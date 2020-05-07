@@ -1,0 +1,15 @@
+;;; Sierra Script
+;;; 145.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_MET_VIZIER 1)
+(define C_NO_MEET 2)
+(define C_FAKED_DEATH 3)
+(define C_LATER 4)
+
+;;; NOUNS
+
+(define N_ROOM 1)
+

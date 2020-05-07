@@ -1,0 +1,27 @@
+;;; Sierra Script
+;;; 0.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ALEX 1)
+(define N_ROCKS 2)
+(define N_DOIT 3)
+(define N_NOTNOW 7)
+(define N_QUIT 4)
+(define N_RESTART 5)
+
+;;; CASES
+
+(define C_BUSY 16)
+(define C_NOMEMORY 15)
+(define C_BEAST 7)
+(define C_ALREADY_DRANK_POTION 18)
+(define C_ALREADY_USED_INK 17)
+(define C_NO_QUIT 11)
+(define C_YES_QUIT 12)
+(define C_YES_RESTART 13)
+(define C_NO_RESTART 14)
+(define C_RAIN_SPELL 9)
+(define C_PAINT_SPELL 8)
+

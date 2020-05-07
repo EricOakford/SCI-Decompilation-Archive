@@ -1,0 +1,16 @@
+;;; Sierra Script
+;;; 899.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_WEDDING 160)
+(define C_POTION_DOGS 1)
+(define C_POTION_GIRL 2)
+(define C_NIGHTINGALE_DOGS 3)
+(define C_NIGHTINGALE_MATRON 4)
+(define C_ENDGAME 238)
+
+;;; NOUNS
+
+

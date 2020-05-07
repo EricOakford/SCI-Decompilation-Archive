@@ -1,0 +1,12 @@
+;;; Sierra Script
+;;; 220.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_GUARDS_KNOW_ALEX 17)
+(define C_LATE_MEETING 12)
+
+;;; NOUNS
+
+

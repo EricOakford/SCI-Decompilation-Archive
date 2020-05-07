@@ -1,0 +1,14 @@
+;;; Sierra Script
+;;; 780.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_JOLLO 1)
+
+;;; CASES
+
+(define C_NOT_FRIEND 1)
+(define C_RETURN 2)
+(define C_FRIEND 8)
+

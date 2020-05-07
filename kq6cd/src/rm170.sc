@@ -1,0 +1,19 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# 170)
+(include sci.sh)
+(use NewRoomCue)
+
+(public
+	rm170 0
+)
+
+(instance rm170 of KQ6Room
+	(properties
+		picture 170
+		autoLoad 0
+	)
+	
+	(method (init)
+		(super init: &rest)
+	)
+)
