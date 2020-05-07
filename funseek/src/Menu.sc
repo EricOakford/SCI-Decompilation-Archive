@@ -22,12 +22,17 @@
 		(switch (super handleEvent: event)
 			(aboutI
 				(= oldPause (DoSound PauseSound TRUE))
-				(Print MENU 0 #icon 0 3 0 #font 3)
+				(Print MENU 0
+					#icon 0 3 0
+					#font 3
+				)
 				(DoSound PauseSound oldPause)
 			)
 			(boostersI
 				(= oldPause (DoSound PauseSound TRUE))
-				(Print MENU 1 #font 3)
+				(Print MENU 1
+					#font 3
+				)
 				(DoSound PauseSound oldPause)
 			)
 			(vaporCalcI

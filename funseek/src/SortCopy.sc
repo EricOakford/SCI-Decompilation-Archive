@@ -1,93 +1,136 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 984)
+(script# SORTCOPY)
 (include game.sh)
+(use Sight)
 (use System)
 
+;;;(procedure
+;;;	SortedAdd
+;;;)
+
 (public
-	SortedAdd 0
+	SortedAdd	0
 )
 
-(procedure (SortedAdd param1 param2 &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8 temp9 newEventHandler temp11 temp12 newEventHandler_2 temp14 temp15 newEventHandler_3)
-	((= newEventHandler (EventHandler new:))
-		add:
-		name: {fl}
+(procedure (SortedAdd theOrigin theLists 
+		&tmp	
+		i toList fromColl
+		node dist obj ang
+		invisible
+		
+		objMinFront distMinFront frontList	;features ego can see on screen
+		objMinOut distMinOut	outList			;   "      "   "   "  off   "
+		objMinBack distMinBack	backList		;   "     behind ego
+		
+		
+		
 	)
-	((= newEventHandler_2 (EventHandler new:))
-		add:
-		name: {ol}
+	
+	((= frontList (EventHandler new:)) add:, name:{fl})
+	((= outList   (EventHandler new:)) add:, name:{ol})
+	((= backList  (EventHandler new:)) add:, name:{bl})
+	
+	((= toList [theLists 0]) add: 
+		frontList 
+		outList 
+		backList
 	)
-	((= newEventHandler_3 (EventHandler new:))
-		add:
-		name: {bl}
-	)
-	((= temp1 [param2 0])
-		add: newEventHandler newEventHandler_2 newEventHandler_3
-	)
-	(-- argc)
+	
+	(-- argc)					;to make up for new argument theOrigin
 	(repeat
-		(= temp8 (= temp11 (= temp14 0)))
-		(= temp9 (= temp12 (= temp15 32767)))
-		(= temp0 1)
-		(while (< temp0 argc)
-			(= temp2 [param2 temp0])
-			(= temp3 (FirstNode (temp2 elements?)))
-			(while
-			(and temp3 (IsObject (= temp5 (NodeValue temp3))))
+		
+		;reset for each pass
+		(= objMinFront		(= objMinOut	(= objMinBack	NULL)))
+		(= distMinFront	(= distMinOut	(= distMinBack	INFINITY)))
+		
+		(for
+			(	(= i 1)
+			)
+			(< i argc)
+			(	(++ i)
+			)
+			
+			(= fromColl [theLists i])
+			
+			(for	
+				((= node (FirstNode (fromColl elements?))))
+				(and
+					node
+					(IsObject (= obj (NodeValue node)))
+				)
+				((= node (NextNode node)))
+				
 				(if
 					(or
 						(and
-							(temp5 respondsTo: #signal)
-							(& (temp5 signal?) $0088)
+							(obj respondsTo: #signal)
+							(& (obj signal?) (| saidEvent mouseUp))
 						)
-						(temp1 firstTrue: #contains temp5)
+						(toList firstTrue: #contains obj)				;already seen
 					)
-				else
-					(= temp4 (param1 distanceTo: temp5))
-					(= temp6
-						(__proc982_2
-							(param1 heading?)
-							(GetAngle
-								(param1 x?)
-								(param1 y?)
-								(temp5 x?)
-								(temp5 y?)
-							)
-						)
-					)
-					(if (== (umod temp6 90) 0) (-- temp6))
-					(if (= temp7 (__proc982_1 temp5 param1))
-						(= temp4 (TimesTan temp6 temp4))
-					else
-						(if (> (Abs temp6) 90)
-							(= temp6 89)
-							(= temp4 (* temp4 10))
-						)
-						(= temp4 (Abs (TimesCot temp6 temp4)))
-					)
-					(if (< temp4 0) (= temp4 32767))
-					(cond 
-						(temp7
-							(if (<= temp4 temp15)
-								(= temp15 temp4)
-								(= temp14 temp5)
-							)
-						)
-						((__proc982_0 temp5)
-							(if (<= temp4 temp12)
-								(= temp12 temp4)
-								(= temp11 temp5)
-							)
-						)
-						((<= temp4 temp9) (= temp9 temp4) (= temp8 temp5))
+					(continue)
+				)
+				
+				(= dist (theOrigin distanceTo: obj))
+				
+				;;favor objects straight in front of ego
+				(= ang
+					(AngleDiff (theOrigin heading?)
+						(GetAngle (theOrigin x?) (theOrigin y?) (obj x?) (obj y?))
 					)
 				)
-				(= temp3 (NextNode temp3))
-			)
-			(++ temp0)
+				;fudge to avoid trig divide by zero
+				(if (== (umod ang 90) 0)	(-- ang))
+				
+				(if (= invisible (CantBeSeen obj theOrigin))
+					;straight aside is better when behind
+					(= dist (TimesTan ang dist))
+				else
+					;straight ahead is better when in front
+					(if (> (Abs ang) 90)
+						(= ang 89)
+						(*= dist 10)	;penalize stuff behind ego
+					)
+					(= dist (Abs (TimesCot ang dist)))
+				)
+				
+				(if (< dist 0) (= dist INFINITY))	;overflow compensation
+				
+				(cond
+					(invisible
+						(if (<= dist distMinBack)
+							(= distMinBack dist)
+							(= objMinBack obj)
+						)
+					)
+					((IsOffScreen obj)				;off screen but visible
+						(if (<= dist distMinOut)
+							(= distMinOut dist)
+							(= objMinOut obj)
+						)
+					)
+					(else									;visible and on screen
+						(if (<= dist distMinFront)
+							(= distMinFront dist)
+							(= objMinFront obj)
+						)
+					)
+				)
+				
+			);for loop over elements
+			
+		);for loop over lists
+		
+		(if objMinFront	(frontList addToEnd: objMinFront))
+		(if objMinOut		(outList addToEnd: objMinOut))
+		(if objMinBack		(backList addToEnd: objMinBack))
+		(or 
+			objMinFront
+			objMinOut
+			objMinBack
+			(break) ;out of repeat
 		)
-		(if temp8 (newEventHandler addToEnd: temp8))
-		(if temp11 (newEventHandler_2 addToEnd: temp11))
-		(if temp14 (newEventHandler_3 addToEnd: temp14))
-		(if (or temp8 temp11) else (if temp14 else (break)))
-	)
-)
+		
+	);repeat
+	
+);SortedAdd procedure

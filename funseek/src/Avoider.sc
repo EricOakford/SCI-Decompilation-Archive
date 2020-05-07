@@ -1,17 +1,22 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 985)
+(script# AVOIDER)
 (include game.sh)
 (use System)
+
+(define	escapeMax		80)
+(define	escapeMin		40)
+(define	noProgressMax	50)
 
 
 (class Avoider of Object
 	(properties
+		name "Avoid"
 		client 0
 		heading -1000
 		bumpTurn 0
 		lastBumped 0
 		thisTurn 1
-		escaping 0
+		escaping FALSE
 		escapes 0
 		escapeTurn 1
 		nearestDist 32000
@@ -19,85 +24,85 @@
 		nonBumps 10
 		targetX 0
 		targetY 0
-		motionInited 0
-		outOfTouch 0
-		offScreenOK 0
+		motionInited FALSE
+		outOfTouch FALSE
+		offScreenOK FALSE
 	)
 	
-	(method (init theClient theOffScreenOK)
-		(if (>= argc 1) (= client theClient))
-		(if (>= argc 2) (= offScreenOK theOffScreenOK))
+	(method (init aClient allowOff)
+		(if (>= argc 1) (= client aClient))
+		(if (>= argc 2) (= offScreenOK allowOff))
 		(= heading (client heading?))
 		(= counter 0)
 		(= nonBumps 10)
-		(= escaping 0)
+		(= escaping FALSE)
 	)
 	
-	(method (doit &tmp theHeading theNearestDist clientX clientY theTargetX theTargetY clientMover temp7 temp8 clientMoverB_moveCnt temp10 temp11 temp12 temp13)
+	(method (doit &tmp h d cx cy mx my motion ang absDiff i j facing bumping firstBump)
 		(cond 
-			((not (= clientMover (client mover?))) (= heading -1000) (return))
-			((clientMover onTarget:)
-				(if motionInited else (InitBresen clientMover))
-				(clientMover doit:)
+			((not (= motion (client mover?))) (= heading -1000) (return))
+			((motion onTarget:)
+				(if motionInited else (InitBresen motion))
+				(motion doit:)
 				(return)
 			)
 			((== heading -1000) (self init:))
 		)
-		(= temp13 0)
-		(= temp12 (<= nonBumps 3))
-		(clientMover setTarget:)
-		(= theTargetX (clientMover x?))
-		(= theTargetY (clientMover y?))
-		(= clientX (client x?))
-		(= clientY (client y?))
-		(= temp7
-			(GetAngle clientX clientY theTargetX theTargetY)
+		(= firstBump FALSE)
+		(= bumping (<= nonBumps 3))
+		(motion setTarget:)
+		(= mx (motion x?))
+		(= my (motion y?))
+		(= cx (client x?))
+		(= cy (client y?))
+		(= ang
+			(GetAngle cx cy mx my)
 		)
-		(= theNearestDist
-			(GetDistance clientX clientY theTargetX theTargetY)
+		(= d
+			(GetDistance cx cy mx my)
 		)
-		(= theHeading
+		(= h
 			(= heading (umod (* 45 (/ heading 45)) 360))
 		)
 		(cond 
 			(
-			(not (if escaping else (= temp12 (<= nonBumps 2))))
+			(not (if escaping else (= bumping (<= nonBumps 2))))
 				(if (not motionInited)
-					(= motionInited 1)
-					(InitBresen clientMover)
+					(= motionInited TRUE)
+					(InitBresen motion)
 				)
-				(clientMover doit:)
+				(motion doit:)
 				(if
-				(or (!= clientX (client x?)) (!= clientY (client y?)))
-					(self pickLoop: temp7)
+				(or (!= cx (client x?)) (!= cy (client y?)))
+					(self pickLoop: ang)
 					(++ nonBumps)
 					(return)
 				else
 					(= nonBumps 0)
-					(= temp13 1)
-					(= motionInited 0)
+					(= firstBump TRUE)
+					(= motionInited FALSE)
 				)
 			)
 			(
 				(<
-					(= clientMoverB_moveCnt (clientMover b-moveCnt?))
+					(= i (motion b-moveCnt?))
 					(client moveSpeed?)
 				)
-				(clientMover b-moveCnt: (++ clientMoverB_moveCnt))
+				(motion b-moveCnt: (++ i))
 				(return)
 			)
-			(else (clientMover b-moveCnt: 0))
+			(else (motion b-moveCnt: 0))
 		)
 		(cond 
 			(
 				(or
-					(!= targetX (= targetX theTargetX))
-					(!= targetY (= targetY theTargetY))
+					(!= targetX (= targetX mx))
+					(!= targetY (= targetY my))
 					(and
 						escaping
 						(or
 							(<= (-- counter) 0)
-							(and (< theNearestDist nearestDist) (< counter 40))
+							(and (< d nearestDist) (< counter 40))
 						)
 					)
 				)
@@ -106,31 +111,31 @@
 				(= counter 0)
 			)
 			(escaping 1)
-			((< theNearestDist nearestDist) (= nearestDist theNearestDist) (= counter 0))
+			((< d nearestDist) (= nearestDist d) (= counter 0))
 			((= escaping (>= (++ counter) 50))
 				(= counter (Random 40 80))
 				(= escapeTurn (- escapeTurn))
 			)
 		)
 		(cond 
-			((<= (= temp7 (- temp7 theHeading)) -180) (= temp7 (+ temp7 360)))
-			((> temp7 180) (= temp7 (- temp7 360)))
+			((<= (= ang (- ang h)) -180) (= ang (+ ang 360)))
+			((> ang 180) (= ang (- ang 360)))
 		)
-		(= temp11 (<= (= temp8 (Abs temp7)) 90))
+		(= facing (<= (= absDiff (Abs ang)) 90))
 		(= thisTurn
 			(if
 				(cond 
-					(escaping (sign temp7))
-					(temp11 (sign temp7))
+					(escaping (sign ang))
+					(facing (sign ang))
 					(bumpTurn)
 					(lastBumped)
-					(else (sign temp7))
+					(else (sign ang))
 				)
 			else
 				escapeTurn
 			)
 		)
-		(if (and (> temp8 22) (or 0 (not escaping)))
+		(if (and (> absDiff 22) (or 0 (not escaping)))
 			(= heading (+ heading (* thisTurn 45)))
 		)
 		(if escaping (= thisTurn escapeTurn))
@@ -145,36 +150,36 @@
 			(= nonBumps 0)
 		)
 		(if escaping
-			(= theHeading (* 45 (/ heading 45)))
-			(= temp10 0)
-			(while (and (< temp10 8) (self canBeHere:))
+			(= h (* 45 (/ heading 45)))
+			(= j 0)
+			(while (and (< j 8) (self canBeHere:))
 				(= heading
-					(umod (+ theHeading (* 45 temp10 escapeTurn)) 360)
+					(umod (+ h (* 45 j escapeTurn)) 360)
 				)
-				(client x: clientX y: clientY)
+				(client x: cx y: cy)
 				(self incClientPos:)
-				(++ temp10)
+				(++ j)
 			)
-			(if (== temp10 8)
+			(if (== j 8)
 				(= heading (+ heading (* escapeTurn 45)))
 			)
-			(= theHeading heading)
+			(= h heading)
 		)
-		(= temp10 (= clientMoverB_moveCnt 1))
+		(= j (= i 1))
 		(while
 			(and
 				(not (self canBeHere:))
-				(< clientMoverB_moveCnt 8)
+				(< i 8)
 			)
-			(client x: clientX y: clientY)
-			(= heading (- theHeading (* 45 temp10 thisTurn)))
+			(client x: cx y: cy)
+			(= heading (- h (* 45 j thisTurn)))
 			(self incClientPos:)
-			(= temp10
+			(= j
 				(cond 
-					(escaping (++ clientMoverB_moveCnt))
-					(temp13 (- (++ clientMoverB_moveCnt)))
-					((> temp10 0) (- temp10))
-					(else (++ clientMoverB_moveCnt))
+					(escaping (++ i))
+					(firstBump (- (++ i)))
+					((> j 0) (- j))
+					(else (++ i))
 				)
 			)
 		)
@@ -196,12 +201,12 @@
 		)
 	)
 	
-	(method (pickLoop param1)
-		(client heading: param1)
+	(method (pickLoop angle)
+		(client heading: angle)
 		(if (client looper?)
-			((client looper?) doit: client param1)
+			((client looper?) doit: client angle)
 		else
-			(DirLoop client param1)
+			(DirLoop client angle)
 		)
 	)
 	
