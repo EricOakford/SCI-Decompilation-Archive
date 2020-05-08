@@ -554,7 +554,7 @@
 )
 (instance changeDirI of DButton
 	(properties
-		text {Change\rDirectory}
+		text {Change\nDirectory}
 	)
 )
 (instance textI of DText

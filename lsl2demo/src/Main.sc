@@ -25,15 +25,15 @@
 	RedrawCast 9
 	proc0_10 10
 	cls 11
-	PrintOk 12
-	PrintItIs 13
-	PrintYouAre 14
-	PrintNotNow 15
-	PrintNotCloseEnough 16
-	PrintAlreadyTookIt 17
-	PrintNothingSpecial 18
-	PrintCantDoThat 19
-	PrintDontHaveIt 20
+	Ok 12
+	ItIs 13
+	YouAre 14
+	NotNow 15
+	NotClose 16
+	AlreadyTook 17
+	SeeNothing 18
+	CantDo 19
+	DontHave 20
 	SetRegionTimer 21
 )
 
@@ -651,39 +651,39 @@
 	)
 )
 
-(procedure (PrintOk)
+(procedure (Ok)
 	(Print 0 10)
 )
 
-(procedure (PrintItIs)
+(procedure (ItIs)
 	(Print 0 11)
 )
 
-(procedure (PrintYouAre)
+(procedure (YouAre)
 	(Print 0 12)
 )
 
-(procedure (PrintNotNow)
+(procedure (NotNow)
 	(Print 0 13)
 )
 
-(procedure (PrintNotCloseEnough)
+(procedure (NotClose)
 	(Print 0 14)
 )
 
-(procedure (PrintAlreadyTookIt)
+(procedure (AlreadyTook)
 	(Print 0 15)
 )
 
-(procedure (PrintNothingSpecial)
+(procedure (SeeNothing)
 	(Print 0 16)
 )
 
-(procedure (PrintCantDoThat)
+(procedure (CantDo)
 	(Print 0 17)
 )
 
-(procedure (PrintDontHaveIt)
+(procedure (DontHave)
 	(Print 0 18)
 )
 
