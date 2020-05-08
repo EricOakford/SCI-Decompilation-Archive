@@ -1,432 +1,631 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 992)
+;;;;
+;;;;	MOTION.SC
+;;;;	(c) Sierra On-Line, Inc, 1988
+;;;;
+;;;;	Author: Jeff Stephenson
+;;;;
+;;;;	Classes for moving and cycling animated objects.
+;;;;	Cycling classes change the cel number of their client in a consistent
+;;;; 	manner in response to the doit: message.  This makes the object seem
+;;;;	to animate.
+;;;;	Motion classes change the x,y position of their client in response
+;;;;	to the doit: message.  Each class implements a different way of
+;;;;	moving an object.
+;;;;
+;;;;	Classes:
+;;;;		Cycle
+;;;;		Forward
+;;;;		Walk
+;;;;		Reverse
+;;;;		CycleTo
+;;;;		EndLoop
+;;;;		BegLoop
+;;;;		Motion
+;;;;		MoveTo
+;;;;		Wander
+;;;;		Follow
+;;;;		Chase
+
+
+(script# MOTION)
 (include game.sh)
 (use Main)
 (use System)
 
 
-(class Cycle of Object
+;CYCLING CLASSES ---------------------------------------------------------------
+
+
+(class Cycle kindof Object
+	;;; Superclass for all cycling classes.  Not used in itself.
+	
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
+		client 0			;object whose cycling the class is controlling
+		caller 0			;object to notify when cycling is completed
+		cycleDir 1		;cycle direction (1 == forward, -1 == backward)
+		cycleCnt 0		;"speed" related property
 		completed 0
 	)
 	
-	(method (init theClient)
-		(= client theClient)
+;;;	(methods
+;;;		nextCel			;return value of next cel in the current cycling direction
+;;;		cycleDone		;method invoked when the cycling finishes
+;;;		motionCue
+;;;	)
+	
+	
+	(method (init theObj)
+		;Make theObj our client.
+		(= client theObj)
+
+		;Reset cycle counter.
 		(= cycleCnt 0)
-		(client setCel: -1)
+
+		;Release our client's cel and make sure it's updating on the screen.
+		(client setCel:-1)
 		(client startUpd:)
 	)
 	
+	
 	(method (nextCel)
+		;; Return client's next logical cel.
+		
+		;Increment the number of animation cycles since the client last cycled.
 		(++ cycleCnt)
+		
 		(return
 			(if (<= cycleCnt (client cycleSpeed?))
+				;Not yet time to change the client's cel.
 				(client cel?)
 			else
+				;Reset counter.
 				(= cycleCnt 0)
-				(if (& (client signal?) $1000)
+				
+				(if (& (client signal?) fixedCel)
+					;Client's cel is fixed -- just return current cel.
 					(client cel?)
 				else
+					;Change the cel number in the appropriate fashion.
 					(+ (client cel?) cycleDir)
 				)
 			)
 		)
 	)
 	
+	
 	(method (cycleDone)
 	)
 	
+	
 	(method (motionCue)
-		(client cycler: 0)
-		(if (and completed (IsObject caller)) (caller cue:))
+		;Detach from client.
+		(client cycler:0)
+		
+		(if (and completed (IsObject caller))
+			(caller cue:)
+		)
+		
 		(self dispose:)
 	)
 )
 
-(class Forward of Cycle
+
+
+
+(class Forward kindof Cycle
+	;;; Cycles client's cel constantly forward, wrapping to 0 when it exceeds
+	;;; the number of cels in the client's loop.
+	
 	(properties
 		name "Fwd"
-		client 0
-		caller 0
 		cycleDir 1
-		cycleCnt 0
-		completed 0
 	)
 	
-	(method (doit &tmp fwdNextCel)
-		(if
-		(> (= fwdNextCel (self nextCel:)) (client lastCel:))
+	
+	(method (doit &tmp newCel)
+		(= newCel (self nextCel:))
+		(if (> newCel (client lastCel:))
 			(self cycleDone:)
 		else
-			(client cel: fwdNextCel)
+			(client cel:newCel)
 		)
 	)
 	
-	(method (cycleDone)
-		(client cel: 0)
-	)
-)
-
-(class Walk of Forward
-	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-	)
 	
-	(method (doit &tmp temp0)
-		(if (not (client isStopped:)) (super doit:))
+	(method (cycleDone)
+		;; When 'done', reset to first cel and keep going.
+		(client cel:0)
 	)
 )
 
-(class Reverse of Cycle
+
+
+(class Walk kindof Forward
+	;;; Do a forward cycle of an object only if it has moved.  Otherwise,
+	;;; remain motionless.
+
+	(method (doit &tmp newCel)
+		;; Goes to next cel if client has moved.
+		
+		(if (not (client isStopped:))
+			(super doit:)
+		)
+	)
+)
+
+
+(class Reverse kindof Cycle
+	;;; Cycles client's cel constantly in reverse, wrapping to the last cel
+	;;; in the client's loop when the cel goes below 0.
+
 	(properties
 		name "Rev"
-		client 0
-		caller 0
 		cycleDir -1
-		cycleCnt 0
-		completed 0
 	)
-	
-	(method (doit &tmp revNextCel)
-		(if (< (= revNextCel (self nextCel:)) 0)
+
+	(method (doit &tmp newCel)
+		(= newCel (self nextCel:))
+		(if (< newCel 0)
 			(self cycleDone:)
 		else
-			(client cel: revNextCel)
+			(client cel:newCel)
 		)
 	)
-	
+
+
 	(method (cycleDone)
+		;; When 'done', reset to last cel and keep going.
 		(client cel: (client lastCel:))
 	)
 )
 
-(class CycleTo of Cycle
+
+
+
+(class CycleTo kindof Cycle
+	;;; Cycle from the current cel of the client to a specified cel,
+	;;; cue:ing the caller when the specified cel is reached.
+	
 	(properties
 		name "CT"
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-		endCel 0
+		endCel 0			;cel to cycle to
 	)
 	
-	(method (init param1 param2 theCycleDir theCaller &tmp clientLastCel)
-		(super init: param1)
-		(= cycleDir theCycleDir)
-		(if (== argc 4) (= caller theCaller))
-		(= endCel
-			(if (> param2 (= clientLastCel (client lastCel:)))
-				clientLastCel
-			else
-				param2
+	(method (init actor toCel dir whoCares &tmp last)
+		;; Set up endCel and caller.
+		
+		(super init: actor)
+		
+		(= cycleDir dir)
+		(if (== argc 4)
+			(= caller whoCares)
+		)
+		
+		;Set endCel to the value passed, or to the last cel of the
+		;current loop if the specified cel is too big.
+		(= last (client lastCel:))
+		(= endCel (if (> toCel last) last else toCel))
+		
+		;If the current cel is the one which we're supposed to
+		;quit at, cycle once to get off it.
+;		(if (== endCel (client cel?))
+;			(= toCel (+ cycleDir (client cel?)))
+;			(client cel:
+;				(cond
+;					((> toCel last)
+;						0
+;					)
+;					((< toCel 0)
+;						last
+;					)
+;					(else
+;						toCel
+;					)
+;				)
+;			)
+;		)
+	)
+	
+	
+	(method (doit &tmp newCel last)
+		(= last (client lastCel:))
+		
+		;Check to see if the current loop of the animated object has fewer
+		;cels than our ending cel.  If so, set the last cel of the current
+		;loop as the ending cel.
+		(if (> endCel last)
+			(= endCel last)
+		)
+		
+		;Move to next cel.
+		(= newCel (self nextCel:))
+		(client cel:
+			(cond
+				((> newCel last)
+					0
+				)
+				((< newCel 0)
+					last
+				)
+				(else
+					newCel
+				)
 			)
 		)
-	)
-	
-	(method (doit &tmp cTNextCel clientLastCel)
-		(if (> endCel (= clientLastCel (client lastCel:)))
-			(= endCel clientLastCel)
-		)
-		(= cTNextCel (self nextCel:))
-		(client
-			cel:
-				(cond 
-					((> cTNextCel clientLastCel) 0)
-					((< cTNextCel 0) clientLastCel)
-					(else cTNextCel)
-				)
-		)
+		
+		;If at final cel, signal that we're done.
 		(if
-		(and (== cycleCnt 0) (== endCel (client cel?)))
+			(and
+				(== cycleCnt 0)
+				(== endCel (client cel?))
+			)
 			(self cycleDone:)
 		)
 	)
 	
+	
 	(method (cycleDone)
-		(= completed 1)
-		(if caller (= doMotionCue 1) else (self motionCue:))
+		(= completed TRUE)
+		
+		;If we have a caller which needs cue:ing, set the flag for a delayed cue:.
+		;Otherwise, just cue: ourselves to complete the motion.
+		(if caller
+			(= doMotionCue TRUE)
+		else
+			(self motionCue:)
+		)
 	)
 )
 
-(class EndLoop of CycleTo
+
+
+(class EndLoop kindof CycleTo
+	;;; Cycles forward until the last cel of the loop is reached.
+	;;; Leaves cel at last cel in loop.
+	
 	(properties
 		name "End"
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-		endCel 0
 	)
 	
-	(method (init param1 param2)
+	(method (init actor whoCares)
 		(super
-			init: param1 (param1 lastCel:) 1 (if (== argc 2) param2 else 0)
+			init:
+			actor
+			(actor lastCel:)
+			1
+			(if (== argc 2) whoCares else 0)
 		)
 	)
 )
 
-(class BegLoop of CycleTo
+
+
+(class BegLoop kindof CycleTo
+	;;; Cycles backward until it reaches cel 0.
+	;;; Leaves cel at 0.
+	
 	(properties
 		name "Beg"
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-		endCel 0
 	)
 	
-	(method (init param1 param2)
-		(super init: param1 0 -1 (if (== argc 2) param2 else 0))
+	(method (init actor whoCares)
+		(super
+			init:
+			actor 
+			0
+			-1
+			(if (== argc 2) whoCares else 0)
+		)
 	)
 )
 
-(class Motion of Object
+
+
+
+
+;;;; MOTION CLASSES ------------------------------------------------------------
+
+;;;; All Actor motion attempts to get from point A to point B in a straight
+;;;; line.  This is done using a modified Bresenham algorithm which deals
+;;;; with non-unit steps.  See "bresen.doc" for a derivation of the algorithm.
+;;;; The bulk of Motion code (particularly the Bresenham algorithm) has been
+;;;; moved into the kernel for both speed and heap space savings.
+;;;; (See motion.c).
+
+
+
+(class Motion kindof Object
+	;;; Move an Actor from its current position to a destination position.
+	
 	(properties
-		client 0
-		caller 0
-		x 0
+		client 0			;actor we are controlling
+		caller 0			;cue this object when complete (or blocked)
+		x 0				;destination of the move
 		y 0
-		dx 0
+		dx 0				;basic step size
 		dy 0
-		b-moveCnt 0
-		b-i1 0
+		b-moveCnt 0		;iterations of doit to skip
+		b-i1 0			;increment values
 		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
+		b-di 0			;decision variable
+		b-xAxis 0		;is motion along x-axis or y-axis?
+		b-incr 0			;the Bresenham adjustment to an integral slope line
 		completed 0
 	)
 	
-	(method (init theClient theX theY theCaller &tmp [temp0 2])
-		(= client theClient)
-		(= x theX)
-		(= y theY)
-		(if (== argc 4) (= caller theCaller))
+;;;	(methods
+;;;		moveDone			;invoked when Actor reaches its destination
+;;;		setTarget		;resets x and y
+;;;		onTarget			;TRUE/FALSE
+;;;		motionCue
+;;;	)
+	
+	
+	(method (init actor xTo yTo toCall &tmp DX DY)
+		
+		;Our client is the actor we are moving
+		(= client actor)
+
+		;Set our destination
+		(= x xTo)
+		(= y yTo)
+
+		;toCall is the ID of the object to cue: when when done.
+		(if (== argc 4)
+			(= caller toCall)
+		)
+
 		(= b-moveCnt 0)
-		(theClient
-			heading: (GetAngle (theClient x?) (theClient y?) theX theY)
-		)
-		(if (theClient looper?)
-			((theClient looper?)
-				doit: theClient (theClient heading?)
-			)
+
+		;Set actor's heading.
+		(actor heading: (GetAngle (actor x?) (actor y?) xTo yTo))
+
+		;Pick an appropriate loop for this direction in which the Actor
+		;will move.
+		(if (actor looper?)
+			((actor looper?) doit: actor (actor heading?))
 		else
-			(DirLoop theClient (theClient heading?))
+			(DirLoop actor (actor heading?))
 		)
+		
+		;Set up for the Bresenham algorithm.
 		(InitBresen self)
 	)
 	
-	(method (doit &tmp [temp0 6])
+	
+	(method (onTarget)
+		(return (and (== (client x?) x) (== (client y?) y)))
+	)
+	
+	(method (setTarget xTo yTo)
+		(if argc (= x xTo) (= y yTo))
+	)
+	
+	(method (doit &tmp aState xd yd si1 si2 sdi)
+		;; Move the actor one step.
+
+		;If time to move, take a step.
 		(DoBresen self)
+		
+		;If our client is where he should be we terminate.
 		(if (and (== x (client x?)) (== y (client y?)))
 			(self moveDone:)
 			(return)
 		)
-	)
+	)		
+	
 	
 	(method (moveDone)
-		(= completed 1)
-		(if caller (= doMotionCue 1) else (self motionCue:))
+		(= completed TRUE)
+		
+		;If we have a caller which needs cue:ing, set the flag for a delayed cue:.
+		;Otherwise, just cue: ourselves to complete the motion.
+		(if caller
+			(= doMotionCue TRUE)
+		else
+			(self motionCue:)
+		)
 	)
 	
 	(method (triedToMove)
 		(return (== b-moveCnt 0))
 	)
 	
-	(method (setTarget theX theY)
-		(if argc (= x theX) (= y theY))
-	)
-	
-	(method (onTarget)
-		(return (if (== (client x?) x) (== (client y?) y) else 0))
-	)
-	
 	(method (motionCue)
-		(client mover: 0)
-		(if (and completed (IsObject caller)) (caller cue:))
+		;Detach from client.
+		(client mover:0)
+		
+		(if (and completed (IsObject caller))
+			(caller cue:)
+		)
+		
 		(self dispose:)
 	)
 )
 
-(class MoveTo of Motion
-	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-	)
+
+
+(class MoveTo kindof Motion
+	;;; Move client to a particular point and signal completion to caller.
 	
 	(method (init)
-		(super init: &rest)
+		(super init: &rest)		;set up to move
+;		(super doit:)				;take the first step
 	)
 	
 	(method (onTarget)
 		(return
-			(if (<= (Abs (- (client x?) x)) (client xStep?))
+			(and
+				(<= (Abs (- (client x?) x)) (client xStep?))
 				(<= (Abs (- (client y?) y)) (client yStep?))
-			else
-				0
 			)
 		)
 	)
-)
+);MoveTo
 
-(class Wander of Motion
+
+(class Wander kindof Motion
+	;;; Wander about the screen.  This motion never terminates.
+	
 	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		distance 0
+		distance 0		;the max distance to move on any one leg of the wander
 	)
 	
-	(method (init param1 param2 &tmp temp0 temp1 temp2)
-		(= distance (if (== argc 2) param2 else 30))
-		(= temp2 (* distance 2))
-		(= temp0
-			(+ (param1 x?) (- distance (Random 1 temp2)))
-		)
-		(= temp1
-			(+ (param1 y?) (- distance (Random 1 temp2)))
-		)
-		(super init: param1 temp0 temp1)
+	(method (init theObj dist &tmp nx ny diam)
+		;The maximum distance to move on any one leg of the wander is 'dist'
+		;if present, 30 pixels otherwise.
+		(= distance (if (== argc 2) dist else 30))
+		(= diam (* distance 2))
+
+		;Pick a random position to move to, constrained by 'distance'.
+		(= nx (+ (theObj x?) (- distance (Random 1 diam))))
+		(= ny (+ (theObj y?) (- distance (Random 1 diam))))
+
+		;Initialize the motion and take the first step.
+		(super init: theObj nx ny)
+;		(super doit:)
 	)
+	
+	(method (setTarget &tmp diam)
+		
+		(= diam (* distance 2))
+		;Pick a random position to move to, constrained by 'distance'.
+		(= x (+ (client x?) (- distance (Random 1 diam))))
+		(= y (+ (client y?) (- distance (Random 1 diam))))
+	)
+
+	(method (onTarget)
+		(return FALSE)	;we're never done wandering
+	)	
 	
 	(method (doit)
+		;Take the next step.
 		(super doit:)
-		(if (client isStopped:) (self moveDone:))
+		
+		;;If the motion is complete or the client is blocked,
+		;;we're finished with this leg.
+		(if (client isStopped:)
+			(self moveDone:)
+		)
 	)
 	
 	(method (moveDone)
+		;;; When done with the current leg of wandering, re-init: the motion
+		;;; to continue wandering.
 		(self init: client distance)
 	)
-	
-	(method (setTarget &tmp temp0)
-		(= temp0 (* distance 2))
-		(= x (+ (client x?) (- distance (Random 1 temp0))))
-		(= y (+ (client y?) (- distance (Random 1 temp0))))
-	)
-	
-	(method (onTarget)
-		(return 0)
-	)
-)
+);Wander
 
-(class Follow of Motion
+
+(class Follow kindof Motion
+	;;; This class moves its client in such a way as to try and stay within
+	;;; a certain distance to another object.
+	
 	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		who 0
-		distance 0
+		who 0					;who to follow
+		distance 0			;try to stay at least this close to 'who'
 	)
 	
-	(method (init theClient theWho param3)
-		(= who theWho)
-		(= client theClient)
-		(= distance (if (< argc 3) 20 else param3))
+	
+	(method (init theObj whom dist)
+		(= who whom)
+		(= client theObj)
+
+		;If distance is not specified, default to 20 pixels.
+		(= distance
+			(if (< argc 3)
+				20
+			else 
+				dist
+			)
+		)
+
+		;If the client is too far from the object being followed, start
+		;moving toward it.
 		(if (> (client distanceTo: who) distance)
-			(super init: theClient (who x?) (who y?))
+			(super init: theObj (who x?) (who y?))
+;			(super doit:)
 		)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (onTarget)
+		(<= (client distanceTo: who) distance)
+	)
+	
+	(method (setTarget)
+		(cond
+			(argc	
+				(super setTarget: &rest)
+			)
+			((not (self onTarget:))
+				(super setTarget: (who x?) (who y?))
+			)
+		)
+	)
+
+	
+	(method (doit &tmp angle)
 		(if (> (client distanceTo: who) distance)
+			;If too far from the object being followed, move toward it.
 			(super doit:)
 			(if (== b-moveCnt 0)
 				(super init: client (who x?) (who y?))
 			)
 		else
-			(= temp0
-				(GetAngle (client x?) (client y?) (who x?) (who y?))
-			)
+			;The client is just standing around near its destination.  Pick
+			;the loop which faces in the destination's direction.
+			(= angle (GetAngle (client x?) (client y?) (who x?) (who y?)))
 			(if (client looper?)
-				((client looper?) doit: client temp0)
+				((client looper?) doit: client angle)
 			else
-				(DirLoop client temp0)
+				(DirLoop client angle)
 			)
 		)
 	)
-	
 	(method (moveDone)
+		;;; When done with the current leg of wandering, re-init: the motion
+		;;; to continue wandering.
+	;		(self init: client distance)
+	)
+	
+)
+
+(class Chase kindof Motion
+	;;; Try to catch a particular Actor.
+	
+	(properties
+		who 0					;who to chase
+		distance 0			;how close to 'who' is considered a 'catch'
+	)
+	
+	
+	(method (init actor whom howClose whoCares)
+		(= client actor)
+		(= who whom)
+		(= distance howClose)
+		(if (== argc 4)
+			(= caller whoCares)
+		)
+		(super init: client (who x?) (who y?) caller)
+;		(super doit:)
+	)
+
+	
+	(method (onTarget)
+		(<= (client distanceTo: who) distance)
 	)
 	
 	(method (setTarget)
-		(cond 
-			(argc (super setTarget: &rest))
-			((not (self onTarget:)) (super setTarget: (who x?) (who y?)))
+		(cond
+			(argc	
+				(super setTarget: &rest)
+			)
+			((not (self onTarget:))
+				(super setTarget: (who x?) (who y?))
+				
+			)
 		)
-	)
-	
-	(method (onTarget)
-		(return (<= (client distanceTo: who) distance))
-	)
-)
-
-(class Chase of Motion
-	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		who 0
-		distance 0
-	)
-	
-	(method (init theClient theWho theDistance theCaller)
-		(= client theClient)
-		(= who theWho)
-		(= distance theDistance)
-		(if (== argc 4) (= caller theCaller))
-		(super init: client (who x?) (who y?) caller)
 	)
 	
 	(method (doit)
@@ -438,16 +637,5 @@
 				(super init: client (who x?) (who y?) caller)
 			)
 		)
-	)
-	
-	(method (setTarget)
-		(cond 
-			(argc (super setTarget: &rest))
-			((not (self onTarget:)) (super setTarget: (who x?) (who y?)))
-		)
-	)
-	
-	(method (onTarget)
-		(return (<= (client distanceTo: who) distance))
-	)
+	)	
 )

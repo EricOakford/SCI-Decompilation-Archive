@@ -1,130 +1,166 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 991)
+;;;;
+;;;;	JUMP.SC
+;;;;	(c) Sierra On-Line, Inc, 1988
+;;;;
+;;;;	Author: Jeff Stephenson
+;;;;
+;;;;	Classes which implement free motion under the influence of gravity.
+;;;;
+;;;;	Classes:
+;;;;		Jump
+;;;;		JumpTo
+
+
+(script#	JUMP)
 (include game.sh)
 (use Main)
 (use Motion)
 
+(define	UNDEF		20000)
 
-(class Jump of Motion
+
+(class Jump kindof Motion
+	;;; Implementation of motion in a gravitational field.
+
 	(properties
-		client 0
-		caller 0
-		x 20000
-		y 20000
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		gx 0
-		gy 3
-		xStep 20000
-		yStep 0
-		signal $0000
-		illegalBits $0000
-		waitApogeeX 1
-		waitApogeeY 1
+		x UNDEF			;x coord of finish
+		y UNDEF			;y coord of finish
+		gx 0				;gravitational acceleration in pixels/(animation cycle)**2
+		gy 3				;gravitational acceleration in pixels/(animation cycle)**2
+		xStep UNDEF		;horizontal step size
+		yStep 0			;vertical step size
+		signal 0			;save are for client's signal bits
+		illegalBits 0	;save area for illegal bits of client
+
+		;The following two properties, when true, indicate that we are to check
+		;for motion completion only after the apogee of the motion.  This is
+		;necessary if we are to be able to jump onto things.  Set these to
+		;FALSE if you do NOT want this behavior.
+		waitApogeeX TRUE
+		waitApogeeY TRUE
 	)
-	
-	(method (init theClient theCaller &tmp clientHeading)
-		(= client theClient)
-		(if (== argc 2) (= caller theCaller))
+
+;;;	(methods
+;;;		setTest			;private -- set up the jump completion test
+;;;	)
+
+
+	(method (init actor whom &tmp dir)
+		(= client actor)
+		(if (== argc 2)
+			(= caller whom)
+		)
+
+		;Save the signal and illegalBits of the client, then set them to
+		;values which allow the client to move anywhere.  Freeze the client's
+		;priority, since the motion is to be vertical.
 		(= illegalBits (client illegalBits?))
 		(= signal (client signal?))
-		(client illegalBits: 0 setPri:)
-		(if (== xStep 20000)
+		(client illegalBits:0, setPri:)
+		
+		;If no xStep was specified, set a default.
+		(if (== xStep UNDEF)
+			(= dir (client heading?))
 			(= xStep
-				(cond 
-					(
-						(or
-							(> (= clientHeading (client heading?)) 330)
-							(< clientHeading 30)
-							(and (< 150 clientHeading) (< clientHeading 210))
-						)
+				(cond
+					((or (> dir 330) (< dir 30) (< 150 dir 210))
 						0
 					)
-					((< clientHeading 180) (client xStep?))
-					(else (- (client xStep?)))
+					((< dir 180)
+						(client xStep?)
+					)
+					(else
+						(- (client xStep?))
+					)
 				)
 			)
 		)
-		(if (not (if waitApogeeX (< (* xStep gx) 0)))
-			(= waitApogeeX 0)
+		
+		(if (not (and waitApogeeX (< (* xStep gx) 0)))
+			(= waitApogeeX FALSE)
 		)
-		(if (not (if waitApogeeY (< (* yStep gy) 0)))
-			(= waitApogeeY 0)
+		(if (not (and waitApogeeY (< (* yStep gy) 0)))
+			(= waitApogeeY FALSE)
 		)
+
 		(self setTest:)
 	)
-	
-	(method (doit &tmp theXStep theYStep)
+
+
+	(method (doit &tmp lxs lys)
+
+		;Move the client.
 		(client
 			x: (+ (client x?) xStep)
 			y: (+ (client y?) yStep)
 		)
-		(= theXStep xStep)
-		(= theYStep yStep)
-		(= xStep (+ xStep gx))
-		(= yStep (+ yStep gy))
+
+		;Accelerate the motion.
+		(= lxs xStep)
+		(= lys yStep)
+		(+= xStep gx)
+		(+= yStep gy)
+
+		;Check to see if the move is completed.
 		(if
 			(and
 				(not waitApogeeX)
-				(!= x 20000)
+				(!= x UNDEF)
 				(<= 0 (* dx (- (client x?) x)))
 			)
-			(client x: x)
+
+			(client x:x)
 			(self moveDone:)
 			(return)
 		)
 		(if
 			(and
 				(not waitApogeeY)
-				(!= y 20000)
+				(!= y UNDEF)
 				(<= 0 (* dy (- (client y?) y)))
 			)
-			(client y: y)
+
+			(client y:y)
 			(self moveDone:)
 			(return)
-		)
-		(if (<= (* theXStep xStep) 0)
-			(= waitApogeeX 0)
+ 		)
+
+		;If a velocity has changed sign, its apogee has been reached.
+		(if (<= (* lxs xStep) 0)
+			(= waitApogeeX FALSE)
 			(self setTest:)
 		)
-		(if (<= (* theYStep yStep) 0)
-			(= waitApogeeY 0)
+		(if (<= (* lys yStep) 0)
+			(= waitApogeeY FALSE)
 			(self setTest:)
 		)
 	)
-	
+
+
 	(method (moveDone)
-		(client illegalBits: illegalBits signal: signal)
-		(if caller (= doMotionCue 1) (= completed 1))
+		(client illegalBits:illegalBits, signal:signal)
+		(if caller
+			(= doMotionCue TRUE)
+			(= completed TRUE)
+		)
 	)
-	
+
 	(method (triedToMove)
-		(return 1)
+		(return TRUE)
 	)
-	
-	(method (motionCue)
-		(client mover: 0)
-		(if (and completed (IsObject caller)) (caller cue:))
-		(self dispose:)
-	)
-	
+
 	(method (setTest)
+		;; Set the properties which determine whether to check for greater than
+		;; or less than ending values.
+
 		(= dx
 			(if
 				(or
 					(> (client x?) x)
 					(and (== (client x?) x) (> xStep 0))
 				)
-				-1
-			else
-				1
+				-1 else 1
 			)
 		)
 		(= dy
@@ -133,66 +169,78 @@
 					(> (client y?) y)
 					(and (== (client y?) y) (> yStep 0))
 				)
-				-1
-			else
-				1
+				-1 else 1
 			)
 		)
 	)
+
+
+	(method (motionCue)
+		;Detach from client.
+		(client mover:0)
+
+		(if (and completed (IsObject caller))
+			(caller cue:)
+		)
+
+		(self dispose:)
+	)
 )
 
-(class JumpTo of Jump
-	(properties
-		client 0
-		caller 0
-		x 20000
-		y 20000
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		gx 0
-		gy 3
-		xStep 20000
-		yStep 0
-		signal $0000
-		illegalBits $0000
-		waitApogeeX 1
-		waitApogeeY 1
-	)
-	
-	(method (init theClient theX theY param4 &tmp temp0 temp1 [temp2 52])
-		(= client theClient)
-		(= x theX)
-		(= y theY)
-		(if
-		(and (== x (theClient x?)) (== y (theClient y?)))
+
+
+
+(class JumpTo kindof Jump
+	;;; This class sets up a Jump which will reach a certain x,y position.
+	;;; The kernel call (SetJump) does this in order to use long integer
+	;;; arithmetic.
+
+	(method (init actor xTo yTo toCall &tmp DX DY n denom [str 50])
+		(= client actor)
+
+		;Set the endpoints of the motion
+		(= x xTo)
+		(= y yTo)
+
+		;Check for jumping to actor's current position.
+		(if (and (== x (actor x?)) (== y (actor y?)))
 			(= illegalBits (client illegalBits?))
 			(= signal (client signal?))
 			(self moveDone:)
 			(return)
 		)
-		(= temp0 (- x (theClient x?)))
-		(= temp1 (- y (theClient y?)))
-		(SetJump self temp0 temp1 gy)
-		(if (not temp0) (= x 20000))
-		(if (not temp1) (= y 20000))
+
+		;Compute the distances to travel.
+		(= DX (- x (actor x?)))
+		(= DY (- y (actor y?)))
+
+		(SetJump self DX DY gy)
+
+ 		(if (not DX)
+			(= x UNDEF)
+		)
+ 		(if (not DY)
+			(= y UNDEF)
+		)
+
 		(switch argc
-			(3 (super init: theClient))
+			(3
+				(super init: actor)
+			)
 			(4
-				(super init: theClient param4)
+				(super init: actor toCall)
 			)
 		)
 	)
-	
+
+
 	(method (moveDone)
-		(if (!= x 20000) (client x: x))
-		(if (!= y 20000) (client y: y))
+		(if (!= x UNDEF)
+			(client x:x)
+		)
+		(if (!= y UNDEF)
+			(client y:y)
+		)
 		(super moveDone:)
 	)
 )
