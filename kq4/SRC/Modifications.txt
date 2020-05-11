@@ -1,0 +1,12 @@
+Copy Protection:
+Main.sc	line 720 changed (self newRoom: 701) to (self newRoom: 700) to skip the  CP script
+
+Main.sc	line 777 Set cursor to normal from wait cursor after bypassing CP script
+
+
+
+Warning: (rm92.sc) Duplicate case values. Already encountered a case for '6'  Line: 368, col: 4
+
+rm92.sc line 368 changed duplicate (6 to (7
+
+rm92.sc line 378 changed (7 to (8 to make room for renaming duplicate (6 to (7

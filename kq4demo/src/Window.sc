@@ -1,120 +1,149 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 981)
+;; The window class defines visible BORDERED rectangular areas of the screen.
+;; A window, ID'ed by systemWindow, is used by Dialog to specify various
+;; aspects of its appearence. 
+
+
+(script# WINDOW)
 (include game.sh)
 (use Save)
 
-
-(class Window of SRDialog
+(class Window kindof	SysWindow
 	(properties
-		left 0
-		bottom 0
-		right 0
-		cycleDir 0
-		color 0
-		back 15
-		priority -1
-		window 0
-		type $0000
-		title 0
-		brTop 0
-		brLeft 0
-		brBottom 190
-		brRight 320
-		underBits 0
+		top		0
+		left		0
+		bottom	0
+		right		0
+		color		0			; foreground color
+		back		15			; background color
+		priority	-1			; priority
+		underBits 0			; handle to saved region of opened window
+		window	0			; handle/pointer to system window
+		type	0				; generally	corresponds to system window types
+		title		0			; text appearing in title bar if present
+
+		;; this rectangle is the working area for X/Y centering
+		;; these coordinates can define a subsection of the picture
+		;; in which a window will be centered
+		brTop		0
+		brLeft	0
+		brBottom	190
+		brRight	320
 	)
-	
-	(method (doit)
-	)
-	
-	(method (dispose)
-		(self restore:)
-		(if window (DisposeWindow window))
-		(super dispose:)
-	)
-	
+
+;;;	(methods
+;;;		doit
+;;;		handleEvent
+;;;		setMapSet
+;;;		move
+;;;		moveTo
+;;;		draw
+;;;		save
+;;;		restore
+;;;		inset
+;;;		show
+;;;		draw
+;;;		open
+;;;		erase
+;;;		center
+;;;	)
 	(method (center)
-		(= window
-			(NewWindow
-				left
-				bottom
-				right
-				cycleDir
-				title
+		;; Center the window in the working rectangle.
+
+		(self moveTo:
+			(/ (- (- brRight left) (- right left)) 2)	
+			(/ (- (- brBottom top) (- bottom top)) 2)
+		)	
+	)
+
+	(method (move h v)
+		(+= left h)
+		(+= right v)
+		(+= right h)
+		(+= bottom v)
+	)
+
+	(method (moveTo h v)
+		(self move: (- h left) (- v top))
+	)
+
+	(method (inset h v)
+		(+= top v)
+		(+= left h)
+		(-= bottom v)
+		(-= right h)
+	)
+	
+	(method (setMapSet &tmp mapSet)
+		(= mapSet 0)
+		(if (!= -1 color)
+			(|= mapSet VMAP)
+		)
+		(if (!= -1 priority)
+			(|= mapSet PMAP)
+		)
+		(return mapSet)
+	)
+
+	(method (show)
+		(kernel_112 GShowBits top left bottom right (self setMapSet:))	;kernel_112 is Graph, but it is not in VOCAB.999
+	)
+	
+	(method (draw v p)
+		(if (>= argc 1)
+			(= color v)
+		)
+		(if (>= argc 2)
+			(= priority p)
+		)
+		(kernel_112 GFillRect top left bottom right (self setMapSet:) color priority)
+	)
+	(method (save)
+		(= underBits (kernel_112 GSaveBits top left bottom right (self setMapSet:)))
+	)
+	(method (restore)
+		(if underBits
+			(kernel_112 GRestoreBits underBits)
+		)
+	)
+
+
+	;; Open corresponding system window structure
+	;; Custom window type 0x81 indicates that system
+	;; will NOT draw the window, only get a port and link into list
+	(method (open)
+		(= window 
+			(NewWindow 
+				top 
+				left 
+				bottom 
+				right 
+				title 
 				type
-				priority
+				priority 
 				color
 				back
 			)
 		)
 	)
 	
-	(method (handleEvent)
-		(return 0)
+	(method (doit)
 	)
-	
-	(method (erase &tmp temp0)
-		(= temp0 0)
-		(if (!= -1 color) (= temp0 (| temp0 $0001)))
-		(if (!= -1 priority) (= temp0 (| temp0 $0002)))
-		(return temp0)
+
+	(method (handleEvent event)
+		(return FALSE)
 	)
-	
-	(method (move param1 param2)
-		(= bottom (+ bottom param1))
-		(= cycleDir (+ cycleDir param2))
-		(= cycleDir (+ cycleDir param1))
-		(= right (+ right param2))
-	)
-	
-	(method (moveTo param1 param2)
-		(self move: (- param1 bottom) (- param2 left))
-	)
-	
-	(method (draw theColor thePriority)
-		(if (>= argc 1) (= color theColor))
-		(if (>= argc 2) (= priority thePriority))
-		(kernel_112 ;EO: This kernel function is Graph, which is not in this game's VOCAB.999
-			11
-			left
-			bottom
-			right
-			cycleDir
-			(self erase:)
-			color
-			priority
+
+	(method (dispose)
+		(self restore:)
+		(if window
+			(DisposeWindow window)
+			(= window 0)
 		)
+		(super dispose:)
 	)
-	
-	(method (save)
-		(= underBits
-			(kernel_112 7 left bottom right cycleDir (self erase:))
-		)
-	)
-	
-	(method (restore)
-		(if underBits (kernel_112 8 underBits))
-	)
-	
-	(method (ux param1 param2)
-		(= left (+ left param2))
-		(= bottom (+ bottom param1))
-		(= right (- right param2))
-		(= cycleDir (- cycleDir param1))
-	)
-	
-	(method (addToPic)
-		(kernel_112 12 left bottom right cycleDir (self erase:))
-	)
-	
-	(method (uy)
+
+	(method (erase)
 		(self draw: back -1)
-	)
-	
-	(method (top)
-		(self
-			moveTo:
-				(/ (- (- brRight bottom) (- cycleDir bottom)) 2)
-				(/ (- (- brBottom left) (- right left)) 2)
-		)
 	)
 )

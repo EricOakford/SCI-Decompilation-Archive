@@ -1,0 +1,399 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# 32)
+(include game.sh)
+(use Main)
+(use Door)
+(use Intrface)
+(use Sound)
+(use Motion)
+(use Game)
+(use User)
+(use Actor)
+(use System)
+
+(public
+	rm32 0
+)
+
+(local
+	oldEgoX
+	oldEgoY
+	nightFalls
+	porthole
+	door
+	mama
+	fruit
+)
+(instance theSound of Sound
+	(properties)
+)
+
+(instance rm32 of Room
+	(properties
+		picture 32
+	)
+	
+	(method (init)
+		(Load VIEW 304)
+		(Load VIEW 131)
+		(if (ego has: iSwimsuit) (Load VIEW 132))
+		(super init:)
+		(NormalEgo)
+		(self setRegions: SHIP setScript: rm32Script)
+		(if ((inventory at: iFruit) ownedBy: curRoomNum)
+			((= fruit (View new:))
+				view: 304
+				setLoop: 2
+				setPri: 4
+				posn: 156 83
+				init:
+			)
+		)
+		((= porthole (Prop new:))
+			view: 304
+			setLoop: 1
+			setCel: 0
+			setPri: 4
+			posn: 148 75
+			setCycle: Forward
+			cycleSpeed: 5
+			isExtra: TRUE
+			init:
+		)
+		(if metMama
+			(Load VIEW 309)
+			(Load SOUND 6)
+			(theSound number: 6 init:)
+			((= mama (Actor new:))
+				view: 309
+				ignoreActors:
+				illegalBits: 0
+				setLoop: 0
+				cel: 3
+				setPri: 7
+				setStep: 3 2
+				setCycle: Forward
+				posn: 217 110
+				init:
+			)
+			(if (and (not gamePhaseTime) (== gamePhase 2))
+				(= currentStatus 1000)
+				(rm32Script changeState: 1)
+			)
+		)
+		((= door (Door new:))
+			view: 304
+			setLoop: 0
+			posn: 207 114
+			setPri: 7
+			entranceTo: 33
+			doorCtrl: 4
+			roomCtrl: 8
+			msgLook:
+				{This door should be locked, as it leads to someone else's cabin. (But, it's not!)}
+			msgFunny: {You may have heard a soft, "Come in." (But you're not sure.)}
+			msgCloser: {Just walk near it.}
+			init:
+		)
+		(if (== prevRoomNum 33)
+			(ego posn: 200 113)
+		else
+			(ego posn: 156 121)
+		)
+		(ego init:)
+	)
+)
+
+(instance rm32Script of Script
+	(properties)
+	
+	(method (doit)
+		(super doit:)
+		(if (== state 20) (ShakeScreen 1 (Random 1 3)))
+		(if (& (ego onControl:) $0002) (curRoom newRoom: 31))
+	)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(1
+				(= currentStatus egoStopped)
+				(= nightFalls TRUE)
+				(HandsOff)
+				(= cycles 5)
+			)
+			(2
+				(Print 32 30)
+				(ego setMotion: MoveTo 159 112 self)
+			)
+			(3
+				(ego setMotion: MoveTo 155 103 self)
+			)
+			(4
+				(= currentStatus egoSleeping)
+				(ego
+					view: 131
+					setLoop: (if (== currentEgoView 100) 0 else 2)
+					cel: 0
+					setCycle: Forward
+					cycleSpeed: 2
+					setPri: 9
+					illegalBits: 0
+					posn: 124 98
+					setMotion: 0
+				)
+				(= seconds 5)
+			)
+			(5
+				(= currentStatus egoStopped)
+				(HandsOff)
+				(= seconds 5)
+			)
+			(6
+				(if (!= (door doorState?) 0)
+					(self changeState: 7)
+				else
+					(Print 32 31)
+					(door locked: 0 notify: self force: 1 open:)
+				)
+			)
+			(7 (Print 32 32) (= seconds 2))
+			(8
+				(mama show: setMotion: MoveTo 181 111 self)
+			)
+			(9
+				(mama setLoop: 1 setCel: 0 posn: 177 110 setPri: 13)
+				(= cycles 2)
+			)
+			(10
+				(mama posn: 171 108 setCel: 1)
+				(= cycles 2)
+			)
+			(11
+				(mama posn: 165 106 setCel: 2)
+				(= cycles 2)
+			)
+			(12
+				(mama posn: 162 104 setCel: 3)
+				(= cycles 2)
+			)
+			(13
+				(Print 32 33 #at -1 20)
+				(mama setLoop: 2 posn: 162 104 setCel: 0)
+				(= cycles 2)
+			)
+			(14
+				(mama posn: 162 104 setCel: 1)
+				(= cycles 2)
+			)
+			(15
+				(mama posn: 162 104 setCel: 2)
+				(= cycles 2)
+			)
+			(16
+				(mama posn: 160 102 setCel: 3)
+				(= cycles 2)
+			)
+			(17
+				(mama posn: 158 98 setCel: 4)
+				(= cycles 2)
+			)
+			(18
+				(mama posn: 154 92 setCel: 5)
+				(= cycles 2)
+			)
+			(19
+				(mama posn: 158 89 setCel: 5)
+				(= cycles 2)
+			)
+			(20
+				(theSound play:)
+				(mama
+					setLoop: 3
+					setMotion: 0
+					setCycle: Forward
+					posn: 129 106
+				)
+				(ego
+					setLoop: (if (== currentEgoView 100) 1 else 3)
+					posn: 125 93
+				)
+				(= seconds 4)
+			)
+			(21
+				(mama setLoop: 0 setCel: 0 posn: 155 103)
+				(Print 32 34 #at -1 15 #width 280 #draw)
+				(Print 32 35 #at -1 15 #width 280)
+				(= seconds 1)
+			)
+			(22
+				(= currentStatus egoDead)
+				(if (== nightFalls 2)
+					(Print 32 36)
+				else
+					(Print 32 37 #at -1 15 #width 280)
+				)
+			)
+		)
+	)
+	
+	(method (handleEvent event)
+		(if
+		(or (!= (event type?) saidEvent) (event claimed?))
+			(return)
+		)
+		(if (Said 'open,look/cabinet')
+			(if (not (ego inRect: 150 96 168 110))
+				(PrintNotCloseEnough)
+			else
+				(Print 32 0)
+			)
+		)
+		(if (Said 'look<on,over,above/cabinet[<(]')
+			(Print 32 1)
+			(Print 32 2 #at -1 152)
+		)
+		(if (Said 'look<below/bed') (Print 32 3) (Print 32 4))
+		(if (Said 'look>')
+			(if (Said '/bed')
+				(Print 32 5)
+				(if (> filthLevel 10) (Print 32 6 #at -1 152))
+			)
+			(if (Said '/new,bureau,buffet')
+				(cond 
+					((not (ego inRect: 150 96 168 110)) (PrintNotCloseEnough))
+					((not ((inventory at: iFruit) ownedBy: curRoomNum)) (Print 32 7))
+					(else
+						(Print 32 8)
+						(Print 32 9)
+						(Print 32 10)
+						(if metMama (Print 32 11) else (Print 32 12))
+					)
+				)
+			)
+			(if
+				(and
+					((inventory at: iFruit) ownedBy: curRoomNum)
+					(Said '/basket,basket')
+				)
+				(if (not (ego inRect: 150 96 168 110))
+					(PrintNotCloseEnough)
+				else
+					(Print 32 8)
+					(Print 32 9)
+					(Print 32 10)
+					(if metMama (Print 32 11) else (Print 32 12))
+				)
+			)
+			(if (Said '[/cabin,airport]')
+				(Print 32 13)
+				(Print 32 14)
+			)
+		)
+		(if (Said '(get,climb<in),board,board/cabinet')
+			(Print 32 15)
+			(Print 32 16 #at -1 152)
+		)
+		(if (Said 'get/dirt') (Print 32 17))
+		(if
+			(or
+				(Said 'get/dress')
+				(Said 'get<dress')
+				(Said
+					'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini'
+				)
+			)
+			(cond 
+				((== currentEgoView 132)
+					(if (not (ego inRect: 170 90 176 110))
+						(Print 32 18)
+					else
+						(= currentEgoView 100)
+						(PrintOk)
+						(ego view: 100)
+					)
+				)
+				((not (ego has: iSwimsuit)) (if (ego has: iBikiniTop) (Print 32 19) else (PrintDontHaveIt)))
+				((!= currentStatus egoNormal) (PrintNotNow))
+				((not metMama) (Print 32 20))
+				((not (ego inRect: 170 90 176 110)) (Print 32 18))
+				(else (= currentEgoView 132) (Print 32 21) (ego view: 132))
+			)
+		)
+		(if (Said 'open/bureau,new,new')
+			(Print 32 22)
+			(Print 32 23)
+			(Print 32 24)
+			(Print 32 25)
+			(Print 32 26)
+		)
+		(if
+			(and
+				(not (ego has: iFruit))
+				((inventory at: iFruit) ownedBy: curRoomNum)
+				(Said 'eat,apply/basket')
+			)
+			(Print 32 27)
+			((inventory at: iFruit) moveTo: -1)
+			(theGame changeScore: -2)
+		)
+		(if (Said 'get/basket,basket')
+			(cond 
+				((not ((inventory at: iFruit) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
+				((not (ego inRect: 150 96 168 110)) (PrintNotCloseEnough))
+				(else
+					(PrintOk)
+					(fruit dispose:)
+					(ego get: iFruit)
+					(theGame changeScore: 3)
+				)
+			)
+		)
+		(if (Said 'lie,board,bath[/bed,nap,barstool]')
+			(cond 
+				((== (ego view?) 131) (PrintYouAre))
+				((!= currentStatus egoNormal) (PrintNotNow))
+				((not (ego inRect: 150 96 168 110)) (PrintNotCloseEnough))
+				(else
+					(= currentStatus egoSleeping)
+					(Print 32 28)
+					(User canControl: FALSE canInput: TRUE)
+					(= oldEgoX (ego x?))
+					(= oldEgoY (ego y?))
+					(= currentEgoView (ego view?))
+					(= nightFalls TRUE)
+					(ego
+						view: 131
+						setLoop: (if (== currentEgoView 100) 0 else 2)
+						cel: 0
+						setCycle: Forward
+						cycleSpeed: 2
+						setPri: 9
+						illegalBits: 0
+						posn: 124 98
+						setMotion: 0
+					)
+					(if metMama (self changeState: 5))
+				)
+			)
+		)
+		(if
+			(or
+				(Said 'new,get,awaken,new[/up]')
+				(Said '(get<off),disembark/bed')
+				(Said 'new,get<up')
+			)
+			(cond 
+				((!= (ego view?) 131) (Print 32 29))
+				((!= currentStatus egoSleeping) (PrintNotNow))
+				(else
+					(PrintOk)
+					(ego posn: oldEgoX oldEgoY)
+					(NormalEgo 0)
+					(if (== (door doorState?) 0)
+						(ego observeControl: 16384)
+					)
+				)
+			)
+		)
+	)
+)
