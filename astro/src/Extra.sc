@@ -15,10 +15,11 @@
 
 (script#	EXTRA)
 (include game.sh)
-;header file is implicitly included through system.sh
-;(include "extra.sh")
 (use Motion)
 (use Actor)
+
+;header file is implicitly included through system.sh
+;(include "extra.sh")
 
 
 (enum
@@ -148,9 +149,7 @@
 				)
 			)
 			(hesitate
-				;(if (== cycleType ExtraEndAndBeginLoop)
-					;EO: Code tweaked per 5/04/90 update
-					(if (and hesitation (== cycleType ExtraEndAndBeginLoop))
+				(if (== cycleType ExtraEndAndBeginLoop)
 					(= cycles hesitation)
 				else
 					(self cue:)
