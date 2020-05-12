@@ -118,6 +118,6 @@
 
 
 	(method (showStr where)
-		(Format where "File: %s" name)
+		(Format where FILE 0 name)
 	)
 )

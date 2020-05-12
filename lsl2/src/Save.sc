@@ -189,7 +189,7 @@
 				theComment
 			)
 
-			(= fd (FOpen (Format @str "%ssg.dir" (theGame name?))))
+			(= fd (FOpen (Format @str SAVE 0 (theGame name?))))
 			(if (== fd -1)
 				;no directory -> no saved games
 				(return)
@@ -429,7 +429,7 @@
 	(repeat
 		(= result
 			(Print 
-				"New save-game directory:"
+				SAVE 1
 				#font: SYSFONT
 				#edit: (StrCpy @newDir where) DIRECTORYSIZE
 				#button: {OK} 1
@@ -453,7 +453,7 @@
 			(return TRUE)
 		else
 			(Print
-				(Format @str "%s\nis not a valid directory" @newDir)
+				(Format @str SAVE 2 @newDir)
 				#font:SYSFONT
 			)
 		)
@@ -469,7 +469,7 @@
 
 
 (procedure (NeedDescription)
-	(Print "You must type a description for the game." #font:SYSFONT)
+	(Print SAVE 3 #font:SYSFONT)
 )
 
 

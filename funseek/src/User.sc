@@ -140,7 +140,7 @@
 		;If this is not the echo character, replace the previous input
 		;line with the character which was passed.
 		(if (!= (event message?) echo)
-			(Format @inputLine "%c" (event message?))
+			(Format @inputLine USER 0 (event message?))
 		)
 		
 		;Let the user edit the input line.

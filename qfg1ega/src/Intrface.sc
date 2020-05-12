@@ -1429,7 +1429,7 @@
 (procedure	(GetNumber string default &tmp [theLine 40])
 	(= theLine 0)
 	(if (> argc 1)
-		(Format @theLine "%d" default)
+		(Format @theLine INTRFACE 0 default)
 	)
 	(return
 		(if (GetInput @theLine 5 string)

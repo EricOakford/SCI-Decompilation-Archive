@@ -82,7 +82,7 @@
 
 
 	(method (at n)
-		(Printf "%s needs an 'at:' method." name)
+		(Printf PATH 0 name)
 		(return 0)
 	)
 )
