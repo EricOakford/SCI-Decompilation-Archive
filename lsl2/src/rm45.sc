@@ -15,8 +15,8 @@
 
 (local
 	local0
-	barber
-	chair
+	aBarber
+	aChair
 	talkedToBarber
 )
 (instance rm45 of Room
@@ -31,7 +31,7 @@
 		(Load VIEW 430)
 		(Load VIEW 149)
 		(super init:)
-		((= chair (Prop new:))
+		((= aChair (Prop new:))
 			view: 232
 			loop: 1
 			cel: 0
@@ -40,7 +40,7 @@
 			ignoreActors:
 			init:
 		)
-		((= barber (Actor new:))
+		((= aBarber (Actor new:))
 			view: 430
 			loop: 0
 			ignoreActors:
@@ -76,7 +76,7 @@
 			)
 			(2
 				(= seconds (= cycles 0))
-				(= currentStatus egoSitting)
+				(= currentStatus egoSITTING)
 				(HandsOff)
 				(Print 45 7)
 				(Print 45 8)
@@ -86,10 +86,10 @@
 					ignoreActors:
 					setMotion: MoveTo 157 120 self
 				)
-				(barber setCycle: EndLoop)
+				(aBarber setCycle: EndLoop)
 			)
 			(3
-				(chair hide:)
+				(aChair hide:)
 				(ego
 					view: 232
 					setLoop: 2
@@ -99,11 +99,11 @@
 				)
 			)
 			(4
-				(barber setLoop: 1 cel: 0 setCycle: EndLoop self)
+				(aBarber setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(ego hide:)
-				(barber
+				(aBarber
 					view: 430
 					setLoop: 2
 					cel: 0
@@ -119,7 +119,7 @@
 				(= seconds 3)
 			)
 			(7
-				(barber
+				(aBarber
 					setLoop: 4
 					cel: 0
 					posn: 165 85
@@ -127,10 +127,10 @@
 					setPri: 9
 					setCycle: EndLoop self
 				)
-				(chair view: 430 setLoop: 3 cel: 0 show:)
+				(aChair view: 430 setLoop: 3 cel: 0 show:)
 			)
 			(8
-				(barber
+				(aBarber
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 2
@@ -142,7 +142,7 @@
 				(Print 45 15 #at -1 20)
 				(= seconds 3)
 			)
-			(10 (barber setCycle: EndLoop self))
+			(10 (aBarber setCycle: EndLoop self))
 			(11
 				(Print 45 16 #at -1 20 #draw)
 				(Print 45 17 #at -1 20)
@@ -151,7 +151,7 @@
 				(= seconds 3)
 			)
 			(12
-				(barber setLoop: 6 cel: 0 setCycle: EndLoop self)
+				(aBarber setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(13 (= seconds 3))
 			(14
@@ -160,8 +160,8 @@
 				(= seconds 3)
 			)
 			(15
-				(barber setLoop: 1 setCel: 0 setPri: -1 posn: 167 91)
-				(chair
+				(aBarber setLoop: 1 setCel: 0 setPri: -1 posn: 167 91)
+				(aChair
 					setLoop: 7
 					cel: 0
 					cycleSpeed: 1
@@ -171,7 +171,7 @@
 			(16
 				(= hairDyedBlonde TRUE)
 				(theGame changeScore: 3)
-				(chair view: 232 setLoop: 1 setCel: 0)
+				(aChair view: 232 setLoop: 1 setCel: 0)
 				(= currentEgoView 149)
 				(NormalEgo 3)
 				(ego posn: 157 119 show:)
@@ -180,8 +180,8 @@
 			)
 			(17
 				(Print (Format @str 45 23 tritePhrase))
-				(barber stopUpd:)
-				(chair stopUpd:)
+				(aBarber stopUpd:)
+				(aChair stopUpd:)
 			)
 			(18
 				(= seconds (= cycles 0))
@@ -195,10 +195,10 @@
 					ignoreActors:
 					setMotion: MoveTo 157 120 self
 				)
-				(barber illegalBits: 0 setCycle: EndLoop)
+				(aBarber illegalBits: 0 setCycle: EndLoop)
 			)
 			(19
-				(chair hide:)
+				(aChair hide:)
 				(ego
 					view: 431
 					setLoop: 0
@@ -208,11 +208,11 @@
 				)
 			)
 			(20
-				(barber setLoop: 1 cel: 0 setCycle: EndLoop self)
+				(aBarber setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(21
 				(ego hide:)
-				(barber
+				(aBarber
 					view: 431
 					setLoop: 1
 					cel: 0
@@ -230,7 +230,7 @@
 				(= seconds 3)
 			)
 			(23
-				(barber
+				(aBarber
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 2
@@ -239,16 +239,16 @@
 			)
 			(24 (= seconds 3))
 			(25
-				(barber
+				(aBarber
 					setLoop: 3
 					cel: 0
 					posn: 165 81
 					setCycle: CycleTo 1 1 self
 				)
-				(chair view: 431 setLoop: 7 cel: 0 posn: 167 115 show:)
+				(aChair view: 431 setLoop: 7 cel: 0 posn: 167 115 show:)
 			)
 			(26 (= seconds 3))
-			(27 (barber setCycle: EndLoop self))
+			(27 (aBarber setCycle: EndLoop self))
 			(28 (= seconds 3))
 			(29
 				(Print 45 33 #at -1 20)
@@ -256,11 +256,11 @@
 				(= seconds 3)
 			)
 			(30
-				(barber setLoop: 4 cel: 0 setCycle: EndLoop self)
+				(aBarber setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(31
 				(Print 45 35 #at -1 152 #draw)
-				(barber setLoop: 5 cel: 0 setCycle: EndLoop)
+				(aBarber setLoop: 5 cel: 0 setCycle: EndLoop)
 				(ego
 					view: 431
 					posn: 157 94
@@ -282,8 +282,8 @@
 			)
 			(35
 				(ego hide:)
-				(chair hide:)
-				(barber view: 431 setLoop: 2 setCel: 5 posn: 167 115)
+				(aChair hide:)
+				(aBarber view: 431 setLoop: 2 setCel: 5 posn: 167 115)
 				(= seconds 3)
 			)
 			(36
@@ -291,16 +291,16 @@
 				(Print 45 37 #at -1 20)
 				(= seconds 3)
 			)
-			(37 (barber setCycle: BegLoop self))
+			(37 (aBarber setCycle: BegLoop self))
 			(38
-				(barber
+				(aBarber
 					view: 430
 					setLoop: 1
 					setCel: 0
 					setPri: -1
 					posn: 167 91
 				)
-				(chair
+				(aChair
 					view: 431
 					setLoop: 0
 					cel: 0
@@ -311,7 +311,7 @@
 			(39
 				(= gotHaircutAtResort 1)
 				(theGame changeScore: 3)
-				(chair view: 232 setLoop: 1 setCel: 0)
+				(aChair view: 232 setLoop: 1 setCel: 0)
 				(NormalEgo 3)
 				(ego posn: 157 119 show:)
 				(Print 45 38 #draw)
@@ -338,7 +338,7 @@
 			(= talkedToBarber TRUE)
 			(cond 
 				((not (ego inRect: 148 117 180 127)) (Print 45 0))
-				((== currentStatus 1009) (PrintYouAre))
+				((== currentStatus 1009) (YouAre))
 				((and hairDyedBlonde gotHaircutAtResort) (Print 45 1))
 				((not hairDyedBlonde) (self changeState: 2))
 				(

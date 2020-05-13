@@ -16,15 +16,15 @@
 
 (local
 	local0
-	ripple1
-	ripple2
+	aWater1
+	aWater2
 	local3
-	helicopter
-	branch
-	oldEgoX
-	oldEgoY
-	keneewauwau
-	keneewauwauHead
+	aPlane
+	aLimb
+	egoX
+	egoY
+	aChief
+	aMouth
 )
 (instance theSound of Sound
 	(properties)
@@ -43,7 +43,7 @@
 		(Load SOUND 1)
 		(super init:)
 		(theSound number: 1 init:)
-		((= ripple1 (Prop new:))
+		((= aWater1 (Prop new:))
 			view: 725
 			setLoop: 2
 			posn: 27 187
@@ -52,7 +52,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= ripple2 (Prop new:))
+		((= aWater2 (Prop new:))
 			view: 725
 			setLoop: 1
 			posn: 37 173
@@ -60,7 +60,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= helicopter (Airplane new:))
+		((= aPlane (Airplane new:))
 			view: 725
 			posn: 444 42
 			setPri: 5
@@ -73,7 +73,7 @@
 			setLoop: 0
 			setCycle: Forward
 		)
-		((= branch (Actor new:))
+		((= aLimb (Actor new:))
 			view: 725
 			setLoop: 3
 			setPri: 14
@@ -89,9 +89,9 @@
 		(NormalEgo)
 		(if (== endGameState endMEETTRIBE)
 			(= endGameState endGOTOVOLCANO)
-			(= currentStatus egoMeetingTribe)
+			(= currentStatus egoMEETTRIBE)
 			(Load VIEW 710)
-			((= keneewauwauHead (Prop new:))
+			((= aMouth (Prop new:))
 				view: 710
 				ignoreActors:
 				setLoop: 4
@@ -100,7 +100,7 @@
 				setPri: 14
 				init:
 			)
-			((= keneewauwau (Actor new:))
+			((= aChief (Actor new:))
 				view: 710
 				setCycle: Walk
 				cycleSpeed: 1
@@ -121,12 +121,12 @@
 		(super doit:)
 		(cond 
 			(
-			(and (== 3 (ego edgeHit?)) (== currentStatus egoNormal)) (curRoom newRoom: 76))
+			(and (== 3 (ego edgeHit?)) (== currentStatus egoNORMAL)) (curRoom newRoom: 76))
 			(
-			(and (& (ego onControl:) $0002) (== currentStatus egoNormal)) (ego setPri: 14) (self changeState: 19))
+			(and (& (ego onControl:) $0002) (== currentStatus egoNORMAL)) (ego setPri: 14) (self changeState: 19))
 			(
-			(and (& (ego onControl:) $0004) (== currentStatus egoNormal)) (ego setPri: 8) (self changeState: 19))
-			((and debugging (== currentStatus egoNormal)) (= oldEgoX (ego x?)) (= oldEgoY (ego y?)))
+			(and (& (ego onControl:) $0004) (== currentStatus egoNORMAL)) (ego setPri: 8) (self changeState: 19))
+			((and debugging (== currentStatus egoNORMAL)) (= egoX (ego x?)) (= egoY (ego y?)))
 		)
 	)
 	
@@ -134,16 +134,16 @@
 		(switch (= state newState)
 			(1
 				(HandsOff)
-				(keneewauwau setMotion: MoveTo 127 134 self)
+				(aChief setMotion: MoveTo 127 134 self)
 			)
 			(2
-				(keneewauwau loop: 0)
+				(aChief loop: 0)
 				(= seconds 3)
 			)
 			(3
 				(Print 79 10 #at -1 152)
-				(keneewauwauHead
-					posn: (+ (keneewauwau x?) -1) (+ (keneewauwau y?) -26)
+				(aMouth
+					posn: (+ (aChief x?) -1) (+ (aChief y?) -26)
 				)
 				(= seconds 3)
 			)
@@ -158,11 +158,11 @@
 			(6
 				(Print 79 15)
 				(Print (Format @str 79 16 tritePhrase))
-				(keneewauwauHead dispose:)
-				(keneewauwau setMotion: MoveTo 270 234 self)
+				(aMouth dispose:)
+				(aChief setMotion: MoveTo 270 234 self)
 			)
 			(7
-				(keneewauwau dispose:)
+				(aChief dispose:)
 				(NormalEgo)
 				(++ endGameState)
 			)
@@ -179,7 +179,7 @@
 			)
 			(10 (NormalEgo 3))
 			(11
-				(= currentStatus egoAuto)
+				(= currentStatus egoAUTO)
 				(ego
 					loop: 1
 					cel: 0
@@ -190,7 +190,7 @@
 					cycleSpeed: 1
 					put: 29 -1
 				)
-				(branch setCycle: EndLoop self)
+				(aLimb setCycle: EndLoop self)
 			)
 			(12 (ego setCycle: EndLoop self))
 			(13
@@ -206,7 +206,7 @@
 					setPri: 6
 					setCycle: EndLoop self
 				)
-				(branch setPri: 8 setMotion: MoveTo (branch x?) 234 self)
+				(aLimb setPri: 8 setMotion: MoveTo (aLimb x?) 234 self)
 			)
 			(15
 				(ego view: 100 setLoop: 2 cycleSpeed: 0 setCycle: Walk)
@@ -230,7 +230,7 @@
 			(19
 				(HandsOff)
 				(Print 79 27 #at -1 20 #dispose)
-				(= currentStatus egoFalling)
+				(= currentStatus egoFALLING)
 				(theSound play:)
 				(ego
 					view: 103
@@ -245,12 +245,12 @@
 			)
 			(20
 				(cls)
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(Print 79 28)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 				(if (== debugging TRUE)
 					(NormalEgo)
-					(ego posn: oldEgoX oldEgoY)
+					(ego posn: egoX egoY)
 					(self changeState: 10)
 				)
 			)
@@ -283,8 +283,8 @@
 		)
 		(if (Said 'apply,throw/landscape')
 			(cond 
-				((not (ego has: iVine)) (PrintDontHaveIt))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((not (ego has: iVine)) (DontHave))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(else (self changeState: 8))
 			)
 		)

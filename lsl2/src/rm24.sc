@@ -13,7 +13,7 @@
 )
 
 (local
-	pedestrian
+	aPeople
 )
 (instance rm24 of Room
 	(properties
@@ -27,7 +27,7 @@
 	(method (init)
 		(Load VIEW 255)
 		(super init:)
-		((= pedestrian (Actor new:))
+		((= aPeople (Actor new:))
 			view: 255
 			setLoop: 0
 			setStep: 1 1
@@ -81,18 +81,18 @@
 		(switch (= state newState)
 			(0 (= cycles 12))
 			(1
-				(pedestrian
+				(aPeople
 					setPri: -1
 					setLoop: 0
 					setMotion: MoveTo 190 64 self
 				)
 			)
 			(2
-				(pedestrian hide:)
+				(aPeople hide:)
 				(= seconds (Random 2 9))
 			)
 			(3
-				(pedestrian
+				(aPeople
 					setLoop: 1
 					posn: -5 63
 					show:
@@ -100,11 +100,11 @@
 				)
 			)
 			(4
-				(pedestrian hide:)
+				(aPeople hide:)
 				(= seconds (Random 2 9))
 			)
 			(5
-				(pedestrian
+				(aPeople
 					setLoop: 2
 					posn: -5 63
 					show:
@@ -112,15 +112,15 @@
 				)
 			)
 			(6
-				(pedestrian hide:)
+				(aPeople hide:)
 				(= seconds (Random 2 9))
 			)
 			(7
-				(pedestrian setLoop: 3 posn: 299 103 setPri: 11 show:)
+				(aPeople setLoop: 3 posn: 299 103 setPri: 11 show:)
 				(= seconds (Random 5 15))
 			)
 			(8
-				(pedestrian hide:)
+				(aPeople hide:)
 				(self changeState: 0)
 			)
 		)

@@ -16,12 +16,12 @@
 (local
 	local0
 	henchmanIsHere
-	scurvyNeon
-	dogNeon
-	saloonNeon
-	boat
-	henchman
-	dizzy
+	aSpudsSign1
+	aSpudsSign2
+	aSpudsSign3
+	aBoat
+	aHench
+	aStars
 )
 (instance rm22 of Room
 	(properties
@@ -85,7 +85,7 @@
 			setPri: 12
 			addToPic:
 		)
-		((= scurvyNeon (Prop new:))
+		((= aSpudsSign1 (Prop new:))
 			view: 252
 			setLoop: 3
 			setPri: 12
@@ -94,7 +94,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= dogNeon (Prop new:))
+		((= aSpudsSign2 (Prop new:))
 			view: 252
 			setLoop: 4
 			setPri: 12
@@ -103,7 +103,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= saloonNeon (Prop new:))
+		((= aSpudsSign3 (Prop new:))
 			view: 252
 			setLoop: 5
 			setPri: 12
@@ -112,7 +112,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= boat (Actor new:))
+		((= aBoat (Actor new:))
 			view: 252
 			setLoop: 0
 			setPri: 7
@@ -135,7 +135,7 @@
 			(Load VIEW 234)
 			(Load SOUND 106)
 			(theSound init:)
-			((= henchman (Actor new:))
+			((= aHench (Actor new:))
 				view: 234
 				posn: -11 174
 				illegalBits: -32768
@@ -143,7 +143,7 @@
 				init:
 				hide:
 			)
-			((= dizzy (Prop new:))
+			((= aStars (Prop new:))
 				view: 102
 				setLoop: 6
 				setCycle: Forward
@@ -174,44 +174,44 @@
 		(switch (= state newState)
 			(1 (= seconds (Random 3 5)))
 			(2
-				(henchman show: setMotion: MoveTo 127 175 self)
+				(aHench show: setMotion: MoveTo 127 175 self)
 				(theSound play:)
 			)
 			(3
-				(henchman
-					setLoop: (if (< (henchman x?) (ego x?)) 0 else 1)
+				(aHench
+					setLoop: (if (< (aHench x?) (ego x?)) 0 else 1)
 				)
 				(Print 22 18 #draw)
 			)
 			(4
 				(HandsOff)
-				(= currentStatus egoStopped)
-				(if (< (henchman x?) (ego x?))
+				(= currentStatus egoSTOPPED)
+				(if (< (aHench x?) (ego x?))
 					(ego
 						setAvoider: Avoider
 						ignoreActors:
-						setMotion: MoveTo (+ (henchman x?) 20) (+ 1 (henchman y?)) self
+						setMotion: MoveTo (+ (aHench x?) 20) (+ 1 (aHench y?)) self
 					)
 				else
 					(ego
 						setAvoider: Avoider
 						ignoreActors:
-						setMotion: MoveTo (- (henchman x?) 20) (+ 1 (henchman y?)) self
+						setMotion: MoveTo (- (aHench x?) 20) (+ 1 (aHench y?)) self
 					)
 				)
 			)
 			(5
 				(ego
 					view: 102
-					setLoop: (if (< (henchman x?) (ego x?)) 1 else 0)
+					setLoop: (if (< (aHench x?) (ego x?)) 1 else 0)
 					cel: 0
 					setCycle: EndLoop self
 				)
-				(= local0 (if (< (henchman x?) (ego x?)) 0 else 1))
-				(henchman setLoop: (+ 2 local0) setCycle: EndLoop)
+				(= local0 (if (< (aHench x?) (ego x?)) 0 else 1))
+				(aHench setLoop: (+ 2 local0) setCycle: EndLoop)
 			)
 			(6
-				(henchman stopUpd:)
+				(aHench stopUpd:)
 				(ego
 					setLoop: (+ 2 (ego loop?))
 					cel: 0
@@ -244,13 +244,13 @@
 				else
 					(= local0 (+ (ego x?) 4))
 				)
-				(dizzy posn: local0 (- (ego y?) 19) show:)
+				(aStars posn: local0 (- (ego y?) 19) show:)
 				(= seconds 5)
 			)
 			(15
 				(Print 22 22)
 				(Print 22 23)
-				(= currentStatus egoCaptured)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 96)
 			)
 		)
@@ -264,7 +264,7 @@
 		(if (== state 3)
 			(if (or (Said 'ok') (Said 'get/drink'))
 				(if (< (ego y?) 162)
-					(PrintNotCloseEnough)
+					(NotClose)
 				else
 					(Print 22 0)
 					(self changeState: 4)
@@ -311,9 +311,9 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 3 15)))
 			(1
-				(boat setMotion: MoveTo 333 107 self)
+				(aBoat setMotion: MoveTo 333 107 self)
 			)
-			(2 (boat hide:))
+			(2 (aBoat hide:))
 		)
 	)
 )

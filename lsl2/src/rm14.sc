@@ -13,7 +13,7 @@
 )
 
 (local
-	openSign
+	aSign
 )
 (instance rm14 of Room
 	(properties
@@ -75,7 +75,7 @@
 			setPri: 9
 			addToPic:
 		)
-		((= openSign (Prop new:))
+		((= aSign (Prop new:))
 			view: 243
 			loop: 2
 			cel: 0

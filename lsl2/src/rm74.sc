@@ -15,16 +15,16 @@
 
 (local
 	vineInRoom
-	local1
-	local2
+	triedToGoWest
+	triedToClimbOut
 	swingingOnVine
 	egoBigHead
 	egoBigFace
-	ripple
-	egoSwinging1
-	egoSwinging2
-	egoSwinging3
-	vine
+	aRapids
+	aVine1
+	aVine2
+	aVine3
+	aTHEVine
 )
 (instance rm74 of Room
 	(properties
@@ -40,7 +40,7 @@
 		(super init:)
 		(if ((inventory at: iVine) ownedBy: curRoomNum)
 			(= vineInRoom TRUE)
-			((= vine (View new:))
+			((= aTHEVine (View new:))
 				view: 178
 				loop: 5
 				posn: 184 37
@@ -120,14 +120,14 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= ripple (Prop new:))
+		((= aRapids (Prop new:))
 			view: 729
 			setLoop: 0
 			setCycle: Forward
 			posn: 124 67
 			init:
 		)
-		((= egoSwinging1 (Prop new:))
+		((= aVine1 (Prop new:))
 			view: 178
 			ignoreActors:
 			setLoop: 0
@@ -136,7 +136,7 @@
 			stopUpd:
 			init:
 		)
-		((= egoSwinging2 (Prop new:))
+		((= aVine2 (Prop new:))
 			view: 178
 			ignoreActors:
 			setLoop: 1
@@ -145,7 +145,7 @@
 			stopUpd:
 			init:
 		)
-		((= egoSwinging3 (Prop new:))
+		((= aVine3 (Prop new:))
 			view: 178
 			ignoreActors:
 			setLoop: 1
@@ -177,7 +177,7 @@
 		)
 		(NormalEgo)
 		(if (== prevRoomNum 75)
-			(ego posn: 288 78 observeControl: 2 16)
+			(ego posn: 288 78 observeControl: cBLUE cRED)
 		else
 			(ego posn: 2 76)
 		)
@@ -193,42 +193,42 @@
 		(super doit:)
 		(cond 
 			(
-			(and (ego inRect: 261 72 321 77) (== currentStatus egoNormal)) (curRoom newRoom: 75))
+			(and (ego inRect: 261 72 321 77) (== currentStatus egoNORMAL)) (curRoom newRoom: 75))
 			(
 				(and
-					(== currentStatus egoEatenByPiranha)
+					(== currentStatus egoEATENBYPIRANHA)
 					(& (ego onControl:) $0010)
 				)
 				(self changeState: 3)
 			)
 			(
 				(and
-					(== currentStatus egoEatenByPiranha)
+					(== currentStatus egoEATENBYPIRANHA)
 					(& (ego onControl:) $0400)
 				)
-				(if (== local2 FALSE) (= local2 TRUE) (Print 74 0))
+				(if (== triedToClimbOut FALSE) (= triedToClimbOut TRUE) (Print 74 0))
 			)
 			(
 				(and
-					(== currentStatus egoEatenByPiranha)
+					(== currentStatus egoEATENBYPIRANHA)
 					(& (ego onControl:) $2000)
 				)
-				(if (== local1 FALSE) (= local1 TRUE) (Print 74 1))
+				(if (== triedToGoWest FALSE) (= triedToGoWest TRUE) (Print 74 1))
 			)
 			(
-			(and (== currentStatus egoNormal) (== (ego onControl:) 2)) (self changeState: 1))
-			(else (= local1 FALSE) (= local2 FALSE))
+			(and (== currentStatus egoNORMAL) (== (ego onControl:) 2)) (self changeState: 1))
+			(else (= triedToGoWest FALSE) (= triedToClimbOut FALSE))
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(= currentStatus egoEatenByPiranha)
+				(= currentStatus egoEATENBYPIRANHA)
 				(User canControl: TRUE canInput: TRUE)
 				(ego
 					view: 176
-					observeControl: 1 -32768
+					observeControl: cBLACK cWHITE
 					setLoop: -1
 					setStep: 3 2
 					setCycle: Walk
@@ -242,11 +242,11 @@
 				(ego
 					view: 177
 					setPri: -1
-					illegalBits: -32768
-					observeControl: 16 2 16384
+					illegalBits: cWHITE
+					observeControl: cRED cBLUE cYELLOW
 				)
 				(User canInput: FALSE)
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(curRoom east: 0)
 				(= cycles 0)
 				(= seconds 6)
@@ -274,21 +274,21 @@
 			(9
 				(Print 74 20)
 				(Print 74 21)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(10
-				(PrintOk)
+				(Ok)
 				(ego hide:)
 				(User canControl: FALSE)
-				(= currentStatus egoOnVine1)
-				(egoSwinging1 cel: 1 setCycle: CycleTo 7 1 self)
+				(= currentStatus egoONVINE1)
+				(aVine1 cel: 1 setCycle: CycleTo 7 1 self)
 			)
 			(11
 				(if swingingOnVine
 					(= swingingOnVine FALSE)
 					(self changeState: 14)
 				else
-					(egoSwinging1 cel: 8 setCycle: EndLoop)
+					(aVine1 cel: 8 setCycle: EndLoop)
 					(ego
 						view: 178
 						illegalBits: 0
@@ -313,15 +313,15 @@
 				(self changeState: 1)
 			)
 			(14
-				(egoSwinging1 setCel: 8 setCycle: EndLoop)
-				(egoSwinging2 setCel: 1 setCycle: CycleTo 6 1 self)
+				(aVine1 setCel: 8 setCycle: EndLoop)
+				(aVine2 setCel: 1 setCycle: CycleTo 6 1 self)
 			)
 			(15
 				(if swingingOnVine
 					(= swingingOnVine FALSE)
 					(self changeState: 18)
 				else
-					(egoSwinging2 cel: 7 setCycle: EndLoop)
+					(aVine2 cel: 7 setCycle: EndLoop)
 					(ego
 						view: 178
 						illegalBits: 0
@@ -346,18 +346,18 @@
 				(self changeState: 1)
 			)
 			(18
-				(egoSwinging1 stopUpd:)
-				(egoSwinging2 setCel: 7 setCycle: EndLoop)
-				(egoSwinging3 cel: 1 setCycle: CycleTo 6 1 self)
+				(aVine1 stopUpd:)
+				(aVine2 setCel: 7 setCycle: EndLoop)
+				(aVine3 cel: 1 setCycle: CycleTo 6 1 self)
 			)
 			(19
-				(egoSwinging2 stopUpd:)
+				(aVine2 stopUpd:)
 				(if swingingOnVine
 					(= swingingOnVine FALSE)
-					(egoSwinging3 setCel: 6)
+					(aVine3 setCel: 6)
 					(self changeState: 23)
 				else
-					(egoSwinging3 setCycle: BegLoop self)
+					(aVine3 setCycle: BegLoop self)
 				)
 			)
 			(20
@@ -384,7 +384,7 @@
 				(self changeState: 1)
 			)
 			(23
-				(egoSwinging3 setCel: 7 setCycle: EndLoop)
+				(aVine3 setCel: 7 setCycle: EndLoop)
 				(ego
 					illegalBits: 0
 					ignoreActors:
@@ -401,7 +401,7 @@
 				)
 			)
 			(24
-				(egoSwinging3 stopUpd:)
+				(aVine3 stopUpd:)
 				(ego setCycle: EndLoop self)
 			)
 			(25
@@ -424,7 +424,7 @@
 			(if (Said '/lagoon,beach') (Print 74 2))
 			(if (Said '/brook,fluid') (Print 74 3))
 			(if (Said '/fish')
-				(if (!= currentStatus egoEatenByPiranha)
+				(if (!= currentStatus egoEATENBYPIRANHA)
 					(Print 74 4)
 				else
 					(Print 74 5)
@@ -439,15 +439,15 @@
 		)
 		(if (Said 'jerk,get/landscape')
 			(cond 
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((!= currentStatus egoNORMAL) (NotNow))
 				((not vineInRoom) (Print 74 10))
 				((ego inRect: 59 91 78 98) (Print 74 11))
-				((not (ego inRect: 149 100 195 129)) (PrintNotCloseEnough))
+				((not (ego inRect: 149 100 195 129)) (NotClose))
 				(else
 					(= vineInRoom FALSE)
 					(ego get: iVine)
 					(theGame changeScore: 4)
-					(vine dispose:)
+					(aTHEVine dispose:)
 					(Print 74 12 #draw)
 					(Print 74 13)
 				)
@@ -455,7 +455,7 @@
 		)
 		(if (Said 'bathing') (Print 74 14))
 		(if (Said '*/boulder')
-			(if (== currentStatus egoEatenByPiranha)
+			(if (== currentStatus egoEATENBYPIRANHA)
 				(Print 74 15)
 			else
 				(Print 74 16)
@@ -470,9 +470,9 @@
 			)
 			(cond 
 				(
-				(and (>= currentStatus egoOnVine1) (<= currentStatus egoOnVine3)) (= swingingOnVine TRUE))
-				((!= currentStatus egoNormal) (PrintNotNow))
-				((not (ego inRect: 59 91 78 98)) (PrintNotCloseEnough))
+				(and (>= currentStatus egoONVINE1) (<= currentStatus egoONVINE3)) (= swingingOnVine TRUE))
+				((!= currentStatus egoNORMAL) (NotNow))
+				((not (ego inRect: 59 91 78 98)) (NotClose))
 				(else (self changeState: 10))
 			)
 		)

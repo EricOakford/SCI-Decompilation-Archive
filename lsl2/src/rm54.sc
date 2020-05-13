@@ -16,14 +16,14 @@
 )
 
 (local
-	whichBag
-	airplane
-	bag
-	gate
-	traveler
+	theBag
+	aPlane
+	aBag
+	aDoor
+	aTraveler
 )
 
-(enum
+(enum	;bag contents
 	subliminalMessage
 	huntingRifle
 	dirtyUnderwear
@@ -71,7 +71,7 @@
 			(Load SOUND 5)
 			(Load FONT 7)
 			(theSound init:)
-			((= bag (Actor new:))
+			((= aBag (Actor new:))
 				view: 515
 				setLoop: 0
 				setCel: 0
@@ -85,7 +85,7 @@
 				setScript: bagScript
 			)
 		)
-		((= airplane (Airplane new:))
+		((= aPlane (Airplane new:))
 			view: 511
 			setCel: 0
 			startX: 306
@@ -94,7 +94,7 @@
 			endY: 22
 			init:
 		)
-		((= traveler (Actor new:))
+		((= aTraveler (Actor new:))
 			view: 515
 			setLoop: 3
 			setPri: 2
@@ -113,13 +113,13 @@
 		)
 		(NormalEgo)
 		(ego init:)
-		((= gate (AutoDoor new:))
+		((= aDoor (AutoDoor new:))
 			view: 515
 			setLoop: 2
 			posn: 15 156
 			setPri: 11
 			doorCtrl: 2
-			doorBlock: 16384
+			doorBlock: cYELLOW
 			roomCtrl: 0
 			msgLook: {The low blue gate leads back to the Customs Inspection area.}
 			msgFunny: {Knock. Knock. (No one's there!)}
@@ -140,7 +140,7 @@
 		(switch (= state newState)
 			(1
 				(theGame changeScore: 5)
-				(bag dispose:)
+				(aBag dispose:)
 				(bagScript dispose:)
 				(Print 54 25 #at -1 20 #width 222 #font 7)
 				(theSound play:)
@@ -197,14 +197,14 @@
 		(if (Said 'carry,(get<up),get/bag,baggage')
 			(cond 
 				((not ((inventory at: iSuitcase) ownedBy: curRoomNum)) (Print 54 8))
-				((not (& (ego onControl:) $0008)) (PrintNotCloseEnough))
-				((> (ego distanceTo: bag) 23) (Print 54 9))
+				((not (& (ego onControl:) $0008)) (NotClose))
+				((> (ego distanceTo: aBag) 23) (Print 54 9))
 				(else
-					(bag hide:)
-					(if (and (!= whichBag 0) (!= whichBag 8))
+					(aBag hide:)
+					(if (and (!= theBag 0) (!= theBag 8))
 						(Print 54 10 #at -1 20 #draw)
 					)
-					(switch whichBag
+					(switch theBag
 						(subliminalMessage (Print 54 11))
 						(huntingRifle (Print 54 12))
 						(dirtyUnderwear (Print 54 13))
@@ -231,7 +231,7 @@
 						)
 					)
 					(Print 54 24 #at -1 20)
-					(bag show:)
+					(aBag show:)
 				)
 			)
 		)
@@ -245,15 +245,15 @@
 		(switch (= state newState)
 			(0 (= seconds 3))
 			(1
-				(traveler
+				(aTraveler
 					posn: 230 36
 					show:
 					setMotion: MoveTo 291 37 self
 				)
 			)
 			(2
-				(traveler
-					setLoop: (if (== (traveler loop?) 3) 4 else 3)
+				(aTraveler
+					setLoop: (if (== (aTraveler loop?) 3) 4 else 3)
 				)
 				(self changeState: 0)
 			)
@@ -267,20 +267,20 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(bag
+				(aBag
 					posn: 90 123
-					setCel: whichBag
+					setCel: theBag
 					setLoop: 0
 					show:
 					setMotion: MoveTo 152 123 self
 				)
 			)
 			(1
-				(bag setLoop: 1 setMotion: MoveTo 303 123 self)
+				(aBag setLoop: 1 setMotion: MoveTo 303 123 self)
 			)
 			(2
-				(if (> (++ whichBag) 12) (= whichBag 0))
-				(bag hide:)
+				(if (> (++ theBag) 12) (= theBag 0))
+				(aBag hide:)
 				(self changeState: 0)
 			)
 		)

@@ -16,7 +16,7 @@
 	local0
 	confirmTrashSearch
 	trashOnCurb
-	local3
+	garageIsOpen
 )
 (instance rm23 of Room
 	(properties
@@ -28,10 +28,12 @@
 	
 	(method (init)
 		(Load VIEW 253)
-		(if (== prevRoomNum 99) (self style: 7))
+		(if (== prevRoomNum 99)
+			(self style: IRISOUT)
+		)
 		(super init:)
-		(if (not ((inventory at: 1) ownedBy: curRoomNum))
-			(= local3 1)
+		(if (not ((inventory at: iDollarBill) ownedBy: curRoomNum))
+			(= garageIsOpen TRUE)
 			((View new:)
 				view: 253
 				loop: 0
@@ -40,7 +42,7 @@
 				setPri: 9
 				addToPic:
 			)
-			(ego observeControl: 16384)
+			(ego observeControl: cYELLOW)
 		else
 			((View new:)
 				view: 253
@@ -95,7 +97,7 @@
 		)
 		(if
 			(and
-				local3
+				garageIsOpen
 				(ego has: iCruiseTicket)
 				((inventory at: iPassport) ownedBy: curRoomNum)
 			)
@@ -155,8 +157,8 @@
 		)
 		(if (Said '(look<in),explore/bra,bra')
 			(cond 
-				((not ((inventory at: iDollarBill) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((& (ego onControl:) $0002) (PrintOk) (Print 23 0))
+				((not ((inventory at: iDollarBill) ownedBy: curRoomNum)) (AlreadyTook))
+				((& (ego onControl:) $0002) (Ok) (Print 23 0))
 				(else (event claimed: FALSE))
 			)
 		)
@@ -166,16 +168,16 @@
 					(Print 23 1)
 					(if (> filthLevel 4) (Print 23 2 #at -1 152))
 				)
-				((not (& (ego onControl:) $0002)) (PrintNotCloseEnough))
-				(else (PrintOk) (Print 23 0))
+				((not (& (ego onControl:) $0002)) (NotClose))
+				(else (Ok) (Print 23 0))
 			)
 		)
 		(if (Said 'get/buck,bill,(bill<buck)')
 			(cond 
-				((not ((inventory at: iDollarBill) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((not (& (ego onControl:) $0002)) (PrintNotCloseEnough))
+				((not ((inventory at: iDollarBill) ownedBy: curRoomNum)) (AlreadyTook))
+				((not (& (ego onControl:) $0002)) (NotClose))
 				(else
-					(PrintOk)
+					(Ok)
 					(Print 23 3)
 					(ego get: iDollarBill)
 					(theGame changeScore: 3)
@@ -190,7 +192,7 @@
 			)
 			(cond 
 				((not trashOnCurb) (Print 23 5))
-				((not (ego inRect: 81 148 144 172)) (PrintNotCloseEnough))
+				((not (ego inRect: 81 148 144 172)) (NotClose))
 				(((inventory at: iPassport) ownedBy: curRoomNum)
 					(if (not confirmTrashSearch)
 						(= confirmTrashSearch TRUE)
@@ -250,14 +252,14 @@
 		(if (Said 'get/passport')
 			(cond 
 				((not trashOnCurb) (Print 23 5))
-				((not (ego inRect: 81 148 144 172)) (PrintNotCloseEnough))
+				((not (ego inRect: 81 148 144 172)) (NotClose))
 				(((inventory at: iPassport) ownedBy: curRoomNum)
-					(PrintOk)
+					(Ok)
 					(ego get: iPassport)
 					(theGame changeScore: 5)
 					(Print 23 29)
 				)
-				(else (PrintAlreadyTookIt))
+				(else (AlreadyTook))
 			)
 		)
 	)

@@ -14,10 +14,10 @@
 
 (local
 	canBuySwimsuit
-	local1
-	buyingSwimsuit
-	clerk
-	clerkBigHand
+	triedToShoplift
+	moneyOwed
+	aClerk
+	aBigHand
 )
 (instance rm116 of Room
 	(properties
@@ -159,7 +159,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= clerkBigHand (Prop new:))
+		((= aBigHand (Prop new:))
 			view: 226
 			setLoop: 4
 			setCel: 0
@@ -170,7 +170,7 @@
 			ignoreActors:
 			init:
 		)
-		((= clerk (Actor new:))
+		((= aClerk (Actor new:))
 			view: 226
 			setLoop: 3
 			setCel: 0
@@ -193,8 +193,10 @@
 		(super doit:)
 		(if (& (ego onControl:) $0002) (curRoom newRoom: 16))
 		(cond 
-			((not (& (ego onControl:) $0004)) (= local1 0))
-			((and buyingSwimsuit (not local1)) (= local1 1) (Print 116 0))
+			((not (& (ego onControl:) $0004)) (= triedToShoplift 0))
+			((and moneyOwed (not triedToShoplift)) (= triedToShoplift TRUE)
+				(Print 116 0)
+			)
 		)
 	)
 	
@@ -202,34 +204,34 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 5 10)))
 			(1
-				(clerk
+				(aClerk
 					setLoop: 1
 					setMotion: MoveTo 138 105 self
 					setCycle: Walk
 				)
 			)
 			(2
-				(clerk setCel: 0)
+				(aClerk setCel: 0)
 				(= seconds (Random 10 20))
 			)
 			(3
-				(clerk setLoop: 3 setCel: 0 setCycle: Forward cycleSpeed: 2)
-				(if (> howFast 30)
-					(clerkBigHand setCel: 0 setCycle: Forward posn: 29 187)
+				(aClerk setLoop: 3 setCel: 0 setCycle: Forward cycleSpeed: 2)
+				(if (> machineSpeed 30)
+					(aBigHand setCel: 0 setCycle: Forward posn: 29 187)
 				)
 				(= seconds (Random 5 10))
 			)
 			(4
-				(clerk
+				(aClerk
 					setLoop: 2
 					setCel: 0
 					setCycle: EndLoop self
 					cycleSpeed: 0
 				)
-				(clerkBigHand posn: 29 1187)
+				(aBigHand posn: 29 1187)
 			)
 			(5
-				(clerk
+				(aClerk
 					setLoop: 0
 					cycleSpeed: 1
 					setMotion: MoveTo 174 105 self
@@ -238,24 +240,24 @@
 			)
 			(6
 				(= state 0)
-				(clerk setCel: 0)
+				(aClerk setCel: 0)
 				(= seconds (Random 20 30))
 			)
 			(7
 				(= canBuySwimsuit (= seconds 0))
 				(HandsOff)
 				(Print 116 31 #icon 4 0 0)
-				(clerkBigHand hide:)
+				(aBigHand hide:)
 				(if (< (= egoX (ego x?)) 138) (= egoX 138))
 				(if (> egoX 174) (= egoX 174))
-				(clerk
+				(aClerk
 					setLoop: -1
 					setCycle: Walk
 					setMotion: MoveTo egoX 105 self
 				)
 			)
 			(8
-				(clerk setLoop: 2 setCel: 2)
+				(aClerk setLoop: 2 setCel: 2)
 				(Print 116 32 #draw)
 				(= seconds 3)
 			)
@@ -298,7 +300,7 @@
 				(Print 116 43)
 				(NormalEgo)
 				(ego get: iWadODough)
-				(= buyingSwimsuit FALSE)
+				(= moneyOwed FALSE)
 				(theGame changeScore: 3)
 			)
 		)
@@ -352,10 +354,10 @@
 				((!= canBuySwimsuit TRUE) (Print 116 20))
 				(else
 					(Print 116 21)
-					(= buyingSwimsuit TRUE)
+					(= moneyOwed TRUE)
 					(ego get: iSwimsuit)
 					(theGame changeScore: 5)
-					(ego observeControl: 2)
+					(ego observeControl: cBLUE)
 				)
 			)
 		)
@@ -366,7 +368,7 @@
 				(Said 'buy')
 			)
 			(cond 
-				((not buyingSwimsuit) (Print 116 22))
+				((not moneyOwed) (Print 116 22))
 				((not (ego inRect: 120 130 192 140)) (Print 116 23))
 				(else (self changeState: 7))
 			)

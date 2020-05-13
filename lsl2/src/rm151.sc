@@ -13,9 +13,9 @@
 )
 
 (local
-	rosella
-	chair
-	talkedToRosella
+	aBarber
+	aChair
+	talkedToBarber
 )
 (instance rm151 of Room
 	(properties
@@ -28,7 +28,7 @@
 		(Load VIEW 507)
 		(Load VIEW 232)
 		(super init:)
-		((= chair (Prop new:))
+		((= aChair (Prop new:))
 			view: 232
 			loop: 1
 			cel: 0
@@ -37,7 +37,7 @@
 			ignoreActors:
 			init:
 		)
-		((= rosella (Actor new:))
+		((= aBarber (Actor new:))
 			view: 507
 			loop: 2
 			posn: 144 152
@@ -74,7 +74,7 @@
 				)
 			)
 			(1
-				(if (not talkedToRosella)
+				(if (not talkedToBarber)
 					(Print 151 4)
 					(= seconds (Random 12 25))
 					(= state 0)
@@ -82,7 +82,7 @@
 			)
 			(2
 				(= seconds (= cycles 0))
-				(= currentStatus egoSitting)
+				(= currentStatus egoSITTING)
 				(HandsOff)
 				(Print 151 5)
 				(Print 151 6)
@@ -92,25 +92,25 @@
 					ignoreActors:
 					setMotion: MoveTo 157 120 self
 				)
-				(rosella setMotion: MoveTo 185 119 self)
+				(aBarber setMotion: MoveTo 185 119 self)
 			)
 			(3
 				(ego hide:)
-				(chair view: 507 setLoop: 8 setCel: 255 setCycle: BegLoop)
+				(aChair view: 507 setLoop: 8 setCel: 255 setCycle: BegLoop)
 			)
 			(4
-				(rosella setMotion: MoveTo 179 113 self)
+				(aBarber setMotion: MoveTo 179 113 self)
 			)
 			(5
-				(rosella
+				(aBarber
 					setMotion: MoveTo 169 113 self
 					illegalBits: 0
 					ignoreActors:
 				)
 			)
 			(6
-				(chair view: 507 setLoop: 4 setCycle: 0)
-				(rosella
+				(aChair view: 507 setLoop: 4 setCycle: 0)
+				(aBarber
 					view: 507
 					setLoop: 5
 					posn: 165 86
@@ -120,16 +120,16 @@
 				)
 			)
 			(7
-				(chair stopUpd:)
-				(rosella setLoop: 6 cycleSpeed: 1 cel: 0 setCycle: Forward)
+				(aChair stopUpd:)
+				(aBarber setLoop: 6 cycleSpeed: 1 cel: 0 setCycle: Forward)
 				(= seconds 5)
 			)
 			(8
-				(rosella setLoop: 7 cel: 0 setCycle: EndLoop self)
+				(aBarber setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(9
-				(chair view: 232 setLoop: 2 setCel: 255)
-				(rosella
+				(aChair view: 232 setLoop: 2 setCel: 255)
+				(aBarber
 					loop: 2
 					setLoop: -1
 					setPri: 7
@@ -146,17 +146,17 @@
 				(= seconds 3)
 			)
 			(11
-				(chair setCycle: BegLoop self)
+				(aChair setCycle: BegLoop self)
 			)
 			(12
 				(= currentEgoView 100)
 				(ego view: 100 setLoop: -1 loop: 3 ignoreActors: 0 show:)
-				(chair view: 232 loop: 1 cel: 0)
+				(aChair view: 232 loop: 1 cel: 0)
 				(= seconds 2)
 			)
 			(13
-				(chair stopUpd:)
-				(rosella stopUpd:)
+				(aChair stopUpd:)
+				(aBarber stopUpd:)
 				(Print 151 11 #draw)
 				(Print 151 12)
 				(Print (Format @str 151 13 tritePhrase))
@@ -178,11 +178,11 @@
 				(Said '(get<in)/barstool')
 				(Said 'get/haircut,(cut<hair)')
 			)
-			(= talkedToRosella TRUE)
+			(= talkedToBarber TRUE)
 			(cond 
 				((not (ego inRect: 148 117 180 127)) (Print 151 0))
 				((!= currentEgoView 149) (Print 151 1))
-				((== currentStatus 1009) (PrintYouAre))
+				((== currentStatus 1009) (YouAre))
 				(else (= hairDyedBlonde FALSE) (self changeState: 2))
 			)
 		)
@@ -196,7 +196,7 @@
 			(HandsOff)
 		)
 		(if (Said 'call/man,children,bimbo')
-			(= talkedToRosella TRUE)
+			(= talkedToBarber TRUE)
 			(if (== currentEgoView 100)
 				(Print 151 2)
 			else

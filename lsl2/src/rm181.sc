@@ -14,10 +14,10 @@
 )
 
 (local
-	waterfall
+	aWaterfall
 	triedToTurnBack
-	oldEgoX
-	oldEgoY
+	egoX
+	egoY
 )
 (instance theSound of Sound
 	(properties
@@ -56,7 +56,7 @@
 		(Load SOUND 1)
 		(super init:)
 		(theSound init:)
-		((= waterfall (Prop new:))
+		((= aWaterfall (Prop new:))
 			view: 727
 			setLoop: 0
 			posn: 27 188
@@ -85,14 +85,14 @@
 		(super doit:)
 		(if
 			(and
-				(== currentStatus egoNormal)
+				(== currentStatus egoNORMAL)
 				(or (== (ego edgeHit?) SOUTH) (== (ego edgeHit?) EAST))
 			)
 			(if (== triedToTurnBack FALSE) (= triedToTurnBack TRUE) (Print 181 0))
 		else
 			(= triedToTurnBack FALSE)
 		)
-		(if (== currentStatus egoNormal)
+		(if (== currentStatus egoNORMAL)
 			(if (< (ego y?) 50)
 				(ego setPri: 3)
 			else
@@ -101,12 +101,12 @@
 		)
 		(cond 
 			(
-			(and (== (ego edgeHit?) WEST) (== currentStatus egoNormal)) (curRoom newRoom: 82))
+			(and (== (ego edgeHit?) WEST) (== currentStatus egoNORMAL)) (curRoom newRoom: 82))
 			(
-			(and (& (ego onControl:) $0002) (== currentStatus egoNormal)) (ego setPri: 8) (self changeState: 1))
+			(and (& (ego onControl:) cBLUE) (== currentStatus egoNORMAL)) (ego setPri: 8) (self changeState: 1))
 			(
-			(and (& (ego onControl:) $0004) (== currentStatus egoNormal)) (ego setPri: 0) (self changeState: 1))
-			((== currentStatus 0) (= oldEgoX (ego x?)) (= oldEgoY (ego y?)))
+			(and (& (ego onControl:) $0004) (== currentStatus egoNORMAL)) (ego setPri: 0) (self changeState: 1))
+			((== currentStatus 0) (= egoX (ego x?)) (= egoY (ego y?)))
 		)
 	)
 	
@@ -115,7 +115,7 @@
 			(1
 				(HandsOff)
 				(Print 181 4 #at -1 20 #dispose)
-				(= currentStatus egoFalling)
+				(= currentStatus egoFALLING)
 				(theSound play:)
 				(ego
 					view: 103
@@ -131,14 +131,14 @@
 			)
 			(2
 				(cls)
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(Print 181 5)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 				(if debugging
 					(NormalEgo)
 					(ego
 						observeBlocks: blockEast blockSouth
-						posn: oldEgoX oldEgoY
+						posn: egoX egoY
 					)
 					(self changeState: 0)
 				)

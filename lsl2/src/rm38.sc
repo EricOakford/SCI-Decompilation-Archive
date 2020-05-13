@@ -15,7 +15,7 @@
 
 (local
 	lifeboatIsReady
-	clouds
+	numClouds
 )
 (instance rm38 of Room
 	(properties
@@ -23,19 +23,19 @@
 		east 31
 	)
 	
-	(method (init &tmp temp0 temp1)
+	(method (init &tmp i temp1)
 		(Load VIEW currentEgoView)
 		(Load VIEW 141)
 		(Load VIEW 620)
 		(super init:)
 		(cond 
-			((> howFast 60) (= clouds 3))
-			((> howFast 40) (= clouds 2))
-			((> howFast 20) (= clouds 1))
+			((> machineSpeed 60) (= numClouds 3))
+			((> machineSpeed 40) (= numClouds 2))
+			((> machineSpeed 20) (= numClouds 1))
 		)
 		(if (not lifeboatLeverPulled)
-			(= temp0 0)
-			(while (< temp0 clouds)
+			(= i 0)
+			(while (< i numClouds)
 				((Actor new:)
 					view: 620
 					setLoop: 0
@@ -47,7 +47,7 @@
 					illegalBits: 0
 					setScript: (cloudScript new:)
 				)
-				(++ temp0)
+				(++ i)
 			)
 		)
 		(NormalEgo)
@@ -63,7 +63,7 @@
 		(super doit:)
 		(if (and lifeboatLeverPulled (< (ego x?) 300) (not lifeboatIsReady))
 			(= lifeboatIsReady 1)
-			(ego observeControl: 16384)
+			(ego observeControl: cYELLOW)
 			(Print 38 0)
 			(Print 38 1)
 		)
@@ -94,7 +94,7 @@
 					(curRoom newRoom: 131)
 				else
 					(User canInput: TRUE)
-					(= currentStatus egoSitting)
+					(= currentStatus egoSITTING)
 					(= seconds 7)
 				)
 			)
@@ -125,8 +125,8 @@
 		)
 		(if (Said 'explore,(look<in)/boat')
 			(cond 
-				((== currentStatus egoSitting) (Print 38 2))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((== currentStatus egoSITTING) (Print 38 2))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(else (Print 38 3))
 			)
 		)
@@ -156,25 +156,25 @@
 			(ego hide:)
 			(Print 38 13 #draw)
 			(Print 38 14 #at -1 152)
-			(= currentStatus egoDead)
+			(= currentStatus egoDEAD)
 		)
 		(if (Said '(hop<off),dive,hop/overboard,craft')
 			(Print 38 12)
 			(ego hide:)
 			(Print 38 15 #draw)
 			(Print 38 14 #at -1 152)
-			(= currentStatus egoDead)
+			(= currentStatus egoDEAD)
 		)
 		(if
 			(and
-				(== currentStatus egoSitting)
+				(== currentStatus egoSITTING)
 				(or
 					(Said 'hop,new,new[/down,boat,barstool]')
 					(Said 'disembark,board')
 					(Said 'climb,new,get<off,up')
 				)
 			)
-			(PrintOk)
+			(Ok)
 			(self changeState: 10)
 		)
 		(if
@@ -186,15 +186,15 @@
 			)
 			(cond 
 				((!= currentEgoView 100) (Print 38 16))
-				((== currentStatus egoSitting) (Print 38 17))
-				((!= currentStatus egoNormal) (PrintNotNow))
-				((not (ego inRect: 128 99 217 122)) (PrintNotCloseEnough))
+				((== currentStatus egoSITTING) (Print 38 17))
+				((!= currentStatus egoNORMAL) (NotNow))
+				((not (ego inRect: 128 99 217 122)) (NotClose))
 				(else
 					(if (not boardedLifeboat)
 						(= boardedLifeboat TRUE)
 						(theGame changeScore: 2)
 					)
-					(PrintOk)
+					(Ok)
 					(self changeState: 2)
 				)
 			)

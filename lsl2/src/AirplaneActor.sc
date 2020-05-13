@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 6)
+(script# AIRPLANE_ACTOR)
 (include game.sh)
 (use Motion)
 (use Actor)

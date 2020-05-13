@@ -107,7 +107,7 @@
 		)
 		(aBullet ignoreActors: setLoop: 6 setPri: 15 init:)
 		(aNo ignoreActors: init: stopUpd:)
-		(= currentStatus egoWonGame)
+		(= currentStatus egoWONGAME)
 		(HandsOff)
 		(ego
 			view: 197

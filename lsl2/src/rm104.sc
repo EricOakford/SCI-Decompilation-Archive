@@ -11,33 +11,43 @@
 
 (public
 	rm104 0
-	proc104_1 1
-	proc104_2 2
+	LotoTVTalk 1
+	LotoTVPerson 2
 )
 
 (local
-	neonSign
-	cameraScreen
-	hostOnTv
-	host
-	wheel
-	cameraMan
+	aSign
+	aCameraMonitor
+	aTV
+	aMC
+	aWheel
+	aCameraman
 	lana
-	applauseSignal
+	aApplause
 )
-(procedure (proc104_1)
-	(hostOnTv
+(procedure (LotoTVTalk)
+	(aTV
 		setLoop: 7
 		setCel: 0
 		cycleSpeed: 0
 		setCycle: Forward
 	)
-	(host setCel: 0 cycleSpeed: 0 setCycle: Forward)
+	(aMC
+		setCel: 0
+		cycleSpeed: 0
+		setCycle: Forward
+	)
 )
 
-(procedure (proc104_2)
-	(host setCel: 0 stopUpd:)
-	(hostOnTv setCel: 0 stopUpd:)
+(procedure (LotoTVPerson)
+	(aMC
+		setCel: 0
+		stopUpd:
+	)
+	(aTV
+		setCel: 0
+		stopUpd:
+	)
 )
 
 (instance mDrumRoll of Sound
@@ -74,7 +84,7 @@
 		(super init:)
 		(mDrumRoll init:)
 		(mThemeSong init:)
-		((= applauseSignal (Prop new:))
+		((= aApplause (Prop new:))
 			view: 207
 			setLoop: 5
 			setCel: 0
@@ -83,7 +93,7 @@
 			init:
 			stopUpd:
 		)
-		((= neonSign (Prop new:))
+		((= aSign (Prop new:))
 			view: 214
 			loop: 0
 			cel: 0
@@ -101,7 +111,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= host (Prop new:))
+		((= aMC (Prop new:))
 			view: 207
 			loop: 1
 			cel: 0
@@ -120,7 +130,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= cameraScreen (Prop new:))
+		((= aCameraMonitor (Prop new:))
 			view: 216
 			loop: 0
 			posn: 276 5
@@ -130,7 +140,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= hostOnTv (Prop new:))
+		((= aTV (Prop new:))
 			view: 216
 			loop: 7
 			cel: 0
@@ -140,7 +150,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= wheel (Prop new:))
+		((= aWheel (Prop new:))
 			view: 213
 			loop: 0
 			cel: 0
@@ -150,7 +160,7 @@
 			stopUpd:
 			init:
 		)
-		((= cameraMan (Actor new:))
+		((= aCameraman (Actor new:))
 			view: 212
 			loop: 1
 			posn: 90 131
@@ -177,7 +187,7 @@
 			illegalBits: 0
 		)
 		(HandsOff)
-		(= currentStatus egoOnTVShow)
+		(= currentStatus egoONTVSHOW)
 		(self setScript: rm104Script)
 	)
 )
@@ -195,36 +205,36 @@
 			(1
 				(Print 104 0)
 				(Print 104 1)
-				(applauseSignal setCycle: Forward)
+				(aApplause setCycle: Forward)
 				(= seconds 1)
 			)
 			(2
 				(Print 104 2 #at -1 152)
-				(proc104_2)
+				(LotoTVPerson)
 				(ego setMotion: MoveTo 77 92 self)
 			)
 			(3
-				(proc104_1)
-				(applauseSignal stopUpd:)
+				(LotoTVTalk)
+				(aApplause stopUpd:)
 				(ego setMotion: MoveTo 99 92 self)
 			)
 			(4
 				(Print 104 3)
-				(proc104_2)
-				(host setLoop: 3 cel: 0 setCycle: EndLoop self)
+				(LotoTVPerson)
+				(aMC setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(ego setMotion: MoveTo 144 98 self)
 			)
 			(6
 				(Print 104 4)
-				(cameraMan setMotion: MoveTo 222 132 setCycle: Walk)
+				(aCameraman setMotion: MoveTo 222 132 setCycle: Walk)
 				(ego setMotion: MoveTo 234 101 self)
 				(= cycles 30)
 			)
 			(7
-				(host setLoop: 1)
-				(proc104_2)
+				(aMC setLoop: 1)
+				(LotoTVPerson)
 			)
 			(8
 				(mDrumRoll play:)
@@ -232,7 +242,7 @@
 			)
 			(9
 				(Print 104 5)
-				(cameraMan stopUpd:)
+				(aCameraman stopUpd:)
 				(ego
 					view: 213
 					loop: 1
@@ -240,8 +250,8 @@
 					cycleSpeed: 1
 					setCycle: EndLoop self
 				)
-				(wheel cel: 0 cycleSpeed: 0 setCycle: Forward)
-				(hostOnTv setLoop: 2 cel: 0 cycleSpeed: 1 setCycle: Forward)
+				(aWheel cel: 0 cycleSpeed: 0 setCycle: Forward)
+				(aTV setLoop: 2 cel: 0 cycleSpeed: 1 setCycle: Forward)
 			)
 			(10
 				(ego
@@ -252,35 +262,35 @@
 					setMotion: 0
 					stopUpd:
 				)
-				(hostOnTv setLoop: 3 cel: 0 cycleSpeed: 0)
+				(aTV setLoop: 3 cel: 0 cycleSpeed: 0)
 				(= seconds 3)
 			)
 			(11
-				(wheel cycleSpeed: 1)
-				(hostOnTv cycleSpeed: 1)
+				(aWheel cycleSpeed: 1)
+				(aTV cycleSpeed: 1)
 				(= seconds 2)
 			)
 			(12
-				(hostOnTv setLoop: 4 cycleSpeed: 2)
-				(wheel cycleSpeed: 2)
+				(aTV setLoop: 4 cycleSpeed: 2)
+				(aWheel cycleSpeed: 2)
 				(= seconds 2)
 			)
 			(13
-				(wheel cycleSpeed: 4)
-				(hostOnTv cycleSpeed: 4)
+				(aWheel cycleSpeed: 4)
+				(aTV cycleSpeed: 4)
 				(= seconds 2)
 			)
 			(14
-				(hostOnTv setLoop: 1 cel: 0 cycleSpeed: 1 setCycle: EndLoop)
-				(wheel stopUpd:)
+				(aTV setLoop: 1 cel: 0 cycleSpeed: 1 setCycle: EndLoop)
+				(aWheel stopUpd:)
 				(mDrumRoll dispose:)
 				(mThemeSong play:)
-				(neonSign setCycle: Forward)
-				(applauseSignal setCycle: Forward)
+				(aSign setCycle: Forward)
+				(aApplause setCycle: Forward)
 				(= seconds 4)
 			)
 			(15
-				(proc104_1)
+				(LotoTVTalk)
 				(theGame changeScore: 12)
 				(= seconds 1)
 			)
@@ -293,22 +303,22 @@
 			(17
 				(Print 104 9)
 				(ego setCycle: Walk setMotion: MoveTo 149 98 self)
-				(proc104_2)
-				(hostOnTv setLoop: 5 setCycle: Forward)
-				(cameraMan setMotion: MoveTo 161 132)
+				(LotoTVPerson)
+				(aTV setLoop: 5 setCycle: Forward)
+				(aCameraman setMotion: MoveTo 161 132)
 			)
 			(18
-				(applauseSignal stopUpd:)
-				(neonSign stopUpd:)
-				(cameraMan stopUpd:)
+				(aApplause stopUpd:)
+				(aSign stopUpd:)
+				(aCameraman stopUpd:)
 				(ego setMotion: MoveTo 149 95)
-				(hostOnTv setLoop: 6 stopUpd:)
-				(host setLoop: 4 cel: 0 setCycle: EndLoop self)
+				(aTV setLoop: 6 stopUpd:)
+				(aMC setLoop: 4 cel: 0 setCycle: EndLoop self)
 				(Print 104 10 #draw)
 			)
 			(19
-				(host setLoop: 1 forceUpd:)
-				(proc104_2)
+				(aMC setLoop: 1 forceUpd:)
+				(LotoTVPerson)
 				(lana posn: 19 91 setMotion: MoveTo 82 91 self)
 			)
 			(20
@@ -318,7 +328,7 @@
 			(21
 				(lana setLoop: 1 setCel: 0 setCycle: 0)
 				(ego setCycle: 0)
-				(cameraMan setMotion: MoveTo 161 132)
+				(aCameraman setMotion: MoveTo 161 132)
 				(= seconds 2)
 			)
 			(22
@@ -341,33 +351,33 @@
 			(24
 				(Print 104 12)
 				(ego hide:)
-				(host setLoop: 2 cycleSpeed: 1 setCycle: Forward)
+				(aMC setLoop: 2 cycleSpeed: 1 setCycle: Forward)
 				(= seconds 4)
 			)
 			(25
-				(host setLoop: 1)
+				(aMC setLoop: 1)
 				(ego view: 100 loop: 0 show:)
-				(proc104_1)
+				(LotoTVTalk)
 				(= seconds 3)
 			)
 			(26
-				(proc104_2)
+				(LotoTVPerson)
 				(Print 104 13 #draw)
 				(Print 104 14 #at -1 152)
-				(hostOnTv setLoop: 5 setCycle: Forward)
+				(aTV setLoop: 5 setCycle: Forward)
 				(= seconds 3)
 			)
 			(27
 				(Print 104 15)
 				(Print 104 16)
-				(hostOnTv setLoop: 6 setCycle: Forward)
-				(neonSign setCycle: Forward)
+				(aTV setLoop: 6 setCycle: Forward)
+				(aSign setCycle: Forward)
 				(= seconds 5)
 			)
 			(28
 				(mThemeSong stop:)
-				(neonSign stopUpd:)
-				(hostOnTv setLoop: 8)
+				(aSign stopUpd:)
+				(aTV setLoop: 8)
 				(Print 104 17 #draw)
 				(Print 104 18)
 				(= seconds 2)

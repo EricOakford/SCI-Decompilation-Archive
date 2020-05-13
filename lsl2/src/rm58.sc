@@ -15,7 +15,7 @@
 (local
 	local0
 	triedToLeave
-	airplane
+	aPlane
 )
 (instance blockWest of Block
 	(properties
@@ -43,7 +43,7 @@
 			posn: 311 132
 			addToPic:
 		)
-		((= airplane (Airplane new:))
+		((= aPlane (Airplane new:))
 			startY: 7
 			endY: 0
 			delayMin: 2

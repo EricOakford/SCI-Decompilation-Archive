@@ -15,8 +15,8 @@
 (local
 	[local0 2]
 	tookPiss
-	sonnyPeeks
-	piss
+	aHead
+	aPuddle
 )
 (instance rm13 of Room
 	(properties
@@ -39,8 +39,8 @@
 			ignoreActors:
 			addToPic:
 		)
-		(self setRegions: 200 setScript: rm13Script)
-		((= piss (Prop new:))
+		(self setRegions: CITY setScript: rm13Script)
+		((= aPuddle (Prop new:))
 			view: 242
 			setLoop: 2
 			setCel: 0
@@ -52,7 +52,7 @@
 		)
 		(if (== 3 (Random 1 3))
 			(rm13Script changeState: 1)
-			((= sonnyPeeks (Prop new:))
+			((= aHead (Prop new:))
 				view: 242
 				setLoop: 1
 				setCel: 0
@@ -91,10 +91,10 @@
 		(switch (= state newState)
 			(1 (= seconds (Random 10 20)))
 			(2
-				(sonnyPeeks posn: 198 73 setCycle: EndLoop self)
+				(aHead posn: 198 73 setCycle: EndLoop self)
 			)
 			(3
-				(sonnyPeeks setCel: 0 posn: 198 1034)
+				(aHead setCel: 0 posn: 198 1034)
 				(= state 0)
 				(= seconds (Random 30 90))
 			)
@@ -108,21 +108,25 @@
 		)
 		(if (Said '(look<in),open,increase/(barrel,barrel)') ;EO: Fixed decompiler goof in Said Spec
 			(if (not (ego inRect: 230 115 284 137))
-				(PrintNotCloseEnough)
+				(NotClose)
 			else
 				(Print 13 0)
 				(Print 13 1 #at -1 152)
 			)
 		)
-		(if (Said 'look/barrel,barrel') (Print 13 2))
+		(if (Said 'look/barrel,barrel')
+			(Print 13 2)
+		)
 		(if (Said 'look/fence')
 			(Print 13 3)
-			(Print 13 4 #at -1 152)
+			(Print 13 4
+				#at -1 152
+			)
 		)
 		(if
 		(or (Said 'look<in,through/fence') (Said 'look/hole'))
 			(if (not (ego inRect: 192 96 203 108))
-				(PrintNotCloseEnough)
+				(NotClose)
 			else
 				(Print 13 5)
 				(if (not lookedThroughKnothole)
@@ -153,11 +157,11 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(piss posn: 243 117 setCycle: EndLoop self)
+				(aPuddle posn: 243 117 setCycle: EndLoop self)
 			)
 			(1
 				(NormalEgo)
-				(piss dispose:)
+				(aPuddle dispose:)
 				(Print 13 11 #draw)
 			)
 		)

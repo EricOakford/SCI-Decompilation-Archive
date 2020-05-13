@@ -14,19 +14,19 @@
 
 (local
 	local0
-	machine1
-	machine2
-	screen
-	radar
-	screen2
-	controlPanels
-	lever
-	captain
-	steeringWheel
-	henchman
-	assassin
-	tide
-	tide2
+	aDials1
+	aDials2
+	aDials3
+	aDials4
+	aDials5
+	aDials6
+	aLever
+	aCaptain
+	aWheel
+	aHench
+	aDart
+	aHorizonEast
+	aHorizonWest
 )
 (instance rm36 of Room
 	(properties
@@ -131,7 +131,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= machine1 (Prop new:))
+		((= aDials1 (Prop new:))
 			view: 322
 			setLoop: 1
 			cel: 2
@@ -143,7 +143,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= machine2 (Prop new:))
+		((= aDials2 (Prop new:))
 			view: 322
 			setLoop: 2
 			cel: 0
@@ -155,7 +155,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= screen (Prop new:))
+		((= aDials3 (Prop new:))
 			view: 322
 			setLoop: 7
 			cel: 0
@@ -167,7 +167,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= radar (Prop new:))
+		((= aDials4 (Prop new:))
 			view: 322
 			setLoop: 6
 			setPri: 6
@@ -177,7 +177,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= screen2 (Prop new:))
+		((= aDials5 (Prop new:))
 			view: 322
 			setLoop: 7
 			cel: 0
@@ -189,7 +189,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= controlPanels (Prop new:))
+		((= aDials6 (Prop new:))
 			view: 322
 			setLoop: 8
 			cel: 0
@@ -201,7 +201,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= tide (Prop new:))
+		((= aHorizonEast (Prop new:))
 			view: 322
 			setLoop: 5
 			setPri: 3
@@ -211,7 +211,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= tide2 (Prop new:))
+		((= aHorizonWest (Prop new:))
 			view: 322
 			setLoop: 4
 			setPri: 3
@@ -221,7 +221,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= lever (Prop new:))
+		((= aLever (Prop new:))
 			view: 322
 			setLoop: 3
 			setCel: (if lifeboatLeverPulled 255 else 0)
@@ -230,7 +230,7 @@
 			stopUpd:
 			init:
 		)
-		((= steeringWheel (Prop new:))
+		((= aWheel (Prop new:))
 			view: 323
 			setLoop: 1
 			cel: 0
@@ -238,7 +238,7 @@
 			setPri: 6
 			init:
 		)
-		((= captain (Actor new:))
+		((= aCaptain (Actor new:))
 			view: 323
 			setLoop: 0
 			cel: 0
@@ -247,7 +247,7 @@
 			init:
 			setScript: captainScript
 		)
-		((= henchman (Actor new:))
+		((= aHench (Actor new:))
 			view: 321
 			setLoop: 1
 			setPri: 5
@@ -281,13 +281,13 @@
 			(1
 				(= seconds (= cycles 0))
 				(HandsOff)
-				(= currentStatus egoStopped)
-				(henchman show: setMotion: MoveTo 167 92 self)
+				(= currentStatus egoSTOPPED)
+				(aHench show: setMotion: MoveTo 167 92 self)
 				(captainScript dispose:)
 				(ego stopUpd:)
 			)
 			(2
-				(henchman
+				(aHench
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 1
@@ -295,8 +295,8 @@
 				)
 			)
 			(3
-				(henchman cycleSpeed: 0 setCycle: BegLoop)
-				((= assassin (Actor new:))
+				(aHench cycleSpeed: 0 setCycle: BegLoop)
+				((= aDart (Actor new:))
 					view: 321
 					setLoop: 3
 					posn: 169 76
@@ -309,15 +309,15 @@
 				(Print 36 9 #at -1 20 #draw)
 			)
 			(4
-				(assassin dispose:)
-				(henchman
+				(aDart dispose:)
+				(aHench
 					setLoop: 0
 					setCycle: Walk
 					cycleSpeed: 0
 					setMotion: MoveTo 192 92
 				)
-				(steeringWheel setCycle: EndLoop)
-				(captain
+				(aWheel setCycle: EndLoop)
+				(aCaptain
 					view: 324
 					setLoop: 0
 					setCel: 0
@@ -338,18 +338,18 @@
 					setPri: 7
 					addToPic:
 				)
-				(captain view: 324 setLoop: 1 cel: 0 setCycle: EndLoop self)
+				(aCaptain view: 324 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(6
 				(Print 36 10)
-				(captain stopUpd:)
-				(steeringWheel stopUpd:)
+				(aCaptain stopUpd:)
+				(aWheel stopUpd:)
 				(= seconds 3)
 			)
 			(7
 				(Print 36 11)
 				(Print 36 12)
-				(henchman dispose:)
+				(aHench dispose:)
 				(= seconds 3)
 			)
 			(8
@@ -360,7 +360,7 @@
 			)
 			(9
 				(= seconds (= cycles 0))
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(HandsOff)
 				(ego stopUpd:)
 				(Print 36 15 #draw)
@@ -369,7 +369,7 @@
 			(10
 				(ego hide:)
 				(Print 36 16 #draw)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 		)
 	)
@@ -397,13 +397,13 @@
 		(if (Said 'throw,cord,jerk/cord')
 			(cond 
 				(lifeboatLeverPulled (Print 36 7))
-				((not (ego inRect: 175 110 202 128)) (PrintNotCloseEnough))
+				((not (ego inRect: 175 110 202 128)) (NotClose))
 				(else
 					(= lifeboatLeverPulled TRUE)
 					(theGame changeScore: 8)
-					(lever setCycle: EndLoop)
+					(aLever setCycle: EndLoop)
 					(Print 36 8 #draw #at -1 15 #width 280)
-					(IncrementGamePhase phaseLIFEBOATS 2 10)
+					(SetRegionTimer rgLIFEBOATS 2 10)
 				)
 			)
 		)
@@ -418,24 +418,24 @@
 			(0 (= cycles (Random 5 10)))
 			(1
 				(= temp0 (Random 0 3))
-				(captain cycleSpeed: temp0 setCycle: EndLoop)
-				(steeringWheel cycleSpeed: temp0 setCycle: EndLoop)
+				(aCaptain cycleSpeed: temp0 setCycle: EndLoop)
+				(aWheel cycleSpeed: temp0 setCycle: EndLoop)
 				(= cycles (Random 5 10))
 			)
 			(2
-				(captain setCel:)
-				(steeringWheel setCel:)
+				(aCaptain setCel:)
+				(aWheel setCel:)
 				(= cycles (Random 5 10))
 			)
 			(3
 				(= temp0 (Random 0 3))
-				(captain cycleSpeed: temp0 setCycle: BegLoop)
-				(steeringWheel cycleSpeed: temp0 setCycle: BegLoop)
+				(aCaptain cycleSpeed: temp0 setCycle: BegLoop)
+				(aWheel cycleSpeed: temp0 setCycle: BegLoop)
 				(= cycles (Random 5 10))
 			)
 			(4
-				(captain setCel:)
-				(steeringWheel setCel:)
+				(aCaptain setCel:)
+				(aWheel setCel:)
 				(self changeState: 0)
 			)
 		)

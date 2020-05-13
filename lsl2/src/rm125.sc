@@ -13,14 +13,14 @@
 )
 
 (local
-	barber
-	chair
-	mirror
-	egoBigFace
-	egoOnChair
-	mirrorHandle
-	detailLevel
-	daydreamView
+	aBarber
+	aChair
+	aThoughtBalloon
+	aThought
+	aHeads
+	aHandle
+	howFast
+	thoughtBalloonView
 	talkedToBarber
 )
 (instance rm125 of Room
@@ -36,32 +36,32 @@
 		(Load VIEW 244)
 		(Load VIEW 246)
 		(if (> filthLevel 4)
-			(= daydreamView 245)
+			(= thoughtBalloonView 245)
 		else
-			(= daydreamView 248) ;censored view
+			(= thoughtBalloonView 248) ;censored view
 		)
-		(Load VIEW daydreamView)
+		(Load VIEW thoughtBalloonView)
 		(super init:)
 		(cond 
-			((> howFast 60) (= detailLevel 3))
-			((> howFast 40) (= detailLevel 2))
-			((> howFast 20) (= detailLevel 1))
+			((> machineSpeed 60) (= howFast 3))
+			((> machineSpeed 40) (= howFast 2))
+			((> machineSpeed 20) (= howFast 1))
 		)
-		((= mirror (Prop new:))
-			view: daydreamView
+		((= aThoughtBalloon (Prop new:))
+			view: thoughtBalloonView
 			ignoreActors:
 			posn: 160 1127
 			setPri: 14
 			init:
 		)
-		((= egoBigFace (Prop new:))
-			view: daydreamView
+		((= aThought (Prop new:))
+			view: thoughtBalloonView
 			ignoreActors:
 			posn: 161 1119
 			setPri: 15
 			init:
 		)
-		((= mirrorHandle (View new:))
+		((= aHandle (View new:))
 			view: 246
 			setCel: 1
 			setPri: 14
@@ -69,13 +69,13 @@
 			posn: 160 1128
 			init:
 		)
-		((= egoOnChair (Prop new:))
+		((= aHeads (Prop new:))
 			view: 244
 			ignoreActors:
 			init:
 			hide:
 		)
-		((= chair (View new:))
+		((= aChair (View new:))
 			view: 232
 			loop: 1
 			cel: 0
@@ -85,7 +85,7 @@
 			stopUpd:
 			init:
 		)
-		((= barber (Actor new:))
+		((= aBarber (Actor new:))
 			view: 233
 			loop: 2
 			posn: 113 153
@@ -121,7 +121,7 @@
 			)
 			(2
 				(= seconds (= cycles 0))
-				(= currentStatus egoSitting)
+				(= currentStatus egoSITTING)
 				(HandsOff)
 				(Print 125 10)
 				(Print 125 11)
@@ -131,10 +131,10 @@
 					ignoreActors:
 					setMotion: MoveTo 157 120 self
 				)
-				(barber setMotion: MoveTo 185 119 self)
+				(aBarber setMotion: MoveTo 185 119 self)
 			)
 			(3
-				(chair hide:)
+				(aChair hide:)
 				(ego
 					view: 232
 					setLoop: 2
@@ -144,29 +144,29 @@
 				)
 			)
 			(4
-				(barber setMotion: MoveTo 179 111 self)
+				(aBarber setMotion: MoveTo 179 111 self)
 			)
 			(5
-				(barber setMotion: MoveTo 166 111 self illegalBits: 0)
+				(aBarber setMotion: MoveTo 166 111 self illegalBits: 0)
 			)
 			(6
 				(Print 125 13)
-				(mirror
+				(aThoughtBalloon
 					view: 246
 					setCel: 0
 					posn: 160 127
 					setPri: 14
 					stopUpd:
 				)
-				(mirrorHandle posn: 160 128 stopUpd:)
-				(egoBigFace
+				(aHandle posn: 160 128 stopUpd:)
+				(aThought
 					view: 246
 					setLoop: 1
 					cel: 0
 					posn: 161 119
 					setPri: 15
 					setCycle: Forward
-					cycleSpeed: (* 2 detailLevel)
+					cycleSpeed: (* 2 howFast)
 				)
 				(= seconds 6)
 			)
@@ -175,23 +175,23 @@
 				(= seconds 3)
 			)
 			(8
-				(egoBigFace posn: 161 1119)
-				(mirrorHandle posn: 160 1128)
-				(mirror posn: 160 1127)
+				(aThought posn: 161 1119)
+				(aHandle posn: 160 1128)
+				(aThoughtBalloon posn: 160 1127)
 				(Print 125 15 #at -1 20 #draw)
 				(= seconds 3)
 			)
 			(9
 				(ego hide:)
-				(barber view: 244 setLoop: 0 posn: 167 115 setCel: 0)
+				(aBarber view: 244 setLoop: 0 posn: 167 115 setCel: 0)
 				(= cycles 30)
 			)
 			(10
-				(barber cycleSpeed: 1 setCycle: EndLoop self)
+				(aBarber cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(11
 				(Print 125 16 #draw)
-				(barber
+				(aBarber
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 2
@@ -199,7 +199,7 @@
 				)
 			)
 			(12
-				(egoOnChair
+				(aHeads
 					posn: 166 100
 					setLoop: 2
 					cel: 0
@@ -208,7 +208,7 @@
 					show:
 					setCycle: Forward
 				)
-				(barber stopUpd:)
+				(aBarber stopUpd:)
 				(= seconds 5)
 			)
 			(13
@@ -218,49 +218,49 @@
 				(= seconds 5)
 			)
 			(14
-				(mirror
-					view: daydreamView
+				(aThoughtBalloon
+					view: thoughtBalloonView
 					setLoop: 0
 					cel: 0
 					setPri: 14
 					posn: 154 91
-					cycleSpeed: detailLevel
+					cycleSpeed: howFast
 					setCycle: EndLoop self
 				)
 			)
 			(15
-				(mirror stopUpd:)
-				(egoBigFace
-					view: daydreamView
+				(aThoughtBalloon stopUpd:)
+				(aThought
+					view: thoughtBalloonView
 					setLoop: 2
 					setPri: 15
 					setCel: 0
 					posn: 110 45
-					cycleSpeed: detailLevel
+					cycleSpeed: howFast
 					setCycle: EndLoop self
 				)
 			)
 			(16
-				(egoBigFace setCycle: BegLoop self)
+				(aThought setCycle: BegLoop self)
 			)
 			(17
-				(egoBigFace setCycle: EndLoop self)
+				(aThought setCycle: EndLoop self)
 			)
 			(18
-				(egoBigFace setCycle: BegLoop self)
+				(aThought setCycle: BegLoop self)
 			)
 			(19
-				(egoBigFace setCycle: EndLoop self)
+				(aThought setCycle: EndLoop self)
 			)
 			(20
-				(egoBigFace setCycle: BegLoop self)
+				(aThought setCycle: BegLoop self)
 			)
 			(21
-				(egoBigFace posn: 161 1119)
+				(aThought posn: 161 1119)
 				(= seconds 5)
 			)
 			(22
-				(egoBigFace
+				(aThought
 					setLoop: 1
 					posn: 112 40
 					cel: 0
@@ -269,7 +269,7 @@
 				)
 			)
 			(23
-				(egoBigFace posn: 161 1120)
+				(aThought posn: 161 1120)
 				(= seconds 3)
 			)
 			(24
@@ -277,11 +277,11 @@
 				(= seconds 3)
 			)
 			(25
-				(egoBigFace
+				(aThought
 					setLoop: 3
 					cel: 0
 					posn: 103 41
-					cycleSpeed: detailLevel
+					cycleSpeed: howFast
 					setCycle: CycleTo 10 1 self
 				)
 			)
@@ -290,26 +290,26 @@
 				(= cycles 8)
 			)
 			(27
-				(egoBigFace setCycle: EndLoop self)
+				(aThought setCycle: EndLoop self)
 			)
 			(28
-				(egoBigFace posn: 161 1120)
-				(mirror posn: 160 1128)
+				(aThought posn: 161 1120)
+				(aThoughtBalloon posn: 160 1128)
 				(= seconds 6)
 			)
 			(29
-				(egoOnChair hide:)
-				(barber
+				(aHeads hide:)
+				(aBarber
 					setLoop: 3
 					cel: 0
-					cycleSpeed: detailLevel
+					cycleSpeed: howFast
 					setCycle: EndLoop self
 				)
 				(Print 125 22 #draw)
 				(Print 125 23)
 			)
 			(30
-				(egoOnChair
+				(aHeads
 					posn: 166 94
 					setLoop: 4
 					cel: 0
@@ -317,31 +317,31 @@
 					setCycle: Forward
 					show:
 				)
-				(barber stopUpd:)
+				(aBarber stopUpd:)
 				(= seconds 11)
 			)
 			(31
-				(egoOnChair dispose:)
+				(aHeads dispose:)
 				(Print 125 24 #draw)
 				(= seconds 3)
 			)
 			(32
-				(mirror
+				(aThoughtBalloon
 					view: 246
 					setCel: 0
 					posn: 160 127
 					setPri: 14
 					stopUpd:
 				)
-				(mirrorHandle posn: 160 128 stopUpd:)
-				(egoBigFace
+				(aHandle posn: 160 128 stopUpd:)
+				(aThought
 					view: 246
 					setLoop: 1
 					cel: 0
 					setPri: 15
 					posn: 161 119
 					setCycle: Forward
-					cycleSpeed: detailLevel
+					cycleSpeed: howFast
 				)
 				(= seconds 6)
 			)
@@ -350,9 +350,9 @@
 				(= seconds 3)
 			)
 			(34
-				(egoBigFace dispose:)
-				(mirrorHandle dispose:)
-				(mirror dispose:)
+				(aThought dispose:)
+				(aHandle dispose:)
+				(aThoughtBalloon dispose:)
 				(Print 125 26 #at -1 20 #draw)
 				(= seconds 3)
 			)
@@ -365,13 +365,13 @@
 				(= seconds 2)
 			)
 			(37
-				(barber setLoop: 3 setCel: 255 setCycle: BegLoop self)
+				(aBarber setLoop: 3 setCel: 255 setCycle: BegLoop self)
 			)
 			(38
-				(barber setLoop: 0 setCel: 255 setCycle: BegLoop self)
+				(aBarber setLoop: 0 setCel: 255 setCycle: BegLoop self)
 			)
 			(39
-				(barber
+				(aBarber
 					view: 233
 					posn: 182 114
 					loop: 2
@@ -390,7 +390,7 @@
 			(40
 				(NormalEgo 2)
 				(ego ignoreActors: 0)
-				(chair show:)
+				(aChair show:)
 				(theGame changeScore: 3)
 				(= seconds 2)
 			)
@@ -419,7 +419,7 @@
 				((ego has: iMillionDollarBill) (Print 125 1) (Print 125 2))
 				((not (ego has: iWadODough)) (Print 125 3))
 				(gotHaircutInCity (Print 125 4) (Print 125 5))
-				((== currentStatus egoSitting) (PrintYouAre))
+				((== currentStatus egoSITTING) (YouAre))
 				(else (= gotHaircutInCity TRUE) (self changeState: 2))
 			)
 		)

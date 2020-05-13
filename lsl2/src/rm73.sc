@@ -14,7 +14,7 @@
 
 (local
 	local0
-	monkey
+	aMonkey
 )
 (instance rm73 of Room
 	(properties
@@ -32,7 +32,7 @@
 			(ego posn: 318 187)
 		else
 			(ego posn: 2 152)
-			((= monkey (Actor new:))
+			((= aMonkey (Actor new:))
 				view: 722
 				illegalBits: 0
 				posn: 221 168
@@ -59,8 +59,9 @@
 				(theGame changeScore: 5)
 				(Print 73 0)
 			)
-			(
-			(and (== currentStatus egoNormal) (& (ego onControl:) $0040)) (self changeState: 3))
+			((and (== currentStatus egoNORMAL) (& (ego onControl:) $0040))
+				(self changeState: 3)
+			)
 		)
 		(super doit:)
 	)
@@ -69,7 +70,7 @@
 		(switch (= state newState)
 			(0
 				(if (!= prevRoomNum 74)
-					(monkey
+					(aMonkey
 						setStep: 1 1
 						setMotion: MoveTo 223 181
 						setCycle: EndLoop self
@@ -77,7 +78,7 @@
 				)
 			)
 			(1
-				(monkey
+				(aMonkey
 					setStep: 4 3
 					setLoop: 1
 					setCycle: Walk
@@ -85,12 +86,12 @@
 				)
 			)
 			(2
-				(monkey dispose:)
+				(aMonkey dispose:)
 				(Print 73 9)
 				(Print 73 10 #at -1 152)
 			)
 			(3
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(HandsOff)
 				(ego
 					setLoop:
@@ -113,7 +114,7 @@
 			(5
 				(Print 73 12)
 				(Print 73 13)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 		)
 	)
@@ -129,7 +130,7 @@
 			(Print 73 3)
 		)
 		(if
-		(and (cast contains: monkey) (Said '/chimpanzee'))
+		(and (cast contains: aMonkey) (Said '/chimpanzee'))
 			(Print 73 4)
 		)
 		(if (Said '/palm') (Print 73 5))

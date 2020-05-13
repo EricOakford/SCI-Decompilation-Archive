@@ -20,17 +20,17 @@
 		(super doit:)
 		(if
 			(and
-				(== gamePhase phaseLIFEBOATS)
-				(not gamePhaseTime)
+				(== gameState rgLIFEBOATS)
+				(not rgSeconds)
 				(!= curRoomNum 38)
 				(!= curRoomNum 31)
 				(!= curRoomNum 131)
 				(!= curRoomNum 138)
-				(> rgMinutes 5)
-				(== currentStatus egoNormal)
+				(> roomSeconds 5)
+				(== currentStatus egoNORMAL)
 			)
-			(= currentStatus egoDead)
-			(= gamePhase phaseTIMEOVER)
+			(= currentStatus egoDEAD)
+			(= gameState NULL)
 			(Print SHIP 0)
 			(Print SHIP 1)
 			(Print SHIP 2)
@@ -46,7 +46,7 @@
 			((and (ego has: iFruit) (Said 'eat,apply/basket')) (Print SHIP 3) (ego put: iFruit -1) (theGame changeScore: -2))
 			((and (ego has: iSpinachDip) (Said 'eat,apply/bread')) (Print SHIP 4) (ego put: iSpinachDip -1) (theGame changeScore: -5))
 			(
-			(and (ego has: iWig) (Said 'wear,apply,(conceal<on)/wig')) (PrintNotNow))
+			(and (ego has: iWig) (Said 'wear,apply,(conceal<on)/wig')) (NotNow))
 			((and (ego has: iSewingKit) (Said 'sew,fix,apply/kit')) (Print SHIP 5))
 			(
 				(and

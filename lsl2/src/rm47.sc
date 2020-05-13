@@ -13,11 +13,11 @@
 )
 
 (local
-	airplane
-	wave
+	aPlane
+	aWave
 	local2
-	hench1
-	hench2
+	aHench1
+	aHench2
 	local5
 )
 (instance rm47 of Room
@@ -60,7 +60,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= wave (Prop new:))
+		((= aWave (Prop new:))
 			view: 406
 			ignoreActors:
 			posn: 268 49
@@ -69,7 +69,7 @@
 			isExtra: 1
 			init:
 		)
-		((= airplane (Actor new:))
+		((= aPlane (Actor new:))
 			view: 511
 			setLoop: 5
 			setCel: 0
@@ -81,17 +81,17 @@
 			init:
 			hide:
 		)
-		((= hench1 (Actor new:))
+		((= aHench1 (Actor new:))
 			view: 411
 			setLoop: 1
 			setCycle: Walk
 			setStep: 4 3
-			ignoreControl: 16384
+			ignoreControl: cYELLOW
 			posn: 159 133
 			init:
 			setAvoider: (Avoider new:)
 		)
-		((= hench2 (Actor new:))
+		((= aHench2 (Actor new:))
 			view: 411
 			setLoop: 0
 			setCycle: Walk
@@ -105,7 +105,7 @@
 			((< 134 (ego y?)) (ego y: 133))
 		)
 		(NormalEgo)
-		(ego x: 3 observeControl: 16384 init:)
+		(ego x: 3 observeControl: cYELLOW init:)
 		(if (and gotHaircutAtResort (== currentEgoView 151))
 			(= local2 8)
 		)
@@ -121,8 +121,8 @@
 		(cond 
 			((and (== local2 0) (ego inRect: 86 2 333 140))
 				(= local2 1)
-				(hench1 setScript: hench1Script)
-				(hench2 setScript: hench2Script)
+				(aHench1 setScript: hench1Script)
+				(aHench2 setScript: hench2Script)
 			)
 			((and (== local2 8) (ego inRect: 86 2 333 140)) (= local2 9) (Print 47 0) (Print 47 1 #at -1 152))
 			((== 2 (ego edgeHit?))
@@ -153,10 +153,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(hench1 setMotion: MoveTo 138 134 self)
+				(aHench1 setMotion: MoveTo 138 134 self)
 			)
 			(1
-				(hench1 setScript: (henchScript new:))
+				(aHench1 setScript: (henchScript new:))
 			)
 		)
 	)
@@ -168,10 +168,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(hench2 setMotion: MoveTo 123 152 self)
+				(aHench2 setMotion: MoveTo 123 152 self)
 			)
 			(1
-				(hench2 setScript: (henchScript new:))
+				(aHench2 setScript: (henchScript new:))
 			)
 		)
 	)
@@ -187,12 +187,12 @@
 			)
 			(1
 				(if (== local2 1)
-					(= currentStatus egoStopped)
+					(= currentStatus egoSTOPPED)
 					(= local2 2)
 					(Print 47 7)
 					(HandsOff)
 					(ego stopUpd:)
-					(airplane show: setMotion: MoveTo 116 13)
+					(aPlane show: setMotion: MoveTo 116 13)
 					(= theY (- (ego y?) 1))
 					(if (< (ego x?) (client x?))
 						(= theX (+ (ego x?) 11))
@@ -230,7 +230,7 @@
 			)
 			(4
 				(Print 47 19)
-				(= currentStatus egoCaptured)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 96)
 			)
 		)

@@ -16,17 +16,17 @@
 
 (local
 	local0
-	electricity
-	radar
-	computer1
-	computer2
-	computer3
-	computer4
-	elevatorDoor
-	slave4
-	slave3
-	slave2
-	slave1
+	aGenerator
+	aRadio
+	aRightPanel1
+	aRightPanel2
+	aLeftPanel1
+	aLeftPanel2
+	aDoor
+	aFanEast
+	aFanWest
+	aGrapeEast
+	aGrapeWest
 )
 (instance theSound of Sound
 	(properties
@@ -100,7 +100,7 @@
 			setPri: 15
 			addToPic:
 		)
-		((= electricity (Extra new:))
+		((= aGenerator (Extra new:))
 			view: 816
 			setLoop: 0
 			posn: 258 101
@@ -109,7 +109,7 @@
 			cycleSpeed: 0
 			setCel: 0
 		)
-		((= radar (Extra new:))
+		((= aRadio (Extra new:))
 			view: 816
 			setLoop: 1
 			posn: 263 75
@@ -117,7 +117,7 @@
 			init:
 			cycleSpeed: 0
 		)
-		((= computer1 (Extra new:))
+		((= aRightPanel1 (Extra new:))
 			view: 816
 			ignoreActors:
 			setLoop: 3
@@ -127,7 +127,7 @@
 			init:
 			cycleSpeed: 0
 		)
-		((= computer2 (Extra new:))
+		((= aRightPanel2 (Extra new:))
 			view: 816
 			ignoreActors:
 			loop: 3
@@ -137,7 +137,7 @@
 			init:
 			cycleSpeed: 1
 		)
-		((= computer3 (Extra new:))
+		((= aLeftPanel1 (Extra new:))
 			view: 816
 			ignoreActors:
 			loop: 2
@@ -148,7 +148,7 @@
 			init:
 			cycleSpeed: 1
 		)
-		((= computer4 (Extra new:))
+		((= aLeftPanel2 (Extra new:))
 			view: 816
 			ignoreActors:
 			setLoop: 2
@@ -158,7 +158,7 @@
 			init:
 			cycleSpeed: 1
 		)
-		((= elevatorDoor (Prop new:))
+		((= aDoor (Prop new:))
 			view: 816
 			loop: 4
 			setCel: 255
@@ -167,7 +167,7 @@
 			stopUpd:
 			init:
 		)
-		((= slave1 (Prop new:))
+		((= aGrapeWest (Prop new:))
 			view: 820
 			ignoreActors:
 			setLoop: 0
@@ -178,7 +178,7 @@
 			stopUpd:
 			init:
 		)
-		((= slave2 (Prop new:))
+		((= aGrapeEast (Prop new:))
 			view: 820
 			ignoreActors:
 			setLoop: 1
@@ -189,7 +189,7 @@
 			stopUpd:
 			init:
 		)
-		((= slave3 (Prop new:))
+		((= aFanWest (Prop new:))
 			view: 819
 			ignoreActors:
 			setLoop: 0
@@ -199,7 +199,7 @@
 			stopUpd:
 			init:
 		)
-		((= slave4 (Prop new:))
+		((= aFanEast (Prop new:))
 			view: 819
 			ignoreActors:
 			setLoop: 1
@@ -228,9 +228,9 @@
 				(ego setMotion: MoveTo 86 127 self)
 				(= cycles 10)
 			)
-			(1 (elevatorDoor setCycle: BegLoop))
+			(1 (aDoor setCycle: BegLoop))
 			(2
-				(elevatorDoor stopUpd:)
+				(aDoor stopUpd:)
 				(ego setMotion: MoveTo 66 160 self)
 			)
 			(3
@@ -307,8 +307,8 @@
 					posn: 161 71
 					cycleSpeed: 1
 				)
-				(slave4 setCycle: Forward)
-				(slave3 setCycle: Forward)
+				(aFanEast setCycle: Forward)
+				(aFanWest setCycle: Forward)
 				(= cycles 30)
 			)
 			(17
@@ -316,27 +316,27 @@
 				(= cycles 10)
 			)
 			(18
-				(slave2 setCycle: CycleTo 4 1 self)
+				(aGrapeEast setCycle: CycleTo 4 1 self)
 			)
 			(19
 				(ego setCycle: EndLoop)
-				(slave2 setCycle: EndLoop self)
+				(aGrapeEast setCycle: EndLoop self)
 			)
 			(20
 				(ego setCycle: BegLoop)
-				(slave2 setCycle: BegLoop self)
+				(aGrapeEast setCycle: BegLoop self)
 			)
 			(21 (= cycles 10))
 			(22
-				(slave1 setCycle: CycleTo 4 1 self)
+				(aGrapeWest setCycle: CycleTo 4 1 self)
 			)
 			(23
 				(ego setLoop: 3 setCycle: EndLoop)
-				(slave1 setCycle: EndLoop self)
+				(aGrapeWest setCycle: EndLoop self)
 			)
 			(24
 				(ego setCycle: BegLoop)
-				(slave1 setCycle: BegLoop self)
+				(aGrapeWest setCycle: BegLoop self)
 			)
 			(25 (= cycles 30))
 			(26

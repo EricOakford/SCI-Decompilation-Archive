@@ -13,9 +13,9 @@
 )
 
 (local
-	traffic
-	freeway
-	traffic2
+	aStreet
+	aFreeway1
+	aFreeway2
 )
 (instance rm12 of Room
 	(properties
@@ -38,7 +38,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= traffic (Prop new:))
+		((= aStreet (Prop new:))
 			view: 247
 			loop: 1
 			cel: 0
@@ -48,7 +48,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= freeway (Prop new:))
+		((= aFreeway1 (Prop new:))
 			view: 247
 			loop: 2
 			cel: 1
@@ -58,7 +58,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= traffic2 (Prop new:))
+		((= aFreeway2 (Prop new:))
 			view: 247
 			loop: 3
 			posn: 220 73

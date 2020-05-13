@@ -12,38 +12,38 @@
 
 (public
 	rm103 0
-	RollingLineOverlay 1
-	PersonOnTVScreen 2
+	DateTVTalk 1
+	DateTVPerson 2
 )
 
 (local
-	[responseToBarbara 30]
+	[str2 30]
 	userPrompt
-	neonRight
-	neonSign
-	cameraScreen
-	scanline
-	biff
-	cameraMan
-	barbara
-	loser1
-	loser2
-	larry
-	chair
-	applauseSignal
+	aSignWest
+	aSignEast
+	aCameraMonitor
+	aTV
+	aMC
+	aCameraman
+	aGirl
+	aBoy1
+	aBoy3
+	aLarry
+	aStoolLarry
+	aApplause
 )
-(procedure (RollingLineOverlay param1 theLoop)
-	(scanline
+(procedure (DateTVTalk who theLoop)
+	(aTV
 		setLoop: theLoop
 		setCel: 0
 		cycleSpeed: 0
 		setCycle: Forward
 	)
-	(param1 setCel: 0 cycleSpeed: 0 setCycle: Forward)
+	(who setCel: 0 cycleSpeed: 0 setCycle: Forward)
 )
 
-(procedure (PersonOnTVScreen person theCel)
-	(person setCel: (if (> argc 1) theCel else 2) stopUpd:)
+(procedure (DateTVPerson who theCel)
+	(who setCel: (if (> argc 1) theCel else 2) stopUpd:)
 )
 
 (instance theSound of Sound
@@ -69,7 +69,7 @@
 		(Load SOUND 108)
 		(super init:)
 		(theSound init:)
-		((= neonRight (Prop new:))
+		((= aSignWest (Prop new:))
 			view: 210
 			loop: 1
 			cel: 1
@@ -79,7 +79,7 @@
 			init:
 			stopUpd:
 		)
-		((= neonSign (Prop new:))
+		((= aSignEast (Prop new:))
 			view: 210
 			loop: 0
 			cel: 0
@@ -89,7 +89,7 @@
 			init:
 			stopUpd:
 		)
-		((= applauseSignal (Prop new:))
+		((= aApplause (Prop new:))
 			view: 207
 			setLoop: 5
 			setCel: 0
@@ -98,7 +98,7 @@
 			init:
 			stopUpd:
 		)
-		((= scanline (Prop new:))
+		((= aTV (Prop new:))
 			view: 209
 			loop: 4
 			cel: 0
@@ -108,7 +108,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= cameraScreen (Prop new:))
+		((= aCameraMonitor (Prop new:))
 			view: 210
 			loop: 2
 			posn: 276 5
@@ -127,7 +127,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= biff (Prop new:))
+		((= aMC (Prop new:))
 			view: 207
 			loop: 1
 			cel: 0
@@ -146,7 +146,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= barbara (Prop new:))
+		((= aGirl (Prop new:))
 			view: 208
 			setLoop: 3
 			setCel: 0
@@ -166,7 +166,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= loser1 (Prop new:))
+		((= aBoy1 (Prop new:))
 			view: 208
 			setLoop: 1
 			setCel: 0
@@ -176,7 +176,7 @@
 			init:
 			stopUpd:
 		)
-		((= chair (Prop new:))
+		((= aStoolLarry (Prop new:))
 			view: 208
 			setLoop: 0
 			setCel: 4
@@ -186,7 +186,7 @@
 			init:
 			stopUpd:
 		)
-		((= larry (Prop new:))
+		((= aLarry (Prop new:))
 			view: 208
 			setLoop: 4
 			setCel: 0
@@ -205,7 +205,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= loser2 (Prop new:))
+		((= aBoy3 (Prop new:))
 			view: 208
 			setLoop: 2
 			setCel: 0
@@ -215,7 +215,7 @@
 			init:
 			stopUpd:
 		)
-		((= cameraMan (Actor new:))
+		((= aCameraman (Actor new:))
 			view: 212
 			loop: 0
 			cel: 0
@@ -235,9 +235,9 @@
 			init:
 		)
 		(HandsOff)
-		(= currentStatus egoOnTVShow)
+		(= currentStatus egoONTVSHOW)
 		(self setScript: rm103Script)
-		(cameraMan setScript: minicamScript)
+		(aCameraman setScript: minicamScript)
 	)
 )
 
@@ -263,26 +263,26 @@
 			(2 (= seconds 2))
 			(3
 				(ego hide:)
-				(chair posn: 205 65 setCel: 2 forceUpd:)
-				(larry show:)
+				(aStoolLarry posn: 205 65 setCel: 2 forceUpd:)
+				(aLarry show:)
 				(= seconds 4)
 			)
 			(4
 				(theSound play:)
 				(Print 103 2)
-				(RollingLineOverlay biff 5)
+				(DateTVTalk aMC 5)
 				(Print 103 3 #draw)
-				(neonRight setCycle: Forward)
-				(neonSign setCycle: Forward)
-				(applauseSignal setCycle: Forward)
+				(aSignWest setCycle: Forward)
+				(aSignEast setCycle: Forward)
+				(aApplause setCycle: Forward)
 				(minicamScript changeState: 3)
 				(= seconds 4)
 			)
 			(5
 				(Print 103 4)
 				(Print 103 5)
-				(PersonOnTVScreen biff)
-				(scanline view: 209 setLoop: 3 setCel: 2 stopUpd:)
+				(DateTVPerson aMC)
+				(aTV view: 209 setLoop: 3 setCel: 2 stopUpd:)
 				(Print 103 6 #draw)
 				(Print 103 7)
 				(Print 103 8)
@@ -290,13 +290,13 @@
 			)
 			(6
 				(minicamScript changeState: 7)
-				(scanline view: 209 setLoop: 0 setCel: 2 forceUpd:)
+				(aTV view: 209 setLoop: 0 setCel: 2 forceUpd:)
 				(Print 103 9 #draw)
 				(Print 103 10)
 				(= seconds 4)
 			)
 			(7
-				(scanline view: 209 setLoop: 1 setCel: 2 forceUpd:)
+				(aTV view: 209 setLoop: 1 setCel: 2 forceUpd:)
 				(Print 103 11 #draw)
 				(Print 103 12)
 				(Print 103 13)
@@ -308,23 +308,23 @@
 				(= seconds 3)
 			)
 			(9
-				(scanline view: 209 setLoop: 2 setCel: 2 forceUpd:)
+				(aTV view: 209 setLoop: 2 setCel: 2 forceUpd:)
 				(Print 103 16 #draw)
 				(Print 103 17)
 				(= seconds 2)
 			)
 			(10
-				(neonRight stopUpd:)
-				(neonSign stopUpd:)
-				(applauseSignal stopUpd:)
+				(aSignWest stopUpd:)
+				(aSignEast stopUpd:)
+				(aApplause stopUpd:)
 				(theSound stop:)
-				(RollingLineOverlay biff 5)
+				(DateTVTalk aMC 5)
 				(= seconds 2)
 			)
 			(11
 				(Print 103 18)
-				(PersonOnTVScreen biff)
-				(RollingLineOverlay barbara 3)
+				(DateTVPerson aMC)
+				(DateTVTalk aGirl 3)
 				(minicamScript changeState: 3)
 				(= seconds 4)
 			)
@@ -332,16 +332,16 @@
 				(Print 103 19)
 				(Print 103 20)
 				(Print 103 21 #at -1 152)
-				(PersonOnTVScreen barbara)
-				(RollingLineOverlay loser1 0)
+				(DateTVPerson aGirl)
+				(DateTVTalk aBoy1 0)
 				(= seconds 4)
 			)
 			(13
 				(Print 103 22)
 				(Print 103 23)
 				(Print 103 24 #at -1 152)
-				(PersonOnTVScreen loser1)
-				(RollingLineOverlay barbara 3)
+				(DateTVPerson aBoy1)
+				(DateTVTalk aGirl 3)
 				(= seconds 4)
 			)
 			(14
@@ -353,9 +353,9 @@
 			)
 			(15
 				(Print 103 28)
-				(PersonOnTVScreen barbara)
-				(scanline view: 209 setLoop: 1 setCel: 1 stopUpd:)
-				(larry setCel: 1 forceUpd:)
+				(DateTVPerson aGirl)
+				(aTV view: 209 setLoop: 1 setCel: 1 stopUpd:)
+				(aLarry setCel: 1 forceUpd:)
 				(Print 103 29 #draw)
 				(User canInput: TRUE)
 				(= seconds 11)
@@ -368,9 +368,9 @@
 			(17
 				(= cycles 0)
 				(User canInput: FALSE)
-				(Print (Format @str 103 31 @responseToBarbara))
-				(PersonOnTVScreen larry)
-				(RollingLineOverlay barbara 3)
+				(Print (Format @str 103 31 @str2))
+				(DateTVPerson aLarry)
+				(DateTVTalk aGirl 3)
 				(= seconds 4)
 			)
 			(18
@@ -380,16 +380,16 @@
 			(19
 				(Print 103 33)
 				(minicamScript changeState: 9)
-				(PersonOnTVScreen barbara)
-				(RollingLineOverlay loser2 2)
+				(DateTVPerson aGirl)
+				(DateTVTalk aBoy3 2)
 				(= seconds 4)
 			)
 			(20
 				(Print 103 34)
 				(Print 103 35)
 				(Print 103 36 #at -1 152)
-				(PersonOnTVScreen loser2)
-				(RollingLineOverlay barbara 3)
+				(DateTVPerson aBoy3)
+				(DateTVTalk aGirl 3)
 				(= seconds 4)
 			)
 			(21
@@ -397,14 +397,14 @@
 				(Print 103 37)
 				(Print 103 38)
 				(Print 103 39 #at -1 152)
-				(PersonOnTVScreen barbara)
-				(RollingLineOverlay biff 5)
+				(DateTVPerson aGirl)
+				(DateTVTalk aMC 5)
 				(= seconds 4)
 			)
 			(22
 				(Print 103 40)
-				(PersonOnTVScreen biff)
-				(RollingLineOverlay barbara 3)
+				(DateTVPerson aMC)
+				(DateTVTalk aGirl 3)
 				(= seconds 4)
 			)
 			(23
@@ -413,15 +413,15 @@
 				(Print 103 42)
 				(Print 103 43)
 				(Print 103 44 #at -1 152)
-				(PersonOnTVScreen barbara)
-				(RollingLineOverlay loser1 0)
+				(DateTVPerson aGirl)
+				(DateTVTalk aBoy1 0)
 				(= seconds 4)
 			)
 			(24
 				(Print 103 45)
 				(Print 103 46 #at -1 152)
-				(RollingLineOverlay barbara 3)
-				(PersonOnTVScreen loser1)
+				(DateTVTalk aGirl 3)
+				(DateTVPerson aBoy1)
 				(= seconds 4)
 			)
 			(25
@@ -433,9 +433,9 @@
 				(Print 103 48)
 				(Print 103 49)
 				(Print 103 50)
-				(PersonOnTVScreen barbara)
-				(scanline view: 209 setLoop: 1 setCel: 1 stopUpd:)
-				(PersonOnTVScreen larry 1)
+				(DateTVPerson aGirl)
+				(aTV view: 209 setLoop: 1 setCel: 1 stopUpd:)
+				(DateTVPerson aLarry 1)
 				(Print 103 51 #draw)
 				(User canInput: TRUE)
 				(= seconds 11)
@@ -448,9 +448,9 @@
 			(28
 				(= cycles 0)
 				(User canInput: FALSE)
-				(Print (Format @str 103 53 @responseToBarbara))
-				(RollingLineOverlay barbara 3)
-				(PersonOnTVScreen larry)
+				(Print (Format @str 103 53 @str2))
+				(DateTVTalk aGirl 3)
+				(DateTVPerson aLarry)
 				(= seconds 4)
 			)
 			(29
@@ -459,67 +459,67 @@
 			)
 			(30
 				(Print 103 55)
-				(PersonOnTVScreen barbara)
-				(RollingLineOverlay loser2 2)
+				(DateTVPerson aGirl)
+				(DateTVTalk aBoy3 2)
 				(minicamScript changeState: 9)
 				(= seconds 4)
 			)
 			(31
 				(Print 103 56)
 				(Print 103 57 #at -1 152)
-				(RollingLineOverlay barbara 3)
-				(PersonOnTVScreen loser2)
+				(DateTVTalk aGirl 3)
+				(DateTVPerson aBoy3)
 				(= seconds 4)
 			)
 			(32
 				(Print 103 58)
-				(RollingLineOverlay biff 5)
-				(PersonOnTVScreen barbara)
+				(DateTVTalk aMC 5)
+				(DateTVPerson aGirl)
 				(= seconds 1)
 			)
 			(33
 				(Print 103 59)
 				(minicamScript changeState: 7)
-				(PersonOnTVScreen biff)
-				(RollingLineOverlay barbara 3)
+				(DateTVPerson aMC)
+				(DateTVTalk aGirl 3)
 				(= seconds 4)
 			)
 			(34
-				(PersonOnTVScreen barbara 2)
+				(DateTVPerson aGirl 2)
 				(Print 103 60 #draw)
 				(Print 103 61 #at -1 152)
 				(Print 103 62)
 				(Print 103 63)
 				(theSound loop: -1 play:)
-				(PersonOnTVScreen barbara)
-				(RollingLineOverlay biff 5)
-				(neonRight setCycle: Forward)
-				(neonSign setCycle: Forward)
-				(applauseSignal setCycle: Forward)
+				(DateTVPerson aGirl)
+				(DateTVTalk aMC 5)
+				(aSignWest setCycle: Forward)
+				(aSignEast setCycle: Forward)
+				(aApplause setCycle: Forward)
 				(theGame changeScore: 20)
 				(= seconds 5)
 			)
 			(35
 				(Print 103 64)
-				(PersonOnTVScreen biff)
-				(larry setLoop: 5 stopUpd:)
-				(scanline setLoop: 7 setCel: 13)
+				(DateTVPerson aMC)
+				(aLarry setLoop: 5 stopUpd:)
+				(aTV setLoop: 7 setCel: 13)
 				(Print 103 65 #draw #at -1 152)
 				(Print 103 66)
-				(barbara setCycle: Forward)
+				(aGirl setCycle: Forward)
 				(= seconds 1)
 			)
 			(36
 				(Print 103 67)
-				(RollingLineOverlay biff 5)
-				(PersonOnTVScreen barbara 2)
+				(DateTVTalk aMC 5)
+				(DateTVPerson aGirl 2)
 				(= seconds 4)
 			)
 			(37
 				(Print 103 68)
 				(Print 103 69)
-				(PersonOnTVScreen biff)
-				(scanline
+				(DateTVPerson aMC)
+				(aTV
 					setLoop: 6
 					setCel: 0
 					setCycle: EndLoop self
@@ -530,7 +530,7 @@
 				(Print 103 70)
 				(Print 103 71 #at -1 152)
 				(Print 103 72)
-				(scanline setLoop: 7 setCel: 0 setCycle: EndLoop self)
+				(aTV setLoop: 7 setCel: 0 setCycle: EndLoop self)
 			)
 			(39
 				(Print 103 73 #draw)
@@ -539,14 +539,14 @@
 			)
 			(40
 				(Print 103 75)
-				(larry setLoop: 4)
-				(RollingLineOverlay barbara 3)
+				(aLarry setLoop: 4)
+				(DateTVTalk aGirl 3)
 				(= seconds 4)
 			)
 			(41
 				(Print 103 76)
-				(PersonOnTVScreen barbara 2)
-				(RollingLineOverlay biff 5)
+				(DateTVPerson aGirl 2)
+				(DateTVTalk aMC 5)
 				(= seconds 4)
 			)
 			(42
@@ -554,12 +554,12 @@
 				(Print 103 78 #at -1 152)
 				(Print 103 79)
 				(theSound stop:)
-				(PersonOnTVScreen biff)
-				(neonRight stopUpd:)
-				(neonSign stopUpd:)
-				(applauseSignal stopUpd:)
-				(scanline loop: 4 setCycle: Forward)
-				(cameraMan setCycle: BegLoop)
+				(DateTVPerson aMC)
+				(aSignWest stopUpd:)
+				(aSignEast stopUpd:)
+				(aApplause stopUpd:)
+				(aTV loop: 4 setCycle: Forward)
+				(aCameraman setCycle: BegLoop)
 				(= seconds 2)
 			)
 			(43
@@ -568,8 +568,8 @@
 			)
 			(44
 				(= seconds 2)
-				(larry hide:)
-				(chair posn: 205 87 setCel: 4 forceUpd:)
+				(aLarry hide:)
+				(aStoolLarry posn: 205 87 setCel: 4 forceUpd:)
 				(ego loop: 0 show:)
 			)
 			(45
@@ -597,9 +597,9 @@
 				getInput: event
 			)
 			(User prompt: userPrompt)
-			(Format @responseToBarbara (User inputLineAddr?))
-			(if (< (StrLen @responseToBarbara) 7)
-				(Format @responseToBarbara {Uh, I dunno.})
+			(Format @str2 (User inputLineAddr?))
+			(if (< (StrLen @str2) 7)
+				(Format @str2 {Uh, I dunno.})
 			)
 			(if (== state 15) (self changeState: 17))
 			(if (== state 26) (self changeState: 28))
@@ -614,27 +614,27 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(cameraMan loop: 2 setCycle: EndLoop self)
+				(aCameraman loop: 2 setCycle: EndLoop self)
 			)
-			(2 (cameraMan stopUpd:))
-			(3 (cameraMan setCycle: BegLoop self))
+			(2 (aCameraman stopUpd:))
+			(3 (aCameraman setCycle: BegLoop self))
 			(4
-				(cameraMan setCycle: Walk setMotion: MoveTo 86 143 self)
+				(aCameraman setCycle: Walk setMotion: MoveTo 86 143 self)
 				(= state 0)
 			)
-			(5 (cameraMan setCycle: BegLoop self))
+			(5 (aCameraman setCycle: BegLoop self))
 			(6
-				(cameraMan setCycle: Walk setMotion: MoveTo 170 143 self)
+				(aCameraman setCycle: Walk setMotion: MoveTo 170 143 self)
 				(= state 0)
 			)
-			(7 (cameraMan setCycle: BegLoop self))
+			(7 (aCameraman setCycle: BegLoop self))
 			(8
-				(cameraMan setCycle: Walk setMotion: MoveTo 205 143 self)
+				(aCameraman setCycle: Walk setMotion: MoveTo 205 143 self)
 				(= state 0)
 			)
-			(9 (cameraMan setCycle: BegLoop self))
+			(9 (aCameraman setCycle: BegLoop self))
 			(10
-				(cameraMan setCycle: Walk setMotion: MoveTo 238 143 self)
+				(aCameraman setCycle: Walk setMotion: MoveTo 238 143 self)
 				(= state 0)
 			)
 		)

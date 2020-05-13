@@ -12,7 +12,7 @@
 )
 
 (local
-	endTime
+	doneTime
 )
 (instance rm99 of Room
 	(properties
@@ -37,10 +37,10 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== (++ howFast) 1) (= endTime (+ 60 (GetTime))))
-		(if (< endTime (GetTime))
+		(if (== (++ machineSpeed) 1) (= doneTime (+ 60 (GetTime))))
+		(if (< doneTime (GetTime))
 			(if speedTestQA
-				(Print (Format @str 99 0 howFast))
+				(Print (Format @str 99 0 machineSpeed))
 				(Print 99 1 #at -1 152)
 			)
 			(theGame setSpeed: 6)

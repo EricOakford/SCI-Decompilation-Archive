@@ -14,9 +14,9 @@
 )
 
 (local
-	doors
-	pedestrian
-	pedestrianVisible
+	aDoor
+	aShowBizType
+	showBizVisible
 )
 (instance rm11 of Room
 	(properties
@@ -50,7 +50,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= pedestrian (Actor new:))
+		((= aShowBizType (Actor new:))
 			view: 204
 			setLoop: 0
 			posn: -20 132
@@ -67,7 +67,7 @@
 		)
 		(NormalEgo)
 		(ego init:)
-		((= doors (AutoDoor new:))
+		((= aDoor (AutoDoor new:))
 			view: 200
 			setLoop: 0
 			posn: 161 62
@@ -91,20 +91,20 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 3 13)))
 			(1
-				(= pedestrianVisible TRUE)
-				(pedestrian
+				(= showBizVisible TRUE)
+				(aShowBizType
 					view: 204
 					setLoop: 0
 					setMotion: MoveTo 340 133 self
 				)
 			)
 			(2
-				(= pedestrianVisible FALSE)
+				(= showBizVisible FALSE)
 				(= seconds (Random 1 11))
 			)
 			(3
-				(= pedestrianVisible TRUE)
-				(pedestrian
+				(= showBizVisible TRUE)
+				(aShowBizType
 					view: 205
 					setLoop: 1
 					setMotion: MoveTo -20 133 self
@@ -123,7 +123,7 @@
 			(if (Said '/sign') (Print 11 0))
 			(if (Said '/antenna,bowl') (Print 11 1))
 			(if (Said '/man,bimbo,children')
-				(if pedestrianVisible (Print 11 2) else (Print 11 3))
+				(if showBizVisible (Print 11 2) else (Print 11 3))
 			)
 			(if
 			(Said '[/krod,building,krod,krod,(krod<krod),airport]')

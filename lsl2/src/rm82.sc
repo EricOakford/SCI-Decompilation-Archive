@@ -17,15 +17,15 @@
 (local
 	holdingBomb
 	bombHasWick
-	bombLit
+	bombIsLit
 	bombDropped
-	oldEgoX
-	oldEgoY
+	egoX
+	egoY
 	elevatorDoor
-	steam3
-	steam2
-	steam1
-	bottle
+	aSteam1
+	aSteam2
+	aSteam3
+	aBottle
 )
 (instance theSound of Sound
 	(properties
@@ -46,7 +46,7 @@
 		(Load SOUND 6)
 		(super init:)
 		(theSound init:)
-		((= steam1 (Prop new:))
+		((= aSteam3 (Prop new:))
 			view: 715
 			loop: 3
 			posn: 142 124
@@ -54,7 +54,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= steam2 (Prop new:))
+		((= aSteam2 (Prop new:))
 			view: 715
 			loop: 2
 			posn: 102 113
@@ -62,7 +62,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= steam3 (Prop new:))
+		((= aSteam1 (Prop new:))
 			view: 715
 			loop: 1
 			posn: 24 110
@@ -80,7 +80,7 @@
 		)
 		(if debugging (ego get: iAirsickBag get: iHairRejuvenator get: iMatches))
 		(if (ego has: iHairRejuvenator)
-			((= bottle (Actor new:))
+			((= aBottle (Actor new:))
 				view: 184
 				ignoreActors:
 				illegalBits: 0
@@ -105,10 +105,10 @@
 		(if (== state 16) (ShakeScreen 1 (Random 1 3)))
 		(cond 
 			(
-			(and (& (ego onControl:) $0008) (== currentStatus egoNormal)) (ego setPri: 1) (self changeState: 4))
+			(and (& (ego onControl:) $0008) (== currentStatus egoNORMAL)) (ego setPri: 1) (self changeState: 4))
 			(
-			(and (& (ego onControl:) $0004) (== currentStatus egoNormal)) (self changeState: 19))
-			((and debugging (== currentStatus egoNormal)) (= oldEgoX (ego x?)) (= oldEgoY (ego y?)))
+			(and (& (ego onControl:) $0004) (== currentStatus egoNORMAL)) (self changeState: 19))
+			((and debugging (== currentStatus egoNORMAL)) (= egoX (ego x?)) (= egoY (ego y?)))
 		)
 	)
 	
@@ -128,12 +128,12 @@
 			)
 			(3
 				(NormalEgo 3)
-				(ego observeControl: 16384)
+				(ego observeControl: cYELLOW)
 			)
 			(4
 				(HandsOff)
 				(Print 82 22 #at -1 20 #dispose)
-				(= currentStatus egoFalling)
+				(= currentStatus egoFALLING)
 				(theSound number: 1 play:)
 				(ego
 					view: 103
@@ -148,17 +148,17 @@
 			)
 			(5
 				(cls)
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(Print 82 23)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 				(if (== debugging TRUE)
 					(NormalEgo)
-					(ego observeControl: 16384 posn: oldEgoX oldEgoY)
+					(ego observeControl: cYELLOW posn: egoX egoY)
 				)
 			)
 			(6
 				(if holdingBomb
-					(PrintItIs)
+					(ItIs)
 				else
 					(bottleScript changeState: 1)
 				)
@@ -170,7 +170,7 @@
 					(HandsOff)
 					(Print 82 25)
 					(Print 82 26 #at -1 152)
-					(= currentStatus egoDead)
+					(= currentStatus egoDEAD)
 				)
 			)
 			(8
@@ -188,7 +188,7 @@
 					(HandsOff)
 					(Print 82 25)
 					(Print 82 26 #at -1 152)
-					(= currentStatus egoDead)
+					(= currentStatus egoDEAD)
 				else
 					(= bombHasWick 1)
 					(User canInput: TRUE)
@@ -206,7 +206,7 @@
 				)
 			)
 			(11
-				(bottle
+				(aBottle
 					setPri: (+ (ego priority?) 1)
 					posn: (+ (ego x?) 7) (- (ego y?) 19)
 					setLoop: 3
@@ -215,13 +215,13 @@
 				(theGame changeScore: 5)
 				(Print 82 28 #at -1 20 #draw)
 				(Print 82 29 #at -1 152)
-				(= bombLit TRUE)
+				(= bombIsLit TRUE)
 				(User canInput: TRUE)
 				(= seconds 5)
 			)
 			(12
 				(HandsOff)
-				(= currentStatus egoNoDropBomb)
+				(= currentStatus egoNOTDROPBOMB)
 				(curRoom newRoom: 152)
 			)
 			(13
@@ -229,8 +229,8 @@
 					(-- state)
 					(bottleScript changeState: 1)
 				else
-					(if bombLit
-						(bottle setLoop: 5)
+					(if bombIsLit
+						(aBottle setLoop: 5)
 						(Print 82 30 #at -1 20)
 					else
 						(Print 82 31 #at -1 20)
@@ -242,7 +242,7 @@
 						setCel: 255
 						put: 21 -1
 					)
-					(bottle
+					(aBottle
 						posn: (+ (ego x?) 7) (- (ego y?) 19)
 						setPri: 0
 						setMotion: MoveTo 162 124 self
@@ -252,13 +252,13 @@
 				)
 			)
 			(14
-				(if (not bombLit) (= state 22))
-				(= bombLit FALSE)
-				(bottle setMotion: MoveTo 162 422 self)
+				(if (not bombIsLit) (= state 22))
+				(= bombIsLit FALSE)
+				(aBottle setMotion: MoveTo 162 422 self)
 			)
 			(15
 				(NormalEgo 0)
-				(bottle dispose:)
+				(aBottle dispose:)
 				(theGame changeScore: 10)
 				(= seconds 3)
 			)
@@ -275,7 +275,7 @@
 			(18 (Print 82 33 #draw))
 			(19
 				(HandsOff)
-				(= currentStatus egoWonGame)
+				(= currentStatus egoWONGAME)
 				(ego setLoop: 2 setPri: 10)
 				(= seconds 3)
 			)
@@ -297,7 +297,7 @@
 				(curRoom newRoom: 83)
 			)
 			(22
-				(= currentStatus egoNoWick)
+				(= currentStatus egoNOWICK)
 				(HandsOff)
 				(Print 82 37)
 				(Print 82 38)
@@ -307,7 +307,7 @@
 			(23
 				(Print 82 40)
 				(Print 82 41)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 		)
 	)
@@ -350,20 +350,20 @@
 		)
 		(if (Said 'conceal,apply,throw/rejuvenator,bottle')
 			(cond 
-				((not (ego has: iHairRejuvenator)) (PrintDontHaveIt))
+				((not (ego has: iHairRejuvenator)) (DontHave))
 				(
-				(and (!= currentStatus egoNormal) (!= currentStatus egoHoldingBottle)) (PrintNotNow))
+				(and (!= currentStatus egoNORMAL) (!= currentStatus egoHOLDINGBOTTLE)) (NotNow))
 				((not (& (ego onControl:) $2000)) (Print 82 15))
-				(else (PrintOk) (self changeState: 13))
+				(else (Ok) (self changeState: 13))
 			)
 		)
 		(if
 		(Said 'stick,conceal,jerk,conceal/rejuvenator,bottle/bag')
 			(cond 
 				(
-				(and (not (ego has: iHairRejuvenator)) (not (ego has: iAirsickBag))) (PrintDontHaveIt))
+				(and (not (ego has: iHairRejuvenator)) (not (ego has: iAirsickBag))) (DontHave))
 				(
-				(and (!= currentStatus egoNormal) (!= currentStatus egoHoldingBottle)) (PrintNotNow))
+				(and (!= currentStatus egoNORMAL) (!= currentStatus egoHOLDINGBOTTLE)) (NotNow))
 				(bombHasWick (Print 82 16))
 				(else (Print 82 17) (Print 82 18))
 			)
@@ -372,12 +372,14 @@
 		(Said 'stick,jerk,conceal,conceal/bag/rejuvenator,bottle')
 			(cond 
 				(
-				(and (not (ego has: iHairRejuvenator)) (not (ego has: iAirsickBag))) (PrintDontHaveIt))
+				(and (not (ego has: iHairRejuvenator)) (not (ego has: iAirsickBag))) (DontHave))
 				(
-				(and (!= currentStatus egoNormal) (!= currentStatus egoHoldingBottle)) (PrintNotNow))
+				(and (!= currentStatus egoNORMAL) (!= currentStatus egoHOLDINGBOTTLE)) (NotNow))
 				((not (& (ego onControl:) $2000)) (Print 82 15))
-				(bombHasWick (PrintItIs))
-				(else (PrintOk) (self changeState: 8))
+				(bombHasWick
+					(ItIs)
+				)
+				(else (Ok) (self changeState: 8))
 			)
 		)
 		(if
@@ -390,20 +392,20 @@
 				((not (ego has: iMatches)) (Print 82 19))
 				((not (ego has: iHairRejuvenator)) (Print 82 20))
 				(
-				(and (!= currentStatus egoNormal) (!= currentStatus egoHoldingBottle)) (PrintNotNow))
+				(and (!= currentStatus egoNORMAL) (!= currentStatus egoHOLDINGBOTTLE)) (NotNow))
 				((!= bombHasWick TRUE) (self changeState: 22))
-				(else (PrintOk) (self changeState: 10))
+				(else (Ok) (self changeState: 10))
 			)
 		)
 		(if (Said 'burn,burn/bag')
 			(cond 
-				((not (ego has: iAirsickBag)) (PrintDontHaveIt))
+				((not (ego has: iAirsickBag)) (DontHave))
 				((not (ego has: iMatches)) (Print 82 19))
 				(
-				(and (!= currentStatus egoNormal) (!= currentStatus egoHoldingBottle)) (PrintNotNow))
+				(and (!= currentStatus egoNORMAL) (!= currentStatus egoHOLDINGBOTTLE)) (NotNow))
 				((!= bombHasWick TRUE) (Print 82 21) (ego put: iMatches -1) (ego put: iAirsickBag -1))
 				((not (& (ego onControl:) $2000)) (Print 82 15))
-				(else (PrintOk) (self changeState: 10))
+				(else (Ok) (self changeState: 10))
 			)
 		)
 	)
@@ -415,7 +417,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(= currentStatus egoHoldingBottle)
+				(= currentStatus egoHOLDINGBOTTLE)
 				(HandsOff)
 				(ego setMotion: MoveTo 147 128 self)
 			)

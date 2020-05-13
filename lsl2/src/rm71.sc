@@ -14,11 +14,11 @@
 )
 
 (local
-	stickInRoom
-	egoBigFace
-	egoDizzyFace
-	stick
-	bees
+	stickOnGround
+	aBigEgo
+	aBigEgoFace
+	aStick
+	aSwarm
 )
 (instance theSound of Sound
 	(properties)
@@ -36,7 +36,7 @@
 		(Load VIEW 173)
 		(Load VIEW 702)
 		(super init:)
-		((= bees (Actor new:))
+		((= aSwarm (Actor new:))
 			view: 702
 			setLoop: 0
 			setCel: 0
@@ -49,9 +49,9 @@
 		)
 		(self setRegions: 700 setScript: rm71Script)
 		(if ((inventory at: iStoutStick) ownedBy: curRoomNum)
-			(= stickInRoom TRUE)
+			(= stickOnGround TRUE)
 			(Load VIEW 721)
-			((= stick (View new:))
+			((= aStick (View new:))
 				view: 721
 				posn: 216 71
 				ignoreActors:
@@ -70,14 +70,14 @@
 			(Load SOUND 1)
 			(Load SOUND 2)
 			(theSound number: 1 loop: 1 play:)
-			((= egoBigFace (View new:))
+			((= aBigEgo (View new:))
 				view: 110
 				ignoreActors:
 				setPri: 14
 				posn: 243 1080
 				init:
 			)
-			((= egoDizzyFace (Prop new:))
+			((= aBigEgoFace (Prop new:))
 				view: 114
 				ignoreActors:
 				setPri: 15
@@ -104,7 +104,7 @@
 			)
 			(HandsOff)
 			(rm71Script changeState: 1)
-			(= currentStatus egoFalling)
+			(= currentStatus egoFALLING)
 		)
 	)
 )
@@ -140,15 +140,15 @@
 				(= seconds 3)
 			)
 			(4
-				(egoBigFace posn: 143 80 stopUpd:)
-				(egoDizzyFace posn: 143 80)
+				(aBigEgo posn: 143 80 stopUpd:)
+				(aBigEgoFace posn: 143 80)
 				(theSound dispose:)
 				(theSound number: 2 play:)
 				(= seconds 5)
 			)
 			(5
-				(egoDizzyFace dispose:)
-				(egoBigFace dispose:)
+				(aBigEgoFace dispose:)
+				(aBigEgo dispose:)
 				(theSound dispose:)
 				(ego setLoop: 2 cel: 0 setCycle: EndLoop self cycleSpeed: 2)
 			)
@@ -158,15 +158,15 @@
 				(theSound number: 3 loop: -1)
 			)
 			(7
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(HandsOff)
 				(ego illegalBits: 0)
 				(Print 71 20)
-				(bees show: setCycle: EndLoop self)
+				(aSwarm show: setCycle: EndLoop self)
 				(theSound play:)
 			)
 			(8
-				(bees
+				(aSwarm
 					setLoop: 1
 					cel: 0
 					posn: 106 106
@@ -174,7 +174,7 @@
 				)
 			)
 			(9
-				(bees setCycle: EndLoop self)
+				(aSwarm setCycle: EndLoop self)
 				(ego
 					view: 173
 					setLoop: 0
@@ -185,7 +185,7 @@
 				)
 			)
 			(10
-				(bees dispose:)
+				(aSwarm dispose:)
 				(ego setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(11
@@ -206,11 +206,11 @@
 			(15
 				(Print 71 23)
 				(theSound dispose:)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(16
 				(Print 71 24)
-				(= currentStatus egoCrouching)
+				(= currentStatus egoCROUCHING)
 				(HandsOff)
 				(ego
 					illegalBits: 0
@@ -244,7 +244,7 @@
 			)
 			(20
 				(Print 71 27 #draw)
-				(= currentStatus egoCrouching)
+				(= currentStatus egoCROUCHING)
 				(HandsOff)
 				(ego
 					illegalBits: 0
@@ -283,15 +283,15 @@
 		)
 		(if (Said 'look<down')
 			(Print 71 0)
-			(if stickInRoom (Print 71 1))
+			(if stickOnGround (Print 71 1))
 		)
 		(if (Said 'look>')
 			(if (Said '/carpet,dirt')
 				(Print 71 0)
-				(if stickInRoom (Print 71 1))
+				(if stickOnGround (Print 71 1))
 			)
 			(if (Said '/path') (Print 71 2))
-			(if (and stickInRoom (Said '/stick')) (Print 71 1))
+			(if (and stickOnGround (Said '/stick')) (Print 71 1))
 			(if (Said '/ear,art,lip') (Print 71 3))
 			(if (Said '/bush') (Print 71 4))
 			(if (Said '/bee') (Print 71 5))
@@ -303,14 +303,14 @@
 		)
 		(if (Said '(get<up),get/stick')
 			(cond 
-				((!= currentStatus egoNormal) (PrintNotNow))
-				((not stickInRoom) (PrintAlreadyTookIt))
-				((not (ego inRect: 205 6 226 82)) (PrintNotCloseEnough))
+				((!= currentStatus egoNORMAL) (NotNow))
+				((not stickOnGround) (AlreadyTook))
+				((not (ego inRect: 205 6 226 82)) (NotClose))
 				(else
-					(PrintOk)
-					(= stickInRoom FALSE)
+					(Ok)
+					(= stickOnGround FALSE)
 					(ego get: iStoutStick)
-					(stick hide:)
+					(aStick hide:)
 					(theGame changeScore: 4)
 					(Print 71 9 #draw)
 				)

@@ -22,7 +22,7 @@
 	(method (doit)
 		(super doit:)
 		(if (& (ego onControl:) $0100)
-			(if (and (== triedToEnterSea FALSE) (!= currentStatus egoAtSea))
+			(if (and (== triedToEnterSea FALSE) (!= currentStatus egoATSEA))
 				(= triedToEnterSea TRUE)
 				(Print BEACH 0)
 			)

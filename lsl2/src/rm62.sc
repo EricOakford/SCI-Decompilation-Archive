@@ -18,10 +18,10 @@
 	drinksBeingServed
 	local1
 	goingToSeat
-	stewardess
-	bore
-	cartLeft
-	cartRight
+	aStewardess
+	aBore
+	aCartLeft
+	aCartRight
 )
 (instance rm62 of Room
 	(properties
@@ -37,18 +37,18 @@
 		(Load SOUND 105)
 		(theSound init:)
 		(super init:)
-		((= bore (Prop new:))
+		((= aBore (Prop new:))
 			view: 602
 			setCel: 0
 			setPri: 5
 			posn: 175 85
 		)
 		(if (== boreState 255)
-			(bore setLoop: 3 stopUpd: init:)
+			(aBore setLoop: 3 stopUpd: init:)
 		else
-			(bore setLoop: 0 stopUpd: init:)
+			(aBore setLoop: 0 stopUpd: init:)
 		)
-		((= cartLeft (Actor new:))
+		((= aCartLeft (Actor new:))
 			view: 611
 			setLoop: 0
 			yStep: 8
@@ -57,7 +57,7 @@
 			init:
 			setScript: cartLeftScript
 		)
-		((= cartRight (Actor new:))
+		((= aCartRight (Actor new:))
 			view: 610
 			setLoop: 1
 			yStep: 8
@@ -67,12 +67,15 @@
 			setScript: cartRightScript
 		)
 		(self setRegions: AIRPLANE setScript: rm62Script)
-		(if (== currentStatus egoBoardedPlane) (= goingToSeat 1) else (NormalEgo))
+		(if (== currentStatus egoBOARDPLANE)
+			(= goingToSeat TRUE)
+		else (NormalEgo)
+		)
 		(if goingToSeat
 			(= goingToSeat 0)
 			(HandsOff)
 			(rm62Script changeState: 1)
-			((= stewardess (Actor new:))
+			((= aStewardess (Actor new:))
 				view: 600
 				setLoop: 0
 				posn: 11 101
@@ -94,19 +97,19 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== currentStatus egoNormal)
+		(if (== currentStatus egoNORMAL)
 			(if (& (ego onControl:) $0002) (curRoom newRoom: 61))
 			(if (& (ego onControl:) $0004) (curRoom newRoom: 63))
 		)
 		(if (== state 18) (ShakeScreen 1 (Random 1 3)))
 		(if
 			(and
-				(== gamePhase phaseAIRPLANE)
-				(not gamePhaseTime)
-				(== currentStatus egoSitting)
+				(== gameState rgAIRPLANE)
+				(not rgSeconds)
+				(== currentStatus egoSITTING)
 			)
-			(= currentStatus egoStopped)
-			(= gamePhase 0)
+			(= currentStatus egoSTOPPED)
+			(= gameState NULL)
 			(rm62Script changeState: 21)
 		)
 	)
@@ -159,10 +162,10 @@
 				(= seconds 4)
 			)
 			(9
-				(stewardess posn: 11 101 setMotion: MoveTo 50 102 self)
+				(aStewardess posn: 11 101 setMotion: MoveTo 50 102 self)
 			)
 			(10
-				(stewardess setLoop: 3 setCycle: Forward)
+				(aStewardess setLoop: 3 setCycle: Forward)
 				(= seconds 3)
 			)
 			(11
@@ -175,25 +178,25 @@
 				(= seconds 3)
 			)
 			(13
-				(stewardess setLoop: 2)
+				(aStewardess setLoop: 2)
 				(= seconds 2)
 			)
 			(14
 				(Print 62 23)
-				(stewardess setLoop: 3)
+				(aStewardess setLoop: 3)
 				(= seconds 3)
 			)
 			(15
 				(Print 62 24)
 				(Print 62 25)
-				(stewardess
+				(aStewardess
 					setLoop: 1
 					setCycle: Walk
 					setMotion: MoveTo 11 102 self
 				)
 			)
 			(16
-				(stewardess dispose:)
+				(aStewardess dispose:)
 				(= seconds 5)
 			)
 			(17
@@ -211,7 +214,7 @@
 			(20
 				(Print 62 31)
 				(Print 62 32)
-				(bore setScript: boreScript)
+				(aBore setScript: boreScript)
 				(ego setScript: sittingScript)
 				(sittingScript changeState: 5)
 			)
@@ -228,7 +231,7 @@
 				(= seconds 3)
 			)
 			(23
-				(cartLeft
+				(aCartLeft
 					view: 223
 					posn: 20 103
 					setLoop: -1
@@ -236,7 +239,7 @@
 					show:
 					setMotion: MoveTo 140 104
 				)
-				(cartRight
+				(aCartRight
 					view: 223
 					posn: 308 103
 					setLoop: -1
@@ -251,7 +254,7 @@
 				(Print 62 39)
 				(Print 62 40)
 				(Print 62 41)
-				(= currentStatus egoCaptured)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 96)
 			)
 		)
@@ -289,19 +292,21 @@
 		)
 		(if (Said 'bath')
 			(cond 
-				((== currentStatus egoSitting) (PrintYouAre))
-				((not (ego inRect: 158 94 194 106)) (PrintNotCloseEnough))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((== currentStatus egoSITTING)
+					(YouAre)
+				)
+				((not (ego inRect: 158 94 194 106)) (NotClose))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(else
-					(PrintOk)
+					(Ok)
 					(ego setScript: sittingScript)
 					(sittingScript changeState: 1)
 				)
 			)
 		)
 		(if
-		(and (== currentStatus egoSitting) (Said 'free,afix/belt'))
-			(PrintOk)
+		(and (== currentStatus egoSITTING) (Said 'free,afix/belt'))
+			(Ok)
 		)
 		(if
 			(or
@@ -309,10 +314,10 @@
 				(Said 'disembark[/barstool]')
 			)
 			(cond 
-				((== currentStatus egoNormal) (PrintYouAre))
-				((!= currentStatus egoSitting) (PrintNotNow))
+				((== currentStatus egoNORMAL) (YouAre))
+				((!= currentStatus egoSITTING) (NotNow))
 				(else
-					(PrintOk)
+					(Ok)
 					(ego setScript: sittingScript)
 					(sittingScript changeState: 6)
 				)
@@ -321,15 +326,15 @@
 		(if (Said 'buy,get,buy/drink')
 			(cond 
 				((not drinksBeingServed) (Print 62 2))
-				((== currentStatus egoSitting) (PrintNotCloseEnough))
+				((== currentStatus egoSITTING) (NotClose))
 				(else (Print 62 10))
 			)
 		)
 		(if (Said 'call/man,man') (Print 62 11))
 		(if (Said 'give,apply/pamphlet')
 			(cond 
-				((not (ego has: iPamphlet)) (PrintDontHaveIt))
-				((!= currentStatus egoSitting) (PrintNotCloseEnough))
+				((not (ego has: iPamphlet)) (DontHave))
+				((!= currentStatus egoSITTING) (NotClose))
 				(else
 					(ego put: iPamphlet -1)
 					(theGame changeScore: 8)
@@ -341,8 +346,8 @@
 		)
 		(if (Said 'get/bag')
 			(cond 
-				((not ((inventory at: iAirsickBag) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((!= currentStatus egoSitting) (PrintNotCloseEnough))
+				((not ((inventory at: iAirsickBag) ownedBy: curRoomNum)) (AlreadyTook))
+				((!= currentStatus egoSITTING) (NotClose))
 				(else
 					(Print 62 14)
 					(Print 62 15 #at -1 152)
@@ -397,12 +402,12 @@
 					cycleSpeed: 4
 					setCycle: EndLoop self
 				)
-				(if (!= boreState 255) (bore setScript: boreScript))
+				(if (!= boreState 255) (aBore setScript: boreScript))
 			)
 			(5
 				(= seconds (= cycles 0))
 				(ego setCel: setMotion: 0 stopUpd:)
-				(= currentStatus egoSitting)
+				(= currentStatus egoSITTING)
 				(User canControl: FALSE canInput: TRUE)
 			)
 			(6
@@ -420,7 +425,7 @@
 					(cartLeftScript changeState: 1)
 					(cartRightScript changeState: 1)
 					(= drinksBeingServed TRUE)
-					(ego observeControl: 16384)
+					(ego observeControl: cYELLOW)
 				)
 			)
 			(7
@@ -458,13 +463,13 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(cartLeft posn: 20 103 setMotion: MoveTo 140 104 self)
+				(aCartLeft posn: 20 103 setMotion: MoveTo 140 104 self)
 			)
 			(2
-				(cartLeft setMotion: MoveTo 30 104 self)
+				(aCartLeft setMotion: MoveTo 30 104 self)
 			)
 			(3
-				(if (== currentStatus egoSitting)
+				(if (== currentStatus egoSITTING)
 					(self changeState: 4)
 				else
 					(= state 0)
@@ -473,11 +478,11 @@
 			)
 			(4
 				(= seconds (= cycles 0))
-				(cartLeft setMotion: MoveTo 20 104 self)
+				(aCartLeft setMotion: MoveTo 20 104 self)
 			)
 			(5
 				(= drinksBeingServed FALSE)
-				(cartLeft posn: -1020 103)
+				(aCartLeft posn: -1020 103)
 			)
 		)
 	)
@@ -489,7 +494,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(cartRight
+				(aCartRight
 					posn: 308 103
 					show:
 					setMotion: MoveTo 210 104 self
@@ -497,10 +502,10 @@
 				(Print 62 42 #draw)
 			)
 			(2
-				(cartRight setMotion: MoveTo 308 104 self)
+				(aCartRight setMotion: MoveTo 308 104 self)
 			)
 			(3
-				(if (== currentStatus egoSitting)
+				(if (== currentStatus egoSITTING)
 					(self changeState: 4)
 				else
 					(= state 0)
@@ -509,11 +514,11 @@
 			)
 			(4
 				(= seconds (= cycles 0))
-				(cartRight setMotion: MoveTo 308 104 self)
+				(aCartRight setMotion: MoveTo 308 104 self)
 			)
 			(5
 				(= drinksBeingServed FALSE)
-				(cartRight posn: 1308 103)
+				(aCartRight posn: 1308 103)
 			)
 		)
 	)
@@ -525,10 +530,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(bore init: setLoop: 0 setCycle: EndLoop self)
+				(aBore init: setLoop: 0 setCycle: EndLoop self)
 			)
 			(1
-				(bore setLoop: 1 setCycle: Forward)
+				(aBore setLoop: 1 setCycle: Forward)
 				(= seconds (Random 2 4))
 			)
 			(2
@@ -569,11 +574,11 @@
 						(self changeState: 5)
 					)
 				)
-				(bore setLoop: 2)
+				(aBore setLoop: 2)
 				(= seconds (Random 2 5))
 			)
 			(3
-				(bore setLoop: 0 setCel: 255 setCycle: BegLoop)
+				(aBore setLoop: 0 setCel: 255 setCycle: BegLoop)
 				(switch boreState
 					(1 (= seconds (Random 40 60)))
 					(2 (= seconds (Random 30 50)))
@@ -583,14 +588,14 @@
 				)
 			)
 			(4
-				(bore setLoop: 0 setCycle: EndLoop)
+				(aBore setLoop: 0 setCycle: EndLoop)
 				(self changeState: 1)
 			)
 			(5
 				(= seconds (= cycles 0))
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(ego hide:)
-				(bore
+				(aBore
 					view: 604
 					setLoop: 0
 					cycleSpeed: 2
@@ -600,24 +605,24 @@
 				)
 			)
 			(6
-				(bore setLoop: 1 cel: 0 setCycle: EndLoop self)
+				(aBore setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(7 (= seconds 3))
 			(8
 				(Print 62 66 #draw)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(9
 				(= seconds (= cycles 0))
 				(if (!= boreState 255)
-					(bore setLoop: 0 setCel: 0 stopUpd:)
+					(aBore setLoop: 0 setCel: 0 stopUpd:)
 				)
 			)
 			(10
 				(= seconds (= cycles 0))
 				(= boreState 255)
-				(IncrementGamePhase phaseAIRPLANE 3 33)
-				(bore setLoop: 3 setCel: 0 stopUpd:)
+				(SetRegionTimer rgAIRPLANE 3 33)
+				(aBore setLoop: 3 setCel: 0 stopUpd:)
 			)
 		)
 	)

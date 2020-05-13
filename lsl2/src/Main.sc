@@ -1,8 +1,9 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 0)
+(script# LSL2)
 (include game.sh) (include menu.sh)
 (use Intrface)
 (use Sound)
+(use Save)
 (use Motion)
 (use Game)
 (use Invent)
@@ -13,27 +14,27 @@
 
 (public
 	LSL2 0
-	FaceObject 1
+	Face 1
 	NormalEgo 2
 	IsObjectOnControl 3
 	proc0_4 4
 	HandsOff 5
 	HandsOn 6
 	NotifyScript 7
-	IsHeapFree 8
-	AnimateCast 9
+	HaveMem 8
+	RedrawCast 9
 	proc0_10 10
 	cls 11
-	PrintOk 12
-	PrintItIs 13
-	PrintYouAre 14
-	PrintNotNow 15
-	PrintNotCloseEnough 16
-	PrintAlreadyTookIt 17
-	PrintNothingSpecial 18
-	PrintCantDoThat 19
-	PrintDontHaveIt 20
-	IncrementGamePhase 21
+	Ok 12
+	ItIs 13
+	YouAre 14
+	NotNow 15
+	NotClose 16
+	AlreadyTook 17
+	SeeNothing 18
+	CantDo 19
+	DontHave 20
+	SetRegionTimer 21
 )
 
 (local
@@ -54,7 +55,7 @@
 	debugOn
 	score
 	possibleScore
-	showStyle =  7
+	showStyle =  IRISOUT
 	aniInterval
 	theCursor
 	normalCursor =  ARROW_CURSOR
@@ -137,7 +138,7 @@
 		global96
 		global97
 		global98
-		lastSysGlobal
+	lastSysGlobal
 	debugging
 	currentStatus
 	currentEgoView
@@ -146,19 +147,19 @@
 	gameMinutes
 	gameHours
 	ranking
-	gamePhaseTime
-	global109
-	gamePhase
+	rgSeconds
+	rgMinutes
+	gameState
 	global111
 	global112
-	global113
+	oldSysTime
 	global114
-	rgMinutes
+	roomSeconds
 	global116
 	global117
 	global118
 	speedTestQA
-	howFast
+	machineSpeed
 	gotHaircutInCity
 	gotOnklunk
 	filthLevel
@@ -170,12 +171,12 @@
 	woreWigAtSea
 	hairDyedBlonde
 	gotHaircutAtResort
-	jungleMazeNextRoom
+	resortMazeNextRoom
 	stuffedBra
-	jungleMazeTimes
+	resortMazeVisits
 	talkedToMaitreD
 	gaveFlowerToKrishna
-	global137
+	passedCustoms
 	suitcaseBombState
 	missedFlight
 	airportEntranceMessage
@@ -189,27 +190,26 @@
 	endGameState
 	global149
 	triteStr
-	global151
-	global152
-	global153
-	global154
-	global155
-	global156
-	global157
-	global158
-	global159
-	global160
-	global161
-	global162
-	global163
-	global164
-	global165
-	global166
-	global167
-	global168
+		global151
+		global152
+		global153
+		global154
+		global155
+		global156
+		global157
+		global158
+		global159
+		global160
+		global161
+		global162
+		global163
+		global164
+		global165
+		global166
+		global167
+		global168
 	tritePhrase
 	str
-	;globals 171-469 appear to be part of an array
 		global171
 		global172
 		global173
@@ -525,24 +525,25 @@
 					;this originally resulted in the points not being awarded
 					;when the game is played in ScummVM.
 )
-(procedure (FaceObject who whom)
+
+(procedure (Face actor1 actor2)
 	(DirLoop
-		who
+		actor1
 		(GetAngle
-			(who x?)
-			(who y?)
-			(whom x?)
-			(whom y?)
+			(actor1 x?)
+			(actor1 y?)
+			(actor2 x?)
+			(actor2 y?)
 		)
 	)
 	(if (== argc 3)
 		(DirLoop
-			whom
+			actor2
 			(GetAngle
-				(whom x?)
-				(whom y?)
-				(who x?)
-				(who y?)
+				(actor2 x?)
+				(actor2 y?)
+				(actor1 x?)
+				(actor1 y?)
 			)
 		)
 	)
@@ -557,17 +558,17 @@
 		setMotion: 0
 		setStep: 3 2
 		setCycle: Walk
-		illegalBits: -32768
+		illegalBits: cWHITE
 		cycleSpeed: 0
 		moveSpeed: 0
 		ignoreActors: 0
 	)
-	(= currentStatus egoNormal)
+	(= currentStatus egoNORMAL)
 	(User canControl: TRUE canInput: TRUE)
 )
 
 (procedure (IsObjectOnControl obj event)
-	(if (< argc 2) (= event 5))
+	(if (< argc 2) (= event (| keyDown mouseDown)))
 	(switch (obj loop?)
 		(0
 			(OnControl
@@ -632,16 +633,16 @@
 	(ego setMotion: 0)
 )
 
-(procedure (NotifyScript script)
-	(= script (ScriptID script))
-	(script notify: &rest)
+(procedure (NotifyScript i)
+	(= i (ScriptID i))
+	(i notify: &rest)
 )
 
-(procedure (IsHeapFree memSize)
-	(return (> (MemoryInfo FreeHeap) memSize))
+(procedure (HaveMem howMuch)
+	(return (> (MemoryInfo FreeHeap) howMuch))
 )
 
-(procedure (AnimateCast)
+(procedure (RedrawCast)
 	(Animate (cast elements?) FALSE)
 )
 
@@ -650,50 +651,52 @@
 )
 
 (procedure (cls)
-	(if modelessDialog (modelessDialog dispose:))
+	(if modelessDialog
+		(modelessDialog dispose:)
+	)
 )
 
-(procedure (PrintOk)
+(procedure (Ok)
 	(Print 0 131)
 )
 
-(procedure (PrintItIs)
+(procedure (ItIs)
 	(Print 0 132)
 )
 
-(procedure (PrintYouAre)
+(procedure (YouAre)
 	(Print 0 133)
 )
 
-(procedure (PrintNotNow)
+(procedure (NotNow)
 	(Print 0 134)
 )
 
-(procedure (PrintNotCloseEnough)
+(procedure (NotClose)
 	(Print 0 135)
 )
 
-(procedure (PrintAlreadyTookIt)
+(procedure (AlreadyTook)
 	(Print 0 136)
 )
 
-(procedure (PrintNothingSpecial)
+(procedure (SeeNothing)
 	(Print 0 137)
 )
 
-(procedure (PrintCantDoThat)
+(procedure (CantDo)
 	(Print 0 138)
 )
 
-(procedure (PrintDontHaveIt)
+(procedure (DontHave)
 	(Print 0 139)
 )
 
-(procedure (IncrementGamePhase phase minutes seconds)
-	;This sets the current game phase and allotted time.
+(procedure (SetRegionTimer state minutes seconds)
+	;This sets the current game state and allotted time.
 	;If you don't leave the region in time, the game is over.
-	(= gamePhase phase)
-	(= gamePhaseTime (* 10 (+ seconds (* minutes 60))))
+	(= gameState state)
+	(= rgSeconds (* 10 (+ seconds (* minutes 60))))
 )
 
 (instance LSL2 of Game
@@ -701,14 +704,15 @@
 	
 	(method (init &tmp temp0)
 		(super init:)
+		(= debugging TRUE)
 		(= volume 15)
 		(DoSound ChangeVolume volume)
 		(StatusLine code: statusCode)
 		(TheMenuBar init:)
 		(scoreSnd init:)
 		(deadSnd init:)
-		(User echo: 32 blocks: 0)
-		(= bigFont 0)
+		(User echo: SPACEBAR blocks: 0)
+		(= bigFont SYSFONT)
 		(= possibleScore 500)
 		(= currentEgoView 100)
 		(= filthLevel 4)
@@ -768,11 +772,11 @@
 		)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp thisTime)
 		(super doit:)
-		(if (!= global113 (= temp0 (GetTime 1)))
-			(= global113 temp0)
-			(++ rgMinutes)
+		(if (!= oldSysTime (= thisTime (GetTime TRUE)))
+			(= oldSysTime thisTime)
+			(++ roomSeconds)
 			(if (== 60 (++ gameSeconds))
 				(= gameSeconds 0)
 				(if (== 60 (++ gameMinutes))
@@ -781,8 +785,12 @@
 				)
 			)
 		)
-		(if (and gamePhase (> gamePhaseTime 0)) (-- gamePhaseTime))
-		(if (== currentStatus egoDead) (curRoom setScript: dyingScript))
+		(if (and gameState (> rgSeconds 0))
+			(-- rgSeconds)
+		)
+		(if (== currentStatus egoDEAD)
+			(curRoom setScript: dyingScript)
+		)
 	)
 	
 	(method (replay)
@@ -797,14 +805,16 @@
 	(method (newRoom newRoomNumber)
 		(DisposeScript JUMP)
 		(DisposeScript EXTRA)
-		(DisposeScript 3)
-		(DisposeScript 6)
-		(DisposeScript 4)
+		(DisposeScript DOOR)
+		(DisposeScript AIRPLANE_ACTOR)
+		(DisposeScript BASS_SETTER)
 		(= henchwomanIsHere FALSE)
 		(= showStyle (Random 0 5))
-		(= rgMinutes 0)
+		(= roomSeconds 0)
 		(super newRoom: newRoomNumber)
-		(if debugging (curRoom setLocales: DEBUG))
+		(if debugging
+			(curRoom setLocales: DEBUG)
+		)
 	)
 	
 	(method (startRoom roomNum &tmp temp0)
@@ -844,7 +854,7 @@
 		(super changeScore: delta)
 	)
 	
-	(method (handleEvent event &tmp temp0 item [temp2 3])
+	(method (handleEvent event &tmp temp0 i [temp2 3])
 		(super handleEvent: event)
 		;EO: Any Said command with "/!" in it does not parse correctly, giving a "Bad Said Spec" error.
 		(if
@@ -867,14 +877,27 @@
 				)
 				(Print 0 7)
 			)
-			((and (ego has: iWadODough) (Said 'count/buck')) (Print 0 8))
+			((and (ego has: iWadODough) (Said 'count/buck'))
+				(Print 0 8)
+			)
 			(
 			(or (Said 'give/bill,wad,million,buck') (Said 'bribe'))
 				(cond 
-					((ego has: iWadODough) (Print 0 9) (Print 0 10 #at -1 152))
-					((ego has: iDollarBill) (Print 0 11) (Print 0 12))
-					((ego has: iMillionDollarBill) (Print 0 13) (Print 0 14 #at -1 152))
-					(else (PrintDontHaveIt))
+					((ego has: iWadODough)
+						(Print 0 9)
+						(Print 0 10 #at -1 152)
+					)
+					((ego has: iDollarBill)
+						(Print 0 11)
+						(Print 0 12)
+					)
+					((ego has: iMillionDollarBill)
+						(Print 0 13)
+						(Print 0 14 #at -1 152)
+					)
+					(else
+						(DontHave)
+					)
 				)
 			)
 			(
@@ -890,47 +913,53 @@
 				)
 				(Print 0 15)
 			)
-			((and (ego has: iPassport) (Said 'look/passport/*')) (Print 0 16))
-			(
-			(and (ego has: iGrotesqueGulp) (Said 'drink,apply/coke,coke'))
-				(Print 0 17)
-				(ego hide: put: 8 -1)
-				(Print 0 18 #draw)
-				(= currentStatus egoDead)
+			((and (ego has: iPassport) (Said 'look/passport/*'))
+				(Print 0 16)
 			)
-			(
-			(and (ego has: iFruit) (Said 'look,look/note,basket')) (Fruit showSelf:))
-			((and (ego has: iOnklunk) (Said 'give/onklunk')) (Print 0 19) (= currentStatus egoDead))
-			(
-				(and
-					(ego has: iOnklunk)
-					(Said 'play,apply/music,music,onklunk')
-				)
+			((and (ego has: iGrotesqueGulp) (Said 'drink,apply/coke,coke'))
+				(Print 0 17)
+				(ego hide: put: iGrotesqueGulp -1)
+				(Print 0 18 #draw)
+				(= currentStatus egoDEAD)
+			)
+			((and (ego has: iFruit) (Said 'look,look/note,basket'))
+				(Fruit showSelf:)
+			)
+			((and (ego has: iOnklunk) (Said 'give/onklunk'))
+				(Print 0 19)
+				(= currentStatus egoDEAD)
+			)
+			((and (ego has: iOnklunk) (Said 'play,apply/music,music,onklunk'))
 				(Print 0 20)
 				(Print 0 21 #at -1 152)
 			)
-			(
-			(and (ego has: iOnklunk) (Said 'conceal//(onklunk<in)>'))
-				(= item (inventory saidMe:))
+			((and (ego has: iOnklunk) (Said 'conceal//(onklunk<in)>'))
+				(= i (inventory saidMe:))
 				(cond 
-					((Said '[/!]') (Print 0 22))
-					((not item) (event claimed: TRUE) (PrintCantDoThat))
-					((not (item ownedBy: ego)) (PrintDontHaveIt))
-					(else (Print 0 23) (Print 0 24 #at -1 152))
+					((Said '[/!]')
+						(Print 0 22)
+					)
+					((not i)
+						(event claimed: TRUE)
+						(CantDo)
+					)
+					((not (i ownedBy: ego))
+						(DontHave)
+					)
+					(else
+						(Print 0 23)
+						(Print 0 24 #at -1 152)
+					)
 				)
 			)
-			(
-				(and
-					(ego has: iKnife)
-					(or (Said 'apply/gun') (Said 'attack'))
-				)
+			((and (ego has: iKnife) (or (Said 'apply/gun') (Said 'attack')))
 				(Print 0 25)
 			)
 			((and (ego has: iMatches) (Said 'apply,burn/match'))
 				(if (ego has: iHairRejuvenator)
 					(HandsOff)
-					(PrintOk)
-					(= currentStatus egoBlownUp)
+					(Ok)
+					(= currentStatus egoBLOWNUP)
 					(curRoom newRoom: 152)
 				else
 					(Print 0 26)
@@ -938,16 +967,14 @@
 					(theGame changeScore: -2)
 				)
 			)
-			(
-				(and
-					(ego has: iHairRejuvenator)
-					(Said
-						'conceal,(conceal<on),drain,apply,conceal,caress,wear/rejuvenator>'
-					)
-				)
+			((and (ego has: iHairRejuvenator) (Said 'put,(put<on),pour,use,hide,rub,wear/rejuvenator>'))
 				(cond 
-					((Said '[/!]') (Print 0 27))
-					((Said '/i,head,hair') (Print 0 28))
+					((Said '[/!]')
+						(Print 0 27)
+					)
+					((Said '/i,head,hair')
+						(Print 0 28)
+					)
 					(else
 						(event claimed: TRUE)
 						(Print 0 29)
@@ -967,29 +994,34 @@
 				)
 				(Print 0 30)
 			)
-			(
-				(and
-					(ego has: iHairRejuvenator)
-					(Said 'burn,burn/bottle,rejuvenator')
-				)
+			((and (ego has: iHairRejuvenator) (Said 'burn,light/bottle,rejuvenator'))
 				(if (ego has: iMatches)
 					(HandsOff)
-					(PrintOk)
-					(= currentStatus egoBlownUp)
+					(Ok)
+					(= currentStatus egoBLOWNUP)
 					(curRoom newRoom: 152)
 				else
 					(Print 0 31)
 				)
 			)
 			((Said 'open,(look<in)>')
-				(= item (inventory saidMe:))
+				(= i (inventory saidMe:))
 				(cond 
-					((Said '[/!]') (Print 0 32))
-					((not item) (event claimed: TRUE) (PrintCantDoThat))
-					((not (item ownedBy: ego)) (PrintDontHaveIt))
+					((Said '[/!]')
+						(Print 0 32)
+					)
+					((not i)
+						(event claimed: TRUE)
+						(CantDo)
+					)
+					((not (i ownedBy: ego))
+						(DontHave)
+					)
 					(else
-						(switch (inventory indexOf: item)
-							(iCruiseTicket (Print 0 33))
+						(switch (inventory indexOf: i)
+							(iCruiseTicket
+								(Print 0 33)
+							)
 							(iSwimsuit
 								(if (== currentEgoView 132)
 									(Print 0 34)
@@ -1000,44 +1032,72 @@
 							(iWadODough
 								(Print 0 36)
 							)
-							(iPassport (Print 0 37 #icon 7 1 0))
+							(iPassport
+								(Print 0 37 #icon 7 1 0)
+							)
 							(iOnklunk
 								(Print 0 38)
 								(Print 0 39 #at -1 152)
 							)
-							(iSewingKit (Print 0 40))
-							(iWig (Print 0 41))
-							(iBikiniTop (Print 0 42))
-							(iBikiniBottom (Print 0 43))
-							(iHairRejuvenator (Print 0 44) (Print 0 44))
-							(iAirlineTicket (Print 0 45))
+							(iSewingKit
+								(Print 0 40)
+							)
+							(iWig
+								(Print 0 41)
+							)
+							(iBikiniTop
+								(Print 0 42)
+							)
+							(iBikiniBottom
+								(Print 0 43)
+							)
+							(iHairRejuvenator
+								(Print 0 44)
+								(Print 0 44)
+							)
+							(iAirlineTicket
+								(Print 0 45)
+							)
 							(iParachute
 								(Print 0 46)
 								(ego put: iParachute -1)
 								(theGame changeScore: -3)
 							)
-							(iPamphlet (Print 0 47) (Print 0 48))
-							(iAirsickBag (Print 0 49))
-							(else  (PrintNothingSpecial))
+							(iPamphlet
+								(Print 0 47)
+								(Print 0 48)
+							)
+							(iAirsickBag
+								(Print 0 49)
+							)
+							(else
+								(SeeNothing)
+							)
 						)
 					)
 				)
 			)
-			((Said 'hello') (Print 0 50))
-			((or (Said '/bye') (Said 'bye')) (Print 0 51))
-			((Said 'thank') (Print 0 52))
-			((Said 'bang') (Print 0 53) (Print 0 54 #at -1 152))
-			((Said 'attack') (Print 0 25))
-			(
-				(or
-					(Said 'board/bathroom')
-					(Said 'leak')
-					(Said 'get/leak')
-				)
+			((Said 'hello')
+				(Print 0 50)
+			)
+			((or (Said '/bye') (Said 'bye'))
+				(Print 0 51)
+			)
+			((Said 'thank')
+				(Print 0 52)
+			)
+			((Said 'bang')
+				(Print 0 53)
+				(Print 0 54 #at -1 152)
+			)
+			((Said 'attack')
+				(Print 0 25)
+			)
+			((or (Said 'board/bathroom') (Said 'leak') (Said 'get/leak'))
 				(if (== 100 (ego view?))
 					(Print 0 55)
 				else
-					(PrintNotNow)
+					(NotNow)
 				)
 			)
 			((Said 'climb>')
@@ -1048,10 +1108,18 @@
 					(event claimed: TRUE)
 				)
 			)
-			((Said 'hop') (Print 0 58))
-			((Said 'holler') (Print 0 59))
-			((Said 'daydream') (Print 0 60))
-			((Said 'rob') (Print 0 61))
+			((Said 'hop')
+				(Print 0 58)
+			)
+			((Said 'holler')
+				(Print 0 59)
+			)
+			((Said 'daydream')
+				(Print 0 60)
+			)
+			((Said 'rob')
+				(Print 0 61)
+			)
 			((Said 'cheat')
 				(Print 0 62)
 				(Print 0 63 #at -1 152)
@@ -1059,54 +1127,84 @@
 			)
 			((Said '(conceal<on),wear>')
 				(cond 
-					((Said '[/!]') (Print 0 64))
-					((= item (inventory saidMe:))
+					((Said '[/!]')
+						(Print 0 64)
+					)
+					((= i (inventory saidMe:))
 						(if
-						(not (ego has: (inventory indexOf: item)))
-							(PrintDontHaveIt)
+						(not (ego has: (inventory indexOf: i)))
+							(DontHave)
 						else
 							(Print 0 65)
 						)
 					)
-					(else (Print 0 66) (event claimed: TRUE))
+					(else
+						(Print 0 66)
+						(event claimed: TRUE)
+					)
 				)
 			)
 			((Said 'conceal>')
 				(cond 
-					((Said '[/!]') (Print 0 67))
-					((= item (inventory saidMe:))
-						(if
-						(not (ego has: (inventory indexOf: item)))
-							(PrintDontHaveIt)
+					((Said '[/!]')
+						(Print 0 67)
+					)
+					((= i (inventory saidMe:))
+						(if (not (ego has: (inventory indexOf: i)))
+							(DontHave)
 						else
 							(Print 0 68)
 						)
 					)
-					(else (Print 0 69) (event claimed: TRUE))
+					(else
+						(Print 0 69)
+						(event claimed: TRUE)
+					)
 				)
 			)
 			((Said 'throw>')
 				(cond 
-					((Said '[/!]') (Print 0 70))
-					((= item (inventory saidMe:))
-						(if
-						(not (ego has: (inventory indexOf: item)))
-							(PrintDontHaveIt)
+					((Said '[/!]')
+						(Print 0 70)
+					)
+					((= i (inventory saidMe:))
+						(if (not (ego has: (inventory indexOf: i)))
+							(DontHave)
 						else
 							(Print 0 68)
 						)
 					)
-					(else (Print 0 71) (event claimed: TRUE))
+					(else
+						(Print 0 71)
+						(event claimed: TRUE)
+					)
 				)
 			)
-			((Said 'smell') (Print 0 72))
-			((Said 'wear/crown') (Print 0 73))
-			((Said '/microfiche') (Print 0 74))
-			((Said 'whistle') (Print 0 75) (Print 0 76 #at -1 152))
-			((Said 'laugh') (Print 0 77))
-			((Said 'eat') (Print 0 78))
-			((Said 'lie,bath,nap') (Print 0 79))
-			((Said 'aid') (Print 0 80))
+			((Said 'smell')
+				(Print 0 72)
+			)
+			((Said 'wear/crown')
+				(Print 0 73)
+			)
+			((Said '/microfiche')
+				(Print 0 74)
+			)
+			((Said 'whistle')
+				(Print 0 75)
+				(Print 0 76 #at -1 152)
+			)
+			((Said 'laugh')
+				(Print 0 77)
+			)
+			((Said 'eat')
+				(Print 0 78)
+			)
+			((Said 'lie,bath,nap')
+				(Print 0 79)
+			)
+			((Said 'aid')
+				(Print 0 80)
+			)
 			((Said 'explore>')
 				(if (Said '/bra,i')
 					(Print 0 81)
@@ -1116,31 +1214,54 @@
 					(Print 0 82)
 				)
 			)
-			((or (Said '/key') (Said 'unbolt,bolt')) (Print 0 83))
-			(
-			(or (Said '/copulate/you') (Said 'copulate/you')) (Print 0 84))
-			((Said 'copulate/*') (Print 0 85))
-			((Said 'jack') (Print 0 86))
-			((Said 'caress,caress,embrace,look/clit') (Print 0 87))
-			((Said 'eat/bimbo') (Print 0 88))
-			((Said 'drink') (Print 0 89))
-			((Said 'embrace') (Print 0 90))
-			(
-				(or
-					(Said 'eat,copulate/i')
-					(Said 'clit,crap,leak,copulate,fart,boob,ass,asshole')
-				)
+			((or (Said '/key') (Said 'unbolt,bolt'))
+				(Print 0 83)
+			)
+			((or (Said '/screw/you') (Said 'screw/you'))
+				(Print 0 84)
+			)
+			((Said 'screw/*')
+				(Print 0 85)
+			)
+			((Said 'jack')
+				(Print 0 86)
+			)
+			((Said 'caress,caress,embrace,look/clit')
+				(Print 0 87)
+			)
+			((Said 'eat/bimbo')
+				(Print 0 88)
+			)
+			((Said 'drink')
+				(Print 0 89)
+			)
+			((Said 'embrace')
+				(Print 0 90)
+			)
+			((or (Said 'eat,copulate/i') (Said 'clit,crap,leak,copulate,fart,boob,ass,asshole'))
 				(Print 0 91)
 			)
-			((Said '/hell') (Print 0 92))
-			((Said '/heck') (Print 0 93))
+			((Said '/hell')
+				(Print 0 92)
+			)
+			((Said '/heck')
+				(Print 0 93)
+			)
 			((Said 'look>')
 				(cond 
 					((Said '/*/man,bimbo,children>')
 						(cond 
-							((not (= item (inventory saidMe:))) (event claimed: TRUE) (Print 0 94))
-							((not (item ownedBy: ego)) (PrintDontHaveIt))
-							(else (Print 0 95) (event claimed: TRUE))
+							((not (= i (inventory saidMe:)))
+								(event claimed: TRUE)
+								(Print 0 94)
+							)
+							((not (i ownedBy: ego))
+								(DontHave)
+							)
+							(else
+								(Print 0 95)
+								(event claimed: TRUE)
+							)
 						)
 					)
 					((Said '/bra,i')
@@ -1157,58 +1278,84 @@
 						)
 						(Print 0 98)
 					)
-					((Said '/bush,palm') (Print 0 99))
-					((Said '/man,bimbo,children') (Print 0 100))
-					((Said '/brick,building') (Print 0 101))
-					((Said '/carpet,down') (Print 0 102))
-					((Said '/cloud,ceiling') (Print 0 103))
-					((Said '<in/cup') (Print 0 104))
+					((Said '/bush,palm')
+						(Print 0 99)
+					)
+					((Said '/man,bimbo,children')
+						(Print 0 100)
+					)
+					((Said '/brick,building')
+						(Print 0 101)
+					)
+					((Said '/carpet,down')
+						(Print 0 102)
+					)
+					((Said '/cloud,ceiling')
+						(Print 0 103)
+					)
+					((Said '<in/cup')
+						(Print 0 104)
+					)
 					((Said '/bikini')
 						(if (or (ego has: iBikiniTop) (ego has: iBikiniBottom))
-							(if (ego has: iBikiniTop) (Bikini_Top showSelf:))
-							(if (ego has: iBikiniBottom) (Bikini_Bottom showSelf:))
+							(if (ego has: iBikiniTop)
+								(Bikini_Top showSelf:)
+							)
+							(if (ego has: iBikiniBottom)
+								(Bikini_Bottom showSelf:)
+							)
 						else
-							(PrintDontHaveIt)
+							(DontHave)
 						)
 					)
 					((Said '/bill,million,buck,wad')
 						(cond 
-							((ego has: iDollarBill) (Dollar_Bill showSelf:))
-							((ego has: iMillionDollarBill) (Million_Dollar_Bill showSelf:))
-							((ego has: iWadODough) (Wad_O__Dough showSelf:))
-							(else (PrintDontHaveIt))
+							((ego has: iDollarBill)
+								(Dollar_Bill showSelf:)
+							)
+							((ego has: iMillionDollarBill)
+								(Million_Dollar_Bill showSelf:)
+							)
+							((ego has: iWadODough)
+								(Wad_O__Dough showSelf:)
+							)
+							(else (DontHave))
 						)
 					)
 					((Said '/ticket')
 						(cond 
-							((ego has: iLotteryTicket) (Lottery_Ticket showSelf:))
-							((ego has: iCruiseTicket) (Cruise_Ticket showSelf:))
-							((ego has: iAirlineTicket) (Airline_Ticket showSelf:))
-							(else (PrintDontHaveIt))
+							((ego has: iLotteryTicket)
+								(Lottery_Ticket showSelf:)
+							)
+							((ego has: iCruiseTicket)
+								(Cruise_Ticket showSelf:)
+							)
+							((ego has: iAirlineTicket)
+								(Airline_Ticket showSelf:)
+							)
+							(else
+								(DontHave)
+							)
 						)
 					)
-					((= item (inventory saidMe:))
-						(if (item ownedBy: ego)
-							(item showSelf:)
+					((= i (inventory saidMe:))
+						(if (i ownedBy: ego)
+							(i showSelf:)
 						else
-							(PrintDontHaveIt)
+							(DontHave)
 						)
 					)
 					(else
 						(switch (Random 42 44)
 							(42 (Print 0 105))
 							(43 (Print 0 106))
-							(44 (PrintNothingSpecial))
+							(44 (SeeNothing))
 						)
 						(event claimed: TRUE)
 					)
 				)
 			)
-			(
-				(or
-					(Said 'apply,buy/bill,million,buck,wad')
-					(Said 'buy')
-				)
+			((or (Said 'apply,buy/bill,million,buck,wad') (Said 'buy'))
 				(if (or (ego has: iDollarBill) (ego has: iWadODough) (ego has: iMillionDollarBill))
 					(Print 0 107)
 				else
@@ -1216,7 +1363,7 @@
 				)
 			)
 			((Said 'apply>')
-				(= item (inventory saidMe:))
+				(= i (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
 					((Said '/ticket')
@@ -1226,31 +1373,51 @@
 							(Print 0 110)
 						)
 					)
-					((Said '[/!]') (Print 0 111))
-					((not item) (event claimed: TRUE) (PrintCantDoThat))
-					((not (item ownedBy: ego)) (PrintDontHaveIt))
-					(else (Print 0 112) (event claimed: TRUE))
+					((Said '[/!]')
+						(Print 0 111)
+					)
+					((not i)
+						(event claimed: TRUE)
+						(CantDo)
+					)
+					((not (i ownedBy: ego))
+						(DontHave)
+					)
+					(else
+						(Print 0 112)
+						(event claimed: TRUE)
+					)
 				)
 			)
 			((Said 'give>')
-				(= item (inventory saidMe:))
+				(= i (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
-					((Said '/*[/!]') (Print 0 113))
-					((Said '[/!]') (Print 0 114))
-					((not item) (event claimed: TRUE) (Print 0 115))
-					((not (item ownedBy: ego)) (PrintDontHaveIt))
-					(else (Print 0 95) (event claimed: TRUE))
+					((Said '/*[/!]')
+						(Print 0 113)
+					)
+					((Said '[/!]')
+						(Print 0 114)
+					)
+					((not i)
+						(event claimed: TRUE)
+						(Print 0 115)
+					)
+					((not (i ownedBy: ego))
+						(DontHave)
+					)
+					(else
+						(Print 0 95)
+						(event claimed: TRUE)
+					)
 				)
 			)
 			((Said 'get>')
 				(cond 
-					((Said '[/!]') (Print 0 116))
-					(
-						(and
-							(= item (inventory saidMe:))
-							(item ownedBy: ego)
-						)
+					((Said '[/!]')
+						(Print 0 116)
+					)
+					((and (= i (inventory saidMe:)) (i ownedBy: ego))
 						(Print 0 117)
 					)
 					(else
@@ -1263,9 +1430,9 @@
 					)
 				)
 			)
-			((= item (inventory saidMe:))
-				(if (not (item ownedBy: ego))
-					(PrintDontHaveIt)
+			((= i (inventory saidMe:))
+				(if (not (i ownedBy: ego))
+					(DontHave)
 				else
 					(Print 0 121)
 				)
@@ -1288,8 +1455,9 @@
 				)
 				(Print 0 124)
 			)
-			(
-			(or (Said '//bimbo') (Said '/bimbo/') (Said '/bimbo')) (Print 0 125))
+			((or (Said '//bimbo') (Said '/bimbo/') (Said '/bimbo'))
+				(Print 0 125)
+			)
 		)
 	)
 	
@@ -1302,23 +1470,21 @@
 	)
 	
 	(method (pragmaFail)
-		(if (<= filthLevel 4) (Print 0 3) else (Print 0 4))
+		(if (<= filthLevel 4)
+			(Print 0 3)
+		else
+			(Print 0 4)
+		)
 	)
 )
 
 (class Iitem of InvItem
-	(properties
-		said 0
-		description 0
-		owner 0
-		view 0
-		loop 0
-		cel 0
-		script 0
-	)
 	
 	(method (showSelf)
-		(Print 2 view #title name #icon view 0 0)
+		(Print INVDESC view
+			#title name
+			#icon view 0 0
+		)
 	)
 )
 
@@ -1595,7 +1761,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= currentStatus egoDeathMessage)
+				(= currentStatus egoDEATHMESSAGE)
 				(HandsOff)
 				(Load SOUND 103)
 				(= seconds 3)
@@ -1604,18 +1770,18 @@
 				(sounds eachElementDo: #dispose)
 				(deadSnd play:)
 				(if
-					(Print 0 5
+					(Print 0 126
 						#title {Oh, no! Not again?!}
 						#font bigFont
 						#icon vBEDismay 0 0
 						#button {Keep On Muddling} 0
 						#button {Order A Hintbook} 1
 					)
-					(Print 0 6)
+					(Print 0 127)
 				)
 				(repeat
 					(switch
-						(Print 0 7
+						(Print 0 128
 							#title {Al says:}
 							#font bigFont
 							#button {Restore} 1
@@ -1638,7 +1804,6 @@
 		)
 	)
 )
-
 
 (instance statusCode of Code
 	(properties)

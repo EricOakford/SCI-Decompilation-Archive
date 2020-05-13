@@ -17,12 +17,12 @@
 
 (local
 	menInRoom
-	local1
-	local2
-	door
-	radar
-	krishna
-	cop
+	triedToLeave
+	roomState
+	aDoor
+	aRadar
+	aHench1
+	aHench2
 )
 (instance theSound of Sound
 	(properties
@@ -66,7 +66,7 @@
 			setPri: 2
 			addToPic:
 		)
-		((= radar (Prop new:))
+		((= aRadar (Prop new:))
 			view: 500
 			setLoop: 2
 			setPri: 0
@@ -85,14 +85,14 @@
 			(ego posn: 159 185)
 		)
 		(ego init:)
-		((= door (AutoDoor new:))
+		((= aDoor (AutoDoor new:))
 			view: 500
 			setLoop: 1
 			posn: 160 122
 			setPri: 8
 			entranceTo: 52
-			doorCtrl: 2
-			doorBlock: 16384
+			doorCtrl: cBLUE
+			doorBlock: cYELLOW
 			roomCtrl: 4
 			msgLook: {Inside you see lines of businessmen waiting to buy tickets.}
 			init:
@@ -100,9 +100,9 @@
 		(self setRegions: 500 setScript: rm50Script)
 		(if (== currentEgoView 151)
 			(= currentStatus 1000)
-			(= local2 0)
+			(= roomState 0)
 			(= menInRoom 1)
-			((= krishna (Actor new:))
+			((= aHench1 (Actor new:))
 				view: 501
 				loop: 2
 				posn: 22 164
@@ -111,7 +111,7 @@
 				init:
 				setAvoider: (Avoider new:)
 			)
-			((= cop (Actor new:))
+			((= aHench2 (Actor new:))
 				view: 502
 				loop: 2
 				posn: 298 164
@@ -124,15 +124,15 @@
 		else
 			((View new:) view: 501 loop: 2 posn: 22 164 addToPic:)
 			((View new:) view: 502 loop: 2 posn: 298 164 addToPic:)
-			(if (!= gaveFlowerToKrishna 1)
-				(= local2 0)
+			(if (!= gaveFlowerToKrishna TRUE)
+				(= roomState 0)
 				(= menInRoom 2)
 				(Load VIEW 503)
 				(Load VIEW 504)
 				(Load VIEW 20)
 				(Load SOUND 117)
 				(theSound play:)
-				((= krishna (Actor new:))
+				((= aHench1 (Actor new:))
 					view: 503
 					setLoop: 2
 					posn: 141 125
@@ -141,7 +141,7 @@
 					init:
 					setAvoider: (Avoider new:)
 				)
-				((= cop (Actor new:))
+				((= aHench2 (Actor new:))
 					view: 504
 					setLoop: 2
 					posn: 181 125
@@ -160,7 +160,7 @@
 				)
 			)
 		)
-		(if menInRoom (door locked: TRUE))
+		(if menInRoom (aDoor locked: TRUE))
 	)
 )
 
@@ -171,24 +171,24 @@
 		(super doit:)
 		(cond 
 			(
-			(and (== local2 0) (== menInRoom 1) (> 180 (ego y?)))
-				(= local2 1)
-				(krishna setScript: (copScript new:))
-				(cop setScript: (copScript new:))
+			(and (== roomState 0) (== menInRoom 1) (> 180 (ego y?)))
+				(= roomState 1)
+				(aHench1 setScript: (copScript new:))
+				(aHench2 setScript: (copScript new:))
 				(Print 50 0 #at -1 20)
 			)
 			(
 				(and
-					(== local2 0)
+					(== roomState 0)
 					(== menInRoom 2)
 					(& (ego onControl:) $0002)
 				)
-				(= local2 1)
-				(krishna setScript: (krishnaScript new:))
-				(cop setScript: (krishnaScript new:))
+				(= roomState 1)
+				(aHench1 setScript: (krishnaScript new:))
+				(aHench2 setScript: (krishnaScript new:))
 			)
-			((& (ego onControl:) $0008) (if (== local1 0) (= local1 1) (Print 50 1)))
-			(else (= local1 0))
+			((& (ego onControl:) $0008) (if (== triedToLeave 0) (= triedToLeave 1) (Print 50 1)))
+			(else (= triedToLeave 0))
 		)
 	)
 	
@@ -212,32 +212,32 @@
 			)
 			(2
 				(= menInRoom 0)
-				(= local2 4)
+				(= roomState 4)
 				(= gaveFlowerToKrishna TRUE)
 				(theSound stop:)
-				(krishna setCel: 0)
-				(cop setCel: 0)
+				(aHench1 setCel: 0)
+				(aHench2 setCel: 0)
 				(HandsOff)
 				(Print 50 24 #at -1 20 #draw #icon 20 0 0)
 				(ego put: 20 -1)
 				(= seconds 3)
 			)
 			(3
-				(krishna
+				(aHench1
 					illegalBits: 0
 					setCycle: Walk
 					setLoop: 5
-					setMotion: MoveTo 333 (krishna y?)
+					setMotion: MoveTo 333 (aHench1 y?)
 				)
-				(cop
+				(aHench2
 					illegalBits: 0
 					setCycle: Walk
 					setLoop: 5
-					setMotion: MoveTo 333 (cop y?) self
+					setMotion: MoveTo 333 (aHench2 y?) self
 				)
 				(Print 50 25 #icon 504 2 0 #at -1 20 #draw #dispose)
 				(theGame changeScore: 7)
-				(door locked: 0)
+				(aDoor locked: FALSE)
 			)
 			(4
 				(cls)
@@ -307,7 +307,7 @@
 								(Print 50 12)
 								(Print 50 13)
 							)
-							(else (PrintNotCloseEnough))
+							(else (NotClose))
 						)
 					)
 				)
@@ -323,7 +323,7 @@
 			(Said 'give,throw,bribe,finger,conceal,buy,buy,conceal>')
 				(= inventorySaidMe (inventory saidMe:))
 				(cond 
-					((!= currentStatus egoNormal) (PrintNotNow))
+					((!= currentStatus egoNORMAL) (NotNow))
 					(
 						(or
 							(not inventorySaidMe)
@@ -334,14 +334,14 @@
 					(
 						(and
 							(!= gaveFlowerToKrishna TRUE)
-							(< 25 (ego distanceTo: krishna))
-							(< 25 (ego distanceTo: cop))
+							(< 25 (ego distanceTo: aHench1))
+							(< 25 (ego distanceTo: aHench2))
 						)
-						(PrintNotCloseEnough)
+						(NotClose)
 					)
 					((== (inventory indexOf: inventorySaidMe) iWadODough) (Print 50 17))
 					((!= (inventory indexOf: inventorySaidMe) iFlower) (Print 50 18))
-					(else (PrintOk) (self changeState: 2))
+					(else (Ok) (self changeState: 2))
 				)
 			)
 		)
@@ -362,10 +362,10 @@
 				(HandsOff)
 			)
 			(1
-				(if (== local2 1)
+				(if (== roomState 1)
 					(Print 50 27 #at -1 20)
 					(= currentStatus 1000)
-					(= local2 2)
+					(= roomState 2)
 					(= theY (- (ego y?) 1))
 					(if (< (ego x?) (client x?))
 						(= theX (+ (ego x?) 19))
@@ -384,7 +384,7 @@
 			)
 			(2
 				(Print 50 28)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 		)
 	)
@@ -404,9 +404,9 @@
 				(HandsOff)
 			)
 			(1
-				(if (== local2 1)
-					(= currentStatus egoStopped)
-					(= local2 2)
+				(if (== roomState 1)
+					(= currentStatus egoSTOPPED)
+					(= roomState 2)
 					(HandsOff)
 					(= theY (- (ego y?) 2))
 					(if (< (ego x?) (client x?))
@@ -432,7 +432,7 @@
 			(2
 				(Print 50 30 #draw)
 				(Print 50 31 #at -1 20 #draw)
-				(= currentStatus egoCaptured)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 96)
 			)
 		)

@@ -15,12 +15,12 @@
 (local
 	currentDay
 	egoInBoat
-	ship
-	calendar
-	tornPaper
-	dayNumber
-	sweat
-	splash
+	aShip
+	aCalendar
+	aPage
+	aDate
+	aFlame
+	aWave
 )
 (instance rm138 of Room
 	(properties
@@ -56,7 +56,7 @@
 				init:
 			)
 		)
-		((= calendar (Prop new:))
+		((= aCalendar (Prop new:))
 			view: 326
 			setLoop: 1
 			setCel: 0
@@ -66,7 +66,7 @@
 			init:
 			hide:
 		)
-		((= dayNumber (Prop new:))
+		((= aDate (Prop new:))
 			view: 326
 			setLoop: 2
 			setCel: 0
@@ -75,7 +75,7 @@
 			init:
 			hide:
 		)
-		((= tornPaper (Actor new:))
+		((= aPage (Actor new:))
 			view: 326
 			setLoop: 3
 			setCel: 0
@@ -88,7 +88,7 @@
 			init:
 			hide:
 		)
-		((= ship (Actor new:))
+		((= aShip (Actor new:))
 			view: 326
 			setLoop: 0
 			setCel: 0
@@ -101,7 +101,7 @@
 			ignoreHorizon:
 			init:
 		)
-		((= splash (Prop new:))
+		((= aWave (Prop new:))
 			view: 326
 			setLoop: 4
 			setPri: 11
@@ -111,7 +111,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= sweat (Prop new:))
+		((= aFlame (Prop new:))
 			view: 120
 			loop: 2
 			posn: 115 66
@@ -121,7 +121,7 @@
 			hide:
 		)
 		(HandsOff)
-		(= currentStatus egoAtSea)
+		(= currentStatus egoATSEA)
 		(self setScript: rm138Script)
 	)
 )
@@ -136,10 +136,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ship setCycle: EndLoop setMotion: MoveTo 233 50 self)
+				(aShip setCycle: EndLoop setMotion: MoveTo 233 50 self)
 			)
 			(1
-				(ship
+				(aShip
 					setPri: 1
 					setCel:
 					moveSpeed: 13
@@ -149,12 +149,12 @@
 			)
 			(2
 				(Print 138 1)
-				(ship dispose:)
+				(aShip dispose:)
 				(= seconds 3)
 			)
 			(3
-				(calendar show:)
-				(dayNumber show:)
+				(aCalendar show:)
+				(aDate show:)
 				(= seconds 3)
 			)
 			(4
@@ -244,7 +244,7 @@
 				(= seconds 3)
 			)
 			(11
-				(sweat show:)
+				(aFlame show:)
 				(= seconds 5)
 			)
 			(12
@@ -310,7 +310,7 @@
 			)
 			(26
 				(Print 138 20 #at -1 20)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 		)
 	)
@@ -322,23 +322,23 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(tornPaper posn: 220 39 cel: 0 setCycle: CycleTo 2 1 self show:)
+				(aPage posn: 220 39 cel: 0 setCycle: CycleTo 2 1 self show:)
 			)
 			(2
-				(dayNumber setCel: (+ 1 (dayNumber cel?)) forceUpd:)
-				(tornPaper setCycle: EndLoop self)
+				(aDate setCel: (+ 1 (aDate cel?)) forceUpd:)
+				(aPage setCycle: EndLoop self)
 			)
 			(3
-				(tornPaper setMotion: MoveTo 360 -31 self)
+				(aPage setMotion: MoveTo 360 -31 self)
 			)
 			(4
-				(tornPaper hide:)
+				(aPage hide:)
 				(rm138Script cue:)
 			)
 			(6
-				(dayNumber dispose:)
-				(tornPaper dispose:)
-				(calendar dispose:)
+				(aDate dispose:)
+				(aPage dispose:)
+				(aCalendar dispose:)
 			)
 		)
 	)

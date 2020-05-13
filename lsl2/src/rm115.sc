@@ -15,9 +15,9 @@
 
 (local
 	local0
-	girl
-	bell
-	onklunk
+	aClerk
+	aBell
+	aOnklunk
 )
 (instance rm115 of Room
 	(properties
@@ -199,7 +199,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= bell (Prop new:))
+		((= aBell (Prop new:))
 			view: 221
 			setLoop: 1
 			posn: 63 62
@@ -215,7 +215,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= girl (Actor new:))
+		((= aClerk (Actor new:))
 			view: 222
 			setLoop: 0
 			setPri: 14
@@ -226,9 +226,9 @@
 			init:
 		)
 		(self setRegions: CITY setScript: rm115Script)
-		(if (== currentStatus egoDoppleganger)
+		(if (== currentStatus egoDOPPLEGANGER)
 			(NormalEgo 0)
-			(= currentStatus egoDoppleganger)
+			(= currentStatus egoDOPPLEGANGER)
 			(HandsOff)
 			(rm115Script changeState: 13)
 		else
@@ -253,11 +253,11 @@
 			(1
 				(HandsOff)
 				(Print (Format @str 115 15 introductoryPhrase))
-				(girl setLoop: 2 setCycle: Forward)
+				(aClerk setLoop: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
-				(girl setLoop: 0 setCel: 0)
+				(aClerk setLoop: 0 setCel: 0)
 				(Print 115 16 #at -1 20 #font userFont #dispose)
 				(Print 115 17 #at -1 152 #font smallFont)
 				(cls)
@@ -279,11 +279,11 @@
 				(Print 115 24 #at -1 20 #font userFont #dispose)
 				(Print 115 25 #at -1 152 #font smallFont)
 				(cls)
-				(girl setLoop: 2 setCycle: Forward)
+				(aClerk setLoop: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(5
-				(girl setLoop: 0 setCel: 0)
+				(aClerk setLoop: 0 setCel: 0)
 				(Print 115 26)
 				(Print 115 27 #at -1 20 #font userFont #dispose)
 				(Print 115 28 #at -1 152 #font smallFont)
@@ -296,18 +296,18 @@
 				(Print 115 31 #at -1 20 #font userFont #dispose)
 				(Print 115 32 #at -1 152 #font smallFont)
 				(cls)
-				(girl setLoop: 2 setCycle: Forward)
+				(aClerk setLoop: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(7
-				(girl setLoop: 0 setCel: 0)
+				(aClerk setLoop: 0 setCel: 0)
 				(Print 115 33 #at -1 20 #font userFont #dispose)
 				(Print 115 34 #at -1 152 #font smallFont)
 				(cls)
 				(Print 115 35 #at -1 20 #font userFont #dispose)
 				(Print 115 36 #at 20 130 #width 270 #font smallFont)
 				(cls)
-				(girl
+				(aClerk
 					setLoop: 3
 					setCel: 0
 					cycleSpeed: 1
@@ -315,8 +315,8 @@
 				)
 			)
 			(8
-				(girl setLoop: 0 cycleSpeed: 0 setCel: 0)
-				((= onklunk (View new:))
+				(aClerk setLoop: 0 cycleSpeed: 0 setCel: 0)
+				((= aOnklunk (View new:))
 					view: 222
 					setLoop: 4
 					setPri: 14
@@ -337,7 +337,7 @@
 				(Print 115 39)
 				(ego get: iOnklunk)
 				(theGame changeScore: 7)
-				(onklunk dispose:)
+				(aOnklunk dispose:)
 				(= seconds 3)
 			)
 			(11
@@ -391,7 +391,7 @@
 				(Print 115 54 #draw)
 				(Print 115 55)
 				(Print 115 56)
-				(IncrementGamePhase phaseCITY 4 30)
+				(SetRegionTimer rgCITY 4 30)
 				(curRoom newRoom: 21)
 			)
 		)
@@ -430,8 +430,8 @@
 		(if (Said 'open/door') (Print 115 3) (Print 115 4))
 		(if (Said 'call/bimbo,children,agent')
 			(cond 
-				((not (ego inRect: 61 139 76 157)) (PrintNotCloseEnough))
-				((not ((inventory at: 10) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
+				((not (ego inRect: 61 139 76 157)) (NotClose))
+				((not ((inventory at: 10) ownedBy: curRoomNum)) (AlreadyTook))
 				((== gotHaircutInCity FALSE)
 					(Print (Format @str 115 12 introductoryPhrase))
 					(Print 115 13)
@@ -450,18 +450,18 @@
 		(switch (= state newState)
 			(0 (= cycles 5))
 			(1
-				(bell cycleSpeed: 1)
+				(aBell cycleSpeed: 1)
 				(= cycles 7)
 			)
 			(2
-				(bell cycleSpeed: 2)
+				(aBell cycleSpeed: 2)
 				(= cycles 9)
 			)
 			(3
-				(bell cycleSpeed: 3)
+				(aBell cycleSpeed: 3)
 				(= cycles 11)
 			)
-			(4 (bell setCel: 2 stopUpd:))
+			(4 (aBell setCel: 2 stopUpd:))
 		)
 	)
 )

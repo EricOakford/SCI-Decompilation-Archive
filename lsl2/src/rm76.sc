@@ -14,14 +14,14 @@
 )
 
 (local
-	computer
-	computerCarrier
-	egoProgramming
-	computerCode
-	drummer
-	kalalau
-	keneewauwau
-	keneewauwauHead
+	aComputer
+	aComputerCarrier
+	aEgoProgramming
+	aComputerCode
+	aDrummer
+	aKalalau
+	aChief
+	aChiefHead
 )
 (instance rm76 of Room
 	(properties
@@ -39,7 +39,7 @@
 		(if (!= endGameState endMEETTRIBE)
 			(self setRegions: ISLAND)
 		else
-			(= currentStatus egoMeetingTribe)
+			(= currentStatus egoMEETTRIBE)
 			(rm76Script changeState: 1)
 			(Load VIEW 194)
 			(Load VIEW 195)
@@ -106,7 +106,7 @@
 				posn: 190 82
 				addToPic:
 			)
-			((= egoProgramming (Prop new:))
+			((= aEgoProgramming (Prop new:))
 				view: 195
 				ignoreActors:
 				setLoop: 0
@@ -115,7 +115,7 @@
 				setCycle: Forward
 				init:
 			)
-			((= computerCode (Prop new:))
+			((= aComputerCode (Prop new:))
 				view: 195
 				ignoreActors:
 				setLoop: 1
@@ -124,7 +124,7 @@
 				setCycle: Forward
 				init:
 			)
-			((= drummer (Prop new:))
+			((= aDrummer (Prop new:))
 				view: 714
 				ignoreActors:
 				setLoop: 0
@@ -132,7 +132,7 @@
 				stopUpd:
 				init:
 			)
-			((= computer (Prop new:))
+			((= aComputer (Prop new:))
 				view: 707
 				ignoreActors:
 				setLoop: 7
@@ -140,7 +140,7 @@
 				stopUpd:
 				init:
 			)
-			((= keneewauwau (Actor new:))
+			((= aChief (Actor new:))
 				view: 710
 				ignoreActors:
 				illegalBits: 0
@@ -151,7 +151,7 @@
 				posn: -21 86
 				init:
 			)
-			((= keneewauwauHead (Prop new:))
+			((= aChiefHead (Prop new:))
 				view: 710
 				ignoreActors:
 				setLoop: 4
@@ -160,7 +160,7 @@
 				setCycle: Forward
 				init:
 			)
-			((= computerCarrier (Actor new:))
+			((= aComputerCarrier (Actor new:))
 				view: 707
 				ignoreActors:
 				illegalBits: 0
@@ -170,7 +170,7 @@
 				stopUpd:
 				init:
 			)
-			((= kalalau (Actor new:))
+			((= aKalalau (Actor new:))
 				view: 704
 				loop: 1
 				ignoreActors:
@@ -202,50 +202,50 @@
 			(2
 				(HandsOff)
 				(ego setMotion: MoveTo 145 126 self)
-				(kalalau setMotion: MoveTo 138 132)
+				(aKalalau setMotion: MoveTo 138 132)
 				(= cycles 10)
 			)
 			(3 (Print 76 4 #draw))
 			(4
 				(Print 76 5)
-				(kalalau setCel: 255 stopUpd:)
+				(aKalalau setCel: 255 stopUpd:)
 				(ego stopUpd:)
-				(keneewauwau setMotion: MoveTo 81 91 self)
+				(aChief setMotion: MoveTo 81 91 self)
 			)
 			(5
 				(Print 76 6)
-				(keneewauwau stopUpd:)
-				(keneewauwauHead
-					posn: (+ (keneewauwau x?) -1) (+ (keneewauwau y?) -26)
+				(aChief stopUpd:)
+				(aChiefHead
+					posn: (+ (aChief x?) -1) (+ (aChief y?) -26)
 				)
 				(= seconds 3)
 			)
 			(6
-				(keneewauwauHead hide:)
+				(aChiefHead hide:)
 				(Print 76 7 #draw)
 				(= seconds 3)
 			)
 			(7
 				(Print 76 8)
-				(keneewauwauHead show:)
+				(aChiefHead show:)
 				(= seconds 3)
 			)
 			(8
-				(keneewauwauHead hide:)
+				(aChiefHead hide:)
 				(Print 76 9 #draw)
 				(Print 76 10 #at -1 152)
 				(= seconds 3)
 			)
 			(9
-				(computerCarrier setLoop: 4 setMotion: MoveTo 444 96 self)
-				(drummer setCycle: Forward)
+				(aComputerCarrier setLoop: 4 setMotion: MoveTo 444 96 self)
+				(aDrummer setCycle: Forward)
 				(theSound play:)
 			)
 			(10
-				(computerCarrier setLoop: 1 setMotion: MoveTo 221 96 self)
+				(aComputerCarrier setLoop: 1 setMotion: MoveTo 221 96 self)
 			)
 			(11
-				(computerCarrier setLoop: 3 cel: 0 setCycle: CycleTo 7 1 self)
+				(aComputerCarrier setLoop: 3 cel: 0 setCycle: CycleTo 7 1 self)
 			)
 			(12
 				((View new:)
@@ -256,24 +256,24 @@
 					setPri: 5
 					addToPic:
 				)
-				(computerCarrier setCycle: EndLoop self)
+				(aComputerCarrier setCycle: EndLoop self)
 			)
 			(13
-				(computerCarrier setLoop: 4 setMotion: MoveTo 233 96 self)
+				(aComputerCarrier setLoop: 4 setMotion: MoveTo 233 96 self)
 			)
 			(14
-				(computerCarrier setLoop: 5 forceUpd: stopUpd:)
-				(keneewauwauHead show:)
+				(aComputerCarrier setLoop: 5 forceUpd: stopUpd:)
+				(aChiefHead show:)
 				(= cycles 20)
 			)
 			(15
 				(Print 76 11)
-				(keneewauwauHead hide:)
+				(aChiefHead hide:)
 				(= seconds 3)
 			)
 			(16
 				(Print 76 12)
-				(keneewauwauHead show:)
+				(aChiefHead show:)
 				(= seconds 3)
 			)
 			(17
@@ -281,12 +281,12 @@
 				(Print 76 14)
 				(Print 76 15)
 				(Print 76 16 #at -1 152)
-				(keneewauwauHead hide:)
+				(aChiefHead hide:)
 				(= cycles 20)
 			)
 			(18
 				(ego setMotion: MoveTo 206 100 self)
-				(kalalau setLoop: 3)
+				(aKalalau setLoop: 3)
 				(= cycles 10)
 			)
 			(19 (Print 76 17))
@@ -301,16 +301,16 @@
 			)
 			(21
 				(ego stopUpd:)
-				(computer setCycle: Forward)
+				(aComputer setCycle: Forward)
 				(= seconds 3)
 			)
 			(22
-				(egoProgramming posn: 275 39)
-				(computerCode posn: 275 39 cel: 0 setCycle: EndLoop self)
+				(aEgoProgramming posn: 275 39)
+				(aComputerCode posn: 275 39 cel: 0 setCycle: EndLoop self)
 				(= cycles 10)
 			)
 			(23
-				(computerCode setLoop: 2 setCycle: Forward)
+				(aComputerCode setLoop: 2 setCycle: Forward)
 				(cls)
 				(Print 76 18 #at -1 152 #dispose)
 				(= cycles (Random 20 30))
@@ -347,9 +347,9 @@
 			)
 			(30 (cls) (= seconds 3))
 			(31
-				(computerCode dispose:)
-				(egoProgramming dispose:)
-				(computer stopUpd:)
+				(aComputerCode dispose:)
+				(aEgoProgramming dispose:)
+				(aComputer stopUpd:)
 				(ego setCycle: BegLoop self)
 			)
 			(32
@@ -360,48 +360,48 @@
 					loop: 1
 					cycleSpeed: 0
 				)
-				(drummer stopUpd:)
+				(aDrummer stopUpd:)
 				(theSound stop:)
 				(= cycles 15)
 			)
 			(33
 				(Print 76 24)
-				(keneewauwauHead show:)
+				(aChiefHead show:)
 				(= seconds 3)
 			)
 			(34
 				(Print 76 25)
-				(keneewauwauHead hide:)
+				(aChiefHead hide:)
 				(= seconds 3)
 			)
 			(35
 				(Print 76 26)
-				(keneewauwauHead show:)
+				(aChiefHead show:)
 				(= seconds 3)
 			)
 			(36
 				(Print 76 27)
-				(keneewauwauHead hide:)
+				(aChiefHead hide:)
 				(= seconds 3)
 			)
 			(37
 				(Print 76 28)
-				(keneewauwauHead show:)
+				(aChiefHead show:)
 				(= seconds 3)
 			)
 			(38
 				(Print 76 29)
 				(Print 76 30)
 				(Print 76 31 #at -1 152)
-				(keneewauwauHead hide:)
-				(keneewauwau setMotion: MoveTo 119 127 self)
+				(aChiefHead hide:)
+				(aChief setMotion: MoveTo 119 127 self)
 			)
 			(39
-				(keneewauwau setPri: -1 setMotion: MoveTo 251 103 self)
+				(aChief setPri: -1 setMotion: MoveTo 251 103 self)
 			)
 			(40
 				(Print 76 32)
-				(keneewauwau setMotion: MoveTo 251 95 self)
+				(aChief setMotion: MoveTo 251 95 self)
 				(ego setMotion: MoveTo 240 100)
 			)
 			(41 (curRoom newRoom: 79))

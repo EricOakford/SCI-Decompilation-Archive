@@ -13,7 +13,7 @@
 )
 
 (local
-	wanderingMind
+	aMind
 	local1
 	local2
 	local3
@@ -33,9 +33,9 @@
 		(= local4 109)
 		(= local5 136)
 		(cond 
-			((> howFast 60) (= local2 4))
-			((> howFast 40) (= local2 3))
-			((> howFast 20) (= local2 2))
+			((> machineSpeed 60) (= local2 4))
+			((> machineSpeed 40) (= local2 3))
+			((> machineSpeed 20) (= local2 2))
 			(else (= local2 1))
 		)
 		(= local1 1)
@@ -44,7 +44,7 @@
 			((Actor new:) setScript: (westLineScript new:))
 			(++ local1)
 		)
-		((= wanderingMind (Actor new:))
+		((= aMind (Actor new:))
 			view: 522
 			setLoop: 1
 			setPri: 14
@@ -55,7 +55,7 @@
 			init:
 		)
 		(HandsOff)
-		(= currentStatus egoNormal)
+		(= currentStatus egoNORMAL)
 		(self setRegions: AIRPORT setScript: rm56Script)
 	)
 )
@@ -73,13 +73,13 @@
 			(1 (Print 56 0) (= seconds 10))
 			(2 (Print 56 1) (= seconds 3))
 			(3
-				(wanderingMind posn: 175 41 setMotion: Wander 99)
+				(aMind posn: 175 41 setMotion: Wander 99)
 				(= seconds 10)
 			)
 			(4
-				(wanderingMind
+				(aMind
 					ignoreControl: 16
-					setMotion: MoveTo (wanderingMind x?) -20
+					setMotion: MoveTo (aMind x?) -20
 				)
 				(Print 56 2 #draw)
 				(= seconds 10)

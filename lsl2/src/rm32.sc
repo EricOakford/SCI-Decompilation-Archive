@@ -16,13 +16,13 @@
 )
 
 (local
-	oldEgoX
-	oldEgoY
-	nightFalls
-	porthole
-	door
-	mama
-	fruit
+	egoX
+	egoY
+	local2
+	aPorthole
+	aDoor
+	aMama
+	aFruit
 )
 (instance theSound of Sound
 	(properties)
@@ -41,7 +41,7 @@
 		(NormalEgo)
 		(self setRegions: SHIP setScript: rm32Script)
 		(if ((inventory at: iFruit) ownedBy: curRoomNum)
-			((= fruit (View new:))
+			((= aFruit (View new:))
 				view: 304
 				setLoop: 2
 				setPri: 4
@@ -49,7 +49,7 @@
 				init:
 			)
 		)
-		((= porthole (Prop new:))
+		((= aPorthole (Prop new:))
 			view: 304
 			setLoop: 1
 			setCel: 0
@@ -64,7 +64,7 @@
 			(Load VIEW 309)
 			(Load SOUND 6)
 			(theSound number: 6 init:)
-			((= mama (Actor new:))
+			((= aMama (Actor new:))
 				view: 309
 				ignoreActors:
 				illegalBits: 0
@@ -76,12 +76,12 @@
 				posn: 217 110
 				init:
 			)
-			(if (and (not gamePhaseTime) (== gamePhase 2))
+			(if (and (not rgSeconds) (== gameState 2))
 				(= currentStatus 1000)
 				(rm32Script changeState: 1)
 			)
 		)
-		((= door (Door new:))
+		((= aDoor (Door new:))
 			view: 304
 			setLoop: 0
 			posn: 207 114
@@ -116,8 +116,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(= currentStatus egoStopped)
-				(= nightFalls TRUE)
+				(= currentStatus egoSTOPPED)
+				(= local2 TRUE)
 				(HandsOff)
 				(= cycles 5)
 			)
@@ -129,7 +129,7 @@
 				(ego setMotion: MoveTo 155 103 self)
 			)
 			(4
-				(= currentStatus egoSleeping)
+				(= currentStatus egoSLEEPING)
 				(ego
 					view: 131
 					setLoop: (if (== currentEgoView 100) 0 else 2)
@@ -144,70 +144,70 @@
 				(= seconds 5)
 			)
 			(5
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(HandsOff)
 				(= seconds 5)
 			)
 			(6
-				(if (!= (door doorState?) 0)
+				(if (!= (aDoor doorState?) 0)
 					(self changeState: 7)
 				else
 					(Print 32 31)
-					(door locked: 0 notify: self force: 1 open:)
+					(aDoor locked: 0 notify: self force: 1 open:)
 				)
 			)
 			(7 (Print 32 32) (= seconds 2))
 			(8
-				(mama show: setMotion: MoveTo 181 111 self)
+				(aMama show: setMotion: MoveTo 181 111 self)
 			)
 			(9
-				(mama setLoop: 1 setCel: 0 posn: 177 110 setPri: 13)
+				(aMama setLoop: 1 setCel: 0 posn: 177 110 setPri: 13)
 				(= cycles 2)
 			)
 			(10
-				(mama posn: 171 108 setCel: 1)
+				(aMama posn: 171 108 setCel: 1)
 				(= cycles 2)
 			)
 			(11
-				(mama posn: 165 106 setCel: 2)
+				(aMama posn: 165 106 setCel: 2)
 				(= cycles 2)
 			)
 			(12
-				(mama posn: 162 104 setCel: 3)
+				(aMama posn: 162 104 setCel: 3)
 				(= cycles 2)
 			)
 			(13
 				(Print 32 33 #at -1 20)
-				(mama setLoop: 2 posn: 162 104 setCel: 0)
+				(aMama setLoop: 2 posn: 162 104 setCel: 0)
 				(= cycles 2)
 			)
 			(14
-				(mama posn: 162 104 setCel: 1)
+				(aMama posn: 162 104 setCel: 1)
 				(= cycles 2)
 			)
 			(15
-				(mama posn: 162 104 setCel: 2)
+				(aMama posn: 162 104 setCel: 2)
 				(= cycles 2)
 			)
 			(16
-				(mama posn: 160 102 setCel: 3)
+				(aMama posn: 160 102 setCel: 3)
 				(= cycles 2)
 			)
 			(17
-				(mama posn: 158 98 setCel: 4)
+				(aMama posn: 158 98 setCel: 4)
 				(= cycles 2)
 			)
 			(18
-				(mama posn: 154 92 setCel: 5)
+				(aMama posn: 154 92 setCel: 5)
 				(= cycles 2)
 			)
 			(19
-				(mama posn: 158 89 setCel: 5)
+				(aMama posn: 158 89 setCel: 5)
 				(= cycles 2)
 			)
 			(20
 				(theSound play:)
-				(mama
+				(aMama
 					setLoop: 3
 					setMotion: 0
 					setCycle: Forward
@@ -220,14 +220,14 @@
 				(= seconds 4)
 			)
 			(21
-				(mama setLoop: 0 setCel: 0 posn: 155 103)
+				(aMama setLoop: 0 setCel: 0 posn: 155 103)
 				(Print 32 34 #at -1 15 #width 280 #draw)
 				(Print 32 35 #at -1 15 #width 280)
 				(= seconds 1)
 			)
 			(22
-				(= currentStatus egoDead)
-				(if (== nightFalls 2)
+				(= currentStatus egoDEAD)
+				(if (== local2 2)
 					(Print 32 36)
 				else
 					(Print 32 37 #at -1 15 #width 280)
@@ -243,7 +243,7 @@
 		)
 		(if (Said 'open,look/cabinet')
 			(if (not (ego inRect: 150 96 168 110))
-				(PrintNotCloseEnough)
+				(NotClose)
 			else
 				(Print 32 0)
 			)
@@ -260,7 +260,7 @@
 			)
 			(if (Said '/new,bureau,buffet')
 				(cond 
-					((not (ego inRect: 150 96 168 110)) (PrintNotCloseEnough))
+					((not (ego inRect: 150 96 168 110)) (NotClose))
 					((not ((inventory at: iFruit) ownedBy: curRoomNum)) (Print 32 7))
 					(else
 						(Print 32 8)
@@ -276,7 +276,7 @@
 					(Said '/basket,basket')
 				)
 				(if (not (ego inRect: 150 96 168 110))
-					(PrintNotCloseEnough)
+					(NotClose)
 				else
 					(Print 32 8)
 					(Print 32 9)
@@ -308,12 +308,12 @@
 						(Print 32 18)
 					else
 						(= currentEgoView 100)
-						(PrintOk)
+						(Ok)
 						(ego view: 100)
 					)
 				)
-				((not (ego has: iSwimsuit)) (if (ego has: iBikiniTop) (Print 32 19) else (PrintDontHaveIt)))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((not (ego has: iSwimsuit)) (if (ego has: iBikiniTop) (Print 32 19) else (DontHave)))
+				((!= currentStatus egoNORMAL) (NotNow))
 				((not metMama) (Print 32 20))
 				((not (ego inRect: 170 90 176 110)) (Print 32 18))
 				(else (= currentEgoView 132) (Print 32 21) (ego view: 132))
@@ -338,11 +338,11 @@
 		)
 		(if (Said 'get/basket,basket')
 			(cond 
-				((not ((inventory at: iFruit) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((not (ego inRect: 150 96 168 110)) (PrintNotCloseEnough))
+				((not ((inventory at: iFruit) ownedBy: curRoomNum)) (AlreadyTook))
+				((not (ego inRect: 150 96 168 110)) (NotClose))
 				(else
-					(PrintOk)
-					(fruit dispose:)
+					(Ok)
+					(aFruit dispose:)
 					(ego get: iFruit)
 					(theGame changeScore: 3)
 				)
@@ -350,17 +350,17 @@
 		)
 		(if (Said 'lie,board,bath[/bed,nap,barstool]')
 			(cond 
-				((== (ego view?) 131) (PrintYouAre))
-				((!= currentStatus egoNormal) (PrintNotNow))
-				((not (ego inRect: 150 96 168 110)) (PrintNotCloseEnough))
+				((== (ego view?) 131) (YouAre))
+				((!= currentStatus egoNORMAL) (NotNow))
+				((not (ego inRect: 150 96 168 110)) (NotClose))
 				(else
-					(= currentStatus egoSleeping)
+					(= currentStatus egoSLEEPING)
 					(Print 32 28)
 					(User canControl: FALSE canInput: TRUE)
-					(= oldEgoX (ego x?))
-					(= oldEgoY (ego y?))
+					(= egoX (ego x?))
+					(= egoY (ego y?))
 					(= currentEgoView (ego view?))
-					(= nightFalls TRUE)
+					(= local2 1)
 					(ego
 						view: 131
 						setLoop: (if (== currentEgoView 100) 0 else 2)
@@ -384,13 +384,13 @@
 			)
 			(cond 
 				((!= (ego view?) 131) (Print 32 29))
-				((!= currentStatus egoSleeping) (PrintNotNow))
+				((!= currentStatus egoSLEEPING) (NotNow))
 				(else
-					(PrintOk)
-					(ego posn: oldEgoX oldEgoY)
+					(Ok)
+					(ego posn: egoX egoY)
 					(NormalEgo 0)
-					(if (== (door doorState?) 0)
-						(ego observeControl: 16384)
+					(if (== (aDoor doorState?) 0)
+						(ego observeControl: cYELLOW)
 					)
 				)
 			)

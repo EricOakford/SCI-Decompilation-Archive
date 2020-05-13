@@ -16,9 +16,9 @@
 	local0
 	bikiniInRoom
 	canFollowHenchwoman
-	henchwomanApporaches
-	bikini
-	henchwoman
+	henchwomanApproaches
+	aBikini
+	aHench
 )
 (instance rm41 of Room
 	(properties
@@ -122,7 +122,7 @@
 				)
 				(= bikiniInRoom TRUE)
 				(Load VIEW 400)
-				((= bikini (View new:))
+				((= aBikini (View new:))
 					view: 400
 					ignoreActors:
 					posn: 88 158
@@ -135,7 +135,7 @@
 				(= henchwomanIsHere TRUE)
 				(= henchView 402)
 				(Load VIEW henchView)
-				((= henchwoman (Actor new:))
+				((= aHench (Actor new:))
 					view: henchView
 					illegalBits: 0
 					setLoop: 4
@@ -157,17 +157,17 @@
 	(method (doit)
 		(super doit:)
 		(if (== 2 (ego edgeHit?))
-			(if (== henchwomanApporaches 0)
+			(if (== henchwomanApproaches 0)
 				(curRoom newRoom: 42)
 			else
 				(Print 41 0 #at 15 -1 #width 280)
-				(= currentStatus egoCaptured)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 95)
 			)
 		)
 		(if (and henchwomanIsHere canFollowHenchwoman (> (ego x?) 300))
 			(= canFollowHenchwoman 0)
-			(= henchwomanApporaches 1)
+			(= henchwomanApproaches 1)
 			(curRoom east: 95)
 			(Print 41 1)
 		)
@@ -203,7 +203,7 @@
 			(if (Said 'get/towel') (Print 41 10))
 			(if (Said 'call/bimbo')
 				(if (not (ego inRect: 75 150 160 189))
-					(PrintNotCloseEnough)
+					(NotClose)
 				else
 					(Print (Format @str 41 11 introductoryPhrase))
 					(if (not (henchScript state?))
@@ -231,12 +231,12 @@
 		(if (Said 'get/bottom,bikini,(bottom<bikini)')
 			(cond 
 				((not bikiniInRoom) (Print 41 14))
-				((not (ego inRect: 76 179 106 189)) (PrintNotCloseEnough))
+				((not (ego inRect: 76 179 106 189)) (NotClose))
 				(else
 					(Print 41 15)
 					(= bikiniInRoom FALSE)
 					(ego get: iBikiniBottom)
-					(bikini dispose:)
+					(aBikini dispose:)
 					(theGame changeScore: 4)
 				)
 			)
@@ -251,11 +251,11 @@
 		(switch (= state newState)
 			(0 (= cycles (Random 30 50)))
 			(1
-				(henchwoman setCycle: Forward)
+				(aHench setCycle: Forward)
 				(= cycles (Random 5 22))
 			)
 			(2
-				(henchwoman setCel:)
+				(aHench setCel:)
 				(= seconds 5)
 			)
 			(3
@@ -269,12 +269,12 @@
 			)
 			(4
 				(= cycles 0)
-				(henchwoman setCel: 0)
+				(aHench setCel: 0)
 				(Print 41 20 #at 15 -1 #width 280 #draw)
 				(= seconds 5)
 			)
 			(5
-				(henchwoman
+				(aHench
 					setAvoider: (Avoider new:)
 					setStep: 3 2
 					setLoop: -1
@@ -289,7 +289,7 @@
 				(= cycles 20)
 			)
 			(6
-				(if (> (henchwoman x?) (ego x?))
+				(if (> (aHench x?) (ego x?))
 					(Print 41 21)
 				else
 					(Print 41 22)
@@ -298,7 +298,7 @@
 			)
 			(7 (= seconds 10))
 			(8
-				(henchwoman dispose:)
+				(aHench dispose:)
 				(= henchView 0)
 				(= henchwomanIsHere FALSE)
 				(= canFollowHenchwoman FALSE)

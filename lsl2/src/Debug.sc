@@ -15,7 +15,7 @@
 (instance rm5 of Locale
 	(properties)
 	
-	(method (handleEvent event &tmp temp0 item temp2 newEvent temp4 [str2 50])
+	(method (handleEvent event &tmp temp0 i obj evt temp4 [str2 50])
 		(if
 			(and
 				debugging
@@ -23,8 +23,12 @@
 				(== keyDown (event type?))
 			)
 			(switch (event message?)
-				(`@i (User canInput: TRUE))
-				(`@z (= quit TRUE))
+				(`@i
+					(User canInput: TRUE)
+				)
+				(`@z
+					(= quit TRUE)
+				)
 				(`@c
 					(Show CMAP)
 					(Print 5 0 #at 0 0)
@@ -34,12 +38,18 @@
 					(Print 5 1)
 					(= debugOn (^ debugOn TRUE))
 				)
-				(`@m (theGame showMem:))
-				(`@p (Show PMAP))
+				(`@m
+					(theGame showMem:)
+				)
+				(`@p
+					(Show PMAP)
+				)
 				(`@r
 					(Print (Format @str 5 2 curRoomNum))
 				)
-				(`@v (Show VMAP))
+				(`@v
+					(Show VMAP)
+				)
 			)
 		)
 		(if
@@ -52,17 +62,17 @@
 				((& (event modifiers?) ctrlDown)
 					(event claimed: TRUE)
 					(User canControl: TRUE)
-					(while (!= 2 ((= newEvent (Event new:)) type?))
-						(GlobalToLocal newEvent)
-						(ego posn: (newEvent x?) (newEvent y?) setMotion: 0)
-						(AnimateCast)
-						(newEvent dispose:)
+					(while (!= 2 ((= evt (Event new:)) type?))
+						(GlobalToLocal evt)
+						(ego posn: (evt x?) (evt y?) setMotion: 0)
+						(RedrawCast)
+						(evt dispose:)
 					)
-					(newEvent dispose:)
+					(evt dispose:)
 				)
 				((& (event modifiers?) shiftDown)
 					(event claimed: TRUE)
-					(= temp2
+					(= obj
 						(Print
 							(Format @str 5 3 (event x?) (event y?))
 							#at 150 100
@@ -70,11 +80,11 @@
 							#dispose
 						)
 					)
-					(while (!= 2 ((= newEvent (Event new:)) type?))
-						(newEvent dispose:)
+					(while (!= 2 ((= evt (Event new:)) type?))
+						(evt dispose:)
 					)
-					(temp2 dispose:)
-					(newEvent dispose:)
+					(obj dispose:)
+					(evt dispose:)
 				)
 			)
 			(if (event claimed?) (return TRUE))
@@ -86,27 +96,27 @@
 		(if
 			(and
 				(Said 'pitch>')
-				(= item (inventory saidMe:))
+				(= i (inventory saidMe:))
 			)
 			(event claimed: TRUE)
-			(if (not (item ownedBy: ego))
+			(if (not (i ownedBy: ego))
 				(Print 5 4)
 			else
 				(Print 5 5)
-				(item moveTo: -1)
+				(i moveTo: -1)
 			)
 		)
 		(if
 			(and
 				(Said 'get>')
-				(= item (inventory saidMe:))
+				(= i (inventory saidMe:))
 			)
 			(event claimed: TRUE)
-			(if (item ownedBy: ego)
+			(if (i ownedBy: ego)
 				(Print 5 6)
 			else
 				(Print 5 5)
-				(item moveTo: ego)
+				(i moveTo: ego)
 			)
 		)
 		(if (Said 'aid') (Print 5 7 #font 999))
@@ -140,8 +150,8 @@
 		(if (Said 'look/cord')
 			(Print
 				(Format @str 5 9
-					(/ gamePhaseTime 600)
-					(/ (mod gamePhaseTime 600) 10)
+					(/ rgSeconds 600)
+					(/ (mod rgSeconds 600) 10)
 				)
 			)
 		)

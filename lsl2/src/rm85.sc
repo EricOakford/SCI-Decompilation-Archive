@@ -14,7 +14,7 @@
 
 (local
 	local0
-	helicopterDoor
+	aDoor
 	[local2 2]
 )
 (instance rm85 of Room
@@ -64,7 +64,7 @@
 			posn: 214 105
 			addToPic:
 		)
-		((= helicopterDoor (Actor new:))
+		((= aDoor (Actor new:))
 			view: 829
 			ignoreActors:
 			illegalBits: 0
@@ -75,7 +75,7 @@
 			stopUpd:
 			init:
 		)
-		(= currentStatus egoWonGame)
+		(= currentStatus egoWONGAME)
 		(ego
 			view: 197
 			setLoop: 0
@@ -127,7 +127,7 @@
 				(ego setMotion: MoveTo 32 153 self)
 			)
 			(6
-				(helicopterDoor setMotion: MoveTo 35 137 self)
+				(aDoor setMotion: MoveTo 35 137 self)
 			)
 			(7
 				(Print 85 3)

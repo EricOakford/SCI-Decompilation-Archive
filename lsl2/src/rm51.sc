@@ -17,9 +17,9 @@
 	local0
 	followingHenchwoman
 	henchwomanBeckons
-	barberPole
-	airplane
-	henchwoman
+	aBarberPole
+	aPlane
+	aHench
 	talkedToHenchwoman
 )
 (instance rm51 of Room
@@ -58,7 +58,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= barberPole (Prop new:))
+		((= aBarberPole (Prop new:))
 			view: 230
 			setPri: 4
 			setCycle: Forward
@@ -66,7 +66,7 @@
 			isExtra: 1
 			init:
 		)
-		((= airplane (Airplane new:))
+		((= aPlane (Airplane new:))
 			view: 511
 			setPri: 1
 			startX: -20
@@ -99,7 +99,7 @@
 			(= henchView 523)
 			(Load VIEW henchView)
 			(Load VIEW 524)
-			((= henchwoman (Actor new:))
+			((= aHench (Actor new:))
 				view: 524
 				ignoreActors:
 				illegalBits: 0
@@ -133,7 +133,7 @@
 				(curRoom newRoom: 52)
 			else
 				(Print 51 0 #at 15 -1 #width 280)
-				(= currentStatus egoCaptured)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 95)
 			)
 		)
@@ -196,7 +196,7 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 5 10)))
 			(1
-				(henchwoman
+				(aHench
 					cycleSpeed: 1
 					setLoop: 1
 					cel: 0
@@ -204,23 +204,23 @@
 				)
 			)
 			(2
-				(henchwoman cycleSpeed: 0 setLoop: 2 setCycle: Forward)
+				(aHench cycleSpeed: 0 setLoop: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(3
-				(henchwoman setLoop: 1 setCel: 0)
+				(aHench setLoop: 1 setCel: 0)
 				(Print 51 10 #draw)
 				(Print 51 11 #at -1 152)
 				(= seconds 5)
 			)
 			(4
-				(henchwoman setLoop: 2 setCycle: Forward)
+				(aHench setLoop: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(5 (Print 51 12) (= seconds 3))
 			(6
 				(Print 51 13)
-				(henchwoman setLoop: 0 cel: 0 setCycle: Forward cycleSpeed: 2)
+				(aHench setLoop: 0 cel: 0 setCycle: Forward cycleSpeed: 2)
 				(= seconds (Random 10 40))
 				(= state 0)
 			)
@@ -234,7 +234,7 @@
 					ignoreActors:
 					addToPic:
 				)
-				(henchwoman
+				(aHench
 					view: henchView
 					ignoreActors: 0
 					loop: 0
@@ -249,12 +249,12 @@
 			)
 			(8
 				(Print 51 14)
-				(henchwoman setMotion: MoveTo 333 118 self)
+				(aHench setMotion: MoveTo 333 118 self)
 				(= henchwomanBeckons TRUE)
 			)
 			(9 (= seconds 10))
 			(10
-				(henchwoman dispose:)
+				(aHench dispose:)
 				(= henchView 0)
 				(= henchwomanIsHere FALSE)
 				(= henchwomanBeckons FALSE)

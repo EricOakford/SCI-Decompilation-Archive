@@ -15,9 +15,9 @@
 
 (local
 	local0
-	shore
-	seagull
-	sparkle
+	aLA
+	aBird
+	aSparkle
 )
 (instance theSound of Sound
 	(properties
@@ -36,7 +36,7 @@
 		(Load SOUND 116)
 		(theSound init:)
 		(super init:)
-		((= sparkle (Prop new:))
+		((= aSparkle (Prop new:))
 			view: 815
 			setLoop: 0
 			setPri: 15
@@ -45,7 +45,7 @@
 			hide:
 			setScript: sparkleScript
 		)
-		((= shore (Actor new:))
+		((= aLA (Actor new:))
 			view: 239
 			setLoop: 1
 			setPri: 1
@@ -54,7 +54,7 @@
 			moveSpeed: 2
 			init:
 		)
-		((= seagull (Actor new:))
+		((= aBird (Actor new:))
 			view: 239
 			setLoop: 0
 			setPri: 4
@@ -64,7 +64,7 @@
 			setCycle: Forward
 		)
 		(HandsOff)
-		(= currentStatus egoBoardedShip)
+		(= currentStatus egoBOARDSHIP)
 		(self setScript: rm28Script)
 	)
 )
@@ -80,7 +80,7 @@
 		(switch (= state newState)
 			(0
 				(theSound play: self)
-				(shore setMotion: MoveTo -63 38 self)
+				(aLA setMotion: MoveTo -63 38 self)
 				(= seconds 5)
 			)
 			(1
@@ -91,11 +91,11 @@
 			)
 			(2 (= seconds 2))
 			(3
-				(seagull posn: 222 18 setMotion: MoveTo -23 19 self)
+				(aBird posn: 222 18 setMotion: MoveTo -23 19 self)
 				(= seconds 60)
 			)
 			(5
-				(IncrementGamePhase phaseSHIP 9 30)
+				(SetRegionTimer rgSHIP 9 30)
 				(curRoom newRoom: 31)
 			)
 		)
@@ -124,7 +124,7 @@
 						(= theY 8)
 					)
 				)
-				(sparkle
+				(aSparkle
 					posn: theX theY
 					cel: 0
 					cycleSpeed: (Random 0 2)
@@ -133,7 +133,7 @@
 				)
 			)
 			(2
-				(sparkle hide:)
+				(aSparkle hide:)
 				(self changeState: 0)
 			)
 		)

@@ -25,12 +25,12 @@
 
 (local
 	mamaInRoom
-	porthole
-	mamaOnBed
-	wardrobe
-	drawer
-	drawerOpen
-	wardrobeOpen
+	aPorthole
+	mama
+	aCloset
+	aDrawer
+	drawerIsOpen
+	closetIsOpen
 	roomState
 )
 (instance rm33 of Room
@@ -72,7 +72,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= porthole (Prop new:))
+		((= aPorthole (Prop new:))
 			view: 305
 			loop: 1
 			setPri: 4
@@ -91,7 +91,7 @@
 				((== 1 (++ metMama))
 					(= mamaInRoom 1)
 					(= roomState firstMama)
-					((= mamaOnBed (Extra new:))
+					((= mama (Extra new:))
 						view: 305
 						setLoop: 4
 						setPri: 7
@@ -106,7 +106,7 @@
 				((> 3 (Random 1 5)) (= roomState notThisTime))
 				((> 3 (Random 1 5))
 					(= roomState 2)
-					((= mamaOnBed (Extra new:))
+					((= mama (Extra new:))
 						view: 305
 						setLoop: 4
 						setPri: 7
@@ -120,7 +120,7 @@
 				)
 				(else
 					(= roomState mamaComingLater)
-					((= mamaOnBed (Actor new:))
+					((= mama (Actor new:))
 						view: 306
 						loop: 3
 						posn: 154 125
@@ -134,7 +134,7 @@
 				)
 			)
 		)
-		((= wardrobe (Door new:))
+		((= aCloset (Door new:))
 			view: 305
 			loop: 3
 			setPri: 6
@@ -144,7 +144,7 @@
 			roomCtrl: 0
 			init:
 		)
-		((= drawer (Door new:))
+		((= aDrawer (Door new:))
 			view: 305
 			setLoop: 2
 			setPri: 5
@@ -155,7 +155,7 @@
 			init:
 		)
 		(if debugging
-			(AnimateCast)
+			(RedrawCast)
 			(switch roomState
 				(firstMama (Print 33 0 #at -1 20))
 				(heresMama (Print 33 1 #at -1 20))
@@ -180,10 +180,10 @@
 			(self cue:)
 		)
 		(if
-		(and mamaInRoom (== currentStatus egoNormal) (> (ego x?) 170))
-			(= currentStatus egoStopped)
+		(and mamaInRoom (== currentStatus egoNORMAL) (> (ego x?) 170))
+			(= currentStatus egoSTOPPED)
 			(HandsOff)
-			(mamaOnBed view: 308 posn: 173 104)
+			(mama view: 308 posn: 173 104)
 			(Print 33 4)
 			(self changeState: 12)
 			(whipScript changeState: 5)
@@ -218,20 +218,20 @@
 			)
 			(6
 				(= seconds 0)
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(= mamaInRoom 3)
-				(mamaOnBed loop: 3 show: setMotion: MoveTo 108 113 self)
+				(mama loop: 3 show: setMotion: MoveTo 108 113 self)
 				(ego setScript: whipScript)
 				(Print 33 43 #at -1 15 #width 280 #draw)
 				(Print 33 44)
 				(Print 33 45)
 			)
 			(7
-				(mamaOnBed loop: 0)
+				(mama loop: 0)
 				(Print 33 46 #at -1 15 #width 280 #draw)
 			)
 			(8
-				(mamaOnBed
+				(mama
 					view: 307
 					setLoop: 0
 					posn: 107 112
@@ -242,7 +242,7 @@
 				)
 			)
 			(9
-				(mamaOnBed
+				(mama
 					setLoop: 1
 					cel: 0
 					posn: 105 112
@@ -254,12 +254,12 @@
 				(Print 33 47 #at -1 20)
 			)
 			(10
-				(mamaOnBed setLoop: 1 setCel: 255)
+				(mama setLoop: 1 setCel: 255)
 				(whipScript changeState: 3)
 			)
 			(11
-				(wardrobe setCel: 255)
-				(mamaOnBed
+				(aCloset setCel: 255)
+				(mama
 					view: 308
 					setLoop: 0
 					setCycle: Walk
@@ -269,14 +269,14 @@
 				(Print 33 48 #draw)
 			)
 			(12
-				(mamaOnBed setLoop: 1 setCycle: Forward cycleSpeed: 1)
+				(mama setLoop: 1 setCycle: Forward cycleSpeed: 1)
 				(= seconds 7)
 			)
 			(13
 				(Print 33 49)
 				(Print 33 50)
 				(Print 33 51 #at -1 152)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(14 (= mamaInRoom 2) (= seconds 5))
 			(15
@@ -295,7 +295,7 @@
 		(if (Said 'look>')
 			(if (Said '/(door<cabinet),cabinet')
 				(cond 
-					((== wardrobeOpen FALSE) (Print 33 6))
+					((== closetIsOpen FALSE) (Print 33 6))
 					(mamaInRoom (Print 33 7))
 					(else (Print 33 8))
 				)
@@ -303,11 +303,11 @@
 			(if (Said '/door') (Print 33 9))
 			(if (Said '/bureau,new,buffet,bureau')
 				(cond 
-					((not (& (ego onControl: origin) $0020)) (PrintNotCloseEnough))
-					((== drawerOpen FALSE) (Print 33 6))
+					((not (& (ego onControl: origin) $0020)) (NotClose))
+					((== drawerIsOpen FALSE) (Print 33 6))
 					(mamaInRoom (Print 33 7))
 					(else
-						(PrintOk)
+						(Ok)
 						(if ((inventory at: iSewingKit) ownedBy: curRoomNum)
 							(Print 33 10)
 						else
@@ -343,18 +343,18 @@
 				(cond 
 					((& (ego onControl:) $0002) (Print 33 19))
 					((ego inRect: 127 117 333 222) (Print 33 20))
-					((not (& (ego onControl: origin) $0010)) (PrintNotCloseEnough))
-					((== wardrobeOpen TRUE) (PrintItIs))
+					((not (& (ego onControl: origin) $0010)) (NotClose))
+					((== closetIsOpen TRUE) (ItIs))
 					(mamaInRoom (Print 33 7))
-					(else (PrintOk) (= wardrobeOpen TRUE) (wardrobe force: 1 open:))
+					(else (Ok) (= closetIsOpen TRUE) (aCloset force: 1 open:))
 				)
 			)
 			(if (Said '/bureau,new,buffet,bureau')
 				(cond 
-					((not (& (ego onControl: 1) $0020)) (PrintNotCloseEnough))
-					((== drawerOpen TRUE) (PrintItIs))
+					((not (& (ego onControl: 1) $0020)) (NotClose))
+					((== drawerIsOpen TRUE) (ItIs))
 					(mamaInRoom (Print 33 7))
-					(else (PrintOk) (= drawerOpen TRUE) (drawer force: 1 open:))
+					(else (Ok) (= drawerIsOpen TRUE) (aDrawer force: 1 open:))
 				)
 			)
 		)
@@ -363,29 +363,29 @@
 				(cond 
 					((& (ego onControl:) $0002) (Print 33 21))
 					((ego inRect: 127 117 333 222) (Print 33 22))
-					((not (& (ego onControl: origin) $0010)) (PrintNotCloseEnough))
-					((== wardrobeOpen FALSE) (PrintItIs))
+					((not (& (ego onControl: origin) $0010)) (NotClose))
+					((== closetIsOpen FALSE) (ItIs))
 					(mamaInRoom (Print 33 23))
-					(else (PrintOk) (= wardrobeOpen FALSE) (wardrobe force: 1 close:))
+					(else (Ok) (= closetIsOpen FALSE) (aCloset force: 1 close:))
 				)
 			)
 			(if (Said '/bureau,new,buffet,bureau')
 				(cond 
-					((not (& (ego onControl: origin) $0020)) (PrintNotCloseEnough))
-					((== drawerOpen FALSE) (PrintItIs))
+					((not (& (ego onControl: origin) $0020)) (NotClose))
+					((== drawerIsOpen FALSE) (ItIs))
 					(mamaInRoom (Print 33 23))
-					(else (PrintOk) (= drawerOpen FALSE) (drawer force: 1 close:))
+					(else (Ok) (= drawerIsOpen FALSE) (aDrawer force: 1 close:))
 				)
 			)
 		)
 		(if (Said 'get/chain,dirt') (Print 33 24))
 		(if (Said 'get/kit')
 			(cond 
-				((not (& (ego onControl: origin) $0020)) (PrintNotCloseEnough))
-				((not ((inventory at: iSewingKit) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((!= drawerOpen TRUE) (Print 33 14))
-				((or mamaInRoom (!= currentStatus egoNormal)) (PrintNotNow))
-				(else (PrintOk) (ego get: 12) (theGame changeScore: 6))
+				((not (& (ego onControl: origin) $0020)) (NotClose))
+				((not ((inventory at: iSewingKit) ownedBy: curRoomNum)) (AlreadyTook))
+				((!= drawerIsOpen TRUE) (Print 33 14))
+				((or mamaInRoom (!= currentStatus egoNORMAL)) (NotNow))
+				(else (Ok) (ego get: 12) (theGame changeScore: 6))
 			)
 		)
 		(if

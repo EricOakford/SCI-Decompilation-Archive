@@ -15,11 +15,11 @@
 
 (local
 	local0
-	firePit
-	villager1
-	kalalau
-	villager3
-	villager2
+	aCampfire
+	aArm
+	aKalalau
+	aBearer
+	aWeaver
 )
 (instance rm77 of Room
 	(properties
@@ -39,7 +39,7 @@
 		(cond 
 			((== endGameState 104)
 				(= endGameState 105)
-				(= currentStatus 22)
+				(= currentStatus egoWONGAME)
 				(rm77Script changeState: 11)
 				(Load VIEW 704)
 				((View new:)
@@ -48,7 +48,7 @@
 					posn: 165 142
 					addToPic:
 				)
-				((= kalalau (Actor new:))
+				((= aKalalau (Actor new:))
 					view: 704
 					ignoreActors:
 					illegalBits: 0
@@ -61,10 +61,10 @@
 			)
 			((== endGameState endMEETKALALAU)
 				(= endGameState endMEETTRIBE)
-				(= currentStatus egoMeetingTribe)
+				(= currentStatus egoMEETTRIBE)
 				(rm77Script changeState: 1)
 				(Load VIEW 709)
-				((= firePit (Prop new:))
+				((= aCampfire (Prop new:))
 					view: 708
 					setLoop: 0
 					setPri: 10
@@ -81,7 +81,7 @@
 					setPri: (CoordPri 138)
 					addToPic:
 				)
-				((= villager1 (Extra new:))
+				((= aArm (Extra new:))
 					view: 709
 					ignoreActors:
 					loop: 1
@@ -93,14 +93,14 @@
 					isExtra: 1
 					init:
 				)
-				((= villager2 (Extra new:))
+				((= aWeaver (Extra new:))
 					view: 709
 					loop: 7
 					posn: 153 107
 					cycleSpeed: 1
 					init:
 				)
-				((= villager3 (Actor new:))
+				((= aBearer (Actor new:))
 					view: 709
 					ignoreActors:
 					illegalBits: 0
@@ -109,7 +109,7 @@
 					posn: 68 144
 					init:
 				)
-				((= kalalau (Actor new:))
+				((= aKalalau (Actor new:))
 					view: 704
 					ignoreActors:
 					illegalBits: 0
@@ -150,12 +150,12 @@
 		(switch (= state newState)
 			(1 (= cycles 3))
 			(2
-				(villager3 setMotion: MoveTo 123 145 self)
+				(aBearer setMotion: MoveTo 123 145 self)
 				(= cycles 15)
 			)
 			(3 (Print 77 8))
 			(4
-				(villager3 setLoop: 4 cel: 0 setCycle: CycleTo 7 1 self)
+				(aBearer setLoop: 4 cel: 0 setCycle: CycleTo 7 1 self)
 			)
 			(5
 				((View new:)
@@ -165,10 +165,10 @@
 					posn: 137 144
 					addToPic:
 				)
-				(villager3 setCycle: EndLoop self)
+				(aBearer setCycle: EndLoop self)
 			)
 			(6
-				(villager3
+				(aBearer
 					setLoop: 5
 					setCycle: Walk
 					setMotion: MoveTo -33 145 self
@@ -180,7 +180,7 @@
 			(9
 				(Print 77 12)
 				(Print 77 13)
-				(kalalau setMotion: MoveTo 4 148 self)
+				(aKalalau setMotion: MoveTo 4 148 self)
 				(ego setMotion: MoveTo 4 138)
 			)
 			(10 (curRoom newRoom: 76))
@@ -188,7 +188,7 @@
 			(12
 				(Print 77 14)
 				(Print 77 15)
-				(kalalau setMotion: MoveTo -5 132 self)
+				(aKalalau setMotion: MoveTo -5 132 self)
 			)
 			(13
 				(Print 77 16)
@@ -238,9 +238,9 @@
 		)
 		(if (Said 'get/>')
 			(cond 
-				((!= currentStatus egoNormal) (PrintNotNow))
-				((not ((inventory at: iAshes) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((not (ego inRect: 144 126 186 148)) (PrintNotCloseEnough))
+				((!= currentStatus egoNORMAL) (NotNow))
+				((not ((inventory at: iAshes) ownedBy: curRoomNum)) (AlreadyTook))
+				((not (ego inRect: 144 126 186 148)) (NotClose))
 				(else (ego get: iAshes) (theGame changeScore: 6) (Print 77 7))
 			)
 		)

@@ -18,15 +18,15 @@
 
 (local
 	local0
-	airplane
+	aPlane
 	gate
-	conveyor4
-	conveyor3
-	conveyor2
-	conveyor1
-	traveler2
-	agent
-	traveler1
+	aConveyor1
+	aConveyor2
+	aConveyor3
+	aConveyor4
+	aAgentFar
+	aAgentNear
+	aTraveler
 )
 (instance theSound of Sound
 	(properties
@@ -72,7 +72,7 @@
 			setPri: 11
 			addToPic:
 		)
-		((= conveyor1 (Prop new:))
+		((= aConveyor4 (Prop new:))
 			view: 513
 			setLoop: 5
 			setPri: 3
@@ -82,7 +82,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= conveyor2 (Prop new:))
+		((= aConveyor3 (Prop new:))
 			view: 513
 			setLoop: 4
 			setPri: 4
@@ -92,7 +92,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= conveyor3 (Prop new:))
+		((= aConveyor2 (Prop new:))
 			view: 513
 			setLoop: 3
 			setPri: 4
@@ -102,7 +102,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= conveyor4 (Prop new:))
+		((= aConveyor1 (Prop new:))
 			view: 513
 			setLoop: 2
 			setPri: 10
@@ -112,7 +112,7 @@
 			isExtra: 1
 			init:
 		)
-		((= agent (Prop new:))
+		((= aAgentNear (Prop new:))
 			view: 514
 			setLoop: 0
 			setCel: 0
@@ -121,7 +121,7 @@
 			stopUpd:
 			init:
 		)
-		((= traveler2 (Prop new:))
+		((= aAgentFar (Prop new:))
 			view: 514
 			setLoop: 1
 			setCel: 0
@@ -130,7 +130,7 @@
 			stopUpd:
 			init:
 		)
-		((= traveler1 (Actor new:))
+		((= aTraveler (Actor new:))
 			view: 514
 			setLoop: 3
 			setPri: 2
@@ -141,7 +141,7 @@
 			init:
 			hide:
 		)
-		((= airplane (Airplane new:))
+		((= aPlane (Airplane new:))
 			view: 511
 			setCel: 0
 			startX: 208
@@ -162,7 +162,7 @@
 			(Load SOUND 5)
 			(theSound play:)
 			(HandsOff)
-			(= currentStatus egoSuitcaseBombed)
+			(= currentStatus egoSUITCASEBOMB)
 			(rm53Script changeState: 9)
 		)
 		(ego init:)
@@ -205,20 +205,20 @@
 				(= seconds 3)
 			)
 			(2
-				(agent setCycle: Forward)
+				(aAgentNear setCycle: Forward)
 				(= seconds 3)
 			)
 			(3
-				(agent setCel: 0)
+				(aAgentNear setCel: 0)
 				(Print 53 19 #draw)
 				(= seconds 3)
 			)
 			(4
-				(agent setCycle: Forward)
+				(aAgentNear setCycle: Forward)
 				(= seconds 3)
 			)
 			(5
-				(agent setCel: 0)
+				(aAgentNear setCel: 0)
 				(Print 53 20 #draw)
 				(= seconds 3)
 			)
@@ -236,12 +236,12 @@
 				(= seconds 3)
 			)
 			(7
-				(agent setCycle: Forward)
+				(aAgentNear setCycle: Forward)
 				(= seconds 3)
 			)
 			(8
 				(User canControl: 1 canInput: 1)
-				(agent setCel: 0 stopUpd:)
+				(aAgentNear setCel: 0 stopUpd:)
 				(ego setLoop: -1)
 				(if (ego has: 17) (Print 53 23) (Print 53 24))
 				(Print 53 25 #draw)
@@ -269,7 +269,7 @@
 	
 	(method (handleEvent event &tmp inventorySaidMe)
 		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'give,look,throw,conceal,conceal>')
@@ -281,12 +281,12 @@
 					)
 					(event claimed: 0)
 				)
-				((not (ego inRect: 171 143 198 149)) (PrintNotCloseEnough))
+				((not (ego inRect: 171 143 198 149)) (NotClose))
 				((== (inventory indexOf: inventorySaidMe) 17) (Print 53 0))
 				((!= (inventory indexOf: inventorySaidMe) 7) (Print 53 1))
 				((== currentEgoView 149) (Print 53 2) (Print 53 3))
-				((not global137)
-					(= global137 1)
+				((not passedCustoms)
+					(= passedCustoms TRUE)
 					(theGame changeScore: 5)
 					(self changeState: 1)
 				)
@@ -334,7 +334,7 @@
 		(switch (= state newState)
 			(0 (= seconds 3))
 			(1
-				(traveler1
+				(aTraveler
 					posn: 128 36
 					show:
 					setCycle: Walk
@@ -342,35 +342,35 @@
 				)
 			)
 			(2
-				(traveler1
-					setLoop: (+ (traveler1 loop?) 1)
+				(aTraveler
+					setLoop: (+ (aTraveler loop?) 1)
 					cel: 0
 					setCycle: EndLoop self
 				)
 			)
 			(3
-				(traveler2 setCycle: EndLoop self)
+				(aAgentFar setCycle: EndLoop self)
 			)
 			(4
-				(traveler2 setLoop: 2 setCycle: Forward)
+				(aAgentFar setLoop: 2 setCycle: Forward)
 				(= seconds 10)
 			)
 			(5
-				(traveler2 setLoop: 1 setCel: 255 setCycle: BegLoop self)
+				(aAgentFar setLoop: 1 setCel: 255 setCycle: BegLoop self)
 			)
 			(6
-				(traveler2 stopUpd:)
-				(traveler1 setCycle: BegLoop self)
+				(aAgentFar stopUpd:)
+				(aTraveler setCycle: BegLoop self)
 			)
 			(7
-				(traveler1
-					setLoop: (- (traveler1 loop?) 1)
+				(aTraveler
+					setLoop: (- (aTraveler loop?) 1)
 					setCycle: Walk
 					setMotion: MoveTo 203 37 self
 				)
 			)
 			(8
-				(traveler1 setLoop: (if (== (traveler1 loop?) 3) 5 else 3))
+				(aTraveler setLoop: (if (== (aTraveler loop?) 3) 5 else 3))
 				(self changeState: 0)
 			)
 		)

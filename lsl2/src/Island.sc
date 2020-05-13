@@ -27,7 +27,7 @@
 		)
 		(if (ego has: iVine)
 			(if (Said '</landscape')
-				(PrintOk)
+				(Ok)
 				(Print ISLAND 1)
 				(Print ISLAND 2 #at -1 152)
 				(ego put: iVine -1)

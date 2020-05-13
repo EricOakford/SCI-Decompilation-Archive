@@ -13,7 +13,7 @@
 )
 
 (local
-	barSign
+	aSign
 )
 (instance rm21 of Room
 	(properties
@@ -46,7 +46,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= barSign (Prop new:))
+		((= aSign (Prop new:))
 			view: 241
 			setLoop: 0
 			setPri: 5

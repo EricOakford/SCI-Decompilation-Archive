@@ -17,8 +17,8 @@
 	local0
 	throwingAtIce
 	local2
-	refrigerationCoil
-	piss
+	aCoil
+	aYellowName
 	newBassSetter
 )
 (instance rm81 of Room
@@ -36,7 +36,7 @@
 		(Load VIEW 31)
 		(Load VIEW 30)
 		(super init:)
-		((= refrigerationCoil (Prop new:))
+		((= aCoil (Prop new:))
 			view: 726
 			setLoop: 1
 			posn: 151 122
@@ -45,7 +45,7 @@
 			init:
 			hide:
 		)
-		((= piss (Prop new:))
+		((= aYellowName (Prop new:))
 			view: 726
 			setLoop: 0
 			setCel: 0
@@ -73,7 +73,7 @@
 				(and
 					(& (ego onControl: origin) $0002)
 					(== throwingAtIce 0)
-					(== currentStatus egoNormal)
+					(== currentStatus egoNORMAL)
 				)
 				(= currentStatus 1017)
 				(self changeState: 1)
@@ -160,7 +160,7 @@
 				)
 			)
 			(9
-				(refrigerationCoil posn: 153 118 cel: 0 setCycle: EndLoop self show:)
+				(aCoil posn: 153 118 cel: 0 setCycle: EndLoop self show:)
 				(ego view: 182 setLoop: 0 setCycle: Forward)
 				(= cycles 10)
 			)
@@ -178,7 +178,7 @@
 				(Print 81 15 #at -1 20)
 				(Print 81 16 #at -1 20)
 				(if (> filthLevel 10) (Print 81 17 #at -1 152))
-				(refrigerationCoil hide:)
+				(aCoil hide:)
 				((View new:)
 					view: 726
 					loop: 1
@@ -190,11 +190,11 @@
 				(ego view: 183 cel: 0 posn: 156 117 setCycle: EndLoop self)
 			)
 			(12
-				(refrigerationCoil posn: 153 102 cel: 0 setCycle: EndLoop self show:)
+				(aCoil posn: 153 102 cel: 0 setCycle: EndLoop self show:)
 				(ego view: 182 setCycle: Forward)
 			)
 			(13
-				(refrigerationCoil hide:)
+				(aCoil hide:)
 				((View new:)
 					view: 726
 					loop: 1
@@ -206,11 +206,11 @@
 				(ego view: 183 cel: 0 posn: 156 101 setCycle: EndLoop self)
 			)
 			(14
-				(refrigerationCoil posn: 153 86 cel: 0 setCycle: EndLoop self show:)
+				(aCoil posn: 153 86 cel: 0 setCycle: EndLoop self show:)
 				(ego view: 182 setCycle: Forward)
 			)
 			(15
-				(refrigerationCoil hide:)
+				(aCoil hide:)
 				((View new:)
 					view: 726
 					loop: 1
@@ -222,11 +222,11 @@
 				(ego view: 183 cel: 0 posn: 156 85 setCycle: EndLoop self)
 			)
 			(16
-				(refrigerationCoil posn: 153 70 cel: 0 setCycle: EndLoop self show:)
+				(aCoil posn: 153 70 cel: 0 setCycle: EndLoop self show:)
 				(ego view: 182 setCycle: Forward)
 			)
 			(17
-				(refrigerationCoil hide:)
+				(aCoil hide:)
 				((View new:)
 					view: 726
 					loop: 1
@@ -256,11 +256,11 @@
 				(= local2 1)
 				(ego setMotion: 0)
 				(HandsOff)
-				(piss show: setCycle: EndLoop self)
+				(aYellowName show: setCycle: EndLoop self)
 			)
 			(21
 				(NormalEgo)
-				(piss hide:)
+				(aYellowName hide:)
 			)
 		)
 	)
@@ -292,12 +292,12 @@
 		(if (Said 'run,climb') (Print 81 7))
 		(if (Said 'throw,apply/>')
 			(cond 
-				((not (ego has: iAshes)) (PrintDontHaveIt))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((not (ego has: iAshes)) (DontHave))
+				((!= currentStatus egoNORMAL) (NotNow))
 				((not (ego inRect: 127 130 202 154)) (Print 81 8))
 				(else
 					(theGame changeScore: 10)
-					(PrintOk)
+					(Ok)
 					(= throwingAtIce iAshes)
 					(self changeState: 8)
 				)
@@ -305,12 +305,12 @@
 		)
 		(if (Said 'throw,apply/beach')
 			(cond 
-				((not (ego has: iSand)) (PrintDontHaveIt))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((not (ego has: iSand)) (DontHave))
+				((!= currentStatus egoNORMAL) (NotNow))
 				((not (ego inRect: 127 130 202 154)) (Print 81 8))
 				(else
 					(theGame changeScore: 10)
-					(PrintOk)
+					(Ok)
 					(= throwingAtIce iSand)
 					(self changeState: 8)
 				)

@@ -14,11 +14,11 @@
 )
 
 (local
-	filter
-	bikiniTop
-	innerTubeGuy
-	fartBubbles
-	piss
+	aSkimmer
+	aBra
+	aMan
+	aFart
+	aPiss
 	pissedInPool
 	drownTimer
 )
@@ -33,7 +33,7 @@
 		(Load VIEW 136)
 		(Load VIEW 314)
 		(super init:)
-		((= filter (Prop new:))
+		((= aSkimmer (Prop new:))
 			view: 314
 			setLoop: 2
 			setPri: 2
@@ -44,7 +44,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= innerTubeGuy (Actor new:))
+		((= aMan (Actor new:))
 			view: 314
 			setLoop: 0
 			setPri: 3
@@ -58,7 +58,7 @@
 			init:
 			setMotion: Wander
 		)
-		((= fartBubbles (Actor new:))
+		((= aFart (Actor new:))
 			view: 314
 			setLoop: 3
 			setPri: 5
@@ -68,7 +68,7 @@
 			hide:
 			setScript: fartScript
 		)
-		((= piss (Actor new:))
+		((= aPiss (Actor new:))
 			view: 314
 			setLoop: 4
 			setPri: 10
@@ -78,7 +78,7 @@
 			init:
 		)
 		(if ((inventory at: iBikiniTop) ownedBy: curRoomNum)
-			((= bikiniTop (View new:))
+			((= aBra (View new:))
 				view: 314
 				setLoop: 1
 				setPri: 2
@@ -100,7 +100,7 @@
 			init:
 		)
 		(User canControl: TRUE canInput: TRUE)
-		(= currentStatus egoDiving)
+		(= currentStatus egoDIVING)
 		(self setRegions: 300 setScript: rm134Script)
 	)
 )
@@ -111,8 +111,8 @@
 	(method (doit)
 		(super doit:)
 		(if (== (++ drownTimer) 200) (Print 134 0))
-		(if (and (== drownTimer 400) (!= currentStatus 1001))
-			(= currentStatus egoDead)
+		(if (and (== drownTimer 400) (!= currentStatus egoDEAD))
+			(= currentStatus egoDEAD)
 			(ego hide:)
 			(Print 134 1 #draw)
 		)
@@ -123,7 +123,7 @@
 			(0
 				(if (and (not pissedInPool) (== 5 (Random 1 22)))
 					(= pissedInPool TRUE)
-					(piss
+					(aPiss
 						cel: 0
 						posn: (+ (ego x?) 7) (- (ego y?) 41)
 						setCycle: EndLoop
@@ -135,7 +135,7 @@
 				(= cycles 4)
 				(if (== pissedInPool TRUE)
 					(= pissedInPool 255)
-					(piss posn: 999 999)
+					(aPiss posn: 999 999)
 					(Print 134 9)
 				)
 			)
@@ -178,11 +178,15 @@
 		(if (Said 'bathing,dive,(climb<off)') (Print 134 7))
 		(if (Said 'get/(,bikini,job,((<bikini)')
 			(cond 
-				((not ((inventory at: iBikiniTop) ownedBy: curRoomNum)) (Print 134 8))
-				((not (ego inRect: 60 130 105 150)) (PrintNotCloseEnough))
+				((not ((inventory at: iBikiniTop) ownedBy: curRoomNum))
+					(Print 134 8)
+				)
+				((not (ego inRect: 60 130 105 150))
+					(NotClose)
+				)
 				(else
-					(PrintOk)
-					(bikiniTop dispose:)
+					(Ok)
+					(aBra dispose:)
 					(ego get: iBikiniTop)
 					(theGame changeScore: 7)
 				)
@@ -198,15 +202,15 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 22 44)))
 			(1
-				(fartBubbles
-					posn: (+ (innerTubeGuy x?) 8) (- (innerTubeGuy y?) 4)
+				(aFart
+					posn: (+ (aMan x?) 8) (- (aMan y?) 4)
 					cel: 0
 					setCycle: EndLoop self
 					show:
 				)
 			)
 			(2
-				(fartBubbles hide:)
+				(aFart hide:)
 				(self changeState: 0)
 			)
 		)

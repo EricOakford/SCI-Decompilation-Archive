@@ -22,10 +22,10 @@
 	local7
 	local8
 	startingRoom
-	dressView
-	faceView
-	hairView
-	earringView
+	aBody
+	aFace
+	aHair
+	aEar
 )
 (instance rm10 of Room
 	(properties
@@ -126,7 +126,7 @@
 			setPri: 7
 			addToPic:
 		)
-		((= dressView (View new:))
+		((= aBody (View new:))
 			view: 60
 			loop: 0
 			cel: 0
@@ -134,7 +134,7 @@
 			posn: 154 980
 			init:
 		)
-		((= faceView (View new:))
+		((= aFace (View new:))
 			view: 60
 			loop: 1
 			cel: 5
@@ -142,7 +142,7 @@
 			posn: 154 980
 			init:
 		)
-		((= hairView (View new:))
+		((= aHair (View new:))
 			view: 60
 			loop: 2
 			cel: 1
@@ -150,7 +150,7 @@
 			posn: 154 980
 			init:
 		)
-		((= earringView (View new:))
+		((= aEar (View new:))
 			view: 60
 			loop: 3
 			cel: 4
@@ -288,11 +288,11 @@
 				(= phoneNumber {555-5834})
 			)
 		)
-		(dressView posn: 154 80 setLoop: 0 setCel: dress)
-		(faceView posn: 154 80 setLoop: 1 setCel: face)
-		(hairView posn: 154 80 setLoop: 2 setCel: hair)
-		(earringView posn: 154 80 setLoop: 3 setCel: earring)
-		(AnimateCast)
+		(aBody posn: 154 80 setLoop: 0 setCel: dress)
+		(aFace posn: 154 80 setLoop: 1 setCel: face)
+		(aHair posn: 154 80 setLoop: 2 setCel: hair)
+		(aEar posn: 154 80 setLoop: 3 setCel: earring)
+		(RedrawCast)
 		(Display 10 0
 			p_at 60 176
 			p_color 1

@@ -14,9 +14,9 @@
 )
 
 (local
-	local0
-	snake
-	snakeEatingEgo
+	putStickInSnake
+	aSnake
+	aBurp
 )
 
 (enum 1
@@ -40,7 +40,7 @@
 			(Load VIEW 174)
 			(Load VIEW 172)
 			(Load VIEW 28)
-			((= snake (Actor new:))
+			((= aSnake (Actor new:))
 				view: 701
 				illegalBits: 0
 				ignoreActors:
@@ -52,7 +52,7 @@
 				stopUpd:
 				init:
 			)
-			((= snakeEatingEgo (Prop new:))
+			((= aBurp (Prop new:))
 				view: 172
 				ignoreActors:
 				setLoop: 4
@@ -83,7 +83,7 @@
 			(and
 				(& (ego onControl:) $0002)
 				(== snakeState 0)
-				(== currentStatus egoNormal)
+				(== currentStatus egoNORMAL)
 			)
 			(self changeState: 1)
 		)
@@ -92,16 +92,16 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(= snakeState snakeHERE)
 				(Print 72 13 #at -1 20)
 				(User canControl: FALSE canInput: TRUE)
 				(ego setMotion: 0 posn: 142 152 setLoop: 2)
-				(snake setCycle: EndLoop self)
+				(aSnake setCycle: EndLoop self)
 			)
 			(2
-				(if (!= local0 1) (Print 72 14 #at -1 20 #draw))
-				(snake
+				(if (!= putStickInSnake 1) (Print 72 14 #at -1 20 #draw))
+				(aSnake
 					posn: 130 144
 					setLoop: 1
 					cel: 0
@@ -111,10 +111,10 @@
 			(3
 				(ego hide:)
 				(User canInput: FALSE)
-				(if local0
+				(if putStickInSnake
 					(self changeState: 12)
 				else
-					(snake
+					(aSnake
 						view: 172
 						setLoop: 0
 						posn: 138 152
@@ -125,7 +125,7 @@
 				)
 			)
 			(4
-				(snake
+				(aSnake
 					setLoop: 1
 					posn: 140 152
 					cel: 0
@@ -135,7 +135,7 @@
 				(= seconds 5)
 			)
 			(5
-				(snake
+				(aSnake
 					setLoop: 2
 					cycleSpeed: 3
 					cel: 0
@@ -143,25 +143,25 @@
 				)
 			)
 			(6
-				(snake cycleSpeed: 2 setLoop: 3 setCycle: Forward)
+				(aSnake cycleSpeed: 2 setLoop: 3 setCycle: Forward)
 				(= seconds 3)
 			)
 			(7 (Print 72 15) (= seconds 3))
 			(8
-				(snakeEatingEgo show: setCycle: EndLoop self)
+				(aBurp show: setCycle: EndLoop self)
 			)
 			(9 (= cycles 10))
 			(10
-				(snakeEatingEgo setCycle: BegLoop self)
+				(aBurp setCycle: BegLoop self)
 			)
 			(11
-				(snakeEatingEgo dispose:)
+				(aBurp dispose:)
 				(Print 72 16 #draw)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(12
 				(= snakeState snakeSTICKINMOUTH)
-				(snake
+				(aSnake
 					view: 174
 					setLoop: 0
 					cycleSpeed: 2
@@ -173,7 +173,7 @@
 			)
 			(13 (= seconds 3))
 			(14
-				(snake
+				(aSnake
 					view: 174
 					setLoop: 1
 					cycleSpeed: 3
@@ -185,7 +185,7 @@
 			)
 			(15
 				(ego posn: 146 159 setLoop: 0 show: put: 28 -1)
-				(snake
+				(aSnake
 					setPri: -1
 					setLoop: 2
 					posn: 142 114
@@ -194,7 +194,7 @@
 				)
 			)
 			(16
-				(snake dispose:)
+				(aSnake dispose:)
 				(= snakeState snakeGONE)
 				(NormalEgo)
 			)
@@ -213,15 +213,15 @@
 				(Said '(get<off),apply,stick,carry,insert,conceal/stick')
 			)
 			(cond 
-				((not (ego has: iStoutStick)) (PrintDontHaveIt))
-				((!= currentStatus egoStopped) (PrintNotCloseEnough))
-				(else (PrintOk) (Print 72 0 #at -1 20) (= local0 1))
+				((not (ego has: iStoutStick)) (DontHave))
+				((!= currentStatus egoSTOPPED) (NotClose))
+				(else (Ok) (Print 72 0 #at -1 20) (= putStickInSnake TRUE))
 			)
 		)
 		(if (Said 'apply,swing,get/landscape') (Print 72 1))
 		(if (not snakeState)
 			(if (Said 'attack/anaconda/stick')
-				(if (ego has: 28) (Print 72 2) else (PrintDontHaveIt))
+				(if (ego has: 28) (Print 72 2) else (DontHave))
 			)
 			(if (Said 'attack/anaconda') (Print 72 3))
 			(if (Said 'crawl') (Print 72 4))

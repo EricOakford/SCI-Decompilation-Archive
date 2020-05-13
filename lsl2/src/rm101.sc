@@ -15,17 +15,17 @@
 
 (local
 	receptionist
-	guy
-	doll
-	westDoor
-	eastDoor
-	northDoor
-	myNum1
-	myNum2
-	myNum3
-	myNum4
-	myNum5
-	myNum6
+	aGuy
+	aDoll
+	aDoorWest
+	aDoorEast
+	aDoorNorth
+	inputNum1
+	inputNum2
+	inputNum3
+	inputNum4
+	inputNum5
+	inputNum6
 	winningNum1
 	winningNum2
 	winningNum3
@@ -89,7 +89,7 @@
 			cycleSpeed: 3
 			init:
 		)
-		((= guy (Actor new:))
+		((= aGuy (Actor new:))
 			view: 204
 			posn: 33 1118
 			illegalBits: 0
@@ -97,7 +97,7 @@
 			init:
 			setScript: guyScript
 		)
-		((= doll (Actor new:))
+		((= aDoll (Actor new:))
 			view: 205
 			posn: 288 1118
 			illegalBits: 0
@@ -116,7 +116,7 @@
 			setScript: receptionistScript
 		)
 		(NormalEgo)
-		((= westDoor (Prop new:))
+		((= aDoorWest (Prop new:))
 			view: 201
 			ignoreActors:
 			setLoop: 1
@@ -125,7 +125,7 @@
 			stopUpd:
 			init:
 		)
-		((= eastDoor (Prop new:))
+		((= aDoorEast (Prop new:))
 			view: 201
 			ignoreActors:
 			setLoop: 2
@@ -134,7 +134,7 @@
 			stopUpd:
 			init:
 		)
-		((= northDoor (Prop new:))
+		((= aDoorNorth (Prop new:))
 			view: 201
 			ignoreActors:
 			setLoop: 3
@@ -198,41 +198,41 @@
 					)
 				)
 				(= str 0)
-				(= myNum1 0)
-				(while (or (< myNum1 100) (> myNum1 999))
-					(= myNum1 (GetNumber {Pick #1}))
+				(= inputNum1 0)
+				(while (or (< inputNum1 100) (> inputNum1 999))
+					(= inputNum1 (GetNumber {Pick #1}))
 				)
-				(= myNum2 0)
-				(while (or (< myNum2 100) (> myNum2 999))
-					(= myNum2 (GetNumber {Pick #2}))
+				(= inputNum2 0)
+				(while (or (< inputNum2 100) (> inputNum2 999))
+					(= inputNum2 (GetNumber {Pick #2}))
 				)
-				(= myNum3 0)
-				(while (or (< myNum3 100) (> myNum3 999))
-					(= myNum3 (GetNumber {Pick #3}))
+				(= inputNum3 0)
+				(while (or (< inputNum3 100) (> inputNum3 999))
+					(= inputNum3 (GetNumber {Pick #3}))
 				)
-				(= myNum4 0)
-				(while (or (< myNum4 100) (> myNum4 999))
-					(= myNum4 (GetNumber {Pick #4}))
+				(= inputNum4 0)
+				(while (or (< inputNum4 100) (> inputNum4 999))
+					(= inputNum4 (GetNumber {Pick #4}))
 				)
-				(= myNum5 0)
-				(while (or (< myNum5 100) (> myNum5 999))
-					(= myNum5 (GetNumber {Pick #5}))
+				(= inputNum5 0)
+				(while (or (< inputNum5 100) (> inputNum5 999))
+					(= inputNum5 (GetNumber {Pick #5}))
 				)
-				(= myNum6 0)
-				(while (or (< myNum6 100) (> myNum6 999))
-					(= myNum6 (GetNumber {Pick #6}))
+				(= inputNum6 0)
+				(while (or (< inputNum6 100) (> inputNum6 999))
+					(= inputNum6 (GetNumber {Pick #6}))
 				)
 				(= seconds 3)
 			)
 			(3
 				(if
 					(or
-						(!= winningNum1 myNum1)
-						(!= winningNum2 myNum2)
-						(!= winningNum3 myNum3)
-						(!= winningNum4 myNum4)
-						(!= winningNum5 myNum5)
-						(!= winningNum6 myNum6)
+						(!= winningNum1 inputNum1)
+						(!= winningNum2 inputNum2)
+						(!= winningNum3 inputNum3)
+						(!= winningNum4 inputNum4)
+						(!= winningNum5 inputNum5)
+						(!= winningNum6 inputNum6)
 					)
 					(self changeState: 10)
 				else
@@ -255,7 +255,7 @@
 				(ego setMotion: MoveTo 162 82 self)
 			)
 			(7
-				(northDoor setCycle: EndLoop self)
+				(aDoorNorth setCycle: EndLoop self)
 			)
 			(8
 				(ego illegalBits: 0 setMotion: MoveTo 162 77 self)
@@ -279,8 +279,8 @@
 		(if (Said 'give,finger,look/ticket')
 			(cond 
 				((ego has: iCruiseTicket) (event claimed: FALSE) (return))
-				((not (ego has: iLotteryTicket)) (PrintDontHaveIt))
-				((not (ego inRect: 134 144 185 152)) (PrintNotCloseEnough))
+				((not (ego has: iLotteryTicket)) (DontHave))
+				((not (ego inRect: 134 144 185 152)) (NotClose))
 				(else (self changeState: 1))
 			)
 		)
@@ -393,21 +393,21 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(westDoor setCycle: EndLoop self)
+				(aDoorWest setCycle: EndLoop self)
 			)
 			(2
-				(guy posn: 33 117 setMotion: MoveTo 72 118 self)
+				(aGuy posn: 33 117 setMotion: MoveTo 72 118 self)
 			)
 			(3
-				(guy setMotion: MoveTo 132 182 self)
-				(westDoor setCycle: BegLoop self)
+				(aGuy setMotion: MoveTo 132 182 self)
+				(aDoorWest setCycle: BegLoop self)
 			)
-			(4 (westDoor stopUpd:))
+			(4 (aDoorWest stopUpd:))
 			(5
-				(guy setMotion: MoveTo 132 232 self)
+				(aGuy setMotion: MoveTo 132 232 self)
 			)
 			(6
-				(guy dispose:)
+				(aGuy dispose:)
 				(Print 101 23)
 			)
 		)
@@ -420,21 +420,21 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(eastDoor setCycle: EndLoop self)
+				(aDoorEast setCycle: EndLoop self)
 			)
 			(2
-				(doll posn: 288 117 setMotion: MoveTo 258 118 self)
+				(aDoll posn: 288 117 setMotion: MoveTo 258 118 self)
 			)
 			(3
-				(doll setMotion: MoveTo 162 182 self)
-				(eastDoor setCycle: BegLoop self)
+				(aDoll setMotion: MoveTo 162 182 self)
+				(aDoorEast setCycle: BegLoop self)
 			)
-			(4 (eastDoor stopUpd:))
+			(4 (aDoorEast stopUpd:))
 			(5
-				(doll setMotion: MoveTo 162 232)
+				(aDoll setMotion: MoveTo 162 232)
 			)
 			(6
-				(doll dispose:)
+				(aDoll dispose:)
 				(Print 101 23)
 			)
 		)

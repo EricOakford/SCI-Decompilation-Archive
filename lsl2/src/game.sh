@@ -2,6 +2,7 @@
 
 
 (include system.sh) (include sci2.sh)
+(include colors.sh)
 
 ; Views
 (define vBEChagrin 111)
@@ -9,16 +10,23 @@
 (define vAuthors 118)
 (define vEgoPause 119)
 
+;doorState
+(enum
+	doorClosed
+	doorOpening
+	doorOpen
+	doorClosing
+)
+
 
 ; Game phases
-(enum
-	phaseTIMEOVER
-	phaseCITY
-	phaseSHIP
-	phaseLIFEBOATS
-	phaseAIRPORT
-	phaseAIRPLANE
-	phaseENDGAME ;not used; just here to indicate the final region of Nontoonyt Island
+(enum 1
+	rgCITY
+	rgSHIP
+	rgLIFEBOATS
+	rgAIRPORT
+	rgAIRPLANE
+	rgENDGAME ;not used; just here to indicate the final region of Nontoonyt Island
 )
 
 ; Endgame states
@@ -79,50 +87,59 @@
 
 ;Ego states
 (enum
-	egoNormal				;0
-	egoAuto					;1
-	egoDummy2				;2
-	egoDoppleganger			;3
-	egoBoardedShip			;4
-	egoInJungleMaze			;5
-	egoDummy6				;6
-	egoSuitcaseBombed		;7
-	egoInTerminal			;8
-	egoBoardedPlane			;9
-	egoLaunchedParachute	;10
-	egoMeetingTribe			;11
-	egoFalling				;12
-	egoHoldingBottle		;13
-	egoNoDropBomb			;14
-	egoNoWick				;15
-	egoKilledByEruption		;16
-	egoBlownUp				;17
-	egoOnTVShow				;18
-	egoDiving				;19
-	egoStuckInTree			;20
-	egoAtSea				;21
-	egoWonGame				;22
-	egoCaptured				;23
+	egoNORMAL				;0
+	egoAUTO					;1
+	egoDUMMY2				;2
+	egoDOPPLEGANGER			;3
+	egoBOARDSHIP			;4
+	egoINRESORTMAZE			;5
+	egoDUMMY6				;6
+	egoSUITCASEBOMB			;7
+	egoINTERMINAL			;8
+	egoBOARDPLANE			;9
+	egoLAUNCHPARACHUTE		;10
+	egoMEETTRIBE			;11
+	egoFALLING				;12
+	egoHOLDINGBOTTLE		;13
+	egoNOTDROPBOMB			;14
+	egoNOWICK				;15
+	egoKILLEDBYERUPTION		;16
+	egoBLOWNUP				;17
+	egoONTVSHOW				;18
+	egoDIVING				;19
+	egoSTUCKINTREE			;20
+	egoATSEA				;21
+	egoWONGAME				;22
+	egoCAPTURED				;23
 )
-(define egoStopped			1000)
-(define egoDead				1001)
-(define egoDeathMessage		1002)
-(define egoSleeping			1005)
-(define egoSwimming			1006)
-(define egoDrowning			1008)
-(define egoSitting			1009)
-(define egoAtTable			1010)
-(define egoCrouching		1012)
-(define egoOnVine1			1013)
-(define egoOnVine2			1014)
-(define egoOnVine3			1015)
-(define egoEatenByPiranha	1016)
 
+(define egoSTOPPED			1000)
+(define egoDEAD				1001)
+(define egoDEATHMESSAGE		1002)
+(define egoSLEEPING			1005)
+(define egoSWIMMING			1006)
+(define egoDROWNING			1008)
+(define egoSITTING			1009)
+(define egoATTABLE			1010)
+(define egoCROUCHING		1012)
+(define egoONVINE1			1013)
+(define egoONVINE2			1014)
+(define egoONVINE3			1015)
+(define egoEATENBYPIRANHA	1016)
+
+;Global stuff
+(define LSL2			0)
+(define	INVDESC			2)
+(define	DOOR			3)
+(define	BASS_SETTER		4)
+(define	DEBUG			5)
+(define	AIRPLANE_ACTOR	6)
+(define	BARBER			7)
+(define	HENCHWOMAN		8)
+(define	BOSSKEY			9)
+(define	COPYPROTECT		10)
 
 ;Regions
-(define DEBUG		5)
-(define BARBER		7)
-(define HENCHWOMAN	8)
 (define CITY		200)
 (define SHIP		300)
 (define RESORT		400)

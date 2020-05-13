@@ -15,14 +15,14 @@
 )
 
 (local
-	storeOpen
+	storeIsOpen
 	afterOnklunk
-	roomDialog
-	car
-	trafficSignal
-	henchman
-	frontDoor
-	backDoor
+	saveBits
+	aCar
+	aSignal
+	aHench
+	aDoorWest
+	aDoorEast
 )
 (instance rm15 of Room
 	(properties
@@ -48,16 +48,16 @@
 			addToPic:
 		)
 		(if (and (== gotOnklunk FALSE) (ego has: iOnklunk)) (= afterOnklunk TRUE))
-		(if (and gotHaircutInCity (not (ego has: iOnklunk))) (= storeOpen TRUE))
-		(if (or afterOnklunk storeOpen)
-			((= frontDoor (AutoDoor new:))
+		(if (and gotHaircutInCity (not (ego has: iOnklunk))) (= storeIsOpen TRUE))
+		(if (or afterOnklunk storeIsOpen)
+			((= aDoorWest (AutoDoor new:))
 				view: 220
 				setLoop: 0
 				posn: 43 114
 				entranceTo: (if (!= prevRoomNum 115) 115 else 0)
 				msgLook:
 					{A sign in the window says, "Now OPEN for business. Please come in!"}
-				msgCloser: {The entrance frontDoor is to the left. Just walk near it.}
+				msgCloser: {The entrance aDoorWest is to the left. Just walk near it.}
 				init:
 			)
 		else
@@ -67,10 +67,10 @@
 				posn: 43 114
 				addToPic:
 			)
-			(ego observeControl: 16384)
+			(ego observeControl: cYELLOW)
 		)
 		(if (== prevRoomNum 115)
-			((= backDoor (Prop new:))
+			((= aDoorEast (Prop new:))
 				view: 220
 				setLoop: 1
 				setCel: 255
@@ -90,7 +90,7 @@
 		)
 		(if afterOnklunk
 			(= gotOnklunk TRUE)
-			(= currentStatus egoAuto)
+			(= currentStatus egoAUTO)
 			(rm15Script changeState: 2)
 			(Load VIEW 223)
 			(curRoom east: 0)
@@ -102,7 +102,7 @@
 				setPri: 15
 				addToPic:
 			)
-			((= car (Extra new:))
+			((= aCar (Extra new:))
 				view: 220
 				setLoop: 4
 				setPri: 8
@@ -110,7 +110,7 @@
 				cycleSpeed: 0
 				init:
 			)
-			((= henchman (Actor new:))
+			((= aHench (Actor new:))
 				view: 223
 				loop: 0
 				posn: 10 173
@@ -121,7 +121,7 @@
 			(ego posn: 253 88 init:)
 			(HandsOff)
 		else
-			((= trafficSignal (Prop new:))
+			((= aSignal (Prop new:))
 				view: 220
 				loop: 3
 				setCel: 0
@@ -153,37 +153,42 @@
 		(switch (= state newState)
 			(0 (= cycles 30))
 			(1
-				(if (and storeOpen (!= prevRoomNum 115)) (Print 15 8))
-				(if (== prevRoomNum 115) (frontDoor entranceTo: 115))
+				(if (and storeIsOpen (!= prevRoomNum 115)) (Print 15 8))
+				(if (== prevRoomNum 115) (aDoorWest entranceTo: 115))
 			)
 			(2 (= cycles 0) (= seconds 3))
 			(3
 				(ego setMotion: MoveTo 262 140 self)
 			)
 			(4
-				(= roomDialog (Print 15 9 #at -1 20 #dispose))
+				(= saveBits
+					(Print 15 9
+						#at -1 20
+						#dispose
+					)
+				)
 			)
 			(5
 				(ego setMotion: MoveTo 262 170 self)
-				(backDoor stopUpd:)
+				(aDoorEast stopUpd:)
 			)
 			(6
-				(frontDoor locked: FALSE)
+				(aDoorWest locked: FALSE)
 				(Print 15 10)
 				(Print 15 11)
 				(ego setMotion: MoveTo 350 170 self)
 			)
 			(7
 				(Print 15 12)
-				(henchman setMotion: MoveTo 333 (henchman y?) self)
+				(aHench setMotion: MoveTo 333 (aHench y?) self)
 			)
 			(8
-				(henchman dispose:)
+				(aHench dispose:)
 				(= seconds 4)
 			)
 			(9
-				(= currentStatus egoDoppleganger)
-				(frontDoor entranceTo: 115)
+				(= currentStatus egoDOPPLEGANGER)
+				(aDoorWest entranceTo: 115)
 				(ego
 					posn: -30 125
 					setMotion: MoveTo 49 119 self
@@ -201,16 +206,16 @@
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (and roomDialog (== state 4))
+		(if (and saveBits (== state 4))
 			(event claimed: TRUE)
-			(= roomDialog NULL)
+			(= saveBits NULL)
 			(cls)
 			(self cue:)
 		)
 		(if (!= (event type?) saidEvent) (return))
 		(if (Said '/door,sign')
 			(cond 
-				(storeOpen (Print 15 0))
+				(storeIsOpen (Print 15 0))
 				((ego has: iOnklunk) (Print 15 1))
 				(else (Print 15 2))
 			)
@@ -228,7 +233,7 @@
 			)
 			(Print 15 6)
 			(Print 15 7)
-			(if storeOpen (Print 15 0))
+			(if storeIsOpen (Print 15 0))
 		)
 	)
 )
@@ -240,15 +245,15 @@
 		(switch (= state newState)
 			(0 (= seconds 6))
 			(1
-				(trafficSignal setCel: 1)
+				(aSignal setCel: 1)
 				(= seconds 4)
 			)
 			(2
-				(trafficSignal setCel: 2)
+				(aSignal setCel: 2)
 				(= seconds 13)
 			)
 			(3
-				(trafficSignal setCel: 0)
+				(aSignal setCel: 0)
 				(= seconds 13)
 				(= state 0)
 			)

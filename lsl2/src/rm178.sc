@@ -14,11 +14,11 @@
 
 (local
 	local0
-	shaman
-	chair
-	mirror
-	egoFace
-	mirrorHandle
+	aBarber
+	aChair
+	aThoughtBalloon
+	aThought
+	aHandle
 )
 (instance rm178 of Room
 	(properties
@@ -33,7 +33,7 @@
 		(Load VIEW 232)
 		(Load PICTURE 178)
 		(super init:)
-		((= mirror (Prop new:))
+		((= aThoughtBalloon (Prop new:))
 			view: 717
 			setLoop: 3
 			setCel: 0
@@ -43,7 +43,7 @@
 			setPri: 14
 			init:
 		)
-		((= mirrorHandle (View new:))
+		((= aHandle (View new:))
 			view: 717
 			setLoop: 3
 			setCel: 1
@@ -52,7 +52,7 @@
 			setPri: 14
 			init:
 		)
-		((= egoFace (Prop new:))
+		((= aThought (Prop new:))
 			view: 717
 			setLoop: 3
 			setCel: 2
@@ -61,7 +61,7 @@
 			setPri: 15
 			init:
 		)
-		((= chair (Prop new:))
+		((= aChair (Prop new:))
 			view: 232
 			loop: 1
 			cel: 0
@@ -71,7 +71,7 @@
 			stopUpd:
 			init:
 		)
-		((= shaman (Actor new:))
+		((= aBarber (Actor new:))
 			view: 711
 			loop: 3
 			setCycle: Walk
@@ -97,7 +97,7 @@
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo 181 132)
-				(shaman setMotion: MoveTo 159 122 self)
+				(aBarber setMotion: MoveTo 159 122 self)
 			)
 			(1
 				(ego loop: 3)
@@ -106,19 +106,19 @@
 			)
 			(2
 				(Print 178 1)
-				(shaman view: 713 setCycle: Forward)
+				(aBarber view: 713 setCycle: Forward)
 				(= cycles 50)
 			)
 			(3
-				(chair view: 712 setLoop: 0 setCycle: Forward)
-				(shaman view: 712 posn: 157 1120)
+				(aChair view: 712 setLoop: 0 setCycle: Forward)
+				(aBarber view: 712 posn: 157 1120)
 				(= cycles 50)
 			)
 			(4
-				(chair setLoop: 1 cel: 0 setCycle: EndLoop self)
+				(aChair setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(5
-				(shaman
+				(aBarber
 					view: 712
 					setLoop: 2
 					posn: 157 121
@@ -137,7 +137,7 @@
 					setPri: 8
 					addToPic:
 				)
-				(shaman
+				(aBarber
 					setLoop: 3
 					setStep: 3 3
 					posn: 144 135
@@ -157,7 +157,7 @@
 				(= cycles 10)
 			)
 			(10
-				(chair view: 232 loop: 1 cel: 0 posn: 164 118 show:)
+				(aChair view: 232 loop: 1 cel: 0 posn: 164 118 show:)
 				(ego
 					view: 196
 					posn: 157 120
@@ -168,7 +168,7 @@
 				)
 			)
 			(11
-				(chair stopUpd:)
+				(aChair stopUpd:)
 				(ego setLoop: 1 setCycle: Forward)
 				(= cycles 20)
 			)
@@ -176,11 +176,11 @@
 				(ego setLoop: 0 setCel: 255 setCycle: BegLoop self)
 			)
 			(13
-				(shaman view: 711 setLoop: 2 posn: 159 121)
+				(aBarber view: 711 setLoop: 2 posn: 159 121)
 				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(14
-				(shaman stopUpd:)
+				(aBarber stopUpd:)
 				(ego setLoop: 3 cel: 0 setCycle: Forward)
 				(= cycles 30)
 			)
@@ -222,7 +222,7 @@
 				(ego setLoop: 2 setCel: 255 setCycle: BegLoop self)
 			)
 			(26
-				(shaman hide:)
+				(aBarber hide:)
 				(ego setLoop: 9)
 				(Print 178 3 #at -1 20 #draw)
 				(= seconds 3)
@@ -230,9 +230,9 @@
 			(27
 				(Print 178 4)
 				(ego stopUpd:)
-				(mirror posn: 160 127 stopUpd:)
-				(mirrorHandle posn: 160 128 stopUpd:)
-				(egoFace posn: 161 119)
+				(aThoughtBalloon posn: 160 127 stopUpd:)
+				(aHandle posn: 160 128 stopUpd:)
+				(aThought posn: 161 119)
 				(= seconds 2)
 			)
 			(28
@@ -240,9 +240,9 @@
 				(= seconds 5)
 			)
 			(29
-				(mirror posn: 160 1128)
-				(mirrorHandle posn: 160 1229)
-				(egoFace posn: 161 1320)
+				(aThoughtBalloon posn: 160 1128)
+				(aHandle posn: 160 1229)
+				(aThought posn: 161 1320)
 				(= seconds 3)
 			)
 			(30
@@ -251,7 +251,7 @@
 				(= seconds 3)
 			)
 			(31
-				(mirror
+				(aThoughtBalloon
 					setLoop: 0
 					cel: 0
 					posn: 154 91
@@ -260,8 +260,8 @@
 				)
 			)
 			(32
-				(mirror stopUpd:)
-				(egoFace
+				(aThoughtBalloon stopUpd:)
+				(aThought
 					posn: 115 47
 					cycleSpeed: 3
 					setLoop: 1
@@ -270,8 +270,8 @@
 				)
 			)
 			(33
-				(mirror posn: 154 1092)
-				(egoFace
+				(aThoughtBalloon posn: 154 1092)
+				(aThought
 					posn: 154 91
 					setLoop: 2
 					cel: 0
@@ -280,9 +280,9 @@
 			)
 			(34
 				(curRoom drawPic: 178 16)
-				(chair posn: 999 999)
+				(aChair posn: 999 999)
 				(ego posn: 999 999)
-				(egoFace forceUpd:)
+				(aThought forceUpd:)
 				(curRoom newRoom: 86)
 			)
 		)

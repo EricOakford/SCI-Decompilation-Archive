@@ -14,10 +14,10 @@
 )
 
 (local
-	woman
+	aGirl
 	lightBall
 	openingCredits
-	local3
+	i
 	songEnded
 )
 (instance mThemeSong of Sound
@@ -52,7 +52,7 @@
 			setPri: 8
 			addToPic:
 		)
-		((= woman (Actor new:))
+		((= aGirl (Actor new:))
 			view: 809
 			ignoreActors:
 			illegalBits: 0
@@ -90,7 +90,9 @@
 			(= songEnded TRUE)
 			(if (< state 33) (mThemeSong play:))
 		)
-		(if (and songEnded (== state 33)) (curRoom newRoom: 91))
+		(if (and songEnded (== state 33))
+			(curRoom newRoom: 91)
+		)
 	)
 	
 	(method (changeState newState &tmp lightX lightY creditX creditY)
@@ -149,15 +151,17 @@
 					)
 				)
 				(ego posn: lightX lightY cel: 0 setCycle: EndLoop self)
-				(if (< (++ local3) 10) (= state 2))
+				(if (< (++ i) 10)
+					(= state 2)
+				)
 			)
 			(4
 				(ego hide:)
 				(theGame setSpeed: 6)
-				(woman setMotion: MoveTo 109 100 self)
+				(aGirl setMotion: MoveTo 109 100 self)
 			)
 			(5
-				(woman setMotion: MoveTo 175 100 self)
+				(aGirl setMotion: MoveTo 175 100 self)
 				(ego
 					view: 193
 					loop: 0
@@ -171,7 +175,7 @@
 			(6 (ego setCycle: BegLoop self))
 			(7 (ego hide:))
 			(8
-				(woman setMotion: MoveTo 220 100 self)
+				(aGirl setMotion: MoveTo 220 100 self)
 				(ego
 					loop: 1
 					cel: 0
@@ -183,7 +187,7 @@
 			(9 (ego setCycle: BegLoop self))
 			(10 (ego hide:))
 			(11
-				(woman setMotion: MoveTo 268 100 self)
+				(aGirl setMotion: MoveTo 268 100 self)
 				(ego loop: 2 cel: 0 posn: 199 57 show: setCycle: EndLoop self)
 			)
 			(12
@@ -191,10 +195,10 @@
 			)
 			(13
 				(ego hide:)
-				(woman hide:)
+				(aGirl hide:)
 				(= lightBall ego)
-				(= openingCredits woman)
-				(curRoom drawPic: 91 4)
+				(= openingCredits aGirl)
+				(curRoom drawPic: 91 WIPEUP)
 				(= cycles 10)
 			)
 			(14

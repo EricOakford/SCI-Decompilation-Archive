@@ -14,14 +14,14 @@
 )
 
 (local
-	nightclub
-	flag
-	ripple2
-	ripple1
-	wave1
-	wave2
-	clouds
-	cantWearSwimsuitThere
+	aBar
+	aFlag
+	aWakeFront
+	aWakeRear
+	aHorizonBow
+	aHorizonStern
+	numClouds
+	noEntry
 )
 (instance rm31 of Room
 	(properties
@@ -29,7 +29,7 @@
 		horizon 1
 	)
 	
-	(method (init &tmp numClouds temp1)
+	(method (init &tmp i temp1)
 		(Load VIEW 300)
 		(Load VIEW 130)
 		(Load VIEW 301)
@@ -89,7 +89,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= wave1 (Prop new:))
+		((= aHorizonBow (Prop new:))
 			view: 300
 			setLoop: 5
 			setPri: 3
@@ -99,7 +99,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= wave2 (Prop new:))
+		((= aHorizonStern (Prop new:))
 			view: 300
 			setLoop: 6
 			setPri: 3
@@ -109,7 +109,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= nightclub (Prop new:))
+		((= aBar (Prop new:))
 			view: 300
 			setLoop: 0
 			setCel: 0
@@ -120,7 +120,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= flag (Prop new:))
+		((= aFlag (Prop new:))
 			view: 300
 			setLoop: 1
 			setPri: 1
@@ -130,7 +130,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= ripple1 (Prop new:))
+		((= aWakeRear (Prop new:))
 			view: 300
 			setLoop: 2
 			setPri: 10
@@ -140,7 +140,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= ripple2 (Prop new:))
+		((= aWakeFront (Prop new:))
 			view: 300
 			setLoop: 3
 			setPri: 10
@@ -151,12 +151,12 @@
 			init:
 		)
 		(cond 
-			((> howFast 60) (= clouds 3))
-			((> howFast 40) (= clouds 2))
-			((> howFast 20) (= clouds 1))
+			((> machineSpeed 60) (= numClouds 3))
+			((> machineSpeed 40) (= numClouds 2))
+			((> machineSpeed 20) (= numClouds 1))
 		)
-		(= numClouds 0)
-		(while (< numClouds clouds)
+		(= i 0)
+		(while (< i numClouds)
 			((Actor new:)
 				view: 620
 				ignoreHorizon:
@@ -164,7 +164,7 @@
 				illegalBits: 0
 				setScript: (cloudScript new:)
 			)
-			(++ numClouds)
+			(++ i)
 		)
 		(if (== (= currentEgoView (ego view?)) 132)
 			(ego view: 129)
@@ -204,7 +204,7 @@
 					(== currentEgoView 132)
 					(& (ego onControl:) $00e0)
 				)
-				(if (== cantWearSwimsuitThere FALSE) (Print 31 0) (= cantWearSwimsuitThere TRUE))
+				(if (== noEntry FALSE) (Print 31 0) (= noEntry TRUE))
 			)
 			((& (ego onControl:) $0100) (curRoom newRoom: 38))
 			((& (ego onControl:) $0080) (curRoom newRoom: 37))
@@ -212,7 +212,7 @@
 			((& (ego onControl:) $0020) (curRoom newRoom: 35))
 			((& (ego onControl:) $0010) (curRoom newRoom: 34))
 			((& (ego onControl:) $0002) (curRoom newRoom: 32))
-			(else (= cantWearSwimsuitThere FALSE))
+			(else (= noEntry FALSE))
 		)
 	)
 	

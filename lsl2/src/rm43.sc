@@ -15,7 +15,7 @@
 
 (local
 	knifeInRoom
-	local1
+	gotKnife
 	waitingForMaitreD
 	canSitAtTable
 )
@@ -137,7 +137,7 @@
 		(aWoman setCycle: Walk ignoreActors: init:)
 		(= canSitAtTable 1)
 		(NormalEgo 3)
-		(ego posn: 195 178 observeControl: 16384 init:)
+		(ego posn: 195 178 observeControl: cYELLOW init:)
 		(self setScript: rm43Script)
 	)
 )
@@ -148,11 +148,11 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (== currentStatus egoSitting) (== 0 (mod state 20)))
+		(and (== currentStatus egoSITTING) (== 0 (mod state 20)))
 			(self cue:)
 		)
 		(if waitingForMaitreD (User canInput: FALSE) else (User canInput: TRUE))
-		(if (< state 101) (ego observeControl: 16384))
+		(if (< state 101) (ego observeControl: cYELLOW))
 		(if (& (ego onControl:) $0002) (curRoom newRoom: 40))
 	)
 	
@@ -579,7 +579,7 @@
 			(121
 				(= waitingForMaitreD 1)
 				(User canControl: FALSE)
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(ego setMotion: 0)
 				(Print 43 62)
 				(Print 43 63)
@@ -592,7 +592,7 @@
 			)
 			(123
 				(Print 43 66)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 		)
 	)
@@ -610,7 +610,7 @@
 			(if (Said '/appetizer,pate,buffet')
 				(cond 
 					((ego inRect: 30 130 80 176) (if knifeInRoom (Print 43 2) else (Print 43 3)))
-					((== currentStatus egoAtTable) (Print 43 4))
+					((== currentStatus egoATTABLE) (Print 43 4))
 					((ego inRect: 266 111 296 124) (Print 43 5))
 					((< state 3) (Print 43 6))
 					(else (Print 43 7))
@@ -666,7 +666,7 @@
 						(Print 43 28)
 					)
 				)
-				((== currentStatus egoAtTable) (self changeState: 121))
+				((== currentStatus egoATTABLE) (self changeState: 121))
 				((ego inRect: 266 111 296 124) (Print 43 29))
 				((< state 3) (Print 43 30))
 				(else (Print 43 31))
@@ -677,14 +677,14 @@
 		)
 		(if (Said '(get<up),get/gun')
 			(cond 
-				((== knifeInRoom FALSE) (PrintAlreadyTookIt))
-				((not (ego inRect: 32 142 55 161)) (PrintNotCloseEnough))
+				((== knifeInRoom FALSE) (AlreadyTook))
+				((not (ego inRect: 32 142 55 161)) (NotClose))
 				(else
 					(Print 43 33)
 					(Print 43 34)
 					(ego get: 17)
 					(= knifeInRoom FALSE)
-					(= local1 1)
+					(= gotKnife 1)
 					(theGame changeScore: 3)
 				)
 			)
@@ -692,23 +692,23 @@
 		(if (Said 'bath')
 			(cond 
 				(
-				(or (== currentStatus egoSitting) (== currentStatus egoAtTable)) (Print 43 35))
+				(or (== currentStatus egoSITTING) (== currentStatus egoATTABLE)) (Print 43 35))
 				((!= currentEgoView 100) (Print 43 36))
-				((and (== knifeInRoom FALSE) (== local1 0)) (Print 43 18))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((and (== knifeInRoom FALSE) (== gotKnife 0)) (Print 43 18))
+				((!= currentStatus egoNORMAL) (NotNow))
 				((ego inRect: 266 111 296 124)
 					(if (not (ego inRect: 268 111 290 116))
 						(Print 43 37)
 					else
-						(PrintOk)
+						(Ok)
 						(ego setScript: TSscript)
 						(TSscript changeState: 0)
 					)
 				)
-				((not (ego inRect: 175 160 241 189)) (PrintNotCloseEnough))
+				((not (ego inRect: 175 160 241 189)) (NotClose))
 				((not talkedToMaitreD) (Print 43 38))
 				(else
-					(PrintOk)
+					(Ok)
 					(if (not servedAtResortRestaurant)
 						(= servedAtResortRestaurant TRUE)
 						(theGame changeScore: 1)
@@ -720,14 +720,14 @@
 		)
 		(if (Said 'new,(new<up),(get<up)')
 			(cond 
-				((== currentStatus egoNormal) (PrintYouAre))
-				((== currentStatus egoSitting)
-					(PrintOk)
+				((== currentStatus egoNORMAL) (YouAre))
+				((== currentStatus egoSITTING)
+					(Ok)
 					(ego setScript: SITscript)
 					(SITscript changeState: 5)
 				)
-				((== currentStatus egoAtTable)
-					(PrintOk)
+				((== currentStatus egoATTABLE)
+					(Ok)
 					(ego setScript: TSscript)
 					(TSscript changeState: 3)
 				)
@@ -775,7 +775,7 @@
 				)
 			)
 			(3
-				(= currentStatus egoSitting)
+				(= currentStatus egoSITTING)
 				(= waitingForMaitreD FALSE)
 				(= seconds (Random 2 6))
 			)
@@ -830,7 +830,7 @@
 				)
 			)
 			(2
-				(= currentStatus egoAtTable)
+				(= currentStatus egoATTABLE)
 				(= waitingForMaitreD 0)
 			)
 			(3
@@ -1086,7 +1086,7 @@
 	(method (changeState newState &tmp [temp0 102])
 		(switch (= state newState)
 			(1
-				(if (!= currentStatus egoSitting)
+				(if (!= currentStatus egoSITTING)
 					(-- state)
 					(= seconds (Random 2 4))
 				else

@@ -15,9 +15,9 @@
 
 (local
 	local0
-	eve
-	eveCar
-	brutus
+	aMouth
+	aCar
+	aDog
 )
 (instance theSound of Sound
 	(properties
@@ -92,7 +92,7 @@
 			setPri: 1
 			addToPic:
 		)
-		((= eve (Prop new:))
+		((= aMouth (Prop new:))
 			view: 802
 			ignoreActors:
 			setLoop: 1
@@ -102,7 +102,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= eveCar (Actor new:))
+		((= aCar (Actor new:))
 			view: 802
 			ignoreActors:
 			illegalBits: 0
@@ -112,7 +112,7 @@
 			posn: -64 222
 			init:
 		)
-		((= brutus (Actor new:))
+		((= aDog (Actor new:))
 			view: 803
 			ignoreActors:
 			illegalBits: 0
@@ -158,43 +158,61 @@
 			)
 			(3
 				(ego setLoop: 1 posn: 155 155 setCel: 0 stopUpd:)
-				(eveCar setMotion: MoveTo 0 183 self)
+				(aCar setMotion: MoveTo 0 183 self)
 			)
-			(4 (= seconds 3))
+			(4
+				(= seconds 3)
+			)
 			(5
-				(Print 91 0 #at -1 15 #width 280 #time 8)
-				(eve posn: 3 152)
+				(Print 91 0
+					#at -1 15
+					#width 280
+					#time 8
+				)
+				(aMouth posn: 3 152)
 				(= seconds 3)
 			)
 			(6
-				(Print 91 1 #time 7)
-				(eve posn: 3 1152)
+				(Print 91 1
+					#time 7
+				)
+				(aMouth posn: 3 1152)
 				(= seconds 3)
 			)
 			(7
-				(Print 91 2 #at -1 15 #width 280 #time 6)
-				(Print 91 3 #at -1 15 #width 280 #time 12)
-				(eve posn: 3 152)
+				(Print 91 2
+					#at -1 15
+					#width 280
+					#time 6
+				)
+				(Print 91 3
+					#at -1 15
+					#width 280
+					#time 12
+				)
+				(aMouth posn: 3 152)
 				(= seconds 2)
 			)
 			(8
 				(Print 91 4 #time 5)
-				(eve posn: 3 1152)
+				(aMouth posn: 3 1152)
 				(= seconds 3)
 			)
 			(9
 				(Print 91 5 #at -1 15 #width 280 #time 10)
 				(Print 91 6 #time 9)
 				(Print 91 7 #time 4)
-				(brutus show:)
+				(aDog show:)
 				(= seconds 3)
 			)
 			(10
-				(brutus setCycle: EndLoop self)
+				(aDog setCycle: EndLoop self)
 			)
-			(11 (= cycles 5))
+			(11
+				(= cycles 5)
+			)
 			(12
-				(brutus
+				(aDog
 					view: 804
 					posn: 52 166
 					setPri: -1
@@ -203,16 +221,16 @@
 					setMotion: MoveTo 193 161 self
 				)
 				(Print 91 8 #at -1 15 #width 280 #time 7)
-				(eve posn: 3 152)
+				(aMouth posn: 3 152)
 				(= cycles 22)
 			)
 			(13
 				(Print 91 9 #time 8)
-				(eve dispose:)
-				(eveCar setMotion: MoveTo -99 288)
+				(aMouth dispose:)
+				(aCar setMotion: MoveTo -99 288)
 			)
 			(14
-				(brutus setLoop: 2 setCycle: Forward)
+				(aDog setLoop: 2 setCycle: Forward)
 				(= cycles 30)
 			)
 			(15
@@ -220,7 +238,7 @@
 				(= cycles 30)
 			)
 			(16
-				(brutus
+				(aDog
 					setLoop: 1
 					setCycle: Walk
 					setMotion: MoveTo 123 161 self
@@ -229,12 +247,12 @@
 			(17
 				(Print 91 11 #at -1 15 #width 280 #time 13)
 				(Print 91 12 #at -1 15 #width 280 #time 4)
-				(brutus setMotion: MoveTo -22 151)
+				(aDog setMotion: MoveTo -22 151)
 				(= seconds 3)
 			)
 			(18
 				(Print 91 13 #time 3)
-				(curRoom newRoom: 92 7)
+				(curRoom newRoom: 92 IRISOUT)
 			)
 		)
 	)

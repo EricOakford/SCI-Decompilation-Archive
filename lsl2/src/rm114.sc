@@ -15,11 +15,11 @@
 
 (local
 	local0
-	oweMoney
+	moneyOwed
 	local2
-	sodaCup
-	sodaPouring
-	girl
+	aGulpCup
+	aSpigots
+	aClerk
 )
 (instance rm114 of Room
 	(properties
@@ -69,7 +69,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= sodaPouring (Prop new:))
+		((= aSpigots (Prop new:))
 			view: 218
 			setLoop: 2
 			setCel: 0
@@ -80,7 +80,7 @@
 			hide:
 		)
 		(if ((inventory at: iGrotesqueGulp) ownedBy: curRoomNum)
-			((= sodaCup (View new:))
+			((= aGulpCup (View new:))
 				view: 218
 				ignoreActors:
 				setLoop: 0
@@ -91,7 +91,7 @@
 				stopUpd:
 			)
 		)
-		((= girl (Prop new:))
+		((= aClerk (Prop new:))
 			view: 219
 			setLoop: 0
 			cel: 0
@@ -120,7 +120,7 @@
 	(method (doit)
 		(super doit:)
 		(if (& (ego onControl:) $0002)
-			(if (and oweMoney (ego has: iGrotesqueGulp)) ;Shoplifters will be executed
+			(if (and moneyOwed (ego has: iGrotesqueGulp)) ;Shoplifters will be executed
 				(if (< state 8) (self changeState: 8))
 			else
 				(curRoom newRoom: 14)
@@ -132,12 +132,12 @@
 		(switch (= state newState)
 			(1
 				(HandsOff)
-				(PrintOk)
+				(Ok)
 				(ego setMotion: MoveTo 155 133 self)
 			)
 			(2
 				(ego setLoop: 3)
-				(sodaPouring show: setCycle: Forward)
+				(aSpigots show: setCycle: Forward)
 				(= seconds 6)
 			)
 			(3
@@ -149,7 +149,7 @@
 				(= seconds 6)
 			)
 			(5
-				(sodaPouring hide:)
+				(aSpigots hide:)
 				(Print 114 33 #draw)
 				(= seconds 3)
 			)
@@ -166,22 +166,22 @@
 					setCycle: EndLoop self
 					cycleSpeed: 2
 				)
-				(sodaCup dispose:)
+				(aGulpCup dispose:)
 			)
 			(7
 				(NormalEgo 1)
 				(ego get: iGrotesqueGulp)
 				(theGame changeScore: 5)
-				(= oweMoney TRUE)
+				(= moneyOwed TRUE)
 				(= state 0)
 			)
 			(8
 				(= seconds (= cycles 0))
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(Print 114 36)
 				(Print 114 37)
 				(HandsOff)
-				(girl
+				(aClerk
 					setLoop: 1
 					cel: 0
 					cycleSpeed: 1
@@ -189,7 +189,7 @@
 				)
 			)
 			(9
-				(girl setCycle: CycleTo 8 -1)
+				(aClerk setCycle: CycleTo 8 -1)
 				(ego
 					view: 219
 					setLoop: 2
@@ -204,13 +204,13 @@
 			)
 			(10
 				(ego stopUpd:)
-				(girl stopUpd:)
+				(aClerk stopUpd:)
 				(= seconds 3)
 			)
 			(11
 				(Print 114 38)
 				(Print 114 39)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(12
 				(HandsOff)
@@ -342,8 +342,8 @@
 		)
 		(if (Said 'look/ticket')
 			(cond 
-				((not (ego has: iLotteryTicket)) (PrintDontHaveIt))
-				((not (ego inRect: 0 105 90 120)) (PrintNotCloseEnough))
+				((not (ego has: iLotteryTicket)) (DontHave))
+				((not (ego inRect: 0 105 90 120)) (NotClose))
 				(else (Print 114 14) (Print 114 15))
 			)
 		)
@@ -362,7 +362,7 @@
 			)
 			(cond 
 				((not ((inventory at: iGrotesqueGulp) ownedBy: curRoomNum)) (Print 114 0))
-				((not (ego inRect: 110 128 170 138)) (PrintNotCloseEnough))
+				((not (ego inRect: 110 128 170 138)) (NotClose))
 				(else (self changeState: 1))
 			)
 		)
@@ -373,8 +373,8 @@
 				(Said 'buy')
 			)
 			(cond 
-				((not oweMoney) (Print 114 17))
-				((not (ego inRect: 0 105 90 120)) (PrintNotCloseEnough))
+				((not moneyOwed) (Print 114 17))
+				((not (ego inRect: 0 105 90 120)) (NotClose))
 				((ego has: iMillionDollarBill) (Print 114 18))
 				((ego has: iLotteryTicket) (Print 114 19))
 				((ego has: iDollarBill)
@@ -390,7 +390,7 @@
 					(Print 114 27)
 					(Print (Format @str 114 28 tritePhrase))
 					(theGame changeScore: 3)
-					(= oweMoney FALSE)
+					(= moneyOwed FALSE)
 				)
 			)
 		)
@@ -407,11 +407,11 @@
 			(1
 				(User canInput: 0)
 				(Print (Format @str 114 47 introductoryPhrase))
-				(girl setLoop: 0 setCycle: Forward)
+				(aClerk setLoop: 0 setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
-				(girl setLoop: 0 setCel: 0)
+				(aClerk setLoop: 0 setCel: 0)
 				(Print 114 48)
 				(= seconds 3)
 			)
@@ -422,24 +422,24 @@
 			(4
 				(User canInput: FALSE)
 				(Print 114 50)
-				(girl setLoop: 0 setCycle: Forward)
+				(aClerk setLoop: 0 setCycle: Forward)
 				(= seconds 3)
 			)
 			(5
 				(User canInput: TRUE)
-				(girl setLoop: 0 setCel: 0)
+				(aClerk setLoop: 0 setCel: 0)
 				(Print 114 51)
 			)
 			(6
 				(User canInput: FALSE)
 				(Print 114 52)
-				(girl setLoop: 0 setCycle: Forward)
+				(aClerk setLoop: 0 setCycle: Forward)
 				(= seconds 3)
 			)
 			(7
 				(User canInput: TRUE)
 				(Print 114 53)
-				(girl setLoop: 0 setCel: 0)
+				(aClerk setLoop: 0 setCel: 0)
 				(= state 6)
 				(-- state)
 			)

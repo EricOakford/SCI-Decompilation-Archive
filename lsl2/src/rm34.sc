@@ -17,16 +17,16 @@
 (local
 	drowningView
 	henchwomanAppeared
-	innerTubeGuyHead
-	guyWithCap
-	guyWithMirror
-	ripple1
-	ripple2
-	innerTubeGuy
+	aHead2
+	aHead6
+	aHead7
+	aWake
+	aDrain
+	aMan
 	local8
-	theBSetter
+	oldEgoBase
 	drowningInLeisureSuit
-	henchwoman
+	aHench
 	canFollowHenchwoman
 )
 (instance rm34 of Room
@@ -115,7 +115,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= ripple1 (Prop new:))
+		((= aWake (Prop new:))
 			view: 310
 			setLoop: 0
 			posn: 128 53
@@ -126,7 +126,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= ripple2 (Prop new:))
+		((= aDrain (Prop new:))
 			view: 310
 			setLoop: 1
 			posn: 119 68
@@ -136,7 +136,7 @@
 			ignoreActors:
 			init:
 		)
-		((= innerTubeGuyHead (Extra new:))
+		((= aHead2 (Extra new:))
 			view: 310
 			setLoop: 3
 			posn: 49 111
@@ -148,7 +148,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= guyWithCap (Extra new:))
+		((= aHead6 (Extra new:))
 			view: 310
 			setLoop: 5
 			posn: 228 106
@@ -159,7 +159,7 @@
 			ignoreActors:
 			init:
 		)
-		((= guyWithMirror (Extra new:))
+		((= aHead7 (Extra new:))
 			view: 310
 			setLoop: 6
 			posn: 259 117
@@ -175,7 +175,7 @@
 			(self setRegions: 8)
 			(= henchView 311)
 			(Load VIEW henchView)
-			((= henchwoman (Actor new:))
+			((= aHench (Actor new:))
 				view: henchView
 				posn: 155 233
 				illegalBits: -32768
@@ -185,7 +185,7 @@
 				setScript: henchScript
 			)
 		)
-		((= innerTubeGuy (Actor new:))
+		((= aMan (Actor new:))
 			view: 310
 			setLoop: 4
 			illegalBits: -513
@@ -197,7 +197,7 @@
 			setStep: 1 1
 		)
 		(if (== prevRoomNum 134)
-			(= currentStatus egoSwimming)
+			(= currentStatus egoSWIMMING)
 			(ego
 				view: 134
 				setLoop: -1
@@ -210,7 +210,7 @@
 				posn: 157 83
 				cycleSpeed: 1
 				moveSpeed: 1
-				baseSetter: (= theBSetter BSetter)
+				baseSetter: (= oldEgoBase BSetter)
 				init:
 			)
 		else
@@ -227,17 +227,17 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (& (ego onControl:) $0400) (== currentStatus egoNormal))
+		(and (& (ego onControl:) $0400) (== currentStatus egoNORMAL))
 			(ego posn: 55 88)
 			(self changeState: 1)
 		)
 		(if
-		(and (& (ego onControl:) $1000) (== currentStatus egoNormal))
+		(and (& (ego onControl:) $1000) (== currentStatus egoNORMAL))
 			(ego posn: 255 88)
 			(self changeState: 1)
 		)
 		(if
-		(and (& (ego onControl:) $0100) (== currentStatus egoNormal))
+		(and (& (ego onControl:) $0100) (== currentStatus egoNORMAL))
 			(self changeState: 1)
 		)
 		(if (== 3 (ego edgeHit?))
@@ -246,7 +246,7 @@
 			else
 				(Print 34 0)
 				(Print 34 1 #draw)
-				(= currentStatus egoCaptured)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 95)
 			)
 		)
@@ -266,7 +266,7 @@
 			(1
 				(User canControl: FALSE)
 				(= currentEgoView (ego view?))
-				(= currentStatus egoDrowning)
+				(= currentStatus egoDROWNING)
 				(if (== currentEgoView 100)
 					(= drowningInLeisureSuit TRUE)
 					(= drowningView 137)
@@ -287,7 +287,7 @@
 				(= seconds 5)
 			)
 			(2
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(User canInput: FALSE)
 				(ego cel: 0 setCycle: EndLoop self setMotion: 0)
 			)
@@ -298,25 +298,25 @@
 					(Print 34 28)
 					(Print 34 29)
 				)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 				(ego hide:)
 			)
 			(4
 				(= seconds (= cycles 0))
-				(= currentStatus egoSwimming)
+				(= currentStatus egoSWIMMING)
 				(User canControl: TRUE)
 				(ego
 					view: 134
 					setStep: 3 2
 					setLoop: -1
 					setMotion: 0
-					baseSetter: (= theBSetter BSetter)
+					baseSetter: (= oldEgoBase BSetter)
 				)
 			)
 			(5
 				(= seconds (= cycles 0))
 				(HandsOff)
-				(= currentStatus egoDiving)
+				(= currentStatus egoDIVING)
 				(ego
 					view: 135
 					loop: (if (or (== (ego loop?) 3) (== (ego loop?) 1))
@@ -357,7 +357,7 @@
 					(= tookSwimInShipPool TRUE)
 					(theGame changeScore: 3)
 				)
-				(PrintOk)
+				(Ok)
 				(if (< (ego y?) 113)
 					(ego setMotion: MoveTo 160 112 self)
 				else
@@ -384,7 +384,7 @@
 				)
 			)
 			(12
-				(= currentStatus egoSitting)
+				(= currentStatus egoSITTING)
 				(Print 34 31)
 				(= seconds 5)
 			)
@@ -394,7 +394,7 @@
 					(Print 34 32)
 					(if (not henchwomanAppeared) (henchScript changeState: 1))
 				else
-					(= currentStatus egoStopped)
+					(= currentStatus egoSTOPPED)
 					(ego
 						setLoop: 1
 						setCel: 0
@@ -405,11 +405,11 @@
 			)
 			(14
 				(Print 34 33 #at -1 20 #draw)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(15
 				(= seconds (= cycles 0))
-				(PrintOk)
+				(Ok)
 				(ego cycleSpeed: 1 setCycle: BegLoop self)
 				(if (== 1 (henchScript state?))
 					(henchScript changeState: 255)
@@ -430,22 +430,22 @@
 		(if (Said 'look>')
 			(if (Said '/man,children') (Print 34 3))
 			(if (Said '/airport,barstool')
-				(if (!= currentStatus egoSitting)
+				(if (!= currentStatus egoSITTING)
 					(Print 34 4)
 				else
 					(Print 34 5)
 				)
 			)
 			(if (Said '<below/airport,barstool')
-				(PrintNothingSpecial)
+				(SeeNothing)
 			)
 			(if (Said '/inner') (Print 34 6))
 			(if (Said '/flower,palm') (Print 34 7))
 			(if (Said '[/fluid,craft,airport]')
 				(cond 
-					((== currentStatus egoSwimming) (Print 34 8))
-					((== currentStatus egoDrowning) (Print 34 9))
-					((== currentStatus egoSitting) (Print 34 10))
+					((== currentStatus egoSWIMMING) (Print 34 8))
+					((== currentStatus egoDROWNING) (Print 34 9))
+					((== currentStatus egoSITTING) (Print 34 10))
 					(else (Print 34 11) (Print 34 12))
 				)
 			)
@@ -456,9 +456,9 @@
 				(Said 'bathing')
 			)
 			(cond 
-				((== currentStatus egoSwimming) (Print 34 13))
-				((!= currentStatus egoDrowning) (Print 34 14) (Print 34 15))
-				(else (PrintOk) (self changeState: 4))
+				((== currentStatus egoSWIMMING) (Print 34 13))
+				((!= currentStatus egoDROWNING) (Print 34 14) (Print 34 15))
+				(else (Ok) (self changeState: 4))
 			)
 		)
 		(if
@@ -468,18 +468,18 @@
 				(Said 'apply,climb/ladder')
 			)
 			(cond 
-				((!= currentStatus egoSwimming) (PrintNotNow))
-				((not (& (ego onControl:) $0100)) (PrintNotCloseEnough))
-				(else (PrintOk) (self changeState: 7))
+				((!= currentStatus egoSWIMMING) (NotNow))
+				((not (& (ego onControl:) $0100)) (NotClose))
+				(else (Ok) (self changeState: 7))
 			)
 		)
 		(if
 		(or (Said 'board,bathing/underwater') (Said 'dive'))
 			(cond 
-				((== currentStatus egoDrowning) (Print 34 16))
-				((!= currentStatus egoSwimming) (Print 34 17))
+				((== currentStatus egoDROWNING) (Print 34 16))
+				((!= currentStatus egoSWIMMING) (Print 34 17))
 				((& (ego onControl:) $0100) (Print 34 18))
-				(else (PrintOk) (self changeState: 5))
+				(else (Ok) (self changeState: 5))
 			)
 		)
 		(if
@@ -488,10 +488,10 @@
 				(Said 'bath[/down,airport,barstool]')
 			)
 			(cond 
-				((== currentStatus egoSitting) (Print 34 19))
-				((not (ego inRect: 139 102 199 134)) (PrintNotCloseEnough))
+				((== currentStatus egoSITTING) (Print 34 19))
+				((not (ego inRect: 139 102 199 134)) (NotClose))
 				((!= currentEgoView 132) (Print 34 20))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(else (self changeState: 9))
 			)
 		)
@@ -501,7 +501,7 @@
 				(Said 'disembark[/barstool]')
 			)
 			(cond 
-				((== currentStatus egoNormal) (Print 34 13))
+				((== currentStatus egoNORMAL) (Print 34 13))
 				(
 					(and
 						(<= (henchScript state?) 4)
@@ -509,12 +509,12 @@
 					)
 					(Print 34 21)
 				)
-				((!= currentStatus egoSitting) (PrintNotNow))
+				((!= currentStatus egoSITTING) (NotNow))
 				(else (self changeState: 15))
 			)
 		)
 		(if (or (Said 'breathe') (Said 'get/breath'))
-			(PrintOk)
+			(Ok)
 		)
 		(if
 			(or
@@ -548,16 +548,16 @@
 				(= seconds (Random 5 10))
 			)
 			(2
-				(if (!= currentStatus egoSitting)
+				(if (!= currentStatus egoSITTING)
 					(self changeState: 1)
 				else
-					(henchwoman setMotion: MoveTo 155 129 self)
+					(aHench setMotion: MoveTo 155 129 self)
 					(= henchwomanIsHere TRUE)
 					(NotifyScript 8 1)
 				)
 			)
 			(3
-				(henchwoman setMotion: MoveTo 160 129 self)
+				(aHench setMotion: MoveTo 160 129 self)
 			)
 			(4
 				(Print 34 34)
@@ -566,15 +566,15 @@
 			)
 			(5
 				(Print 34 36)
-				(henchwoman setMotion: MoveTo 155 129 self)
-				(= canFollowHenchwoman 1)
+				(aHench setMotion: MoveTo 155 129 self)
+				(= canFollowHenchwoman TRUE)
 			)
 			(6
-				(henchwoman setMotion: MoveTo 155 234 self)
+				(aHench setMotion: MoveTo 155 234 self)
 			)
 			(7 (= seconds 10))
 			(8
-				(henchwoman dispose:)
+				(aHench dispose:)
 				(= henchView 0)
 				(= henchwomanIsHere FALSE)
 				(= canFollowHenchwoman FALSE)
@@ -586,10 +586,10 @@
 (instance BSetter of Code
 	(properties)
 	
-	(method (doit param1)
-		(param1 brBottom: (+ (param1 y?) 5))
-		(param1 brTop: (- (param1 y?) 3))
-		(param1 brLeft: (- (param1 x?) 10))
-		(param1 brRight: (+ (param1 x?) 10))
+	(method (doit theActor)
+		(theActor brBottom: (+ (theActor y?) 5))
+		(theActor brTop: (- (theActor y?) 3))
+		(theActor brLeft: (- (theActor x?) 10))
+		(theActor brRight: (+ (theActor x?) 10))
 	)
 )

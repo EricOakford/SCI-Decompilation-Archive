@@ -14,7 +14,7 @@
 
 (local
 	local0
-	door
+	aDoor
 )
 (instance rm16 of Room
 	(properties
@@ -72,7 +72,7 @@
 		)
 		(NormalEgo)
 		(ego init:)
-		((= door (AutoDoor new:))
+		((= aDoor (AutoDoor new:))
 			view: 224
 			setLoop: 0
 			posn: 136 134

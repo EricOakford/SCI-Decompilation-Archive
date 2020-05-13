@@ -13,7 +13,7 @@
 )
 
 (local
-	cascade
+	aWaterfall
 	triedToTurnBack
 )
 (instance rm80 of Room
@@ -41,7 +41,7 @@
 			setPri: 10
 			addToPic:
 		)
-		((= cascade (Prop new:))
+		((= aWaterfall (Prop new:))
 			view: 728
 			ignoreActors:
 			setLoop: 0

@@ -15,8 +15,8 @@
 (local
 	local0
 	triedToStealSunscreen
-	oweMoney
-	clerk
+	moneyOwed
+	aClerk
 )
 (instance rm118 of Room
 	(properties
@@ -90,7 +90,7 @@
 			setCycle: Forward
 			init:
 		)
-		((= clerk (Prop new:))
+		((= aClerk (Prop new:))
 			view: 229
 			setLoop: 0
 			setPri: 2
@@ -114,7 +114,7 @@
 		)
 		(cond 
 			((not (& (ego onControl:) $0004)) (= triedToStealSunscreen 0))
-			((and oweMoney (not triedToStealSunscreen)) (= triedToStealSunscreen 1) (Print 118 0))
+			((and moneyOwed (not triedToStealSunscreen)) (= triedToStealSunscreen 1) (Print 118 0))
 		)
 	)
 	
@@ -122,11 +122,11 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 10 40)))
 			(1
-				(clerk setLoop: 1 cel: 0 setCycle: Forward)
+				(aClerk setLoop: 1 cel: 0 setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
-				(clerk setLoop: 0 cel: 0)
+				(aClerk setLoop: 0 cel: 0)
 				(= seconds (Random 10 20))
 				(= state 0)
 			)
@@ -137,7 +137,7 @@
 				else
 					(Print 118 18)
 				)
-				(clerk setLoop: 3 setCycle: Forward)
+				(aClerk setLoop: 3 setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
@@ -158,18 +158,18 @@
 					((ego has: iDollarBill) (Print 118 24))
 					(else (Print 118 25))
 				)
-				(clerk setLoop: 3 setCycle: Forward)
+				(aClerk setLoop: 3 setCycle: Forward)
 				(= seconds 3)
 			)
 			(6
 				(cond 
-					((ego has: iMillionDollarBill) (Print 118 26) (clerk setLoop: 0))
+					((ego has: iMillionDollarBill) (Print 118 26) (aClerk setLoop: 0))
 					((ego has: iWadODough)
 						(Print 118 27)
 						(Print 118 28)
-						(clerk setLoop: 2 cycleSpeed: 1 cel: 0 setCycle: EndLoop)
+						(aClerk setLoop: 2 cycleSpeed: 1 cel: 0 setCycle: EndLoop)
 					)
-					(else (Print 118 29) (clerk setLoop: 0))
+					(else (Print 118 29) (aClerk setLoop: 0))
 				)
 				(= seconds 4)
 			)
@@ -178,14 +178,14 @@
 				(if (ego has: iWadODough)
 					(Print 118 30)
 					(Print (Format @str 118 31 tritePhrase))
-					(= oweMoney FALSE)
+					(= moneyOwed FALSE)
 					(if (not boughtSunscreen)
 						(= boughtSunscreen TRUE)
 						(theGame changeScore: 9)
 					)
 				else
 					(Print 118 32)
-					(ego observeControl: 2)
+					(ego observeControl: cBLUE)
 				)
 				(self changeState: 2)
 			)
@@ -219,13 +219,13 @@
 		)
 		(if (Said 'get/lotion,(lotion<suntan)')
 			(cond 
-				((not (ego inRect: 66 115 90 134)) (PrintNotCloseEnough))
+				((not (ego inRect: 66 115 90 134)) (NotClose))
 				((ego has: iSunscreen) (Print 118 10))
 				(else
 					(if (ego has: iCruiseTicket) (Print 118 11) else (Print 118 12))
-					(= oweMoney TRUE)
+					(= moneyOwed TRUE)
 					(ego get: iSunscreen)
-					(ego observeControl: 2)
+					(ego observeControl: cBLUE)
 				)
 			)
 		)
@@ -238,10 +238,10 @@
 			)
 			(cond 
 				((not (ego inRect: 66 115 90 134)) (Print 118 13))
-				((not (ego has: iSunscreen)) (PrintDontHaveIt))
+				((not (ego has: iSunscreen)) (DontHave))
 				(else
-					(PrintOk)
-					(= oweMoney FALSE)
+					(Ok)
+					(= moneyOwed FALSE)
 					(ego put: iSunscreen curRoomNum)
 					(ego ignoreControl: 2)
 				)
@@ -254,8 +254,8 @@
 				(Said 'buy')
 			)
 			(cond 
-				((not oweMoney) (Print 118 14))
-				((not (ego inRect: 216 118 237 134)) (PrintNotCloseEnough))
+				((not moneyOwed) (Print 118 14))
+				((not (ego inRect: 216 118 237 134)) (NotClose))
 				(else (self changeState: 5))
 			)
 		)

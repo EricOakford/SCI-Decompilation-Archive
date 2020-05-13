@@ -16,11 +16,11 @@
 
 (local
 	local0
-	soap
+	aSoap
 	boat
-	maria
-	carlos
-	mariaInRoom
+	aMaid
+	aBrother
+	maidInRoom
 	[local6 2]
 )
 (instance rm44 of Room
@@ -85,7 +85,7 @@
 			addToPic:
 		)
 		(if ((inventory at: iSoap) ownedBy: curRoomNum)
-			((= soap (View new:))
+			((= aSoap (View new:))
 				view: 416
 				ignoreActors:
 				loop: 0
@@ -112,11 +112,11 @@
 		(NormalEgo)
 		(ego posn: 159 162 init:)
 		(if (== currentEgoView 100)
-			(Load rsVIEW 417)
-			(Load rsVIEW 418)
-			(Load rsVIEW 419)
-			(Load rsVIEW 436)
-			((= maria (Actor new:))
+			(Load VIEW 417)
+			(Load VIEW 418)
+			(Load VIEW 419)
+			(Load VIEW 436)
+			((= aMaid (Actor new:))
 				view: 417
 				illegalBits: 0
 				loop: 3
@@ -132,7 +132,7 @@
 				setPri: 15
 				init:
 			)
-			((= carlos (Actor new:))
+			((= aBrother (Actor new:))
 				view: 419
 				ignoreActors:
 				illegalBits: 0
@@ -162,19 +162,19 @@
 		(switch (= state newState)
 			(0
 				(if
-				(and (== currentStatus egoNormal) (== currentEgoView 100))
+				(and (== currentStatus egoNORMAL) (== currentEgoView 100))
 					(= seconds 10)
 				)
 			)
 			(1
 				(if
-				(and (== currentStatus egoNormal) (== currentEgoView 100))
-					(= mariaInRoom TRUE)
-					(maria setMotion: MoveTo 160 132 self)
+				(and (== currentStatus egoNORMAL) (== currentEgoView 100))
+					(= maidInRoom TRUE)
+					(aMaid setMotion: MoveTo 160 132 self)
 				)
 			)
 			(2
-				(FaceObject maria ego 1)
+				(Face aMaid ego 1)
 				(= seconds 3)
 			)
 			(3
@@ -184,19 +184,19 @@
 			)
 			(4
 				(Print (Format @str 44 60 tritePhrase))
-				(maria setMotion: MoveTo 160 234 self)
+				(aMaid setMotion: MoveTo 160 234 self)
 			)
 			(5
-				(= mariaInRoom FALSE)
-				(maria dispose:)
+				(= maidInRoom FALSE)
+				(aMaid dispose:)
 			)
 			(6
 				(= seconds (= cycles 0))
 				(Print 44 61 #at -1 20)
-				(maria setMotion: MoveTo 130 130 self)
+				(aMaid setMotion: MoveTo 130 130 self)
 			)
 			(7
-				(maria
+				(aMaid
 					illegalBits: 0
 					ignoreActors:
 					view: 418
@@ -209,7 +209,7 @@
 			)
 			(8
 				(HandsOff)
-				(= currentStatus egoStopped)
+				(= currentStatus egoSTOPPED)
 				(ego
 					illegalBits: 0
 					ignoreActors:
@@ -227,12 +227,12 @@
 			)
 			(10
 				(ego cycleSpeed: 1 setCycle: EndLoop self)
-				(maria cycleSpeed: 1 setCycle: EndLoop)
+				(aMaid cycleSpeed: 1 setCycle: EndLoop)
 			)
 			(11 (= seconds 4))
 			(12
 				(ego hide:)
-				(maria
+				(aMaid
 					setLoop: 2
 					cel: 0
 					setCycle: Forward
@@ -242,31 +242,31 @@
 				(= seconds 3)
 			)
 			(13
-				(maria setLoop: 3)
+				(aMaid setLoop: 3)
 				(= seconds 2)
 			)
 			(14
-				(maria setLoop: 2)
+				(aMaid setLoop: 2)
 				(= seconds 4)
 			)
 			(15
-				(maria setLoop: 4)
+				(aMaid setLoop: 4)
 				(= seconds 2)
 			)
 			(16
-				(maria setLoop: 2)
+				(aMaid setLoop: 2)
 				(= seconds 4)
 			)
 			(17
-				(maria setLoop: 5)
+				(aMaid setLoop: 5)
 				(= seconds 2)
 			)
 			(18
-				(maria setLoop: 2)
-				(carlos setScript: brotherScript)
+				(aMaid setLoop: 2)
+				(aBrother setScript: brotherScript)
 			)
 			(19
-				(carlos setCycle: EndLoop self)
+				(aBrother setCycle: EndLoop self)
 				(if (> filthLevel 10)
 					(Print 44 64 #at -1 20 #draw)
 				else
@@ -275,12 +275,12 @@
 				(= seconds 3)
 			)
 			(20
-				(maria setLoop: 6)
+				(aMaid setLoop: 6)
 				(= seconds 4)
 			)
 			(21
 				(if (> filthLevel 10) (Print 44 66) else (Print 44 67))
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 		)
 	)
@@ -299,8 +299,8 @@
 		(if (Said 'look>')
 			(if (Said '/bimbo')
 				(cond 
-					((not mariaInRoom) (Print 44 4))
-					((!= currentStatus egoNormal) (PrintNotNow))
+					((not maidInRoom) (Print 44 4))
+					((!= currentStatus egoNORMAL) (NotNow))
 					(else
 						(aBigFace posn: 149 59)
 						(Timer setReal: aBigFace 5)
@@ -387,7 +387,7 @@
 				(ego loop: 2 setMotion: 0)
 				(Print 44 28 #draw)
 			else
-				(PrintNotCloseEnough)
+				(NotClose)
 			)
 		)
 		(if
@@ -400,7 +400,7 @@
 		(if (Said 'wear,apply/flower') (Print 44 30))
 		(if (Said '(jerk<on),apply/fluid,basin') (Print 44 31))
 		(if (Said 'close,jerk/cup,curtain') (Print 44 32))
-		(if mariaInRoom
+		(if maidInRoom
 			(if (Said 'n') (Print 44 33) (Print 44 34))
 			(if (Said 'call/bimbo')
 				(Print (Format @str 44 35 introductoryPhrase))
@@ -408,9 +408,9 @@
 			)
 			(if (Said '(enjoy<make),(clit<have),copulate/bimbo')
 				(cond 
-					((!= currentStatus egoNormal) (PrintNotNow))
+					((!= currentStatus egoNORMAL) (NotNow))
 					((> state 5) (Print 44 37))
-					(else (PrintOk) (self changeState: 6))
+					(else (Ok) (self changeState: 6))
 				)
 			)
 		)
@@ -420,14 +420,14 @@
 				(Said '(lie<down),lie,nap')
 			)
 			(cond 
-				((== (ego view?) 152) (PrintYouAre))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((== (ego view?) 152) (YouAre))
+				((!= currentStatus egoNORMAL) (NotNow))
 				((!= currentEgoView 100) (Print 44 38))
 				((< (ego y?) 121) (Print 44 39))
-				((not (ego inRect: 104 127 122 131)) (PrintNotCloseEnough))
+				((not (ego inRect: 104 127 122 131)) (NotClose))
 				(else
-					(= currentStatus egoSleeping)
-					(PrintOk)
+					(= currentStatus egoSLEEPING)
+					(Ok)
 					(User canControl: FALSE canInput: TRUE)
 					(= currentEgoView (ego view?))
 					(ego
@@ -450,9 +450,9 @@
 				(Said 'new,(awaken,new,get<up)')
 			)
 			(cond 
-				((!= (ego view?) 152) (PrintYouAre))
-				((!= currentStatus 1005) (PrintNotNow))
-				(else (PrintOk) (ego posn: 110 129) (NormalEgo 3))
+				((!= (ego view?) 152) (YouAre))
+				((!= currentStatus 1005) (NotNow))
+				(else (Ok) (ego posn: 110 129) (NormalEgo 3))
 			)
 		)
 		(if
@@ -463,13 +463,13 @@
 				(Said 'alter,(get<off),drain/bra,bra')
 			)
 			(cond 
-				((!= currentStatus egoNormal) (PrintNotNow))
-				(mariaInRoom (Print 44 40))
+				((!= currentStatus egoNORMAL) (NotNow))
+				(maidInRoom (Print 44 40))
 				(
 				(or (== currentEgoView 150) (== currentEgoView 151)) (Print 44 41))
 				((and (ego has: iBikiniTop) (ego has: iBikiniBottom))
 					(if (ego inRect: 176 100 199 115)
-						(PrintOk)
+						(Ok)
 						(= currentEgoView 150)
 						(ego view: currentEgoView)
 						(theGame changeScore: 5)
@@ -479,7 +479,7 @@
 					)
 				)
 				((or (ego has: iBikiniTop) (ego has: iBikiniBottom)) (Print 44 44))
-				(else (PrintDontHaveIt))
+				(else (DontHave))
 			)
 		)
 		(if
@@ -497,10 +497,10 @@
 		(if (Said 'get/bathtub,bath') (Print 44 47))
 		(if (Said 'get/match')
 			(cond 
-				((not ((inventory at: iMatches) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((not (ego inRect: 70 127 103 139)) (PrintNotCloseEnough))
+				((not ((inventory at: iMatches) ownedBy: curRoomNum)) (AlreadyTook))
+				((not (ego inRect: 70 127 103 139)) (NotClose))
 				(else
-					(PrintOk)
+					(Ok)
 					(ego get: iMatches)
 					(theGame changeScore: 2)
 					(Print 44 48)
@@ -512,13 +512,13 @@
 		)
 		(if (Said 'get/soap')
 			(cond 
-				((not ((inventory at: iSoap) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((not (ego inRect: 222 131 243 145)) (PrintNotCloseEnough))
+				((not ((inventory at: iSoap) ownedBy: curRoomNum)) (AlreadyTook))
+				((not (ego inRect: 222 131 243 145)) (NotClose))
 				(else
-					(PrintOk)
+					(Ok)
 					(ego get: iSoap)
 					(theGame changeScore: 2)
-					(soap hide:)
+					(aSoap hide:)
 					(Print 44 51 #at 15 -1 #width 280 #draw)
 					(Print 44 52 #at -1 152)
 				)
@@ -530,12 +530,12 @@
 				(Said 'conceal,conceal/buck,bill/(,bikini')
 			)
 			(cond 
-				((!= currentStatus egoNormal) (PrintNotNow))
-				(mariaInRoom (Print 44 40))
+				((!= currentStatus egoNORMAL) (NotNow))
+				(maidInRoom (Print 44 40))
 				((== currentEgoView 151) (Print 44 53))
 				((!= currentEgoView 150) (Print 44 54))
 				((ego inRect: 176 100 199 115)
-					(PrintOk)
+					(Ok)
 					(= stuffedBra 6)
 					(= currentEgoView 151)
 					(NormalEgo)
@@ -551,13 +551,13 @@
 				(Said 'conceal,conceal/soap/(,bikini')
 			)
 			(cond 
-				((!= currentStatus 0) (PrintNotNow))
-				(mariaInRoom (Print 44 40))
+				((!= currentStatus 0) (NotNow))
+				(maidInRoom (Print 44 40))
 				((== currentEgoView 151) (Print 44 53))
 				((!= currentEgoView 150) (Print 44 54))
 				((not (ego has: 18)) (Print 44 57))
 				((ego inRect: 176 100 199 115)
-					(PrintOk)
+					(Ok)
 					(= stuffedBra 18)
 					(= currentEgoView 151)
 					(NormalEgo)
@@ -577,15 +577,15 @@
 		(switch (= state newState)
 			(0 (= seconds 5))
 			(1
-				(carlos setMotion: MoveTo 160 160 self)
+				(aBrother setMotion: MoveTo 160 160 self)
 			)
 			(2
 				(Print 44 68)
 				(Print 44 69)
-				(carlos setMotion: MoveTo 150 122 self)
+				(aBrother setMotion: MoveTo 150 122 self)
 			)
 			(3
-				(carlos setLoop: 1 cel: 0)
+				(aBrother setLoop: 1 cel: 0)
 				(= seconds 3)
 			)
 			(4

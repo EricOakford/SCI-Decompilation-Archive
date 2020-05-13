@@ -14,11 +14,11 @@
 
 (local
 	local0
-	chairLift
-	monorail
+	aChairlift
+	aMonorail
 	local3
-	coaster
-	parkFlags
+	aRollerCoaster
+	aFlags
 )
 (instance rm19 of Room
 	(properties
@@ -39,7 +39,7 @@
 			posn: 144 31
 			addToPic:
 		)
-		((= chairLift (Prop new:))
+		((= aChairlift (Prop new:))
 			view: 254
 			setLoop: 0
 			posn: 60 15
@@ -48,7 +48,7 @@
 			isExtra: 1
 			init:
 		)
-		((= coaster (Prop new:))
+		((= aRollerCoaster (Prop new:))
 			view: 254
 			setLoop: 3
 			setCel: 255
@@ -57,7 +57,7 @@
 			hide:
 			setScript: coasterScript
 		)
-		((= parkFlags (Prop new:))
+		((= aFlags (Prop new:))
 			view: 254
 			setLoop: 4
 			posn: 239 14
@@ -66,7 +66,7 @@
 			isExtra: 1
 			init:
 		)
-		((= monorail (Actor new:))
+		((= aMonorail (Actor new:))
 			view: 254
 			setLoop: 1
 			setPri: 2
@@ -122,10 +122,10 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 2 21)))
 			(1
-				(monorail posn: -59 52 setMotion: MoveTo 380 53 self)
+				(aMonorail posn: -59 52 setMotion: MoveTo 380 53 self)
 			)
 			(2
-				(monorail posn: -945 52)
+				(aMonorail posn: -945 52)
 				(self changeState: 0)
 			)
 		)
@@ -139,10 +139,10 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 2 10)))
 			(1
-				(coaster cel: 0 show: setCycle: EndLoop self)
+				(aRollerCoaster cel: 0 show: setCycle: EndLoop self)
 			)
 			(2
-				(coaster hide:)
+				(aRollerCoaster hide:)
 				(self changeState: 0)
 			)
 		)

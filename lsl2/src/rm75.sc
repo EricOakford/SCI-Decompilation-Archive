@@ -15,10 +15,10 @@
 
 (local
 	triedToEnterWater
-	kalalau
-	cupid2
-	cupid1
-	helicopter
+	aKalalau
+	aCupidWest
+	aCupidEast
+	aCopter
 )
 (instance theSound of Sound
 	(properties
@@ -42,7 +42,7 @@
 		(cond 
 			((== endGameState NULL)
 				(= endGameState endMEETKALALAU)
-				(= currentStatus egoMeetingTribe)
+				(= currentStatus egoMEETTRIBE)
 				(rm75Script changeState: 1)
 				(Load VIEW 703)
 				(Load VIEW 704)
@@ -52,7 +52,7 @@
 				(Load PICTURE 99)
 				(Load SOUND 116)
 				(theSound number: 116 init:)
-				((= kalalau (Actor new:))
+				((= aKalalau (Actor new:))
 					view: 705
 					loop: 0
 					ignoreActors:
@@ -60,7 +60,7 @@
 					posn: 190 124
 					init:
 				)
-				((= cupid1 (Prop new:))
+				((= aCupidEast (Prop new:))
 					view: 703
 					ignoreActors:
 					setLoop: 1
@@ -69,7 +69,7 @@
 					init:
 					hide:
 				)
-				((= cupid2 (Prop new:))
+				((= aCupidWest (Prop new:))
 					view: 703
 					ignoreActors:
 					setLoop: 0
@@ -91,13 +91,13 @@
 				(Load VIEW 807)
 				(Load SOUND 17)
 				(theSound number: 17 play:)
-				((= helicopter (Prop new:))
+				((= aCopter (Prop new:))
 					view: 807
 					posn: 319 136
 					setCycle: Forward
 					init:
 				)
-				((= kalalau (Actor new:))
+				((= aKalalau (Actor new:))
 					view: 704
 					loop: 2
 					ignoreActors:
@@ -138,10 +138,10 @@
 		(switch (= state newState)
 			(1 (= seconds 3))
 			(2
-				(kalalau cycleSpeed: 1 setCycle: EndLoop self)
+				(aKalalau cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(3
-				(kalalau setLoop: 1 setCycle: Forward)
+				(aKalalau setLoop: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
@@ -152,10 +152,10 @@
 			)
 			(5
 				(Print 75 12)
-				(kalalau setLoop: 0 setCel: 255 setCycle: BegLoop self)
+				(aKalalau setLoop: 0 setCel: 255 setCycle: BegLoop self)
 			)
 			(6
-				(kalalau
+				(aKalalau
 					cycleSpeed: 0
 					setLoop: 2
 					cel: 0
@@ -164,7 +164,7 @@
 				)
 			)
 			(7
-				(kalalau
+				(aKalalau
 					view: 704
 					setLoop: -1
 					setCycle: Walk
@@ -172,7 +172,7 @@
 				)
 			)
 			(8
-				(kalalau loop: 1)
+				(aKalalau loop: 1)
 				(ego setMotion: MoveTo 115 164 self)
 				(Print 75 13 #draw)
 				(Print 75 14 #at -1 152)
@@ -183,7 +183,7 @@
 			)
 			(10
 				(ego posn: 1115 163)
-				(kalalau posn: 1190 163)
+				(aKalalau posn: 1190 163)
 				(DrawPic 99 DISSOLVE)
 				(= seconds 6)
 			)
@@ -194,43 +194,43 @@
 			(12
 				(DrawPic 75 DISSOLVE)
 				(ego posn: 115 163)
-				(kalalau posn: 190 163)
+				(aKalalau posn: 190 163)
 				(= seconds 3)
 			)
 			(13
 				(ego view: 703 loop: 4 cel: 0 setCycle: EndLoop)
-				(kalalau view: 703 loop: 6 cel: 0 setCycle: EndLoop self)
+				(aKalalau view: 703 loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(14
 				(ego loop: 5 setCycle: Forward)
-				(kalalau loop: 7 setCycle: Forward)
+				(aKalalau loop: 7 setCycle: Forward)
 				(= seconds 3)
 			)
 			(15
 				(ego loop: 4 setCel: 255 setCycle: BegLoop)
-				(kalalau loop: 6 setCel: 255 setCycle: BegLoop self)
+				(aKalalau loop: 6 setCel: 255 setCycle: BegLoop self)
 			)
 			(16
-				(cupid2 show: setCycle: Forward)
-				(cupid1 show: setCycle: Forward)
+				(aCupidWest show: setCycle: Forward)
+				(aCupidEast show: setCycle: Forward)
 				(ego view: 100 loop: 0 setLoop: -1 setCycle: Walk)
-				(kalalau view: 704 loop: 1 setLoop: -1 setCycle: Walk)
+				(aKalalau view: 704 loop: 1 setLoop: -1 setCycle: Walk)
 				(= seconds 4)
 			)
 			(17
-				(cupid1 hide:)
-				(cupid2 hide:)
+				(aCupidEast hide:)
+				(aCupidWest hide:)
 				(= cycles 20)
 			)
 			(18
-				(cupid2
+				(aCupidWest
 					loop: 2
 					cel: 0
 					setCycle: EndLoop
 					posn: 84 127
 					show:
 				)
-				(cupid1
+				(aCupidEast
 					loop: 2
 					cel: 0
 					setCycle: EndLoop self
@@ -239,21 +239,21 @@
 				)
 			)
 			(19
-				(cupid2 loop: 3 cel: 0 setCycle: Forward)
-				(cupid1 loop: 3 cel: 1 setCycle: Forward)
+				(aCupidWest loop: 3 cel: 0 setCycle: Forward)
+				(aCupidEast loop: 3 cel: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(20
-				(cupid2 loop: 2 setCel: 255 setCycle: BegLoop)
-				(cupid1 loop: 2 setCel: 255 setCycle: BegLoop self)
+				(aCupidWest loop: 2 setCel: 255 setCycle: BegLoop)
+				(aCupidEast loop: 2 setCel: 255 setCycle: BegLoop self)
 			)
 			(21
-				(cupid1 hide:)
-				(cupid2 hide:)
+				(aCupidEast hide:)
+				(aCupidWest hide:)
 				(= cycles 20)
 			)
 			(22
-				(cupid2
+				(aCupidWest
 					loop: 9
 					cel: 0
 					setCycle: Forward
@@ -263,24 +263,24 @@
 				(= cycles 5)
 			)
 			(23
-				(cupid1 loop: 8 cel: 0 setCycle: Forward posn: 236 51 show:)
+				(aCupidEast loop: 8 cel: 0 setCycle: Forward posn: 236 51 show:)
 				(= cycles 41)
 			)
 			(24
-				(cupid1 hide:)
+				(aCupidEast hide:)
 				(= cycles 5)
 			)
 			(25
-				(cupid2 hide:)
+				(aCupidWest hide:)
 				(= cycles 20)
 			)
 			(26
 				(Print 75 16)
 				(ego setMotion: MoveTo 142 164)
-				(kalalau setMotion: MoveTo 158 164 self)
+				(aKalalau setMotion: MoveTo 158 164 self)
 			)
 			(27
-				(kalalau hide:)
+				(aKalalau hide:)
 				(ego
 					view: 706
 					setLoop: 0
@@ -294,7 +294,7 @@
 			(30
 				(Print 75 17 #draw)
 				(Print 75 18 #at -1 152)
-				(kalalau show: ignoreActors: 0)
+				(aKalalau show: ignoreActors: 0)
 				(ego
 					view: currentEgoView
 					setLoop: -1
@@ -328,12 +328,12 @@
 			)
 			(33
 				(Print 75 33)
-				(kalalau
-					setMotion: MoveTo (kalalau x?) (- (kalalau y?) 5) self
+				(aKalalau
+					setMotion: MoveTo (aKalalau x?) (- (aKalalau y?) 5) self
 				)
 			)
 			(34
-				(kalalau setMotion: MoveTo -20 143)
+				(aKalalau setMotion: MoveTo -20 143)
 				(= cycles 20)
 			)
 			(35
@@ -346,13 +346,13 @@
 				(ego illegalBits: 0 setMotion: MoveTo 181 167 self)
 			)
 			(38
-				(kalalau setMotion: MoveTo 76 156)
+				(aKalalau setMotion: MoveTo 76 156)
 				(ego setMotion: MoveTo 92 158 self)
 			)
 			(39
 				(Print 75 36)
 				(Print 75 37)
-				(kalalau hide:)
+				(aKalalau hide:)
 				(ego
 					view: 706
 					setLoop: 1
@@ -364,7 +364,7 @@
 			(40 (= seconds 5))
 			(41 (ego setCycle: BegLoop self))
 			(42
-				(kalalau show: ignoreActors: 0)
+				(aKalalau show: ignoreActors: 0)
 				(ego
 					view: currentEgoView
 					setLoop: -1
@@ -377,7 +377,7 @@
 			(43
 				(Print 75 38)
 				(ego setMotion: MoveTo 0 143 self)
-				(kalalau setMotion: MoveTo -20 143)
+				(aKalalau setMotion: MoveTo -20 143)
 			)
 		)
 	)
@@ -401,9 +401,9 @@
 		(if (Said 'play,dig/beach') (Print 75 7))
 		(if (Said 'get/beach')
 			(cond 
-				((!= currentStatus egoNormal) (PrintNotNow))
-				((not ((inventory at: iSand) ownedBy: curRoomNum)) (PrintAlreadyTookIt))
-				((not (& (ego onControl: origin) $4000)) (PrintNotCloseEnough))
+				((!= currentStatus egoNORMAL) (NotNow))
+				((not ((inventory at: iSand) ownedBy: curRoomNum)) (AlreadyTook))
+				((not (& (ego onControl: origin) $4000)) (NotClose))
 				(else
 					(ego get: iSand)
 					(theGame changeScore: 3)

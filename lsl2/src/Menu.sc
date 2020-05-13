@@ -111,7 +111,7 @@
 				(Sound pause: hPause)
 			)
 			(invI
-				(if (not (IsHeapFree 1024))
+				(if (not (HaveMem 1024))
 					(Print MENU 9)
 				else
 					(inventory showSelf: ego)
@@ -125,7 +125,7 @@
 			)
 			(filthI
 				(if (< (MemoryInfo FreeHeap) 2048)
-					(PrintNotNow)
+					(NotNow)
 				else
 					(cond 
 						(
@@ -160,7 +160,7 @@
 				(if (> (StrLen @str) 4) (Format tritePhrase @str))
 			)
 			(speedI
-				(if (not (IsHeapFree 2048))
+				(if (not (HaveMem 2048))
 					(Print MENU 14)
 				else
 					(= i
@@ -190,7 +190,7 @@
 				(theGame setSpeed: (++ speed))
 			)
 			(volumeI
-				(if (not (IsHeapFree 2048))
+				(if (not (HaveMem 2048))
 					(Print MENU 15)
 				else
 					(= i

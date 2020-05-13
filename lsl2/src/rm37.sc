@@ -14,8 +14,8 @@
 
 (local
 	local0
-	barber
-	chair
+	aBarber
+	aChair
 	talkedToBarber
 )
 (instance rm37 of Room
@@ -30,7 +30,7 @@
 		(Load VIEW 303)
 		(Load VIEW 302)
 		(super init:)
-		((= chair (View new:))
+		((= aChair (View new:))
 			view: 232
 			loop: 1
 			cel: 0
@@ -40,12 +40,12 @@
 			stopUpd:
 			init:
 		)
-		((= barber (Actor new:))
+		((= aBarber (Actor new:))
 			view: 303
 			setLoop: 0
 			posn: 134 145
 			setCycle: Walk
-			observeControl: 16384 -32768
+			observeControl: cYELLOW cWHITE
 			moveSpeed: 6
 			cycleSpeed: 3
 			setMotion: Wander
@@ -96,7 +96,7 @@
 					ignoreActors:
 					setMotion: MoveTo 157 120 self
 				)
-				(barber
+				(aBarber
 					setLoop: 1
 					moveSpeed: 0
 					cycleSpeed: 0
@@ -105,7 +105,7 @@
 				)
 			)
 			(3
-				(chair hide:)
+				(aChair hide:)
 				(ego
 					view: 232
 					setLoop: 2
@@ -115,15 +115,15 @@
 				)
 			)
 			(4
-				(barber setLoop: 2 setCycle: Forward)
+				(aBarber setLoop: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(5
-				(barber setLoop: 3 setCycle: EndLoop self)
+				(aBarber setLoop: 3 setCycle: EndLoop self)
 			)
 			(6 (= seconds 3))
 			(7
-				(barber
+				(aBarber
 					setLoop: 4
 					setCycle: Walk
 					setMotion: MoveTo 166 117 self
@@ -131,28 +131,28 @@
 				)
 			)
 			(8
-				(barber setLoop: 5 setCycle: EndLoop self)
+				(aBarber setLoop: 5 setCycle: EndLoop self)
 				(Print 37 13 #at -1 20 #draw)
 				(Print 37 14 #at -1 20)
 			)
 			(9
-				(barber setLoop: 6 setCycle: Forward)
+				(aBarber setLoop: 6 setCycle: Forward)
 				(Print 37 15 #at -1 20 #draw)
 				(= seconds 4)
 			)
 			(10
-				(barber setLoop: 7 setCycle: EndLoop self)
+				(aBarber setLoop: 7 setCycle: EndLoop self)
 			)
 			(11
-				(barber setLoop: 8 setCycle: Forward)
+				(aBarber setLoop: 8 setCycle: Forward)
 				(= seconds 4)
 			)
 			(12
 				(ego view: 302 setLoop: 0 cel: 0)
-				(barber setLoop: 9 setCycle: CycleTo 6 1 self)
+				(aBarber setLoop: 9 setCycle: CycleTo 6 1 self)
 			)
 			(13
-				(barber setCycle: EndLoop self setMotion: MoveTo 176 118)
+				(aBarber setCycle: EndLoop self setMotion: MoveTo 176 118)
 			)
 			(14
 				(Print 37 16 #at -1 20)
@@ -174,7 +174,7 @@
 				(ego posn: 159 119)
 				(= currentEgoView 133)
 				(NormalEgo 3)
-				(chair show:)
+				(aChair show:)
 				(HandsOff)
 				(= seconds 3)
 			)
@@ -225,7 +225,7 @@
 			(cond 
 				((not (ego inRect: 148 117 180 127)) (Print 37 4))
 				((not ((inventory at: iWig) ownedBy: curRoomNum)) (Print 37 5) (Print 37 6))
-				((== currentStatus egoSitting) (PrintYouAre))
+				((== currentStatus egoSITTING) (YouAre))
 				(else (self changeState: 2))
 			)
 		)

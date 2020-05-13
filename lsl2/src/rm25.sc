@@ -14,9 +14,9 @@
 )
 
 (local
-	door
-	barberPole
-	wave
+	aDoor
+	aPole
+	aWave
 )
 (instance rm25 of Room
 	(properties
@@ -48,7 +48,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= wave (Prop new:))
+		((= aWave (Prop new:))
 			view: 231
 			setLoop: 2
 			setCel: 0
@@ -59,7 +59,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= barberPole (Prop new:))
+		((= aPole (Prop new:))
 			view: 230
 			setPri: 12
 			posn: 176 138
@@ -69,7 +69,7 @@
 			init:
 		)
 		(NormalEgo)
-		((= door (AutoDoor new:))
+		((= aDoor (AutoDoor new:))
 			view: 231
 			setLoop: 0
 			posn: 185 84
@@ -103,7 +103,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(wave cel: 0 setCycle: EndLoop self)
+				(aWave cel: 0 setCycle: EndLoop self)
 			)
 			(1 (= cycles (Random 6 10)))
 			(2 (self changeState: 0))

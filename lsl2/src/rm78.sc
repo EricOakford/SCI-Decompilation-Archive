@@ -14,22 +14,22 @@
 )
 
 (local
-	woodcutter
+	aWoodChopper
 	local1
-	hulaGirl1
-	hulaGirl2
-	cameraVillager
-	drummer
-	cyclist
-	shaman
-	keneewauwau
-	keneewauwauHead
-	kalalau
-	minicameraMan
-	cupidLeftWing
-	cupidRightWing
-	egoAndKalalau
-	cameraFlash
+	aHulaHooper
+	aDancer
+	aPhotographer
+	aDrummer
+	aPedaler
+	aDoctor
+	aChief
+	aMouth
+	aKalalau
+	aCameraman
+	thePedaler
+	theChief
+	theDrummer
+	theMouth
 )
 (instance rm78 of Room
 	(properties
@@ -39,7 +39,9 @@
 	)
 	
 	(method (init)
-		(if (== endGameState 105) (self style: 8))
+		(if (== endGameState 105)
+			(self style: DISSOLVE)
+		)
 		(super init:)
 		(NormalEgo)
 		(ego posn: 9 133 init:)
@@ -48,7 +50,7 @@
 		(if (!= endGameState 105)
 			(self setRegions: ISLAND)
 			(Load VIEW 716)
-			((= woodcutter (Prop new:))
+			((= aWoodChopper (Prop new:))
 				view: 716
 				posn: 55 102
 				cycleSpeed: 1
@@ -127,7 +129,7 @@
 				posn: 16 108
 				addToPic:
 			)
-			((= drummer (Prop new:))
+			((= aDrummer (Prop new:))
 				view: 714
 				ignoreActors:
 				setLoop: 1
@@ -135,7 +137,7 @@
 				stopUpd:
 				init:
 			)
-			((= cyclist (Prop new:))
+			((= aPedaler (Prop new:))
 				view: 707
 				ignoreActors:
 				setLoop: 7
@@ -143,7 +145,7 @@
 				stopUpd:
 				init:
 			)
-			((= shaman (Actor new:))
+			((= aDoctor (Actor new:))
 				view: 711
 				loop: 3
 				posn: 159 171
@@ -153,7 +155,7 @@
 				stopUpd:
 				init:
 			)
-			((= hulaGirl1 (Actor new:))
+			((= aHulaHooper (Actor new:))
 				view: 823
 				ignoreActors:
 				illegalBits: 0
@@ -164,7 +166,7 @@
 				stopUpd:
 				init:
 			)
-			((= hulaGirl2 (Actor new:))
+			((= aDancer (Actor new:))
 				view: 823
 				ignoreActors:
 				illegalBits: 0
@@ -175,7 +177,7 @@
 				stopUpd:
 				init:
 			)
-			((= kalalau (Actor new:))
+			((= aKalalau (Actor new:))
 				view: 704
 				loop: 1
 				ignoreActors:
@@ -187,7 +189,7 @@
 				moveSpeed: 1
 				init:
 			)
-			((= keneewauwau (Actor new:))
+			((= aChief (Actor new:))
 				view: 710
 				ignoreActors:
 				illegalBits: 0
@@ -198,7 +200,7 @@
 				posn: -22 137
 				init:
 			)
-			((= keneewauwauHead (Prop new:))
+			((= aMouth (Prop new:))
 				view: 710
 				ignoreActors:
 				setLoop: 4
@@ -207,7 +209,7 @@
 				setCycle: Forward
 				init:
 			)
-			((= minicameraMan (Actor new:))
+			((= aCameraman (Actor new:))
 				view: 212
 				ignoreActors:
 				illegalBits: 0
@@ -221,7 +223,7 @@
 				init:
 				setScript: minicamScript
 			)
-			((= cameraVillager (Actor new:))
+			((= aPhotographer (Actor new:))
 				view: 823
 				ignoreActors:
 				illegalBits: 0
@@ -246,9 +248,9 @@
 			(and
 				(!= endGameState 105)
 				(== (ego loop?) 3)
-				(== 6 (woodcutter cel?))
+				(== 6 (aWoodChopper cel?))
 				(ego inRect: 34 100 43 107)
-				(== currentStatus egoNormal)
+				(== currentStatus egoNORMAL)
 			)
 			(self changeState: 47)
 		)
@@ -261,14 +263,14 @@
 			(3
 				(theSound play:)
 				(Print 78 11)
-				(drummer setCycle: Forward)
-				(hulaGirl1 setMotion: MoveTo 222 123 self)
-				(hulaGirl2 setMotion: MoveTo 46 111 self)
+				(aDrummer setCycle: Forward)
+				(aHulaHooper setMotion: MoveTo 222 123 self)
+				(aDancer setMotion: MoveTo 46 111 self)
 			)
 			(5
 				(Print 78 12)
-				(hulaGirl1 setLoop: 5 cel: 0 stopUpd:)
-				(hulaGirl2 cel: 0 stopUpd:)
+				(aHulaHooper setLoop: 5 cel: 0 stopUpd:)
+				(aDancer cel: 0 stopUpd:)
 				(ego setMotion: MoveTo 163 134 self)
 			)
 			(6
@@ -277,33 +279,33 @@
 			)
 			(7 (Print 78 13) (= seconds 3))
 			(8
-				(kalalau setMotion: MoveTo 182 152 self)
-				(keneewauwau setMotion: MoveTo 100 138 self)
-				(cyclist setCycle: Forward)
+				(aKalalau setMotion: MoveTo 182 152 self)
+				(aChief setMotion: MoveTo 100 138 self)
+				(aPedaler setCycle: Forward)
 				(minicamScript changeState: 5)
 			)
 			(10
-				(kalalau setLoop: 1)
+				(aKalalau setLoop: 1)
 				(ego setMotion: MoveTo 165 152 self)
 			)
 			(11
-				(kalalau hide:)
+				(aKalalau hide:)
 				(ego view: 822 setLoop: 0 cel: 0 posn: 172 151)
 				(Print 78 14 #draw)
-				(keneewauwau stopUpd:)
-				(keneewauwauHead
-					posn: (+ (keneewauwau x?) -1) (+ (keneewauwau y?) -25)
+				(aChief stopUpd:)
+				(aMouth
+					posn: (+ (aChief x?) -1) (+ (aChief y?) -25)
 				)
 				(= seconds 3)
 			)
 			(12
-				(keneewauwauHead posn: 666 666)
-				(= cameraFlash keneewauwauHead)
-				(= cupidRightWing keneewauwau)
+				(aMouth posn: 666 666)
+				(= theMouth aMouth)
+				(= theChief aChief)
 				(ego stopUpd:)
 				(Print 78 15 #draw)
-				(proc0_4 keneewauwau)
-				(cupidRightWing posn: 888 888)
+				(proc0_4 aChief)
+				(theChief posn: 888 888)
 				(= seconds 3)
 			)
 			(13
@@ -318,8 +320,8 @@
 			(15
 				(Print 78 18)
 				(theSound stop:)
-				(proc0_4 drummer)
-				((= egoAndKalalau drummer) posn: 777 777)
+				(proc0_4 aDrummer)
+				((= theDrummer aDrummer) posn: 777 777)
 				(Print 78 19)
 				(= seconds 3)
 			)
@@ -365,7 +367,7 @@
 				(= cycles 22)
 			)
 			(26
-				(kalalau
+				(aKalalau
 					show:
 					setLoop: 0
 					cycleSpeed: 0
@@ -383,7 +385,7 @@
 				)
 			)
 			(27
-				(kalalau setLoop: 1 setMotion: MoveTo 189 152)
+				(aKalalau setLoop: 1 setMotion: MoveTo 189 152)
 				(ego setLoop: 1 setMotion: MoveTo 172 152 self)
 			)
 			(28
@@ -392,7 +394,7 @@
 				(= cycles 10)
 			)
 			(29
-				(kalalau hide:)
+				(aKalalau hide:)
 				(ego
 					view: 706
 					setLoop: 0
@@ -412,19 +414,19 @@
 			)
 			(33
 				(Print 78 25)
-				(proc0_4 cyclist)
-				((= cupidLeftWing cyclist) posn: 999 999)
-				(cameraVillager setMotion: MoveTo 132 160 self)
+				(proc0_4 aPedaler)
+				((= thePedaler aPedaler) posn: 999 999)
+				(aPhotographer setMotion: MoveTo 132 160 self)
 			)
 			(34
-				(cameraVillager setLoop: 3 cel: 0 setCycle: EndLoop self)
+				(aPhotographer setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(35
-				(shaman view: 713 setLoop: 1 setCycle: Forward)
+				(aDoctor view: 713 setLoop: 1 setCycle: Forward)
 				(= cycles 50)
 			)
 			(36
-				(egoAndKalalau
+				(theDrummer
 					view: 822
 					loop: 3
 					posn: 170 138
@@ -435,14 +437,14 @@
 				)
 			)
 			(37
-				(shaman view: 711 setLoop: 3 setCycle: Walk stopUpd:)
-				(cupidLeftWing
+				(aDoctor view: 711 setLoop: 3 setCycle: Walk stopUpd:)
+				(thePedaler
 					view: 822
 					setLoop: 4
 					posn: 154 105
 					setCycle: Forward
 				)
-				(cupidRightWing
+				(theChief
 					view: 822
 					setLoop: 5
 					posn: 186 105
@@ -451,34 +453,34 @@
 				(= cycles 30)
 			)
 			(38
-				(cameraFlash
+				(theMouth
 					view: 823
 					setLoop: 4
 					setPri: 12
 					cel: 0
-					posn: (+ (cameraVillager x?) 5) (- (cameraVillager y?) 35)
+					posn: (+ (aPhotographer x?) 5) (- (aPhotographer y?) 35)
 					cycleSpeed: 0
 					setCycle: EndLoop self
 				)
 			)
 			(39
-				(cameraFlash dispose:)
-				(cameraVillager setCycle: BegLoop self)
+				(theMouth dispose:)
+				(aPhotographer setCycle: BegLoop self)
 			)
 			(40 (= cycles 10))
 			(41
-				(egoAndKalalau setCycle: BegLoop self)
-				(cupidLeftWing dispose:)
-				(cupidRightWing dispose:)
+				(theDrummer setCycle: BegLoop self)
+				(thePedaler dispose:)
+				(theChief dispose:)
 			)
 			(42
-				(egoAndKalalau dispose:)
+				(theDrummer dispose:)
 				(= seconds 3)
 			)
 			(43
 				(Print 78 26)
 				(Print 78 27)
-				(kalalau setLoop: 1 show:)
+				(aKalalau setLoop: 1 show:)
 				(ego
 					view: 100
 					setPri: -1
@@ -486,10 +488,10 @@
 					loop: 2
 					posn: 165 151
 				)
-				(shaman setPri: -1 setMotion: MoveTo 150 152 self)
+				(aDoctor setPri: -1 setMotion: MoveTo 150 152 self)
 			)
 			(44
-				(shaman setMotion: MoveTo 165 116 self)
+				(aDoctor setMotion: MoveTo 165 116 self)
 				(= cycles 5)
 			)
 			(45
@@ -499,14 +501,14 @@
 			(46 (curRoom newRoom: 178))
 			(47
 				(HandsOff)
-				(= currentStatus egoStopped)
-				(woodcutter setScript: 0 setCel: 255 stopUpd:)
+				(= currentStatus egoSTOPPED)
+				(aWoodChopper setScript: 0 setCel: 255 stopUpd:)
 				(Print 78 29 #draw)
 				(Print 78 30)
 				(= seconds 3)
 			)
 			(48
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 				(Print 78 31)
 			)
 		)
@@ -538,7 +540,7 @@
 				(Print 78 5)
 				(Print 78 6 #at -1 152)
 			else
-				(PrintNotCloseEnough)
+				(NotClose)
 			)
 		)
 		(if (Said '/man,children') (Print 78 7))
@@ -553,7 +555,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 8))
-			(1 (woodcutter setCycle: EndLoop self))
+			(1 (aWoodChopper setCycle: EndLoop self))
 			(2
 				(= cycles (++ local1))
 				(= state 0)
@@ -568,21 +570,21 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(minicameraMan loop: 2 setCycle: EndLoop self)
+				(aCameraman loop: 2 setCycle: EndLoop self)
 			)
-			(2 (minicameraMan stopUpd:))
+			(2 (aCameraman stopUpd:))
 			(3
-				(minicameraMan setCycle: BegLoop self)
+				(aCameraman setCycle: BegLoop self)
 			)
 			(4
-				(minicameraMan setCycle: Walk setMotion: MoveTo 180 179 self)
+				(aCameraman setCycle: Walk setMotion: MoveTo 180 179 self)
 				(= state 0)
 			)
 			(5
-				(minicameraMan setCycle: BegLoop self)
+				(aCameraman setCycle: BegLoop self)
 			)
 			(6
-				(minicameraMan setCycle: Walk setMotion: MoveTo 120 179 self)
+				(aCameraman setCycle: Walk setMotion: MoveTo 120 179 self)
 				(= state 0)
 			)
 		)

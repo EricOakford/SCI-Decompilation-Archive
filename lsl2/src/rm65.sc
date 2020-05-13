@@ -15,7 +15,7 @@
 
 (local
 	local0
-	local1
+	numClouds
 )
 (instance rm65 of Room
 	(properties
@@ -23,7 +23,7 @@
 		horizon 5
 	)
 	
-	(method (init &tmp temp0 temp1)
+	(method (init &tmp i temp1)
 		(Load VIEW 607)
 		(Load VIEW 620)
 		(super init:)
@@ -36,9 +36,9 @@
 			ignoreActors:
 			addToPic:
 		)
-		(= local1 (Random 2 6))
-		(= temp0 0)
-		(while (< temp0 local1)
+		(= numClouds (Random 2 6))
+		(= i 0)
+		(while (< i numClouds)
 			((View new:)
 				view: 620
 				cel: (Random 0 10)
@@ -46,15 +46,15 @@
 				posn: (Random -10 330) (Random 5 120)
 				addToPic:
 			)
-			(++ temp0)
+			(++ i)
 		)
 		(self setScript: rm65Script)
 		(ego ignoreHorizon: posn: 144 -21)
-		(if (== currentStatus egoFalling)
+		(if (== currentStatus egoFALLING)
 			(ego loop: 0 setStep: 3 4 init:)
 			(rm65Script changeState: 0)
 		else
-			(= currentStatus egoLaunchedParachute)
+			(= currentStatus egoLAUNCHPARACHUTE)
 			(ego loop: 1 setStep: 1 1 cycleSpeed: 4 init:)
 			(rm65Script changeState: 6)
 		)
@@ -87,10 +87,10 @@
 			(3
 				(Print 65 12)
 				(if (Random 0 1) (Print 65 13) else (Print 65 14))
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(4
-				(= currentStatus egoLaunchedParachute)
+				(= currentStatus egoLAUNCHPARACHUTE)
 				(= seconds (= cycles 0))
 				(User canInput: FALSE)
 				(Print 65 15)
@@ -108,7 +108,7 @@
 			)
 			(6
 				(= seconds (= cycles 0))
-				(= currentStatus egoLaunchedParachute)
+				(= currentStatus egoLAUNCHPARACHUTE)
 				(User canInput: FALSE)
 				(ego
 					loop: 1
@@ -129,7 +129,7 @@
 		)
 		(if (Said 'look>')
 			(if (Said '/island')
-				(if (== currentStatus egoFalling)
+				(if (== currentStatus egoFALLING)
 					(Print 65 0)
 				else
 					(Print 65 1)
@@ -138,7 +138,7 @@
 			(if (Said '/fluid,lagoon,lagoon') (Print 65 2))
 			(if (Said '/cloud') (Print 65 3))
 			(if (Said '[/airport,around,cloud]')
-				(if (== currentStatus egoFalling)
+				(if (== currentStatus egoFALLING)
 					(Print 65 4)
 				else
 					(Print 65 5)
@@ -146,7 +146,7 @@
 			)
 		)
 		(if (Said 'apply,open,jerk/cord,parachute')
-			(if (!= currentStatus egoFalling)
+			(if (!= currentStatus egoFALLING)
 				(Print 65 6)
 			else
 				(Print 65 7)

@@ -13,8 +13,8 @@
 )
 
 (local
-	madeItMessage
-	confetti
+	confettiFalling
+	numConfetti
 )
 (instance rm27 of Room
 	(properties
@@ -34,21 +34,21 @@
 (instance rm27Script of Script
 	(properties)
 	
-	(method (doit &tmp numConfetti)
+	(method (doit &tmp i)
 		(super doit:)
-		(if (and (not madeItMessage) (> (ego x?) 160))
+		(if (and (not confettiFalling) (> (ego x?) 160))
 			(Print 27 0)
-			(= madeItMessage TRUE)
+			(= confettiFalling TRUE)
 			(cond 
-				((> howFast 80) (= confetti 5))
-				((> howFast 60) (= confetti 4))
-				((> howFast 40) (= confetti 3))
-				((> howFast 20) (= confetti 2))
-				(else (= confetti 1))
+				((> machineSpeed 80) (= numConfetti 5))
+				((> machineSpeed 60) (= numConfetti 4))
+				((> machineSpeed 40) (= numConfetti 3))
+				((> machineSpeed 20) (= numConfetti 2))
+				(else (= numConfetti 1))
 			)
-			(= confetti 4)
-			(= numConfetti 0)
-			(while (< numConfetti confetti)
+			(= numConfetti 4)
+			(= i 0)
+			(while (< i numConfetti)
 				((Actor new:)
 					view: 238
 					setPri: 14
@@ -60,7 +60,7 @@
 					init:
 					setScript: (confettiScript new:)
 				)
-				(++ numConfetti)
+				(++ i)
 			)
 		)
 	)
@@ -71,12 +71,12 @@
 			(return)
 		)
 		(if (Said 'look>')
-			(if (and madeItMessage (Said '/confetti')) (Print 27 1))
+			(if (and confettiFalling (Said '/confetti')) (Print 27 1))
 			(if (Said '/hull,craft,boat,up') (Print 27 2))
 			(if (Said '/cup,hole') (Print 27 3))
 			(if (Said '[/airport,carpet]')
 				(Print 27 4)
-				(if madeItMessage (Print 27 5))
+				(if confettiFalling (Print 27 5))
 			)
 		)
 	)

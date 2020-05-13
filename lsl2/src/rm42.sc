@@ -13,8 +13,8 @@
 )
 
 (local
-	sports
-	guy
+	aSport
+	aCreep
 )
 (instance rm42 of Room
 	(properties
@@ -77,7 +77,7 @@
 				put: 12 -1
 				put: 11 -1
 			)
-			((= guy (Actor new:))
+			((= aCreep (Actor new:))
 				view: 408
 				ignoreActors:
 				illegalBits: 0
@@ -87,10 +87,10 @@
 			)
 			(HandsOff)
 			(rm42Script changeState: 1)
-			(= currentStatus egoAtSea)
+			(= currentStatus egoATSEA)
 			(curRoom west: 0)
 		else
-			((= sports (Actor new:))
+			((= aSport (Actor new:))
 				view: 407
 				setCycle: Forward
 				setPri: 1
@@ -154,16 +154,16 @@
 			)
 			(7 (= seconds 5))
 			(8
-				(guy setMotion: MoveTo 84 150 self)
+				(aCreep setMotion: MoveTo 84 150 self)
 				(= cycles 15)
 			)
 			(9 (Print 42 4))
 			(10
-				(guy view: 409 cel: 0 setCycle: Forward)
+				(aCreep view: 409 cel: 0 setCycle: Forward)
 				(= cycles 18)
 			)
 			(11
-				(guy
+				(aCreep
 					view: 408
 					setCycle: Walk
 					setMotion: MoveTo 333 120 self
@@ -174,7 +174,7 @@
 				(if (> filthLevel 10) (Print 42 5 #at -1 152))
 			)
 			(13
-				(guy dispose:)
+				(aCreep dispose:)
 				(Print 42 6 #at -1 15 #width 280 #draw)
 				(ego
 					cycleSpeed: 1
@@ -227,7 +227,7 @@
 				(if (!= prevRoomNum 138) (= seconds (Random 3 5)))
 			)
 			(1
-				(sports
+				(aSport
 					setLoop: 0
 					cel: 0
 					posn: -30 49
@@ -238,11 +238,11 @@
 				)
 			)
 			(2
-				(sports hide:)
+				(aSport hide:)
 				(= seconds (Random 2 5))
 			)
 			(3
-				(sports
+				(aSport
 					setLoop: 1
 					posn: -24 107
 					setStep: 3 1
@@ -252,11 +252,11 @@
 				)
 			)
 			(4
-				(sports hide:)
+				(aSport hide:)
 				(= seconds (Random 2 5))
 			)
 			(5
-				(sports
+				(aSport
 					setLoop: 2
 					posn: -29 57
 					setStep: 1 1
@@ -267,11 +267,11 @@
 				)
 			)
 			(6
-				(sports hide:)
+				(aSport hide:)
 				(= seconds (Random 2 5))
 			)
 			(7
-				(sports
+				(aSport
 					setLoop: 3
 					posn: -10 47
 					setStep: 3 1
@@ -282,11 +282,11 @@
 				)
 			)
 			(8
-				(sports hide:)
+				(aSport hide:)
 				(= seconds (Random 2 5))
 			)
 			(9
-				(sports
+				(aSport
 					setLoop: 4
 					posn: -35 79
 					setStep: 2 1
@@ -296,11 +296,11 @@
 				)
 			)
 			(10
-				(sports hide:)
+				(aSport hide:)
 				(= seconds (Random 2 5))
 			)
 			(11
-				(sports
+				(aSport
 					setLoop: 5
 					posn: 358 76
 					setStep: 3 1
@@ -310,11 +310,11 @@
 				)
 			)
 			(12
-				(sports hide:)
+				(aSport hide:)
 				(= seconds (Random 2 5))
 			)
 			(13
-				(sports
+				(aSport
 					setLoop: 6
 					posn: -23 73
 					setStep: 5 2
@@ -324,7 +324,7 @@
 				)
 			)
 			(14
-				(sports hide:)
+				(aSport hide:)
 				(self changeState: 0)
 			)
 		)

@@ -15,10 +15,10 @@
 
 (local
 	local0
-	waterfall
-	fog
-	bayDoor
-	helicopter
+	aWaterfall
+	aFog
+	aDoor
+	aCopter
 )
 (instance theSound of Sound
 	(properties
@@ -38,7 +38,7 @@
 		(Load VIEW 806)
 		(Load VIEW 821)
 		(super init:)
-		((= helicopter (Actor new:))
+		((= aCopter (Actor new:))
 			view: 821
 			ignoreActors:
 			illegalBits: 0
@@ -52,24 +52,24 @@
 			((== endGameState 100)
 				(Load SOUND 17)
 				(theSound number: 17 play:)
-				(helicopter posn: 103 122)
+				(aCopter posn: 103 122)
 				(rm92Script changeState: 16)
 			)
 			((== endGameState 102)
 				(Load SOUND 17)
 				(theSound number: 17 play:)
-				(helicopter posn: 223 92)
+				(aCopter posn: 223 92)
 				(rm92Script changeState: 23)
 			)
 			(else
 				(Load SOUND 102)
 				(theSound number: 102 play:)
-				(helicopter posn: -7 92)
+				(aCopter posn: -7 92)
 				(rm92Script changeState: 1)
 			)
 		)
 		(if (!= endGameState 102)
-			((= waterfall (Prop new:))
+			((= aWaterfall (Prop new:))
 				view: 806
 				ignoreActors:
 				loop: 0
@@ -79,7 +79,7 @@
 				cycleSpeed: 1
 				init:
 			)
-			((= fog (Prop new:))
+			((= aFog (Prop new:))
 				view: 806
 				ignoreActors:
 				loop: 1
@@ -90,7 +90,7 @@
 				init:
 				hide:
 			)
-			((= bayDoor (Prop new:))
+			((= aDoor (Prop new:))
 				view: 806
 				ignoreActors:
 				loop: 3
@@ -101,9 +101,9 @@
 				init:
 			)
 		)
-		(helicopter init:)
+		(aCopter init:)
 		(HandsOff)
-		(= currentStatus egoWonGame)
+		(= currentStatus egoWONGAME)
 	)
 )
 
@@ -126,7 +126,7 @@
 				(= cycles 20)
 			)
 			(4
-				(helicopter setMotion: MoveTo 186 93 self)
+				(aCopter setMotion: MoveTo 186 93 self)
 				(= cycles 40)
 			)
 			(5
@@ -141,7 +141,7 @@
 				(islandScript changeState: 5)
 			)
 			(9
-				(helicopter setMotion: MoveTo 223 93 self)
+				(aCopter setMotion: MoveTo 223 93 self)
 			)
 			(10
 				(islandScript changeState: 7)
@@ -160,24 +160,24 @@
 			(15 (curRoom newRoom: 93))
 			(16 (= cycles 30))
 			(17
-				(fog show: setScript: fogScript)
-				(helicopter setMotion: MoveTo 98 93 self)
+				(aFog show: setScript: fogScript)
+				(aCopter setMotion: MoveTo 98 93 self)
 			)
 			(18
 				(islandScript changeState: 3)
 			)
 			(19
-				(helicopter setMotion: MoveTo 186 93 self)
+				(aCopter setMotion: MoveTo 186 93 self)
 			)
 			(20
 				(islandScript changeState: 5)
 			)
 			(21
-				(helicopter setMotion: MoveTo 223 93 self)
+				(aCopter setMotion: MoveTo 223 93 self)
 			)
 			(22 (curRoom newRoom: 85))
 			(23
-				(helicopter setMotion: MoveTo 149 93)
+				(aCopter setMotion: MoveTo 149 93)
 				(= cycles 20)
 			)
 			(24
@@ -188,7 +188,7 @@
 			(25 (Print 92 7) (= cycles 10))
 			(26 (Print 92 8) (= cycles 20))
 			(27
-				(helicopter setMotion: MoveTo 246 120 self)
+				(aCopter setMotion: MoveTo 246 120 self)
 			)
 			(28
 				(= endGameState 103)
@@ -211,39 +211,41 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(fog show: setCycle: EndLoop self)
+				(aFog show: setCycle: EndLoop self)
 			)
 			(2
-				(fog stopUpd:)
+				(aFog stopUpd:)
 				(rm92Script cue:)
 			)
 			(3
-				(waterfall cycleSpeed: 2 setLoop: 2 setCycle: EndLoop self)
+				(aWaterfall cycleSpeed: 2 setLoop: 2 setCycle: EndLoop self)
 			)
 			(4
-				(waterfall hide:)
+				(aWaterfall hide:)
 				(rm92Script cue:)
 			)
 			(5
-				(bayDoor setCycle: EndLoop self)
+				(aDoor setCycle: EndLoop self)
 			)
-			(6 (rm92Script cue:))
+			(6
+				(rm92Script cue:)
+			)
 			(7
-				(bayDoor setCycle: BegLoop self)
+				(aDoor setCycle: BegLoop self)
 			)
 			(8 (rm92Script cue:))
 			(9
-				(waterfall show: setLoop: 4 cel: 0 setCycle: EndLoop self)
+				(aWaterfall show: setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(10
-				(waterfall setLoop: 0 cycleSpeed: 0 setCycle: Forward)
+				(aWaterfall setLoop: 0 cycleSpeed: 0 setCycle: Forward)
 				(rm92Script cue:)
 			)
 			(11
-				(fog show: setCycle: BegLoop self)
+				(aFog show: setCycle: BegLoop self)
 			)
 			(12
-				(fog hide:)
+				(aFog hide:)
 				(rm92Script cue:)
 			)
 		)
@@ -255,14 +257,18 @@
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
-			(0 (= cycles 5))
+			(0
+				(= cycles 5)
+			)
 			(1
-				(fog setCycle: EndLoop self)
+				(aFog setCycle: EndLoop self)
 			)
 			(2
-				(fog setCycle: BegLoop self)
+				(aFog setCycle: BegLoop self)
 			)
-			(3 (self changeState: 0))
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )

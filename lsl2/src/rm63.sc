@@ -13,14 +13,14 @@
 )
 
 (local
-	smoker1
-	smoker2
-	smoker3
-	john1
-	john2
-	man1
-	man2
-	man3
+	aSmoker1
+	aSmoker2
+	aSmoker3
+	aJohnLight
+	aJohnDoor
+	aJohnUser1
+	aJohnUser2
+	aEmergencyExit
 )
 
 (enum ;emergency exit door states
@@ -51,7 +51,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= smoker1 (Prop new:))
+		((= aSmoker1 (Prop new:))
 			view: 605
 			loop: 2
 			cel: 0
@@ -63,7 +63,7 @@
 			init:
 			setScript: smokerScript
 		)
-		((= smoker2 (Prop new:))
+		((= aSmoker2 (Prop new:))
 			view: 605
 			loop: 2
 			cel: 0
@@ -75,7 +75,7 @@
 			stopUpd:
 			init:
 		)
-		((= smoker3 (Prop new:))
+		((= aSmoker3 (Prop new:))
 			view: 605
 			loop: 2
 			cel: 0
@@ -87,7 +87,7 @@
 			stopUpd:
 			init:
 		)
-		((= john1 (Prop new:))
+		((= aJohnLight (Prop new:))
 			view: 605
 			loop: 3
 			cel: 1
@@ -96,7 +96,7 @@
 			stopUpd:
 			init:
 		)
-		((= john2 (Prop new:))
+		((= aJohnDoor (Prop new:))
 			view: 605
 			loop: 1
 			cel: 0
@@ -107,7 +107,7 @@
 			init:
 			setScript: johnScript
 		)
-		((= man1 (Actor new:))
+		((= aJohnUser1 (Actor new:))
 			view: 608
 			posn: 222 79
 			setPri: 0
@@ -117,7 +117,7 @@
 			init:
 			hide:
 		)
-		((= man2 (Actor new:))
+		((= aJohnUser2 (Actor new:))
 			view: 608
 			posn: 0 0
 			setPri: 0
@@ -127,7 +127,7 @@
 			init:
 			hide:
 		)
-		((= man3 (Actor new:))
+		((= aEmergencyExit (Actor new:))
 			view: 605
 			illegalBits: 0
 			ignoreActors:
@@ -140,7 +140,7 @@
 			init:
 		)
 		(NormalEgo 0)
-		(ego posn: 37 104 init: observeControl: 16384)
+		(ego posn: 37 104 init: observeControl: cYELLOW)
 		(self setRegions: 600 setScript: rm63Script)
 	)
 )
@@ -151,7 +151,7 @@
 	(method (doit)
 		(super doit:)
 		(if
-		(and (== currentStatus egoNormal) (& (ego onControl:) $0002))
+		(and (== currentStatus egoNORMAL) (& (ego onControl:) $0002))
 			(curRoom newRoom: 62)
 		)
 	)
@@ -164,10 +164,10 @@
 				(ego posn: 250 144)
 				(Print 63 36 #draw)
 				(theGame changeScore: 6)
-				(man3 cycleSpeed: 3 setCycle: EndLoop self)
+				(aEmergencyExit cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(2
-				(man3 setMotion: MoveTo 324 (man3 y?) self)
+				(aEmergencyExit setMotion: MoveTo 324 (aEmergencyExit y?) self)
 				(Print 63 37 #draw)
 			)
 			(3
@@ -246,11 +246,11 @@
 				'(conceal<on),wear,afix,buckle,afix,apply/parachute'
 			)
 			(cond 
-				(wearingParachute (PrintItIs))
-				((not (ego has: iParachute)) (PrintDontHaveIt))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				(wearingParachute (ItIs))
+				((not (ego has: iParachute)) (DontHave))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(else
-					(PrintOk)
+					(Ok)
 					(Print 63 22)
 					(= wearingParachute TRUE)
 					(if (not wornParachute)
@@ -265,23 +265,23 @@
 				wearingParachute
 				(Said 'alter,(get<off),drain/parachute')
 			)
-			(PrintOk)
+			(Ok)
 			(= wearingParachute FALSE)
 		)
 		(if
 		(Said 'drain,apply,conceal/rejuvenator/bolt,door,cord')
 			(cond 
-				((not (ego has: iHairRejuvenator)) (PrintDontHaveIt))
-				((not (ego inRect: 0 127 320 190)) (PrintNotCloseEnough))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((not (ego has: iHairRejuvenator)) (DontHave))
+				((not (ego inRect: 0 127 320 190)) (NotClose))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(else (Print 63 23) (ego put: iHairRejuvenator -1) (theGame changeScore: -5))
 			)
 		)
 		(if (Said '/gun/bolt,door,cord')
 			(cond 
-				((not (ego has: iKnife)) (PrintDontHaveIt))
-				((not (ego inRect: 0 127 320 190)) (PrintNotCloseEnough))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((not (ego has: iKnife)) (DontHave))
+				((not (ego inRect: 0 127 320 190)) (NotClose))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(else (Print 63 24))
 			)
 		)
@@ -292,7 +292,7 @@
 				(Said 'get/bolt')
 			)
 			(cond 
-				((not (ego inRect: 0 127 320 190)) (PrintNotCloseEnough))
+				((not (ego inRect: 0 127 320 190)) (NotClose))
 				((not (ego has: iBobbyPin)) (Print 63 25) (Print 63 26 #at -1 152))
 				(else
 					(theGame changeScore: 5)
@@ -305,7 +305,7 @@
 		)
 		(if (Said 'jerk,apply,jerk,jerk/cord,cord,button')
 			(cond 
-				((not (ego inRect: 0 127 320 190)) (PrintNotCloseEnough))
+				((not (ego inRect: 0 127 320 190)) (NotClose))
 				((== emergencyExitState exitPICKED) (Print 63 29) (= emergencyExitState exitHANDLETURNED))
 				((< emergencyExitState exitPICKED) (Print 63 30))
 				(else (Print 63 31))
@@ -315,7 +315,7 @@
 			(cond 
 				((ego inRect: 206 0 236 92) (Print 63 0))
 				((ego inRect: 242 90 254 102) (Print 63 32))
-				((not (ego inRect: 0 127 320 190)) (PrintNotCloseEnough))
+				((not (ego inRect: 0 127 320 190)) (NotClose))
 				((== emergencyExitState exitHANDLETURNED) (= emergencyExitState exitDOOROPEN) (self changeState: 1))
 				((< emergencyExitState exitHANDLETURNED) (Print 63 33))
 				(else (Print 63 31))
@@ -335,24 +335,24 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 1 5)))
 			(1
-				(smoker1 startUpd: setCel: 0 setCycle: EndLoop self)
+				(aSmoker1 startUpd: setCel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(smoker1 stopUpd:)
+				(aSmoker1 stopUpd:)
 				(= seconds (Random 1 5))
 			)
 			(3
-				(smoker2 startUpd: setCel: 0 setCycle: EndLoop self)
+				(aSmoker2 startUpd: setCel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(smoker2 stopUpd:)
+				(aSmoker2 stopUpd:)
 				(= seconds (Random 1 5))
 			)
 			(5
-				(smoker3 startUpd: setCel: 0 setCycle: EndLoop self)
+				(aSmoker3 startUpd: setCel: 0 setCycle: EndLoop self)
 			)
 			(6
-				(smoker3 stopUpd:)
+				(aSmoker3 stopUpd:)
 				(= seconds (Random 1 5))
 				(= state 0)
 			)
@@ -374,12 +374,12 @@
 		(switch (= state newState)
 			(1
 				(= seconds (= cycles 0))
-				(john2 startUpd: setCycle: EndLoop self)
-				(john1 setCel: 0 forceUpd:)
+				(aJohnDoor startUpd: setCycle: EndLoop self)
+				(aJohnLight setCel: 0 forceUpd:)
 			)
 			(2
-				(john2 stopUpd:)
-				(man1
+				(aJohnDoor stopUpd:)
+				(aJohnUser1
 					loop: 1
 					posn: 219 85
 					setPri: 5
@@ -388,7 +388,7 @@
 					setCycle: Walk
 					setMotion: MoveTo 192 98 self
 				)
-				(man2
+				(aJohnUser2
 					loop: 0
 					posn: 174 103
 					setPri: 6
@@ -399,17 +399,17 @@
 				)
 			)
 			(3
-				(man1 setMotion: MoveTo 174 98)
-				(man2 setMotion: MoveTo 222 86 self)
+				(aJohnUser1 setMotion: MoveTo 174 98)
+				(aJohnUser2 setMotion: MoveTo 222 86 self)
 			)
 			(4
-				(man1 hide:)
-				(man2 hide:)
-				(john2 startUpd: setCycle: BegLoop self)
+				(aJohnUser1 hide:)
+				(aJohnUser2 hide:)
+				(aJohnDoor startUpd: setCycle: BegLoop self)
 			)
 			(5
-				(john2 stopUpd:)
-				(john1 setCel: 1 forceUpd:)
+				(aJohnDoor stopUpd:)
+				(aJohnLight setCel: 1 forceUpd:)
 				(= seconds (Random 11 33))
 			)
 			(6 (= state 0))

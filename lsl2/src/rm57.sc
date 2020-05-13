@@ -17,13 +17,13 @@
 
 (local
 	triedToEnterWrongSidewalk
-	sidewalkNorth
-	sidewalkSouth
-	airplane
-	child1
-	child2
-	child3
-	gate
+	aSidewalkNorth
+	aSidewalkSouth
+	aPlane
+	aKid1
+	aKid2
+	aKid3
+	aDoor
 )
 (instance rm57 of Room
 	(properties
@@ -69,7 +69,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= airplane (Airplane new:))
+		((= aPlane (Airplane new:))
 			view: 511
 			setLoop: 2
 			setCel: 0
@@ -79,7 +79,7 @@
 			endY: 14
 			init:
 		)
-		((= gate (Door new:))
+		((= aDoor (Door new:))
 			view: 525
 			setLoop: 6
 			posn: 163 137
@@ -97,7 +97,7 @@
 				{This door is controlled by the gentleman behind the counter. He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
 			msgExcept: {Have the man at the desk open it for you!}
 		)
-		((= child1 (Extra new:))
+		((= aKid1 (Extra new:))
 			view: 525
 			loop: 2
 			posn: 92 130
@@ -109,7 +109,7 @@
 			maxCycles: 33
 			init:
 		)
-		((= child2 (Extra new:))
+		((= aKid2 (Extra new:))
 			view: 525
 			loop: 1
 			posn: 127 139
@@ -121,7 +121,7 @@
 			maxCycles: 30
 			init:
 		)
-		((= child3 (Prop new:))
+		((= aKid3 (Prop new:))
 			view: 525
 			setLoop: 4
 			posn: 100 157
@@ -130,7 +130,7 @@
 			init:
 			setScript: tumbleScript
 		)
-		((= sidewalkNorth (Actor new:))
+		((= aSidewalkNorth (Actor new:))
 			view: 525
 			setLoop: 3
 			setCel: 3
@@ -142,7 +142,7 @@
 			init:
 			setScript: sidewalkNorthScript
 		)
-		((= sidewalkSouth (Actor new:))
+		((= aSidewalkSouth (Actor new:))
 			view: 525
 			setLoop: 3
 			setCel: 3
@@ -154,7 +154,7 @@
 			init:
 			setScript: sidewalkSouthScript
 		)
-		(= currentStatus egoInTerminal)
+		(= currentStatus egoINTERMINAL)
 		(HandsOff)
 		(ego
 			illegalBits: 0
@@ -178,7 +178,7 @@
 		(cond 
 			((& (ego onControl:) $0010) (self changeState: 2))
 			((& (ego onControl:) $0008)
-				(if (and (== currentStatus egoNormal) (== triedToEnterWrongSidewalk FALSE))
+				(if (and (== currentStatus egoNORMAL) (== triedToEnterWrongSidewalk FALSE))
 					(= triedToEnterWrongSidewalk TRUE)
 					(Print 57 0)
 				)
@@ -194,10 +194,10 @@
 			)
 			(1
 				(NormalEgo 3)
-				(ego observeControl: 4 16384)
+				(ego observeControl: cGREEN cYELLOW)
 			)
 			(2
-				(= currentStatus egoInTerminal)
+				(= currentStatus egoINTERMINAL)
 				(HandsOff)
 				(ego
 					illegalBits: 0
@@ -213,15 +213,15 @@
 				(theGame changeScore: 3)
 				(Print 57 20)
 				(Print (Format @str 57 21 tritePhrase))
-				(gate locked: FALSE force: TRUE open:)
-				(IncrementGamePhase NULL 0 0)
+				(aDoor locked: FALSE force: TRUE open:)
+				(SetRegionTimer NULL 0 0)
 				(ego setMotion: MoveTo 151 145 self)
 			)
 			(5
 				(ego setMotion: MoveTo 151 133 self)
 			)
 			(6
-				(gate setCycle: BegLoop)
+				(aDoor setCycle: BegLoop)
 				(ego
 					illegalBits: 0
 					setPri: 5
@@ -244,9 +244,9 @@
 				(Said 'give,finger,look,apply/ticket')
 			)
 			(cond 
-				((not (ego has: iAirlineTicket)) (PrintDontHaveIt))
-				((!= currentStatus egoNormal) (PrintNotNow))
-				((not (ego inRect: 185 140 244 152)) (PrintNotCloseEnough))
+				((not (ego has: iAirlineTicket)) (DontHave))
+				((!= currentStatus egoNORMAL) (NotNow))
+				((not (ego inRect: 185 140 244 152)) (NotClose))
 				(else
 					(Print 57 1)
 					(if (== missedFlight TRUE)
@@ -273,9 +273,9 @@
 		)
 		(if (Said 'get/pamphlet')
 			(cond 
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((!= currentStatus egoNORMAL) (NotNow))
 				((not ((inventory at: iPamphlet) ownedBy: curRoomNum)) (Print 57 8))
-				((not (ego inRect: 159 140 195 152)) (PrintNotCloseEnough))
+				((not (ego inRect: 159 140 195 152)) (NotClose))
 				(else (ego get: iPamphlet) (theGame changeScore: 11) (Print 57 9))
 			)
 		)
@@ -307,10 +307,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(sidewalkNorth setMotion: MoveTo 192 179 self)
+				(aSidewalkNorth setMotion: MoveTo 192 179 self)
 			)
 			(1
-				(sidewalkNorth posn: 192 221)
+				(aSidewalkNorth posn: 192 221)
 				(self changeState: 0)
 			)
 		)
@@ -323,10 +323,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(sidewalkSouth setMotion: MoveTo 135 202 self)
+				(aSidewalkSouth setMotion: MoveTo 135 202 self)
 			)
 			(1
-				(sidewalkSouth posn: 135 178)
+				(aSidewalkSouth posn: 135 178)
 				(self changeState: 0)
 			)
 		)
@@ -339,18 +339,18 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(child3 setLoop: 4 cel: 0)
+				(aKid3 setLoop: 4 cel: 0)
 				(= seconds (Random 2 5))
 			)
 			(1
-				(child3 cycleSpeed: (Random 0 2) setCycle: EndLoop self)
+				(aKid3 cycleSpeed: (Random 0 2) setCycle: EndLoop self)
 			)
 			(2
-				(child3 setLoop: 5 cel: 0)
+				(aKid3 setLoop: 5 cel: 0)
 				(= seconds (Random 2 5))
 			)
 			(3
-				(child3 cycleSpeed: (Random 0 2) setCycle: EndLoop self)
+				(aKid3 cycleSpeed: (Random 0 2) setCycle: EndLoop self)
 			)
 			(4 (self changeState: 0))
 		)

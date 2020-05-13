@@ -13,8 +13,8 @@
 )
 
 (local
-	airplane
-	pedestrian
+	aPlane
+	aJogger
 )
 (instance rm20 of Room
 	(properties
@@ -28,7 +28,7 @@
 	(method (init)
 		(Load VIEW 251)
 		(super init:)
-		((= pedestrian (Actor new:))
+		((= aJogger (Actor new:))
 			view: 251
 			setLoop: 0
 			setPri: 4
@@ -40,7 +40,7 @@
 			hide:
 			setCycle: Walk
 		)
-		((= airplane (Actor new:))
+		((= aPlane (Actor new:))
 			view: 251
 			setLoop: 1
 			posn: 274 7
@@ -71,20 +71,20 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 2 14)))
 			(1
-				(airplane posn: 287 7 show: setMotion: MoveTo -30 8 self)
+				(aPlane posn: 287 7 show: setMotion: MoveTo -30 8 self)
 			)
 			(2
-				(airplane hide:)
+				(aPlane hide:)
 				(= seconds (Random 2 9))
 			)
 			(3
-				(pedestrian posn: 61 120 show: setMotion: MoveTo 112 116 self)
+				(aJogger posn: 61 120 show: setMotion: MoveTo 112 116 self)
 			)
 			(4
-				(pedestrian setMotion: MoveTo 150 125 self)
+				(aJogger setMotion: MoveTo 150 125 self)
 			)
 			(5
-				(pedestrian hide:)
+				(aJogger hide:)
 				(self changeState: 0)
 			)
 		)

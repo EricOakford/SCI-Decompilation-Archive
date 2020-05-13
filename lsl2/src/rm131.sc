@@ -14,13 +14,13 @@
 )
 
 (local
-	lifeboat1
-	lifeboat2
-	lifeboat3
-	lifeboat4
-	lifeboat5
-	lifeboat6
-	egoLifeboat
+	aBoat0
+	aBoat1
+	aBoat2
+	aBoat3
+	aBoat4
+	aBoat5
+	aEgoBoat
 )
 (instance rm131 of Room
 	(properties
@@ -48,7 +48,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= lifeboat1 (Prop new:))
+		((= aBoat0 (Prop new:))
 			view: 301
 			setLoop: 0
 			setPri: 14
@@ -56,7 +56,7 @@
 			cycleSpeed: 5
 			init:
 		)
-		((= lifeboat2 (Prop new:))
+		((= aBoat1 (Prop new:))
 			view: 301
 			setLoop: 0
 			setPri: 14
@@ -64,7 +64,7 @@
 			cycleSpeed: 5
 			init:
 		)
-		((= lifeboat3 (Prop new:))
+		((= aBoat2 (Prop new:))
 			view: 301
 			setLoop: 0
 			setPri: 14
@@ -72,7 +72,7 @@
 			cycleSpeed: 5
 			init:
 		)
-		((= lifeboat4 (Prop new:))
+		((= aBoat3 (Prop new:))
 			view: 301
 			setLoop: 0
 			setPri: 14
@@ -80,7 +80,7 @@
 			cycleSpeed: 5
 			init:
 		)
-		((= lifeboat5 (Prop new:))
+		((= aBoat4 (Prop new:))
 			view: 301
 			setLoop: 0
 			setPri: 14
@@ -88,7 +88,7 @@
 			cycleSpeed: 5
 			init:
 		)
-		((= lifeboat6 (Prop new:))
+		((= aBoat5 (Prop new:))
 			view: 301
 			setLoop: 0
 			setPri: 14
@@ -96,7 +96,7 @@
 			cycleSpeed: 5
 			init:
 		)
-		((= egoLifeboat (Actor new:))
+		((= aEgoBoat (Actor new:))
 			view: 301
 			setLoop: 2
 			setPri: 14
@@ -110,8 +110,8 @@
 		)
 		(ego posn: 123 999)
 		(HandsOff)
-		(= currentStatus egoAtSea)
-		(self setRegions: 300 setScript: rm131Script)
+		(= currentStatus egoATSEA)
+		(self setRegions: SHIP setScript: rm131Script)
 	)
 )
 
@@ -132,26 +132,26 @@
 				(= seconds 3)
 			)
 			(3
-				(lifeboat1 setCycle: EndLoop self)
-				(lifeboat2 setCycle: EndLoop)
-				(lifeboat3 setCycle: EndLoop)
-				(lifeboat4 setCycle: EndLoop)
-				(lifeboat5 setCycle: EndLoop)
-				(lifeboat6 setCycle: EndLoop)
+				(aBoat0 setCycle: EndLoop self)
+				(aBoat1 setCycle: EndLoop)
+				(aBoat2 setCycle: EndLoop)
+				(aBoat3 setCycle: EndLoop)
+				(aBoat4 setCycle: EndLoop)
+				(aBoat5 setCycle: EndLoop)
 			)
 			(4
-				(lifeboat2 stopUpd:)
-				(lifeboat3 stopUpd:)
-				(lifeboat4 stopUpd:)
-				(lifeboat5 stopUpd:)
-				(lifeboat6 stopUpd:)
-				(lifeboat1 setLoop: 1 stopUpd:)
+				(aBoat1 stopUpd:)
+				(aBoat2 stopUpd:)
+				(aBoat3 stopUpd:)
+				(aBoat4 stopUpd:)
+				(aBoat5 stopUpd:)
+				(aBoat0 setLoop: 1 stopUpd:)
 				(User canControl: FALSE canInput: TRUE)
-				(egoLifeboat posn: 160 132 setMotion: MoveTo 123 146 self)
+				(aEgoBoat posn: 160 132 setMotion: MoveTo 123 146 self)
 			)
 			(5
 				(Print 131 8)
-				(egoLifeboat setMotion: MoveTo -12 201 self)
+				(aEgoBoat setMotion: MoveTo -12 201 self)
 				(User canInput: TRUE)
 			)
 			(6 (curRoom newRoom: 138))

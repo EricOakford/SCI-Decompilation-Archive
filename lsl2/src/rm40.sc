@@ -18,13 +18,13 @@
 (local
 	local0
 	searchingForShortcut
-	egoJungleView
-	flower
+	littleEgoView
+	flowerInRoom
 	peacock
-	plant
-	pottedPlant
-	cockatoo
-	parrot
+	aFlower
+	aPottedPlant
+	aBird1
+	aBird2
 )
 (instance theSound of Sound
 	(properties
@@ -42,12 +42,12 @@
 	
 	(method (init)
 		(cond 
-			((== currentEgoView 149) (= egoJungleView 146))
-			((== currentEgoView 150) (= egoJungleView 147))
-			((== currentEgoView 151) (= egoJungleView 157))
-			(else (= egoJungleView 145))
+			((== currentEgoView 149) (= littleEgoView 146))
+			((== currentEgoView 150) (= littleEgoView 147))
+			((== currentEgoView 151) (= littleEgoView 157))
+			(else (= littleEgoView 145))
 		)
-		(Load VIEW egoJungleView)
+		(Load VIEW littleEgoView)
 		(Load VIEW 415)
 		(Load VIEW 700)
 		(Load VIEW 414)
@@ -57,19 +57,19 @@
 		(Load SOUND 8)
 		(super init:)
 		(theSound play:)
-		(++ jungleMazeTimes)
-		(if global111 (= jungleMazeTimes 257))
-		(= flower ((inventory at: iFlower) ownedBy: curRoomNum))
-		((= plant (View new:))
+		(++ resortMazeVisits)
+		(if global111 (= resortMazeVisits 257))
+		(= flowerInRoom ((inventory at: iFlower) ownedBy: curRoomNum))
+		((= aFlower (View new:))
 			view: 415
 			ignoreActors:
 			setLoop: 1
-			setCel: flower
+			setCel: flowerInRoom
 			posn: 139 156
 			stopUpd:
 			init:
 		)
-		((= pottedPlant (Actor new:))
+		((= aPottedPlant (Actor new:))
 			view: 415
 			ignoreActors:
 			setLoop: 0
@@ -79,7 +79,7 @@
 			setPri: 12
 			init:
 		)
-		((= cockatoo (Extra new:))
+		((= aBird1 (Extra new:))
 			view: 700
 			ignoreActors:
 			setLoop: 0
@@ -91,7 +91,7 @@
 			maxCycles: 22
 			init:
 		)
-		((= parrot (Extra new:))
+		((= aBird2 (Extra new:))
 			view: 700
 			ignoreActors:
 			setLoop: 1
@@ -103,7 +103,7 @@
 			maxCycles: 22
 			init:
 		)
-		(if (== egoJungleView 145)
+		(if (== littleEgoView 145)
 			((= peacock (Actor new:))
 				view: 412
 				ignoreActors:
@@ -117,8 +117,8 @@
 		(NormalEgo 0)
 		(ego ignoreActors: illegalBits: 0 posn: 44 188 init:)
 		(User canControl: FALSE)
-		(= currentStatus egoInJungleMaze)
-		(self setRegions: 400 setScript: rm40Script)
+		(= currentStatus egoINRESORTMAZE)
+		(self setRegions: RESORT setScript: rm40Script)
 	)
 )
 
@@ -135,7 +135,7 @@
 				(ego posn: 16 170 setMotion: MoveTo 91 171 self)
 			)
 			(1
-				(if (== jungleMazeTimes 257) (= state 62))
+				(if (== resortMazeVisits 257) (= state 62))
 				(= cycles 15)
 			)
 			(2
@@ -178,11 +178,11 @@
 			)
 			(13
 				(= cycles 30)
-				(if (or searchingForShortcut (> jungleMazeTimes 8)) (= state 62))
+				(if (or searchingForShortcut (> resortMazeVisits 8)) (= state 62))
 			)
 			(14
 				(ego
-					view: egoJungleView
+					view: littleEgoView
 					setLoop: -1
 					setPri: -1
 					setStep: 2 1
@@ -212,7 +212,7 @@
 			)
 			(22
 				(= cycles 30)
-				(if (or (!= egoJungleView 145) searchingForShortcut (> jungleMazeTimes 7))
+				(if (or (!= littleEgoView 145) searchingForShortcut (> resortMazeVisits 7))
 					(= state 62)
 				)
 			)
@@ -235,7 +235,7 @@
 			)
 			(26
 				(= cycles 50)
-				(if (or searchingForShortcut (> jungleMazeTimes 6)) (= state 62))
+				(if (or searchingForShortcut (> resortMazeVisits 6)) (= state 62))
 			)
 			(27
 				(ego
@@ -251,10 +251,10 @@
 			(30
 				(ego hide:)
 				(= cycles 30)
-				(if (or searchingForShortcut (> jungleMazeTimes 5)) (= state 62))
+				(if (or searchingForShortcut (> resortMazeVisits 5)) (= state 62))
 			)
 			(31
-				(pottedPlant setMotion: MoveTo 103 151)
+				(aPottedPlant setMotion: MoveTo 103 151)
 				(ego
 					setLoop: 5
 					cel: 0
@@ -270,13 +270,13 @@
 				(ego setCycle: CycleTo 5 -1 self)
 			)
 			(34
-				(pottedPlant setMotion: MoveTo 103 161)
+				(aPottedPlant setMotion: MoveTo 103 161)
 				(ego setCycle: BegLoop self)
 			)
 			(35
 				(ego hide:)
 				(= cycles 30)
-				(if (or searchingForShortcut (> jungleMazeTimes 4)) (= state 62))
+				(if (or searchingForShortcut (> resortMazeVisits 4)) (= state 62))
 			)
 			(36
 				(ego
@@ -295,7 +295,7 @@
 			)
 			(40
 				(= cycles 30)
-				(if (or searchingForShortcut (> jungleMazeTimes 3)) (= state 62))
+				(if (or searchingForShortcut (> resortMazeVisits 3)) (= state 62))
 			)
 			(41
 				(peacock
@@ -341,11 +341,11 @@
 			)
 			(49
 				(= cycles 30)
-				(if (or searchingForShortcut (> jungleMazeTimes 2)) (= state 62))
+				(if (or searchingForShortcut (> resortMazeVisits 2)) (= state 62))
 			)
 			(50
 				(ego
-					view: egoJungleView
+					view: littleEgoView
 					setLoop: -1
 					setPri: -1
 					posn: 321 146
@@ -388,7 +388,7 @@
 			)
 			(57
 				(peacock setMotion: MoveTo 333 153 self)
-				(if (or searchingForShortcut (> jungleMazeTimes 1)) (= state 62))
+				(if (or searchingForShortcut (> resortMazeVisits 1)) (= state 62))
 			)
 			(58
 				(theSound dispose:)
@@ -415,22 +415,22 @@
 			)
 			(63
 				(cond 
-					((== jungleMazeNextRoom 0) (= jungleMazeNextRoom 43))
-					((> (++ jungleMazeNextRoom) 45) (= jungleMazeNextRoom 42))
+					((== resortMazeNextRoom 0) (= resortMazeNextRoom 43))
+					((> (++ resortMazeNextRoom) 45) (= resortMazeNextRoom 42))
 				)
-				(if (!= egoJungleView 145)
+				(if (!= littleEgoView 145)
 					(Print 40 15)
 				else
 					(Print 40 16)
 					(Print 40 17 #at -1 152)
-					(switch jungleMazeNextRoom
+					(switch resortMazeNextRoom
 						(42 (Print 40 18))
 						(43 (Print 40 19))
 						(44 (Print 40 20))
 						(45 (Print 40 21))
 					)
 				)
-				(curRoom newRoom: jungleMazeNextRoom)
+				(curRoom newRoom: resortMazeNextRoom)
 			)
 		)
 	)
@@ -442,7 +442,7 @@
 		)
 		(if (Said 'look>')
 			(if (Said '/carpet') (Print 40 0))
-			(if (and flower (Said '/flower')) (Print 40 1))
+			(if (and flowerInRoom (Said '/flower')) (Print 40 1))
 			(if (Said '<below/bush') (Print 40 2))
 			(if (Said '/feather') (Print 40 3))
 			(if (Said '/bird') (Print 40 4))
@@ -470,7 +470,7 @@
 				(Said 'done,disembark,disembark')
 				(Said 'explore/disembark')
 			)
-			(if (> jungleMazeTimes 1)
+			(if (> resortMazeVisits 1)
 				(Print 40 12)
 				(= searchingForShortcut TRUE)
 			else
@@ -479,14 +479,14 @@
 		)
 		(if (Said 'get,cut,get/flower')
 			(cond 
-				((!= currentStatus egoInJungleMaze) (PrintNotNow))
-				((not flower) (PrintAlreadyTookIt))
-				((not (ego inRect: 128 150 160 167)) (PrintNotCloseEnough))
+				((!= currentStatus egoINRESORTMAZE) (NotNow))
+				((not flowerInRoom) (AlreadyTook))
+				((not (ego inRect: 128 150 160 167)) (NotClose))
 				(else
 					(ego get: iFlower)
-					(= flower 0)
+					(= flowerInRoom FALSE)
 					(theGame changeScore: 3)
-					(plant setCel: flower stopUpd:)
+					(aFlower setCel: flowerInRoom stopUpd:)
 					(Print 40 14 #at -1 20 #draw)
 				)
 			)

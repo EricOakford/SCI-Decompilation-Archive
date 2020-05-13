@@ -14,8 +14,8 @@
 )
 
 (local
-	local0
-	airplane
+	numClouds
+	aPlane
 )
 (instance rm64 of Room
 	(properties
@@ -23,12 +23,12 @@
 		horizon 5
 	)
 	
-	(method (init &tmp temp0 temp1)
+	(method (init &tmp i temp1)
 		(Load VIEW 162)
 		(Load VIEW 511)
 		(Load VIEW 620)
 		(super init:)
-		((= airplane (Actor new:))
+		((= aPlane (Actor new:))
 			view: 511
 			setLoop: 5
 			setCel: 0
@@ -38,9 +38,9 @@
 			setMotion: MoveTo -20 8
 			init:
 		)
-		(= local0 (Random 2 6))
-		(= temp0 0)
-		(while (< temp0 local0)
+		(= numClouds (Random 2 6))
+		(= i 0)
+		(while (< i numClouds)
 			((View new:)
 				view: 620
 				cel: (Random 0 10)
@@ -48,7 +48,7 @@
 				posn: (Random -10 330) (Random 5 188)
 				addToPic:
 			)
-			(++ temp0)
+			(++ i)
 		)
 		(ego
 			view: 162
@@ -58,7 +58,7 @@
 			setStep: -1 3
 			init:
 		)
-		(= currentStatus egoFalling)
+		(= currentStatus egoFALLING)
 		(self setScript: rm64Script)
 		(User canInput: TRUE canControl: FALSE)
 	)
@@ -84,7 +84,7 @@
 					cycleSpeed: 4
 					setMotion: MoveTo 144 208 self
 				)
-				(= currentStatus egoLaunchedParachute)
+				(= currentStatus egoLAUNCHPARACHUTE)
 				(Print 64 8 #draw)
 			)
 			(3 (curRoom newRoom: 65))
@@ -97,14 +97,14 @@
 			(return)
 		)
 		(if (Said 'look')
-			(if (== currentStatus egoFalling)
+			(if (== currentStatus egoFALLING)
 				(Print 64 0)
 			else
 				(Print 64 1)
 			)
 		)
 		(if (Said 'apply,open,jerk/cord,parachute')
-			(if (!= currentStatus egoFalling)
+			(if (!= currentStatus egoFALLING)
 				(Print 64 2)
 			else
 				(Print 64 3)

@@ -16,8 +16,8 @@
 
 (local
 	local0
-	oldEgoX
-	oldEgoY
+	egoX
+	egoY
 	oldScore
 	newBassSetter
 )
@@ -92,8 +92,8 @@
 					(== state 8)
 					(== state 11)
 				)
-				(= oldEgoX (ego x?))
-				(= oldEgoY (ego y?))
+				(= egoX (ego x?))
+				(= egoY (ego y?))
 			)
 		)
 	)
@@ -219,7 +219,7 @@
 			(16 (ego setCycle: BegLoop self))
 			(17
 				(NormalEgo 1)
-				(ego posn: oldEgoX oldEgoY setPri: 11 setStep: 3 1)
+				(ego posn: egoX egoY setPri: 11 setStep: 3 1)
 				(= state 1)
 				(NearFallPoint)
 			)
@@ -234,7 +234,7 @@
 			)
 			(20
 				(NormalEgo 1)
-				(ego posn: oldEgoX oldEgoY setPri: 9 setStep: 2 1)
+				(ego posn: egoX egoY setPri: 9 setStep: 2 1)
 				(= state 5)
 				(NearFallPoint)
 			)
@@ -253,7 +253,7 @@
 			)
 			(24
 				(NormalEgo 1)
-				(ego posn: oldEgoX oldEgoY setPri: 7 setStep: 1 1)
+				(ego posn: egoX egoY setPri: 7 setStep: 1 1)
 				(= state 8)
 				(NearFallPoint)
 			)
@@ -273,11 +273,11 @@
 			)
 			(28
 				(if (ego inRect: 34 118 39 123)
-					(= oldEgoX 38)
-					(= oldEgoY 120)
+					(= egoX 38)
+					(= egoY 120)
 				)
 				(NormalEgo 1)
-				(ego posn: oldEgoX oldEgoY setPri: 5 setStep: 1 1)
+				(ego posn: egoX egoY setPri: 5 setStep: 1 1)
 				(= state 11)
 				(NearFallPoint)
 			)

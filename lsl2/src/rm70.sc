@@ -15,9 +15,9 @@
 )
 
 (local
-	trappedEgo
-	trappedEgoBody
-	glint
+	aBigEgo
+	aBigEgoBottom
+	aSparkle
 )
 (instance theSound of Sound
 	(properties
@@ -36,7 +36,7 @@
 		(Load SOUND 1)
 		(theSound init:)
 		(super init:)
-		((= glint (Prop new:))
+		((= aSparkle (Prop new:))
 			view: 170
 			setLoop: 3
 			setPri: 15
@@ -44,14 +44,14 @@
 			init:
 			hide:
 		)
-		((= trappedEgo (Actor new:))
+		((= aBigEgo (Actor new:))
 			view: 170
 			posn: 120 103
 			setPri: 14
 			illegalBits: 0
 			init:
 		)
-		((= trappedEgoBody (View new:))
+		((= aBigEgoBottom (View new:))
 			view: 170
 			cel: 1
 			posn: 120 133
@@ -59,8 +59,8 @@
 		)
 		(ego setMotion: 0)
 		(User canControl: FALSE canInput: TRUE)
-		(= currentStatus egoStuckInTree)
-		(self setRegions: 700 setScript: rm70Script)
+		(= currentStatus egoSTUCKINTREE)
+		(self setRegions: ISLAND setScript: rm70Script)
 	)
 )
 
@@ -84,35 +84,35 @@
 			(2
 				(Print 70 10)
 				(Print 70 11)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 			(3
 				(User canInput: FALSE)
-				(trappedEgo cycleSpeed: 2 setLoop: 1 setCycle: EndLoop self)
+				(aBigEgo cycleSpeed: 2 setLoop: 1 setCycle: EndLoop self)
 			)
 			(4
-				(trappedEgo cycleSpeed: 1 setLoop: 4 setCycle: Forward)
+				(aBigEgo cycleSpeed: 1 setLoop: 4 setCycle: Forward)
 				(= cycles 40)
 			)
 			(5
 				(theGame changeScore: 8)
 				(Print 70 12 #at -1 15 #width 280)
 				(Print 70 13 #at -1 20)
-				(trappedEgoBody dispose:)
+				(aBigEgoBottom dispose:)
 				(theSound play:)
-				(trappedEgo
+				(aBigEgo
 					setStep: 1 10
 					setLoop: 2
 					cel: 0
 					setCycle: EndLoop
-					setMotion: MoveTo (trappedEgo x?) 255 self
+					setMotion: MoveTo (aBigEgo x?) 255 self
 				)
 			)
 			(6
-				(glint show: setCycle: EndLoop self)
+				(aSparkle show: setCycle: EndLoop self)
 			)
 			(7
-				(glint dispose:)
+				(aSparkle dispose:)
 				(curRoom newRoom: 71)
 			)
 		)

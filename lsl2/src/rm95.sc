@@ -15,16 +15,16 @@
 
 (local
 	local0
-	henchwoman
-	chain2
-	chain
-	helicopterDoor
+	aHench
+	aChainEast
+	aChainWest
+	aDoor
 	laserGun
 	laserBeam
-	acidPit
-	bed
-	egoBigHead
-	egoBigFace
+	aAcid
+	aBed
+	aBigEgo
+	aBigEgoFace
 )
 (instance rm95 of Room
 	(properties
@@ -72,7 +72,7 @@
 			setPri: 1
 			addToPic:
 		)
-		((= bed (View new:))
+		((= aBed (View new:))
 			view: 829
 			ignoreActors:
 			loop: 9
@@ -81,14 +81,14 @@
 			stopUpd:
 			init:
 		)
-		((= egoBigHead (View new:))
+		((= aBigEgo (View new:))
 			view: 110
 			ignoreActors:
 			setPri: 14
 			posn: 172 1038
 			init:
 		)
-		((= egoBigFace (Prop new:))
+		((= aBigEgoFace (Prop new:))
 			view: 113
 			ignoreActors:
 			cycleSpeed: 5
@@ -97,7 +97,7 @@
 			setCel: 0
 			init:
 		)
-		((= acidPit (Prop new:))
+		((= aAcid (Prop new:))
 			view: 829
 			ignoreActors:
 			setLoop: 4
@@ -107,7 +107,7 @@
 			init:
 			hide:
 		)
-		((= helicopterDoor (Actor new:))
+		((= aDoor (Actor new:))
 			view: 829
 			ignoreActors:
 			illegalBits: 0
@@ -118,7 +118,7 @@
 			stopUpd:
 			init:
 		)
-		((= chain (Actor new:))
+		((= aChainWest (Actor new:))
 			view: 829
 			ignoreActors:
 			ignoreHorizon:
@@ -129,7 +129,7 @@
 			setStep: 1 3
 			init:
 		)
-		((= chain2 (Actor new:))
+		((= aChainEast (Actor new:))
 			view: 829
 			ignoreActors:
 			ignoreHorizon:
@@ -167,7 +167,7 @@
 			hide:
 		)
 		(if (== henchView 0) (= henchView 205))
-		((= henchwoman (Actor new:))
+		((= aHench (Actor new:))
 			view: henchView
 			ignoreActors:
 			illegalBits: 0
@@ -197,10 +197,10 @@
 			(0 (= seconds 3))
 			(1
 				(Print 95 0)
-				(helicopterDoor setMotion: MoveTo 9 138 self)
+				(aDoor setMotion: MoveTo 9 138 self)
 			)
 			(2
-				(helicopterDoor stopUpd:)
+				(aDoor stopUpd:)
 				(henchScript cue:)
 			)
 			(3
@@ -255,12 +255,12 @@
 				(= seconds 3)
 			)
 			(14
-				(chain setMotion: MoveTo 218 90 self)
-				(chain2 setMotion: MoveTo 250 90)
+				(aChainWest setMotion: MoveTo 218 90 self)
+				(aChainEast setMotion: MoveTo 250 90)
 			)
 			(15 (= seconds 3))
 			(16
-				(bed hide:)
+				(aBed hide:)
 				(ego
 					setLoop: 4
 					cel: 0
@@ -268,20 +268,20 @@
 					cycleSpeed: 1
 					setCycle: EndLoop self
 				)
-				(chain setStep: 1 2 setMotion: MoveTo 218 45)
-				(chain2 setStep: 1 2 setMotion: MoveTo 250 45)
+				(aChainWest setStep: 1 2 setMotion: MoveTo 218 45)
+				(aChainEast setStep: 1 2 setMotion: MoveTo 250 45)
 			)
 			(17
 				(ego setStep: 1 2 setMotion: MoveTo 214 89 self)
 			)
 			(18
 				(ego stopUpd:)
-				(chain setMotion: 0 stopUpd:)
-				(chain setMotion: 0 stopUpd:)
-				(acidPit show: setCycle: EndLoop self)
+				(aChainWest setMotion: 0 stopUpd:)
+				(aChainWest setMotion: 0 stopUpd:)
+				(aAcid show: setCycle: EndLoop self)
 			)
 			(19
-				(acidPit setLoop: 2 cycleSpeed: 0 setCycle: Forward)
+				(aAcid setLoop: 2 cycleSpeed: 0 setCycle: Forward)
 				(= cycles 15)
 			)
 			(20
@@ -293,8 +293,8 @@
 				(laserGun setMotion: MoveTo 234 29 self)
 			)
 			(22
-				(egoBigHead posn: 172 38 stopUpd:)
-				(egoBigFace posn: 172 38 setCycle: EndLoop)
+				(aBigEgo posn: 172 38 stopUpd:)
+				(aBigEgoFace posn: 172 38 setCycle: EndLoop)
 				(laserGun
 					setStep: 1 1
 					moveSpeed: 1
@@ -312,7 +312,7 @@
 			(23
 				(Print 95 6 #at -1 152)
 				(laserBeam setMotion: MoveTo 234 0 self)
-				(bed view: 191 loop: 0 posn: 214 88 show:)
+				(aBed view: 191 loop: 0 posn: 214 88 show:)
 				(ego
 					setLoop: 5
 					posn: (+ (ego x?) 8) (- (ego y?) 5)
@@ -323,8 +323,8 @@
 				(= cycles 10)
 			)
 			(24
-				(egoBigFace dispose:)
-				(egoBigHead dispose:)
+				(aBigEgoFace dispose:)
+				(aBigEgo dispose:)
 			)
 			(25
 				(laserGun dispose:)
@@ -341,7 +341,7 @@
 				(ego setMotion: 0 cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(27 (= seconds 3))
-			(28 (= currentStatus egoDead))
+			(28 (= currentStatus egoDEAD))
 		)
 	)
 )
@@ -352,25 +352,25 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(henchwoman setMotion: MoveTo 37 169 self)
+				(aHench setMotion: MoveTo 37 169 self)
 			)
 			(2
-				(henchwoman setMotion: MoveTo 39 181 self)
+				(aHench setMotion: MoveTo 39 181 self)
 				(rm95Script cue:)
 			)
 			(3
-				(henchwoman setMotion: MoveTo 139 181 self)
+				(aHench setMotion: MoveTo 139 181 self)
 			)
 			(4
 				(Print 95 7)
-				(henchwoman setMotion: MoveTo 139 131 self)
+				(aHench setMotion: MoveTo 139 131 self)
 			)
 			(5
 				(Print 95 8)
-				(henchwoman setMotion: MoveTo 49 91 self)
+				(aHench setMotion: MoveTo 49 91 self)
 			)
 			(6
-				(henchwoman setLoop: 3 stopUpd:)
+				(aHench setLoop: 3 stopUpd:)
 				(self dispose:)
 			)
 		)

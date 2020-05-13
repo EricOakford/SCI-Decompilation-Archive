@@ -15,13 +15,13 @@
 
 (local
 	local0
-	purser
-	gate
+	aPurser
+	aGate
 	shipIsHere
-	splash
-	bird
-	buoy1
-	buoy2
+	aWave
+	aBird
+	aPoop
+	aPoop2
 )
 (instance rm26 of Room
 	(properties
@@ -44,7 +44,7 @@
 			(Load VIEW 237)
 			(Load VIEW 7)
 			(Load VIEW 3)
-			((= purser (Prop new:))
+			((= aPurser (Prop new:))
 				view: 237
 				ignoreActors:
 				setCel: 0
@@ -53,7 +53,7 @@
 				init:
 				stopUpd:
 			)
-			((= bird (Actor new:))
+			((= aBird (Actor new:))
 				view: 236
 				setLoop: 2
 				setCel: 0
@@ -65,7 +65,7 @@
 				init:
 				setScript: birdScript
 			)
-			((= buoy1 (Actor new:))
+			((= aPoop (Actor new:))
 				view: 236
 				setLoop: 5
 				setCel: 0
@@ -77,7 +77,7 @@
 				init:
 				hide:
 			)
-			((= buoy2 (Actor new:))
+			((= aPoop2 (Actor new:))
 				view: 236
 				setLoop: 5
 				setCel: 0
@@ -89,7 +89,7 @@
 				init:
 				hide:
 			)
-			((= splash (Prop new:))
+			((= aWave (Prop new:))
 				view: 236
 				setLoop: 0
 				setPri: 10
@@ -100,7 +100,7 @@
 				init:
 			)
 		)
-		((= gate (Actor new:))
+		((= aGate (Actor new:))
 			view: 236
 			setLoop: 1
 			illegalBits: 0
@@ -129,28 +129,28 @@
 			(1
 				(HandsOff)
 				(Print 26 14)
-				(purser setCycle: Forward)
+				(aPurser setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
 				(Print 26 15)
-				(purser setCel: 0 stopUpd:)
+				(aPurser setCel: 0 stopUpd:)
 				(= seconds 3)
 			)
 			(3
 				(Print 26 16)
-				(purser setCycle: Forward)
+				(aPurser setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
 				(Print 26 17)
-				(purser setCel: 0 stopUpd:)
+				(aPurser setCel: 0 stopUpd:)
 				(User canControl: 1 canInput: 1)
 			)
 			(5
 				(HandsOff)
 				(Print 26 18)
-				(purser setCycle: Forward)
+				(aPurser setCycle: Forward)
 				(= seconds 3)
 			)
 			(6
@@ -161,7 +161,7 @@
 				(Print 26 23)
 				(Print 26 24)
 				(theGame changeScore: 9)
-				(purser setCel: 0 stopUpd:)
+				(aPurser setCel: 0 stopUpd:)
 				(ego
 					put: 3 -1
 					illegalBits: 0
@@ -170,13 +170,13 @@
 			)
 			(7
 				(ego loop: 3)
-				(gate setMotion: MoveTo 218 146 self)
+				(aGate setMotion: MoveTo 218 146 self)
 			)
 			(8
 				(ego setPri: 7 setMotion: MoveTo 182 144 self)
 			)
 			(9
-				(gate setMotion: MoveTo 188 146)
+				(aGate setMotion: MoveTo 188 146)
 				(ego setMotion: MoveTo 179 121 self)
 			)
 			(10
@@ -203,7 +203,7 @@
 						(Said 'look,finger,give/passport,ticket/man,agent')
 					)
 					(cond 
-						((not (ego inRect: 175 144 211 158)) (PrintNotCloseEnough))
+						((not (ego inRect: 175 144 211 158)) (NotClose))
 						((ego has: iPassport) (self changeState: 5))
 						(else (self changeState: 1))
 					)
@@ -238,9 +238,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 2 3)))
-			(1 (bird setCycle: EndLoop self))
+			(1 (aBird setCycle: EndLoop self))
 			(2
-				(bird
+				(aBird
 					setLoop: 3
 					setCycle: Forward
 					setMotion: MoveTo -12 49 self
@@ -252,7 +252,7 @@
 					(= seconds 3)
 					(-- state)
 				else
-					(bird
+					(aBird
 						posn: 333 65
 						setLoop: 3
 						setCycle: Forward
@@ -261,19 +261,19 @@
 				)
 			)
 			(5
-				(bird setMotion: MoveTo -12 66)
-				(buoy1
-					posn: (bird x?) (bird y?)
+				(aBird setMotion: MoveTo -12 66)
+				(aPoop
+					posn: (aBird x?) (aBird y?)
 					setCel: 0
 					show:
-					setMotion: MoveTo (- (bird x?) 24) (+ (ego y?) 8) self
+					setMotion: MoveTo (- (aBird x?) 24) (+ (ego y?) 8) self
 				)
 			)
 			(6
-				(buoy1 setCycle: EndLoop self)
+				(aPoop setCycle: EndLoop self)
 			)
 			(7
-				(bird setMotion: MoveTo -12 66 self)
+				(aBird setMotion: MoveTo -12 66 self)
 			)
 			(8 (= seconds 3))
 			(9
@@ -281,7 +281,7 @@
 					(= seconds 3)
 					(-- state)
 				else
-					(bird
+					(aBird
 						posn: -12 21
 						setLoop: 4
 						setCycle: Forward
@@ -290,15 +290,15 @@
 				)
 			)
 			(10
-				(bird setMotion: MoveTo 333 22 self)
-				(buoy2
-					posn: (bird x?) (bird y?)
+				(aBird setMotion: MoveTo 333 22 self)
+				(aPoop2
+					posn: (aBird x?) (aBird y?)
 					show:
-					setMotion: MoveTo (+ 14 (bird x?)) (+ (ego y?) 3) self
+					setMotion: MoveTo (+ 14 (aBird x?)) (+ (ego y?) 3) self
 				)
 			)
-			(11 (buoy2 setCycle: EndLoop))
-			(12 (bird dispose:))
+			(11 (aPoop2 setCycle: EndLoop))
+			(12 (aBird dispose:))
 		)
 	)
 )

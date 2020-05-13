@@ -15,12 +15,12 @@
 
 (local
 	local0
-	doorIsOpen
-	assistantProducer
-	leftDoor
-	rightDoor
-	leftScreen
-	rightScreen
+	doorControl
+	aProducer
+	aDoorWest
+	aDoorEast
+	aTVwest
+	aTVeast
 )
 (instance rm102 of Room
 	(properties
@@ -50,7 +50,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= leftScreen (Prop new:))
+		((= aTVwest (Prop new:))
 			view: 202
 			setLoop: 2
 			setCel: 0
@@ -60,7 +60,7 @@
 			isExtra: TRUE
 			init:
 		)
-		((= rightScreen (Prop new:))
+		((= aTVeast (Prop new:))
 			view: 202
 			setLoop: 3
 			setCel: 1
@@ -72,14 +72,14 @@
 		)
 		(self setScript: rm102Script)
 		(NormalEgo)
-		(ego observeControl: 16384 8192)
-		((= leftDoor (Prop new:))
+		(ego observeControl: cYELLOW cLMAGENTA)
+		((= aDoorWest (Prop new:))
 			view: 202
 			posn: 83 115
 			setPri: 4
 			init:
 		)
-		((= rightDoor (Prop new:))
+		((= aDoorEast (Prop new:))
 			view: 202
 			setLoop: 1
 			posn: 250 116
@@ -87,8 +87,8 @@
 			init:
 		)
 		(if (== prevRoomNum 103)
-			(leftDoor setCel: 255)
-			(ego posn: 67 122 observeControl: 8192 ignoreActors:)
+			(aDoorWest setCel: 255)
+			(ego posn: 67 122 observeControl: cLMAGENTA ignoreActors:)
 			(rm102Script changeState: 12)
 		else
 			(ego posn: 163 153)
@@ -105,36 +105,36 @@
 		(super doit:)
 		(if
 			(and
-				(== currentStatus egoSitting)
+				(== currentStatus egoSITTING)
 				(or (== state 20) (== state 1))
 			)
 			(self cue:)
 		)
-		(if (== doorIsOpen 8192) (ego ignoreControl: 8192))
-		(if (== doorIsOpen 16384) (ego ignoreControl: 16384))
-		(if (& (ego onControl:) $0004) (curRoom newRoom: 103))
-		(if (& (ego onControl:) $0020) (curRoom newRoom: 104))
+		(if (== doorControl cLMAGENTA) (ego ignoreControl: cLMAGENTA))
+		(if (== doorControl cYELLOW) (ego ignoreControl: cYELLOW))
+		(if (& (ego onControl:) cGREEN) (curRoom newRoom: 103))
+		(if (& (ego onControl:) cMAGENTA) (curRoom newRoom: 104))
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(HandsOn)
-				(ego observeControl: 16384 8192)
+				(ego observeControl: cYELLOW cLMAGENTA)
 			)
 			(2 (= seconds (Random 10 30)))
 			(3
-				(if (!= currentStatus egoSitting)
+				(if (!= currentStatus egoSITTING)
 					(-- state)
 					(= seconds 3)
 				else
 					(HandsOff)
-					(= doorIsOpen 16384)
-					(leftDoor setCycle: EndLoop self)
+					(= doorControl cYELLOW)
+					(aDoorWest setCycle: EndLoop self)
 				)
 			)
 			(4
-				((= assistantProducer (Actor new:))
+				((= aProducer (Actor new:))
 					view: 206
 					loop: 0
 					illegalBits: 0
@@ -146,7 +146,7 @@
 				)
 			)
 			(5
-				(assistantProducer
+				(aProducer
 					setLoop: 2
 					cel: 0
 					setCycle: EndLoop
@@ -154,10 +154,10 @@
 				)
 			)
 			(6
-				(assistantProducer setLoop: 3 cel: 0 setCycle: EndLoop self)
+				(aProducer setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				(assistantProducer setLoop: 4 setCycle: Forward)
+				(aProducer setLoop: 4 setCycle: Forward)
 				(= seconds 3)
 			)
 			(8
@@ -166,12 +166,12 @@
 			)
 			(9
 				(Print 102 11 #at -1 20)
-				(assistantProducer setLoop: 5 cycleSpeed: 2 setCycle: EndLoop self)
+				(aProducer setLoop: 5 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(10
 				(User canInput: TRUE)
-				(if (!= currentStatus egoSitting) (User canControl: 1))
-				(assistantProducer
+				(if (!= currentStatus egoSITTING) (User canControl: 1))
+				(aProducer
 					setLoop: 1
 					setCycle: Walk
 					cycleSpeed: 0
@@ -179,13 +179,13 @@
 					setMotion: MoveTo 60 120
 				)
 			)
-			(11 (assistantProducer dispose:))
+			(11 (aProducer dispose:))
 			(12
 				(HandsOff)
 				(ego illegalBits: 0 setMotion: MoveTo 120 123 self)
 			)
 			(13
-				((= assistantProducer (Actor new:))
+				((= aProducer (Actor new:))
 					view: 206
 					loop: 0
 					setCycle: Walk
@@ -196,13 +196,13 @@
 					setMotion: MoveTo 80 120 self
 				)
 				(ego
-					illegalBits: -32768
-					observeControl: 16384 8192
+					illegalBits: cWHITE
+					observeControl: cYELLOW cLMAGENTA
 					loop: 1
 				)
 			)
 			(14
-				(assistantProducer
+				(aProducer
 					setLoop: 2
 					cel: 0
 					setCycle: EndLoop
@@ -210,10 +210,10 @@
 				)
 			)
 			(15
-				(assistantProducer setLoop: 3 cel: 0 setCycle: EndLoop self)
+				(aProducer setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(16
-				(assistantProducer setLoop: 4 cycleSpeed: 1 setCycle: Forward)
+				(aProducer setLoop: 4 cycleSpeed: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(17
@@ -222,10 +222,10 @@
 				(Print 102 14 #at -1 20)
 				(ego get: iCruiseTicket)
 				(theGame changeScore: 6)
-				(assistantProducer setLoop: 5 setCycle: EndLoop self)
+				(aProducer setLoop: 5 setCycle: EndLoop self)
 			)
 			(18
-				(assistantProducer
+				(aProducer
 					setLoop: 1
 					setCycle: Walk
 					cycleSpeed: 0
@@ -233,46 +233,46 @@
 				)
 			)
 			(19
-				(assistantProducer posn: 264 121)
-				(leftDoor setCycle: BegLoop self)
+				(aProducer posn: 264 121)
+				(aDoorWest setCycle: BegLoop self)
 			)
 			(20
 				(HandsOn)
-				(leftDoor stopUpd:)
-				(= currentStatus egoNormal)
+				(aDoorWest stopUpd:)
+				(= currentStatus egoNORMAL)
 			)
 			(21 (= seconds (Random 11 33)))
 			(22
-				(if (!= currentStatus egoSitting)
+				(if (!= currentStatus egoSITTING)
 					(-- state)
 					(= seconds 3)
 				else
 					(HandsOff)
-					(= doorIsOpen 8192)
-					(rightDoor setCycle: EndLoop self)
+					(= doorControl cLMAGENTA)
+					(aDoorEast setCycle: EndLoop self)
 				)
 			)
 			(23
-				(assistantProducer
+				(aProducer
 					view: 217
 					setCycle: Walk
 					setMotion: MoveTo 219 122 self
 				)
 			)
 			(24
-				(assistantProducer loop: (+ (assistantProducer loop?) 2) setCycle: Forward)
+				(aProducer loop: (+ (aProducer loop?) 2) setCycle: Forward)
 				(= seconds 3)
 			)
 			(25
 				(Print 102 15)
 				(Print 102 16 #at -1 20)
 				(Print 102 17)
-				(assistantProducer loop: 0 setMotion: MoveTo 264 122 self)
+				(aProducer loop: 0 setMotion: MoveTo 264 122 self)
 			)
 			(26
 				(User canInput: TRUE)
-				(if (== currentStatus egoNormal) (User canControl: TRUE))
-				(assistantProducer dispose:)
+				(if (== currentStatus egoNORMAL) (User canControl: TRUE))
+				(aProducer dispose:)
 				(Print 102 18 #at -1 152)
 			)
 		)
@@ -284,8 +284,8 @@
 			(return)
 		)
 		(if (Said 'open/door')
-			(if doorIsOpen
-				(PrintItIs)
+			(if doorControl
+				(ItIs)
 			else
 				(Print 102 0)
 				(Print 102 1)
@@ -294,7 +294,7 @@
 		(if (Said 'look>')
 			(if (Said '/art,brick') (Print 102 2))
 			(if (Said '/door')
-				(if doorIsOpen
+				(if doorControl
 					(Print 102 3)
 					(Print 102 4 #at -1 152)
 				else
@@ -310,15 +310,15 @@
 		)
 		(if (Said 'bath')
 			(cond 
-				((== currentStatus egoSitting) (PrintYouAre))
-				((not (ego inRect: 101 90 255 99)) (PrintNotCloseEnough))
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((== currentStatus egoSITTING) (YouAre))
+				((not (ego inRect: 101 90 255 99)) (NotClose))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(else
 					(if (not satInGreenRoom)
 						(= satInGreenRoom TRUE)
 						(theGame changeScore: 1)
 					)
-					(PrintOk)
+					(Ok)
 					(ego setScript: sittingScript)
 					(sittingScript changeState: 0)
 				)
@@ -330,10 +330,10 @@
 				(Said 'disembark[/barstool]')
 			)
 			(cond 
-				((== currentStatus egoNormal) (PrintYouAre))
-				((!= currentStatus egoSitting) (PrintNotNow))
+				((== currentStatus egoNORMAL) (YouAre))
+				((!= currentStatus egoSITTING) (NotNow))
 				(else
-					(PrintOk)
+					(Ok)
 					(ego setScript: sittingScript)
 					(sittingScript changeState: 5)
 				)
@@ -370,7 +370,7 @@
 			)
 			(3
 				(ego setCel: setMotion: 0 stopUpd:)
-				(= currentStatus egoSitting)
+				(= currentStatus egoSITTING)
 				(User canInput: TRUE)
 				(= seconds (Random 2 6))
 			)
@@ -396,7 +396,7 @@
 			)
 			(6
 				(NormalEgo 2)
-				(ego observeControl: 16384 8192)
+				(ego observeControl: cYELLOW cLMAGENTA)
 			)
 		)
 	)

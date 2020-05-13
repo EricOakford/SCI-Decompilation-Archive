@@ -14,11 +14,11 @@
 )
 
 (local
-	stewardess
-	cockpitDoor
-	passenger1
-	passenger2
-	passenger3
+	aStewardess
+	aCockDoor
+	aKnitting
+	aNewspaper
+	aHand
 )
 (instance rm61 of Room
 	(properties
@@ -184,7 +184,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= passenger2 (Extra new:))
+		((= aNewspaper (Extra new:))
 			view: 661
 			loop: 3
 			posn: 146 74
@@ -194,7 +194,7 @@
 			maxPause: 8
 			init:
 		)
-		((= passenger3 (Extra new:))
+		((= aHand (Extra new:))
 			view: 661
 			loop: 4
 			posn: 279 108
@@ -206,7 +206,7 @@
 			maxCycles: 11
 			init:
 		)
-		((= passenger1 (Extra new:))
+		((= aKnitting (Extra new:))
 			view: 661
 			loop: 5
 			posn: 149 59
@@ -218,8 +218,8 @@
 			maxCycles: 31
 			init:
 		)
-		(self setRegions: 600 setScript: rm61Script)
-		((= cockpitDoor (Prop new:))
+		(self setRegions: AIRPLANE setScript: rm61Script)
+		((= aCockDoor (Prop new:))
 			view: 603
 			ignoreActors:
 			setLoop: 0
@@ -230,7 +230,7 @@
 			init:
 		)
 		(if (== prevRoomNum 62)
-			(ego observeControl: 16384 loop: 1 posn: 300 101)
+			(ego observeControl: cYELLOW loop: 1 posn: 300 101)
 			((View new:)
 				view: 603
 				loop: 1
@@ -242,7 +242,7 @@
 			)
 		else
 			(Load VIEW 23)
-			((= stewardess (Prop new:))
+			((= aStewardess (Prop new:))
 				view: 600
 				setLoop: 4
 				posn: 55 100
@@ -251,7 +251,7 @@
 			)
 			(ego loop: 3 posn: 42 143)
 			(HandsOff)
-			(= currentStatus egoBoardedPlane)
+			(= currentStatus egoBOARDPLANE)
 			(rm61Script changeState: 1)
 		)
 		(ego init:)
@@ -274,21 +274,21 @@
 				(ego setMotion: MoveTo 53 117 self)
 			)
 			(3
-				(stewardess setCycle: Forward)
+				(aStewardess setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
-				(stewardess setCel: 0)
+				(aStewardess setCel: 0)
 				(Print 61 7 #draw)
 				(Print 61 8 #icon 23 0 0)
 				(= seconds 3)
 			)
 			(5
-				(stewardess setCycle: Forward)
+				(aStewardess setCycle: Forward)
 				(= seconds 3)
 			)
 			(6
-				(stewardess setCel: 0)
+				(aStewardess setCel: 0)
 				(Print 61 9 #draw)
 				(ego put: 23 -1)
 				(Print 61 10)
@@ -296,11 +296,11 @@
 				(= seconds 3)
 			)
 			(7
-				(stewardess setCycle: Forward)
+				(aStewardess setCycle: Forward)
 				(= seconds 3)
 			)
 			(8
-				(stewardess setCel: 0 stopUpd:)
+				(aStewardess setCel: 0 stopUpd:)
 				(Print 61 12 #draw)
 				(Print 61 13)
 				(Print 61 14)
@@ -317,15 +317,15 @@
 			)
 			(12
 				(HandsOff)
-				(= currentStatus egoStopped)
-				(PrintOk)
-				(cockpitDoor setCycle: EndLoop self)
+				(= currentStatus egoSTOPPED)
+				(Ok)
+				(aCockDoor setCycle: EndLoop self)
 			)
 			(13
 				(ego illegalBits: 0 setMotion: MoveTo 0 102 self)
 			)
 			(14
-				(cockpitDoor setCycle: BegLoop self)
+				(aCockDoor setCycle: BegLoop self)
 			)
 			(15
 				(Print 61 17)
@@ -339,7 +339,7 @@
 			(17 (= seconds 3))
 			(18
 				(Print 61 20)
-				(= currentStatus egoDead)
+				(= currentStatus egoDEAD)
 			)
 		)
 	)
@@ -354,7 +354,7 @@
 				(if (ego inRect: 0 0 106 92)
 					(Print 61 0)
 				else
-					(PrintNotCloseEnough)
+					(NotClose)
 				)
 			)
 			(if (Said '/door') (Print 61 1))
@@ -369,9 +369,11 @@
 		)
 		(if (Said 'open/door')
 			(cond 
-				((!= currentStatus egoNormal) (PrintNotNow))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
 				((& (ego onControl:) $0010) (Print 61 6))
-				((not (& (ego onControl:) $0008)) (PrintNotCloseEnough))
+				((not (& (ego onControl:) $0008)) (NotClose))
 				(else (self changeState: 12))
 			)
 		)

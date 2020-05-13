@@ -16,15 +16,15 @@
 
 (local
 	local0
-	receptionist1
-	receptionist2
-	receptionist3
-	line1
-	line2
-	line3
-	man
+	aBlueAgent
+	aGreenAgent
+	aCyanAgent
+	aBlueLine
+	aGreenLine
+	aCyanLine
+	aCustomer
 	local8
-	clearedLines
+	linesCleared
 )
 (instance theSound of Sound
 	(properties
@@ -189,30 +189,30 @@
 		)
 		(self setRegions: AIRPORT setScript: rm52Script)
 		(if ((inventory at: iAirlineTicket) ownedBy: curRoomNum)
-			(= clearedLines 1)
+			(= linesCleared 1)
 		)
 		(if (< suitcaseBombState bombEXPLODING)
 			(Load VIEW 510)
 			(Load VIEW 608)
-			((= receptionist1 (Extra new:))
+			((= aBlueAgent (Extra new:))
 				view: 509
 				setLoop: 0
 				posn: 116 93
 				init:
 			)
-			((= receptionist2 (Extra new:))
+			((= aGreenAgent (Extra new:))
 				view: 509
 				setLoop: 2
 				posn: 167 92
 				init:
 			)
-			((= receptionist3 (Extra new:))
+			((= aCyanAgent (Extra new:))
 				view: 509
 				setLoop: 1
 				posn: 194 94
 				init:
 			)
-			((= line1 (Prop new:))
+			((= aBlueLine (Prop new:))
 				view: 510
 				loop: 0
 				cel: 4
@@ -222,7 +222,7 @@
 				stopUpd:
 				init:
 			)
-			((= line2 (Prop new:))
+			((= aGreenLine (Prop new:))
 				view: 510
 				loop: 1
 				cel: 4
@@ -232,7 +232,7 @@
 				stopUpd:
 				init:
 			)
-			((= line3 (Prop new:))
+			((= aCyanLine (Prop new:))
 				view: 510
 				loop: 0
 				cel: 4
@@ -244,8 +244,8 @@
 			)
 			(if (< suitcaseBombState bombHOLDING)
 				(NormalEgo)
-				(ego observeControl: 16384)
-				((= man (Actor new:))
+				(ego observeControl: cYELLOW)
+				((= aCustomer (Actor new:))
 					view: 608
 					posn: 161 227
 					setCycle: Walk
@@ -257,7 +257,7 @@
 			else
 				(Load SOUND 5)
 				(theSound play:)
-				(= currentStatus egoSuitcaseBombed)
+				(= currentStatus egoSUITCASEBOMB)
 				(HandsOff)
 				(rm52Script changeState: 1)
 			)
@@ -277,8 +277,8 @@
 			else
 				(NormalEgo)
 			)
-			(if clearedLines
-				((= receptionist2 (Prop new:))
+			(if linesCleared
+				((= aGreenAgent (Prop new:))
 					view: 509
 					setLoop: 2
 					setCel: 0
@@ -314,7 +314,7 @@
 				(Print 52 22)
 				(Print 52 23 #at -1 15 #width 280)
 				(Print 52 24 #at -1 152)
-				(ego ignoreControl: 16384 setMotion: MoveTo 184 178 self)
+				(ego ignoreControl: cYELLOW setMotion: MoveTo 184 178 self)
 			)
 			(4
 				(Print 52 25)
@@ -339,24 +339,24 @@
 				(HandsOff)
 				(ego loop: 3)
 				(Print 52 29 #draw)
-				(receptionist2 setCycle: Forward)
+				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
 			)
 			(10
 				(Print 52 30 #at -1 20)
-				(receptionist2 setCel: 0)
+				(aGreenAgent setCel: 0)
 				(= seconds 3)
 			)
 			(11
 				(Print 52 31)
-				(receptionist2 setCycle: Forward)
+				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
 			)
 			(12
 				(Print 52 32 #at -1 20)
 				(Print 52 33)
 				(Print 52 34 #at -1 20)
-				(receptionist2 setCel: 0)
+				(aGreenAgent setCel: 0)
 				(= seconds 3)
 			)
 			(13
@@ -364,7 +364,7 @@
 				(= seconds 3)
 			)
 			(14
-				(receptionist2 setCycle: Forward)
+				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
 			)
 			(15
@@ -414,22 +414,22 @@
 				(Print 52 70 #at -1 20 #time 3)
 				(Print 52 71 #at -1 20 #time 2 #dispose)
 				(if (> filthLevel 4) (Print 52 72) else (Print 52 73))
-				(receptionist2 setCel: 0)
+				(aGreenAgent setCel: 0)
 				(= seconds 3)
 			)
 			(16
-				(receptionist2 setCycle: Forward)
+				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
 			)
 			(17
 				(Print 52 74 #at -1 15 #width 280)
 				(Print 52 75 #at -1 20)
 				(Print (Format @str 52 76 tritePhrase) #at -1 20)
-				(receptionist2 setCel: 0 stopUpd:)
+				(aGreenAgent setCel: 0 stopUpd:)
 				(ego get: iAirlineTicket)
 				(theGame changeScore: 5)
 				(NormalEgo 3)
-				(IncrementGamePhase phaseAIRPORT 5 10)
+				(SetRegionTimer rgAIRPORT 5 10)
 			)
 		)
 	)
@@ -442,12 +442,12 @@
 		(if (Said 'look>')
 			(if (Said '/man,children')
 				(cond 
-					(line1 (Print 52 0))
-					(clearedLines (Print 52 1))
+					(aBlueLine (Print 52 0))
+					(linesCleared (Print 52 1))
 					(else (Print 52 2))
 				)
 			)
-			(if (and clearedLines (Said '/bimbo,agent')) (Print 52 3))
+			(if (and linesCleared (Said '/bimbo,agent')) (Print 52 3))
 			(if (Said '/computer,schedule')
 				(Print 52 4)
 				(Print 52 5 #at -1 152)
@@ -462,8 +462,8 @@
 			)
 			(if (Said '[/airport,buffet]')
 				(cond 
-					(line1 (Print 52 9))
-					(clearedLines (Print 52 10))
+					(aBlueLine (Print 52 9))
+					(linesCleared (Print 52 10))
 					(else (Print 52 2))
 				)
 			)
@@ -471,16 +471,16 @@
 		(if
 		(or (Said 'call/bimbo,agent') (Said 'get,buy/ticket'))
 			(cond 
-				((not clearedLines) (Print 52 11))
+				((not linesCleared) (Print 52 11))
 				((!= suitcaseBombState bombAFTEREXPLOSION) (Print 52 12))
 				((not ((inventory at: iAirlineTicket) ownedBy: curRoomNum)) (Print 52 13))
-				((not (ego inRect: 154 118 181 129)) (PrintNotCloseEnough))
+				((not (ego inRect: 154 118 181 129)) (NotClose))
 				(else (self changeState: 9))
 			)
 		)
 		(if (Said 'call/man,children')
 			(cond 
-				((not clearedLines) (Print 52 11))
+				((not linesCleared) (Print 52 11))
 				((!= suitcaseBombState bombAFTEREXPLOSION)
 					(Print (Format @str 52 14 introductoryPhrase))
 					(if (> filthLevel 10) (Print 52 15) else (Print 52 16))
@@ -489,7 +489,7 @@
 					(Print (Format @str 52 17 introductoryPhrase))
 					(Print 52 18)
 				)
-				(else (PrintNotCloseEnough))
+				(else (NotClose))
 			)
 		)
 		(if (and (!= suitcaseBombState bombAFTEREXPLOSION) (Said '/line'))
@@ -505,7 +505,7 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 2 5)))
 			(1
-				(man
+				(aCustomer
 					posn: 161 227
 					show:
 					setMotion: MoveTo 161 165 self
@@ -538,10 +538,10 @@
 				)
 			)
 			(3
-				(man setMotion: MoveTo 161 148 self)
+				(aCustomer setMotion: MoveTo 161 148 self)
 			)
 			(4
-				(man loop: 3)
+				(aCustomer loop: 3)
 				(= seconds 3)
 			)
 			(5
@@ -549,26 +549,26 @@
 					(-- state)
 					(= cycles 10)
 				else
-					(man posn: 164 124 setMotion: MoveTo 177 124 self)
-					(line2 cel: 0 setCycle: EndLoop)
+					(aCustomer posn: 164 124 setMotion: MoveTo 177 124 self)
+					(aGreenLine cel: 0 setCycle: EndLoop)
 				)
 			)
 			(6
-				(man setMotion: MoveTo 177 153 self)
+				(aCustomer setMotion: MoveTo 177 153 self)
 			)
 			(7
-				(line2 stopUpd:)
-				(man setMotion: MoveTo 220 153 self)
+				(aGreenLine stopUpd:)
+				(aCustomer setMotion: MoveTo 220 153 self)
 			)
 			(8
-				(man setMotion: MoveTo 282 128 self)
+				(aCustomer setMotion: MoveTo 282 128 self)
 				(= state 19)
 			)
 			(9
-				(man setMotion: MoveTo 119 148 self)
+				(aCustomer setMotion: MoveTo 119 148 self)
 			)
 			(10
-				(man loop: 3)
+				(aCustomer loop: 3)
 				(= seconds 3)
 			)
 			(11
@@ -576,26 +576,26 @@
 					(-- state)
 					(= cycles 10)
 				else
-					(man posn: 122 124 setMotion: MoveTo 135 124 self)
-					(line1 cel: 0 setCycle: EndLoop)
+					(aCustomer posn: 122 124 setMotion: MoveTo 135 124 self)
+					(aBlueLine cel: 0 setCycle: EndLoop)
 				)
 			)
 			(12
-				(man setMotion: MoveTo 135 153 self)
+				(aCustomer setMotion: MoveTo 135 153 self)
 			)
 			(13
-				(line1 stopUpd:)
-				(man setMotion: MoveTo 220 153 self)
+				(aBlueLine stopUpd:)
+				(aCustomer setMotion: MoveTo 220 153 self)
 			)
 			(14
-				(man setMotion: MoveTo 282 128 self)
+				(aCustomer setMotion: MoveTo 282 128 self)
 				(= state 19)
 			)
 			(15
-				(man setMotion: MoveTo 207 148 self)
+				(aCustomer setMotion: MoveTo 207 148 self)
 			)
 			(16
-				(man loop: 3)
+				(aCustomer loop: 3)
 				(= seconds 3)
 			)
 			(17
@@ -603,16 +603,16 @@
 					(-- state)
 					(= cycles 10)
 				else
-					(man posn: 210 124 setMotion: MoveTo 223 124 self)
-					(line3 cel: 0 setCycle: EndLoop)
+					(aCustomer posn: 210 124 setMotion: MoveTo 223 124 self)
+					(aCyanLine cel: 0 setCycle: EndLoop)
 				)
 			)
 			(18
-				(man setMotion: MoveTo 282 128 self)
+				(aCustomer setMotion: MoveTo 282 128 self)
 				(= state 19)
 			)
 			(20
-				(man hide:)
+				(aCustomer hide:)
 				(self changeState: 0)
 			)
 		)
