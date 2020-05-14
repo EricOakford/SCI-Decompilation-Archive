@@ -236,7 +236,7 @@
 			)
 			(Print 77 6)
 		)
-		(if (Said 'get/>')
+		(if (Said 'get/ash')
 			(cond 
 				((!= currentStatus egoNORMAL) (NotNow))
 				((not ((inventory at: iAshes) ownedBy: curRoomNum)) (AlreadyTook))

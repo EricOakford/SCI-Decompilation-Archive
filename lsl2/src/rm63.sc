@@ -321,7 +321,7 @@
 				(else (Print 63 31))
 			)
 		)
-		(if (Said 'man,(ask<for)/<')
+		(if (Said 'man,(ask<for)/cigarette')
 			(Print 63 34)
 			(Print 63 35 #at -1 152)
 		)

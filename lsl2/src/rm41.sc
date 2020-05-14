@@ -214,13 +214,9 @@
 		)
 		(if
 			(or
-				(Said
-					'wear,(alter<in),(conceal<on)/job,(bra<bathing),bikini'
-				)
+				(Said 'wear,(alter<in),(conceal<on)/job,(bra<bathing),bikini')
 				(Said 'alter,(get<off),drain/bra,bra')
-				(Said
-					'wear,(conceal<on)/job,(,bottom,(bra<bathing),bikini'
-				)
+				(Said 'wear,(conceal<on)/job,bottom,(bra<bathing),bikini')
 				(Said 'get<naked')
 				(Said 'naked')
 				(Said 'alter,(get<off),drain/bra,bra')

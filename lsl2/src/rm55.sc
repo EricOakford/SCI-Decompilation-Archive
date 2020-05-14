@@ -368,7 +368,7 @@
 		)
 		(if
 			(or
-				(Said 'buy,get/),sidewalk')
+				(Said 'buy,get/sidewalk')
 				(Said 'apply/dispenser')
 				(Said 'conceal/buck/dispenser')
 			)

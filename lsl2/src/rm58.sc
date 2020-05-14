@@ -62,9 +62,14 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 61))
-		(if (& (ego onControl:) $0004)
-			(if (not triedToLeave) (= triedToLeave TRUE) (Print 58 0))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 61)
+		)
+		(if (& (ego onControl:) cGREEN)
+			(if (not triedToLeave)
+				(= triedToLeave TRUE)
+				(Print 58 0)
+			)
 		else
 			(= triedToLeave FALSE)
 		)

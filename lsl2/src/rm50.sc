@@ -262,7 +262,7 @@
 							(else (Print 50 4))
 						)
 					)
-					((Said '/cult,,')
+					((Said '/cult')
 						(if (== menInRoom 2)
 							(aBigFace posn: 160 54)
 							(Timer setReal: aBigFace 5)

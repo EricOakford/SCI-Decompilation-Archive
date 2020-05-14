@@ -14,6 +14,10 @@
 
 (class Airplane of Actor
 	(properties
+		view 511
+		loop 0
+		cel 0
+		moveSpeed 1
 		startX -60
 		startY 22
 		endX 380

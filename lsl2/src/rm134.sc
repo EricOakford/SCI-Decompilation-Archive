@@ -176,7 +176,7 @@
 		(if (Said 'get/inner,man') (Print 134 5))
 		(if (Said '/drain') (Print 134 6))
 		(if (Said 'bathing,dive,(climb<off)') (Print 134 7))
-		(if (Said 'get/(,bikini,job,((<bikini)')
+		(if (Said 'get/(bikini,job,(<bikini))')
 			(cond 
 				((not ((inventory at: iBikiniTop) ownedBy: curRoomNum))
 					(Print 134 8)

@@ -704,7 +704,6 @@
 	
 	(method (init &tmp temp0)
 		(super init:)
-		(= debugging TRUE)
 		(= volume 15)
 		(DoSound ChangeVolume volume)
 		(StatusLine code: statusCode)

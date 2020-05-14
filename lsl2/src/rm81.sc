@@ -273,7 +273,7 @@
 		(if (Said 'look>')
 			(if (Said '/glacier,glacier') (Print 81 0))
 			(if (Said '/carpet,carpet') (Print 81 1))
-			(if (Said '[/airport,island,/,glacier,glacier]')
+			(if (Said '[/airport,island/glacier,glacier]')
 				(Print 81 2)
 				(Print 81 3)
 				(Print 81 4)
@@ -290,7 +290,7 @@
 			(theGame changeScore: -5)
 		)
 		(if (Said 'run,climb') (Print 81 7))
-		(if (Said 'throw,apply/>')
+		(if (Said 'throw,apply/ash')
 			(cond 
 				((not (ego has: iAshes)) (DontHave))
 				((!= currentStatus egoNORMAL) (NotNow))

@@ -295,7 +295,7 @@
 				(Print 48 2)
 				(Print 48 3 #at -1 152)
 			)
-			(if (Said '[/airport,/,cliff]') (Print 48 4))
+			(if (Said '[/airport,cliff]') (Print 48 4))
 		)
 		(if
 			(or

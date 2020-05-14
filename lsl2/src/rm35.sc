@@ -41,7 +41,7 @@
 		(Load VIEW 315)
 		(Load VIEW 319)
 		(super init:)
-		(self setRegions: 300 setScript: rm35Script)
+		(self setRegions: SHIP setScript: rm35Script)
 		(if ((inventory at: iSpinachDip) ownedBy: curRoomNum)
 			(= spinachDipInRoom TRUE)
 			((= aSpinachDip (View new:))
@@ -61,7 +61,7 @@
 			((= aHench (Actor new:))
 				view: henchView
 				posn: 155 233
-				illegalBits: -32768
+				illegalBits: cWHITE
 				setCycle: Walk
 				init:
 				setScript: henchScript
@@ -264,7 +264,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002)
+		(if (& (ego onControl:) cBLUE)
 			(if (== canFollowHenchwoman FALSE)
 				(curRoom newRoom: 31)
 			else

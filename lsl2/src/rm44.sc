@@ -458,7 +458,7 @@
 		(if
 			(or
 				(Said
-					'wear,(alter<in),(conceal<on)/job,(bra<bathing),(,bottom,bikini'
+					'wear,(alter<in),(conceal<on)/job,(bra<bathing),(bottom,bikini)'
 				)
 				(Said 'alter,(get<off),drain/bra,bra')
 			)
@@ -526,8 +526,8 @@
 		)
 		(if
 			(or
-				(Said 'conceal,conceal/(,bikini/buck,bill')
-				(Said 'conceal,conceal/buck,bill/(,bikini')
+				(Said 'conceal,conceal/(bikini)/buck,bill')
+				(Said 'conceal,conceal/buck,bill/(bikini)')
 			)
 			(cond 
 				((!= currentStatus egoNORMAL) (NotNow))
@@ -536,7 +536,7 @@
 				((!= currentEgoView 150) (Print 44 54))
 				((ego inRect: 176 100 199 115)
 					(Ok)
-					(= stuffedBra 6)
+					(= stuffedBra iWadODough)
 					(= currentEgoView 151)
 					(NormalEgo)
 					(theGame changeScore: 12)
@@ -547,18 +547,18 @@
 		)
 		(if
 			(or
-				(Said 'conceal,conceal/(,bikini/soap')
-				(Said 'conceal,conceal/soap/(,bikini')
+				(Said 'conceal,conceal/(bikini)/soap')
+				(Said 'conceal,conceal/soap/(bikini)')
 			)
 			(cond 
-				((!= currentStatus 0) (NotNow))
+				((!= currentStatus egoNORMAL) (NotNow))
 				(maidInRoom (Print 44 40))
 				((== currentEgoView 151) (Print 44 53))
 				((!= currentEgoView 150) (Print 44 54))
-				((not (ego has: 18)) (Print 44 57))
+				((not (ego has: iSoap)) (Print 44 57))
 				((ego inRect: 176 100 199 115)
 					(Ok)
-					(= stuffedBra 18)
+					(= stuffedBra iSoap)
 					(= currentEgoView 151)
 					(NormalEgo)
 					(theGame changeScore: 12)

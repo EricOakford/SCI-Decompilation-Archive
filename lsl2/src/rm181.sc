@@ -156,7 +156,7 @@
 				(Print 181 1)
 				(Print 181 2 #at -1 152)
 			)
-			(if (Said '[/airport,/,cliff,cascade,fluid,brook]')
+			(if (Said '[/airport,cliff,cascade,fluid,brook]')
 				(Print 181 3)
 			)
 		)
