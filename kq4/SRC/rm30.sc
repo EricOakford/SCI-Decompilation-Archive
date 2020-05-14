@@ -16,8 +16,8 @@
 (local
 	gEgoOnControl
 	theGEgoOnControl
-	h1
-	h2
+	aHench1
+	aHench2
 	local4
 	local5
 )
@@ -113,7 +113,7 @@
 							((Said '/path') (Print 30 1))
 							((Said '/boulder') (Print 30 2))
 							((Said '/goon,man,person')
-								(if (cast contains: h1)
+								(if (cast contains: aHench1)
 									(Print 30 3)
 								else
 									(Print 30 4)
@@ -167,7 +167,7 @@
 				(ego view: 21 loop: 2 cel: 4 setCycle: BegLoop self)
 			)
 			(3
-				(ego setCycle: Walk view: 2 illegalBits: -32768)
+				(ego setCycle: Walk view: 2 illegalBits: cWHITE)
 				(HandsOn)
 				(curRoom setScript: 0)
 			)
@@ -279,9 +279,9 @@
 					cycleSpeed: 1
 					setCycle: EndLoop self
 				)
-				(= h1 (Actor new:))
-				(= h2 (Actor new:))
-				(h1
+				(= aHench1 (Actor new:))
+				(= aHench2 (Actor new:))
+				(aHench1
 					view: 144
 					posn: (- (ego x?) 15) (ego y?)
 					xStep: 6
@@ -290,7 +290,7 @@
 					setCycle: Forward
 					setScript: h1Actions
 				)
-				(h2
+				(aHench2
 					view: 144
 					posn: (+ (ego x?) 15) (ego y?)
 					xStep: 6
@@ -306,7 +306,7 @@
 					ignoreActors: 0
 					setLoop: -1
 					loop: 1
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setPri: -1
 					cycleSpeed: 0
 					setCycle: Walk
@@ -324,7 +324,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(h1
+				(aHench1
 					init:
 					ignoreHorizon:
 					illegalBits: 0
@@ -334,12 +334,12 @@
 				)
 			)
 			(1
-				(h1 view: 143 setMotion: MoveTo 145 -30 self)
+				(aHench1 view: 143 setMotion: MoveTo 145 -30 self)
 				(= local4 1)
 			)
 			(2
 				(curRoom horizon: 85)
-				(h1 dispose:)
+				(aHench1 dispose:)
 			)
 		)
 	)
@@ -351,7 +351,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(h2
+				(aHench2
 					init:
 					ignoreHorizon:
 					illegalBits: 0
@@ -361,9 +361,9 @@
 				)
 			)
 			(1
-				(h2 view: 143 setMotion: MoveTo 175 -30 self)
+				(aHench2 view: 143 setMotion: MoveTo 175 -30 self)
 			)
-			(2 (h2 dispose:))
+			(2 (aHench2 dispose:))
 		)
 	)
 )

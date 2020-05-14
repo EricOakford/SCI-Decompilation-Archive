@@ -21,8 +21,8 @@
 	local1
 	gEgoOnControl
 	local3
-	fisherman
-	smoke
+	aFisher
+	aSmoke
 	[local6 2]
 	ripple1
 	ripple2
@@ -187,8 +187,8 @@
 		)
 		(waves add: wave1 wave2 wave3)
 		(wave1 setScript: waveActions)
-		(= smoke (Prop new:))
-		(smoke
+		(= aSmoke (Prop new:))
+		(aSmoke
 			isExtra: TRUE
 			view: 625
 			loop: 1
@@ -222,13 +222,13 @@
 					)
 					40
 				)
-				((= fisherman (Actor new:)) view: 230)
+				((= aFisher (Actor new:)) view: 230)
 				(cond 
 					((<= fishermanTimer 12) (= fishermanX 40))
 					((< fishermanTimer 20) (= fishermanX 120))
 					(else (= fishermanX 166))
 				)
-				(fisherman
+				(aFisher
 					posn: fishermanX 144
 					setPri: 13
 					loop: 0
@@ -238,12 +238,12 @@
 					setScript: fishWalkHouse
 					init:
 				)
-				(fisherman baseSetter: (ScriptID 0 1))
+				(aFisher baseSetter: (ScriptID 0 1))
 			else
 				(= fishermanState fisherAtHome)
 			)
 		)
-		(ego observeControl: -32768 16384 1024)
+		(ego observeControl: cWHITE cYELLOW cLGREEN)
 		(if (<= (ego y?) (+ horizon 1))
 			(ego y: (+ horizon 2))
 		)
@@ -279,7 +279,7 @@
 						(if (== global107 9)
 							(ego
 								view: 2
-								illegalBits: -32768
+								illegalBits: cWHITE
 								observeControl: 128 1024
 								posn: 1 143
 							)
@@ -353,7 +353,7 @@
 		(if
 		(and (& (ego onControl: 1) $0020) (!= global107 9))
 			(ego setPri: 13)
-			(ego illegalBits: -32768 observeControl: 1024)
+			(ego illegalBits: cWHITE observeControl: cLGREEN)
 			(ego observeControl: 128)
 			(= global107 9)
 		)
@@ -428,14 +428,14 @@
 				(cond 
 					((Said 'get/fisherman') (if (== fishermanState fisherComingHome) (Print 7 0) else (Print 7 1)))
 					((Said 'get/pole')
-						(if (cast contains: fisherman)
+						(if (cast contains: aFisher)
 							(Print 7 2)
 						else
 							(Print 7 3)
 						)
 					)
 					((Said 'rob/pole')
-						(if (cast contains: fisherman)
+						(if (cast contains: aFisher)
 							(Print 7 4)
 						else
 							(Print 7 3)
@@ -538,7 +538,7 @@
 	
 	(method (newRoom newRoomNumber)
 		(HandsOn)
-		(ego setPri: -1 illegalBits: -32768)
+		(ego setPri: -1 illegalBits: cWHITE)
 		(if (== fishermanState fisherComingHome) (= fishermanState fisherAtHome))
 		(super newRoom: newRoomNumber)
 	)
@@ -615,7 +615,7 @@
 				(HandsOn)
 				(ego
 					viewer: water
-					illegalBits: -32768
+					illegalBits: cWHITE
 					observeControl: 1024
 				)
 				(curRoom setScript: 0)
@@ -650,7 +650,7 @@
 					setPri: -1
 					loop: 3
 					view: 7
-					illegalBits: -32768
+					illegalBits: cWHITE
 					observeControl: 1024
 					viewer: water
 				)
@@ -689,7 +689,7 @@
 			)
 			(2
 				(ego
-					illegalBits: -32768
+					illegalBits: cWHITE
 					observeControl: 1024
 					setCycle: Walk
 					loop: 1
@@ -710,23 +710,23 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(fisherman setMotion: MoveTo 207 140 self)
+				(aFisher setMotion: MoveTo 207 140 self)
 			)
 			(1
-				(fisherman setPri: 10)
+				(aFisher setPri: 10)
 				(door setCycle: EndLoop self)
 				(doorSound play:)
 			)
 			(2
-				(fisherman setMotion: MoveTo 226 134 self)
+				(aFisher setMotion: MoveTo 226 134 self)
 			)
 			(3
-				(fisherman setMotion: MoveTo 255 134 self)
+				(aFisher setMotion: MoveTo 255 134 self)
 			)
 			(4
 				(door ignoreActors: 0 setCycle: BegLoop self)
 				(= fishermanState 3)
-				(fisherman dispose:)
+				(aFisher dispose:)
 			)
 			(5 (door stopUpd:))
 		)

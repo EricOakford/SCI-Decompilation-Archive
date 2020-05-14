@@ -19,19 +19,19 @@
 
 (local
 	local0
-	egoFrog
+	aEgoFrog
 	local2
 	local3
 	local4
 	ripple1
-	cascade4
-	cascade5
-	cascade1
-	splash1
-	splash2
-	local11
-	cascade2
-	cascade3
+	aWaterfall1
+	aWaterfall2
+	aWaterfall3
+	aSplash1
+	aSplash2
+	aRipple1
+	aRipple2
+	aRipple3
 )
 (instance poofSound of Sound
 	(properties
@@ -64,11 +64,11 @@
 			(Load VIEW 372)
 			(Load VIEW 377)
 		)
-		(= splash1 (Prop new:))
-		(= splash2 (Prop new:))
+		(= aSplash1 (Prop new:))
+		(= aSplash2 (Prop new:))
 		(if (== howFast 2)
 			(= ripple1 (Prop new:))
-			(= cascade1 (Prop new:))
+			(= aWaterfall3 (Prop new:))
 			(ripple1
 				isExtra: TRUE
 				view: 651
@@ -80,7 +80,7 @@
 				ignoreActors:
 				init:
 			)
-			(cascade1
+			(aWaterfall3
 				isExtra: TRUE
 				view: 651
 				loop: 3
@@ -91,9 +91,9 @@
 				ignoreActors:
 				init:
 			)
-			(= cascade2 (Prop new:))
-			(= cascade3 (Prop new:))
-			(cascade2
+			(= aRipple2 (Prop new:))
+			(= aRipple3 (Prop new:))
+			(aRipple2
 				isExtra: TRUE
 				view: 653
 				loop: 1
@@ -104,7 +104,7 @@
 				ignoreActors:
 				init:
 			)
-			(cascade3
+			(aRipple3
 				isExtra: TRUE
 				view: 653
 				loop: 2
@@ -116,8 +116,8 @@
 				init:
 			)
 		)
-		(= cascade4 (Prop new:))
-		(cascade4
+		(= aWaterfall1 (Prop new:))
+		(aWaterfall1
 			isExtra: TRUE
 			view: 651
 			loop: 1
@@ -128,8 +128,8 @@
 			ignoreActors:
 			init:
 		)
-		(= cascade5 (Prop new:))
-		(cascade5
+		(= aWaterfall2 (Prop new:))
+		(aWaterfall2
 			isExtra: TRUE
 			view: 651
 			loop: 2
@@ -140,7 +140,7 @@
 			ignoreActors:
 			init:
 		)
-		(splash1
+		(aSplash1
 			isExtra: TRUE
 			view: 651
 			loop: 4
@@ -151,7 +151,7 @@
 			ignoreActors:
 			init:
 		)
-		(splash2
+		(aSplash2
 			isExtra: TRUE
 			view: 651
 			loop: 5
@@ -188,7 +188,7 @@
 		(super doit:)
 		(if
 			(and
-				(& (ego onControl: 0) $0010)
+				(& (ego onControl: 0) cRED)
 				(== (ego view?) 8)
 				(== (ego script?) 0)
 			)
@@ -266,8 +266,8 @@
 				(HandsOff)
 				(ego setMotion: 0)
 				(poofSound play:)
-				(= egoFrog (Prop new:))
-				(egoFrog
+				(= aEgoFrog (Prop new:))
+				(aEgoFrog
 					posn: (ego x?) (ego y?)
 					setPri: (+ (ego priority?) 1)
 					view: 680
@@ -279,12 +279,12 @@
 				)
 			)
 			(2
-				(egoFrog setCycle: EndLoop self)
+				(aEgoFrog setCycle: EndLoop self)
 				(ego view: 370 setCycle: Forward setMotion: 0)
 			)
 			(3
 				(Timer setReal: self 3)
-				(egoFrog dispose:)
+				(aEgoFrog dispose:)
 			)
 			(4
 				(ego view: 372 setCycle: Walk setAvoider: Avoider)
@@ -331,7 +331,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(= local4 (= local3 (ego onControl: 1)))
+		(= local4 (= local3 (ego onControl: origin)))
 		(if (& local3 $0001)
 			(ego view: 371)
 		else
@@ -370,7 +370,7 @@
 				(ego
 					xStep: 3
 					yStep: 2
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setLoop: -1
 					setScript: 0
 				)

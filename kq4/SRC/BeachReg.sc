@@ -17,7 +17,7 @@
 
 (local
 	[local0 7]
-	local7
+	theControl
 	oldEgoViewer
 )
 (instance beachReg of Region
@@ -69,10 +69,10 @@
 							((!= (ego view?) 2) (Print 503 15))
 							(
 								(or
-									(& (= local7 (IsObjectOnControl ego 12)) $0008)
-									(& local7 $0800)
-									(& local7 $0002)
-									(& local7 $0200)
+									(& (= theControl (IsObjectOnControl ego 12)) cCYAN)
+									(& theControl cLCYAN)
+									(& theControl cBLUE)
+									(& theControl cLBLUE)
 								)
 								(= oldEgoScript (ego script?))
 								(ego setScript: drinking)

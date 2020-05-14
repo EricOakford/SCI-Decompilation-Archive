@@ -78,7 +78,7 @@
 				yStep: 1
 				setLoop: 0
 				ignoreActors: 0
-				illegalBits: -32768
+				illegalBits: cWHITE
 				observeControl: 4 1
 				setCycle: Forward
 				setMotion: Wander 4
@@ -99,7 +99,7 @@
 		(super doit:)
 		(if
 			(and
-				(& (ego onControl: FALSE) $0004)
+				(& (ego onControl: 0) cGREEN)
 				(== (ego script?) 0)
 				(== (deadTimer state?) 0)
 				(<= (inWhale state?) 0)
@@ -255,8 +255,8 @@
 		(super doit:)
 		(if (== (ego script?) 0)
 			(cond 
-				((& (ego onControl: TRUE) $0200) (ego view: 8 xStep: 2 yStep: 1 setCycle: Forward))
-				((& (ego onControl: TRUE) $0008) (ego view: 7 xStep: 2 yStep: 1 setCycle: Walk))
+				((& (ego onControl: origin) $0200) (ego view: 8 xStep: 2 yStep: 1 setCycle: Forward))
+				((& (ego onControl: TRUE) cCYAN) (ego view: 7 xStep: 2 yStep: 1 setCycle: Walk))
 				((& (ego onControl: TRUE) $0800) (ego view: 6 xStep: 2 yStep: 1 setCycle: Walk))
 				((& (ego onControl: TRUE) $0001)
 					(if (== (ego view?) 2)

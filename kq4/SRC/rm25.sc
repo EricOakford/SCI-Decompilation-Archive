@@ -20,8 +20,8 @@
 	local1
 	gEgoViewer
 	local3
-	ripple1
-	ripple2
+	aRipple1
+	aRipple2
 )
 (instance wave1 of Prop
 	(properties)
@@ -82,9 +82,9 @@
 			cycleSpeed: 1
 			init:
 		)
-		(= ripple1 (Prop new:))
-		(= ripple2 (Prop new:))
-		(ripple1
+		(= aRipple1 (Prop new:))
+		(= aRipple2 (Prop new:))
+		(aRipple1
 			isExtra: TRUE
 			view: 666
 			loop: 6
@@ -95,7 +95,7 @@
 			setCycle: Forward
 			init:
 		)
-		(ripple2
+		(aRipple2
 			isExtra: TRUE
 			view: 666
 			loop: 7

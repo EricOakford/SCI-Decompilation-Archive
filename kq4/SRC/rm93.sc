@@ -106,11 +106,11 @@
 	)
 	
 	(method (doit)
-		(if (& (ego onControl: 0) $0040)
+		(if (& (ego onControl: 0) cBROWN)
 			(ego illegalBits: cWHITE)
 			(curRoom newRoom: 92)
 		)
-		(if (& (ego onControl: 0) $0020)
+		(if (& (ego onControl: 0) cMAGENTA)
 			(ego setPri: -1 illegalBits: cWHITE)
 			(curRoom newRoom: 88)
 		)
@@ -118,20 +118,20 @@
 			(and
 				slippedOnStairs
 				(!= (ego script?) falling)
-				(& (ego onControl: 0) $0004)
+				(& (ego onControl: 0) cGREEN)
 			)
 			(ego setScript: falling)
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $0002)
+				(& (ego onControl: origin) cBLUE)
 				(!= (ego script?) falling)
 			)
 			(if
 			(and (< (ego heading?) 180) (> (ego heading?) 0))
 				(ego
 					setPri: 12
-					illegalBits: -32768
+					illegalBits: cWHITE
 					baseSetter: (ScriptID 0 1)
 				)
 				(= slippedOnStairs TRUE)

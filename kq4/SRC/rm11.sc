@@ -17,11 +17,11 @@
 	[treeArm 12]
 	i
 	grabCycle
-	treeEye1
-	treeEye2
-	treeEye3
-	treeEye4
-	treeEye5
+	aEye1
+	aEye2
+	aEye3
+	aEye4
+	aEye5
 	treeBlock
 )
 (instance walkingMusic of Sound
@@ -179,12 +179,12 @@
 			init:
 			stopUpd:
 		)
-		(= treeEye1 (Prop new:))
-		(= treeEye2 (Prop new:))
-		(= treeEye3 (Prop new:))
-		(= treeEye4 (Prop new:))
-		(= treeEye5 (Prop new:))
-		(treeEye1
+		(= aEye1 (Prop new:))
+		(= aEye2 (Prop new:))
+		(= aEye3 (Prop new:))
+		(= aEye4 (Prop new:))
+		(= aEye5 (Prop new:))
+		(aEye1
 			isExtra: TRUE
 			view: 689
 			loop: 2
@@ -196,7 +196,7 @@
 			ignoreActors:
 			init:
 		)
-		(treeEye2
+		(aEye2
 			isExtra: TRUE
 			view: 689
 			loop: 3
@@ -208,7 +208,7 @@
 			ignoreActors:
 			init:
 		)
-		(treeEye3
+		(aEye3
 			isExtra: TRUE
 			view: 689
 			loop: 4
@@ -220,7 +220,7 @@
 			ignoreActors:
 			init:
 		)
-		(treeEye4
+		(aEye4
 			isExtra: TRUE
 			view: 689
 			loop: 5
@@ -232,7 +232,7 @@
 			ignoreActors:
 			init:
 		)
-		(treeEye5
+		(aEye5
 			isExtra: TRUE
 			view: 689
 			loop: 6
@@ -281,30 +281,30 @@
 		(if
 		(and (not choppedScaryTree) (== (curRoom script?) 0))
 			(cond 
-				((& (ego onControl: 0) $0002) (= i 8) (= grabCycle 3) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) $0004) (= i 1) (= grabCycle 1) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) $0008)
+				((& (ego onControl: 0) cBLUE) (= i 8) (= grabCycle 3) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cGREEN) (= i 1) (= grabCycle 1) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cCYAN)
 					(= i 2)
 					(curRoom setScript: grabbed)
 					(= grabCycle 2)
 					(curRoom setScript: grabbed)
 				)
-				((& (ego onControl: 0) $0010) (= i 3) (= grabCycle 1) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) $0020) (= i 4) (= grabCycle 1) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) $0040) (= i 5) (= grabCycle 1) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) $0200) (= i 9) (= grabCycle 1) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) $2000) (= i 6) (= grabCycle 2) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) $0400)
+				((& (ego onControl: 0) cRED) (= i 3) (= grabCycle 1) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cMAGENTA) (= i 4) (= grabCycle 1) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cBROWN) (= i 5) (= grabCycle 1) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cLGREY) (= i 9) (= grabCycle 1) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cLMAGENTA) (= i 6) (= grabCycle 2) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cLGREEN)
 					(= i 10)
 					(= grabCycle 2)
 					(curRoom setScript: grabbed)
 				)
-				((& (ego onControl: 0) $1000)
+				((& (ego onControl: 0) cLRED)
 					(= i 11)
 					(= grabCycle 3)
 					(curRoom setScript: grabbed)
 				)
-				((& (ego onControl: 0) $0800) (= i 7) (= grabCycle 2) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cLCYAN) (= i 7) (= grabCycle 2) (curRoom setScript: grabbed))
 			)
 		)
 	)

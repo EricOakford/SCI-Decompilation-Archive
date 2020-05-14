@@ -33,7 +33,7 @@
 	(properties)
 	
 	(method (doit)
-		(if (!= (= waterDepth (ego onControl: 1)) local1)
+		(if (!= (= waterDepth (ego onControl: origin)) local1)
 			(= local1 waterDepth)
 			(if (!= currentStatus egoRidingDolphin)
 				(ego setCycle: Walk)

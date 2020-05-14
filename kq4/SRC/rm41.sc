@@ -109,12 +109,12 @@
 		(super doit:)
 		(if
 			(and
-				(& (= gEgoOnControl (ego onControl:)) $0040)
+				(& (= gEgoOnControl (ego onControl:)) cBROWN)
 				(or (<= (ego heading?) 90) (>= (ego heading?) 270))
 			)
 			(curRoom newRoom: 35)
 		)
-		(if (& gEgoOnControl $0010) (curRoom newRoom: 38))
+		(if (& gEgoOnControl cRED) (curRoom newRoom: 38))
 	)
 	
 	(method (dispose)

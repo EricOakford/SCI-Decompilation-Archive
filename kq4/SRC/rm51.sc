@@ -14,12 +14,12 @@
 )
 
 (local
-	frontDoor
-	theOgre
-	ogreTorso
-	ogreHead
-	ogreLegs
-	hen
+	aDoor
+	aOgre
+	aBody
+	aHead
+	aLegs
+	aHen
 	local6
 	ogreSpeaks
 )
@@ -52,10 +52,10 @@
 				view: 2
 				setStep: 3 2
 				posn: 156 139
-				illegalBits: -32768
+				illegalBits: cWHITE
 				init:
 			)
-			((= frontDoor (Prop new:))
+			((= aDoor (Prop new:))
 				view: 614
 				loop: 0
 				setCel: 255
@@ -65,7 +65,7 @@
 				init:
 				setCycle: BegLoop
 			)
-			((= theOgre (View new:))
+			((= aOgre (View new:))
 				view: 614
 				setLoop: 1
 				posn: 165 105
@@ -73,7 +73,7 @@
 				hide:
 			)
 			(if (and ogreState (< ogreState 5))
-				(theOgre
+				(aOgre
 					cel:
 						(switch ogreState
 							(1 0)
@@ -103,7 +103,7 @@
 						((Said 'look>')
 							(cond 
 								((Said '/keyhole')
-									(if (== (frontDoor cel?) 0)
+									(if (== (aDoor cel?) 0)
 										(cond 
 											((not ogreCameHome)
 												(if (and (> ogreState 0) (!= ogreState 5))
@@ -126,11 +126,11 @@
 							)
 						)
 						((Said 'open/door,closet')
-							(if (== (frontDoor cel?) 0)
+							(if (== (aDoor cel?) 0)
 								(if
 								(or ogreCameHome (== ogreState 0) (== ogreState 5))
 									(if (ego inRect: 134 131 169 141)
-										(frontDoor setScript: doorOpen)
+										(aDoor setScript: doorOpen)
 									else
 										(NotClose)
 									)
@@ -142,9 +142,9 @@
 							)
 						)
 						((Said 'close/door')
-							(if (frontDoor cel?)
-								(frontDoor ignoreActors: 0 setCycle: BegLoop)
-								(theOgre hide:)
+							(if (aDoor cel?)
+								(aDoor ignoreActors: 0 setCycle: BegLoop)
+								(aOgre hide:)
 							else
 								(Print 51 8)
 							)
@@ -168,7 +168,7 @@
 		(Load VIEW 255)
 		(Load VIEW 647)
 		(Load PICTURE 52)
-		((= ogreTorso (Prop new:))
+		((= aBody (Prop new:))
 			view: 251
 			loop: 0
 			cel: 1
@@ -176,14 +176,14 @@
 			init:
 			hide:
 		)
-		((= ogreHead (Prop new:))
+		((= aHead (Prop new:))
 			view: 251
 			loop: 1
 			posn: 175 65
 			init:
 			hide:
 		)
-		((= ogreLegs (View new:))
+		((= aLegs (View new:))
 			view: 251
 			loop: 0
 			cel: 0
@@ -191,7 +191,7 @@
 			init:
 			hide:
 		)
-		((= hen (Prop new:))
+		((= aHen (Prop new:))
 			view: 253
 			loop: 0
 			cel: 0
@@ -213,35 +213,35 @@
 			)
 			(2
 				(ego hide:)
-				(theOgre hide:)
-				(frontDoor hide:)
+				(aOgre hide:)
+				(aDoor hide:)
 				(curRoom drawPic: 52 15)
 				(= ogreCameHome TRUE)
 				(if isNightTime
 					((View new:) view: 647 loop: 3 posn: 184 87 addToPic:)
 				)
-				(ogreTorso show:)
-				(ogreHead
-					setPri: (+ (ogreTorso priority?) 1)
+				(aBody show:)
+				(aHead
+					setPri: (+ (aBody priority?) 1)
 					show:
 					cycleSpeed: 1
 					setCycle: Forward
 				)
-				(ogreLegs show: stopUpd:)
+				(aLegs show: stopUpd:)
 				(keyholeMusic play:)
 				(= ogreSpeaks (Print 51 9 #font smallFont #at -1 5 #time 12))
 				(= seconds 2)
 			)
 			(3
-				(ogreHead setCycle: 0 stopUpd:)
+				(aHead setCycle: 0 stopUpd:)
 				(Print 51 10
 					#font smallFont
 					#at -1 15
 					#width 290
 					#dispose
 				)
-				(ogreHead dispose:)
-				(ogreTorso
+				(aHead dispose:)
+				(aBody
 					view: 252
 					loop: 0
 					cel: 255
@@ -251,20 +251,20 @@
 				(= seconds 2)
 			)
 			(4
-				(ogreTorso loop: 1 cel: 0 cycleSpeed: 2 setCycle: Forward)
+				(aBody loop: 1 cel: 0 cycleSpeed: 2 setCycle: Forward)
 				(= seconds 10)
 			)
 			(5
 				(cls)
-				(ogreTorso loop: 1 cel: 0)
+				(aBody loop: 1 cel: 0)
 				(= seconds 2)
 			)
 			(6
-				(ogreTorso loop: 1 cel: 255 setCycle: EndLoop self)
+				(aBody loop: 1 cel: 255 setCycle: EndLoop self)
 			)
 			(7
-				(ogreTorso loop: 0 cel: 0)
-				(hen show: setCycle: EndLoop)
+				(aBody loop: 0 cel: 0)
+				(aHen show: setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(8
@@ -272,7 +272,7 @@
 				(= seconds 3)
 			)
 			(9
-				(hen loop: 1 cel: 255 setCycle: EndLoop)
+				(aHen loop: 1 cel: 255 setCycle: EndLoop)
 				((inventory at: 33) moveTo: 49)
 				(= seconds 3)
 			)
@@ -282,8 +282,8 @@
 				(= seconds 5)
 			)
 			(11
-				(hen dispose:)
-				(ogreTorso
+				(aHen dispose:)
+				(aBody
 					view: 254
 					loop: 0
 					cel: 255
@@ -294,7 +294,7 @@
 				(= seconds 5)
 			)
 			(12
-				(ogreTorso
+				(aBody
 					view: 255
 					loop: 0
 					cel: 255
@@ -303,7 +303,7 @@
 				)
 			)
 			(13
-				(ogreTorso loop: 1 cel: 0 cycleSpeed: 2 setCycle: Forward)
+				(aBody loop: 1 cel: 0 cycleSpeed: 2 setCycle: Forward)
 				(= seconds 5)
 			)
 			(14
@@ -312,11 +312,11 @@
 				(= seconds 5)
 			)
 			(15
-				(ogreTorso dispose:)
-				(ogreLegs dispose:)
+				(aBody dispose:)
+				(aLegs dispose:)
 				(curRoom drawPic: 51 15)
 				(HandsOn)
-				(frontDoor show:)
+				(aDoor show:)
 				(ego show: setCycle: BegLoop self)
 			)
 			(16
@@ -347,15 +347,15 @@
 			)
 			(2
 				(ego hide:)
-				(theOgre hide:)
-				(frontDoor hide:)
+				(aOgre hide:)
+				(aDoor hide:)
 				(curRoom drawPic: 52 15)
 				(if isNightTime
 					((View new:) view: 647 loop: 3 posn: 184 87 addToPic:)
 				)
 				(keyholeMusic play:)
 				(if (== ogreState ogreSLEEPING)
-					((= ogreTorso (Prop new:))
+					((= aBody (Prop new:))
 						view: 255
 						loop: 1
 						cel: 0
@@ -364,7 +364,7 @@
 						cycleSpeed: 2
 						setCycle: Forward
 					)
-					((= ogreLegs (View new:))
+					((= aLegs (View new:))
 						view: 251
 						loop: 0
 						cel: 0
@@ -377,9 +377,9 @@
 			)
 			(3
 				(cls)
-				(if (IsObject ogreTorso) (ogreTorso dispose:))
+				(if (IsObject aBody) (aBody dispose:))
 				(curRoom drawPic: 51 15)
-				(frontDoor show:)
+				(aDoor show:)
 				(ego view: 70 loop: 0 setCycle: BegLoop self show:)
 			)
 			(4
@@ -398,7 +398,7 @@
 			(0
 				(HandsOff)
 				(if (and (> ogreState 1) (< ogreState 5))
-					(theOgre
+					(aOgre
 						cel:
 							(switch ogreState
 								(ogreAWAY 0)
@@ -410,7 +410,7 @@
 						show:
 					)
 				else
-					(theOgre hide:)
+					(aOgre hide:)
 				)
 				(client ignoreActors: 1 setCycle: EndLoop self)
 			)

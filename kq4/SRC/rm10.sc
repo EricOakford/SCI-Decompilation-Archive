@@ -18,9 +18,9 @@
 	[local0 2]
 	local2
 	local3
-	smoke
-	bird1
-	bird2
+	aSmoke
+	aBird1
+	aBird2
 )
 (instance ogreTheme of Sound
 	(properties
@@ -41,7 +41,7 @@
 		(= west 9)
 		(= horizon 72)
 		(= isIndoors FALSE)
-		(= noWearCrown 1)
+		(= noWearCrown TRUE)
 		(super init:)
 		(if isNightTime (curRoom overlay: 110))
 		(self setRegions: FOREST OGRE)
@@ -61,8 +61,8 @@
 				)
 			)
 		)
-		(= smoke (Prop new:))
-		(smoke
+		(= aSmoke (Prop new:))
+		(aSmoke
 			isExtra: TRUE
 			view: 626
 			loop: 0
@@ -118,8 +118,8 @@
 		(ego view: 2 init:)
 		(if (not isNightTime)
 			(if (< (Random 1 100) 50)
-				(= bird1 (Prop new:))
-				(bird1
+				(= aBird1 (Prop new:))
+				(aBird1
 					view: 342
 					loop: 5
 					cel: 1
@@ -130,8 +130,8 @@
 				)
 			)
 			(if (< (Random 1 100) 50)
-				(= bird2 (Prop new:))
-				(bird2
+				(= aBird2 (Prop new:))
+				(aBird2
 					view: 342
 					loop: 4
 					cel: 1
@@ -207,11 +207,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(bird1 setCycle: Forward)
+				(aBird1 setCycle: Forward)
 				(= seconds (Random 1 12))
 			)
 			(1
-				(bird1 setCycle: 0 cel: 0)
+				(aBird1 setCycle: 0 cel: 0)
 				(= seconds (Random 1 8))
 			)
 			(2 (self changeState: 0))
@@ -225,11 +225,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(bird2 setCycle: Forward)
+				(aBird2 setCycle: Forward)
 				(= seconds (Random 1 12))
 			)
 			(1
-				(bird2 cel: 0 setCycle: 0)
+				(aBird2 cel: 0 setCycle: 0)
 				(= seconds (Random 1 8))
 			)
 			(2 (self changeState: 0))

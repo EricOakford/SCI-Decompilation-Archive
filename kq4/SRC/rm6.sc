@@ -13,7 +13,7 @@
 
 (local
 	local0
-	smoke
+	aSmoke
 )
 (instance Room6 of Room
 	(properties
@@ -47,8 +47,8 @@
 			(57 (ego loop: 1 x: 200 y: 152))
 			(0 (ego x: 180 y: 160))
 		)
-		(= smoke (Prop new:))
-		(smoke
+		(= aSmoke (Prop new:))
+		(aSmoke
 			view: 628
 			loop: 1
 			cel: 0

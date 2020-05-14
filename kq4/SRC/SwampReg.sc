@@ -132,12 +132,12 @@
 	
 	(method (doit)
 		(super doit:)
-		(= local0 (= swampDepth (ego onControl: 1)))
+		(= local0 (= swampDepth (ego onControl: origin)))
 		(cond 
 			((and (== currentStatus egoOnSwampGrass) (== laidDownBoard FALSE))
 				(switch swampDepth
 					(1
-						(ego illegalBits: -32768 view: 2)
+						(ego illegalBits: cWHITE view: 2)
 					)
 					(2048
 						(ego illegalBits: -31744 view: 5)
@@ -158,17 +158,17 @@
 						(ego illegalBits: -16384 view: 372)
 					)
 					(2048
-						(ego illegalBits: -32768 view: 377)
+						(ego illegalBits: cWHITE view: 377)
 					)
 					(512
-						(ego illegalBits: -32768 view: 377)
+						(ego illegalBits: cWHITE view: 377)
 					)
 					(8
-						(ego view: 377 illegalBits: -32768)
+						(ego view: 377 illegalBits: cWHITE)
 					)
 					(2 (self changeState: 10))
 					(1024
-						(ego illegalBits: -32768 view: 372)
+						(ego illegalBits: cWHITE view: 372)
 					)
 					(else 
 						(ego illegalBits: -15360 view: 377)

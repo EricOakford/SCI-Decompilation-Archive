@@ -79,7 +79,7 @@
 		(if
 			(and
 				(not (LanternIsOn))
-				(not (& (ego onControl: 0) $0002))
+				(not (& (ego onControl: 0) cBLUE))
 			)
 			(ego dispose:)
 			(RedrawCast)
@@ -198,7 +198,7 @@
 				(theLight dispose:)
 				(cond 
 					(local3 (ego dispose:) (RedrawCast))
-					((& (ego onControl: 0) $0002) (LanternIsOn FALSE))
+					((& (ego onControl: 0) cBLUE) (LanternIsOn FALSE))
 					(else
 						(ego dispose:)
 						(RedrawCast)

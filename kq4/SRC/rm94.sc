@@ -90,7 +90,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) $0040) (curRoom newRoom: 80))
+		(if (& (ego onControl: 0) cBROWN) (curRoom newRoom: 80))
 	)
 	
 	(method (handleEvent event)

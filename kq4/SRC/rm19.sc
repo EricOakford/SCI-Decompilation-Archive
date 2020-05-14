@@ -128,7 +128,7 @@
 					(25
 						(if (> (ego x?) 210)
 							(ego x: 293 y: 188)
-							(ego illegalBits: -32768 setPri: 14)
+							(ego illegalBits: cWHITE setPri: 14)
 							(= global107 11)
 						else
 							(ego x: 212 y: 188)
@@ -141,12 +141,12 @@
 							(ego x: 215 y: (+ horizon (ego yStep?) 1))
 						else
 							(ego x: 286 y: (+ horizon (ego yStep?) 1))
-							(ego setPri: 14 illegalBits: -32768)
+							(ego setPri: 14 illegalBits: cWHITE)
 							(= global107 11)
 						)
 					)
 					(20
-						(ego setPri: 14 illegalBits: -32768)
+						(ego setPri: 14 illegalBits: cWHITE)
 						(= global107 11)
 						(= currentStatus egoNormal)
 						(if (< (ego y?) horizon)
@@ -158,7 +158,7 @@
 					(else 
 						(= global107 11)
 						(ego x: 318 y: 160)
-						(ego illegalBits: -32768)
+						(ego illegalBits: cWHITE)
 						(ego setPri: 14)
 					)
 				)
@@ -278,7 +278,7 @@
 			(= minutesLastMetMinstrel gameMinutes)
 		)
 		(if (!= currentStatus egoFalling)
-			(ego setPri: -1 illegalBits: -32768)
+			(ego setPri: -1 illegalBits: cWHITE)
 			(super newRoom: newRoomNumber)
 		)
 	)

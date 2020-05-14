@@ -303,7 +303,7 @@
 			(3
 				(Print 48 27)
 				(client
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setPri: -1
 					setAvoider: Avoider
 					setMotion: Chase ego 15 self

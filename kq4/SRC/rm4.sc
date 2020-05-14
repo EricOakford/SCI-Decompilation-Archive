@@ -30,7 +30,7 @@
 	ogressState
 	local4
 	newActHeading
-	deer
+	aDeer
 	local7
 )
 (instance doorSound of Sound
@@ -298,7 +298,7 @@
 					((Said 'get,capture/buck')
 						(cond 
 							((cast contains: aOgress) (Print 4 13))
-							((cast contains: deer) (Print 4 14))
+							((cast contains: aDeer) (Print 4 14))
 							(else (Print 4 15))
 						)
 					)
@@ -314,7 +314,7 @@
 									(HandsOff)
 									(door setPri: 9 setCycle: EndLoop)
 									(doorSound number: 300 play: door)
-									(ego illegalBits: -32768)
+									(ego illegalBits: cWHITE)
 								)
 							)
 						else
@@ -351,7 +351,7 @@
 	(method (newRoom newRoomNumber)
 		(HandsOn)
 		(if (cast contains: ego)
-			(ego illegalBits: -32768)
+			(ego illegalBits: cWHITE)
 			(ego setPri: -1)
 		)
 		(if (!= newRoomNumber 49) (= ogreState 0))
@@ -390,8 +390,8 @@
 				(= aOgress 0)
 			)
 			(10
-				(= deer (Prop new:))
-				(deer
+				(= aDeer (Prop new:))
+				(aDeer
 					view: 530
 					ignoreActors:
 					setPri: (+ (aOgress priority?) 1)
@@ -412,8 +412,8 @@
 					ignoreActors:
 					setMotion: Chase ego 5 self
 				)
-				(if (cast contains: deer)
-					(deer ignoreActors: 0 setPri: -1)
+				(if (cast contains: aDeer)
+					(aDeer ignoreActors: 0 setPri: -1)
 				)
 			)
 			(12

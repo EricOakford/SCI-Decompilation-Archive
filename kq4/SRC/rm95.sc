@@ -396,13 +396,13 @@
 				(ego
 					view: 19
 					loop: (& (ego loop?) $0001)
-					illegalBits: -32768
+					illegalBits: cWHITE
 					cel: 255
 					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego view: 8 setCycle: Forward illegalBits: -32768 setPri: -1)
+				(ego view: 8 setCycle: Forward illegalBits: cWHITE setPri: -1)
 				(HandsOn)
 				(= global107 0)
 				(ego setScript: 0)

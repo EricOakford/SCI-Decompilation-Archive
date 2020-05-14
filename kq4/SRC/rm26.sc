@@ -13,13 +13,13 @@
 
 (local
 	local0
-	ripple1
-	ripple2
-	ripple6
-	ripple5
-	ripple3
+	aRipple1
+	aRipple2
+	aRipple6
+	aRipple5
+	aRipple3
 	local6
-	ripple4
+	aRipple4
 )
 (instance Room26 of Room
 	(properties
@@ -65,8 +65,8 @@
 		)
 		(ego init:)
 		(if (== prevRoomNum 0) (ego posn: 150 149))
-		(= ripple1 (Prop new:))
-		(ripple1
+		(= aRipple1 (Prop new:))
+		(aRipple1
 			isExtra: TRUE
 			view: 658
 			loop: 6
@@ -78,8 +78,8 @@
 			ignoreActors:
 			init:
 		)
-		(= ripple2 (Prop new:))
-		(ripple2
+		(= aRipple2 (Prop new:))
+		(aRipple2
 			isExtra: TRUE
 			view: 658
 			loop: 2
@@ -91,9 +91,9 @@
 			ignoreActors:
 			init:
 		)
-		(= ripple3 (Prop new:))
-		(= ripple4 (Prop new:))
-		(ripple3
+		(= aRipple3 (Prop new:))
+		(= aRipple4 (Prop new:))
+		(aRipple3
 			isExtra: TRUE
 			view: 658
 			loop: 5
@@ -105,7 +105,7 @@
 			ignoreActors:
 			init:
 		)
-		(ripple4
+		(aRipple4
 			isExtra: TRUE
 			view: 658
 			loop: 7
@@ -117,9 +117,9 @@
 			ignoreActors:
 			init:
 		)
-		(= ripple5 (Prop new:))
-		(= ripple6 (Prop new:))
-		(ripple5
+		(= aRipple5 (Prop new:))
+		(= aRipple6 (Prop new:))
+		(aRipple5
 			isExtra: TRUE
 			view: 658
 			loop: 4
@@ -131,7 +131,7 @@
 			ignoreActors:
 			init:
 		)
-		(ripple6
+		(aRipple6
 			isExtra: TRUE
 			view: 658
 			loop: 3

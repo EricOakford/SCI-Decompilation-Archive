@@ -18,7 +18,7 @@
 	local1
 	local2
 	theGEgoOnControl
-	mineDoor
+	aDoor
 )
 (instance fallSound of Sound
 	(properties
@@ -39,16 +39,16 @@
 		(= horizon 126)
 		(= isIndoors FALSE)
 		(HandsOn)
-		(ego edgeHit: 0 illegalBits: -32768)
+		(ego edgeHit: 0 illegalBits: cWHITE)
 		(super init:)
 		(if isNightTime (curRoom overlay: 128))
 		(self setRegions: FOREST)
 		(Load VIEW 17)
 		(Load VIEW 21)
 		(Load SOUND 51)
-		(= mineDoor (View new:))
+		(= aDoor (View new:))
 		(if isNightTime
-			(mineDoor
+			(aDoor
 				view: 600
 				loop: 0
 				cel: 0
@@ -60,7 +60,7 @@
 			)
 			(ego observeControl: 16384)
 		else
-			(mineDoor
+			(aDoor
 				view: 600
 				loop: 1
 				cel: 0
@@ -97,7 +97,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (= gEgoOnControl (ego onControl:)) $0040)
+		(if (& (= gEgoOnControl (ego onControl:)) cBROWN)
 			(curRoom newRoom: 55)
 		)
 		(if
@@ -216,7 +216,7 @@
 			)
 			(3
 				(curRoom setScript: 0)
-				(ego illegalBits: -32768 setCycle: Walk view: 2)
+				(ego illegalBits: cWHITE setCycle: Walk view: 2)
 				(if isNightTime (ego observeControl: 16384))
 				(curRoom east: 29)
 				(HandsOn)

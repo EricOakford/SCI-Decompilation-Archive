@@ -16,9 +16,9 @@
 (local
 	[treeArm 9]
 	i
-	treeEye1
+	aEye1
 	local11
-	treeEye2
+	aEye2
 )
 (instance gMusic of Sound
 	(properties
@@ -131,9 +131,9 @@
 			init:
 			stopUpd:
 		)
-		(= treeEye1 (Prop new:))
-		(= treeEye2 (Prop new:))
-		(treeEye1
+		(= aEye1 (Prop new:))
+		(= aEye2 (Prop new:))
+		(aEye1
 			isExtra: TRUE
 			view: 689
 			loop: 0
@@ -145,7 +145,7 @@
 			cycleSpeed: 4
 			init:
 		)
-		(treeEye2
+		(aEye2
 			isExtra: TRUE
 			view: 689
 			loop: 1

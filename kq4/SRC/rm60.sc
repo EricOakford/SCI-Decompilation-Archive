@@ -282,7 +282,7 @@
 				(ego
 					view: 4
 					loop: 3
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setCycle: Walk
 					cycleSpeed: 0
 					moveSpeed: 0

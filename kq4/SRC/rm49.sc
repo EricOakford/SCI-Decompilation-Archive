@@ -17,7 +17,7 @@
 )
 
 (local
-	theOgre
+	aOgre
 	local1
 	ogress
 	hen
@@ -123,7 +123,7 @@
 				view: 2
 				loop: 0
 				setStep: 3 2
-				illegalBits: -32768
+				illegalBits: cWHITE
 				init:
 			)
 			(if (or (> gamePhase getTheHen) (ego has: iMagicHen))
@@ -144,7 +144,7 @@
 				view: 2
 				loop: 1
 				setStep: 3 2
-				illegalBits: -32768
+				illegalBits: cWHITE
 				init:
 			)
 		)
@@ -153,7 +153,7 @@
 				posn: 267 131
 				view: 2
 				setStep: 3 2
-				illegalBits: -32768
+				illegalBits: cWHITE
 				init:
 			)
 			(if enteredOgreKitchen
@@ -161,7 +161,7 @@
 				(Load VIEW 48)
 				((= ogress (Actor new:))
 					view: 245
-					illegalBits: -32768
+					illegalBits: cWHITE
 					posn: 301 131
 					setStep: 4 2
 					init:
@@ -177,7 +177,7 @@
 				view: 2
 				setStep: 3 2
 				loop: 2
-				illegalBits: -32768
+				illegalBits: cWHITE
 				posn: 225 128
 				init:
 				setCycle: Walk
@@ -188,7 +188,7 @@
 				(Load VIEW 48)
 				((= ogress (Actor new:))
 					view: 245
-					illegalBits: -32768
+					illegalBits: cWHITE
 					posn: 301 131 4 2
 					init:
 					setScript: ogressChase
@@ -198,7 +198,7 @@
 				(Load VIEW 250)
 				(Load VIEW 78)
 				(Load VIEW 79)
-				((= theOgre (Actor new:))
+				((= aOgre (Actor new:))
 					view: 250
 					posn: 235 132
 					setStep: 6 2
@@ -215,7 +215,7 @@
 			(Load VIEW 78)
 			(Load VIEW 79)
 			(Load VIEW 256)
-			((= theOgre (Actor new:))
+			((= aOgre (Actor new:))
 				view: 256
 				posn: 201 158
 				setStep: 6 2
@@ -223,7 +223,7 @@
 				cycleSpeed: 2
 				setCycle: Forward
 			)
-			(theOgre setScript: ogreAwake)
+			(aOgre setScript: ogreAwake)
 		)
 		(if (== ogreState 3)
 			(= ogreFrontDoorOpen FALSE)
@@ -231,7 +231,7 @@
 			(Load VIEW 250)
 			(Load VIEW 78)
 			(Load VIEW 79)
-			((= theOgre (Actor new:))
+			((= aOgre (Actor new:))
 				illegalBits: 0
 				view: 256
 				posn: 201 158
@@ -240,7 +240,7 @@
 				cycleSpeed: 2
 				setCycle: Forward
 			)
-			(theOgre setScript: ogreAwake)
+			(aOgre setScript: ogreAwake)
 		)
 		(frontDoor
 			cel: (if ogreFrontDoorOpen (frontDoor lastCel:) else 0)
@@ -329,7 +329,7 @@
 						((Said 'look>')
 							(cond 
 								((Said '<under/table') (Print 49 0))
-								((Said '/table') (if theOgre (Print 49 1) else (Print 49 2)))
+								((Said '/table') (if aOgre (Print 49 1) else (Print 49 2)))
 								((Said '/chair') (Print 49 3))
 								((Said '/carpet,carpet') (Print 49 4))
 								((Said '/stair') (Print 49 5))
@@ -355,7 +355,7 @@
 							)
 						)
 						((Said 'blow/whistle')
-							(if (and (ego has: iSilverWhistle) (cast contains: theOgre))
+							(if (and (ego has: iSilverWhistle) (cast contains: aOgre))
 								(if (== ogreState 3) (Print 49 15) else (Print 49 16))
 							else
 								(event claimed: FALSE)
@@ -381,11 +381,11 @@
 							)
 						)
 						((Said 'converse,awaken[/giant]')
-							(if (cast contains: theOgre)
+							(if (cast contains: aOgre)
 								(if (== ogreState 3)
 									(if
 										(and
-											(< (ego distanceTo: theOgre) 50)
+											(< (ego distanceTo: aOgre) 50)
 											(not (ogreAwake state?))
 										)
 										(Print 49 24)
@@ -407,7 +407,7 @@
 								((not (ego inRect: 219 123 245 130)) (NotClose))
 								((closetDoor cel?) (Print 49 28))
 								(
-								(or (cast contains: ogress) (cast contains: theOgre)) (Print 49 29))
+								(or (cast contains: ogress) (cast contains: aOgre)) (Print 49 29))
 								((ego has: iMagicHen) (Print 49 10))
 								(else (closetDoor setScript: doorOpen))
 							)
@@ -418,7 +418,7 @@
 									(cond 
 										((closetDoor cel?) (Print 49 28))
 										(
-										(or (cast contains: ogress) (cast contains: theOgre)) (Print 49 29))
+										(or (cast contains: ogress) (cast contains: aOgre)) (Print 49 29))
 										((ego has: iMagicHen) (Print 49 10))
 										(else (closetDoor setScript: doorOpen))
 									)
@@ -434,7 +434,7 @@
 													(ogreAwake changeState: 2)
 												)
 											)
-											((cast contains: theOgre)
+											((cast contains: aOgre)
 												(if
 												(and (== ogreState 3) (not (ogreAwake state?)))
 													(ogreAwake changeState: 2)
@@ -479,8 +479,8 @@
 							)
 						)
 						((Said 'get/egg[<gold]')
-							(if theOgre
-								(if (< (ego distanceTo: theOgre) 20)
+							(if aOgre
+								(if (< (ego distanceTo: aOgre) 20)
 									(ego put: iMagicHen 49)
 									(ogreAwake changeState: 1)
 								else
@@ -552,7 +552,7 @@
 									inventorySaidMe
 									(ego has: (inventory indexOf: inventorySaidMe))
 								)
-								(if (cast contains: theOgre)
+								(if (cast contains: aOgre)
 									(Print 49 43)
 								else
 									(Print 49 44)
@@ -616,7 +616,7 @@
 				(self cue:)
 			)
 			(11
-				((= theOgre (Actor new:))
+				((= aOgre (Actor new:))
 					view: 250
 					posn: 53 132
 					setStep: 6 2
@@ -625,14 +625,14 @@
 				)
 				(User canInput: FALSE)
 				(if (not enteredOgreKitchen)
-					(theOgre setMotion: MoveTo 130 133)
+					(aOgre setMotion: MoveTo 130 133)
 				else
-					(Face theOgre ego)
+					(Face aOgre ego)
 				)
 			)
 			(12
 				(= local9 1)
-				(theOgre
+				(aOgre
 					setAvoider: (Avoider new:)
 					setCycle: Walk
 					setMotion: Chase ego 15 self
@@ -641,13 +641,13 @@
 			(13
 				(User canControl: FALSE canInput: FALSE)
 				(ego dispose:)
-				(theOgre view: 78 setCycle: EndLoop self)
+				(aOgre view: 78 setCycle: EndLoop self)
 				(Print 49 46 #at -1 20 #draw)
 				(theMusic number: 6 loop: 1 play:)
 				(Print 49 47 #at -1 10)
 			)
 			(14
-				(theOgre
+				(aOgre
 					view: 79
 					setPri: 9
 					setCycle: Walk
@@ -659,7 +659,7 @@
 			(20
 				(Print 49 48 #at -1 10)
 				(ogreAwake state: 0)
-				((= theOgre (Actor new:))
+				((= aOgre (Actor new:))
 					illegalBits: 0
 					view: 256
 					loop: 2
@@ -716,7 +716,7 @@
 					((== ogreState 3) (Print 49 51))
 				)
 				(theMusic number: 5 loop: -1 play:)
-				(theOgre cycleSpeed: 0 loop: 1 setCycle: EndLoop self)
+				(aOgre cycleSpeed: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(3
 				(if (== howFast 0) (= seconds 3) else (self cue:))
@@ -724,9 +724,9 @@
 			(4
 				(= ogreState 4)
 				(= local9 1)
-				(theOgre
+				(aOgre
 					view: 250
-					posn: (theOgre x?) (- (theOgre y?) 3)
+					posn: (aOgre x?) (- (aOgre y?) 3)
 					setAvoider: Avoider
 					setCycle: Walk
 					setMotion: Chase ego 15 self
@@ -741,10 +741,10 @@
 				)
 				(theMusic number: 6 loop: 1 play:)
 				(ego dispose:)
-				(theOgre view: 78 setCycle: EndLoop self)
+				(aOgre view: 78 setCycle: EndLoop self)
 			)
 			(6
-				(theOgre
+				(aOgre
 					view: 79
 					setCycle: Walk
 					illegalBits: cWHITE

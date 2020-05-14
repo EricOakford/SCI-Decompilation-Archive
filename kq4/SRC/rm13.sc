@@ -14,8 +14,8 @@
 )
 
 (local
-	smoke
-	fisherman
+	aSmoke
+	aFisher
 	local2
 	local3
 )
@@ -119,7 +119,7 @@
 		)
 		(self setRegions: WATER MINSTREL BEACH GULL MEADOW)
 		(if (and (== fishermanState fisherGoneFishing) (not isNightTime))
-			((= fisherman (View new:))
+			((= aFisher (View new:))
 				view: 534
 				setLoop: 0
 				setCel: 0
@@ -128,8 +128,8 @@
 				addToPic:
 			)
 		)
-		(= smoke (Prop new:))
-		(smoke
+		(= aSmoke (Prop new:))
+		(aSmoke
 			view: 625
 			isExtra: TRUE
 			posn: 173 29

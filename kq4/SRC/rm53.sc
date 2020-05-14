@@ -17,32 +17,32 @@
 )
 
 (local
-	messyBed1
-	messyBed2
-	messyBed3
-	messyBed4
-	messyBed5
-	messyBed6
-	messyBed7
-	messyClothing1
-	messyClothing2
-	messyClothing3
-	messyClothing4
-	messyClothing5
-	messyClothing6
-	messyClothing7
-	messyClothing8
-	messyClothing9
-	messyClothing10
-	messyClothing11
-	messyClothing12
-	messyClothing13
-	messyClothing14
-	messyClothing15
-	messyClothing16
-	messyClothing17
+	aBed1
+	aBed2
+	aBed3
+	aBed4
+	aBed5
+	aBed6
+	aBed7
+	aClothes1
+	aClothes2
+	aClothes3
+	aClothes4
+	aClothes5
+	aClothes6
+	aClothes7
+	aClothes8
+	aClothes9
+	aClothes10
+	aClothes11
+	aClothes12
+	aClothes13
+	aClothes14
+	aClothes15
+	aClothes16
+	aClothes17
 	[local24 2]
-	dwarf
+	aDwarf
 	local27
 )
 (instance Room53 of Room
@@ -78,7 +78,7 @@
 				posn: 72 131
 				view: 4
 				setStep: 4 2
-				illegalBits: -32768
+				illegalBits: cWHITE
 				init:
 			)
 		)
@@ -89,7 +89,7 @@
 			(Load VIEW 63)
 			(Load VIEW 678)
 			(Load SOUND 62)
-			((= dwarf (Actor new:))
+			((= aDwarf (Actor new:))
 				view: 290
 				illegalBits: 0
 				loop: 0
@@ -101,7 +101,7 @@
 				setScript: chaseEgo
 				init:
 			)
-			((= messyClothing1 (View new:))
+			((= aClothes1 (View new:))
 				view: 676
 				loop: 0
 				cel: 0
@@ -110,7 +110,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing2 (View new:))
+			((= aClothes2 (View new:))
 				view: 676
 				loop: 0
 				cel: 1
@@ -119,7 +119,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing3 (View new:))
+			((= aClothes3 (View new:))
 				view: 676
 				loop: 0
 				cel: 2
@@ -128,7 +128,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing4 (View new:))
+			((= aClothes4 (View new:))
 				view: 676
 				loop: 0
 				cel: 3
@@ -137,7 +137,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing5 (View new:))
+			((= aClothes5 (View new:))
 				view: 676
 				loop: 0
 				cel: 4
@@ -146,7 +146,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing6 (View new:))
+			((= aClothes6 (View new:))
 				view: 676
 				loop: 0
 				cel: 5
@@ -155,7 +155,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing7 (View new:))
+			((= aClothes7 (View new:))
 				view: 676
 				loop: 0
 				cel: 6
@@ -165,7 +165,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing8 (View new:))
+			((= aClothes8 (View new:))
 				view: 676
 				loop: 1
 				cel: 0
@@ -175,7 +175,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing9 (View new:))
+			((= aClothes9 (View new:))
 				view: 676
 				loop: 1
 				cel: 1
@@ -185,7 +185,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing10 (View new:))
+			((= aClothes10 (View new:))
 				view: 676
 				loop: 1
 				cel: 2
@@ -195,7 +195,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing11 (View new:))
+			((= aClothes11 (View new:))
 				view: 676
 				loop: 1
 				cel: 3
@@ -204,7 +204,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing12 (View new:))
+			((= aClothes12 (View new:))
 				view: 676
 				loop: 2
 				cel: 0
@@ -213,7 +213,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing13 (View new:))
+			((= aClothes13 (View new:))
 				view: 676
 				loop: 2
 				cel: 1
@@ -222,7 +222,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing14 (View new:))
+			((= aClothes14 (View new:))
 				view: 676
 				loop: 2
 				cel: 2
@@ -231,7 +231,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing15 (View new:))
+			((= aClothes15 (View new:))
 				view: 676
 				loop: 2
 				cel: 3
@@ -240,7 +240,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing16 (View new:))
+			((= aClothes16 (View new:))
 				view: 676
 				loop: 2
 				cel: 4
@@ -249,7 +249,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyClothing17 (View new:))
+			((= aClothes17 (View new:))
 				view: 676
 				loop: 2
 				cel: 5
@@ -258,7 +258,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyBed1 (View new:))
+			((= aBed1 (View new:))
 				view: 675
 				loop: 0
 				cel: 0
@@ -267,7 +267,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyBed2 (View new:))
+			((= aBed2 (View new:))
 				view: 675
 				loop: 0
 				cel: 1
@@ -276,7 +276,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyBed3 (View new:))
+			((= aBed3 (View new:))
 				view: 675
 				loop: 0
 				cel: 2
@@ -285,7 +285,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyBed4 (View new:))
+			((= aBed4 (View new:))
 				view: 675
 				loop: 0
 				cel: 3
@@ -294,7 +294,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyBed5 (View new:))
+			((= aBed5 (View new:))
 				view: 675
 				loop: 0
 				cel: 4
@@ -303,7 +303,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyBed6 (View new:))
+			((= aBed6 (View new:))
 				view: 675
 				loop: 0
 				cel: 5
@@ -313,7 +313,7 @@
 				stopUpd:
 				init:
 			)
-			((= messyBed7 (View new:))
+			((= aBed7 (View new:))
 				view: 675
 				loop: 0
 				cel: 6
@@ -437,8 +437,8 @@
 				(= seconds 2)
 			)
 			(3
-				(messyBed6 dispose:)
-				(messyClothing6 dispose:)
+				(aBed6 dispose:)
+				(aClothes6 dispose:)
 				(ego view: 4 setMotion: MoveTo 185 145 self)
 			)
 			(4
@@ -446,9 +446,9 @@
 				(= seconds 2)
 			)
 			(5
-				(messyBed7 dispose:)
-				(messyClothing7 dispose:)
-				(messyClothing10 dispose:)
+				(aBed7 dispose:)
+				(aClothes7 dispose:)
+				(aClothes10 dispose:)
 				(ego view: 4 setMotion: MoveTo 231 145 self)
 			)
 			(6 (self cue:))
@@ -460,11 +460,11 @@
 				(= seconds 2)
 			)
 			(9
-				(messyClothing17 dispose:)
-				(messyClothing16 dispose:)
-				(messyClothing15 dispose:)
-				(messyClothing9 dispose:)
-				(messyClothing8 dispose:)
+				(aClothes17 dispose:)
+				(aClothes16 dispose:)
+				(aClothes15 dispose:)
+				(aClothes9 dispose:)
+				(aClothes8 dispose:)
 				(ego view: 4 setMotion: MoveTo 232 130 self)
 			)
 			(10
@@ -472,9 +472,9 @@
 				(= seconds 2)
 			)
 			(11
-				(messyBed5 dispose:)
-				(messyClothing2 dispose:)
-				(messyClothing3 dispose:)
+				(aBed5 dispose:)
+				(aClothes2 dispose:)
+				(aClothes3 dispose:)
 				(ego view: 4 setMotion: MoveTo 187 126 self)
 			)
 			(12
@@ -482,11 +482,11 @@
 				(= seconds 2)
 			)
 			(13
-				(messyBed2 dispose:)
-				(messyBed4 dispose:)
-				(messyClothing5 dispose:)
-				(messyClothing11 dispose:)
-				(messyClothing12 dispose:)
+				(aBed2 dispose:)
+				(aBed4 dispose:)
+				(aClothes5 dispose:)
+				(aClothes11 dispose:)
+				(aClothes12 dispose:)
 				(ego view: 4 setMotion: MoveTo 115 126 self)
 			)
 			(14
@@ -494,10 +494,10 @@
 				(= seconds 2)
 			)
 			(15
-				(messyBed1 dispose:)
-				(messyBed3 dispose:)
-				(messyClothing1 dispose:)
-				(messyClothing4 dispose:)
+				(aBed1 dispose:)
+				(aBed3 dispose:)
+				(aClothes1 dispose:)
+				(aClothes4 dispose:)
 				(ego view: 4 setMotion: MoveTo 41 151 self)
 			)
 			(16
@@ -505,8 +505,8 @@
 				(= seconds 2)
 			)
 			(17
-				(messyClothing13 dispose:)
-				(messyClothing14 dispose:)
+				(aClothes13 dispose:)
+				(aClothes14 dispose:)
 				(ego view: 4 setLoop: -1 setMotion: MoveTo 91 133 self)
 			)
 			(18
@@ -536,7 +536,7 @@
 					(-- state)
 					(= seconds 5)
 				else
-					(dwarf
+					(aDwarf
 						setAvoider: Avoider
 						posn: 55 130
 						setMotion: MoveTo 78 131 self
@@ -556,7 +556,7 @@
 				)
 			)
 			(3
-				(dwarf setMotion: Follow ego 20)
+				(aDwarf setMotion: Follow ego 20)
 				(ego setMotion: MoveTo 10 135 self)
 			)
 		)

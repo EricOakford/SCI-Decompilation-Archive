@@ -147,3 +147,7 @@
 (define AIRPORT		500)
 (define AIRPLANE	600)
 (define ISLAND		700)
+
+;Required memory sizes in bytes
+(define GaugeSize 2048)
+(define InvSize 1024)

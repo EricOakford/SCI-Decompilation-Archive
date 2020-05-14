@@ -28,17 +28,15 @@
 			{Change...`^s:--!:Faster`+:Normal`=:Slower`-}
 		)
 		(AddMenu { Sound_} {Volume...`^v:Turn Off`#2=1})
-		(SetMenu
-			1282
-			110
-			(if (DoSound sndSET_SOUND) {Turn Off} else {Turn On})
+		(SetMenu soundI
+			p_text (if (DoSound SoundOn) {Turn Off} else {Turn On})
 		)
-		(SetMenu 513 109 'rescue[/game]')
-		(SetMenu 514 109 'restore[/game]')
-		(SetMenu 516 109 'restart[/game]')
-		(SetMenu 517 109 'done[/game]')
-		(SetMenu 769 109 'pause[/game]')
-		(SetMenu 770 109 'all')
+		(SetMenu saveI p_said 'rescue[/game]')
+		(SetMenu restoreI p_said 'restore[/game]')
+		(SetMenu restartI p_said 'restart[/game]')
+		(SetMenu quitI p_said 'done[/game]')
+		(SetMenu pauseI p_said 'pause[/game]')
+		(SetMenu invI p_said 'all')
 	)
 	
 	(method (handleEvent event &tmp temp0 i [str2 100])
@@ -101,7 +99,7 @@
 				)
 			)
 			(pauseI
-				(= hPause (Sound pause: 1))
+				(= hPause (Sound pause: TRUE))
 				(Print MENU 8
 					#title {This game is paused.}
 					#icon vEgoPause 0 0
@@ -111,7 +109,7 @@
 				(Sound pause: hPause)
 			)
 			(invI
-				(if (not (HaveMem 1024))
+				(if (not (HaveMem InvSize))
 					(Print MENU 9)
 				else
 					(inventory showSelf: ego)
@@ -121,10 +119,10 @@
 				(event claimed: FALSE type: keyDown message: (User echo?))
 			)
 			(bossI
-				(curRoom newRoom: 9)
+				(curRoom newRoom: BOSSKEY)
 			)
 			(filthI
-				(if (< (MemoryInfo FreeHeap) 2048)
+				(if (< (MemoryInfo FreeHeap) GaugeSize)
 					(NotNow)
 				else
 					(cond 
@@ -160,7 +158,7 @@
 				(if (> (StrLen @str) 4) (Format tritePhrase @str))
 			)
 			(speedI
-				(if (not (HaveMem 2048))
+				(if (not (HaveMem GaugeSize))
 					(Print MENU 14)
 				else
 					(= i

@@ -78,9 +78,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) $0040) (curRoom newRoom: 90))
-		(if (& (ego onControl: 0) $0020) (curRoom newRoom: 92))
-		(if (& (ego onControl: 0) $0010) (curRoom newRoom: 89))
+		(if (& (ego onControl: 0) cBROWN) (curRoom newRoom: 90))
+		(if (& (ego onControl: 0) cMAGENTA) (curRoom newRoom: 92))
+		(if (& (ego onControl: 0) cRED) (curRoom newRoom: 89))
 	)
 	
 	(method (handleEvent event)

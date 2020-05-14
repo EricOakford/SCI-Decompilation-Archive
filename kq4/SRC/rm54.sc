@@ -24,19 +24,19 @@
 	closetDoor
 	local2
 	[bowl 8]
-	bowlNum
+	i
 	dwarfBouncer
 	local13
-	dirtyDishes1
-	dirtyDishes2
-	dirtyDishes3
-	dirtyDishes4
-	dirtyDishes5
-	dirtyDishes6
-	dirtyDishes7
-	dirtyDishes8
-	dirtyDishes9
-	dirtyDishes10
+	aDishes1
+	aDishes2
+	aDishes3
+	aDishes4
+	aDishes5
+	aDishes6
+	aDishes7
+	aDishes8
+	aDishes9
+	aDishes10
 	diamondPouch
 	busy
 )
@@ -101,16 +101,16 @@
 			)
 		)
 		(if (not dwarfTableClean)
-			(= bowlNum 7)
-			(while (>= bowlNum 0)
-				((= [bowl bowlNum] (View new:))
+			(= i 7)
+			(while (>= i 0)
+				((= [bowl i] (View new:))
 					view: 500
 					loop: 1
 					cel: 2
 					ignoreActors: TRUE
 					setPri: 12
 					posn:
-						(switch bowlNum
+						(switch i
 							(0 189)
 							(1 193)
 							(2 218)
@@ -120,7 +120,7 @@
 							(6 270)
 							(7 295)
 						)
-						(switch bowlNum
+						(switch i
 							(0 136)
 							(1 133)
 							(2 133)
@@ -133,7 +133,7 @@
 					init:
 					stopUpd:
 				)
-				(-- bowlNum)
+				(-- i)
 			)
 		else
 			((= [bowl 0] (View new:))
@@ -158,7 +158,7 @@
 			)
 		)
 		(if (not dwarfHouseState)
-			((= dirtyDishes1 (View new:))
+			((= aDishes1 (View new:))
 				view: 677
 				loop: 0
 				cel: 0
@@ -166,7 +166,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes2 (View new:))
+			((= aDishes2 (View new:))
 				view: 677
 				loop: 0
 				cel: 1
@@ -174,7 +174,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes3 (View new:))
+			((= aDishes3 (View new:))
 				view: 677
 				loop: 0
 				cel: 2
@@ -182,7 +182,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes4 (View new:))
+			((= aDishes4 (View new:))
 				view: 677
 				loop: 1
 				cel: 0
@@ -190,7 +190,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes5 (View new:))
+			((= aDishes5 (View new:))
 				view: 677
 				loop: 1
 				cel: 1
@@ -198,7 +198,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes6 (View new:))
+			((= aDishes6 (View new:))
 				view: 677
 				loop: 1
 				cel: 2
@@ -206,7 +206,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes7 (View new:))
+			((= aDishes7 (View new:))
 				view: 678
 				loop: 0
 				cel: 0
@@ -214,7 +214,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes8 (View new:))
+			((= aDishes8 (View new:))
 				view: 678
 				loop: 0
 				cel: 1
@@ -222,7 +222,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes9 (View new:))
+			((= aDishes9 (View new:))
 				view: 678
 				loop: 0
 				cel: 2
@@ -230,7 +230,7 @@
 				init:
 				stopUpd:
 			)
-			((= dirtyDishes10 (View new:))
+			((= aDishes10 (View new:))
 				view: 677
 				loop: 0
 				cel: 3
@@ -502,37 +502,37 @@
 				(ego setLoop: -1 setMotion: MoveTo 103 120 self)
 			)
 			(3
-				(dirtyDishes1 dispose:)
+				(aDishes1 dispose:)
 				(ego setMotion: MoveTo 110 (ego y?) self)
 			)
 			(4
-				(dirtyDishes2 dispose:)
-				(dirtyDishes10 dispose:)
+				(aDishes2 dispose:)
+				(aDishes10 dispose:)
 				(ego setMotion: MoveTo 120 (ego y?) self)
 			)
 			(5
-				(dirtyDishes3 dispose:)
+				(aDishes3 dispose:)
 				(ego setMotion: MoveTo 130 (ego y?) self)
 			)
 			(6
-				(dirtyDishes4 dispose:)
+				(aDishes4 dispose:)
 				(ego setMotion: MoveTo 140 (ego y?) self)
 			)
 			(7
-				(dirtyDishes5 dispose:)
+				(aDishes5 dispose:)
 				(ego setMotion: MoveTo 150 (ego y?) self)
 			)
 			(8
-				(dirtyDishes6 dispose:)
+				(aDishes6 dispose:)
 				(ego setMotion: MoveTo 160 (ego y?) self)
 			)
 			(9
-				(dirtyDishes7 dispose:)
+				(aDishes7 dispose:)
 				(ego setMotion: MoveTo 170 (ego y?) self)
 			)
 			(10
-				(dirtyDishes8 dispose:)
-				(dirtyDishes9 dispose:)
+				(aDishes8 dispose:)
+				(aDishes9 dispose:)
 				(ego setMotion: MoveTo 180 (ego y?) self)
 			)
 			(11
@@ -675,20 +675,20 @@
 				)
 			)
 			(1
-				(= bowlNum 7)
+				(= i 7)
 				(ego setMotion: MoveTo 290 (ego y?) self)
 			)
 			(2
-				([bowl bowlNum] dispose:)
+				([bowl i] dispose:)
 				(ego
 					view: 63
 					setLoop: (if (> (ego y?) 151) 3 else 2)
-					setMotion: MoveTo (+ (* bowlNum 10) 190) (ego y?) self
+					setMotion: MoveTo (+ (* i 10) 190) (ego y?) self
 				)
 			)
 			(3
-				(if (> bowlNum 0)
-					(-- bowlNum)
+				(if (> i 0)
+					(-- i)
 					(= state 1)
 					(self cue:)
 				else

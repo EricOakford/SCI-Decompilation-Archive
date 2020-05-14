@@ -273,7 +273,7 @@
 					observeBlocks: stairBlock1 stairBlock2 stairBlock3 stairBlock4
 				)
 				(if (& (ego onControl:) $0020)
-					(ego setPri: -1 illegalBits: -32768 baseSetter: 0)
+					(ego setPri: -1 illegalBits: cWHITE baseSetter: 0)
 					(HandsOn)
 					(curRoom newRoom: 45)
 				else

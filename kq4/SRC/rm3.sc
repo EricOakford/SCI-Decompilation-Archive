@@ -37,7 +37,7 @@
 	local4
 	local5
 	cupidTimer
-	cupidBow
+	aBow
 	ripple
 	aCupid
 )
@@ -200,7 +200,7 @@
 										(== cupidState cupidGone)
 									)
 								)
-								(if (< (ego distanceTo: cupidBow) 10)
+								(if (< (ego distanceTo: aBow) 10)
 									((Inventory at: iCupidBow) moveTo: ego)
 									(theGame changeScore: 2)
 									(egoActions changeState: 1)
@@ -253,17 +253,17 @@
 			((and (== local3 0) (== local4 0))
 				(cond 
 					(
-					(and (& (ego onControl: 0) $0004) (== (ego view?) 2)) (= local3 1) (fall changeState: 1))
+					(and (& (ego onControl: 0) cGREEN) (== (ego view?) 2)) (= local3 1) (fall changeState: 1))
 					(
-					(and (== (ego onControl: 1) 1) (!= (ego view?) 21)) (ego view: 2))
-					((& (ego onControl: 1) $0800) (ego view: 5))
-					((& $0200 (ego onControl: 1)) (ego view: 6))
-					((& $0008 (ego onControl: 1)) (ego view: 7))
-					((& $0010 (ego onControl: 0)) (ego view: 2))
+					(and (== (ego onControl: origin) cBLACK) (!= (ego view?) 21)) (ego view: 2))
+					((& (ego onControl: origin) cLCYAN) (ego view: 5))
+					((& cLBLUE (ego onControl: origin)) (ego view: 6))
+					((& cCYAN (ego onControl: origin)) (ego view: 7))
+					((& cRED (ego onControl: 0)) (ego view: 2))
 				)
 			)
 			(
-			(and (== (ego onControl: 1) 4096) (< (fall state?) 2))
+			(and (== (ego onControl: origin) cLRED) (< (fall state?) 2))
 				(ego setMotion: 0)
 				(self changeState: 2)
 				(if (timers contains: local5) (local5 dispose: delete:))
@@ -299,11 +299,11 @@
 			(3
 				(= local3 0)
 				(ego view: 7)
-				(ego illegalBits: -1 ignoreControl: 8 4096 setCycle: Walk)
+				(ego illegalBits: -1 ignoreControl: cCYAN cLRED setCycle: Walk)
 				(= seconds 2)
 			)
 			(4
-				(ego illegalBits: -32768)
+				(ego illegalBits: cWHITE)
 				(HandsOn)
 				(self changeState: 0)
 			)
@@ -379,9 +379,9 @@
 					setLoop: 1
 					setCycle: EndLoop
 				)
-				(= cupidBow (View new:))
+				(= aBow (View new:))
 				((Inventory at: iCupidBow) moveTo: 3)
-				(cupidBow
+				(aBow
 					ignoreActors:
 					view: 509
 					x: (+ (aCupid x?) 10)
@@ -429,7 +429,7 @@
 				)
 				(aCupid ignoreBlocks: cupidCage)
 				(aCupid
-					ignoreControl: 1
+					ignoreControl: cBLACK
 					setLoop: 0
 					xStep: 3
 					yStep: 2
@@ -520,12 +520,12 @@
 			(42
 				(aCupid
 					ignoreActors:
-					posn: (- (cupidBow x?) 10) (- (cupidBow y?) 4)
+					posn: (- (aBow x?) 10) (- (aBow y?) 4)
 				)
 				(aCupid view: 163 loop: 0 cel: 255 setCycle: CycleTo 5 1 self)
 			)
 			(43
-				(cupidBow dispose:)
+				(aBow dispose:)
 				(aCupid cel: 6 setCycle: EndLoop self)
 			)
 			(44
@@ -603,12 +603,12 @@
 		(switch (= state newState)
 			(1
 				(HandsOff)
-				(Face ego cupidBow)
+				(Face ego aBow)
 				(ego view: 21 setMotion: 0 cel: 255 setCycle: EndLoop self)
 			)
 			(2
-				(= gotItem 1)
-				(cupidBow dispose:)
+				(= gotItem TRUE)
+				(aBow dispose:)
 				(ego setCycle: BegLoop self)
 			)
 			(3

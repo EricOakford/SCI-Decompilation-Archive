@@ -18,7 +18,7 @@
 )
 
 (local
-	z6
+	aZombie
 )
 (instance zTheme of Sound
 	(properties
@@ -63,8 +63,8 @@
 			(Load VIEW 270)
 			(Load VIEW 36)
 			(Load VIEW 35)
-			(= z6 (Actor new:))
-			(z6
+			(= aZombie (Actor new:))
+			(aZombie
 				view: 270
 				cel: 0
 				loop: 0
@@ -210,22 +210,22 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(z6 show: setLoop: 0 cel: 255 setCycle: EndLoop self)
+				(aZombie show: setLoop: 0 cel: 255 setCycle: EndLoop self)
 			)
 			(2
-				(z6 hide:)
+				(aZombie hide:)
 				(zTheme play: self)
 				(ego view: 35 cel: 255 setCycle: EndLoop self)
 			)
 			(3
-				(z6 view: 270 show: cycleSpeed: 1 setCycle: BegLoop)
+				(aZombie view: 270 show: cycleSpeed: 1 setCycle: BegLoop)
 				(ego view: 36 cel: 255 setMotion: 0 setCycle: EndLoop self)
 			)
 			(4
 				(ego view: 46 cel: 255 setCycle: EndLoop self)
 			)
 			(5
-				(z6 hide:)
+				(aZombie hide:)
 				(= timedMessage (Print 17 16 #at -1 20 #dispose))
 				(ego
 					view: 45

@@ -175,7 +175,7 @@
 					init:
 				)
 			)
-			(ego illegalBits: -32768)
+			(ego illegalBits: cWHITE)
 		)
 		(if (== lolotteDoorOpen TRUE)
 			(door setCel: 255 ignoreActors: TRUE)

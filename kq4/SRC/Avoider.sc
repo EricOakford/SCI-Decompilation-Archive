@@ -41,6 +41,7 @@
 		outOfTouch		FALSE
 		offScreenOK		FALSE
 	)
+
 	
 	(method (init aClient allowOff)
 		(if (>= argc 1)	(= client aClient))
@@ -52,18 +53,15 @@
 		(= escaping FALSE)
 		;(client view:1)
 	)
-
+	
 	(method (incClientPos)
 		
 		(client
-			x: (+ (client x?) (* (sign (TimesSin heading 100)) (client xStep?))),
-			y: (- (client y?) (* (sign (TimesCot heading 100)) (client yStep?))),
+			x: (+ (client x?) (* (sign (TimesSin heading 100)) (client xStep?)))
+			y: (- (client y?) (* (sign (TimesCos heading 100)) (client yStep?)))
 			heading: heading
 		)
-		;(return (self canBeHere:))
-		
-	);incClientPos
-
+	)
 	
 	(method (pickLoop angle)
 		(client heading: angle)
@@ -90,7 +88,6 @@
 			)
 		)
 	)
-
 	
 	(method (doit 
 			&tmp

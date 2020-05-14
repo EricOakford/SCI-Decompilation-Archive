@@ -50,7 +50,7 @@
 			view: 4
 			loop: 0
 			setStep: 4 2
-			illegalBits: -32768
+			illegalBits: cWHITE
 			setPri: -1
 			posn: 63 125
 			init:
@@ -187,7 +187,7 @@
 	)
 	
 	(method (doit)
-		(if (& (ego onControl: FALSE) $0040)
+		(if (& (ego onControl: 0) cBROWN)
 			(ego loop: 1)
 			(Animate (cast elements?) FALSE)
 			(curRoom newRoom: 7)

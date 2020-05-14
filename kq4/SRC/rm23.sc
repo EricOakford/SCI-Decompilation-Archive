@@ -17,10 +17,10 @@
 (local
 	local0
 	local1
-	bird
+	aBird
 	birdTimer
 	wormTimer
-	worm
+	aWorm
 	gEgoViewer
 	ripple4
 	local8
@@ -134,8 +134,8 @@
 				(<= (Random 1 100) 50)
 				((Inventory at: iWorm) ownedBy: 206)
 			)
-			(= bird (Actor new:))
-			(bird
+			(= aBird (Actor new:))
+			(aBird
 				view: 348
 				loop: 2
 				cel: 0
@@ -181,9 +181,9 @@
 					)
 					((Said 'look/cottage') (Print 23 1))
 					((Said 'capture,get/earthworm')
-						(if (cast contains: worm)
-							(if (< (ego distanceTo: worm) 15)
-								(Face ego worm)
+						(if (cast contains: aWorm)
+							(if (< (ego distanceTo: aWorm) 15)
+								(Face ego aWorm)
 								(wormActions changeState: 10)
 							else
 								(Print 800 1)
@@ -195,7 +195,7 @@
 					((Said 'look/crow,crow') (event claimed: FALSE))
 					((Said 'look/robin,bird')
 						(cond 
-							((cast contains: bird)
+							((cast contains: aBird)
 								(if (== (birdActions state?) FALSE)
 									(Print 23 3)
 								else
@@ -216,7 +216,7 @@
 					((Said 'kill/robin,bird') (Print 23 8))
 					((Said 'capture,get,kiss/robin,bird')
 						(if
-						(or (cast contains: bird) (cast contains: crow))
+						(or (cast contains: aBird) (cast contains: crow))
 							(Print 23 9)
 						else
 							(Print 23 5)
@@ -224,7 +224,7 @@
 					)
 					((Said 'help/robin,bird') (Print 23 10))
 					((Said 'deliver')
-						(if (cast contains: bird)
+						(if (cast contains: aBird)
 							(Print 23 11)
 						else
 							(Print 23 12)
@@ -234,7 +234,7 @@
 						(cond 
 							(
 								(and
-									(cast contains: bird)
+									(cast contains: aBird)
 									((Inventory at: iWorm) ownedBy: 206)
 									(== (birdActions state?) 0)
 								)
@@ -251,7 +251,7 @@
 							(
 								(and
 									(== (birdActions state?) 0)
-									(cast contains: bird)
+									(cast contains: aBird)
 								)
 								(Print 23 3)
 							)
@@ -306,7 +306,7 @@
 			(3
 				(HandsOn)
 				(ego
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setCycle: Walk
 					view: 2
 					viewer: gEgoViewer
@@ -349,7 +349,7 @@
 			(3
 				(HandsOn)
 				(ego
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setCycle: Walk
 					view: 2
 					viewer: gEgoViewer
@@ -390,7 +390,7 @@
 			)
 			(3
 				(ego
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setCycle: Walk
 					view: 2
 					viewer: gEgoViewer
@@ -409,9 +409,9 @@
 		(super doit:)
 		(if
 			(and
-				(cast contains: bird)
-				(< (bird distanceTo: ego) 30)
-				(== (bird loop?) 2)
+				(cast contains: aBird)
+				(< (aBird distanceTo: ego) 30)
+				(== (aBird loop?) 2)
 			)
 			(if birdTimer (birdTimer dispose:))
 			(self changeState: 1)
@@ -424,20 +424,20 @@
 				(= birdTimer (Timer setReal: self 15))
 			)
 			(1
-				(bird cel: 255 loop: 3 setCycle: EndLoop self)
+				(aBird cel: 255 loop: 3 setCycle: EndLoop self)
 			)
 			(2
-				(= worm (Prop new:))
-				(worm
+				(= aWorm (Prop new:))
+				(aWorm
 					view: 348
 					setLoop: 0
 					setCycle: Forward
 					ignoreActors:
-					posn: (- (bird x?) 8) (bird y?)
+					posn: (- (aBird x?) 8) (aBird y?)
 					init:
 				)
 				(wormActions changeState: 1)
-				(bird
+				(aBird
 					setPri: 12
 					setLoop: 1
 					xStep: 7
@@ -446,11 +446,11 @@
 				)
 			)
 			(3
-				(bird setMotion: MoveTo 20 -6 self)
+				(aBird setMotion: MoveTo 20 -6 self)
 			)
 			(4
-				(bird dispose:)
-				(= bird 0)
+				(aBird dispose:)
+				(= aBird 0)
 			)
 		)
 	)
@@ -466,7 +466,7 @@
 				((Inventory at: iWorm) moveTo: 23)
 			)
 			(2
-				(worm dispose:)
+				(aWorm dispose:)
 				((Inventory at: iWorm) moveTo: 206)
 			)
 			(10
@@ -475,8 +475,8 @@
 				(ego viewer: 0 view: 21 setCycle: EndLoop self)
 			)
 			(11
-				(worm dispose:)
-				(= worm 0)
+				(aWorm dispose:)
+				(= aWorm 0)
 				(ego setCycle: BegLoop self)
 				(ego get: iWorm)
 				(= gotItem TRUE)

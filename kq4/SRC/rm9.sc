@@ -16,8 +16,8 @@
 )
 
 (local
-	bird1
-	bird2
+	aBird1
+	aBird2
 )
 (instance Room9 of Room
 	(properties
@@ -41,8 +41,8 @@
 		(self setRegions: WOODS PAN)
 		(if (not isNightTime)
 			(if (< (Random 1 100) 50)
-				(= bird1 (Prop new:))
-				(bird1
+				(= aBird1 (Prop new:))
+				(aBird1
 					view: 342
 					loop: 5
 					cel: 2
@@ -53,8 +53,8 @@
 				)
 			)
 			(if (< (Random 1 100) 50)
-				(= bird2 (Prop new:))
-				(bird2
+				(= aBird2 (Prop new:))
+				(aBird2
 					view: 342
 					loop: 4
 					cel: 2
@@ -103,11 +103,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(bird1 setCycle: Forward)
+				(aBird1 setCycle: Forward)
 				(= seconds (Random 1 12))
 			)
 			(1
-				(bird1 setCycle: 0 cel: 0)
+				(aBird1 setCycle: 0 cel: 0)
 				(= seconds (Random 1 8))
 			)
 			(2 (self changeState: 0))
@@ -121,11 +121,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(bird2 setCycle: Forward)
+				(aBird2 setCycle: Forward)
 				(= seconds (Random 1 12))
 			)
 			(1
-				(bird2 setCycle: 0 cel: 0)
+				(aBird2 setCycle: 0 cel: 0)
 				(= seconds (Random 1 8))
 			)
 			(2 (self changeState: 0))

@@ -22,7 +22,9 @@
 		(= horizon 68)
 		(= isIndoors FALSE)
 		(super init:)
-		(if isNightTime (curRoom overlay: 102))
+		(if isNightTime
+			(curRoom overlay: 102)
+		)
 		(ego view: 2 init:)
 		(self setRegions: MEADOW PAN)
 	)

@@ -145,7 +145,7 @@
 			(ego
 				view: 2
 				setStep: 3 2
-				illegalBits: -32768
+				illegalBits: cWHITE
 				posn: 224 114
 				init:
 			)

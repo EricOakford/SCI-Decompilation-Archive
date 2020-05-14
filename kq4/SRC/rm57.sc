@@ -603,7 +603,7 @@
 			(4
 				(witchChaser
 					setLoop: -1
-					illegalBits: -32768
+					illegalBits: cWHITE
 					ignoreActors: 0
 					setAvoider: Avoider
 					view: 180

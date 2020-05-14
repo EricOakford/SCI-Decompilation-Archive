@@ -20,10 +20,10 @@
 )
 
 (local
-	z1
-	z2
-	z3
-	hole
+	zombie1
+	zombie2
+	zombie3
+	aHole
 	local4
 	local5
 	local6
@@ -67,10 +67,10 @@
 			(Load VIEW 46)
 			(Load VIEW 45)
 			(Load VIEW 21)
-			(= z1 (Actor new:))
-			(= z2 (Actor new:))
-			(= z3 (Actor new:))
-			(z1
+			(= zombie1 (Actor new:))
+			(= zombie2 (Actor new:))
+			(= zombie3 (Actor new:))
+			(zombie1
 				view: 260
 				loop: 0
 				cel: 0
@@ -81,7 +81,7 @@
 				init:
 				hide:
 			)
-			(z2
+			(zombie2
 				view: 262
 				loop: 0
 				cel: 0
@@ -92,7 +92,7 @@
 				init:
 				hide:
 			)
-			(z3
+			(zombie3
 				view: 264
 				loop: 0
 				cel: 0
@@ -136,18 +136,42 @@
 					((Said 'look/gravestone') (Print 16 0))
 					((Said 'read,look/epitaph,gravestone,boulder')
 						(cond 
-							((& (ego onControl: 0) $0008) (Print 16 1 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0020) (Print 16 2 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0100) (Print 16 3 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0200) (Print 16 4 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0004) (Print 16 5 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0002) (Print 16 6 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0080) (Print 16 7 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0040) (Print 16 8 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0010) (Print 16 9 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $0400) (Print 16 10 #mode teJustCenter #at -1 15 #width 290))
-							((& (ego onControl: 0) $1000) (Print 16 11 #mode teJustCenter #at -1 15 #width 290))
-							(else (Print 800 1))
+							((& (ego onControl: 0) cCYAN)
+								(Print 16 1 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cMAGENTA)
+								(Print 16 2 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cGREY)
+								(Print 16 3 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cLBLUE)
+								(Print 16 4 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cGREEN)
+								(Print 16 5 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cBLUE)
+								(Print 16 6 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cLGREY)
+								(Print 16 7 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cBROWN)
+								(Print 16 8 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cRED)
+								(Print 16 9 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cLGREEN)
+								(Print 16 10 #mode teJustCenter #at -1 15 #width 290)
+							)
+							((& (ego onControl: 0) cLRED)
+								(Print 16 11 #mode teJustCenter #at -1 15 #width 290)
+							)
+							(else
+								(Print 800 1)
+							)
 						)
 					)
 					((Said 'look>')
@@ -228,25 +252,25 @@
 			(1
 				(= noWearCrown 1)
 				(zTheme play:)
-				(z1 show: setCycle: EndLoop self)
+				(zombie1 show: setCycle: EndLoop self)
 				(++ numZombies)
 				((View new:)
 					view: 260
-					posn: (z1 x?) (z1 y?)
+					posn: (zombie1 x?) (zombie1 y?)
 					ignoreActors:
 					addToPic:
 				)
 			)
 			(2
 				(if (== currentStatus egoNormal)
-					(z1
+					(zombie1
 						view: 261
 						setCycle: Walk
 						setAvoider: (Avoider new:)
 						setMotion: Chase ego 12 self
 					)
 				else
-					(z1
+					(zombie1
 						view: 261
 						setCycle: Walk
 						setAvoider: (Avoider new:)
@@ -265,10 +289,10 @@
 				(if (== (-- numZombies) 0)
 					(zTheme loop: 1 changeState:)
 				)
-				(z1 setMotion: 0 view: 260 cel: 0 setCycle: BegLoop self)
+				(zombie1 setMotion: 0 view: 260 cel: 0 setCycle: BegLoop self)
 			)
 			(5
-				(z1 ignoreActors: addToPic:)
+				(zombie1 ignoreActors: addToPic:)
 			)
 			(10
 				(HandsOff)
@@ -276,20 +300,20 @@
 				(zTheme stop:)
 				(zTheme number: 21 loop: 1 play:)
 				(ego view: 36 cel: 0 setCycle: EndLoop self)
-				(z1 setMotion: Wander)
+				(zombie1 setMotion: Wander)
 				(if
 					(and
-						(cast contains: z2)
-						(== (z2 mover?) Chase)
+						(cast contains: zombie2)
+						(== (zombie2 mover?) Chase)
 					)
-					(z2 setMotion: Wander)
+					(zombie2 setMotion: Wander)
 				)
 				(if
 					(and
-						(cast contains: z3)
-						(== (z3 mover?) Chase)
+						(cast contains: zombie3)
+						(== (zombie3 mover?) Chase)
 					)
-					(z3 setMotion: Wander)
+					(zombie3 setMotion: Wander)
 				)
 			)
 			(11
@@ -321,25 +345,25 @@
 					(zTheme loop: -1 changeState:)
 				)
 				(++ numZombies)
-				(z2 show: setCycle: EndLoop self)
+				(zombie2 show: setCycle: EndLoop self)
 				((View new:)
 					view: 262
 					cel: 0
-					posn: (z2 x?) (z2 y?)
+					posn: (zombie2 x?) (zombie2 y?)
 					ignoreActors:
 					addToPic:
 				)
 			)
 			(2
 				(if (== currentStatus egoNormal)
-					(z2
+					(zombie2
 						view: 263
 						setCycle: Walk
 						setAvoider: (Avoider new:)
 						setMotion: Chase ego 12 self
 					)
 				else
-					(z2
+					(zombie2
 						view: 263
 						setCycle: Walk
 						setAvoider: (Avoider new:)
@@ -354,7 +378,7 @@
 				)
 			)
 			(4
-				(z2
+				(zombie2
 					setMotion: 0
 					view: 262
 					cel: 0
@@ -366,7 +390,7 @@
 				)
 			)
 			(5
-				(z2 ignoreActors: addToPic:)
+				(zombie2 ignoreActors: addToPic:)
 			)
 			(10
 				(HandsOff)
@@ -374,20 +398,20 @@
 				(zTheme stop:)
 				(zTheme number: 21 loop: 1 play:)
 				(ego view: 36 cel: 0 setMotion: 0 setCycle: EndLoop self)
-				(z2 setMotion: Wander)
+				(zombie2 setMotion: Wander)
 				(if
 					(and
-						(cast contains: z1)
-						(== (z1 mover?) Chase)
+						(cast contains: zombie1)
+						(== (zombie1 mover?) Chase)
 					)
-					(z1 setMotion: Wander)
+					(zombie1 setMotion: Wander)
 				)
 				(if
 					(and
-						(cast contains: z3)
-						(== (z3 mover?) Chase)
+						(cast contains: zombie3)
+						(== (zombie3 mover?) Chase)
 					)
-					(z3 setMotion: Wander)
+					(zombie3 setMotion: Wander)
 				)
 			)
 			(11
@@ -419,24 +443,24 @@
 					(zTheme loop: -1 changeState:)
 				)
 				(++ numZombies)
-				(z3 show: setCycle: EndLoop self)
+				(zombie3 show: setCycle: EndLoop self)
 				((View new:)
 					view: 264
-					posn: (z3 x?) (z3 y?)
+					posn: (zombie3 x?) (zombie3 y?)
 					ignoreActors:
 					addToPic:
 				)
 			)
 			(2
 				(if (== currentStatus egoNormal)
-					(z3
+					(zombie3
 						view: 265
 						setCycle: Walk
 						setAvoider: (Avoider new:)
 						setMotion: Chase ego 12 self
 					)
 				else
-					(z3
+					(zombie3
 						view: 265
 						setCycle: Walk
 						setAvoider: (Avoider new:)
@@ -455,7 +479,7 @@
 				(if (== (-- numZombies) 0)
 					(zTheme loop: 1 changeState:)
 				)
-				(z3
+				(zombie3
 					setMotion: 0
 					view: 264
 					cel: 0
@@ -463,7 +487,7 @@
 				)
 			)
 			(5
-				(z3 ignoreActors: addToPic:)
+				(zombie3 ignoreActors: addToPic:)
 			)
 			(10
 				(HandsOff)
@@ -471,20 +495,20 @@
 				(zTheme stop:)
 				(zTheme number: 21 loop: 1 play:)
 				(ego view: 36 cel: 0 setMotion: 0 setCycle: EndLoop self)
-				(z3 setMotion: Wander)
+				(zombie3 setMotion: Wander)
 				(if
 					(and
-						(cast contains: z1)
-						(== (z1 mover?) Chase)
+						(cast contains: zombie1)
+						(== (zombie1 mover?) Chase)
 					)
-					(z1 setMotion: Wander)
+					(zombie1 setMotion: Wander)
 				)
 				(if
 					(and
-						(cast contains: z2)
-						(== (z2 mover?) Chase)
+						(cast contains: zombie2)
+						(== (zombie2 mover?) Chase)
 					)
-					(z2 setMotion: Wander)
+					(zombie2 setMotion: Wander)
 				)
 			)
 			(11
@@ -508,9 +532,9 @@
 	(properties)
 	
 	(method (cue &tmp temp0)
-		(= temp0 (hole cel?))
+		(= temp0 (aHole cel?))
 		(++ temp0)
-		(if (>= state 0) (hole cel: temp0) else (++ state))
+		(if (>= state 0) (aHole cel: temp0) else (++ state))
 	)
 )
 
@@ -527,8 +551,8 @@
 					cel: 0
 					setCycle: EndLoop self
 				)
-				(= hole (Prop new:))
-				(hole
+				(= aHole (Prop new:))
+				(aHole
 					posn:
 						(if (== (ego loop?) 1)
 							(- (ego x?) 16)
@@ -562,7 +586,7 @@
 			)
 			(5
 				(holeActions cue:)
-				(if (< (hole cel?) 6)
+				(if (< (aHole cel?) 6)
 					(self changeState: 2)
 				else
 					(self changeState: 6)
@@ -572,18 +596,18 @@
 				(= [gNewPropX (= local5 (* (- (++ timesUsedShovel) 1) 3))]
 					curRoomNum
 				)
-				(= [gNewPropX (+ local5 1)] (hole x?))
-				(= [gNewPropX (+ local5 2)] (hole y?))
+				(= [gNewPropX (+ local5 1)] (aHole x?))
+				(= [gNewPropX (+ local5 2)] (aHole y?))
 				(ego view: 2 setCycle: Walk)
 				(HandsOn)
 				(cond 
 					(
 						(and
-							(& (ego onControl: FALSE) $0008)
+							(& (ego onControl: 0) cCYAN)
 							(== mansionPhase mansionMISER)
 							((Inventory at: iGoldCoins) ownedBy: 88)
 						)
-						(hole setLoop: 1 cel: 2)
+						(aHole setLoop: 1 cel: 2)
 						(Print 16 23 #at -1 20 #draw)
 						((Inventory at: iGoldCoins) moveTo: 16)
 						(ego setScript: getItems)
@@ -593,11 +617,11 @@
 					)
 					(
 						(and
-							(& (ego onControl: FALSE) $0100)
+							(& (ego onControl: 0) cGREY)
 							(== mansionPhase mansionBABY)
 							((Inventory at: iSilverBabyRattle) ownedBy: 88)
 						)
-						(hole setLoop: 1 cel: 1)
+						(aHole setLoop: 1 cel: 1)
 						(Print 16 24 #at -1 20 #draw)
 						(ego setScript: getItems)
 						(getItems changeState: 1)
@@ -606,11 +630,11 @@
 					)
 					(
 						(and
-							(& (ego onControl: FALSE) $0004)
+							(& (ego onControl: 0) cGREEN)
 							(== mansionPhase mansionLORD)
 							((Inventory at: iMedal) ownedBy: 88)
 						)
-						(hole setLoop: 1 cel: 3)
+						(aHole setLoop: 1 cel: 3)
 						(Print 16 25 #at -1 20 #draw)
 						((Inventory at: iMedal) moveTo: 16)
 						(ego setScript: getItems)
@@ -632,11 +656,11 @@
 		(switch (= state newState)
 			(1
 				(HandsOff)
-				(Face ego hole)
+				(Face ego aHole)
 				(ego view: 21 cel: 255 setCycle: EndLoop self)
 			)
 			(2
-				(hole setLoop: 0 cel: 6)
+				(aHole setLoop: 0 cel: 6)
 				(= gotItem TRUE)
 				(ego setCycle: BegLoop self)
 			)

@@ -15,7 +15,7 @@
 )
 
 (local
-	local0
+	theControl
 	oldEgoViewer
 )
 (instance riverReg of Region
@@ -43,10 +43,10 @@
 					((Said 'look<in/brook')
 						(if
 							(or
-								(& (= local0 (IsObjectOnControl ego 20)) $0008)
-								(& local0 $0800)
-								(& local0 $0002)
-								(& local0 $0200)
+								(& (= theControl (IsObjectOnControl ego 20)) cCYAN)
+								(& theControl cLCYAN)
+								(& theControl cBLUE)
+								(& theControl cLBLUE)
 							)
 							(Print 512 0)
 						else
@@ -83,10 +83,10 @@
 							((!= currentStatus egoNormal) (Print 512 6))
 							(
 								(or
-									(& (= local0 (IsObjectOnControl ego 10)) $0008)
-									(& local0 $0800)
-									(& local0 $0002)
-									(& local0 $0200)
+									(& (= theControl (IsObjectOnControl ego 10)) cCYAN)
+									(& theControl cLCYAN)
+									(& theControl cBLUE)
+									(& theControl cLBLUE)
 								)
 								(= timedMessage (Print 512 7 #at -1 10 #dispose))
 								(riverActions changeState: 1)

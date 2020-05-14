@@ -15,7 +15,7 @@
 )
 
 (local
-	ball
+	aBall
 	ripple1
 	ripple2
 	ripple3
@@ -81,7 +81,7 @@
 		)
 		(if (< (ego y?) horizon) (ego y: (+ horizon 2)))
 		(if ((Inventory at: iGoldBall) ownedBy: 21)
-			((= ball (View new:))
+			((= aBall (View new:))
 				view: 518
 				loop: 1
 				cel: 0
@@ -190,7 +190,7 @@
 			)
 			(3
 				(if ((Inventory at: iGoldBall) ownedBy: 21)
-					(ball dispose:)
+					(aBall dispose:)
 					(theGame changeScore: 2)
 					(Print 21 3 #draw)
 					(= gotItem TRUE)

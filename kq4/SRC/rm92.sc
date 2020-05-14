@@ -179,7 +179,7 @@
 	)
 	
 	(method (doit)
-		(if (& (ego onControl: 0) $0040)
+		(if (& (ego onControl: 0) cBROWN)
 			(cond 
 				((and (== gamePhase endGame) (== lolotteAlive FALSE)) (curRoom newRoom: 80))
 				((not triedToEscape) (Print 92 0) (= triedToEscape TRUE))
@@ -188,11 +188,11 @@
 			(= triedToEscape FALSE)
 		)
 		(if
-		(and (& (ego onControl: 0) $0020) (!= (ego view?) 81))
+		(and (& (ego onControl: 0) cMAGENTA) (!= (ego view?) 81))
 			(curRoom newRoom: 91)
 		)
 		(if
-		(and (& (ego onControl: 0) $0010) (!= (ego view?) 81))
+		(and (& (ego onControl: 0) cRED) (!= (ego view?) 81))
 			(curRoom newRoom: 93)
 		)
 		(super doit:)

@@ -131,7 +131,7 @@
 					xStep: 4
 					cycleSpeed: 0
 					setCycle: Walk
-					illegalBits: -32768
+					illegalBits: cWHITE
 				)
 				(HandsOn)
 				(client setScript: 0)

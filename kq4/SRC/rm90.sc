@@ -76,7 +76,7 @@
 				baseSetter: (ScriptID 0 1)
 				view: 4
 				setStep: 4 2
-				illegalBits: -32768
+				illegalBits: cWHITE
 				setPri: 12
 				init:
 			)
@@ -85,12 +85,12 @@
 	)
 	
 	(method (doit)
-		(if (& (ego onControl: 0) $0040)
-			(ego setPri: -1 illegalBits: -32768 baseSetter: 0)
+		(if (& (ego onControl: 0) cBROWN)
+			(ego setPri: -1 illegalBits: cWHITE baseSetter: 0)
 			(curRoom newRoom: 91)
 		)
-		(if (& (ego onControl: 0) $0020)
-			(ego setPri: -1 illegalBits: -32768 baseSetter: 0)
+		(if (& (ego onControl: 0) cMAGENTA)
+			(ego setPri: -1 illegalBits: cWHITE baseSetter: 0)
 			(curRoom newRoom: 85)
 		)
 		(if
@@ -100,11 +100,11 @@
 			)
 			(if local0
 				(cond 
-					((& (ego onControl:) $0004) (self setScript: fallingToDeath))
-					((& (ego onControl:) $0100) (self setScript: fallingDown))
+					((& (ego onControl:) cGREEN) (self setScript: fallingToDeath))
+					((& (ego onControl:) cGREY) (self setScript: fallingDown))
 				)
 			)
-			(if (& (ego onControl: 1) $0002)
+			(if (& (ego onControl: origin) cBLUE)
 				(if
 				(and (< (ego heading?) 180) (> (ego heading?) 0))
 					(ego

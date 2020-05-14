@@ -23,10 +23,10 @@
 	local0
 	local1
 	local2
-	frog
-	poof
+	aFrog
+	aPoof
 	frogLoop
-	ball
+	aBall
 	ripple1
 	ripple2
 	ripple3
@@ -148,10 +148,10 @@
 			addToPic:
 		)
 		(if ((Inventory at: iSmallCrown) ownedBy: 200)
-			(= frog (Actor new:))
+			(= aFrog (Actor new:))
 			(frogTheme play:)
 			(= frogPrinceState 0)
-			(frog
+			(aFrog
 				view: 370
 				cycleSpeed: 2
 				setCycle: Forward
@@ -162,7 +162,7 @@
 			)
 		)
 		(if ((Inventory at: iGoldBall) ownedBy: 15)
-			((= ball (View new:))
+			((= aBall (View new:))
 				view: 518
 				loop: 1
 				cel: 0
@@ -179,7 +179,7 @@
 		(super doit:)
 		(if
 			(and
-				(== (= local0 (ego onControl: 1)) 512)
+				(== (= local0 (ego onControl: origin)) cLBLUE)
 				(== frogPrinceState 0)
 			)
 			(frogActions changeState: 1)
@@ -223,7 +223,7 @@
 			(if (== (event type?) saidEvent)
 				(cond 
 					((Said '/prince>')
-						(if (and (== frogPrinceState 5) (cast contains: frog))
+						(if (and (== frogPrinceState 5) (cast contains: aFrog))
 							(cond 
 								((Said 'look') (Print 15 0))
 								((Said 'converse') (Print 15 1))
@@ -337,9 +337,9 @@
 							((ego inRect: 249 133 266 139) (Print 15 29))
 							((== frogPrinceState 7) (CantDo))
 							((== frogPrinceState frogHasBall)
-								(if (< (ego distanceTo: frog) 13)
+								(if (< (ego distanceTo: aFrog) 13)
 									(HandsOff)
-									(Face ego frog)
+									(Face ego aFrog)
 									(frogActions changeState: 10)
 								else
 									(Print 15 30)
@@ -368,7 +368,7 @@
 												(== (ego view?) 2)
 											)
 											(HandsOff)
-											(Face ego frog)
+											(Face ego aFrog)
 											(Print 15 35 #draw)
 											(= frogPrinceState 2)
 											(frogActions changeState: 3)
@@ -400,7 +400,7 @@
 							(cond 
 								((== frogPrinceState 7) (CantDo))
 								(((Inventory at: iGoldBall) ownedBy: 15)
-									(if (< (ego distanceTo: ball) 10)
+									(if (< (ego distanceTo: aBall) 10)
 										(HandsOff)
 										(ego setScript: ballActions)
 										(ballActions changeState: 1)
@@ -418,7 +418,7 @@
 					((Said 'deliver>')
 						(if (= inventorySaidMe (inventory saidMe:))
 							(if (ego has: (inventory indexOf: inventorySaidMe))
-								(if (cast contains: frog)
+								(if (cast contains: aFrog)
 									(Print 15 44)
 								else
 									(Print 15 45)
@@ -469,18 +469,18 @@
 			(1
 				(= frogPrinceState frogUnderwater)
 				(Print 15 47 #time 3)
-				(frog
+				(aFrog
 					view: 373
 					cycleSpeed: 0
 					loop: 0
 					cel: 255
 					setCycle: EndLoop
 					illegalBits: 0
-					setMotion: MoveTo (+ (frog x?) 10) (- (frog y?) 5) self
+					setMotion: MoveTo (+ (aFrog x?) 10) (- (aFrog y?) 5) self
 				)
 			)
 			(2
-				(frog hide:)
+				(aFrog hide:)
 				(frogActions changeState: 100)
 			)
 			(3
@@ -491,7 +491,7 @@
 			)
 			(4
 				(ego setMotion: 0)
-				(frog
+				(aFrog
 					view: 373
 					show:
 					cycleSpeed: 0
@@ -502,12 +502,12 @@
 					illegalBits: 0
 					ignoreActors: 0
 					setCycle: EndLoop self
-					setMotion: MoveTo (+ (frog x?) 8) (frog y?)
+					setMotion: MoveTo (+ (aFrog x?) 8) (aFrog y?)
 				)
 				((Inventory at: iGoldBall) moveTo: 15)
 			)
 			(5
-				(frog ignoreActors: hide:)
+				(aFrog ignoreActors: hide:)
 				(= seconds 4)
 			)
 			(6
@@ -515,7 +515,7 @@
 					(ego setScript: ballActions)
 					(ballActions changeState: 10)
 				)
-				(frog
+				(aFrog
 					view: 377
 					setLoop: 0
 					cel: 0
@@ -530,7 +530,7 @@
 				)
 			)
 			(7
-				(frog
+				(aFrog
 					view: 372
 					xStep: 2
 					setLoop: -1
@@ -541,7 +541,7 @@
 				)
 			)
 			(8
-				(frog
+				(aFrog
 					view: 370
 					cel: 0
 					ignoreActors: 0
@@ -549,12 +549,12 @@
 					setCycle: Forward
 				)
 				(= frogPrinceState frogHasBall)
-				(= ball (View new:))
-				(ball
+				(= aBall (View new:))
+				(aBall
 					view: 518
 					loop: 1
 					cel: 0
-					posn: (+ (frog x?) 5) (frog y?)
+					posn: (+ (aFrog x?) 5) (aFrog y?)
 					ignoreActors:
 					stopUpd:
 					init:
@@ -562,11 +562,11 @@
 				(HandsOn)
 			)
 			(10
-				(Face ego frog)
+				(Face ego aFrog)
 				(ego view: 21 ignoreActors: setCycle: EndLoop self)
 			)
 			(11
-				(frog dispose:)
+				(aFrog dispose:)
 				((Inventory at: iGoldBall) moveTo: ego)
 				(ego view: 27 ignoreActors: 0 setCycle: EndLoop self)
 			)
@@ -601,7 +601,7 @@
 			)
 			(52
 				(poofSound play:)
-				((= poof (Prop new:))
+				((= aPoof (Prop new:))
 					posn: (- (ego x?) 15) (ego y?)
 					setPri: (+ (ego priority?) 1)
 					view: 680
@@ -613,9 +613,9 @@
 				)
 			)
 			(53
-				(poof setCycle: EndLoop self)
-				(= frog (Actor new:))
-				(frog
+				(aPoof setCycle: EndLoop self)
+				(= aFrog (Actor new:))
+				(aFrog
 					posn: (- (ego x?) 19) (ego y?)
 					view: 225
 					cel: 0
@@ -624,23 +624,23 @@
 					init:
 				)
 				(ego view: 2)
-				(Face ego frog 1)
+				(Face ego aFrog 1)
 			)
 			(54
-				(poof dispose:)
+				(aPoof dispose:)
 				(Print 15 49 #at -1 10)
 				(Print 15 50 #at -1 10)
-				(frog cycleSpeed: 1 setAvoider: (Avoider new:))
+				(aFrog cycleSpeed: 1 setAvoider: (Avoider new:))
 				(Print 15 51)
 				((Inventory at: iSmallCrown) moveTo: ego)
 				(= gotItem TRUE)
 				(theGame changeScore: 2)
-				(if (< (frog x?) (ego x?))
+				(if (< (aFrog x?) (ego x?))
 					(= frogLoop 0)
 				else
 					(= frogLoop 1)
 				)
-				(frog
+				(aFrog
 					view: 226
 					setStep: 2 1
 					setLoop: -1
@@ -649,42 +649,42 @@
 				)
 			)
 			(55
-				(frog
+				(aFrog
 					view: 227
 					cycleSpeed: 0
 					setCycle: Walk
 					setAvoider: (Avoider new:)
 				)
-				(if (< (frog x?) 150)
-					(frog setMotion: MoveTo -10 150 self)
+				(if (< (aFrog x?) 150)
+					(aFrog setMotion: MoveTo -10 150 self)
 				else
-					(frog setMotion: MoveTo 330 150 self)
+					(aFrog setMotion: MoveTo 330 150 self)
 				)
 			)
 			(56
 				(HandsOn)
 				(ego setCycle: Walk)
-				(frog dispose:)
+				(aFrog dispose:)
 			)
 			(60
 				(ego view: 2 setLoop: -1 cycleSpeed: 0 setCycle: Walk)
-				(= frog (Actor new:))
-				(frog
+				(= aFrog (Actor new:))
+				(aFrog
 					view: 372
 					setCycle: Walk
 					posn: (- (ego x?) 10) (ego y?)
-					setMotion: MoveTo (- (ball x?) 3) (ball y?) self
+					setMotion: MoveTo (- (aBall x?) 3) (aBall y?) self
 					init:
 				)
 			)
 			(61
 				(= frogPrinceState frogHasBall)
-				(frog view: 370 loop: 0 cycleSpeed: 3 setCycle: Forward)
+				(aFrog view: 370 loop: 0 cycleSpeed: 3 setCycle: Forward)
 			)
 			(70
 				(= frogPrinceState frogUnderwater)
-				(= frog (Actor new:))
-				(frog
+				(= aFrog (Actor new:))
+				(aFrog
 					view: 378
 					posn: (- (ego x?) 6) (+ (ego y?) 4)
 					illegalBits: 0
@@ -694,13 +694,13 @@
 					init:
 				)
 			)
-			(71 (frog dispose:))
+			(71 (aFrog dispose:))
 			(100 (= seconds (Random 3 8)))
 			(101
-				(if (== (ego onControl: 1) 512)
+				(if (== (ego onControl: origin) cLBLUE)
 					(self changeState: 100)
 				else
-					(frog
+					(aFrog
 						view: 378
 						loop: 1
 						posn: 216 139
@@ -713,10 +713,10 @@
 				)
 			)
 			(102
-				(frog
+				(aFrog
 					view: 370
 					loop: 0
-					illegalBits: -32768
+					illegalBits: cWHITE
 					cycleSpeed: 2
 					setCycle: Forward
 				)
@@ -733,18 +733,18 @@
 		(switch (= state newState)
 			(1
 				(HandsOff)
-				(Face ego ball)
+				(Face ego aBall)
 				(ego view: 21 cel: 255 setCycle: EndLoop self)
 			)
 			(2
-				(ball dispose:)
+				(aBall dispose:)
 				(ego get: 5)
 				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego view: 2 setCycle: Walk)
 				(if (or (== frogPrinceState frogHeldByEgo) (== frogPrinceState frogHasBall))
-					(frog
+					(aFrog
 						illegalBits: 0
 						ignoreActors:
 						view: 373
@@ -760,7 +760,7 @@
 			(4
 				(= frogPrinceState frogUnderwater)
 				(frogActions changeState: 100)
-				(frog hide:)
+				(aFrog hide:)
 				(HandsOn)
 			)
 			(10

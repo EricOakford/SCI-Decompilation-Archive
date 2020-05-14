@@ -441,46 +441,46 @@
 		global399
 		global400
 )
-(procedure (IsObjectOnControl param1 param2)
-	(if (< argc 2) (= param2 5))
-	(switch (param1 loop?)
+(procedure (IsObjectOnControl obj ctrl)
+	(if (< argc 2) (= ctrl 5))
+	(switch (obj loop?)
 		(0
 			(OnControl
-				4
-				(param1 x?)
-				(param1 y?)
-				(+ (param1 x?) param2)
-				(+ (param1 y?) 1)
+				CMAP
+				(obj x?)
+				(obj y?)
+				(+ (obj x?) ctrl)
+				(+ (obj y?) 1)
 			)
 			(return)
 		)
 		(1
 			(OnControl
-				4
-				(- (param1 x?) param2)
-				(param1 y?)
-				(param1 x?)
-				(+ (param1 y?) 1)
+				CMAP
+				(- (obj x?) ctrl)
+				(obj y?)
+				(obj x?)
+				(+ (obj y?) 1)
 			)
 			(return)
 		)
 		(2
 			(OnControl
-				4
-				(param1 x?)
-				(param1 y?)
-				(+ (param1 x?) 1)
-				(+ (param1 y?) param2)
+				CMAP
+				(obj x?)
+				(obj y?)
+				(+ (obj x?) 1)
+				(+ (obj y?) ctrl)
 			)
 			(return)
 		)
 		(3
 			(OnControl
-				4
-				(param1 x?)
-				(- (param1 y?) param2)
-				(+ (param1 x?) 1)
-				(param1 y?)
+				CMAP
+				(obj x?)
+				(- (obj y?) ctrl)
+				(+ (obj x?) 1)
+				(obj y?)
 			)
 			(return)
 		)
