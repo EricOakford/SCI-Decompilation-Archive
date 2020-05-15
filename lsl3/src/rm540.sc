@@ -18,8 +18,8 @@
 
 (local
 	pigAppears
-	[str 33]
-	[deadStr 22]
+	[msgBuf 33]
+	[titleBuf 22]
 )
 (instance rm540 of Room
 	(properties
@@ -185,11 +185,11 @@
 			)
 			(10
 				(Print 540 29)
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 543
-					register: (Format @str 540 30)
-					next: (Format @deadStr 540 31)
+					register: (Format @msgBuf 540 30)
+					next: (Format @titleBuf 540 31)
 				)
 			)
 			(11 (= cycles 0) (= seconds 3))
@@ -425,11 +425,11 @@
 					(Print 540 38 #at -1 10)
 					(Print 540 39 #at -1 10)
 				)
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 543
-					register: (Format @str 540 40)
-					next: (Format @deadStr 540 41)
+					register: (Format @msgBuf 540 40)
+					next: (Format @titleBuf 540 41)
 				)
 			)
 			(9

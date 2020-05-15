@@ -19,12 +19,16 @@
 	)
 	
 	(method (init)
-		(if (CheckItemOwner iOrchids) (Load VIEW 236))
+		(if (CheckItemOwner iOrchids)
+			(Load VIEW 236)
+		)
 		(super init:)
 		(self setRegions: 41 setScript: RoomScript)
 		(ego posn: 43 124 loop: 0 init:)
 		(NormalEgo)
-		(if currentStatus (ego observeControl: 2))
+		(if currentStatus
+			(ego observeControl: cBLUE)
+		)
 	)
 )
 
@@ -33,7 +37,7 @@
 	
 	(method (doit)
 		(if
-		(and (& (ego onControl:) $0002) (== currentStatus egoNORMAL))
+		(and (& (ego onControl:) cBLUE) (== currentStatus egoNORMAL))
 			(NotifyScript 41 2 300)
 		)
 		(super doit:)
@@ -106,8 +110,8 @@
 					(playingAsPatti (Print 235 9))
 					(
 						(and
-							(not (& (ego onControl:) $0004))
-							(not (& (ego onControl:) $0008))
+							(not (& (ego onControl:) cGREEN))
+							(not (& (ego onControl:) cCYAN))
 						)
 						(Print 235 10)
 					)

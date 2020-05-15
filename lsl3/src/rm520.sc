@@ -14,8 +14,8 @@
 
 (local
 	local0
-	[str 50]
-	[deadStr 22]
+	[msgBuf 50]
+	[titleBuf 22]
 )
 (instance rm520 of Room
 	(properties
@@ -123,11 +123,11 @@
 					(= currentStatus egoNORMAL)
 					(ego posn: 178 100)
 				else
-					(theGame setScript: (ScriptID 40))
-					((ScriptID 40)
+					(theGame setScript: (ScriptID DYING))
+					((ScriptID DYING)
 						caller: 522
-						register: (Format @str 520 30)
-						next: (Format @deadStr 520 31)
+						register: (Format @msgBuf 520 30)
+						next: (Format @titleBuf 520 31)
 					)
 				)
 			)
@@ -162,7 +162,7 @@
 			(12
 				(HandsOff)
 				(Print
-					(Format @str 520 33 expletive)
+					(Format @msgBuf 520 33 expletive)
 					#at -1 10
 					#dispose
 				)

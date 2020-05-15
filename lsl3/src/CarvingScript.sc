@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 43)
+(script# CARVING)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -20,7 +20,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (!= currentStatus 0)
+				(if (!= currentStatus egoNORMAL)
 					(= cycles 1)
 				else
 					(HandsOff)
@@ -49,7 +49,7 @@
 					(theGame setSpeed: oldSpeed)
 				)
 				(theGame setScript: 0)
-				(DisposeScript 43)
+				(DisposeScript CARVING)
 			)
 		)
 	)

@@ -78,7 +78,7 @@
 			)
 			(else
 				(NormalEgo 1)
-				(ego observeControl: 16384 posn: 295 144 init:)
+				(ego observeControl: cYELLOW posn: 295 144 init:)
 			)
 		)
 		(music number: 32 loop: global108 play:)

@@ -40,17 +40,24 @@
 )
 
 ;Global Stuff
-(define LSL3		0)
-(define DEBUG		20) ;this seems to be intended for Al Lowe
-(define DEBUG_22	22) ;this seems to be intended for the QA team
-(define INVDESC		46)
-(define DOOR		50)
-(define AUTODOOR	51)
-(define GIRL		70)
-(define FACE		71)
-(define ROBIN_LARRY	80)
-(define ROBIN_PATTI	81)
-(define BOSSKEY		90)
+(define LSL3			0)
+(define DEBUG			20) ;this seems to be intended for Al Lowe
+(define CHANGE_SCRIPT	21)
+(define DEBUG_22		22) ;this seems to be intended for the QA team
+(define DYING			40)
+(define FALLING			41)
+(define LEIING			42)
+(define CARVING			43)
+(define WEAVING			44)
+(define LOCKER			45)
+(define INVDESC			46)
+(define DOOR			50)
+(define AUTODOOR		51)
+(define GIRL			70)
+(define FACE			71)
+(define ROBIN_LARRY		80)
+(define ROBIN_PATTI		81)
+(define BOSSKEY			90)
 
 ;Locales and regions
 (define VILLAGE 299)

@@ -21,20 +21,20 @@
 )
 
 (local
-	[str 166]
-	[local166 22]
+	[msgBuf 166]
+	[titleBuf 22]
 	passPage
 	inputPassNum
 	[correctPassNum 27] = [0 0 0 741 0 -9725 30004 0 0 18608 25695 -32695 993 0 0 9170 0 0 -16422 -31742 0 0 -11054 -3033]
 )
 (procedure (MaitreDSays theView theLoop theCel)
-	(Print @str
+	(Print @msgBuf
 		#at -1 10
 		#title {the Maitre d' says}
 		#mode teJustCenter
 		#icon theView theLoop theCel
 	)
-	(= str 0)
+	(= msgBuf 0)
 )
 
 (instance rm420 of Room
@@ -331,7 +331,7 @@
 					)
 					((Said '[/area]')
 						(Print
-							(Format @str 420 19
+							(Format @msgBuf 420 19
 								(cond 
 									((== showroomState SRcherriOnPhone) {a gorgeous woman in a dressing gown})
 									((cast contains: aMaitreD) {a man standing behind a podium})
@@ -379,7 +379,7 @@
 				(while (== 0 [correctPassNum passPage])
 					(= passPage (Random 1 24))
 				)
-				(Format @str 420 65 passPage)
+				(Format @msgBuf 420 65 passPage)
 				(MaitreDSays 422 3 0)
 				(= numBuf 0)
 				(GetInput @numBuf 7 {My pass number is:})
@@ -393,7 +393,7 @@
 				(if debugging
 					(Printf 420 66 inputPassNum [correctPassNum passPage] passPage)
 				)
-				(Format @str 420 67)
+				(Format @msgBuf 420 67)
 				(MaitreDSays 422 3 0)
 				(= seconds 3)
 			)
@@ -401,18 +401,18 @@
 				(aMaitreD setCel: 0 stopUpd:)
 				(Bset fGaveTicketToMaitreD)
 				(if (not (Btst fGaveMoneyToMaitreD))
-					(Format @str 420 68)
+					(Format @msgBuf 420 68)
 					(handIcon view: 422 loop: 4)
-					(Print @str
+					(Print @msgBuf
 						#at -1 10
 						#title {the Maitre d' says}
 						#mode teJustCenter
 						#icon handIcon
 					)
-					(= str 0)
+					(= msgBuf 0)
 					(HandsOn)
 				else
-					(Format @str 420 69)
+					(Format @msgBuf 420 69)
 					(MaitreDSays 422 3 6)
 					(self changeState: 8)
 				)
@@ -424,7 +424,7 @@
 			)
 			(5
 				(aMaitreD setCel: 0 stopUpd:)
-				(if (not str) (Format @str 420 70))
+				(if (not msgBuf) (Format @msgBuf 420 70))
 				(MaitreDSays 422 3 0)
 				(HandsOn)
 			)
@@ -439,7 +439,7 @@
 				(cond 
 					((== ((Inventory at: iMoney) view?) 24) (Print 420 71) (MaitreDSays 422 3 0))
 					((not (Btst fGaveTicketToMaitreD))
-						(Format @str 420 72)
+						(Format @msgBuf 420 72)
 						(MaitreDSays 422 3 0)
 						(SetItemOwner iMoney)
 						(theGame changeScore: 50)
@@ -448,7 +448,7 @@
 					)
 					(else
 						(HandsOff)
-						(Format @str 420 73)
+						(Format @msgBuf 420 73)
 						(MaitreDSays 422 3 1)
 						(SetItemOwner iMoney)
 						(Bset fGaveMoneyToMaitreD)
@@ -485,18 +485,18 @@
 			(12 (curRoom newRoom: 430))
 			(13
 				(aMaitreD setCel: 0 stopUpd:)
-				(Format @str 420 74)
+				(Format @msgBuf 420 74)
 				(MaitreDSays 422 3 0)
 				(= seconds 2)
 			)
 			(14
-				(Format @str 420 75)
+				(Format @msgBuf 420 75)
 				(MaitreDSays 422 3 0)
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 56
-					register: (Format @str 420 76)
-					next: (Format @local166 420 77)
+					register: (Format @msgBuf 420 76)
+					next: (Format @titleBuf 420 77)
 				)
 			)
 		)
@@ -514,7 +514,7 @@
 					((not (& (ego onControl:) cRED)) (Print 420 37))
 					(else
 						(Print 420 38)
-						(Format @str 420 39)
+						(Format @msgBuf 420 39)
 						(self changeState: 4)
 					)
 				)
@@ -526,7 +526,7 @@
 					((not (& (ego onControl:) cRED)) (Print 420 37))
 					(else
 						(Print 420 40)
-						(Format @str 420 41)
+						(Format @msgBuf 420 41)
 						(self changeState: 4)
 					)
 				)
@@ -542,7 +542,7 @@
 					((not (& (ego onControl:) cRED)) (Print 420 37))
 					(else
 						(Print 420 42)
-						(Format @str 420 43)
+						(Format @msgBuf 420 43)
 						(self changeState: 4)
 					)
 				)
@@ -559,7 +559,7 @@
 					((not (& (ego onControl:) cRED)) (Print 420 37))
 					((>= showroomState SRstageDoorUnlocked) (Print 420 44))
 					((>= showroomState SRshowDone) (Print 420 45))
-					(else (Format @str 420 46) (self changeState: 4))
+					(else (Format @msgBuf 420 46) (self changeState: 4))
 				)
 			)
 			((Said 'bracelet,use,give,show/pass,book')
@@ -594,7 +594,7 @@
 					(else
 						(Printf 420 51 introductoryPhrase)
 						(Print 420 52)
-						(Format @str 420 46)
+						(Format @msgBuf 420 46)
 						(self changeState: 4)
 					)
 				)

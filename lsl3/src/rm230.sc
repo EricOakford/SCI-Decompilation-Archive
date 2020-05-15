@@ -92,7 +92,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 235))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 235)
+		)
 	)
 	
 	(method (changeState newState)
@@ -143,7 +145,7 @@
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					(playingAsPatti (Print 230 0))
 					((not (CheckItemOwner iGrass)) (AlreadyTook))
-					((not (& (ego onControl:) $0010)) (NotClose))
+					((not (& (ego onControl:) cRED)) (NotClose))
 					(else (Print 230 0))
 				)
 			)
@@ -152,7 +154,7 @@
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					(playingAsPatti (Print 230 0))
 					((not (CheckItemOwner 4)) (AlreadyTook))
-					((not (& (ego onControl:) $0010)) (NotClose))
+					((not (& (ego onControl:) cRED)) (NotClose))
 					(
 					(or (not (Said '//ginsu')) (not (ego has: iGinsuKnife))) (Print 230 1))
 					((!= ((Inventory at: iGinsuKnife) view?) 21) (Print 230 2))
@@ -165,7 +167,7 @@
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					((not (ego has: iGinsuKnife)) (DontHave))
 					((not (CheckItemOwner iGrass)) (AlreadyTook))
-					((not (& (ego onControl:) $0010)) (NotClose))
+					((not (& (ego onControl:) cRED)) (NotClose))
 					((not (Said '//blade<carve')) (Print 230 3))
 					((!= ((Inventory at: iGinsuKnife) view?) 21) (Print 230 2))
 					(else (self changeState: 1))

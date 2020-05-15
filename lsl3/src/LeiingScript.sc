@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 42)
+(script# LEIING)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -36,7 +36,10 @@
 				(ego loop: 1 cel: 0 setCycle: Forward)
 				(= seconds 3)
 			)
-			(2 (ego loop: 2) (= seconds 2))
+			(2
+				(ego loop: 2)
+				(= seconds 2)
+			)
 			(3
 				(ego loop: 3 cel: 0 setCycle: EndLoop self)
 			)
@@ -53,7 +56,7 @@
 				(NormalEgo 0)
 				(ego illegalBits: oldIllBits)
 				(theGame setScript: 0 setSpeed: oldSpeed)
-				(DisposeScript 42)
+				(DisposeScript LEIING)
 			)
 		)
 	)

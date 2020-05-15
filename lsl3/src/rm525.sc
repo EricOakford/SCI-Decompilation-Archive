@@ -14,8 +14,8 @@
 )
 
 (local
-	[str 40]
-	[deadStr 22]
+	[msgBuf 40]
+	[titleBuf 22]
 )
 (instance rm525 of Room
 	(properties
@@ -129,11 +129,11 @@
 			(21
 				(Print 525 3)
 				(ego hide:)
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 814
-					register: (Format @str 525 4)
-					next: (Format @deadStr 525 5)
+					register: (Format @msgBuf 525 4)
+					next: (Format @titleBuf 525 5)
 				)
 			)
 		)

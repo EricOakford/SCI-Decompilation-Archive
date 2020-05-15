@@ -101,7 +101,7 @@
 			)
 		)
 		(if (== nearSteps 1)
-			(ego setPri: 11 observeControl: 16384 ignoreControl: 8192)
+			(ego setPri: 11 observeControl: cYELLOW ignoreControl: cLMAGENTA)
 		)
 		(if (== nearSteps 0)
 			(ego
@@ -120,7 +120,7 @@
 				(ego
 					posn: (ego xLast?) (ego yLast?)
 					setMotion: 0
-					observeControl: 2
+					observeControl: cBLUE
 				)
 				(if playingAsPatti (Print 250 0) else (Print 250 1))
 				(Animate (cast elements?) FALSE)

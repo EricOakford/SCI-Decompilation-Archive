@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 41)
+(script# FALLING)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -17,8 +17,8 @@
 	jumpY
 	egoX
 	egoY
-	[str 44]
-	[deadStr 22]
+	[msgBuf 44]
+	[titleBuf 22]
 )
 (instance rm41 of Region
 	(properties)
@@ -59,7 +59,7 @@
 				(HandsOff)
 				(soundFX number: 4 loop: 1 play:)
 				(Print
-					(Format @str 41 0 expletive)
+					(Format @msgBuf 41 0 expletive)
 					#at -1 10
 					#dispose
 				)
@@ -82,11 +82,11 @@
 					(= currentStatus egoNORMAL)
 					(ego posn: egoX egoY)
 				else
-					(theGame setScript: (ScriptID 40))
-					((ScriptID 40)
+					(theGame setScript: (ScriptID DYING))
+					((ScriptID DYING)
 						caller: (+ 1 (ego view?))
-						register: (Format @str 41 1 currentEgo)
-						next: (Format @deadStr 41 2)
+						register: (Format @msgBuf 41 1 currentEgo)
+						next: (Format @titleBuf 41 2)
 					)
 				)
 			)

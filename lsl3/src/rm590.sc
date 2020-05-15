@@ -15,8 +15,8 @@
 )
 
 (local
-	[str 88]
-	[deadStr 22]
+	[msgBuf 88]
+	[titleBuf 22]
 )
 (instance rm590 of Room
 	(properties
@@ -188,11 +188,11 @@
 			)
 			(21
 				(aDoctor hide:)
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 595
-					register: (Format @str 590 33)
-					next: (Format @deadStr 590 34)
+					register: (Format @msgBuf 590 33)
+					next: (Format @titleBuf 590 34)
 				)
 			)
 			(22)
@@ -271,8 +271,8 @@
 				)
 			)
 			(34
-				(Format @str 590 39 expletive)
-				(Print @str #at -1 10)
+				(Format @msgBuf 590 39 expletive)
+				(Print @msgBuf #at -1 10)
 				(soundFX number: 4 loop: 1 play:)
 				(Print 590 40 #at -1 10)
 				(= cycles 11)

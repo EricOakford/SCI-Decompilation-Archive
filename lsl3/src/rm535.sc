@@ -14,8 +14,8 @@
 )
 
 (local
-	[str 77]
-	[deadStr 22]
+	[msgBuf 77]
+	[titleBuf 22]
 )
 (instance rm535 of Room
 	(properties
@@ -113,11 +113,11 @@
 				(ego setMotion: theJump)
 			)
 			(9
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 814
-					register: (Format @str 535 11)
-					next: (Format @deadStr 535 12)
+					register: (Format @msgBuf 535 11)
+					next: (Format @titleBuf 535 12)
 				)
 			)
 		)

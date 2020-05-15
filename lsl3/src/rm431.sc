@@ -20,8 +20,8 @@
 	[actors 6]
 	[veggies 6]
 	[local12 9] = [999 113 127 141 155 169 183 197 999]
-	[str 40]
-	[deadStr 22]
+	[msgBuf 40]
+	[titleBuf 22]
 )
 (instance rm431 of Room
 	(properties
@@ -106,7 +106,7 @@
 		)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp i)
 		(ChangeScriptState self newState 1 12)
 		(switch (= state newState)
 			(0)
@@ -118,7 +118,7 @@
 			(2)
 			(3
 				(aCurtain stopUpd:)
-				(Print (Format @str 431 5 expletive) #font 7)
+				(Print (Format @msgBuf 431 5 expletive) #font 7)
 				(Print 431 6)
 				(Print 431 7)
 				(= seconds 3)
@@ -168,15 +168,15 @@
 			)
 			(12
 				(HandsOff)
-				(= temp0 1)
-				(while (<= temp0 5)
-					([veggies temp0]
+				(= i 1)
+				(while (<= i 5)
+					([veggies i]
 						view: 430
 						setCycle: Forward
 						setStep: 6 6
 						setScript: (VeggieScript new:)
 					)
-					(++ temp0)
+					(++ i)
 				)
 				(= seconds 8)
 			)
@@ -186,16 +186,16 @@
 			)
 			(14
 				(cls)
-				(= temp0 1)
-				(while (<= temp0 5)
-					(([veggies temp0] script?) changeState: 2)
-					(++ temp0)
+				(= i 1)
+				(while (<= i 5)
+					(([veggies i] script?) changeState: 2)
+					(++ i)
 				)
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 437
-					register: (Format @str 431 22)
-					next: (Format @deadStr 431 23)
+					register: (Format @msgBuf 431 22)
+					next: (Format @titleBuf 431 23)
 				)
 			)
 			(15
@@ -246,10 +246,10 @@
 				(music loop: 1 play:)
 				(curRoom drawPic: 99 6)
 				(cast eachElementDo: #hide)
-				(= temp0 1)
-				(while (<= temp0 5)
-					(([actors temp0] script?) changeState: 2)
-					(++ temp0)
+				(= i 1)
+				(while (<= i 5)
+					(([actors i] script?) changeState: 2)
+					(++ i)
 				)
 				(= cycles 20)
 			)

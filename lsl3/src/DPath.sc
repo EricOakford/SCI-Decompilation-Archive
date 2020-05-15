@@ -27,7 +27,9 @@
 	
 	(method (init theClient thePoints &tmp i)
 		
-		(= points (or points (List new:)))	;create only once
+		(= points (if points else (List new:)))
+		;EO: The following line of code causes "Not an Object" errors
+;		(= points (or points (List new:)))	;create only once
 		
 		(if argc	
 			

@@ -24,8 +24,8 @@
 	onOtherSide
 	local2
 	ropeState
-	[str 44]
-	[deadStr 22]
+	[msgBuf 44]
+	[titleBuf 22]
 )
 (instance rm530 of Room
 	(properties
@@ -46,8 +46,8 @@
 		)
 		(cond 
 			((== prevRoomNum 535)
-				(= playingAsPatti 1)
-				(= onOtherSide 1)
+				(= playingAsPatti TRUE)
+				(= onOtherSide TRUE)
 				(= ropeState 531)
 				(= currentEgoView 802)
 				(NormalEgo 2)
@@ -55,8 +55,8 @@
 				(aRope posn: 227 72 setCycle: EndLoop RopeScript)
 			)
 			((== prevRoomNum 540)
-				(= playingAsPatti 1)
-				(= onOtherSide 1)
+				(= playingAsPatti TRUE)
+				(= onOtherSide TRUE)
 				(= ropeState 531)
 				(= currentEgoView 802)
 				(NormalEgo 2)
@@ -64,7 +64,7 @@
 				(aRope posn: 227 72 setCel: 255 stopUpd:)
 			)
 			(else
-				(= playingAsPatti 1)
+				(= playingAsPatti TRUE)
 				(= currentEgoView 800)
 				(Load VIEW 531)
 				(Load VIEW 532)
@@ -240,11 +240,11 @@
 				(ego view: 804 loop: 1 setCel: 255 setCycle: BegLoop self)
 			)
 			(14
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 537
-					register: (Format @str 530 69)
-					next: (Format @deadStr 530 70)
+					register: (Format @msgBuf 530 69)
+					next: (Format @titleBuf 530 70)
 				)
 			)
 			(15
@@ -350,7 +350,7 @@
 			(34
 				(= seconds (= cycles 0))
 				(Print
-					(Format @str 530 81 expletive)
+					(Format @msgBuf 530 81 expletive)
 					#dispose
 					#at
 					-1
@@ -531,11 +531,11 @@
 				)
 			)
 			(59
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 27
-					register: (Format @str 530 93)
-					next: (Format @deadStr 530 94)
+					register: (Format @msgBuf 530 93)
+					next: (Format @titleBuf 530 94)
 				)
 			)
 			(60
@@ -581,7 +581,7 @@
 			(65
 				(HandsOff)
 				(Print
-					(Format @str 530 81 expletive)
+					(Format @msgBuf 530 81 expletive)
 					#at
 					-1
 					10
@@ -621,10 +621,10 @@
 						(ego posn: 159 158)
 					)
 				else
-					(theGame setScript: (ScriptID 40))
-					((ScriptID 40)
+					(theGame setScript: (ScriptID DYING))
+					((ScriptID DYING)
 						caller: 814
-						register: (Format @str 530 99)
+						register: (Format @msgBuf 530 99)
 					)
 				)
 			)

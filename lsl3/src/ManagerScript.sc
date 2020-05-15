@@ -13,8 +13,8 @@
 
 (local
 	local0
-	[str 40]
-	[deadStr 22]
+	[msgBuf 40]
+	[titleBuf 22]
 )
 (instance ManagerScript of Script
 	(properties)
@@ -85,11 +85,11 @@
 				(gADoor setCycle: BegLoop self)
 			)
 			(10
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 423
-					register: (Format @str 421 4)
-					next: (Format @deadStr 421 5)
+					register: (Format @msgBuf 421 4)
+					next: (Format @titleBuf 421 5)
 				)
 				(self dispose:)
 			)

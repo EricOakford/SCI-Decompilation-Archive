@@ -98,7 +98,7 @@
 			(2
 				(Printf 630 10 expletive)
 				(ego
-					observeControl: 8192
+					observeControl: cLMAGENTA
 					baseSetter: SQ3Base
 					setMotion: MoveTo 187 99 self
 				)
@@ -128,12 +128,12 @@
 				(HandsOn)
 				(ego
 					illegalBits: 0
-					observeControl: -32768 8192
+					observeControl: cWHITE cLMAGENTA
 					baseSetter: SQ3Base
 				)
 			)
 			(5
-				(aLarry observeControl: -32768 16384 setMotion: Wander 22)
+				(aLarry observeControl: cWHITE cYELLOW setMotion: Wander 22)
 			)
 			(6
 				(Ok)

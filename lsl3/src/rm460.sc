@@ -251,34 +251,36 @@
 			(return)
 		)
 		(cond 
-			(
-				(or
-					(Said '/casino,gamble,gambling')
-					(Said '//casino,gamble,gambling')
-				)
+			((or (Said '/casino,gamble,gambling') (Said '//casino,gamble,gambling'))
 				(Print 460 6)
 				(ManScript changeState: 5 register: 102)
 			)
 			((Said 'address')
 				(cond 
-					((& (ego onControl:) cCYAN) (Print 460 7))
-					((& (ego onControl:) cGREEN) (Print 460 8) (ManScript changeState: 5))
-					(else (NotClose))
+					((& (ego onControl:) cCYAN)
+						(Print 460 7)
+					)
+					((& (ego onControl:) cGREEN)
+						(Print 460 8)
+						(ManScript changeState: 5)
+					)
+					(else
+						(NotClose)
+					)
 				)
 			)
 			(
 				(and
 					(not (Said 'look>'))
-					(or
-						(Said '/key,penthouse,area')
-						(Said 'enroll')
-						(Said '//key,penthouse,area')
-					)
+					(or (Said '/key,penthouse,area') (Said 'enroll') (Said '//key,penthouse,area'))
 				)
 				(Print 460 9)
 				(ManScript changeState: 5 register: 101)
 			)
-			((Said 'look/man,buffet,man') (Print 460 10) (Print 460 11 #at -1 144))
+			((Said 'look/man,buffet,man')
+				(Print 460 10)
+				(Print 460 11 #at -1 144)
+			)
 		)
 	)
 )
@@ -349,8 +351,7 @@
 	(method (changeState newState &tmp clientCel)
 		(switch (= state newState)
 			(0
-				((/ machineSpeed 2)
-				;(client
+				(client
 					view: 460
 					setCel: (Random 2 9)
 					setLoop: 2
@@ -361,7 +362,9 @@
 				)
 				(= seconds 3)
 			)
-			(1 (= seconds (Random 4 10)))
+			(1
+				(= seconds (Random 4 10))
+			)
 			(2
 				(= clientCel (client cel?))
 				(while (== (client cel?) clientCel)
@@ -380,15 +383,18 @@
 				(= seconds 3)
 			)
 			(4
-				;(client
-				((/ machineSpeed 2)
+				(client
 					cycleSpeed: 2
 					;cycleSpeed: (/ machineSpeed 2)
 					setCycle: CycleTo 0 -1 self
 				)
 			)
-			(5 (= seconds 3))
-			(6 (RoomScript changeState: 6))
+			(5
+				(= seconds 3)
+			)
+			(6
+				(RoomScript changeState: 6)
+			)
 		)
 	)
 )

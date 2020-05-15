@@ -79,18 +79,18 @@
 		(cond 
 			(
 				(and
-					(& (ego onControl:) $0002)
+					(& (ego onControl:) cBLUE)
 					(or (< (ego heading?) 90) (> (ego heading?) 269))
 				)
-				(aDoor doorCtrl: 2 loop: 0)
+				(aDoor doorCtrl: cBLUE loop: 0)
 			)
 			(
 				(and
-					(& (ego onControl:) $0010)
+					(& (ego onControl:) cRED)
 					(> (ego heading?) 89)
 					(< (ego heading?) 271)
 				)
-				(aDoor doorCtrl: 16 loop: 1)
+				(aDoor doorCtrl: cRED loop: 1)
 			)
 		)
 	)

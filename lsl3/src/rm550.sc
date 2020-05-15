@@ -16,8 +16,8 @@
 
 (local
 	drownLoop
-	[str 55]
-	[deadStr 22]
+	[msgBuf 55]
+	[titleBuf 22]
 )
 (instance rm550 of Room
 	(properties
@@ -158,7 +158,7 @@
 				(HandsOff)
 				(= currentStatus egoDROWNING)
 				(Print
-					(Format @str 550 26 expletive)
+					(Format @msgBuf 550 26 expletive)
 					#at -1 10
 					#dispose
 				)
@@ -180,11 +180,11 @@
 				(ego setMotion: MoveTo 348 73 self)
 			)
 			(16
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 816
-					register: (Format @str 550 27)
-					next: (Format @deadStr 550 28)
+					register: (Format @msgBuf 550 27)
+					next: (Format @titleBuf 550 28)
 				)
 			)
 		)

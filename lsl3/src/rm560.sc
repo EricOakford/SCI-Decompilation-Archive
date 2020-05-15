@@ -24,8 +24,8 @@
 	oldEgoX
 	[local6 2]
 	obstacleLoop
-	[str 40]
-	[deadStr 22]
+	[msgBuf 40]
+	[titleBuf 22]
 )
 (instance rm560 of Room
 	(properties
@@ -160,11 +160,11 @@
 			(8)
 			(9
 				(soundFX number: 561 loop: 1 play:)
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 563
-					register: (Format @str 560 6)
-					next: (Format @deadStr 560 7)
+					register: (Format @msgBuf 560 6)
+					next: (Format @titleBuf 560 7)
 				)
 			)
 		)

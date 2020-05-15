@@ -15,8 +15,8 @@
 )
 
 (local
-	[str 66]
-	[deadStr 22]
+	[msgBuf 66]
+	[titleBuf 22]
 	[local88 20] = [-16564 5177 19666 27846 18175 19476 14668 -11668 -14778 -2049 -12039 -6221 -28275 -28200 -29441 -24077 -12441 8987 9137 6655]
 	local108 =  500
 	local109
@@ -242,11 +242,11 @@
 				)
 			)
 			(6
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 505
-					register: (Format @str 500 23)
-					next: (Format @deadStr 500 24)
+					register: (Format @msgBuf 500 23)
+					next: (Format @titleBuf 500 24)
 				)
 			)
 		)
@@ -292,7 +292,7 @@
 						((Said '[/area]') (Print 500 9) (Print 500 10 #at -1 144))
 						((Said '/bamboo')
 							(Print 500 11)
-							(Print (Format @str 500 12 bambooStalksSeen) #at -1 144)
+							(Print (Format @msgBuf 500 12 bambooStalksSeen) #at -1 144)
 							(++ bambooStalksSeen)
 						)
 					)

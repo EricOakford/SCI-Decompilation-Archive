@@ -23,8 +23,8 @@
 	local1
 	local2
 	[local3 2]
-	[str 40]
-	[local45 22]
+	[msgBuf 40]
+	[titleBuf 22]
 )
 (instance rm260 of Room
 	(properties
@@ -66,11 +66,11 @@
 				(Load VIEW 712)
 				(aLizard init:)
 			)
-			(1 (ego observeControl: 16384))
+			(1 (ego observeControl: cYELLOW))
 			(2
 				(aTawni setLoop: 2 setCel: 255)
 				(TawniScript changeState: 8)
-				(ego observeControl: 16384)
+				(ego observeControl: cYELLOW)
 				(-- tawniState)
 			)
 			(3
@@ -99,7 +99,7 @@
 			)
 			(4
 				(aTawni init:)
-				(ego observeControl: 16384)
+				(ego observeControl: cYELLOW)
 			)
 			(5
 				(Load VIEW 707)
@@ -170,10 +170,10 @@
 		)
 		(if
 		(and (!= currentStatus egoNORMAL) (!= currentStatus 1003))
-			(ego observeControl: 512)
+			(ego observeControl: cLBLUE)
 		)
 		(if
-		(and (== (ego onControl:) 512) (== currentStatus egoNORMAL))
+		(and (== (ego onControl:) cLBLUE) (== currentStatus egoNORMAL))
 			(self changeState: 5)
 		)
 	)
@@ -200,11 +200,11 @@
 			)
 			(7 (ego hide:) (= seconds 2))
 			(8
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: (+ 4 (ego view?))
-					register: (Format @str 260 24 currentEgo)
-					next: (Format @local45 260 25)
+					register: (Format @msgBuf 260 24 currentEgo)
+					next: (Format @titleBuf 260 25)
 				)
 			)
 			(9
@@ -285,11 +285,11 @@
 			)
 			(22
 				(Print 260 30)
-				(theGame setScript: (ScriptID 40))
-				((ScriptID 40)
+				(theGame setScript: (ScriptID DYING))
+				((ScriptID DYING)
 					caller: 259
-					register: (Format @str 260 31)
-					next: (Format @local45 260 32)
+					register: (Format @msgBuf 260 31)
+					next: (Format @titleBuf 260 32)
 				)
 			)
 			(23
@@ -393,9 +393,9 @@
 			(38
 				(Print 260 45)
 				(Print 260 46)
-				(ego get: 2)
-				(= newspaperState 1)
-				(= showroomState 0)
+				(ego get: iGinsuKnife)
+				(= newspaperState NSpComing)
+				(= showroomState SRshowIsOn)
 				(theGame changeScore: 40)
 				(= seconds 3)
 			)
@@ -446,7 +446,7 @@
 				(= cycles 44)
 			)
 			(46
-				(Print (Format @str 260 55 expletive) #at -1 10)
+				(Print (Format @msgBuf 260 55 expletive) #at -1 10)
 				(ego cycleSpeed: 1 loop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(47
@@ -472,7 +472,7 @@
 				(Print 260 59)
 				(NormalEgo 2)
 				(Bclr 5)
-				(ego observeControl: 16384)
+				(ego observeControl: cYELLOW)
 				(= tawniState 4)
 				(= currentStatus egoNORMAL)
 			)
