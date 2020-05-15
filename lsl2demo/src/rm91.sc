@@ -222,8 +222,12 @@
 				(aDog show:)
 				(= seconds 3)
 			)
-			(10 (aDog setCycle: EndLoop self))
-			(11 (= cycles 5))
+			(10
+				(aDog setCycle: EndLoop self)
+			)
+			(11
+				(= cycles 5)
+			)
 			(12
 				(aDog
 					view: 804

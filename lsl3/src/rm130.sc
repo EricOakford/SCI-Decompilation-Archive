@@ -24,7 +24,7 @@
 		setPri: 1
 		posn: [housePosn (++ local2)] [housePosn (++ local2)]
 	)
-	(proc0_15 aHouse)
+	(AddViewToPic aHouse)
 	(if (== 999 [housePosn local2]) (= local2 (- local2 2)))
 )
 

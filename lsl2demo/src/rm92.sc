@@ -234,9 +234,15 @@
 				(aWaterfall hide:)
 				(rm92Script cue:)
 			)
-			(5 (aDoor setCycle: EndLoop self))
-			(6 (rm92Script cue:))
-			(7 (aDoor setCycle: BegLoop self))
+			(5
+				(aDoor setCycle: EndLoop self)
+			)
+			(6
+				(rm92Script cue:)
+			)
+			(7
+				(aDoor setCycle: BegLoop self)
+			)
 			(8 (rm92Script cue:))
 			(9
 				(aWaterfall show: setLoop: 4 cel: 0 setCycle: EndLoop self)
@@ -261,10 +267,18 @@
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
-			(0 (= cycles 5))
-			(1 (aFog setCycle: EndLoop self))
-			(2 (aFog setCycle: BegLoop self))
-			(3 (self changeState: 0))
+			(0
+				(= cycles 5)
+			)
+			(1
+				(aFog setCycle: EndLoop self)
+			)
+			(2
+				(aFog setCycle: BegLoop self)
+			)
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )

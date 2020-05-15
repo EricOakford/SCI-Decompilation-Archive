@@ -119,7 +119,7 @@
 			)
 			(17
 				(Print 355 6)
-				(proc0_15 ego)
+				(AddViewToPic ego)
 				(ego
 					view: 355
 					loop: 3

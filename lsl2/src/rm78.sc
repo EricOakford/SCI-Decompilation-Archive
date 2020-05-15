@@ -304,7 +304,7 @@
 				(= theChief aChief)
 				(ego stopUpd:)
 				(Print 78 15 #draw)
-				(proc0_4 aChief)
+				(AddViewToPic aChief)
 				(theChief posn: 888 888)
 				(= seconds 3)
 			)
@@ -320,7 +320,7 @@
 			(15
 				(Print 78 18)
 				(theSound stop:)
-				(proc0_4 aDrummer)
+				(AddViewToPic aDrummer)
 				((= theDrummer aDrummer) posn: 777 777)
 				(Print 78 19)
 				(= seconds 3)
@@ -414,7 +414,7 @@
 			)
 			(33
 				(Print 78 25)
-				(proc0_4 aPedaler)
+				(AddViewToPic aPedaler)
 				((= thePedaler aPedaler) posn: 999 999)
 				(aPhotographer setMotion: MoveTo 132 160 self)
 			)

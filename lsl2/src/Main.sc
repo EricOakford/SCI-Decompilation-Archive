@@ -17,7 +17,7 @@
 	Face 1
 	NormalEgo 2
 	IsObjectOnControl 3
-	proc0_4 4
+	AddViewToPic 4
 	HandsOff 5
 	HandsOn 6
 	NotifyScript 7
@@ -609,17 +609,17 @@
 	)
 )
 
-(procedure (proc0_4 param1)
-	(if param1
+(procedure (AddViewToPic obj)
+	(if obj
 		((View new:)
-			view: (param1 view?)
-			loop: (param1 loop?)
-			cel: (param1 cel?)
-			priority: (param1 priority?)
-			posn: (param1 x?) (param1 y?)
+			view: (obj view?)
+			loop: (obj loop?)
+			cel: (obj cel?)
+			priority: (obj priority?)
+			posn: (obj x?) (obj y?)
 			addToPic:
 		)
-		(param1 posn: (param1 x?) (+ 1000 (param1 y?)))
+		(obj posn: (obj x?) (+ 1000 (obj y?)))
 	)
 )
 

@@ -121,6 +121,7 @@
 (define egoEATENBYPIRANHA	1016)
 
 ;Global stuff
+(define LSL2	0)
 (enum 2
 	INVDESC			;2
 	DOOR			;3

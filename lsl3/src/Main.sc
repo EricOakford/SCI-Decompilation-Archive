@@ -29,7 +29,7 @@
 	DontHave 12
 	NotifyScript 13
 	HaveMem 14
-	proc0_15 15
+	AddViewToPic 15
 	SetOrchidTimer 16
 	proc0_17 17
 	proc0_18 18
@@ -374,17 +374,17 @@
 	)
 )
 
-(procedure (proc0_15 param1)
-	(if param1
+(procedure (AddViewToPic obj)
+	(if obj
 		((View new:)
-			view: (param1 view?)
-			loop: (param1 loop?)
-			cel: (param1 cel?)
-			setPri: (param1 priority?)
-			posn: (param1 x?) (param1 y?)
+			view: (obj view?)
+			loop: (obj loop?)
+			cel: (obj cel?)
+			setPri: (obj priority?)
+			posn: (obj x?) (obj y?)
 			addToPic:
 		)
-		(param1 posn: (param1 x?) (+ 1000 (param1 y?)))
+		(obj posn: (obj x?) (+ 1000 (obj y?)))
 	)
 )
 

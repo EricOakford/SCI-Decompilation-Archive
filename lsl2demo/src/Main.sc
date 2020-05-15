@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 0)
+(script# LSL2)
 (include game.sh) (include menu.sh)
 (use Intrface)
 (use Sound)
@@ -17,7 +17,7 @@
 	Face 1
 	NormalEgo 2
 	IsObjectOnControl 3
-	proc0_4 4
+	AddViewToPic 4
 	HandsOff 5
 	HandsOn 6
 	NotifyScript 7
@@ -158,7 +158,7 @@
 	global117
 	global118
 	speedTestQA
-	howFast
+	machineSpeed
 	gotHaircutInCity
 	gotOnklunk
 	filthLevel
@@ -207,7 +207,7 @@
 		global166
 		global167
 		global168
-		tritePhrase
+	tritePhrase
 	str
 		global171
 		global172
@@ -508,6 +508,7 @@
 		global467
 		global468
 		global469
+	;end of str array
 	introductoryPhrase
 	lookedThroughKnothole
 	tookSwimInShipPool
@@ -518,7 +519,10 @@
 	appliedSunscreen
 	lookedAtRosella
 	appliedSunscreenAgain
-	wornParachute
+	wornParachute	;EO: This was not in the list, but is referenced when Larry
+					;puts on the parachute for the first time. As a result,
+					;this originally resulted in the points not being awarded
+					;when the game is played in ScummVM.
 )
 
 (procedure (Face actor1 actor2)
@@ -565,7 +569,7 @@
 (procedure (IsObjectOnControl obj event)
 	(if (< argc 2) (= event 5))
 	(switch (obj loop?)
-		(0
+		(loopE
 			(OnControl
 				(obj x?)
 				(obj y?)
@@ -574,7 +578,7 @@
 			)
 			(return)
 		)
-		(1
+		(loopW
 			(OnControl
 				(- (obj x?) event)
 				(obj y?)
@@ -583,7 +587,7 @@
 			)
 			(return)
 		)
-		(2
+		(loopS
 			(OnControl
 				(obj x?)
 				(obj y?)
@@ -592,7 +596,7 @@
 			)
 			(return)
 		)
-		(3
+		(loopN
 			(OnControl
 				(obj x?)
 				(- (obj y?) event)
@@ -604,17 +608,17 @@
 	)
 )
 
-(procedure (proc0_4 param1)
-	(if param1
+(procedure (AddViewToPic obj)
+	(if obj
 		((View new:)
-			view: (param1 view?)
-			loop: (param1 loop?)
-			cel: (param1 cel?)
-			priority: (param1 priority?)
-			posn: (param1 x?) (param1 y?)
+			view: (obj view?)
+			loop: (obj loop?)
+			cel: (obj cel?)
+			priority: (obj priority?)
+			posn: (obj x?) (obj y?)
 			addToPic:
 		)
-		(param1 posn: (param1 x?) (+ 1000 (param1 y?)))
+		(obj posn: (obj x?) (+ 1000 (obj y?)))
 	)
 )
 
@@ -688,6 +692,8 @@
 )
 
 (procedure (SetRegionTimer state minutes seconds)
+	;This sets the current game state and allotted time.
+	;If you don't leave the region in time, the game is over.
 	(= gameState state)
 	(= rgSeconds (* 10 (+ seconds (* minutes 60))))
 )
@@ -722,7 +728,9 @@
 		(Load CURSOR normalCursor)
 		(Load CURSOR waitCursor)
 		(ego view: 100 setCycle: Walk)
-		(Inventory empty: {Your leisure suit is empty!})
+		(Inventory
+			empty: {Your leisure suit is empty!}
+		)
 		(if (GameIsRestarting)
 			(StatusLine disable:)
 			(TheMenuBar hide:)
@@ -789,7 +797,7 @@
 		(super changeScore: delta)
 	)
 	
-	(method (handleEvent event &tmp [temp0 5])
+	(method (handleEvent event &tmp temp0 i [temp2 3])
 		(if (event claimed?) (return))
 		(super handleEvent: event)
 	)
@@ -814,7 +822,7 @@
 (class Iitem of InvItem
 	
 	(method (showSelf)
-		(Print 2 view
+		(Print INVDESC view
 			#title name
 			#icon view 0 0
 		)
