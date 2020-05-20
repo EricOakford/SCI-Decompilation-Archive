@@ -188,7 +188,10 @@
 		(if (& signal delObj)
 			(= signal (& signal (~ delObj)))
 			(cast delete: self)
-			(if underBits (UnLoad MEMORY underBits) (= underBits 0))
+			(if underBits
+				(UnLoad MEMORY underBits)
+				(= underBits 0)
+			)
 			(if (& signal viewAdded)
 				(addToPics
 					add:
@@ -280,7 +283,11 @@
 			(self setCel: -1)
 			(self startUpd:)
 			(= cycler
-				(if (& (cType -info-?) CLASS) (cType new:) else cType)
+				(if (& (cType -info-?) CLASS)
+					(cType new:)
+				else
+					cType
+				)
 			)
 			(cycler init: self &rest)
 		else
@@ -399,7 +406,11 @@
 		(if mType
 			(self startUpd:)
 			(= mover
-				(if (& (mType -info-?) CLASS) (mType new:) else mType)
+				(if (& (mType -info-?) CLASS)
+					(mType new:)
+				else
+					mType
+				)
 			)
 			(mover init: self &rest)
 		else
@@ -411,7 +422,10 @@
 		(if avoider (avoider dispose:))
 		(= avoider
 			(if
-			(and (IsObject aType) (& (aType -info-?) CLASS))
+				(and
+					(IsObject aType)
+					(& (aType -info-?) CLASS)
+				)
 				(aType new:)
 			else
 				aType
@@ -523,7 +537,10 @@
 		(if
 			(and
 				(or
-					(and (== illegalBits 0) (& signal ignrAct))
+					(and
+						(== illegalBits 0)
+						(& signal ignrAct)
+					)
 					(CanBeHere self (cast elements?))
 				)
 				(or
@@ -582,7 +599,9 @@
 				(< 180 (= ang (GetAngle x y vx vy)))
 					(= ang (- ang 360))
 				)
-				(= ang (+ (/ (+ ang 90) 2) (* 45 (- dir 2))))
+				(= ang
+					(+ (/ (+ ang 90) 2) (* 45 (- dir 2)))
+				)
 				(= xIncr (SinMult ang 100))
 				(= yIncr (- (CosMult ang 100)))
 			)
