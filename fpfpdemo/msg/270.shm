@@ -1,0 +1,22 @@
+;;; Sierra Script
+;;; 270.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 5)
+(define N_SWAMP 4)
+(define N_MINE 6)
+(define N_WATERTOWER 1)
+(define N_SHRUBS 2)
+(define N_TRAIN 3)
+(define N_FUSE 7)
+(define N_ROPE 8)
+(define N_BUCKET 9)
+(define N_TREE 10)
+(define N_TRACKS 11)
+
+;;; CASES
+
+(define C_WRONGSIDE 1)
+

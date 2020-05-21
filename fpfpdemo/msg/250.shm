@@ -1,0 +1,31 @@
+;;; Sierra Script
+;;; 250.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_GETCLOSER 3)
+
+;;; NOUNS
+
+(define N_ROOM 19)
+(define N_PHARMACYDOOR 1)
+(define N_RAIL 2)
+(define N_SHERIFFDOOR 3)
+(define N_SHERIFFWINDOW 4)
+(define N_PLAYHOUSE 5)
+(define N_TALLTHINSIGN 6)
+(define N_THINTALL 7)
+(define N_PLAYHOUSESIGN 8)
+(define N_PHARMACY 9)
+(define N_SHERIFFOFFICE 10)
+(define N_PHARMACYPOLES 11)
+(define N_CLUTTER 12)
+(define N_PHARMACYSIGN 13)
+(define N_SHERIFFSIGN 14)
+(define N_PLAYHOUSEDOOR 15)
+(define N_PHARMACYLEFT 16)
+(define N_PHARMACYRIGHT 17)
+(define N_TROUGH 18)
+(define N_HAND 20)
+

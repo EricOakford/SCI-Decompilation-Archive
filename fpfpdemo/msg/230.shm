@@ -1,0 +1,31 @@
+;;; Sierra Script
+;;; 230.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_ROOM 15)
+(define N_SALOON 1)
+(define N_CAFE 2)
+(define N_MOMSWINDOW 3)
+(define N_BARREL 4)
+(define N_HOTELWINDOW 5)
+(define N_MOMSDOOR 6)
+(define N_SALOONDOOR 7)
+(define N_CLUTTER 8)
+(define N_POST 9)
+(define N_HOTELPORCH 10)
+(define N_HOTELBALCONY 11)
+(define N_MOMSPORCH 12)
+(define N_SALOONPORCH 13)
+(define N_HOTELDOOR 14)
+(define N_RRSIGN 16)
+(define N_CACTUS 17)
+(define N_SIDEWALK 18)
+(define N_SALOONWINDOW 19)
+(define N_DUMMY 20)
+(define N_BUNTING 21)
+

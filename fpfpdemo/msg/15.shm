@@ -1,0 +1,42 @@
+;;; Sierra Script
+;;; 15.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DUMMY1 1)
+(define C_ATTACHFUSE 2)
+(define C_SULFUR 3)
+(define C_SALTPETER 4)
+(define C_CHARCOAL 5)
+(define C_SALTPETER_SULFUR 6)
+(define C_SALTPETER_CHARCOAL 7)
+(define C_SULFUR_CHARCOAL 8)
+(define C_ALL 9)
+(define C_CAN_EMPTY 10)
+
+;;; NOUNS
+
+(define N_EMPTY_VIAL 1)
+(define N_EMPTY_BOTTLE 2)
+(define N_TIN_CAN 3)
+(define N_FULL_VIAL 4)
+(define N_BEER_BOTTLE 5)
+(define N_FULL_BOTTLE 6)
+(define N_CHARCOAL 7)
+(define N_EMPTY_SALTPETER 8)
+(define N_EMPTY_MUG 9)
+(define N_COFFEE 10)
+(define N_MOLE 11)
+(define N_PRESCRIPTION 12)
+(define N_FUSE 13)
+(define N_HAND 14)
+(define N_HELP 15)
+(define N_LOOK 16)
+(define N_OK 17)
+(define N_SELECT 18)
+(define N_MATCHES 19)
+(define N_BOMB 20)
+(define N_FULL_SALTPETER 21)
+(define N_UNLIT_BOMB 22)
+

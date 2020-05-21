@@ -1,0 +1,47 @@
+;;; Sierra Script
+;;; 600.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_ROOM 1)
+(define N_RX 3)
+(define N_INTRO 2)
+(define N_CANT_GO 4)
+(define N_GATE 18)
+(define N_BOTTLE 7)
+(define N_VIAL 5)
+(define N_BACKDOOR 8)
+(define N_RFRONTSHELF1 36)
+(define N_RFRONTSHELF2 37)
+(define N_BACKCOUNTER 6)
+(define N_ICECREAM 20)
+(define N_DIPLOMA 17)
+(define N_BACKSHELF1 9)
+(define N_BACKSHELF2 10)
+(define N_BIGPICTURE 11)
+(define N_REARSHELF1 30)
+(define N_REARSHELF2 31)
+(define N_REARSHELF3 32)
+(define N_DESK 16)
+(define N_LFRONTSHELF1 34)
+(define N_LFRONTSHELF2 35)
+(define N_LEFTSHELF1 23)
+(define N_LEFTSHELF2 24)
+(define N_LEFTSHELF3 25)
+(define N_LEFTSHELF4 26)
+(define N_HANDSIGN 19)
+(define N_CABINET 14)
+(define N_LAMP 22)
+(define N_BOTTLES1 12)
+(define N_BOTTLES2 13)
+(define N_LFRONTSHELF 27)
+(define N_RFRONTSHELF 28)
+(define N_PHOTO 29)
+(define N_STATUE 33)
+(define N_JAR 21)
+(define N_COLUMN 15)
+

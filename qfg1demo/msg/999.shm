@@ -1,0 +1,12 @@
+;;; Sierra Script
+;;; 999.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_ASKQUIT 2)
+
+;;; NOUNS
+
+(define N_DEMO 1)
+
