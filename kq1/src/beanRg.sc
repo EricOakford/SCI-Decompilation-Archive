@@ -3,6 +3,7 @@
 (include game.sh)
 (use Main)
 (use Intrface)
+(use StopWalk)
 (use LoadMany)
 (use Reverse)
 (use Follow)
@@ -191,26 +192,27 @@
 	)
 )
 
-(class SyncWalkBack of Reverse
+(class SyncWalkBack of StopWalk
+	;was a subclass of Reverse, but this appears to be a decompilation error.
+	;The fact that it has vWalking and vStopped properties shows that it's actually
+	;a subclass of StopWalk.
 	(properties
 		xLast 0
 		yLast 0
-		vWalking 0
-		vStopped 0
 	)
 	
-	(method (init theClient theVStopped)
+	(method (init who stopView)
 		(if argc
-			(= vWalking ((= client theClient) view?))
-			(if (>= argc 2) (= vStopped theVStopped))
+			(= vWalking ((= client who) view?))
+			(if (>= argc 2) (= vStopped stopView))
 		)
 		(super init: client)
 	)
 	
-	(method (doit &tmp clientMover clientMover_2 temp2)
+	(method (doit &tmp mv mv2 temp2)
 		(if
 			(and
-				(IsObject (= clientMover (client mover?)))
+				(IsObject (= mv (client mover?)))
 				(or (!= (client x?) xLast) (!= (client y?) yLast))
 			)
 			(= xLast (client x?))
@@ -222,8 +224,8 @@
 				(client view: vStopped)
 				(if
 					(and
-						(= clientMover_2 (client mover?))
-						(not (clientMover_2 completed?))
+						(= mv2 (client mover?))
+						(not (mv2 completed?))
 					)
 					(client setMotion: 0)
 				)

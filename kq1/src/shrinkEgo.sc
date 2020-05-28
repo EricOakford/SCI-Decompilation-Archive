@@ -72,6 +72,7 @@
 			(4
 				(User canControl: FALSE)
 				(if (and (== curRoomNum 78) (== (ego onControl: origin) cBLUE))
+					;for some reason, this never happens - Graham can be in that area indefinitely without re-enlarging.
 					(EgoDead
 						{The mushroom wore off and you enlarged.__But you can't squeeze a five-foot Knight into a 6-inch hole!}
 					)

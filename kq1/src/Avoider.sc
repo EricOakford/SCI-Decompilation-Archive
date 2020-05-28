@@ -3,7 +3,6 @@
 (include game.sh)
 (use Sight)
 (use System)
-(use Main)
 
 
 (define	escapeMax		80)

@@ -6,8 +6,8 @@
 (use System)
 
 
-(procedure (ClaimEvent event claimed)
-	(event claimed: &rest)
+(procedure (ClaimObj obj eMod)
+	(obj eMod: &rest)
 )
 
 (class NewFeature of Object
@@ -97,7 +97,7 @@
 						)
 					)
 					((& eMod shiftDown)
-						(ClaimEvent self shiftClick)
+						(ClaimObj self shiftClick)
 						(event claimed: TRUE)
 					)
 				)

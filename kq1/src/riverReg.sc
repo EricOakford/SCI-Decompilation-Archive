@@ -13,6 +13,8 @@
 	riverReg 0
 )
 
+(define riverPri 60)	;(| cGREEN cCYAN cRED cMAGENTA)
+
 (local
 	oldEgoLoop
 )
@@ -30,7 +32,7 @@
 		(super doit:)
 		(if
 			(and
-				(& (ego onControl: origin) (| cBLUE cRED cMAGENTA))
+				(& (ego onControl: origin) riverPri)
 				(not (curRoom script?))
 				(== newRoomNum curRoomNum)
 			)
@@ -124,19 +126,19 @@
 					setStep: 6 3
 				)
 				(switch (ego onControl: origin)
-					(4
+					(cGREEN
 						(ego
 							setLoop: 1
 							setMotion: MoveTo (- (ego x?) 200) (+ (ego y?) 140)
 						)
 					)
-					(32
+					(cMAGENTA
 						(ego yStep: 1 setLoop: 2 setMotion: MoveTo (ego x?) 190)
 					)
-					(16
+					(cRED
 						(ego setLoop: 3 setMotion: MoveTo (ego x?) 0)
 					)
-					(8
+					(cCYAN
 						(ego
 							setLoop: 0
 							setMotion: MoveTo (+ (ego x?) 200) (+ (ego y?) 140)
@@ -156,7 +158,7 @@
 							)
 							(41 7)
 							(26
-								(if (& (ego onControl: 1) $0004) 1 else 8)
+								(if (& (ego onControl: origin) cGREEN) 1 else 8)
 							)
 							(42
 								(cond 

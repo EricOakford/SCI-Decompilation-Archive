@@ -227,21 +227,20 @@
 )
 
 (instance moveButterfly of Script
-	(properties)
+	;NOTE: This script seems to be bugged, and may hang the game.
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (< (Random 1 100) 10)
-					(repeat
-						(!= (= local2 (Random 0 7)) local0)
-					)
-					(= local0 local2)
-				)
+				;this appears to be the problematic code
+;;;				(if (< (Random 1 100) 10)
+;;;					(repeat
+;;;						(!= (= local2 (Random 0 7)) local0)
+;;;					)
+;;;					(= local0 local2)
+;;;				)
 				(= local1 (Random 1 [local11 [local3 local0]]))
-				(butterfly
-					setMotion:
-						MoveTo
+				(butterfly setMotion: MoveTo
 						[local11 (+ [local3 local0] (- (* local1 2) 1))]
 						[local11 (+ [local3 local0] (* local1 2))]
 						self
@@ -251,7 +250,9 @@
 				(butterfly setCycle: Forward)
 				(= cycles (Random 5 20))
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
