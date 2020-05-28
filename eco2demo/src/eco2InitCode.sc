@@ -1,0 +1,37 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# ECO2INIT)
+(include game.sh)
+(use Main)
+(use Print)
+(use Talker)
+(use System)
+
+(public
+	eco2InitCode 0
+)
+
+(instance eco2InitCode of Code
+
+	(method (init &tmp temp0 versionFile [temp2 25])
+		(= possibleScore 1000)
+		(= userFont 1207)
+		(Print font: userFont)
+		((= narrator Narrator) font: userFont keepWindow: TRUE)
+		(= msgType TEXT_MSG)
+		(= version {x.yyy.zzz})
+		(= buildDate {mm/dd/yy})
+		(= usPhone {991-999-9999})
+		(= intPhone {992-999-9999})
+		(= versionFile (FileIO fileOpen {version} 1))
+		(FileIO fileFGets version 11 versionFile)
+		(FileIO fileFGets buildDate 20 versionFile)
+		(FileIO fileFGets usPhone 20 versionFile)
+		(FileIO fileFGets intPhone 20 versionFile)
+		(FileIO fileClose versionFile)
+		(= useSortedFeatures TRUE)
+		(= eatMice 6)
+		(theGame setCursor: waitCursor TRUE 304 172 detailLevel: 5)
+		(= numVoices (DoSound NumVoices))
+		(systemWindow color: 57 back: 68)
+	)
+)

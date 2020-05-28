@@ -1,0 +1,43 @@
+;;; Sierra Script
+;;; Talkers.sh -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; 
+
+(define NARRATOR 99)
+(define PRINTMSG 97)
+(define SYSMSG 98)
+(define SLUDGE 6)
+(define PIGHEAD 24)
+(define ROGER 7)
+(define WEIRDNAR 13)
+(define SP1 11)
+(define SP2 12)
+(define TIMERIPPER 4)
+(define SVGRUNT 5)
+(define MONO 10)
+(define BARTENDER 1)
+(define VOHAULJR 32)
+(define ZONDRA 19)
+(define CLERK 9)
+(define BOB 38)
+(define ROBOCLERK 23)
+(define ROGERJR 31)
+(define ALIEN 29)
+(define SP4 22)
+(define SP3 14)
+(define ROGANDROGJR 34)
+(define COPS 17)
+(define PROFESSOR 8)
+(define BABES 30)
+(define CAN 15)
+(define BUTTON 25)
+(define MAYO 26)
+(define MUSTARD 27)
+(define KETCHUP 28)
+(define PICKLE 36)
+(define LETTUCE 37)
+(define BUN 35)
+(define VIBRA 20)
+(define THOREEN 21)
+

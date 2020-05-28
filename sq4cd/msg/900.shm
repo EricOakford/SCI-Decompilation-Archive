@@ -1,0 +1,40 @@
+;;; Sierra Script
+;;; 900.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+
+;;; CASES
+
+(define C_DIE_GENERIC 1)
+(define C_DIE_SMOKING 2)
+(define C_DIE_SHOPLIFTING 3)
+(define C_DIE_DILLYDALLY 4)
+(define C_DIE_ORTEGA 16)
+(define C_DIE_FORMATTED 6)
+(define C_DIE_VOHAUL_WINS 11)
+(define C_DIE_FORCEFIELD 7)
+(define C_DIE_BLOWNUP 5)
+(define C_DIE_FALL_STREETS 8)
+(define C_DIE_SLIMED 13)
+(define C_DIE_LEAVE_FORMATTING 19)
+(define C_DIE_STIFF 21)
+(define C_DIE_FALL_HANGAR 22)
+(define C_DIE_POCKETPAL 23)
+(define C_DIE_SLUG 27)
+(define C_DIE_CHANGE_MACHINE 29)
+(define C_DIE_ZAPZAP 17)
+(define C_DIE_DROID_BLAST 20)
+(define C_DIE_ORBS 30)
+(define C_DIE_LEAVEMALL 26)
+(define C_DIE_ALLOVER 24)
+(define C_DIE_WORTHTRY 18)
+(define C_DIE_SKATEORAMA 15)
+(define C_DIE_SKATE_LUMP 14)
+(define C_DIE_KNEWCOMING 10)
+(define C_DIE_STANDTHERE 9)
+(define C_DIE_ZEROIQ 12)
+(define C_DIE_MALLSECURED 25)
+(define C_DIE_SPLEEN 28)
+
