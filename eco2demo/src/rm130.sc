@@ -51,7 +51,7 @@
 				(= saveBits
 					(Display
 						@str
-						p_at teJustLeft
+						p_mode teJustLeft
 						p_at 26 140
 						p_font userFont
 						p_color 68
