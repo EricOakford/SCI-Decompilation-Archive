@@ -13,8 +13,7 @@
 	(properties)
 	
 	(method (init)
-		(if
-		(not (OneOf curRoomNum 300 310 311 320 330 333 334))
+		(if (not (OneOf curRoomNum 300 310 311 320 330 333 334))
 			(cSound stop:)
 		)
 		(mouseDownHandler addToFront: self)

@@ -707,6 +707,7 @@ code_1559:
 
 (class HQEgo of Ego
 	(properties
+		view 0
 		name "ego"
 	)
 	
