@@ -1,0 +1,16 @@
+;;; Sierra Script
+;;; 78.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_STAGFORAGING 1)
+(define C_STAGLEAP 2)
+
+;;; NOUNS
+
+(define N_ROOM 3)
+(define N_STAG 4)
+(define N_ANTWERP 2)
+(define N_BABY 1)
+

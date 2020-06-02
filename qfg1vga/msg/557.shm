@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 557.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_WALK 9)
+(define N_TIME 8)
+(define N_CANTDOTHAT 1)
+(define N_ACTIONHELP 2)
+(define N_OK 3)
+(define N_REST 4)
+(define N_RUN 5)
+(define N_SHEET 6)
+(define N_SNEAK 7)
+
+;;; CASES
+
+

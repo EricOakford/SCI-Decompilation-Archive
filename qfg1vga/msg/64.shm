@@ -1,0 +1,36 @@
+;;; Sierra Script
+;;; 64.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DAY 15)
+(define C_ROOT 1)
+(define C_NOROOT 2)
+(define C_LOOKDAY 11)
+(define C_LOOKNIGHT 12)
+(define C_LOOK1 13)
+(define C_LOOK2 14)
+(define C_NIGHT 8)
+(define C_NEARMANDRAKE 3)
+(define C_NOGHOST 4)
+(define C_LOOKGHOST1 5)
+(define C_LOOKGHOST2 6)
+(define C_FIRST_TIME 10)
+(define C_MIDNIGHT 7)
+(define C_WRONGTIME 9)
+
+;;; NOUNS
+
+(define N_ROOM 6)
+(define N_GRAVESTONE 3)
+(define N_CROSS_STONE 1)
+(define N_GRASS 7)
+(define N_TREES 10)
+(define N_SKY 9)
+(define N_WALL 11)
+(define N_MORTUARY 8)
+(define N_GRATE 2)
+(define N_MANDRAKE 4)
+(define N_GHOST 5)
+

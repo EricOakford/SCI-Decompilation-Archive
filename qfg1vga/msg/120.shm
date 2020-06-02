@@ -1,0 +1,18 @@
+;;; Sierra Script
+;;; 120.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_PICKSUCCESS 1)
+(define C_PICKFAIL 2)
+(define C_AFTERSHROOMS 3)
+(define C_NOSHROOMSHERE 4)
+(define C_SENSESRETURN 5)
+(define C_TRIPPY 6)
+(define C_TOADSTOOLS 7)
+
+;;; NOUNS
+
+(define N_EGO 1)
+

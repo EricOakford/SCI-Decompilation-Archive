@@ -1,0 +1,37 @@
+;;; Sierra Script
+;;; 210.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 1)
+(define N_SEARCHIT 2)
+(define N_LOOKIT 3)
+
+;;; CASES
+
+(define C_TROLLFLEES 1)
+(define C_NOESCAPE 2)
+(define C_SNEAKSUCCESS 3)
+(define C_GETREADY 4)
+(define C_CANTCALM 5)
+(define C_GETBEARD 6)
+(define C_GETCLAWS 7)
+(define C_GETDAGGERS 8)
+(define C_MANTRAYIMMUNE 9)
+(define C_GETCOINS 10)
+(define C_MANTRAYIMMUNE2 11)
+(define C_GET1COIN 12)
+(define C_GETNOTHING 13)
+(define C_GETCLAWS2 14)
+(define C_TROLL 15)
+(define C_BRIGAND 16)
+(define C_CHEETAUR 17)
+(define C_SAURUSREX 18)
+(define C_GOBLIN 19)
+(define C_DEAD 20)
+(define C_MANTRAY 21)
+(define C_OGRE 22)
+(define C_PROGRAMBUG 23)
+(define C_SAURUS 24)
+

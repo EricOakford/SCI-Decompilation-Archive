@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 206.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_ITEM 3)
+(define N_DROP 1)
+(define N_HELP 2)
+(define N_LOOK 4)
+(define N_CANCEL 5)
+(define N_PAGETURNER 6)
+(define N_PICKUP 7)
+(define N_USE 8)
+(define N_STATUS 9)
+

@@ -1,0 +1,47 @@
+;;; Sierra Script
+;;; 333.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_ALMSFORTHEPOOR 1)
+(define C_LOOKROOM 29)
+(define C_NIGHT 11)
+(define C_NOCLIMB 28)
+(define C_NOMORECLIMBING 26)
+(define C_CLIMBFAIL 27)
+(define C_TOOFAR 24)
+(define C_SEEMARKS 25)
+(define C_BOWLEMPTY 19)
+(define C_BOWLHASMONEY 20)
+(define C_BACKTOWORK 23)
+(define C_NOFUNDS 21)
+(define C_DONTDRINKBREATH 2)
+(define C_BEGGING 3)
+(define C_BRIGANDS 4)
+(define C_CASH 5)
+(define C_CIDER 6)
+(define C_CRUSHER 7)
+(define C_GAUNTS 8)
+(define C_LUCK 9)
+(define C_NAME 10)
+(define C_SOUTH 12)
+(define C_SPELL 13)
+(define C_THIEVES 14)
+(define C_TOURISTS 15)
+(define C_SPIELBURG 16)
+(define C_TRADERS 17)
+(define C_WORK 18)
+(define C_BRIGAND 22)
+
+;;; NOUNS
+
+(define N_ROOM 6)
+(define N_BEGGAR 2)
+(define N_SKY 8)
+(define N_BARRELS 7)
+(define N_BARRELS2 1)
+(define N_HOTDOGSTAND 4)
+(define N_BRICKS 3)
+(define N_MARKS 5)
+

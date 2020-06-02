@@ -1,0 +1,50 @@
+;;; Sierra Script
+;;; 332.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_CHIEF 7)
+(define N_BORIS 4)
+(define N_KNIFE 13)
+(define N_ROOM 18)
+(define N_BOARD 3)
+(define N_DOOR 11)
+(define N_LADDER 14)
+(define N_LIGHTS 15)
+(define N_CEILING 6)
+(define N_TRUNK 22)
+(define N_BARRELS 2)
+(define N_BOXES 5)
+(define N_TRAPDOOR 21)
+(define N_DAGGERS 10)
+(define N_POTTERY 17)
+(define N_TABLE 19)
+(define N_KNIFEONTABLE 16)
+(define N_CROCK 8)
+(define N_WINDOW 23)
+(define N_CRUSHER 9)
+
+;;; CASES
+
+(define C_FENCING 1)
+(define C_LICENSE 2)
+(define C_LOCKPICK 3)
+(define C_SERVICES 4)
+(define C_TOOLKIT 5)
+(define C_TOOLS 6)
+(define C_FENCEIT 7)
+(define C_UNLICENSED 8)
+(define C_CANTFENCETHAT 9)
+(define C_GETLICENSE 10)
+(define C_ALREADYPAID 11)
+(define C_NOFUNDS 12)
+(define C_BUYSOMETHING 13)
+(define C_ITSATIE 14)
+(define C_EGOWINS 15)
+(define C_FIRSTENTRY 46)
+(define C_MEETCHIEF1 22)
+(define C_MEETCHIEF2 24)
+(define C_MEETCHIEF3 23)
+(define C_DOORLOCKED 47)
+

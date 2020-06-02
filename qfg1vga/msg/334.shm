@@ -1,0 +1,46 @@
+;;; Sierra Script
+;;; 334.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_BARREL1 1)
+(define N_BARREL2 2)
+(define N_BRICKS 3)
+(define N_COIN 4)
+(define N_HOTDOGSTAND 5)
+(define N_MARKS 6)
+(define N_ROOM 7)
+(define N_SLINK 8)
+(define N_SKY 9)
+
+;;; CASES
+
+(define C_CLIMBFAIL 1)
+(define C_NOMORECLIMBING 2)
+(define C_NOCLIMB 3)
+(define C_NOTATHIEF 9)
+(define C_THIEVESALREADYKNOW 12)
+(define C_THIEVESIGNORE 10)
+(define C_CLICKSLINK 13)
+(define C_CLICKSNEAK 14)
+(define C_NEARCOIN 4)
+(define C_TOOFAR 5)
+(define C_FIRSTENTRY 6)
+(define C_LEARNPASSWORD 7)
+(define C_BETTERCHECKIN 8)
+(define C_NOFUNDS 26)
+(define C_GIVEMONEY 25)
+(define C_DIDNTPAY 17)
+(define C_AMBUSH53 15)
+(define C_AMBUSH 16)
+(define C_HELLOAGAIN 23)
+(define C_NOLICENSE 22)
+(define C_THIRDTIME 21)
+(define C_IGNOREDWARNING 18)
+(define C_SHOWLICENSE 19)
+(define C_SLINKWARNS 20)
+(define C_ALREADYGAVEMONEY 24)
+(define C_NIGHT 27)
+(define C_TOUCHROOM 11)
+

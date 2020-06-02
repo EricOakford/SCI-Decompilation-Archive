@@ -1,0 +1,52 @@
+;;; Sierra Script
+;;; 300.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_NIGHT 1)
+(define C_DAY 2)
+(define C_SHERIFFWARNS 3)
+(define C_FIRSTENTRY 4)
+(define C_SLEPTINSTREET 5)
+(define C_ADVENTURE 6)
+(define C_BARON 7)
+(define C_BRIGANDS 8)
+(define C_CASTLE 9)
+(define C_DANGER 10)
+(define C_GUILDHALL 11)
+(define C_INN 12)
+(define C_MAGIC 13)
+(define C_MERCHANT 14)
+(define C_MONSTERS 15)
+(define C_MOUNTAIN 16)
+(define C_NAME 17)
+(define C_OTTO 18)
+(define C_PRISONERS 19)
+(define C_SHERIFF 21)
+(define C_BRIGANDS2 20)
+(define C_TOWN 22)
+(define C_TREASURE 23)
+(define C_WOLFGANG 24)
+
+;;; NOUNS
+
+(define N_ROOM 12)
+(define N_CLOSEDGATE 1)
+(define N_OPENGATE 10)
+(define N_INNDOOR 2)
+(define N_SHERIFF 14)
+(define N_OTTO 11)
+(define N_YOYO 18)
+(define N_SHERIFFDOOR 13)
+(define N_INNWINDOW 3)
+(define N_JAILCELL 4)
+(define N_JAILWINDOW 5)
+(define N_STATUE1 15)
+(define N_STATUE2 16)
+(define N_BARBERNOTE 6)
+(define N_JAILSIGN 8)
+(define N_SCISSORS 9)
+(define N_INNSIGN 7)
+(define N_TUBOSUDS 17)
+

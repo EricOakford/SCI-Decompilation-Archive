@@ -1,0 +1,51 @@
+;;; Sierra Script
+;;; 15.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_GET_TOADSTOOLS 28)
+(define C_CANT_GET_TOADSTOOLS 27)
+(define C_KOBOLD_WARNS 26)
+(define C_GET_TREASURE 25)
+(define C_KOBOLD_REVERSAL 24)
+(define C_CHEST_TOO_WEAK 23)
+(define C_LOCKPICK_FAIL 22)
+(define C_LOCKPICK_SUCCESS 21)
+(define C_FORCE_CHEST 19)
+(define C_FIRST_ENTRY 20)
+(define C_NOT_NOW 18)
+(define C_KOBOLD_HAS_KEY 17)
+(define C_NO_PICK 4)
+(define C_ALREADY_GOT_TREASURE 2)
+(define C_NO_MORE_MAGIC 10)
+(define C_DETECT_KEY 9)
+(define C_CANT_REACH_KEY 14)
+(define C_KOBOLD_DEAD 11)
+(define C_ALREADY_FIGHTING 12)
+(define C_DETECT_CHEST 7)
+(define C_CANT_SEE_TREASURE 5)
+(define C_CANT_REACH_TREASURE 3)
+(define C_CHEST_EXPLODED 8)
+(define C_CHEST_CLOSED 1)
+(define C_CHEST_LOCKED 6)
+(define C_STEALTH_FAIL 13)
+(define C_KOBOLD_AWAKE 15)
+(define C_STEALTH_SUCCESS 16)
+
+;;; NOUNS
+
+(define N_CHEST 2)
+(define N_ROOM 9)
+(define N_STALAGMITES 10)
+(define N_SUNLIGHT 11)
+(define N_FUNGUS 5)
+(define N_KOBKEY 6)
+(define N_KOBOLD 7)
+(define N_TREASURE 8)
+(define N_TABLE 12)
+(define N_TOADSTOOLS 13)
+(define N_CANTCALM 1)
+(define N_CASTDETECT 3)
+(define N_CASTFETCH 4)
+

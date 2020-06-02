@@ -1,0 +1,44 @@
+;;; Sierra Script
+;;; 60.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_FURONGROUND 1)
+(define C_APPLES 2)
+(define C_BABY 3)
+(define C_BRIGANDS 4)
+(define C_DONTKNOW 5)
+(define C_FUR 6)
+(define C_GREENFUR 7)
+(define C_HOLES 8)
+(define C_MAGIC 9)
+(define C_MEEPS 10)
+(define C_ROCKS 11)
+(define C_SCROLL 12)
+(define C_ASKBOSS 13)
+(define C_OUTOFTHEWAY 14)
+(define C_GETFUR 15)
+(define C_NOMAGIC 16)
+(define C_LEARNDETECT 17)
+(define C_WELCOMEBACK 18)
+(define C_FIRSTMEET 19)
+(define C_SLIPAWAY 20)
+(define C_SCAREDMEEPS 21)
+(define C_SEEMEEPS 22)
+(define C_SEEROOM 23)
+(define C_NONEEDTO 24)
+
+;;; NOUNS
+
+(define N_ROOM 7)
+(define N_ROCKS 8)
+(define N_GRASS 5)
+(define N_TREES 10)
+(define N_FUR 4)
+(define N_BABY 2)
+(define N_APPLE 1)
+(define N_MEEP 6)
+(define N_SCROLL 9)
+(define N_BOSSEYES 3)
+

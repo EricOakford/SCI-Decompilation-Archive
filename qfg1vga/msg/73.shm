@@ -1,0 +1,34 @@
+;;; Sierra Script
+;;; 73.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 4)
+(define N_BRUNO 1)
+(define N_BRUTUS 2)
+(define N_BUILDINGS 3)
+(define N_TREES 6)
+(define N_TARGET 5)
+(define N_WALL 7)
+
+;;; CASES
+
+(define C_NOWEAPON 3)
+(define C_NOBODYHERE 1)
+(define C_BRUTUSHERE 2)
+(define C_BRIGSMEET 4)
+(define C_GETMULTIPLEDAGGERS 5)
+(define C_GET1DAGGER 6)
+(define C_BRUTUSATTACKS 7)
+(define C_PASSWORD 8)
+(define C_BACKDOOR 9)
+(define C_CANTCALM 10)
+(define C_FINDKEY 11)
+(define C_NODAGSONTARGET 12)
+(define C_TARGETHASDAGS 13)
+(define C_CLIMBFAIL 15)
+(define C_CLIMBSUCCESS 16)
+(define C_DAY 17)
+(define C_APPLETREE 14)
+

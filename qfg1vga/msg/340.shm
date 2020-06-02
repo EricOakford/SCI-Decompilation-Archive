@@ -1,0 +1,27 @@
+;;; Sierra Script
+;;; 340.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_TOOHIGH 8)
+(define C_NOTENOUGHMONEY 7)
+(define C_CHIEFWINS 6)
+(define C_TIED 1)
+(define C_EGOWINS 2)
+(define C_HOTSTUFF 3)
+(define C_NOBETNOPLAY 4)
+(define C_TIEDOUBLE 5)
+(define C_YOURHAND 9)
+(define C_SAYNO 10)
+(define C_PLAYAGAIN 11)
+(define C_SAYYES 12)
+
+;;; NOUNS
+
+(define N_ROOM 4)
+(define N_CHIEF 2)
+(define N_BOARD 5)
+(define N_ANGLEPANEL 1)
+(define N_FORCEPANEL 3)
+

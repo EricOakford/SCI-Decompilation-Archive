@@ -1,0 +1,45 @@
+;;; Sierra Script
+;;; 76.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 7)
+(define N_DRYAD 5)
+(define N_STAG 9)
+(define N_MOUNTAIN 6)
+(define N_DRYADTREE 2)
+(define N_ACORN 1)
+(define N_BROKENTREE 3)
+(define N_BUSHES 4)
+(define N_ROCK 8)
+
+;;; CASES
+
+(define C_GETMAGICACORN 8)
+(define C_GETREGULARACORN 12)
+(define C_EATACORN 11)
+(define C_YESORNO 23)
+(define C_AIDME 7)
+(define C_GIVESEED 9)
+(define C_OHMYGOD 3)
+(define C_DAY 36)
+(define C_DETECTDRYAD 35)
+(define C_DRYADHERE 2)
+(define C_DONTGIVESEED 10)
+(define C_NOTFORESTFRIEND 16)
+(define C_DRYADGIVESRECIPE 13)
+(define C_ACORNONGROUND 1)
+(define C_DONTHAVEIT 22)
+(define C_KILLEDFLOWER 19)
+(define C_HURTSTAG 20)
+(define C_USEDFLAMEDART 21)
+(define C_BLABBERMOUTH 24)
+(define C_CANTREACHDRYAD 4)
+(define C_CANTREACHSTAG 5)
+(define C_ACORNFALL 6)
+(define C_HANDITOVER 17)
+(define C_SHEGOTIT 18)
+(define C_GOTOSLEEP 32)
+(define C_STARTLEDSTAG 33)
+

@@ -1,0 +1,55 @@
+;;; Sierra Script
+;;; 93.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_FIRSTENTRY 18)
+(define C_LOOKEGO 32)
+(define C_WHYKNOCK 5)
+(define C_GATEFASTENED 6)
+(define C_GATEOPEN 7)
+(define C_READSIGN 3)
+(define C_CANTREADSIGN 4)
+(define C_ENTERFROMAMBUSH 1)
+(define C_ENTERFROMCAVE 2)
+(define C_MINOTAURAWAKES 13)
+(define C_ALREADYLOOTED 11)
+(define C_WHYBOTHER 9)
+(define C_HERESYOURCHANCE 8)
+(define C_SEARCHMINOTAUR 12)
+(define C_GETDAGGERS 10)
+(define C_NOESCAPE 28)
+(define C_IMBAD 21)
+(define C_LOOSEDIRT 17)
+(define C_RINGIT 30)
+(define C_UHOH 31)
+(define C_MUTTER1 22)
+(define C_MUTTER2 23)
+(define C_FORCEGATE 19)
+(define C_THATFELTGOOD 20)
+(define C_MINOTAURDEFEATED 14)
+(define C_MINOTAURPATROLLING 15)
+(define C_CLIMBROCKS 16)
+(define C_MUTTER3 24)
+(define C_MUTTER4 25)
+(define C_MUTTER5 26)
+(define C_MUTTER6 27)
+(define C_HASPOPENED 29)
+
+;;; NOUNS
+
+(define N_ROOM 13)
+(define N_DEBRIS 6)
+(define N_ROCK1 10)
+(define N_ROCK2 9)
+(define N_GROUND 8)
+(define N_EASTCLIFF 7)
+(define N_FORT 12)
+(define N_GATE 4)
+(define N_BUSH 2)
+(define N_BELL 1)
+(define N_GATESIGN 3)
+(define N_MINOTAUR 5)
+(define N_LOW_CLIMB 11)
+

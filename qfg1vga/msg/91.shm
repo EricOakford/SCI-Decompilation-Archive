@@ -1,0 +1,27 @@
+;;; Sierra Script
+;;; 91.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_ARROWKILLS 3)
+(define C_ARROWHITS 4)
+(define C_BADFEELING 1)
+(define C_WORSEFEELING 2)
+
+;;; NOUNS
+
+(define N_ARCHER1 1)
+(define N_ARCHER2 2)
+(define N_ARCHER3 3)
+(define N_ARCHER4 4)
+(define N_ARCHER5 5)
+(define N_ARROW 6)
+(define N_GROUND 7)
+(define N_ROOM 8)
+(define N_SPEARMAN4 9)
+(define N_SPEARMAN5 10)
+(define N_STIFF 11)
+(define N_LOG 12)
+(define N_WALLS 13)
+

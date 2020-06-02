@@ -1,0 +1,30 @@
+;;; Sierra Script
+;;; 40.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DIRTY 1)
+(define C_CLEAN 2)
+(define C_CANT_HEAR 22)
+(define C_BORED 23)
+(define C_SAY_NO 3)
+(define C_WORK_BREAK 4)
+(define C_AWAKEN_WORK 5)
+(define C_SAY_YES 6)
+(define C_SNOOZING 7)
+
+;;; NOUNS
+
+(define N_HORSE 4)
+(define N_ROOM 8)
+(define N_FENCE 1)
+(define N_GRAIN 2)
+(define N_HORSE_HEAD 3)
+(define N_HOUSES 5)
+(define N_WATERBARREL 14)
+(define N_MOUNTAINS 7)
+(define N_SKY 9)
+(define N_MANURE 6)
+(define N_STABLEMAN 10)
+

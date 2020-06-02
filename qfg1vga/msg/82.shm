@@ -1,0 +1,55 @@
+;;; Sierra Script
+;;; 82.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_HERMITDOOR 4)
+(define N_LADDER 5)
+(define N_ROOM 9)
+(define N_WATERFALL 7)
+(define N_LEDGE 6)
+(define N_CLIFF 2)
+(define N_WATER 8)
+(define N_GROUND 3)
+(define N_ROCKS 10)
+(define N_BOTTOMSPLASH 1)
+(define N_SMLSPLASH1 11)
+(define N_SMLSPLASH2 12)
+(define N_SMLSPLASH3 13)
+(define N_SMLSPLASH4 14)
+(define N_SMLSPLASH5 15)
+(define N_SMLSPLASH6 16)
+
+;;; CASES
+
+(define C_CANTREACHWATER 6)
+(define C_SPELLNOTWORKING 19)
+(define C_ALREADYOPEN 26)
+(define C_OPENFALLDOWN 28)
+(define C_OPENFAIL 27)
+(define C_CANTREACHDOOR 1)
+(define C_LOOKDOORAGAIN 2)
+(define C_DONTHAVEFLASK 4)
+(define C_HERMITCANTHEAR 29)
+(define C_DRINKWATER1 25)
+(define C_DRINKWATER2 22)
+(define C_DRINKWATER3 8)
+(define C_FILLFLASK 10)
+(define C_JUSTASEASY 18)
+(define C_KNOCKKNOCK 17)
+(define C_COMEONIN 7)
+(define C_DONTSEEANYBODY 12)
+(define C_AFTERFALL 16)
+(define C_KNOCKROCK2 15)
+(define C_KNOCKROCK1 14)
+(define C_ROCKMISSED 24)
+(define C_THATWASEASY 23)
+(define C_YOUAGAIN 5)
+(define C_HELLOTHERE 21)
+(define C_FIRSTENTRY 9)
+(define C_LOOKTOCLIMB 11)
+(define C_ANNOYED 13)
+(define C_SOMEONETHERE 20)
+(define C_DONTSEELADDER 3)
+

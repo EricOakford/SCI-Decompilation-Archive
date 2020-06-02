@@ -1,0 +1,27 @@
+;;; Sierra Script
+;;; 330.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_NIGHT 1)
+
+;;; NOUNS
+
+(define N_ALLEY 1)
+(define N_WORKDOOR 15)
+(define N_POTS 11)
+(define N_WORKSHOP 16)
+(define N_TAVERN 14)
+(define N_BUTCHERSHOP 7)
+(define N_BUTCHERDOOR 6)
+(define N_BAKERYDOOR 2)
+(define N_BAKERY 3)
+(define N_BUTCHERWINDOW 9)
+(define N_BREADWINDOW 5)
+(define N_BUTCHERSIGN 8)
+(define N_BAKERYSIGN 4)
+(define N_GLINT 10)
+(define N_TAVERNDOOR 13)
+(define N_ROOM 12)
+

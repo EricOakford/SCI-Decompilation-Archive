@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 811.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_STREET 1)
+
+;;; CASES
+
+(define C_DUMMY 1)
+(define C_DOOR_BARRED 2)
+(define C_DUMMY2 3)
+(define C_NO_PICK 4)
+(define C_CANT_SLEEP_THERE 5)
+(define C_NO_DOORS 6)
+(define C_DAY 7)
+(define C_EGOSLEEPS 8)
+

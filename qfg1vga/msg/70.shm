@@ -1,0 +1,22 @@
+;;; Sierra Script
+;;; 70.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_NONEEDTO 3)
+(define C_NIGHT 1)
+(define C_FIRSTENTRY 7)
+(define C_DANCEAGAIN 2)
+(define C_GETDUST 4)
+(define C_HOLDOUTHAND 5)
+(define C_NOFLASK 6)
+
+;;; NOUNS
+
+(define N_MUSHROOMS 1)
+(define N_ROOM 2)
+(define N_ROCKS 3)
+(define N_TREESRIGHT 4)
+(define N_TREESLEFT 5)
+

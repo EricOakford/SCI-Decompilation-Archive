@@ -1,0 +1,46 @@
+;;; Sierra Script
+;;; 84.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_BOUNCEDOFF 1)
+(define C_BAREHANDED 2)
+(define C_FLOWNCOOP 3)
+(define C_ITSHERE 4)
+(define C_ANTWERPSPLIT 16)
+(define C_ANTWERPSKY 7)
+(define C_SEEGRASS 8)
+(define C_LOCKED 17)
+(define C_ALREADYOPENED 18)
+(define C_TOOWEAK 19)
+(define C_WRONGKEY 20)
+(define C_SEENOLOCKS 25)
+(define C_UNLOCKED 15)
+(define C_SEETHELOCK 26)
+(define C_NOPICK 22)
+(define C_LOCKPICKSUCCESS 23)
+(define C_TOOLFAIL 21)
+(define C_PICKFAIL 24)
+(define C_NOANSWER 27)
+(define C_ANTWERPSCARED 11)
+(define C_LOOSENUP 12)
+(define C_APPROACH 13)
+(define C_HOLYMACKAREL 14)
+(define C_CANTDAZZLE 10)
+(define C_CANTCALM 9)
+
+;;; NOUNS
+
+(define N_ROOM 9)
+(define N_ANTWERP 1)
+(define N_MOUNTAINROCKS 7)
+(define N_BUSHESLL 2)
+(define N_TREE 11)
+(define N_BUSHESUR 3)
+(define N_BUSHESU 4)
+(define N_ROCKSUR 8)
+(define N_ENTRANCE 5)
+(define N_GROUND 6)
+(define N_ROCKDOOR 10)
+

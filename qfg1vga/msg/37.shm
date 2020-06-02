@@ -1,0 +1,24 @@
+;;; Sierra Script
+;;; 37.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_INVITED 1)
+(define C_IMPATIENT 2)
+(define C_WHOS_THERE 3)
+
+;;; NOUNS
+
+(define N_ROOM 7)
+(define N_BUSH 1)
+(define N_CASTLE 2)
+(define N_CASTLE_GATE 3)
+(define N_KARL 4)
+(define N_MOUNTAIN 5)
+(define N_CASTLE_BARS 6)
+(define N_SKY 8)
+(define N_TOWER 9)
+(define N_WALL 10)
+(define N_WINDOW 11)
+

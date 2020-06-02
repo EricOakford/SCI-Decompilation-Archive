@@ -1,0 +1,15 @@
+;;; Sierra Script
+;;; 171.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_AFTERMATH 1)
+(define C_MEETBARNARD 2)
+(define C_OOPS 3)
+(define C_RECOGNIZECORPSE 4)
+
+;;; NOUNS
+
+(define N_ROOM 1)
+

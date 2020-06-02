@@ -1,0 +1,48 @@
+;;; Sierra Script
+;;; 322.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 9)
+(define N_SHOPKEEPER 14)
+(define N_WINDOW 18)
+(define N_TOOTHPICKS 8)
+(define N_POLE 7)
+(define N_TEAPOT 17)
+(define N_BARRELS 13)
+(define N_SWORD 16)
+(define N_SHIELD 12)
+(define N_EQUIPMENT 3)
+(define N_ODDSNENDS 4)
+(define N_DRYGOODS 6)
+(define N_SACK 11)
+(define N_CLOTHES1 1)
+(define N_CLOTHES2 2)
+(define N_CAPE 5)
+(define N_DOOR 10)
+(define N_STOVE 15)
+
+;;; CASES
+
+(define C_BUYSOMETHING 16)
+(define C_NIGHT 20)
+(define C_CANTHEARYOU 19)
+(define C_NOFUNDS 18)
+(define C_TRADEINLEATHER 17)
+(define C_FIRSTENTRY 1)
+(define C_LOOKCOUNTER 2)
+(define C_HITHERE 3)
+(define C_FIRSTMEET 4)
+(define C_CHAINARMOR 5)
+(define C_ADVENTURER 6)
+(define C_BOOK 7)
+(define C_BRIGAND 8)
+(define C_DAGGER 9)
+(define C_EQUIPMENT 10)
+(define C_FLASK 11)
+(define C_FOOD 12)
+(define C_HILDE 13)
+(define C_NAME 14)
+(define C_SHERIFF 15)
+

@@ -1,0 +1,27 @@
+;;; Sierra Script
+;;; 41.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 8)
+(define N_EGO 1)
+(define N_GROUND 9)
+(define N_LGUARD 3)
+(define N_RGUARD 5)
+(define N_GUARDS 6)
+(define N_BADIDEA 7)
+(define N_DOOR 2)
+(define N_LIGHT 4)
+
+;;; CASES
+
+(define C_WONT_TALK 14)
+(define C_DAY 1)
+(define C_NIGHT 2)
+(define C_EXIT_CASTLE 16)
+(define C_INVITED 15)
+(define C_NO_ENTRY 17)
+(define C_NAMES 18)
+(define C_NO_ENTRY_2 3)
+

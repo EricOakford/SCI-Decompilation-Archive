@@ -1,0 +1,23 @@
+;;; Sierra Script
+;;; 67.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_CUE 1)
+(define C_KILLFOX 2)
+(define C_FOXEXPLAINS 3)
+(define C_FREEFOX 4)
+(define C_FOXBEGS1 5)
+(define C_FOXBEGS2 6)
+(define C_FOXBEGS3 7)
+(define C_FOXWONTFIGHT 8)
+(define C_CANTGETTRAP 9)
+
+;;; NOUNS
+
+(define N_FOX 1)
+(define N_ROOM 2)
+(define N_SINCLAIR 3)
+(define N_TRAP 4)
+

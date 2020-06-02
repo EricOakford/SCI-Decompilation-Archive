@@ -1,0 +1,29 @@
+;;; Sierra Script
+;;; 602.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 1)
+
+;;; CASES
+
+(define C_BESTENDING 9)
+(define C_BABAFROG 1)
+(define C_STILLCURSED 6)
+(define C_OFFTOSHAPEIR 12)
+(define C_BOBFISCHBACH 2)
+(define C_DEFEATEDBRIGANDS 3)
+(define C_CINDYWALKER 4)
+(define C_COREYCOLE 5)
+(define C_GURUKA 7)
+(define C_WHERESHALFDOME 8)
+(define C_JEFFCROWE 10)
+(define C_JERRYMOORE 11)
+(define C_KENNNISHIUYE 13)
+(define C_LARRYSCOTT 14)
+(define C_LORICOLE 15)
+(define C_MARKSEIBERT 16)
+(define C_PROMOTIONALCONSIDERATIONS 17)
+(define C_JERRYSHAW 18)
+

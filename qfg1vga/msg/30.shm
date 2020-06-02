@@ -1,0 +1,33 @@
+;;; Sierra Script
+;;; 30.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ARMOR 1)
+(define N_BOOKSHELF 2)
+(define N_CASKET 3)
+(define N_CEILING 4)
+(define N_DRAGON 5)
+(define N_DUNKER 6)
+(define N_EASTWALL 7)
+(define N_FENRUS 8)
+(define N_FOREGROUND 9)
+(define N_LAMP 10)
+(define N_PEACOCK 11)
+(define N_ROOM 12)
+(define N_RUG 13)
+(define N_STOOL 14)
+(define N_TABLE 15)
+(define N_SARCOPHAGUS 16)
+(define N_ERASMUS 17)
+(define N_VASE 18)
+(define N_WESTWALL 19)
+
+;;; CASES
+
+(define C_BEFORE_MET_ERASMUS 6)
+(define C_AFTER_MET_ERASMUS 5)
+(define C_WARNED 4)
+(define C_WARP_OUT 3)
+

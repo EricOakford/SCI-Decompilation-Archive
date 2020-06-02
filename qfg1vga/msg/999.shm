@@ -1,0 +1,39 @@
+;;; Sierra Script
+;;; 999.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ACTION 1)
+(define N_CAST 2)
+(define N_CONTROL 3)
+(define N_DO 4)
+(define N_ABOUT 5)
+(define N_DETAIL 6)
+(define N_CONTROL_HELP 7)
+(define N_OK 8)
+(define N_QUIT 9)
+(define N_RESTART 10)
+(define N_RESTORE 11)
+(define N_SAVE 12)
+(define N_SPEED 13)
+(define N_VOLUME 14)
+(define N_CUE 15)
+(define N_ICON_HELP 16)
+(define N_INVENTORY 17)
+(define N_LOOK 18)
+(define N_SCORE 19)
+(define N_NO_CAST_IN_TOWN 20)
+(define N_STATUS_LINE_END 21)
+(define N_STATUS_LINE 22)
+(define N_TALK 23)
+(define N_USEIT 24)
+(define N_WALK 25)
+
+;;; CASES
+
+(define C_SCRIPT_NUM 1)
+(define C_BABA_CURSE 2)
+(define C_NO_LONGER_OVERLOADED 3)
+(define C_QUITTING 4)
+

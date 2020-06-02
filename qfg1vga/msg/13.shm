@@ -1,0 +1,40 @@
+;;; Sierra Script
+;;; 13.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_NO_WEAPON 23)
+(define C_CAST_ZAP 24)
+(define C_CHEST_OPEN 1)
+(define C_CANT_UNLOCK 2)
+(define C_NOTHING_TO_FETCH 22)
+(define C_OGRE_GONE 6)
+(define C_OGRE_DEAD 5)
+(define C_CHEST_FULL 4)
+(define C_OGRE_ALIVE 8)
+(define C_SPELL_TOO_WEAK 16)
+(define C_SPELL_UNLOCKS_CHEST 17)
+(define C_CHEST_PICKED 21)
+(define C_ALREADY_UNLOCKED 20)
+(define C_GET_DAGGERS 19)
+(define C_OGRE_RECOVERS 18)
+(define C_CHEST_LOCKED 15)
+(define C_CHEST_FORCED 14)
+(define C_REVEAL_CHEST 13)
+(define C_OGRE_DAZZLED 12)
+(define C_NOTHING_TO_OPEN 11)
+(define C_ALREADY_LOOTED 9)
+(define C_CHEST_CLOSED 3)
+(define C_ALREADY_DEAD 7)
+(define C_FEED_OGRE 10)
+
+;;; NOUNS
+
+(define N_ROOM 4)
+(define N_CAVE 1)
+(define N_CHEST 2)
+(define N_OGRE 3)
+(define N_ROCKS 5)
+(define N_TREES 6)
+

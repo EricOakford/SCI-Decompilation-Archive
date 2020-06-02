@@ -1,0 +1,44 @@
+;;; Sierra Script
+;;; 53.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 9)
+(define N_WALL 14)
+(define N_TREES 11)
+(define N_BUSH 2)
+(define N_UNPLANTED_TREE 12)
+(define N_BUSH2 1)
+(define N_FRONT_TREE 3)
+(define N_BARREN_TREE 5)
+(define N_SHOVEL 10)
+(define N_CENTAUR 4)
+(define N_PINETREE 6)
+(define N_VASE 13)
+(define N_RAKE 8)
+(define N_POTS 7)
+
+;;; CASES
+
+(define C_NIGHT 18)
+(define C_DAY 19)
+(define C_CLIMBFAIL 21)
+(define C_WORKING 14)
+(define C_WATCHING 15)
+(define C_ALERTED 16)
+(define C_APPROACHED 17)
+(define C_BARON 1)
+(define C_BRIGANDS 2)
+(define C_CENTAURS 3)
+(define C_FARM 4)
+(define C_FIELD 5)
+(define C_FRUIT 6)
+(define C_HARVEST 7)
+(define C_HEALER 8)
+(define C_HILDE 9)
+(define C_LEADER 10)
+(define C_MART 11)
+(define C_NAME 12)
+(define C_VEGETABLES 13)
+

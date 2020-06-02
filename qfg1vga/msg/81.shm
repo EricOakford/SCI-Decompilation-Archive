@@ -1,0 +1,12 @@
+;;; Sierra Script
+;;; 81.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_HOLLOWLOG 1)
+(define N_ROOM 2)
+
+;;; CASES
+
+

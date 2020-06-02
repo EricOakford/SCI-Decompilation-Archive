@@ -1,0 +1,40 @@
+;;; Sierra Script
+;;; 58.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 6)
+(define N_SKY 7)
+(define N_YELLOWSNOW 11)
+(define N_CAVE 1)
+(define N_LOG 3)
+(define N_GIANT 2)
+(define N_MORESKY 4)
+(define N_SNOWROCK 8)
+(define N_MOUNTAIN 5)
+(define N_SNOWYROCKS 9)
+(define N_SNOW 10)
+
+;;; CASES
+
+(define C_NORUNNING 13)
+(define C_BARGAIN 1)
+(define C_BRAUGGI 2)
+(define C_FIGHTING 3)
+(define C_FRUIT 4)
+(define C_GEM 5)
+(define C_HUNGER 6)
+(define C_MEAD 7)
+(define C_NORTHLANDS 8)
+(define C_LOOKGEM 9)
+(define C_NOTHANKS 10)
+(define C_GIANTLEAVES 11)
+(define C_ALMOSTENOUGH 12)
+(define C_CASTSPELL 14)
+(define C_NOFRUIT 15)
+(define C_NOTENOUGH 16)
+(define C_THROWSOMETHING 17)
+(define C_GIANTGONE 18)
+(define C_GIANTBORED 19)
+

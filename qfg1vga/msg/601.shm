@@ -1,0 +1,20 @@
+;;; Sierra Script
+;;; 601.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_FINALSCORE 8)
+(define C_CONGRATULATIONS 4)
+(define C_WRITECOMPLETE 1)
+(define C_SAVEDONE 7)
+(define C_CANTCREATEFILE 2)
+(define C_STATUSLINE 3)
+(define C_INSERTDISK 5)
+(define C_SAVECREATED 6)
+(define C_DUMMY2 9)
+
+;;; NOUNS
+
+(define N_CHARSAVE 1)
+

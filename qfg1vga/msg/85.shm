@@ -1,0 +1,15 @@
+;;; Sierra Script
+;;; 85.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_BABY 1)
+(define N_ANTWERP 2)
+(define N_NORTHBUSH 4)
+(define N_NORTHBUSH2 3)
+(define N_SOUTHBUSH 5)
+
+;;; CASES
+
+

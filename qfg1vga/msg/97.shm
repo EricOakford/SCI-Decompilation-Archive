@@ -1,0 +1,36 @@
+;;; Sierra Script
+;;; 97.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_KILLED 8)
+(define C_CONFRONTLEADER 9)
+(define C_ELSAISBACK 7)
+(define C_NOTIMETOTALK 6)
+(define C_LOOKELSA 5)
+(define C_NOTCLOSEENOUGH 1)
+(define C_NOTHINGONDESK 2)
+(define C_MIRRORONDESK 3)
+(define C_POTIONSONDESK 4)
+
+;;; NOUNS
+
+(define N_ROOM 14)
+(define N_POTION 13)
+(define N_ELSA 6)
+(define N_MIRROR 12)
+(define N_TORCH 16)
+(define N_ORNAMENT 10)
+(define N_BIRD 7)
+(define N_CHEST 8)
+(define N_DRAGON 9)
+(define N_SHIELD 11)
+(define N_DOOR 2)
+(define N_GOLDCHEST 5)
+(define N_DESK 1)
+(define N_GEMCHEST1 3)
+(define N_GEMCHEST2 4)
+(define N_YORICK 17)
+(define N_RUG 15)
+

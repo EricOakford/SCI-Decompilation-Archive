@@ -1,0 +1,46 @@
+;;; Sierra Script
+;;; 16.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_CLIFF 1)
+(define N_FLOWERS 2)
+(define N_SEED 3)
+(define N_GRASS 4)
+(define N_LEAF0 5)
+(define N_LEAF1 6)
+(define N_LEAF2 7)
+(define N_LEAF3 8)
+(define N_ROOM 9)
+(define N_TREES 10)
+
+;;; CASES
+
+(define C_FLOWERS_SPITTING 1)
+(define C_WANT_SEED 2)
+(define C_DONT_NEED_FLOWERS 3)
+(define C_FLOWERS_NOT_SPITTING 4)
+(define C_LOSE_CONCENTRATION 7)
+(define C_OPEN_TOO_WEAK 8)
+(define C_KEEP_SEED 9)
+(define C_FETCH_TOO_LATE 27)
+(define C_FETCH_FALL 28)
+(define C_OPEN_NOT_NOW 29)
+(define C_OPEN_FALL 30)
+(define C_DONT_BE_DESTRUCTIVE 5)
+(define C_DONT_DAMAGE_SEED 6)
+(define C_SWORD_FALL 12)
+(define C_NEED_ROCK 17)
+(define C_ROCK_NOT_NOW 15)
+(define C_FETCH_SEED 23)
+(define C_HIT_GROUND 22)
+(define C_REGAIN_CONSCIOUSNESS 21)
+(define C_GET_ROCKS 25)
+(define C_PREPARE_FETCH 26)
+(define C_PREPARE_ROCK 16)
+(define C_FETCH_FAIL 24)
+(define C_FIRST_CLIMB 19)
+(define C_GET_SEED_CLIMB_DOWN 20)
+(define C_GET_SEED 18)
+

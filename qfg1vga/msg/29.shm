@@ -1,0 +1,39 @@
+;;; Sierra Script
+;;; 29.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 3)
+(define N_DOOR 1)
+(define N_SKY 4)
+(define N_GARGOYLE 2)
+(define N_WINDOW 5)
+
+;;; CASES
+
+(define C_WIZARD_WILL_SEE 24)
+(define C_FIRST_ENTRY 25)
+(define C_PASS_OUT 5)
+(define C_RETURN_ENTRY 26)
+(define C_WORN_OUT 23)
+(define C_FIRST_MEET_GARGOYLE 9)
+(define C_NIGHT 3)
+(define C_HELLO_AGAIN 4)
+(define C_ASK_QUEST 11)
+(define C_PASS_OUT_QUESTIONS 21)
+(define C_RETURN_QUESTIONS 13)
+(define C_ASK_NAME 8)
+(define C_WRONG_NAME 7)
+(define C_QUEST_ANSWERS 12)
+(define C_WRONG_QUEST 10)
+(define C_COLOR 14)
+(define C_SEEK 15)
+(define C_PASSWORD 16)
+(define C_RULER_FIRST_NAME 17)
+(define C_WHO_PUT_AURA 18)
+(define C_MEAN_AIR_SPEED 19)
+(define C_MEANING_OF_LIFE 20)
+(define C_DIRECT_TO_TOWER 2)
+(define C_WARP_OUT 22)
+

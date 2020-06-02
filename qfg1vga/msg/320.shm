@@ -1,0 +1,50 @@
+;;; Sierra Script
+;;; 320.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 7)
+(define N_SKY 9)
+(define N_FENCE 4)
+(define N_STONES 12)
+(define N_WINDOW 14)
+(define N_DRYGOODS 13)
+(define N_SHERIFFHOUSE 6)
+(define N_STALL 10)
+(define N_BARRELS 2)
+(define N_STAND 11)
+(define N_DOOR 3)
+(define N_PRODUCE 1)
+(define N_SCALES 8)
+(define N_CENTAUR 5)
+
+;;; CASES
+
+(define C_NIGHT 1)
+(define C_BUYNOTHING 2)
+(define C_WANTAPPLES 3)
+(define C_GOODDAY 4)
+(define C_OUTOFSTALL 5)
+(define C_HOWMUCH 6)
+(define C_APPLES 7)
+(define C_BRIGANDS 8)
+(define C_CARROTS 9)
+(define C_DATE 10)
+(define C_MARKET 11)
+(define C_FARMER 12)
+(define C_FARM 13)
+(define C_FATHER 14)
+(define C_MOTHER 15)
+(define C_NAME 16)
+(define C_PARSNIPS 17)
+(define C_ROBBERY 18)
+(define C_RUTABAGAS 19)
+(define C_SHERIFF 20)
+(define C_TURNIPS 21)
+(define C_VEGETABLES 22)
+(define C_NOFUNDS 23)
+(define C_FIRSTENTRY 24)
+(define C_BUYVEGETABLES 25)
+(define C_BUYFRUIT 26)
+

@@ -1,0 +1,25 @@
+;;; Sierra Script
+;;; 14.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_BEAR_SCORCHED 1)
+(define C_BEAR_STUNNED 2)
+(define C_BEAR_NEUTRAL 3)
+(define C_BEAR_DOCILE 4)
+(define C_BEAR_HOSTILE 5)
+(define C_BEAR_FED 6)
+(define C_UNLOCK_CHAIN 12)
+(define C_FIRST_ENTRY 11)
+(define C_TALKBEAR1 7)
+(define C_TALKBEAR2 8)
+
+;;; NOUNS
+
+(define N_BEAR 1)
+(define N_CAVEGLOW 2)
+(define N_ROOM 3)
+(define N_STALAGMITES 4)
+(define N_STALACTITES 5)
+

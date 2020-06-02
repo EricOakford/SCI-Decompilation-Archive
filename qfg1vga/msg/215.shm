@@ -1,0 +1,14 @@
+;;; Sierra Script
+;;; 215.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DONTKNOWSPELL 1)
+(define C_CANTESCAPE 2)
+(define C_CANTWITHSHIELD 3)
+
+;;; NOUNS
+
+(define N_ROOM 1)
+

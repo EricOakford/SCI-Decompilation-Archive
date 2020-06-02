@@ -1,0 +1,50 @@
+;;; Sierra Script
+;;; 170.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_FAIRIES 1)
+(define N_MUSHROOMS 2)
+(define N_ROOM 3)
+(define N_TREESLEFT 6)
+(define N_TREESRIGHT 5)
+(define N_ROCKS 4)
+
+;;; CASES
+
+(define C_ATTACKFAIRIES 11)
+(define C_FLAMEFAIRIES 12)
+(define C_NIGHT 23)
+(define C_FAIRIESIGNORE 34)
+(define C_GETDUST 3)
+(define C_COULDNTGETDUST 20)
+(define C_DIDNTASKFORDUST 22)
+(define C_ENTEREDCIRCLE 8)
+(define C_ASKDANCE 33)
+(define C_SAYNO 32)
+(define C_SAYYES 31)
+(define C_SAYNOTSURE 30)
+(define C_AGREETODANCE 1)
+(define C_LOWAGILITY 6)
+(define C_CUTEDANCE 7)
+(define C_KLUTZDANCE 9)
+(define C_WHATDOYOUWANT 13)
+(define C_DANCEAGAIN 2)
+(define C_FIRSTMEET 5)
+(define C_DEATHDANCE 4)
+(define C_HELLOAGAIN 10)
+(define C_FAIRIESIMPRESSED 14)
+(define C_BRIGANDS 15)
+(define C_DRYAD 16)
+(define C_FAIRY 17)
+(define C_FOREST 18)
+(define C_MUSHROOMS 19)
+(define C_FIRSTENTRY 21)
+(define C_DONTNEEDTO 24)
+(define C_PUTAWAYDUST 25)
+(define C_HOLDOUTHAND 26)
+(define C_ALLFLASKSFULL 27)
+(define C_NOFLASK 28)
+(define C_EATSHROOMS 29)
+

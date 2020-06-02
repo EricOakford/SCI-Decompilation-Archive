@@ -1,0 +1,40 @@
+;;; Sierra Script
+;;; 22.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 6)
+(define N_FENCE 2)
+(define N_FEET 1)
+(define N_GATE 3)
+(define N_HUTDOOR 4)
+(define N_HUT 5)
+(define N_SKULL1 9)
+(define N_DUMMY1 7)
+(define N_DUMMY2 8)
+(define N_SKULL2 10)
+(define N_SKULL3 11)
+(define N_SKULL4 12)
+(define N_WINDOW 13)
+
+;;; CASES
+
+(define C_BABA 7)
+(define C_DEAL 8)
+(define C_GEM 9)
+(define C_HUT 10)
+(define C_OGRESS 11)
+(define C_RHYME 12)
+(define C_SKULLS 13)
+(define C_SKULL_EYELESS 16)
+(define C_SKULL_HAS_EYES 14)
+(define C_NO_ADMITTANCE 15)
+(define C_BABA_FLEES 20)
+(define C_DOOR_OPEN 17)
+(define C_DOOR_CLOSED 18)
+(define C_ASK_RHYME 19)
+(define C_AFTER_ROOT 22)
+(define C_CURSED 29)
+(define C_FROG_IN 36)
+

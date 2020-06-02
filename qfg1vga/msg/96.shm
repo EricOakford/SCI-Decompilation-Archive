@@ -1,0 +1,31 @@
+;;; Sierra Script
+;;; 96.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 7)
+(define N_LITTLESIGN 6)
+(define N_CHAIN 1)
+(define N_TRAP4 8)
+(define N_DOOR11 2)
+(define N_DOOR3 4)
+(define N_DOOR13 3)
+(define N_YORICK 9)
+
+;;; CASES
+
+(define C_TOOFARAWAY 1)
+(define C_BRICKWALL 2)
+(define C_DISORIENTED 10)
+(define C_BARDOOR 7)
+(define C_MEETYORICK 8)
+(define C_DONTUNBARDOOR 4)
+(define C_YORICKFLEES 11)
+(define C_CANTDOIT 5)
+(define C_YORICKFRIEND 6)
+(define C_DOORFALL 3)
+(define C_NOPURPOSE 9)
+(define C_NOTHINGLOCK 12)
+(define C_PIT 13)
+

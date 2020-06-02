@@ -1,0 +1,24 @@
+;;; Sierra Script
+;;; 28.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_GREEN_SIGN_APPEARS 5)
+(define C_RED_SIGN_APPEARS 6)
+(define C_CLIMBING_MOUNTAIN 8)
+(define C_AT_BASE 7)
+
+;;; NOUNS
+
+(define N_ROOM 8)
+(define N_POSTPILE 6)
+(define N_LONGSHOT 4)
+(define N_MAGICMOUNT 5)
+(define N_CASTLE 1)
+(define N_FARPAVILLIONS 2)
+(define N_GREENSIGN 3)
+(define N_REDSIGN 7)
+(define N_ROAD 9)
+(define N_ROCKS 10)
+

@@ -1,0 +1,21 @@
+;;; Sierra Script
+;;; 45.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_GOBLIN_STEPS_OUT 13)
+(define C_START_BATTLE 14)
+
+;;; NOUNS
+
+(define N_DEAD_GOBLIN 1)
+(define N_ROOM 9)
+(define N_GOBLIN1 2)
+(define N_GOBLIN2 3)
+(define N_GOBLIN3 4)
+(define N_GOBLIN4 5)
+(define N_GOBLIN5 6)
+(define N_GOBLIN6 7)
+(define N_MOVING_BUSH 8)
+

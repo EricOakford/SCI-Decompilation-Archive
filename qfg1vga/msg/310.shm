@@ -1,0 +1,25 @@
+;;; Sierra Script
+;;; 310.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DAY 1)
+(define C_NIGHT 2)
+(define C_SLEPTINSTREET 3)
+(define C_PICKFAIL 4)
+(define C_DOORUNLOCKED 5)
+(define C_DOORBARRED 6)
+(define C_PICKSUCCESS 7)
+
+;;; NOUNS
+
+(define N_ROOM 6)
+(define N_GUILDDOOR 1)
+(define N_LOCK 8)
+(define N_LOLDOOR 3)
+(define N_EYE 7)
+(define N_LOL 4)
+(define N_MAGICSHOPSIGN 5)
+(define N_GUILDSIGN 2)
+

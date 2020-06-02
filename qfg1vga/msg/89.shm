@@ -1,0 +1,34 @@
+;;; Sierra Script
+;;; 89.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_NOBODYHERE 7)
+(define C_TROLLHERE 8)
+(define C_SPELLUSELESS 6)
+(define C_FIRSTENTRY 4)
+(define C_DRIP 5)
+(define C_LOOK1 1)
+(define C_LOOK2 2)
+(define C_LOOK3 3)
+(define C_TROLLATTACKS 9)
+(define C_NOTHINGMORE 18)
+(define C_CANTGETCLUB 11)
+(define C_TROLLVISIBLE 19)
+(define C_TROLLDYING 17)
+(define C_TROLLDEAD 16)
+(define C_TROLLMAD 10)
+(define C_TROLLHASNOTHING 12)
+(define C_TROLLHASBEARD 13)
+(define C_ALREADYGOTBEARD 14)
+(define C_SHAVETROLL 15)
+
+;;; NOUNS
+
+(define N_ROOM 4)
+(define N_CAVE 1)
+(define N_CEILING 2)
+(define N_ROCKS 3)
+(define N_TROLL 5)
+

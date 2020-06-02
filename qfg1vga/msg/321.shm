@@ -1,0 +1,40 @@
+;;; Sierra Script
+;;; 321.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_CANDELABRA 1)
+(define N_ROOM 15)
+(define N_SAFE 12)
+(define N_DESK 10)
+(define N_SHADOW 2)
+(define N_DRAWER 3)
+(define N_VASE 18)
+(define N_PLANT 11)
+(define N_CHAIR 9)
+(define N_TABLE 13)
+(define N_GRYPHONHEAD 7)
+(define N_FIREPICTURE 5)
+(define N_STAIRSPICTURE 17)
+(define N_PORTRAIT 14)
+(define N_MUSICBOX 8)
+(define N_SAFEDOOR 16)
+(define N_FIREBURNS 4)
+(define N_FIRESTONE 6)
+
+;;; CASES
+
+(define C_DRAWERNOTLOOTED 1)
+(define C_DRAWERLOOTED 2)
+(define C_TOOKMUSICBOX 6)
+(define C_MUSICBOXONTABLE 7)
+(define C_MUSICBOXOPEN 8)
+(define C_MUSICBOXCLOSED 9)
+(define C_SAFEEMPTY 5)
+(define C_FINDCOINBAG 11)
+(define C_LOOTSAFE 4)
+(define C_CRACKFAIL 10)
+(define C_LOOKINSAFE 12)
+(define C_MYMISTAKE 3)
+

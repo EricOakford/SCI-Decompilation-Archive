@@ -1,0 +1,11 @@
+;;; Sierra Script
+;;; 121.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_PRAGFAIL 1)
+
+;;; CASES
+
+

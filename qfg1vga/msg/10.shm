@@ -1,0 +1,35 @@
+;;; Sierra Script
+;;; 10.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_FRUIT 1)
+(define N_MAGICSTONE 2)
+(define N_MEADOW 3)
+(define N_SKY 4)
+(define N_ROOM 6)
+(define N_TREE 7)
+(define N_SNOW 5)
+(define N_TRUNK 8)
+
+;;; CASES
+
+(define C_NIGHT 14)
+(define C_DAY 13)
+(define C_SEESCROLL 3)
+(define C_STONEOPEN 1)
+(define C_STONECLOSED 2)
+(define C_SPELLFAIL 9)
+(define C_READSTONE1 4)
+(define C_READSTONE2 5)
+(define C_SEEMEADOW1 6)
+(define C_SEEMEADOW2 7)
+(define C_SEEMEADOW3 8)
+(define C_NOMOREFLOWERS 10)
+(define C_GETFLOWERS 11)
+(define C_GETMOREFLOWERS 12)
+(define C_SEEMOUNTAINS 15)
+(define C_SEESNOWLINE 16)
+(define C_FIRSTENTRY 17)
+

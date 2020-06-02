@@ -1,0 +1,47 @@
+;;; Sierra Script
+;;; 804.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_AT_CLEARING 1)
+(define C_NOTHING_HAPPENS 2)
+(define C_LITTERBUG 3)
+(define C_DONT_DROP_THAT 4)
+(define C_USE_ITEM 5)
+(define C_JOKE1 6)
+(define C_JOKE2 7)
+(define C_JOKE3 8)
+(define C_JOKE4 9)
+(define C_JOKE5 10)
+(define C_JOKE6 11)
+(define C_JOKE7 12)
+(define C_JOKE8 13)
+(define C_JOKE9 14)
+(define C_JOKE10 15)
+(define C_JOKE11 16)
+(define C_JOKE12 17)
+(define C_JOKE13 18)
+(define C_JOKE14 19)
+(define C_JOKE15 20)
+(define C_JOKE16 21)
+(define C_JOKE17 22)
+(define C_JOKE18 23)
+(define C_JOKE19 24)
+(define C_JOKE20 25)
+(define C_JOKE21 26)
+(define C_JOKE22 27)
+(define C_JOKE23 28)
+(define C_JOKE24 29)
+(define C_JOKE25 30)
+(define C_JOKE26 31)
+(define C_JOKE27 32)
+(define C_JOKE28 33)
+
+;;; NOUNS
+
+(define N_FOREST 2)
+(define N_FLOOR 1)
+(define N_ROCKS 3)
+(define N_TREES 4)
+

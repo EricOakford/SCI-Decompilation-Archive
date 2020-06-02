@@ -1,0 +1,43 @@
+;;; Sierra Script
+;;; 21.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 11)
+(define N_BABA 1)
+(define N_BAT 2)
+(define N_BROKEN_GATE 3)
+(define N_BUCKET 5)
+(define N_BROOM 4)
+(define N_CAULDRON 6)
+(define N_FIREPLACE 7)
+(define N_WINDOW 8)
+(define N_MURAL 9)
+(define N_NOTE 10)
+(define N_SKULL 12)
+(define N_SPIDER 13)
+(define N_TABLE 14)
+(define N_TELEPHONE 15)
+(define N_WEB 16)
+
+;;; CASES
+
+(define C_WINDOW1 1)
+(define C_WINDOW2 2)
+(define C_WINDOW3 3)
+(define C_BABA_GOT_ROOT 4)
+(define C_BABA_2ND_TIME 5)
+(define C_NO_NAME 13)
+(define C_NO_FETCH 15)
+(define C_ASK_NAME 14)
+(define C_YES_NAME 6)
+(define C_NO_BRAVE 11)
+(define C_BABA_FROG 10)
+(define C_STAY_THERE 16)
+(define C_FROG_AGAIN 8)
+(define C_FROZEN_SPELL 9)
+(define C_FROG_LEGS 7)
+(define C_AFTER_ROOT 12)
+(define C_LOOK_ROOM 17)
+

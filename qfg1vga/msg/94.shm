@@ -1,0 +1,32 @@
+;;; Sierra Script
+;;; 94.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_CANTCALM 1)
+(define C_BRIGANDSALERTED 2)
+(define C_TOOFARFROMWINDOW 3)
+(define C_OPENHASP 4)
+
+;;; NOUNS
+
+(define N_ROOM 15)
+(define N_RUG 16)
+(define N_UNSAFEBRIDGE 18)
+(define N_SAFEBRIDGE 17)
+(define N_JACKINTHEBOX 7)
+(define N_BACKDOOR 5)
+(define N_CLOSEDBOX 6)
+(define N_ARCHER1 1)
+(define N_ARCHER2 2)
+(define N_ARCHER3 3)
+(define N_ARCHER4 4)
+(define N_SACKS 12)
+(define N_KEGS 9)
+(define N_CHASM 8)
+(define N_LUMBER1 10)
+(define N_LUMBER2 11)
+(define N_WINDOW 13)
+(define N_WIRE 14)
+
