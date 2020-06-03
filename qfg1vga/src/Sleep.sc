@@ -70,11 +70,11 @@
 		(switch
 			(Print
 				addText: N_HOWLONG NULL C_REST 1 0 0 SLEEP
-				addButton: rest10Minutes N_HOWLONG NULL C_REST 1 0 20 SLEEP
-				addButton: rest30Minutes N_HOWLONG NULL C_REST 2 0 40 SLEEP
-				addButton: rest60Minutes N_HOWLONG NULL C_REST 3 0 60 SLEEP
-				addButton: sleepUntilMorning N_HOWLONG NULL C_REST 4 0 80 SLEEP
-				addButton: stayAwake N_HOWLONG NULL C_REST 5 0 100 SLEEP
+				addButton: rest10Minutes N_HOWLONG NULL NULL 1 0 20 SLEEP
+				addButton: rest30Minutes N_HOWLONG NULL NULL 2 0 40 SLEEP
+				addButton: rest60Minutes N_HOWLONG NULL NULL 3 0 60 SLEEP
+				addButton: sleepUntilMorning N_HOWLONG NULL NULL 4 0 80 SLEEP
+				addButton: stayAwake N_HOWLONG NULL NULL 5 0 100 SLEEP
 				init:
 			)
 			(rest10Minutes

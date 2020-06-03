@@ -146,7 +146,7 @@
 	)
 	
 	(method (handleEvent event)
-		(event claimed: 1)
+		(event claimed: TRUE)
 	)
 )
 
@@ -325,14 +325,22 @@
 							((!= highlightedIcon namePlate) 0)
 							(
 								(or
-									(and (<= `a evtMsg) (<= evtMsg `z))
+									;EO: For some reason, `a and `A compile exactly the same,
+									;despite the different cases.
+									;This makes inputting a proper name (e.g. Eric)
+									;impossible without the keys.sh defines.
+									(and (<= KEY_a evtMsg) (<= evtMsg KEY_z))
 									(and (<= KEY_A evtMsg) (<= evtMsg KEY_Z))
 									(and (<= `0 evtMsg) (<= evtMsg `9))
 								)
 								(self select: namePlate evtMsg)
 							)
-							((== evtMsg KEY_SPACE) (self select: namePlate evtMsg))
-							((and (== evtMsg JOY_UPLEFT) local105) (self select: namePlate evtMsg))
+							((== evtMsg SPACEBAR)
+								(self select: namePlate evtMsg)
+							)
+							((and (== evtMsg JOY_UPLEFT) local105)
+								(self select: namePlate evtMsg)
+							)
 						)
 					)
 				)

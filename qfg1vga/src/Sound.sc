@@ -95,13 +95,13 @@
 			(= client 0)
 		)
 
-		(if (not (sounds contains: self))
+;		(if (not (sounds contains: self))
 			(self init:)
-		)
-
-;		(if (not loop)
-			(= loop 1)
 ;		)
+
+		(if (not loop)
+			(= loop 1)
+		)
 
 		(if argCount
 			(= vol newVol)

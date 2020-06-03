@@ -35,7 +35,6 @@
 	drinkAle
 	drinkSweat
 	drinkBreath
-	drankUp
 )
 
 (enum	-1
@@ -1480,7 +1479,9 @@
 				(= ticks 36)
 			)
 			(8
-				(if (Btst fEgoSitting) (ego loop: 3 cel: 0))
+				(if (Btst fEgoSitting)
+					(ego loop: 3 cel: 0)
+				)
 				(bartender loop: 2 cel: 2 stopUpd:)
 				(if 1 (++ numberOfAlesDrunk))
 				(ego setScript: drinkDown)
@@ -1548,9 +1549,12 @@
 				(messager say: N_BARTENDER 0 C_THEREYOUGO)
 			)
 			(10
-				(if (Btst fEgoSitting) (head hide:) (ego loop: 3 cel: 0))
+				(if (Btst fEgoSitting)
+					(head hide:)
+					(ego loop: 3 cel: 0)
+				)
 				(= drinkOrdered 0)
-				(= drinkConsumed drankUp)
+				(= drinkConsumed drinkBreath)
 				(ego setScript: drinkDown)
 				(self dispose:)
 			)
@@ -1593,7 +1597,7 @@
 				)
 			)
 			(2
-				(if (== drinkConsumed drankUp)
+				(if (== drinkConsumed drinkBreath)
 					(client setScript: breathDeath)
 				else
 					(ego setCycle: BegLoop self)

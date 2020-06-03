@@ -803,7 +803,7 @@
 			)
 			(9
 				(sneakMusic stop:)
-				(EgoDead 88 89 0 1 503)	;Can't get caught here, as the Hero always moves out of Otto's path. Regardless, corrected the death icon
+				(EgoDead 88 89 1 0 503)	;Can't get caught here, as the Hero always moves out of Otto's path.
 			)
 		)
 	)
@@ -919,13 +919,24 @@
 			(3
 				(cond 
 					((> local13 2) (EgoDead 19 22 0 4 602))
-					((== safeCrackSuccess 2) (sneakMusic stop:) (EgoDead 145 146 0 1 503))
-					;Loop and cel have been switched to show correct death icon.
-					(else (sneakMusic stop:) (messager say: N_ROOM 0 0 10 self))
+					((== safeCrackSuccess 2)
+						(sneakMusic stop:)
+						(EgoDead 145 146 1 0 503)
+					)
+					;Loop and cel should be switched to show correct death icon.
+					;However, it doesn't match the palette correctly.
+					(else
+						(sneakMusic stop:)
+						(messager say: N_ROOM 0 0 10 self)
+					)
 				)
 			)
-			(4 (= seconds 1))
-			(5 (EgoDead 19 22 0 4 602))
+			(4
+				(= seconds 1)
+			)
+			(5
+				(EgoDead 19 22 0 4 602)
+			)
 		)
 	)
 )
@@ -1197,7 +1208,9 @@
 				(tumbleMusic stop:)
 				(= cycles 20)
 			)
-			(10 (EgoDead 130 131 0 1 503))
+			(10
+				(EgoDead 130 131 1 0 503)
+			)
 		)
 	)
 )

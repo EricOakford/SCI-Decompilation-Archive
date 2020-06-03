@@ -1,6 +1,8 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# MAIN) ;0
-(include game.sh) (include "999.shm") (include "814.shm")
+(include game.sh)
+(include "999.shm") (include "814.shm")
+(include "120.shm")
 (use GameInit)
 (use CastFlame)
 (use CastDagger)
@@ -708,6 +710,8 @@ code_1559:
 (class HQEgo of Ego
 	(properties
 		view 0
+		noun N_EGO
+		modNum EGOSEZ
 		name "ego"
 	)
 	
