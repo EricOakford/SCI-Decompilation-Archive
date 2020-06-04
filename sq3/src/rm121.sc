@@ -20,12 +20,12 @@
 	(method (init &tmp [temp0 50])
 		(HandsOff)
 		(= global159 1)
-		(Load rsVIEW 194)
-		(Load rsVIEW 68)
-		(Load rsVIEW 210)
-		(Load rsPIC 120)
-		(Load rsPIC 122)
-		(Load rsSOUND 30)
+		(Load VIEW 194)
+		(Load VIEW 68)
+		(Load VIEW 210)
+		(Load PICTURE 120)
+		(Load PICTURE 122)
+		(Load SOUND 30)
 		(super init:)
 		(ego
 			view: 68

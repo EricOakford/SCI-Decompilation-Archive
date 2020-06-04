@@ -514,7 +514,7 @@
 		(if (or (event claimed?) (== isHandsOff 1)) (return 1))
 		(return
 			(switch (event type?)
-				(evSAID
+				(saidEvent
 					(if (Said 'look>')
 						(cond 
 							(

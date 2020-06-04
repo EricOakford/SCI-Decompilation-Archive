@@ -369,15 +369,14 @@ code_019f:
 		(super handleEvent: event)
 		(if (event claimed?) (return))
 		(switch (event type?)
-			(evKEYBOARD
-				(if
-				(and (== (event message?) KEY_F6) (not local2))
+			(keyDown
+				(if (and (== (event message?) `#6) (not local2))
 					(event claimed: 1)
 					(= saveDisabled 0)
 					(curRoom newRoom: 14)
 				)
 			)
-			(evMOUSEBUTTON
+			(mouseDown
 				(if
 					(and
 						(<= 95 (event x?))
@@ -386,7 +385,7 @@ code_019f:
 						(<= (event y?) 77)
 						(not local2)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(= saveDisabled 0)
 					(curRoom newRoom: 14)
 				)

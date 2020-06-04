@@ -198,8 +198,8 @@
 					(
 						(and
 							(or
-								(== (event message?) KEY_J)
-								(== (event message?) KEY_J)
+								(== (event message?) `J)
+								(== (event message?) `J)
 							)
 							canEgoFight
 						)
@@ -208,8 +208,8 @@
 					(
 						(and
 							(or
-								(== (event message?) KEY_M)
-								(== (event message?) KEY_M)
+								(== (event message?) `M)
+								(== (event message?) `M)
 							)
 							canEgoFight
 						)
@@ -218,8 +218,8 @@
 					(
 						(and
 							(or
-								(== (event message?) KEY_N)
-								(== (event message?) KEY_N)
+								(== (event message?) `N)
+								(== (event message?) `N)
 							)
 							canEgoFight
 						)

@@ -284,7 +284,7 @@
 			(direction
 				(= local13 0)
 				(switch (event message?)
-					(JOY_UP
+					(dirN
 						(if (== local15 0)
 							(Chicken setCycle: Forward)
 							(= local7 0)

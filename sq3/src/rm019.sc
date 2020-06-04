@@ -17,19 +17,19 @@
 
 (local
 	local0
-	local1
-	local2
-	local3
-	local4
-	local5
-	[local6 49]
-	[local55 50]
-	[local105 50]
+	saveBits1
+	saveBits2
+	saveBits3
+	saveBits4
+	saveBits5
+	[str1 49]
+	[str2 50]
+	[str3 50]
 	local155
 )
 (procedure (localproc_0874 message theColor)
 	(if (< numColors 16) (= theColor vWHITE))
-	(= local1
+	(= saveBits1
 		(Display message
 			p_width 135
 			p_mode teJustCenter
@@ -102,10 +102,10 @@
 		(HandsOn)
 		(User mapKeyToDir: dirN)
 		(timers eachElementDo: #dispose 84)
-		(if local2 (localproc_08a5 local2) (= local2 0))
-		(if local1 (localproc_08a5 local1) (= local1 0))
-		(if local3 (localproc_08a5 local3) (= local3 0))
-		(if local4 (localproc_08a5 local4) (= local4 0))
+		(if saveBits2 (localproc_08a5 saveBits2) (= saveBits2 0))
+		(if saveBits1 (localproc_08a5 saveBits1) (= saveBits1 0))
+		(if saveBits3 (localproc_08a5 saveBits3) (= saveBits3 0))
+		(if saveBits4 (localproc_08a5 saveBits4) (= saveBits4 0))
 		(super newRoom: newRoomNumber)
 	)
 )
@@ -130,22 +130,14 @@
 				(= cycles 2)
 			)
 			(2
-				(= local2
-					(Display
-						19
-						0
-						dsWIDTH
-						135
-						dsALIGN
-						1
-						dsCOORD
-						168
-						3
-						dsCOLOR
-						14
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= saveBits2
+					(Display 19 0
+						p_width 135
+						p_mode teJustCenter
+						p_at 168 3
+						p_color vYELLOW
+						p_font 600
+						p_save
 					)
 				)
 				(scanBut state: 1 draw:)
@@ -157,21 +149,15 @@
 			)
 			(3
 				(if selectedSector
-					(= local2
+					(= saveBits2
 						(Display
-							(Format @local55 {DESTINATION: SECTOR %d} selectedSector)
-							dsWIDTH
-							135
-							dsALIGN
-							1
-							dsCOORD
-							168
-							3
-							dsCOLOR
-							9
-							dsFONT
-							600
-							dsSAVEPIXELS
+							(Format @str2 {DESTINATION: SECTOR %d} selectedSector)
+							p_width 135
+							p_mode teJustCenter
+							p_at 168 3
+							p_color 9
+							p_font 600
+							p_save
 						)
 					)
 				)
@@ -187,7 +173,7 @@
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
-				(if local2 (localproc_08a5 local2) (= local2 0))
+				(if saveBits2 (localproc_08a5 saveBits2) (= saveBits2 0))
 				(cond 
 					(
 						(and
@@ -204,13 +190,13 @@
 					(else
 						(if
 							(!=
-								local5
-								(Format @local105 {SCANNING SECTOR %d} scanningSector)
+								saveBits5
+								(Format @str3 {SCANNING SECTOR %d} scanningSector)
 							)
-							(= local5
-								(Format @local105 {SCANNING SECTOR %d} scanningSector)
+							(= saveBits5
+								(Format @str3 {SCANNING SECTOR %d} scanningSector)
 							)
-							(if local1 (localproc_08a5 local1) (= local1 0))
+							(if saveBits1 (localproc_08a5 saveBits1) (= saveBits1 0))
 						)
 						(scanBox setCycle: Forward)
 						(scanBut state: 0 cel: 2 draw:)
@@ -221,7 +207,7 @@
 			)
 			(1
 				(localproc_0874
-					(Format @local105 {SCANNING SECTOR %d} scanningSector)
+					(Format @str3 {SCANNING SECTOR %d} scanningSector)
 					14
 				)
 				(curRoom setScript: zoomScript)
@@ -276,9 +262,9 @@
 				(Timer setCycle: self 2)
 			)
 			(2
-				(if local1 (localproc_08a5 local1) (= local1 0))
+				(if saveBits1 (localproc_08a5 saveBits1) (= saveBits1 0))
 				(= saveDisabled TRUE)
-				(= local3
+				(= saveBits3
 					(Display
 						(cond 
 							((== scanningSector 39)
@@ -294,26 +280,23 @@
 								{NAME:\n PLANET ORTEGA\nSECTOR: 82\nHABITANTS: UNKNOWN\nVOLCANIC CRATER-STREWN\nSURFACE}
 							)
 						)
-						dsWIDTH
-						(if (< global163 7) 220 else 91)
-						dsCOORD
+						p_width (if (< global163 7) 220 else 91)
+						p_at
 						(if (< global163 7)
 							(+ (* (- global163 1) 25) 62)
 						else
 							(- (* (- global163 1) 25) 111)
 						)
 						(+ (* (- global164 1) 18) 6)
-						dsFONT
-						600
-						dsCOLOR
-						12
-						dsSAVEPIXELS
+						p_font 600
+						p_color 12
+						p_save
 					)
 				)
 			)
 			(3
 				(scanBox setCycle: BegLoop self)
-				(if local3 (localproc_08a5 local3) (= local3 0))
+				(if saveBits3 (localproc_08a5 saveBits3) (= saveBits3 0))
 				(= saveDisabled 0)
 			)
 			(4
@@ -329,10 +312,10 @@
 (instance courseScript of Script
 	(properties)
 	
-	(method (changeState newState &tmp temp0 [temp1 49])
+	(method (changeState newState &tmp theString [temp1 49])
 		(switch (= state newState)
 			(0
-				(if local2 (localproc_08a5 local2) (= local2 0))
+				(if saveBits2 (localproc_08a5 saveBits2) (= saveBits2 0))
 				(= gGEgoY_5 (/ currentSector 12))
 				(if
 				(> (= global161 (- currentSector (* gGEgoY_5 12))) 0)
@@ -349,7 +332,7 @@
 				(= seconds 2)
 			)
 			(1
-				(= temp0
+				(= theString
 					(if (== scanningSector currentSector)
 						{COURSE ALREADY ACHIEVED}
 					else
@@ -359,61 +342,47 @@
 				(if (!= scanningSector currentSector)
 					(= selectedSector scanningSector)
 				)
-				(if local1 (localproc_08a5 local1) (= local1 0))
-				(= local4
-					(Display
-						temp0
-						dsWIDTH
-						135
-						dsALIGN
-						1
-						dsCOORD
-						168
-						3
-						dsCOLOR
-						14
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(if saveBits1 (localproc_08a5 saveBits1) (= saveBits1 0))
+				(= saveBits4
+					(Display theString
+						p_width 135
+						p_mode teJustCenter
+						p_at 168 3
+						p_color 14
+						p_font 600
+						p_save
 					)
 				)
-				(if (== temp0 {COURSE ALREADY ACHIEVED})
+				(if (== theString {COURSE ALREADY ACHIEVED})
 					(scanBut state: 0)
 					(curRoom newRoom: 17)
 				)
 				(= seconds 3)
 			)
 			(2
-				(if local4 (localproc_08a5 local4) (= local4 0))
+				(if saveBits4 (localproc_08a5 saveBits4) (= saveBits4 0))
 				(if (!= scanningSector currentSector) (= cycles 2))
 			)
 			(3
-				(= local4
-					(Display
-						{COURSE LOCKED}
-						dsWIDTH
-						135
-						dsALIGN
-						1
-						dsCOORD
-						168
-						3
-						dsCOLOR
-						9
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= saveBits4
+					(Display {COURSE LOCKED}
+						p_width 135
+						p_mode teJustCenter
+						p_at 168 3
+						p_color 9
+						p_font 600
+						p_save
 					)
 				)
 				(= seconds 3)
 			)
 			(4
-				(if local4 (localproc_08a5 local4) (= local4 0))
+				(if saveBits4 (localproc_08a5 saveBits4) (= saveBits4 0))
 				(= cycles 1)
 			)
 			(5
 				(localproc_08a5
-					(Format @local55 {DESTINATION: SECTOR %d} selectedSector)
+					(Format @str2 {DESTINATION: SECTOR %d} selectedSector)
 				)
 				(= global220 local155)
 				(curRoom newRoom: 17)

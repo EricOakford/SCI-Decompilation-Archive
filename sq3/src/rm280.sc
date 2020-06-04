@@ -251,41 +251,41 @@
 						(cond 
 							(
 								(or
-									(== (event message?) KEY_Q)
-									(== (event message?) KEY_q)
+									(== (event message?) `Q)
+									(== (event message?) `q)
 								)
 								(curRoom setScript: Quitting)
 							)
 							(
 								(and
-									(>= (event message?) KEY_1)
-									(<= (event message?) KEY_9)
+									(>= (event message?) `1)
+									(<= (event message?) `9)
 								)
-								(= menuOption (- (event message?) KEY_0))
+								(= menuOption (- (event message?) `0))
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(>= (event message?) KEY_A)
-									(<= (event message?) KEY_C)
+									(>= (event message?) `A)
+									(<= (event message?) `C)
 								)
-								(= menuOption (- (event message?) KEY_7))
+								(= menuOption (- (event message?) `7))
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(>= (event message?) KEY_a)
-									(<= (event message?) KEY_c)
+									(>= (event message?) `a)
+									(<= (event message?) `c)
 								)
-								(= menuOption (- (event message?) KEY_W))
+								(= menuOption (- (event message?) `W))
 								(curRoom setScript: ChooseFood)
 							)
 						)
 					)
 					(
 						(or
-							(== (event message?) KEY_Q)
-							(== (event message?) KEY_q)
+							(== (event message?) `Q)
+							(== (event message?) `q)
 						)
 						(curRoom setScript: Quitting)
 					)

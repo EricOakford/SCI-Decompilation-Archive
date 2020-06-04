@@ -48,7 +48,7 @@
 		(if (!= prevRoomNum 3) (Load SOUND 56))
 		(if
 		(and climbedOutOfReactorRoom (== prevRoomNum 3))
-			(Load rsSOUND 11)
+			(Load SOUND 11)
 		)
 		(Load SOUND 12)
 		(= global132 0)
