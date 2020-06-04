@@ -57,7 +57,7 @@
 		)
 	)
 )
-						
+
 (class Feature of Object
 	(properties
 		x					0
@@ -73,7 +73,6 @@
 		sightAngle		ftrDefault	; angle used by facingMe
 		actions			0	; instance of Action or EventHandler with Actions
 		onMeCheck		ftrDefault	; if filled, the control color used by onMe:	or a Polygon
-		state				0
 		approachX		0
 		approachY		0
 		approachDist	0
@@ -91,7 +90,6 @@
 ;;;		isNotHidden			; method defining what hidden means for this object
 ;;;		onMe					; method defining what constitutes being on  
 ;;;		approachVerbs		; method to set _approachVerbs
-;;;		setOnMeCheck		; set the onMeCheck to something
 ;;;	)
 
 
@@ -298,7 +296,7 @@
 			(actions dispose:)
 			(= actions NULL)
 		)
-		(if	(IsObject onMeCheck)
+		(if (IsObject onMeCheck)
 			(onMeCheck dispose:)
 			(= onMeCheck NULL)
 		)
@@ -327,3 +325,4 @@
 		(return FALSE)
 	)
 )
+
