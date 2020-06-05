@@ -6,7 +6,7 @@
 (include gameEnumPuzzlePoints.sh)
 (include gameViews.sh)
 (include gamePics.sh)
-
+(include menu.sh)
 
 (define MAZEBUG 238)
 
@@ -98,7 +98,7 @@
 ; Character Classes
 (enum
 	FIGHTER
-	MAGE
+	MAGIC_USER
 	THIEF
 )
 
@@ -369,15 +369,3 @@
 
 ; Monster Arenas
 (define KOBOLD 15)
-
-(define BEAR 420)
-(define MINOTAUR 425)
-(define SAURUS 430)
-(define MANTRAY 435)
-(define CHEETAUR 440)
-(define GOBLIN 445)
-(define TROLL 450)
-(define OGRE 455)
-(define SAURUSREX 460)
-(define BRIGAND 465)
-(define LEADER 470)	;unused

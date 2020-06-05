@@ -125,7 +125,7 @@
 			(ego illegalBits: (| cWHITE cLRED))
 		)
 		(if (not (Btst DEFEATED_MINOTAUR))
-			(= monsterNum MINOTAUR)
+			(= monsterNum vMinotaur)
 			(= monsterHealth 186)
 		)
 		(switch prevRoomNum
@@ -158,7 +158,7 @@
 					(ego posn: 143 108 init: setScript: (ScriptID 275 0))
 				)
 			)
-			(MINOTAUR
+			(vMinotaur
 				(Load VIEW vEgoDanceBow)
 				(Load VIEW vMinotaurDefeated)
 				(Bset DEFEATED_MINOTAUR)
@@ -760,7 +760,7 @@
 				(cond 
 					((Said 'search[/bull,body,flail]')
 						(cond 
-							(local6 (HighPrint 93 41) (curRoom newRoom: MINOTAUR))
+							(local6 (HighPrint 93 41) (curRoom newRoom: vMinotaur))
 							((Btst DEFEATED_MINOTAUR)
 								(if local10
 									(HighPrint 93 42)
@@ -818,7 +818,7 @@
 						else
 							(HighPrint 93 53)
 							;OK.  Here's your chance.
-							(curRoom newRoom: MINOTAUR)
+							(curRoom newRoom: vMinotaur)
 						)
 					)
 				)
@@ -914,7 +914,7 @@
 					)
 					(client setScript: patrol)
 				else
-					(curRoom newRoom: MINOTAUR)
+					(curRoom newRoom: vMinotaur)
 				)
 			)
 		)

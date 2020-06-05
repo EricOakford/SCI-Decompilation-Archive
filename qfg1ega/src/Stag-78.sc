@@ -177,18 +177,18 @@
 							(HighPrint 78 3)
 							;Huh?
 							)
-						)
+					)
 					((Said 'look/buck,buck')
 						(HighPrint 78 4)
 						;You don't see a stag here.
-						)
+					)
 					((Said 'fight,kill,beat,chop/buck')
 						(if (Btst STAG_PRESENT)
 							(Bset STAG_HURT)
 							(HighPrint 78 5)
 							;The stag seems to be magically protected.
 						else
-							(PrintCantDoThat)
+							(CantDo)
 						)
 					)
 					((Said 'look/antwerp,baby')

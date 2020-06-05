@@ -688,7 +688,7 @@
 		(super init: &rest)
 		(theGame setCursor: normalCursor TRUE)
 		(++ magesMazePlayCount)
-		(SolvePuzzle POINTS_PLAYWIZARDGAME 5 MAGE)
+		(SolvePuzzle POINTS_PLAYWIZARDGAME 5 MAGIC_USER)
 		(= temp0 0)
 		(while (< temp0 4)
 			(repeat
@@ -871,7 +871,7 @@
 				(Printf 32 2 magesMazePlayCount temp1 temp0)
 				(Print 32 3)
 				(ego learn: DAZZLE 10)
-				(SolvePuzzle POINTS_WINWIZARDGAME 12 MAGE)
+				(SolvePuzzle POINTS_WINWIZARDGAME 12 MAGIC_USER)
 				; "As I promised, I shall now teach you the spell known as `Erasmus' Razzle Dazzle'."
 			)
 			(else

@@ -374,7 +374,7 @@
 			(44
 				(ego posn: 1 120 setMotion: MoveTo 15 120)
 			)
-			(GOBLIN
+			(vGoblin
 				(if monsterHealth
 					(ChangeGait MOVE_RUN FALSE)
 					(ego posn: 318 108 setMotion: MoveTo 255 108)
@@ -443,7 +443,7 @@
 				(ego posn: 160 189 setMotion: MoveTo 160 165)
 			)
 		)
-		(if (or (!= prevRoomNum GOBLIN) monsterHealth)
+		(if (or (!= prevRoomNum vGoblin) monsterHealth)
 			(switch numGoblins
 				(0
 					(if (Btst DEFEATED_FIRST_GOBLIN) (= local51 1))
@@ -479,7 +479,7 @@
 	
 	(method (dispose)
 		(Bset VISITED_GOBLIN_AMBUSH)
-		(if (== prevRoomNum GOBLIN) (= monsterNum FALSE))
+		(if (== prevRoomNum vGoblin) (= monsterNum FALSE))
 		(super dispose:)
 	)
 	
@@ -794,8 +794,8 @@
 			(HighPrint 45 26)
 			;A Goblin steps out of the bush.
 			(goblinS stop:)
-			(= monsterNum GOBLIN)
-			(curRoom newRoom: GOBLIN)
+			(= monsterNum vGoblin)
+			(curRoom newRoom: vGoblin)
 		)
 	)
 )
@@ -824,7 +824,7 @@
 				(and (not lootedGoblin1) (<= (ego distanceTo: self) 30))
 				(HighPrint 45 28)
 				;You find 5 silvers concealed in a pouch.  You take the silvers.
-				(= lootedGoblin1 TRUE) (Purchase -5))
+				(= lootedGoblin1 TRUE) (GiveMoney -5))
 				((and lootedGoblin1 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
@@ -864,7 +864,7 @@
 				(and (not lootedGoblin2) (<= (ego distanceTo: self) 30))
 				(HighPrint 45 32)
 				;You find 4 silvers tucked in his tunic.  He has no use for the silvers.  Into your pocket they go.
-				(= lootedGoblin2 TRUE) (Purchase -4))
+				(= lootedGoblin2 TRUE) (GiveMoney -4))
 				((and lootedGoblin2 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
@@ -946,7 +946,7 @@
 				(HighPrint 45 37)
 				;It's your lucky day, this was the big winner at last night's poker game.  You take his 35 silvers.
 				(= lootedGoblin4 TRUE)
-				(Purchase -35))
+				(GiveMoney -35))
 				((and lootedGoblin4 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
@@ -986,7 +986,7 @@
 				(and (not lootedGoblin5) (<= (ego distanceTo: self) 30))
 				(HighPrint 45 39)
 				;In this Goblin's left shoe you find 8 silvers. You look around and slip the silvers into your pocket.
-				(= lootedGoblin5 TRUE) (Purchase -8))
+				(= lootedGoblin5 TRUE) (GiveMoney -8))
 				((and lootedGoblin5 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
@@ -1027,7 +1027,7 @@
 				(and (not lootedGoblin6) (<= (ego distanceTo: self) 30))
 				(HighPrint 45 41)
 				;Clutched in his hand are 4 silvers.  You take the money.
-				(= lootedGoblin6 TRUE) (Purchase -4))
+				(= lootedGoblin6 TRUE) (GiveMoney -4))
 				((and lootedGoblin6 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
@@ -1338,8 +1338,8 @@
 				(AimToward client ego (+ [local66 register] 5))
 			)
 			(goblinS stop:)
-			(= monsterNum GOBLIN)
-			(curRoom newRoom: GOBLIN)
+			(= monsterNum vGoblin)
+			(curRoom newRoom: vGoblin)
 		)
 		(super doit:)
 	)
@@ -1388,8 +1388,8 @@
 						(HighPrint 45 48)
 						;"You'll fight all right."
 						(goblinS stop:)
-						(= monsterNum GOBLIN)
-						(curRoom newRoom: GOBLIN)
+						(= monsterNum vGoblin)
+						(curRoom newRoom: vGoblin)
 					)
 				)
 			)

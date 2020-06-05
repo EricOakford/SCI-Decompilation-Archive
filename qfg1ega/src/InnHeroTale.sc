@@ -254,7 +254,9 @@
 							)
 						)
 					)
-					((Said 'chat/man') (PrintNotCloseEnough))
+					((Said 'chat/man')
+						(NotClose)
+					)
 					((Said 'pay[/man,shameen,abdulla,shema]')
 						(HighPrint 301 28)
 						;For what?
@@ -426,11 +428,14 @@
 								(HighPrint 301 4)
 								;You must pay the innkeeper for a room.
 								)
-							((Purchase roomPrice) (Bset RENTED_ROOMATINN) (shameen setScript: (ScriptID 167 0)))
+							((GiveMoney roomPrice)
+								(Bset RENTED_ROOMATINN)
+								(shameen setScript: (ScriptID 167 0))
+							)
 							(else
 								(HighPrint 301 47)
 								;Because your silver is too low, you must find other accomodations.  Perhaps you can find work somewhere.
-								)
+							)
 						)
 					)
 					((Said 'ask>')
@@ -439,36 +444,35 @@
 							((Said '//tavern,bar')
 								(HighPrint 301 48)
 								;"The tavern is located in the northwest corner of our town."
-								)
+							)
 							((Said '//abenteuer,hall[<club,about]')
 								(HighPrint 301 49)
 								;"The Guild Hall is just down the street from here."
-								)
+							)
 							((Said '//zara,magic,shop')
 								(HighPrint 301 50)
 								;"Zara's magic shop is next door to my Inn.  You can't miss it."
-								)
+							)
 							((Said '//hotel,(fable<hero),replace,journey')
 								(HighPrint 301 51)
 								;"I have run this inn for three years now, with Shema."
 								(HighPrint 301 52)
 								;"We had thought to return to Shapeir, my homeland, with Abdulla Doo, but Alas, Fate has decreed otherwise."
-								)
+							)
 							((Said '//room,bed,nap,rest,lodging,cost')
 								(HighPrint 301 53)
 								;"Very nice room.  Very soft beds, finest in town.  Only five silvers a night."
-								)
+							)
 							(
 								(Said
 									'//food,lamb,chicken,soup,drink,breakfast,coffee,tea'
-								)
+							)
 								(HighPrint 301 44)
 								;"Very good food, very good drink, finest in town.  Sit, rest, you will be served by my Shema."
 							)
-							(
-							(Said '//weapon,blade,dagger,shield,equipment,armor')
-							(HighPrint 301 54)
-							;I have little knowledge of these things.  Perhaps if you shop around..."
+							((Said '//weapon,blade,dagger,shield,equipment,armor')
+								(HighPrint 301 54)
+								;I have little knowledge of these things.  Perhaps if you shop around..."
 							)
 							((Said '//abdulla,man')
 								(if (cast contains: (ScriptID 166 0))
@@ -483,82 +487,87 @@
 							((Said '//monster,ogre,goon,centaur')
 								(HighPrint 301 57)
 								;"The world is filled with many kinds of creatures, both good and bad."
-								)
+							)
 							((Said '//hamlet,valley')
 								(HighPrint 301 58)
 								;"Although in this valley I now have friends, I miss my homeland terribly."
-								)
+							)
 							((Said '//ale,sweat,breath,wine')
 								(HighPrint 301 59)
 								;"My apologies, Wanderer, but for such drink you must go to the tavern at the other end of town."
-								)
+							)
 							((Said '//robbery,loss,alm,gold,silver')
 								(HighPrint 301 60)
 								;"Alas, the brigands stole all of Abdulla's wealth and mine own when they robbed his caravan.
 								;Now I am forced to stay in this wet, cold land."
-								)
+							)
 							((Said '//loot,caravan,destiny')
 								(HighPrint 301 61)
 								;"I hoped to return to my homeland with the profits Abdulla, Shema, and I would make from the caravan.
 								;Now, I fear, we will remain here unless someone defeats the brigands and returns our stolen treasures."
-								)
+							)
 							((Said '//spice')
 								(HighPrint 301 62)
 								;"Hot spice.  Hot!  I hope you like!"
-								)
+							)
 							((Said '//home,desert,south,land')
 								(HighPrint 301 63)
 								;"We live far to the south in the desert lands.  Someday, we may yet return there."
-								)
-							(
-							(Said '//labor,hero,fame,adventure,hall,abenteuer')
-							(HighPrint 301 64)
-							;"Work of an adventurous sort is available.  You must go to the Hall of the Adventurer's Guild."
+							)
+							((Said '//labor,hero,fame,adventure,hall,abenteuer')
+								(HighPrint 301 64)
+								;"Work of an adventurous sort is available.  You must go to the Hall of the Adventurer's Guild."
 							)
 							((Said '//bandit')
 								(HighPrint 301 65)
 								;"I know little about them except that they must be wealthy now."
-								)
+							)
 							((Said '//name')
 								(HighPrint 301 66)
 								;"I am Shameen, mate of Shema, innkeeper to the town of Spielburg."
-								)
+							)
 							((Said '//shema,companion,mate,wife,female')
 								(HighPrint 301 67)
 								;"Shema is my mate and the light of my life. If you sit down, she will be happy to serve you."
-								)
+							)
 							((Said '//katta,cat,people,sand')
 								(HighPrint 301 68)
 								;We Katta are a race of desert dwellers, wanderers of the endless sands."
-								)
+							)
 							((Said '//shameen,keeper,innkeeper,owner,ya')
 								(HighPrint 301 69)
 								;"I am but a poor unfortunate, forced to seek my fortune in this cold land, far from my homeland, Shapeir, and my people."
-								)
+							)
 							((Said '//magic,spell,potion,wand,scroll')
 								(HighPrint 301 70)
 								;"We of the Katta know only low and simple spells."
-								)
+							)
 							((Said '//*')
 								(= chatShameen 0)
 								(switch invalidTopic
 									(0
 										(HighPrint 301 71)
 										;"Alas, this humble innkeeper is ignorant of that about which you ask."
-										)
+									)
 									(1
 										(HighPrint 301 72)
 										;"A thousand pardons!  I am a fool and have no answer for your question."
-										)
+									)
 									(2
 										(HighPrint 301 73)
 										;"Forgive me, that I am unable to speak with knowledge on that subject."
-										)
+									)
 								)
-								(if (== invalidTopic 2) (= invalidTopic 0) else (++ invalidTopic))
+								(if (== invalidTopic 2)
+									(= invalidTopic 0)
+								else
+									(++ invalidTopic)
+								)
 							)
 						)
-						(if chatShameen (SolvePuzzle POINTS_TALKTOSHAMEEN 1))
+						(if chatShameen
+							(SolvePuzzle POINTS_TALKTOSHAMEEN 1)
+						)
 					)
 				)
 			)
@@ -713,7 +722,7 @@
 								(
 								(Said '/food,breakfast,lamb,chicken,soup,plate,bowl')
 									(cond 
-										((not (Purchase mealPrice)) (NotEnoughMoney))
+										((not (GiveMoney mealPrice)) (NotEnoughMoney))
 										(
 										(and (== teaOrdered foodOrdered) (== foodOrdered mealNOTHING))
 											(HighPrint 301 89)
@@ -731,7 +740,7 @@
 								)
 								((Said '/drink,coffee,tea,cup,cup')
 									(cond 
-										((not (Purchase drinkPrice)) (NotEnoughMoney))
+										((not (GiveMoney drinkPrice)) (NotEnoughMoney))
 										(
 										(and (== teaOrdered foodOrdered) (== foodOrdered mealNOTHING))
 											(HighPrint 301 90)

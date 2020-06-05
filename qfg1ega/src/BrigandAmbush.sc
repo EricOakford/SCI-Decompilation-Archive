@@ -366,43 +366,43 @@
 								(HighPrint 91 1)
 								;The cliffs are rocky and riddled with niches that could conceal things.
 								;Brigand archers for instance.  There is a pile of logs off to the north.
-								)
+							)
 							((Said '[<at]/boulder')
 								(HighPrint 91 2)
 								;You seem to see movement, but you are not certain what is over there.
-								)
+							)
 							((Said '[<at]/cliff')
 								(HighPrint 91 3)
 								;The rock walls look steep.
-								)
+							)
 							((Said '[<at]/log')
 								(HighPrint 91 4)
 								;It is difficult to see them because of the cliff walls, but you think you can make out something or things behind the logs.
-								)
+							)
 							((Said '[<at]/bandit,archer,man')
 								(HighPrint 91 5)
 								;From what you can see, you realize that you are in a very dangerous situation.
-								)
+							)
 							((or (Said '<up') (Said '/sky'))
 								(HighPrint 91 6)
 								;You see archers perched on the cliffs.
-								)
+							)
 							((or (Said '<down') (Said '/ground,grass'))
 								(HighPrint 91 7)
 								;You'd better keep your head up.
-								)
+							)
 							((Said '/south,west')
 								(HighPrint 91 8)
 								;You see sheer cliff walls.
-								)
+							)
 							((Said '/north')
 								(HighPrint 91 9)
 								;You see a suspicious pile of logs blocking the passage in this canyon.
-								)
+							)
 							((Said '/east')
 								(HighPrint 91 10)
 								;You see where the canyon turns north.
-								)
+							)
 						)
 					)
 					((Said 'climb,hop,hop')
@@ -429,7 +429,7 @@
 							(else
 								(HighPrint 91 11)
 								;The only way to climb is over the logs and you're not in a good place for that.
-								)
+							)
 						)
 					)
 				)
@@ -823,32 +823,19 @@
 	)
 )
 
-(instance shoot1 of Shooter
-	(properties)
-)
+(instance shoot1 of Shooter)
 
-(instance shoot2 of Shooter
-	(properties)
-)
+(instance shoot2 of Shooter)
 
-(instance shoot3 of Shooter
-	(properties)
-)
+(instance shoot3 of Shooter)
 
-(instance shoot4 of Shooter
-	(properties)
-)
+(instance shoot4 of Shooter)
 
-(instance shoot5 of Shooter
-	(properties)
-)
+(instance shoot5 of Shooter)
 
-(instance shoot6 of Shooter
-	(properties)
-)
+(instance shoot6 of Shooter)
 
 (instance egoHit of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -899,7 +886,6 @@
 )
 
 (instance egoEnters of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -908,7 +894,7 @@
 				(if (not (Btst VISITED_BRIGAND_AMBUSH))
 					(TimePrint 4 91 18)
 					;You have a bad feeling about this place.
-					)
+				)
 				(= seconds 4)
 			)
 			(2
@@ -958,7 +944,7 @@
 				(if (not (Btst VISITED_BRIGAND_AMBUSH))
 					(TimePrint 4 91 19)
 					;You have an even worse feeling about this place.
-					)
+				)
 				(= seconds 4)
 			)
 			(6
@@ -1090,7 +1076,7 @@
 				)
 				(if (and local149 brigandsBehindLog)
 					(= numBrigands 3)
-					(curRoom newRoom: BRIGAND)
+					(curRoom newRoom: vBrigand)
 				else
 					(HandsOn)
 					(self dispose:)

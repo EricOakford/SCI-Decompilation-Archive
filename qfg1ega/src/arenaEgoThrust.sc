@@ -34,7 +34,7 @@
 				(= local1 (local0 tryAttack: (local0 opponent?)))
 				(if
 					(and
-						(or (== monsterNum MINOTAUR) (== monsterNum BRIGAND))
+						(or (== monsterNum vMinotaur) (== monsterNum vBrigand))
 						(== ((local0 opponent?) action?) 3)
 					)
 					(= local1 0)
@@ -42,11 +42,11 @@
 				(if local1
 					(if
 						(or
-							(== monsterNum CHEETAUR)
-							(== monsterNum BEAR)
-							(== monsterNum SAURUS)
-							(== monsterNum MINOTAUR)
-							(== monsterNum BRIGAND)
+							(== monsterNum vCheetaur)
+							(== monsterNum vBear)
+							(== monsterNum vSaurus)
+							(== monsterNum vMinotaur)
+							(== monsterNum vBrigand)
 						)
 						(= register 3)
 					)

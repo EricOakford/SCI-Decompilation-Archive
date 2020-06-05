@@ -46,9 +46,9 @@
 		(westBush setPri: 7 ignoreActors: init: addToPic:)
 		(if
 			(not
-				(OneOf
-					prevRoomNum
-					BEAR MINOTAUR SAURUS MANTRAY CHEETAUR GOBLIN TROLL OGRE SAURUSREX BRIGAND LEADER
+				(OneOf prevRoomNum
+					vBear vMinotaur vSaurus vMantray vCheetaur
+					vGoblin vTroll vOgre vDragon vBrigand vBrigandLeader
 				)
 			)
 			(= egoX (ego x?))

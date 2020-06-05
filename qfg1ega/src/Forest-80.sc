@@ -87,9 +87,9 @@
 		(addToPics add: southBush eachElementDo: #init doit:)
 		(if
 			(not
-				(OneOf
-					prevRoomNum
-					BEAR MINOTAUR SAURUS MANTRAY CHEETAUR GOBLIN TROLL OGRE SAURUSREX BRIGAND LEADER
+				(OneOf prevRoomNum
+					vBear vMinotaur vSaurus vMantray vCheetaur
+					vGoblin vTroll vOgre vDragon vBrigand vBrigandLeader
 				)
 			)
 			(= egoX (ego x?))
@@ -121,7 +121,6 @@
 )
 
 (instance egoLoses of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -188,7 +187,8 @@
 			(5
 				(EgoDead 80 1
 					#icon vEgoDefeatedMagic 2 5
-					#title {Timing is everything.})
+					#title {Timing is everything.}
+				)
 			)
 		)
 	)

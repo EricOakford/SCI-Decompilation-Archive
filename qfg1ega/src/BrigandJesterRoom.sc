@@ -43,9 +43,9 @@
 	local7
 	local8
 	chatJester
-	[local10 6]
-	[local16 6] = [160 164 160 167 151 155]
-	[local22 6] = [14 21 9 12 13 21]
+	[fly 6]
+	[flyX 6] = [160 164 160 167 151 155]
+	[flyY 6] = [14 21 9 12 13 21]
 )
 (procedure (NoTalking)
 	(if (Btst PULLED_CHAIN)
@@ -57,22 +57,24 @@
 		)
 )
 
-(procedure (localproc_0f76 &tmp temp0)
-	(= temp0 0)
-	(while (< temp0 6)
-		([local10 temp0]
+(procedure (AddFlies &tmp i)
+	(= i 0)
+	(while (< i 6)
+		;EO: This didn't decompile correctly.
+		(= [fly i] (Clone aFly))
+		([fly i]
 			ignoreActors:
-			posn: [local16 temp0] [local22 (= [local10 temp0] (Clone aFly))]
+			posn: [flyX i] [flyY i]
 			init:
 			setLoop: 9
 			setPri: 15
 		)
 		(if (< howFast 2)
-			([local10 temp0] stopUpd: addToPic:)
+			([fly i] stopUpd: addToPic:)
 		else
-			([local10 temp0] setCycle: Forward setMotion: Wander)
+			([fly i] setCycle: Forward setMotion: Wander)
 		)
-		(++ temp0)
+		(++ i)
 	)
 )
 
@@ -221,7 +223,7 @@
 		)
 		(cond 
 			((and (Btst BEFRIENDED_JESTER) (not local7) (not local8))
-				(SolvePuzzle POINTS_TALKTOJESTER 8)
+				(SolvePuzzle POINTS_TALKTOJESTERABOUTELSA 8)
 				(= local7 1)
 				(head dispose:)
 				(self view: vYorickLeave setLoop: 0 setCel: 0)
@@ -701,7 +703,7 @@
 		(= local4 (= local3 50))
 		(roomMusic init: play:)
 		(effect init:)
-		(localproc_0f76)
+		(AddFlies)
 		(= yesNoTimer 0)
 		(yorick init: stopUpd:)
 		(head setPri: 7 init:)

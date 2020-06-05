@@ -54,13 +54,13 @@
 			(HighPrint 313 2)
 			;Just wait. He'll catch up to you
 			)
-		(else (PrintNotCloseEnough))
+		(else (NotClose))
 	)
 )
 
 (procedure (SearchPurse)
 	(cond 
-		((Btst SEARCHED_LOL_PURSE) (PrintAlreadyDoneThat))
+		((Btst SEARCHED_LOL_PURSE) (AlreadyDone))
 		((< (ego distanceTo: purse) 15)
 			(HighPrint 313 3)
 			;In the purse, you find 20 silvers and some soiled hankies. You take the silver.
@@ -68,13 +68,13 @@
 			(Bset SEARCHED_LOL_PURSE)
 			(SolvePuzzle POINTS_SEARCHLOLPURSE 1 THIEF)
 		)
-		(else (PrintNotCloseEnough))
+		(else (NotClose))
 	)
 )
 
 (procedure (SearchBasket)
 	(cond 
-		((Btst SEARCHED_LOL_BASKET) (PrintAlreadyDoneThat))
+		((Btst SEARCHED_LOL_BASKET) (AlreadyDone))
 		((< (ego distanceTo: basket) 15)
 			(HighPrint 313 4)
 			;A string of pearls seems to have fallen into the bag among the knitting. You take the pearls, of course.
@@ -82,7 +82,7 @@
 			(Bset SEARCHED_LOL_BASKET)
 			(SolvePuzzle POINTS_SEARCHLOLBASKET 1 THIEF)
 		)
-		(else (PrintNotCloseEnough))
+		(else (NotClose))
 	)
 )
 
@@ -93,15 +93,15 @@
 			;You find nothing else of value in the desk.
 			)
 		((ego inRect: 22 131 53 152) (SolvePuzzle POINTS_SEARCHLOLDESK 1 THIEF) (ego setScript: deskOpen))
-		(else (PrintNotCloseEnough))
+		(else (NotClose))
 	)
 )
 
 (procedure (UncoverBirdcage)
 	(cond 
-		((Btst UNCOVERED_BIRDCAGE) (PrintAlreadyDoneThat))
+		((Btst UNCOVERED_BIRDCAGE) (AlreadyDone))
 		((< (ego distanceTo: birdcage) 25) (ego setScript: birdieSings))
-		(else (PrintNotCloseEnough))
+		(else (NotClose))
 	)
 )
 
@@ -306,7 +306,7 @@
 								(Bset SEARCHED_LOL_COUCH)
 								(SolvePuzzle POINTS_SEARCHLOLCOUCH 1 THIEF)
 							)
-							(else (PrintNotCloseEnough))
+							(else (NotClose))
 						)
 					)
 					((Said '/desk,drawer') (SearchDesk))
@@ -319,7 +319,7 @@
 							(HighPrint 313 8)
 							;Nothing but dirt and leaves there.
 						else
-							(PrintNotCloseEnough)
+							(NotClose)
 						)
 					)
 					(else (event claimed: FALSE))
@@ -337,7 +337,7 @@
 				(cond 
 					((Said '/candlestick,stick,holder,candle')
 						(cond 
-							((Btst STOLE_CANDLESTICKS) (PrintAlreadyDoneThat))
+							((Btst STOLE_CANDLESTICKS) (AlreadyDone))
 							((ego inRect: 62 145 166 165)
 								(HighPrint 313 9)
 								;You take the silver candlesticks and stow them in your pack.
@@ -347,7 +347,7 @@
 								(Bset STOLE_CANDLESTICKS)
 								(SolvePuzzle POINTS_TAKECANDLESTICKS 1 THIEF)
 							)
-							(else (PrintNotCloseEnough))
+							(else (NotClose))
 						)
 					)
 					((Said '/purse') (SearchPurse))
@@ -767,7 +767,7 @@
 							;You have a bad feeling about the very deep, low growl emanating from the cat.
 							(cat setScript: gonnaGetYou)
 						else
-							(PrintNotCloseEnough)
+							(NotClose)
 						)
 					)
 				)

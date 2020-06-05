@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# MANTRAY) ;435
+(script# vMantray) ;435
 (include game.sh)
 (use Main)
 (use Arena)
@@ -107,7 +107,7 @@
 		(= local205 (Random 0 1))
 		(= local206 (Random 0 1))
 		(= monster mantray)
-		(= monsterNum MANTRAY)
+		(= monsterNum vMantray)
 		(super init: &rest)
 		(stingerMusic number: (SoundFX 2) loop: -1 play:)
 		(monster setScript: mantrayScript)

@@ -82,7 +82,9 @@
 			)
 			(event claimed: TRUE)
 		)
-		((not [invNum wPotion]) (HighPrint DRINK 7))
+		((not [invNum wPotion])
+			(HighPrint DRINK 7)
+		)
 		((== wPotion iHealingPotion)
 			(HighPrint DRINK 8)
 			;The drink soothes as it goes down.

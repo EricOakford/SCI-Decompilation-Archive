@@ -81,7 +81,6 @@
 	(while (< i 8)
 		(= [meep i] (Clone aMeep))
 		(= [eye i] (Clone anEye))
-		(= [meepScript i] (Clone aMeepScript))
 		([meep i]
 			setLoop: 5
 			cel: 0
@@ -91,7 +90,7 @@
 				(- [meepPosn (+ (* i 2) 1)] 4)
 			init:
 			stopUpd:
-			setScript: [meepScript i] 0 ;(= [meepScript i] (Clone aMeepScript)) ;decompiler placed the code here by mistake
+			setScript: (= [meepScript i] (Clone aMeepScript))
 		)
 		([eye i]
 			setLoop: 3
@@ -1222,13 +1221,15 @@
 			)
 			(5
 				(if (not local300_3_2_2) (HandsOn))
+				;EO: Fixed to prevent "Not an Object"
+				(= [meepScript 3] (Clone aMeepScript))
 				(client
 					setLoop: 5
 					cel: 0
 					setPri: (+ 1 [meepPri 3])
 					posn: [meepPosn 6] (- [meepPosn 7] 4)
 					forceUpd:
-					setScript: [meepScript 3] 0 (= [meepScript 3] (Clone aMeepScript))
+					setScript: [meepScript 3] 0 ;(= [meepScript 3] (Clone aMeepScript))
 				)
 			)
 		)
@@ -1313,7 +1314,7 @@
 				(switch register
 					(2
 						(greenFur dispose:)
-						(ego get: 27)
+						(ego get: iGreenFur)
 						(= furOnGround 0)
 						(Bset OBTAINED_GREEN_FUR)
 					)
@@ -1341,7 +1342,7 @@
 							(TimePrint 8 60 48)
 							;You pick up the Spell Scroll.  As the magical runes fade, you find you now know how to cast the "Detect Magic" spell.
 							(ego learn: DETMAGIC 10)
-							(SolvePuzzle POINTS_LEARNDETECTMAGIC 4 MAGE)
+							(SolvePuzzle POINTS_LEARNDETECTMAGIC 4 MAGIC_USER)
 						else
 							(TimePrint 5 60 49)
 							;The magical runes fade from the paper before your eye can focus on them.

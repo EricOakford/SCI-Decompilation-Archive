@@ -15,7 +15,7 @@
 				((and (not (ego has: iMushroom)) (!= curRoomNum 70))
 					(HighPrint EAT 0)
 					;You don't have any.
-					)
+				)
 				((Btst fHaveToadstools)
 					(ego use: iMushroom 3)
 					(if (Btst fHaveFaeryShrooms) (HighPrint EAT 1))
@@ -35,7 +35,9 @@
 						(HighPrint EAT 3)
 						;You think that you'd better take it easy for a while until you recover.
 					)
-					(if (not (ego has: iMushroom)) (Bclr fHaveToadstools))
+					(if (not (ego has: iMushroom))
+						(Bclr fHaveToadstools)
+					)
 				)
 				(else
 					(ego use: iMushroom 3)
@@ -71,7 +73,10 @@
 				;You eat the Magic Acorn. It tastes terrible. Better stick to real food next time.
 			)
 		)
-		(freeMeals (event claimed: TRUE) (HighPrint EAT 10))
+		(freeMeals
+			(event claimed: TRUE)
+			(HighPrint EAT 10)
+		)
 		((Said '/apple')
 			(if (ego has: iFruit)
 				(ego use: iFruit 3)

@@ -46,7 +46,7 @@
 
 (procedure (PrepareForBattle)
 	(= askedFight TRUE)
-	(if (Purchase 10)
+	(if (GiveMoney 10)
 		(HighPrint 221 5)
 		;You pay the Weapon Master's price and then...
 		(= masterDay Day)

@@ -426,8 +426,7 @@
 						(HighPrint 22 6)
 						;Nothing happens.
 					)
-					(
-					(StrFind (User inputLineAddr?) {now sit down})
+					((StrFind (User inputLineAddr?) {now sit down})
 						(SolvePuzzle POINTS_HUTSIT 7)
 						(if (not (hut script?))
 							(hut setScript: walkEm)
@@ -438,7 +437,8 @@
 							; "I'm moving as fast as I can!"
 						)
 					)
-					(else (HighPrint 22 6)
+					(else
+						(HighPrint 22 6)
 						;Nothing happens.
 					)
 				)
@@ -447,7 +447,9 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '[<at,around][/!*]') (LookAround))
+							((Said '[<at,around][/!*]')
+								(LookAround)
+							)
 							((Said '/hut,house')
 								(HighPrint 22 8)
 								;The hut is a strange little house perched on chicken legs.
@@ -460,7 +462,8 @@
 								(HighPrint 22 10)
 								;The sharp ends of the fence are covered with some nasty-looking green slime.
 							)
-							((Said '/gate') (if gateOpen 
+							((Said '/gate')
+								(if gateOpen 
 									(HighPrint 22 11)
 									;The gate's gone.
 									else
@@ -468,7 +471,8 @@
 									;The large skull on the gate seems to stare vacantly at you.
 								)
 							)
-							((Said '/goo') (if (Btst VISITED_TAVERN_INSIDE)
+							((Said '/goo')
+								(if (Btst VISITED_TAVERN_INSIDE)
 									(HighPrint 22 13)
 									;It looks a lot like the slime that was eating away the barstool at the tavern.
 									else
@@ -502,12 +506,9 @@
 									;The door of the hut is ornately decorated.
 								)
 							)
-							(
-							(or (Said '/tree,bush,boulder')
-								(Said '<up,down')
-							)
-							(HighPrint 22 20)
-							;Your eyes are drawn to the incredible hut on chicken legs.
+							((or (Said '/tree,bush,boulder') (Said '<up,down'))
+								(HighPrint 22 20)
+								;Your eyes are drawn to the incredible hut on chicken legs.
 							)
 						)
 					)
@@ -591,8 +592,7 @@
 			(saidEvent
 				(if (> yesNoTimer 1)
 					(cond 
-						(
-						(or (Said 'affirmative,please,deal') (Said 'made/deal'))
+						((or (Said 'affirmative,please,deal') (Said 'made/deal'))
 							(= yesNoTimer 0)
 							(switch hutState
 								(hutINITIAL
@@ -603,7 +603,7 @@
 									(HighPrint 22 29)
 									;"The deal is made, then.  A glowing gem in exchange for an opportunity to see Baba Yaga herself."
 									(= hutState 3)
-									(SolvePuzzle 655 2)
+									(SolvePuzzle POINTS_MAKEDEALWITHSKULL 2)
 								)
 								(hutDEALMADE (HighPrint 22 30)
 									;"Give me my gem!!"
@@ -775,10 +775,10 @@
 								(SolvePuzzle POINTS_GIVEGEM 10)
 								(bonehead setScript: putEyes)
 							else
-								(PrintNotCloseEnough)
+								(NotClose)
 							)
 						else
-							(PrintDontHaveIt)
+							(DontHave)
 						)
 					)
 				)

@@ -47,7 +47,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vBrigandLeader vBrigand vEgoDefeated)
+		(LoadMany VIEW vBrigandLeaderRoom vBrigand vEgoDefeated)
 		(LoadMany SOUND 88 66)
 		(cSound fade:)
 		(super init:)
@@ -289,7 +289,9 @@
 								(HighPrint 97 25)
 								;There are no more potions here.
 								)
-							(else (PrintNotCloseEnough))
+							(else
+								(NotClose)
+							)
 						)
 					)
 					((Said 'search/desk')
@@ -313,7 +315,7 @@
 									)
 							)
 						else
-							(PrintNotCloseEnough)
+							(NotClose)
 						)
 					)
 					((Said 'get')
@@ -336,7 +338,7 @@
 	(properties
 		y 92
 		x 159
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 	)
 )
 
@@ -344,7 +346,7 @@
 	(properties
 		y 144
 		x 285
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		cel 1
 		priority 11
 	)
@@ -354,7 +356,7 @@
 	(properties
 		y 164
 		x 273
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		cel 2
 		priority 12
 	)
@@ -364,7 +366,7 @@
 	(properties
 		y 92
 		x 256
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		cel 3
 		priority 8
 	)
@@ -374,7 +376,7 @@
 	(properties
 		y 151
 		x 298
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		cel 4
 		priority 11
 	)
@@ -384,7 +386,7 @@
 	(properties
 		y 81
 		x 65
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		cel 5
 		priority 10
 	)
@@ -394,7 +396,7 @@
 	(properties
 		y 108
 		x 160
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		cel 6
 		priority 9
 	)
@@ -404,7 +406,7 @@
 	(properties
 		y 109
 		x 125
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		cel 7
 		priority 9
 	)
@@ -414,7 +416,7 @@
 	(properties
 		y 75
 		x 159
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		loop 1
 		cel 1
 		priority 1
@@ -425,7 +427,7 @@
 	(properties
 		y 76
 		x 91
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		loop 2
 		cel 4
 	)
@@ -435,7 +437,7 @@
 	(properties
 		y 190
 		x 232
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		loop 8
 	)
 )
@@ -444,7 +446,7 @@
 	(properties
 		y 76
 		x 225
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		loop 2
 		cel 2
 	)
@@ -454,7 +456,7 @@
 	(properties
 		y 123
 		x 164
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		loop 4
 	)
 )
@@ -463,7 +465,7 @@
 	(properties
 		y 142
 		x 316
-		view vBrigandLeader
+		view vBrigandLeaderRoom
 		loop 6
 	)
 )

@@ -46,10 +46,10 @@
 
 (procedure (GetMonsterIndex monster &tmp temp0)
 	(return
-		(if (and (<= BEAR monster) (<= monster LEADER))
+		(if (and (<= vBear monster) (<= monster vBrigandLeader))
 			;EO: According to the whichMonster array, 470 was intended for the Brigand Leader. Was she originally going to be a possible combatant?
 			;CI: Likely, since she had a close-up view when transforming, it was simpler to group all "Arena" scenes together.
-			(return (+ 1 (/ (- monster BEAR) 5)))
+			(return (+ 1 (/ (- monster vBear) 5)))
 		else
 			(return 0)
 		)
@@ -95,7 +95,7 @@
 		setMotion: 0
 		cycleSpeed: 1
 	)
-	(if (!= monsterNum GOBLIN)
+	(if (!= monsterNum vGoblin)
 		(theSmallMonster setCycle: EndLoop)
 	)
 )
@@ -135,60 +135,61 @@
 		)
 		(= retMonster
 			(switch tmpMonsterNum
-				(0 GOBLIN)
-				(1 SAURUS)
-				(2 GOBLIN)
-				(3 BRIGAND)
-				(4 MANTRAY)
-				(5 CHEETAUR)
-				(6 SAURUSREX)
-				(else  TROLL)
+				(0 vGoblin)
+				(1 vSaurus)
+				(2 vGoblin)
+				(3 vBrigand)
+				(4 vMantray)
+				(5 vCheetaur)
+				(6 vDragon)
+				(else  vTroll)
 			)
 		)
 	)
 	
 	(if (OneOf curRoomNum 85 86 92)
 		(if (or (<= tmpMonsterNum 4) (not Night))
-			(= retMonster BRIGAND)
+			(= retMonster vBrigand)
 		else
-			(= retMonster TROLL)
+			(= retMonster vTroll)
 		)
 	)
 	(= bucks 0)
 	(cond 
-		((== retMonster GOBLIN) (= bucks (Random 1 10)))
-		((== retMonster BRIGAND) (= bucks (Random 5 25)))
-		((== retMonster TROLL) (= bucks (Random 20 50)))
-		((== retMonster MINOTAUR) (= bucks 50))
+		((== retMonster vGoblin) (= bucks (Random 1 10)))
+		((== retMonster vBrigand) (= bucks (Random 5 25)))
+		((== retMonster vTroll) (= bucks (Random 20 50)))
+		((== retMonster vMinotaur) (= bucks 50))
 	)
 	(return retMonster)
 )
 
 (procedure (localproc_0d25 vMonster actMonster &tmp curRoomAmbushX curRoomAmbushY temp2 temp3 temp4)
 	;CI: NOTE: Monster Views and Room numbers are very closely tied together.
+	;EO: For this reason, I'll just be using the view defines/
 	(= temp2 (& (curRoom entrances?) (| reEAST reWEST)))
 	(= temp4 (& (curRoom entrances?) reWEST))
 	(= temp3 (& (curRoom entrances?) reEAST))
 	(actMonster view: vMonster)
-	(if (!= vMonster MANTRAY)
+	(if (!= vMonster vMantray)
 		(actMonster xStep: 6 yStep: 4 cel: 0)
 		(switch vMonster
-			(SAURUS
+			(vSaurus
 				(actMonster xStep: 5 yStep: 3 setCycle: Forward)
 			)
-			(TROLL
+			(vTroll
 				(actMonster xStep: 5 yStep: 3 setCycle: Walk)
 			)
-			(CHEETAUR
+			(vCheetaur
 				(actMonster xStep: 6 yStep: 3 setCycle: Forward)
 			)
-			(GOBLIN
+			(vGoblin
 				(actMonster xStep: 4 yStep: 2 setCycle: Walk)
 			)
-			(BRIGAND
+			(vBrigand
 				(actMonster xStep: 3 yStep: 2 setCycle: Walk)
 			)
-			(SAURUSREX
+			(vDragon
 				(actMonster xStep: 8 yStep: 5 setCycle: Forward)
 			)
 		)
@@ -201,7 +202,7 @@
 	)
 	(cond 
 		(local4
-			(if (== vMonster MANTRAY)
+			(if (== vMonster vMantray)
 				(theSmallMonster
 					setCycle: Walk
 					z: 25
@@ -269,7 +270,7 @@
 			(User canControl: TRUE)
 		)
 		(local5
-			(if (== vMonster MANTRAY)
+			(if (== vMonster vMantray)
 				(theSmallMonster
 					setCycle: Walk
 					z: 25
@@ -284,10 +285,10 @@
 					(ego setMotion: MoveTo egoX 190)
 					(if
 						(or
-							(== vMonster GOBLIN)
-							(== vMonster MANTRAY)
-							(== vMonster TROLL)
-							(== vMonster BRIGAND)
+							(== vMonster vGoblin)
+							(== vMonster vMantray)
+							(== vMonster vTroll)
+							(== vMonster vBrigand)
 						)
 						(theSmallMonster setScript: northDelay)
 					else
@@ -299,15 +300,15 @@
 					(ego setMotion: MoveTo egoX 0)
 					(if
 						(or
-							(== vMonster GOBLIN)
-							(== vMonster MANTRAY)
-							(== vMonster TROLL)
-							(== vMonster BRIGAND)
+							(== vMonster vGoblin)
+							(== vMonster vMantray)
+							(== vMonster vTroll)
+							(== vMonster vBrigand)
 						)
 						(theSmallMonster
 							posn:
 								egoX
-								(if (== vMonster MANTRAY) 235 else (- egoY monsterDistY))
+								(if (== vMonster vMantray) 235 else (- egoY monsterDistY))
 							setCel: -1
 							setLoop: -1
 							setMotion: Chase ego [local36 (GetMonsterIndex vMonster)] Encounter
@@ -340,7 +341,7 @@
 				)
 			)
 		)
-		((== vMonster MANTRAY) (theSmallMonster setScript: (ScriptID 436 2)))
+		((== vMonster vMantray) (theSmallMonster setScript: (ScriptID 436 2)))
 		((== temp2 (| reWEST reEAST))
 			(switch (= temp2 (if (< (Random 0 1000) 500) reWEST else reEAST))
 				(reEAST (actMonster setScript: inEast))
@@ -378,7 +379,7 @@
 			(ego get: iSilver bucks)
 		)
 	)
-	(if (== monsterNum TROLL)
+	(if (== monsterNum vTroll)
 		(HighPrint 210 39)
 		;You thought that the Troll concealed some of its treasure in that thick beard, but you didn't find any there.
 		)
@@ -440,21 +441,21 @@
 				(not
 					(OneOf
 						prevRoomNum
-						BEAR
-						MINOTAUR
-						SAURUS
-						MANTRAY
-						CHEETAUR
-						GOBLIN
-						OGRE
-						TROLL
-						SAURUSREX
-						BRIGAND
-						LEADER
+						vBear
+						vMinotaur
+						vSaurus
+						vMantray
+						vCheetaur
+						vGoblin
+						vOgre
+						vTroll
+						vDragon
+						vBrigand
+						vBrigandLeader
 					)
 				)
 				(if monsterNum
-					(if (and (== monsterNum TROLL) (not Night))
+					(if (and (== monsterNum vTroll) (not Night))
 						(ego illegalBits: (curRoom illBits?) init:)
 						(ChangeGait MOVE_RUN FALSE)
 						(= monsterNum (= monsterHealth 0))
@@ -498,10 +499,12 @@
 					(ego illegalBits: (curRoom illBits?))
 				)
 			)
-			((<= monsterHealth 0) (localproc_0071 1))
+			((<= monsterHealth 0)
+				(localproc_0071 1)
+			)
 			(else
 				(= local8 (= local9 0))
-				(ChangeGait MOVE_RUN FALSE)	;EO: I'd set this to Walk by mistake. That's fixed.
+				(ChangeGait MOVE_RUN FALSE)
 				(= local4 1)
 				(NormalEgo)
 				(ego illegalBits: (curRoom illBits?) posn: 160 140 init:)
@@ -525,7 +528,7 @@
 			)
 			(
 				(and 
-					(== monsterNum MANTRAY) 
+					(== monsterNum vMantray) 
 					(Btst FLAG_351)
 				)
 				(localproc_0071 0)
@@ -560,7 +563,7 @@
 					(local9
 						(cond 
 							((super handleEvent: event))
-							((Said 'kill,fight,beat,beat') (PrintAlreadyDoneThat))
+							((Said 'kill,fight,beat,beat') (AlreadyDone))
 							((Said 'eat')
 								(HighPrint 210 5)
 								;All the excitement of the battle has caused you to lose your appetite.
@@ -596,9 +599,9 @@
 							((Said 'get>')
 								(cond 
 									((Said '/claw[<cheetaur]')
-										(if (== monsterNum CHEETAUR)
+										(if (== monsterNum vCheetaur)
 											(if gotClaws
-												(PrintAlreadyDoneThat)
+												(AlreadyDone)
 											else
 												(HighPrint 210 10)
 												;Some of the Cheetaur's claws have been broken off or damaged, apparently in battle.
@@ -617,7 +620,7 @@
 												(HighPrint 210 12)
 												;You already have the Troll's beard.
 												)
-											((== monsterNum TROLL)
+											((== monsterNum vTroll)
 												(HighPrint 210 13)
 												;You remove as much of the Troll's beard as you can and put it away in your pack.
 												(= gotBeard TRUE) (ego get: iTrollBeard))
@@ -636,7 +639,7 @@
 										(Said [whichMonster (GetMonsterIndex monsterNum)])
 									)
 									(if searchedMonster
-										(PrintAlreadyDoneThat)
+										(AlreadyDone)
 									else
 										(= searchedMonster TRUE)
 										(ego setScript: searchIt 0 theSmallMonster)
@@ -657,36 +660,36 @@
 								(Said [whichMonster (GetMonsterIndex monsterNum)])
 							)
 							(switch monsterNum
-								(GOBLIN
+								(vGoblin
 									(HighPrint 210 16)
 									;It's an ugly little Goblin.
 								)
-								(BRIGAND
+								(vBrigand
 									(HighPrint 210 17)
 									;Uh oh, this looks like one of the brigands that have been terrorizing the Valley.  Better hope his friends aren't around.
 								)
-								(SAURUS
+								(vSaurus
 									(HighPrint 210 18)
 									;Don't worry, it's just a little purple Saurus.  Watch out for those teeth though.
 								)
-								(SAURUSREX
+								(vDragon
 									(HighPrint 210 19)
 									;Oh, no!  It's a fierce (and hungry) looking Saurus Rex (smarter than your average Saurus).
 								)
-								(CHEETAUR
+								(vCheetaur
 									(HighPrint 210 20)
 									;It's a Cheetaur, a Cheetah Centaur, one of the deadliest creatures in the land.  Hope you've saved your game recently.
 								)
-								(OGRE
+								(vOgre
 									;EO: Were Ogres originally going to be encountered at random?
 									(HighPrint 210 21)
 									;It's an Ogre, big, mean, and ugly.  Ogres are said to eat human flesh.
 								)
-								(TROLL
+								(vTroll
 									(HighPrint 210 22)
 									;It's a Troll, hard as stone.
 								)
-								(MANTRAY
+								(vMantray
 									(HighPrint 210 23)
 									;It's a Mantray, a former sea creature that took flight many generations ago and moved to the mountains.  Don't get stung!
 								)
@@ -710,17 +713,17 @@
 							(not
 								(OneOf
 									curRoomNum
-									BEAR
-									MINOTAUR
-									SAURUS
-									MANTRAY
-									CHEETAUR
-									GOBLIN
-									OGRE
-									TROLL
-									SAURUSREX
-									BRIGAND
-									LEADER
+									vBear
+									vMinotaur
+									vSaurus
+									vMantray
+									vCheetaur
+									vGoblin
+									vOgre
+									vTroll
+									vDragon
+									vBrigand
+									vBrigandLeader
 								)
 							)
 							(= spell (SaidSpell event))
@@ -728,7 +731,7 @@
 								(switch spell
 									(0)
 									(CALM
-										(if (or local50 (== monsterNum MANTRAY))
+										(if (or local50 (== monsterNum vMantray))
 											(theSmallMonster setScript: spellDelay 0 22)
 										else
 											(HighPrint 210 26)
@@ -744,7 +747,7 @@
 										;You sense no magic here.
 										)
 									(DAZZLE
-										(if (or local50 (== monsterNum MANTRAY))
+										(if (or local50 (== monsterNum vMantray))
 											(theSmallMonster setScript: spellDelay 0 20)
 										else
 											(HighPrint 210 26)
@@ -838,17 +841,17 @@
 					(not
 						(OneOf
 							newRoomNumber
-							BEAR
-							MINOTAUR
-							SAURUS
-							MANTRAY
-							CHEETAUR
-							GOBLIN
-							OGRE
-							TROLL
-							SAURUSREX
-							BRIGAND
-							LEADER
+							vBear
+							vMinotaur
+							vSaurus
+							vMantray
+							vCheetaur
+							vGoblin
+							vOgre
+							vTroll
+							vDragon
+							vBrigand
+							vBrigandLeader
 						)
 					)
 					(not
@@ -915,7 +918,7 @@
 						(cond 
 							(
 							(> (curRoom horizon?) (- egoY monsterDistY)) (- (curRoom horizon?) 20))
-							((== monsterNum MANTRAY) -10)
+							((== monsterNum vMantray) -10)
 							(else (- egoY monsterDistY))
 						)
 					setCel: -1
@@ -956,7 +959,7 @@
 			(1
 				(= state 3)
 				(cond 
-					((== monsterNum MANTRAY)
+					((== monsterNum vMantray)
 						(HighPrint 210 34)
 						;Unfortunately, the Mantray appears not to have been affected by your spell.
 						(= cycles 1))
@@ -974,7 +977,7 @@
 				)
 			)
 			(3
-				(if (== monsterNum MANTRAY)
+				(if (== monsterNum vMantray)
 					(HighPrint 210 34)
 					;Unfortunately, the Mantray appears not to have been affected by your spell.
 					(= cycles 1)
@@ -986,9 +989,9 @@
 				(if (not local10)
 					(if
 						(or
-							(== monsterNum GOBLIN)
-							(== monsterNum TROLL)
-							(== monsterNum BRIGAND)
+							(== monsterNum vGoblin)
+							(== monsterNum vTroll)
+							(== monsterNum vBrigand)
 							(and
 								(< -15 (- (ego x?) (theSmallMonster x?)))
 								(< (- (ego x?) (theSmallMonster x?)) 15)
@@ -1020,23 +1023,23 @@
 				((= theSmallMonster register) ignoreActors:)
 				(= SearchMonsterX
 					(switch monsterNum
-						(SAURUS 10)
-						(CHEETAUR 12)
-						(SAURUSREX 18)
-						(GOBLIN 23)
-						(MANTRAY 12)
-						(BRIGAND 0)
+						(vSaurus 10)
+						(vCheetaur 12)
+						(vDragon 18)
+						(vGoblin 23)
+						(vMantray 12)
+						(vBrigand 0)
 						(else  20)
 					)
 				)
 				(= SearchMonsterY
 					(switch monsterNum
-						(SAURUS 4)
-						(CHEETAUR -3)
-						(SAURUSREX 4)
-						(GOBLIN 1)
-						(MANTRAY 4)
-						(BRIGAND 2)
+						(vSaurus 4)
+						(vCheetaur -3)
+						(vDragon 4)
+						(vGoblin 1)
+						(vMantray 4)
+						(vBrigand 2)
 						(else  20)
 					)
 				)
@@ -1062,8 +1065,8 @@
 							(-
 								(theSmallMonster x?)
 								(cond 
-									((== monsterNum MANTRAY) 19)
-									((== monsterNum BRIGAND) 36)
+									((== monsterNum vMantray) 19)
+									((== monsterNum vBrigand) 36)
 									(else 11)
 								)
 							)

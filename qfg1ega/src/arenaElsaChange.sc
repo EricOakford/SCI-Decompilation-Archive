@@ -13,59 +13,65 @@
 )
 
 (local
-	local0
-	[local1 20]
-	[local21 20]
-	[local41 20] = [2 4 3 3 2 4 2 2 3 4 1 1 3 4 4 4 4 1 3 1]
-	[local61 40] = [156 6 119 25 99 50 79 74 100 102 119 94 107 145 140 173 140 153 170 162 193 175 189 133 211 105 213 59 198 37 181 19 144 35 170 35 140 85 176 125]
+	i
+	[aStar 20]
+	[starScript 20]
+	[starCel 20] = [2 4 3 3 2 4 2 2 3 4 1 1 3 4 4 4 4 1 3 1]
+	[starPosn 40] = [156 6 119 25 99 50 79 74 100 102 119 94 107 145 140 173 140 153 170 162 193 175 189 133 211 105 213 59 198 37 181 19 144 35 170 35 140 85 176 125]
 )
-(procedure (localproc_000c)
-	(= local0 0)
-	(while (< local0 20)
-		(= [local1 local0] (Clone star))
-		([local1 ([local21 (= [local21 local0] (Clone starScriptOn))]
-			register: [local41 local0]
-		)]
+(procedure (AddStars)
+	;EO: Fixed to prevent "Not an Object" errors.
+	(= i 0)
+	(while (< i 20)
+		(= [aStar i] (Clone star))
+		(= [starScript i] (Clone starScriptOn))
+		([starScript i]
+			register: [starCel i]
+		)
+		([aStar i]
 			cel: 0
 			init:
 			setPri: 15
-			posn: [local61 (* local0 2)] [local61 (+ (* local0 2) 1)]
-			setScript: [local21 local0]
+			posn: [starPosn (* i 2)] [starPosn (+ (* i 2) 1)]
+			setScript: [starScript i]
 		)
-		(++ local0)
+		(++ i)
 	)
 )
 
-(procedure (localproc_0070)
-	(= local0 0)
-	(while (< local0 20)
-		(= [local1 local0] (Clone star))
-		([local1 ([local21 (= [local21 local0] (Clone starScriptOff))]
-			register: [local41 local0]
-		)]
-			cel: (- [local41 local0] 1)
+(procedure (TurnOffStarScripts)
+	(= i 0)
+	(while (< i 20)
+		(= [aStar i] (Clone star))
+		(= [starScript i] (Clone starScriptOff))
+		([starScript i]
+			register: [starCel i]
+		)
+		([aStar i]
+			cel: (- [starCel i] 1)
 			init:
 			setPri: 15
-			posn: [local61 (* local0 2)] [local61 (+ (* local0 2) 1)]
-			setScript: [local21 local0]
+			posn: [starScript (* i 2)] [starScript (+ (* i 2) 1)]
+			setScript: [starScript i]
 		)
-		(++ local0)
+		(++ i)
 	)
+
 )
 
-(procedure (localproc_00db)
-	(= local0 19)
-	(while (>= local0 0)
-		([local21 local0] dispose:)
-		([local1 local0] dispose:)
-		(-- local0)
+(procedure (DisposeStars)
+	(= i 19)
+	(while (>= i 0)
+		([starScript i] dispose:)
+		([aStar i] dispose:)
+		(-- i)
 	)
 )
 
 (instance rmBrig of Room
 	(properties
 		picture 400
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
@@ -86,9 +92,7 @@
 				(cond 
 					(
 						(or
-							(Said
-								'cast,use,throw,splash/disenchant,potion[<disenchant]'
-							)
+							(Said 'cast,use,throw,splash/disenchant,potion[<disenchant]')
 							(Said 'disenchant')
 						)
 						(if (ego has: iDisenchant)
@@ -103,8 +107,7 @@
 						)
 					)
 					((Said 'look>')
-						(if
-						(or (Said '[<at,around][/!*]') (Said '/man,female'))
+						(if (or (Said '[<at,around][/!*]') (Said '/man,female'))
 							(CenterPrint 172 2)
 							;You see the brigand leader.  From the look in her eyes you've only got seconds to live.
 						)
@@ -112,19 +115,19 @@
 					((Said 'cast')
 						(CenterPrint 172 3)
 						;Casting a spell isn't useful now.
-						)
+					)
 					((Said 'ask')
 						(CenterPrint 172 4)
 						;She's not in a talking mood.
-						)
+					)
 					((Said 'fight')
 						(CenterPrint 172 5)
 						;Not a good idea.
-						)
+					)
 					(else (event claimed: 1)
 						(CenterPrint 172 6)
 						;No time for that.
-						)
+					)
 				)
 			)
 		)
@@ -142,7 +145,7 @@
 				(SolvePuzzle POINTS_DISPELBRIGANDLEADER 35)
 				(SetCursor theCursor FALSE)
 				(elsaChange init: play:)
-				(localproc_000c)
+				(AddStars)
 				(= cycles 20)
 			)
 			(1
@@ -150,15 +153,17 @@
 				(= cycles 20)
 			)
 			(2
-				(localproc_00db)
-				(localproc_0070)
+				(DisposeStars)
+				(TurnOffStarScripts)
 				(= cycles 20)
 			)
 			(3
-				(localproc_00db)
+				(DisposeStars)
 				(= cycles 2)
 			)
-			(4 (curRoom newRoom: 97))
+			(4
+				(curRoom newRoom: 97)
+			)
 		)
 	)
 )
@@ -178,7 +183,9 @@
 				;The Brigand leader looks tough!  This may be the toughest battle of your career so far.
 				(= seconds 3)
 			)
-			(3 (curRoom newRoom: 97))
+			(3
+				(curRoom newRoom: 97)
+			)
 		)
 	)
 )

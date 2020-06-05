@@ -36,8 +36,12 @@
 (procedure (BabaYagaDeath)
 	(User canInput: FALSE)
 	(switch babaState
-		(babaNAME (rm21 setScript: nameDeath))
-		(babaBRAVE (rm21 setScript: braveDeath))
+		(babaNAME
+			(rm21 setScript: nameDeath)
+		)
+		(babaBRAVE
+			(rm21 setScript: braveDeath)
+		)
 		(babaFETCH
 			(rm21 setScript: noFetchDeath)
 		)
@@ -332,7 +336,7 @@
 							;You furtively grasp the Magic Mirror.
 							(Bset fBabaFrog)
 						else
-							(PrintDontHaveIt)
+							(DontHave)
 						)
 					)
 					((Said 'get')
@@ -645,7 +649,8 @@
 				(babaHead hide:)
 				(EgoDead 21 33
 					#title { Now you're really in the soup!_}
-					#icon myIcon 0 0)
+					#icon myIcon 0 0
+				)
 				;Next time you are asked a question by someone who has just turned you into a frog, perhaps you should be more polite.
 				;It's better than being fricasseed!
 			)
@@ -679,7 +684,8 @@
 				(babaHead hide:)
 				(EgoDead 21 36
 					#title { Shame on you!_}
-					#icon myIcon 0 0)
+					#icon myIcon 0 0
+				)
 			)
 			;Didn't anyone ever tell you that a hero is supposed to be brave even when he isn't?
 			;Looks like you found the coward's way out...sauteed in wine sauce.
@@ -713,7 +719,8 @@
 				(babaHead hide:)
 				(EgoDead 21 39
 					#title { Of all the lazy....!_}
-					#icon myIcon 0 0)
+					#icon myIcon 0 0
+				)
 					;It seems a shame to have such a promising career go up in flames (assuming she decides to flambe you).
 					;Wouldn't it have been better just to do a small favor for such a sweet little old Ogress?
 			)
@@ -745,7 +752,8 @@
 				(babaHead hide:)
 				(EgoDead 21 42
 					#title {Breakfast of Champions?}
-					#icon myIcon 0 0)
+					#icon myIcon 0 0
+				)
 					;At least you could have said "Yes" before you croaked!
 			)
 		)

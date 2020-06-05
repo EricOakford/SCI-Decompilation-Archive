@@ -72,7 +72,7 @@
 	
 	(method (init)
 		(if (not (Btst VISITED_OGRE_ROOM)) (= ogreHealth MAX_HP_OGRE))
-		(if (== prevRoomNum OGRE)
+		(if (== prevRoomNum vOgre)
 			(if (<= (= ogreHealth monsterHealth) 0) (Bset DEFEATED_OGRE))
 		else
 			(= monsterHealth ogreHealth)
@@ -81,7 +81,7 @@
 			((not (Btst DEFEATED_OGRE))
 				(LoadMany VIEW vOgre vOgreDefeated vEgoThrowing)
 				(Load SCRIPT CHASE)
-				(= monsterNum OGRE)
+				(= monsterNum vOgre)
 			)
 			((> Day ogreDeathDay) (Bset OGRE_GONE))
 		)
@@ -93,7 +93,7 @@
 		(Bclr BEAR_FRIENDLY)
 		(NormalEgo)
 		(ego init:)
-		(if (== prevRoomNum OGRE)
+		(if (== prevRoomNum vOgre)
 			(ego
 				posn: 127 107
 				loop: 1
@@ -165,7 +165,7 @@
 	(method (dispose)
 		(Bset VISITED_OGRE_ROOM)
 		(DisposeScript CHASE)
-		(if (!= newRoomNum OGRE) (= monsterNum FALSE))
+		(if (!= newRoomNum vOgre) (= monsterNum FALSE))
 		(super dispose:)
 	)
 	
@@ -182,7 +182,7 @@
 						(if (Btst DEFEATED_OGRE)
 							(event claimed: FALSE)
 						else
-							(curRoom newRoom: OGRE)
+							(curRoom newRoom: vOgre)
 						)
 					)
 					((Said 'throw/dagger')
@@ -498,7 +498,7 @@
 				(if (not (Btst DEFEATED_OGRE))
 					(HighPrint 13 38)
 					;Hostile intent is evident.  You prepare for battle.
-					(curRoom newRoom: OGRE)
+					(curRoom newRoom: vOgre)
 				)
 			)
 		)

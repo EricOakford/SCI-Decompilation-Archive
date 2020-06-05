@@ -12,7 +12,9 @@
 (public
 	rm88 0
 )
-(enum 2
+(enum
+	trollABSENT
+	trollHIDING
 	trollVISIBLE
 	trollDYING
 	trollDEAD
@@ -29,9 +31,9 @@
 	local1
 	searchWhat
 	[local3 4]
-	local7
-	local8
-	dripTimer
+	dripX
+	dripY
+	i
 	[local10 4]
 )
 (instance magicHit of Sound
@@ -59,19 +61,19 @@
 		(super init:)
 		(pile init: addToPic:)
 		(drip init: setScript: dripScript)
-		(= dripTimer (Random 0 5))
-		(= [local7 0] 36)
-		(= [local8 0] 133)
-		(= [local7 1] 94)
-		(= [local8 1] 146)
-		(= [local7 2] 135)
-		(= [local8 2] 158)
-		(= [local7 3] 212)
-		(= [local8 3] 160)
-		(= [local7 4] 292)
-		(= [local8 4] 161)
-		(= [local7 5] 67)
-		(= [local8 5] 153)
+		(= i (Random 0 5))
+		(= [dripX 0] 36)
+		(= [dripY 0] 133)
+		(= [dripX 1] 94)
+		(= [dripY 1] 146)
+		(= [dripX 2] 135)
+		(= [dripY 2] 158)
+		(= [dripX 3] 212)
+		(= [dripY 3] 160)
+		(= [dripX 4] 292)
+		(= [dripY 4] 161)
+		(= [dripX 5] 67)
+		(= [dripY 5] 153)
 		(StatusLine enable:)
 		(NormalEgo)
 		(ego init:)
@@ -79,7 +81,9 @@
 			(==
 				(= trollState
 					(cond 
-						((Btst DEFEATED_FRED_89) 0)
+						((Btst DEFEATED_FRED_89)
+							trollABSENT
+						)
 						((Btst DEFEATED_FRED)
 							(troll
 								view: vTrollDefeated
@@ -89,9 +93,11 @@
 								init:
 								addToPic:
 							)
-							4
+							trollDEAD
 						)
-						(else 1)
+						(else
+							trollHIDING
+						)
 					)
 				)
 				1
@@ -107,7 +113,7 @@
 			)
 		)
 		(switch prevRoomNum
-			(TROLL
+			(vTroll
 				(ego posn: 135 160 loop: 1)
 				(= monsterNum FALSE)
 				(self setScript: trollDies)
@@ -118,7 +124,7 @@
 					(HighPrint 88 0)
 					;There is a strong odor of decay and other nasty smells filling the air.
 					;A pile of something unpleasant lies near the center of this cave.
-					)
+				)
 			)
 		)
 	)
@@ -127,7 +133,9 @@
 		(super doit:)
 		(if (< (ego x?) 140)
 			(switch trollState
-				(1 (self setScript: trollOut))
+				(trollHIDING
+					(self setScript: trollOut)
+				)
 			)
 		)
 	)
@@ -146,89 +154,88 @@
 							((Said '/down,ground,floor,stalactite')
 								(HighPrint 88 1)
 								;You can watch the water ooze down the sides of the stalactites and drip to the ground.
-								)
+							)
 							((Said '/up,ceiling,stalagmite')
 								(HighPrint 88 2)
 								;You can watch the water drop down from the stalactites and ooze down the sides of the stalagmites.
-								)
+							)
 							((Said '[<at,around][/!*,cave,room]')
 								(HighPrint 88 0)
 								;There is a strong odor of decay and other nasty smells filling the air.
 								;A pile of something unpleasant lies near the center of this cave.
-								)
+							)
 							((Said '/water')
 								(HighPrint 88 3)
 								;The water has been polluted by various other disgusting liquids.
-								)
+							)
 							((Said '/collection,item,bone,armor')
 								(HighPrint 88 4)
 								;It looks as if someone has piled up bones, bits of armor, and things you can't quite
 								;make out and probably don't want to know about. It smells disgusting.
-								)
+							)
 							((Said '/troll,monster,creature')
 								(switch trollState
 									(trollVISIBLE
 										(HighPrint 88 5)
 										;A mean-looking Troll looms before you, a snarl on his lips.
-										)
+									)
 									(trollDYING
 										(HighPrint 88 6)
 										;The Troll lies dying upon the slimy floor of the cave.
-										)
+									)
 									(trollDEAD
 										(HighPrint 88 7)
 										;A dead Troll lies in a pool of blue blood.
-										)
+									)
 									(else
 										(HighPrint 88 8)
 										;You see no such creature here.
-										)
+									)
 								)
 							)
 							((Said '/north,west,south,east')
 								(HighPrint 88 9)
 								;You have lost your sense of direction, as the cave passage twists around.
-								)
+							)
 							((Said '/boulder')
 								(HighPrint 88 10)
 								;The rocks look slick and are slimy to the touch.
-								)
+							)
 							((Said '/fungus')
 								(HighPrint 88 11)
 								;The light from the fungus is eerie and vaguely unpleasant.
-								)
+							)
 							((Said '/entrance,open')
 								(HighPrint 88 12)
 								;The only entrance to this cave is the one you came through.
-								)
+							)
 						)
 					)
 					((Said 'throw/')
 						(HighPrint 88 13)
 						;There is nothing here to throw it at.
-						)
-					(
-					(Said 'search/troll,monster,creature,body,enemy')
+					)
+					((Said 'search/troll,monster,creature,body,enemy')
 						(cond 
 							((!= trollState trollDEAD)
 								(HighPrint 88 14)
 								;You can't do that.
-								)
-							((ego inRect: 64 144 106 165) (= searchWhat searchTROLL) (self setScript: egoSearch))
+							)
+							((ego inRect: 64 144 106 165)
+								(= searchWhat searchTROLL)
+								(self setScript: egoSearch)
+							)
 							(else
 								(HighPrint 88 15)
 								;You need to get closer to the dead Troll.
-								)
+							)
 						)
 					)
 					((Said 'hiden')
 						(HighPrint 88 16)
 						;The password is for the hidden passage, not the troll's home.
-						)
-					(
-						(Said
-							'get,search/collection,junk,item,collection,silver,gold,loot,[!*]'
-						)
+					)
+					((Said 'get,search/collection,junk,item,collection,silver,gold,loot,[!*]')
 						(if (ego inRect: 39 140 120 157)
 							(= searchWhat searchJUNK)
 							(self setScript: egoSearch)
@@ -244,12 +251,15 @@
 									((!= trollState trollDEAD)
 										(HighPrint 88 14)
 										;You can't do that.
-										)
-									((ego inRect: 64 144 106 165) (= searchWhat searchBEARD) (self setScript: egoSearch))
+									)
+									((ego inRect: 64 144 106 165)
+										(= searchWhat searchBEARD)
+										(self setScript: egoSearch)
+									)
 									(else
 										(HighPrint 88 15)
 										;You need to get closer to the dead Troll.
-										)
+									)
 								)
 							)
 							((Said '/club,weapon')
@@ -257,33 +267,33 @@
 									((== trollState trollVISIBLE)
 										(HighPrint 88 18)
 										;You're kidding, right?
-										)
+									)
 									((!= trollState trollDEAD)
 										(HighPrint 88 14)
 										;You can't do that.
-										)
+									)
 									(else
 										(HighPrint 88 19)
 										;The dead Troll's huge club is much too heavy for you to lift.
-										)
+									)
 								)
 							)
 							((Said '/fungus')
 								(HighPrint 88 20)
 								;The fungus is slimy and stuck tight to the cave walls.
-								)
+							)
 							((Said '/troll,stalactite,stalagmite')
 								(HighPrint 88 18)
 								;You're kidding, right?
-								)
+							)
 							((Said '/boulder,water')
 								(HighPrint 88 21)
 								;You don't need it.
-								)
+							)
 							((Said '/armor,leather,chain')
 								(HighPrint 88 22)
 								;The armor is corroded and valueless.
-								)
+							)
 						)
 					)
 					((Said 'feed/troll,monster,creature')
@@ -311,27 +321,27 @@
 								(DETMAGIC
 									(HighPrint 88 26)
 									;There is no magic in this cave.
-									)
+								)
 								(DAZZLE
 									(HighPrint 88 27)
 									;There is nothing here to dazzle.
-									)
+								)
 								(FLAMEDART
 									(HighPrint 88 28)
 									;There is nothing here to use that spell on.
-									)
+								)
 								(CALM
 									(HighPrint 88 29)
 									;There is nothing here to calm.
-									)
+								)
 								(OPEN
 									(HighPrint 88 30)
 									;There is nothing here to open.
-									)
+								)
 								(else
 									(HighPrint 88 31)
 									;That spell is useless here.
-									)
+								)
 							)
 						)
 					)
@@ -340,7 +350,7 @@
 							(HighPrint 88 32)
 							;The cave troll is dead.
 						else
-							(curRoom newRoom: TROLL)
+							(curRoom newRoom: vTroll)
 						)
 					)
 				)
@@ -396,14 +406,13 @@
 			(1
 				(HighPrint 88 33)
 				;Before you can notice him, a Troll sneaks up behind you, and the encounter begins.
-				(curRoom newRoom: TROLL)
+				(curRoom newRoom: vTroll)
 			)
 		)
 	)
 )
 ;EO: Was this Troll battle originally going to be a side-view battle?
 (instance trollKills of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -425,16 +434,16 @@
 			(3 (= cycles 12))
 			(4
 				(EgoDead 88 34
-					#title {WHATA TROLL!}
-					#icon vDeathScenes 0 0)
+					#title {WHATA vTroll!}
+					#icon vDeathScenes 0 0
 					;The Troll's brute force was too much for your skull.
+				)
 			)
 		)
 	)
 )
 
 (instance trollDies of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -461,19 +470,18 @@
 )
 
 (instance dripScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(drip
-					posn: [local7 dripTimer] [local8 dripTimer]
+					posn: [dripX i] [dripY i]
 					setPri: 15
 					setCycle: EndLoop self
 				)
 			)
 			(1
-				(= dripTimer (Random 0 5))
+				(= i (Random 0 5))
 				(self changeState: 0)
 			)
 		)
@@ -481,7 +489,6 @@
 )
 
 (instance egoSearch of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -533,7 +540,10 @@
 				)
 				(ego setCycle: BegLoop self)
 			)
-			(2 (NormalEgo) (HandsOn))
+			(2
+				(NormalEgo)
+				(HandsOn)
+			)
 		)
 	)
 )

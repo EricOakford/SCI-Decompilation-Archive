@@ -584,7 +584,7 @@
 									(HighPrint 300 41)
 									;The Sheriff informs you that he's much too busy for idle chit-chat.
 								else
-									(PrintNotCloseEnough)
+									(NotClose)
 								)
 							)
 							((Said 'chat,ask/goon,otto,deputy,assistant')
@@ -592,7 +592,7 @@
 									(HighPrint 300 42)
 									;Otto only expresses himself physically.
 								else
-									(PrintNotCloseEnough)
+									(NotClose)
 								)
 							)
 							(

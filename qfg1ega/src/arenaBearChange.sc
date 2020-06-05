@@ -16,60 +16,61 @@
 
 (local
 	i
-	[local1 20]
-	[local21 20]
-	[local41 20] = [2 4 3 3 2 4 2 2 3 4 1 1 3 4 4 4 4 1 3 1]
-	[local61 40] = [156 6 119 25 99 50 79 74 100 102 119 94 107 145 140 173 140 153 170 162 193 175 189 133 211 105 213 59 198 37 181 19 144 35 170 35 140 85 176 125]
+	[aStar 20]
+	[starScript 20]
+	[starCel 20] = [2 4 3 3 2 4 2 2 3 4 1 1 3 4 4 4 4 1 3 1]
+	[starPosn 40] = [156 6 119 25 99 50 79 74 100 102 119 94 107 145 140 173 140 153 170 162 193 175 189 133 211 105 213 59 198 37 181 19 144 35 170 35 140 85 176 125]
 	[local101 40]
 	[local141 5] = [144 249 283 88 165]
 	[local146 5] = [184 221 219 201 168]
 	local151
 )
-(procedure (localproc_000c)
+
+(procedure (AddStars)
+	;EO: Fixed to prevent "Not an Object" errors.
 	(= i 0)
 	(while (< i 20)
-		(= [local1 i] (Clone star))
-		;CI: The original code wouldn't properly compile, so it had to be split into segments
-		([local21 i] register: [local41 i])
-		([local1 i]
-		;([local1 ([local21 (= [local21 i] (Clone starScriptOn))]
-		;	register: [local41 i]
-		;)]
+		(= [aStar i] (Clone star))
+		(= [starScript i] (Clone starScriptOn))
+		([starScript i]
+			register: [starCel i]
+		)
+		([aStar i]
 			cel: 0
 			init:
 			setPri: 15
-			posn: [local61 (* i 2)] [local61 (+ (* i 2) 1)]
-			setScript: [local21 i]
+			posn: [starPosn (* i 2)] [starPosn (+ (* i 2) 1)]
+			setScript: [starScript i]
 		)
 		(++ i)
 	)
 )
 
-(procedure (localproc_0070)
+(procedure (TurnOffStarScripts)
 	(= i 0)
 	(while (< i 20)
-		(= [local1 i] (Clone star))
-		;CI: The original code wouldn't properly compile, so it had to be split into segments
-		([local21 i] register: [local41 i])
-		([local1 i]
-		;([local1 ([local21 (= [local21 i] (Clone starScriptOff))]
-		;	register: [local41 i]
-		;)]
-			cel: (- [local41 i] 1)
+		(= [aStar i] (Clone star))
+		(= [starScript i] (Clone starScriptOff))
+		([starScript i]
+			register: [starCel i]
+		)
+		([aStar i]
+			cel: (- [starCel i] 1)
 			init:
 			setPri: 15
-			posn: [local61 (* i 2)] [local61 (+ (* i 2) 1)]
-			setScript: [local21 i]
+			posn: [starScript (* i 2)] [starScript (+ (* i 2) 1)]
+			setScript: [starScript i]
 		)
 		(++ i)
 	)
+
 )
 
-(procedure (localproc_00db)
+(procedure (DisposeStars)
 	(= i 19)
 	(while (>= i 0)
-		([local21 i] dispose:)
-		([local1 i] dispose:)
+		([starScript i] dispose:)
+		([aStar i] dispose:)
 		(-- i)
 	)
 )
@@ -88,12 +89,12 @@
 	(bearHead init: setPri: 4 setLoop: 3 cel: 0 stopUpd:)
 )
 
-(procedure (localproc_0190)
-	(localproc_00db)
+(procedure (DisposeBear)
+	(DisposeStars)
 	(bearHead dispose:)
 	(bearRightPaw dispose:)
 	(bearLeftPaw dispose:)
-	(curRoom drawPic: 400 8)
+	(curRoom drawPic: 400 DISSOLVE)
 )
 
 (procedure (localproc_01bb)
@@ -110,7 +111,7 @@
 	(baronLeftArm init: setPri: 6 setLoop: 5 cel: 0 stopUpd:)
 )
 
-(procedure (localproc_027f)
+(procedure (DisposeBaronet)
 	(baronet dispose:)
 	(baronHead dispose:)
 	(baronRightArm dispose:)
@@ -275,17 +276,17 @@
 				(= cycles 3)
 			)
 			(1
-				(SetCursor theCursor 0)
+				(SetCursor theCursor FALSE)
 				(bearHead cycleSpeed: 1 setCycle: EndLoop)
 				(= cycles 5)
 			)
 			(2
-				(localproc_000c)
+				(AddStars)
 				(= cycles 16)
 			)
 			(3
-				(localproc_0190)
-				(localproc_0070)
+				(DisposeBear)
+				(TurnOffStarScripts)
 				(self cue:)
 			)
 			(4
@@ -299,8 +300,8 @@
 				(= cycles 13)
 			)
 			(6
-				(localproc_00db)
-				(localproc_027f)
+				(DisposeStars)
+				(DisposeBaronet)
 				(= cycles 11)
 			)
 			(7
@@ -343,12 +344,12 @@
 			)
 			(1
 				(SetCursor theCursor FALSE)
-				(localproc_000c)
+				(AddStars)
 				(= cycles 20)
 			)
 			(2
-				(localproc_0190)
-				(localproc_0070)
+				(DisposeBear)
+				(TurnOffStarScripts)
 				(self cue:)
 			)
 			(3
@@ -387,7 +388,7 @@
 			)
 			(12
 				(baronHead setCycle: BegLoop)
-				(localproc_00db)
+				(DisposeStars)
 				(= cycles 5)
 			)
 			(13
@@ -395,7 +396,7 @@
 				(= cycles 5)
 			)
 			(14
-				(localproc_027f)
+				(DisposeBaronet)
 				(= cycles 11)
 			)
 			(15

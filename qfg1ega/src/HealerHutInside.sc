@@ -94,7 +94,7 @@
 
 (procedure (BuyPotion potion silvers)
 	(return
-		(if (Purchase silvers)
+		(if (GiveMoney silvers)
 			(HighPrint 55 4)
 			;You pay the Healer for the potion and put it away.
 			(HighPrint 55 5)
@@ -481,7 +481,7 @@
 								(if (ego has: iRing)
 									(if
 									(> (+ (* (ego y?) 8) (* (ego x?) 3) -1822) 0)
-										(PrintNotCloseEnough)
+										(NotClose)
 									else
 										(Bset RETURNED_RING)
 										(ego use: iRing)
@@ -499,7 +499,7 @@
 										(= healerKiss TRUE)
 									)
 								else
-									(PrintDontHaveIt)
+									(DontHave)
 								)
 							)
 							((Said '/flower')
@@ -513,7 +513,7 @@
 										(HighPrint 55 65)
 										;"Thank you.  I often use flowers from Erana's Peace in potion making.  Here are your silvers."
 										;You put them away.
-										(Purchase -5)
+										(GiveMoney -5)
 										(Bset DISPEL_GAVE_FLOWERS)
 										(DispelIngredients)
 										(++ numFlowers)
@@ -543,7 +543,7 @@
 											;"These are very nice.  I'll dry them and grind them into a powder.
 											;Let me think...oh yes! I said these are worth a gold.  Here you are."
 											;You put it away.
-											(Purchase -10)
+											(GiveMoney -10)
 											(++ numMushrooms)
 											(ego use: iMushroom 3)
 											(SolvePuzzle POINTS_SELLMUSHROOM 1)
@@ -582,7 +582,7 @@
 									(ego get: iHealingPotion)
 									(SolvePuzzle POINTS_SELLTROLLBEARD 2)
 								else
-									(PrintDontHaveIt)
+									(DontHave)
 								)
 							)
 							((Said '/dust[<faerie]')
@@ -602,12 +602,12 @@
 									(SolvePuzzle POINTS_GIVEFAIRYDUST 2)
 									(DispelIngredients)
 								else
-									(PrintDontHaveIt)
+									(DontHave)
 								)
 							)
 							((Said '/water[<floating]')
 								(cond 
-									((not (ego has: iWater)) (PrintDontHaveIt))
+									((not (ego has: iWater)) (DontHave))
 									(numWater
 										(HighPrint 55 74)
 										;"I don't need any more Flying Water.
@@ -662,7 +662,7 @@
 									(SolvePuzzle POINTS_GIVEGREENFUR 2)
 									(DispelIngredients)
 								else
-									(PrintDontHaveIt)
+									(DontHave)
 								)
 							)
 							((Said '/acorn')
@@ -677,7 +677,7 @@
 									(SolvePuzzle POINTS_GIVEMAGICACORN 5)
 									(DispelIngredients)
 								else
-									(PrintDontHaveIt)
+									(DontHave)
 								)
 							)
 							((Said '/bottle')
@@ -689,7 +689,7 @@
 									(ego use: iFlask)
 									(ego get: iSilver 1)
 								else
-									(PrintDontHaveIt)
+									(DontHave)
 								)
 							)
 							((Said '/root,plant[<mandrake]')

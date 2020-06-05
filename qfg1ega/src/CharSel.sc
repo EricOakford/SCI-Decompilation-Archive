@@ -78,7 +78,7 @@
 			(ToCharAlloc)
 		)
 		(selectMage
-			(= heroType MAGE)
+			(= heroType MAGIC_USER)
 			(ToCharAlloc)
 		)
 		(selectThief

@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# BEAR) ;420
+(script# vBear) ;420
 (include game.sh)
 (use Main)
 (use Arena)
@@ -18,18 +18,21 @@
 	local0
 	[local1 2]
 	local3
-	[theLeftArm 3]
-	[local7 3]
+	[bearArm 3]
+	[fightScript 3]
 	local10
 	local11 =  5
 )
-(procedure (localproc_000e &tmp temp0)
-	(= temp0 0)
-	(while (< temp0 2)
-		([theLeftArm temp0]
-			setScript: [local7 temp0] 0 (= [local7 temp0] (Clone aFightScript))
+(procedure (AddFightScript &tmp i)
+	;EO: Tweaked to prevent memory fragmentation
+	; and to allow the bear to attack
+	(= i 0)
+	(while (< i 2)
+		(= [fightScript i] (Clone aFightScript))
+		([bearArm i]
+			setScript: [fightScript i] 0 ;(= [fightScript i] (Clone aFightScript))
 		)
-		(++ temp0)
+		(++ i)
 	)
 )
 
@@ -93,7 +96,7 @@
 	(method (init)
 		(Load VIEW vBearFight)
 		(= monster bear)
-		(= monsterNum BEAR)
+		(= monsterNum vBear)
 		(= prevRoomNum 171)
 		(super init: &rest)
 		(leftArm setPri: 12 init: stopUpd:)
@@ -107,10 +110,10 @@
 			cycleSpeed: 2
 			setScript: bearCycle
 		)
-		(= [theLeftArm 0] leftArm)
-		(= [theLeftArm 1] rightArm)
+		(= [bearArm 0] leftArm)
+		(= [bearArm 1] rightArm)
 		(bearMusic number: (SoundFX 2) init: play:)
-		(localproc_000e)
+		(AddFightScript)
 	)
 	
 	(method (doit)
@@ -143,14 +146,14 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				([theLeftArm register] cel: local10 setCycle: 0 stopUpd:)
+				([bearArm register] cel: local10 setCycle: 0 stopUpd:)
 				(bear action: 0)
 				(= cycles (Random 5 10))
 			)
 			(1
 				(= local3 (Random 0 1))
 				(bear action: 1)
-				([theLeftArm register] setCycle: CycleTo local11 1 self)
+				([bearArm register] setCycle: CycleTo local11 1 self)
 				(if (bear tryAttack: (bear opponent?))
 					(bear ateEgo: 1)
 				)
@@ -161,8 +164,8 @@
 					(bear ateEgo: 0)
 				)
 				(if local3
-					([theLeftArm register]
-						setCycle: CycleTo ([theLeftArm register] cel?) 1 self
+					([bearArm register]
+						setCycle: CycleTo ([bearArm register] cel?) 1 self
 					)
 				else
 					(client setCycle: EndLoop self)

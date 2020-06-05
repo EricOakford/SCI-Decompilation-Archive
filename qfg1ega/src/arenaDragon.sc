@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# SAURUSREX) ;460
+(script# vDragon) ;460
 (include game.sh)
 (use Main)
 (use Arena)
@@ -24,9 +24,9 @@
 	)
 	
 	(method (init)
-		(Load VIEW vSaurusRexFight)
+		(Load VIEW vDragonFight)
 		(= monster dragon)
-		(= monsterNum SAURUSREX)
+		(= monsterNum vDragon)
 		(super init: &rest)
 		(dragonTail init:)
 		(if (== howFast slow)
@@ -57,7 +57,7 @@
 	(properties
 		y 118
 		x 170
-		view vSaurusRexFight
+		view vDragonFight
 		priority 10
 		strength 80
 		intell 40
@@ -86,7 +86,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(client view: vSaurusRexFight setLoop: 0 setPri: 10 cel: 8)
+		(client view: vDragonFight setLoop: 0 setPri: 10 cel: 8)
 	)
 	
 	(method (doit)
@@ -148,7 +148,7 @@
 	(properties
 		y 121
 		x 87
-		view vSaurusRexFight
+		view vDragonFight
 		loop 1
 		priority 8
 	)

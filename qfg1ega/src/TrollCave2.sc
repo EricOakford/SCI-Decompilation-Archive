@@ -14,6 +14,7 @@
 	rm89 0
 )
 (enum
+	trollABSENT
 	trollVISIBLE
 	trollDYING
 	trollDEAD
@@ -63,7 +64,10 @@
 			(==
 				(= trollState
 					(cond 
-						((== prevRoomNum TROLL) (= monsterNum FALSE) trollDYING)
+						((== prevRoomNum vTroll)
+							(= monsterNum 0)
+							trollDYING
+						)
 						((Btst DEFEATED_FRED_89)
 							(troll
 								view: vTrollDefeated
@@ -73,10 +77,14 @@
 								init:
 								addToPic:
 							)
-							3
+							trollDEAD
 						)
-						((or (Btst SAID_HIDEN_GOSEKE) (Btst DEFEATED_FRED)) 0)
-						(else 1)
+						((or (Btst SAID_HIDEN_GOSEKE) (Btst DEFEATED_FRED))
+							trollABSENT
+						)
+						(else
+							trollVISIBLE
+						)
 					)
 				)
 				1
@@ -92,7 +100,7 @@
 			)
 		)
 		(switch prevRoomNum
-			(TROLL
+			(vTroll
 				(ego posn: 94 115 loop: 1 cel: 4)
 				(self setScript: trollDies)
 			)
@@ -114,7 +122,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== (ego onControl: origin) cLCYAN) (curRoom newRoom: 84))
+		(if (== (ego onControl: origin) cLCYAN)
+			(curRoom newRoom: 84)
+		)
 	)
 	
 	(method (dispose)
@@ -131,11 +141,11 @@
 							((Said '/down,ground,floor,stalactite')
 								(HighPrint 89 0)
 								;You can watch the water ooze down the sides of the stalactites and drip to the ground.
-								)
+							)
 							((Said '/up,ceiling,stalagmite')
 								(HighPrint 89 1)
 								;You can watch the water drop down from the stalactites and ooze down the sides of the stalagmites.
-								)
+							)
 							((Said '[<at,around][/!*,cave,room]')
 								(Print 89 2 #at -1 120 #width 300 #mode teJustCenter)
 								;As your eyes adjust to the darkness, you see by the light of the fungus that this passageway twists
@@ -144,65 +154,64 @@
 							((Said '/water')
 								(HighPrint 89 3)
 								;The water lies in stagnant pools.
-								)
+							)
 							((Said '/troll,monster,creature')
 								(switch trollState
 									(trollVISIBLE
 										(HighPrint 89 4)
 										;A large Troll looms before you, a snarl on his lips.
-										)
+									)
 									(trollDYING
 										(HighPrint 89 5)
 										;The large Troll lies dying upon the slimy floor of the cave.
-										)
+									)
 									(trollDEAD
 										(HighPrint 89 6)
 										;A large, dead Troll lies in a pool of blue blood.
-										)
+									)
 									(else
 										(HighPrint 89 7)
 										;You see no such creature here.
-										)
+									)
 								)
 							)
 							((Said '/north,west,south,east')
 								(HighPrint 89 8)
 								;You have lost your sense of direction, as the cave passage twists around.
-								)
+							)
 							((Said '/boulder')
 								(HighPrint 89 9)
 								;The rocks look slick and are slimy to the touch.
-								)
+							)
 							((Said '/fungus')
 								(HighPrint 89 10)
 								;The light from the fungus is eerie and vaguely unpleasant.
-								)
+							)
 							((Said '/entrance,open')
 								(HighPrint 89 11)
 								;The only entrance to this cave is the one you came through.
-								)
+							)
 						)
 					)
 					((Said 'hiden')
 						(HighPrint 89 12)
 						;There's no need for the password now.
-						)
+					)
 					((Said 'throw/')
 						(HighPrint 89 13)
 						;There is nothing here to throw it at.
-						)
-					(
-					(Said 'search/troll,monster,creature,body,enemy')
+					)
+					((Said 'search/troll,monster,creature,body,enemy')
 						(cond 
 							((!= trollState trollDEAD)
 								(HighPrint 89 14)
 								;You can't do that.
-								)
+							)
 							((ego inRect: 54 78 100 125) (= searchWhat 0) (self setScript: egoSearch))
 							(else
 								(HighPrint 89 15)
 								;You need to get closer to the dead Troll.
-								)
+							)
 						)
 					)
 					((Said 'get,get>')
@@ -212,12 +221,15 @@
 									((!= trollState trollDEAD)
 										(HighPrint 89 14)
 										;You can't do that.
-										)
-									((ego inRect: 54 78 100 125) (= searchWhat searchBEARD) (self setScript: egoSearch))
+									)
+									((ego inRect: 54 78 100 125)
+										(= searchWhat searchBEARD)
+										(self setScript: egoSearch)
+									)
 									(else
 										(HighPrint 89 15)
 										;You need to get closer to the dead Troll.
-										)
+									)
 								)
 							)
 							((Said '/club,weapon')
@@ -225,29 +237,29 @@
 									((== trollState trollVISIBLE)
 										(HighPrint 89 16)
 										;You're kidding, right?
-										)
+									)
 									((!= trollState trollDEAD)
 										(HighPrint 89 14)
 										;You can't do that.
-										)
+									)
 									(else
 										(HighPrint 89 17)
 										;The dead Troll's huge club is much too heavy for you to lift.
-										)
+									)
 								)
 							)
 							((Said '/fungus')
 								(HighPrint 89 18)
 								;The fungus is slimy and stuck tight to the cave walls.
-								)
+							)
 							((Said '/troll,stalactite,stalagmite')
 								(HighPrint 89 16)
 								;You're kidding, right?
-								)
+							)
 							((Said '/boulder,water')
 								(HighPrint 89 19)
 								;You don't need it.
-								)
+							)
 						)
 					)
 					((Said 'feed/troll,monster,creature')
@@ -262,7 +274,7 @@
 					((Said 'listen/')
 						(HighPrint 89 21)
 						;You hear the constant "drip... drip..." of water.
-						)
+					)
 					((Said 'cast>')
 						(= spell (SaidSpell event))
 						(if (CastSpell spell)
@@ -270,27 +282,27 @@
 								(DETMAGIC
 									(HighPrint 89 22)
 									;There is no magic in this cave.
-									)
+								)
 								(DAZZLE
 									(HighPrint 89 23)
 									;There is nothing here to dazzle.
-									)
+								)
 								(FLAMEDART
 									(HighPrint 89 24)
 									;There is nothing here to use it on.
-									)
+								)
 								(CALM
 									(HighPrint 89 25)
 									;There is nothing here to calm.
-									)
+								)
 								(OPEN
 									(HighPrint 89 26)
 									;There is nothing here to open.
-									)
+								)
 								(else
 									(HighPrint 89 27)
 									;That spell is useless here.
-									)
+								)
 							)
 						)
 					)
@@ -299,7 +311,7 @@
 							(HighPrint 89 28)
 							;The cave troll is dead.
 						else
-							(curRoom newRoom: TROLL)
+							(curRoom newRoom: vTroll)
 						)
 					)
 				)
@@ -338,7 +350,7 @@
 			(1
 				(HighPrint 89 29)
 				;Before you can react, the Troll is upon you, and the encounter begins.
-				(curRoom newRoom: TROLL)
+				(curRoom newRoom: vTroll)
 			)
 		)
 	)
@@ -413,7 +425,10 @@
 				)
 				(ego setCycle: BegLoop self)
 			)
-			(2 (NormalEgo) (HandsOn))
+			(2
+				(NormalEgo)
+				(HandsOn)
+			)
 		)
 	)
 )

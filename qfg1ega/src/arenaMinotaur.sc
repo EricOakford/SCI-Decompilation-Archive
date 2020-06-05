@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# MINOTAUR) ;425
+(script# vMinotaur) ;425
 (include game.sh)
 (use Main)
 (use Arena)
@@ -102,7 +102,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(= monsterNum MINOTAUR)
+		(= monsterNum vMinotaur)
 		(client
 			view: vMinotaurFight
 			setLoop: 2

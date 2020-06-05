@@ -458,7 +458,7 @@
 
 				(ego get: iSword get: iShield)
 			)
-			(MAGE
+			(MAGIC_USER
 				(= [egoStats STR]     10)
 				(= [egoStats INT]     25)
 				(= [egoStats AGIL]    15)

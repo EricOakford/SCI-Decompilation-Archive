@@ -56,11 +56,11 @@
 					((Said 'get/boulder')
 						(HighPrint 53 1)
 						;The farmer has painstakingly removed all the rocks from his fields.
-						)
+					)
 					((Said 'throw')
 						(HighPrint 53 2)
 						;Don't throw things here.  The farmer wouldn't appreciate it.
-						)
+					)
 					((Said 'look>')
 						(cond 
 							((Said '/centaur,farmer')
@@ -70,20 +70,20 @@
 									else
 									(HighPrint 53 4)
 									;The handsome Centaur has a look of pride and dignity as he rakes his field.
-									)
 								)
+							)
 							((Said '/horse')
 								(HighPrint 53 5)
 								;There's a world of difference between a horse and a Centaur!
-								)
+							)
 							((Said '/man')
 								(HighPrint 53 6)
 								;The Centaur is half man, half horse.
-								)
+							)
 							((Said '/hoe')
 								(HighPrint 53 7)
 								;It is a sturdy iron rake with a wooden handle.
-								)
+							)
 						)
 					)
 					((Said 'buy,get/apple,carrot,produce')
@@ -117,7 +117,7 @@
 								((Said '//farmer,name,heinrich')
 									(HighPrint 53 10)
 									;"I am Heinrich Pferdefedern.  I live in town with my daughter Hilde, who sells our produce on Market Street."
-									)
+								)
 								(
 									(Said
 										'//elsa,baron,barnard,(barnard,daughter[<baron,about])'
@@ -128,19 +128,19 @@
 								((Said '//filly,daughter')
 									(HighPrint 53 12)
 									;"Hilde is a bright little filly.  I'm very proud of her."
-									)
+								)
 								((Said '//centaur')
 									(HighPrint 53 13)
 									;"We Centaurs are a very ancient and proud people."
-									)
+								)
 								((Said '//seed,pod')
 									(HighPrint 53 14)
 									;"It is truly a sight to see."
-									)
+								)
 								((Said '//carrot,produce')
 									(HighPrint 53 15)
 									;"There are a few carrots and potatoes left from last season, but I'm just starting to plant this year's crops."
-									)
+								)
 								(
 									(or
 										(Said '//farm,field,field,harvest,crop,farming,job,labor')
@@ -158,7 +158,7 @@
 									;"They nearly killed me.  My right leg was broken, and there is no pride for a Centaur who cannot run."
 									(HighPrint 53 19)
 									;"If it had not been for the unlikely intervention of their leader, I would be dead."
-									)
+								)
 								((Said '//leader,intervention,death')
 									(SolvePuzzle POINTS_TALKTOFARMERABOUTLEADER 3)
 									(HighPrint 53 20)
@@ -171,33 +171,35 @@
 								((Said '//heal,potion,healer')
 									(HighPrint 53 23)
 									;"The Healer lives just east of here.  She is very skilled with potions."
-									)
+								)
 								((Said '//weather,offseason')
 									(HighPrint 53 24)
 									;"The late snow has made the mountains very pretty.
 									;Fortunately, our valley is sheltered, so the frost has not come to my fields."
-									)
+								)
 								((Said '//hoe,implement,broom')
 									(HighPrint 53 25)
 									;"Fields must be carefully tended to produce the best crops."
-									)
+								)
 								((Said '//market,street,stand,hamlet')
 									(HighPrint 53 26)
 									;"Our stand is in the northeast corner of Spielburg.
 									;The produce is not of the finest this time of year,
 									;but you will not find better than Pferdefedern fruit come harvest time."
-									)
+								)
 								((Said '//tree,orchard,apple,beet')
 									(HighPrint 53 27)
 									;We grow fine fruit in our little orchard, and sell it at our stand in town.
 									;There you will find fresh cherries in the spring, peaches in summer, and apples in the fall."
-									)
+								)
 								(else (= chatWithFarmer 0) (event claimed: 1)
 									(HighPrint 53 28)
 									;"I'm afraid I can't tell you much about that."
-									)
+								)
 							)
-							(if (and chatWithFarmer (event claimed?)) (SolvePuzzle POINTS_TALKTOFARMER 1))
+							(if (and chatWithFarmer (event claimed?))
+								(SolvePuzzle POINTS_TALKTOFARMER 1)
+							)
 						)
 					)
 				)
@@ -246,7 +248,11 @@
 		(super init:)
 		(cSound fade:)
 		(StatusLine enable:)
-		(if (Btst FARMER_IS_EAST) (Bclr FARMER_IS_EAST) else (Bset FARMER_IS_EAST))
+		(if (Btst FARMER_IS_EAST)
+			(Bclr FARMER_IS_EAST)
+		else
+			(Bset FARMER_IS_EAST)
+		)
 		(if (not Night)
 			(if (Btst FARMER_IS_EAST)
 				(centaur posn: 250 135)

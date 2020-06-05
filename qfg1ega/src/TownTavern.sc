@@ -50,7 +50,7 @@
 )
 
 (procedure (BuyDrink price)
-	(if (Purchase price)
+	(if (GiveMoney price)
 		(HighPrint 331 68)
 		;You thank the bartender and pay him for your beverage.
 	else
@@ -354,7 +354,7 @@
 							(= drinkOrdered drinkBreath)
 							(HighPrint 331 21)
 							;The bartender is emphatic as he tells you, "If you want a mug of Dragon's Breath, house rules say it'll have to be cash up front!"
-							(if (Purchase dragonBreathPrice)
+							(if (GiveMoney dragonBreathPrice)
 								(HighPrint 331 22)
 								;You cough up the cash.
 								(HighPrint 331 23)

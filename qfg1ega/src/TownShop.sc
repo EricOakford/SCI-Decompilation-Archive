@@ -25,7 +25,7 @@
 	(if (and (== item iChainmail) (ego has: iLeather))
 		(= price (- price 50))
 	)
-	(if (Purchase price)
+	(if (GiveMoney price)
 		(= qty (if (== item iRations) 5 else 1))
 		(if (== item iChainmail)
 			(if (ego has: iLeather)

@@ -149,7 +149,7 @@
 				)
 			)
 			(quitI
-				(AskQuit)
+				(PromptQuit)
 			)
 			(fasterI
 				(if (> speed 0)

@@ -37,7 +37,7 @@
 			(HighPrint 10 2)
 			;You see no scroll here.
 			)
-		((not (ego inRect: 92 126 150 149)) (PrintNotCloseEnough))
+		((not (ego inRect: 92 126 150 149)) (NotClose))
 		(else
 			(HighPrint 10 3)
 			;The scroll vanishes even as you read the magical runes upon it.
@@ -97,7 +97,7 @@
 		(super init:)
 		(StatusLine enable:)
 		(NormalEgo)
-		(ChangeGait MOVE_WALK 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(ego posn: 160 188 init: setMotion: MoveTo 160 170)
 		(magicStone posn: 109 145 init:)
 		(fruit1 init: setPri: 5)
@@ -138,7 +138,7 @@
 								(HighPrint 10 12)
 								;A large, carved stone lies flat on the ground.  You feel as though someone gentle was watching over you.
 								;You feel that you are safe here.
-								)
+							)
 							((Said '/flower,grass')
 								(if (ego has: iFlowers)
 									(event claimed: FALSE)
@@ -161,11 +161,11 @@
 							((or (Said '<down') (Said '/ground'))
 								(HighPrint 10 13)
 								;All kinds of colorful and fragrant flowers and grasses cover the meadow.
-								)
+							)
 							((Said '/blossom')
 								(HighPrint 10 17)
 								;The tree's blossoms are soft, green and fragrant.
-								)
+							)
 							((Said '/apple')
 								(if Night
 									(HighPrint 10 18)
@@ -179,19 +179,19 @@
 							((Said '/hill,north,dragon,smoke,peak')
 								(HighPrint 10 20)
 								;To the north, the high, snowy peaks of the Dragon Smoke mountains are clearly visible.
-								)
+							)
 							((Said '/cliff,cliff,east,west')
 								(HighPrint 10 21)
 								;The meadow is an oasis at the edge of the snowline.  The rocky hillside looks very steep and slippery.
-								)
+							)
 							((Said '/ice')
 								(HighPrint 10 22)
 								;You are at the snowline.  All around you, except for the forest, the rocks and mountains glisten with slippery snow.
-								)
+							)
 							((Said '/south,forest')
 								(HighPrint 10 23)
 								;To the south, you see the deep forest through which you came to this meadow.
-								)
+							)
 							(
 								(or
 									(Said '/boulder,brick')
@@ -210,14 +210,14 @@
 								(if (< (ego distanceTo: magicStone) 50)
 									(ReadStone)
 								else
-									(PrintNotCloseEnough)
+									(NotClose)
 								)
 							)
 							((Said '/rune')
 								(if (< (ego distanceTo: magicStone) 50)
 									(ReadRunes)
 								else
-									(PrintNotCloseEnough)
+									(NotClose)
 								)
 							)
 							((Said '/scroll') (GetCalmScroll))
@@ -232,7 +232,7 @@
 										(HighPrint 10 27)
 										;The hole that was beneath the stone is empty.
 										)
-									(else (PrintNotCloseEnough))
+									(else (NotClose))
 								)
 							)
 						)
@@ -243,20 +243,22 @@
 								(if (< (ego distanceTo: magicStone) 50)
 									(ReadStone)
 								else
-									(PrintNotCloseEnough)
+									(NotClose)
 								)
 							)
 							((Said '/rune')
 								(if (< (ego distanceTo: magicStone) 50)
 									(ReadRunes)
 								else
-									(PrintNotCloseEnough)
+									(NotClose)
 								)
 							)
 							((Said '/scroll') (GetCalmScroll))
 						)
 					)
-					((Said 'open,force,move/brick,boulder') (CantMoveStone))
+					((Said 'open,force,move/brick,boulder')
+						(CantMoveStone)
+					)
 					((Said 'eat/apple')
 						(cond 
 							((> freeMeals 2) (DontNeedFruit))
@@ -279,10 +281,10 @@
 							((Said '/blossom')
 								(HighPrint 10 30)
 								;The lovely blossoms should stay on the tree.
-								)
+							)
 							((Said '/apple')
 								(cond 
-									((not (ego inRect: 109 88 223 106)) (PrintNotCloseEnough))
+									((not (ego inRect: 109 88 223 106)) (NotClose))
 									((> freeMeals 2) (DontNeedFruit))
 									(else (HighPrint 10 31)
 										;The fruit is very soft and juicy.   It would be impossible to keep in your pack.
@@ -292,9 +294,13 @@
 							((Said '/grass')
 								(HighPrint 10 32)
 								;The grasses in the meadow are covered over with flowers.
-								)
-							((Said '/boulder,brick') (CantMoveStone))
-							((Said '/scroll') (GetCalmScroll))
+							)
+							((Said '/boulder,brick')
+								(CantMoveStone)
+							)
+							((Said '/scroll')
+								(GetCalmScroll)
+							)
 							((Said '/flower')
 								(if (Btst PICKED_ERANA_FLOWERS)
 									(HighPrint 10 33)
@@ -311,7 +317,7 @@
 					((Said 'odor/flower,blossom,grass,clearing')
 						(HighPrint 10 35)
 						;The smell reminds you of laughter.
-						)
+					)
 					((Said 'cast>')
 						(switch (= spell (SaidSpell event))
 							(OPEN
@@ -338,7 +344,7 @@
 							;You just can't sleep during the daytime.
 							(DisposeScript 7)
 						else
-							(SolvePuzzle POINTS_SLEEPERANA 5 MAGE)
+							(SolvePuzzle POINTS_SLEEPERANA 5 MAGIC_USER)
 							(ego setScript: goToSleep)
 						)
 					)
@@ -349,7 +355,7 @@
 					((Said 'throw')
 						(HighPrint 10 40)
 						;The atmosphere here is peaceful and calm.   There is no need to throw anything.
-						)
+					)
 				)
 			)
 		)
@@ -357,7 +363,6 @@
 )
 
 (instance goToSleep of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -378,7 +383,7 @@
 			(2
 				(EgoSleeps 6 0)
 				(= currentPalette 0)
-				(curRoom drawPic: 10 7)
+				(curRoom drawPic: 10 IRISOUT)
 				(ego posn: sleepX sleepY setLoop: 2)
 				(magicStone forceUpd:)
 				(HandsOn)
@@ -390,7 +395,6 @@
 )
 
 (instance moveStoneAway of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

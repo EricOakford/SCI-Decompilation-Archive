@@ -169,20 +169,20 @@
 					((Said 'climb,ride/buck,buck') (if (Btst STAG_PRESENT)
 							(HighPrint 77 2)
 							;He's beyond your reach.
-							else (PrintCantDoThat)))
+							else (CantDo)))
 					((Said 'fight,kill,beat,chop/buck,buck')
 						(if (Btst STAG_PRESENT)
 							(Bset STAG_HURT)
 							(HighPrint 77 3)
 							;The stag seems to be magically protected.
 						else
-							(PrintCantDoThat)
+							(CantDo)
 						)
 					)
 					((Said 'look/buck,buck')
 						(HighPrint 77 4)
 						;You don't see a stag here.
-						)
+					)
 				)
 			)
 		)

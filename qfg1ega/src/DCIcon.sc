@@ -21,9 +21,9 @@
 ;;;	)
 
 	;;; Do not pass a caller to this cycler
-;;;	(method (init)
-;;;		((= cycler (Forward new:)) init: self)
-;;;	)
+	(method (init)
+		((= cycler (Forward new:)) init: self)
+	)
 
 	;;; invoked at 60 times per second by the Dialog doit: loop
 	(method (cycle &tmp oldCel)

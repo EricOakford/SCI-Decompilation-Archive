@@ -48,13 +48,13 @@
 	(= numVoices (DoSound NumVoices))
 	(if (< (= numColors (Graph GDetect)) 8)
 		;CGA
-		(= statusBarView vFightUiCGA)
+		(= statusBarView vMonoStatusBar)
 		(= combatColor vWHITE)
 		(= sameColor vBLACK)
 		(= changeColor vRED)
 	else
 		;EGA
-		(= statusBarView vFightUI)
+		(= statusBarView vStatusBar)
 		(= combatColor vLCYAN)
 		(= sameColor vLBLUE)
 		(= changeColor vLRED)

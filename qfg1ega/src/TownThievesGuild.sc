@@ -314,7 +314,7 @@
 						(HighPrint 332 27)
 						;"Don't bother.  You've already paid, stupid."
 						)
-					((Purchase 25) (ego get: iThiefLicense)
+					((GiveMoney 25) (ego get: iThiefLicense)
 						(HighPrint 332 28)
 						;"Welcome to the Thieves' Guild Union, Local 1313."
 						(SolvePuzzle POINTS_BUYTHIEFLICENSE 3 THIEF)
@@ -337,7 +337,7 @@
 						;"Our very special items are reserved for our guild members.  No scabs allowed."
 						(event claimed: TRUE))
 					((Said '/lockpick')
-						(if (Purchase 15)
+						(if (GiveMoney 15)
 							(HighPrint 332 31)
 							;"There you are."
 							(ego get: iLockPick)
@@ -348,7 +348,7 @@
 						)
 					)
 					((Said '/kit[<thief,implement]')
-						(if (Purchase 100)
+						(if (GiveMoney 100)
 							(ego get: iThiefKit)
 							(= lockPickBonus 35)
 							(SolvePuzzle POINTS_BUYTHIEFTOOLKIT 3 2)

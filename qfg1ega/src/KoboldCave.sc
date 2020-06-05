@@ -425,21 +425,22 @@
 					(Said 'use,fill/lockpick,(implement,kit<thief)')
 				)
 				(cond 
-					(
-					(or (not (Btst KOBOLD_CHEST_KNOWN)) (not (cast contains: chest))) (CenterPrint KOBOLD 18))
+					((or (not (Btst KOBOLD_CHEST_KNOWN)) (not (cast contains: chest)))
+						(CenterPrint KOBOLD 18)
+					)
 					((Btst KOBOLD_CHEST_UNLOCKED) (CenterPrint KOBOLD 19))
-					((not (< (ego distanceTo: chest) 25)) (PrintNotCloseEnough))
+					((not (< (ego distanceTo: chest) 25)) (NotClose))
 					((not [egoStats PICK]) (CenterPrint KOBOLD 20))
 					(else (ego setScript: (ScriptID 116 0) 0 0))
 				)
 			)
-			(
-			(Said 'force,break,pry/chest,box,trunk,hasp,lid')
+			((Said 'force,break,pry/chest,box,trunk,hasp,lid')
 				(cond 
-					(
-					(or (not (Btst KOBOLD_CHEST_KNOWN)) (not (cast contains: chest))) (CenterPrint KOBOLD 21))
+					((or (not (Btst KOBOLD_CHEST_KNOWN)) (not (cast contains: chest)))
+						(CenterPrint KOBOLD 21)
+					)
 					((Btst KOBOLD_CHEST_UNLOCKED) (CenterPrint KOBOLD 19))
-					((not (< (ego distanceTo: chest) 25)) (PrintNotCloseEnough))
+					((not (< (ego distanceTo: chest) 25)) (NotClose))
 					(else (ego setScript: (ScriptID 116 0) 0 1))
 				)
 			)
@@ -472,8 +473,7 @@
 						)
 						(CenterPrint KOBOLD 26)
 					)
-					(
-					(Said '[<at,around][/!*,cave,room,area,wall,fungus]')
+					((Said '[<at,around][/!*,cave,room,area,wall,fungus]')
 						(CenterPrint KOBOLD 27)
 						(if (not (Btst DEFEATED_KOBOLD)) (CenterPrint KOBOLD 28))
 					)
@@ -625,8 +625,7 @@
 	)
 	
 	(method (doit)
-		(if
-		(and (< (ego distanceTo: chest) 25) (not (Btst KOBOLD_CHEST_KNOWN)))
+		(if (and (< (ego distanceTo: chest) 25) (not (Btst KOBOLD_CHEST_KNOWN)))
 			(CenterPrint KOBOLD 54)
 			(Bset KOBOLD_CHEST_KNOWN)
 		)
@@ -1191,7 +1190,7 @@
 			)
 			(1
 				(= monsterNum (= monsterHealth 0))
-				(if (or (== heroType FIGHTER) (== heroType MAGE))
+				(if (or (== heroType FIGHTER) (== heroType MAGIC_USER))
 					(SolvePuzzle POINTS_KILLKOBOLD 10)
 				)
 				(cSound number: 20 loop: -1 play:)

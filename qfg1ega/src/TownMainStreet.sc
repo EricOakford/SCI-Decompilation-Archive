@@ -219,7 +219,7 @@
 						(HighPrint 310 6)
 						;Not the sturdiest you've ever seen.
 						)
-					(else (PrintNotCloseEnough))
+					(else (NotClose))
 				)
 			)
 			((Said 'knock,open/door')

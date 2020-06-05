@@ -68,9 +68,9 @@
 		)
 		(if
 			(not
-				(OneOf
-					prevRoomNum
-					BEAR MINOTAUR SAURUS MANTRAY CHEETAUR GOBLIN TROLL OGRE SAURUSREX BRIGAND LEADER
+				(OneOf prevRoomNum
+					vBear vMinotaur vSaurus vMantray vCheetaur
+					vGoblin vTroll vOgre vDragon vBrigand vBrigandLeader
 				)
 			)
 			(= egoX (ego x?))
@@ -162,8 +162,7 @@
 )
 
 (instance antwerped of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -213,8 +212,9 @@
 			(4
 				(EgoDead 85 7
 					#title {Trounced by a bounce!}
-					#icon vDeathScenes 0 0)
+					#icon vDeathScenes 0 0
 					;You're obviously in no shape to continue the game.
+				)
 			)
 		)
 	)
@@ -227,7 +227,7 @@
 					((Said 'look,search/')
 						(CenterPrint 85 3)
 						;Looking up, you can see a small, blue dot in the sky, getting bigger... and bigger... and BIGGER!
-						)
+					)
 					((Said 'use,lift,draw/blade,dagger,weapon')
 						(if (self state?)
 							(CenterPrint 85 4)
@@ -240,11 +240,11 @@
 					((Said 'cast/')
 						(CenterPrint 85 5)
 						;There's no time for that!
-						)
+					)
 					((Said 'run,escape/')
 						(CenterPrint 85 6)
 						;Where to? There is no escaping the hurtling blue blob.
-						)
+					)
 				)
 			)
 		)
@@ -315,7 +315,6 @@
 )
 
 (instance splat of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

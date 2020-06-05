@@ -161,7 +161,7 @@
 ;;;			callb    Btst,  2
 ;;;			bnt      code_021c
 ;;;			pushi    0
-;;;			callb    PrintAlreadyDoneThat,  0
+;;;			callb    AlreadyDone,  0
 ;;;			jmp      code_0303
 ;;;code_021c:
 ;;;			lsg      nestState
@@ -242,7 +242,7 @@
 ;;;			callb    Btst,  2
 ;;;			bnt      code_02b7
 ;;;			pushi    0
-;;;			callb    PrintAlreadyDoneThat,  0
+;;;			callb    AlreadyDone,  0
 ;;;			jmp      code_0303
 ;;;code_02b7:
 ;;;			lsg      nestState
@@ -315,7 +315,7 @@
 			((Said 'get/ring')
 				(cond 
 					((ego pickUp: iRing) (HighPrint 54 3))
-					((Btst 210) (PrintAlreadyDoneThat))
+					((Btst 210) (AlreadyDone))
 					((== nestState nestInTree)
 						(if (not (Btst CLIMBED_HEALER_TREE))
 							(HighPrint 54 4)
@@ -340,7 +340,7 @@
 			)
 			((Said 'climb/branch')
 				(cond 
-					((Btst OBTAINED_RING) (PrintAlreadyDoneThat))
+					((Btst OBTAINED_RING) (AlreadyDone))
 					((== nestState nestInTree)
 						(if (not (Btst CLIMBED_HEALER_TREE))
 							(HighPrint 54 7)
@@ -811,7 +811,7 @@
 ;;;			jmp      code_0f9e
 ;;;code_0aae:
 ;;;			pushi    0
-;;;			callb    PrintNotCloseEnough,  0
+;;;			callb    NotClose,  0
 ;;;			jmp      code_0f9e
 ;;;code_0ab5:
 ;;;			pushi    1
@@ -857,7 +857,7 @@
 ;;;			not     
 ;;;			bnt      code_0b0f
 ;;;			pushi    0
-;;;			callb    PrintNotCloseEnough,  0
+;;;			callb    NotClose,  0
 ;;;			jmp      code_0f9e
 ;;;code_0b0f:
 ;;;			lag      Night
@@ -1134,7 +1134,7 @@
 ;;;			jmp      code_0f9e
 ;;;code_0d17:
 ;;;			pushi    0
-;;;			callb    PrintNotCloseEnough,  0
+;;;			callb    NotClose,  0
 ;;;			jmp      code_0f9e
 ;;;code_0d1e:
 ;;;			pushi    1
@@ -1413,7 +1413,7 @@
 ;;;			jmp      code_0f9e
 ;;;code_0f42:
 ;;;			pushi    0
-;;;			callb    PrintNotCloseEnough,  0
+;;;			callb    NotClose,  0
 ;;;			jmp      code_0f9e
 ;;;code_0f49:
 ;;;			pushi    1
@@ -1479,7 +1479,7 @@
 						(if (ego has: iRing)
 							(HighPrint 54 23)
 						else
-							(PrintDontHaveIt)
+							(DontHave)
 						)
 					)
 					((Said 'cast>')
@@ -1527,7 +1527,7 @@
 						(if (== (ego onControl: origin) cLRED)
 							(HighPrint 54 28)
 						else
-							(PrintNotCloseEnough)
+							(NotClose)
 						)
 					)
 					((Said 'lockpick,unlock/hasp,door')
@@ -1540,7 +1540,7 @@
 					)
 					((Said 'knock[/door]')
 						(cond 
-							((not (== (ego onControl: origin) cLRED)) (PrintNotCloseEnough))
+							((not (== (ego onControl: origin) cLRED)) (NotClose))
 							(Night (HighPrint 54 32))
 							((Btst STOLE_HEALER_POTIONS)
 								(if (!= prevRoomNum 55)
@@ -1611,7 +1611,7 @@
 										)
 									)
 									((Btst CLIMBED_HEALER_TREE) (HighPrint 54 42))
-									(else (PrintNotCloseEnough))
+									(else (NotClose))
 								)
 							)
 							((Said '<down')
@@ -1660,7 +1660,7 @@
 										(HighPrint 54 59)
 									)
 								else
-									(PrintNotCloseEnough)
+									(NotClose)
 								)
 							)
 							((Said '/east,forest') (HighPrint 54 60))

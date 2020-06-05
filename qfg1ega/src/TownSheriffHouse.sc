@@ -299,7 +299,7 @@
 								;You've looked in there already.
 								)
 							((ego inRect: 167 127 196 132) (SearchDrawer))
-							(else (PrintNotCloseEnough))
+							(else (NotClose))
 						)
 					)
 					((Said 'look,search>')
@@ -478,7 +478,7 @@
 								(BreakInPrint 321 31)
 								;You have already done that.
 								)
-							((> (ego distanceTo: portrait) 45) (PrintNotCloseEnough))
+							((> (ego distanceTo: portrait) 45) (NotClose))
 							((not vaseOutOfWay) (vase setScript: (ScriptID 288 0)))
 							(else
 								(Bset UNCOVERED_SHERIFF_SAFE)
@@ -498,7 +498,7 @@
 								(BreakInPrint 321 33)
 								;There is no need to do that.
 								)
-							((> (ego distanceTo: portrait) 50) (PrintNotCloseEnough))
+							((> (ego distanceTo: portrait) 50) (NotClose))
 							(else (= uncoveredSafe FALSE) (self setScript: (ScriptID 288 5)))
 						)
 					)
@@ -517,8 +517,8 @@
 								(HighPrint 321 20)
 								;You took it.  Remember?
 								)
-							((> (ego distanceTo: vase) 40) (PrintNotCloseEnough))
-							(vaseOutOfWay (PrintAlreadyDoneThat))
+							((> (ego distanceTo: vase) 40) (NotClose))
+							(vaseOutOfWay (AlreadyDone))
 							(else
 								(vase posn: 247 136)
 								(Bset MOVED_SHERIFF_VASE)
@@ -542,7 +542,7 @@
 								(HighPrint 321 20)
 								;You took it.  Remember?
 								)
-							((> (ego distanceTo: vase) 40) (PrintNotCloseEnough))
+							((> (ego distanceTo: vase) 40) (NotClose))
 							((not vaseOutOfWay)
 								(BreakInPrint 321 36)
 								;The vase is on the mantle.
@@ -560,8 +560,8 @@
 						(cond 
 							((Said '/vase,bottle')
 								(cond 
-									((Btst STOLE_SHERIFF_VASE) (PrintAlreadyDoneThat))
-									((> (ego distanceTo: vase) 35) (PrintNotCloseEnough))
+									((Btst STOLE_SHERIFF_VASE) (AlreadyDone))
+									((> (ego distanceTo: vase) 35) (NotClose))
 									(else
 										(Bset STOLE_SHERIFF_VASE)
 										(ego get: iVase)
@@ -575,8 +575,8 @@
 							)
 							((Said '/candle,candelabra,(stick<candle)')
 								(cond 
-									((Btst STOLE_SHERIFF_CANDELABRA) (PrintAlreadyDoneThat))
-									((> (ego distanceTo: candelabra) 55) (PrintNotCloseEnough))
+									((Btst STOLE_SHERIFF_CANDELABRA) (AlreadyDone))
+									((> (ego distanceTo: candelabra) 55) (NotClose))
 									(else
 										(Bset STOLE_SHERIFF_CANDELABRA)
 										(ego get: iCandelabra)
@@ -589,8 +589,8 @@
 							)
 							((Said '/box')
 								(cond 
-									((Btst STOLE_OTTO_MUSIC_BOX) (PrintAlreadyDoneThat))
-									((> (ego distanceTo: musicBox) 35) (PrintNotCloseEnough))
+									((Btst STOLE_OTTO_MUSIC_BOX) (AlreadyDone))
+									((> (ego distanceTo: musicBox) 35) (NotClose))
 									(else
 										(Bset STOLE_OTTO_MUSIC_BOX)
 										(ego get: iMusicBox)
@@ -613,19 +613,19 @@
 									(HighPrint 321 42)
 									;Even though it's a 50-year-old Sego palm, it's too big to fit in your pack.
 								else
-									(PrintNotCloseEnough)
+									(NotClose)
 								)
 							)
 							((Said '/alm,silver,loot,bag')
 								(cond 
 									((ego inRect: 167 127 196 132)
 										(if (Btst SEARCHED_SHERIFF_DRAWER)
-											(PrintAlreadyDoneThat)
+											(AlreadyDone)
 										else
 											(SearchDrawer)
 										)
 									)
-									((Btst SEARCHED_SHERIFF_SAFE) (PrintAlreadyDoneThat))
+									((Btst SEARCHED_SHERIFF_SAFE) (AlreadyDone))
 									((not uncoveredSafe)
 										(BreakInPrint 321 43)
 										;Nothing like that is visible to you.
@@ -634,7 +634,7 @@
 										(BreakInPrint 321 44)
 										;There might be something like that inside the wall safe.
 										)
-									((> (ego distanceTo: safeDoor) 50) (PrintNotCloseEnough))
+									((> (ego distanceTo: safeDoor) 50) (NotClose))
 									(else
 										(Bset SEARCHED_SHERIFF_SAFE)
 										(ego get: iSilver 50)
@@ -656,7 +656,7 @@
 								(BreakInPrint 321 26)
 								;Safe? You don't see a safe.
 								)
-							((> (ego distanceTo: safeDoor) 50) (PrintNotCloseEnough))
+							((> (ego distanceTo: safeDoor) 50) (NotClose))
 							(else
 								(BreakInPrint 321 47)
 								;The safe is securely locked.
@@ -669,7 +669,7 @@
 								(BreakInPrint 321 48)
 								;Where?
 								)
-							((> (ego distanceTo: safeDoor) 50) (PrintNotCloseEnough))
+							((> (ego distanceTo: safeDoor) 50) (NotClose))
 							(crackedSafe
 								(BreakInPrint 321 49)
 								;What for? It's open!
@@ -701,7 +701,7 @@
 								(BreakInPrint 321 52)
 								;It's not open.
 								)
-							((> (ego distanceTo: safeDoor) 50) (PrintNotCloseEnough))
+							((> (ego distanceTo: safeDoor) 50) (NotClose))
 							(else (Bclr CRACKED_SHERIFF_SAFE) (= crackedSafe FALSE) (safeDoor setCel: 0))
 						)
 					)
@@ -710,7 +710,7 @@
 							((== (ego onControl: origin) cYELLOW) (leftDoor setScript: (ScriptID 290 1)))
 							((== (ego onControl: origin) cLMAGENTA) (rightDoor setScript: (ScriptID 290 2)))
 							((== (ego onControl: origin) cLRED) (bottomDoor setScript: (ScriptID 290 0)))
-							(else (PrintNotCloseEnough))
+							(else (NotClose))
 						)
 					)
 					((Said 'lift,open/box,lid')
@@ -723,7 +723,7 @@
 								(HighPrint 321 20)
 								;You took it.  Remember?
 								)
-							((> (ego distanceTo: musicBox) 35) (PrintNotCloseEnough))
+							((> (ego distanceTo: musicBox) 35) (NotClose))
 							((Btst OTTO_CLOSES_MUSIC_BOX)
 								(BreakInPrint 321 54)
 								;Oh, no! You won't do THAT again!
@@ -741,7 +741,7 @@
 								(HighPrint 321 20)
 								;You took it.  Remember?
 								)
-							((> (ego distanceTo: musicBox) 35) (PrintNotCloseEnough))
+							((> (ego distanceTo: musicBox) 35) (NotClose))
 							((Btst OPEN_MUSIC_BOX)
 								(miscMusic stop:)
 								(BreakInPrint 321 56)

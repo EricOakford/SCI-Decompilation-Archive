@@ -447,13 +447,15 @@
 								)
 							((Said '/mandrake,root,plant')
 								(cond 
-									((ego has: iMandrake) (PrintAlreadyDoneThat))
+									((ego has: iMandrake)
+										(AlreadyDone)
+									)
 									((not (cast contains: mandrake))
 										(HighPrint 64 28)
 										;You don't see any particularly interesting roots.
 										)
 									((ego inRect: 130 113 168 140) (ego setScript: getRoot))
-									(else (PrintNotCloseEnough))
+									(else (NotClose))
 								)
 							)
 						)

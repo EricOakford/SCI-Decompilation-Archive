@@ -70,13 +70,25 @@
 	
 	(method (init)
 		(LoadMany PICTURE 460 400 906)
-		(LoadMany VIEW vDragonHead vDragonFire vSierraPresents vQFGshadow vQFG vSubtitle vEgoRunning vEgoRunFast vSaurus vSaurusRex vSaurusRexFight)
+		(LoadMany VIEW
+			vDragonHead vDragonFire vSierraPresents vQFGshadow vQFG
+			vSubtitle vEgoRunning vEgoRunFast vSaurus vDragon vDragonFight
+		)
 		(super init:)
 		(HandsOff)
 		(cond 
-			((== numVoices 1) (Load SOUND 201) (introMusic number: 201))
-			((<= numVoices 4) (Load SOUND 301) (introMusic number: 301))
-			(else (Load SOUND 1) (introMusic number: 1))
+			((== numVoices 1)
+				(Load SOUND 201)
+				(introMusic number: 201)
+			)
+			((<= numVoices 4)
+				(Load SOUND 301)
+				(introMusic number: 301)
+			)
+			(else
+				(Load SOUND 1)
+				(introMusic number: 1)
+			)
 		)
 		(keyDownHandler add: self)
 		(mouseDownHandler add: self)
@@ -85,7 +97,11 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((== (event type?) mouseDown) (event claimed: TRUE) (cSound stop:) (GoToCharacterSelect))
+			((== (event type?) mouseDown)
+				(event claimed: TRUE)
+				(cSound stop:)
+				(GoToCharacterSelect)
+			)
 			((super handleEvent: event))
 			((== (event type?) keyDown)
 				(switch (event message?)
@@ -94,11 +110,17 @@
 						(cSound stop:)
 						(GoToCharacterSelect)
 					)
-					(`#2 (ToggleSound))
-					(`^q (AskQuit))
+					(`#2
+						(ToggleSound)
+					)
+					(`^q
+						(PromptQuit)
+					)
 				)
 			)
-			(else (event claimed: TRUE))
+			(else
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
@@ -414,7 +436,7 @@
 				(forText stopUpd:)
 				(gloryText stopUpd:)
 				(saurus
-					view: vSaurusRex
+					view: vDragon
 					setLoop: 1
 					cel: 0
 					xStep: 8
@@ -897,7 +919,9 @@
 				)
 				(= seconds 10)
 			)
-			(21 (GoToCharacterSelect))
+			(21
+				(GoToCharacterSelect)
+			)
 		)
 	)
 )
@@ -1097,7 +1121,7 @@
 	(properties
 		y 118
 		x 170
-		view vSaurusRexFight
+		view vDragonFight
 	)
 )
 
@@ -1105,7 +1129,7 @@
 	(properties
 		y 121
 		x 87
-		view vSaurusRexFight
+		view vDragonFight
 		loop 1
 		priority 8
 	)
@@ -1125,18 +1149,10 @@
 	)
 )
 
-(instance leftDrag of View
-	(properties)
-)
+(instance leftDrag of View)
 
-(instance rightDrag of View
-	(properties)
-)
+(instance rightDrag of View)
 
-(instance andAnd of View
-	(properties)
-)
+(instance andAnd of View)
 
-(instance byBy of View
-	(properties)
-)
+(instance byBy of View)

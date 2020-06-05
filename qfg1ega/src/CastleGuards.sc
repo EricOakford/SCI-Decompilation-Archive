@@ -593,13 +593,13 @@
 			((super handleEvent: event))
 			;if the mouse is on the stones, but not on ego nor any of the weeds, 
 			;then show a funny message about the stone's origin.
-			((and (MouseClaimed onStones event emRIGHT_BUTTON)
-				(not (or (MouseClaimed ego event emRIGHT_BUTTON) 
-					(MouseClaimed onWeed1 event emRIGHT_BUTTON)
-					(MouseClaimed onWeed2 event emRIGHT_BUTTON)
-					(MouseClaimed onWeed3 event emRIGHT_BUTTON)
-					(MouseClaimed onWeed4 event emRIGHT_BUTTON)
-					(MouseClaimed onWeed5 event emRIGHT_BUTTON)
+			((and (MouseClaimed onStones event shiftDown)
+				(not (or (MouseClaimed ego event shiftDown) 
+					(MouseClaimed onWeed1 event shiftDown)
+					(MouseClaimed onWeed2 event shiftDown)
+					(MouseClaimed onWeed3 event shiftDown)
+					(MouseClaimed onWeed4 event shiftDown)
+					(MouseClaimed onWeed5 event shiftDown)
 				)))
 				(cond
 					((== stoneLookCount 0)

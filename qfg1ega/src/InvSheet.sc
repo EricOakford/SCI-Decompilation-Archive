@@ -20,7 +20,7 @@
 	)
 	;display quantity
 	(Display
-		(Format @str 3 (+ item item) (if (> invQty 1) KEY_s else 0))
+		(Format @str 3 (+ item item) (if (> invQty 1) `s else 0))
 		p_at (+ x 30) y
 		p_mode teJustLeft
 		p_font smallFont
@@ -71,7 +71,7 @@
 	(method (init &tmp i temp1 y fgColour totalWeight [str 40])
 		(super init:)
 		(= theWindow
-			(NewWindow nsTop nsLeft nsBottom nsRight {} nwNORMAL nwON_TOP vBLUE vWHITE)
+			(NewWindow nsTop nsLeft nsBottom nsRight {} 0 -1 vBLUE vWHITE)
 		)
 		(Display 206 1 p_at 10 8 p_mode teJustLeft p_font 300 p_color vBLUE)
 		;You Are Carrying:

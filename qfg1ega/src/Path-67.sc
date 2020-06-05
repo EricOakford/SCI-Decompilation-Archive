@@ -771,9 +771,13 @@
 								((not (ego has: iSword))
 									(HighPrint 67 34)
 									;You would need a sword.
-									)
-								((ego inRect: 55 111 120 120) (fox setScript: foxDies))
-								(else (PrintNotCloseEnough))
+								)
+								((ego inRect: 55 111 120 120)
+									(fox setScript: foxDies)
+								)
+								(else
+									(NotClose)
+								)
 							)
 						else
 							(HighPrint 67 33)

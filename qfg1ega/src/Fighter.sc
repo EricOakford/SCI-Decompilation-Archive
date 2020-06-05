@@ -67,8 +67,12 @@
 		(= armorEnc (/ (WtCarried) 2))
 		(= armorValue 0)
 		(cond 
-			((ego has: iChainmail) (= armorValue 5))
-			((ego has: iLeather) (= armorValue 3))
+			((ego has: iChainmail)
+				(= armorValue CHAIN_VALUE)
+			)
+			((ego has: iLeather)
+				(= armorValue LEATHER_VALUE)
+			)
 		)
 		(self weapValue: 8)
 		(self

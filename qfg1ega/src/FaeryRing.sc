@@ -37,7 +37,7 @@
 	[faeryBackColor 5] = [14 2 10 15 12]
 	[faeryWindow 5]
 	[faeryScript 5]
-	[local64 5]
+	[chaseScript 5]
 	local69
 	[local70 5] = [35 250 265 140 225]
 	[local75 5] = [30 35 125 50 45]
@@ -112,46 +112,46 @@
 	)
 )
 
-(procedure (localproc_00c8 &tmp i)
+(procedure (AddChaseScript &tmp i)
 	(Bset GOT_FAIRIES_ATTENTION)
 	(= i 0)
 	(while (< i 5)
+		(= [chaseScript i] (Clone aChaseScript))
 		([faery i]
 			setStep: 6 4
-			setScript: [local64 i] 0 (= [local64 i] (Clone aChaseScript))
+			setScript: [chaseScript i] 0 ;(= [chaseScript i] (Clone aChaseScript))
 		)
 		(++ i)
 	)
 )
 
-(procedure (localproc_0106 &tmp temp0)
+(procedure (AddFaeryDanceScript &tmp i)
 	(Bclr GOT_FAIRIES_ATTENTION)
-	(= temp0 0)
-	(while (< temp0 5)
-		([faery temp0]
+	(= i 0)
+	(while (< i 5)
+		(= [faeryScript i] (aFaeryScript new:))
+		([faery i]
 			setStep: 3 2
-			setScript:
-				[faeryScript temp0]
-				0
-				(= [faeryScript temp0] (aFaeryScript new:))
+			setScript: [faeryScript i] 0
+				;(= [faeryScript i] (aFaeryScript new:))
 		)
-		(++ temp0)
+		(++ i)
 	)
 )
 
-(procedure (FaeriesHostile &tmp temp0 temp1)
+(procedure (FaeriesHostile &tmp i temp1)
 	(if faeriesOnScreen
 		(Bclr GOT_FAIRIES_ATTENTION)
 		(= local69 80)
-		(= temp0 0)
-		(while (< temp0 5)
-			(= [faeryScript temp0] (aFaeryScript new:))
+		(= i 0)
+		(while (< i 5)
+			(= [faeryScript i] (aFaeryScript new:))
 			(= temp1 (Random 0 4))
 			([faery temp1]
 				posn: [local70 temp1] [local75 temp1]
-				setScript: [faeryScript temp0] 0 temp1
+				setScript: [faeryScript i] 0 temp1
 			)
-			(++ temp0)
+			(++ i)
 		)
 	)
 )
@@ -205,9 +205,7 @@
 	)
 )
 
-(instance aFaeryWindow of SysWindow
-	(properties)
-)
+(instance aFaeryWindow of SysWindow)
 
 (instance faeryMusic of Sound
 	(properties
@@ -317,7 +315,7 @@
 				faeriesOnScreen
 			)
 			(= local87 1)
-			(localproc_00c8)
+			(AddChaseScript)
 			(= local4 0)
 			(= local107 1)
 			(= local82 (+ (= local80 local96) 9))
@@ -361,7 +359,7 @@
 				(= local82 (+ (= local80 local90) 12))
 				(= local81 1)
 			)
-			(localproc_00c8)
+			(AddChaseScript)
 			(self setScript: faeryTalk)
 		)
 		(if
@@ -375,7 +373,7 @@
 				(= local82 (+ (= local80 local90) 12))
 				(= local81 1)
 			)
-			(localproc_00c8)
+			(AddChaseScript)
 			(self setScript: faeryTalk)
 		)
 		(if
@@ -420,7 +418,7 @@
 						(= local82 (+ (= local80 local90) 12))
 						(= local81 1)
 					)
-					(localproc_00c8)
+					(AddChaseScript)
 					(self setScript: faeryTalk)
 				)
 				(cond 
@@ -435,10 +433,9 @@
 							;What for?  There's no one to dance with.
 						)
 					)
-					(
-					(or (Said 'fight,kill,beat') (Said 'use/blade,dagger'))
+					((or (Said 'fight,kill,beat') (Said 'use/blade,dagger'))
 						(if faeriesOnScreen
-							(localproc_00c8)
+							(AddChaseScript)
 							(= local107 1)
 							(= local82 (+ (= local80 local105) 9))
 							(= local81 16)
@@ -469,7 +466,7 @@
 							(= local109 1)
 							(cond 
 								((Said '//mushroom,toadstool,ring')
-									(localproc_00c8)
+									(AddChaseScript)
 									(= local107 1)
 									(= local82 (+ (= local80 local100) 8))
 									(= local81 11)
@@ -480,7 +477,7 @@
 										(HighPrint 70 6)
 										;You know all about it, now.
 									else
-										(localproc_00c8)
+										(AddChaseScript)
 										(= local107 1)
 										(= local82 (+ (= local80 local98) 22))
 										(= local81 9)
@@ -488,21 +485,21 @@
 									)
 								)
 								((Said '//faerie,magic')
-									(localproc_00c8)
+									(AddChaseScript)
 									(= local107 1)
 									(= local82 (+ (= local80 local101) 7))
 									(= local81 12)
 									(self setScript: faeryTalk)
 								)
 								((Said '//forest')
-									(localproc_00c8)
+									(AddChaseScript)
 									(= local107 1)
 									(= local82 (+ (= local80 local102) 6))
 									(= local81 13)
 									(self setScript: faeryTalk)
 								)
 								((Said '//dryad')
-									(localproc_00c8)
+									(AddChaseScript)
 									(= local107 1)
 									(= local82 (+ (= local80 local103) 6))
 									(= local81 14)
@@ -577,9 +574,10 @@
 						(cond 
 							((Btst fAteShrooms) (event claimed: FALSE))
 							((and (== local4 0) (== (ego script?) 0)) (Bset fAteShrooms) (ego setScript: eatShroom))
-							(else (HighPrint 70 1)
+							(else
+								(HighPrint 70 1)
 								;Don't you want to dance?
-								)
+							)
 						)
 					)
 					((Said 'get>')
@@ -669,7 +667,7 @@
 							((Said '/west')
 								(HighPrint 70 24)
 								;The trees here look thicker and healthier than in other parts of the forest.
-								)
+							)
 						)
 					)
 				)
@@ -679,7 +677,6 @@
 )
 
 (instance aFaeryScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -798,11 +795,11 @@
 							(4 (= local84 1))
 							(8
 								(= local69 0)
-								(localproc_00c8)
+								(AddChaseScript)
 							)
 							(9 (ego setScript: getDust))
 							(10 (getDust cue:))
-							(15 (localproc_0106))
+							(15 (AddFaeryDanceScript))
 						)
 						(if (== (ego script?) 0) (cls) (HandsOn))
 						(self dispose:)
@@ -821,7 +818,7 @@
 			(0
 				(HandsOff)
 				(SolvePuzzle POINTS_DANCEWITHFAIRIES 3)
-				(localproc_0106)
+				(AddFaeryDanceScript)
 				(ego
 					illegalBits: 0
 					ignoreActors:
@@ -861,7 +858,7 @@
 				(cond 
 					((== local83 2) 
 						(Bset DANCING_FOR_FAIRIES) 
-						(localproc_00c8) 
+						(AddChaseScript) 
 						(self changeState: 3)
 					)
 					((== local83 3)
@@ -877,7 +874,7 @@
 				)
 			)
 			(5
-				(localproc_0106)
+				(AddFaeryDanceScript)
 				(ego setLoop: 5 cel: 0 setCycle: 0)
 				(= seconds 2)
 			)
@@ -905,7 +902,7 @@
 			)
 			(12
 				(Bclr DANCING_FOR_FAIRIES)
-				(localproc_00c8)
+				(AddChaseScript)
 				(= local107 1)
 				(= local82 (+ (= local80 local95) 11))
 				(= local81 6)
@@ -962,7 +959,7 @@
 				(= cycles 10)
 			)
 			(3
-				(localproc_00c8)
+				(AddChaseScript)
 				(= local107 1)
 				(= local82 (+ (= local80 local95) 11))
 				(= local81 6)

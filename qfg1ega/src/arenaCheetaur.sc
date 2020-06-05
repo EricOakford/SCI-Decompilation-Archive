@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# CHEETAUR) ;440
+(script# vCheetaur) ;440
 (include game.sh)
 (use Main)
 (use Arena)
@@ -24,10 +24,12 @@
 	[local13 3] = [1 2 2]
 )
 (procedure (SetFightScript &tmp i)
+	;EO: Tweaked to prevent memory fragmentation.
 	(= i 0)
 	(while (< i 3)
+		(= [fightScript i] (Clone aFightScript))
 		([theCheetaur i]
-			setScript: [fightScript i] 0 (= [fightScript i] (Clone aFightScript))
+			setScript: [fightScript i] 0
 		)
 		(++ i)
 	)
@@ -112,7 +114,7 @@
 	(method (init)
 		(Load VIEW vCheetaurFight)
 		(= monster cheetaur)
-		(= monsterNum CHEETAUR)
+		(= monsterNum vCheetaur)
 		(super init: &rest)
 		(tail setPri: 2 init: setCycle: Forward startUpd:)
 		(chest init:)
@@ -154,11 +156,12 @@
 )
 
 (instance aFightScript of Script
-	(properties)
 	
 	(method (doit)
 		(cond 
-			((and local0 (== client cheetaur)) (= local0 (= cycles 0)))
+			((and local0 (== client cheetaur))
+				(= local0 (= cycles 0))
+			
 			((and monsterDazzle (== state 0) (not script))
 				(= cycles (+ cycles monsterDazzle))
 				(= monsterDazzle 0)

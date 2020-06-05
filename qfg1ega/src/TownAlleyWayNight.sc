@@ -416,8 +416,8 @@
 							(thievesSatisfied
 								(HighPrint 334 26)
 								;"That's all right; we already have all your money.  But it was certainly nice of you to offer."
-								)
-							((not (Purchase 5))
+							)
+							((not (GiveMoney 5))
 								(HighPrint 334 27)
 								;"Hey!  You don't have enough money to be worth our while.  How do you expect us poor independent businessmen to make a living?"
 								(HandsOff) (self changeState: 7))

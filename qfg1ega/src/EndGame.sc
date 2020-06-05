@@ -654,8 +654,12 @@
 		(event claimed: TRUE)
 		(if (== (event type?) keyDown)
 			(switch (event message?)
-				(KEY_F2 (ToggleSound))
-				(KEY_F5 (theGame save:))
+				(`#2
+					(ToggleSound)
+				)
+				(`#5
+					(theGame save:)
+				)
 			)
 		)
 	)

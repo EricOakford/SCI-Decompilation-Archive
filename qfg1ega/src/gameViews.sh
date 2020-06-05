@@ -123,7 +123,7 @@
 (define vBrigandCourtyard 094)
 (define vBrigandDiningHall 095)
 (define vJesterRoom 	096)
-(define vBrigandLeader 097)
+(define vBrigandLeaderRoom 097)
 (define vGameSelect 	100)
 (define vEndGameCast	139)
 
@@ -202,12 +202,13 @@
 (define vOgre 			455)
 (define vOgreDefeated 	456)
 (define vOgreFight 		457)
-(define vSaurusRex 		460)
-(define vSaurusRexDefeated 	461)
-(define vSaurusRexFight 	462)
+(define vDragon			460)
+(define vDragonDefeated 	461)
+(define vDragonFight 	462)
 (define vBrigand 		465)
 (define vBrigandDefeated 466)
 (define vBrigandFight 	467)
+(define vBrigandLeader		470)	;unused, but was likely the leader's arena
 (define vBrigandLeaderFight 473)
 
 
@@ -231,8 +232,8 @@
 (define vDeathScenes 800)
 (define vCharSheet 802)
 (define vEgoCharSheet 802)
-(define vFightUI 803)
-(define vFightUiCGA 804)
+(define vStatusBar 803)
+(define vMonoStatusBar 804)
 (define vCreditsDragon 901)
 (define vCredits 902)
 (define vDragonHead 906)

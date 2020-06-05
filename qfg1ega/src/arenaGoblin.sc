@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# GOBLIN) ;445
+(script# vGoblin) ;445
 (include game.sh)
 (use Main)
 (use Arena)
@@ -122,7 +122,7 @@
 	(method (init)
 		(Load VIEW vGoblinFight)
 		(= monster goblin)
-		(= monsterNum GOBLIN)
+		(= monsterNum vGoblin)
 		(super init: &rest)
 		(if (== prevRoomNum 45)
 			(= goblinsInArena (+ numGoblins 1))

@@ -296,7 +296,7 @@
 							(HighPrint 340 3)
 							;"Now, let's not get carried away."
 						else
-							(if (not (Purchase bet))
+							(if (not (GiveMoney bet))
 								(HighPrint 340 4)
 								;"Hey!  This is cash on the table.  You can't bet what you don't have."
 							else

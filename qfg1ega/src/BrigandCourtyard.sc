@@ -632,6 +632,7 @@
 				)
 				(= setATrap TRUE)
 				(ego setScript: (ScriptID 186 0)) ;fallbridge
+				;EO: This doesn't seem to work.
 			)
 			((and (not setATrap)
 				  (not (and (<= 215 (ego x?)) (<= (ego x?) 235)))

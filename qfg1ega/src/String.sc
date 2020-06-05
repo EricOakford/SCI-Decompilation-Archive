@@ -11,10 +11,10 @@
 
 (procedure (ToLower aChar)
 	(return
-		(if (or (< aChar 65) (> aChar 90))
+		(if (or (< aChar `A) (> aChar `Z))
 			(return aChar)
 		else
-			(return (+ (- aChar 65) 97))
+			(return (+ (- aChar `A) `a))
 		)
 	)
 )
@@ -39,7 +39,7 @@
 		(if (== wordPtr wordLen) (return (+ wordPtr 1)))
 		(-- len)
 	)
-	(return FALSE)
+	(return 0)
 )
 
 (procedure (LookFor event parseIt &tmp index inLine)
@@ -61,17 +61,16 @@
 			(= inLine (User inputLineAddr?))
 			(= index 1)
 			(while (< index argc)
-				(if
-				(StrFind inLine [parseIt (- index 1)])
+				(if (StrFind inLine [parseIt (- index 1)])
 					(return index)
 				)
 				(++ index)
 			)
-			(event type: allEvents)
+			(event type: saidEvent)
 			(event claimed: FALSE)
 			(Parse inLine event)
 			(User said: event)
 		)
 	)
-	(return FALSE)
+	(return 0)
 )

@@ -294,19 +294,30 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp [mD 3])
+	(method (handleEvent event &tmp [temp0 3])
 		(switch (event type?)
 			(saidEvent
 				(cond 
 					((Said 'get')
 						(HighPrint 311 16)
 						;There is nothing here that you need, and the Guild Master may be more aware than he seems.
-						)
-					(
-					(or (Said 'turn/page') (Said 'page<preceding')) (++ remainingPages) (Logbook))
-					((Said '/page<next') (-- remainingPages) (Logbook))
-					((Said '/page<first') (= remainingPages 2) (Logbook))
-					((Said '/page<last') (= remainingPages 0) (Logbook))
+					)
+					((or (Said 'turn/page') (Said 'page<preceding'))
+						(++ remainingPages)
+						(Logbook)
+					)
+					((Said '/page<next')
+						(-- remainingPages)
+						(Logbook)
+					)
+					((Said '/page<first')
+						(= remainingPages 2)
+						(Logbook)
+					)
+					((Said '/page<last')
+						(= remainingPages 0)
+						(Logbook)
+					)
 					(
 						(or
 							(Said 'look<in/desk,drawer')
@@ -315,12 +326,12 @@
 						(if (NearDesk)
 							(HighPrint 311 17)
 							;The desk drawers are empty.
-							)
+						)
 					)
 					((Said 'close/desk')
 						(HighPrint 311 18)
 						;There is no way to close the desk.
-						)
+					)
 					((Said 'look,read>')
 						(cond 
 							((Said '/registration,register,log,book,page') (Logbook))
@@ -328,14 +339,13 @@
 									(HighPrint 311 19)
 									;On the desk are an old but ornate leather-bound book and a quill pen in the ink bottle.
 									)
-								)
+							)
 							((Said '/feather,pen,ink,bottle')
 								(HighPrint 311 20)
 								;You see an ordinary pen and ink.
-								)
+							)
 							((Said '/message,quest,(board[<bulletin,quest])') (ReadNoticeBoard))
-							(
-							(Said '[<at,around][/!*,room,building,hall,club]') (LookAround))
+							((Said '[<at,around][/!*,room,building,hall,club]') (LookAround))
 							((Said '/moose,(head<moose)') (LookMoose))
 							((Said '/saurus,(head<saurus)') (LookSaurus))
 							((Said '/troll,(head<troll)') (LookTroll))
@@ -368,14 +378,16 @@
 							((Btst SIGNED_LOGBOOK)
 								(HighPrint 311 24)
 								;But you've already done that!
-								)
+							)
 							((ego inRect: 190 115 250 124)
 								(HighPrint 311 25)
 								;You sign your name into the Adventurer's Log Book with a flourish.
 								(SolvePuzzle POINTS_SIGNLOGBOOK 1)
 								(Bset SIGNED_LOGBOOK)
-								)
-							(else (PrintNotCloseEnough))
+							)
+							(else
+								(NotClose)
+							)
 						)
 					)
 				)
@@ -557,7 +569,7 @@
 								(self changeState: 7)
 							)
 						else
-							(PrintNotCloseEnough)
+							(NotClose)
 						)
 					)
 					((Said 'ask>')
@@ -740,7 +752,7 @@
 								((Said '//*') (masterScript changeState: 7))
 							)
 						else
-							(PrintNotCloseEnough)
+							(NotClose)
 						)
 					)
 				)

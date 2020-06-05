@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# OGRE) ;455
+(script# vOgre) ;455
 (include game.sh)
 (use Main)
 (use Arena)
@@ -27,7 +27,7 @@
 	
 	(method (init)
 		(= monster ogre)
-		(= monsterNum OGRE)
+		(= monsterNum vOgre)
 		(Load VIEW vOgreFight)
 		(super init: &rest)
 		(ogre cycleSpeed: 1 setPri: 5)

@@ -34,8 +34,8 @@
    barnard
    exit
 )
-(procedure (PosterPrint param1 param2)
-	(Print param2 #at -1 12 #mode teJustCenter #width param1)
+(procedure (PosterPrint theWidth theString)
+	(Print theString #at -1 12 #mode teJustCenter #width theWidth)
 )
 
 (procedure (HighlightPoster)
@@ -64,7 +64,7 @@
 	)
 )
 
-(procedure (ReadPoster &tmp [mD 4] [str 400])
+(procedure (ReadPoster &tmp [temp0 4] [str 400])
 	(switch highlightedPoster
 		(healerRing
 			(Format @str 318 0)

@@ -446,7 +446,7 @@
 							;You now have the knowledge to cast a "Trigger" spell.
 							(Bset LEARNED_TRIGGER)
 							(ego learn: TRIGGER 10)
-							(SolvePuzzle POINTS_LEARNTRIGGER 4 MAGE)
+							(SolvePuzzle POINTS_LEARNTRIGGER 4 MAGIC_USER)
 						else
 							(HighPrint 83 25)
 							;You see no scroll.

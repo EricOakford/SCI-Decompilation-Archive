@@ -590,7 +590,7 @@
 						)
 						(GoneFishing)
 					)
-					((not Night) (PrintNotCloseEnough))
+					((not Night) (NotClose))
 					(else
 						(HighPrint 330 10)
 						;The Butcher's shop seems to be closed.
@@ -619,7 +619,7 @@
 			((MouseClaimed onBakeryNote event shiftDown)
 				(cond 
 					((and (> (ego x?) 230) (not Night)) (GoneFishing))
-					((not Night) (PrintNotCloseEnough))
+					((not Night) (NotClose))
 					(else
 						(HighPrint 330 9)
 						;The bakery seems to be closed, although there are some dried-up-looking cupcakes in the window.

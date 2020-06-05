@@ -100,7 +100,6 @@
 )
 
 (instance saveHero of Script
-	(properties)
 	
 	(method (changeState newState &tmp whichSkill oldGold)
 		(switch (= state newState)
@@ -235,9 +234,7 @@
 				(Format @YNSTR 601 8)
 				;n
 				(if
-					(GetInput
-						@YNSTR
-						2
+					(GetInput @YNSTR 2
 						{If you wish to try saving your character again, type "y", then ENTER.__Otherwise type "n", then ENTER.}
 					)
 					(if (StrCmp @YNSTR {y})
@@ -271,7 +268,6 @@
 )
 
 (instance endStatus of Code
-	(properties)
 	
 	(method (doit strg)
 		(Format strg 601 11 score)

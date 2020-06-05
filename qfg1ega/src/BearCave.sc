@@ -96,7 +96,7 @@
 		(if (not (Btst BEAR_GONE))
 			(LoadMany VIEW vBear vEgoDefeatedMagic vKoboldCave vEgoThrowing)
 			(= monsterHealth MAX_HP_BEAR)
-			(= monsterNum BEAR)
+			(= monsterNum vBear)
 		)
 		(Load SOUND 20)
 		(super init:)
@@ -442,7 +442,7 @@
 							((ego has: iRations)
 								(if
 								(not (if (> (ego x?) 180) (> (ego y?) 132)))
-									(PrintNotCloseEnough)
+									(NotClose)
 								else
 									(ego use: iRations)
 									(HighPrint 14 35)
@@ -451,10 +451,10 @@
 									(SolvePuzzle POINTS_CALMBEAR 5)
 								)
 							)
-							(else (PrintDontHaveIt))
+							(else (DontHave))
 						)
 					)
-					((Said 'kill,chop,beat,fight') (curRoom newRoom: BEAR))
+					((Said 'kill,chop,beat,fight') (curRoom newRoom: vBear))
 					(
 						(or
 							(Said
@@ -474,7 +474,7 @@
 										inRect: [local50 0] [local50 1] [local50 2] [local50 3]
 									)
 								)
-								(PrintNotCloseEnough)
+								(NotClose)
 							)
 							((or dazzledBear calmedBear (Btst BEAR_FRIENDLY)) (SolvePuzzle POINTS_FREEBEAR 25) (self setScript: useKey))
 							(else

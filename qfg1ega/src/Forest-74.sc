@@ -51,7 +51,8 @@
 		(if
 			(not
 				(OneOf prevRoomNum
-					BEAR MINOTAUR SAURUS MANTRAY CHEETAUR GOBLIN TROLL OGRE SAURUSREX BRIGAND LEADER
+					vBear vMinotaur vSaurus vMantray vCheetaur
+					vGoblin vTroll vOgre vDragon vBrigand vBrigandLeader
 				)
 			)
 			(= egoX (ego x?))

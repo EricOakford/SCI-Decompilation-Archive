@@ -326,7 +326,7 @@
 							local7
 							(or (Said 'pay/man,bruno,bandit') (Said 'pay[/!*]'))
 						)
-						(if (Purchase 1)
+						(if (GiveMoney 1)
 							(= local7 0)
 							(= local8 1)
 							(HighPrint 65 28)
@@ -351,7 +351,7 @@
 							(Said 'pay,gave/silver')
 							(Said 'pay,gave/alm<silver')
 						)
-						(if (Purchase 1)
+						(if (GiveMoney 1)
 							(if (not local8)
 								(= local7 0)
 								(= local8 1)
@@ -373,7 +373,7 @@
 							(Said 'pay,gave/gold<10')
 							(Said 'pay,gave/alm<gold<10')
 						)
-						(if (Purchase 100)
+						(if (GiveMoney 100)
 							(if (= silversWanted 100)
 								(= chatBruno TRUE)
 								(= local2 1)
@@ -396,7 +396,7 @@
 							(Said 'pay,gave/gold<2')
 							(Said 'pay,gave/alm<gold<2')
 						)
-						(if (Purchase 20)
+						(if (GiveMoney 20)
 							(if (== silversWanted 20)
 								(= chatBruno TRUE)
 								(HighPrint 65 36)
@@ -418,7 +418,7 @@
 					)
 					(
 					(or (Said 'pay,gave/gold') (Said 'pay,gave/alm<gold'))
-						(if (Purchase 10)
+						(if (GiveMoney 10)
 							(= canAskBruno TRUE)
 							(if (== silversWanted 10)
 								(HighPrint 65 38)
@@ -438,7 +438,7 @@
 					(or (Said 'pay/man,bruno,bandit') (Said 'pay[/!*]'))
 						(switch silversWanted
 							(1
-								(if (Purchase 1)
+								(if (GiveMoney 1)
 									(= local0 1)
 									(HighPrint 65 39)
 									;"Okay, whaddaya wanna know?"
@@ -448,7 +448,7 @@
 								)
 							)
 							(10
-								(if (Purchase 10)
+								(if (GiveMoney 10)
 									(if (= canAskBruno TRUE) (= canAskBruno FALSE)
 										(HighPrint 65 38)
 										;"They hide it in the graveyard.
@@ -464,7 +464,7 @@
 								)
 							)
 							(20
-								(if (Purchase 20)
+								(if (GiveMoney 20)
 									(= chatBruno TRUE)
 									(HighPrint 65 36)
 									;"I seen her one time yelling out to the house, 'Hut of brown, now sit down.'
@@ -479,7 +479,7 @@
 								)
 							)
 							(100
-								(if (Purchase 100)
+								(if (GiveMoney 100)
 									(= chatBruno TRUE)
 									(= local2 1)
 									(HighPrint 65 41)

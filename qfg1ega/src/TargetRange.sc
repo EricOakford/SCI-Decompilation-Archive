@@ -297,7 +297,7 @@
 			((= brigandMeeting (and (Btst BEAR_GONE) (not (Btst SPIED_THIEVES)) (== timeODay TIME_MIDDAY) (or (== prevRoomNum 72) (== prevRoomNum 74))))
 				(= brutusHealth MAX_HP_BRUTUS)
 				(= monsterHealth brutusHealth)
-				(= monsterNum BRIGAND)
+				(= monsterNum vBrigand)
 				(Load VIEW vBruno)
 				(Load VIEW vBrutus)
 			)
@@ -307,16 +307,16 @@
 			((= brutusThrowingDaggersAtEgo (and brunoTimer (or (== prevRoomNum 72) (== prevRoomNum 74)) (not (Btst DEFEATED_BRUTUS))))
 				(Load VIEW vBrutus)
 				(= monsterHealth brutusHealth)
-				(= monsterNum BRIGAND)
+				(= monsterNum vBrigand)
 			)
 			((= brutusPreCombat (and brunoTimer (== prevRoomNum 80) (not (Btst DEFEATED_BRUTUS))))
 				(Load VIEW vBrutus)
 				(= monsterHealth brutusHealth)
-				(= monsterNum BRIGAND)
+				(= monsterNum vBrigand)
 				(= brigandHead 6)
 				(brutus posn: 134 120)
 			)
-			((= brutusPostCombat (== prevRoomNum BRIGAND))
+			((= brutusPostCombat (== prevRoomNum vBrigand))
 				(Bset DEFEATED_BRUTUS)
 				(Load VIEW vBrigandDefeated)
 			)
@@ -454,7 +454,7 @@
 ;;;			ldi      MAX_HP_BRUTUS
 ;;;			sag      brutusHealth
 ;;;			sag      monsterHealth
-;;;			ldi      BRIGAND
+;;;			ldi      vBrigand
 ;;;			sag      monsterNum
 ;;;			pushi    2
 ;;;			pushi    RES_VIEW
@@ -504,7 +504,7 @@
 ;;;			callk    Load,  4
 ;;;			lag      brutusHealth
 ;;;			sag      monsterHealth
-;;;			ldi      BRIGAND
+;;;			ldi      vBrigand
 ;;;			sag      monsterNum
 ;;;			jmp      code_077b
 ;;;code_0719:
@@ -527,7 +527,7 @@
 ;;;			callk    Load,  4
 ;;;			lag      brutusHealth
 ;;;			sag      monsterHealth
-;;;			ldi      BRIGAND
+;;;			ldi      vBrigand
 ;;;			sag      monsterNum
 ;;;			ldi      6
 ;;;			sag      brigandHead
@@ -540,7 +540,7 @@
 ;;;			jmp      code_077b
 ;;;code_075f:
 ;;;			lsg      prevRoomNum
-;;;			ldi      BRIGAND
+;;;			ldi      vBrigand
 ;;;			eq?     
 ;;;			sal      brutusPostCombat
 ;;;			bnt      code_077b
@@ -820,7 +820,7 @@
 	(method (dispose)
 		(dags eachElementDo: #dispose 84 release:)
 		(dags dispose:)
-		(if (!= newRoomNum BRIGAND)
+		(if (!= newRoomNum vBrigand)
 			(= monsterNum FALSE)
 			(= brigandHead 0)
 		)
@@ -1261,7 +1261,7 @@
 				(NormalEgo)
 				(ego setScript: 0)
 				(HandsOff)
-				(if (== prevRoomNum BRIGAND)
+				(if (== prevRoomNum vBrigand)
 					(ego posn: 152 128)
 					(brutus view: vBrigandDefeated loop: 0 init:)
 				else
@@ -1302,7 +1302,7 @@
 				;"Hey, watchu doin' here? Spyin', I'll wager!"
 				(= cycles 11)
 			)
-			(1 (curRoom newRoom: BRIGAND))
+			(1 (curRoom newRoom: vBrigand))
 		)
 	)
 )

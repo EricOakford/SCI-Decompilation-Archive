@@ -262,7 +262,7 @@
 				)
 			)
 			((Said 'pay,gave,put,deposit,throw[/alm,silver]')
-				(if (Purchase 1)
+				(if (GiveMoney 1)
 					(SolvePuzzle POINTS_GIVEALMS 1)
 					(HighPrint 333 28)
 					;"Thanks.  You know, it's really tough trying to make a living begging in this town since the brigands started scaring all the trade away."

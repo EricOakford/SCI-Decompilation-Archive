@@ -131,7 +131,7 @@
 				(HighPrint 339 19)
 				;Not a pleasant sight!
 			else
-				(PrintNotCloseEnough)
+				(NotClose)
 			)
 		)
 		(

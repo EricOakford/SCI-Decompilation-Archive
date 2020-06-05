@@ -53,7 +53,7 @@
 		west 38
 	)
 	
-	(method (init &tmp oldEgoY)
+	(method (init &tmp theY)
 		(Load VIEW vCastleGuards)
 		(if
 			(and
@@ -73,16 +73,16 @@
 			(leftGuard init: stopUpd: addToPic:)
 		)
 		(castleDoor init: stopUpd: addToPic:)
-		(= oldEgoY (ego y?))
+		(= theY (ego y?))
 		(NormalEgo)
 		(ego init:)
 		(= yesNoTimer 0)
 		(switch prevRoomNum
 			(38
-				(ego posn: 1 egoY setMotion: MoveTo 15 oldEgoY)
+				(ego posn: 1 theY setMotion: MoveTo 15 theY)
 			)
 			(40
-				(ego posn: 319 egoY setMotion: MoveTo 305 oldEgoY)
+				(ego posn: 319 theY setMotion: MoveTo 305 theY)
 			)
 			(41
 				(ego posn: egoX 125 setMotion: MoveTo egoX 135)
@@ -115,7 +115,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== (ego edgeHit?) 1)
+		(if (== (ego edgeHit?) NORTH)
 			(cond 
 				((< (ego x?) 100) (ego x: 1))
 				((> (ego x?) 203) (ego x: 318))

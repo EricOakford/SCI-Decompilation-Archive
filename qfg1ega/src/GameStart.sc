@@ -179,12 +179,42 @@
 			addToPic:
 		)
 		(RedrawCast)
-		(Display {Introduction}   p_at 213 76  p_mode teJustLeft p_font 300 p_color vBROWN)
-		(Display {Start New Hero} p_at 205 105 p_mode teJustLeft p_font 300 p_color vBROWN)
-		(Display {Continue Quest} p_at 206 139 p_mode teJustLeft p_font 300 p_color vBROWN)
-		(Display {Introduction}   p_at 212 76  p_mode teJustLeft p_font 300 p_color vBLACK)
-		(Display {Start New Hero} p_at 204 105 p_mode teJustLeft p_font 300 p_color vBLACK)
-		(Display {Continue Quest} p_at 205 139 p_mode teJustLeft p_font 300 p_color vBLACK)
+		(Display {Introduction}
+			p_at 213 76
+			p_mode teJustLeft
+			p_font 300
+			p_color vBROWN
+		)
+		(Display {Start New Hero}
+			p_at 205 105
+			p_mode teJustLeft
+			p_font 300
+			p_color vBROWN
+		)
+		(Display {Continue Quest}
+			p_at 206 139
+			p_mode teJustLeft
+			p_font 300
+			p_color vBROWN
+		)
+		(Display {Introduction}
+			p_at 212 76
+			p_mode teJustLeft
+			p_font 300
+			p_color vBLACK
+		)
+		(Display {Start New Hero}
+			p_at 204 105
+			p_mode teJustLeft
+			p_font 300
+			p_color vBLACK
+		)
+		(Display {Continue Quest}
+			p_at 205 139
+			p_mode teJustLeft
+			p_font 300
+			p_color vBLACK
+		)
 		(= selectedButton 1)
 		((= buttonHighlight (View new:))
 			view: vGameSelect
@@ -265,7 +295,9 @@
 			)
 			(keyDown
 				(switch (event message?)
-					(ENTER (ClickButton))
+					(ENTER
+						(ClickButton)
+					)
 					(SHIFTTAB
 						(if (== selectedButton BUTTON_INTRO)
 							(= selectedButton BUTTON_RESTORE)
@@ -291,7 +323,6 @@
 )
 
 (instance scorpS of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -315,7 +346,9 @@
 			(4
 				(scorp setCycle: Forward setMotion: MoveTo 80 0 self)
 			)
-			(5 (scorp dispose: delete:))
+			(5
+				(scorp dispose: delete:)
+			)
 		)
 	)
 )

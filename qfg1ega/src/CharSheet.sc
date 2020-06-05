@@ -79,7 +79,7 @@
 		(Load VIEW vCharSheet)
 		(if useWindow
 			(= theWindow
-				(NewWindow nsTop nsLeft nsBottom nsRight {} nwNORMAL nwON_TOP vBLACK vWHITE)
+				(NewWindow nsTop nsLeft nsBottom nsRight {} 0 -1 vBLACK vWHITE)
 			)
 		)
 		(= x 26)
@@ -92,8 +92,8 @@
 		(DrawCel 802 2 0 10 23 -1)
 		;draw the hero
 		(DrawCel 802 0 heroType x 32 -1)
-		(if (== heroType MAGE)
-			;if it's a MAGE, then also draw the magic spiral.
+		(if (== heroType MAGIC_USER)
+			;if it's a MAGIC_USER, then also draw the magic spiral.
 			(DrawCel 802 1 0 40 52 -1)
 		)
 		;display all the headings

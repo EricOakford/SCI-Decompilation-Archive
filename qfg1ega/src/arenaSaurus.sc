@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# SAURUS) ;430
+(script# vSaurus) ;430
 (include game.sh)
 (use Main)
 (use Arena)
@@ -25,7 +25,7 @@
 	
 	(method (init)
 		(= monster saurus)
-		(= monsterNum SAURUS)
+		(= monsterNum vSaurus)
 		(Load VIEW vSaurusFight)
 		(super init: &rest)
 		(addToPics

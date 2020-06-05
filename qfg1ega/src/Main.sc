@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# MAIN) ;MAIN = 0
-(include game.sh) (include menu.sh)
+(include game.sh)
 (use HQInit)
 (use Drink)
 (use Eat)
@@ -40,19 +40,19 @@
 	NextDay 12
 	Dummy1 13
 	NormalEgo 14
-	PrintNotCloseEnough 15
-	PrintAlreadyDoneThat 16
-	PrintDontHaveIt 17
-	PrintCantDoThat 18
+	NotClose 15
+	AlreadyDone 16
+	DontHave 17
+	CantDo 18
 	HighPrint 19
 	CenterPrint 20
 	TimePrint 21
 	ShowTime 22
 	CanPickLocks 23
 	Face 24
-	Purchase 25
+	GiveMoney 25
 	FixTime 26
-	AskQuit 27
+	PromptQuit 27
 	UseMana 28
 	UseStamina 29
 	TrySkill 30
@@ -829,7 +829,9 @@
 	; (clear screen) clears any modelessDialogs from the screan
 	;
 	
-	(if modelessDialog (modelessDialog dispose:))
+	(if modelessDialog
+		(modelessDialog dispose:)
+	)
 )
 
 (procedure (HandsOff)
@@ -921,22 +923,22 @@
 	)
 )
 
-(procedure (PrintNotCloseEnough)
+(procedure (NotClose)
 	(HighPrint 0 51)
 	;You're not close enough.
 )
 
-(procedure (PrintAlreadyDoneThat)
+(procedure (AlreadyDone)
 	(HighPrint 0 52)
 	;You've already done that.
 )
 
-(procedure (PrintDontHaveIt)
+(procedure (DontHave)
 	(HighPrint 0 53)
 	;You don't have it.
 )
 
-(procedure (PrintCantDoThat)
+(procedure (CantDo)
 	(HighPrint 0 49)
 	;You can't do that now.
 )
@@ -1027,7 +1029,7 @@
 	)
 )
 
-(procedure (Purchase itemPrice &tmp oldSilver oldGold)
+(procedure (GiveMoney itemPrice &tmp oldSilver oldGold)
 	; if hero has enough money total (gold + silver), then 
 	; hero's silver will be deducted first. If that's not enough to pay the cost, 
 	; gold will be automatically converted to silver at 10:1 rate
@@ -1060,15 +1062,33 @@
 	(= Clock (^ Clock 1))
 	(= oldTime timeODay)
 	(cond 
-		((< Clock 300) (= timeODay TIME_MIDNIGHT))
-		((< Clock 750) (= timeODay TIME_NOTYETDAWN))
-		((< Clock 1200) (= timeODay TIME_DAWN))
-		((< Clock 1650) (= timeODay TIME_MIDMORNING))
-		((< Clock 2100) (= timeODay TIME_MIDDAY))
-		((< Clock 2550) (= timeODay TIME_MIDAFTERNOON))
-		((< Clock 3000) (= timeODay TIME_SUNSET))
-		((< Clock 3450) (= timeODay TIME_NIGHT))
-		(else (= timeODay TIME_MIDNIGHT))
+		((< Clock 300)
+			(= timeODay TIME_MIDNIGHT)
+		)
+		((< Clock 750)
+			(= timeODay TIME_NOTYETDAWN)
+		)
+		((< Clock 1200)
+			(= timeODay TIME_DAWN)
+		)
+		((< Clock 1650)
+			(= timeODay TIME_MIDMORNING)
+		)
+		((< Clock 2100)
+			(= timeODay TIME_MIDDAY)
+		)
+		((< Clock 2550)
+			(= timeODay TIME_MIDAFTERNOON)
+		)
+		((< Clock 3000)
+			(= timeODay TIME_SUNSET)
+		)
+		((< Clock 3450)
+			(= timeODay TIME_NIGHT)
+		)
+		(else
+			(= timeODay TIME_MIDNIGHT)
+		)
 	)
 	(if (> timeODay TIME_SUNSET)
 		(= Night TRUE)
@@ -1088,7 +1108,7 @@
 	)
 )
 
-(procedure (AskQuit)
+(procedure (PromptQuit)
 	(= quit
 		(Print 0 64
 			#title {Giving up, huh?}
@@ -1576,7 +1596,6 @@
 )
 
 (instance egoBase of Code
-	(properties)
 	
 	(method (doit theActor &tmp theX theY)
 		(= theX (theActor x?))
@@ -1590,9 +1609,7 @@
 	)
 )
 
-(instance egoObj of HQEgo
-	(properties)
-)
+(instance egoObj of HQEgo)
 
 (instance contMusic of Sound
 	(properties
@@ -1615,7 +1632,6 @@
 )
 
 (instance statusCode of Code
-	(properties)
 	
 	(method (doit str)
 		(Format str 0 1 score)
@@ -1625,7 +1641,6 @@
 )
 
 (instance keyHandler of EventHandler
-	(properties)
 	
 	(method (handleEvent event)
 		(if
@@ -1639,20 +1654,13 @@
 	)
 )
 
-(instance dirHandler of EventHandler
-	(properties)
-)
+(instance dirHandler of EventHandler)
 
-(instance mouseHandler of EventHandler
-	(properties)
-)
+(instance mouseHandler of EventHandler)
 
-(instance hSW of SysWindow
-	(properties)
-)
+(instance hSW of SysWindow)
 
 (instance Glory of Game
-	(properties)
 	
 	(method (init &tmp egoStopWalk)
 		(Load SCRIPT HQINIT)
@@ -1716,7 +1724,8 @@
 				;Maaaandraaaaake Rooooooooooooot????"
 				(EgoDead 0 3
 					#icon vDeathScenes 1 2 
-					#title {Curses!})
+					#title {Curses!}
+				)
 				;Because you failed to meet Baba Yaga's DEADline, her curse turns you into a frog on the spot, and you are forced to live
 				;out your years dodging Sauruses (Saurii?) with large feet.
 			)
@@ -1725,8 +1734,7 @@
 				(-- brunoTimer)
 			)
 			;eat a ration at noon and dinner.
-			(if
-			(or (== Clock 1100) (== Clock 2500))
+			(if (or (== Clock 1100) (== Clock 2500))
 				(EatMeal)
 			)
 			
@@ -1813,9 +1821,10 @@
 				;out of memory problem. quit now by throwing quit/restart/restore dialog.
 				((!= roomNum CHARSAVE)
 					(EgoDead 0 7
-						#title {Bitten by a program bug})
+						#title {Bitten by a program bug}
 					;Suddenly, the deadly poison Fragmentation Bug leaps out of a crack in the system,
 					;and injects you with its poison.  Alas, there is no cure, save to . . .
+					)
 				)
 			)
 		)
@@ -1859,9 +1868,10 @@
 			)
 			(saidEvent
 				(cond 
-					((super handleEvent: event))
+					((super handleEvent: event)) ;let rooms, regions, and locales claim the event first
 					((or (Said 'quit') (Said 'done,done/game'))
-						(AskQuit))
+						(PromptQuit)
+					)
 					(
 						(or
 							(Said 'kiss,boff,blow,crap,leak')
@@ -1888,8 +1898,7 @@
 									;There aren't any here.
 								)
 							)
-							(
-							(and (== i iDagger) (== curRoomNum daggerRoom))
+							((and (== i iDagger) (== curRoomNum daggerRoom))
 								(if (and monsterNum (> monsterHealth 0))
 									(HighPrint 0 11)
 									;You don't have time -- there's the slight matter of the monster that wants to eat you.
@@ -2162,6 +2171,4 @@
 	)
 )
 
-(instance egoSW of StopWalk
-	(properties)
-)
+(instance egoSW of StopWalk)

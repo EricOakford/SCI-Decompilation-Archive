@@ -267,7 +267,7 @@
 												(& (ego onControl: origin) cLMAGENTA)
 											)
 										)
-										(PrintNotCloseEnough)
+										(NotClose)
 									)
 									((ego has: iSword) (ego setScript: smashIt) (Bset SPIREA_INACTIVE))
 									(else (HighPrint 16 17))
@@ -304,7 +304,7 @@
 							((Said '/boulder,brick') (SpireaPickUpSeed))
 							((Said '/seed')
 								(if (Btst OBTAINED_SPIREA_SEED)
-									(PrintAlreadyDoneThat)
+									(AlreadyDone)
 								else
 									(HighPrint 16 24)
 								)
@@ -371,7 +371,7 @@
 						(cond 
 							((Said '/seed')
 								(cond 
-									((Btst OBTAINED_SPIREA_SEED) (PrintAlreadyDoneThat))
+									((Btst OBTAINED_SPIREA_SEED) (AlreadyDone))
 									((Btst SPIREA_INACTIVE) (HighPrint 16 36))
 									(else (HighPrint 16 37))
 								)
