@@ -418,7 +418,7 @@ code_0453:
 		(cond 
 			(
 				(and
-					(== (event message?) KEY_ESCAPE)
+					(== (event message?) ESC)
 					(not (Btst 337))
 				)
 				(Bset 337)
@@ -432,7 +432,7 @@ code_0453:
 					(or
 						(MousedOn self event 0)
 						(and
-							(== (event message?) KEY_RETURN)
+							(== (event message?) ENTER)
 							(== (event type?) keyDown)
 							(== x (event x?))
 							(== y (event y?))
@@ -474,7 +474,7 @@ code_0453:
 		(cond 
 			(
 				(and
-					(== (event message?) KEY_ESCAPE)
+					(== (event message?) ESC)
 					(not (Btst 337))
 				)
 				(Bset 337)
@@ -559,7 +559,7 @@ code_0453:
 		(cond 
 			(
 				(and
-					(== (event message?) KEY_ESCAPE)
+					(== (event message?) ESC)
 					(not (Btst 337))
 				)
 				(Bset 337)
@@ -1355,7 +1355,7 @@ code_0453:
 	(method (handleEvent event &tmp [temp0 3] eventX eventY)
 		(if
 			(and
-				(== (event message?) KEY_RETURN)
+				(== (event message?) ENTER)
 				(== (event type?) keyDown)
 			)
 			(event type: 1)
@@ -1374,8 +1374,8 @@ code_0453:
 				)
 				(
 					(and
-						(<= JOY_UP (event message?))
-						(<= (event message?) JOY_UPLEFT)
+						(<= dirN (event message?))
+						(<= (event message?) dirNW)
 					)
 					(objectList handleEvent: event)
 				)
@@ -1522,7 +1522,7 @@ code_0453:
 		(cond 
 			(
 				(and
-					(== (event message?) KEY_ESCAPE)
+					(== (event message?) ESC)
 					(not (Btst 337))
 				)
 				(= local14 0)
@@ -1533,8 +1533,8 @@ code_0453:
 			)
 			(
 				(and
-					(<= JOY_UP (event message?))
-					(<= (event message?) JOY_UPLEFT)
+					(<= dirN (event message?))
+					(<= (event message?) dirNW)
 				)
 				(objectList handleEvent: event)
 			)
@@ -1587,8 +1587,8 @@ code_0453:
 			)
 			(
 				(and
-					(<= JOY_UP (event message?))
-					(<= (event message?) JOY_UPLEFT)
+					(<= dirN (event message?))
+					(<= (event message?) dirNW)
 				)
 				(= temp1 [local225 (= eventMessage (event message?))])
 				(= temp2 [local234 eventMessage])
@@ -1612,7 +1612,7 @@ code_0453:
 			)
 			(
 				(and
-					(== (event message?) KEY_RETURN)
+					(== (event message?) ENTER)
 					(== (event type?) keyDown)
 				)
 				(flame setPri: -1)

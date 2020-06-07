@@ -1480,22 +1480,22 @@
 				)
 				(
 					(and
-						(<= JOY_UP (event message?))
-						(<= (event message?) JOY_UPLEFT)
+						(<= dirN (event message?))
+						(<= (event message?) dirNW)
 						(not (ego script?))
 					)
 					(HandsOff)
 					(switch (event message?)
-						(JOY_UPRIGHT
+						(dirNE
 							(ego setScript: theSwBlow self 0)
 						)
-						(JOY_DOWNRIGHT
+						(dirSE
 							(ego setScript: local10 self 1)
 						)
-						(JOY_UPLEFT
+						(dirNW
 							(ego setScript: theSwDodge self 2)
 						)
-						(JOY_DOWNLEFT
+						(dirSW
 							(ego setScript: theSwParry self 3)
 						)
 						(else 

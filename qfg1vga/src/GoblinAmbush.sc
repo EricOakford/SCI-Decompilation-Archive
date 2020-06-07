@@ -31,8 +31,8 @@
 	local62
 	local63
 	local64
-	[local65 10]
-	local75
+	[goblinScript 10]
+	i
 	[local76 31] = [10 100 150 200 225 400 625 750 850 950 1050 2 2 2 2 2 2 2 2 2 2]
 	lootedGoblin1
 	lootedGoblin2
@@ -57,8 +57,8 @@
 	(= [local3 5] temp3)
 	(= [local3 6] temp1)
 	(= [local3 7] temp2)
-	(if (& (movingBush onControl: 1) $0002)
-		(movingBush ignoreActors: 1)
+	(if (& (movingBush onControl: origin) cBLUE)
+		(movingBush ignoreActors: TRUE)
 		(movingBushPoly points: @local3 size: 4)
 	else
 		(movingBush ignoreActors: 0)
@@ -68,43 +68,6 @@
 
 (class DeadGoblin of View
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 1
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0101
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
 		whichGoblin 0
 	)
 	
@@ -142,7 +105,10 @@
 						(= cueGoblinSearch 1)
 						(ego setScript: cueItScript)
 					)
-					((and (== whichGoblin 3) (not lootedGoblin3)) (messager say: N_DEAD_GOBLIN V_DO 6) (= lootedGoblin3 TRUE))
+					((and (== whichGoblin 3) (not lootedGoblin3))
+						(messager say: N_DEAD_GOBLIN V_DO 6)
+						(= lootedGoblin3 TRUE)
+					)
 					((and (== whichGoblin 4) (not lootedGoblin4))
 						(messager say: N_DEAD_GOBLIN V_DO 7)
 						(= lootedGoblin4 TRUE)
@@ -161,8 +127,14 @@
 						(= cueGoblinSearch 4)
 						(ego setScript: cueItScript)
 					)
-					((and (== whichGoblin 7) (not lootedGoblin7)) (messager say: N_DEAD_GOBLIN V_DO 10) (= lootedGoblin7 TRUE))
-					((and (== whichGoblin 8) (not lootedGoblin8)) (messager say: N_DEAD_GOBLIN V_DO 11) (= lootedGoblin8 TRUE))
+					((and (== whichGoblin 7) (not lootedGoblin7))
+						(messager say: N_DEAD_GOBLIN V_DO 10)
+						(= lootedGoblin7 TRUE)
+					)
+					((and (== whichGoblin 8) (not lootedGoblin8))
+						(messager say: N_DEAD_GOBLIN V_DO 11)
+						(= lootedGoblin8 TRUE)
+					)
 					(else
 						(switch whichGoblin
 							(3 (messager say: N_DEAD_GOBLIN V_DO 12))
@@ -193,26 +165,46 @@
 		(curRoom
 			addObstacle:
 				(topBush
-					type: 2
-					init: 169 63 169 80 99 80 99 63
+					type: PBarredAccess
+					init:
+						169 63
+						169 80
+						99 80
+						99 63
 					yourself:
 				)
 				(twoRocks
-					type: 2
-					init: 234 178 193 178 193 153 215 153 234 164
+					type: PBarredAccess
+					init:
+						234 178
+						193 178
+						193 153
+						215 153
+						234 164
 					yourself:
 				)
 				(bushRockCombo
-					type: 2
-					init: 0 127 74 127 141 127 141 145 77 164 0 152
+					type: PBarredAccess
+					init:
+						0 127
+						74 127
+						141 127
+						141 145
+						77 164
+						0 152
 					yourself:
 				)
 		)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 0 91 134 91 148 99 148 110 0 110
+					type: PBarredAccess
+					init:
+						0 91
+						134 91
+						148 99
+						148 110
+						0 110
 					yourself:
 				)
 				((Polygon new:)
@@ -266,7 +258,9 @@
 		(if (or (!= prevRoomNum vGoblin) monsterHealth)
 			(switch numGoblins
 				(0
-					(if (Btst DEFEATED_FIRST_GOBLIN) (= local63 1))
+					(if (Btst fFoundGoblinHideout)
+						(= local63 1)
+					)
 				)
 				(1 (= local63 1) (= local62 1))
 				(2 (= local63 1) (= local62 1))
@@ -405,17 +399,22 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(if (ego edgeHit?) (Bset DEFEATED_FIRST_GOBLIN) (goblinMusic stop:))
+		(if (ego edgeHit?)
+			(Bset fFoundGoblinHideout)
+			(goblinMusic stop:)
+		)
 		(cond 
-			(
-			(and (!= monsterNum vGoblin) (== newRoomNumber vGoblin))
+			((and (!= monsterNum vGoblin) (== newRoomNumber vGoblin))
 				(goblinMusic stop:)
 				(= monsterNum vGoblin)
 				(ego setMotion: 0)
 				(Bset ATTACKED_BUSH_GOBLIN)
-				(messager say: N_ROOM 0 14 0 self)
+				(messager say: N_ROOM NULL C_START_BATTLE 0 self)
 			)
-			((IsObject gClient) (roomTimer setCycle: self 2) (gClient dispose:))
+			((IsObject gClient)
+				(roomTimer setCycle: self 2)
+				(gClient dispose:)
+			)
 			(else
 				(roomTimer dispose: delete:)
 				(= disabledActions 0)
@@ -447,14 +446,14 @@
 		(kernel_128 445)
 		(super init:)
 		(if local61
+			;EO: this did not decompile correctly
+			(= [goblinScript i] (Clone goblinAttacks))
 			(self
 				posn: 46 85
-				setScript:
-					[local65 local75]
-					0
-					(= [local65 local75] (Clone goblinAttacks))
+				setScript: [goblinScript i] 0
+					;(= [goblinScript i] (Clone goblinAttacks))
 			)
-			(++ local75)
+			(++ i)
 		else
 			(self setScript: goblin1Leaves)
 		)
@@ -514,14 +513,13 @@
 	(method (init)
 		(super init:)
 		(if local62
+			(= [goblinScript i] (Clone goblinAttacks))
 			(self
 				show:
-				setScript:
-					[local65 local75]
-					0
-					(= [local65 local75] (Clone goblinAttacks))
+				setScript: [goblinScript i]0
+					;(= [goblinScript i] (Clone goblinAttacks))
 			)
-			(++ local75)
+			(++ i)
 		else
 			(self setScript: goblin4Leaves)
 		)
@@ -562,13 +560,12 @@
 	(method (init)
 		(super init:)
 		(if local63
+			(= [goblinScript i] (Clone goblinAttacks))
 			(self
-				setScript:
-					[local65 local75]
-					0
-					(= [local65 local75] (Clone goblinAttacks))
+				setScript: [goblinScript i] 0
+					;(= [goblinScript i] (Clone goblinAttacks))
 			)
-			(++ local75)
+			(++ i)
 		else
 			(self setScript: goblin5Leaves)
 		)
@@ -600,7 +597,7 @@
 		view vGoblin
 		loop 3
 		priority 3
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 3
 		illegalBits $0000
 		xStep 2
@@ -610,14 +607,13 @@
 	(method (init)
 		(super init:)
 		(if local64
+			(= [goblinScript i] (Clone goblinAttacks))
 			(self
 				show:
-				setScript:
-					[local65 local75]
-					0
-					(= [local65 local75] (Clone goblinAttacks))
+				setScript: [goblinScript i] 0
+					;(= [goblinScript i] (Clone goblinAttacks))
 			)
-			(++ local75)
+			(++ i)
 		else
 			(self hide: setHeading: 270 setScript: goblin6Leaves)
 		)

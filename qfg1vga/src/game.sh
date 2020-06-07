@@ -631,7 +631,7 @@
 	MET_STABLEMAN 				;229
 	RETURNED_RING 				;230
 	fUnused231					;----------- event 231 is unused
-	DEFEATED_FIRST_GOBLIN 		;232	; "Wow! You threw that dead Goblin a long way!"
+	fFoundGoblinHideout 		;232
 	fMonsterDazzled				;233
 	fUnused234					;----------- event 234 is unused
 	SPIED_THIEVES 				;235

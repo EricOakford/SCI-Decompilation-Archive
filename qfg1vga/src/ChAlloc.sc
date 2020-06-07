@@ -325,12 +325,9 @@
 							((!= highlightedIcon namePlate) 0)
 							(
 								(or
-									;EO: For some reason, `a and `A compile exactly the same,
-									;despite the different cases.
-									;This makes inputting a proper name (e.g. Eric)
-									;impossible without the keys.sh defines.
-									(and (<= KEY_a evtMsg) (<= evtMsg KEY_z))
-									(and (<= KEY_A evtMsg) (<= evtMsg KEY_Z))
+									;EO: As of 6/4/2020, backtic sequences are now case-sensitive. Thanks, Kawa!
+									(and (<= `a evtMsg) (<= evtMsg `z))
+									(and (<= `A evtMsg) (<= evtMsg `Z))
 									(and (<= `0 evtMsg) (<= evtMsg `9))
 								)
 								(self select: namePlate evtMsg)
@@ -338,7 +335,7 @@
 							((== evtMsg SPACEBAR)
 								(self select: namePlate evtMsg)
 							)
-							((and (== evtMsg JOY_UPLEFT) local105)
+							((and (== evtMsg keyUp) local105)
 								(self select: namePlate evtMsg)
 							)
 						)

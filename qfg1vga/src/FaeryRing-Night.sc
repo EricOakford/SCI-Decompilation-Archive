@@ -81,15 +81,17 @@
 	(Bset fFaeryAttention)
 	(= i 0)
 	(while (< i 4)
-		([faery (= [chaseScript i] (Clone aChaseScript))]
+		(= [chaseScript i] (Clone aChaseScript))
+		([faery i]
 			setStep: 6 4
 			setPri: 14
 			setScript: [chaseScript i] 0 (ego signal: (| (ego signal?) $1000))
 		)
 		(++ i)
 	)
+	(= [chaseScript 4] (Clone aChaseScript))
 	(aFaery
-		setScript: [chaseScript 4] 0 (= [chaseScript 4] (Clone aChaseScript))
+		setScript: [chaseScript 4] 0
 	)
 )
 
@@ -97,17 +99,16 @@
 	(Bclr fFaeryAttention)
 	(= i 0)
 	(while (< i 4)
+		(= [faeryScript i] (aFaeryScript new:))
 		([faery i]
 			setStep: 3 2
-			setScript:
-				[faeryScript i]
-				0
-				(= [faeryScript i] (aFaeryScript new:))
+			setScript: [faeryScript i] 0
 		)
 		(++ i)
 	)
+	(= [faeryScript 4] (aFaeryScript new:))
 	(aFaery
-		setScript: [faeryScript 4] 0 (= [faeryScript 4] (aFaeryScript new:))
+		setScript: [faeryScript 4] 0
 	)
 )
 
