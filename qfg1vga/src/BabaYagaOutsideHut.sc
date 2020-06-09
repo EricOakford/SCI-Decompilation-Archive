@@ -116,7 +116,7 @@
 				(gateEyes init: setCycle: Forward)
 			)
 			(skullTeller init: gate @local7 @local22 @local28)
-			(gate init: actions: skullTeller approachVerbs: 4 2 27)
+			(gate init: actions: skullTeller approachVerbs: V_DO V_TALK V_MAGICGEM)
 		)
 		(skull1 init: addToPic:)
 		(skull2 init: addToPic:)

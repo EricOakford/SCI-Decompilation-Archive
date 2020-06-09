@@ -63,9 +63,23 @@
 		(if (Btst HENRY_SAFE_TP) (Load RES_VIEW 531))
 		(super init: &rest)
 		(self
-			setFeatures: onWater cliff ground ledge onFall theCliff
+			setFeatures:
+				onWater
+				cliff
+				ground
+				ledge
+				onFall
+				theCliff
 		)
-		(rocks init: approachVerbs: 4)
+		;UPGRADE
+;;;		(onWater init:)
+;;;		(cliff init:)
+;;;		(ground init:)
+;;;		(ledge init:)
+;;;		(onFall init:)
+;;;		(theCliff init:)
+		
+		(rocks init: approachVerbs: V_DO)
 		(cSound stop:)
 		(smlSplash1 init: setCycle: Forward)
 		(smlSplash2 init: setCycle: Forward)
@@ -93,34 +107,20 @@
 						addObstacle:
 							(bottomPoly
 								init:
-									214
-									149
-									214
-									146
-									190
-									151
-									162
-									153
-									79
-									156
-									52
-									171
-									0
-									160
-									0
-									0
-									319
-									0
-									319
-									189
-									83
-									189
-									113
-									178
-									124
-									167
-									198
-									152
+									214 149
+									214 146
+									190 151
+									162 153
+									79 156
+									52 171
+									0 160
+									0 0
+									319 0
+									319 189
+									83 189
+									113 178
+									124 167
+									198 152
 								yourself:
 							)
 					)
@@ -134,7 +134,15 @@
 					(self
 						addObstacle:
 							(topPoly
-								init: 105 74 67 85 95 82 108 86 141 85 147 82 185 83 137 74
+								init:
+									105 74
+									67 85
+									95 82
+									108 86
+									141 85
+									147 82
+									185 83
+									137 74
 								yourself:
 							)
 						setScript: fromHermit
@@ -146,34 +154,20 @@
 				addObstacle:
 					(bottomPoly
 						init:
-							214
-							149
-							214
-							146
-							190
-							151
-							162
-							153
-							79
-							156
-							52
-							171
-							0
-							160
-							0
-							0
-							319
-							0
-							319
-							189
-							83
-							189
-							113
-							178
-							124
-							167
-							198
-							152
+							214 149
+							214 146
+							190 151
+							162 153
+							79 156
+							52 171
+							0 160
+							0 0
+							319 0
+							319 189
+							83 189
+							113 178
+							124 167
+							198 152
 						yourself:
 					)
 			)
@@ -276,7 +270,7 @@
 		x 248
 		y 70
 		noun N_WATERFALL
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 	
 	(method (doVerb theVerb)
@@ -307,17 +301,25 @@
 		x 112
 		y 112
 		noun N_CLIFF
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DO
 				(cond 
-					((Btst fClimbedHenryCliff) (ego setScript: climbDown))
-					((Btst HENRY_LADDER_KNOWN) (ego setScript: goodClimb))
-					((TrySkill CLIMB 30) (ego setScript: goodClimb))
-					(else (ego setScript: badClimb))
+					((Btst fClimbedHenryCliff)
+						(ego setScript: climbDown)
+					)
+					((Btst HENRY_LADDER_KNOWN)
+						(ego setScript: goodClimb)
+					)
+					((TrySkill CLIMB 30)
+						(ego setScript: goodClimb)
+					)
+					(else
+						(ego setScript: badClimb)
+					)
 				)
 			)
 			(else 
@@ -332,60 +334,31 @@
 		x 242
 		y 173
 		noun N_WATER
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (GetFlyingWater 0))
+			(V_DO
+				(GetFlyingWater 0)
+			)
 			(V_FLASK
 				(if (ego has: iFlyingWater)
-					(messager say: N_WATER V_FLASK 0)
+					(messager say: N_WATER V_FLASK NULL)
 				else
 					(GetFlyingWater 1)
 				)
 			)
 			(else 
 				(if
-					(OneOf
-						theVerb
-						34
-						42
-						44
-						46
-						16
-						38
-						21
-						36
-						39
-						32
-						29
-						37
-						22
-						26
-						14
-						17
-						27
-						23
-						31
-						30
-						40
-						43
-						45
-						53
-						11
-						28
-						20
-						35
-						15
-						10
-						24
-						12
-						18
-						19
-						47
-						41
-						33
+					(OneOf theVerb
+						V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+						V_FAIRYDUST V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+						V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+						V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+						V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+						V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+						V_VASE V_VEGETABLES
 					)
 					(messager say: N_WATER 0 C_DONTHAVEFLASK)
 				else
@@ -401,7 +374,7 @@
 		x 100
 		y 160
 		noun N_GROUND
-		onMeCheck $0020
+		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
@@ -418,7 +391,7 @@
 		x 150
 		y 180
 		noun N_ROCKS
-		onMeCheck $0008
+		onMeCheck cCYAN
 		approachX 149
 		approachY 159
 	)
@@ -436,7 +409,7 @@
 	(properties
 		x 50
 		y 10
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -459,7 +432,7 @@
 		view 82
 		cel 1
 		priority pYELLOW
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
@@ -480,7 +453,7 @@
 		view 82
 		loop 1
 		priority pYELLOW
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -502,7 +475,7 @@
 		loop 1
 		cel 3
 		priority pYELLOW
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -524,7 +497,7 @@
 		loop 1
 		cel 3
 		priority pYELLOW
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -546,7 +519,7 @@
 		loop 1
 		cel 2
 		priority pYELLOW
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -568,7 +541,7 @@
 		loop 1
 		cel 3
 		priority pYELLOW
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -590,7 +563,7 @@
 		loop 1
 		cel 3
 		priority pYELLOW
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -870,34 +843,20 @@
 					addObstacle:
 						(bottomPoly
 							init:
-								214
-								149
-								214
-								146
-								190
-								151
-								162
-								153
-								79
-								156
-								52
-								171
-								0
-								160
-								0
-								0
-								319
-								0
-								319
-								189
-								83
-								189
-								113
-								178
-								124
-								167
-								198
-								152
+								214 149
+								214 146
+								190 151
+								162 153
+								79 156
+								52 171
+								0 160
+								0 0
+								319 0
+								319 189
+								83 189
+								113 178
+								124 167
+								198 152
 							yourself:
 						)
 				)
@@ -1530,7 +1489,15 @@
 				(curRoom
 					addObstacle:
 						(topPoly
-							init: 105 74 67 85 95 82 108 86 141 85 147 82 185 83 137 74
+							init:
+								105 74
+								67 85
+								95 82
+								108 86
+								141 85
+								147 82
+								185 83
+								137 74
 							yourself:
 						)
 				)
@@ -1570,13 +1537,13 @@
 
 (instance bottomPoly of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance topPoly of Polygon
 	(properties
-		type $0003
+		type PContainedAccess
 	)
 )
 
@@ -1621,34 +1588,20 @@
 					addObstacle:
 						(bottomPoly
 							init:
-								214
-								149
-								214
-								146
-								190
-								151
-								162
-								153
-								79
-								156
-								52
-								171
-								0
-								160
-								0
-								0
-								319
-								0
-								319
-								189
-								83
-								189
-								113
-								178
-								124
-								167
-								198
-								152
+								214 149
+								214 146
+								190 151
+								162 153
+								79 156
+								52 171
+								0 160
+								0 0
+								319 0
+								319 189
+								83 189
+								113 178
+								124 167
+								198 152
 							yourself:
 						)
 				)

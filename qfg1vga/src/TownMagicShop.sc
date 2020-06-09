@@ -126,34 +126,21 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						189
-						0
-						0
-						319
-						0
-						319
-						189
-						152
-						189
-						277
-						168
-						191
-						132
-						181
-						131
-						161
-						130
-						113
-						141
-						51
-						163
-						36
-						178
-						0
-						180
+						0 189
+						0 0
+						319 0
+						319 189
+						152 189
+						277 168
+						191 132
+						181 131
+						161 130
+						113 141
+						51 163
+						36 178
+						0 180
 					yourself:
 				)
 		)
@@ -188,6 +175,25 @@
 				onCeiling
 				onMortar
 		)
+		;UPGRADE
+;;;		(onClouds init:)
+;;;		(onScroll init:)
+;;;		(onBat init:)
+;;;		(onBottles init:)
+;;;		(onBooks init:)
+;;;		(onCrystalBall init:)
+;;;		(onMagicBall init:)
+;;;		(onBalanceScale init:)
+;;;		(onFloor init:)
+;;;		(onPentagon init:)
+;;;		(onBrownJar init:)
+;;;		(onGreenJar init:)
+;;;		(onAGreenJar init:)
+;;;		(onRedJar init:)
+;;;		(onBlueBottle init:)
+;;;		(onCeiling init:)
+;;;		(onMortar init:)
+		
 		(zaraTeller init: zara @local10 @local80 @local101)
 		(onFloor init:)
 	)
@@ -310,7 +316,7 @@
 		x 143
 		y 154
 		noun N_FLOOR
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 

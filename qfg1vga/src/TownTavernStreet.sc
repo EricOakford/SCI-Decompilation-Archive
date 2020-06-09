@@ -108,126 +108,33 @@
 		)
 		(onBakeryDoor
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(onButcherDoor
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(onWorkDoor
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(butcherSign init:)
 		(bakerySign init:)
@@ -241,44 +148,13 @@
 			(tDoor
 				init:
 				approachVerbs:
-					4
-					34
-					42
-					44
-					46
-					16
-					38
-					21
-					36
-					39
-					32
-					29
-					37
-					22
-					26
-					14
-					17
-					27
-					23
-					31
-					30
-					40
-					43
-					45
-					53
-					11
-					28
-					20
-					35
-					15
-					10
-					24
-					12
-					18
-					19
-					47
-					41
-					33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 				locked: (if Night TRUE else FALSE)
 			)
 		)
@@ -424,7 +300,7 @@
 	(properties
 		y 36
 		noun N_POTS
-		onMeCheck $0200
+		onMeCheck cLBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -445,7 +321,7 @@
 		nsBottom 148
 		nsRight 48
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -473,7 +349,7 @@
 		nsBottom 133
 		nsRight 127
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -515,7 +391,7 @@
 		nsBottom 140
 		nsRight 254
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -529,7 +405,7 @@
 		nsBottom 143
 		nsRight 196
 		sightAngle 40
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 		approachX 172
 		approachY 151
 	)
@@ -558,7 +434,7 @@
 		x 302
 		y 1
 		noun N_BAKERY
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 )
 
@@ -573,7 +449,7 @@
 		nsBottom 107
 		nsRight 278
 		sightAngle 40
-		onMeCheck $0010
+		onMeCheck cRED
 		approachX 255
 		approachY 151
 	)
@@ -661,7 +537,7 @@
 		x 61
 		y 93
 		noun N_BUTCHERSIGN
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 	
 	(method (doVerb theVerb)
@@ -679,12 +555,14 @@
 		x 264
 		y 44
 		noun N_BAKERYSIGN
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_BAKERYSIGN V_LOOK))
+			(V_LOOK
+				(messager say: N_BAKERYSIGN V_LOOK)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)

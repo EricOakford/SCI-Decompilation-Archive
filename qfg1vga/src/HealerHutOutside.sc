@@ -124,7 +124,7 @@
 			cycleSpeed: 2
 			setPri: 8
 			init:
-			approachVerbs: 4
+			approachVerbs: V_DO
 			stopUpd:
 		)
 		(if (not (Btst OBTAINED_RING))
@@ -257,7 +257,7 @@
 		nsBottom 189
 		nsRight 183
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 		approachX 45
 		approachY 176
 	)
@@ -293,7 +293,7 @@
 		nsBottom 50
 		nsRight 160
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -317,7 +317,7 @@
 		nsBottom 152
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 		approachX 196
 		approachY 138
 	)
@@ -392,7 +392,7 @@
 		nsBottom 189
 		nsRight 263
 		sightAngle 40
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -423,7 +423,7 @@
 		nsBottom 171
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -443,7 +443,7 @@
 		nsBottom 134
 		nsRight 47
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -1268,7 +1268,7 @@
 		nsBottom 139
 		nsRight 186
 		sightAngle 40
-		onMeCheck $4000
+		onMeCheck cYELLOW
 		approachX 196
 		approachY 138
 	)
@@ -1293,7 +1293,7 @@
 		nsBottom 158
 		nsRight 284
 		sightAngle 40
-		onMeCheck $4000
+		onMeCheck cYELLOW
 		approachX 196
 		approachY 138
 	)

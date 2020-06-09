@@ -101,43 +101,7 @@
 
 (class Knife of View
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
 		noun N_KNIFE
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0101
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
 	)
 )
 
@@ -534,7 +498,7 @@
 		nsBottom 38
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -556,7 +520,7 @@
 		nsBottom 137
 		nsRight 252
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -578,7 +542,7 @@
 		nsBottom 179
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -1443,7 +1407,7 @@
 		(switch (= state newState)
 			(0
 				(borisThief
-					approachVerbs: 4 10
+					approachVerbs: V_DO V_MONEY
 					init:
 					loop: 12
 					cel: 0

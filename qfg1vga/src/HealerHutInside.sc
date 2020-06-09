@@ -135,30 +135,19 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						319
-						133
-						179
-						122
-						270
-						143
-						234
-						168
-						115
-						152
-						75
-						164
-						0
-						140
-						0
-						189
+						0 0
+						319 0
+						319 189
+						319 133
+						179 122
+						270 143
+						234 168
+						115 152
+						75 164
+						0 140
+						0 189
 					yourself:
 				)
 		)
@@ -179,91 +168,41 @@
 				ingredients
 				onThings
 		)
+		;UPGRADE
+;;;		(pots init:)
+;;;		(barrel init:)
+;;;		(cheeseCloth init:)
+;;;		(bed init:)
+;;;		(woodTable init:)
+;;;		(litterBox init:)
+;;;		(healerWindow init:)
+;;;		(ladder init:)
+;;;		(ingredients init:)
+;;;		(onThings init:)
+		
 		(stoneTable
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(fire init: setCycle: Forward)
 		(kettle init: setCycle: Forward)
 		(bottles
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(NormalEgo)
 		(bird init: setScript: preening)
@@ -278,7 +217,7 @@
 			(script)
 			(
 				(or
-					(== (ego edgeHit?) 3)
+					(== (ego edgeHit?) SOUTH)
 					(< (ego x?) 3)
 					(> (ego x?) 318)
 				)
@@ -419,7 +358,7 @@
 		x 195
 		y 159
 		noun N_STONETABLE
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -427,7 +366,9 @@
 			(V_LOOK (messager say: N_STONETABLE V_LOOK))
 			(V_DO
 				(cond 
-					((Btst fStolePotions) (messager say: N_STONETABLE V_DO C_GREEDY))
+					((Btst fStolePotions)
+						(messager say: N_STONETABLE V_DO C_GREEDY)
+					)
 					(healerFacingAway
 						(messager say: N_STONETABLE V_DO C_FILCH)
 						(bottles hide:)
@@ -435,7 +376,9 @@
 						(= healerCue cueStealPotions)
 						(ego setScript: cueItScript)
 					)
-					(else (messager say: N_STONETABLE V_DO C_HEALERSEES))
+					(else
+						(messager say: N_STONETABLE V_DO C_HEALERSEES)
+					)
 				)
 			)
 			(else 
@@ -450,13 +393,17 @@
 		x 219
 		y 135
 		noun N_POTS
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_POTS V_LOOK))
-			(V_DO (messager say: N_POTS V_DO))
+			(V_LOOK
+				(messager say: N_POTS V_LOOK)
+			)
+			(V_DO
+				(messager say: N_POTS V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -491,10 +438,10 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
 			(if (not lookedAtBarrel)
-				(messager say: N_BARREL V_LOOK 1)
+				(messager say: N_BARREL V_LOOK C_LOOKBARREL1)
 				(= lookedAtBarrel TRUE)
 			else
-				(messager say: N_BARREL V_LOOK 2)
+				(messager say: N_BARREL V_LOOK C_LOOKBARREL2)
 			)
 		else
 			(super doVerb: theVerb &rest)
@@ -506,13 +453,13 @@
 	(properties
 		x 145
 		y 135
-		noun 14
+		noun N_STONETABLE
 		approachX 144
 		approachY 162
 		view 56
 		loop 1
 		priority 11
-		signal $0011
+		signal (| stopUpdOn fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -532,7 +479,7 @@
 		view 56
 		loop 7
 		priority 9
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 20
 	)
 )
@@ -548,7 +495,7 @@
 		nsRight 199
 		view 56
 		priority 10
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 4
 	)
 	
@@ -606,7 +553,11 @@
 		(super
 			showDialog:
 				-37
-				(if (or (Btst fBeenIn311) (Btst fBeenIn55)) (not (Btst RETURNED_RING)) else 0)
+				(if
+					(or (Btst fBeenIn311) (Btst fBeenIn55)) (not (Btst RETURNED_RING))
+				else
+					0
+				)
 				-16
 				(ego has: iAcorn)
 		)
@@ -638,7 +589,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_HEALER V_DO 0 1))
+			(V_LOOK
+				(messager say: N_HEALER V_DO NULL 1)
+			)
 			(V_DO
 				(if (Btst RETURNED_RING)
 					(messager say: N_HEALER V_DO C_RING 2)
@@ -659,24 +612,26 @@
 						((Clone Ware) name: {Undead} price: {100})
 				)
 				(switch ((ScriptID 551 0) doit:)
-					(noFunds (messager say: N_HEALER 10 52))
+					(noFunds
+						(messager say: N_HEALER V_MONEY C_NOFUNDS)
+					)
 					(buyStamina
-						(messager say: N_HEALER 10 56)
+						(messager say: N_HEALER V_MONEY 56)
 						(= healerCue cueStamina)
 						(ego setScript: cueItScript)
 					)
 					(buyHealing
-						(messager say: N_HEALER 10 56)
+						(messager say: N_HEALER V_MONEY 56)
 						(= healerCue cueHealing)
 						(ego setScript: cueItScript)
 					)
 					(buyMana
-						(messager say: N_HEALER 10 56)
+						(messager say: N_HEALER V_MONEY 56)
 						(= healerCue cueMana)
 						(ego setScript: cueItScript)
 					)
 					(buyGhostOil
-						(messager say: N_HEALER 10 56)
+						(messager say: N_HEALER V_MONEY 56)
 						(= healerCue cueGhostOil)
 						(ego setScript: cueItScript)
 					)
@@ -707,21 +662,41 @@
 			(V_GREENFUR
 				(ego setScript: giveGreenFur)
 			)
-			(V_ACORN (ego setScript: giveAcorn))
-			(V_SEED (messager say: N_HEALER V_SEED C_NONEEDSEED))
+			(V_ACORN
+				(ego setScript: giveAcorn)
+			)
+			(V_SEED
+				(messager say: N_HEALER V_SEED C_NONEEDSEED)
+			)
 			(V_MUSHROOM
 				(ego setScript: giveMushroom)
 			)
-			(V_CHEETAURCLAW (ego setScript: giveClaws))
-			(V_TROLLBEARD (ego setScript: giveBeard))
-			(V_FAIRYDUST (ego setScript: giveDust))
+			(V_CHEETAURCLAW
+				(ego setScript: giveClaws)
+			)
+			(V_TROLLBEARD
+				(ego setScript: giveBeard)
+			)
+			(V_FAIRYDUST
+				(ego setScript: giveDust)
+			)
 			(V_WATER
 				(cond 
-					((not (ego has: iFlyingWater)) (DontHave))
-					(numWater (messager say: N_HEALER V_WATER C_DISPELPOTION))
-					((not (Btst fHealerKnowsDispel)) (messager say: N_HEALER V_WATER C_NONEEDWATER))
-					((not (Btst fHaveFlyingWater)) (messager say: N_HEALER V_WATER C_GIVELAKEWATER))
-					(else (ego setScript: giveWater))
+					((not (ego has: iFlyingWater))
+						(DontHave)
+					)
+					(numWater
+						(messager say: N_HEALER V_WATER C_DISPELPOTION)
+					)
+					((not (Btst fHealerKnowsDispel))
+						(messager say: N_HEALER V_WATER C_NONEEDWATER)
+					)
+					((not (Btst fHaveFlyingWater))
+						(messager say: N_HEALER V_WATER C_GIVELAKEWATER)
+					)
+					(else
+						(ego setScript: giveWater)
+					)
 				)
 			)
 			(V_ROCK (messager say: N_HEALER V_DAGGER))
@@ -799,36 +774,34 @@
 			(1 (= cycles 2))
 			(2
 				(cond 
-					((not (Btst MET_HEALER)) (messager say: N_ROOM 0 C_FIRSTENTRY 1 self))
+					((not (Btst MET_HEALER)) (messager say: N_ROOM NULL C_FIRSTENTRY 1 self))
 					(
 						(and
 							(not (Btst DISPEL_HEALER_MAKING_POTION))
 							(or (not (Btst DISPEL_LEARNED_RECIPE)) (Btst fHealerKnowsDispel))
 						)
-						(messager say: N_ROOM 0 C_RETURNED 1 self)
+						(messager say: N_ROOM NULL C_RETURNED 1 self)
 					)
 					(else (self cue:))
 				)
 			)
 			(3
 				(if (not (Btst MET_HEALER))
-					(messager say: N_ROOM 0 C_FIRSTMEET 0 self)
+					(messager say: N_ROOM NULL C_FIRSTMEET 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(4
-				(if
-				(and (Btst DISPEL_LEARNED_RECIPE) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
-					(messager say: N_ROOM 0 C_METDRYAD 1 self)
+				(if (and (Btst DISPEL_LEARNED_RECIPE) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
+					(messager say: N_ROOM NULL C_METDRYAD 1 self)
 				else
 					(self cue:)
 				)
 			)
 			(5
-				(if
-				(and (Btst DISPEL_LEARNED_RECIPE) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
-					(messager say: N_HEALER C_POTIONS 0 1 self)
+				(if (and (Btst DISPEL_LEARNED_RECIPE) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
+					(messager say: N_HEALER C_POTIONS NULL 1 self)
 					(Bset fHealerKnowsDispel)
 				else
 					(self cue:)
@@ -949,7 +922,9 @@
 				(healer setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			;changed to address speed bug
-			(2 (= ticks (* 2 theCycles)))
+			(2
+				(= ticks (* 2 theCycles))
+			)
 			(3
 				(switch local3
 					(0
@@ -1118,7 +1093,7 @@
 			)
 			(1
 				(if (and (not (Btst MET_HEALER)) (not (Btst RETURNED_RING)))
-					(messager say: N_ROOM 0 C_TELLABOUTRING 1 self)
+					(messager say: N_ROOM NULL C_TELLABOUTRING 1 self)
 				else
 					(self cue:)
 				)
@@ -1139,7 +1114,9 @@
 			(0
 				(HandsOff)
 				(= theCycles 10)
-				(messager say: N_HEALER V_FLOWERS C_GIVECOMPONENTS 1 self)
+				;(messager say: N_HEALER V_FLOWERS C_GIVECOMPONENTS 1 self)
+				(messager say: N_HEALER V_FLOWERS C_GIVECOMPONENTS)	;now shows complete sequence
+				(self cue:)
 			)
 			(1
 				(Bset DISPEL_GAVE_FLOWERS)
@@ -1176,7 +1153,7 @@
 				(if (Btst fHealerKnowsDispel)
 					(messager say: N_HEALER V_GREENFUR C_DISPELPOTION 1 self)
 				else
-					(messager say: N_HEALER V_GREENFUR 0 1 self)
+					(messager say: N_HEALER V_GREENFUR NULL 1 self)
 				)
 			)
 			(2
@@ -1198,7 +1175,7 @@
 				(Bset fHealerKnowsDispel)
 				(= theCycles 10)
 				(healer setScript: healerPleased)
-				(messager say: N_HEALER V_ACORN 0 1 self)
+				(messager say: N_HEALER V_ACORN NULL 1 self)
 			)
 			(1
 				(Bset DISPEL_GAVE_ACORN)
@@ -1223,8 +1200,11 @@
 			(0
 				(HandsOff)
 				(cond 
+					;Changes have been made to fix the bug where you can sell mushrooms
+					; after the healer has enough. This bug was fixed in the Macintosh version.
 					((> numMushrooms 2)
 						(messager say: N_HEALER V_MUSHROOM C_NOMORE 1 self)
+						(self changeState: 2)
 					)
 					((Btst fHaveToadstools)
 						(messager say: N_HEALER V_MUSHROOM C_GIVETOADSTOOLS 1 self)
@@ -1232,17 +1212,20 @@
 					(else
 						(= theCycles 10)
 						(healer setScript: healerPleased)
-						(messager say: N_HEALER V_MUSHROOM C_GIVECOMPONENTS 1 self)
-						(++ numMushrooms)
+						;(messager say: N_HEALER V_MUSHROOM C_GIVECOMPONENTS 1 self)
+						(messager say: N_HEALER V_MUSHROOM C_GIVECOMPONENTS)	;now shows complete sequence
+						(self cue:)
+						;(++ numMushrooms)	;moved to next state
 					)
 				)
 			)
 			(1
 				(if (not (Btst fHaveToadstools))
+					;increment mushrooms sold here				
+					(++ numMushrooms)
 					(ego get: iGold 1)
 					(ego use: iMushroom 3)
 				)
-				;EO: Despite the healer saying she has enough, she will still buy the mushrooms anyway. This bug was fixed in the Macintosh version.
 				(self cue:)
 			)
 			(2

@@ -165,7 +165,7 @@
 		x 68
 		y 167
 		noun N_WEB
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -174,7 +174,7 @@
 		x 270
 		y 163
 		noun N_TABLE
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -183,7 +183,7 @@
 		x 221
 		y 164
 		noun N_BUCKET
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -200,7 +200,7 @@
 		x 242
 		y 74
 		noun N_NOTE
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 )
 
@@ -209,7 +209,7 @@
 		x 282
 		y 85
 		noun N_FIREPLACE
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 )
 
@@ -218,7 +218,7 @@
 		x 306
 		y 141
 		noun N_BROOM
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 )
 
@@ -227,7 +227,7 @@
 		x 209
 		y 130
 		noun N_CAULDRON
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -244,7 +244,7 @@
 		x 228
 		y 50
 		noun N_SKULL
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 	
 	(method (doVerb theVerb)

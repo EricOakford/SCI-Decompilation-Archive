@@ -300,7 +300,7 @@
 		nsLeft 164
 		nsBottom 143
 		nsRight 227
-		onMeCheck $0010
+		onMeCheck cRED
 		approachX 196
 		approachY 151
 	)

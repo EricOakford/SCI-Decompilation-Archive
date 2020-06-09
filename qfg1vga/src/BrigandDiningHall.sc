@@ -96,6 +96,10 @@
 		(= oldSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)
 		(self setFeatures: table ceiling floor1 floor2 floor3)
+		;UPGRADE
+		;(table init:)
+		;(ceiling init:)
+		
 		(floor1 init:)
 		(floor2 init:)
 		(floor3 init:)

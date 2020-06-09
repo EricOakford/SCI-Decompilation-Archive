@@ -50,57 +50,9 @@
 (class Apple of Actor
 	(properties
 		noun N_APPLE
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
 		view 61
 		loop 0
 		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		cycleSpeed 6
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		scaler 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
-		xStep 3
-		origStep 770
-		moveSpeed 6
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
-		code 0
 	)
 )
 
@@ -119,68 +71,77 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						319
-						94
-						226
-						94
-						193
-						83
-						115
-						83
-						68
-						95
-						43
-						104
-						43
-						136
-						85
-						163
-						300
-						163
-						300
-						130
-						319
-						130
-						319
-						189
-						0
-						189
-						0
-						0
-						319
-						0
+						319 94
+						226 94
+						193 83
+						115 83
+						68 95
+						43 104
+						43 136
+						85 163
+						300 163
+						300 130
+						319 130
+						319 189
+						0 189
+						0 0
+						319 0
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 139 88 169 88 169 99 139 99
+					type: PBarredAccess
+					init:
+						139 88
+						169 88
+						169 99
+						139 99
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 95 106 132 106 132 114 95 114
+					type: PBarredAccess
+					init:
+						95 106
+						132 106
+						132 114
+						95 114
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 55 120 89 120 89 133 56 133
+					type: PBarredAccess
+					init:
+						55 120
+						89 120
+						89 133
+						56 133
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 128 116 164 116 164 127 128 127
+					type: PBarredAccess
+					init:
+						128 116
+						164 116
+						164 127
+						128 127
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 193 118 227 118 227 126 193 126
+					type: PBarredAccess
+					init:
+						193 118
+						227 118
+						227 126
+						193 126
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 236 99 272 99 272 109 236 109
+					type: PBarredAccess
+					init:
+						236 99
+						272 99
+						272 109
+						236 109
 					yourself:
 				)
 		)
@@ -191,254 +152,68 @@
 		(bossRock
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(rock1
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+ 				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(rock2
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(rock3
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(rock4
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(rock5
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(bossEyes init: setLoop: 3 z: 1000)
 		(meepEyes2 init: setLoop: 3 z: 1000)
@@ -449,132 +224,39 @@
 			actions: meepTeller
 			z: 1000
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			setScript: meepScript1
 		)
 		(meep2
 			init:
 			z: 1000
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			setScript: meepScript2
 		)
 		(meep3
 			init:
 			z: 1000
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			setScript: meepScript3
 		)
 		(upperRocks init:)
@@ -652,7 +334,7 @@
 		nsBottom 86
 		nsRight 301
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -665,7 +347,7 @@
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -724,7 +406,7 @@
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -1912,44 +1594,13 @@
 					z: 1000
 					actions: 0
 					approachVerbs:
-						4
-						34
-						42
-						44
-						46
-						16
-						38
-						21
-						36
-						39
-						32
-						29
-						37
-						22
-						26
-						14
-						17
-						27
-						23
-						31
-						30
-						40
-						43
-						45
-						53
-						11
-						28
-						20
-						35
-						15
-						10
-						24
-						12
-						18
-						19
-						47
-						41
-						33
+						V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+						V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+						V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+						V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+						V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+						V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+						V_VASE V_VEGETABLES
 					setScript: meepScript1
 				)
 				(meep2 setScript: meepScript2)

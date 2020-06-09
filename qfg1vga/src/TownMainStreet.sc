@@ -70,6 +70,11 @@
 		(Load VIEW 515)
 		(super init:)
 		(self setFeatures: onGuildSign magicShopSign theLock)
+		;UPGRADE
+;;;		(onGuildSign init:)
+;;;		(magicShopSign init:)
+;;;		(theLock init:)
+		
 		(self setRegions: STREET TOWN)
 		(theIconBar enable:)
 		(NormalEgo)

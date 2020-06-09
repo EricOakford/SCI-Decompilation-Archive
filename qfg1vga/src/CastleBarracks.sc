@@ -46,48 +46,28 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						319
-						189
-						0
-						189
-						0
-						0
-						319
-						0
-						319
-						67
-						302
-						74
-						272
-						113
-						186
-						114
-						197
-						122
-						190
-						132
-						159
-						131
-						106
-						161
-						99
-						172
-						78
-						184
-						94
-						184
-						107
-						181
-						121
-						181
-						127
-						184
-						135
-						187
-						319
-						187
+						319 189
+						0 189
+						0 0
+						319 0
+						319 67
+						302 74
+						272 113
+						186 114
+						197 122
+						190 132
+						159 131
+						106 161
+						99 172
+						78 184
+						94 184
+						107 181
+						121 181
+						127 184
+						135 187
+						319 187
 					yourself:
 				)
 		)
@@ -109,6 +89,23 @@
 				crest
 				pots
 		)
+		;UPGRADE
+;;;		(doors init:)
+;;;		(barrack init:)
+;;;		(towers init:)
+;;;		(walls init:)
+;;;		(walkWay init:)
+;;;		(theDoor init:)
+;;;		(castle init:)
+;;;		(waggon init:)
+;;;		(chimney init:)
+;;;		(garden init:)
+;;;		(mounts init:)
+;;;		(sky init:)
+;;;		(water init:)
+;;;		(crest init:)
+;;;		(pots init:)
+		
 		(doors approachVerbs: V_DO)
 		(if (not Night) (guard init:))
 		(if (== prevRoomNum 39)
@@ -181,7 +178,7 @@
 (instance barrack of Feature
 	(properties
 		noun N_BARRACKS
-		onMeCheck $4000
+		onMeCheck cYELLOW
 	)
 	
 	(method (doVerb theVerb)
@@ -196,7 +193,7 @@
 (instance towers of Feature
 	(properties
 		noun N_TOWERS
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -211,7 +208,7 @@
 (instance walls of Feature
 	(properties
 		noun N_WALLS
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -226,7 +223,7 @@
 (instance walkWay of Feature
 	(properties
 		noun N_WALKWAY
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -241,7 +238,7 @@
 (instance theDoor of Feature
 	(properties
 		noun N_TOWER_DOOR
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
@@ -256,7 +253,7 @@
 (instance castle of Feature
 	(properties
 		noun N_CASTLE
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -274,7 +271,7 @@
 (instance waggon of Feature ;EO: Was that misspelling a joke or a genuine typo?
 	(properties
 		noun N_WAGON
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 	
 	(method (doVerb theVerb)
@@ -289,7 +286,7 @@
 (instance chimney of Feature
 	(properties
 		noun N_CHIMNEY
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -304,7 +301,7 @@
 (instance garden of Feature
 	(properties
 		noun N_GARDEN
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -319,7 +316,7 @@
 (instance mounts of Feature
 	(properties
 		noun N_MOUNTAINS
-		onMeCheck $0200
+		onMeCheck cLBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -334,7 +331,7 @@
 (instance sky of Feature
 	(properties
 		noun N_SKY
-		onMeCheck $0400
+		onMeCheck cLGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -349,7 +346,7 @@
 (instance water of Feature
 	(properties
 		noun N_WATER
-		onMeCheck $0800
+		onMeCheck cLCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -364,7 +361,7 @@
 (instance crest of Feature
 	(properties
 		noun N_CREST
-		onMeCheck $1000
+		onMeCheck cLRED
 	)
 	
 	(method (doVerb theVerb)
@@ -379,7 +376,7 @@
 (instance pots of Feature
 	(properties
 		noun N_POTS
-		onMeCheck $2000
+		onMeCheck cLMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -400,7 +397,7 @@
 		approachY 146
 		view 38
 		priority 9
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doit)

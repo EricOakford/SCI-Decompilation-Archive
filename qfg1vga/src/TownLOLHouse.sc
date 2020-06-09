@@ -51,7 +51,7 @@
 	(if (Btst SEARCHED_LOL_PURSE)
 		(AlreadyDone)
 	else
-		(messager say: N_ROOM 0 C_SEARCHPURSE)
+		(messager say: N_ROOM NULL C_SEARCHPURSE)
 		(= lootCue cuePurse)
 		(Bset SEARCHED_LOL_PURSE)
 		(SolvePuzzle POINTS_SEARCHLOLPURSE 1 THIEF)
@@ -63,7 +63,7 @@
 	(if (Btst SEARCHED_LOL_BASKET)
 		(AlreadyDone)
 	else
-		(messager say: N_ROOM 0 C_SEARCHBASKET)
+		(messager say: N_ROOM NULL C_SEARCHBASKET)
 		(= lootCue cueBasket)
 		(Bset SEARCHED_LOL_BASKET)
 		(SolvePuzzle POINTS_SEARCHLOLBASKET 1 THIEF)
@@ -96,53 +96,52 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						25
-						189
-						242
-						189
-						319
-						163
-						314
-						143
-						281
-						146
-						220
-						128
-						200
-						118
-						184
-						120
-						156
-						74
-						136
-						68
-						176
-						133
-						149
-						134
-						95
-						117
-						20
-						135
-						8
-						189
+						25 189
+						242 189
+						319 163
+						314 143
+						281 146
+						220 128
+						200 118
+						184 120
+						156 74
+						136 68
+						176 133
+						149 134
+						95 117
+						20 135
+						8 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 319 189 246 189 319 167
+					type: PBarredAccess
+					init:
+						319 189
+						246 189
+						319 167
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 162 156 162 177 134 187 109 178 103 165
+					type: PBarredAccess
+					init:
+						162 156
+						162 177
+						134 187
+						109 178
+						103 165
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 105 127 120 135 124 152 77 170 64 170 38 150
+					type: PBarredAccess
+					init:
+						105 127
+						120 135
+						124 152
+						77 170
+						64 170
+						38 150
 					yourself:
 				)
 		)
@@ -154,6 +153,12 @@
 		(SolvePuzzle POINTS_ENTERLOLHOUSE 5 2)
 		(= timesPettedCat 0)
 		(self setFeatures: onPlant onTable onDoor onStorageBox)
+		;UPGRADE
+;;;		(onPlant init:)
+;;;		(onTable init:)
+;;;		(onDoor init:)
+;;;		(onStorageBox init:)
+		
 		(onDrawer init:)
 		(onStair init:)
 		(onChair init:)
@@ -162,92 +167,30 @@
 		(onTableFood init:)
 		(onCouch
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			init:
 		)
 		(onPlant
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 		)
 		(NormalEgo)
 		(ego
 			posn: 159 189
 			init:
-			ignoreControl: -32768
+			ignoreControl: cWHITE
 			setAvoider: PAvoider
 			setScript: enterRoom
 		)
@@ -266,44 +209,13 @@
 		(purse
 			cel: 2
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			init:
 		)
 		(birdcage cel: 5 init:)
@@ -311,44 +223,13 @@
 		(bag
 			cel: 1
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			init:
 		)
 		(if (not (Btst STOLE_CANDLESTICKS))
@@ -470,7 +351,7 @@
 		x 223
 		y 104
 		noun N_CHAIR
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 )
 
@@ -479,7 +360,7 @@
 		x 159
 		y 94
 		noun N_STAIRS
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 )
 
@@ -501,7 +382,7 @@
 		y 122
 		z 40
 		noun N_DRAWER
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -519,7 +400,7 @@
 		x 268
 		y 115
 		noun N_FIREPLACE
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -555,7 +436,7 @@
 		x 180
 		y 174
 		noun N_RUG
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 )
 
@@ -564,7 +445,7 @@
 		x 85
 		y 130
 		noun N_COUCH
-		onMeCheck $0004
+		onMeCheck cGREEN
 		approachX 100
 		approachY 167
 	)
@@ -594,7 +475,7 @@
 		x 307
 		y 181
 		noun N_FRUIT
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 )
 
@@ -608,7 +489,7 @@
 		view 313
 		loop 3
 		priority 6
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)

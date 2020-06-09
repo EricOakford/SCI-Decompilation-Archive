@@ -211,7 +211,7 @@ code_042f:
 		nsBottom 189
 		nsRight 116
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -225,7 +225,7 @@ code_042f:
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -239,7 +239,7 @@ code_042f:
 		nsBottom 153
 		nsRight 247
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cRED
 	)
 )
 
@@ -417,7 +417,7 @@ code_042f:
 		z 100
 		noun N_MUSHROOMS
 		sightAngle 40
-		onMeCheck $4000
+		onMeCheck cYELLOW
 	)
 	
 	(method (doVerb theVerb)

@@ -57,38 +57,23 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						302
-						189
-						265
-						168
-						248
-						167
-						223
-						158
-						219
-						150
-						61
-						150
-						65
-						167
-						47
-						169
-						41
-						174
-						44
-						181
-						45
-						189
-						0
-						189
+						0 0
+						319 0
+						319 189
+						302 189
+						265 168
+						248 167
+						223 158
+						219 150
+						61 150
+						65 167
+						47 169
+						41 174
+						44 181
+						45 189
+						0 189
 					yourself:
 				)
 		)
@@ -114,7 +99,28 @@
 				onRolledUpItems
 				onCape
 		)
-		(if Night (theWindow init:))
+		;UPGRADE
+;;;		(woodenPole init:)
+;;;		(onBarrels init:)
+;;;		(onTeaPot init:)
+;;;		(onPole init:)
+;;;		(onWindow init:)
+;;;		(onSword init:)
+;;;		(onShield init:)
+;;;		(onEquipment init:)
+;;;		(onOddsNEnds init:)
+;;;		(onDrygoods init:)
+;;;		(onClothes1 init:)
+;;;		(onClothes2 init:)
+;;;		(onSack init:)
+;;;		(onTorch1 init:)
+;;;		(onTorch2 init:
+;;;		(onRolledUpItems init:)
+;;;		(onCape init:)
+		
+		(if Night
+			(theWindow init:)
+		)
 		(self setRegions: TOWN)
 		(cSound priority: 0 number: 93 loop: -1 play:)
 		(shopTeller init: proprietor @local8 @local25 @local35)

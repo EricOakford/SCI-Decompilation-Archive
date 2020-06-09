@@ -434,7 +434,7 @@
 		nsBottom 189
 		nsRight 116
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -448,7 +448,7 @@
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -462,7 +462,7 @@
 		nsBottom 153
 		nsRight 247
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -611,7 +611,7 @@
 		z 100
 		noun 2
 		sightAngle 40
-		onMeCheck $4000
+		onMeCheck cYELLOW
 	)
 	
 	(method (doVerb theVerb)

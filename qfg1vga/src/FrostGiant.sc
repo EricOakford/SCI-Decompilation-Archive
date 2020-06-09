@@ -88,32 +88,20 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						0
-						189
-						0
-						162
-						41
-						183
-						141
-						183
-						194
-						130
-						179
-						126
-						130
-						126
-						97
-						153
-						0
-						153
+						0 0
+						319 0
+						319 189
+						0 189
+						0 162
+						41 183
+						141 183
+						194 130
+						179 126
+						130 126
+						97 153
+						0 153
 					yourself:
 				)
 		)
@@ -136,9 +124,20 @@
 				snow
 				snowyRocks
 		)
+		;UPGRADE
+;;;		(cave init:)
+;;;		(yellowSnow init:)
+;;;		(sky init:)
+;;;		(moreSky init:)
+;;;		(snowRock init:)
+;;;		(log init:)
+;;;		(mountain init:)
+;;;		(snow init:)
+;;;		(snowyRocks init:)
+		
 		(cSound fade:)
 		(NormalEgo)
-		(ChangeGait MOVE_WALK 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(if local4
 			(cSound number: 47)
 			(ego posn: 1 158 init: setMotion: MoveTo 25 158)

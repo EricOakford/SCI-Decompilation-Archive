@@ -182,8 +182,24 @@
 			(leftGuard init: setPri: 2 stopUpd:)
 		)
 		(self
-			setFeatures: castle barrels waggon curbLeft curbRite wall court
+			setFeatures:
+				castle
+				barrels
+				waggon
+				curbLeft
+				curbRite
+				wall
+				court
 		)
+		;UPGRADE
+;;;			(castle init:)
+;;;			(barrels init:)
+;;;			(waggon init:)
+;;;			(curbLeft init:)
+;;;			(curbRite init:)
+;;;			(wall init:)
+;;;			(court init:)
+		
 		(if
 			(and
 				(< TIME_DAWN timeODay)
@@ -281,7 +297,7 @@
 		nsLeft 1
 		nsBottom 50
 		nsRight 250
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -302,7 +318,7 @@
 		nsLeft 3
 		nsBottom 114
 		nsRight 34
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -319,7 +335,7 @@
 		x 27
 		y 110
 		noun N_WAGON
-		onMeCheck $0800
+		onMeCheck cLCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -340,7 +356,7 @@
 		nsLeft 43
 		nsBottom 132
 		nsRight 76
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -357,7 +373,7 @@
 		x 263
 		y 93
 		noun N_CURB_RIGHT
-		onMeCheck $2000
+		onMeCheck cLMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -378,7 +394,7 @@
 		nsLeft 81
 		nsBottom 187
 		nsRight 101
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 	
 	(method (doVerb theVerb)
@@ -399,7 +415,7 @@
 		nsLeft 123
 		nsBottom 146
 		nsRight 251
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -419,16 +435,16 @@
 		view 39
 		loop 1
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 	;added unused message
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK
-				(messager say: N_RIGHT_GUARD V_LOOK)
-			)
 			(V_TALK
 				(messager say: N_RIGHT_GUARD V_ALTTALK2)
+			)
+			(else
+				(super doVerb: theVerb &rest)
 			)
 		)
 	)

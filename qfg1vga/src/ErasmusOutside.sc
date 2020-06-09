@@ -63,36 +63,30 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						299
-						189
-						212
-						168
-						166
-						165
-						143
-						136
-						120
-						168
-						4
-						182
-						4
-						189
-						0
-						189
+						0 0
+						319 0
+						319 189
+						299 189
+						212 168
+						166 165
+						143 136
+						120 168
+						4 182
+						4 189
+						0 189
 					yourself:
 				)
 		)
 		(LoadMany RES_SOUND 66 28)
 		(LoadMany RES_VIEW 29 530)
 		(self setFeatures: mySky doorPost theWindow)
+		;UPGRADE
+;;;		(mySky init:)
+;;;		(doorPost init:)
+;;;		(theWindow init:)
+		
 		(super init:)
 		(cSound number: 114 loop: -1 init: play:)
 		(= theUseSortedFeatures useSortedFeatures)
@@ -150,14 +144,14 @@
 (instance mySky of Feature
 	(properties
 		noun N_SKY
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
 (instance doorPost of Feature
 	(properties
 		noun N_DOOR
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -168,7 +162,7 @@
 (instance theWindow of Feature
 	(properties
 		noun N_WINDOW
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -221,7 +215,7 @@
 		y 10
 		view 1029
 		talkWidth 260
-		modeless 1
+		modeless TRUE
 		textX 15
 		textY 110
 	)

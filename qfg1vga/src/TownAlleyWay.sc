@@ -157,7 +157,7 @@
 	(properties
 		x 75
 		y 80
-		onMeCheck ISNOTHIDDEN
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -205,7 +205,7 @@
 		nsBottom 164
 		nsRight 122
 		sightAngle 40
-		onMeCheck NEARCHECK
+		onMeCheck cBLUE
 	)
 )
 
@@ -219,7 +219,7 @@
 		nsBottom 136
 		nsRight 212
 		sightAngle 40
-		onMeCheck NEARCHECK
+		onMeCheck cBLUE
 	)
 )
 
@@ -233,7 +233,7 @@
 		nsBottom 153
 		nsRight 124
 		sightAngle 40
-		onMeCheck FARCHECK
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)

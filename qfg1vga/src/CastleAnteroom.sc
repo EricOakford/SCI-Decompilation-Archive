@@ -106,6 +106,20 @@
 				table
 				throne
 		)
+		;UPGRADE
+;;;		(tapestry init:)
+;;;		(alcove init:)
+;;;		(crest init:)
+;;;		(pillars init:)
+;;;		(stainedGlass init:)
+;;;		(couch init:)
+;;;		(vase init:)
+;;;		(brasier init:)
+;;;		(piglet init:)
+;;;		(wine init:)
+;;;		(table init:)
+;;;		(throne init:)
+		
 		(guard3 init: setPri: 4 stopUpd:)
 		(baronTeller init: baron @local0 @local28 @local41)
 		(baron setPri: 5 actions: baronTeller init:)

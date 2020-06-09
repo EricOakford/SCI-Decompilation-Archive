@@ -1180,7 +1180,7 @@
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 	
 	(method (init)
@@ -1299,7 +1299,7 @@
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 	
 	(method (init)

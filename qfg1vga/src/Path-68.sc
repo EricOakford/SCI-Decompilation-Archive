@@ -38,7 +38,7 @@
 	)
 	
 	(method (init)
-		(= onMeCheck 512)
+		(= onMeCheck cLBLUE)
 		(super init:)
 	)
 	

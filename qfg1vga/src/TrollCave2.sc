@@ -215,13 +215,24 @@
 		(switch theVerb
 			(V_LOOK
 				(switch (Random 1 3)
-					(1 (messager say: N_CAVE V_LOOK C_LOOK1))
-					(2 (messager say: N_CAVE V_LOOK C_LOOK2))
-					(3 (messager say: N_CAVE V_LOOK C_LOOK3))
+					(1
+						(messager say: N_CAVE V_LOOK C_LOOK1)
+					)
+					(2
+						(messager say: N_CAVE V_LOOK C_LOOK2)
+					)
+					(3
+						(messager say: N_CAVE V_LOOK C_LOOK3)
+					)
 				)
 			)
-			(V_DO (messager say: N_CAVE V_DO))
-			(V_TALK (messager say: N_CAVE V_ALTTALK)) ;changed to correct verb to trigger this message
+			(V_DO
+				(messager say: N_CAVE V_DO)
+			)
+			(V_TALK
+				;changed to correct verb to trigger this message
+				(messager say: N_CAVE V_ALTTALK)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -237,7 +248,7 @@
 		nsBottom 59
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -250,20 +261,30 @@
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
 				(switch (Random 1 3)
-					(1 (messager say: N_ROCKS V_LOOK C_LOOK1))
-					(2 (messager say: N_ROCKS V_LOOK C_LOOK2))
-					(3 (messager say: N_ROCKS V_LOOK C_LOOK3))
+					(1
+						(messager say: N_ROCKS V_LOOK C_LOOK1)
+					)
+					(2\
+						(messager say: N_ROCKS V_LOOK C_LOOK2)
+					)
+					(3
+						(messager say: N_ROCKS V_LOOK C_LOOK3)
+					)
 				)
 			)
-			(V_DO (messager say: N_CEILING V_DO))
-			(V_TALK (messager say: N_CEILING V_ALTTALK))
+			(V_DO
+				(messager say: N_CEILING V_DO)
+			)
+			(V_TALK
+				(messager say: N_CEILING V_ALTTALK)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)

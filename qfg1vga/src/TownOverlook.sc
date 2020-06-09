@@ -167,8 +167,22 @@
 			(onTownGate init:)
 		)
 		(self
-			setFeatures: rock onTheWall onTownSign deadSquare onTheRoad onTheWhat
+			setFeatures:
+				rock
+				onTheWall
+				onTownSign
+				deadSquare
+				onTheRoad
+				onTheWhat
 		)
+		;UPGRADE
+;;;		(rock init:)
+;;;		(onTheWall init:)
+;;;		(onTownSign init:)
+;;;		(deadSquare init:)
+;;;		(onTheRoad init:)
+;;;		(onTheWhat init:)
+		
 		(= brunoWhines 0)
 		(if
 			(and
@@ -317,7 +331,7 @@
 		nsBottom 187
 		nsRight 316
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -329,7 +343,7 @@
 		nsBottom 75
 		nsRight 236
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -355,7 +369,7 @@
 		y 180
 		noun N_CART
 		sightAngle 40
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -380,7 +394,7 @@
 		y 20
 		noun N_ROAD
 		sightAngle 40
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 	
 	(method (doVerb theVerb)
@@ -405,7 +419,7 @@
 		x 117
 		y 74
 		noun N_DEADSQUARE
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 )
 

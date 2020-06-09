@@ -68,7 +68,7 @@
 				cycleSpeed: 1
 				init:
 				actions: hildeTeller
-				approachVerbs: 4 10
+				approachVerbs: V_DO V_MONEY
 				stopUpd:
 			)
 			(centaurBody
@@ -76,7 +76,7 @@
 				init:
 				actions: hildeTeller
 				stopUpd:
-				approachVerbs: 4 10
+				approachVerbs: V_DO V_MONEY
 				addToPic:
 			)
 			(theApples setPri: 4 init: stopUpd: addToPic:)
@@ -192,87 +192,25 @@
 		(storeDoor
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			locked: (if Night TRUE else FALSE)
 		)
 		(sheriffDoor
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			locked: TRUE
 		)
 		(if (not (ego script?)) (HandsOn))
@@ -462,7 +400,7 @@
 		nsBottom 135
 		nsRight 212
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -475,7 +413,7 @@
 		nsBottom 114
 		nsRight 95
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -489,7 +427,7 @@
 		nsBottom 153
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 )
 
@@ -503,7 +441,7 @@
 		nsBottom 185
 		nsRight 317
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -511,7 +449,7 @@
 	(properties
 		noun N_STAND
 		sightAngle 40
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 	
 	(method (doVerb theVerb)

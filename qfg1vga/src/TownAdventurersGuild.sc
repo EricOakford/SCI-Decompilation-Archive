@@ -303,7 +303,7 @@
 		z 100
 		heading 360
 		noun N_BOOK
-		onMeCheck $0002
+		onMeCheck cBLUE
 		approachX 149
 		approachY 167
 	)

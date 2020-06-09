@@ -496,8 +496,8 @@
 	(cond 
 		((<
 			(= foo (= [egoStats STAMINA] (- [egoStats STAMINA] pointsUsed))) 0)
-			(TakeDamage (/ (- -3 [egoStats 15]) 4))
-			(= [egoStats 15] 0)
+			(TakeDamage (/ (- -3 [egoStats STAMINA]) 4))
+			(= [egoStats STAMINA] 0)
 			(if (not fastCast)
 				(cond 
 					((not (Btst fWornOut))
@@ -537,7 +537,7 @@
 )
 
 (procedure (TakeDamage damage)
-	(if (> damage 0) (SkillUsed 3 (/ (+ damage 1) 2)))
+	(if (> damage 0) (SkillUsed VIT (/ (+ damage 1) 2)))
 	(if
 	(< (= [egoStats HEALTH] (- [egoStats HEALTH] damage)) 0)
 		(= [egoStats HEALTH] 0)

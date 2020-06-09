@@ -154,7 +154,7 @@
 	(properties
 		x 75
 		y 80
-		onMeCheck ISNOTHIDDEN
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -176,7 +176,7 @@
 		nsBottom 164
 		nsRight 122
 		sightAngle 40
-		onMeCheck NEARCHECK
+		onMeCheck cBLUE
 	)
 )
 
@@ -190,7 +190,7 @@
 		nsBottom 136
 		nsRight 212
 		sightAngle 40
-		onMeCheck NEARCHECK
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -218,7 +218,7 @@
 		nsBottom 153
 		nsRight 124
 		sightAngle 40
-		onMeCheck FARCHECK
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -500,19 +500,27 @@
 	)
 )
 
-(instance coin of Extra
+(instance coin of Prop
+	;was an Extra, but in preparation for the upgrade patch,
+	; we're changing it to a Prop.	
 	(properties
 		x 158
 		y 111
-		noun 4
+		noun N_COIN
 		view 333
 		loop 6
-		cycleType 1
-		pauseCel 2
-		minPause 40
-		maxPause 80
-		minCycles 1
-		maxCycles 1
+;		cycleType ExtraEndLoop
+;		pauseCel 2
+;		minPause 40
+;		maxPause 80
+;		minCycles 1
+;		maxCycles 1
+	)
+
+	;This init: will allow it to function just as it was as an Extra.	
+	(method (init)
+		((= cycler (Forward new:)) init: self)
+		(super init:)
 	)
 	
 	(method (doVerb theVerb)

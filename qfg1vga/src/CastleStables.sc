@@ -31,7 +31,7 @@
 	local6
 	workBreak
 	local8
-	theUseSortedFeatures
+	oldSortedFeatures
 	gEgoCycleSpeed
 	gEgoMoveSpeed
 	local12
@@ -45,7 +45,7 @@
 	[local41 5] = [0 -21 -13 -17 999]
 )
 (procedure (AlreadyClean)
-	(messager say: N_ROOM 0 0 1)
+	(messager say: N_ROOM NULL NULL 1)
 )
 
 (instance rakeMusic of Sound
@@ -63,7 +63,7 @@
 		horizon 60
 	)
 	
-	(method (init &tmp egoY temp1 temp2)
+	(method (init &tmp theY temp1 soundNum)
 		(= [local34 0] @local15)
 		(= [local34 1] @local23)
 		(= [local34 2] @local26)
@@ -72,67 +72,71 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						319
-						0
-						319
-						189
-						0
-						189
-						0
-						166
-						33
-						165
-						56
-						178
-						184
-						179
-						236
-						162
-						94
-						141
-						145
-						116
-						145
-						105
-						88
-						140
-						67
-						130
-						59
-						112
-						0
-						108
-						0
-						0
+						319 0
+						319 189
+						0 189
+						0 166
+						33 165
+						56 178
+						184 179
+						236 162
+						94 141
+						145 116
+						145 105
+						88 140
+						67 130
+						59 112
+						0 108
+						0 0
 					yourself:
 				)
 		)
 		(self style: DISSOLVE)
-		(= temp2 (if Night 32 else 25))
+		(= soundNum (if Night 32 else 25))
 		(if
 			(or
 				(== (cSound prevSignal?) -1)
-				(!= (cSound number?) temp2)
+				(!= (cSound number?) soundNum)
 			)
-			(cSound stop: number: temp2 loop: -1 priority: 0 play:)
+			(cSound stop: number: soundNum loop: -1 priority: 0 play:)
 		)
 		(super init: &rest)
 		(= local13 0)
-		(= theUseSortedFeatures useSortedFeatures)
+		(= oldSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)
 		(= gEgoCycleSpeed (ego cycleSpeed?))
 		(= gEgoMoveSpeed (ego moveSpeed?))
 		(self
-			setFeatures: walls towers waggon grain houses waterBarrel mounts sky fence
+			setFeatures:
+				walls
+				towers
+				waggon
+				grain
+				houses
+				waterBarrel
+				mounts
+				sky
+				fence
 		)
+		;UPGRADE
+;;;		(walls init:)
+;;;		(towers init:)
+;;;		(waggon init:)
+;;;		(grain init:)
+;;;		(houses init:)
+;;;		(waterBarrel init:)
+;;;		(mounts init:)
+;;;		(sky init:)
+;;;		(fence init:)
+		
 		(stableTeller init: stableMan @local15 @local34 @local41)
 		(stableMan
 			setLoop: 0
 			cel: 0
 			actions: stableTeller
-			approachVerbs: 2
+			approachVerbs: V_TALK
 			posn: 234 82
 			init:
 			stopUpd:
@@ -176,7 +180,7 @@
 			init:
 			stopUpd:
 		)
-		(= egoY (ego y?))
+		(= theY (ego y?))
 		(switch prevRoomNum
 			(999
 				(= goodMorning TRUE)
@@ -187,7 +191,7 @@
 				(ego
 					cel: (ego cel?)
 					loop: (ego loop?)
-					posn: 15 egoY
+					posn: 15 theY
 					init:
 				)
 			)
@@ -204,8 +208,7 @@
 	
 	(method (doit &tmp temp0)
 		(super doit:)
-		(if
-		(and (== (ego edgeHit?) 4) (not (ego script?)))
+		(if (and (== (ego edgeHit?) WEST) (not (ego script?)))
 			(ego setScript: headWest)
 		)
 		(if
@@ -213,8 +216,8 @@
 				(not Night)
 				(!= prevRoomNum 999)
 				(or
-					(== (ego onControl: 1) 4)
-					(== (ego onControl: 1) 2)
+					(== (ego onControl: origin) cGREEN)
+					(== (ego onControl: origin) cBLUE)
 				)
 				(not (== (stableMan script?) intro))
 				(not (ego script?))
@@ -228,7 +231,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(= useSortedFeatures theUseSortedFeatures)
+		(= useSortedFeatures oldSortedFeatures)
 		(super dispose:)
 	)
 	
@@ -236,22 +239,42 @@
 		(switch theVerb
 			(V_LOOK
 				(cond 
-					((== (ego onControl: 1) 2) (messager say: N_ROOM V_LOOK 8))
-					((Btst fStableClean) (messager say: N_ROOM V_LOOK 2))
-					(else (messager say: 8 1 1))
+					((== (ego onControl: origin) cBLUE)
+						(messager say: N_ROOM V_LOOK 8)
+					)
+					((Btst fStableClean)
+						(messager say: N_ROOM V_LOOK C_CLEAN)
+					)
+					(else
+						(messager say: N_ROOM V_LOOK C_DIRTY)
+					)
 				)
 			)
 			(V_SLEEP
 				(cond 
-					((and (< 750 Clock) (< Clock 2550)) (messager say: 8 52 9))
-					((not (== (ego onControl: 1) 2)) (messager say: 8 52 8))
-					((not (Btst fStableClean)) (messager say: 8 52 2))
-					((ego script?) (messager say: 8 52 10))
-					(else (ego setScript: sleeper))
+					((and (< 750 Clock) (< Clock 2550))
+						(messager say: N_ROOM V_SLEEP 9)
+					)
+					((not (== (ego onControl: origin) cBLUE))
+						(messager say: N_ROOM V_SLEEP 8)
+					)
+					((not (Btst fStableClean))
+						(messager say: N_ROOM V_SLEEP C_CLEAN)
+					)
+					((ego script?)
+						(messager say: N_ROOM V_SLEEP 10)
+					)
+					(else
+						(ego setScript: sleeper)
+					)
 				)
 			)
-			(V_FLAME (messager say: 8 81))
-			(V_DAZZLE (messager say: 8 78))
+			(V_FLAME
+				(messager say: N_ROOM V_FLAME)
+			)
+			(V_DAZZLE
+				(messager say: N_ROOM V_DAZZLE)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -259,14 +282,14 @@
 	)
 	
 	(method (cue)
-		(messager say: 8 0 0 9)
+		(messager say: N_ROOM NULL NULL 9)
 	)
 )
 
 (instance walls of Feature
 	(properties
 		noun 13
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -281,12 +304,12 @@
 (instance towers of Feature
 	(properties
 		noun 11
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: 11 1)
+			(messager say: 11 V_LOOK)
 		else
 			(curRoom doVerb: theVerb &rest)
 		)
@@ -296,12 +319,12 @@
 (instance waggon of Feature
 	(properties
 		noun 12
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: 12 1)
+			(messager say: 12 V_LOOK)
 		else
 			(curRoom doVerb: theVerb &rest)
 		)
@@ -311,7 +334,7 @@
 (instance grain of Feature
 	(properties
 		noun 2
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 	
 	(method (doVerb theVerb)
@@ -326,7 +349,7 @@
 (instance houses of Feature
 	(properties
 		noun N_HOUSES
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -341,7 +364,7 @@
 (instance waterBarrel of Feature
 	(properties
 		noun N_WATERBARREL
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -356,7 +379,7 @@
 (instance mounts of Feature
 	(properties
 		noun N_MOUNTAINS
-		onMeCheck $0200
+		onMeCheck cLBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -371,7 +394,7 @@
 (instance sky of Feature
 	(properties
 		noun N_SKY
-		onMeCheck $0400
+		onMeCheck cLGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -386,7 +409,7 @@
 (instance fence of Feature
 	(properties
 		noun N_FENCE
-		onMeCheck $0800
+		onMeCheck cLCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -516,12 +539,24 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_HORSE V_LOOK))
-			(V_DO (messager say: N_HORSE V_DO))
-			(V_TALK (messager say: N_HORSE V_TALK))
-			(V_FRUIT (messager say: N_HORSE V_FRUIT))
-			(V_VEGETABLES (messager say: N_HORSE V_FRUIT))
-			(V_FLOWERS (messager say: N_HORSE V_FRUIT))
+			(V_LOOK
+				(messager say: N_HORSE V_LOOK)
+			)
+			(V_DO
+				(messager say: N_HORSE V_DO)
+			)
+			(V_TALK
+				(messager say: N_HORSE V_TALK)
+			)
+			(V_FRUIT
+				(messager say: N_HORSE V_FRUIT)
+			)
+			(V_VEGETABLES
+				(messager say: N_HORSE V_FRUIT)
+			)
+			(V_FLOWERS
+				(messager say: N_HORSE V_FRUIT)
+			)
 			(else 
 				(curRoom doVerb: theVerb &rest)
 			)
@@ -529,24 +564,37 @@
 	)
 )
 
-(instance horseHead of Extra
+(instance horseHead of Prop
+	;was an Extra, but in preparation for the upgrade patch,
+	; we're changing it to a Prop.
 	(properties
 		noun N_HORSE_HEAD
 		view 40
 		loop 6
 		cycleSpeed 3
-		cycleType 1
-		minPause 50
-		maxPause 110
-		minCycles 1
-		maxCycles 1
+;		cycleType ExtraEndLoop
+;		minPause 50
+;		maxPause 110
+;		minCycles 1
+;		maxCycles 1
+	)
+	;This init: will allow it to function just as it was as an Extra.
+	(method (init)
+		((= cycler (Forward new:)) init: self)
+		(super init:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_HORSE V_LOOK))
-			(V_DO (messager say: N_HORSE V_DO))
-			(V_TALK (messager say: N_HORSE V_TALK))
+			(V_LOOK
+				(messager say: N_HORSE V_LOOK)
+			)
+			(V_DO
+				(messager say: N_HORSE V_DO)
+			)
+			(V_TALK
+				(messager say: N_HORSE V_TALK)
+			)
 			(else 
 				(curRoom doVerb: theVerb &rest)
 			)
@@ -554,24 +602,35 @@
 	)
 )
 
-(instance horseTail of Extra
+(instance horseTail of Prop ;Extra
 	(properties
 		noun N_HORSE
 		view 40
 		loop 5
 		cycleSpeed 12
-		cycleType 1
-		minPause 60
-		maxPause 100
-		minCycles 1
-		maxCycles 2
+;		cycleType ExtraEndLoop
+;		minPause 60
+;		maxPause 100
+;		minCycles 1
+;		maxCycles 2
 	)
+	
+	(method (init)
+		((= cycler (Forward new:)) init: self)
+		(super init:)
+	)	
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_HORSE V_LOOK))
-			(V_DO (messager say: N_HORSE V_DO))
-			(V_TALK (messager say: N_HORSE V_TALK))
+			(V_LOOK
+				(messager say: N_HORSE V_LOOK)
+			)
+			(V_DO
+				(messager say: N_HORSE V_DO)
+			)
+			(V_TALK
+				(messager say: N_HORSE V_TALK)
+			)
 			(else 
 				(curRoom doVerb: theVerb &rest)
 			)

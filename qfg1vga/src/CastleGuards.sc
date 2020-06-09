@@ -150,7 +150,7 @@
 		x 209
 		y 180
 		noun N_GROUND
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 	
 	(method (doVerb theVerb)

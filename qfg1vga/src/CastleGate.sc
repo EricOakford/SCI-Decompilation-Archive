@@ -302,7 +302,7 @@
 	(properties
 		y 164
 		noun N_SKY
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -310,7 +310,7 @@
 	(properties
 		y 165
 		noun N_MOUNTAIN
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -318,7 +318,7 @@
 	(properties
 		y 167
 		noun N_CASTLE
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -326,7 +326,7 @@
 	(properties
 		y 71
 		noun N_WALL
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
@@ -343,7 +343,7 @@
 	(properties
 		y 62
 		noun N_TOWER
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -360,16 +360,16 @@
 (instance bush of Feature
 	(properties
 		y 156
-		noun 1
-		onMeCheck $0040
+		noun N_BUSH
+		onMeCheck cBROWN
 	)
 )
 
 (instance wall of Feature
 	(properties
 		y 105
-		noun 10
-		onMeCheck $0080
+		noun N_WALL
+		onMeCheck cLGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -398,7 +398,7 @@
 	(properties
 		y 105
 		noun N_WINDOW
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 )
 

@@ -170,6 +170,20 @@
 				onWholeKeg
 				onBar
 		)
+		;UPGRADE
+;;;		(onWindow init:)
+;;;		(onFloor init:)
+;;;		(onTableBottom init:)
+;;;		(onRtTableTop init:)
+;;;		(onLtTable init:)
+;;;		(onKeg1 init:)
+;;;		(onKeg2 init:)
+;;;		(onKeg3 init:)
+;;;		(onKeg4 init:)
+;;;		(onFloor init:)
+;;;		(onWholeKeg init:)
+;;;		(onBar init:)
+		
 		(Bset fOrderedDrink)
 		(Bclr fEgoSitting)
 		(= drinkConsumed 0)
@@ -185,44 +199,13 @@
 		(ctrStool
 			init:
 			approachVerbs:
-				4
-				34
-				42
-				44
-				46
-				16
-				38
-				21
-				36
-				39
-				32
-				29
-				37
-				22
-				26
-				14
-				17
-				27
-				23
-				31
-				30
-				40
-				43
-				45
-				53
-				11
-				28
-				20
-				35
-				15
-				10
-				24
-				12
-				18
-				19
-				47
-				41
-				33
+				V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+				V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+				V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+				V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+				V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+				V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+				V_VASE V_VEGETABLES
 			ignoreActors:
 		)
 		(player1Teller init: player1 @drinkConsumed4 @numberOfAlesDrunk0 @numberOfAlesDrunk8)
@@ -576,7 +559,7 @@
 		x 171
 		y 169
 		noun N_FLOOR
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)

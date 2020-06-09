@@ -182,6 +182,17 @@
 				aFunnyBush
 				ground
 		)
+		;UPGRADE
+;;;		(onRock init:)
+;;;		(onRock2 init:)
+;;;		(onDebris init:)
+;;;		(leftFort init:)
+;;;		(rightFort init:)
+;;;		(eastCliff init:)
+;;;		(westCliff init:)
+;;;		(aFunnyBush init:)
+;;;		(ground init:)
+
 		(gateSign setPri: 5 init: addToPic:)
 		(bell setPri: 6 init: stopUpd:)
 		(bush init:)
@@ -195,7 +206,7 @@
 				stopUpd:
 			)
 		else
-			(gate init: setCel: 0 setPri: 6 approachVerbs: 4 stopUpd:)
+			(gate init: setCel: 0 setPri: 6 approachVerbs: V_DO stopUpd:)
 		)
 		(if (not (Btst fMinotaurDead))
 			(= monsterNum vMinotaur)

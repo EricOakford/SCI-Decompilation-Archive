@@ -133,6 +133,18 @@
 				jailWindow
 				onScissors
 		)
+		;UPGRADE
+;;;		(onBarberNote init:)
+;;;		(onInnSign init:)
+;;;		(tubOSuds init:)
+;;;		(onJailSign init:)
+;;;		(sheriffsDoor init:)
+;;;		(statue1 init:)
+;;;		(innWindow init:)
+;;;		(jailCell init:)
+;;;		(jailWindow init:)
+;;;		(onScissors init:)
+		
 		(cSound fade:)
 		(self setRegions: STREET TOWN)
 		(if (or (not Night) (and (== prevRoomNum 65) (Btst fTownGateOpen)))
@@ -262,9 +274,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(cond 
-					((not [egoStats 11])
+					((not [egoStats CLIMB])
 						(messager say: N_CLOSEDGATE V_DO NULL 1)
 					)
 					((<= (Random 3 10) (++ timesClimbedGate))
@@ -1222,7 +1234,7 @@
 			(0
 				(HandsOff)
 				(if (and (not (Btst fBeenIn300)) (< timeODay TIME_SUNSET))
-					(messager say: N_ROOM V_LOOK C_SHERIFFWARNS 1 self)
+					(messager say: N_ROOM NULL C_SHERIFFWARNS 1 self)
 				else
 					(self cue:)
 				)

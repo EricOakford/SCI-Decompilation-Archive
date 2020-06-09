@@ -223,43 +223,6 @@
 (class inputBox216 of View
 	(properties
 		name "inputBox"
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0101
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
 		oldX 0
 		oldY 0
 		relX 280
@@ -274,7 +237,7 @@
 	
 	(method (init)
 		(theIconBar disable:)
-		(theGame setCursor: normalCursor 1 280 155)
+		(theGame setCursor: normalCursor TRUE 280 155)
 		(Bset 359)
 		(self setPri: 14 ignoreActors:)
 		(super init: &rest)

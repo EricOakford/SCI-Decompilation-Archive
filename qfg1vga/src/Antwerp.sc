@@ -265,7 +265,7 @@
 		nsBottom 65
 		nsRight 70
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -292,7 +292,7 @@
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -313,7 +313,7 @@
 		nsBottom 189
 		nsRight 146
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -327,7 +327,7 @@
 		nsBottom 189
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -349,7 +349,7 @@
 		nsBottom 58
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -370,7 +370,7 @@
 		nsBottom 13
 		nsRight 174
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -392,7 +392,7 @@
 		nsBottom 60
 		nsRight 319
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)

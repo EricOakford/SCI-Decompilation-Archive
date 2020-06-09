@@ -115,6 +115,17 @@
 				pStone
 				walls
 		)
+		;UPGRADE
+;;;		(pillars init:)
+;;;		(curtain init:)
+;;;		(table init:)
+;;;		(stairs init:)
+;;;		(wWindow init:)
+;;;		(fenrusPad init:)
+;;;		(gStone init:)
+;;;		(pStone init:)
+;;;		(walls init:)
+		
 		(wizLegs addToPic:)
 		(wizChair addToPic:)
 		(egoChair addToPic:)
@@ -613,7 +624,7 @@
 		noun N_PILLARS
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -622,7 +633,7 @@
 		noun N_CURTAIN
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -631,7 +642,7 @@
 		noun N_TABLE
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -640,7 +651,7 @@
 		noun N_STAIRS
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 )
 
@@ -649,7 +660,7 @@
 		noun N_WINDOW
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -670,7 +681,7 @@
 		noun N_FENRUS_PAD
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 )
 
@@ -679,7 +690,7 @@
 		noun N_GSTONE
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 )
 
@@ -688,7 +699,7 @@
 		noun N_PSTONE
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 )
 
@@ -697,7 +708,7 @@
 		noun N_WALLS
 		nsBottom 189
 		nsRight 319
-		onMeCheck $0200
+		onMeCheck cLBLUE
 	)
 )
 

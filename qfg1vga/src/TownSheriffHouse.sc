@@ -128,6 +128,15 @@
 				firePicture
 				stairsPicture
 		)
+		;UPGRADE
+;;;		(onDesk init:)
+;;;		(onSafe init:)
+;;;		(onPlant init:)
+;;;		(onChair init:)
+;;;		(gryphonHead init:)
+;;;		(firePicture init:)
+;;;		(stairsPicture init:)
+		
 		(self setRegions: TOWN)
 		(sneakMusic init:)
 		(tumbleMusic init:)
@@ -306,7 +315,7 @@
 		nsBottom 101
 		nsRight 235
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)

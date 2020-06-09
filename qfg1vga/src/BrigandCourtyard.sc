@@ -291,6 +291,15 @@
 				lumber1
 				lumber2
 		)
+		;UPGRADE
+;;;		(onWire1 init:)
+;;;		(onWire2 init:)
+;;;		(onSacks init:)
+;;;		(onKegs init:)
+;;;		(onWindow init:)
+;;;		(lumber1 init:)
+;;;		(lumber2 init:)
+
 		(onChasm init:)
 		(SolvePuzzle f94EnterFortress 8)
 		(NormalEgo)

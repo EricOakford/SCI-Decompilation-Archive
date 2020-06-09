@@ -39,38 +39,23 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						111
-						76
-						87
-						103
-						57
-						103
-						53
-						112
-						114
-						112
-						123
-						91
-						264
-						93
-						242
-						89
-						144
-						85
-						0
-						31
-						0
-						0
-						319
-						0
-						319
-						189
-						0
-						189
-						0
-						35
+						111 76
+						87 103
+						57 103
+						53 112
+						114 112
+						123 91
+						264 93
+						242 89
+						144 85
+						0 31
+						0 0
+						319 0
+						319 189
+						0 189
+						0 35
 					yourself:
 				)
 		)
@@ -78,10 +63,18 @@
 		(self
 			setFeatures: water rocks trees deadTree formation falls
 		)
+		;UPGRADE
+;;;		(water init:)
+;;;		(rocks init:)
+;;;		(trees init:)
+;;;		(deadTree init:)
+;;;		(formation init:)
+;;;		(falls init:)
+		
 		(SolvePuzzle POINTS_VISITLAKE 1)
 		(ego init: setPri: 4 posn: 77 59 setScript: comeOnIn)
 		(if (== egoGait MOVE_SNEAK)
-			(messager say: N_ROOM 0 C_WALKONLY)
+			(messager say: N_ROOM NULL C_WALKONLY)
 		)
 		(if (Btst fBeenIn87)
 			(switch (Random 1 2)
@@ -136,7 +129,7 @@
 		x 179
 		y 65
 		noun N_ROCKS
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -144,7 +137,7 @@
 	(properties
 		x 268
 		noun N_FORMATION
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 )
 
@@ -153,7 +146,7 @@
 		x 40
 		y 38
 		noun N_TREES
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 
@@ -162,7 +155,7 @@
 		x 287
 		y 181
 		noun N_DEADTREE
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 )
 
@@ -171,7 +164,7 @@
 		x 268
 		y 60
 		noun N_WATER
-		onMeCheck $0002
+		onMeCheck cBLUE
 		approachX 262
 		approachY 70
 	)
@@ -188,47 +181,16 @@
 			(V_FLASK (ego setScript: fillFlask))
 			(else 
 				(if
-					(OneOf
-						theVerb
-						34
-						42
-						44
-						46
-						16
-						38
-						21
-						36
-						39
-						32
-						29
-						37
-						22
-						26
-						14
-						17
-						27
-						23
-						31
-						30
-						40
-						43
-						45
-						53
-						11
-						28
-						20
-						35
-						15
-						10
-						24
-						12
-						18
-						19
-						47
-						41
-						33
+					(OneOf theVerb
+						V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+						V_FAIRYDUST V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+						V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+						V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+						V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+						V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+						V_VASE V_VEGETABLES
 					)
-					(messager say: N_WATER 0 0)
+					(messager say: N_WATER NULL NULL)
 				else
 					(super doVerb: theVerb &rest)
 				)
@@ -242,7 +204,7 @@
 		x 268
 		y 60
 		noun N_FALLS
-		onMeCheck $4000
+		onMeCheck cYELLOW
 		approachX 262
 		approachY 93
 	)

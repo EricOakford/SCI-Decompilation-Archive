@@ -265,6 +265,9 @@
 		(mouseDownHandler add: self)
 		(super init:)
 		(self setFeatures: theLog)
+		;UPGRADE
+		;(theLog init:)
+		
 		(NormalEgo)
 		(cSound stop:)
 		(brigandS number: 73 init: play:)

@@ -61,50 +61,29 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						319
-						189
-						0
-						189
-						0
-						0
-						96
-						0
-						96
-						75
-						84
-						103
-						129
-						106
-						158
-						118
-						162
-						123
-						158
-						138
-						135
-						149
-						162
-						154
-						183
-						145
-						249
-						142
-						195
-						110
-						150
-						108
-						135
-						94
-						137
-						77
-						133
-						77
-						134
-						0
-						319
-						0
+						319 189
+						0 189
+						0 0
+						96 0
+						96 75
+						84 103
+						129 106
+						158 118
+						162 123
+						158 138
+						135 149
+						162 154
+						183 145
+						249 142
+						195 110
+						150 108
+						135 94
+						137 77
+						133 77
+						134 0
+						319 0
 					yourself:
 				)
 		)
@@ -113,7 +92,7 @@
 		(Load RES_SOUND 41)
 		(SolvePuzzle POINTS_MEETHERMIT 5)
 		(ego loop: 2 posn: 116 94 init:)
-		(onSeat init: approachVerbs: 4)
+		(onSeat init: approachVerbs: V_DO)
 		(features
 			add:
 				straw
@@ -161,7 +140,7 @@
 		(return
 			(if
 				(and
-					(& (ego onControl: origin) $0002)
+					(& (ego onControl: origin) cBLUE)
 					(!= (curRoom script?) doorScript)
 					(!= (curRoom script?) sLeaving)
 				)
@@ -435,7 +414,7 @@
 		x 159
 		y 133
 		noun N_CHAIR
-		onMeCheck $0040
+		onMeCheck cBROWN
 	)
 	
 	(method (doVerb theVerb)
@@ -458,7 +437,7 @@
 		x 227
 		y 168
 		noun N_COT
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
@@ -475,7 +454,7 @@
 		x 154
 		y 91
 		noun N_POT1
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -498,7 +477,7 @@
 		x 154
 		y 111
 		noun N_POT2
-		onMeCheck $0080
+		onMeCheck cLGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -521,7 +500,7 @@
 		x 154
 		y 91
 		noun N_POT3
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 	
 	(method (doVerb theVerb)
@@ -544,7 +523,7 @@
 		x 154
 		y 91
 		noun N_POT4
-		onMeCheck $0200
+		onMeCheck cLBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -567,7 +546,7 @@
 		x 154
 		y 91
 		noun N_POT5
-		onMeCheck $0400
+		onMeCheck cLGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -590,7 +569,7 @@
 		x 154
 		y 91
 		noun N_POT6
-		onMeCheck $0800
+		onMeCheck cLCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -613,7 +592,7 @@
 		x 154
 		y 91
 		noun N_POT7
-		onMeCheck $1000
+		onMeCheck cLRED
 	)
 	
 	(method (doVerb theVerb)
@@ -636,7 +615,7 @@
 		x 167
 		y 45
 		noun N_BOWS
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
@@ -657,7 +636,7 @@
 		x 22
 		y 36
 		noun N_WATER
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)

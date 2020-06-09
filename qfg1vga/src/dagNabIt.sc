@@ -483,7 +483,7 @@
 					setPri: 1
 					init:
 					stopUpd:
-					onMeCheck: -32768
+					onMeCheck: cWHITE
 				)
 				(++ i)
 				(= local3
@@ -576,7 +576,7 @@
 		nsBottom 157
 		nsRight 63
 		sightAngle 40
-		onMeCheck ISNOTHIDDEN
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)

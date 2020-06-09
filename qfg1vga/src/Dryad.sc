@@ -77,7 +77,7 @@
 		(if (ego has: iSeed)
 			(dryad setScript: hasSeed)
 		else
-			(messager say: N_ROOM 0 C_DONTHAVEIT 0)
+			(messager say: N_ROOM NULL C_DONTHAVEIT 0)
 			(dryad setScript: intoTree)
 		)
 	else
@@ -97,34 +97,21 @@
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
+						type: PBarredAccess
 						init:
-							319
-							131
-							181
-							131
-							169
-							136
-							139
-							131
-							129
-							144
-							156
-							149
-							175
-							160
-							271
-							160
-							319
-							148
-							319
-							189
-							0
-							189
-							0
-							0
-							319
-							0
+							319 131
+							181 131
+							169 136
+							139 131
+							129 144
+							156 149
+							175 160
+							271 160
+							319 148
+							319 189
+							0 189
+							0 0
+							319 0
 						yourself:
 					)
 			)
@@ -132,34 +119,21 @@
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
+						type: PBarredAccess
 						init:
-							319
-							131
-							181
-							131
-							169
-							136
-							52
-							136
-							15
-							149
-							156
-							149
-							175
-							160
-							271
-							160
-							319
-							148
-							319
-							189
-							0
-							189
-							0
-							0
-							319
-							0
+							319 131
+							181 131
+							169 136
+							52 136
+							15 149
+							156 149
+							175 160
+							271 160
+							319 148
+							319 189
+							0 189
+							0 0
+							319 0
 						yourself:
 					)
 			)
@@ -175,7 +149,9 @@
 		(LoadMany RES_VIEW 77 72 510)
 		(LoadMany RES_SOUND 97 98)
 		(Load RES_SCRIPT JUMP)
-		(if (Btst STAG_PRESENT) (Load RES_VIEW 78))
+		(if (Btst STAG_PRESENT)
+			(Load RES_VIEW 78)
+		)
 		(super init:)
 		(self
 			setFeatures:
@@ -187,6 +163,15 @@
 				bushes
 				acorns
 		)
+		;UPGRADE
+;;;		(mountain init:)
+;;;		(bigGreenTree init:)
+;;;		(brokenTree init:)
+;;;		(frontRock init:)
+;;;		(backRock init:)
+;;;		(bushes init:)
+;;;		(acorns init:)
+		
 		(NormalEgo)
 		(ChangeGait MOVE_WALK 0)
 		(= yesNoTimer 0)
@@ -366,7 +351,7 @@
 		y 125
 		noun N_DRYADTREE
 		sightAngle 40
-		onMeCheck $0010
+		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
@@ -418,7 +403,7 @@
 		y 184
 		noun N_BROKENTREE
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -428,7 +413,7 @@
 		y 134
 		noun N_BUSHES
 		sightAngle 40
-		onMeCheck $0020
+		onMeCheck cMAGENTA
 	)
 )
 
@@ -438,7 +423,7 @@
 		y 180
 		noun N_ROCK
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 )
 
@@ -448,7 +433,7 @@
 		y 44
 		noun N_ROCK
 		sightAngle 40
-		onMeCheck $0008
+		onMeCheck cCYAN
 	)
 )
 

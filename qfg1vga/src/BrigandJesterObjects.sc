@@ -447,7 +447,7 @@
 		nsLeft 212
 		nsBottom 98
 		nsRight 267
-		onMeCheck $0100
+		onMeCheck cGREY
 	)
 	
 	(method (handleEvent event)
