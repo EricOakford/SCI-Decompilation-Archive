@@ -231,7 +231,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(Bset VISITED_TOWNOVERLOOK)
+		(Bset fBeenIn65)
 		(DisposeScript DPATH)
 		(super dispose:)
 	)

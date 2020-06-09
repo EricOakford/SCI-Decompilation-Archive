@@ -64,62 +64,6 @@
 
 (class WeaponMaster of SkilledActor
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		cycleSpeed 6
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		scaler 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
-		xStep 3
-		origStep 770
-		moveSpeed 6
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
-		code 0
 		strength 40
 		intell 45
 		agil 45
@@ -128,18 +72,9 @@
 		weap 50
 		parry 50
 		dodge 40
-		magic 0
-		stamina 0
-		health 0
-		mana 0
 		armorValue 3
-		armorEnc 0
 		shieldValue 3
 		weapValue 5
-		canFight 0
-		action 0
-		opponent 0
-		fightLeft 0
 		warriorX 187
 		warriorY 135
 		endFight 0
@@ -288,15 +223,19 @@
 		(super doit:)
 		(cond 
 			((ego script?))
-			((ego edgeHit?) (ego setScript: egoExits))
+			((ego edgeHit?)
+				(ego setScript: egoExits)
+			)
 		)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
 		(= useSortedFeatures theUseSortedFeatures)
-		(if (>= Clock 3000) (Bclr fFlag239))
-		(LoadMany FALSE RES_SCRIPT 212 222 223 224 220 218 216 217)
+		(if (>= Clock 3000)
+			(Bclr fFlag239)
+		)
+		(LoadMany FALSE 130 212 222 223 224 220 218 216 217)
 		(super dispose:)
 	)
 	

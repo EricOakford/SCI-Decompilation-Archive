@@ -64,7 +64,9 @@
 				)
 			)
 			(1
-				(if (not (Btst 243)) (Bset 243))
+				(if (not (Btst 243))
+					(Bset 243)
+				)
 				(self cue:)
 			)
 			(2
@@ -73,7 +75,9 @@
 				(self
 					setScript: (ScriptID 217 (Random 0 6)) 0 (ScriptID 39 2)
 				)
-				(= cycles 15)
+				;NRS speed fix
+				(= ticks 30)
+				;(= cycles 15)
 			)
 			(3
 				(if
@@ -125,7 +129,9 @@
 						((ScriptID 39 2) posn: 100 147)
 					)
 				)
-				(= cycles 1)
+				;NRS speed fix
+				(= ticks 2)
+				;(= cycles 1)
 			)
 			(1
 				((ScriptID 39 2) view: 638)
@@ -133,7 +139,9 @@
 				(self
 					setScript: (ScriptID 217 (Random 0 6)) 0 (ScriptID 39 2)
 				)
-				(= cycles 12)
+				;NRS speed fix
+				(= ticks 24)
+				;(= cycles 12)
 			)
 			(2
 				(if
@@ -161,7 +169,6 @@
 )
 
 (instance startFight of Script
-	(properties)
 	
 	(method (dispose)
 		(super dispose:)
@@ -199,7 +206,9 @@
 				else
 					(ego setMotion: MoveTo 187 135)
 				)
-				(= cycles 3)
+				;NRS speed fix
+				(= ticks 6)
+				;(= cycles 3)
 			)
 			(1
 				(cond 
@@ -213,7 +222,9 @@
 							)
 							(self changeState: 3)
 						else
-							(= cycles 1)
+							;NRS speed fix
+							(= ticks 2)
+							;(= cycles 1)
 						)
 					)
 					(
@@ -225,7 +236,11 @@
 						)
 						(self changeState: 3)
 					)
-					(else (= cycles 1))
+					(else
+						;NRS speed fix
+						(= ticks 2)
+						;(= cycles 1)
+					)
 				)
 			)
 			(2 (self changeState: 1))

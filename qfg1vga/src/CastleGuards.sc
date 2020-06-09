@@ -111,7 +111,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_CASTLE_GUARDS)
+		(Bset fBeenIn41)
 		(super dispose:)
 	)
 	

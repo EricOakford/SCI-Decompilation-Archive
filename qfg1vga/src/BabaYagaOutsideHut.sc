@@ -825,8 +825,8 @@
 			(1 (= cycles 2))
 			(2
 				(if (not (Btst fBeenIn22))
-					(Bset fBeenIn21)
-					(messager say: N_ROOM 0 0 3 self)
+					(Bset fBeenIn22)
+					(messager say: N_ROOM NULL NULL 3 self)
 				else
 					(= ticks 30)
 				)

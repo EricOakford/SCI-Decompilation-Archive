@@ -43,7 +43,7 @@
 	local7
 	local8
 	local9
-	[local10 7]
+	[fly 7]
 	[local17 7] = [160 164 160 156 155 155 157]
 	[local24 7] = [14 15 9 12 13 10 8]
 	local31
@@ -77,24 +77,25 @@
 	)
 )
 
-(procedure (localproc_021a &tmp temp0)
-	(= temp0 0)
-	(while (< temp0 6)
-		([local10 temp0]
+(procedure (localproc_021a &tmp i)
+	(= i 0)
+	(while (< i 6)
+		(= [fly i] (Clone (ScriptID 98 28)))
+		([fly i]
 			ignoreActors:
 			posn:
-				[local17 temp0]
-				[local24 (= [local10 temp0] (Clone (ScriptID 98 28)))]
+				[local17 i]
+				[local24 i]
 			init:
 			setLoop: 9
 			setPri: 15
 		)
 		(if (< howFast 3)
-			([local10 temp0] addToPic:)
+			([fly i] addToPic:)
 		else
-			([local10 temp0] setCycle: Forward setMotion: Wander)
+			([fly i] setCycle: Forward setMotion: Wander)
 		)
-		(++ temp0)
+		(++ i)
 	)
 )
 

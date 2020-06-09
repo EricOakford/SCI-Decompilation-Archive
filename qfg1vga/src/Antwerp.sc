@@ -204,7 +204,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_ANTWERP)
+		(Bset fBeenIn84)
 		(cond 
 			((!= newRoomNum 89)
 				(Bclr SAID_HIDEN_GOSEKE)

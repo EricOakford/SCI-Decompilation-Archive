@@ -295,8 +295,12 @@ code_02ef:
 		(features add: target wall buildings trees appleTree)
 		(= armorValue 0)
 		(cond 
-			((ego has: iChainmail) (= armorValue 5))
-			((ego has: iLeather) (= armorValue 3))
+			((ego has: iChainmail)
+				(= armorValue CHAIN_VALUE)
+			)
+			((ego has: iLeather)
+				(= armorValue LEATHER_VALUE)
+			)
 		)
 		(brutus targDeltaX:
 		(switch local8

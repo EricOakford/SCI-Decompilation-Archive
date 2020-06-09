@@ -283,7 +283,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(Bset VISITED_DRYAD)
+		(Bset fBeenIn76)
 		(DisposeScript JUMP)
 		(super dispose:)
 	)
@@ -703,7 +703,7 @@
 				)
 			)
 			(8
-				(if (not (Btst VISITED_DRYAD))
+				(if (not (Btst fBeenIn76))
 					(messager say: N_ROOM 0 14 1 self)
 				else
 					(messager say: N_ROOM 0 31 1 self)

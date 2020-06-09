@@ -52,48 +52,36 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						254
-						189
-						264
-						175
-						318
-						165
-						319
-						149
-						224
-						167
-						204
-						146
-						210
-						130
-						182
-						112
-						152
-						112
-						191
-						136
-						181
-						146
-						0
-						146
+						0 0
+						319 0
+						319 189
+						254 189
+						264 175
+						318 165
+						319 149
+						224 167
+						204 146
+						210 130
+						182 112
+						152 112
+						191 136
+						181 146
+						0 146
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 0 157 42 189 0 189
+					type: PBarredAccess
+					init:
+						0 157
+						42 189
+						0 189
 					yourself:
 				)
 		)
-		(LoadMany RES_VIEW 63 516)
-		(Load RES_SCRIPT 942)
+		(LoadMany VIEW 63 516)
+		(Load SCRIPT MOVECYC)
 		(super init:)
 		(features
 			add:
@@ -169,7 +157,7 @@
 			init:
 			setPri: 13
 			ignoreActors:
-			ignoreControl: -32768
+			ignoreControl: cYELLOW
 			actions: unusualDoVerb
 		)
 		(if (and Night (Btst fGhostOil))
@@ -197,7 +185,7 @@
 		(if
 			(and
 				(not (ego script?))
-				(== (ego edgeHit?) 3)
+				(== (ego edgeHit?) SOUTH)
 				(not local3)
 			)
 			(ego setScript: walkOutTo72)
@@ -295,8 +283,10 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
+		(= deathMusic (SoundFX 26))	;this fix ensures that the death music always changes back
+									; when exiting
 		(if Night
-			(= deathMusic (SoundFX 26))
+			;(= deathMusic (SoundFX 26))
 			(riser setMotion: 0 setCycle: 0 setScript: 0)
 			(twister setMotion: 0 setCycle: 0 setScript: 0)
 			(tumbler setMotion: 0 setCycle: 0 setScript: 0)
@@ -305,9 +295,9 @@
 			(swimmer setMotion: 0 setCycle: 0 setScript: 0)
 			(Bset fBeenInGraveyardNight)
 		else
-			(Bset VISITED_GRAVEYARD_DAYTIME)
+			(Bset fBeenIn64)
 		)
-		(Bset VISITED_GRAVEYARD_DAYTIME)
+		(Bset fBeenIn64)
 		(Bclr fGhostsAttack)
 		(DisposeScript MOVECYC)
 		(super dispose:)
@@ -317,8 +307,12 @@
 		(switch theVerb
 			(V_LOOK
 				(switch (Random 1 3)
-					(1 (messager say: N_ROOM V_LOOK C_LOOK1))
-					(2 (messager say: N_ROOM V_LOOK C_LOOK2))
+					(1
+						(messager say: N_ROOM V_LOOK C_LOOK1)
+					)
+					(2
+						(messager say: N_ROOM V_LOOK C_LOOK2)
+					)
 					(3
 						(if Night
 							(messager say: N_ROOM V_LOOK C_LOOKNIGHT)
@@ -401,7 +395,7 @@
 		y 6
 		noun N_GRASS
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 	
 	(method (doVerb theVerb)
@@ -423,7 +417,7 @@
 		y 6
 		noun N_TREES
 		sightAngle 40
-		onMeCheck $0002
+		onMeCheck cBLUE
 	)
 )
 
@@ -433,7 +427,7 @@
 		y 6
 		noun N_SKY
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
@@ -831,7 +825,7 @@
 						(or
 							(== prevRoomNum 63)
 							(and Night (Btst fBeenInGraveyardNight))
-							(and (not Night) (Btst VISITED_GRAVEYARD_DAYTIME))
+							(and (not Night) (Btst fBeenIn64))
 						)
 						(= ticks 60)
 					)
@@ -841,7 +835,7 @@
 			)
 			(2
 				(cond 
-					((Btst VISITED_GRAVEYARD_DAYTIME) (self cue:))
+					((Btst fBeenIn64) (self cue:))
 					(Night (self cue:))
 					(else (messager say: N_ROOM 0 0 2 self))
 				)
@@ -849,7 +843,7 @@
 			(3
 				(cond 
 					(Night (messager say: N_ROOM 0 C_NIGHT 1 self))
-					((Btst VISITED_GRAVEYARD_DAYTIME) (self cue:))
+					((Btst fBeenIn64) (self cue:))
 					(else (messager say: N_ROOM 0 C_FIRST_TIME 1 self))
 				)
 			)

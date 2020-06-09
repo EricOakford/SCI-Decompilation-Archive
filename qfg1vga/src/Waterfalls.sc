@@ -212,7 +212,7 @@
 	(method (dispose)
 		(Bclr HENRY_DOOR_OPEN)
 		(= disabledActions 0)
-		(Bset VISITED_FLYINGFALLS)
+		(Bset fBeenIn82)
 		(super dispose:)
 	)
 	
@@ -1591,7 +1591,7 @@
 			)
 			(2 (NormalEgo) (= cycles 2))
 			(3
-				(if (not (Btst VISITED_FLYINGFALLS))
+				(if (not (Btst fBeenIn82))
 					(messager say: N_ROOM 0 C_FIRSTENTRY 1 self)
 				else
 					(= cycles 2)

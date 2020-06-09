@@ -382,8 +382,10 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(Bset VISITED_GOBLIN_AMBUSH)
-		(if (== prevRoomNum vGoblin) (= monsterNum 0))
+		(Bset fBeenIn45)
+		(if (== prevRoomNum vGoblin)
+			(= monsterNum 0)
+		)
 		(DisposeScript PAVOID)
 		(DisposeScript PCHASE)
 		(super dispose:)

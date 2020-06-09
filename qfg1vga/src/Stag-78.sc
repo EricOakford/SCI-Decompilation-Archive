@@ -92,7 +92,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(Bset VISITED_STAG_78)
+		(Bset fBeenIn78)
 		(super dispose:)
 	)
 )

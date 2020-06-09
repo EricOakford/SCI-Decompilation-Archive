@@ -20,7 +20,7 @@
 (local
 	brigandsBehindLog
 	local1
-	[local2 108]
+	[arrowPosn 108]
 	theArrowID
 	local111
 	local112 =  30
@@ -226,25 +226,25 @@
 	(= temp3 (/ (* temp1 2) 128))
 	(= temp1 (/ temp1 8))
 	(= temp2 (/ temp2 8))
-	(= [local2 param3] param1)
-	(= [local2 (+ param3 9)] param2)
+	(= [arrowPosn param3] param1)
+	(= [arrowPosn (+ param3 9)] param2)
 	(= temp0 1)
 	(while (<= temp0 4)
-		(= [local2 (+ param3 temp0)]
-			(+ [local2 (+ param3 temp0 -1)] temp1)
+		(= [arrowPosn (+ param3 temp0)]
+			(+ [arrowPosn (+ param3 temp0 -1)] temp1)
 		)
-		(= [local2 (+ param3 temp0 9)]
-			(+ [local2 (+ param3 temp0 8)] (- temp2 temp3))
+		(= [arrowPosn (+ param3 temp0 9)]
+			(+ [arrowPosn (+ param3 temp0 8)] (- temp2 temp3))
 		)
 		(++ temp0)
 	)
 	(= temp0 5)
 	(while (<= temp0 8)
-		(= [local2 (+ param3 temp0)]
-			(+ [local2 (+ param3 temp0 -1)] temp1)
+		(= [arrowPosn (+ param3 temp0)]
+			(+ [arrowPosn (+ param3 temp0 -1)] temp1)
 		)
-		(= [local2 (+ param3 temp0 9)]
-			(+ [local2 (+ param3 temp0 8)] temp2 temp3)
+		(= [arrowPosn (+ param3 temp0 9)]
+			(+ [arrowPosn (+ param3 temp0 8)] temp2 temp3)
 		)
 		(++ temp0)
 	)
@@ -397,11 +397,16 @@
 		)
 	)
 	
-	(method (doit &tmp egoLoop egoPriority egoX egoY)
+	(method (doit &tmp egoLoop egoPriority theX theY)
+		
+		;EO: added to fix speed bug
+		(if (< (Abs (- gameTime name)) 2) (return))
+		(= name gameTime)
+		
 		(= egoLoop (ego loop?))
 		(= egoPriority (ego priority?))
-		(= egoX (ego x?))
-		(= egoY (ego y?))
+		(= theX (ego x?))
+		(= theY (ego y?))
 		(= local147 0)
 		(while (<= local147 24)
 			(if (!= [newView local147] 0)
@@ -419,14 +424,14 @@
 				([newView (+ local147 3)]
 					setCel: local145
 					setPri: (- egoPriority 1)
-					posn: (+ egoX local146) (+ egoY [newView local147])
+					posn: (+ theX local146) (+ theY [newView local147])
 				)
 			)
 			(= local147 (+ local147 4))
 		)
-		(= egoX (ego x?))
+		(= theX (ego x?))
 		(cond 
-			((and (not local1) (< egoX 230))
+			((and (not local1) (< theX 230))
 				(= local1 1)
 				(archer1 setScript: shoot1 0 1)
 				(archer2 setScript: shoot2 0 2)
@@ -439,7 +444,7 @@
 					(archer5 stopUpd:)
 				)
 			)
-			((and local1 (> egoX 270))
+			((and local1 (> theX 270))
 				(= local1 0)
 				(archer1 setScript: 0)
 				(archer2 setScript: 0)
@@ -653,11 +658,11 @@
 		addArrowY 0
 	)
 	
-	(method (changeState newState &tmp egoX)
+	(method (changeState newState &tmp theX)
 		(switch (= state newState)
 			(0
 				(if (not local1) (self dispose:) (return))
-				(= egoX (ego x?))
+				(= theX (ego x?))
 				(= arrowPt (* register 18))
 				(switch register
 					(1
@@ -669,8 +674,8 @@
 						(= addArrowX 0)
 						(= addArrowY 4)
 						(cond 
-							((< egoX 140) (= arrowLoop 2))
-							((> egoX 225) (= arrowLoop 1))
+							((< theX 140) (= arrowLoop 2))
+							((> theX 225) (= arrowLoop 1))
 							(else (= arrowLoop 4))
 						)
 					)
@@ -688,14 +693,17 @@
 						(= addArrowX 11)
 						(= addArrowY 5)
 						(cond 
-							((< egoX 177) (= arrowLoop 2))
-							((> egoX 245) (= arrowLoop 1))
+							((< theX 177) (= arrowLoop 2))
+							((> theX 245) (= arrowLoop 1))
 							(else (= arrowLoop 4))
 						)
 					)
 				)
 				(client cel: 4)
-				(= cycles (Random 5 15))
+				
+				;NRS speed fix
+				(= ticks (* 2 (Random 5 15)))
+				;(= cycles (Random 5 15))
 			)
 			(1
 				(localproc_0347
@@ -714,7 +722,7 @@
 						setPri: 11
 						noun: 6
 						ignoreActors:
-						posn: [local2 (+ arrowPt 1)] [local2 (+ arrowPt 10)]
+						posn: [arrowPosn (+ arrowPt 1)] [arrowPosn (+ arrowPt 10)]
 						init:
 					)
 				else
@@ -725,51 +733,61 @@
 						setPri: 7
 						noun: 6
 						ignoreActors:
-						posn: [local2 (+ arrowPt 1)] [local2 (+ arrowPt 10)]
+						posn: [arrowPosn (+ arrowPt 1)] [arrowPosn (+ arrowPt 10)]
 						init:
 					)
 				)
 				(client setCel: (+ (client cel?) 1))
-				(= cycles 1)
+				;NRS speed fix
+				(= ticks 2)
+				;(= cycles 1)
 			)
 			(3
 				(arrowFly play:)
 				(arrowID
 					setCel: 1
-					posn: [local2 (+ arrowPt 2)] [local2 (+ arrowPt 11)]
+					posn: [arrowPosn (+ arrowPt 2)] [arrowPosn (+ arrowPt 11)]
 				)
-				(= cycles 1)
+				;NRS speed fix
+				(= ticks 2)
+				;(= cycles 1)
 			)
 			(4
 				(arrowID
 					setCel: 2
-					posn: [local2 (+ arrowPt 3)] [local2 (+ arrowPt 12)]
+					posn: [arrowPosn (+ arrowPt 3)] [arrowPosn (+ arrowPt 12)]
 				)
-				(= cycles 1)
+				;NRS speed fix
+				(= ticks 2)
+				;(= cycles 1)
 			)
 			(5
 				(client setCel: (NumCels client))
 				(arrowID
-					posn: [local2 (+ arrowPt 4)] [local2 (+ arrowPt 13)]
+					posn: [arrowPosn (+ arrowPt 4)] [arrowPosn (+ arrowPt 13)]
 				)
-				(= cycles 1)
+				;NRS speed fix
+				(= ticks 2)
+				;(= cycles 1)
 			)
 			(6
 				(arrowID
 					setCel: 3
-					posn: [local2 (+ arrowPt 5)] [local2 (+ arrowPt 14)]
+					posn: [arrowPosn (+ arrowPt 5)] [arrowPosn (+ arrowPt 14)]
 				)
-				(= cycles 1)
+				;NRS speed fix
+				(= ticks 2)
+				;(= cycles 1)
 			)
 			(7
 				(if
 					(and
 						(== (ego script?) 0)
 						(localproc_0100
-							[local2 (+ arrowPt 5)]
-							[local2 (+ arrowPt 14)]
-							[local2 (+ arrowPt 6)]
-							[local2 (+ arrowPt 15)]
+							[arrowPosn (+ arrowPt 5)]
+							[arrowPosn (+ arrowPt 14)]
+							[arrowPosn (+ arrowPt 6)]
+							[arrowPosn (+ arrowPt 15)]
 						)
 					)
 					(= theArrowID arrowID)
@@ -777,9 +795,11 @@
 					(self changeState: 0)
 				else
 					(arrowID
-						posn: [local2 (+ arrowPt 6)] [local2 (+ arrowPt 15)]
+						posn: [arrowPosn (+ arrowPt 6)] [arrowPosn (+ arrowPt 15)]
 					)
-					(= cycles 1)
+					;NRS speed fix
+					(= ticks 2)
+					;(= cycles 1)
 				)
 			)
 			(8
@@ -787,10 +807,10 @@
 					(and
 						(== (ego script?) 0)
 						(localproc_0100
-							[local2 (+ arrowPt 6)]
-							[local2 (+ arrowPt 15)]
-							[local2 (+ arrowPt 7)]
-							[local2 (+ arrowPt 16)]
+							[arrowPosn (+ arrowPt 6)]
+							[arrowPosn (+ arrowPt 15)]
+							[arrowPosn (+ arrowPt 7)]
+							[arrowPosn (+ arrowPt 16)]
 						)
 					)
 					(= theArrowID arrowID)
@@ -799,9 +819,11 @@
 				else
 					(arrowID
 						setCel: 4
-						posn: [local2 (+ arrowPt 7)] [local2 (+ arrowPt 16)]
+						posn: [arrowPosn (+ arrowPt 7)] [arrowPosn (+ arrowPt 16)]
 					)
-					(= cycles 1)
+					;NRS speed fix
+					(= ticks 2)
+					;(= cycles 1)
 				)
 			)
 			(9
@@ -809,10 +831,10 @@
 					(and
 						(== (ego script?) 0)
 						(localproc_0100
-							[local2 (+ arrowPt 7)]
-							[local2 (+ arrowPt 16)]
-							[local2 (+ arrowPt 8)]
-							[local2 (+ arrowPt 17)]
+							[arrowPosn (+ arrowPt 7)]
+							[arrowPosn (+ arrowPt 16)]
+							[arrowPosn (+ arrowPt 8)]
+							[arrowPosn (+ arrowPt 17)]
 						)
 					)
 					(= theArrowID arrowID)
@@ -820,9 +842,11 @@
 					(self changeState: 0)
 				else
 					(arrowID
-						posn: [local2 (+ arrowPt 8)] [local2 (+ arrowPt 17)]
+						posn: [arrowPosn (+ arrowPt 8)] [arrowPosn (+ arrowPt 17)]
 					)
-					(= cycles 1)
+					;NRS speed fix
+					(= ticks 2)
+					;(= cycles 1)
 				)
 			)
 			(10
@@ -839,28 +863,17 @@
 	)
 )
 
-(instance shoot1 of Shooter
-	(properties)
-)
+(instance shoot1 of Shooter)
 
-(instance shoot2 of Shooter
-	(properties)
-)
+(instance shoot2 of Shooter)
 
-(instance shoot3 of Shooter
-	(properties)
-)
+(instance shoot3 of Shooter)
 
-(instance shoot4 of Shooter
-	(properties)
-)
+(instance shoot4 of Shooter)
 
-(instance shoot5 of Shooter
-	(properties)
-)
+(instance shoot5 of Shooter)
 
 (instance egoHit of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -897,7 +910,7 @@
 			)
 			(1
 				(if egoKilled
-					(messager say: N_ROOM 0 C_ARROWKILLS 1 self)
+					(messager say: N_ROOM NULL C_ARROWKILLS 1 self)
 				else
 					(self cue:)
 				)

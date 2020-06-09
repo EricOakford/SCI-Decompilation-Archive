@@ -222,14 +222,16 @@
 	)
 	
 	(method (cue)
-		(if (not (Btst VISITED_HEALERHUT_OUTSIDE))
-			(Bset VISITED_HEALERHUT_OUTSIDE)
-			(messager say: N_ROOM 0 19)
+		(if (not (Btst fBeenIn54))
+			(Bset fBeenIn54)
+			(messager say: N_ROOM NULL 19)
 		else
 			(switch local11
 				(1 (messager say: 3 4 2 2))
 				(2
-					(if (== nestState 0) (messager say: 12 1 29))
+					(if (== nestState 0)
+						(messager say: 12 1 29)
+					)
 				)
 				(3 (messager say: N_ROOM 0 15 2))
 				(4 (messager say: N_ROOM 0 0 6))

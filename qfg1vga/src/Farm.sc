@@ -212,7 +212,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(Bset VISITED_FARM)
+		(Bset fBeenIn53)
 		(DisposeScript FORCOUNT)
 		(super dispose:)
 	)

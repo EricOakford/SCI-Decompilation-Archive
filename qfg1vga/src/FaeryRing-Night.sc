@@ -82,10 +82,11 @@
 	(= i 0)
 	(while (< i 4)
 		(= [chaseScript i] (Clone aChaseScript))
+		(ego signal: (| (ego signal?) skipCheck))
 		([faery i]
 			setStep: 6 4
 			setPri: 14
-			setScript: [chaseScript i] 0 (ego signal: (| (ego signal?) $1000))
+			setScript: [chaseScript i] 0 
 		)
 		(++ i)
 	)
@@ -126,36 +127,37 @@
 		(++ i)
 	)
 	(aFaery
-		setScript: [faeryScript 4] 0 (= [faeryScript 4] (aFaeryScript new:))
+		setScript: [faeryScript 4] 0 ;(= [faeryScript 4] (aFaeryScript new:))
 	)
 )
 
 (procedure (localproc_07a3 &tmp i)
 	(= i 0)
 	(while (< i 4)
+		(= [faeryScript i] (aFaeryScript new:))
+		(= [faeryTalker i] (fairyTeller new:))
+		(= [faery i] (Actor new:))
 		([faery i]
 			view: 70
 			setLoop: i
 			cel: 0
 			posn:
 				[local48 i]
-				[local53 (= [faeryTalker i] (fairyTeller new:))]
+				[local53 i]
 			ignoreActors: 1
 			illegalBits: 0
 			ignoreHorizon: 1
 			init:
-			actions:
-				[faeryTalker (= [faeryScript i] (aFaeryScript new:))]
-				0
-				(= [faery i] (Actor new:))
+			actions: [faeryTalker i] 0
 			setCycle: Forward
 			setScript: [faeryScript i] 0 i
 			setPri: 14
 		)
 		(++ i)
 	)
+	(= [faeryScript 4] (aFaeryScript new:))
 	(aFaery
-		posn: [local48 4] [local53 (= [faeryScript 4] (aFaeryScript new:))]
+		posn: [local48 4] [local53 i]
 		setCycle: Forward
 		setScript: [faeryScript 4] 0 i
 	)

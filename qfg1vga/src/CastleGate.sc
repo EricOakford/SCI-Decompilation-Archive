@@ -93,7 +93,10 @@
 					yourself:
 				)
 		)
-		(if (not (Btst VISITED_CASTLE_GATE)) (Bset VISITED_CASTLE_GATE) (oneTime init: play:))
+		(if (not (Btst fBeenIn37))
+			(Bset fBeenIn37)
+			(oneTime init: play:)
+		)
 		(portSound number: 90 init:)
 		(self
 			setFeatures: theSky mountain castle gateHouse tower bush wall wWindow

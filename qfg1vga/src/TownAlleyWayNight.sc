@@ -88,6 +88,8 @@
 			)
 		)
 		(self setRegions: STREET TOWN)
+		;(self setRegions: STREET) ;UPGRADE: Don't make this area part of the Town region, since Erana's aura doesn't cover it.
+
 	)
 	
 	(method (doit)

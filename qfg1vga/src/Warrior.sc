@@ -124,40 +124,56 @@
 			(= shieldValue 0)
 		)
 		(= armorEnc (/ (= theArmorEnc (WtCarried)) 2))
-		(if (> theArmorEnc (MaxLoad)) (= armorEnc theArmorEnc))
+		(if (> theArmorEnc (MaxLoad))
+			(= armorEnc theArmorEnc)
+		)
 		(= armorValue 0)
 		(cond 
-			((ego has: iChainmail) (= armorValue 5))
-			((ego has: iLeather) (= armorValue 3))
+			((ego has: iChainmail)
+				(= armorValue CHAIN_VALUE)
+			)
+			((ego has: iLeather)
+				(= armorValue LEATHER_VALUE)
+			)
 		)
 		(cond 
 			((ego has: iSword)
-				(self view: 109 weapValue: 8)
+				(self view: 109 weapValue: SWORD_VALUE)
 			)
 			((ego has: iDagger)
 				(switch monsterNum
-					(440 1)
-					(435 1)
-					(420 (= baseY (+ baseY 8)))
-					(430
+					(vCheetaur
+						1
+					)
+					(vMantray
+						1
+					)
+					(vBear
+						(= baseY (+ baseY 8))
+					)
+					(vSaurus
 						(= baseX (+ baseX 8))
 						(= baseY (+ baseY 5))
 					)
-					(450 (= baseX (+ baseX 12)))
-					(455
+					(vTroll
+						(= baseX (+ baseX 12))
+					)
+					(vOgre
 						(= baseY (+ baseY 4))
 						(= baseX (+ baseX 8))
 					)
-					(425 (= baseX (+ baseX 7)))
-					(445
+					(vMinotaur
+						(= baseX (+ baseX 7))
+					)
+					(vGoblin
 						(= baseX (+ baseX 6))
 						(= baseY (- baseY 7))
 					)
-					(465
+					(vBrigand
 						(= baseX (+ baseX 12))
 						(= baseY (+ baseY 2))
 					)
-					(460
+					(vDragon
 						(= baseX (+ baseX 8))
 						(= baseY (+ baseY 10))
 					)
@@ -166,7 +182,7 @@
 						(= baseY (+ baseY 10))
 					)
 				)
-				(self view: 102 weapValue: 5)
+				(self view: 102 weapValue: DAGGER_VALUE)
 			)
 			(else
 				(= noWeapon TRUE)

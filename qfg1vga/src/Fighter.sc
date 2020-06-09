@@ -79,16 +79,22 @@
 	(method (drawWeapons)
 		(= baseX (opponent warriorX?))
 		(= baseY 135)
-		(if (ego has: 5) (= shieldValue 10))
+		(if (ego has: iShield)
+			(= shieldValue 10)
+		)
 		(= armorEnc (/ (WtCarried) 2))
 		(= armorValue 0)
 		(cond 
-			((ego has: 3) (= armorValue 5))
-			((ego has: 4) (= armorValue 3))
+			((ego has: iChainmail)
+				(= armorValue CHAIN_VALUE)
+			)
+			((ego has: iLeather)
+				(= armorValue LEATHER_VALUE)
+			)
 		)
-		(self weapValue: 8)
+		(self weapValue: SWORD_VALUE)
 		(self
-			ignoreActors: 1
+			ignoreActors: TRUE
 			view: fighterView
 			posn: baseX baseY
 			stopUpd:

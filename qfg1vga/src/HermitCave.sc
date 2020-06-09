@@ -165,7 +165,7 @@
 					(!= (curRoom script?) doorScript)
 					(!= (curRoom script?) sLeaving)
 				)
-				(if (not (Btst VISITED_HENRYINSIDE))
+				(if (not (Btst fBeenIn83))
 					(self setScript: sLeaving)
 				else
 					(self setScript: doorScript)
@@ -699,7 +699,7 @@
 			(V_DO
 				(cond 
 					(sittingDown (messager say: N_CAVEDOOR V_DO))
-					((not (Btst VISITED_HENRYINSIDE)) (curRoom setScript: sLeaving))
+					((not (Btst fBeenIn83)) (curRoom setScript: sLeaving))
 					(else (curRoom setScript: doorScript))
 				)
 			)
@@ -815,9 +815,9 @@
 					(super
 						showDialog:
 							-3
-							(Btst VISITED_HENRYINSIDE)
+							(Btst fBeenIn83)
 							-16
-							(Btst VISITED_HENRYINSIDE)
+							(Btst fBeenIn83)
 							-15
 							(if (not (Btst fLearnedTrigger)) (not (Btst ASKED_TRIGGER_SCROLL)) else 0)
 							-13
@@ -1000,7 +1000,7 @@
 				(= cycles 6)
 			)
 			(1
-				(if (Btst VISITED_HENRYINSIDE)
+				(if (Btst fBeenIn83)
 					(= state 4)
 					(messager say: N_ROOM 0 C_HELLOAGAIN 1 self)
 				else
@@ -1092,7 +1092,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset VISITED_HENRYINSIDE)
+				(Bset fBeenIn83)
 				(HandsOff)
 				(ego hide:)
 				(poof
@@ -1152,7 +1152,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset VISITED_HENRYINSIDE)
+				(Bset fBeenIn83)
 				(HandsOff)
 				(ego setMotion: PolyPath 109 89 self)
 			)
@@ -1194,7 +1194,7 @@
 			)
 			(4
 				(messager say: N_ROOM 0 C_WAKEUP 1 self)
-				(Bset VISITED_HENRYINSIDE)
+				(Bset fBeenIn83)
 			)
 			(5
 				(EgoSleeps 5)

@@ -161,7 +161,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(Bset VISITED_FROST_CAVE)
+		(Bset fBeenIn58)
 		(super dispose:)
 	)
 	
@@ -554,7 +554,9 @@
 				)
 			)
 			(6
-				(if (not (Btst VISITED_FROST_CAVE)) (messager say: N_GIANT V_CONVERSATION C_NORTHLANDS 0 self))
+				(if (not (Btst fBeenIn58))
+					(messager say: N_GIANT V_CONVERSATION C_NORTHLANDS 0 self)
+				)
 				(HandsOn)
 			)
 			(7

@@ -136,7 +136,7 @@
 	
 	(method (dispose)
 		(= useSortedFeatures theUseSortedFeatures)
-		(Bset VISITED_CASTLE_BARRACKS)
+		(Bset fBeenIn38)
 		(super dispose:)
 	)
 	

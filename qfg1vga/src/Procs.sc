@@ -52,7 +52,8 @@
 	local0
 )
 (procedure (EgoDead message title cel loop view
-		&tmp deadMsg deadTitle deadCel deadLoop deadView msgY msgX msgHeight [msgBuf 120] [titleBuf 50] [msgLen 4] [titleLen 4])
+		&tmp deadMsg deadTitle deadCel deadLoop deadView msgY msgX msgHeight [msgBuf 150] [titleBuf 50] [msgLen 4] [titleLen 4])
+		;EO: msgBuf increased from 120 to 150. This prevents really long messages from overlapping into the title.
 		;set up the death message, title, and icon
 	(= deadMsg
 		(if (and argc message) message else C_DIE_GENERIC)

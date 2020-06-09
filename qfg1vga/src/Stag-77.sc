@@ -76,7 +76,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_STAG_77)
+		(Bset fBeenIn77)
 		(super dispose:)
 	)
 )

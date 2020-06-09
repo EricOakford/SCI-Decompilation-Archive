@@ -357,6 +357,13 @@
 	aaMAGIC
 )
 
+;Armor values
+(define LEATHER_VALUE 2)
+(define CHAIN_VALUE 5)
+
+;Weapon values
+(define DAGGER_VALUE 5)
+(define SWORD_VALUE 8)
 
 ; Icons
 (enum 
@@ -429,35 +436,35 @@
 	fBeenIn34 			;24
 	fBeenIn35 			;25
 	fBeenIn36 			;26
-	VISITED_CASTLE_GATE 		;27
-	VISITED_CASTLE_BARRACKS 	;28
-	VISITED_CASTLE_COURTYARD 	;29 ;unused
-	VISITED_CASTLE_STABLES 		;30 ;unused
-	VISITED_CASTLE_GUARDS 		;31
+	fBeenIn37 		;27
+	fBeenIn38 	;28
+	fBeenIn39 	;29 ;unused
+	fBeenIn40 		;30 ;unused
+	fBeenIn41 		;31
 	fBeenIn42 			;32
 	fBeenIn43 			;33
 	fBeenIn44 			;34
-	VISITED_GOBLIN_AMBUSH 		;35
-	VISITED_ROOM_46 			;36 ;unused (deleted Goblin Cave scene)
-	VISITED_ROOM_47 			;37 ;unused (deleted Goblin Cave scene)
-	VISITED_ROOM_48 			;38 ;unused (deleted Goblin Cave scene)
-	VISITED_ROOM_49 			;39 ;unused (deleted Goblin Cave scene)
-	VISITED_ROOM_50 			;40 ;unused (deleted Goblin Cave scene)
+	fBeenIn45 		;35
+	fBeenIn46 			;36 ;unused (deleted Goblin Cave scene)
+	fBeenIn47 			;37 ;unused (deleted Goblin Cave scene)
+	fBeenIn48 			;38 ;unused (deleted Goblin Cave scene)
+	fBeenIn49 			;39 ;unused (deleted Goblin Cave scene)
+	fBeenIn50 			;40 ;unused (deleted Goblin Cave scene)
 	fBeenIn51 			;41
 	fBeenIn52 			;42
-	VISITED_FARM 				;43
-	VISITED_HEALERHUT_OUTSIDE 	;44
-	VISITED_HEALERHUT_INSIDE 	;45
+	fBeenIn53 				;43
+	fBeenIn54 	;44
+	fBeenIn55 	;45
 	fBeenIn56 			;46
 	fBeenIn57 			;47
-	VISITED_FROST_CAVE 			;48
+	fBeenIn58 			;48
 	fBeenIn59 			;49 ;unused (Room 59 does not exist)
-	VISITED_MEEPS 				;50
+	fBeenIn60 				;50
 	fBeenIn61 			;51
 	fBeenIn62 			;52
 	fBeenIn63 			;53
-	VISITED_GRAVEYARD_DAYTIME 	;54
-	VISITED_TOWNOVERLOOK 		;55
+	fBeenIn64 	;54
+	fBeenIn65 		;55
 	fBeenIn66 			;56
 	fBeenIn67 			;57
 	fBeenIn68 			;58
@@ -468,15 +475,15 @@
 	fBeenIn73 		;63 ;unused
 	fBeenIn74 			;64
 	fBeenIn75 			;65
-	VISITED_DRYAD 				;66
-	VISITED_STAG_77 			;67
-	VISITED_STAG_78 			;68
+	fBeenIn76 				;66
+	fBeenIn77 			;67
+	fBeenIn78 			;68
 	fBeenIn79 			;69
 	fBeenIn80 			;70
 	fBeenIn81 			;71 ;log crossroads
-	VISITED_FLYINGFALLS 		;72
-	VISITED_HENRYINSIDE 		;73
-	VISITED_ANTWERP 			;74
+	fBeenIn82 		;72
+	fBeenIn83 		;73
+	fBeenIn84 			;74
 	fBeenIn85 			;75
 	fBeenIn86 			;76
 	fBeenIn87 				;77

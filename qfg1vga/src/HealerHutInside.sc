@@ -292,7 +292,7 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(cSound fade:)
-		(Bset VISITED_HEALERHUT_INSIDE)
+		(Bset fBeenIn55)
 		(super dispose:)
 	)
 	
@@ -606,7 +606,7 @@
 		(super
 			showDialog:
 				-37
-				(if (or (Btst fBeenIn311) (Btst VISITED_HEALERHUT_INSIDE)) (not (Btst RETURNED_RING)) else 0)
+				(if (or (Btst fBeenIn311) (Btst fBeenIn55)) (not (Btst RETURNED_RING)) else 0)
 				-16
 				(ego has: iAcorn)
 		)
@@ -618,14 +618,14 @@
 				(-14 (Bset fClawsKnown))
 				(-11 (Bset fBeardKnown))
 				(-12
-					(if (or (Btst fBeenIn320) (Btst VISITED_FARM))
+					(if (or (Btst fBeenIn320) (Btst fBeenIn53))
 						(super doChild: query)
 					else
 						(return TRUE)
 					)
 				)
 				(-29
-					(if (or (Btst fBeenIn70) (Btst VISITED_DRYAD))
+					(if (or (Btst fBeenIn70) (Btst fBeenIn76))
 						(super doChild: query)
 					else
 						(return TRUE)
@@ -1398,7 +1398,8 @@
 				(ego setMotion: PolyPath 105 157 self)
 			)
 			(3
-				(messager say: N_ROOM 0 C_GETDISPEL self) ;Now shows complete sequence
+				(messager say: N_ROOM NULL C_GETDISPEL) ;Now shows complete sequence
+				(self cue:)
 			)
 			(4
 				(healer
