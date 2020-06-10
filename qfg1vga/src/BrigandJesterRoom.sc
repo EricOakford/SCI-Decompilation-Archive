@@ -240,7 +240,7 @@
 					(not (Btst 271))
 				)
 				(Bset fOpeningLeaderDoor)
-				(switch (ego onControl: 1)
+				(switch (ego onControl: origin)
 					(512
 						(Bset 256)
 						(if local6 (= local5 1))
@@ -661,9 +661,11 @@
 	(properties)
 	
 	(method (showDialog &tmp superShowDialog)
-		(if
-		(== (= superShowDialog (super showDialog:)) -23)
+		(if (== (= superShowDialog (super showDialog:)) -23)
 			(SolvePuzzle f96AskAboutElsa 8)
+			;UPGRADE: Allow Yorick to leave
+			(Bset fBefriendedYorick)
+			((ScriptID 98 21) setScript: takeADive)
 		)
 		(return superShowDialog)
 	)
@@ -1518,10 +1520,16 @@
 				)
 			)
 			(1
-				(if (not (Btst fPulledChain)) (= ticks 12) else (= ticks 1))
+				(if (not (Btst fPulledChain))
+					(= ticks 12)
+				else
+					(= ticks 1)
+				)
 			)
 			(2
-				(if (Btst fBefriendedYorick) (messager say: N_ROOM 0 C_YORICKFRIEND))
+				(if (Btst fBefriendedYorick)
+					(messager say: N_ROOM NULL C_YORICKFRIEND)
+				)
 				(yorick setLoop: 1 setCel: 0 setCycle: MoveCycle @local56 self)
 			)
 			(3

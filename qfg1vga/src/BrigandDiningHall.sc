@@ -113,8 +113,8 @@
 		(drunk
 			init:
 			setPri: 12
-			addToPic:	;this makes it impossible to interact with him
-			;stopUpd:	;Mac bug fix
+			;addToPic:	;this makes it impossible to interact with him
+			stopUpd:	;Mac bug fix
 		)
 		(chandelier init: setPri: 5 stopUpd:)
 		(rope init: setPri: 3)

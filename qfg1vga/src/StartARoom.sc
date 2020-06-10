@@ -46,7 +46,7 @@
 		(= hitDaggers 0)
 	)
 	(= index 0)
-	(while (< index 40)
+	(while (< index NUM_INVITEMS)
 		((inventory at: index) amtDropped: 0)
 		(++ index)
 	)

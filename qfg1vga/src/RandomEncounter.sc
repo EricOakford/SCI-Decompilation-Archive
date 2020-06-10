@@ -573,8 +573,8 @@
 								(messager say: N_LOOKIT V_LOOK C_SAURUSREX 0 0 ENCOUNTER)
 							)
 							(vCheetaur
-								(messager say: N_LOOKIT V_LOOK C_SAURUSREX 0 0 ENCOUNTER)
-								;(messager say: N_LOOKIT V_LOOK C_CHEETAUR 0 0 ENCOUNTER)	;bug fix
+								;(messager say: N_LOOKIT V_LOOK C_SAURUSREX 0 0 ENCOUNTER)
+								(messager say: N_LOOKIT V_LOOK C_CHEETAUR 0 0 ENCOUNTER)	;bug fix
 							)
 							(vOgre
 								(messager say: N_LOOKIT V_LOOK C_OGRE 0 0 ENCOUNTER)

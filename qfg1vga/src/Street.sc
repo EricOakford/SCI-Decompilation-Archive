@@ -39,7 +39,7 @@
 					((and (< 700 Clock) (< Clock 2550))
 						(messager say: N_STREET V_SLEEP C_DAY 1 0 STREET)
 					)
-					((!= (ego onControl: origin) 1)
+					((!= (ego onControl: origin) cBLACK)
 						(messager say: N_STREET V_SLEEP C_CANT_SLEEP_THERE 1 0 STREET)
 					)
 					((== curRoomNum 334)

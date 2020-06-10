@@ -149,7 +149,9 @@
 			(V_CALM
 				(messager say: N_MEADOW V_CALM C_SPELLFAIL)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	

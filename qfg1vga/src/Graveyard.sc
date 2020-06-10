@@ -33,7 +33,7 @@
 	local10
 	cueGrave
 	local12
-	timesTalkedToGhosts
+	talkCount
 	cueGhostOil
 	[local15 45] = [5 0 180 27 5 1 196 47 5 2 190 67 5 3 153 80 5 4 132 91 5 5 152 116 5 6 189 114 5 7 198 96 5 8 179 75 5 9 169 57 5 10 174 35 -32768]
 )
@@ -102,8 +102,7 @@
 			)
 			(mandrake setPri: 8 stopUpd: init:)
 		)
-		(if
-		(and Night (or (== timeODay TIME_MIDNIGHT) (== timeODay TIME_NOTYETDAWN)))
+		(if (and Night (or (== timeODay TIME_MIDNIGHT) (== timeODay TIME_NOTYETDAWN)))
 			(Load RES_SCRIPT REVERSE)
 			(= deathMusic 37)
 			(riser init: cycleSpeed: 24 setCycle: Forward)
@@ -232,7 +231,7 @@
 			)
 			((and Night (== local12 0))
 				(= local12 1)
-				(Load RES_SCRIPT 969)
+				(Load RES_SCRIPT REVERSE)
 				(= deathMusic 37)
 				(longOne
 					cycleSpeed: 18
@@ -329,10 +328,6 @@
 				else
 					(messager say: N_ROOM V_DETECT)
 				)
-			)
-			;added in unused message
-			(V_FETCH
-				(messager say: N_ROOM V_FETCH)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -433,7 +428,7 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
 			(if Night
-				(messager say: N_SKY V_LOOK 0)
+				(messager say: N_SKY V_LOOK NULL)
 			else
 				(messager say: N_SKY V_LOOK C_DAY)
 			)
@@ -463,7 +458,7 @@
 					(if (TrySkill CLIMB 35 0)
 						(ego setScript: upTheWall)
 					else
-						(messager say: N_WALL V_DO 0)
+						(messager say: N_WALL V_DO NULL)
 					)
 				else
 					(messager say: N_WALL V_DO C_DAY)
@@ -506,7 +501,7 @@
 		(switch theVerb
 			(V_LOOK
 				(= cueGrave 1)
-				(messager say: N_GRAVESTONE V_LOOK 0 1 curRoom)
+				(messager say: N_GRAVESTONE V_LOOK NULL 1 curRoom)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -530,7 +525,7 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
 			(= cueGrave 4)
-			(messager say: N_CROSS_STONE V_LOOK 0 1 curRoom)
+			(messager say: N_CROSS_STONE V_LOOK NULL 1 curRoom)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -563,7 +558,7 @@
 		(switch theVerb
 			(V_LOOK
 				(if (ego inRect: 192 134 243 160)
-					(messager say: N_MANDRAKE V_LOOK 0)
+					(messager say: N_MANDRAKE V_LOOK NULL)
 				else
 					(messager say: N_MANDRAKE V_LOOK C_NEARMANDRAKE)
 				)
@@ -583,7 +578,7 @@
 		noun N_GHOST
 		view 64
 		loop 7
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
@@ -626,7 +621,7 @@
 		view 64
 		loop 6
 		cel 3
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
@@ -641,7 +636,7 @@
 		y 102
 		noun N_GHOST
 		view 64
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
@@ -664,7 +659,7 @@
 		noun N_GHOST
 		view 64
 		loop 2
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
@@ -687,7 +682,7 @@
 		noun N_GHOST
 		view 64
 		loop 9
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
@@ -703,7 +698,7 @@
 		noun N_GHOST
 		view 64
 		loop 4
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
@@ -1178,11 +1173,11 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(++ timesTalkedToGhosts)
+				(++ talkCount)
 				(self cue:)
 			)
 			(1
-				(switch timesTalkedToGhosts
+				(switch talkCount
 					(1
 						(messager say: N_GHOST V_ALTTALK 0 1 self)
 					)
@@ -1204,7 +1199,7 @@
 				)
 			)
 			(2
-				(if (== timesTalkedToGhosts 6) (= timesTalkedToGhosts 0))
+				(if (== talkCount 6) (= talkCount 0))
 				(HandsOn)
 				(self dispose:)
 			)

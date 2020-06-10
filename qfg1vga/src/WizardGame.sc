@@ -842,6 +842,7 @@ code_0453:
 		x 23
 		y 165
 		view 32
+		loop 9
 		value 0
 		valCel 0
 		max 1000

@@ -276,9 +276,7 @@ code_02ef:
 	)
 )
 
-(instance dags of Set
-	(properties)
-)
+(instance dags of Set)
 
 (instance rm73 of Room
 	(properties
@@ -291,7 +289,9 @@ code_02ef:
 		(Load RES_SOUND 31 29)
 		(Load RES_SCRIPT 101)
 		(super init: &rest)
-		(if targetDaggers (phonyDagger init: stopUpd:))
+		(if targetDaggers
+			(phonyDagger init: stopUpd:)
+		)
 		(features add: target wall buildings trees appleTree)
 		(= armorValue 0)
 		(cond 
@@ -313,8 +313,15 @@ code_02ef:
 				(self
 					addObstacle:
 						((Polygon new:)
-							type: 2
-							init: 0 0 319 0 319 189 25 189 6 135 26 126 0 126
+							type: PBarredAccess
+							init:
+								0 0
+								319 0
+								319 189
+								25 189
+								6 135
+								26 126
+								0 126
 							yourself:
 						)
 				)
@@ -324,8 +331,14 @@ code_02ef:
 				(self
 					addObstacle:
 						((Polygon new:)
-							type: 2
-							init: 284 113 284 189 0 189 0 0 319 0 319 113
+							type: PBarredAccess
+							init:
+								284 113
+								284 189
+								0 189
+								0 0
+								319 0
+								319 113
 							yourself:
 						)
 				)
@@ -335,40 +348,24 @@ code_02ef:
 				(self
 					addObstacle:
 						((Polygon new:)
-							type: 2
+							type: PBarredAccess
 							init:
-								108
-								124
-								122
-								138
-								106
-								153
-								106
-								189
-								0
-								189
-								0
-								0
-								319
-								0
-								319
-								189
-								170
-								189
-								175
-								171
-								202
-								139
-								212
-								115
-								144
-								122
-								152
-								139
-								130
-								139
-								115
-								124
+								108 124
+								122 138
+								106 153
+								106 189
+								0 189
+								0 0
+								319 0
+								319 189
+								170 189
+								175 171
+								202 139
+								212 115
+								144 122
+								152 139
+								130 139
+								115 124
 							yourself:
 						)
 				)
@@ -378,40 +375,24 @@ code_02ef:
 				(self
 					addObstacle:
 						((Polygon new:)
-							type: 2
+							type: PBarredAccess
 							init:
-								108
-								124
-								122
-								138
-								106
-								153
-								106
-								189
-								0
-								189
-								0
-								0
-								319
-								0
-								319
-								189
-								170
-								189
-								175
-								171
-								202
-								139
-								212
-								115
-								144
-								122
-								152
-								139
-								130
-								139
-								115
-								124
+								108 124
+								122 138
+								106 153
+								106 189
+								0 189
+								0 0
+								319 0
+								319 189
+								170 189
+								175 171
+								202 139
+								212 115
+								144 122
+								152 139
+								130 139
+								115 124
 							yourself:
 						)
 				)
@@ -423,26 +404,34 @@ code_02ef:
 	(method (doit)
 		(cond 
 			(script)
-			((== (ego edgeHit?) 2) (HandsOff) (curRoom setScript: sExitEast))
-			((== (ego edgeHit?) 4) (HandsOff) (curRoom setScript: sExitWest))
-			((== (ego edgeHit?) 3) (curRoom setScript: sExitSouth))
+			((== (ego edgeHit?) EAST)
+				(HandsOff)
+				(curRoom setScript: sExitEast)
+			)
+			((== (ego edgeHit?) WEST)
+				(HandsOff)
+				(curRoom setScript: sExitWest)
+			)
+			((== (ego edgeHit?) SOUTH)
+				(curRoom setScript: sExitSouth)
+			)
 		)
 		(super doit:)
 	)
 	
-	(method (dispose &tmp temp0)
+	(method (dispose &tmp i)
 		(= nightPalette NULL)
 		(dags eachElementDo: #dispose 81 release:)
-		(= temp0 0)
-		(while (< temp0 targetDaggers)
+		(= i 0)
+		(while (< i targetDaggers)
 			(if
 				(and
-					(cast contains: [newDagger temp0])
-					(IsObject [newDagger temp0])
+					(cast contains: [newDagger i])
+					(IsObject [newDagger i])
 				)
-				([newDagger temp0] dispose: delete:)
+				([newDagger i] dispose: delete:)
 			)
-			(++ temp0)
+			(++ i)
 		)
 		(dags dispose:)
 		(if (!= newRoomNum vBrigand)
@@ -850,8 +839,12 @@ code_02ef:
 				(HandsOn)
 				(NormalEgo)
 				(cond 
-					(local2 (curRoom setScript: brigsMeet))
-					((and (< timeODay 4) (or local6 (Btst 324))) (curRoom setScript: brutusThrows))
+					(local2
+						(curRoom setScript: brigsMeet)
+					)
+					((and (< timeODay 4) (or local6 (Btst 324)))
+						(curRoom setScript: brutusThrows)
+					)
 				)
 				(self dispose:)
 			)
@@ -873,8 +866,12 @@ code_02ef:
 				(HandsOn)
 				(NormalEgo)
 				(cond 
-					(local2 (curRoom setScript: brigsMeet))
-					((and (< timeODay 4) (or local6 (Btst 324))) (curRoom setScript: brutusThrows))
+					(local2
+						(curRoom setScript: brigsMeet)
+					)
+					((and (< timeODay TIME_SUNSET) (or local6 (Btst 324)))
+						(curRoom setScript: brutusThrows)
+					)
 				)
 				(self dispose:)
 			)
@@ -1021,7 +1018,10 @@ code_02ef:
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Bset fBrutusWaits) (= ticks 300))
+			(0
+				(Bset fBrutusWaits)
+				(= ticks 300)
+			)
 			(1
 				(Bclr fBrutusWaits)
 				(= seconds brunoTimer)
@@ -1050,8 +1050,12 @@ code_02ef:
 					setMotion: MoveTo (ego x?) (- (ego y?) 20) self
 				)
 			)
-			(1 (messager say: N_ROOM 0 C_BRUTUSATTACKS 0 self))
-			(2 (curRoom newRoom: vBrigand))
+			(1
+				(messager say: N_ROOM NULL C_BRUTUSATTACKS 0 self)
+			)
+			(2
+				(curRoom newRoom: vBrigand)
+			)
 		)
 	)
 )
@@ -1174,9 +1178,15 @@ code_02ef:
 					(cast eachElementDo: #stopUpd)
 					(= ticks 30)
 				)
-				(2 (messager say: N_ROOM 0 C_BRIGSMEET 0 self))
-				(3 (messager say: N_ROOM 0 C_BACKDOOR 0 self))
-				(4 (messager say: N_ROOM 0 C_PASSWORD 0 self))
+				(2
+					(messager say: N_ROOM NULL C_BRIGSMEET 0 self)
+				)
+				(3
+					(messager say: N_ROOM NULL C_BACKDOOR 0 self)
+				)
+				(4
+					(messager say: N_ROOM NULL C_PASSWORD 0 self)
+				)
 				(5
 					(SolvePuzzle POINTS_OVERHEARBRUNO 12)
 					(cast eachElementDo: #startUpd)
@@ -1215,14 +1225,14 @@ code_02ef:
 		noun N_BRUTUS
 		view 73
 		loop 4
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 	
 	(method (doVerb theVerb &tmp theBrutus)
 		(switch theVerb
 			(V_LOOK
 				(if (Btst fBeatBrutus)
-					(messager say: N_BRUTUS V_LOOK 0)
+					(messager say: N_BRUTUS V_LOOK NULL)
 				else
 					(messager say: N_BRUTUS V_LOOK C_BRUTUSHERE)
 				)
@@ -1265,7 +1275,9 @@ code_02ef:
 					(messager say: N_BRUNO V_DAGGER)
 				)
 			)
-			(V_DETECT (messager say: N_BRUTUS V_DETECT 0))
+			(V_DETECT
+				(messager say: N_BRUTUS V_DETECT NULL)
+			)
 			(V_FLAME
 				(if (or (not (cast contains: brutus)) (Btst fBeatBrutus))
 					(CastFlame 0)
@@ -1277,19 +1289,26 @@ code_02ef:
 				)
 			)
 			(V_CALM
-				(if
-				(and (cast contains: brutus) (not (Btst fBeatBrutus)))
-					(messager say: N_BRUTUS V_CALM 0 2)
+				(if (and (cast contains: brutus) (not (Btst fBeatBrutus)))
+					(messager say: N_BRUTUS V_CALM NULL 2)
 				else
-					(messager say: N_BRUTUS V_CALM 0 1)
+					(messager say: N_BRUTUS V_CALM NULL 1)
 				)
 			)
-			(V_OPEN (messager say: N_BRUNO V_OPEN 0))
+			(V_OPEN
+				(messager say: N_BRUNO V_OPEN NULL)
+			)
 			(V_ZAP	;EO: The original programmers mistakenly assigned this to Trigger. Now it's Zap.
 				(cond 
-					((or (not (cast contains: brutus)) (Btst fBeatBrutus)) (= zapPower (+ 5 (/ [egoStats ZAP] 10))))
-					((or (ego has: iDagger) (ego has: iSword)) (messager say: N_BRUTUS V_TRIGGER 0))
-					(else (messager say: N_BRUTUS V_TRIGGER C_NOWEAPON))
+					((or (not (cast contains: brutus)) (Btst fBeatBrutus))
+						(= zapPower (+ 5 (/ [egoStats ZAP] 10)))
+					)
+					((or (ego has: iDagger) (ego has: iSword))
+						(messager say: N_BRUTUS V_TRIGGER NULL)
+					)
+					(else
+						(messager say: N_BRUTUS V_TRIGGER C_NOWEAPON)
+					)
 				)
 			)
 			(V_FETCH
@@ -1319,13 +1338,15 @@ code_02ef:
 )
 
 (instance brutusDies of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if local15 (knife1 dispose:) (knife2 dispose:))
+				(if local15
+					(knife1 dispose:)
+					(knife2 dispose:)
+				)
 				(if (== prevRoomNum vBrigand)
 					(ego init: posn: 146 161 setHeading: 360)
 					(brutus view: 73 setCel: 0 loop: 7 setCycle: EndLoop self)
@@ -1333,7 +1354,9 @@ code_02ef:
 					(brutus view: 73 setCel: 0 setLoop: 7 setCycle: EndLoop self)
 				)
 			)
-			(1 (= ticks 60))
+			(1
+				(= ticks 60)
+			)
 			(2
 				(= local13 0)
 				(brutus stopUpd:)
@@ -1352,7 +1375,7 @@ code_02ef:
 		y 83
 		view 65
 		loop 6
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 	)
 )
 
@@ -1414,15 +1437,27 @@ code_02ef:
 			)
 			(4
 				(cond 
-					((Btst fDaggerInBrutus) (= register 1) (Bclr fDaggerInBrutus) (messager say: N_ROOM 0 C_GET1DAGGER))
-					((Btst OBTAINED_BRUTUS_KEY) (messager say: N_ROOM V_SEARCH C_BRUTUSATTACKS))
-					(else (= register 2) (messager say: N_ROOM V_SEARCH C_FINDKEY) (Bset OBTAINED_BRUTUS_KEY))
+					((Btst fDaggerInBrutus)
+						(= register 1)
+						(Bclr fDaggerInBrutus) 
+						(messager say: N_ROOM NULL C_GET1DAGGER)
+					)
+					((Btst OBTAINED_BRUTUS_KEY)
+						(messager say: N_ROOM V_SEARCH C_BRUTUSATTACKS)
+					)
+					(else
+						(= register 2)
+						(messager say: N_ROOM V_SEARCH C_FINDKEY)
+						(Bset OBTAINED_BRUTUS_KEY)
+					)
 				)
 				(= seconds 2)
 			)
 			(5
 				(cond 
-					((== register 1) (ego get: 6 1))
+					((== register 1)
+						(ego get: iDagger 1)
+					)
 					((== register 2) (ego get: 16))
 				)
 				(= register 0)
@@ -1574,7 +1609,7 @@ code_02ef:
 				(ego setMotion: 0)
 				(Face ego brutus)
 				(brutus
-					setLoop: (if (> (ego x?) 160) 5 else 4)
+					setLoop: (if (> (ego x?) 160) 5 else 6)	;chaged 4 to 6 to fix a bug
 					setCel: 0
 					setCycle: CycleTo 4 1 self
 				)
@@ -1655,7 +1690,7 @@ code_02ef:
 (instance getYourDags of Script
 	(properties)
 	
-	(method (changeState newState &tmp [temp0 3] temp3)
+	(method (changeState newState &tmp [temp0 3] i)
 		(switch (= state newState)
 			(0
 				(HandsOff)
@@ -1692,16 +1727,16 @@ code_02ef:
 				(= targetDaggers 0)
 			)
 			(6
-				(= temp3 0)
-				(while (< temp3 targetDaggers)
+				(= i 0)
+				(while (< i targetDaggers)
 					(if
 						(and
-							(cast contains: [newDagger temp3])
-							(IsObject [newDagger temp3])
+							(cast contains: [newDagger i])
+							(IsObject [newDagger i])
 						)
-						([newDagger temp3] dispose: delete:)
+						([newDagger i] dispose: delete:)
 					)
-					(++ temp3)
+					(++ i)
 				)
 				(dags eachElementDo: #dispose 81 release:)
 				(= seconds 2)

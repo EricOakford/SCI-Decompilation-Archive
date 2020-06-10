@@ -16,6 +16,7 @@
 (procedure (GameStartRoom &tmp nr [str 10] [scriptNum 10] [debugNum 10])
 	(User alterEgo: ego)
 	(= showStyle HSHUTTER)
+	(= debugging TRUE) ;added to enable debug features
 	(= useSortedFeatures TRUE)
 	(= msgType TEXT_MSG)
 	(= possibleScore 500)
@@ -47,7 +48,7 @@
 	(= str (= scriptNum (= debugNum 0)))
 	(Message MsgGet SYSTEM N_CUE NULL C_SCRIPT_NUM 1 @scriptNum)
 	(Format @debugNum @scriptNum DEBUG)
-	(if (FileIO fileExists @debugNum)
+	(if (or debugging (FileIO fileExists @debugNum))
 		(= nr
 			(Print
 				addText: N_ROOM NULL C_WHERETO 1 0 0 GLORY_INIT

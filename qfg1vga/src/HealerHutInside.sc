@@ -1114,9 +1114,12 @@
 			(0
 				(HandsOff)
 				(= theCycles 10)
-				;(messager say: N_HEALER V_FLOWERS C_GIVECOMPONENTS 1 self)
-				(messager say: N_HEALER V_FLOWERS C_GIVECOMPONENTS)	;now shows complete sequence
-				(self cue:)
+				(messager say: N_HEALER V_FLOWERS C_GIVECOMPONENTS 1 self)
+				;Trying to show the complete sequence fragments memory
+				; if the Healer then lists the remaining
+				; Dispel potion ingredients.
+				;(messager say: N_HEALER V_FLOWERS C_GIVECOMPONENTS)
+				;(self cue:)
 			)
 			(1
 				(Bset DISPEL_GAVE_FLOWERS)

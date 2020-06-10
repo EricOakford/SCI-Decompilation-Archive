@@ -1238,7 +1238,7 @@ code_1559:
 		(StartARoom roomNum)
 		(Message MsgGet SYSTEM N_CUE NULL C_SCRIPT_NUM 1 @scriptNum)
 		(Format @debugNum @scriptNum DEBUG)
-		(if (FileIO fileExists @debugNum)
+		(if (or debugging (FileIO fileExists @debugNum))
 			(if
 				(and
 					(u> (MemoryInfo FreeHeap) (+ 10 (MemoryInfo LargestPtr)))
@@ -1415,7 +1415,7 @@ code_1559:
 					(else 
 						(Message MsgGet SYSTEM N_CUE NULL C_SCRIPT_NUM 1 @scriptNum)
 						(Format @debugNum @scriptNum DEBUG)
-						(if (FileIO fileExists @debugNum)
+						(if (or debugging (FileIO fileExists @debugNum))
 							((ScriptID DEBUG) handleEvent: event)
 						)
 					)
@@ -1424,7 +1424,7 @@ code_1559:
 			(mouseDown
 				(Message MsgGet SYSTEM N_CUE NULL C_SCRIPT_NUM 1 @scriptNum)
 				(Format @debugNum @scriptNum DEBUG)
-				(if (FileIO fileExists @debugNum)
+				(if (or debugging (FileIO fileExists @debugNum))
 					((ScriptID DEBUG) handleEvent: event)
 				)
 			)

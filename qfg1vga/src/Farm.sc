@@ -56,43 +56,38 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 138 10 127 97 98 119 0 119 0 0 319 0 319 119 183 119 152 98 144 10
+					type: PBarredAccess
+					init:
+						138 10
+						127 97
+						98 119
+						0 119
+						0 0
+						319 0
+						319 119
+						183 119
+						152 98
+						144 10
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						128
-						111
-						128
-						138
-						151
-						134
-						171
-						16
-						171
-						16
-						185
-						165
-						185
-						305
-						185
-						305
-						170
-						169
-						170
-						161
-						148
-						188
-						126
-						319
-						126
-						319
-						189
-						0
-						189
+						0 128
+						111 128
+						138 151
+						134 171
+						16 171
+						16 185
+						165 185
+						305 185
+						305 170
+						169 170
+						161 148
+						188 126
+						319 126
+						319 189
+						0 189
 					yourself:
 				)
 		)
@@ -178,10 +173,20 @@
 		(cond 
 			((ego script?) 0)
 			((curRoom script?) 0)
-			((< (ego x?) 12) (curRoom setScript: sExitLeft))
-			((> (ego x?) 310) (curRoom setScript: sExitRight))
-			((and (not local6) (< (ego y?) 134)) (= local6 1) (ego setPri: 8))
-			((and local6 (>= (ego y?) 134)) (= local6 0) (ego setPri: -1))
+			((< (ego x?) 12)
+				(curRoom setScript: sExitLeft)
+			)
+			((> (ego x?) 310)
+				(curRoom setScript: sExitRight)
+			)
+			((and (not local6) (< (ego y?) 134))
+				(= local6 1)
+				(ego setPri: 8)
+			)
+			((and local6 (>= (ego y?) 134))
+				(= local6 0)
+				(ego setPri: -1)
+			)
 		)
 		(if
 			(or
@@ -757,10 +762,15 @@
 				)
 			)
 			(1
-				(if (not Night) (centaur setScript: standStill))
+				(if (not Night)
+					(centaur setScript: standStill)
+				)
 				(ego setMotion: MoveTo local11 local12 self)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -774,7 +784,7 @@
 				(if centaurStandsStill
 					(if (not local2)
 						(= local2 1)
-						(messager say: N_ROOM 0 C_ALERTED)
+						(messager say: N_ROOM NULL C_ALERTED)
 					else
 						(messager say: N_ROOM)
 					)
