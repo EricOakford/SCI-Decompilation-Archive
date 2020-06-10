@@ -522,163 +522,213 @@
 	)
 )
 
-(procedure (HandsOn &tmp temp0)
-	(asm
-		lag      isHandsOff
-		bnt      code_1468
-		ldi      0
-		sag      isHandsOff
-		pushi    #setSpeed
-		pushi    1
-		lsg      egoSpeed
-		lag      theGame
-		send     6
-		ldi      6
-		sag      egoSpeed
-		pushi    #canControl
-		pushi    1
-		pushi    1
-		pushi    347
-		pushi    1
-		pushi    1
-		class    User
-		send     12
-code_1468:
-		pushi    #enable
-		pushi    9
-		pushi    1
-		pushi    2
-		pushi    3
-		pushi    4
-		pushi    5
-		pushi    6
-		pushi    7
-		pushi    8
-		pushi    9
-		lag      theIconBar
-		send     22
-		pushi    14
-		pushi    #x
-		pushi    #signal
-		pushi    0
-		lag      ego
-		send     4
-		push    
-		ldi      4096
-		or      
-		push    
-		lag      ego
-		send     6
-		pushi    0
-		calle    RestoreTheCursor,  0
-		pushi    #curInvIcon
-		pushi    0
-		lag      theIconBar
-		send     4
-		not     
-		bnt      code_14b2
-		pushi    #disable
-		pushi    1
-		pushi    7
-		lag      theIconBar
-		send     6
-code_14b2:
-		ldi      12
-		lagi     egoStats
-		not     
-		bt       code_14e5
-		ldi      17
-		sat      temp0
-code_14be:
-		lst      temp0
-		ldi      24
-		le?     
-		bnt      code_14e1
-		pushi    #knows
-		pushi    1
-		lst      temp0
-		lag      ego
-		send     6
-		bnt      code_14dd
-		ldi      1
-		ret     
-		pushi    1
-		pushi    814
-		callk    DisposeScript,  2
-code_14dd:
-		+at      temp0
-		jmp      code_14be
-code_14e1:
-		not     
-		bnt      code_14ef
-code_14e5:
-		pushi    #disable
-		pushi    1
-		pushi    6
-		lag      theIconBar
-		send     6
-code_14ef:
-		pushi    #curInvIcon
-		pushi    0
-		lag      theIconBar
-		send     4
-		not     
-		bnt      code_1519
-		pushi    #curIcon
-		pushi    0
-		lag      theIconBar
-		send     4
-		push    
-		pushi    #at
-		pushi    1
-		pushi    7
-		lag      theIconBar
-		send     6
-		eq?     
-		bnt      code_1519
-		pushi    #advanceCurIcon
-		pushi    0
-		lag      theIconBar
-		send     4
-code_1519:
-		pushi    0
-		callk    HaveMouse,  0
-		not     
-		bnt      code_1542
-		pushi    #setCursor
-		pushi    4
-		pushi    #cursor
-		pushi    0
-		pushi    #curIcon
-		pushi    0
-		lag      theIconBar
-		send     4
-		send     4
-		push    
-		pushi    1
-		lsg      oldMouseX
-		lsg      oldMouseY
-		lag      theGame
-		send     12
-		jmp      code_1559
-code_1542:
-		pushi    #setCursor
-		pushi    2
-		pushi    #cursor
-		pushi    0
-		pushi    #curIcon
-		pushi    0
-		lag      theIconBar
-		send     4
-		send     4
-		push    
-		pushi    1
-		lag      theGame
-		send     8
-code_1559:
-		ret     
+(procedure (HandsOn &tmp i)
+	(if isHandsOff
+		(= isHandsOff FALSE)
+		(theGame setSpeed: egoSpeed)
+		(= egoSpeed 6)
+		(User canControl: TRUE canInput: TRUE)
+	)
+	(theIconBar enable:
+		ICON_WALK
+		ICON_LOOK
+		ICON_DO
+		ICON_TALK
+		ICON_ACTIONS
+		ICON_CAST
+		ICON_USEIT
+		ICON_INVENTORY
+		ICON_CONTROL
+	)
+	(ego signal: (| (ego signal?) fixedCel))
+	(RestoreTheCursor)
+	(if (not (theIconBar curInvIcon?))
+		(theIconBar disable: ICON_USEIT)
+	)
+	(while (>= i FETCH) (<= i OPEN)
+		(if (ego knows: i)
+			(return TRUE)
+			(DisposeScript PROCS)
+		else
+			(theIconBar disable: ICON_CAST)
+		)
+		(++ i)
+	)
+	(if
+		(and
+			(not (theIconBar curInvIcon?))
+			(== (theIconBar curIcon?) (theIconBar at: ICON_USEIT))
+		)
+		(theIconBar advanceCurIcon:)
+	)
+	(return
+		(if (not (HaveMouse))
+			(theGame
+				setCursor: ((theIconBar curIcon?) cursor?) TRUE oldMouseX oldMouseY
+			)
+		else
+			(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
+		)
 	)
 )
+
+;;;(procedure (HandsOn &tmp i)
+;;;	(asm
+;;;		lag      isHandsOff
+;;;		bnt      code_1468
+;;;		ldi      0
+;;;		sag      isHandsOff
+;;;		pushi    #setSpeed
+;;;		pushi    1
+;;;		lsg      egoSpeed
+;;;		lag      theGame
+;;;		send     6
+;;;		ldi      6
+;;;		sag      egoSpeed
+;;;		pushi    #canControl
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    347
+;;;		pushi    1
+;;;		pushi    1
+;;;		class    User
+;;;		send     12
+;;;code_1468:
+;;;		pushi    #enable
+;;;		pushi    9
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    3
+;;;		pushi    4
+;;;		pushi    5
+;;;		pushi    6
+;;;		pushi    7
+;;;		pushi    8
+;;;		pushi    9
+;;;		lag      theIconBar
+;;;		send     22
+;;;		pushi    14
+;;;		pushi    #x
+;;;		pushi    #signal
+;;;		pushi    0
+;;;		lag      ego
+;;;		send     4
+;;;		push    
+;;;		ldi      4096
+;;;		or      
+;;;		push    
+;;;		lag      ego
+;;;		send     6
+;;;		pushi    0
+;;;		calle    RestoreTheCursor,  0
+;;;		pushi    #curInvIcon
+;;;		pushi    0
+;;;		lag      theIconBar
+;;;		send     4
+;;;		not     
+;;;		bnt      code_14b2
+;;;		pushi    #disable
+;;;		pushi    1
+;;;		pushi    7
+;;;		lag      theIconBar
+;;;		send     6
+;;;code_14b2:
+;;;		ldi      12
+;;;		lagi     egoStats
+;;;		not     
+;;;		bt       code_14e5
+;;;		ldi      17
+;;;		sat      i
+;;;code_14be:
+;;;		lst      i
+;;;		ldi      24
+;;;		le?     
+;;;		bnt      code_14e1
+;;;		pushi    #knows
+;;;		pushi    1
+;;;		lst      i
+;;;		lag      ego
+;;;		send     6
+;;;		bnt      code_14dd
+;;;		ldi      1
+;;;		ret     
+;;;		pushi    1
+;;;		pushi    814
+;;;		callk    DisposeScript,  2
+;;;code_14dd:
+;;;		+at      i
+;;;		jmp      code_14be
+;;;code_14e1:
+;;;		not     
+;;;		bnt      code_14ef
+;;;code_14e5:
+;;;		pushi    #disable
+;;;		pushi    1
+;;;		pushi    6
+;;;		lag      theIconBar
+;;;		send     6
+;;;code_14ef:
+;;;		pushi    #curInvIcon
+;;;		pushi    0
+;;;		lag      theIconBar
+;;;		send     4
+;;;		not     
+;;;		bnt      code_1519
+;;;		pushi    #curIcon
+;;;		pushi    0
+;;;		lag      theIconBar
+;;;		send     4
+;;;		push    
+;;;		pushi    #at
+;;;		pushi    1
+;;;		pushi    7
+;;;		lag      theIconBar
+;;;		send     6
+;;;		eq?     
+;;;		bnt      code_1519
+;;;		pushi    #advanceCurIcon
+;;;		pushi    0
+;;;		lag      theIconBar
+;;;		send     4
+;;;code_1519:
+;;;		pushi    0
+;;;		callk    HaveMouse,  0
+;;;		not     
+;;;		bnt      code_1542
+;;;		pushi    #setCursor
+;;;		pushi    4
+;;;		pushi    #cursor
+;;;		pushi    0
+;;;		pushi    #curIcon
+;;;		pushi    0
+;;;		lag      theIconBar
+;;;		send     4
+;;;		send     4
+;;;		push    
+;;;		pushi    1
+;;;		lsg      oldMouseX
+;;;		lsg      oldMouseY
+;;;		lag      theGame
+;;;		send     12
+;;;		jmp      code_1559
+;;;code_1542:
+;;;		pushi    #setCursor
+;;;		pushi    2
+;;;		pushi    #cursor
+;;;		pushi    0
+;;;		pushi    #curIcon
+;;;		pushi    0
+;;;		lag      theIconBar
+;;;		send     4
+;;;		send     4
+;;;		push    
+;;;		pushi    1
+;;;		lag      theGame
+;;;		send     8
+;;;code_1559:
+;;;		ret     
+;;;	)
+;;;)
 
 (procedure (Bset flagEnum)
 	(= [gameFlags (/ flagEnum 16)]
