@@ -8,8 +8,8 @@
 	proc932_0 0
 	proc932_1 1
 	proc932_2 2
-	proc932_3 3
-	proc932_4 4
+	SaveSubLang 3
+	RestoreSubLang 4
 	proc932_5 5
 	proc932_6 6
 	proc932_7 7
@@ -20,11 +20,11 @@
 	local1
 )
 (procedure (proc932_0)
-	(localproc_003c 0 &rest)
+	(localproc_0188 0 &rest)
 )
 
 (procedure (proc932_1)
-	(localproc_003c 1 &rest)
+	(localproc_0188 1 &rest)
 )
 
 (procedure (proc932_2 param1 param2 param3 param4)
@@ -45,7 +45,7 @@
 	)
 )
 
-(procedure (proc932_3 &tmp theGameSubtitleLang)
+(procedure (SaveSubLang &tmp theGameSubtitleLang)
 	(if
 		(and
 			(not theTheGameSubtitleLang)
@@ -57,7 +57,7 @@
 	(return theGameSubtitleLang)
 )
 
-(procedure (proc932_4 &tmp theTheTheGameSubtitleLang)
+(procedure (RestoreSubLang &tmp theTheTheGameSubtitleLang)
 	(if
 		(and
 			(= theTheTheGameSubtitleLang theTheGameSubtitleLang)
@@ -108,7 +108,7 @@
 	(return (if (== (theGame parseLang?) 1) param1 else param2))
 )
 
-(procedure (localproc_003c param1 &tmp theGamePrintLang theGameSubtitleLang)
+(procedure (localproc_0188 param1 &tmp theGamePrintLang theGameSubtitleLang)
 	(= theGameSubtitleLang (theGame subtitleLang?))
 	(theGame subtitleLang: 0)
 	(if param1 (Display &rest) else (Print &rest 117))

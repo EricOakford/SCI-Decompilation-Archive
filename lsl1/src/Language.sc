@@ -8,8 +8,8 @@
 	proc932_0 0
 	proc932_1 1
 	proc932_2 2
-	proc932_3 3
-	proc932_4 4
+	SaveSubLang 3
+	RestoreSubLang 4
 	proc932_5 5
 	proc932_6 6
 	proc932_7 7
@@ -30,43 +30,43 @@
 (procedure (proc932_2 param1 param2 param3 param4)
 	(return
 		(cond 
-			((== (theGame printLang?) ENGLISH)
+			((== (theGame printLang?) 1)
 				(if
-				(or (< argc 3) (== (theGame subtitleLang?) NULL))
+				(or (< argc 3) (== (theGame subtitleLang?) 0))
 					param1
 				else
 					param3
 				)
 			)
 			(
-			(or (< argc 4) (== (theGame subtitleLang?) NULL)) param2)
+			(or (< argc 4) (== (theGame subtitleLang?) 0)) param2)
 			(else param4)
 		)
 	)
 )
 
-(procedure (proc932_3 &tmp theGameSubtitleLang)
+(procedure (SaveSubLang &tmp theGameSubtitleLang)
 	(if
 		(and
 			(not theGGameSubtitleLang)
 			(= theGameSubtitleLang (theGame subtitleLang?))
 		)
 		(= theGGameSubtitleLang theGameSubtitleLang)
-		(theGame subtitleLang: NULL)
+		(theGame subtitleLang: 0)
 	)
 	(return theGameSubtitleLang)
 )
 
-(procedure (proc932_4 &tmp oldLang)
+(procedure (RestoreSubLang &tmp theTheGGameSubtitleLang)
 	(if
 		(and
-			(= oldLang theGGameSubtitleLang)
+			(= theTheGGameSubtitleLang theGGameSubtitleLang)
 			(not (theGame subtitleLang?))
 		)
 		(theGame subtitleLang: theGGameSubtitleLang)
-		(= theGGameSubtitleLang NULL)
+		(= theGGameSubtitleLang 0)
 	)
-	(return oldLang)
+	(return theTheGGameSubtitleLang)
 )
 
 (procedure (proc932_5 &tmp theGameSubtitleLang)
@@ -74,9 +74,9 @@
 		(if (= theGameSubtitleLang (theGame subtitleLang?))
 			(theGame subtitleLang: (theGame printLang?))
 			(theGame printLang: theGameSubtitleLang)
-			(return TRUE)
+			(return 1)
 		else
-			FALSE
+			0
 		)
 	)
 )
@@ -89,7 +89,7 @@
 	)
 	(= theGamePrintLang (theGame printLang?))
 	(= theGameSubtitleLang (theGame subtitleLang?))
-	(theGame printLang: ENGLISH subtitleLang: NULL)
+	(theGame printLang: 1 subtitleLang: 0)
 	(kernel_123 param1 @temp3 0)
 	(if (= temp2 0)
 		(theGame printLang: temp2)
@@ -105,13 +105,13 @@
 )
 
 (procedure (proc932_7 param1 param2)
-	(return (if (== (theGame parseLang?) ENGLISH) param1 else param2))
+	(return (if (== (theGame parseLang?) 1) param1 else param2))
 )
 
 (procedure (localproc_003c param1 &tmp theGamePrintLang theGameSubtitleLang)
 	(= theGameSubtitleLang (theGame subtitleLang?))
-	(theGame subtitleLang: NULL)
-	(if param1 (Display &rest) else (Print &rest #first))
+	(theGame subtitleLang: 0)
+	(if param1 (Display &rest) else (Print &rest 118))
 	(if theGameSubtitleLang
 		(= theGamePrintLang (theGame printLang?))
 		(theGame printLang: theGameSubtitleLang)
