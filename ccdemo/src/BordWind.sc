@@ -1,0 +1,61 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# BORDWIND)
+(include game.sh)
+(use Save)
+
+
+(class bordWindow of SysWindow
+	(properties
+		type $0081
+		underBits 0
+	)
+	
+	(method (dispose)
+		(SetPort 0)
+		(Graph GRestoreBits underBits)
+		(Graph
+			GReAnimate
+			(- top 10)
+			(- left 10)
+			(+ bottom 10)
+			(+ right 10)
+		)
+		(DisposeWindow window)
+		(DisposeClone self)
+	)
+	
+	(method (open &tmp wMap t l b r topRgt botRgt topLft botLft)
+		(= topLft (CelHigh 657 0 0))
+		(= topRgt (CelHigh 657 0 1))
+		(= botRgt (CelHigh 657 1 0))
+		(= botLft (CelWide 657 0 0))
+		(SetPort 0)
+		(= t (- top 10))
+		(= l (- left 10))
+		(= b (+ bottom 10))
+		(= r (+ right 10))
+		(= wMap VMAP)
+		(if (!= priority -1)
+			(= wMap (| wMap PMAP))
+		)
+		(= underBits
+			(Graph GSaveBits t l b r wMap)
+		)
+		(Graph GFillRect t l b r wMap back priority)
+		(DrawCel 657 0 0 l t -1)
+		(DrawCel 657 0 1 l (- b topRgt) -1)
+		(DrawCel 657 1 0 (- r botRgt) t -1)
+		(DrawCel 657 1 2 (- r botRgt) (- b topRgt) -1)
+		(Graph GDrawLine (+ t 2) (+ l botLft) (+ t 2) (- r botLft) 31 -1 -1)
+		(Graph GDrawLine (+ t 4) (+ l botLft) (+ t 4) (- r botLft) 31 -1 -1)
+		(Graph GDrawLine (- b 3) (+ l botLft) (- b 3) (- r botLft) 31 -1 -1)
+		(Graph GDrawLine (- b 5) (+ l botLft) (- b 5) (- r botLft) 31 -1 -1)
+		(Graph GDrawLine (+ t topLft) (+ l 2) (- b topLft) (+ l 2) 31 -1 -1)
+		(Graph GDrawLine (+ t topLft) (+ l 4) (- b topLft) (+ l 4) 31 -1 -1)
+		(Graph GDrawLine (+ t topLft) (- r 3) (- b topLft) (- r 3) 31 -1 -1)
+		(Graph GDrawLine (+ t topLft) (- r 5) (- b topLft) (- r 5) 31 -1 -1)
+		(Graph GShowBits t l b r VMAP)
+		(= type $81)
+		(super open:)
+	)
+)
