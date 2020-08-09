@@ -1,0 +1,25 @@
+;;; Sierra Script
+;;; 200.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_SRINI_TRAPPED 10)
+(define C_SRINI_SAVED 1)
+
+;;; NOUNS
+
+(define N_ROOM 14)
+(define N_SRINI 1)
+(define N_DUMMY2 2)
+(define N_ANTHILL 3)
+(define N_ROCKS 4)
+(define N_LADDER 16)
+(define N_ANTS 13)
+(define N_CACTI 5)
+(define N_FAR_CACTI 17)
+(define N_ROAD 6)
+(define N_BRIDGE 7)
+(define N_TRACKS 8)
+(define N_CLIFF 9)
+

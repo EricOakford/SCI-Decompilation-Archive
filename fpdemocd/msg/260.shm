@@ -1,0 +1,26 @@
+;;; Sierra Script
+;;; 260.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_OFFICE_CLOSED 5)
+
+;;; NOUNS
+
+(define N_ROOM 16)
+(define N_SEESAW 4)
+(define N_SWING 3)
+(define N_SCHOOL_DOOR 2)
+(define N_LADDER 1)
+(define N_ASSAY_OFFICE 11)
+(define N_SCHOOL 12)
+(define N_STREET 5)
+(define N_BUILDINGS 13)
+(define N_SLIDE 6)
+(define N_TREE 7)
+(define N_WINDOW 8)
+(define N_ROOF 9)
+(define N_CLUTTER 10)
+(define N_ASSAY_FIRE 14)
+
