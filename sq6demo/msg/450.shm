@@ -1,0 +1,28 @@
+;;; Sierra Script
+;;; 450.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_COMPOST 1)
+(define N_ROOM 2)
+(define N_SHUTTLE_DOOR 13)
+(define N_SHIP1 3)
+(define N_SHIP2 4)
+(define N_SHIP3 5)
+(define N_SHIP4 6)
+(define N_SHIP5 7)
+(define N_SHIP6 8)
+(define N_SHIP7 9)
+(define N_SHIP8 10)
+(define N_SHIP9 11)
+(define N_WORKSTATION 12)
+(define N_TOWER_SUPPORTS 14)
+(define N_LEFT_TOWER 15)
+(define N_RIGHT_TOWER 16)
+(define N_TUBE_TOP 17)
+(define N_TUBE_BOTTOM 18)
+
+;;; CASES
+
+

@@ -1,0 +1,32 @@
+;;; Sierra Script
+;;; 15.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_DUMMY1 1)
+(define N_DUMMY2 2)
+(define N_DUMMY3 3)
+(define N_DUMMY4 4)
+(define N_DUMMY5 5)
+(define N_SELECT 6)
+(define N_LOOK 7)
+(define N_USE 8)
+(define N_BJORNBELT 9)
+(define N_OK 10)
+(define N_HELP 11)
+(define N_BJORNCHOW 12)
+(define N_CLAPBROKEN 13)
+(define N_CLAPFIXED 14)
+(define N_DUCTTAPE 15)
+(define N_PIN 16)
+(define N_PLIERS 17)
+(define N_TAPEDPLIERS 18)
+(define N_SCROLLUP 19)
+(define N_SCROLLDOWN 20)
+(define N_SLIDER 21)
+
+;;; CASES
+
+(define C_USEBELT 1)
+

@@ -1,0 +1,24 @@
+;;; Sierra Script
+;;; 480.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 1)
+(define N_CUP 20)
+(define N_SHUTTLE_DOOR 8)
+(define N_GLOVEBOX 7)
+(define N_PASSENGER_SEATS 9)
+(define N_EXIT_SIGN 10)
+(define N_GLOVEBOX_INSET 2)
+(define N_BOX_LID 3)
+(define N_BOX_STUFF 4)
+(define N_TAPE 5)
+(define N_PLIERS 6)
+
+;;; CASES
+
+(define C_BOX_OPEN 1)
+(define C_DUMMY2 2)
+(define C_BOX_CLOSED 3)
+

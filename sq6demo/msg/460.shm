@@ -1,0 +1,35 @@
+;;; Sierra Script
+;;; 460.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_PLEASE_ENTER 1)
+(define N_CYBERFUNCTIONS 4)
+(define N_DUMMY2 2)
+(define N_DUMMY3 3)
+(define N_COMMUNICATIONS 5)
+(define N_DATABASE 6)
+(define N_TRANSPORT 7)
+(define N_DNA_SEQUENCING 8)
+(define N_FOOD_REPLICATOR 9)
+(define N_MEDICAL_ISSUES 10)
+(define N_KNOWN_RACES_AE 11)
+(define N_RACES_PAGES 12)
+(define N_KNOWN_RACES_FM 13)
+(define N_KNOWN_RACES_NR 14)
+(define N_KNOWN_RACES_SZ 15)
+
+;;; CASES
+
+(define C_DESTINATION 1)
+(define C_DEST1 2)
+(define C_DEST2 3)
+(define C_DEST3 4)
+(define C_DEST4 5)
+(define C_DUMMY6 6)
+(define C_DUMMY7 7)
+(define C_DUMMY8 8)
+(define C_DUMMY9 9)
+(define C_INTRASHIP 10)
+

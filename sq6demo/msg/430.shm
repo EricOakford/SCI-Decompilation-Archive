@@ -1,0 +1,28 @@
+;;; Sierra Script
+;;; 430.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 1)
+(define N_CHOW 18)
+(define N_COMPOST 2)
+(define N_WINDOW_R 3)
+(define N_WINDOW_L 4)
+(define N_REPLICATOR 7)
+(define N_COMPAD 9)
+(define N_HANGY_THING 15)
+(define N_VIEWSCREEN 5)
+(define N_SIGN 6)
+(define N_DUMMY8 8)
+(define N_PILLAR1 10)
+(define N_PILLAR2 11)
+(define N_PILLAR3 12)
+(define N_LIGHT 14)
+(define N_TABLE 13)
+(define N_PILLAR4 16)
+(define N_SEAT 17)
+
+;;; CASES
+
+

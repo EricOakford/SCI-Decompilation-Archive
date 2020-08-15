@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 24.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_DUMMY 1)
+(define N_ROOM 2)
+
+;;; CASES
+
+(define C_DUMMY1 1)
+(define C_RESTORE 2)
+(define C_DUMMY3 3)
+(define C_WHERETO 4)
+(define C_WHICHROOM 5)
+(define C_DUMMY6 6)
+(define C_TITLE 7)
+

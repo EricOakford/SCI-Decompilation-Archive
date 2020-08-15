@@ -1,0 +1,42 @@
+;;; Sierra Script
+;;; 0.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_DUMMY1 1)
+(define N_DUMMY2 2)
+(define N_DUMMY3 3)
+(define N_SAVEGAME 4)
+(define N_RESTOREGAME 5)
+(define N_ABOUT 6)
+(define N_CONTROLHELP 7)
+(define N_VOICE 8)
+(define N_TEXT 9)
+(define N_RESTARTGAME 10)
+(define N_QUITGAME 11)
+(define N_OK 12)
+(define N_GAMESPEED 13)
+(define N_DETAIL 14)
+(define N_AUDVOLUME 15)
+(define N_MUSVOLUME 16)
+(define N_TEXTSPEED 17)
+(define N_QUITSTR 18)
+(define N_WALK 19)
+(define N_LOOK 20)
+(define N_DO 21)
+(define N_TALK 22)
+(define N_ICONHELP 23)
+(define N_CONTROL 24)
+(define N_USEITEM 25)
+(define N_INVENTORY 26)
+(define N_INTRO 27)
+(define N_EXITWINDOW 28)
+
+;;; CASES
+
+(define C_PAUSED 1)
+(define C_CONTINUE 2)
+(define C_QUIT 3)
+(define C_SKIP 4)
+

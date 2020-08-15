@@ -1,0 +1,43 @@
+;;; Sierra Script
+;;; 800.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_CHOW_READY 1)
+
+;;; NOUNS
+
+(define N_FOOD_REPLICATOR_INSET 1)
+(define N_ROGER_REPLICATOR 28)
+(define N_SCREEN 23)
+(define N_BUTTON1 3)
+(define N_BUTTON2 4)
+(define N_BUTTON3 5)
+(define N_BUTTON4 6)
+(define N_BUTTON5 7)
+(define N_BUTTON6 8)
+(define N_BUTTON7 9)
+(define N_BUTTON8 10)
+(define N_BUTTON0 2)
+(define N_ENTER_BUTTON 12)
+(define N_BACKSPACE_BUTTON 13)
+(define N_PERIOD_BUTTON 14)
+(define N_STAR_BUTTON 26)
+(define N_BUTTON9 11)
+(define N_LIGHT 15)
+(define N_LEFT_VENTS 16)
+(define N_RIGHT_VENTS 17)
+(define N_ACCESS1 18)
+(define N_ACCESS2 19)
+(define N_ACCESS3 20)
+(define N_ACCESS4 21)
+(define N_BLACK_PANEL 22)
+(define N_LEFT_PIPE 24)
+(define N_RIGHT_PIPE 25)
+(define N_BJORN_CHOW 29)
+(define N_DUMMY27 27)
+(define N_DOOR 30)
+(define N_BUG 31)
+(define N_BULLET_HOLE 32)
+
