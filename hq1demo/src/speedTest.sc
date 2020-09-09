@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# SPEEDTEST)
+(script# SPEED)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -18,13 +18,11 @@
 (local
 	doneTime
 )
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance speedTest of Room
 	(properties
-		picture 400
+		picture pBlack
 		style IRISIN
 	)
 	
@@ -33,10 +31,9 @@
 		(HandsOff)
 		(super init:)
 		(sounds eachElementDo: #stop)
-		(while (u> (GetTime) -1024)
-		)
+		(while (u> (GetTime) -1024))
 		(fred
-			view: 799
+			view: vSpeed
 			setLoop: 0
 			illegalBits: 0
 			posn: 20 99
@@ -52,13 +49,20 @@
 	(method (doit)
 		(super doit:)
 		(if (== (++ machineSpeed) 1) (= doneTime (+ 60 (GetTime))))
-		(if
-		(and (u< doneTime (GetTime)) (not (self script?)))
+		(if (and (u< doneTime (GetTime)) (not (self script?)))
 			(cond 
-				((<= machineSpeed 25) (= howFast 0))
-				((<= machineSpeed 40) (= howFast 1))
-				((<= machineSpeed 60) (= howFast 2))
-				(else (= howFast 3))
+				((<= machineSpeed 25)
+					(= howFast slow)
+				)
+				((<= machineSpeed 40)
+					(= howFast medium)
+				)
+				((<= machineSpeed 60)
+					(= howFast fast)
+				)
+				(else
+					(= howFast fastest)
+				)
 			)
 			(self setScript: speedScript)
 		)
@@ -71,11 +75,12 @@
 )
 
 (instance speedScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp nextRoom [str 20])
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
 				(theGame setSpeed: 6)
 				(= cycles (if debugging 1 else 30))
@@ -97,7 +102,9 @@
 							)
 						)
 						(if str (= nextRoom (ReadNumber @str)))
-						(if (> nextRoom 0) (break))
+						(if (> nextRoom 0)
+							(break)
+						)
 					)
 				else
 					(= nextRoom INTRO)

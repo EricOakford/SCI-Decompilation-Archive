@@ -15,19 +15,19 @@
 )
 
 (local
-	[ropePath 13] = [46 107 48 96 83 93 118 96 120 105 83 114 -1]
+	ropePath = [46 107 48 96 83 93 118 96 120 105 83 114 -1]
 )
 (instance demoRope of Room
 	(properties
-		picture 490
+		picture rTightrope
 		style IRISIN
 	)
 	
-	(method (init &tmp temp0 theX theY)
-		(LoadMany VIEW 490 285 495)
+	(method (init &tmp i theX theY)
+		(LoadMany VIEW rTightrope vEgoTightrope vAdAvisRope)
 		(super init:)
 		(ego
-			view: 285
+			view: vEgoTightrope
 			setLoop: 0
 			cel: 3
 			cycleSpeed: 1
@@ -37,20 +37,20 @@
 			init:
 		)
 		(adAvis init:)
-		(= temp0 0)
-		(while (!= [ropePath (* temp0 2)] -1)
-			(= theX [ropePath (+ (* temp0 2) 0)])
-			(= theY [ropePath (+ (* temp0 2) 1)])
+		(= i 0)
+		(while (!= [ropePath (* i 2)] -1)
+			(= theX [ropePath (+ (* i 2) 0)])
+			(= theY [ropePath (+ (* i 2) 1)])
 			((PicView new:)
-				view: 490
+				view: rTightrope
 				loop: 0
 				x: theX
 				y: theY
 				init:
 			)
-			(if (!= temp0 3)
+			(if (!= i 3)
 				((Flame new:)
-					view: 490
+					view: rTightrope
 					loop: 1
 					x: (- theX 2)
 					y: theY
@@ -58,7 +58,7 @@
 					init:
 				)
 			)
-			(++ temp0)
+			(++ i)
 		)
 		(addToPics doit:)
 		(self setScript: rmScript)
@@ -78,17 +78,19 @@
 	(properties
 		x 152
 		y 111
-		view 495
+		view vAdAvisRope
 	)
 )
 
 (instance rmScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Print ROPE 0 #at -1 12 #dispose)
+				(Print ROPE 0
+					#at -1 12
+					#dispose
+				)
 				(= seconds 2)
 			)
 			(1
@@ -120,7 +122,10 @@
 				(adAvis cycleSpeed: 2 setCycle: EndLoop)
 				(= seconds 4)
 			)
-			(6 (cls) (curRoom newRoom: RITUAL))
+			(6
+				(cls)
+				(curRoom newRoom: RITUAL)
+			)
 		)
 	)
 )

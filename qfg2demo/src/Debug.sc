@@ -13,7 +13,6 @@
 )
 
 (instance debugRm of Script
-	(properties)
 	
 	(method (handleEvent event &tmp evt obj nX nY i [str 80] nextRoom temp86)
 		(switch (event type?)
@@ -38,8 +37,7 @@
 								#at
 								(- (event x?) 21)
 								(- (event y?) 17)
-								#font
-								999
+								#font 999
 								#dispose
 							)
 						)
@@ -64,7 +62,9 @@
 						)
 					)
 					(`?
-						(Print DEBUG 1 #window SysWindow)
+						(Print DEBUG 1
+							#window SysWindow
+						)
 					)
 					(`@s
 						(= i (cast first:))
@@ -87,19 +87,16 @@
 										-1
 									)
 								)
-								#window
-								SysWindow
-								#title
-								(obj name?)
-								#icon
-								(obj view?)
-								(obj loop?)
-								(obj cel?)
+								#window SysWindow
+								#title (obj name?)
+								#icon (obj view?) (obj loop?) (obj cel?)
 							)
 							(= i (cast next: i))
 						)
 					)
-					(`@m (theGame showMem:))
+					(`@m
+						(theGame showMem:)
+					)
 					(`@e
 						(Format @str DEBUG 3
 							(ego x?)
@@ -107,12 +104,22 @@
 							(ego loop?)
 							(ego cel?)
 						)
-						(Print @str #icon (ego view?) 0 0)
+						(Print @str
+							#icon (ego view?) 0 0
+						)
 					)
-					(`@v (Show VMAP))
-					(`@p (Show PMAP))
-					(`@c (Show CMAP))
-					(else  (event claimed: FALSE))
+					(`@v
+						(Show VMAP)
+					)
+					(`@p
+						(Show PMAP)
+					)
+					(`@c
+						(Show CMAP)
+					)
+					(else
+						(event claimed: FALSE)
+					)
 				)
 			)
 		)

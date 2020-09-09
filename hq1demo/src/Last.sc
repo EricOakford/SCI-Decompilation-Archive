@@ -18,12 +18,12 @@
 
 (instance Endo of Room
 	(properties
-		picture 148
+		picture rBigEgo
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany SOUND 47 99 199)
+		(LoadMany SOUND sWind sEndGame sEndGameIBM)
 		(super init:)
 		(wind init: play:)
 		(self setScript: openMusic)
@@ -42,7 +42,12 @@
 		(RColWink init:)
 		(LColWink init:)
 		(= endAnimationTimer 1)
-		(Print 12 0 #width 120 #at 8 140 #dispose #window aWin)
+		(Print 12 0
+			#width 120
+			#at 8 140
+			#dispose
+			#window aWin
+		)
 	)
 	
 	(method (doit)
@@ -75,7 +80,7 @@
 	(properties
 		y 189
 		x 167
-		view 148
+		view rBigEgo
 		priority 8
 	)
 )
@@ -84,7 +89,7 @@
 	(properties
 		y 75
 		x 148
-		view 148
+		view rBigEgo
 		loop 1
 		cel 3
 		priority 15
@@ -95,7 +100,7 @@
 	(properties
 		y 141
 		x 140
-		view 148
+		view rBigEgo
 		loop 1
 		cel 3
 		priority 15
@@ -106,7 +111,7 @@
 	(properties
 		y 82
 		x 138
-		view 148
+		view rBigEgo
 		loop 2
 		priority 15
 		signal fixPriOn
@@ -117,7 +122,7 @@
 	(properties
 		y 67
 		x 150
-		view 148
+		view rBigEgo
 		loop 3
 		priority 15
 		signal fixPriOn
@@ -128,7 +133,7 @@
 	(properties
 		y 92
 		x 178
-		view 148
+		view rBigEgo
 		loop 4
 		priority 15
 		signal fixPriOn
@@ -139,7 +144,7 @@
 	(properties
 		y 141
 		x 206
-		view 148
+		view rBigEgo
 		loop 5
 		priority 5
 		cycleSpeed 2
@@ -150,7 +155,7 @@
 	(properties
 		y 30
 		x 48
-		view 914
+		view vSubtitle
 		loop 1
 		priority 12
 	)
@@ -160,7 +165,7 @@
 	(properties
 		y 30
 		x 127
-		view 914
+		view vSubtitle
 		loop 1
 		cel 1
 		priority 12
@@ -171,7 +176,7 @@
 	(properties
 		y 30
 		x 207
-		view 914
+		view vSubtitle
 		loop 1
 		cel 2
 		priority 12
@@ -182,7 +187,7 @@
 	(properties
 		y 30
 		x 286
-		view 914
+		view vSubtitle
 		loop 1
 		cel 3
 		priority 12
@@ -193,7 +198,7 @@
 	(properties
 		y 79
 		x 278
-		view 148
+		view rBigEgo
 		loop 1
 		cel 3
 	)
@@ -203,7 +208,7 @@
 	(properties
 		y 79
 		x 39
-		view 148
+		view rBigEgo
 		loop 1
 		cel 3
 	)
@@ -211,7 +216,7 @@
 
 (instance wind of Sound
 	(properties
-		number 47
+		number sWind
 		priority 1
 		loop -1
 	)
@@ -219,7 +224,7 @@
 
 (instance heroMusic of Sound
 	(properties
-		number 199
+		number sEndGameIBM
 		priority 2
 	)
 )
@@ -231,14 +236,13 @@
 )
 
 (instance openMusic of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(heroMusic
 					init:
-					number: (if (== numVoices 1) 199 else 99)
+					number: (if (== numVoices 1) sEndGameIBM else sEndGame)
 					loop: 1
 					play:
 				)
@@ -248,7 +252,9 @@
 				(heroMusic fade:)
 				(= seconds 10)
 			)
-			(2 (theGame restart:))
+			(2
+				(theGame restart:)
+			)
 		)
 	)
 )

@@ -15,25 +15,30 @@
 )
 
 (local
-	[dripX 5] = [144 249 283 88 165]
-	[dripY 5] = [184 221 219 201 168]
-	dripTimer
+	dripX = [144 249 283 88 165]
+	dripY = [184 221 219 201 168]
+	dripIndex
 )
 (instance cave of Room
 	(properties
-		picture 14
+		picture rBearCave
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany VIEW 420 15)
-		(Load SOUND 20)
+		(LoadMany VIEW vBear rKoboldCave)
+		(Load SOUND sCave)
 		(super init:)
-		(music number: 20 play:)
+		(music number: sCave play:)
 		(bear ignoreActors: init: setPri: 11 stopUpd:)
 		(drip init: setScript: dripScript)
-		(= dripTimer (Random 0 4))
-		(ego view: 0 posn: 66 174 init: setScript: entranceMsg)
+		(= dripIndex (Random 0 4))
+		(ego
+			view: vEgo
+			posn: 66 174
+			init:
+			setScript: entranceMsg
+		)
 	)
 	
 	(method (dispose)
@@ -45,7 +50,7 @@
 	(properties
 		y 144
 		x 273
-		view 420
+		view vBear
 	)
 )
 
@@ -53,12 +58,11 @@
 	(properties
 		y 204
 		x 79
-		view 15
+		view rKoboldCave
 	)
 )
 
 (instance entranceMsg of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -70,7 +74,7 @@
 				(ego setMotion: MoveTo 166 138 self)
 			)
 			(2
-				(ego view: 4)
+				(ego view: vEgoStanding)
 				(Print 8 0
 					#at -1 1
 					#width 250
@@ -85,31 +89,37 @@
 				(bear loop: 1 cel: 0 cycleSpeed: 1 setCycle: Forward)
 				(= seconds 4)
 			)
-			(4 (bear setCycle: EndLoop self))
+			(4
+				(bear setCycle: EndLoop self)
+			)
 			(5
 				(bear loop: 2 cel: 0)
 				(= cycles 1)
 			)
-			(6 (bear setCycle: EndLoop self))
-			(7 (cls) (curRoom newRoom: MEADOW))
+			(6
+				(bear setCycle: EndLoop self)
+			)
+			(7
+				(cls)
+				(curRoom newRoom: MEADOW)
+			)
 		)
 	)
 )
 
 (instance dripScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(drip
-					posn: [dripX dripTimer] [dripY dripTimer]
+					posn: [dripX dripIndex] [dripY dripIndex]
 					setCycle: EndLoop
 				)
 				(= cycles (Random 20 40))
 			)
 			(1
-				(= dripTimer (Random 0 4))
+				(= dripIndex (Random 0 4))
 				(self changeState: 0)
 			)
 		)

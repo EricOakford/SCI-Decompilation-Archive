@@ -28,12 +28,12 @@
 
 (class DemoAFeat of View
 	(properties
-		signal $6004
+		signal (| ignrAct ignrHrz notUpd) ;$6004
 		owner 0
 		coord 0
-		type $0000
+		type 0
 		side 0
-		illegalBits $0000
+		illegalBits 0
 	)
 	
 	(method (init theOwner)
@@ -44,17 +44,17 @@
 		(super init:)
 	)
 	
-	(method (redraw param1 &tmp temp0 [temp1 100])
-		(= temp0 (- coord param1))
+	(method (redraw scrBotPos &tmp distance [str 100])
+		(= distance (- coord scrBotPos))
 		(cond 
 			((== type 0)
-				(if (not (if (< -1 temp0) (< temp0 16)))
+				(if (not (if (< -1 distance) (< distance 16)))
 					(self hide:)
 					(return)
 				)
 				(self
-					posn: [alleyPts (+ (* temp0 3) side)] [alleyPts (+ (* temp0 3) 2)]
-					cel: temp0
+					posn: [alleyPts (+ (* distance 3) side)] [alleyPts (+ (* distance 3) 2)]
+					cel: distance
 					setPri: -1
 					forceUpd:
 					show:
@@ -62,9 +62,9 @@
 			)
 			((OneOf type 1 2)
 				(cond 
-					((>= temp0 16) (self hide:))
-					((> temp0 12)
-						(= cel (- (self lastCel:) (- temp0 12)))
+					((>= distance 16) (self hide:))
+					((> distance 12)
+						(= cel (- (self lastCel:) (- distance 12)))
 						(self forceUpd: show:)
 					)
 					(else (= cel (self lastCel:)) (self forceUpd: show:))
@@ -85,8 +85,8 @@
 	)
 	
 	(method (init)
-		(Load VIEW 700)
-		(Load VIEW 701)
+		(Load VIEW vAlley)
+		(Load VIEW vAlleyDoor)
 		(= isScrolling TRUE)
 		(= alleyFeatures (List new:))
 		(self add: length (localproc_000c endType 0) 0)
@@ -104,7 +104,7 @@
 		)
 		(ego setCycle: Forward doit: setCycle: 0)
 		(if
-		(and (== (ego loop?) 3) (not (& (ego cel?) $0001)))
+		(and (== (ego loop?) 3) (not (& (ego cel?) 1)))
 			(alleyFeatures eachElementDo: #redraw egoCoord)
 			(++ egoCoord)
 		)
@@ -115,25 +115,25 @@
 		(super dispose:)
 	)
 	
-	(method (add theCoord theType theSide &tmp newDemoAFeat)
+	(method (add theCoord aType aSide &tmp newFeature)
 		(alleyFeatures
 			add:
-				((= newDemoAFeat (DemoAFeat new:))
-					type: theType
+				((= newFeature (DemoAFeat new:))
+					type: aType
 					coord: theCoord
-					side: theSide
+					side: aSide
 					init: self
 					redraw: egoCoord
 					yourself:
 				)
 		)
-		(return newDemoAFeat)
+		(return newFeature)
 	)
 )
 
 (instance demoAlley of DemoAlley
 	(properties
-		picture 700
+		picture rAlley
 		style IRISIN
 		length 50
 	)
@@ -141,9 +141,9 @@
 	(method (init)
 		(super init:)
 		(ego
-			loop: 3
+			loop: loopN
 			init:
-			view: 0
+			view: vEgo
 			posn: 160 175
 			ignoreActors:
 			illegalBits: 0
@@ -161,7 +161,7 @@
 			add: 35 0 0
 			add: 35 0 1
 		)
-		(globalSound number: 410 loop: -1 playBed:)
+		(globalSound number: rKhaveenHouse loop: -1 playBed:)
 		(= isMoving TRUE)
 		(Print ALLEY 0 #at -1 180 #dispose)
 	)
@@ -175,7 +175,6 @@
 )
 
 (instance exitScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

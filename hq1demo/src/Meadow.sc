@@ -15,13 +15,13 @@
 
 (instance meadow of Room
 	(properties
-		picture 10
+		picture rEranasPeace
 		style IRISOUT
 	)
 	
 	(method (init)
-		(Load VIEW 10)
-		(LoadMany SOUND 124 24)
+		(Load VIEW rEranasPeace)
+		(LoadMany SOUND sEranasPeaceIBM sEranasPeace)
 		(super init:)
 		(ego
 			view: 0
@@ -31,7 +31,7 @@
 		)
 		(magicStone posn: 109 145 init:)
 		(music
-			number: (if (== numVoices 1) 124 else 24)
+			number: (if (== numVoices 1) sEranasPeaceIBM else sEranasPeace)
 			loop: 1
 			play:
 		)
@@ -50,14 +50,22 @@
 		(fruit13 init: setPri: 5)
 		(fruit14 init: setPri: 5)
 		(= roomTimer 220)
-		(Print 9 0 #at -1 185 #width 270 #dispose)
+		(Print 9 0
+			#at -1 185
+			#width 270
+			#dispose
+		)
 	)
 	
 	(method (doit)
-		(if (> roomTimer 1) (-- roomTimer))
+		(if (> roomTimer 1)
+			(-- roomTimer)
+		)
 		(if (== roomTimer 1)
 			(= roomTimer 0)
-			(if modelessDialog (modelessDialog dispose:))
+			(if modelessDialog
+				(modelessDialog dispose:)
+			)
 			(curRoom newRoom: FOREST)
 		)
 		(super doit:)
@@ -73,9 +81,9 @@
 	(properties
 		y 43
 		x 166
-		view 10
+		view rEranasPeace
 		loop 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 50
 		maxPause 100
 		minCycles 1
@@ -87,9 +95,9 @@
 	(properties
 		y 60
 		x 139
-		view 10
+		view rEranasPeace
 		loop 1
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 60
 		maxPause 110
 		minCycles 1
@@ -101,9 +109,9 @@
 	(properties
 		y 49
 		x 154
-		view 10
+		view rEranasPeace
 		loop 2
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 70
 		maxPause 120
 		minCycles 1
@@ -115,9 +123,9 @@
 	(properties
 		y 50
 		x 175
-		view 10
+		view rEranasPeace
 		loop 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 80
 		maxPause 130
 		minCycles 1
@@ -129,9 +137,9 @@
 	(properties
 		y 43
 		x 184
-		view 10
+		view rEranasPeace
 		loop 1
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 90
 		maxPause 140
 		minCycles 1
@@ -143,9 +151,9 @@
 	(properties
 		y 60
 		x 191
-		view 10
+		view rEranasPeace
 		loop 2
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 100
 		maxPause 150
 		minCycles 1
@@ -157,9 +165,9 @@
 	(properties
 		y 66
 		x 208
-		view 10
+		view rEranasPeace
 		loop 1
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 90
 		minCycles 1
@@ -171,9 +179,9 @@
 	(properties
 		y 48
 		x 136
-		view 10
+		view rEranasPeace
 		loop 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 30
 		maxPause 80
 		minCycles 1
@@ -185,9 +193,9 @@
 	(properties
 		y 71
 		x 163
-		view 10
+		view rEranasPeace
 		loop 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 20
 		maxPause 70
 		minCycles 1
@@ -199,9 +207,9 @@
 	(properties
 		y 49
 		x 208
-		view 10
+		view rEranasPeace
 		loop 2
-		cycleType 1
+		cycleType ExtraEndLoop
 		maxPause 60
 		minCycles 1
 		maxCycles 1
@@ -212,9 +220,9 @@
 	(properties
 		y 80
 		x 190
-		view 10
+		view rEranasPeace
 		loop 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 20
 		maxPause 70
 		minCycles 1
@@ -226,9 +234,9 @@
 	(properties
 		y 43
 		x 148
-		view 10
+		view rEranasPeace
 		loop 1
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 30
 		maxPause 80
 		minCycles 1
@@ -240,9 +248,9 @@
 	(properties
 		y 70
 		x 128
-		view 10
+		view rEranasPeace
 		loop 2
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 90
 		minCycles 1
@@ -254,9 +262,9 @@
 	(properties
 		y 79
 		x 145
-		view 10
+		view rEranasPeace
 		loop 1
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 50
 		maxPause 100
 		minCycles 1
@@ -266,6 +274,6 @@
 
 (instance magicStone of View
 	(properties
-		view 10
+		view rEranasPeace
 	)
 )

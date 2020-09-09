@@ -26,26 +26,20 @@
 	mageText
 	thiefText
 	userText
-	selectedClass
-	numAnimationCycles
+	whichChar
+	charCycles
 	thePlaque
-)
-
-(enum 1	;character classes
-	FIGHTER
-	MAGE
-	THIEF
 )
 	
 (procedure (HighlightCharacter)
-	(switch selectedClass
+	(switch whichChar
 		(FIGHTER
 			(thePlaque setCel: 0 posn: 64 127 stopUpd:)
 			(mageScript changeState: 0)
 			(thiefScript changeState: 0)
 			(fighterScript changeState: 1)
 		)
-		(MAGE
+		(MAGIC_USER
 			(thePlaque setCel: 0 posn: 158 127 stopUpd:)
 			(fighterScript changeState: 0)
 			(thiefScript changeState: 0)
@@ -62,16 +56,16 @@
 
 (instance selChar of Room
 	(properties
-		picture 905
+		picture pCharSel
 		style IRISIN
 	)
 	
 	(method (init)
 		(HandsOff)
-		(LoadMany SOUND 73 173)
+		(LoadMany SOUND sBrigand sBrigandIBM)
 		(super init:)
 		((= thePlaque (View new:))
-			view: 506
+			view: vCharSel
 			setLoop: 0
 			setCel: 0
 			posn: 0 1000
@@ -81,7 +75,7 @@
 			stopUpd:
 		)
 		((= theFighter (Prop new:))
-			view: 505
+			view: vSelEgo
 			setPri: 5
 			init:
 			ignoreActors:
@@ -89,7 +83,7 @@
 			setScript: fighterScript
 		)
 		((= magicSwirl (Prop new:))
-			view: 505
+			view: vSelEgo
 			setLoop: 3
 			setCel: 0
 			posn: 158 84
@@ -99,7 +93,7 @@
 			ignoreActors:
 		)
 		((= theMage (Prop new:))
-			view: 505
+			view: vSelEgo
 			setPri: 5
 			init:
 			ignoreActors:
@@ -107,7 +101,7 @@
 			setScript: mageScript
 		)
 		((= theThief (Prop new:))
-			view: 505
+			view: vSelEgo
 			setPri: 5
 			init:
 			ignoreActors:
@@ -115,7 +109,7 @@
 			setScript: thiefScript
 		)
 		((= chooseText (View new:))
-			view: 506
+			view: vCharSel
 			setLoop: 1
 			setCel: 0
 			posn: 83 25
@@ -124,7 +118,7 @@
 			stopUpd:
 		)
 		((= yourText (View new:))
-			view: 506
+			view: vCharSel
 			setLoop: 1
 			setCel: 1
 			posn: 146 27
@@ -133,7 +127,7 @@
 			stopUpd:
 		)
 		((= characterText (View new:))
-			view: 506
+			view: vCharSel
 			setLoop: 1
 			setCel: 2
 			posn: 220 27
@@ -142,7 +136,7 @@
 			stopUpd:
 		)
 		((= fighterText (View new:))
-			view: 506
+			view: vCharSel
 			setLoop: 1
 			setCel: 3
 			posn: 65 155
@@ -151,7 +145,7 @@
 			stopUpd:
 		)
 		((= mageText (View new:))
-			view: 506
+			view: vCharSel
 			setLoop: 1
 			setCel: 4
 			posn: 159 147
@@ -160,7 +154,7 @@
 			stopUpd:
 		)
 		((= thiefText (View new:))
-			view: 506
+			view: vCharSel
 			setLoop: 1
 			setCel: 6
 			posn: 161 163
@@ -169,7 +163,7 @@
 			stopUpd:
 		)
 		((= userText (View new:))
-			view: 506
+			view: vCharSel
 			setLoop: 1
 			setCel: 5
 			posn: 252 153
@@ -179,7 +173,7 @@
 		)
 		(self setScript: selScript)
 		(music
-			number: (if (== numVoices 1) 173 else 73)
+			number: (if (== numVoices 1) sBrigandIBM else sBrigand)
 			loop: -1
 			play:
 		)
@@ -199,18 +193,17 @@
 )
 
 (instance fighterScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(++ numAnimationCycles)
+				(++ charCycles)
 				(= seconds (= cycles 0))
 				(theFighter setLoop: 4 setCel: 0 posn: 64 117)
 			)
 			(1
 				(= seconds (= cycles 0))
-				(= selectedClass FIGHTER)
+				(= whichChar FIGHTER)
 				(theFighter setLoop: 0 setCel: 0)
 				(= cycles 4)
 			)
@@ -235,8 +228,8 @@
 				(= cycles 4)
 			)
 			(7
-				(if (< numAnimationCycles 2)
-					(++ selectedClass)
+				(if (< charCycles 2)
+					(++ whichChar)
 					(HighlightCharacter)
 				else
 					(music fade:)
@@ -248,7 +241,6 @@
 )
 
 (instance mageScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -258,7 +250,7 @@
 			)
 			(1
 				(= seconds (= cycles 0))
-				(= selectedClass MAGE)
+				(= whichChar MAGIC_USER)
 				(theMage setLoop: 1 setCel: 0)
 				(= cycles 3)
 			)
@@ -274,7 +266,7 @@
 				(theMage setCycle: BegLoop self)
 			)
 			(5
-				(++ selectedClass)
+				(++ whichChar)
 				(HighlightCharacter)
 			)
 		)
@@ -282,7 +274,6 @@
 )
 
 (instance thiefScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -304,7 +295,7 @@
 			)
 			(4
 				(if modelessDialog (modelessDialog dispose:))
-				(= selectedClass FIGHTER)
+				(= whichChar FIGHTER)
 				(HighlightCharacter)
 			)
 		)
@@ -312,13 +303,12 @@
 )
 
 (instance selScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 5))
 			(1
-				(++ numAnimationCycles)
+				(++ charCycles)
 				(chooseText hide:)
 				(yourText hide:)
 				(characterText hide:)
@@ -331,12 +321,12 @@
 				(= cycles 8)
 			)
 			(3
-				(if (< numAnimationCycles 3)
+				(if (< charCycles 3)
 					(self changeState: 1)
 				else
-					(= selectedClass FIGHTER)
+					(= whichChar FIGHTER)
 					(HighlightCharacter)
-					(= numAnimationCycles 0)
+					(= charCycles 0)
 					(self dispose:)
 				)
 			)
@@ -346,7 +336,7 @@
 
 (instance aWin of SysWindow
 	(properties
-		color 4
-		back 14
+		color vRED
+		back vYELLOW
 	)
 )

@@ -25,19 +25,22 @@
 )
 (instance town of Room
 	(properties
-		picture 300
+		picture rTownOutlook
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany VIEW 300 606)
-		(Load SOUND 93)
+		(LoadMany VIEW rTownOutlook vOtto)
+		(Load SOUND sTown)
 		(super init:)
 		(= yoYoState 1)
-		(music number: 93 play:)
-		((= townGate (View new:)) posn: 114 173 cel: 1)
+		(music number: sTown play:)
+		((= townGate (View new:))
+			posn: 114 173
+			cel: 1
+		)
 		(townGate
-			view: 300
+			view: rTownOutlook
 			loop: 1
 			setPri: 15
 			init:
@@ -45,9 +48,14 @@
 			ignoreActors:
 		)
 		(sheriff init:)
-		((View new:) view: 300 loop: 0 posn: 71 122 init:)
 		((View new:)
-			view: 300
+			view: rTownOutlook
+			loop: 0
+			posn: 71 122
+			init:
+		)
+		((View new:)
+			view: rTownOutlook
 			posn: 58 69
 			loop: 2
 			cel: 0
@@ -57,7 +65,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 300
+			view: rTownOutlook
 			posn: 259 58
 			loop: 2
 			cel: 1
@@ -67,7 +75,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 300
+			view: rTownOutlook
 			posn: 173 72
 			loop: 2
 			cel: 2
@@ -77,7 +85,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 300
+			view: rTownOutlook
 			posn: 271 104
 			loop: 2
 			cel: 3
@@ -87,13 +95,19 @@
 			addToPic:
 		)
 		(= roomTimer 125)
-		(ego illegalBits: cWHITE posn: 205 235 init:)
+		(ego
+			illegalBits: cWHITE
+			posn: 205 235
+			init:
+		)
 		(self setScript: entranceScript)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (> roomTimer 1) (-- roomTimer))
+		(if (> roomTimer 1)
+			(-- roomTimer)
+		)
 		(if (== roomTimer 1)
 			(= roomTimer 0)
 			(curRoom newRoom: MAGIC)
@@ -106,18 +120,24 @@
 )
 
 (instance entranceScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 100])
 		(switch (= state newState)
-			(0 (= cycles 5))
+			(0
+				(= cycles 5)
+			)
 			(1
-				(Print 3 0 #at -1 10 #width 300 #dispose #window aTalk)
+				(Print 3 0
+					#at -1 10
+					#width 300
+					#dispose
+					#window aTalk
+				)
 				(ego setMotion: MoveTo 187 187 self)
 			)
 			(2
 				((= egoHeadTurn (View new:))
-					view: 300
+					view: rTownOutlook
 					loop: 8
 					cel: 0
 					posn: 187 154
@@ -140,7 +160,9 @@
 			)
 			(6
 				(ego setMotion: MoveTo 20 143 self)
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 			)
 			(7
 				(ego setMotion: MoveTo -20 123 self)
@@ -151,14 +173,14 @@
 
 (instance sheriff of Actor
 	(properties
-		view 300
+		view rTownOutlook
 		loop 3
 	)
 	
 	(method (init)
 		(self illegalBits: 0)
 		((= pipeSmoke (Prop new:))
-			view: 300
+			view: rTownOutlook
 			loop: 5
 			cel: 0
 			posn: 159 102
@@ -170,7 +192,7 @@
 			stopUpd:
 		)
 		((= puffSmoke (Prop new:))
-			view: 300
+			view: rTownOutlook
 			loop: 7
 			cel: 0
 			posn: 156 99
@@ -181,7 +203,7 @@
 			stopUpd:
 		)
 		((= sheriffBody (View new:))
-			view: 300
+			view: rTownOutlook
 			loop: 6
 			cel: 0
 			posn: 152 128
@@ -190,14 +212,14 @@
 			stopUpd:
 		)
 		((= ottoBody (Prop new:))
-			view: 606
+			view: vOtto
 			loop: 1
 			posn: 194 76
 			init:
 			cycleSpeed: 1
 		)
 		((View new:)
-			view: 606
+			view: vOtto
 			posn: 195 118
 			loop: 0
 			cel: 0
@@ -211,7 +233,6 @@
 )
 
 (instance sheriffScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -241,7 +262,6 @@
 )
 
 (instance YoYoScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

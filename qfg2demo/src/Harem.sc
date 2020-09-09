@@ -14,19 +14,19 @@
 
 (instance demoHarem of Room
 	(properties
-		picture 430
+		picture rHaremGirlHouse
 		style IRISIN
 	)
 	
 	(method (init)
 		(super init:)
-		(ego view: 438 loop: 0 cel: 2 posn: 183 136 init:)
+		(ego view: vEgoPeek loop: 0 cel: 2 posn: 183 136 init:)
 		(servant init:)
 		(girl init:)
 		(veil init:)
 		(vase init: addToPic:)
 		(addToPics doit:)
-		(globalSound number: 430 loop: -1 playBed:)
+		(globalSound number: rHaremGirlHouse loop: -1 playBed:)
 		(Print HAREM 0 #at -1 12 #dispose)
 		(self setScript: rmScript)
 	)
@@ -36,7 +36,7 @@
 	(properties
 		x 78
 		y 119
-		view 435
+		view vHaremGirl
 	)
 )
 
@@ -44,7 +44,7 @@
 	(properties
 		x 110
 		y 116
-		view 432
+		view vServant
 	)
 )
 
@@ -52,7 +52,7 @@
 	(properties
 		x 83
 		y 125
-		view 430
+		view rHaremGirlHouse
 		priority 12
 	)
 )
@@ -61,14 +61,13 @@
 	(properties
 		x 149
 		y 114
-		view 430
+		view rHaremGirlHouse
 		loop 1
 		cel 1
 	)
 )
 
 (instance rmScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -99,7 +98,10 @@
 				(ego cycleSpeed: 2 setCycle: BegLoop)
 				(= seconds 3)
 			)
-			(6 (cls) (curRoom newRoom: DESERT))
+			(6
+				(cls)
+				(curRoom newRoom: DESERT)
+			)
 		)
 	)
 )

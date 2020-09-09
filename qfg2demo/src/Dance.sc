@@ -20,29 +20,37 @@
 		(super dispose:)
 	)
 	
-	(method (changeState newState &tmp [temp0 50])
+	(method (changeState newState &tmp [str 50])
 		(= state newState)
 		(= baseIndex (* state 4))
 		(= stepType (self at: baseIndex))
-		(if (OneOf stepType 2 3 4)
+		(if (OneOf stepType DanceEndLoop DanceBegLoop DanceMove)
 			(= repCnt (self at: (+ baseIndex 2)))
 			(if (> repCnt 0) (-- repCnt))
 		)
-		(if (OneOf stepType 1 2 3)
+		(if (OneOf stepType DanceCel DanceEndLoop DanceBegLoop)
 			(= pauseCnt (self at: (+ baseIndex 3)))
 		)
-		(if (OneOf stepType 1 2 3 4)
+		(if (OneOf stepType DanceCel DanceEndLoop DanceBegLoop DanceMove)
 			(client setLoop: (self at: (+ baseIndex 1)))
 		)
-		(self setDir: 0)
+		(self setDir: dirStop)
 		(self doState:)
 	)
 	
 	(method (cue)
 		(cond 
-			(repCnt (-- repCnt) (self doState:))
-			(pauseCnt (= cycles pauseCnt) (= pauseCnt 0))
-			(else (super cue: &rest))
+			(repCnt
+				(-- repCnt)
+				(self doState:)
+			)
+			(pauseCnt
+				(= cycles pauseCnt)
+				(= pauseCnt 0)
+			)
+			(else
+				(super cue: &rest)
+			)
 		)
 	)
 	
@@ -50,43 +58,48 @@
 		(Printf DANCE 0 name)
 	)
 	
-	(method (doState &tmp temp0)
+	(method (doState &tmp dir)
 		(switch stepType
-			(0
+			(DanceView
 				(client view: (self at: (+ baseIndex 1)) loop: 0 cel: 0)
 				(self cue:)
 			)
-			(1
+			(DanceCel
 				(client cel: (self at: (+ baseIndex 2)))
 			)
-			(2 (self endLoop:))
-			(3 (self begLoop:))
-			(4
-				(if
-				(OneOf (= temp0 (self at: (+ baseIndex 3))) 5 3)
+			(DanceEndLoop
+				(self endLoop:)
+			)
+			(DanceBegLoop
+				(self begLoop:)
+			)
+			(DanceMove
+				(if (OneOf (= dir (self at: (+ baseIndex 3))) 5 3)
 					(self endLoop:)
 				else
 					(self begLoop:)
 				)
-				(self setDir: temp0)
+				(self setDir: dir)
 			)
-			(6
+			(DancePosn
 				(client
 					posn: (self at: (+ baseIndex 1)) (self at: (+ baseIndex 2))
 				)
 				(self cue:)
 			)
-			(5
+			(DanceRelPosn
 				(client
 					x: (+ (client x?) (self at: (+ baseIndex 1)))
 					y: (+ (client y?) (self at: (+ baseIndex 2)))
 				)
 				(self cue:)
 			)
-			(7
+			(DanceSpecial
 				(self doSpecial: (self at: (+ baseIndex 1)))
 			)
-			(8 (self dispose:))
+			(DanceEnd
+				(self dispose:)
+			)
 		)
 	)
 	
@@ -102,8 +115,8 @@
 		(client cel: 0 setCycle: EndLoop self)
 	)
 	
-	(method (setDir param1)
-		(client setMotion: param1)
+	(method (setDir dir)
+		(client setMotion: dir)
 	)
 )
 
@@ -118,19 +131,23 @@
 		thisTime 0
 	)
 	
-	(method (init theClient theTheMusic)
-		((= client theClient) script: self)
-		((= theMusic theTheMusic) playBed: self)
+	(method (init who music)
+		((= client who) script: self)
+		((= theMusic music) playBed: self)
 		(self changeState: start)
 	)
 	
 	(method (doit)
-		(if disposeUs (self dispose:))
+		(if disposeUs
+			(self dispose:)
+		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(if theMusic (theMusic dispose:))
+		(if theMusic
+			(theMusic dispose:)
+		)
 		(super dispose:)
 	)
 	
@@ -140,7 +157,7 @@
 		(= pauseCnt 0)
 	)
 	
-	(method (cue &tmp [temp0 51])
+	(method (cue &tmp temp0 [str 50])
 		(if cycleDir
 			(cond 
 				((== cycleDir 1)
@@ -150,8 +167,12 @@
 						(client cel: (+ (client cel?) 1))
 					)
 				)
-				((not (client cel?)) (= cycleDir 0))
-				(else (client cel: (- (client cel?) 1)))
+				((not (client cel?))
+					(= cycleDir 0)
+				)
+				(else
+					(client cel: (- (client cel?) 1))
+				)
 			)
 			(if (not cycleDir)
 				(self cue:)
@@ -177,7 +198,7 @@
 	)
 	
 	(method (doState)
-		(if (== stepType 8)
+		(if (== stepType DanceEnd)
 			(= disposeUs TRUE)
 		else
 			(super doState:)
@@ -194,7 +215,7 @@
 		(= cycleDir dirN)
 	)
 	
-	(method (setDir theMoveDir)
-		(= moveDir theMoveDir)
+	(method (setDir dir)
+		(= moveDir dir)
 	)
 )

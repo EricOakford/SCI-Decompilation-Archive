@@ -16,15 +16,15 @@
 
 (instance demoDesert of Room
 	(properties
-		picture 660
+		picture rGenDesert
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany VIEW 12)
-		(Load SOUND 790)
+		(LoadMany VIEW vEgoRidingSaurus)
+		(Load SOUND sCaravan)
 		(super init:)
-		(globalSound stop: number: 790 loop: 1 playBed:)
+		(globalSound stop: number: sCaravan loop: 1 playBed:)
 		(self setScript: rmScript)
 	)
 	
@@ -34,14 +34,16 @@
 )
 
 (instance rmScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Print DESERT 0 #at -1 170 #dispose)
+				(Print DESERT 0
+					#at -1 170
+					#dispose
+				)
 				(ego
-					view: 12
+					view: vEgoRidingSaurus
 					loop: 0
 					cel: 0
 					posn: -20 164

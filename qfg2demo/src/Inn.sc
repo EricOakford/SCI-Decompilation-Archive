@@ -40,14 +40,14 @@
 
 (instance innRoom of Room
 	(properties
-		picture 100
+		picture rKattaInn
 		style IRISIN
 	)
 	
 	(method (init)
 		(Load SCRIPT FLAME)
-		(LoadMany VIEW 0 4 100 104 109)
-		(LoadMany SOUND 100 410 112)
+		(LoadMany VIEW vEgo vEgoStanding rKattaInn vShameen vMusician)
+		(LoadMany SOUND rKattaInn rKhaveenHouse rShemaDance)
 		(super init:)
 		(egoTable init:)
 		(table1 init:)
@@ -76,12 +76,11 @@
 )
 
 (instance rmScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(globalSound number: 100 loop: 1 play: self)
+				(globalSound number: rKattaInn loop: 1 play: self)
 				(Print INN 0
 					#at -1 12
 					#dispose
@@ -126,7 +125,7 @@
 	(properties
 		x 61
 		y 41
-		view 100
+		view rKattaInn
 		loop 1
 		cel 2
 	)
@@ -136,7 +135,7 @@
 	(properties
 		x 116
 		y 43
-		view 100
+		view rKattaInn
 		loop 1
 		cel 3
 	)
@@ -146,7 +145,7 @@
 	(properties
 		x 99
 		y 135
-		view 100
+		view rKattaInn
 		loop 2
 		cel 6
 	)
@@ -156,7 +155,7 @@
 	(properties
 		x 95
 		y 117
-		view 100
+		view rKattaInn
 		loop 2
 		cel 7
 		priority 6
@@ -167,7 +166,7 @@
 	(properties
 		x 38
 		y 128
-		view 100
+		view rKattaInn
 		loop 2
 		cel 8
 		priority 6
@@ -178,7 +177,7 @@
 	(properties
 		x 26
 		y 180
-		view 100
+		view rKattaInn
 		loop 2
 		cel 4
 	)
@@ -188,7 +187,7 @@
 	(properties
 		x 92
 		y 67
-		view 100
+		view rKattaInn
 		loop 2
 		cel 3
 	)
@@ -198,7 +197,7 @@
 	(properties
 		x 168
 		y 66
-		view 100
+		view rKattaInn
 		loop 2
 		cel 2
 	)
@@ -208,7 +207,7 @@
 	(properties
 		x 252
 		y 160
-		view 104
+		view vShameen
 		cycleSpeed 2
 	)
 )
@@ -217,7 +216,7 @@
 	(properties
 		x 54
 		y 180
-		view 100
+		view rKattaInn
 	)
 )
 
@@ -225,7 +224,7 @@
 	(properties
 		x 17
 		y 127
-		view 100
+		view rKattaInn
 		cel 1
 	)
 )
@@ -234,7 +233,7 @@
 	(properties
 		x 76
 		y 117
-		view 100
+		view rKattaInn
 		cel 3
 	)
 )
@@ -243,7 +242,7 @@
 	(properties
 		x 128
 		y 111
-		view 100
+		view rKattaInn
 		cel 4
 	)
 )
@@ -252,7 +251,7 @@
 	(properties
 		x 132
 		y 139
-		view 100
+		view rKattaInn
 		cel 1
 	)
 )
@@ -261,7 +260,7 @@
 	(properties
 		x 279
 		y 121
-		view 100
+		view rKattaInn
 		loop 2
 		priority 15
 	)
@@ -271,7 +270,7 @@
 	(properties
 		x 297
 		y 183
-		view 100
+		view rKattaInn
 		loop 2
 		cel 1
 	)
@@ -281,7 +280,7 @@
 	(properties
 		x 200
 		y 34
-		view 100
+		view rKattaInn
 		loop 1
 	)
 )
@@ -290,7 +289,7 @@
 	(properties
 		x 272
 		y 18
-		view 100
+		view rKattaInn
 		loop 1
 		cel 1
 		priority 12
@@ -301,7 +300,7 @@
 	(properties
 		x 198
 		y 111
-		view 109
+		view vMusician
 	)
 )
 
@@ -309,7 +308,7 @@
 	(properties
 		x 54
 		y 147
-		view 100
+		view rKattaInn
 		loop 3
 		priority 6
 		signal fixPriOn
@@ -320,7 +319,7 @@
 	(properties
 		x 133
 		y 111
-		view 100
+		view rKattaInn
 		loop 3
 		priority 7
 		signal fixPriOn

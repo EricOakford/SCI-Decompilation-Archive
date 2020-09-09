@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 11)
+(script# ARENA) ;11
 (include game.sh)
 (use Main)
 (use LoadMany)
@@ -17,22 +17,22 @@
 	egoHealth =  10
 	egoStamina =  10
 	catHealth =  10
-	local3 =  10
-	local4 =  3
-	local5 =  20
-	local6
-	local7
-	local8
+	leftArmTimer =  10
+	rightArmTimer =  3
+	headTimer =  20
+	leftArmCued
+	rightArmCued
+	headCued
 )
 (instance battle of Room
 	(properties
-		picture 440
+		picture vCheetaur
 		style IRISOUT
 	)
 	
 	(method (init)
-		(LoadMany VIEW 442 540 541 803)
-		(LoadMany SOUND 2 102 38 138)
+		(LoadMany VIEW vMoreCheetaur vEgoBattleArms vEgoBattleBody vStatusBar)
+		(LoadMany SOUND sHardBattle sHardBattleIBM sHardBattleEnd sHardBattleEndIBM)
 		(super init:)
 		(addToPics
 			add: torso heroH heroHBox heroS heroSBox heroM heroMBox catH catHBox
@@ -52,7 +52,7 @@
 		(heroMBar init:)
 		(catHBar cel: catHealth init:)
 		(music
-			number: (if (== numVoices 1) 102 else 2)
+			number: (if (== numVoices 1) sHardBattleIBM else sHardBattle)
 			loop: -1
 			play:
 		)
@@ -96,31 +96,35 @@
 				(tail setCycle: 0)
 			)
 		)
-		(if (and local3 (not (-- local3)))
-			(= local3 (Random 5 25))
-			(= local6 1)
+		(if (and leftArmTimer (not (-- leftArmTimer)))
+			(= leftArmTimer (Random 5 25))
+			(= leftArmCued TRUE)
 		)
-		(if (and local4 (not (-- local4)))
-			(= local4 (Random 3 25))
-			(= local7 1)
+		(if (and rightArmTimer (not (-- rightArmTimer)))
+			(= rightArmTimer (Random 3 25))
+			(= rightArmCued TRUE)
 		)
-		(if (and local5 (not (-- local5)))
-			(= local5 (Random 10 30))
-			(= local8 1)
+		(if (and headTimer (not (-- headTimer)))
+			(= headTimer (Random 10 30))
+			(= headCued TRUE)
 		)
 		(cond 
-			(
-			(and local6 (not (LArm script?)) (>= catHealth 2)) (LArm setScript: LeftSwipe) (= local6 0))
-			(
-			(and local7 (not (RArm script?)) (>= catHealth 2)) (RArm setScript: RightSwipe) (= local7 0))
+			((and leftArmCued (not (LArm script?)) (>= catHealth 2))
+				(LArm setScript: LeftSwipe)
+				(= leftArmCued FALSE)
+			)
+			((and rightArmCued (not (RArm script?)) (>= catHealth 2))
+				(RArm setScript: RightSwipe)
+				(= rightArmCued FALSE)
+			)
 			(
 				(and
-					local8
+					headCued
 					(not (head script?))
 					(!= (egoBack script?) Thrust)
 				)
 				(head setScript: TakeABite)
-				(= local8 0)
+				(= headCued FALSE)
 			)
 		)
 		(super doit:)
@@ -131,7 +135,7 @@
 	(properties
 		y 30
 		x 60
-		view 803
+		view vStatusBar
 	)
 )
 
@@ -139,7 +143,7 @@
 	(properties
 		y 29
 		x 59
-		view 803
+		view vStatusBar
 		cel 3
 	)
 )
@@ -148,7 +152,7 @@
 	(properties
 		y 49
 		x 58
-		view 803
+		view vStatusBar
 		cel 1
 	)
 )
@@ -157,7 +161,7 @@
 	(properties
 		y 48
 		x 59
-		view 803
+		view vStatusBar
 		cel 3
 	)
 )
@@ -166,7 +170,7 @@
 	(properties
 		y 69
 		x 58
-		view 803
+		view vStatusBar
 		cel 2
 	)
 )
@@ -175,7 +179,7 @@
 	(properties
 		y 68
 		x 59
-		view 803
+		view vStatusBar
 		cel 3
 	)
 )
@@ -184,7 +188,7 @@
 	(properties
 		y 30
 		x 227
-		view 803
+		view vStatusBar
 	)
 )
 
@@ -192,7 +196,7 @@
 	(properties
 		y 29
 		x 228
-		view 803
+		view vStatusBar
 		cel 3
 	)
 )
@@ -201,7 +205,7 @@
 	(properties
 		y 28
 		x 61
-		view 803
+		view vStatusBar
 		loop 1
 		priority 10
 	)
@@ -211,7 +215,7 @@
 	(properties
 		y 47
 		x 61
-		view 803
+		view vStatusBar
 		loop 1
 		cel 10
 		priority 10
@@ -222,7 +226,7 @@
 	(properties
 		y 67
 		x 61
-		view 803
+		view vStatusBar
 		loop 1
 		cel 9
 		priority 10
@@ -233,7 +237,7 @@
 	(properties
 		y 28
 		x 230
-		view 803
+		view vStatusBar
 		loop 1
 		priority 10
 	)
@@ -243,7 +247,7 @@
 	(properties
 		y 112
 		x 189
-		view 442
+		view vMoreCheetaur
 		loop 1
 		priority 0
 		signal fixPriOn
@@ -254,7 +258,7 @@
 	(properties
 		y 44
 		x 172
-		view 442
+		view vMoreCheetaur
 		loop 5
 		priority 8
 	)
@@ -264,7 +268,7 @@
 	(properties
 		y 140
 		x 235
-		view 442
+		view vMoreCheetaur
 		loop 4
 		priority 8
 	)
@@ -274,7 +278,7 @@
 	(properties
 		y 67
 		x 202
-		view 442
+		view vMoreCheetaur
 		loop 2
 		priority 8
 	)
@@ -284,7 +288,7 @@
 	(properties
 		y 77
 		x 139
-		view 442
+		view vMoreCheetaur
 		loop 3
 		priority 8
 	)
@@ -294,7 +298,7 @@
 	(properties
 		y 194
 		x 158
-		view 541
+		view vEgoBattleBody
 		priority 15
 		signal fixPriOn
 	)
@@ -304,7 +308,7 @@
 	(properties
 		y 187
 		x 137
-		view 540
+		view vEgoBattleArms
 		loop 1
 		priority 12
 		signal fixPriOn
@@ -315,7 +319,7 @@
 	(properties
 		y 194
 		x 195
-		view 540
+		view vEgoBattleArms
 		loop 3
 		priority 12
 		signal fixPriOn
@@ -323,7 +327,6 @@
 )
 
 (instance RightSwipe of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -335,7 +338,9 @@
 						(egoBack setScript: ShieldBlock)
 					else
 						(egoBack setScript: TakeAHit)
-						(if (> egoHealth 2) (-- egoHealth))
+						(if (> egoHealth 2)
+							(-- egoHealth)
+						)
 						(heroHBar cel: egoHealth forceUpd:)
 					)
 				)
@@ -346,7 +351,6 @@
 )
 
 (instance LeftSwipe of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -365,8 +369,7 @@
 )
 
 (instance TakeABite of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -375,7 +378,9 @@
 			(1
 				(if (and (not (egoBack script?)) (Random 0 1))
 					(egoBack setScript: TakeAHit)
-					(if (> egoHealth 2) (-- egoHealth))
+					(if (> egoHealth 2)
+						(-- egoHealth)
+					)
 					(heroHBar cel: egoHealth forceUpd:)
 				)
 				(head loop: 5 cel: 0 setCycle: Forward)
@@ -386,8 +391,7 @@
 )
 
 (instance Thrust of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -431,8 +435,7 @@
 )
 
 (instance CatHit of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -452,8 +455,7 @@
 )
 
 (instance TakeAHit of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -473,7 +475,6 @@
 )
 
 (instance ShieldBlock of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -494,7 +495,6 @@
 )
 
 (instance SwordMotion of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

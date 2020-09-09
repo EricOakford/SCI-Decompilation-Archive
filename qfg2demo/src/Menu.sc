@@ -12,9 +12,15 @@
 	)
 	
 	(method (init)
-		(AddMenu { \01_} {About Trial By Fire`^a})
-		(AddMenu { Action_} {Restart Demo`#9:Quit`^q})
-		(AddMenu { Sound_} {Volume...`^v:Turn Off`#2=1})
+		(AddMenu { \01_}
+			{About Trial By Fire`^a}
+		)
+		(AddMenu { Action_}
+			{Restart Demo`#9:Quit`^q}
+		)
+		(AddMenu { Sound_}
+			{Volume...`^v:Turn Off`#2=1}
+		)
 	)
 	
 	(method (handleEvent event &tmp temp0 [str 150] oldPause i)
@@ -64,8 +70,7 @@
 			(volumeI
 				(= oldPause (Sound pause: TRUE))
 				(= i (+ 1 (DoSound MasterVol)))
-				(if
-				(= i (GetNumber {Volume (1 - 16)?} i))
+				(if (= i (GetNumber {Volume (1 - 16)?} i))
 					(DoSound MasterVol (- i 1))
 				)
 				(Sound pause: oldPause)

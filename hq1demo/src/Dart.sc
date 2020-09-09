@@ -39,9 +39,9 @@
 	local20 =  10
 	forceCel =  5
 	angleCel =  10
-	[dagsOnTarget 12]
-	local35
-	theSpeed
+	[dags 12]
+	dagIndex
+	saveSpeed
 	[str 50]
 )
 (procedure (ShowScores strg theColor theX theY)
@@ -61,11 +61,11 @@
 	(= daggerY (Random 85 100))
 )
 
-(procedure (localproc_004f)
-	(while (>= (-- local35) 0)
-		([dagsOnTarget local35] dispose:)
+(procedure (DisposeDaggers)
+	(while (>= (-- dagIndex) 0)
+		([dags dagIndex] dispose:)
 	)
-	(= local35 0)
+	(= dagIndex 0)
 )
 
 (procedure (localproc_0069 &tmp temp0 temp1)
@@ -88,25 +88,32 @@
 
 (instance dagNabIt of Room
 	(properties
-		picture 340
+		picture rDagNabIt
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany VIEW 340 341)
-		(LoadMany SOUND 29 30 31 129 130 131)
+		(LoadMany VIEW rDagNabIt vDartBoard)
+		(LoadMany SOUND
+			sKnifeStick1
+			sKnifeStick2
+			sKnifeThrow
+			sKnifeStick1IBM
+			sKnifeStick2IBM
+			sKnifeThrowIBM
+		)
 		(super init: &rest)
 		(if (== numVoices 1)
-			(dagSound number: 131)
-			(heroDag number: 129)
-			(chiefDag number: 130)
+			(dagSound number: sKnifeThrowIBM)
+			(heroDag number: sKnifeStick1IBM)
+			(chiefDag number: sKnifeStick2IBM)
 		else
-			(dagSound number: 31)
-			(heroDag number: 29)
-			(chiefDag number: 30)
+			(dagSound number: sKnifeThrow)
+			(heroDag number: sKnifeStick1)
+			(chiefDag number: sKnifeStick2)
 		)
 		((View new:)
-			view: 341
+			view: vDartBoard
 			loop: 0
 			cel: 0
 			posn: 70 45
@@ -117,7 +124,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 341
+			view: vDartBoard
 			loop: 1
 			cel: 0
 			posn: 68 183
@@ -128,7 +135,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 341
+			view: vDartBoard
 			loop: 2
 			cel: 0
 			posn: 183 180
@@ -139,7 +146,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 341
+			view: vDartBoard
 			loop: 2
 			cel: 1
 			posn: 272 180
@@ -150,7 +157,7 @@
 			addToPic:
 		)
 		((= egoLabel (View new:))
-			view: 341
+			view: vDartBoard
 			loop: 5
 			cel: 0
 			ignoreActors:
@@ -159,7 +166,7 @@
 			init:
 		)
 		((= chiefLabel (View new:))
-			view: 341
+			view: vDartBoard
 			loop: 5
 			cel: 1
 			ignoreActors:
@@ -175,20 +182,23 @@
 )
 
 (instance throwScript of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp theCel addPoints)
 		(switch (= state newState)
 			(0)
 			(1
-				(= theSpeed speed)
+				(= saveSpeed speed)
 				(theGame setSpeed: 0)
 				(theHand cycleSpeed: 2 setCycle: CycleTo 2 1 self)
-				(if egosTurn (egoDagger cycleSpeed: 2 setCycle: CycleTo 2 1))
+				(if egosTurn
+					(egoDagger cycleSpeed: 2 setCycle: CycleTo 2 1)
+				)
 			)
 			(2
 				(theHand cycleSpeed: 0 setCycle: EndLoop self)
-				(if egosTurn (egoDagger cycleSpeed: 0 setCycle: EndLoop))
+				(if egosTurn
+					(egoDagger cycleSpeed: 0 setCycle: EndLoop)
+				)
 				(dagSound play:)
 			)
 			(3
@@ -221,7 +231,7 @@
 			(5
 				(theDagger posn: 900 100 stopUpd:)
 				(theHand cel: 0 forceUpd: stopUpd:)
-				((= [dagsOnTarget local35] (View new:))
+				((= [dags dagIndex] (View new:))
 					view: 340
 					loop: (if egosTurn 7 else 3)
 					cel: 3
@@ -231,10 +241,10 @@
 					init:
 					stopUpd:
 				)
-				(++ local35)
+				(++ dagIndex)
 				(dagSound stop:)
 				(if egosTurn (heroDag play:) else (chiefDag play:))
-				(= temp0
+				(= theCel
 					(cond 
 						((< hitX 65) 0)
 						((> hitX 75) 2)
@@ -243,32 +253,32 @@
 				)
 				(= hitX (+ (* (- hitX 70) 2) 229))
 				(= hitY (+ (* (- hitY 45) 2) 61))
-				((= [dagsOnTarget local35] (View new:))
+				((= [dags dagIndex] (View new:))
 					view: 340
 					loop: (if egosTurn 7 else 3)
-					cel: temp0
+					cel: theCel
 					posn: hitX hitY
 					ignoreActors:
 					setPri: 1
 					init:
 					stopUpd:
 				)
-				(++ local35)
-				(= temp1
-					(switch (OnControl 4 hitX hitY)
-						(2 1)
-						(4 2)
-						(8 3)
-						(16 4)
+				(++ dagIndex)
+				(= addPoints
+					(switch (OnControl CMAP hitX hitY)
+						(cBLUE 1)
+						(cGREEN 2)
+						(cCYAN 3)
+						(cRED 4)
 						(else  0)
 					)
 				)
 				(if egosTurn
-					(= egoPoints (+ egoPoints temp1))
+					(= egoPoints (+ egoPoints addPoints))
 				else
-					(= chiefPoints (+ chiefPoints temp1))
+					(= chiefPoints (+ chiefPoints addPoints))
 				)
-				(theGame setSpeed: theSpeed)
+				(theGame setSpeed: saveSpeed)
 				(client cue:)
 			)
 		)
@@ -276,11 +286,10 @@
 )
 
 (instance dagnabitScript of Script
-	(properties)
-	
+
 	(method (init)
 		((= forceMeter (View new:))
-			view: 341
+			view: vDartBoard
 			loop: 3
 			cel: forceCel
 			posn: 160 178
@@ -290,7 +299,7 @@
 			stopUpd:
 		)
 		((= angleMeter (View new:))
-			view: 341
+			view: vDartBoard
 			loop: 4
 			cel: angleCel
 			posn: 272 178
@@ -337,7 +346,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Print 5 1 #mode 1 #dispose #window aWin)
+				(Print 5 1
+					#mode teJustCenter
+					#dispose
+					#window aWin
+				)
 				(= seconds 8)
 			)
 			(1
@@ -348,9 +361,9 @@
 					(= local15 (= local11 (= egoPoints (= chiefPoints 0))))
 				)
 				(= local19 60)
-				(= local35 0)
-				(ShowScores egoPoints 14 47 173)
-				(ShowScores chiefPoints 11 73 173)
+				(= dagIndex 0)
+				(ShowScores egoPoints vYELLOW 47 173)
+				(ShowScores chiefPoints vLCYAN 73 173)
 				(self cue:)
 			)
 			(2
@@ -360,7 +373,7 @@
 				(self cue:)
 			)
 			(3
-				(localproc_004f)
+				(DisposeDaggers)
 				(self setScript: throwScript)
 				(self cue:)
 			)
@@ -382,7 +395,7 @@
 				(script changeState: 1)
 			)
 			(7
-				(ShowScores egoPoints 14 47 173)
+				(ShowScores egoPoints vYELLOW 47 173)
 				(if (< (++ daggersThrown) 3)
 					(SetHandCoords)
 					(self changeState: 4)
@@ -431,7 +444,7 @@
 				)
 			)
 			(14
-				(localproc_004f)
+				(DisposeDaggers)
 				(curRoom newRoom: GHOSTS)
 			)
 		)
@@ -458,6 +471,6 @@
 
 (instance aWin of SysWindow
 	(properties
-		color 4
+		color vRED
 	)
 )

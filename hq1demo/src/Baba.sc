@@ -21,17 +21,23 @@
 )
 (instance baba of Room
 	(properties
-		picture 22
+		picture rBabaHutOutside
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany VIEW 22 23)
-		(Load SOUND 23)
+		(LoadMany VIEW rBabaHutOutside vBabaSkulls)
+		(Load SOUND sBabaHutOutside)
 		(= currentPalette 0)
 		(super init:)
-		(music number: 23 play:)
-		(ego view: 4 loop: 3 cel: 0 posn: 181 189 init:)
+		(music number: sBabaHutOutside play:)
+		(ego
+			view: vEgoStanding
+			loop: loopN
+			cel: 0
+			posn: 181 189
+			init:
+		)
 		(= hutX 167)
 		(= hutY 96)
 		(hut
@@ -83,13 +89,19 @@
 )
 
 (instance startIt of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
-				(Print 7 0 #at -1 290 #width 300 #dispose #window aWin)
+				(Print 7 0
+					#at -1 290
+					#width 300
+					#dispose
+					#window aWin
+				)
 				(self setScript: flyAway)
 			)
 		)
@@ -97,8 +109,7 @@
 )
 
 (instance flyAway of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -107,10 +118,18 @@
 				(skull3 stopUpd: addToPic:)
 				(skull4 stopUpd: addToPic:)
 				(skull5 stopUpd: addToPic:)
-				(if (cast contains: gate) (gate addToPic:))
-				(if (cast contains: dirt) (dirt addToPic:))
-				(if (cast contains: bonehead) (bonehead addToPic:))
-				(if (cast contains: eyes) (eyes addToPic:))
+				(if (cast contains: gate)
+					(gate addToPic:)
+				)
+				(if (cast contains: dirt)
+					(dirt addToPic:)
+				)
+				(if (cast contains: bonehead)
+					(bonehead addToPic:)
+				)
+				(if (cast contains: eyes)
+					(eyes addToPic:)
+				)
 				(= seconds 5)
 			)
 			(1
@@ -137,7 +156,9 @@
 				(= cycles 12)
 			)
 			(3
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(hut setMotion: MoveTo hutX -20)
 				(wing1 setMotion: MoveTo (wing1 x?) -15)
 				(wing2 setMotion: MoveTo (wing2 x?) -15)
@@ -151,7 +172,9 @@
 				)
 				(= seconds 10)
 			)
-			(4 (curRoom newRoom: CAVE))
+			(4
+				(curRoom newRoom: CAVE)
+			)
 		)
 	)
 )
@@ -161,18 +184,18 @@
 		y 137
 		x 190
 		z 1
-		view 23
+		view vBabaSkulls
 		loop 2
-		illegalBits $0000
+		illegalBits 0
 	)
 )
 
 (instance wing1 of Actor
 	(properties
 		yStep 4
-		view 22
+		view rBabaHutOutside
 		loop 8
-		illegalBits $0000
+		illegalBits 0
 		xStep 6
 	)
 )
@@ -180,9 +203,9 @@
 (instance wing2 of Actor
 	(properties
 		yStep 4
-		view 22
+		view rBabaHutOutside
 		loop 9
-		illegalBits $0000
+		illegalBits 0
 		xStep 6
 	)
 )
@@ -190,27 +213,27 @@
 (instance hut of Actor
 	(properties
 		yStep 4
-		view 22
+		view rBabaHutOutside
 		loop 4
-		illegalBits $0000
+		illegalBits 0
 		xStep 6
 	)
 )
 
 (instance hutDoor of Actor
 	(properties
-		view 22
+		view rBabaHutOutside
 		loop 5
 		cycleSpeed 1
-		illegalBits $0000
+		illegalBits 0
 	)
 )
 
 (instance frontLeg of Actor
 	(properties
 		yStep 4
-		view 22
-		illegalBits $0000
+		view rBabaHutOutside
+		illegalBits 0
 		xStep 6
 	)
 )
@@ -218,10 +241,10 @@
 (instance frontFoot of Actor
 	(properties
 		yStep 4
-		view 22
+		view rBabaHutOutside
 		loop 1
 		cel 1
-		illegalBits $0000
+		illegalBits 0
 		xStep 6
 	)
 )
@@ -229,9 +252,9 @@
 (instance backLeg of Actor
 	(properties
 		yStep 4
-		view 22
+		view rBabaHutOutside
 		loop 2
-		illegalBits $0000
+		illegalBits 0
 		xStep 6
 	)
 )
@@ -239,10 +262,10 @@
 (instance backFoot of Actor
 	(properties
 		yStep 4
-		view 22
+		view rBabaHutOutside
 		loop 3
 		cel 1
-		illegalBits $0000
+		illegalBits 0
 		xStep 6
 	)
 )
@@ -251,8 +274,8 @@
 	(properties
 		y 158
 		x 191
-		view 23
-		illegalBits $0000
+		view vBabaSkulls
+		illegalBits 0
 	)
 )
 
@@ -260,9 +283,9 @@
 	(properties
 		y 156
 		x 191
-		view 23
+		view vBabaSkulls
 		loop 1
-		illegalBits $0000
+		illegalBits 0
 	)
 )
 
@@ -271,10 +294,10 @@
 		y 130
 		x 189
 		z 2
-		view 23
+		view vBabaSkulls
 		loop 3
 		cycleSpeed 1
-		illegalBits $0000
+		illegalBits 0
 	)
 )
 
@@ -282,9 +305,9 @@
 	(properties
 		y 88
 		x 117
-		view 23
+		view vBabaSkulls
 		loop 4
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 80
 		minCycles 2
@@ -296,9 +319,9 @@
 	(properties
 		y 89
 		x 251
-		view 23
+		view vBabaSkulls
 		loop 4
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 80
 		minCycles 2
@@ -310,9 +333,9 @@
 	(properties
 		y 88
 		x 72
-		view 23
+		view vBabaSkulls
 		loop 6
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 80
 		minCycles 2
@@ -324,9 +347,9 @@
 	(properties
 		y 85
 		x 14
-		view 23
+		view vBabaSkulls
 		loop 5
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 80
 		minCycles 2
@@ -338,9 +361,9 @@
 	(properties
 		y 82
 		x 295
-		view 23
+		view vBabaSkulls
 		loop 5
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 80
 		minCycles 2

@@ -14,25 +14,79 @@
 	rm112 0
 )
 
+(define ShemaX 200)
+(define ShemaY 107)
+
 (local
-	local0
-	theTheMusicPrevSignal
-	[danceSteps 217] = [2 0 0 0 2 1 0 15 2 2 0 17 2 3 0 20 4 4 2 3 4 4 4 7 4 4 2 3 5
-	-19 0 0 2 5 0 0 4 6 2 5 4 6 2 1 2 7 0 0 4 8 2 3 4 8 4 7 4 8 2 3 3 7 0 0 4 6 1 5
-	4 6 1 1 3 5 0 0 5 16 0 0 4 4 1 7 4 4 2 3 4 4 1 7 0 113 0 0 2 0 0 0 2 2 4 0 5 -27
-	0 0 2 1 0 0 2 3 4 0 0 112 0 0 2 5 0 0 0 113 0 0 4 4 0 3 2 4 0 3 4 4 0 3 2 4 0 3 4
-	4 0 3 2 4 0 3 4 4 0 3 2 4 0 3 4 4 0 3 2 4 0 3 4 4 0 3 2 4 0 3 4 4 0 3 2 4 0 3 4 4
-	0 3 2 4 0 3 6 200 107 0 2 5 0 0 1 6 0 10 2 7 0 0 0 112 0 0 3 0 0 20 8]
+	musicianInCast
+	musicianPausedSignal
+	danceSteps =	[
+		DanceEndLoop 0 0 0
+		DanceEndLoop 1 0 15
+		DanceEndLoop 2 0 17
+		DanceEndLoop 3 0 20
+		DanceMove 4 2 dirE
+		DanceMove 4 4 dirW
+		DanceMove 4 2 dirE
+		DanceRelPosn -19 0 0
+		DanceEndLoop 5 0 0
+		DanceMove 6 2 dirS
+		DanceMove 6 2 dirN
+		DanceEndLoop 7 0 0
+		DanceMove 8 2 dirE
+		DanceMove 8 4 dirW
+		DanceMove 8 2 dirE
+		DanceBegLoop 7 0 0
+		DanceMove 6 1 dirS
+		DanceMove 6 1 dirN
+		DanceBegLoop 5 0 0
+		DanceRelPosn 16 0 0
+		DanceMove 4 1 dirW
+		DanceMove 4 2 dirE
+		DanceMove 4 1 dirW
+		DanceView vDance2 0 0
+		DanceEndLoop 0 0 0
+		DanceEndLoop 2 4 0
+		DanceRelPosn -27 0 0
+		DanceEndLoop 1 0 0
+		DanceEndLoop 3 4 0
+		DanceView rShemaDance 0 0
+		DanceEndLoop 5 0 0
+		DanceView vDance2 0 0
+		DanceMove 4 0 dirE
+		DanceEndLoop 4 0 3
+		DanceMove 4 0 dirE
+		DanceEndLoop 4 0 3
+		DanceMove 4 0 dirE
+		DanceEndLoop 4 0 3
+		DanceMove 4 0 dirE
+		DanceEndLoop 4 0 3
+		DanceMove 4 0 dirE
+		DanceEndLoop 4 0 3
+		DanceMove 4 0 dirE
+		DanceEndLoop 4 0 3
+		DanceMove 4 0 dirE
+		DanceEndLoop 4 0 3
+		DanceMove 4 0 dirE
+		DanceEndLoop 4 0 3
+		DancePosn ShemaX ShemaY 0
+		DanceEndLoop 5 0 0
+		DanceCel 6 0 10
+		DanceEndLoop 7 0 0
+		DanceView rShemaDance 0 0
+		DanceBegLoop 0 0 20
+		DanceEnd
+	]
 )
 (instance rm112 of Room
 	(properties
-		picture 110
+		picture rKattaClose
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany VIEW 112 113 111 110)
-		(Load SOUND 112)
+		(LoadMany VIEW rShemaDance vDance2 vDanceMusician rKattaClose)
+		(Load SOUND rShemaDance)
 		(globalSound stop:)
 		(LoadMany SCRIPT REVERSE)
 		(super init:)
@@ -57,7 +111,7 @@
 		x 200
 		y 107
 		yStep 1
-		view 112
+		view rShemaDance
 		cycleSpeed 1
 		xStep 1
 		moveSpeed 1
@@ -68,7 +122,7 @@
 	(properties
 		x 110
 		y 88
-		view 111
+		view vDanceMusician
 		loop 1
 		signal fixPriOn
 		cycleSpeed 6
@@ -79,7 +133,7 @@
 	(properties
 		x 88
 		y 115
-		view 110
+		view rKattaClose
 		loop 1
 	)
 )
@@ -88,7 +142,7 @@
 	(properties
 		x 226
 		y 156
-		view 110
+		view rKattaClose
 		loop 1
 		cel 1
 	)
@@ -98,7 +152,7 @@
 	(properties
 		x 249
 		y 167
-		view 110
+		view rKattaClose
 		loop 2
 	)
 )
@@ -107,7 +161,7 @@
 	(properties
 		x 88
 		y 97
-		view 110
+		view rKattaClose
 		loop 3
 	)
 )
@@ -116,41 +170,40 @@
 	(properties
 		x 226
 		y 136
-		view 110
+		view rKattaClose
 		loop 3
 	)
 )
 
 (instance bellySound of QueuedSound
 	(properties
-		number 112
+		number rShemaDance
 		priority 10
 	)
 )
 
 (instance dance of DanceQueuedSound
-	(properties)
 	
 	(method (dispose)
-		(curRoom newRoom: 4)
+		(curRoom newRoom: ALLEY)
 		(super dispose:)
 	)
 	
-	(method (cue &tmp theMusicPrevSignal)
+	(method (cue &tmp aSignal)
 		(super cue: &rest)
-		(if local0
+		(if musicianInCast
 			(cond 
 				(
 					(>
-						(= theMusicPrevSignal (theMusic prevSignal?))
-						theTheMusicPrevSignal
+						(= aSignal (theMusic prevSignal?))
+						musicianPausedSignal
 					)
 					(musician setCycle: Forward)
-					(= theTheMusicPrevSignal 32767)
+					(= musicianPausedSignal INFINITY)
 				)
 				((OneOf (theMusic prevSignal?) 140 147 156 456)
 					(musician setCel: 2 setCycle: 0)
-					(= theTheMusicPrevSignal theMusicPrevSignal)
+					(= musicianPausedSignal aSignal)
 				)
 			)
 		)
@@ -168,7 +221,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds 2))
+			(1
+				(= seconds 2)
+			)
 			(2
 				(shema setScript: dance bellySound)
 				(self dispose:)

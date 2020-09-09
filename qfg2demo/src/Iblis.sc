@@ -16,8 +16,8 @@
 )
 
 (local
-	local0
-	local1
+	iblisTimer
+	lightningTimer
 	[lightning 4]
 	[lightningX 4] = [66 111 256 200]
 	[lightningY 4] = [35 9 18 -3]
@@ -28,8 +28,7 @@
 	[boltY 8] = [111 103 103 112 100 103 108 103]
 )
 (procedure (AddLightning &tmp i)
-	(= i 0)
-	(while (< i 4)
+	(for ((= i 0)) (< i 4) ((++ i))		
 		(= [lightning i] (aLightning new:))
 		([lightning i]
 			setLoop: i
@@ -37,23 +36,14 @@
 			ignoreActors:
 			minPause: (Random 20 40)
 			maxPause: (Random 40 70)
-			posn:
-				[lightningX i]
-				[lightningY i]; (= [lightning i])] (aLightning new:))]
+			posn: [lightningX i] [lightningY i]
 			init:
 		)
-		(++ i)
 	)
 )
 
-;EO: This procedure caused the error "Not an object: $b0b".
-;It seems to be a decompiler error.
 (procedure (AddSound &tmp i)
-	(= i 0)
-	(while (< i 2)
-		;problem code below
-;;;		([sound (= [sound i] (Sound new:))]
-		;corrected code below
+	(for ((= i 0)) (< i 2) ((++ i))	
 		(= [sound i] (Sound new:))
 		([sound i]
 			number: 12
@@ -61,21 +51,17 @@
 			priority: [soundPri i]
 			init:
 		)
-		(++ i)
 	)
 )
 
 (procedure (DisposeSound &tmp i)
-	(= i 0)
-	(while (< i 2)
+	(for ((= i 0)) (< i 2) ((++ i))	
 		([sound i] dispose:)
-		(++ i)
 	)
 )
 
 (procedure (AddBolts &tmp i)
-	(= i 0)
-	(while (< i 8)
+	(for ((= i 0)) (< i 8) ((++ i))	
 		(= [bolt i] (aBolt new:))
 		([bolt i]
 			setLoop: (mod i 4)
@@ -84,14 +70,13 @@
 			posn: [boltX i] [boltY i]
 			init:
 		)
-		(++ i)
 	)
 )
 
 (instance aLightning of Extra
 	(properties
-		view 792
-		cycleType 1
+		view vLightningStrikes
+		cycleType ExtraEndLoop
 		minCycles 1
 		maxCycles 2
 	)
@@ -99,21 +84,21 @@
 
 (instance aBolt of Prop
 	(properties
-		view 792
+		view vLightningStrikes
 	)
 )
 
 (instance demoIblis of Room
 	(properties
-		picture 790
+		picture rIblisDestroys
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany VIEW 791 792)
+		(LoadMany VIEW vIblisParts vLightningStrikes)
 		(= currentPalette 2)
 		(super init:)
-		(globalSound number: 340 loop: 1 priority: 8 playBed:)
+		(globalSound number: rDestructCity loop: 1 priority: 8 playBed:)
 		(addToPics
 			add: head body smoke rightArm leftArm
 			eachElementDo: #init
@@ -164,18 +149,20 @@
 			else
 				([bolt 0] setScript: leftBolt)
 				([bolt 4] setScript: rightBolt)
-				(= local0 80)
+				(= iblisTimer 80)
 			)
 		)
-		(if (and (> local0 1) (== (-- local0) 1))
-			(= local0 0)
+		(if (and (> iblisTimer 1) (== (-- iblisTimer) 1))
+			(= iblisTimer 0)
 			(curRoom newRoom: SPEED)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(if modelessDialog (modelessDialog dispose:))
+		(if modelessDialog
+			(modelessDialog dispose:)
+		)
 		(DisposeSound)
 		(ego view: 0 setLoop: -1 setCel: -1)
 		(= currentPalette 0)
@@ -184,16 +171,22 @@
 )
 
 (instance rmScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Print IBLIS 0 #at -1 160 #dispose)
+				(Print IBLIS 0
+					#at -1 160
+					#dispose
+				)
 				(= seconds 5)
 			)
 			(1
-				(Print IBLIS 1 #at -1 160 #mode 1 #dispose)
+				(Print IBLIS 1
+					#at -1 160
+					#mode teJustCenter
+					#dispose
+				)
 				(self dispose:)
 			)
 		)
@@ -201,8 +194,7 @@
 )
 
 (instance leftBolt of Script
-	(properties)
-	
+
 	(method (doit)
 		(if (mod (client cel?) 2)
 			(leftHandFlash show:)
@@ -216,21 +208,22 @@
 	(method (changeState newState &tmp i)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i 4)
+				(for ((= i 0)) (< i 4) ((++ i))
 					([bolt i] setCycle: EndLoop)
-					(++ i)
 				)
 				(= cycles 10)
 			)
-			(1 (= cycles (Random 5 25)))
-			(2 (self changeState: 0))
+			(1
+				(= cycles (Random 5 25))
+			)
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance rightBolt of Script
-	(properties)
 	
 	(method (doit)
 		(if (mod (client cel?) 2)
@@ -245,15 +238,17 @@
 	(method (changeState newState &tmp i)
 		(switch (= state newState)
 			(0
-				(= i 4)
-				(while (< i 8)
+				(for ((= i 0)) (< i 4) ((++ i))	
 					([bolt i] setCycle: EndLoop)
-					(++ i)
 				)
 				(= cycles 10)
 			)
-			(1 (= cycles (Random 5 25)))
-			(2 (self changeState: 0))
+			(1
+				(= cycles (Random 5 25))
+			)
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )
@@ -262,7 +257,7 @@
 	(properties
 		x 157
 		y 36
-		view 791
+		view vIblisParts
 	)
 )
 
@@ -270,7 +265,7 @@
 	(properties
 		x 161
 		y 80
-		view 791
+		view vIblisParts
 		loop 1
 	)
 )
@@ -279,7 +274,7 @@
 	(properties
 		x 200
 		y 119
-		view 791
+		view vIblisParts
 		loop 2
 	)
 )
@@ -288,7 +283,7 @@
 	(properties
 		x 128
 		y 40
-		view 791
+		view vIblisParts
 		loop 3
 	)
 )
@@ -297,7 +292,7 @@
 	(properties
 		x 197
 		y 45
-		view 791
+		view vIblisParts
 		loop 4
 	)
 )
@@ -306,7 +301,7 @@
 	(properties
 		x 158
 		y 29
-		view 791
+		view vIblisParts
 		cel 1
 		priority 2
 		signal fixPriOn
@@ -317,7 +312,7 @@
 	(properties
 		x 158
 		y 45
-		view 791
+		view vIblisParts
 		loop 1
 		cel 1
 		priority 5
@@ -329,7 +324,7 @@
 	(properties
 		x 109
 		y 78
-		view 791
+		view vIblisParts
 		loop 3
 		cel 1
 	)
@@ -339,7 +334,7 @@
 	(properties
 		x 110
 		y 105
-		view 791
+		view vIblisParts
 		loop 3
 		cel 2
 	)
@@ -349,7 +344,7 @@
 	(properties
 		x 218
 		y 78
-		view 791
+		view vIblisParts
 		loop 4
 		cel 1
 	)
@@ -359,7 +354,7 @@
 	(properties
 		x 238
 		y 104
-		view 791
+		view vIblisParts
 		loop 4
 		cel 2
 	)

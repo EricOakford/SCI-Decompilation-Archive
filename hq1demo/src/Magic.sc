@@ -36,26 +36,26 @@
 
 (instance magic of Room
 	(properties
-		picture 314
+		picture rMagicShop
 		style IRISIN
 		vanishingY 80
 	)
 	
 	(method (init)
-		(LoadMany VIEW 314 315)
+		(LoadMany VIEW rMagicShop vZara)
 		(Load SOUND 28 128 45 145 67)
 		(super init:)
 		(if (== numVoices 1)
-			(theThunder number: 145)
-			(theTeleport number: 128)
+			(theThunder number: sThunderIBM)
+			(theTeleport number: sTeleportIBM)
 		else
-			(theThunder number: 45)
-			(theTeleport number: 28)
+			(theThunder number: sThunder)
+			(theTeleport number: sTeleport)
 		)
-		(music number: 67 loop: 1 play:)
+		(music number: sMagicShop loop: 1 play:)
 		(ego loop: 3 posn: 159 188 init:)
 		((= [thunderingCloud 0] (Prop new:))
-			view: 314
+			view: rMagicShop
 			posn: 159 13
 			loop: 0
 			cel: 0
@@ -63,7 +63,7 @@
 			stopUpd:
 		)
 		((= [thunderingCloud 1] (Prop new:))
-			view: 314
+			view: rMagicShop
 			posn: 149 27
 			loop: 1
 			cel: 0
@@ -71,7 +71,7 @@
 			stopUpd:
 		)
 		((= [thunderingCloud 2] (Prop new:))
-			view: 314
+			view: rMagicShop
 			posn: 161 38
 			loop: 2
 			cel: 0
@@ -79,7 +79,7 @@
 			stopUpd:
 		)
 		((= [thunderingCloud 3] (Prop new:))
-			view: 314
+			view: rMagicShop
 			posn: 160 53
 			loop: 3
 			cel: 0
@@ -87,7 +87,7 @@
 			stopUpd:
 		)
 		((= theFamiliar (Prop new:))
-			view: 314
+			view: rMagicShop
 			posn: 110 55
 			loop: 6
 			cel: 0
@@ -96,7 +96,7 @@
 			stopUpd:
 		)
 		((View new:)
-			view: 314
+			view: rMagicShop
 			posn: 111 66
 			loop: 8
 			cel: 0
@@ -110,7 +110,7 @@
 
 (instance zara of Prop
 	(properties
-		view 315
+		view vZara
 		loop 1
 	)
 	
@@ -123,8 +123,7 @@
 )
 
 (instance entranceScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -141,7 +140,7 @@
 			)
 			(4
 				((= theLightning (Prop new:))
-					view: 314
+					view: rMagicShop
 					posn: 159 90
 					loop: 4
 					cel: 0
@@ -152,7 +151,7 @@
 			(5
 				(theLightning stopUpd:)
 				((= warpCloud (Prop new:))
-					view: 314
+					view: rMagicShop
 					posn: 161 90
 					loop: 5
 					cel: 0
@@ -163,7 +162,9 @@
 				(theTeleport init: play:)
 			)
 			(6
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(zara loop: 1 cel: 0 show:)
 				((= zaraBody (View new:))
 					view: 315
@@ -176,7 +177,9 @@
 				)
 				(warpCloud setCycle: CycleTo 5 1 self)
 			)
-			(7 (zara setCycle: EndLoop self))
+			(7
+				(zara setCycle: EndLoop self)
+			)
 			(8
 				(warpCloud stopUpd:)
 				(= cycles 20)
@@ -190,12 +193,16 @@
 )
 
 (instance familiarScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Print 4 0 #at -1 285 #width 290 #dispose #window aTalk)
+				(Print 4 0
+					#at -1 285
+					#width 290
+					#dispose
+					#window aTalk
+				)
 				(theFamiliar cel: 1 posn: 110 54)
 				(= seconds 2)
 			)
@@ -207,7 +214,10 @@
 					setCycle: EndLoop self
 				)
 			)
-			(2 (zara init:) (= cycles 20))
+			(2
+				(zara init:)
+				(= cycles 20)
+			)
 			(3
 				(theFamiliar
 					loop: 7
@@ -219,7 +229,9 @@
 			(4
 				(theFamiliar setCycle: BegLoop self)
 			)
-			(6 (self dispose:))
+			(6
+				(self dispose:)
+			)
 		)
 	)
 )

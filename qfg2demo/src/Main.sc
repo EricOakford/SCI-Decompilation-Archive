@@ -327,7 +327,9 @@
 )
 
 (procedure (cls)
-	(if modelessDialog (modelessDialog dispose:))
+	(if modelessDialog
+		(modelessDialog dispose:)
+	)
 )
 
 (instance egoObj of Ego
@@ -337,8 +339,7 @@
 )
 
 (instance statusCode of Code
-	(properties)
-	
+
 	(method (doit strg)
 		(Format strg 0 0)
 	)
@@ -346,19 +347,18 @@
 
 (instance GlobalMusic of Sound
 	(properties
-		number 751
+		number sGenieHand1
 	)
 )
 
 (instance miscMusic of Sound
 	(properties
-		number 751
+		number sGenieHand1
 		priority 15
 	)
 )
 
 (instance HQ2Demo of Game
-	(properties)
 	
 	(method (init)
 		(= debugging TRUE) ;EO: added to enable debug
@@ -380,8 +380,16 @@
 			(HandsOff)
 			(self setCursor: normalCursor FALSE 350 200)
 		)
-		((= globalSound GlobalMusic) number: 751 owner: self init:)
-		((= miscSound miscMusic) number: 751 owner: self init:)
+		((= globalSound GlobalMusic)
+			number: sGenieHand1
+			owner: self
+			init:
+		)
+		((= miscSound miscMusic)
+			number: sGenieHand1
+			owner: self
+			init:
+		)
 		(self newRoom: SPEED)
 	)
 	
@@ -391,7 +399,7 @@
 	
 	(method (startRoom roomNum &tmp temp0)
 		(LoadMany FALSE
-			EXTRA DANCE QSOUND ALLEY GROOPER FULL
+			EXTRA DANCE QSOUND ALLEY GROOPER FULLLOOP
 			FORCOUNT SIGHT DPATH FLAME
 		)
 		(if debugging

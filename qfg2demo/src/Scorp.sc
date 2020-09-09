@@ -2,7 +2,7 @@
 (script# SCORP) ;8
 (include game.sh)
 (use Main)
-(use Full)
+(use FullLoop)
 (use Intrface)
 (use ForCount)
 (use LoadMany)
@@ -17,17 +17,17 @@
 
 (instance demoCombat of Room
 	(properties
-		picture 681
+		picture rCombatIsolated
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany SCRIPT SCORP FULL FORCOUNT)
-		(Load PICTURE 681)
-		(LoadMany VIEW 0 4 673 670 675)
+		(LoadMany SCRIPT SCORP FULLLOOP FORCOUNT)
+		(Load PICTURE rCombatIsolated)
+		(LoadMany VIEW vEgo vEgoStanding vEgoSwordFight vScorpion vEgoCaughtByScorpion)
 		(super init:)
 		(ego
-			view: 673
+			view: vEgoSwordFight
 			loop: 0
 			cel: 0
 			posn: 151 113
@@ -37,7 +37,7 @@
 		(scorpion init:)
 		(leftPincer init:)
 		(rightPincer init:)
-		(globalSound number: 54 loop: -1 playBed:)
+		(globalSound number: sHardBattle loop: -1 playBed:)
 		(self setScript: rmScript)
 	)
 )
@@ -46,13 +46,13 @@
 	(properties
 		x 173
 		y 86
-		view 670
+		view vScorpion
 	)
 )
 
 (instance leftPincer of Prop
 	(properties
-		view 670
+		view vScorpion
 		loop 1
 		signal ignrAct
 	)
@@ -65,7 +65,7 @@
 
 (instance rightPincer of Prop
 	(properties
-		view 670
+		view vScorpion
 		loop 2
 		signal ignrAct
 	)
@@ -77,39 +77,41 @@
 )
 
 (instance rmScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Print SCORP 0 #at -1 12 #dispose)
+				(Print SCORP 0
+					#at -1 12
+					#dispose
+				)
 				(= cycles 10)
 			)
 			(1
-				(ego loop: 1 cycleSpeed: 1 setCycle: Full)
-				(rightPincer cycleSpeed: 1 setCycle: Full self)
+				(ego loop: 1 cycleSpeed: 1 setCycle: FullLoop)
+				(rightPincer cycleSpeed: 1 setCycle: FullLoop self)
 				(= cycles 15)
 			)
 			(2
-				(ego loop: 3 setCycle: Full)
-				(rightPincer setCycle: Full self)
+				(ego loop: 3 setCycle: FullLoop)
+				(rightPincer setCycle: FullLoop self)
 			)
 			(3
-				(leftPincer cycleSpeed: 1 setCycle: Full self)
+				(leftPincer cycleSpeed: 1 setCycle: FullLoop self)
 			)
 			(4
-				(ego loop: 2 setCycle: Full self)
+				(ego loop: 2 setCycle: FullLoop self)
 			)
 			(5
-				(rightPincer setCycle: Full self)
+				(rightPincer setCycle: FullLoop self)
 			)
 			(6
-				(ego loop: 1 setCycle: Full self)
+				(ego loop: 1 setCycle: FullLoop self)
 			)
 			(7
 				(rightPincer setCycle: EndLoop)
 				(leftPincer setCycle: EndLoop)
-				(ego setCycle: Full)
+				(ego setCycle: FullLoop)
 				(= cycles 10)
 			)
 			(8

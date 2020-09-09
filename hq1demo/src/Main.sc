@@ -337,7 +337,6 @@
 )
 
 (instance statusCode of Code
-	(properties)
 	
 	(method (doit strg)
 		(Format strg 0 0)
@@ -346,7 +345,7 @@
 
 (instance GlobalSound of Sound
 	(properties
-		number 1
+		number sThemeSong
 	)
 )
 
@@ -371,7 +370,11 @@
 			(HandsOff)
 			(self setCursor: normalCursor FALSE 350 200)
 		)
-		((= music GlobalSound) priority: 0 init: owner: self)
+		((= music GlobalSound)
+			priority: 0
+			init:
+			owner: self
+		)
 		(self newRoom: SPEED)
 	)
 	

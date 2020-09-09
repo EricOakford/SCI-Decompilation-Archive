@@ -19,9 +19,15 @@
 	)
 	
 	(method (init)
-		(AddMenu { \01_} {About HQ`^a})
-		(AddMenu { Action_} {Restart Demo`#9:Quit`^q})
-		(AddMenu { Sound_} {Volume...`^v:Turn Off`#2=1})
+		(AddMenu { \01_}
+			{About HQ`^a}
+		)
+		(AddMenu { Action_}
+			{Restart Demo`#9:Quit`^q}
+		)
+		(AddMenu { Sound_}
+			{Volume...`^v:Turn Off`#2=1}
+		)
 	)
 	
 	(method (handleEvent event &tmp i [str 150] oldPause)
@@ -54,7 +60,7 @@
 					(Print MENU 2
 						#button {Restart} 1
 						#button {Continue} 0
-						#icon 800 1 3
+						#icon vIcons 1 3
 					)
 					(theGame restart:)
 				)
@@ -66,7 +72,7 @@
 						#title {Giving up, huh?}
 						#button {Quit} 1
 						#button {Don't Quit} 0
-						#icon 800 1 4
+						#icon vIcons 1 4
 					)
 				)
 				(Sound pause: oldPause)
@@ -80,8 +86,12 @@
 						)
 						-1
 					)
-					(if (< (-- i) 0) (= i 0))
-					(if (> i 15) (= i 15))
+					(if (< (-- i) 0)
+						(= i 0)
+					)
+					(if (> i 15)
+						(= i 15)
+					)
 					(DoSound ChangeVolume i)
 				)
 				(Sound pause: oldPause)

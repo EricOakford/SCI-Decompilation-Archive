@@ -17,50 +17,46 @@
 )
 
 (local
-	local0
-	local1
+	ghostPeeks
+	treeSpins
 	twisterX
 	twisterY
 	oldTwisterX
 	oldTwisterY
 )
-(instance riser of Actor
-	(properties)
-)
+(instance riser of Actor)
 
-(instance longOne of Actor
-	(properties)
-)
+(instance longOne of Actor)
 
-(instance twister of Actor
-	(properties)
-)
+(instance twister of Actor)
 
-(instance tumbler of Actor
-	(properties)
-)
+(instance tumbler of Actor)
 
-(instance swimmer of Actor
-	(properties)
-)
+(instance swimmer of Actor)
 
 (instance ghosts of Room
 	(properties
-		picture 64
+		picture rGraveyard
 		style IRISIN
 		horizon 116
 	)
 	
 	(method (init)
-		(LoadMany VIEW 64 63)
-		(Load SOUND 12)
+		(LoadMany VIEW rGraveyard vGraveyardStuff)
+		(Load SOUND sGhosts)
 		(= currentPalette 1)
 		(super init:)
-		(ego view: 4 loop: 0 cel: 0 posn: 15 177 init:)
+		(ego
+			view: vEgoStanding
+			loop: loopE
+			cel: 0
+			posn: 15 177
+			init:
+		)
 		(gravestone init:)
 		(etching init:)
 		(riser
-			view: 64
+			view: rGraveyard
 			setLoop: 3
 			ignoreActors:
 			ignoreHorizon:
@@ -70,7 +66,7 @@
 		)
 		(riser setScript: riseUpLeft)
 		(longOne
-			view: 64
+			view: rGraveyard
 			setLoop: 7
 			setPri: 6
 			ignoreActors:
@@ -82,7 +78,7 @@
 		)
 		(longOne setScript: peekABoo)
 		(twister
-			view: 64
+			view: rGraveyard
 			setLoop: 0
 			setPri: 14
 			ignoreActors:
@@ -94,7 +90,7 @@
 		)
 		(twister setScript: twistIt)
 		(tumbler
-			view: 64
+			view: rGraveyard
 			setLoop: 8
 			setPri: 7
 			ignoreActors:
@@ -106,7 +102,7 @@
 		)
 		(tumbler setScript: spinOnTree)
 		(swimmer
-			view: 64
+			view: rGraveyard
 			setPri: 14
 			setLoop: 1
 			ignoreActors:
@@ -118,7 +114,7 @@
 			setStep: 3 4
 		)
 		(swimmer setScript: swimRight)
-		(music number: 12 play:)
+		(music number: sGhosts play:)
 		(self setScript: demoMsg)
 	)
 	
@@ -129,8 +125,7 @@
 )
 
 (instance riseDownLeft of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -164,7 +159,6 @@
 )
 
 (instance riseUpLeft of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -199,8 +193,7 @@
 )
 
 (instance riseUpRight of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -233,8 +226,7 @@
 )
 
 (instance peekABoo of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -242,11 +234,11 @@
 				(longOne setMotion: MoveTo 21 70 self)
 			)
 			(1
-				(++ local0)
+				(++ ghostPeeks)
 				(longOne setCycle: Reverse setMotion: MoveTo 21 50 self)
 			)
 			(2
-				(if (> local0 2)
+				(if (> ghostPeeks 2)
 					(longOne setMotion: MoveTo 21 126 self)
 				else
 					(self changeState: 0)
@@ -260,13 +252,12 @@
 )
 
 (instance twistIt of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(twister
-					view: 64
+					view: rGraveyard
 					setLoop: 0
 					setPri: 12
 					ignoreActors:
@@ -324,13 +315,12 @@
 )
 
 (instance spinAcross of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(tumbler
-					view: 64
+					view: rGraveyard
 					setLoop: 8
 					setPri: 7
 					setStep: 5 3
@@ -351,13 +341,12 @@
 )
 
 (instance spinOnTree of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(tumbler
-					view: 64
+					view: rGraveyard
 					setLoop: 8
 					setStep: 5 3
 					ignoreActors:
@@ -371,11 +360,11 @@
 				(= cycles 35)
 			)
 			(1
-				(++ local1)
+				(++ treeSpins)
 				(tumbler setCel: -1 setCycle: EndLoop self)
 			)
 			(2
-				(if (> local1 (Random 2 4))
+				(if (> treeSpins (Random 2 4))
 					(tumbler setCycle: Forward)
 					(tumbler setMotion: MoveTo -15 (Random 40 110) self)
 				else
@@ -390,13 +379,12 @@
 )
 
 (instance swimRight of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(swimmer
-					view: 64
+					view: rGraveyard
 					setStep: 6 4
 					ignoreActors:
 					ignoreHorizon:
@@ -417,13 +405,12 @@
 )
 
 (instance swimLeft of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(swimmer
-					view: 64
+					view: rGraveyard
 					setStep: 6 4
 					ignoreActors:
 					ignoreHorizon:
@@ -449,11 +436,12 @@
 )
 
 (instance demoMsg of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 5))
+			(0
+				(= cycles 5)
+			)
 			(1
 				(Print 6 0
 					#at -1 185
@@ -465,10 +453,14 @@
 				(= seconds 10)
 			)
 			(2
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(= seconds 6)
 			)
-			(3 (curRoom newRoom: BABA))
+			(3
+				(curRoom newRoom: BABA)
+			)
 		)
 	)
 )
@@ -477,7 +469,7 @@
 	(properties
 		y 133
 		x 227
-		view 63
+		view vGraveyardStuff
 	)
 )
 
@@ -485,7 +477,7 @@
 	(properties
 		y 119
 		x 124
-		view 63
+		view vGraveyardStuff
 		loop 2
 		priority 6
 	)
@@ -500,7 +492,7 @@
 
 (instance ghostMusic of Sound
 	(properties
-		number 12
+		number sGhosts
 		loop -1
 	)
 )

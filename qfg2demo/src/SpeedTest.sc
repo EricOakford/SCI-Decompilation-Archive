@@ -18,13 +18,11 @@
 (local
 	doneTime
 )
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance speedTest of Room
 	(properties
-		picture 10
+		picture pBlack
 		style IRISIN
 	)
 	
@@ -33,7 +31,7 @@
 		(super init:)
 		(sounds eachElementDo: #stop)
 		(fred
-			view: 98
+			view: vSpeed
 			setLoop: 0
 			illegalBits: 0
 			posn: 20 99
@@ -54,10 +52,18 @@
 		(if
 		(and (u< doneTime (GetTime)) (not (self script?)))
 			(cond 
-				((<= machineSpeed 25) (= howFast slow))
-				((<= machineSpeed 40) (= howFast medium))
-				((<= machineSpeed 60) (= howFast fast))
-				(else (= howFast fastest))
+				((<= machineSpeed 25)
+					(= howFast slow)
+				)
+				((<= machineSpeed 40)
+					(= howFast medium)
+				)
+				((<= machineSpeed 60)
+					(= howFast fast)
+				)
+				(else
+					(= howFast fastest)
+				)
 			)
 			(self setScript: speedScript)
 		)
@@ -70,11 +76,12 @@
 )
 
 (instance speedScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp nextRoom [str 20])
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
 				(theGame setSpeed: 6)
 				(= cycles (if debugging 1 else 30))
@@ -95,8 +102,12 @@
 								#window SysWindow
 							)
 						)
-						(if str (= nextRoom (ReadNumber @str)))
-						(if (> nextRoom 0) (break))
+						(if str
+							(= nextRoom (ReadNumber @str))
+						)
+						(if (> nextRoom 0)
+							(break)
+						)
 					)
 				else
 					(= nextRoom INTRO)

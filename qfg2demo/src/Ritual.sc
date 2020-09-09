@@ -17,36 +17,36 @@
 (local
 	local0
 	local1
-	[ritualPath 13] = [108 124 94 146 160 158 223 146 206 126 160 117 -1]
+	candleXY = [108 124 94 146 160 158 223 146 206 126 160 117 -1]
 )
 (instance demoRitual of Room
 	(properties
-		picture 500
+		picture rRitualChamber
 		style IRISIN
 	)
 	
-	(method (init &tmp temp0 theX theY)
-		(LoadMany VIEW 500 505 510 40)
+	(method (init &tmp i theX theY)
+		(LoadMany VIEW rRitualChamber vAdAvisRitual vThark vEgoCastLightning)
 		(super init:)
-		(ego view: 0 loop: 0 cel: 0 posn: 197 173 init:)
+		(ego view: vEgo loop: 0 cel: 0 posn: 197 173 init:)
 		(adAvis init:)
 		(adAvisHead init:)
 		(tharkTorso init:)
 		(tharkLegs init:)
-		(= temp0 0)
-		(while (!= [ritualPath (* temp0 2)] -1)
-			(= theX [ritualPath (+ (* temp0 2) 0)])
-			(= theY [ritualPath (+ (* temp0 2) 1)])
+		(= i 0)
+		(while (!= [candleXY (* i 2)] -1)
+			(= theX [candleXY (+ (* i 2) 0)])
+			(= theY [candleXY (+ (* i 2) 1)])
 			((PicView new:)
-				view: 500
+				view: rRitualChamber
 				loop: 2
 				x: theX
 				y: theY
 				init:
 			)
-			(if (!= temp0 0)
+			(if (!= i 0)
 				((Flame new:)
-					view: 500
+					view: rRitualChamber
 					loop: 1
 					x: theX
 					y: theY
@@ -54,7 +54,7 @@
 					init:
 				)
 			)
-			(++ temp0)
+			(++ i)
 		)
 		(brazier init:)
 		(addToPics doit:)
@@ -66,7 +66,7 @@
 	(properties
 		x 150
 		y 109
-		view 505
+		view vAdAvisRitual
 	)
 )
 
@@ -74,7 +74,7 @@
 	(properties
 		x 148
 		y 68
-		view 505
+		view vAdAvisRitual
 		loop 1
 		cel 2
 	)
@@ -84,7 +84,7 @@
 	(properties
 		x 152
 		y 86
-		view 505
+		view vAdAvisRitual
 	)
 )
 
@@ -92,7 +92,7 @@
 	(properties
 		x 276
 		y 127
-		view 510
+		view vThark
 		cycleSpeed 2
 	)
 )
@@ -101,7 +101,7 @@
 	(properties
 		x 272
 		y 163
-		view 510
+		view vThark
 		loop 1
 	)
 )
@@ -110,13 +110,13 @@
 	(properties
 		x 114
 		y 117
-		view 500
+		view rRitualChamber
 	)
 )
 
 (instance lightning of Prop
 	(properties
-		view 40
+		view vEgoCastLightning
 		loop 1
 	)
 	
@@ -127,11 +127,12 @@
 )
 
 (instance rmScript of Script
-	(properties)
 	
 	(method (doit)
 		(if (> local1 state)
-			(if (or seconds cycles) (= seconds (= cycles 0)))
+			(if (or seconds cycles)
+				(= seconds (= cycles 0))
+			)
 			(self cue:)
 		else
 			(super doit:)
@@ -141,7 +142,10 @@
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
-				(Print RITUAL 0 #at -1 12 #dispose)
+				(Print RITUAL 0
+					#at -1 12
+					#dispose
+				)
 				(tharkTorso setLoop: 0 setCycle: Forward)
 				(= seconds 5)
 			)
@@ -186,19 +190,23 @@
 			(6
 				(lightning setCycle: EndLoop)
 				(ego loop: 2 cel: 0 setCycle: EndLoop)
-				(globalSound number: 55 loop: 1 play: self)
+				(globalSound number: sHardBattleEnd loop: 1 play: self)
 			)
-			(7 (cls) (curRoom newRoom: IBLIS))
+			(7
+				(cls)
+				(curRoom newRoom: IBLIS)
+			)
 		)
 	)
 )
 
 (instance adAvisCastSpell of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (adAvis setCycle: EndLoop self))
+			(0
+				(adAvis setCycle: EndLoop self)
+			)
 			(1
 				(adAvisHead loop: 2 cel: 0 setCycle: EndLoop self)
 			)

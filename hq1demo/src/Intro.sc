@@ -20,25 +20,34 @@
 	[local2 2] = [2 10]
 	cyclesBeforeShake2 =  10
 	[local5 4] = [3 3 3 2]
-	titleSpellX =  160
-	titleSpellY =  120
-	local11
+	titleX =  160
+	titleY =  120
+	targState
 	local12
 )
 (instance intro of Room
 	(properties
-		picture 400
+		picture pBlack
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany PICTURE 460 400 906)
-		(LoadMany VIEW 906 907 908 918 919 913 5 7 430 460 462)
+		(LoadMany PICTURE vDragon pBlack pHalfDome)
+		(LoadMany VIEW pHalfDome vHalfFlame vSierraPresents 918 919 913 vEgoRunning vEgoFleeing 430 460 462)
 		(super init:)
 		(cond 
-			((== numVoices 1) (Load SOUND 201) (introMusic number: 201))
-			((<= numVoices 4) (Load SOUND 301) (introMusic number: 301))
-			(else (Load SOUND 1) (introMusic number: 1))
+			((== numVoices 1)
+				(Load SOUND sThemeIBM)
+				(introMusic number: sThemeIBM)
+			)
+			((<= numVoices 4)
+				(Load SOUND sThemeTandy)
+				(introMusic number: sThemeTandy)
+			)
+			(else
+				(Load SOUND sThemeSong)
+				(introMusic number: sThemeSong)
+			)
 		)
 		(TheMenuBar state: TRUE)
 		(self setScript: page1Script)
@@ -46,16 +55,15 @@
 )
 
 (instance page1Script of Script
-	(properties)
 	
 	(method (doit)
 		(switch (introMusic prevSignal?)
-			(20 (= local11 4))
-			(30 (= local11 6))
-			(40 (= local11 9))
-			(50 (= local11 13))
+			(20 (= targState 4))
+			(30 (= targState 6))
+			(40 (= targState 9))
+			(50 (= targState 13))
 		)
-		(if (and (> local11 state) (or seconds cycles))
+		(if (and (> targState state) (or seconds cycles))
 			(= seconds (= cycles 0))
 			(self cue:)
 		else
@@ -65,13 +73,13 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= local11 0) (= cycles 2))
+			(0 (= targState 0) (= cycles 2))
 			(1
 				(introMusic init: play:)
 				(= cycles 1)
 			)
 			(2
-				(curRoom drawPic: 906)
+				(curRoom drawPic: pHalfDome)
 				(= seconds preTextTime)
 			)
 			(3
@@ -100,7 +108,7 @@
 					setPri: 6
 					posn: 143 68
 					init:
-					cycleSpeed: (if (== howFast 0) 0 else 2)
+					cycleSpeed: (if (== howFast slow) 0 else 2)
 					setCycle: EndLoop self
 				)
 			)
@@ -114,7 +122,9 @@
 				)
 				(= seconds 5)
 			)
-			(9 (head setCycle: CycleTo 5 1 self))
+			(9
+				(head setCycle: CycleTo 5 1 self)
+			)
 			(10
 				(flame
 					posn: 145 76
@@ -156,11 +166,10 @@
 )
 
 (instance page2Script of Script
-	(properties)
 	
 	(method (doit)
-		(if (== (introMusic prevSignal?) -1) (= local11 14))
-		(if (and (> local11 state) (or seconds cycles))
+		(if (== (introMusic prevSignal?) -1) (= targState 14))
+		(if (and (> targState state) (or seconds cycles))
 			(= seconds (= cycles 0))
 			(self cue:)
 		else
@@ -171,18 +180,18 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local11 0)
-				(curRoom drawPic: 400)
+				(= targState 0)
+				(curRoom drawPic: pBlack)
 				(switch howFast
-					(0
+					(slow
 						(heroText posn: 117 70 cycleSpeed: 0 cel: 2)
 						(questText posn: 208 70 cycleSpeed: 0 cel: 2)
 					)
-					(1
+					(medium
 						(heroText posn: 133 115 cycleSpeed: 1 cel: 0)
 						(questText posn: 189 115 cycleSpeed: 1 cel: 0)
 					)
-					(2
+					(fast
 						(heroText posn: 150 160 cycleSpeed: 2 cel: 0)
 						(questText posn: 170 160 cycleSpeed: 2 cel: 0)
 					)
@@ -222,21 +231,21 @@
 			(2
 				(heroText view: 919 setLoop: 0 cel: 0 setCycle: Forward)
 				(questText view: 919 setLoop: 1 cel: 0 setCycle: Forward)
-				(= seconds (if (== howFast 0) 1 else 5))
+				(= seconds (if (== howFast slow) 1 else 5))
 			)
 			(3
 				(heroText stopUpd:)
 				(questText stopUpd:)
 				(cond 
-					((== howFast 0)
+					((== howFast slow)
 						(saurus posn: 200 125 cycleSpeed: 0 moveSpeed: 0)
 						(aHero posn: 120 125 cycleSpeed: 0 moveSpeed: 0)
 					)
-					((== howFast 1)
+					((== howFast medium)
 						(saurus posn: 90 125 cycleSpeed: 1 moveSpeed: 1)
 						(aHero posn: 0 125 cycleSpeed: 1 moveSpeed: 1)
 					)
-					((== howFast 2)
+					((== howFast fast)
 						(saurus posn: 0 125 cycleSpeed: 1 moveSpeed: 1)
 						(aHero posn: -100 125 cycleSpeed: 1 moveSpeed: 1)
 					)
@@ -263,11 +272,11 @@
 			(4
 				(saurus hide: stopUpd:)
 				(aHero hide: stopUpd:)
-				(if (>= howFast 2)
+				(if (>= howFast fast)
 					(heroText startUpd:)
 					(questText startUpd:)
 				)
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					(titleSpell
 						setLoop: 0
 						cel: -1
@@ -276,11 +285,11 @@
 						illegalBits: 0
 						xStep: 8
 						yStep: 8
-						posn: titleSpellX titleSpellY
+						posn: titleX titleY
 						init:
 						setCycle: EndLoop self
 					)
-					(if (== howFast 3)
+					(if (== howFast fastest)
 						(titleSpell cycleSpeed: 2 moveSpeed: 2)
 					)
 				else
@@ -288,7 +297,7 @@
 				)
 			)
 			(5
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					(titleSpell2
 						setLoop: 0
 						cel: (titleSpell cel?)
@@ -297,13 +306,13 @@
 						illegalBits: 0
 						xStep: 8
 						yStep: 8
-						posn: titleSpellX titleSpellY
+						posn: titleX titleY
 						init:
 						setCycle: Forward
 						setMotion: MoveTo 231 160
 					)
 					(titleSpell setCycle: Forward setMotion: MoveTo 89 160 self)
-					(if (== howFast 3)
+					(if (== howFast fastest)
 						(titleSpell2 cycleSpeed: 2 moveSpeed: 2)
 					)
 				else
@@ -315,7 +324,7 @@
 				(want init: stopUpd:)
 				(toBeA init: stopUpd:)
 				(heroWord init: stopUpd:)
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					(titleSpell setCycle: EndLoop)
 					(titleSpell2 setCycle: EndLoop self)
 				else
@@ -323,14 +332,14 @@
 				)
 			)
 			(7
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					(titleSpell dispose:)
 					(titleSpell2 dispose:)
 				)
 				(heroText stopUpd:)
 				(questText stopUpd:)
 				(saurus
-					view: 460
+					view: vSaurus
 					setLoop: 1
 					cel: 0
 					xStep: 8
@@ -340,7 +349,7 @@
 					show:
 				)
 				(aHero
-					view: 7
+					view: vEgoFleeing
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 0
@@ -348,11 +357,11 @@
 					show:
 				)
 				(switch howFast
-					(0
+					(slow
 						(aHero posn: 330 125 setMotion: MoveTo 230 125 self)
 						(saurus posn: 390 125 setMotion: MoveTo 250 125)
 					)
-					(3
+					(fastest
 						(aHero posn: 400 125 setMotion: MoveTo 100 125 self)
 						(saurus posn: 500 125 setMotion: MoveTo 120 125)
 					)
@@ -364,11 +373,11 @@
 			)
 			(8
 				(cast eachElementDo: #dispose eachElementDo: #delete)
-				(curRoom drawPic: 460)
+				(curRoom drawPic: vDragon)
 				(hero2Text setPri: 12 ignoreActors: init: stopUpd:)
 				(quest2Text setPri: 12 ignoreActors: init: stopUpd:)
 				(dragonTail cycleSpeed: 4 init:)
-				(if (== howFast 0)
+				(if (== howFast slow)
 					(dragonTail stopUpd:)
 				else
 					(dragonTail setScript: drTailScript)
@@ -381,7 +390,9 @@
 				)
 			)
 			(9
-				(if (== howFast 0) (self changeState: 13))
+				(if (== howFast slow)
+					(self changeState: 13)
+				)
 				(= cycles 8)
 			)
 			(10
@@ -401,9 +412,16 @@
 			(14
 				(dragonHead stopUpd:)
 				(dragonTail setCycle: 0 setScript: 0 stopUpd:)
-				(if (== howFast 0) (= cycles 1) else (= seconds 2))
+				(if
+					(== howFast slow)
+					(= cycles 1)
+				else
+					(= seconds 2)
+				)
 			)
-			(15 (curRoom newRoom: ROLES))
+			(15
+				(curRoom newRoom: ROLES)
+			)
 		)
 	)
 )
@@ -412,7 +430,7 @@
 	(properties
 		y 92
 		x 111
-		view 906
+		view pHalfDome
 		priority 3
 	)
 )
@@ -421,7 +439,7 @@
 	(properties
 		y 87
 		x 187
-		view 906
+		view pHalfDome
 		loop 1
 		cel 1
 		priority 3
@@ -432,14 +450,14 @@
 	(properties
 		y 49
 		x 147
-		view 906
+		view pHalfDome
 		loop 2
 	)
 )
 
 (instance flame of Actor
 	(properties
-		view 907
+		view vHalfFlame
 	)
 )
 
@@ -447,7 +465,7 @@
 	(properties
 		y 168
 		x 188
-		view 908
+		view vSierraPresents
 		priority 12
 	)
 )
@@ -456,7 +474,7 @@
 	(properties
 		y 182
 		x 190
-		view 908
+		view vSierraPresents
 		loop 1
 		priority 12
 	)
@@ -466,7 +484,7 @@
 	(properties
 		y 160
 		x 150
-		view 918
+		view vHeroText
 	)
 )
 
@@ -474,8 +492,8 @@
 	(properties
 		y 50
 		x 85
-		view 919
-		illegalBits $0000
+		view vHero2Text
+		illegalBits 0
 	)
 )
 
@@ -483,7 +501,7 @@
 	(properties
 		y 160
 		x 150
-		view 918
+		view vHeroText
 		loop 1
 		priority 12
 	)
@@ -493,21 +511,21 @@
 	(properties
 		y 50
 		x 244
-		view 919
+		view vHero2Text
 		loop 1
-		illegalBits $0000
+		illegalBits 0
 	)
 )
 
 (instance titleSpell of Actor
 	(properties
-		view 913
+		view vTitleSpell
 	)
 )
 
 (instance titleSpell2 of Actor
 	(properties
-		view 913
+		view vTitleSpell
 	)
 )
 
@@ -515,7 +533,7 @@
 	(properties
 		y 160
 		x 50
-		view 913
+		view vTitleSpell
 		loop 1
 		priority 7
 	)
@@ -525,7 +543,7 @@
 	(properties
 		y 160
 		x 127
-		view 913
+		view vTitleSpell
 		loop 1
 		cel 1
 		priority 7
@@ -536,7 +554,7 @@
 	(properties
 		y 160
 		x 209
-		view 913
+		view vTitleSpell
 		loop 1
 		cel 2
 		priority 7
@@ -547,23 +565,21 @@
 	(properties
 		y 160
 		x 286
-		view 913
+		view vTitleSpell
 		loop 1
 		cel 3
 		priority 7
 	)
 )
 
-(instance introMusic of Sound
-	(properties)
-)
+(instance introMusic of Sound)
 
 (instance saurus of Actor
 	(properties
 		y 125
 		x -20
 		yStep 4
-		view 430
+		view vSaurus
 		xStep 6
 	)
 )
@@ -573,7 +589,7 @@
 		y 125
 		x -80
 		yStep 4
-		view 5
+		view vEgoRunning
 		xStep 7
 	)
 )
@@ -582,7 +598,7 @@
 	(properties
 		y 118
 		x 170
-		view 462
+		view vMoreDragon
 	)
 )
 
@@ -590,18 +606,19 @@
 	(properties
 		y 121
 		x 87
-		view 462
+		view vMoreDragon
 		loop 1
 		priority 8
 	)
 )
 
 (instance drTailScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: EndLoop self))
+			(0
+				(client setCycle: EndLoop self)
+			)
 			(1
 				(= state -1)
 				(client setCycle: BegLoop self)
