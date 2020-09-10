@@ -645,8 +645,8 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_10 param1 param2)
-	(param1 loop: param2 changeState:)
+(procedure (proc0_10 theObj theLoop)
+	(theObj loop: theLoop changeState:)
 )
 
 (procedure (cls)
@@ -699,8 +699,7 @@
 )
 
 (instance LSL2 of Game
-	(properties)
-	
+
 	(method (init &tmp temp0)
 		(= systemWindow (SysWindow new:))
 		(systemWindow color: vBLACK back: vWHITE)
@@ -727,16 +726,16 @@
 		(Load FONT bigFont)
 		(Load CURSOR normalCursor)
 		(Load CURSOR waitCursor)
-		(ego view: 100 setCycle: Walk)
+		(ego view: vEgo setCycle: Walk)
 		(Inventory
 			empty: {Your leisure suit is empty!}
 		)
 		(if (GameIsRestarting)
 			(StatusLine disable:)
 			(TheMenuBar hide:)
-			(self newRoom: 90)
+			(self newRoom: TITLE)
 		else
-			(self newRoom: 90)
+			(self newRoom: TITLE)
 		)
 	)
 	
@@ -756,7 +755,7 @@
 		(if (and gameState (> rgSeconds 0))
 			(-- rgSeconds)
 		)
-		(if (== currentStatus egoDEAD)
+		(if (== currentStatus egoDYING)
 			(curRoom setScript: dyingScript)
 		)
 	)
@@ -791,8 +790,12 @@
 	
 	(method (changeScore delta)
 		(cond 
-			((> delta 25) (= ranking {Big Hero}))
-			((> delta 0) (scoreSnd play:))
+			((> delta 25)
+				(= ranking {Big Hero})
+			)
+			((> delta 0)
+				(scoreSnd play:)
+			)
 		)
 		(super changeScore: delta)
 	)
@@ -830,14 +833,13 @@
 )
 
 (instance dyingScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= currentStatus egoDEATHMESSAGE)
+				(= currentStatus egoDEAD)
 				(HandsOff)
-				(Load SOUND 103)
+				(Load SOUND sDeath)
 				(= seconds 3)
 			)
 			(1
@@ -880,7 +882,6 @@
 )
 
 (instance statusCode of Code
-	(properties)
 	
 	(method (doit strg)
 		(Format strg 0 8
@@ -892,7 +893,7 @@
 
 (instance scoreSnd of Sound
 	(properties
-		number 7
+		number sScore
 		priority -10
 		owner -1
 	)
@@ -900,7 +901,7 @@
 
 (instance deadSnd of Sound
 	(properties
-		number 103
+		number sDeath
 		priority 255
 	)
 )

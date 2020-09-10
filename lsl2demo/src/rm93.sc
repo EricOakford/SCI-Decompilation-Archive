@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 93)
+(script# rNonookeeThrone)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -30,7 +30,7 @@
 )
 (instance theSound of Sound
 	(properties
-		number 110
+		number sNonookee
 		priority 30
 		loop -1
 	)
@@ -38,27 +38,27 @@
 
 (instance rm93 of Room
 	(properties
-		picture 93
+		picture rNonookeeThrone
 		style IRISOUT
 	)
 	
 	(method (init)
-		(Load VIEW 816)
-		(Load VIEW 818)
-		(Load VIEW 819)
-		(Load VIEW 820)
-		(Load SOUND 110)
+		(Load VIEW vThroneStuff)
+		(Load VIEW vNonookee)
+		(Load VIEW vFanGirl)
+		(Load VIEW vGrapeGirl)
+		(Load SOUND sNonookee)
 		(super init:)
 		(theSound play:)
 		((View new:)
-			view: 816
+			view: vThroneStuff
 			loop: 5
 			cel: 0
 			posn: 39 85
 			addToPic:
 		)
 		((View new:)
-			view: 816
+			view: vThroneStuff
 			ignoreActors:
 			loop: 5
 			cel: 1
@@ -67,7 +67,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 816
+			view: vThroneStuff
 			loop: 5
 			cel: 2
 			posn: 291 107
@@ -75,7 +75,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 816
+			view: vThroneStuff
 			loop: 5
 			cel: 3
 			posn: 253 73
@@ -83,7 +83,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 816
+			view: vThroneStuff
 			ignoreActors:
 			loop: 5
 			cel: 4
@@ -92,7 +92,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 816
+			view: vThroneStuff
 			ignoreActors:
 			loop: 5
 			cel: 5
@@ -101,7 +101,7 @@
 			addToPic:
 		)
 		((= aGenerator (Extra new:))
-			view: 816
+			view: vThroneStuff
 			setLoop: 0
 			posn: 258 101
 			setPri: 7
@@ -110,7 +110,7 @@
 			setCel: 0
 		)
 		((= aRadio (Extra new:))
-			view: 816
+			view: vThroneStuff
 			setLoop: 1
 			posn: 263 75
 			setPri: 4
@@ -118,7 +118,7 @@
 			cycleSpeed: 0
 		)
 		((= aRightPanel1 (Extra new:))
-			view: 816
+			view: vThroneStuff
 			ignoreActors:
 			setLoop: 3
 			posn: 267 163
@@ -128,7 +128,7 @@
 			cycleSpeed: 0
 		)
 		((= aRightPanel2 (Extra new:))
-			view: 816
+			view: vThroneStuff
 			ignoreActors:
 			loop: 3
 			posn: 283 151
@@ -138,7 +138,7 @@
 			cycleSpeed: 1
 		)
 		((= aLeftPanel1 (Extra new:))
-			view: 816
+			view: vThroneStuff
 			ignoreActors:
 			loop: 2
 			cel: 1
@@ -149,7 +149,7 @@
 			cycleSpeed: 1
 		)
 		((= aLeftPanel2 (Extra new:))
-			view: 816
+			view: vThroneStuff
 			ignoreActors:
 			setLoop: 2
 			posn: 50 163
@@ -159,7 +159,7 @@
 			cycleSpeed: 1
 		)
 		((= aDoor (Prop new:))
-			view: 816
+			view: vThroneStuff
 			loop: 4
 			setCel: 255
 			setPri: 5
@@ -168,7 +168,7 @@
 			init:
 		)
 		((= aGrapeWest (Prop new:))
-			view: 820
+			view: vGrapeGirl
 			ignoreActors:
 			setLoop: 0
 			setCycle: Forward
@@ -179,7 +179,7 @@
 			init:
 		)
 		((= aGrapeEast (Prop new:))
-			view: 820
+			view: vGrapeGirl
 			ignoreActors:
 			setLoop: 1
 			setCycle: Forward
@@ -190,7 +190,7 @@
 			init:
 		)
 		((= aFanWest (Prop new:))
-			view: 819
+			view: vFanGirl
 			ignoreActors:
 			setLoop: 0
 			posn: 132 85
@@ -200,7 +200,7 @@
 			init:
 		)
 		((= aFanEast (Prop new:))
-			view: 819
+			view: vFanGirl
 			ignoreActors:
 			setLoop: 1
 			posn: 191 85
@@ -209,8 +209,8 @@
 			stopUpd:
 			init:
 		)
-		(NormalEgo 2)
-		(ego view: 818 posn: 84 82 init:)
+		(NormalEgo loopS)
+		(ego view: vNonookee posn: 84 82 init:)
 		(self setScript: rm93Script)
 	)
 	
@@ -233,8 +233,7 @@
 )
 
 (instance rm93Script of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 	)
@@ -245,21 +244,34 @@
 				(ego setMotion: MoveTo 86 127 self)
 				(= cycles 10)
 			)
-			(1 (aDoor setCycle: BegLoop))
+			(1
+				(aDoor setCycle: BegLoop)
+			)
 			(2
 				(aDoor stopUpd:)
 				(ego setMotion: MoveTo 66 160 self)
 			)
 			(3
-				(Print 93 0 #at -1 15 #width 280 #time 10)
+				(Print 93 0
+					#at -1 15
+					#width 280
+					#time 10
+				)
 				(= cycles 30)
 			)
 			(4
 				(ego setMotion: MoveTo 249 160 self)
 			)
 			(5
-				(Print 93 1 #at -1 15 #width 280 #time 5)
-				(Print 93 2 #at -1 20 #time 5)
+				(Print 93 1
+					#at -1 15
+					#width 280
+					#time 5
+				)
+				(Print 93 2
+					#at -1 20
+					#time 5
+				)
 				(= cycles 30)
 			)
 			(6
@@ -310,7 +322,7 @@
 			(16
 				(Print 93 10 #at -1 20 #time 4 #draw)
 				((View new:)
-					view: 820
+					view: vGrapeGirl
 					ignoreActors:
 					loop: 4
 					posn: 161 96
@@ -318,7 +330,7 @@
 					addToPic:
 				)
 				(ego
-					view: 820
+					view: vGrapeGirl
 					setLoop: 2
 					setPri: 8
 					posn: 161 71
@@ -358,7 +370,7 @@
 			(25 (= cycles 30))
 			(26
 				(Print 93 12 #at -1 15 #width 280 #time 6)
-				(curRoom newRoom: 90)
+				(curRoom newRoom: TITLE)
 			)
 		)
 	)

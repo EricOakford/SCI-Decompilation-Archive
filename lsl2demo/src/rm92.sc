@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 92)
+(script# rIsland)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -29,14 +29,14 @@
 
 (instance rm92 of Room
 	(properties
-		picture 92
+		picture rIsland
 		style IRISOUT
 		horizon 5
 	)
 	
 	(method (init)
-		(Load VIEW 806)
-		(Load VIEW 821)
+		(Load VIEW vMountain)
+		(Load VIEW vHelicopter)
 		(super init:)
 		((= aCopter (Actor new:))
 			view: 821
@@ -50,27 +50,27 @@
 		(self setScript: rm92Script)
 		(cond 
 			((== endGameState 100)
-				(Load SOUND 17)
-				(theSound number: 17 play:)
+				(Load SOUND sHelicopter)
+				(theSound number: sHelicopter play:)
 				(aCopter posn: 103 122)
 				(rm92Script changeState: 16)
 			)
 			((== endGameState 102)
-				(Load SOUND 17)
-				(theSound number: 17 play:)
+				(Load SOUND sHelicopter)
+				(theSound number: sHelicopter play:)
 				(aCopter posn: 223 92)
 				(rm92Script changeState: 23)
 			)
 			(else
-				(Load SOUND 102)
-				(theSound number: 102 play:)
+				(Load SOUND sMeanwhile)
+				(theSound number: sMeanwhile play:)
 				(aCopter posn: -7 92)
 				(rm92Script changeState: 1)
 			)
 		)
 		(if (!= endGameState 102)
 			((= aWaterfall (Prop new:))
-				view: 806
+				view: vMountain
 				ignoreActors:
 				loop: 0
 				posn: 203 87
@@ -80,7 +80,7 @@
 				init:
 			)
 			((= aFog (Prop new:))
-				view: 806
+				view: vMountain
 				ignoreActors:
 				loop: 1
 				cel: 0
@@ -91,7 +91,7 @@
 				hide:
 			)
 			((= aDoor (Prop new:))
-				view: 806
+				view: vMountain
 				ignoreActors:
 				loop: 3
 				cel: 0
@@ -125,21 +125,31 @@
 )
 
 (instance rm92Script of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= cycles 30))
+			(1
+				(= cycles 30)
+			)
 			(2
-				(Print 92 0 #at -1 15 #width 280 #time 12)
+				(Print 92 0
+					#at -1 15
+					#width 280
+					#time 12
+				)
 				(islandScript changeState: 1)
 			)
 			(3
-				(Print 92 1 #at -1 15 #width 280 #time 12 #draw)
+				(Print 92 1
+					#at -1 15
+					#width 280
+					#time 12
+					#draw
+				)
 				(= cycles 20)
 			)
 			(4
@@ -147,8 +157,16 @@
 				(= cycles 40)
 			)
 			(5
-				(Print 92 2 #at -1 15 #width 280 #time 14 #draw)
-				(Print 92 3 #font bigFont #time 5)
+				(Print 92 2
+					#at -1 15
+					#width 280
+					#time 14
+					#draw
+				)
+				(Print 92 3
+					#font bigFont
+					#time 5
+				)
 				(= cycles 40)
 			)
 			(6
@@ -169,13 +187,24 @@
 			(12
 				(islandScript changeState: 11)
 			)
-			(13 (= cycles 20))
+			(13
+				(= cycles 20)
+			)
 			(14
-				(Print 92 4 #at -1 15 #width 280 #time 8 #draw)
+				(Print 92 4
+					#at -1 15
+					#width 280
+					#time 8
+					#draw
+				)
 				(= seconds 3)
 			)
-			(15 (curRoom newRoom: 93))
-			(16 (= cycles 30))
+			(15
+				(curRoom newRoom: rNonookeeThrone)
+			)
+			(16
+				(= cycles 30)
+			)
 			(17
 				(aFog show: setScript: fogScript)
 				(aCopter setMotion: MoveTo 98 93 self)
@@ -192,7 +221,9 @@
 			(21
 				(aCopter setMotion: MoveTo 223 93 self)
 			)
-			(22 (curRoom newRoom: 85))
+			(22
+				(curRoom newRoom: 85)
+			)
 			(23
 				(aCopter setMotion: MoveTo 149 93)
 				(= cycles 20)
@@ -202,8 +233,14 @@
 				(Print (Format @str 92 6 introductoryPhrase))
 				(= cycles 20)
 			)
-			(25 (Print 92 7) (= cycles 10))
-			(26 (Print 92 8) (= cycles 20))
+			(25
+				(Print 92 7)
+				(= cycles 10)
+			)
+			(26
+				(Print 92 8)
+				(= cycles 20)
+			)
 			(27
 				(aCopter setMotion: MoveTo 246 120 self)
 			)
@@ -216,8 +253,7 @@
 )
 
 (instance islandScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -243,7 +279,9 @@
 			(7
 				(aDoor setCycle: BegLoop self)
 			)
-			(8 (rm92Script cue:))
+			(8
+				(rm92Script cue:)
+			)
 			(9
 				(aWaterfall show: setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
@@ -263,8 +301,7 @@
 )
 
 (instance fogScript of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0

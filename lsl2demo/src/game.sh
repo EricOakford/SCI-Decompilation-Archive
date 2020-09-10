@@ -6,21 +6,60 @@
 (include system.sh) (include sci2.sh)
 
 ; Views
-(define vBEChagrin 111)
-(define vBEDismay 112)
-(define vAuthors 118)
-(define vEgoPause 119)
+(define vEgo			0)
+(define vBigEgo			110)
+(define vBEChagrin		111)
+(define vBEDismay		112)
+(define vBEDismembered	113)
+(define vAuthors		118)
+(define vEgoPause		119)
+(define vTrapBed		191)
+(define vEgoMowLawn		192)
+(define vEgoMaze		193)
+(define vEveHouseStuff	253)
+(define vAirplanes		511)
+(define vTitle			800)
+(define vCredits		801)
+(define vEve			802)
+(define vDogExitCar		803)
+(define vDogPiss		804)
+(define vMountain		806)
+(define vTitleGirl		809)
+(define vTitleSparkle	815)
+(define vThroneStuff	816)
+(define vNonookee		818)
+(define vFanGirl		819)
+(define vGrapeGirl		820)
+(define vHelicopter		821)
+
+;Pictures
+(define pCredits		91)
+
+; Sounds
+(define sScore		7)
+(define sHelicopter	17)
+(define sThemeSong	101)
+(define sMeanwhile	102)
+(define sDeath		103)
+(define sNonookee	110)
+
+;doorState
+(enum
+	doorClosed
+	doorOpening
+	doorOpen
+	doorClosing
+)
 
 
 ; Game phases
-(enum
-	phaseTIMEOVER
-	phaseCITY
-	phaseSHIP
-	phaseLIFEBOATS
-	phaseAIRPORT
-	phaseAIRPLANE
-	phaseENDGAME ;not used; just here to indicate the final region of Nontoonyt Island
+(enum 1
+	rgCITY
+	rgSHIP
+	rgLIFEBOATS
+	rgAIRPORT
+	rgAIRPLANE
+	rgENDGAME ;not used; just here to indicate the final region of Nontoonyt Island
 )
 
 ; Endgame states
@@ -106,9 +145,10 @@
 	egoWONGAME				;22
 	egoCAPTURED				;23
 )
+
 (define egoSTOPPED			1000)
-(define egoDEAD				1001)
-(define egoDEATHMESSAGE		1002)
+(define egoDYING			1001)
+(define egoDEAD				1002)
 (define egoSLEEPING			1005)
 (define egoSWIMMING			1006)
 (define egoDROWNING			1008)
@@ -121,18 +161,23 @@
 (define egoEATENBYPIRANHA	1016)
 
 ;Global stuff
-(define LSL2	0)
-(enum 2
-	INVDESC			;2
-	DOOR			;3
-	BASS_SETTER		;4
-	DEBUG			;5
-	AIRPLANE_ACTOR	;6
-	BARBER			;7
-	HENCHWOMAN		;8
-	BOSSKEY			;9
-	COPYPROTECT		;10
-)
+(define LSL2			0)
+(define	INVDESC			2)
+(define	DOOR			3)
+(define	BASS_SETTER		4)
+(define	DEBUG			5)
+(define	AIRPLANE_ACTOR	6)
+(define	BARBER			7)
+(define	HENCHWOMAN		8)
+(define	BOSSKEY			9)
+(define	COPYPROTECT		10)
+(define TITLE			90)
+
+;Actual rooms
+(define rEveHouse		23)
+(define rIntroEveHouse	91)
+(define rIsland			92)
+(define rNonookeeThrone	93)
 
 
 ;Regions
@@ -143,3 +188,7 @@
 (define AIRPORT		500)
 (define AIRPLANE	600)
 (define ISLAND		700)
+
+;Required memory sizes in bytes
+(define GaugeSize 2048)
+(define InvSize 1024)

@@ -112,11 +112,10 @@
 		global97
 		global98
 		lastSysGlobal
-	vaporCalcOn
+	vaporCalcCued
 )
 (instance statusCode of Code
-	(properties)
-	
+
 	(method (doit strg)
 		(Format strg 0 0)
 	)
@@ -146,7 +145,7 @@
 		(StatusLine code: statusCode)
 		(TheMenuBar draw:)
 		(StatusLine enable:)
-		(= vaporCalcOn FALSE)
+		(= vaporCalcCued FALSE)
 		(self newRoom: 1)
 	)
 )

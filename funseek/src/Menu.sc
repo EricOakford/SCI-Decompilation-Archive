@@ -11,14 +11,15 @@
 	)
 	
 	(method (init)
-		(AddMenu
-			{ \01_}
+		(AddMenu { \01_}
 			{About Fun Seekers Guide`^a :About Boosters`^b :VaporCalc`^c}
 		)
-		(AddMenu { Quit_} {Quit`^q})
+		(AddMenu { Quit_}
+			{Quit`^q}
+		)
 	)
 	
-	(method (handleEvent event &tmp temp0 oldPause)
+	(method (handleEvent event &tmp i oldPause)
 		(switch (super handleEvent: event)
 			(aboutI
 				(= oldPause (DoSound PauseSound TRUE))
@@ -37,7 +38,7 @@
 			)
 			(vaporCalcI
 				(= oldPause (DoSound PauseSound TRUE))
-				(= vaporCalcOn TRUE)
+				(= vaporCalcCued TRUE)
 				(DoSound PauseSound oldPause)
 			)
 			(quitI

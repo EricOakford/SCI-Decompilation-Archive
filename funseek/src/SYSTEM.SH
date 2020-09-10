@@ -52,8 +52,6 @@
 (define	FORCOUNT		956)	;forward-loop a specified number of times
 (define	TRACK			955)	;motion to track an actor at an x/y offset.
 (define	GOTOSAID		954)	;turn to or approach "said" object.
-(define	APPROACH		953)	;EO: Script found in Iceman
-(define	MOVEFWD			951)	;EO: script added per 5/24/90 update
 
 
 (define	INTRFACE		255)
@@ -87,14 +85,6 @@
 (define	TPLAIN	0)
 (define	TDIMMED	1)
 
-;Language defines (added per Iceman demo code by EO)
-(define	ENGLISH		1)
-(define	FRENCH		33)
-(define	SPANISH		34)
-(define	ITALIAN		39)
-(define	GERMAN		49)
-(define	JAPANESE	81)
-(define	PORTUGUESE	351)
 
 ;Dialog item types
 (define	dButton	1)
@@ -199,10 +189,10 @@
 ; some keycode definitions
 (define	ESC			27)
 (define	SPACEBAR		32)
-(define	ENTER       $000d)		;(define ENTER	`^m) in SSCI
-(define	TAB         $0009)		;(define TAB	`^i) in SSCI
+(define ENTER	`^m)
+(define TAB	`^i)
 (define	SHIFTTAB		$0f00)
-(define	BACKSPACE	$0008)		;(define	BACKSPACE	`^h)
+(define	BACKSPACE	`^h)
 
 
 ; Numeric key code in scan code order with missing codes added

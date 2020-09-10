@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 91)
+(script# rIntroEveHouse)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -21,7 +21,7 @@
 )
 (instance theSound of Sound
 	(properties
-		number 101
+		number sThemeSong
 		priority 10
 		loop -1
 	)
@@ -29,21 +29,21 @@
 
 (instance rm91 of Room
 	(properties
-		picture 23
+		picture rEveHouse
 		style IRISOUT
 	)
 	
 	(method (init)
-		(Load VIEW 192)
-		(Load VIEW 253)
-		(Load VIEW 802)
-		(Load VIEW 803)
-		(Load VIEW 804)
-		(Load SOUND 101)
+		(Load VIEW vEgoMowLawn)
+		(Load VIEW vEveHouseStuff)
+		(Load VIEW vEve)
+		(Load VIEW vDogExitCar)
+		(Load VIEW vDogPiss)
+		(Load SOUND sThemeSong)
 		(super init:)
 		(theSound play:)
 		((View new:)
-			view: 253
+			view: vEveHouseStuff
 			loop: 0
 			cel: 0
 			posn: 95 130
@@ -52,7 +52,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 253
+			view: vEveHouseStuff
 			loop: 0
 			cel: 2
 			posn: 136 139
@@ -61,7 +61,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 253
+			view: vEveHouseStuff
 			loop: 0
 			cel: 2
 			posn: 49 138
@@ -69,7 +69,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 253
+			view: vEveHouseStuff
 			loop: 0
 			cel: 2
 			posn: 35 143
@@ -77,7 +77,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 253
+			view: vEveHouseStuff
 			loop: 0
 			cel: 3
 			posn: 149 110
@@ -85,7 +85,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: 253
+			view: vEveHouseStuff
 			loop: 0
 			cel: 1
 			posn: 15 135
@@ -93,7 +93,7 @@
 			addToPic:
 		)
 		((= aMouth (Prop new:))
-			view: 802
+			view: vEve
 			ignoreActors:
 			setLoop: 1
 			setCel: 0
@@ -103,7 +103,7 @@
 			init:
 		)
 		((= aCar (Actor new:))
-			view: 802
+			view: vEve
 			ignoreActors:
 			illegalBits: 0
 			setLoop: 0
@@ -113,7 +113,7 @@
 			init:
 		)
 		((= aDog (Actor new:))
-			view: 803
+			view: vDogExitCar
 			ignoreActors:
 			illegalBits: 0
 			setLoop: 0
@@ -124,7 +124,7 @@
 			hide:
 		)
 		(ego
-			view: 192
+			view: vEgoMowLawn
 			ignoreActors:
 			illegalBits: 0
 			posn: 119 146
@@ -156,7 +156,6 @@
 )
 
 (instance rm91Script of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -168,13 +167,28 @@
 				(ego setMotion: MoveTo 185 146 self)
 			)
 			(1
-				(ego loop: 1 posn: 179 147 setMotion: MoveTo 116 147 self)
+				(ego
+					loop: loopW
+					posn: 179 147
+					setMotion: MoveTo 116 147
+					self
+				)
 			)
 			(2
-				(ego loop: 0 posn: 110 151 setMotion: MoveTo 167 151 self)
+				(ego
+					loop: loopE
+					posn: 110 151
+					setMotion: MoveTo 167 151
+					self
+				)
 			)
 			(3
-				(ego setLoop: 1 posn: 155 155 setCel: 0 stopUpd:)
+				(ego
+					setLoop: loopW
+					posn: 155 155
+					setCel: 0
+					stopUpd:
+				)
 				(aCar setMotion: MoveTo 0 183 self)
 			)
 			(4
@@ -216,7 +230,11 @@
 				(= seconds 3)
 			)
 			(9
-				(Print 91 5 #at -1 15 #width 280 #time 10)
+				(Print 91 5
+					#at -1 15
+					#width 280
+					#time 10
+				)
 				(Print 91 6 #time 9)
 				(Print 91 7 #time 4)
 				(aDog show:)
@@ -230,14 +248,18 @@
 			)
 			(12
 				(aDog
-					view: 804
+					view: vDogPiss
 					posn: 52 166
 					setPri: -1
 					setLoop: 0
 					setCycle: Walk
 					setMotion: MoveTo 193 161 self
 				)
-				(Print 91 8 #at -1 15 #width 280 #time 7)
+				(Print 91 8
+					#at -1 15
+					#width 280
+					#time 7
+				)
 				(aMouth posn: 3 152)
 				(= cycles 22)
 			)
@@ -251,7 +273,10 @@
 				(= cycles 30)
 			)
 			(15
-				(Print 91 10 #at -1 152 #time 3)
+				(Print 91 10
+					#at -1 152
+					#time 3
+				)
 				(= cycles 30)
 			)
 			(16
@@ -262,14 +287,22 @@
 				)
 			)
 			(17
-				(Print 91 11 #at -1 15 #width 280 #time 13)
-				(Print 91 12 #at -1 15 #width 280 #time 4)
+				(Print 91 11
+					#at -1 15
+					#width 280
+					#time 13
+				)
+				(Print 91 12
+					#at -1 15
+					#width 280
+					#time 4
+				)
 				(aDog setMotion: MoveTo -22 151)
 				(= seconds 3)
 			)
 			(18
 				(Print 91 13 #time 3)
-				(curRoom newRoom: 92 IRISOUT)
+				(curRoom newRoom: rIsland IRISOUT)
 			)
 		)
 	)
