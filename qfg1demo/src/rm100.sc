@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 100)
+(script# rHalfDome)
 (include game.sh)
 (use Main)
 (use Print)
@@ -18,17 +18,26 @@
 	logoTimer
 )
 (instance rm100 of Room
-	(properties)
-	
+
 	(method (init)
-		(Load PICTURE 905)
-		(LoadMany VIEW 526 527 528 910 907 908 909 912 906)
+		(Load PICTURE pCharSel)
+		(LoadMany VIEW
+			vSelFighter
+			vSelWizard
+			vSelThief
+			vIntroDragon
+			vIntroFlame2
+			vQFGCooldown
+			vHeroCooldown
+			vIntroTitle
+			vIntroFlame
+		)
 		(super init:)
 		(if showSierraLogo
 			(SetPort 0 0 200 320 0 0)
 			(Palette PALIntensity 0 254 0)
-			(= currentPic 1)
-			(curRoom drawPic: 1 FADEOUT)
+			(= currentPic pHalfDome)
+			(curRoom drawPic: pHalfDome FADEOUT)
 			(glint init:)
 			(glint2 init:)
 			(self setScript: logoScript)
@@ -50,7 +59,7 @@
 	(properties
 		x 68
 		y 129
-		view 526
+		view vSelFighter
 		cel 5
 		priority 15
 		signal (| ignrAct fixPriOn)
@@ -62,7 +71,7 @@
 	(properties
 		x 162
 		y 73
-		view 527
+		view vHalfSparkle
 		loop 1
 		priority 13
 		signal (| ignrAct fixPriOn)
@@ -74,7 +83,7 @@
 	(properties
 		x 158
 		y 129
-		view 527
+		view vSelWizard
 		priority 12
 		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
@@ -85,7 +94,7 @@
 	(properties
 		x 248
 		y 130
-		view 528
+		view vSelThief
 		priority 15
 		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
@@ -96,7 +105,7 @@
 	(properties
 		x 260
 		y 101
-		view 910
+		view vIntroDragon
 		priority 6
 		signal fixPriOn
 		cycleSpeed 8
@@ -107,7 +116,7 @@
 	(properties
 		x 147
 		y 74
-		view 907
+		view vIntroFlame2
 		priority 15
 		signal fixPriOn
 	)
@@ -117,7 +126,7 @@
 	(properties
 		x 172
 		y 167
-		view 908
+		view vQFGCooldown
 	)
 )
 
@@ -125,7 +134,7 @@
 	(properties
 		x 56
 		y 154
-		view 909
+		view vHeroCooldown
 	)
 )
 
@@ -133,7 +142,7 @@
 	(properties
 		x 134
 		y 34
-		view 988
+		view vHalfSparkle
 		cycleSpeed 2
 	)
 )
@@ -142,7 +151,7 @@
 	(properties
 		x 60
 		y 155
-		view 988
+		view vHalfSparkle
 		loop 1
 		cycleSpeed 2
 	)
@@ -150,12 +159,11 @@
 
 (instance fireSound of Sound
 	(properties
-		number 46
+		number sFire
 	)
 )
 
 (instance logoScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -164,7 +172,7 @@
 			)
 			(1
 				(soundFx
-					number: 100
+					number: rHalfDome
 					loop: 1
 					flags: 0
 					play: self
@@ -200,19 +208,19 @@
 
 (instance stamp of View
 	(properties
-		view 506
+		view vCharSel
 	)
 )
 
 (instance swoosh of Sound
 	(properties
-		number 993
+		number sSwoosh
 	)
 )
 
 (instance twinkle of Sound
 	(properties
-		number 992
+		number sTwinkle
 	)
 )
 
@@ -221,15 +229,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= currentPic 902)
-				(curRoom drawPic: 902)
+				(= currentPic pIntro)
+				(curRoom drawPic: pIntro)
 				(dragon init:)
 				(subTitle init: hide:)
 				(qForGlory init: hide:)
 				(dragonFire init: hide:)
 				(soundFx
 					priority: 100
-					number: 999
+					number: sShortIntro
 					loop: 1
 					flags: 0
 					play: self
@@ -240,7 +248,9 @@
 				(dragon setCel: 1)
 				(= seconds 1)
 			)
-			(2 (dragon setCycle: EndLoop self))
+			(2
+				(dragon setCycle: EndLoop self)
+			)
 			(3
 				(dragon stopUpd:)
 				(fireSound play:)
@@ -252,7 +262,7 @@
 				(dragonFire hide:)
 			)
 			(5
-				(qForGlory view: 912 setLoop: 0 setCel: 0)
+				(qForGlory view: vIntroTitle setLoop: 0 setCel: 0)
 				(dragon startUpd: setCel: 6)
 				(= ticks 25)
 			)
@@ -260,7 +270,7 @@
 				(dragon setCel: 10)
 				(fireSound play:)
 				(dragonFire
-					view: 906
+					view: vIntroFlame
 					posn: 170 144
 					setCel: 0
 					show:
@@ -273,16 +283,16 @@
 				(subTitle show: setCel: 0 setCycle: EndLoop self)
 			)
 			(8
-				(subTitle view: 912 setLoop: 1 setCel: 0)
+				(subTitle view: vIntroTitle setLoop: 1 setCel: 0)
 			)
 			(9
 				(dragon dispose:)
 				(dragonFire dispose:)
 				(qForGlory dispose:)
 				(subTitle dispose:)
-				(= currentPic 905)
-				(curRoom drawPic: 905 FADEOUT)
-				(fighter init: setCel: 255)
+				(= currentPic pCharSel)
+				(curRoom drawPic: pCharSel FADEOUT)
+				(fighter init: setCel: LASTCEL)
 				(mage init:)
 				(thief init:)
 				(= cycles 2)
@@ -310,10 +320,17 @@
 				(= ticks 60)
 			)
 			(14
-				(stamp setLoop: 1 setCel: 1 posn: 202 156 signal: 16384)
+				(stamp
+					setLoop: 1
+					setCel: 1
+					posn: 202 156
+					signal: ignrAct
+				)
 				(mage setCycle: EndLoop self)
 			)
-			(15 (= seconds 1))
+			(15
+				(= seconds 1)
+			)
 			(16
 				(twinkle play:)
 				(sparkle init: cycleSpeed: 1 setCycle: Forward)
@@ -322,7 +339,12 @@
 			(17
 				(twinkle stop:)
 				(sparkle dispose:)
-				(stamp setLoop: 1 setCel: 2 posn: 201 146 signal: 16384)
+				(stamp
+					setLoop: 1
+					setCel: 2
+					posn: 201 146
+					signal: ignrAct
+				)
 				(thief setCycle: EndLoop self)
 			)
 			(18
@@ -343,7 +365,9 @@
 				(= seconds 9)
 			)
 			(21
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(soundFx fade: 5 30 5 0)
 				(= ticks 60)
 			)
@@ -352,7 +376,7 @@
 				(= ticks 60)
 			)
 			(23
-				(curRoom newRoom: 310)
+				(curRoom newRoom: rMainStreet)
 			)
 		)
 	)

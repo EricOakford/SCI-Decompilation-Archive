@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 148)
+(script# rBigEgo)
 (include game.sh)
 (use Main)
 (use Print)
@@ -14,13 +14,13 @@
 
 (instance rm148 of Room
 	(properties
-		picture 148
+		picture rBigEgo
 		style FADEOUT
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(= currentPic 148)
+		(= currentPic rBigEgo)
 		(self setScript: roomScript)
 	)
 )
@@ -29,7 +29,7 @@
 	(properties
 		x 120
 		y 51
-		view 148
+		view rBigEgo
 		cel 1
 		priority 15
 		signal fixPriOn
@@ -41,7 +41,7 @@
 	(properties
 		x 65
 		y 166
-		view 148
+		view rBigEgo
 		loop 1
 		cel 1
 		cycleSpeed 24
@@ -52,7 +52,7 @@
 	(properties
 		x 220
 		y 184
-		view 148
+		view rBigEgo
 		loop 2
 		cel 1
 		cycleSpeed 12
@@ -63,7 +63,7 @@
 	(properties
 		x 126
 		y 99
-		view 148
+		view rBigEgo
 		loop 3
 		priority 15
 		signal fixPriOn
@@ -71,12 +71,15 @@
 )
 
 (instance roomScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(soundFx loop: 1 number: 996 play: self)
+				(soundFx
+					loop: 1
+					number: sDemoFinale
+					play: self
+				)
 				(leftHair init: posn: 126 42 setLoop: 0 stopUpd:)
 				(metal init: addToPic:)
 				(leftCape init: setLoop: 1 posn: 81 151 setCycle: Forward)
@@ -96,7 +99,9 @@
 				(= seconds 12)
 			)
 			(2
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(leftHair setCycle: Forward)
 				(= ticks 30)
 			)
@@ -113,13 +118,13 @@
 				(if modelessDialog
 					(modelessDialog dispose:)
 				)
-				(curRoom drawPic: 400 DISSOLVE)
+				(curRoom drawPic: pBlack DISSOLVE)
 				(cast eachElementDo: #hide)
 				(= cycles 2)
 			)
 			(5
 				(= showSierraLogo FALSE)
-				(curRoom newRoom: 100)
+				(curRoom newRoom: rHalfDome)
 			)
 		)
 	)

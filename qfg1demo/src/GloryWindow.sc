@@ -108,10 +108,10 @@
 	(Graph GDrawLine (+ b 1) l (+ b 1) r 69 thePri -1)
 	(Graph GDrawLine (+ b 2) l (+ b 2) r 66 thePri -1)
 	(Graph GDrawLine (+ b 3) l (+ b 3) r 67 thePri -1)
-	(if (OneOf currentPic 902 905)
+	(if (OneOf currentPic pIntro pCharSel)
 		(= theView 895)
 	else
-		(= theView 995)
+		(= theView vControlPanel)
 	)
 	(DrawCel theView 9 0 (- l 20) (- t 3) thePri)
 	(DrawCel theView 9 1 (+ r 1) (- t 3) thePri)

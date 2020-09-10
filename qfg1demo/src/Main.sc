@@ -116,7 +116,7 @@
 		global98
 	lastSysGlobal
 	debugging
-	dongle =  1234
+	gameCode =  1234
 	soundFx
 	showSierraLogo =  TRUE
 	demoRunning
@@ -134,9 +134,9 @@
 		(User alterEgo: ego canControl: FALSE canInput: FALSE)
 		((= systemWindow SysWindow) back: 4)
 		(theGame setCursor: INVIS_CURSOR FALSE 300 300)
-		(= demoRunning 1)
+		(= demoRunning TRUE)
 		((= soundFx SFX) init: owner: self flags: 0)
-		(self newRoom: 100)
+		(self newRoom: rHalfDome)
 	)
 	
 	(method (startRoom roomNum)

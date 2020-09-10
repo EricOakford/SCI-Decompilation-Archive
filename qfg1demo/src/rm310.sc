@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 310)
+(script# rMainStreet)
 (include game.sh)
 (use Main)
 (use Print)
@@ -21,20 +21,20 @@
 )
 (instance rm310 of Room
 	(properties
-		picture 310
+		picture rMainStreet
 		style FADEOUT
 	)
 	
 	(method (init)
-		(Load PICTURE 314)
-		(LoadMany VIEW 314 310 315 1314)
+		(Load PICTURE rMagicShop)
+		(LoadMany VIEW rMagicShop rMainStreet vZara vZaraBust)
 		(super init: &rest)
 		(townSound play:)
-		(ego view: 0 setLoop: 6 x: 208 y: 188 init:)
-		(theEye view: 310 init: setCel: 5)
-		(LOL view: 310 init: cycleSpeed: 6 setCycle: Forward)
+		(ego view: vEgo setLoop: 6 x: 208 y: 188 init:)
+		(theEye view: rMainStreet init: setCel: 5)
+		(LOL view: rMainStreet init: cycleSpeed: 6 setCycle: Forward)
 		((= oldLadyDoor (Prop new:))
-			view: 310
+			view: rMainStreet
 			loop: 1
 			x: 217
 			y: 106
@@ -42,7 +42,7 @@
 			init:
 		)
 		((= guildDoor (Prop new:))
-			view: 310
+			view: rMainStreet
 			loop: 2
 			x: 16
 			y: 150
@@ -55,14 +55,14 @@
 	
 	(method (doit)
 		(if (== (witchSound prevSignal?) -1)
-			(soundFx number: 67 loop: -1 flags: 0 play:)
+			(soundFx number: sMagicShop loop: -1 flags: 0 play:)
 			(witchSound prevSignal: 0)
 		)
 		(super doit:)
 		(if
 			(and
 				(> (Abs (- gameTime oldTime)) 6)
-				(== (curRoom curPic?) 310)
+				(== (curRoom curPic?) rMainStreet)
 			)
 			(= oldTime gameTime)
 			(Palette PALCycle 234 241 -1)
@@ -76,7 +76,7 @@
 	(properties
 		x 259
 		y 47
-		view 310
+		view rMainStreet
 		loop 3
 		cel 6
 		priority 10
@@ -88,7 +88,7 @@
 	(properties
 		x 156
 		y 113
-		view 310
+		view rMainStreet
 		loop 6
 	)
 )
@@ -97,7 +97,7 @@
 	(properties
 		x 258
 		y 156
-		view 310
+		view rMainStreet
 		priority 11
 		signal (| ignrAct fixPriOn)
 		cycleSpeed 10
@@ -108,7 +108,7 @@
 	(properties
 		x 259
 		y 100
-		view 315
+		view vZara
 		loop 1
 		priority 2
 		signal (| ignrAct fixPriOn)
@@ -119,7 +119,7 @@
 	(properties
 		x 14
 		y 12
-		view 1314
+		view vZaraBust
 		priority 14
 		signal fixPriOn
 	)
@@ -129,7 +129,7 @@
 	(properties
 		x 87
 		y 43
-		view 1314
+		view vZaraBust
 		loop 1
 		cel 5
 		priority 15
@@ -142,7 +142,7 @@
 	(properties
 		x 87
 		y 26
-		view 1314
+		view vZaraBust
 		loop 2
 		cel 1
 		priority 15
@@ -155,7 +155,7 @@
 	(properties
 		x 203
 		y 60
-		view 314
+		view rMagicShop
 		loop 6
 		priority 15
 		signal fixPriOn
@@ -167,7 +167,7 @@
 	(properties
 		x 295
 		y 80
-		view 314
+		view rMagicShop
 		loop 5
 		priority 15
 		signal fixPriOn
@@ -179,7 +179,7 @@
 	(properties
 		x 240
 		y 115
-		view 314
+		view rMagicShop
 		loop 4
 		cel 1
 	)
@@ -189,7 +189,7 @@
 	(properties
 		x 308
 		y 149
-		view 314
+		view rMagicShop
 		loop 3
 		cel 2
 	)
@@ -199,7 +199,7 @@
 	(properties
 		x 58
 		y 123
-		view 314
+		view rMagicShop
 		loop 2
 		priority 6
 		signal fixPriOn
@@ -210,7 +210,7 @@
 	(properties
 		x 194
 		y 52
-		view 314
+		view rMagicShop
 		loop 8
 	)
 )
@@ -219,32 +219,32 @@
 	(properties
 		x 101
 		y 177
-		view 314
+		view rMagicShop
 	)
 )
 
 (instance suckedSound of Sound
 	(properties
-		number 33
+		number sFireDart
 	)
 )
 
 (instance townSound of Sound
 	(properties
-		number 93
+		number sTown
 		loop -1
 	)
 )
 
 (instance witchSound of Sound
 	(properties
-		number 28
+		number sTeleport
 	)
 )
 
 (instance witchHereSound of Sound
 	(properties
-		number 67
+		number sMagicShop
 		loop -1
 	)
 )
@@ -289,15 +289,15 @@
 				(guildDoor dispose:)
 				(oldLadyDoor dispose:)
 				(transEgoEye dispose:)
-				(= currentPic 314)
-				(curRoom drawPic: 314 FADEOUT)
+				(= currentPic rMagicShop)
+				(curRoom drawPic: rMagicShop FADEOUT)
 				(transFormEgo init: posn: 101 176)
 				(damiano init: setCel: 0)
 				(glowCoals init: setCycle: Forward)
 				(fishBowl init: setCycle: Forward)
 				(burnSent init: setCycle: Forward)
-				(ego show: view: 4 setLoop: 6 posn: 87 185)
-				(Load VIEW 1314)
+				(ego show: view: vEgoStanding setLoop: 6 posn: 87 185)
+				(Load VIEW vZaraBust)
 				(= cycles 2)
 			)
 			(6
@@ -352,7 +352,7 @@
 				(if modelessDialog
 					(modelessDialog dispose:)
 				)
-				(curRoom newRoom: 11)
+				(curRoom newRoom: rDemoGraveyard)
 			)
 		)
 	)

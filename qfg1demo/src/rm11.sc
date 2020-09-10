@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 11)
+(script# rDemoGraveyard)
 (include game.sh)
 (use Main)
 (use Print)
@@ -17,29 +17,70 @@
 
 (local
 	ghostCount
-	[local1 2] = [0 5]
-	[ghost1Cycle 45] = [0 0 180 27 0 1 196 47 0 2 190 67 0 3 153 80 0 4 132 91 0 5 152 116 0 6 189 114 0 7 198 96 0 8 179 75 0 9 159 57 0 10 174 35 -32768]
-	[ghost4Cycle 65] = [4 0 232 95 4 1 229 94 4 2 229 94 4 3 227 94 4 4 221 95 4 5 215 96 4 6 206 96 4 7 200 96 4 8 194 95 4 9 193 95 4 10 193 95 4 11 193 95 4 12 193 95 4 13 193 95 4 14 193 95 4 15 193 95 -32768]
+	local1 = [0 5]
+	ghost1Path = [
+		0 0 180 27
+		0 1 196 47
+		0 2 190 67
+		0 3 153 80
+		0 4 132 91
+		0 5 152 116
+		0 6 189 114
+		0 7 198 96
+		0 8 179 75
+		0 9 159 57
+		0 10 174 35
+		PATHEND
+	]
+	ghost4Path = [
+		4 0 232 95
+		4 1 229 94
+		4 2 229 94
+		4 3 227 94
+		4 4 221 95
+		4 5 215 96
+		4 6 206 96
+		4 7 200 96
+		4 8 194 95
+		4 9 193 95
+		4 10 193 95
+		4 11 193 95
+		4 12 193 95
+		4 13 193 95
+		4 14 193 95
+		4 15 193 95
+		PATHEND
+	]
 )
 (instance rm11 of Room
 	(properties
-		picture 11
+		picture rDemoGraveyard
 		style FADEOUT
 	)
 	
 	(method (init)
-		(Load PICTURE 460)
-		(LoadMany VIEW 17 110 113 462)
+		(Load PICTURE pForestArena)
+		(LoadMany VIEW
+			vGhosts
+			vEgoStabSword
+			vEgoHitSword
+			vMoreDragon
+		)
 		(super init: &rest)
 		(ego
-			view: 0
+			view: vEgo
 			setLoop: -1
 			setCycle: Walk
 			posn: -15 147
 			init:
 		)
 		(if (not prevRoomNum)
-			(soundFx number: 67 loop: -1 flags: 0 play:)
+			(soundFx
+				number: sMagicShop
+				loop: -1
+				flags: 0
+				play:
+			)
 		)
 		(self setScript: roomScript)
 	)
@@ -49,7 +90,7 @@
 	(properties
 		x 180
 		y 27
-		view 17
+		view vGhosts
 		signal ignrAct
 		cycleSpeed 9
 	)
@@ -58,7 +99,7 @@
 		(super cue:)
 		(switch (++ ghostCount)
 			(1
-				(self setCycle: MoveCycle @ghost1Cycle self)
+				(self setCycle: MoveCycle @ghost1Path self)
 			)
 			(2
 				(roomScript cue:)
@@ -71,7 +112,7 @@
 	(properties
 		x 168
 		y 77
-		view 17
+		view vGhosts
 		loop 1
 		signal ignrAct
 		cycleSpeed 9
@@ -82,7 +123,7 @@
 	(properties
 		x 73
 		y 139
-		view 17
+		view vGhosts
 		loop 2
 		signal ignrAct
 		cycleSpeed 12
@@ -104,7 +145,7 @@
 	(properties
 		x 232
 		y 95
-		view 17
+		view vGhosts
 		loop 4
 		signal ignrAct
 	)
@@ -114,7 +155,7 @@
 	(properties
 		x 105
 		y 168
-		view 110
+		view vEgoStabSword
 	)
 )
 
@@ -122,7 +163,7 @@
 	(properties
 		x 183
 		y 148
-		view 462
+		view vMoreDragon
 		cel 7
 	)
 	
@@ -136,7 +177,7 @@
 	(properties
 		x 203
 		y 102
-		view 462
+		view vMoreDragon
 		loop 1
 		cel 1
 		cycleSpeed 2
@@ -144,7 +185,6 @@
 )
 
 (instance roomScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -152,7 +192,7 @@
 				(ego setMotion: MoveTo 24 147 self)
 			)
 			(1
-				(ego view: 4)
+				(ego view: vEgoStanding)
 				(ghost2 init: setScript: sMoan1Sc setCycle: EndLoop self)
 				(ghost3 init: setCycle: EndLoop ghost3)
 			)
@@ -161,12 +201,12 @@
 				(ghost1
 					init:
 					cycleSpeed: 12
-					setCycle: MoveCycle @ghost1Cycle ghost1
+					setCycle: MoveCycle @ghost1Path ghost1
 				)
 			)
 			(3
 				(ghost1 setCel: 11 posn: 159 10)
-				(ghost4 init: cycleSpeed: 12 setCycle: MoveCycle @ghost4Cycle)
+				(ghost4 init: cycleSpeed: 12 setCycle: MoveCycle @ghost4Path)
 				(Print
 					addText: {You will face deadly dangers.}
 					modeless: TRUE
@@ -195,12 +235,12 @@
 				(ghost2 dispose:)
 				(ghost3 dispose:)
 				(ghost4 dispose:)
-				(ego view: 0 dispose:)
-				(= currentPic 460)
-				(curRoom drawPic: 460 FADEOUT)
+				(ego view: vEgo dispose:)
+				(= currentPic pForestArena)
+				(curRoom drawPic: pForestArena FADEOUT)
 				(combatEgo
 					init:
-					view: 109
+					view: vEgoSwingSword
 					posn: 101 173
 					setScript: combatEgoScript
 				)
@@ -211,7 +251,7 @@
 				(= cycles 2)
 			)
 			(8
-				(Load SOUND 997)
+				(Load SOUND sRoar)
 				(Print
 					addText: {So you still want to Be a Hero?}
 					modeless: TRUE
@@ -228,15 +268,14 @@
 				(if modelessDialog
 					(modelessDialog dispose:)
 				)
-				(curRoom newRoom: 148)
+				(curRoom newRoom: rBigEgo)
 			)
 		)
 	)
 )
 
 (instance sDragon of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -255,8 +294,7 @@
 )
 
 (instance sMoan1Sc of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -273,32 +311,34 @@
 					(1 (ghost1Snd play: self))
 				)
 			)
-			(3 (self dispose:))
+			(3
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance dragonRoar of Sound
 	(properties
-		number 997
+		number sRoar
 	)
 )
 
 (instance ghost1Snd of Sound
 	(properties
-		number 995
+		number sMoan2
 	)
 )
 
 (instance ghost2Snd of Sound
 	(properties
-		number 994
+		number sMoan1
 	)
 )
 
 (instance battleSound of Sound
 	(properties
-		number 998
+		number sShortBattle
 		loop -1
 	)
 )
