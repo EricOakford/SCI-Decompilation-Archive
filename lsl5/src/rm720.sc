@@ -322,7 +322,7 @@
 					#width 260
 				)
 			)
-			(verbDo
+			(verbWalk
 				(cashout doVerb: verbDo)
 			)
 			(else

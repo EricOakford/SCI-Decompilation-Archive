@@ -292,14 +292,14 @@
 		(switch theVerb
 			(verbLook
 				(TimePrint 320 4)
-				(TimePrint 320 5 67 -1 185)
-			)
-			(verbDo
-				(TimePrint 320 6)
+				(TimePrint 320 5 #at -1 185)
 			)
 			(verbTalk
+				(TimePrint 320 6)
+			)
+			(verbDo
 				(TimePrint 320 7)
-				(TimePrint 320 8 67 -1 185)
+				(TimePrint 320 8 #at -1 185)
 			)
 			(else 
 				(super doVerb: theVerb theItem &rest)

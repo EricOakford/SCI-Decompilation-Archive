@@ -22,7 +22,7 @@
 
 (local
 	local0
-	local1 =  1
+	numTakes =  1
 	local2
 	local3
 	local4
@@ -399,7 +399,7 @@
 
 (instance sSession of Script
 	
-	(method (changeState newState &tmp [temp0 20])
+	(method (changeState newState &tmp [str 20])
 		(switch (= state newState)
 			(0
 				(HandsOff)
@@ -433,14 +433,14 @@
 				)
 			)
 			(2
-				(if (and (== local1 1) (not (HaveMouse)))
+				(if (and (== numTakes 1) (not (HaveMouse)))
 					(TimePrint 660 14
 						#at -1 15
 						#width 280
 						#title {A Tip from AL}
 					)
 				)
-				(if (> local1 1)
+				(if (> numTakes 1)
 					(rewind play: self)
 					(reelOne cycleSpeed: 5 setCycle: Reverse)
 					(reelTwo cycleSpeed: 5 setCycle: Forward)
@@ -451,7 +451,7 @@
 				)
 			)
 			(3
-				(if (> local1 1)
+				(if (> numTakes 1)
 					(musicStop play: self)
 					(reelOne cycleSpeed: 10)
 					(reelTwo cycleSpeed: 10)
@@ -462,7 +462,7 @@
 				)
 			)
 			(4
-				(if (> local1 1)
+				(if (> numTakes 1)
 					(reelOne setCycle: 0)
 					(reelTwo setCycle: 0)
 					(reelThree setCycle: 0)
@@ -473,8 +473,8 @@
 				)
 			)
 			(5
-				(Format @temp0 660 15 local1)
-				(Say Reverse_Biaz @temp0 #dispose #caller self)
+				(Format @str 660 15 numTakes)
+				(Say Reverse_Biaz @str #dispose #caller self)
 			)
 			(6
 				(reverseBiaz setLoop: 2 setCel: 0 setCycle: EndLoop self)
@@ -573,7 +573,7 @@
 			(curRoom setScript: sEndSession)
 		else
 			(++ local0)
-			(++ local1)
+			(++ numTakes)
 			(ego setScript: sSession)
 		)
 		(super dispose:)

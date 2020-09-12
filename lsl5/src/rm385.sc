@@ -157,7 +157,7 @@
 							(= unfinishedBusiness 1)
 							(= theTicks 30)
 						)
-						(fAskedAboutSkateDeposit
+						(fReturnedSkates
 							(Say ego 385 10 #dispose self)
 							(= unfinishedBusiness 1)
 							(= theTicks 30)

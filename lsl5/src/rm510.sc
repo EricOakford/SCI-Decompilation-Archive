@@ -1110,9 +1110,9 @@
 					(TimePrint 510 71)
 				)
 			)
-			(3
+			(verbDo
 				(if (== ((Inventory at: iMembershipTape) owner?) 510)
-					(tape doVerb: verbLook)
+					(tape doVerb: verbDo)
 				else
 					(curRoom newRoom: 520)
 				)

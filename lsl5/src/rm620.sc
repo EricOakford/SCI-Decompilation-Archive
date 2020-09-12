@@ -123,7 +123,7 @@
 					1
 				)
 			)
-			(verbTalk
+			(verbLook
 				(if (== curPic 630)
 					(TimePrint 620 0)
 				else

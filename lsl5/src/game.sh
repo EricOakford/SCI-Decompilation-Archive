@@ -234,7 +234,7 @@
 	fPutOnSkates					;139
 	fAskedLanaOut					;140
 	fCameraForSkates				;141
-	fAskedAboutSkateDeposit			;142
+	fReturnedSkates					;142
 	fSilverForSkates				;143
 	fOpenedDesk						;144
 	fGotEvidence					;145

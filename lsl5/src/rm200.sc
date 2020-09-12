@@ -191,7 +191,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(verbLook
+			(verbWalk
 				(if (and (== ((theIconBar at: ICON_WALK) cursor?) 6) (not limoMoving))
 					(curRoom newRoom: prevRoomNum)
 				)
@@ -209,7 +209,7 @@
 					(if (OneOf prevRoomNum 190 250)
 						(StartTimer 2 1 self)
 					else
-						(Say ego 200 0 #caller self)
+						(Say ego 200 0 #dispose self)
 					)
 				)
 				(2
@@ -223,7 +223,7 @@
 				)
 				(3
 					(Bset fFlightAvailable)
-					(driver doVerb: verbDo 7)
+					(driver doVerb: verbUse iGoldCard)
 				)
 			)
 		else

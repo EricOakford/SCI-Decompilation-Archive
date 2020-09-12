@@ -189,7 +189,6 @@
 )
 
 (instance sRollerblades of Script
-	(properties)
 	
 	(method (changeState newState &tmp price [str 80])
 		(switch (= state newState)
@@ -198,7 +197,7 @@
 				(Say Ivana_b 790 11 #dispose #caller self)
 			)
 			(1
-				(SolvePuzzle 3 fAskedAboutSkateDeposit)
+				(SolvePuzzle 3 fReturnedSkates)
 				(if (ego has: iCamcorder)
 					(= price (Random 100 240))
 					(Format @str 790 12 price)
@@ -220,6 +219,7 @@
 
 (instance Ivana_a of Actor
 	(properties
+		name {Ivana}
 		x 147
 		y 107
 		description {Ivana Tramp}
@@ -532,6 +532,7 @@
 
 (instance Ivana_b of Talker
 	(properties
+		name {Ivana}
 		nsTop 15
 		nsLeft 20
 		view 1792

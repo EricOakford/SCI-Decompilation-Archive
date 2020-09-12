@@ -253,6 +253,26 @@ code_0511:
 			pushi    #check
 			pushi    0
 			send     4
+			;EO: Code edited to fix speed bugs
+;;;code_052f:
+;;;			pushi    2
+;;;			pushi    #elements
+;;;			pushi    0
+;;;			lag      cast
+;;;			send     4
+;;;			push    
+;;;			pushi    1
+;;;			callk    Animate,  4
+;;;			lag      doMotionCue
+;;;			bnt      code_054f
+;;;			ldi      0
+;;;			sag      doMotionCue
+;;;			pushi    #eachElementDo
+;;;			pushi    1
+;;;			pushi    218
+;;;			lag      cast
+;;;			send     6
+;;;code_054f:
 code_052f:
 			pushi    2
 			pushi    #elements
@@ -262,16 +282,17 @@ code_052f:
 			push    
 			pushi    1
 			callk    Animate,  4
-			lag      doMotionCue
-			bnt      code_054f
-			ldi      0
-			sag      doMotionCue
+			pushi    1
+			pushi    2
+			callk    Wait,  2
+			jmp      code_0545
+			le?     
+code_0545:
 			pushi    #eachElementDo
 			pushi    1
 			pushi    218
 			lag      cast
 			send     6
-code_054f:
 			pToa     script
 			bnt      code_0559
 			pushi    #doit
