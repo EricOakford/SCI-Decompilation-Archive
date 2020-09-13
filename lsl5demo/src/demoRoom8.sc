@@ -103,7 +103,7 @@
 			(6
 				(cast eachElementDo: #hide eachElementDo: #dispose)
 				(curRoom drawPic: 100 30)
-				(music fade:)
+				(theMusic fade:)
 				(= cycles 20)
 			)
 			(7

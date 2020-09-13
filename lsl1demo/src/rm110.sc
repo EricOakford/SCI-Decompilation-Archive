@@ -17,13 +17,13 @@
 )
 (instance rm110 of Room
 	(properties
-		picture 130
+		picture pInsideBar
 	)
 	
 	(method (init)
 		(fakeEgo init: setScript: egoScript)
 		(super init:)
-		(music
+		(theMusic
 			number: 902
 			loop: -1
 			vol: 127
@@ -38,8 +38,7 @@
 )
 
 (instance sRoomScript of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit: &rest)
 		(if (and (== state 20) (> (GetTime SYSTIME1) scriptTimer))
@@ -51,17 +50,13 @@
 		(switch (= state newState)
 			(0 (= seconds 3))
 			(1
-				(SCIDisplay
-					{Your mission as Larry Laffer:}
-					156
+				(SCIDisplay {Your mission as Larry Laffer:} 156
 					#back myTextColor
 				)
 				(= seconds 3)
 			)
 			(2
-				(SCIDisplay
-					{seek out new civilizations...}
-					170
+				(SCIDisplay {seek out new civilizations...} 170
 					#back myTextColor
 				)
 				(= seconds 2)
@@ -90,7 +85,7 @@
 				(soundFX number: 115 play:)
 				(cast eachElementDo: #z 1000)
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 140)
+				(curRoom drawPic: pFawn)
 				(leftEye init:)
 				(rightEye init:)
 				(nose init: setScript: sNoseScript)
@@ -101,9 +96,7 @@
 				(rightEye setCycle: EndLoop self)
 			)
 			(10
-				(SCIDisplay
-					{...explore new life forms...}
-					136
+				(SCIDisplay {...explore new life forms...} 136
 					#back myTextColor
 				)
 				(= seconds 3)
@@ -126,8 +119,8 @@
 				(cast eachElementDo: #z 1000)
 				(cast eachElementDo: #dispose)
 				(curRoom drawPic: 150)
-				(globalSound
-					number: 130
+				(theMusic2
+					number: pInsideBar
 					loop: -1
 					vol: 127
 					priority: 5
@@ -159,32 +152,30 @@
 				(= cycles 1)
 			)
 			(20
-				(SCIDisplay
-					{...and boldly go where no man has gone before!}
-					166
+				(SCIDisplay {...and boldly go where no man has gone before!} 166
 					#color myTextColor4
 					#back myTextColor10
 				)
 				(soundFX number: 133 play:)
-				(UnLoad VIEW 140)
-				(UnLoad VIEW 130)
-				(UnLoad PICTURE 130)
-				(UnLoad PICTURE 140)
-				(UnLoad PICTURE 120)
+				(UnLoad VIEW pFawn)
+				(UnLoad VIEW pInsideBar)
+				(UnLoad PICTURE pInsideBar)
+				(UnLoad PICTURE pFawn)
+				(UnLoad PICTURE pBlack)
 				(UnLoad SOUND 900)
 				(UnLoad SOUND 113)
 				(UnLoad SOUND 114)
 				(UnLoad SOUND 115)
 				(UnLoad SOUND 382)
-				(Load PICTURE 160)
-				(Load VIEW 160)
+				(Load PICTURE pHoneymoonSuite)
+				(Load VIEW pHoneymoonSuite)
 				(Load SOUND 901)
 				(fakeEgo setCycle: EndLoop)
 				(soundFX number: 132 play:)
 			)
 			(21
-				(music fade:)
-				(globalSound stop:)
+				(theMusic fade:)
+				(theMusic2 stop:)
 				(curRoom newRoom: 390)
 			)
 		)
@@ -195,7 +186,7 @@
 	(properties
 		x 36
 		y 122
-		view 130
+		view pInsideBar
 		cel 1
 	)
 )
@@ -204,7 +195,7 @@
 	(properties
 		x 202
 		y 110
-		view 130
+		view pInsideBar
 		loop 2
 		cycleSpeed 1
 	)
@@ -213,7 +204,7 @@
 (instance fan of Prop
 	(properties
 		x 182
-		view 130
+		view pInsideBar
 		loop 1
 		cel 5
 	)
@@ -223,7 +214,7 @@
 	(properties
 		x 128
 		y 61
-		view 140
+		view pFawn
 		loop 1
 		signal ignrAct
 	)
@@ -233,7 +224,7 @@
 	(properties
 		x 156
 		y 58
-		view 140
+		view pFawn
 		signal ignrAct
 	)
 )
@@ -242,7 +233,7 @@
 	(properties
 		x 143
 		y 80
-		view 140
+		view pFawn
 		loop 2
 		cel 2
 		signal ignrAct
@@ -251,9 +242,9 @@
 
 (instance nose of Prop
 	(properties
-		x 140
+		x pFawn
 		y 79
-		view 140
+		view pFawn
 		loop 3
 		priority 14
 		signal (| ignrAct fixPriOn)
@@ -265,14 +256,13 @@
 	(properties
 		x 208
 		y 127
-		view 130
+		view pInsideBar
 		loop 5
 	)
 )
 
 (instance egoScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 20))
@@ -294,8 +284,7 @@
 )
 
 (instance sNoseScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -311,6 +300,4 @@
 	)
 )
 
-(instance soundFX of Sound
-	(properties)
-)
+(instance soundFX of Sound)

@@ -15,7 +15,7 @@
 )
 (instance rm700 of Room
 	(properties
-		picture 170
+		picture pTitle1
 		style IRISIN
 	)
 	
@@ -26,12 +26,10 @@
 )
 
 (instance sRoomScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and (== state 2) (== (music prevSignal?) -1))
+		(if (and (== state 2) (== (theMusic prevSignal?) -1))
 			(= cycles 1)
 		)
 	)
@@ -44,23 +42,23 @@
 				(= seconds 3)
 			)
 			(2
-				(SCIDisplay {Available at:} 150 #back myTextColor)
-				(SCIDisplay
-					{swinging software stores everywhere!}
-					164
+				(SCIDisplay {Available at:} 150
 					#back myTextColor
 				)
-				(UnLoad VIEW 160)
-				(UnLoad PICTURE 160)
-				(UnLoad PICTURE 170)
-				(LoadMany PICTURE 100 110 120)
-				(LoadMany VIEW 110 100)
+				(SCIDisplay {swinging software stores everywhere!} 164
+					#back myTextColor
+				)
+				(UnLoad VIEW pHoneymoonSuite)
+				(UnLoad PICTURE pHoneymoonSuite)
+				(UnLoad PICTURE pTitle1)
+				(LoadMany PICTURE pOutsideBarAGI pOutsideBarSCI pBlack)
+				(LoadMany VIEW pOutsideBarSCI pOutsideBarAGI)
 				(Load FONT USERFONT)
 				(Load FONT 312)
 				(LoadMany SOUND 906 900 903 905 904 102)
 			)
 			(3
-				(music fade:)
+				(theMusic fade:)
 				(curRoom newRoom: 100)
 			)
 		)

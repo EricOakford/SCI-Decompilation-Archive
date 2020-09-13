@@ -6,6 +6,7 @@
 (use PrintD)
 (use LoadMany)
 (use Sound)
+(use Window)
 (use Game)
 (use User)
 
@@ -115,7 +116,7 @@
 		global97
 		global98
 	lastSysGlobal
-	music
+	theMusic
 	global101
 	numColors
 	numVoices
@@ -138,36 +139,35 @@
 	myTextColor7
 	myTextColor8
 )
-(procedure (DoDisplay theString &tmp theMode theFont theWidth theX theY theForeColor i)
+(procedure (DoDisplay args &tmp theMode theFont theWidth theX theY theForeColor i)
 	(= theX 1)
-	(= theY [theString 1])
+	(= theY [args 1])
 	(= theMode 0)
 	(= theFont 2510)
 	(= theWidth 318)
 	(= theForeColor myTextColor6)
-	(= i 1)
-	(while (< i argc)
-		(switch [theString i]
+	(for ((= i 1)) (< i argc) ((++ i))
+		(switch [args i]
 			(#mode
 				(= theMode
-					[theString (++ i)]
+					[args (++ i)]
 				)
 			)
 			(#font
 				(= theFont
-					[theString (++ i)]
+					[args (++ i)]
 				)
 			)
 			(#width
 				(= theWidth
-					[theString (++ i)]
+					[args (++ i)]
 				)
 			)
 			(#at
 				(= theX
-					[theString (++ i)]
+					[args (++ i)]
 				)
-				(= theY [theString (++ i)])
+				(= theY [args (++ i)])
 				(if (== theWidth 318)
 					(= theWidth
 						(- 320 theX)
@@ -175,19 +175,18 @@
 				)
 			)
 			(#color
-				(= theForeColor [theString (++ i)])
+				(= theForeColor [args (++ i)])
 			)
 		)
-		(++ i)
 	)
-	(Display [theString 0]
+	(Display [args 0]
 		p_at (+ theX 1) (+ theY 1)
 		p_color myTextColor
 		p_width theWidth
 		p_mode theMode
 		p_font theFont
 	)
-	(Display [theString 0]
+	(Display [args 0]
 		p_at theX theY
 		p_color theForeColor
 		p_width theWidth
@@ -196,19 +195,14 @@
 	)
 )
 
-(instance egoObj of Ego
-	(properties)
-)
+(instance egoObj of Ego)
 
-(instance demoMusic of Sound
-	(properties)
-)
+(instance demoMusic of Sound)
 
 (instance ll5 of Game
-	(properties)
 	
 	(method (init &tmp [temp0 6])
-		(LoadMany PICTURE 111 112)
+		(LoadMany PICTURE pDemoOpening1 pDemoOpening2)
 		(LoadMany CURSOR 20 69 ARROW_CURSOR)
 		(LoadMany FONT SYSFONT 2510)
 		(ColorInit)
@@ -221,7 +215,7 @@
 			canControl: FALSE
 			canInput: FALSE
 		)
-		((= music demoMusic) owner: self init:)
+		((= theMusic demoMusic) owner: self init:)
 		(= waitCursor HAND_CURSOR)
 		(= version {x.yyy})
 		(= numVoices (DoSound NumVoices))
@@ -251,8 +245,10 @@
 			((super handleEvent: event))
 			(
 				(PrintD {Exit the demo?}
-					#new #button {Oops!__Lemme see more!} FALSE
-					#new #button {Yeah, I gotta place an order!} TRUE
+					#new
+					#button {Oops!__Lemme see more!} FALSE
+					#new
+					#button {Yeah, I gotta place an order!} TRUE
 				)
 				(theGame quitGame:)
 			)
@@ -260,6 +256,4 @@
 	)
 )
 
-(instance ll5Win of BorderWindow
-	(properties)
-)
+(instance ll5Win of BorderWindow)

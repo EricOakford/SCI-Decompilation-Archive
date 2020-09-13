@@ -13,32 +13,30 @@
 )
 
 (local
-	local0
-	local1 =  7
+	scriptTimer
+	theX =  7
 	local2 =  12
 )
 (instance rm390 of Room
 	(properties
-		picture 160
+		picture pHoneymoonSuite
 		style IRISIN
 	)
 	
 	(method (init)
 		(fakeEgo init:)
 		(super init:)
-		(music number: 901 loop: 1 vol: 127 priority: 50 playBed:)
+		(theMusic number: 901 loop: 1 vol: 127 priority: 50 playBed:)
 		(eve init:)
 		(self setScript: sRoomScript)
 	)
 )
 
 (instance sRoomScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and (not (eve script?)) (< (fakeEgo x?) 200))
+		(if (and (not (eve script?)) (< (fakeEgo x?) 200))
 			(eve setScript: sEve)
 		)
 	)
@@ -46,23 +44,20 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(fakeEgo setCycle: Walk setMotion: MoveTo 160 125 self)
-				(SCIDisplay
-					{"Leisure Suit Larry in the}
-					(= local1 (+ local1 local2))
+				(fakeEgo setCycle: Walk setMotion: MoveTo pHoneymoonSuite 125 self)
+				(SCIDisplay {"Leisure Suit Larry in the}
+					(= theX (+ theX local2))
 					#back myTextColor
 				)
-				(SCIDisplay
-					{Land of the Lounge Lizards"}
-					(= local1 (+ local1 local2))
+				(SCIDisplay {Land of the Lounge Lizards"}
+					(= theX (+ theX local2))
 					#back myTextColor
 				)
 				(= cycles 20)
 			)
 			(1
-				(SCIDisplay
-					{...more graphic(s) than ever before!}
-					(+ local1 local2 8)
+				(SCIDisplay {...more graphic(s) than ever before!}
+					(+ theX local2 8)
 					#back myTextColor
 				)
 			)
@@ -71,15 +66,16 @@
 )
 
 (instance sEve of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit: &rest)
-		(if (== (music prevSignal?) 10) (= register 1))
+		(if (== (theMusic prevSignal?) 10)
+			(= register TRUE)
+		)
 		(if
 			(and
 				(== state 4)
-				(or register (> (GetTime SYSTIME1) local0))
+				(or register (> (GetTime SYSTIME1) scriptTimer))
 			)
 			(= cycles 1)
 		)
@@ -97,19 +93,21 @@
 				(fakeEgo loop: 3 cel: 0 x: 155 setCycle: EndLoop self)
 			)
 			(3
-				(= local0 (+ (GetTime SYSTIME1) 7))
+				(= scriptTimer (+ (GetTime SYSTIME1) 7))
 				(= cycles 1)
 			)
 			(4
-				(UnLoad VIEW 150)
-				(UnLoad PICTURE 150)
+				(UnLoad VIEW pToilet)
+				(UnLoad PICTURE pToilet)
 				(UnLoad SOUND 902)
 				(UnLoad SOUND 132)
 				(UnLoad SOUND 133)
 				(UnLoad SOUND 130)
-				(LoadMany PICTURE 170 180)
+				(LoadMany PICTURE pTitle1 pTitle2)
 			)
-			(5 (curRoom newRoom: 700))
+			(5
+				(curRoom newRoom: 700)
+			)
 		)
 	)
 )
@@ -118,7 +116,7 @@
 	(properties
 		x 137
 		y 132
-		view 160
+		view pHoneymoonSuite
 		cycleSpeed 3
 	)
 )
@@ -127,7 +125,7 @@
 	(properties
 		x 249
 		y 89
-		view 160
+		view pHoneymoonSuite
 		loop 2
 		signal fixedLoop
 	)

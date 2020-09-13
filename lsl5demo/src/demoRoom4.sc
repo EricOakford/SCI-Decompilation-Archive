@@ -25,8 +25,7 @@
 )
 
 (instance sCartoon of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if state (Palette PALCycle 8 15 -1))
@@ -35,22 +34,19 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DoDisplay
-					{Larry's in the entertainment industry now,}
+				(DoDisplay {Larry's in the entertainment industry now,}
 					#at -1 15
 					#color myTextColor5
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{working on a new syndicated}
+				(DoDisplay {working on a new syndicated}
 					#at -1 30
 					#color myTextColor5
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{television show...}
+				(DoDisplay {television show...}
 					#at -1 45
 					#color myTextColor5
 					#font 2510

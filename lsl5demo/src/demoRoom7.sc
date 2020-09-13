@@ -28,15 +28,13 @@
 )
 
 (instance sCartoon of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 15])
 		(switch (= state newState)
 			(0
 				(poster init:)
 				(addToPics doit:)
-				(DoDisplay
-					{And since you also play the role of Passionate Patti,}
+				(DoDisplay {And since you also play the role of Passionate Patti,}
 					#at 10 20
 					#color myTextColor4
 					#font 2510

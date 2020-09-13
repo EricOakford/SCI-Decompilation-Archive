@@ -36,8 +36,7 @@
 			(0
 				(poster init:)
 				(addToPics doit:)
-				(DoDisplay
-					{Larry's job:}
+				(DoDisplay {Larry's job:}
 					#at 175 20
 					#color myTextColor4
 					#font 2510
@@ -46,29 +45,25 @@
 				(= cycles 25)
 			)
 			(1
-				(DoDisplay
-					{to find the}
+				(DoDisplay {to find the}
 					#at 175 50
 					#color myTextColor4
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{show's hostess, the}
+				(DoDisplay {show's hostess, the}
 					#at 175 70
 					#color myTextColor4
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{"Sexiest Woman}
+				(DoDisplay {"Sexiest Woman}
 					#at 175 90
 					#color myTextColor4
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{in America!"}
+				(DoDisplay {in America!"}
 					#at 175 110
 					#color myTextColor4
 					#font 2510

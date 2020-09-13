@@ -17,7 +17,7 @@
 	i
 	theX
 	[str 50]
-	[local52 11]
+	[typeBits 11]
 	local63
 	local64
 )
@@ -35,7 +35,7 @@
 		)
 	)
 	(if (and (< 21 i) (< i 29))
-		(= [local52 (- i 22)] temp3)
+		(= [typeBits (- i 22)] temp3)
 	else
 		(UnLoad MEMORY temp3)
 	)
@@ -45,16 +45,15 @@
 
 (instance demoRoom2 of Room
 	(properties
-		picture 104
+		picture pTitle
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany PICTURE 104 100)
-		(LoadMany VIEW 104)
+		(LoadMany PICTURE pTitle pBlack)
+		(LoadMany VIEW pTitle)
 		(LoadMany SOUND 903 905)
-		(StrCpy
-			@str
+		(StrCpy @str
 			{Passionate Patti Does Pittsbua Little Undercover Work}
 		)
 		(super init:)
@@ -66,19 +65,20 @@
 )
 
 (instance sCartoon of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if local64 (Palette PALCycle 24 31 -1) (Palette PALCycle 240 254 -1))
+		(if local64
+			(Palette PALCycle 24 31 -1)
+			(Palette PALCycle 240 254 -1)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(music number: 1 loop: -1 playBed:)
-				(DoDisplay
-					{No, even worse, girls!__It's}
+				(theMusic number: 1 loop: -1 playBed:)
+				(DoDisplay {No, even worse, girls!__It's}
 					#at -1 1
 					#color myTextColor6
 					#font 2510
@@ -90,15 +90,13 @@
 				(sPasteThatBig5 changeState: 1)
 			)
 			(2
-				(DoDisplay
-					{Back for Episode 4,}
+				(DoDisplay {Back for Episode 4,}
 					#at -1 155
 					#color myTextColor6
 					#font 2510
 					#mode teJustCenter
 				)
-				(DoDisplay
-					{which he calls Larry 5!}
+				(DoDisplay {which he calls Larry 5!}
 					#at -1 170
 					#color myTextColor6
 					#font 2510
@@ -124,10 +122,8 @@
 				)
 			)
 			(5
-				(Display
-					{}
-					p_restore
-					[local52 (- (-- i) 22)]
+				(Display {}
+					p_restore [typeBits (- (-- i) 22)]
 				)
 				(typeBack play:)
 				(if (> i 22)
@@ -156,8 +152,8 @@
 			)
 			(8
 				(= speed 6)
-				(UnLoad PICTURE 104)
-				(UnLoad PICTURE 100)
+				(UnLoad PICTURE pTitle)
+				(UnLoad PICTURE pBlack)
 				(curRoom newRoom: 3)
 			)
 		)
@@ -168,7 +164,7 @@
 	(properties
 		x 63
 		y 18
-		view 104
+		view pTitle
 	)
 )
 

@@ -11,7 +11,7 @@
 ;;;;	Last Updated:
 ;;;;		Brian K. Hughes
 ;;;;		August 19, 1992
-
+;Adapted for SCI1.0 by Eric Oakford
 
 (include kernel.sh)		;kernel external declarations
 
@@ -33,20 +33,20 @@
 (define	JUMP			991)
 (define	SAVE			990)
 (define	MUSIC			989)
-(define	EGO 			988)		; was EXTRA
+(define	EXTRA 			988)
 (define	GAUGE			987)
 (define	ORBIT			986)
-(define	FLAGS			985)		; was AVOIDER
-(define	REGPATH		984)		; was SORTCOPY
+(define	AVOIDER			985)
+(define SORTCOPY		984)
 (define	PATH			983)
 (define	SIGHT			982)
 (define	WINDOW		981)
-(define	TUTORIAL		980)		; was TEXTRA
-(define	UNUSED_4		979)		; was MOUSER
-(define	GCONTROL		978)
+(define	TEXTRA		980)
+(define	MOUSER		979)
+(define	RFEATURE		978)
 (define	GROOPER		977)
 (define	CAT			976)
-(define	SCALETO		975)		; was DEMO
+(define	DEMO		975)
 (define	NAMEFIND		974)
 (define	TIMER			973)
 (define	CHASE			972)
@@ -59,22 +59,22 @@
 (define	COUNT			965)
 (define	DPATH			964)		; will be merged into PATH
 (define	RELDPATH		963)		; will be merged into PATH
-(define	UNUSED_7		962)		; was QSCRIPT
+(define	QSCRIPT		962)
 (define	STOPWALK		961)
-(define	UNUSED_8		960)		; was TIMEDCUE
+(define TIMEDCUE		960)
 (define	QSOUND		959)
 (define	LOADMANY		958)
-(define	UNUSED_10	957)		; was LASTLINK
+(define	LASTLINK	957)
 (define	FORCOUNT		956)
 (define	TRACK			955)
-(define	DOOR			954)		; was GOTOSAID
+(define	GOTOSAID			954)
 (define	APPROACH		953)
 (define	LOGGER		952)
 (define	MOVEFWD     951)
 (define 	FEATURE		950)
 (define 	BLOCK			949)
 (define 	WRITEFTR		948)
-(define 	DLGEDIT		947)		; was DELAYEVT
+(define 	DELAYEVT		947)
 (define 	POLYGON		946)
 (define 	POLYPATH		945)
 (define 	FILESEL		944)
@@ -83,11 +83,11 @@
 (define 	RANDCYC		941)
 (define 	PRINTD	940)
 (define 	OSC	 		939)
-(define 	RANGEOSC		938)		; was PCYCLE
+(define 	PCYCLE		938)
 (define 	ICONBAR		937)
 (define 	BORDWIND		936)
 (define 	SCALER		935)
-(define 	SLIDEICON	934)
+(define 	GCONTROL	934)
 (define 	PMOUSE		933)
 (define 	LANGUAGE		932)
 (define 	CDACTOR		931)
@@ -96,11 +96,6 @@
 (define 	TALKER		928)
 (define 	PAVOID		927)
 (define 	FLIPPOLY		926)
-(define	CONV			925)
-(define	MESSAGER		924)
-(define	INSET			923)
-(define	DIALOG		922)	;Contains DIcon, DButton, DEdit, DSelector, Controls
-(define	PRINT			921)	;Front-end for dialogs
 
 (define	INTRFACE		255)
 
@@ -533,10 +528,10 @@
 
 (define	ESC			27)
 (define	SPACEBAR		32)
-(define ENTER			$0D)	;(define	ENTER			`^m)
-(define TAB				$09)	;(define	TAB			`^i)
+(define	ENTER			`^m)
+(define	TAB			`^i)
 (define	SHIFTTAB		$0f00)
-(define BACKSPACE		$08)	;(define	BACKSPACE	`^h)
+(define	BACKSPACE	`^h)
 
 
 ;Numeric key code in scan code order with missing codes added
@@ -825,13 +820,6 @@
 ;;;	tickOffset			86						;used to adjust gameTime after restore
 ;;;	howFast				87 					;measurment of how fast a machine is
 ;;;	gameTime				88						;ticks since game start
-;;;	narrator				89						;pointer to narrator (normally Narrator)
-;;;	msgType				90 = TEXT_MSG		;type of messages used
-;;;	messager				91						;pointer to messager (normally Messager)
-;;;	prints				92						;list of Print's on screen
-;;;	walkHandler			93						;list of objects to get walkEvents
-;;;	textSpeed			94 = 2				;time text remains on screen
-;;;	altPolyList			95						;list of alternate obstacles
 ;;;	lastSysGlobal		99
 ;;;)
 ;;;;;;)

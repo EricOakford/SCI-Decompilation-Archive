@@ -27,7 +27,6 @@
 )
 
 (instance sCartoon of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
