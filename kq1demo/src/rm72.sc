@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 72)
+(script# rBeanStalk3)
 (include game.sh)
 (use Main)
 (use NewWalk)
@@ -18,14 +18,20 @@
 )
 (instance rm72 of Room
 	(properties
-		picture 572
+		picture pBeanStalk3AGI
 	)
 	
 	(method (init)
-		(LoadMany VIEW 440 444 441 4 8)
-		(Load PICTURE 71)
+		(LoadMany VIEW
+			vGiant
+			vGiantGrabEgo
+			vGiantStompEgo
+			vEgoSmall
+			vEgoClimbSmall
+		)
+		(Load PICTURE rBeanStalk2)
 		(LoadMany SOUND 59 17)
-		(self style: 2)
+		(self style: WIPELEFT)
 		(super init:)
 		(HandsOff)
 		(self setScript: chaseEgo)
@@ -38,18 +44,16 @@
 
 (instance giant of Actor
 	(properties
-		view 440
+		view vGiant
 		loop 1
 	)
 )
 
 (instance chaseEgo of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== state 6) (not local0) (> (ego y?) 6))
+		(if (and (== state 6) (not local0) (> (ego y?) 6))
 			(= local0 1)
 			(DisplayNewGraphics)
 		)
@@ -60,7 +64,7 @@
 			(0
 				(DisplayOldGraphics)
 				(ego
-					view: 4
+					view: vEgoSmall
 					init:
 					posn: 320 148
 					setMotion: MoveTo 200 148
@@ -76,17 +80,26 @@
 					setMotion: MoveTo 213 145 self
 				)
 			)
-			(1 (giant loop: 2) (self cue:))
+			(1
+				(giant loop: loopS)
+				(self cue:)
+			)
 			(2
 				((ScriptID 0 6) fade:)
 				(ego hide:)
-				(giant view: 444 loop: 1 cel: 0 setCycle: EndLoop self)
+				(giant
+					view: vGiantGrabEgo
+					loop: loopW
+					cel: 0
+					setCycle: EndLoop
+					self
+				)
 				(if (== (giant loop?) 3) (- (giant y?) 7))
 			)
 			(3
 				(ego hide:)
 				(giant
-					view: 441
+					view: vGiantStompEgo
 					cel: 3
 					cycleSpeed: 1
 					y: (+ (giant y?) 6)
@@ -101,7 +114,7 @@
 				((ScriptID 0 6) loop: 1 stop:)
 				(ego
 					show:
-					view: 8
+					view: vEgoClimbSmall
 					setLoop: 5
 					setCycle: Forward
 					cycleSpeed: 1
@@ -121,7 +134,7 @@
 			)
 			(6
 				(giant dispose: delete:)
-				(curRoom drawPic: 71)
+				(curRoom drawPic: rBeanStalk2)
 				((ScriptID 0 5) stop:)
 				((ScriptID 0 6) number: 17 loop: -1 play:)
 				(ego
@@ -131,7 +144,9 @@
 					setMotion: MoveTo (ego x?) 220 self
 				)
 			)
-			(7 (curRoom newRoom: 73))
+			(7
+				(curRoom newRoom: dmLeps)
+			)
 		)
 	)
 )

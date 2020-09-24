@@ -99,6 +99,7 @@
 		global70
 		global71
 	endSysLogPath
+	;globals 73-99 are unused
 		global73
 		global74
 		global75
@@ -346,7 +347,7 @@
 
 (procedure (NormalEgo)
 	(ego
-		view: 0
+		view: vEgo
 		setLoop: -1
 		setPri: -1
 		setMotion: 0
@@ -356,9 +357,9 @@
 		cycleSpeed: 0
 		moveSpeed: 0
 		ignoreActors: 0
-		setCycle: StopWalk 2
+		setCycle: StopWalk vEgoStand
 	)
-	(Load VIEW 2)
+	(Load VIEW vEgoStand)
 )
 
 (procedure (DisplayOldGraphics theX theY &tmp i seconds theColor)
@@ -366,66 +367,78 @@
 		(= shadowedTextX theX)
 		(= shadowedTextY theY)
 	else
-		(= shadowedTextX 214)
-		(= shadowedTextY 165)
+		(= shadowedTextX TEXT_X)
+		(= shadowedTextY TEXT_Y)
 	)
-	(= i (if (!= howFast 0) 0 else 2))
-	(while (< i 6)
-		(= seconds 0)
-		(while (< seconds 40)
-			(-- seconds)
-			(= seconds (+ seconds 2))
+	(for
+		((= i (if (!= howFast slow) 0 else 2)))
+		(< i 6)
+		(
+			(++ shadowedTextX)
+			(++ shadowedTextY)
+			(++ i)
 		)
-		(if (< i 1) (= theColor vLGREY) else (= theColor vBLACK))
+		(for
+			((= seconds 0))
+			(< seconds 40)
+			((-- seconds) (+= seconds 2))
+		)
+		(if (< i 1)
+			(= theColor vLGREY)
+		else
+			(= theColor vBLACK)
+		)
 		(Display 0 2
 			p_at shadowedTextX shadowedTextY
 			p_font SYSFONT
 			p_color theColor
 		)
-		(++ shadowedTextX)
-		(++ shadowedTextY)
-		(++ i)
 	)
 	(Display 0 2
 		p_at (- shadowedTextX 1) (- shadowedTextY 1)
 		p_color vWHITE
 	)
-	(= shadowedTextX 214)
-	(= shadowedTextY 165)
+	(= shadowedTextX TEXT_X)
+	(= shadowedTextY TEXT_Y)
 )
 
 (procedure (DisplayNewGraphics theX theY &tmp i seconds theColor)
 	(if (< argc 1)
-		(= shadowedTextX 214)
-		(= shadowedTextY 165)
+		(= shadowedTextX TEXT_X)
+		(= shadowedTextY TEXT_Y)
 	else
 		(= shadowedTextX theX)
 		(= shadowedTextY theY)
 	)
-	(= theColor 0)
-	(= i (if (!= howFast 0) 0 else 2))
-	(while (< i 6)
-		(= seconds 0)
-		(while (< seconds 40)
-			(-- seconds)
-			(= seconds (+ seconds 2))
+	(for
+		(
+			(= theColor 0)
+			(= i (if (!= howFast slow) 0 else 2))
+		)
+ 		(< i 6)
+ 		(
+ 			(++ shadowedTextX)
+			(++ shadowedTextY)
+			(+= theColor 1)
+ 			(++ i)
+ 		)
+		(for
+			((= seconds 0))
+			(< seconds 40)
+			((-- seconds) (+= seconds 2))
 		)
 		(Display 0 3
 			p_at shadowedTextX shadowedTextY
 			p_font SYSFONT
 			p_color theColor
 		)
-		(++ shadowedTextX)
-		(++ shadowedTextY)
-		(= theColor (+ theColor 1))
-		(++ i)
 	)
 	(Display 0 3
 		p_at (- shadowedTextX 1) (- shadowedTextY 1)
 		p_color vWHITE
 	)
-	(= shadowedTextX 214)
-	(= shadowedTextY 165)
+	(= shadowedTextX TEXT_X)
+	(= shadowedTextY TEXT_Y)
 )
 
 (procedure (RedrawPic)
@@ -439,7 +452,6 @@
 )
 
 (instance statusCode of Code
-	(properties)
 	
 	(method (doit strg)
 		(Format strg 0 0)
@@ -460,11 +472,10 @@
 )
 
 (instance Demo000 of Game
-	(properties)
-	
+
 	(method (init &tmp [temp0 11])
 		(= debugging FALSE)
-		(LoadMany VIEW 657 2 0 500 699)
+		(LoadMany VIEW vKQWindow vEgoStand vEgo vEgoAGI vEgoTalkIcon)
 		(Load SCRIPT KQ_WINDOW)
 		(= numColors (Graph GDetect))
 		(= systemWindow myWindow)
@@ -476,13 +487,13 @@
 		(DoSound ChangeVolume 8)
 		(TheMenuBar init: draw: hide:)
 		(StatusLine code: statusCode enable:)
-		(= shadowedTextX 214)
-		(= shadowedTextY 165)
+		(= shadowedTextX TEXT_X)
+		(= shadowedTextY TEXT_Y)
 		(backSound owner: self init:)
 		(StopWalk init:)
 		(HandsOff)
 		(theGame setCursor: waitCursor TRUE)
-		(= startingRoom 1)
+		(= startingRoom dmBegin)
 		(self newRoom: SPEED)
 	)
 	
@@ -512,7 +523,9 @@
 				(== (event type?) keyDown)
 				(== (event message?) `@n)
 			)
-			(AddMenu { Debug_} {Area change.`@z})
+			(AddMenu { Debug_}
+				{Area change.`@z}
+			)
 		)
 	)
 )

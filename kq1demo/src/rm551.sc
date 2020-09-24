@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# DRAGON)
+(script# dmDragon)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -19,21 +19,21 @@
 )
 (instance rm551 of Room
 	(properties
-		picture 551
+		picture dmDragon
 		style (| IRISOUT BLACKOUT)
-		east 502
-		west 51
+		east rOldRm2
+		west rDragonCave
 	)
 	
 	(method (init)
-		(LoadMany VIEW 533 265)
+		(LoadMany VIEW vDragonAGI vPoof)
 		(Load SOUND 45)
 		(super init:)
 		(ego
 			init:
 			hide:
-			view: 0
-			setCycle: StopWalk 2
+			view: vEgo
+			setCycle: StopWalk vEgoStand
 			x: 267
 			y: 147
 		)
@@ -49,7 +49,6 @@
 )
 
 (instance moveAwayFromEgo of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -67,14 +66,21 @@
 			)
 			(1
 				(if local0
-					(if (== local0 1) (DisplayOldGraphics))
+					(if (== local0 1)
+						(DisplayOldGraphics)
+					)
 					(self changeState: 0)
 				else
 					(= cycles 1)
 				)
 			)
 			(2
-				(Print 551 0 #at 25 20 #width 260 #mode 1 #dispose)
+				(Print 551 0
+					#at 25 20
+					#width 260
+					#mode teJustCenter
+					#dispose
+				)
 				(dragon1
 					loop: 1
 					setCycle: Walk
@@ -88,7 +94,6 @@
 )
 
 (instance enterEgo of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -98,7 +103,7 @@
 					x: 267
 					y: 147
 					priority: 12
-					signal: 16
+					signal: fixPriOn
 					setCycle: EndLoop self
 				)
 			)
@@ -107,10 +112,10 @@
 					show:
 					x: 267
 					y: 147
-					loop: 1
+					loop: loopW
 					setCycle: StopWalk 2
 					priority: 12
-					signal: 16
+					signal: fixPriOn
 				)
 				(poof setCycle: BegLoop self)
 			)
@@ -125,7 +130,7 @@
 	(properties
 		x 160
 		y 151
-		view 533
+		view vDragonAGI
 		loop 2
 		priority 12
 		signal fixPriOn
@@ -135,6 +140,6 @@
 (instance poof of Prop
 	(properties
 		z 26
-		view 265
+		view vPoof
 	)
 )

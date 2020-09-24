@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 77)
+(script# rLeprechaunThrone)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -23,21 +23,35 @@
 )
 (instance rm77 of Room
 	(properties
-		picture 577
-		north 73
+		picture pLeprechaunAGI
+		north rCaveHole
 	)
 	
 	(method (init)
 		(LoadMany VIEW
-			170 171 172 173 174 175 176 177 178
-			179 547 554 578 579 3 30
+			vLepKingSitting
+			vLepKing
+			vLepGirls
+			vLepMan1
+			vLepMan2
+			vLepManWalk
+			vLepGirl1Walk
+			vLepGirl2Walk
+			vLepHarpist
+			vLepDrummer
+			vLep1AGI
+			vLepKingAGI
+			vLep2AGI
+			vLep3AGI
+			vEgoLookAround
+			vEgoShrink
 		)
-		(LoadMany PICTURE 77)
+		(LoadMany PICTURE rLeprechaunThrone)
 		(Load SOUND 48)
 		(super init:)
 		(ego
-			view: 31
-			loop: 1
+			view: vTinyEgo
+			loop: loopW
 			x: 214
 			y: 51
 			setCycle: Walk
@@ -62,22 +76,39 @@
 )
 
 (instance oldDance of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(lep3 setCycle: Forward setMotion: Wander illegalBits: -16384)
-				(lep2 setCycle: Forward setMotion: Wander illegalBits: -16384)
+				(lep3
+					setCycle: Forward
+					setMotion: Wander
+					illegalBits: cYELLOW
+				)
+				(lep2
+					setCycle: Forward
+					setMotion: Wander
+					illegalBits: cYELLOW
+				)
 				(DisplayOldGraphics)
-				(ego setCycle: Walk setMotion: DPath 199 51 173 75 self)
+				(ego
+					setCycle: Walk
+					setMotion: DPath 199 51 173 75
+					self
+				)
 			)
 			(1
-				(ego view: 30 loop: 1 cel: 10 setCycle: BegLoop self)
+				(ego
+					view: vEgoShrink
+					loop: 1
+					cel: 10
+					setCycle: BegLoop
+					self
+				)
 			)
 			(2
 				(NormalEgo)
-				(ego loop: 2)
+				(ego loop: loopS)
 				(= cycles 5)
 			)
 			(3
@@ -88,7 +119,11 @@
 				(= cycles 1)
 			)
 			(5
-				(curRoom picture: 77 style: 0 drawPic: 77)
+				(curRoom
+					picture: rLeprechaunThrone
+					style: HSHUTTER
+					drawPic: rLeprechaunThrone
+				)
 				(lep1 dispose: delete:)
 				(lep2 dispose: delete:)
 				(lep3 dispose: delete:)
@@ -102,8 +137,7 @@
 )
 
 (instance danceFever of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(cond 
@@ -112,7 +146,10 @@
 				((ScriptID 0 6) prevSignal: 0)
 				(poofAway cue:)
 			)
-			((and (== (ego x?) 249) (not local2)) (= local2 1) (DisplayNewGraphics 39 165))
+			((and (== (ego x?) 249) (not local2))
+				(= local2 1)
+				(DisplayNewGraphics 39 165)
+			)
 		)
 	)
 	
@@ -128,7 +165,7 @@
 				(man3 init: stopUpd:)
 				(drummer init: stopUpd:)
 				(harpist init: stopUpd:)
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					(girl1 setCycle: Forward)
 					(girl2 setCycle: Forward)
 					(man1 setCycle: Forward)
@@ -140,18 +177,18 @@
 				)
 				((ScriptID 0 6) number: 48 loop: 1 play:)
 				(man4 init: stopUpd:)
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					(man4 setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					(man4
 						loop: 0
 						cel: 0
-						setCycle: (if (!= howFast 0) Forward else 0)
+						setCycle: (if (!= howFast slow) Forward else 0)
 					)
 					(= seconds 3)
 				else
@@ -193,8 +230,7 @@
 )
 
 (instance poofAway of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 0)
@@ -294,22 +330,30 @@
 				(harpist dispose:)
 				(poof setCycle: EndLoop self)
 			)
-			(24 (self dispose:))
+			(24
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance dialog of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo 165 (ego y?) self)
 			)
-			(1 (ego loop: 2) (= cycles 2))
+			(1
+				(ego loop: loopS)
+				(= cycles 2)
+			)
 			(2
-				(ego view: 3 loop: 1 setCycle: Forward)
+				(ego
+					view: vEgoLookAround
+					loop: 1
+					setCycle: Forward
+				)
 				(= cycles 7)
 			)
 			(3
@@ -334,7 +378,7 @@
 			)
 			(5
 				(NormalEgo)
-				(ego loop: 2)
+				(ego loop: loopS)
 				(Print 77 2
 					#icon movingIcon
 					#mode teJustCenter
@@ -351,7 +395,11 @@
 				)
 			)
 			(7
-				(curRoom picture: 777 style: 15 drawPic: 777)
+				(curRoom
+					picture: vSpeed
+					style: (| IRISIN BLACKOUT)
+					drawPic: vSpeed
+				)
 				(= cycles 3)
 			)
 			(8 (theGame restart:))
@@ -361,13 +409,13 @@
 
 (instance movingIcon of DCIcon
 	(properties
-		view 699
+		view vEgoTalkIcon
 		loop 2
 	)
 	
 	(method (init)
 		(super init:)
-		(self cycleSpeed: (if (> howFast 2) 10 else 6))
+		(self cycleSpeed: (if (> howFast fast) 10 else 6))
 	)
 )
 
@@ -375,7 +423,7 @@
 	(properties
 		x 168
 		y 97
-		view 171
+		view vLepKing
 		illegalBits $0000
 	)
 )
@@ -384,7 +432,7 @@
 	(properties
 		x 41
 		y 88
-		view 172
+		view vLepGirls
 	)
 )
 
@@ -392,7 +440,7 @@
 	(properties
 		x 250
 		y 131
-		view 172
+		view vLepGirls
 		loop 1
 	)
 )
@@ -401,7 +449,7 @@
 	(properties
 		x 25
 		y 86
-		view 174
+		view vLepMan2
 	)
 )
 
@@ -409,7 +457,7 @@
 	(properties
 		x 137
 		y 114
-		view 174
+		view vLepMan2
 		loop 1
 	)
 )
@@ -418,7 +466,7 @@
 	(properties
 		x 167
 		y 134
-		view 174
+		view vLepMan2
 		loop 2
 	)
 )
@@ -427,7 +475,7 @@
 	(properties
 		x 116
 		y 138
-		view 173
+		view vLepMan1
 		loop 1
 	)
 )
@@ -436,7 +484,7 @@
 	(properties
 		x 211
 		y 126
-		view 179
+		view vLepDrummer
 	)
 )
 
@@ -444,13 +492,13 @@
 	(properties
 		x 231
 		y 110
-		view 178
+		view vLepHarpist
 	)
 )
 
 (instance poof of Prop
 	(properties
-		view 170
+		view vLepKingSitting
 		loop 2
 	)
 )
@@ -459,7 +507,7 @@
 	(properties
 		x 260
 		y 110
-		view 554
+		view vLepKingAGI
 		priority 10
 		signal fixPriOn
 	)
@@ -469,7 +517,7 @@
 	(properties
 		x 105
 		y 83
-		view 547
+		view vLep1AGI
 		cel 7
 	)
 )
@@ -478,7 +526,7 @@
 	(properties
 		x 225
 		y 97
-		view 578
+		view vLep2AGI
 		cel 1
 	)
 )
@@ -487,7 +535,7 @@
 	(properties
 		x 61
 		y 140
-		view 578
+		view vLep2AGI
 		cel 2
 		moveSpeed 1
 	)
@@ -497,7 +545,7 @@
 	(properties
 		x 124
 		y 81
-		view 579
+		view vLep3AGI
 		cel 3
 	)
 )

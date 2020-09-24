@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 501)
+(script# rOldRm1)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -16,22 +16,22 @@
 
 (instance oldRm1 of Room
 	(properties
-		picture 501
-		west 502
+		picture rOldRm1
+		west rOldRm2
 	)
 	
 	(method (init)
-		(LoadMany VIEW 500 597 607)
+		(LoadMany VIEW vEgoAGI vFlagsAGI vAlligator)
 		(super init:)
 		(flags
 			init:
-			setCycle: (if (!= howFast 0) Forward else 0)
+			setCycle: (if (!= howFast slow) Forward else 0)
 		)
 		(alligator1 init: setScript: moveAlligator1)
 		(alligator2 init: setScript: moveAlligator2)
 		(ego
 			init:
-			view: 500
+			view: vEgoAGI
 			x: 304
 			y: 151
 			loop: 1
@@ -48,12 +48,16 @@
 )
 
 (instance welcomeEgo of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if (== (ego x?) 219)
-			(Print 501 0 #at 25 20 #width 260 #mode 1 #dispose)
+			(Print 501 0
+				#at 25 20
+				#width 260
+				#mode teJustCenter
+				#dispose
+			)
 		)
 	)
 	
@@ -63,7 +67,13 @@
 				(ego setMotion: MoveTo 241 151 self)
 			)
 			(1
-				(ego setMotion: DPath 219 153 206 164 199 171 5 171 self)
+				(ego setMotion: DPath
+					219 153
+					206 164
+					199 171
+					5 171
+					self
+				)
 			)
 			(2
 				(cls)
@@ -74,8 +84,7 @@
 )
 
 (instance moveAlligator1 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -91,13 +100,14 @@
 				(alligator1 setCycle: Forward setMotion: 0)
 				(= cycles (Random (Random 4 9) (Random 12 15)))
 			)
-			(2 (self changeState: 0))
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance moveAlligator2 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -123,7 +133,7 @@
 	(properties
 		x 51
 		y 18
-		view 597
+		view vFlagsAGI
 		cel 2
 		moveSpeed 3
 	)
@@ -133,7 +143,7 @@
 	(properties
 		x 191
 		y 185
-		view 607
+		view vAlligator
 	)
 )
 
@@ -141,6 +151,6 @@
 	(properties
 		x 161
 		y 185
-		view 607
+		view vAlligator
 	)
 )

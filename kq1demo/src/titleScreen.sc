@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# BEGIN)
+(script# dmBegin)
 (include game.sh)
 (use Main)
 (use LoadMany)
@@ -15,15 +15,14 @@
 (local
 	i
 	[aSpark 10]
-	[sparkX 8] = [61 160 264 130 208 169 184 97]
-	[sparkY 8] = [29 70 32 20 54 140 21 59]
-	[sparkSpeed 8] = [1 3 0 2 1 0 2 1]
+	sparkX = [61 160 264 130 208 169 184 97]
+	sparkY = [29 70 32 20 54 140 21 59]
+	sparkSpeed = [1 3 0 2 1 0 2 1]
 )
 (procedure (addSpark)
-	(= i 0)
-	(while (< i 8)
+	(for ((= i 0)) (< i 8) ((++ i))
 		((= [aSpark i] (Clone spark))
-			view: 950
+			view: vSpark
 			setLoop: 0
 			cel: 5
 			posn: [sparkX i] [sparkY i]
@@ -35,37 +34,39 @@
 			isExtra: TRUE
 			init:
 		)
-		(++ i)
 	)
 )
 
 (instance titleScreen of Room
 	(properties
-		picture 902
+		picture pTitle
 		style IRISIN
 	)
 	
 	(method (init)
-		(LoadMany VIEW 913 950)
+		(LoadMany VIEW vTitle vSpark)
 		(super init:)
 		(addToPics
 			add: QUEST FOR CROWN copyright
 			eachElementDo: #init
 			doit:
 		)
-		(if (!= howFast 0) (addSpark))
+		(if (!= howFast slow)
+			(addSpark)
+		)
 		(self setScript: showTitle)
 	)
 	
 	(method (dispose)
-		(if cast (cast eachElementDo: #dispose))
+		(if cast
+			(cast eachElementDo: #dispose)
+		)
 		(super dispose:)
 	)
 )
 
 (instance showTitle of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -74,7 +75,7 @@
 				(= seconds 10)
 			)
 			(1
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					([aSpark i] dispose:)
 					(= cycles 1)
 				else
@@ -88,7 +89,9 @@
 					(self cue:)
 				)
 			)
-			(3 (curRoom newRoom: 501))
+			(3
+				(curRoom newRoom: rOldRm1)
+			)
 		)
 	)
 )
@@ -97,7 +100,7 @@
 	(properties
 		x 67
 		y 167
-		view 913
+		view vTitle
 		signal fixedLoop
 	)
 )
@@ -106,7 +109,7 @@
 	(properties
 		x 133
 		y 169
-		view 913
+		view vTitle
 		cel 1
 		signal fixedLoop
 	)
@@ -116,7 +119,7 @@
 	(properties
 		x 226
 		y 164
-		view 913
+		view vTitle
 		cel 2
 		signal fixedLoop
 	)
@@ -126,11 +129,9 @@
 	(properties
 		x 164
 		y 181
-		view 913
+		view vTitle
 		loop 1
 	)
 )
 
-(instance spark of Extra
-	(properties)
-)
+(instance spark of Extra)

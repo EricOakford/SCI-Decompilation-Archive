@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 73)
+(script# dmLeps)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -15,17 +15,22 @@
 
 (instance rm73 of Room
 	(properties
-		picture 73
+		picture rCaveHole
 		style WIPEDOWN
-		south 77
+		south rLeprechaunThrone
 	)
 	
 	(method (init)
-		(LoadMany VIEW 18 274 0 2)
+		(LoadMany VIEW
+			vEgoFall
+			vCaveStuff
+			vEgo
+			vEgoStand
+		)
 		(LoadMany SOUND 59 42)
 		(super init:)
 		(ego
-			view: 18
+			view: vEgoFall
 			setLoop: 0
 			posn: 182 -42
 			cycleSpeed: 0
@@ -35,7 +40,7 @@
 			ignoreControl: cWHITE
 			init:
 		)
-		(if (!= howFast 0)
+		(if (!= howFast slow)
 			(d1 setPri: 14 init:)
 			(d2 setPri: 15 init:)
 			(d3 setPri: 14 init:)
@@ -53,8 +58,7 @@
 )
 
 (instance fallScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -75,9 +79,18 @@
 				(= seconds 3)
 			)
 			(4
-				(Print 73 0 #at 25 20 #width 260 #mode 1 #dispose)
+				(Print 73 0
+					#at 25 20
+					#width 260
+					#mode teJustCenter
+					#dispose
+				)
 				((ScriptID 0 5) stop: dispose:)
-				(ego setLoop: 2 setCel: 0 posn: 181 132)
+				(ego
+					setLoop: loopS
+					setCel: 0
+					posn: 181 132
+				)
 				(= cycles 2)
 			)
 			(5
@@ -87,8 +100,8 @@
 			(6
 				(NormalEgo)
 				(ego
-					loop: 2
-					observeControl: -32768
+					loop: loopS
+					observeControl: cWHITE
 					setMotion: MoveTo 180 190 self
 				)
 			)
@@ -104,10 +117,10 @@
 	(properties
 		x 128
 		y 34
-		view 274
+		view vCaveStuff
 		loop 2
 		cel 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 30
 		maxPause 40
 		minCycles 1
@@ -119,10 +132,10 @@
 	(properties
 		x 227
 		y 40
-		view 274
+		view vCaveStuff
 		loop 2
 		cel 1
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 50
 		minCycles 1
@@ -134,10 +147,10 @@
 	(properties
 		x 254
 		y 40
-		view 274
+		view vCaveStuff
 		loop 2
 		cel 5
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 50
 		maxPause 60
 		minCycles 1
@@ -149,10 +162,10 @@
 	(properties
 		x 210
 		y 53
-		view 274
+		view vCaveStuff
 		loop 2
 		cel 4
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 36
 		maxPause 40
 		minCycles 1
@@ -164,10 +177,10 @@
 	(properties
 		x 289
 		y 57
-		view 274
+		view vCaveStuff
 		loop 2
 		cel 6
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 48
 		minCycles 1
@@ -179,10 +192,10 @@
 	(properties
 		x 266
 		y 53
-		view 274
+		view vCaveStuff
 		loop 2
 		cel 1
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 20
 		minCycles 1
 		maxCycles 1

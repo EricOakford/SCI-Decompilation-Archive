@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 58)
+(script# dmGiant)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -18,14 +18,21 @@
 
 (instance rm58 of Room
 	(properties
-		picture 558
-		west 72
+		picture pGiantAGI
+		west rBeanStalk3
 	)
 	
 	(method (init)
 		(self style: WIPEDOWN)
-		(LoadMany VIEW 566 18 440 7 4 30)
-		(Load PICTURE 58)
+		(LoadMany VIEW
+			vGiantAGI
+			vEgoFall
+			vGiant
+			vEgoStandSmall
+			vEgoSmall
+			vEgoShrink
+		)
+		(Load PICTURE rGiant)
 		(Load SOUND 39 59)
 		(super init:)
 		(giant
@@ -49,24 +56,30 @@
 
 (instance giant of Actor
 	(properties
-		view 566
+		view vGiantAGI
 		loop 1
 	)
 )
 
 (instance skyDiver of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
-				(Print 58 0 #at 25 20 #width 260 #mode 1 #dispose)
+				(Print 58 0
+					#at 25 20
+					#width 260
+					#mode teJustCenter
+					#dispose
+				)
 				(DisplayOldGraphics)
 				(ego
 					init:
 					ignoreHorizon: TRUE
-					view: 18
+					view: vEgoFall
 					posn: 182 -40
 					yStep: 14
 					illegalBits: 0
@@ -97,7 +110,13 @@
 				(ego cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(7
-				(ego view: 30 loop: 0 cel: 0 setCycle: EndLoop self)
+				(ego
+					view: vEgoShrink
+					loop: 0
+					cel: 0
+					setCycle: EndLoop
+					self
+				)
 			)
 			(8
 				(cls)
@@ -106,12 +125,12 @@
 					cycleSpeed: 0
 					moveSpeed: 0
 					setStep: 2 2
-					view: 7
+					view: vEgoStandSmall
 					setLoop: -1
 					loop: 2
 				)
-				(curRoom drawPic: 58 DISSOLVE)
-				(giant view: 440 setStep: 4 3)
+				(curRoom drawPic: rGiant DISSOLVE)
+				(giant view: vGiant setStep: 4 3)
 				(= cycles 10)
 			)
 			(9
@@ -121,7 +140,11 @@
 					setCycle: NewWalk
 					setMotion: Follow ego 20
 				)
-				(ego view: 4 setCycle: Walk setMotion: MoveTo -20 148)
+				(ego
+					view: vEgoSmall
+					setCycle: Walk
+					setMotion: MoveTo -20 148
+				)
 				(self dispose:)
 			)
 		)

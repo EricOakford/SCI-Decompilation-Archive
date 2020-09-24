@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 502)
+(script# rOldRm2)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -17,36 +17,57 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
+	glowCycles
+	monsterPeekLoop
+	monsterLoop
+	peekABoo
 )
 (instance oldRm2 of Room
 	(properties
-		picture 502
+		picture rOldRm2
 		style WIPELEFT
-		east 501
+		east rOldRm2
 		west 2
 	)
 	
 	(method (init)
 		(LoadMany VIEW
-			3 597 607 509 511 186 107 108
-			0 265 15 512 80 81 500 267
+			vEgoLookAround
+			vFlagsAGI
+			vAlligator
+			vDoorAGI
+			vGlowAGI
+			vCastleGuards
+			vMoatMonster
+			vMoatMonsterPeek
+			vEgo
+			vPoof
+			vEgoJumping
+			vGlowDoorAGI
+			vEgoReflection
+			vEgoReflectionStand
+			vEgoAGI
+			vUrn
 		)
 		(Load SOUND 1)
-		(Load PICTURE 1)
+		(Load PICTURE rCastleGate)
 		(super init:)
-		(= local0 3)
+		(= glowCycles 3)
 		(castleDoor init:)
 		(flags
 			init:
-			setCycle: (if (!= howFast 0) Forward else 0)
+			setCycle: (if (!= howFast slow) Forward else 0)
 		)
 		(alligator1 init: setScript: moveAlligator1)
 		(alligator2 init: setScript: moveAlligator2)
-		(ego init: view: 500 x: 313 y: 171 loop: 1 setCycle: Walk)
+		(ego
+			init:
+			view: vEgoAGI
+			x: 313
+			y: 171
+			loop: loopW
+			setCycle: Walk
+		)
 		(HandsOff)
 		(curRoom setScript: walkIntoCastle)
 	)
@@ -56,7 +77,7 @@
 		(cond 
 			((!= (menace x?) (ego x?))
 				(menace
-					view: 80
+					view: vEgoReflection
 					loop: (ego loop?)
 					x: (ego x?)
 					cel: (ego cel?)
@@ -65,7 +86,7 @@
 			)
 			((== (menace x?) (ego x?))
 				(menace
-					view: 81
+					view: vEgoReflectionStand
 					loop: (ego loop?)
 					x: (ego x?)
 					cel: 0
@@ -77,8 +98,7 @@
 )
 
 (instance walkIntoCastle of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(cond 
@@ -91,23 +111,49 @@
 				(ego hide:)
 				(= cycles 1)
 			)
-			((and (< (ego y?) 150) (> (ego y?) 138)) (ego priority: 10 signal: 16))
-			((> (ego y?) 150) (ego priority: -1 signal: 0))
+			((and (< (ego y?) 150) (> (ego y?) 138))
+				(ego
+					priority: 10
+					signal: fixPriOn
+				)
+			)
+			((> (ego y?) 150)
+				(ego priority: -1 signal: 0)
+			)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
-				(Print 502 0 #at 25 20 #width 260 #mode 1 #dispose)
+				(Print 502 0
+					#at 25 20
+					#width 260
+					#mode teJustCenter
+					#dispose
+				)
 				(DisplayOldGraphics 39 165)
 				(castleDoor ignoreActors: TRUE)
-				(ego illegalBits: 0 setMotion: DPath 229 171 229 136)
+				(ego
+					illegalBits: 0
+					setMotion: DPath
+						229 171
+						229 136
+				)
 			)
-			(2 (= cycles 1))
+			(2
+				(= cycles 1)
+			)
 			(3
-				(Print 502 1 #at 25 20 #width 260 #mode 1 #dispose)
+				(Print 502 1
+					#at 25 20
+					#width 260
+					#mode teJustCenter
+					#dispose
+				)
 				(= seconds 6)
 			)
 			(4
@@ -120,15 +166,27 @@
 )
 
 (instance changeEgo of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(cond 
-			((and (== state 0) (== (glow cel?) 3)) (glowDoor show:))
-			((and (== state 0) (== (glow cel?) 4)) (glowDoor hide:))
-			((and (== state 3) (== (castleDoor cel?) 1)) (ego show: view: 0 loop: 2 setCycle: StopWalk 2))
-			((and (== state 12) (< (ego x?) 60)) (self changeState: 13))
+			((and (== state 0) (== (glow cel?) 3))
+				(glowDoor show:)
+			)
+			((and (== state 0) (== (glow cel?) 4))
+				(glowDoor hide:)
+			)
+			((and (== state 3) (== (castleDoor cel?) 1))
+				(ego
+					show:
+					view: vEgo
+					loop: loopS
+					setCycle: StopWalk vEgoStand
+				)
+			)
+			((and (== state 12) (< (ego x?) 60))
+				(self changeState: 13)
+			)
 		)
 	)
 	
@@ -137,15 +195,15 @@
 			(0
 				(glow init:)
 				(glowDoor init: hide:)
-				(if local0
+				(if glowCycles
 					(glow setCycle: EndLoop self)
 				else
 					(self changeState: 2)
 				)
 			)
 			(1
-				(if local0
-					(= local0 (- local0 1))
+				(if glowCycles
+					(-= glowCycles 1)
 					(self changeState: 0)
 				)
 			)
@@ -158,21 +216,31 @@
 				(castleDoor setCycle: EndLoop self)
 			)
 			(4
-				(Print 502 2 #at 25 20 #width 260 #mode 1 #dispose)
+				(Print 502 2
+					#at 25 20
+					#width 260
+					#mode teJustCenter
+					#dispose
+				)
 				(ego setMotion: MoveTo 229 145)
 				(= seconds 2)
 			)
 			(5
-				(ego view: 3 loop: 0 cycleSpeed: 4 setCycle: EndLoop)
+				(ego
+					view: vEgoLookAround
+					loop: 0
+					cycleSpeed: 4
+					setCycle: EndLoop
+				)
 				(= seconds 4)
 			)
 			(6
 				(cls)
 				(ego
-					view: 15
+					view: vEgoJumping
 					illegalBits: 0
 					priority: 15
-					signal: 16
+					signal: fixPriOn
 					cycleSpeed: 1
 					setCycle: CycleTo 5 1 self
 				)
@@ -182,7 +250,11 @@
 				(= cycles 3)
 			)
 			(8
-				(curRoom picture: 1 style: 7 drawPic: 1)
+				(curRoom
+					picture: rCastleGate
+					style: IRISOUT
+					drawPic: rCastleGate
+				)
 				(alligator1 dispose: delete:)
 				(alligator2 dispose: delete:)
 				(castleDoor dispose: delete:)
@@ -192,7 +264,7 @@
 				(g2 init: stopUpd:)
 				(urn1 init: stopUpd:)
 				(urn2 init: stopUpd:)
-				(if (!= howFast 0)
+				(if (!= howFast slow)
 					(monsterHead1
 						init:
 						hide:
@@ -213,11 +285,21 @@
 				(ego setCycle: BegLoop self)
 			)
 			(10
-				(Print 502 3 #at 25 20 #width 260 #mode 1 #dispose)
-				(ego view: 3 cycleSpeed: 2 setCycle: EndLoop self)
-				(if (!= howFast 0)
+				(Print 502 3
+					#at 25 20
+					#width 260
+					#mode teJustCenter
+					#dispose
+				)
+				(ego
+					view: vEgoLookAround
+					cycleSpeed: 2
+					setCycle: EndLoop
+					self
+				)
+				(if (!= howFast slow)
 					(menace
-						view: 80
+						view: vEgoReflection
 						setPri: 0
 						loop: (ego loop?)
 						x: (ego x?)
@@ -229,7 +311,7 @@
 			)
 			(11
 				(ego
-					view: 0
+					view: vEgo
 					setLoop: -1
 					loop: 2
 					setCycle: StopWalk 2
@@ -243,7 +325,9 @@
 			(13
 				(cls)
 				(ego setMotion: 0)
-				(if (!= howFast 0) (poofReflect init: setPri: 1))
+				(if (!= howFast slow)
+					(poofReflect init: setPri: 1)
+				)
 				(poof
 					init:
 					x: (ego x?)
@@ -254,13 +338,13 @@
 				)
 			)
 			(14
-				(if (!= howFast 0) (menace dispose:))
+				(if (!= howFast slow) (menace dispose:))
 				(ego hide:)
 				(poof setCycle: BegLoop self)
 			)
 			(15
 				((ScriptID 0 6) loop: 1 fade:)
-				(curRoom newRoom: 551)
+				(curRoom newRoom: dmDragon)
 				(self dispose:)
 			)
 		)
@@ -268,8 +352,7 @@
 )
 
 (instance moveAlligator1 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -285,14 +368,15 @@
 				(alligator1 setCycle: Forward setMotion: 0)
 				(= cycles (Random (Random 4 9) (Random 12 15)))
 			)
-			(2 (self changeState: 0))
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance moveAlligator2 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -308,25 +392,26 @@
 				(alligator2 setCycle: Forward setMotion: 0)
 				(= cycles (Random (Random 4 9) (Random 12 15)))
 			)
-			(2 (self changeState: 0))
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance monsterLeftRight of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local2 (Random 0 1))
+				(= monsterLoop (Random 0 1))
 				(monsterHead1 x: (Random 60 260) y: (Random 150 166))
 				(= cycles 1)
 			)
 			(1
 				(monsterHead1
 					show:
-					setLoop: local2
+					setLoop: monsterLoop
 					setCel: 0
 					cycleSpeed: 1
 					setCycle: EndLoop self
@@ -339,33 +424,33 @@
 					cycleSpeed: 1
 				)
 				(monsterHead1
-					setLoop: (+ local2 2)
+					setLoop: (+ monsterLoop 2)
 					setCel: 0
 					setCycle: EndLoop self
 				)
 			)
 			(3
 				(monsterHead1
-					x: (+ (monsterHead1 x?) (- (* local2 120) 60))
-					setLoop: local2
+					x: (+ (monsterHead1 x?) (- (* monsterLoop 120) 60))
+					setLoop: monsterLoop
 					setCel: 0
 					setCycle: EndLoop
 				)
 				(monsterTail1
 					show:
-					setLoop: (+ local2 2)
+					setLoop: (+ monsterLoop 2)
 					setCel: 0
 					setCycle: EndLoop self
 				)
 			)
 			(4
 				(monsterHead1
-					setLoop: (+ local2 2)
+					setLoop: (+ monsterLoop 2)
 					setCel: 0
 					setCycle: Forward
 				)
 				(monsterTail1
-					setLoop: (+ local2 4)
+					setLoop: (+ monsterLoop 4)
 					setCel: 0
 					setCycle: EndLoop self
 				)
@@ -374,14 +459,14 @@
 				(monsterHead1 hide:)
 				(monsterTail1
 					x: (monsterHead1 x?)
-					setLoop: (+ local2 2)
+					setLoop: (+ monsterLoop 2)
 					setCel: 0
 					setCycle: EndLoop self
 				)
 			)
 			(6
 				(monsterTail1
-					setLoop: (+ local2 4)
+					setLoop: (+ monsterLoop 4)
 					setCel: 0
 					setCycle: EndLoop self
 				)
@@ -390,17 +475,20 @@
 				(monsterTail1 setCel: 0 hide:)
 				(self cue:)
 			)
-			(8 (self init:))
+			(8
+				(self init:)
+			)
 		)
 	)
 )
 
 (instance monsterLookScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (Random 25 150)))
+			(0
+				(= cycles (Random 25 150))
+			)
 			(1
 				(monsterPeek
 					posn: (Random 50 270) (Random 145 155)
@@ -412,13 +500,13 @@
 				)
 			)
 			(2
-				(= local1 (Random 0 1))
-				(monsterPeek setLoop: local1 setCel: 0 setCycle: EndLoop self)
+				(= monsterPeekLoop (Random 0 1))
+				(monsterPeek setLoop: monsterPeekLoop setCel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(if (= local3 (Random 0 1))
+				(if (= peekABoo (Random 0 1))
 					(monsterPeek
-						setLoop: (+ local1 3)
+						setLoop: (+ monsterPeekLoop 3)
 						setCel: 0
 						setCycle: EndLoop
 					)
@@ -431,9 +519,9 @@
 				(monsterPeek setCycle: BegLoop self)
 			)
 			(5
-				(if local3
+				(if peekABoo
 					(monsterPeek
-						setLoop: local1
+						setLoop: monsterPeekLoop
 						setCel: (monsterPeek lastCel:)
 						setCycle: BegLoop self
 					)
@@ -460,7 +548,7 @@
 	(properties
 		x 271
 		y 18
-		view 597
+		view vFlagsAGI
 		cel 2
 		moveSpeed 3
 	)
@@ -470,7 +558,7 @@
 	(properties
 		x 229
 		y 136
-		view 509
+		view vDoorAGI
 		priority 10
 		signal fixPriOn
 	)
@@ -492,9 +580,15 @@
 					(!= (curRoom script?) changeEgo)
 				)
 				(cond 
-					((!= (curRoom script?) walkIntoCastle) (self setCycle: 0))
-					((!= (castleDoor cel?) 0) (self setCycle: 0))
-					(else (self setCycle: EndLoop))
+					((!= (curRoom script?) walkIntoCastle)
+						(self setCycle: 0)
+					)
+					((!= (castleDoor cel?) 0)
+						(self setCycle: 0)
+					)
+					(else
+						(self setCycle: EndLoop)
+					)
 				)
 			)
 			(
@@ -520,7 +614,7 @@
 	(properties
 		x 198
 		y 187
-		view 607
+		view vAlligator
 		cel 2
 	)
 )
@@ -529,7 +623,7 @@
 	(properties
 		x 107
 		y 185
-		view 607
+		view vAlligator
 		loop 2
 		cel 2
 	)
@@ -539,7 +633,7 @@
 	(properties
 		x 173
 		y 86
-		view 511
+		view vGlowAGI
 		priority 15
 		signal fixPriOn
 		cycleSpeed 1
@@ -550,7 +644,7 @@
 	(properties
 		x 229
 		y 136
-		view 512
+		view vGlowDoorAGI
 		priority 15
 		signal fixPriOn
 	)
@@ -560,7 +654,7 @@
 	(properties
 		x 203
 		y 87
-		view 186
+		view vCastleGuards
 	)
 )
 
@@ -568,7 +662,7 @@
 	(properties
 		x 116
 		y 87
-		view 186
+		view vCastleGuards
 		cel 1
 	)
 )
@@ -578,16 +672,16 @@
 		x 159
 		y 78
 		yStep 1
-		view 201
+		view vCastleGate
 		priority 3
 		signal fixPriOn
-		illegalBits $0000
+		illegalBits 0
 	)
 )
 
 (instance monsterPeek of Prop
 	(properties
-		view 108
+		view vMoatMonsterPeek
 	)
 )
 
@@ -595,7 +689,7 @@
 	(properties
 		x 45
 		y 145
-		view 107
+		view vMoatMonster
 		loop 1
 	)
 )
@@ -604,7 +698,7 @@
 	(properties
 		x 45
 		y 145
-		view 107
+		view vMoatMonster
 		loop 5
 	)
 )
@@ -612,7 +706,7 @@
 (instance poof of Prop
 	(properties
 		z 26
-		view 265
+		view vPoof
 	)
 	
 	(method (doit)
@@ -628,20 +722,18 @@
 
 (instance poofReflect of Prop
 	(properties
-		view 265
+		view vPoof
 		loop 1
 	)
 )
 
-(instance menace of Actor
-	(properties)
-)
+(instance menace of Actor)
 
 (instance urn1 of View
 	(properties
 		x 35
 		y 103
-		view 267
+		view vUrn
 	)
 )
 
@@ -649,6 +741,6 @@
 	(properties
 		x 292
 		y 103
-		view 267
+		view vUrn
 	)
 )

@@ -13,13 +13,11 @@
 (local
 	doneTime
 )
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance speedChecker of Room
 	(properties
-		picture 777
+		picture vSpeed
 		style IRISIN
 	)
 	
@@ -27,10 +25,9 @@
 		(HandsOff)
 		(super init:)
 		(sounds eachElementDo: #stop)
-		(while (u> (GetTime) $fc00)
-		)
+		(while (u> (GetTime) $fc00))
 		(fred
-			view: 777
+			view: vSpeed
 			setLoop: 0
 			illegalBits: 0
 			posn: 20 99
@@ -45,13 +42,23 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== (++ machineSpeed) 1) (= doneTime (+ 60 (GetTime))))
+		(if (== (++ machineSpeed) 1)
+			(= doneTime (+ 60 (GetTime)))
+		)
 		(if (u< doneTime (GetTime))
 			(cond 
-				((<= machineSpeed 25) (= howFast 0))
-				((<= machineSpeed 50) (= howFast 1))
-				((<= machineSpeed 75) (= howFast 2))
-				(else (= howFast 3))
+				((<= machineSpeed 25)
+					(= howFast slow)
+				)
+				((<= machineSpeed 50)
+					(= howFast medium)
+				)
+				((<= machineSpeed 75)
+					(= howFast fast)
+				)
+				(else
+					(= howFast fastest)
+				)
 			)
 			(theGame setSpeed: 5)
 			(RedrawCast)

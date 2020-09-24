@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 22)
+(script# dmBird)
 (include game.sh)
 (use Main)
 (use LoadMany)
@@ -15,18 +15,25 @@
 
 (instance rm22 of Room
 	(properties
-		picture 22
+		picture rOutsideCave
 		style IRISOUT
 	)
 	
 	(method (init)
-		(LoadMany VIEW 52 3 160 33 249 0)
+		(LoadMany VIEW
+			vEgoBurned
+			vEgoLookAround
+			vCondor
+			vEgoFlown
+			vBucket
+			vEgo
+		)
 		(LoadMany SOUND 54 55 63)
 		((ScriptID 0 6) fade:)
 		(super init:)
 		(ego
 			init:
-			view: 52
+			view: vEgoBurned
 			setLoop: 2
 			setCycle: Walk
 			moveSpeed: 0
@@ -47,8 +54,7 @@
 )
 
 (instance gotoBucket of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -57,13 +63,17 @@
 			(1
 				(DisplayNewGraphics)
 				((ScriptID 0 5) number: 63 loop: 1 play: self)
-				(ego view: 3 loop: 3 cel: 0)
+				(ego
+					view: vEgoLookAround
+					loop: 3
+					cel: 0
+				)
 				(= cycles 3)
 			)
 			(2
 				(bucket hide:)
 				(ego
-					view: 249
+					view: vBucket
 					x: 44
 					y: 89
 					xStep: 3
@@ -82,8 +92,7 @@
 )
 
 (instance startWalking of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if
@@ -94,13 +103,20 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
 				((ScriptID 0 6) number: 55 loop: -1 play:)
 				(self cue:)
 			)
 			(2
-				(ego view: 0 posn: 44 90 loop: 2 setCycle: Walk)
+				(ego
+					view: vEgo
+					posn: 44 90
+					loop: loopS
+					setCycle: Walk
+				)
 				(bucket show:)
 				(= cycles 4)
 			)
@@ -108,15 +124,22 @@
 				(ego setMotion: DPath 70 119 132 140 self)
 			)
 			(4
-				(ego view: 3 cycleSpeed: 2 setCycle: EndLoop self)
+				(ego
+					view: vEgoLookAround
+					cycleSpeed: 2
+					setCycle: EndLoop
+					self
+				)
 			)
-			(5 (NormalEgo) (ego loop: 2))
+			(5
+				(NormalEgo)
+				(ego loop: loopS)
+			)
 		)
 	)
 )
 
 (instance swoopEast of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -124,7 +147,7 @@
 				(condor
 					posn: -30 10
 					setPri: 8
-					loop: 0
+					loop: loopE
 					cel: 1
 					xStep: 8
 					yStep: 3
@@ -143,13 +166,14 @@
 				(curRoom setScript: birdRide)
 				(condor cycleSpeed: 1 setMotion: MoveTo 348 0 self)
 			)
-			(3 (curRoom newRoom: 80))
+			(3
+				(curRoom newRoom: rSky)
+			)
 		)
 	)
 )
 
 (instance birdRide of Script
-	(properties)
 	
 	(method (doit)
 		(super doit: &rest)
@@ -160,12 +184,12 @@
 		(switch (= state newState)
 			(0
 				(ego
-					view: 33
+					view: vEgoFlown
 					loop: 0
-					setCycle: (if (!= howFast 0) Forward else 0)
+					setCycle: (if (!= howFast slow) Forward else 0)
 					setMotion: 0
-					ignoreHorizon: 1
-					ignoreActors: 1
+					ignoreHorizon: TRUE
+					ignoreActors: TRUE
 					illegalBits: 0
 					setPri: 7
 				)
@@ -178,7 +202,7 @@
 	(properties
 		x -52
 		y 52
-		view 160
+		view vCondor
 		cel 3
 		priority 8
 		signal fixPriOn
@@ -189,7 +213,7 @@
 	(properties
 		x 44
 		y 89
-		view 249
+		view vBucket
 		signal stopUpdOn
 	)
 )
