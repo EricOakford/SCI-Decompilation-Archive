@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 20)
+(script# SQ6EGO)
 (include game.sh) (include "20.shm")
 (use Main)
 (use SQNarrator)

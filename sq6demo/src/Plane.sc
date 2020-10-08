@@ -125,12 +125,12 @@
 		;
 		; Return the handle to the cast list whose name matches 'theName'
 
-		(for	((= node (List LFirstNode (casts elements?))))
+		(for	((= node (KList LFirstNode (casts elements?))))
 				node
 				((= node (casts nextNode?)))
-			(casts nextNode: (List LNextNode node))
-			(= theList (List LNodeValue node))
-			(if (not (String StrCmp (theList name?) theName))
+			(casts nextNode: (KList LNextNode node))
+			(= theList (KList LNodeValue node))
+			(if (not (KString StrCmp (theList name?) theName))
 				(return theList)
 			)
 		)
@@ -350,17 +350,17 @@
 		;	in the plane's cast lists.
 
 		(= r (= b 0))
-		(for	((= node1 (List LFirstNode (casts elements?))))
+		(for	((= node1 (KList LFirstNode (casts elements?))))
 				node1
 				((= node1 (casts nextNode?)))
-			(casts nextNode: (List LNextNode node1))
-			(= theList (List LNodeValue node1))
+			(casts nextNode: (KList LNextNode node1))
+			(= theList (KList LNodeValue node1))
 
-			(for	((= node2 (List LFirstNode (theList elements?))))
+			(for	((= node2 (KList LFirstNode (theList elements?))))
 					node2
 					((= node2 (theList nextNode?)))
-				(theList nextNode: (List LNextNode node2))
-				(= obj (List LNodeValue node2))
+				(theList nextNode: (KList LNextNode node2))
+				(= obj (KList LNodeValue node2))
 				(if (> (obj nsRight?) r)
 					(= r (obj nsRight?))
 				)
@@ -392,7 +392,7 @@
 
 		; Calculate the size of the text's nsRect
 		(= r (IntArray new:))
-		(Text TextSize (r data?) theText userFont -1) ;SYSFONT -1)
+		(KText TextSize (r data?) theText userFont -1) ;SYSFONT -1)
 		(= th (+ (r at: 3) 2)) ;12))
 
 		(txt
@@ -425,17 +425,17 @@
 		(self setRect: left top right (+ top ph th) TRUE)
 
 		; Now adjust all the items in the plane down by the title height
-		(for	((= node1 (List LFirstNode (casts elements?))))
+		(for	((= node1 (KList LFirstNode (casts elements?))))
 				node1
 				((= node1 (casts nextNode?)))
-			(casts nextNode: (List LNextNode node1))
-			(= theList (List LNodeValue node1))
+			(casts nextNode: (KList LNextNode node1))
+			(= theList (KList LNodeValue node1))
 
-			(for	((= node2 (List LFirstNode (theList elements?))))
+			(for	((= node2 (KList LFirstNode (theList elements?))))
 					node2
 					((= node2 (theList nextNode?)))
-				(theList nextNode: (List LNextNode node2))
-				(= obj (List LNodeValue node2))
+				(theList nextNode: (KList LNextNode node2))
+				(= obj (KList LNodeValue node2))
 				(if (!= obj txt)
 					(obj
 						y: 			(+ (obj y?) th),

@@ -116,14 +116,14 @@
 
 		(Message MsgGet SAVE N_BUTTON_DELETE NULL NULL 1 (butbuf2 data?))
 		(deleteI
-			text:			(String StrDup (butbuf2 data?)), ;EO: Was "KString"
+			text:			(KString StrDup (butbuf2 data?)),
 			setSize:		,
 			moveTo:		i (+ (okI nsBottom?) 2)
 		)
 
 		(Message MsgGet SAVE N_BUTTON_CHANGE NULL NULL 1 (butbuf3 data?))
 		(changeDirI
-			text: 		(String StrDup (butbuf3 data?)),;EO: Was "KString"
+			text: 		(KString StrDup (butbuf3 data?)),
 			setSize:		,
 			moveTo: 		i (+ (deleteI nsBottom?) 2),
 			state:		(& (changeDirI state?) (~ dSelected))
@@ -131,7 +131,7 @@
 
 		(Message MsgGet SAVE N_BUTTON_CANCEL NULL NULL 1 (butbuf4 data?))
 		(cancelI
-			text: 		(String StrDup (butbuf4 data?)), ;EO: Was "KString"
+			text: 		(KString StrDup (butbuf4 data?)),
 			setSize:		,
 			moveTo: 		i (+ (changeDirI nsBottom?) 2),
 			state: 		(& (cancelI state?) (~ dSelected))
@@ -158,7 +158,7 @@
 		;;; items to their appropriate value.
 		;;;
 
-		(= numGames (Save SGGetSaveFiles (theGame name?) (names data?) (nums data?))) ;EO: "Save" was "SaveGame"
+		(= numGames (SaveGame SGGetSaveFiles (theGame name?) (names data?) (nums data?)))
 		(if (== numGames -1)
 			(return FALSE)
 		)
@@ -178,7 +178,7 @@
 			)
 		)
 		(textI
-			text:		(String StrDup (buf data?)), ;EO: Was "KString"
+			text:		(KString StrDup (buf data?)),
 			x:			0,
 			y:			0,
 			setSize: 240,  
@@ -261,7 +261,7 @@
 		(okI
 			x:				0,
 			y:				0,
-			text: 		(String StrDup db), ;EO: Was "KString"
+			text: 		(KString StrDup db),
 			setSize:		,
 			moveTo: 		i (selectorI nsTop?),
 			state:		(if (or	(and	(== theStatus RESTORE)
@@ -461,7 +461,7 @@
 						)
 					
 						; Open the saved game directory file
-						(Save SGMakeSaveCatName (str data?) (theGame name?)) ;EO: "Save" was "SaveGame"
+						(SaveGame SGMakeSaveCatName (str data?) (theGame name?))
 						((= fd (File new:))
 							name: (str data?),
 							open:	fTrunc
@@ -502,7 +502,7 @@
 						)
 
 						; Delete the save game file itself
-						(Save SGMakeSaveFileName ;EO: "Save" was "SaveGame"
+						(SaveGame SGMakeSaveFileName 
 								(str data?) (theGame name?) (nums at: selected)
 						)
 						(FileIO FileUnlink (str data?))
@@ -612,7 +612,7 @@
 		((p dialog?)
 			add:
  				((DText new:)
-					text:			(String StrDup (theText data?)), ;EO: Was "KString"
+					text:			(KString StrDup (theText data?)),
  					font: 		999,
 					fore:			0,
 					back:			saveColGray,
@@ -661,7 +661,7 @@
 
 (procedure (HaveSpace)
 	(return 	(and 	(< numGames MAXGAMES)
-						(FileIO FileCheckFreeSpace CFSEnoughSpaceToSave (String StrGetData curSaveDir)) ;EO: Was "KString"
+						(FileIO FileCheckFreeSpace (KString StrGetData curSaveDir) CFSEnoughSpaceToSave)
 				)
 	)
 )

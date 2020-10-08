@@ -28,8 +28,8 @@
 ;;;	FlipFeature
 ;;;)
 
-(define SIZEOFPOINT 	4)
-(define SIZEOFWORD 	2)
+	(define SIZEOFPOINT 	4)
+	(define SIZEOFWORD 	2)
 
 (public
 	FlipPoly		0
@@ -120,11 +120,11 @@
 	(method (doit theFeature &tmp node obj theList)
 		(if ((theFeature onMeCheck?) isKindOf:	List)
 			(= theList (theFeature onMeCheck?))
-			(for	((= node (List LFirstNode (theList elements?))))
+			(for	((= node (KList LFirstNode (theList elements?))))
 					node
 					((= node (theList nextNode?)))
-				(theList nextNode: (List LNextNode node))
-				(= obj (List LNodeValue node))
+				(theList nextNode: (KList LNextNode node))
+				(= obj (KList LNodeValue node))
 				(FlipPoly obj)		;so all list elements will flip polygons
 			)
 		else

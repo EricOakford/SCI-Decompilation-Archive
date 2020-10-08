@@ -950,7 +950,7 @@ code_1107:
 		(while node
 			(if
 				(not
-					((= obj (List LNodeValue node)) isKindOf: InvItem)
+					((= obj (KList LNodeValue node)) isKindOf: InvItem)
 				)
 				(obj signal: (| (obj signal?) IB_ACTIVE))
 			)
@@ -982,10 +982,10 @@ code_1107:
 			(sounds pause: FALSE)
 			(= state (& state (~ IB_ACTIVE)))
 		)
-		(= node (List LFirstNode elements))
+		(= node (KList LFirstNode elements))
 		(while node
-			(= nextNode (List LNextNode node))
-			(= obj (List LNodeValue node))
+			(= nextNode (KList LNextNode node))
+			(= obj (KList LNodeValue node))
 			(obj signal: (& (obj signal?) (~ IB_ACTIVE)))
 			(if
 				(and
@@ -1090,7 +1090,7 @@ code_1107:
 		(while node
 			(if
 				(not
-					((= obj (List LNodeValue node)) isKindOf: InvItem)
+					((= obj (KList LNodeValue node)) isKindOf: InvItem)
 				)
 				(= cWide
 					(CelWide (obj view?) (obj loop?) (obj cel?))
@@ -1129,7 +1129,7 @@ code_1107:
 		(while node
 			(if
 				(and
-					((= obj (List LNodeValue node)) isKindOf: InvItem)
+					((= obj (KList LNodeValue node)) isKindOf: InvItem)
 					(== (obj owner?) owner)
 				)
 				(++ numInv)
@@ -1161,7 +1161,7 @@ code_1107:
 			(while node
 				(if
 					(and
-						((= obj (List LNodeValue node)) isKindOf: InvItem)
+						((= obj (KList LNodeValue node)) isKindOf: InvItem)
 						(not (& (obj signal?) DISABLED))
 					)
 					(DeleteScreenItem obj)
@@ -1181,7 +1181,7 @@ code_1107:
 		(= node (self first:))
 		(while node
 			(if
-			((= obj (List LNodeValue node)) isKindOf: InvItem)
+			((= obj (KList LNodeValue node)) isKindOf: InvItem)
 				(DeleteScreenItem obj)
 				(obj signal: (| (obj signal?) DISABLED))
 			)

@@ -47,4 +47,3 @@
 		(return (InPolygon oX oY self))
 	)
 )
-

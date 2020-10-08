@@ -56,11 +56,11 @@
 				)
 			)
 		)
-		(AddMagnify client)	;EO: Was "AddMagnifier"
+		(AddMagnifier client)
 	)
 
 	(method (dispose)
-		(DeleteMagnify client)	;EO: Was "DeleteMagifier"
+		(DeleteMagnifier client)
 		(client magnifier: 0)
 		(= client 0)
 		(super dispose:)

@@ -231,7 +231,7 @@
 				(if (not (= node (self next: node)))
 					(= node (self first:))
 				)
-				(= theItem (List LNodeValue node))
+				(= theItem (KList LNodeValue node))
 
 				; we break on next active item
 				(if (& (theItem state?) dActive)
@@ -265,7 +265,7 @@
 				(if (not (= node (self prev: node)))
 					(= node (self last:))
 				)
-				(= theItem (List LNodeValue node))
+				(= theItem (KList LNodeValue node))
 
 				; we break on next active item
 				(if (& (theItem state?) dActive)
@@ -500,7 +500,7 @@
 		(= r (IntArray with: 0 0 0 0))
 		(if text
 			; get textsize in the font without word wrapping
-			(Text TextSize
+			(KText TextSize
 				(r data?)
 				text
 				font
@@ -521,7 +521,7 @@
 				node
 				((= node (self next: node)))
 
-			(= obj (List LNodeValue node))
+			(= obj (KList LNodeValue node))
 
 			; compare to existing size and adjust if neccessary
 			(if (< (obj nsLeft?) nsLeft)

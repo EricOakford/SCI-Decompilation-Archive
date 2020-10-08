@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 64905)
-(include sci.sh)
+(script# ANM_CAST)
+(include game.sh)
 (use Main)
 (use Actor)
 (use System)
@@ -8,55 +8,6 @@
 
 (class ScrollBar of View
 	(properties
-		scratch 0
-		heading 0
-		noun 0
-		case 0
-		modNum -1
-		nsLeft 0
-		nsTop 0
-		nsRight 0
-		nsBottom 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $0000
-		state $0000
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		plane 0
-		x 0
-		y 0
-		z 0
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		scaleType 0
-		priority 0
-		fixPriority 0
-		inLeft 0
-		inTop 0
-		inRight 0
-		inBottom 0
-		useInsetRect 0
-		view -1
-		loop 0
-		cel 0
-		bitmap 0
-		yStep 2
-		signal $4021
-		lsLeft 0
-		lsTop 0
-		lsRight 0
-		lsBottom 0
-		brLeft 0
-		brTop 0
-		brRight 0
-		brBottom 0
-		scaleSignal $0000
-		magnifier 0
-		oldScaleX 128
 		type $0000
 		thumbView -1
 		thumbLoop 0
@@ -108,16 +59,16 @@
 		(super dispose: &rest)
 	)
 	
-	(method (handleEvent pEvent &tmp temp0 newEvent temp2)
+	(method (handleEvent event &tmp temp0 newEvent temp2)
 		(if
 			(and
-				(& (pEvent type?) evMOUSEBUTTON)
-				(not (pEvent modifiers?))
+				(& (event type?) mouseDown)
+				(not (event modifiers?))
 			)
-			(pEvent localize: (ourCast plane?))
+			(event localize: (ourCast plane?))
 			(cond 
-				((thumb onMe: pEvent) (self select: 1) (pEvent claimed: 1))
-				((and lowIcon (lowIcon onMe: pEvent))
+				((thumb onMe: event) (self select: 1) (event claimed: 1))
+				((and lowIcon (lowIcon onMe: event))
 					(lowIcon cel: (= temp0 1))
 					(UpdateScreenItem lowIcon)
 					(FrameOut)
@@ -125,7 +76,7 @@
 					(= temp2 1)
 					(while (!= ((= newEvent (Event new:)) type?) 2)
 						(cond 
-							((lowIcon onMe: pEvent)
+							((lowIcon onMe: event)
 								(if (not temp0)
 									(lowIcon cel: (= temp0 1))
 									(UpdateScreenItem lowIcon)
@@ -152,9 +103,9 @@
 						(UpdateScreenItem lowIcon)
 						(FrameOut)
 					)
-					(pEvent claimed: 1)
+					(event claimed: 1)
 				)
-				((and highIcon (highIcon onMe: pEvent))
+				((and highIcon (highIcon onMe: event))
 					(highIcon cel: (= temp0 1))
 					(UpdateScreenItem highIcon)
 					(FrameOut)
@@ -162,7 +113,7 @@
 					(= temp2 1)
 					(while (!= ((= newEvent (Event new:)) type?) 2)
 						(cond 
-							((highIcon onMe: pEvent)
+							((highIcon onMe: event)
 								(if (not temp0)
 									(highIcon cel: (= temp0 1))
 									(UpdateScreenItem highIcon)
@@ -189,13 +140,13 @@
 						(UpdateScreenItem highIcon)
 						(FrameOut)
 					)
-					(pEvent claimed: 1)
+					(event claimed: 1)
 				)
-				((self onMe: pEvent) (self select: 0) (pEvent claimed: 1))
+				((self onMe: event) (self select: 0) (event claimed: 1))
 			)
-			(pEvent localize: (cast plane?))
+			(event localize: (cast plane?))
 		)
-		(pEvent claimed?)
+		(event claimed?)
 	)
 	
 	(method (select &tmp [temp0 5])

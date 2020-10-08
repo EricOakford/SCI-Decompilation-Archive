@@ -528,7 +528,7 @@ code_05b1:
 		(= mode 1)
 		(= local1 (String format: {Edit Mode}))
 		((= newDText (DText new:))
-			text: (String StrDup (local1 data?))
+			text: (KString StrDup (local1 data?))
 			fore: 255
 			posn: 1 1
 			setSize: 240
@@ -607,11 +607,11 @@ code_05b1:
 		(= currentPolygon (= currentIndex 0))
 		(if (not (self size:)) (return))
 		(= theTheCurrentPolygonShortestDistance 32767)
-		(= node (List LFirstNode elements))
+		(= node (KList LFirstNode elements))
 		(while node
-			(= nextNode (List LNextNode node))
+			(= nextNode (KList LNextNode node))
 			(= theCurrentIndex
-				((= theCurrentPolygon (List LNodeValue node))
+				((= theCurrentPolygon (KList LNodeValue node))
 					findClosestPoint: param1 param2
 				)
 			)
@@ -702,7 +702,7 @@ code_0b9d:
 			lal      local1
 			send     4
 			push    
-			callk    String,  4
+			callk    KString,  4
 			push    
 			pushi    37
 			pushi    1

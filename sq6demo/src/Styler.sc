@@ -145,7 +145,7 @@
 
 		; Call the appropriate style call
 		(cond
-			((OneOf style SHOW_SCROLL_LEFT SHOW_SCROLL_RIGHT SHOW_SCROLL_UP SHOW_SCROLL_DOWN)	;SHOW_SCROLLS
+			((OneOf style SHOW_SCROLL_LEFT SHOW_SCROLL_RIGHT SHOW_SCROLL_UP SHOW_SCROLL_DOWN) ;SHOW_SCROLLS)
 				(switch style
 					(SHOW_SCROLL_LEFT
 						(= xDir (* (ego xStep?) -1))

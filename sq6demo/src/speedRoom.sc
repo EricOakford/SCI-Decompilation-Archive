@@ -12,7 +12,6 @@
 )
 
 (instance speedRoom of Room
-	(properties)
 	
 	(method (init)
 		(LoadMany RES_VIEW -556)

@@ -137,7 +137,7 @@
 	lastScreenX =  319
 	lastScreenY =  199
 	debugging
-	dongle =  1234
+	gameCode =  1234
 	global102
 	numVoices
 	sound1

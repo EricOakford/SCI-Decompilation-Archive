@@ -36,8 +36,8 @@
 	(return
 		(not
 			(and
-				(<= 0 (theObj x?) (curRoom edgeE?))
-				(<= 0 (- (theObj y?) (theObj z?)) (curRoom edgeS?))
+				(<= 0 (theObj x?) (curRoom edgeE?)) ;eastEdge)
+				(<= 0 (- (theObj y?) (theObj z?)) (curRoom edgeS?)) ;southEdge)
 			)
 		)
 	)

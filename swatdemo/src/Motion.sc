@@ -292,7 +292,7 @@
 ;;;		onTarget			;TRUE/FALSE
 ;;;		motionCue
 ;;;	)
-
+	
 	(method (init actor xTo yTo toCall &tmp cx cy)
 		(if (>= argc 1)				(= client actor)
 			(if (>= argc 2)			(= x xTo)

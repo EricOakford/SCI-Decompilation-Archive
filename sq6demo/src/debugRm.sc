@@ -75,7 +75,7 @@
 							(= temp6 (String newWith: 75 {}))
 							(= castFirst (cast first:))
 							(while castFirst
-								(= str (List LNodeValue castFirst))
+								(= str (KList LNodeValue castFirst))
 								(temp6
 									format:
 										{class: %s\nname: %s\nview: %d\nloop: %d\ncel: %d\nposn: %d %d %d\nheading: %d\npri: %d\nsignal: $%x\n}

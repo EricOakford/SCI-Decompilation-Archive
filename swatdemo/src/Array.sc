@@ -302,7 +302,7 @@
 	;; This method is overridden in subclasses that require calling another
 	;;	kernel entry besides KArray.
 
-		(Array &rest)
+		(KArray &rest)
 	)
 )
 

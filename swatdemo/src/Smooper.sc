@@ -40,10 +40,10 @@
 
 (define TwoStep 16)
 
-;;;(define HEADINGNORTH 	(or (<= theHeading 45	) (> theHeading 315)))
-;;;(define HEADINGEAST 	(<= theHeading 135	))
-;;;(define HEADINGSOUTH 	(<= theHeading 225	))
-;;;(define HEADINGWEST 	(<= theHeading 315	))
+;(define HEADINGNORTH 	(or (<= theHeading 45	) (> theHeading 315)))
+;(define HEADINGEAST 	(<= theHeading 135	))
+;(define HEADINGSOUTH 	(<= theHeading 225	))
+;(define HEADINGWEST 	(<= theHeading 315	))
 
 (class SmoothLooper of Code
 	(properties
@@ -64,7 +64,7 @@
 ;;;	)
 
 	(method (doit cl theHeading &tmp theLoop changedTheLoop)
-		(if (& (cl signal?) fixedLoop) (return))
+		(if (& (cl signal:) fixedLoop) (return))
 		(= changedTheLoop FALSE)
 		(if inProgress
 			(if newMover 	(newMover dispose:))
@@ -96,19 +96,19 @@
 		(switch theLoop  ; clients Loop
 			(facingNorth
 				(cond
-					((or (<= theHeading 45) (> theHeading 315))	;HEADINGNORTH		  ; new Headings
+					((or (<= theHeading 45) (> theHeading 315)) ;HEADINGNORTH		  ; new Headings
 					)
-					((<= theHeading 135	)	;HEADINGEAST
+					((<= theHeading 135) ;HEADINGEAST
 						(= theLoop 	lNorthToEast) 
 						(= nextLoop facingEast)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 225	)	;HEADINGSOUTH
+					((<= theHeading 225	) ;HEADINGSOUTH
 						(= theLoop  lNorthToEast)
-						(= nextLoop (+ TwoStep lEastToSouth))
+						(= nextLoop (+ 16 lEastToSouth))
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 315	)	;HEADINGWEST
+					((<= theHeading 315	) ;HEADINGWEST
 						(= theLoop  lNorthToWest)
 						(= nextLoop facingWest)
 						(=	changedTheLoop TRUE)
@@ -117,61 +117,61 @@
 			)
 			(facingEast
 				(cond
-					((or (<= theHeading 45) (> theHeading 315))	;HEADINGNORTH
+					((or (<= theHeading 45	) (> theHeading 315)) ;HEADINGNORTH
 						(= theLoop	lEastToNorth)
 						(= nextLoop facingNorth )
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 135	)	;HEADINGEAST
+					((<= theHeading 135	) ;HEADINGEAST
 					)
-					((<= theHeading 225	)	;HEADINGSOUTH
+					((<= theHeading 225	) ;HEADINGSOUTH
 						(= theLoop 	lEastToSouth)
 						(= nextLoop facingSouth)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 315	)	;HEADINGWEST							
+					((<= theHeading 315	) ;HEADINGWEST							
 						(= theLoop	lEastToNorth)
-						(= nextLoop (+ TwoStep lNorthToWest))
+						(= nextLoop (+ 16 lNorthToWest))
 						(=	changedTheLoop TRUE)
 					)
 				)
 			)
 			(facingWest
 				(cond
-					((or (<= theHeading 45) (> theHeading 315))	;HEADINGNORTH
+					((or (<= theHeading 45	) (> theHeading 315)) ;HEADINGNORTH
 						(= theLoop 	lWestToNorth) 
 						(= nextLoop facingNorth)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 135	)	;HEADINGEAST
+					((<= theHeading 135	) ;HEADINGEAST
 						(= theLoop 	lWestToSouth)
-						(= nextLoop (+ TwoStep lSouthToEast))
+						(= nextLoop (+ 16 lSouthToEast))
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 225	)	;HEADINGSOUTH
+					((<= theHeading 225	) ;HEADINGSOUTH
 						(= theLoop 	lWestToSouth)
 						(= nextLoop facingSouth)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 315	)	;HEADINGWEST
+					((<= theHeading 315	) ;HEADINGWEST
 					)
 				)
 			)
 			(facingSouth
 				(cond
-					((or (<= theHeading 45) (> theHeading 315))	;HEADINGNORTH
+					((or (<= theHeading 45	) (> theHeading 315)) ;HEADINGNORTH
 						(= theLoop 	lSouthToWest) 
-						(= nextLoop (+ TwoStep lWestToNorth))
+						(= nextLoop (+ 16 lWestToNorth))
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 135	)	;HEADINGEAST
+					((<= theHeading 135	) ;HEADINGEAST
 						(= theLoop 	lSouthToEast)
 						(= nextLoop facingEast)
 						(=	changedTheLoop TRUE)
 					)
-					((<= theHeading 225	)	;HEADINGSOUTH
+					((<= theHeading 225	) ;HEADINGSOUTH
 					)
-					((<= theHeading 315	)	;HEADINGWEST
+					((<= theHeading 315	) ;HEADINGWEST
 						(= theLoop	lSouthToWest)
 						(= nextLoop facingWest)
 						(=	changedTheLoop TRUE)

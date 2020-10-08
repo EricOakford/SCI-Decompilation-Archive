@@ -20,7 +20,7 @@
 		(= temp2 (IntArray with: 0 0 0 0))
 		(super init:)
 		(theGame setCursor: normalCursor TRUE)
-		(Text TextSize (temp2 data?) {A} userFont 320)
+		(KText TextSize (temp2 data?) {A} userFont 320)
 		(= startingRoom 0)
 		(= startingRoom
 			(Print

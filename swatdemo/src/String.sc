@@ -10,8 +10,6 @@
 ;;;;	Classes:
 ;;;;		String
 
-;EO: All instances of KString have been replaced with "String" to allow the script to compile.
-;Restore the original name when SCICompanion recognizes SCI32 kernel calls.
 
 (script#	STRING)
 (include game.sh)
@@ -152,7 +150,7 @@
 		else
 			; They passed us a string object or string literal
 			(= str (String newWith: (* numCopies (SizeOfStr whatToCopy))))
-			(= strToCopy (String StrGetData whatToCopy))	;EO: Was "KString"
+			(= strToCopy (KString StrGetData whatToCopy))
 			(while (>= (-- numCopies) 0)
 				(str cat: strToCopy)
 			)
@@ -811,7 +809,7 @@
 	)
 
 	(method (callKernel)
-		(String &rest)	;EO: Was "KString"
+		(KString &rest)
 	)
 )
 
@@ -821,6 +819,6 @@
 ;; regardless of whether 'str' is a String object or a kernel string block.
 
 	(return
-		(String StrLen (String StrGetData str))	;EO: Was "KString"
+		(KString StrLen (KString StrGetData str))
 	)
 )

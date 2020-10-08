@@ -92,7 +92,7 @@ EO:
 		(return
 			(cond 
 				((& signal DISABLED) 0)
-				((and argc param1 (& signal notUpd))
+				((and argc param1 (& signal canUpdate))
 					(= cel (= temp1 1))
 					(UpdateScreenItem self)
 					(FrameOut)
@@ -501,11 +501,11 @@ code_0c1f:
 		(UpdatePlane plane)
 		(= temp0 0)
 		(= theY y)
-		(= node (List LFirstNode elements))
+		(= node (KList LFirstNode elements))
 		(while node
-			(= nextNode (List LNextNode node))
+			(= nextNode (KList LNextNode node))
 			(if
-			(<= ((= temp3 (List LNodeValue node)) nsRight?) 0)
+			(<= ((= temp3 (KList LNodeValue node)) nsRight?) 0)
 				(temp3 show: temp0 theY)
 				(= temp0 (temp3 nsRight?))
 			else
@@ -583,10 +583,10 @@ code_0c1f:
 			(= state (& state $ffdf))
 			(if (and argc param1) (sounds pause: 0))
 			(self highlight: curIcon)
-			(= node (List LFirstNode elements))
+			(= node (KList LFirstNode elements))
 			(while node
-				(= nextNode (List LNextNode node))
-				(= temp1 (List LNodeValue node))
+				(= nextNode (KList LNextNode node))
+				(= temp1 (KList LNodeValue node))
 				(temp1 signal: (& (temp1 signal?) $ffdf))
 				(= node nextNode)
 			)
@@ -663,11 +663,11 @@ code_0c1f:
 			((theIconBar contains: exitIcon8) (return))
 			(
 				(and
-					(!= curIcon (= temp0 (List LNodeValue (self first:))))
+					(!= curIcon (= temp0 (KList LNodeValue (self first:))))
 					(not (& (temp0 signal?) DISABLED))
 				)
 				(= prevIcon curIcon)
-				(= curIcon (List LNodeValue (self first:)))
+				(= curIcon (KList LNodeValue (self first:)))
 			)
 			(
 			(and prevIcon (not (& (prevIcon signal?) DISABLED))) (= curIcon prevIcon))
@@ -821,9 +821,7 @@ code_0c1f:
 	)
 )
 
-(instance talkerSet of Cast
-	(properties)
-)
+(instance talkerSet of Cast)
 
 (instance walkIcon0 of SQIconItem
 	(properties
@@ -938,27 +936,27 @@ code_0c1f:
 						(theIconBar contains: walkIcon0)
 						(not (& (walkIcon0 signal?) DISABLED))
 					)
-					(Bset WALK_ENABLED)
+					(Bset fWalkActive)
 					(walkIcon0 signal: (| (walkIcon0 signal?) DISABLED) show:)
 				)
 				(if (not (& (lookIcon1 signal?) DISABLED))
-					(Bset LOOK_ENABLED)
+					(Bset fLookActive)
 					(lookIcon1 signal: (| (lookIcon1 signal?) DISABLED) show:)
 				)
 				(if (not (& (doIcon2 signal?) DISABLED))
-					(Bset DO_ENABLED)
+					(Bset fDoActive)
 					(doIcon2 signal: (| (doIcon2 signal?) DISABLED) show:)
 				)
 				(if (not (& (talkIcon3 signal?) DISABLED))
-					(Bset TALK_ENABLED)
+					(Bset fTalkActive)
 					(talkIcon3 signal: (| (talkIcon3 signal?) DISABLED) show:)
 				)
 				(if (not (& (helpIcon5 signal?) DISABLED))
-					(Bset HELP_ENABLED)
+					(Bset fHelpActive)
 					(helpIcon5 signal: (| (helpIcon5 signal?) DISABLED) show:)
 				)
 				(if (not (& (controlIcon6 signal?) DISABLED))
-					(Bset CONTROL_ENABLED)
+					(Bset fControlActive)
 					(controlIcon6
 						signal: (| (controlIcon6 signal?) DISABLED)
 						show:
@@ -969,10 +967,10 @@ code_0c1f:
 						(theIconBar contains: exitIcon8)
 						(not (& (exitIcon8 signal?) DISABLED))
 					)
-					(Bset EXIT_ENABLED)
+					(Bset fExitActive)
 					(exitIcon8 signal: (| (exitIcon8 signal?) DISABLED) show:)
 				)
-				(Bset INVENTORY_ACTIVE)
+				(Bset fInvActive)
 				(inventory showSelf:)
 				(return TRUE)
 			else

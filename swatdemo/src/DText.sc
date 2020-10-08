@@ -61,7 +61,7 @@
 		;	and TRUE, don't free the text string
 
 		(if (or (not argc) (not keepText))
-			(String StrFree text)
+			(KString StrFree text)
 		)
 		(if rects
 			(rects dispose:)
@@ -116,7 +116,7 @@
 		(= textTop 0)
 		(if text
 			(= r (IntArray with: 0 0 0 0))
-			(Text TextSize
+			(KText TextSize
 				(r data?)
 				text
 				font

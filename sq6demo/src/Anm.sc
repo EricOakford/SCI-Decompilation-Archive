@@ -1,13 +1,12 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 64907)
-(include sci.sh)
+(script# ANM)
+(include game.sh)
 (use Plane)
 (use System)
 
 
 (class ScrollableWindow of Object
 	(properties
-		scratch 0
 		plane 0
 		fore 255
 		back 0
@@ -31,53 +30,69 @@
 				(= nsTop [theMaxItems 1])
 				(= nsRight [theMaxItems 2])
 				(= nsBottom [theMaxItems 3])
-				(if (> argc 4) (= maxItems [theMaxItems 4]))
+				(if (> argc 4)
+					(= maxItems [theMaxItems 4])
+				)
 			)
 		)
-		(if (not plane) (= plane (Plane new:)))
-		(= kWindow (ScrollWindow 0 self maxItems))
+		(if (not plane)
+			(= plane (Plane new:))
+		)
+		(= kWindow (ScrollWindow ScrollCreate self maxItems))
 	)
 	
 	(method (dispose)
-		(ScrollWindow 17 kWindow)
+		(ScrollWindow ScrollDestroy kWindow)
 		(super dispose:)
 	)
 	
 	(method (show)
-		(ScrollWindow 16 kWindow)
+		(ScrollWindow ScrollShow kWindow)
 	)
 	
 	(method (hide)
-		(ScrollWindow 15 kWindow)
+		(ScrollWindow ScrollHide kWindow)
 	)
 	
-	(method (addString param1)
-		(ScrollWindow 1 kWindow param1 &rest)
+	(method (addString theString)
+		(ScrollWindow ScrollAdd kWindow theString &rest)
 	)
 	
-	(method (modifyString param1)
-		(ScrollWindow 14 kWindow param1 &rest)
+	(method (modifyString theString)
+		(ScrollWindow ScrollModify kWindow theString &rest)
 	)
 	
-	(method (insertString param1)
-		(ScrollWindow 12 kWindow param1 &rest)
+	(method (insertString theString)
+		(ScrollWindow ScrollInsert kWindow theString &rest)
 	)
 	
 	(method (erase)
-		(ScrollWindow 2 kWindow)
+		(ScrollWindow ScrollClear kWindow)
 	)
 	
 	(method (scrollTo param1 param2 param3)
 		(switch param1
-			(0 (ScrollWindow 7 kWindow))
-			(1 (ScrollWindow 3 kWindow))
-			(2 (ScrollWindow 5 kWindow))
-			(3
-				(ScrollWindow 11 kWindow param2 param3)
+			(0
+				(ScrollWindow ScrollHome kWindow)
 			)
-			(4 (ScrollWindow 6 kWindow))
-			(5 (ScrollWindow 4 kWindow))
-			(6 (ScrollWindow 8 kWindow))
+			(1
+				(ScrollWindow ScrollPageUp kWindow)
+			)
+			(2
+				(ScrollWindow ScrollUpArrow kWindow)
+			)
+			(3
+				(ScrollWindow ScrollGo kWindow param2 param3)
+			)
+			(4
+				(ScrollWindow ScrollDownArrow kWindow)
+			)
+			(5
+				(ScrollWindow ScrollPageDown kWindow)
+			)
+			(6
+				(ScrollWindow ScrollEnd kWindow)
+			)
 		)
 	)
 	
@@ -93,7 +108,7 @@
 			(= nsLeft theNsLeft)
 			(= nsTop theNsTop)
 		)
-		(ScrollWindow 9 kWindow self)
+		(ScrollWindow ScrollResize kWindow self)
 	)
 	
 	(method (resize param1 param2 param3)
@@ -104,10 +119,10 @@
 			(= nsRight (+ nsLeft param1 -1))
 			(= nsBottom (+ nsTop param2 -1))
 		)
-		(ScrollWindow 9 kWindow self)
+		(ScrollWindow ScrollResize kWindow self)
 	)
 	
 	(method (where param1)
-		(ScrollWindow 10 kWindow param1)
+		(ScrollWindow ScrollWhere kWindow param1)
 	)
 )

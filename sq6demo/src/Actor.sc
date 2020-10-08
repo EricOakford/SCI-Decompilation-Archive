@@ -350,7 +350,7 @@
 					FALSE
 				)
 				((not onMeCheck)
-				  	(IsOnMe oX oY self (& signal skipCheck))	;EO: Was "OnMe"
+				  	(OnMe oX oY self (& signal skipCheck))
 				)
 				(else
 					(super onMe: oX oY)

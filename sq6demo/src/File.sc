@@ -61,11 +61,11 @@
 
 	(method (copy oldOrNew newFileName &tmp oldName newName)
 		(if (> argc 1)
-			(= oldName (String StrGetData oldOrNew))
-			(= newName (String StrGetData newFileName))
+			(= oldName (KString StrGetData oldOrNew))
+			(= newName (KString StrGetData newFileName))
 		else
 			(= oldName name)
-			(= newName (String StrGetData oldOrNew))
+			(= newName (KString StrGetData oldOrNew))
 		)
 		(return
 			(FileIO FileCopy oldName newName)
@@ -77,7 +77,7 @@
 			(self close:)
 		)
 		(return 
-			(FileIO FileUnlink (if argc (String StrGetData fName) else name))
+			(FileIO FileUnlink (if argc (KString StrGetData fName) else name))
 		)
 	)
 
@@ -123,7 +123,7 @@
 		)
 
 		(return
-			(if handle (FileIO FileRead handle (String StrGetData str) len) else 0)
+			(if handle (FileIO FileRead handle (KString StrGetData str) len) else 0)
 		)
 	)
 
@@ -140,7 +140,7 @@
 		)
 
 		(return
-			(if handle (FileIO FileFGets (String StrGetData str) len handle) else	NULL)
+			(if handle (FileIO FileFGets (KString StrGetData str) len handle) else	NULL)
 		)
 	)
 
@@ -151,12 +151,12 @@
 	(method (rename oldOrNew newName &tmp upDate newN oldN tmpStr)
 		(if (> argc 1)
 			(= upDate FALSE)
-			(= oldN (String StrGetData oldOrNew))
-			(= newN (String StrGetData newName))
+			(= oldN (KString StrGetData oldOrNew))
+			(= newN (KString StrGetData newName))
 		else
 			(= upDate TRUE)
 			(= oldN name)
-			(= newN (String StrGetData oldOrNew))
+			(= newN (KString StrGetData oldOrNew))
 		)
 		;The kernel call returns 0 on success, but we should return 1.
 		(if (FileIO FileRename oldN newN)
@@ -202,7 +202,7 @@
 		)
 
 		(return
-			(if handle (FileIO FileWrite handle (String StrGetData str) len) else 0)
+			(if handle (FileIO FileWrite handle (KString StrGetData str) len) else 0)
 		)
 	)
 
@@ -218,7 +218,7 @@
 		;Multiple writes accepted.
 		(if handle
 			(for ((= i 0)) (< i argc) ((++ i))
-				(if (not (FileIO FileFPuts handle (String StrGetData [str i])))
+				(if (not (FileIO FileFPuts handle (KString StrGetData [str i])))
 					(return FALSE)
 				)
 			)

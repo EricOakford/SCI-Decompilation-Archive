@@ -33,16 +33,16 @@
 	;;
 	;;	--Pablo Ghenis 6/9/89
 
-	(= tempList (List new:))	;EO: This one always was "List"
+	(= tempList (List new:))
 
-	(while	(= node (List LFirstNode (theList elements?)))
+	(while	(= node (KList LFirstNode (theList elements?)))
 		
 		(for
-			((= minValue (List LNodeValue node)))
+			((= minValue (KList LNodeValue node)))
 			node
-			((= node (List LNextNode node)))
+			((= node (KList LNextNode node)))
 			
-			(if (theLTCode doit: (= temp (List LNodeValue node)) minValue &rest)
+			(if (theLTCode doit: (= temp (KList LNodeValue node)) minValue &rest)
 				(= minValue temp)
 			)
 			

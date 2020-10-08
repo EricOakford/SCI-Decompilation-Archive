@@ -15,6 +15,7 @@
 (include game.sh)
 (use System)
 
+;(define	xc	r)
 
 (class Rectangle of Object
 ;;; The Rectangle class implements operations on a rectangular region
@@ -286,7 +287,7 @@
 	;;	(myRect contains: anotherRect)
 	;;			Returns TRUE if no part of anotherRect is outside the receiver.
 
-;		(define	xc	r)
+		;(define	xc	r)
 		(return
 			(cond
 				((== argc 2)
@@ -447,13 +448,13 @@
 
 		(return
 			(cond
-				((!= (event type?) t)
+				((!= (event type:) t)
 					FALSE
 				)
 				((and
 					(>= argc 3)
 					theMods
-					(== (& (event modifiers?) theMods) 0)
+					(== (& (event modifiers:) theMods) 0)
 				 )
 					FALSE
 				)

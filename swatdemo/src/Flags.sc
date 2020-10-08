@@ -30,7 +30,7 @@
 ;;;		clear
 ;;;		test
 ;;;	)
-;;;
+
 	(method (init)
 		(if (and size (not array))
 			(self setSize: size)

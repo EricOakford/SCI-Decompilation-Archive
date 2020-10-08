@@ -74,17 +74,17 @@
 	(method (eachElementDo action &tmp node aCastList obj)
 		;
 		; Overridden to pass the action on to all the planes' casts
-		(for	((= node (List LFirstNode elements)))
+		(for	((= node (KList LFirstNode elements)))
 				node
 				((= node nextNode))
-			(= nextNode (List LNextNode node))
-			(= aCastList ((List LNodeValue node) casts?))
+			(= nextNode (KList LNextNode node))
+			(= aCastList ((KList LNodeValue node) casts?))
 
-			(for	((= node (List LFirstNode (aCastList elements?))))
+			(for	((= node (KList LFirstNode (aCastList elements?))))
 					node
 					((= node (aCastList nextNode?)))
-				(aCastList nextNode: (List LNextNode node))
-				(= obj (List LNodeValue node))
+				(aCastList nextNode: (KList LNextNode node))
+				(= obj (KList LNodeValue node))
 				(obj eachElementDo: action &rest)
 			)
 		)
@@ -267,17 +267,15 @@
 		;
 		; Invoked from the kernel, this starts the game going, then goes into the
 		; main game loop of doit: then wait for the next animation cycle
-		
-		;EO: "MonoOut" not recognized by SCICompanion
-;(MonoOut {Play 1})
+(MonoOut {Play 1})
 		(= theGame self)
-;(MonoOut {Play 2})
+(MonoOut {Play 2})
 		(= curSaveDir (String new:))
-;(MonoOut {Play 3})
+(MonoOut {Play 3})
 		(= sysLogPath (String new:))
-;(MonoOut {Play 4})
-		(curSaveDir data: (Save SGGetSaveDir))	;EO: "Save" was "SaveGame"
-;(MonoOut {Play 5})
+(MonoOut {Play 4})
+		(curSaveDir data: (SaveGame SGGetSaveDir))
+(MonoOut {Play 5})
 
 		; Setup the cursors
 		(= normalCursor theNormalCursor)
@@ -328,26 +326,26 @@
 
 		; Make sure all the screen items are added to their planes again,
 		;	if they were in the silist originally
-		(for	((= node1 (List LFirstNode (planes elements?))))
+		(for	((= node1 (KList LFirstNode (planes elements?))))
 				node1
 				((= node1 (planes nextNode?)))
-			(planes nextNode: (List LNextNode node1))
-			(= aPlane (List LNodeValue node1))
+			(planes nextNode: (KList LNextNode node1))
+			(= aPlane (KList LNodeValue node1))
 			(AddPlane aPlane)
 
 			; For each cast in the plane's casts list...
-			(for	((= node2 (List LFirstNode ((aPlane casts?) elements?))))
+			(for	((= node2 (KList LFirstNode ((aPlane casts?) elements?))))
 					node2
 					((= node2 ((aPlane casts?) nextNode?)))
-				((aPlane casts?) nextNode: (List LNextNode node2))
-				(= aList (List LNodeValue node2))
+				((aPlane casts?) nextNode: (KList LNextNode node2))
+				(= aList (KList LNodeValue node2))
 
 				; For each object in the cast list...
-				(for	((= node3 (List LFirstNode (aList elements?))))
+				(for	((= node3 (KList LFirstNode (aList elements?))))
 						node3
 						((= node3 (aList nextNode?)))
-					(aList nextNode: (List LNextNode node3))
-					(= obj (List LNodeValue node3))
+					(aList nextNode: (KList LNextNode node3))
+					(= obj (KList LNodeValue node3))
 					(if (& (obj -info-?) IN_SILIST)
 						(AddScreenItem obj)
 					)
@@ -363,7 +361,7 @@
 		; Draw the picture in the game being restored
 		(theGame setCursor: waitCursor TRUE)
 		(= theStyle
-			(if (not (OneOf (curRoom style?) -1 SHOW_SCROLL_LEFT SHOW_SCROLL_RIGHT SHOW_SCROLL_UP SHOW_SCROLL_DOWN))
+			(if (not (OneOf (curRoom style?) -1 SHOW_SCROLL_LEFT SHOW_SCROLL_RIGHT SHOW_SCROLL_UP SHOW_SCROLL_DOWN)) ;SHOW_SCROLLS))
 				(curRoom style?)
 			else
 				SHOW_PLAIN
@@ -379,7 +377,7 @@
 				(theGame setCursor: waitCursor)
 			)
 			; The iconbar's current icon's cursor
-			((and theIconBar (theIconBar curIcon?))
+			((and	theIconBar (theIconBar curIcon?))
 				(theGame setCursor: (theIconBar getCursor:))
 			)
 			(else
@@ -434,7 +432,7 @@
 		((= extMouseHandler theExtMouseHandler)		add:)
 		
 		; Set the current save/restore directory
-		(Save SGGetSaveDir (curSaveDir data?))	;EO: "Save" was "SaveGame"
+		(SaveGame SGGetSaveDir (curSaveDir data?))
 
 		; Initialize the user.  If not specifically set by the application, use
 		;	the normal system User.
@@ -520,7 +518,7 @@
 		; Remove any expired timers.
 		(timers eachElementDo: #delete:)
 
-		(Save SGGameIsRestarting FALSE)	;EO: "Save" was "SaveGame"
+		(SaveGame SGGameIsRestarting FALSE)
 	);Game doit
 
 	(method (newRoom n &tmp mX mY theMover theEgo oldCur evt eStyle)
@@ -614,7 +612,7 @@
 		; This allows us to break when the heap is as free as it gets with
 		; the game running, letting us detect any fragmentation in the heap
 		(if debugOn
-			(Dummy)	;EO: Was "SetDebug"
+			(SetDebug)
 		)
 
 		; Initialize the new room and add it to the front of the region list
@@ -651,7 +649,7 @@
 	)
 
 	(method (restart)
-		(Save SGRestart)	;EO: "Save" was "SaveGame"
+		(SaveGame SGRestart)
 	)
 
 	(method (save &tmp comment num oldCur buf1 buf2 str)
@@ -661,10 +659,10 @@
 
 		(= comment (String new:))
 ;;;#ifdef MAC
-;;;		(SaveGame SGSave name num (comment data?) (String StrGetData version))
+;;;		(SaveGame SGSave name num (comment data?) (KString StrGetData version))
 ;;;#else
 		; Ensure a valid directory
-		(if (not (FileIO FileValidPath (String StrGetData curSaveDir)))
+		(if (not (FileIO FileValidPath (KString StrGetData curSaveDir)))
 			(= str (String new:))
 			(= buf1 (String new:))
 			(Message MsgGet GAME N_INVALID_DIR NULL NULL 1 (buf1 data?))
@@ -720,7 +718,7 @@
 				(if numCD (self getDisc: numCD) )
 
 				(= oldCur (self setCursor: waitCursor TRUE))
-	 			(if (not (Save SGSave name num (comment data?) (String StrGetData version)))	;EO: "Save" was "SaveGame"
+	 			(if (not (SaveGame SGSave name num (comment data?) (KString StrGetData version)))
 					(= buf1 (String new:))
 					(= buf2 (String new:))
 					(Message MsgGet GAME N_SAVE_ERROR NULL NULL 1 (buf1 data?))
@@ -759,7 +757,7 @@
 ;;;		(SaveGame SGRestore name num version)
 ;;;#else
 		; Ensure we have a valid directory
-		(if (not (FileIO FileValidPath (String StrGetData curSaveDir)))
+		(if (not (FileIO FileValidPath (KString StrGetData curSaveDir)))
 			(Message MsgGet GAME N_INVALID_DIR NULL NULL 1 (buf1 data?))
 			(str format: buf1 curSaveDir)
 			(Print
@@ -782,25 +780,25 @@
 		(= num (Restore doit: &rest))
 		(if (!= num -1)
 			; First make sure all the screen items are deleted from their planes
-			(for	((= node1 (List LFirstNode (planes elements?))))
+			(for	((= node1 (KList LFirstNode (planes elements?))))
 					node1
 					((= node1 (planes nextNode?)))
-				(planes nextNode: (List LNextNode node1))
-				(= aPlane (List LNodeValue node1))
+				(planes nextNode: (KList LNextNode node1))
+				(= aPlane (KList LNodeValue node1))
 
 				; For each cast in the plane's casts list...
-				(for	((= node2 (List LFirstNode ((aPlane casts?) elements?))))
+				(for	((= node2 (KList LFirstNode ((aPlane casts?) elements?))))
 						node2
 						((= node2 ((aPlane casts?) nextNode?)))
-					((aPlane casts?) nextNode: (List LNextNode node2))
-					(= aList (List LNodeValue node2))
+					((aPlane casts?) nextNode: (KList LNextNode node2))
+					(= aList (KList LNodeValue node2))
 
 					; For each object in the cast list...
-					(for	((= node3 (List LFirstNode (aList elements?))))
+					(for	((= node3 (KList LFirstNode (aList elements?))))
 							node3
 							((= node3 (aList nextNode?)))
-						(aList nextNode: (List LNextNode node3))
-						(= obj (List LNodeValue node3))
+						(aList nextNode: (KList LNextNode node3))
+						(= obj (KList LNodeValue node3))
 						(= bit (& (obj -info-?) IN_SILIST))
 						(if bit
 							(DeleteScreenItem obj)
@@ -813,35 +811,35 @@
 
 			(self setCursor: waitCursor TRUE)
 
-			(if (Save SGCheckSaveGame name num (String StrGetData version))	;EO: "Save" was "SaveGame"
+			(if (SaveGame SGCheckSaveGame name num (KString StrGetData version))
 
 				;Acquire appropriate CD in drive
 				(self getDisc: (CD GetSaveCD))
 
-				(Save SGRestore name num version)	;EO: "Save" was "SaveGame"
+				(SaveGame SGRestore name num version)
 			else
 				; Make sure all the screen items are added to their planes again,
 				;	if they were in the silist originally
-				(for	((= node1 (List LFirstNode (planes elements?))))
+				(for	((= node1 (KList LFirstNode (planes elements?))))
 						node1
 						((= node1 (planes nextNode?)))
-					(planes nextNode: (List LNextNode node1))
-					(= aPlane (List LNodeValue node1))
+					(planes nextNode: (KList LNextNode node1))
+					(= aPlane (KList LNodeValue node1))
 					(AddPlane aPlane)
 
 					; For each cast in the plane's casts list...
-					(for	((= node2 (List LFirstNode ((aPlane casts?) elements?))))
+					(for	((= node2 (KList LFirstNode ((aPlane casts?) elements?))))
 							node2
 							((= node2 ((aPlane casts?) nextNode?)))
-						((aPlane casts?) nextNode: (List LNextNode node2))
-						(= aList (List LNodeValue node2))
+						((aPlane casts?) nextNode: (KList LNextNode node2))
+						(= aList (KList LNodeValue node2))
 
 						; For each object in the cast list...
-						(for	((= node3 (List LFirstNode (aList elements?))))
+						(for	((= node3 (KList LFirstNode (aList elements?))))
 								node3
 								((= node3 (aList nextNode?)))
-							(aList nextNode: (List LNextNode node3))
-							(= obj (List LNodeValue node3))
+							(aList nextNode: (KList LNextNode node3))
+							(= obj (KList LNodeValue node3))
 							(if (& (obj -info-?) IN_SILIST)
 								(AddScreenItem obj)
 							)

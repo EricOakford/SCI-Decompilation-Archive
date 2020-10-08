@@ -16,7 +16,7 @@
 ;;;;	Classes:
 ;;;;		User
 ;;;;		OnMeAndLowY
-;NOTE: This script has been specially modified for SwAT
+;NOTE: This script has been specially modified for SWAT
 
 (script#	USER)
 (include game.sh)
@@ -316,7 +316,7 @@
 		(if (and global110 (& (event type?) mouseEvt))
 			(event globalize:)
 			(OnPlaneAndHighPri init:)
-			(List LEachElementDo (planes elements?) 99 OnPlaneAndHighPri event)
+			(KList LEachElementDo (planes elements?) 99 OnPlaneAndHighPri event)
 			(if
 				(not
 					(= aObj (OnPlaneAndHighPri theObj?))

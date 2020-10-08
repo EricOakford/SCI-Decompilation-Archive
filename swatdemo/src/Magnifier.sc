@@ -56,11 +56,11 @@
 				)
 			)
 		)
-		(AddMagnify self)
+		(AddMagnifier self)
 	)
 
 	(method (dispose)
-		(DeleteMagnify self)
+		(DeleteMagnifier self)
 		(client magnifier: 0)
 		(= client 0)
 		(super dispose:)

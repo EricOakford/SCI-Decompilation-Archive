@@ -102,10 +102,10 @@
 		(= temp0 [param1 5])
 		(= temp1 [param1 6])
 	)
-	(Text TextSize (local46 data?) (local44 data?) 460 110)
+	(KText TextSize (local46 data?) (local44 data?) 460 110)
 	((= [newDText temp0] (DText new:))
 		font: 460
-		text: (String StrDup (local44 data?))
+		text: (KString StrDup (local44 data?))
 		fore: 102
 		back: 101
 		x:
@@ -144,10 +144,10 @@
 		(local47 dispose:)
 		(= local47 (String newCopies: (local44 data?)))
 	)
-	(Text TextSize (local46 data?) (local47 data?) 460 110)
+	(KText TextSize (local46 data?) (local47 data?) 460 110)
 	((= [newDText param5] (DText new:))
 		font: 460
-		text: (String StrDup (local47 data?))
+		text: (KString StrDup (local47 data?))
 		fore: 102
 		back: 101
 		x:
@@ -176,10 +176,10 @@
 		param4
 		(local44 data?)
 	)
-	(Text TextSize (local46 data?) (local44 data?) 460 110)
+	(KText TextSize (local46 data?) (local44 data?) 460 110)
 	((= [newDText param5] (DText new:))
 		font: 460
-		text: (String StrDup (local44 data?))
+		text: (KString StrDup (local44 data?))
 		fore: 102
 		back: 101
 		x:
@@ -288,7 +288,7 @@
 	(= temp1 [param1 6])
 	((= [newDText_2 temp0] (DText new:))
 		font: 460
-		text: (String StrDup (local44 data?))
+		text: (KString StrDup (local44 data?))
 		fore: 102
 		back: 101
 		x: (+ 65 (* temp1 3))

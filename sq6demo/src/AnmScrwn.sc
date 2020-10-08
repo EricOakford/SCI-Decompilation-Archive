@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 64906)
+(script# ANM_SCRWN)
 (include game.sh)
 (use AnmCast)
 (use Anm)
@@ -12,19 +12,6 @@
 )
 (class ScrollerWindow of ScrollableWindow
 	(properties
-		scratch 0
-		plane 0
-		fore 255
-		back 0
-		font 0
-		mode 0
-		borderColor 255
-		nsLeft 75
-		nsTop 50
-		nsRight 275
-		nsBottom 150
-		maxItems 20
-		kWindow 0
 		scroller 0
 		scrollCast 0
 		range 0
@@ -149,8 +136,8 @@
 		(scroller rePosn: temp1 1)
 	)
 	
-	(method (handleEvent pEvent)
-		(if isVisible (scroller handleEvent: pEvent))
+	(method (handleEvent event)
+		(if isVisible (scroller handleEvent: event))
 	)
 )
 
@@ -165,7 +152,7 @@
 		nsTop 0
 		nsRight 0
 		nsBottom 0
-		sightAngle ftrDefault
+		sightAngle 26505
 		actions 0
 		onMeCheck $0000
 		state $0000

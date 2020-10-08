@@ -61,12 +61,12 @@
 
 				; Single view - we're stopped but haven't changed yet
 				((and	(== vStopped -1)
-						(!= (client loop?) (- (NumLoops client) 1))
+						(!= (client loop?) (- (NumLoops client) 1));LastLoop)
 					)
 					(= curLoop (client loop?))
 					(super doit:)
 					(client
-						loop: 	(- (NumLoops client) 1),
+						loop: 	(- (NumLoops client) 1) ;LastLoop,
 						setCel:	curLoop
 					)
 				)
@@ -93,7 +93,7 @@
 				)
 				(-1						; same view
 					(client setLoop: -1)
-					(if (== (client loop?) (- (NumLoops client) 1))
+					(if (== (client loop?) (- (NumLoops client) 1)) ;LastLoop)
 						(client
 							loop:		(client cel?),
 							cel:		0

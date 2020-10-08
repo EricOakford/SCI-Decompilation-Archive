@@ -165,7 +165,7 @@
 ;		)
 
 		;;access "memory variable" file to seed data
-		(thePath format: {%s.mem} (String StrGetData sysLogPath))
+		(thePath format: {%s.mem} (KString StrGetData sysLogPath))
 		
 		(if (!= -1 (= logHandle (FileIO FileOpen (thePath data?) fRead)))
 			(FileIO FileFGets (QAinitials data?) 80 logHandle)
@@ -264,10 +264,7 @@
 							((++ j))
 
 						(cond
-							((OneOf c `: `
-							;EO: This commented out part can't be compiled, since it causes SCICompanion to give an error:
-               	;Error: (Logger.sc) Expected an expression. (224, 36): "\"
-									;\\
+							((OneOf c `: `\;\
 									`/)
 								(= i (+ j 1))
 							)
@@ -290,7 +287,7 @@
 		)
 		
 		;;NOW, open log file!
-		(thePath format: {%s.log} (String StrGetData sysLogPath))
+		(thePath format: {%s.log} (KString StrGetData sysLogPath))
 		(if (and
 				firstNote
 				(or
@@ -554,7 +551,7 @@
 			(FileIO FileClose logHandle)
 		)
 		
-		(thePath format: {%s.mem} (String StrGetData sysLogPath))
+		(thePath format: {%s.mem} (KString StrGetData sysLogPath))
 		(if (and
 				(== -1 (= logHandle (FileIO FileOpen (thePath data?) fTrunc))) ;existing file
 				(== -1 (= logHandle (FileIO FileOpen (thePath data?) fAppend))) ;new file

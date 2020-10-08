@@ -51,18 +51,29 @@
 		;	try to face himself
 		(return TRUE)
 	)
-	
+
 	(method (doit)
 		(super doit:)
+		
 		;If the Ego has moved either above the horizon or past a screen edge,
 		;set the edgeHit to the appropriate edge.
 		(= edgeHit
-			(cond 
-				((<= x (curRoom edgeW?)) WEST)
-				((>= x (curRoom edgeE?)) EAST)
-				((>= y (curRoom edgeS?)) SOUTH)
-				((<= y (curRoom horizon?)) NORTH)
-				(else 0)
+			(cond
+				((<= x (curRoom edgeW?)) ;westEdge)
+					WEST
+				)
+				((>= x (curRoom edgeE?)) ;eastEdge)
+					EAST
+				)
+				((>= y (curRoom edgeS?)) ;southEdge)
+					SOUTH
+				)
+				((<= y (curRoom horizon?))
+					NORTH
+				)
+				(else
+					0
+				)
 			)
 		)
 	)

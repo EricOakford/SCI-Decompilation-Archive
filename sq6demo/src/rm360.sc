@@ -278,7 +278,7 @@
 				(mouseDownHandler addToFront: self)
 				(= local3 (String format: {Computer... end simulation.}))
 				((= newDText (DText new:))
-					text: (String StrDup (local3 data?))
+					text: (KString StrDup (local3 data?))
 					font: userFont
 					fore: 84
 					posn: 105 65

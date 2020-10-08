@@ -178,7 +178,7 @@
 									$7777 0,
 
 							type:		PBarredAccess
-							name		{isBlockedPoly}
+							name		{isBlockedPoly},
 							yourself:
 						)
 					)
@@ -192,7 +192,7 @@
  
 
 							type:		PBarredAccess
-							name		{isBlockedPoly}
+							name		{isBlockedPoly},
 							yourself:
 						)
 					)
@@ -206,7 +206,7 @@
  
  
 							type:		PBarredAccess
-							name		{isBlockedPoly}
+							name		{isBlockedPoly},
 							yourself:
 						)
 					)
@@ -221,7 +221,7 @@
 	
 
 							type:		PBarredAccess
-							name		{isBlockedPoly}
+							name		{isBlockedPoly},
 							yourself:
 						)
 					)

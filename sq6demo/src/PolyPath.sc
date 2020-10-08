@@ -68,7 +68,7 @@
 				((= points (IntArray new:))
 					copy: pathData
 				)
-				(Array ArrayFree pathData)	;EO: Was "KArray"
+				(KArray ArrayFree pathData)
 
 				(if (> argc 3)
 					(= caller whoCares)

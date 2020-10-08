@@ -87,7 +87,7 @@
 )
 
 (procedure (FindFormatLen ctrlString args &tmp finalLen len parmCount i str argStr)
-	(= str (String newWith: (String StrLen (String StrGetData ctrlString)) {}))
+	(= str (String newWith: (KString StrLen (KString StrGetData ctrlString)) {}))
 	(str copy: ctrlString)
 	(= finalLen (= len (str size:)))
 	(= parmCount 0)
@@ -296,7 +296,7 @@
 			)
 
 			; Clone the text passed so we can do whatever we want
-			(= theText (String StrDup (String StrGetData [args 0])))
+			(= theText (KString StrDup (KString StrGetData [args 0])))
 
 			(dialog
 				add:
@@ -420,9 +420,9 @@
 				(d
 					setText:		,
 					mask:			(if (> argc 3)
-										(String StrDup (String StrGetData theMask))
+										(KString StrDup (KString StrGetData theMask))
 									else
-										(String StrDup {*.*})
+										(KString StrDup {*.*})
 									),
 					sort:			FALSE,
 					length:		(if (!= maxLen -1) maxLen else 0),
@@ -651,7 +651,7 @@
 
 			; Clone the text passed so we can do whatever we want
 			(= theText (String new:))
-			(theText copy: (String StrGetData [args 0]))
+			(theText copy: (KString StrGetData [args 0]))
 
 			(dialog
 				add:
@@ -763,7 +763,7 @@
 				(theText dispose:)
 				(return 0)
 			)
-			(= title (String StrDup (theText data?)))
+			(= title (KString StrDup (theText data?)))
 			(theText
 				data:		0,
 				dispose:
@@ -771,7 +771,7 @@
 		else
 			; Case b), just a buffer
 
-			(= title (String StrDup (String StrGetData [args 0])))
+			(= title (KString StrDup (KString StrGetData [args 0])))
 		)
 	)
 

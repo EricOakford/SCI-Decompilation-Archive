@@ -69,23 +69,19 @@
 	)
 
 	(method (show iX iY &tmp iconNo uISize iconSpace leftEdge topEdge celWide pnv)
-		(if (& signal viewHidden)
-			(super show:) ; so as not to invalidate normal View hide/show
-		else
-			(|= signal IB_ACTIVE)
-			(if argc
-				(self posn: iX iY)
-				(SetNowSeen self)
-			)
+		(|= signal IB_ACTIVE)
+		(if argc
+			(self posn: iX iY)
+			(SetNowSeen self)
+		)
 
-			(if (& signal DISABLED)
-				(self mask:)
-			else
-				(= view mainView)
-				(= loop mainLoop)
-				(= cel mainCel)
-				(UpdateScreenItem self)
-			)
+		(if (& signal DISABLED)
+			(self mask:)
+		else
+			(= view mainView)
+			(= loop mainLoop)
+			(= cel mainCel)
+			(UpdateScreenItem self)
 		)
 	)
 
@@ -510,7 +506,7 @@
 						(event
 							type:		(curIcon type?),
 					  		message: (if (== curIcon useIconItem)
-											(curInvIcon message:)
+											(curInvIcon message?)
 										else
 											(curIcon message?)
 										)
@@ -603,11 +599,11 @@
 		(plane priority: (+ (GetHighPlanePri) 1))
 		(UpdatePlane plane)
 
-		(for	((= theX 0) (= theY y) (= node (List LFirstNode elements)))	;EO: Was "KList"
+		(for	((= theX 0) (= theY y) (= node (KList LFirstNode elements)))	
 				node
 				((= node nextNode))
-			(= nextNode (List LNextNode node))	;EO: Was "KList"		
-			(= obj (List LNodeValue node)) ;EO: Was "KList"
+			(= nextNode (KList LNextNode node))			
+			(= obj (KList LNodeValue node))
 			
 			; If nsRect not set yet
 			(if (<= (obj nsRight?) 0)
@@ -671,11 +667,11 @@
 			(&= state (~ IB_ACTIVE))
 
 			;; tell all	icons that they are no longer active
-			(for 	((= node (List LFirstNode elements))) ;EO: Was "KList"
+			(for 	((= node (KList LFirstNode elements)))
 					node
 					((= node nextNode))
-				(= nextNode (List LNextNode node)) ;EO: Was "KList"
-				(= obj (List LNodeValue node)) ;EO: Was "KList"
+				(= nextNode (KList LNextNode node))
+				(= obj (KList LNodeValue node))
 				(obj signal: (& (obj signal?) (~ IB_ACTIVE)))
 			)
 
@@ -987,11 +983,11 @@
 				(return)
 			)
 			((and 
-					(!= curIcon (= firstIcon (List LNodeValue (self first:)))) ;EO: Was "KList"
-					(not (& (firstIcon signal?) DISABLED))
+					(!= curIcon (= firstIcon (KList LNodeValue (self first:)))) 
+					(not (& (firstIcon signal:) DISABLED))
 				)
 				(= prevIcon curIcon)
-				(= curIcon (List LNodeValue (self first:))) ;EO: Was "KList"
+				(= curIcon (KList LNodeValue (self first:)))
 			)
 			((and prevIcon	(not (& (prevIcon	signal?) DISABLED)))
 				(= curIcon prevIcon)

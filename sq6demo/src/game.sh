@@ -8,6 +8,7 @@
 
 ;Script defines
 (define SQ6INV 15)
+(define SQ6ROOM 16)
 (define SQ6EGO 20)
 (define DEBUG 21)
 (define SQ6CONTROLS 32)

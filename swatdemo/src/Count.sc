@@ -19,20 +19,24 @@
 (script# COUNT)
 (include game.sh)
 
+;;;(procedure
+;;;	Count
+;;;)
+
 (public
 	Count	0
 )
 
 (procedure (Count theList theCode &tmp theCount theNode)
 	(for
-		(	(= theNode (List LFirstNode (theList elements?)))
+		(	(= theNode (KList LFirstNode (theList elements?)))
 			(= theCount 0)
 		)
 		theNode
-		(	(= theNode (List LNextNode theNode))
+		(	(= theNode (KList LNextNode theNode))
 		)
 		
-		(if (theCode doit: (List LNodeValue theNode) &rest)
+		(if (theCode doit: (KList LNodeValue theNode) &rest)
 			(++ theCount)
 		)
 	)

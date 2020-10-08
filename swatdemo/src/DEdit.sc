@@ -71,7 +71,7 @@
 		(= textTop	margin)
 		(if (== view -1)
 			(= r (IntArray with: 0 0 0 0))
-			(Text TextSize
+			(KText TextSize
 				(r data?)
 				{M}
 				font

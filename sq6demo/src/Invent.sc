@@ -13,8 +13,6 @@
 ;;;;		InvItem
 ;;;;		Inventory
 
-;EO: All instances of KList have been replaced with "List" to allow the script to compile.
-;Restore the original name when SCICompanion recognizes SCI32 kernel calls.
 
 (script# INVENT)
 (include game.sh)
@@ -217,7 +215,7 @@
 		(for 	((= node (self first:)))
 				node
 				((= node (self next: node)))
-			(if ((= obj (List LNodeValue node)) isKindOf: InvItem) ;EO: Was "KList"
+			(if ((= obj (KList LNodeValue node)) isKindOf: InvItem)
 				(DeleteScreenItem obj)
 				(obj signal: (| (obj signal?) DISABLED))
 			 else
@@ -239,7 +237,7 @@
 				((= node (self next: node)))
 
 			; If the item is an IconItem, position it
-			(if (not ((= obj (List LNodeValue node)) isKindOf: InvItem)) ;EO: Was "KList"
+			(if (not ((= obj (KList LNodeValue node)) isKindOf: InvItem))
  				(= cWide (CelWide (obj view?) (obj loop?) (obj cel?)))
 				(+= iconRight cWide)											;we need to get the final right of the icons
 				(if (> (= cHigh (CelHigh (obj view?) (obj loop?) (obj cel?))) iconBottom)
@@ -279,7 +277,7 @@
 
 		; SKIP THE UPPER-INDEXING INVENTORY ITEMS
 		(for ((= node (self first:)) (= si 0)) (< si curIndex) ( (++ si) (= node (self next: node)))
-			(if (and ((= obj (List LNodeValue node)) isKindOf: InvItem) ;EO: Was "KList"
+			(if (and ((= obj (KList LNodeValue node)) isKindOf: InvItem)
 						(not (& (obj signal?) DISABLED))
 				)
 				(DeleteScreenItem obj)
@@ -289,7 +287,7 @@
 
 		(for 	((= node node)) node ((= node (self next: node)))
 			(if (and
-					((= obj (List LNodeValue node)) isKindOf: InvItem) ;EO: Was "KList"
+					((= obj (KList LNodeValue node)) isKindOf: InvItem)
 					(== (obj owner?) owner)
 				 )
 
@@ -332,7 +330,7 @@
 		(if node
 			(for 	((= node (self next: node))) node ((= node (self next: node)))
 				(if (and 
-				 		((= obj (List LNodeValue node)) isKindOf: InvItem) ;EO: Was "KList"
+				 		((= obj (KList LNodeValue node)) isKindOf: InvItem)
 				 		(not (& (obj signal?) DISABLED))
 				 	)
 					(DeleteScreenItem obj)
@@ -357,11 +355,11 @@
 		;
 		; Return the first item in inventory which is owned by `whom'
 
-		(for	((= node (List LFirstNode elements))) ;EO: Was "KList"
+		(for	((= node (KList LFirstNode elements)))
 				node
 				((= node nextNode))
-			(= nextNode (List LNextNode node))	;EO: Was "KList"
-			(= obj (List LNodeValue node))	;EO: Was "KList"
+			(= nextNode (KList LNextNode node))
+			(= obj (KList LNodeValue node))
 			(if (and	(obj isKindOf: InvItem)
 						(obj ownedBy: whom)
 				)
@@ -381,7 +379,7 @@
 			(pMouse stop:)
 		)
 		(if (not okButton)
-			(= okButton (List LNodeValue (self first?))) ;EO: Was "KList"
+			(= okButton (KList LNodeValue (self first?)))
 		)
 		(= curIcon NULL)
 
@@ -425,11 +423,11 @@
 		)
 
 		; Tell all icons that they are no longer active
-		(for 	((= node (List LFirstNode elements))) ;EO: Was "KList"
+		(for 	((= node (KList LFirstNode elements)))
 				node
 				((= node nextNode))
-			(= nextNode (List LNextNode node)) ;EO: Was "KList"
-			(= obj (List LNodeValue node)) ;EO: Was "KList"
+			(= nextNode (KList LNextNode node))
+			(= obj (KList LNodeValue node))
 			(obj signal: (& (obj signal?) (~ IB_ACTIVE)))
 			(if (and	(obj isKindOf: InvItem)
 						(not (& (obj signal?) DISABLED))
@@ -493,7 +491,7 @@
 				)
 			)
 			(if (not theIcon)
-				(= theIcon (List LNodeValue (self first:))) ;EO: Was "KList"
+				(= theIcon (KList LNodeValue (self first:)))
 			)
 			(if (not (& (theIcon signal?) DISABLED))
 				(break)
@@ -516,7 +514,7 @@
 		 		(self at: nextIcon)
 			)
 			(if (not theIcon)
-				(= theIcon (List LNodeValue (self last:))) ;EO: Was "KList"
+				(= theIcon (KList LNodeValue (self last:)))
 			)
 			(if (not (& (theIcon signal?) DISABLED))
 				(break)

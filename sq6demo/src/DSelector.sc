@@ -118,7 +118,7 @@
 		(Message MsgGet SAVE N_BUTTON_UP 0 0 1 (str data?))
 		(upButton
 				font:			SYSFONT,
-				text:			(String StrDup (str data?)),
+				text:			(KString StrDup (str data?)),
 				view:			SAVE,
 				loop:			4,
 				cel:			0,
@@ -133,7 +133,7 @@
 		(= downButton
 			((DButton new:)
 				font:			SYSFONT,
-				text:			(String StrDup (str data?)),
+				text:			(KString StrDup (str data?)),
 				view:			SAVE,
 				loop:			4,
 				cel:			0,
@@ -221,11 +221,11 @@
 	(method (draw &tmp node nextNode obj cobj i)
 		(if (textList size?)
 			(= cobj (textList at: current))
-			(for	((= node (List LFirstNode (textList elements?))) (= i 0))
+			(for	((= node (KList LFirstNode (textList elements?))) (= i 0))
 					node
 					((= node nextNode) (++ i))
-				(= nextNode (List LNextNode node))
-				(= obj (List LNodeValue node))
+				(= nextNode (KList LNextNode node))
+				(= obj (KList LNodeValue node))
 				(obj
 					moveTo:	2 (+ 1 (* (- first i) (* -1 textHeight))),
 					fore:		(if (== cobj obj) back else fore),
@@ -282,7 +282,7 @@
 				(textList add:
 					((SelectorDText new:)
 						font:			font,
-						text:			(String StrDup (str data?)),
+						text:			(KString StrDup (str data?)),
 						setSize:		(- width MARGIN),
 						yourself:
 					)
@@ -307,7 +307,7 @@
 		;
 		; Return a copy of the text for the current item
 
-		(return (String StrDup ((textList at: current) text?)))
+		(return (KString StrDup ((textList at: current) text?)))
 	)
 
 	(method (setSize &tmp widest node obj r)
@@ -315,18 +315,18 @@
 		(= r (IntArray new:))
 		(= widest 0)
 		(if (not width)
-			(for	((= node (List LFirstNode (textList elements?))))
+			(for	((= node (KList LFirstNode (textList elements?))))
 					node
 					((= node (textList nextNode?)))
-				(textList nextNode: (List LNextNode node))
-				(= obj (List LNodeValue node))
-				(Text TextSize (r data?) (obj text?) font 0)
+				(textList nextNode: (KList LNextNode node))
+				(= obj (KList LNodeValue node))
+				(KText TextSize (r data?) (obj text?) font 0)
 				(= widest (Max (r at: 2) widest))
 			)
 		)
 
 		; Find the height of the font
-		(Text TextSize (r data?) {M} font 0)
+		(KText TextSize (r data?) {M} font 0)
 		(= textHeight (+ (r at: 3) 2))
 		(r dispose:)
 

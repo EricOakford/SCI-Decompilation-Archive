@@ -23,7 +23,7 @@
 )
 (procedure (localproc_00af param1)
 	((= newDText (DText new:))
-		text: (String StrDup (str data?))
+		text: (KString StrDup (str data?))
 		fore: 0
 		font: 60
 		mode: teJustCenter
@@ -33,7 +33,7 @@
 		init:
 	)
 	((= newDText_2 (DText new:))
-		text: (String StrDup (str data?))
+		text: (KString StrDup (str data?))
 		fore: 255
 		font: 60
 		mode: teJustCenter
@@ -95,7 +95,7 @@
 					)
 				)
 				((= newDText_3 (DText new:))
-					text: (String StrDup (str data?))
+					text: (KString StrDup (str data?))
 					fore: 0
 					font: 60
 					posn: 61 11
@@ -105,7 +105,7 @@
 					init:
 				)
 				((= newDText_4 (DText new:))
-					text: (String StrDup (str data?))
+					text: (KString StrDup (str data?))
 					fore: 85
 					font: 60
 					posn: 60 10
@@ -120,7 +120,7 @@
 					)
 				)
 				((= newDText_5 (DText new:))
-					text: (String StrDup (str data?))
+					text: (KString StrDup (str data?))
 					fore: 0
 					font: 60
 					posn: 69 166
@@ -130,7 +130,7 @@
 					init:
 				)
 				((= newDText_6 (DText new:))
-					text: (String StrDup (str data?))
+					text: (KString StrDup (str data?))
 					fore: 85
 					font: 60
 					posn: 68 165

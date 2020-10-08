@@ -32,8 +32,6 @@
 ;;;;		OneOf
 ;;;;		Eval
 
-;EO: All instances of "KList" were changed to "List" to allow the script to compile.
-;They will be restored to their original name when SCICompanion properly supports SCI2.1.
 
 (script# SYSTEM)
 (include game.sh)
@@ -194,7 +192,10 @@
 ;	)
 ;)
 
-(class Object
+
+
+
+(class Object ;kindof RootObj
 	;;; Class Object is the superclass of all other Script objects.  It
 	;;; defines the behavior which is expected of all objects, ensuring
 	;;; that all objects will respond to a certain set of selectors.
@@ -286,6 +287,8 @@
 	)
 )
 
+
+
 (class Code kindof Object
 	;;; Class Code is used to attach code to various objects (as in
 	;;; the 'viewer' property of an Actor) or for use in the perform:
@@ -331,7 +334,7 @@
 	(method (new)
 		(return
 			((super new:)
-				elements: (List LNew),
+				elements: (KList LNew),
 				yourself:
 			)
 		)
@@ -344,8 +347,7 @@
 	(method (add item &tmp obj n node)
 		;If the Collection does not have a KList, create one for it.
 		(if (not elements)
-			(= elements (List LNew))
-			;EO: was "KList"
+			(= elements (KList LNew))
 		)
 		
 		;Loop over the arguments, adding each to the Collection.
@@ -353,8 +355,7 @@
 				(< n argc)
 				((++ n))
 			(if (not (self isDuplicate: [item n]))
-				(List LAddToEnd elements (List LNewNode [item n]) [item n])
-				;EO: was "KList"
+				(KList LAddToEnd elements (KList LNewNode [item n]) [item n])
 				(++ size)
 			)
 		)
@@ -369,14 +370,11 @@
 			; If we're going to delete our nextNode, make sure we get
 			;	another nextNode
 			(if (and nextNode
-						(== [item n] (List LNodeValue nextNode))
-						;EO: was "KList"
+						(== [item n] (KList LNodeValue nextNode))
 				)
-				(= nextNode (List LNextNode (List LFindKey elements [item n])))
-					;EO: was "KList"
+				(= nextNode (KList LNextNode (KList LFindKey elements [item n])))
 			)
-			(if (List LDeleteKey elements [item n])
-				;EO: was "KList"
+			(if (KList LDeleteKey elements [item n])
 				(-- size)
 			)
 		)
@@ -386,8 +384,7 @@
 	(method (dispose)
 		(if elements
 			(self eachElementDo: #dispose:)
-			(List LDispose elements)
-			;EO: was "KList"
+			(KList LDispose elements)
 		)
 		(= elements NULL)
 		(= size 0)
@@ -395,29 +392,23 @@
 	)
 
 	(method (first)
-		(return (List LFirstNode elements))
-		;EO: was "KList"
+		(return (KList LFirstNode elements))
 	)
 
 	(method (next node)
-		(return (List LNextNode node))
-		;EO: was "KList"
+		(return (KList LNextNode node))
 	)
 
 	(method (isEmpty)
-		(return (or (== elements NULL) (List LEmpty elements)))
-		;EO: was "KList"
+		(return (or (== elements NULL) (KList LEmpty elements)))
 	)
 
 	(method (contains anObject)
-		(return (List LFindKey elements anObject))
-		;EO: was "KList"
+		(return (KList LFindKey elements anObject))
 	)
 
 	(method (eachElementDo action &tmp node obj)
-		(List LEachElementDo elements action &rest)
-		;EO: was "KList"
-		
+		(KList LEachElementDo elements action &rest)
 ;		(for	((= node (KList LFirstNode elements)))
 ;				node
 ;				((= node nextNode))
@@ -428,9 +419,7 @@
 	)
 
 	(method (firstTrue action &tmp node obj)
-		(List LFirstTrue elements action &rest)
-		;EO: was "KList"
-		
+		(KList LFirstTrue elements action &rest)
 ;		(for	((= node (KList LFirstNode elements)))
 ;				node
 ;				((= node nextNode))
@@ -444,9 +433,7 @@
 	)
 
 	(method (allTrue action &tmp node obj)
-		(List LAllTrue elements action &rest)
-		;EO: was "KList"
-		
+		(KList LAllTrue elements action &rest)
 ;		(for	((= node (KList LFirstNode elements)))	;(for	((= node (self first:)))
 ;				node
 ;				((= node nextNode))
@@ -463,11 +450,11 @@
 		;
 		; Delete all elements from collection to deallocate list nodes
 
-		(for	((= node (List LFirstNode elements)))	;EO: was "KList"
+		(for	((= node (KList LFirstNode elements)))
 				node
 				((= node nextNode))
-			(= nextNode (List LNextNode node))		;EO: was "KList"
-			(self delete: (List LNodeValue node))	;EO: was "KList"
+			(= nextNode (KList LNextNode node))
+			(self delete: (KList LNodeValue node))
 		)
 	)
 
@@ -481,9 +468,11 @@
 	)
 
 	(method (value n)
-		(return (List LNodeValue n) )		;EO: was "KList"
+		(return (KList LNodeValue n) )
 	)
 )
+
+
 
 (class List kindof Collection
 	;;; A List is a Collection which has a specified order to its
@@ -502,7 +491,7 @@
 ;;;	)
 
 	(method (at n &tmp node)
-		(return (List LAt elements n))	;EO: was "KList"
+		(return (KList LAt elements n))
 ;		(for	((= node (KList LFirstNode elements)))		;(for	((= node (self first:)))
 ;				(and n node)
 ;				((-- n) (= node (KList LNextNode node)))	;((-- n) (= node (self next: node)))
@@ -517,23 +506,23 @@
 	)
 
 	(method (last)
-		(return (List LLastNode elements))	;EO: was "KList"
+		(return (KList LLastNode elements))
 	)
 
 	(method (prev node)
-		(return (List LPrevNode node))		;EO: was "KList"
+		(return (KList LPrevNode node))
 	)
 	
 	(method (addToFront obj &tmp n)
 		(if (not elements)
-			(= elements (List LNew))		;EO: was "KList"
+			(= elements (KList LNew))
 		)
 		
 		(for	((= n (- argc 1)))
 				(<= 0 n)
 				((-- n))
 			(if (not (self isDuplicate: [obj n]))
-				(List LAddToFront elements (List LNewNode [obj n]) [obj n])		;EO: was "KList"
+				(KList LAddToFront elements (KList LNewNode [obj n]) [obj n])
 				(++ size)
 			)
 		)
@@ -542,14 +531,14 @@
 
 	(method (addToEnd obj &tmp n)
 		(if (not elements)
-			(= elements (List LNew))		;EO: was "KList"
+			(= elements (KList LNew))
 		)
 		
 		(for	((= n 0))
 				(< n argc)
 				((++ n))
 			(if (not (self isDuplicate: [obj n]))
-				(List LAddToEnd elements (List LNewNode [obj n]) [obj n])		;EO: was "KList"
+				(KList LAddToEnd elements (KList LNewNode [obj n]) [obj n])
 				(++ size)
 			)
 		)
@@ -557,14 +546,14 @@
 	)
 
 	(method (addAfter el obj &tmp n num insertNode)
-		(if (= insertNode (List LFindKey elements el))		;EO: was "KList"
+		(if (= insertNode (KList LFindKey elements el))
 			(-- argc)
 			(for	((= n 0))
 					(< n argc)
 					((++ n))
 				(if (not (self isDuplicate: [obj n]))
 					(= insertNode
-						(List LAddAfter elements insertNode (List LNewNode [obj n]) [obj n])		;EO: was "KList"
+						(KList LAddAfter elements insertNode (KList LNewNode [obj n]) [obj n])
 					)
 					(++ size)
 				)
@@ -574,7 +563,7 @@
 	)
 
 	(method (indexOf obj &tmp n node)
-		(return (List LIndexOf elements obj))		;EO: was "KList"
+		(return (KList LIndexOf elements obj))
 ;		(for	((= n 0) (= node (KList LFirstNode elements)))
 ;				node
 ;				((++ n) (= node (KList LNextNode node)))
@@ -588,9 +577,11 @@
 	(method (sort theProp doDescending &tmp v des)
 		(= v (if argc theProp else -1))
 		(= des (and (> argc 1) doDescending))
-		(List LSort elements v des)		;EO: was "KList"
+		(KList LSort elements v des)
 	)
 )
+
+
 
 (class Set kindof List
 	;;; A Set is a kind of List which does not contain duplicate
@@ -616,11 +607,11 @@
 
 	(method (handleEvent event &tmp node evtClone ret obj)
 		(= evtClone (Clone event))
-		(for	((= node (List LFirstNode elements)))		;EO: was "KList"
+		(for	((= node (KList LFirstNode elements)))
 				(and node (not (evtClone claimed?)))
 				((= node nextNode))
-			(= nextNode (List LNextNode node))		;EO: was "KList"
-			(= obj (List LNodeValue node))		;EO: was "KList"
+			(= nextNode (KList LNextNode node))
+			(= obj (KList LNodeValue node))
 			(obj handleEvent: evtClone)
 		)
 		(= ret (evtClone claimed?))
@@ -628,6 +619,7 @@
 		(return ret)
 	)
 )
+
 
 (class Cast kindof EventHandler
 	(properties
@@ -641,7 +633,6 @@
 		(super dispose:)
 	)
 )
-
 
 (class Script kindof Object
 	;; A Script is a kind of Object which has a state, methods to

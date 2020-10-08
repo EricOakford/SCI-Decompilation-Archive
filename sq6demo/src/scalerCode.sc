@@ -39,7 +39,7 @@
 		)
 		(= temp6 (String format: {%s scale= %d} param2 temp0))
 		((= newDText (DText new:))
-			text: (String StrDup (temp6 data?))
+			text: (KString StrDup (temp6 data?))
 			fore: 255
 			back: 0
 			setSize: 240
@@ -63,7 +63,7 @@
 		(newEvent y: (Max (+ param1 1) (- (newEvent y?) 10)))
 		(= temp3 (String format: {%s y= %d} param2 (newEvent y?)))
 		((= newDText (DText new:))
-			text: (String StrDup (temp3 data?))
+			text: (KString StrDup (temp3 data?))
 			fore: 255
 			back: 0
 			setSize: 240
