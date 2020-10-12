@@ -116,7 +116,7 @@
 		(chair init:)
 		(desk init: approachVerbs: verbDo)
 		(cabinetDoors init: approachVerbs: verbDo verbLook)
-		(outlet init: approachVerbs: verbDo verbLook)
+		(outlet init: approachVerbs: verbUse verbDo)
 		(hallway init:)
 		(curRoom
 			addObstacle:

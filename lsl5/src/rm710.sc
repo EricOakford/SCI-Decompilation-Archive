@@ -730,17 +730,17 @@
 		approachY 93
 	)
 	
-	(method (doVerb theVerb theItem &tmp [temp0 100])
+	(method (doVerb theVerb theItem &tmp [str 100])
 		(switch theVerb
 			(verbLook
-				(Format @temp0 710 14 pokerJackpot)
-				(TimePrint @temp0)
+				(Format @str 710 14 pokerJackpot)
+				(TimePrint @str)
 			)
 			(verbDo
 				(if (ego has: iSilverDollar)
-					(Format @temp0 710 15 silverDollars)
+					(Format @str 710 15 silverDollars)
 					(SolvePuzzle 4 fPlayedVideoPoker)
-					(TimePrint @temp0)
+					(TimePrint @str)
 					(curRoom newRoom: 720)
 				else
 					(TimePrint 710 16)
@@ -750,8 +750,8 @@
 				(switch theItem
 					(iSilverDollar
 						(if (ego has: iSilverDollar)
-							(Format @temp0 710 15 silverDollars)
-							(TimePrint @temp0)
+							(Format @str 710 15 silverDollars)
+							(TimePrint @str)
 							(curRoom newRoom: 720)
 						else
 							(TimePrint 710 16)

@@ -1009,7 +1009,7 @@
 				(ego setCel: 255 setCycle: BegLoop self)
 			)
 			(2
-				(SolvePuzzle 5 147)
+				(SolvePuzzle 5 fUnlockedDesk)
 				(TimePrint 840 25)
 				(ego
 					normalize: (if (Btst fCoveredInToner) 842 else 570)
@@ -1154,7 +1154,7 @@
 				(= ticks 60)
 			)
 			(3
-				(SolvePuzzle 5 145)
+				(SolvePuzzle 5 fGotEvidence)
 				(TimePrint 840 31)
 				(= ticks 123)
 			)

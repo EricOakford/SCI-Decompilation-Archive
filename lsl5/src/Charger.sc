@@ -16,7 +16,7 @@
 )
 
 (local
-	[chargerPosn 7] = [160 64 108 260 19 146]
+	chargerPosn = [160 64 108 260 19 146]
 )
 (instance sPlugCharger of Script
 	
@@ -53,7 +53,7 @@
 				(ego setLoop: 0 setCel: 255 setCycle: BegLoop self)
 			)
 			(3
-				(ego put: 1 curRoom setLoop: 1 normalize:)
+				(ego put: iCharger curRoom setLoop: 1 normalize:)
 				(SolvePuzzle 8 fPlugCharger)
 				(TimePrint 22 0)
 				(HandsOn)

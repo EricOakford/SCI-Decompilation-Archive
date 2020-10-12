@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 940)
-(include sci.sh)
+(script# PRINTD)
+(include game.sh)
 (use Main)
 (use Intrface)
 
@@ -8,103 +8,104 @@
 	PrintD 0
 )
 
-(procedure (PrintD param1 &tmp temp0 newDialog newDText newDTextNsRight temp4 newDTextNsBottom temp6 temp7 temp8 temp9 temp10 temp11 temp12 temp13 temp14)
-	(= temp10 (= temp11 -1))
-	(= newDTextNsRight
-		(= temp4 (= newDTextNsBottom (= temp6 0)))
-	)
-	(= temp12 0)
-	(= temp14 0)
-	((= newDialog (Dialog new:)) window: systemWindow)
-	(= temp0 0)
-	(while (< temp0 argc)
-		(switch (= temp8 [param1 temp0])
-			(106
-				(= newDTextNsBottom (newDText nsBottom?))
-				(= newDTextNsRight 0)
+(procedure (PrintD args &tmp
+		arg theDialog theItem right bottom top left ret type theObj
+		xDialog yDialog theTitle theValue theFirst)
+	(= xDialog (= yDialog -1))
+	(= right (= bottom (= top (= left 0))))
+	(= theTitle 0)
+	(= theFirst 0)
+	((= theDialog (Dialog new:)) window: systemWindow)
+	(= arg 0)
+	(while (< arg argc)
+		(switch (= type [args arg])
+			(#new
+				(= top (theItem nsBottom?))
+				(= right 0)
 			)
-			(67
-				(= temp10 [param1 (++ temp0)])
-				(= temp11 [param1 (++ temp0)])
+			(#at
+				(= xDialog [args (++ arg)])
+				(= yDialog [args (++ arg)])
 			)
-			(80
-				(= temp12 [param1 (++ temp0)])
+			(#title
+				(= theTitle [args (++ arg)])
 			)
-			(121
-				(= temp14 [param1 (++ temp0)])
+			(#first
+				(= theFirst [args (++ arg)])
 			)
 			(else 
-				(++ temp0)
-				(switch temp8
-					(26
-						((= newDText (DText new:)) text: [param1 temp0])
+				(++ arg)
+				(switch type
+					(#text
+						((= theItem (DText new:)) text: [args arg])
 					)
-					(81
-						((= newDText (DButton new:))
-							text: [param1 temp0]
-							value: [param1 (++ temp0)]
+					(#button
+						((= theItem (DButton new:))
+							text: [args arg]
+							value: [args (++ arg)]
 						)
 					)
-					(82
-						((= newDText (DIcon new:))
-							view: [param1 temp0]
-							loop: [param1 (++ temp0)]
-							cel: [param1 (++ temp0)]
+					(#icon
+						((= theItem (DIcon new:))
+							view: [args arg]
+							loop: [args (++ arg)]
+							cel: [args (++ arg)]
 						)
 					)
-					(41
-						((= newDText (DEdit new:))
-							text: [param1 temp0]
-							max: [param1 (++ temp0)]
+					
+					(#edit
+						((= theItem (DEdit new:))
+							text: [args arg]
+							max: [args (++ arg)]
 						)
 					)
 					(else 
-						((= newDText (DText new:)) text: [param1 (-- temp0)])
+						((= theItem (DText new:)) text: [args (-- arg)])
 					)
 				)
 				(if
-				(and (< (+ temp0 1) argc) (== [param1 (+ temp0 1)] 4))
-					(++ temp0)
-					(= newDTextNsRight
-						(+ newDTextNsRight [param1 (++ temp0)])
+				(and (< (+ arg 1) argc) (== [args (+ arg 1)] 4))
+					(++ arg)
+					(= right
+						(+ right [args (++ arg)])
 					)
 				)
 				(if
-				(and (< (+ temp0 1) argc) (== [param1 (+ temp0 1)] 3))
-					(++ temp0)
-					(= newDTextNsBottom
-						(+ newDTextNsBottom [param1 (++ temp0)])
+				(and (< (+ arg 1) argc) (== [args (+ arg 1)] 3))
+					(++ arg)
+					(= top
+						(+ top [args (++ arg)])
 					)
 				)
-				(newDText
+				(theItem
 					setSize:
-					moveTo: (+ newDTextNsRight 4) (+ newDTextNsBottom 4)
+					moveTo: (+ right MARGIN) (+ top MARGIN)
 				)
-				(newDialog add: newDText)
-				(= newDTextNsRight (newDText nsRight?))
+				(theDialog add: theItem)
+				(= right (theItem nsRight?))
 			)
 		)
-		(++ temp0)
+		(++ arg)
 	)
-	(newDialog setSize: center:)
-	(newDialog
+	(theDialog setSize: center:)
+	(theDialog
 		moveTo:
-			(if (== -1 temp10) (newDialog nsLeft?) else temp10)
-			(if (== -1 temp11) (newDialog nsTop?) else temp11)
+			(if (== -1 xDialog) (theDialog nsLeft?) else xDialog)
+			(if (== -1 yDialog) (theDialog nsTop?) else yDialog)
 	)
-	(if temp12 (newDialog text: temp12))
-	(= temp13 (newDialog at: temp14))
-	(if (not (& $0001 (temp13 state?))) (= temp13 0))
-	(= temp7
-		(newDialog open: (if temp12 4 else 0) -1 doit: temp13)
+	(if theTitle (theDialog text: theTitle))
+	(= theValue (theDialog at: theFirst))
+	(if (not (& dButton (theValue state?))) (= theValue 0))
+	(= ret
+		(theDialog open: (if theTitle wTitled else 0) -1 doit: theValue)
 	)
-	(if (IsObject temp7)
-		(if (temp7 isKindOf: DButton)
-			(= temp7 (temp7 value?))
+	(if (IsObject ret)
+		(if (ret isKindOf: DButton)
+			(= ret (ret value?))
 		else
-			(= temp7 1)
+			(= ret TRUE)
 		)
 	)
-	(newDialog dispose:)
-	(return temp7)
+	(theDialog dispose:)
+	(return ret)
 )

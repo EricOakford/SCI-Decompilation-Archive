@@ -99,9 +99,9 @@
 			(self init:)
 		)
 
-;		(if (not loop)
+		(if (not loop)
 			(= loop 1)
-;		)
+		)
 
 		(if argCount
 			(= vol newVol)

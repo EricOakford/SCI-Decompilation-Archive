@@ -328,7 +328,7 @@
 		)
 	)
 	
-	(method (changeState newState &tmp [temp0 110])
+	(method (changeState newState &tmp [str 110])
 		(switch (= state newState)
 			(0
 				(ego setHeading: 270)
@@ -359,8 +359,8 @@
 						(doorman setLoop: 2 setCel: 0 setCycle: Oscillate 1 self)
 					)
 					(else 
-						(Format @temp0 700 3 silverDollars)
-						(TimePrint @temp0)
+						(Format @str 700 3 silverDollars)
+						(TimePrint @str)
 						(doorman setLoop: 2 setCel: 0 setCycle: Oscillate 1 self)
 					)
 				)

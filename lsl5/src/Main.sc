@@ -743,7 +743,7 @@
 		(ScriptID SIGHT)
 		(super init:)
 		((ScriptID LL5INIT 0) init:)
-		(UnLoad SCRIPT 16)
+		(UnLoad SCRIPT LL5INIT)
 		(= doVerbCode ll5DoVerbCode)
 		(= ftrInitializer ll5FtrInit)
 		((= keyDownHandler ll5KDHandler) add:)
