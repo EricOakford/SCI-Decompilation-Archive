@@ -18,23 +18,63 @@
 )
 
 (local
-	local0
+	cupidPathValue
 	cupidTargets
 	picDrawn
 	local3
 	local4
 	playingBagPipes
-	[local6 10] = [0 0 122 57 245 61 163 118 -1 -1]
-	[cupidPts 13] = [225 76 197 79 161 81 129 79 101 77 67 71 -32768]
-	[cupidPts2 13] = [101 77 129 79 161 81 197 79 225 76 265 71 -32768]
-	[turkeyPoly 36] = [0 0 0 0 237 80 1 243 77 2 243 69 3 243 65 4 244 65 5 232 65 6 218 67 7 202 78 8 184 96 9 166 105 -1 -1 -1]
+	local6 = [
+		0 0
+		122 57
+		245 61
+		163 118
+		-1 -1
+		]
+	cupidPts = [
+		225 76
+		197 79
+		161 81
+		129 79
+		101 77
+		67 71
+		PATHEND
+		]
+	cupidPts2 = [
+		101 77
+		129 79
+		161 81
+		197 79
+		225 76
+		265 71
+		PATHEND
+		]
+	turkeyPoly = [
+		0 0
+		0 0
+		237 80
+		1 243
+		77 2
+		243 69
+		3 243
+		65 4
+		244 65
+		5 232
+		65 6
+		218 67
+		7 202
+		78 8
+		184 96
+		9 166
+		105 -1
+		-1 -1
+		]
 )
-(procedure (NextTake nextPic &tmp ret)
-	((ScriptID 0 5) fade:)
-	(= ret (if argc nextPic else 1))
+(procedure (NextTake nextPic &tmp thePic)
+	((ScriptID MAIN 5) fade:)
+	(= thePic (if argc nextPic else pStage))
 	(curRoom
-		drawPic:
-			ret
+		drawPic: thePic
 			(if (and (<= 0 numColors) (<= numColors 16))
 				BLACKOUT
 			else
@@ -46,13 +86,13 @@
 
 (instance centerStage of Room
 	(properties
-		picture 1
+		picture pStage
 		style (| IRISIN DISSOLVE)
 	)
 	
 	(method (init)
 		(super init:)
-		(Load SOUND 101)
+		(Load SOUND sNo)
 		(wannaBe init: hide:)
 		(stageProp init: hide:)
 		(director init: hide:)
@@ -63,11 +103,10 @@
 )
 
 (instance bagPipeScript of Script
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
-		((ScriptID 0 5) number: 6 loop: -1 playBed:)
+		((ScriptID MAIN 5) number: sBagPipes loop: -1 playBed:)
 		(= playingBagPipes TRUE)
 		(self setScript: scottishDance)
 	)
@@ -102,7 +141,7 @@
 			(0 (wannaBe posn: 265 132))
 			(1 0)
 			(2
-				((ScriptID 0 4) number: 10 loop: 0 play:)
+				((ScriptID MAIN 4) number: 10 loop: 0 play:)
 				(stageProp
 					show:
 					view: vBagPipe
@@ -131,7 +170,7 @@
 			(6
 				(Wait 40)
 				(Load VIEW vTurkey)
-				(LoadMany SOUND 2 12 13 14 102)
+				(LoadMany SOUND sChicken 12 13 14 sWrong)
 				(clover setScript: 0)
 				(NextTake)
 				(= cycles 2)
@@ -144,8 +183,7 @@
 )
 
 (instance cloverFall of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -184,8 +222,7 @@
 )
 
 (instance scottishDance of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -214,11 +251,10 @@
 )
 
 (instance turkeyEnter of Script
-	(properties)
-	
+
 	(method (init)
 		(super init: &rest)
-		((ScriptID 0 5) number: 2 loop: -1 playBed:)
+		((ScriptID 0 5) number: sChicken loop: -1 playBed:)
 	)
 	
 	(method (changeState newState)
@@ -262,8 +298,7 @@
 				(= cycles 10)
 			)
 			(7
-				(if
-				(!= [turkeyPoly (= picDrawn (+ picDrawn 3))] -1)
+				(if (!= [turkeyPoly (= picDrawn (+ picDrawn 3))] -1)
 					((ScriptID 0 4) number: 13 loop: 0 play:)
 					(wannaBe
 						show:
@@ -292,10 +327,10 @@
 				(director show: cel: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(11
-				((ScriptID 0 6) number: 102 loop: 0 play: self)
+				((ScriptID 0 6) number: sWrong loop: 0 play: self)
 				(LoadMany VIEW vCupid vBodies)
 				(Load SCRIPT MOVEFWD)
-				(LoadMany SOUND 3 16 17 18 103)
+				(LoadMany SOUND sCupid 16 17 18 sCut)
 			)
 			(12
 				(Wait 40)
@@ -311,11 +346,10 @@
 )
 
 (instance cupidWannaBe of Script
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
-		((ScriptID 0 5) number: 3 loop: -1 playBed:)
+		((ScriptID 0 5) number: sCupid loop: -1 playBed:)
 		(stageProp posn: 365 132)
 	)
 	
@@ -339,7 +373,7 @@
 		)
 		(if
 			(and
-				(== local0 (OneOf local0 3 9 15))
+				(== cupidPathValue (OneOf cupidPathValue 3 9 15))
 				(not (wannaBe cel?))
 			)
 			(wannaBe setCycle: EndLoop)
@@ -414,13 +448,13 @@
 				(director show: cel: 0 loop: 0 setCycle: EndLoop self)
 			)
 			(7
-				((ScriptID 0 6) number: 103 loop: 0 play: self)
+				((ScriptID 0 6) number: sCut loop: 0 play: self)
 			)
 			(8
 				(Wait 40)
 				(LoadMany VIEW vGroundhog vBoard)
 				(Load SCRIPT JUMP)
-				(LoadMany SOUND 5 19 20 21 14 104)
+				(LoadMany SOUND sGroundhog 19 20 21 14 sNoNoNo)
 				(NextTake)
 				(= cycles 2)
 			)
@@ -435,11 +469,10 @@
 )
 
 (instance hogScript of Script
-	(properties)
-	
+
 	(method (init)
 		(super init: &rest)
-		((ScriptID 0 5) number: 5 loop: -1 playBed:)
+		((ScriptID 0 5) number: sGroundhog loop: -1 playBed:)
 		(light init: hide:)
 		(stars init: hide:)
 		(sparks init: hide:)
@@ -474,7 +507,7 @@
 				(= cycles 1)
 			)
 			(2
-				((ScriptID 0 4) number: 19 loop: 0 play:)
+				((ScriptID 0 4) number: sCrash loop: 0 play:)
 			)
 			(3
 				(stars show: setCycle: Forward)
@@ -513,13 +546,13 @@
 				(director loop: 5 cel: 0 show: setCycle: EndLoop self)
 			)
 			(10
-				((ScriptID 0 6) number: 104 loop: 0 play: self)
+				((ScriptID 0 6) number: sNoNoNo loop: 0 play: self)
 			)
 			(11
 				(Wait 40)
 				(Load VIEW vSanta vSantaEaster vSantaHop)
 				(Load SCRIPT OSC)
-				(LoadMany SOUND 4 12 23 24 25 27 26 105 106)
+				(LoadMany SOUND sBunny 12 23 24 25 27 26 sYesThatsIt sAction)
 				(= seconds 4)
 			)
 			(12
@@ -540,8 +573,7 @@
 )
 
 (instance santaWannaBe of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 3))
@@ -742,7 +774,7 @@
 				(arrowSound dispose:)
 				((ScriptID 0 5) fade:)
 				(Load VIEW vCreditStars)
-				(Load SOUND 1)
+				(Load SOUND sSugarPlumFairy)
 				(= cycles 2)
 			)
 			(32
@@ -753,19 +785,28 @@
 )
 
 (instance CreditsRoll of Script
-	(properties)
-	
+		
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(misHap dispose:)
 				(cast eachElementDo: #hide)
-				(curRoom drawPic: 6 FADEOUT)
-				(LoadMany PICTURE 6 7 8 9 10 11 12 13 14)
+				(curRoom drawPic: pCredits2 FADEOUT)
+				(LoadMany PICTURE
+					pCredits2
+					pCredits3
+					pCredits4
+					pCredits5
+					pCredits6
+					pCredits7
+					pCredits8
+					pCredits9
+					pCredits10
+				)
 				(= cycles 1)
 			)
 			(1
-				((ScriptID 0 5) number: 1 loop: 1 playBed: self)
+				((ScriptID 0 5) number: sSugarPlumFairy loop: 1 playBed: self)
 				(= picDrawn 6)
 				(= playingBagPipes 0)
 				(= seconds 2)
@@ -778,7 +819,7 @@
 				(= seconds 2)
 			)
 			(3
-				(curRoom drawPic: 5 FADEOUT)
+				(curRoom drawPic: pCredits1 FADEOUT)
 				(= picDrawn 0)
 				(= cycles 1)
 			)
@@ -796,10 +837,12 @@
 				)
 			)
 			(5
-				(curRoom drawPic: 3 FADEOUT)
+				(curRoom drawPic: pBlack FADEOUT)
 				(= cycles 2)
 			)
-			(6 (theGame restart:))
+			(6
+				(theGame restart:)
+			)
 		)
 	)
 )
@@ -1027,20 +1070,19 @@
 )
 
 (instance cupidPath of Path
-	(properties)
 	
 	(method (motionCue)
 		(++ cupidTargets)
 		(super motionCue: &rest)
 	)
 	
-	(method (at param1)
-		(return [cupidPts param1])
+	(method (at n)
+		(return [cupidPts n])
 	)
 	
 	(method (next)
 		(super next: &rest)
-		(return (++ local0))
+		(return (++ cupidPathValue))
 	)
 )
 
@@ -1067,20 +1109,19 @@
 )
 
 (instance cpdPath2 of Path
-	(properties)
-	
+
 	(method (motionCue)
 		(++ cupidTargets)
 		(super motionCue: &rest)
 	)
 	
-	(method (at param1)
-		(return [cupidPts2 param1])
+	(method (at n)
+		(return [cupidPts2 n])
 	)
 	
 	(method (next)
 		(super next: &rest)
-		(return (++ local0))
+		(return (++ cupidPathValue))
 	)
 )
 

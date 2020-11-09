@@ -22,13 +22,14 @@
 (use Intrface)
 (use System)
 
+
 (define	GAMESSHOWN 8)		;the number of games displayed in the selector
 (define	MAXGAMES 20)		;maximum number of games in a save directory
-(define	COMMENTSIZE 36)		;size of user's description of the game
-(define COMMENTBUFF 18) 	;(define	COMMENTBUFF (/ (+ 1 COMMENTSIZE) 2))
+(define	COMMENTSIZE 36)	;size of user's description of the game
+(define	COMMENTBUFF 18) ;(/ (+ 1 COMMENTSIZE) 2))
 
 (define	DIRECTORYSIZE 29) ;size of the save directory name
- ;(define	DIRECTORYBUFF (/ (+ 1 DIRECTORYSIZE) 2))
+;(define	DIRECTORYBUFF (/ (+ 1 DIRECTORYSIZE) 2))
 
 (define BUFFERSIZE 361) ;(define	BUFFERSIZE (+ (* MAXGAMES COMMENTBUFF) 1))
 
@@ -63,11 +64,11 @@
 					{Select the game that you would like to restore.}
 					{Type the description of this saved game.}
 					{This directory/disk can hold no more saved games. 
-	You must replace one of your saved games or use
-	Change Directory to save on a different directory/disk.}
+					You must replace one of your saved games or use
+					Change Directory to save on a different directory/disk.}
 					{This directory/disk can hold no more saved games. 
-	You must replace one of your saved games or use
-	Change Directory to save on a different directory/disk.}
+					You must replace one of your saved games or use
+					Change Directory to save on a different directory/disk.}
 					]
 )
 
@@ -81,59 +82,6 @@
 )
 
 
-(class SysWindow kindof	Object
-	(properties
-		top		0
-		left		0
-		bottom	0
-		right		0
-		color		0			; foreground color
-		back		15			; background color
-		priority	-1			; priority
-		window	0			; handle/pointer to system window
-		type	0				; generally	corresponds to system window types
-		title		0			; text appearing in title bar if present
-
-		;; this rectangle is the working area for X/Y centering
-		;; these coordinates can define a subsection of the picture
-		;; in which a window will be centered
-		brTop		0
-		brLeft	0
-		brBottom	190
-		brRight	320
-	)
-
-;;;	(methods
-;;;		open
-;;;		dispose
-;;;	)
-
-	;; Open corresponding system window structure
-	;; Custom window type 0x81 indicates that system
-	;; will NOT draw the window, only get a port and link into list
-	(method (open)
-		(= window 
-			(NewWindow 
-				top 
-				left 
-				bottom 
-				right 
-				title 
-				type
-				priority 
-				color
-				back
-			)
-		)
-	)
-	(method (dispose)
-		(if window
-			(DisposeWindow window)
-			(= window 0)
-		)
-		(super dispose:)
-	)
-)
 
 
 
@@ -144,10 +92,6 @@
 
 	(method (init theComment names nums)
 		;; Initialize the dialog.
-
-
-		; give ourself the class SysWindow as our window
-		(= window SysWindow)
 
 		;Re-init our size, with no elements.
 		(= nsBottom 0)
@@ -176,8 +120,7 @@
 			text: names,
 			font: smallFont,
 			setSize:,
-			moveTo: MARGIN (+ nsBottom MARGIN),
-			state: dExit
+			moveTo: MARGIN (+ nsBottom MARGIN)
 		)
 
 		;Add three buttons down the side.
@@ -221,10 +164,6 @@
 			add: textI,
 			setSize:, 
 			center:,
-			;EO: VGA-specific change to allow the dialog box to be removed from the screen and subsequent PackHandle Failure crashes.
-			; However, this creates a side-effect of views being redrawn over the save/restore dialog after you
-			;bring up the Change Directory box.
-			;open: wTitled -1			;don't save PMAP
 			open: wTitled 15
 		)
 
@@ -236,7 +175,7 @@
 
 	(method	(doit theComment
 						&tmp 	oldStatus fd ret offset
-								[names BUFFERSIZE] [nums 21]
+								[names BUFFERSIZE] [nums 21] ;(+ MAXGAMES 1)
 								[str 40]
 				)
 
@@ -250,12 +189,12 @@
 				theComment
 			)
 
-			(= fd (FileIO fileOpen (Format @str SAVE 0 (theGame name?))))
+			(= fd (FOpen (Format @str "%ssg.dir" (theGame name?))))
 			(if (== fd -1)
 				;no directory -> no saved games
 				(return)
 			)
-			(FileIO fileClose fd)
+			(FClose fd)
 		)
 
 		(if (not (self init: theComment @names @nums))
@@ -428,9 +367,6 @@
 (instance GetReplaceName of Dialog
 
 	(method (doit theComment &tmp ret)
-		; give ourself the class SysWindow as our window
-		(= window SysWindow)
-
 		(text1
 			setSize:,
 			moveTo:MARGIN MARGIN
@@ -493,7 +429,7 @@
 	(repeat
 		(= result
 			(Print 
-				SAVE 1
+				"New save-game directory:"
 				#font: SYSFONT
 				#edit: (StrCpy @newDir where) DIRECTORYSIZE
 				#button: {OK} 1
@@ -517,7 +453,7 @@
 			(return TRUE)
 		else
 			(Print
-				(Format @str SAVE 2 @newDir)
+				(Format @str "%s\nis not a valid directory" @newDir)
 				#font:SYSFONT
 			)
 		)
@@ -533,7 +469,7 @@
 
 
 (procedure (NeedDescription)
-	(Print SAVE 3 #font:SYSFONT)
+	(Print "You must type a description for the game." #font:SYSFONT)
 )
 
 

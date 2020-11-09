@@ -12,21 +12,20 @@
 
 (instance titleScreen of Room
 	(properties
-		picture 4
+		picture pTitle
 		style FADEOUT
 	)
 	
 	(method (init)
 		(LoadMany VIEW vBagPipe vDirector)
-		(LoadMany PICTURE 3 1 5)
-		(Load SOUND 6)
+		(LoadMany PICTURE pBlack pStage pCredits1)
+		(Load SOUND sBagPipes)
 		(super init:)
 		(self setScript: displayTitle)
 	)
 )
 
 (instance displayTitle of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -37,13 +36,19 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
-				((ScriptID 0 5) number: 7 loop: -1 playBed:)
+				((ScriptID MAIN 5)
+					number: sJingleBells
+					loop: -1
+					playBed:
+				)
 				(= seconds 5)
 			)
 			(2
-				(curRoom drawPic: 3 FADEOUT)
+				(curRoom drawPic: pBlack FADEOUT)
 				(Palette PALLoad 999 2)
 				(= cycles 4)
 			)

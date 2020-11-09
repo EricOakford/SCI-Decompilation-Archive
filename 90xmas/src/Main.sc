@@ -154,9 +154,7 @@
 	)
 )
 
-(instance backSound of Sound
-	(properties)
-)
+(instance backSound of Sound)
 
 (instance saidSound of Sound
 	(properties
@@ -165,7 +163,6 @@
 )
 
 (instance Card of Game
-	(properties)
 	
 	(method (init &tmp [temp0 11])
 		(= systemWindow SysWindow)
