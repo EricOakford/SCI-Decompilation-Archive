@@ -271,7 +271,7 @@
 					(1
 						(messager say: N_ROCKS V_LOOK C_LOOK1)
 					)
-					(2\
+					(2
 						(messager say: N_ROCKS V_LOOK C_LOOK2)
 					)
 					(3
