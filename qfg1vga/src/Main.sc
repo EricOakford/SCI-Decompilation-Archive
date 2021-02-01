@@ -545,15 +545,20 @@
 	(if (not (theIconBar curInvIcon?))
 		(theIconBar disable: ICON_USEIT)
 	)
-	(= i OPEN)
-	(while (<= i OPEN) (>= i FETCH)
-		(if [egoStats i]
-			(return TRUE)
-			(DisposeScript PROCS)
-		else
-			(theIconBar disable: ICON_CAST)
+	(if 
+		(or
+			(not [egoStats MAGIC]) ;no magic, no cast icon
+			(not
+				;does ego know any spells?
+				(for ((= i OPEN)) (<= i FETCH) ((++ i))
+					(if (ego knows: i)
+						(return TRUE)
+						(DisposeScript PROCS)
+					)
+				)
+			)
 		)
-		(++ i)
+		(theIconBar disable: ICON_CAST)
 	)
 	(if
 		(and

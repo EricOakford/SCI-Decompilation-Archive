@@ -14,11 +14,14 @@
 )
 
 ; General Game Defines
-(define NUMSTATS 25)
-(define NUM_INVITEMS 40)
-(define NUM_SPELLS 8)
+(define	NUM_STATS	5)
+(define	NUM_SKILLS	8)
+(define	NUM_DERIVS	4)
+(define NUM_SPELLS	8)
+(define NUM_ATTRIBS 25)	;(+ NUM_STATS NUM_SKILLS NUM_DERIVS NUM_SPELLS))
 (define GAMEDAY 3600)	;number of ticks per game day
 (define GAMEHOUR 150) 	;number of ticks per game hour
+(define NUM_INVITEMS 40)
 
 ; Priority States
 (define LowPri 4) ;pRED
