@@ -18,11 +18,7 @@
 	debugRoom 0
 )
 
-(local
-	[local0 4]
-)
 (instance debugRoom of Feature
-	(properties)
 	
 	(method (init)
 		(super init:)
@@ -61,7 +57,7 @@
 						)
 						(Prints
 							{ALT-I get InvItem\n
-							ALT-S learn a new Spell\n
+							ALT-S (vacant)\n
 							ALT-G Set/Clear flag\n
 							ALT-B set ego's Bucks\n
 							ALT-D toggle debugging\n
@@ -118,16 +114,7 @@
 					(`@m
 						(theGame showMem:)
 					)
-					(`@s	;in the works
-						(= i OPEN)
-						(while (< i (+ NUMSTATS 1))
-							(if (not [egoStats i])
-								(= [egoStats i] 10)
-								(= i 999)
-								(Printf @str {[egoStats i] is %d} [egoStats i])
-							)
-							(++ i)
-						)
+					(`@s
 					)
 					(`@n 0)
 					(`@a
@@ -242,9 +229,10 @@
 						(= [egoStats HEALTH] (MaxHealth))
 						(= [egoStats STAMINA] (MaxStamina))
 						(= [egoStats MANA] (MaxMana))
+						;now for the spells
 						(= i 0)
-						(while (< i TRIGGER)
-							(= [egoStats (+ 20 i)] nr)
+						(while (< i NUM_SPELLS)
+							(ego learn: (+ (+ NUM_STATS NUM_SKILLS NUM_DERIVS) i) nr)
 							(++ i)
 						)
 						(Prints {Why, you feel better already!})

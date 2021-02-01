@@ -545,8 +545,9 @@
 	(if (not (theIconBar curInvIcon?))
 		(theIconBar disable: ICON_USEIT)
 	)
-	(while (>= i FETCH) (<= i OPEN)
-		(if (ego knows: i)
+	(= i OPEN)
+	(while (<= i OPEN) (>= i FETCH)
+		(if [egoStats i]
 			(return TRUE)
 			(DisposeScript PROCS)
 		else
