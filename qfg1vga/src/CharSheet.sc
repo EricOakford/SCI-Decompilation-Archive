@@ -177,7 +177,7 @@
 		(HideSheet)
 		(= useSortedFeatures oldSortedFeatures)
 		(= i 0)
-		(while (< i NUMSTATS)
+		(while (< i NUM_ATTRIBS)
 			(= [oldStats i] [egoStats i])
 			(++ i)
 		)

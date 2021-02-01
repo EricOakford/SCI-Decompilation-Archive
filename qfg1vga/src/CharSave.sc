@@ -34,7 +34,7 @@
 	svLowGold				 ;;;;;;;;order dependent variables;;;;;;;;
 	svScore					 ;;;;;;;;order dependent variables;;;;;;;;
 	svMiscEquip				 ;;;;;;;;order dependent variables;;;;;;;;
-	[codedStats NUMSTATS] ;;;;;;;;order dependent variables;;;;;;;;
+	[codedStats NUM_ATTRIBS] ;;;;;;;;order dependent variables;;;;;;;;
 	svDaggers				 ;;;;;;;;order dependent variables;;;;;;;;
 	svHealing				 ;;;;;;;;order dependent variables;;;;;;;;
 	svMana					 ;;;;;;;;order dependent variables;;;;;;;;
@@ -153,7 +153,7 @@
 					(return)
 				)
 				(= whichSkill 0)
-				(while (< whichSkill NUMSTATS)
+				(while (< whichSkill NUM_ATTRIBS)
 					(= [codedStats whichSkill] [egoStats whichSkill])
 					(++ whichSkill)
 				)
@@ -177,7 +177,7 @@
 				(= svGhostOil ((inventory at: iGhostOil) amount?))
 				(= checkSum1 checkSumKey)
 				(= whichSkill 0)
-				(while (< whichSkill (+ NUMSTATS CHECK_DATA))
+				(while (< whichSkill (+ NUM_ATTRIBS CHECK_DATA))
 					(= [statsKey (+ whichSkill 1)]
 						(& [statsKey (+ whichSkill 1)] 127)
 					)
@@ -186,7 +186,7 @@
 				)
 				(= checkSum2 0)
 				(= whichSkill 1)
-				(while (< whichSkill (+ NUMSTATS CHECK_DATA))
+				(while (< whichSkill (+ NUM_ATTRIBS CHECK_DATA))
 					(= [statsKey (+ whichSkill 1)]
 						(& [statsKey (+ whichSkill 1)] 127)
 					)
@@ -196,7 +196,7 @@
 				(&= checkSum1 127)
 				(&= checkSum2 127)
 				(= whichSkill 0)
-				(while (< whichSkill (+ NUMSTATS EXTRA_DATA))
+				(while (< whichSkill (+ NUM_ATTRIBS EXTRA_DATA))
 					(= [statsKey (+ whichSkill 1)]
 						(& [statsKey (+ whichSkill 1)] 127)
 					)
@@ -208,7 +208,7 @@
 				(heroInfo writeString: @userName)
 				(heroInfo writeString: {\n})
 				(= whichSkill 1)
-				(while (< whichSkill (+ NUMSTATS EXTRA_DATA 1))
+				(while (< whichSkill (+ NUM_ATTRIBS EXTRA_DATA 1))
 					(Format @bigStr 601 1 [statsKey whichSkill])
 					(heroInfo writeString: @bigStr)
 					(++ whichSkill)

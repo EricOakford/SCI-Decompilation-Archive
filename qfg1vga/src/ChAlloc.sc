@@ -114,7 +114,7 @@
 		(= [egoStats STAMINA] (MaxStamina))
 		(= [egoStats MANA] (MaxMana))
 		(= statNum 0)
-		(while (< statNum NUMSTATS)
+		(while (< statNum NUM_ATTRIBS)
 			(= [oldStats statNum] [egoStats statNum])
 			(++ statNum)
 		)
