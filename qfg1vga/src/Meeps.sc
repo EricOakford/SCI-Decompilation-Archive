@@ -20,11 +20,11 @@
 )
 
 (local
-	[local0 10] = [0 10 -11 -6 4 12 -3 -2 -9 999]
-	[local10 3] = [0 7 999]
-	[local13 3] = [0 8 999]
-	[local16 8]
-	[local24 4] = [0 -11 -6 999]
+	local0 = [0 10 -11 -6 4 12 -3 -2 -9 999]
+	local10 = [0 7 999]
+	local13 = [0 8 999]
+	local16
+	local24 = [0 -11 -6 999]
 	newApple
 	local29
 	meepsScared
@@ -263,7 +263,7 @@
 		(trees init:)
 		(grass init:)
 		(lowerRocks init:)
-		(Load RES_SCRIPT 991)
+		(Load RES_SCRIPT JUMP)
 		(Load RES_SCRIPT 160)
 		(Lock RES_VIEW 60 1)
 	)
@@ -272,10 +272,13 @@
 		(super doit:)
 		(cond 
 			(script)
-			((== (ego edgeHit?) 2) (HandsOff) (curRoom setScript: sExitEast))
+			((== (ego edgeHit?) 2)
+				(HandsOff)
+				(curRoom setScript: sExitEast)
+			)
 		)
-		(if (!= local32 (GetTime 1))
-			(= local32 (GetTime 1))
+		(if (!= local32 (GetTime SYSTIME1))
+			(= local32 (GetTime SYSTIME1))
 			(if
 				(and
 					(== bossOnScreen 2)
@@ -294,7 +297,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(messager say: N_ROOM 0 C_NONEEDTO)
+				(messager say: N_ROOM NULL C_NONEEDTO)
 				(= meepsScared TRUE)
 			)
 			(V_TALK
@@ -302,17 +305,27 @@
 			)
 			(V_LOOK
 				(cond 
-					(meepsScared (messager say: N_ROOM V_LOOK C_SCAREDMEEPS))
-					((not (Random 0 3)) (messager say: N_ROOM V_LOOK C_SEEROOM))
-					(else (messager say: N_ROOM V_LOOK C_SEEMEEPS))
+					(meepsScared
+						(messager say: N_ROOM V_LOOK C_SCAREDMEEPS)
+					)
+					((not (Random 0 3))
+						(messager say: N_ROOM V_LOOK C_SEEROOM)
+					)
+					(else
+						(messager say: N_ROOM V_LOOK C_SEEMEEPS)
+					)
 				)
 			)
 			(V_ROCK
 				(= meepsScared TRUE)
 				(CastRock 0)
 			)
-			(V_DETECT (messager say: N_ROOM V_DETECT))
-			(V_OPEN (messager say: N_ROOM V_OPEN))
+			(V_DETECT
+				(messager say: N_ROOM V_DETECT)
+			)
+			(V_OPEN
+				(messager say: N_ROOM V_OPEN)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -356,8 +369,12 @@
 				(messager say: N_ROOM 0 C_NONEEDTO)
 				(= meepsScared TRUE)
 			)
-			(V_LOOK (messager say: N_ROCKS V_LOOK))
-			(V_DO (= local31 3))
+			(V_LOOK
+				(messager say: N_ROCKS V_LOOK)
+			)
+			(V_DO
+				(= local31 3)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -383,12 +400,23 @@
 				(messager say: N_ROOM 0 C_NONEEDTO)
 				(= meepsScared TRUE)
 			)
-			(V_LOOK (ego setScript: lookAtGrass))
+			(V_LOOK
+				(ego setScript: lookAtGrass)
+			)
 			(V_DO
 				(cond 
-					((== local37 1) (= local37 0) (= local38 1) (ego setScript: getTheFur))
-					((== local35 1) (= local35 0) (ego setScript: sGetScroll))
-					(else (super doVerb: theVerb &rest))
+					((== local37 1)
+						(= local37 0)
+						(= local38 1)
+						(ego setScript: getTheFur)
+					)
+					((== local35 1)
+						(= local35 0)
+						(ego setScript: sGetScroll)
+					)
+					(else
+						(super doVerb: theVerb &rest)
+					)
 				)
 			)
 			(else 
@@ -415,7 +443,9 @@
 				(messager say: N_ROOM 0 C_NONEEDTO)
 				(= meepsScared 1)
 			)
-			(V_LOOK (messager say: N_TREES V_LOOK))
+			(V_LOOK
+				(messager say: N_TREES V_LOOK)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -431,17 +461,21 @@
 		view 61
 		loop 8
 		priority 1
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(messager say: N_ROOM 0 C_NONEEDTO)
+				(messager say: N_ROOM NULL C_NONEEDTO)
 				(= meepsScared TRUE)
 			)
-			(V_LOOK (messager say: N_FUR V_LOOK))
-			(V_DO (ego setScript: getTheFur))
+			(V_LOOK
+				(messager say: N_FUR V_LOOK)
+			)
+			(V_DO
+				(ego setScript: getTheFur)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -460,7 +494,7 @@
 		view 60
 		loop 6
 		priority 9
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -514,7 +548,7 @@
 		view 60
 		loop 7
 		priority 7
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -540,7 +574,7 @@
 		view 60
 		loop 7
 		priority 8
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -566,7 +600,7 @@
 		view 60
 		loop 6
 		priority 8
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -592,7 +626,7 @@
 		view 60
 		loop 7
 		priority 7
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -615,12 +649,14 @@
 		noun N_BOSSEYES
 		view 60
 		priority 6
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_BOSSEYES V_LOOK))
+			(V_LOOK
+				(messager say: N_BOSSEYES V_LOOK)
+			)
 			(else 
 				(meep3 doVerb: theVerb &rest)
 			)
@@ -675,16 +711,24 @@
 						(curRoom setScript: sBossOut)
 					)
 				)
-				(V_LOOK (messager say: N_MEEP V_LOOK 0 2))
+				(V_LOOK
+					(messager say: N_MEEP V_LOOK NULL 2)
+				)
 				(V_DO
 					(cond 
-						((== (ego x?) (rock1 approachX?)) (rock1 doVerb: theVerb &rest))
-						((== (ego x?) (rock5 approachX?)) (rock5 doVerb: theVerb &rest))
-						(else (messager say: N_MEEP V_DO))
+						((== (ego x?) (rock1 approachX?))
+							(rock1 doVerb: theVerb &rest)
+						)
+						((== (ego x?) (rock5 approachX?))
+							(rock5 doVerb: theVerb &rest)
+						)
+						(else
+							(messager say: N_MEEP V_DO)
+						)
 					)
 				)
 				(V_DAGGER
-					(messager say: N_ROOM 0 C_NONEEDTO)
+					(messager say: N_ROOM NULL C_NONEEDTO)
 					(= meepsScared TRUE)
 				)
 				(else 
@@ -708,7 +752,7 @@
 		(return
 			(switch theVerb
 				(V_DAGGER
-					(messager say: N_ROOM 0 C_NONEEDTO)
+					(messager say: N_ROOM NULL C_NONEEDTO)
 					(= meepsScared TRUE)
 				)
 				(V_TALK
@@ -719,13 +763,23 @@
 						(curRoom setScript: sBossOut)
 					)
 				)
-				(V_LOOK (messager say: N_MEEP V_LOOK 0 2))
+				(V_LOOK
+					(messager say: N_MEEP V_LOOK NULL 2)
+				)
 				(V_DO
 					(cond 
-						((== (ego x?) (rock2 approachX?)) (rock2 doVerb: theVerb &rest))
-						((== (ego x?) (rock3 approachX?)) (rock3 doVerb: theVerb &rest))
-						((== (ego x?) (rock4 approachX?)) (rock4 doVerb: theVerb &rest))
-						(else (messager say: N_MEEP V_DO))
+						((== (ego x?) (rock2 approachX?))
+							(rock2 doVerb: theVerb &rest)
+						)
+						((== (ego x?) (rock3 approachX?))
+							(rock3 doVerb: theVerb &rest)
+						)
+						((== (ego x?) (rock4 approachX?))
+							(rock4 doVerb: theVerb &rest)
+						)
+						(else
+							(messager say: N_MEEP V_DO)
+						)
 					)
 				)
 				(else 
@@ -741,17 +795,21 @@
 		noun N_SCROLL
 		view 61
 		loop 5
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(messager say: N_ROOM 0 C_NONEEDTO)
+				(messager say: N_ROOM NULL C_NONEEDTO)
 				(= meepsScared TRUE)
 			)
-			(V_LOOK (messager say: N_SCROLL V_LOOK))
-			(V_DO (ego setScript: sGetScroll))
+			(V_LOOK
+				(messager say: N_SCROLL V_LOOK)
+			)
+			(V_DO
+				(ego setScript: sGetScroll)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -771,14 +829,16 @@
 		view 61
 		loop 6
 		priority 1
-		signal $6810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_MEEP V_CONVERSATION C_APPLES))
+			(V_LOOK
+				(messager say: N_MEEP V_CONVERSATION C_APPLES)
+			)
 			(V_DAGGER
-				(messager say: N_ROOM 0 C_NONEEDTO)
+				(messager say: N_ROOM NULL C_NONEEDTO)
 				(= meepsScared TRUE)
 			)
 			(else 
@@ -789,7 +849,7 @@
 	
 	(method (cue)
 		(super cue:)
-		(self setCycle: 0 ignoreActors: 1 addToPic:)
+		(self setCycle: 0 ignoreActors: TRUE addToPic:)
 	)
 )
 
@@ -799,7 +859,7 @@
 		noun N_BABY
 		view 61
 		loop 7
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 	)
 )
 
@@ -813,7 +873,7 @@
 		view 60
 		loop 5
 		priority 5
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -834,7 +894,6 @@
 )
 
 (instance sStabRock of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -842,14 +901,15 @@
 				(HandsOff)
 				(= meepsScared TRUE)
 				(ego
-					setMotion:
-						PolyPath
+					setMotion: PolyPath
 						(+ (client approachX?) 25)
 						(+ (client approachY?) 10)
 						self
 				)
 			)
-			(1 (ego setHeading: 270 self))
+			(1
+				(ego setHeading: 270 self)
+			)
 			(2
 				(ego view: 518 setCel: 0 setLoop: 2 setCycle: EndLoop self)
 			)
@@ -870,8 +930,7 @@
 )
 
 (instance sLiftRock of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -879,7 +938,9 @@
 				(= ticks 20)
 			)
 			(1
-				(if (& (client signal?) $0080) (-- state))
+				(if (& (client signal?) actorHidden)
+					(-- state)
+				)
 				(= ticks 20)
 			)
 			(2
@@ -920,11 +981,13 @@
 )
 
 (instance sThrowStuff of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 300))
+			(0
+				(HandsOff)
+				(= ticks 300)
+			)
 			(1
 				(self cue:)
 			;	(bossMeep setCycle:)
@@ -934,16 +997,24 @@
 			(2
 				(bossMeep setPri: 5 setCycle: BegLoop self)
 			)
-			(3 (= ticks 25))
+			(3
+				(= ticks 25)
+			)
 			(4
 				(if (not (-- register))
 					(= cycles 2)
 				else
 					(bossMeep setLoop: 0 setCel: 0)
 					(cond 
-						((and (not local35) (not local36)) (self changeState: 40))
-						((and (not local40) (not (Random 0 1))) (self changeState: 20))
-						(else (self changeState: 10))
+						((and (not local35) (not local36))
+							(self changeState: 40)
+						)
+						((and (not local40) (not (Random 0 1)))
+							(self changeState: 20)
+						)
+						(else
+							(self changeState: 10)
+						)
 					)
 				)
 			)
@@ -964,7 +1035,7 @@
 				((= newApple (Apple new:))
 					init:
 					setLoop: 6
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCel: 0
 					posn: 159 96
 					setPri: 1
@@ -1047,7 +1118,9 @@
 					setMotion: JumpTo (Random 171 233) (Random 106 119) apple2
 				)
 			)
-			(34 (self changeState: 5))
+			(34
+				(self changeState: 5)
+			)
 			(40
 				(bossMeep setCel: 1)
 				(scroll init: posn: 161 85 setPri: 1 setCel: 1)
@@ -1082,21 +1155,21 @@
 )
 
 (instance babySqueak of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= cycles (Random 3 8))
 				(meepSound loop: 1 number: 74 play:)
 			)
-			(1 (self changeState: 0))
+			(1
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance sBaby of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -1111,7 +1184,9 @@
 					setMotion: PolyPath 129 87 self
 				)
 			)
-			(2 (= ticks 10))
+			(2
+				(= ticks 10)
+			)
 			(3
 				(baby setMotion: PolyPath 158 89 self)
 			)
@@ -1124,8 +1199,7 @@
 )
 
 (instance sExitEast of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1141,8 +1215,7 @@
 )
 
 (instance sPullFur of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1177,11 +1250,13 @@
 )
 
 (instance getTheFur of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 3))
+			(0
+				(HandsOff)
+				(= seconds 3)
+			)
 			(1
 				(ego setMotion: PolyPath 183 105 self)
 			)
@@ -1195,7 +1270,7 @@
 				)
 			)
 			(3
-				(messager say: N_ROOM 0 C_GETFUR 1 self)
+				(messager say: N_ROOM NULL C_GETFUR 1 self)
 			)
 			(4
 				(SolvePuzzle POINTS_GETGREENFUR 5)
@@ -1216,13 +1291,12 @@
 )
 
 (instance lookAtGrass of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_GRASS V_LOOK 0 1 self)
+				(messager say: N_GRASS V_LOOK NULL 1 self)
 			)
 			(1
 				(if (and (== local37 1) (not local38))
@@ -1231,7 +1305,10 @@
 					(self cue:)
 				)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -1247,7 +1324,7 @@
 		view 60
 		loop 2
 		priority 5
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 )
 
@@ -1259,8 +1336,7 @@
 )
 
 (instance meepScript1 of Script
-	(properties)
-	
+
 	(method (dispose)
 		(= state 0)
 		(super dispose: &rest)
@@ -1277,9 +1353,12 @@
 			)
 			(1
 				(cond 
-					(bossOnScreen (self dispose:))
-					(
-					(or meepsScared (<= (ego distanceTo: bossRock) 130)) (self init:))
+					(bossOnScreen
+						(self dispose:)
+					)
+					((or meepsScared (<= (ego distanceTo: bossRock) 130))
+						(self init:)
+					)
 					(else
 						(meepSound loop: 1 number: (+ (Random 0 2) 55) play:)
 						(bossMeep
@@ -1294,7 +1373,11 @@
 			)
 			(2
 				(bossEyes setCycle: Forward z: 100)
-				(if bossOnScreen (= cycles 2) else (= ticks (Random 20 40)))
+				(if bossOnScreen
+					(= cycles 2)
+				else
+					(= ticks (Random 20 40))
+				)
 			)
 			(3
 				(if bossOnScreen
@@ -1308,15 +1391,20 @@
 			(4
 				(bossRock z: 100)
 				(bossMeep z: 1000)
-				(if bossOnScreen (= cycles 2) else (= ticks 20))
+				(if bossOnScreen
+					(= cycles 2)
+				else
+					(= ticks 20)
+				)
 			)
-			(5 (self init:))
+			(5
+				(self init:)
+			)
 		)
 	)
 )
 
 (instance meepScript3 of MeepPeeps
-	(properties)
 	
 	(method (dispose)
 		(= state 0)
@@ -1437,7 +1525,11 @@
 					setPri: (+ (meep3 priority?) 1)
 					z: 100
 				)
-				(if bossOnScreen (= cycles 2) else (= ticks (Random 20 40)))
+				(if bossOnScreen
+					(= cycles 2)
+				else
+					(= ticks (Random 20 40))
+				)
 			)
 			(5
 				(if bossOnScreen
@@ -1462,8 +1554,7 @@
 )
 
 (instance meepTeller of Teller
-	(properties)
-	
+
 	(method (showDialog &tmp temp0)
 		(if
 			(==
@@ -1486,7 +1577,10 @@
 			)
 			(= temp0 (Abs temp0))
 		)
-		(if (== temp0 -2) (= temp0 (Abs temp0)))
+		(if
+			(== temp0 -2)
+			(= temp0 (Abs temp0))
+		)
 		(if
 			(and
 				(== temp0 7)
@@ -1521,7 +1615,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(messager say: N_ROOM 0 C_NONEEDTO)
+				(messager say: N_ROOM NULL C_NONEEDTO)
 				(= meepsScared TRUE)
 			)
 			(V_TALK
@@ -1529,7 +1623,7 @@
 					(SolvePuzzle POINTS_TALKTOMEEP 1)
 					(super doVerb: theVerb)
 				else
-					(bossMeep approachVerbs: 0)
+					(bossMeep approachVerbs: NULL)
 					(curRoom setScript: sBossOut)
 				)
 			)
@@ -1552,8 +1646,7 @@
 )
 
 (instance sByeBoss of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1567,7 +1660,9 @@
 			(1
 				(bossMeep setPri: 5 setCycle: CycleTo 1 -1 self)
 			)
-			(2 (= ticks 10))
+			(2
+				(= ticks 10)
+			)
 			(3
 				(bossRock z: 1000)
 				(bossMeep
@@ -1612,7 +1707,6 @@
 )
 
 (instance sBossOut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -1642,24 +1736,28 @@
 			(3
 				(meep2 stopUpd:)
 				(meep3 stopUpd:)
-				(messager say: N_ROOM 0 13 1 self)
+				(messager say: N_ROOM NULL C_ASKBOSS 1 self)
 			)
 			(4
-				(if (& (ego onControl: 1) $4000)
-					(messager say: N_ROOM 0 20 1 self)
+				(if (& (ego onControl: origin) cYELLOW)
+					(messager say: N_ROOM NULL C_SLIPAWAY 1 self)
 				else
 					(= cycles 2)
 				)
 			)
 			(5
-				(if (& (ego onControl: 1) $4000)
+				(if (& (ego onControl: origin) cYELLOW)
 					(ego setMotion: PolyPath 306 120 self)
 				else
 					(= cycles 2)
 				)
 			)
-			(6 (ego setHeading: 270 self))
-			(7 (= cycles 2))
+			(6
+				(ego setHeading: 270 self)
+			)
+			(7
+				(= cycles 2)
+			)
 			(8
 				(bossMeep
 					view: 61
@@ -1688,7 +1786,9 @@
 					setMotion: MoveTo 172 140 self
 				)
 			)
-			(10 (= ticks 5))
+			(10
+				(= ticks 5)
+			)
 			(11
 				(bossRock setMotion: MoveTo 183 189 self)
 			)
@@ -1702,9 +1802,9 @@
 			)
 			(14
 				(if (Btst fMetMeepBoss)
-					(messager say: N_ROOM 0 18 1 self)
+					(messager say: N_ROOM NULL C_WELCOMEBACK 1 self)
 				else
-					(messager say: N_ROOM 0 19 1 self)
+					(messager say: N_ROOM NULL C_FIRSTMEET 1 self)
 					(Bset 305)
 				)
 			)
@@ -1719,7 +1819,6 @@
 )
 
 (instance meepScript2 of MeepPeeps
-	(properties)
 	
 	(method (dispose)
 		(= state 0)
@@ -1755,7 +1854,9 @@
 			)
 			(2
 				(cond 
-					((== register 2) (= cycles 2))
+					((== register 2)
+						(= cycles 2)
+					)
 					(
 						(or
 							(<= (ego distanceTo: rock1) 130)
@@ -1820,7 +1921,11 @@
 					setPri: (+ (meep2 priority?) 1)
 					z: 100
 				)
-				(if bossOnScreen (= cycles 2) else (= ticks (Random 20 40)))
+				(if bossOnScreen
+					(= cycles 2)
+				else
+					(= ticks (Random 20 40))
+				)
 			)
 			(5
 				(if bossOnScreen
@@ -1844,8 +1949,7 @@
 )
 
 (instance sGetScroll of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1865,12 +1969,12 @@
 			)
 			(3
 				(if (not [egoStats MAGIC])
-					(messager say: N_ROOM 0 C_NOMAGIC 1)
+					(messager say: N_ROOM NULL C_NOMAGIC 1)
 					(NormalEgo)
 					(HandsOn)
 					(self dispose:)
 				else
-					(messager say: N_ROOM 0 C_LEARNDETECT 1 self)
+					(messager say: N_ROOM NULL C_LEARNDETECT 1 self)
 				)
 			)
 			(4

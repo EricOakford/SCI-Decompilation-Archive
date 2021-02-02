@@ -1094,9 +1094,9 @@
 							(switch
 								(Print
 									addText: N_ROOM NULL C_ASKDANCE 1 0 0
-									addButton: 0 N_FAIRIES NULL C_SAYNOTSURE 1 0 20
-									addButton: 1 N_FAIRIES NULL C_SAYYES 1 0 40
-									addButton: 2 N_FAIRIES NULL C_SAYNO 1 0 60
+									addButton: 0 N_ROOM NULL C_SAYNOTSURE 1 0 20
+									addButton: 1 N_ROOM NULL C_SAYYES 1 0 40
+									addButton: 2 N_ROOM NULL C_SAYNO 1 0 60
 									init:
 								)
 								(0
