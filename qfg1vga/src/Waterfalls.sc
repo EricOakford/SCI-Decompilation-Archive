@@ -374,7 +374,7 @@
 		x 100
 		y 160
 		noun N_GROUND
-		onMeCheck cRED
+		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
