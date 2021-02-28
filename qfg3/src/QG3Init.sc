@@ -1,0 +1,47 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# GLORY_INIT)
+(include game.sh) 
+(use Main)
+(use Talker)
+(use User)
+(use System)
+
+(public
+	QG3Init 0
+)
+
+(instance QG3Init of Code
+	(properties)
+	
+	(method (init &tmp temp0 temp1 [temp2 9])
+		(User alterEgo: ego canControl: FALSE canInput: FALSE)
+		(if (FileIO fileExists {18.scr})
+			(= debugging TRUE)
+		)
+		((= narrator Narrator) keepWindow: TRUE y: 120 back: 57)
+		(= msgType TEXT_MSG)
+		(= showStyle HSHUTTER)
+		(= useSortedFeatures TRUE)
+		(= numVoices (DoSound NumVoices))
+		(= possibleScore 500)
+		(= userFont 0)
+		(= smallFont 999)
+		(= bigFont 300)
+		(= stamCounter 20)
+		(= healCounter 15)
+		(= manaCounter 20)
+		((ScriptID TIME 4) init: 11)
+		(if (HaveMouse)
+			(= eatMice 6)
+			(theGame setCursor: normalCursor TRUE)
+		else
+			(theGame setCursor: normalCursor TRUE 304 174)
+		)
+		(= temp1 0)
+		(if (FileIO fileExists {18.scr})
+			(theGame newRoom: 101)
+		else
+			(theGame newRoom: 130)
+		)
+	)
+)

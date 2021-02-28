@@ -1,0 +1,24 @@
+;;; Sierra Script
+;;; 230.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_BARGAIN_SUCCESS 35)
+(define C_BARGAIN_NO_DEAL 37)
+(define C_BARGAIN_FAIL 38)
+(define C_BARGAIN_TRY_1 39)
+(define C_BARGAIN_TRY_2 40)
+(define C_BARGAIN_TRY_3 41)
+(define C_DONE_DEAL 19)
+(define C_EXCHANGE_MONEY 70)
+(define C_EXCHANGE_DONE 71)
+(define C_NOT_ENOUGH_COMMONS 72)
+(define C_MONEY_TITLE 69)
+
+;;; NOUNS
+
+(define N_FRUIT_VENDOR 4)
+(define N_LEATHER_VENDOR 3)
+(define N_MONEY_CHANGER 1)
+

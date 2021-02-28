@@ -1,0 +1,22 @@
+;;; Sierra Script
+;;; 23.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_PERSON 1)
+(define N_CUE 2)
+
+;;; CASES
+
+(define C_ASK_ABOUT 1)
+(define C_SOMETHING_ELSE 2)
+(define C_ENOUGH_ALREADY 3)
+(define C_INAPPROPRIATE_OFFERING 4)
+(define C_PERSON_UNINTERESTED 5)
+(define C_HURT_PERSON 6)
+(define C_CAST_SPELL 7)
+(define C_DUMMY8 8)
+(define C_DONT_BOTHER 9)
+(define C_BEHAVE 10)
+

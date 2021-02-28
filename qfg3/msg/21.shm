@@ -1,0 +1,52 @@
+;;; Sierra Script
+;;; 21.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_SPELL_NAMES 1)
+(define C_NO_MANA 2)
+(define C_SPELL_DESCRIPTION 3)
+(define C_NO_EFFECT 4)
+(define C_DUMMY5 5)
+(define C_NOTHING_HAPPENS 6)
+(define C_DUMMY7 7)
+(define C_WEAPON_CHARGED 8)
+(define C_NO_WEAPON 9)
+(define C_DUMMY10 10)
+(define C_FETCH_FAIL 11)
+(define C_DUMMY12 12)
+(define C_DONT_NEED_REVERSAL 13)
+(define C_DONT_WASTE_SPELL 14)
+(define C_NO_LEVITATE_NOW 15)
+(define C_NO_SPELLS_IN_TARNA 16)
+(define C_NO_SPELLS_IN_SIMBANI 17)
+(define C_CANT_SUMMON_STAFF 18)
+(define C_HEALED 19)
+(define C_LOW_STAMINA 20)
+(define C_LEVITATE_FAIL 21)
+
+;;; NOUNS
+
+(define N_LOOK 1)
+(define N_OK 2)
+(define N_HELP 3)
+(define N_SELECT 4)
+(define N_OPEN 5)
+(define N_DETECT 6)
+(define N_TRIGGER 7)
+(define N_DAZZLE 8)
+(define N_ZAP 9)
+(define N_CALM 10)
+(define N_FLAME 11)
+(define N_FETCH 12)
+(define N_FORCEBOLT 13)
+(define N_LEVITATE 14)
+(define N_REVERSAL 15)
+(define N_JUGGLE 16)
+(define N_SUMMON_STAFF 17)
+(define N_LIGHTNING 18)
+(define N_HEALING 20)
+(define N_DUMMY19 19)
+(define N_CUE 21)
+

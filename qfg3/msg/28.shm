@@ -1,0 +1,40 @@
+;;; Sierra Script
+;;; 28.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_EGO_CUE 1)
+(define N_HERO 2)
+
+;;; CASES
+
+(define C_OVERENCUMBERED 1)
+(define C_NO_STAMINA 2)
+(define C_NO_MANA 3)
+(define C_NO_RATIONS 4)
+(define C_STARVING 5)
+(define C_HUNGRY 6)
+(define C_DEATH_OVERWORK 7)
+(define C_DEATH_STARVE 8)
+(define C_PILLED 9)
+(define C_EAT_IT 10)
+(define C_DONT_NEED_PILL 11)
+(define C_TOO_FULL 12)
+(define C_GAIN_FLAME_SWORD 13)
+(define C_LOSE_FLAME_SWORD 14)
+(define C_LOSE_SENSE 15)
+(define C_LOSE_SHIELD 16)
+(define C_GAIN_SENSE 17)
+(define C_GAIN_SHIELD 18)
+(define C_GAIN_HEAL 19)
+(define C_LOSE_HEAL 20)
+(define C_MAGIC_ON_ME 22)
+(define C_ITEM_ON_ME 21)
+(define C_HEALED 23)
+(define C_DUMMY24 24)
+(define C_FULL_HEALTH 25)
+(define C_DUMMY26 26)
+(define C_DEATH_POISON 27)
+(define C_POISONED 28)
+

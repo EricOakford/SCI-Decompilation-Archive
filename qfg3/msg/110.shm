@@ -1,0 +1,17 @@
+;;; Sierra Script
+;;; 110.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_AZIZA 1)
+(define N_KREESHA 2)
+
+;;; CASES
+
+(define C_START 1)
+(define C_AVIS_DEATH 2)
+(define C_EXPOSITION 3)
+(define C_KREESHA_MESSAGE 4)
+(define C_GO_TO_TARNA 5)
+

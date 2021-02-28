@@ -1,0 +1,782 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# 853)
+(include sci.sh)
+(use Main)
+(use EgoDead)
+(use OccasionalCycle)
+(use Scaler)
+(use Sound)
+(use Jump)
+(use Motion)
+(use Game)
+(use Actor)
+(use System)
+
+(public
+	rm853 0
+	mageEndScript 1
+	deMageBattle 2
+	deWizRecoils 3
+)
+
+(local
+	local0
+)
+(instance rm853 of Rm
+	(properties
+		modNum 850
+		noun 18
+		picture 850
+	)
+	
+	(method (init)
+		(super init:)
+		(self setRegions: 850)
+		(if (== prevRoomNum 550)
+			(= local0 1)
+			(Bset 124)
+			(self setScript: fromFracas)
+		else
+			((ScriptID 850 6) init: stopUpd:)
+			(self setScript: mageEndScript)
+		)
+		(if (not (== global155 0)) (theGame save: 1))
+	)
+	
+	(method (doVerb theVerb)
+		(if
+			(and
+				(not (== (mageEndScript state?) 3))
+				(== ((ScriptID 850 2) view?) 861)
+				(== ((ScriptID 850 2) loop?) 0)
+			)
+			((ScriptID 850 2) loop: 1 cel: 0 setCycle: End)
+		)
+		(switch theVerb
+			(85
+				(if (== (deMageBattle state?) 11)
+					(EgoDead 18 850 857 End)
+				)
+				(cond 
+					((== local0 1) (messager say: 2 6 65 0 0 850))
+					(
+						(and
+							(not (== local0 1))
+							(not (== (self script?) egoSummon))
+							(not (== (self script?) deMageBattle))
+						)
+						(= local0 1)
+						((ScriptID 850 8) dispose:)
+						(Bset 82)
+						(self setScript: deMageBattle)
+					)
+				)
+			)
+			(81
+				(if (== (deMageBattle state?) 11)
+					(EgoDead 18 850 857 End)
+				)
+				(if (ego script?)
+					((ego script?) setScript: (ScriptID 850 12))
+				else
+					(ego setScript: (ScriptID 850 12) 0 theVerb)
+				)
+			)
+			(83
+				(if (== (deMageBattle state?) 11)
+					(EgoDead 18 850 857 End)
+				)
+				(if (ego script?)
+					((ego script?) setScript: (ScriptID 850 12))
+				else
+					(ego setScript: (ScriptID 850 12) 0 theVerb)
+				)
+			)
+			(88
+				(if (== (deMageBattle state?) 11)
+					(EgoDead 18 850 857 End)
+				)
+				(if (ego script?)
+					((ego script?) setScript: (ScriptID 850 12))
+				else
+					(ego setScript: (ScriptID 850 12) 0 theVerb)
+				)
+			)
+			(84
+				(if (== (deMageBattle script?) egoTakesDamage)
+					(egoTakesDamage dispose:)
+					(deMageBattle setScript: egoLevitates deMageBattle)
+				else
+					(messager say: 2 6 64 0 0 850)
+				)
+			)
+			(87
+				(if (== (deMageBattle state?) 11)
+					(EgoDead 18 850 857 End)
+				)
+				(if (not (== (egoSummon state?) -1))
+					(super doVerb: theVerb)
+				)
+				(if (not (Btst 97))
+					(mageEndScript dispose:)
+					((ScriptID 850 8) dispose:)
+					(deMageBattle dispose:)
+					(curRoom setScript: egoSummon)
+				)
+			)
+			(80
+				(if (== (deMageBattle script?) egoTakesDamage)
+					(sFx3 number: 942 play:)
+					(egoTakesDamage dispose:)
+					(deMageBattle cue:)
+				else
+					(messager say: 2 6 66 0 0 850)
+				)
+			)
+			(77
+				(cond 
+					((== (deMageBattle state?) 11) (EgoDead 18 850 857 End))
+					((Btst 97) (curRoom setScript: kablooie))
+					((== (deMageBattle state?) 17)
+						(deMageBattle state: -1)
+						((deMageBattle client?) setScript: triggerGarg)
+					)
+					(else (messager say: 2 6 66 0 0 850))
+				)
+			)
+			(76
+				(if (== (deMageBattle state?) 11)
+					(EgoDead 18 850 857 End)
+				else
+					(messager say: 2 6 66 0 0 850)
+				)
+			)
+			(78
+				(if (== (deMageBattle state?) 11)
+					(EgoDead 18 850 857 End)
+				else
+					(messager say: 2 6 66 0 0 850)
+				)
+			)
+			(86
+				(if (== (deMageBattle state?) 11)
+					(EgoDead 18 850 857 End)
+				else
+					(messager say: 2 6 66 0 0 850)
+				)
+			)
+			(75
+				(messager say: 2 6 66 0 0 850)
+			)
+			(else  (super doVerb: theVerb))
+		)
+	)
+)
+
+(instance triggerGarg of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(HandsOff)
+				(ego view: 15 cel: 0 setCycle: End self)
+				(globalSound setLoop: 1 number: 900 play:)
+			)
+			(1 (ego setCycle: Beg self))
+			(2
+				(ego normalize:)
+				(client setScript: fromFracas)
+			)
+		)
+	)
+)
+
+(instance deWizRecoils of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				((ScriptID 850 2)
+					view: 866
+					loop: 0
+					cel: 0
+					setCycle: End self
+				)
+			)
+			(1
+				((ScriptID 850 2) setCycle: Beg self)
+			)
+			(2
+				((ScriptID 850 2) view: 863)
+				(messager say: 3 6 46 0 self 850)
+			)
+			(3
+				(if (== (egoSummon state?) 4) (egoSummon seconds: 1))
+				(self dispose:)
+			)
+		)
+	)
+)
+
+(instance kablooie of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(HandsOff)
+				(Bclr 97)
+				(ego view: 15 cel: 0 setCycle: End self)
+				(globalSound number: 944 setLoop: 1 play:)
+			)
+			(1 (ego setCycle: Beg self))
+			(2
+				(ego normalize:)
+				((ScriptID 850 2) loop: 2 cel: 0 setCycle: End)
+				(stick setMotion: MoveTo 183 68)
+				(= seconds 3)
+			)
+			(3
+				(stick dispose:)
+				((ScriptID 850 17) number: 930 play:)
+				(kaBoom init: setPri: 14 setCycle: CT 5 1 self)
+			)
+			(4
+				((ScriptID 850 2) dispose:)
+				(kaBoom setCycle: End self)
+			)
+			(5
+				(kaBoom
+					setLoop: 1
+					x: 193
+					y: 77
+					setScale: Scaler 22 150 96 34
+					cycleSpeed: 10
+					setCycle: Fwd
+					setMotion: JumpTo 67 174 self
+				)
+			)
+			(6
+				((ScriptID 850 17) number: 403 play:)
+				(kaBoom setMotion: JumpTo 44 178 self)
+			)
+			(7
+				((ScriptID 850 17) number: 403 play:)
+				(kaBoom setCycle: 0)
+				(= seconds 3)
+			)
+			(8
+				(ego setMotion: MoveTo 22 176 self)
+			)
+			(9
+				(ego setLoop: 0 setCycle: CT 3 1 self)
+			)
+			(10
+				((ScriptID 850 17) number: 920 play:)
+				(kaBoom setMotion: JumpTo 144 189 self)
+			)
+			(11
+				(ego solvePuzzle: 340 10 normalize:)
+				(kaBoom dispose:)
+				(HandsOn)
+				((ScriptID 32 0) start: 0)
+				(self setScript: portalTimer)
+			)
+		)
+	)
+)
+
+(instance portalTimer of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(switch arcadeDifficulty
+					(1 (= seconds 180))
+					(2 (= seconds 30))
+					(3 (= seconds 15))
+				)
+			)
+			(1
+				(switch arcadeDifficulty
+					(1 (= seconds 180))
+					(2 (= seconds 30))
+					(3 (= seconds 20))
+				)
+			)
+			(2
+				(HandsOff)
+				((ScriptID 850 6) init:)
+				(DrawPic 850 dpOPEN_PIXELATION)
+				(EgoDead 2 850 857 End)
+			)
+		)
+	)
+)
+
+(instance egoSummon of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(Bset 124)
+				(if (cast contains: (ScriptID 850 6))
+					(self setScript: deMasterBails self)
+				else
+					(self cue:)
+				)
+			)
+			(1
+				(HandsOff)
+				(ego view: 20 loop: 4 cel: 0 setCycle: End self)
+				((ScriptID 850 17) number: 900 play:)
+			)
+			(2
+				(ego setLoop: 6 cel: 0 setCycle: End self)
+			)
+			(3
+				(messager say: 3 6 23 0 self 850)
+			)
+			(4
+				(theIconBar enable: 6 2 3 8)
+				(theIconBar curIcon: (theIconBar at: 2))
+				(theGame setCursor: 941)
+				(user canInput: 1)
+				(Bset 15)
+				((ScriptID 32 0) start: 1)
+				(= seconds 10)
+			)
+			(5
+				(Bset 97)
+				(HandsOff)
+				((ScriptID 850 2)
+					view: 864
+					loop: 0
+					cel: 0
+					setCycle: CT 4 1 self
+				)
+			)
+			(6
+				((ScriptID 850 17) number: 12 play:)
+				((ScriptID 850 9)
+					view: 21
+					setLoop: 7
+					x: 167
+					y: 81
+					init:
+					setCycle: Fwd
+					setMotion: JumpTo 23 143 self
+				)
+			)
+			(7
+				(ego view: 20 loop: 6 cel: 0 setCycle: CT 2 1)
+				((ScriptID 850 9) setMotion: MoveTo 17 128)
+				(= seconds 4)
+			)
+			(8
+				(ego setLoop: 4 cel: 255 setCycle: Beg)
+				(stick init: setLoop: 1 setMotion: JumpTo 183 63)
+				((ScriptID 850 9) setMotion: JumpTo 169 81 self)
+			)
+			(9
+				(ego normalize:)
+				((ScriptID 850 9) dispose:)
+				((ScriptID 850 2) setCycle: End self)
+			)
+			(10
+				((ScriptID 850 2) loop: 1 cel: 0 setCycle: End self)
+			)
+			(11
+				(messager say: 3 6 24 0 self 850)
+			)
+			(12
+				(ego drop: 44)
+				(user canInput: 1)
+				(theIconBar enable: 3 2 8 6)
+				(theIconBar curIcon: (theIconBar at: 2))
+				(theGame setCursor: 941)
+				(= seconds 5)
+			)
+			(13
+				(messager say: 3 6 25 0 self 850)
+			)
+			(14 (= seconds 5))
+			(15
+				(messager say: 3 6 14 0 self 850)
+			)
+			(16
+				(stick dispose:)
+				((ScriptID 850 2)
+					view: 861
+					loop: 1
+					cel: 5
+					cycleSpeed: 10
+					setCycle: Beg self
+				)
+			)
+			(17
+				((ScriptID 850 2)
+					loop: 2
+					setCycle: OccasionalCycle self 1 10 30
+				)
+				(= seconds 5)
+			)
+			(18
+				((ScriptID 850 2) setCycle: 0)
+				((ScriptID 850 6) init:)
+				(DrawPic 850 dpOPEN_PIXELATION)
+				(= seconds 2)
+			)
+			(19 (EgoDead 2 850 857 End))
+		)
+	)
+)
+
+(instance egoLevitates of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(HandsOff)
+				(ego view: 17 setLoop: 0 cel: 0 setCycle: End self)
+			)
+			(1
+				((ScriptID 850 17) number: 281 play:)
+				(ego
+					setCel: 255
+					setScale:
+					setMotion: MoveTo (ego x?) (- (ego y?) 50) self
+				)
+			)
+			(2 (= seconds 2))
+			(3
+				(floorFire dispose:)
+				(ego setMotion: MoveTo (ego x?) (+ (ego y?) 50) self)
+			)
+			(4
+				(ego setScale: Scaler 92 63 189 130 setCycle: Beg self)
+			)
+			(5
+				(ego normalize:)
+				(user canInput: 1)
+				(theIconBar enable: 2 4 6 3 8)
+				(= state -1)
+				(self dispose:)
+			)
+		)
+	)
+)
+
+(instance mageEndScript of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0 (HandsOff) (= seconds 1))
+			(1
+				(messager say: 1 6 4 0 self 850)
+			)
+			(2
+				(ego setMotion: MoveTo 20 183 self)
+			)
+			(3
+				(HandsOn)
+				(theIconBar disable: 1 5)
+				(switch arcadeDifficulty
+					(1 (= seconds 60))
+					(2 (= seconds 30))
+					(3 (= seconds 20))
+				)
+			)
+			(4
+				(if (cast contains: (ScriptID 850 6))
+					(self setScript: deMasterBails self)
+				else
+					(self cue:)
+				)
+			)
+			(5
+				(user canInput: 1)
+				((ScriptID 850 2) setCycle: End self)
+			)
+			(6
+				((ScriptID 850 2) loop: 1 setCycle: End self)
+			)
+			(7
+				(messager say: 3 6 6 0 self 850)
+			)
+			(8
+				(theIconBar enable: 3 6 8)
+				(theGame setCursor: 941)
+				((ScriptID 850 2) setScript: (ScriptID 850 8))
+				(self dispose:)
+			)
+		)
+	)
+)
+
+(instance deMageBattle of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(if (cast contains: (ScriptID 850 6))
+					(self setScript: deMasterBails self)
+				else
+					(self cue:)
+				)
+			)
+			(1
+				(HandsOff)
+				((ScriptID 850 2)
+					view: 863
+					loop: 0
+					setCycle: CT 6 1 self
+				)
+			)
+			(2
+				(ego view: 15 loop: 2 cel: 0 setCycle: End)
+				((ScriptID 850 17) number: 943 play:)
+				((ScriptID 850 9)
+					setLoop: (Random 0 4)
+					x: 186
+					y: 60
+					setStep: 8 7
+					cycleSpeed: 0
+					moveSpeed: 0
+					setScale:
+					init:
+					setMotion: MoveTo (ego x?) (- (ego y?) 35) self
+				)
+				((ScriptID 850 2) setCycle: End)
+				((ScriptID 850 17) number: 13 play:)
+			)
+			(3
+				(ego normalize: 6)
+				((ScriptID 850 17) number: 10 play:)
+				((ScriptID 850 9)
+					setMotion:
+						MoveTo
+						((ScriptID 850 2) x?)
+						(- ((ScriptID 850 2) y?) 35)
+						self
+				)
+			)
+			(4
+				((ScriptID 850 9) loop: 10 setCycle: End self)
+				((ScriptID 850 17) number: 930 play:)
+			)
+			(5
+				((ScriptID 850 9) dispose:)
+				((ScriptID 850 2)
+					view: 868
+					loop: 0
+					cel: 0
+					setCycle: End self
+				)
+			)
+			(6
+				((ScriptID 850 2) setCycle: Beg self)
+			)
+			(7
+				((ScriptID 850 2) view: 863 loop: 0 cel: 0)
+				(messager say: 3 6 16 0 self 850)
+			)
+			(8
+				((ScriptID 850 2) setCycle: End self)
+			)
+			(9
+				((ScriptID 850 2) setCycle: Beg self)
+			)
+			(10
+				(messager say: 3 6 17 0 self 850)
+			)
+			(11
+				((ScriptID 850 17) number: 101 play:)
+				(floorFire x: (ego x?) y: (ego y?) init: setCycle: Fwd)
+				(theIconBar enable: 8 2 6)
+				(theGame setCursor: 941)
+				(user canInput: 1)
+				(self setScript: egoTakesDamage self)
+			)
+			(12
+				(if (not (== (egoLevitates state?) -1)) (self cue:))
+			)
+			(13
+				(ego normalize:)
+				(floorFire dispose:)
+				(messager say: 3 6 56 0 self 850)
+			)
+			(14
+				((ScriptID 850 2) setCycle: End self)
+			)
+			(15
+				(HandsOff)
+				((ScriptID 850 3)
+					view: 852
+					loop: 0
+					cel: 0
+					noun: 4
+					setCycle: End self
+				)
+			)
+			(16
+				(sFx3 number: 900 play:)
+				((ScriptID 850 3) loop: 1 setCycle: CT 3 1 self)
+			)
+			(17
+				(HandsOn)
+				(theIconBar disable: 5)
+				(= seconds 5)
+			)
+			(18
+				(messager say: 3 6 33 0 self 850)
+			)
+			(19
+				(= monsterNum 855)
+				(curRoom newRoom: 550)
+			)
+		)
+	)
+)
+
+(instance fromFracas of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(HandsOff)
+				(Bset 124)
+				(ego x: 20 y: 183)
+				((ScriptID 850 3) view: 852 loop: 2 cel: 0)
+				((ScriptID 850 2) view: 863 loop: (Random 0 6) cel: 0)
+				(= seconds 2)
+			)
+			(1
+				(if (and (== prevRoomNum 550) (== global155 0))
+					(EgoDead 60 850)
+				else
+					(self cue:)
+				)
+			)
+			(2
+				((ScriptID 850 3) cycleSpeed: 3 setCycle: End self)
+			)
+			(3
+				((ScriptID 850 3) view: 854 setLoop: 1)
+				(messager say: 3 6 21 0 self 850)
+			)
+			(4
+				(messager say: 3 6 22 0 self 850)
+			)
+			(5
+				(HandsOn)
+				(theIconBar disable: 1 5)
+				((ScriptID 850 2)
+					view: 861
+					loop: 1
+					cel: 255
+					setCycle: Beg self
+				)
+			)
+			(6
+				((ScriptID 850 2) loop: 0 cel: 255 setCycle: End self)
+			)
+			(7
+				((ScriptID 850 2) setCycle: OccasionalCycle self 1 10 25)
+				(switch arcadeDifficulty
+					(1 (= seconds 60))
+					(2 (= seconds 40))
+					(3 (= seconds 20))
+				)
+			)
+			(8
+				((ScriptID 850 2) setCycle: 0)
+				((ScriptID 850 6) init:)
+				(DrawPic 850 dpOPEN_PIXELATION)
+				(= seconds 1)
+			)
+			(9
+				(EgoDead 2 850)
+				(self dispose:)
+			)
+		)
+	)
+)
+
+(instance egoTakesDamage of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(ego view: 29 setCycle: Fwd)
+				(if (ego takeDamage: 10)
+					(switch arcadeDifficulty
+						(1 (= seconds 6))
+						(2 (= seconds 4))
+						(3 (= seconds 2))
+					)
+				else
+					(EgoDead 18 850 857 End)
+				)
+			)
+			(1 (self init:))
+		)
+	)
+)
+
+(instance deMasterBails of Script
+	(properties)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0 (HandsOff) (= seconds 3))
+			(1
+				((ScriptID 850 6) dispose:)
+				(DrawPic 850 dpOPEN_PIXELATION)
+				(= seconds 2)
+			)
+			(2 (self dispose:))
+		)
+	)
+)
+
+(instance floorFire of Prop
+	(properties
+		modNum 850
+		view 872
+		signal $4000
+	)
+)
+
+(instance kaBoom of Actor
+	(properties
+		x 193
+		y 97
+		noun 5
+		modNum 850
+		view 867
+		signal $4000
+	)
+)
+
+(instance stick of Actor
+	(properties
+		x 20
+		y 117
+		view 790
+		loop 1
+	)
+)
+
+(instance sFx3 of Sound
+	(properties)
+)

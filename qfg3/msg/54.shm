@@ -1,0 +1,33 @@
+;;; Sierra Script
+;;; 54.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 2)
+(define N_GET_FILE_NAME 1)
+
+;;; CASES
+
+(define C_NEW_DIRECTORY 1)
+(define C_FILENAME 2)
+(define C_CANT_FIND 7)
+(define C_INVALID_FILE_QG1 16)
+(define C_INVALID_FILE_QG2 17)
+(define C_INVALID_DIR 15)
+(define C_IMPORT_SUCCESS 3)
+(define C_TRY_AGAIN 4)
+(define C_YES 5)
+(define C_NO 6)
+(define C_IMPORT_TITLE 8)
+(define C_TOO_MANY_FILES 9)
+(define C_CANCEL 10)
+(define C_CHANGE_DIR 11)
+(define C_CHOOSE_TYPE 23)
+(define C_FIGHTER 18)
+(define C_THIEF 19)
+(define C_WAS_WIZARD 20)
+(define C_WIZARD 21)
+(define C_PALADIN 22)
+(define C_IMPORT_BUTTON 12)
+

@@ -1,0 +1,23 @@
+;;; Sierra Script
+;;; 240.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_HARAMI 9)
+(define N_WEAPON_VENDOR 1)
+(define N_HONEY_VENDOR 4)
+(define N_SANFORD_VENDOR 7)
+(define N_OIL_VENDOR 5)
+(define N_SON_VENDOR 6)
+
+;;; CASES
+
+(define C_DONE_DEAL 10)
+(define C_BARGAIN_SUCCESS 11)
+(define C_BARGAIN_NO_DEAL 13)
+(define C_BARGAIN_FAIL 12)
+(define C_BARGAIN_TRY_1 14)
+(define C_BARGAIN_TRY_2 15)
+(define C_BARGAIN_TRY_3 16)
+

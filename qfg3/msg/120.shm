@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 120.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_PORTAL_APPEARS 3)
+(define N_START 1)
+(define N_SULTAN 2)
+
+;;; CASES
+
+(define C_THREE_DAYS_LATER 1)
+(define C_GOODBYE 2)
+(define C_SHIELD 3)
+(define C_GRAPNEL 4)
+(define C_GIFT 5)
+(define C_PORTAL 6)
+

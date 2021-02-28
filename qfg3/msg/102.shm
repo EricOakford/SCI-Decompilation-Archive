@@ -1,0 +1,38 @@
+;;; Sierra Script
+;;; 102.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DO_YOU_WANT 1)
+(define C_TECH_INFO 2)
+(define C_GAME_INFO 3)
+(define C_TROUBLESHOOTING 4)
+(define C_TECH_SUPPORT 5)
+(define C_WARRANTY 6)
+(define C_SALES 7)
+(define C_USE_ICON_BARS 8)
+(define C_FIGHT_MONSTERS 9)
+(define C_DO_THINGS 10)
+(define C_MAIN_ICON_BAR 11)
+(define C_ACTION_ICONS 12)
+(define C_SPELLCASTING 13)
+(define C_INVENTORY 14)
+(define C_ENCOUNTERS 15)
+(define C_CLOSE_COMBAT 16)
+(define C_DISTANCE_COMBAT 17)
+(define C_RUNNING_AWAY 18)
+(define C_TALK_TO_PEOPLE 19)
+(define C_BUY_THINGS 20)
+(define C_GET_HINTS 21)
+(define C_HOW_TO 22)
+(define C_HINT_LINE 23)
+(define C_HINT_BOOKS 24)
+(define C_BULLETIN_BOARDS 25)
+(define C_HINTS_BY_MAIL 26)
+(define C_PLAYING_HINTS 28)
+
+;;; NOUNS
+
+(define N_INFO 1)
+

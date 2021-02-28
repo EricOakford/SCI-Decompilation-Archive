@@ -1,0 +1,109 @@
+/*************************************************************************
+ * SCI Game Header
+ *************************************************************************
+ * Put all the defines specific to your game in here
+ *************************************************************************/
+
+// e.g.
+// (define MAIN_SCRIPT			  0)
+// (define MENU_ABOUT			$101)
+(include "verbs.sh") (include "talkers.sh")
+/////////////////////////////////////////////////////////
+//Inventory
+/////////////////////////////////////////////////////////
+	(define iRoyals		0) //Dinars and Commons are stored in global variables 424 and 410, respectively.
+	(define iSword			1)
+	(define iFineDagger		2)
+	(define iFineSpear		3)
+	(define iChainmail			4)
+	(define iShield		5)
+	(define iGrapnel		6)
+	(define iToolkit			7)
+	(define iGuildCard		8) //Unused; item data and description exist for this, but there is no corresponding icon.
+	(define iTinderbox		9)
+	(define iDaggers	10)
+	(define iCurePills	11)
+	(define iHealPills		12)
+	(define iManaPills			13)
+	(define iRations		14)
+	(define iWaterskin		15)
+	(define iDispell		16)
+	(define iFish		17)
+	(define iMeat		18)
+	(define iFruit			19)
+	(define iBeads	20)
+	(define iSkins		21)
+	(define iHorn		22)
+	(define iRocks				23)
+	(define iVine		24)
+	(define iOil	25)
+	(define iRope				26)
+	(define iGagGift			27)
+	(define iPin			28)
+	(define iHoney			29)
+	(define iFeather	30)
+	(define iAmulet			31) //Unused; you can't buy from the Amulet seller, and there is no corresponding icon or description.
+	(define iLeopard	32)
+	(define iBird		33)
+	(define iOpal			34)
+	(define iVineFruit		35)
+	(define iGem		36)
+	(define iPeaceWater	37)
+	(define iHeartGift	38)
+	(define iOrchid		39)
+	(define iRobe			40)
+	(define iBridge		41)
+	(define iEye		42) //Unused; the Anubis statue just has the Fire Opal item, and there is no corresponding icon.
+	(define iNote		43)
+	(define iWood		44)
+	(define iMagicSpear		45)
+	(define iMagicDrum		46)
+
+/////////////////////////////////////////////////////////
+//Character Classes
+/////////////////////////////////////////////////////////
+	(define FIGHTER 	0)
+	(define MAGICUSER 1)
+	(define WIZARD 	1)
+	(define THIEF 	2)
+	(define PALADIN 	3)
+	
+/////////////////////////////////////////////////////////
+//Skills
+/////////////////////////////////////////////////////////
+	(define STR		0)
+	(define INT 	1)
+	(define AGIL		2)
+	(define VIT 		3)
+	(define LUCK 			4)
+	(define WEAPON 	5)
+	(define PARRY 		6)
+	(define DODGE 		7)
+	(define STEALTH 		8)
+	(define PICK 	9)
+	(define THROW 		10)
+	(define CLIMB 		11)
+	(define MAGIC 		12)
+	(define COMM	13)
+	(define HONOR			14)
+	(define EXPER 	15) //Unused
+	(define HEALTH 			16)
+	(define STAMINA 			17)
+	(define MANA 			18)
+
+//Magic Spells
+	(define OPEN 				19)
+	(define DETMAGIC 		20)
+	(define TRIGGER 			21)
+	(define DAZZLE 			22)
+	(define ZAP 				23)
+	(define CALM 				24)
+	(define FLAMEDART 		25)
+	(define FETCH				26)
+	(define FORCEBOLT			27)
+	(define LEVITATE			28)
+	(define REVERSAL			29)
+	(define LIGHTS	30)
+	(define STAFF		31)
+	(define	LIGHTBALL		32)
+	(define skPALADIN			33)	

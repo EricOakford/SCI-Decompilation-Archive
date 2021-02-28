@@ -1242,7 +1242,7 @@ code_02ef:
 				(if (not (Btst fBeatBrutus))
 					(brutus setScript: brutusThrows)
 				else
-					(messager say: N_BRUNO V_LOOK)
+					(messager say: N_BRUNO V_TALK)	;message uses wrong noun
 				)
 			)
 			(V_DO

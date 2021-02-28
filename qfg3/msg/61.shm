@@ -1,0 +1,14 @@
+;;; Sierra Script
+;;; 61.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_ASK_SKIP 1)
+(define C_YES 2)
+(define C_NO 3)
+
+;;; NOUNS
+
+(define N_INTRO 1)
+

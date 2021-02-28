@@ -1,0 +1,28 @@
+;;; Sierra Script
+;;; 47.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DUMMY1 1)
+(define C_BUY_MULTIPLE 2)
+(define C_BUT_SINGLE 3)
+(define C_NEW_ITEM 4)
+(define C_TAKE_PRICE 5)
+(define C_ROYALS 9)
+(define C_COMMONS 10)
+
+;;; NOUNS
+
+(define N_DUMMY1 1)
+(define N_DUMMY2 2)
+(define N_DUMMY3 3)
+(define N_PURCHASE 4)
+(define N_BARGAIN 5)
+(define N_DONE 6)
+(define N_QUANTITY 7)
+(define N_MONEY 8)
+(define N_COST 9)
+(define N_PRICE 10)
+(define N_PAY 11)
+

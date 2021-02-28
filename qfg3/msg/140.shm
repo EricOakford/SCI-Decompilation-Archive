@@ -1,0 +1,18 @@
+;;; Sierra Script
+;;; 140.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_CHAR_ALLOC 1)
+(define N_FIGHTER 2)
+(define N_WIZARD 3)
+(define N_THIEF 4)
+(define N_PALADIN 5)
+(define N_MAGE 6)
+(define N_CHOOSE_CHARACTER 7)
+(define N_USER_NAME 8)
+

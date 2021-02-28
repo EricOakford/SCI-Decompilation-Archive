@@ -1,0 +1,27 @@
+;;; Sierra Script
+;;; 52.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_CONGRATS 4)
+(define C_DUMMY3 3)
+(define C_WRITE_COMPLETE 1)
+(define C_WRITE_FAIL 2)
+(define C_PLAY_IT_AGAIN 5)
+(define C_WRITE_COMPLETE_2 6)
+(define C_SAVE_DONE 7)
+(define C_CONGRATS_FULL_SCORE 8)
+(define C_YES_OR_NO 9)
+(define C_FILENAME 10)
+(define C_DISK_FILE 11)
+(define C_WARNING 12)
+(define C_OVERWRITE 13)
+(define C_NO 14)
+(define C_YES 15)
+(define C_TRY_AGAIN 16)
+
+;;; NOUNS
+
+(define N_CHARSAVE 2)
+

@@ -1,0 +1,26 @@
+;;; Sierra Script
+;;; 7.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_CAMP 1)
+(define N_SLEEP_CHOICE 2)
+(define N_CANT_SLEEP_HERE 3)
+
+;;; CASES
+
+(define C_MAKE_CAMP 1)
+(define C_DAY 2)
+(define C_AWAKEN 3)
+(define C_DUMMY4 4)
+(define C_DUMMY5 5)
+(define C_TIRED 6)
+(define C_EXHAUSTED 7)
+(define C_IMPATIENT 8)
+(define C_REST_BETTER 9)
+(define C_SHOW_TIME 10)
+(define C_NO_SLEEP_HERE 11)
+(define C_SLEEP_LATE 12)
+(define C_REST_WORSE 13)
+

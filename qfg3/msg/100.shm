@@ -1,0 +1,24 @@
+;;; Sierra Script
+;;; 100.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DUMMY 1)
+(define C_START 12)
+(define C_CHANT 2)
+(define C_DESTROYED_SPELL 3)
+(define C_KNOCKED_CANDLE 4)
+(define C_FIRE_RING 5)
+(define C_AVIS_DYING 6)
+(define C_PUSHED_HIM 7)
+(define C_EGO_REVERSAL 8)
+(define C_AVIS_REVERSAL 9)
+(define C_FORCE_BOLTED_HIM 10)
+(define C_DAGGERED_HIM 11)
+
+;;; NOUNS
+
+(define N_ROOM 1)
+(define N_AVIS 2)
+

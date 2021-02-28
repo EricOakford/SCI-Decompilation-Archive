@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 26.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_DEATH 1)
+
+;;; CASES
+
+(define C_GENERIC 1)
+(define C_DUMMY2 2)
+(define C_RESTORE 3)
+(define C_RESTART 4)
+(define C_QUIT 5)
+(define C_MESSAGE 6)
+(define C_SELECT_WHICH 7)
+(define C_CONTINUE 8)
+
