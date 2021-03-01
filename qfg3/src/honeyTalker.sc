@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 247)
-(include sci.sh)
+(include game.sh) (include "240.shm")
 (use Main)
 (use Vendor)
 (use GloryTalker)
@@ -60,7 +60,7 @@
 
 (instance honeyVendor of Vendor
 	(properties
-		noun 4
+		noun N_HONEY_VENDOR
 	)
 	
 	(method (dispose)
@@ -68,38 +68,40 @@
 		(super dispose: &rest)
 	)
 	
-	(method (transact param1 param2)
+	(method (transact what howMany)
 		(= theVendor self)
-		(switch param1
+		(switch what
 			(0
-				(Buy param1 param2 theVendor)
-				(ego solvePuzzle: 224 2 get: 29 param2)
-				(messager say: 4 6 10 0 self)
+				(Buy what howMany theVendor)
+				(ego solvePuzzle: fBoughtHoney 2 get: iHoney howMany)
+				(messager say: N_HONEY_VENDOR V_DOIT C_DONE_DEAL 0 self)
 			)
 		)
 	)
 	
-	(method (doBargain param1)
-		(switch param1
-			(1
-				(messager say: 4 6 11 0 self)
+	(method (doBargain result)
+		(switch result
+			(bargainSUCCESS
+				(messager say: N_HONEY_VENDOR V_DOIT C_BARGAIN_SUCCESS 0 self)
 			)
-			(2
-				(messager say: 4 6 14 0 self)
+			(bargainTRY1
+				(messager say: N_HONEY_VENDOR V_DOIT C_BARGAIN_TRY_1 0 self)
 			)
-			(3
-				(messager say: 4 6 15 0 self)
+			(bargainTRY2
+				(messager say: N_HONEY_VENDOR V_DOIT C_BARGAIN_TRY_2 0 self)
 			)
-			(4
-				(messager say: 4 6 16 0 self)
+			(bargainTRY3
+				(messager say: N_HONEY_VENDOR V_DOIT C_BARGAIN_TRY_3 0 self)
 			)
-			(5
-				(messager say: 4 6 12 0 self)
+			(bargainFAIL
+				(messager say: N_HONEY_VENDOR V_DOIT C_BARGAIN_FAIL 0 self)
 			)
-			(6
-				(messager say: 4 6 13 0 self)
+			(bargainNODEAL
+				(messager say: N_HONEY_VENDOR V_DOIT C_BARGAIN_NO_DEAL 0 self)
 			)
-			(else  (self cue:))
+			(else
+				(self cue:)
+			)
 		)
 	)
 )

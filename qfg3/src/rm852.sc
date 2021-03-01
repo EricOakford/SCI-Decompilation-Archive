@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 852)
-(include sci.sh)
+(include game.sh) (include "850.shm")
 (use Main)
 (use EgoDead)
 (use Sound)
@@ -19,16 +19,16 @@
 	orbTempts 6
 )
 
-(instance rm852 of Rm
+(instance rm852 of Room
 	(properties
 		modNum 850
-		noun 18
+		noun N_ROOM
 		picture 850
 	)
 	
 	(method (init)
-		(= heroType 3)
-		(Bset 124)
+		(= heroType PALADIN)
+		(Bset fWizNoticesEgo)
 		(super init:)
 		(self setRegions: 850)
 		(if (== prevRoomNum 550)
@@ -36,13 +36,14 @@
 		else
 			(self setScript: paladinEndScript)
 		)
-		(if (not (== global155 0)) (theGame save: 1))
+		(if (not (== global155 0))
+			(theGame save: TRUE)
+		)
 	)
 )
 
 (instance paladinEndScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -51,23 +52,23 @@
 				(ego setMotion: MoveTo 20 183 self)
 			)
 			(1
-				(if (Btst 150)
-					(messager say: 2 6 62 0 self 850)
+				(if (Btst fSenseDanger)
+					(messager say: N_REGION V_DOIT C_SENSE_DANGER 0 self 850)
 				else
 					(self cue:)
 				)
 			)
 			(2
-				(messager say: 3 6 13 0 self 850)
+				(messager say: N_DEWIZ V_DOIT C_GREET_PALADIN 0 self 850)
 			)
 			(3
-				((ScriptID 850 2) view: 863 loop: 6 setCycle: End self)
+				((ScriptID 850 2) view: 863 loop: 6 setCycle: EndLoop self)
 			)
 			(4
-				((ScriptID 850 3) setCycle: End self)
+				((ScriptID 850 3) setCycle: EndLoop self)
 			)
 			(5
-				((ScriptID 850 3) loop: 1 setCycle: CT 3 1 self)
+				((ScriptID 850 3) loop: 1 setCycle: CycleTo 3 1 self)
 			)
 			(6
 				(= monsterNum 855)
@@ -78,22 +79,25 @@
 )
 
 (instance killedGarg of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				((ScriptID 850 3) loop: 2 cel: 0 noun: 4)
-				(ego x: 20 y: 183 solvePuzzle: 342 3 9)
+				(ego x: 20 y: 183 solvePuzzle: fBeatGargoyle 3 (| puzzleFIGHTER puzzlePALADIN))
 				((ScriptID 850 2) view: 863 loop: (Random 0 6) cel: 0)
 				(= seconds 2)
 			)
 			(1
-				(if (== global155 0) (EgoDead 59 850) else (self cue:))
+				(if (== global155 0)
+					(EgoDead C_DEATH_GARGOYLE 850)
+				else
+					(self cue:)
+				)
 			)
 			(2
-				((ScriptID 850 3) cycleSpeed: 3 setCycle: End self)
+				((ScriptID 850 3) cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(3
 				((ScriptID 850 3) view: 854 setLoop: 1)
@@ -102,7 +106,7 @@
 			(4
 				((ScriptID 850 2) setScript: (ScriptID 850 8))
 				(HandsOn)
-				(theIconBar disable: 1 5 6)
+				(theIconBar disable: ICON_WALK ICON_ACTIONS ICON_CAST)
 				(self dispose:)
 			)
 		)
@@ -110,7 +114,6 @@
 )
 
 (instance crankUpSword of Script
-	(properties)
 	
 	(method (doit)
 		(if
@@ -125,20 +128,20 @@
 	)
 	
 	(method (dispose)
-		(Bclr 82)
+		(Bclr fDeWizBattle)
 		(super dispose:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theIconBar disable: 1 4 5 6)
-				(Bset 89)
+				(theIconBar disable: ICON_WALK ICON_TALK ICON_ACTIONS ICON_CAST)
+				(Bset fDeWizElectrocuted)
 				((ScriptID 850 8) dispose:)
 				(ego setMotion: MoveTo 42 178 self)
 			)
 			(1
-				(theIconBar disable: 1 4 5 6)
+				(theIconBar disable: ICON_WALK ICON_TALK ICON_ACTIONS ICON_CAST)
 				(if (IsObject (ego looper?))
 					((ego looper?) dispose:)
 					(ego looper: 0)
@@ -149,14 +152,14 @@
 					view: 863
 					cel: 0
 					loop: (Random 0 6)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				((ScriptID 850 2)
 					view: 863
 					loop: 0
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(3
@@ -171,16 +174,16 @@
 					init:
 					setMotion: MoveTo 61 111 self
 				)
-				((ScriptID 850 2) setCycle: End self)
+				((ScriptID 850 2) setCycle: EndLoop self)
 			)
 			(4
-				(ego view: 38 loop: 0 cel: 0 setCycle: End)
+				(ego view: 38 loop: 0 cel: 0 setCycle: EndLoop)
 				(sFx2 number: 240 play:)
 			)
 			(5
 				(sFx2 number: 10 play:)
 				((ScriptID 850 9) dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(6
 				(ego normalize:)
@@ -188,11 +191,10 @@
 				(if (== (self script?) (ScriptID 850 12))
 					((ScriptID 850 12) cue:)
 				)
-				(if
-				(== ((ScriptID 850 3) script?) (ScriptID 850 7))
+				(if (== ((ScriptID 850 3) script?) (ScriptID 850 7))
 					((ScriptID 850 7) cue:)
 				)
-				(theIconBar enable: 1 4)
+				(theIconBar enable: ICON_WALK ICON_TALK)
 				(switch arcadeDifficulty
 					(1 (= seconds 15))
 					(2 (= seconds 10))
@@ -204,7 +206,6 @@
 )
 
 (instance chuckSwordAtWiz of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -213,8 +214,8 @@
 				((ScriptID 850 8) dispose:)
 				(crankUpSword dispose:)
 				(self setScript: (ScriptID 32 0) self 11)
-				(ego drop: 1)
-				(Bset 91)
+				(ego drop: iSword)
+				(Bset fChuckedSwordAtWiz)
 			)
 			(1)
 			(2
@@ -224,7 +225,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (== (ego script?) (ScriptID 850 11))
 					((ScriptID 850 11) cue:)
@@ -238,7 +239,7 @@
 					loop: 1
 					cel: 0
 					setPri: 14
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -247,14 +248,14 @@
 					setLoop: 3
 					cycleSpeed: 0
 					setPri: 2
-					setCycle: Fwd
+					setCycle: Forward
 				)
-				(lightnin2 init: setPri: 1 cycleSpeed: 0 setCycle: Fwd)
+				(lightnin2 init: setPri: 1 cycleSpeed: 0 setCycle: Forward)
 				(sFx2 number: 7 play:)
 				(self setScript: (ScriptID 850 10))
 				((ScriptID 850 10) setScript: orbTempts)
 				(if (== (ego script?) (ScriptID 850 11))
-					(messager say: 2 6 31 0 0 850)
+					(messager say: N_REGION V_DOIT C_GARGOYLE_RELEASES 0 0 850)
 					((ScriptID 850 11) cue:)
 				)
 				(if (== ((ScriptID 850 16) state?) 0)
@@ -266,32 +267,31 @@
 )
 
 (instance orbTempts of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 7))
 			(1
-				(messager say: 2 6 32 0 self 850)
+				(messager say: N_REGION V_DOIT C_ORB_TEMPTS 0 self 850)
 			)
 			(2 (= seconds 7))
 			(3
-				(messager say: 2 6 51 0 self 850)
+				(messager say: N_REGION V_DOIT C_ORB_SPEAKS_1 0 self 850)
 			)
 			(4 (= seconds 7))
 			(5
-				(messager say: 2 6 52 0 self 850)
+				(messager say: N_REGION V_DOIT C_ORB_SPEAKS_2 0 self 850)
 			)
 			(6 (= seconds 7))
 			(7
-				(messager say: 2 6 53 0 self 850)
+				(messager say: N_REGION V_DOIT C_ORB_SPEAKS_3 0 self 850)
 			)
 			(8
-				(messager say: 2 6 54 0 self 850)
+				(messager say: N_REGION V_DOIT C_ORB_SPEAKS_4 0 self 850)
 			)
 			(9 (= seconds 7))
 			(10
-				(messager say: 2 6 55 0 self 850)
+				(messager say: N_REGION V_DOIT C_ORB_SPEAKS_5 0 self 850)
 			)
 			(11 (self dispose:))
 		)
@@ -304,7 +304,7 @@
 		view 855
 		loop 1
 		priority 13
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -319,10 +319,8 @@
 		loop 1
 		cel 1
 		priority 13
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
-(instance sFx2 of Sound
-	(properties)
-)
+(instance sFx2 of Sound)

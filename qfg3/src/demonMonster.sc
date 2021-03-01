@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 845)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use CombatIcon)
 (use Motion)
@@ -57,7 +57,7 @@
 			(1
 				(gMonster
 					setLoop: (if (== (gMonster loop?) 1) 2 else 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -97,7 +97,7 @@
 				(if (== (gMonster loop?) 1) (gMonster whimper:))
 			)
 			(3
-				(gMonster setCycle: Beg self)
+				(gMonster setCycle: BegLoop self)
 			)
 			(4 (self init:))
 		)
@@ -105,16 +105,15 @@
 )
 
 (instance sReact of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setCel: 0 setLoop: 1 setCycle: CT 2 1)
+				(gMonster setCel: 0 setLoop: 1 setCycle: CycleTo 2 1)
 				(= ticks 60)
 			)
 			(1
-				(gMonster setCycle: Beg self)
+				(gMonster setCycle: BegLoop self)
 			)
 			(2
 				(gMonster loop: 2)

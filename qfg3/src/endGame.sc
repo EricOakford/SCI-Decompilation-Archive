@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 850)
-(include sci.sh)
+(include game.sh) (include "850.shm")
 (use Main)
 (use Target)
 (use EgoDead)
@@ -41,14 +41,14 @@
 )
 
 (local
-	local0
-	local1
+	knockedGargoyle
+	passedGargoyle
 	local2
 )
-(instance endGame of Rgn
+(instance endGame of Region
 	(properties
 		modNum 850
-		noun 18
+		noun N_ROOM
 	)
 	
 	(method (init)
@@ -61,86 +61,56 @@
 			init:
 			setScale: Scaler 92 63 189 130
 			normalize:
-			ignoreHorizon: 1
+			ignoreHorizon: TRUE
 		)
 		(HandsOn)
-		(if (not (== heroType 1)) (theIconBar disable: 6 5 4))
+		(if (not (== heroType MAGIC_USER))
+			(theIconBar disable: ICON_CAST ICON_ACTIONS ICON_TALK)
+		)
 		(super init:)
 		(switch heroType
-			(2
+			(THIEF
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 3
+							type: PContainedAccess
 							init:
-								270
-								67
-								266
-								76
-								243
-								76
-								238
-								66
-								227
-								66
-								206
-								90
-								180
-								90
-								172
-								74
-								147
-								76
-								147
-								87
-								139
-								92
-								118
-								92
-								112
-								85
-								112
-								80
-								81
-								85
-								104
-								101
-								166
-								94
-								181
-								105
-								128
-								114
-								142
-								121
-								153
-								120
-								162
-								127
-								161
-								139
-								148
-								145
-								162
-								165
-								205
-								167
-								227
-								189
-								301
-								189
-								264
-								167
-								319
-								152
-								319
-								56
-								292
-								59
+								270 67
+								266 76
+								243 76
+								238 66
+								227 66
+								206 90
+								180 90
+								172 74
+								147 76
+								147 87
+								139 92
+								118 92
+								112 85
+								112 80
+								81 85
+								104 101
+								166 94
+								181 105
+								128 114
+								142 121
+								153 120
+								162 127
+								161 139
+								148 145
+								162 165
+								205 167
+								227 189
+								301 189
+								264 167
+								319 152
+								319 56
+								292 59
 							yourself:
 						)
 						((Polygon new:)
-							type: 3
+							type: PContainedAccess
 							init:
 								0
 								100
@@ -178,103 +148,60 @@
 						)
 				)
 			)
-			(1
+			(MAGIC_USER
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 3
+							type: PContainedAccess
 							init:
-								270
-								67
-								266
-								76
-								243
-								76
-								238
-								66
-								227
-								66
-								206
-								90
-								180
-								90
-								172
-								74
-								147
-								76
-								147
-								87
-								139
-								92
-								118
-								92
-								112
-								85
-								112
-								80
-								81
-								85
-								104
-								101
-								166
-								94
-								181
-								105
-								128
-								114
-								142
-								121
-								153
-								120
-								162
-								127
-								161
-								139
-								148
-								145
-								162
-								165
-								205
-								167
-								227
-								189
-								301
-								189
-								264
-								167
-								319
-								152
-								319
-								56
-								292
-								59
+								270 67
+								266 76
+								243 76
+								238 66
+								227 66
+								206 90
+								180 90
+								172 74
+								147 76
+								147 87
+								139 92
+								118 92
+								112 85
+								112 80
+								81 85
+								104 101
+								166 94
+								181 105
+								128 114
+								142 121
+								153 120
+								162 127
+								161 139
+								148 145
+								162 165
+								205 167
+								227 189
+								301 189
+								264 167
+								319 152
+								319 56
+								292 59
 							yourself:
 						)
 						((Polygon new:)
-							type: 3
+							type: PContainedAccess
 							init:
-								0
-								144
-								0
-								189
-								112
-								189
-								104
-								178
-								116
-								176
-								110
-								171
-								84
-								173
-								72
-								162
-								69
-								148
-								52
-								148
-								48
-								144
+								0 144
+								0 189
+								112 189
+								104 178
+								116 176
+								110 171
+								84 173
+								72 162
+								69 148
+								52 148
+								48 144
 							yourself:
 						)
 				)
@@ -283,106 +210,70 @@
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 3
+							type: PContainedAccess
 							init:
-								206
-								90
-								177
-								90
-								170
-								76
-								151
-								76
-								151
-								92
-								110
-								92
-								108
-								81
-								84
-								85
-								104
-								100
-								166
-								94
-								183
-								104
-								128
-								114
-								142
-								121
-								153
-								120
-								162
-								127
-								161
-								139
-								148
-								145
-								162
-								165
-								205
-								167
-								227
-								189
-								301
-								189
-								264
-								167
-								319
-								152
-								319
-								56
-								282
-								56
-								282
-								135
-								277
-								142
-								253
-								140
-								239
-								107
+								206 90
+								177 90
+								170 76
+								151 76
+								151 92
+								110 92
+								108 81
+								84 85
+								104 100
+								166 94
+								183 104
+								128 114
+								142 121
+								153 120
+								162 127
+								161 139
+								148 145
+								162 165
+								205 167
+								227 189
+								301 189
+								264 167
+								319 152
+								319 56
+								282 56
+								282 135
+								277 142
+								253 140
+								239 107
 							yourself:
 						)
 						((Polygon new:)
-							type: 3
+							type: PContainedAccess
 							init:
-								0
-								144
-								0
-								189
-								112
-								189
-								104
-								178
-								116
-								176
-								108
-								166
-								88
-								156
-								77
-								158
-								69
-								148
-								52
-								148
-								48
-								144
+								0 144
+								0 189
+								112 189
+								104 178
+								116 176
+								108 166
+								88 156
+								77 158
+								69 148
+								52 148
+								48 144
 							yourself:
 						)
 				)
 			)
 		)
-		(if (not (== heroType 2))
+		(if (not (== heroType THIEF))
 			(gargoyle x: 93 y: 174 loop: 0 cel: 0 init:)
 		)
-		(if (== heroType 1) (gargoyle view: 853 loop: 1 cel: 0))
+		(if (== heroType MAGIC_USER)
+			(gargoyle view: 853 loop: 1 cel: 0)
+		)
 		(portal init: stopUpd:)
 		(deWiz init: setPri: 12 stopUpd:)
 		(orb init: stopUpd:)
-		(if (== heroType 2) (pedestal view: 853 x: 217 y: 124))
+		(if (== heroType THIEF)
+			(pedestal view: 853 x: 217 y: 124)
+		)
 		(pedestal init: stopUpd:)
 		(ledge init:)
 	)
@@ -393,71 +284,74 @@
 	)
 	
 	(method (dispose)
-		(ego changeGait: 0)
-		(if gNewList (gNewList dispose:))
-		(LoadMany 0 851 852 853 854 33)
+		(ego changeGait: MOVE_WALK)
+		(if gNewList
+			(gNewList dispose:)
+		)
+		(LoadMany FALSE 851 852 853 854 OCC_CYCLE)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(56
+			(V_MAGIC_SPEAR
 				(if (not (curRoom script?))
-					(Bset 84)
-					(self setScript: (ScriptID 32 0) 0 theVerb)
+					(Bset fSpearedWiz)
+					(self setScript: (ScriptID PROJECTILE 0) 0 theVerb)
 				)
 			)
-			(20
+			(V_DAGGER
 				(if (not (curRoom script?))
-					(self setScript: (ScriptID 32 0) 0 theVerb)
+					(self setScript: (ScriptID PROJECTILE 0) 0 theVerb)
 				)
 			)
-			(33
+			(V_ROCK
 				(if (not (curRoom script?))
-					(self setScript: (ScriptID 32 0) 0 theVerb)
+					(self setScript: (ScriptID PROJECTILE 0) 0 theVerb)
 				)
 			)
-			(81
+			(V_FLAME
 				(if (not (self script?))
-					(self setScript: (ScriptID 32 0) 0 theVerb)
+					(self setScript: (ScriptID PROJECTILE 0) 0 theVerb)
 				)
 			)
-			(88
+			(V_LIGHTNING
 				(if (not (self script?))
-					(self setScript: (ScriptID 32 0) 0 theVerb)
+					(self setScript: (ScriptID PROJECTILE 0) 0 theVerb)
 				)
 			)
-			(83
+			(V_FORCEBOLT
 				(if (not (self script?))
-					(self setScript: (ScriptID 32 0) 0 theVerb)
+					(self setScript: (ScriptID PROJECTILE 0) 0 theVerb)
 				)
 			)
-			(80
-				(messager say: 2 6 66 0 0 850)
+			(V_CALM
+				(messager say: N_REGION V_DOIT C_SPELL_WONT_WORK 0 0 850)
 			)
-			(86
-				(messager say: 2 6 66 0 0 850)
+			(V_JUGGLE
+				(messager say: N_REGION V_DOIT C_SPELL_WONT_WORK 0 0 850)
 			)
-			(78
-				(messager say: 2 6 66 0 0 850)
+			(V_DAZZLE
+				(messager say: N_REGION V_DOIT C_SPELL_WONT_WORK 0 0 850)
 			)
-			(82
-				(messager say: 2 6 67 0 0 850)
+			(V_FETCH
+				(messager say: N_REGION V_DOIT C_CANT_FETCH 0 0 850)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	
 	(method (cue)
 		(if (== (ego script?) walkOnGarg)
-			(theIconBar disable: 1 5 4)
+			(theIconBar disable: ICON_WALK ICON_ACTIONS ICON_TALK)
 		)
 		(super cue:)
 	)
 )
 
 (instance knockGarg of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -478,7 +372,7 @@
 			)
 			(1
 				(HandsOff)
-				(= local0 1)
+				(= knockedGargoyle TRUE)
 				(castSpells dispose:)
 				(if (not (cast contains: (ScriptID 852 5)))
 					(deWiz stopUpd:)
@@ -486,22 +380,22 @@
 				(ego changeGait: 1 setMotion: MoveTo 52 180 self)
 			)
 			(2
-				(ego view: 36 cel: 0 setLoop: 0 setCycle: CT 3 1 self)
+				(ego view: 36 cel: 0 setLoop: 0 setCycle: CycleTo 3 1 self)
 			)
 			(3
 				(sFx number: 850 play:)
-				(gargoyle view: 871 cel: 0 setCycle: End self)
-				(ego setCycle: End)
+				(gargoyle view: 871 cel: 0 setCycle: EndLoop self)
+				(ego setCycle: EndLoop)
 			)
 			(4
 				(sFx number: 920 play:)
 				(ShakeScreen 10)
 				(walkHandler addToFront: gargoyle)
 				(gargoyle stopUpd:)
-				(ego view: 0 changeGait: 0 normalize:)
+				(ego view: 0 changeGait: MOVE_WALK normalize:)
 				(if
 					(and
-						(not (Btst 91))
+						(not (Btst fChuckedSwordAtWiz))
 						(cast contains: deWiz)
 						(or
 							(not (== ((ScriptID 852 3) state?) -1))
@@ -511,7 +405,7 @@
 					(deWiz setScript: castSpells)
 				)
 				(HandsOn)
-				(theIconBar disable: 6 4 5)
+				(theIconBar disable: ICON_CAST ICON_TALK ICON_ACTIONS)
 				(self dispose:)
 			)
 		)
@@ -519,27 +413,30 @@
 )
 
 (instance castSpells of Script
-	(properties)
-	
+
 	(method (dispose)
-		(if (cast contains: zap) (zap dispose:))
+		(if (cast contains: zap)
+			(zap dispose:)
+		)
 		(super dispose:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theIconBar disable: 1 4 5)
-				(if (not (== heroType 1)) (theIconBar disable: 6))
+				(theIconBar disable: ICON_WALK ICON_TALK ICON_ACTIONS)
+				(if (not (== heroType MAGIC_USER))
+					(theIconBar disable: ICON_CAST)
+				)
 				(deWiz
 					view: 863
 					cel: 0
 					loop: (Random 0 6)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(deWiz view: 863 loop: 0 setCycle: CT 6 1 self)
+				(deWiz view: 863 loop: 0 setCycle: CycleTo 6 1 self)
 			)
 			(2
 				(sFx number: 13 play:)
@@ -554,19 +451,21 @@
 					init:
 					setMotion: MoveTo (ego x?) (- (ego y?) 35) self
 				)
-				(deWiz setCycle: End)
+				(deWiz setCycle: EndLoop)
 			)
 			(3
 				(if (> (zap loop?) 3)
-					(zap loop: 10 setCycle: End self)
+					(zap loop: 10 setCycle: EndLoop self)
 				else
-					(zap loop: 9 setCycle: End self)
+					(zap loop: 9 setCycle: EndLoop self)
 				)
 			)
 			(4
 				(zap dispose:)
-				(theIconBar enable: 1)
-				(if (or (Btst 91) (Btst 84)) (EgoDead 47 850))
+				(theIconBar enable: ICON_WALK)
+				(if (or (Btst fChuckedSwordAtWiz) (Btst fSpearedWiz))
+					(EgoDead C_DEATH_SPELL 850)
+				)
 				(= state -1)
 				(switch arcadeDifficulty
 					(1 (= seconds 10))
@@ -579,8 +478,7 @@
 )
 
 (instance egoHit of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -608,22 +506,30 @@
 						loop: 0
 						cel: 0
 						setMotion: 0
-						setCycle: CT 6 1 self
+						setCycle: CycleTo 6 1 self
 					)
 				else
-					(EgoDead 47 850)
+					(EgoDead C_DEATH_SPELL 850)
 				)
 			)
-			(2 (ego setCycle: Beg self))
+			(2
+				(ego setCycle: BegLoop self)
+			)
 			(3
 				(ego view: 0 normalize:)
 				(HandsOn)
-				(if (not (== heroType 1)) (theIconBar disable: 6 5 4))
-				(if (== (blastWiz state?) 0) (blastWiz cue:))
+				(if (not (== heroType MAGIC_USER))
+					(theIconBar disable: ICON_CAST ICON_ACTIONS ICON_TALK)
+				)
+				(if (== (blastWiz state?) 0)
+					(blastWiz cue:)
+				)
 				(if (== ((ScriptID 851 3) state?) 0)
 					((ScriptID 851 3) cue:)
 				)
-				(if (== (knockGarg state?) 0) (knockGarg cue:))
+				(if (== (knockGarg state?) 0)
+					(knockGarg cue:)
+				)
 				(if (== ((ScriptID 852 3) state?) 1)
 					((ScriptID 852 3) cue:)
 				)
@@ -635,8 +541,7 @@
 )
 
 (instance blastWiz of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -653,11 +558,11 @@
 			)
 			(1
 				(HandsOff)
-				(Bset 15)
-				(self setScript: (ScriptID 32 0) self register)
+				(Bset fCastingSpell)
+				(self setScript: (ScriptID PROJECTILE 0) self register)
 			)
 			(2
-				(Bclr 15)
+				(Bclr fCastingSpell)
 				(if
 					(not
 						(if (and (> (ego view?) 17) (< (ego view?) 21)))
@@ -666,7 +571,9 @@
 				else
 					(HandsOff)
 				)
-				(if (== (egoHit state?) 0) (egoHit cue:))
+				(if (== (egoHit state?) 0)
+					(egoHit cue:)
+				)
 				(if (== ((ScriptID 853 1) state?) 3)
 					((ScriptID 853 1) seconds: 3)
 				)
@@ -675,14 +582,16 @@
 						(not
 							(if (and (> (ego view?) 17) (< (ego view?) 21)))
 						)
-						(== heroType 1)
+						(== heroType MAGIC_USER)
 					)
-					(theIconBar enable: 6 8)
+					(theIconBar enable: ICON_CAST ICON_INVENTORY)
 				)
-				(if (not (== heroType 1)) (theIconBar enable: 8))
-				(User controls: 1 input: 1)
+				(if (not (== heroType MAGIC_USER))
+					(theIconBar enable: ICON_INVENTORY)
+				)
+				(User controls: TRUE input: TRUE)
 				(if (== (ego script?) walkOnGarg)
-					(theIconBar disable: 1 5 4 6)
+					(theIconBar disable: ICON_WALK ICON_ACTIONS ICON_TALK ICON_CAST)
 				)
 				(= state -1)
 				(self dispose:)
@@ -692,7 +601,6 @@
 )
 
 (instance deWizTimer of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -711,16 +619,17 @@
 					((ScriptID 852 6) dispose:)
 				)
 				(deMaster view: 856 loop: 1 setPri: 6 init:)
-				(DrawPic (curRoom picture?) dpOPEN_PIXELATION)
+				(DrawPic (curRoom picture?) PIXELDISSOLVE)
 				(= seconds 1)
 			)
-			(2 (EgoDead 2 850))
+			(2
+				(EgoDead C_DEATH_THERMONUCLEAR 850)
+			)
 		)
 	)
 )
 
 (instance walkOnGarg of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -731,45 +640,47 @@
 				(ego setMotion: MoveTo 128 169 self)
 			)
 			(1
-				(if (or (Btst 91) (not (cast contains: deWiz)))
+				(if (or (Btst fChuckedSwordAtWiz) (not (cast contains: deWiz)))
 					(self cue:)
 				else
-					(messager say: 3 6 8 0 self 850)
+					(messager say: N_DEWIZ V_DOIT C_GARGOYLE_SPELL 0 self 850)
 				)
 			)
 			(2
-				(if (or (Btst 91) (not (cast contains: deWiz)))
+				(if (or (Btst fChuckedSwordAtWiz) (not (cast contains: deWiz)))
 					(self cue:)
 				else
-					(gargArm init: setCycle: End self)
+					(gargArm init: setCycle: EndLoop self)
 				)
 			)
 			(3
-				(if (or (Btst 91) (not (cast contains: deWiz)))
+				(if (or (Btst fChuckedSwordAtWiz) (not (cast contains: deWiz)))
 					(self cue:)
 				else
-					(messager say: 2 6 9 0 self 850)
+					(messager say: N_REGION V_DOIT C_GARGOYLE_GRABS 0 self 850)
 					(deWiz setScript: castSpells)
 					(theIconBar advanceCurIcon:)
 					(theGame setCursor: 941)
 				)
 			)
 			(4
-				(if (or (Btst 91) (not (cast contains: deWiz)))
+				(if (or (Btst fChuckedSwordAtWiz) (not (cast contains: deWiz)))
 					(self cue:)
 				else
-					(if (== heroType 3) (messager say: 3 6 14 0 0 850))
+					(if (== heroType PALADIN)
+						(messager say: N_DEWIZ V_DOIT C_START_SUMMON 0 0 850)
+					)
 					(deWiz setScript: deWizTimer)
-					(theIconBar enable: 3 9 8 2)
-					(user canInput: 1)
+					(theIconBar enable: ICON_DO ICON_CONTROL ICON_INVENTORY ICON_LOOK)
+					(user canInput: TRUE)
 				)
 			)
 			(5
-				(if (or (Btst 91) (not (cast contains: deWiz)))
+				(if (or (Btst fChuckedSwordAtWiz) (not (cast contains: deWiz)))
 					(self cue:)
 				else
 					(HandsOff)
-					(gargArm setCycle: Beg self)
+					(gargArm setCycle: BegLoop self)
 				)
 			)
 			(6
@@ -777,9 +688,9 @@
 				(ego setMotion: MoveTo 183 147 self)
 			)
 			(7
-				(= local1 1)
+				(= passedGargoyle TRUE)
 				(HandsOn)
-				(theIconBar disable: 6 5 4)
+				(theIconBar disable: ICON_CAST ICON_ACTIONS ICON_TALK)
 				(self dispose:)
 			)
 		)
@@ -787,7 +698,6 @@
 )
 
 (instance touchPortal of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -796,15 +706,15 @@
 				(ego setMotion: MoveTo 225 120 self)
 			)
 			(1
-				(ego view: 31 loop: 0 setCycle: End self)
+				(ego view: 31 loop: 0 setCycle: EndLoop self)
 			)
 			(2
 				(ego dispose:)
-				(DrawPic 850 dpOPEN_PIXELATION)
+				(DrawPic 850 PIXELDISSOLVE)
 				(= seconds 2)
 			)
 			(3
-				(EgoDead 11 850)
+				(EgoDead C_DEATH_PORTAL 850)
 				(self dispose:)
 			)
 		)
@@ -812,8 +722,7 @@
 )
 
 (instance touchOrb of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -821,15 +730,15 @@
 				(ego setMotion: MoveTo 243 141 self)
 			)
 			(1
-				(ego view: 31 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 31 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(ego dispose:)
-				(DrawPic 850 dpOPEN_PIXELATION)
+				(DrawPic 850 PIXELDISSOLVE)
 				(= seconds 2)
 			)
 			(3
-				(EgoDead 12 850)
+				(EgoDead C_DEATH_ORB 850)
 				(self dispose:)
 			)
 		)
@@ -837,7 +746,6 @@
 )
 
 (instance knockOrb of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -854,18 +762,18 @@
 				(ego changeGait: 1 setMotion: MoveTo 243 141 self)
 			)
 			(2
-				(ego view: 36 loop: 0 cel: 0 setCycle: CT 4 1 self)
+				(ego view: 36 loop: 0 cel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(3
 				(sFx number: 850 play:)
 				(orb moveSpeed: 0 setStep: 7 6 setMotion: MoveTo 247 80)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4
 				(sFx number: 101 play:)
 				(orb dispose:)
-				(ego solvePuzzle: 341 20)
-				(DrawPic 850 dpOPEN_PIXELATION)
+				(ego solvePuzzle: fKnockedOrb 20)
+				(DrawPic 850 PIXELDISSOLVE)
 				(= seconds 2)
 			)
 			(5
@@ -888,39 +796,41 @@
 			(6
 				(if (cast contains: deWiz)
 					(deWiz hide:)
-					(DrawPic 850 dpOPEN_PIXELATION)
-					(ego solvePuzzle: 340 10)
+					(DrawPic 850 PIXELDISSOLVE)
+					(ego solvePuzzle: fBeatDeWiz 10)
 					(= seconds 2)
 				else
 					(self cue:)
 				)
 			)
 			(7
-				(portal setCycle: End self)
+				(portal setCycle: EndLoop self)
 				(sFx number: 831 play:)
 			)
 			(8
-				(portal loop: 1 setCycle: Fwd)
+				(portal loop: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(9
 				(portal dispose:)
 				(ego normalize:)
 				(switch heroType
-					(0
-						(messager say: 2 6 57 0 self 850)
+					(FIGHTER
+						(messager say: N_REGION V_DOIT C_EXIT_FIGHTER 0 self 850)
 					)
-					(3
-						(messager say: 2 6 58 0 self 850)
+					(PALADIN
+						(messager say: N_REGION V_DOIT C_EXIT_PALADIN 0 self 850)
 					)
 					(else 
-						(messager say: 2 6 3 0 self 850)
+						(messager say: N_REGION V_DOIT C_EXIT 0 self 850)
 					)
 				)
 			)
-			(10 (= cycles 3))
+			(10
+				(= cycles 3)
+			)
 			(11
-				(Bset 117)
+				(Bset fWonGame)
 				(curRoom newRoom: 830)
 			)
 		)
@@ -928,7 +838,6 @@
 )
 
 (instance blastOrb of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -952,8 +861,8 @@
 			)
 			(3
 				(orb dispose:)
-				(ego solvePuzzle: 341 20)
-				(DrawPic 850 dpOPEN_PIXELATION)
+				(ego solvePuzzle: fKnockedOrb 20)
+				(DrawPic 850 PIXELDISSOLVE)
 				(= seconds 2)
 			)
 			(4
@@ -972,27 +881,27 @@
 			(5
 				(if (cast contains: deWiz)
 					(deWiz hide:)
-					(DrawPic 850 dpOPEN_PIXELATION)
-					(ego solvePuzzle: 340 10)
+					(DrawPic 850 PIXELDISSOLVE)
+					(ego solvePuzzle: fBeatDeWiz 10)
 					(= seconds 2)
 				else
 					(self cue:)
 				)
 			)
 			(6
-				(portal setCycle: End self)
+				(portal setCycle: EndLoop self)
 				(sFx number: 831 play:)
 			)
 			(7
-				(portal loop: 1 setCycle: Fwd)
+				(portal loop: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(8
 				(portal dispose:)
-				(messager say: 2 6 3 0 self 850)
+				(messager say: N_REGION V_DOIT C_EXIT 0 self 850)
 			)
 			(9
-				(Bset 117)
+				(Bset fWonGame)
 				(curRoom newRoom: 830)
 			)
 		)
@@ -1000,15 +909,14 @@
 )
 
 (instance deSummons of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(messager say: 3 6 14 0 self 850)
+				(messager say: N_DEWIZ V_DOIT C_START_SUMMON 0 self 850)
 			)
 			(1
-				(deWiz view: 861 loop: 1 cel: 5 setCycle: Beg self)
+				(deWiz view: 861 loop: 1 cel: 5 setCycle: BegLoop self)
 			)
 			(2
 				(deWiz loop: 0 setCycle: OccasionalCycle self 1 1 20)
@@ -1019,29 +927,28 @@
 )
 
 (instance noticeEgo of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset 124)
+				(Bset fWizNoticesEgo)
 				(ego code: 0)
-				(messager say: 1 6 5 0 self 850)
+				(messager say: N_DELORD V_DOIT C_NOTICE_EGO 0 self 850)
 			)
 			(1
 				(deMaster dispose:)
-				(DrawPic 850 dpOPEN_PIXELATION)
+				(DrawPic 850 PIXELDISSOLVE)
 				(= seconds 1)
 			)
 			(2
-				(deWiz view: 861 loop: 1 cel: 0 setCycle: End self)
+				(deWiz view: 861 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(messager say: 3 6 6 0 self 850)
+				(messager say: N_DEWIZ V_DOIT C_NOTICE_EGO2 0 self 850)
 			)
 			(4
-				(deWiz view: 863 cel: 0 setCycle: End)
+				(deWiz view: 863 cel: 0 setCycle: EndLoop)
 				(globalSound setLoop: 1 number: 13 play:)
 				(zap
 					setLoop: (Random 0 4)
@@ -1057,14 +964,16 @@
 			)
 			(5
 				(if (> (zap loop?) 3)
-					(zap loop: 10 setCycle: End self)
+					(zap loop: 10 setCycle: EndLoop self)
 				else
-					(zap loop: 9 setCycle: End self)
+					(zap loop: 9 setCycle: EndLoop self)
 				)
 			)
 			(6
 				(zap dispose:)
-				(if (== heroType 2) (EgoDead 47 850 857 End))
+				(if (== heroType THIEF)
+					(EgoDead C_DEATH_SPELL 850 857 EndLoop)
+				)
 				(self dispose:)
 			)
 		)
@@ -1075,7 +984,7 @@
 	(properties
 		yStep 7
 		view 21
-		signal $4000
+		signal ignrAct
 		xStep 8
 	)
 	
@@ -1086,8 +995,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (ego onMe: zap) (not (Btst 82)) (not (Btst 89)))
+		(if (and (ego onMe: zap) (not (Btst fDeWizBattle)) (not (Btst fDeWizElectrocuted)))
 			(if
 				(and
 					(not
@@ -1105,36 +1013,46 @@
 	(properties
 		x 93
 		y 174
-		noun 6
+		noun N_PILLAR_A
 		modNum 850
 		view 852
 		priority 8
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(cond 
-					((and (ego has: 5) (not local0)) (self setScript: knockGarg))
-					((and local0 (== (walkOnGarg state?) -1)) (ego setScript: walkOnGarg))
-					(else (super doVerb: theVerb))
+					((and (ego has: iShield) (not knockedGargoyle))
+						(self setScript: knockGarg)
+					)
+					((and knockedGargoyle (== (walkOnGarg state?) -1))
+						(ego setScript: walkOnGarg)
+					)
+					(else
+						(super doVerb: theVerb)
+					)
 				)
 			)
-			(15
-				(if (and (ego has: 5) (not local0))
+			(V_SHIELD
+				(if (and (ego has: iShield) (not knockedGargoyle))
 					(self setScript: knockGarg)
 				)
 			)
-			(3
-				(if (and local0 (== (walkOnGarg state?) -1))
+			(V_WALK
+				(if (and knockedGargoyle (== (walkOnGarg state?) -1))
 					(ego setScript: walkOnGarg)
 				)
 			)
-			(26
-				(if local0 (walkOnGarg cue:))
+			(V_DISPEL
+				(if knockedGargoyle
+					(walkOnGarg cue:)
+				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -1143,10 +1061,10 @@
 	(properties
 		x 187
 		y 115
-		noun 3
+		noun N_DEWIZ
 		modNum 850
 		view 861
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (dispose)
@@ -1156,18 +1074,26 @@
 	
 	(method (doVerb theVerb)
 		(cond 
-			((OneOf theVerb 81 83 88 20 11 33)
+			((OneOf theVerb V_FLAME V_FORCEBOLT V_LIGHTNING V_DAGGER V_SWORD V_ROCK)
 				(cond 
-					((== ((ScriptID 853 2) state?) 11) (EgoDead 18 850 857 End))
-					((and (== theVerb 11) (not (== heroType 3))) 0)
-					((and (not (curRoom script?)) (== theVerb 11))
+					((== ((ScriptID 853 2) state?) 11)
+						(EgoDead C_DEATH_FIRE 850 857 EndLoop)
+					)
+					((and (== theVerb V_SWORD) (not (== heroType PALADIN)))
+						0	;do nothing if not a paladin
+					)
+					((and (not (curRoom script?)) (== theVerb V_SWORD))
 						(curRoom setScript: (ScriptID 852 3))
 						(if (== (deWiz script?) castSpells)
 							(castSpells dispose:)
 						)
 					)
-					((== (ego script?) (ScriptID 851 2)) ((ScriptID 851 2) setScript: blastWiz 0 theVerb))
-					((== (ego script?) (ScriptID 852 2)) ((ScriptID 852 2) setScript: (ScriptID 852 3) 0 theVerb))
+					((== (ego script?) (ScriptID 851 2))
+						((ScriptID 851 2) setScript: blastWiz 0 theVerb)
+					)
+					((== (ego script?) (ScriptID 852 2))
+						((ScriptID 852 2) setScript: (ScriptID 852 3) 0 theVerb)
+					)
 					((not (ego script?))
 						(AutoTarget
 							((User curEvent?) x?)
@@ -1188,59 +1114,70 @@
 					)
 				)
 			)
-			((== theVerb 56)
-				(Bset 84)
+			((== theVerb V_MAGIC_SPEAR)
+				(Bset fSpearedWiz)
 				(cond 
 					((== (ego script?) walkOnGarg)
 						(walkOnGarg
 							setScript: (ScriptID 851 3) walkOnGarg theVerb
 						)
 					)
-					((not (ego script?)) (ego setScript: (ScriptID 851 3) 0 theVerb))
-					(else (curRoom setScript: (ScriptID 851 3) 0 theVerb))
+					((not (ego script?))
+						(ego setScript: (ScriptID 851 3) 0 theVerb)
+					)
+					(else
+						(curRoom setScript: (ScriptID 851 3) 0 theVerb)
+					)
 				)
 			)
-			((and (== heroType 3) (== theVerb 11))
+			((and (== heroType PALADIN) (== theVerb V_SWORD))
 				(cond 
 					((== (ego script?) walkOnGarg)
 						(walkOnGarg
 							setScript: (ScriptID 852 3) walkOnGarg theVerb
 						)
 					)
-					((not (ego script?)) (ego setScript: (ScriptID 852 3) walkOnGarg theVerb))
+					((not (ego script?))
+						(ego setScript: (ScriptID 852 3) walkOnGarg theVerb)
+					)
 				)
 			)
 			(
 				(and
-					(== heroType 3)
-					(== theVerb 4)
-					local0
+					(== heroType PALADIN)
+					(== theVerb V_DO)
+					knockedGargoyle
 					(not (== ((ScriptID 852 3) state?) -1))
 				)
 				((ScriptID 852 3) cue:)
 			)
-			((== theVerb 26) (messager say: 3 26 10 0 0 850))
-			((== theVerb 16)
+			((== theVerb V_DISPEL)
+				(messager say: N_DEWIZ V_DISPEL C_DISPEL_WONT_WORK 0 0 850)
+			)
+			((== theVerb V_GRAPNEL)
 				(if (not (> (ego x?) 290))
-					(messager say: 2 6 37 0 0 850)
+					(messager say: N_REGION V_DOIT C_DONT_HAVE_CLEAR_SHOT 0 0 850)
 				else
 					(ego setScript: (ScriptID 854 2))
 				)
 			)
-			(
-			(and (== theVerb 4) (cast contains: (ScriptID 852 5))) (EgoDead 2 850))
+			((and (== theVerb V_DO) (cast contains: (ScriptID 852 5)))
+					(EgoDead C_DEATH_THERMONUCLEAR 850)
+			)
 			(else (super doVerb: theVerb))
 		)
 	)
 	
 	(method (getHurt)
 		(cond 
-			((not (Btst 124)) (curRoom setScript: noticeEgo))
-			((Btst 84)
+			((not (Btst fWizNoticesEgo))
+				(curRoom setScript: noticeEgo)
+			)
+			((Btst fSpearedWiz)
 				(if (not (== ((ScriptID 851 3) state?) -1))
 					((ScriptID 851 3) cue:)
 				else
-					(ego drop: 45)
+					(ego drop: iMagicSpear)
 					((ScriptID 851 3) start: 2)
 					(if (== (ego script?) walkOnGarg)
 						(walkOnGarg setScript: (ScriptID 851 3))
@@ -1249,7 +1186,9 @@
 					)
 				)
 			)
-			((Btst 91) ((ScriptID 852 3) cue:))
+			((Btst fChuckedSwordAtWiz)
+				((ScriptID 852 3) cue:)
+			)
 			(
 				(==
 					(if (and (> (ego view?) 17) (< (ego view?) 21)))
@@ -1257,8 +1196,12 @@
 				)
 				((curRoom script?) setScript: (ScriptID 853 3))
 			)
-			((== heroType 1) (messager say: 3 6 43 0 0 850))
-			(else (messager say: 3 6 29 0 0 850))
+			((== heroType MAGIC_USER)
+				(messager say: N_DEWIZ V_DOIT C_WIZ_PROTECTED_MAGIC 0 0 850)
+			)
+			(else
+				(messager say: N_DEWIZ V_DOIT C_WIZ_PROTECTED 0 0 850)
+			)
 		)
 	)
 )
@@ -1267,27 +1210,37 @@
 	(properties
 		x 246
 		y 106
-		noun 19
+		noun N_PORTAL
 		modNum 850
 		view 856
 		priority 1
-		signal $4015
+		signal (| ignrAct fixPriOn notUpd stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(if (and local0 (not (cast contains: deWiz)))
+			(V_DO
+				(if (and knockedGargoyle (not (cast contains: deWiz)))
 					(curRoom setScript: touchPortal)
 				else
 					(super doVerb: theVerb)
 				)
 			)
-			(33 (curRoom doVerb: theVerb))
-			(81 (curRoom doVerb: theVerb))
-			(83 (curRoom doVerb: theVerb))
-			(88 (curRoom doVerb: theVerb))
-			(else  (super doVerb: theVerb))
+			(V_ROCK
+				(curRoom doVerb: theVerb)
+			)
+			(V_FLAME
+				(curRoom doVerb: theVerb)
+			)
+			(V_FORCEBOLT
+				(curRoom doVerb: theVerb)
+			)
+			(V_LIGHTNING
+				(curRoom doVerb: theVerb)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -1297,11 +1250,11 @@
 		x 267
 		y 115
 		z 20
-		noun 15
+		noun N_ORB
 		modNum 850
 		view 860
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (dispose)
@@ -1311,28 +1264,28 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(if (and local0 local1)
+			(V_DO
+				(if (and knockedGargoyle passedGargoyle)
 					(curRoom setScript: touchOrb)
 				else
 					(super doVerb: theVerb)
 				)
 			)
-			(15
+			(V_SHIELD
 				(if (== (ego script?) (ScriptID 851 2))
 					((ScriptID 851 2) dispose:)
 				)
 				(if
 					(and
-						(not local1)
-						(== local0 1)
+						(not passedGargoyle)
+						(== knockedGargoyle TRUE)
 						(not (== (ego script?) walkOnGarg))
 					)
 					(ego setScript: walkOnGarg)
 				)
 				(if
 					(and
-						(== local0 1)
+						(== knockedGargoyle TRUE)
 						(not (== (ego script?) walkOnGarg))
 					)
 					(curRoom setScript: knockOrb)
@@ -1340,25 +1293,25 @@
 					(super doVerb: theVerb)
 				)
 			)
-			(83
+			(V_FORCEBOLT
 				(if (== ((ScriptID 853 2) state?) 11)
-					(EgoDead 18 850 857 End)
+					(EgoDead C_DEATH_FIRE 850 857 EndLoop)
 				else
 					(curRoom setScript: blastOrb 0 theVerb)
 				)
 			)
-			(88
+			(V_LIGHTNING
 				(if (== ((ScriptID 853 2) state?) 11)
-					(EgoDead 18 850 857 End)
+					(EgoDead C_DEATH_FIRE 850 857 EndLoop)
 				else
 					(curRoom setScript: blastOrb 0 theVerb)
 				)
 			)
-			(56
-				(curRoom setScript: (ScriptID 32 0) 0 theVerb)
+			(V_MAGIC_SPEAR
+				(curRoom setScript: (ScriptID PROJECTILE 0) 0 theVerb)
 			)
-			(16
-				(messager say: 2 6 49 0 0 850)
+			(V_GRAPNEL
+				(messager say: N_REGION V_DOIT C_WiZ_PROTECTS_ORB 0 0 850)
 			)
 			(else  (super doVerb: theVerb))
 		)
@@ -1366,8 +1319,12 @@
 	
 	(method (getHurt)
 		(cond 
-			((cast contains: deWiz) (messager say: 2 6 42 0 0 850))
-			((== (curRoom script?) blastOrb) (blastOrb cue:))
+			((cast contains: deWiz)
+				(messager say: N_REGION V_DOIT C_ORB_UNAFFECTED 0 0 850)
+			)
+			((== (curRoom script?) blastOrb)
+				(blastOrb cue:)
+			)
 			(else
 				(deWizTimer dispose:)
 				(blastOrb start: 2)
@@ -1385,7 +1342,7 @@
 		view 873
 		loop 1
 		priority 14
-		signal $4015
+		signal (| ignrAct fixPriOn notUpd stopUpdOn)
 	)
 )
 
@@ -1393,10 +1350,10 @@
 	(properties
 		x 266
 		y 139
-		noun 16
+		noun N_PEDESTAL
 		modNum 850
 		view 860
-		signal $5000
+		signal (| ignrAct ignrHrz)
 	)
 	
 	(method (doVerb theVerb)
@@ -1436,9 +1393,9 @@
 	)
 	
 	(method (startText)
-		(eyes setCycle: Fwd)
-		(brows setCycle: Fwd)
-		(bubbles setCycle: Fwd)
+		(eyes setCycle: Forward)
+		(brows setCycle: Forward)
+		(bubbles setCycle: Forward)
 		(super startText:)
 	)
 )
@@ -1493,13 +1450,13 @@
 		y 182
 		view 858
 		priority 13
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(26
-				(messager say: 4 26 10 0 0 850)
+			(V_DISPEL
+				(messager say: N_GARGOYLE V_DISPEL C_DISPEL_WONT_WORK 0 0 850)
 			)
 			(else  (super doVerb: theVerb))
 		)
@@ -1510,7 +1467,7 @@
 	(properties
 		x 98
 		y 165
-		noun 17
+		noun N_LEDGE
 		nsTop 150
 		nsLeft 74
 		nsBottom 181
@@ -1520,14 +1477,13 @@
 )
 
 (instance egoActions of Actions
-	(properties)
 	
 	(method (doVerb theVerb)
 		(cond 
 			(
 				(and
-					(not local0)
-					(== theVerb 15)
+					(not knockedGargoyle)
+					(== theVerb V_SHIELD)
 					(cast contains: deWiz)
 					(not (== (castSpells script?) egoHit))
 				)
@@ -1535,19 +1491,19 @@
 			)
 			(
 				(and
-					(not local0)
-					(== theVerb 11)
-					(== heroType 3)
+					(not knockedGargoyle)
+					(== theVerb V_SHIELD)
+					(== heroType PALADIN)
 					(cast contains: deWiz)
 					(not (== (castSpells script?) egoHit))
 				)
 				(ego setScript: (ScriptID 852 2))
 			)
-			(else (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
-(instance sFx of Sound
-	(properties)
-)
+(instance sFx of Sound)

@@ -918,13 +918,11 @@
 
 (procedure (DisableIcons &tmp i n)
 	(= n -32768)
-	(= i 0)
-	(while (<= i 10)
+	(for ((= i 0)) (<= i 10) ((++ i))
 		(if (& disabledIcons n)
 			(theIconBar disable: i)
 		)
 		(= n (>> n $0001))
-		(++ i)
 	)
 )
 

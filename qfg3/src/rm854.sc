@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 854)
-(include sci.sh)
+(include game.sh) (include "850.shm")
 (use Main)
 (use EgoDead)
 (use GloryControls)
@@ -24,50 +24,65 @@
 )
 
 (local
-	local0
-	local1
+	onPillar
+	saveBits
 	[local2 2]
 )
 (procedure (localproc_1628)
 	(ropeControls state: (& (ropeControls state?) $ffdf))
 )
 
-(procedure (localproc_163e)
+(procedure (DisableRopeControls)
 	(ropeControls disable: 0 1 2 3 4 5 6 eachElementDo: #show)
 )
 
-(procedure (localproc_165a)
+(procedure (EnableRopeControls)
 	(ropeControls enable: 0 1 2 eachElementDo: #show)
 )
 
 (procedure (localproc_166e &tmp temp0)
 )
 
-(instance rm854 of Rm
+(instance rm854 of Room
 	(properties
 		modNum 850
-		noun 18
+		noun N_ROOM
 		picture 850
 	)
 	
 	(method (init)
-		(= heroType 2)
+		(= heroType THIEF)
 		(super init:)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
-					init: 21 76 43 76 43 70 21 72 21 75
+					type: PContainedAccess
+					init:
+						21 76
+						43 76
+						43 70
+						21 72
+						21 75
 					yourself:
 				)
 				((Polygon new:)
-					type: 3
-					init: 118 35 118 39 146 37 137 35 118 36
+					type: PContainedAccess
+					init:
+						118 35
+						118 39
+						146 37
+						137 35
+						118 36
 					yourself:
 				)
 				((Polygon new:)
-					type: 3
-					init: 288 64 317 68 317 59 289 62 290 64
+					type: PContainedAccess
+					init:
+						288 64
+						317 68
+						317 59
+						289 62
+						290 64
 					yourself:
 				)
 		)
@@ -83,51 +98,52 @@
 	
 	(method (doit)
 		(cond 
-			(
-			(and (GameIsRestarting) (> local0 2) (< local0 4))
-				(Graph grDRAW_LINE 71 38 35 125 190 -1 -1)
-				(Graph grUPDATE_BOX 35 38 71 125 1)
+			((and (GameIsRestarting) (> onPillar 2) (< onPillar 4))
+				(Graph GDrawLine 71 38 35 125 190 -1 -1)
+				(Graph GShowBits 35 38 71 125 1)
 			)
-			((and (GameIsRestarting) (> local0 3))
-				(Graph grDRAW_LINE 75 42 31 128 190 -1 -1)
-				(Graph grUPDATE_BOX 31 42 75 128 1)
-				(Graph grDRAW_LINE 37 131 64 298 190 -1 -1)
-				(Graph grUPDATE_BOX 37 131 64 298 1)
+			((and (GameIsRestarting) (> onPillar 3))
+				(Graph GDrawLine 75 42 31 128 190 -1 -1)
+				(Graph GShowBits 31 42 75 128 1)
+				(Graph GDrawLine 37 131 64 298 190 -1 -1)
+				(Graph GShowBits 37 131 64 298 1)
 			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 57)
+		(LoadMany FALSE JUMPX)
 		(super dispose:)
 	)
 )
 
 (instance thiefEndScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theIconBar disable: 6)
-				(ego changeGait: 2)
+				(theIconBar disable: ICON_CAST)
+				(ego changeGait: MOVE_SNEAK)
 				(= seconds 1)
 			)
 			(1
 				(ego code: egoGaitCheck setMotion: MoveTo 20 183 self)
 			)
 			(2
-				(messager say: 1 6 4 0 self 850)
+				(messager say: N_DELORD V_DOIT C_DEMONS_TALK 0 self 850)
 			)
-			(3 (= seconds 5))
-			(4 (self dispose:))
+			(3
+				(= seconds 5)
+			)
+			(4
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance climbPillarA of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -147,7 +163,7 @@
 					view: 7
 					loop: 3
 					setPri: 12
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 33 106 self
 				)
 			)
@@ -158,14 +174,14 @@
 					loop: 5
 					cel: 0
 					setPri: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(= local0 1)
+				(= onPillar 1)
 				(ego normalize: 0)
 				(HandsOn)
-				(theIconBar disable: 6 5)
+				(theIconBar disable: ICON_CAST ICON_ACTIONS)
 				(self dispose:)
 			)
 		)
@@ -173,7 +189,6 @@
 )
 
 (instance grapPillarB of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -185,7 +200,7 @@
 					view: 8
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -194,7 +209,7 @@
 					x: 58
 					y: 32
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: JumpTo 128 31 self
 				)
 			)
@@ -202,12 +217,12 @@
 				((ScriptID 850 17) number: 361 play: 127)
 				(grapThingy dispose:)
 				(ego normalize:)
-				(Graph grDRAW_LINE 71 38 35 125 190 -1 -1)
-				(Graph grUPDATE_BOX 35 38 71 125 1)
-				(= local0 2)
+				(Graph GDrawLine 71 38 35 125 190 -1 -1)
+				(Graph GShowBits 35 38 71 125 1)
+				(= onPillar 2)
 				(walkHandler addToFront: pillarB)
 				(HandsOn)
-				(theIconBar disable: 5 6)
+				(theIconBar disable: ICON_ACTIONS ICON_CAST)
 				(self dispose:)
 			)
 		)
@@ -215,7 +230,6 @@
 )
 
 (instance grapPillarC of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -224,7 +238,7 @@
 				(ego setCycle: Walk setMotion: MoveTo 132 35 self)
 			)
 			(1
-				(ego view: 8 loop: 4 cel: 0 setCycle: End self)
+				(ego view: 8 loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				((ScriptID 850 17) number: 721 play:)
@@ -232,31 +246,31 @@
 					x: 157
 					y: 9
 					setPri: 14
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 					setMotion: JumpTo 310 57 self
 				)
 			)
 			(3
 				((ScriptID 850 17) number: 361 play: 127)
-				(= local0 4)
+				(= onPillar 4)
 				(grapThingy dispose:)
-				(Graph grDRAW_LINE 37 131 64 298 148 -1 -1)
-				(Graph grUPDATE_BOX 37 131 64 298 1)
+				(Graph GDrawLine 37 131 64 298 148 -1 -1)
+				(Graph GShowBits 37 131 64 298 1)
 				(ego normalize:)
 				(= cycles 2)
 			)
 			(4
-				(messager say: 3 6 61 0 self 850)
+				(messager say: N_DEWIZ V_DOIT C_BURN_ROPE 0 self 850)
 			)
 			(5
-				((ScriptID 850 2) setCycle: End self)
+				((ScriptID 850 2) setCycle: EndLoop self)
 			)
 			(6
-				(ropeFire init: setCycle: Fwd setScript: ropeIsBurning)
+				(ropeFire init: setCycle: Forward setScript: ropeIsBurning)
 				(walkHandler addToFront: pillarC)
 				(HandsOn)
-				(theIconBar disable: 5 6)
+				(theIconBar disable: ICON_ACTIONS ICON_CAST)
 				(self dispose:)
 			)
 		)
@@ -264,7 +278,6 @@
 )
 
 (instance ropeIsBurning of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -277,7 +290,6 @@
 )
 
 (instance toPillarB of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -294,34 +306,34 @@
 				)
 			)
 			(2
-				(if (Btst 124)
+				(if (Btst fWizNoticesEgo)
 					(self cue:)
 				else
-					(messager say: 1 6 35 0 self 850)
+					(messager say: N_DELORD V_DOIT C_NOTICE_THIEF 0 self 850)
 				)
 			)
 			(3
-				(if (Btst 124)
+				(if (Btst fWizNoticesEgo)
 					(self cue:)
 				else
 					((ScriptID 850 6) dispose:)
-					(DrawPic 850 dpOPEN_CHECKBOARD)
+					(DrawPic 850 DISSOLVE)
 					(= seconds 2)
 				)
 			)
 			(4
-				(if (Btst 124)
+				(if (Btst fWizNoticesEgo)
 					(self cue:)
 				else
-					(messager say: 3 6 6 0 self 850)
+					(messager say: N_DEWIZ V_DOIT C_NOTICE_EGO2 0 self 850)
 				)
 			)
 			(5
-				(Bset 124)
+				(Bset fWizNoticesEgo)
 				(walkHandler delete: pillarB)
 				(HandsOn)
-				(theIconBar disable: 6 5)
-				(= local0 3)
+				(theIconBar disable: ICON_CAST ICON_ACTIONS)
+				(= onPillar 3)
 				(ego normalize: 0)
 				((ScriptID 850 2) setScript: timeToBurn)
 				(self dispose:)
@@ -331,27 +343,26 @@
 )
 
 (instance timeToBurn of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((ScriptID 850 2) view: 861 loop: 1 setCycle: End self)
+				((ScriptID 850 2) view: 861 loop: 1 setCycle: EndLoop self)
 			)
 			(1
 				((ScriptID 850 2)
 					view: 863
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				((ScriptID 850 17) number: 101 play:)
-				(pillarFire init: setCycle: End self)
+				(pillarFire init: setCycle: EndLoop self)
 			)
 			(3
-				(pillarFire loop: 1 setCycle: Fwd)
+				(pillarFire loop: 1 setCycle: Forward)
 				(= seconds 10)
 			)
 			(4
@@ -371,7 +382,6 @@
 )
 
 (instance toPillarC of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -405,10 +415,10 @@
 				)
 			)
 			(4
-				(messager say: 3 6 48 0 self 850)
+				(messager say: N_DEWIZ V_DOIT C_JUMP_ROPE 0 self 850)
 			)
 			(5
-				((ScriptID 850 2) view: 863 setCycle: End self)
+				((ScriptID 850 2) view: 863 setCycle: EndLoop self)
 			)
 			(6
 				(globalSound number: 101 play: 127)
@@ -419,32 +429,33 @@
 					cel: 0
 					setPri: 14
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego normalize:)
 				(HandsOn)
 				(ropeIsBurning dispose:)
-				(= local0 5)
+				(= onPillar 5)
 				(walkHandler delete: pillarC)
 				(pillarC dispose:)
 				(theIconBar disable: 5 6)
 			)
 			(7
-				(pillarFire loop: 1 setCycle: Fwd)
+				(pillarFire loop: 1 setCycle: Forward)
 				(= seconds 15)
 			)
-			(8 (EgoDead 18 850 857 End))
+			(8
+				(EgoDead C_DEATH_FIRE 850 857 EndLoop)
+			)
 		)
 	)
 )
 
 (instance arcadeCrossing of Script
-	(properties)
 	
 	(method (dispose)
 		(ego normalize:)
 		(HandsOn)
-		(theIconBar disable: 6 5)
+		(theIconBar disable: ICON_CAST ICON_ACTIONS)
 		(super dispose:)
 	)
 	
@@ -459,7 +470,6 @@
 )
 
 (instance rightStep of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -484,7 +494,7 @@
 				)
 			)
 			(2
-				(localproc_165a)
+				(EnableRopeControls)
 				(user canInput: 1)
 				(self dispose:)
 			)
@@ -493,8 +503,7 @@
 )
 
 (instance leftStep of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -515,7 +524,7 @@
 				)
 			)
 			(2
-				(localproc_165a)
+				(EnableRopeControls)
 				(user canInput: 1)
 				(self dispose:)
 			)
@@ -524,7 +533,6 @@
 )
 
 (instance jumpRope of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -542,7 +550,7 @@
 				)
 			)
 			(2
-				(if (<= (ego trySkill: 2 175) 0)
+				(if (<= (ego trySkill: AGIL 175) 0)
 					(curRoom setScript: egoDeathFall)
 				else
 					(self cue:)
@@ -558,10 +566,10 @@
 				)
 			)
 			(4
-				(messager say: 3 6 48 0 self 850)
+				(messager say: N_DEWIZ V_DOIT C_JUMP_ROPE 0 self 850)
 			)
 			(5
-				((ScriptID 850 2) view: 863 setCycle: End self)
+				((ScriptID 850 2) view: 863 setCycle: EndLoop self)
 			)
 			(6
 				(globalSound number: 101 play: 127)
@@ -572,53 +580,57 @@
 					cel: 0
 					setPri: 14
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego normalize:)
 				(HandsOn)
 				(ropeIsBurning dispose:)
-				(= local0 5)
+				(= onPillar 5)
 				(arcadeCrossing dispose:)
-				(theIconBar disable: 5 6)
+				(theIconBar disable: ICON_ACTIONS ICON_CAST)
 			)
 			(7
-				(pillarFire loop: 1 setCycle: Fwd)
+				(pillarFire loop: 1 setCycle: Forward)
 				(= seconds 15)
 			)
-			(8 (EgoDead 18 850 857 End))
+			(8
+				(EgoDead C_DEATH_FIRE 850 857 EndLoop)
+			)
 		)
 	)
 )
 
 (instance egoDeathFall of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (ego script?) ((ego script?) dispose:))
+				(if (ego script?)
+					((ego script?) dispose:)
+				)
 				(ropeControls hide:)
 				(globalSound number: 912 play: 127)
-				((ScriptID 850 2) ignoreActors: 1)
-				((ScriptID 850 18) ignoreActors: 1)
-				((ScriptID 850 4) ignoreActors: 1)
+				((ScriptID 850 2) ignoreActors: TRUE)
+				((ScriptID 850 18) ignoreActors: TRUE)
+				((ScriptID 850 4) ignoreActors: TRUE)
 				(ego
 					view: 6
 					setLoop: 3
 					setStep: 5 5
-					setCycle: End
-					ignoreActors: 1
+					setCycle: EndLoop
+					ignoreActors: TRUE
 					setMotion: MoveTo (ego x?) (+ (ego y?) 50) self
 				)
 			)
-			(1 (EgoDead 39 850))
+			(1
+				(EgoDead C_DEATH_FALL 850)
+			)
 		)
 	)
 )
 
 (instance grapDeWiz of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -628,14 +640,14 @@
 				(ego setMotion: MoveTo 299 65 self)
 			)
 			(1
-				(ego view: 8 setLoop: 1 setCycle: End self)
+				(ego view: 8 setLoop: 1 setCycle: EndLoop self)
 			)
 			(2
 				(globalSound number: 721 play: 127)
 				(grapThingy
 					x: 283
 					y: 29
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 14
 					init:
 					xStep: 8
@@ -644,7 +656,7 @@
 				)
 			)
 			(3
-				(messager say: 2 6 41 0 self 850)
+				(messager say: N_DEWIZ V_DOIT C_GRAPNEL_WIZ 0 self 850)
 			)
 			(4
 				(ropeFire dispose:)
@@ -656,34 +668,40 @@
 					setPri: 14
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
-				((ScriptID 850 2) loop: 1 cel: 0 setCycle: End)
-				((ScriptID 850 18) setCycle: End)
+				((ScriptID 850 2) loop: 1 cel: 0 setCycle: EndLoop)
+				((ScriptID 850 18) setCycle: EndLoop)
 				((ScriptID 850 4)
 					setLoop: 1
 					setMotion: MoveTo 260 61 self
 				)
 			)
 			(6
-				((ScriptID 850 18) setCycle: Beg)
-				(ego solvePuzzle: 340 10 solvePuzzle: 341 20 normalize:)
+				((ScriptID 850 18) setCycle: BegLoop)
+				(ego
+					solvePuzzle: fBeatDeWiz 10
+					solvePuzzle: fKnockedOrb 20
+					normalize:
+				)
 				((ScriptID 850 2) dispose:)
 				((ScriptID 850 4) dispose:)
-				((ScriptID 850 5) setCycle: End self)
+				((ScriptID 850 5) setCycle: EndLoop self)
 			)
 			(7
 				(globalSound number: 831 play: 127)
-				((ScriptID 850 5) setLoop: 1 setCycle: Fwd)
+				((ScriptID 850 5) setLoop: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(8
 				((ScriptID 850 5) dispose:)
-				(messager say: 2 6 3 0 self 850)
+				(messager say: N_ROOM V_DOIT C_EXIT 0 self 850)
 			)
-			(9 (curRoom newRoom: 830))
+			(9
+				(curRoom newRoom: 830)
+			)
 		)
 	)
 )
@@ -693,7 +711,7 @@
 		yStep 7
 		view 21
 		loop 3
-		signal $4000
+		signal ignrAct
 		xStep 8
 	)
 )
@@ -704,7 +722,7 @@
 		y 54
 		view 870
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doit)
@@ -725,24 +743,26 @@
 	(properties
 		x 28
 		y 115
-		noun 6
+		noun N_PILLAR_A
 		view 854
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(if (and (not (curRoom script?)) (not local0))
+			(V_DO
+				(if (and (not (curRoom script?)) (not onPillar))
 					(curRoom setScript: climbPillarA)
 				)
 			)
-			(16
-				(if ((inventory at: 6) state?)
-					(messager say: 6 16 0 0 0 850)
+			(V_GRAPNEL
+				(if ((inventory at: iGrapnel) state?)
+					(messager say: N_PILLAR_A V_GRAPNEL NULL 0 0 850)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -751,7 +771,7 @@
 	(properties
 		x 133
 		y 64
-		noun 8
+		noun N_PILLAR_B
 		nsTop 31
 		nsLeft 114
 		nsBottom 91
@@ -761,24 +781,24 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(16
+			(V_GRAPNEL
 				(if
 					(and
 						((inventory at: 6) state?)
-						(== local0 1)
+						(== onPillar 1)
 						(not (curRoom script?))
 					)
 					(curRoom setScript: grapPillarB)
 				else
-					(messager say: 7 16 0 0 0 850)
+					(messager say: N_PILLAR_C V_GRAPNEL NULL 0 0 850)
 				)
 			)
 			(3
-				(pillarB doVerb: 4)
-				((User curEvent?) claimed: 1)
+				(pillarB doVerb: V_DO)
+				((User curEvent?) claimed: TRUE)
 			)
 			(4
-				(if (and (== local0 2) (not (curRoom script?)))
+				(if (and (== onPillar 2) (not (curRoom script?)))
 					(curRoom setScript: toPillarB)
 				)
 			)
@@ -790,7 +810,7 @@
 	(properties
 		x 304
 		y 80
-		noun 7
+		noun N_PILLAR_C
 		nsTop 58
 		nsLeft 283
 		nsBottom 96
@@ -800,18 +820,18 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(16
+			(V_GRAPNEL
 				(if
 					(and
-						((inventory at: 6) state?)
-						(== local0 3)
+						((inventory at: iGrapnel) state?)
+						(== onPillar 3)
 						(not (curRoom script?))
 					)
 					(curRoom setScript: grapPillarC)
 				)
 			)
-			(3
-				(if (and (== local0 4) (not (curRoom script?)))
+			(V_WALK
+				(if (and (== onPillar 4) (not (curRoom script?)))
 					(if (cast contains: pillarFire)
 						(timeToBurn dispose:)
 						(pillarFire dispose:)
@@ -821,22 +841,26 @@
 					else
 						(curRoom setScript: toPillarC)
 					)
-					((User curEvent?) claimed: 1)
+					((User curEvent?) claimed: TRUE)
 				)
 			)
-			(4
+			(V_DO
 				(cond 
-					((and (== local0 4) (not (curRoom script?)))
+					((and (== onPillar 4) (not (curRoom script?)))
 						(if (== arcadeDifficulty 3)
 							(curRoom setScript: arcadeCrossing)
 						else
 							(curRoom setScript: toPillarC)
 						)
 					)
-					((== local0 5) (messager say: 2 6 38 0 0 850))
+					((== onPillar 5)
+						(messager say: N_ROOM V_DOIT C_CANT_GO_DOWN 0 0 850)
+					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -845,7 +869,7 @@
 	(properties
 		view 21
 		loop 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -854,16 +878,15 @@
 		x 133
 		y 88
 		view 870
-		signal $4000
+		signal ignrAct
 	)
 )
 
 (instance ropeControls of GloryControls
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
-		(theGame setCursor: 999)
+		(theGame setCursor: ARROW_CURSOR)
 		(= icon1 iconJump)
 		(= icon2 iconRight)
 		(= icon3 iconLeft)
@@ -887,18 +910,18 @@
 			eachElementDo: #signal 129
 		)
 		(self disable: iconPush iconPull iconQuit iconDrop)
-		(iconQuit signal: (| (iconQuit signal?) $0040))
+		(iconQuit signal: (| (iconQuit signal?) HIDEBAR))
 		(self add: iconDummy)
 		(SetCursor 140 105 200 187)
 	)
 	
 	(method (show)
 		(= window bridgeWin)
-		(User input: 1)
-		(= local1 (Graph grSAVE_BOX 129 104 189 200 1))
+		(User input: TRUE)
+		(= saveBits (Graph GSaveBits 129 104 189 200 1))
 		(super show: &rest)
-		(Graph grRESTORE_BOX local1)
-		(Graph grUPDATE_BOX 130 105 189 200 1)
+		(Graph GRestoreBits saveBits)
+		(Graph GShowBits 130 105 189 200 1)
 	)
 	
 	(method (hide)
@@ -912,16 +935,16 @@
 		(timers eachElementDo: #doit)
 		(cast eachElementDo: #doit)
 		((curRoom script?) doit:)
-		(Animate (cast elements?) 1)
+		(Animate (cast elements?) TRUE)
 		(if doMotionCue
-			(= doMotionCue 0)
+			(= doMotionCue FALSE)
 			(cast eachElementDo: #motionCue)
 		)
 		(super dispatchEvent: event)
 	)
 )
 
-(instance iconJump of IconI
+(instance iconJump of IconItem
 	(properties
 		view 470
 		loop 1
@@ -935,18 +958,20 @@
 	(method (select)
 		(return
 			(if (super select: &rest)
-				(localproc_163e)
+				(DisableRopeControls)
 				(ego setScript: jumpRope)
-				(return 1)
+				(return TRUE)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (highlight param1)
-		(if (not (& signal $0020)) (return))
-		(if param1
+	(method (highlight tOrF)
+		(if (not (& signal IB_ACTIVE))
+			(return)
+		)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop)
 		else
 			(DrawCel view loop 0 nsLeft nsTop)
@@ -954,7 +979,7 @@
 	)
 )
 
-(instance iconMiddle of IconI
+(instance iconMiddle of IconItem
 	(properties
 		view 470
 		loop 7
@@ -964,7 +989,7 @@
 	)
 )
 
-(instance iconRight of IconI
+(instance iconRight of IconItem
 	(properties
 		view 470
 		loop 9
@@ -979,7 +1004,7 @@
 	(method (select)
 		(return
 			(if (super select: &rest)
-				(localproc_163e)
+				(DisableRopeControls)
 				(ego setScript: rightStep)
 				(return 1)
 			else
@@ -988,9 +1013,11 @@
 		)
 	)
 	
-	(method (highlight param1)
-		(if (not (& signal $0020)) (return))
-		(if param1
+	(method (highlight tOrF)
+		(if (not (& signal IB_ACTIVE))
+			(return)
+		)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop)
 		else
 			(DrawCel view loop 0 nsLeft nsTop)
@@ -998,7 +1025,7 @@
 	)
 )
 
-(instance iconLeft of IconI
+(instance iconLeft of IconItem
 	(properties
 		view 470
 		loop 8
@@ -1013,18 +1040,20 @@
 	(method (select)
 		(return
 			(if (super select: &rest)
-				(localproc_163e)
+				(DisableRopeControls)
 				(ego setScript: leftStep)
-				(return 1)
+				(return TRUE)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (highlight param1)
-		(if (not (& signal $0020)) (return))
-		(if param1
+	(method (highlight tOrF)
+		(if (not (& signal IB_ACTIVE))
+			(return)
+		)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop)
 		else
 			(DrawCel view loop 0 nsLeft nsTop)
@@ -1032,7 +1061,7 @@
 	)
 )
 
-(instance iconPush of IconI
+(instance iconPush of IconItem
 	(properties
 		view 470
 		loop 2
@@ -1045,12 +1074,20 @@
 	)
 	
 	(method (select)
-		(return (if (super select: &rest) (return 1) else 0))
+		(return
+			(if (super select: &rest)
+				(return TRUE)
+			else
+				FALSE
+			)
+		)
 	)
 	
-	(method (highlight param1)
-		(if (not (& signal $0020)) (return))
-		(if param1
+	(method (highlight tOrF)
+		(if (not (& signal IB_ACTIVE))
+			(return)
+		)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop)
 		else
 			(DrawCel view loop 0 nsLeft nsTop)
@@ -1058,7 +1095,7 @@
 	)
 )
 
-(instance iconPull of IconI
+(instance iconPull of IconItem
 	(properties
 		view 470
 		loop 3
@@ -1071,12 +1108,20 @@
 	)
 	
 	(method (select)
-		(return (if (super select: &rest) (return 1) else 0))
+		(return
+			(if (super select: &rest)
+				(return TRUE)
+			else
+				FALSE
+			)
+		)
 	)
 	
-	(method (highlight param1)
-		(if (not (& signal $0020)) (return))
-		(if param1
+	(method (highlight tOrF)
+		(if (not (& signal IB_ACTIVE))
+			(return)
+		)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop)
 		else
 			(DrawCel view loop 0 nsLeft nsTop)
@@ -1084,7 +1129,7 @@
 	)
 )
 
-(instance iconDrop of IconI
+(instance iconDrop of IconItem
 	(properties
 		view 470
 		loop 4
@@ -1097,12 +1142,20 @@
 	)
 	
 	(method (select)
-		(return (if (super select: &rest) (return 1) else 0))
+		(return
+			(if (super select: &rest)
+				(return TRUE)
+			else
+				FALSE
+			)
+		)
 	)
 	
-	(method (highlight param1)
-		(if (not (& signal $0020)) (return))
-		(if param1
+	(method (highlight tOrF)
+		(if (not (& signal IB_ACTIVE))
+			(return)
+		)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop)
 		else
 			(DrawCel view loop 0 nsLeft nsTop)
@@ -1110,7 +1163,7 @@
 	)
 )
 
-(instance iconQuit of IconI
+(instance iconQuit of IconItem
 	(properties
 		view 470
 		loop 5
@@ -1126,16 +1179,18 @@
 		(return
 			(if (super select: &rest)
 				(localproc_1628)
-				(return 1)
+				(return TRUE)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (highlight param1)
-		(if (not (& signal $0020)) (return))
-		(if param1
+	(method (highlight tOrF)
+		(if (not (& signal IB_ACTIVE))
+			(return)
+		)
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop)
 		else
 			(DrawCel view loop 0 nsLeft nsTop)
@@ -1143,21 +1198,21 @@
 	)
 )
 
-(instance iconDummy of IconI
+(instance iconDummy of IconItem
 	(properties
 		nsLeft 20
 		nsTop 20
 		nsRight 21
 		nsBottom 21
 		cursor 997
-		signal $0080
+		signal FIXED_POSN
 	)
 	
 	(method (show)
 	)
 	
 	(method (select)
-		(return 1)
+		(return TRUE)
 	)
 	
 	(method (highlight)
@@ -1181,10 +1236,9 @@
 )
 
 (instance egoGaitCheck of Code
-	(properties)
 	
 	(method (doit)
-		(if (and (not (Btst 124)) (not (== egoGait 2)))
+		(if (and (not (Btst fWizNoticesEgo)) (not (== egoGait MOVE_SNEAK)))
 			(curRoom setScript: (ScriptID 850 19))
 		)
 		(super doit: &rest)

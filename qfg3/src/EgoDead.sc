@@ -35,7 +35,7 @@
 	local56
 	[local57 30]
 )
-(procedure (EgoDead reason roomNum deadView param4 param5)
+(procedure (EgoDead reason roomNum deadView theCycler deadSnd)
 	(HandsOff)
 	(if (not (Btst fFakeDeath))
 		(if (Btst fFlag162)
@@ -58,8 +58,8 @@
 			(if (>= argc 3)
 				(= deathView deadView)
 				(if (>= argc 4)
-					(= local54 param4)
-					(if (== argc 5) (= local55 param5))
+					(= local54 theCycler)
+					(if (== argc 5) (= local55 deadSnd))
 				)
 			else
 				(= deathView 937)

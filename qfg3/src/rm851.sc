@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 851)
-(include sci.sh)
+(include game.sh) (include "850.shm")
 (use Main)
 (use EgoDead)
 (use Sound)
@@ -16,29 +16,30 @@
 	spearWiz 3
 )
 
-(instance rm851 of Rm
+(instance rm851 of Room
 	(properties
 		modNum 850
-		noun 18
+		noun N_ROOM
 		picture 850
 	)
 	
 	(method (init)
 		(super init:)
 		(self setRegions: 850)
-		(Bset 124)
+		(Bset fWizNoticesEgo)
 		(if (== prevRoomNum 550)
 			(self setScript: killedGarg)
 		else
 			(self setScript: fighterEndScript)
 		)
-		(if (not (== global155 0)) (theGame save: 1))
+		(if (not (== global155 0))
+			(theGame save: TRUE)
+		)
 	)
 )
 
 (instance fighterEndScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -47,31 +48,31 @@
 				(ego setMotion: MoveTo 20 183 self)
 			)
 			(1
-				(messager say: 1 6 4 0 self 850)
+				(messager say: N_DELORD V_DOIT C_DEMONS_TALK 0 self 850)
 			)
 			(2
-				(messager say: 1 6 5 0 self 850)
+				(messager say: N_DELORD V_DOIT C_NOTICE_EGO 0 self 850)
 			)
 			(3
 				((ScriptID 850 6) dispose:)
-				(DrawPic 850 dpOPEN_PIXELATION)
+				(DrawPic 850 PIXELDISSOLVE)
 				(= seconds 2)
 			)
 			(4
-				((ScriptID 850 2) loop: 1 setCycle: End self)
+				((ScriptID 850 2) loop: 1 setCycle: EndLoop self)
 			)
 			(5
-				(messager say: 3 6 6 0 self 850)
+				(messager say: N_DEWIZ V_DOIT C_NOTICE_EGO2 0 self 850)
 			)
 			(6
-				((ScriptID 850 2) view: 863 loop: 6 setCycle: End self)
+				((ScriptID 850 2) view: 863 loop: 6 setCycle: EndLoop self)
 			)
 			(7
 				(sFx2 number: 944 play:)
-				((ScriptID 850 3) setCycle: End self)
+				((ScriptID 850 3) setCycle: EndLoop self)
 			)
 			(8
-				((ScriptID 850 3) loop: 1 setCycle: CT 3 1 self)
+				((ScriptID 850 3) loop: 1 setCycle: CycleTo 3 1 self)
 			)
 			(9
 				(= monsterNum 855)
@@ -82,22 +83,25 @@
 )
 
 (instance killedGarg of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego normalize: x: 20 y: 183 solvePuzzle: 342 3)
-				((ScriptID 850 3) loop: 2 cel: 0 noun: 4)
+				(ego normalize: x: 20 y: 183 solvePuzzle: fBeatGargoyle 3)
+				((ScriptID 850 3) loop: 2 cel: 0 noun: N_GARGOYLE)
 				((ScriptID 850 2) view: 863 loop: (Random 0 6) cel: 0)
 				(= seconds 2)
 			)
 			(1
-				(if (== global155 0) (EgoDead 59 850) else (self cue:))
+				(if (== global155 0)
+					(EgoDead C_DEATH_GARGOYLE 850)
+				else
+					(self cue:)
+				)
 			)
 			(2
-				((ScriptID 850 3) cycleSpeed: 3 setCycle: End self)
+				((ScriptID 850 3) cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(3
 				((ScriptID 850 3) view: 854 setLoop: 1)
@@ -106,7 +110,7 @@
 			(4
 				((ScriptID 850 2) setScript: (ScriptID 850 8))
 				(HandsOn)
-				(theIconBar disable: 1 5 6)
+				(theIconBar disable: ICON_WALK ICON_ACTIONS ICON_CAST)
 				(self dispose:)
 			)
 		)
@@ -114,7 +118,6 @@
 )
 
 (instance crankUpShield of Script
-	(properties)
 	
 	(method (doit)
 		(if
@@ -129,20 +132,20 @@
 	)
 	
 	(method (dispose)
-		(Bclr 82)
+		(Bclr fDeWizBattle)
 		(super dispose:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theIconBar disable: 1 4 5 6)
-				(Bset 82)
+				(theIconBar disable: ICON_WALK ICON_TALK ICON_ACTIONS ICON_CAST)
+				(Bset fDeWizBattle)
 				((ScriptID 850 8) dispose:)
 				(ego setMotion: MoveTo 42 178 self)
 			)
 			(1
-				(theIconBar disable: 1 4 5 6)
+				(theIconBar disable: ICON_WALK ICON_TALK ICON_ACTIONS ICON_CAST)
 				(if (IsObject (ego looper?))
 					((ego looper?) dispose:)
 					(ego looper: 0)
@@ -153,14 +156,14 @@
 					view: 863
 					cel: 0
 					loop: (Random 0 6)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				((ScriptID 850 2)
 					view: 863
 					loop: 0
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(3
@@ -176,28 +179,27 @@
 					init:
 					setMotion: MoveTo (+ (ego x?) 20) (- (ego y?) 34) self
 				)
-				((ScriptID 850 2) setCycle: End self)
+				((ScriptID 850 2) setCycle: EndLoop self)
 			)
 			(4
-				(ego view: 36 loop: 0 cel: 0 setCycle: CT 4 1)
+				(ego view: 36 loop: 0 cel: 0 setCycle: CycleTo 4 1)
 			)
 			(5
 				(sFx2 number: 10 play:)
 				((ScriptID 850 9) dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(6
 				(ego normalize:)
 				(if (== (self script?) (ScriptID 850 12))
 					((ScriptID 850 12) cue:)
 				)
-				(if
-				(== ((ScriptID 850 3) script?) (ScriptID 850 7))
+				(if (== ((ScriptID 850 3) script?) (ScriptID 850 7))
 					((ScriptID 850 7) cue:)
 				)
 				(= state 0)
 				(HandsOn)
-				(theIconBar enable: 1 4)
+				(theIconBar enable: ICON_WALK ICON_TALK)
 				(switch arcadeDifficulty
 					(1 (= seconds 15))
 					(2 (= seconds 10))
@@ -209,7 +211,6 @@
 )
 
 (instance spearWiz of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -222,7 +223,7 @@
 			)
 			(1
 				(HandsOff)
-				(Bset 84)
+				(Bset fSpearedWiz)
 				(if ((ScriptID 850 2) script?)
 					((ScriptID 850 2) setScript: 0)
 				)
@@ -232,7 +233,7 @@
 					((User curEvent?) y?)
 				)
 				(self setScript: (ScriptID 32 0) 0 56)
-				(ego drop: 45)
+				(ego drop: iMagicSpear)
 				(theIconBar advanceCurIcon:)
 			)
 			(2
@@ -249,12 +250,12 @@
 			(3
 				(sFx2 number: 101 play:)
 				((ScriptID 850 2) dispose:)
-				(ego solvePuzzle: 340 10)
+				(ego solvePuzzle: fBeatDeWiz 10)
 				(= seconds 1)
 			)
 			(4
 				(if (== (ego script?) (ScriptID 850 11))
-					(messager say: 2 6 31 0 0 850)
+					(messager say: N_REGION V_DOIT C_GARGOYLE_RELEASES 0 0 850)
 					((ScriptID 850 11) cue:)
 				)
 				(if (== ((ScriptID 850 16) state?) 0)
@@ -266,6 +267,4 @@
 	)
 )
 
-(instance sFx2 of Sound
-	(properties)
-)
+(instance sFx2 of Sound)
