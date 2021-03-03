@@ -1,0 +1,42 @@
+;;; Sierra Script
+;;; 160.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_RAKEESH_WALK 1)
+(define N_ROOM 9)
+(define N_SIMBANI_VILLAGE 4)
+(define N_TELL_SCRIPT 3)
+(define N_POOL_OF_PEACE 2)
+(define N_BLUFFS 5)
+(define N_HIGH_HILL 6)
+(define N_LEAPFROG_ROCKS 7)
+(define N_MISC_ROCKS 8)
+
+;;; CASES
+
+(define C_CAMP 22)
+(define C_FIGHTER1 20)
+(define C_FIGHTER2 17)
+(define C_FIGHTER3 18)
+(define C_FIGHTER4 19)
+(define C_PALADIN1 1)
+(define C_PALADIN2 2)
+(define C_PALADIN3 3)
+(define C_PALADIN4 4)
+(define C_PALADIN5 5)
+(define C_THIEF1 6)
+(define C_THIEF2 7)
+(define C_THIEF3 8)
+(define C_THIEF4 9)
+(define C_THIEF5 10)
+(define C_WIZARD1 11)
+(define C_WIZARD2 12)
+(define C_WIZARD3 13)
+(define C_WIZARD4 14)
+(define C_WIZARD5 15)
+(define C_END_TALK 16)
+(define C_GOOD_MORNING 23)
+(define C_NO_ENTRY 21)
+

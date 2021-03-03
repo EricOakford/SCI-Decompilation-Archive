@@ -1,0 +1,34 @@
+;;; Sierra Script
+;;; 170.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_JOHARI 2)
+(define N_MANU 3)
+(define N_ROOM 1)
+(define N_TELL_SCRIPT 4)
+(define N_LEOPARDMAN_VILLAGE 10)
+(define N_BIG_TREE 5)
+(define N_GIANT_ANT_HILL 6)
+(define N_GORGE 7)
+(define N_MOUNTAIN 8)
+(define N_SKY 9)
+
+;;; CASES
+
+(define C_GOOD_MORNING 13)
+(define C_GOOD_NIGHT 14)
+(define C_MANU_TALK1 8)
+(define C_MANU_TALK2 9)
+(define C_MANU_TALK3 10)
+(define C_MANU_TALK4 11)
+(define C_MANU_TALK5 12)
+(define C_CANT_GO 1)
+(define C_JOHARI_TALK1 2)
+(define C_JOHARI_TALK2 3)
+(define C_JOHARI_TALK3 4)
+(define C_JOHARI_TALK4 5)
+(define C_JOHARI_TALK5 6)
+(define C_JOHARI_TALK6 7)
+

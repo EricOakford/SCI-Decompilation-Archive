@@ -360,7 +360,7 @@
 						(= v NULL)
 						(= c C_MAGIC_ON_ME)
 					)
-					((>= theVerb V_CONTROL)
+					((>= theVerb V_ROYALS)
 						(= v NULL)
 						(= c C_ITEM_ON_ME)
 					)
@@ -395,10 +395,10 @@
 			((and (> curRoomNum 100) (== what 0))
 				(if
 					(and
-						(== ((inventory at: what) message?) V_MONEY)
+						(== ((inventory at: what) message?) V_DINARS)
 						(== oldNum 0)
 					)
-					((inventory at: what) message: V_CONTROL)
+					((inventory at: what) message: V_ROYALS)
 				)
 			)
 			((== what 0)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 160)
-(include sci.sh)
+(include game.sh) (include "160.shm")
 (use Main)
 (use PanoRoom)
 (use PolyPath)
@@ -16,46 +16,46 @@
 
 (local
 	local0
-	local1
+	rakeeshMsg
 	local2
 )
-(procedure (localproc_0482)
+(procedure (ClassTalk)
 	(return
 		(switch heroType
-			(0
-				(switch (++ local1)
-					(1 (return 20))
-					(2 (return 17))
-					(3 (return 18))
-					(4 (return 19))
-					(else  (return 16))
+			(FIGHTER
+				(switch (++ rakeeshMsg)
+					(1 (return C_FIGHTER1))
+					(2 (return C_FIGHTER2))
+					(3 (return C_FIGHTER3))
+					(4 (return C_FIGHTER4))
+					(else  (return C_END_TALK))
 				)
 			)
-			(1
-				(switch (++ local1)
+			(MAGIC_USER
+				(switch (++ rakeeshMsg)
 					(1 (return 11))
 					(2 (return 12))
 					(3 (return 13))
 					(4 (return 14))
-					(else  (return 15))
+					(else  (return C_END_TALK))
 				)
 			)
-			(2
-				(switch (++ local1)
-					(1 (return 6))
-					(2 (return 7))
-					(3 (return 8))
-					(4 (return 9))
-					(else  (return 10))
+			(THIEF
+				(switch (++ rakeeshMsg)
+					(1 (return C_THIEF1))
+					(2 (return C_THIEF2))
+					(3 (return C_THIEF3))
+					(4 (return C_THIEF4))
+					(else  (return C_THIEF5))
 				)
 			)
-			(else 
-				(switch (++ local1)
-					(1 (return 1))
-					(2 (return 2))
-					(3 (return 3))
-					(4 (return 4))
-					(else  (return 5))
+			(else 	;PALADIN
+				(switch (++ rakeeshMsg)
+					(1 (return C_PALADIN1))
+					(2 (return C_PALADIN2))
+					(3 (return C_PALADIN3))
+					(4 (return C_PALADIN4))
+					(else  (return C_PALADIN5))
 				)
 			)
 		)
@@ -64,7 +64,7 @@
 
 (instance rm160 of PanoRoom
 	(properties
-		noun 9
+		noun N_ROOM
 		picture 160
 		east 170
 		west 150
@@ -75,58 +75,118 @@
 			setRegions: 50
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 122 89 124 99 64 99 64 89
+					type: PBarredAccess
+					init:
+						122 89
+						124 99
+						64 99
+						64 89
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 177 91 185 105 179 117 153 117 168 101 150 100 141 91
+					type: PBarredAccess
+					init:
+						177 91
+						185 105
+						179 117
+						153 117
+						168 101
+						150 100
+						141 91
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 176 177 319 156 319 189 0 189 0 159 54 159
+					type: PBarredAccess
+					init:
+						176 177
+						319 156
+						319 189
+						0 189
+						0 159
+						54 159
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 251 80 251 87 213 87 205 80
+					type: PBarredAccess
+					init:
+						251 80
+						251 87
+						213 87
+						205 80
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 319 0 319 42 262 42 173 39 152 46 112 52 0 53 0 0
+					type: PBarredAccess
+					init:
+						319 0
+						319 42
+						262 42
+						173 39
+						152 46
+						112 52
+						0 53
+						0 0
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 171 72 171 76 148 76 148 72
+					type: PBarredAccess
+					init:
+						171 72
+						171 76
+						148 76
+						148 72
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 102 127 142 121 148 130 125 139
+					type: PBarredAccess
+					init:
+						102 127
+						142 121
+						148 130
+						125 139
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 109 149 124 145 142 151 159 143 190 143 189 154 159 166 124 162
+					type: PBarredAccess
+					init:
+						109 149
+						124 145
+						142 151
+						159 143
+						190 143
+						189 154
+						159 166
+						124 162
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 194 101 185 93 198 81 214 90 214 100
+					type: PBarredAccess
+					init:
+						194 101
+						185 93
+						198 81
+						214 90
+						214 100
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 214 140 238 140 238 145 214 145
+					type: PBarredAccess
+					init:
+						214 140
+						238 140
+						238 145
+						214 145
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 220 95 223 91 239 89 248 90 251 94 231 100
+					type: PBarredAccess
+					init:
+						220 95
+						223 91
+						239 89
+						248 90
+						251 94
+						231 100
 					yourself:
 				)
 			setScript:
@@ -141,11 +201,11 @@
 					)
 					(410 fromSimbani)
 					(east
-						(= style 11)
+						(= style SCROLLRIGHT)
 						fromTreePanorama
 					)
 					(west
-						(= style 12)
+						(= style SCROLLLEFT)
 						fromTarnaPanorama
 					)
 					(else  fromSprings)
@@ -157,13 +217,13 @@
 		(highHill init:)
 		(leapFrogRocks init:)
 		(miscRocks init:)
-		(ego solvePuzzle: 209 3)
-		(if (and (Btst 99) (== gGClientModNum curRoomNum))
-			(honeyTree x: gGOwnerX y: gGOwnerY init: stopUpd:)
+		(ego solvePuzzle: fEnteredSimbaniPanorama 3)
+		(if (and (Btst fHoneyBirdHinted) (== honeyBirdRoom curRoomNum))
+			(honeyTree x: honeyTreeX y: honeyTreeY init: stopUpd:)
 		)
 		(HandsOn 6 3)
 		(super init: &rest)
-		(if (not (Btst 88))
+		(if (not (Btst fTravelWithSomeone))
 			(ego code: whereIsHe)
 			(if (!= (cSound number?) 160)
 				(cSound number: 160 setLoop: -1 play:)
@@ -179,7 +239,7 @@
 	(method (cue)
 		(cond 
 			((ego inRect: 208 82 250 97)
-				(if (Btst 43)
+				(if (Btst fAfterConference)
 					(self setScript: tellScript)
 				else
 					(curRoom newRoom: 410)
@@ -187,32 +247,39 @@
 			)
 			(
 				(and
-					(Btst 99)
-					(== gGClientModNum curRoomNum)
+					(Btst fHoneyBirdHinted)
+					(== honeyBirdRoom curRoomNum)
 					(ego
-						inRect: gGOwnerX (- gGOwnerY 20) (+ gGOwnerX 20) gGOwnerY
+						inRect: honeyTreeX (- honeyTreeY 20) (+ honeyTreeX 20) honeyTreeY
 					)
 				)
-				(Bset 143)
+				(Bset fStartedEncounter)
 				(= monsterNum 2)
 				(self newRoom: 400)
 			)
-			((ego inRect: 128 153 162 174) (curRoom newRoom: 390))
-			((> (ego x?) 315) (curRoom setScript: toJungle))
-			((< (ego x?) 5) (curRoom setScript: toTarna))
-			(else (curRoom newRoom: 0))
+			((ego inRect: 128 153 162 174)
+				(curRoom newRoom: 390)
+			)
+			((> (ego x?) 315)
+				(curRoom setScript: toJungle)
+			)
+			((< (ego x?) 5)
+				(curRoom setScript: toTarna)
+			)
+			(else
+				(curRoom newRoom: 0)
+			)
 		)
 	)
 )
 
 (instance tellScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: 3 6 21 0 self)
+				(messager say: N_TELL_SCRIPT V_DOIT C_NO_ENTRY 0 self)
 			)
 			(1
 				(HandsOff)
@@ -223,7 +290,6 @@
 )
 
 (instance toTarna of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -231,13 +297,14 @@
 				(HandsOff)
 				(ego setMotion: PolyPath 1 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 150))
+			(1
+				(curRoom newRoom: 150)
+			)
 		)
 	)
 )
 
 (instance toJungle of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -245,13 +312,14 @@
 				(HandsOff)
 				(ego setMotion: PolyPath 319 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 170))
+			(1
+				(curRoom newRoom: 170)
+			)
 		)
 	)
 )
 
 (instance fromSimbani of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -283,8 +351,7 @@
 )
 
 (instance fromTreePanorama of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -299,16 +366,17 @@
 )
 
 (instance fromTarnaPanorama of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (Btst 88) (ego view: 153))
+				(if (Btst fTravelWithSomeone)
+					(ego view: 153)
+				)
 				(ego x: 2 setMotion: PolyPath 6 (ego y?) self)
 			)
 			(1
-				(if (Btst 88)
+				(if (Btst fTravelWithSomeone)
 					(fire init: hide:)
 					(curRoom setScript: rakeeshWalk)
 				else
@@ -324,13 +392,12 @@
 )
 
 (instance rakeeshWalk of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bclr 6)
+				(Bclr fInMainGame)
 				(ego
 					cycleSpeed: 6
 					moveSpeed: 6
@@ -338,11 +405,11 @@
 				)
 			)
 			(1
-				(messager say: 1 6 (localproc_0482) 0 self)
+				(messager say: N_RAKEESH_WALK V_DOIT (ClassTalk) 0 self)
 			)
 			(2
-				(Bclr 6)
-				(PalVary pvINIT curRoomNum 3)
+				(Bclr fInMainGame)
+				(PalVary PALVARYSTART curRoomNum 3)
 				(ego setMotion: PolyPath 30 103 self)
 			)
 			(3
@@ -352,10 +419,10 @@
 				(ego setMotion: PolyPath 75 107 self)
 			)
 			(5
-				(messager say: 1 6 (localproc_0482) 0 self)
+				(messager say: N_RAKEESH_WALK V_DOIT (ClassTalk) 0 self)
 			)
 			(6
-				(Bclr 6)
+				(Bclr fInMainGame)
 				(ego setMotion: PolyPath 107 133 self)
 			)
 			(7
@@ -365,30 +432,30 @@
 				(ego setMotion: PolyPath 140 130 self)
 			)
 			(9
-				(messager say: 1 6 (localproc_0482) 0 self)
+				(messager say: N_RAKEESH_WALK V_DOIT (ClassTalk) 0 self)
 			)
 			(10
-				(Bclr 6)
+				(Bclr fInMainGame)
 				(ego setMotion: PolyPath 165 133 self)
 			)
 			(11
-				(messager say: 1 6 (localproc_0482) 0 self)
+				(messager say: N_RAKEESH_WALK V_DOIT (ClassTalk) 0 self)
 			)
 			(12
-				(Bclr 6)
+				(Bclr fInMainGame)
 				(ego setMotion: PolyPath 207 101 self)
 			)
 			(13
-				(messager say: 1 6 (localproc_0482) 0 self)
+				(messager say: N_RAKEESH_WALK V_DOIT (ClassTalk) 0 self)
 			)
 			(14
-				(Bclr 6)
+				(Bclr fInMainGame)
 				(ego setMotion: PolyPath 217 94 self)
 			)
 			(15
-				(Bset 85)
-				(Bclr 88)
-				(Bset 6)
+				(Bset fCanGoToSimbani)
+				(Bclr fTravelWithSomeone)
+				(Bset fInMainGame)
 				(= Clock 2600)
 				(= Day 3)
 				(curRoom newRoom: 410)
@@ -398,37 +465,43 @@
 )
 
 (instance campOut of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(messager say: 1 6 22 0 self)
+				(messager say: N_RAKEESH_WALK V_DOIT C_CAMP 0 self)
 			)
 			(1
-				(Bclr 6)
+				(Bclr fInMainGame)
 				(fire
 					x: (+ (ego x?) 5)
 					y: (ego y?)
 					show:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles 5)
 			)
-			(2 (= seconds 9))
+			(2
+				(= seconds 9)
+			)
 			(3
-				(PalVary pvREVERSE 5)
+				(PalVary PALVARYREVERSE 5)
 				(fire dispose:)
 				(++ Day)
-				(= [egoStats 17] (ego maxStamina:))
+				(= [egoStats STAMINA] (ego maxStamina:))
 				(ego takeDamage: -16 useMana: -16)
 				(= cycles 5)
 			)
-			(4 (= seconds 7))
-			(5
-				(messager say: 1 6 23 0 self)
+			(4
+				(= seconds 7)
 			)
-			(6 (Bclr 6) (self dispose:))
+			(5
+				(messager say: N_RAKEESH_WALK V_DOIT C_GOOD_MORNING 0 self)
+			)
+			(6
+				(Bclr fInMainGame)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -446,7 +519,7 @@
 		view 150
 		loop 1
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -454,7 +527,7 @@
 	(properties
 		x 142
 		y 158
-		noun 2
+		noun N_POOL_OF_PEACE
 		nsTop 152
 		nsLeft 121
 		nsBottom 164
@@ -467,7 +540,7 @@
 	(properties
 		x 228
 		y 83
-		noun 4
+		noun N_SIMBANI_VILLAGE
 		nsTop 79
 		nsLeft 208
 		nsBottom 87
@@ -480,7 +553,7 @@
 	(properties
 		x 219
 		y 91
-		noun 5
+		noun N_BLUFFS
 		nsTop 82
 		nsLeft 190
 		nsBottom 100
@@ -493,7 +566,7 @@
 	(properties
 		x 162
 		y 90
-		noun 6
+		noun N_HIGH_HILL
 		nsTop 82
 		nsLeft 148
 		nsBottom 99
@@ -506,7 +579,7 @@
 	(properties
 		x 95
 		y 93
-		noun 7
+		noun N_LEAPFROG_ROCKS
 		nsTop 89
 		nsLeft 68
 		nsBottom 98
@@ -519,7 +592,7 @@
 	(properties
 		x 171
 		y 149
-		noun 8
+		noun N_MISC_ROCKS
 		nsTop 144
 		nsLeft 156
 		nsBottom 155
@@ -529,16 +602,25 @@
 )
 
 (instance whereIsHe of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
 			((curRoom script?) 0)
-			((ego inRect: 123 154 164 164) (ego setMotion: 0) (curRoom newRoom: 390))
-			((> (ego x?) 315) (ego setMotion: 0) (curRoom setScript: toJungle))
-			((< (ego x?) 5) (curRoom setScript: toTarna))
-			(
-			(and (not (Btst 43)) (ego inRect: 208 82 252 92)) (ego setMotion: 0) (curRoom newRoom: 410))
+			((ego inRect: 123 154 164 164)
+				(ego setMotion: 0)
+				(curRoom newRoom: 390)
+			)
+			((> (ego x?) 315)
+				(ego setMotion: 0)
+				(curRoom setScript: toJungle)
+			)
+			((< (ego x?) 5)
+				(curRoom setScript: toTarna)
+			)
+			((and (not (Btst fAfterConference)) (ego inRect: 208 82 252 92))
+				(ego setMotion: 0)
+				(curRoom newRoom: 410)
+			)
 		)
 	)
 )

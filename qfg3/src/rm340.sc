@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 340)
-(include sci.sh)
+(include game.sh) (include "340.shm")
 (use Main)
 (use GloryWindow)
 (use OccasionalCycle)
@@ -31,7 +31,7 @@
 )
 (procedure (proc340_3)
 	(ego hold: 1 3 110)
-	(super init: &rest)
+	;(super init: &rest)	;this will not compile, but the procedure doesn't seem to be used anyway
 	(self setScript: doEvent2)
 )
 
@@ -53,59 +53,22 @@
 	)
 )
 
-(procedure (localproc_04f1 &tmp temp0 theTheCursor)
-	(= theTheCursor theCursor)
-	(= temp0 (Message msgSIZE 340 11 60 51 1))
+(procedure (localproc_04f1 &tmp temp0 oldCur)
+	(= oldCur theCursor)
+	(= temp0 (Message MsgSize 340 11 60 51 1))
 	(= local1 (Memory memALLOC_NONCRIT temp0))
-	(Message msgGET 340 11 60 51 1 local1)
-	(= temp0 (Message msgSIZE 340 11 60 52 1))
+	(Message MsgGet 340 11 60 51 1 local1)
+	(= temp0 (Message MsgSize 340 11 60 52 1))
 	(= local2 (Memory memALLOC_NONCRIT temp0))
-	(Message msgGET 340 11 60 52 1 local2)
+	(Message MsgGet 340 11 60 52 1 local2)
 	(quest init: show: dispose:)
 	(Memory memFREE local1)
 	(Memory memFREE local2)
-	(theGame setCursor: theTheCursor)
+	(theGame setCursor: oldCur)
 )
 
 (class Head of View
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0101
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
 		face 2
 	)
 	
@@ -116,20 +79,19 @@
 	
 	(method (back)
 		(heads eachElementDo: #setCel (self face?))
-		(Animate (heads elements?) 0)
+		(Animate (heads elements?) FALSE)
 	)
 	
-	(method (cue param1)
-		(heads eachElementDo: #setCel param1)
-		(Animate (heads elements?) 0)
+	(method (cue theCel)
+		(heads eachElementDo: #setCel theCel)
+		(Animate (heads elements?) FALSE)
 	)
 )
 
 (instance myMessager of Messager
-	(properties)
 	
-	(method (say param1)
-		(switch param1
+	(method (say who)
+		(switch who
 			(5 (speaker cue: 0))
 			(8 (priestess cue: 1))
 			(9 (mother cue: 2))
@@ -138,15 +100,13 @@
 			(4 (yWarrior cue: 6))
 			(else  (speaker back:))
 		)
-		(messager say: param1 &rest)
+		(messager say: who &rest)
 	)
 )
 
-(instance heads of List
-	(properties)
-)
+(instance heads of List)
 
-(instance rm340 of Rm
+(instance rm340 of Room
 	(properties
 		picture 340
 	)
@@ -164,7 +124,7 @@
 			x: 103
 			y: 41
 			init:
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		((Prop new:)
 			view: 340
@@ -173,11 +133,11 @@
 			x: 210
 			y: 41
 			init:
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		(cond 
 			((or (== prevRoomNum 230) (== prevRoomNum 240))
-				(Bset 36)
+				(Bset fHaramiWasOnTrial)
 				(localproc_048a)
 				(ego
 					view: 5
@@ -193,9 +153,9 @@
 				(super init: &rest)
 				(self setScript: doEvent1)
 			)
-			((and (== prevRoomNum 310) (not (Btst 12)))
+			((and (== prevRoomNum 310) (not (Btst fSoulJudged)))
 				(cSound setLoop: -1 number: 340 play: 127)
-				(Bset 35)
+				(Bset fRakeeshSworeOath)
 				(localproc_048a)
 				(rajah init: stopUpd:)
 				((ScriptID 35 1)
@@ -389,14 +349,14 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (Btst 27)
+				(if (Btst fUsedCalmOnHarami)
 					(messager say: 4 6 26 0 rajah)
 				else
 					(myMessager say: 4 6 19 0 rajah)
 				)
 			)
 			(1
-				(if (Btst 27)
+				(if (Btst fUsedCalmOnHarami)
 					(curRoom setScript: forbidden)
 				else
 					(myMessager say: 8 6 19 0 rajah)
@@ -927,24 +887,24 @@
 	)
 )
 
-(instance titleIcon of IconI
+(instance titleIcon of IconItem
 	(properties
 		view 935
 		loop 2
 		cel 0
 		nsTop 0
-		signal $0004
+		signal DISABLED
 		maskView 361
 		maskLoop 3
 	)
 	
-	(method (show &tmp [temp0 20])
-		(Message msgGET 340 11 60 53 1 @temp0)
-		(Display @temp0 dsCOORD 5 3 dsCOLOR 17)
+	(method (show &tmp [str 20])
+		(Message MsgGet 340 11 60 53 1 @str)
+		(Display @str p_at 5 3 p_color 17)
 	)
 )
 
-(instance yesIcon of IconI
+(instance yesIcon of IconItem
 	(properties
 		view 935
 		loop 2
@@ -959,7 +919,7 @@
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display local1 dsCOORD 20 (+ nsTop 3) dsCOLOR 17)
+		(Display local1 p_at 20 (+ nsTop 3) p_color 17)
 		(if (& signal $0004) (self mask:))
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
@@ -979,11 +939,11 @@
 			(DrawCel view loop 0 nsLeft nsTop -1)
 			(= temp0 17)
 		)
-		(Display local1 dsCOORD 20 (+ nsTop 3) dsCOLOR temp0)
+		(Display local1 p_at 20 (+ nsTop 3) p_color temp0)
 	)
 )
 
-(instance noIcon of IconI
+(instance noIcon of IconItem
 	(properties
 		view 935
 		loop 2
@@ -998,7 +958,7 @@
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display local2 dsCOORD 20 (+ nsTop 3) dsCOLOR 17)
+		(Display local2 p_at 20 (+ nsTop 3) p_color 17)
 		(if (& signal $0004) (self mask:))
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
@@ -1018,6 +978,6 @@
 			(DrawCel view loop 0 nsLeft nsTop -1)
 			(= temp0 17)
 		)
-		(Display local2 dsCOORD 20 (+ nsTop 3) dsCOLOR temp0)
+		(Display local2 p_at 20 (+ nsTop 3) p_color temp0)
 	)
 )

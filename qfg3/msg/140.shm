@@ -2,9 +2,6 @@
 ;;; 140.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
-;;; CASES
-
-
 ;;; NOUNS
 
 (define N_CHAR_ALLOC 1)
@@ -14,5 +11,13 @@
 (define N_PALADIN 5)
 (define N_MAGE 6)
 (define N_CHOOSE_CHARACTER 7)
-(define N_USER_NAME 8)
+(define N_STAT 8)
+
+;;; CASES
+
+(define C_STILL_HAVE_POJNTS 1)
+(define C_YES 2)
+(define C_NO 3)
+(define C_CANCEL 4)
+(define C_NAME 5)
 

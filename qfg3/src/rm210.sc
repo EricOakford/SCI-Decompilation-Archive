@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 210)
-(include sci.sh)
+(include game.sh) (include "210.shm")
 (use Main)
 (use TellerIcon)
 (use GloryTalker)
@@ -21,44 +21,44 @@
 )
 
 (local
-	[local0 6] = [0 35 36 33 34 999]
-	[local6 6] = [0 -45 42 -40 43 999]
-	[local12 3] = [0 -41 999]
-	[local15 3] = [0 44 999]
-	[local18 4] = [0 -46 37 999]
-	[local22 3] = [0 -39 999]
-	[local25 3] = [0 38 999]
-	[local28 6] = [0 -45 42 -40 43 999]
-	[local34 5] = [0 -37 41 -44 999]
-	[local39 3] = [0 49 999]
-	[local42 5] = [0 57 -48 54 999]
-	[local47 4] = [0 -38 -50 999]
-	[local51 5] = [0 56 58 55 999]
-	[local56 3] = [0 51 999]
-	[local59 5] = [0 -37 52 53 999]
-	[local64 6] = [0 45 -42 40 -43 999]
-	[local70 3] = [0 60 999]
-	[local73 3] = [0 59 999]
-	[local76 6] = [0 45 42 -40 43 999]
-	[local82 3] = [0 -62 999]
-	[local85 3] = [0 -46 999]
-	[local88 3] = [0 -38 999]
-	[local91 3] = [0 56 999]
+	local0 = [0 35 36 33 34 999]
+	local6 = [0 -45 42 -40 43 999]
+	local12 = [0 -41 999]
+	local15 = [0 44 999]
+	local18 = [0 -46 37 999]
+	local22 = [0 -39 999]
+	local25 = [0 38 999]
+	local28 = [0 -45 42 -40 43 999]
+	local34 = [0 -37 41 -44 999]
+	local39 = [0 49 999]
+	local42 = [0 57 -48 54 999]
+	local47 = [0 -38 -50 999]
+	local51 = [0 56 58 55 999]
+	local56 = [0 51 999]
+	local59 = [0 -37 52 53 999]
+	local64 = [0 45 -42 40 -43 999]
+	local70 = [0 60 999]
+	local73 = [0 59 999]
+	local76 = [0 45 42 -40 43 999]
+	local82 = [0 -62 999]
+	local85 = [0 -46 999]
+	local88 = [0 -38 999]
+	local91 = [0 56 999]
 	[local94 4]
 	[local98 8]
 	[local106 11]
 	[local117 5]
 	[local122 7]
-	[local129 7] = [0 -45 -40 -41 -46 -39 999]
-	[local136 9] = [0 -45 -40 -44 -48 -50 -38 -37 999]
-	[local145 4] = [0 -42 -43 999]
-	[local149 6] = [0 -40 -62 -46 -38 999]
+	local129 = [0 -45 -40 -41 -46 -39 999]
+	local136 = [0 -45 -40 -44 -48 -50 -38 -37 999]
+	local145 = [0 -42 -43 999]
+	local149 = [0 -40 -62 -46 -38 999]
 	local155 =  118
 	[local156 20]
 )
-(instance rm210 of Rm
+(instance rm210 of Room
 	(properties
-		noun 26
+		noun N_ROOM
 		picture 210
 		picAngle 75
 	)
@@ -109,44 +109,26 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						299
-						189
-						267
-						173
-						220
-						173
-						207
-						157
-						250
-						157
-						175
-						143
-						159
-						63
-						155
-						63
-						140
-						144
-						67
-						158
-						116
-						158
-						110
-						173
-						60
-						173
-						18
-						189
-						0
-						189
+						0 0
+						319 0
+						319 189
+						299 189
+						267 173
+						220 173
+						207 157
+						250 157
+						175 143
+						159 63
+						155 63
+						140 144
+						67 158
+						116 158
+						110 173
+						60 173
+						18 189
+						0 189
 					yourself:
 				)
 		)
@@ -167,7 +149,7 @@
 		(pillar2 init:)
 		(pillar3 init:)
 		(pillar4 init:)
-		(if (Btst 20)
+		(if (Btst fTarnaClosed)
 			(closedCityGates init: addToPic:)
 		else
 			(egoTell init: ego @local0 @local94)
@@ -179,8 +161,8 @@
 			else
 				((Teller new:) init: guard1 @local64 @local117 @local145)
 				((Teller new:) init: guard2 @local76 @local122 @local149)
-				(guard1 noun: 3 init: addToPic:)
-				(guard2 noun: 4 init: addToPic:)
+				(guard1 noun: N_GUARD3 init: addToPic:)
+				(guard2 noun: N_GUARD4 init: addToPic:)
 			)
 		)
 	)
@@ -189,8 +171,12 @@
 		(super doit: &rest)
 		(cond 
 			(script 0)
-			((< (ego y?) 145) (self setScript: goinIntoTown))
-			((> (ego y?) 186) (self setScript: goinToBoonies))
+			((< (ego y?) 145)
+				(self setScript: goinIntoTown)
+			)
+			((> (ego y?) 186)
+				(self setScript: goinToBoonies)
+			)
 		)
 	)
 	
@@ -200,7 +186,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 3)
+		(if (== theVerb V_WALK)
 			(if (< ((User curEvent?) y?) 145)
 				(if (< ((User curEvent?) y?) 96)
 					(if (< ((User curEvent?) y?) 61)
@@ -219,14 +205,15 @@
 	)
 	
 	(method (newRoom n)
-		(if (OneOf n 150 350 320) (soundFx fade:))
+		(if (OneOf n 150 350 320)
+			(soundFx fade:)
+		)
 		(super newRoom: n)
 	)
 )
 
 (instance cominFromTown of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -237,7 +224,7 @@
 					normalize:
 					edgeHit: 0
 					setScale: Scaler 30 14 142 73
-					noun: 5
+					noun: N_EGO_TELL
 				)
 				(if (== prevRoomNum 270)
 					(ego setMotion: PolyPath 160 (ego y?) self)
@@ -262,7 +249,6 @@
 )
 
 (instance getOutAndStayOut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -285,18 +271,21 @@
 					setMotion: MoveTo 160 165 self
 				)
 			)
-			(2 (messager say: 6 6 1 0 self))
+			(2
+				(messager say: N_GET_OUT_STAY_OUT V_DOIT C_ESCAPE 0 self)
+			)
 			(3
 				(ego setMotion: MoveTo 160 250 self)
-				(Bset 20)
+				(Bset fTarnaClosed)
 			)
-			(4 (curRoom newRoom: 150))
+			(4
+				(curRoom newRoom: 150)
+			)
 		)
 	)
 )
 
 (instance goinToBoonies of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -310,7 +299,6 @@
 )
 
 (instance cominFromBoonies of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -331,7 +319,6 @@
 )
 
 (instance goinIntoTown of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -351,9 +338,15 @@
 			)
 			(2
 				(switch local155
-					(118 (curRoom newRoom: 270))
-					(96 (curRoom newRoom: 320))
-					(61 (curRoom newRoom: 350))
+					(118
+						(curRoom newRoom: 270)
+					)
+					(96
+						(curRoom newRoom: 320)
+					)
+					(61
+						(curRoom newRoom: 350)
+					)
 				)
 			)
 		)
@@ -361,7 +354,6 @@
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
@@ -374,18 +366,18 @@
 	(properties
 		x 73
 		y 165
-		noun 1
+		noun N_GUARD1
 		approachX 125
 		approachY 167
 		view 210
 		loop 3
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 1 2 4)
+		(self approachVerbs: V_LOOK V_TALK V_DO)
 	)
 )
 
@@ -393,17 +385,17 @@
 	(properties
 		x 231
 		y 169
-		noun 2
+		noun N_GUARD2
 		approachX 214
 		approachY 167
 		view 210
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 1 2 4)
+		(self approachVerbs: V_LOOK V_TALK V_DO)
 	)
 )
 
@@ -495,7 +487,7 @@
 	(properties
 		x 161
 		y 150
-		noun 7
+		noun N_GATES
 		view 211
 	)
 )
@@ -504,7 +496,7 @@
 	(properties
 		x 29
 		y 151
-		noun 8
+		noun N_POT1
 		nsTop 135
 		nsLeft 5
 		nsBottom 168
@@ -517,7 +509,7 @@
 	(properties
 		x 288
 		y 152
-		noun 9
+		noun N_POT2
 		nsTop 135
 		nsLeft 264
 		nsBottom 170
@@ -530,7 +522,7 @@
 	(properties
 		x 24
 		y 68
-		noun 10
+		noun N_LEFT_POT_PALM
 		nsTop 3
 		nsLeft 1
 		nsBottom 133
@@ -543,7 +535,7 @@
 	(properties
 		x 59
 		y 46
-		noun 11
+		noun N_LEFT_FROND
 		nsTop 21
 		nsLeft 47
 		nsBottom 71
@@ -556,7 +548,7 @@
 	(properties
 		x 85
 		y 38
-		noun 12
+		noun N_LEFT_DISTANT_PALM
 		nsTop 28
 		nsLeft 74
 		nsBottom 48
@@ -569,7 +561,7 @@
 	(properties
 		x 293
 		y 68
-		noun 13
+		noun N_RIGHT_POT_PALM
 		nsTop 2
 		nsLeft 268
 		nsBottom 135
@@ -582,7 +574,7 @@
 	(properties
 		x 257
 		y 69
-		noun 14
+		noun N_RIGHT_FROND
 		nsTop 49
 		nsLeft 247
 		nsBottom 90
@@ -595,7 +587,7 @@
 	(properties
 		x 231
 		y 39
-		noun 15
+		noun N_RIGHT_DISTANT_PALM
 		nsTop 29
 		nsLeft 222
 		nsBottom 50
@@ -608,7 +600,7 @@
 	(properties
 		x 93
 		y 65
-		noun 16
+		noun N_LEFT_STATUE
 		nsTop 49
 		nsLeft 85
 		nsBottom 81
@@ -621,7 +613,7 @@
 	(properties
 		x 220
 		y 63
-		noun 17
+		noun N_RIGHT_STATUE
 		nsTop 47
 		nsLeft 213
 		nsBottom 80
@@ -634,7 +626,7 @@
 	(properties
 		x 158
 		y 25
-		noun 18
+		noun N_LION_HEAD
 		nsTop 10
 		nsLeft 139
 		nsBottom 40
@@ -647,7 +639,7 @@
 	(properties
 		x 157
 		y 57
-		noun 27
+		noun N_DOOR
 		nsTop 53
 		nsLeft 154
 		nsBottom 61
@@ -660,7 +652,7 @@
 	(properties
 		x 159
 		y 89
-		noun 20
+		noun N_STAIRS
 		nsTop 61
 		nsLeft 138
 		nsBottom 117
@@ -673,7 +665,7 @@
 	(properties
 		x 82
 		y 110
-		noun 23
+		noun N_PILLAR1
 		nsTop 85
 		nsLeft 74
 		nsBottom 135
@@ -686,7 +678,7 @@
 	(properties
 		x 98
 		y 117
-		noun 22
+		noun N_PILLAR2
 		nsTop 98
 		nsLeft 92
 		nsBottom 136
@@ -699,7 +691,7 @@
 	(properties
 		x 216
 		y 121
-		noun 24
+		noun N_PILLAR3
 		nsTop 99
 		nsLeft 211
 		nsBottom 143
@@ -712,7 +704,7 @@
 	(properties
 		x 231
 		y 115
-		noun 25
+		noun N_PILLAR4
 		nsTop 87
 		nsLeft 225
 		nsBottom 143

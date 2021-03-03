@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 140)
-(include sci.sh)
+(include game.sh) (include "140.shm")
 (use Main)
 (use GloryWindow)
 (use PMouse)
@@ -12,6 +12,9 @@
 (use Actor)
 (use System)
 
+;EO: The list of stats does not display correctly.
+; I think this is due to a decompiler error.
+
 (public
 	rm140 0
 )
@@ -22,168 +25,127 @@
 	local2 =  71
 	[local3 11]
 	[local14 19]
-	[local33 15] = [28 34 50 66 82 98 35 47 59 71 83 95 107 114 119]
-	[local48 15] = [100 11 12 12 13 13 207 207 207 207 207 207 209 12 209]
-	[local63 15] = [0 1 2 3 4 5 7 9 10 1 9 11 12 6 12]
-	[local78 14] = [1 2 3 4 5 7 8 9 10 11 12 13 6 14]
-	[local92 15] = [0 1 2 3 4 5 13 6 7 8 9 10 11 12 14]
-	[theEgoStats 51] = [0 150 80 130 150 100 150 130 100 0 0 100 0 0 90 0 80 150 100 100 100 80 0 100 0 0 0 0 150 120 0 100 100 150 100 100 100 0 100 100 100 100 100 0 100 67 78 68 20 23 27]
-	[theEgoStats_3 11] = [0 50 0 0 50 0 50 0 50]
-	[theEgoStats_4 11] = [100 100 50 100 100 100 100 100 100 100 50]
+	local33 = [28 34 50 66 82 98 35 47 59 71 83 95 107 114 119]
+	local48 = [100 11 12 12 13 13 207 207 207 207 207 207 209 12 209]
+	local63 = [0 1 2 3 4 5 7 9 10 1 9 11 12 6 12]
+	local78 = [1 2 3 4 5 7 8 9 10 11 12 13 6 14]
+	local92 = [0 1 2 3 4 5 13 6 7 8 9 10 11 12 14]
+	initStats = [
+		;fighter/paladin
+		0 150 80 130 150 100 150 130 100 0 0 100 0 0 90
+		;wizard
+		0 80 150 100 100 100 80 0 100 0 0 0 0 150 120
+		;thief
+		0 100 100 150 100 100 100 0 100 100 100 100 100
+		;no idea
+		0 100 67 78 68 20 23 27
+		]
+	nonMageSpellValue = [0 50 0 0 50 0 50 0 50]
+	mageSpellValue = [100 100 50 100 100 100 100 100 100 100 50]
 	theHeroType =  1
-	[local181 39]
-	local220
+	[nameBuf 39]
+	nameLen
 	local221 =  50
 	[theEgoStats_2 14]
 	[theTheEgoStats 14]
 	local250 =  1
 	local251
-	[local252 6] = [71 159 245 71 159 245]
-	[local258 6] = [42 44 43 44 46 45]
+	picX = [71 159 245 71 159 245]
+	picY = [42 44 43 44 46 45]
 	local264
 	[local265 10]
 	[local275 10]
-	[local285 5]
+	[statBuf 5]
 )
-(procedure (localproc_1008 &tmp temp0)
+(procedure (SaveEgoStats &tmp whichSkill)
 	(cond 
-		((or (== heroType 3) (== heroType 0))
-			(= temp0 1)
-			(while (< temp0 15)
-				(= [theEgoStats temp0] [egoStats (- temp0 1)])
-				(++ temp0)
+		((or (== heroType PALADIN) (== heroType FIGHTER))
+			(for ((= whichSkill 1)) (< whichSkill 15) ((++ whichSkill))
+				(= [initStats whichSkill] [egoStats (- whichSkill 1)])
 			)
-			(if (not [egoStats 10]) (= [theEgoStats 11] 50))
-			(= theHeroType 0)
+			(if (not [egoStats THROW])
+				(= [initStats 11] 50)
+			)
+			(= theHeroType FIGHTER)
 		)
-		((== heroType 1)
-			(== temp0 16)
-			(while (< temp0 30)
-				(= [theEgoStats temp0] [egoStats (- temp0 16)])
-				(++ temp0)
+		((== heroType MAGIC_USER)
+			(for ((= whichSkill 16)) (< whichSkill 30) ((++ whichSkill))
+				(= [initStats whichSkill] [egoStats (- whichSkill 16)])
 			)
-			(= theHeroType 1)
+			(= theHeroType MAGIC_USER)
 		)
-		((== heroType 2)
-			(== temp0 31)
-			(while (< temp0 45)
-				(= [theEgoStats temp0] [egoStats (- temp0 31)])
-				(++ temp0)
+		((== heroType THIEF)
+			(for ((= whichSkill 31)) (< whichSkill 45) ((++ whichSkill))
+				(= [initStats whichSkill] [egoStats (- whichSkill 31)])
 			)
-			(= theHeroType 2)
+			(= theHeroType THIEF)
 		)
 	)
-	(StrCpy @local181 @userName)
-	(= local220 (StrLen @local181))
+	(StrCpy @nameBuf @userName)
+	(= nameLen (StrLen @nameBuf))
 )
 
-(procedure (localproc_10b2 param1 param2)
-	(Display
-		&rest
-		dsCOORD
-		(+ param2 5)
-		(+ param1 1)
-		dsCOLOR
-		58
-		dsWIDTH
-		30
-		dsALIGN
-		1
-		dsFONT
-		123
+(procedure (ShowValue yPlace xPlace)
+	(Display &rest
+		100 (+ xPlace 5) (+ yPlace 1)
+		p_color 58
+		p_width 30
+		p_mode teJustCenter
+		p_font 123
 	)
-	(Display
-		&rest
-		dsCOORD
-		(+ param2 4)
-		(+ param1 1)
-		dsCOLOR
-		82
-		dsWIDTH
-		30
-		dsALIGN
-		1
-		dsFONT
-		123
+	(Display &rest
+		100 (+ xPlace 4) (+ yPlace 1)
+		p_color 82
+		p_width 30
+		p_mode teJustCenter
+		p_font 123
 	)
 )
 
-(procedure (localproc_10fb &tmp [temp0 4] temp4)
-	(= temp4 1)
-	(while (< temp4 15)
-		(= [egoStats (- temp4 1)] [theEgoStats_2 temp4])
-		(++ temp4)
+(procedure (localproc_10fb &tmp [str 4] whichSkill)
+	(for ((= whichSkill 1)) (< whichSkill EXPER) ((++ whichSkill))
+		(= [egoStats (- whichSkill 1)] [theEgoStats_2 whichSkill])
 	)
-	(if (not [egoStats 14]) (= [egoStats 14] 50))
-	(= [oldStats 14] [egoStats 14])
-	(if (== heroType 3) (= paladinStat [egoStats 14]))
+	(if (not [egoStats HONOR])
+		(= [egoStats HONOR] 50)
+	)
+	(= [oldStats HONOR] [egoStats HONOR])
+	(if (== heroType PALADIN)
+		(= paladinStat [egoStats HONOR])
+	)
 	(DrawCel 145 6 0 92 134 15)
-	(Message msgGET 140 8 0 5 1 @local285)
-	(Format @temp0 @local285 local221)
-	(Display
-		@temp0
-		dsCOORD
-		97
-		133
-		dsCOLOR
-		58
-		dsWIDTH
-		30
-		dsALIGN
-		1
-		dsFONT
-		123
+	(Message MsgGet 140 N_STAT NULL C_NAME 1 @statBuf)
+	(Format @str @statBuf local221)
+	(Display @str
+		p_at 97 133
+		p_color 58
+		p_width 30
+		p_mode teJustCenter
+		p_font 123
 	)
-	(Display
-		@temp0
-		dsCOORD
-		96
-		133
-		dsCOLOR
-		43
-		dsWIDTH
-		30
-		dsALIGN
-		1
-		dsFONT
-		123
+	(Display @str
+		p_at 96 133
+		p_color 43
+		p_width 30
+		p_mode teJustCenter
+		p_font 123
 	)
 	(DrawCel 145 6 0 89 172 15)
-	(Message msgGET 140 8 0 5 1 @local285)
-	(localproc_10b2
-		170
-		86
-		(Format
-			@temp0
-			@local285
-			(= [egoStats 16] (ego maxHealth:))
-		)
+	(Message MsgGet 140 N_STAT NULL C_NAME 1 @statBuf)
+	(ShowValue 170 86
+		(Format @str @statBuf (= [egoStats HEALTH] (ego maxHealth:)))
 	)
 	(DrawCel 145 6 0 287 159 15)
-	(localproc_10b2
-		157
-		284
-		(Format
-			@temp0
-			@local285
-			(= [egoStats 17] (ego maxStamina:))
-		)
+	(ShowValue 157 284
+		(Format @str @statBuf (= [egoStats STAMINA] (ego maxStamina:)))
 	)
 	(DrawCel 145 6 0 287 172 15)
-	(localproc_10b2
-		170
-		284
-		(Format
-			@temp0
-			@local285
-			(= [egoStats 18] (ego maxMana:))
-		)
+	(ShowValue 170 284
+		(Format @str @statBuf (= [egoStats MANA] (ego maxMana:)))
 	)
 	(DrawCel 145 6 0 285 132 15)
-	(localproc_10b2
-		130
-		283
-		(Format @temp0 @local285 [egoStats 14])
+	(ShowValue 130 283
+		(Format @str @statBuf [egoStats HONOR])
 	)
 )
 
@@ -194,77 +156,75 @@
 		(if (not (IsObject (= temp2 (NodeValue temp0))))
 			(return)
 		)
-		(if (temp2 respondsTo: #owner) (temp2 owner: 0))
+		(if (temp2 respondsTo: #owner)
+			(temp2 owner: 0)
+		)
 		(= temp0 temp1)
 	)
 )
 
-(procedure (localproc_12f6 &tmp temp0)
-	(StrCpy @userName @local181)
-	(if (!= prevRoomNum 54) (localproc_12ac inventory))
-	(ego get: 43)
-	(ego get: 15)
-	(ego get: 14 20)
-	((inventory at: 14) amount: 20)
+(procedure (InitInventory &tmp whichSkill)
+	(StrCpy @userName @nameBuf)
+	(if (!= prevRoomNum 54)
+		(localproc_12ac inventory)
+	)
+	(ego get: iNote)
+	(ego get: iWaterskin)
+	(ego get: iRations 20)
+	((inventory at: iRations) amount: 20)
 	(= numDinars 200)
 	(switch theHeroType
-		(3
-			((inventory at: 1) state: 1)
-			(ego get: 1)
-			(ego get: 4)
-			(ego get: 5)
-			(if [egoStats 12]
-				(= temp0 19)
-				(while (< temp0 30)
-					(if (not [egoStats temp0])
-						(= [egoStats temp0] [theEgoStats_3 (- temp0 19)])
+		(PALADIN
+			((inventory at: iSword) state: 1)
+			(ego get: iSword)
+			(ego get: iChainmail)
+			(ego get: iShield)
+			(if [egoStats MAGIC]
+				(for ((= whichSkill OPEN)) (< whichSkill JUGGLE) ((++ whichSkill))
+					(if (not [egoStats whichSkill])
+						(= [egoStats whichSkill] [nonMageSpellValue (- whichSkill OPEN)])
 					)
-					(++ temp0)
 				)
 			)
 		)
-		(0
-			(ego get: 1)
-			(ego get: 4)
-			(ego get: 5)
-			(if [egoStats 12]
-				(= temp0 19)
-				(while (< temp0 30)
-					(if (not [egoStats temp0])
-						(= [egoStats temp0] [theEgoStats_3 (- temp0 19)])
+		(FIGHTER
+			(ego get: iSword)
+			(ego get: iChainmail)
+			(ego get: iShield)
+			(if [egoStats MAGIC]
+				(for ((= whichSkill OPEN)) (< whichSkill JUGGLE) ((++ whichSkill))
+					(if (not [egoStats whichSkill])
+						(= [egoStats whichSkill] [nonMageSpellValue (- whichSkill OPEN)])
 					)
-					(++ temp0)
 				)
 			)
 		)
-		(1
-			(ego get: 27)
-			(ego get: 2)
-			(if [egoStats 12]
-				(= temp0 19)
-				(while (< temp0 30)
-					(if (not [egoStats temp0])
-						(= [egoStats temp0] [theEgoStats_4 (- temp0 19)])
+		(MAGIC_USER
+			(ego get: iGagGift)
+			(ego get: iFineDagger)
+			(if [egoStats MAGIC]
+				(for ((= whichSkill OPEN)) (< whichSkill JUGGLE) ((++ whichSkill))
+					(if (not [egoStats whichSkill])
+						(= [egoStats whichSkill] [mageSpellValue (- whichSkill OPEN)])
 					)
-					(++ temp0)
 				)
 			)
 		)
-		(else 
-			(ego get: 7)
-			(ego get: 6)
-			(ego get: 2)
+		(else ;THIEF
+			(ego get: iToolkit)
+			(ego get: iGrapnel)
+			(ego get: iFineDagger)
 			(cond 
-				((not (ego has: 10)) (ego get: 10 5))
-				((< ((inventory at: 10) amount?) 5) ((inventory at: 10) amount: 5))
+				((not (ego has: iDaggers))
+					(ego get: iDaggers 5)
+				)
+				((< ((inventory at: iDaggers) amount?) 5) ((inventory at: iDaggers) amount: 5))
 			)
-			(if [egoStats 12]
-				(= temp0 19)
-				(while (< temp0 30)
-					(if (not [egoStats temp0])
-						(= [egoStats temp0] [theEgoStats_3 (- temp0 19)])
+			(if [egoStats MAGIC]
+				(for ((= whichSkill OPEN)) (< whichSkill JUGGLE) ((++ whichSkill))
+					(if (not [egoStats whichSkill])
+						(= [egoStats whichSkill] [nonMageSpellValue (- whichSkill OPEN)])
 					)
-					(++ temp0)
 				)
 			)
 		)
@@ -278,9 +238,9 @@
 	(theTitle
 		setLoop: 0
 		cel: temp1
-		x: [local252 param1]
+		x: [picX param1]
 		y:
-			[local258
+			[picY
 			(switch param1
 				(0 (= temp1 0))
 				(1 (= temp1 1))
@@ -295,7 +255,7 @@
 			(and (not (HaveMouse)) (not local251))
 		)
 		(theGame
-			setCursor: 999 1
+			setCursor: ARROW_CURSOR TRUE
 			(switch param1
 				(0 50)
 				(1 140)
@@ -307,43 +267,43 @@
 )
 
 (procedure (localproc_1b0c &tmp [temp0 4])
-	(Message msgGET 140 1 6 2 1 @local265)
-	(Message msgGET 140 1 6 3 1 @local275)
+	(Message MsgGet 140 1 6 2 1 @local265)
+	(Message MsgGet 140 1 6 3 1 @local275)
 	(quest init: show: dispose:)
-	(Message msgGET 140 8 0 5 1 @temp0)
-	(Format @temp0 @local285 local221)
+	(Message MsgGet 140 8 0 5 1 @temp0)
+	(Format @temp0 @statBuf local221)
 	(Display
 		@temp0
-		dsCOORD
+		p_at
 		97
 		133
-		dsCOLOR
+		p_color
 		58
-		dsWIDTH
+		p_width
 		30
-		dsALIGN
+		p_mode
 		1
-		dsFONT
+		p_font
 		123
 	)
 	(Display
 		@temp0
-		dsCOORD
+		p_at
 		96
 		133
-		dsCOLOR
+		p_color
 		43
-		dsWIDTH
+		p_width
 		30
-		dsALIGN
+		p_mode
 		1
-		dsFONT
+		p_font
 		123
 	)
 	(return local0)
 )
 
-(instance rm140 of Rm
+(instance rm140 of Room
 	(properties
 		picture 140
 		style $000a
@@ -355,12 +315,12 @@
 		(if (== prevRoomNum 54)
 			(curRoom picture: 145)
 			(super init: &rest)
-			(localproc_1008)
+			(SaveEgoStats)
 			(selectChar start: 1)
 			(curRoom setScript: selectChar)
 		else
 			(super init: &rest)
-			(Load rsVIEW 145)
+			(Load RES_VIEW 145)
 			(super init:)
 			(HandsOff)
 			(theIconBar disable:)
@@ -385,8 +345,8 @@
 	
 	(method (dispose)
 		(DisposeScript 934)
-		(UnLoad 128 145)
-		(UnLoad 128 142)
+		(UnLoad RES_VIEW 145)
+		(UnLoad RES_VIEW 142)
 		(= useSortedFeatures 1)
 		(= pMouse PseudoMouse)
 		(theIconBar enable:)
@@ -395,17 +355,17 @@
 	
 	(method (handleEvent event)
 		(if local250
-			(if (== (event type?) evKEYBOARD)
+			(if (== (event type?) keyDown)
 				(switch (event message?)
-					(KEY_TAB
+					(TAB
 						(event type: 64)
 						(event message: 3)
 					)
-					(KEY_SHIFTTAB
+					(SHIFTTAB
 						(event type: 64)
 						(event message: 7)
 					)
-					(KEY_RETURN
+					(ENTER
 						(= local250 0)
 						(HandsOff)
 						(switch (theTitle cel?)
@@ -422,9 +382,9 @@
 			)
 			(cond 
 				((or (event claimed?) (not local251)) 0)
-				((& (event type?) evJOYSTICK)
+				((& (event type?) direction)
 					(switch (event message?)
-						(JOY_LEFT
+						(dirW
 							(event claimed: 1)
 							(script
 								state:
@@ -437,7 +397,7 @@
 								cue:
 							)
 						)
-						(JOY_RIGHT
+						(dirE
 							(event claimed: 1)
 							(script
 								state:
@@ -480,30 +440,30 @@
 					(1 (= temp0 0))
 				)
 				(theChar setLoop: temp0 init:)
-				(DrawPic 145 dpOPEN_PIXELATION)
+				(DrawPic 145 PIXELDISSOLVE)
 				(= ticks 60)
 			)
 			(2
 				(switch heroType
 					(0
-						(Message msgGET 140 2 0 0 1 @local3)
-						(Display @local3 dsCOORD 140 31 dsFONT 123 dsCOLOR 0)
-						(Display @local3 dsFONT 123 dsCOORD 139 30 dsCOLOR 30)
+						(Message MsgGet 140 2 0 0 1 @local3)
+						(Display @local3 p_at 140 31 p_font 123 p_color 0)
+						(Display @local3 p_font 123 p_at 139 30 p_color 30)
 					)
 					(1
-						(Message msgGET 140 3 0 0 1 @local3)
-						(Display @local3 dsCOORD 140 31 dsFONT 123 dsCOLOR 0)
-						(Display @local3 dsFONT 123 dsCOORD 139 30 dsCOLOR 30)
+						(Message MsgGet 140 3 0 0 1 @local3)
+						(Display @local3 p_at 140 31 p_font 123 p_color 0)
+						(Display @local3 p_font 123 p_at 139 30 p_color 30)
 					)
 					(2
-						(Message msgGET 140 4 0 0 1 @local3)
-						(Display @local3 dsCOORD 145 31 dsFONT 123 dsCOLOR 0)
-						(Display @local3 dsFONT 123 dsCOORD 144 30 dsCOLOR 30)
+						(Message MsgGet 140 4 0 0 1 @local3)
+						(Display @local3 p_at 145 31 p_font 123 p_color 0)
+						(Display @local3 p_font 123 p_at 144 30 p_color 30)
 					)
 					(3
-						(Message msgGET 140 5 0 0 1 @local3)
-						(Display @local3 dsCOORD 137 31 dsFONT 123 dsCOLOR 0)
-						(Display @local3 dsFONT 123 dsCOORD 136 30 dsCOLOR 30)
+						(Message MsgGet 140 5 0 0 1 @local3)
+						(Display @local3 p_at 137 31 p_font 123 p_color 0)
+						(Display @local3 p_font 123 p_at 136 30 p_color 30)
 					)
 				)
 				(startControls init: show: dispose:)
@@ -522,7 +482,7 @@
 	(properties)
 	
 	(method (init &tmp temp0)
-		(if (!= prevRoomNum 54) (= local181 0))
+		(if (!= prevRoomNum 54) (= nameBuf 0))
 		(self add: namePlate)
 		(= temp0 1)
 		(while (< temp0 6)
@@ -538,10 +498,10 @@
 					)
 			)
 			(= [theTheEgoStats temp0]
-				[theEgoStats (+ temp0 (* theHeroType 15))]
+				[initStats (+ temp0 (* theHeroType 15))]
 			)
 			(= [theEgoStats_2 temp0]
-				[theEgoStats (+ temp0 (* theHeroType 15))]
+				[initStats (+ temp0 (* theHeroType 15))]
 			)
 			(++ temp0)
 		)
@@ -557,10 +517,10 @@
 				)
 		)
 		(= [theTheEgoStats 13]
-			[theEgoStats (+ 13 (* theHeroType 15))]
+			[initStats (+ 13 (* theHeroType 15))]
 		)
 		(= [theEgoStats_2 13]
-			[theEgoStats (+ 13 (* theHeroType 15))]
+			[initStats (+ 13 (* theHeroType 15))]
 		)
 		(= temp0 6)
 		(while (< temp0 13)
@@ -576,10 +536,10 @@
 					)
 			)
 			(= [theTheEgoStats temp0]
-				[theEgoStats (+ temp0 (* theHeroType 15))]
+				[initStats (+ temp0 (* theHeroType 15))]
 			)
 			(= [theEgoStats_2 temp0]
-				[theEgoStats (+ temp0 (* theHeroType 15))]
+				[initStats (+ temp0 (* theHeroType 15))]
 			)
 			(++ temp0)
 		)
@@ -595,10 +555,10 @@
 				)
 		)
 		(= [theTheEgoStats 14]
-			[theEgoStats (+ 14 (* theHeroType 15))]
+			[initStats (+ 14 (* theHeroType 15))]
 		)
 		(= [theEgoStats_2 14]
-			[theEgoStats (+ 14 (* theHeroType 15))]
+			[initStats (+ 14 (* theHeroType 15))]
 		)
 		(self add: startIcon cancelIcon dummyIcon)
 		(super init: &rest)
@@ -692,7 +652,7 @@ code_07aa:
 	
 	(method (dispatchEvent event &tmp eventY eventX eventType eventMessage eventModifiers temp5 temp6 highlightedIconState)
 		(cond 
-			(local220
+			(nameLen
 				(if (& (startIcon signal?) $0004)
 					(self enable: startIcon)
 					(startIcon show:)
@@ -710,39 +670,39 @@ code_07aa:
 		(if (IsObject event) (event dispose:))
 		(if (IsObject temp5)
 			(cond 
-				((& eventType evJOYSTICK)
+				((& eventType direction)
 					(switch eventMessage
-						(JOY_RIGHT
+						(dirE
 							(if (and highlightedIcon (highlightedIcon state?))
 								(self select: temp5 1)
 							)
 						)
-						(JOY_LEFT
+						(dirW
 							(if (and highlightedIcon (highlightedIcon state?))
 								(self select: temp5 0)
 							)
 						)
-						(JOY_UP
+						(dirN
 							(if (not highlightedIcon)
 								(= highlightedIcon (self at: (- size 1)))
 							)
 							(self retreat:)
 						)
-						(JOY_DOWN
+						(dirS
 							(if (not highlightedIcon)
 								(= highlightedIcon (self at: 0))
 							)
 							(self advance:)
 						)
-						(JOY_UPRIGHT
+						(dirNE
 							(if (temp5 state?) (self select: temp5 3))
 						)
-						(JOY_DOWNRIGHT
+						(dirSW
 							(if (temp5 state?) (self select: temp5 2))
 						)
 					)
 				)
-				((== eventType evNULL)
+				((== eventType nullEvt)
 					(cond 
 						((not (IsObject temp5))
 							(if (IsObject highlightedIcon)
@@ -754,21 +714,21 @@ code_07aa:
 					)
 				)
 				((not (IsObject highlightedIcon)) 0)
-				((== eventType evMOUSEBUTTON)
+				((== eventType mouseDown)
 					(cond 
 						((== temp5 namePlate) 0)
 						((not (temp5 state?)) (self select: temp5 1))
-						((== eventModifiers emSHIFT) (self select: temp5 3))
+						((== eventModifiers shiftDown) (self select: temp5 3))
 						(else (self select: temp5 2))
 					)
 				)
-				((== eventType evKEYBOARD)
+				((== eventType keyDown)
 					(switch eventMessage
-						(KEY_ESCAPE
+						(ESC
 							(= temp6 1)
 							(return 0)
 						)
-						(KEY_RETURN
+						(ENTER
 							(if
 								(or
 									(== highlightedIcon startIcon)
@@ -777,7 +737,7 @@ code_07aa:
 								(self select: highlightedIcon 1)
 							)
 						)
-						(KEY_TAB
+						(TAB
 							(cond 
 								(
 								(< (= highlightedIconState (highlightedIcon state?)) 1) 0)
@@ -803,14 +763,18 @@ code_07aa:
 								((!= highlightedIcon namePlate) 0)
 								(
 									(or
-										(and (<= KEY_a eventMessage) (<= eventMessage KEY_z))
-										(and (<= KEY_A eventMessage) (<= eventMessage KEY_Z))
-										(and (<= KEY_0 eventMessage) (<= eventMessage KEY_9))
+										(and (<= `a eventMessage) (<= eventMessage `z))
+										(and (<= `A eventMessage) (<= eventMessage `Z))
+										(and (<= `0 eventMessage) (<= eventMessage `9))
 									)
 									(self select: namePlate eventMessage)
 								)
-								((== eventMessage KEY_SPACE) (self select: namePlate eventMessage))
-								((== eventMessage JOY_UPLEFT) (self select: namePlate eventMessage))
+								((== eventMessage SPACEBAR)
+									(self select: namePlate eventMessage)
+								)
+								((== eventMessage BACKSPACE)
+									(self select: namePlate eventMessage)
+								)
 							)
 						)
 					)
@@ -821,7 +785,7 @@ code_07aa:
 	)
 )
 
-(instance selectionIcon of IconI
+(instance selectionIcon of IconItem
 	(properties
 		view 145
 		loop 1
@@ -997,34 +961,34 @@ code_07aa:
 			(= temp5 82)
 			(= temp6 58)
 		)
-		(Message msgGET 140 8 0 5 1 @local285)
+		(Message MsgGet 140 8 0 5 1 @statBuf)
 		(Display
-			(Format @temp1 @local285 [theEgoStats_2 [local92 state]])
-			dsCOORD
+			(Format @temp1 @statBuf [theEgoStats_2 [local92 state]])
+			p_at
 			(+ temp0 1)
 			nsTop
-			dsCOLOR
+			p_color
 			temp6
-			dsWIDTH
+			p_width
 			25
-			dsALIGN
+			p_mode
 			-1
-			dsFONT
+			p_font
 			123
 		)
-		(Message msgGET 140 8 0 5 1 @local285)
+		(Message MsgGet 140 8 0 5 1 @statBuf)
 		(Display
-			(Format @temp1 @local285 [theEgoStats_2 [local92 state]])
-			dsCOORD
+			(Format @temp1 @statBuf [theEgoStats_2 [local92 state]])
+			p_at
 			temp0
 			nsTop
-			dsCOLOR
+			p_color
 			temp5
-			dsWIDTH
+			p_width
 			25
-			dsALIGN
+			p_mode
 			-1
-			dsFONT
+			p_font
 			123
 		)
 	)
@@ -1041,7 +1005,7 @@ code_07aa:
 	)
 )
 
-(instance dummyIcon of IconI
+(instance dummyIcon of IconItem
 	(properties
 		view 145
 		loop 0
@@ -1061,7 +1025,7 @@ code_07aa:
 	)
 )
 
-(instance startIcon of IconI
+(instance startIcon of IconItem
 	(properties
 		view 145
 		loop 3
@@ -1083,7 +1047,7 @@ code_07aa:
 					(return 0)
 				else
 					(HandsOff)
-					(localproc_12f6)
+					(InitInventory)
 					(= temp0 1)
 					(while (< temp0 15)
 						(= [oldStats (- temp0 1)] [theEgoStats_2 temp0])
@@ -1104,7 +1068,7 @@ code_07aa:
 	)
 )
 
-(instance cancelIcon of IconI
+(instance cancelIcon of IconItem
 	(properties
 		view 145
 		loop 4
@@ -1132,7 +1096,7 @@ code_07aa:
 	)
 )
 
-(instance namePlate of IconI
+(instance namePlate of IconItem
 	(properties
 		view 145
 		loop 1
@@ -1149,12 +1113,12 @@ code_07aa:
 	)
 	
 	(method (select param1 &tmp [temp0 4])
-		(TextSize @[temp0 0] @local181 3 0)
+		(TextSize @[temp0 0] @nameBuf 3 0)
 		(return
 			(cond 
 				((== param1 8)
-					(if local220
-						(StrAt @local181 (-- local220) 0)
+					(if nameLen
+						(StrAt @nameBuf (-- nameLen) 0)
 						(DrawCel
 							maskView
 							maskLoop
@@ -1167,8 +1131,8 @@ code_07aa:
 					)
 				)
 				((<= [temp0 3] 150)
-					(StrAt @local181 local220 param1)
-					(StrAt @local181 (++ local220) 0)
+					(StrAt @nameBuf nameLen param1)
+					(StrAt @nameBuf (++ nameLen) 0)
 					(self highlight: 1)
 				)
 				(else (return 1))
@@ -1188,31 +1152,31 @@ code_07aa:
 		)
 		(DrawCel view theLoop cel nsLeft nsTop 15)
 		(Display
-			@local181
-			dsCOORD
+			@nameBuf
+			p_at
 			(+ nsLeft 41)
 			(+ nsTop 4)
-			dsCOLOR
+			p_color
 			temp1
-			dsWIDTH
+			p_width
 			172
-			dsALIGN
+			p_mode
 			0
-			dsFONT
+			p_font
 			3
 		)
 		(Display
-			@local181
-			dsCOORD
+			@nameBuf
+			p_at
 			(+ nsLeft 40)
 			(+ nsTop 4)
-			dsCOLOR
+			p_color
 			temp0
-			dsWIDTH
+			p_width
 			172
-			dsALIGN
+			p_mode
 			0
-			dsFONT
+			p_font
 			3
 		)
 	)
@@ -1366,9 +1330,9 @@ code_07aa:
 				(= seconds 2)
 			)
 			(1
-				(Message msgGET 140 7 0 0 1 @local14)
-				(Display @local14 dsFONT 123 dsCOORD 101 153 dsCOLOR 0)
-				(Display @local14 dsFONT 123 dsCOORD 100 152 dsCOLOR 30)
+				(Message MsgGet 140 7 0 0 1 @local14)
+				(Display @local14 p_font 123 p_at 101 153 p_color 0)
+				(Display @local14 p_font 123 p_at 100 152 p_color 30)
 				(= ticks 1)
 			)
 			(2
@@ -1376,56 +1340,56 @@ code_07aa:
 				(if (cast contains: fireBall) (fireBall dispose:))
 				(localproc_1a39 0)
 				(globalSound number: 946 play:)
-				(fightChar setCycle: End self)
+				(fightChar setCycle: EndLoop self)
 				(= local251 1)
 			)
 			(3
 				(if (== (theTitle x?) 71)
-					(Message msgGET 140 2 0 0 1 @local3)
-					(Display @local3 dsFONT 123 dsCOORD 50 29 dsCOLOR 0)
-					(Display @local3 dsFONT 123 dsCOORD 49 28 dsCOLOR 30)
+					(Message MsgGet 140 2 0 0 1 @local3)
+					(Display @local3 p_font 123 p_at 50 29 p_color 0)
+					(Display @local3 p_font 123 p_at 49 28 p_color 30)
 				)
 				(= seconds 3)
 			)
 			(4
-				(fightChar setCycle: Beg self)
+				(fightChar setCycle: BegLoop self)
 			)
 			(5
-				(Load rsVIEW 142)
+				(Load RES_VIEW 142)
 				(= seconds 0)
 				(if (cast contains: fireBall) (fireBall dispose:))
 				(localproc_1a39 1)
 				(globalSound number: 948 play:)
-				(mageChar setCycle: CT 4 1 self)
+				(mageChar setCycle: CycleTo 4 1 self)
 			)
 			(6
 				(if (== (theTitle x?) 159)
-					(Message msgGET 140 6 0 0 1 @local3)
-					(Display @local3 dsFONT 123 dsCOORD 124 29 dsCOLOR 0)
-					(Display @local3 dsFONT 123 dsCOORD 123 28 dsCOLOR 30)
+					(Message MsgGet 140 6 0 0 1 @local3)
+					(Display @local3 p_font 123 p_at 124 29 p_color 0)
+					(Display @local3 p_font 123 p_at 123 28 p_color 30)
 				)
 				(globalSound number: 947 play:)
-				(fireBall loop: 0 x: 157 y: 94 init: setCycle: End self)
-				(mageChar setCycle: End self)
+				(fireBall loop: 0 x: 157 y: 94 init: setCycle: EndLoop self)
+				(mageChar setCycle: EndLoop self)
 			)
 			(7)
 			(8
-				(mageChar setCycle: Beg self)
+				(mageChar setCycle: BegLoop self)
 			)
 			(9
 				(if (cast contains: fireBall) (fireBall dispose:))
 				(= seconds 0)
 				(localproc_1a39 2)
-				(thiefChar setCycle: End self)
+				(thiefChar setCycle: EndLoop self)
 			)
 			(10
 				(if (== (theTitle x?) 245)
-					(Message msgGET 140 4 0 0 1 @local3)
-					(Display @local3 dsFONT 123 dsCOORD 226 30 dsCOLOR 0)
-					(Display @local3 dsFONT 123 dsCOORD 225 29 dsCOLOR 30)
+					(Message MsgGet 140 4 0 0 1 @local3)
+					(Display @local3 p_font 123 p_at 226 30 p_color 0)
+					(Display @local3 p_font 123 p_at 225 29 p_color 30)
 				)
 				(globalSound number: 949 play:)
-				(thiefChar setCycle: Beg self)
+				(thiefChar setCycle: BegLoop self)
 			)
 			(11
 				(self changeState: (= state 1))
@@ -1488,7 +1452,7 @@ code_07aa:
 	)
 )
 
-(instance titleIcon of IconI
+(instance titleIcon of IconItem
 	(properties
 		view 935
 		loop 2
@@ -1501,15 +1465,15 @@ code_07aa:
 	
 	(method (show &tmp [temp0 50])
 		(if local1
-			(Message msgGET 140 1 6 4 1 @temp0)
+			(Message MsgGet 140 1 6 4 1 @temp0)
 		else
-			(Message msgGET 140 1 6 1 1 @temp0)
+			(Message MsgGet 140 1 6 1 1 @temp0)
 		)
-		(Display @temp0 dsWIDTH 155 dsCOORD 5 3 dsCOLOR 17)
+		(Display @temp0 p_width 155 p_at 5 3 p_color 17)
 	)
 )
 
-(instance yesIcon of IconI
+(instance yesIcon of IconItem
 	(properties
 		view 935
 		loop 2
@@ -1524,7 +1488,7 @@ code_07aa:
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display @local265 dsCOORD 20 (+ nsTop 3) dsCOLOR 17)
+		(Display @local265 p_at 20 (+ nsTop 3) p_color 17)
 		(if (& signal $0004) (self mask:))
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
@@ -1544,11 +1508,11 @@ code_07aa:
 			(DrawCel view loop 0 nsLeft nsTop -1)
 			(= temp0 17)
 		)
-		(Display @local265 dsCOORD 20 (+ nsTop 3) dsCOLOR temp0)
+		(Display @local265 p_at 20 (+ nsTop 3) p_color temp0)
 	)
 )
 
-(instance noIcon of IconI
+(instance noIcon of IconItem
 	(properties
 		view 935
 		loop 2
@@ -1563,7 +1527,7 @@ code_07aa:
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display @local275 dsCOORD 20 (+ nsTop 3) dsCOLOR 17)
+		(Display @local275 p_at 20 (+ nsTop 3) p_color 17)
 		(if (& signal $0004) (self mask:))
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
@@ -1583,6 +1547,6 @@ code_07aa:
 			(DrawCel view loop 0 nsLeft nsTop -1)
 			(= temp0 17)
 		)
-		(Display @local275 dsCOORD 20 (+ nsTop 3) dsCOLOR temp0)
+		(Display @local275 p_at 20 (+ nsTop 3) p_color temp0)
 	)
 )

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 285)
-(include sci.sh)
+(include game.sh) (include "285.shm")
 (use Main)
 (use TellerIcon)
 (use Talker)
@@ -17,7 +17,7 @@
 )
 
 (local
-	local0
+	greeting
 	[local1 19] = [0 -1 -2 -3 -4 -7 -54 -55 -56 -59 -9 -48 -61 -78 -67 -79 -69 -70 999]
 	[local20 14]
 	[local34 14] = [0 -1 -4 -7 -5 -45 -46 -10 -40 -11 -56 -57 -9 999]
@@ -46,9 +46,17 @@
 	[local156 14] = [0 -41 -76 1 -30 -77 -33 -34 -35 -36 -37 -42 -80 999]
 	[local170 4]
 )
-(instance rm285 of Rm
+
+(enum ;greetings
+	beforeThief
+	afterThief
+	afterSimbani
+	genericGreet
+)
+
+(instance rm285 of Room
 	(properties
-		noun 5
+		noun N_ROOM
 		picture 285
 	)
 	
@@ -77,7 +85,7 @@
 		(= [local170 0] @local156)
 		(walkHandler addToFront: curRoom)
 		(HandsOn)
-		(theIconBar disable: 8 7 5 6)
+		(theIconBar disable: ICON_INVENTORY ICON_USEIT ICON_ACTIONS ICON_CAST)
 		(super init:)
 		(cSound number: 285 setLoop: -1 play: 127)
 		(pillar init:)
@@ -89,10 +97,19 @@
 		(kreeshaTell init: kreesha @local89 @local107 @local116)
 		(rakeeshTell init: rakeeshFeat @local1 @local20 @local34)
 		(cond 
-			((not (Btst 41)) (= local0 0))
-			((not (Btst 35)) (= local0 1))
-			((not (Btst 156)) (= local0 2) (Bset 156))
-			(else (= local0 3))
+			((not (Btst fMetMoneyChanger))
+				(= greeting beforeThief)
+			)
+			((not (Btst fRakeeshSworeOath))
+				(= greeting afterThief)
+			)
+			((not (Btst fReturnedToRakeesh))
+				(= greeting afterSimbani)
+				(Bset fReturnedToRakeesh)
+			)
+			(else
+				(= greeting genericGreet)
+			)
 		)
 		(self setScript: theyConverse)
 	)
@@ -100,55 +117,64 @@
 	(method (dispose)
 		((ego actions?) dispose:)
 		(ego actions: 0)
-		(LoadMany 0 35 49)
+		(LoadMany FALSE RAKEESH_TALKER KREESHA_TALKER)
 		(walkHandler delete: curRoom)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (curRoom newRoom: 280))
+			(V_WALK
+				(curRoom newRoom: 280)
+			)
 			(else  (super doVerb: theVerb))
 		)
 	)
 )
 
 (instance egoExits of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 2))
-			(1 (curRoom newRoom: 280))
+			(0
+				(HandsOff)
+				(= seconds 2)
+			)
+			(1
+				(curRoom newRoom: 280)
+			)
 		)
 	)
 )
 
 (instance theyConverse of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
-				(switch local0
-					(0
-						(messager say: 1 6 41 0 self)
+				(switch greeting
+					(beforeThief
+						(messager say: N_RAKEESH V_DOIT C_BEFORE_THIEF 0 self)
 					)
-					(1
-						(messager say: 1 6 29 0 self)
+					(afterThief
+						(messager say: N_RAKEESH V_DOIT C_AFTER_THIEF 0 self)
 					)
-					(2
-						(messager say: 1 6 39 0 self)
+					(afterSimbani
+						(messager say: N_RAKEESH V_DOIT C_AFTER_SIMBANI 0 self)
 					)
-					(3
-						(messager say: 1 6 42 0 self)
+					(genericGreet
+						(messager say: N_RAKEESH V_DOIT C_GENERIC 0 self)
 					)
-					(else  (self cue:))
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(2 0)
-			(3 (curRoom newRoom: 280))
+			(3
+				(curRoom newRoom: 280)
+			)
 		)
 	)
 )
@@ -157,8 +183,8 @@
 	(properties
 		x 100
 		y 100
-		noun 2
-		onMeCheck $0002
+		noun N_KREESHA
+		onMeCheck cBLUE
 	)
 )
 
@@ -166,8 +192,8 @@
 	(properties
 		x 100
 		y 100
-		noun 1
-		onMeCheck $0004
+		noun N_RAKEESH
+		onMeCheck cGREEN
 	)
 )
 
@@ -175,7 +201,7 @@
 	(properties
 		x 168
 		y 83
-		noun 1
+		noun N_RAKEESH
 		nsTop 61
 		nsLeft 158
 		nsBottom 105
@@ -188,7 +214,7 @@
 	(properties
 		x 44
 		y 73
-		noun 4
+		noun N_PILLAR
 		nsTop 23
 		nsLeft 30
 		nsBottom 123
@@ -201,8 +227,8 @@
 	(properties
 		x 100
 		y 100
-		noun 3
-		onMeCheck $0008
+		noun N_EGO
+		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
@@ -211,24 +237,17 @@
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
 			showDialog:
 				-30
-				(Btst 42)
-				-31
-				(Btst 56)
-				-77
-				(if (Btst 29) (not (Btst 38)) else 0)
-				-33
-				(if (Btst 38) (not (Btst 65)) else 0)
-				-34
-				(if (== global392 4) (not (Btst 65)) else 0)
-				-35
-				(if (not (Btst 102)) (Btst 65) else 0)
-				-36
+				(Btst 42) -31
+				(Btst 56) 77
+				(if (Btst 29) (not (Btst 38)) else 0) -33
+				(if (Btst 38) (not (Btst 65)) else 0) -34
+				(if (== global392 4) (not (Btst 65)) else 0) -35
+				(if (not (Btst 102)) (Btst 65) else 0) -36
 				(if (and (Btst 102) (Btst 65))
 					(not (Btst 37))
 				else
@@ -237,13 +256,13 @@
 				-37
 				(Btst 37)
 				-41
-				(< local0 3)
+				(< greeting 3)
 				-76
-				(< local0 3)
+				(< greeting 3)
 				-42
-				(== local0 3)
+				(== greeting 3)
 				-80
-				(== local0 3)
+				(== greeting 3)
 		)
 	)
 	
@@ -287,37 +306,37 @@
 		(super
 			showDialog:
 				-1
-				(== local0 0)
+				(== greeting 0)
 				-20
-				(== local0 0)
+				(== greeting 0)
 				-21
-				(== local0 0)
+				(== greeting 0)
 				-22
-				(== local0 0)
+				(== greeting 0)
 				-23
-				(== local0 0)
+				(== greeting 0)
 				-56
-				(== local0 1)
+				(== greeting 1)
 				-60
-				(== local0 1)
+				(== greeting 1)
 				-30
-				(== local0 1)
+				(== greeting 1)
 				-37
-				(== local0 1)
+				(== greeting 1)
 				-62
-				(== local0 2)
+				(== greeting 2)
 				-40
-				(== local0 2)
+				(== greeting 2)
 				-63
-				(== local0 2)
+				(== greeting 2)
 				-64
-				(== local0 2)
+				(== greeting 2)
 				-71
-				(== local0 3)
+				(== greeting 3)
 				-72
-				(== local0 3)
+				(== greeting 3)
 				-75
-				(== local0 3)
+				(== greeting 3)
 		)
 	)
 	
@@ -353,39 +372,39 @@
 		(super
 			showDialog:
 				-1
-				(== local0 0)
+				(== greeting 0)
 				-2
-				(== local0 0)
+				(== greeting 0)
 				-3
-				(== local0 0)
+				(== greeting 0)
 				-4
-				(== local0 0)
+				(== greeting 0)
 				-7
-				(== local0 0)
+				(== greeting 0)
 				-56
-				(== local0 1)
+				(== greeting 1)
 				-54
-				(== local0 1)
+				(== greeting 1)
 				-55
-				(== local0 1)
+				(== greeting 1)
 				-59
-				(== local0 1)
+				(== greeting 1)
 				-9
-				(== local0 2)
+				(== greeting 2)
 				-48
-				(== local0 2)
+				(== greeting 2)
 				-61
-				(== local0 2)
+				(== greeting 2)
 				-78
-				(== local0 2)
+				(== greeting 2)
 				-67
-				(== local0 3)
+				(== greeting 3)
 				-79
-				(== local0 3)
+				(== greeting 3)
 				-69
-				(== local0 3)
+				(== greeting 3)
 				-70
-				(== local0 3)
+				(== greeting 3)
 		)
 	)
 	

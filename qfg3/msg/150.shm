@@ -1,0 +1,31 @@
+;;; Sierra Script
+;;; 150.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 7)
+(define N_CUE 3)
+(define N_TARNA 1)
+(define N_RAKEESH_WALK 2)
+(define N_ROCK_PILE 4)
+(define N_SMALL_ROCK_PILE 5)
+(define N_MOUNTAINS 6)
+(define N_RIVER1 8)
+(define N_RIVER2 9)
+(define N_RIVER3 10)
+(define N_RIVER4 11)
+
+;;; CASES
+
+(define C_NO_ENTRY 10)
+(define C_MUST_LEAVE 1)
+(define C_DUMMY 2)
+(define C_TALK1 3)
+(define C_TALK2 4)
+(define C_TALK3 5)
+(define C_TALK4 6)
+(define C_TALK5 7)
+(define C_TALK6 8)
+(define C_TALK7 9)
+

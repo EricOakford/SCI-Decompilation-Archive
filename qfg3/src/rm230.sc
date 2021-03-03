@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 230)
-(include sci.sh)
+(include game.sh) (include "230.shm")
 (use Main)
 (use TellerIcon)
 (use OccasionalCycle)
@@ -35,16 +35,16 @@
 
 (local
 	local0
-	theAFruitMerchant
+	nearMerchant
 	newView
-	theTheVerb
+	verbOnHarami
 	local4
 	local5
 	local6
 	local7
 	local8 =  4103
 	local9
-	local10 =  2
+	haramiLoop =  2
 	local11
 	local12
 	egoLoop
@@ -54,88 +54,40 @@
 	local17
 	egoCycleSpeed
 	egoMoveSpeed
-	[local20 8] = [0 1 0 2 0 3 2 1]
-	[local28 8] = [2 3 0 3 0 1 2 3]
-	[local36 15] = [0 -20 -23 -21 -22 -26 -57 -34 999 0 20 23 24 25 999]
-	[local51 7] = [0 -2 1 5 -12 -73 999]
-	[local58 4] = [0 3 4 999]
-	[local62 6] = [0 50 29 -12 -75 999]
-	[local68 6] = [0 28 29 12 30 999]
+	local20 = [0 1 0 2 0 3 2 1]
+	local28 = [2 3 0 3 0 1 2 3]
+	local36 = [0 -20 -23 -21 -22 -26 -57 -34 999 0 20 23 24 25 999]
+	local51 = [0 -2 1 5 -12 -73 999]
+	local58 = [0 3 4 999]
+	local62 = [0 50 29 -12 -75 999]
+	local68 = [0 28 29 12 30 999]
 	[local74 5]
 	[local79 5]
 	[local92_2 4]
 	[local100_2 4]
-	[local92_2_2 8] = [0 1 2 3 2 3 0 1]
-	[local100_2_2 3] = [0 -2 999]
+	local92_2_2 = [0 1 2 3 2 3 0 1]
+	local100_2_2 = [0 -2 999]
 )
 (class Spell of Actor
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
 		yStep 10
 		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $4000
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0001
+		signal ignrAct
+		scaleSignal scalable
 		scaleX 96
 		scaleY 96
-		maxScale 128
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		scaler 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
 		xStep 15
 		origStep 770
-		moveSpeed 0
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
-		code 0
 	)
 	
-	(method (init param1 &tmp temp0)
+	(method (init param1 &tmp theLoop)
 		(super init: &rest)
 		(switch param1
-			(20 (= temp0 2))
-			(81 (= temp0 0))
-			(83 (= temp0 4))
+			(20 (= theLoop 2))
+			(81 (= theLoop 0))
+			(83 (= theLoop 4))
 		)
-		(self setLoop: temp0 setMotion: MoveTo projX projY self)
+		(self setLoop: theLoop setMotion: MoveTo projX projY self)
 	)
 	
 	(method (doit)
@@ -148,7 +100,7 @@
 				(< x (+ (aHarami x?) 12))
 			)
 			(self setMotion: 0)
-			(= local10 1)
+			(= haramiLoop 1)
 			(curRoom setScript: onHisButt 0 (+ (self loop?) 1))
 			(self dispose:)
 		)
@@ -162,7 +114,7 @@
 				(> projX (- (aHarami x?) 21))
 				(< projX (+ (aHarami x?) 12))
 			)
-			(= local10 1)
+			(= haramiLoop 1)
 			(curRoom setScript: onHisButt 0 (+ (self loop?) 1))
 		else
 			(self dispose:)
@@ -173,7 +125,7 @@
 					y: projY
 					init:
 					setLoop: 9
-					setCycle: End spBurst
+					setCycle: EndLoop spBurst
 				)
 			)
 			(HandsOn)
@@ -181,43 +133,32 @@
 	)
 )
 
-(instance rm230 of Rm
+(instance rm230 of Room
 	(properties
-		noun 7
+		noun N_ROOM
 		picture 230
 		vanishingY -300
 	)
 	
 	(method (init)
 		(ego init: normalize: setScale: 0 noun: 2)
-		(if (or Night (Btst 135))
+		(if (or Night (Btst fVisitedBazaar))
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
+						type: PBarredAccess
 						init:
-							0
-							156
-							0
-							0
-							319
-							0
-							319
-							115
-							302
-							115
-							275
-							126
-							229
-							111
-							178
-							121
-							161
-							103
-							105
-							97
-							82
-							103
+							0 156
+							0 0
+							319 0
+							319 115
+							302 115
+							275 126
+							229 111
+							178 121
+							161 103
+							105 97
+							82 103
 						yourself:
 					)
 			)
@@ -226,59 +167,36 @@
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
+						type: PBarredAccess
 						init:
-							65
-							108
-							0
-							142
-							0
-							0
-							319
-							0
-							319
-							141
-							279
-							135
-							240
-							116
-							198
-							111
-							182
-							120
-							170
-							114
-							158
-							125
-							72
-							118
+							65 108
+							0 142
+							0 0
+							319 0
+							319 141
+							279 135
+							240 116
+							198 111
+							182 120
+							170 114
+							158 125
+							72 118
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
+						type: PBarredAccess
 						init:
-							100
-							189
-							95
-							176
-							106
-							150
-							157
-							154
-							151
-							163
-							169
-							170
-							184
-							167
-							208
-							181
-							222
-							177
-							251
-							176
-							260
-							189
+							100 189
+							95 176
+							106 150
+							157 154
+							151 163
+							169 170
+							184 167
+							208 181
+							222 177
+							251 176
+							260 189
 						yourself:
 					)
 			)
@@ -298,20 +216,22 @@
 				init:
 				setCycle: OccasionalCycle self 1 25 81
 			)
-			(if (== Day 5) (Bset 22))
+			(if (== Day 5)
+				(Bset fHaramiRobbedChanger)
+			)
 			(if
 				(and
-					(not (Btst 22))
+					(not (Btst fHaramiRobbedChanger))
 					(< Day 5)
 					(not Night)
-					(not (Btst 135))
+					(not (Btst fVisitedBazaar))
 				)
 				(aHarami init:)
-				(LoadMany 143 230)
-				(LoadMany 128 233)
+				(LoadMany RES_MESSAGE 230)
+				(LoadMany RES_VIEW 233)
 				(aMoneyChanger setCycle: OccasionalCycle self 1 20 150)
 			else
-				(self setRegions: 51)
+				(self setRegions: BAZAAR)
 			)
 			(leatherA init: addToPic:)
 			(leatherB init: addToPic:)
@@ -340,12 +260,12 @@
 		(self setScript: from240)
 		(if
 			(and
-				(not (Btst 22))
+				(not (Btst fHaramiRobbedChanger))
 				(< Day 5)
 				(not Night)
-				(not (Btst 135))
+				(not (Btst fVisitedBazaar))
 			)
-			(theGame save: 1)
+			(theGame save: TRUE)
 			(HandsOff)
 		)
 	)
@@ -354,124 +274,127 @@
 		(if local6 (local6 dispose:))
 		(if local7 (local7 dispose:))
 		(if local5 (local5 dispose:))
-		(UnLoad 143 230)
-		(UnLoad 128 233)
-		(LoadMany 0 47 55 40 231 232 233 234 235)
+		(UnLoad RES_MESSAGE 230)
+		(UnLoad RES_VIEW 233)
+		(LoadMany FALSE 47 55 40 231 232 233 234 235)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(65
-				(if (Btst 22)
-					((ScriptID 7 5) init: global455)
+			(V_REST
+				(if (Btst fHaramiRobbedChanger)
+					((ScriptID TIME 5) init: global455)
 				else
-					(messager say: 0 0 84)
+					(messager say: NULL NULL C_CANT_SLEEP)
 				)
 			)
-			(1
-				(messager say: 7 1 0 (if Night 0 else 1))
+			(V_LOOK
+				(messager say: N_ROOM V_LOOK NULL (if Night 0 else 1))
 			)
-			(20
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 66)
+			(V_DAGGER
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_THROW)
 				else
-					(ego drop: 10 1)
-					(= theTheVerb theVerb)
+					(ego drop: iDaggers 1)
+					(= verbOnHarami theVerb)
 					(= projX ((user curEvent?) x?))
 					(= projY ((user curEvent?) y?))
 					(ego setScript: castFlameDart 0 theVerb)
 				)
 			)
-			(80
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
+			(V_CALM
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
 				else
-					(= theTheVerb theVerb)
+					(= verbOnHarami theVerb)
 					(ego setScript: calmCast)
 				)
 			)
-			(81
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
+			(V_FLAME
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
 				else
 					(= projX ((user curEvent?) x?))
 					(= projY ((user curEvent?) y?))
-					(= theTheVerb theVerb)
+					(= verbOnHarami theVerb)
 					(ego setScript: castFlameDart 0 theVerb)
 				)
 			)
-			(83
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
+			(V_FORCEBOLT
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
 				else
 					(= projX ((user curEvent?) x?))
 					(= projY ((user curEvent?) y?))
-					(= theTheVerb theVerb)
+					(= verbOnHarami theVerb)
 					(ego setScript: castFlameDart 0 theVerb)
 				)
 			)
-			(86
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
+			(V_JUGGLE
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
 				else
-					(ego setScript: (ScriptID 62 0))
+					(ego setScript: (ScriptID CASTJUGGLE 0))
 				)
 			)
-			(76
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
+			(V_DETECT
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
 				else
-					(ego setScript: (ScriptID 12) 0 76)
+					(ego setScript: (ScriptID CASTAREA) 0 V_DETECT)
 				)
 			)
-			(82
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
+			(V_FETCH
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
 				else
-					(messager say: 25 6 85)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_FETCH)
 				)
 			)
-			(75
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
+			(V_OPEN
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
 				else
-					(ego setScript: (ScriptID 13))
+					(ego setScript: (ScriptID CASTOPEN))
 				)
 			)
-			(77
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
+			(V_TRIGGER
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT 65)
 				else
-					(ego setScript: (ScriptID 12) 0 77)
+					(ego setScript: (ScriptID CASTAREA) 0 V_TRIGGER)
 				)
 			)
-			(88
-				(if (or (Btst 22) Night) (messager say: 25 6 65))
-			)
-			(78
-				(if (or (Btst 22) Night)
-					(messager say: 25 6 65)
-				else
-					(ego setScript: (ScriptID 12) 0 78)
+			(V_LIGHTNING
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(V_DAZZLE
+				(if (or (Btst fHaramiRobbedChanger) Night)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_CANT_CAST)
+				else
+					(ego setScript: (ScriptID CASTAREA) 0 V_DAZZLE)
+				)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance haramiHeadsOut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(messager say: 25 6 80 0 self)
+				(messager say: N_HARAMI_HEADS_OUT V_DOIT C_DISPUTE 0 self)
 			)
 			(1
-				(Bset 159)
-				(Bset 119)
+				(Bset fMetHarami)
+				(Bset fSpeedDisabled)
 				(if (!= arcadeDifficulty 3)
 					(= egoCycleSpeed (ego cycleSpeed?))
 					(= egoMoveSpeed (ego moveSpeed?))
@@ -479,10 +402,10 @@
 				)
 				(aFruitMerchant setCycle: 0 stopUpd:)
 				(aLeatherMerchant setCycle: 0 stopUpd:)
-				(aHarami setCycle: Beg self)
+				(aHarami setCycle: BegLoop self)
 			)
 			(2
-				(aMoneyChanger setLoop: 0 setCycle: Fwd)
+				(aMoneyChanger setLoop: 0 setCycle: Forward)
 				(= cycles 5)
 			)
 			(3
@@ -499,7 +422,7 @@
 				(cSound number: 230 setLoop: 1 nextSong: 340 play:)
 			)
 			(4
-				(messager say: 1 6 60 0 self)
+				(messager say: N_MONEY_CHANGER V_DOIT C_THIEF_RUNS 0 self)
 			)
 			(5
 				(HandsOn)
@@ -517,19 +440,19 @@
 				)
 			)
 			(7
-				(if (== egoGait 1)
-					(Bset 23)
-					(= theTheVerb 0)
-					(ego solvePuzzle: 216 8 addHonor: 40)
+				(if (== egoGait MOVE_RUN)
+					(Bset fRanAfterHarami)
+					(= verbOnHarami 0)
+					(ego solvePuzzle: fChaseHarami 8 addHonor: 40)
 				else
-					(Bset 28)
+					(Bset fDidntCatchHarami)
 					(ego addHonor: -100)
-					(Bset 19)
+					(Bset fCantBePaladin)
 				)
-				(Bset 22)
+				(Bset fHaramiRobbedChanger)
 				(aHarami hide:)
-				(aMoneyChanger setCycle: End)
-				(Bclr 119)
+				(aMoneyChanger setCycle: EndLoop)
+				(Bclr fSpeedDisabled)
 				(= cycles 3)
 			)
 			(8
@@ -540,14 +463,19 @@
 )
 
 (instance spEffect of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
 				(aHarami setMotion: 0)
-				(if local16 (sfx number: 930 play:))
-				(if (!= register 5) (= temp0 9) else (= temp0 10))
+				(if local16
+					(sfx number: 930 play:)
+				)
+				(if (!= register 5)
+					(= temp0 9)
+				else
+					(= temp0 10)
+				)
 				((= newProp (Prop new:))
 					view: 21
 					loop: temp0
@@ -556,13 +484,13 @@
 					cycleSpeed: 1
 					init:
 					setPri: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(newProp dispose:)
-				(Palette palSET_INTENSITY 0 255 1000)
-				(Palette palSET_INTENSITY 0 255 100)
+				(Palette PALIntensity 0 255 1000)
+				(Palette PALIntensity 0 255 100)
 				(self dispose:)
 			)
 		)
@@ -570,14 +498,17 @@
 )
 
 (instance castFlameDart of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(Face ego aHarami self)
-				(if (== register 20) (Bset 25) else (Bset 26))
+				(if (== register V_DAGGER)
+					(Bset fDaggeredHarami)
+				else
+					(Bset fFlamedHarami)
+				)
 			)
 			(1
 				(= egoLoop (ego loop?))
@@ -585,9 +516,9 @@
 					view: (if (!= register 20) 14 else 9)
 					loop: [local20 egoLoop]
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
-				(if (!= register 20)
+				(if (!= register V_DAGGER)
 					(sfx number: 13 play:)
 					(= local16 1)
 				else
@@ -595,42 +526,43 @@
 				)
 			)
 			(2
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				((= newSpell (Spell new:))
-					view: (if (!= register 20) 21 else 46)
+					view: (if (!= register V_DAGGER) 21 else 46)
 					x: (+ (ego x?) 20)
 					y: (- (ego y?) 35)
 					origStep: 6922
 					init: register
-					setCycle: Fwd
+					setCycle: Forward
 				)
 			)
 			(3
 				(ego normalize: egoLoop addHonor: -50)
 				(= cycles (+ (ego cycleSpeed?) 5))
 			)
-			(4 (self dispose:))
+			(4
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance knockFruitOver of Script
-	(properties)
 	
 	(method (doit)
 		(super doit: &rest)
 		(if
 			(and
-				(not (Btst 80))
+				(not (Btst fKnockedOverFruit))
 				(== local9 1)
 				(< 135 (aHarami x?))
 				(< (aHarami x?) 223)
 			)
 			(aHarami setCycle: 0 stopUpd:)
-			(Bset 80)
-			(= local10 2)
-			(= theTheVerb 0)
-			(ego solvePuzzle: 218 5 13)
+			(Bset fKnockedOverFruit)
+			(= haramiLoop 2)
+			(= verbOnHarami 0)
+			(ego solvePuzzle: fHaramiSlipsOnFruit 5 (| puzzleFIGHTER puzzlePALADIN puzzleTHIEF))
 			(curRoom setScript: onHisButt)
 		)
 	)
@@ -645,7 +577,7 @@
 				(if (< (= temp1 (- (ego moveSpeed?) 1)) 0)
 					(= temp1 0)
 				)
-				(if (!= egoGait 1)
+				(if (!= egoGait MOVE_RUN)
 					(ego
 						view: 1
 						moveSpeed: temp0
@@ -664,18 +596,18 @@
 			)
 			(1
 				(ego view: 14)
-				(Bset 24)
+				(Bset fTrippedHarami)
 				(sfx number: 922 play:)
 				(if (== local11 -1)
-					(ego setLoop: 2 cel: 0 setCycle: End)
+					(ego setLoop: 2 cel: 0 setCycle: EndLoop)
 				else
-					(ego setLoop: 3 cel: 6 x: 134 y: 158 setCycle: End)
+					(ego setLoop: 3 cel: 6 x: 134 y: 158 setCycle: EndLoop)
 				)
-				(aFruitBasket setCycle: CT 2 1 self)
+				(aFruitBasket setCycle: CycleTo 2 1 self)
 				(= local9 1)
 			)
 			(2
-				(aFruitBasket setCycle: CT 4 1 self)
+				(aFruitBasket setCycle: CycleTo 4 1 self)
 			)
 			(3
 				((= newView (View new:))
@@ -684,7 +616,7 @@
 					cel: 0
 					x: 113
 					y: 162
-					signal: 16385
+					signal: ignrAct
 					noun: 33
 					init:
 					setPri: 1
@@ -693,14 +625,14 @@
 			)
 			(4
 				(if (== local11 -1)
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				else
-					(ego setCycle: CT 6 -1 self)
+					(ego setCycle: CycleTo 6 -1 self)
 				)
 			)
 			(5
 				(aFruitBasket noun: 34 setPri: 14)
-				(aFruitMerchant setLoop: 2 setCycle: Fwd)
+				(aFruitMerchant setLoop: 2 setCycle: Forward)
 				(if (== local11 -1)
 					(ego loop: 6 cel: 2)
 				else
@@ -710,7 +642,10 @@
 				(= ticks 4)
 			)
 			(6
-				(if (< (onHisButt state?) 0) (Bclr 123) (HandsOn))
+				(if (< (onHisButt state?) 0)
+					(Bclr fKnockingOverFruit)
+					(HandsOn)
+				)
 				(aFruitBasket stopUpd:)
 				(newView stopUpd:)
 				(self dispose:)
@@ -720,18 +655,21 @@
 )
 
 (instance onHisButt of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(switch theTheVerb
+				(switch verbOnHarami
 					(0 0)
-					(20 (ego solvePuzzle: 217 5 4))
-					(else  (ego solvePuzzle: 215 7))
+					(V_DAGGER
+						(ego solvePuzzle: fHaramiHitByDagger 5 puzzleTHIEF)
+					)
+					(else
+						(ego solvePuzzle: fStopHaramiWithMagic 7)
+					)
 				)
-				(Bclr 119)
+				(Bclr fSpeedDisabled)
 				(if (and (!= register 0) (!= register 3))
 					(self setScript: spEffect self register)
 				else
@@ -741,25 +679,25 @@
 			(1
 				(aHarami
 					view: 953
-					setLoop: local10
+					setLoop: haramiLoop
 					cel: 0
 					x: (- (aHarami x?) 25)
 					cycleSpeed: (if (== (ego script?) calmCast) 15 else 12)
 					moveSpeed: (aHarami cycleSpeed?)
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo (+ (aHarami x?) 15) (+ (aHarami y?) 2)
 				)
 			)
 			(2
-				(aMoneyChanger setCycle: End self)
+				(aMoneyChanger setCycle: EndLoop self)
 			)
 			(3
-				(aHarami ignoreActors: 1 stopUpd:)
+				(aHarami ignoreActors: TRUE stopUpd:)
 				(= seconds 2)
 			)
 			(4
 				(if (aFruitMerchant cycler?)
-					(aFruitMerchant setCycle: End self)
+					(aFruitMerchant setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
@@ -780,8 +718,8 @@
 				(messager say: 5 6 60 0 self)
 			)
 			(7
-				(Bset 22)
-				(Bclr 80)
+				(Bset fHaramiRobbedChanger)
+				(Bclr fKnockedOverFruit)
 				(globalSound fade:)
 				(soundFx fade:)
 				(curRoom newRoom: 340)
@@ -791,14 +729,17 @@
 )
 
 (instance seekNkill of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(Face ego aHarami self)
-				(if (== register 20) (Bset 25) else (Bset 26))
+				(if (== register V_DAGGER)
+					(Bset fDaggeredHarami)
+				else
+					(Bset fFlamedHarami)
+				)
 			)
 			(1
 				(= egoLoop (ego loop?))
@@ -806,16 +747,22 @@
 					view: (if (!= register 20) 14 else 9)
 					loop: [local20 egoLoop]
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
 				(switch register
-					(20 (= temp0 2))
-					(81 (= temp0 0))
-					(83 (= temp0 4))
+					(V_DAGGER
+						(= temp0 2)
+					)
+					(V_FLAME
+						(= temp0 0)
+					)
+					(V_FORCEBOLT
+						(= temp0 4)
+					)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				((= newSpell (Actor new:))
 					view: (if (!= register 20) 21 else 46)
 					x: (+ (ego x?) 20)
@@ -829,13 +776,13 @@
 					scaleY: 96
 					init:
 					setLoop: temp0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: Chase aHarami 1 self
 				)
 			)
 			(3
 				(ego normalize: egoLoop)
-				(= local10 1)
+				(= haramiLoop 1)
 				(curRoom setScript: onHisButt 0 (+ (newSpell loop?) 1))
 				(newSpell dispose:)
 				(self dispose:)
@@ -845,15 +792,14 @@
 )
 
 (instance calmCast of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: 0)
 				(Face ego aHarami self)
-				(Bset 27)
+				(Bset fUsedCalmOnHarami)
 				(= egoLoop (ego loop?))
 			)
 			(1
@@ -862,14 +808,13 @@
 					loop: [local28 egoLoop]
 					cel: 0
 					addHonor: 50
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(sfx number: 900 play:)
 			)
 			(2
-				(if
-				(and (ego castSpell: 24) (< (aHarami x?) 300))
-					(= local10 1)
+				(if (and (ego castSpell: CALM) (< (aHarami x?) 300))
+					(= haramiLoop 1)
 					(curRoom setScript: onHisButt)
 				)
 				(if (< (onHisButt state?) 0) (HandsOn))
@@ -881,7 +826,6 @@
 )
 
 (instance from240 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -890,23 +834,23 @@
 				(ego x: -10 y: 200 setMotion: PolyPath 50 175 self)
 				(if
 					(and
-						(not (Btst 22))
+						(not (Btst fHaramiRobbedChanger))
 						(< Day 5)
 						(not Night)
-						(not (Btst 135))
+						(not (Btst fVisitedBazaar))
 					)
-					(aHarami setCycle: End)
+					(aHarami setCycle: EndLoop)
 				)
 			)
 			(1
 				(if
 					(and
-						(not (Btst 22))
+						(not (Btst fHaramiRobbedChanger))
 						(< Day 5)
 						(not Night)
-						(not (Btst 135))
+						(not (Btst fVisitedBazaar))
 					)
-					(Bset 122)
+					(Bset fWitnessedRobbery)
 					(Face ego aHarami self)
 				else
 					(self cue:)
@@ -915,16 +859,16 @@
 			(2
 				(if
 					(and
-						(not (Btst 22))
+						(not (Btst fHaramiRobbedChanger))
 						(< Day 5)
 						(not Night)
-						(not (Btst 135))
+						(not (Btst fVisitedBazaar))
 					)
 					(ego code: moneyCode)
 					(curRoom setScript: haramiHeadsOut)
 				else
 					(HandsOn)
-					(if (or Night (Btst 135))
+					(if (or Night (Btst fVisitedBazaar))
 						(ego code: nightCode)
 					else
 						(ego code: bazCode)
@@ -943,30 +887,35 @@
 )
 
 (instance sExit of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(cond 
-					((<= (ego x?) 5) (ego setMotion: MoveTo -30 200 self))
-					((>= (ego x?) 315) (ego setMotion: MoveTo 335 177 self))
-					(else (ego setMotion: PolyPath (ego x?) 250 self))
+					((<= (ego x?) 5)
+						(ego setMotion: MoveTo -30 200 self)
+					)
+					((>= (ego x?) 315)
+						(ego setMotion: MoveTo 335 177 self)
+					)
+					(else
+						(ego setMotion: PolyPath (ego x?) 250 self)
+					)
 				)
 			)
 			(1
 				(if
 					(and
 						(not
-							(if (or (Btst 23) (Btst 24) (Btst 25) (Btst 26))
+							(if (or (Btst fRanAfterHarami) (Btst fTrippedHarami) (Btst fDaggeredHarami) (Btst fFlamedHarami))
 							else
-								(Btst 27)
+								(Btst fUsedCalmOnHarami)
 							)
 						)
-						(== egoGait 1)
+						(== egoGait MOVE_RUN)
 					)
-					(Bset 23)
+					(Bset fRanAfterHarami)
 				)
 				(curRoom newRoom: 240)
 			)
@@ -975,18 +924,17 @@
 )
 
 (instance wondering of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOn)
-				(if (or (== theTheVerb 0) (== theTheVerb 20))
+				(if (or (== verbOnHarami 0) (== verbOnHarami V_DAGGER))
 					0
 				else
-					(ego solvePuzzle: 214 4)
+					(ego solvePuzzle: fLetHaramiEscape 4)
 				)
-				(if (Btst 24)
+				(if (Btst fTrippedHarami)
 					(ego code: fruitCode)
 				else
 					(ego code: bazCode)
@@ -1025,7 +973,7 @@
 				)
 			)
 			(3
-				(messager say: 5 6 68 0 self)
+				(messager say: N_GUARD V_DOIT C_GUARD_COMES_IN 0 self)
 			)
 			(4
 				(globalSound fade:)
@@ -1040,7 +988,6 @@
 )
 
 (instance egoFell of Script
-	(properties)
 	
 	(method (changeState newState &tmp egoLoop_2 temp1)
 		(switch (= state newState)
@@ -1051,7 +998,7 @@
 					cel: 0
 					setMotion: 0
 					setLoop: [local92_2_2 egoLoop_2]
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -1067,11 +1014,11 @@
 					x: (+ (ego x?) temp1)
 					cel: 0
 					setLoop: egoLoop_2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(messager say: 25 6 76 0 self)
+				(messager say: N_HARAMI_HEADS_OUT V_DOIT C_EGO_FELL 0 self)
 			)
 			(3
 				(if (mod (ego loop?) 2)
@@ -1088,7 +1035,6 @@
 )
 
 (instance bazCode of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
@@ -1098,13 +1044,13 @@
 					(& local8 $0001)
 				)
 				(ego setMotion: 0)
-				(if (not (Btst 41))
-					(Bset 41)
-					(= local8 (& local8 $fffe))
-					(messager say: 1 6 5)
+				(if (not (Btst fMetMoneyChanger))
+					(Bset fMetMoneyChanger)
+					(&= local8 $fffe)
+					(messager say: N_MONEY_CHANGER V_DOIT C_FIRST_MEET_MONEY_CHANGER)
 				else
-					(= local8 (& local8 $fffe))
-					(messager say: 1 6 20)
+					(&= local8 $fffe)
+					(messager say: N_MONEY_CHANGER V_DOIT C_MEET_AGAIN_MONEY_CHANGER)
 				)
 			)
 			(
@@ -1112,7 +1058,7 @@
 					(< (ego distanceTo: aFruitMerchant) 50)
 					(& local8 $0002)
 				)
-				(= local8 (& local8 $fffd))
+				(&= local8 $fffd)
 				(aFruitMerchant newGreeting:)
 			)
 			(
@@ -1121,8 +1067,8 @@
 					(& local8 $0004)
 				)
 				(ego setMotion: 0)
-				(= local8 (& local8 $fffb))
-				(messager say: 3 6 27)
+				(&= local8 $fffb)
+				(messager say: N_LEATHER_VENDOR V_DOIT C_LEATHER_GREET)
 			)
 			((not (if (< 5 (ego x?)) (< (ego x?) 315)))
 				(if
@@ -1148,7 +1094,6 @@
 )
 
 (instance nightCode of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
@@ -1159,22 +1104,22 @@
 				)
 				(curRoom setScript: sExit)
 			)
-			(
-			(and (> (ego y?) 183) (not (curRoom script?))) (curRoom setScript: sExit))
+			((and (> (ego y?) 183) (not (curRoom script?)))
+				(curRoom setScript: sExit)
+			)
 		)
 	)
 )
 
 (instance fruitCode of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
 			(
 				(and
-					(== egoGait 1)
+					(== egoGait MOVE_RUN)
 					(ego mover?)
-					(& (ego onControl:) $0008)
+					(& (ego onControl:) cCYAN)
 					(not (ego script?))
 				)
 				(ego setScript: egoFell)
@@ -1185,13 +1130,13 @@
 					(& local8 $0001)
 				)
 				(ego setMotion: 0)
-				(if (not (Btst 41))
-					(Bset 41)
-					(= local8 (& local8 $fffe))
-					(messager say: 1 6 5)
+				(if (not (Btst fMetMoneyChanger))
+					(Bset fMetMoneyChanger)
+					(&= local8 $fffe)
+					(messager say: N_MONEY_CHANGER V_DOIT C_FIRST_MEET_MONEY_CHANGER)
 				else
-					(= local8 (& local8 $fffe))
-					(messager say: 1 6 20)
+					(&= local8 $fffe)
+					(messager say: N_MONEY_CHANGER V_DOIT C_MEET_AGAIN_MONEY_CHANGER)
 				)
 			)
 			(
@@ -1200,9 +1145,9 @@
 					(& local8 $0002)
 				)
 				(ego setMotion: 0)
-				(= local8 (& local8 $fffd))
-				(aFruitMerchant setCycle: Beg)
-				(messager say: 4 6 77 0 wondering)
+				(&= local8 $fffd)
+				(aFruitMerchant setCycle: BegLoop)
+				(messager say: N_FRUIT_VENDOR V_DOIT C_FRUIT_MERCHANT_MAD 0 wondering)
 			)
 			(
 				(and
@@ -1210,8 +1155,8 @@
 					(& local8 $0004)
 				)
 				(ego setMotion: 0)
-				(= local8 (& local8 $fffb))
-				(messager say: 3 6 27)
+				(&= local8 $fffb)
+				(messager say: N_LEATHER_VENDOR V_DOIT C_LEATHER_GREET)
 			)
 			((not (if (< 5 (ego x?)) (< (ego x?) 315)))
 				(if
@@ -1237,7 +1182,6 @@
 )
 
 (instance moneyCode of Code
-	(properties)
 	
 	(method (doit)
 		(if
@@ -1247,7 +1191,7 @@
 			)
 			(= local4 1)
 			(ego setMotion: 0)
-			(messager say: 1 6 60)
+			(messager say: N_MONEY_CHANGER V_DOIT C_THIEF_RUNS)
 		)
 	)
 )
@@ -1256,45 +1200,57 @@
 	(properties
 		x 42
 		y 106
-		noun 26
+		noun N_HARAMI
 		view 954
 		loop 2
 		priority 9
-		signal $1010
+		signal (| ignrHrz fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(cond 
-			(
-			(and (== arcadeDifficulty 1) (not (ego script?)))
+			((and (== arcadeDifficulty 1) (not (ego script?)))
 				(cond 
-					(
-					(or (== theVerb 20) (== theVerb 81) (== theVerb 83))
+					((or (== theVerb V_DAGGER) (== theVerb V_FLAME) (== theVerb V_FORCEBOLT))
 						(if (< x 260)
-							(if (== theVerb 20) (ego drop: 10 1))
+							(if (== theVerb V_DAGGER)
+								(ego drop: iDaggers 1)
+							)
 							(ego setScript: seekNkill 0 theVerb)
 						else
 							(= projX ((user curEvent?) x?))
 							(= projY ((user curEvent?) y?))
-							(= theTheVerb theVerb)
-							(if (== theVerb 20) (ego drop: 10 1))
+							(= verbOnHarami theVerb)
+							(if (== theVerb V_DAGGER)
+								(ego drop: iDaggers 1)
+							)
 							(ego setScript: castFlameDart 0 theVerb)
 						)
 					)
-					((== theVerb 82) (curRoom doVerb: theVerb))
-					(else (super doVerb: theVerb))
+					((== theVerb V_FETCH)
+						(curRoom doVerb: theVerb)
+					)
+					(else
+						(super doVerb: theVerb)
+					)
 				)
 			)
 			(
-			(or (== theVerb 20) (== theVerb 81) (== theVerb 83))
-				(= theTheVerb theVerb)
+			(or (== theVerb V_DAGGER) (== theVerb V_FLAME) (== theVerb V_FORCEBOLT))
+				(= verbOnHarami theVerb)
 				(= projX ((user curEvent?) x?))
 				(= projY ((user curEvent?) y?))
-				(if (== theVerb 20) (ego drop: 10 1))
+				(if (== theVerb V_DAGGER)
+					(ego drop: iDaggers 1)
+				)
 				(ego setScript: castFlameDart 0 theVerb)
 			)
-			((== theVerb 82) (curRoom doVerb: theVerb))
-			(else (super doVerb: theVerb))
+			((== theVerb V_FETCH)
+				(curRoom doVerb: theVerb)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -1303,7 +1259,7 @@
 	(properties
 		x 360
 		y 163
-		noun 5
+		noun N_GUARD
 		yStep 3
 		view 190
 		loop 1
@@ -1314,29 +1270,29 @@
 	(properties
 		x 143
 		y 183
-		noun 4
+		noun N_FRUIT_VENDOR
 		approachX 149
 		approachY 157
 		view 234
 		loop 3
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 11
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4 59 10)
+		(self approachVerbs: V_TALK V_DO V_DINARS V_ROYALS)
 	)
 	
 	(method (newGreeting)
 		(switch (mod Day 6)
-			(0 (messager say: noun 6 44))
-			(1 (messager say: noun 6 45))
-			(2 (messager say: noun 6 46))
-			(3 (messager say: noun 6 47))
-			(4 (messager say: noun 6 48))
-			(5 (messager say: noun 6 49))
+			(0 (messager say: noun V_DOIT C_FRUIT_GREET1))
+			(1 (messager say: noun V_DOIT C_FRUIT_GREET2))
+			(2 (messager say: noun V_DOIT C_FRUIT_GREET3))
+			(3 (messager say: noun V_DOIT C_FRUIT_GREET4))
+			(4 (messager say: noun V_DOIT C_FRUIT_GREET5))
+			(5 (messager say: noun V_DOIT C_FRUIT_GREET6))
 		)
 	)
 )
@@ -1346,7 +1302,7 @@
 		x 146
 		y 121
 		z 20
-		noun 3
+		noun N_LEATHER_VENDOR
 		approachDist 20
 		view 236
 		loop 2
@@ -1356,7 +1312,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4 59 10)
+		(self approachVerbs: V_TALK V_DO V_DINARS V_ROYALS)
 	)
 )
 
@@ -1364,25 +1320,27 @@
 	(properties
 		x 122
 		y 163
-		noun 29
+		noun N_FRUIT_BASKET
 		approachX 106
 		approachY 151
 		view 231
-		signal $5000
+		signal (| ignrAct ignrHrz)
 		cycleSpeed 3
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(if (and (not (Btst 22)) (< Day 5))
-					(Bset 123)
+			(V_DO
+				(if (and (not (Btst fHaramiRobbedChanger)) (< Day 5))
+					(Bset fKnockingOverFruit)
 					(ego setScript: knockFruitOver)
 				else
-					(messager say: 25 6 78)
+					(messager say: N_HARAMI_HEADS_OUT V_DOIT C_SEARCH_FRUIT)
 				)
 			)
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1394,17 +1352,17 @@
 	(properties
 		x 21
 		y 103
-		noun 1
+		noun N_MONEY_CHANGER
 		approachDist 40
 		view 232
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 9
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4 59 10)
+		(self approachVerbs: V_TALK V_DO V_DINARS V_ROYALS)
 	)
 )
 
@@ -1412,7 +1370,7 @@
 	(properties
 		view 21
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 0
 	)
 	
@@ -1422,7 +1380,6 @@
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (respond)
 		(return
@@ -1431,33 +1388,52 @@
 			else
 				(= local0 0)
 				(cond 
-					((not query) (return 1))
-					((== query -999) (return 1))
-					((== query 999) (self doParent:) (return 0))
-					((and (< query 0) (not (self doChild: query))) (return 1))
+					((not query)
+						(return TRUE)
+					)
+					((== query -999)
+						(return TRUE)
+					)
+					((== query 999)
+						(self doParent:)
+						(return FALSE)
+					)
+					((and (< query 0) (not (self doChild: query)))
+						(return TRUE)
+					)
 				)
-				(if (< query 0) (= query (- query)))
-				(messager say: (client noun?) 5 query 0)
-				(return 1)
+				(if (< query 0)
+					(= query (- query))
+				)
+				(messager say: (client noun?) V_TELL query 0)
+				(return TRUE)
 			)
 		)
 	)
 	
 	(method (showDialog &tmp temp0)
-		(if
-		(== (= theAFruitMerchant (proc51_1)) aFruitBasket)
-			(= theAFruitMerchant aFruitMerchant)
+		(if (== (= nearMerchant (proc51_1)) aFruitBasket)
+			(= nearMerchant aFruitMerchant)
 		)
-		(= temp0 (ego distanceTo: theAFruitMerchant))
-		(switch theAFruitMerchant
+		(= temp0 (ego distanceTo: nearMerchant))
+		(switch nearMerchant
 			(aMoneyChanger
-				(if (> temp0 40) (messager say: 2 5 83) (return -999))
+				(if (> temp0 40)
+					(messager say: N_EGO_TELL V_TELL C_TALK_TO_WHOM)
+					(return -999)
+				)
 			)
 			(aFruitMerchant
-				(if (> temp0 60) (messager say: 2 5 83) (return -999))
+				(if (> temp0 60)
+					(messager say: N_EGO_TELL V_TELL C_TALK_TO_WHOM)
+					(return -999)
+				)
 			)
 			(else 
-				(if (> temp0 30) (messager say: 2 5 83) (return -999))
+				(if (> temp0 30)
+					(messager say: N_EGO_TELL V_TELL C_TALK_TO_WHOM)
+					(return -999)
+				)
 			)
 		)
 		(if
@@ -1466,11 +1442,11 @@
 				(GetAngle
 					(ego x?)
 					(ego y?)
-					(theAFruitMerchant x?)
-					(theAFruitMerchant y?)
+					(nearMerchant x?)
+					(nearMerchant y?)
 				)
 			)
-			(Face ego theAFruitMerchant)
+			(Face ego nearMerchant)
 		)
 		((Timer new:) setCycle: self (+ (ego cycleSpeed?) 10))
 		(= iconValue 0)
@@ -1481,46 +1457,61 @@
 		(return
 			(switch query
 				(-21
-					(Bset 171)
+					(Bset fDidMoneyExchange)
 					(ExchangeMoney)
-					(return 0)
+					(return FALSE)
 				)
-				(-22 (Bset 171) (= query 22))
+				(-22
+					(Bset fDidMoneyExchange)
+					(= query 22)
+				)
 				(-20
 					(cond 
-						((== theAFruitMerchant aMoneyChanger) (= query 61))
-						((== theAFruitMerchant aFruitMerchant) (= query 58))
-						((== theAFruitMerchant aLeatherMerchant) (= query 31))
+						((== nearMerchant aMoneyChanger)
+							(= query 61)
+						)
+						((== nearMerchant aFruitMerchant)
+							(= query 58)
+						)
+						((== nearMerchant aLeatherMerchant)
+							(= query 31)
+						)
 					)
 				)
 				(-23
 					(cond 
-						((== theAFruitMerchant aMoneyChanger)
-							(= local8 (& local8 $efff))
+						((== nearMerchant aMoneyChanger)
+							(&= local8 $efff)
 							(ego addHonor: 2)
 							(= query 23)
 						)
-						((== theAFruitMerchant aFruitMerchant) (= query 59))
-						((== theAFruitMerchant aLeatherMerchant) (= query 32))
+						((== nearMerchant aFruitMerchant)
+							(= query 59)
+						)
+						((== nearMerchant aLeatherMerchant)
+							(= query 32)
+						)
 					)
 				)
 				(-57
 					(if numDinars
-						(fruitTell doVerb: 59)
+						(fruitTell doVerb: V_DINARS)
 					else
-						(fruitTell doVerb: 10)
+						(fruitTell doVerb: V_ROYALS)
 					)
-					(return 0)
+					(return FALSE)
 				)
 				(-34
 					(if numDinars
-						(leatherTell doVerb: 59)
+						(leatherTell doVerb: V_DINARS)
 					else
-						(leatherTell doVerb: 10)
+						(leatherTell doVerb: V_ROYALS)
 					)
-					(return 0)
+					(return FALSE)
 				)
-				(-26 (= query 26))
+				(-26
+					(= query 26)
+				)
 			)
 		)
 	)
@@ -1530,30 +1521,28 @@
 			(super
 				showDialog:
 					-21
-					(if
-					(and (== aMoneyChanger theAFruitMerchant) (Btst 41))
-						(not (Btst 171))
+					(if (and (== aMoneyChanger nearMerchant) (Btst fMetMoneyChanger))
+						(not (Btst fDidMoneyExchange))
 					else
 						0
 					)
 					-22
-					(if
-					(and (== aMoneyChanger theAFruitMerchant) (Btst 41))
-						(not (Btst 171))
+					(if (and (== aMoneyChanger nearMerchant) (Btst fMetMoneyChanger))
+						(not (Btst fDidMoneyExchange))
 					else
 						0
 					)
 					-23
-					(if (!= aMoneyChanger theAFruitMerchant)
+					(if (!= aMoneyChanger nearMerchant)
 					else
 						(& local8 $1000)
 					)
 					-26
-					(== aMoneyChanger theAFruitMerchant)
+					(== aMoneyChanger nearMerchant)
 					-57
-					(== aFruitMerchant theAFruitMerchant)
+					(== aFruitMerchant nearMerchant)
 					-34
-					(== aLeatherMerchant theAFruitMerchant)
+					(== aLeatherMerchant nearMerchant)
 			)
 		)
 		(= local0 1)
@@ -1563,11 +1552,10 @@
 )
 
 (instance moneyTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
-			showDialog: 5 (not (Btst 41)) -12 (Btst 41) -73 (Btst 41)
+			showDialog: 5 (not (Btst fMetMoneyChanger)) -12 (Btst fMetMoneyChanger) -73 (Btst fMetMoneyChanger)
 		)
 	)
 	
@@ -1576,26 +1564,28 @@
 			(switch query
 				(-12
 					(switch (mod Day 6)
-						(0 (messager say: 1 5 13))
-						(1 (messager say: 1 5 14))
-						(2 (messager say: 1 5 15))
-						(3 (messager say: 1 5 16))
-						(4 (messager say: 1 5 17))
-						(5 (messager say: 1 5 18))
+						(0 (messager say: N_MONEY_CHANGER V_TELL C_RUMOR1))
+						(1 (messager say: N_MONEY_CHANGER V_TELL C_RUMOR2))
+						(2 (messager say: N_MONEY_CHANGER V_TELL C_RUMOR3))
+						(3 (messager say: N_MONEY_CHANGER V_TELL C_RUMOR4))
+						(4 (messager say: N_MONEY_CHANGER V_TELL C_RUMOR5))
+						(5 (messager say: N_MONEY_CHANGER V_TELL C_RUMOR6))
 					)
-					(return 0)
+					(return FALSE)
 				)
 				(-73
 					(switch (mod Day 5)
-						(0 (messager say: 1 5 6))
-						(1 (messager say: 1 5 7))
-						(2 (messager say: 1 5 8))
-						(3 (messager say: 1 5 9))
-						(4 (messager say: 1 5 10))
+						(0 (messager say: N_MONEY_CHANGER V_TELL C_MONEY_SELF1))
+						(1 (messager say: N_MONEY_CHANGER V_TELL C_MONEY_SELF2))
+						(2 (messager say: N_MONEY_CHANGER V_TELL C_MONEY_SELF3))
+						(3 (messager say: N_MONEY_CHANGER V_TELL C_MONEY_SELF4))
+						(4 (messager say: N_MONEY_CHANGER V_TELL C_MONEY_SELF5))
 					)
-					(return 0)
+					(return FALSE)
 				)
-				(else  (super doChild: query))
+				(else
+					(super doChild: query)
+				)
 			)
 		)
 	)
@@ -1603,54 +1593,57 @@
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(59
-					(Bset 171)
+				(V_DINARS
+					(Bset fDidMoneyExchange)
 					(ExchangeMoney)
-					(return 1)
+					(return TRUE)
 				)
-				(10
+				(V_ROYALS
 					(if (< commons 100)
-						(messager say: 1 6 72)
+						(messager say: N_MONEY_CHANGER V_DOIT C_NOT_ENOUGH_COMMONS)
 					else
 						(ExchangeMoney)
 					)
-					(return 1)
+					(return TRUE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
 (instance fruitTell of Teller
-	(properties)
 	
 	(method (doChild)
 		(return
 			(switch query
 				(-12
 					(switch (mod Day 6)
-						(0 (messager say: 4 5 13))
-						(1 (messager say: 4 5 14))
-						(2 (messager say: 4 5 15))
-						(3 (messager say: 4 5 16))
-						(4 (messager say: 4 5 17))
-						(5 (messager say: 4 5 18))
+						(0 (messager say: N_FRUIT_VENDOR V_TELL C_RUMOR1))
+						(1 (messager say: N_FRUIT_VENDOR V_TELL C_RUMOR2))
+						(2 (messager say: N_FRUIT_VENDOR V_TELL C_RUMOR3))
+						(3 (messager say: N_FRUIT_VENDOR V_TELL C_RUMOR4))
+						(4 (messager say: N_FRUIT_VENDOR V_TELL C_RUMOR5))
+						(5 (messager say: N_FRUIT_VENDOR V_TELL C_RUMOR6))
 					)
 					(return 0)
 				)
 				(-75
 					(switch (mod Day 6)
-						(0 (messager say: 4 5 51))
-						(1 (messager say: 4 5 52))
-						(2 (messager say: 4 5 53))
-						(3 (messager say: 4 5 54))
-						(4 (messager say: 4 5 55))
-						(5 (messager say: 4 5 56))
+						(0 (messager say: N_FRUIT_VENDOR V_TELL C_FRUIT_SELF1))
+						(1 (messager say: N_FRUIT_VENDOR V_TELL C_FRUIT_SELF2))
+						(2 (messager say: N_FRUIT_VENDOR V_TELL C_FRUIT_SELF3))
+						(3 (messager say: N_FRUIT_VENDOR V_TELL C_FRUIT_SELF4))
+						(4 (messager say: N_FRUIT_VENDOR V_TELL C_FRUIT_SELF5))
+						(5 (messager say: N_FRUIT_VENDOR V_TELL C_FRUIT_SELF6))
 					)
-					(return 0)
+					(return FALSE)
 				)
-				(else  (super doChild: query))
+				(else
+					(super doChild: query)
+				)
 			)
 		)
 	)
@@ -1658,13 +1651,15 @@
 	(method (doVerb theVerb &tmp [temp0 20])
 		(return
 			(switch theVerb
-				(59 (messager say: 4 6 63))
-				(10
+				(V_DINARS
+					(messager say: N_FRUIT_VENDOR V_DOIT C_WRONG_MONEY)
+				)
+				(V_ROYALS
 					(if (not local6)
 						((ScriptID 232 0)
 							goods:
 								((List new:)
-									add: ((Class_47_1 new: 27)
+									add: ((Ware new: N_FRUIT_WARE)
 										price: 50
 										denomination: 1
 										quantity: 40
@@ -1676,33 +1671,39 @@
 						((ScriptID 232 0) goods: local6)
 					)
 					((ScriptID 232 0) init: purchase: dispose:)
-					(return 1)
+					(return TRUE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
 (instance leatherTell of Teller
-	(properties)
 	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(59 (messager say: 3 6 63))
-				(10
+				(V_DINARS
+					(messager say: N_LEATHER_VENDOR V_DOIT C_WRONG_MONEY)
+				)
+				(V_ROYALS
 					(if (not local7)
 						((ScriptID 235 0)
 							goods:
 								((List new:)
 									add:
-										((Class_47_1 new: 32)
+										((Ware new: N_WATERSKIN_WARE)
 											price: 200
 											denomination: 1
 											quantity: 70
 										)
-										((Class_47_1 new: 31) price: 5 quantity: 6)
+										((Ware new: N_ZEBRA_SKIN_WARE)
+											price: 5
+											quantity: 6
+										)
 								)
 						)
 						(= local7 ((ScriptID 235 0) goods?))
@@ -1710,9 +1711,11 @@
 						((ScriptID 235 0) goods: local7)
 					)
 					((ScriptID 235 0) init: purchase: dispose:)
-					(return 1)
+					(return TRUE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -1743,7 +1746,7 @@
 		view 233
 		loop 1
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1754,7 +1757,7 @@
 		view 233
 		loop 2
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1763,7 +1766,7 @@
 		nsTop 58
 		nsLeft 35
 		view 233
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1773,7 +1776,7 @@
 		nsLeft 28
 		view 233
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1783,15 +1786,23 @@
 		y 91
 		z -30
 		view 230
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(20 (curRoom doVerb: theVerb))
-			(80 (curRoom doVerb: theVerb))
-			(81 (curRoom doVerb: theVerb))
-			(83 (curRoom doVerb: theVerb))
+			(V_DAGGER
+				(curRoom doVerb: theVerb)
+			)
+			(V_CALM
+				(curRoom doVerb: theVerb)
+			)
+			(V_FLAME
+				(curRoom doVerb: theVerb)
+			)
+			(V_FORCEBOLT
+				(curRoom doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1806,15 +1817,23 @@
 		z -30
 		view 230
 		cel 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(20 (curRoom doVerb: theVerb))
-			(80 (curRoom doVerb: theVerb))
-			(81 (curRoom doVerb: theVerb))
-			(83 (curRoom doVerb: theVerb))
+			(V_DAGGER
+				(curRoom doVerb: theVerb)
+			)
+			(V_CALM
+				(curRoom doVerb: theVerb)
+			)
+			(V_FLAME
+				(curRoom doVerb: theVerb)
+			)
+			(V_FORCEBOLT
+				(curRoom doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1827,15 +1846,17 @@
 		x 157
 		y 158
 		z -30
-		noun 30
+		noun N_FRUIT_A
 		view 230
 		loop 1
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1847,7 +1868,7 @@
 	(properties
 		x 178
 		y 180
-		noun 6
+		noun N_BANANAS
 		nsTop 172
 		nsLeft 164
 		nsBottom 189
@@ -1856,7 +1877,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1869,7 +1892,7 @@
 		x 118
 		y 204
 		z 30
-		noun 28
+		noun N_FRUIT
 		nsTop 167
 		nsLeft 106
 		nsBottom 181
@@ -1878,7 +1901,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1891,7 +1916,7 @@
 		x 64
 		y 123
 		z 60
-		noun 8
+		noun N_HIDES
 		nsTop 41
 		nsLeft 57
 		nsBottom 85
@@ -1900,7 +1925,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1913,7 +1940,7 @@
 		x 181
 		y 103
 		z 60
-		noun 9
+		noun N_BELTS
 		nsTop 23
 		nsLeft 171
 		nsBottom 63
@@ -1922,7 +1949,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1934,7 +1963,7 @@
 	(properties
 		x 93
 		y 100
-		noun 10
+		noun N_SKIN_RUGS
 		nsTop 90
 		nsLeft 78
 		nsBottom 111
@@ -1943,7 +1972,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1955,7 +1986,7 @@
 	(properties
 		x 135
 		y 102
-		noun 11
+		noun N_ZEBRA_RUG
 		nsTop 90
 		nsLeft 109
 		nsBottom 115
@@ -1964,7 +1995,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1977,7 +2010,7 @@
 		x 138
 		y 115
 		z 50
-		noun 12
+		noun N_GIRAFFE
 		nsTop 50
 		nsLeft 112
 		nsBottom 81
@@ -1986,7 +2019,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -1999,7 +2034,7 @@
 		x 89
 		y 98
 		z 60
-		noun 13
+		noun N_LEOPARD_SKIN
 		nsTop 16
 		nsLeft 78
 		nsBottom 60
@@ -2008,7 +2043,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2020,7 +2057,7 @@
 	(properties
 		x 17
 		y 37
-		noun 14
+		noun N_MONEY_SIGN
 		nsTop 30
 		nsBottom 45
 		nsRight 34
@@ -2028,7 +2065,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2041,7 +2080,7 @@
 		x 221
 		y 114
 		z 30
-		noun 15
+		noun N_HIDE_RACKS
 		nsTop 62
 		nsLeft 197
 		nsBottom 107
@@ -2050,7 +2089,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2062,7 +2103,7 @@
 	(properties
 		x 237
 		y 184
-		noun 16
+		noun N_WATERMELON
 		nsTop 180
 		nsLeft 222
 		nsBottom 189
@@ -2071,7 +2112,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2084,7 +2127,7 @@
 		x 242
 		y 117
 		z 60
-		noun 17
+		noun N_BASKET
 		nsTop 47
 		nsLeft 228
 		nsBottom 68
@@ -2094,7 +2137,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2107,7 +2152,7 @@
 		x 262
 		y 116
 		z 20
-		noun 18
+		noun N_PITCHER
 		nsTop 86
 		nsLeft 254
 		nsBottom 107
@@ -2116,7 +2161,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2129,7 +2176,7 @@
 		x 271
 		y 114
 		z 60
-		noun 19
+		noun N_ROUND_TRAY
 		nsTop 42
 		nsLeft 265
 		nsBottom 67
@@ -2138,7 +2185,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2151,7 +2200,7 @@
 		x 284
 		y 110
 		z 50
-		noun 20
+		noun N_PEPPERS
 		nsTop 45
 		nsLeft 278
 		nsBottom 76
@@ -2160,7 +2209,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2173,7 +2224,7 @@
 		x 296
 		y 113
 		z 60
-		noun 21
+		noun N_RECTANGLE_TRAY
 		nsTop 39
 		nsLeft 288
 		nsBottom 67
@@ -2182,7 +2233,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2194,7 +2247,7 @@
 	(properties
 		x 262
 		y 114
-		noun 22
+		noun N_RED_PLATE
 		nsTop 109
 		nsLeft 251
 		nsBottom 119
@@ -2203,7 +2256,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2215,7 +2270,7 @@
 	(properties
 		x 284
 		y 108
-		noun 23
+		noun N_BRASS_VASE
 		nsTop 92
 		nsLeft 276
 		nsBottom 125
@@ -2224,7 +2279,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2236,7 +2293,7 @@
 	(properties
 		x 301
 		y 126
-		noun 24
+		noun N_SHOES
 		nsTop 120
 		nsLeft 293
 		nsBottom 133
@@ -2245,7 +2302,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(curRoom doVerb: theVerb)
 			)
@@ -2253,6 +2312,4 @@
 	)
 )
 
-(instance sfx of Sound
-	(properties)
-)
+(instance sfx of Sound)

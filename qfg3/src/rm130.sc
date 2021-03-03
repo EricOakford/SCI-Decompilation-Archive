@@ -212,6 +212,7 @@
 	)
 )
 
+
 (instance III of Prop
 	(properties
 		x 54
@@ -329,6 +330,7 @@
 	(properties
 		view 132
 		cel 0
+		nsLeft 24
 		nsTop -1
 		nsRight 0
 		nsBottom 0

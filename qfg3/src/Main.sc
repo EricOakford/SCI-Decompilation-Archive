@@ -466,8 +466,8 @@
 	gCalledBy
 	global420
 	global421
-	gGOwnerX
-	gGOwnerY
+	honeyTreeX
+	honeyTreeY
 	numDinars
 	wrestledDay
 	global426
@@ -493,7 +493,7 @@
 	global446
 	global447
 	global448
-	global449
+	palVaryInfo
 	global450
 	haramiNight
 	gCurrentDay_5
@@ -512,7 +512,7 @@
 	totalEncumbrance
 	global466
 	gGloryWindow_2
-	gGClientModNum
+	honeyBirdRoom
 	qg3Controls
 	dayStoleMagicDrum
 	global471
@@ -2413,10 +2413,10 @@
 	
 	(method (hide)
 		(super hide:)
-		(if global449
+		(if palVaryInfo
 			(PalVary PALVARYPAUSE 0)
 			(Bclr fFlag121)
-			(= global449 0)
+			(= palVaryInfo 0)
 		)
 	)
 	

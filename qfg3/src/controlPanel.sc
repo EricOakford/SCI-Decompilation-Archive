@@ -232,7 +232,7 @@
 		cel 0
 		nsLeft 8
 		nsTop 6
-		message V_CONTROL
+		message V_ROYALS
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_SAVE
 		modNum GLORY_CONTROL
@@ -255,7 +255,7 @@
 		cel 0
 		nsLeft 8
 		nsTop 23
-		message V_CONTROL
+		message V_ROYALS
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_RESTORE
 		modNum GLORY_CONTROL
@@ -278,7 +278,7 @@
 		cel 0
 		nsLeft 8
 		nsTop 40
-		message V_CONTROL
+		message V_ROYALS
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_RESTART
 		modNum GLORY_CONTROL
@@ -301,7 +301,7 @@
 		cel 0
 		nsLeft 8
 		nsTop 57
-		message V_CONTROL
+		message V_ROYALS
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_QUIT
 		modNum GLORY_CONTROL
@@ -324,7 +324,7 @@
 		cel 0
 		nsLeft 8
 		nsTop 74
-		message V_CONTROL
+		message V_ROYALS
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_ABOUT
 		modNum GLORY_CONTROL

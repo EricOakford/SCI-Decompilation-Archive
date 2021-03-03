@@ -31,7 +31,7 @@
 			(ego solvePuzzle: fExchangedDinars 4)
 			((inventory at: iRoyals)
 				amount: (/ (* 9 numDinars) 10)
-				message: V_CONTROL
+				message: V_ROYALS
 			)
 			(= numDinars 0)
 		else

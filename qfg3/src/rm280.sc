@@ -190,8 +190,7 @@
 			)
 			((Btst 35) (= global129 3))
 			((and (Btst 159) (not (Btst 35))) (= global129 1))
-			(
-			(and (not (== global129 0)) (not (Btst 159))) (= global129 1))
+			((and (not (== global129 0)) (not (Btst 159))) (= global129 1))
 			((== global129 0) (= global129 0))
 			(else (= global129 1))
 		)

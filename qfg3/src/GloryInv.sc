@@ -1085,7 +1085,7 @@ code_0fb6:
 		view 905
 		loop 4
 		cel 3
-		message V_MONEY
+		message V_DINARS
 		value 2
 		mustKeep TRUE
 	)
@@ -1094,7 +1094,7 @@ code_0fb6:
 		(switch theVerb
 			(1
 				(Format @dinarBuf {Dinars: %d.} numDinars)
-				(if (== message V_MONEY)
+				(if (== message V_DINARS)
 					(Print addText: @dinarBuf)
 				else
 					(= temp90 0)
@@ -1118,7 +1118,7 @@ code_0fb6:
 						(Format @str @wtBuf (+ numDinars amount commons))
 						(Print addText: @str 0 (= temp90 (+ temp90 15)))
 					else
-						(Print addText: NULL V_CONTROL C_NO_MONEY 1 0 0 GLORY_INV)
+						(Print addText: NULL V_ROYALS C_NO_MONEY 1 0 0 GLORY_INV)
 					)
 				)
 				(Print init:)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 200)
-(include sci.sh)
+(include game.sh) (include "200.shm")
 (use Main)
 (use Game)
 (use System)
@@ -10,11 +10,11 @@
 )
 
 (local
-	local0
+	nextRoom
 	local1
-	[local2 20]
+	[str 20]
 )
-(instance rm200 of Rm
+(instance rm200 of Room
 	(properties
 		picture 200
 		horizon 66
@@ -27,24 +27,30 @@
 		else
 			(self cue:)
 		)
-		(Bclr 6)
-		(if (= global449 (PalVary pvGET_CURRENT_STEP))
-			(PalVary pvPAUSE_RESUME 1)
+		(Bclr fInMainGame)
+		(if (= palVaryInfo (PalVary PALVARYINFO))
+			(PalVary PALVARYPAUSE TRUE)
 		)
 		(switch prevRoomNum
-			(150 (= style -32759))
-			(210 (= style -32761))
+			(150
+				(= style (| BLACKOUT PIXELDISSOLVE))
+			)
+			(210
+				(= style (| BLACKOUT IRISOUT))
+			)
 			(420
-				(= style -32759)
+				(= style (| BLACKOUT PIXELDISSOLVE))
 				(self cue:)
 			)
 			(620
-				(= style -32759)
+				(= style (| BLACKOUT PIXELDISSOLVE))
 				(self cue:)
 			)
 			(else 
-				(= style -32759)
-				(if (OneOf prevRoomNum 110 120 100) (self cue:))
+				(= style (| BLACKOUT PIXELDISSOLVE))
+				(if (OneOf prevRoomNum 110 120 100)
+					(self cue:)
+				)
 			)
 		)
 		(super init:)
@@ -52,8 +58,10 @@
 	)
 	
 	(method (dispose)
-		(if global449 (PalVary pvPAUSE_RESUME 0))
-		(Bset 6)
+		(if palVaryInfo
+			(PalVary PALVARYPAUSE FALSE)
+		)
+		(Bset fInMainGame)
 		(super dispose:)
 	)
 	
@@ -63,7 +71,6 @@
 )
 
 (instance showTarnaFarShot of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -74,43 +81,31 @@
 			)
 			(1
 				(DrawCel 200 0 0 125 171 15)
-				(Message msgGET 200 0 0 1 1 @local2)
-				(Display
-					@local2
-					dsCOORD
-					140
-					173
-					dsALIGN
-					1
-					dsCOLOR
-					0
-					dsFONT
-					123
+				(Message MsgGet 200 NULL NULL C_TARNA 1 @str)
+				(Display @str
+					p_at 140 173
+					p_mode teJustCenter
+					p_color 0
+					p_font 123
 				)
-				(Display
-					@local2
-					dsCOORD
-					139
-					172
-					dsALIGN
-					1
-					dsCOLOR
-					29
-					dsFONT
-					123
+				(Display @str
+					p_at 139 172
+					p_mode teJustCenter
+					p_color 29
+					p_font 123
 				)
 				(switch prevRoomNum
-					(120 (= local0 280))
-					(150 (= local0 210))
-					(420 (= local0 210))
-					(620 (= local0 210))
-					(else  (= local0 210))
+					(120 (= nextRoom 280))
+					(150 (= nextRoom 210))
+					(420 (= nextRoom 210))
+					(620 (= nextRoom 210))
+					(else  (= nextRoom 210))
 				)
 			)
 			(2
 				(theIconBar enable:)
 				(SetCursor 1)
-				(curRoom newRoom: local0)
+				(curRoom newRoom: nextRoom)
 			)
 		)
 	)
