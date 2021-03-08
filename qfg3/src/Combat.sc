@@ -43,7 +43,7 @@
 
 (procedure (localproc_03a1)
 	(HandsOff)
-	(if (<= [egoStats 16] 0) (= global155 0))
+	(if (<= [egoStats 16] 0) (= battleResult 0))
 	(localproc_0344)
 	(if (spellTimer seconds?) (spellTimer dispose:))
 	(if (stamTimer seconds?) (stamTimer dispose:))
@@ -651,7 +651,7 @@
 		(Bclr 6)
 		(globalSound setLoop: 1)
 		(soundFx setLoop: 1)
-		(= global155 2)
+		(= battleResult 2)
 		((= gWarriorObj WarriorObj) view: 999 init:)
 		(if
 			(not
@@ -1266,7 +1266,7 @@
 	
 	(method (cue)
 		(if (< [egoStats 16] 1)
-			(= global155 0)
+			(= battleResult 0)
 			(localproc_03a1)
 		)
 	)
@@ -1318,8 +1318,8 @@
 	
 	(method (cue)
 		(cond 
-			((== global155 -1) (gWarriorObj setScript: sDemonEgoDies))
-			((< monsterHealth 1) (= global155 1) (localproc_03a1))
+			((== battleResult -1) (gWarriorObj setScript: sDemonEgoDies))
+			((< monsterHealth 1) (= battleResult 1) (localproc_03a1))
 		)
 	)
 	
@@ -1352,7 +1352,7 @@
 				(= cycles 3)
 			)
 			(2
-				(= global155 1)
+				(= battleResult 1)
 				(DisposeScript 40)
 				(localproc_03a1)
 			)

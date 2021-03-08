@@ -173,31 +173,32 @@
 					(not (Btst 19))
 					(== prevRoomNum 420)
 				)
-				(= local0 global129)
-				(= global129 8)
+				(= local0 kreeshaHomeState)
+				(= kreeshaHomeState 8)
 			)
-			((== global129 7) (== global129 7))
-			((and (ego has: 44) (not (Btst 69))) (= local0 global129) (= global129 6))
-			((and (== global129 3) (Btst 42)) (= global129 5))
+			((== kreeshaHomeState 7) (== kreeshaHomeState 7))
+			((and (ego has: 44) (not (Btst 69))) (= local0 kreeshaHomeState) (= kreeshaHomeState 6))
+			((and (== kreeshaHomeState 3) (Btst 42)) (= kreeshaHomeState 5))
 			(
 				(and
 					(Btst 159)
-					(not (== global129 2))
+					(not (== kreeshaHomeState 2))
 					(not (Btst 142))
 					(not (Btst 35))
 				)
-				(= global129 2)
+				(= kreeshaHomeState 2)
 			)
-			((Btst 35) (= global129 3))
-			((and (Btst 159) (not (Btst 35))) (= global129 1))
-			((and (not (== global129 0)) (not (Btst 159))) (= global129 1))
-			((== global129 0) (= global129 0))
-			(else (= global129 1))
+			((Btst 35) (= kreeshaHomeState 3))
+			((and (Btst 159) (not (Btst 35))) (= kreeshaHomeState 1))
+			(
+			(and (not (== kreeshaHomeState 0)) (not (Btst 159))) (= kreeshaHomeState 1))
+			((== kreeshaHomeState 0) (= kreeshaHomeState 0))
+			(else (= kreeshaHomeState 1))
 		)
 		(if (== prevRoomNum 285)
 			(self setScript: from285)
 		else
-			(switch global129
+			(switch kreeshaHomeState
 				(0
 					(curRoom
 						addObstacle:
@@ -260,7 +261,7 @@
 			((self script?) 0)
 			((ego script?) 0)
 			((ego inRect: 255 89 319 102)
-				(if (OneOf global129 0 2 4 6 8)
+				(if (OneOf kreeshaHomeState 0 2 4 6 8)
 					(self setScript: bePolite)
 				else
 					(curRoom newRoom: 285)
@@ -273,7 +274,7 @@
 	
 	(method (dispose)
 		(LoadMany 0 964 35 34 49 62)
-		(if (== global129 0) (= global129 1))
+		(if (== kreeshaHomeState 0) (= kreeshaHomeState 1))
 		(super dispose:)
 	)
 	
@@ -409,7 +410,7 @@
 			(13
 				(Bset 44)
 				(ego solvePuzzle: 238 25 1)
-				(= global129 local0)
+				(= kreeshaHomeState local0)
 				(= heroType 3)
 				(curRoom newRoom: 340)
 			)
@@ -423,7 +424,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(= global129 local0)
+				(= kreeshaHomeState local0)
 				(HandsOff)
 				(ego x: 20 y: 110 init: setMotion: PolyPath 133 131 self)
 				(kreesha x: 50 y: 180 loop: 0 cel: 0 init: addToPic:)
@@ -657,7 +658,7 @@
 				(ego x: 20 y: 110 init: setMotion: PolyPath 160 100 self)
 			)
 			(1
-				(switch global129
+				(switch kreeshaHomeState
 					(1
 						(messager say: 1 6 17 0 self)
 					)
@@ -845,8 +846,8 @@
 			(0
 				(HandsOff)
 				(cond 
-					((== global129 2) (messager say: 2 6 79 0 self))
-					((== global129 0) (messager say: 3 6 10 0 self) (++ global129))
+					((== kreeshaHomeState 2) (messager say: 2 6 79 0 self))
+					((== kreeshaHomeState 0) (messager say: 3 6 10 0 self) (++ kreeshaHomeState))
 					(else (self cue:))
 				)
 			)
@@ -1195,47 +1196,47 @@
 		(super
 			showDialog:
 				-3
-				(== global129 0)
+				(== kreeshaHomeState 0)
 				-5
-				(== global129 0)
+				(== kreeshaHomeState 0)
 				-7
-				(== global129 0)
+				(== kreeshaHomeState 0)
 				-2
-				(== global129 0)
+				(== kreeshaHomeState 0)
 				-4
-				(< global129 2)
+				(< kreeshaHomeState 2)
 				-19
-				(> global129 2)
+				(> kreeshaHomeState 2)
 				-20
-				(if (== heroType 1) (> global129 1) else 0)
+				(if (== heroType 1) (> kreeshaHomeState 1) else 0)
 				-21
-				(> global129 1)
+				(> kreeshaHomeState 1)
 				-22
-				(> global129 1)
+				(> kreeshaHomeState 1)
 				-37
-				(== global129 7)
+				(== kreeshaHomeState 7)
 				-39
-				(== global129 6)
+				(== kreeshaHomeState 6)
 				-38
-				(== global129 6)
+				(== kreeshaHomeState 6)
 				-40
-				(== global129 7)
+				(== kreeshaHomeState 7)
 				-6
-				(if (== global129 0) else (== global129 7))
+				(if (== kreeshaHomeState 0) else (== kreeshaHomeState 7))
 				-58
-				(if (== global129 0) (== heroType 1) else 0)
+				(if (== kreeshaHomeState 0) (== heroType 1) else 0)
 				-74
-				(== global129 6)
+				(== kreeshaHomeState 6)
 				-71
-				(== global129 6)
+				(== kreeshaHomeState 6)
 				-70
-				(== global129 6)
+				(== kreeshaHomeState 6)
 				-74
-				(== global129 6)
+				(== kreeshaHomeState 6)
 				-65
-				(== global129 2)
+				(== kreeshaHomeState 2)
 				-64
-				(== global129 2)
+				(== kreeshaHomeState 2)
 		)
 	)
 	
@@ -1272,17 +1273,17 @@
 		(super
 			showDialog:
 				-36
-				(== global129 7)
+				(== kreeshaHomeState 7)
 				-19
-				(== global129 3)
+				(== kreeshaHomeState 3)
 				-11
-				(== global129 0)
+				(== kreeshaHomeState 0)
 				-75
-				(== global129 0)
+				(== kreeshaHomeState 0)
 				-76
-				(if (< global129 6) (> global129 0) else 0)
+				(if (< kreeshaHomeState 6) (> kreeshaHomeState 0) else 0)
 				-77
-				(== global129 6)
+				(== kreeshaHomeState 6)
 		)
 	)
 	

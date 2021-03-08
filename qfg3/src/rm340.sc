@@ -25,9 +25,9 @@
 )
 
 (local
-	local0
-	local1
-	local2
+	sworeOath
+	yesText
+	noText
 )
 (procedure (proc340_3)
 	(ego hold: 1 3 110)
@@ -35,7 +35,7 @@
 	(self setScript: doEvent2)
 )
 
-(procedure (localproc_048a)
+(procedure (InitCast)
 	(rajah init:)
 	(yWarrior init:)
 	(mother init:)
@@ -53,17 +53,17 @@
 	)
 )
 
-(procedure (localproc_04f1 &tmp temp0 oldCur)
+(procedure (SwearOath &tmp len oldCur)
 	(= oldCur theCursor)
-	(= temp0 (Message MsgSize 340 11 60 51 1))
-	(= local1 (Memory memALLOC_NONCRIT temp0))
-	(Message MsgGet 340 11 60 51 1 local1)
-	(= temp0 (Message MsgSize 340 11 60 52 1))
-	(= local2 (Memory memALLOC_NONCRIT temp0))
-	(Message MsgGet 340 11 60 52 1 local2)
+	(= len (Message MsgSize 340 N_OATH V_QUESTION C_YES 1))
+	(= yesText (Memory MNewPtr len))
+	(Message MsgGet 340 N_OATH V_QUESTION C_YES 1 yesText)
+	(= len (Message MsgSize 340 N_OATH V_QUESTION C_NO 1))
+	(= noText (Memory MNewPtr len))
+	(Message MsgGet 340 N_OATH V_QUESTION C_NO 1 noText)
 	(quest init: show: dispose:)
-	(Memory memFREE local1)
-	(Memory memFREE local2)
+	(Memory MDisposePtr yesText)
+	(Memory MDisposePtr noText)
 	(theGame setCursor: oldCur)
 )
 
@@ -138,7 +138,7 @@
 		(cond 
 			((or (== prevRoomNum 230) (== prevRoomNum 240))
 				(Bset fHaramiWasOnTrial)
-				(localproc_048a)
+				(InitCast)
 				(ego
 					view: 5
 					loop: 6
@@ -156,9 +156,9 @@
 			((and (== prevRoomNum 310) (not (Btst fSoulJudged)))
 				(cSound setLoop: -1 number: 340 play: 127)
 				(Bset fRakeeshSworeOath)
-				(localproc_048a)
+				(InitCast)
 				(rajah init: stopUpd:)
-				((ScriptID 35 1)
+				((ScriptID RAKEESH_TALKER 1)
 					loop: 3
 					x: 162
 					y: 165
@@ -171,8 +171,8 @@
 			)
 			(else
 				(cSound setLoop: -1 number: 340 play: 127)
-				(localproc_048a)
-				((ScriptID 35 1)
+				(InitCast)
+				((ScriptID RAKEESH_TALKER 1)
 					x: 30
 					y: 213
 					loop: 3
@@ -201,30 +201,33 @@
 	)
 	
 	(method (dispose)
-		(LoadMany 0 35 42 48 49)
+		(LoadMany FALSE RAKEESH_TALKER LAIBON_TALKER PRIESTESS_TALKER KREESHA_TALKER)
 		(heads dispose:)
 		(super dispose:)
 	)
 )
 
 (instance doEvent1 of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp knockedFruit)
 		(switch (= state newState)
 			(0
-				(if (!= egoGait 0) (ego changeGait: 0 0))
+				(if (!= egoGait MOVE_WALK)
+					(ego changeGait: MOVE_WALK FALSE)
+				)
 				(= cycles 10)
 			)
-			(1 (messager say: 3 6 1 0 self))
+			(1
+				(messager say: N_EGO V_DOIT C_JUDGEMENT1 0 self)
+			)
 			(2
-				(myMessager say: 1 6 1 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_JUDGEMENT1 0 rajah)
 			)
 			(3
-				(myMessager say: 2 6 3 0 rajah)
+				(myMessager say: N_HARAMI V_DOIT C_JUDGEMENT3 0 rajah)
 			)
 			(4
-				(myMessager say: 1 6 4 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_JUDGEMENT4 0 rajah)
 			)
 			(5
 				(localHarami
@@ -235,9 +238,10 @@
 			)
 			(6
 				(localHarami dispose:)
-				(myMessager say: 1 6 5 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_JUDGEMENT5 0 rajah)
 			)
 			(7
+				(messager say: N_ROOM V_DOIT C_JUDGEMENT6)	;EO: Added in to restore an unused message
 				(ego
 					view: 0
 					setLoop: -1
@@ -253,85 +257,100 @@
 				(ego posn: 150 260 setMotion: MoveTo 150 180 self)
 			)
 			(10
-				(= temp0 0)
+				(= knockedFruit FALSE)
 				(cond 
-					((Btst 24) (= temp0 1))
-					((and (Btst 25) (not (Btst 28))) (curRoom setScript: thiefSolution))
-					((or (Btst 27) (Btst 26)) (curRoom setScript: magicSolution))
-					((Btst 23) (curRoom setScript: chaseHarami))
-					(else (myMessager say: 1 6 32 0 rajah))
+					((Btst fTrippedHarami)
+						(= knockedFruit TRUE)
+					)
+					((and (Btst fDaggeredHarami) (not (Btst fDidntCatchHarami)))
+						(curRoom setScript: thiefSolution)
+					)
+					((or (Btst fUsedCalmOnHarami) (Btst fFlamedHarami))
+						(curRoom setScript: magicSolution)
+					)
+					((Btst fRanAfterHarami)
+						(curRoom setScript: chaseHarami)
+					)
+					(else
+						(myMessager say: N_ROOM V_DOIT C_DIDNT_STOP_HARAMI 0 rajah)
+					)
 				)
-				(if temp0 (curRoom setScript: doEvent1Alt self))
+				(if knockedFruit
+					(curRoom setScript: doEvent1Alt self)
+				)
 			)
 			(11
-				(myMessager say: 5 6 9 0 rajah)
+				(myMessager say: N_SPEAKER V_DOIT C_CHASE_HARAMI3 0 rajah)
 			)
-			(12 (curRoom newRoom: 330))
+			(12
+				(curRoom newRoom: 330)
+			)
 		)
 	)
 )
 
 (instance chaseHarami of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(myMessager say: 4 6 7 0 rajah)
+				(myMessager say: N_WARRIOR V_DOIT C_CHASE_HARAMI1 0 rajah)
 			)
 			(1
-				(myMessager say: 1 6 8 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_CHASE_HARAMI2 0 rajah)
 			)
 			(2
-				(myMessager say: 5 6 9 0 rajah)
+				(myMessager say: N_SPEAKER V_DOIT C_CHASE_HARAMI3 0 rajah)
 			)
-			(3 (curRoom newRoom: 330))
+			(3
+				(curRoom newRoom: 330)
+			)
 		)
 	)
 )
 
 (instance thiefSolution of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(myMessager say: 4 6 27 0 rajah)
+				(myMessager say: N_WARRIOR V_DOIT C_THIEF1 0 rajah)
 			)
 			(1
-				(myMessager say: 1 6 28 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_THIEF2 0 rajah)
 			)
 			(2
-				(myMessager say: 8 6 29 0 rajah)
+				(myMessager say: N_PRIESTESS V_DOIT C_THIEF3 0 rajah)
 			)
 			(3
-				(myMessager say: 1 6 30 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_THIEF4 0 rajah)
 			)
 			(4
-				(myMessager say: 5 6 31 0 rajah)
+				(myMessager say: N_SPEAKER V_DOIT C_THIEF5 0 rajah)
 			)
-			(5 (curRoom newRoom: 330))
+			(5
+				(curRoom newRoom: 330)
+			)
 		)
 	)
 )
 
 (instance magicSolution of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(myMessager say: 4 6 16 0 rajah)
+				(myMessager say: N_WARRIOR V_DOIT C_MAGIC1 0 rajah)
 			)
 			(1
-				(myMessager say: 1 6 17 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_MAGIC2 0 rajah)
 			)
 			(2
-				(myMessager say: 7 6 18 0 rajah)
+				(myMessager say: N_KREESHA V_DOIT C_MAGIC3 0 rajah)
 			)
 			(3
-				(if (Btst 28)
-					(messager say: 4 6 26 0 rajah)
+				(if (Btst fDidntCatchHarami)
+					(messager say: N_WARRIOR V_DOIT C_CALMED_HARAMI 0 rajah)
 				else
 					(curRoom setScript: solution2)
 				)
@@ -344,26 +363,25 @@
 )
 
 (instance solution2 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if (Btst fUsedCalmOnHarami)
-					(messager say: 4 6 26 0 rajah)
+					(messager say: N_WARRIOR V_DOIT C_CALMED_HARAMI 0 rajah)
 				else
-					(myMessager say: 4 6 19 0 rajah)
+					(myMessager say: N_WARRIOR V_DOIT C_MAGIC4 0 rajah)
 				)
 			)
 			(1
 				(if (Btst fUsedCalmOnHarami)
 					(curRoom setScript: forbidden)
 				else
-					(myMessager say: 8 6 19 0 rajah)
+					(myMessager say: N_PRIESTESS V_DOIT C_MAGIC4 0 rajah)
 				)
 			)
 			(2
-				(myMessager say: 1 6 19 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_MAGIC4 0 rajah)
 			)
 			(3
 				(curRoom setScript: forbidden)
@@ -373,41 +391,41 @@
 )
 
 (instance forbidden of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(myMessager say: 1 6 20 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_FORBIDDEN1 0 rajah)
 			)
 			(1
-				(myMessager say: 7 6 21 0 rajah)
+				(myMessager say: N_KREESHA V_DOIT C_FORBIDDEN2 0 rajah)
 			)
 			(2
-				(myMessager say: 1 6 22 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_FORBIDDEN3 0 rajah)
 			)
 			(3
-				(messager say: 3 6 23 0 self)
+				(messager say: N_EGO V_DOIT C_FORBIDDEN4 0 self)
 			)
 			(4
-				(myMessager say: 1 6 24 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_FORBIDDEN5 0 rajah)
 			)
 			(5
-				(myMessager say: 5 6 31 0 rajah)
+				(myMessager say: N_SPEAKER V_DOIT C_THIEF5 0 rajah)
 			)
-			(6 (curRoom newRoom: 330))
+			(6
+				(curRoom newRoom: 330)
+			)
 		)
 	)
 )
 
 (instance doEvent1Alt of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(myMessager say: 4 6 10 0 rajah)
-				((ScriptID 35 1)
+				(myMessager say: N_WARRIOR V_DOIT C_KNOCKED_FRUIT1 0 rajah)
+				((ScriptID RAKEESH_TALKER 1)
 					loop: 3
 					x: 180
 					y: 280
@@ -416,83 +434,87 @@
 				)
 			)
 			(1
-				(myMessager say: 1 6 11 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_KNOCKED_FRUIT2 0 rajah)
 			)
 			(2
-				(myMessager say: 6 6 12 0 rajah)
+				(myMessager say: N_RAKEESH V_DOIT C_KNOCKED_FRUIT3 0 rajah)
 			)
 			(3
-				((ScriptID 35 1)
+				((ScriptID RAKEESH_TALKER 1)
 					setCycle: Walk
 					setMotion: MoveTo 190 185 self
 				)
 			)
 			(4
-				(myMessager say: 1 6 13 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_KNOCKED_FRUIT4 0 rajah)
 			)
 			(5
-				(myMessager say: 5 6 14 0 rajah)
+				(myMessager say: N_SPEAKER V_DOIT C_KNOCKED_FRUIT5 0 rajah)
 			)
 			(6
-				(myMessager say: 6 6 15 0 rajah)
+				(myMessager say: N_RAKEESH V_DOIT C_KNOCKED_FRUIT6 0 rajah)
 			)
-			(7 (curRoom newRoom: 330))
+			(7
+				(curRoom newRoom: 330)
+			)
 		)
 	)
 )
 
 (instance doEvent2 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Bclr 6) (= cycles 10))
+			(0
+				(Bclr fInMainGame)
+				(= cycles 10)
+			)
 			(1
-				(myMessager say: 1 6 33 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_HONOR1 0 rajah)
 			)
 			(2
-				(myMessager say: 4 6 34 0 rajah)
+				(myMessager say: N_WARRIOR V_DOIT C_HONOR2 0 rajah)
 			)
 			(3
-				(myMessager say: 8 6 35 0 rajah)
+				(myMessager say: N_PRIESTESS V_DOIT C_HONOR3 0 rajah)
 			)
 			(4
-				(myMessager say: 9 6 36 0 rajah)
+				(myMessager say: N_KREESHA_9 V_DOIT C_HONOR4 0 rajah)
 			)
 			(5
-				(myMessager say: 4 6 37 0 rajah)
+				(myMessager say: N_WARRIOR V_DOIT C_HONOR5 0 rajah)
 			)
 			(6
-				(myMessager say: 6 6 38 0 rajah)
+				(myMessager say: N_RAKEESH V_DOIT C_HONOR6 0 rajah)
 			)
 			(7
-				(myMessager say: 7 6 38 0 rajah)
+				(myMessager say: N_KREESHA V_DOIT C_HONOR6 0 rajah)
 			)
 			(8
-				(myMessager say: 6 6 39 0 rajah)
+				(myMessager say: N_RAKEESH V_DOIT C_HONOR7 0 rajah)
 			)
 			(9
-				(myMessager say: 1 6 40 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_HONOR8 0 rajah)
 			)
 			(10
-				(localproc_04f1)
-				(if local0
-					(ego addHonor: 40 solvePuzzle: 251 5 8)
+				(SwearOath)
+				(if sworeOath
+					(ego addHonor: 40 solvePuzzle: fSwearOath 5 puzzlePALADIN)
 				else
 					(ego addHonor: -100)
-					(Bset 19)
+					(Bset fCantBePaladin)
 				)
 				(= cycles 1)
 			)
 			(11
-				(myMessager say: 1 6 41 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_HONOR9 0 rajah)
 			)
 			(12
-				(myMessager say: 5 6 42 0 rajah)
+				(myMessager say: N_SPEAKER V_DOIT C_HONOR10 0 rajah)
 			)
 			(13
-				(Bset 48)
-				(Bset 6)
+				(Bset fMetRajah)
+				(Bset fInMainGame)
 				(curRoom newRoom: 330)
 			)
 		)
@@ -500,49 +522,50 @@
 )
 
 (instance doEvent3 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(yesufU setScale:)
-				((ScriptID 35 1) setScale:)
+				((ScriptID RAKEESH_TALKER 1) setScale:)
 				(= cycles 10)
 			)
 			(1
-				(messager say: 3 6 43 0 self)
+				(messager say: N_EGO V_DOIT C_CONFERENCE1 0 self)
 				(yesufU stopUpd:)
 			)
 			(2
-				(myMessager say: 1 6 44 0 rajah)
+				(myMessager say: N_ROOM V_DOIT C_CONFERENCE2 0 rajah)
 			)
 			(3
-				(myMessager say: 10 6 45 0 rajah)
+				(myMessager say: N_LAIBON V_DOIT C_CONFERENCE3 0 rajah)
 			)
 			(4
-				(simbani startUpd: loop: 0 setCel: 0 setCycle: End self)
+				(simbani startUpd: loop: 0 setCel: 0 setCycle: EndLoop self)
 			)
 			(5
-				(if (Btst 150)
-					(messager say: 3 6 46 0 self)
+				(if (Btst fSenseDanger)
+					(messager say: N_EGO V_DOIT C_CONFERENCE4 0 self)
 				else
 					(= cycles 1)
 				)
 			)
 			(6
-				(myMessager say: 6 6 47 0 rajah)
+				(myMessager say: N_RAKEESH V_DOIT C_CONFERENCE5 0 rajah)
 			)
 			(7
 				(leopardman
 					startUpd:
 					loop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(8 (= seconds 1))
+			(8
+				(= seconds 1)
+			)
 			(9
-				(leopardman loop: 1 setCel: 0 setCycle: End self)
+				(leopardman loop: 1 setCel: 0 setCycle: EndLoop self)
 				(globalSound number: 900 play: 127)
 			)
 			(10
@@ -551,39 +574,41 @@
 				(= cycles 1)
 			)
 			(11
-				(simbani loop: 1 setCel: 0 setCycle: End self)
+				(simbani loop: 1 setCel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(yesufU view: 984 setLoop: 3 setCel: 0 setCycle: End self)
+				(yesufU view: 984 setLoop: 3 setCel: 0 setCycle: EndLoop self)
 				(globalSound number: 916 play: 127)
 				(simbani stopUpd:)
 			)
 			(13
-				(leopardman setLoop: 2 setCel: 0 setCycle: End self)
+				(leopardman setLoop: 2 setCel: 0 setCycle: EndLoop self)
 				(globalSound number: 920 play: 127)
 				(yesufU stopUpd:)
 			)
 			(14
-				(leopardman setLoop: 3 setCel: 0 setCycle: End self)
+				(leopardman setLoop: 3 setCel: 0 setCycle: EndLoop self)
 			)
-			(15 (= seconds 2))
+			(15
+				(= seconds 2)
+			)
 			(16
-				(leopardman setLoop: 4 setCel: 0 setCycle: End self)
+				(leopardman setLoop: 4 setCel: 0 setCycle: EndLoop self)
 				(globalSound number: 918 play: 127)
 			)
 			(17
-				(myMessager say: 6 6 48 0 self)
+				(myMessager say: N_RAKEESH V_DOIT C_CONFERENCE6 0 self)
 			)
 			(18
-				(rajah startUpd: setCycle: End self)
+				(rajah startUpd: setCycle: EndLoop self)
 				(leopardman stopUpd:)
 			)
 			(19
-				(messager say: 5 6 49 0 self)
+				(messager say: N_SPEAKER V_DOIT C_CONFERENCE7 0 self)
 				(rajah stopUpd:)
 			)
 			(20
-				(messager say: 6 6 50 0 self)
+				(messager say: N_RAKEESH V_DOIT C_CONFERENCE8 0 self)
 			)
 			(21
 				(ego
@@ -594,7 +619,7 @@
 				)
 			)
 			(22
-				(Bset 43)
+				(Bset fAfterConference)
 				(curRoom newRoom: 210)
 			)
 		)
@@ -620,7 +645,7 @@
 		y 152
 		view 950
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -630,7 +655,7 @@
 		y 165
 		view 346
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -660,7 +685,7 @@
 		loop 1
 		cel 1
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -716,7 +741,7 @@
 		view 348
 		cel 1
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -727,7 +752,7 @@
 		view 357
 		cel 5
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -870,10 +895,9 @@
 )
 
 (instance quest of GameControls
-	(properties)
 	
 	(method (init)
-		(theGame setCursor: 999)
+		(theGame setCursor: ARROW_CURSOR)
 		((= window (GloryWindow new:))
 			top: 60
 			left: 95
@@ -899,8 +923,11 @@
 	)
 	
 	(method (show &tmp [str 20])
-		(Message MsgGet 340 11 60 53 1 @str)
-		(Display @str p_at 5 3 p_color 17)
+		(Message MsgGet 340 N_OATH V_QUESTION C_TITLE 1 @str)
+		(Display @str
+			p_at 5 3
+			p_color 17
+		)
 	)
 )
 
@@ -910,7 +937,7 @@
 		loop 2
 		cel 0
 		nsTop 15
-		signal $0101
+		signal (| VICON RELVERIFY)
 		maskView 361
 		maskLoop 3
 	)
@@ -919,27 +946,35 @@
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display local1 p_at 20 (+ nsTop 3) p_color 17)
-		(if (& signal $0004) (self mask:))
+		(Display yesText
+			p_at 20 (+ nsTop 3)
+			p_color 17
+		)
+		(if (& signal DISABLED)
+			(self mask:)
+		)
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
 		)
 	)
 	
 	(method (select)
-		(= local0 1)
+		(= sworeOath TRUE)
 		(quest state: (& (quest state?) $ffdf))
 	)
 	
-	(method (highlight param1 &tmp temp0)
-		(if param1
+	(method (highlight tOrF &tmp sColor)
+		(if tOrF
 			(DrawCel view loop 1 nsLeft nsTop -1)
-			(= temp0 46)
+			(= sColor 46)
 		else
 			(DrawCel view loop 0 nsLeft nsTop -1)
-			(= temp0 17)
+			(= sColor 17)
 		)
-		(Display local1 p_at 20 (+ nsTop 3) p_color temp0)
+		(Display yesText
+			p_at 20 (+ nsTop 3)
+			p_color sColor
+		)
 	)
 )
 
@@ -949,35 +984,43 @@
 		loop 2
 		cel 0
 		nsTop 30
-		signal $0101
+		signal (| VICON RELVERIFY)
 		maskView 361
 		maskLoop 3
 	)
 	
-	(method (show &tmp [temp0 15])
+	(method (show &tmp [str 15])
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display local2 p_at 20 (+ nsTop 3) p_color 17)
-		(if (& signal $0004) (self mask:))
+		(Display noText
+			p_at 20 (+ nsTop 3)
+			p_color 17
+		)
+		(if (& signal DISABLED)
+			(self mask:)
+		)
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
 		)
 	)
 	
 	(method (select)
-		(= local0 0)
+		(= sworeOath FALSE)
 		(quest state: (& (quest state?) $ffdf))
 	)
 	
-	(method (highlight param1 &tmp temp0)
-		(if param1
+	(method (highlight tOrF &tmp sColor)
+		(if tOrF
 			(DrawCel view loop 1 nsLeft nsTop -1)
-			(= temp0 46)
+			(= sColor 46)
 		else
 			(DrawCel view loop 0 nsLeft nsTop -1)
-			(= temp0 17)
+			(= sColor 17)
 		)
-		(Display local2 p_at 20 (+ nsTop 3) p_color temp0)
+		(Display noText
+			p_at 20 (+ nsTop 3)
+			p_color sColor
+		)
 	)
 )

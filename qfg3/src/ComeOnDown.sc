@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 401)
-(include sci.sh)
+(include game.sh) (include "400.shm")
 (use Main)
 (use GloryTalker)
 (use Motion)
@@ -14,17 +14,16 @@
 )
 
 (local
-	local0
+	oldCur
 )
 (instance ComeOnDown of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(theIconBar disable:)
-				(= local0 (theGame setCursor: 996 1))
+				(= oldCur (theGame setCursor: INVIS_CURSOR TRUE))
 				(SetCursor 0)
 				(hardy
 					init:
@@ -46,9 +45,11 @@
 				)
 			)
 			(1
-				(messager say: 1 6 1 0 self 400)
+				(messager say: N_COME_ON_DOWN V_DOIT C_LAUREL_HARDY1 0 self 400)
 			)
-			(2 (= cycles 20))
+			(2
+				(= cycles 20)
+			)
 			(3
 				(laurel cycleSpeed: 10 loop: 1 cel: 0)
 				(= cycles 20)
@@ -57,29 +58,47 @@
 				(hardy cycleSpeed: 10 loop: 1 cel: 0)
 				(= cycles 20)
 			)
-			(5 (hardy setCycle: End self))
-			(6 (= cycles 20))
+			(5
+				(hardy setCycle: EndLoop self)
+			)
+			(6
+				(= cycles 20)
+			)
 			(7
 				(hardy loop: 2 cel: 0)
-				(messager say: 1 6 2 0 self 400)
+				(messager say: N_COME_ON_DOWN V_DOIT C_LAUREL_HARDY2 0 self 400)
 			)
-			(8 (hardy setCycle: End self))
-			(9 (= cycles 20))
+			(8
+				(hardy setCycle: EndLoop self)
+			)
+			(9
+				(= cycles 20)
+			)
 			(10
 				(hardy loop: 3 cel: 0)
-				(messager say: 1 6 3 1 self 400)
+				(messager say: N_COME_ON_DOWN V_DOIT C_LAUREL_HARDY3 1 self 400)
 			)
-			(11 (laurel setCycle: End self))
-			(12 (= cycles 20))
+			(11
+				(laurel setCycle: EndLoop self)
+			)
+			(12
+				(= cycles 20)
+			)
 			(13
-				(messager say: 1 6 3 2 self 400)
+				(messager say: N_COME_ON_DOWN V_DOIT C_LAUREL_HARDY3 2 self 400)
 			)
-			(14 (hardy setCycle: End self))
-			(15 (= cycles 20))
+			(14
+				(hardy setCycle: EndLoop self)
+			)
+			(15
+				(= cycles 20)
+			)
 			(16
-				(messager say: 1 6 4 0 self 400)
+				(messager say: N_COME_ON_DOWN V_DOIT C_LAUREL_HARDY4 0 self 400)
 			)
-			(17 (laurel setCycle: Beg self))
+			(17
+				(laurel setCycle: BegLoop self)
+			)
 			(18
 				(hardy
 					setLoop: 0
@@ -96,14 +115,18 @@
 					setMotion: MoveTo -15 133 self
 				)
 			)
-			(19 (Face ego laurel self))
-			(20 (= cycles 2))
+			(19
+				(Face ego laurel self)
+			)
+			(20
+				(= cycles 2)
+			)
 			(21
-				(messager say: 3 6 25 0 self 400)
+				(messager say: N_EGO_TELL V_DOIT C_FAMILIAR 0 self 400)
 			)
 			(22
 				(SetCursor 1)
-				(theGame setCursor: local0 1)
+				(theGame setCursor: oldCur TRUE)
 				(theIconBar enable:)
 				(laurel dispose:)
 				(laurelTalker dispose:)
@@ -120,7 +143,7 @@
 		x 352
 		y 116
 		view 408
-		signal $4000
+		signal ignrAct
 		origStep 1028
 	)
 )
@@ -174,7 +197,7 @@
 		x 325
 		y 106
 		view 406
-		signal $4000
+		signal ignrAct
 		origStep 1028
 	)
 )

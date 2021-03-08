@@ -173,7 +173,7 @@
 	gGOwnerMoveSpeed
 	global127
 	global128
-	global129
+	kreeshaHomeState
 	global130
 	global131
 	numColors
@@ -199,7 +199,7 @@
 	global152 =  315
 	global153
 	global154
-	global155
+	battleResult
 	monsterHealth
 	userName
 	global158
@@ -410,7 +410,7 @@
 	panoEgoX
 	panoEgoY
 	monsterNum
-	global366
+	simbaniState
 	spellCost =  2
 		global368 =  2
 		global369 =  3
@@ -436,7 +436,7 @@
 	global389
 	global390
 	global391
-	global392
+	brideState
 	gNewList
 	global394
 	global395
@@ -450,7 +450,7 @@
 	global403 =  1
 	paladinStat
 	global405 =  4
-	global406
+	wonBridgeWrestling
 	global407
 	global408
 	survivorDay
@@ -458,7 +458,7 @@
 	global411 =  1
 	gMonster
 	gWarriorObj
-	gGGClientModNum_2
+	savannaPanoNum
 	gGOwnerX_3
 	gGOwnerY_3
 	global417
@@ -470,8 +470,8 @@
 	honeyTreeY
 	numDinars
 	wrestledDay
-	global426
-	gGGClientModNum_2_2
+	thrownDaggers
+	junglePanoNum
 	gGOwnerX_4
 	gGOwnerY_4
 	global430
@@ -496,10 +496,10 @@
 	palVaryInfo
 	global450
 	haramiNight
-	gCurrentDay_5
+	enterSimbaniDay
 	global453
 	global454
-	global455
+	restTime
 	gCurrentDay_6
 	soundFx
 	gNewCollect

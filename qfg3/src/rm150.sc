@@ -136,7 +136,7 @@
 		(rockPile init:)
 		(smallRockPile init:)
 		(mountains init:)
-		(if (and (Btst fHoneyBirdHinted) (== honeyBirdRoom curRoomNum))
+		(if (and (Btst fFoundHoneyBird) (== honeyBirdRoom curRoomNum))
 			(honeyTree x: honeyTreeX y: honeyTreeY init: stopUpd:)
 		)
 		(super init: &rest)
@@ -179,7 +179,7 @@
 			)
 			(
 				(and
-					(Btst fHoneyBirdHinted)
+					(Btst fFoundHoneyBird)
 					(== honeyBirdRoom curRoomNum)
 					(ego
 						inRect: honeyTreeX (- honeyTreeY 20) (+ honeyTreeX 20) honeyTreeY

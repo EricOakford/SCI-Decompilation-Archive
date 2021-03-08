@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 400)
-(include sci.sh)
+(include game.sh) (include "400.shm")
 (use Main)
 (use Target)
 (use EgoDead)
@@ -30,38 +30,38 @@
 
 (local
 	theScaleX =  128
-	local1 =  1
-	local2
+	sensedDanger =  1
+	monsterHurt
 	local3
-	newActor
-	newActor_2
+	bees1
+	bees2
 	local6
-	local7
+	trapSprung
 	local8
-	newProp
+	campFire
 	local10
 	local11
 	local12
-	local13
+	fireLit
 	local14
-	local15
-	local16
+	monsterDead
+	searchedMonster
 	local17
 	local18
 	local19 =  340
-	local20
-	local21
+	randSign
+	endSigns
 	local22
-	local23
+	monsterHere
 	local24
 	theGGOwnerX_3
 	theGGOwnerY_3
 	local27
 	local28
-	[local29 2] = [400 405]
+	local29 = [400 405]
 	local31
-	[local32 4] = [160 -45 160 355]
-	[local36 4] = [35 160 300 160]
+	local32 = [160 -45 160 355]
+	local36 = [35 160 300 160]
 	local40
 	itX
 	itY
@@ -72,8 +72,8 @@
 	local47
 )
 (procedure (proc400_2)
-	(self)
-	(super doit: &rest)
+;;;	(self)
+;;;	(super doit: &rest)
 )
 
 (procedure (localproc_32f4 &tmp [temp0 2] temp2 temp3)
@@ -124,12 +124,12 @@
 	)
 	(curRoom
 		curPic: (curRoom picture?)
-		style: (if local43 16393 else 9)
+		style: (if local43 16393 else PIXELDISSOLVE)
 	)
 	(if local43
 		(DrawPic (curRoom picture?) 16393 TRUE)
 	else
-		(DrawPic (curRoom picture?) dpOPEN_PIXELATION TRUE)
+		(DrawPic (curRoom picture?) PIXELDISSOLVE TRUE)
 	)
 	(= temp2 0)
 	(= temp3 1)
@@ -156,7 +156,7 @@
 (procedure (localproc_3479 param1 param2 param3 &tmp temp0)
 	(= temp0 1)
 	(while
-	(Message msgGET curRoomNum param1 param2 param3 temp0)
+	(Message MsgGet curRoomNum param1 param2 param3 temp0)
 		(++ temp0)
 	)
 	(return (-- temp0))
@@ -173,16 +173,15 @@
 )
 
 (instance BookTo of Motion
-	(properties)
 	
-	(method (init theClient theX theY theCaller &tmp [temp0 3] clientCycler)
+	(method (init actor theX theY whoCares &tmp [temp0 3] clientCycler)
 		(if (>= argc 1)
-			(= client theClient)
+			(= client actor)
 			(if (>= argc 2)
 				(= x theX)
 				(if (>= argc 3)
 					(= y theY)
-					(if (>= argc 4) (= caller theCaller))
+					(if (>= argc 4) (= caller whoCares))
 				)
 			)
 		)
@@ -197,8 +196,7 @@
 		(if (>= (client y?) y)
 			(self moveDone:)
 		else
-			(if
-			(>= (Abs (- gameTime b-moveCnt)) (client moveSpeed?))
+			(if (>= (Abs (- gameTime b-moveCnt)) (client moveSpeed?))
 				(= b-moveCnt gameTime)
 				(client y: (+ (client y?) (client yStep?)))
 			)
@@ -207,27 +205,29 @@
 	)
 )
 
-(instance controls of Controls
-	(properties)
+(instance roomControls of Controls
+	(properties
+		name {controls}
+	)
 )
 
-(instance rm400 of Rm
+(instance rm400 of Room
 	(properties
-		noun 17
+		noun N_ROOM
 		picture 400
 		vanishingY 49
 	)
 	
 	(method (init &tmp [temp0 2])
 		(= number curRoomNum)
-		(= controls controls)
+		(= controls roomControls)
 		(= perspective picAngle)
 		(if (== prevRoomNum 550)
-			(= local2 1)
+			(= monsterHurt 1)
 			(= local24 global417)
 			(= theGGOwnerX_3 gGOwnerX_3)
 			(= theGGOwnerY_3 gGOwnerY_3)
-			(= prevRoomNum gGGClientModNum_2)
+			(= prevRoomNum savannaPanoNum)
 			(= local27 (& global418 $0001))
 			(localproc_32f4)
 			(ego
@@ -236,18 +236,20 @@
 				y: 146
 				normalize:
 				init:
-				noun: 3
+				noun: N_EGO_TELL
 			)
-			(switch global155
-				(0 (self setScript: egoIsDead))
-				(1
-					(= local15 1)
+			(switch battleResult
+				(battleEGOLOST
+					(self setScript: egoIsDead)
+				)
+				(battleEGOWON
+					(= monsterDead TRUE)
 					(cSound setLoop: -1 changeTo: 400)
 					(it x: 190 y: 158 init:)
 					(it setScript: monsterIsDead)
 				)
-				(2
-					(ego changeGait: 1)
+				(battleEGORUNS
+					(ego changeGait: MOVE_RUN)
 					(= local47 1)
 					(HandsOn)
 					(self setScript: encounterScript)
@@ -255,36 +257,42 @@
 			)
 		else
 			(= local47 0)
-			(= local1 0)
+			(= sensedDanger 0)
 			(cond 
-				((== monsterNum 3) (cSound setLoop: -1 changeTo: 407))
-				((== monsterNum 11) (cSound setLoop: -1 changeTo: 408))
-				(else (cSound setLoop: -1 changeTo: 400))
+				((== monsterNum 3)
+					(cSound setLoop: -1 changeTo: 407)
+				)
+				((== monsterNum 11)
+					(cSound setLoop: -1 changeTo: 408)
+				)
+				(else
+					(cSound setLoop: -1 changeTo: 400)
+				)
 			)
 			(= monsterHealth 0)
-			(= global426 0)
+			(= thrownDaggers 0)
 			(= local24 (Random 64 256))
 			(= theGGOwnerX_3 (= theGGOwnerY_3 (Random 5 127)))
 			(switch monsterNum
 				(2
 					(= local24 90)
-					(if (Btst 99)
+					(if (Btst fFoundHoneyBird)
 						(= theGGOwnerX_3 52)
 					else
 						(= theGGOwnerX_3 50)
 					)
-					(= global418 (& global418 $fff7))
+					(&= global418 $fff7)
 					(= theGGOwnerY_3 59)
 					(localproc_32f4)
 					(ego
 						setScale: Scaler 127 30 189 70
-						x: (if (Btst 99) 60 else 160)
+						x: (if (Btst fFoundHoneyBird) 60 else 160)
 						y: 156
 						normalize:
 						init:
-						noun: 3
+						noun: N_EGO_TELL
 					)
-					(if (Btst 99)
+					(if (Btst fFoundHoneyBird)
 						(self setScript: beeTree)
 					else
 						(self setScript: encounterScript)
@@ -292,7 +300,7 @@
 					(HandsOn)
 				)
 				(74
-					(= local15 1)
+					(= monsterDead TRUE)
 					((ScriptID 705 0) init: 9 6 48)
 					(switch controlRet
 						(1 (= local22 1))
@@ -300,7 +308,7 @@
 					)
 					(= theGGOwnerX_3 (= theGGOwnerY_3 128))
 					(= local24 192)
-					(= local23 0)
+					(= monsterHere 0)
 					(localproc_32f4)
 					(ego
 						setScale: Scaler 127 30 189 70
@@ -308,7 +316,7 @@
 						y: 156
 						normalize:
 						init:
-						noun: 3
+						noun: N_EGO_TELL
 					)
 					(HandsOn)
 				)
@@ -322,10 +330,10 @@
 						setScale: Scaler 127 30 189 70
 						normalize:
 						init:
-						noun: 3
+						noun: N_EGO_TELL
 					)
 					(HandsOn)
-					(= local23 0)
+					(= monsterHere 0)
 					(self setScript: encounterScript)
 					(theGame save: 1)
 				)
@@ -347,8 +355,8 @@
 					(self setScript: encounterScript)
 				)
 				(4
-					(= local15 1)
-					(= local21 (localproc_3479 6 1 29))
+					(= monsterDead 1)
+					(= endSigns (localproc_3479 6 1 29))
 					(= theGGOwnerX_3 (= theGGOwnerY_3 128))
 					(= local24 192)
 					(localproc_32f4)
@@ -358,14 +366,14 @@
 						setScale: Scaler 127 30 189 70
 						normalize:
 						init:
-						noun: 3
+						noun: N_EGO_TELL
 					)
-					(= local23 0)
+					(= monsterHere 0)
 					(self setScript: encounterScript)
 					(HandsOn)
 				)
 				(5
-					(= local15 1)
+					(= monsterDead 1)
 					(= theGGOwnerX_3 (= theGGOwnerY_3 128))
 					(= local24 192)
 					(localproc_32f4)
@@ -376,9 +384,9 @@
 						setAvoider: PAvoider
 						normalize:
 						init:
-						noun: 3
+						noun: N_EGO_TELL
 					)
-					(= local23 0)
+					(= monsterHere 0)
 					(self setScript: encounterScript)
 					(HandsOn)
 				)
@@ -390,11 +398,11 @@
 						y: 156
 						normalize:
 						init:
-						noun: 3
+						noun: N_EGO_TELL
 					)
 					(if (== monsterNum 999)
-						(= local15 1)
-						(= local23 0)
+						(= monsterDead 1)
+						(= monsterHere 0)
 					else
 						(self setScript: encounterScript)
 					)
@@ -402,7 +410,7 @@
 				)
 			)
 		)
-		(Animate (cast elements?) 1)
+		(Animate (cast elements?) TRUE)
 	)
 	
 	(method (doit)
@@ -421,7 +429,7 @@
 				)
 			)
 			((< (ego x?) 6)
-				(if (or (not local23) (== monsterNum 2))
+				(if (or (not monsterHere) (== monsterNum 2))
 					(= theGGOwnerX_3 -20)
 					(= theGGOwnerY_3 (ego y?))
 					(self setScript: sExit)
@@ -430,7 +438,7 @@
 				)
 			)
 			((> (ego y?) 183)
-				(if (or (not local23) (== monsterNum 2))
+				(if (or (not monsterHere) (== monsterNum 2))
 					(= theGGOwnerX_3 (ego x?))
 					(= theGGOwnerY_3 250)
 					(self setScript: sExit)
@@ -439,7 +447,7 @@
 				)
 			)
 			((> (ego x?) 313)
-				(if (not local23)
+				(if (not monsterHere)
 					(= theGGOwnerX_3 330)
 					(= theGGOwnerY_3 (ego y?))
 					(self setScript: sExit)
@@ -448,7 +456,7 @@
 				)
 			)
 			((< (ego y?) 80)
-				(if (or (not local23) (== monsterNum 2))
+				(if (or (not monsterHere) (== monsterNum 2))
 					(= theGGOwnerX_3 (ego x?))
 					(= theGGOwnerY_3 (- (ego y?) 10))
 					(self setScript: sExit)
@@ -461,8 +469,12 @@
 	)
 	
 	(method (dispose)
-		(if timer (timer dispose: delete:))
-		(if (== monsterNum 2) (globalSound stop:))
+		(if timer
+			(timer dispose: delete:)
+		)
+		(if (== monsterNum 2)
+			(globalSound stop:)
+		)
 		(= global461 0)
 		(= global462 0)
 		(super dispose:)
@@ -471,40 +483,40 @@
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(65
-					(if local23
-						(messager say: 0 0 47)
+				(V_REST
+					(if monsterHere
+						(messager say: NULL NULL C_CANT_REST)
 					else
-						((ScriptID 7 5) init: global455)
+						((ScriptID TIME 5) init: restTime)
 					)
 				)
-				(74
-					(if
-					(or (and local15 (not local23)) (== monsterNum 74))
+				(V_SLEEP
+					(if (or (and monsterDead (not monsterHere)) (== monsterNum 74))
 						(= monsterNum 74)
 						(self setScript: sleepScript 0 0)
 					else
-						(messager say: 9 6 37)
+						(messager say: N_CUE V_DOIT C_CANT_SLEEP)
 					)
 				)
-				(84
-					(if (ego castSpell: 28)
-						((ScriptID 31 0) init: (ego x?) (+ (ego y?) 1) 80)
+				(V_LEVITATE
+					(if (ego castSpell: LEVITATE)
+						((ScriptID LEVITATION 0) init: (ego x?) (+ (ego y?) 1) 80)
 					)
 				)
-				(82
-					(if (ego castSpell: 26)
-						(ego setScript: (ScriptID 37 0))
-						(return 1)
+				(V_FETCH
+					(if (ego castSpell: FETCH)
+						(ego setScript: (ScriptID CASTFETCH 0))
+						(return TRUE)
 					)
 				)
-				(40
+				(V_HONEY
 					(if (and (== monsterNum 2) (== theGGOwnerX_3 52))
 						(if (& global418 $0002)
 							(if (& global418 $0004)
 								(super doVerb: theVerb &rest)
 							else
-								(messager say: 0 40 34)
+								;EO: There is no such message in the MSG file
+								(messager say: NULL V_HONEY C_CANT_POUR_HONEY)
 							)
 						else
 							(self setScript: pourHoney)
@@ -513,108 +525,119 @@
 						(super doVerb: theVerb &rest)
 					)
 				)
-				(20
-					(++ global426)
-					(if (== monsterNum 2) (ego setScale:))
-					(self setScript: (ScriptID 32 0) self 20)
+				(V_DAGGER
+					(++ thrownDaggers)
+					(if (== monsterNum 2)
+						(ego setScale:)
+					)
+					(self setScript: (ScriptID PROJECTILE 0) self V_DAGGER)
 				)
-				(75
-					(if (ego castSpell: 19)
+				(V_OPEN
+					(if (ego castSpell: OPEN)
 						(AutoTarget
 							((User curEvent?) x?)
 							((User curEvent?) y?)
 						)
-						(self setScript: (ScriptID 13))
+						(self setScript: (ScriptID CASTOPEN))
 					)
 				)
-				(81
-					(if (ego castSpell: 25)
-						(if (== monsterNum 2) (ego setScale:))
-						(self setScript: (ScriptID 32 0) self 81)
+				(V_FLAME
+					(if (ego castSpell: FLAMEDART)
+						(if (== monsterNum 2)
+							(ego setScale:)
+						)
+						(self setScript: (ScriptID PROJECTILE 0) self V_FLAME)
 					)
 				)
-				(83
-					(if (ego castSpell: 27)
-						(if (== monsterNum 2) (ego setScale:))
-						(self setScript: (ScriptID 32 0) self 83)
+				(V_FORCEBOLT
+					(if (ego castSpell: FORCEBOLT)
+						(if (== monsterNum 2)
+							(ego setScale:)
+						)
+						(self setScript: (ScriptID PROJECTILE 0) self V_FORCEBOLT)
 					)
 				)
-				(88
-					(if (ego castSpell: 32)
-						(if (== monsterNum 2) (ego setScale:))
-						(self setScript: (ScriptID 32 0) self 88)
+				(V_LIGHTNING
+					(if (ego castSpell: LIGHTNING)
+						(if (== monsterNum 2)
+							(ego setScale:)
+						)
+						(self setScript: (ScriptID PROJECTILE 0) self V_LIGHTNING)
 					)
 				)
-				(80
-					(if (ego castSpell: 24)
-						((Timer new:) setReal: self (/ [egoStats 24] 10))
-						(self setScript: (ScriptID 12 0) 0 80)
-						(if local13
-							(newProp setScript: 0 dispose:)
-							(= newProp 0)
-							(= local13 0)
+				(V_CALM
+					(if (ego castSpell: CALM)
+						((Timer new:) setReal: self (/ [egoStats CALM] 10))
+						(self setScript: (ScriptID CASTAREA 0) 0 V_CALM)
+						(if fireLit
+							(campFire setScript: 0 dispose:)
+							(= campFire 0)
+							(= fireLit 0)
 						)
 						(= local3 1)
 					)
 				)
+				;not sure what these three were meant for
 				(-77
 					(if (== monsterNum 5)
 						(if local6
-							(messager say: 0 0 2 1 0 12)
+							(messager say: NULL NULL 2 1 0 12)
 						else
-							(genericProp doVerb: 4)
+							(genericProp doVerb: V_DO)
 						)
-						(return 1)
+						(return TRUE)
 					else
-						(messager say: 0 0 2 1 0 12)
+						(messager say: NULL NULL 2 1 0 12)
 					)
 				)
 				(-76
-					(messager say: 0 0 1 1 0 12)
+					(messager say: NULL NULL 1 1 0 12)
 				)
 				(-80
-					(messager say: 0 0 4 1 0 12)
+					(messager say: NULL NULL 4 1 0 12)
 				)
-				(86
-					(if (ego castSpell: 30)
-						(if local23
-							(messager say: 9 6 57)
+				(V_JUGGLE
+					(if (ego castSpell: JUGGLE)
+						(if monsterHere
+							(messager say: N_CUE V_DOIT C_JUGGLE_LIGHTS)
 						else
-							(self setScript: (ScriptID 62 0))
+							(self setScript: (ScriptID CASTJUGGLE 0))
 						)
 					)
 				)
-				(78
-					(if (ego castSpell: 22)
-						((Timer new:) setReal: self (/ [egoStats 22] 10))
-						(self setScript: (ScriptID 12 0) 0 78)
+				(V_DAZZLE
+					(if (ego castSpell: DAZZLE)
+						((Timer new:) setReal: self (/ [egoStats DAZZLE] 10))
+						(self setScript: (ScriptID CASTAREA 0) 0 V_DAZZLE)
 					)
 				)
-				(77
-					(if (ego castSpell: 21)
+				(V_TRIGGER
+					(if (ego castSpell: TRIGGER)
 						(if (== monsterNum 5)
-							(self setScript: (ScriptID 12 0) 0 77)
+							(self setScript: (ScriptID CASTAREA 0) 0 V_TRIGGER)
 						else
-							(self setScript: (ScriptID 12 0) 0 77)
+							(self setScript: (ScriptID CASTAREA 0) 0 V_TRIGGER)
 						)
 					)
 				)
-				(33
-					(if (== monsterNum 2) (ego setScale:))
-					(self setScript: (ScriptID 32 0) 0 33)
+				(V_ROCK
+					(if (== monsterNum 2)
+						(ego setScale:)
+					)
+					(self setScript: (ScriptID PROJECTILE 0) 0 V_ROCK)
 				)
-				(87
-					(if (ego castSpell: 31)
-						(self setScript: (ScriptID 46 0))
+				(V_STAFF
+					(if (ego castSpell: STAFF)
+						(self setScript: (ScriptID STAFF_SCRIPT 0))
 					)
 				)
-				(85
-					(if (ego castSpell: 29)
+				(V_REVERSAL
+					(if (ego castSpell: REVERSAL)
 						(sFx number: 943 play:)
-						(self setScript: (ScriptID 12 0) self 85)
+						(self setScript: (ScriptID CASTAREA 0) self V_REVERSAL)
 					)
 				)
-				(4
+				(V_DO
 					(if (> ((User curEvent?) y?) 100)
 						(self setScript: getRocks)
 					else
@@ -638,7 +661,6 @@
 )
 
 (instance egoIsDead of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
@@ -649,19 +671,19 @@
 					setLoop: (Random 0 3)
 					cel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(switch monsterNum
-					(565
-						(EgoDead 41 400 707 End 152)
+					(vAnt
+						(EgoDead C_DEATH_ANT 400 707 EndLoop 152)
 					)
-					(560
-						(EgoDead 42 400 633 End 158)
+					(vDinosaur
+						(EgoDead C_DEATH_DINOSAUR 400 633 EndLoop 158)
 					)
-					(585
-						(EgoDead 43 400 455 End 155)
+					(vCroc
+						(EgoDead C_DEATH_CROC 400 455 EndLoop 155)
 					)
 				)
 			)
@@ -670,8 +692,7 @@
 )
 
 (instance monsterIsDead of Script
-	(properties)
-	
+
 	(method (doit &tmp egoX egoY)
 		(= egoY (ego y?))
 		(= egoX (ego x?))
@@ -685,7 +706,7 @@
 		(super doit:)
 	)
 	
-	(method (changeState newState &tmp [temp0 23] temp23 temp24)
+	(method (changeState newState &tmp [temp0 23] temp23 sndNum)
 		(switch (= state newState)
 			(0
 				(HandsOff)
@@ -694,40 +715,46 @@
 					approachX: (/ (+ (it nsLeft?) (it nsRight?)) 2)
 					approachY: (+ (/ (+ (it nsTop?) (it nsBottom?)) 2) 5)
 				)
-				(= local23 0)
-				(= local15 1)
+				(= monsterHere FALSE)
+				(= monsterDead TRUE)
 				(= monsterHealth 0)
 				(= local11 (if (Random 0 1) -10 else 10))
 				(Face it (it x?) (+ (it y?) local11) self)
 				(switch monsterNum
-					(565 (ego solvePuzzle: 293 2 9))
-					(585 (ego solvePuzzle: 292 2 9))
-					(560 (ego solvePuzzle: 294 2 9))
+					(vAnt
+						(ego solvePuzzle: fBeatAnt 2 (| puzzleFIGHTER puzzlePALADIN))
+					)
+					(vCroc
+						(ego solvePuzzle: fBeatCroc 2 (| puzzleFIGHTER puzzlePALADIN))
+					)
+					(vDinosaur
+						(ego solvePuzzle: fBeatDinosaur 2 (| puzzleFIGHTER puzzlePALADIN))
+					)
 				)
 			)
 			(1
-				(= temp24
+				(= sndNum
 					(cond 
-						((== monsterNum 565) 153)
-						((== monsterNum 585) 156)
-						((== monsterNum 560) 159)
+						((== monsterNum vAnt) 153)
+						((== monsterNum vCroc) 156)
+						((== monsterNum vDinosaur) 159)
 					)
 				)
-				(cSound setLoop: 1 changeTo: temp24 self)
+				(cSound setLoop: 1 changeTo: sndNum self)
 				(globalSound number: 931 setLoop: 1 play:)
 				(it
 					loop: (if (< local11 0) 1 else 0)
 					cel: 0
 					setMotion: 0
 					init:
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(2
 				(= itX (it x?))
 				(= itY (it y?))
 				(it
-					approachVerbs: 4
+					approachVerbs: V_DO
 					approachX: (/ (+ (it nsLeft?) (it nsRight?)) 2)
 					approachY: (+ (/ (+ (it nsTop?) (it nsBottom?)) 2) 5)
 					stopUpd:
@@ -760,8 +787,8 @@
 								((Polygon new:)
 									points: temp23
 									size: (localproc_3499 temp23)
-									type: 2
-									dynamic: 1
+									type: PBarredAccess
+									dynamic: TRUE
 									yourself:
 								)
 						)
@@ -771,8 +798,8 @@
 								((Polygon new:)
 									points: @temp0
 									size: 4
-									type: 2
-									dynamic: 1
+									type: PBarredAccess
+									dynamic: TRUE
 									yourself:
 								)
 						)
@@ -783,8 +810,8 @@
 							((Polygon new:)
 								points: @temp0
 								size: 4
-								type: 2
-								dynamic: 1
+								type: PBarredAccess
+								dynamic: TRUE
 								yourself:
 							)
 					)
@@ -794,13 +821,14 @@
 				(cSound number: 400 setLoop: -1 play:)
 				(= seconds 20)
 			)
-			(3 (self dispose:))
+			(3
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance getRocks of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -814,18 +842,18 @@
 					setMotion: 0
 					view: 4
 					loop: (mod (ego loop?) 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= register (Narrator y?))
 			)
 			(1
 				(Narrator y: 20)
-				(messager say: 9 6 45 0 self)
-				(ego get: 23 (Random 2 5))
+				(messager say: N_CUE V_DOIT C_GET_ROCKS 0 self)
+				(ego get: iRocks (Random 2 5))
 			)
 			(2
 				(Narrator y: register)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego normalize:)
@@ -837,8 +865,7 @@
 )
 
 (instance doBattle of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -849,11 +876,13 @@
 				(globalSound client: 0)
 			)
 			(1
-				(messager say: 9 6 44)
+				(messager say: N_CUE V_DOIT C_DO_BATTLE)
 				(= cycles 2)
 			)
 			(2
-				(if (< monsterHealth 2) (= monsterHealth 2))
+				(if (< monsterHealth 2)
+					(= monsterHealth 2)
+				)
 				(curRoom newRoom: 550)
 			)
 		)
@@ -861,9 +890,8 @@
 )
 
 (instance searchMonster of Script
-	(properties)
 	
-	(method (changeState newState &tmp [temp0 50])
+	(method (changeState newState &tmp [str 50])
 		(switch (= state newState)
 			(0
 				(HandsOff)
@@ -874,25 +902,27 @@
 				)
 			)
 			(1
-				(ego view: 4 setCycle: End self)
+				(ego view: 4 setCycle: EndLoop self)
 			)
 			(2 (= cycles 10))
 			(3
 				(if register
 					(if (== register -1)
-						(ego get: 22 solvePuzzle: 261 3 9)
-						(messager say: 9 6 38 0 self)
+						(ego get: iHorn solvePuzzle: fGetHorn 3 (| puzzleFIGHTER puzzlePALADIN))
+						(messager say: N_CUE V_DOIT C_GET_HORN 0 self)
 					else
-						(ego get: 0 register)
-						(Message msgGET 400 9 6 39 1 @temp0)
-						(messager sayFormat: 99 @temp0 register)
+						(ego get: iRoyals register)
+						(Message MsgGet 400 N_CUE V_DOIT C_GET_MONEY 1 @str)
+						(messager sayFormat: NARRATOR @str register)
 						(= cycles 1)
 					)
 				else
-					(messager say: 9 6 40 0 self)
+					(messager say: N_CUE V_DOIT C_GET_NOTHING 0 self)
 				)
 			)
-			(4 (ego setCycle: Beg self))
+			(4
+				(ego setCycle: BegLoop self)
+			)
 			(5
 				(ego normalize:)
 				(HandsOn)
@@ -903,36 +933,39 @@
 )
 
 (instance beeTree of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
 				(if (not (& global418 $0004))
-					(if (not (& global418 $0010)) (it init:))
-					(if (& global418 $0002) (genericProp init:))
+					(if (not (& global418 $0010))
+						(it init:)
+					)
+					(if (& global418 $0002)
+						(genericProp init:)
+					)
 				)
 				(beeHandler init:)
 				(globalSound number: 405 setLoop: -1 play:)
-				((= newActor (Actor new:))
+				((= bees1 (Actor new:))
 					view: 402
 					x: 202
 					y: 13
 					priority: 1
-					signal: 16400
+					signal: ignrAct
 					setLoop: 2
-					noun: 54
+					noun: N_BEES
 					setCycle: RandCycle
 					init:
 				)
-				((= newActor_2 (Actor new:))
+				((= bees2 (Actor new:))
 					view: 402
 					x: 213
 					y: 29
 					priority: 11
-					signal: 16400
+					signal: ignrAct
 					setLoop: 2
-					noun: 54
+					noun: N_BEES
 					setCycle: RandCycle
 					init:
 				)
@@ -943,14 +976,13 @@
 )
 
 (instance sleepScript of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0 theClock temp2 temp3)
+	(method (changeState newState &tmp sleptHours saveTime palInfo rand)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= cycles 2)
-				(= local1 0)
+				(= sensedDanger 0)
 			)
 			(1
 				(ego setMotion: PolyPath 165 135 self)
@@ -961,40 +993,49 @@
 					view: 35
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(cSound setLoop: -1 fade: 127 1 30 0 changeTo: 927)
 			)
 			(3
-				(if (= temp2 (PalVary pvGET_CURRENT_STEP))
-					(if (< temp2 64) (PalVary pvCHANGE_TICKS 3))
+				(if (= palInfo (PalVary PALVARYINFO))
+					(if (< palInfo 64) (PalVary PALVARYNEWTIME 3))
 				else
-					(PalVary pvINIT 400 3)
+					(PalVary PALVARYSTART 400 3)
 				)
 				(= seconds 5)
 			)
 			(4
 				(if (not local12)
-					(if (and local13 (Btst 32))
-						(= temp3 (Random 0 3))
+					(if (and fireLit (Btst fMetAardvark))
+						(= rand (Random 0 3))
 					else
-						(= temp3 0)
+						(= rand 0)
 					)
-					(if (not temp3)
+					(if (not rand)
 						(cond 
-							((and (Random 0 1) (not (Btst 32))) (Bset 32) (= monsterNum 1))
-							((and (<= 4 timeODay) (<= timeODay 6)) (if (< (Random 1 10) 5) (= monsterNum 585)))
-							((not (Random 0 2)) (= monsterNum 585))
-						)
-						(if (and (!= monsterNum 74) (!= timeODay 7))
-							(= theClock Clock)
-							((ScriptID 7 4) init: 3)
-							(= temp0
-								(/ (mod (- (+ Clock 3600) theClock) 3600) 150)
+							((and (Random 0 1) (not (Btst fMetAardvark)))
+								(Bset fMetAardvark)
+								(= monsterNum 1)
 							)
-							(ego useStamina: (- (* temp0 2)))
-							(ego takeDamage: (- (* temp0 2)))
-							(ego useMana: (- (* temp0 2)))
+							((and (<= TIME_SUNSET timeODay) (<= timeODay TIME_MIDNIGHT))
+								(if (< (Random 1 10) 5)
+									(= monsterNum 585)
+								)
+							)
+							((not (Random 0 2))
+								(= monsterNum 585)
+							)
+						)
+						(if (and (!= monsterNum 74) (!= timeODay TIME_NOTYETDAWN))
+							(= saveTime Clock)
+							((ScriptID TIME 4) init: 3)
+							(= sleptHours
+								(/ (mod (- (+ Clock 3600) saveTime) 3600) 150)
+							)
+							(ego useStamina: (- (* sleptHours 2)))
+							(ego takeDamage: (- (* sleptHours 2)))
+							(ego useMana: (- (* sleptHours 2)))
 						)
 					)
 				)
@@ -1002,16 +1043,18 @@
 			)
 			(5
 				(switch monsterNum
-					(74 (= seconds 5))
+					(74
+						(= seconds 5)
+					)
 					(1
 						(cSound number: 409 setLoop: -1 play:)
 						(self setScript: (ScriptID 402 0) self)
 					)
 					(else 
 						(= local22 0)
-						(= local13 0)
-						(if (Btst 150)
-							(= local1 1)
+						(= fireLit FALSE)
+						(if (Btst fSenseDanger)
+							(= sensedDanger TRUE)
 							(self setScript: paladinHearsMonster self)
 						else
 							(= seconds 2)
@@ -1020,21 +1063,38 @@
 				)
 			)
 			(6
-				(if (!= monsterNum 1) (self cue:))
+				(if (!= monsterNum 1)
+					(self cue:)
+				)
 			)
 			(7
 				(cond 
-					((== monsterNum 1) ((ego actions?) dispose:) (ego actions: 0) (self cue:))
-					((== monsterNum 74) (PalVary pvREVERSE 3) (Bclr 81) (= seconds 4))
-					(local1 (= seconds 3))
-					(else (ego setCycle: Beg self))
+					((== monsterNum 1)
+						((ego actions?) dispose:)
+						(ego actions: 0)
+						(self cue:)
+					)
+					((== monsterNum 74)
+						(PalVary PALVARYREVERSE 3)
+						(Bclr fEgoIsAsleep)
+						(= seconds 4)
+					)
+					(sensedDanger
+						(= seconds 3)
+					)
+					(else
+						(ego setCycle: BegLoop self)
+					)
 				)
 			)
 			(8
 				(if (!= monsterNum 74)
 					(cond 
-						((== monsterNum 1) (HandsOn) (self dispose:))
-						(local1
+						((== monsterNum 1)
+							(HandsOn)
+							(self dispose:)
+						)
+						(sensedDanger
 							(= local12 1)
 							(client setScript: encounterScript)
 							(self dispose:)
@@ -1051,10 +1111,12 @@
 				)
 			)
 			(9
-				((ScriptID 7 7) init: 5 40)
+				((ScriptID TIME 7) init: 5 40)
 				(= cycles 10)
 			)
-			(10 (ego setCycle: Beg self))
+			(10
+				(ego setCycle: BegLoop self)
+			)
 			(11
 				(ego x: (+ (ego x?) 25) normalize:)
 				(cSound setLoop: -1 number: 400 play:)
@@ -1066,15 +1128,14 @@
 )
 
 (instance sExit of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (and global426 (not local17))
-					(messager say: 0 20 36 0 self)
-					(ego get: 10 global426)
+				(if (and thrownDaggers (not local17))
+					(messager say: NULL V_DAGGER C_GET_DAGGERS 0 self)
+					(ego get: iDaggers thrownDaggers)
 				else
 					(self cue:)
 				)
@@ -1083,9 +1144,9 @@
 				(ego setMotion: PolyPath theGGOwnerX_3 theGGOwnerY_3 self)
 			)
 			(2
-				(if local13
-					(Bset 140)
-					(EgoDead 48 400 415 End)
+				(if fireLit
+					(Bset fFakeDeath)
+					(EgoDead C_DEATH_SMOKY 400 415 EndLoop)
 					(= cycles 10)
 				else
 					(self cue:)
@@ -1099,7 +1160,6 @@
 )
 
 (instance pourHoney of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
@@ -1107,20 +1167,24 @@
 				(HandsOff)
 				(ego setMotion: PolyPath 170 160 self)
 			)
-			(1 (ego setHeading: 90 self))
+			(1
+				(ego setHeading: 90 self)
+			)
 			(2
-				(ego view: 4 loop: 0 setCycle: End self)
+				(ego view: 4 loop: 0 setCycle: EndLoop self)
 			)
 			(3
-				(= global418 (| global418 $0008))
+				(|= global418 $0008)
 				(genericProp init:)
-				(messager say: 0 40 35 0 self)
+				(messager say: NULL V_HONEY C_POUR_HONEY 0 self)
 			)
-			(4 (ego setCycle: Beg self))
+			(4
+				(ego setCycle: BegLoop self)
+			)
 			(5
 				(ego normalize:)
-				(ego drop: 29 1)
-				(= global418 (| global418 $0002))
+				(ego drop: iHoney 1)
+				(|= global418 $0002)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -1129,7 +1193,6 @@
 )
 
 (instance getFeather of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
@@ -1138,15 +1201,17 @@
 				(ego setHeading: 90 self)
 			)
 			(1
-				(ego view: 4 loop: 0 setCycle: End self)
+				(ego view: 4 loop: 0 setCycle: EndLoop self)
 			)
 			(2
-				(genericProp setCycle: End self noun: 8)
-				(Bclr 99)
-				(ego get: 30 solvePuzzle: 260 8)
-				(= global418 (| global418 $0004))
+				(genericProp setCycle: EndLoop self noun: 8)
+				(Bclr fFoundHoneyBird)
+				(ego get: iFeather solvePuzzle: fGetFeather 8)
+				(|= global418 $0004)
 			)
-			(3 (ego setCycle: Beg self))
+			(3
+				(ego setCycle: BegLoop self)
+			)
 			(4
 				(ego normalize:)
 				(HandsOn)
@@ -1157,45 +1222,45 @@
 )
 
 (instance paladinHearsMonster of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego setLoop: 3 cel: 0 setCycle: End self)
+				(ego setLoop: 3 cel: 0 setCycle: EndLoop self)
 				(= register (Narrator y?))
 			)
 			(1
 				(Narrator y: 20)
-				(messager say: 9 6 51)
-				(ego setLoop: 5 cel: 3 setCycle: End self)
+				(messager say: N_CUE V_DOIT C_SENSE_DANGER)
+				(ego setLoop: 5 cel: 3 setCycle: EndLoop self)
 			)
 			(2
 				(Narrator y: register)
 				(ego x: (+ (ego x?) 25) normalize:)
 				(= cycles 10)
 			)
-			(3 (self dispose:))
+			(3
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance castFire of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				((User curEvent?) x: 146 y: 160)
-				(self setScript: (ScriptID 32 0) self 81)
+				(self setScript: (ScriptID PROJECTILE 0) self 81)
 			)
 			(1
 				(HandsOn)
 				(ego normalize:)
-				(= local13 1)
-				((= newProp (Prop new:))
-					signal: 20496
+				(= fireLit TRUE)
+				((= campFire (Prop new:))
+					signal: (| ignrAct skipCheck fixPriOn)
 					view: 400
 					loop: 6
 					cel: 0
@@ -1203,9 +1268,9 @@
 					y: 149
 					priority: 13
 					setScript: loopSound
-					noun: 20
+					noun: N_FIRE
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(self dispose:)
 			)
@@ -1214,11 +1279,9 @@
 )
 
 (instance loopSound of Script
-	(properties)
 	
 	(method (doit)
-		(if
-		(and (!= (globalSound number?) 913) (== state 1))
+		(if (and (!= (globalSound number?) 913) (== state 1))
 			(self cue:)
 		else
 			(super doit:)
@@ -1232,50 +1295,57 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= ticks 120))
+			(0
+				(= ticks 120)
+			)
 			(1
 				(globalSound number: 913 setLoop: -1 play: self)
 			)
-			(2 (self init:))
+			(2
+				(self init:)
+			)
 		)
 	)
 )
 
 (instance kindleFire of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 4 loop: 1 cel: 0 setCycle: End self)
+				(ego view: 4 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(if local13 (self cue:) else (= seconds 5))
+				(if fireLit
+					(self cue:)
+				else
+					(= seconds 5)
+				)
 			)
 			(2
-				(if local13
-					(= local13 0)
-					(newProp setScript: 0 dispose:)
-					(messager say: 20 48 0)
-					(= newProp 0)
+				(if fireLit
+					(= fireLit FALSE)
+					(campFire setScript: 0 dispose:)
+					(messager say: N_FIRE V_PEACEWATER 0)
+					(= campFire FALSE)
 				else
-					(= local13 1)
-					((= newProp (Prop new:))
+					(= fireLit TRUE)
+					((= campFire (Prop new:))
 						view: 400
 						loop: 6
 						cel: 0
 						x: 144
 						y: 149
 						priority: 13
-						signal: 20496
+						signal: (| ignrAct skipCheck fixPriOn)
 						noun: 20
 						setScript: loopSound
 						init:
-						setCycle: Fwd
+						setCycle: Forward
 					)
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego normalize:)
@@ -1289,20 +1359,24 @@
 (instance it of TargActor
 	(properties
 		view 0
-		signal $7000
+		signal (| ignrAct ignrHrz skipCheck)
 	)
 	
 	(method (init)
-		(if (not (cast contains: self)) (super init:))
-		(if local15 (self approachVerbs: 4))
+		(if (not (cast contains: self))
+			(super init:)
+		)
+		(if monsterDead
+			(self approachVerbs: V_DO)
+		)
 		(switch monsterNum
 			(2
-				(= noun 21)
-				(self approachVerbs: 4)
+				(= noun N_HONEY_BIRD)
+				(self approachVerbs: V_DO)
 				(cond 
 					(
 						(and
-							(Btst 99)
+							(Btst fFoundHoneyBird)
 							(> (ego x?) 10)
 							(not (& global418 $0002))
 						)
@@ -1321,7 +1395,7 @@
 					)
 					(
 						(and
-							(Btst 99)
+							(Btst fFoundHoneyBird)
 							(& global418 $0002)
 							(not (& global418 $0004))
 						)
@@ -1355,13 +1429,13 @@
 				(= approachX x)
 				(= approachY y)
 			)
-			(560
-				(if local15
+			(vDinosaur
+				(if monsterDead
 					(self
-						view: 560
+						view: vDinosaur
 						setScale: 160
 						cycleSpeed: (+ (ego cycleSpeed?) 5)
-						noun: 22
+						noun: N_DINOSAUR_DEAD
 						setMotion: 0
 					)
 				else
@@ -1372,18 +1446,18 @@
 						moveSpeed: (+ (ego moveSpeed?) 8)
 						cycleSpeed: (+ (ego cycleSpeed?) 10)
 						setCycle: Walk
-						noun: 23
+						noun: N_DINOSAUR_ALIVE
 						setMotion: MChase ego local45 self
 					)
 				)
 			)
-			(565
-				(if local15
+			(vAnt
+				(if monsterDead
 					(self
 						view: 563
 						setScale: 160
 						cycleSpeed: (+ (ego cycleSpeed?) 4)
-						noun: 24
+						noun: N_ANT_DEAD
 						setMotion: 0
 					)
 				else
@@ -1394,18 +1468,18 @@
 						moveSpeed: (+ (ego moveSpeed?) 7)
 						cycleSpeed: (+ (ego cycleSpeed?) 8)
 						setCycle: Walk
-						noun: 25
+						noun: N_ANT_ALIVE
 						setMotion: MChase ego local45 self
 					)
 				)
 			)
-			(585
-				(if local15
+			(vCroc
+				(if monsterDead
 					(self
 						view: 582
 						setScale: 160
 						cycleSpeed: (+ (ego cycleSpeed?) 4)
-						noun: 26
+						noun: N_CROC_DEAD
 						setMotion: 0
 					)
 				else
@@ -1416,7 +1490,7 @@
 						moveSpeed: (+ (ego moveSpeed?) 5)
 						cycleSpeed: (+ (ego cycleSpeed?) 6)
 						setCycle: Walk
-						noun: 27
+						noun: N_CROC_ALIVE
 						setMotion: MChase ego local45 self
 					)
 				)
@@ -1425,28 +1499,30 @@
 	)
 	
 	(method (doit &tmp temp0 theBrLeft theBrRight temp3 temp4 temp5 temp6)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 		(if
 			(and
 				local3
-				local2
+				monsterHurt
 				(curRoom timer?)
 				(not (ego script?))
 			)
 			(= local3 0)
 			((curRoom timer?) dispose:)
 			(curRoom timer: 0)
-			(messager say: 9 6 56)
+			(messager say: N_CUE V_DOIT C_CANT_CALM)
 		)
 		(return
 			(if (not local8)
-				(= signal (| signal $4000))
+				(|= signal ignrAct)
 				(cond 
 					((and mover (curRoom timer?) (!= monsterNum 2))
 						(self setMotion: 0)
 						(= local14
 							((Polygon new:)
-								type: 2
+								type: PBarredAccess
 								init:
 									(- nsLeft 6)
 									(- nsBottom 5)
@@ -1463,7 +1539,7 @@
 					)
 					(
 						(and
-							(not local15)
+							(not monsterDead)
 							(not mover)
 							(not (curRoom timer?))
 							(not local40)
@@ -1476,7 +1552,9 @@
 									((curRoom obstacles?) delete: local14)
 									(local14 dispose:)
 								)
-								(if (!= loop 1) (self setMotion: BookTo 160 300 charge))
+								(if (!= loop 1)
+									(self setMotion: BookTo 160 300 charge)
+								)
 							)
 						else
 							(if (IsObject local14)
@@ -1512,36 +1590,48 @@
 								(< (ego y?) y)
 								(not local46)
 							)
-							(EgoDead 24 0 410)
+							(EgoDead C_RHINO 0 410)
 						)
-						(if (> y (ego y?)) (= local46 1))
+						(if (> y (ego y?))
+							(= local46 1)
+						)
 					)
 					((== monsterNum 2)
 						(cond 
 							(
 								(and
-									(Btst 99)
+									(Btst fFoundHoneyBird)
 									(& global418 $0002)
 									(== x 188)
 									(> (ego x?) 160)
 								)
 								(self setCycle: Walk setLoop: 0 setMotion: MoveTo 340 100)
-								(= global418 (| global418 $0010))
-								(genericProp noun: 19)
+								(|= global418 $0010)
+								(genericProp noun: N_FEATHER)
 							)
-							((and (> (ego x?) 200) (== x 214)) (self setCycle: Walk setLoop: 0 setMotion: MoveTo 340 y))
+							((and (> (ego x?) 200) (== x 214))
+								(self setCycle: Walk setLoop: 0 setMotion: MoveTo 340 y)
+							)
 						)
 					)
 					(else 0)
 				)
-				(if (& signal $8000) (return (& signal $8000)))
-				(if (and (& signal $0004) (not (& signal $0002)))
-					(return (not (& signal $0002)))
+				(if (& signal delObj)
+					(return (& signal delObj))
 				)
-				(if scaler (scaler doit:))
-				(if (> scaleX theScaleX) (= theScaleX scaleX))
-				(if (< scaleX 0) (= scaleY (= scaleX theScaleX)))
-				(if (& scaleSignal $0001)
+				(if (and (& signal notUpd) (not (& signal startUpdOn)))
+					(return (not (& signal startUpdOn)))
+				)
+				(if scaler
+					(scaler doit:)
+				)
+				(if (> scaleX theScaleX)
+					(= theScaleX scaleX)
+				)
+				(if (< scaleX 0)
+					(= scaleY (= scaleX theScaleX))
+				)
+				(if (& scaleSignal scalable)
 					(= temp5 (>> origStep $0008))
 					(= temp6 (& origStep $00ff))
 					(if (or (< y 0) (< x -40) (> y 260) (> x 340))
@@ -1571,8 +1661,12 @@
 					)
 				)
 				(cond 
-					(avoider (avoider doit:))
-					(mover (mover doit:))
+					(avoider
+						(avoider doit:)
+					)
+					(mover
+						(mover doit:)
+					)
 				)
 				(if cycler
 					(= theBrLeft brLeft)
@@ -1596,13 +1690,13 @@
 			else
 				(if (== local8 1)
 					(switch monsterNum
-						(565
+						(vAnt
 							(sFx setLoop: 1 number: 904 play:)
 						)
-						(585
+						(vCroc
 							(sFx setLoop: 1 number: 907 play:)
 						)
-						(560
+						(vDinosaur
 							(sFx setLoop: 1 number: 903 play:)
 						)
 					)
@@ -1615,38 +1709,42 @@
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(4
+				(V_DO
 					(cond 
-						((== monsterNum 2) (return 1))
-						(local23 (super doVerb: theVerb &rest))
+						((== monsterNum 2)
+							(return TRUE)
+						)
+						(monsterHere
+							(super doVerb: theVerb &rest)
+						)
 						(else
 							(switch monsterNum
-								(565
+								(vAnt
 									(ego setScript: searchMonster 0 0)
 								)
-								(585
+								(vCroc
 									(ego
-										setScript: searchMonster 0 (if local16 0 else (Random 2 5))
+										setScript: searchMonster 0 (if searchedMonster 0 else (Random 2 5))
 									)
 								)
-								(560
-									(ego setScript: searchMonster 0 (if local16 0 else -1))
+								(vDinosaur
+									(ego setScript: searchMonster 0 (if searchedMonster 0 else -1))
 								)
 								(else 
 									(super doVerb: theVerb &rest)
 								)
 							)
-							(= local16 1)
+							(= searchedMonster TRUE)
 						)
 					)
 				)
-				(1
+				(V_LOOK
 					(if (== monsterNum 2)
 						(if (not mover)
 							(if loop
-								(messager say: 21 1 59)
+								(messager say: N_HONEY_BIRD V_LOOK C_BIRD_IN_TREE)
 							else
-								(messager say: 21 1 58)
+								(messager say: N_HONEY_BIRD V_LOOK C_BIRD_IN_HONEY)
 							)
 						else
 							(super doVerb: theVerb &rest)
@@ -1669,20 +1767,22 @@
 	
 	(method (cue &tmp temp0)
 		(cond 
-			((== monsterNum 2) (self loop: 4 cel: 0 y: 176 z: 150))
+			((== monsterNum 2)
+				(self loop: 4 cel: 0 y: 176 z: 150)
+			)
 			((< (ego z?) local45)
 				(self setMotion: 0)
 				(ego setMotion: 0)
-				(= local23 0)
+				(= monsterHere 0)
 				(if (< global461 global462)
 					(= global417 local24)
 					(= gGOwnerX_3 theGGOwnerX_3)
 					(= gGOwnerY_3 theGGOwnerY_3)
-					(= gGGClientModNum_2 prevRoomNum)
+					(= savannaPanoNum prevRoomNum)
 					(if local27
-						(= global418 (& global418 $0001))
+						(&= global418 $0001)
 					else
-						(= global418 (^ global418 $0001))
+						(^= global418 $0001)
 					)
 					(if (not local10)
 						(= local10 1)
@@ -1690,10 +1790,10 @@
 						(self setScript: doBattle)
 					)
 				else
-					(= monsterHealth 0)
-					(= local13 0)
-					(messager say: 9 6 46)
-					(= local15 1)
+					(= monsterHealth FALSE)
+					(= fireLit FALSE)
+					(messager say: N_CUE V_DOIT C_GOT_AWAY)
+					(= monsterDead TRUE)
 					(= local17 1)
 					(curRoom setScript: 0)
 					(cSound setLoop: -1 changeTo: 400)
@@ -1701,28 +1801,31 @@
 					(HandsOn)
 				)
 			)
-			((IsObject cycler) (cycler dispose:) (= cycler 0))
+			((IsObject cycler)
+				(cycler dispose:)
+				(= cycler 0)
+			)
 		)
 	)
 	
-	(method (getHurt param1 param2)
-		(= local2 1)
+	(method (getHurt amount whatHurt)
+		(= monsterHurt TRUE)
 		(if (curRoom timer?)
 			((curRoom timer?) dispose: delete:)
 		)
 		(if (not script)
 			(if (!= monsterNum 2)
-				(if (not local15)
+				(if (not monsterDead)
 					(= local8 10)
 					(switch monsterNum
-						(565
-							(= monsterHealth (- monsterHealth param2))
+						(vAnt
+							(-= monsterHealth whatHurt)
 						)
-						(585
-							(= monsterHealth (- monsterHealth param2))
+						(vCroc
+							(-= monsterHealth whatHurt)
 						)
-						(560
-							(= monsterHealth (- monsterHealth param2))
+						(vDinosaur
+							(-= monsterHealth whatHurt)
 						)
 					)
 					(if (< monsterHealth 1)
@@ -1744,8 +1847,7 @@
 )
 
 (instance genericProp of Prop
-	(properties)
-	
+
 	(method (init)
 		(cond 
 			((== monsterNum 5)
@@ -1764,7 +1866,7 @@
 				(= x 106)
 				(= y 114)
 				(= noun 6)
-				(= local20 (Random 1 local21))
+				(= randSign (Random 1 endSigns))
 			)
 			(else
 				(= x 188)
@@ -1776,13 +1878,21 @@
 				(= signal 20496)
 				(= approachX 170)
 				(= approachY 160)
-				(self approachVerbs: 4)
-				(if (& global418 $0010) (= noun 19) else (= noun 8))
+				(self approachVerbs: V_DO)
+				(if (& global418 $0010)
+					(= noun N_FEATHER)
+				else
+					(= noun N_HONEY)
+				)
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 2
-							init: 173 149 203 149 203 164 173 164
+							type: PBarredAccess
+							init:
+								173 149
+								203 149
+								203 164
+								173 164
 							yourself:
 						)
 				)
@@ -1793,23 +1903,25 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(cond 
-					((== noun 5)
+					((== noun N_TRAP)
 						(if (or (== loop 0) (== loop 1) (== loop 3))
 							(if (== cel 0)
 								(= local6 1)
-								(self setCycle: End self)
+								(self setCycle: EndLoop self)
 								(globalSound setLoop: 1 number: 401 play:)
 								(ego addHonor: 10)
 							else
-								(messager say: 5 6 31)
+								(messager say: N_TRAP V_DOIT C_TRAP_DISARMED)
 							)
 						else
 							(super doVerb: theVerb &rest)
 						)
 					)
-					((== noun 6) (messager say: 6 4 30))
+					((== noun N_SIGN)
+						(messager say: N_SIGN V_DO C_DONT_TAKE_SIGN)
+					)
 					(
 						(and
 							(not (& global418 $0008))
@@ -1817,24 +1929,30 @@
 						)
 						(self setScript: getFeather)
 					)
-					(else (super doVerb: theVerb &rest))
+					(else
+						(super doVerb: theVerb &rest)
+					)
 				)
 			)
-			(1
+			(V_LOOK
 				(cond 
-					((== noun 5)
+					((== noun N_TRAP)
 						(if (or (== loop 0) (== loop 1) (== loop 3))
 							(if (== cel 0)
-								(messager say: 5 6 32)
+								(messager say: N_TRAP V_DOIT C_TRAP_ARMED)
 							else
-								(messager say: 5 1 31)
+								(messager say: N_TRAP V_LOOK C_TRAP_DISARMED)
 							)
 						else
 							(super doVerb: theVerb &rest)
 						)
 					)
-					((== noun 6) (messager say: 6 1 29 local20))
-					(else (super doVerb: theVerb &rest))
+					((== noun N_SIGN)
+						(messager say: N_SIGN V_LOOK C_READ_SIGN randSign)
+					)
+					(else
+						(super doVerb: theVerb &rest)
+					)
 				)
 			)
 			(else 
@@ -1845,11 +1963,11 @@
 	
 	(method (cue)
 		(if (== monsterNum 5)
-			(if (or (not local6) local7)
-				(self doVerb: 4)
+			(if (or (not local6) trapSprung)
+				(self doVerb: V_DO)
 			else
-				(= local7 1)
-				(messager say: 5 6 33)
+				(= trapSprung TRUE)
+				(messager say: N_TRAP V_DOIT C_SPRING_TRAP)
 			)
 		else
 			(super cue:)
@@ -1861,9 +1979,9 @@
 	(properties
 		x -10
 		y 160
-		noun 7
+		noun N_EGGO
 		view 417
-		signal $5000
+		signal (| ignrAct skipCheck)
 	)
 	
 	(method (init)
@@ -1871,7 +1989,7 @@
 		(super init:)
 		(self
 			setCycle: Walk
-			setLoop: Grooper
+			setLoop: GradualLooper
 			cycleSpeed: (ego cycleSpeed?)
 			moveSpeed: (ego moveSpeed?)
 			setScale: 140
@@ -1886,9 +2004,13 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(= local23 0)
-			(if (Btst 3) (Bclr 3) else (Bclr 2))
+		(if (== theVerb V_DO)
+			(= monsterHere 0)
+			(if (Btst fStarving)
+				(Bclr fStarving)
+			else
+				(Bclr fHungry)
+			)
 			(self dispose:)
 		)
 		(super doVerb: theVerb &rest)
@@ -1899,10 +2021,10 @@
 	(properties
 		x 146
 		y 160
-		noun 10
+		noun N_FIREWOOD
 		view 400
 		loop 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)
@@ -1910,8 +2032,12 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 129 155 163 155 163 171 129 171
+					type: PBarredAccess
+					init:
+						129 155
+						163 155
+						163 171
+						129 171
 					yourself:
 				)
 		)
@@ -1919,35 +2045,35 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(81
-				(if (not local13)
-					(= noun 20)
+			(V_FLAME
+				(if (not fireLit)
+					(= noun N_FIRE)
 					(curRoom setScript: castFire)
 				else
 					(super doVerb: theVerb &rest)
 				)
 			)
-			(19
-				(if (not local13)
-					(= noun 20)
+			(V_TINDERBOX
+				(if (not fireLit)
+					(= noun N_FIRE)
 					(curRoom setScript: kindleFire)
 				else
 					(super doVerb: theVerb &rest)
 				)
 			)
-			(4
-				(if local13
-					(= noun 10)
+			(V_DO
+				(if fireLit
+					(= noun N_FIREWOOD)
 					(curRoom setScript: kindleFire)
 				else
 					(super doVerb: theVerb &rest)
 				)
 			)
-			(48
-				(if local13
-					(= noun 10)
-					(ego drop: 37 1)
-					(ego get: 15 1)
+			(V_PEACEWATER
+				(if fireLit
+					(= noun N_FIREWOOD)
+					(ego drop: iPeaceWater 1)
+					(ego get: iWaterskin 1)
 					(curRoom setScript: kindleFire)
 				else
 					(super doVerb: theVerb &rest)
@@ -1961,32 +2087,39 @@
 )
 
 (instance encounterScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0)
+
+	(method (changeState newState &tmp i)
 		(switch (= state newState)
-			(0 (= ticks 20))
+			(0
+				(= ticks 20)
+			)
 			(1
 				(ego normalize:)
 				(switch monsterNum
-					(565
+					(vAnt
 						(= local45 35)
 						(= global462 600)
-						(if (not monsterHealth) (= monsterHealth 150))
+						(if (not monsterHealth)
+							(= monsterHealth 150)
+						)
 					)
-					(585
+					(vCroc
 						(= local45 30)
 						(= global462 700)
-						(if (not monsterHealth) (= monsterHealth 200))
+						(if (not monsterHealth)
+							(= monsterHealth 200)
+						)
 					)
-					(560
+					(vDinosaur
 						(= local45 40)
-						(if (not monsterHealth) (= monsterHealth 320))
+						(if (not monsterHealth)
+							(= monsterHealth 320)
+						)
 						(= global462 1000)
 					)
 					(0
 						(= global462 1000)
-						(= local23 0)
+						(= monsterHere 0)
 						(= monsterHealth 1000)
 						(client setScript: charge)
 						(self dispose:)
@@ -1996,20 +2129,20 @@
 						(self dispose:)
 					)
 					(4
-						(= local23 0)
+						(= monsterHere FALSE)
 						(genericProp init:)
 						(HandsOn)
 						(self dispose:)
 					)
 					(5
-						(genericProp approachVerbs: 4 init:)
-						(= local23 0)
+						(genericProp approachVerbs: V_DO init:)
+						(= monsterHere FALSE)
 						(HandsOn)
 						(self dispose:)
 					)
 					(11
-						(eggo init: approachVerbs: 4)
-						(= local23 1)
+						(eggo init: approachVerbs: V_DO)
+						(= monsterHere TRUE)
 						(HandsOn)
 						(self dispose:)
 					)
@@ -2018,9 +2151,11 @@
 				(self cue:)
 			)
 			(2
-				(= local15 0)
+				(= monsterDead FALSE)
 				(cond 
-					((== monsterNum 2) (it init:))
+					((== monsterNum 2)
+						(it init:)
+					)
 					(local47
 						(it x: 270 y: 140 init:)
 						(ego setMotion: PolyPath -10 (ego y?))
@@ -2029,15 +2164,15 @@
 						(if
 							(and
 								(!= monsterNum 11)
-								(Btst 150)
-								(not local1)
+								(Btst fSenseDanger)
+								(not sensedDanger)
 								(not local47)
 							)
-							(= local1 1)
-							(messager say: 9 6 51)
+							(= sensedDanger TRUE)
+							(messager say: N_CUE V_DOIT C_SENSE_DANGER)
 						)
-						(= temp0 (Random 0 3))
-						(it x: [local32 temp0] y: [local36 temp0] init:)
+						(= i (Random 0 3))
+						(it x: [local32 i] y: [local36 i] init:)
 					)
 				)
 				(if local47
@@ -2048,9 +2183,8 @@
 				else
 					(= local8 50)
 				)
-				(= local23 1)
-				(if
-				(and (!= (cSound number?) 700) (!= monsterNum 2))
+				(= monsterHere TRUE)
+				(if (and (!= (cSound number?) 700) (!= monsterNum 2))
 					(cSound setLoop: -1 number: 700 play:)
 				)
 				(self dispose:)
@@ -2060,11 +2194,13 @@
 )
 
 (instance showNewRoom of Script
-	(properties)
 	
 	(method (changeState newState &tmp egoX egoY temp2)
 		(switch (= state newState)
-			(0 (HandsOff) (self cue:))
+			(0
+				(HandsOff)
+				(self cue:)
+			)
 			(1
 				(switch register
 					(4
@@ -2124,8 +2260,8 @@
 							((== monsterNum 2)
 								(if (== theGGOwnerX_3 52)
 									(= local19 214)
-									(Bset 99)
-									(Bclr 83)
+									(Bset fFoundHoneyBird)
+									(Bclr fHoneyBirdHinted)
 								)
 							)
 							(else (it x: (+ -5 (- (it x?) (ego x?)))))
@@ -2156,42 +2292,44 @@
 				else
 					(it init:)
 					(if (and (== monsterNum 2) (== theGGOwnerX_3 52))
-						(= local23 0)
+						(= monsterHere FALSE)
 						(globalSound number: 405 setLoop: -1 play:)
 						(beeHandler init:)
-						((= newActor (Actor new:))
+						((= bees1 (Actor new:))
 							view: 402
 							x: 202
 							y: 13
 							priority: 1
-							signal: 16400
+							signal: (| ignrAct fixPriOn)
 							setLoop: 2
 							noun: 54
-							setCycle: Fwd
+							setCycle: Forward
 							init:
 						)
-						((= newActor_2 (Actor new:))
+						((= bees2 (Actor new:))
 							view: 402
 							x: 213
 							y: 29
 							priority: 11
-							signal: 16400
+							signal: (| ignrAct fixPriOn)
 							setLoop: 2
 							noun: 54
-							setCycle: Fwd
+							setCycle: Forward
 							init:
 						)
 					)
 				)
 				(= cycles 15)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance charge of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
@@ -2205,23 +2343,29 @@
 					x: 150
 					y: 59
 				)
-				(theIconBar curIcon: (theIconBar at: 1))
+				(theIconBar curIcon: (theIconBar at: ICON_WALK))
 				(if (not (HaveMouse))
-					(theGame setCursor: theCursor 1 310 155)
+					(theGame setCursor: theCursor TRUE 310 155)
 				else
-					(theGame setCursor: theCursor 1)
+					(theGame setCursor: theCursor TRUE)
 				)
 				(Face ego it self)
 			)
-			(1 (= cycles 2))
+			(1
+				(= cycles 2)
+			)
 			(2
-				(messager say: 9 6 24 0 self)
+				(messager say: N_CUE V_DOIT C_RHINO 0 self)
 			)
-			(3 (it setCycle: End self))
+			(3
+				(it setCycle: EndLoop self)
+			)
 			(4
-				(messager say: 9 6 49 0 self)
+				(messager say: N_CUE V_DOIT C_RHINO_SEES 0 self)
 			)
-			(5 (= seconds 2))
+			(5
+				(= seconds 2)
+			)
 			(6
 				(it
 					setLoop: 0
@@ -2235,10 +2379,10 @@
 				)
 			)
 			(7
-				(messager say: 9 6 50 0 self)
+				(messager say: N_CUE V_DOIT C_RHINO_PASSES 0 self)
 			)
 			(8
-				(= local23 0)
+				(= monsterHere FALSE)
 				(it dispose:)
 				(self dispose:)
 			)
@@ -2247,7 +2391,6 @@
 )
 
 (instance laurelAndHardy of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
@@ -2262,8 +2405,7 @@
 )
 
 (instance killerBees of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -2273,16 +2415,16 @@
 			)
 			(1
 				(globalSound number: 406 setLoop: -1 play:)
-				(messager say: 54 6 55 0 self)
+				(messager say: N_BEES V_DOIT C_KILLER_BEES 0 self)
 			)
 			(2
-				(newActor
+				(bees1
 					cycleSpeed: 0
 					moveSpeed: 0
 					priority: 14
 					setMotion: MoveTo (- (ego x?) 10) (- (ego y?) 25) self
 				)
-				(newActor_2
+				(bees2
 					cycleSpeed: 0
 					moveSpeed: 0
 					priority: 14
@@ -2290,12 +2432,12 @@
 				)
 			)
 			(3
-				(ego view: 11 loop: 1 cycleSpeed: 0 setCycle: Fwd)
+				(ego view: 11 loop: 1 cycleSpeed: 0 setCycle: Forward)
 				(= seconds 4)
 			)
 			(4
 				(globalSound stop:)
-				(EgoDead 54)
+				(EgoDead C_DEATH_BEES)
 			)
 		)
 	)
@@ -2305,7 +2447,7 @@
 	(properties
 		x 210
 		y 60
-		noun 54
+		noun N_BEES
 		nsTop 10
 		nsLeft 193
 		nsBottom 52
@@ -2329,10 +2471,8 @@
 	)
 	
 	(method (getHurt)
-		(newActor setScript: killerBees)
+		(bees1 setScript: killerBees)
 	)
 )
 
-(instance sFx of Sound
-	(properties)
-)
+(instance sFx of Sound)

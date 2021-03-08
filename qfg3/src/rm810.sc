@@ -123,13 +123,13 @@
 			(doorWay init: approachVerbs: 4 1)
 		)
 		(if
-		(and (not (== global155 0)) (== prevRoomNum 550))
+		(and (not (== battleResult 0)) (== prevRoomNum 550))
 			(ego x: 60 y: 169 code: quikChek)
 			(localproc_0d92)
 		else
 			(self setScript: egoEnters)
 		)
-		(if (and (== prevRoomNum 550) (== global155 0))
+		(if (and (== prevRoomNum 550) (== battleResult 0))
 			(self setScript: egoIsDead)
 		)
 	)

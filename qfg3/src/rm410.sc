@@ -176,11 +176,11 @@
 				(= local170 1)
 			)
 			(if
-			(and global406 (not (Btst 72)) (not theIsNightTime))
+			(and wonBridgeWrestling (not (Btst 72)) (not theIsNightTime))
 				(Bset 72)
 				(= local171 1)
 			)
-			(if (and global406 (not (Btst 73)) theIsNightTime)
+			(if (and wonBridgeWrestling (not (Btst 73)) theIsNightTime)
 				(Bset 73)
 				(= local172 1)
 			)

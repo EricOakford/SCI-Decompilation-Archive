@@ -121,9 +121,9 @@
 				)
 				(curRoom setScript: egoEnters)
 			)
-			((and (== prevRoomNum 550) (== global155 0)) (fric init: stopUpd:) (curRoom setScript: knockEmDead))
+			((and (== prevRoomNum 550) (== battleResult 0)) (fric init: stopUpd:) (curRoom setScript: knockEmDead))
 			(
-			(and (== prevRoomNum 550) (not (== global155 0)))
+			(and (== prevRoomNum 550) (not (== battleResult 0)))
 				(fric x: 156 y: 67 view: 824 signal: 1 init:)
 				(ego x: 212 y: 61 init: solvePuzzle: 335 7 9)
 				(curRoom setScript: afterFight)
@@ -198,7 +198,7 @@
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
-				(if (== global155 0) (EgoDead) else (self cue:))
+				(if (== battleResult 0) (EgoDead) else (self cue:))
 			)
 			(2
 				(globalSound number: 931 setLoop: 1 play: 127)

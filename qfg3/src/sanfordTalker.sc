@@ -101,7 +101,7 @@
 
 (instance sanfordVendor of Vendor
 	(properties
-		noun N_SANFORD_VENDOR
+		noun N_JUNK
 	)
 	
 	(method (dispose)
@@ -115,13 +115,13 @@
 			(0
 				(Buy what howMany theVendor)
 				(ego solvePuzzle: fBoughtTinderbox 3 get: iTinderbox howMany)
-				(messager say: N_SANFORD_VENDOR V_DOIT C_DONE_DEAL 0 self)
+				(messager say: N_JUNK V_DOIT C_DONE_DEAL 0 self)
 			)
 			(1
 				(Buy what howMany theVendor)
 				(ego solvePuzzle: fBoughtBlackBird 5 puzzleTHIEF get: iBird howMany)
 				(Bset fGotBlackBird)
-				(messager say: N_SON_VENDOR V_DOIT C_DONE_DEAL 0 self)
+				(messager say: N_SON V_DOIT C_DONE_DEAL 0 self)
 			)
 		)
 	)
@@ -130,44 +130,44 @@
 		(if withSon
 			(switch result
 				(bargainSUCCESS
-					(messager say: N_SON_VENDOR V_DOIT C_BARGAIN_SUCCESS 0 self)
+					(messager say: N_SON V_DOIT C_BARGAIN_SUCCESS 0 self)
 				)
 				(bargainTRY1
-					(messager say: N_SON_VENDOR V_DOIT C_BARGAIN_TRY_1 0 self)
+					(messager say: N_SON V_DOIT C_BARGAIN_TRY_1 0 self)
 				)
 				(bargainTRY2
-					(messager say: N_SON_VENDOR V_DOIT C_BARGAIN_TRY_2 0 self)
+					(messager say: N_SON V_DOIT C_BARGAIN_TRY_2 0 self)
 				)
 				(bargainTRY3
-					(messager say: N_SON_VENDOR V_DOIT C_BARGAIN_TRY_3 0 self)
+					(messager say: N_SON V_DOIT C_BARGAIN_TRY_3 0 self)
 				)
 				(bargainFAIL
-					(messager say: N_SON_VENDOR V_DOIT C_BARGAIN_FAIL 0 self)
+					(messager say: N_SON V_DOIT C_BARGAIN_FAIL 0 self)
 				)
 				(bargainNODEAL
-					(messager say: N_SON_VENDOR V_DOIT C_BARGAIN_NO_DEAL 0 self)
+					(messager say: N_SON V_DOIT C_BARGAIN_NO_DEAL 0 self)
 				)
 				(else  (self cue:))
 			)
 		else
 			(switch result
 				(bargainSUCCESS
-					(messager say: N_SANFORD_VENDOR V_DOIT C_BARGAIN_SUCCESS 0 self)
+					(messager say: N_JUNK V_DOIT C_BARGAIN_SUCCESS 0 self)
 				)
 				(bargainTRY1
-					(messager say: N_SANFORD_VENDOR V_DOIT C_BARGAIN_TRY_1 0 self)
+					(messager say: N_JUNK V_DOIT C_BARGAIN_TRY_1 0 self)
 				)
 				(bargainTRY2
-					(messager say: N_SANFORD_VENDOR V_DOIT C_BARGAIN_TRY_2 0 self)
+					(messager say: N_JUNK V_DOIT C_BARGAIN_TRY_2 0 self)
 				)
 				(bargainTRY3
-					(messager say: N_SANFORD_VENDOR V_DOIT C_BARGAIN_TRY_3 0 self)
+					(messager say: N_JUNK V_DOIT C_BARGAIN_TRY_3 0 self)
 				)
 				(bargainFAIL
-					(messager say: N_SANFORD_VENDOR V_DOIT C_BARGAIN_FAIL 0 self)
+					(messager say: N_JUNK V_DOIT C_BARGAIN_FAIL 0 self)
 				)
 				(bargainNODEAL
-					(messager say: N_SANFORD_VENDOR V_DOIT C_BARGAIN_NO_DEAL 0 self)
+					(messager say: N_JUNK V_DOIT C_BARGAIN_NO_DEAL 0 self)
 				)
 				(else
 					(self cue:)

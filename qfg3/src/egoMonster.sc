@@ -277,7 +277,7 @@
 			(0 (= ticks 40))
 			(1
 				(= monsterHealth 0)
-				(= global155 -1)
+				(= battleResult -1)
 				((ScriptID 550 3) cue:)
 			)
 		)

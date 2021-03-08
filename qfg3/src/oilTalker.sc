@@ -60,7 +60,7 @@
 
 (instance oilVendor of Vendor
 	(properties
-		noun N_OIL_VENDOR
+		noun N_OIL
 	)
 	
 	(method (dispose)
@@ -74,7 +74,7 @@
 			(0
 				(Buy what howMany theVendor)
 				(ego solvePuzzle: fBoughtOil 5 puzzleTHIEF get: iOil howMany)
-				(messager say: N_OIL_VENDOR V_DOIT C_DONE_DEAL 0 self)
+				(messager say: N_OIL V_DOIT C_DONE_DEAL 0 self)
 			)
 		)
 	)
@@ -82,22 +82,22 @@
 	(method (doBargain result)
 		(switch result
 			(bargainSUCCESS
-				(messager say: N_OIL_VENDOR V_DOIT C_BARGAIN_SUCCESS 0 self)
+				(messager say: N_OIL V_DOIT C_BARGAIN_SUCCESS 0 self)
 			)
 			(bargainTRY1
-				(messager say: N_OIL_VENDOR V_DOIT C_BARGAIN_TRY_1 0 self)
+				(messager say: N_OIL V_DOIT C_BARGAIN_TRY_1 0 self)
 			)
 			(bargainTRY2
-				(messager say: N_OIL_VENDOR V_DOIT C_BARGAIN_TRY_2 0 self)
+				(messager say: N_OIL V_DOIT C_BARGAIN_TRY_2 0 self)
 			)
 			(bargainTRY3
-				(messager say: N_OIL_VENDOR V_DOIT C_BARGAIN_TRY_3 0 self)
+				(messager say: N_OIL V_DOIT C_BARGAIN_TRY_3 0 self)
 			)
 			(bargainFAIL
-				(messager say: N_OIL_VENDOR V_DOIT C_BARGAIN_FAIL 0 self)
+				(messager say: N_OIL V_DOIT C_BARGAIN_FAIL 0 self)
 			)
 			(bargainNODEAL
-				(messager say: N_OIL_VENDOR V_DOIT C_BARGAIN_NO_DEAL 0 self)
+				(messager say: N_OIL V_DOIT C_BARGAIN_NO_DEAL 0 self)
 			)
 			(else
 				(self cue:)

@@ -310,7 +310,7 @@
 			(judge init:)
 			(super init: &rest)
 			(Bset 79)
-			(switch global155
+			(switch battleResult
 				(0
 					(ego view: 43 cel: 0 loop: 1)
 					(sHaman view: 656 loop: 0 x: 102 cel: 9 init:)

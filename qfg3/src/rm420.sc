@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 420)
-(include sci.sh)
+(include game.sh) (include "420.shm")
 (use Main)
 (use TellerIcon)
 (use Inset)
@@ -23,29 +23,29 @@
 )
 
 (local
-	[local0 3] = [0 -1 999]
+	local0 = [0 -1 999]
 	[local3 5]
-	local8
+	askedUhura
 )
-(procedure (localproc_1e03)
+(procedure (InitCrowd)
 	(crowd
 		x: 92
 		y: 189
 		loop: 3
-		ignoreActors: 1
+		ignoreActors: TRUE
 		init:
 		addToPic:
 	)
-	((ScriptID 42 1)
+	((ScriptID LAIBON_TALKER 1)
 		view: 454
 		loop: 1
 		x: 160
 		y: 117
 		setScale: 350
-		ignoreActors: 1
+		ignoreActors: TRUE
 		init:
 	)
-	((ScriptID 34 1)
+	((ScriptID UHURA_TALKER 1)
 		view: 971
 		loop: 4
 		cel: 6
@@ -66,9 +66,9 @@
 	)
 )
 
-(instance rm420 of Rm
+(instance rm420 of Room
 	(properties
-		noun 3
+		noun N_ROOM
 		picture 420
 		vanishingY -60
 	)
@@ -80,78 +80,81 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 140 161 100 160 78 150 80 137 98 133 121 131 143 133 155 141 155 153
-					yourself:
-				)
-				((Polygon new:)
-					type: 2
-					init: 319 120 269 103 272 89 262 88 262 103 238 103 243 83 267 74 319 74
-					yourself:
-				)
-				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						145
-						68
-						146
-						84
-						97
-						84
-						94
-						76
-						98
-						64
-						211
-						65
-						219
-						70
-						226
-						82
-						200
-						83
-						167
-						83
-						167
-						68
+						140 161
+						100 160
+						78 150
+						80 137
+						98 133
+						121 131
+						143 133
+						155 141
+						155 153
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 35 102 0 96 0 82 68 76 99 91 93 104 73 104 79 84 72 82 71 98
-					yourself:
-				)
-				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						223
-						64
-						212
-						63
-						200
-						58
-						100
-						58
-						49
-						60
-						0
-						63
-						0
-						0
-						319
-						0
-						319
-						60
-						271
-						58
-						267
-						64
-						254
-						65
-						239
-						64
-						230
-						71
+						319 120
+						269 103
+						272 89
+						262 88
+						262 103
+						238 103
+						243 83
+						267 74
+						319 74
+					yourself:
+				)
+				((Polygon new:)
+					type: PBarredAccess
+					init:
+						145 68
+						146 84
+						97 84
+						94 76
+						98 64
+						211 65
+						219 70
+						226 82
+						200 83
+						167 83
+						167 68
+					yourself:
+				)
+				((Polygon new:)
+					type: PBarredAccess
+					init:
+						35 102
+						0 96
+						0 82
+						68 76
+						99 91
+						93 104
+						73 104
+						79 84
+						72 82
+						71 98
+					yourself:
+				)
+				((Polygon new:)
+					type: PBarredAccess
+					init:
+						223 64
+						212 63
+						200 58
+						100 58
+						49 60
+						0 63
+						0 0
+						319 0
+						319 60
+						271 58
+						267 64
+						254 65
+						239 64
+						230 71
 					yourself:
 				)
 		)
@@ -163,7 +166,7 @@
 			loop: 8
 			cel: 2
 			stopUpd:
-			approachVerbs: 2
+			approachVerbs: V_TALK
 			init:
 		)
 		(egoActions init: ego @local0 @local3)
@@ -171,14 +174,16 @@
 			actions: egoActions
 			normalize:
 			setScale: 350
-			noun: 1
+			noun: N_EGO_TELL
 			init:
 		)
 		(chiefHut
-			approachVerbs: (if (== origHeroType 2) 1 else 0)
+			approachVerbs: (if (== origHeroType THIEF) V_LOOK else 0)
 			init:
 		)
-		(if Night (fire setCycle: Fwd init:))
+		(if Night
+			(fire setCycle: Forward init:)
+		)
 		(campfire init:)
 		(tree init:)
 		(fence init:)
@@ -186,81 +191,93 @@
 		(uhuraHutLook init:)
 		(guestHut init:)
 		(guestHutLook init:)
-		(leaderDoor approachVerbs: 1 init:)
+		(leaderDoor approachVerbs: V_LOOK init:)
 		(cond 
 			(
 				(and
-					(>= Day (+ gCurrentDay_5 3))
-					(not (Btst 29))
-					(!= global366 3)
-					(not (Btst 74))
+					(>= Day (+ enterSimbaniDay 3))
+					(not (Btst fLeopardmanCaptured))
+					(!= simbaniState 3)
+					(not (Btst fStoleDrum))
 				)
-				(= global366 2)
+				(= simbaniState 2)
 			)
-			(
-			(and (Btst 29) (not (Btst 38)) (!= global366 5)) (= global366 4))
-			(
-				(and
-					(Btst 38)
-					(not (Btst 11))
-					(not (ego has: 22))
-					(== origHeroType 0)
-					(!= global366 7)
-				)
-				(= global366 6)
+			((and (Btst fLeopardmanCaptured) (not (Btst fDispelledLeopardman)) (!= simbaniState 5))
+				(= simbaniState 4)
 			)
 			(
 				(and
-					(== origHeroType 0)
-					(not (Btst 11))
-					(ego has: 22)
-					(!= global366 9)
+					(Btst fDispelledLeopardman)
+					(not (Btst fGaveHorn))
+					(not (ego has: iHorn))
+					(== origHeroType FIGHTER)
+					(!= simbaniState 7)
 				)
-				(= global366 8)
+				(= simbaniState 6)
 			)
 			(
 				(and
-					(Btst 38)
-					(not (Btst 65))
-					(== global392 0)
-					(!= global366 11)
+					(== origHeroType FIGHTER)
+					(not (Btst fGaveHorn))
+					(ego has: iHorn)
+					(!= simbaniState 9)
 				)
-				(= global366 10)
+				(= simbaniState 8)
 			)
 			(
 				(and
-					(== global392 1)
-					(ego has: 3)
-					(ego has: 40)
-					(ego has: 21)
-					(> ((inventory at: 21) amount?) 4)
-					(!= global366 13)
+					(Btst fDispelledLeopardman)
+					(not (Btst fJohariReleased))
+					(== brideState 0)
+					(!= simbaniState 11)
 				)
-				(= global366 12)
+				(= simbaniState 10)
+			)
+			(
+				(and
+					(== brideState 1)
+					(ego has: iFineSpear)
+					(ego has: iRobe)
+					(ego has: iSkins)
+					(> ((inventory at: iSkins) amount?) 4)
+					(!= simbaniState 13)
+				)
+				(= simbaniState 12)
 			)
 		)
-		(if (not (Btst 87)) (curRoom style: 9))
+		(if (not (Btst fFirstEnterSimbaniVillage))
+			(curRoom style: PIXELDISSOLVE)
+		)
 		(super init:)
-		(if (!= (cSound number?) 160) (cSound changeTo: 160))
+		(if (!= (cSound number?) 160)
+			(cSound changeTo: 160)
+		)
 		(cond 
-			((not (Btst 87)) (curRoom setScript: enterFirstTime))
-			((or (== prevRoomNum 620) (== prevRoomNum 630)) (curRoom setScript: returnSpear))
-			(
-			(and (== prevRoomNum 470) (Btst 16) (not (Btst 154))) (curRoom setScript: afterMatch))
-			((== prevRoomNum 500) (curRoom setScript: afterContest))
+			((not (Btst fFirstEnterSimbaniVillage))
+				(curRoom setScript: enterFirstTime)
+			)
+			((or (== prevRoomNum 620) (== prevRoomNum 630))
+				(curRoom setScript: returnSpear)
+			)
+			((and (== prevRoomNum 470) (Btst fAfterMatch) (not (Btst fInitiationComplete)))
+				(curRoom setScript: afterMatch)
+			)
+			((== prevRoomNum 500)
+				(curRoom setScript: afterContest)
+			)
 			(
 				(and
-					(or (== heroType 0) (== heroType 3))
-					(Btst 11)
-					(not (Btst 56))
+					(or (== heroType FIGHTER) (== heroType PALADIN))
+					(Btst fGaveHorn)
+					(not (Btst fAfterRace))
 				)
 				(curRoom setScript: startContest)
 			)
 			(
 				(and
 					(>= Day 5)
-					(or (== timeODay 5) (== timeODay 4))
-					(not (Btst 9))
+					(or (== timeODay TIME_NIGHT) (== timeODay TIME_SUNSET))
+					(not (Btst fListenedToStory))
 				)
 				(curRoom setScript: enterStoryTell)
 			)
@@ -268,48 +285,70 @@
 			(
 				(and
 					(== prevRoomNum 450)
-					(== origHeroType 2)
+					(== origHeroType THIEF)
 					(== Day dayStoleMagicDrum)
 					Night
 				)
 				(curRoom setScript: enterThief)
 			)
-			((== prevRoomNum 450) (curRoom setScript: enterFromLHut))
-			((== prevRoomNum 430) (curRoom setScript: enterFromEHut))
-			((== prevRoomNum 460) (curRoom setScript: enterFromSpRoom))
-			((== prevRoomNum 470) (curRoom setScript: enterFromWrRoom))
-			((== prevRoomNum 480) (curRoom setScript: enterFromPrisCage))
-			(else (curRoom setScript: enterRoom))
+			((== prevRoomNum 450)
+				(curRoom setScript: enterFromLHut)
+			)
+			((== prevRoomNum 430)
+				(curRoom setScript: enterFromEHut)
+			)
+			((== prevRoomNum 460)
+				(curRoom setScript: enterFromSpRoom)
+			)
+			((== prevRoomNum 470)
+				(curRoom setScript: enterFromWrRoom)
+			)
+			((== prevRoomNum 480)
+				(curRoom setScript: enterFromPrisCage)
+			)
+			(else
+				(curRoom setScript: enterRoom)
+			)
 		)
 	)
 	
 	(method (doit)
 		(cond 
 			(script 0)
-			((== (ego onControl: 1) 8)
-				(if (and Night (< timeODay 6))
+			((== (ego onControl: origin) cCYAN)
+				(if (and Night (< timeODay TIME_MIDNIGHT))
 					(curRoom setScript: enterUhHut)
 				else
 					(curRoom setScript: cantEnterUhHut)
 				)
 			)
-			((guestHut onMe: ego) (curRoom newRoom: 430))
-			((== (ego onControl: 1) 4)
+			((guestHut onMe: ego)
+				(curRoom newRoom: 430)
+			)
+			((== (ego onControl: origin) cGREEN)
 				(if
 					(and
 						(not Night)
-						(>= Day (+ gCurrentDay_5 3))
-						(not (& global366 $0001))
+						(>= Day (+ enterSimbaniDay 3))
+						(not (& simbaniState $0001))
 					)
 					(curRoom setScript: enterLeader)
 				else
 					(curRoom setScript: cantEnter)
 				)
 			)
-			((and (<= (ego x?) 90) (< (ego y?) 70)) (curRoom setScript: exitWest))
-			((< (ego x?) 10) (curRoom setScript: exitWest))
-			((>= (ego x?) 310) (curRoom setScript: exitEast))
-			((>= (ego y?) 180) (curRoom setScript: exitSouth))
+			((and (<= (ego x?) 90) (< (ego y?) 70))
+				(curRoom setScript: exitWest)
+			)
+			((< (ego x?) 10)
+				(curRoom setScript: exitWest)
+			)
+			((>= (ego x?) 310)
+				(curRoom setScript: exitEast)
+			)
+			((>= (ego y?) 180)
+				(curRoom setScript: exitSouth)
+			)
 			(
 				(and
 					(< 90 (ego x?))
@@ -318,25 +357,34 @@
 				)
 				(curRoom newRoom: 480)
 			)
-			((and (> (ego x?) 239) (< (ego y?) 80)) (curRoom newRoom: 470))
-			((and (< (ego x?) 78) (< (ego y?) 79)) (curRoom newRoom: 460))
+			((and (> (ego x?) 239) (< (ego y?) 80))
+				(curRoom newRoom: 470)
+			)
+			((and (< (ego x?) 78) (< (ego y?) 79))
+				(curRoom newRoom: 460)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 970 949 34 35 39 42 53 923)
+		(LoadMany FALSE
+			WANDER BLOCK UHURA_TALKER RAKEESH_TALKER YESUFU_TALKER
+			LAIBON_TALKER STORY_TALKER INSET
+		)
 		(super dispose:)
 	)
 	
-	(method (setInset param1 param2 param3)
-		(if inset (inset dispose:))
-		(if (and argc param1)
-			(param1
+	(method (setInset theInset who reg)
+		(if inset
+			(inset dispose:)
+		)
+		(if (and argc theInset)
+			(theInset
 				init:
-					(if (>= argc 2) param2 else 0)
+					(if (>= argc 2) who else 0)
 					self
-					(if (>= argc 3) param3 else 0)
+					(if (>= argc 3) reg else 0)
 					&rest
 			)
 		)
@@ -344,31 +392,33 @@
 )
 
 (instance egoActions of Teller
-	(properties)
 	
 	(method (doChild)
 		(if (== query -1)
 			(cond 
-				((ego inRect: 108 79 218 90) (ego addHonor: 3) (= query -2))
+				((ego inRect: 108 79 218 90)
+					(ego addHonor: 3)
+					(= query -2)
+				)
 				((ego inRect: 250 104 280 116)
-					(if
-					(and (> Day gCurrentDay_5) Night (< timeODay 6))
-						(= local8 1)
+					(if (and (> Day enterSimbaniDay) Night (< timeODay TIME_MIDNIGHT))
+						(= askedUhura TRUE)
 						(ego addHonor: 10)
 						(= query -6)
 					else
 						(= query -7)
 					)
 				)
-				(else (= query -3))
+				(else
+					(= query -3)
+				)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 )
 
 (instance enterThief of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -376,53 +426,56 @@
 				(HandsOff)
 				(ego x: 221 y: 75 setMotion: PolyPath 230 90 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance goTo620 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (== heroType 1)
-					(messager say: 18 6 42 0 self)
+				(if (== heroType MAGIC_USER)
+					(messager say: N_RETURN_DRUM V_DOIT C_RAKEESH_TELLS 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(1
 				(cast eachElementDo: #dispose eachElementDo: #delete)
-				(DrawPic 0 dpOPEN_HCENTER)
+				(DrawPic 0 HSHUTTER)
 				(= cycles 3)
 			)
 			(2
-				(messager say: 11 6 32 0 self)
+				(messager say: N_CUE V_DOIT C_GO_TO_620 0 self)
 			)
-			(3 (curRoom newRoom: 620))
+			(3
+				(curRoom newRoom: 620)
+			)
 		)
 	)
 )
 
 (instance goTo350 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cast eachElementDo: #dispose eachElementDo: #delete)
-				(DrawPic 0 dpOPEN_HCENTER)
+				(DrawPic 0 HSHUTTER)
 				(= cycles 3)
 			)
 			(1
-				(messager say: 11 6 31 0 self)
+				(messager say: N_CUE V_DOIT C_GO_TO_350 0 self)
 			)
 			(2
-				(= [egoStats 16] (ego maxHealth:))
-				(= [egoStats 17] (ego maxStamina:))
-				(= [egoStats 18] (ego maxMana:))
+				(= [egoStats HEALTH] (ego maxHealth:))
+				(= [egoStats STAMINA] (ego maxStamina:))
+				(= [egoStats MANA] (ego maxMana:))
 				(curRoom newRoom: 350)
 			)
 		)
@@ -430,22 +483,21 @@
 )
 
 (instance goTo280 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cast eachElementDo: #dispose eachElementDo: #delete)
-				(DrawPic 0 dpOPEN_HCENTER)
+				(DrawPic 0 HSHUTTER)
 				(= cycles 3)
 			)
 			(1
-				(messager say: 11 6 30 0 self)
+				(messager say: N_CUE V_DOIT C_GO_TO_280 0 self)
 			)
 			(2
-				(= [egoStats 16] (ego maxHealth:))
-				(= [egoStats 17] (ego maxStamina:))
-				(= [egoStats 18] (ego maxMana:))
+				(= [egoStats HEALTH] (ego maxHealth:))
+				(= [egoStats STAMINA] (ego maxStamina:))
+				(= [egoStats MANA] (ego maxMana:))
 				(curRoom newRoom: 280)
 			)
 		)
@@ -453,22 +505,21 @@
 )
 
 (instance goTo340 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cast eachElementDo: #dispose eachElementDo: #delete)
-				(DrawPic 0 dpOPEN_HCENTER)
+				(DrawPic 0 HSHUTTER)
 				(= cycles 3)
 			)
 			(1
-				(messager say: 11 6 29 0 self)
+				(messager say: N_CUE V_DOIT C_GO_TO_340 0 self)
 			)
 			(2
-				(= [egoStats 16] (ego maxHealth:))
-				(= [egoStats 17] (ego maxStamina:))
-				(= [egoStats 18] (ego maxMana:))
+				(= [egoStats HEALTH] (ego maxHealth:))
+				(= [egoStats STAMINA] (ego maxStamina:))
+				(= [egoStats MANA] (ego maxMana:))
 				(curRoom newRoom: 340)
 			)
 		)
@@ -476,7 +527,6 @@
 )
 
 (instance enterUhHut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -484,80 +534,88 @@
 				(HandsOff)
 				(ego setMotion: PolyPath 267 103 self)
 			)
-			(1 (curRoom newRoom: 440))
+			(1
+				(curRoom newRoom: 440)
+			)
 		)
 	)
 )
 
 (instance enterFromPrisCage of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego x: 215 y: 68 setMotion: PolyPath 225 75 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance cantEnterUhHut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: 11 6 41 0 self)
+				(messager say: N_CUE V_DOIT C_NO_ENTRY_UHURA 0 self)
 			)
 			(1
 				(ego
 					setMotion: PolyPath (- (ego x?) 5) (+ (ego y?) 5) self
 				)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance cantEnter of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: 0)
-				(messager say: 11 6 34 0 self)
+				(messager say: N_CUE V_DOIT C_NO_ENTRY_LAIBON 0 self)
 			)
 			(1
 				(ego setMotion: PolyPath (ego x?) (+ (ego y?) 10) self)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance enterLeader of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: 0)
-				(++ global366)
-				(messager say: 11 6 33 0 self)
+				(++ simbaniState)
+				(messager say: N_CUE V_DOIT C_ENTER_LEADER 0 self)
 			)
-			(1 (curRoom newRoom: 450))
+			(1
+				(curRoom newRoom: 450)
+			)
 		)
 	)
 )
 
 (instance exitWest of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -565,55 +623,60 @@
 				(HandsOff)
 				(ego setMotion: MoveTo (- (ego x?) 15) (ego y?) self)
 			)
-			(1 (curRoom newRoom: 460))
+			(1
+				(curRoom newRoom: 460)
+			)
 		)
 	)
 )
 
 (instance exitEast of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo (+ (ego x?) 15) (ego y?) self)
 			)
-			(1 (curRoom newRoom: 470))
+			(1
+				(curRoom newRoom: 470)
+			)
 		)
 	)
 )
 
 (instance exitSouth of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo (ego x?) (+ (ego y?) 15) self)
 			)
-			(1 (curRoom newRoom: 410))
+			(1
+				(curRoom newRoom: 410)
+			)
 		)
 	)
 )
 
 (instance enterRoom of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego x: 190 y: 210 setMotion: PolyPath 190 170 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance enterFromUHut of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -624,20 +687,22 @@
 					setMotion: MoveTo 270 115 self
 				)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance enterFromLHut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (Btst 125)
-					(Bclr 125)
+				(if (Btst fFlag125)
+					(Bclr fFlag125)
 					(self setScript: enterFromPrisCage self)
 				else
 					(ego
@@ -648,7 +713,10 @@
 					)
 				)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -661,13 +729,15 @@
 			(0
 				(ego x: 74 y: 99 normalize: setMotion: MoveTo 60 110 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance enterFromWrRoom of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -679,43 +749,47 @@
 					setMotion: PolyPath 240 84 self
 				)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance enterFromSpRoom of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego x: 65 y: 74 normalize: setMotion: MoveTo 85 82 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance enterFirstTime of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset 87)
-				(= gCurrentDay_5 Day)
-				((ScriptID 34 1)
+				(Bset fFirstEnterSimbaniVillage)
+				(= enterSimbaniDay Day)
+				((ScriptID UHURA_TALKER 1)
 					view: 969
 					loop: 0
 					cel: 0
 					x: 144
 					y: 133
 					setScale: 300
-					ignoreActors: 1
+					ignoreActors: TRUE
 					init:
 				)
-				(simba x: 158 y: 135 setScale: 300 ignoreActors: 1 init:)
+				(simba x: 158 y: 135 setScale: 300 ignoreActors: TRUE init:)
 				(= gGOwnerMoveSpeed (ego moveSpeed?))
 				(ego
 					normalize:
@@ -724,9 +798,9 @@
 					setScale: 300
 					setSpeed: 6
 					setMotion: MoveTo 173 145 self
-					ignoreActors: 1
+					ignoreActors: TRUE
 				)
-				((ScriptID 35 1)
+				((ScriptID RAKEESH_TALKER 1)
 					view: 967
 					setLoop: 3
 					x: 254
@@ -741,26 +815,29 @@
 			)
 			(1 0)
 			(2
-				((ScriptID 35 1) view: 962 setLoop: 1)
+				((ScriptID RAKEESH_TALKER 1) view: 962 setLoop: 1)
 				(= ticks 90)
 			)
-			(3 (messager say: 8 6 8 0 self))
+			(3
+				(messager say: N_RAKEESH V_DOIT C_FIRST_ENTRY 0 self)
+			)
 			(4
 				(ego setSpeed: gGOwnerMoveSpeed)
-				((ScriptID 34 1)
+				((ScriptID UHURA_TALKER 1)
 					view: 971
 					setCycle: Walk
 					setAvoider: PAvoider
 					setMotion: PolyPath 144 115 self
 				)
 			)
-			(5 (curRoom newRoom: 450))
+			(5
+				(curRoom newRoom: 450)
+			)
 		)
 	)
 )
 
 (instance enterStoryTell of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -769,13 +846,19 @@
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 2
-							init: 32 189 72 128 122 109 217 109 236 122 235 189
+							type: PBarredAccess
+							init:
+								32 189
+								72 128
+								122 109
+								217 109
+								236 122
+								235 189
 							yourself:
 						)
 				)
 				(crowd init: addToPic:)
-				((ScriptID 53 1)
+				((ScriptID STORY_TALKER 1)
 					x: 85
 					y: 136
 					setScale:
@@ -783,7 +866,7 @@
 					scaleY: 66
 					init:
 				)
-				((ScriptID 34 1)
+				((ScriptID UHURA_TALKER 1)
 					view: 971
 					loop: 4
 					cel: 1
@@ -808,7 +891,7 @@
 				)
 				(extra setScale: scaleX: 66 scaleY: 66 init: addToPic:)
 				(extra2 setScale: scaleX: 66 scaleY: 66 init: addToPic:)
-				(fire setCycle: Fwd init:)
+				(fire setCycle: Forward init:)
 				(switch prevRoomNum
 					(410 (ego x: 240 y: 210))
 					(430 (ego x: 74 y: 99))
@@ -826,49 +909,49 @@
 				)
 			)
 			(1
-				(Face ego (ScriptID 53 1))
+				(Face ego (ScriptID STORY_TALKER 1))
 				(= cycles 15)
 			)
 			(2
-				(Bset 9)
-				(messager say: 9 6 9 0 self)
+				(Bset fListenedToStory)
+				(messager say: N_STORYTELLER V_DOIT C_STORY1 0 self)
 			)
 			(3
-				((ScriptID 53 1) setCycle: End self)
+				((ScriptID STORY_TALKER 1) setCycle: EndLoop self)
 			)
 			(4
-				(messager say: 9 6 11 0 self)
+				(messager say: N_STORYTELLER V_DOIT C_STORY3 0 self)
 			)
 			(5
-				((ScriptID 53 1) cel: 0 loop: 1 setCycle: End self)
+				((ScriptID STORY_TALKER 1) cel: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(6
-				(messager say: 9 6 12 0 self)
+				(messager say: N_STORYTELLER V_DOIT C_STORY4 0 self)
 			)
 			(7
-				((ScriptID 53 1) cel: 0 loop: 0 setCycle: End self)
+				((ScriptID STORY_TALKER 1) cel: 0 loop: 0 setCycle: EndLoop self)
 			)
 			(8
-				((ScriptID 53 1) cel: 0 loop: 1 setCycle: End self)
+				((ScriptID STORY_TALKER 1) cel: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(9
-				(messager say: 9 6 13 0 self)
+				(messager say: N_STORYTELLER V_DOIT C_STORY5 0 self)
 			)
 			(10
-				((ScriptID 53 1) cel: 0 loop: 1 setCycle: End self)
+				((ScriptID STORY_TALKER 1) cel: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(11
-				(messager say: 9 6 14 0 self)
+				(messager say: N_STORYTELLER V_DOIT C_END_STORY 0 self)
 			)
 			(12
-				((ScriptID 53 1) cel: 0 loop: 2 setCycle: End self)
+				((ScriptID STORY_TALKER 1) cel: 0 loop: 2 setCycle: EndLoop self)
 			)
 			(13
-				(messager say: 9 6 15 0 self)
+				(messager say: N_STORYTELLER V_DOIT C_BEDTIME 0 self)
 			)
 			(14
-				(ego solvePuzzle: 262 2)
-				(Bset 118)
+				(ego solvePuzzle: fHearStory 2)
+				(Bset fAfterStory)
 				(curRoom newRoom: 430)
 			)
 		)
@@ -876,21 +959,20 @@
 )
 
 (instance startContest of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cSound changeTo: 420 hold:)
-				(localproc_1e03)
+				(InitCrowd)
 				(ego
-					changeGait: 1
-					ignoreActors: 1
+					changeGait: MOVE_RUN
+					ignoreActors: TRUE
 					setCycle: StopWalk 5
 					x: 187
 					y: 117
 				)
-				((ScriptID 39 1)
+				((ScriptID YESUFU_TALKER 1)
 					view: 983
 					heading: 180
 					loop: 2
@@ -907,11 +989,11 @@
 				(= cycles 10)
 			)
 			(2
-				(messager say: 10 6 16 0 self)
+				(messager say: N_LAIBON V_DOIT C_START_CONTEST 0 self)
 			)
 			(3
 				(ego setMotion: PolyPath 187 220 self)
-				((ScriptID 39 1)
+				((ScriptID YESUFU_TALKER 1)
 					origStep: 2053
 					setCycle: StopWalk -1
 					setMotion: PolyPath 208 220
@@ -923,27 +1005,26 @@
 )
 
 (instance afterContest of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cSound changeTo: 420 hold:)
-				(Bset 56)
-				(localproc_1e03)
+				(Bset fAfterRace)
+				(InitCrowd)
 				(= gGOwnerMoveSpeed (ego moveSpeed?))
 				(ego
 					view: 1
-					changeGait: 1
+					changeGait: MOVE_RUN
 					setCycle: StopWalk 5
 					setSpeed: 6
 					x: 190
 					y: 220
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setHeading: 0
 					setMotion: PolyPath 190 130 self
 				)
-				((ScriptID 39 1)
+				((ScriptID YESUFU_TALKER 1)
 					view: 983
 					x: 220
 					y: 220
@@ -954,127 +1035,137 @@
 					setMotion: PolyPath 220 130
 				)
 			)
-			(1 (= cycles 15))
+			(1
+				(= cycles 15)
+			)
 			(2
-				(messager say: 10 6 17 0 self)
+				(messager say: N_LAIBON V_DOIT C_AFTER_CONTEST 0 self)
 			)
 			(3
-				(if global406
+				(if wonBridgeWrestling
 					(ego
 						setMotion: PolyPath 177 117 self
-						solvePuzzle: 264 10 9
+						solvePuzzle: fWinInitiation 10 (| puzzleFIGHTER puzzlePALADIN)
 					)
 				else
-					(ego solvePuzzle: 263 5 9)
-					((ScriptID 39 1) setMotion: PolyPath 177 117 self)
+					(ego solvePuzzle: fLoseInitiation 5 (| puzzleFIGHTER puzzlePALADIN))
+					((ScriptID YESUFU_TALKER 1) setMotion: PolyPath 177 117 self)
 				)
 			)
 			(4
-				(if global406
+				(if wonBridgeWrestling
 					(ego setHeading: 270)
 				else
-					((ScriptID 39 1) setHeading: 270)
+					((ScriptID YESUFU_TALKER 1) setHeading: 270)
 				)
 				(= cycles 15)
 			)
 			(5
-				(messager say: 10 6 18 0 self)
+				(messager say: N_LAIBON V_DOIT C_STEP_UP 0 self)
 			)
 			(6
-				(if global406
-					(ego view: 13 loop: 0 cel: 0 setCycle: End self)
+				(if wonBridgeWrestling
+					(ego view: 13 loop: 0 cel: 0 setCycle: EndLoop self)
 				else
-					((ScriptID 39 1)
+					((ScriptID YESUFU_TALKER 1)
 						view: 427
 						loop: 0
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
 			(7
 				(ego setSpeed: gGOwnerMoveSpeed)
-				(messager say: 10 6 19 0 self)
+				(messager say: N_LAIBON V_DOIT C_READY_MATCH 0 self)
 			)
-			(8 (curRoom newRoom: 460))
+			(8
+				(curRoom newRoom: 460)
+			)
 		)
 	)
 )
 
 (instance afterMatch of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cSound changeTo: 420 hold:)
-				(Bset 154)
-				(localproc_1e03)
+				(Bset fInitiationComplete)
+				(InitCrowd)
 				(ego setHeading: 180 x: 152 y: 114)
-				((ScriptID 39 1)
+				((ScriptID YESUFU_TALKER 1)
 					setHeading: 180
 					setScale: 350
 					x: 194
 					y: 114
 					init:
 				)
-				((ScriptID 42 1)
-					setLoop: (if global406 3 else 2)
+				((ScriptID LAIBON_TALKER 1)
+					setLoop: (if wonBridgeWrestling 3 else 2)
 					x: 171
 					y: 118
 				)
 				(= cycles 1)
 			)
-			(1 (= cycles 15))
+			(1
+				(= cycles 15)
+			)
 			(2
-				(messager say: 10 6 20 0 self)
+				(messager say: N_LAIBON V_DOIT C_AFTER_MATCH 0 self)
 			)
 			(3
-				(messager say: 10 6 22 0 self)
+				(messager say: N_LAIBON V_DOIT C_CLOSING_SPEECH 0 self)
 			)
 			(4
-				(if global406
-					(messager say: 10 6 23 0 self)
+				(if wonBridgeWrestling
+					(messager say: N_LAIBON V_DOIT C_EGO_WINS 0 self)
 				else
-					(messager say: 10 6 24 0 self)
+					(messager say: N_LAIBON V_DOIT C_YESUFU_WINS 0 self)
 				)
 			)
 			(5
-				((ScriptID 42 1) cycleSpeed: 6 setCycle: End self)
+				((ScriptID LAIBON_TALKER 1) cycleSpeed: 6 setCycle: EndLoop self)
 			)
 			(6
-				(if global406
-					(ego view: 13 setCycle: End self)
+				(if wonBridgeWrestling
+					(ego view: 13 setCycle: EndLoop self)
 				else
-					((ScriptID 39 1) view: 427 setCycle: End self)
+					((ScriptID YESUFU_TALKER 1) view: 427 setCycle: EndLoop self)
 				)
 			)
-			(7 (curRoom newRoom: 450))
+			(7
+				(curRoom newRoom: 450)
+			)
 		)
 	)
 )
 
 (instance returnSpear of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cSound changeTo: 420 hold:)
 				(curRoom vanishingY: -80)
-				(ego solvePuzzle: 265 20 addHonor: 50 drop: 45)
+				(ego
+					solvePuzzle: fReturnSpear 20
+					addHonor: 50
+					drop: iMagicSpear
+				)
 				(crowd loop: 2 x: 146 y: 189 init: addToPic:)
-				((ScriptID 42 1)
+				((ScriptID LAIBON_TALKER 1)
 					view: 454
 					loop: 1
 					cel: 0
 					setScale: 300
 					x: 22
 					y: 142
-					ignoreActors: 1
+					ignoreActors: TRUE
 					init:
 				)
-				((ScriptID 34 1)
+				((ScriptID UHURA_TALKER 1)
 					view: 970
 					loop: 4
 					cel: 1
@@ -1083,7 +1174,7 @@
 					setScale: 300
 					init:
 				)
-				((ScriptID 35 1)
+				((ScriptID RAKEESH_TALKER 1)
 					view: 432
 					loop: 2
 					cel: 0
@@ -1094,7 +1185,7 @@
 					addToPic:
 				)
 				(simba x: 141 y: 120 setScale: 300 init: addToPic:)
-				((ScriptID 53 1)
+				((ScriptID STORY_TALKER 1)
 					loop: 3
 					cel: 0
 					setScale: 300
@@ -1104,36 +1195,38 @@
 					addToPic:
 				)
 				(ego
-					changeGait: 0
+					changeGait: MOVE_WALK
 					setCycle: StopWalk 5
 					setHeading: 0
 					setScale: 300
 					x: 46
 					y: 168
 				)
-				((ScriptID 39 1)
+				((ScriptID YESUFU_TALKER 1)
 					view: 989
 					loop: 0
 					cel: 0
 					x: 9
 					y: 165
 					setScale: 300
-					ignoreActors: 1
+					ignoreActors: TRUE
 					init:
 				)
 				(extra setScale: scaleX: 69 scaleY: 69 init: addToPic:)
 				(extra2 setScale: scaleX: 69 scaleY: 69 init: addToPic:)
 				(= cycles 1)
 			)
-			(1 (= ticks 180))
+			(1
+				(= ticks 180)
+			)
 			(2
-				(messager say: 10 6 26 0 self)
+				(messager say: N_LAIBON V_DOIT C_PEACE 0 self)
 			)
 			(3
 				(ego setMotion: PolyPath 52 139 self)
 			)
 			(4
-				(ego view: 32 loop: 1 cel: 0 setCycle: End self)
+				(ego view: 32 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(ego
@@ -1142,48 +1235,60 @@
 					setMotion: MoveTo 30 142 self
 				)
 			)
-			(6 (= ticks 30))
+			(6
+				(= ticks 30)
+			)
 			(7
 				(ego
 					setLoop: 1
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: MoveTo 52 142 self
 				)
 			)
 			(8
 				(ego view: 5 setCycle: 0 setLoop: 1)
-				((ScriptID 42 1) loop: 5 setCycle: End self)
+				((ScriptID LAIBON_TALKER 1) loop: 5 setCycle: EndLoop self)
 			)
-			(9 (= ticks 30))
+			(9
+				(= ticks 30)
+			)
 			(10
-				(messager say: 10 6 27 0 self)
+				(messager say: N_LAIBON V_DOIT C_SPEAR_RETURNED 0 self)
 			)
 			(11
 				(if
 					(or
-						(== heroType 1)
-						(and (not (Btst 74)) (== heroType 2))
+						(== heroType MAGIC_USER)
+						(and (not (Btst fStoleDrum)) (== heroType THIEF))
 					)
-					(ego get: 46)
-					(messager say: 10 6 28 0 self)
+					(ego get: iMagicDrum)
+					(messager say: N_LAIBON V_DOIT C_GET_DRUM 0 self)
 				else
 					(= cycles 1)
 				)
 			)
-			(12 (= ticks 60))
+			(12
+				(= ticks 60)
+			)
 			(13
 				(cond 
-					((not (Btst 13)) (curRoom setScript: goTo620))
+					((not (Btst fGaveDrum))
+						(curRoom setScript: goTo620)
+					)
 					(
 						(and
-							(== heroType 0)
-							(>= [egoStats 14] 150)
-							(not (Btst 19))
+							(== heroType FIGHTER)
+							(>= [egoStats HONOR] 150)
+							(not (Btst fCantBePaladin))
 						)
 						(client setScript: goTo280)
 					)
-					((ego has: 36) (curRoom setScript: goTo350))
-					(else (client setScript: goTo340))
+					((ego has: iGem)
+						(curRoom setScript: goTo350)
+					)
+					(else
+						(client setScript: goTo340)
+					)
 				)
 			)
 		)
@@ -1191,19 +1296,20 @@
 )
 
 (instance showHole of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(globalSound number: 926 setLoop: 1 play: 127)
-				(messager say: 12 12 40 0 self)
+				(messager say: N_DIG_HOLE V_FINE_DAGGER C_DIG_HOLE 0 self)
 			)
 			(1
 				((hutHole insetView?) setCel: 1)
-				(messager say: 11 6 38 0 self)
+				(messager say: N_CUE V_DOIT C_CAN_ENTER_HOLE 0 self)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -1212,7 +1318,7 @@
 	(properties
 		x 116
 		y 145
-		noun 13
+		noun N_CAMPFIRE
 		nsTop 134
 		nsLeft 88
 		nsBottom 157
@@ -1225,7 +1331,7 @@
 	(properties
 		x 235
 		y 33
-		noun 14
+		noun N_TREE
 		nsTop 16
 		nsLeft 202
 		nsBottom 51
@@ -1238,7 +1344,7 @@
 	(properties
 		x 159
 		y 52
-		noun 15
+		noun N_FENCE
 		nsTop 47
 		nsBottom 58
 		nsRight 319
@@ -1250,7 +1356,7 @@
 	(properties
 		x 159
 		y 31
-		noun 16
+		noun N_MOUNTAINS
 		nsTop 26
 		nsBottom 37
 		nsRight 319
@@ -1272,8 +1378,8 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 1)
-			(guestHutLook doVerb: 1 &rest)
+		(if (== theVerb V_LOOK)
+			(guestHutLook doVerb: V_LOOK &rest)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1285,14 +1391,14 @@
 		x 160
 		y 54
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 		approachX 120
 		approachY 84
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 1)
-			(chiefHut doVerb: 1 &rest)
+		(if (== theVerb V_LOOK)
+			(chiefHut doVerb: V_LOOK &rest)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1303,7 +1409,7 @@
 	(properties
 		x 162
 		y 68
-		noun 5
+		noun N_LAIBON_HUT
 		nsTop 54
 		nsLeft 107
 		nsBottom 82
@@ -1315,14 +1421,23 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1
+			(V_LOOK
 				(cond 
-					((or (curRoom script?) (!= origHeroType 2)) (super doVerb: 1 &rest))
-					((Btst 50) (messager say: 5 1 37))
-					(else (messager say: 5 1 35 0) (curRoom setInset: hutHole))
+					((or (curRoom script?) (!= origHeroType THIEF))
+						(super doVerb: V_LOOK &rest)
+					)
+					((Btst fLaibonHutRepaired)
+						(messager say: N_LAIBON_HUT V_LOOK C_HUT_REPAIRED)
+					)
+					(else
+						(messager say: N_LAIBON_HUT V_LOOK C_SEARCH_HUT 0)
+						(curRoom setInset: hutHole)
+					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else 
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -1331,7 +1446,7 @@
 	(properties
 		x 283
 		y 92
-		noun 6
+		noun N_UHURA_HUT
 		nsTop 78
 		nsLeft 248
 		nsBottom 107
@@ -1346,7 +1461,7 @@
 	(properties
 		x 47
 		y 87
-		noun 4
+		noun N_GUEST_HUT
 		nsTop 74
 		nsLeft 2
 		nsBottom 100
@@ -1363,7 +1478,7 @@
 		y 190
 		view 420
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1371,10 +1486,10 @@
 	(properties
 		x 117
 		y 147
-		noun 13
+		noun N_CAMPFIRE
 		view 420
 		priority 11
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1388,9 +1503,9 @@
 	(properties
 		x 140
 		y 85
-		noun 2
+		noun N_GUARD
 		view 482
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1429,36 +1544,40 @@
 		loop 4
 		x 200
 		y 85
-		disposeNotOnMe 1
-		noun 17
+		disposeNotOnMe TRUE
+		noun N_HUT_HOLE
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(20
+			(V_DAGGER
 				(if (not Night)
-					(messager say: 12 12 39)
+					(messager say: N_DIG_HOLE V_FINE_DAGGER C_CANT_DIG_DAY)
 				else
 					(self setScript: showHole)
 				)
 			)
-			(12 (self doVerb: 20))
-			(3
+			(V_FINE_DAGGER
+				(self doVerb: V_DAGGER)
+			)
+			(V_WALK
 				(if (== ((self insetView?) cel?) 1)
-					(Bset 50)
-					(if (not (Btst 266)) (ego addHonor: -50))
-					(ego solvePuzzle: 266 8 4)
+					(Bset fLaibonHutRepaired)
+					(if (not (Btst fBreakIntoLaibonHut))
+						(ego addHonor: -50)
+					)
+					(ego solvePuzzle: fBreakIntoLaibonHut 8 puzzleTHIEF)
 					(self dispose:)
 					(curRoom newRoom: 450)
 				else
 					(super doVerb: theVerb &rest)
 				)
 			)
-			(1
+			(V_LOOK
 				(if (== ((self insetView?) cel?) 1)
-					(messager say: 17 1 38)
+					(messager say: N_HUT_HOLE V_LOOK C_CAN_ENTER_HOLE)
 				else
-					(messager say: 17 1 36)
+					(messager say: N_HUT_HOLE V_LOOK C_FIND_HOLE)
 				)
 			)
 			(else 
@@ -1468,39 +1587,38 @@
 	)
 )
 
-(instance lionGroop of Grooper
-	(properties)
-	
+(instance lionGroop of GradualLooper
+
 	(method (doit)
 		(cond 
-			((not ((ScriptID 35 1) mover?)) ((ScriptID 35 1) view: 962))
+			((not ((ScriptID RAKEESH_TALKER 1) mover?)) ((ScriptID RAKEESH_TALKER 1) view: 962))
 			(
 				(and
-					(< 15 ((ScriptID 35 1) heading?))
-					(< ((ScriptID 35 1) heading?) 75)
+					(< 15 ((ScriptID RAKEESH_TALKER 1) heading?))
+					(< ((ScriptID RAKEESH_TALKER 1) heading?) 75)
 				)
-				((ScriptID 35 1) view: 967)
+				((ScriptID RAKEESH_TALKER 1) view: 967)
 			)
 			(
 				(and
-					(< 105 ((ScriptID 35 1) heading?))
-					(< ((ScriptID 35 1) heading?) 165)
+					(< 105 ((ScriptID RAKEESH_TALKER 1) heading?))
+					(< ((ScriptID RAKEESH_TALKER 1) heading?) 165)
 				)
-				((ScriptID 35 1) view: 967)
+				((ScriptID RAKEESH_TALKER 1) view: 967)
 			)
 			(
 				(and
-					(< 195 ((ScriptID 35 1) heading?))
-					(< ((ScriptID 35 1) heading?) 255)
+					(< 195 ((ScriptID RAKEESH_TALKER 1) heading?))
+					(< ((ScriptID RAKEESH_TALKER 1) heading?) 255)
 				)
-				((ScriptID 35 1) view: 967)
+				((ScriptID RAKEESH_TALKER 1) view: 967)
 			)
 			(
 				(and
-					(< 285 ((ScriptID 35 1) heading?))
-					(< ((ScriptID 35 1) heading?) 345)
+					(< 285 ((ScriptID RAKEESH_TALKER 1) heading?))
+					(< ((ScriptID RAKEESH_TALKER 1) heading?) 345)
 				)
-				((ScriptID 35 1) view: 967)
+				((ScriptID RAKEESH_TALKER 1) view: 967)
 			)
 		)
 		(super doit: &rest)

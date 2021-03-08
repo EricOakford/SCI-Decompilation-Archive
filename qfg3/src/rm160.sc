@@ -218,7 +218,7 @@
 		(leapFrogRocks init:)
 		(miscRocks init:)
 		(ego solvePuzzle: fEnteredSimbaniPanorama 3)
-		(if (and (Btst fHoneyBirdHinted) (== honeyBirdRoom curRoomNum))
+		(if (and (Btst fFoundHoneyBird) (== honeyBirdRoom curRoomNum))
 			(honeyTree x: honeyTreeX y: honeyTreeY init: stopUpd:)
 		)
 		(HandsOn 6 3)
@@ -247,7 +247,7 @@
 			)
 			(
 				(and
-					(Btst fHoneyBirdHinted)
+					(Btst fFoundHoneyBird)
 					(== honeyBirdRoom curRoomNum)
 					(ego
 						inRect: honeyTreeX (- honeyTreeY 20) (+ honeyTreeX 20) honeyTreeY

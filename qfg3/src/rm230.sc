@@ -284,7 +284,7 @@
 		(switch theVerb
 			(V_REST
 				(if (Btst fHaramiRobbedChanger)
-					((ScriptID TIME 5) init: global455)
+					((ScriptID TIME 5) init: restTime)
 				else
 					(messager say: NULL NULL C_CANT_SLEEP)
 				)

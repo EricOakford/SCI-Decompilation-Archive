@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 240)
-(include sci.sh)
+(include game.sh) (include "240.shm")
 (use Main)
 (use TellerIcon)
 (use Vendor)
@@ -26,8 +26,8 @@
 )
 
 (local
-	local0 =  1
-	aSanfordNoun
+	weaponPitchMade =  1
+	merchantNoun
 	local2
 	local3
 	local4
@@ -35,24 +35,24 @@
 	local6
 	local7
 	local8
-	local9
-	local10 =  1
+	theMerchant
+	walkedAway =  1
 	local11
 	[aWeaponSellerInit 4]
-	local16
-	[local17 9] = [0 -92 -93 -105 -43 -72 -97 -98 999]
-	[local26 7] = [0 82 83 84 -86 -85 999]
-	[local33 7] = [0 76 77 47 78 24 999]
-	[local40 5] = [0 79 80 25 999]
-	[local45 5] = [0 104 81 26 999]
-	[local50 6] = [0 -36 35 -100 -101 999]
-	[local56 7] = [0 37 38 39 40 2 999]
-	[local63 3] = [0 -36 999]
-	[local66 6] = [0 63 35 -100 -101 999]
-	[local72 6] = [0 -48 35 -100 -101 999]
-	[local78 4] = [0 49 -91 999]
-	[local82 3] = [0 -48 999]
-	[local85 6] = [0 52 35 -100 -101 999]
+	weaponSellerCued
+	local17 = [0 -92 -93 -105 -43 -72 -97 -98 999]
+	local26 = [0 82 83 84 -86 -85 999]
+	local33 = [0 76 77 47 78 24 999]
+	local40 = [0 79 80 25 999]
+	local45 = [0 104 81 26 999]
+	local50 = [0 -36 35 -100 -101 999]
+	local56 = [0 37 38 39 40 2 999]
+	local63 = [0 -36 999]
+	local66 = [0 63 35 -100 -101 999]
+	local72 = [0 -48 35 -100 -101 999]
+	local78 = [0 49 -91 999]
+	local82 = [0 -48 999]
+	local85 = [0 52 35 -100 -101 999]
 	[local91 4]
 	[local95 4]
 	[local99 4]
@@ -73,15 +73,15 @@
 			(= local3 1)
 		)
 	)
-	(= local0 0)
+	(= weaponPitchMade 0)
 	([aWeaponSellerInit local3]
 		cel: 0
-		setCycle: End aOilSeller
+		setCycle: EndLoop aOilSeller
 	)
 )
 
-(procedure (localproc_08de param1)
-	(switch param1
+(procedure (DisposeVendor who)
+	(switch who
 		(1 (DisposeScript 245))
 		(7 (DisposeScript 246))
 		(6 (DisposeScript 246))
@@ -90,45 +90,63 @@
 	)
 )
 
-(instance rm240 of Rm
+(instance rm240 of Room
 	(properties
-		noun 26
+		noun N_ROOM
 		picture 240
 		horizon -20
 		vanishingY -300
 	)
 	
 	(method (init)
-		(LoadMany 143 240)
+		(LoadMany RES_MESSAGE 240)
 		(walkHandler addToFront: self)
-		(self setRegions: 51)
+		(self setRegions: BAZAAR)
 		(ego
-			noun: 2
+			noun: N_EGO_TELL
 			init:
 			normalize:
 			edgeHit: 0
-			scaleSignal: 1
+			scaleSignal: scalable
 			scaleX: 120
 			scaleY: 120
 		)
-		(if (or Night (Btst 135))
+		(if (or Night (Btst fVisitedBazaar))
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
-						init: 319 189 283 189 239 149 319 137
+						type: PBarredAccess
+						init:
+							319 189
+							283 189
+							239 149
+							319 137
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
-						init: 0 95 0 0 319 0 319 104 284 104 255 89 230 104 128 118 109 108 52 114
+						type: PBarredAccess
+						init:
+							0 95
+							0 0
+							319 0
+							319 104
+							284 104
+							255 89
+							230 104
+							128 118
+							109 108
+							52 114
 						yourself:
 					)
 			)
-			(if (and (> Day 4) (not (Btst 172)))
-				(= local11 (| local11 $2000))
-				(if (and (!= haramiNight Day) (Btst 40))
-					(if (Btst 46) (Bset 47) else (Bset 46))
+			(if (and (> Day 4) (not (Btst fHaramiGone)))
+				(|= local11 $2000)
+				(if (and (!= haramiNight Day) (Btst fMetHonorlessHarami))
+					(if (Btst fHaramiSecondVisit)
+						(Bset fHaramiThirdVisit)
+					else
+						(Bset fHaramiSecondVisit)
+					)
 				)
 				(ego code: nightCode)
 				((ScriptID 241 0)
@@ -138,7 +156,7 @@
 					x: 149
 					y: 105
 					init:
-					scaleSignal: 1
+					scaleSignal: scalable
 					scaleX: 120
 					scaleY: 120
 				)
@@ -165,24 +183,46 @@
 					)
 					(cSound setLoop: -1 number: 923 play: 60)
 				)
-				((!= (cSound number?) 230) (cSound fade: 60 10 5 0))
-				(else (cSound client: self))
+				((!= (cSound number?) 230)
+					(cSound fade: 60 10 5 0)
+				)
+				(else
+					(cSound client: self)
+				)
 			)
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
-						init: 240 189 141 189 114 165 218 150 262 186
+						type: PBarredAccess
+						init:
+							240 189
+							141 189
+							114 165
+							218 150
+							262 186
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
-						init: 319 189 273 189 236 146 319 137
+						type: PBarredAccess
+						init:
+							319 189
+							273 189
+							236 146
+							319 137
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
-						init: 0 100 0 0 319 0 319 98 291 102 270 93 271 105 187 117 51 117
+						type: PBarredAccess
+						init:
+							0 100
+							0 0
+							319 0
+							319 98
+							291 102
+							270 93
+							271 105
+							187 117
+							51 117
 						yourself:
 					)
 			)
@@ -203,7 +243,7 @@
 			(honeyTell init: aHoneySeller @local72 @local113 @local82)
 			(ego code: bazCode)
 			(mooseHead init: addToPic:)
-			(if (and (== heroType 2) (not (Btst 147)))
+			(if (and (== heroType THIEF) (not (Btst fGotBlackBird)))
 				(blackBird init: stopUpd:)
 			)
 			(spearsLeft setPri: 7 init: addToPic:)
@@ -239,8 +279,8 @@
 		(HandsOn)
 		(switch prevRoomNum
 			(230
-				(= style -32759)
-				(if (and (< Day 5) (Btst 22) (not (Btst 36)))
+				(= style (| BLACKOUT IRISOUT))
+				(if (and (< Day 5) (Btst fHaramiGone) (not (Btst fHaramiWasOnTrial)))
 					((ScriptID 241 0) init: addToPic:)
 					((View new:)
 						view: 240
@@ -262,54 +302,65 @@
 				)
 			)
 			(250
-				(= style -32761)
+				(= style (| BLACKOUT PIXELDISSOLVE))
 				(self setScript: from250)
 			)
 			(270
-				(= style -32761)
+				(= style (| BLACKOUT PIXELDISSOLVE))
 				(self setScript: from270)
 			)
-			(else  (ego x: 35 y: 120))
+			(else
+				(ego x: 35 y: 120)
+			)
 		)
 	)
 	
 	(method (dispose)
 		(= haramiNight Day)
-		(Bclr 113)
-		(if local5 (local5 dispose:))
-		(if local6 (local6 dispose:))
-		(if local7 (local7 dispose:))
-		(if local8 (local8 dispose:))
+		(Bclr fFedHarami)
+		(if local5
+			(local5 dispose:)
+		)
+		(if local6
+			(local6 dispose:)
+		)
+		(if local7
+			(local7 dispose:)
+		)
+		(if local8
+			(local8 dispose:)
+		)
 		(walkHandler delete: self)
-		(UnLoad 143 240)
-		(LoadMany 0 47 241 245 246 247 248)
+		(UnLoad RES_MESSAGE 240)
+		(LoadMany FALSE 47 241 245 246 247 248)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1
-				(messager say: noun 1 0 (if Night 0 else 1))
+			(V_LOOK
+				(messager say: noun V_LOOK NULL (if Night 0 else 1))
 			)
-			(3
+			(V_WALK
 				(if (& local11 $2000)
-					(if
-					(and ((ScriptID 241 0) cycler?) (& local11 $1000))
-						(= local11 (& local11 $efff))
-						((ScriptID 241 0) setCycle: Beg)
+					(if (and ((ScriptID 241 0) cycler?) (& local11 $1000))
+						(&= local11 $efff)
+						((ScriptID 241 0) setCycle: BegLoop)
 					)
-					(if (and (not (Btst 113)) (not local10))
-						(= local10 1)
-						(messager say: 9 6 93)
+					(if (and (not (Btst fFedHarami)) (not walkedAway))
+						(= walkedAway TRUE)
+						(messager say: N_HARAMI V_DOIT C_LEAVE_HARAMI)
 					)
 				else
 					(if (self script?)
 						(self script: 0)
-						(aWeaponSeller setCycle: End setLoop: 2)
+						(aWeaponSeller setCycle: EndLoop setLoop: 2)
 					)
-					(if (CueObj theVerb?) (CueObj theVerb: 0))
-					(if aSanfordNoun
-						(messager say: aSanfordNoun 6 10 0 aSon)
+					(if (CueObj theVerb?)
+						(CueObj theVerb: 0)
+					)
+					(if merchantNoun
+						(messager say: merchantNoun V_DOIT C_DONE_DEAL 0 aSon)
 					)
 				)
 				(ego
@@ -320,7 +371,9 @@
 						aWeaponSeller
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	
@@ -333,13 +386,12 @@
 )
 
 (instance haramiBeg of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset 159)
+				(Bset fMetHarami)
 				(switch prevRoomNum
 					(270
 						(ego setMotion: PolyPath 220 111 self)
@@ -352,29 +404,45 @@
 					)
 				)
 			)
-			(1 (= cycles 5))
+			(1
+				(= cycles 5)
+			)
 			(2
 				(cond 
-					((Btst 47) (Bset 172) (messager say: 9 6 7 0 self))
-					((Btst 46) (messager say: 9 6 6 0 self))
-					((Btst 40) (messager say: 9 6 75 0 self))
-					(else (messager say: 9 6 62 0 self) (Bset 40))
+					((Btst fHaramiThirdVisit)
+						(Bset fHaramiGone)
+						(messager say: N_HARAMI V_DOIT C_GREETING4 0 self)
+					)
+					((Btst fHaramiSecondVisit)
+						(messager say: N_HARAMI V_DOIT C_GREETING3 0 self)
+					)
+					((Btst fMetHonorlessHarami)
+						(messager say: N_HARAMI V_DOIT C_AGREED_MEET 0 self)
+					)
+					(else
+						(messager say: N_HARAMI V_DOIT C_FIRST_MEET 0 self)
+						(Bset fMetHonorlessHarami)
+					)
 				)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance weaponSellerFirst of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (aWeaponSeller cycler?) (= local0 1))
-				(aWeaponSeller setCycle: Beg self)
+				(if (aWeaponSeller cycler?)
+					(= weaponPitchMade 1)
+				)
+				(aWeaponSeller setCycle: BegLoop self)
 				(ego setMotion: 0)
 				(aSon setCycle: 0)
 			)
@@ -382,20 +450,24 @@
 				(Face ego aWeaponSeller)
 				(= cycles (+ (ego cycleSpeed?) 15))
 			)
-			(2 (messager say: 1 6 1 1 self))
-			(3
-				(aWeaponSeller setLoop: 2 cel: 6 setCycle: CT 3 -1 self)
+			(2
+				(messager say: N_WEAPON V_DOIT C_SALES_PITCH 1 self)
 			)
-			(4 (messager say: 1 6 3 0 self))
+			(3
+				(aWeaponSeller setLoop: 2 cel: 6 setCycle: CycleTo 3 -1 self)
+			)
+			(4
+				(messager say: N_WEAPON V_DOIT C_DAGGER 0 self)
+			)
 			(5
-				(aWeaponSeller cel: 0 setCycle: End self)
+				(aWeaponSeller cel: 0 setCycle: EndLoop self)
 			)
 			(6
 				(HandsOn)
-				(localproc_08de 1)
-				(Bset 106)
+				(DisposeVendor 1)
+				(Bset fMetWeaponSeller)
 				(aWeaponSeller stopUpd:)
-				(= local0 1)
+				(= weaponPitchMade TRUE)
 				(self dispose:)
 			)
 		)
@@ -403,7 +475,6 @@
 )
 
 (instance thiefChase of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -416,9 +487,11 @@
 					setMotion: PolyPath 85 120 self
 				)
 			)
-			(1 (= cycles 5))
+			(1
+				(= cycles 5)
+			)
 			(2
-				(messager say: 8 6 47 0 self)
+				(messager say: N_GUARD V_DOIT C_THIEF 0 self)
 			)
 			(3
 				(HandsOff)
@@ -431,8 +504,7 @@
 )
 
 (instance aSonGreeting of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -445,14 +517,14 @@
 				(= cycles (+ (ego cycleSpeed?) 15))
 			)
 			(2
-				(aSanford setCycle: End self)
+				(aSanford setCycle: EndLoop self)
 			)
 			(3
-				(messager say: 7 6 62 0 self)
+				(messager say: N_JUNK V_DOIT 62 0 self)
 			)
 			(4
-				(localproc_08de 7)
-				(aSanford setCycle: CT 0 -1 self)
+				(DisposeVendor 7)
+				(aSanford setCycle: CycleTo 0 -1 self)
 			)
 			(5
 				(HandsOn)
@@ -464,7 +536,6 @@
 )
 
 (instance from230 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -477,19 +548,19 @@
 			(1
 				(if (& local11 $2000)
 					(cond 
-						((Btst 47)
+						((Btst fHaramiThirdVisit)
 							(= [local99 0] @local45)
 							(haramiTell init: (ScriptID 241 0) @local45 @local99)
 							(curRoom setScript: haramiBeg)
 						)
-						((Btst 46)
-							(= local11 (| local11 $0020))
+						((Btst fHaramiSecondVisit)
+							(|= local11 $0020)
 							(= [local99 0] @local40)
 							(haramiTell init: (ScriptID 241 0) @local40 @local99)
 							(curRoom setScript: haramiBeg)
 						)
 						(else
-							(= local11 (| local11 $0010))
+							(|= local11 $0010)
 							(= [local99 0] @local33)
 							(haramiTell init: (ScriptID 241 0) @local33 @local99)
 							(curRoom setScript: haramiBeg)
@@ -501,13 +572,15 @@
 			(2
 				(ego setMotion: PolyPath 20 115 self)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance from250 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -520,19 +593,19 @@
 			(1
 				(if (& local11 $2000)
 					(cond 
-						((Btst 47)
+						((Btst fHaramiThirdVisit)
 							(= [local99 0] @local45)
 							(haramiTell init: (ScriptID 241 0) @local45 @local99)
 							(curRoom setScript: haramiBeg)
 						)
-						((Btst 46)
-							(= local11 (| local11 $0020))
+						((Btst fHaramiSecondVisit)
+							(|= local11 $0020)
 							(= [local99 0] @local40)
 							(haramiTell init: (ScriptID 241 0) @local40 @local99)
 							(curRoom setScript: haramiBeg)
 						)
 						(else
-							(= local11 (| local11 $0010))
+							(|= local11 $0010)
 							(= [local99 0] @local33)
 							(haramiTell init: (ScriptID 241 0) @local33 @local99)
 							(curRoom setScript: haramiBeg)
@@ -544,13 +617,15 @@
 			(2
 				(ego setMotion: PolyPath 87 175 self)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance from270 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -562,19 +637,19 @@
 			(1
 				(if (& local11 $2000)
 					(cond 
-						((Btst 47)
+						((Btst fHaramiThirdVisit)
 							(= [local99 0] @local45)
 							(haramiTell init: (ScriptID 241 0) @local45 @local99)
 							(curRoom setScript: haramiBeg)
 						)
-						((Btst 46)
-							(= local11 (| local11 $0020))
+						((Btst fHaramiSecondVisit)
+							(|= local11 $0020)
 							(= [local99 0] @local40)
 							(haramiTell init: (ScriptID 241 0) @local40 @local99)
 							(curRoom setScript: haramiBeg)
 						)
 						(else
-							(= local11 (| local11 $0010))
+							(|= local11 $0010)
 							(= [local99 0] @local33)
 							(haramiTell init: (ScriptID 241 0) @local33 @local99)
 							(curRoom setScript: haramiBeg)
@@ -592,7 +667,6 @@
 )
 
 (instance begSecond of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -602,7 +676,7 @@
 				(= cycles (+ (ego cycleSpeed?) 15))
 			)
 			(1
-				(messager say: 9 6 92 0 self)
+				(messager say: N_HARAMI V_DOIT C_HARAMI_BEGS 0 self)
 			)
 			(2 (self dispose:))
 		)
@@ -610,7 +684,6 @@
 )
 
 (instance sExit of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -626,8 +699,7 @@
 						(ego setMotion: PolyPath (ego x?) -30 self)
 					)
 					((>= (ego x?) 315)
-						(if
-						(and Night (not (Btst 113)) (& local11 $2000))
+						(if (and Night (not (Btst fFedHarami)) (& local11 $2000))
 							(ego addHonor: -50)
 						)
 						(= register 270)
@@ -651,18 +723,21 @@
 )
 
 (instance bazCode of Code
-	(properties)
 	
 	(method (doit)
-		(if local0 (localproc_0892))
+		(if weaponPitchMade (localproc_0892))
 		(cond 
 			((curRoom script?) 0)
-			((not (if (< 5 (ego x?)) (< (ego x?) 315))) (curRoom setScript: sExit))
-			((not (if (< 5 (ego y?)) (< (ego y?) 183))) (curRoom setScript: sExit))
+			((not (if (< 5 (ego x?)) (< (ego x?) 315)))
+				(curRoom setScript: sExit)
+			)
+			((not (if (< 5 (ego y?)) (< (ego y?) 183)))
+				(curRoom setScript: sExit)
+			)
 			((< (ego distanceTo: aWeaponSeller) 45)
 				(aWeaponSeller setCycle: 0)
-				(if (and (not (Btst 106)) (not local16))
-					(= local16 1)
+				(if (and (not (Btst fMetWeaponSeller)) (not weaponSellerCued))
+					(= weaponSellerCued TRUE)
 					(aWeaponSeller setCycle: 0)
 					(curRoom setScript: weaponSellerFirst)
 				)
@@ -673,10 +748,12 @@
 					(globalSound client: 0 number: 231 setLoop: -1 play:)
 				)
 				(cond 
-					((not (Btst 107)) (Bset 107) (curRoom setScript: aSonGreeting))
+					((not (Btst fMetSanfordAndSon)) (Bset fMetSanfordAndSon)
+						(curRoom setScript: aSonGreeting)
+					)
 					((not (& local11 $0001))
-						(= local11 (| local11 $0001))
-						(= aSanfordNoun (aSanford noun?))
+						(|= local11 $0001)
+						(= merchantNoun (aSanford noun?))
 						(ego setMotion: 0)
 						(aSanford newGreeting:)
 					)
@@ -685,23 +762,26 @@
 			((< (ego distanceTo: aHoneySeller) 40)
 				(aHoneySeller setCycle: 0)
 				(if (not (& local11 $0002))
-					(= local11 (| local11 $0002))
+					(|= local11 $0002)
 					(ego setMotion: 0)
-					(= aSanfordNoun (aHoneySeller noun?))
+					(= merchantNoun (aHoneySeller noun?))
 					(aHoneySeller newGreeting:)
 				)
 			)
 			((< (ego distanceTo: aSon) 17)
 				(if (!= (globalSound number?) 231)
-					(cSound pause: 1)
+					(cSound pause: TRUE)
 					(globalSound client: 0 number: 231 setLoop: -1 play:)
 				)
 				(cond 
-					((not (Btst 107)) (Bset 107) (curRoom setScript: aSonGreeting))
+					((not (Btst fMetSanfordAndSon))
+						(Bset fMetSanfordAndSon)
+						(curRoom setScript: aSonGreeting)
+					)
 					((not (& local11 $0004))
-						(= local11 (| local11 $0004))
+						(|= local11 $0004)
 						(ego setMotion: 0)
-						(= aSanfordNoun (aSanford noun?))
+						(= merchantNoun (aSanford noun?))
 						(aSanford newGreeting:)
 					)
 				)
@@ -709,9 +789,9 @@
 			((< (ego distanceTo: aOilSeller) 33)
 				(aOilSeller setCycle: 0)
 				(if (not (& local11 $0008))
-					(= local11 (| local11 $0008))
+					(|= local11 $0008)
 					(ego setMotion: 0)
-					(= aSanfordNoun (aOilSeller noun?))
+					(= merchantNoun (aOilSeller noun?))
 					(aOilSeller newGreeting:)
 				)
 			)
@@ -727,21 +807,24 @@
 )
 
 (instance nightCode of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
 			((curRoom script?) 0)
-			((not (if (< 5 (ego x?)) (< (ego x?) 315))) (curRoom setScript: sExit))
-			((not (if (< 5 (ego y?)) (< (ego y?) 183))) (curRoom setScript: sExit))
+			((not (if (< 5 (ego x?)) (< (ego x?) 315)))
+				(curRoom setScript: sExit)
+			)
+			((not (if (< 5 (ego y?)) (< (ego y?) 183)))
+				(curRoom setScript: sExit)
+			)
 			((< (ego distanceTo: (ScriptID 241 0)) 30)
 				(if (& local11 $0100)
 					0
 				else
-					(= local11 (| local11 $0100))
-					((ScriptID 241 0) setCycle: Fwd)
-					(= local11 (| local11 $1000))
-					(= local10 0)
+					(|= local11 $0100)
+					((ScriptID 241 0) setCycle: Forward)
+					(|= local11 $1000)
+					(= walkedAway FALSE)
 					(curRoom setScript: begSecond)
 				)
 			)
@@ -750,13 +833,16 @@
 )
 
 (instance nightCodeX of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
 			((curRoom script?) 0)
-			((not (if (< 5 (ego x?)) (< (ego x?) 315))) (curRoom setScript: sExit))
-			((not (if (< 5 (ego y?)) (< (ego y?) 183))) (curRoom setScript: sExit))
+			((not (if (< 5 (ego x?)) (< (ego x?) 315)))
+				(curRoom setScript: sExit)
+			)
+			((not (if (< 5 (ego y?)) (< (ego y?) 183)))
+				(curRoom setScript: sExit)
+			)
 		)
 	)
 )
@@ -765,17 +851,17 @@
 	(properties
 		x 62
 		y 82
-		noun 1
+		noun N_WEAPON
 		approachDist 50
 		view 325
 		loop 2
-		signal $4000
+		signal ignrAct
 		cycleSpeed 12
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4 59 10)
+		(self approachVerbs: V_TALK V_DO V_DINARS V_ROYALS)
 		(return self)
 	)
 	
@@ -785,28 +871,30 @@
 	)
 	
 	(method (cue)
-		(if (& local11 $0100) (= local11 (& local11 $feff)))
+		(if (& local11 $0100)
+			(&= local11 $feff)
+		)
 	)
 	
 	(method (newGreeting)
 		(switch (mod Day 6)
 			(0
-				(messager say: noun 6 4 0 aSon)
+				(messager say: noun V_DOIT C_GREETING1 0 aSon)
 			)
 			(1
-				(messager say: noun 6 5 0 aSon)
+				(messager say: noun V_DOIT C_GREETING2 0 aSon)
 			)
 			(2
-				(messager say: noun 6 6 0 aSon)
+				(messager say: noun V_DOIT C_GREETING3 0 aSon)
 			)
 			(3
-				(messager say: noun 6 7 0 aSon)
+				(messager say: noun V_DOIT C_GREETING4 0 aSon)
 			)
 			(4
-				(messager say: noun 6 8 0 aSon)
+				(messager say: noun V_DOIT C_GREETING5 0 aSon)
 			)
 			(5
-				(messager say: noun 6 9 0 aSon)
+				(messager say: noun V_DOIT C_GREETING6 0 aSon)
 			)
 		)
 	)
@@ -816,16 +904,16 @@
 	(properties
 		x 241
 		y 85
-		noun 7
+		noun N_JUNK
 		approachDist 50
 		view 242
-		signal $5000
+		signal (| ignrAct skipCheck)
 		cycleSpeed 19
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4 59 10)
+		(self approachVerbs: V_TALK V_DO V_DINARS V_ROYALS)
 	)
 	
 	(method (dispose)
@@ -836,22 +924,22 @@
 	(method (newGreeting)
 		(switch (mod Day 6)
 			(0
-				(messager say: noun 6 4 0 aSon)
+				(messager say: noun V_DOIT C_GREETING1 0 aSon)
 			)
 			(1
-				(messager say: noun 6 5 0 aSon)
+				(messager say: noun V_DOIT C_GREETING2 0 aSon)
 			)
 			(2
-				(messager say: noun 6 6 0 aSon)
+				(messager say: noun V_DOIT C_GREETING3 0 aSon)
 			)
 			(3
-				(messager say: noun 6 7 0 aSon)
+				(messager say: noun V_DOIT C_GREETING4 0 aSon)
 			)
 			(4
-				(messager say: noun 6 8 0 aSon)
+				(messager say: noun V_DOIT C_GREETING5 0 aSon)
 			)
 			(5
-				(messager say: noun 6 9 0 aSon)
+				(messager say: noun V_DOIT C_GREETING6 0 aSon)
 			)
 		)
 	)
@@ -861,17 +949,17 @@
 	(properties
 		x 209
 		y 104
-		noun 6
+		noun N_SON
 		approachDist 40
 		view 244
 		loop 2
-		signal $4000
+		signal ignrAct
 		cycleSpeed 11
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4 59 10)
+		(self approachVerbs: V_TALK V_DO V_DINARS V_ROYALS)
 		(return self)
 	)
 	
@@ -882,7 +970,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (super doVerb: theVerb))
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(junkTell doVerb: theVerb)
 			)
@@ -890,8 +980,8 @@
 	)
 	
 	(method (cue)
-		(localproc_08de aSanfordNoun)
-		(= aSanfordNoun 0)
+		(DisposeVendor merchantNoun)
+		(= merchantNoun 0)
 	)
 )
 
@@ -899,17 +989,17 @@
 	(properties
 		x 304
 		y 167
-		noun 4
+		noun N_HONEY
 		approachDist 30
 		view 254
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 14
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4 59 10)
+		(self approachVerbs: V_TALK V_DO V_DINARS V_ROYALS)
 		(return self)
 	)
 	
@@ -921,22 +1011,22 @@
 	(method (newGreeting)
 		(switch (mod Day 6)
 			(0
-				(messager say: noun 6 4 0 aSon)
+				(messager say: noun V_DOIT C_GREETING1 0 aSon)
 			)
 			(1
-				(messager say: noun 6 5 0 aSon)
+				(messager say: noun V_DOIT C_GREETING2 0 aSon)
 			)
 			(2
-				(messager say: noun 6 6 0 aSon)
+				(messager say: noun V_DOIT C_GREETING3 0 aSon)
 			)
 			(3
-				(messager say: noun 6 7 0 aSon)
+				(messager say: noun V_DOIT C_GREETING4 0 aSon)
 			)
 			(4
-				(messager say: noun 6 8 0 aSon)
+				(messager say: noun V_DOIT C_GREETING5 0 aSon)
 			)
 			(5
-				(messager say: noun 6 9 0 aSon)
+				(messager say: noun V_DOIT C_GREETING6 0 aSon)
 			)
 		)
 	)
@@ -946,18 +1036,18 @@
 	(properties
 		x 197
 		y 182
-		noun 5
+		noun N_OIL
 		approachDist 30
 		view 258
 		loop 2
 		priority 15
-		signal $4000
+		signal ignrAct
 		cycleSpeed 11
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4 59 10)
+		(self approachVerbs: V_TALK V_DO V_DINARS V_ROYALS)
 		(return self)
 	)
 	
@@ -968,35 +1058,34 @@
 	
 	(method (cue)
 		([aWeaponSellerInit local3] stopUpd:)
-		(= local0 1)
+		(= weaponPitchMade TRUE)
 	)
 	
 	(method (newGreeting)
 		(switch (mod Day 6)
 			(0
-				(messager say: noun 6 4 0 aSon)
+				(messager say: noun V_DOIT C_GREETING1 0 aSon)
 			)
 			(1
-				(messager say: noun 6 5 0 aSon)
+				(messager say: noun V_DOIT C_GREETING2 0 aSon)
 			)
 			(2
-				(messager say: noun 6 6 0 aSon)
+				(messager say: noun V_DOIT C_GREETING3 0 aSon)
 			)
 			(3
-				(messager say: noun 6 7 0 aSon)
+				(messager say: noun V_DOIT C_GREETING4 0 aSon)
 			)
 			(4
-				(messager say: noun 6 8 0 aSon)
+				(messager say: noun V_DOIT C_GREETING5 0 aSon)
 			)
 			(5
-				(messager say: noun 6 9 0 aSon)
+				(messager say: noun V_DOIT C_GREETING6 0 aSon)
 			)
 		)
 	)
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (respond)
 		(return
@@ -1005,39 +1094,65 @@
 			else
 				(= local4 0)
 				(cond 
-					((not query) (return 1))
-					((== query -999) (return 1))
-					((== query 999) (self doParent:) (return 0))
-					((and (< query 0) (not (self doChild: query))) (return 1))
+					((not query)
+						(return TRUE)
+					)
+					((== query -999)
+						(return TRUE)
+					)
+					((== query 999)
+						(self doParent:)
+						(return FALSE)
+					)
+					((and (< query 0) (not (self doChild: query)))
+						(return TRUE)
+					)
 				)
-				(if (< query 0) (= query (- query)))
-				(messager say: (client noun?) 5 query 0)
-				(return 1)
+				(if (< query 0)
+					(= query (- query))
+				)
+				(messager say: (client noun?) V_TELL query 0)
+				(return TRUE)
 			)
 		)
 	)
 	
 	(method (showDialog &tmp temp0)
-		(= local9 (proc51_1))
-		(= temp0 (ego distanceTo: local9))
-		(switch local9
+		(= theMerchant (proc51_1))
+		(= temp0 (ego distanceTo: theMerchant))
+		(switch theMerchant
 			(aWeaponSeller
-				(if (> temp0 45) (messager say: 3 6 99) (return -999))
+				(if (> temp0 45)
+					(messager say: N_MERCHANTS V_DOIT C_WHICH_ONE)
+					(return -999)
+				)
 			)
 			(aOilSeller
-				(if (> temp0 48) (messager say: 3 6 99) (return -999))
+				(if (> temp0 48)
+					(messager say: N_MERCHANTS V_DOIT C_WHICH_ONE)
+					(return -999)
+				)
 			)
 			(aSon
-				(if (> temp0 18) (messager say: 3 6 99) (return -999))
+				(if (> temp0 18)
+					(messager say: N_MERCHANTS V_DOIT C_WHICH_ONE)
+					(return -999)
+				)
 			)
 			(aHoneySeller
-				(if (> temp0 41) (messager say: 3 6 99) (return -999))
+				(if (> temp0 41)
+					(messager say: N_MERCHANTS V_DOIT C_WHICH_ONE)
+					(return -999)
+				)
 			)
 			(else 
 				(cond 
-					((> temp0 26) (messager say: 3 6 99) (return -999))
+					((> temp0 26)
+						(messager say: N_MERCHANTS V_DOIT C_WHICH_ONE)
+						(return -999)
+					)
 					((!= (globalSound number?) 231)
-						(cSound pause: 1)
+						(cSound pause: TRUE)
 						(globalSound client: 0 number: 231 setLoop: -1 play:)
 					)
 				)
@@ -1046,9 +1161,9 @@
 		(if
 			(!=
 				(ego heading?)
-				(GetAngle (ego x?) (ego y?) (local9 x?) (local9 y?))
+				(GetAngle (ego x?) (ego y?) (theMerchant x?) (theMerchant y?))
 			)
-			(Face ego local9)
+			(Face ego theMerchant)
 		)
 		((Timer new:) setCycle: self (+ (ego cycleSpeed?) 10))
 		(= iconValue 0)
@@ -1060,68 +1175,114 @@
 			(switch query
 				(-92
 					(cond 
-						((== local9 aWeaponSeller) (= query 41))
-						((== local9 aSon) (= query 73))
-						((== local9 aSanford) (= query 73))
-						((== local9 aHoneySeller) (= query 50))
-						((== local9 aOilSeller) (= query 59))
+						((== theMerchant aWeaponSeller)
+							(= query C_GREET_WEAPON)
+						)
+						((== theMerchant aSon)
+							(= query C_GREET_SANFORD)
+						)
+						((== theMerchant aSanford)
+							(= query C_GREET_SANFORD)
+						)
+						((== theMerchant aHoneySeller)
+							(= query C_GREET_HONEY)
+						)
+						((== theMerchant aOilSeller)
+							(= query C_GREET_OIL)
+						)
 					)
 				)
 				(-93
 					(cond 
-						((== local9 aWeaponSeller) (= query 42))
-						((== local9 aSon) (= query 74))
-						((== local9 aSanford) (= query 74))
-						((== local9 aHoneySeller) (= query 51))
-						((== local9 aOilSeller) (= query 60))
+						((== theMerchant aWeaponSeller)
+							(= query C_GOODBYE_WEAPON)
+						)
+						((== theMerchant aSon)
+							(= query C_GOODBYE_SANFORD)
+						)
+						((== theMerchant aSanford)
+							(= query C_GOODBYE_SANFORD)
+						)
+						((== theMerchant aHoneySeller)
+							(= query C_GOODBYE_HONEY)
+						)
+						((== theMerchant aOilSeller)
+							(= query C_GOODBYE_OIL)
+						)
 					)
 				)
 				(-105
 					(cond 
-						((== local9 aWeaponSeller) (= query 87))
-						((== local9 aSon) (= query 88))
-						((== local9 aSanford) (= query 88))
-						((== local9 aHoneySeller) (= query 89))
-						((== local9 aOilSeller) (= query 90))
+						((== theMerchant aWeaponSeller)
+							(= query C_THIEF_SIGN_WEAPON)
+						)
+						((== theMerchant aSon)
+							(= query C_THIEF_SIGN_SANFORD)
+						)
+						((== theMerchant aSanford)
+							(= query C_THIEF_SIGN_SANFORD)
+						)
+						((== theMerchant aHoneySeller)
+							(= query C_THIEF_SIGN_HONEY)
+						)
+						((== theMerchant aOilSeller)
+							(= query C_THIEF_SIGN_OIL)
+						)
 					)
 				)
 				(-43
-					(if (== ((inventory at: 0) message?) 59)
-						(messager say: 1 6 94)
+					(if (== ((inventory at: iRoyals) message?) V_DINARS)
+						(messager say: N_WEAPON V_DOIT C_WRONG_MONEY)
 					else
-						(weaponTell doVerb: 10)
+						(weaponTell doVerb: V_ROYALS)
 					)
-					(return 0)
+					(return FALSE)
 				)
 				(-72
 					(cond 
-						((== ((inventory at: 0) message?) 59) (messager say: 7 6 94))
+						((== ((inventory at: iRoyals) message?) V_DINARS)
+							(messager say: N_JUNK V_DOIT C_WRONG_MONEY)
+						)
 						(
 							(or
-								(and (ego has: 9) (!= heroType 2))
-								(and (== heroType 2) (ego has: 9) (ego has: 33))
+								(and (ego has: iTinderbox) (!= heroType THIEF))
+								(and (== heroType THIEF) (ego has: iTinderbox) (ego has: iBird))
 							)
-							(messager say: 3 6 115)
+							(messager say: N_MERCHANTS V_DOIT C_NO_MORE_JUNK)
 						)
-						(else (junkTell doVerb: 10))
+						(else
+							(junkTell doVerb: V_ROYALS)
+						)
 					)
-					(return 0)
+					(return FALSE)
 				)
 				(-97
 					(cond 
-						((== ((inventory at: 0) message?) 59) (messager say: 4 6 94))
-						((ego has: 29) (messager say: 3 6 113))
-						(else (honeyTell doVerb: 10))
+						((== ((inventory at: iRoyals) message?) V_DINARS)
+							(messager say: N_HONEY V_DOIT C_WRONG_MONEY)
+						)
+						((ego has: iHoney)
+							(messager say: N_MERCHANTS V_DOIT C_NO_MORE_HONEY)
+						)
+						(else
+							(honeyTell doVerb: V_ROYALS)
+						)
 					)
-					(return 0)
+					(return FALSE)
 				)
 				(-98
 					(cond 
-						((== ((inventory at: 0) message?) 59) (messager say: 5 6 94))
-						((ego has: 25) (messager say: 3 6 114))
-						(else (oilTell doVerb: 10))
+						((== ((inventory at: iRoyals) message?) V_DINARS)
+							(messager say: N_OIL V_DOIT C_WRONG_MONEY)
+						)
+						((ego has: iOil)
+							(messager say: N_MERCHANTS V_DOIT C_NO_MORE_OIL)
+						)
+						(else
+							(oilTell doVerb: V_ROYALS)
+						)
 					)
-					(return 0)
+					(return FALSE)
 				)
 			)
 		)
@@ -1132,19 +1293,21 @@
 			(super
 				showDialog:
 					-105
-					(== heroType 2)
+					(== heroType THIEF)
 					-97
-					(== aHoneySeller local9)
+					(== aHoneySeller theMerchant)
 					-72
-					(if (== aSanford local9) else (== aSon local9))
+					(if (== aSanford theMerchant) else (== aSon theMerchant))
 					-43
-					(== aWeaponSeller local9)
+					(== aWeaponSeller theMerchant)
 					-98
-					(== aOilSeller local9)
+					(== aOilSeller theMerchant)
 			)
 		)
 		(= local4 1)
-		(if iconValue (= query iconValue))
+		(if iconValue
+			(= query iconValue)
+		)
 		(egoTell respond:)
 	)
 )
@@ -1156,11 +1319,11 @@
 		(super
 			showDialog:
 				84
-				(if (Btst 46) else (Btst 47))
+				(if (Btst fHaramiSecondVisit) else (Btst fHaramiThirdVisit))
 				-86
-				(Btst 47)
+				(Btst fHaramiThirdVisit)
 				-85
-				(== heroType 2)
+				(== heroType THIEF)
 		)
 	)
 	
@@ -1168,11 +1331,11 @@
 		(return
 			(switch query
 				(-86
-					(ego solvePuzzle: 221 8)
+					(ego solvePuzzle: fTellHaramiAboutRakeesh 8)
 					(return query)
 				)
 				(-85
-					(ego solvePuzzle: 229 8)
+					(ego solvePuzzle: fShowSignToHarami 8)
 					(return query)
 				)
 			)
@@ -1181,56 +1344,87 @@
 )
 
 (instance weaponTell of Teller
-	(properties)
 	
 	(method (doChild)
 		(switch query
 			(-100
 				(switch (mod Day 6)
-					(0 (= query 23))
-					(1 (= query 24))
-					(2 (= query 25))
-					(3 (= query 26))
-					(4 (= query 27))
-					(5 (= query 28))
+					(0
+						(= query C_RUMOR1)
+					)
+					(1
+						(= query C_RUMOR2)
+					)
+					(2
+						(= query C_RUMOR3)
+					)
+					(3
+						(= query C_RUMOR4)
+					)
+					(4
+						(= query C_RUMOR5)
+					)
+					(5
+						(= query C_RUMOR6)
+					)
 				)
 			)
 			(-101
 				(switch (mod Day 6)
-					(0 (= query 29))
-					(1 (= query 30))
-					(2 (= query 31))
-					(3 (= query 32))
-					(4 (= query 33))
-					(5 (= query 34))
+					(0
+						(= query C_NAME)
+					)
+					(1
+						(= query C_SELF1)
+					)
+					(2
+						(= query C_SELF2)
+					)
+					(3
+						(= query C_SELF3)
+					)
+					(4
+						(= query C_SELF4)
+					)
+					(5
+						(= query C_SELF5)
+					)
 				)
 			)
-			(else  (super doChild: query))
+			(else
+				(super doChild: query)
+			)
 		)
 	)
 	
 	(method (doVerb theVerb)
-		(if (!= local2 1) (localproc_08de local2) (= local2 1))
+		(if (!= local2 1)
+			(DisposeVendor local2)
+			(= local2 1)
+		)
 		(return
 			(switch theVerb
-				(59
-					(= aSanfordNoun 1)
-					(messager say: 1 6 94 0 aSon)
+				(V_DINARS
+					(= merchantNoun N_WEAPON)
+					(messager say: N_WEAPON V_DOIT C_WRONG_MONEY 0 aSon)
 				)
-				(10
+				(V_ROYALS
 					(if (not local5)
 						((ScriptID 245 1)
 							goods:
 								((List new:)
 									add:
-										((Ware new: 29)
+										((Ware new: N_FINE_DAGGER)
 											price: 15
-											quantity: (if (Btst 166) 0 else 1)
+											quantity: (if (Btst fGotFineDagger) 0 else 1)
 										)
-										((Ware new: 30) price: 6 quantity: 26)
-										((Ware new: 31)
+										((Ware new: N_THROW_DAGGER)
+											price: 6
+											quantity: 26
+										)
+										((Ware new: N_FINE_SPEAR)
 											price: 15
-											quantity: (if (Btst 167) 0 else 1)
+											quantity: (if (Btst fGotFineSpear) 0 else 1)
 										)
 								)
 						)
@@ -1239,51 +1433,79 @@
 						((ScriptID 245 1) goods: local5)
 					)
 					((ScriptID 245 1) init: purchase: dispose:)
-					(return 1)
+					(return TRUE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
 (instance junkTell of Teller
-	(properties)
 	
 	(method (doChild)
 		(switch query
 			(-100
 				(switch (mod Day 6)
-					(0 (= query 23))
-					(1 (= query 24))
-					(2 (= query 25))
-					(3 (= query 26))
-					(4 (= query 27))
-					(5 (= query 28))
+					(0
+						(= query C_RUMOR1)
+					)
+					(1
+						(= query C_RUMOR2)
+					)
+					(2
+						(= query C_RUMOR3)
+					)
+					(3
+						(= query C_RUMOR4)
+					)
+					(4
+						(= query C_RUMOR5)
+					)
+					(5
+						(= query C_RUMOR6)
+					)
 				)
 			)
 			(-101
 				(switch (mod Day 6)
-					(0 (= query 64))
-					(1 (= query 65))
-					(2 (= query 66))
-					(3 (= query 67))
-					(4 (= query 68))
-					(5 (= query 69))
+					(0
+						(= query C_JUNK1)
+					)
+					(1
+						(= query C_JUNK2)
+					)
+					(2
+						(= query C_JUNK3)
+					)
+					(3
+						(= query C_JUNK4)
+					)
+					(4
+						(= query C_JUNK5)
+					)
+					(5
+						(= query C_JUNK6)
+					)
 				)
 			)
 		)
 	)
 	
 	(method (doVerb theVerb)
-		(if (!= local2 7) (localproc_08de local2) (= local2 7))
+		(if (!= local2 7)
+			(DisposeVendor local2)
+			(= local2 7)
+		)
 		(return
 			(switch theVerb
-				(59
-					(= aSanfordNoun 7)
-					(messager say: 6 6 94 0 aSon)
+				(V_DINARS
+					(= merchantNoun N_JUNK)
+					(messager say: N_SON V_DOIT C_WRONG_MONEY 0 aSon)
 				)
-				(10
+				(V_ROYALS
 					(if
 						(or
 							(and (ego has: 9) (!= heroType 2))
@@ -1326,58 +1548,89 @@
 )
 
 (instance honeyTell of Teller
-	(properties)
 	
 	(method (doChild)
 		(return
 			(switch query
-				(-91 (Bset 83) (return query))
+				(-91
+					(Bset fHoneyBirdHinted)
+					(return query)
+				)
 				(-100
 					(switch (mod Day 6)
-						(0 (= query 23))
-						(1 (= query 24))
-						(2 (= query 25))
-						(3 (= query 26))
-						(4 (= query 27))
-						(5 (= query 28))
+						(0
+							(= query C_RUMOR1)
+						)
+						(1
+							(= query C_RUMOR2)
+						)
+						(2
+							(= query C_RUMOR3)
+						)
+						(3
+							(= query C_RUMOR4)
+						)
+						(4
+							(= query C_RUMOR5)
+						)
+						(5
+							(= query C_RUMOR6)
+						)
 					)
 				)
 				(-101
 					(switch (mod Day 6)
-						(0 (= query 29))
-						(1 (= query 30))
-						(2 (= query 31))
-						(3 (= query 32))
-						(4 (= query 33))
-						(5 (= query 34))
+						(0
+							(= query C_NAME)
+						)
+						(1
+							(= query C_SELF1)
+						)
+						(2
+							(= query C_SELF2)
+						)
+						(3
+							(= query C_SELF3)
+						)
+						(4
+							(= query C_SELF4)
+						)
+						(5
+							(= query C_SELF5)
+						)
 					)
 				)
-				(else  (super doChild: query))
+				(else
+					(super doChild: query)
+				)
 			)
 		)
 	)
 	
 	(method (doVerb theVerb)
-		(if (!= local2 4) (localproc_08de local2) (= local2 4))
+		(if (!= local2 4)
+			(DisposeVendor local2)
+			(= local2 4)
+		)
 		(return
 			(switch theVerb
-				(59
-					(= aSanfordNoun 4)
-					(messager say: 4 6 94 0 aSon)
+				(V_DINARS
+					(= merchantNoun N_HONEY)
+					(messager say: N_HONEY V_DOIT C_WRONG_MONEY 0 aSon)
 				)
-				(10
-					(if (ego has: 29)
-						(messager say: 3 6 113)
+				(V_ROYALS
+					(if (ego has: iHoney)
+						(messager say: N_HONEY V_DOIT C_NO_MORE_HONEY)
 					else
 						(if (not local7)
 							((ScriptID 247 1)
 								goods:
 									((List new:)
 										add:
-											((Ware new: 4)
+											((Ware new: N_HONEY)
 												price: 80
 												denomination: 1
-												quantity: (if (ego has: 29) 0 else 1)
+												quantity: (if (ego has: iHoney) 0 else 1)
 											)
 									)
 							)
@@ -1387,63 +1640,91 @@
 						)
 						((ScriptID 247 1) init: purchase: dispose:)
 					)
-					(return 1)
+					(return TRUE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
 (instance oilTell of Teller
-	(properties)
-	
+
 	(method (doChild)
 		(switch query
 			(-100
 				(switch (mod Day 6)
-					(0 (= query 23))
-					(1 (= query 24))
-					(2 (= query 25))
-					(3 (= query 26))
-					(4 (= query 27))
-					(5 (= query 28))
+					(0
+						(= query C_RUMOR1)
+					)
+					(1
+						(= query C_RUMOR2)
+					)
+					(2
+						(= query C_RUMOR3)
+					)
+					(3
+						(= query C_RUMOR4)
+					)
+					(4
+						(= query C_RUMOR5)
+					)
+					(5
+						(= query C_RUMOR6)
+					)
 				)
 			)
 			(-101
 				(switch (mod Day 6)
-					(0 (= query 53))
-					(1 (= query 54))
-					(2 (= query 55))
-					(3 (= query 56))
-					(4 (= query 57))
-					(5 (= query 58))
+					(0
+						(= query C_OIL1)
+					)
+					(1
+						(= query C_OIL2)
+					)
+					(2
+						(= query C_OIL3)
+					)
+					(3
+						(= query C_OIL4)
+					)
+					(4
+						(= query C_OIL5)
+					)
+					(5
+						(= query C_OIL6)
+					)
 				)
 			)
 		)
 	)
 	
 	(method (doVerb theVerb)
-		(if (!= local2 5) (localproc_08de local2) (= local2 5))
+		(if (!= local2 5)
+			(DisposeVendor local2)
+			(= local2 5)
+		)
 		(return
 			(switch theVerb
-				(59
-					(= aSanfordNoun 5)
-					(messager say: 5 6 94 0 aSon)
+				(V_DINARS
+					(= merchantNoun N_OIL)
+					(messager say: N_OIL V_DOIT C_WRONG_MONEY 0 aSon)
 				)
-				(10
-					(if (ego has: 25)
-						(messager say: 3 6 114)
+				(V_ROYALS
+					(if (ego has: iOil)
+						(messager say: N_MERCHANTS V_DOIT C_NO_MORE_OIL)
 					else
 						(if (not local8)
 							((ScriptID 248 1)
 								goods:
 									((List new:)
 										add:
-											((Ware new: 5)
+											((Ware new: N_OIL)
 												price: 100
 												denomination: 1
-												quantity: (if (ego has: 25) 0 else 1)
+												quantity: (if (ego has: iOil) 0 else 1)
 											)
 									)
 							)
@@ -1452,10 +1733,12 @@
 							((ScriptID 248 1) goods: local8)
 						)
 						((ScriptID 248 1) init: purchase: dispose:)
-						(return 1)
+						(return TRUE)
 					)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -1465,9 +1748,9 @@
 	(properties
 		x 31
 		y 78
-		noun 11
+		noun N_SPEARS
 		view 240
-		signal $5000
+		signal (| ignrAct skipCheck)
 	)
 )
 
@@ -1477,7 +1760,7 @@
 		y 98
 		view 240
 		cel 1
-		signal $5000
+		signal (| ignrAct skipCheck)
 	)
 	
 	(method (doVerb theVerb)
@@ -1491,7 +1774,7 @@
 		y 41
 		view 240
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
@@ -1506,7 +1789,7 @@
 		noun 33
 		view 240
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1517,7 +1800,7 @@
 		noun 28
 		view 241
 		priority 6
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1527,7 +1810,7 @@
 		y 143
 		view 240
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
@@ -1542,7 +1825,7 @@
 		view 240
 		loop 1
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1553,7 +1836,7 @@
 		view 240
 		loop 1
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
@@ -1564,32 +1847,32 @@
 (instance haramiTell of Teller
 	(properties)
 	
-	(method (doVerb theVerb &tmp temp0)
+	(method (doVerb theVerb &tmp what)
 		(cond 
-			((OneOf theVerb 27 29 40 28 24)
-				(= temp0
+			((OneOf theVerb V_FISH V_FRUIT V_HONEY V_MEAT V_RATIONS)
+				(= what
 					(switch theVerb
-						(24 14)
-						(29 19)
-						(40 29)
-						(28 18)
-						(27 17)
+						(V_RATIONS iRations)
+						(V_FRUIT iFruit)
+						(V_HONEY iHoney)
+						(V_MEAT iMeat)
+						(V_FISH iFish)
 					)
 				)
-				(ego drop: temp0 1)
+				(ego drop: what 1)
 				(Bset 113)
 				(ego addHonor: 10)
 				(if ((ScriptID 241 0) cycler?)
-					((ScriptID 241 0) setCycle: Beg)
+					((ScriptID 241 0) setCycle: BegLoop)
 				)
-				(messager say: 9 6 10)
+				(messager say: N_HARAMI V_DOIT 10)
 			)
 			((OneOf theVerb 59 10)
 				(ego addHonor: 5)
 				(if ((ScriptID 241 0) cycler?)
-					((ScriptID 241 0) setCycle: Beg)
+					((ScriptID 241 0) setCycle: BegLoop)
 				)
-				(messager say: 9 6 112)
+				(messager say: N_HARAMI V_DOIT 112)
 			)
 			(else (super doVerb: theVerb))
 		)
@@ -1601,7 +1884,7 @@
 		x 148
 		y 199
 		z 30
-		noun 12
+		noun N_LEFT_OIL_BOTTLES
 		nsTop 164
 		nsLeft 138
 		nsBottom 175
@@ -1613,7 +1896,7 @@
 	(properties
 		x 160
 		y 183
-		noun 13
+		noun N_BIG_OIL_BOTTLE
 		nsTop 177
 		nsLeft 153
 		nsBottom 189
@@ -1626,7 +1909,7 @@
 		x 228
 		y 193
 		z 30
-		noun 14
+		noun N_RIGHT_OIL_BOTTLES
 		nsTop 157
 		nsLeft 222
 		nsBottom 169
@@ -1638,7 +1921,7 @@
 	(properties
 		x 189
 		y 175
-		noun 15
+		noun N_OIL_RUG
 		nsTop 162
 		nsLeft 124
 		nsBottom 189
@@ -1650,7 +1933,7 @@
 	(properties
 		x 72
 		y 73
-		noun 16
+		noun N_WEAPON_STAND
 		nsTop 48
 		nsLeft 34
 		nsBottom 99
@@ -1662,7 +1945,7 @@
 	(properties
 		x 290
 		y 128
-		noun 17
+		noun N_HONEY_STAND
 		nsTop 98
 		nsLeft 262
 		nsBottom 159
@@ -1674,7 +1957,7 @@
 	(properties
 		x 153
 		y 66
-		noun 24
+		noun N_PANS_ON_ROPE
 		nsTop 50
 		nsLeft 116
 		nsBottom 82
@@ -1686,7 +1969,7 @@
 	(properties
 		x 165
 		y 95
-		noun 19
+		noun N_LEFT_JUNK
 		nsTop 83
 		nsLeft 146
 		nsBottom 107
@@ -1698,7 +1981,7 @@
 	(properties
 		x 238
 		y 86
-		noun 20
+		noun N_JUNK_TABLE
 		nsTop 75
 		nsLeft 220
 		nsBottom 98
@@ -1710,7 +1993,7 @@
 	(properties
 		x 199
 		y 52
-		noun 18
+		noun N_JUNK_TENT
 		nsTop 17
 		nsLeft 109
 		nsBottom 87
@@ -1722,7 +2005,7 @@
 	(properties
 		x 253
 		y 63
-		noun 25
+		noun N_PURPLE_POT
 		nsTop 52
 		nsLeft 247
 		nsBottom 74
@@ -1734,7 +2017,7 @@
 	(properties
 		x 270
 		y 53
-		noun 21
+		noun N_PLATE_ROWS
 		nsTop 44
 		nsLeft 261
 		nsBottom 63
@@ -1746,7 +2029,7 @@
 	(properties
 		x 275
 		y 69
-		noun 22
+		noun N_RIGHT_TABLE
 		nsTop 63
 		nsLeft 262
 		nsBottom 75
@@ -1758,7 +2041,7 @@
 	(properties
 		x 304
 		y 77
-		noun 23
+		noun N_LARGE_URNS
 		nsTop 64
 		nsLeft 290
 		nsBottom 90

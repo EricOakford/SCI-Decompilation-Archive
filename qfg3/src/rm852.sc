@@ -36,7 +36,7 @@
 		else
 			(self setScript: paladinEndScript)
 		)
-		(if (not (== global155 0))
+		(if (not (== battleResult 0))
 			(theGame save: TRUE)
 		)
 	)
@@ -90,7 +90,7 @@
 				(= seconds 2)
 			)
 			(1
-				(if (== global155 0)
+				(if (== battleResult 0)
 					(EgoDead C_DEATH_GARGOYLE 850)
 				else
 					(self cue:)

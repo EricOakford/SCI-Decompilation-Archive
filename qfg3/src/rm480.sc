@@ -192,7 +192,7 @@
 			)
 			(1
 				(if
-				(and (not (Btst 29)) (or (ego has: 44) [egoStats 31]))
+				(and (not (Btst 29)) (or (ego has: 44) [egoStats STAFF]))
 					(Bset 29)
 				)
 			)
@@ -303,7 +303,7 @@
 			)
 			(
 				(and
-					(== global392 4)
+					(== brideState 4)
 					(== gCurrentDay_10 Day)
 					(not (Btst 65))
 				)
@@ -312,7 +312,7 @@
 			(
 				(and
 					(not (Btst 65))
-					(== global392 4)
+					(== brideState 4)
 					(!= gCurrentDay_10 Day)
 					(not Night)
 				)
@@ -1162,7 +1162,7 @@
 					(
 						(and
 							(Btst 38)
-							(== global392 4)
+							(== brideState 4)
 							(> global401 5)
 							(not (Btst 65))
 						)
@@ -1267,7 +1267,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(30
-				(if (and (== global392 4) (Btst 38))
+				(if (and (== brideState 4) (Btst 38))
 					(if (not (Btst 283))
 						(ego solvePuzzle: 283 3 addHonor: 20)
 						(++ global453)
@@ -1279,7 +1279,7 @@
 				)
 			)
 			(12
-				(if (and (== global392 4) (Btst 38))
+				(if (and (== brideState 4) (Btst 38))
 					(if (not (Btst 284))
 						(ego solvePuzzle: 284 3 addHonor: 20)
 						(++ global453)
@@ -1291,7 +1291,7 @@
 				)
 			)
 			(43
-				(if (and (== global392 4) (Btst 38))
+				(if (and (== brideState 4) (Btst 38))
 					(if (not (Btst 282))
 						(ego solvePuzzle: 282 3 addHonor: 20)
 						(++ global453)
@@ -1302,7 +1302,7 @@
 					(messager say: 11 43 0)
 				)
 			)
-			(26
+			(V_DISPEL
 				(cond 
 					(
 					(and (cast contains: (ScriptID 39 1)) (== global401 5)) (messager say: 6 6 25))

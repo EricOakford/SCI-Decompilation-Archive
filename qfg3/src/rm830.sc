@@ -91,7 +91,7 @@
 			)
 			(1
 				(cond 
-					((and (== prevRoomNum 550) (== global155 0)) (curRoom setScript: egoIsDead))
+					((and (== prevRoomNum 550) (== battleResult 0)) (curRoom setScript: egoIsDead))
 					((== prevRoomNum 550)
 						(cSound number: 830 setLoop: -1 play: 127)
 						(reesha noun: 1 init:)

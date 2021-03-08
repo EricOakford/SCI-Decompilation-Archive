@@ -242,19 +242,19 @@
 		(super
 			showDialog:
 				-30
-				(Btst 42) -31
-				(Btst 56) 77
-				(if (Btst 29) (not (Btst 38)) else 0) -33
-				(if (Btst 38) (not (Btst 65)) else 0) -34
-				(if (== global392 4) (not (Btst 65)) else 0) -35
-				(if (not (Btst 102)) (Btst 65) else 0) -36
-				(if (and (Btst 102) (Btst 65))
-					(not (Btst 37))
+				(Btst fAfterInitiation) -31	;NOTE: This used flag 42, which is never set, making it impossible to get the points.
+				(Btst fAfterRace) 77
+				(if (Btst fLeopardmanCaptured) (not (Btst fDispelledLeopardman)) else 0) -33
+				(if (Btst fDispelledLeopardman) (not (Btst fJohariReleased)) else 0) -34
+				(if (== brideState 4) (not (Btst fJohariReleased)) else 0) -35
+				(if (not (Btst fEnteredLeopardmanVillage)) (Btst fJohariReleased) else 0) -36
+				(if (and (Btst fEnteredLeopardmanVillage) (Btst fJohariReleased))
+					(not (Btst fSawLeopardmanRitual))
 				else
 					0
 				)
 				-37
-				(Btst 37)
+				(Btst fSawLeopardmanRitual)
 				-41
 				(< greeting 3)
 				-76
@@ -278,11 +278,11 @@
 					(return query)
 				)
 				(-31
-					(ego solvePuzzle: 239 3 9)
+					(ego solvePuzzle: fTellAboutInitiation 3 (| puzzleFIGHTER puzzlePALADIN))
 					(return query)
 				)
 				(-33
-					(ego solvePuzzle: 240 2)
+					(ego solvePuzzle: fTellAboutDispelledLeopardLady 2)
 					(return query)
 				)
 				(else  (return query))
@@ -291,8 +291,8 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 3)
-			(curRoom doVerb: 3)
+		(if (== theVerb V_WALK)
+			(curRoom doVerb: V_WALK)
 		else
 			(super doVerb: theVerb)
 		)
@@ -300,8 +300,7 @@
 )
 
 (instance kreeshaTell of Teller
-	(properties)
-	
+
 	(method (showDialog)
 		(super
 			showDialog:
@@ -357,8 +356,8 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 3)
-			(curRoom doVerb: 3)
+		(if (== theVerb V_WALK)
+			(curRoom doVerb: V_WALK)
 		else
 			(super doVerb: theVerb)
 		)
@@ -366,8 +365,7 @@
 )
 
 (instance rakeeshTell of Teller
-	(properties)
-	
+
 	(method (showDialog)
 		(super
 			showDialog:
@@ -418,7 +416,8 @@
 				(-40 (super doChild: query))
 				(-9 (super doChild: query))
 				(-10 (super doChild: query))
-				(-7 (super doChild: query))
+				;NOTE: This case already exists, and will probably never be executed
+				;(-7 (super doChild: query))
 				(-45 (super doChild: query))
 				(-46 (super doChild: query))
 				(-56 (super doChild: query))
@@ -429,8 +428,8 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 3)
-			(curRoom doVerb: 3)
+		(if (== theVerb V_WALK)
+			(curRoom doVerb: V_WALK)
 		else
 			(super doVerb: theVerb)
 		)

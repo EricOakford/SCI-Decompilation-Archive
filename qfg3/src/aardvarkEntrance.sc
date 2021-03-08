@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 402)
-(include sci.sh)
+(include game.sh) (include "400.shm")
 (use Main)
 (use TellerIcon)
 (use Talker)
@@ -16,26 +16,25 @@
 )
 
 (local
-	theCurrentTime
-	theClient
-	[local2 8] = [0 -14 13 -11 -8 7 12 999]
-	[local10 6] = [0 15 16 17 18 999]
-	[local16 6] = [0 19 20 21 9 999]
-	[local22 4] = [0 9 10 999]
+	now
+	whoCares
+	local2 = [0 -14 13 -11 -8 7 12 999]
+	local10 = [0 15 16 17 18 999]
+	local16 = [0 19 20 21 9 999]
+	local22 = [0 9 10 999]
 	[local26 10]
-	[local36 5] = [0 -14 -11 -8 999]
-	[local41 4] = [0 22 -23 999]
+	local36 = [0 -14 -11 -8 999]
+	local41 = [0 22 -23 999]
 	[local45 6]
 )
 (instance aardvarkEntrance of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= theCurrentTime Clock)
-				(= theClient client)
+				(= now Clock)
+				(= whoCares client)
 				(= [local26 0] @local2)
 				(= [local26 1] @local10)
 				(= [local26 2] @local16)
@@ -44,9 +43,11 @@
 				(aardvark init:)
 				(aardvarkTell init: aardvark @local2 @local26 @local36)
 				(egoTell init: ego @local41 @local45)
-				(messager say: 2 6 27 0 self 400)
+				(messager say: N_AARDVARK V_DOIT C_HEAR_AARDVARK 0 self 400)
 			)
-			(1 (ego setCycle: Beg self))
+			(1
+				(ego setCycle: BegLoop self)
+			)
 			(2
 				(ego x: (+ (ego x?) 25) normalize:)
 				(aardvark
@@ -56,24 +57,24 @@
 				)
 			)
 			(3
-				(aardvark loop: 2 cel: 0 setCycle: End self)
+				(aardvark loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(messager say: 2 6 5 0 self 400)
+				(messager say: N_AARDVARK V_DOIT C_AARDVARK_ENTRANCE 0 self 400)
 			)
 			(5
-				(aardvark loop: 3 cel: 0 setCycle: End self)
+				(aardvark loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				(aardvark loop: 4 cel: 0 setCycle: End self)
+				(aardvark loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				(messager say: 2 6 6 0 self 400)
+				(messager say: N_AARDVARK V_DOIT C_AARDVARK_HELLO 0 self 400)
 			)
 			(8
 				(aardvark loop: 5 cel: 0)
-				(theIconBar enable: 4 2)
-				(User canInput: 1)
+				(theIconBar enable: V_DO V_TALK)
+				(User canInput: TRUE)
 				(theIconBar advanceCurIcon:)
 				(aardvark setScript: drink)
 				(self dispose:)
@@ -83,23 +84,26 @@
 )
 
 (instance drink of Script
-	(properties)
-	
+
 	(method (doit)
-		(= Clock theCurrentTime)
+		(= Clock now)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(aardvark setCycle: End self)
+				(aardvark setCycle: EndLoop self)
 			)
 			(1
-				(aardvark setCycle: Beg self)
+				(aardvark setCycle: BegLoop self)
 			)
-			(2 (= cycles 300))
-			(3 (self init:))
+			(2
+				(= cycles 300)
+			)
+			(3
+				(self init:)
+			)
 		)
 	)
 )
@@ -108,12 +112,12 @@
 	(properties
 		x -10
 		y 149
-		noun 2
+		noun N_AARDVARK
 		view 404
 	)
 	
 	(method (doit)
-		(Palette palANIMATE 67 69 2)
+		(Palette PALCycle 67 69 2)
 		(super doit: &rest)
 	)
 )
@@ -126,7 +130,7 @@
 		loop 1
 		cel 1
 		priority 11
-		signal $0010
+		signal fixPriOn
 		talkWidth 150
 		back 57
 		textX 137
@@ -138,12 +142,18 @@
 	)
 	
 	(method (doit)
-		(if (and (super doit:) mouth) (self cycle: mouth))
-		(if bust (self cycle: bust))
-		(if eyes (self cycle: eyes))
+		(if (and (super doit:) mouth)
+			(self cycle: mouth)
+		)
+		(if bust
+			(self cycle: bust)
+		)
+		(if eyes
+			(self cycle: eyes)
+		)
 	)
 	
-	(method (dispose param1)
+	(method (dispose dWD)
 		(if (and mouth underBits)
 			(mouth cel: 0)
 			(DrawCel
@@ -161,7 +171,7 @@
 			)
 			(mouth setCycle: 0)
 		)
-		(if (or (not argc) param1)
+		(if (or (not argc) dWD)
 			(if (and bust underBits)
 				(bust setCycle: 0 cel: 0)
 				(DrawCel
@@ -186,16 +196,16 @@
 			)
 			(self hide:)
 		)
-		(super dispose: param1)
+		(super dispose: dWD)
 	)
 	
-	(method (show &tmp temp0)
+	(method (show &tmp pnv)
 		(if (not underBits)
 			(= underBits
-				(Graph grSAVE_BOX nsTop nsLeft nsBottom nsRight 1)
+				(Graph GSaveBits nsTop nsLeft nsBottom nsRight 1)
 			)
 		)
-		(= temp0 (PicNotValid))
+		(= pnv (PicNotValid))
 		(PicNotValid 1)
 		(DrawCel view loop cel nsLeft nsTop -1)
 		(if bust
@@ -228,12 +238,14 @@
 				-1
 			)
 		)
-		(Graph grUPDATE_BOX nsTop nsLeft nsBottom nsRight 1)
-		(PicNotValid temp0)
+		(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
+		(PicNotValid pnv)
 	)
 	
 	(method (startText &tmp [temp0 21])
-		(if bust (bust setCycle: Fwd))
+		(if bust
+			(bust setCycle: Forward)
+		)
 		(super startText:)
 	)
 )
@@ -246,7 +258,7 @@
 		loop 2
 		cel 1
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -257,7 +269,7 @@
 		view 405
 		loop 3
 		priority 15
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 10
 	)
 )
@@ -269,44 +281,43 @@
 		view 405
 		cel 4
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 
-(instance aardvarkTell of Teller
-	(properties)
-)
+(instance aardvarkTell of Teller)
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (doChild param1)
 		(return
 			(if (== param1 -23)
-				(theClient setScript: cleanUp theClient)
-				(return 1)
+				(whoCares setScript: cleanUp whoCares)
+				(return TRUE)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance cleanUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 10))
+			(0
+				(HandsOff)
+				(= cycles 10)
+			)
 			(1
 				(drink dispose:)
-				(aardvark setCycle: End self)
+				(aardvark setCycle: EndLoop self)
 			)
 			(2
-				(aardvark loop: 6 cel: 0 setCycle: End self)
+				(aardvark loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(aardvark loop: 3 cel: 6 setCycle: Beg self)
+				(aardvark loop: 3 cel: 6 setCycle: BegLoop self)
 			)
 			(4
 				(aardvark
@@ -321,7 +332,7 @@
 					loop: 1
 					cel: 0
 					x: (- (ego x?) 25)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(aardvarkTell dispose:)
 				(aardvarkTalker dispose:)
@@ -329,17 +340,19 @@
 				(egoTell dispose:)
 				(cSound number: 927 setLoop: -1 play:)
 			)
-			(6 (= seconds 5))
+			(6
+				(= seconds 5)
+			)
 			(7
-				(PalVary pvREVERSE 3)
-				(Bclr 81)
+				(PalVary PALVARYREVERSE 3)
+				(Bclr fEgoIsAsleep)
 				(= seconds 4)
 			)
 			(8
-				((ScriptID 7 7) init: 5 40)
+				((ScriptID TIME 7) init: 5 40)
 				(= cycles 10)
 			)
-			(9 (ego setCycle: Beg self))
+			(9 (ego setCycle: BegLoop self))
 			(10
 				(ego normalize: x: (+ (ego x?) 25))
 				(self dispose:)

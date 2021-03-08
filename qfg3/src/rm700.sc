@@ -506,7 +506,7 @@
 			(= local41 global430)
 			(= theGGOwnerX_4 gGOwnerX_4)
 			(= theGGOwnerY_4 gGOwnerY_4)
-			(= prevRoomNum gGGClientModNum_2_2)
+			(= prevRoomNum junglePanoNum)
 			(= local44 (& global431 $0001))
 			(= local28 (& global431 $0002))
 			(localproc_3a24)
@@ -518,7 +518,7 @@
 				signal: 2
 				noun: 2
 			)
-			(switch global155
+			(switch battleResult
 				(0 (self setScript: egoIsDead))
 				(1
 					(cSound setLoop: -1 changeTo: 400)
@@ -546,7 +546,7 @@
 			(cSound setLoop: -1 changeTo: 400)
 			(= global432 230)
 			(= monsterHealth 0)
-			(= global426 0)
+			(= thrownDaggers 0)
 			(= local41 (Random 64 256))
 			(= theGGOwnerX_4 (= theGGOwnerY_4 (Random 5 127)))
 			(switch monsterNum
@@ -938,7 +938,7 @@
 					(if local38
 						(messager say: 0 0 93)
 					else
-						((ScriptID 7 5) init: global455)
+						((ScriptID 7 5) init: restTime)
 					)
 				)
 				(74
@@ -951,7 +951,7 @@
 					)
 				)
 				(20
-					(++ global426)
+					(++ thrownDaggers)
 					(if (OneOf monsterNum 580 8 9) (ego setScale:))
 					(ego setScript: (ScriptID 32 0) self 20)
 				)
@@ -1868,9 +1868,9 @@
 				(self cue:)
 			)
 			(1
-				(if (and global426 (not local33))
+				(if (and thrownDaggers (not local33))
 					(messager say: 0 20 86 0 self)
-					(ego get: 10 global426)
+					(ego get: 10 thrownDaggers)
 				else
 					(self cue:)
 				)
@@ -2328,7 +2328,7 @@
 					(= global430 local41)
 					(= gGOwnerX_4 theGGOwnerX_4)
 					(= gGOwnerY_4 theGGOwnerY_4)
-					(= gGGClientModNum_2_2 prevRoomNum)
+					(= junglePanoNum prevRoomNum)
 					(if local44
 						(= global431 (& global431 $fffe))
 					else

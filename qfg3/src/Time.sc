@@ -71,7 +71,7 @@
 			230 400 460 510 520 530 700
 			810 820 830 851 852 853 854
 		)
-		(= global455 theMin)
+		(= restTime theMin)
 		((= evt (Event new:)) type: mouseDown message: V_REST)
 		(if (not (mouseDownHandler handleEvent: evt))
 			(regions handleEvent: evt)

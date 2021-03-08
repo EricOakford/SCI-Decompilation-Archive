@@ -119,18 +119,18 @@
 			((and (Btst 16) (not (Btst 163))) (= local11 8))
 			(
 				(and
-					(not (== global392 4))
-					(== global392 1)
+					(not (== brideState 4))
+					(== brideState 1)
 					(ego has: 21)
 					(ego has: 40)
 					(ego has: 3)
 					(>= ((inventory at: 21) amount?) 5)
 				)
-				(= global392 2)
+				(= brideState 2)
 				(= local11 6)
 			)
 			(
-			(and (Btst 29) (not (Btst 38)) (== global392 0)) (= local11 3))
+			(and (Btst 29) (not (Btst 38)) (== brideState 0)) (= local11 3))
 			(
 				(and
 					(Btst 38)
@@ -140,7 +140,7 @@
 				)
 				(= local11 5)
 			)
-			((and (not (Btst 65)) (Btst 38)) (= global392 1) (= local11 4))
+			((and (not (Btst 65)) (Btst 38)) (= brideState 1) (= local11 4))
 			((and (not (Btst 74)) (Btst 49) (not Night)) (= local11 1))
 			(else (= local11 2))
 		)
@@ -168,7 +168,7 @@
 		(egoTell init: ego @local45 @local60)
 		(cond 
 			((== local11 0)
-				(= global392 0)
+				(= brideState 0)
 				(rakeeshTell init: (ScriptID 35 1) @local62 @local66)
 				(uhuraTell init: native @local68 @local71)
 				((ScriptID 34 0)
@@ -402,7 +402,7 @@
 				(messager say: 4 6 58 0 self)
 			)
 			(3
-				(if global406
+				(if wonBridgeWrestling
 					(messager say: 4 6 64 0 self)
 				else
 					(messager say: 4 6 62 0 self)
@@ -413,15 +413,15 @@
 			)
 			(5
 				(cond 
-					((and (not global406) (Btst 30)) (ego get: 46) (Bset 163) (messager say: 6 6 60 0 self))
-					((and (not global406) (not (Btst 30))) (messager say: 6 6 61 0 self))
-					(global406 (ego get: 46) (Bset 163) (self cue:))
+					((and (not wonBridgeWrestling) (Btst fHelpedYesufu)) (ego get: 46) (Bset 163) (messager say: 6 6 60 0 self))
+					((and (not wonBridgeWrestling) (not (Btst fHelpedYesufu))) (messager say: 6 6 61 0 self))
+					(wonBridgeWrestling (ego get: 46) (Bset 163) (self cue:))
 				)
 			)
 			(6
 				(cond 
-					((and (not global406) (Btst 30)) (curRoom newRoom: 420))
-					((not global406) (EgoDead 72))
+					((and (not wonBridgeWrestling) (Btst fHelpedYesufu)) (curRoom newRoom: 420))
+					((not wonBridgeWrestling) (EgoDead 72))
 					(else (messager say: 4 6 63 0 self))
 				)
 			)
@@ -581,7 +581,7 @@
 							(ego has: 40)
 							(ego has: 3)
 							(Btst 16)
-							(== global392 2)
+							(== brideState 2)
 						)
 						(messager say: 4 6 40)
 						(self setScript: egoBuysJohari self)
@@ -592,7 +592,7 @@
 							(ego has: 21)
 							(ego has: 40)
 							(ego has: 3)
-							(== global392 2)
+							(== brideState 2)
 						)
 						(messager say: 4 6 40)
 						(self setScript: egoBuysJohari self)
@@ -657,7 +657,7 @@
 			(0
 				(HandsOff)
 				(ego drop: 21 5 drop: 40 1 drop: 3 1)
-				(= global366 11)
+				(= simbaniState 11)
 				(ego solvePuzzle: 272 3)
 				(ego solvePuzzle: 274 3)
 				(ego solvePuzzle: 273 3)
@@ -676,7 +676,7 @@
 			)
 			(4
 				(laibonArm show:)
-				(= global392 4)
+				(= brideState 4)
 				((ScriptID 42 1) loop: 0)
 				(if (!= client egoExits) (HandsOn))
 				(self dispose:)
@@ -1375,9 +1375,9 @@
 				-39
 				(if (< 3 local11) (< local11 6) else 0)
 				-47
-				(== global392 2)
+				(== brideState 2)
 				-49
-				(== global392 2)
+				(== brideState 2)
 				-40
 				(if (< 3 local11) (< local11 6) else 0)
 				-25
@@ -1398,7 +1398,7 @@
 				-38
 				(if (< 3 local11) (< local11 6) else 0)
 				-48
-				(== global392 4)
+				(== brideState 4)
 				-65
 				(Btst 74)
 				-8
@@ -1451,7 +1451,7 @@
 								(ego has: 21)
 								(ego has: 3)
 								(ego has: 40)
-								(== global392 2)
+								(== brideState 2)
 								(Btst 16)
 							)
 							(ego setScript: egoBuysJohari)
@@ -1463,7 +1463,7 @@
 								(ego has: 21)
 								(ego has: 3)
 								(ego has: 40)
-								(== global392 2)
+								(== brideState 2)
 							)
 							(ego setScript: egoBuysJohari)
 						)
@@ -1523,7 +1523,7 @@
 					(cond 
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 3)
 								(ego has: 40)
 								(!= origHeroType 0)
@@ -1532,7 +1532,7 @@
 						)
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 3)
 								(ego has: 40)
 								(Btst 16)
@@ -1542,7 +1542,7 @@
 						)
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 3)
 								(ego has: 40)
 								(not (Btst 16))
@@ -1558,7 +1558,7 @@
 					(cond 
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 3)
 								(ego has: 21)
 								(!= origHeroType 0)
@@ -1567,7 +1567,7 @@
 						)
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 3)
 								(ego has: 21)
 								(Btst 16)
@@ -1577,7 +1577,7 @@
 						)
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 3)
 								(ego has: 21)
 								(not (Btst 16))
@@ -1593,7 +1593,7 @@
 					(cond 
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 40)
 								(ego has: 21)
 								(!= origHeroType 0)
@@ -1602,7 +1602,7 @@
 						)
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 40)
 								(ego has: 21)
 								(Btst 16)
@@ -1612,7 +1612,7 @@
 						)
 						(
 							(and
-								(== global392 2)
+								(== brideState 2)
 								(ego has: 40)
 								(ego has: 21)
 								(not (Btst 16))
@@ -1730,7 +1730,7 @@ code_2481:
 			ldi      8
 			eq?     
 			bnt      code_248f
-			lag      global406
+			lag      wonBridgeWrestling
 code_248f:
 			push    
 			pushi    65468
@@ -1738,7 +1738,7 @@ code_248f:
 			ldi      8
 			eq?     
 			bnt      code_249d
-			lag      global406
+			lag      wonBridgeWrestling
 code_249d:
 			push    
 			pushi    65470
@@ -1746,7 +1746,7 @@ code_249d:
 			ldi      8
 			eq?     
 			bnt      code_24ae
-			lag      global406
+			lag      wonBridgeWrestling
 			bt       code_24b4
 code_24ae:
 			pushi    1

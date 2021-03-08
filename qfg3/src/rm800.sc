@@ -86,7 +86,7 @@
 			ignoreActors: 1
 			init:
 		)
-		(if (and (== prevRoomNum 550) (== global155 0))
+		(if (and (== prevRoomNum 550) (== battleResult 0))
 			(EgoDead)
 		)
 		(if (== prevRoomNum 550)

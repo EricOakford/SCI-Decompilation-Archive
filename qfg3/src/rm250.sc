@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 250)
-(include sci.sh)
+(include game.sh) (include "250.shm")
 (use Main)
 (use TellerIcon)
 (use OccasionalCycle)
@@ -27,60 +27,60 @@
 
 (local
 	theVendor
-	local1
-	local2
+	beadGreeted
+	nearMerchant
 	local3
 	local4
-	local5
-	local6
-	local7
-	local8
-	local9
-	local10
-	local11
+	begCount
+	haramiHere
+	askedAboutAcrobatics
+	showedThiefSign
+	fishGreeted
+	ropeGreeted
+	talkCount
 	[local12 2]
-	[local14 11] = [0 -1 -59 -74 -4 -16 -47 -55 -72 -13 999]
-	[local25 6] = [0 4 5 6 7 999]
-	[local31 6] = [0 16 5 -6 -78 999]
-	[local37 6] = [0 -6 -79 5 -54 999]
-	[local43 5] = [0 -66 68 69 999]
-	[local48 3] = [0 67 999]
-	[local51 3] = [0 -66 999]
+	local14 = [0 -1 -59 -74 -4 -16 -47 -55 -72 -13 999]
+	local25 = [0 4 5 6 7 999]
+	local31 = [0 16 5 -6 -78 999]
+	local37 = [0 -6 -79 5 -54 999]
+	local43 = [0 -66 68 69 999]
+	local48 = [0 67 999]
+	local51 = [0 -66 999]
 	[local54 2]
 	[local56 2]
 	[local58 2]
 	[local60 2]
 	[local62 3]
 	local67_2
-	local66
+	agreedToMeet
 	local67_2_2
 )
-(procedure (localproc_1bb6)
-	(if local6
-		(switch local5
-			(0 (messager say: 6 6 60))
-			(1 (messager say: 6 6 61))
-			(2 (messager say: 6 6 62))
-			(3 (messager say: 6 6 63))
-			(4 (messager say: 6 6 64))
-			(else  (messager say: 6 6 65))
+(procedure (HaramiBegs)
+	(if haramiHere
+		(switch begCount
+			(0 (messager say: N_HARAMI V_DOIT 60))
+			(1 (messager say: N_HARAMI V_DOIT 61))
+			(2 (messager say: N_HARAMI V_DOIT 62))
+			(3 (messager say: N_HARAMI V_DOIT 63))
+			(4 (messager say: N_HARAMI V_DOIT 64))
+			(else  (messager say: N_HARAMI V_DOIT 65))
 		)
-		(if (> (++ local5) 6) (= local5 0))
+		(if (> (++ begCount) 6) (= begCount 0))
 		((Timer new:) set: aHarami 8)
 	)
 )
 
-(instance rm250 of Rm
+(instance rm250 of Room
 	(properties
-		noun 19
+		noun N_ROOM
 		picture 250
 		horizon -280
 	)
 	
 	(method (init)
-		(self setRegions: 51)
+		(self setRegions: BAZAAR)
 		(ego
-			noun: 2
+			noun: N_EGO_TELL
 			normalize:
 			edgeHit: 0
 			actions: egoTeller
@@ -102,17 +102,32 @@
 				(ego x: 200 y: 110 setHeading: 135)
 			)
 		)
-		(if (or Night (Btst 135))
+		(if (or Night (Btst fVisitedBazaar))
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
-						init: 236 189 0 189 0 0 36 0 149 69 55 83
+						type: PBarredAccess
+						init:
+							236 189
+							0 189
+							0 0
+							36 0
+							149 69
+							55 83
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
-						init: 319 115 213 135 198 112 315 93 315 45 183 63 116 22 126 0 319 0
+						type: PBarredAccess
+						init:
+							319 115
+							213 135
+							198 112
+							315 93
+							315 45
+							183 63
+							116 22
+							126 0
+							319 0
 						yourself:
 					)
 			)
@@ -123,38 +138,36 @@
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
-						init: 0 189 0 0 34 0 144 61 154 71 210 109 124 124 238 189
+						type: PBarredAccess
+						init:
+							0 189
+							0 0
+							34 0
+							144 61
+							154 71
+							210 109
+							124 124
+							238 189
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
+						type: PBarredAccess
 						init:
-							319
-							0
-							319
-							189
-							199
-							119
-							315
-							92
-							315
-							50
-							270
-							47
-							244
-							58
-							188
-							58
-							119
-							23
-							120
-							0
+							319 0
+							319 189
+							199 119
+							315 92
+							315 50
+							270 47
+							244 58
+							188 58
+							119 23
+							120 0
 						yourself:
 					)
 			)
 		)
-		(if (and (not Night) (not (Btst 135)))
+		(if (and (not Night) (not (Btst fVisitedBazaar)))
 			(= [local54 0] @local14)
 			(egoTeller init: ego @local14 @local54)
 			(= [local56 0] @local25)
@@ -162,8 +175,8 @@
 				setPri: 1
 				setCycle: OccasionalCycle self 1 65 150
 				actions: beadTeller
-				noun: 1
-				approachVerbs: 2 59 10
+				noun: N_BEADS
+				approachVerbs: V_TALK V_DINARS V_ROYALS
 				init:
 			)
 			(beadTeller init: aBeadMaker @local25 @local56)
@@ -171,7 +184,7 @@
 				init:
 				goods:
 					((List new:)
-						add: ((Class_47_1 new: 1)
+						add: ((Ware new: N_BEADS)
 							price: 95
 							denomination: 1
 							quantity: 9999
@@ -184,7 +197,7 @@
 				setCycle: OccasionalCycle self 1 40 170
 				actions: fishTeller
 				noun: 3
-				approachVerbs: 2 59 10
+				approachVerbs: V_TALK V_DINARS V_ROYALS
 				init:
 			)
 			(fishTeller init: aFishSeller @local31 @local58)
@@ -192,7 +205,7 @@
 				init:
 				goods:
 					((List new:)
-						add: ((Class_47_1 new: 3)
+						add: ((Ware new: N_FISH)
 							price: 50
 							quantity: 9999
 							denomination: 1
@@ -202,9 +215,9 @@
 			(= [local60 0] @local37)
 			(aRopeMaker
 				setCycle: OccasionalCycle self 1 55 150
-				noun: 4
+				noun: N_ROPE
 				actions: ropeTeller
-				approachVerbs: 2 59 10
+				approachVerbs: V_TALK V_DINARS V_ROYALS
 				init:
 			)
 			(ropeTeller init: aRopeMaker @local37 @local60)
@@ -213,19 +226,18 @@
 				goods:
 					((List new:)
 						add:
-							((Class_47_1 new: 4)
+							((Ware new: N_ROPE)
 								price: 100
 								denomination: 1
-								quantity: (if (Btst 168) 0 else 1)
+								quantity: (if (Btst fGotRope) 0 else 1)
 							)
 					)
 			)
-			(if
-			(and (not (Btst 40)) (== local67_2 1) (> Day 4))
+			(if (and (not (Btst fMetHonorlessHarami)) (== local67_2 1) (> Day 4))
 				(ego code: cueCode)
 			)
 		)
-		(if (and (not Night) (not (Btst 135)))
+		(if (and (not Night) (not (Btst fVisitedBazaar)))
 			(beadtent init:)
 			(rack_of_beads init:)
 			(fishingpoles init:)
@@ -239,7 +251,7 @@
 		)
 		(river init:)
 		(moreriver init:)
-		(if (and (not Night) (not (Btst 135)))
+		(if (and (not Night) (not (Btst fVisitedBazaar)))
 			(fishA init: addToPic:)
 			(fishB init: addToPic:)
 			(beadA init: addToPic:)
@@ -252,30 +264,35 @@
 		(super doit: &rest)
 		(cond 
 			(script)
-			((not (if (< 5 (ego x?)) (< (ego x?) 315))) (self setScript: sExit))
-			((not (if (< 35 (ego y?)) (< (ego y?) 183))) (self setScript: sExit))
+			((not (if (< 5 (ego x?)) (< (ego x?) 315)))
+				(self setScript: sExit)
+			)
+			((not (if (< 35 (ego y?)) (< (ego y?) 183)))
+				(self setScript: sExit)
+			)
 		)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 40 47)
+		(LoadMany FALSE HARAMI_TALKER VENDOR)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb &tmp [temp0 2])
 		(switch theVerb
-			(1
+			(V_LOOK
 				(messager
-					say: 19 1 0 (if (or (Btst 135) Night) 0 else 1)
+					say: N_ROOM V_LOOK NULL (if (or (Btst fVisitedBazaar) Night) 0 else 1)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance dayCode of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
@@ -283,35 +300,37 @@
 				(and
 					(not Night)
 					(ego inRect: 193 42 237 65)
-					(not local1)
-					(not (Btst 135))
+					(not beadGreeted)
+					(not (Btst fVisitedBazaar))
 				)
 				(curRoom setScript: beadGreet)
-				(= local1 1)
+				(= beadGreeted TRUE)
 			)
-			((& (ego onControl: 1) $0004)
-				(if
-				(and (not Night) (not local9) (not (Btst 135)))
+			((& (ego onControl: origin) cGREEN)
+				(if (and (not Night) (not fishGreeted) (not (Btst fVisitedBazaar)))
 					(curRoom setScript: fishGreet)
-					(= local9 1)
+					(= fishGreeted TRUE)
 				)
 			)
-			((& (ego onControl: 1) $0008)
-				(if
-				(and (not Night) (not local10) (not (Btst 135)))
+			((& (ego onControl: origin) cCYAN)
+				(if (and (not Night) (not ropeGreeted) (not (Btst fVisitedBazaar)))
 					(curRoom setScript: ropeGreet)
-					(= local10 1)
+					(= ropeGreeted TRUE)
 				)
 			)
-			((not (& (ego onControl: 1) $0004)) (if local9 (= local9 0)))
-			(
-			(and (not (& (ego onControl: 1) $0008)) local10) (= local10 0))
+			((not (& (ego onControl: origin) cGREEN))
+				(if fishGreeted
+					(= fishGreeted FALSE)
+				)
+			)
+			((and (not (& (ego onControl: origin) cCYAN)) ropeGreeted)
+				(= ropeGreeted FALSE)
+			)
 		)
 	)
 )
 
 (instance beadGreet of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -323,14 +342,18 @@
 				(Face ego aBeadMaker)
 				(= cycles 15)
 			)
-			(2 (messager say: 1 6 1 0 self))
-			(3 (HandsOn) (self dispose:))
+			(2
+				(messager say: N_BEADS V_DOIT C_GREET_BEADS 0 self)
+			)
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance haramiLeave of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -338,12 +361,12 @@
 				(HandsOff)
 				(ego code: dayCode)
 				(= local67_2_2 0)
-				(= local6 0)
-				(if (not local66)
-					(if local11
-						(messager say: 6 6 59 0 self)
+				(= haramiHere FALSE)
+				(if (not agreedToMeet)
+					(if talkCount
+						(messager say: N_HARAMI V_DOIT C_HARAMI_GAB 0 self)
 					else
-						(messager say: 6 6 87 0 self)
+						(messager say: N_HARAMI V_DOIT C_HARAMI_DITCHES 0 self)
 					)
 				else
 					(self cue:)
@@ -354,7 +377,7 @@
 					view: 950
 					setScript: 0
 					setCycle: Walk
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: PolyPath 310 (aHarami y?) self
 				)
 			)
@@ -368,7 +391,6 @@
 )
 
 (instance ropeGreet of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -381,65 +403,68 @@
 				(= cycles 15)
 			)
 			(2
-				(if local8
+				(if showedThiefSign
 					(switch (mod Day 6)
 						(0
-							(messager say: 4 6 41 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET_ROPE1 0 self)
 						)
 						(1
-							(messager say: 4 6 42 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET_ROPE2 0 self)
 						)
 						(2
-							(messager say: 4 6 43 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET_ROPE3 0 self)
 						)
 						(3
-							(messager say: 4 6 44 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET_ROPE4 0 self)
 						)
 						(4
-							(messager say: 4 6 45 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET_ROPE5 0 self)
 						)
 						(5
-							(messager say: 4 6 46 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET_ROPE6 0 self)
 						)
 					)
 				else
 					(switch (mod Day 6)
 						(0
-							(messager say: 4 6 30 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET1 0 self)
 						)
 						(1
-							(messager say: 4 6 31 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET2 0 self)
 						)
 						(2
-							(messager say: 4 6 26 0 self)
+							;EO: No, that's not the wrong case
+							(messager say: N_ROPE V_DOIT C_SELF_FISH4 0 self)
 						)
 						(3
-							(messager say: 4 6 32 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET3 0 self)
 						)
 						(4
-							(messager say: 4 6 33 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET4 0 self)
 						)
 						(5
-							(messager say: 4 6 34 0 self)
+							(messager say: N_ROPE V_DOIT C_GREET5 0 self)
 						)
 					)
 				)
 			)
 			(3
-				(if local8
+				(if showedThiefSign
 					(self setScript: jumpFlip self)
 				else
 					(= cycles 1)
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance fishGreet of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -453,32 +478,34 @@
 			(2
 				(switch (mod Day 6)
 					(0
-						(messager say: 3 6 30 0 self)
+						(messager say: N_FISH V_DOIT C_GREET1 0 self)
 					)
 					(1
-						(messager say: 3 6 31 0 self)
+						(messager say: N_FISH V_DOIT C_GREET2 0 self)
 					)
 					(2
-						(messager say: 3 6 26 0 self)
+						(messager say: N_FISH V_DOIT C_SELF_FISH4 0 self)
 					)
 					(3
-						(messager say: 3 6 32 0 self)
+						(messager say: N_FISH V_DOIT C_GREET3 0 self)
 					)
 					(4
-						(messager say: 3 6 33 0 self)
+						(messager say: N_FISH V_DOIT C_GREET4 0 self)
 					)
 					(5
-						(messager say: 3 6 34 0 self)
+						(messager say: N_FISH V_DOIT C_GREET5 0 self)
 					)
 				)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance from240 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -486,14 +513,18 @@
 				(HandsOff)
 				(ego x: 30 y: 0 setMotion: PolyPath 155 50 self)
 			)
-			(1 (ego setHeading: 180 self))
-			(2 (HandsOn) (self dispose:))
+			(1
+				(ego setHeading: 180 self)
+			)
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance from260 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -506,14 +537,18 @@
 					setMotion: PolyPath 230 172 self
 				)
 			)
-			(1 (ego setHeading: 0 self))
-			(2 (HandsOn) (self dispose:))
+			(1
+				(ego setHeading: 0 self)
+			)
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sExit of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -531,7 +566,7 @@
 					)
 					((>= (ego x?) 315)
 						(if (< (ego y?) 90)
-							(messager say: 5 6 86)
+							(messager say: N_MERCHANTS V_DOIT C_CANT_GO)
 							(ego setMotion: PolyPath (- (ego x?) 30) (ego y?) self)
 						else
 							(= register 260)
@@ -545,7 +580,9 @@
 				)
 			)
 			(1
-				(if (!= register 0) (curRoom newRoom: register))
+				(if (!= register 0)
+					(curRoom newRoom: register)
+				)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -554,7 +591,6 @@
 )
 
 (instance sMeetHarami of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -571,7 +607,7 @@
 					y: (ego y?)
 					noun: 6
 					init:
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setStep: 4 2
 					setCycle: Walk
 					setMotion: MoveTo (+ (ego x?) 25) (ego y?) self
@@ -585,15 +621,15 @@
 					loop: 0
 					cycleSpeed: 9
 					ignoreActors: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(Bset 40)
+				(Bset fMetHonorlessHarami)
 			)
 			(2
-				(messager say: 6 6 30 0 self)
+				(messager say: N_HARAMI V_DOIT C_GREET1 0 self)
 			)
 			(3
-				(= local6 1)
+				(= haramiHere TRUE)
 				(= local67_2_2 1)
 				((Timer new:) set: aHarami 5)
 				(HandsOn)
@@ -605,7 +641,6 @@
 )
 
 (instance jumpFlip of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -615,7 +650,7 @@
 					setLoop: 0
 					cel: 0
 					ignoreActors: 1
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
@@ -626,7 +661,7 @@
 					x: 259
 					y: 126
 					cycleSpeed: 12
-					setCycle: CT 7 1 self
+					setCycle: CycleTo 7 1 self
 				)
 			)
 			(2
@@ -638,13 +673,13 @@
 					setCel: -1
 					cel: 1
 					y: 86
-					setCycle: CT 5 1
+					setCycle: CycleTo 5 1
 					setMotion: JumpTo 259 44 self
 				)
 			)
 			(4
 				(aRopeMaker
-					setCycle: CT 8 1 self
+					setCycle: CycleTo 8 1 self
 					setMotion: JumpTo 259 53 self
 				)
 			)
@@ -658,17 +693,17 @@
 				(= cycles 6)
 			)
 			(8
-				(aRopeMaker cel: 1 setCycle: End self)
+				(aRopeMaker cel: 1 setCycle: EndLoop self)
 			)
 			(9
-				(aRopeMaker cel: 1 setCycle: End self)
+				(aRopeMaker cel: 1 setCycle: EndLoop self)
 			)
 			(10
-				(aRopeMaker cel: 1 setCycle: End)
+				(aRopeMaker cel: 1 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(11
-				(aRopeMaker cel: 1 setCycle: End self)
+				(aRopeMaker cel: 1 setCycle: EndLoop self)
 			)
 			(12
 				(aRopeMaker
@@ -676,7 +711,7 @@
 					cel: 0
 					x: 260
 					y: 84
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(13
@@ -685,7 +720,7 @@
 					cel: 0
 					x: 264
 					y: 82
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(14
@@ -703,20 +738,22 @@
 					cel: 1
 					x: 261
 					y: 36
-					setCycle: CT 5 1
+					setCycle: CycleTo 5 1
 					setMotion: JumpTo 261 21 self
 				)
 			)
 			(16
 				(aRopeMaker
-					setCycle: CT 8 1 self
+					setCycle: CycleTo 8 1 self
 					setMotion: JumpTo 261 40 self
 				)
 			)
 			(17 0)
-			(18 (= ticks 8))
+			(18
+				(= ticks 8)
+			)
 			(19
-				(aRopeMaker setLoop: 3 cel: 0 x: 259 y: 83 setCycle: End)
+				(aRopeMaker setLoop: 3 cel: 0 x: 259 y: 83 setCycle: EndLoop)
 				(= ticks 110)
 			)
 			(20
@@ -725,7 +762,7 @@
 					cel: 0
 					x: 259
 					y: 83
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(21
@@ -749,21 +786,21 @@
 )
 
 (instance cueCode of Code
-	(properties)
 	
 	(method (doit)
-		(if (< (ego y?) 100) (curRoom setScript: sMeetHarami))
+		(if (< (ego y?) 100)
+			(curRoom setScript: sMeetHarami)
+		)
 	)
 )
 
 (instance walkCode of Code
-	(properties)
-	
+
 	(method (doit)
 		(if
 			(and
-				(or (ego mover?) (> local11 2))
-				(not local66)
+				(or (ego mover?) (> talkCount 2))
+				(not agreedToMeet)
 				local67_2_2
 			)
 			(curRoom setScript: haramiLeave)
@@ -781,10 +818,10 @@
 	)
 	
 	(method (cue)
-		(if (and (> local11 2) (not (curRoom script?)))
+		(if (and (> talkCount 2) (not (curRoom script?)))
 			(curRoom setScript: haramiLeave)
 		else
-			(localproc_1bb6)
+			(HaramiBegs)
 		)
 	)
 )
@@ -797,7 +834,7 @@
 		approachX 233
 		approachY 58
 		view 246
-		signal $4000
+		signal ignrAct
 		cycleSpeed 3
 		detailLevel 3
 	)
@@ -962,7 +999,6 @@
 )
 
 (instance egoTeller of Teller
-	(properties)
 	
 	(method (respond)
 		(return
@@ -971,38 +1007,58 @@
 			else
 				(= local4 0)
 				(cond 
-					((not query) (return 1))
-					((== query -999) (return 1))
-					((== query 999) (self doParent:) (return 0))
-					((and (< query 0) (not (self doChild: query))) (return 1))
+					((not query)
+						(return TRUE)
+					)
+					((== query -999)
+						(return TRUE)
+					)
+					((== query 999)
+						(self doParent:)
+						(return FALSE)
+					)
+					((and (< query 0) (not (self doChild: query)))
+						(return TRUE)
+					)
 				)
-				(if (< query 0) (= query (- query)))
-				(messager say: (client noun?) 5 query 0)
-				(return 1)
+				(if (< query 0)
+					(= query (- query))
+				)
+				(messager say: (client noun?) V_TELL query 0)
+				(return TRUE)
 			)
 		)
 	)
 	
 	(method (showDialog)
-		(= local2 (proc51_1))
-		(= local3 (ego distanceTo: local2))
-		(switch local2
+		(= nearMerchant (proc51_1))
+		(= local3 (ego distanceTo: nearMerchant))
+		(switch nearMerchant
 			(aFishSeller
-				(if (> local3 65) (messager say: 5 6 80) (return -999))
+				(if (> local3 65)
+					(messager say: N_MERCHANTS V_DOIT C_WHICH_MERCHANT)
+					(return -999)
+				)
 			)
 			(aBeadMaker
-				(if (> local3 35) (messager say: 5 6 80) (return -999))
+				(if (> local3 35)
+					(messager say: N_MERCHANTS V_DOIT C_WHICH_MERCHANT)
+					(return -999)
+				)
 			)
 			(else 
-				(if (> local3 45) (messager say: 5 6 80) (return -999))
+				(if (> local3 45)
+					(messager say: N_MERCHANTS V_DOIT C_WHICH_MERCHANT)
+					(return -999)
+				)
 			)
 		)
 		(if
 			(!=
 				(ego heading?)
-				(GetAngle (ego x?) (ego y?) (local2 x?) (local2 y?))
+				(GetAngle (ego x?) (ego y?) (nearMerchant x?) (nearMerchant y?))
 			)
-			(Face ego local2)
+			(Face ego nearMerchant)
 		)
 		((Timer new:) setCycle: self (+ (ego cycleSpeed?) 10))
 		(= iconValue 0)
@@ -1013,112 +1069,143 @@
 		(return
 			(switch query
 				(-13
-					(ego solvePuzzle: 229 8)
+					(ego solvePuzzle: fShowSignToHarami 8)
 					(return query)
 				)
 				(-1
 					(cond 
-						((cast contains: aHarami) (= query 70))
-						((== local2 aBeadMaker) (= local11 3) (= query 8))
-						((== local2 aFishSeller) (= local11 3) (= query 14))
-						((== local2 aRopeMaker) (= local11 3) (= query 81))
+						((cast contains: aHarami)
+							(= query 70)
+						)
+						((== nearMerchant aBeadMaker)
+							(= talkCount 3)
+							(= query C_GREET_BEAD)
+						)
+						((== nearMerchant aFishSeller)
+							(= talkCount 3)
+							(= query C_GREET_FISH)
+						)
+						((== nearMerchant aRopeMaker)
+							(= talkCount 3)
+							(= query C_GREET_ROPE)
+						)
 					)
 				)
 				(-59
 					(cond 
 						((cast contains: aHarami)
-							(= local66 1)
-							(= local6 0)
-							(messager say: 2 5 71)
+							(= agreedToMeet TRUE)
+							(= haramiHere 0)
+							(messager say: N_EGO_TELL V_TELL C_GOODBYE_HARAMI)
 							(curRoom setScript: haramiLeave)
 							(return 0)
 						)
-						((== local2 aBeadMaker) (= local11 3) (= query 9))
-						((== local2 aFishSeller) (= local11 3) (= query 15))
-						((== local2 aRopeMaker) (= local11 3) (= query 82))
+						((== nearMerchant aBeadMaker)
+							(= talkCount 3)
+							(= query C_GOODBYE_BEAD)
+						)
+						((== nearMerchant aFishSeller)
+							(= talkCount 3)
+							(= query C_GOODBYE_FISH)
+						)
+						((== nearMerchant aRopeMaker)
+							(= talkCount 3)
+							(= query C_GOODBYE_ROPE)
+						)
 					)
 				)
 				(-74
 					(cond 
-						((cast contains: aHarami) (ego solvePuzzle: 229 8) (= query 13))
-						((== local2 aBeadMaker) (= local11 3) (= query 10))
-						((== local2 aFishSeller) (= local11 3) (= query 11))
-						((== local2 aRopeMaker)
-							(= local11 3)
-							(messager say: 2 5 12)
+						((cast contains: aHarami)
+							(ego solvePuzzle: fShowSignToHarami 8)
+							(= query C_THIEF_SIGN_HARAMI)
+						)
+						((== nearMerchant aBeadMaker)
+							(= talkCount 3)
+							(= query C_THIEF_SIGN_BEAD)
+						)
+						((== nearMerchant aFishSeller)
+							(= talkCount 3)
+							(= query C_THIEF_SIGN_FISH)
+						)
+						((== nearMerchant aRopeMaker)
+							(= talkCount 3)
+							(messager say: N_EGO_TELL V_TELL C_THIEF_SIGN_ROPE)
 							(curRoom setScript: jumpFlip)
-							(= local8 1)
-							(return 0)
+							(= showedThiefSign TRUE)
+							(return FALSE)
 						)
 					)
 				)
 				(-4
-					(= local11 3)
-					(if (== ((inventory at: 0) message?) 59)
-						(messager say: 1 6 77)
-						(return 0)
+					(= talkCount 3)
+					(if (== ((inventory at: iRoyals) message?) V_DINARS)
+						(messager say: N_BEADS V_DOIT 77)
+						(return FALSE)
 					else
 						(beadVendor purchase:)
 					)
 					(return 0)
 				)
 				(-16
-					(= local11 3)
-					(if (== ((inventory at: 0) message?) 59)
-						(messager say: 3 6 77)
-						(return 0)
+					(= talkCount 3)
+					(if (== ((inventory at: iRoyals) message?) V_DINARS)
+						(messager say: N_FISH V_DOIT C_WRONG_MONEY)
+						(return FALSE)
 					else
 						(fishVendor purchase:)
-						(return 0)
+						(return FALSE)
 					)
 				)
 				(-47
-					(= local11 3)
+					(= talkCount 3)
 					(if (== ((inventory at: 0) message?) 59)
-						(messager say: 4 6 77)
+						(messager say: N_ROPE V_DOIT C_WRONG_MONEY)
 						(return 0)
 					else
-						(if (Btst 168)
-							(messager say: 5 6 88)
+						(if (Btst fGotRope)
+							(messager say: N_MERCHANTS V_DOIT C_NO_MORE_ROPE)
 						else
 							(ropeVendor purchase:)
 						)
-						(return 0)
+						(return FALSE)
 					)
 				)
 				(-55
-					(= local11 3)
+					(= talkCount 3)
 					(if
 						(or
 							(<
 								(= temp0
-									(+ (* ((inventory at: 0) amount?) 100) commons)
+									(+ (* ((inventory at: iRoyals) amount?) 100) commons)
 								)
 								1000
 							)
-							(== ((inventory at: 0) message?) 59)
+							(== ((inventory at: iRoyals) message?) V_DINARS)
 						)
-						(messager say: 5 6 83)
+						(messager say: N_MERCHANTS V_DOIT C_NO_MONEY)
 						(return 0)
 					else
 						(= temp0 (/ commons 100))
 						(= commons (mod commons 100))
-						((inventory at: 0)
-							amount: (+ (- ((inventory at: 0) amount?) 50) temp0)
+						((inventory at: iRoyals)
+							amount: (+ (- ((inventory at: iRoyals) amount?) 50) temp0)
 						)
 					)
-					(Bset 149)
-					(if (> (= [egoStats 2] (+ [egoStats 2] 30)) 300)
-						(= [egoStats 2] 300)
+					(Bset fTrainedAcrobatics)
+					(if (> (= [egoStats AGIL] (+ [egoStats AGIL] 30)) 300)
+						(= [egoStats AGIL] 300)
 					)
-					(return 1)
+					(return TRUE)
 				)
 				(-72
-					(= local66 1)
-					(= local6 0)
-					(messager say: 2 5 72)
-					(if (not (Btst 230)) (ego addHonor: 30))
-					(ego solvePuzzle: 230 4)
+					(= agreedToMeet TRUE)
+					(= haramiHere FALSE)
+					(messager say: N_EGO_TELL V_TELL C_AGREE_TO_MEET)
+					(if (not (Btst fAgreedToMeetHarami))
+						(ego addHonor: 30)
+					)
+					(ego solvePuzzle: fAgreedToMeetHarami 4)
 					(curRoom setScript: haramiLeave)
 					(return 0)
 				)
@@ -1133,27 +1220,29 @@
 					-1
 					-59
 					-74
-					(== heroType 2)
+					(== heroType THIEF)
 					-55
-					(if (and local7 (== local2 aRopeMaker))
-						(not (Btst 149))
+					(if (and askedAboutAcrobatics (== nearMerchant aRopeMaker))
+						(not (Btst fTrainedAcrobatics))
 					else
 						0
 					)
 					-4
-					(== local2 aBeadMaker)
+					(== nearMerchant aBeadMaker)
 					-16
-					(== local2 aFishSeller)
+					(== nearMerchant aFishSeller)
 					-47
-					(== local2 aRopeMaker)
+					(== nearMerchant aRopeMaker)
 					-72
 					(cast contains: aHarami)
 					-13
-					(if (== heroType 2) (cast contains: aHarami) else 0)
+					(if (== heroType THIEF) (cast contains: aHarami) else 0)
 			)
 		)
 		(= local4 1)
-		(if iconValue (= query iconValue))
+		(if iconValue
+			(= query iconValue)
+		)
 		(egoTeller respond:)
 	)
 )
@@ -1163,39 +1252,66 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(59
-				(= local11 3)
-				(messager say: 1 6 77)
+			(V_DINARS
+				(= talkCount 3)
+				(messager say: N_BEADS V_DOIT C_WRONG_MONEY)
 			)
-			(10 (beadVendor purchase:))
-			(else  (super doVerb: theVerb))
+			(V_ROYALS
+				(beadVendor purchase:)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance fishTeller of Teller
-	(properties)
 	
 	(method (doChild)
 		(switch query
 			(-6
 				(switch (mod Day 6)
-					(0 (= query 17))
-					(1 (= query 18))
-					(2 (= query 19))
-					(3 (= query 20))
-					(4 (= query 21))
-					(5 (= query 22))
+					(0
+						(= query C_RUMOR1)
+					)
+					(1
+						(= query C_RUMOR2)
+					)
+					(2
+						(= query C_RUMOR3)
+					)
+					(3
+						(= query C_RUMOR4)
+					)
+					(4
+						(= query C_RUMOR5)
+					)
+					(5
+						(= query C_RUMOR6)
+					)
 				)
 			)
 			(-78
 				(switch (mod Day 6)
-					(0 (= query 23))
-					(1 (= query 24))
-					(2 (= query 25))
-					(3 (= query 27))
-					(4 (= query 28))
-					(5 (= query 29))
+					(0
+						(= query C_SELF_FISH1)
+					)
+					(1
+						(= query C_SELF_FISH2)
+					)
+					(2
+						(= query C_SELF_FISH3)
+					)
+					(3
+						(= query C_SELF_FISH5)
+					)
+					(4
+						(= query C_SELF_FISH6)
+					)
+					(5
+						(= query C_SELF_FISH7)
+					)
 				)
 			)
 		)
@@ -1203,21 +1319,24 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(59
-				(= local11 3)
-				(messager say: 3 6 77)
+			(V_DINARS
+				(= talkCount 3)
+				(messager say: N_FISH V_DOIT C_WRONG_MONEY)
 			)
-			(10 (fishVendor purchase:))
-			(else  (super doVerb: theVerb))
+			(V_ROYALS
+				(fishVendor purchase:)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance ropeTeller of Teller
-	(properties)
-	
+
 	(method (showDialog)
-		(super showDialog: -54 local8)
+		(super showDialog: -54 showedThiefSign)
 	)
 	
 	(method (doChild)
@@ -1225,52 +1344,80 @@
 			(switch query
 				(-6
 					(switch (mod Day 6)
-						(0 (= query 17))
-						(1 (= query 18))
-						(2 (= query 19))
-						(3 (= query 20))
-						(4 (= query 21))
-						(5 (= query 22))
+						(0
+							(= query C_RUMOR1)
+						)
+						(1
+							(= query C_RUMOR2)
+						)
+						(2
+							(= query C_RUMOR3)
+						)
+						(3
+							(= query C_RUMOR4)
+						)
+						(4
+							(= query C_RUMOR5)
+						)
+						(5
+							(= query C_RUMOR6)
+						)
 					)
 				)
 				(-79
 					(switch (mod Day 6)
-						(0 (= query 48))
-						(1 (= query 49))
-						(2 (= query 50))
-						(3 (= query 51))
-						(4 (= query 52))
-						(5 (= query 53))
+						(0
+							(= query C_SELF_ROPE1)
+						)
+						(1
+							(= query C_SELF_ROPE2)
+						)
+						(2
+							(= query C_SELF_ROPE3)
+						)
+						(3
+							(= query C_SELF_ROPE4)
+						)
+						(4
+							(= query C_SELF_ROPE5)
+						)
+						(5
+							(= query C_SELF_ROPE6)
+						)
 					)
 				)
-				(-54 (= local7 1) (return 1))
+				(-54
+					(= askedAboutAcrobatics TRUE)
+					(return TRUE)
+				)
 			)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(59
-				(= local11 3)
-				(messager say: 4 6 77)
+			(V_DINARS
+				(= talkCount 3)
+				(messager say: N_ROPE V_DOIT C_WRONG_MONEY)
 			)
-			(10
-				(if (Btst 168)
-					(messager say: 5 6 88)
+			(V_ROYALS
+				(if (Btst fGotRope)
+					(messager say: N_MERCHANTS V_DOIT C_NO_MORE_ROPE)
 				else
 					(ropeVendor purchase:)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance haramiTeller of Teller
-	(properties)
 	
 	(method (showDialog)
-		(++ local11)
+		(++ talkCount)
 		(super showDialog: &rest)
 	)
 )
@@ -1283,7 +1430,9 @@
 	)
 	
 	(method (init)
-		(if (or Night (Btst 135)) (super init: &rest))
+		(if (or Night (Btst fVisitedBazaar))
+			(super init: &rest)
+		)
 	)
 )
 
@@ -1293,11 +1442,11 @@
 		y 172
 		view 250
 		priority 7
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (onMe)
-		(return 0)
+		(return FALSE)
 	)
 )
 
@@ -1308,11 +1457,11 @@
 		view 250
 		cel 1
 		priority 7
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (onMe)
-		(return 0)
+		(return FALSE)
 	)
 )
 
@@ -1322,11 +1471,11 @@
 		y 7
 		view 250
 		loop 1
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (onMe)
-		(return 0)
+		(return FALSE)
 	)
 )
 
@@ -1338,107 +1487,115 @@
 		loop 1
 		cel 1
 		priority 10
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (onMe)
-		(return 0)
+		(return FALSE)
 	)
 )
 
 (instance beadVendor of Vendor
 	(properties
-		noun 1
+		noun N_BEADS
 	)
 	
-	(method (bargain &tmp theEgoStats)
-		(= theEgoStats [egoStats 13])
-		(= [egoStats 13] 0)
+	(method (bargain &tmp commStat)	;can't bargain with her
+		(= commStat [egoStats COMM])
+		(= [egoStats COMM] 0)
 		(super bargain: &rest)
-		(= [egoStats 13] theEgoStats)
+		(= [egoStats COMM] commStat)
 	)
 	
-	(method (transact param1 param2)
+	(method (transact what howMany)
 		(= theVendor self)
-		(ego get: 20 param2 solvePuzzle: 231 2)
-		(Buy param1 param2)
-		(messager say: 1 6 2 0 self)
+		(ego
+			get: iBeads howMany
+			solvePuzzle: fBuyBeads 2
+		)
+		(Buy what howMany)
+		(messager say: N_BEADS V_DOIT C_DONE_DEAL 0 self)
 	)
 	
 	(method (doBargain)
-		(messager say: 1 6 3 0 self)
+		(messager say: N_BEADS V_DOIT C_CANT_BARGAIN 0 self)
 	)
 )
 
 (instance fishVendor of Vendor
 	(properties
-		noun 3
+		noun N_FISH
 	)
 	
-	(method (transact param1 param2)
+	(method (transact what howMany)
 		(= theVendor self)
-		(ego get: 17 param2)
-		(Buy param1 param2)
-		(messager say: 3 6 2 0 self)
+		(ego get: iFish howMany)
+		(Buy what howMany)
+		(messager say: N_FISH V_DOIT C_DONE_DEAL 0 self)
 	)
 	
-	(method (doBargain param1)
-		(switch param1
-			(1
-				(messager say: 3 6 35 0 self)
+	(method (doBargain result)
+		(switch result
+			(bargainSUCCESS
+				(messager say: N_FISH V_DOIT C_BARGAIN_SUCCESS 0 self)
 			)
-			(2
-				(messager say: 3 6 38 0 self)
+			(bargainTRY1
+				(messager say: N_FISH V_DOIT C_BARGAIN_TRY1 0 self)
 			)
-			(3
-				(messager say: 3 6 39 0 self)
+			(bargainTRY2
+				(messager say: N_FISH V_DOIT C_BARGAIN_TRY2 0 self)
 			)
-			(4
-				(messager say: 3 6 40 0 self)
+			(bargainTRY3
+				(messager say: N_FISH V_DOIT C_BARGAIN_TRY3 0 self)
 			)
-			(5
-				(messager say: 3 6 36 0 self)
+			(bargainFAIL
+				(messager say: N_FISH V_DOIT C_BARGAIN_FAIL 0 self)
 			)
-			(6
-				(messager say: 3 6 37 0 self)
+			(bargainNODEAL
+				(messager say: N_FISH V_DOIT C_BARGAIN_NODEAL 0 self)
 			)
-			(else  (self cue:))
+			(else
+				(self cue:)
+			)
 		)
 	)
 )
 
 (instance ropeVendor of Vendor
 	(properties
-		noun 4
+		noun N_ROPE
 	)
 	
-	(method (transact param1 param2)
+	(method (transact what howMany)
 		(= theVendor self)
-		(ego get: 26 param2 solvePuzzle: 228 8 4)
-		(Buy param1 param2)
-		(Bset 168)
-		(messager say: 4 6 2 0 self)
+		(ego
+			get: iRope howMany
+			solvePuzzle: 228 8 puzzleTHIEF
+		)
+		(Buy what howMany)
+		(Bset fGotRope)
+		(messager say: N_ROPE V_DOIT C_DONE_DEAL 0 self)
 	)
 	
-	(method (doBargain param1)
-		(switch param1
-			(1
-				(messager say: 4 6 35 0 self)
+	(method (doBargain result)
+		(switch result
+			(bargainSUCCESS
+				(messager say: N_ROPE V_DOIT C_BARGAIN_NODEAL self)
 			)
-			(2
-				(messager say: 4 6 38 0 self)
+			(bargainTRY1
+				(messager say: N_ROPE V_DOIT C_BARGAIN_TRY1 0 self)
 			)
-			(3
-				(messager say: 4 6 39 0 self)
+			(bargainTRY2
+				(messager say: N_ROPE V_DOIT C_BARGAIN_TRY2 0 self)
 			)
-			(4
-				(messager say: 4 6 40 0 self)
+			(bargainTRY3
+				(messager say: N_ROPE V_DOIT C_BARGAIN_TRY3 0 self)
 			)
-			(5
-				(messager say: 4 6 36 0 self)
+			(bargainFAIL
+				(messager say: N_ROPE V_DOIT C_BARGAIN_FAIL 0 self)
 			)
-			(6
-				(messager say: 4 6 37 0 self)
+			(bargainNODEAL
+				(messager say: N_ROPE V_DOIT C_BARGAIN_NODEAL 0 self)
 			)
 			(else  (self cue:))
 		)
@@ -1449,7 +1606,7 @@
 	(properties
 		x 195
 		y 22
-		noun 7
+		noun N_BEAD_TENT
 		nsLeft 154
 		nsBottom 44
 		nsRight 236
@@ -1461,7 +1618,7 @@
 	(properties
 		x 213
 		y 20
-		noun 8
+		noun N_BEAD_RACK
 		nsTop 11
 		nsLeft 201
 		nsBottom 29
@@ -1474,7 +1631,7 @@
 	(properties
 		x 60
 		y 92
-		noun 9
+		noun N_FISHING_POLES
 		nsTop 77
 		nsLeft 15
 		nsBottom 107
@@ -1487,7 +1644,7 @@
 	(properties
 		x 143
 		y 109
-		noun 10
+		noun N_FISH_BUCKETS
 		nsTop 104
 		nsLeft 131
 		nsBottom 114
@@ -1500,7 +1657,7 @@
 	(properties
 		x 142
 		y 65
-		noun 11
+		noun N_FISH_STAND
 		nsTop 64
 		nsLeft 115
 		nsBottom 90
@@ -1513,7 +1670,7 @@
 	(properties
 		x 175
 		y 65
-		noun 12
+		noun N_FISH_STICKS
 		nsTop 64
 		nsLeft 169
 		nsBottom 113
@@ -1526,7 +1683,7 @@
 	(properties
 		x 259
 		y 22
-		noun 13
+		noun N_BRASSWORKS
 		nsTop 1
 		nsLeft 235
 		nsBottom 44
@@ -1539,7 +1696,7 @@
 	(properties
 		x 272
 		y 137
-		noun 14
+		noun N_ROPES
 		nsTop 123
 		nsLeft 235
 		nsBottom 152
@@ -1552,7 +1709,7 @@
 	(properties
 		x 308
 		y 116
-		noun 15
+		noun N_ROPE_STAND
 		nsTop 89
 		nsLeft 299
 		nsBottom 143
@@ -1565,7 +1722,7 @@
 	(properties
 		x 217
 		y 118
-		noun 16
+		noun N_ROPE_HOOK
 		nsTop 114
 		nsLeft 209
 		nsBottom 122
@@ -1578,7 +1735,7 @@
 	(properties
 		x 31
 		y 149
-		noun 17
+		noun N_RIVER
 		nsTop 109
 		nsBottom 189
 		nsRight 62
@@ -1590,7 +1747,7 @@
 	(properties
 		x 86
 		y 170
-		noun 18
+		noun N_MORE_RIVER
 		nsTop 152
 		nsLeft 61
 		nsBottom 189

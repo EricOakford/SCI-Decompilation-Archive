@@ -40,7 +40,7 @@
 			((ScriptID 850 6) init: stopUpd:)
 			(self setScript: mageEndScript)
 		)
-		(if (not (== global155 0))
+		(if (not (== battleResult 0))
 			(theGame save: 1)
 		)
 	)
@@ -670,7 +670,7 @@
 				(= seconds 2)
 			)
 			(1
-				(if (and (== prevRoomNum 550) (== global155 0))
+				(if (and (== prevRoomNum 550) (== battleResult 0))
 					(EgoDead C_DEATH_GARGOYLE_MAGIC 850)
 				else
 					(self cue:)

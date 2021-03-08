@@ -984,13 +984,13 @@
 					(Bset global407)
 					(messager say: 8 6 40 0 self 470)
 				else
-					(= global406 1)
+					(= wonBridgeWrestling 1)
 					(ego solvePuzzle: 280 5 9)
 					(messager say: 8 6 39 0 self 470)
 				)
 			)
 			(1
-				(if global406
+				(if wonBridgeWrestling
 					(cSound setLoop: 1 number: 462 play: 127 self)
 				else
 					(= cycles 1)

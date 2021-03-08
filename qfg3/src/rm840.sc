@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 840)
-(include sci.sh)
+(include game.sh) (include "840.shm")
 (use Main)
 (use Polygon)
 (use LoadMany)
@@ -14,87 +14,106 @@
 )
 
 (local
-	local0
+	enterCued
 )
-(instance rm840 of Rm
+(instance rm840 of Room
 	(properties
 		picture 840
 	)
 	
 	(method (init)
-		(if (Btst 77)
+		(if (Btst fEnteredMirrorRoom)
 			(ego setScale: x: 160 y: 137 init: normalize:)
 		else
 			(ego setScale: x: 160 y: 189 init: normalize:)
 		)
 		(super init:)
 		(cSound number: 840 setLoop: -1 play: self)
-		(if (Btst 77)
+		(if (Btst fEnteredMirrorRoom)
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 2
-						init: 48 83 129 83 143 143 167 164 167 173 132 189 32 189 32 83 50 83
+						type: PBarredAccess
+						init:
+							48 83
+							129 83
+							143 143
+							167 164
+							167 173
+							132 189
+							32 189
+							32 83
+							50 83
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
-						init: 162 189 195 158 195 83 319 83 319 189
+						type: PBarredAccess
+						init:
+							162 189
+							195 158
+							195 83
+							319 83
+							319 189
 						yourself:
 					)
 			)
 		)
-		(if (Btst 77)
+		(if (Btst fEnteredMirrorRoom)
 			(curRoom setScript: secondEntrance)
 		else
-			(Bset 77)
+			(Bset fEnteredMirrorRoom)
 			(curRoom setScript: firstEntrance)
 		)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 41 36 39)
+		(LoadMany FALSE MONkEY_TALKER JOHARI_TALKER YESUFU_TALKER)
 		(super dispose:)
 	)
 	
 	(method (cue)
-		(if local0 (firstEntrance cue:) (= local0 0))
+		(if enterCued
+			(firstEntrance cue:)
+			(= enterCued FALSE)
+		)
 	)
 )
 
 (instance firstEntrance of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: 2 6 4 0 self)
+				(messager say: N_ROOM V_DOIT C_FIRST_ENTRANCE 0 self)
 			)
 			(1
-				(if (Btst 150)
-					(messager say: 2 6 5 0 self)
+				(if (Btst fSenseDanger)
+					(messager say: N_ROOM V_DOIT C_SENSE_DANGER 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(2
-				(ego solvePuzzle: 339 3 setMotion: MoveTo 158 155 self)
+				(ego
+					solvePuzzle: fEnterMirrorRoom 3
+					setMotion: MoveTo 158 155 self
+				)
 			)
 			(3
-				((ScriptID 36 1)
+				((ScriptID JOHARI_TALKER 1)
 					x: 160
 					y: 200
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setScale:
 					init:
 					setCycle: Walk
 					setMotion: MoveTo 72 174 self
 				)
-				((ScriptID 39 1)
+				((ScriptID YESUFU_TALKER 1)
 					x: 160
 					y: 200
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setScale:
 					init:
 					setStep: 3 2
@@ -104,10 +123,10 @@
 				)
 			)
 			(4
-				((ScriptID 41 1)
+				((ScriptID MONkEY_TALKER 1)
 					x: 160
 					y: 200
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setScale:
 					init:
 					setCycle: Walk
@@ -119,56 +138,82 @@
 					setMotion: MoveTo 250 168 self
 				)
 			)
-			(5 (= cycles 1))
-			(6 (= local0 1))
+			(5
+				(= cycles 1)
+			)
+			(6
+				(= enterCued TRUE)
+			)
 			(7
 				(johariBiz init:)
-				(curRoom drawPic: (curRoom picture?) 9)
+				(curRoom drawPic: (curRoom picture?) PIXELDISSOLVE)
 				(= cycles 2)
 			)
-			(8 (= local0 1))
+			(8
+				(= enterCued TRUE)
+			)
 			(9
 				(manuBiz init:)
-				(curRoom drawPic: (curRoom picture?) 9)
+				(curRoom drawPic: (curRoom picture?) PIXELDISSOLVE)
 				(= cycles 2)
 			)
-			(10 (= local0 1))
+			(10
+				(= enterCued TRUE)
+			)
 			(11
 				(egoBiz init:)
-				(curRoom drawPic: (curRoom picture?) 9)
+				(curRoom drawPic: (curRoom picture?) PIXELDISSOLVE)
 				(= cycles 2)
 			)
-			(12 (= local0 1))
+			(12
+				(= enterCued TRUE)
+			)
 			(13
 				(yesufuBiz init:)
-				(curRoom drawPic: (curRoom picture?) 9)
+				(curRoom drawPic: (curRoom picture?) PIXELDISSOLVE)
 				(= cycles 2)
 			)
-			(14 (= local0 1))
+			(14
+				(= enterCued TRUE)
+			)
 			(15
 				(reeshaBiz init:)
-				(curRoom drawPic: (curRoom picture?) 9)
+				(curRoom drawPic: (curRoom picture?) PIXELDISSOLVE)
 				(= seconds 3)
 			)
-			(16 (= local0 1))
+			(16
+				(= enterCued TRUE)
+			)
 			(17
-				(johariBiz setCycle: End self)
+				(johariBiz setCycle: EndLoop self)
 			)
-			(18 (= local0 1))
+			(18
+				(= enterCued TRUE)
+			)
 			(19
-				(manuBiz setCycle: End self)
+				(manuBiz setCycle: EndLoop self)
 			)
-			(20 (= local0 1))
-			(21 (egoBiz setCycle: End self))
-			(22 (= local0 1))
+			(20
+				(= enterCued TRUE)
+			)
+			(21
+				(egoBiz setCycle: EndLoop self)
+			)
+			(22
+				(= enterCued TRUE)
+			)
 			(23
-				(yesufuBiz setCycle: End self)
+				(yesufuBiz setCycle: EndLoop self)
 			)
-			(24 (= local0 1))
+			(24
+				(= enterCued TRUE)
+			)
 			(25
-				(reeshaBiz setCycle: End self)
+				(reeshaBiz setCycle: EndLoop self)
 			)
-			(26 (= seconds 2))
+			(26
+				(= seconds 2)
+			)
 			(27
 				(curRoom newRoom: 549)
 				(self dispose:)
@@ -178,8 +223,7 @@
 )
 
 (instance secondEntrance of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -191,14 +235,14 @@
 				(= seconds 3)
 			)
 			(1
-				(if (not (Btst 117))
-					(if 12
-						(= [egoStats 18] (ego maxMana:))
-						(= [egoStats 16] (ego maxHealth:))
-						(messager say: 2 6 3 0 self)
+				(if (not (Btst fWonGame))
+					(if [egoStats MAGIC]	;EO: fixed to properly show correct messages
+						(= [egoStats MANA] (ego maxMana:))
+						(= [egoStats HEALTH] (ego maxHealth:))
+						(messager say: N_ROOM V_DOIT C_MAGIC 0 self)
 					else
-						(= [egoStats 16] (ego maxHealth:))
-						(messager say: 2 6 2 0 self)
+						(= [egoStats HEALTH] (ego maxHealth:))
+						(messager say: N_ROOM V_DOIT C_NO_MAGIC 0 self)
 					)
 				else
 					(self cue:)
@@ -206,10 +250,18 @@
 			)
 			(2
 				(switch heroType
-					(0 (curRoom newRoom: 851))
-					(3 (curRoom newRoom: 852))
-					(1 (curRoom newRoom: 853))
-					(2 (curRoom newRoom: 854))
+					(FIGHTER
+						(curRoom newRoom: 851)
+					)
+					(PALADIN
+						(curRoom newRoom: 852)
+					)
+					(MAGIC_USER
+						(curRoom newRoom: 853)
+					)
+					(THIEF
+						(curRoom newRoom: 854)
+					)
 				)
 			)
 		)
@@ -221,7 +273,7 @@
 		x 155
 		y 111
 		view 841
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -231,7 +283,7 @@
 		y 129
 		view 841
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -241,7 +293,7 @@
 		y 116
 		view 841
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -251,7 +303,7 @@
 		y 123
 		view 841
 		loop 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -261,7 +313,7 @@
 		y 200
 		view 831
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -271,6 +323,6 @@
 		y 134
 		view 841
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 )

@@ -167,8 +167,8 @@
 			(if
 				(and
 					(OneOf curRoomNum 150 160)
-					(Btst 83)
-					(not (Btst 99))
+					(Btst fHoneyBirdHinted)
+					(not (Btst fFoundHoneyBird))
 				)
 				(switch (Random 0 7)
 					(0

@@ -60,7 +60,7 @@
 
 (instance weaponVendor of Vendor
 	(properties
-		noun N_WEAPON_VENDOR
+		noun N_WEAPON
 	)
 	
 	(method (dispose)
@@ -75,25 +75,25 @@
 				(Buy what howMany theVendor)
 				(ego solvePuzzle: fBoughtFineDagger 2 get: iFineDagger howMany)
 				(Bset fGotFineDagger)
-				(messager say: N_WEAPON_VENDOR V_DOIT C_DONE_DEAL 0 self)
+				(messager say: N_WEAPON V_DOIT C_DONE_DEAL 0 self)
 			)
 			(1
 				(Buy what howMany theVendor)
 				(ego get: iDaggers howMany)
-				(messager say: N_WEAPON_VENDOR V_DOIT C_DONE_DEAL 0 self)
+				(messager say: N_WEAPON V_DOIT C_DONE_DEAL 0 self)
 			)
 			(2
 				(Buy what howMany theVendor)
 				(ego solvePuzzle: fBoughtFineSpear 2 get: iFineSpear howMany)
 				(Bset fGotFineSpear)
-				(messager say: N_WEAPON_VENDOR V_DOIT C_DONE_DEAL 0 self)
+				(messager say: N_WEAPON V_DOIT C_DONE_DEAL 0 self)
 			)
 			;EO: Seems like it was going to be possible to buy a sword from
 			; this guy
 			(3
 				(Buy what howMany theVendor)
 				(ego get: iSword howMany)
-				(messager say: N_WEAPON_VENDOR V_DOIT C_DONE_DEAL 0 self)
+				(messager say: N_WEAPON V_DOIT C_DONE_DEAL 0 self)
 			)
 		)
 	)
@@ -101,22 +101,22 @@
 	(method (doBargain result)
 		(switch result
 			(bargainSUCCESS
-				(messager say: N_WEAPON_VENDOR V_DOIT C_BARGAIN_SUCCESS 0 self)
+				(messager say: N_WEAPON V_DOIT C_BARGAIN_SUCCESS 0 self)
 			)
 			(bargainTRY1
-				(messager say: N_WEAPON_VENDOR V_DOIT C_BARGAIN_TRY_1 0 self)
+				(messager say: N_WEAPON V_DOIT C_BARGAIN_TRY_1 0 self)
 			)
 			(bargainTRY2
-				(messager say: N_WEAPON_VENDOR V_DOIT C_BARGAIN_TRY_2 0 self)
+				(messager say: N_WEAPON V_DOIT C_BARGAIN_TRY_2 0 self)
 			)
 			(bargainTRY3
-				(messager say: N_WEAPON_VENDOR V_DOIT C_BARGAIN_TRY_3 0 self)
+				(messager say: N_WEAPON V_DOIT C_BARGAIN_TRY_3 0 self)
 			)
 			(bargainFAIL
-				(messager say: N_WEAPON_VENDOR V_DOIT C_BARGAIN_FAIL 0 self)
+				(messager say: N_WEAPON V_DOIT C_BARGAIN_FAIL 0 self)
 			)
 			(bargainNODEAL
-				(messager say: N_WEAPON_VENDOR V_DOIT C_BARGAIN_NO_DEAL 0 self)
+				(messager say: N_WEAPON V_DOIT C_BARGAIN_NO_DEAL 0 self)
 			)
 			(else
 				(self cue:)

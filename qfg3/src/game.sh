@@ -221,6 +221,13 @@
 	ENDSTATS			;34	;scrapped spell?
 )
 
+; Battle results
+(enum
+	battleEGOLOST
+	battleEGOWON
+	battleEGORUNS
+)
+
 ; Icons
 (enum 
 	ICON_LEFT	;left border of icon bar
@@ -245,42 +252,67 @@
 
 ;Event flags
 (enum 1
-	fWornOut			;1
-	fHungry				;2
-	fStarving			;3
-	fUnused4			;4
-	fOverloaded			;5
-	fInMainGame			;6
-	fFlag7				;7
-	fReversal			;8
+	fWornOut				;1
+	fHungry					;2
+	fStarving				;3
+	fUnused4				;4
+	fOverloaded				;5
+	fInMainGame				;6
+	fFlag7					;7
+	fReversal				;8
+	fListenedToStory		;9
+	fFlag10					;10
+	fGaveHorn				;11
+	fSoulJudged				;12
+	fGaveDrum				;13
+	fFlag14					;14
+	fCastingSpell			;15
+	fAfterMatch				;16
+	fUnused17				;17
+	fUnused18				;18
+	fCantBePaladin			;19
+	fTarnaClosed			;20
+	fUnused21				;21
+	fHaramiRobbedChanger	;22
+	fRanAfterHarami			;23
+	fTrippedHarami			;24
+	fDaggeredHarami			;25
+	fFlamedHarami			;26
+	fUsedCalmOnHarami		;27
+	fDidntCatchHarami		;28
+	fLeopardmanCaptured		;29
+	fHelpedYesufu			;30
+	fFlag31					;31
+	fMetAardvark			;32
+	fUnused33				;33
+	fFlag34					;34
+	fRakeeshSworeOath		;35
+	fHaramiWasOnTrial		;36
+	fSawLeopardmanRitual	;37
+	fDispelledLeopardman	;38
 )
-(define fSoulJudged	12)
-(define fFlag14 14)
-(define fCastingSpell	15)
-(define fCantBePaladin 19)
-(define fTarnaClosed	20)
-(define fHaramiRobbedChanger	22)
-(define fRanAfterHarami			23)
-(define fTrippedHarami			24)
-(define fDaggeredHarami			25)
-(define fFlamedHarami			26)
-(define fUsedCalmOnHarami		27)
-(define fDidntCatchHarami		28)
-(define fFlag31 31)
-(define fFlag34		34)
-(define fRakeeshSworeOath 35)
-(define fHaramiWasOnTrial	36)
+(define fMetHonorlessHarami		40)
 (define fMetMoneyChanger	41)
+(define fAfterInitiation	42)
 (define fAfterConference	43)
-(define fAfterContest		56)
+(define fHaramiSecondVisit	46)
+(define fHaramiThirdVisit	47)
+(define fMetRajah	48)
+(define fLaibonHutRepaired	50)
+(define fAfterRace		56)
 (define fBeenInLostCityPanorama	63)
+(define fPracticedWithUhura		64)
 (define fJohariReleased		65)
 (define fCanSummonStaff 69)
+(define fStoleDrum 74)
+(define fEnteredMirrorRoom	77)
 (define fKnockedOverFruit	80)
 (define fEgoIsAsleep 81)
 (define fDeWizBattle	82)
+(define fHoneyBirdHinted	83)
 (define fSpearedWiz	84)
 (define fCanGoToSimbani	85)
+(define fFirstEnterSimbaniVillage 87)
 (define fTravelWithSomeone	88)
 (define fDeWizElectrocuted	89)
 (define fChuckedSwordAtWiz	91)
@@ -290,19 +322,25 @@
 (define fWillGoToWaterfall			95)
 (define fMonkeysFindDeWorm			96)
 (define fDeWizTookStaff		97)
-(define fHoneyBirdHinted		99)
+(define fFoundHoneyBird		99)
 (define fCharSheetActive 101)
 (define fEnteredLeopardmanVillage 102)
+(define fMetWeaponSeller	106)
+(define fMetSanfordAndSon	107)
 (define fManuReleased	109)
+(define fManuAbandoned1	110)
+(define fManuAbandoned2	111)
 (define fFedHarami 113)
 (define fPoisoned 115)
 (define fGotOrchid 116)
 (define fWonGame	117)
+(define fAfterStory	118)
 (define fSpeedDisabled 119)
 (define fFlag121 121)
 (define fWitnessedRobbery	122)
 (define fKnockingOverFruit	123)
 (define fWizNoticesEgo	124)
+(define fFlag125 125)
 (define fHadMeeting 130)
 (define fNightPaletteDisabled 131)
 (define fEnteredGuardianDen	132)
@@ -313,15 +351,20 @@
 (define fStartedEncounter	143)
 (define fWasWizard	144)
 (define fGotBlackBird	147)
+(define fTrainedAcrobatics	149)
 (define fSenseDanger 150)
 (define fHonorShield 151)
+(define fInitiationComplete	154)
 (define fReturnedToRakeesh	156)
 (define fBabaFrog 158)
 (define fMetHarami	159)
 (define fFlag162 162)
+(define fGotDrum	163)
 (define fGotFineDagger	166)
 (define fGotFineSpear	167)
+(define fGotRope		168)
 (define fDidMoneyExchange	171)
+(define fHaramiGone			172)
 
 (enum 202
 	fLearnFlamingSword			;202
@@ -343,14 +386,36 @@
 	fHaramiSlipsOnFruit			;218
 	fBoughtZebraSkin			;219
 	fBoughtWaterskin			;220
+	fTellHaramiAboutRakeesh		;221
+	fBoughtFineSpear			;222
+	fBoughtOil					;223
+	fBoughtHoney				;224
+	fBoughtTinderbox			;225
+	fBoughtBlackBird			;226
+	fBoughtFineDagger			;227
 )
-(define fBoughtFineSpear		222)
-(define fBoughtOil				223)
-(define fBoughtHoney			224)
-(define fBoughtTinderbox		225)
-(define fBoughtBlackBird		226)
-(define fBoughtFineDagger		227)
 
+(define fShowSignToHarami	229)
+(define fAgreedToMeetHarami		230)
+(define fBuyBeads	231)
+(define fTellAboutInitiation				239)
+(define fTellAboutDispelledLeopardLady		240)
+
+(define fSwearOath	251)
+
+(define fGetFeather	260)
+(define fGetHorn	261)
+(define fHearStory	262)
+(define fLoseInitiation 263)
+(define fWinInitiation 264)
+(define fReturnSpear	265)
+(define fBreakIntoLaibonHut	266)
+
+(define fBeatCroc		292)
+(define fBeatAnt		293)
+(define fBeatDinosaur	294)
+
+(define fEnterMirrorRoom		339)
 (define fBeatDeWiz				340)
 (define fKnockedOrb				341)
 (define fBeatGargoyle			342)

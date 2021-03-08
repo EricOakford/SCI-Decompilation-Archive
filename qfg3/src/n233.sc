@@ -12,20 +12,20 @@
 
 (local
 	buttonPressed
-	local1
-	local2
+	yesText
+	noText
 )
 (procedure (ExchangeMoney &tmp len oldCur)
 	(= oldCur theCursor)
 	(= len (Message MsgSize 230 N_MONEY_CHANGER V_DOIT C_EXCHANGE_MONEY 1))
-	(= local1 (Memory MNewPtr len))
-	(Message MsgGet 230 N_MONEY_CHANGER V_DOIT C_EXCHANGE_MONEY 1 local1)
+	(= yesText (Memory MNewPtr len))
+	(Message MsgGet 230 N_MONEY_CHANGER V_DOIT C_EXCHANGE_MONEY 1 yesText)
 	(= len (Message MsgSize 230 N_MONEY_CHANGER V_DOIT 71 1))
-	(= local2 (Memory MNewPtr len))
-	(Message MsgGet 230 N_MONEY_CHANGER V_DOIT C_EXCHANGE_DONE 1 local2)
+	(= noText (Memory MNewPtr len))
+	(Message MsgGet 230 N_MONEY_CHANGER V_DOIT C_EXCHANGE_DONE 1 noText)
 	(quest init: show: dispose:)
-	(Memory MDisposePtr local1)
-	(Memory MDisposePtr local2)
+	(Memory MDisposePtr yesText)
+	(Memory MDisposePtr noText)
 	(if buttonPressed
 		(if numDinars
 			(ego solvePuzzle: fExchangedDinars 4)
@@ -111,7 +111,7 @@
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display local1 p_at 20 (+ nsTop 3) p_color 17)
+		(Display yesText p_at 20 (+ nsTop 3) p_color 17)
 		(if (& signal DISABLED)
 			(self mask:)
 		)
@@ -133,7 +133,7 @@
 			(DrawCel view loop 0 nsLeft nsTop -1)
 			(= sColor 17)
 		)
-		(Display local1 p_at 20 (+ nsTop 3) p_color sColor)
+		(Display yesText p_at 20 (+ nsTop 3) p_color sColor)
 	)
 )
 
@@ -152,7 +152,7 @@
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display local2 p_at 20 (+ nsTop 3) p_color 17)
+		(Display noText p_at 20 (+ nsTop 3) p_color 17)
 		(if (& signal DISABLED)
 			(self mask:)
 		)
@@ -174,6 +174,6 @@
 			(DrawCel view loop 0 nsLeft nsTop -1)
 			(= sColor 17)
 		)
-		(Display local2 p_at 20 (+ nsTop 3) p_color sColor)
+		(Display noText p_at 20 (+ nsTop 3) p_color sColor)
 	)
 )

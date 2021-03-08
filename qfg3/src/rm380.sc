@@ -36,7 +36,7 @@
 	
 	(method (init)
 		(HandsOff)
-		(= global426 0)
+		(= thrownDaggers 0)
 		(LoadMany 130 956 991)
 		(ego
 			x: 164
@@ -174,7 +174,7 @@
 				)
 				(20
 					(if (not (curRoom script?))
-						(++ global426)
+						(++ thrownDaggers)
 						(curRoom setScript: blastVine 0 theVerb)
 					)
 				)
@@ -218,11 +218,11 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego get: 10 global426)
+				(ego get: 10 thrownDaggers)
 				(= seconds 1)
 			)
 			(1
-				(= global426 0)
+				(= thrownDaggers 0)
 				(globalSound setLoop: 1)
 				(curRoom newRoom: 150)
 			)
