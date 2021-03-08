@@ -1,0 +1,15 @@
+;;; Sierra Script
+;;; 1020.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_ROOM 5)
+(define N_SWITCH 6)
+(define N_GUARD 4)
+(define N_GRATE 3)
+(define N_CANT_GO 1)
+

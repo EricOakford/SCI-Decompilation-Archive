@@ -1,0 +1,14 @@
+;;; Sierra Script
+;;; 208.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ATTACK 1)
+(define N_BEAM_DOWN 2)
+(define N_TIME_UP 3)
+
+;;; CASES
+
+(define C_WD40_ATTACKS 1)
+

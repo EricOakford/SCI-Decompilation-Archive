@@ -1,0 +1,22 @@
+;;; Sierra Script
+;;; 117.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_CANT_GO 8)
+(define N_MOON 1)
+(define N_LOWER_CLEAN 2)
+(define N_LOWER_DIRTY 3)
+(define N_LIFT 4)
+(define N_ROOM 10)
+(define N_GUARD 11)
+(define N_CADET 14)
+(define N_SPACE 13)
+(define N_RED_PLANET 7)
+(define N_MACHINE 5)
+(define N_SKYLIGHT 12)
+
+;;; CASES
+
+

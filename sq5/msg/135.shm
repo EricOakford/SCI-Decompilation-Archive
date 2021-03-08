@@ -1,0 +1,24 @@
+;;; Sierra Script
+;;; 135.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_FACING_ROGER 1)
+(define C_FACING_AWAY 2)
+
+;;; NOUNS
+
+(define N_ROOM 11)
+(define N_TALK_TO_TEACHER 10)
+(define N_BLOB 1)
+(define N_BLUE_GUY 2)
+(define N_CHEAT_DROID 3)
+(define N_DOOR 4)
+(define N_DESK 5)
+(define N_DUMB 6)
+(define N_GREEN_GIRL 7)
+(define N_KLINGON 8)
+(define N_RAM 9)
+(define N_SMART 12)
+

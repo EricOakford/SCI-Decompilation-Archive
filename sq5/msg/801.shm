@@ -1,0 +1,49 @@
+;;; Sierra Script
+;;; 801.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ALIENS 1)
+(define N_TARGET_IN_RANGE 32)
+(define N_FUEL 22)
+(define N_LEVER2 2)
+(define N_LEVER1 31)
+(define N_ARM 3)
+(define N_AST1 4)
+(define N_AST2 5)
+(define N_AST3 6)
+(define N_AST4 7)
+(define N_AST5 8)
+(define N_AST6 9)
+(define N_AST7 10)
+(define N_AST8 11)
+(define N_AST9 12)
+(define N_BTHRUST 13)
+(define N_CLAW_BUTTON 14)
+(define N_CLAW 15)
+(define N_CLIFFY_BLIP 16)
+(define N_CLIFFY 17)
+(define N_DIRECTIONS 18)
+(define N_SHIP_BLIP 19)
+(define N_SHIP 20)
+(define N_FTHRUST 21)
+(define N_HEADSUP 23)
+(define N_HAND1 24)
+(define N_LTHRUST 25)
+(define N_HAND2 28)
+(define N_RTHRUST 30)
+(define N_OXYGEN 26)
+(define N_RADAR 27)
+(define N_RETURN_TO_EUREKA 29)
+
+;;; CASES
+
+(define C_DEATH 1)
+(define C_GOT_CLIFFY 2)
+(define C_SCREWED_AROUND 3)
+(define C_NO_TANK 5)
+(define C_NO_AIR 4)
+(define C_CLIFFY_BACK 6)
+(define C_NEED_CLIFFY 7)
+

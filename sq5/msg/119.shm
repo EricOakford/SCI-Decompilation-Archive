@@ -1,0 +1,30 @@
+;;; Sierra Script
+;;; 119.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_EGA 11)
+(define N_ROOM 2)
+(define N_CONES 3)
+(define N_QUIRK_YELLS 1)
+(define N_DISK 4)
+(define N_CREST 5)
+(define N_MEET_QUIRK 6)
+(define N_ALIEN 7)
+(define N_PERSON 8)
+
+;;; CASES
+
+(define C_CLEAN 5)
+(define C_DIRTY 1)
+(define C_ON_SCRUBBER 3)
+(define C_NOT_YET 8)
+(define C_BOUNCE_BACK 2)
+(define C_GETTING_ON_SCRUBBER 6)
+(define C_CONES_SET 7)
+(define C_CREST_PIECE 4)
+(define C_PARTLY_CLEAN 9)
+(define C_FOLDED 10)
+(define C_READY 11)
+

@@ -1,0 +1,40 @@
+;;; Sierra Script
+;;; 0.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ABOUT 1)
+(define N_ORDER 2)
+(define N_CONTROL 3)
+(define N_USEIT 4)
+(define N_WELCOME 27)
+(define N_EGO 22)
+(define N_DETAIL 5)
+(define N_DO 6)
+(define N_HELP 7)
+(define N_START 8)
+(define N_DOINV 9)
+(define N_INVENTORY 10)
+(define N_HELP_ICONBAR 11)
+(define N_SELECTINV 12)
+(define N_LOOKINV 13)
+(define N_DONE 14)
+(define N_SELECTINV2 15)
+(define N_LOOK 16)
+(define N_DONE2 17)
+(define N_OUTOF 18)
+(define N_QUIT 19)
+(define N_RESTART 20)
+(define N_RESTORE 21)
+(define N_SAVE 23)
+(define N_VOLUME 24)
+(define N_SPEED 25)
+(define N_TALK 26)
+(define N_WALK 28)
+(define N_STATUSLINE 29)
+(define N_EGO_FLY 30)
+
+;;; CASES
+
+

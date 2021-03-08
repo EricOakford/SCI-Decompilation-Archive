@@ -1,0 +1,22 @@
+;;; Sierra Script
+;;; 1040.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_FORGOT_NITRO 9)
+(define N_ROGER_CAUGHT 8)
+(define N_SELF_DESTRUCT 7)
+(define N_BEEP 1)
+(define N_GET_AWAY 2)
+(define N_BLOB_OUTSIDE 3)
+(define N_FLO 5)
+(define N_FOLLOW_WD40 6)
+(define N_FLO_CALLS 4)
+
+;;; CASES
+
+(define C_FLO_COMMAND 1)
+(define C_ENERGIZE 2)
+(define C_PHASERS 3)
+

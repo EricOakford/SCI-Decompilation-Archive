@@ -1,0 +1,20 @@
+;;; Sierra Script
+;;; 123.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_BOARD 1)
+(define N_CLASS_DOOR 2)
+(define N_LOCKER 3)
+(define N_CADETS 8)
+(define N_ASTROMECHS 7)
+(define N_SHIP1 4)
+(define N_SHIP2 5)
+(define N_SHIP3 6)
+
+;;; CASES
+
+(define C_AFTER_CLASS 1)
+(define C_BEFORE_CLASS 2)
+

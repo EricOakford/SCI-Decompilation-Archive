@@ -1,0 +1,18 @@
+;;; Sierra Script
+;;; 109.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_CANT_DO 1)
+(define C_TEST 2)
+(define C_CREST 3)
+
+;;; NOUNS
+
+(define N_HALL 3)
+(define N_BAY 1)
+(define N_HALL_PEOPLE 2)
+(define N_TIMER 4)
+(define N_CHEATER 5)
+

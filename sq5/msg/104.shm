@@ -1,0 +1,13 @@
+;;; Sierra Script
+;;; 104.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_COPYRIGHT 3)
+(define N_CAPTAIN_LOG 1)
+(define N_ATTACK 2)
+

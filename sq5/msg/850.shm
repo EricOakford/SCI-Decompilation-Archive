@@ -1,0 +1,43 @@
+;;; Sierra Script
+;;; 850.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_MUST_PLACE_ALL_SHIPS 1)
+(define C_ALREADY_FIRED 2)
+(define C_INSULT 3)
+(define C_BLOW_UP_SHIP1 4)
+(define C_BLOW_UP_SHIP2 5)
+(define C_BLOW_UP_SHIP3 6)
+(define C_BLOW_UP_SHIP4 7)
+(define C_BLOW_UP_SHIP5 8)
+(define C_BLOW_UP_SHIP6 9)
+(define C_WIN 11)
+(define C_QUIT 10)
+
+;;; NOUNS
+
+(define N_ROOM 13)
+(define N_DONE 3)
+(define N_SECTOR1_BUTTON 15)
+(define N_SHIP_SELECTOR 1)
+(define N_DIRECTIONS 2)
+(define N_GRID 5)
+(define N_FIRE_PANEL 4)
+(define N_ROGER 6)
+(define N_NEXT 7)
+(define N_NUMPROBES 8)
+(define N_PROBE_BUTTON 9)
+(define N_WEAPON_BUTTON 18)
+(define N_ROTATE_BUTTON 14)
+(define N_QUIT_BUTTON 11)
+(define N_ROGER_RESPOND 12)
+(define N_QUiRK_RESPOND 10)
+(define N_SECTOR2_BUTTON 16)
+(define N_SECTOR3_BUTTON 17)
+(define N_SHIP1 19)
+(define N_SHIP2 20)
+(define N_SHIP3 21)
+(define N_SHIP4 22)
+

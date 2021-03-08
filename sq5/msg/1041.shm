@@ -1,0 +1,13 @@
+;;; Sierra Script
+;;; 1041.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_CREDITS 1)
+(define N_FINALE 2)
+(define N_CLOSING 3)
+

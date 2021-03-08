@@ -1,0 +1,20 @@
+;;; Sierra Script
+;;; 137.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_QUESTION10 1)
+(define N_QUESTION1 2)
+(define N_QUESTION2 3)
+(define N_QUESTION3 4)
+(define N_QUESTION4 5)
+(define N_QUESTION5 6)
+(define N_QUESTION6 7)
+(define N_QUESTION7 8)
+(define N_QUESTION8 9)
+(define N_QUESTION9 10)
+
+;;; CASES
+
+

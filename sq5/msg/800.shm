@@ -1,0 +1,15 @@
+;;; Sierra Script
+;;; 800.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_CLOSED 2)
+(define C_OPEN 1)
+
+;;; NOUNS
+
+(define N_ROOM 4)
+(define N_NO_TORCH 6)
+(define N_CUT_HOLE 5)
+

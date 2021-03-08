@@ -1,0 +1,20 @@
+;;; Sierra Script
+;;; 1001.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 9)
+(define N_DOOR 4)
+(define N_CATWALK 3)
+(define N_CARBURATOR 2)
+(define N_CONSOLE 6)
+(define N_ENGINE 5)
+(define N_BEAM_IN 8)
+(define N_BEEP 1)
+(define N_DOWN_RIGHT_STAIRS 7)
+
+;;; CASES
+
+(define C_CANT_REACH 1)
+

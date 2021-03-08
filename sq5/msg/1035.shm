@@ -1,0 +1,17 @@
+;;; Sierra Script
+;;; 1035.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 5)
+(define N_LIFT_BOTTOM 6)
+(define N_VENT 7)
+(define N_AT_BOTTOM 1)
+(define N_AT_TOP 2)
+(define N_DOOR 3)
+(define N_LADDER 4)
+
+;;; CASES
+
+

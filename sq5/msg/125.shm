@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 125.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_PANEL 5)
+(define N_DAVE 1)
+(define N_SCORES_POSTED 2)
+(define N_CONFERENCE_DOOR 3)
+(define N_CONFERENCE_WINDOW 4)
+(define N_ASTROMECHS 9)
+(define N_SHIP1 6)
+(define N_SHIP2 7)
+(define N_SHIP3 8)
+
+;;; CASES
+
+

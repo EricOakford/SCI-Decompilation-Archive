@@ -1,0 +1,31 @@
+;;; Sierra Script
+;;; 802.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_DO_ANIMATION 1)
+
+;;; NOUNS
+
+(define N_ROOM 14)
+(define N_LEVER2 1)
+(define N_ARM 2)
+(define N_BTHRUST 3)
+(define N_FTHRUST 4)
+(define N_FUEL 5)
+(define N_GOLIATH 6)
+(define N_HEADSUP 7)
+(define N_INSTRUCTION 8)
+(define N_HAND1 9)
+(define N_LTHRUST 10)
+(define N_OXYGEN 11)
+(define N_RADAR 12)
+(define N_HAND2 13)
+(define N_RTHRUST 15)
+(define N_PANEL1 16)
+(define N_PANEL2 17)
+(define N_PANEL3 18)
+(define N_PANEL4 19)
+(define N_LEVER1 20)
+

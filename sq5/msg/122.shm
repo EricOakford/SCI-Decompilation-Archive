@@ -1,0 +1,24 @@
+;;; Sierra Script
+;;; 122.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_SCRUBBER 1)
+(define N_CLOSET 2)
+(define N_CONES 3)
+(define N_GARBAGE 10)
+(define N_SIM 8)
+(define N_GUYS 9)
+(define N_PANEL 4)
+(define N_SHIP1 5)
+(define N_SHIP2 6)
+(define N_SHIP3 7)
+
+;;; CASES
+
+(define C_OPEN 1)
+(define C_CLOSED 2)
+(define C_AFTER_BEA 3)
+(define C_BEFORE_BEA 4)
+
