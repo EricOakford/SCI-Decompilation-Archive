@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 800)
-(include sci.sh)
+(include game.sh) (include "800.shm")
 (use Main)
 (use TellerIcon)
 (use EgoDead)
@@ -17,18 +17,18 @@
 )
 
 (local
-	local0
-	local1
-	[local2 4] = [0 -2 11 999]
+	numDeadApemen
+	toldAboutDoor
+	local2 = [0 -2 11 999]
 	[local6 2]
-	[local8 6] = [0 6 -7 9 10 999]
-	[local14 4] = [0 3 8 999]
-	[local18 3] = [0 -7 999]
+	local8 = [0 6 -7 9 10 999]
+	local14 = [0 3 8 999]
+	local18 = [0 -7 999]
 	[local21 3]
 )
-(instance rm800 of Rm
+(instance rm800 of Room
 	(properties
-		noun 4
+		noun N_ROOM
 		picture 800
 	)
 	
@@ -39,36 +39,25 @@
 		(ego setScale: 189 x: -10 y: 182 noun: 2 init: normalize:)
 		(egoTell init: ego @local2 @local6)
 		(manuTell
-			init: (ScriptID 41 1) @local8 @local21 @local18
+			init: (ScriptID MONkEY_TALKER 1) @local8 @local21 @local18
 		)
 		(HandsOn)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						136
-						189
-						148
-						184
-						109
-						184
-						132
-						161
-						193
-						162
-						200
-						156
-						159
-						159
-						140
-						155
-						102
-						155
-						0
-						167
-						0
-						189
+						136 189
+						148 184
+						109 184
+						132 161
+						193 162
+						200 156
+						159 159
+						140 155
+						102 155
+						0 167
+						0 189
 					yourself:
 				)
 		)
@@ -78,21 +67,22 @@
 		(jungle init:)
 		(tree init:)
 		(walkHandler addToFront: city)
-		((ScriptID 41 1)
+		((ScriptID MONkEY_TALKER 1)
 			x: -20
 			y: 175
 			setScale:
-			noun: 1
-			ignoreActors: 1
+			noun: N_MANU
+			ignoreActors: TRUE
 			init:
 		)
-		(if (and (== prevRoomNum 550) (== battleResult 0))
-			(EgoDead)
+		(if (and (== prevRoomNum 550) (== battleResult battleEGOLOST))
+			;EO: Restored unused death message
+			(EgoDead C_APEMAN 800)
 		)
 		(if (== prevRoomNum 550)
 			(cSound changeTo: 180)
 			(ego x: 104 y: 171)
-			((ScriptID 41 1) x: 157 y: 167)
+			((ScriptID MONkEY_TALKER 1) x: 157 y: 167)
 		)
 		(curRoom setScript: egoEnters)
 		(apeManGuard
@@ -106,41 +96,44 @@
 	(method (doit)
 		(cond 
 			(script 0)
-			((< (ego x?) 10) (curRoom setScript: blockEgo))
+			((< (ego x?) 10)
+				(curRoom setScript: blockEgo)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 41)
+		(LoadMany FALSE MONkEY_TALKER)
 		(walkHandler delete: city)
 		(super dispose:)
 	)
 )
 
 (instance egoEnters of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 104 171)
-				((ScriptID 41 1)
+				((ScriptID MONkEY_TALKER 1)
 					setCycle: Walk
 					setMotion: MoveTo 157 167 self
 				)
 			)
 			(1
-				(if (Btst 150)
-					(messager say: 3 6 14 0 self)
+				(if (Btst fSenseDanger)
+					(messager say: N_PALADIN V_DOIT C_SENSE_DANGER 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(2
-				((ScriptID 41 1) ignoreActors: 0)
-				(messager say: 1 6 1)
+				((ScriptID MONkEY_TALKER 1)
+					ignoreActors: FALSE
+				)
+				(messager say: N_MANU V_DOIT C_ENTER)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -149,8 +142,7 @@
 )
 
 (instance guardPatrols of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -163,44 +155,50 @@
 			(2
 				(apeManGuard setMotion: MoveTo 330 78 self)
 			)
-			(3 (= state -1) (= seconds 10))
+			(3
+				(= state -1)
+				(= seconds 10)
+			)
 		)
 	)
 )
 
 (instance egoExits of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 2))
+			(0
+				(HandsOff)
+				(= seconds 2)
+			)
 			(1
-				(if (not local1)
-					(messager say: 1 6 3)
+				(if (not toldAboutDoor)
+					(messager say: N_MANU V_DOIT C_DOOR)
 				else
-					(messager say: 1 6 2)
+					(messager say: N_MANU V_DOIT C_GOODBYE)
 				)
 				(ego setMotion: MoveTo 115 153 self)
 			)
 			(2
 				(ego setPri: 1 setLoop: 3 setMotion: MoveTo 115 173 self)
 			)
-			(3 (curRoom newRoom: 810))
+			(3
+				(curRoom newRoom: 810)
+			)
 		)
 	)
 )
 
 (instance blockEgo of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (> local0 2)
-					(messager say: 1 6 5)
+				(if (> numDeadApemen 2)
+					(messager say: N_MANU V_DOIT C_BLOCK_EGO)
 				else
-					(messager say: 1 6 4)
+					(messager say: N_MANU V_DOIT C_APEMAN)
 				)
 				(ego setLoop: 1 setMotion: MoveTo 30 175 self)
 			)
@@ -213,7 +211,7 @@
 				)
 			)
 			(2
-				(= monsterNum 575)
+				(= monsterNum vApeman)
 				(= monsterHealth 180)
 				(curRoom newRoom: 550)
 				(HandsOn)
@@ -236,7 +234,7 @@
 	(properties
 		x 319
 		y 78
-		noun 5
+		noun N_APEMAN_GUARD
 		view 570
 	)
 )
@@ -245,7 +243,7 @@
 	(properties
 		x 121
 		y 81
-		noun 4
+		noun N_CITY ;N_ROOM	;EO: restored unused message
 		nsTop 11
 		nsBottom 152
 		nsRight 243
@@ -254,10 +252,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(V_WALK
 				(curRoom setScript: egoExits)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -266,7 +266,7 @@
 	(properties
 		x 203
 		y 19
-		noun 9
+		noun N_TOWERS
 		nsTop -4
 		nsLeft 94
 		nsBottom 43
@@ -279,7 +279,7 @@
 	(properties
 		x 258
 		y 153
-		noun 7
+		noun N_JUNGLE
 		nsTop 118
 		nsLeft 197
 		nsBottom 189
@@ -292,7 +292,7 @@
 	(properties
 		x 22
 		y 97
-		noun 8
+		noun N_TREE
 		nsTop 46
 		nsLeft 2
 		nsBottom 149
@@ -302,7 +302,6 @@
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (doChild)
 		(return
@@ -312,23 +311,26 @@
 						(curRoom setScript: egoExits)
 					)
 				)
-				(else  (return query))
+				(else
+					(return query)
+				)
 			)
 		)
 	)
 )
 
 (instance manuTell of Teller
-	(properties)
 	
 	(method (doChild)
 		(return
 			(switch query
 				(-7
-					(= local1 1)
+					(= toldAboutDoor TRUE)
 					(super doChild: query)
 				)
-				(else  (return query))
+				(else
+					(return query)
+				)
 			)
 		)
 	)

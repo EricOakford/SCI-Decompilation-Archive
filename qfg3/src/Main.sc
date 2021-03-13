@@ -439,8 +439,8 @@
 	brideState
 	gNewList
 	global394
-	global395
-	dispelPotionDay
+	apothFlags
+	apothDay
 	global397
 	global398
 	disabledActions
@@ -449,11 +449,11 @@
 	global402
 	global403 =  1
 	paladinStat
-	global405 =  4
+	healingPillsInStock =  4
 	wonBridgeWrestling
 	global407
-	global408
-	survivorDay
+	innFlags
+	innDay
 	commons
 	global411 =  1
 	gMonster
@@ -492,7 +492,7 @@
 	global445
 	global446
 	global447
-	global448
+	numDeaders
 	palVaryInfo
 	global450
 	haramiNight
@@ -510,12 +510,12 @@
 	global463
 	gCurrentDay_7
 	totalEncumbrance
-	global466
+	survivorTalkCount
 	gGloryWindow_2
 	honeyBirdRoom
 	qg3Controls
 	dayStoleMagicDrum
-	global471
+	dispelPotionsInStock
 	global472
 	global473
 	global474

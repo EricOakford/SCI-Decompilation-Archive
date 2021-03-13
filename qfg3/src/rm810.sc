@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 810)
-(include sci.sh)
+(include game.sh) (include "810.shm")
 (use Main)
 (use Target)
 (use EgoDead)
@@ -24,14 +24,14 @@
 )
 
 (local
-	local0
+	climbedUp
 	local1
 	egoMoveSpeed
 )
-(procedure (localproc_0d92)
+(procedure (ShowDeadApemen)
 	(sFx number: 931 play:)
 	(deader init: setPri: 11 ignoreActors: 1 addToPic:)
-	(switch global448
+	(switch numDeaders
 		(0 0)
 		(1
 			(deader1 init: ignoreActors: 1 addToPic:)
@@ -46,12 +46,12 @@
 			(deader3 init: ignoreActors: 1 addToPic:)
 		)
 	)
-	(return (++ global448))
+	(return (++ numDeaders))
 )
 
-(instance rm810 of Rm
+(instance rm810 of Room
 	(properties
-		noun 9
+		noun N_ROOM
 		picture 810
 	)
 	
@@ -64,46 +64,37 @@
 			setScale: Scaler 100 50 189 125
 			normalize:
 		)
-		(LoadMany 128 810 570 6)
+		(LoadMany RES_VIEW 810 570 6)
 		(HandsOn)
 		(super init:)
 		(cSound number: 810 setLoop: -1 play: 127)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						0
-						173
-						81
-						173
-						165
-						189
-						216
-						148
-						185
-						138
-						168
-						135
-						155
-						127
-						133
-						124
-						133
-						99
-						112
-						99
-						112
-						126
-						142
-						157
-						0
-						157
+						0 173
+						81 173
+						165 189
+						216 148
+						185 138
+						168 135
+						155 127
+						133 124
+						133 99
+						112 99
+						112 126
+						142 157
+						0 157
 					yourself:
 				)
 				((Polygon new:)
-					type: 3
-					init: 148 81 212 81 212 71 148 71
+					type: PContainedAccess
+					init:
+						148 81
+						212 81
+						212 71
+						148 71
 					yourself:
 				)
 		)
@@ -114,97 +105,115 @@
 		(rocks init:)
 		(noWayToGo init:)
 		(anubisStatue init:)
-		(if (and (not (ego has: 34)) (not (Btst 136)))
+		(if (and (not (ego has: iOpal)) (not (Btst fLostCityDoorOpen)))
 			(opal setPri: 14 init: stopUpd:)
 		)
-		(if (Btst 136)
-			(doorWay init: loop: 2 approachVerbs: 4 1 ignoreActors: 0)
+		(if (Btst fLostCityDoorOpen)
+			(doorWay
+				init:
+				loop: 2
+				approachVerbs: V_DO V_LOOK
+				ignoreActors: FALSE
+			)
 		else
-			(doorWay init: approachVerbs: 4 1)
+			(doorWay
+				init:
+				approachVerbs: V_DO V_LOOK
+			)
 		)
-		(if
-		(and (not (== battleResult 0)) (== prevRoomNum 550))
+		(if (and (not (== battleResult battleEGOLOST)) (== prevRoomNum 550))
 			(ego x: 60 y: 169 code: quikChek)
-			(localproc_0d92)
+			(ShowDeadApemen)
 		else
 			(self setScript: egoEnters)
 		)
-		(if (and (== prevRoomNum 550) (== battleResult 0))
+		(if (and (== prevRoomNum 550) (== battleResult battleEGOLOST))
 			(self setScript: egoIsDead)
 		)
 	)
 	
 	(method (dispose)
 		(ego code: 0)
-		(UnLoad 128 810)
-		(UnLoad 128 570)
-		(UnLoad 128 6)
-		(LoadMany 0 956 923 37 57)
-		(if gNewList (gNewList eachElementDo: #dispose))
+		(UnLoad RES_VIEW 810)
+		(UnLoad RES_VIEW 570)
+		(UnLoad RES_VIEW 6)
+		(LoadMany FALSE FORCOUNT INSET CASTFETCH JUMPX)
+		(if gNewList
+			(gNewList eachElementDo: #dispose)
+		)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(81
+			(V_FLAME
 				(ego setScript: castProj 0 theVerb)
 			)
-			(83
+			(V_FORCEBOLT
 				(ego setScript: castProj 0 theVerb)
 			)
-			(32
+			(V_ROCK	;was 32 (horn), but that's not a throwing item!
 				(ego setScript: castProj 0 theVerb)
 			)
-			(20
+			(V_DAGGER
 				(ego setScript: castProj 0 theVerb)
 			)
-			(65 (messager say: 1 6 1))
+			(V_REST
+				(messager say: N_CUE V_DOIT C_CANT_SLEEP)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
 		)
 	)
 	
-	(method (setInset param1 param2 param3)
+	(method (setInset theInset who reg)
 		(ego code: 0)
-		(theIconBar disable: 6 1 5 3)
-		(if inset (inset dispose:))
-		(if (and argc param1)
-			(param1
+		(theIconBar disable: ICON_CAST ICON_WALK ICON_ACTIONS ICON_DO)
+		(if inset
+			(inset dispose:)
+		)
+		(if (and argc theInset)
+			(theInset
 				init:
-					(if (>= argc 2) param2 else 0)
+					(if (>= argc 2) who else 0)
 					self
-					(if (>= argc 3) param3 else 0)
+					(if (>= argc 3) reg else 0)
 			)
 		)
-		(if (Btst 136)
+		(if (Btst fLostCityDoorOpen)
 			(opal view: 810 loop: 1 setPri: 14 x: 158 y: 83 init:)
 		)
 	)
 )
 
 (instance egoIsDead of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 2))
-			(1 (EgoDead))
+			(0
+				(HandsOff)
+				(= seconds 2)
+			)
+			(1
+				(EgoDead)
+			)
 		)
 	)
 )
 
 (instance castOpenOnDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(AutoTarget 125 101)
-				(self setScript: (ScriptID 13 0) self)
+				(self setScript: (ScriptID CASTOPEN 0) self)
 			)
-			(1 (messager say: 1 6 6))
+			(1
+				(messager say: N_CUE V_DOIT C_CANT_OPEN)
+			)
 			(2
 				(HandsOn)
 				(ego normalize:)
@@ -215,8 +224,7 @@
 )
 
 (instance egoFalls of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -226,7 +234,7 @@
 					view: 35
 					setLoop: 3
 					cel: 0
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 				(= egoMoveSpeed (ego moveSpeed?))
 			)
@@ -239,7 +247,7 @@
 				)
 			)
 			(2
-				(ego x: 162 y: 131 z: 0 setCycle: End self)
+				(ego x: 162 y: 131 z: 0 setCycle: EndLoop self)
 			)
 			(3
 				(sFx number: 920 setLoop: 1 play:)
@@ -250,19 +258,18 @@
 				(ego
 					loop: 5
 					cel: 0
-					illegalBits: -32768
-					setCycle: End self
+					illegalBits: cWHITE
+					setCycle: EndLoop self
 				)
 			)
 			(5
-				(if
-				(or (cast contains: apeMan) (cast contains: apeMan1))
-					(= monsterNum 575)
+				(if (or (cast contains: apeMan) (cast contains: apeMan1))
+					(= monsterNum vApeman)
 					(= monsterHealth 180)
 					(curRoom newRoom: 550)
 				)
 				(ego code: quikChek moveSpeed: egoMoveSpeed normalize:)
-				(= local0 0)
+				(= climbedUp 0)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -271,7 +278,6 @@
 )
 
 (instance cantExit of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -285,12 +291,12 @@
 					init:
 					setStep: 4 4
 					setCycle: Walk
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 30 168 self
 				)
 			)
 			(1
-				(= monsterNum 575)
+				(= monsterNum vApeman)
 				(= monsterHealth 180)
 				(curRoom newRoom: 550)
 			)
@@ -299,7 +305,6 @@
 )
 
 (instance apeManCrossLeft of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -331,17 +336,16 @@
 )
 
 (instance castProj of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(self setScript: (ScriptID 32 0) self register)
+				(self setScript: (ScriptID PROJECTILE 0) self register)
 			)
 			(1
 				(if (cast contains: apeMan)
-					(= monsterNum 575)
+					(= monsterNum vApeman)
 					(= monsterHealth 180)
 					(curRoom newRoom: 550)
 				)
@@ -354,7 +358,6 @@
 )
 
 (instance apeManCrossRight of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -378,8 +381,7 @@
 )
 
 (instance climbDownPedestal of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -388,7 +390,7 @@
 			)
 			(1
 				(sFx number: 928 play:)
-				(ego view: 7 cel: 11 loop: 4 setCycle: Beg self)
+				(ego view: 7 cel: 11 loop: 4 setCycle: BegLoop self)
 			)
 			(2
 				(ego
@@ -397,18 +399,18 @@
 					y: 93
 					setStep: 2 1
 					setLoop: 3
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: MoveTo 162 131 self
 				)
 			)
 			(3
 				(ego view: 5 normalize:)
 				(HandsOn)
-				(= local0 0)
+				(= climbedUp 0)
 				(if (not (cast contains: apeMan))
 					(curRoom setScript: apeManCrossLeft)
 				else
-					(= monsterNum 575)
+					(= monsterNum vApeman)
 					(= monsterHealth 180)
 					(curRoom newRoom: 550)
 				)
@@ -419,7 +421,6 @@
 )
 
 (instance climbUpPedestal of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -433,22 +434,22 @@
 			)
 			(2
 				(ego
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 5
 					setStep: 2 1
 					setMotion: MoveTo 166 93 self
 				)
 			)
 			(3
-				(ego loop: 4 cel: 0 y: 70 setCycle: End self)
+				(ego loop: 4 cel: 0 y: 70 setCycle: EndLoop self)
 			)
 			(4
-				(ego view: 13 setHeading: 180 setCycle: End)
+				(ego view: 13 setHeading: 180 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(5
 				(ego code: fallChek setStep: 3 2 normalize:)
-				(= local0 1)
+				(= climbedUp 1)
 				(HandsOn)
 				(if (not (cast contains: apeMan))
 					(apeMan
@@ -467,7 +468,6 @@
 )
 
 (instance egoEnters of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -486,8 +486,8 @@
 				(ego x: -20 y: 168 setMotion: PolyPath 60 169 self)
 			)
 			(2
-				(if (Btst 150)
-					(messager say: 1 6 7 0 self)
+				(if (Btst fSenseDanger)
+					(messager say: N_CUE V_DOIT C_SENSE_DANGER 0 self)
 				else
 					(self cue:)
 				)
@@ -502,15 +502,14 @@
 )
 
 (instance hoarkOpal of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					get: 34
-					solvePuzzle: 329 5 5
+					get: iOpal
+					solvePuzzle: fGetAnubisEyes 5 (| puzzleWIZARD puzzleTHIEF)
 					setMotion: MoveTo 181 71 self
 				)
 			)
@@ -537,7 +536,7 @@
 	)
 	
 	(method (getHurt)
-		(= monsterNum 575)
+		(= monsterNum vApeman)
 		(= monsterHealth 180)
 		(curRoom newRoom: 550)
 		(super getHurt:)
@@ -548,7 +547,7 @@
 	(properties
 		x 116
 		y 94
-		noun 8
+		noun N_DOORWAY
 		nsTop 87
 		nsLeft 114
 		nsBottom 121
@@ -563,37 +562,39 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(if (== local0 0)
-					(if (not (Btst 136))
+			(V_DO
+				(if (== climbedUp 0)
+					(if (not (Btst fLostCityDoorOpen))
 						(curRoom setInset: anubisInset)
 					else
 						(super doVerb: theVerb)
 					)
 				else
-					(messager say: 1 6 2)
+					(messager say: N_CUE V_DOIT C_CLIMB_DOWN_FIRST)
 				)
 			)
-			(1
-				(if (== local0 0)
+			(V_LOOK
+				(if (== climbedUp 0)
 					(curRoom setInset: anubisInset)
 				else
-					(messager say: 1 6 3)
+					(messager say: N_CUE V_DOIT C_CANT_SEE)
 				)
 			)
-			(75
+			(V_OPEN
 				(if (not (ego script?))
 					(ego setScript: castOpenOnDoor)
 				)
 			)
-			(45
-				(if (== local0 0)
+			(V_OPAL
+				(if (== climbedUp 0)
 					(curRoom setInset: anubisInset)
 				else
-					(messager say: 1 6 2)
+					(messager say: N_CUE V_DOIT C_CLIMB_DOWN_FIRST)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -603,7 +604,7 @@
 		x 185
 		y 56
 		view 811
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -623,7 +624,7 @@
 		view 572
 		loop 1
 		cel 1
-		scaleSignal $0001
+		scaleSignal scalable
 		scaleX 81
 		scaleY 81
 	)
@@ -636,7 +637,7 @@
 		view 572
 		loop 1
 		cel 2
-		scaleSignal $0001
+		scaleSignal scalable
 		scaleX 110
 		scaleY 110
 	)
@@ -649,7 +650,7 @@
 		view 572
 		loop 1
 		cel 4
-		scaleSignal $0001
+		scaleSignal scalable
 		scaleX 111
 		scaleY 111
 	)
@@ -659,7 +660,7 @@
 	(properties
 		x 193
 		y 57
-		noun 2
+		noun N_STATUE ;N_PEDESTAL	:EO: Corrected noun
 		nsTop 46
 		nsLeft 174
 		nsBottom 69
@@ -669,38 +670,42 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1
+			(V_LOOK
 				(if (cast contains: opal)
-					(messager say: 10 1)
+					(messager say: N_STATUE V_LOOK)
 				else
-					(messager say: 1 6 4)
+					(messager say: N_CUE V_DOIT C_EYELESS)
 				)
 			)
-			(4
+			(V_DO
 				(if
 					(and
-						(== local0 1)
-						(not (Btst 136))
-						(not (ego has: 34))
+						(== climbedUp TRUE)
+						(not (Btst fLostCityDoorOpen))
+						(not (ego has: iOpal))
 					)
 					(ego setScript: hoarkOpal)
 				)
 			)
-			(82
-				(if (not (ego has: 34))
-					(if (== local0 1)
-						(messager say: 1 6 5)
+			(V_FETCH
+				(if (not (ego has: iOpal))
+					(if (== climbedUp TRUE)
+						(messager say: N_CUE V_DOIT C_DONT_NEED_FETCH)
 					else
 						(AutoTarget 186 53)
-						(curRoom setScript: (ScriptID 37 0) 0 anubisStatue)
+						(curRoom setScript: (ScriptID CASTFETCH 0) 0 anubisStatue)
 					)
 				)
 			)
 			(-82
 				(opal dispose:)
-				(ego get: 34 solvePuzzle: 329 5 6)
+				(ego
+					get: iOpal
+					solvePuzzle: fGetAnubisEyes 5 (| puzzleWIZARD puzzleTHIEF))
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -709,7 +714,7 @@
 	(properties
 		x 168
 		y 94
-		noun 2
+		noun N_PEDESTAL
 		nsTop 71
 		nsLeft 150
 		nsBottom 118
@@ -719,14 +724,16 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(if (== local0 0)
+			(V_DO
+				(if (== climbedUp 0)
 					(ego setScript: climbUpPedestal)
 				else
 					(ego setScript: climbDownPedestal)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -735,7 +742,7 @@
 	(properties
 		x 233
 		y 104
-		noun 3
+		noun N_STAIRS
 		nsTop 75
 		nsLeft 215
 		nsBottom 133
@@ -748,7 +755,7 @@
 	(properties
 		x 73
 		y 102
-		noun 4
+		noun N_LEFT_STAIRS
 		nsTop 82
 		nsLeft 53
 		nsBottom 122
@@ -761,7 +768,7 @@
 	(properties
 		x 123
 		y 47
-		noun 5
+		noun N_RUINS
 		nsTop 31
 		nsLeft 87
 		nsBottom 63
@@ -774,7 +781,7 @@
 	(properties
 		x 43
 		y 122
-		noun 6
+		noun N_ROCKS
 		nsTop 87
 		nsLeft 3
 		nsBottom 158
@@ -787,7 +794,7 @@
 	(properties
 		x 280
 		y 151
-		noun 7
+		noun N_NO_WAY_TO_GO
 		nsTop 114
 		nsLeft 242
 		nsBottom 189
@@ -796,29 +803,26 @@
 	)
 )
 
-(instance sFx of Sound
-	(properties)
-)
+(instance sFx of Sound)
 
 (instance fallChek of Code
-	(properties)
 	
 	(method (doit)
-		(if
-		(or (ego inRect: 156 73 218 76) (< (ego x?) 156))
+		(if (or (ego inRect: 156 73 218 76) (< (ego x?) 156))
 			(ego setScript: egoFalls)
 		)
 	)
 )
 
 (instance quikChek of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
-			((ego inRect: 0 152 36 200) (ego setScript: cantExit))
-			((and (Btst 136) (ego inRect: 115 118 134 120))
-				(= monsterNum 575)
+			((ego inRect: 0 152 36 200)
+				(ego setScript: cantExit)
+			)
+			((and (Btst fLostCityDoorOpen) (ego inRect: 115 118 134 120))
+				(= monsterNum vApeman)
 				(= monsterHealth 180)
 				(curRoom newRoom: 820)
 			)
@@ -831,25 +835,34 @@
 		view 810
 		x 160
 		y 135
-		disposeNotOnMe 1
+		disposeNotOnMe TRUE
 		noun 11
 	)
 	
 	(method (dispose)
 		(ego code: quikChek)
-		(theIconBar enable: 6 1 5 3)
-		(if (Btst 136) (opal dispose:))
+		(theIconBar enable: ICON_CAST ICON_WALK ICON_ACTIONS ICON_DO)
+		(if (Btst fLostCityDoorOpen)
+			(opal dispose:)
+		)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(45
-				(ego drop: 34 solvePuzzle: 330 8)
+			(V_OPAL
+				(ego
+					drop: iOpal
+					solvePuzzle: fOpenLostCityDoor 8
+				)
 				(opal view: 810 loop: 1 setPri: 14 x: 158 y: 83 init:)
-				(Animate (cast elements?) 1)
-				(doorWay loop: 2 ignoreActors: 1 approachY: 110)
-				(Bset 136)
+				(Animate (cast elements?) TRUE)
+				(doorWay
+					loop: 2
+					ignoreActors: TRUE
+					approachY: 110
+				)
+				(Bset fLostCityDoorOpen)
 				(self dispose:)
 			)
 			(else 

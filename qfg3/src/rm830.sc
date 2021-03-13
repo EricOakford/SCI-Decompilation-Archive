@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 830)
-(include sci.sh)
+(include game.sh) (include "830.shm")
 (use Main)
 (use TellerIcon)
 (use EgoDead)
@@ -22,16 +22,16 @@
 )
 
 (local
-	local0
-	local1
-	[local2 5] = [0 -1 -2 -3 999]
+	roomState
+	reeshaDemon
+	local2 = [0 -1 -2 -3 999]
 	[local7 2]
-	[local9 9] = [0 -8 -7 -6 -5 -11 -12 -13 999]
+	local9 = [0 -8 -7 -6 -5 -11 -12 -13 999]
 	[local18 2]
 )
-(instance rm830 of Rm
+(instance rm830 of Room
 	(properties
-		noun 9
+		noun N_ROOM
 		picture 830
 	)
 	
@@ -44,45 +44,36 @@
 			scaleX: 128
 			scaleY: 128
 			init:
-			noun: 2
+			noun: N_EGO_TELL
 			normalize:
 		)
 		(super init:)
-		(theIconBar disable: 1)
+		(theIconBar disable: ICON_WALK)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						39
-						189
-						319
-						189
-						259
-						138
-						287
-						138
-						309
-						138
-						309
-						130
-						270
-						130
-						245
-						130
-						163
-						90
-						61
-						90
-						38
-						189
+						39 189
+						319 189
+						259 138
+						287 138
+						309 138
+						309 130
+						270 130
+						245 130
+						163 90
+						61 90
+						38 189
 					yourself:
 				)
 		)
 		(sky init:)
-		(if (Btst 57) (= local0 1))
-		(Bset 57)
-		(switch local0
+		(if (Btst fFoundReeshaka)
+			(= roomState 1)
+		)
+		(Bset fFoundReeshaka)
+		(switch roomState
 			(0
 				(cSound number: 830 setLoop: -1 play: 127)
 				(reesha init:)
@@ -91,12 +82,14 @@
 			)
 			(1
 				(cond 
-					((and (== prevRoomNum 550) (== battleResult 0)) (curRoom setScript: egoIsDead))
+					((and (== prevRoomNum 550) (== battleResult battleEGOLOST))
+						(curRoom setScript: egoIsDead)
+					)
 					((== prevRoomNum 550)
 						(cSound number: 830 setLoop: -1 play: 127)
-						(reesha noun: 1 init:)
+						(reesha noun: N_REESHAKA init:)
 						(rubble init: stopUpd:)
-						(ego changeGait: 0)
+						(ego changeGait: MOVE_WALK)
 						(self setScript: reeshaCollapses)
 					)
 					(else
@@ -107,11 +100,11 @@
 							setCel: 5
 							x: 104
 							y: 181
-							noun: 1
+							noun: N_REESHAKA
 							init:
 							addToPic:
 						)
-						((ScriptID 35 1)
+						((ScriptID RAKEESH_TALKER 1)
 							view: 964
 							setScale:
 							loop: 0
@@ -121,7 +114,7 @@
 							init:
 							addToPic:
 						)
-						((ScriptID 39 1)
+						((ScriptID YESUFU_TALKER 1)
 							view: 989
 							setScale:
 							loop: 2
@@ -131,7 +124,7 @@
 							init:
 							addToPic:
 						)
-						((ScriptID 36 1)
+						((ScriptID JOHARI_TALKER 1)
 							view: 974
 							setScale:
 							loop: 2
@@ -141,7 +134,7 @@
 							init:
 							addToPic:
 						)
-						((ScriptID 34 1)
+						((ScriptID UHURA_TALKER 1)
 							view: 969
 							setScale:
 							loop: 2
@@ -151,7 +144,7 @@
 							init:
 							addToPic:
 						)
-						((ScriptID 40 1)
+						((ScriptID HARAMI_TALKER 1)
 							view: 838
 							x: 61
 							y: 111
@@ -167,13 +160,16 @@
 	)
 	
 	(method (dispose)
-		(LoadMany 0 991 34 35 36 39 40 41 939)
+		(LoadMany FALSE
+			JUMP UHURA_TALKER RAKEESH_TALKER
+			JOHARI_TALKER YESUFU_TALKER HARAMI_TALKER
+			MONkEY_TALKER OSC
+		)
 		(super dispose:)
 	)
 )
 
 (instance egoIsDead of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -182,19 +178,22 @@
 				(= seconds 2)
 			)
 			(1
-				(ego view: 6 cel: 0 loop: 0 setCycle: End self)
+				(ego view: 6 cel: 0 loop: 0 setCycle: EndLoop self)
 			)
-			(2 (EgoDead))
+			(2
+				(EgoDead)
+			)
 		)
 	)
 )
 
 (instance demonTaunts of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
+			(0
+				(= seconds 5)
+			)
 			(1
 				(curRoom setScript: closeCombat)
 			)
@@ -203,22 +202,21 @@
 )
 
 (instance eventTwo of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp ptr egoName)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bclr 6)
+				(Bclr fInMainGame)
 				(ego
 					x: 298
 					y: 133
-					solvePuzzle: 338 25
+					solvePuzzle: fWinGame 25
 					setMotion: MoveTo 168 145 self
 				)
 			)
 			(1
-				((ScriptID 41 1)
+				((ScriptID MONkEY_TALKER 1)
 					setScale:
 					init:
 					x: 298
@@ -228,31 +226,31 @@
 				)
 			)
 			(2
-				(if (Btst 150)
-					(messager say: 4 6 10 0 self)
+				(if (Btst fSenseDanger)
+					(messager say: N_ENDING V_DOIT C_SENSE_DANGER 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(messager say: 6 6 17 0 self)
+				(messager say: N_MANU V_DOIT C_END1 0 self)
 			)
 			(4
-				(messager say: 5 6 18 0 self)
+				(messager say: N_EVENT V_DOIT C_END2 0 self)
 			)
 			(5
 				(cSound changeTo: 833)
-				(ego view: 881 setCycle: Fwd)
+				(ego view: 881 setCycle: Forward)
 				(= seconds 5)
 			)
 			(6
-				(messager say: 5 6 19 0 self)
+				(messager say: N_EVENT V_DOIT C_END3 0 self)
 			)
 			(7
-				(= temp0 (Memory memALLOC_CRIT 50))
-				(= temp1 (Message msgGET 830 5 6 3 1 temp0))
-				(messager sayFormat: temp1 temp0 @userName)
-				(Memory memFREE temp0)
+				(= ptr (Memory MNeedPtr 50))
+				(= egoName (Message MsgGet 830 N_EVENT V_DOIT C_NAME 1 ptr))
+				(messager sayFormat: egoName ptr @userName)
+				(Memory MDisposePtr ptr)
 				(= seconds 3)
 			)
 			(8
@@ -264,13 +262,12 @@
 )
 
 (instance blastDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(rubble loop: 2 setCycle: End self)
+				(rubble loop: 2 setCycle: EndLoop self)
 				(globalSound number: 930 play: 127)
 			)
 			(1
@@ -282,13 +279,12 @@
 )
 
 (instance useDispell of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 9 setLoop: 3 setCycle: End self)
+				(ego view: 9 setLoop: 3 setCycle: EndLoop self)
 			)
 			(1
 				(ego
@@ -296,7 +292,7 @@
 					drop: 16
 					normalize:
 					addHonor: 40
-					solvePuzzle: 337 10
+					solvePuzzle: fDispelReeshaka 10
 				)
 				(reesha setScript: reeshaCollapses)
 				(self dispose:)
@@ -306,13 +302,14 @@
 )
 
 (instance closeCombat of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (messager say: 3 6 9 0 self))
+			(0
+				(messager say: N_DEMON V_DOIT C_START_BATTLE 0 self)
+			)
 			(1
-				(= monsterNum 845)
+				(= monsterNum vDemon)
 				(curRoom newRoom: 550)
 			)
 		)
@@ -320,17 +317,16 @@
 )
 
 (instance reeshaCollapses of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(reesha view: 837 loop: 0 cel: 9 setCycle: Beg self)
+				(reesha view: 837 loop: 0 cel: 9 setCycle: BegLoop self)
 				(globalSound number: 932 setLoop: 1 play:)
 			)
 			(1
-				(reesha view: 833 loop: 0 cel: 5 setCycle: Beg self)
+				(reesha view: 833 loop: 0 cel: 5 setCycle: BegLoop self)
 			)
 			(2
 				(demonCloud
@@ -339,12 +335,12 @@
 					cel: 0
 					setLoop: 1
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(demonCloud dispose:)
-				(DrawPic (curRoom picture?) dpOPEN_PIXELATION)
+				(DrawPic (curRoom picture?) PIXELDISSOLVE)
 				(= seconds 3)
 			)
 			(4
@@ -357,7 +353,6 @@
 )
 
 (instance portalOpens of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -375,15 +370,15 @@
 					y: 85
 					init:
 					cycleSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 4)
 			)
 			(2
 				(portal setLoop: 3 x: 46 y: 11 init:)
-				(DrawPic (curRoom picture?) dpOPEN_PIXELATION)
+				(DrawPic (curRoom picture?) PIXELDISSOLVE)
 				(SetPort 0 0 320 200)
-				((ScriptID 34 1)
+				((ScriptID UHURA_TALKER 1)
 					setScale:
 					x: 76
 					y: 94
@@ -396,49 +391,49 @@
 			(3)
 			(4
 				(portal stopUpd:)
-				((ScriptID 34 1)
+				((ScriptID UHURA_TALKER 1)
 					view: 969
 					setScale:
 					stopUpd:
 					setCycle: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 				)
-				((ScriptID 36 1)
+				((ScriptID JOHARI_TALKER 1)
 					view: 975
 					x: 76
 					y: 94
 					setScale:
 					init:
 					setCycle: Walk
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 154 113 self
 				)
 				(cSound number: 835 setLoop: 1 play: self)
 			)
 			(5
-				((ScriptID 36 1) setCycle: 0 setHeading: 180)
+				((ScriptID JOHARI_TALKER 1) setCycle: 0 setHeading: 180)
 			)
 			(6
-				((ScriptID 39 1)
+				((ScriptID YESUFU_TALKER 1)
 					x: 76
 					y: 94
 					setScale:
 					init:
 					setCycle: Walk
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 136 110 self
 				)
 				(cSound number: 836 setLoop: 1 play: self)
 			)
 			(7
-				((ScriptID 39 1) setCycle: 0 setHeading: 180 self)
+				((ScriptID YESUFU_TALKER 1) setCycle: 0 setHeading: 180 self)
 			)
 			(8
-				((ScriptID 36 1) view: 974 ignoreActors: 1 stopUpd:)
+				((ScriptID JOHARI_TALKER 1) view: 974 ignoreActors: TRUE stopUpd:)
 			)
 			(9
-				((ScriptID 39 1) view: 989 ignoreActors: 1 stopUpd:)
-				((ScriptID 40 1)
+				((ScriptID YESUFU_TALKER 1) view: 989 ignoreActors: TRUE stopUpd:)
+				((ScriptID HARAMI_TALKER 1)
 					x: 76
 					y: 94
 					init:
@@ -449,13 +444,13 @@
 			)
 			(10)
 			(11
-				((ScriptID 40 1)
+				((ScriptID HARAMI_TALKER 1)
 					view: 838
 					setCycle: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					stopUpd:
 				)
-				((ScriptID 35 1)
+				((ScriptID RAKEESH_TALKER 1)
 					setScale:
 					view: 967
 					setLoop: 0
@@ -468,60 +463,63 @@
 				(cSound number: 280 setLoop: -1 play:)
 			)
 			(12
-				(messager say: 5 6 8 0 self)
+				(messager say: N_EVENT V_DOIT C_REESHAKA 0 self)
 			)
 			(13
 				(portal dispose:)
-				(DrawPic (curRoom picture?) dpOPEN_PIXELATION)
+				(DrawPic (curRoom picture?) PIXELDISSOLVE)
 				(= seconds 2)
 			)
 			(14
-				((ScriptID 39 1) addToPic:)
-				((ScriptID 36 1) addToPic:)
-				((ScriptID 34 1) addToPic:)
-				((ScriptID 40 1) addToPic:)
-				((ScriptID 35 1)
+				((ScriptID YESUFU_TALKER 1) addToPic:)
+				((ScriptID JOHARI_TALKER 1) addToPic:)
+				((ScriptID UHURA_TALKER 1) addToPic:)
+				((ScriptID HARAMI_TALKER 1) addToPic:)
+				((ScriptID RAKEESH_TALKER 1)
 					view: 965
 					loop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(globalSound number: 12 setLoop: 1 play:)
 			)
 			(15
-				(messager say: 5 6 14 0 self)
+				(messager say: N_EVENT V_DOIT C_HEAL_REESHAKA 0 self)
 			)
 			(16
-				(if (not (Btst 159))
-					(messager say: 5 6 22 0 self)
+				(if (not (Btst fMetHarami))
+					(messager say: N_EVENT V_DOIT C_MEET_HARAMI 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(17
-				((ScriptID 35 1) setCycle: Beg self)
+				((ScriptID RAKEESH_TALKER 1) setCycle: BegLoop self)
 			)
-			(18 (reesha setCycle: End self))
+			(18 (reesha setCycle: EndLoop self))
 			(19
-				((ScriptID 35 1) setCycle: 0 addToPic:)
-				(reesha ignoreActors: 1 addToPic:)
-				(messager say: 5 6 15 0 self)
+				((ScriptID RAKEESH_TALKER 1) setCycle: 0 addToPic:)
+				(reesha
+					ignoreActors: TRUE
+					addToPic:
+				)
+				(messager say: N_EVENT V_DOIT C_PORTAL_OPENS 0 self)
 			)
 			(20
 				(cSound changeTo: 720)
-				((ScriptID 41 1)
+				((ScriptID MONkEY_TALKER 1)
 					x: 40
 					y: -5
 					view: 985
 					setLoop: 5
 					init:
-					ignoreHorizon: 1
-					setCycle: Rev
+					ignoreHorizon: TRUE
+					setCycle: Reverse
 					setMotion: MoveTo 41 144 self
 				)
 			)
 			(21
-				((ScriptID 41 1)
+				((ScriptID MONkEY_TALKER 1)
 					setLoop: 0
 					setCycle: Walk
 					setMotion: MoveTo 116 148 self
@@ -529,29 +527,32 @@
 				(cSound changeTo: 830)
 			)
 			(22
-				(messager say: 6 6 8 0 self)
+				(messager say: N_MANU V_DOIT C_REESHAKA 0 self)
 			)
 			(23
-				(messager say: 5 6 16 0 self)
+				(messager say: N_EVENT V_DOIT C_ROCKS_CLEARED 0 self)
 			)
 			(24
 				(self setScript: blastDoor self)
 			)
 			(25
-				(if (== heroType 0)
-					(ego get: 45)
-					(messager say: 7 6 20 0 self)
+				(if (== heroType FIGHTER)
+					(ego get: iMagicSpear)
+					(messager say: N_GET_SPEAR V_DOIT C_SPEAR 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(26
-				(messager say: 5 6 1 0 self)
+				(messager say: N_EVENT V_DOIT C_DEMONS 0 self)
 			)
 			(27
-				(ego ignoreActors: 1 setMotion: PolyPath 290 133 self)
-				((ScriptID 41 1)
-					ignoreActors: 1
+				(ego
+					ignoreActors: TRUE
+					setMotion: PolyPath 290 133 self
+				)
+				((ScriptID MONkEY_TALKER 1)
+					ignoreActors: TRUE
 					setMotion: MoveTo 294 133
 				)
 			)
@@ -565,8 +566,7 @@
 )
 
 (instance eventOne of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -575,41 +575,49 @@
 					x: 160
 					y: 190
 					setScale:
-					solvePuzzle: 336 3
+					solvePuzzle: fFindReeshaka 3
 					setMotion: MoveTo 160 180 self
 				)
 			)
-			(1 (reesha setCycle: End self))
+			(1
+				(reesha setCycle: EndLoop self)
+			)
 			(2
-				(reesha loop: 1 setCycle: End self)
+				(reesha loop: 1 setCycle: EndLoop self)
 			)
 			(3
-				(reesha loop: 2 setCycle: End self)
+				(reesha loop: 2 setCycle: EndLoop self)
 			)
-			(4 (messager say: 1 6 8 0 self))
+			(4
+				(messager say: N_REESHAKA V_DOIT C_REESHAKA 0 self)
+			)
 			(5
-				(if (== heroType 3) (messager say: 4 6 10))
+				(if (== heroType PALADIN)
+					(messager say: N_ENDING V_DOIT C_SENSE_DANGER)
+				)
 				(demonCloud
 					x: 146
 					y: 160
 					init:
 					moveSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
-				(demonCloud loop: 1 setCycle: End self)
+				(demonCloud loop: 1 setCycle: EndLoop self)
 			)
 			(7
 				(demonCloud dispose:)
-				(= local1 1)
-				(reesha view: 837 loop: 0 cel: 0 setCycle: End self)
+				(= reeshaDemon TRUE)
+				(reesha view: 837 loop: 0 cel: 0 setCycle: EndLoop self)
 				(globalSound number: 932 setLoop: 1 play:)
 			)
-			(8 (messager say: 3 6 8 0 self))
+			(8
+				(messager say: N_DEMON V_DOIT C_REESHAKA 0 self)
+			)
 			(9
 				(HandsOn)
-				(theIconBar disable: 1 4)
+				(theIconBar disable: ICON_WALK ICON_TALK)
 				(= seconds 10)
 			)
 			(10
@@ -632,39 +640,43 @@
 	(properties
 		x 145
 		y 139
-		noun 3
+		noun N_DEMON
 		view 833
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(26
+			(V_DISPEL
 				(curRoom setScript: useDispell)
 			)
-			(2
+			(V_TALK
 				(curRoom setScript: closeCombat)
 			)
-			(65 (messager say: 4 6 21))
-			(4
+			(V_REST
+				(messager say: N_ENDING V_DOIT C_CANT_SLEEP)
+			)
+			(V_DO
 				(curRoom setScript: closeCombat)
 			)
-			(81
+			(V_FLAME
 				(curRoom setScript: closeCombat)
 			)
-			(83
+			(V_FORCEBOLT
 				(curRoom setScript: closeCombat)
 			)
-			(88
+			(V_LIGHTNING
 				(curRoom setScript: closeCombat)
 			)
-			(33
+			(V_ROCK
 				(curRoom setScript: closeCombat)
 			)
-			(20
+			(V_DAGGER
 				(curRoom setScript: closeCombat)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -675,7 +687,7 @@
 		y 189
 		view 836
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -685,7 +697,7 @@
 		y 11
 		view 830
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -693,7 +705,7 @@
 	(properties
 		x 142
 		y 13
-		noun 8
+		noun N_SKY
 		nsTop -2
 		nsLeft 117
 		nsBottom 28
@@ -703,7 +715,6 @@
 )
 
 (instance reeshaTell of Teller
-	(properties)
 	
 	(method (doChild)
 		(switch query
@@ -717,45 +728,46 @@
 				(curRoom setScript: closeCombat)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(26
+				(V_DISPEL
 					(curRoom setScript: useDispell)
 				)
-				(2
+				(V_TALK
 					(curRoom setScript: closeCombat)
-					(return 1)
+					(return TRUE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
 			showDialog:
 				-5
-				(not local1)
+				(not reeshaDemon)
 				-8
-				(not local1)
+				(not reeshaDemon)
 				-6
-				(not local1)
+				(not reeshaDemon)
 				-7
-				(not local1)
+				(not reeshaDemon)
 				-11
-				(== local1 1)
+				(== reeshaDemon 1)
 				-13
-				(== local1 1)
+				(== reeshaDemon 1)
 				-12
-				(== local1 1)
+				(== reeshaDemon 1)
 		)
 	)
 	
@@ -771,7 +783,9 @@
 				(-13
 					(curRoom setScript: demonTaunts)
 				)
-				(else  (return query))
+				(else
+					(return query)
+				)
 			)
 		)
 	)

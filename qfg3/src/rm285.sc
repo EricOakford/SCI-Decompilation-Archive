@@ -241,8 +241,8 @@
 	(method (showDialog)
 		(super
 			showDialog:
-				-30
-				(Btst fAfterInitiation) -31	;NOTE: This used flag 42, which is never set, making it impossible to get the points.
+				-30 (Btst fVisitedSimbani)	;NOTE: This used flag 42, which is never set, making it impossible to get this.
+				-31
 				(Btst fAfterRace) 77
 				(if (Btst fLeopardmanCaptured) (not (Btst fDispelledLeopardman)) else 0) -33
 				(if (Btst fDispelledLeopardman) (not (Btst fJohariReleased)) else 0) -34

@@ -38,10 +38,10 @@
 (procedure (EgoDead reason roomNum deadView theCycler deadSnd)
 	(HandsOff)
 	(if (not (Btst fFakeDeath))
-		(if (Btst fFlag162)
+		(if (Btst fEgoHasDied)
 			(return FALSE)
 		else
-			(Bset fFlag162)
+			(Bset fEgoHasDied)
 		)
 	)
 	(theGame setCursor: normalCursor TRUE)

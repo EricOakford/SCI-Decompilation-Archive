@@ -1,0 +1,32 @@
+;;; Sierra Script
+;;; 800.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 4)
+(define N_MANU 1)
+(define N_PALADIN 3)
+(define N_EGO_TELL 2)
+(define N_APEMAN_GUARD 5)
+(define N_DUMMY6 6)
+(define N_JUNGLE 7)
+(define N_TREE 8)
+(define N_TOWERS 9)
+(define N_CITY 10)
+
+;;; CASES
+
+(define C_APEMAN 4)
+(define C_SENSE_DANGER 14)
+(define C_ENTER 1)
+(define C_GOODBYE 2)
+(define C_DOOR 3)
+(define C_BLOCK_EGO 5)
+(define C_LOST_CITY 6)
+(define C_SECRET_DOOR 7)
+(define C_EYE 8)
+(define C_BAD_THINGS 9)
+(define C_MANU 10)
+(define C_HONOR 11)
+

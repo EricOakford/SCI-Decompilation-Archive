@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 290)
-(include sci.sh)
+(include game.sh) (include "290.shm")
 (use Main)
 (use TellerIcon)
 (use EgoDead)
@@ -24,63 +24,81 @@
 )
 
 (local
-	local0 =  10
-	local1
-	local2
-	local3
-	local4
-	local5 =  150
-	local6 =  150
+	cycleTime =  10
+	paletteCycling
+	pipeLit
+	savePalette
+	numTokes
+	toX =  150
+	toY =  150
 	theVendor
 	local8
-	[local9 14] = [0 -68 -69 -1 2 -70 79 74 75 76 78 77 -110 999]
+	local9 = [0 -68 -69 -1 2 -70 79 74 75 76 78 77 -110 999]
 	[local23 4]
-	[local27 21] = [0 -49 -65 -54 -60 -66 -33 -35 -37 -39 -41 -43 -5 -29 -111 -30 85 -81 -57 -47 999]
-	[local48 6] = [0 45 80 -44 46 999]
-	[local54 3] = [0 -20 999]
-	[local57 4] = [0 21 22 999]
-	[local61 3] = [0 -112 999]
-	[local64 3] = [0 -25 999]
-	[local67 5] = [0 -24 26 -27 999]
-	[local72 3] = [0 71 999]
-	[local75 3] = [0 28 999]
-	[local78 3] = [0 -34 999]
-	[local81 3] = [0 103 999]
-	[local84 3] = [0 36 999]
-	[local87 3] = [0 38 999]
-	[local90 3] = [0 40 999]
-	[local93 3] = [0 42 999]
-	[local96 4] = [0 50 51 999]
-	[local100 3] = [0 67 999]
-	[local103 4] = [0 55 56 999]
-	[local107 3] = [0 -61 999]
-	[local110 5] = [0 63 62 64 999]
-	[local115 3] = [0 53 999]
-	[local118 4] = [0 -58 59 999]
-	[local122 3] = [0 -19 999]
-	[local125 3] = [0 48 999]
+	local27 = [0 -49 -65 -54 -60 -66 -33 -35 -37 -39 -41 -43 -5 -29 -111 -30 85 -81 -57 -47 999]
+	local48 = [0 45 80 -44 46 999]
+	local54 = [0 -20 999]
+	local57 = [0 21 22 999]
+	local61 = [0 -112 999]
+	local64 = [0 -25 999]
+	local67 = [0 -24 26 -27 999]
+	local72 = [0 71 999]
+	local75 = [0 28 999]
+	local78 = [0 -34 999]
+	local81 = [0 103 999]
+	local84 = [0 36 999]
+	local87 = [0 38 999]
+	local90 = [0 40 999]
+	local93 = [0 42 999]
+	local96 = [0 50 51 999]
+	local100 = [0 67 999]
+	local103 = [0 55 56 999]
+	local107 = [0 -61 999]
+	local110 = [0 63 62 64 999]
+	local115 = [0 53 999]
+	local118 = [0 -58 59 999]
+	local122 = [0 -19 999]
+	local125 = [0 48 999]
 	[local128 28]
-	[local156 26] = [0 -49 -65 -54 -60 -61 -66 -33 -34 -35 -37 -39 -41 -43 -44 -20 -5 -29 -25 -24 -27 -111 -57 -58 -47 999]
+	local156 = [0 -49 -65 -54 -60 -61 -66 -33 -34 -35 -37 -39 -41 -43 -44 -20 -5 -29 -25 -24 -27 -111 -57 -58 -47 999]
 )
-(procedure (localproc_054c param1)
-	(= global395 (| global395 param1))
-)
-
-(procedure (localproc_0556 param1)
-	(= global395 (& global395 (~ param1)))
+(procedure (ApothSet flagEnum)
+	(|= apothFlags flagEnum)
 )
 
-(procedure (localproc_0561 param1)
-	(return (& global395 param1))
+(procedure (ApothClr flagEnum)
+	(&= apothFlags (~ flagEnum))
 )
 
-(procedure (localproc_0568 param1 &tmp temp0)
-	(return (== ((= temp0 (inventory at: param1)) state?) curRoom))
+(procedure (ApothTst flagEnum)
+	(return (& apothFlags flagEnum))
 )
 
-(instance rm290 of Rm
+(procedure (SalimHas what &tmp index)
+	(return (== ((= index (inventory at: what)) state?) curRoom))
+)
+
+;Apothecary flags
+(define FIRST_TIME			$0001)
+(define SECOND_TIME			$0002)
+(define THIRD_TIME			$0004)
+(define DISPEL_MADE			$0008)
+;$0010 is unused
+(define GOT_DISPEL			$0020)
+(define SAID_HELLO			$0040)
+(define SAID_GOODBYE		$0080)
+(define TOLD_ABOUT_JULANAR	$0100)
+(define TOLD_ABOUT_SHAPEIR	$0200)
+(define ASKED_ABOUT_DISPEL	$0400)
+(define DISPELLED_LEOPARD	$0800)
+(define GOT_ALL_INGREDIENTS	$1000)
+(define ASKED_ABOUT_DREAM	$2000)
+(define SALIM_STANDING		$4000)
+(define DISPEL_DONE			$8000)
+
+(instance rm290 of Room
 	(properties
-		noun 25
+		noun N_ROOM
 		picture 290
 		vanishingY -100
 	)
@@ -88,17 +106,29 @@
 	(method (init)
 		(cSound hold: 0 holdVal: 0 setVol: 127)
 		(HandsOff)
-		(if (localproc_0561 16384) (localproc_0556 16384))
+		(if (ApothTst SALIM_STANDING)
+			(ApothClr SALIM_STANDING)
+		)
 		(cond 
-			((not global395) (localproc_054c 1) (salim loop: 0 cel: 0) (Book show:))
-			((localproc_0561 1)
-				(localproc_0556 1)
-				(localproc_054c 2)
+			((not apothFlags)
+				(ApothSet FIRST_TIME)
+				(salim loop: 0 cel: 0)
+				(Book show:)
+			)
+			((ApothTst FIRST_TIME)
+				(ApothClr FIRST_TIME)
+				(ApothSet SECOND_TIME)
 				(salim loop: 2 cel: 0)
 				(Book hide:)
 			)
-			((localproc_0561 2) (localproc_0556 2) (localproc_054c 4))
-			((and (localproc_0561 4) (localproc_0561 4096)) (localproc_0556 4) (localproc_054c 8))
+			((ApothTst SECOND_TIME)
+				(ApothClr SECOND_TIME)
+				(ApothSet THIRD_TIME)
+			)
+			((and (ApothTst THIRD_TIME) (ApothTst GOT_ALL_INGREDIENTS))
+				(ApothClr THIRD_TIME)
+				(ApothSet DISPEL_MADE)
+			)
 		)
 		(ego
 			init:
@@ -106,74 +136,55 @@
 			y: 192
 			normalize:
 			setScale: Scaler 113 87 150 110
-			noun: 2
+			noun: N_EGO_TELL
 		)
 		(self setScript: sEnter)
 		(super init:)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						173
-						170
-						181
-						170
-						203
-						158
-						212
-						141
-						207
-						141
-						187
-						143
-						176
-						144
-						163
-						144
-						140
-						144
-						129
-						147
-						110
-						147
-						106
-						139
-						114
-						129
-						125
-						121
-						152
-						124
-						153
-						118
-						139
-						117
-						140
-						114
-						123
-						114
-						116
-						121
-						107
-						127
-						98
-						133
-						83
-						148
-						77
-						165
-						95
-						171
-						95
-						189
-						173
-						189
+						173 170
+						181 170
+						203 158
+						212 141
+						207 141
+						187 143
+						176 144
+						163 144
+						140 144
+						129 147
+						110 147
+						106 139
+						114 129
+						125 121
+						152 124
+						153 118
+						139 117
+						140 114
+						123 114
+						116 121
+						107 127
+						98 133
+						83 148
+						77 165
+						95 171
+						95 189
+						173 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 123 148 150 146 173 146 171 157 162 160 155 161 131 160 125 156
+					type: PBarredAccess
+					init:
+						123 148
+						150 146
+						173 146
+						171 157
+						162 160
+						155 161
+						131 160
+						125 156
 					yourself:
 				)
 		)
@@ -208,7 +219,7 @@
 		(egoTell init: ego @local9 @local23)
 		(salimTell init: salim @local27 @local128 @local156)
 		(Cushion1 init: setScale: addToPic:)
-		(Cushion2 init: setScale: approachVerbs: 4 stopUpd:)
+		(Cushion2 init: setScale: approachVerbs: V_DO stopUpd:)
 		(Book init: setScale: stopUpd:)
 		(pipe init:)
 		(spiderplant init:)
@@ -233,8 +244,12 @@
 		(hookedbottle init:)
 		(walkHandler addToFront: curRoom)
 		(cond 
-			((localproc_0568 30) (= global405 9999))
-			((not global405) (= global405 4))
+			((SalimHas iFeather)
+				(= healingPillsInStock 9999)
+			)
+			((not healingPillsInStock)
+				(= healingPillsInStock 4)
+			)
 		)
 	)
 	
@@ -245,7 +260,10 @@
 				(if (IsObject (ego looper?)) ((ego looper?) dispose:))
 				(ego setMotion: 0 setScript: stand)
 			)
-			((> (ego y?) 170) (HandsOff) (self setScript: sExit))
+			((> (ego y?) 170)
+				(HandsOff)
+				(self setScript: sExit)
+			)
 		)
 		(super doit:)
 	)
@@ -257,7 +275,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (egoActions doVerb: 3))
+			(V_WALK
+				(egoActions doVerb: V_WALK)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -266,7 +286,6 @@
 )
 
 (instance sExit of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -277,13 +296,14 @@
 			(1
 				(ego setMotion: MoveTo 135 225 self)
 			)
-			(2 (curRoom newRoom: 270))
+			(2
+				(curRoom newRoom: 270)
+			)
 		)
 	)
 )
 
 (instance sEnter of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -292,10 +312,17 @@
 			)
 			(1
 				(cond 
-					((localproc_0561 1) (salim setLoop: 0) (Book show:) (= cycles 5))
-					((localproc_0561 2) (salim setLoop: 2) (= cycles 5))
-					((localproc_0561 4)
-						(if (mod dispelPotionDay 2)
+					((ApothTst FIRST_TIME)
+						(salim setLoop: 0)
+						(Book show:)
+						(= cycles 5)
+					)
+					((ApothTst SECOND_TIME)
+						(salim setLoop: 2)
+						(= cycles 5)
+					)
+					((ApothTst THIRD_TIME)
+						(if (mod apothDay 2)
 							(Book hide:)
 							(salim setLoop: 0)
 							(= cycles 5)
@@ -305,44 +332,87 @@
 							(= cycles 5)
 						)
 					)
-					((localproc_0561 8) (Book show:) (salim setLoop: 0) (= cycles 5))
-					(else (Book hide:) (salim setLoop: 2) (= cycles 5))
+					((ApothTst DISPEL_MADE)
+						(Book show:)
+						(salim setLoop: 0)
+						(= cycles 5)
+					)
+					(else
+						(Book hide:)
+						(salim setLoop: 2)
+						(= cycles 5)
+					)
 				)
 			)
 			(2
 				(cond 
-					((localproc_0561 1) (messager say: 1 6 10))
-					((localproc_0561 2)
-						(if (localproc_0561 256)
-							(messager say: 1 6 2)
-						else
-							(messager say: 1 6 11)
-						)
-						(= dispelPotionDay 1)
+					((ApothTst FIRST_TIME)
+						(messager say: N_SALIM V_DOIT C_FIRST_TIME)
 					)
-					((localproc_0561 4)
+					((ApothTst SECOND_TIME)
+						(if (ApothTst TOLD_ABOUT_JULANAR)
+							(messager say: N_SALIM V_DOIT C_JULANAR2)
+						else
+							(messager say: N_SALIM V_DOIT C_HELLO1)
+						)
+						(= apothDay 1)
+					)
+					((ApothTst THIRD_TIME)
 						(cond 
-							((== dispelPotionDay 1) (messager say: 1 6 12) (++ dispelPotionDay))
-							((== dispelPotionDay 2) (messager say: 1 6 13) (++ dispelPotionDay))
-							((== dispelPotionDay 3) (messager say: 1 6 14) (++ dispelPotionDay))
-							((== dispelPotionDay 4) (messager say: 1 6 15) (++ dispelPotionDay))
-							(else (messager say: 1 6 11) (= dispelPotionDay 1))
+							((== apothDay 1)
+								(messager say: N_SALIM V_DOIT C_HELLO2)
+								(++ apothDay)
+							)
+							((== apothDay 2)
+								(messager say: N_SALIM V_DOIT C_HELLO3)
+								(++ apothDay)
+							)
+							((== apothDay 3)
+								(messager say: N_SALIM V_DOIT C_HELLO4)
+								(++ apothDay)
+							)
+							((== apothDay 4)
+								(messager say: N_SALIM V_DOIT C_HELLO5)
+								(++ apothDay)
+							)
+							(else
+								(messager say: N_SALIM V_DOIT C_HELLO1)
+								(= apothDay 1)
+							)
 						)
 					)
-					((localproc_0561 8)
-						(if (== dispelPotionDay Day)
-							(messager say: 1 6 18)
+					((ApothTst DISPEL_MADE)
+						(if (== apothDay Day)
+							(messager say: N_SALIM V_DOIT C_WAIT_A_DAY)
 						else
-							(messager say: 1 6 17)
-							(= dispelPotionDay 0)
+							(messager say: N_SALIM V_DOIT C_DISPEL_READY)
+							(= apothDay 0)
 						)
 					)
-					((== dispelPotionDay 0) (messager say: 1 6 16) (++ dispelPotionDay))
-					((== dispelPotionDay 1) (messager say: 1 6 11) (++ dispelPotionDay))
-					((== dispelPotionDay 2) (messager say: 1 6 12) (++ dispelPotionDay))
-					((== dispelPotionDay 3) (messager say: 1 6 13) (++ dispelPotionDay))
-					((== dispelPotionDay 4) (messager say: 1 6 14) (++ dispelPotionDay))
-					((== dispelPotionDay 5) (messager say: 1 6 14) (= dispelPotionDay 0))
+					((== apothDay 0)
+						(messager say: N_SALIM V_DOIT C_HELLO_DISPEL)
+						(++ apothDay)
+					)
+					((== apothDay 1)
+						(messager say: N_SALIM V_DOIT C_HELLO1)
+						(++ apothDay)
+					)
+					((== apothDay 2)
+						(messager say: N_SALIM V_DOIT C_HELLO2)
+						(++ apothDay)
+					)
+					((== apothDay 3)
+						(messager say: N_SALIM V_DOIT C_HELLO3)
+						(++ apothDay)
+					)
+					((== apothDay 4)
+						(messager say: N_SALIM V_DOIT C_HELLO4)
+						(++ apothDay)
+					)
+					((== apothDay 5)
+						(messager say: N_SALIM V_DOIT C_HELLO5)
+						(= apothDay 0)
+					)
 				)
 				(self cue:)
 			)
@@ -356,30 +426,29 @@
 )
 
 (instance lookUp of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 20])
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if (== (salim loop?) 3)
-					(salim setCycle: Beg self)
+					(salim setCycle: BegLoop self)
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(messager say: 1 6 32 0 self)
+				(messager say: N_SALIM V_DOIT C_LOOK_IT_UP 0 self)
 			)
 			(2
 				(Book hide:)
-				(salim cycleSpeed: 5 loop: 1 setCycle: Fwd)
+				(salim cycleSpeed: 5 loop: 1 setCycle: Forward)
 				(globalSound number: 928 setLoop: -1 play:)
 				(= seconds 5)
 			)
 			(3
 				(globalSound stop:)
-				(messager say: 1 6 4 0 self)
+				(messager say: N_SALIM V_DOIT C_DISPEL_INGREDIENTS 0 self)
 			)
 			(4
 				(salim
@@ -396,7 +465,6 @@
 )
 
 (instance tokeDeath of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -407,22 +475,31 @@
 				(= cycles 5)
 			)
 			(1
-				(messager say: 3 6 101 0 self)
+				(messager say: N_PIPE V_DOIT C_TOKE_DEATH 0 self)
 			)
-			(2 (EgoDead 97 0 294 Fwd 291))
+			(2
+				(EgoDead C_DEATH_ADDICT 0 294 Forward 291)
+			)
 		)
 	)
 )
 
 (instance freakOut of Script
-	(properties)
 	
 	(method (doit)
-		(if local1
+		(if paletteCycling
 			(cond 
-				((< local0 20) (++ local0) (Palette palANIMATE 1 71 1 73 235 1))
-				((< local0 40) (++ local0) (Palette palANIMATE 1 71 1 73 235 -1))
-				(else (= local0 0))
+				((< cycleTime 20)
+					(++ cycleTime)
+					(Palette PALCycle 1 71 1 73 235 1)
+				)
+				((< cycleTime 40)
+					(++ cycleTime)
+					(Palette PALCycle 1 71 1 73 235 -1)
+				)
+				(else
+					(= cycleTime 0)
+				)
 			)
 		)
 		(super doit:)
@@ -432,41 +509,45 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (== local4 1)
-					(messager say: 3 4 96 0 self)
+				(if (== numTokes 1)
+					(messager say: N_PIPE V_DO C_FREAK_OUT 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(cSound pause: 1)
+				(cSound pause: TRUE)
 				(sFx number: 291 play:)
-				(= local3 (Palette palSAVE))
-				(= local1 1)
+				(= savePalette (Palette PALSave))
+				(= paletteCycling TRUE)
 				(= ticks 270)
 			)
 			(2
-				(cSound pause: 0)
-				(= local1 0)
-				(Palette palRESTORE local3)
-				(switch local4
+				(cSound pause: FALSE)
+				(= paletteCycling 0)
+				(Palette PALRestore savePalette)
+				(switch numTokes
 					(1
-						(messager say: 3 4 98 0 self)
+						(messager say: N_PIPE V_DO C_TOKE1 0 self)
 					)
 					(2
-						(messager say: 3 4 99 0 self)
+						(messager say: N_PIPE V_DO C_TOKE2 0 self)
 					)
-					(3 (self setScript: tokeDeath))
+					(3
+						(self setScript: tokeDeath)
+					)
 				)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sit of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -474,25 +555,27 @@
 				(ego setMotion: MoveTo 158 150 self)
 			)
 			(1
-				(ego view: 40 cel: 0 setLoop: 2 setCycle: End self)
+				(ego view: 40 cel: 0 setLoop: 2 setCycle: EndLoop self)
 				(if (ego looper?)
 					((ego looper?) dispose:)
 					(ego looper: 0)
 				)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance stand of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(1
 				(ego
@@ -502,7 +585,7 @@
 				)
 			)
 			(2
-				(ego setMotion: PolyPath local5 local6)
+				(ego setMotion: PolyPath toX toY)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -511,163 +594,140 @@
 )
 
 (instance standUp of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: 2 5 1 0 self)
+				(messager say: N_EGO_TELL V_TELL C_JULANAR1 0 self)
 			)
-			(1 (messager say: 1 6 1 0 self))
+			(1
+				(messager say: N_SALIM V_DOIT C_JULANAR1 0 self)
+			)
 			(2
 				(Book show:)
-				(salim cel: 0 loop: 3 setCycle: End self)
+				(salim cel: 0 loop: 3 setCycle: EndLoop self)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
 			showDialog:
 				-1
-				(if
-				(and (localproc_0561 8192) (not (localproc_0561 256)))
-					(localproc_0561 3)
+				(if (and (ApothTst ASKED_ABOUT_DREAM) (not (ApothTst TOLD_ABOUT_JULANAR)))
+					(ApothTst (| FIRST_TIME SECOND_TIME))
 				else
 					0
 				)
 				2
-				(if
-				(and (localproc_0561 256) (not (localproc_0561 16384)))
-					(localproc_0561 3)
+				(if (and (ApothTst TOLD_ABOUT_JULANAR) (not (ApothTst SALIM_STANDING)))
+					(ApothTst (| FIRST_TIME SECOND_TIME))
 				else
 					0
 				)
 				-70
 				(not
-					(if (localproc_0561 8192) else (localproc_0561 512))
+					(if (ApothTst ASKED_ABOUT_DREAM) else (ApothTst TOLD_ABOUT_SHAPEIR))
 				)
-				79
-				(localproc_0561 2048)
-				74
-				(ego has: 30)
-				75
-				(ego has: 35)
-				76
-				(ego has: 36)
-				78
-				(ego has: 38)
-				77
-				(ego has: 37)
+				79 (ApothTst DISPELLED_LEOPARD)
+				74 (ego has: iFeather)
+				75 (ego has: iVineFruit)
+				76 (ego has: iGem)
+				78 (ego has: iHeartGift)
+				77 (ego has: iPeaceWater)
 		)
 	)
 	
 	(method (doChild param1 &tmp temp0)
 		(cond 
 			((== param1 -1)
-				(if (not (localproc_0561 256))
-					(ego solvePuzzle: 246 10 addHonor: 40)
-					(localproc_054c 256)
-					(localproc_054c 16384)
+				(if (not (ApothTst TOLD_ABOUT_JULANAR))
+					(ego solvePuzzle: fTellAboutJulanar 10 addHonor: 40)
+					(ApothSet TOLD_ABOUT_JULANAR)
+					(ApothSet SALIM_STANDING)
 					(salim setScript: standUp)
-					(return 0)
+					(return FALSE)
 				)
 			)
-			((== param1 -70) (if (not (localproc_0561 8192)) (localproc_054c 512)))
+			((== param1 -70)
+				(if (not (ApothTst ASKED_ABOUT_DREAM))
+					(ApothSet TOLD_ABOUT_SHAPEIR)
+				)
+			)
 			((== param1 -68)
-				(if (not (localproc_0561 64))
-					(localproc_054c 64)
+				(if (not (ApothTst SAID_HELLO))
+					(ApothSet SAID_HELLO)
 					(ego addHonor: 2)
 				)
 			)
 			((== param1 -69)
-				(if (not (localproc_0561 128))
-					(localproc_054c 128)
+				(if (not (ApothTst SAID_GOODBYE))
+					(ApothSet SAID_GOODBYE)
 					(ego addHonor: 2)
 				)
 			)
 			((== param1 -110)
-				(salimTell doVerb: ((inventory at: 0) message?))
-				(return 0)
+				(salimTell doVerb: ((inventory at: iRoyals) message?))
+				(return FALSE)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 )
 
 (instance salimTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
 			showDialog:
-				-33
-				(localproc_0561 1)
-				-35
-				(localproc_0561 2)
-				-37
-				(localproc_0561 4)
-				-39
-				(localproc_0561 8)
-				-41
-				(localproc_0561 32)
+				-33 (ApothTst FIRST_TIME)
+				-35 (ApothTst SECOND_TIME)
+				-37 (ApothTst THIRD_TIME)
+				-39 (ApothTst DISPEL_MADE)
+				-41 (ApothTst GOT_DISPEL)
 				-5
-				(if (localproc_0561 7)
-					(not (localproc_0561 1024))
+				(if (ApothTst (| FIRST_TIME SECOND_TIME THIRD_TIME))
+					(not (ApothTst ASKED_ABOUT_DISPEL))
 				else
 					0
 				)
-				-24
-				(not (localproc_0568 37))
-				-27
-				(not (localproc_0568 35))
-				26
-				(not (localproc_0568 38))
+				-24 (not (SalimHas iPeaceWater))
+				-27 (not (SalimHas iVineFruit))
+				26 (not (SalimHas iHeartGift))
 				-81
-				(if (localproc_0561 512) (localproc_0561 3) else 0)
-				-29
-				(if (localproc_0561 3) (localproc_0561 1024) else 0)
+				(if (ApothTst TOLD_ABOUT_SHAPEIR) (ApothTst (| FIRST_TIME SECOND_TIME)) else 0)
+				-29 (if (ApothTst (| FIRST_TIME SECOND_TIME)) (ApothTst ASKED_ABOUT_DISPEL) else 0)
 				-111
-				(if (and (localproc_0561 1024) (localproc_0561 4))
-					(not (localproc_0561 4096))
+				(if (and (ApothTst ASKED_ABOUT_DISPEL) (ApothTst THIRD_TIME))
+					(not (ApothTst GOT_ALL_INGREDIENTS))
 				else
 					0
 				)
 				-30
-				(if
-				(and (localproc_0561 4096) (not (localproc_0561 32)))
-					(== dispelPotionDay Day)
+				(if (and (ApothTst GOT_ALL_INGREDIENTS) (not (ApothTst GOT_DISPEL)))
+					(== apothDay Day)
 				else
 					0
 				)
-				85
-				(if (localproc_0561 8) (!= dispelPotionDay Day) else 0)
-				-44
-				(not (localproc_0568 30))
-				80
-				(localproc_0568 30)
-				-49
-				(localproc_0561 1)
-				-65
-				(localproc_0561 2)
-				-54
-				(localproc_0561 4)
-				-60
-				(localproc_0561 8)
-				-66
-				(localproc_0561 32)
-				-57
-				(localproc_0561 3)
-				-47
-				(localproc_0561 1)
-				-58
-				(localproc_0561 1)
+				85 (if (ApothTst 8) (!= apothDay Day) else 0)
+				-44 (not (SalimHas 30))
+				80 (SalimHas 30)
+				-49 (ApothTst FIRST_TIME)
+				-65 (ApothTst SECOND_TIME)
+				-54 (ApothTst THIRD_TIME)
+				-60 (ApothTst DISPEL_MADE)
+				-66 (ApothTst GOT_DISPEL)
+				-57 (ApothTst (| FIRST_TIME SECOND_TIME))
+				-47 (ApothTst FIRST_TIME)
+				-58 (ApothTst FIRST_TIME)
 		)
 	)
 	
@@ -675,193 +735,219 @@
 		(return
 			(cond 
 				((== param1 -20)
-					(if (not (Btst 83)) (Bset 83))
-					(if (localproc_0561 1)
+					(if (not (Btst fHoneyBirdHinted))
+						(Bset fHoneyBirdHinted)
+					)
+					(if (ApothTst FIRST_TIME)
 						(super doChild: param1)
 					else
-						(return 1)
+						(return TRUE)
 					)
 				)
 				((== param1 -57)
-					(if (localproc_0561 1)
+					(if (ApothTst FIRST_TIME)
 						(super doChild: param1)
 					else
-						(return 1)
+						(return TRUE)
 					)
 				)
-				((== param1 -19) (localproc_054c 8192) (return 1))
-				((== param1 -81) (localproc_054c 8192) (return 1))
+				((== param1 -19)
+					(ApothSet ASKED_ABOUT_DREAM)
+					(return TRUE)
+				)
+				((== param1 -81)
+					(ApothSet ASKED_ABOUT_DREAM)
+					(return TRUE)
+				)
 				((== param1 -112)
-					(if (not (Btst 58))
-						(localproc_054c 1024)
-						(Bset 58)
+					(if (not (Btst fAskedAboutDispel))
+						(ApothSet ASKED_ABOUT_DISPEL)
+						(Bset fAskedAboutDispel)
 						(salimTell stuffArray: @local27 0)
 						(curRoom setScript: lookUp)
 					)
 					(return 0)
 				)
 				((== param1 -29)
-					(if (localproc_0561 4096)
-						(return 1)
+					(if (ApothTst GOT_ALL_INGREDIENTS)
+						(return TRUE)
 					else
 						(super doChild: param1)
 					)
 				)
-				((== param1 -30) (return 1))
+				((== param1 -30)
+					(return TRUE)
+				)
 				((== param1 -44)
-					(if (localproc_0561 32)
-						(return 1)
+					(if (ApothTst GOT_DISPEL)
+						(return TRUE)
 					else
 						(super doChild: param1)
 					)
 				)
-				(else (super doChild: param1))
+				(else
+					(super doChild: param1)
+				)
 			)
 		)
 	)
 	
-	(method (doVerb theVerb &tmp [temp0 20] temp20)
+	(method (doVerb theVerb &tmp [temp0 20] numPills)
 		(return
 			(cond 
-				((== theVerb 59) (messager say: 1 59 31))
-				((== theVerb 10)
+				((== theVerb V_DINARS)
+					(messager say: N_SALIM V_DINARS C_WRONG_MONEY)
+				)
+				((== theVerb V_ROYALS)
 					(if (not (salimVendor goods?))
-						(if (< global405 0)
-							(= temp20 0)
+						(if (< healingPillsInStock 0)
+							(= numPills 0)
 						else
-							(= temp20 global405)
+							(= numPills healingPillsInStock)
 						)
-						(if (not (localproc_0561 -32768))
-							(if (localproc_0561 8)
-								(if (== heroType 1)
-									(= global471 3)
+						(if (not (ApothTst DISPEL_DONE))
+							(if (ApothTst DISPEL_MADE)
+								(if (== heroType MAGIC_USER)
+									(= dispelPotionsInStock 3)
 								else
-									(= global471 2)
+									(= dispelPotionsInStock 2)
 								)
 							else
-								(= global471 1)
+								(= dispelPotionsInStock 1)
 							)
 						)
 						(salimVendor
 							goods:
 								((List new:)
 									add:
-										((Class_47_1 new: 29) price: 10 quantity: temp20)
-										((Class_47_1 new: 27) price: 20 quantity: 9999)
-										((Class_47_1 new: 28) price: 20 quantity: 9999)
-										((Class_47_1 new: 30) price: 30 quantity: global471)
+										((Ware new: N_HEALING_PILLS) price: 10 quantity: numPills)
+										((Ware new: N_MANA_PILLS) price: 20 quantity: 9999)
+										((Ware new: N_CURE_PILLS) price: 20 quantity: 9999)
+										((Ware new: N_DISPEL_POTION) price: 30 quantity: dispelPotionsInStock)
 								)
 						)
 					)
 					(salimVendor purchase:)
-					(return 1)
+					(return TRUE)
 				)
-				((== theVerb 48)
-					(if (Btst 58)
-						(if (Btst 243)
-							(messager say: 1 6 113)
-							(return 1)
+				((== theVerb V_PEACEWATER)
+					(if (Btst fAskedAboutDispel)
+						(if (Btst fGivePeaceWater)
+							(messager say: N_SALIM V_DOIT C_DONT_NEED)
+							(return TRUE)
 						else
-							(ego drop: 37 1 solvePuzzle: 243 3)
-							((inventory at: 37) state: curRoom)
-							(messager say: 1 48 23)
+							(ego drop: iPeaceWater 1 solvePuzzle: fGivePeaceWater 3)
+							((inventory at: iPeaceWater) state: curRoom)
+							(messager say: N_SALIM V_PEACEWATER C_GIVE)
 							(cond 
-								((and (localproc_0568 35) (localproc_0568 38))
-									(localproc_0556 3)
-									(localproc_054c 4)
-									(localproc_054c 4096)
-									(= dispelPotionDay Day)
+								((and (SalimHas iVineFruit) (SalimHas iHeartGift))
+									(ApothClr (| FIRST_TIME SECOND_TIME))
+									(ApothSet THIRD_TIME)
+									(ApothSet GOT_ALL_INGREDIENTS)
+									(= apothDay Day)
 									(salimTell stuffArray: @local27 0)
-									(messager say: 1 6 82)
+									(messager say: N_SALIM V_DOIT C_DISPEL_START)
 								)
-								((== (salimTell curArray?) @local72) (salimTell stuffArray: @local67 0))
+								((== (salimTell curArray?) @local72)
+									(salimTell stuffArray: @local67 0)
+								)
 							)
-							(return 1)
+							(return TRUE)
 						)
 					else
 						(super doVerb: theVerb &rest)
 					)
 				)
-				((== theVerb 46)
-					(if (Btst 58)
-						(if (Btst 242)
-							(messager say: 1 6 113)
-							(return 1)
+				((== theVerb V_VINEFRUIT)
+					(if (Btst fAskedAboutDispel)
+						(if (Btst fGiveVineFruit)
+							(messager say: N_SALIM V_DOIT C_DONT_NEED)
+							(return TRUE)
 						else
-							(ego drop: 35 1 solvePuzzle: 242 3)
-							((inventory at: 35) state: curRoom)
-							(messager say: 1 46 23)
+							(ego drop: iVineFruit 1 solvePuzzle: fGiveVineFruit 3)
+							((inventory at: iVineFruit) state: curRoom)
+							(messager say: N_SALIM V_VINEFRUIT C_GIVE)
 							(cond 
-								((and (localproc_0568 37) (localproc_0568 38))
-									(localproc_0556 3)
-									(localproc_054c 4)
-									(localproc_054c 4096)
-									(= dispelPotionDay Day)
+								((and (SalimHas iPeaceWater) (SalimHas iHeartGift))
+									(ApothClr (| FIRST_TIME SECOND_TIME))
+									(ApothSet THIRD_TIME)
+									(ApothSet GOT_ALL_INGREDIENTS)
+									(= apothDay Day)
 									(salimTell stuffArray: @local27 0)
-									(messager say: 1 6 82)
+									(messager say: N_SALIM V_DOIT C_DISPEL_START)
 								)
-								((== (salimTell curArray?) @local75) (salimTell stuffArray: @local67 0))
+								((== (salimTell curArray?) @local75)
+									(salimTell stuffArray: @local67 0)
+								)
 							)
-							(return 1)
+							(return TRUE)
 						)
 					else
 						(super doVerb: theVerb &rest)
 					)
 				)
-				((== theVerb 49)
-					(if (Btst 58)
-						(if (Btst 244)
-							(messager say: 1 6 113)
-							(return 1)
+				((== theVerb V_HEARTGIFT)
+					(if (Btst fAskedAboutDispel)
+						(if (Btst fGiveHeartGift)
+							(messager say: N_SALIM V_DOIT C_DONT_NEED)
+							(return TRUE)
 						else
-							(ego drop: 38 1 solvePuzzle: 244 3)
-							((inventory at: 38) state: curRoom)
-							(messager say: 1 49 23)
-							(if (and (localproc_0568 35) (localproc_0568 37))
-								(localproc_054c 4096)
-								(localproc_0556 3)
-								(localproc_054c 4)
-								(= dispelPotionDay Day)
-								(messager say: 1 6 82)
+							(ego drop: iHeartGift 1 solvePuzzle: fGiveHeartGift 3)
+							((inventory at: iHeartGift) state: curRoom)
+							(messager say: N_SALIM V_HEARTGIFT C_GIVE)
+							(if (and (SalimHas iVineFruit) (SalimHas iPeaceWater))
+								(ApothSet GOT_ALL_INGREDIENTS)
+								(ApothClr (| FIRST_TIME SECOND_TIME))
+								(ApothSet THIRD_TIME)
+								(= apothDay Day)
+								(messager say: N_SALIM V_DOIT C_DISPEL_START)
 								(salimTell stuffArray: @local27 0)
 							)
-							(return 1)
+							(return TRUE)
 						)
 					else
 						(super doVerb: theVerb &rest)
 					)
 				)
-				((== theVerb 41)
-					(ego drop: 30 get: 12 3 solvePuzzle: 241 3)
-					((inventory at: 30) state: curRoom)
-					(messager say: 1 41 23)
-					(if (not (Btst 241)) (ego addHonor: 10))
-					(return 1)
+				((== theVerb V_FEATHER)
+					(ego
+						drop: iFeather
+						get: iHealPills 3
+						solvePuzzle: fGiveFeather 3)
+					((inventory at: iFeather) state: curRoom)
+					(messager say: N_SALIM V_FEATHER C_GIVE)
+					(if (not (Btst fGiveFeather))
+						(ego addHonor: 10)
+					)
+					(return TRUE)
 				)
-				(else (super doVerb: theVerb &rest))
+				(else
+					(super doVerb: theVerb &rest)
+				)
 			)
 		)
 	)
 )
 
 (instance egoActions of Actions
-	(properties)
-	
+
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(3
+				(V_WALK
 					(cond 
 						((curRoom script?) 0)
 						((== (ego view?) 40)
-							(= local5 ((User curEvent?) x?))
-							(= local6 ((User curEvent?) y?))
+							(= toX ((User curEvent?) x?))
+							(= toY ((User curEvent?) y?))
 							(curRoom setScript: stand)
-							(return 1)
+							(return TRUE)
 						)
 					)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -871,9 +957,9 @@
 	(properties
 		x 186
 		y 136
-		noun 32
+		noun N_CUSHION1
 		view 290
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		scaleX 132
 		scaleY 132
 	)
@@ -883,26 +969,28 @@
 	(properties
 		x 145
 		y 153
-		noun 31
+		noun N_CUSHION2
 		approachX 155
 		approachY 160
 		view 290
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		scaleX 155
 		scaleY 155
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(if (!= (ego view?) 40)
 					(curRoom setScript: sit)
 				else
 					(super doVerb: theVerb)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -911,11 +999,11 @@
 	(properties
 		x 192
 		y 133
-		noun 15
+		noun N_BOOK
 		view 290
 		loop 1
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		scaleX 132
 		scaleY 132
 	)
@@ -925,7 +1013,7 @@
 	(properties
 		x 186
 		y 134
-		noun 1
+		noun N_SALIM
 		view 292
 		cycleSpeed 18
 	)
@@ -956,7 +1044,7 @@
 		view 293
 		loop 2
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -969,7 +1057,7 @@
 		view 293
 		loop 3
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -979,77 +1067,87 @@
 		nsLeft 42
 		view 293
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 )
 
 (instance salimVendor of Vendor
 	(properties
-		noun 26
+		noun N_SALIM_VENDOR
 	)
 	
-	(method (transact param1 param2)
+	(method (transact what howMany)
 		(= theVendor self)
-		(switch param1
+		(switch what
 			(0
-				(Buy param1 param2)
-				(if (not ((goods at: param1) quantity?))
-					(= global405 -1)
-					(ego get: 12 param2)
-					(messager say: 1 6 3 0 self)
+				(Buy what howMany)
+				(if (not ((goods at: what) quantity?))
+					(= healingPillsInStock -1)
+					(ego get: iHealPills howMany)
+					(messager say: N_SALIM V_DOIT C_OUT_OF_PILLS 0 self)
 				else
-					(if (not (> global405 4))
-						(= global405 (- global405 param2))
+					(if (not (> healingPillsInStock 4))
+						(-= healingPillsInStock howMany)
 					)
-					(ego get: 12 param2)
+					(ego get: iHealPills howMany)
 					(self cue:)
 				)
 			)
 			(1
-				(ego get: 13 param2)
-				(Buy param1 param2)
+				(ego get: iManaPills howMany)
+				(Buy what howMany)
 				(self cue:)
 			)
 			(2
-				(ego get: 11 param2)
-				(Buy param1 param2)
+				(ego get: iCurePills howMany)
+				(Buy what howMany)
 				(self cue:)
 			)
 			(3
 				(cond 
-					((not (localproc_0561 1024))
-						(localproc_054c 1024)
-						(Bset 58)
+					((not (ApothTst ASKED_ABOUT_DISPEL))
+						(ApothSet ASKED_ABOUT_DISPEL)
+						(Bset fAskedAboutDispel)
 						(salimTell stuffArray: @local27 0)
 						(self setScript: lookUp self)
 					)
-					((not (localproc_0561 -32768))
+					((not (ApothTst DISPEL_DONE))
 						(cond 
-							((not (localproc_0561 4096)) (messager say: 1 6 84 0 self))
-							((== dispelPotionDay Day) (messager say: 1 6 114 0 self))
+							((not (ApothTst GOT_ALL_INGREDIENTS))
+								(messager say: N_SALIM V_DOIT C_NEED_INGREDIENTS 0 self)
+							)
+							((== apothDay Day)
+								(messager say: N_SALIM V_DOIT C_NEED_TO_WAIT 0 self)
+							)
 							(else
-								(localproc_0556 8)
-								(localproc_054c 32)
-								(if (localproc_0561 256)
-									(ego get: 16 global471 solvePuzzle: 245 6)
-									(= global471 0)
-									((goods at: param1) quantity: 0)
-									(localproc_054c -32768)
-									(messager say: 1 6 6 0 self)
+								(ApothClr DISPEL_MADE)
+								(ApothSet GOT_DISPEL)
+								(if (ApothTst TOLD_ABOUT_JULANAR)
+									(ego
+										get: iDispell dispelPotionsInStock
+										solvePuzzle: fGetDispelPotions 6
+									)
+									(= dispelPotionsInStock 0)
+									((goods at: what) quantity: 0)
+									(ApothSet DISPEL_DONE)
+									(messager say: N_SALIM V_DOIT C_GIFT_DISPEL 0 self)
 								else
-									(ego get: 16 param2 solvePuzzle: 245 6)
-									(= global471 (- global471 param2))
-									(Buy param1 param2)
-									(localproc_054c -32768)
+									(ego
+										get: iDispell howMany
+										solvePuzzle: fGetDispelPotions 6
+									)
+									(-= dispelPotionsInStock howMany)
+									(Buy what howMany)
+									(ApothSet DISPEL_DONE)
 									(self cue:)
 								)
 							)
 						)
 					)
 					(else
-						(ego get: 16 param2)
-						(= global471 (- global471 param2))
-						(Buy param1 param2)
+						(ego get: iDispell howMany)
+						(-= dispelPotionsInStock howMany)
+						(Buy what howMany)
 						(self cue:)
 					)
 				)
@@ -1057,27 +1155,29 @@
 		)
 	)
 	
-	(method (doBargain param1)
-		(switch param1
-			(1
-				(messager say: 1 6 87 0 self)
+	(method (doBargain result)
+		(switch result
+			(bargainSUCCESS
+				(messager say: N_SALIM V_DOIT C_BARGAIN_SUCCESS 0 self)
 			)
-			(2
-				(messager say: 1 6 88 0 self)
+			(bargainTRY1
+				(messager say: N_SALIM V_DOIT C_BARGAIN_TRY1 0 self)
 			)
-			(3
-				(messager say: 1 6 90 0 self)
+			(bargainTRY2
+				(messager say: N_SALIM V_DOIT C_BARGAIN_TRY3 0 self)
 			)
-			(4
-				(messager say: 1 6 89 0 self)
+			(bargainTRY3
+				(messager say: N_SALIM V_DOIT C_BARGAIN_TRY2 0 self)
 			)
-			(5
-				(messager say: 1 6 91 0 self)
+			(bargainFAIL
+				(messager say: N_SALIM V_DOIT C_BARGAIN_FAIL 0 self)
 			)
-			(6
-				(messager say: 1 6 92 0 self)
+			(bargainNODEAL
+				(messager say: N_SALIM V_DOIT C_BARGAIN_NO_DEAL 0 self)
 			)
-			(else  (self cue:))
+			(else
+				(self cue:)
+			)
 		)
 	)
 )
@@ -1086,7 +1186,7 @@
 	(properties
 		x 143
 		y 120
-		noun 3
+		noun N_PIPE
 		nsTop 100
 		nsLeft 130
 		nsBottom 131
@@ -1096,35 +1196,35 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(19
+			(V_TINDERBOX
 				(if (== (ego view?) 40)
-					(if (not local2)
-						(= local2 1)
-						(messager say: 3 19 93)
+					(if (not pipeLit)
+						(= pipeLit TRUE)
+						(messager say: N_PIPE V_TINDERBOX C_LIGHT_PIPE)
 					else
-						(messager say: 3 19 94)
+						(messager say: N_PIPE V_TINDERBOX C_PIPE_LIT)
 					)
 				else
-					(messager say: 3 6 100)
+					(messager say: N_PIPE V_DOIT C_STANDING)
 				)
 			)
-			(4
+			(V_DO
 				(if (== (ego view?) 40)
-					(if local2
-						(++ local4)
+					(if pipeLit
+						(++ numTokes)
 						(rm290 setScript: freakOut)
 					else
-						(messager say: 3 4 95)
+						(messager say: N_PIPE V_DO C_PIPE_UNLIT)
 					)
 				else
-					(messager say: 3 6 100)
+					(messager say: N_PIPE V_DOIT C_STANDING)
 				)
 			)
-			(1
-				(if local2
-					(messager say: 3 1 94)
+			(V_LOOK
+				(if pipeLit
+					(messager say: N_PIPE V_LOOK C_PIPE_LIT)
 				else
-					(messager say: 3 1 95)
+					(messager say: N_PIPE V_LOOK C_PIPE_UNLIT)
 				)
 			)
 			(else  (super doVerb: theVerb))
@@ -1136,7 +1236,7 @@
 	(properties
 		x 86
 		y 52
-		noun 4
+		noun N_SPIDERPLANT
 		nsTop 35
 		nsLeft 67
 		nsBottom 70
@@ -1149,7 +1249,7 @@
 	(properties
 		x 53
 		y 155
-		noun 5
+		noun N_BOOK_PILE
 		nsTop 146
 		nsLeft 40
 		nsBottom 164
@@ -1162,7 +1262,7 @@
 	(properties
 		x 39
 		y 76
-		noun 6
+		noun N_ELIXIR
 		nsTop 71
 		nsLeft 35
 		nsBottom 82
@@ -1175,7 +1275,7 @@
 	(properties
 		x 42
 		y 33
-		noun 7
+		noun N_CREEPER
 		nsTop 18
 		nsLeft 34
 		nsBottom 48
@@ -1188,7 +1288,7 @@
 	(properties
 		x 38
 		y 135
-		noun 8
+		noun N_ANTIDOTE
 		nsTop 131
 		nsLeft 35
 		nsBottom 140
@@ -1201,7 +1301,7 @@
 	(properties
 		x 44
 		y 99
-		noun 9
+		noun N_BOTTLES
 		nsTop 91
 		nsLeft 35
 		nsBottom 107
@@ -1214,7 +1314,7 @@
 	(properties
 		x 90
 		y 114
-		noun 10
+		noun N_TABLE
 		nsTop 100
 		nsLeft 80
 		nsBottom 128
@@ -1227,7 +1327,7 @@
 	(properties
 		x 73
 		y 132
-		noun 11
+		noun N_GREENVASE
 		nsTop 120
 		nsLeft 68
 		nsBottom 144
@@ -1240,7 +1340,7 @@
 	(properties
 		x 130
 		y 86
-		noun 12
+		noun N_BEADED_DOOR
 		nsTop 63
 		nsLeft 118
 		nsBottom 109
@@ -1253,7 +1353,7 @@
 	(properties
 		x 166
 		y 95
-		noun 13
+		noun N_REDPOT
 		nsTop 77
 		nsLeft 156
 		nsBottom 113
@@ -1266,7 +1366,7 @@
 	(properties
 		x 199
 		y 162
-		noun 14
+		noun N_ROUNDPOT
 		nsTop 156
 		nsLeft 190
 		nsBottom 169
@@ -1279,7 +1379,7 @@
 	(properties
 		x 216
 		y 97
-		noun 16
+		noun N_HOYA
 		nsTop 79
 		nsLeft 204
 		nsBottom 116
@@ -1292,7 +1392,7 @@
 	(properties
 		x 162
 		y 51
-		noun 17
+		noun N_FERN
 		nsTop 43
 		nsLeft 148
 		nsBottom 59
@@ -1305,7 +1405,7 @@
 	(properties
 		x 258
 		y 112
-		noun 18
+		noun N_RIGHTPOTS
 		nsTop 98
 		nsLeft 248
 		nsBottom 126
@@ -1318,7 +1418,7 @@
 	(properties
 		x 230
 		y 46
-		noun 19
+		noun N_PLANTSHELF
 		nsTop 40
 		nsLeft 194
 		nsBottom 52
@@ -1331,7 +1431,7 @@
 	(properties
 		x 189
 		y 32
-		noun 20
+		noun N_UPPER_SHELF
 		nsTop 29
 		nsLeft 164
 		nsBottom 36
@@ -1344,7 +1444,7 @@
 	(properties
 		x 231
 		y 131
-		noun 21
+		noun N_BROWNBOTTLES
 		nsTop 116
 		nsLeft 221
 		nsBottom 146
@@ -1357,7 +1457,7 @@
 	(properties
 		x 243
 		y 78
-		noun 22
+		noun N_MOREBOTTLES
 		nsTop 68
 		nsLeft 227
 		nsBottom 88
@@ -1370,7 +1470,7 @@
 	(properties
 		x 132
 		y 48
-		noun 23
+		noun N_BOTTLES_OVER_DOOR
 		nsTop 44
 		nsLeft 121
 		nsBottom 52
@@ -1383,7 +1483,7 @@
 	(properties
 		x 65
 		y 101
-		noun 24
+		noun N_HOOKEDBOTTLE
 		nsTop 92
 		nsLeft 61
 		nsBottom 111
@@ -1392,6 +1492,4 @@
 	)
 )
 
-(instance sFx of Sound
-	(properties)
-)
+(instance sFx of Sound)

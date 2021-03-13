@@ -1,0 +1,27 @@
+;;; Sierra Script
+;;; 810.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_CANT_SLEEP 1)
+(define C_CLIMB_DOWN_FIRST 2)
+(define C_CANT_OPEN 6)
+(define C_SENSE_DANGER 7)
+(define C_CANT_SEE 3)
+(define C_EYELESS 4)
+(define C_DONT_NEED_FETCH 5)
+
+;;; NOUNS
+
+(define N_ROOM 9)
+(define N_CUE 1)
+(define N_DOORWAY 8)
+(define N_PEDESTAL 2)
+(define N_STATUE 10)
+(define N_STAIRS 3)
+(define N_LEFT_STAIRS 4)
+(define N_RUINS 5)
+(define N_ROCKS 6)
+(define N_NO_WAY_TO_GO 7)
+

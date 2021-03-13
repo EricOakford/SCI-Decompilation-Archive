@@ -2,7 +2,7 @@
 (script# vMirrorMonster)
 (include game.sh)
 (use Main)
-(use CombatIcon)
+(use Combat)
 (use Motion)
 (use Actor)
 (use System)

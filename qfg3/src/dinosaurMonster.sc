@@ -2,7 +2,7 @@
 (script# 560)
 (include sci.sh)
 (use Main)
-(use CombatIcon)
+(use Combat)
 (use Motion)
 (use System)
 

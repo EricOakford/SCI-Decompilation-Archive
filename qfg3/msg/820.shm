@@ -1,0 +1,37 @@
+;;; Sierra Script
+;;; 820.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_FRIC_DEAD 13)
+(define C_NO_ESCAPE 1)
+(define C_CANT_SLEEP 9)
+(define C_SENSE_DANGER 2)
+(define C_DEMONS_TALK 3)
+(define C_DEMONS_ATTACK 4)
+(define C_HEAR_NOISE 5)
+(define C_SEE_EGO 6)
+(define C_ALREADY_UNLOCKED 12)
+(define C_DOOR_LOCKED 10)
+(define C_PICK_LOCK 11)
+(define C_BORED 7)
+(define C_ALERTED 8)
+
+;;; NOUNS
+
+(define N_ROOM 3)
+(define N_CUE 1)
+(define N_DOOR 4)
+(define N_FRIC 2)
+(define N_FLAME1 5)
+(define N_FLAME2 6)
+(define N_FLAME3 7)
+(define N_FLAME4 8)
+(define N_DOORWAY 9)
+(define N_FLOOR 10)
+(define N_STAIRS 11)
+(define N_SECRET_DOOR 12)
+(define N_FRAC 13)
+(define N_VISAGE 14)
+

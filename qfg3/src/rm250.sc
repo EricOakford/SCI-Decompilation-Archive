@@ -1570,7 +1570,7 @@
 		(= theVendor self)
 		(ego
 			get: iRope howMany
-			solvePuzzle: 228 8 puzzleTHIEF
+			solvePuzzle: fBuyRope 8 puzzleTHIEF
 		)
 		(Buy what howMany)
 		(Bset fGotRope)

@@ -1,0 +1,31 @@
+;;; Sierra Script
+;;; 270.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 21)
+(define N_DUMMY 1)
+(define N_GUARD 20)
+(define N_KREESHA_DOOR 2)
+(define N_GARDEN 3)
+(define N_TREES 4)
+(define N_MAGIC_SIGN 5)
+(define N_APOTHECARY_SIGN 6)
+(define N_APOTHECARY_DOOR 7)
+(define N_INN_SIGN 8)
+(define N_INN_DOOR 9)
+(define N_KING_DOOR 10)
+(define N_BAZAAR_STAIRS 11)
+(define N_KING_STAIRS 12)
+(define N_RIGHT_PLANT 13)
+(define N_UP_PLANT 14)
+(define N_PERSON1 15)
+(define N_PERSON2 16)
+(define N_PERSON3 17)
+(define N_PERSON4 18)
+(define N_PERSON5 19)
+
+;;; CASES
+
+

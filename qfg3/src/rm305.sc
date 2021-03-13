@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 305)
-(include sci.sh)
+(include game.sh) (include "305.shm")
 (use Main)
 (use Feature)
 (use Motion)
@@ -12,16 +12,16 @@
 	rm305 0
 )
 
-(instance rm305 of Rm
+(instance rm305 of Room
 	(properties
-		noun 5
+		noun N_ROOM
 		picture 305
 	)
 	
 	(method (init)
 		(super init:)
 		(DontMove)
-		(theIconBar disable: 4)
+		(theIconBar disable: ICON_TALK)
 		(kreesha init:)
 		(junk init:)
 		(apoth init:)
@@ -55,7 +55,7 @@
 	)
 	
 	(method (doVerb)
-		(messager say: 1 6 1)
+		(messager say: N_LAWS V_DOIT C_LAWS)
 	)
 )
 
@@ -70,7 +70,7 @@
 	)
 	
 	(method (doVerb)
-		(messager say: 3 6 3)
+		(messager say: N_APOTHECARY V_DOIT C_APOTHECARY)
 	)
 )
 
@@ -85,7 +85,7 @@
 	)
 	
 	(method (doVerb)
-		(messager say: 2 6 2)
+		(messager say: N_KREESHA V_DOIT C_KREESHA)
 	)
 )
 
@@ -100,17 +100,16 @@
 	)
 	
 	(method (doVerb)
-		(messager say: 4 6 4)
+		(messager say: N_JUNK V_DOIT C_JUNK)
 	)
 )
 
 (instance sExit of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(doneButton setCycle: Beg self)
+				(doneButton setCycle: BegLoop self)
 			)
 			(1
 				(ego x: 113 y: 126)

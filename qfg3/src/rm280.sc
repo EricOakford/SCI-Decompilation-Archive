@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 280)
-(include sci.sh)
+(include game.sh) (include "280.shm")
 (use Main)
 (use TellerIcon)
 (use PolyPath)
@@ -16,31 +16,44 @@
 	rm280 0
 )
 
-(local
-	local0
-	[local1 21] = [0 -2 -3 -4 -6 -7 -19 -20 -21 -22 -37 -39 -38 -40 -65 -70 -71 -74 -74 -64 999]
-	[local22 11]
-	[local33 10] = [0 -4 -5 -7 -20 -65 -66 -69 -71 999]
-	[local43 3] = [0 72 999]
-	[local46 3] = [0 -5 999]
-	[local49 4] = [0 -66 34 999]
-	[local53 3] = [0 67 999]
-	[local56 6] = [0 -59 -58 56 57 999]
-	[local62 4] = [0 60 61 999]
-	[local66 4] = [0 68 -69 999]
-	[local70 3] = [0 26 999]
-	[local73 8] = [0 -78 -11 -19 -36 -75 -76 999]
-	[local81 2]
-	[local83 7] = [0 -2 -8 -54 -3 -55 999]
-	[local90 5]
-	[local95 5] = [0 -8 -3 -51 999]
-	[local100 4] = [0 -49 -51 999]
-	[local104 5] = [0 -50 -48 -18 999]
-	[local109 4] = [0 -53 -52 999]
+;room states
+(enum
+	firstTime			;0
+	kreeshaInParlor		;1
+	kreeshaReading		;2
+	afterOath			;3
+	state4				;4
+	backFromSimbani		;5
+	makingAStaff		;6
+	state7				;7
+	becomingAPaladin	;8
 )
-(instance rm280 of Rm
+
+(local
+	saveRoomState
+	local1 = [0 -2 -3 -4 -6 -7 -19 -20 -21 -22 -37 -39 -38 -40 -65 -70 -71 -74 -74 -64 999]
+	[local22 11]
+	local33 = [0 -4 -5 -7 -20 -65 -66 -69 -71 999]
+	local43 = [0 72 999]
+	local46 = [0 -5 999]
+	local49 = [0 -66 34 999]
+	local53 = [0 67 999]
+	local56 = [0 -59 -58 56 57 999]
+	local62 = [0 60 61 999]
+	local66 = [0 68 -69 999]
+	local70 = [0 26 999]
+	local73 = [0 -78 -11 -19 -36 -75 -76 999]
+	[local81 2]
+	local83 = [0 -2 -8 -54 -3 -55 999]
+	[local90 5]
+	local95 = [0 -8 -3 -51 999]
+	local100 = [0 -49 -51 999]
+	local104 = [0 -50 -48 -18 999]
+	local109 = [0 -53 -52 999]
+)
+(instance rm280 of Room
 	(properties
-		noun 10
+		noun N_ROOM
 		picture 280
 		horizon 62
 		picAngle 70
@@ -74,7 +87,7 @@
 			normalize:
 			x: -100
 			y: -100
-			noun: 4
+			noun: N_EGO_TELL
 			edgeHit: 0
 			setScale: 175
 			changeGait: 0
@@ -82,7 +95,7 @@
 		(egoTell init: ego @local73 @local81)
 		(kreeshaTell init: kreeshaTop @local1 @local22 @local33)
 		(rakeeshTell
-			init: (ScriptID 35 1) @local83 @local90 @local95
+			init: (ScriptID RAKEESH_TALKER 1) @local83 @local90 @local95
 		)
 		(super init:)
 		(AutoTarget -10 -10)
@@ -109,109 +122,105 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						319
-						0
-						319
-						189
-						0
-						189
-						0
-						88
-						3
-						88
-						3
-						187
-						317
-						187
-						317
-						115
-						295
-						115
-						292
-						108
-						295
-						100
-						317
-						100
-						316
-						92
-						232
-						92
-						232
-						96
-						267
-						97
-						272
-						107
-						267
-						115
-						37
-						115
-						38
-						108
-						52
-						97
-						65
-						97
-						65
-						93
-						0
-						84
-						0
-						0
+						319 0
+						319 189
+						0 189
+						0 88
+						3 88
+						3 187
+						317 187
+						317 115
+						295 115
+						292 108
+						295 100
+						317 100
+						316 92
+						232 92
+						232 96
+						267 97
+						272 107
+						267 115
+						37 115
+						38 108
+						52 97
+						65 97
+						65 93
+						0 84
+						0 0
 					yourself:
 				)
 		)
 		(cond 
 			(
 				(and
-					(not (== heroType 3))
-					(not (Btst 44))
-					(> [egoStats 14] 149)
-					(not (Btst 19))
+					(not (== heroType PALADIN))
+					(not (Btst fHadPaladinCeremony))
+					(> [egoStats HONOR] 149)
+					(not (Btst fCantBePaladin))
 					(== prevRoomNum 420)
 				)
-				(= local0 kreeshaHomeState)
-				(= kreeshaHomeState 8)
+				(= saveRoomState kreeshaHomeState)
+				(= kreeshaHomeState becomingAPaladin)
 			)
-			((== kreeshaHomeState 7) (== kreeshaHomeState 7))
-			((and (ego has: 44) (not (Btst 69))) (= local0 kreeshaHomeState) (= kreeshaHomeState 6))
-			((and (== kreeshaHomeState 3) (Btst 42)) (= kreeshaHomeState 5))
+			((== kreeshaHomeState state7)
+				(= kreeshaHomeState state7)
+			)
+			((and (ego has: iWood) (not (Btst fCanSummonStaff)))
+				(= saveRoomState kreeshaHomeState)
+				(= kreeshaHomeState makingAStaff)
+			)
+			((and (== kreeshaHomeState afterOath) (Btst fVisitedSimbani))
+				(= kreeshaHomeState backFromSimbani)
+			)
 			(
 				(and
-					(Btst 159)
-					(not (== kreeshaHomeState 2))
-					(not (Btst 142))
-					(not (Btst 35))
+					(Btst fMetHarami)
+					(not (== kreeshaHomeState kreeshaReading))
+					(not (Btst fSawKreeshaReading))
+					(not (Btst fRakeeshSworeOath))
 				)
-				(= kreeshaHomeState 2)
+				(= kreeshaHomeState kreeshaReading)
 			)
-			((Btst 35) (= kreeshaHomeState 3))
-			((and (Btst 159) (not (Btst 35))) (= kreeshaHomeState 1))
+			((Btst fRakeeshSworeOath)
+				(= kreeshaHomeState afterOath)
+			)
+			((and (Btst fMetHarami) (not (Btst fRakeeshSworeOath)))
+				(= kreeshaHomeState kreeshaInParlor)
+			)
 			(
-			(and (not (== kreeshaHomeState 0)) (not (Btst 159))) (= kreeshaHomeState 1))
-			((== kreeshaHomeState 0) (= kreeshaHomeState 0))
-			(else (= kreeshaHomeState 1))
+			(and (not (== kreeshaHomeState firstTime)) (not (Btst fMetHarami)))
+			(= kreeshaHomeState kreeshaInParlor)
+		)
+			((== kreeshaHomeState firstTime)
+				(= kreeshaHomeState firstTime)
+			)
+			(else
+				(= kreeshaHomeState kreeshaInParlor)
+			)
 		)
 		(if (== prevRoomNum 285)
 			(self setScript: from285)
 		else
 			(switch kreeshaHomeState
-				(0
+				(firstTime
 					(curRoom
 						addObstacle:
 							((Polygon new:)
-								type: 2
-								init: 21 159 177 157 178 176 14 179
+								type: PBarredAccess
+								init:
+									21 159
+									177 157
+									178 176
+									14 179
 								yourself:
 							)
 					)
 					(self setScript: firstEntrance)
 				)
-				(2
-					(Bset 142)
+				(kreeshaReading
+					(Bset fSawKreeshaReading)
 					(kreeshaTell init: kreesha @local1 @local22 @local33)
 					(kreesha
 						x: 169
@@ -221,24 +230,30 @@
 						noun: 2
 						actions: kreeshaTell
 						init:
-						ignoreActors: 1
+						ignoreActors: TRUE
 						stopUpd:
 					)
 					(curRoom
 						addObstacle:
 							((Polygon new:)
-								type: 2
-								init: 98 133 147 126 173 130 178 153 123 161 89 157
+								type: PBarredAccess
+								init:
+									98 133
+									147 126
+									173 130
+									178 153
+									123 161
+									89 157
 								yourself:
 							)
 					)
 					(self setScript: doneChanger)
 				)
-				(6
+				(makingAStaff
 					(self setScript: enterWithWood)
 				)
-				(8
-					((ScriptID 35 1) view: 963 loop: 1 x: 236 y: 130 init:)
+				(becomingAPaladin
+					((ScriptID RAKEESH_TALKER 1) view: 963 loop: 1 x: 236 y: 130 init:)
 					(ego x: 155 y: 142 init:)
 					(kreesha x: 54 y: 182 init: addToPic:)
 					(kreeshaTop
@@ -261,20 +276,31 @@
 			((self script?) 0)
 			((ego script?) 0)
 			((ego inRect: 255 89 319 102)
-				(if (OneOf kreeshaHomeState 0 2 4 6 8)
+				(if (OneOf
+						kreeshaHomeState
+						firstTime
+						kreeshaReading
+						state4
+						makingAStaff
+						becomingAPaladin
+					)
 					(self setScript: bePolite)
 				else
 					(curRoom newRoom: 285)
 				)
 			)
-			((ego inRect: 0 87 45 115) (curRoom setScript: egoExits))
+			((ego inRect: 0 87 45 115)
+				(curRoom setScript: egoExits)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 964 35 34 49 62)
-		(if (== kreeshaHomeState 0) (= kreeshaHomeState 1))
+		(LoadMany FALSE DPATH RAKEESH_TALKER UHURA_TALKER KREESHA_TALKER CASTJUGGLE)
+		(if (== kreeshaHomeState firstTime)
+			(= kreeshaHomeState kreeshaInParlor)
+		)
 		(super dispose:)
 	)
 	
@@ -283,70 +309,85 @@
 			(super doVerb: theVerb)
 		else
 			(switch theVerb
-				(81
+				(V_FLAME
 					(cond 
 						(
 							(or
 								(cast contains: kreesha)
-								(cast contains: (ScriptID 35 1))
+								(cast contains: (ScriptID RAKEESH_TALKER 1))
 							)
-							(messager say: 1 6 86)
+							(messager say: N_CUE V_DOIT C_NO_SPELLS_NOW)
 						)
-						((ego castSpell: 25) (self setScript: (ScriptID 32 0) 0 81))
+						((ego castSpell: FLAMEDART)
+							(self setScript: (ScriptID PROJECTILE 0) 0 V_FLAME)
+						)
 					)
 				)
-				(83
+				(V_FORCEBOLT
 					(cond 
 						(
 							(or
 								(cast contains: kreesha)
-								(cast contains: (ScriptID 35 1))
+								(cast contains: (ScriptID RAKEESH_TALKER 1))
 							)
-							(messager say: 1 6 86)
+							(messager say: N_CUE V_DOIT C_NO_SPELLS_NOW)
 						)
-						((ego castSpell: 27) (self setScript: (ScriptID 32 0) 0 83))
+						((ego castSpell: FORCEBOLT)
+							(self setScript: (ScriptID PROJECTILE 0) 0 V_FORCEBOLT)
+						)
 					)
 				)
-				(88
+				(V_LIGHTNING
 					(cond 
 						(
 							(or
 								(cast contains: kreesha)
-								(cast contains: (ScriptID 35 1))
+								(cast contains: (ScriptID RAKEESH_TALKER 1))
 							)
-							(messager say: 1 6 86)
+							(messager say: N_CUE V_DOIT C_NO_SPELLS_NOW)
 						)
-						((ego castSpell: 32) (self setScript: (ScriptID 32 0) 0 88))
+						((ego castSpell: LIGHTNING)
+							(self setScript: (ScriptID PROJECTILE 0) 0 V_LIGHTNING)
+						)
 					)
 				)
-				(80
-					(if (ego castSpell: 24)
-						(curRoom setScript: (ScriptID 12))
+				(V_CALM
+					(if (ego castSpell: CALM)
+						(curRoom setScript: (ScriptID CASTAREA))
 					)
 				)
-				(77
-					(if (ego castSpell: 21) (messager say: 1 6 45))
-				)
-				(85
-					(if (ego castSpell: 29) (messager say: 1 6 87))
-				)
-				(84 ((ScriptID 31 0) init:))
-				(86
-					(if (ego castSpell: 30)
-						(curRoom setScript: (ScriptID 62))
+				(V_TRIGGER
+					(if (ego castSpell: TRIGGER)
+						(messager say: N_CUE V_DOIT C_TRIGGER)
 					)
 				)
-				(82
-					(if (ego castSpell: 26) (messager say: 1 6 90))
+				(V_REVERSAL
+					(if (ego castSpell: REVERSAL)
+						(messager say: N_CUE V_DOIT C_REVERSAL)
+					)
 				)
-				(else  (super doVerb: theVerb))
+				(V_LEVITATE
+					((ScriptID LEVITATION 0) init:)
+				)
+				(V_JUGGLE
+					(if (ego castSpell: JUGGLE)
+						(curRoom setScript: (ScriptID CASTJUGGLE))
+					)
+				)
+				(V_FETCH
+					(if (ego castSpell: FETCH)
+						(messager say: N_CUE V_DOIT C_FETCH)
+					)
+				)
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
 (instance from285 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -360,58 +401,67 @@
 					setMotion: MoveTo 277 141 self
 				)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance ceremonyScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 1))
+			(0
+				(HandsOff)
+				(= cycles 1)
+			)
 			(1
-				(messager say: 1 6 80 0 self)
-				(= paladinStat (- [egoStats 14] 9))
+				(messager say: N_CUE V_DOIT C_START_CEREMONY 0 self)
+				(= paladinStat (- [egoStats HONOR] 9))
 			)
 			(2
-				(messager say: 3 6 46 0 self)
+				(messager say: N_RAKEESH V_DOIT C_BECOME_PALADIN 0 self)
 			)
 			(3
-				((ScriptID 35 1) setCycle: End self)
+				((ScriptID RAKEESH_TALKER 1) setCycle: EndLoop self)
 				(globalSound number: 240 play:)
 			)
 			(4
-				(messager say: 3 6 47 0 self)
+				(messager say: N_RAKEESH V_DOIT C_GET_SOULFORGE 0 self)
 			)
 			(5
 				(ego setMotion: MoveTo 198 136 self)
 			)
 			(6
-				(ego view: 31 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 31 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				((ScriptID 35 1) cel: 0)
-				(ego setCycle: Beg self)
+				((ScriptID RAKEESH_TALKER 1) cel: 0)
+				(ego setCycle: BegLoop self)
 			)
 			(8
-				(ego view: 38 loop: 0 cel: 1 setCycle: End self)
+				(ego view: 38 loop: 0 cel: 1 setCycle: EndLoop self)
 			)
-			(9 (= seconds 1))
-			(10 (ego setCycle: Beg self))
+			(9
+				(= seconds 1)
+			)
+			(10
+				(ego setCycle: BegLoop self)
+			)
 			(11
 				(ego normalize:)
-				(messager say: 3 6 21 0 self)
+				(messager say: N_RAKEESH V_DOIT C_HONOR 0 self)
 			)
 			(12
-				(messager say: 3 6 35 0 self)
+				(messager say: N_RAKEESH V_DOIT C_LETS_GO 0 self)
 			)
 			(13
-				(Bset 44)
-				(ego solvePuzzle: 238 25 1)
-				(= kreeshaHomeState local0)
-				(= heroType 3)
+				(Bset fHadPaladinCeremony)
+				(ego solvePuzzle: fBecomePaladin 25 puzzleFIGHTER)
+				(= kreeshaHomeState saveRoomState)
+				(= heroType PALADIN)
 				(curRoom newRoom: 340)
 			)
 		)
@@ -419,12 +469,11 @@
 )
 
 (instance enterWithWood of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(= kreeshaHomeState local0)
+				(= kreeshaHomeState saveRoomState)
 				(HandsOff)
 				(ego x: 20 y: 110 init: setMotion: PolyPath 133 131 self)
 				(kreesha x: 50 y: 180 loop: 0 cel: 0 init: addToPic:)
@@ -436,39 +485,41 @@
 				)
 			)
 			(1
-				(messager say: 2 6 25 0 self)
+				(messager say: N_KREESHA V_DOIT C_START_RITUAL 0 self)
 			)
 			(2
-				(messager say: 2 6 26 0 self)
+				(messager say: N_KREESHA V_DOIT C_WOOD 0 self)
 			)
 			(3
 				(ego setMotion: PolyPath 133 146 self)
 			)
 			(4
-				(ego view: 4 cel: 0 setCycle: End self)
+				(ego view: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(stick init:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(6
 				(ego normalize: setMotion: PolyPath 79 142 self)
 			)
-			(7 (ego setHeading: 90 self))
+			(7
+				(ego setHeading: 90 self)
+			)
 			(8
-				(messager say: 2 6 27 0 self)
+				(messager say: N_KREESHA V_DOIT C_CHANT 0 self)
 			)
 			(9
-				(kreeshaTop setCycle: End self)
+				(kreeshaTop setCycle: EndLoop self)
 			)
 			(10
 				(globalSound number: 12 setLoop: 1 play:)
-				(thatOldGlow init: setPri: 12 setCycle: Fwd)
+				(thatOldGlow init: setPri: 12 setCycle: Forward)
 				(stick setPri: 13)
 				(= seconds 5)
 			)
 			(11
-				(messager say: 2 6 43 0 self)
+				(messager say: N_KREESHA V_DOIT C_CALL_CIRCLE 0 self)
 			)
 			(12
 				(globalSound number: 900 setLoop: 1 play:)
@@ -480,10 +531,10 @@
 				(stick setMotion: MoveTo 155 96 self)
 			)
 			(14
-				(messager say: 2 6 28 0 self)
+				(messager say: N_KREESHA V_DOIT C_SPELLS_ON_STAFF 0 self)
 			)
 			(15
-				(ego view: 15 learn: 31 10 drop: 44 setCycle: CT 3 1 self)
+				(ego view: 15 learn: 31 10 drop: 44 setCycle: CycleTo 3 1 self)
 				(Bset 69)
 			)
 			(16
@@ -494,12 +545,12 @@
 					init:
 					setScale:
 					setPri: 14
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 1)
 			)
 			(17
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(globalSound number: 13 setLoop: 1 play:)
 				(pow setStep: 6 5 setMotion: MoveTo 153 98 self)
 			)
@@ -508,10 +559,10 @@
 				(= seconds 1)
 			)
 			(19
-				(messager say: 2 6 29 0 self)
+				(messager say: N_KREESHA V_DOIT C_SPELL_AGAIN 0 self)
 			)
 			(20
-				(ego view: 15 setCycle: CT 3 1 self)
+				(ego view: 15 setCycle: CycleTo 3 1 self)
 			)
 			(21
 				(pow
@@ -521,12 +572,12 @@
 					init:
 					setScale:
 					setPri: 14
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 1)
 			)
 			(22
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(globalSound number: 13 setLoop: 1 play:)
 				(pow setStep: 6 5 setMotion: MoveTo 153 98 self)
 			)
@@ -535,10 +586,10 @@
 				(= seconds 1)
 			)
 			(24
-				(messager say: 2 6 29 0 self)
+				(messager say: N_KREESHA V_DOIT C_SPELL_AGAIN 0 self)
 			)
 			(25
-				(ego view: 15 setCycle: CT 3 1 self)
+				(ego view: 15 setCycle: CycleTo 3 1 self)
 			)
 			(26
 				(pow
@@ -548,12 +599,12 @@
 					init:
 					setScale:
 					setPri: 14
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 1)
 			)
 			(27
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(globalSound number: 13 setLoop: 1 play:)
 				(pow setStep: 6 5 setMotion: MoveTo 153 98 self)
 			)
@@ -562,10 +613,10 @@
 				(= seconds 1)
 			)
 			(29
-				(messager say: 2 6 29 0 self)
+				(messager say: N_KREESHA V_DOIT C_SPELL_AGAIN 0 self)
 			)
 			(30
-				(ego view: 15 setCycle: CT 3 1 self)
+				(ego view: 15 setCycle: CycleTo 3 1 self)
 			)
 			(31
 				(pow
@@ -575,12 +626,12 @@
 					init:
 					setScale:
 					setPri: 14
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 1)
 			)
 			(32
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(globalSound number: 13 setLoop: 1 play:)
 				(pow setStep: 6 5 setMotion: MoveTo 153 98 self)
 			)
@@ -589,18 +640,18 @@
 				(= seconds 1)
 			)
 			(34
-				(messager say: 2 6 37 0 self)
+				(messager say: N_KREESHA V_DOIT C_STAFF 0 self)
 			)
 			(35
 				(stick dispose:)
-				(ego view: 20 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 20 loop: 0 cel: 0 setCycle: EndLoop self)
 				(globalSound number: 12 setLoop: 1 play:)
 			)
 			(36
-				(ego loop: 2 setCycle: End self)
+				(ego loop: 2 setCycle: EndLoop self)
 			)
 			(37
-				(messager say: 2 6 30 0 self)
+				(messager say: N_KREESHA V_DOIT C_STAFF_MADE 0 self)
 			)
 			(38
 				(pentaGlow dispose:)
@@ -608,13 +659,13 @@
 			)
 			(39
 				(thatOldGlow dispose:)
-				(kreeshaTop setCycle: Beg self)
+				(kreeshaTop setCycle: BegLoop self)
 			)
 			(40
-				(messager say: 2 6 32 0 self)
+				(messager say: N_KREESHA V_DOIT 32 0 self)
 			)
 			(41
-				(ego solvePuzzle: 237 10 2)
+				(ego solvePuzzle: fMakeStaff 10 puzzleWIZARD)
 				(ego normalize:)
 				(curRoom newRoom: 270)
 			)
@@ -623,7 +674,6 @@
 )
 
 (instance doneChanger of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -631,26 +681,30 @@
 				(HandsOff)
 				(ego x: 20 y: 110 init: setMotion: PolyPath 160 125 self)
 			)
-			(1 (kreesha setCycle: End self))
+			(1
+				(kreesha setCycle: EndLoop self)
+			)
 			(2
 				(kreesha stopUpd:)
-				(messager say: 2 6 63 0 self)
+				(messager say: N_KREESHA V_DOIT C_DONE_CHANGER 0 self)
 			)
 			(3
-				(if (or (Btst 26) (Btst 27))
-					(messager say: 2 6 20 0 self)
+				(if (or (Btst fFlamedHarami) (Btst fUsedCalmOnHarami))
+					(messager say: N_KREESHA V_DOIT C_MAGIC 0 self)
 				else
 					(self cue:)
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance mostTimes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -659,34 +713,38 @@
 			)
 			(1
 				(switch kreeshaHomeState
-					(1
-						(messager say: 1 6 17 0 self)
+					(kreeshaInParlor
+						(messager say: N_CUE V_DOIT C_IN_PARLOR 0 self)
 					)
-					(3
-						(messager say: 1 6 17 0 self)
+					(afterOath
+						(messager say: N_CUE V_DOIT C_IN_PARLOR 0 self)
 					)
-					(5
-						(messager say: 1 6 17 0 self)
+					(backFromSimbani
+						(messager say: N_CUE V_DOIT C_IN_PARLOR 0 self)
 					)
-					(7
-						(messager say: 1 6 17 0 self)
+					(state7
+						(messager say: N_CUE V_DOIT C_IN_PARLOR 0 self)
 					)
-					(else  (self cue:))
+					(else
+						(self cue:)
+					)
 				)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance firstEntrance of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 15])
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset 6)
+				(Bset fInMainGame)
 				(kreesha
 					x: 74
 					y: 176
@@ -694,8 +752,8 @@
 					loop: 0
 					cel: 0
 					actions: kreeshaTell
-					noun: 2
-					signal: 16384
+					noun: N_KREESHA
+					signal: ignrAct
 					init:
 					addToPic:
 				)
@@ -705,24 +763,24 @@
 					setPri: 13
 					loop: 3
 					cel: 0
-					signal: 16400
+					signal: (| ignrAct fixPriOn)
 					init:
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= seconds 5)
 			)
 			(1
 				(globalSound number: 932 setLoop: -1 play: 127)
-				(portal cycleSpeed: 10 setCycle: Fwd init:)
+				(portal cycleSpeed: 10 setCycle: Forward init:)
 				(= seconds 3)
 			)
 			(2
-				(kreeshaTop setCycle: Beg)
+				(kreeshaTop setCycle: BegLoop)
 				(ego x: 283 y: 115 setMotion: PolyPath 290 170 self)
 			)
 			(3
-				((ScriptID 34 1)
+				((ScriptID UHURA_TALKER 1)
 					x: 281
 					y: 115
 					view: 968
@@ -738,14 +796,17 @@
 				(ego setLoop: -1)
 			)
 			(4
-				((ScriptID 34 1) setMotion: PolyPath 180 130 self)
+				((ScriptID UHURA_TALKER 1) setMotion: PolyPath 180 130 self)
 			)
 			(5
-				((ScriptID 34 1) setLoop: 2 ignoreActors: 1)
+				((ScriptID UHURA_TALKER 1)
+					setLoop: 2
+					ignoreActors: TRUE
+				)
 				(= cycles 2)
 			)
 			(6
-				((ScriptID 35 1)
+				((ScriptID RAKEESH_TALKER 1)
 					x: 285
 					y: 115
 					view: 281
@@ -761,20 +822,20 @@
 				)
 			)
 			(7
-				((ScriptID 35 1)
+				((ScriptID RAKEESH_TALKER 1)
 					setLoop: 3
-					x: (- ((ScriptID 35 1) x?) 20)
+					x: (- ((ScriptID RAKEESH_TALKER 1) x?) 20)
 					ignoreActors: 1
 					setMotion: MoveTo 127 165 self
 				)
-				(kreeshaTop setCycle: End)
+				(kreeshaTop setCycle: EndLoop)
 			)
 			(8
-				((ScriptID 35 1) setLoop: 5 stopUpd:)
+				((ScriptID RAKEESH_TALKER 1) setLoop: 5 stopUpd:)
 				(= seconds 2)
 			)
 			(9
-				(kreeshaTop setCycle: Beg self)
+				(kreeshaTop setCycle: BegLoop self)
 			)
 			(10
 				(kreeshaTop stopUpd:)
@@ -783,13 +844,13 @@
 				(= cycles 2)
 			)
 			(11
-				(messager say: 3 6 12 0 self)
+				(messager say: N_RAKEESH V_DOIT C_LIONTAURS_GREET 0 self)
 			)
 			(12
-				(messager say: 3 6 8 0 self)
+				(messager say: N_RAKEESH V_DOIT C_UHURA 0 self)
 			)
 			(13
-				((ScriptID 34 1)
+				((ScriptID UHURA_TALKER 1)
 					setLoop: -1
 					setCycle: Walk
 					cycleSpeed: 5
@@ -798,16 +859,16 @@
 				)
 			)
 			(14
-				((ScriptID 34 1) dispose:)
-				(if (== heroType 3)
-					(messager say: 3 6 34 0 self)
+				((ScriptID UHURA_TALKER 1) dispose:)
+				(if (== heroType PALADIN)
+					(messager say: N_RAKEESH V_DOIT C_PALADIN 0 self)
 				else
-					(messager say: 3 6 14 0 self)
+					(messager say: N_RAKEESH V_DOIT C_INTRODUCE_EGO 0 self)
 				)
 			)
 			(15
-				(if [egoStats 18]
-					(messager say: 2 6 15 0 self)
+				(if [egoStats MAGIC]
+					(messager say: N_KREESHA V_DOIT C_HAVE_MAGIC 0 self)
 				else
 					(self cue:)
 				)
@@ -822,13 +883,12 @@
 )
 
 (instance bePolite of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: 2 6 42 0 self)
+				(messager say: N_KREESHA V_DOIT C_BE_POLITE 0 self)
 			)
 			(1
 				(ego setMotion: MoveTo 265 138 self)
@@ -839,19 +899,27 @@
 )
 
 (instance egoExits of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(cond 
-					((== kreeshaHomeState 2) (messager say: 2 6 79 0 self))
-					((== kreeshaHomeState 0) (messager say: 3 6 10 0 self) (++ kreeshaHomeState))
-					(else (self cue:))
+					((== kreeshaHomeState kreeshaReading)
+						(messager say: N_KREESHA V_DOIT C_REMINDER 0 self)
+					)
+					((== kreeshaHomeState firstTime)
+						(messager say: N_RAKEESH V_DOIT C_GOODBYE 0 self)
+						(++ kreeshaHomeState)
+					)
+					(else
+						(self cue:)
+					)
 				)
 			)
-			(1 (curRoom newRoom: 270))
+			(1
+				(curRoom newRoom: 270)
+			)
 		)
 	)
 )
@@ -860,7 +928,7 @@
 	(properties
 		view 21
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -868,7 +936,7 @@
 	(properties
 		x 246
 		y 186
-		noun 2
+		noun N_KREESHA
 		yStep 4
 		view 282
 		cycleSpeed 2
@@ -884,10 +952,10 @@
 	(properties
 		x 71
 		y 142
-		noun 2
+		noun N_KREESHA
 		view 282
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -896,7 +964,7 @@
 		x 285
 		y 117
 		view 280
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -906,7 +974,7 @@
 		y 141
 		view 790
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -916,7 +984,7 @@
 		y 163
 		view 283
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -925,7 +993,7 @@
 		x 157
 		y 163
 		view 283
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -933,7 +1001,7 @@
 	(properties
 		x 12
 		y 45
-		noun 20
+		noun N_LEFT_CANDLES
 		nsTop 35
 		nsLeft 2
 		nsBottom 55
@@ -946,7 +1014,7 @@
 	(properties
 		x 293
 		y 46
-		noun 20
+		noun N_LEFT_CANDLES
 		nsTop 37
 		nsLeft 284
 		nsBottom 55
@@ -959,7 +1027,7 @@
 	(properties
 		x 157
 		y 17
-		noun 7
+		noun N_HORN_SKULL
 		nsTop 5
 		nsLeft 146
 		nsBottom 30
@@ -972,7 +1040,7 @@
 	(properties
 		x 157
 		y 145
-		noun 8
+		noun N_PENTAGRAM
 		nsTop 125
 		nsLeft 92
 		nsBottom 165
@@ -985,7 +1053,7 @@
 	(properties
 		x 39
 		y 73
-		noun 9
+		noun N_PITCHER
 		nsTop 56
 		nsLeft 33
 		nsBottom 90
@@ -998,7 +1066,7 @@
 	(properties
 		x 61
 		y 94
-		noun 23
+		noun N_STOOL
 		nsTop 81
 		nsLeft 45
 		nsBottom 108
@@ -1011,7 +1079,7 @@
 	(properties
 		x 200
 		y 39
-		noun 11
+		noun N_BOOKS
 		nsTop 29
 		nsLeft 175
 		nsBottom 49
@@ -1024,7 +1092,7 @@
 	(properties
 		x 228
 		y 62
-		noun 12
+		noun N_CANDLES
 		nsTop 49
 		nsLeft 220
 		nsBottom 75
@@ -1037,7 +1105,7 @@
 	(properties
 		x 135
 		y 44
-		noun 13
+		noun N_CRETIAN_URN
 		nsTop 33
 		nsLeft 122
 		nsBottom 55
@@ -1050,7 +1118,7 @@
 	(properties
 		x 92
 		y 73
-		noun 14
+		noun N_BOXES
 		nsTop 65
 		nsLeft 79
 		nsBottom 82
@@ -1063,7 +1131,7 @@
 	(properties
 		x 207
 		y 12
-		noun 15
+		noun N_SKULLS
 		nsTop 8
 		nsLeft 179
 		nsBottom 17
@@ -1076,7 +1144,7 @@
 	(properties
 		x 103
 		y 15
-		noun 16
+		noun N_BOTTLES
 		nsTop 5
 		nsLeft 65
 		nsBottom 25
@@ -1089,7 +1157,7 @@
 	(properties
 		x 83
 		y 34
-		noun 17
+		noun N_SHELF
 		nsTop 26
 		nsLeft 66
 		nsBottom 43
@@ -1102,7 +1170,7 @@
 	(properties
 		x 190
 		y 64
-		noun 18
+		noun N_OTHER_BOTTLES
 		nsTop 56
 		nsLeft 178
 		nsBottom 73
@@ -1115,7 +1183,7 @@
 	(properties
 		x 191
 		y 78
-		noun 19
+		noun N_PLANT
 		nsTop 74
 		nsLeft 178
 		nsBottom 82
@@ -1128,7 +1196,7 @@
 	(properties
 		x 213
 		y 65
-		noun 21
+		noun N_MORE_BOOKS
 		nsTop 56
 		nsLeft 207
 		nsBottom 74
@@ -1141,7 +1209,7 @@
 	(properties
 		x 140
 		y 65
-		noun 22
+		noun N_VASES
 		nsTop 55
 		nsLeft 111
 		nsBottom 76
@@ -1154,7 +1222,7 @@
 	(properties
 		x 297
 		y 84
-		noun 26
+		noun N_CHEST
 		nsTop 73
 		nsLeft 289
 		nsBottom 95
@@ -1167,7 +1235,7 @@
 	(properties
 		x 255
 		y 61
-		noun 24
+		noun N_PILLAR
 		nsTop 12
 		nsLeft 242
 		nsBottom 111
@@ -1180,7 +1248,7 @@
 	(properties
 		x 275
 		y 73
-		noun 25
+		noun N_URN
 		nsTop 56
 		nsLeft 270
 		nsBottom 91
@@ -1190,100 +1258,122 @@
 )
 
 (instance kreeshaTell of Teller
-	(properties)
-	
+
 	(method (showDialog)
 		(super
 			showDialog:
 				-3
-				(== kreeshaHomeState 0)
+				(== kreeshaHomeState firstTime)
 				-5
-				(== kreeshaHomeState 0)
+				(== kreeshaHomeState firstTime)
 				-7
-				(== kreeshaHomeState 0)
+				(== kreeshaHomeState firstTime)
 				-2
-				(== kreeshaHomeState 0)
+				(== kreeshaHomeState firstTime)
 				-4
-				(< kreeshaHomeState 2)
+				(< kreeshaHomeState kreeshaReading)
 				-19
-				(> kreeshaHomeState 2)
+				(> kreeshaHomeState kreeshaReading)
 				-20
-				(if (== heroType 1) (> kreeshaHomeState 1) else 0)
+				(if (== heroType MAGIC_USER) (> kreeshaHomeState kreeshaInParlor) else 0)
 				-21
-				(> kreeshaHomeState 1)
+				(> kreeshaHomeState kreeshaInParlor)
 				-22
-				(> kreeshaHomeState 1)
+				(> kreeshaHomeState kreeshaInParlor)
 				-37
-				(== kreeshaHomeState 7)
+				(== kreeshaHomeState state7)
 				-39
-				(== kreeshaHomeState 6)
+				(== kreeshaHomeState makingAStaff)
 				-38
-				(== kreeshaHomeState 6)
+				(== kreeshaHomeState makingAStaff)
 				-40
-				(== kreeshaHomeState 7)
+				(== kreeshaHomeState state7)
 				-6
-				(if (== kreeshaHomeState 0) else (== kreeshaHomeState 7))
+				(if (== kreeshaHomeState firstTime) else (== kreeshaHomeState state7))
 				-58
-				(if (== kreeshaHomeState 0) (== heroType 1) else 0)
+				(if (== kreeshaHomeState firstTime) (== heroType MAGIC_USER) else 0)
 				-74
-				(== kreeshaHomeState 6)
+				(== kreeshaHomeState makingAStaff)
 				-71
-				(== kreeshaHomeState 6)
+				(== kreeshaHomeState makingAStaff)
 				-70
-				(== kreeshaHomeState 6)
+				(== kreeshaHomeState makingAStaff)
 				-74
-				(== kreeshaHomeState 6)
+				(== kreeshaHomeState makingAStaff)
 				-65
-				(== kreeshaHomeState 2)
+				(== kreeshaHomeState kreeshaReading)
 				-64
-				(== kreeshaHomeState 2)
+				(== kreeshaHomeState kreeshaReading)
 		)
 	)
 	
 	(method (doChild)
 		(return
 			(switch query
-				(-69 (Bset 133) (return query))
-				(-4 (super doChild: query))
-				(-7 (super doChild: query))
-				(-5 (super doChild: query))
-				(-20 (super doChild: query))
-				(-71 (super doChild: query))
-				(-65 (super doChild: query))
-				(-66 (super doChild: query))
-				(else  (return query))
+				(-69
+					(Bset fNeedStaff)
+					(return query)
+				)
+				(-4
+					(super doChild: query)
+				)
+				(-7
+					(super doChild: query)
+				)
+				(-5
+					(super doChild: query)
+				)
+				(-20
+					(super doChild: query)
+				)
+				(-71
+					(super doChild: query)
+				)
+				(-65
+					(super doChild: query)
+				)
+				(-66
+					(super doChild: query)
+				)
+				(else
+					(return query)
+				)
 			)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(cond 
-			(
-			(or (== theVerb 81) (== theVerb 83) (== theVerb 88)) (messager say: 1 6 89))
-			((== theVerb 82) (messager say: 1 6 90))
-			(else (super doVerb: theVerb))
+			((or (== theVerb V_FLAME) (== theVerb V_FORCEBOLT) (== theVerb V_LIGHTNING))
+				(messager say: N_CUE V_DOIT C_NO_ATTACK_KREESHA)
+			)
+			((== theVerb V_FETCH)
+				(messager say: N_CUE V_DOIT C_FETCH)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance egoTell of Teller
-	(properties)
-	
+
 	(method (showDialog)
 		(super
 			showDialog:
 				-36
-				(== kreeshaHomeState 7)
+				(== kreeshaHomeState state7)
 				-19
-				(== kreeshaHomeState 3)
+				(== kreeshaHomeState afterOath)
 				-11
-				(== kreeshaHomeState 0)
+				(== kreeshaHomeState firstTime)
 				-75
-				(== kreeshaHomeState 0)
+				(== kreeshaHomeState firstTime)
 				-76
-				(if (< kreeshaHomeState 6) (> kreeshaHomeState 0) else 0)
+				(if (< kreeshaHomeState makingAStaff) (> kreeshaHomeState firstTime) else 0)
 				-77
-				(== kreeshaHomeState 6)
+				(== kreeshaHomeState makingAStaff)
 		)
 	)
 	
@@ -1293,29 +1383,41 @@
 )
 
 (instance rakeeshTell of Teller
-	(properties)
 	
 	(method (showDialog)
-		(super showDialog: -55 (== heroType 3))
+		(super showDialog: -55 (== heroType PALADIN))
 	)
 	
 	(method (doChild)
 		(return
 			(switch query
-				(-8 (super doChild: query))
-				(-3 (super doChild: query))
-				(-51 (super doChild: query))
-				(else  (return query))
+				(-8
+					(super doChild: query)
+				)
+				(-3
+					(super doChild: query)
+				)
+				(-51
+					(super doChild: query)
+				)
+				(else
+					(return query)
+				)
 			)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(cond 
-			(
-			(or (== theVerb 81) (== theVerb 83) (== theVerb 88)) (messager say: 1 6 88))
-			((== theVerb 82) (messager say: 1 6 90))
-			(else (super doVerb: theVerb))
+			((or (== theVerb V_FLAME) (== theVerb V_FORCEBOLT) (== theVerb V_LIGHTNING))
+				(messager say: N_CUE V_DOIT C_NO_ATTACK_RAKEESH)
+			)
+			((== theVerb V_FETCH)
+				(messager say: N_CUE V_DOIT C_FETCH)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )

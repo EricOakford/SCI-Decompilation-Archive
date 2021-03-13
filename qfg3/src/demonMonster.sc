@@ -2,7 +2,7 @@
 (script# 845)
 (include game.sh)
 (use Main)
-(use CombatIcon)
+(use Combat)
 (use Motion)
 (use System)
 

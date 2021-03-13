@@ -2,7 +2,7 @@
 (script# vGargoyle)
 (include game.sh)
 (use Main)
-(use CombatIcon)
+(use Combat)
 (use Motion)
 (use System)
 

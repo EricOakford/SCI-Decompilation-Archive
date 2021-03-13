@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 300)
-(include sci.sh)
+(include game.sh) (include "300.shm")
 (use Main)
 (use TellerIcon)
 (use GloryTalker)
@@ -23,101 +23,116 @@
 )
 
 (local
-	local0
-	local1
+	toX
+	toY
 	theX
 	theY
-	local4
-	local5 =  150
-	local6 =  150
+	egoPri
+	eventX =  150
+	eventY =  150
 	local7
 	theFeature
 	local9
-	local10 =  1
-	[local11 29] = [0 -20 143 0 142 143 159 -32768 143 159 0 142 -20 143 -32768 -20 143 0 142 236 150 -32768 236 150 0 142 -20 143 -32768]
+	msgOfTheDay =  1
+	local11 = [
+			0 -20 143 0 142 143 159 PATHEND
+			143 159 0 142 -20 143 PATHEND
+			-20 143 0 142 236 150 PATHEND
+			236 150 0 142 -20 143 PATHEND
+			]
 	local40
-	local41
-	local42
-	local43
-	local44
-	local45
-	[local46 3] = [0 1 2]
-	[local49 3] = [2 3 1]
-	[local52 3] = [3 2]
-	[local55 3] = [0 4 2]
-	[local58 3] = [2 5 6]
-	[local61 3] = [4 3 5]
-	[local64 3] = [5 6 4]
-	[local67 3] = [11 12 13]
-	[local70 3] = [13 14 15]
-	[local73 3] = [14 13 11]
-	[local76 3] = [16 17 18]
-	[local79 3] = [18 19 20]
-	[local82 3] = [17 21 19]
-	[local85 3] = [19 20 17]
-	local88
-	[local89 16] = [0 -19 -4 44 -2 -38 33 -12 -3 -40 58 -34 37 -26 -5 999]
-	[local105 3] = [0 -20 999]
-	[local108 5] = [0 -21 25 24 999]
-	[local113 4] = [0 23 22 999]
-	[local117 5] = [0 13 -14 18 999]
-	[local122 5] = [0 15 16 17 999]
-	[local127 8] = [0 27 28 29 30 31 32 999]
-	[local135 3] = [0 -9 999]
-	[local138 3] = [0 -62 999]
-	[local141 3] = [0 -63 999]
-	[local144 3] = [0 39 999]
-	[local147 3] = [0 -41 999]
-	[local150 4] = [0 42 43 999]
-	[local154 4] = [0 35 36 999]
-	[local158 9] = [0 -70 1 -60 69 68 64 -6 999]
-	[local167 6] = [0 -17 -53 -32 33 999]
-	[local173 5] = [0 -46 -49 -52 999]
-	[local178 4] = [0 -47 -66 999]
-	[local182 3] = [0 -48 999]
-	[local185 4] = [0 -50 -51 999]
-	[local189 3] = [0 -65 999]
-	[local192 4] = [0 54 55 999]
-	[local196 3] = [0 -56 999]
-	[local199 3] = [0 67 999]
+	survivorWontTalk
+	welcomeWomanHere
+	survivorIsHere
+	triedToPayInDinars
+	flirted
+	sitter1Cel = [0 1 2]
+	sitter2Cel = [2 3 1]
+	sitter3Cel = [3 2]
+	sitter4Cel = [0 4 2]
+	sitter5Cel = [2 5 6]
+	sitter6Cel = [4 3 5]
+	sitter7Cel = [5 6 4]
+	sitter1Noun = [N_SITTER1 N_SITTER2 N_SITTER3]
+	sitter2Noun = [N_SITTER3 N_SITTER4 N_SITTER5]
+	sitter3Noun = [N_SITTER4 N_SITTER5 N_SITTER1]
+	sitter4Noun = [N_SITTER6 N_SITTER7 N_SITTER8]
+	sitter5Noun = [N_SITTER8 N_SITTER9 N_SITTER10]
+	sitter6Noun = [N_SITTER7 N_SITTER11 N_SITTER9]
+	sitter7Noun = [N_SITTER9 N_SITTER10 N_SITTER7]
+	sitterIndex
+	local89 = [0 -19 -4 44 -2 -38 33 -12 -3 -40 58 -34 37 -26 -5 999]
+	local105 = [0 -20 999]
+	local108 = [0 -21 25 24 999]
+	local113 = [0 23 22 999]
+	local117 = [0 13 -14 18 999]
+	local122 = [0 15 16 17 999]
+	local127 = [0 27 28 29 30 31 32 999]
+	local135 = [0 -9 999]
+	local138 = [0 -62 999]
+	local141 = [0 -63 999]
+	local144 = [0 39 999]
+	local147 = [0 -41 999]
+	local150 = [0 42 43 999]
+	local154 = [0 35 36 999]
+	local158 = [0 -70 1 -60 69 68 64 -6 999]
+	local167 = [0 -17 -53 -32 33 999]
+	local173 = [0 -46 -49 -52 999]
+	local178 = [0 -47 -66 999]
+	local182 = [0 -48 999]
+	local185 = [0 -50 -51 999]
+	local189 = [0 -65 999]
+	local192 = [0 54 55 999]
+	local196 = [0 -56 999]
+	local199 = [0 67 999]
 	[local202 4]
 	[local206 19]
-	[local225 15] = [0 -19 -20 -21 -12 -14 -26 -2 -3 -5 -38 -40 -41 -34 999]
+	local225 = [0 -19 -20 -21 -12 -14 -26 -2 -3 -5 -38 -40 -41 -34 999]
 	[local240 15]
-	[local255 10] = [0 -17 -53 -32 -46 -49 -52 -47 -56 999]
+	local255 = [0 -17 -53 -32 -46 -49 -52 -47 -56 999]
 )
-(procedure (localproc_1fab param1)
-	(= global408 (| global408 param1))
-)
-
-(procedure (localproc_1fb5 param1)
-	(= global408 (& global408 (~ param1)))
+(procedure (InnSet flagEnum)
+	(|= innFlags flagEnum)
 )
 
-(procedure (localproc_1fc0 param1)
-	(return (& global408 param1))
+(procedure (InnClr flagEnum)
+	(&= innFlags (~ flagEnum))
 )
 
-(procedure (localproc_1fc7 param1 param2 param3 &tmp temp0)
-	(= temp0 1)
-	(while
-	(Message msgGET curRoomNum param1 param2 param3 temp0)
-		(++ temp0)
-	)
-	(return (-- temp0))
+(procedure (InnTst flagEnum)
+	(return (& innFlags flagEnum))
 )
 
-(instance rm300 of Rm
+;inn flags
+(define FIRST_TIME				$0001)
+(define SECOND_TIME				$0002)
+(define SURVIVOR_WILL_COME		$0004)
+(define SURVIVOR_DEAD			$0008)
+(define SURVIVOR_WAS_HERE		$0010)
+(define SURVIVOR_DONE			$0020)
+(define ASKED_ABOUT_RESTAURANT	$0040)
+(define ORDERED_FOOD			$0080)
+(define JANNA_WAITS				$0100)
+(define TALKED_TO_SURVIVOR		$0200)
+
+(procedure (DailyMsg n v c &tmp i)
+	(for ((= i 1)) (Message MsgGet curRoomNum n v c i) ((++ i)))
+	(return (-- i))
+)
+
+(instance rm300 of Room
 	(properties
-		noun 25
+		noun N_ROOM
 		picture 300
 		vanishingY 30
 	)
 	
 	(method (init)
-		(if (== prevRoomNum 270) (cSound hold: 0 setVol: 127))
+		(if (== prevRoomNum 270)
+			(cSound hold: 0 setVol: 127)
+		)
 		(ego
-			noun: 2
+			noun: N_EGO_TELL
 			init:
 			normalize:
 			setScale: Scaler 95 60 180 30
@@ -157,147 +172,80 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						177
-						189
-						177
-						187
-						313
-						187
-						313
-						172
-						232
-						171
-						221
-						162
-						208
-						159
-						192
-						151
-						235
-						150
-						256
-						160
-						247
-						141
-						273
-						141
-						287
-						150
-						312
-						146
-						312
-						138
-						297
-						138
-						282
-						117
-						274
-						117
-						288
-						139
-						275
-						139
-						239
-						130
-						238
-						137
-						214
-						137
-						197
-						115
-						169
-						107
-						157
-						106
-						182
-						116
-						199
-						139
-						168
-						139
-						140
-						127
-						97
-						127
-						101
-						140
-						68
-						140
-						63
-						115
-						59
-						107
-						39
-						107
-						35
-						114
-						25
-						141
-						4
-						141
-						4
-						146
-						31
-						146
-						34
-						152
-						80
-						154
-						80
-						177
-						3
-						179
-						3
-						187
-						176
-						187
-						176
-						189
-						0
-						189
+						0 0
+						319 0
+						319 189
+						177 189
+						177 187
+						313 187
+						313 172
+						232 171
+						221 162
+						208 159
+						192 151
+						235 150
+						256 160
+						247 141
+						273 141
+						287 150
+						312 146
+						312 138
+						297 138
+						282 117
+						274 117
+						288 139
+						275 139
+						239 130
+						238 137
+						214 137
+						197 115
+						169 107
+						157 106
+						182 116
+						199 139
+						168 139
+						140 127
+						97 127
+						101 140
+						68 140
+						63 115
+						59 107
+						39 107
+						35 114
+						25 141
+						4 141
+						4 146
+						31 146
+						34 152
+						80 154
+						80 177
+						3 179
+						3 187
+						176 187
+						176 189
+						0 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						87
-						160
-						114
-						157
-						122
-						166
-						137
-						165
-						123
-						148
-						159
-						148
-						167
-						152
-						187
-						151
-						205
-						160
-						218
-						163
-						229
-						172
-						195
-						176
-						160
-						181
-						118
-						178
-						87
-						175
+						87 160
+						114 157
+						122 166
+						137 165
+						123 148
+						159 148
+						167 152
+						187 151
+						205 160
+						218 163
+						229 172
+						195 176
+						160 181
+						118 178
+						87 175
 					yourself:
 				)
 		)
@@ -308,67 +256,76 @@
 			((>= Clock 750)
 				(if (!= prevRoomNum 305)
 					(cond 
-						((not global408) (localproc_1fab 1) (localproc_1fab 256))
-						((localproc_1fc0 1)
+						((not innFlags)
+							(InnSet FIRST_TIME)
+							(InnSet JANNA_WAITS)
+						)
+						((InnTst FIRST_TIME)
 							(cond 
 								(
 									(and
-										(not (localproc_1fc0 16))
-										(>= Day (+ survivorDay 1))
-										(localproc_1fc0 128)
-										(>= timeODay 4)
+										(not (InnTst SURVIVOR_WAS_HERE))
+										(>= Day (+ innDay 1))
+										(InnTst ORDERED_FOOD)
+										(>= timeODay TIME_SUNSET)
 									)
-									(localproc_1fb5 1)
-									(localproc_1fab 4)
+									(InnClr FIRST_TIME)
+									(InnSet SURVIVOR_WILL_COME)
 								)
-								((localproc_1fc0 128) (localproc_1fb5 1) (localproc_1fab 2))
+								((InnTst ORDERED_FOOD)
+									(InnClr FIRST_TIME)
+									(InnSet SECOND_TIME)
+								)
 							)
 						)
 						(
 							(and
-								(not (localproc_1fc0 16))
-								(localproc_1fc0 2)
-								(>= Day (+ survivorDay 1))
-								(localproc_1fc0 128)
-								(>= timeODay 4)
+								(not (InnTst SURVIVOR_WAS_HERE))
+								(InnTst SECOND_TIME)
+								(>= Day (+ innDay 1))
+								(InnTst ORDERED_FOOD)
+								(>= timeODay TIME_SUNSET)
 							)
-							(localproc_1fb5 2)
-							(localproc_1fab 4)
+							(InnClr SECOND_TIME)
+							(InnSet SURVIVOR_WILL_COME)
 						)
-						((localproc_1fc0 4)
+						((InnTst SURVIVOR_WILL_COME)
 							(cond 
 								(
 									(and
-										(not (localproc_1fc0 32))
-										(>= Day (+ survivorDay 3))
-										(localproc_1fc0 16)
+										(not (InnSet SURVIVOR_DONE))
+										(>= Day (+ innDay 3))
+										(InnTst SURVIVOR_WAS_HERE)
 									)
-									(= survivorDay Day)
-									(localproc_1fb5 4)
-									(localproc_1fab 8)
+									(= innDay Day)
+									(InnClr SURVIVOR_WILL_COME)
+									(InnSet SURVIVOR_DEAD)
 								)
-								((or (localproc_1fc0 16) (< timeODay 4)) (localproc_1fb5 4) (localproc_1fab 2))
+								((or (InnTst SURVIVOR_WAS_HERE) (< timeODay TIME_SUNSET))
+									(InnClr SURVIVOR_WILL_COME)
+									(InnSet SECOND_TIME)
+								)
 							)
 						)
 						(
 							(and
-								(not (localproc_1fc0 32))
-								(localproc_1fc0 2)
-								(>= Day (+ survivorDay 3))
-								(localproc_1fc0 16)
+								(not (InnSet SURVIVOR_DONE))
+								(InnTst SECOND_TIME)
+								(>= Day (+ innDay 3))
+								(InnTst SURVIVOR_WAS_HERE)
 							)
-							(= survivorDay Day)
-							(localproc_1fb5 2)
-							(localproc_1fab 8)
+							(= innDay Day)
+							(InnClr SECOND_TIME)
+							(InnSet SURVIVOR_DEAD)
 						)
-						((and (localproc_1fc0 8) (!= survivorDay Day))
-							(localproc_1fb5 8)
-							(localproc_1fab 32)
-							(localproc_1fab 2)
+						((and (InnTst SURVIVOR_DEAD) (!= innDay Day))
+							(InnClr SURVIVOR_DEAD)
+							(InnSet SURVIVOR_DONE)
+							(InnSet SECOND_TIME)
 						)
 					)
-					(if (and (localproc_1fc0 256) (localproc_1fc0 1))
-						(localproc_1fb5 256)
+					(if (and (InnTst JANNA_WAITS) (InnTst FIRST_TIME))
+						(InnClr JANNA_WAITS)
 						(welcomeWoman
 							x: 37
 							y: 179
@@ -379,16 +336,19 @@
 							stopUpd:
 						)
 						(cond 
-							((== prevRoomNum 310) (ego x: 302 y: 33) (self setScript: firstWalkIn))
+							((== prevRoomNum 310)
+								(ego x: 302 y: 33)
+								(self setScript: firstWalkIn)
+							)
 							((< (ego x?) 35)
-								(= local0 197)
-								(= local1 135)
+								(= toX 197)
+								(= toY 135)
 								(ego y: 114 x: 179)
 								(self setScript: firstWalkIn)
 							)
 							(else
-								(= local0 47)
-								(= local1 135)
+								(= toX 47)
+								(= toY 135)
 								(ego y: 114 x: 47)
 								(self setScript: firstWalkIn)
 							)
@@ -401,16 +361,19 @@
 							stopUpd:
 						)
 						(cond 
-							((== prevRoomNum 310) (ego x: 302 y: 33) (self setScript: sEnter self))
+							((== prevRoomNum 310)
+								(ego x: 302 y: 33)
+								(self setScript: sEnter self)
+							)
 							((< (ego x?) 35)
-								(= local0 197)
-								(= local1 135)
+								(= toX 197)
+								(= toY 135)
 								(ego y: 114 x: 179)
 								(self setScript: walkIn)
 							)
 							(else
-								(= local0 47)
-								(= local1 135)
+								(= toX 47)
+								(= toY 135)
 								(ego y: 114 x: 47)
 								(self setScript: walkIn)
 							)
@@ -424,71 +387,79 @@
 						stopUpd:
 					)
 				)
-				(flameRight setCycle: Fwd init:)
-				(flameCenter setCycle: Fwd init:)
-				(flameLeft setCycle: Fwd init:)
-				(= local88 (mod (+ Day 3) 3))
+				(flameRight setCycle: Forward init:)
+				(flameCenter setCycle: Forward init:)
+				(flameLeft setCycle: Forward init:)
+				(= sitterIndex (mod (+ Day 3) 3))
 				(northSitter1
 					loop: (mod (+ Day 2) 2)
-					cel: [local46 local88]
-					noun: [local67 local88]
+					cel: [sitter1Cel sitterIndex]
+					noun: [sitter1Noun sitterIndex]
 					addToPic:
 				)
+				;EO: This code was a bit messy
 				(eastSitter2
-					cel: [local58 local88]
-					noun:
-						[local79 (eastSitter1
-							cel: [local55 local88]
-							noun:
-								[local76 (if (and (not (localproc_1fc0 4)) (mod Day 2))
-									(northSitter2
-										loop: (mod (+ Day 2) 2)
-										cel: [local49 local88]
-										noun: [local70 (northCushion3 approachVerbs: 4 init:)]
-										addToPic:
-									)
-									(otherTray x: 132 y: 200 z: 35 priority: 14 addToPic:)
-								else
-									(northCushion2 init: approachVerbs: 4)
-									(northSitter3
-										loop: (mod (+ Day 2) 2)
-										cel: [local52 local88]
-										noun: [local73 (otherTray x: 250 y: 200 z: 41 addToPic:)]
-										addToPic:
-									)
-								)]
-							addToPic:
-						)]
+					cel: [sitter5Cel sitterIndex]
+					noun: [sitter5Noun sitterIndex]
 					addToPic:
 				)
-				(eastSitter3 noun: 22 addToPic:)
-				(westSitter2
-					cel: [local64 local88]
-					noun:
-						[local85 (cond 
-							((not (localproc_1fc0 4))
-								(westSitter1
-									cel: [local61 local88]
-									noun: [local82 local88]
-									addToPic:
-								)
-							)
-							((localproc_1fc0 16)
-								(= local40 1)
-								(= local41 (localproc_1fc0 512))
-								(= local42 1)
-								(survivor
-									view: 307
-									loop: 2
-									cel: (if (== global466 1023) 3 else 1)
-									x: 104
-									y: 171
-									init:
-								)
-							)
-							(else (westCushion init:))
-						)]
+				(eastSitter1
+					cel: [sitter4Cel sitterIndex]
+					noun: [sitter4Noun sitterIndex]
 					addToPic:
+				)
+				(if (and (not (InnTst SURVIVOR_WILL_COME)) (mod Day 2))
+					(northSitter2
+						loop: (mod (+ Day 2) 2)
+						cel: [sitter2Cel sitterIndex]
+						noun: [sitter2Noun sitterIndex]
+						addToPic:
+					)
+					(northCushion3 approachVerbs: V_DO init:)
+					(otherTray x: 132 y: 200 z: 35 priority: 14 addToPic:)
+				else
+					(northCushion2 init: approachVerbs: V_DO)
+					(northSitter3
+						loop: (mod (+ Day 2) 2)
+						cel: [sitter3Cel sitterIndex]
+						noun: [sitter3Noun sitterIndex]
+						addToPic:
+					)
+				)
+				(otherTray x: 250 y: 200 z: 41 addToPic:)
+				(eastSitter3
+					noun: N_OLIVER
+					addToPic:
+				)
+				(westSitter2
+					cel: [sitter7Cel sitterIndex]
+					noun: [sitter7Noun sitterIndex]
+					addToPic:
+				)
+				(cond 
+					((not (InnTst SURVIVOR_WILL_COME))
+						(westSitter1
+							cel: [sitter6Cel sitterIndex]
+							noun: [sitter6Noun sitterIndex]
+							addToPic:
+						)
+					)
+					((InnTst SURVIVOR_WAS_HERE)
+						(= local40 1)
+						(= survivorWontTalk (InnTst TALKED_TO_SURVIVOR))
+						(= welcomeWomanHere 1)
+						(survivor
+							view: 307
+							loop: 2
+							cel: (if (== survivorTalkCount 1023) 3 else 1)
+							x: 104
+							y: 171
+							init:
+						)
+					)
+					(else
+						(westCushion init:)
+					)
 				)
 				(tray1 addToPic:)
 				(tray2 addToPic:)
@@ -499,16 +470,18 @@
 			)
 			((!= prevRoomNum 305)
 				(cond 
-					((== prevRoomNum 310) (ego x: 302 y: 33) (self setScript: sEnter self))
+					((== prevRoomNum 310) (ego x: 302 y: 33)
+						(self setScript: sEnter self)
+					)
 					((< (ego x?) 35)
-						(= local0 197)
-						(= local1 135)
+						(= toX 197)
+						(= toY 135)
 						(ego y: 114 x: 179)
 						(self setScript: walkIn)
 					)
 					(else
-						(= local0 47)
-						(= local1 135)
+						(= toX 47)
+						(= toY 135)
 						(ego y: 114 x: 47)
 						(self setScript: walkIn)
 					)
@@ -521,37 +494,46 @@
 		(midtable init:)
 		(righttable init:)
 		(stairs init:)
-		(board init: approachVerbs: 1)
+		(board init: approachVerbs: V_LOOK)
 	)
 	
 	(method (doit)
 		(super doit: &rest)
-		(Palette palANIMATE 76 81 6)
+		(Palette PALCycle 76 81 6)
 		(cond 
 			(script 0)
-			((== (ego onControl: 1) 2) (self setScript: toRoom))
-			((== (ego onControl: 2) 4) (curRoom newRoom: 270))
-			((and (ego mover?) (== (ego view?) 40)) (ego setMotion: 0 setScript: standNorth))
+			((== (ego onControl: origin) cBLUE)
+				(self setScript: toRoom)
+			)
+			((== (ego onControl: cBLUE) cGREEN)
+				(curRoom newRoom: 270)
+			)
+			((and (ego mover?) (== (ego view?) 40))
+				(ego setMotion: 0 setScript: standNorth))
 		)
 	)
 	
 	(method (dispose)
-		(UnLoad 128 300)
-		(UnLoad 128 301)
-		(UnLoad 128 302)
-		(UnLoad 128 303)
-		(UnLoad 128 306)
+		(UnLoad RES_VIEW 300)
+		(UnLoad RES_VIEW 301)
+		(UnLoad RES_VIEW 302)
+		(UnLoad RES_VIEW 303)
+		(UnLoad RES_VIEW 306)
 		(walkHandler delete: curRoom)
-		(if local41 (localproc_1fab 512))
+		(if survivorWontTalk
+			(InnSet TALKED_TO_SURVIVOR)
+		)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (egoActions doVerb: 3))
+			(V_WALK
+				(egoActions doVerb: V_WALK)
+			)
 			(else 
 				(if (< Clock 750)
-					(messager say: 0 6 77)
+					(messager say: NULL V_DOIT C_MIDNIGHT)
 				else
 					(super doVerb: theVerb &rest)
 				)
@@ -561,8 +543,7 @@
 )
 
 (instance firstWalkIn of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -570,12 +551,12 @@
 					(self setScript: sEnter self)
 				else
 					(HandsOff)
-					(ego setMotion: PolyPath local0 local1 self)
+					(ego setMotion: PolyPath toX toY self)
 				)
 			)
 			(1
 				(HandsOff)
-				(welcomeWoman setCycle: End self)
+				(welcomeWoman setCycle: EndLoop self)
 			)
 			(2
 				(welcomeWoman
@@ -588,7 +569,7 @@
 				(= cycles 2)
 			)
 			(3
-				(messager say: 1 6 59 0 self)
+				(messager say: N_WELCOME_WOMAN V_DOIT C_FIRST_WALK_IN 0 self)
 			)
 			(4
 				(welcomeWoman setMotion: MoveTo -20 174 self)
@@ -603,21 +584,22 @@
 )
 
 (instance walkIn of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego setMotion: PolyPath local0 local1 self)
+				(ego setMotion: PolyPath toX toY self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sEnter of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -630,13 +612,15 @@
 			(2
 				(ego setMotion: MoveTo 295 139 self)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance toRoom of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -650,20 +634,21 @@
 			(2
 				(ego setMotion: MoveTo 309 31 self)
 			)
-			(3 (curRoom newRoom: 310))
+			(3
+				(curRoom newRoom: 310)
+			)
 		)
 	)
 )
 
 (instance survivorWalkIn of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= survivorDay Day)
+				(= innDay Day)
 				(= local40 1)
-				(localproc_1fab 16)
+				(InnSet SURVIVOR_WAS_HERE)
 				(survivor
 					init:
 					setCycle: Walk
@@ -671,7 +656,7 @@
 				)
 			)
 			(1
-				(survivor loop: 1 cel: 0 setCycle: End self)
+				(survivor loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(survivor loop: 2 cel: 1)
@@ -682,15 +667,16 @@
 )
 
 (instance sitNorth of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 20])
 		(switch (= state newState)
 			(0
-				(if (not local40) (= local9 1))
+				(if (not local40)
+					(= local9 1)
+				)
 				(CueObj client: 0)
 				(HandsOff)
-				(ego setPri: local4 setMotion: MoveTo theX theY self)
+				(ego setPri: egoPri setMotion: MoveTo theX theY self)
 			)
 			(1
 				(ego
@@ -699,40 +685,51 @@
 					cel: 0
 					x: theX
 					y: theY
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (ego looper?)
 					((ego looper?) dispose:)
 					(ego looper: 0)
 				)
-				(if local40 (HandsOn) (self dispose:))
+				(if local40
+					(HandsOn)
+					(self dispose:)
+				)
 			)
 			(2
 				(welcomeWoman setMotion: MoveTo 5 142 self)
 			)
 			(3
-				(welcomeWoman setMotion: PolyPath local0 local1 self)
+				(welcomeWoman setMotion: PolyPath toX toY self)
 			)
 			(4
 				(cond 
-					((and (not local42) (localproc_1fc0 4)) (= local42 1) (messager say: 1 6 16 0 self))
-					((and (not local42) (localproc_1fc0 8)) (= local42 1) (messager say: 1 6 45 0 self))
+					((and (not welcomeWomanHere) (InnTst SURVIVOR_WILL_COME))
+						(= welcomeWomanHere TRUE)
+						(messager say: N_WELCOME_WOMAN V_DOIT C_SURVIVOR 0 self)
+					)
+					((and (not welcomeWomanHere) (InnTst SURVIVOR_DEAD))
+						(= welcomeWomanHere TRUE)
+						(messager say: N_WELCOME_WOMAN V_DOIT C_SURVIVOR_DIED 0 self)
+					)
 					(else
-						(= local10 (localproc_1fc7 1 6 1))
+						(= msgOfTheDay (DailyMsg N_WELCOME_WOMAN V_DOIT C_HELLO))
 						(messager
-							say: 1 6 1 (+ (mod (+ Day local10) local10) 1) self
+							say: N_WELCOME_WOMAN V_DOIT C_HELLO (+ (mod (+ Day msgOfTheDay) msgOfTheDay) 1) self
 						)
 					)
 				)
 			)
-			(5 (HandsOn) (self dispose:))
+			(5
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance standNorth of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -741,7 +738,7 @@
 					(and
 						(CueObj client?)
 						((CueObj client?) approachX?)
-						(!= (theIconBar curIcon?) (theIconBar at: 1))
+						(!= (theIconBar curIcon?) (theIconBar at: ICON_WALK))
 					)
 					(= local7 1)
 				)
@@ -750,22 +747,22 @@
 			(1
 				(HandsOff)
 				(if local9
-					(if local45
+					(if flirted
 						(self setScript: welcomeFlirtExit self)
-						(if (localproc_1fc0 4)
+						(if (InnTst SURVIVOR_WILL_COME)
 							(curRoom setScript: survivorWalkIn)
 						)
 					else
-						(if (localproc_1fc0 4)
+						(if (InnTst SURVIVOR_WILL_COME)
 							(curRoom setScript: survivorWalkIn)
 						)
 						(self setScript: welcomeExit self)
 					)
-					(ego setCycle: Beg)
+					(ego setCycle: BegLoop)
 				else
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				)
-				(theFeature approachVerbs: 4)
+				(theFeature approachVerbs: V_DO)
 			)
 			(2
 				(if local9
@@ -789,7 +786,7 @@
 							CueObj
 					)
 				else
-					(ego setPri: -1 setMotion: PolyPath local5 local6 self)
+					(ego setPri: -1 setMotion: PolyPath eventX eventY self)
 				)
 				(welcomeWoman stopUpd:)
 				(HandsOn)
@@ -800,39 +797,42 @@
 )
 
 (instance getFood of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (localproc_1fc0 128))
-					(localproc_1fab 128)
-					(= survivorDay Day)
+				(if (not (InnTst ORDERED_FOOD))
+					(InnSet ORDERED_FOOD)
+					(= innDay Day)
 				)
 				(HandsOff)
-				(messager say: 2 5 70 0 self)
+				(messager say: N_EGO_TELL V_TELL C_ORDER 0 self)
 			)
 			(1
-				(if local45
+				(if flirted
 					(self setScript: welcomeFlirtExit self)
 				else
 					(self setScript: welcomeExit self)
 				)
-				(if (localproc_1fc0 4) (ego setScript: survivorWalkIn))
+				(if (InnTst SURVIVOR_WILL_COME)
+					(ego setScript: survivorWalkIn)
+				)
 			)
-			(2 (= seconds 4))
+			(2
+				(= seconds 4)
+			)
 			(3
 				(welcomeWoman view: 304 setMotion: MoveTo 5 142 self)
 			)
 			(4
-				(welcomeWoman setMotion: PolyPath local0 local1 self)
+				(welcomeWoman setMotion: PolyPath toX toY self)
 			)
 			(5
 				(welcomeWoman
 					view: 303
 					loop: 4
 					cel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(6
@@ -840,22 +840,29 @@
 					x: (welcomeWoman x?)
 					y: (+ (welcomeWoman y?) 30)
 					z: 30
-					priority: (+ local4 3)
+					priority: (+ egoPri 3)
 					addToPic:
 				)
-				(welcomeWoman setCycle: End self)
+				(welcomeWoman setCycle: EndLoop self)
 			)
-			(7 (messager say: 1 6 9 0 self))
+			(7
+				(messager say: N_WELCOME_WOMAN V_DOIT C_FOOD 0 self)
+			)
 			(8
 				(cond 
-					((== ((inventory at: 0) message?) 59) (messager say: 1 6 8 0 self) (= local44 1))
-					(((inventory at: 0) amount?)
-						((inventory at: 0)
-							amount: (- ((inventory at: 0) amount?) 1)
-						)
-						(messager say: 1 6 11 0 self)
+					((== ((inventory at: iRoyals) message?) V_DINARS)
+						(messager say: N_WELCOME_WOMAN V_DOIT C_WRONG_MONEY 0 self)
+						(= triedToPayInDinars TRUE)
 					)
-					(else (messager say: 1 6 10 0 self))
+					(((inventory at: iRoyals) amount?)
+						((inventory at: iRoyals)
+							amount: (- ((inventory at: iRoyals) amount?) 1)
+						)
+						(messager say: N_WELCOME_WOMAN V_DOIT C_PAY 0 self)
+					)
+					(else
+						(messager say: N_WELCOME_WOMAN V_DOIT C_NO_MONEY 0 self)
+					)
 				)
 			)
 			(9
@@ -869,34 +876,39 @@
 				(welcomeWoman setMotion: MoveTo -10 142 self)
 			)
 			(11
-				(messager say: 0 6 71 0 self)
+				(messager say: NULL V_DOIT C_EAT_MEAL 0 self)
 			)
-			(12 (HandsOn) (self dispose:))
+			(12
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance tellFit of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 5))
+			(0
+				(HandsOff)
+				(= cycles 5)
+			)
 			(1
-				(messager say: 3 6 74 0 self)
+				(messager say: N_SURVIVOR V_DOIT C_SURVIVOR_FIT 0 self)
 			)
 			(2 (= cycles 15))
 			(3
 				(welcomeWoman setMotion: MoveTo 5 142 self)
 			)
 			(4
-				(messager say: 1 6 57 0 self)
+				(messager say: N_WELCOME_WOMAN V_DOIT C_NO_MORE_QUESTIONS 0 self)
 			)
 			(5
 				(welcomeWoman setMotion: MoveTo -15 142 self)
 			)
 			(6
-				(survivor setCycle: End)
+				(survivor setCycle: EndLoop)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -905,12 +917,13 @@
 )
 
 (instance welcomeExit of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 20])
 		(switch (= state newState)
 			(0
-				(if (not caller) (HandsOff))
+				(if (not caller)
+					(HandsOff)
+				)
 				(welcomeWoman
 					view: 301
 					setCycle: StopWalk -1
@@ -919,12 +932,14 @@
 			)
 			(1
 				(welcomeWoman setMotion: MoveTo -10 142 self)
-				(= local45 0)
+				(= flirted FALSE)
 				(= local9 0)
 			)
 			(2
 				(welcomeWoman stopUpd:)
-				(if (not caller) (HandsOn))
+				(if (not caller)
+					(HandsOn)
+				)
 				(self dispose:)
 			)
 		)
@@ -932,12 +947,13 @@
 )
 
 (instance welcomeFlirtExit of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not caller) (HandsOff))
+				(if (not caller)
+					(HandsOff)
+				)
 				(welcomeWoman
 					view: 301
 					setCycle: StopWalk -1
@@ -949,7 +965,7 @@
 					view: 303
 					loop: (+ (Random 0 1) 2)
 					cel: 0
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
@@ -961,12 +977,14 @@
 			)
 			(3
 				(welcomeWoman setMotion: MoveTo -10 142 self)
-				(= local45 0)
+				(= flirted FALSE)
 				(= local9 0)
 			)
 			(4
 				(welcomeWoman stopUpd:)
-				(if (not caller) (HandsOn))
+				(if (not caller)
+					(HandsOn)
+				)
 				(self dispose:)
 			)
 		)
@@ -974,32 +992,34 @@
 )
 
 (instance egoActions of Actions
-	(properties)
-	
+
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(3
+				(V_WALK
 					(cond 
 						((curRoom script?) 0)
 						((== (ego view?) 40)
-							(= local5 ((User curEvent?) x?))
-							(= local6 ((User curEvent?) y?))
+							(= eventX ((User curEvent?) x?))
+							(= eventY ((User curEvent?) y?))
 							(ego setScript: standNorth)
-							(return 1)
+							(return TRUE)
 						)
-						(else (super doVerb: theVerb))
+						(else
+							(super doVerb: theVerb)
+						)
 					)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
 (instance egoTell of Teller
-	(properties)
-	
+
 	(method (showDialog)
 		(return
 			(if (or local9 local40)
@@ -1014,14 +1034,14 @@
 						-6
 						local9
 						69
-						(if local40 (not local41) else 0)
+						(if local40 (not survivorWontTalk) else 0)
 						68
 						local40
 						-70
 						local9
 				)
 			else
-				(client doVerb: 2)
+				(client doVerb: V_TALK)
 				(return -999)
 			)
 		)
@@ -1031,43 +1051,52 @@
 		(return
 			(cond 
 				((== param1 -60)
-					(if local45
+					(if flirted
 						(curRoom setScript: welcomeFlirtExit)
 					else
 						(curRoom setScript: welcomeExit)
 					)
 					(if
-					(and (not (localproc_1fc0 16)) (localproc_1fc0 4))
+					(and (not (InnTst SURVIVOR_WAS_HERE)) (InnTst SURVIVOR_WILL_COME))
 						(ego setScript: survivorWalkIn)
 					)
-					(return 1)
+					(return TRUE)
 				)
 				((== param1 -70)
 					(cond 
-						((Btst 3) (Bclr 3))
-						((Btst 2) (Bclr 2))
-						((< freeMeals 2) (++ freeMeals))
-						((not (localproc_1fc0 4)) (= local43 1))
+						((Btst fStarving)
+							(Bclr fStarving)
+						)
+						((Btst fHungry)
+							(Bclr fHungry)
+						)
+						((< freeMeals 2)
+							(++ freeMeals)
+						)
+						((not (InnTst SURVIVOR_WILL_COME))
+							(= survivorIsHere TRUE)
+						)
 					)
-					(if (not local43)
+					(if (not survivorIsHere)
 						(curRoom setScript: getFood)
-						(if
-						(and (not (localproc_1fc0 16)) (localproc_1fc0 4))
+						(if (and (not (InnTst SURVIVOR_WAS_HERE)) (InnTst SURVIVOR_WILL_COME))
 							(ego setScript: survivorWalkIn)
 						)
-						(= local43 1)
+						(= survivorIsHere TRUE)
 					else
-						(messager say: 0 6 72)
+						(messager say: NULL V_DOIT C_TOO_FULL)
 					)
-					(return 0)
+					(return FALSE)
 				)
 				((== param1 -6)
-					(= local45 1)
-					(= temp0 (localproc_1fc7 1 6 6))
-					(messager say: 1 6 6 (+ (mod (+ Day temp0) temp0) 1))
-					(return 0)
+					(= flirted TRUE)
+					(= temp0 (DailyMsg N_WELCOME_WOMAN V_DOIT C_FLIRT))
+					(messager say: N_WELCOME_WOMAN V_DOIT C_FLIRT (+ (mod (+ Day temp0) temp0) 1))
+					(return FALSE)
 				)
-				(else (super doChild: param1 &rest))
+				(else
+					(super doChild: param1 &rest)
+				)
 			)
 		)
 	)
@@ -1077,7 +1106,7 @@
 	(properties
 		x -15
 		y 189
-		noun 3
+		noun N_SURVIVOR
 		view 307
 		loop 2
 		cel 2
@@ -1085,14 +1114,13 @@
 )
 
 (instance survivorTell of Teller
-	(properties)
-	
+
 	(method (showDialog)
 		(return
-			(if (not local41)
+			(if (not survivorWontTalk)
 				(super showDialog:)
 			else
-				(messager say: 3 6 73)
+				(messager say: N_SURVIVOR V_DOIT C_NO_RESPONSE)
 				(return -999)
 			)
 		)
@@ -1102,75 +1130,75 @@
 		(return
 			(cond 
 				((== param1 -17)
-					(ego solvePuzzle: 248 7)
-					(if (== (= global466 (| global466 $0001)) 1023)
-						(= local41 1)
+					(ego solvePuzzle: fAskAboutPeaceMission 7)
+					(if (== (|= survivorTalkCount $0001) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
 					(super doChild: param1)
 				)
 				((== param1 -46)
-					(if (== (= global466 (| global466 $0002)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0002) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
 					(super doChild: param1)
 				)
 				((== param1 -49)
-					(if (== (= global466 (| global466 $0004)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0004) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
 					(super doChild: param1)
 				)
 				((== param1 -52)
-					(if (== (= global466 (| global466 $0008)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0008) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
 					(super doChild: param1)
 				)
 				((== param1 -47)
-					(if (== (= global466 (| global466 $0010)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0010) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
 					(super doChild: param1)
 				)
 				((== param1 -66)
-					(if (== (= global466 (| global466 $0020)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0020) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
-					(return 1)
+					(return TRUE)
 				)
 				((== param1 -48)
-					(if (== (= global466 (| global466 $0040)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0040) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
-					(return 1)
+					(return TRUE)
 				)
 				((== param1 -50)
-					(if (== (= global466 (| global466 $0080)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0080) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
-					(return 1)
+					(return TRUE)
 				)
 				((== param1 -51)
-					(if (== (= global466 (| global466 $0100)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0100) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
-					(return 1)
+					(return TRUE)
 				)
 				((== param1 -65)
-					(if (== (= global466 (| global466 $0200)) 1023)
-						(= local41 1)
+					(if (== (|= survivorTalkCount $0200) 1023)
+						(= survivorWontTalk TRUE)
 						(curRoom setScript: tellFit)
 					)
-					(return 1)
+					(return TRUE)
 				)
 				(else (super doChild: param1))
 			)
@@ -1228,7 +1256,7 @@
 	(properties
 		x -20
 		y 145
-		noun 1
+		noun N_WELCOME_WOMAN
 		view 301
 	)
 )
@@ -1278,50 +1306,49 @@
 )
 
 (instance welcomeTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
 			showDialog:
 				-2
 				(cond 
-					((localproc_1fc0 6))
-					((localproc_1fc0 64) (not (localproc_1fc0 8)))
+					((InnTst (| SECOND_TIME SURVIVOR_WILL_COME)))
+					((InnTst ASKED_ABOUT_RESTAURANT) (not (InnTst SURVIVOR_DEAD)))
 				)
 				-38
-				(localproc_1fc0 8)
+				(InnTst SURVIVOR_DEAD)
 				7
-				local44
+				triedToPayInDinars
 				-19
-				(localproc_1fc0 1)
+				(InnTst FIRST_TIME)
 				-4
-				(localproc_1fc0 2)
+				(InnTst SECOND_TIME)
 				44
-				(localproc_1fc0 8)
+				(InnTst SURVIVOR_DEAD)
 				33
-				(localproc_1fc0 1)
+				(InnTst FIRST_TIME)
 				-12
-				(localproc_1fc0 1)
+				(InnTst FIRST_TIME)
 				-3
-				(localproc_1fc0 6)
+				(InnTst (| SECOND_TIME SURVIVOR_WILL_COME))
 				-40
-				(localproc_1fc0 8)
+				(InnTst SURVIVOR_DEAD)
 				58
-				(if (localproc_1fc0 16)
-					(if (not (localproc_1fc0 8))
-						(not (localproc_1fc0 32))
+				(if (InnTst SURVIVOR_WAS_HERE)
+					(if (not (InnTst SURVIVOR_DEAD))
+						(not (InnSet SURVIVOR_DONE))
 					)
 				else
 					0
 				)
 				-34
-				(localproc_1fc0 4)
+				(InnTst SURVIVOR_WILL_COME)
 				37
-				(localproc_1fc0 8)
+				(InnTst SURVIVOR_DEAD)
 				-26
-				(localproc_1fc0 1)
+				(InnTst FIRST_TIME)
 				-5
-				(localproc_1fc0 6)
+				(InnTst (| SECOND_TIME SURVIVOR_WILL_COME))
 		)
 	)
 	
@@ -1330,12 +1357,12 @@
 			(if (== param1 63)
 				(return
 					(+
-						(mod (+ Day (= temp0 (localproc_1fc7 1 2 63))) temp0)
+						(mod (+ Day (= temp0 (DailyMsg N_WELCOME_WOMAN V_TALK C_DAILY))) temp0)
 						1
 					)
 				)
 			else
-				(return 1)
+				(return TRUE)
 			)
 		)
 	)
@@ -1344,44 +1371,48 @@
 		(return
 			(cond 
 				((== param1 -4)
-					(= temp0 (localproc_1fc7 1 5 4))
-					(messager say: 1 5 4 (+ (mod (+ Day temp0) temp0) 1))
-					(return 0)
+					(= temp0 (DailyMsg N_WELCOME_WOMAN V_TELL C_JANNA))
+					(messager say: N_WELCOME_WOMAN V_TELL C_JANNA (+ (mod (+ Day temp0) temp0) 1))
+					(return FALSE)
 				)
 				((== param1 -3)
-					(= temp0 (localproc_1fc7 1 5 3))
-					(messager say: 1 5 3 (+ (mod (+ Day temp0) temp0) 1))
+					(= temp0 (DailyMsg N_WELCOME_WOMAN V_TELL C_RUMORS))
+					(messager say: N_WELCOME_WOMAN V_TELL C_RUMORS (+ (mod (+ Day temp0) temp0) 1))
 					(super doChild: param1)
-					(return 0)
+					(return FALSE)
 				)
 				((== param1 -62)
-					(= temp0 (localproc_1fc7 1 5 62))
-					(messager say: 1 5 62 (+ (mod (+ Day temp0) temp0) 1))
-					(return 0)
+					(= temp0 (DailyMsg N_WELCOME_WOMAN V_TELL C_GOSSIP))
+					(messager say: N_WELCOME_WOMAN V_TELL C_GOSSIP (+ (mod (+ Day temp0) temp0) 1))
+					(return FALSE)
 				)
 				((== param1 -2)
-					(= temp0 (localproc_1fc7 1 5 2))
-					(messager say: 1 5 2 (+ (mod (+ Day temp0) temp0) 1))
+					(= temp0 (DailyMsg N_WELCOME_WOMAN V_TELL C_MENU))
+					(messager say: N_WELCOME_WOMAN V_TELL C_MENU (+ (mod (+ Day temp0) temp0) 1))
 					(super doChild: param1)
-					(return 0)
+					(return FALSE)
 				)
 				((== param1 -9)
-					(= temp0 (localproc_1fc7 1 5 9))
-					(messager say: 1 5 9 (+ (mod (+ Day temp0) temp0) 1))
-					(return 0)
+					(= temp0 (DailyMsg N_WELCOME_WOMAN V_TELL C_FOOD))
+					(messager say: N_WELCOME_WOMAN V_TELL C_FOOD (+ (mod (+ Day temp0) temp0) 1))
+					(return FALSE)
 				)
 				((== param1 -5)
-					(= temp0 (localproc_1fc7 1 5 5))
-					(messager say: 1 5 5 (+ (mod (+ Day temp0) temp0) 1))
+					(= temp0 (DailyMsg N_WELCOME_WOMAN V_TELL C_TARNA))
+					(messager say: N_WELCOME_WOMAN V_TELL C_TARNA (+ (mod (+ Day temp0) temp0) 1))
 					(super doChild: param1)
-					(return 0)
+					(return FALSE)
 				)
 				((== param1 -63)
-					(= temp0 (localproc_1fc7 1 5 63))
-					(messager say: 1 5 63 (+ (mod (+ Day temp0) temp0) 1))
-					(return 0)
+					(= temp0 (DailyMsg N_WELCOME_WOMAN V_TELL C_DAILY))
+					(messager say: N_WELCOME_WOMAN V_TELL C_DAILY (+ (mod (+ Day temp0) temp0) 1))
+					(return FALSE)
 				)
-				((== param1 -12) (localproc_1fab 64) (super doChild: param1) (return 1))
+				((== param1 -12)
+					(InnSet ASKED_ABOUT_RESTAURANT)
+					(super doChild: param1)
+					(return TRUE)
+				)
 				(else (super doChild: param1))
 			)
 		)
@@ -1389,24 +1420,31 @@
 	
 	(method (doVerb theVerb)
 		(return
-			(if (== theVerb 10)
+			(if (== theVerb V_ROYALS)
 				(cond 
-					((Btst 3) (Bclr 3))
-					((Btst 2) (Bclr 2))
-					((< freeMeals 2) (++ freeMeals))
-					((not (localproc_1fc0 4)) (= local43 1))
+					((Btst fStarving)
+						(Bclr fHungry)
+					)
+					((Btst fHungry)
+						(Bclr fHungry)
+					)
+					((< freeMeals 2)
+						(++ freeMeals)
+					)
+					((not (InnTst SURVIVOR_WILL_COME))
+						(= survivorIsHere TRUE)
+					)
 				)
-				(if (not local43)
+				(if (not survivorIsHere)
 					(curRoom setScript: getFood)
-					(if
-					(and (not (localproc_1fc0 16)) (localproc_1fc0 4))
+					(if (and (not (InnTst SURVIVOR_WAS_HERE)) (InnTst SURVIVOR_WILL_COME))
 						(ego setScript: survivorWalkIn)
 					)
-					(= local43 1)
+					(= survivorIsHere TRUE)
 				else
-					(messager say: 0 6 72)
+					(messager say: NULL V_DOIT C_TOO_FULL)
 				)
-				(return 1)
+				(return TRUE)
 			else
 				(super doVerb: theVerb &rest)
 			)
@@ -1418,12 +1456,12 @@
 	(properties
 		x 16
 		y 162
-		noun 23
+		noun N_FLAME
 		view 300
 		loop 1
 		cel 2
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		detailLevel 3
 	)
 )
@@ -1432,11 +1470,11 @@
 	(properties
 		x 148
 		y 162
-		noun 23
+		noun N_FLAME
 		view 300
 		loop 1
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		detailLevel 3
 	)
 )
@@ -1445,11 +1483,11 @@
 	(properties
 		x 274
 		y 154
-		noun 23
+		noun N_FLAME
 		view 300
 		loop 1
 		priority 12
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		detailLevel 3
 	)
 )
@@ -1458,35 +1496,35 @@
 	(properties
 		x 31
 		y 45
-		noun 9
+		noun N_LEFTDOOR
 		view 300
 		loop 4
-		signal $5011
+		signal (| ignrAct skipCheck fixPriOn stopUpdOn)
 	)
 	
-	(method (doit &tmp temp0 temp1)
-		(if (= temp0 (Abs (PalVary pvGET_CURRENT_STEP)))
+	(method (doit &tmp thePal theCel)
+		(if (= thePal (Abs (PalVary PALVARYINFO)))
 			(if
 				(!=
-					(= temp1
+					(= theCel
 						(cond 
-							((and (<= 0 temp0) (<= temp0 5)) 0)
-							((and (<= 6 temp0) (<= temp0 10)) 1)
-							((and (<= 11 temp0) (<= temp0 15)) 2)
-							((and (<= 16 temp0) (<= temp0 20)) 3)
-							((and (<= 21 temp0) (<= temp0 25)) 4)
-							((and (<= 26 temp0) (<= temp0 30)) 5)
-							((and (<= 31 temp0) (<= temp0 35)) 6)
-							((and (<= 36 temp0) (<= temp0 40)) 7)
-							((and (<= 41 temp0) (<= temp0 45)) 8)
-							((and (<= 46 temp0) (<= temp0 50)) 9)
-							((and (<= 51 temp0) (<= temp0 55)) 10)
-							((and (<= 56 temp0) (<= temp0 64)) 11)
+							((and (<= 0 thePal) (<= thePal 5)) 0)
+							((and (<= 6 thePal) (<= thePal 10)) 1)
+							((and (<= 11 thePal) (<= thePal 15)) 2)
+							((and (<= 16 thePal) (<= thePal 20)) 3)
+							((and (<= 21 thePal) (<= thePal 25)) 4)
+							((and (<= 26 thePal) (<= thePal 30)) 5)
+							((and (<= 31 thePal) (<= thePal 35)) 6)
+							((and (<= 36 thePal) (<= thePal 40)) 7)
+							((and (<= 41 thePal) (<= thePal 45)) 8)
+							((and (<= 46 thePal) (<= thePal 50)) 9)
+							((and (<= 51 thePal) (<= thePal 55)) 10)
+							((and (<= 56 thePal) (<= thePal 64)) 11)
 						)
 					)
 					cel
 				)
-				(self setCel: temp1 stopUpd:)
+				(self setCel: theCel stopUpd:)
 			)
 		)
 		(super doit:)
@@ -1497,35 +1535,35 @@
 	(properties
 		x 156
 		y 45
-		noun 26
+		noun N_RIGHTDOOR
 		view 300
 		loop 5
-		signal $5011
+		signal (| ignrAct skipCheck fixPriOn stopUpdOn)
 	)
 	
-	(method (doit &tmp temp0 temp1)
-		(if (= temp0 (Abs (PalVary pvGET_CURRENT_STEP)))
+	(method (doit &tmp thePal theCel)
+		(if (= thePal (Abs (PalVary PALVARYINFO)))
 			(if
 				(!=
-					(= temp1
+					(= theCel
 						(cond 
-							((and (<= 0 temp0) (<= temp0 5)) 0)
-							((and (<= 6 temp0) (<= temp0 10)) 1)
-							((and (<= 11 temp0) (<= temp0 15)) 2)
-							((and (<= 16 temp0) (<= temp0 20)) 3)
-							((and (<= 21 temp0) (<= temp0 25)) 4)
-							((and (<= 26 temp0) (<= temp0 30)) 5)
-							((and (<= 31 temp0) (<= temp0 35)) 6)
-							((and (<= 36 temp0) (<= temp0 40)) 7)
-							((and (<= 41 temp0) (<= temp0 45)) 8)
-							((and (<= 46 temp0) (<= temp0 50)) 9)
-							((and (<= 51 temp0) (<= temp0 55)) 10)
-							((and (<= 56 temp0) (<= temp0 64)) 11)
+							((and (<= 0 thePal) (<= thePal 5)) 0)
+							((and (<= 6 thePal) (<= thePal 10)) 1)
+							((and (<= 11 thePal) (<= thePal 15)) 2)
+							((and (<= 16 thePal) (<= thePal 20)) 3)
+							((and (<= 21 thePal) (<= thePal 25)) 4)
+							((and (<= 26 thePal) (<= thePal 30)) 5)
+							((and (<= 31 thePal) (<= thePal 35)) 6)
+							((and (<= 36 thePal) (<= thePal 40)) 7)
+							((and (<= 41 thePal) (<= thePal 45)) 8)
+							((and (<= 46 thePal) (<= thePal 50)) 9)
+							((and (<= 51 thePal) (<= thePal 55)) 10)
+							((and (<= 56 thePal) (<= thePal 64)) 11)
 						)
 					)
 					cel
 				)
-				(self setCel: temp1 stopUpd:)
+				(self setCel: theCel stopUpd:)
 			)
 		)
 		(super doit:)
@@ -1534,11 +1572,11 @@
 
 (instance tray of View
 	(properties
-		noun 24
+		noun N_TRAY
 		view 300
 		loop 3
 		priority 14
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 )
 
@@ -1547,11 +1585,11 @@
 		x 250
 		y 200
 		z 41
-		noun 24
+		noun N_TRAY
 		view 300
 		loop 3
 		priority 13
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 )
 
@@ -1560,11 +1598,11 @@
 		x 1
 		y 200
 		z 37
-		noun 24
+		noun N_TRAY
 		view 300
 		loop 3
 		priority 14
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 )
 
@@ -1573,11 +1611,11 @@
 		x 28
 		y 200
 		z 34
-		noun 24
+		noun N_TRAY
 		view 300
 		loop 3
 		priority 14
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 )
 
@@ -1586,11 +1624,11 @@
 		x 107
 		y 200
 		z 31
-		noun 24
+		noun N_TRAY
 		view 300
 		loop 3
 		priority 14
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 )
 
@@ -1599,11 +1637,11 @@
 		x 163
 		y 200
 		z 31
-		noun 24
+		noun N_TRAY
 		view 300
 		loop 3
 		priority 14
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 )
 
@@ -1612,11 +1650,11 @@
 		x 225
 		y 200
 		z 38
-		noun 24
+		noun N_TRAY
 		view 300
 		loop 3
 		priority 13
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 )
 
@@ -1625,11 +1663,11 @@
 		x 279
 		y 200
 		z 55
-		noun 24
+		noun N_TRAY
 		view 306
 		loop 4
 		priority 13
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 )
 
@@ -1640,12 +1678,12 @@
 		view 306
 		cel 2
 		priority 10
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(messager say: 4 4 0)
+		(if (== theVerb V_DO)
+			(messager say: N_SITTERS V_DO NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1659,12 +1697,12 @@
 		view 306
 		cel 1
 		priority 10
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(messager say: 4 4 0)
+		(if (== theVerb V_DO)
+			(messager say: N_SITTERS V_DO NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1677,12 +1715,12 @@
 		y 150
 		view 306
 		priority 9
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(messager say: 4 4 0)
+		(if (== theVerb V_DO)
+			(messager say: N_SITTERS V_DO NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1697,12 +1735,12 @@
 		loop 3
 		cel 3
 		priority 11
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(messager say: 4 4 0)
+		(if (== theVerb V_DO)
+			(messager say: N_SITTERS V_DO NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1717,12 +1755,12 @@
 		loop 3
 		cel 1
 		priority 12
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(messager say: 4 4 0)
+		(if (== theVerb V_DO)
+			(messager say: N_SITTERS V_DO NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1737,12 +1775,12 @@
 		loop 3
 		cel 1
 		priority 10
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(messager say: 4 4 0)
+		(if (== theVerb V_DO)
+			(messager say: N_SITTERS V_DO NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1757,12 +1795,12 @@
 		loop 2
 		cel 3
 		priority 12
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(messager say: 4 4 0)
+		(if (== theVerb V_DO)
+			(messager say: N_SITTERS V_DO NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1776,12 +1814,12 @@
 		view 306
 		loop 2
 		priority 10
-		signal $5010
+		signal (| ignrAct skipCheck fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
-			(messager say: 4 4 0)
+		(if (== theVerb V_DO)
+			(messager say: N_SITTERS V_DO NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1802,8 +1840,8 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 1)
-			(ego solvePuzzle: 247 3)
+		(if (== theVerb V_LOOK)
+			(ego solvePuzzle: fReadBoard 3)
 			(curRoom newRoom: 305)
 		else
 			(super doVerb: theVerb &rest)
@@ -1815,7 +1853,7 @@
 	(properties
 		x 149
 		y 154
-		noun 27
+		noun N_CUSHION
 		nsTop 146
 		nsLeft 132
 		nsBottom 155
@@ -1826,13 +1864,13 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
+		(if (== theVerb V_DO)
 			(if (!= (ego view?) 40)
 				(= theX x)
 				(= theY y)
-				(= local0 132)
-				(= local1 165)
-				(= local4 11)
+				(= toX 132)
+				(= toY 165)
+				(= egoPri 11)
 				(= theFeature self)
 				(ego setScript: sitNorth)
 				(self approachVerbs:)
@@ -1849,7 +1887,7 @@
 	(properties
 		x 272
 		y 148
-		noun 27
+		noun N_CUSHION
 		nsTop 140
 		nsLeft 245
 		nsBottom 146
@@ -1860,13 +1898,13 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
+		(if (== theVerb V_DO)
 			(if (!= (ego view?) 40)
 				(= theX x)
 				(= theY y)
-				(= local0 252)
-				(= local1 159)
-				(= local4 9)
+				(= toX 252)
+				(= toY 159)
+				(= egoPri 9)
 				(= theFeature self)
 				(ego setScript: sitNorth)
 				(self approachVerbs:)
@@ -1883,7 +1921,7 @@
 	(properties
 		x 103
 		y 167
-		noun 28
+		noun N_SURVIVOR_CUSHION
 		nsTop 160
 		nsLeft 93
 		nsBottom 174
@@ -1896,7 +1934,7 @@
 	(properties
 		x 114
 		y 14
-		noun 5
+		noun N_CHANDELIER
 		nsTop -1
 		nsLeft 86
 		nsBottom 30
@@ -1909,7 +1947,7 @@
 	(properties
 		x 239
 		y 20
-		noun 5
+		noun N_CHANDELIER
 		nsLeft 214
 		nsBottom 41
 		nsRight 264
@@ -1921,7 +1959,7 @@
 	(properties
 		x 27
 		y 159
-		noun 6
+		noun N_LEFTTABLE
 		nsTop 149
 		nsBottom 169
 		nsRight 55
@@ -1933,7 +1971,7 @@
 	(properties
 		x 152
 		y 162
-		noun 7
+		noun N_MIDTABLE
 		nsTop 155
 		nsLeft 110
 		nsBottom 173
@@ -1946,7 +1984,7 @@
 	(properties
 		x 272
 		y 155
-		noun 8
+		noun N_RIGHTTABLE
 		nsTop 146
 		nsLeft 232
 		nsBottom 164
@@ -1959,7 +1997,7 @@
 	(properties
 		x 290
 		y 58
-		noun 10
+		noun N_STAIRS
 		nsTop 39
 		nsLeft 275
 		nsBottom 78
