@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 410)
-(include sci.sh)
+(include game.sh) (include "410.shm")
 (use Main)
 (use TellerIcon)
 (use PolyPath)
@@ -18,70 +18,86 @@
 )
 
 (local
-	[local0 5] = [0 -10 -13 -15 999]
-	[local5 6] = [0 59 60 58 57 999]
-	[local11 7] = [0 13 -10 -14 14 15 999]
-	[local18 4] = [0 16 12 999]
-	[local22 4] = [0 17 18 999]
-	[local26 4] = [0 12 -19 999]
-	[local30 3] = [0 20 999]
+	local0 = [0 -10 -13 -15 999]
+	local5 = [0 59 60 58 57 999]
+	local11 = [0 13 -10 -14 14 15 999]
+	local18 = [0 16 12 999]
+	local22 = [0 17 18 999]
+	local26 = [0 12 -19 999]
+	local30 = [0 20 999]
 	[local33 7]
 	[local40 2]
 	[local42 2]
-	[local44 5] = [0 -10 -14 -19 999]
-	[local49 6] = [0 -1 27 10 37 999]
-	[local55 5] = [0 21 3 -4 999]
-	[local60 5] = [0 5 6 -7 999]
-	[local65 3] = [0 8 999]
-	[local68 5] = [0 -1 -4 -7 999]
-	[local73 6] = [0 -1 27 28 26 999]
-	[local79 4] = [0 -21 52 999]
-	[local83 4] = [0 -23 -24 999]
-	[local87 3] = [0 22 999]
-	[local90 3] = [0 25 999]
-	[local93 6] = [0 -1 -21 -23 -24 999]
-	[local99 6] = [0 -30 34 32 38 999]
-	[local105 4] = [0 35 -39 999]
-	[local109 3] = [0 40 999]
-	[local112 4] = [0 -30 -39 999]
-	[local116 6] = [0 30 -34 -32 31 999]
-	[local122 4] = [0 35 36 999]
-	[local126 3] = [0 33 999]
-	[local129 4] = [0 -34 -32 999]
-	[local133 5] = [0 42 43 44 999]
-	[local138 5] = [0 42 -46 45 999]
-	[local143 3] = [0 47 999]
-	[local146 3] = [0 -46 999]
-	[local149 6] = [0 -13 51 52 53 999]
-	[local155 4] = [0 49 50 999]
-	[local159 3] = [0 -13 999]
+	local44 = [0 -10 -14 -19 999]
+	local49 = [0 -1 27 10 37 999]
+	local55 = [0 21 3 -4 999]
+	local60 = [0 5 6 -7 999]
+	local65 = [0 8 999]
+	local68 = [0 -1 -4 -7 999]
+	local73 = [0 -1 27 28 26 999]
+	local79 = [0 -21 52 999]
+	local83 = [0 -23 -24 999]
+	local87 = [0 22 999]
+	local90 = [0 25 999]
+	local93 = [0 -1 -21 -23 -24 999]
+	local99 = [0 -30 34 32 38 999]
+	local105 = [0 35 -39 999]
+	local109 = [0 40 999]
+	local112 = [0 -30 -39 999]
+	local116 = [0 30 -34 -32 31 999]
+	local122 = [0 35 36 999]
+	local126 = [0 33 999]
+	local129 = [0 -34 -32 999]
+	local133 = [0 42 43 44 999]
+	local138 = [0 42 -46 45 999]
+	local143 = [0 47 999]
+	local146 = [0 -46 999]
+	local149 = [0 -13 51 52 53 999]
+	local155 = [0 49 50 999]
+	local159 = [0 -13 999]
 	[local162 3]
-	theIsNightTime
-	local166
-	local167
-	local168
-	local169
-	local170
-	local171
-	local172
-	local173
+	nightTime
+	leopardmanCued
+	dayLeopardMsg
+	nightLeopardMsg
+	dayDispelMsg
+	nightDispelMsg
+	dayCongratsMsg
+	nightCongratsMsg
+	roomConsolations
 )
-(procedure (localproc_0d4b param1)
+(procedure (ElderMsg whoCares)
 	(cond 
-		(local171 (messager say: 1 6 41 0 param1))
-		(local172 (messager say: 2 6 41 0 param1))
-		(local169 (messager say: 1 6 29 0 param1))
-		(local170 (messager say: 2 6 29 0 param1))
-		(local168 (messager say: 2 6 1 0 param1))
-		(local167 (messager say: 1 6 1 0 param1))
-		(theIsNightTime (messager say: 2 6 9 0 param1))
-		(else (messager say: 1 6 9 0 param1))
+		(dayCongratsMsg
+			(messager say: N_ELDER_DAY V_DOIT C_AFTER_INITIATION 0 whoCares)
+		)
+		(nightCongratsMsg
+			(messager say: N_ELDER_NIGHT V_DOIT C_AFTER_INITIATION 0 whoCares)
+		)
+		(dayDispelMsg
+			(messager say: N_ELDER_DAY V_DOIT C_LEOPARD_DISPELLED 0 whoCares)
+		)
+		(nightDispelMsg
+			(messager say: N_ELDER_NIGHT V_DOIT C_LEOPARD_DISPELLED 0 whoCares)
+		)
+		(nightLeopardMsg
+			(messager say: N_ELDER_NIGHT V_DOIT C_PRISONER 0 whoCares)
+		)
+		(dayLeopardMsg
+			(messager say: N_ELDER_DAY V_DOIT C_PRISONER 0 whoCares)
+		)
+		(nightTime
+			(messager say: N_ELDER_NIGHT V_DOIT C_HELLO 0 whoCares)
+		)
+		(else
+			(messager say: N_ELDER_DAY V_DOIT C_HELLO 0 whoCares)
+		)
 	)
 )
 
-(instance rm410 of Rm
+(instance rm410 of Room
 	(properties
-		noun 6
+		noun N_ROOM
 		picture 410
 	)
 	
@@ -89,35 +105,24 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						237
-						189
-						132
-						171
-						90
-						148
-						69
-						142
-						69
-						153
-						27
-						153
-						27
-						129
-						0
-						129
+						0 0
+						319 0
+						319 189
+						237 189
+						132 171
+						90 148
+						69 142
+						69 153
+						27 153
+						27 129
+						0 129
 					yourself:
 				)
 		)
-		(Load rsMESSAGE 410)
-		(= theIsNightTime Night)
+		(Load RES_MESSAGE 410)
+		(= nightTime Night)
 		(= [local40 0] @local5)
 		(egoTell init: ego @local5 @local40)
 		(leftTreeTop init:)
@@ -130,9 +135,9 @@
 		(village init:)
 		(outCrop init:)
 		(super init:)
-		(if (not (Btst 18))
-			((ScriptID 58 1)
-				noun: (if theIsNightTime 2 else 1)
+		(if (not (Btst fCantEnterSimbani))
+			((ScriptID ELDER_TALKER 1)
+				noun: (if nightTime N_ELDER_NIGHT else N_ELDER_DAY)
 				setScale:
 				scaleX: 102
 				scaleY: 102
@@ -141,124 +146,125 @@
 				y: 150
 				init:
 			)
-			(if (Btst 29) (= local166 1))
+			(if (Btst fLeopardmanCaptured)
+				(= leopardmanCued TRUE)
+			)
 			(switch origHeroType
-				(0
-					(if (and (not (Btst 29)) (Btst 64)) (= local166 1))
-				)
-				(1
-					(if
-					(and (not (Btst 29)) (or (ego has: 44) [egoStats 31]))
-						(= local166 1)
+				(FIGHTER
+					(if (and (not (Btst fLeopardmanCaptured)) (Btst fPracticedWithUhuraTwice))
+						(= leopardmanCued TRUE)
 					)
 				)
-				(2
-					(if (and (not (Btst 29)) (Btst 63)) (= local166 1))
+				(MAGIC_USER
+					(if (and (not (Btst fLeopardmanCaptured)) (or (ego has: iWood) [egoStats STAFF]))
+						(= leopardmanCued TRUE)
+					)
+				)
+				(THIEF
+					(if (and (not (Btst fLeopardmanCaptured)) (Btst fBeenInLostCityPanorama))
+						(= leopardmanCued TRUE)
+					)
 				)
 			)
-			(if (and local166 (not (Btst 68)) theIsNightTime)
-				(Bset 68)
-				(= local168 1)
+			(if (and leopardmanCued (not (Btst fNightElderAnnouncement)) nightTime)
+				(Bset fNightElderAnnouncement)
+				(= nightLeopardMsg TRUE)
 			)
-			(if
-			(and local166 (not (Btst 67)) (not theIsNightTime))
-				(Bset 67)
-				(= local167 1)
+			(if (and leopardmanCued (not (Btst fDayElderAnnouncement)) (not nightTime))
+				(Bset fDayElderAnnouncement)
+				(= dayLeopardMsg TRUE)
 			)
-			(if
-			(and (Btst 38) (not (Btst 70)) (not theIsNightTime))
-				(Bset 70)
-				(= local169 1)
+			(if (and (Btst fDispelledLeopardman) (not (Btst fDayDispelMsg)) (not nightTime))
+				(Bset fDayDispelMsg)
+				(= dayDispelMsg TRUE)
 			)
-			(if
-			(and (Btst 38) (not (Btst 71)) theIsNightTime)
-				(Bset 71)
-				(= local170 1)
+			(if (and (Btst fDispelledLeopardman) (not (Btst fNightDispelMsg)) nightTime)
+				(Bset fNightDispelMsg)
+				(= nightDispelMsg TRUE)
 			)
-			(if
-			(and wonBridgeWrestling (not (Btst 72)) (not theIsNightTime))
-				(Bset 72)
-				(= local171 1)
+			(if (and wonBridgeWrestling (not (Btst fDayCongratsMsg)) (not nightTime))
+				(Bset fDayCongratsMsg)
+				(= dayCongratsMsg TRUE)
 			)
-			(if (and wonBridgeWrestling (not (Btst 73)) theIsNightTime)
-				(Bset 73)
-				(= local172 1)
+			(if (and wonBridgeWrestling (not (Btst fNightCongratsMsg)) nightTime)
+				(Bset fNightCongratsMsg)
+				(= nightCongratsMsg TRUE)
 			)
 			(cond 
-				(local171
+				(dayCongratsMsg
 					(= [local33 0] @local133)
-					(elderTell init: (ScriptID 58 1) @local133 @local33)
+					(elderTell init: (ScriptID ELDER_TALKER 1) @local133 @local33)
 				)
-				(local172
+				(nightCongratsMsg
 					(= [local33 0] @local138)
 					(= [local33 1] @local143)
 					(elderTell
-						init: (ScriptID 58 1) @local138 @local33 @local146
+						init: (ScriptID ELDER_TALKER 1) @local138 @local33 @local146
 					)
 				)
-				(local169
+				(dayDispelMsg
 					(= [local33 0] @local99)
 					(= [local33 1] @local105)
 					(= [local33 2] @local109)
 					(elderTell
-						init: (ScriptID 58 1) @local99 @local33 @local112
+						init: (ScriptID ELDER_TALKER 1) @local99 @local33 @local112
 					)
 				)
-				(local170
+				(nightDispelMsg
 					(= [local33 0] @local116)
 					(= [local33 1] @local122)
 					(= [local33 2] @local126)
 					(elderTell
-						init: (ScriptID 58 1) @local116 @local33 @local129
+						init: (ScriptID ELDER_TALKER 1) @local116 @local33 @local129
 					)
 				)
-				(local167
+				(dayLeopardMsg
 					(= [local33 0] @local49)
 					(= [local33 1] @local55)
 					(= [local33 2] @local60)
 					(= [local33 3] @local65)
 					(elderTell
-						init: (ScriptID 58 1) @local49 @local33 @local68
+						init: (ScriptID ELDER_TALKER 1) @local49 @local33 @local68
 					)
 				)
-				(local168
+				(nightLeopardMsg
 					(= [local33 0] @local73)
 					(= [local33 1] @local79)
 					(= [local33 2] @local83)
 					(= [local33 3] @local87)
 					(= [local33 4] @local90)
 					(elderTell
-						init: (ScriptID 58 1) @local73 @local33 @local93
+						init: (ScriptID ELDER_TALKER 1) @local73 @local33 @local93
 					)
 				)
-				(theIsNightTime
+				(nightTime
 					(= [local33 0] @local11)
 					(= [local33 1] @local22)
 					(= [local33 2] @local26)
 					(= [local33 3] @local30)
 					(elderTell
-						init: (ScriptID 58 1) @local11 @local33 @local44
+						init: (ScriptID ELDER_TALKER 1) @local11 @local33 @local44
 					)
 				)
 				(else
 					(= [local33 0] @local11)
 					(= [local33 1] @local18)
 					(elderTell
-						init: (ScriptID 58 1) @local11 @local33 @local44
+						init: (ScriptID ELDER_TALKER 1) @local11 @local33 @local44
 					)
 				)
 			)
-			(if theIsNightTime
-				((ScriptID 58 0) view: 416)
-				((ScriptID 58 2) view: 416 nsLeft: 45 nsTop: 38)
-				((ScriptID 58 4) view: 416 nsLeft: 41 nsTop: 30)
-				((ScriptID 58 3) view: 416 nsLeft: 45 nsTop: 38)
+			(if nightTime
+				((ScriptID ELDER_TALKER 0) view: 416)
+				((ScriptID ELDER_TALKER 2) view: 416 nsLeft: 45 nsTop: 38)
+				((ScriptID ELDER_TALKER 4) view: 416 nsLeft: 41 nsTop: 30)
+				((ScriptID ELDER_TALKER 3) view: 416 nsLeft: 45 nsTop: 38)
 			)
 		)
 		(if (== prevRoomNum 420)
 			(ego
 				normalize:
-				noun: 4
+				noun: N_EGO_TELL
 				x: 120
 				y: 200
 				setScale:
@@ -269,7 +275,7 @@
 		else
 			(ego
 				normalize:
-				noun: 4
+				noun: N_EGO_TELL
 				x: -10
 				y: 180
 				setScale:
@@ -278,10 +284,10 @@
 				init:
 			)
 		)
-		(if (not (Btst 86))
+		(if (not (Btst fFirstEnteredSimbaniOverlook))
 			(= [local42 0] @local0)
-			(rakeeshTell init: (ScriptID 35 1) @local0 @local42)
-			((ScriptID 35 1)
+			(rakeeshTell init: (ScriptID RAKEESH_TALKER 1) @local0 @local42)
+			((ScriptID RAKEESH_TALKER 1)
 				x: -10
 				y: 160
 				setScale:
@@ -300,19 +306,29 @@
 		(cSound hold: 0)
 		(walkHandler addToFront: village)
 		(cond 
-			((== prevRoomNum 420) (self setScript: enterFromVillage))
-			((Btst 18) (self setScript: postConf))
-			((not (Btst 86)) (self setScript: enterWRakeesh))
-			(else (self setScript: enterRoom))
+			((== prevRoomNum 420)
+				(self setScript: enterFromVillage)
+			)
+			((Btst fCantEnterSimbani)
+				(self setScript: postConf)
+			)
+			((not (Btst fFirstEnteredSimbaniOverlook))
+				(self setScript: enterWRakeesh)
+			)
+			(else
+				(self setScript: enterRoom)
+			)
 		)
 	)
 	
 	(method (doit)
 		(cond 
 			(script 0)
-			((<= (ego x?) 10) (self setScript: exitToMap))
+			((<= (ego x?) 10)
+				(self setScript: exitToMap)
+			)
 			((>= (ego y?) 178)
-				(if (Btst 18)
+				(if (Btst fCantEnterSimbani)
 					(self setScript: subHonor)
 				else
 					(self setScript: walkOut)
@@ -325,13 +341,15 @@
 	(method (dispose)
 		(walkHandler delete: curRoom)
 		(walkHandler delete: village)
-		(LoadMany 0 35 34 58)
+		(LoadMany FALSE RAKEESH_TALKER UHURA_TALKER ELDER_TALKER)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (egoTell doVerb: theVerb))
+			(V_WALK
+				(egoTell doVerb: theVerb)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -340,37 +358,29 @@
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
 			showDialog:
 				59
-				(if (and (Btst 86) (not theIsNightTime))
-					(not (Btst 18))
+				(if (and (Btst fFirstEnteredSimbaniOverlook) (not nightTime))
+					(not (Btst fCantEnterSimbani))
 				else
 					0
 				)
 				58
-				(if (and (Btst 86) (not theIsNightTime))
-					(not (Btst 18))
+				(if (and (Btst fFirstEnteredSimbaniOverlook) (not nightTime))
+					(not (Btst fCantEnterSimbani))
 				else
 					0
 				)
-				60
-				(if theIsNightTime (not (Btst 18)) else 0)
-				57
-				(if theIsNightTime (not (Btst 18)) else 0)
-				-61
-				(not (Btst 86))
-				-62
-				(not (Btst 86))
-				55
-				(Btst 18)
-				56
-				(Btst 18)
-				-54
-				(Btst 18)
+				60 (if nightTime (not (Btst fCantEnterSimbani)) else 0)
+				57 (if nightTime (not (Btst fCantEnterSimbani)) else 0)
+				-61 (not (Btst fFirstEnteredSimbaniOverlook))
+				-62 (not (Btst fFirstEnteredSimbaniOverlook))
+				55 (Btst fCantEnterSimbani)
+				56 (Btst fCantEnterSimbani)
+				-54 (Btst fCantEnterSimbani)
 		)
 	)
 	
@@ -378,17 +388,20 @@
 		(return
 			(switch query
 				(-54
-					(if (not local173) (++ local173) (ego addHonor: 30))
+					(if (not roomConsolations)
+						(++ roomConsolations)
+						(ego addHonor: 30)
+					)
 				)
 				(-62
-					(messager say: 4 5 62)
+					(messager say: N_EGO_TELL V_TELL C_FIRST_GOODBYE)
 					(curRoom setScript: goToVillage)
-					(return 0)
+					(return FALSE)
 				)
 				(-61
-					(messager say: 4 5 61)
+					(messager say: N_EGO_TELL V_TELL C_FIRST_HELLO)
 					(curRoom setScript: goToVillage)
-					(return 0)
+					(return FALSE)
 				)
 			)
 		)
@@ -396,10 +409,10 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
-				(messager say: 5 6 63)
+			(V_WALK
+				(messager say: N_RAKEESH V_DOIT C_WAIT_A_SECOND)
 				(curRoom setScript: goToVillage)
-				((User curEvent?) claimed: 1)
+				((User curEvent?) claimed: TRUE)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -409,26 +422,27 @@
 )
 
 (instance elderTell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
-			showDialog: -14 theIsNightTime 14 (not theIsNightTime)
+			showDialog:
+				-14 nightTime
+				C_SAVANNA (not nightTime)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
-				(if (not (Btst 86))
+			(V_TALK
+				(if (not (Btst fFirstEnteredSimbaniOverlook))
 					(curRoom setScript: goToVillage)
 					(super doVerb: theVerb &rest)
 				else
 					(super doVerb: theVerb &rest)
 				)
 			)
-			(3
-				((User curEvent?) claimed: 1)
+			(V_WALK
+				((User curEvent?) claimed: TRUE)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -438,81 +452,80 @@
 )
 
 (instance rakeeshTell of Teller
-	(properties)
-	
+
 	(method (doChild)
 		(return
 			(switch query
 				(-10
-					(messager say: 5 5 10)
+					(messager say: N_RAKEESH V_TELL C_SIMBANI)
 					(curRoom setScript: goToVillage)
-					(return 0)
+					(return FALSE)
 				)
 				(-13
-					(messager say: 5 5 13)
+					(messager say: N_RAKEESH V_TELL C_VILLAGE)
 					(curRoom setScript: goToVillage)
-					(return 0)
+					(return FALSE)
 				)
 				(-15
-					(messager say: 5 5 15)
+					(messager say: N_RAKEESH V_TELL C_ELDER)
 					(curRoom setScript: goToVillage)
-					(return 0)
+					(return FALSE)
 				)
 			)
 		)
 	)
 )
 
-(instance uhuraTell of Teller
-	(properties)
-)
+(instance uhuraTell of Teller)
 
 (instance goToVillage of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				((ScriptID 58 1) loop: 2 cel: 0 setCycle: End self)
+				((ScriptID ELDER_TALKER 1) loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(messager say: 1 6 13 0 self)
+				(messager say: N_ELDER_DAY V_DOIT C_VILLAGE 0 self)
 			)
 			(2
 				(ego setMotion: PolyPath 129 200 self)
-				((ScriptID 35 1) setMotion: PolyPath 125 190)
+				((ScriptID RAKEESH_TALKER 1) setMotion: PolyPath 125 190)
 			)
 			(3
 				(cast eachElementDo: #hide)
-				(curRoom drawPic: 0 9)
+				(curRoom drawPic: 0 PIXELDISSOLVE)
 				(= cycles 12)
 			)
-			(4 (curRoom newRoom: 420))
+			(4
+				(curRoom newRoom: 420)
+			)
 		)
 	)
 )
 
 (instance enterWRakeesh of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset 86)
+				(Bset fFirstEnteredSimbaniOverlook)
 				(ego setMotion: PolyPath 55 170 self)
 			)
 			(1
-				(Face ego (ScriptID 58 1) self)
+				(Face ego (ScriptID ELDER_TALKER 1) self)
 			)
 			(2
-				((ScriptID 58 1) setCycle: End self)
+				((ScriptID ELDER_TALKER 1) setCycle: EndLoop self)
 			)
 			(3
-				((ScriptID 58 1) cel: 0 loop: 1 setCycle: End self)
+				((ScriptID ELDER_TALKER 1) cel: 0 loop: 1 setCycle: EndLoop self)
 			)
-			(4 (messager say: 5 6 9 0 self))
+			(4
+				(messager say: N_RAKEESH V_DOIT C_HELLO 0 self)
+			)
 			(5
 				(HandsOn)
 				(walkHandler addToFront: curRoom)
@@ -527,7 +540,6 @@
 )
 
 (instance exitToMap of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -535,13 +547,14 @@
 				(HandsOff)
 				(ego setMotion: PolyPath (- (ego x?) 15) (ego y?) self)
 			)
-			(1 (curRoom newRoom: 160))
+			(1
+				(curRoom newRoom: 160)
+			)
 		)
 	)
 )
 
 (instance enterFromVillage of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -550,34 +563,39 @@
 				(ego setMotion: MoveTo 90 165 self)
 			)
 			(1
-				((ScriptID 58 1) setCycle: End self)
+				((ScriptID ELDER_TALKER 1) setCycle: EndLoop self)
 			)
 			(2
-				((ScriptID 58 1) cel: 0 loop: 1 setCycle: End self)
+				((ScriptID ELDER_TALKER 1) cel: 0 loop: 1 setCycle: EndLoop self)
 			)
-			(3 (localproc_0d4b self))
-			(4 (HandsOn) (self dispose:))
+			(3
+				(ElderMsg self)
+			)
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance walkOut of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: PolyPath 129 200 self)
 			)
-			(1 (curRoom newRoom: 420))
+			(1
+				(curRoom newRoom: 420)
+			)
 		)
 	)
 )
 
 (instance enterRoom of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -589,20 +607,24 @@
 				(= cycles 18)
 			)
 			(2
-				((ScriptID 58 1) setCycle: End self)
+				((ScriptID ELDER_TALKER 1) setCycle: EndLoop self)
 			)
 			(3
-				((ScriptID 58 1) cel: 0 loop: 1 setCycle: End self)
+				((ScriptID ELDER_TALKER 1) cel: 0 loop: 1 setCycle: EndLoop self)
 			)
-			(4 (localproc_0d4b self))
-			(5 (HandsOn) (self dispose:))
+			(4
+				(ElderMsg self)
+			)
+			(5
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance postConf of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -610,36 +632,38 @@
 				(= [local162 0] @local149)
 				(= [local162 1] @local155)
 				(uhuraTell
-					init: (ScriptID 34 1) @local149 @local162 @local159
+					init: (ScriptID UHURA_TALKER 1) @local149 @local162 @local159
 				)
-				((ScriptID 34 1)
+				((ScriptID UHURA_TALKER 1)
 					setScale: 220
 					x: 90
 					y: 160
 					setHeading: 270
-					noun: 3
+					noun: N_UHURA
 					init:
 				)
 				(ego setMotion: PolyPath 50 150 self)
 			)
 			(1
-				(messager say: 3 6 9)
+				(messager say: N_UHURA V_DOIT C_HELLO)
 				(= cycles 1)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance subHonor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: 0)
-				(messager say: 3 6 48)
+				(messager say: N_UHURA V_DOIT C_AFTER_CONFERENCE)
 			)
 			(1
 				(ego
@@ -647,7 +671,10 @@
 					addHonor: -20
 				)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -656,7 +683,7 @@
 	(properties
 		x 58
 		y 28
-		noun 11
+		noun N_LEFT_TREETOP
 		nsTop -2
 		nsBottom 59
 		nsRight 117
@@ -668,7 +695,7 @@
 	(properties
 		x 20
 		y 93
-		noun 12
+		noun N_LEFT_TREETRUNK
 		nsTop 57
 		nsBottom 129
 		nsRight 41
@@ -680,7 +707,7 @@
 	(properties
 		x 261
 		y 29
-		noun 13
+		noun N_RIGHT_TREETOP
 		nsLeft 203
 		nsBottom 58
 		nsRight 319
@@ -692,7 +719,7 @@
 	(properties
 		x 302
 		y 124
-		noun 14
+		noun N_RIGHT_TREETRUNK
 		nsTop 59
 		nsLeft 285
 		nsBottom 189
@@ -705,7 +732,7 @@
 	(properties
 		x 236
 		y 168
-		noun 15
+		noun N_RIGHT_TREE_BOTTOM
 		nsTop 148
 		nsLeft 186
 		nsBottom 189
@@ -718,7 +745,7 @@
 	(properties
 		x 77
 		y 70
-		noun 7
+		noun N_PENS
 		nsTop 60
 		nsLeft 33
 		nsBottom 81
@@ -731,7 +758,7 @@
 	(properties
 		x 269
 		y 93
-		noun 8
+		noun N_BRIDGE
 		nsTop 83
 		nsLeft 256
 		nsBottom 104
@@ -744,7 +771,7 @@
 	(properties
 		x 163
 		y 59
-		noun 10
+		noun N_VILLAGE
 		nsTop 58
 		nsLeft 24
 		nsBottom 134
@@ -754,17 +781,23 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(V_WALK
 				(cond 
-					((walkHandler contains: curRoom) (super doVerb: 3))
+					((walkHandler contains: curRoom)
+						(super doVerb: V_WALK)
+					)
 					((not (curRoom script?))
 						(curRoom setScript: walkOut)
-						((User curEvent?) claimed: 1)
+						((User curEvent?) claimed: TRUE)
 					)
-					(else (super doVerb: 3))
+					(else
+						(super doVerb: V_WALK)
+					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -773,7 +806,7 @@
 	(properties
 		x 117
 		y 129
-		noun 9
+		noun N_OUTCROP
 		nsTop 128
 		nsBottom 189
 		nsRight 234

@@ -1,0 +1,37 @@
+;;; Sierra Script
+;;; 380.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_VINES_GONE 15)
+(define C_CANT_OPEN 18)
+(define C_SAVED_BAT 17)
+(define C_HOOKED_FRUIT 11)
+(define C_KILL_BAT 9)
+(define C_DEATH_AMBUSH 6)
+(define C_GRAB_EGO 3)
+(define C_DEATH_VINES 7)
+(define C_SENSE_DANGER 14)
+(define C_FIRST_ENTRY 2)
+(define C_GET_ROCKS 19)
+(define C_GOT_REWARD 16)
+(define C_GET_OPAL 10)
+(define C_EMPTY 20)
+(define C_HEAL_BAT 5)
+(define C_NOT_CLOSE 12)
+(define C_FETCH_FRUIT 4)
+(define C_DONT_NEED 13)
+
+;;; NOUNS
+
+(define N_ROOM 5)
+(define N_CUE 1)
+(define N_STONE_RING 3)
+(define N_SKY 4)
+(define N_HOLES 2)
+(define N_BAT 6)
+(define N_SMALL_BAT 7)
+(define N_MAIN_VINE 8)
+(define N_VINE 9)
+

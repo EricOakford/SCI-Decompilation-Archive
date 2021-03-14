@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 310)
-(include sci.sh)
+(include game.sh) (include "310.shm")
 (use Main)
 (use Scaler)
 (use PolyPath)
@@ -23,24 +23,24 @@
 
 (local
 	local0
-	local1
-	local2
-	local3 =  150
-	local4 =  150
+	nearBed
+	sleeping
+	toX =  150
+	toY =  150
 	local5
 	[local6 3]
 )
-(instance rm310 of Rm
+(instance rm310 of Room
 	(properties
-		noun 21
+		noun N_ROOM
 		picture 310
 		picAngle 290
 		vanishingY 10
 	)
 	
 	(method (init)
-		(LoadMany 128 310 35 40)
-		(chestLid init: setPri: 10 approachVerbs: 4 10 stopUpd:)
+		(LoadMany RES_VIEW 310 35 40)
+		(chestLid init: setPri: 10 approachVerbs: V_DO V_ROYALS stopUpd:)
 		(sky init:)
 		(super init:)
 		(if (!= prevRoomNum 300)
@@ -72,74 +72,41 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						0
-						189
-						16
-						186
-						29
-						187
-						43
-						186
-						37
-						179
-						67
-						171
-						90
-						174
-						97
-						185
-						135
-						186
-						147
-						175
-						167
-						173
-						183
-						178
-						198
-						186
-						317
-						186
-						316
-						169
-						302
-						157
-						267
-						143
-						232
-						152
-						175
-						133
-						195
-						129
-						183
-						124
-						150
-						130
-						133
-						126
-						111
-						129
-						101
-						130
-						94
-						132
-						67
-						110
-						12
-						115
-						23
-						138
-						0
-						141
+						0 0
+						319 0
+						319 189
+						0 189
+						16 186
+						29 187
+						43 186
+						37 179
+						67 171
+						90 174
+						97 185
+						135 186
+						147 175
+						167 173
+						183 178
+						198 186
+						317 186
+						316 169
+						302 157
+						267 143
+						232 152
+						175 133
+						195 129
+						183 124
+						150 130
+						133 126
+						111 129
+						101 130
+						94 132
+						67 110
+						12 115
+						23 138
+						0 141
 					yourself:
 				)
 		)
@@ -155,7 +122,9 @@
 				setMotion: MoveTo 331 -4
 			)
 		)
-		(if (Btst 130) (self setScript: meeting))
+		(if (Btst fWillHaveMeeting)
+			(self setScript: meeting)
+		)
 		(if (and (<= 3000 Clock) (<= Clock 3450))
 			(moon
 				init:
@@ -169,12 +138,12 @@
 			)
 		)
 		(if Night
-			(flame init: cycleSpeed: 10 setCycle: Fwd setPri: 15)
+			(flame init: cycleSpeed: 10 setCycle: Forward setPri: 15)
 		)
-		(bed init: approachVerbs: 4)
-		(chest init: approachVerbs: 4 10)
-		(northCushion init: approachVerbs: 4)
-		(eastCushion init: approachVerbs: 4)
+		(bed init: approachVerbs: V_DO)
+		(chest init: approachVerbs: V_DO V_ROYALS)
+		(northCushion init: approachVerbs: V_DO)
+		(eastCushion init: approachVerbs: V_DO)
 		(table init:)
 		(pot init:)
 		(urn init:)
@@ -187,7 +156,7 @@
 		(alcove init:)
 		(rug init:)
 		(walkHandler addToFront: curRoom)
-		(if (and (!= prevRoomNum 360) (not (Btst 130)))
+		(if (and (!= prevRoomNum 360) (not (Btst fWillHaveMeeting)))
 			(HandsOn)
 		)
 	)
@@ -195,10 +164,16 @@
 	(method (doit)
 		(cond 
 			(script 0)
-			((<= (ego x?) 2) (self setScript: exit310))
-			(
-			(and (not local2) (< (ego y?) 131) (< (ego x?) 88)) (= local2 1) ((ScriptID 7 2) init:))
-			(local2 (self setScript: getOffBed))
+			((<= (ego x?) 2)
+				(self setScript: exit310)
+			)
+			((and (not sleeping) (< (ego y?) 131) (< (ego x?) 88))
+				(= sleeping TRUE)
+				((ScriptID TIME 2) init:)
+			)
+			(sleeping
+				(self setScript: getOffBed)
+			)
 			((and (ego mover?) (== (ego view?) 40))
 				(if (ego loop?)
 					(self setScript: standEast)
@@ -212,107 +187,107 @@
 	
 	(method (dispose)
 		(walkHandler delete: curRoom)
-		(DisposeScript 29)
-		(UnLoad 128 310)
-		(UnLoad 128 35)
-		(UnLoad 128 40)
+		(DisposeScript CHEST)
+		(UnLoad RES_VIEW 310)
+		(UnLoad RES_VIEW 35)
+		(UnLoad RES_VIEW 40)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(74
+				(V_SLEEP
 					(if (and (== (ego x?) 20) (== (ego y?) 140))
-						(= local1 1)
+						(= nearBed TRUE)
 					else
-						(= local1 0)
+						(= nearBed FALSE)
 					)
 					(self setScript: goToBed)
 				)
-				(84
+				(V_LEVITATE
 					(ego addHonor: -5)
-					(if (ego castSpell: 28)
-						((ScriptID 31 0) init: (ego x?) (+ (ego y?) 1) 80)
+					(if (ego castSpell: LEVITATE)
+						((ScriptID LEVITATION 0) init: (ego x?) (+ (ego y?) 1) 80)
 					)
 				)
-				(82
+				(V_FETCH
 					(ego addHonor: -5)
-					(if (ego castSpell: 26)
-						(self setScript: (ScriptID 37 0))
-						(return 1)
+					(if (ego castSpell: FETCH)
+						(self setScript: (ScriptID CASTFETCH 0))
+						(return TRUE)
 					)
 				)
-				(81
+				(V_FLAME
 					(ego addHonor: -5)
-					(if (ego castSpell: 25)
-						(self setScript: (ScriptID 32 0) self 81)
+					(if (ego castSpell: FLAMEDART)
+						(self setScript: (ScriptID PROJECTILE 0) self V_FLAME)
 					)
 				)
-				(83
+				(V_FORCEBOLT
 					(ego addHonor: -5)
-					(if (ego castSpell: 27)
-						(self setScript: (ScriptID 32 0) self 83)
+					(if (ego castSpell: FORCEBOLT)
+						(self setScript: (ScriptID PROJECTILE 0) self V_FORCEBOLT)
 					)
 				)
-				(75
+				(V_OPEN
 					(ego addHonor: -5)
-					(if (ego castSpell: 19)
+					(if (ego castSpell: OPEN)
 						(AutoTarget
 							((User curEvent?) x?)
 							((User curEvent?) y?)
 						)
-						(ego setScript: (ScriptID 13) 0 chest)
+						(ego setScript: (ScriptID CASTOPEN) 0 chest)
 					)
 				)
-				(88
+				(V_LIGHTNING
 					(ego addHonor: -5)
-					(if (ego castSpell: 32)
-						(self setScript: (ScriptID 32 0) self 88)
+					(if (ego castSpell: LIGHTNING)
+						(self setScript: (ScriptID PROJECTILE 0) self V_LIGHTNING)
 					)
 				)
-				(80
+				(V_CALM
 					(ego addHonor: -5)
-					(if (ego castSpell: 24)
-						(ego setScript: (ScriptID 12 0) 0 80)
-						(super doVerb: 80)
+					(if (ego castSpell: CALM)
+						(ego setScript: (ScriptID CASTAREA 0) 0 V_CALM)
+						(super doVerb: V_CALM)
 					)
 				)
-				(86
+				(V_JUGGLE
 					(ego addHonor: -5)
-					(if (ego castSpell: 30)
-						(ego setScript: (ScriptID 62 0))
+					(if (ego castSpell: JUGGLE)
+						(ego setScript: (ScriptID CASTJUGGLE 0))
 					)
 				)
-				(78
+				(V_DAZZLE
 					(ego addHonor: -5)
-					(if (ego castSpell: 22)
-						(ego setScript: (ScriptID 12 0) 0 78)
+					(if (ego castSpell: DAZZLE)
+						(ego setScript: (ScriptID CASTAREA 0) 0 V_DAZZLE)
 					)
 				)
-				(76
+				(V_DETECT
 					(ego addHonor: -5)
-					(if (ego castSpell: 20)
-						(ego setScript: (ScriptID 12 0) 0 76)
+					(if (ego castSpell: DETMAGIC)
+						(ego setScript: (ScriptID CASTAREA 0) 0 V_DETECT)
 					)
 				)
-				(77
+				(V_TRIGGER
 					(ego addHonor: -5)
-					(if (ego castSpell: 21)
-						(ego setScript: (ScriptID 12 0) 0 77)
+					(if (ego castSpell: TRIGGER)
+						(ego setScript: (ScriptID CASTAREA 0) 0 V_TRIGGER)
 					)
 				)
-				(85
+				(V_REVERSAL
 					(ego addHonor: -5)
-					(if (ego castSpell: 29)
+					(if (ego castSpell: REVERSAL)
 						(sFx number: 943 play:)
-						(self setScript: (ScriptID 12 0) 0 85)
+						(self setScript: (ScriptID CASTAREA 0) 0 V_REVERSAL)
 					)
 				)
-				(87
+				(V_STAFF
 					(ego addHonor: -5)
-					(if (ego castSpell: 31)
-						(ego setScript: (ScriptID 46 0))
+					(if (ego castSpell: STAFF)
+						(ego setScript: (ScriptID STAFF_SCRIPT 0))
 					)
 				)
 				(-77
@@ -324,16 +299,19 @@
 				(-80
 					(messager say: 0 0 4 1 0 12)
 				)
-				(3 (egoActions doVerb: 3))
-				(else  (super doVerb: theVerb))
+				(V_WALK
+					(egoActions doVerb: V_WALK)
+				)
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
 (instance meeting of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -349,15 +327,19 @@
 )
 
 (instance dreaming of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 5))
-			(1
-				(messager say: 19 6 2 0 self)
+			(0
+				(HandsOff)
+				(= cycles 5)
 			)
-			(2 (ego setCycle: Beg self))
+			(1
+				(messager say: N_AWAKEN V_DOIT C_DREAMING 0 self)
+			)
+			(2
+				(ego setCycle: BegLoop self)
+			)
 			(3
 				(ego
 					normalize: 6
@@ -368,7 +350,7 @@
 				)
 			)
 			(4
-				(if (Btst 13)
+				(if (Btst fGaveDrum)
 					(ego setMotion: PolyPath -10 140 self)
 				else
 					(HandsOn)
@@ -376,15 +358,16 @@
 				)
 			)
 			(5
-				(messager say: 19 6 3 0 self)
+				(messager say: N_AWAKEN V_DOIT C_PEACE 0 self)
 			)
-			(6 (curRoom newRoom: 340))
+			(6
+				(curRoom newRoom: 340)
+			)
 		)
 	)
 )
 
 (instance exit310 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -393,16 +376,16 @@
 				(ego setMotion: PolyPath -30 (ego y?) self)
 			)
 			(1
-				(if (Btst 130)
-					(messager say: 0 6 1 0 self)
+				(if (Btst fWillHaveMeeting)
+					(messager say: NULL V_DOIT C_MEETING 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(2
 				(ego x: 302 y: 33)
-				(if (Btst 130)
-					(Bclr 130)
+				(if (Btst fWillHaveMeeting)
+					(Bclr fWillHaveMeeting)
 					(cSound fade:)
 					(curRoom newRoom: 340)
 				else
@@ -415,8 +398,7 @@
 )
 
 (instance sitNorth of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -432,20 +414,22 @@
 					cel: 0
 					x: 67
 					y: 179
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (ego looper?)
 					((ego looper?) dispose:)
 					(ego looper: 0)
 				)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sitEast of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -462,30 +446,36 @@
 					cel: 0
 					x: 170
 					y: 183
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (ego looper?)
 					((ego looper?) dispose:)
 					(ego looper: 0)
 				)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance standNorth of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: 0)
-				(if (!= (theIconBar curIcon?) (theIconBar at: 1))
+				(if (!= (theIconBar curIcon?) (theIconBar at: ICON_WALK))
 					(if (CueObj client?)
 						(cond 
-							((== (CueObj client?) northCushion) (self dispose:))
-							(((CueObj client?) approachX?) (= local5 1))
+							((== (CueObj client?) northCushion)
+								(self dispose:)
+							)
+							(((CueObj client?) approachX?)
+								(= local5 1)
+							)
 						)
 					)
 				else
@@ -494,9 +484,11 @@
 				(self cue:)
 			)
 			(1
-				(if (not client) (HandsOff))
-				(northCushion approachVerbs: 4)
-				(ego setMotion: 0 setCycle: Beg self)
+				(if (not client)
+					(HandsOff)
+				)
+				(northCushion approachVerbs: V_DO)
+				(ego setMotion: 0 setCycle: BegLoop self)
 			)
 			(2
 				(ego
@@ -519,9 +511,11 @@
 							CueObj
 					)
 				else
-					(ego setPri: -1 setMotion: PolyPath local3 local4 self)
+					(ego setPri: -1 setMotion: PolyPath toX toY self)
 				)
-				(if (not client) (HandsOn))
+				(if (not client)
+					(HandsOn)
+				)
 				(self dispose:)
 			)
 		)
@@ -529,17 +523,20 @@
 )
 
 (instance standEast of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: 0)
-				(if (!= (theIconBar curIcon?) (theIconBar at: 1))
+				(if (!= (theIconBar curIcon?) (theIconBar at: ICON_WALK))
 					(if (CueObj client?)
 						(cond 
-							((== (CueObj client?) eastCushion) (self dispose:))
-							(((CueObj client?) approachX?) (= local5 1))
+							((== (CueObj client?) eastCushion)
+								(self dispose:)
+							)
+							(((CueObj client?) approachX?)
+								(= local5 1)
+							)
 						)
 					)
 				else
@@ -548,9 +545,11 @@
 				(self cue:)
 			)
 			(1
-				(if (not client) (HandsOff))
-				(eastCushion approachVerbs: 4)
-				(ego setMotion: 0 setCycle: Beg self)
+				(if (not client)
+					(HandsOff)
+				)
+				(eastCushion approachVerbs: V_DO)
+				(ego setMotion: 0 setCycle: BegLoop self)
 			)
 			(2
 				(ego
@@ -573,9 +572,11 @@
 							CueObj
 					)
 				else
-					(ego setPri: -1 setMotion: PolyPath local3 local4 self)
+					(ego setPri: -1 setMotion: PolyPath toX toY self)
 				)
-				(if (not client) (HandsOn))
+				(if (not client)
+					(HandsOn)
+				)
 				(self dispose:)
 			)
 		)
@@ -583,22 +584,21 @@
 )
 
 (instance useChest of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(sFx number: 311 play:)
-				(chestLid setCycle: End self)
+				(chestLid setCycle: EndLoop self)
 			)
 			(1
-				((ScriptID 29 0) init:)
+				((ScriptID CHEST 0) init:)
 				(= cycles 1)
 			)
 			(2
 				(sFx number: 312 play:)
-				(chestLid setCycle: Beg self)
+				(chestLid setCycle: BegLoop self)
 			)
 			(3
 				(chestLid stopUpd:)
@@ -610,22 +610,21 @@
 )
 
 (instance fillChest of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(sFx number: 311 play:)
-				(chestLid setCycle: End self)
+				(chestLid setCycle: EndLoop self)
 			)
 			(1
-				((ScriptID 29 1) init: local0)
+				((ScriptID CHEST 1) init: local0)
 				(= cycles 1)
 			)
 			(2
 				(sFx number: 312 play:)
-				(chestLid setCycle: Beg self)
+				(chestLid setCycle: BegLoop self)
 			)
 			(3
 				(chestLid stopUpd:)
@@ -637,17 +636,18 @@
 )
 
 (instance goToBed of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
-				(if (not (Btst 130)) (HandsOff))
+				(if (not (Btst fWillHaveMeeting))
+					(HandsOff)
+				)
 				(cond 
-					(local1 (self cue:))
+					(nearBed (self cue:))
 					((== (ego view?) 40)
-						(= local3 28)
-						(= local4 128)
+						(= toX 28)
+						(= toY 128)
 						(CueObj client: 0)
 						(if (ego loop?)
 							(self setScript: standEast self)
@@ -655,7 +655,9 @@
 							(self setScript: standNorth self)
 						)
 					)
-					(else (ego setMotion: PolyPath 28 128 self))
+					(else
+						(ego setMotion: PolyPath 28 128 self)
+					)
 				)
 			)
 			(1
@@ -668,19 +670,23 @@
 					cel: 0
 					x: 56
 					y: 124
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(if (= temp0 (PalVary pvGET_CURRENT_STEP))
+				(if (= temp0 (PalVary PALVARYINFO))
 					(if (and (< 0 temp0) (< temp0 64))
-						(PalVary pvCHANGE_TICKS 3)
-						(if (< temp0 30) (= seconds 6) else (= seconds 3))
+						(PalVary PALVARYNEWTIME 3)
+						(if (< temp0 30)
+							(= seconds 6)
+						else
+							(= seconds 3)
+						)
 					else
 						(self cue:)
 					)
 				else
-					(PalVary pvINIT 310 3)
+					(PalVary PALVARYSTART 310 3)
 					(= seconds 6)
 				)
 			)
@@ -705,12 +711,12 @@
 				)
 			)
 			(5
-				(if (< (PalVary pvGET_CURRENT_STEP) 0)
-					(PalVary pvCHANGE_TICKS 3)
+				(if (< (PalVary PALVARYINFO) 0)
+					(PalVary PALVARYNEWTIME 3)
 				else
-					(PalVary pvREVERSE 3)
+					(PalVary PALVARYREVERSE 3)
 				)
-				(Bclr 81)
+				(Bclr fEgoIsAsleep)
 				(= seconds 3)
 			)
 			(6
@@ -727,9 +733,11 @@
 			)
 			(7
 				(sun moveSpeed: 1500 setMotion: MoveTo 331 -4)
-				(if (cast contains: moon) (moon dispose:))
-				((ScriptID 7 7) init: 5 40)
-				(ego setCycle: Beg self)
+				(if (cast contains: moon)
+					(moon dispose:)
+				)
+				((ScriptID TIME 7) init: 5 40)
+				(ego setCycle: BegLoop self)
 			)
 			(8
 				(ego
@@ -741,12 +749,12 @@
 				)
 			)
 			(9
-				(if (not (Btst 130))
+				(if (not (Btst fEgoIsAsleep))
 					(HandsOn)
 				else
-					(ego changeGait: 0)
+					(ego changeGait: MOVE_WALK)
 				)
-				(= local2 0)
+				(= sleeping FALSE)
 				(self dispose:)
 			)
 		)
@@ -754,8 +762,7 @@
 )
 
 (instance getOffBed of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -764,7 +771,7 @@
 			)
 			(1
 				(HandsOn)
-				(= local2 0)
+				(= sleeping FALSE)
 				(self dispose:)
 			)
 		)
@@ -775,12 +782,12 @@
 	(properties
 		x 265
 		y 123
-		noun 12
+		noun N_CHEST
 		sightAngle 40
 		approachX 204
 		approachY 143
 		view 310
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
@@ -792,20 +799,20 @@
 	(properties
 		x 101
 		y 170
-		noun 18
+		noun N_FLAME
 		view 310
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
 (instance sun of Actor
 	(properties
-		noun 16
+		noun N_SUN
 		yStep 1
 		view 938
 		loop 2
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		xStep 1
 	)
 )
@@ -814,22 +821,22 @@
 	(properties
 		x 296
 		z -62
-		noun 20
+		noun N_SKY
 		view 310
 		loop 2
-		signal $6011
+		signal (| ignrAct ignrHrz fixPriOn stopUpdOn)
 	)
 	
 	(method (doit &tmp temp0 temp1)
 		(super doit:)
-		(if (Btst 6)
+		(if (Btst fInMainGame)
 			(if
 				(!=
 					(= temp1
 						(cond 
 							(
 								(and
-									(<= 0 (= temp0 (Abs (PalVary pvGET_CURRENT_STEP))))
+									(<= 0 (= temp0 (Abs (PalVary PALVARYINFO))))
 									(<= temp0 8)
 								)
 								0
@@ -853,11 +860,11 @@
 
 (instance moon of Actor
 	(properties
-		noun 17
+		noun N_MOON
 		yStep 1
 		view 938
 		loop 5
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		xStep 1
 	)
 )
@@ -866,7 +873,7 @@
 	(properties
 		x 108
 		y 184
-		noun 1
+		noun N_TABLE
 		nsTop 179
 		nsLeft 51
 		nsBottom 189
@@ -879,7 +886,7 @@
 	(properties
 		x 240
 		y 182
-		noun 2
+		noun N_POT
 		nsTop 175
 		nsLeft 219
 		nsBottom 189
@@ -892,7 +899,7 @@
 	(properties
 		x 110
 		y 109
-		noun 3
+		noun N_URN
 		nsTop 95
 		nsLeft 104
 		nsBottom 124
@@ -906,7 +913,7 @@
 		x 232
 		y 118
 		z 50
-		noun 4
+		noun N_PLANT
 		nsTop 59
 		nsLeft 223
 		nsBottom 77
@@ -920,7 +927,7 @@
 		x 261
 		y 91
 		z 20
-		noun 5
+		noun N_MOUNTAINS
 		nsTop 66
 		nsLeft 241
 		nsBottom 77
@@ -933,7 +940,7 @@
 	(properties
 		x 257
 		y 72
-		noun 6
+		noun N_WINDOW
 		nsTop 42
 		nsLeft 207
 		nsBottom 102
@@ -946,7 +953,7 @@
 	(properties
 		x 161
 		y 73
-		noun 7
+		noun N_PILLAR
 		nsTop 32
 		nsLeft 147
 		nsBottom 114
@@ -959,7 +966,7 @@
 	(properties
 		x 93
 		y 99
-		noun 8
+		noun N_CURTAINRIGHT
 		nsTop 74
 		nsLeft 83
 		nsBottom 125
@@ -972,7 +979,7 @@
 	(properties
 		x 10
 		y 104
-		noun 9
+		noun N_CURTAINLEFT
 		nsTop 72
 		nsLeft 1
 		nsBottom 136
@@ -985,7 +992,7 @@
 	(properties
 		x 54
 		y 89
-		noun 10
+		noun N_ALCOVE
 		nsTop 73
 		nsLeft 19
 		nsBottom 106
@@ -998,7 +1005,7 @@
 	(properties
 		x 69
 		y 140
-		noun 11
+		noun N_RUG
 		nsTop 129
 		nsLeft 26
 		nsBottom 151
@@ -1011,7 +1018,7 @@
 	(properties
 		x 226
 		y 129
-		noun 12
+		noun N_CHEST
 		nsTop 114
 		nsLeft 187
 		nsBottom 144
@@ -1023,17 +1030,23 @@
 	
 	(method (doVerb theVerb)
 		(cond 
-			((== theVerb 4) (chestLid setScript: (useChest new:)))
-			((== theVerb -75) (chestLid setScript: (useChest new:)))
-			((and (< 9 theVerb) (< theVerb 62))
-				(if (>= theVerb 39)
-					(= local0 (- theVerb 11))
+			((== theVerb V_DO)
+				(chestLid setScript: (useChest new:))
+			)
+			((== theVerb -75)
+				(chestLid setScript: (useChest new:))
+			)
+			((and (< V_HELP theVerb) (< theVerb 62))
+				(if (>= theVerb V_PIN)
+					(= local0 (- theVerb V_SWORD))
 				else
-					(= local0 (- theVerb 10))
+					(= local0 (- theVerb V_ROYALS))
 				)
 				(chestLid setScript: (fillChest new:))
 			)
-			(else (super doVerb: theVerb &rest))
+			(else
+				(super doVerb: theVerb &rest)
+			)
 		)
 	)
 )
@@ -1042,7 +1055,7 @@
 	(properties
 		x 50
 		y 98
-		noun 13
+		noun N_BED
 		nsTop 73
 		nsLeft 12
 		nsBottom 124
@@ -1053,8 +1066,8 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (or (== theVerb 3) (== theVerb 4))
-			((ScriptID 7 2) init:)
+		(if (or (== theVerb V_WALK) (== theVerb V_DO))
+			((ScriptID TIME 2) init:)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -1065,7 +1078,7 @@
 	(properties
 		x 173
 		y 182
-		noun 14
+		noun N_EAST_CUSHION
 		nsTop 175
 		nsLeft 145
 		nsBottom 190
@@ -1076,7 +1089,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
+		(if (== theVerb V_DO)
 			(if (!= (ego view?) 40)
 				(rm310 setScript: sitEast)
 			else
@@ -1092,7 +1105,7 @@
 	(properties
 		x 68
 		y 177
-		noun 15
+		noun N_NORTH_CUSHION
 		nsTop 171
 		nsLeft 42
 		nsBottom 180
@@ -1103,7 +1116,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 4)
+		(if (== theVerb V_DO)
 			(if (!= (ego view?) 40)
 				(rm310 setScript: sitNorth)
 			else
@@ -1116,36 +1129,36 @@
 )
 
 (instance egoActions of Actions
-	(properties)
 	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(3
+				(V_WALK
 					(cond 
 						((curRoom script?) 0)
 						((and (== (ego x?) 67) (== (ego y?) 179))
-							(= local3 ((User curEvent?) x?))
-							(= local4 ((User curEvent?) y?))
+							(= toX ((User curEvent?) x?))
+							(= toY ((User curEvent?) y?))
 							(curRoom setScript: standNorth)
-							(return 1)
+							(return TRUE)
 						)
 						((and (== (ego x?) 170) (== (ego y?) 183))
-							(= local3 ((User curEvent?) x?))
-							(= local4 ((User curEvent?) y?))
+							(= toX ((User curEvent?) x?))
+							(= toY ((User curEvent?) y?))
 							(curRoom setScript: standEast)
-							(return 1)
+							(return TRUE)
 						)
 					)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
 )
 
-(instance stopGroop of Grooper
-	(properties)
+(instance stopGroop of GradualLooper
 	
 	(method (doit)
 		(if
@@ -1159,6 +1172,4 @@
 	)
 )
 
-(instance sFx of Sound
-	(properties)
-)
+(instance sFx of Sound)

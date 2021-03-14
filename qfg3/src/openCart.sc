@@ -168,13 +168,17 @@
 
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 3))
+			(0
+				(= cycles 3)
+			)
 			(1
 				(cSound number: 100 play: 127 self hold: 1)
 			)
 			(2
 				(cSound client: 0)
-				(Narrator keepWindow: 0)
+				(Narrator keepWindow: FALSE)
+				;for some reason, this text doesn't appear, but the game pauses
+				; as if it does. It's related to GAME.SC.
 				(messager say: N_ROOM V_DOIT C_START 0 self)
 			)
 			(3

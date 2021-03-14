@@ -1,0 +1,53 @@
+;;; Sierra Script
+;;; 320.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 11)
+(define N_RIGHT_GUARD_DAY 1)
+(define N_LEFT_GUARD_DAY 2)
+(define N_EGO_TELL 3)
+(define N_LEFT_GUARD_NIGHT 4)
+(define N_RIGHT_GUARD_NIGHT 5)
+(define N_STATUE1 6)
+(define N_STATUE2 7)
+(define N_TEMPLE 8)
+(define N_DOME 9)
+(define N_KING 12)
+(define N_JUDGE 13)
+(define N_MAGICSHOP 14)
+(define N_SPIRE 15)
+
+;;; CASES
+
+(define C_WONT_TALK 14)
+(define C_NO_ENTRY 1)
+(define C_DOOR 2)
+(define C_GUARDS 3)
+(define C_STAIRS 4)
+(define C_PLATEAU 5)
+(define C_TEMPLE 6)
+(define C_SEKHMENT 7)
+(define C_JUDGEMENT 8)
+(define C_COUNCIL 9)
+(define C_LAWS 10)
+(define C_CHAMBERS 11)
+(define C_RULER 12)
+(define C_NAME 13)
+(define C_GOODBYE_DAY 17)
+(define C_HELLO_DAY 18)
+(define C_DUMMY15 15)
+(define C_DUMMY16 16)
+(define C_GOODBYE_NIGHT 19)
+(define C_HELLO_NIGHT 20)
+(define C_WARRIOR 21)
+(define C_WIZARD 22)
+(define C_SPEAKER 23)
+(define C_PRIESTESS 24)
+(define C_MOTHER 25)
+(define C_YOUTH 26)
+(define C_KREESHA 27)
+(define C_RAKEESH 28)
+(define C_COMPANION 29)
+

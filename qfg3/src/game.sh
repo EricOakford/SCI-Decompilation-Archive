@@ -269,7 +269,7 @@
 	fCastingSpell			;15
 	fAfterMatch				;16
 	fUnused17				;17
-	fUnused18				;18
+	fCantEnterSimbani		;18	;this flag should be set after the peace conference, but it never is
 	fCantBePaladin			;19
 	fTarnaClosed			;20
 	fUnused21				;21
@@ -293,22 +293,36 @@
 	fUnused30				;39
 	fMetHonorlessHarami		;40
 	fMetMoneyChanger		;41
-	fVisitedSimbani		;42
+	fVisitedSimbani			;42
 	fAfterConference		;43
 	fHadPaladinCeremony		;44
+	fUnused45				;45
+	fHaramiSecondVisit		;46
+	fHaramiThirdVisit		;47
+	fMetRajah				;48
+	fMetLaibon				;49
+	fLaibonHutRepaired		;50
+	fGotGem					;51
+	fMeerbatDead			;52
+	fPracticedWithUhuraOnce	;53
+	fVisitedVines			;54
+	fMeerbatFreed			;55
+	fAfterRace				;56
+	fFoundReeshaka			;57
+	fAskedAboutDispel		;58
+	fBalanceBridge			;59
+	fEnteredTemple			;60
 )
-
-(define fHaramiSecondVisit	46)
-(define fHaramiThirdVisit	47)
-(define fMetRajah	48)
-(define fLaibonHutRepaired	50)
-(define fAfterRace		56)
-(define fFoundReeshaka	57)
-(define fAskedAboutDispel	58)
 (define fBeenInLostCityPanorama	63)
-(define fPracticedWithUhura		64)
+(define fPracticedWithUhuraTwice		64)
 (define fJohariReleased		65)
+(define fDayElderAnnouncement	67)
+(define fNightElderAnnouncement	68)
 (define fCanSummonStaff 69)
+(define fDayDispelMsg	70)
+(define fNightDispelMsg	71)
+(define fDayCongratsMsg	72)
+(define fNightCongratsMsg	73)
 (define fStoleDrum 74)
 (define fEnteredMirrorRoom	77)
 (define fKnockedOverFruit	80)
@@ -317,6 +331,7 @@
 (define fHoneyBirdHinted	83)
 (define fSpearedWiz	84)
 (define fCanGoToSimbani	85)
+(define fFirstEnteredSimbaniOverlook	86)
 (define fFirstEnterSimbaniVillage 87)
 (define fTravelWithSomeone	88)
 (define fDeWizElectrocuted	89)
@@ -327,6 +342,7 @@
 (define fWillGoToWaterfall			95)
 (define fMonkeysFindDeWorm			96)
 (define fDeWizTookStaff		97)
+(define fSawImpala			98)
 (define fFoundHoneyBird		99)
 (define fCharSheetActive 101)
 (define fEnteredLeopardmanVillage 102)
@@ -348,7 +364,7 @@
 (define fKnockingOverFruit	123)
 (define fWizNoticesEgo	124)
 (define fFlag125 125)
-(define fHadMeeting 130)
+(define fWillHaveMeeting 130)
 (define fNightPaletteDisabled 131)
 (define fEnteredGuardianDen	132)
 (define fNeedStaff	133)
@@ -362,6 +378,7 @@
 (define fWasWizard	144)
 (define fGiftedCarvedLeopard	146)
 (define fGotBlackBird	147)
+(define fGotOpalAndFruit	148)
 (define fTrainedAcrobatics	149)
 (define fSenseDanger 150)
 (define fHonorShield 151)
@@ -369,9 +386,12 @@
 (define fReturnedToRakeesh	156)
 (define fBabaFrog 158)
 (define fMetHarami	159)
-(define fEgoHasDied 162)
-(define fGotDrum	163)
-(enum 166
+(enum 161
+	fPrisonerEasterEgg	;161
+	fEgoHasDied			;162
+	fGotDrum			;163
+	fUnused164			;164
+	fShamanDead			;165
 	fGotFineDagger		;166
 	fGotFineSpear		;167
 	fGotRope			;168
@@ -429,9 +449,17 @@
 	fTellAboutJulanar				;246
 	fReadBoard						;247
 	fAskAboutPeaceMission			;248
+	fPoliteToRajahFirst				;249
+	fPoliteToRajahSecond			;250
+	fSwearOath						;251
 )
-
-(define fSwearOath	251)
+(define fBringGemToTemple			253)
+(define fBeWorthy					254)
+(define fBeInBalance				255)
+(define fGetVineFruit				256)
+(define fSaveMeerbat				257)
+(define fGetWater					258)
+(define fOrchidGlows				259)
 
 (enum 260
 	fGetFeather			;260
@@ -447,20 +475,22 @@
 (define fBeatAnt		293)
 (define fBeatDinosaur	294)
 
-(define fGetAnubisEyes			329)
-(define fOpenLostCityDoor		330)
-(define fPickDoorLock			331)
-(define fLubedDoor				332)
-(define fCalmDemons				333)
-(define fCastOpenOnDoor			334)
-(define fBeatFric				335)
-(define fFindReeshaka			336)
-(define fDispelReeshaka			337)
-(define fWinGame				338)
-(define fEnterMirrorRoom		339)
-(define fBeatDeWiz				340)
-(define fKnockedOrb				341)
-(define fBeatGargoyle			342)
+(enum 329
+	fGetAnubisEyes			;329
+	fOpenLostCityDoor		;330
+	fPickDoorLock			;331
+	fLubedDoor				;332
+	fCalmDemons				;333
+	fCastOpenOnDoor			;334
+	fBeatFric				;335
+	fFindReeshaka			;336
+	fDispelReeshaka			;337
+	fWinGame				;338
+	fEnterMirrorRoom		;339
+	fBeatDeWiz				;340
+	fKnockedOrb				;341
+	fBeatGargoyle			;342
+)
 
 ;Monster arenas
 (define vDinosaur 560)

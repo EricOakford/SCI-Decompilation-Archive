@@ -1068,7 +1068,7 @@
 					;get ready for Day 3's meeting
 					(and
 						(not (Btst fRakeeshSworeOath))
-						(not (Btst fHadMeeting))
+						(not (Btst fWillHaveMeeting))
 						(>= Day 1)
 						(>= Clock 2200)
 						(not (curRoom script?))
@@ -1080,7 +1080,7 @@
 						(!= curRoomNum 340)
 						(!= curRoomNum 550)
 					)
-					(Bset fHadMeeting)
+					(Bset fWillHaveMeeting)
 					((ScriptID TIME 4) init: 19)
 					(messager say: N_CUE V_DOIT C_MEETING_TOMORROW 0 0 0)
 					(if (== curRoomNum 310)

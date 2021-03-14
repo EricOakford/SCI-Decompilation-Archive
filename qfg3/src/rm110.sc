@@ -155,7 +155,7 @@
 				(= cycles 3)
 			)
 			(18
-				(messager say: N_KREESHA V_DOIT C_GO_TO_TARNA 0 self)
+				(messager say: N_AZIZA V_DOIT C_GO_TO_TARNA 0 self)
 			)
 			(19
 				(Narrator color: 0)

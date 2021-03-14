@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 330)
-(include sci.sh)
+(include game.sh) (include "330.shm")
 (use Main)
 (use TellerIcon)
 (use OccasionalCycle)
@@ -24,30 +24,30 @@
 	local2
 	local3
 	local4
-	local5
+	wasRude
 	local6
 	theGameTime
-	[local8 20] = [0 -9 -26 -45 -4 -8 -28 -32 -33 -40 -11 -12 -34 -39 -5 -13 -29 -35 -38 999]
-	[local28 11] = [0 -16 -6 -19 -24 -17 -14 -15 -30 -44 999]
-	[local39 4] = [0 11 18 999]
+	local8 = [0 -9 -26 -45 -4 -8 -28 -32 -33 -40 -11 -12 -34 -39 -5 -13 -29 -35 -38 999]
+	local28 = [0 -16 -6 -19 -24 -17 -14 -15 -30 -44 999]
+	local39 = [0 11 18 999]
 	[local43 4]
 	[local47 5]
-	[local52 3] = [0 -14 999]
+	local52 = [0 -14 999]
 )
-(instance rm330 of Rm
+(instance rm330 of Room
 	(properties
-		noun 11
+		noun N_ROOM
 		picture 330
 		vanishingY 1
 	)
 	
 	(method (init)
-		(LoadMany 130 924 928)
-		(LoadMany 128 961)
+		(LoadMany RES_SCRIPT MESSAGER TALKER)
+		(LoadMany RES_VIEW 961)
 		(= [local43 0] @local8)
 		(= [local47 0] @local28)
 		(= [local47 1] @local39)
-		(ego noun: 2)
+		(ego noun: N_EGO_TELL)
 		(egoPic init: actions: tell)
 		(tell init: ego @local8 @local43)
 		(rajahTeller init: rajah @local28 @local47 @local52)
@@ -62,7 +62,7 @@
 			setCycle: OccasionalCycle self 1 30 100
 		)
 		(cheeseCake2 init:)
-		(flame1 init: setCycle: Fwd)
+		(flame1 init: setCycle: Forward)
 		(flame2 init: setCycle: OccasionalCycle self 1 30 80)
 		(lightglobe init:)
 		(spittoon init:)
@@ -71,10 +71,10 @@
 		(walkHandler addToFront: self)
 		(super init:)
 		(cSound number: 330 setLoop: -1 play: 127)
-		(if (Btst 48)
+		(if (Btst fMetRajah)
 			(curRoom setScript: situationTwo)
 		else
-			(Bset 48)
+			(Bset fMetRajah)
 			(curRoom setScript: situationOne)
 		)
 	)
@@ -88,13 +88,13 @@
 			eachElementDo: #delete
 			release:
 		)
-		(UnLoad 128 961)
-		(LoadMany 0 35)
+		(UnLoad RES_VIEW 961)
+		(LoadMany FALSE RAKEESH_TALKER)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 3)
+		(if (== theVerb V_WALK)
 			(curRoom newRoom: 320)
 		else
 			(super doVerb: theVerb)
@@ -103,24 +103,26 @@
 )
 
 (instance situationOne of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (DontMove) (= cycles 5))
+			(0
+				(DontMove)
+				(= cycles 5)
+			)
 			(1
 				(= local3 1)
-				(messager say: 1 2 1 0 self)
+				(messager say: N_RAJAH V_TELL C_INTRO 0 self)
 			)
 			(2
 				((Timer new:) setReal: self 10)
 			)
 			(3
 				(= local3 2)
-				(messager say: 1 2 7 1 self)
+				(messager say: N_RAJAH V_TELL C_QUESTION_EGO 1 self)
 			)
 			(4
-				(messager say: 1 2 7 (+ heroType 2) self)
+				(messager say: N_RAJAH V_TELL C_QUESTION_EGO (+ heroType 2) self)
 			)
 			(5
 				((Timer new:) setReal: self 10)
@@ -136,39 +138,45 @@
 				(if register
 					(= register 0)
 				else
-					(= local5 1)
+					(= wasRude TRUE)
 					(ego addHonor: -10)
 				)
 				(= local3 4)
-				(messager say: 1 2 10 0 self)
+				(messager say: N_RAJAH V_TELL C_PEACE 0 self)
 			)
 			(8
 				((Timer new:) setReal: self 5)
 			)
 			(9
 				(= local3 8)
-				(messager say: 1 2 20 0 self)
+				(messager say: N_RAJAH V_TELL C_REESHAKA 0 self)
 			)
 			(10
 				((Timer new:) setReal: self 10)
 			)
 			(11
 				(cond 
-					((< local6 1) (messager say: 1 2 21 0 self))
-					((== local6 3) (messager say: 1 2 22 0 self))
-					(else (self cue:))
+					((< local6 1)
+						(messager say: N_RAJAH V_TELL C_RUDE1 0 self)
+					)
+					((== local6 3)
+						(messager say: N_RAJAH V_TELL C_RUDE2 0 self)
+					)
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(12
 				(if register
 					(= register 0)
 				else
-					(= local5 1)
+					(= wasRude TRUE)
 					(ego addHonor: -10)
 				)
 				(= local3 16)
-				(theIconBar enable: 1)
-				(messager say: 1 2 23 1 self)
+				(theIconBar enable: ICON_WALK)
+				(messager say: N_RAJAH V_TELL C_DISMISSED 1 self)
 			)
 			(13
 				((Timer new:) setReal: self 10)
@@ -179,15 +187,15 @@
 					(ego addHonor: 10)
 					(self cue:)
 				else
-					(= local5 1)
+					(= wasRude TRUE)
 					(ego addHonor: -10)
-					(messager say: 1 6 49 0 self)
+					(messager say: N_RAJAH V_DOIT C_KICKED_OUT 0 self)
 				)
 			)
 			(15
-				(if (== local5 0)
+				(if (== wasRude 0)
 					(ego addHonor: 25)
-					(ego solvePuzzle: 249 2 8)
+					(ego solvePuzzle: fPoliteToRajahFirst 2 puzzlePALADIN)
 				)
 				(curRoom newRoom: 320)
 			)
@@ -196,11 +204,13 @@
 )
 
 (instance situationTwo of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (DontMove) (= cycles 5))
+			(0
+				(DontMove)
+				(= cycles 5)
+			)
 			(1
 				(= local3 64)
 				(messager say: 3 2 28 0 self)
@@ -211,7 +221,7 @@
 			(3
 				(= register 0)
 				(= local3 128)
-				(messager say: 1 2 31 0 self)
+				(messager say: N_RAJAH V_TELL 31 0 self)
 			)
 			(4
 				((Timer new:) setReal: self 10)
@@ -222,26 +232,26 @@
 					(self cue:)
 				else
 					(ego addHonor: -10)
-					(messager say: 1 2 36 0 self)
+					(messager say: N_RAJAH V_TELL 36 0 self)
 				)
 			)
 			(6
 				(= local3 256)
-				(messager say: 1 2 37 0 self)
+				(messager say: N_RAJAH V_TELL 37 0 self)
 			)
 			(7
 				((Timer new:) setReal: self 10)
 			)
 			(8
 				(cond 
-					((< local6 1) (ego addHonor: -10) (messager say: 1 2 42 0 self))
-					((== local6 3) (messager say: 1 2 22 0 self))
+					((< local6 1) (ego addHonor: -10) (messager say: N_RAJAH V_TELL 42 0 self))
+					((== local6 3) (messager say: N_RAJAH V_TELL 22 0 self))
 					(else (self cue:))
 				)
 			)
 			(9
 				(= local3 512)
-				(messager say: 1 2 43 0 self)
+				(messager say: N_RAJAH V_TELL 43 0 self)
 			)
 			(10
 				((Timer new:) setReal: self 5)
@@ -263,7 +273,7 @@
 				(= cycles 30)
 			)
 			(13
-				(messager say: 1 2 48 1 self)
+				(messager say: N_RAJAH V_TELL 48 1 self)
 			)
 			(14
 				(= Day 3)
@@ -303,7 +313,7 @@
 	
 	(method (doChild param1 &tmp temp0 temp1)
 		(cond 
-			((== param1 -6) (= local5 1) (ego addHonor: -10) (= temp0 1))
+			((== param1 -6) (= wasRude 1) (ego addHonor: -10) (= temp0 1))
 			(
 			(or (== param1 -16) (== param1 -17) (== param1 -15))
 				(if (> local6 2)
@@ -322,9 +332,9 @@
 					(++ local6)
 				)
 			)
-			((== param1 -19) (= local5 1) (ego addHonor: -10) (= local3 32))
-			((== param1 -24) (= local5 1) (ego addHonor: -10) (= temp0 1))
-			((== param1 -30) (= local5 1) (ego addHonor: -10) (= temp0 1))
+			((== param1 -19) (= wasRude 1) (ego addHonor: -10) (= local3 32))
+			((== param1 -24) (= wasRude 1) (ego addHonor: -10) (= temp0 1))
+			((== param1 -30) (= wasRude 1) (ego addHonor: -10) (= temp0 1))
 			((== param1 -44)
 				(ego addHonor: -10)
 				(if (not local4)
@@ -408,20 +418,20 @@
 				(2
 					(cond 
 						((& local3 $0007)
-							(= local5 1)
+							(= wasRude 1)
 							(ego addHonor: -10)
 							(= temp0 1)
 							(messager say: 3 5 6)
 						)
 						((& local3 $0008)
-							(= local5 1)
+							(= wasRude 1)
 							(ego addHonor: -10)
 							(= local6 999)
 							(= temp0 1)
 							(messager say: 3 5 19)
 						)
 						((& local3 $0010)
-							(= local5 1)
+							(= wasRude 1)
 							(ego addHonor: -10)
 							(= temp0 0)
 							(messager say: 3 5 24)
@@ -440,7 +450,7 @@
 								(= local4 1)
 								(ego addHonor: -10)
 								(= temp0 0)
-								(messager say: 1 2 27)
+								(messager say: N_RAJAH V_TELL 27)
 							else
 								(= temp0 1)
 							)
@@ -480,20 +490,20 @@
 				(2
 					(cond 
 						((& local3 $0007)
-							(= local5 1)
+							(= wasRude 1)
 							(ego addHonor: -10)
 							(= temp0 1)
 							(messager say: 4 5 6)
 						)
 						((& local3 $0008)
 							(= local6 999)
-							(= local5 1)
+							(= wasRude 1)
 							(ego addHonor: -10)
 							(= temp0 1)
 							(messager say: 4 5 19)
 						)
 						((& local3 $0010)
-							(= local5 1)
+							(= wasRude 1)
 							(ego addHonor: -10)
 							(= temp0 0)
 							(messager say: 4 5 24)
@@ -512,7 +522,7 @@
 								(= local4 1)
 								(= temp0 0)
 								(ego addHonor: -10)
-								(messager say: 1 2 27)
+								(messager say: N_RAJAH V_TELL 27)
 							else
 								(= temp0 1)
 							)
@@ -622,7 +632,7 @@
 				)
 				(= temp0 1)
 			)
-			((== param1 -5) (= local5 1) (ego addHonor: -10) (= temp0 1))
+			((== param1 -5) (= wasRude 1) (ego addHonor: -10) (= temp0 1))
 			((== param1 -9)
 				(messager say: 2 5 9 1)
 				(if (<= (ego trySkill: 13 120) 0)
@@ -635,7 +645,7 @@
 				(= temp0 1)
 			)
 			((== param1 -8) (= temp0 1))
-			((== param1 -11) (ego addHonor: 20 solvePuzzle: 250 2 8) (= temp0 1))
+			((== param1 -11) (ego addHonor: 20 solvePuzzle: fPoliteToRajahSecond 2 puzzlePALADIN) (= temp0 1))
 			((== param1 -12)
 				(= local6 999)
 				(messager say: 2 5 12 1)
@@ -660,9 +670,9 @@
 			)
 			((== param1 -26) (ego addHonor: 3) (= temp0 1))
 			((== param1 -28) (ego addHonor: 5) (= temp0 1))
-			((== param1 -29) (= local5 1) (ego addHonor: -10) (= temp0 1))
+			((== param1 -29) (= wasRude 1) (ego addHonor: -10) (= temp0 1))
 			((== param1 -32) (= temp0 1))
-			((== param1 -35) (= local5 1) (ego addHonor: -10) (= temp0 1))
+			((== param1 -35) (= wasRude 1) (ego addHonor: -10) (= temp0 1))
 			((== param1 -34) (ego addHonor: 20) (= temp0 1))
 			((== param1 -33) (ego addHonor: 20) (= temp0 1))
 			((== param1 -40) (= local6 999) (= temp0 1))
@@ -706,7 +716,7 @@
 		view 330
 		loop 1
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -743,7 +753,7 @@
 			)
 			(flame1 cel: local0)
 			(flame2 cel: flame2Cel)
-			(Animate (cast elements?) 0)
+			(Animate (cast elements?) FALSE)
 		)
 		(super doit:)
 	)

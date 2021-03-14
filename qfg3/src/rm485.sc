@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 485)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Motion)
 (use Game)
@@ -11,14 +11,14 @@
 	rm485 0
 )
 
-(instance rm485 of Rm
+(instance rm485 of Room
 	(properties
 		picture 485
 	)
 	
 	(method (init)
 		(HandsOff)
-		((ScriptID 36 1)
+		((ScriptID JOHARI_TALKER 1)
 			view: 485
 			x: 105
 			y: 129
@@ -31,7 +31,7 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 36)
+		(DisposeScript JOHARI_TALKER)
 		(super dispose:)
 	)
 	
@@ -43,7 +43,6 @@
 )
 
 (instance transform of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -52,19 +51,21 @@
 				(= seconds 2)
 			)
 			(1
-				((ScriptID 36 1) setCycle: Fwd)
+				((ScriptID 36 1) setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
-				(if (or (== (Random 1 50) 25) (Btst 161))
-					(egoHead setCycle: End init:)
+				(if (or (== (Random 1 50) 25) (Btst fPrisonerEasterEgg))
+					(egoHead setCycle: EndLoop init:)
 					(globalSound number: 401 setLoop: 1 play: 127)
 				)
-				((ScriptID 36 1) setCycle: End)
+				((ScriptID JOHARI_TALKER 1) setCycle: EndLoop)
 				(= seconds 5)
 			)
 			(3)
-			(4 (curRoom newRoom: 480))
+			(4
+				(curRoom newRoom: 480)
+			)
 		)
 	)
 )

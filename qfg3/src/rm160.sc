@@ -239,10 +239,18 @@
 	(method (cue)
 		(cond 
 			((ego inRect: 208 82 250 97)
-				(if (Btst fAfterConference)
-					(self setScript: tellScript)
-				else
-					(curRoom newRoom: 410)
+				(cond
+					((Btst fAfterConference)
+						;This should allow for entering the Simbani village one last time
+						(Bset fCantEnterSimbani)
+						(curRoom newRoom: 410)
+					)
+					((Btst fCantEnterSimbani)
+						(self setScript: tellScript)
+					)
+					(else
+						(curRoom newRoom: 410)
+					)
 				)
 			)
 			(

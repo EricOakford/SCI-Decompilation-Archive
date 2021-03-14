@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 320)
-(include sci.sh)
+(include game.sh) (include "320.shm")
 (use Main)
 (use TellerIcon)
 (use GloryTalker)
@@ -23,18 +23,18 @@
 )
 
 (local
-	[local0 6] = [0 18 17 20 19 999]
-	[local6 6] = [0 -2 3 -4 13 999]
-	[local12 5] = [0 8 -9 -11 999]
-	[local17 5] = [0 6 7 5 999]
-	[local22 3] = [0 10 999]
-	[local25 3] = [0 12 999]
-	[local28 6] = [0 -2 -3 -4 -13 999]
-	[local34 6] = [0 -2 -3 -4 -13 999]
-	[local40 6] = [0 -2 3 4 13 999]
-	[local46 5] = [0 8 -9 -11 999]
-	[local51 8] = [0 21 22 23 24 25 26 999]
-	[local59 4] = [0 28 29 999]
+	local0 = [0 18 17 20 19 999]
+	local6 = [0 -2 3 -4 13 999]
+	local12 = [0 8 -9 -11 999]
+	local17 = [0 6 7 5 999]
+	local22 = [0 10 999]
+	local25 = [0 12 999]
+	local28 = [0 -2 -3 -4 -13 999]
+	local34 = [0 -2 -3 -4 -13 999]
+	local40 = [0 -2 3 4 13 999]
+	local46 = [0 8 -9 -11 999]
+	local51 = [0 21 22 23 24 25 26 999]
+	local59 = [0 28 29 999]
 	[local63 4]
 	[local67 7]
 	[local74 5]
@@ -43,15 +43,15 @@
 	[local91 6] = [0 -2 -4 -9 -11 999]
 	[local97 6] = [0 -2 -4 -9 -11 999]
 )
-(instance rm320 of Rm
+(instance rm320 of Room
 	(properties
-		noun 11
+		noun N_ROOM
 		picture 320
 		vanishingY -58
 	)
 	
 	(method (init)
-		(LoadMany 128 196 191)
+		(LoadMany RES_VIEW 196 191)
 		(= [local63 0] @local0)
 		(= [local67 0] @local6)
 		(= [local67 1] @local12)
@@ -68,95 +68,57 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						135
-						0
-						0
-						319
-						0
-						319
-						124
-						310
-						136
-						296
-						136
-						275
-						55
-						249
-						55
-						273
-						139
-						260
-						140
-						236
-						133
-						132
-						148
-						92
-						129
-						97
-						120
-						97
-						103
-						82
-						99
-						87
-						120
-						73
-						123
-						58
-						123
-						43
-						114
-						63
-						103
-						44
-						91
-						41
-						112
-						27
-						120
-						11
-						124
+						0 135
+						0 0
+						319 0
+						319 124
+						310 136
+						296 136
+						275 55
+						249 55
+						273 139
+						260 140
+						236 133
+						132 148
+						92 129
+						97 120
+						97 103
+						82 99
+						87 120
+						73 123
+						58 123
+						43 114
+						63 103
+						44 91
+						41 112
+						27 120
+						11 124
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						163
-						4
-						159
-						4
-						146
-						14
-						144
-						21
-						134
-						40
-						131
-						48
-						134
-						36
-						137
-						99
-						153
-						129
-						163
-						304
-						143
-						319
-						189
-						0
-						189
+						0 163
+						4 159
+						4 146
+						14 144
+						21 134
+						40 131
+						48 134
+						36 137
+						99 153
+						129 163
+						304 143
+						319 189
+						0 189
 					yourself:
 				)
 		)
 		(tell init: ego @local0 @local63)
 		(ego
-			noun: 3
+			noun: N_EGO_TELL
 			init:
 			normalize:
 			xStep: 2
@@ -170,10 +132,10 @@
 				(if Night @local79 else @local74)
 		)
 		(leftGuard
-			noun: (if Night 4 else 2)
+			noun: (if Night N_LEFT_GUARD_NIGHT else N_LEFT_GUARD_DAY)
 			init:
 			stopUpd:
-			approachVerbs: 4 2
+			approachVerbs: V_DO V_TALK
 		)
 		(rightGuardTell
 			init:
@@ -183,10 +145,10 @@
 				(if Night @local97 else @local91)
 		)
 		(rightGuard
-			noun: (if Night 5 else 1)
+			noun: (if Night N_RIGHT_GUARD_NIGHT else N_RIGHT_GUARD_DAY)
 			init:
 			stopUpd:
-			approachVerbs: 4 2
+			approachVerbs: V_DO V_TALK
 		)
 		(tallGay1 init:)
 		(tallGay2 init:)
@@ -222,67 +184,63 @@
 		)
 	)
 	
-	(method (doit &tmp temp0 egoMover)
+	(method (doit &tmp thisControl egoMover)
 		(super doit: &rest)
 		(cond 
 			(script)
-			((not (= temp0 (ego onControl: 1))))
-			((== temp0 2)
+			((not (= thisControl (ego onControl: origin))))
+			((== thisControl cBLUE)
 				(if (= egoMover (ego mover?))
-					(if
-					(== (OnControl 4 (egoMover x?) (egoMover y?)) 2)
+					(if (== (OnControl cGREEN (egoMover x?) (egoMover y?)) 2)
 						(curRoom setScript: sTo270)
 					)
 				)
 			)
-			((== temp0 4)
+			((== thisControl cGREEN)
 				(if (= egoMover (ego mover?))
-					(if
-					(== (OnControl 4 (egoMover x?) (egoMover y?)) 4)
+					(if (== (OnControl cGREEN (egoMover x?) (egoMover y?)) 4)
 						(HandsOff)
 						(curRoom setScript: noEnterKings)
 					)
 				)
 			)
-			((== temp0 8)
+			((== thisControl cCYAN)
 				(if (= egoMover (ego mover?))
-					(if
-					(== (OnControl 4 (egoMover x?) (egoMover y?)) 8)
+					(if (== (OnControl cGREEN (egoMover x?) (egoMover y?)) 8)
 						(HandsOff)
 						(curRoom setScript: noEnterJudgement)
 					)
 				)
 			)
-			((== temp0 16)
+			((== thisControl cRED)
 				(if (= egoMover (ego mover?))
-					(if
-					(== (OnControl 4 (egoMover x?) (egoMover y?)) 16)
+					(if (== (OnControl cGREEN (egoMover x?) (egoMover y?)) 16)
 						(curRoom setScript: sTo350)
 					)
 				)
 			)
-			((== temp0 32)
+			((== thisControl cMAGENTA)
 				(if (= egoMover (ego mover?))
-					(if
-					(== (OnControl 4 (egoMover x?) (egoMover y?)) 32)
+					(if (== (OnControl cGREEN (egoMover x?) (egoMover y?)) 32)
 						(curRoom setScript: sTo210)
 					)
 				)
 			)
-			((not (< (ego x?) 315)) (curRoom setScript: sTo210))
+			((not (< (ego x?) 315))
+				(curRoom setScript: sTo210)
+			)
 		)
 	)
 	
 	(method (dispose)
-		(UnLoad 128 196)
-		(UnLoad 128 191)
+		(UnLoad RES_VIEW 196)
+		(UnLoad RES_VIEW 191)
 		(super dispose:)
 	)
 )
 
 (instance sTo270 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -298,7 +256,6 @@
 )
 
 (instance sFrom210 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -306,34 +263,36 @@
 				(HandsOff)
 				(ego setMotion: PolyPath 280 141 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance noEnterKings of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: 0)
-				(leftGuard setCycle: End self)
+				(leftGuard setCycle: EndLoop self)
 			)
 			(1
 				(if Night
-					(messager say: 5 6 1 0 self)
+					(messager say: N_RIGHT_GUARD_NIGHT V_DO C_NO_ENTRY 0 self)
 				else
-					(messager say: 1 6 1 0 self)
+					(messager say: N_RIGHT_GUARD_DAY V_DO C_NO_ENTRY 0 self)
 				)
 			)
 			(2
-				(leftGuard setCycle: Beg self)
+				(leftGuard setCycle: BegLoop self)
 			)
 			(3
 				(leftGuard stopUpd:)
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 6
 					setMotion: PolyPath (- (ego x?) 4) (+ (ego y?) 4) self
 				)
@@ -348,28 +307,27 @@
 )
 
 (instance noEnterJudgement of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: 0)
-				(rightGuard setCycle: End self)
+				(rightGuard setCycle: EndLoop self)
 			)
 			(1
 				(if Night
-					(messager say: 5 6 1 0 self)
+					(messager say: N_RIGHT_GUARD_NIGHT V_DOIT C_NO_ENTRY 0 self)
 				else
-					(messager say: 1 6 1 0 self)
+					(messager say: N_RIGHT_GUARD_DAY V_DOIT C_NO_ENTRY 0 self)
 				)
 			)
 			(2
-				(rightGuard setCycle: Beg self)
+				(rightGuard setCycle: BegLoop self)
 			)
 			(3
 				(rightGuard stopUpd:)
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 6
 					setMotion: MoveTo (- (ego x?) 5) (+ (ego y?) 3) self
 				)
@@ -384,8 +342,7 @@
 )
 
 (instance sTo350 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -393,13 +350,14 @@
 				(cSound fade: 0 5 10 1)
 				(ego setMotion: PolyPath 273 98 self)
 			)
-			(1 (curRoom newRoom: 350))
+			(1
+				(curRoom newRoom: 350)
+			)
 		)
 	)
 )
 
 (instance sTo210 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -418,33 +376,36 @@
 )
 
 (instance sFrom270 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo 29 128 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sFrom330 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: PolyPath 27 122 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sFrom340 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -460,27 +421,31 @@
 				(ego view: 0 normalize:)
 				(= cycles 1)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sFrom350 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo 282 138 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sExit of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -496,7 +461,9 @@
 					)
 				)
 			)
-			(1 (curRoom newRoom: register))
+			(1
+				(curRoom newRoom: register)
+			)
 		)
 	)
 )
@@ -508,7 +475,7 @@
 		approachX 98
 		approachY 134
 		view 197
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -519,7 +486,7 @@
 		approachX 28
 		approachY 122
 		view 192
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -527,7 +494,7 @@
 	(properties
 		x 28
 		y 171
-		noun 14
+		noun N_MAGICSHOP
 		nsTop 154
 		nsLeft 4
 		nsBottom 189
@@ -539,7 +506,7 @@
 	(properties
 		x 209
 		y 164
-		noun 9
+		noun N_DOME
 		nsTop 153
 		nsLeft 174
 		nsBottom 176
@@ -551,7 +518,7 @@
 	(properties
 		x 211
 		y 129
-		noun 15
+		noun N_SPIRE
 		nsTop 106
 		nsLeft 202
 		nsBottom 152
@@ -563,7 +530,7 @@
 	(properties
 		x 140
 		y 75
-		noun 6
+		noun N_STATUE1
 		nsTop 7
 		nsLeft 123
 		nsBottom 144
@@ -575,7 +542,7 @@
 	(properties
 		x 11
 		y 58
-		noun 7
+		noun N_STATUE2
 		nsTop 2
 		nsLeft 1
 		nsBottom 115
@@ -587,7 +554,7 @@
 	(properties
 		x 260
 		y 39
-		noun 8
+		noun N_TEMPLE
 		nsTop 28
 		nsLeft 244
 		nsBottom 51
@@ -599,7 +566,7 @@
 	(properties
 		x 48
 		y 103
-		noun 12
+		noun N_KING
 		nsTop 94
 		nsLeft 43
 		nsBottom 112
@@ -611,7 +578,7 @@
 	(properties
 		x 94
 		y 112
-		noun 13
+		noun N_JUDGE
 		nsTop 104
 		nsLeft 90
 		nsBottom 120
@@ -620,35 +587,36 @@
 )
 
 (instance tell of Teller
-	(properties)
 	
 	(method (showDialog)
 		(super
-			showDialog: 18 (not Night) 20 Night 17 (not Night) 19 Night
+			showDialog:
+				C_HELLO_DAY (not Night)
+				C_HELLO_NIGHT Night
+				C_GOODBYE_DAY (not Night)
+				C_GOODBYE_NIGHT Night
 		)
 	)
 )
 
 (instance leftGuardTell of Teller
-	(properties)
-	
+
 	(method (showDialog)
 		(super showDialog: -2 -3 -4 -13)
 	)
 	
 	(method (doChild)
 		(if Night
-			(messager say: 4 5 14)
+			(messager say: N_LEFT_GUARD_NIGHT V_TELL C_WONT_TALK)
 		else
-			(messager say: 2 5 14)
+			(messager say: N_LEFT_GUARD_DAY V_TELL C_WONT_TALK)
 		)
-		(return 0)
+		(return FALSE)
 	)
 )
 
 (instance rightGuardTell of Teller
-	(properties)
-	
+
 	(method (showDialog)
 		(super showDialog: -2 -3 -4 -13)
 	)

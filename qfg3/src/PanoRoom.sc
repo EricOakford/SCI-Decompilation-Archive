@@ -275,7 +275,7 @@
 	
 	(method (newRoom n)
 		(cond 
-			((and (not n) (not (Btst fHadMeeting)))
+			((and (not n) (not (Btst fWillHaveMeeting)))
 				(if
 					(or
 						(== (ego onControl: origin) cGREEN)
@@ -289,7 +289,7 @@
 					(= n 400)
 				)
 			)
-			((Btst fHadMeeting)
+			((Btst fWillHaveMeeting)
 				(= n 310)
 			)
 		)

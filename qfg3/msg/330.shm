@@ -1,0 +1,39 @@
+;;; Sierra Script
+;;; 330.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 11)
+(define N_RAJAH 1)
+(define N_EGO_TELL 2)
+(define N_RAKEESH 3)
+(define N_SERVANTS 4)
+
+;;; CASES
+
+(define C_INTRO 1)
+(define C_DUMMY2 2)
+(define C_DUMMY3 3)
+(define C_GREET 4)
+(define C_SHAPEIR1 5)
+(define C_RAJAH 6)
+(define C_QUESTION_EGO 7)
+(define C_GREET_AGAIN 8)
+(define C_ANSWER 9)
+(define C_PEACE 10)
+(define C_RAKEESH1 11)
+(define C_RAKEESH2 12)
+(define C_SHAPEIR2 13)
+(define C_TARNA 14)
+(define C_THRONE 15)
+(define C_LIONTAUR 16)
+(define C_SERVANCTS 17)
+(define C_RULE 18)
+(define C_RUDE 19)
+(define C_REESHAKA 20)
+(define C_RUDE1 21)
+(define C_RUDE2 22)
+(define C_DISMISSED 23)
+(define C_KICKED_OUT 49)
+

@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# GLORY_WINODW) ;22
+(script# 22)
 (include game.sh)
 (use Main)
 (use Window)
@@ -55,6 +55,7 @@
 	(SetPort savePort)
 )
 
+
 (procedure (PushOnScreen wind &tmp dX dY)
 	;; top
 	(= dY 
@@ -104,7 +105,7 @@
 		yOffset 0
 		updateList 0
 	)
-	
+
 	(method (dispose)
 		(-= top 3)
 		(-= right 3)
@@ -137,7 +138,7 @@
 		)
 		(PushOnScreen self)
 		(-= top yOffset)
-		(-= lsTop 3)
+		(= lsTop (- top 3))
 		(= lsLeft (- left 20))
 		(= lsRight (+ right 21))
 		(= lsBottom (+ bottom 4))

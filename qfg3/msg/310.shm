@@ -1,0 +1,34 @@
+;;; Sierra Script
+;;; 310.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 21)
+(define N_AWAKEN 19)
+(define N_TABLE 1)
+(define N_POT 2)
+(define N_URN 3)
+(define N_PLANT 4)
+(define N_MOUNTAINS 5)
+(define N_WINDOW 6)
+(define N_PILLAR 7)
+(define N_CURTAINRIGHT 8)
+(define N_CURTAINLEFT 9)
+(define N_ALCOVE 10)
+(define N_RUG 11)
+(define N_CHEST 12)
+(define N_BED 13)
+(define N_EAST_CUSHION 14)
+(define N_NORTH_CUSHION 15)
+(define N_SUN 16)
+(define N_MOON 17)
+(define N_FLAME 18)
+(define N_SKY 20)
+
+;;; CASES
+
+(define C_MEETING 1)
+(define C_DREAMING 2)
+(define C_PEACE 3)
+

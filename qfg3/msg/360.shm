@@ -1,0 +1,28 @@
+;;; Sierra Script
+;;; 360.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 13)
+(define N_DES 2)
+(define N_ANUBIS 3)
+(define N_DUMMY1 1)
+(define N_ANKH 4)
+(define N_KEY 5)
+(define N_PENTAGRAM 6)
+(define N_FIST 7)
+(define N_YINYANG 8)
+(define N_CUP 9)
+(define N_HEART 10)
+(define N_HOURGLASS 11)
+(define N_CANDLE 12)
+(define N_INFINITY 14)
+(define N_RING 15)
+(define N_SWORD 17)
+
+;;; CASES
+
+(define C_DUMMY1 1)
+(define C_CHOOSE_FUTURE 2)
+

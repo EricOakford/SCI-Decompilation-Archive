@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 360)
-(include sci.sh)
+(include game.sh) (include "360.shm")
 (use Main)
 (use GloryWindow)
 (use Intrface)
@@ -20,11 +20,11 @@
 )
 
 (local
-	[local0 6] = [5 2 1 7 8 11]
-	[local6 6] = [6 4 9 3 1]
-	[local12 6] = [8 0 11 2 10 5]
+	local0 = [5 2 1 7 8 11]
+	local6 = [6 4 9 3 1]
+	local12 = [8 0 11 2 10 5]
 	theActor_2
-	local19
+	theCase
 	local20
 	local21
 	local22
@@ -34,16 +34,16 @@
 	local26
 	[theTheTheActor 3]
 	[theActor 3]
-	local33
+	savePalette
 	theTheActor
 	local35
-	[local36 200]
+	[str 200]
 )
 (procedure (localproc_01d1)
-	(= local33 (Palette palSAVE))
-	(DrawPic 360 dpOPEN_PIXELATION)
-	(Palette palRESTORE local33)
-	(Animate (cast elements?) 1)
+	(= savePalette (Palette PALSave))
+	(DrawPic 360 PIXELDISSOLVE)
+	(Palette PALRestore savePalette)
+	(Animate (cast elements?) TRUE)
 )
 
 (procedure (localproc_01f8)
@@ -119,48 +119,48 @@
 )
 
 (procedure (localproc_0349 &tmp theTheCursor temp1)
-	(= temp1 (Message msgSIZE 360 2 6 local19 2))
-	(= local22 (Memory memALLOC_NONCRIT temp1))
-	(= temp1 (Message msgSIZE 360 2 6 local19 3))
-	(= local23 (Memory memALLOC_NONCRIT temp1))
-	(= temp1 (Message msgSIZE 360 2 6 local19 4))
-	(= local24 (Memory memALLOC_NONCRIT temp1))
-	(= temp1 (Message msgSIZE 360 2 6 local19 5))
-	(= local25 (Memory memALLOC_NONCRIT temp1))
-	(= temp1 (Message msgSIZE 360 2 6 local19 6))
-	(= local26 (Memory memALLOC_NONCRIT temp1))
-	(Message msgGET 360 2 6 local19 1 @local36)
-	(Message msgGET 360 2 6 local19 2 local22)
-	(Message msgGET 360 2 6 local19 3 local23)
-	(Message msgGET 360 2 6 local19 4 local24)
-	(Message msgGET 360 2 6 local19 5 local25)
-	(Message msgGET 360 2 6 local19 6 local26)
-	(myPrint addText: @local36 init:)
+	(= temp1 (Message MsgSize 360 N_DES V_DOIT theCase 2))
+	(= local22 (Memory MNewPtr temp1))
+	(= temp1 (Message MsgSize 360 N_DES V_DOIT theCase 3))
+	(= local23 (Memory MNewPtr temp1))
+	(= temp1 (Message MsgSize 360 N_DES V_DOIT theCase 4))
+	(= local24 (Memory MNewPtr temp1))
+	(= temp1 (Message MsgSize 360 N_DES V_DOIT theCase 5))
+	(= local25 (Memory MNewPtr temp1))
+	(= temp1 (Message MsgSize 360 N_DES V_DOIT theCase 6))
+	(= local26 (Memory MNewPtr temp1))
+	(Message MsgGet 360 N_DES V_DOIT theCase 1 @str)
+	(Message MsgGet 360 N_DES V_DOIT theCase 2 local22)
+	(Message MsgGet 360 N_DES V_DOIT theCase 3 local23)
+	(Message MsgGet 360 N_DES V_DOIT theCase 4 local24)
+	(Message MsgGet 360 N_DES V_DOIT theCase 5 local25)
+	(Message MsgGet 360 N_DES V_DOIT theCase 6 local26)
+	(myPrint addText: @str init:)
 	(= theTheCursor theCursor)
 	(quest init: show: dispose:)
 	(while local35
-		(myPrint addText: @local36 init:)
+		(myPrint addText: @str init:)
 		(quest init: show: dispose:)
 	)
-	(Memory memFREE local22)
-	(Memory memFREE local23)
-	(Memory memFREE local24)
-	(Memory memFREE local25)
-	(Memory memFREE local26)
+	(Memory MDisposePtr local22)
+	(Memory MDisposePtr local23)
+	(Memory MDisposePtr local24)
+	(Memory MDisposePtr local25)
+	(Memory MDisposePtr local26)
 	(++ local21)
 	(theGame setCursor: theTheCursor)
 	(choices cycles: 5)
 )
 
-(instance rm360 of Rm
+(instance rm360 of Room
 	(properties
-		noun 13
+		noun N_ROOM
 		picture 360
 	)
 	
 	(method (init)
 		(cSound fade:)
-		(Palette palSET_FLAG 72 255 4)
+		(Palette PALSet 72 255 4)
 		(ringObj init:)
 		(keyObj init:)
 		(pentagram init:)
@@ -182,20 +182,21 @@
 	
 	(method (doit)
 		(super doit:)
-		(Palette palANIMATE 72 255 1)
+		(Palette PALCycle 72 255 1)
 	)
 )
 
 (instance choices of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp temp0 temp1)
 		(switch (= state newState)
 			(0 (HandsOff) (= seconds 2))
 			(1
-				(messager say: 2 6 10 0 self)
+				(messager say: N_DES V_DOIT 10 0 self)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(= temp0 0)
 				(while (< temp0 6)
@@ -206,7 +207,7 @@
 				(= cycles 5)
 			)
 			(4
-				(messager say: 2 6 11 0 self)
+				(messager say: N_DES V_DOIT 11 0 self)
 			)
 			(5
 				(HandsOn 1 4 6 5 8)
@@ -225,10 +226,10 @@
 				(= cycles 5)
 			)
 			(7 (= cycles 20))
-			(8 (messager say: 2 6 4 0 self))
+			(8 (messager say: N_DES V_DOIT 4 0 self))
 			(9 (localproc_0349))
 			(10
-				(messager say: 2 6 13 0 self)
+				(messager say: N_DES V_DOIT 13 0 self)
 			)
 			(11
 				(theActor_2 hide:)
@@ -258,7 +259,7 @@
 			)
 			(14 (= seconds 2))
 			(15
-				(messager say: 2 6 14 0 self)
+				(messager say: N_DES V_DOIT 14 0 self)
 			)
 			(16 (localproc_0349))
 			(17
@@ -272,7 +273,7 @@
 				(= cycles 5)
 			)
 			(18
-				(messager say: 2 6 2 0 self)
+				(messager say: N_DES V_DOIT 2 0 self)
 			)
 			(19
 				(HandsOn 1 4 6 5 8)
@@ -292,7 +293,7 @@
 			)
 			(21 (= seconds 2))
 			(22
-				(messager say: 2 6 14 0 self)
+				(messager say: N_DES V_DOIT 14 0 self)
 			)
 			(23 (localproc_0349))
 			(24
@@ -317,7 +318,7 @@
 					)
 					(curRoom setScript: leave 0 0)
 				else
-					(ego addHonor: 30 solvePuzzle: 254 10)
+					(ego addHonor: 30 solvePuzzle: fBeWorthy 10)
 					(self cue:)
 				)
 			)
@@ -325,7 +326,7 @@
 				(messager say: 3 6 32 0 self)
 			)
 			(29
-				(messager say: 2 6 41 0 self)
+				(messager say: N_DES V_DOIT 41 0 self)
 			)
 			(30
 				([theActor 0] show: 1)
@@ -334,7 +335,7 @@
 			)
 			(31 (= seconds 2))
 			(32
-				(messager say: 2 6 (localproc_0265) 0 self)
+				(messager say: N_DES V_DOIT (localproc_0265) 0 self)
 			)
 			(33
 				([theActor 0] hide:)
@@ -342,7 +343,7 @@
 				(= cycles 3)
 			)
 			(34
-				(messager say: 2 6 40 0 self)
+				(messager say: N_DES V_DOIT 40 0 self)
 			)
 			(35
 				([theActor 1] show: 1)
@@ -351,7 +352,7 @@
 			)
 			(36 (= seconds 2))
 			(37
-				(messager say: 2 6 (localproc_02b1) 0 self)
+				(messager say: N_DES V_DOIT (localproc_02b1) 0 self)
 			)
 			(38
 				([theActor 1] hide:)
@@ -359,7 +360,7 @@
 				(= cycles 3)
 			)
 			(39
-				(messager say: 2 6 42 0 self)
+				(messager say: N_DES V_DOIT 42 0 self)
 			)
 			(40
 				([theActor 2] show: 1)
@@ -368,7 +369,7 @@
 			)
 			(41 (= seconds 2))
 			(42
-				(messager say: 2 6 (localproc_02fd) 0 self)
+				(messager say: N_DES V_DOIT (localproc_02fd) 0 self)
 			)
 			(43 (= seconds 2))
 			(44
@@ -380,33 +381,33 @@
 			)
 			(45
 				(switch heroType
-					(0
+					(FIGHTER
 						(if
 							(or
 								(== [theActor 0] sword)
 								(== [theActor 1] raisedFist)
 								(== [theActor 2] sword)
 							)
-							(ego solvePuzzle: 255 5)
-							(messager say: 2 6 55 0 self)
+							(ego solvePuzzle: fBeInBalance 5)
+							(messager say: N_DES V_DOIT 55 0 self)
 						else
-							(messager say: 2 6 57 0 self)
+							(messager say: N_DES V_DOIT 57 0 self)
 						)
 					)
-					(1
+					(MAGIC_USER
 						(if
 							(or
 								(== [theActor 0] pentagram)
 								(== [theActor 1] infinity)
 								(== [theActor 2] pentagram)
 							)
-							(ego solvePuzzle: 255 5)
-							(messager say: 2 6 55 0 self)
+							(ego solvePuzzle: fBeInBalance 5)
+							(messager say: N_DES V_DOIT 55 0 self)
 						else
-							(messager say: 2 6 58 0 self)
+							(messager say: N_DES V_DOIT 58 0 self)
 						)
 					)
-					(2
+					(THIEF
 						(if
 							(or
 								(== [theActor 0] keyObj)
@@ -414,10 +415,10 @@
 								(== [theActor 1] ringObj)
 								(== [theActor 2] ringObj)
 							)
-							(ego solvePuzzle: 255 5)
-							(messager say: 2 6 55 0 self)
+							(ego solvePuzzle: fBeInBalance 5)
+							(messager say: N_DES V_DOIT 55 0 self)
 						else
-							(messager say: 2 6 56 0 self)
+							(messager say: N_DES V_DOIT 56 0 self)
 						)
 					)
 					(else 
@@ -428,10 +429,10 @@
 								(== [theActor 1] yinYang)
 								(== [theActor 2] ankh)
 							)
-							(ego solvePuzzle: 255 5)
-							(messager say: 2 6 55 0 self)
+							(ego solvePuzzle: fBeInBalance 5)
+							(messager say: N_DES V_DOIT 55 0 self)
 						else
-							(messager say: 2 6 59 0 self)
+							(messager say: N_DES V_DOIT 59 0 self)
 						)
 					)
 				)
@@ -461,16 +462,16 @@
 					(else (= theTheActor 999))
 				)
 				(if (!= theTheActor 999)
-					(messager say: 2 6 (localproc_01f8) 0 self)
+					(messager say: N_DES V_DOIT (localproc_01f8) 0 self)
 				else
-					(messager say: 2 6 64 0 self)
+					(messager say: N_DES V_DOIT 64 0 self)
 				)
 			)
 			(51
 				(if (!= theTheActor 999)
 					(self cue:)
 				else
-					(messager say: 2 6 (localproc_0220) 0 self)
+					(messager say: N_DES V_DOIT (localproc_0220) 0 self)
 				)
 			)
 			(52
@@ -495,7 +496,7 @@
 				(= cycles 3)
 			)
 			(58
-				(messager say: 2 6 70 0 self)
+				(messager say: N_DES V_DOIT 70 0 self)
 			)
 			(59
 				(heart hide:)
@@ -504,7 +505,7 @@
 				(= cycles 3)
 			)
 			(60
-				(messager say: 2 6 71 0 self)
+				(messager say: N_DES V_DOIT 71 0 self)
 			)
 			(61
 				(sword hide:)
@@ -513,7 +514,7 @@
 				(= cycles 3)
 			)
 			(62
-				(messager say: 2 6 72 0 self)
+				(messager say: N_DES V_DOIT 72 0 self)
 			)
 			(63
 				(keyObj hide:)
@@ -524,16 +525,16 @@
 			(64
 				(switch heroType
 					(0
-						(messager say: 2 6 73 0 self)
+						(messager say: N_DES V_DOIT 73 0 self)
 					)
 					(1
-						(messager say: 2 6 74 0 self)
+						(messager say: N_DES V_DOIT 74 0 self)
 					)
 					(2
-						(messager say: 2 6 75 0 self)
+						(messager say: N_DES V_DOIT 75 0 self)
 					)
 					(else 
-						(messager say: 2 6 76 0 self)
+						(messager say: N_DES V_DOIT 76 0 self)
 					)
 				)
 			)
@@ -559,7 +560,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset 12)
+				(Bset fSoulJudged)
 				(if register
 					(self cue:)
 				else
@@ -593,9 +594,9 @@
 		(if (== theVerb 4)
 			(= [theActor local20] self)
 			(switch local20
-				(0 (= local19 20) (++ local20))
-				(1 (= local19 21) (++ local20))
-				(else  (= local19 29))
+				(0 (= theCase 20) (++ local20))
+				(1 (= theCase 21) (++ local20))
+				(else  (= theCase 29))
 			)
 			(= theActor_2 self)
 			(HandsOff)
@@ -626,9 +627,9 @@
 		(= [theActor local20] self)
 		(if (== theVerb 4)
 			(switch local20
-				(0 (= local19 6) (++ local20))
+				(0 (= theCase 6) (++ local20))
 				(else 
-					(= local19 17)
+					(= theCase 17)
 					(++ local20)
 				)
 			)
@@ -662,8 +663,8 @@
 		(= [theActor local20] self)
 		(if (== theVerb 4)
 			(switch local20
-				(0 (= local19 5) (++ local20))
-				(else  (= local19 26))
+				(0 (= theCase 5) (++ local20))
+				(else  (= theCase 26))
 			)
 			(= theActor_2 self)
 			(HandsOff)
@@ -694,7 +695,7 @@
 	(method (doVerb theVerb)
 		(= [theActor local20] self)
 		(if (== theVerb 4)
-			(= local19 19)
+			(= theCase 19)
 			(++ local20)
 			(= theActor_2 self)
 			(HandsOff)
@@ -724,7 +725,7 @@
 	(method (doVerb theVerb)
 		(= [theActor local20] self)
 		(if (== theVerb 4)
-			(= local19 18)
+			(= theCase 18)
 			(++ local20)
 			(= theActor_2 self)
 			(HandsOff)
@@ -756,8 +757,8 @@
 		(= [theActor local20] self)
 		(if (== theVerb 4)
 			(switch local20
-				(0 (= local19 3) (++ local20))
-				(else  (= local19 28))
+				(0 (= theCase 3) (++ local20))
+				(else  (= theCase 28))
 			)
 			(= theActor_2 self)
 			(HandsOff)
@@ -787,7 +788,7 @@
 	(method (doVerb theVerb)
 		(= [theActor local20] self)
 		(if (== theVerb 4)
-			(= local19 15)
+			(= theCase 15)
 			(++ local20)
 			(= theActor_2 self)
 			(HandsOff)
@@ -818,9 +819,9 @@
 		(= [theActor local20] self)
 		(if (== theVerb 4)
 			(switch local20
-				(0 (= local19 12) (++ local20))
-				(1 (= local19 22) (++ local20))
-				(else  (= local19 23))
+				(0 (= theCase 12) (++ local20))
+				(1 (= theCase 22) (++ local20))
+				(else  (= theCase 23))
 			)
 			(= theActor_2 self)
 			(HandsOff)
@@ -850,7 +851,7 @@
 	(method (doVerb theVerb)
 		(= [theActor local20] self)
 		(if (== theVerb 4)
-			(= local19 7)
+			(= theCase 7)
 			(++ local20)
 			(= theActor_2 self)
 			(HandsOff)
@@ -882,9 +883,9 @@
 		(= [theActor local20] self)
 		(if (== theVerb 4)
 			(switch local20
-				(0 (= local19 9) (++ local20))
+				(0 (= theCase 9) (++ local20))
 				(else 
-					(= local19 16)
+					(= theCase 16)
 					(++ local20)
 				)
 			)
@@ -916,7 +917,7 @@
 	(method (doVerb theVerb)
 		(= [theActor local20] self)
 		(if (== theVerb 4)
-			(= local19 24)
+			(= theCase 24)
 			(= theActor_2 self)
 			(HandsOff)
 			(globalSound number: 361 play: 127 setLoop: 1)
@@ -945,8 +946,8 @@
 		(= [theActor local20] self)
 		(if (== theVerb 4)
 			(switch local20
-				(0 (= local19 8) (++ local20))
-				(else  (= local19 25))
+				(0 (= theCase 8) (++ local20))
+				(else  (= theCase 25))
 			)
 			(= theActor_2 self)
 			(HandsOff)
@@ -994,7 +995,7 @@
 	)
 )
 
-(instance aIcon of IconI
+(instance aIcon of IconItem
 	(properties
 		view 361
 		loop 3
@@ -1011,14 +1012,14 @@
 		(DrawCel view loop cel nsLeft nsTop -1)
 		(Display
 			local22
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			15
-			dsCOLOR
+			p_color
 			1
-			dsWIDTH
+			p_width
 			245
 		)
 		(if (& signal $0004) (self mask:))
@@ -1043,20 +1044,20 @@
 		)
 		(Display
 			local22
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			15
-			dsCOLOR
+			p_color
 			temp0
-			dsWIDTH
+			p_width
 			245
 		)
 	)
 )
 
-(instance bIcon of IconI
+(instance bIcon of IconItem
 	(properties
 		view 361
 		loop 3
@@ -1073,14 +1074,14 @@
 		(DrawCel view loop cel nsLeft nsTop -1)
 		(Display
 			local23
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			45
-			dsCOLOR
+			p_color
 			1
-			dsWIDTH
+			p_width
 			245
 		)
 		(if (& signal $0004) (self mask:))
@@ -1105,20 +1106,20 @@
 		)
 		(Display
 			local23
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			45
-			dsCOLOR
+			p_color
 			temp0
-			dsWIDTH
+			p_width
 			245
 		)
 	)
 )
 
-(instance cIcon of IconI
+(instance cIcon of IconItem
 	(properties
 		view 361
 		loop 3
@@ -1135,14 +1136,14 @@
 		(DrawCel view loop cel nsLeft nsTop -1)
 		(Display
 			local24
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			75
-			dsCOLOR
+			p_color
 			1
-			dsWIDTH
+			p_width
 			245
 		)
 		(if (& signal $0004) (self mask:))
@@ -1167,20 +1168,20 @@
 		)
 		(Display
 			local24
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			75
-			dsCOLOR
+			p_color
 			temp0
-			dsWIDTH
+			p_width
 			245
 		)
 	)
 )
 
-(instance xIcon of IconI
+(instance xIcon of IconItem
 	(properties
 		view 361
 		loop 3
@@ -1196,14 +1197,14 @@
 		(= nsBottom (+ nsTop 30))
 		(Display
 			local25
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			105
-			dsCOLOR
+			p_color
 			1
-			dsWIDTH
+			p_width
 			245
 		)
 		(DrawCel view loop cel nsLeft nsTop -1)
@@ -1229,20 +1230,20 @@
 		)
 		(Display
 			local25
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			105
-			dsCOLOR
+			p_color
 			temp0
-			dsWIDTH
+			p_width
 			245
 		)
 	)
 )
 
-(instance eIcon of IconI
+(instance eIcon of IconItem
 	(properties
 		view 361
 		loop 3
@@ -1258,14 +1259,14 @@
 		(= nsBottom (+ nsTop 30))
 		(Display
 			local26
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			135
-			dsCOLOR
+			p_color
 			1
-			dsWIDTH
+			p_width
 			245
 		)
 		(DrawCel view loop cel nsLeft nsTop -1)
@@ -1291,20 +1292,20 @@
 		)
 		(Display
 			local26
-			dsFONT
+			p_font
 			smallFont
-			dsCOORD
+			p_at
 			20
 			135
-			dsCOLOR
+			p_color
 			temp0
-			dsWIDTH
+			p_width
 			245
 		)
 	)
 )
 
-(instance upIcon of IconI
+(instance upIcon of IconItem
 	(properties
 		view 361
 		loop 3
@@ -1353,7 +1354,7 @@
 	)
 	
 	(method (doit)
-		(Palette palANIMATE 72 255 1)
+		(Palette PALCycle 72 255 1)
 		(super doit:)
 	)
 )
@@ -1364,7 +1365,7 @@
 	)
 	
 	(method (doit)
-		(Palette palANIMATE 72 255 1)
+		(Palette PALCycle 72 255 1)
 		(super doit:)
 	)
 )
@@ -1394,7 +1395,7 @@
 			(if
 				(= temp8
 					(Message
-						msgSIZE
+						MsgSize
 						theCurRoomNum
 						theTheTheCurRoomNum
 						theTheTheCurRoomNum_2
@@ -1402,10 +1403,10 @@
 						temp3
 					)
 				)
-				(= temp7 (Memory memALLOC_CRIT temp8))
+				(= temp7 (Memory MNeedPtr temp8))
 				(if
 					(Message
-						msgGET
+						MsgGet
 						theCurRoomNum
 						theTheTheCurRoomNum
 						theTheTheCurRoomNum_2
@@ -1438,7 +1439,7 @@
 			)
 			(= temp7
 				(Memory
-					memALLOC_CRIT
+					MNeedPtr
 					(+ (StrLen [theTheCurRoomNum 0]) 1)
 				)
 			)
@@ -1483,7 +1484,7 @@
 		)
 		(= temp1 0)
 		(while (not temp1)
-			(Palette palANIMATE 72 255 1)
+			(Palette PALCycle 72 255 1)
 			(Animate (cast elements?) 1)
 			(= gameTime (+ tickOffset (GetTime)))
 			(self eachElementDo: #cycle)

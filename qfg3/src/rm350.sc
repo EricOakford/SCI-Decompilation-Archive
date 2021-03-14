@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 350)
-(include sci.sh)
+(include game.sh) (include "350.shm")
 (use Main)
 (use TellerIcon)
 (use Talker)
@@ -19,24 +19,24 @@
 )
 
 (local
-	[local0 4] = [0 -12 -13 999]
-	[local4 7] = [0 -14 -15 -16 -17 -18 999]
+	local0 = [0 -12 -13 999]
+	local4 = [0 -14 -15 -16 -17 -18 999]
 	[local11 5]
 	[local16 7]
-	local23
+	priestessCued
 	local24
 	local25
 	local26
 	local27
-	local28
-	local29
+	toX
+	toY
 	theGameTime
-	local31
+	flameCel
 	local32
 )
-(instance rm350 of Rm
+(instance rm350 of Room
 	(properties
-		noun 5
+		noun N_ROOM
 		picture 350
 		vanishingY -35
 	)
@@ -47,56 +47,42 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						0
-						189
-						180
-						189
-						142
-						159
-						113
-						164
-						86
-						142
-						106
-						139
-						48
-						90
-						61
-						90
-						53
-						80
-						35
-						80
-						35
-						53
-						25
-						53
-						25
-						82
-						0
-						82
+						0 189
+						180 189
+						142 159
+						113 164
+						86 142
+						106 139
+						48 90
+						61 90
+						53 80
+						35 80
+						35 53
+						25 53
+						25 82
+						0 82
 					yourself:
 				)
 		)
-		(if (ego has: 36)
-			(ego addHonor: 20 solvePuzzle: 253 10)
+		(if (ego has: iGem)
+			(ego addHonor: 20 solvePuzzle: fBringGemToTemple 10)
 		)
 		(ego
 			view: 0
 			setLoop: 2
 			x: 27
 			y: 92
-			noun: 4
+			noun: N_EGO_TELL
 			xStep: 2
 			yStep: 1
 			setScale: 220
 			init:
-			changeGait: 0
+			changeGait: MOVE_WALK
 		)
-		(flame1 setCycle: Fwd init:)
-		(flame2 setCycle: Fwd init:)
+		(flame1 setCycle: Forward init:)
+		(flame2 setCycle: Forward init:)
 		(stairs setPri: 10 init: stopUpd:)
 		(if Night
 			(nPal init:)
@@ -110,9 +96,9 @@
 			y: 108
 			detailLevel: 3
 			priority: 2
-			signal: 16
-			setCycle: Fwd
-			noun: 6
+			signal: fixPriOn
+			setCycle: Forward
+			noun: N_STATUE
 			init:
 		)
 		((Prop new:)
@@ -122,9 +108,9 @@
 			x: 236
 			y: 56
 			detailLevel: 3
-			signal: 16384
-			setCycle: Fwd
-			noun: 6
+			signal: (| ignrAct fixPriOn)
+			setCycle: Forward
+			noun: N_STATUE
 			init:
 		)
 		((Prop new:)
@@ -134,8 +120,8 @@
 			x: 155
 			y: 96
 			detailLevel: 3
-			setCycle: Fwd
-			noun: 6
+			setCycle: Forward
+			noun: N_STATUE
 			init:
 		)
 		((Prop new:)
@@ -145,8 +131,8 @@
 			x: 230
 			y: 126
 			detailLevel: 3
-			setCycle: Fwd
-			noun: 6
+			setCycle: Forward
+			noun: N_STATUE
 			init:
 		)
 		((Prop new:)
@@ -156,8 +142,8 @@
 			x: 131
 			y: 117
 			detailLevel: 3
-			setCycle: Fwd
-			noun: 6
+			setCycle: Forward
+			noun: N_STATUE
 			init:
 		)
 		((Prop new:)
@@ -167,8 +153,8 @@
 			x: 185
 			y: 145
 			detailLevel: 3
-			setCycle: Fwd
-			noun: 6
+			setCycle: Forward
+			noun: N_STATUE
 			init:
 		)
 		((Prop new:)
@@ -178,10 +164,10 @@
 			x: 80
 			y: 78
 			priority: 5
-			signal: 16
+			signal: fixPriOn
 			detailLevel: 3
-			setCycle: Fwd
-			noun: 6
+			setCycle: Forward
+			noun: N_STATUE
 			init:
 		)
 		((Prop new:)
@@ -192,15 +178,18 @@
 			y: 76
 			detailLevel: 3
 			priority: 4
-			signal: 16400
-			setCycle: Fwd
-			noun: 6
+			signal: (| ignrAct fixPriOn)
+			setCycle: Forward
+			noun: N_STATUE
 			init:
 		)
 		(super init: &rest)
 		(cond 
-			((Btst 12) (acolyte1 init: stopUpd:) (self setScript: letSGo))
-			((not (Btst 60))
+			((Btst fSoulJudged)
+				(acolyte1 init: stopUpd:)
+				(self setScript: letSGo)
+			)
+			((not (Btst fEnteredTemple))
 				(fTable init:)
 				(pan init:)
 				(statue init:)
@@ -212,11 +201,11 @@
 				(= [local11 0] @local0)
 				(= [local16 0] @local4)
 				(walkHandler addToFront: self)
-				(priestess noun: 2 init: setLoop: 0 stopUpd:)
+				(priestess noun: N_PRIESTESS init: setLoop: 0 stopUpd:)
 				(ego code: checkCode)
 				(self setScript: sEnter)
 			)
-			((ego has: 36)
+			((ego has: iGem)
 				(acolyte1 init: stopUpd:)
 				(acolyte2 init: setPri: 12 stopUpd:)
 				(priestess init: x: 107 y: 176 stopUpd:)
@@ -224,12 +213,16 @@
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 2
-							init: 49 123 71 118 88 128 59 134
+							type: PBarredAccess
+							init:
+								49 123
+								71 118
+								88 128
+								59 134
 							yourself:
 						)
 				)
-				(ego useSkill: 14 20)
+				(ego useSkill: HONOR 20)
 				(self setScript: sEnter)
 			)
 			(else
@@ -242,33 +235,33 @@
 	
 	(method (dispose)
 		(super dispose:)
-		(LoadMany 0 48)
+		(LoadMany FALSE PRIESTESS_TALKER)
 		(walkHandler delete: self)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
-				(if local23
+			(V_WALK
+				(if priestessCued
 					(curRoom setScript: priestessShow)
 				else
-					(= local28 ((user curEvent?) x?))
-					(= local29 ((user curEvent?) y?))
-					(ego setMotion: PolyPath local28 local29 priestess)
+					(= toX ((user curEvent?) x?))
+					(= toY ((user curEvent?) y?))
+					(ego setMotion: PolyPath toX toY priestess)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else 
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance priestTalk of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (not state) (< (priestess distanceTo: ego) 23))
+		(if (and (not state) (< (priestess distanceTo: ego) 23))
 			(priestess setMotion: 0)
 			(self cue:)
 		)
@@ -303,11 +296,13 @@
 				)
 			)
 			(2
-				(priestess setLoop: 0 cel: 0 setCycle: End self)
+				(priestess setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
-			(3 (messager say: 2 6 2 0 self))
+			(3
+				(messager say: N_PRIESTESS V_DOIT C_PRIESTESS_TALK 0 self)
+			)
 			(4
-				(priestess setCycle: CT 0 -1 self)
+				(priestess setCycle: CycleTo 0 -1 self)
 			)
 			(5
 				(HandsOn 5 6 6)
@@ -321,26 +316,29 @@
 )
 
 (instance priestessShow of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (messager say: 2 6 3 0 self))
+			(0
+				(messager say: N_PRIESTESS V_DOIT C_SEKHMET_CHASTISES 0 self)
+			)
 			(1
 				(HandsOff)
-				(priestess setLoop: 1 setCel: 4 setCycle: CT 0 -1 self)
+				(priestess setLoop: 1 setCel: 4 setCycle: CycleTo 0 -1 self)
 			)
-			(2 (messager say: 3 6 4 0 self))
+			(2
+				(messager say: N_SEKEMET V_DOIT C_SEKEMET_SPEAKS_TO_EGO 0 self)
+			)
 			(3
 				(priestess
 					cycleSpeed: 6
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
-				(Bset 60)
+				(Bset fEnteredTemple)
 				(curRoom setScript: stepDown 0 1)
 			)
 		)
@@ -348,7 +346,6 @@
 )
 
 (instance stepDown of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -379,12 +376,11 @@
 )
 
 (instance WestOut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(messager say: 4 3 19 0 self)
+				(messager say: N_EGO_TELL V_WALK C_WEST_OUT 0 self)
 			)
 			(1
 				(ego
@@ -404,12 +400,11 @@
 )
 
 (instance SouthOut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(messager say: 4 3 20 0 self)
+				(messager say: N_EGO_TELL V_WALK C_SOUTH_OUT 0 self)
 			)
 			(1
 				(ego
@@ -429,7 +424,6 @@
 )
 
 (instance sEnter of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -453,9 +447,16 @@
 			(5
 				(ego normalize:)
 				(cond 
-					((not (Btst 60)) (messager say: 1 6 1 0 self))
-					((ego has: 36) (curRoom setScript: sGem))
-					(else (acolyte1 setCycle: Beg) (curRoom setScript: sNoGem))
+					((not (Btst fEnteredTemple))
+						(messager say: N_ENTRANCE V_DOIT C_FIRST_ENTER 0 self)
+					)
+					((ego has: iGem)
+						(curRoom setScript: sGem)
+					)
+					(else
+						(acolyte1 setCycle: BegLoop)
+						(curRoom setScript: sNoGem)
+					)
 				)
 			)
 			(6
@@ -467,18 +468,21 @@
 )
 
 (instance sNoGem of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (messager say: 1 6 5 0 self))
+			(0
+				(messager say: N_ENTRANCE V_DOIT C_RETURNED 0 self)
+			)
 			(1
 				(ego setMotion: PolyPath 68 100 self)
 			)
 			(2
-				(acolyte2 setCycle: Beg self)
+				(acolyte2 setCycle: BegLoop self)
 			)
-			(3 (messager say: 1 6 6 0 self))
+			(3
+				(messager say: N_ENTRANCE V_DOIT C_NO_GEM 0 self)
+			)
 			(4
 				(curRoom setScript: stepDown 0 1)
 			)
@@ -487,21 +491,24 @@
 )
 
 (instance sGem of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(acolyte1 setCycle: Beg self)
+				(acolyte1 setCycle: BegLoop self)
 			)
 			(1
 				(ego setMotion: PolyPath (ego x?) (+ (ego y?) 10) self)
 			)
-			(2 (messager say: 1 6 5 0 self))
+			(2
+				(messager say: N_ENTRANCE V_DOIT C_RETURNED 0 self)
+			)
 			(3
 				(ego setMotion: PolyPath 92 165)
 			)
-			(4 (messager say: 1 6 7 0 self))
+			(4
+				(messager say: N_ENTRANCE V_DOIT C_HAVE_GEM 0 self)
+			)
 			(5
 				(ego setMotion: PolyPath 86 171 self)
 			)
@@ -513,16 +520,18 @@
 					loop: 1
 					setCel: 0
 					cycleSpeed: 10
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
-			(8 (messager say: 2 6 8 0 self))
+			(8
+				(messager say: N_PRIESTESS V_DOIT C_PRIESTESS_TO_SEKEMET 0 self)
+			)
 			(9
 				(priestess
 					loop: 3
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(chalice dispose:)
 			)
@@ -531,7 +540,7 @@
 					loop: 1
 					setCel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -539,11 +548,11 @@
 					loop: 2
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
-				(messager say: 2 6 9 0 self)
+				(messager say: N_PRIESTESS V_DOIT C_PRIESTESS_TO_EGO 0 self)
 			)
 			(13
 				(ego
@@ -552,18 +561,18 @@
 					setCel: 0
 					setScale: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(14
-				(priestess setCycle: Beg self)
+				(priestess setCycle: BegLoop self)
 			)
 			(15
 				(globalSound stop:)
 				(= seconds 3)
 			)
 			(16
-				(ego loop: 1 setCel: 0 setCycle: End self)
+				(ego loop: 1 setCel: 0 setCycle: EndLoop self)
 			)
 			(17
 				(globalSound number: 920 setLoop: 1 play: 127)
@@ -571,8 +580,8 @@
 			)
 			(18
 				(ego cycleSpeed: 6)
-				(Bset 12)
-				(ego drop: 36 1)
+				(Bset fSoulJudged)
+				(ego drop: iGem 1)
 				(curRoom newRoom: 360)
 			)
 		)
@@ -580,7 +589,6 @@
 )
 
 (instance letSGo of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -592,10 +600,10 @@
 				(stairs setPri: 0)
 			)
 			(2
-				(acolyte1 setCycle: Beg self)
+				(acolyte1 setCycle: BegLoop self)
 			)
 			(3
-				(messager say: 1 6 10 0 self)
+				(messager say: N_ENTRANCE V_DOIT C_LETS_GO 0 self)
 			)
 			(4
 				(curRoom setScript: stepDown 0 1)
@@ -605,22 +613,30 @@
 )
 
 (instance checkCode of Code
-	(properties)
-	
+
 	(method (doit)
 		(cond 
 			((curRoom script?) 0)
-			((< (ego x?) 5) (HandsOff) (curRoom setScript: WestOut))
-			((> (ego y?) 187) (HandsOff) (curRoom setScript: SouthOut))
-			((& (ego onControl:) $0010) (HandsOff) (curRoom setScript: stepDown 0 0))
+			((< (ego x?) 5)
+				(HandsOff)
+				(curRoom setScript: WestOut)
+			)
+			((> (ego y?) 187)
+				(HandsOff)
+				(curRoom setScript: SouthOut)
+			)
+			((& (ego onControl:) cRED)
+				(HandsOff)
+				(curRoom setScript: stepDown 0 0)
+			)
 			(
 				(and
-					(& (ego onControl:) $0008)
-					(not local23)
-					(not (Btst 60))
+					(& (ego onControl:) cCYAN)
+					(not priestessCued)
+					(not (Btst fEnteredTemple))
 				)
 				(HandsOff)
-				(= local23 1)
+				(= priestessCued TRUE)
 				(curRoom setScript: priestTalk)
 			)
 		)
@@ -632,7 +648,7 @@
 		x 65
 		y 80
 		view 351
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -643,14 +659,13 @@
 		view 351
 		loop 1
 		priority 8
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (not local24) (< (ego distanceTo: self) 35))
-			(self setCycle: Beg sGem)
+		(if (and (not local24) (< (ego distanceTo: self) 35))
+			(self setCycle: BegLoop sGem)
 			(= local24 1)
 		)
 	)
@@ -661,7 +676,7 @@
 		x 187
 		y 243
 		view 355
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (cue)
@@ -685,7 +700,7 @@
 		view 350
 		cel 4
 		priority 5
-		signal $0010
+		signal fixPriOn
 		detailLevel 3
 	)
 )
@@ -697,7 +712,7 @@
 		view 350
 		loop 1
 		priority 13
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 )
 
@@ -707,7 +722,7 @@
 		y 115
 		view 350
 		loop 2
-		signal $4041
+		signal (| ignrAct forceUpdOn stopUpdOn)
 	)
 )
 
@@ -719,7 +734,7 @@
 		loop 3
 		cel 1
 		priority 1
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 )
 
@@ -727,7 +742,7 @@
 	(properties
 		x 116
 		y 147
-		noun 7
+		noun N_FTABLE
 		nsTop 136
 		nsLeft 98
 		nsBottom 159
@@ -739,7 +754,7 @@
 	(properties
 		x 207
 		y 177
-		noun 8
+		noun N_PAN
 		nsTop 165
 		nsLeft 197
 		nsBottom 189
@@ -749,7 +764,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self approachVerbs: 2 4)
+		(self approachVerbs: V_TALK V_DO)
 	)
 )
 
@@ -757,7 +772,7 @@
 	(properties
 		x 246
 		y 58
-		noun 6
+		noun N_STATUE
 		nsTop 6
 		nsLeft 201
 		nsBottom 111
@@ -769,7 +784,7 @@
 	(properties
 		x 114
 		y 54
-		noun 9
+		noun N_HIEROGLYPHICS
 		nsTop 39
 		nsLeft 82
 		nsBottom 70
@@ -781,7 +796,7 @@
 	(properties
 		x 32
 		y 57
-		noun 10
+		noun N_DOORWAY
 		nsTop 41
 		nsBottom 74
 		nsRight 64
@@ -792,7 +807,7 @@
 	(properties
 		x 163
 		y 86
-		noun 11
+		noun N_LEFTFIRE
 		nsTop 78
 		nsLeft 150
 		nsBottom 95
@@ -804,7 +819,7 @@
 	(properties
 		x 233
 		y 116
-		noun 12
+		noun N_RIGHTFIRE
 		nsTop 111
 		nsLeft 216
 		nsBottom 121
@@ -816,7 +831,7 @@
 	(properties
 		x 278
 		y 174
-		noun 13
+		noun N_TENT
 		nsTop 161
 		nsLeft 237
 		nsBottom 188
@@ -825,24 +840,26 @@
 )
 
 (instance egoTell of Teller
-	(properties)
 	
 	(method (doChild param1)
 		(cond 
-			((== param1 -12) (messager say: 4 5 12 0 priestTalk))
-			((== param1 -13) (messager say: 4 5 13 0 priestTalk))
+			((== param1 -12)
+				(messager say: N_EGO_TELL V_TELL C_HELLO 0 priestTalk)
+			)
+			((== param1 -13)
+				(messager say: N_EGO_TELL V_TELL C_GOODBYE 0 priestTalk)
+			)
 		)
-		(return 0)
+		(return FALSE)
 	)
 )
 
 (instance priestessTell of Teller
-	(properties)
-	
+
 	(method (doChild)
-		(messager say: 2 5 11 0 priestTalk)
+		(messager say: N_PRIESTESS V_TELL C_WONT_TALK 0 priestTalk)
 		(priestTalk cycles: 0)
-		(return 0)
+		(return FALSE)
 	)
 )
 
@@ -852,7 +869,7 @@
 		y 30
 		view 352
 		loop 1
-		signal $4000
+		signal ignrAct
 		talkWidth 260
 		color 45
 		back 57
@@ -867,9 +884,9 @@
 	
 	(method (doit)
 		(if (not (mod (++ theGameTime) 40))
-			(if (> (++ local31) 12) (= local31 0))
-			(flame1 cel: local31)
-			(flame2 cel: local31)
+			(if (> (++ flameCel) 12) (= flameCel 0))
+			(flame1 cel: flameCel)
+			(flame2 cel: flameCel)
 			(Animate (cast elements?) 0)
 		)
 		(super doit:)
@@ -883,7 +900,7 @@
 		view 352
 		loop 2
 		cel 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -893,7 +910,7 @@
 		nsLeft 8
 		view 352
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 

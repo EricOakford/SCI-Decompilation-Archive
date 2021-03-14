@@ -1,0 +1,30 @@
+;;; Sierra Script
+;;; 390.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_NONVIOLENCE 1)
+(define C_NOTNOW 9)
+(define C_ORCHID_NIGHT 5)
+(define C_ORCHID_DAY 6)
+(define C_DUMMY2 2)
+(define C_DUMMY3 3)
+(define C_ENTRANCE 4)
+(define C_REST 7)
+(define C_NIGHT 8)
+(define C_ALREADY_GLOWING 10)
+(define C_CALM 11)
+
+;;; NOUNS
+
+(define N_PEACE_POOL 1)
+(define N_MOUNTAINS 2)
+(define N_ROOM 3)
+(define N_CUE 4)
+(define N_IMPALA 8)
+(define N_CHEETAH 7)
+(define N_RUNE 5)
+(define N_ROCKS 9)
+(define N_TREES 6)
+

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 380)
-(include sci.sh)
+(include game.sh) (include "380.shm")
 (use Main)
 (use Target)
 (use EgoDead)
@@ -23,21 +23,28 @@
 )
 
 (local
-	local0
+	vinesGone
 	local1
-	local2
-	local3
+	egoGrabbed
+	roomState
 )
-(instance rm380 of Rm
+
+(enum ;room states
+	firstTime
+	vineTrap
+	savedBat
+	allDoneHere
+)
+(instance rm380 of Room
 	(properties
-		noun 5
+		noun N_ROOM
 		picture 380
 	)
 	
 	(method (init)
 		(HandsOff)
 		(= thrownDaggers 0)
-		(LoadMany 130 956 991)
+		(LoadMany RES_SCRIPT FORCOUNT JUMP)
 		(ego
 			x: 164
 			y: 68
@@ -50,60 +57,45 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						0
-						92
-						85
-						92
-						81
-						103
-						60
-						109
-						70
-						115
-						70
-						136
-						140
-						179
-						177
-						184
-						251
-						184
-						293
-						152
-						232
-						110
-						141
-						96
-						133
-						87
-						178
-						80
-						178
-						76
-						227
-						76
-						263
-						69
-						287
-						71
-						319
-						53
-						319
-						1
-						0
-						1
+						0 92
+						85 92
+						81 103
+						60 109
+						70 115
+						70 136
+						140 179
+						177 184
+						251 184
+						293 152
+						232 110
+						141 96
+						133 87
+						178 80
+						178 76
+						227 76
+						263 69
+						287 71
+						319 53
+						319 1
+						0 1
 					yourself:
 				)
 		)
-		(if (Btst 52) (= local3 1))
-		(if (Btst 55) (= local3 2))
-		(if (Btst 148) (= local3 3))
+		(if (Btst fMeerbatDead)
+			(= roomState vineTrap)
+		)
+		(if (Btst fMeerbatFreed)
+			(= roomState savedBat)
+		)
+		(if (Btst fGotOpalAndFruit)
+			(= roomState allDoneHere)
+		)
 		(holes init:)
 		(sky init:)
-		(switch local3
-			(0
+		(switch roomState
+			(firstTime
 				(bat1 setPri: 14 init: stopUpd:)
 				(bat2 setPri: 14 init: stopUpd:)
 				(bat3 setPri: 14 init: stopUpd:)
@@ -115,14 +107,15 @@
 				(vine4 init: stopUpd:)
 				(vine5 init: stopUpd:)
 			)
-			(1
+			(vineTrap
 				(mainVine init:)
 				(ego code: ambushChek)
 			)
-			(2
-				(if (not (Btst 148))
-					(stoneRing setPri: 14 init: approachVerbs: 4 stopUpd:)
+			(savedBat
+				(if (not (Btst fGotOpalAndFruit))
+					(stoneRing setPri: 14 init: approachVerbs: V_DO stopUpd:)
 				)
+				;(self setScript: savedBatEntrance)	;EO: Restored unused script
 				(smallBat setPri: 14 init: stopUpd: setScript: thankYou)
 			)
 		)
@@ -137,7 +130,7 @@
 				(or
 					(and
 						(not (== (curRoom script?) egoEnters))
-						(& (ego onControl: 1) $0004)
+						(& (ego onControl: origin) cGREEN)
 					)
 					(< (ego y?) 65)
 				)
@@ -148,51 +141,55 @@
 	)
 	
 	(method (dispose)
-		(Bset 54)
-		(if gNewList (gNewList eachElementDo: #dispose))
-		(LoadMany 0 956 991 37)
+		(Bset fVisitedVines)
+		(if gNewList
+			(gNewList eachElementDo: #dispose)
+		)
+		(LoadMany FALSE FORCOUNT JUMP CASTFETCH)
 		(super dispose: &rest)
 	)
 	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(81
+				(V_FLAME
 					(if (not (curRoom script?))
 						(curRoom setScript: blastVine 0 theVerb)
 					)
 				)
-				(83
+				(V_FORCEBOLT
 					(if (not (curRoom script?))
 						(curRoom setScript: blastVine 0 theVerb)
 					)
 				)
-				(88
+				(V_LIGHTNING
 					(if (not (curRoom script?))
 						(curRoom setScript: blastVine 0 theVerb)
 					)
 				)
-				(20
+				(V_DAGGER
 					(if (not (curRoom script?))
 						(++ thrownDaggers)
 						(curRoom setScript: blastVine 0 theVerb)
 					)
 				)
-				(33
+				(V_ROCK
 					(if (not (curRoom script?))
 						(curRoom setScript: blastVine 0 theVerb)
 					)
 				)
-				(1
-					(if (not local0)
-						(messager say: 5 1)
+				(V_LOOK
+					(if (not vinesGone)
+						(messager say: N_ROOM V_LOOK)
 					else
-						(messager say: 5 1 15)
+						(messager say: N_ROOM V_LOOK C_VINES_GONE)
 					)
-					(return 1)
+					(return TRUE)
 				)
-				(75 (messager say: 1 6 18))
-				(4
+				(V_OPEN
+					(messager say: N_CUE V_DOIT C_CANT_OPEN)
+				)
+				(V_DO
 					(if
 						(and
 							(> ((User curEvent?) y?) 30)
@@ -212,13 +209,12 @@
 )
 
 (instance getOut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego get: 10 thrownDaggers)
+				(ego get: iDaggers thrownDaggers)
 				(= seconds 1)
 			)
 			(1
@@ -231,20 +227,24 @@
 )
 
 (instance thankYou of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
-			(1 (client setCycle: End self))
-			(2 (client dispose:))
+			(0
+				(= seconds 5)
+			)
+			(1
+				(client setCycle: EndLoop self)
+			)
+			(2
+				(client dispose:)
+			)
 		)
 	)
 )
 
 (instance savedBatEntrance of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -252,10 +252,10 @@
 				(ego setMotion: PolyPath 120 110 self)
 			)
 			(1
-				(messager say: 1 6 17 0 self)
+				(messager say: N_CUE V_DOIT C_SAVED_BAT 0 self)
 			)
 			(2
-				(smallBat setCycle: End self)
+				(smallBat setCycle: EndLoop self)
 			)
 			(3
 				(smallBat dispose:)
@@ -266,14 +266,13 @@
 )
 
 (instance blastVine of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0 1)
+				(= vinesGone TRUE)
 				(HandsOff)
-				(self setScript: (ScriptID 32 0) self register)
+				(self setScript: (ScriptID PROJECTILE 0) self register)
 			)
 			(1
 				(ego normalize:)
@@ -285,12 +284,13 @@
 )
 
 (instance throwHook of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (ego has: 35) (self dispose:))
+				(if (ego has: iVineFruit)
+					(self dispose:)
+				)
 				(HandsOff)
 				(ego setMotion: PolyPath 90 72 self)
 			)
@@ -298,7 +298,7 @@
 				(ego setMotion: PolyPath 93 89 self)
 			)
 			(2
-				(ego view: 8 setLoop: 4 setCycle: End self)
+				(ego view: 8 setLoop: 4 setCycle: EndLoop self)
 				(globalSound number: 721 setLoop: 1 play: 127)
 			)
 			(3
@@ -314,16 +314,20 @@
 			(4
 				(mainVine cel: 1)
 				(mainVine setScript: vinesTwist)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(grapThingy setMotion: JumpTo 95 79 self)
 				(globalSound number: 511 setLoop: 1 play: 127)
 			)
 			(5
 				(grapThingy dispose:)
-				(messager say: 1 6 11 0 self)
+				(messager say: N_CUE V_DOIT C_HOOKED_FRUIT 0 self)
 			)
 			(6
-				(ego get: 35 solvePuzzle: 256 8 normalize:)
+				(ego
+					get: iVineFruit
+					solvePuzzle: fGetVineFruit 8
+					normalize:
+				)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -332,35 +336,38 @@
 )
 
 (instance egoHacksBat of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bclr 55)
+				(Bclr fMeerbatFreed)
 				(flutterBackToRock dispose:)
 				(ego setMotion: PolyPath 104 178 self)
 			)
 			(1
-				(ego view: 385 loop: 1 cel: 0 setCycle: End self)
+				(ego view: 385 loop: 1 cel: 0 setCycle: EndLoop self)
 				(globalSound number: 520 setLoop: 1 play: 127)
 			)
-			(2 (ego setCycle: Beg self))
-			(3 (messager say: 1 6 9 0 self))
+			(2
+				(ego setCycle: BegLoop self)
+			)
+			(3
+				(messager say: N_CUE V_DOIT C_KILL_BAT 0 self)
+			)
 			(4
 				(if
 					(and
-						(== heroType 0)
-						(not (ego has: 16))
+						(== heroType FIGHTER)
+						(not (ego has: iDispell))
 						(ego code: ambushChek)
-						(mainVine init: setCycle: Beg)
+						(mainVine init: setCycle: BegLoop)
 					)
 				)
 				(ego normalize:)
 				(smallBat dispose:)
-				(Bset 52)
-				(Bset 19)
+				(Bset fMeerbatDead)
+				(Bset fCantBePaladin)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -369,12 +376,11 @@
 )
 
 (instance flutterBackToRock of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(smallBat loop: 6 cel: 8 setCycle: Beg self)
+				(smallBat loop: 6 cel: 8 setCycle: BegLoop self)
 			)
 			(1
 				(globalSound number: 383 setLoop: 1 play: 127)
@@ -387,7 +393,7 @@
 			)
 			(3
 				(globalSound stop:)
-				(smallBat loop: 0 setCycle: End self)
+				(smallBat loop: 0 setCycle: EndLoop self)
 			)
 			(4
 				(smallBat hide:)
@@ -398,13 +404,16 @@
 )
 
 (instance smallBatJump of Script
-	(properties)
 	
 	(method (doit)
-		(if (== local0 1)
-			(Bset 55)
-			(if (not (Btst 257)) (ego addHonor: 20))
-			(ego solvePuzzle: 257 8 9)
+		(if (== vinesGone TRUE)
+			(Bset fMeerbatFreed)
+			(if (not (Btst fSaveMeerbat))
+				(ego addHonor: 20)
+			)
+			(ego
+				solvePuzzle: fSaveMeerbat 8 (| puzzleFIGHTER puzzlePALADIN)
+			)
 			(smallBat setCycle: 0)
 			(self dispose:)
 		)
@@ -413,16 +422,19 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 7))
+			(0
+				(HandsOff)
+				(= seconds 7)
+			)
 			(1
 				(ego code: 0)
-				(smallBat loop: 2 setCycle: End self)
+				(smallBat loop: 2 setCycle: EndLoop self)
 			)
 			(2
 				(globalSound number: 383 setLoop: 1 play: 127)
 				(smallBat
 					setLoop: 4
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: JumpTo 163 147 self
 				)
 			)
@@ -430,33 +442,35 @@
 				(smallBat setMotion: MoveTo 192 126 self)
 			)
 			(4
-				(mainVine setCycle: Fwd)
-				(vine4 setPri: (+ (smallBat priority?) 1) setCycle: Fwd)
-				(smallBat cycleSpeed: 6 loop: 4 setCycle: End self)
+				(mainVine setCycle: Forward)
+				(vine4 setPri: (+ (smallBat priority?) 1) setCycle: Forward)
+				(smallBat cycleSpeed: 6 loop: 4 setCycle: EndLoop self)
 				(globalSound number: 918 setLoop: 1 play: 127)
 			)
 			(5
 				(HandsOn)
 				(globalSound number: 382 setLoop: -1 play: 127)
 				(if (> (theGame detailLevel:) 2)
-					(smallBat setCycle: Fwd)
+					(smallBat setCycle: Forward)
 				else
 					(smallBat stopUpd:)
 				)
 				(= seconds 20)
 			)
 			(6
-				(smallBat setCycle: End self)
+				(smallBat setCycle: EndLoop self)
 			)
 			(7
-				(vine4 loop: 5 setCycle: End self)
+				(vine4 loop: 5 setCycle: EndLoop self)
 			)
 			(8
 				(mainVine setCycle: 0)
 				(smallBat hide:)
 				(globalSound stop:)
-				(Bset 52)
-				(if (not local2) (HandsOn))
+				(Bset fMeerbatDead)
+				(if (not egoGrabbed)
+					(HandsOn)
+				)
 				(self dispose:)
 			)
 		)
@@ -464,36 +478,35 @@
 )
 
 (instance ambush of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LoadMany 128 6)
+				(LoadMany RES_VIEW 6)
 				(HandsOff)
-				(vine1 loop: 2 cel: 5 init: setCycle: Beg)
-				(vine2 loop: 3 cel: 5 init: setCycle: Beg)
-				(vine3 loop: 2 cel: 5 init: setCycle: Beg)
-				(vine4 loop: 3 cel: 4 init: setCycle: Beg)
-				(vine5 loop: 2 cel: 5 init: setCycle: Beg)
-				(mainVine setLoop: 0 setCycle: Fwd)
+				(vine1 loop: 2 cel: 5 init: setCycle: BegLoop)
+				(vine2 loop: 3 cel: 5 init: setCycle: BegLoop)
+				(vine3 loop: 2 cel: 5 init: setCycle: BegLoop)
+				(vine4 loop: 3 cel: 4 init: setCycle: BegLoop)
+				(vine5 loop: 2 cel: 5 init: setCycle: BegLoop)
+				(mainVine setLoop: 0 setCycle: Forward)
 				(globalSound number: 918 setLoop: 1 play: 127)
-				(ego view: 11 setCycle: End self)
+				(ego view: 11 setCycle: EndLoop self)
 			)
 			(1
-				(vine1 loop: 0 setCycle: Fwd)
-				(vine2 loop: 0 setCycle: Fwd)
-				(vine3 loop: 0 setCycle: Fwd)
-				(vine4 loop: 0 setCycle: Fwd)
-				(vine5 loop: 0 setCycle: Fwd)
+				(vine1 loop: 0 setCycle: Forward)
+				(vine2 loop: 0 setCycle: Forward)
+				(vine3 loop: 0 setCycle: Forward)
+				(vine4 loop: 0 setCycle: Forward)
+				(vine5 loop: 0 setCycle: Forward)
 				(ego cycleSpeed: 8 setCycle: ForwardCounter 3 self)
 				(globalSound number: 918 setLoop: -1 play: 127)
 			)
 			(2
-				(ego view: 6 setCycle: End self)
+				(ego view: 6 setCycle: EndLoop self)
 			)
 			(3
-				(EgoDead 6 0 386 End)
+				(EgoDead C_DEATH_AMBUSH 0 386 EndLoop)
 				(self dispose:)
 			)
 		)
@@ -501,20 +514,19 @@
 )
 
 (instance chopVines of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local0 1)
+				(= vinesGone TRUE)
 				(grabEgo dispose:)
-				(ego view: 385 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 385 loop: 0 cel: 0 setCycle: EndLoop self)
 				(globalSound number: 520 setLoop: 1 play: 127)
 			)
 			(1
 				(mainVine setScript: vinesGoDown)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(2
 				(if (not (cast contains: smallBat))
@@ -529,26 +541,27 @@
 )
 
 (instance vinesGoDown of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0 1)
-				(vine1 loop: 2 cel: 0 setCycle: End ignoreActors: 1)
-				(vine2 loop: 3 cel: 0 setCycle: End ignoreActors: 1)
-				(vine3 loop: 2 cel: 0 setCycle: End ignoreActors: 1)
-				(vine4 loop: 3 cel: 0 setCycle: End ignoreActors: 1)
-				(vine5 loop: 2 cel: 0 setCycle: End ignoreActors: 1)
+				(= vinesGone TRUE)
+				(vine1 loop: 2 cel: 0 setCycle: EndLoop ignoreActors: TRUE)
+				(vine2 loop: 3 cel: 0 setCycle: EndLoop ignoreActors: TRUE)
+				(vine3 loop: 2 cel: 0 setCycle: EndLoop ignoreActors: TRUE)
+				(vine4 loop: 3 cel: 0 setCycle: EndLoop ignoreActors: TRUE)
+				(vine5 loop: 2 cel: 0 setCycle: EndLoop ignoreActors: TRUE)
 				(mainVine
 					loop: 1
 					cel: 0
-					setCycle: End self
-					ignoreActors: 1
+					setCycle: EndLoop self
+					ignoreActors: TRUE
 				)
 				(globalSound number: 918 setLoop: 1 play: 127)
 			)
-			(1 (= seconds 1))
+			(1
+				(= seconds 1)
+			)
 			(2
 				(vine1 stopUpd:)
 				(vine2 stopUpd:)
@@ -556,7 +569,9 @@
 				(vine4 stopUpd:)
 				(vine5 stopUpd:)
 				(mainVine stopUpd:)
-				(if (Btst 55) (smallBat setScript: flutterBackToRock))
+				(if (Btst fMeerbatFreed)
+					(smallBat setScript: flutterBackToRock)
+				)
 				(self dispose:)
 			)
 		)
@@ -564,40 +579,46 @@
 )
 
 (instance grabEgo of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: 0)
-				(Bset 115)
-				(= local2 1)
-				(vine3 setCycle: End self)
+				(Bset fPoisoned)
+				(= egoGrabbed TRUE)
+				(vine3 setCycle: EndLoop self)
 				(globalSound number: 918 setLoop: 1 play: 127)
 			)
-			(1 (messager say: 1 6 3 0 self))
+			(1
+				(messager say: N_CUE V_DOIT C_GRAB_EGO 0 self)
+			)
 			(2
 				(ego
 					view: 11
 					cycleSpeed: 8
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 115 93
 				)
 				(HandsOn)
-				(theIconBar disable: 1 6 5 3 advanceCurIcon:)
-				(vine3 setCycle: Fwd)
-				(mainVine setCycle: Fwd)
+				(theIconBar
+					disable: ICON_WALK ICON_CAST ICON_ACTIONS ICON_DO
+					advanceCurIcon:
+				)
+				(vine3 setCycle: Forward)
+				(mainVine setCycle: Forward)
 				(globalSound number: 918 setLoop: 1 play: 127)
 				(= seconds 1)
 			)
 			(3
-				(if (<= [egoStats 16] 1) (EgoDead 7 0 386 End))
+				(if (<= [egoStats HEALTH] 1)
+					(EgoDead C_DEATH_VINES 0 386 EndLoop)
+				)
 				(ego takeDamage: 1)
 				(= seconds 1)
 			)
 			(4
-				(= state (- state 2))
+				(-= state 2)
 				(self cue:)
 			)
 		)
@@ -605,39 +626,47 @@
 )
 
 (instance egoEnters of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo (ego x?) 80 self)
 			)
-			(1 (= cycles 10))
+			(1
+				(= cycles 10)
+			)
 			(2
-				(if (not (Btst 54))
-					(messager say: 1 6 2 0 self)
+				(if (not (Btst fVisitedVines))
+					(messager say: N_CUE V_DOIT C_FIRST_ENTRY 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(if (Btst 150)
-					(messager say: 1 6 14 0 self)
+				(if (Btst fSenseDanger)
+					(messager say: N_CUE V_DOIT C_SENSE_DANGER 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(4
 				(cond 
-					((== local3 2) (ego setScript: savedBatEntrance) (HandsOn))
-					(
-					(and (Btst 52) (== heroType 0) (not (ego has: 16))) (ego code: ambushChek) (HandsOn))
-					((and (not (Btst 52)) (not (Btst 55)))
+					((== roomState savedBat)
+						(ego setScript: savedBatEntrance)
+						(HandsOn)
+					)
+					((and (Btst fMeerbatDead) (== heroType FIGHTER) (not (ego has: iDispell)))
+						(ego code: ambushChek)
+						(HandsOn)
+					)
+					((and (not (Btst fMeerbatDead)) (not (Btst fMeerbatFreed)))
 						(bat1 setScript: bat1Hoark)
 						(globalSound number: 381 setLoop: 1 play: 127)
 						(ego code: egoChek)
 					)
-					(else (HandsOn))
+					(else
+						(HandsOn)
+					)
 				)
 				(self dispose:)
 			)
@@ -646,28 +675,27 @@
 )
 
 (instance vinesTwist of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(mainVine setCycle: End)
+				(mainVine setCycle: EndLoop)
 				(if (cast contains: vine1)
-					(vine1 setCycle: End)
-					(vine2 setCycle: End)
-					(vine3 setCycle: End)
-					(vine4 setCycle: End)
-					(vine5 setCycle: End self)
+					(vine1 setCycle: EndLoop)
+					(vine2 setCycle: EndLoop)
+					(vine3 setCycle: EndLoop)
+					(vine4 setCycle: EndLoop)
+					(vine5 setCycle: EndLoop self)
 				)
 				(globalSound number: 918 setLoop: 1 play: 127)
 			)
 			(1
-				(mainVine setCycle: Beg)
+				(mainVine setCycle: BegLoop)
 				(if (cast contains: vine1)
-					(vine1 setCycle: Beg)
-					(vine2 setCycle: Beg)
-					(vine3 setCycle: Beg)
-					(vine5 setCycle: Beg)
+					(vine1 setCycle: BegLoop)
+					(vine2 setCycle: BegLoop)
+					(vine3 setCycle: BegLoop)
+					(vine5 setCycle: BegLoop)
 				)
 				(globalSound number: 918 setLoop: 1 play: 127)
 				(= seconds 2)
@@ -686,28 +714,31 @@
 )
 
 (instance bat1Hoark of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(bat1 moveSpeed: 1 setLoop: 2 setCycle: End self)
+				(bat1 moveSpeed: 1 setLoop: 2 setCycle: EndLoop self)
 			)
 			(1
 				(globalSound number: 383 setLoop: 1 play: 127)
 				(bat1 setLoop: 4 setCycle: ForwardCounter 3 self)
 			)
-			(2 (bat1 setCycle: End self))
+			(2
+				(bat1 setCycle: EndLoop self)
+			)
 			(3
 				(globalSound number: 383 setLoop: 1 play: 127)
 				(bat1 setMotion: JumpTo 169 132 self)
 			)
-			(4 (bat1 setCycle: Beg self))
+			(4
+				(bat1 setCycle: BegLoop self)
+			)
 			(5
 				(globalSound number: 383 setLoop: 1 play: 127)
 				(mainVine setScript: vinesTwist)
-				(bat1 setCycle: Fwd setMotion: MoveTo 214 105 self)
+				(bat1 setCycle: Forward setMotion: MoveTo 214 105 self)
 			)
 			(6
 				(bat1 setMotion: MoveTo 360 110 self)
@@ -717,7 +748,7 @@
 				(bat1 setLoop: 5 setMotion: JumpTo 42 160 self)
 			)
 			(8
-				(bat1 setLoop: 2 setCycle: Beg self)
+				(bat1 setLoop: 2 setCycle: BegLoop self)
 			)
 			(9
 				(globalSound number: 381 setLoop: 1 play: 127)
@@ -725,10 +756,10 @@
 				(HandsOn)
 				(if
 					(and
-						(Btst 54)
-						(not (Btst 55))
-						(not (Btst 52))
-						(not (== local0 1))
+						(Btst fVisitedVines)
+						(not (Btst fMeerbatFreed))
+						(not (Btst fMeerbatDead))
+						(not (== vinesGone TRUE))
 					)
 					(smallBat setScript: smallBatJump)
 				)
@@ -739,26 +770,24 @@
 )
 
 (instance batsComeOut of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(bat1 show: setCycle: Beg self)
+				(bat1 show: setCycle: BegLoop self)
 			)
 			(1
-				(bat2 show: setCycle: Beg self)
+				(bat2 show: setCycle: BegLoop self)
 			)
 			(2
-				(if
-				(and (cast contains: smallBat) (not (Btst 55)))
-					(smallBat show: setCycle: Beg self)
+				(if (and (cast contains: smallBat) (not (Btst fMeerbatFreed)))
+					(smallBat show: setCycle: BegLoop self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(bat3 show: setCycle: Beg self)
+				(bat3 show: setCycle: BegLoop self)
 			)
 			(4
 				(globalSound number: 381 setLoop: 1 play: 127)
@@ -776,13 +805,12 @@
 )
 
 (instance theyHide of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(globalSound number: 381 setLoop: 1 play: 127)
-				(bat1 setCycle: End self)
+				(bat1 setCycle: EndLoop self)
 			)
 			(1
 				(bat1 hide:)
@@ -790,9 +818,9 @@
 					(and
 						(cast contains: smallBat)
 						(not (== (smallBat script?) flutterBackToRock))
-						(not (Btst 55))
+						(not (Btst fMeerbatFreed))
 					)
-					(smallBat setCycle: End self)
+					(smallBat setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
@@ -802,15 +830,15 @@
 					(and
 						(cast contains: smallBat)
 						(not (== (smallBat script?) flutterBackToRock))
-						(not (Btst 55))
+						(not (Btst fMeerbatFreed))
 					)
 					(smallBat hide:)
 				)
-				(bat3 setCycle: End self)
+				(bat3 setCycle: EndLoop self)
 			)
 			(3
 				(bat3 hide:)
-				(bat2 setCycle: End self)
+				(bat2 setCycle: EndLoop self)
 			)
 			(4
 				(bat2 hide:)
@@ -821,8 +849,7 @@
 )
 
 (instance getRocks of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -835,18 +862,18 @@
 					setMotion: 0
 					view: 4
 					loop: (mod (ego loop?) 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= register (Narrator y?))
 			)
 			(1
 				(Narrator y: 20)
-				(messager say: 1 6 19 0 self)
+				(messager say: N_CUE V_DOIT C_GET_ROCKS 0 self)
 				(ego get: 23 (Random 2 5))
 			)
 			(2
 				(Narrator y: register)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego normalize:)
@@ -861,7 +888,7 @@
 	(properties
 		view 21
 		loop 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -869,56 +896,65 @@
 	(properties
 		x 95
 		y 185
-		noun 3
+		noun N_STONE_RING
 		approachX 109
 		approachY 163
 		view 384
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(1
+				(V_LOOK
 					(if (== (stoneRing cel?) 0)
-						(messager say: 3 1)
+						(messager say: N_STONE_RING V_LOOK)
 					else
-						(messager say: 3 1 16)
+						(messager say: N_STONE_RING V_LOOK C_GOT_REWARD)
 					)
 					(return 1)
 				)
-				(4
-					(if (not (ego has: 35))
-						(ego get: 35 solvePuzzle: 256 8)
-						(if (== (stoneRing cel?) 0) (stoneRing setCycle: End))
+				(V_DO
+					(if (not (ego has: iVineFruit))
+						(ego
+							get: iVineFruit
+							solvePuzzle: fGetVineFruit 8
+						)
+						(if (== (stoneRing cel?) 0)
+							(stoneRing setCycle: EndLoop)
+						)
 					)
-					(if (not (ego has: 34))
-						(ego get: 34)
-						(if (== (stoneRing cel?) 0) (stoneRing setCycle: End))
+					(if (not (ego has: iOpal))
+						(ego get: iOpal)
+						(if (== (stoneRing cel?) 0)
+							(stoneRing setCycle: EndLoop)
+						)
 					)
-					(if (not (Btst 148))
-						(messager say: 3 4 10)
+					(if (not (Btst fGotOpalAndFruit))
+						(messager say: N_STONE_RING V_DO C_GET_OPAL)
 					else
-						(messager say: 3 4 20)
+						(messager say: N_STONE_RING V_DO C_EMPTY)
 					)
-					(Bset 148)
-					(return 1)
+					(Bset fGotOpalAndFruit)
+					(return TRUE)
 				)
-				(26
+				(V_FETCH	;was 26, which is V_DISPEL
 					(if (not (curRoom script?))
 						(AutoTarget 95 180)
-						(curRoom setScript: (ScriptID 37 0) 0 mainVine)
+						(curRoom setScript: (ScriptID CASTFETCH 0) 0 mainVine)
 					)
 				)
 				(-82
-					(messager say: 1 6 21)
-					(if (not (ego has: 35))
-						(ego solvePuzzle: 256 8 get: 35)
+					(messager say: N_CUE V_DOIT 21)
+					(if (not (ego has: iVineFruit))
+						(ego solvePuzzle: fGetVineFruit 8 get: iVineFruit)
 					)
-					(if (not (ego has: 34)) (ego get: 34))
+					(if (not (ego has: iOpal)) (ego get: iOpal))
 					(stoneRing setCel: 1)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -928,22 +964,22 @@
 	(properties
 		x 79
 		y 167
-		noun 7
+		noun N_SMALL_BAT
 		view 383
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(22
+			(V_HEALPILLS
 				(if (< (self distanceTo: ego) 30)
-					(messager say: 1 6 5)
-					(ego drop: 12 1 addHonor: 20)
+					(messager say: N_CUE V_DOIT C_HEAL_BAT)
+					(ego drop: iHealPills 1 addHonor: 20)
 				else
-					(messager say: 1 6 12)
+					(messager say: N_CUE V_DOIT C_NOT_CLOSE)
 				)
 			)
-			(11
+			(V_SWORD
 				(if
 					(and
 						(not (ego script?))
@@ -952,7 +988,7 @@
 					(ego setScript: egoHacksBat)
 				)
 			)
-			(20
+			(V_DAGGER
 				(if
 					(and
 						(not (ego script?))
@@ -963,7 +999,7 @@
 					(super doVerb: theVerb)
 				)
 			)
-			(12
+			(V_FINE_DAGGER
 				(if
 					(and
 						(not (ego script?))
@@ -972,14 +1008,16 @@
 					(ego setScript: egoHacksBat)
 				)
 			)
-			(66
-				(if (Btst 55)
-					(messager say: 1 6 5)
-					(= [egoStats 17] (/ [egoStats 17] 2))
+			(V_HEAL
+				(if (Btst fMeerbatFreed)
+					(messager say: N_CUE V_DOIT C_HEAL_BAT)
+					(/= [egoStats STAMINA] 2)
 					(ego addHonor: 20)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -988,9 +1026,9 @@
 	(properties
 		x 118
 		y 184
-		noun 6
+		noun N_BAT
 		view 382
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -998,9 +1036,9 @@
 	(properties
 		x 58
 		y 182
-		noun 6
+		noun N_BAT
 		view 382
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1008,9 +1046,9 @@
 	(properties
 		x 42
 		y 160
-		noun 6
+		noun N_BAT
 		view 382
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1018,47 +1056,49 @@
 	(properties
 		x 179
 		y 160
-		noun 9
+		noun N_VINE
 		view 380
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(81
+			(V_FLAME
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(83
+			(V_FORCEBOLT
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(88
+			(V_LIGHTNING
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(20
+			(V_DAGGER
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(33
+			(V_ROCK
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(4
+			(V_DO
 				(if (not (curRoom script?))
 					(ego setMotion: PolyPath 127 95)
 				)
 			)
-			(11
+			(V_SWORD
 				(ego setMotion: PolyPath 127 95)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	
@@ -1071,10 +1111,10 @@
 	(properties
 		x 112
 		y 140
-		noun 9
+		noun N_VINE
 		view 380
 		cel 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
@@ -1090,17 +1130,17 @@
 	(properties
 		x 115
 		y 95
-		noun 9
+		noun N_VINE
 		view 380
 		cel 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doit)
 		(if
 			(and
-				(not local0)
-				(not local2)
+				(not vinesGone)
+				(not egoGrabbed)
 				(< (GetDistance x y (ego x?) (ego y?) perspective) 20)
 			)
 			(self setScript: grabEgo)
@@ -1110,52 +1150,57 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(20
+			(V_DAGGER
 				(if (== (self script?) grabEgo)
 					(ego setScript: chopVines)
 				else
 					(vine1 doVerb: theVerb)
 				)
 			)
-			(11
+			(V_SWORD
 				(if (== (self script?) grabEgo)
 					(ego setScript: chopVines)
 				else
 					(ego setMotion: PolyPath 127 95)
 				)
 			)
-			(12
+			(V_FINE_DAGGER
 				(if (== (self script?) grabEgo)
 					(ego setScript: chopVines)
 				)
 			)
-			(81
+			(V_FLAME
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(83
+			(V_FORCEBOLT
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(88
+			(V_LIGHTNING
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(20
+			;NOTE: This case already exists, and will probably never be executed
+;;;			(V_DAGGER
+;;;				(if (not (curRoom script?))
+;;;					(self setScript: blastVine 0 theVerb)
+;;;				)
+;;;			)
+			(V_ROCK
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(33
-				(if (not (curRoom script?))
-					(self setScript: blastVine 0 theVerb)
-				)
+			(V_DO
+				(vine1 doVerb: theVerb)
 			)
-			(4 (vine1 doVerb: theVerb))
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	
@@ -1168,10 +1213,10 @@
 	(properties
 		x 194
 		y 115
-		noun 9
+		noun N_VINE
 		view 380
 		cel 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
@@ -1187,10 +1232,10 @@
 	(properties
 		x 251
 		y 158
-		noun 9
+		noun N_VINE
 		view 380
 		cel 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
@@ -1206,71 +1251,77 @@
 	(properties
 		x 165
 		y 143
-		noun 8
+		noun N_MAIN_VINE
 		view 381
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(-82
-				(messager say: 1 6 4)
-				(ego solvePuzzle: 256 8 get: 35)
+				(messager say: N_CUE V_DOIT C_FETCH_FRUIT)
+				(ego solvePuzzle: fGetVineFruit 8 get: iVineFruit)
 				(self setScript: vinesTwist)
 			)
-			(82
+			(V_FETCH
 				(cond 
-					((ego has: 35) (messager say: 1 6 13))
+					((ego has: iVineFruit)
+						(messager say: N_VINE V_DOIT C_DONT_NEED)
+					)
 					((not (curRoom script?))
 						(AutoTarget 165 138)
-						(curRoom setScript: (ScriptID 37 0) 0 mainVine)
+						(curRoom setScript: (ScriptID CASTFETCH 0) 0 mainVine)
 					)
 				)
 			)
-			(16
+			(V_GRAPNEL
 				(cond 
-					((ego has: 35) (messager say: 1 6 13))
+					((ego has: iVineFruit)
+						(messager say: N_CUE V_DOIT C_DONT_NEED)
+					)
 					(
 						(and
 							(not (vine3 script?))
 							(not (curRoom script?))
-							(not (ego has: 35))
+							(not (ego has: iVineFruit))
 						)
 						(curRoom setScript: throwHook)
 					)
 				)
 			)
-			(20
+			(V_DAGGER
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(33
+			(V_ROCK
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(81
+			(V_FLAME
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(83
+			(V_FORCEBOLT
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(88
+			(V_LIGHTNING
 				(if (not (curRoom script?))
 					(self setScript: blastVine 0 theVerb)
 				)
 			)
-			(4
+			(V_DO
 				(if (not (curRoom script?))
 					(ego setMotion: PolyPath 129 95)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	
@@ -1283,7 +1334,7 @@
 	(properties
 		x 91
 		y 172
-		noun 2
+		noun N_HOLES
 		nsTop 155
 		nsLeft 53
 		nsBottom 189
@@ -1296,7 +1347,7 @@
 	(properties
 		x 159
 		y 21
-		noun 4
+		noun N_SKY
 		nsBottom 42
 		nsRight 319
 		sightAngle 180
@@ -1304,7 +1355,6 @@
 )
 
 (instance egoChek of Code
-	(properties)
 	
 	(method (doit)
 		(cond 
@@ -1318,14 +1368,15 @@
 				(= local1 1)
 				(curRoom setScript: theyHide)
 			)
-			(
-			(and (== local1 1) (> (ego x?) 127) (< (ego y?) 91)) (= local1 0) (curRoom setScript: batsComeOut))
+			((and (== local1 1) (> (ego x?) 127) (< (ego y?) 91))
+				(= local1 0)
+				(curRoom setScript: batsComeOut)
+			)
 		)
 	)
 )
 
 (instance ambushChek of Code
-	(properties)
 	
 	(method (doit)
 		(if
