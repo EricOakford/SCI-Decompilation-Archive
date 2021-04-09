@@ -12,37 +12,32 @@
 )
 
 (local
-	speedCount
-	endTime
+	machineSpeed
+	doneTime
 )
 (instance speedRoom of Room
 	(properties
 		picture 98
 	)
 	
-	(method (init &tmp temp0)
+	(method (init &tmp versionFile)
 		(super init:)
-		(= temp0 (FileIO fileOpen {version} 1))
-		(FileIO fileFGets version 10 temp0)
-		(FileIO fileClose temp0)
+		(= versionFile (FileIO fileOpen {version} 1))
+		(FileIO fileFGets version 10 versionFile)
+		(FileIO fileClose versionFile)
 		(self setScript: speedTest)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp i)
 		(super doit:)
-		(= temp0 0)
-		(while (< temp0 500)
-			(++ temp0)
+		(for ((= i 0)) (< i 500) ((++ i))
 		)
 	)
 )
 
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance speedTest of Script
-	(properties)
 	
 	(method (changeState newState &tmp [str 200])
 		(switch (= state newState)
@@ -51,7 +46,7 @@
 				(= cycles 1)
 			)
 			(1
-				(= endTime (GetTime))
+				(= doneTime (GetTime))
 				(fred
 					view: 99
 					setLoop: 0
@@ -65,11 +60,11 @@
 				)
 			)
 			(2
-				(= speedCount (- (GetTime) endTime))
+				(= machineSpeed (- (GetTime) doneTime))
 				(= cycles 1)
 			)
 			(3
-				(Message MsgGet NARRATOR 0 0 0 1 @str)
+				(Message MsgGet NARRATOR NULL NULL NULL 1 @str)
 				(Display @str
 					p_at 10 80
 					p_width 300
@@ -79,14 +74,15 @@
 				)
 				(= seconds 5)
 			)
-			(4 (startGame doit:))
+			(4
+				(startGame doit:)
+			)
 		)
 	)
 )
 
 (instance startGame of Code
-	(properties)
-	
+
 	(method (doit &tmp [str 40])
 		(= howFast
 			(cond 
@@ -94,21 +90,21 @@
 					(>
 						(= howFast
 							(cond 
-								((> speedCount 600) 0)
-								((> speedCount 550) 1)
-								((> speedCount 500) 2)
-								((> speedCount 450) 3)
-								((> speedCount 400) 4)
-								((> speedCount 350) 5)
-								((> speedCount 300) 6)
-								((> speedCount 275) 7)
-								((> speedCount 250) 8)
-								((> speedCount 225) 9)
-								((> speedCount 200) 10)
-								((> speedCount 100) 11)
-								((> speedCount 60) 12)
-								((> speedCount 40) 13)
-								((> speedCount 20) 14)
+								((> machineSpeed 600) 0)
+								((> machineSpeed 550) 1)
+								((> machineSpeed 500) 2)
+								((> machineSpeed 450) 3)
+								((> machineSpeed 400) 4)
+								((> machineSpeed 350) 5)
+								((> machineSpeed 300) 6)
+								((> machineSpeed 275) 7)
+								((> machineSpeed 250) 8)
+								((> machineSpeed 225) 9)
+								((> machineSpeed 200) 10)
+								((> machineSpeed 100) 11)
+								((> machineSpeed 60) 12)
+								((> machineSpeed 40) 13)
+								((> machineSpeed 20) 14)
 								(else 15)
 							)
 						)

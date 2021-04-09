@@ -532,10 +532,10 @@
 
 (define	ESC			27)
 (define	SPACEBAR		32)
-(define ENTER			$0D)	;(define	ENTER			`^m)
-(define TAB				$09)	;(define	TAB			`^i)
+(define	ENTER			`^m)
+(define	TAB			`^i)
 (define	SHIFTTAB		$0f00)
-(define BACKSPACE		$08)	;(define	BACKSPACE	`^h)
+(define	BACKSPACE	`^h)
 
 
 ;Numeric key code in scan code order with missing codes added

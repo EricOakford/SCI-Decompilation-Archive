@@ -37,8 +37,7 @@
 )
 
 (instance introScript of Script
-	(properties)
-	
+
 	(method (dispose)
 		(keyDownHandler delete: self)
 		(super dispose:)
@@ -49,12 +48,12 @@
 			(0
 				(keyDownHandler add: self)
 				(Cursor showCursor: FALSE)
-				(theGlobalSound1 number: 1 loop: 1)
+				(theMusic1 number: 1 loop: 1)
 				(if (== howFast 0)
-					(theGlobalSound1 play:)
+					(theMusic1 play:)
 					(= seconds 6)
 				else
-					(theGlobalSound1 play: self)
+					(theMusic1 play: self)
 				)
 			)
 			(1
@@ -85,7 +84,7 @@
 			(7 (FadeCode init: 100 1 self))
 			(8
 				(six init:)
-				(theGlobalSound1 number: 2 loop: 1 play: self)
+				(theMusic1 number: 2 loop: 1 play: self)
 				(= seconds 5)
 			)
 			(9 (six setCycle: EndLoop))
@@ -118,8 +117,7 @@
 )
 
 (instance FadeCode of Code
-	(properties)
-	
+
 	(method (init param1 param2 param3)
 		(= local3 0)
 		(if (>= argc 1)
@@ -132,13 +130,13 @@
 		(theDoits add: self)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp i)
 		(if (!= local0 local2)
 			(= local0 (+ local0 (* 1 local1)))
-			(Palette palSET_INTENSITY 0 255 local0)
-			(= temp0 0)
-			(while (< temp0 10)
-				(++ temp0)
+			(Palette PALIntensity 0 255 local0)
+			(= i 0)
+			(while (< i 10)
+				(++ i)
 			)
 		else
 			(theDoits delete: self)
@@ -175,7 +173,6 @@
 )
 
 (class ButtonActor of Actor
-	(properties)
 	
 	(method (init)
 		(super init: &rest)

@@ -18,7 +18,7 @@
 		(if
 			(and
 				(== (ego loop?) (- (NumLoops ego) 1))
-				(not (& (ego signal?) $0800))
+				(not (& (ego signal?) fixedLoop))
 			)
 			(ego loop: (ego cel?))
 		)

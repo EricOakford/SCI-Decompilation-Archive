@@ -24,8 +24,9 @@
 				(if (IsObject param1) (= local0 param1))
 				(self check:)
 			)
-			(
-			(and (IsObject param1) (!= (= local0 param1) 0)) (local0 cue:))
+			((and (IsObject param1) (!= (= local0 param1) 0))
+				(local0 cue:)
+			)
 		)
 	)
 	
@@ -39,20 +40,22 @@
 	)
 	
 	(method (resume)
-		(if paused (DoAudio Resume) (self paused: FALSE))
+		(if paused
+			(DoAudio Resume)
+			(self paused: FALSE)
+		)
 	)
 	
-	(method (setLoop param1)
-		(self loop: param1)
+	(method (setLoop theLoop)
+		(self loop: theLoop)
 	)
 	
-	(method (setRate param1)
-		(if argc (DoAudio Rate param1))
+	(method (setRate theRate)
+		(if argc (DoAudio Rate theRate))
 	)
 	
 	(method (check &tmp temp0)
-		(if
-		(and (not stopped) (== (DoAudio Loc) -1) (== loop 1))
+		(if (and (not stopped) (== (DoAudio Loc) -1) (== loop 1))
 			(= doNotStop FALSE)
 			(= stopped TRUE)
 			(if (!= local0 0)

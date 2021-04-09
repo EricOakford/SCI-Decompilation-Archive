@@ -6,6 +6,12 @@
 (include system.sh) (include sci2.sh)
 (include verbs.sh) (include talkers.sh)
 
+; Global scripts
+(define KQ6ICON 98)
+(define KQ6CONTROLS	903)
+(define KQ6INV	907)
+(define DEBUG	911)
+(define DISPOSE 919)
 
 ;Inventory items
 (enum

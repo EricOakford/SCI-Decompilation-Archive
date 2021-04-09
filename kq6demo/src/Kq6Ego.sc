@@ -78,7 +78,7 @@
 				(and
 					normal
 					(== loop (- (NumLoops self) 1))
-					(not (& signal noTurn))
+					(not (& signal fixedLoop))
 				)
 				(self loop: cel)
 			)

@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 98)
+(script# KQ6ICON)
 (include game.sh)
 (use Main)
 (use IconBar)
@@ -7,112 +7,107 @@
 
 (class Kq6IconBar of IconBar
 	
-	(method (show &tmp temp0 temp1 temp2 temp3 theY temp5 temp6 temp7)
+	(method (show &tmp theIcon pnv i theX theY node nextNode obj)
 		(sounds pause:)
-		(= state (| state IB_ACTIVE))
-		(theGame setCursor: 999 1)
+		(|= state IB_ACTIVE)
+		(theGame setCursor: ARROW_CURSOR TRUE)
 		(= height
 			(CelHigh
-				((= temp0 (self at: 0)) view?)
-				(temp0 loop?)
-				(temp0 cel?)
+				((= theIcon (self at: 0)) view?)
+				(theIcon loop?)
+				(theIcon cel?)
 			)
 		)
 		(= port (GetPort))
 		(SetPort -1)
-		(= underBits (Graph grSAVE_BOX y 0 (+ y height) 320 1))
-		(= temp1 (PicNotValid))
-		(PicNotValid 1)
-		(= temp3 0)
+		(= underBits (Graph GSaveBits y 0 (+ y height) SCRNWIDE VMAP))
+		(= pnv (PicNotValid))
+		(PicNotValid TRUE)
+		(= theX 0)
 		(= theY y)
-		(= temp5 (FirstNode elements))
-		(while temp5
-			(= temp6 (NextNode temp5))
-			(if (not (IsObject (= temp7 (NodeValue temp5))))
+		(= node (FirstNode elements))
+		(while node
+			(= nextNode (NextNode node))
+			(if (not (IsObject (= obj (NodeValue node))))
 				(return)
 			)
-			(if (<= (temp7 nsRight?) 0)
-				(temp7 show: temp3 theY)
-				(= temp3 (temp7 nsRight?))
+			(if (<= (obj nsRight?) 0)
+				(obj show: theX theY)
+				(= theX (obj nsRight?))
 			else
-				(temp7 show:)
+				(obj show:)
 			)
-			(= temp5 temp6)
+			(= node nextNode)
 		)
 		(self updateInvIcon:)
-		(PicNotValid temp1)
-		(Graph GShowBits y 0 (+ y height) 320 1)
+		(PicNotValid pnv)
+		(Graph GShowBits y 0 (+ y height) SCRNWIDE VMAP)
 		(self highlight: curIcon)
 	)
 	
-	(method (hide &tmp temp0 temp1 temp2)
+	(method (hide &tmp node nextNode obj)
 		(if (& state IB_ACTIVE)
-			(sounds pause: 0)
-			(= state (& state $ffdf))
-			(= temp0 (FirstNode elements))
-			(while temp0
-				(= temp1 (NextNode temp0))
-				(if (not (IsObject (= temp2 (NodeValue temp0))))
+			(sounds pause: FALSE)
+			(&= state (~ IB_ACTIVE))
+			(= node (FirstNode elements))
+			(while node
+				(= nextNode (NextNode node))
+				(if (not (IsObject (= obj (NodeValue node))))
 					(return)
 				)
-				((= temp2 (NodeValue temp0))
-					signal: (& (temp2 signal?) $ffdf)
+				((= obj (NodeValue node))
+					signal: (& (obj signal?) (~ IB_ACTIVE))
 				)
-				(= temp0 temp1)
+				(= node nextNode)
 			)
 			(if
 				(and
-					(not (& state $0800))
+					(not (& state NOCLICKHELP))
 					helpIconItem
-					(& (helpIconItem signal?) $0010)
+					(& (helpIconItem signal?) TRANSLATOR)
 				)
-				(helpIconItem signal: (& (helpIconItem signal?) $ffef))
+				(helpIconItem signal: (& (helpIconItem signal?) (~ TRANSLATOR)))
 			)
 			(Graph GRestoreBits underBits)
-			(Graph GShowBits y 0 (+ y height) 320 1)
-			(Graph GReAnimate y 0 (+ y height) 320)
+			(Graph GShowBits y 0 (+ y height) SCRNWIDE VMAP)
+			(Graph GReAnimate y 0 (+ y height) SCRNWIDE)
 			(SetPort port)
 			(= height activateHeight)
 		)
 	)
 	
-	(method (advance &tmp temp0 temp1)
-		(= temp1 1)
-		(while (<= temp1 size)
-			(= temp0
+	(method (advance &tmp theIcon i)
+		(for ((= i 1)) (<= i size) ((++ i))
+			(= theIcon
 				(self
-					at: (mod (+ temp1 (self indexOf: highlightedIcon)) size)
+					at: (mod (+ i (self indexOf: highlightedIcon)) size)
 				)
 			)
-			(if (not (IsObject temp0))
-				(= temp0 (NodeValue (self first:)))
+			(if (not (IsObject theIcon))
+				(= theIcon (NodeValue (self first:)))
 			)
-			(breakif (not (& (temp0 signal?) DISABLED)))
-			(++ temp1)
+			(breakif (not (& (theIcon signal?) DISABLED)))
 		)
-		(self highlight: temp0 (& state IB_ACTIVE))
+		(self highlight: theIcon (& state IB_ACTIVE))
 	)
 	
-	(method (retreat &tmp temp0 temp1)
-		(= temp1 1)
-		(while (<= temp1 size)
-			(= temp0
+	(method (retreat &tmp theIcon i)
+		(for ((= i 1)) (<= i size) ((++ i))
+			(= theIcon
 				(self
-					at: (mod (- (self indexOf: highlightedIcon) temp1) size)
+					at: (mod (- (self indexOf: highlightedIcon) i) size)
 				)
 			)
-			(if (not (IsObject temp0))
-				(= temp0 (NodeValue (self last:)))
+			(if (not (IsObject theIcon))
+				(= theIcon (NodeValue (self last:)))
 			)
-			(breakif (not (& (temp0 signal?) DISABLED)))
-			(++ temp1)
+			(breakif (not (& (theIcon signal?) DISABLED)))
 		)
-		(self highlight: temp0 (& state IB_ACTIVE))
+		(self highlight: theIcon (& state IB_ACTIVE))
 	)
 	
 	(method (updateInvIcon &tmp temp0 temp1)
-		(if
-		(and curInvIcon (not (& (useIconItem state?) DISABLED)))
+		(if (and curInvIcon (not (& (useIconItem state?) DISABLED)))
 			(if (ego has: (inventory indexOf: curInvIcon))
 				(= temp0
 					(+
@@ -167,70 +162,26 @@
 
 (class Kq6IconItem of IconItem
 	
-	(method (highlight param1 &tmp temp0 temp1 temp2 temp3 theHighlightColor [temp5 2])
-		(if
-		(or (not (& signal IB_ACTIVE)) (== highlightColor -1))
+	(method (highlight tOrF &tmp t l b r sColor [temp5 2])
+		(if (or (not (& signal IB_ACTIVE)) (== highlightColor -1))
 			(return)
 		)
-		(if (and argc param1)
-			(= theHighlightColor highlightColor)
-			(= temp0 (+ nsTop 2))
-			(= temp1 (+ nsLeft 2))
-			(= temp2 (- nsBottom 3))
-			(= temp3 (- nsRight 4))
-			(Graph
-				GDrawLine
-				temp0
-				temp1
-				temp0
-				temp3
-				theHighlightColor
-				-1
-				-1
-			)
-			(Graph
-				GDrawLine
-				temp0
-				temp3
-				temp2
-				temp3
-				theHighlightColor
-				-1
-				-1
-			)
-			(Graph
-				GDrawLine
-				temp2
-				temp3
-				temp2
-				temp1
-				theHighlightColor
-				-1
-				-1
-			)
-			(Graph
-				GDrawLine
-				temp2
-				temp1
-				temp0
-				temp1
-				theHighlightColor
-				-1
-				-1
-			)
+		(if (and argc tOrF)
+			(= sColor highlightColor)
+			(= t (+ nsTop 2))
+			(= l (+ nsLeft 2))
+			(= b (- nsBottom 3))
+			(= r (- nsRight 4))
+			(Graph GDrawLine t l t r sColor -1 -1)
+			(Graph GDrawLine t r b r sColor -1 -1)
+			(Graph GDrawLine b r b l sColor -1 -1)
+			(Graph GDrawLine b l t l sColor -1 -1)
 		else
 			(self show:)
 			(if (Kq6IconBar curInvIcon?)
 				(Kq6IconBar updateInvIcon:)
 			)
 		)
-		(Graph
-			GShowBits
-			(- nsTop 2)
-			(- nsLeft 2)
-			nsBottom
-			(+ nsRight 3)
-			1
-		)
+		(Graph GShowBits (- nsTop 2) (- nsLeft 2) nsBottom (+ nsRight 3) VMAP)
 	)
 )

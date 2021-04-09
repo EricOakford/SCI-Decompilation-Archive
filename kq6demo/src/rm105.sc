@@ -48,7 +48,7 @@
 	(method (handleEvent event)
 		(if (== (event type?) keyDown)
 			(switch (event message?)
-				(KEY_CONTROL
+				(`^q
 					(theGame quitGame:)
 					(event claimed: TRUE)
 				)
@@ -123,7 +123,7 @@
 				((ScriptID 107 2) doit: 1 self)
 			)
 			(3
-				(theGlobalSound1 loop: 1 number: 105 play:)
+				(theMusic1 loop: 1 number: 105 play:)
 				(Message MsgGet 105 N_MOVIE 0 0 1 @str)
 				(= saveBits
 					(Display @str
@@ -166,11 +166,11 @@
 			(13 (= seconds 2))
 			(14 (= seconds 2))
 			(15
-				(theGlobalSound1 fade:)
+				(theMusic1 fade:)
 				(= cycles 10)
 			)
 			(16
-				(theGlobalSound1 number: 106 play:)
+				(theMusic1 number: 106 play:)
 				(= seconds 5)
 			)
 			(17
@@ -178,8 +178,8 @@
 				(= cycles 1)
 			)
 			(18
-				(theGlobalSound1 stop:)
-				(theGlobalSound1 number: 107 play:)
+				(theMusic1 stop:)
+				(theMusic1 number: 107 play:)
 				(ShowMovie {FS3A.SEQ} 8)
 				(ShowMovie {FS3B.SEQ} 8)
 				(= cycles 1)
@@ -243,10 +243,10 @@
 			(26 (DrawPic 107) (= cycles 2))
 			(27
 				(Palette PALIntensity 0 231 100)
-				(theGlobalSound1 fade: 20 0 2 self)
+				(theMusic1 fade: 20 0 2 self)
 			)
 			(28
-				(theGlobalSound1 number: Forward play:)
+				(theMusic1 number: Forward play:)
 				(if cDAudio
 					(localAudio number: 1008 play: self)
 				else
@@ -276,7 +276,7 @@
 				(= cycles 2)
 			)
 			(32
-				(theGlobalSound1 stop: number: 109 loop: -1 play: self)
+				(theMusic1 stop: number: 109 loop: -1 play: self)
 				(Message MsgGet 105 N_MOVIE 0 0 21 @str)
 				(= saveBits
 					(Display @str
@@ -338,11 +338,11 @@
 			)
 			(41
 				(DrawPic 107)
-				(theGlobalSound1 fade: 20 0 2 self)
+				(theMusic1 fade: 20 0 2 self)
 			)
 			(42
-				(theGlobalSound1 stop: number: 110 loop: 1 play: self)
-				(Message MsgGet 105 N_MOVIE 0 0 23 @str)
+				(theMusic1 stop: number: 110 loop: 1 play: self)
+				(Message MsgGet 105 N_MOVIE NULL NULL 23 @str)
 				(Display 105 N_MOVIE p_restore saveBits)
 				(= saveBits
 					(Display @str

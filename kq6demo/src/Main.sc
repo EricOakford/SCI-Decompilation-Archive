@@ -139,14 +139,14 @@
 		global98
 	lastSysGlobal
 	debugging
-	dongle =  1234
-	theGlobalSound1
-	theGlobalSound2
-	theGlobalSound3
-	theGlobalSound4
+	gameCode =  1234
+	theMusic1
+	theMusic2
+	theMusic3
+	theMusic4
 	global106
-	colorCount
-	musicChannels
+	numColors
+	numVoices
 	global109
 	global110
 	
@@ -220,14 +220,16 @@
 	(if (> vga 255) (= vga 255))
 	(if (< ega 0) (= ega 0))
 	(if (> ega 15) (= ega 15))
-	(return (if (>= colorCount 32) vga else ega))
+	(return (if (>= numColors 32) vga else ega))
 )
 
 (class Kq6Points of Kq6Sound
 	
 	(method (check)
 		(super check: &rest)
-		(if (== prevSignal -1) (self dispose:))
+		(if (== prevSignal -1)
+			(self dispose:)
+		)
 	)
 )
 
@@ -242,7 +244,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(= scaleSignal (| scaleSignal $0004))
+		(|= scaleSignal noStepScale)
 	)
 	
 	(method (handleEvent event)
@@ -257,7 +259,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_EGG (curRoom setScript: 908))
+			(V_EGG
+				(curRoom setScript: 908)
+			)
 			(V_POTION
 				(if (and (!= curRoomNum 280) (Btst fDrankPotion))
 					(messager say: N_ALEX V_POTION C_ALREADY_DRANK_POTION 0 0 0)
@@ -265,9 +269,15 @@
 					(curRoom setScript: 87)
 				)
 			)
-			(V_FLUTE (curRoom setScript: 85))
-			(V_BORINGBOOK (curRoom setScript: 88))
-			(V_RIDDLE_BOOK (curRoom setScript: 90))
+			(V_FLUTE
+				(curRoom setScript: 85)
+			)
+			(V_BORINGBOOK
+				(curRoom setScript: 88)
+			)
+			(V_RIDDLE_BOOK
+				(curRoom setScript: 90)
+			)
 			(V_INK
 				(if (Btst fUsedInk)
 					(messager say: N_ALEX V_INK C_ALREADY_USED_INK 0 0 0)
@@ -275,8 +285,12 @@
 					(curRoom setScript: 92)
 				)
 			)
-			(V_NIGHTINGALE (curRoom setScript: 93))
-			(V_SPELLBOOK (curRoom setScript: 190))
+			(V_NIGHTINGALE
+				(curRoom setScript: 93)
+			)
+			(V_SPELLBOOK
+				(curRoom setScript: 190)
+			)
 			(V_POEM
 				(if (curRoom script?)
 					(messager say: N_NOTNOW NULL C_BUSY 0 0 0)
@@ -339,7 +353,9 @@
 		(= newLoop 0)
 		(if (and argc (>= argc 1))
 			(= newPiece [theNewPiece 0])
-			(if (>= argc 2) (= newLoop [theNewPiece 1]))
+			(if (>= argc 2)
+				(= newLoop [theNewPiece 1])
+			)
 		)
 		(if (== prevSignal -1)
 			(self cue:)
@@ -360,37 +376,21 @@
 	)
 )
 
-(instance globalSound of NewSound
-	(properties)
-)
+(instance globalSound of NewSound)
 
-(instance globalSound2 of Kq6Sound
-	(properties)
-)
+(instance globalSound2 of Kq6Sound)
 
-(instance globalSound3 of Kq6Sound
-	(properties)
-)
+(instance globalSound3 of Kq6Sound)
 
-(instance globalSound4 of Kq6Sound
-	(properties)
-)
+(instance globalSound4 of Kq6Sound)
 
-(instance kq6KeyDownHandler of EventHandler
-	(properties)
-)
+(instance kq6KeyDownHandler of EventHandler)
 
-(instance kq6MouseDownHandler of EventHandler
-	(properties)
-)
+(instance kq6MouseDownHandler of EventHandler)
 
-(instance kq6DirectionHandler of EventHandler
-	(properties)
-)
+(instance kq6DirectionHandler of EventHandler)
 
-(instance kq6WalkHandler of EventHandler
-	(properties)
-)
+(instance kq6WalkHandler of EventHandler)
 
 (class Kq6 of Game
 	(properties
@@ -443,10 +443,10 @@
 		(= pMouse kq6PseudoMouse)
 		(= ego egoObj)
 		(User alterEgo: ego canControl: FALSE canInput: FALSE)
-		((= theGlobalSound1 globalSound) owner: self init:)
-		((= theGlobalSound2 globalSound2) owner: self init:)
-		((= theGlobalSound3 globalSound3) owner: self init:)
-		((= theGlobalSound4 globalSound4) owner: self init:)
+		((= theMusic1 globalSound) owner: self init:)
+		((= theMusic2 globalSound2) owner: self init:)
+		((= theMusic3 globalSound3) owner: self init:)
+		((= theMusic4 globalSound4) owner: self init:)
 		(= possibleScore 231)
 		(= version {x.yyy.zzz})
 		(Format @fileBuf 0 0 911)
@@ -456,7 +456,7 @@
 			(= debugging FALSE)
 		)
 		(ego setSpeed: 6 currentSpeed: 6)
-		(= musicChannels (DoSound NumVoices))
+		(= numVoices (DoSound NumVoices))
 		((= theIconBar Kq6IconBar)
 			add:
 				(icon0 cursor: cIcon0 yourself:)
@@ -475,7 +475,7 @@
 			disable: icon4
 			disable:
 		)
-		(icon5 message: (if (HaveMouse) 3840 else 9))
+		(icon5 message: (if (HaveMouse) SHIFTTAB else TAB))
 		((ScriptID 907) init:)
 		(= startingRoom (if (GameIsRestarting) 200 else 100))
 		(= eatMice 2)
@@ -487,7 +487,9 @@
 	(method (play)
 		(= theGame self)
 		(= curSaveDir (GetSaveDir))
-		(if (not (GameIsRestarting)) (GetCWD curSaveDir))
+		(if (not (GameIsRestarting))
+			(GetCWD curSaveDir)
+		)
 		(self init:)
 		(while (not quit)
 			(self doit:)
@@ -496,13 +498,13 @@
 	
 	(method (startRoom roomNum)
 		(if pMouse (pMouse stop:))
-		((ScriptID 919) doit: roomNum)
+		((ScriptID DISPOSE) doit: roomNum)
 		(if
 			(and
 				debugging
-				(not (Btst 38))
-				(u> (MemoryInfo 1) (+ 10 (MemoryInfo 0)))
-				(!= (- (MemoryInfo 1) 2) (MemoryInfo 0))
+				(not (Btst fFragmented))
+				(u> (MemoryInfo FreeHeap) (+ 10 (MemoryInfo LargestPtr)))
+				(!= (- (MemoryInfo FreeHeap) 2) (MemoryInfo LargestPtr))
 			)
 			(if
 				(switch
@@ -513,12 +515,18 @@
 						addButton: 1 {Debug} 0 34
 						init:
 					)
-					(0 (Bset fFragmented))
-					(1 (SetDebug))
+					(0
+						(Bset fFragmented)
+					)
+					(1
+						(SetDebug)
+					)
 				)
 			)
 		)
-		(if debugOn (SetDebug))
+		(if debugOn
+			(SetDebug)
+		)
 		(cond 
 			(
 			(OneOf roomNum 200 210 220 230 240 250 260 270 280 290)
@@ -541,11 +549,22 @@
 				(ScriptID regionLABYRINTH)
 				((ScriptID roomNum) setRegions: regionLABYRINTH)
 			)
-			((OneOf roomNum 450 460 461 470 475 480 490) (ScriptID regionWONDER) ((ScriptID roomNum) setRegions: regionWONDER))
-			((OneOf roomNum 500 510 520 530 540) (ScriptID regionBEAST) ((ScriptID roomNum) setRegions: regionBEAST))
-			((OneOf roomNum 550 560 570 580) (ScriptID regionMIST) ((ScriptID roomNum) setRegions: regionMIST))
-			(
-			(OneOf roomNum 600 605 615 620 630 640 650 660 670 680 690) (ScriptID regionDEAD) ((ScriptID roomNum) setRegions: regionDEAD))
+			((OneOf roomNum 450 460 461 470 475 480 490)
+				(ScriptID regionWONDER)
+				((ScriptID roomNum) setRegions: regionWONDER)
+			)
+			((OneOf roomNum 500 510 520 530 540)
+				(ScriptID regionBEAST)
+				((ScriptID roomNum) setRegions: regionBEAST)
+			)
+			((OneOf roomNum 550 560 570 580)
+				(ScriptID regionMIST)
+				((ScriptID roomNum) setRegions: regionMIST)
+			)
+			((OneOf roomNum 600 605 615 620 630 640 650 660 670 680 690)
+				(ScriptID regionDEAD)
+				((ScriptID roomNum) setRegions: regionDEAD)
+			)
 			(
 				(OneOf roomNum
 					700 710 720 730 740 750 760 770 780 781
@@ -563,14 +582,15 @@
 		)
 		(super startRoom: roomNum)
 		(CueObj client: 0 state: 0)
-		(if
-		(and (cast contains: ego) (not (ego looper?)))
+		(if (and (cast contains: ego) (not (ego looper?)))
 			(ego setLoop: EgoGroop)
 		)
 	)
 	
 	(method (restart tOrF &tmp ret oldCur)
-		(if modelessDialog (modelessDialog dispose:))
+		(if modelessDialog
+			(modelessDialog dispose:)
+		)
 		(if (not argc)
 			(= oldCur (theGame setCursor: normalCursor))
 			(if
@@ -578,10 +598,10 @@
 					(Print
 						posn: 59 85
 						font: 4
-						addButton: TRUE N_RESTART 0 C_YES_RESTART 0 115 18 0
-						addButton: FALSE N_RESTART 0 C_NO_RESTART 0 115 36 0
+						addButton: TRUE N_RESTART NULL C_YES_RESTART 0 115 18 0
+						addButton: FALSE N_RESTART NULL C_NO_RESTART 0 115 36 0
 						font: USERFONT
-						addText: N_RESTART 0 0 0 0 0 0
+						addText: N_RESTART NULL NULL 0 0 0 0
 						init:
 					)
 				)
@@ -595,17 +615,15 @@
 	)
 	
 	(method (restore)
-		(if
-		(or (not (Btst fSaveDisabled)) (>= (MemoryInfo LargestPtr) 1500))
+		(if (or (not (Btst fSaveDisabled)) (>= (MemoryInfo LargestPtr) 1500))
 			(super restore: &rest)
 		else
-			(messager say: N_NOTNOW 0 C_NOMEMORY 0 0 0)
+			(messager say: N_NOTNOW NULL C_NOMEMORY 0 0 0)
 		)
 	)
 	
 	(method (save)
-		(if
-		(and (not (Btst fSaveDisabled)) (>= (MemoryInfo LargestPtr) 1500))
+		(if (and (not (Btst fSaveDisabled)) (>= (MemoryInfo LargestPtr) 1500))
 			(super save: &rest)
 			(self
 				setCursor:
@@ -616,12 +634,12 @@
 					)
 			)
 		else
-			(messager say: N_NOTNOW 0 C_NOMEMORY 0 0 0)
+			(messager say: N_NOTNOW NULL C_NOMEMORY 0 0 0)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(cond 
 			(debugging
 				(switch (event type?)
@@ -629,25 +647,31 @@
 						(switch (event message?)
 							(TAB
 								(if (not (& (icon5 signal?) DISABLED))
-									((ScriptID 907 1) init: ego)
+									((ScriptID KQ6INV 1) init: ego)
 									(event claimed: TRUE)
 								)
 							)
 							(SHIFTTAB
 								(if (not (& (icon5 signal?) DISABLED))
-									((ScriptID 907 1) init: ego)
+									((ScriptID KQ6INV 1) init: ego)
 									(event claimed: TRUE)
 								)
 							)
-							(KEY_CONTROL
+							(`^q
 								(theGame quitGame:)
 								(event claimed: TRUE)
 							)
 							(`#2
 								(cond 
-									((theGame masterVolume:) (self masterVolume: 0))
-									((> musicChannels 1) (self masterVolume: 15))
-									(else (self masterVolume: 1))
+									((theGame masterVolume:)
+										(self masterVolume: 0)
+									)
+									((> numVoices 1)
+										(self masterVolume: 15)
+									)
+									(else
+										(self masterVolume: 1)
+									)
 								)
 								(event claimed: TRUE)
 							)
@@ -673,9 +697,9 @@
 										)
 									)
 									(event claimed: FALSE)
-									((ScriptID 911) handleEvent: event)
-									((ScriptID 911) dispose:)
-									(DisposeScript 911)
+									((ScriptID DEBUG) handleEvent: event)
+									((ScriptID DEBUG) dispose:)
+									(DisposeScript DEBUG)
 								)
 							)
 						)
@@ -684,11 +708,13 @@
 			)
 			((== (event type?) keyDown)
 				(switch (event message?)
-					(KEY_CONTROL
+					(`^q
 						(theGame quitGame:)
 						(event claimed: TRUE)
 					)
-					(else  (event claimed: TRUE))
+					(else
+						(event claimed: TRUE)
+					)
 				)
 			)
 		)
@@ -718,23 +744,27 @@
 	)
 	
 	(method (quitGame &tmp temp0)
-		(if modelessDialog (modelessDialog dispose:))
+		(if modelessDialog
+			(modelessDialog dispose:)
+		)
 		(= quit TRUE)
 	)
 	
 	(method (pragmaFail theVerb &tmp seq)
 		(if (User canInput:)
 			(= seq (Random 1 3))
-			(if (== (approachCode doit: theVerb) -32768)
+			(if (== (approachCode doit: theVerb) $8000)
 				(= theVerb NULL)
 			)
-			(messager say: 0 theVerb 0 seq 0 0)
+			(messager say: NULL theVerb NULL seq 0 0)
 		)
 	)
 	
 	(method (handsOff)
 		(= isHandsOn FALSE)
-		(if (not argc) (ego setMotion: 0))
+		(if (not argc)
+			(ego setMotion: 0)
+		)
 		(if (not oldCurIcon)
 			(= oldCurIcon (theIconBar curIcon?))
 		)
@@ -763,7 +793,9 @@
 		)
 		(User canControl: FALSE canInput: FALSE)
 		(theGame setCursor: waitCursor)
-		(if pMouse (pMouse stop:))
+		(if pMouse
+			(pMouse stop:)
+		)
 	)
 	
 	(method (handsOn &tmp temp0)
@@ -783,7 +815,7 @@
 	)
 	
 	(method (givePoints delta)
-		(= score (+ score delta))
+		(+= score delta)
 		((Kq6Points new:) flags: mNOPAUSE number: 900 play:)
 	)
 	
@@ -909,49 +941,49 @@
 	)
 )
 (instance kq6DoVerbCode of Code
-	(properties)
 	
 	(method (doit theVerb theNoun)
 		(cond 
 			(
 				(and
-					(== (kq6ApproachCode doit: theVerb) -32768)
-					(Message MsgGet (theNoun modNum?) (theNoun noun?) 0 0 1)
+					(== (kq6ApproachCode doit: theVerb) $8000)
+					(Message MsgGet (theNoun modNum?) (theNoun noun?) NULL NULL 1)
 				)
-				(messager say: (theNoun noun?) 0 0 0 0 (theNoun modNum?))
+				(messager say: (theNoun noun?) NULL NULL 0 0 (theNoun modNum?))
 			)
-			((not (curRoom doVerb: theVerb)) (theGame pragmaFail: theVerb))
+			((not (curRoom doVerb: theVerb))
+				(theGame pragmaFail: theVerb)
+			)
 		)
 	)
 )
 
 (instance kq6FtrInit of Code
-	(properties)
-	
-	(method (doit param1)
-		(if (== (param1 sightAngle?) 26505)
-			(param1 sightAngle: 90)
+
+	(method (doit theObj)
+		(if (== (theObj sightAngle?) ftrDefault)
+			(theObj sightAngle: 90)
 		)
-		(if (== (param1 actions?) 26505) (param1 actions: 0))
+		(if (== (theObj actions?) ftrDefault)
+			(theObj actions: 0)
+		)
 	)
 )
 
 (instance kq6ApproachCode of Code
-	(properties)
 	
-	(method (doit theDirection)
-		(switch theDirection
-			(dirN 1)
-			(dirW 2)
-			(dirE 4)
-			(dirS 8)
-			(else  -32768)
+	(method (doit theVerb)
+		(switch theVerb
+			(V_LOOK $0001)
+			(V_TALK $0002)
+			(V_WALK $0004)
+			(V_DO $0008)
+			(else  $8000)
 		)
 	)
 )
 
 (instance kq6PseudoMouse of PseudoMouse
-	(properties)
 	
 	(method (handleEvent event &tmp oldIcon)
 		(if (& (event type?) direction)
@@ -1051,7 +1083,7 @@
 		view 980
 		loop 6
 		cel 0
-		message 0
+		message NULL
 		signal (| RELVERIFY HIDEBAR IMMEDIATE)
 		maskView 980
 		maskLoop 6
@@ -1060,9 +1092,9 @@
 	
 	(method (doit)
 		(if (>= (MemoryInfo LargestPtr) 1500)
-			((ScriptID 903) init: show: dispose:)
+			((ScriptID KQ6CONTROLS) init: show: dispose:)
 		else
-			(messager say: N_NOTNOW 0 C_NOMEMORY 0 0 0)
+			(messager say: N_NOTNOW NULL C_NOMEMORY 0 0 0)
 		)
 	)
 	
@@ -1135,10 +1167,11 @@
 )
 
 (instance emberTimer of Timer
-	(properties)
-	
+
 	(method (doit)
-		(if (!= client self) (super doit: &rest))
+		(if (!= client self)
+			(super doit: &rest)
+		)
 	)
 	
 	(method (dispose)
@@ -1147,16 +1180,19 @@
 	)
 	
 	(method (delete)
-		(if (not client) (= client self))
+		(if (not client)
+			(= client self)
+		)
 		(super delete:)
 	)
 )
 
 (instance beastTimer of Timer
-	(properties)
-	
+
 	(method (doit)
-		(if (!= client self) (super doit: &rest))
+		(if (!= client self)
+			(super doit: &rest)
+		)
 	)
 	
 	(method (dispose)
@@ -1166,10 +1202,11 @@
 )
 
 (instance CharonTimer of Timer
-	(properties)
-	
+
 	(method (doit)
-		(if (!= client self) (super doit: &rest))
+		(if (!= client self)
+			(super doit: &rest)
+		)
 	)
 	
 	(method (dispose)
@@ -1179,10 +1216,11 @@
 )
 
 (instance lettuceTimer of Timer
-	(properties)
-	
+
 	(method (doit)
-		(if (!= client self) (super doit: &rest))
+		(if (!= client self)
+			(super doit: &rest)
+		)
 	)
 	
 	(method (dispose)
@@ -1191,7 +1229,9 @@
 	)
 	
 	(method (delete)
-		(if (not client) (= client self))
+		(if (not client)
+			(= client self)
+		)
 		(super delete:)
 	)
 )

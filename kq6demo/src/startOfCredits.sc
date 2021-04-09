@@ -42,7 +42,7 @@
 				else
 					(= isEGA TRUE)
 				)
-				(theGlobalSound2 loop: 1 number: 111 play:)
+				(theMusic2 loop: 1 number: 111 play:)
 				(kq init:)
 				(= cycles 2)
 			)
@@ -66,10 +66,10 @@
 				(self setScript: openingCredits self)
 			)
 			(5
-				(if (== (theGlobalSound2 prevSignal?) -1)
+				(if (== (theMusic2 prevSignal?) -1)
 					(self cue:)
 				else
-					(theGlobalSound2 client: self)
+					(theMusic2 client: self)
 				)
 			)
 			(6 (= cycles 4))
