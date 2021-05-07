@@ -1,0 +1,251 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# 257)
+(include sci.sh)
+(use Main)
+(use Intrface)
+(use Motion)
+(use Game)
+(use User)
+(use Actor)
+(use System)
+
+(public
+	lillRead 0
+)
+(synonyms
+	(lil person girl)
+)
+
+(local
+	local0
+	local1
+)
+(procedure (localproc_000c)
+	(Print
+		&rest
+		#at
+		40
+		10
+		#font
+		4
+		#width
+		125
+		#mode
+		1
+		#draw
+		#dispose
+	)
+)
+
+(instance lillRead of Rgn
+	(properties)
+	
+	(method (init)
+		(super init:)
+		(if (not (& global118 $0001))
+			(LoadMany 132 29 94 95 96)
+			(Load rsFONT 41)
+			(Load rsSCRIPT 406)
+			(Load rsVIEW 642)
+		)
+		(Load rsFONT 4)
+		(LoadMany 143 406 243 288)
+		(Load rsVIEW 905)
+		(= global208 32)
+		(= [global377 5] 288)
+		(Lillian init:)
+		(LHead init: stopUpd:)
+		(Book init: stopUpd:)
+		(self setScript: reading)
+	)
+	
+	(method (doit)
+		(super doit:)
+	)
+	
+	(method (dispose)
+		(super dispose:)
+	)
+	
+	(method (handleEvent event)
+		(super handleEvent: event)
+		(if (event claimed?) (return 1))
+		(return
+			(if (== (event type?) evSAID)
+				(cond 
+					((Said 'examine>')
+						(cond 
+							((Said '/book')
+								(if (< (ego distanceTo: Lillian) 40)
+									(Print 257 0)
+								else
+									(NotClose)
+								)
+							)
+							((Said '/doll') (Print 257 1))
+						)
+					)
+					((Said 'get>')
+						(cond 
+							((Said '/book') (Print 257 2))
+							((Said '/doll') (Print 257 3))
+						)
+					)
+					((Said 'read/book')
+						(if (< (ego distanceTo: Lillian) 40)
+							(Print 257 0)
+						else
+							(NotClose)
+						)
+					)
+				)
+			else
+				0
+			)
+		)
+	)
+)
+
+(instance reading of Script
+	(properties)
+	
+	(method (doit)
+		(if (and (== state 1) (== (Lillian cel?) 4))
+			(Book hide:)
+		)
+		(super doit:)
+	)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(cond 
+					((not global216) (= state -1))
+					((not (& global118 $0001))
+						(= global118 (| global118 $0001))
+						(self setScript: (ScriptID 406 0))
+						(= state -1)
+					)
+					((self script?) (= state -1))
+				)
+				(= cycles 1)
+			)
+			(1
+				(Lillian loop: 6 setCycle: Beg self)
+			)
+			(2
+				(LHead loop: 5 setCycle: Fwd)
+				(User canInput: 0)
+				(switch local1
+					(0 (localproc_000c 257 4))
+					(1 (localproc_000c 257 5))
+					(2 (localproc_000c 257 6))
+					(3 (localproc_000c 257 7))
+					(4 (localproc_000c 257 8))
+					(5 (localproc_000c 257 9))
+					(6 (localproc_000c 257 10))
+					(7 (localproc_000c 257 11))
+					(8 (localproc_000c 257 12))
+					(else  (localproc_000c 257 13))
+				)
+				(if (< local1 9) (++ local1) else (= local1 0))
+				(= seconds 4)
+			)
+			(3
+				(LHead loop: 5 setCycle: 0)
+				(cls)
+				(User canInput: 1)
+				(= seconds 3)
+			)
+			(4
+				(Lillian loop: 2 setCycle: End)
+				(if (< (Random 1 100) 15) (= state 3))
+				(= seconds (Random 6 12))
+			)
+			(5
+				(LHead loop: 3 setCycle: End)
+				(= seconds (Random 3 8))
+			)
+			(6
+				(LHead setCycle: Beg)
+				(if (< (Random 1 100) 25)
+					(= state 3)
+				else
+					(= state 1)
+				)
+				(= seconds (Random 3 8))
+			)
+		)
+	)
+)
+
+(instance Lillian of Act
+	(properties
+		y 141
+		x 187
+		view 506
+		loop 6
+		cel 5
+		illegalBits $0000
+	)
+	
+	(method (handleEvent event)
+		(cond 
+			((Said 'converse/lil')
+				(= theTalker 6)
+				(switch local0
+					(0 (Say 1 257 14))
+					(1 (Say 1 257 15))
+					(2 (Say 1 257 16))
+					(else  (Print 257 17))
+				)
+				(++ local0)
+			)
+			((Said 'tell,ask/lil') (Print 257 18))
+			((Said 'deliver,hold/lil') (Print 257 19))
+			((Said 'hear/lil') (Print 257 20))
+			((Said 'get/lil') (Print 257 21))
+			((Said 'kill/lil') (Print 257 22))
+			((Said 'kiss/lil') (Print 257 23))
+			((Said 'embrace/lil') (Print 257 24))
+			(
+				(and
+					(not (& global207 $0020))
+					(or (MousedOn self event 3) (Said 'examine/lil'))
+				)
+				(= global207 (| global207 $0020))
+				(= theTalker 6)
+				(event claimed: 1)
+				(Say 0 257 25)
+			)
+			(
+				(and
+					(& global207 $0020)
+					(or (MousedOn self event 3) (Said 'examine/lil'))
+				)
+				(event claimed: 1)
+				(Print 257 26)
+			)
+		)
+	)
+)
+
+(instance LHead of Prop
+	(properties
+		y 141
+		x 189
+		z 33
+		view 506
+		loop 3
+	)
+)
+
+(instance Book of Prop
+	(properties
+		y 123
+		x 177
+		view 163
+		loop 2
+		cel 2
+	)
+)
