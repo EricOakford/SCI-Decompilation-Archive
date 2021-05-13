@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 320)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -16,27 +16,21 @@
 (local
 	local0
 )
-(instance Wilbur of Prop
-	(properties)
-)
+(instance Wilbur of Prop)
 
-(instance Book of Prop
-	(properties)
-)
+(instance Book of Prop)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene32a of Rm
+(instance scene32a of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(HandsOff)
 		(myMusic number: 27 loop: -1 play:)
 		(Wilbur
@@ -74,7 +68,6 @@
 )
 
 (instance page of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -83,11 +76,13 @@
 					(cond 
 						((not global216) (= state -1))
 						((not (& global118 $0008))
-							(= global118 (| global118 $0008))
+							(|= global118 $0008)
 							(self setScript: (ScriptID 406 0))
 							(= state -1)
 						)
-						((self script?) (= state -1))
+						((self script?)
+							(= state -1)
+						)
 					)
 				)
 				(= cycles 1)
@@ -97,9 +92,12 @@
 				(= seconds 4)
 			)
 			(2
-				(Book show: cel: 0 cycleSpeed: 1 setCycle: End self)
+				(Book show: cel: 0 cycleSpeed: 1 setCycle: EndLoop self)
 			)
-			(3 (Book hide:) (= seconds 3))
+			(3
+				(Book hide:)
+				(= seconds 3)
+			)
 			(4
 				(curRoom newRoom: prevRoomNum)
 			)

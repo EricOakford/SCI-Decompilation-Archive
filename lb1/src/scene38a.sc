@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 301)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -16,56 +16,44 @@
 (local
 	local0
 	local1
-	theCycles
-	local3
-	local4
+	talkCycles
+	mouthCued
+	saveBits
 )
-(procedure (localproc_000c &tmp [temp0 500])
-	(GetFarText &rest @temp0)
-	(if (< (= theCycles (/ (StrLen @temp0) 2)) 20)
-		(= theCycles 20)
+(procedure (Measure &tmp [str 500])
+	(GetFarText &rest @str)
+	(if (< (= talkCycles (/ (StrLen @str) 2)) 20)
+		(= talkCycles 20)
 	)
 )
 
-(procedure (localproc_0033)
-	(localproc_000c &rest)
+(procedure (GertPrint)
+	(Measure &rest)
 	(gertMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		140
-		110
-		#font
-		4
-		#width
-		160
-		#mode
-		1
+	(Print &rest
+		#at 140 110
+		#font 4
+		#width 160
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(procedure (localproc_0064)
-	(localproc_000c &rest)
-	(= theCycles (/ theCycles 2))
+(procedure (ClarPrint)
+	(Measure &rest)
+	(/= talkCycles 2)
 	(clarMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		10
-		110
-		#font
-		4
-		#width
-		160
-		#mode
-		1
+	(Print &rest
+		#at 10 110
+		#font 4
+		#width 160
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(procedure (localproc_009b)
-	(= global173 (| global173 $0002))
+(procedure (EventDone)
+	(|= global173 $0002)
 	(= [global368 1] 0)
 	(++ global197)
 	(Bset 16)
@@ -73,18 +61,18 @@
 	(Bset 21)
 )
 
-(instance scene38a of Rm
+(instance scene38a of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(LoadMany 135 4 41)
+		(LoadMany FONT 4 41)
 		(LoadMany 143 406)
-		(Load rsVIEW 642)
-		(LoadMany 132 29 94 95 96)
+		(Load VIEW 642)
+		(LoadMany SOUND 29 94 95 96)
 		(HandsOff)
 		(Clarence setPri: 1 init:)
 		(clarMouth setPri: 2 init: hide:)
@@ -99,7 +87,7 @@
 		(Smoke setPri: 2 init: hide:)
 		(myMusic number: 27 loop: -1 play:)
 		(if (not (& global173 $0002))
-			(localproc_009b)
+			(EventDone)
 			(if (!= [global368 1] 1)
 				(gertEye setPri: 2 init: stopUpd: setScript: GertsEye)
 				(gertMouth setPri: 2 init: hide:)
@@ -108,7 +96,7 @@
 					setLoop: 3
 					setCel: 0
 					setPri: 3
-					ignoreActors: 1
+					ignoreActors: TRUE
 					init:
 				)
 			)
@@ -132,12 +120,11 @@
 )
 
 (instance ClarsEye of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(clarEye cel: (^ (clarEye cel?) $0001) forceUpd:)
+				(clarEye cel: (^ (clarEye cel?) 1) forceUpd:)
 				(= state -1)
 				(if (clarEye cel?)
 					(= cycles 2)
@@ -150,12 +137,11 @@
 )
 
 (instance GertsEye of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gertEye cel: (^ (gertEye cel?) $0001) forceUpd:)
+				(gertEye cel: (^ (gertEye cel?) 1) forceUpd:)
 				(= state -1)
 				(= seconds (Random 1 6))
 			)
@@ -164,7 +150,6 @@
 )
 
 (instance speech38a of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -172,7 +157,7 @@
 			(if (== (mod state 2) 0)
 				(gertGlass setMotion: MoveTo 222 118)
 				(if (and (== (Hand x?) 122) (== (Hand y?) 135))
-					(Smoke show: setCycle: End)
+					(Smoke show: setCycle: EndLoop)
 				)
 				(Hand setMotion: MoveTo 122 135)
 			else
@@ -184,78 +169,74 @@
 	
 	(method (changeState newState)
 		(if (cycleMouth client?)
-			(= local3 1)
+			(= mouthCued TRUE)
 			(= cycles 1)
 		else
 			(switch (= state newState)
 				(0
 					(cond 
-						((not global216) (= state -1))
+						((not global216)
+							(= state -1)
+						)
 						((not (& global118 $0002))
-							(= global118 (| global118 $0002))
+							(|= global118 $0002)
 							(self setScript: (ScriptID 406 0))
 							(= state -1)
 						)
-						((self script?) (= state -1))
+						((self script?)
+							(= state -1)
+						)
 					)
 					(= cycles 1)
 				)
 				(1
-					(= local4
-						(Display
-							301
-							0
-							dsCOORD
-							48
-							8
-							dsWIDTH
-							256
-							dsCOLOR
-							15
-							dsBACKGROUND
-							-1
-							dsFONT
-							0
-							dsSAVEPIXELS
+					(= saveBits
+						(Display 301 0
+							p_at 48 8
+							p_width 256
+							p_color vWHITE
+							p_back -1
+							p_font SYSFONT
+							p_save
 						)
 					)
-					(localproc_0064 301 1)
+					(ClarPrint 301 1)
 					(= seconds 10)
 				)
 				(2
-					(localproc_0033 301 2)
+					(GertPrint 301 2)
 					(= seconds 10)
 				)
 				(3
-					(localproc_0064 301 3)
+					(ClarPrint 301 3)
 					(= seconds 10)
 				)
 				(4
-					(localproc_0033 301 4)
+					(GertPrint 301 4)
 					(= seconds 3)
 				)
 				(5
-					(localproc_0064 301 5)
+					(ClarPrint 301 5)
 					(= seconds 10)
 				)
 				(6
-					(localproc_0033 301 6)
+					(GertPrint 301 6)
 					(= seconds 10)
 				)
 				(7
-					(localproc_0064 301 7)
+					(ClarPrint 301 7)
 					(= seconds 10)
 				)
 				(8
-					(localproc_0033 301 8)
+					(GertPrint 301 8)
 					(= seconds 10)
 				)
 				(9
-					(localproc_0064 301 9)
+					(ClarPrint 301 9)
 					(= seconds 4)
 				)
 				(10
-					(localproc_0033 301 10)
+					(GertPrint 301 10)
 					(= seconds 4)
 				)
 				(11
@@ -282,22 +263,23 @@
 			(and
 				(not (event claimed?))
 				(not script)
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(cls)
-			(if (not (& global173 $0002)) (localproc_009b))
+			(if (not (& global173 $0002))
+				(EventDone)
+			)
 			(curRoom newRoom: prevRoomNum)
 		)
 	)
 )
 
 (instance twice of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -306,7 +288,7 @@
 				(clarMouth cycleSpeed: 1)
 			)
 			(1
-				(= theCycles 4)
+				(= talkCycles 4)
 				(clarMouth setScript: cycleMouth)
 				(= cycles 1)
 			)
@@ -314,8 +296,10 @@
 				(if (clarMouth script?)
 					(= cycles (= state 1))
 				else
-					(Smoke show: setCycle: End self)
-					(if (< (++ local1) 2) (= state 0))
+					(Smoke show: setCycle: EndLoop self)
+					(if (< (++ local1) 2)
+						(= state 0)
+					)
 				)
 			)
 			(3
@@ -330,18 +314,20 @@
 )
 
 (instance cycleMouth of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if local3 (= local3 0) (= cycles 1))
+		(if mouthCued
+			(= mouthCued FALSE)
+			(= cycles 1)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cel: 0 setCycle: Fwd show:)
-				(= cycles theCycles)
+				(client cel: 0 setCycle: Forward show:)
+				(= cycles talkCycles)
 			)
 			(1
 				(client setScript: 0 hide:)
@@ -351,7 +337,7 @@
 	)
 )
 
-(instance Gertie of Act
+(instance Gertie of Actor
 	(properties
 		y 104
 		x 213
@@ -403,7 +389,7 @@
 	)
 )
 
-(instance gertGlass of Act
+(instance gertGlass of Actor
 	(properties
 		y 138
 		x 246
@@ -413,7 +399,7 @@
 	)
 )
 
-(instance Hand of Act
+(instance Hand of Actor
 	(properties
 		y 190
 		x 140
@@ -430,6 +416,4 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

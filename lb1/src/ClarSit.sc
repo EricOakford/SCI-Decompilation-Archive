@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 378)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use servent)
 (use Intrface)
@@ -20,14 +20,11 @@
 (local
 	local0
 	[local1 2]
-	local3
+	roomCycles
 )
-(instance Jeeves of servent
-	(properties)
-)
+(instance Jeeves of servent)
 
-(instance ClarSit of Rgn
-	(properties)
+(instance ClarSit of Region
 	
 	(method (init)
 		(super init:)
@@ -39,7 +36,7 @@
 		(Clarence setPri: 6 init: setScript: clarActions)
 		(Smoke setPri: 6 init: hide:)
 		(if (not (& global194 $0002))
-			(= global194 (| global194 $0002))
+			(|= global194 $0002)
 			(Jeeves
 				view: 444
 				posn: -15 98
@@ -49,29 +46,33 @@
 				exitY: 98
 				itemX: 178
 				itemY: 108
-				setAvoider: ((Avoid new:) offScreenOK: 1)
+				setAvoider: ((Avoider new:) offScreenOK: TRUE)
 				init:
 			)
 		)
 	)
 	
 	(method (doit)
-		(if (< local3 50) (++ local3) else (= global167 1))
+		(if (< roomCycles 50)
+			(++ roomCycles)
+		else
+			(= global167 1)
+		)
 		(super doit:)
 	)
 	
 	(method (dispose)
 		(DisposeScript 204)
-		(DisposeScript 975)
-		(DisposeScript 985)
+		(DisposeScript CHASE)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
@@ -79,38 +80,52 @@
 								(if (& global207 $0040)
 									(Print 378 0)
 								else
-									(event claimed: 0)
+									(event claimed: FALSE)
 								)
 							)
-							((Said '/butt') (Bset 13) (Print 378 1))
-							((Said '/drink,glass') (Print 378 2))
+							((Said '/cigar')
+								(Bset fExaminedCigar)
+								(Print 378 1)
+							)
+							((Said '/drink,glass')
+								(Print 378 2)
+							)
 						)
 					)
-					((Said 'converse>') (if (Said '/attorney') (Print 378 3)))
-					((Said 'hear/attorney') (Print 378 4))
-					((Said 'get/butt') (Print 378 5))
-					((Said 'get/drink,glass') (Print 378 6))
+					((Said 'converse>')
+						(if (Said '/attorney')
+							(Print 378 3)
+						)
+					)
+					((Said 'hear/attorney')
+						(Print 378 4)
+					)
+					((Said 'get/butt')
+						(Print 378 5)
+					)
+					((Said 'get/drink,glass')
+						(Print 378 6)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance clarActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Clarence loop: 5 cel: 0 setCycle: End self)
+				(Clarence loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(Clarence loop: 4 cel: 0 cycleSpeed: 1 setCycle: End self)
+				(Clarence loop: 4 cel: 0 cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(2
-				(Smoke cel: 0 setCycle: End self show:)
+				(Smoke cel: 0 setCycle: EndLoop self show:)
 				(if (< local0 1)
 					(++ local0)
 					(= state 0)
@@ -120,11 +135,11 @@
 			)
 			(3
 				(Smoke cel: 0 hide:)
-				(Clarence loop: 1 cel: 5 cycleSpeed: 2 setCycle: Beg)
+				(Clarence loop: 1 cel: 5 cycleSpeed: 2 setCycle: BegLoop)
 				(= seconds (Random 6 12))
 			)
 			(4
-				(Clarence loop: 2 cel: 0 setCycle: End)
+				(Clarence loop: 2 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 6 12))
 				(= state -1)
 			)
@@ -142,14 +157,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(and (MousedOn self event 3) (not (& global207 $0040))) (event claimed: 1) (ParseName {clarence}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0040)))
+				(event claimed: TRUE)
+				(ParseName {clarence})
+			)
 			(
 				(and
 					(& global207 $0040)
-					(or (MousedOn self event 3) (Said 'examine/attorney'))
+					(or (MousedOn self event shiftDown) (Said 'examine/attorney'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 378 0)
 			)
 		)

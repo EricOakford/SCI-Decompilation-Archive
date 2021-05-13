@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 386)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -12,8 +12,7 @@
 )
 
 (instance jDog of Script
-	(properties)
-	
+
 	(method (init)
 		(super init: &rest)
 	)
@@ -27,7 +26,7 @@
 	
 	(method (dispose)
 		(super dispose: &rest)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(DisposeScript 386)
 	)
 	
@@ -36,7 +35,7 @@
 			(0
 				(HandsOff)
 				(if (!= prevRoomNum 35)
-					(gDoor_2 setCycle: End self)
+					(gDoor_2 setCycle: EndLoop self)
 					(gMyMusic number: 43 loop: 1 priority: 5 play:)
 				else
 					(= cycles 1)
@@ -45,7 +44,7 @@
 			(1
 				(gDoor
 					setCycle: Walk
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setAvoider: ((Avoider new:) offScreenOK: TRUE)
 				)
 				(if (!= prevRoomNum 35)
 					(gDoor setMotion: MoveTo 196 141 self init:)
@@ -55,7 +54,7 @@
 			)
 			(2
 				(if (!= prevRoomNum 35)
-					(gDoor_2 setCycle: Beg)
+					(gDoor_2 setCycle: BegLoop)
 					(gMyMusic number: 44 loop: 1 priority: 5 play:)
 				)
 				(Print 386 0 #at 175 15 #font 4 #dispose)
@@ -64,21 +63,21 @@
 			(3
 				(cls)
 				(gDoor_2 stopUpd:)
-				(gDoor view: 445 loop: 0 cel: 0 setCycle: End self)
+				(gDoor view: 445 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(gDoor view: 440 setMotion: MoveTo 140 248 setCycle: Walk)
 				(gMySound
 					setCycle: Walk
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setAvoider: ((Avoider new:) offScreenOK: TRUE)
 					setMotion: MoveTo 224 159 self
 				)
 			)
 			(5
-				(gMySound view: 526 setLoop: 0 cel: 0 setCycle: End self)
+				(gMySound view: 526 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				(gMySound setLoop: 2 cel: 0 setCycle: Fwd)
+				(gMySound setLoop: 2 cel: 0 setCycle: Forward)
 				(= seconds 5)
 			)
 			(7
@@ -86,7 +85,7 @@
 					setLoop: 0
 					cel: (- (NumCels gMySound) 1)
 					setPri: 11
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(8
@@ -104,8 +103,8 @@
 				(= [global368 2] 1800)
 				(= global162 1)
 				(= global155 2)
-				(gBdoor ignoreActors: 0)
-				(= saveDisabled 0)
+				(gBdoor ignoreActors: FALSE)
+				(= saveDisabled FALSE)
 				(client setScript: 0)
 			)
 		)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 384)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -17,13 +17,12 @@
 	local0
 	local1
 )
-(instance WCAct2 of Rgn
-	(properties)
+(instance WCAct2 of Region
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 420 402 404)
-		(CHead ignoreActors: 1 setPri: 9 init:)
+		(LoadMany VIEW 420 402 404)
+		(CHead ignoreActors: TRUE setPri: 9 init:)
 		(WHead setPri: 9 init:)
 		(Clarence setPri: 9 init:)
 		(Wilbur init:)
@@ -44,8 +43,7 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if
-		(and (== (event type?) evSAID) (Said '*/c,attorney'))
+		(if (and (== (event type?) saidEvent) (Said '*/c,attorney'))
 			(Print 384 0)
 		)
 	)
@@ -64,7 +62,7 @@
 			)
 			(1
 				(HandsOff)
-				(User canControl: 1)
+				(User canControl: TRUE)
 				(Print 384 1 #dispose)
 				(= local0 1)
 				(CHead hide:)
@@ -82,7 +80,7 @@
 			)
 			(2
 				(cls)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= global154 2)
 				(= seconds 30)
 			)
@@ -94,7 +92,7 @@
 	)
 )
 
-(instance Clarence of Act
+(instance Clarence of Actor
 	(properties
 		y 121
 		x 209
@@ -103,7 +101,7 @@
 	)
 )
 
-(instance Wilbur of Act
+(instance Wilbur of Actor
 	(properties
 		y 121
 		x 184

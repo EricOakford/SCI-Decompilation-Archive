@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 385)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -19,10 +19,10 @@
 (local
 	[local0 6] = [246 158 76 150 192 112]
 	local6
-	local7
-	local8
+	talkCount
+	askCount
 )
-(instance Rudy of Act
+(instance Rudy of Actor
 	(properties
 		y 146
 		x 173
@@ -31,25 +31,29 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(and (not (& global207 $0100)) (MousedOn self event 3))
-				(event claimed: 1)
-				(= global207 (| global207 $0100))
+			((and (not (& global207 $0100)) (MousedOn self event shiftDown))
+				(event claimed: TRUE)
+				(|= global207 $0100)
 				(Say 0 385 0)
 			)
 			(
 				(and
 					(& global207 $0100)
-					(or (MousedOn self event 3) (Said 'examine/rudolph'))
+					(or (MousedOn self event shiftDown) (Said 'examine/rudolph'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 385 1)
 			)
 			((Said 'ask,tell//*<about')
-				(= theTalker 9)
-				(switch local8
-					(0 (Say 1 385 2) (++ local8))
-					(1 (Print 385 3))
+				(= theTalker talkRUDY)
+				(switch askCount
+					(0
+						(Say 1 385 2)
+						(++ askCount)
+					)
+					(1
+						(Print 385 3)
+					)
 				)
 			)
 			((Said 'hold,deliver/*')
@@ -62,35 +66,48 @@
 			((Said '/rudolph>')
 				(cond 
 					((Said 'converse')
-						(= theTalker 9)
-						(switch local7
-							(0 (Say 1 385 4))
-							(1 (Say 1 385 5))
-							(else  (Print 385 6))
+						(= theTalker talkRUDY)
+						(switch talkCount
+							(0
+								(Say 1 385 4)
+							)
+							(1
+								(Say 1 385 5)
+							)
+							(else
+								(Print 385 6)
+							)
 						)
-						(++ local7)
+						(++ talkCount)
 					)
-					((Said 'get') (Print 385 7))
-					((Said 'kill') (Print 385 8))
-					((Said 'kiss,embrace') (Print 385 9))
+					((Said 'get')
+						(Print 385 7)
+					)
+					((Said 'kill')
+						(Print 385 8)
+					)
+					((Said 'kiss,embrace')
+						(Print 385 9)
+					)
 				)
 			)
-			((Said 'flirt//rudolph<with') (Print 385 10))
+			((Said 'flirt//rudolph<with')
+				(Print 385 10)
+			)
 		)
 	)
 )
 
-(instance RudySearch of Rgn
-	(properties)
-	
+(instance RudySearch of Region
+
 	(method (init)
 		(super init:)
 		(= global195 256)
-		(Load rsVIEW 393)
+		(Load VIEW 393)
 		(self setScript: searching)
 		(Rudy
-			setAvoider: ((Avoid new:) offScreenOK: 1)
-			illegalBits: -32768
+			setAvoider: ((Avoider new:) offScreenOK: TRUE)
+			illegalBits: cWHITE
 			init:
 		)
 	)
@@ -100,7 +117,7 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
@@ -111,19 +128,22 @@
 )
 
 (instance searching of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0004))
-						(= global118 (| global118 $0004))
+						(|= global118 $0004)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
@@ -140,12 +160,15 @@
 				)
 			)
 			(2
-				(Rudy view: 393 cel: 0 cycleSpeed: 1 setCycle: End self)
+				(Rudy view: 393 cel: 0 cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(3 (= seconds 3))
 			(4
-				(Rudy setCycle: Beg self)
-				(if (< local6 2) (++ local6) (= state -1))
+				(Rudy setCycle: BegLoop self)
+				(if (< local6 2)
+					(++ local6)
+					(= state -1)
+				)
 			)
 			(5
 				(Rudy

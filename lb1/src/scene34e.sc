@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 306)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -15,10 +15,10 @@
 
 (local
 	local0
-	local1
+	eyesCued
 	theHand
 )
-(instance Hand of Act
+(instance Hand of Actor
 	(properties
 		y 136
 		x 155
@@ -61,30 +61,28 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene34e of Rm
+(instance scene34e of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
 		(HandsOff)
 		(myMusic number: 27 loop: -1 play:)
-		(Head setPri: 0 ignoreActors: 1 init:)
-		(Shoulder setPri: 0 ignoreActors: 1 init:)
-		(Mouth setPri: 1 ignoreActors: 1 init: hide:)
-		(Eye setPri: 1 ignoreActors: 1 init: hide:)
+		(Head setPri: 0 ignoreActors: TRUE init:)
+		(Shoulder setPri: 0 ignoreActors: TRUE init:)
+		(Mouth setPri: 1 ignoreActors: TRUE init: hide:)
+		(Eye setPri: 1 ignoreActors: TRUE init: hide:)
 		(Hand
 			setLoop: 2
 			setCel: 0
 			setPri: 3
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 		)
 		(self setScript: twice)
@@ -103,10 +101,10 @@
 		(if
 			(and
 				(not (event claimed?))
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(cls)
@@ -116,20 +114,25 @@
 )
 
 (instance twice of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1) (= cycles 1))
+					((not global216)
+						(= state -1)
+						(= cycles 1)
+					)
 					((not (& global118 $0001))
-						(= global118 (| global118 $0001))
+						(|= global118 $0001)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 						(= cycles 1)
 					)
-					((self script?) (= state -1) (= cycles 1))
+					((self script?)
+						(= state -1)
+						(= cycles 1)
+					)
 					(else
 						(Print 306 0 #dispose)
 						(Hand setMotion: MoveTo 135 120 self)
@@ -152,7 +155,7 @@
 				(Hand setMotion: MoveTo 133 114 self)
 			)
 			(5
-				(Mouth loop: 4 setCycle: Fwd)
+				(Mouth loop: 4 setCycle: Forward)
 				(Hand cel: 3 setMotion: MoveTo 136 114 self)
 			)
 			(6
@@ -167,7 +170,7 @@
 					setCycle: 0
 					setPri: 3
 				)
-				(Mouth setCycle: Beg self)
+				(Mouth setCycle: BegLoop self)
 			)
 			(8
 				(theHand setMotion: MoveTo 108 118 self)
@@ -176,17 +179,17 @@
 				(theHand setMotion: MoveTo 108 114 self)
 			)
 			(10
-				(theHand setCycle: End)
+				(theHand setCycle: EndLoop)
 				(Eye hide:)
-				(Head setCycle: End)
-				(Mouth cycleSpeed: 1 setCycle: Fwd)
+				(Head setCycle: EndLoop)
+				(Mouth cycleSpeed: 1 setCycle: Forward)
 				(= seconds 2)
 			)
 			(11
 				(Mouth hide:)
-				(theHand setCycle: Beg self setMotion: MoveTo 108 118)
+				(theHand setCycle: BegLoop self setMotion: MoveTo 108 118)
 			)
-			(12 (Head setCycle: Beg self))
+			(12 (Head setCycle: BegLoop self))
 			(13
 				(Eye show:)
 				(theHand setMotion: MoveTo 88 137 self)
@@ -199,8 +202,7 @@
 )
 
 (instance RudysEyes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -208,13 +210,13 @@
 				(= seconds (Random 1 3))
 			)
 			(1
-				(if (and (not local1) (== (Random 1 2) 1))
+				(if (and (not eyesCued) (== (Random 1 2) 1))
 					(Eye setLoop: 6 setCel: 1 forceUpd:)
-					(= local1 1)
+					(= eyesCued TRUE)
 					(= cycles 1)
 				else
 					(Eye setLoop: 5 setCel: 1 forceUpd:)
-					(= local1 0)
+					(= eyesCued FALSE)
 					(= seconds (Random 1 3))
 				)
 				(= state -1)

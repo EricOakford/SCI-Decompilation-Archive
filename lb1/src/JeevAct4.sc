@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 377)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use atsgl)
 (use Intrface)
@@ -12,10 +12,28 @@
 
 (local
 	local0
-	[local1 36] = [377 0 377 1 377 2 377 3 377 4 377 5 377 6 377 7 377 8 377 9 377 10 377 11 377 12 377 13 377 14 377 15 377 16 377 17]
+	local1 = [
+		377 0
+		377 1
+		377 2
+		377 3
+		377 4
+		377 5
+		377 6
+		377 7
+		377 8
+		377 9
+		377 10
+		377 11
+		377 12
+		377 13
+		377 14
+		377 15
+		377 16
+		377 17
+		]
 )
 (instance JeevAct4 of Script
-	(properties)
 	
 	(method (dispose)
 		(super dispose:)
@@ -25,7 +43,7 @@
 	(method (handleEvent event &tmp temp0)
 		(cond 
 			((event claimed?))
-			((and (== (event type?) evSAID) global212)
+			((and (== (event type?) saidEvent) global212)
 				(= local0 -1)
 				(switch global212
 					(1 (= local0 (Random 0 6)))

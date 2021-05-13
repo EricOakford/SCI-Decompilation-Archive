@@ -79,7 +79,7 @@
 (define fExaminedDiary 12)
 (define fExaminedCigar 13)
 (define fExaminedMagazine 17)
-(define SAW_FIFI_JEEVES_TOGETHER 22)
+(define fSawFifiJeevesTogether 22)
 (define fFlag36	36)
 (define fDaddyTip1 41)
 (define fDaddyTip2 42)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 302)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -14,63 +14,51 @@
 )
 
 (local
-	local0
-	theCycles
-	local2
+	saveBits
+	talkCycles
+	mouthCued
 )
-(procedure (localproc_000c &tmp [temp0 500])
-	(GetFarText &rest @temp0)
-	(= theCycles (+ (/ (StrLen @temp0) 3) 1))
+(procedure (Measure &tmp [str 500])
+	(GetFarText &rest @str)
+	(= talkCycles (+ (/ (StrLen @str) 3) 1))
 )
 
-(procedure (localproc_002c)
-	(localproc_000c &rest)
-	(= theCycles (+ theCycles (/ theCycles 4)))
+(procedure (EthelPrint)
+	(Measure &rest)
+	(= talkCycles (+ talkCycles (/ talkCycles 4)))
 	(Mouth setScript: cycleMouth)
 	(ParrotMouth setCycle: 0)
-	(Print
-		&rest
-		#at
-		160
-		120
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 160 120
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(procedure (localproc_006f)
-	(localproc_000c &rest)
+(procedure (ParrotPrint)
+	(Measure &rest)
 	(ParrotMouth setScript: cycleMouth)
 	(Mouth setCycle: 0)
-	(Print
-		&rest
-		#at
-		20
-		120
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 20 120
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(instance scene38b of Rm
+(instance scene38b of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(HandsOff)
 		(addToPics add: parrotBody doit:)
 		(Ethel setPri: 1 init:)
@@ -92,7 +80,7 @@
 	
 	(method (dispose)
 		(super dispose:)
-		(= global173 (| global173 $0002))
+		(|= global173 $0002)
 	)
 	
 	(method (handleEvent event)
@@ -101,54 +89,45 @@
 )
 
 (instance speech38 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(if (cycleMouth client?)
-			(= local2 1)
+			(= mouthCued TRUE)
 			(= cycles 1)
 		else
 			(switch (= state newState)
 				(0
-					(= local0
-						(Display
-							302
-							0
-							dsCOORD
-							48
-							8
-							dsWIDTH
-							256
-							dsCOLOR
-							15
-							dsBACKGROUND
-							-1
-							dsFONT
-							0
-							dsSAVEPIXELS
+					(= saveBits
+						(Display 302 0
+							p_at 48 8
+							p_width 256
+							p_color vWHITE
+							p_back -1
+							p_font SYSFONT
+							p_save
 						)
 					)
-					(localproc_002c 302 1)
+					(EthelPrint 302 1)
 					(= seconds 5)
 				)
 				(1
 					(cls)
-					(localproc_006f 302 2)
+					(ParrotPrint 302 2)
 					(= seconds 5)
 				)
 				(2
 					(cls)
-					(localproc_002c 302 3)
+					(EthelPrint 302 3)
 					(= seconds 8)
 				)
 				(3
 					(cls)
-					(localproc_002c 302 4)
+					(EthelPrint 302 4)
 					(= seconds 6)
 				)
 				(4
 					(cls)
-					(localproc_006f 302 5)
+					(ParrotPrint 302 5)
 					(= seconds 5)
 				)
 				(5
@@ -164,10 +143,10 @@
 		(if
 			(and
 				(not (event claimed?))
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(cls)
@@ -177,22 +156,26 @@
 )
 
 (instance cycleMouth of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
-		(if local2 (= local2 0) (= cycles 1))
+		(if mouthCued
+			(= mouthCued FALSE)
+			(= cycles 1)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cel: 0 setCycle: Fwd show:)
-				(= cycles theCycles)
+				(client cel: 0 setCycle: Forward show:)
+				(= cycles talkCycles)
 			)
 			(1
 				(client setScript: 0 setCycle: 0 cel: 0)
-				(if (== client Mouth) (client hide:))
+				(if (== client Mouth)
+					(client hide:)
+				)
 				(self client: 0)
 			)
 		)
@@ -200,13 +183,14 @@
 )
 
 (instance ethelEyes of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 5)))
+			(0
+				(= seconds (Random 2 5))
+			)
 			(1
-				(Eye loop: (Random 5 7) setCycle: End self)
+				(Eye loop: (Random 5 7) setCycle: EndLoop self)
 				(= state -1)
 			)
 		)
@@ -214,25 +198,30 @@
 )
 
 (instance Salute of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (& global173 $0002) (Print 302 6 #dispose))
+				(if (& global173 $0002)
+					(Print 302 6 #dispose)
+				)
 				(Arm show: setMotion: MoveTo 183 99 self)
 			)
 			(1
-				(if (not (& global173 $0002)) (localproc_002c 302 7))
+				(if (not (& global173 $0002))
+					(EthelPrint 302 7)
+				)
 				(= seconds 3)
 			)
 			(2
 				(Arm setMotion: MoveTo 205 106 self)
 			)
 			(3
-				(if (not (& global173 $0002)) (cls))
-				(Arm setCycle: End)
-				(Mouth show: cycleSpeed: 2 setCycle: Fwd)
+				(if (not (& global173 $0002))
+					(cls)
+				)
+				(Arm setCycle: EndLoop)
+				(Mouth show: cycleSpeed: 2 setCycle: Forward)
 				(= seconds 2)
 			)
 			(4
@@ -247,7 +236,7 @@
 	)
 )
 
-(instance parrotBody of PV
+(instance parrotBody of PicView
 	(properties
 		y 103
 		x 84
@@ -256,7 +245,7 @@
 	)
 )
 
-(instance Arm of Act
+(instance Arm of Actor
 	(properties
 		y 134
 		x 199
@@ -270,7 +259,7 @@
 		x 222
 		view 324
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -289,7 +278,7 @@
 		x 212
 		view 324
 		loop 4
-		signal $4000
+		signal ignrAct
 		cycleSpeed 1
 	)
 )
@@ -300,10 +289,8 @@
 		x 212
 		view 324
 		loop 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

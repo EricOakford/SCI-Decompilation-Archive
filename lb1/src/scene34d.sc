@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 303)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -14,19 +14,19 @@
 )
 
 (local
-	theCycles
-	local1
-	local2
+	talkCycles
+	mouthCued
+	saveBits
 	local3 =  1
-	local4
+	eyeCycles
 )
-(procedure (localproc_000c &tmp [temp0 500])
-	(GetFarText &rest @temp0)
-	(= theCycles (+ (/ (StrLen @temp0) 2) 1))
+(procedure (Measure &tmp [str 500])
+	(GetFarText &rest @str)
+	(= talkCycles (+ (/ (StrLen @str) 2) 1))
 )
 
-(procedure (localproc_002c param1)
-	(if (= local3 param1)
+(procedure (localproc_002c tOrF)
+	(if (= local3 tOrF)
 		(jeevEyes hide:)
 		(jeevFace show:)
 	else
@@ -35,56 +35,43 @@
 	)
 )
 
-(procedure (localproc_005b)
-	(localproc_000c &rest)
+(procedure (FifiPrint)
+	(Measure &rest)
 	(fifiMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		20
-		120
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 20 120
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(procedure (localproc_008b)
-	(localproc_000c &rest)
+(procedure (JeevPrint)
+	(Measure &rest)
 	(jeevMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		160
-		120
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 160 120
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(instance scene34d of Rm
+(instance scene34d of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(HandsOff)
 		(myMusic number: 27 loop: -1 play:)
-		(if
-		(and (not (& global173 $0020)) (> [global368 2] 1))
-			(= global173 (| global173 $0020))
+		(if (and (not (& global173 $0020)) (> [global368 2] 1))
+			(|= global173 $0020)
 			(= [global368 2] 1)
 			(Fifi setPri: 3 cycleSpeed: 2 init:)
 			(fifiMouth cycleSpeed: 1 setPri: 4 init: hide:)
@@ -119,16 +106,15 @@
 )
 
 (instance speech34d of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
-		(if (and (not local3) (<= (-- local4) 0))
-			(= local4 (Random 10 30))
+		(if (and (not local3) (<= (-- eyeCycles) 0))
+			(= eyeCycles (Random 10 30))
 			(if (jeevEyes cycler?)
 				(jeevEyes setCycle: 0 hide:)
 			else
-				(jeevEyes setCycle: Fwd show:)
+				(jeevEyes setCycle: Forward show:)
 			)
 		)
 	)
@@ -136,79 +122,71 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local2
-					(Display
-						303
-						0
-						dsCOORD
-						48
-						8
-						dsWIDTH
-						256
-						dsCOLOR
-						15
-						dsBACKGROUND
-						-1
-						dsFONT
-						0
-						dsSAVEPIXELS
+				(= saveBits
+					(Display 303 0
+						p_at 48 8
+						p_width 256
+						p_color vWHITE
+						p_back -1
+						p_font SYSFONT
+						p_save
 					)
 				)
-				(Fifi setCycle: End self)
-				(jeevFace show: setCycle: End)
+				(Fifi setCycle: EndLoop self)
+				(jeevFace show: setCycle: EndLoop)
 			)
 			(1
-				(Fifi setCycle: Beg self)
-				(jeevFace setCycle: Beg)
+				(Fifi setCycle: BegLoop self)
+				(jeevFace setCycle: BegLoop)
 			)
 			(2
 				(localproc_002c 0)
-				(localproc_008b 303 1)
+				(JeevPrint 303 1)
 				(= seconds 4)
 			)
 			(3
-				(localproc_005b 303 2)
+				(FifiPrint 303 2)
 				(= seconds 4)
 			)
 			(4
-				(Fifi setCycle: End self)
+				(Fifi setCycle: EndLoop self)
 				(localproc_002c 1)
-				(jeevFace setCycle: End)
+				(jeevFace setCycle: EndLoop)
 			)
 			(5
-				(Fifi setCycle: Beg self)
-				(jeevFace setCycle: Beg)
+				(Fifi setCycle: BegLoop self)
+				(jeevFace setCycle: BegLoop)
 			)
 			(6
 				(localproc_002c 0)
-				(localproc_008b 303 3)
+				(JeevPrint 303 3)
 				(= seconds 4)
 			)
 			(7
-				(localproc_005b 303 4)
+				(FifiPrint 303 4)
 				(= seconds 4)
 			)
 			(8
-				(localproc_005b 303 5)
+				(FifiPrint 303 5)
 				(= seconds 4)
 			)
 			(9
-				(localproc_008b 303 6)
+				(JeevPrint 303 6)
 				(= seconds 4)
 			)
 			(10
-				(localproc_005b 303 7)
+				(FifiPrint 303 7)
 				(= seconds 4)
 			)
 			(11
-				(Fifi setCycle: End self)
+				(Fifi setCycle: EndLoop self)
 				(localproc_002c 1)
-				(jeevFace setCycle: End)
+				(jeevFace setCycle: EndLoop)
 			)
 			(12
 				(cls)
-				(Fifi setCycle: Beg self)
-				(jeevFace setCycle: Beg)
+				(Fifi setCycle: BegLoop self)
+				(jeevFace setCycle: BegLoop)
 			)
 			(13
 				(localproc_002c 0)
@@ -231,10 +209,10 @@
 		(if
 			(and
 				(not (event claimed?))
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(curRoom newRoom: prevRoomNum)
@@ -243,18 +221,20 @@
 )
 
 (instance cycleMouth of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if local1 (= local1 0) (= cycles 1))
+		(if mouthCued
+			(= mouthCued FALSE)
+			(= cycles 1)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cel: 0 setCycle: Fwd show:)
-				(= cycles theCycles)
+				(client cel: 0 setCycle: Forward show:)
+				(= cycles talkCycles)
 			)
 			(1
 				(client setScript: 0 hide:)
@@ -265,13 +245,12 @@
 )
 
 (instance JeevEyes of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= state -1)
-				(if (= local3 (^ local3 $0001))
+				(if (^= local3 TRUE)
 					(jeevEyes hide:)
 					(= seconds (Random 2 3))
 				else
@@ -288,8 +267,7 @@
 )
 
 (instance twice of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -338,7 +316,7 @@
 	)
 )
 
-(instance Fifi of Act
+(instance Fifi of Actor
 	(properties
 		y 102
 		x 172
@@ -357,6 +335,4 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

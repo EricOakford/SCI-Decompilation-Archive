@@ -1,0 +1,15 @@
+;;; Sierra Script
+;;; 16.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_WONT_OPEN 1)
+(define C_ALREADY_OPEN 2)
+(define C_LOCKED 3)
+(define C_HEAR_NOTHING 4)
+
+;;; NOUNS
+
+(define N_DOOR 1)
+

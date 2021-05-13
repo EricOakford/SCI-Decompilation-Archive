@@ -1,0 +1,48 @@
+;;; Sierra Script
+;;; 990.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_BUTTON_CANCEL 22)
+(define N_BUTTON_CHANGE 23)
+(define N_BUTTON_DELETE 24)
+(define N_BUTTON_NO 31)
+(define N_BUTTON_NODIRCHG 38)
+(define N_BUTTON_OK 27)
+(define N_BUTTON_REPLACE 25)
+(define N_BUTTON_RESTORE 26)
+(define N_BUTTON_SAVE 28)
+(define N_BUTTON_YES 32)
+(define N_BUT_REPLACE 9)
+(define N_BUT_RESTORE 7)
+(define N_BUT_SAVE 8)
+(define N_CANCEL_BUTTON 5)
+(define N_CHANGE_BUTTON 18)
+(define N_DELETE_BUTTON 19)
+(define N_DEL_NO 13)
+(define N_DEL_TEXT 12)
+(define N_DEL_YES 14)
+(define N_DIALOG_RESTORE 20)
+(define N_DIALOG_SAVE 21)
+(define N_DIR_INVALID 29)
+(define N_DIR_NOROOM 30)
+(define N_DIR_PROMPT 1)
+(define N_DTEXT_REPLACE 33)
+(define N_DTEXT_WITH 34)
+(define N_INVALID_DIR 2)
+(define N_NOROOM 6)
+(define N_NO_DESC 3)
+(define N_OK_BUTTON 4)
+(define N_REPLACE_BUTTON 15)
+(define N_RESTORE_BUTTON 16)
+(define N_SAVE_BUTTON 17)
+(define N_SELECT_GAME 10)
+(define N_TEXT_REPLACE 37)
+(define N_TEXT_RESTORE 35)
+(define N_TEXT_SAVE 36)
+(define N_TYPE_DESC 11)
+

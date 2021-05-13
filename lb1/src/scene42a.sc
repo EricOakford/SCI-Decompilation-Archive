@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 307)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -12,39 +12,29 @@
 	scene42a 0
 )
 
-(procedure (localproc_009a)
-	(Print
-		&rest
-		#at
-		160
-		115
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+(procedure (FifiPrint)
+	(Print &rest
+		#at 160 115
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(instance Fifi of Act
-	(properties)
-)
+(instance Fifi of Actor)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene42a of Rm
+(instance scene42a of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(HandsOff)
 		(myMusic number: 27 loop: -1 play:)
 		(Fifi
@@ -73,12 +63,11 @@
 )
 
 (instance speech42a of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(localproc_009a 307 0)
+				(FifiPrint 307 0)
 				(= seconds 4)
 			)
 			(1
@@ -93,10 +82,10 @@
 			(and
 				(not (event claimed?))
 				(not script)
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(cls)

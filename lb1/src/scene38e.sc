@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 304)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -16,42 +16,30 @@
 (local
 	local0
 )
-(instance Clarence of Prop
-	(properties)
-)
+(instance Clarence of Prop)
 
-(instance Torso of Prop
-	(properties)
-)
+(instance Torso of Prop)
 
-(instance Eyes of Prop
-	(properties)
-)
+(instance Eyes of Prop)
 
-(instance Mouth of Prop
-	(properties)
-)
+(instance Mouth of Prop)
 
-(instance Hand of Act
-	(properties)
-)
+(instance Hand of Actor)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene38e of Rm
+(instance scene38e of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 41)
+		(Load FONT 41)
 		(LoadMany 143 406)
-		(Load rsVIEW 642)
-		(LoadMany 132 29 94 95 96)
+		(Load VIEW 642)
+		(LoadMany SOUND 29 94 95 96)
 		(HandsOff)
 		(myMusic number: 27 loop: -1 play:)
 		(Clarence
@@ -68,7 +56,7 @@
 			cel: 0
 			posn: 103 107
 			setPri: 1
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 		)
 		(Eyes
@@ -116,19 +104,22 @@
 )
 
 (instance twice of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0008))
-						(= global118 (| global118 $0008))
+						(|= global118 $0008)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
@@ -138,18 +129,18 @@
 			)
 			(2
 				(Eyes hide:)
-				(Clarence startUpd: setCycle: End)
-				(Hand setCycle: End setMotion: MoveTo 95 108 self)
+				(Clarence startUpd: setCycle: EndLoop)
+				(Hand setCycle: EndLoop setMotion: MoveTo 95 108 self)
 			)
 			(3
 				(Hand stopUpd:)
-				(Mouth show: setCycle: Fwd)
+				(Mouth show: setCycle: Forward)
 				(= cycles 4)
 			)
 			(4
 				(Mouth hide:)
-				(Clarence setCycle: Beg)
-				(Hand setCycle: Beg setMotion: MoveTo 93 120 self)
+				(Clarence setCycle: BegLoop)
+				(Hand setCycle: BegLoop setMotion: MoveTo 93 120 self)
 			)
 			(5
 				(Eyes show:)
@@ -164,12 +155,11 @@
 )
 
 (instance ClarsEyes of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Eyes cel: (^ (Eyes cel?) $0001) forceUpd:)
+				(Eyes cel: (^ (Eyes cel?) 1) forceUpd:)
 				(= state -1)
 				(if (Eyes cel?)
 					(Eyes loop: (Random 2 5))

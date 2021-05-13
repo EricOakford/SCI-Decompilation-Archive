@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 387)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Avoider)
 (use Motion)
@@ -11,8 +11,7 @@
 )
 
 (instance jWalk of Script
-	(properties)
-	
+
 	(method (init)
 		(super init: &rest)
 	)
@@ -23,19 +22,22 @@
 	
 	(method (dispose)
 		(super dispose: &rest)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(DisposeScript 387)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 7))
+			(0
+				(HandsOff)
+				(= cycles 7)
+			)
 			(1
 				(HandsOff)
 				(gDoor
 					setCycle: Walk
 					setMotion: MoveTo 305 55 self
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setAvoider: ((Avoider new:) offScreenOK: TRUE)
 					init:
 				)
 				(if (ego inRect: 252 117 312 131)
@@ -54,7 +56,7 @@
 			)
 			(4
 				(gMyMusic number: 43 loop: 1 priority: 5 play:)
-				(gCellar setCycle: End self)
+				(gCellar setCycle: EndLoop self)
 			)
 			(5
 				(gDoor
@@ -68,7 +70,7 @@
 			)
 			(7
 				(gDoor hide:)
-				(gCellar setCycle: Beg self)
+				(gCellar setCycle: BegLoop self)
 				(gMyMusic number: 44 loop: 1 priority: 5 play:)
 			)
 			(8
