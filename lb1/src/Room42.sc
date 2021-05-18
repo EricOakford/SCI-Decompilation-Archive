@@ -68,7 +68,7 @@
 				SDress
 				Shaft
 		)
-		(if (& global123 $0040)
+		(if (& deadGuests $0040)
 			(Dbag init: stopUpd:)
 			(addToPics add: Chair eachElementDo: #init doit:)
 			(self setFeatures: Chair)
@@ -96,7 +96,7 @@
 						(Btst 38)
 						(and
 							(< gameMinutes 3)
-							(not (& global123 $0040))
+							(not (& deadGuests $0040))
 							(not (Btst 37))
 						)
 					)
@@ -142,7 +142,7 @@
 			(if
 				(and
 					(not (& global109 $0030))
-					(not (& global123 $0040))
+					(not (& deadGuests $0040))
 				)
 				(= global111
 					(switch (Random 1 3)
@@ -284,7 +284,7 @@
 	(method (newRoom n)
 		(if (and (!= n 41) (== global201 200))
 			(++ global201)
-			(= global123 (| global123 $0020))
+			(= deadGuests (| deadGuests $0020))
 		)
 		(super newRoom: n)
 	)

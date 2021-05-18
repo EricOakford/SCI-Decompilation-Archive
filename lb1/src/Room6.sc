@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 6)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Wander)
@@ -18,9 +18,9 @@
 
 (local
 	local0
-	local1
+	greetCued
 )
-(instance Room6 of Rm
+(instance Room6 of Room
 	(properties
 		picture 6
 	)
@@ -30,25 +30,24 @@
 		(= west 12)
 		(= east 7)
 		(super init:)
-		(if
-		(and (not (& global118 $0001)) (== currentAct 5))
-			(Load rsFONT 41)
-			(Load rsVIEW 642)
-			(LoadMany 132 29 94 95 96)
-			(Load rsSCRIPT 406)
+		(if (and (not (& global118 $0001)) (== currentAct 5))
+			(Load FONT 41)
+			(Load VIEW 642)
+			(LoadMany SOUND 29 94 95 96)
+			(Load SCRIPT 406)
 		)
 		(if howFast
 			(chick1
-				illegalBits: 4
-				ignoreActors: 1
+				illegalBits: cGREEN
+				ignoreActors: TRUE
 				moveSpeed: 2
 				setMotion: Wander 1
 				setPri: 7
 				init:
 			)
 			(chick2
-				illegalBits: 4
-				ignoreActors: 1
+				illegalBits: cGREEN
+				ignoreActors: TRUE
 				moveSpeed: 2
 				setMotion: Wander 1
 				setPri: 7
@@ -56,15 +55,15 @@
 			)
 		else
 			(chick1
-				illegalBits: 4
-				ignoreActors: 1
+				illegalBits: cGREEN
+				ignoreActors: TRUE
 				setPri: 7
 				init:
 				stopUpd:
 			)
 			(chick2
-				illegalBits: 4
-				ignoreActors: 1
+				illegalBits: cGREEN
+				ignoreActors: TRUE
 				setPri: 7
 				init:
 				stopUpd:
@@ -77,15 +76,14 @@
 			stopUpd:
 		)
 		(= gDoor Door)
-		(LoadMany 132 43 44 48)
-		(Load rsVIEW 56)
+		(LoadMany SOUND 43 44 48)
+		(Load VIEW 56)
 		(self setFeatures: coop Window1 Window2)
 		(if (>= currentAct 2)
 			(light1 init: stopUpd:)
 			(light2 init: stopUpd:)
 		)
-		(if
-		(and (== currentAct 3) (not (== prevRoomNum 59)))
+		(if (and (== currentAct 3) (not (== prevRoomNum 59)))
 			(self setRegions: 266)
 		else
 			(Chair init: stopUpd:)
@@ -95,7 +93,9 @@
 			(self setRegions: 203)
 		)
 		(switch prevRoomNum
-			(7 (ego posn: 310 151))
+			(7
+				(ego posn: 310 151)
+			)
 			(12 (ego posn: 1 182))
 			(59
 				(ego posn: 238 101)
@@ -103,12 +103,14 @@
 			)
 			(18 (ego posn: 148 185))
 		)
-		(ego illegalBits: -32768 view: 0 init:)
+		(ego illegalBits: cWHITE view: 0 init:)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 6 0))
-		(if (& (ego onControl: 0) $4000)
+		(if (FirstEntry)
+			(Print 6 0)
+		)
+		(if (& (ego onControl: FALSE) cYELLOW)
 			(ego setPri: 6)
 		else
 			(ego setPri: -1)
@@ -128,7 +130,7 @@
 	(method (handleEvent event &tmp temp0)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(if
 				(and
 					global208
@@ -149,70 +151,82 @@
 						((Said '/archway') (Print 6 3))
 						((Said '/path') (Print 6 4))
 						((Said '/cabin') (Print 6 5))
-						((Said '/gallery') (if (== currentAct 3) (Print 6 6) else (Print 6 7)))
+						((Said '/gallery')
+							(if (== currentAct 3)
+								(Print 6 6)
+							else
+								(Print 6 7)
+							)
+						)
 					)
 				)
 				((Said 'bang[/door]')
 					(cond 
-						(
-						(and (== currentAct 3) (not (== prevRoomNum 59))) (Print 6 8))
-						((& (ego onControl: 0) $0010)
-							(if (not local1)
-								(= local1 1)
+						((and (== currentAct 3) (not (== prevRoomNum 59)))
+							(Print 6 8)
+						)
+						((& (ego onControl: FALSE) cRED)
+							(if (not greetCued)
+								(= greetCued TRUE)
 								(ego setScript: knockDoor)
 							)
 						)
-						(else (NotClose))
+						(else
+							(NotClose)
+						)
 					)
 				)
-				((Said 'climb/fence') (Print 6 9))
+				((Said 'climb/fence')
+					(Print 6 9)
+				)
 			)
 		)
 		(super handleEvent: event)
 	)
 	
 	(method (newRoom n)
-		(if (== n 59) (cSound stop:))
+		(if (== n 59)
+			(cSound stop:)
+		)
 		(super newRoom: n)
 	)
 )
 
 (instance firstGreet of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(= global195 2)
 				(Print 6 11)
 				(= seconds 4)
 			)
 			(1
 				(Celie setPri: 4 loop: 2 posn: 239 93 init:)
-				(Door setCycle: End self)
+				(Door setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 play:)
 			)
 			(2
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(Print 6 12)
 				(= seconds 8)
 			)
 			(3
 				(HandsOff)
 				(Print 6 13)
-				(Door setCycle: Beg self)
+				(Door setCycle: BegLoop self)
 				(myMusic number: 44 loop: 1 play:)
 			)
 			(4
-				(User canControl: 1 canInput: 1)
-				(= local1 0)
+				(User canControl: TRUE canInput: TRUE)
+				(= greetCued FALSE)
 				(Celie dispose:)
 				(client setScript: 0)
 			)
 			(5
 				(Print 6 14)
-				(ego put: 0)
+				(ego put: iNecklace)
 				(= global135 1)
 				(curRoom newRoom: 59)
 			)
@@ -222,14 +236,14 @@
 	(method (handleEvent event &tmp temp0)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				(
 					(or
 						(Said 'hold,deliver/necklace[/celie]')
 						(Said 'hold,deliver/necklace<celie')
 					)
-					(if (ego has: 0)
+					(if (ego has: iNecklace)
 						(if (== state 2)
 							(= state 4)
 							(= cycles 1)
@@ -240,14 +254,17 @@
 						(DontHave)
 					)
 				)
-				((Said '*') (event claimed: 1) (= seconds 0) (= cycles 1))
+				((Said '*')
+					(event claimed: TRUE)
+					(= seconds 0)
+					(= cycles 1)
+				)
 			)
 		)
 	)
 )
 
 (instance secondGreet of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -255,28 +272,34 @@
 				(HandsOff)
 				(= global195 2)
 				(Celie setPri: 4 loop: 2 posn: 239 90 init:)
-				(Door setCycle: End self)
+				(Door setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 play:)
 			)
-			(1 (Print 6 15) (= cycles 1))
-			(2 (curRoom newRoom: 59))
+			(1
+				(Print 6 15)
+				(= cycles 1)
+			)
+			(2
+				(curRoom newRoom: 59)
+			)
 		)
 	)
 )
 
 (instance lastGreet of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
 					((not (& global118 $0001))
-						(= global118 (| global118 $0001))
+						(|= global118 $0001)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
@@ -290,19 +313,22 @@
 					posn: 239 90
 					init:
 				)
-				(Door setCycle: End self)
+				(Door setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 play:)
 			)
-			(2 (Print 6 16) (= cycles 1))
+			(2
+				(Print 6 16)
+				(= cycles 1)
+			)
 			(3
-				(Door setCycle: Beg self)
+				(Door setCycle: BegLoop self)
 				(myMusic number: 44 loop: 1 play:)
 			)
 			(4
 				(HandsOn)
 				(Door stopUpd:)
 				(Celie stopUpd:)
-				(= local1 (= global195 0))
+				(= greetCued (= global195 0))
 				(client setScript: 0)
 			)
 		)
@@ -310,26 +336,25 @@
 )
 
 (instance knockDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 56 loop: 0 illegalBits: 0 setCycle: End self)
+				(ego view: 56 loop: 0 illegalBits: 0 setCycle: EndLoop self)
 			)
 			(1
 				(myMusic number: 48 loop: 1 play:)
-				(ego loop: 2 setCycle: Fwd)
+				(ego loop: 2 setCycle: Forward)
 				(= cycles 6)
 			)
 			(2
 				(cls)
-				(ego view: 56 loop: 0 cel: 3 setCycle: Beg self)
+				(ego view: 56 loop: 0 cel: 3 setCycle: BegLoop self)
 			)
 			(3
 				(HandsOn)
-				(ego view: 0 setCycle: Walk illegalBits: -32768 loop: 3)
+				(ego view: 0 setCycle: Walk illegalBits: cWHITE loop: 3)
 				(cond 
 					(
 						(and
@@ -341,14 +366,18 @@
 							((== currentAct 5)
 								(if (& global135 $0100)
 									(Print 6 17)
-									(= local1 0)
+									(= greetCued FALSE)
 								else
-									(= global135 (| global135 $0100))
+									(|= global135 $0100)
 									(Room6 setScript: lastGreet)
 								)
 							)
-							((== global135 1) (Room6 setScript: secondGreet))
-							(else (Room6 setScript: firstGreet))
+							((== global135 1)
+								(Room6 setScript: secondGreet)
+							)
+							(else
+								(Room6 setScript: firstGreet)
+							)
 						)
 					)
 					((== currentAct 7)
@@ -360,9 +389,12 @@
 							(4 (Print 6 22))
 							(5 (Print 6 23))
 						)
-						(= local1 0)
+						(= greetCued FALSE)
 					)
-					(else (= local1 0) (Print 6 24))
+					(else
+						(= greetCued FALSE)
+						(Print 6 24)
+					)
 				)
 				(client setScript: 0)
 			)
@@ -381,9 +413,13 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(cond 
-			((Said 'break,force/door') (Print 6 25))
-			(
-			(or (MousedOn self event 3) (Said 'examine/door')) (event claimed: 1) (Print 6 26))
+			((Said 'break,force/door')
+				(Print 6 25)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/door'))
+				(event claimed: TRUE)
+				(Print 6 26)
+			)
 			((Said 'open/door')
 				(if (ego inRect: 221 92 259 108)
 					(if (and (>= currentAct 2) (< currentAct 6))
@@ -430,7 +466,9 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(cond 
-			((Said 'get/rocker,chair[<rocking]') (Print 6 29))
+			((Said 'get/rocker,chair[<rocking]')
+				(Print 6 29)
+			)
 			((Said 'boulder,sit[/chair,rocker]')
 				(if (and (== currentAct 3) (!= prevRoomNum 59))
 					(Print 6 30)
@@ -441,16 +479,20 @@
 			(
 				(or
 					(Said 'examine/rocker,chair[<rocking]')
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 				)
-				(event claimed: 1)
-				(if (== currentAct 3) (Print 6 32) else (Print 6 7))
+				(event claimed: TRUE)
+				(if (== currentAct 3)
+					(Print 6 32)
+				else
+					(Print 6 7)
+				)
 			)
 		)
 	)
 )
 
-(instance chick1 of Act
+(instance chick1 of Actor
 	(properties
 		y 106
 		x 81
@@ -460,8 +502,10 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/chicken')) (Print 6 33) (event claimed: 1))
+			((or (MousedOn self event shiftDown) (Said 'examine/chicken'))
+				(Print 6 33)
+				(event claimed: TRUE)
+			)
 			(
 				(or
 					(Said 'feed,deliver/chicken')
@@ -469,7 +513,11 @@
 					(Said 'feed,deliver/*<chicken')
 				)
 				(if theInvItem
-					(if haveInvItem (Print 6 34) else (DontHave))
+					(if haveInvItem
+						(Print 6 34)
+					else
+						(DontHave)
+					)
 				else
 					(Print 6 34)
 				)
@@ -481,12 +529,14 @@
 				)
 				(Print 6 35)
 			)
-			((Said 'converse/chicken') (Print 6 36))
+			((Said 'converse/chicken')
+				(Print 6 36)
+			)
 		)
 	)
 )
 
-(instance chick2 of Act
+(instance chick2 of Actor
 	(properties
 		y 102
 		x 94
@@ -495,9 +545,9 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (MousedOn self event 3)
+		(if (MousedOn self event shiftDown)
 			(Print 6 33)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -513,7 +563,7 @@
 		view 106
 		loop 2
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -527,11 +577,11 @@
 			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/(coop[<chicken]),(cabin<chicken)')
 				)
 				(Print 6 38)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
@@ -548,9 +598,10 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(cond 
-			((Said 'break/window') (Print 6 39))
-			(
-			(Said 'examine<(in,through)/window,(cabin[<celie])')
+			((Said 'break/window')
+				(Print 6 39)
+			)
+			((Said 'examine<(in,through)/window,(cabin[<celie])')
 				(if
 					(or
 						(ego inRect: 179 92 221 103)
@@ -561,9 +612,13 @@
 					(NotClose)
 				)
 			)
-			((Said 'open/window') (Print 6 41))
-			(
-			(or (MousedOn self event 3) (Said 'examine/window')) (event claimed: 1) (Print 6 42))
+			((Said 'open/window')
+				(Print 6 41)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/window'))
+				(event claimed: TRUE)
+				(Print 6 42)
+			)
 		)
 	)
 )
@@ -578,24 +633,21 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 6 42)
 		)
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
 (instance closeDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Door setCycle: Beg self)
+				(Door setCycle: BegLoop self)
 				(myMusic number: 44 loop: 1 play:)
 			)
 			(1

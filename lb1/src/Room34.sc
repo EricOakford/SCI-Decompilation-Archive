@@ -1019,6 +1019,5 @@ code_05bf:
 (instance myIcon of DCIcon
 	(properties
 		view 653
-		cycleSpeed 16
 	)
 )

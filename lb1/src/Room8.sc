@@ -413,9 +413,7 @@
 )
 
 (instance deathIcon of DCIcon
-	(properties
-		cycleSpeed 16
-	)
+	(properties)
 	
 	(method (init)
 		((= cycler (End new:)) init: self)

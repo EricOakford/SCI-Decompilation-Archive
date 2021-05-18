@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 7)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DCIcon)
@@ -17,9 +17,9 @@
 )
 
 (local
-	local0
+	dying
 )
-(instance Room7 of Rm
+(instance Room7 of Room
 	(properties
 		picture 7
 	)
@@ -29,23 +29,23 @@
 		(= west 6)
 		(= horizon 86)
 		(super init:)
-		(LoadMany 128 5 13 35)
-		(LoadMany 132 67 82 92)
+		(LoadMany VIEW 5 13 35)
+		(LoadMany SOUND 67 82 92)
 		(self setRegions: 205)
 		(self setFeatures: Bridge)
 		(if howFast
 			(wave1
 				setPri: 1
 				cycleSpeed: 2
-				ignoreActors: 1
-				setCycle: Fwd
+				ignoreActors: TRUE
+				setCycle: Forward
 				init:
 			)
 			(wave2
 				setPri: 1
 				cycleSpeed: 2
-				ignoreActors: 1
-				setCycle: Fwd
+				ignoreActors: TRUE
+				setCycle: Forward
 				init:
 			)
 			(flyCage init:)
@@ -54,9 +54,9 @@
 				cel: 0
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				setMotion: Wander 5
 				init:
 			)
@@ -65,9 +65,9 @@
 				cel: 1
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				setMotion: Wander 5
 				init:
 			)
@@ -76,9 +76,9 @@
 				cel: 2
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				setMotion: Wander 5
 				init:
 			)
@@ -87,9 +87,9 @@
 				cel: 3
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				setMotion: Wander 5
 				init:
 			)
@@ -98,9 +98,9 @@
 				cel: 4
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				setMotion: Wander 5
 				init:
 			)
@@ -117,15 +117,15 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 7 0))
-		(if
-		(and (& (ego onControl: 1) $0002) (== local0 0))
-			(= local0 1)
+		(if (FirstEntry)
+			(Print 7 0)
+		)
+		(if (and (& (ego onControl: origin) cBLUE) (== dying FALSE))
+			(= dying TRUE)
 			(self setScript: sink)
 		)
-		(if
-		(and (& (ego onControl: 1) $0008) (== local0 0))
-			(= local0 1)
+		(if (and (& (ego onControl: origin) cCYAN) (== dying FALSE))
+			(= dying TRUE)
 			(myMusic number: 67 loop: 1 play:)
 			(self setScript: falling)
 		)
@@ -140,15 +140,25 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				((Said 'examine>')
 					(cond 
-						((Said '<(below,below)/bridge') (Print 7 1))
-						((Said '<(across,on)/brook,water') (Print 7 2))
-						((Said '/brook,water') (Print 7 3))
-						((Said '<down') (ParseName {ground}))
-						((Said '[/bridge,room,around]') (Print 7 0))
+						((Said '<(below,below)/bridge')
+							(Print 7 1)
+						)
+						((Said '<(across,on)/brook,water')
+							(Print 7 2)
+						)
+						((Said '/brook,water')
+							(Print 7 3)
+						)
+						((Said '<down')
+							(ParseName {ground})
+						)
+						((Said '[/bridge,room,around]')
+							(Print 7 0)
+						)
 					)
 				)
 				(
@@ -158,8 +168,12 @@
 					)
 					(Print 7 4)
 				)
-				((Said 'climb[<(across,above)]/oak,log') (Print 7 5))
-				((Said 'hop[<(across,above)][/bridge,brook]') (Print 7 6))
+				((Said 'climb[<(across,above)]/oak,log')
+					(Print 7 5)
+				)
+				((Said 'hop[<(across,above)][/bridge,brook]')
+					(Print 7 6)
+				)
 			)
 		)
 	)
@@ -170,7 +184,6 @@
 )
 
 (instance falling of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -180,7 +193,7 @@
 					view: 5
 					setLoop: 0
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					yStep: 5
 					illegalBits: 0
 					setMotion: MoveTo 115 130 self
@@ -188,21 +201,23 @@
 			)
 			(1
 				(myMusic number: 82 loop: 1 play:)
-				(ego loop: 2 posn: 116 149 cel: 0 setCycle: End self)
+				(ego loop: 2 posn: 116 149 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(ego view: 13 loop: 0 posn: 92 157 setCycle: Fwd)
+				(ego view: 13 loop: 0 posn: 92 157 setCycle: Forward)
 				(= seconds 3)
 			)
 			(3
-				(ego view: 13 loop: 2 setCycle: End self)
+				(ego view: 13 loop: 2 setCycle: EndLoop self)
 			)
-			(4 (= seconds 3))
+			(4
+				(= seconds 3)
+			)
 			(5
 				(= cIcon myIcon)
 				(= deathLoop 5)
 				(= deathCel 0)
-				(= cyclingIcon 1)
+				(= cyclingIcon TRUE)
 				(EgoDead 7 7)
 			)
 		)
@@ -210,8 +225,7 @@
 )
 
 (instance sink of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -222,15 +236,18 @@
 					cel: 0
 					cycleSpeed: 3
 					setMotion: MoveTo (+ (ego x?) 30) (ego y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(1 (ego hide:) (= seconds 3))
+			(1
+				(ego hide:)
+				(= seconds 3)
+			)
 			(2
 				(= cIcon myIcon)
 				(= deathLoop 5)
 				(= deathCel 0)
-				(= cyclingIcon 1)
+				(= cyclingIcon TRUE)
 				(EgoDead 7 7)
 			)
 		)
@@ -241,17 +258,14 @@
 	(properties
 		view 13
 		loop 5
-		cycleSpeed 16
 	)
 	
 	(method (init)
-		((= cycler (End new:)) init: self)
+		((= cycler (EndLoop new:)) init: self)
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
 (instance wave1 of Prop
 	(properties
@@ -270,7 +284,7 @@
 	)
 )
 
-(instance Fly of Act
+(instance Fly of Actor
 	(properties
 		y 123
 		x 274
@@ -279,7 +293,7 @@
 	)
 )
 
-(instance Fly2 of Act
+(instance Fly2 of Actor
 	(properties
 		y 179
 		x 297
@@ -288,7 +302,7 @@
 	)
 )
 
-(instance Fly3 of Act
+(instance Fly3 of Actor
 	(properties
 		y 139
 		x 207
@@ -296,7 +310,7 @@
 	)
 )
 
-(instance Fly4 of Act
+(instance Fly4 of Actor
 	(properties
 		y 179
 		x 197
@@ -304,7 +318,7 @@
 	)
 )
 
-(instance Fly5 of Act
+(instance Fly5 of Actor
 	(properties
 		y 139
 		x 217
@@ -330,9 +344,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/bridge'))
-			(event claimed: 1)
+		(if(or (MousedOn self event shiftDown) (Said 'examine/bridge'))
+			(event claimed: TRUE)
 			(Print 7 0)
 		)
 	)

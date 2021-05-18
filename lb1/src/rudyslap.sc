@@ -40,7 +40,7 @@
 			(
 			(and (Btst 51) (Said 'tell[/rudolph]/gertie<about'))
 				(= theTalker 9)
-				(if (& global123 $0001)
+				(if (& deadGuests $0001)
 					(if (& global145 $0080)
 						(Say 1 241 0)
 					else

@@ -303,7 +303,7 @@
 					(Btst 51)
 					(Said 'tell[/actress]/(death<gertie),gertie<about')
 				)
-				(if (& global123 $0001)
+				(if (& deadGuests $0001)
 					(if (& global145 $0002)
 						(= temp0
 							(switch currentAct

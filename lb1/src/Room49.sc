@@ -487,7 +487,7 @@
 								(Btst 38)
 								(and
 									(< gameMinutes 3)
-									(not (& global123 $0040))
+									(not (& deadGuests $0040))
 									(not (Btst 37))
 								)
 							)
@@ -679,7 +679,7 @@
 							(and
 								(== (ego loop?) 3)
 								(== (curRoom east?) 43)
-								(not (& global123 $0040))
+								(not (& deadGuests $0040))
 							)
 							(= temp0 352)
 						)

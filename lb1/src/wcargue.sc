@@ -453,7 +453,7 @@
 		(cond 
 			((and (Btst 51) (Said 'tell[/c]/gertie<about'))
 				(= theTalker 8)
-				(if (& global123 $0001)
+				(if (& deadGuests $0001)
 					(if (& global145 $0004)
 						(Say 1 237 22)
 					else

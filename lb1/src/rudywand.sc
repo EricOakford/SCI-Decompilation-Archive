@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 281)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -18,31 +18,30 @@
 )
 
 (local
-	[local0 18] = [65 129 242 187 197 172 233 134 189 138 80 138 100 143 136 177 135 163]
-	[local18 18] = [0 0 340 187 340 170 304 97 159 113 -20 138 -20 143 66 240 118 240]
-	[local36 18] = [-20 62 -20 187 104 240 156 240 340 139 340 130 193 143 340 173 340 140]
-	[local54 9] = [22 21 27 26 25 13 9 3 10]
+	local0 = [65 129 242 187 197 172 233 134 189 138 80 138 100 143 136 177 135 163]
+	local18 = [0 0 340 187 340 170 304 97 159 113 -20 138 -20 143 66 240 118 240]
+	local36 = [-20 62 -20 187 104 240 156 240 340 139 340 130 193 143 340 173 340 140]
+	local54 = [22 21 27 26 25 13 9 3 10]
 	local63
-	local64
-	local65
+	talkCount
+	askCount
 	[local66 5]
 )
-(instance rudywand of Rgn
+(instance rudywand of Region
 	(properties)
 	
 	(method (init)
 		(super init:)
-		(if
-		(and (== currentAct 3) (not (& global118 $0001)))
-			(Load rsFONT 41)
-			(LoadMany 132 29 94 95 96)
-			(Load rsSCRIPT 406)
-			(Load rsVIEW 642)
+		(if (and (== currentAct 3) (not (& global118 $0001)))
+			(Load FONT 41)
+			(LoadMany SOUND 29 94 95 96)
+			(Load SCRIPT 406)
+			(Load VIEW 642)
 		)
 		(if (== currentAct 3)
 			(LoadMany 143 243 296)
 			(= [global377 8] 296)
-			(Load rsVIEW 908)
+			(Load VIEW 908)
 			(if (== [global368 1] 0)
 				(= [global368 1] 800)
 				(= global114 0)
@@ -59,8 +58,8 @@
 		(Rudy
 			view: 380
 			loop: 1
-			illegalBits: -32768
-			ignoreHorizon: 1
+			illegalBits: cWHITE
+			ignoreHorizon: TRUE
 		)
 		(if
 			(and
@@ -68,12 +67,12 @@
 				(>= [global368 1] (* (- 8 global114) 100))
 			)
 			(= gCurRoomNum_4 curRoomNum)
-			(= global208 (| global208 $0100))
+			(|= global208 $0100)
 			(= [global368 1] (- 899 (* global114 100)))
 			(= local63 1)
 			(Rudy
 				setCycle: Walk
-				setAvoider: ((Avoid new:) offScreenOK: 1)
+				setAvoider: ((Avoider new:) offScreenOK: TRUE)
 				posn: [local0 (* global114 2)] [local0 (+ (* global114 2) 1)]
 				init:
 			)
@@ -99,13 +98,13 @@
 				(not local63)
 			)
 			(if (User controls?)
-				(= global208 (| global208 $0100))
+				(|= global208 $0100)
 				(= global114 (- 8 (/ [global368 1] 100)))
 				(= gCurRoomNum_4 curRoomNum)
 				(= local63 1)
 				(Rudy
 					setCycle: Walk
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setAvoider: ((Avoider new:) offScreenOK: TRUE)
 					posn: [local18 (* global114 2)] [local18 (+ (* global114 2) 1)]
 					init:
 				)
@@ -132,7 +131,7 @@
 			(= [global368 1] (- 720 (* global114 100)))
 		)
 		(= gCurRoomNum_4 0)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
@@ -154,7 +153,6 @@
 )
 
 (instance rudyActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -170,28 +168,36 @@
 			)
 			(1
 				(cond 
-					((not global216) (= state 0))
+					((not global216)
+						(= state 0)
+					)
 					(
 					(and (== currentAct 3) (not (& global118 $0001)))
 						(if (and (== gameMinutes 3) (== curRoomNum 10))
 							(gDoor startUpd:)
 						)
-						(= global118 (| global118 $0001))
+						(|= global118 $0001)
 						(self setScript: (ScriptID 406 0))
 						(= state 0)
 					)
-					((self script?) (= state 0))
+					((self script?)
+						(= state 0)
+					)
 				)
 				(= cycles 1)
 			)
 			(2
-				(if (== curRoomNum 10) (gDoor stopUpd:))
+				(if (== curRoomNum 10)
+					(gDoor stopUpd:)
+				)
 				(if
 					(and
 						(== (Rudy x?) [local36 (* global114 2)])
 						(== (Rudy y?) [local36 (+ (* global114 2) 1)])
 					)
-					(if (== curRoomNum 27) (= state 3))
+					(if (== curRoomNum 27)
+						(= state 3)
+					)
 				else
 					(= state 1)
 				)
@@ -211,7 +217,7 @@
 				)
 				(= gCurRoomNum_4 0)
 				(DisposeScript 985)
-				(= global208 (& global208 $feff))
+				(&= global208 $feff)
 				(= [global377 8] 0)
 				(= local63 0)
 				(client setScript: 0)
@@ -224,8 +230,7 @@
 	)
 )
 
-(instance Rudy of Act
-	(properties)
+(instance Rudy of Actor
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
@@ -233,43 +238,47 @@
 			(if (== currentAct 6)
 				(cond 
 					((Said 'ask,tell')
-						(= theTalker 9)
-						(if (not local65)
-							(= theTalker 9)
-							(++ local65)
+						(= theTalker talkRUDY)
+						(if (not askCount)
+							(= theTalker talkRUDY)
+							(++ askCount)
 							(Say 1 281 0)
 						else
 							(Say 1 281 1)
 						)
 					)
-					((Said 'deliver,hold') (Print 281 2))
+					((Said 'deliver,hold')
+						(Print 281 2)
+					)
 				)
 			)
 			(cond 
-				(
-				(and (not (& global207 $0100)) (MousedOn self event 3)) (event claimed: 1) (ParseName {rudy}))
+				((and (not (& global207 $0100)) (MousedOn self event shiftDown))
+					(event claimed: TRUE)
+					(ParseName {rudy})
+				)
 				(
 					(and
 						(& global207 $0100)
-						(or (MousedOn self event 3) (Said 'examine/rudolph'))
+						(or (MousedOn self event shiftDown) (Said 'examine/rudolph'))
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(Print 281 3)
 				)
 				((Said 'converse/rudolph>')
-					(= theTalker 9)
-					(switch local64
+					(= theTalker talkRUDY)
+					(switch talkCount
 						(0
 							(Say 1 281 4)
-							(= theTalker 12)
+							(= theTalker talkLAURA)
 							(Say 1 281 5)
 						)
 						(1 (Say 1 281 6))
 						(2 (Say 1 281 7))
 						(else  (Print 281 8))
 					)
-					(++ local64)
-					(event claimed: 1)
+					(++ talkCount)
+					(event claimed: TRUE)
 				)
 			)
 		)

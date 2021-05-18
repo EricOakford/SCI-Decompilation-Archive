@@ -35,8 +35,8 @@
 		(if
 			(and
 				(>= currentAct 3)
-				(not (& global123 $0004))
-				(not (& global123 $0040))
+				(not (& deadGuests $0004))
+				(not (& deadGuests $0040))
 			)
 			(if
 			(and (!= gCurRoomNum 23) (!= gCurRoomNum curRoomNum))

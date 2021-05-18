@@ -188,7 +188,7 @@
 				(== global201 200)
 			)
 			(++ global201)
-			(= global123 (| global123 $0020))
+			(= deadGuests (| deadGuests $0020))
 		)
 		(super newRoom: n)
 	)

@@ -119,7 +119,7 @@
 	)
 	
 	(method (newRoom n)
-		(if (and (& global123 $0008) (!= n 61))
+		(if (and (& deadGuests $0008) (!= n 61))
 			(= global200 101)
 		)
 		(if (== n 61) (cSound stop:))

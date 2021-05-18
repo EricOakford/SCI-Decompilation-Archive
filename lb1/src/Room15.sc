@@ -45,8 +45,8 @@
 		(if
 			(and
 				(>= currentAct 1)
-				(not (& global123 $0001))
-				(not (& global123 $0040))
+				(not (& deadGuests $0001))
+				(not (& deadGuests $0040))
 			)
 			(++ local1)
 			(self setRegions: 235)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 275)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use atsgl)
 (use Intrface)
@@ -12,10 +12,9 @@
 
 (local
 	local0
-	[local1 30] = [275 0 275 1 275 2 275 3 275 4 275 5 275 6 275 7 275 8 275 9 275 10 275 11 275 12 275 13 275 14]
+	local1 = [275 0 275 1 275 2 275 3 275 4 275 5 275 6 275 7 275 8 275 9 275 10 275 11 275 12 275 13 275 14]
 )
 (instance EtheAct2 of Script
-	(properties)
 	
 	(method (dispose)
 		(super dispose:)
@@ -25,7 +24,7 @@
 	(method (handleEvent event &tmp temp0)
 		(cond 
 			((event claimed?))
-			((and (== (event type?) evSAID) global212)
+			((and (== (event type?) saidEvent) global212)
 				(= local0 -1)
 				(switch global212
 					(1 (= local0 (Random 0 7)))

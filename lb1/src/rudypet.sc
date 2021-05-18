@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 277)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -16,9 +16,9 @@
 )
 
 (local
-	local0
-	local1
-	local2
+	talkCount
+	askCount
+	tellCount
 )
 (instance Dog of Prop
 	(properties
@@ -36,11 +36,17 @@
 					(Said 'feed,deliver/*<beauregard>')
 				)
 				(cond 
-					((and (ego has: 12) (Said '/bone')) (Print 277 0))
-					((and theInvItem haveInvItem) (Print 277 1))
-					(else (DontHave))
+					((and (ego has: iSoupBone) (Said '/bone'))
+						(Print 277 0)
+					)
+					((and theInvItem haveInvItem)
+						(Print 277 1)
+					)
+					(else
+						(DontHave)
+					)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 			(
 				(or
@@ -53,33 +59,46 @@
 					(DontHave)
 				)
 			)
-			((Said 'throw/bone') (Print 277 3))
+			((Said 'throw/bone')
+				(Print 277 3)
+			)
 			((Said '/beauregard>')
 				(cond 
-					((Said 'examine') (Print 277 4))
-					((Said 'get,move,drag,get') (Print 277 5))
-					((Said 'pat') (Print 277 6))
-					((Said 'converse') (Print 277 7))
-					((Said 'kill') (Print 277 8))
-					((Said 'kiss') (Print 277 9))
+					((Said 'examine')
+						(Print 277 4)
+					)
+					((Said 'get,move,drag,get')
+						(Print 277 5)
+					)
+					((Said 'pat')
+						(Print 277 6)
+					)
+					((Said 'converse')
+						(Print 277 7)
+					)
+					((Said 'kill')
+						(Print 277 8)
+					)
+					((Said 'kiss')
+						(Print 277 9)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance rudypet of Rgn
-	(properties)
+(instance rudypet of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(= global195 256)
 		(if (not (& global118 $0004))
-			(Load rsFONT 41)
-			(Load rsVIEW 642)
-			(LoadMany 132 29 94 95 96)
-			(Load rsSCRIPT 406)
+			(Load FONT 41)
+			(Load VIEW 642)
+			(LoadMany SOUND 29 94 95 96)
+			(Load SCRIPT 406)
 		)
 		(Dog init:)
 		(Rudy init:)
@@ -96,11 +115,15 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
-		(if (== (event type?) evSAID)
+		(if (event claimed?) (return TRUE))
+		(if (== (event type?) saidEvent)
 			(cond 
-				((Said 'examine/rudolph') (Print 277 10))
-				((Said 'feed/food') (Print 277 1))
+				((Said 'examine/rudolph')
+					(Print 277 10)
+				)
+				((Said 'feed/food')
+					(Print 277 1)
+				)
 			)
 		)
 		(return (super handleEvent: event))
@@ -108,7 +131,6 @@
 )
 
 (instance petDog of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -126,25 +148,27 @@
 				(cond 
 					((not global216) (= state 0))
 					((not (& global118 $0004))
-						(= global118 (| global118 $0004))
+						(|= global118 $0004)
 						(self setScript: (ScriptID 406 0))
 						(= state 0)
 					)
-					((self script?) (= state 0))
+					((self script?)
+						(= state 0)
+					)
 				)
 				(= cycles 1)
 			)
 			(2
-				(Rudy cycleSpeed: 1 loop: 1 cel: 2 setCycle: Beg self)
+				(Rudy cycleSpeed: 1 loop: 1 cel: 2 setCycle: BegLoop self)
 			)
 			(3
-				(Rudy loop: 0 setCycle: Fwd)
-				(Dog setCycle: Fwd)
+				(Rudy loop: 0 setCycle: Forward)
+				(Dog setCycle: Forward)
 				(= seconds (Random 3 5))
 			)
 			(4
 				(Dog setCycle: 0)
-				(Rudy loop: 1 cel: 0 setCycle: End)
+				(Rudy loop: 1 cel: 0 setCycle: EndLoop)
 				(= state 1)
 				(= seconds (Random 6 12))
 			)
@@ -161,17 +185,17 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 9)
+		(= theTalker talkRUDY)
 		(cond 
 			((Said 'ask//*<about')
-				(switch local1
-					(0 (Say 1 277 11) (++ local1))
+				(switch askCount
+					(0 (Say 1 277 11) (++ askCount))
 					(1 (Print 277 12))
 				)
 			)
 			((Said 'tell//*<about')
-				(switch local2
-					(0 (Say 1 277 13) (++ local2))
+				(switch tellCount
+					(0 (Say 1 277 13) (++ tellCount))
 					(1 (Print 277 14))
 				)
 			)
@@ -180,7 +204,7 @@
 					(Said 'deliver/*[/rudolph]')
 					(Said 'deliver/*[<rudolph]')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(if (and theInvItem haveInvItem)
 					(Print 277 15)
 				else
@@ -189,7 +213,7 @@
 			)
 			(
 			(or (Said 'hold/*/[rudolph]') (Said 'hold/*[<rudolph]'))
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(if (and theInvItem haveInvItem)
 					(Print 277 16)
 				else
@@ -204,19 +228,21 @@
 					((Said 'kiss') (Print 277 20))
 					((Said 'embrace') (Print 277 20))
 					((Said 'converse')
-						(= theTalker 9)
-						(switch local0
+						(= theTalker talkRUDY)
+						(switch talkCount
 							(0 (Say 1 277 21))
 							(1 (Say 1 277 22))
 							(2 (Say 1 277 23))
 							(3 (Say 1 277 24))
 							(else  (Print 277 25))
 						)
-						(++ local0)
+						(++ talkCount)
 					)
 				)
 			)
-			((Said 'flirt//rudolph') (Print 277 26))
+			((Said 'flirt//rudolph')
+				(Print 277 26)
+			)
 		)
 	)
 )

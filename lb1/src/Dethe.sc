@@ -100,8 +100,8 @@
 			(0 (HandsOff) (= seconds 2))
 			(1 (= cycles 1))
 			(2
-				(if (not (& global123 $0008))
-					(= global123 (| global123 $0008))
+				(if (not (& deadGuests $0008))
+					(= deadGuests (| deadGuests $0008))
 					(myMusic play:)
 					(if (!= curRoomNum 61)
 						(Print 268 10 #at 10 10 #icon 323 1 0 #mode 1)

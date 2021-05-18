@@ -23,7 +23,8 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (and (& global123 $0040) (== [global368 0] 2))
+		(if
+		(and (& deadGuests $0040) (== [global368 0] 2))
 			(= [global368 0] 1)
 			(Print 210 34)
 		)

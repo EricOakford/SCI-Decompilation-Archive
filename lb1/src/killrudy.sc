@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 290)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Wander)
@@ -26,14 +26,14 @@
 )
 (procedure (localproc_0056)
 	(HandsOff)
-	(TheMenuBar state: 0)
-	(fight cycles: 0 115 0)
+	(TheMenuBar state: FALSE)
+	(fight cycles: 0 seconds: 0)
 	(Duo setLoop: 0)
 	(ego
 		view: 52
 		loop: (if (< (ego x?) (Duo x?)) 0 else 1)
 		cel: 0
-		setCycle: End fight
+		setCycle: EndLoop fight
 	)
 )
 
@@ -61,37 +61,31 @@
 	)
 )
 
-(procedure (localproc_014d &tmp [temp0 500])
-	(GetFarText &rest @temp0)
-	(if (< (= theCycles (/ (StrLen @temp0) 2)) 20)
+(procedure (Measure &tmp [str 500])
+	(GetFarText &rest @str)
+	(if (< (= theCycles (/ (StrLen @str) 2)) 20)
 		(= theCycles 20)
 	)
 )
 
-(procedure (localproc_0174)
+(procedure (TalkPrint)
 	(if local2
-		(localproc_014d &rest)
+		(Measure &rest)
 		(Mouth setScript: cycleMouth)
 	)
-	(Print
-		&rest
-		#at
-		15
-		10
-		#font
-		4
-		#mode
-		1
+	(Print &rest
+		#at 15 10
+		#font 4
+		#mode teJustCenter
 		#draw
-		#width
-		280
+		#width 280
 		#dispose
 	)
 )
 
 (procedure (localproc_01ab)
-	(DrawPic 282 dpOPEN_EDGECENTER TRUE currentPalette)
-	(DrawPic local0 dpOPEN_CENTEREDGE FALSE currentPalette)
+	(DrawPic 282 IRISIN TRUE currentPalette)
+	(DrawPic local0 IRISOUT FALSE currentPalette)
 	(cast eachElementDo: #hide)
 	(Head show:)
 	(Mouth show:)
@@ -100,7 +94,7 @@
 )
 
 (procedure (localproc_01f8)
-	(DrawPic curRoomNum dpOPEN_CENTEREDGE)
+	(DrawPic curRoomNum IRISOUT)
 	(addToPics doit:)
 	(cast eachElementDo: #show)
 	(Head hide:)
@@ -119,23 +113,18 @@
 	(localproc_01ab)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance arena of Cage
-	(properties)
-)
+(instance arena of Cage)
 
-(instance killrudy of Rgn
-	(properties)
+(instance killrudy of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
-		(LoadMany 129 182 282 382)
-		(LoadMany 128 52 182 301 308 314 380 383 385 395)
-		(LoadMany 132 24 25 31 34 56)
+		(Load FONT 4)
+		(LoadMany PICTURE 182 282 382)
+		(LoadMany VIEW 52 182 301 308 314 380 383 385 395)
+		(LoadMany SOUND 24 25 31 34 56)
 		(= global195 768)
 		(Head init: hide:)
 		(Eye init: hide:)
@@ -146,7 +135,7 @@
 		else
 			(Bset 33)
 			(HandsOff)
-			(TheMenuBar state: 0)
+			(TheMenuBar state: FALSE)
 			(Rudy view: 385 loop: 2 posn: 130 126)
 			(Rudy cel: (Rudy lastCel:) init:)
 			(Colonel view: 385 loop: 1 posn: 133 128)
@@ -168,62 +157,75 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(super handleEvent: event)
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
-				((Said 'examine>') (if (Said '/rudolph,colonel') (Print 290 0)))
-				((Said 'converse') (Print 290 1))
+				((Said 'examine>')
+					(if (Said '/rudolph,colonel')
+						(Print 290 0)
+					)
+				)
+				((Said 'converse')
+					(Print 290 1)
+				)
 				(
 					(or
 						(Said 'load/derringer')
 						(Said 'attach,load/bullet/derringer<in,in')
 					)
 					(cond 
-						(gunIsLoaded (Print 290 2))
-						((ego has: 15)
-							(if (ego has: 14)
+						(gunIsLoaded
+							(Print 290 2)
+						)
+						((ego has: iDerringer)
+							(if (ego has: iBullet)
 								(Ok)
-								(ego put: 14 99)
-								(= gunIsLoaded 1)
+								(ego put: iBullet 99)
+								(= gunIsLoaded TRUE)
 							else
 								(Print 290 3)
 							)
 						)
-						(else (Print 290 4))
+						(else
+							(Print 290 4)
+						)
 					)
 				)
-				((Said '*[/*]') (Print 290 5))
+				((Said '*[/*]')
+					(Print 290 5)
+				)
 			)
 		)
 	)
 	
 	(method (newRoom n)
-		(= saveDisabled 0)
-		(TheMenuBar state: 1)
+		(= saveDisabled FALSE)
+		(TheMenuBar state: TRUE)
 		(super newRoom: n)
 	)
 )
 
 (instance fight of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp colonelX colonelY)
 		(switch (= state newState)
 			(0
-				(User canInput: 0)
-				(if (Btst 33) (= state 3))
+				(User canInput: FALSE)
+				(if (Btst 33)
+					(= state 3)
+				)
 				(= cycles 4)
 			)
 			(1
-				(User canInput: 1 canControl: 0)
+				(User canInput: TRUE canControl: FALSE)
 				(Print 290 0)
 				(myMusic number: 24 loop: -1 play:)
-				(Duo setLoop: 1 setCycle: Fwd setMotion: Wander 10)
+				(Duo setLoop: 1 setCycle: Forward setMotion: Wander 10)
 				(= seconds 10)
 			)
 			(2
 				(HandsOff)
-				(TheMenuBar state: 0)
-				(Duo setLoop: 0 setMotion: 0 setCycle: End self)
+				(TheMenuBar state: FALSE)
+				(Duo setLoop: 0 setMotion: 0 setCycle: EndLoop self)
 			)
 			(3
 				(Colonel
@@ -231,7 +233,7 @@
 					loop: 1
 					cel: 0
 					posn: (- (Duo x?) 2) (Duo y?)
-					setCycle: End
+					setCycle: EndLoop
 					init:
 				)
 				(Rudy
@@ -240,7 +242,7 @@
 					cel: 0
 					posn: (+ (Duo x?) 2) (Duo y?)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 				(Duo dispose:)
@@ -258,24 +260,24 @@
 			)
 			(5
 				(= local0 182)
-				(TheMenuBar state: 1)
+				(TheMenuBar state: TRUE)
 				(localproc_024f 0)
 				(if (Btst 33)
-					(localproc_0174 290 11)
+					(TalkPrint 290 11)
 				else
-					(localproc_0174 290 12)
+					(TalkPrint 290 12)
 				)
 				(= seconds 10)
 			)
 			(6
-				(localproc_0174 290 13)
+				(TalkPrint 290 13)
 				(= state 36)
 				(= seconds 10)
 			)
 			(7 (localproc_0056))
 			(8
 				(myMusic number: 25 loop: 1 play:)
-				(ego loop: (+ (ego loop?) 2) cel: 0 setCycle: End)
+				(ego loop: (+ (ego loop?) 2) cel: 0 setCycle: EndLoop)
 				(Colonel
 					view: 301
 					loop: 0
@@ -289,7 +291,7 @@
 					loop: 1
 					posn: (Duo x?) (Duo y?)
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 				(Duo setMotion: 0 ignoreBlocks: arena hide:)
@@ -327,22 +329,22 @@
 					cel: 0
 					posn: colonelX (- colonelY 22)
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
-				(TheMenuBar state: 1)
+				(TheMenuBar state: TRUE)
 				(= local0 382)
 				(localproc_024f 1)
 				(= cycles 10)
 			)
 			(13
 				(myMusic number: 31 loop: -1 play:)
-				(localproc_0174 290 15)
+				(TalkPrint 290 15)
 				(= seconds 18)
 			)
 			(14
-				(localproc_0174 290 16)
+				(TalkPrint 290 16)
 				(= seconds 12)
 			)
 			(15
@@ -353,11 +355,11 @@
 				(= cycles 10)
 			)
 			(16
-				(localproc_0174 290 17)
+				(TalkPrint 290 17)
 				(= seconds 18)
 			)
 			(17
-				(localproc_0174 290 18)
+				(TalkPrint 290 18)
 				(= seconds 12)
 			)
 			(18
@@ -367,11 +369,11 @@
 				(= cycles 10)
 			)
 			(19
-				(localproc_0174 290 19)
+				(TalkPrint 290 19)
 				(= seconds 12)
 			)
 			(20
-				(localproc_0174 290 20)
+				(TalkPrint 290 20)
 				(= seconds 12)
 			)
 			(21
@@ -381,7 +383,7 @@
 				(= cycles 10)
 			)
 			(22
-				(localproc_0174 290 21)
+				(TalkPrint 290 21)
 				(= seconds 12)
 			)
 			(23
@@ -389,12 +391,14 @@
 				(myMusic fade:)
 				(= cycles 21)
 			)
-			(24 (curRoom newRoom: 784))
+			(24 
+				(curRoom newRoom: 784)
+			)
 			(25 (localproc_0056))
 			(26
 				(= local4 1)
 				(myMusic number: 25 loop: 1 play:)
-				(ego loop: (+ (ego loop?) 2) cel: 0 setCycle: End)
+				(ego loop: (+ (ego loop?) 2) cel: 0 setCycle: EndLoop)
 				(Rudy
 					view: 380
 					cel: 0
@@ -409,7 +413,7 @@
 					loop: 0
 					posn: (- (Duo x?) 2) (Duo y?)
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 				(Duo dispose:)
@@ -428,15 +432,15 @@
 				(ego view: 0 loop: 3 setCycle: 0)
 			)
 			(29
-				(Rudy view: 393 loop: 0 cel: 0 setCycle: End self)
+				(Rudy view: 393 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(30 (= seconds 3))
-			(31 (Rudy setCycle: Beg self))
+			(31 (Rudy setCycle: BegLoop self))
 			(32
 				(myMusic number: 56 loop: -1 play:)
 				(LeftArm setLoop: 8)
 				(localproc_00b0)
-				(localproc_0174 290 22)
+				(TalkPrint 290 22)
 				(= seconds 4)
 			)
 			(33
@@ -447,16 +451,16 @@
 				(= cycles 10)
 			)
 			(34
-				(localproc_0174 290 23)
-				(Mouth setCycle: Fwd)
+				(TalkPrint 290 23)
+				(Mouth setCycle: Forward)
 				(= seconds 16)
 			)
 			(35
-				(localproc_0174 290 24)
+				(TalkPrint 290 24)
 				(= seconds 5)
 			)
 			(36
-				(localproc_0174 290 25)
+				(TalkPrint 290 25)
 				(= seconds 5)
 			)
 			(37
@@ -466,15 +470,15 @@
 				(= cycles 10)
 			)
 			(38
-				(localproc_0174 290 26)
+				(TalkPrint 290 26)
 				(= seconds 10)
 			)
 			(39
-				(localproc_0174 290 27)
+				(TalkPrint 290 27)
 				(= seconds 10)
 			)
 			(40
-				(localproc_0174 290 28)
+				(TalkPrint 290 28)
 				(= seconds 10)
 			)
 			(41
@@ -484,17 +488,17 @@
 				(= cycles 10)
 			)
 			(42
-				(localproc_0174 290 29)
+				(TalkPrint 290 29)
 				(= seconds 10)
 			)
 			(43
-				(localproc_0174 290 30)
+				(TalkPrint 290 30)
 				(= seconds 10)
 			)
 			(44
 				(myMusic fade:)
 				(if local4
-					(localproc_0174 290 31)
+					(TalkPrint 290 31)
 					(= seconds 4)
 				else
 					(= cycles 10)
@@ -510,7 +514,7 @@
 	(method (handleEvent event &tmp temp0)
 		(if (event claimed?) (return))
 		(super handleEvent: event)
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				(
 					(or
@@ -522,13 +526,17 @@
 							(if (== state 1)
 								(= state 6)
 								(= cycles 1)
-								(= gunIsLoaded 0)
+								(= gunIsLoaded FALSE)
 							else
 								(Print 290 6)
 							)
 						)
-						((ego has: 15) (Print 290 7))
-						(else (Print 290 8))
+						((ego has: iDerringer)
+							(Print 290 7)
+						)
+						(else
+							(Print 290 8)
+						)
 					)
 				)
 				(
@@ -540,29 +548,34 @@
 						(gunIsLoaded
 							(if (== state 1)
 								(= state 24)
-								(= gunIsLoaded 0)
+								(= gunIsLoaded FALSE)
 								(= cycles 1)
 							else
 								(Print 290 6)
 							)
 						)
-						((ego has: 15) (Print 290 7))
-						(else (Print 290 8))
+						((ego has: iDerringer)
+							(Print 290 7)
+						)
+						(else
+							(Print 290 8)
+						)
 					)
 				)
-				((Said 'shoot/derringer') (Print 290 9))
+				((Said 'shoot/derringer')
+					(Print 290 9)
+				)
 			)
 		)
 	)
 )
 
 (instance cycleMouth of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cel: 0 setCycle: Fwd show:)
+				(client cel: 0 setCycle: Forward show:)
 				(= cycles theCycles)
 			)
 			(1
@@ -574,8 +587,7 @@
 )
 
 (instance BigEye of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -599,8 +611,7 @@
 )
 
 (instance coloTalking of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -608,7 +619,7 @@
 					loop: (Random 2 5)
 					cel: 0
 					cycleSpeed: (Random 2 4)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles (Random 8 16))
 			)
@@ -622,14 +633,13 @@
 )
 
 (instance RudyTalking of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(TalkingHead setCycle: Fwd)
-				(RightArm setCycle: Fwd)
-				(LeftArm setCycle: Fwd)
+				(TalkingHead setCycle: Forward)
+				(RightArm setCycle: Forward)
+				(LeftArm setCycle: Forward)
 				(= cycles 1)
 			)
 			(1
@@ -643,31 +653,31 @@
 	)
 )
 
-(instance Rudy of Act
+(instance Rudy of Actor
 	(properties
 		y 113
 		x 114
 		view 383
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance Colonel of Act
+(instance Colonel of Actor
 	(properties
 		y 113
 		x 114
 		view 308
-		signal $4000
+		signal ignrAct
 		illegalBits $0000
 	)
 )
 
-(instance Duo of Act
+(instance Duo of Actor
 	(properties
 		y 129
 		x 114
 		view 395
-		signal $4000
+		signal ignrAct
 		cycleSpeed 1
 		illegalBits $0000
 	)

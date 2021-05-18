@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 276)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -16,8 +16,8 @@
 )
 
 (local
-	local0
-	local1
+	talkCount
+	askCount
 )
 (instance Clarence of Prop
 	(properties
@@ -31,19 +31,19 @@
 			(
 				(and
 					(not (& global207 $0040))
-					(or (MousedOn self event 3) (Said 'examine/attorney'))
+					(or (MousedOn self event shiftDown) (Said 'examine/attorney'))
 				)
-				(= global207 (| global207 $0040))
-				(= theTalker 7)
-				(event claimed: 1)
+				(|= global207 $0040)
+				(= theTalker talkCLARENCE)
+				(event claimed: TRUE)
 				(Say 0 276 0)
 			)
 			(
 				(and
 					(& global207 $0040)
-					(or (MousedOn self event 3) (Said 'examine/attorney'))
+					(or (MousedOn self event shiftDown) (Said 'examine/attorney'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 276 1)
 			)
 		)
@@ -63,31 +63,30 @@
 			(
 				(and
 					(not (& global207 $0040))
-					(or (MousedOn self event 3) (Said 'examine/attorney'))
+					(or (MousedOn self event shiftDown) (Said 'examine/attorney'))
 				)
-				(= global207 (| global207 $0040))
-				(= theTalker 7)
-				(event claimed: 1)
+				(|= global207 $0040)
+				(= theTalker talkCLARENCE)
+				(event claimed: TRUE)
 				(Say 0 276 0)
 			)
 			(
 				(and
 					(& global207 $0040)
-					(or (MousedOn self event 3) (Said 'examine/attorney'))
+					(or (MousedOn self event shiftDown) (Said 'examine/attorney'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 276 1)
 			)
 		)
 	)
 )
 
-(instance desk of Rgn
-	(properties)
+(instance desk of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(= global195 64)
 		(cHead setPri: 10 init:)
 		(Clarence init:)
@@ -105,24 +104,39 @@
 	(method (handleEvent event &tmp temp0)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
-			(= theTalker 7)
+		(if (== (event type?) saidEvent)
+			(= theTalker talkCLARENCE)
 			(cond 
 				((Said 'examine>')
 					(cond 
-						((Said '/attorney') (Print 276 1))
-						((Said '/desk') (Print 276 2))
-						((Said '<in/notebook') (Print 276 3))
-						((Said '/notebook') (Print 276 4))
+						((Said '/attorney')
+							(Print 276 1)
+						)
+						((Said '/desk')
+							(Print 276 2)
+						)
+						((Said '<in/notebook')
+							(Print 276 3)
+						)
+						((Said '/notebook')
+							(Print 276 4)
+						)
 					)
 				)
 				((Said 'ask//*<about')
-					(switch local1
-						(0 (Say 1 276 5) (++ local1))
-						(1 (Print 276 6))
+					(switch askCount
+						(0
+							(Say 1 276 5)
+							(++ askCount)
+						)
+						(1
+							(Print 276 6)
+						)
 					)
 				)
-				((Said 'tell//*<about') (Print 276 7))
+				((Said 'tell//*<about')
+					(Print 276 7)
+				)
 				((Said 'hold/*')
 					(if (and theInvItem haveInvItem)
 						(Print 276 8)
@@ -140,13 +154,13 @@
 				((Said '/attorney>')
 					(cond 
 						((Said 'converse')
-							(switch local0
+							(switch talkCount
 								(0 (Say 1 276 10))
 								(1 (Say 1 276 11))
 								(2 (Say 1 276 12))
 								(else  (Print 276 13))
 							)
-							(++ local0)
+							(++ talkCount)
 						)
 						((Said 'hear') (Print 276 14))
 						((Said 'get') (Print 276 15))
@@ -164,7 +178,6 @@
 )
 
 (instance noteBook of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -172,30 +185,32 @@
 				(cond 
 					((not global216) (= state -1))
 					((not (& global118 $0008))
-						(= global118 (| global118 $0008))
+						(|= global118 $0008)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
 			(1
-				(cHead loop: 5 cel: 0 cycleSpeed: 3 setCycle: End)
-				(Clarence cycleSpeed: 1 setCycle: Fwd)
+				(cHead loop: 5 cel: 0 cycleSpeed: 3 setCycle: EndLoop)
+				(Clarence cycleSpeed: 1 setCycle: Forward)
 				(= seconds (Random 5 12))
 			)
 			(2
 				(Clarence setCycle: 0)
-				(cHead setCycle: Beg)
+				(cHead setCycle: BegLoop)
 				(= seconds (Random 3 5))
 			)
 			(3
-				(cHead loop: 1 cel: 0 setCycle: End)
+				(cHead loop: 1 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 3 5))
 			)
 			(4
-				(cHead setCycle: Beg)
+				(cHead setCycle: BegLoop)
 				(= seconds (Random 3 5))
 			)
 			(5

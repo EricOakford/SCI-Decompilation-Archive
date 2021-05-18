@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 335)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -16,38 +16,28 @@
 (local
 	local0
 )
-(instance Lillian of Prop
-	(properties)
-)
+(instance Lillian of Prop)
 
-(instance Eyes of Prop
-	(properties)
-)
+(instance Eyes of Prop)
 
-(instance Head of Prop
-	(properties)
-)
+(instance Head of Prop)
 
-(instance Hand of Act
-	(properties)
-)
+(instance Hand of Actor)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene44f of Rm
+(instance scene44f of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
 		(HandsOff)
-		(Load rsFONT 41)
-		(Load rsVIEW 642)
-		(LoadMany 132 29 94 95 96)
+		(Load FONT 41)
+		(Load VIEW 642)
+		(LoadMany SOUND 29 94 95 96)
 		(LoadMany 143 406)
 		(myMusic number: 27 loop: -1 play:)
 		(Lillian
@@ -106,19 +96,22 @@
 )
 
 (instance twice of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0002))
-						(= global118 (| global118 $0002))
+						(|= global118 $0002)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
@@ -138,8 +131,7 @@
 )
 
 (instance writing of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -150,7 +142,7 @@
 					(= state 0)
 					(Hand
 						setCel: -1
-						setCycle: Fwd
+						setCycle: Forward
 						posn: (- 225 (Random 0 3)) (- 118 (Random 0 3))
 					)
 					(= cycles 2)
@@ -174,14 +166,13 @@
 )
 
 (instance movements of Script
-	(properties)
 	
 	(method (changeState newState &tmp headCel)
 		(switch (= state newState)
 			(0
 				(= headCel (Head cel?))
 				(if (== (Random 1 7) 1)
-					(Head cel: (= headCel (^ headCel $0001)))
+					(Head cel: (^= headCel $0001))
 				)
 				(Eyes
 					cel: (^ (Eyes cel?) $0001)

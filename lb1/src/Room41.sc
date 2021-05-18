@@ -43,8 +43,8 @@
 			(
 				(and
 					(>= currentAct 6)
-					(not (& global123 $0020))
-					(not (& global123 $0040))
+					(not (& deadGuests $0020))
+					(not (& deadGuests $0040))
 				)
 				(cond 
 					((== gCurRoomNum_3 41) (++ local0) (self setRegions: 278))
@@ -133,7 +133,7 @@
 						(if (not (cast contains: bag))
 							(cond 
 								(
-								(and (== gCurRoomNum_3 41) (not (& global123 $0020))) (Print 41 8))
+								(and (== gCurRoomNum_3 41) (not (& deadGuests $0020))) (Print 41 8))
 								((not (Btst 35)) (self setScript: myBed))
 								(else (AlreadyClosed))
 							)

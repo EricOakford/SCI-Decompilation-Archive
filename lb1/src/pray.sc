@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 279)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -17,7 +17,7 @@
 )
 
 (local
-	local0
+	talkCount
 )
 (instance Celie of Prop
 	(properties)
@@ -25,21 +25,23 @@
 	(method (handleEvent event)
 		(cond 
 			(
-			(and (MousedOn self event 3) (not (& global207 $0002)))
-				(= global207 (| global207 $0002))
-				(= theTalker 2)
-				(event claimed: 1)
+			(and (MousedOn self event shiftDown) (not (& global207 $0002)))
+				(|= global207 $0002)
+				(= theTalker talkCELIE)
+				(event claimed: TRUE)
 				(Say 0 279 0)
 			)
 			(
 				(and
 					(& global207 $0002)
-					(or (MousedOn self event 3) (Said 'examine/celie'))
+					(or (MousedOn self event shiftDown) (Said 'examine/celie'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 279 1)
 			)
-			((Said 'ask,tell//*<about') (Print 279 2))
+			((Said 'ask,tell//*<about')
+				(Print 279 2)
+			)
 			((Said 'deliver,hold/*')
 				(if (and theInvItem haveInvItem)
 					(Print 279 3)
@@ -50,13 +52,13 @@
 			((Said '/celie>')
 				(cond 
 					((Said 'converse')
-						(= theTalker 2)
-						(switch local0
+						(= theTalker talkCELIE)
+						(switch talkCount
 							(0 (Say 1 279 4))
 							(1 (Say 1 279 5))
 							(else  (Print 279 6))
 						)
-						(++ local0)
+						(++ talkCount)
 					)
 					((Said 'get') (Print 279 7))
 					((Said 'kill') (Print 279 8))
@@ -68,18 +70,17 @@
 	)
 )
 
-(instance pray of Rgn
-	(properties)
+(instance pray of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(= global195 2)
 		(if (not (& global118 $0008))
-			(Load rsFONT 41)
-			(LoadMany 132 29 94 95 96)
-			(Load rsSCRIPT 406)
-			(Load rsVIEW 642)
+			(Load FONT 41)
+			(LoadMany SOUND 29 94 95 96)
+			(Load SCRIPT 406)
+			(Load VIEW 642)
 		)
 		(Celie view: 481 loop: 0 posn: 142 105 init:)
 		(self setScript: praying)
@@ -95,38 +96,41 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(super handleEvent: event)
-		(return (if (event claimed?) (return 1) else 0))
+		(return (if (event claimed?) (return TRUE) else FALSE))
 	)
 )
 
 (instance praying of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0008))
-						(= global118 (| global118 $0008))
+						(|= global118 $0008)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
 			(1
 				(cls)
-				(User canInput: 1)
-				(Celie loop: 0 setCycle: End)
+				(User canInput: TRUE)
+				(Celie loop: 0 setCycle: EndLoop)
 			)
 			(2
-				(User canInput: 0)
-				(Celie setCycle: Beg self)
+				(User canInput: FALSE)
+				(Celie setCycle: BegLoop self)
 			)
 			(3
-				(Celie loop: 1 setCycle: Fwd)
+				(Celie loop: 1 setCycle: Forward)
 				(= state 0)
 				(= seconds 5)
 			)

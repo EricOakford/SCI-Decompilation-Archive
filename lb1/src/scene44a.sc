@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 330)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -15,61 +15,49 @@
 
 (local
 	theCycles
-	local1
-	local2
+	mouthCued
+	saveBits
 )
-(procedure (localproc_000c &tmp [temp0 500])
-	(GetFarText &rest @temp0)
-	(= theCycles (+ (/ (StrLen @temp0) 2) 1))
+(procedure (Measure &tmp [str 500])
+	(GetFarText &rest @str)
+	(= theCycles (+ (/ (StrLen @str) 2) 1))
 )
 
-(procedure (localproc_002c)
-	(localproc_000c &rest)
+(procedure (LilPrint)
+	(Measure &rest)
 	(LilMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		20
-		115
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 20 115
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(procedure (localproc_005e)
-	(localproc_000c &rest)
+(procedure (EthPrint)
+	(Measure &rest)
 	(EthMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		160
-		115
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 160 115
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(instance scene44a of Rm
+(instance scene44a of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(HandsOff)
 		(myMusic number: 27 loop: -1 play:)
 		(Lillian setPri: 1 init:)
@@ -87,7 +75,7 @@
 			setLoop: 2
 			setCel: 0
 			setPri: 3
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 		)
 		(if (not (& global173 $0080))
@@ -104,7 +92,7 @@
 	
 	(method (dispose)
 		(if (and (not (& global173 $0080)) global125)
-			(= global173 (| global173 $0080))
+			(|= global173 $0080)
 		)
 		(super dispose:)
 	)
@@ -115,8 +103,7 @@
 )
 
 (instance LillsEyes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -124,7 +111,7 @@
 				(= seconds (Random 2 5))
 			)
 			(1
-				(LilEyes startUpd: setCycle: Beg self)
+				(LilEyes startUpd: setCycle: BegLoop self)
 				(= state -1)
 			)
 		)
@@ -132,64 +119,55 @@
 )
 
 (instance speech44a of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(if (cycleMouth client?)
-			(= local1 1)
+			(= mouthCued TRUE)
 			(= cycles 1)
 		else
 			(switch (= state newState)
-				(0 (= cycles 7))
+				(0
+					(= cycles 7)
+				)
 				(1
-					(= local2
-						(Display
-							330
-							0
-							dsCOORD
-							48
-							8
-							dsWIDTH
-							256
-							dsCOLOR
-							15
-							dsBACKGROUND
-							-1
-							dsFONT
-							0
-							dsSAVEPIXELS
+					(= saveBits
+						(Display 330 0
+							p_at 48 8
+							p_width 256
+							p_color vWHITE
+							p_back -1
+							p_font SYSFONT
+							p_save
 						)
 					)
-					(localproc_005e 330 1)
+					(EthPrint 330 1)
 					(= seconds 7)
 				)
 				(2
-					(localproc_002c 330 2)
+					(LilPrint 330 2)
 					(EthArm setScript: TakeASip)
 					(= seconds 5)
 				)
 				(3
-					(if
-					(and (EthArm script?) (< (TakeASip state?) 3))
+					(if (and (EthArm script?) (< (TakeASip state?) 3))
 						(-- state)
 						(= cycles 1)
 					else
-						(localproc_005e 330 3)
+						(EthPrint 330 3)
 						(= seconds 7)
 					)
 				)
 				(4
-					(localproc_002c 330 4)
+					(LilPrint 330 4)
 					(EthArm setScript: TakeASip)
 					(= seconds 5)
 				)
 				(5
-					(if
-					(and (EthArm script?) (< (TakeASip state?) 3))
+					(if (and (EthArm script?) (< (TakeASip state?) 3))
 						(-- state)
 						(= cycles 1)
 					else
-						(localproc_005e 330 5)
+						(EthPrint 330 5)
 						(= seconds 7)
 					)
 				)
@@ -199,8 +177,7 @@
 					(= seconds 7)
 				)
 				(7
-					(if
-					(and (EthArm script?) (< (TakeASip state?) 3))
+					(if (and (EthArm script?) (< (TakeASip state?) 3))
 						(-- state)
 						(= cycles 1)
 					else
@@ -216,10 +193,10 @@
 		(if
 			(and
 				(not (event claimed?))
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(cls)
@@ -229,21 +206,24 @@
 )
 
 (instance TakeASip of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (& global173 $0080) (Print 330 6 #dispose))
+				(if (& global173 $0080)
+					(Print 330 6 #dispose)
+				)
 				(EthArm moveSpeed: 1 setMotion: MoveTo 191 113 self)
 			)
-			(1 (EthArm setCycle: End self))
+			(1
+				(EthArm setCycle: EndLoop self)
+			)
 			(2
-				(EthMouth cel: 0 setCycle: Fwd show:)
+				(EthMouth cel: 0 setCycle: Forward show:)
 				(= seconds 2)
 			)
 			(3
-				(EthArm setCycle: Beg self)
+				(EthArm setCycle: BegLoop self)
 				(EthMouth cel: 0 setCycle: 0 hide:)
 			)
 			(4
@@ -251,24 +231,28 @@
 			)
 			(5
 				(client setScript: 0)
-				(if (& global173 $0080) (curRoom newRoom: prevRoomNum))
+				(if (& global173 $0080)
+					(curRoom newRoom: prevRoomNum)
+				)
 			)
 		)
 	)
 )
 
 (instance cycleMouth of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if local1 (= local1 0) (= cycles 1))
+		(if mouthCued
+			(= mouthCued FALSE)
+			(= cycles 1)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cel: 0 setCycle: Fwd show:)
+				(client cel: 0 setCycle: Forward show:)
 				(= cycles theCycles)
 			)
 			(1
@@ -325,7 +309,7 @@
 	)
 )
 
-(instance EthArm of Act
+(instance EthArm of Actor
 	(properties
 		y 136
 		x 165
@@ -335,6 +319,4 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

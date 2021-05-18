@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 351)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -15,24 +15,20 @@
 (local
 	local0
 )
-(instance Snoring of Act
-	(properties)
-)
+(instance Snoring of Actor)
 
-(instance snoring of Sound
-	(properties)
-)
+(instance snoring of Sound)
 
-(instance scene46a of Rm
+(instance scene46a of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
 		(HandsOff)
-		(LoadMany 132 114 115)
+		(LoadMany SOUND 114 115)
 		(snoring number: 114 loop: 1 play:)
 		(if (& global173 $0002)
 			(Snoring

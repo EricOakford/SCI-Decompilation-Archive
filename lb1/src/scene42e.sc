@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 354)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -15,17 +15,17 @@
 
 (local
 	theCycles
-	local1
-	local2
+	mouthCued
+	saveBits
 	local3 =  1
 )
-(procedure (localproc_0236 &tmp [temp0 500])
+(procedure (Measure &tmp [temp0 500])
 	(GetFarText &rest @temp0)
 	(= theCycles (+ (/ (StrLen @temp0) 3) 1))
 )
 
-(procedure (localproc_0256)
-	(localproc_0236 &rest)
+(procedure (LillPrint)
+	(Measure &rest)
 	(= theCycles (+ theCycles (/ theCycles 4)))
 	(lillMouth setScript: cycleMouth)
 	(Print
@@ -43,62 +43,42 @@
 	)
 )
 
-(procedure (localproc_0290)
-	(localproc_0236 &rest)
+(procedure (ColoPrint)
+	(Measure &rest)
 	(= theCycles (+ theCycles (/ theCycles 2)))
 	(coloMouth loop: 5 setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		20
-		115
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 20 115
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(instance Hand of Act
-	(properties)
-)
+(instance Hand of Actor)
 
-(instance Smoke of Act
-	(properties)
-)
+(instance Smoke of Actor)
 
-(instance Colonel of Prop
-	(properties)
-)
+(instance Colonel of Prop)
 
-(instance coloFace of Prop
-	(properties)
-)
+(instance coloFace of Prop)
 
-(instance coloMouth of Prop
-	(properties)
-)
+(instance coloMouth of Prop)
 
-(instance coloEyes of Prop
-	(properties)
-)
+(instance coloEyes of Prop)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene42e of Rm
+(instance scene42e of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(HandsOff)
 		(myMusic number: 27 loop: -1 play:)
 		(Colonel
@@ -147,7 +127,7 @@
 			setPri: 3
 			moveSpeed: 1
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			hide:
 		)
@@ -161,14 +141,13 @@
 			init:
 			hide:
 		)
-		(if
-		(and (not (& global173 $0040)) (!= [global368 1] 1))
+		(if (and (not (& global173 $0040)) (!= [global368 1] 1))
 			(= [global368 1] 1)
-			(= global173 (| global173 $0040))
-			(Load rsFONT 41)
+			(|= global173 $0040)
+			(Load FONT 41)
 			(LoadMany 143 406)
-			(Load rsVIEW 642)
-			(LoadMany 132 94 95 96 29)
+			(Load VIEW 642)
+			(LoadMany SOUND 94 95 96 29)
 			(Lillian setPri: 3 cycleSpeed: 2 init:)
 			(lillMouth cycleSpeed: 1 setPri: 4 init: hide:)
 			(lillEye setPri: 4 init: setScript: LillEyes)
@@ -193,7 +172,6 @@
 )
 
 (instance speech42e of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -201,51 +179,47 @@
 	
 	(method (changeState newState)
 		(if (cycleMouth client?)
-			(= local1 1)
+			(= mouthCued 1)
 			(= cycles 1)
 		else
 			(switch (= state newState)
 				(0
 					(cond 
-						((not global216) (= state -1))
+						((not global216)
+							(= state -1)
+						)
 						((not (& global118 $0002))
-							(= global118 (| global118 $0002))
+							(|= global118 $0002)
 							(self setScript: (ScriptID 406 0))
 							(= state -1)
 						)
-						((self script?) (= state -1))
+						((self script?)
+							(= state -1)
+						)
 					)
 					(= cycles 1)
 				)
 				(1
-					(= local2
-						(Display
-							354
-							0
-							dsCOORD
-							48
-							8
-							dsWIDTH
-							256
-							dsCOLOR
-							15
-							dsBACKGROUND
-							-1
-							dsFONT
-							0
-							dsSAVEPIXELS
+					(= saveBits
+						(Display 354 0
+							p_at 48 8
+							p_width 256
+							p_color vWHITE
+							p_back -1
+							p_font SYSFONT
+							p_save
 						)
 					)
-					(localproc_0256 354 1)
+					(LillPrint 354 1)
 					(= seconds 10)
 				)
 				(2
-					(localproc_0290 354 2)
+					(ColoPrint 354 2)
 					(= seconds 8)
 				)
 				(3
 					(Colonel setScript: twice)
-					(localproc_0256 354 3)
+					(LillPrint 354 3)
 					(= seconds 10)
 				)
 				(4
@@ -253,21 +227,21 @@
 						(= state 3)
 						(= cycles 1)
 					else
-						(localproc_0290 354 4)
+						(ColoPrint 354 4)
 						(= seconds 5)
 					)
 				)
 				(5
-					(localproc_0256 354 5)
+					(LillPrint 354 5)
 					(= seconds 8)
 				)
 				(6
-					(localproc_0290 354 6)
+					(ColoPrint 354 6)
 					(= seconds 10)
 				)
 				(7
 					(Colonel setScript: twice)
-					(localproc_0256 354 7)
+					(LillPrint 354 7)
 					(= seconds 10)
 				)
 				(8
@@ -275,7 +249,7 @@
 						(= state 7)
 						(= cycles 1)
 					else
-						(localproc_0256 354 8)
+						(LillPrint 354 8)
 						(= seconds 5)
 					)
 				)
@@ -300,10 +274,10 @@
 			(and
 				(not (event claimed?))
 				(not script)
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(cls)
@@ -313,17 +287,19 @@
 )
 
 (instance cycleMouth of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if local1 (= local1 0) (= cycles 1))
+		(if mouthCued
+			(= mouthCued FALSE)
+			(= cycles 1)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cel: 0 setCycle: Fwd show:)
+				(client cel: 0 setCycle: Forward show:)
 				(= cycles theCycles)
 			)
 			(1
@@ -335,14 +311,13 @@
 )
 
 (instance ColoEyes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 7))
 			(1
 				(= state 0)
-				(if (= local3 (^ local3 $0001))
+				(if (^= local3 $0001)
 					(coloEyes hide:)
 					(= seconds (Random 2 3))
 				else
@@ -359,14 +334,15 @@
 )
 
 (instance LillEyes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 7))
+			(0
+				(= cycles 7)
+			)
 			(1
 				(= state 0)
-				(lillEye loop: (Random 2 3) cel: 0 setCycle: Beg)
+				(lillEye loop: (Random 2 3) cel: 0 setCycle: BegLoop)
 				(= seconds (Random 3 8))
 			)
 		)
@@ -374,8 +350,7 @@
 )
 
 (instance twice of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if
@@ -390,18 +365,20 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (== client scene42e) (Print 354 9 #dispose))
+				(if (== client scene42e)
+					(Print 354 9 #dispose)
+				)
 				(coloFace cel: 0 forceUpd:)
 				(coloEyes y: (- (coloFace y?) 15) forceUpd:)
 				(Hand show: setMotion: MoveTo 116 116 self)
 			)
 			(1
 				(Hand stopUpd:)
-				(coloMouth show: loop: 4 setCycle: Fwd)
+				(coloMouth show: loop: 4 setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
-				(coloMouth setCycle: End)
+				(coloMouth setCycle: EndLoop)
 				(Hand setMotion: MoveTo 128 136 self)
 			)
 			(3
@@ -430,7 +407,7 @@
 	)
 )
 
-(instance Lillian of Act
+(instance Lillian of Actor
 	(properties
 		y 107
 		x 227

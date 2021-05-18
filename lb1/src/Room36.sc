@@ -283,7 +283,7 @@
 						(or
 							(not (& global208 $0044))
 							(not (Said 'tell[/actress,attorney]/gertie<about>'))
-							(not (& global123 $0001))
+							(not (& deadGuests $0001))
 						)
 					else
 						(& global145 $0002)

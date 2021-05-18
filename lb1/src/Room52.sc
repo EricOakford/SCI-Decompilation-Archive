@@ -41,7 +41,7 @@
 		(= horizon 0)
 		(super init:)
 		(addToPics add: rags tub eachElementDo: #init doit:)
-		(= global123 (| global123 $003f))
+		(= deadGuests (| deadGuests $003f))
 		(self
 			setRegions: 242
 			setFeatures:

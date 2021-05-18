@@ -65,7 +65,7 @@
 		(if
 			(and
 				(>= currentAct 3)
-				(not (& global123 $0004))
+				(not (& deadGuests $0004))
 				(!= gCurRoomNum 24)
 				(!= gCurRoomNum curRoomNum)
 			)
@@ -192,7 +192,7 @@
 	
 	(method (newRoom n)
 		(if local4
-			(= global123 (| global123 $0004))
+			(= deadGuests (| deadGuests $0004))
 			(= gCurRoomNum 0)
 		)
 		(super newRoom: n)
@@ -249,7 +249,7 @@
 				(if
 					(and
 						(== gCurRoomNum curRoomNum)
-						(not (& global123 $0040))
+						(not (& deadGuests $0040))
 						(not local4)
 					)
 					(mySound number: 120 loop: 1 play:)

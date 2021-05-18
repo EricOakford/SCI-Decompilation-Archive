@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 352)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -17,38 +17,24 @@
 	[local0 3]
 	local3
 )
-(instance Hand of Act
-	(properties)
-)
+(instance Hand of Actor)
 
-(instance Smoke of Act
-	(properties)
-)
+(instance Smoke of Actor)
 
-(instance Colonel of Prop
-	(properties)
-)
+(instance Colonel of Prop)
 
-(instance coloFace of Prop
-	(properties)
-)
+(instance coloFace of Prop)
 
-(instance coloMouth of Prop
-	(properties)
-)
+(instance coloMouth of Prop)
 
-(instance coloEyes of Prop
-	(properties)
-)
+(instance coloEyes of Prop)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene42b of Rm
+(instance scene42b of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
@@ -101,7 +87,7 @@
 			setPri: 3
 			moveSpeed: 1
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			hide:
 		)
@@ -111,7 +97,7 @@
 			setCycle: Walk
 			setPri: 3
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			hide:
 		)
@@ -132,13 +118,12 @@
 )
 
 (instance ColoEyes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= state -1)
-				(if (= local3 (^ local3 $0001))
+				(if (^= local3 $0001)
 					(coloEyes hide:)
 					(= seconds (Random 2 3))
 				else
@@ -155,8 +140,7 @@
 )
 
 (instance twice of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if
@@ -181,11 +165,11 @@
 			)
 			(2
 				(Hand stopUpd:)
-				(coloMouth show: setCycle: Fwd)
+				(coloMouth show: setCycle: Forward)
 				(= seconds 3)
 			)
 			(3
-				(coloMouth setCycle: End)
+				(coloMouth setCycle: EndLoop)
 				(Hand setMotion: MoveTo 128 136 self)
 			)
 			(4

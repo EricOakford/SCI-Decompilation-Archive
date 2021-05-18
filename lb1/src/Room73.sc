@@ -66,8 +66,8 @@
 		(if
 			(and
 				(>= currentAct 6)
-				(not (& global123 $0020))
-				(not (& global123 $0040))
+				(not (& deadGuests $0020))
+				(not (& deadGuests $0040))
 			)
 			(cond 
 				((== gCurRoomNum_3 73) (self setRegions: 278) (= local3 1))

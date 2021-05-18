@@ -46,9 +46,9 @@
 					)
 					(= temp1 (<< local0 $0001))
 					(cond 
-						((and (== local0 43) (& global123 $0001)) (= temp3 75))
-						((and (== local0 52) (& global123 $0002)) (= temp3 76))
-						((and (== local0 44) (& global123 $0004)) (= temp3 77))
+						((and (== local0 43) (& deadGuests $0001)) (= temp3 75))
+						((and (== local0 52) (& deadGuests $0002)) (= temp3 76))
+						((and (== local0 44) (& deadGuests $0004)) (= temp3 77))
 						(else (= temp3 0))
 					)
 					(if temp3

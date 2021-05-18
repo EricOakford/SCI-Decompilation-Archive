@@ -32,9 +32,9 @@
 	(properties)
 	
 	(method (init)
-		(ShowDeadBody 1)
+		(proc415_1 1)
 		(Body view: 343 cel: 0 posn: 55 126 init:)
-		(= global123 (| global123 $0001))
+		(= deadGuests (| deadGuests $0001))
 		(= global195 1)
 		(self setScript: showCloseup)
 	)

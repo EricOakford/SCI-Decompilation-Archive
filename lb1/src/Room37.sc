@@ -2005,7 +2005,5 @@ code_0f17:
 )
 
 (instance myIcon of DCIcon
-	(properties
-		cycleSpeed 16
-	)
+	(properties)
 )

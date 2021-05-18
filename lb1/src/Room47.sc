@@ -921,7 +921,6 @@
 (instance myIcon of DCIcon
 	(properties
 		view 653
-		cycleSpeed 16
 	)
 	
 	(method (init)

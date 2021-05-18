@@ -56,8 +56,8 @@
 		(if
 			(and
 				(== global121 69)
-				(not (& global123 $0002))
-				(not (& global123 $0040))
+				(not (& deadGuests $0002))
+				(not (& deadGuests $0040))
 			)
 			(self setRegions: 256)
 		)

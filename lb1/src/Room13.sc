@@ -214,7 +214,7 @@
 	(method (newRoom n)
 		(cond 
 			((== n 69) (cSound stop:))
-			((== global198 200) (++ global198) (= global123 (| global123 $0002)))
+			((== global198 200) (++ global198) (= deadGuests (| deadGuests $0002)))
 		)
 		(super newRoom: n)
 	)

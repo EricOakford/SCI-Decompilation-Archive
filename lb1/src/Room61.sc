@@ -43,7 +43,7 @@
 		(if
 			(and
 				(>= currentAct 4)
-				(not (& global123 $0040))
+				(not (& deadGuests $0040))
 				(!= global200 101)
 			)
 			(cond 

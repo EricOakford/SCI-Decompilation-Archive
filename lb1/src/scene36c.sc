@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 324)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -16,10 +16,10 @@
 (local
 	local0
 )
-(instance scene36c of Rm
+(instance scene36c of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
@@ -29,9 +29,9 @@
 		(glorSmoke
 			setLoop: 4
 			posn: 148 89
-			setCycle: Fwd
+			setCycle: Forward
 			setPri: 2
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 		)
 		(glorEye setPri: 2 init: stopUpd: setScript: GlorsEyes)
@@ -42,7 +42,7 @@
 			setPri: 3
 			xStep: 5
 			yStep: 5
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 		)
 		(self setScript: twice)
@@ -62,8 +62,7 @@
 )
 
 (instance GlorsEyes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -71,7 +70,7 @@
 				(= seconds (Random 2 5))
 			)
 			(1
-				(glorEye startUpd: setCycle: Beg self)
+				(glorEye startUpd: setCycle: BegLoop self)
 				(= state -1)
 			)
 		)
@@ -79,19 +78,22 @@
 )
 
 (instance twice of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0008))
-						(= global118 (| global118 $0008))
+						(|= global118 $0008)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
@@ -118,7 +120,7 @@
 	)
 )
 
-(instance glorSmoke of Act
+(instance glorSmoke of Actor
 	(properties
 		y 89
 		x 148
@@ -137,7 +139,7 @@
 	)
 )
 
-(instance glorHand of Act
+(instance glorHand of Actor
 	(properties
 		y 111
 		x 167
@@ -145,6 +147,4 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

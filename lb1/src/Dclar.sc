@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 278)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use FndBody)
@@ -33,8 +33,7 @@
 	)
 )
 
-(instance Dclar of Rgn
-	(properties)
+(instance Dclar of Region
 	
 	(method (init)
 		(if (== (= gCurRoomNum_3 curRoomNum) 73)
@@ -60,9 +59,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine/dagger') (Print 278 0))
 					((Said 'get/dagger') (Print 278 1))
@@ -74,11 +73,11 @@
 							((Said 'get,drag,drag,press,move') (Print 278 5))
 							((Said '(examine<in),search')
 								(if (< (ego distanceTo: Body) 40)
-									(if (not (ego has: 16))
+									(if (not (ego has: iMatches))
 										(Print 278 6)
 										(Print 278 7)
-										(= gotItem 1)
-										(ego get: 16)
+										(= gotItem TRUE)
+										(ego get: iMatches)
 									else
 										(Print 278 8)
 									)
@@ -93,14 +92,13 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance showCloseup of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -108,7 +106,11 @@
 			(1 (= cycles 1))
 			(2
 				(myMusic play:)
-				(Print 278 12 #at 10 10 #icon 403 0 0 #mode 1)
+				(Print 278 12
+					#at 10 10
+					#icon 403 0 0
+					#mode teJustCenter
+				)
 				(= cycles 1)
 			)
 			(3

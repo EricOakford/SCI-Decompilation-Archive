@@ -41,7 +41,7 @@
 				)
 				(if (!= local0 -1)
 					(= temp1 (<< local0 $0001))
-					(if (and (== local0 43) (& global123 $0001))
+					(if (and (== local0 43) (& deadGuests $0001))
 						(= [local1 86] [local1 148])
 						(= [local1 87] [local1 149])
 					)

@@ -90,6 +90,7 @@
 ;Murdered guests
 (define deadGERTRUDE	$0001)
 (define deadGLORIA		$0004)
+(define deadLILLIAN		$0040)
 
 ;howFast values
 (enum

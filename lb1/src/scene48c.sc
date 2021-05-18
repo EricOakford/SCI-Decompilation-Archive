@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 333)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -15,67 +15,55 @@
 
 (local
 	theCycles
-	local1
-	local2
+	mouthCued
+	saveBits
 )
-(procedure (localproc_000c &tmp [temp0 500])
-	(GetFarText &rest @temp0)
-	(= theCycles (+ (/ (StrLen @temp0) 3) 1))
+(procedure (Measure &tmp [str 500])
+	(GetFarText &rest @str)
+	(= theCycles (+ (/ (StrLen @str) 3) 1))
 )
 
-(procedure (localproc_002c)
-	(localproc_000c &rest)
+(procedure (ClarPrint)
+	(Measure &rest)
 	(clarMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		160
-		110
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 160 110
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(procedure (localproc_005d)
-	(localproc_000c &rest)
+(procedure (RudyPrint)
+	(Measure &rest)
 	(rudyMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		10
-		120
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 10 120
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
 (procedure (localproc_008d)
-	(= global173 (| global173 $0008))
+	(|= global173 $0008)
 	(= [global368 2] 1)
 	(Bset 23)
 )
 
-(instance scene48c of Rm
+(instance scene48c of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
 		(HandsOff)
 		(if (& global173 $0008)
-			(LoadMany 132 114 115)
+			(LoadMany SOUND 114 115)
 			(snoring number: 114 loop: 1 play:)
 			(Snoring
 				setLoop: 0
@@ -86,10 +74,10 @@
 			)
 			(Print 333 0 #width 240 #dispose)
 		else
-			(Load rsFONT 4)
+			(Load FONT 4)
 			(snoring number: 27 loop: -1 play:)
 			(clarMouth setPri: 2 init:)
-			(Clarence setPri: 1 ignoreActors: 1 init:)
+			(Clarence setPri: 1 ignoreActors: TRUE init:)
 			(clarEye setPri: 2 init: stopUpd: setScript: ClarsEye)
 			(Rudy setPri: 1 init:)
 			(rudyMouth setPri: 2 init:)
@@ -99,7 +87,7 @@
 				setPri: 3
 				xStep: 5
 				yStep: 5
-				ignoreActors: 1
+				ignoreActors: TRUE
 			)
 			(self setScript: speech48c)
 		)
@@ -132,12 +120,11 @@
 )
 
 (instance ClarsEye of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(clarEye cel: (^ (clarEye cel?) $0001) forceUpd:)
+				(clarEye cel: (^ (clarEye cel?) 1) forceUpd:)
 				(= state -1)
 				(if (clarEye cel?)
 					(= cycles 2)
@@ -150,8 +137,7 @@
 )
 
 (instance RudysEyes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -168,72 +154,69 @@
 )
 
 (instance speech48c of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(if (cycleMouth client?)
-			(= local1 1)
+			(= mouthCued TRUE)
 			(= cycles 1)
 		else
 			(switch (= state newState)
 				(0
 					(cond 
-						((not global216) (= state -1))
+						((not global216)
+							(= state -1)
+						)
 						((not (& global118 $0004))
-							(= global118 (| global118 $0004))
+							(|= global118 $0004)
 							(self setScript: (ScriptID 406 0))
 							(= state -1)
 						)
-						((self script?) (= state -1))
+						((self script?)
+							(= state -1)
+						)
 					)
 					(= cycles 1)
 				)
 				(1
-					(= local2
-						(Display
-							333
-							1
-							dsCOORD
-							48
-							8
-							dsWIDTH
-							256
-							dsCOLOR
-							15
-							dsBACKGROUND
-							-1
-							dsFONT
-							0
-							dsSAVEPIXELS
+					(= saveBits
+						(Display 333 1
+							p_at 48 8
+							p_width 256
+							p_color vWHITE
+							p_back -1
+							p_font SYSFONT
+							p_save
 						)
 					)
-					(localproc_002c 333 2)
+					(ClarPrint 333 2)
 					(= seconds 10)
 				)
 				(2
-					(localproc_005d 333 3)
+					(RudyPrint 333 3)
 					(= seconds 6)
 				)
-				(3 (= cycles 1))
+				(3
+					(= cycles 1)
+				)
 				(4
-					(localproc_005d 333 4)
+					(RudyPrint 333 4)
 					(= seconds 7)
 				)
 				(5
-					(localproc_002c 333 5)
+					(ClarPrint 333 5)
 					(= seconds 7)
 				)
 				(6
-					(localproc_005d 333 6)
+					(RudyPrint 333 6)
 					(= seconds 10)
 				)
 				(7
-					(localproc_002c 333 7)
+					(ClarPrint 333 7)
 					(= seconds 8)
 				)
 				(8
 					(Hand init: setMotion: MoveTo 161 100)
-					(localproc_005d 333 8)
+					(RudyPrint 333 8)
 					(= seconds 10)
 				)
 				(9
@@ -263,10 +246,10 @@
 			(and
 				(not (event claimed?))
 				(not script)
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(cls)
@@ -276,17 +259,19 @@
 )
 
 (instance cycleMouth of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
-		(if local1 (= local1 0) (= cycles 1))
+		(if mouthCued
+			(= mouthCued FALSE)
+			(= cycles 1)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cel: 0 setCycle: Fwd show:)
+				(client cel: 0 setCycle: Forward show:)
 				(= cycles theCycles)
 			)
 			(1
@@ -297,7 +282,7 @@
 	)
 )
 
-(instance Rudy of Act
+(instance Rudy of Actor
 	(properties
 		y 113
 		x 103
@@ -323,7 +308,7 @@
 	)
 )
 
-(instance Hand of Act
+(instance Hand of Actor
 	(properties
 		y 130
 		x 161
@@ -331,7 +316,7 @@
 	)
 )
 
-(instance Clarence of Act
+(instance Clarence of Actor
 	(properties
 		y 117
 		x 217
@@ -358,7 +343,7 @@
 	)
 )
 
-(instance Snoring of Act
+(instance Snoring of Actor
 	(properties
 		y 164
 		x 80
@@ -367,6 +352,4 @@
 	)
 )
 
-(instance snoring of Sound
-	(properties)
-)
+(instance snoring of Sound)

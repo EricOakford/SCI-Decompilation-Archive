@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 334)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -16,34 +16,26 @@
 (local
 	local0
 )
-(instance Clarence of Prop
-	(properties)
-)
+(instance Clarence of Prop)
 
-(instance Eye of Prop
-	(properties)
-)
+(instance Eye of Prop)
 
-(instance Hand of Act
-	(properties)
-)
+(instance Hand of Actor)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene48f of Rm
+(instance scene48f of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
 		(HandsOff)
-		(Load rsFONT 41)
-		(Load rsVIEW 642)
-		(LoadMany 132 29 94 95 96)
+		(Load FONT 41)
+		(Load VIEW 642)
+		(LoadMany SOUND 29 94 95 96)
 		(LoadMany 143 406)
 		(myMusic number: 27 loop: -1 play:)
 		(Clarence
@@ -52,7 +44,7 @@
 			loop: 2
 			cel: 0
 			setPri: 2
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 		)
 		(Hand
@@ -90,19 +82,22 @@
 )
 
 (instance twice of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0008))
-						(= global118 (| global118 $0008))
+						(|= global118 $0008)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
@@ -118,7 +113,6 @@
 )
 
 (instance writing of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -146,8 +140,7 @@
 )
 
 (instance movements of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -160,7 +153,9 @@
 				)
 			)
 			(1
-				(if (Clarence cel?) (Clarence cel: 0))
+				(if (Clarence cel?)
+					(Clarence cel: 0)
+				)
 				(Eye show: cel: (Random 0 1))
 				(= state -1)
 				(= cycles (Random 4 15))

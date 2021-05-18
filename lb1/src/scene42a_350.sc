@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 350)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -15,113 +15,84 @@
 
 (local
 	theCycles
-	local1
-	local2
+	mouthCued
+	saveBits
 	theFifi
 	local4 =  1
 	local5
 )
-(procedure (localproc_0284 &tmp [temp0 500])
-	(GetFarText &rest @temp0)
-	(= theCycles (+ (/ (StrLen @temp0) 3) 1))
+(procedure (Measure &tmp [str 500])
+	(GetFarText &rest @str)
+	(= theCycles (+ (/ (StrLen @str) 3) 1))
 )
 
-(procedure (localproc_02a4 param1)
-	(if (= local4 param1)
+(procedure (localproc_02a4 tOrF)
+	(if (= local4 tOrF)
 		(coloEyes hide:)
 	else
 		(coloEyes show:)
 	)
 )
 
-(procedure (localproc_02c1)
-	(localproc_0284 &rest)
+(procedure (FifiPrint)
+	(Measure &rest)
 	(fifiMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		160
-		115
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 160 115
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(procedure (localproc_02f2)
-	(localproc_0284 &rest)
+(procedure (ColoPrint)
+	(Measure &rest)
 	(= theCycles (+ theCycles (/ theCycles 4)))
 	(coloMouth setScript: cycleMouth)
-	(Print
-		&rest
-		#at
-		20
-		115
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+	(Print &rest
+		#at 20 115
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(instance Fifi of Act
-	(properties)
-)
+(instance Fifi of Actor)
 
-(instance Smoke of Act
-	(properties)
-)
+(instance Smoke of Actor)
 
-(instance fifiMouth of Prop
-	(properties)
-)
+(instance fifiMouth of Prop)
 
-(instance Colonel of Prop
-	(properties)
-)
+(instance Colonel of Prop)
 
-(instance coloFace of Prop
-	(properties)
-)
+(instance coloFace of Prop)
 
-(instance coloMouth of Prop
-	(properties)
-)
+(instance coloMouth of Prop)
 
-(instance coloEyes of Prop
-	(properties)
-)
+(instance coloEyes of Prop)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance scene42a of Rm
+(instance scene42a of Room
 	(properties
 		picture 62
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(HandsOff)
 		(myMusic number: 27 loop: -1 play:)
-		(if
-		(and (not (& global173 $0040)) (!= [global368 3] 1))
-			(= global173 (| global173 $0040))
+		(if (and (not (& global173 $0040)) (!= [global368 3] 1))
+			(|= global173 $0040)
 			(= global124 1)
-			(Load rsFONT 41)
+			(Load FONT 41)
 			(LoadMany 143 406)
-			(Load rsVIEW 642)
-			(LoadMany 132 94 95 96 29)
+			(Load VIEW 642)
+			(LoadMany SOUND 94 95 96 29)
 			(coloEyes
 				view: 303
 				loop: 4
@@ -158,7 +129,7 @@
 				cel: 0
 				setPri: 1
 				cycleSpeed: 1
-				ignoreActors: 1
+				ignoreActors: TRUE
 				init:
 			)
 			(Fifi
@@ -228,7 +199,7 @@
 				setPri: 3
 				moveSpeed: 1
 				illegalBits: 0
-				ignoreActors: 1
+				ignoreActors: TRUE
 				init:
 				hide:
 			)
@@ -238,7 +209,7 @@
 				setCycle: Walk
 				setPri: 3
 				illegalBits: 0
-				ignoreActors: 1
+				ignoreActors: TRUE
 				init:
 				hide:
 			)
@@ -260,7 +231,6 @@
 )
 
 (instance speech42a of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -269,7 +239,7 @@
 			(if (coloEyes cycler?)
 				(coloEyes setCycle: 0 hide:)
 			else
-				(coloEyes setCycle: Fwd show:)
+				(coloEyes setCycle: Forward show:)
 			)
 		)
 		(if (== state 14)
@@ -290,7 +260,7 @@
 	
 	(method (changeState newState)
 		(if (cycleMouth client?)
-			(= local1 1)
+			(= mouthCued 1)
 			(= cycles 1)
 		else
 			(switch (= state newState)
@@ -298,7 +268,7 @@
 					(cond 
 						((not global216) (= state -1))
 						((not (& global118 $0008))
-							(= global118 (| global118 $0008))
+							(|= global118 $0008)
 							(self setScript: (ScriptID 406 0))
 							(= state -1)
 						)
@@ -307,85 +277,79 @@
 					(= cycles 1)
 				)
 				(1
-					(= local2
-						(Display
-							350
-							0
-							dsCOORD
-							48
-							8
-							dsWIDTH
-							256
-							dsCOLOR
-							15
-							dsBACKGROUND
-							-1
-							dsFONT
-							0
-							dsSAVEPIXELS
+					(= saveBits
+						(Display 350 0
+							p_at 48 8
+							p_width 256
+							p_color vWHITE
+							p_back -1
+							p_font SYSFONT
+							p_save
 						)
 					)
-					(Colonel setCycle: End)
-					(Fifi setCycle: End self)
+					(Colonel setCycle: EndLoop)
+					(Fifi setCycle: EndLoop self)
 				)
 				(2
 					(localproc_02a4 0)
 					(Colonel view: 303 loop: 1 cel: 0)
 					(Fifi view: 303 loop: 0 cel: 0)
-					(localproc_02c1 350 1)
+					(FifiPrint 350 1)
 					(= seconds 7)
 				)
 				(3
 					(localproc_02a4 1)
 					(cls)
-					(Colonel setCycle: End self)
+					(Colonel setCycle: EndLoop self)
 				)
 				(4
-					(coloFace cel: 0 show: setCycle: End)
-					(Fifi setCycle: End self)
+					(coloFace cel: 0 show: setCycle: EndLoop)
+					(Fifi setCycle: EndLoop self)
 				)
 				(5
-					(Fifi setCycle: Beg self)
+					(Fifi setCycle: BegLoop self)
 					(coloFace hide:)
 				)
-				(6 (Colonel setCycle: Beg self))
+				(6
+					(Colonel setCycle: BegLoop self)
+				)
 				(7
 					(localproc_02a4 0)
-					(localproc_02f2 350 2)
+					(ColoPrint 350 2)
 					(= seconds 7)
 				)
 				(8
-					(localproc_02c1 350 3)
+					(FifiPrint 350 3)
 					(= seconds 7)
 				)
 				(9
 					(localproc_02a4 1)
 					(cls)
-					(Colonel setCycle: End self)
+					(Colonel setCycle: EndLoop self)
 				)
 				(10
-					(coloFace cel: 0 show: setCycle: End)
-					(Fifi setCycle: End self)
+					(coloFace cel: 0 show: setCycle: EndLoop)
+					(Fifi setCycle: EndLoop self)
 				)
 				(11
-					(Fifi setCycle: Beg self)
+					(Fifi setCycle: BegLoop self)
 					(coloFace hide:)
 				)
 				(12
-					(Colonel setCycle: Beg self)
+					(Colonel setCycle: BegLoop self)
 				)
 				(13
 					(localproc_02a4 0)
-					(localproc_02f2 350 4)
+					(ColoPrint 350 4)
 					(= seconds 10)
 				)
 				(14
 					(Colonel stopUpd:)
-					(localproc_02c1 350 5)
+					(FifiPrint 350 5)
 				)
 				(15
 					(++ global192)
-					(= global173 (| global173 $0040))
+					(|= global173 $0040)
 					(curRoom newRoom: prevRoomNum)
 				)
 			)
@@ -398,10 +362,10 @@
 			(and
 				(not (event claimed?))
 				(not script)
-				(== evKEYBOARD (event type?))
+				(== keyDown (event type?))
 				(or
-					(== (event message?) KEY_S)
-					(== (event message?) KEY_s)
+					(== (event message?) `S)
+					(== (event message?) `s)
 				)
 			)
 			(cls)
@@ -411,17 +375,19 @@
 )
 
 (instance cycleMouth of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
-		(if local1 (= local1 0) (= cycles 1))
+		(if mouthCued
+			(= mouthCued FALSE)
+			(= cycles 1)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cel: 0 setCycle: Fwd show:)
+				(client cel: 0 setCycle: Forward show:)
 				(= cycles theCycles)
 			)
 			(1
@@ -433,13 +399,12 @@
 )
 
 (instance ColoEyes of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= state -1)
-				(if (= local4 (^ local4 $0001))
+				(if (^= local4 $0001)
 					(coloEyes hide:)
 					(= seconds (Random 2 3))
 				else
@@ -456,7 +421,6 @@
 )
 
 (instance twice of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -479,11 +443,11 @@
 			)
 			(1
 				(theFifi stopUpd:)
-				(coloMouth show: setCycle: Fwd)
+				(coloMouth show: setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
-				(coloMouth setCycle: End)
+				(coloMouth setCycle: EndLoop)
 				(theFifi setMotion: MoveTo 128 136 self)
 			)
 			(3

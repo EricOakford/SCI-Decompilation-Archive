@@ -498,7 +498,6 @@
 	(properties
 		view 13
 		loop 5
-		cycleSpeed 16
 	)
 	
 	(method (init)

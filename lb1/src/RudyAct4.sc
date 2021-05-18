@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 296)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use atsgl)
 (use Intrface)
@@ -12,11 +12,10 @@
 
 (local
 	local0
-	[local1 28] = [296 0 296 1 296 2 296 3 296 4 296 5 296 6 296 7 296 8 296 9 296 10 296 11 296 11 296 12]
+	local1 = [296 0 296 1 296 2 296 3 296 4 296 5 296 6 296 7 296 8 296 9 296 10 296 11 296 11 296 12]
 )
 (instance RudyAct4 of Script
-	(properties)
-	
+
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 296)
@@ -25,7 +24,7 @@
 	(method (handleEvent event &tmp temp0)
 		(cond 
 			((event claimed?))
-			((and (== (event type?) evSAID) global212)
+			((and (== (event type?) saidEvent) global212)
 				(= local0 -1)
 				(switch global212
 					(1

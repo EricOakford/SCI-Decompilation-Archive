@@ -336,7 +336,7 @@
 		(cond 
 			(
 			(and (Btst 51) (Said 'tell[/lil]/gertie<about'))
-				(if (& global123 $0001)
+				(if (& deadGuests $0001)
 					(if (& global145 $0001)
 						(Say 1 264 16)
 						(event claimed: 1)
@@ -351,7 +351,7 @@
 			)
 			(
 			(and (Btst 51) (Said 'tell[/lil]/actress<about>'))
-				(if (& global123 $0004)
+				(if (& deadGuests $0004)
 					(if (& global145 $0001)
 						(Say 1 264 16)
 						(event claimed: 1)
@@ -365,7 +365,7 @@
 				)
 			)
 			((and (Btst 51) (Said 'tell[/lil]/c<about'))
-				(if (& global123 $0002)
+				(if (& deadGuests $0002)
 					(if (& global145 $0001)
 						(Say 1 264 16)
 						(event claimed: 1)

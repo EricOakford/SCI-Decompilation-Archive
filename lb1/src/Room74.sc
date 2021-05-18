@@ -113,7 +113,7 @@
 				(addToPics add: decanter)
 				(self setFeatures: decanter)
 			)
-			(if (and (& global123 $0040) (not (ego has: 5)))
+			(if (and (& deadGuests $0040) (not (ego has: 5)))
 				(door cel: (door lastCel:) ignoreActors: 1)
 				(= global117 (| global117 $8000))
 			)
@@ -179,8 +179,8 @@
 			(5
 				(if
 					(and
-						(not (& global123 $0010))
-						(not (& global123 $0040))
+						(not (& deadGuests $0010))
+						(not (& deadGuests $0040))
 					)
 					(= local4 1)
 					(self setRegions: 273)
@@ -209,7 +209,7 @@
 		(super doit:)
 		(if
 			(or
-				(and (& (ego onControl: 0) $0008) (& global123 $0040))
+				(and (& (ego onControl: 0) $0008) (& deadGuests $0040))
 				(& (ego onControl: 0) $0002)
 			)
 			(Bclr 46)
@@ -310,7 +310,7 @@
 								((== local2 1) (Print 74 0))
 								((== local2 3) (Print 74 1))
 								(
-								(and (not (& global123 $0010)) (== currentAct 5)) (= global123 (| global123 $0010)) (Print 74 6))
+								(and (not (& deadGuests $0010)) (== currentAct 5)) (= deadGuests (| deadGuests $0010)) (Print 74 6))
 								(else (Print 74 2))
 							)
 						)

@@ -47,8 +47,8 @@
 				(if (!= local0 -1)
 					(= temp1 (<< local0 $0001))
 					(cond 
-						((and (== local0 50) (& global123 $0001)) (= temp0 80))
-						((and (== local0 57) (& global123 $0002)) (= temp0 81))
+						((and (== local0 50) (& deadGuests $0001)) (= temp0 80))
+						((and (== local0 57) (& deadGuests $0002)) (= temp0 81))
 						(else (= temp0 0))
 					)
 					(if temp0

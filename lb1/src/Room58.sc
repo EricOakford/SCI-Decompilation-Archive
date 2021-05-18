@@ -106,10 +106,10 @@
 		(if
 			(and
 				(== global121 58)
-				(not (& global123 $0002))
-				(not (& global123 $0040))
+				(not (& deadGuests $0002))
+				(not (& deadGuests $0040))
 			)
-			(= global123 (| global123 $0002))
+			(= deadGuests (| deadGuests $0002))
 			(self setRegions: 256)
 		)
 		(ego

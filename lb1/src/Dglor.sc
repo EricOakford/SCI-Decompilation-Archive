@@ -38,7 +38,7 @@
 	(method (init)
 		(proc415_1 4)
 		(Body setPri: 8 init:)
-		(= global123 (| global123 $0004))
+		(= deadGuests (| deadGuests $0004))
 		(= global195 4)
 		(self setScript: showCloseup)
 	)

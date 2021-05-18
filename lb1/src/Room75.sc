@@ -53,7 +53,7 @@
 			)
 		)
 		(self setFeatures: Window1 Shaft Junk)
-		(if (& global123 $0040)
+		(if (& deadGuests $0040)
 			(User canControl: 0 canInput: 1)
 			(= saveDisabled 1)
 			(self setRegions: 290)
@@ -85,7 +85,7 @@
 	(method (doit)
 		(if
 			(and
-				(not (& global123 $0040))
+				(not (& deadGuests $0040))
 				(not (& global109 $0010))
 				(FirstEntry)
 			)
@@ -119,7 +119,13 @@
 				((Said 'get,move/box') (Print 75 1))
 				((Said 'examine>')
 					(cond 
-						((Said '[<around,at][/room]') (if (& global123 $0040) (Print 75 2) else (Print 75 0)))
+						((Said '[<around,at][/room]')
+							(if (& deadGuests $0040)
+								(Print 75 2)
+							else
+								(Print 75 0)
+							)
+						)
 						((Said '<in/box') (Print 75 3))
 						((Said '/box') (Print 75 4))
 						((Said '<in/chest') (Print 75 5))

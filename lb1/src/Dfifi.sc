@@ -126,7 +126,7 @@
 			(0
 				(mySound number: 99 loop: -1 play:)
 				(gDoor setCycle: Fwd init:)
-				(= global123 (| global123 $0010))
+				(= deadGuests (| deadGuests $0010))
 				(Bset 22)
 				(HandsOff)
 				(= seconds 2)

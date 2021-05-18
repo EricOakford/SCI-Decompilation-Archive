@@ -745,7 +745,7 @@
 			(and (Btst 51) (Said 'tell[/lil]/gertie<about'))
 				(= theTalker 6)
 				(cls)
-				(if (& global123 $0001)
+				(if (& deadGuests $0001)
 					(if (& global145 $0001)
 						(Say 1 236 43)
 					else
