@@ -59,14 +59,20 @@
 )
 
 ;Talkers
-(define talkCELIE 2)
-(define talkFIFI 5)
-(define talkLILLIAN 6)
-(define talkCLARENCE 7)
-(define talkWILBUR 8)
-(define talkRUDY 9)
-(define talkJEEVES 11)
-(define talkLAURA 12)
+(enum 1
+	talkGERTIE		;1
+	talkCELIE		;2
+	talkGLORIA		;3
+	talkETHEL		;4
+	talkFIFI		;5
+	talkLILLIAN		;6
+	talkCLARENCE	;7
+	talkWILBUR		;8
+	talkRUDY		;9
+	talkCOLONEL		;10
+	talkJEEVES		;11
+	talkLAURA		;12
+)
 (define talkDADDY 26)
 
 ;Event flags
@@ -81,15 +87,21 @@
 (define fExaminedMagazine 17)
 (define fSawFifiJeevesTogether 22)
 (define fFlag36	36)
+(define fSawLillianColonelTogether	38)
 (define fDaddyTip1 41)
 (define fDaddyTip2 42)
 (define fDaddyTip3 43)
+(define fLookedAtDog	49)
 (define fSkippedIntro 50)
-(define fFlag51 51)
+(define fSawDeadGuest 51)
 
 ;Murdered guests
 (define deadGERTRUDE	$0001)
+(define deadWILBUR		$0002)
 (define deadGLORIA		$0004)
+(define deadETHEL		$0008)
+(define deadFIFI		$0010)
+(define deadRUDY		$0020)
 (define deadLILLIAN		$0040)
 
 ;howFast values

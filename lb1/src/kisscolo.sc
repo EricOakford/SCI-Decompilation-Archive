@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 231)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -21,26 +21,25 @@
 
 (local
 	local0
-	local1
-	local2
+	talkCount
+	fifiDir
 )
-(instance kisscolo of Rgn
-	(properties)
+(instance kisscolo of Region
 	
 	(method (init)
 		(super init:)
-		(LoadMany 135 4 41)
-		(Load rsSCRIPT 985)
-		(LoadMany 128 470 642 909)
-		(LoadMany 132 29 51 94 95 96)
+		(LoadMany FONT 4 41)
+		(Load SCRIPT AVOIDER)
+		(LoadMany VIEW 470 642 909)
+		(LoadMany SOUND 29 51 94 95 96)
 		(LoadMany 143 243 225 406)
 		(= global208 512)
 		(= [global377 9] 225)
 		(if (and (== currentAct 0) (== [global368 3] 0))
 			(= [global368 3] 1800)
-			(LoadMany 128 304 464 904)
+			(LoadMany VIEW 304 464 904)
 			(= global195 16)
-			(Fifi view: 466 setAvoider: (Avoid new:) init: hide:)
+			(Fifi view: 466 setAvoider: (Avoider new:) init: hide:)
 			(Colonel view: 466 init: stopUpd:)
 			(self setScript: kiss)
 		else
@@ -48,9 +47,9 @@
 				(= global195 16)
 				(Fifi
 					view: 464
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					init:
-					illegalBits: -32764
+					illegalBits: (| cWHITE cGREEN)
 					setScript: fifiActions
 				)
 			)
@@ -86,42 +85,49 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'examine/butt') (Bset 13) (Print 231 0))
-					((Said 'hear/fifi,colonel') (Print 231 1))
-					((Said 'get/butt') (Print 231 2))
-					(
-					(and (Said 'converse>') (Said '/colonel,person'))
-						(= theTalker 10)
-						(switch local1
+					((Said 'examine/butt')
+						(Bset fExaminedCigar)
+						(Print 231 0)
+					)
+					((Said 'hear/fifi,colonel')
+						(Print 231 1)
+					)
+					((Said 'get/butt')
+						(Print 231 2)
+					)
+					((and (Said 'converse>') (Said '/colonel,person'))
+						(= theTalker talkCOLONEL)
+						(switch talkCount
 							(0 (Say 1 231 3))
 							(1 (Say 1 231 4))
 							(2 (Say 1 231 5))
 							(3 (Say 1 231 6))
 							(4 (Print 231 7))
 						)
-						(if (< local1 4) (++ local1))
+						(if (< talkCount 4)
+							(++ talkCount)
+						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance kiss of Script
-	(properties)
-	
+
 	(method (doit)
 		(if (and (== state 1) (== (Colonel cel?) 2))
 			(Kiss number: 51 loop: 1 play:)
@@ -133,33 +139,30 @@
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0008))
-						(= global118 (| global118 $0008))
+						(|= global118 $0008)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
 			(1
 				(HandsOff)
-				(Colonel cycleSpeed: 2 setCycle: End self)
+				(Colonel cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(2
-				(Print
-					231
-					8
-					#at
-					140
-					150
-					#font
-					4
-					#width
-					125
-					#mode
-					1
+				(Print 231 8
+					#at 140 150
+					#font 4
+					#width 125
+					#mode teJustCenter
 					#dispose
 				)
 				(Colonel
@@ -174,13 +177,13 @@
 					view: 466
 					loop: 1
 					cycleSpeed: 2
-					ignoreActors: 1
-					setCycle: Fwd
+					ignoreActors: TRUE
+					setCycle: Forward
 				)
 				(= seconds 4)
 			)
 			(3
-				(Fifi cel: 0 loop: 2 setCycle: End self)
+				(Fifi cel: 0 loop: 2 setCycle: EndLoop self)
 			)
 			(4
 				(HandsOn)
@@ -190,7 +193,7 @@
 					view: 470
 					loop: 1
 					cycleSpeed: 0
-					illegalBits: -32764
+					illegalBits: (| cWHITE cGREEN)
 					setScript: fifiActions
 				)
 				(client setScript: 0)
@@ -200,26 +203,25 @@
 )
 
 (instance fifiActions of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local2 (Random 0 4))
+				(= fifiDir (Random 0 4))
 				(Fifi
 					view: 464
 					setCycle: Walk
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setMotion:
 						MoveTo
-						(switch local2
+						(switch fifiDir
 							(0 225)
 							(1 244)
 							(2 218)
 							(3 130)
 							(4 66)
 						)
-						(switch local2
+						(switch fifiDir
 							(0 126)
 							(1 129)
 							(2 90)
@@ -234,32 +236,32 @@
 					view: 470
 					cel: 0
 					loop:
-					(switch local2
+					(switch fifiDir
 						(0 5)
 						(1 0)
 						(2 1)
 						(3 1)
 						(4 5)
 					)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(Fifi
 					loop:
-					(switch local2
+					(switch fifiDir
 						(0 7)
 						(1 2)
 						(2 3)
 						(3 3)
 						(4 7)
 					)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 4)
 			)
 			(3
-				(Fifi cel: 2 setCycle: Beg self)
+				(Fifi cel: 2 setCycle: BegLoop self)
 				(= state -1)
 			)
 		)
@@ -267,16 +269,15 @@
 )
 
 (instance colonelActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(smoke2 cel: 0 hide:)
-				(Colonel loop: 0 cel: 0 setCycle: End self)
+				(Colonel loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(Glow show: loop: 1 cel: 0 setCycle: Fwd)
+				(Glow show: loop: 1 cel: 0 setCycle: Forward)
 				(= cycles 18)
 			)
 			(2
@@ -284,12 +285,12 @@
 				(Colonel
 					loop: 0
 					cel: (- (NumCels Colonel) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3
-				(smoke2 setCycle: Fwd show:)
-				(smoke1 show: setCycle: End self)
+				(smoke2 setCycle: Forward show:)
+				(smoke1 show: setCycle: EndLoop self)
 			)
 			(4
 				(smoke1 cel: 0 hide:)
@@ -315,15 +316,19 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get,move,press/wheelchair') (Print 231 9))
-			(
-			(and (MousedOn self event 3) (not (& global207 $0200))) (event claimed: 1) (ParseName {colonel}))
+			((Said 'get,move,press/wheelchair')
+				(Print 231 9)
+			)
+			((and (MousedOn self event shiftDown) (not (& global207 $0200)))
+				(event claimed: TRUE)
+				(ParseName {colonel})
+			)
 			(
 				(and
 					(& global207 $0200)
-					(or (MousedOn self event 3) (Said 'examine/colonel'))
+					(or (MousedOn self event shiftDown) (Said 'examine/colonel'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 231 10)
 			)
 		)
@@ -351,7 +356,7 @@
 	)
 )
 
-(instance Fifi of Act
+(instance Fifi of Actor
 	(properties
 		y 140
 		x 206
@@ -359,9 +364,15 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'converse,examine/person') (Print 231 11))
-			((Said 'converse/people') (Print 231 12))
-			((Said 'examine/people') (Print 231 13))
+			((Said 'converse,examine/person')
+				(Print 231 11)
+			)
+			((Said 'converse/people')
+				(Print 231 12)
+			)
+			((Said 'examine/people')
+				(Print 231 13)
+			)
 			(
 				(or
 					(Said 'ask,tell/fifi/*<about')
@@ -369,7 +380,7 @@
 					(Said 'deliver,hold/*<fifi')
 					(Said 'deliver,hold/*/fifi')
 				)
-				(event claimed: 0)
+				(event claimed: FALSE)
 				(if (Said 'deliver,hold')
 					(if (and theInvItem haveInvItem)
 						(Print 231 14)
@@ -378,32 +389,37 @@
 					)
 				else
 					(Print 231 14)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/fifi'))
+			((or (MousedOn self event shiftDown) (Said 'examine/fifi'))
 				(if (& global207 $0010)
 					(Print 231 15)
 				else
-					(= global207 (| global207 $0010))
-					(= theTalker 5)
+					(|= global207 $0010)
+					(= theTalker talkFIFI)
 					(Say 0 231 16)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 			((Said '/fifi>')
 				(cond 
-					((Said 'get') (Print 231 17))
-					((Said 'kill') (Print 231 18))
-					((Said 'kiss') (Print 231 19))
-					((Said 'embrace') (Print 231 20))
+					((Said 'get')
+						(Print 231 17)
+					)
+					((Said 'kill')
+						(Print 231 18)
+					)
+					((Said 'kiss')
+						(Print 231 19)
+					)
+					((Said 'embrace')
+						(Print 231 20)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance Kiss of Sound
-	(properties)
-)
+(instance Kiss of Sound)

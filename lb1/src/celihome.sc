@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 262)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -17,10 +17,10 @@
 )
 
 (local
-	local0
+	talkCount
 	local1
 )
-(instance Celie of Act
+(instance Celie of Actor
 	(properties
 		view 480
 	)
@@ -33,20 +33,19 @@
 		view 489
 		loop 1
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 )
 
-(instance celihome of Rgn
-	(properties)
+(instance celihome of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
-		(Load rsVIEW 489)
-		(Load rsFONT 4)
-		(LoadMany 128 480 901)
-		(= theTalker 2)
+		(Load FONT 4)
+		(Load VIEW 489)
+		(Load FONT 4)
+		(LoadMany VIEW 480 901)
+		(= theTalker talkCELIE)
 		(if enteredCelieHouse
 			(Celie
 				view: 480
@@ -67,28 +66,32 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine/celie')
-						(= theTalker 2)
+						(= theTalker talkCELIE)
 						(if (& global207 $0002)
-							(if enteredCelieHouse (Print 262 0) else (Print 262 1))
+							(if enteredCelieHouse
+								(Print 262 0) 
+							else
+								(Print 262 1)
+							)
 						else
 							(Say 0 262 2)
 						)
 					)
 					((Said 'converse>')
 						(if (Said '/celie')
-							(= theTalker 2)
+							(= theTalker talkCELIE)
 							(if enteredCelieHouse
-								(switch local0
+								(switch talkCount
 									(0 (Say 1 262 3))
 									(1 (Say 1 262 4))
 									(2 (Say 1 262 5))
@@ -96,9 +99,9 @@
 									(4 (Say 1 262 7))
 									(else  (Say 1 262 8))
 								)
-								(++ local0)
+								(++ talkCount)
 							else
-								(switch local0
+								(switch talkCount
 									(0 (Say 1 262 9))
 									(1
 										(Say 1 262 10)
@@ -115,21 +118,22 @@
 									(6 (Say 1 262 20))
 									(else  (Print 262 21))
 								)
-								(++ local0)
+								(++ talkCount)
 							)
 						)
 					)
-					((Said 'hear/celie') (Print 262 22))
+					((Said 'hear/celie')
+						(Print 262 22)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance cook of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -137,7 +141,7 @@
 				(Celie
 					setCycle: Walk
 					illegalBits: 0
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 192 127 self
 				)
 			)
@@ -147,17 +151,17 @@
 					loop: 4
 					setAvoider: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(gDoor hide:)
-				(Celie loop: 5 cycleSpeed: 1 setCycle: Fwd)
+				(Celie loop: 5 cycleSpeed: 1 setCycle: Forward)
 				(= seconds (Random 3 8))
 			)
 			(3
 				(gDoor show:)
-				(Celie loop: 4 cel: 3 setCycle: Beg)
+				(Celie loop: 4 cel: 3 setCycle: BegLoop)
 				(= state 0)
 				(= seconds (Random 3 8))
 			)
@@ -166,7 +170,6 @@
 )
 
 (instance sitDown of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -174,16 +177,16 @@
 				(Celie
 					setCycle: Walk
 					illegalBits: 0
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 213 138 self
 				)
 			)
 			(1
-				(Celie view: 489 setAvoider: 0 cel: 0 setCycle: End self)
+				(Celie view: 489 setAvoider: 0 cel: 0 setCycle: EndLoop self)
 				(DisposeScript 985)
 			)
 			(2
-				(= theTalker 2)
+				(= theTalker talkCELIE)
 				(Say 1 262 23)
 				(Celie loop: 2)
 				(CHead init:)
@@ -191,11 +194,11 @@
 				(= seconds (Random 6 12))
 			)
 			(3
-				(CHead setCycle: End)
+				(CHead setCycle: EndLoop)
 				(= seconds (Random 6 12))
 			)
 			(4
-				(CHead setCycle: Beg)
+				(CHead setCycle: BegLoop)
 				(= state 2)
 				(= seconds (Random 6 12))
 			)

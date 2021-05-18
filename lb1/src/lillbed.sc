@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 265)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Game)
@@ -12,16 +12,15 @@
 
 (local
 	local0
-	local1
+	talkCount
 )
-(instance lillbed of Rgn
-	(properties)
+(instance lillbed of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(Lillian setPri: 11 init:)
-		(= theTalker 6)
+		(= theTalker talkLILLIAN)
 	)
 	
 	(method (doit)
@@ -33,32 +32,53 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 6)
+		(= theTalker talkLILLIAN)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
 			(cond 
 				((Said 'converse[/lil]')
-					(switch local1
-						(0 (Say 1 265 0) (Say 1 265 1))
-						(1 (Say 1 265 2))
-						(2 (Say 1 265 3))
-						(else  (Print 265 4))
+					(switch talkCount
+						(0
+							(Say 1 265 0)
+							(Say 1 265 1)
+						)
+						(1
+							(Say 1 265 2)
+						)
+						(2
+							(Say 1 265 3)
+						)
+						(else
+							(Print 265 4)
+						)
 					)
-					(++ local1)
+					(++ talkCount)
 				)
-				((Said 'hear/lil') (Print 265 5))
-				((Said 'ask,tell,deliver,hold') (Say 1 265 6))
-				((Said 'get/lil') (Print 265 7))
-				((Said 'kill/lil') (Print 265 8))
-				((Said 'kiss/lil') (Print 265 9))
-				((Said 'embrace/lil') (Print 265 10))
+				((Said 'hear/lil')
+					(Print 265 5)
+				)
+				((Said 'ask,tell,deliver,hold')
+					(Say 1 265 6)
+				)
+				((Said 'get/lil')
+					(Print 265 7)
+				)
+				((Said 'kill/lil')
+					(Print 265 8)
+				)
+				((Said 'kiss/lil')
+					(Print 265 9)
+				)
+				((Said 'embrace/lil')
+					(Print 265 10)
+				)
 			)
 		)
 	)
 )
 
-(instance Lillian of Act
+(instance Lillian of Actor
 	(properties
 		y 134
 		x 285
@@ -68,16 +88,15 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 6)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/lil'))
+		(= theTalker talkLILLIAN)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/lil'))
 			(if (& global207 $0020)
 				(Print 265 11)
 			else
-				(= global207 (| global207 $0020))
+				(|= global207 $0020)
 				(Print 265 12)
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )

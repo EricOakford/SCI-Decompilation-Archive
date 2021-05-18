@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 230)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use atsgl)
 (use Intrface)
@@ -16,65 +16,52 @@
 )
 
 (local
-	local0
+	ethelTalkCount
 	local1
-	local2
+	lillTalkCount
 	[local3 2]
-	local5
+	argueCount
 	local6
 	local7
 	local8
 )
-(procedure (localproc_000c)
+(procedure (EthelPrint)
 	(if (< global172 100)
 		(lHead stopUpd:)
 		(Lillian stopUpd:)
-		(Ethel loop: 3 cycleSpeed: 1 setCycle: Fwd)
-		(Print
-			&rest
-			#at
-			175
-			125
-			#font
-			4
-			#width
-			125
-			#mode
-			1
+		(Ethel loop: 3 cycleSpeed: 1 setCycle: Forward)
+		(Print &rest
+			#at 175 125
+			#font 4
+			#width 125
+			#mode teJustCenter
 			#dispose
 		)
 	)
 )
 
-(procedure (localproc_0058)
+(procedure (LillPrint)
 	(if (< global172 100)
 		(Ethel stopUpd:)
-		(Lillian loop: 1 cycleSpeed: 1 setCycle: Fwd)
-		(lHead cycleSpeed: 1 setCycle: Fwd)
-		(Print
-			&rest
-			#at
-			10
-			45
-			#font
-			4
-			#width
-			125
-			#mode
-			1
+		(Lillian loop: 1 cycleSpeed: 1 setCycle: Forward)
+		(lHead cycleSpeed: 1 setCycle: Forward)
+		(Print &rest
+			#at 10 45
+			#font 4
+			#width 125
+			#mode teJustCenter
 			#dispose
 		)
 	)
 )
 
-(instance leargue of Rgn
-	(properties)
+(instance leargue of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(LoadMany 143 243 221 226)
-		(LoadMany 128 501 512)
+		(LoadMany VIEW 501 512)
 		(LoadMany 142 4 6)
 		(= [global377 3] 221)
 		(= [global377 5] 226)
@@ -105,25 +92,27 @@
 				ignoreActors:
 				show:
 			)
-			(lHead ignoreActors: 1 setPri: 11 init:)
+			(lHead ignoreActors: TRUE setPri: 11 init:)
 			(self setScript: talkActions)
 		)
 	)
 	
 	(method (doit)
 		(if (< local8 70) (++ local8))
-		(if
-		(and local6 local7 (not script) (< global172 100))
+		(if (and local6 local7 (not script) (< global172 100))
 			(self setScript: casTalk)
 		)
 		(if (== global172 99)
 			(Lillian setCycle: 0)
 			(lHead setCycle: 0)
 			(cls)
-			(localproc_000c 230 0)
+			(EthelPrint 230 0)
 			(++ global172)
 		)
-		(if (== global172 110) (cls) (Ethel setCycle: 0))
+		(if (== global172 110)
+			(cls)
+			(Ethel setCycle: 0)
+		)
 		(if
 			(and
 				(== [global368 4] 1)
@@ -138,43 +127,58 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				((Said 'examine>')
 					(if (Said '/people,person,girl')
 						(cond 
-							((and (== global203 2) (== global200 1)) (Print 230 1))
-							((== global203 2) (ParseName {lillian}))
-							(else (event claimed: 0))
+							((and (== global203 2) (== global200 1))
+								(Print 230 1)
+							)
+							((== global203 2)
+								(ParseName {lillian})
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 				)
-				((Said 'converse/person,men') (Print 230 2))
-				((Said 'converse/people') (Print 230 3))
+				((Said 'converse/person,men')
+					(Print 230 2)
+				)
+				((Said 'converse/people')
+					(Print 230 3)
+				)
 			)
 		)
 	)
 )
 
 (instance talkActions of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
-		(if (> global172 98) (client setScript: 0))
+		(if (> global172 98)
+			(client setScript: 0)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (== global200 0) (= seconds 5) else (= cycles 1))
+				(if (== global200 0)
+					(= seconds 5)
+				else
+					(= cycles 1)
+				)
 			)
 			(1
 				(if (== global200 0)
@@ -186,10 +190,10 @@
 					(Ethel
 						view: 325
 						setLoop: 0
-						illegalBits: -32768
+						illegalBits: cWHITE
 						posn: 295 121
 						setCycle: Walk
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: MoveTo 157 161 self
 						init:
 					)
@@ -207,28 +211,28 @@
 						posn: 133 149
 						setPri: 13
 						setAvoider: 0
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
-					(DisposeScript 985)
+					(DisposeScript AVOIDER)
 				else
 					(= cycles 1)
 				)
-				(= global208 (| global208 $0028))
+				(|= global208 $0028)
 				(HandsOn)
 			)
 			(3
-				(User canInput: 0)
+				(User canInput: FALSE)
 				(if local1
-					(localproc_000c 230 4)
+					(EthelPrint 230 4)
 				else
-					(if (== (= local5 (& global178 $7fff)) global178)
+					(if (== (= argueCount (& global178 $7fff)) global178)
 						(if (< global178 10)
 							(++ global178)
 						else
 							(= global178 -32766)
 						)
 					else
-						(switch local5
+						(switch argueCount
 							(2 (= global178 -32764))
 							(4 (= global178 -32762))
 							(6 (= global178 -32761))
@@ -237,18 +241,18 @@
 							(10 (= global178 -32766))
 						)
 					)
-					(switch local5
-						(0 (localproc_000c 230 5))
-						(1 (localproc_0058 230 6))
-						(2 (localproc_000c 230 7))
-						(3 (localproc_0058 230 8))
-						(4 (localproc_000c 230 9))
-						(5 (localproc_0058 230 10))
-						(6 (localproc_0058 230 11))
-						(7 (localproc_000c 230 12))
-						(8 (localproc_0058 230 13))
-						(9 (localproc_0058 230 14))
-						(else  (localproc_000c 230 15))
+					(switch argueCount
+						(0 (EthelPrint 230 5))
+						(1 (LillPrint 230 6))
+						(2 (EthelPrint 230 7))
+						(3 (LillPrint 230 8))
+						(4 (EthelPrint 230 9))
+						(5 (LillPrint 230 10))
+						(6 (LillPrint 230 11))
+						(7 (EthelPrint 230 12))
+						(8 (LillPrint 230 13))
+						(9 (LillPrint 230 14))
+						(else  (EthelPrint 230 15))
 					)
 				)
 				(= seconds 7)
@@ -264,12 +268,12 @@
 				(cls)
 				(if (== local1 0)
 					(= seconds 5)
-					(switch local5
-						(0 (localproc_000c 230 16))
-						(1 (localproc_0058 230 17))
-						(5 (localproc_0058 230 18))
-						(7 (localproc_000c 230 19))
-						(8 (localproc_0058 230 20))
+					(switch argueCount
+						(0 (EthelPrint 230 16))
+						(1 (LillPrint 230 17))
+						(5 (LillPrint 230 18))
+						(7 (EthelPrint 230 19))
+						(8 (LillPrint 230 20))
 						(else  (= cycles 1))
 					)
 				else
@@ -290,29 +294,30 @@
 )
 
 (instance casTalk of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if (> global172 98) (client setScript: 0))
+		(if (> global172 98)
+			(client setScript: 0)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canInput: 0)
+				(User canInput: FALSE)
 				(= seconds 5)
 				(switch gCurRoomNum_4
-					(0 (localproc_000c 230 21))
-					(1 (localproc_0058 230 22))
-					(2 (localproc_000c 230 23))
-					(3 (localproc_0058 230 24))
-					(4 (localproc_000c 230 25))
-					(5 (localproc_000c 230 26))
-					(6 (localproc_0058 230 27))
-					(7 (localproc_000c 230 28))
-					(8 (localproc_000c 230 29))
-					(9 (localproc_000c 230 30))
+					(0 (EthelPrint 230 21))
+					(1 (LillPrint 230 22))
+					(2 (EthelPrint 230 23))
+					(3 (LillPrint 230 24))
+					(4 (EthelPrint 230 25))
+					(5 (EthelPrint 230 26))
+					(6 (LillPrint 230 27))
+					(7 (EthelPrint 230 28))
+					(8 (EthelPrint 230 29))
+					(9 (EthelPrint 230 30))
 					(else  (= seconds 1))
 				)
 			)
@@ -327,16 +332,16 @@
 				(cls)
 				(= seconds 5)
 				(switch gCurRoomNum_4
-					(0 (localproc_0058 230 31))
-					(1 (localproc_000c 230 32))
-					(2 (localproc_0058 230 33))
-					(3 (localproc_000c 230 34))
-					(4 (localproc_0058 230 35))
-					(5 (localproc_0058 230 36))
-					(6 (localproc_000c 230 37))
-					(7 (localproc_0058 230 38))
-					(8 (localproc_0058 230 39))
-					(9 (localproc_0058 230 40))
+					(0 (LillPrint 230 31))
+					(1 (EthelPrint 230 32))
+					(2 (LillPrint 230 33))
+					(3 (EthelPrint 230 34))
+					(4 (LillPrint 230 35))
+					(5 (LillPrint 230 36))
+					(6 (EthelPrint 230 37))
+					(7 (LillPrint 230 38))
+					(8 (LillPrint 230 39))
+					(9 (LillPrint 230 40))
 					(else  (= seconds 1))
 				)
 			)
@@ -345,15 +350,17 @@
 				(lHead cel: 0 forceUpd: stopUpd:)
 				(= seconds 5)
 				(switch gCurRoomNum_4
-					(8 (localproc_000c 230 41))
+					(8 (EthelPrint 230 41))
 					(else  (= cycles 1))
 				)
 			)
 			(4
 				(= local8 0)
-				(if (< gCurRoomNum_4 9) (++ gCurRoomNum_4))
+				(if (< gCurRoomNum_4 9)
+					(++ gCurRoomNum_4)
+				)
 				(cls)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(Lillian setScript: lilActions)
 				(Ethel setScript: ethelActions)
 				(= local7 0)
@@ -365,24 +372,25 @@
 )
 
 (instance ethelActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Ethel cel: 0 loop: 1 cycleSpeed: 1 setCycle: End self)
+				(Ethel cel: 0 loop: 1 cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(1
-				(Ethel cel: 0 loop: 2 setCycle: End)
+				(Ethel cel: 0 loop: 2 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(2
-				(Ethel loop: 2 setCycle: Beg)
-				(if (< (Random 1 100) 40) (= state 0))
+				(Ethel loop: 2 setCycle: BegLoop)
+				(if (< (Random 1 100) 40)
+					(= state 0)
+				)
 				(= seconds (Random 6 12))
 			)
 			(3
-				(Ethel loop: 1 cel: 6 setCycle: Beg)
+				(Ethel loop: 1 cel: 6 setCycle: BegLoop)
 				(if (== local8 70)
 					(client setScript: 0)
 					(= local6 1)
@@ -396,41 +404,45 @@
 )
 
 (instance lilActions of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Lillian loop: 4 cel: 0 cycleSpeed: 2 setCycle: End)
+				(Lillian loop: 4 cel: 0 cycleSpeed: 2 setCycle: EndLoop)
 				(lHead show: stopUpd:)
 				(= seconds (Random 6 12))
 			)
 			(1
 				(lHead show: stopUpd:)
-				(Lillian loop: 6 setCycle: Fwd)
-				(if (< (Random 1 100) 50) (= state 2))
+				(Lillian loop: 6 setCycle: Forward)
+				(if (< (Random 1 100) 50)
+					(= state 2)
+				)
 				(= seconds (Random 5 8))
 			)
 			(2
 				(Lillian
 					loop: 4
 					cel: (- (NumCels Lillian) 1)
-					setCycle: Beg
+					setCycle: BegLoop
 				)
-				(if (== local8 70) (= local7 1) (client setScript: 0))
+				(if (== local8 70)
+					(= local7 1)
+					(client setScript: 0)
+				)
 				(= state -1)
 				(= seconds (Random 5 8))
 			)
 			(3
 				(lHead hide:)
-				(Lillian loop: 2 cycleSpeed: 1 setCycle: End self)
+				(Lillian loop: 2 cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(4
-				(Lillian loop: 3 cycleSpeed: 1 setCycle: Fwd)
+				(Lillian loop: 3 cycleSpeed: 1 setCycle: Forward)
 				(= seconds 2)
 			)
 			(5
-				(Lillian cel: 2 loop: 2 cycleSpeed: 1 setCycle: Beg)
+				(Lillian cel: 2 loop: 2 cycleSpeed: 1 setCycle: BegLoop)
 				(= state 0)
 				(= seconds (Random 5 8))
 			)
@@ -439,7 +451,6 @@
 )
 
 (instance comeBack of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -450,7 +461,7 @@
 					posn: -29 148
 					setCycle: Walk
 					setPri: 10
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setAvoider: ((Avoider new:) offScreenOK: TRUE)
 					setMotion: MoveTo 55 148 self
 					show:
 				)
@@ -462,7 +473,7 @@
 				(Lillian setMotion: MoveTo 121 153 self)
 			)
 			(3
-				(= global208 (| global208 $0020))
+				(|= global208 $0020)
 				(Lillian
 					view: 501
 					loop: 0
@@ -474,7 +485,7 @@
 					ignoreActors:
 					stopUpd:
 				)
-				(DisposeScript 985)
+				(DisposeScript AVOIDER)
 				(lHead setPri: 11 init:)
 				(client setScript: talkActions)
 			)
@@ -482,8 +493,7 @@
 	)
 )
 
-(instance Ethel of Act
-	(properties)
+(instance Ethel of Actor
 	
 	(method (handleEvent event)
 		(if
@@ -492,48 +502,62 @@
 		else
 			(= global214 32)
 		)
-		(= theTalker 4)
+		(= theTalker talkETHEL)
 		(cond 
-			(
-			(and (MousedOn self event 3) (not (& global207 $0008))) (event claimed: 1) (ParseName {ethel}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0008)))
+				(event claimed: TRUE)
+				(ParseName {ethel})
+			)
 			(
 				(and
 					(& global207 $0008)
-					(or (MousedOn self event 3) (Said 'examine/ethel'))
+					(or (MousedOn self event shiftDown) (Said 'examine/ethel'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 230 1)
 			)
 			((Said 'converse/ethel')
-				(switch local0
+				(switch ethelTalkCount
 					(0 (Say 1 230 42))
 					(1 (Say 1 230 43))
 					(2 (Say 1 230 44))
 					(3 (Say 1 230 45))
 					(else  (Print 230 46))
 				)
-				(++ local0)
+				(++ ethelTalkCount)
 			)
 			((Said 'ask[/ethel]/lil<about')
 				(= global212 1)
 				(= global209 event)
 				(proc243_1 14 230 47)
 			)
-			((Said 'hear/ethel,lil') (Print 230 48))
-			((Said 'examine/drink,glass') (Print 230 49))
-			((Said 'examine/deliver') (Print 230 50))
-			((Said 'examine/handkerchief') (Print 230 51))
+			((Said 'hear/ethel,lil')
+				(Print 230 48)
+			)
+			((Said 'examine/drink,glass')
+				(Print 230 49)
+			)
+			((Said 'examine/deliver')
+				(Print 230 50)
+			)
+			((Said 'examine/handkerchief')
+				(Print 230 51)
+			)
 			((Said 'get>')
 				(cond 
-					((Said '/drink,glass') (Print 230 52))
-					((Said '/handkerchief') (Print 230 53))
+					((Said '/drink,glass')
+						(Print 230 52)
+					)
+					((Said '/handkerchief')
+						(Print 230 53)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance Lillian of Act
+(instance Lillian of Actor
 	(properties
 		y 134
 		x 69
@@ -544,25 +568,26 @@
 		(if (== global203 2)
 			(= theTalker 6)
 			(cond 
-				(
-				(and (MousedOn self event 3) (not (& global207 $0020))) (event claimed: 1) (ParseName {lillian}))
+				((and (MousedOn self event shiftDown) (not (& global207 $0020)))
+					(event claimed: TRUE) (ParseName {lillian})
+				)
 				(
 					(and
 						(& global207 $0020)
-						(or (MousedOn self event 3) (Said 'examine/lil'))
+						(or (MousedOn self event shiftDown) (Said 'examine/lil'))
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(Print 230 1)
 				)
 				((Said 'converse/lil')
-					(switch local2
+					(switch lillTalkCount
 						(0 (Say 1 230 54))
 						(1 (Say 1 230 55))
 						(2 (Say 1 230 56))
 						(3 (Say 1 230 57))
 						(else  (Say 1 230 58))
 					)
-					(++ local2)
+					(++ lillTalkCount)
 				)
 				((Said 'ask[/lil]/ethel<about')
 					(= global212 1)
@@ -580,6 +605,6 @@
 		x 116
 		view 501
 		loop 9
-		signal $4000
+		signal ignrAct
 	)
 )

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 229)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -17,26 +17,25 @@
 )
 
 (local
-	local0
+	talkCount
 	[local1 2]
-	local3
+	gaveBoneToDog
 )
-(instance celiWash of Rgn
-	(properties)
+(instance celiWash of Region
 	
 	(method (init)
 		(super init:)
 		(LoadMany 143 243 228)
-		(LoadMany 128 480 22 522 901)
+		(LoadMany VIEW 480 22 522 901)
 		(= global208 2)
 		(= [global377 1] 228)
 		(Celie illegalBits: 0 init: setScript: wash)
-		(if (== ((inventory at: 12) owner?) 0)
+		(if (== ((inventory at: iSoupBone) owner?) 0)
 			(Rover
 				view: 522
 				loop: 4
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 		else
@@ -49,31 +48,31 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'converse/celie')
-						(= theTalker 2)
-						(switch local0
+						(= theTalker talkCELIE)
+						(switch talkCount
 							(0 (Say 1 229 0))
 							(1 (Say 1 229 1))
 							(2 (Say 1 229 2))
 							(else  (Say 1 229 3))
 						)
-						(++ local0)
+						(++ talkCount)
 					)
 					(
 						(or
 							(Said 'feed,deliver/bone/beauregard')
 							(Said 'feed,deliver/beauregard/bone')
 						)
-						(if (ego has: 12)
+						(if (ego has: iSoupBone)
 							(if (< (ego distanceTo: Rover) 60)
 								(self setScript: giveBone)
 							else
@@ -90,7 +89,11 @@
 							(Said 'feed/beauregard')
 						)
 						(if theInvItem
-							(if haveInvItem (Print 229 4) else (DontHave))
+							(if haveInvItem
+								(Print 229 4)
+							else
+								(DontHave)
+							)
 						else
 							(Print 229 5)
 						)
@@ -101,7 +104,11 @@
 							(Said 'hold/*<beauregard')
 						)
 						(if (and theInvItem haveInvItem)
-							(if (== whichItem 12) (Print 229 6) else (Print 229 4))
+							(if (== whichItem iSoupBone)
+								(Print 229 6)
+							else
+								(Print 229 4)
+							)
 						else
 							(DontHave)
 						)
@@ -111,11 +118,17 @@
 							(Said 'deliver/*/beauregard')
 							(Said 'deliver/*<beauregard')
 						)
-						(if haveInvItem (Print 229 4) else (DontHave))
+						(if haveInvItem
+							(Print 229 4)
+						else
+							(DontHave)
+						)
 					)
 					((Said '/beauregard>')
 						(cond 
-							((Said 'get,move') (Print 229 7))
+							((Said 'get,move')
+								(Print 229 7)
+							)
 							((Said 'pat')
 								(if (< (ego distanceTo: Rover) 60)
 									(Print 229 8)
@@ -124,10 +137,18 @@
 									(NotClose)
 								)
 							)
-							((Said 'converse') (Print 229 9))
-							((Said 'call') (Print 229 10))
-							((Said 'kill') (Print 229 11))
-							((Said 'kiss') (Print 229 12))
+							((Said 'converse')
+								(Print 229 9)
+							)
+							((Said 'call')
+								(Print 229 10)
+							)
+							((Said 'kill')
+								(Print 229 11)
+							)
+							((Said 'kiss')
+								(Print 229 12)
+							)
 						)
 					)
 					(
@@ -140,24 +161,23 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance wash of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cls)
-				(Celie loop: 0 setCycle: Fwd)
+				(Celie loop: 0 setCycle: Forward)
 				(= seconds (Random 6 12))
 			)
 			(1
-				(Celie cel: 0 loop: 1 setCycle: End self)
+				(Celie cel: 0 loop: 1 setCycle: EndLoop self)
 				(= state
 					(switch (Random 1 2)
 						(1 -1)
@@ -174,34 +194,33 @@
 )
 
 (instance petDog of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo (+ (Rover x?) 26) (+ (Rover y?) 5) self
 				)
 			)
 			(1
-				(ego view: 22 loop: 0 setAvoider: 0 setCycle: End self)
+				(ego view: 22 loop: 0 setAvoider: 0 setCycle: EndLoop self)
 			)
 			(2
-				(ego loop: 5 cel: 0 setCycle: End self)
+				(ego loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(ego loop: 7 setCycle: Fwd)
+				(ego loop: 7 setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
 				(ego loop: 5)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(5
 				(ego loop: 0)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(6
 				(HandsOn)
@@ -213,23 +232,23 @@
 )
 
 (instance dogActions of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((not local3)
-				(if
-				(and (< (ego distanceTo: Rover) 30) (== state 0))
+			((not gaveBoneToDog)
+				(if (and (< (ego distanceTo: Rover) 30) (== state 0))
 					(= cycles 1)
 				)
-				(if
-				(and (> (ego distanceTo: Rover) 30) (== state 2))
+				(if (and (> (ego distanceTo: Rover) 30) (== state 2))
 					(= state -1)
 					(= cycles 1)
 				)
 			)
-			((< state 3) (= state 2) (= cycles 1))
+			((< state 3)
+				(= state 2)
+				(= cycles 1)
+			)
 		)
 	)
 	
@@ -240,33 +259,32 @@
 					loop: 0
 					cycleSpeed: 2
 					cel: (- (NumCels Rover) 1)
-					setCycle: Beg
+					setCycle: BegLoop
 				)
 			)
 			(1
-				(Rover loop: 0 cycleSpeed: 2 setCycle: End self)
+				(Rover loop: 0 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(2
-				(Rover loop: 2 cycleSpeed: 2 setCycle: Fwd)
+				(Rover loop: 2 cycleSpeed: 2 setCycle: Forward)
 			)
 			(3
 				(Bone dispose:)
-				(Rover view: 522 loop: 4 cycleSpeed: 2 setCycle: Fwd)
+				(Rover view: 522 loop: 4 cycleSpeed: 2 setCycle: Forward)
 			)
 		)
 	)
 )
 
 (instance giveBone of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(return
 			(if (and (== state 1) (== (ego cel?) 4))
 				(ego put: 12 0)
 				(Bone init:)
-				(++ local3)
+				(++ gaveBoneToDog)
 			else
 				0
 			)
@@ -278,12 +296,12 @@
 			(0
 				(HandsOff)
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo (+ (Rover x?) 31) (+ (Rover y?) 3) self
 				)
 			)
 			(1
-				(ego view: 48 setLoop: 7 cel: 8 setCycle: Beg self)
+				(ego view: 48 setLoop: 7 cel: 8 setCycle: BegLoop self)
 				(Bone cel: 0 posn: (- (ego x?) 13) (- (ego y?) 1))
 			)
 			(2
@@ -292,7 +310,7 @@
 				(= cycles 1)
 			)
 			(3
-				(ego view: 0 setAvoider: 0 setLoop: -1 setCycle: Walk)
+				(ego view: 0 setAvoider: FALSE setLoop: -1 setCycle: Walk)
 				(HandsOn)
 				(self setScript: 0)
 			)
@@ -319,21 +337,25 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/beauregard,dirt')
 			)
-			(event claimed: 1)
-			(if (Btst 49)
-				(if local3 (Print 229 15) else (Print 229 16))
+			(event claimed: TRUE)
+			(if (Btst fLookedAtDog)
+				(if gaveBoneToDog
+					(Print 229 15)
+				else
+					(Print 229 16)
+				)
 			else
-				(Bset 49)
+				(Bset fLookedAtDog)
 				(Print 229 17)
 			)
 		)
 	)
 )
 
-(instance Celie of Act
+(instance Celie of Actor
 	(properties
 		y 103
 		x 214
@@ -342,14 +364,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(and (MousedOn self event 3) (not (& global207 $0002))) (event claimed: 1) (ParseName {celie}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0002)))
+				(event claimed: TRUE)
+				(ParseName {celie})
+			)
 			(
 				(and
 					(& global207 $0002)
-					(or (MousedOn self event 3) (Said 'examine/celie'))
+					(or (MousedOn self event shiftDown) (Said 'examine/celie'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 229 18)
 			)
 		)

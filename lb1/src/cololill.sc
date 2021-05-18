@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 270)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -19,60 +19,49 @@
 
 (local
 	local0
-	local1
-	local2
+	colTalkCount
+	lillTalkCount
 	local3
-	local4
-	local5
+	colLillTalkCount
+	argueCount
 )
-(procedure (localproc_000c)
-	(Colonel cycleSpeed: 1 setCycle: Fwd)
-	(Print
-		&rest
-		#at
-		15
-		10
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+(procedure (ColPrint)
+	(Colonel cycleSpeed: 1 setCycle: Forward)
+	(Print &rest
+		#at 15 10
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(procedure (localproc_003a)
-	(Lillian loop: 1 setCycle: Fwd)
-	(LHead loop: 7 setCycle: Fwd)
-	(Print
-		&rest
-		#at
-		140
-		10
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+(procedure (LillPrint)
+	(Lillian loop: 1 setCycle: Forward)
+	(LHead loop: 7 setCycle: Forward)
+	(Print &rest
+		#at 140 10
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(instance cololill of Rgn
-	(properties)
-	
+(instance cololill of Region
+
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
-		(Load rsVIEW 909)
+		(Load FONT 4)
+		(Load VIEW 909)
 		(LoadMany 143 243 298)
 		(= global208 512)
 		(= [global377 9] 298)
-		(if (== [global368 1] 0) (= [global368 1] 1800))
+		(if (== [global368 1] 0)
+			(= [global368 1] 1800)
+		)
 		(Colonel init: stopUpd:)
 		(smoke1
 			view: 304
@@ -103,15 +92,15 @@
 			(= global195 512)
 			(Colonel setScript: colonelActions)
 		else
-			(Load rsFONT 41)
-			(Load rsVIEW 642 905)
-			(LoadMany 132 29 94 95 96)
+			(Load FONT 41)
+			(Load VIEW 642 905)
+			(LoadMany SOUND 29 94 95 96)
 			(LoadMany 143 406 372)
 			(= global208 544)
 			(= [global377 5] 372)
 			(LHead init:)
 			(Lillian init:)
-			(Bset 38)
+			(Bset fSawLillianColonelTogether)
 			(self setScript: argue)
 		)
 	)
@@ -127,7 +116,7 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				((Said 'hear/fifi,colonel')
 					(if (cast contains: Lillian)
@@ -138,49 +127,63 @@
 				)
 				((cast contains: Lillian))
 				((Said 'converse,ask,tell')
-					(if local4
+					(if colLillTalkCount
 						(Print 270 2)
 					else
 						(= theTalker 10)
 						(Say 1 270 3)
-						(++ local4)
+						(++ colLillTalkCount)
 					)
 				)
-				((Said 'deliver/*') (if haveInvItem (Print 270 4) else (DontHave)))
-				((Said 'hold/*]') (if haveInvItem (Print 270 5) else (DontHave)))
+				((Said 'deliver/*')
+					(if haveInvItem
+						(Print 270 4)
+					else
+						(DontHave)
+					)
+				)
+				((Said 'hold/*]')
+					(if haveInvItem
+						(Print 270 5)
+					else
+						(DontHave)
+					)
+				)
 			)
 		)
 	)
 )
 
 (instance argue of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0002))
-						(= global118 (| global118 $0002))
+						(|= global118 $0002)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
 			(1
-				(User canInput: 0)
-				(if
-				(== (= local5 (& gCurRoomNum_2 $7fff)) gCurRoomNum_2)
+				(User canInput: FALSE)
+				(if (== (= argueCount (& gCurRoomNum_2 $7fff)) gCurRoomNum_2)
 					(if (< gCurRoomNum_2 10)
 						(++ gCurRoomNum_2)
 					else
 						(= gCurRoomNum_2 -32767)
 					)
 				else
-					(switch local5
+					(switch argueCount
 						(1 (= gCurRoomNum_2 -32766))
 						(2 (= gCurRoomNum_2 -32763))
 						(5 (= gCurRoomNum_2 -32762))
@@ -189,18 +192,18 @@
 						(10 (= gCurRoomNum_2 -32767))
 					)
 				)
-				(switch local5
-					(0 (localproc_003a 270 6))
-					(1 (localproc_003a 270 7))
-					(2 (localproc_000c 270 8))
-					(3 (localproc_000c 270 9))
-					(4 (localproc_003a 270 10))
-					(5 (localproc_000c 270 11))
-					(6 (localproc_003a 270 12))
-					(7 (localproc_000c 270 13))
-					(8 (localproc_000c 270 14))
-					(9 (localproc_003a 270 15))
-					(10 (localproc_003a 270 16))
+				(switch argueCount
+					(0 (LillPrint 270 6))
+					(1 (LillPrint 270 7))
+					(2 (ColPrint 270 8))
+					(3 (ColPrint 270 9))
+					(4 (LillPrint 270 10))
+					(5 (ColPrint 270 11))
+					(6 (LillPrint 270 12))
+					(7 (ColPrint 270 13))
+					(8 (ColPrint 270 14))
+					(9 (LillPrint 270 15))
+					(10 (LillPrint 270 16))
 				)
 				(= seconds 5)
 			)
@@ -210,14 +213,16 @@
 				(Lillian setCycle: 0)
 				(Colonel setCycle: 0)
 				(= seconds 3)
-				(switch local5
-					(0 (localproc_003a 270 17))
-					(5 (localproc_000c 270 18))
-					(6 (localproc_000c 270 19))
-					(8 (localproc_003a 270 20))
-					(9 (localproc_000c 270 21))
-					(10 (localproc_000c 270 22))
-					(else  (= seconds 1))
+				(switch argueCount
+					(0 (LillPrint 270 17))
+					(5 (ColPrint 270 18))
+					(6 (ColPrint 270 19))
+					(8 (LillPrint 270 20))
+					(9 (ColPrint 270 21))
+					(10 (ColPrint 270 22))
+					(else
+						(= seconds 1)
+					)
 				)
 			)
 			(3
@@ -225,7 +230,7 @@
 				(LHead setCycle: 0 setScript: headActions)
 				(Lillian setCycle: 0 setScript: lillActions)
 				(Colonel setScript: colonelActions)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(client setScript: 0)
 			)
 		)
@@ -233,7 +238,6 @@
 )
 
 (instance colonelActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -244,11 +248,11 @@
 					loop: 0
 					cycleSpeed: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(Glow show: loop: 1 cel: 0 setCycle: Fwd)
+				(Glow show: loop: 1 cel: 0 setCycle: Forward)
 				(= cycles 18)
 			)
 			(2
@@ -256,12 +260,12 @@
 				(Colonel
 					loop: 0
 					cel: (- (NumCels Colonel) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3
-				(smoke2 setCycle: Fwd show:)
-				(smoke1 show: setCycle: End self)
+				(smoke2 setCycle: Forward show:)
+				(smoke1 show: setCycle: EndLoop self)
 			)
 			(4
 				(smoke1 cel: 0 hide:)
@@ -280,13 +284,12 @@
 )
 
 (instance lillActions of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if (!= (Lillian cel?) 0)
-					(Lillian loop: 0 cel: 3 setCycle: Beg self)
+					(Lillian loop: 0 cel: 3 setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
@@ -296,24 +299,23 @@
 				(= seconds (Random 6 15))
 			)
 			(2
-				(Lillian loop: 2 cel: 0 setCycle: End)
+				(Lillian loop: 2 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 6 15))
 			)
 			(3
-				(if
-				(and (== (LHead loop?) 5) (== (LHead cel?) 2))
-					(Lillian loop: 3 cel: 0 setCycle: End self)
+				(if (and (== (LHead loop?) 5) (== (LHead cel?) 2))
+					(Lillian loop: 3 cel: 0 setCycle: EndLoop self)
 				else
 					(= state 0)
 					(= cycles 1)
 				)
 			)
 			(4
-				(Lillian loop: 4 cel: 0 setCycle: Fwd)
+				(Lillian loop: 4 cel: 0 setCycle: Forward)
 				(= seconds 3)
 			)
 			(5
-				(Lillian loop: 2 cel: 2 setCycle: Beg self)
+				(Lillian loop: 2 cel: 2 setCycle: BegLoop self)
 				(= state 0)
 			)
 		)
@@ -321,25 +323,24 @@
 )
 
 (instance headActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 12 18)))
 			(1
-				(LHead loop: 5 cel: 0 setCycle: End)
+				(LHead loop: 5 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 12 18))
 			)
 			(2
-				(LHead setCycle: Beg)
+				(LHead setCycle: BegLoop)
 				(= seconds (Random 12 18))
 			)
 			(3
-				(LHead loop: 6 cel: 0 setCycle: End)
+				(LHead loop: 6 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 2 8))
 			)
 			(4
-				(LHead setCycle: Beg)
+				(LHead setCycle: BegLoop)
 				(= seconds (Random 12 18))
 				(= state 0)
 			)
@@ -355,40 +356,52 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(< (ego distanceTo: Colonel) (ego distanceTo: Lillian))
+		(if (< (ego distanceTo: Colonel) (ego distanceTo: Lillian))
 			(= global214 512)
 		else
 			(= global214 32)
 		)
 		(if (cast contains: Lillian)
 			(cond 
-				((Said 'examine/people') (Print 270 23))
-				((Said 'examine,converse/person') (Print 270 24))
-				((Said 'converse/people') (Print 270 25))
+				((Said 'examine/people')
+					(Print 270 23)
+				)
+				((Said 'examine,converse/person')
+					(Print 270 24)
+				)
+				((Said 'converse/people')
+					(Print 270 25)
+				)
 			)
 		)
 		(cond 
 			((Said 'converse/colonel,person')
 				(if (cast contains: Lillian)
-					(= theTalker 10)
-					(switch local1
+					(= theTalker talkCOLONEL)
+					(switch colTalkCount
 						(0 (Say 1 270 26))
 						(1 (Say 1 270 27))
 						(2 (Say 1 270 28))
 						(3 (Say 1 270 29))
-						(else  (Print 270 30))
+						(else
+							(Print 270 30)
+						)
 					)
-					(++ local1)
+					(++ colTalkCount)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
-			((Said 'examine/butt') (Bset 13) (Print 270 31))
-			((Said 'get/butt') (Print 270 32))
+			((Said 'examine/butt')
+				(Bset fExaminedCigar)
+				(Print 270 31)
+			)
+			((Said 'get/butt')
+				(Print 270 32)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/colonel,person')
 				)
 				(if (& global207 $0200)
@@ -398,10 +411,10 @@
 						(Print 270 33)
 					)
 				else
-					(= global207 (| global207 $0200))
+					(|= global207 $0200)
 					(ParseName {colonel})
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
@@ -431,26 +444,28 @@
 	(method (handleEvent event)
 		(return
 			(cond 
-				(
-				(and (MousedOn self event 3) (not (& global207 $0020))) (event claimed: 1) (ParseName {lillian}))
+				((and (MousedOn self event shiftDown) (not (& global207 $0020)))
+					(event claimed: TRUE)
+					(ParseName {lillian})
+				)
 				(
 					(and
 						(& global207 $0020)
-						(or (MousedOn self event 3) (Said 'examine/lil'))
+						(or (MousedOn self event shiftDown) (Said 'examine/lil'))
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(Print 270 23)
 				)
 				((Said 'converse/lil')
-					(= theTalker 6)
-					(switch local2
+					(= theTalker talkLILLIAN)
+					(switch lillTalkCount
 						(0 (Say 1 270 34))
 						(1 (Say 1 270 35))
 						(2 (Say 1 270 36))
 						(3 (Say 1 270 37))
 						(else  (Say 1 270 38))
 					)
-					(++ local2)
+					(++ lillTalkCount)
 				)
 			)
 		)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 269)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -16,19 +16,18 @@
 )
 
 (local
-	[local0 6] = [136 141 69 147 139 141]
+	toXY = [136 141 69 147 139 141]
 	local6
-	local7
-	local8
+	talkCount
+	toldEgo
 )
-(instance sweeping of Rgn
-	(properties)
+(instance sweeping of Region
 	
 	(method (init)
 		(super init:)
-		(DisposeScript 990)
+		(DisposeScript SAVE)
 		(= global195 1024)
-		(LoadMany 128 459 910)
+		(LoadMany VIEW 459 910)
 		(Jeeves
 			view: 447
 			setCycle: Walk
@@ -36,14 +35,17 @@
 			init:
 			setScript: sweepFeather
 		)
-		(Feather setPri: 8 ignoreActors: 1 init:)
+		(Feather setPri: 8 ignoreActors: TRUE init:)
 	)
 	
 	(method (doit)
 		(if (Jeeves isBlocked:)
-			(if (not local8) (= local8 1) (Print 269 0))
+			(if (not toldEgo)
+				(= toldEgo TRUE)
+				(Print 269 0)
+			)
 		else
-			(= local8 0)
+			(= toldEgo FALSE)
 		)
 		(super doit:)
 	)
@@ -53,31 +55,32 @@
 	)
 	
 	(method (handleEvent event)
-		(return (if (event claimed?) (return 1) else 0))
+		(return (if (event claimed?) (return TRUE) else FALSE))
 	)
 )
 
 (instance sweepFeather of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
+			(0
+				(= seconds 5)
+			)
 			(1
 				(Jeeves setMotion: MoveTo 250 151 self)
 				(= gDoor 1)
 			)
 			(2
-				(= global141 (| global141 $0002))
-				(Jeeves view: 459 cel: 0 loop: 1 setCycle: End self)
+				(|= global141 $0002)
+				(Jeeves view: 459 cel: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(3
-				(Jeeves loop: 3 setCycle: Fwd)
+				(Jeeves loop: 3 setCycle: Forward)
 				(Feather dispose:)
 				(= seconds 4)
 			)
 			(4
-				(Jeeves cel: 2 loop: 1 setCycle: Beg self)
+				(Jeeves cel: 2 loop: 1 setCycle: BegLoop self)
 			)
 			(5
 				(Jeeves
@@ -85,24 +88,27 @@
 					setCycle: Walk
 					setMotion:
 						MoveTo
-						[local0 (* local6 2)]
-						[local0 (+ (* local6 2) 1)]
+						[toXY (* local6 2)]
+						[toXY (+ (* local6 2) 1)]
 						self
 				)
 			)
 			(6
-				(Jeeves view: 459 cel: 0 loop: 0 setCycle: End self)
+				(Jeeves view: 459 cel: 0 loop: 0 setCycle: EndLoop self)
 			)
 			(7
-				(Jeeves loop: 2 setCycle: Fwd)
+				(Jeeves loop: 2 setCycle: Forward)
 				(= seconds 4)
 			)
 			(8
-				(Jeeves cel: 2 loop: 0 setCycle: Beg self)
+				(Jeeves cel: 2 loop: 0 setCycle: BegLoop self)
 			)
 			(9
-				(Jeeves view: 447 setCycle: Walk ignoreActors: 0)
-				(if (< local6 2) (++ local6) (= state 4))
+				(Jeeves view: 447 setCycle: Walk ignoreActors: FALSE)
+				(if (< local6 2)
+					(++ local6)
+					(= state 4)
+				)
 				(= cycles 1)
 			)
 			(10
@@ -116,7 +122,7 @@
 	)
 )
 
-(instance Jeeves of Act
+(instance Jeeves of Actor
 	(properties
 		y 140
 		x 196
@@ -127,23 +133,23 @@
 			(
 				(and
 					(not (& global207 $0400))
-					(or (MousedOn self event 3) (Said 'examine/butler'))
+					(or (MousedOn self event shiftDown) (Said 'examine/butler'))
 				)
-				(= theTalker 11)
-				(= global207 (| global207 $0400))
-				(event claimed: 1)
+				(= theTalker talkJEEVES)
+				(|= global207 $0400)
+				(event claimed: TRUE)
 				(Say 0 269 1)
 			)
 			(
 				(and
 					(& global207 $0400)
-					(or (MousedOn self event 3) (Said 'examine/butler'))
+					(or (MousedOn self event shiftDown) (Said 'examine/butler'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 269 2)
 			)
 			((Said 'ask,tell//*<about')
-				(= theTalker 11)
+				(= theTalker talkJEEVES)
 				(switch (Random 1 7)
 					(1 (Say 1 269 3))
 					(2 (Say 1 269 4))
@@ -170,21 +176,33 @@
 			((Said '/butler>')
 				(cond 
 					((Said 'converse')
-						(= theTalker 11)
-						(switch local7
+						(= theTalker talkJEEVES)
+						(switch talkCount
 							(0 (Say 1 269 15))
 							(1 (Say 1 269 16))
 							(2 (Say 1 269 17))
 							(else  (Print 269 18))
 						)
-						(++ local7)
+						(++ talkCount)
 					)
-					((Said 'hear') (Print 269 19))
-					((Said 'get') (Print 269 20))
-					((Said 'kill') (Print 269 21))
-					((Said 'kiss') (Print 269 22))
-					((Said 'embrace') (Print 269 23))
-					((Said 'flirt') (Print 269 24))
+					((Said 'hear')
+						(Print 269 19)
+					)
+					((Said 'get')
+						(Print 269 20)
+					)
+					((Said 'kill')
+						(Print 269 21)
+					)
+					((Said 'kiss')
+						(Print 269 22)
+					)
+					((Said 'embrace')
+						(Print 269 23)
+					)
+					((Said 'flirt')
+						(Print 269 24)
+					)
 				)
 			)
 		)
@@ -201,9 +219,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/feather') (Print 269 25))
-			(
-			(or (Said 'examine/feather') (MousedOn self event 3)) (Print 269 26) (event claimed: 1))
+			((Said 'get/feather')
+				(Print 269 25)
+			)
+			((or (Said 'examine/feather') (MousedOn self event shiftDown))
+				(Print 269 26)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )

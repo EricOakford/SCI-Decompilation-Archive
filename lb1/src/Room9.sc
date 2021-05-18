@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 9)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -24,7 +24,7 @@
 	local1
 	local2
 )
-(instance Room9 of Rm
+(instance Room9 of Room
 	(properties
 		picture 9
 	)
@@ -34,12 +34,16 @@
 		(= east 3)
 		(= horizon 86)
 		(super init:)
-		(LoadMany 132 43 44)
+		(LoadMany SOUND 43 44)
 		(Thunder number: 17 loop: 0)
-		(if (== currentAct 1) (self setRegions: 381))
-		(if howFast (light1 init: setScript: showers))
-		(Door ignoreActors: 1 stopUpd: init:)
-		(ego view: 0 illegalBits: -32766)
+		(if (== currentAct 1)
+			(self setRegions: 381)
+		)
+		(if howFast
+			(light1 init: setScript: showers)
+		)
+		(Door ignoreActors: TRUE stopUpd: init:)
+		(ego view: 0 illegalBits: (| cWHITE cBLUE))
 		(self setFeatures: Window1 Window2)
 		(if (and (>= currentAct 2) (< currentAct 4))
 			(self setRegions: 202)
@@ -53,9 +57,15 @@
 		)
 		(= local0 0)
 		(switch prevRoomNum
-			(14 (ego posn: 285 188))
-			(2 (ego posn: 58 114))
-			(13 (ego posn: 68 185))
+			(14
+				(ego posn: 285 188)
+			)
+			(2
+				(ego posn: 58 114)
+			)
+			(13
+				(ego posn: 68 185)
+			)
 			(58
 				(if (== global133 1)
 					(Door cel: 0)
@@ -63,7 +73,7 @@
 				else
 					(Door cel: (- (NumCels Door) 1))
 					(HandsOff)
-					(ego loop: 2 illegalBits: -32768 posn: 237 132)
+					(ego loop: 2 illegalBits: cWHITE posn: 237 132)
 					(self setScript: exitDoor)
 				)
 			)
@@ -72,42 +82,46 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 9 0))
+		(if (FirstEntry)
+			(Print 9 0)
+		)
 		(super doit:)
-		(switch (ego onControl: 1)
-			(64
+		(switch (ego onControl: origin)
+			(cBROWN
 				(if (or (== (ego loop?) 1) (== (ego loop?) 3))
 					(= local2 1)
 					(User canControl: 0)
 					(ego illegalBits: 0 setLoop: 1 setMotion: MoveTo 268 133)
 				)
 			)
-			(128
+			(cLGREY
 				(if (or (== (ego loop?) 0) (== (ego loop?) 2))
 					(= local2 1)
 					(User canControl: 0)
 					(ego setLoop: 0 illegalBits: 0 setMotion: MoveTo 294 158)
 				)
 			)
-			(1
+			(cBLACK
 				(if (== local2 1)
 					(= local2 0)
-					(User canControl: 1)
-					(ego illegalBits: -32768 setLoop: -1)
+					(User canControl: TRUE)
+					(ego illegalBits: cWHITE setLoop: -1)
 				)
 			)
-			(8 (curRoom newRoom: 2))
-			(4
+			(cCYAN
+				(curRoom newRoom: 2)
+			)
+			(cGREEN
 				(= global133 1)
 				(curRoom newRoom: 58)
 			)
-			(2
+			(cBLUE
 				(HandsOn)
 				(= global133 0)
 				(self setScript: 0)
 				(curRoom newRoom: 58)
 			)
-			(16
+			(cRED
 				(if
 					(and
 						(or (== (ego loop?) 3) (== (ego loop?) 1))
@@ -119,7 +133,7 @@
 				)
 			)
 		)
-		(if (== (ego edgeHit?) 3)
+		(if (== (ego edgeHit?) SOUTH)
 			(if (< (ego x?) 275)
 				(curRoom newRoom: 13)
 			else
@@ -134,7 +148,7 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				((Said 'examine>')
 					(cond 
@@ -179,7 +193,6 @@
 )
 
 (instance chapelDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -193,7 +206,7 @@
 			(2
 				(ego loop: 1)
 				(cSound stop:)
-				(Door startUpd: ignoreActors: 1 setCycle: End self)
+				(Door startUpd: ignoreActors: TRUE setCycle: EndLoop self)
 				(mySound number: 43 loop: 1 priority: 5 play:)
 			)
 			(3
@@ -204,13 +217,12 @@
 )
 
 (instance exitDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(mySound number: 44 loop: 1 priority: 5 play:)
-				(Door setCycle: Beg self)
+				(Door setCycle: BegLoop self)
 			)
 			(1
 				(HandsOn)
@@ -221,24 +233,28 @@
 )
 
 (instance showers of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (= state 3)))
 			(1
-				(light1 setCycle: Fwd)
+				(light1 setCycle: Forward)
 				(= cycles 7)
 			)
 			(2
-				(light1 setCycle: End self)
+				(light1 setCycle: EndLoop self)
 				(Thunder loop: 1 play:)
 			)
 			(3
-				(if (< (Random 1 100) 20) (= state 0))
+				(if (< (Random 1 100) 20)
+					(= state 0)
+				)
 				(= cycles 7)
 			)
-			(4 (= state 2) (= seconds 5))
+			(4
+				(= state 2)
+				(= seconds 5)
+			)
 		)
 	)
 )
@@ -251,9 +267,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/door'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/door'))
+			(event claimed: TRUE)
 			(if (ego inRect: 0 0 120 140)
 				(Print 9 16)
 			else
@@ -273,21 +288,16 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/door'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/door'))
+			(event claimed: TRUE)
 			(Print 9 17)
 		)
 	)
 )
 
-(instance Thunder of Sound
-	(properties)
-)
+(instance Thunder of Sound)
 
-(instance mySound of Sound
-	(properties)
-)
+(instance mySound of Sound)
 
 (instance Window1 of RFeature
 	(properties
@@ -300,16 +310,22 @@
 	(method (handleEvent event)
 		(cond 
 			((Said 'examine<(in,in,in,through)/window,room')
-				(if (& (ego onControl: 1) $0020)
+				(if (& (ego onControl: origin) cMAGENTA)
 					(Print 9 18)
 				else
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/window')) (event claimed: 1) (Print 9 19))
-			((Said 'open/window') (Print 9 20))
-			((Said 'break/window') (Print 9 21))
+			((or (MousedOn self event shiftDown) (Said 'examine/window'))
+				(event claimed: TRUE)
+				(Print 9 19)
+			)
+			((Said 'open/window')
+				(Print 9 20)
+			)
+			((Said 'break/window')
+				(Print 9 21)
+			)
 		)
 	)
 )
@@ -323,9 +339,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/window'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/window'))
+			(event claimed: TRUE)
 			(Print 9 19)
 		)
 	)

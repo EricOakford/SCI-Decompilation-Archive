@@ -130,9 +130,9 @@
 			(= haveInvItem TRUE)
 		)
 		(if (== saidIndex 1)
-			(Bset fFlag51)
+			(Bset fSawDeadGuest)
 		else
-			(Bclr fFlag51)
+			(Bclr fSawDeadGuest)
 		)
 		(client setScript: 0)
 	)

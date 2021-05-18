@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 232)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use atsgl)
 (use Intrface)
@@ -19,59 +19,46 @@
 )
 
 (local
-	local0
-	local1
+	gloriaTalkCount
+	rudyTalkCount
 	local2
-	local3
+	argueCount
 	local4
 )
-(procedure (localproc_000c)
-	(Gloria setCel: -1 loop: 1 setCycle: Fwd)
-	(Print
-		&rest
-		#at
-		40
-		140
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+(procedure (GloriaPrint)
+	(Gloria setCel: -1 loop: 1 setCycle: Forward)
+	(Print &rest
+		#at 40 140
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(procedure (localproc_0040)
-	(rHead setCel: -1 setCycle: Fwd)
-	(Rudy setCycle: Fwd)
-	(Print
-		&rest
-		#at
-		171
-		140
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+(procedure (RudyPrint)
+	(rHead setCel: -1 setCycle: Forward)
+	(Rudy setCycle: Forward)
+	(Print &rest
+		#at 171 140
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(instance grargue of Rgn
-	(properties)
+(instance grargue of Region
 	
 	(method (init)
 		(super init:)
 		(if (not (& global118 $0001))
-			(LoadMany 135 4 41)
-			(Load rsVIEW 642)
-			(LoadMany 132 29 94 95 96)
-			(Load rsSCRIPT 406)
+			(LoadMany FONT 4 41)
+			(Load VIEW 642)
+			(LoadMany SOUND 29 94 95 96)
+			(Load SCRIPT 406)
 		)
 		(LoadMany 143 243 223 222)
 		(LoadMany 142 3 9)
@@ -83,7 +70,9 @@
 		(rHead setPri: 9 init:)
 		(Smoke init: hide:)
 		(Ash init: hide:)
-		(if (!= prevRoomNum 49) (self setScript: argue))
+		(if (!= prevRoomNum 49)
+			(self setScript: argue)
+		)
 	)
 	
 	(method (doit)
@@ -91,8 +80,7 @@
 	)
 	
 	(method (dispose)
-		(if
-		(and (not (& global173 $0001)) (== [global368 0] 0))
+		(if (and (not (& global173 $0001)) (== [global368 0] 0))
 			(= [global368 0] 1800)
 		)
 		(super dispose:)
@@ -101,19 +89,29 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				((Said 'examine>')
 					(cond 
-						((Said '/cigarette') (Print 232 0))
-						((Said '/boa') (Print 232 1))
+						((Said '/cigarette')
+							(Print 232 0)
+						)
+						((Said '/boa')
+							(Print 232 1)
+						)
 					)
 				)
-				((Said 'hear/rudolph,actress') (Print 232 2))
+				((Said 'hear/rudolph,actress')
+					(Print 232 2)
+				)
 				((Said 'get,smoke>')
 					(cond 
-						((Said '/cigarette') (Print 232 3))
-						((Said '/boa') (Print 232 4))
+						((Said '/cigarette')
+							(Print 232 3)
+						)
+						((Said '/boa')
+							(Print 232 4)
+						)
 					)
 				)
 			)
@@ -122,12 +120,11 @@
 )
 
 (instance argue of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if (== global120 3)
-			(User canInput: 0)
+			(User canInput: FALSE)
 			(= global120 4)
 			(= cycles 12)
 		)
@@ -137,40 +134,43 @@
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0001))
-						(= global118 (| global118 $0001))
+						(|= global118 $0001)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
 			(1
-				(User canInput: 0)
-				(if
-				(== (= local3 (& gCurRoomNum_2 $7fff)) gCurRoomNum_2)
+				(User canInput: FALSE)
+				(if (== (= argueCount (& gCurRoomNum_2 $7fff)) gCurRoomNum_2)
 					(if (< gCurRoomNum_2 6)
 						(++ gCurRoomNum_2)
 					else
 						(= gCurRoomNum_2 -32765)
 					)
 				else
-					(switch local3
+					(switch argueCount
 						(3 (= gCurRoomNum_2 -32764))
 						(4 (= gCurRoomNum_2 -32762))
 						(6 (= gCurRoomNum_2 -32765))
 					)
 				)
-				(switch local3
-					(0 (localproc_000c 232 5))
-					(1 (localproc_000c 232 6))
-					(2 (localproc_0040 232 7))
-					(3 (localproc_000c 232 8))
-					(4 (localproc_0040 232 9))
-					(5 (localproc_0040 232 10))
-					(6 (localproc_0040 232 11))
+				(switch argueCount
+					(0 (GloriaPrint 232 5))
+					(1 (GloriaPrint 232 6))
+					(2 (RudyPrint 232 7))
+					(3 (GloriaPrint 232 8))
+					(4 (RudyPrint 232 9))
+					(5 (RudyPrint 232 10))
+					(6 (RudyPrint 232 11))
 				)
 				(= seconds 5)
 			)
@@ -183,33 +183,33 @@
 			)
 			(3
 				(cls)
-				(switch local3
+				(switch argueCount
 					(0
-						(localproc_0040 232 12)
+						(RudyPrint 232 12)
 						(= seconds 3)
 					)
 					(5
-						(localproc_0040 232 13)
+						(RudyPrint 232 13)
 						(= seconds 3)
 					)
 					(26
-						(localproc_0040 232 14)
+						(RudyPrint 232 14)
 						(= seconds 3)
 					)
 					(else  (= cycles 1))
 				)
 			)
 			(4
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(Rudy setCycle: 0)
 				(rHead setCel: 0 setScript: rudyActions)
 				(cls)
 				(Gloria setScript: gloriaActions)
 			)
 			(5
-				(localproc_000c 232 15)
+				(GloriaPrint 232 15)
 				(= state 1)
-				(= local3 26)
+				(= argueCount 26)
 				(= seconds 5)
 			)
 		)
@@ -217,12 +217,10 @@
 )
 
 (instance gloriaActions of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (< global120 4) (> global120 0) (client script?))
+		(if (and (< global120 4) (> global120 0) (client script?))
 			(++ global120)
 			(client setScript: 0)
 		)
@@ -232,14 +230,14 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 3 6)))
 			(1
-				(Gloria cel: 0 loop: 0 cycleSpeed: 0 setCycle: End)
+				(Gloria cel: 0 loop: 0 cycleSpeed: 0 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(2
 				(Gloria
 					cel: (- (NumCels Gloria) 1)
 					loop: 0
-					setCycle: Beg
+					setCycle: BegLoop
 				)
 				(= seconds 2)
 			)
@@ -247,7 +245,7 @@
 				(Smoke
 					show:
 					setPri: (CoordPri (Gloria y?))
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -255,16 +253,16 @@
 				(= seconds (Random 2 5))
 			)
 			(5
-				(Gloria cel: 0 loop: 4 setCycle: End self)
+				(Gloria cel: 0 loop: 4 setCycle: EndLoop self)
 			)
 			(6
-				(Gloria cel: 0 loop: 5 cycleSpeed: 1 setCycle: Fwd)
-				(Ash cel: 0 show: setCycle: End)
+				(Gloria cel: 0 loop: 5 cycleSpeed: 1 setCycle: Forward)
+				(Ash cel: 0 show: setCycle: EndLoop)
 				(= cycles 5)
 			)
 			(7
 				(Ash hide:)
-				(Gloria cel: 2 loop: 4 setCycle: Beg self)
+				(Gloria cel: 2 loop: 4 setCycle: BegLoop self)
 				(= state -1)
 			)
 		)
@@ -272,12 +270,10 @@
 )
 
 (instance rudyActions of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
-		(if
-		(and (< global120 4) (> global120 0) (client script?))
+		(if (and (< global120 4) (> global120 0) (client script?))
 			(++ global120)
 			(client setScript: 0)
 		)
@@ -285,29 +281,31 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 3 6)))
+			(0
+				(= seconds (Random 3 6))
+			)
 			(1
-				(rHead setCel: -1 loop: 5 setCycle: End self)
+				(rHead setCel: -1 loop: 5 setCycle: EndLoop self)
 				(= seconds (Random 3 5))
 			)
 			(2
-				(Rudy cel: 0 loop: 2 setCycle: End)
+				(Rudy cel: 0 loop: 2 setCycle: EndLoop)
 				(= seconds (Random 3 5))
 			)
 			(3
-				(rHead setCycle: Beg)
+				(rHead setCycle: BegLoop)
 				(= seconds (Random 3 5))
 			)
 			(4
-				(Rudy loop: 3 setCycle: End)
+				(Rudy loop: 3 setCycle: EndLoop)
 				(= seconds (Random 3 5))
 			)
 			(5
-				(rHead setCycle: End)
+				(rHead setCycle: EndLoop)
 				(= seconds (Random 5 8))
 			)
 			(6
-				(rHead setCycle: Beg self)
+				(rHead setCycle: BegLoop self)
 				(= state 4)
 			)
 		)
@@ -323,35 +321,36 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 9)
-		(if
-		(< (ego distanceTo: Rudy) (ego distanceTo: Gloria))
+		(= theTalker talkRUDY)
+		(if (< (ego distanceTo: Rudy) (ego distanceTo: Gloria))
 			(= global214 256)
 		else
 			(= global214 4)
 		)
 		(cond 
 			((Said 'converse/rudolph')
-				(switch local1
+				(switch rudyTalkCount
 					(0 (Say 1 232 16))
 					(1 (Say 1 232 17))
 					(else  (Print 232 18))
 				)
-				(++ local1)
+				(++ rudyTalkCount)
 			)
 			((Said 'ask[/rudolph]/actress<about')
 				(= global212 1)
 				(= global209 event)
 				(proc243_1 13 232 19)
 			)
-			(
-			(and (not (& global207 $0100)) (MousedOn self event 3)) (event claimed: 1) (ParseName {rudy}))
+			((and (not (& global207 $0100)) (MousedOn self event shiftDown))
+				(event claimed: TRUE)
+				(ParseName {rudy})
+			)
 			(
 				(and
 					(& global207 $0100)
-					(or (MousedOn self event 3) (Said 'examine/rudolph'))
+					(or (MousedOn self event shiftDown) (Said 'examine/rudolph'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 232 20)
 			)
 		)
@@ -366,35 +365,43 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 3)
+		(= theTalker talkGLORIA)
 		(cond 
 			((Said 'converse/actress')
-				(switch local0
+				(switch gloriaTalkCount
 					(0 (Say 1 232 21))
 					(1 (Say 1 232 22))
 					(else  (Print 232 23))
 				)
-				(++ local0)
+				(++ gloriaTalkCount)
 			)
 			((Said 'ask[/actress]/rudolph<about')
 				(= global212 1)
 				(= global209 event)
 				(proc243_1 21 232 24)
 			)
-			((Said 'examine/people') (Print 232 20))
-			((Said 'examine,converse/person,men') (Print 232 25))
-			((Said 'converse/people') (Print 232 26))
-			(
-			(and (not (& global207 $0004)) (MousedOn self event 3)) (event claimed: 1) (ParseName {gloria}))
+			((Said 'examine/people')
+				(Print 232 20)
+			)
+			((Said 'examine,converse/person,men')
+				(Print 232 25)
+			)
+			((Said 'converse/people')
+				(Print 232 26)
+			)
+			((and (not (& global207 $0004)) (MousedOn self event shiftDown))
+				(event claimed: TRUE)
+				(ParseName {gloria})
+			)
 			(
 				(and
 					(& global207 $0004)
 					(or
-						(MousedOn self event 3)
+						(MousedOn self event shiftDown)
 						(Said 'examine/actress[/!*]')
 					)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 232 20)
 			)
 		)

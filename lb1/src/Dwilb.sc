@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 256)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use FndBody)
@@ -25,17 +25,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/c'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/c'))
+			(event claimed: TRUE)
 			(Print 256 0)
 		)
 	)
 )
 
-(instance WilburBlock of Blk
-	(properties)
-)
+(instance WilburBlock of Block)
 
 (instance myMusic of Sound
 	(properties
@@ -44,8 +41,7 @@
 	)
 )
 
-(instance Dwilb of Rgn
-	(properties)
+(instance Dwilb of Region
 	
 	(method (init)
 		(if (== curRoomNum 69) (Body posn: 272 145))
@@ -63,9 +59,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'get/monocle')
 						(if (< (ego distanceTo: Body) 25)
@@ -75,12 +71,20 @@
 							(NotClose)
 						)
 					)
-					((Said '/c>')
+					((Said '/wilbur>')
 						(cond 
-							((Said 'kill') (Print 256 1))
-							((Said 'kiss') (Print 256 2))
-							((Said 'embrace') (Print 256 3))
-							((Said 'get,drag,drag,press,move') (Print 256 4))
+							((Said 'kill')
+								(Print 256 1)
+							)
+							((Said 'kiss')
+								(Print 256 2)
+							)
+							((Said 'embrace')
+								(Print 256 3)
+							)
+							((Said 'get,drag,drag,press,move')
+								(Print 256 4)
+							)
 							((Said '(examine<in),search')
 								(if (< (ego distanceTo: Body) 25)
 									(HandsOff)
@@ -89,24 +93,30 @@
 									(NotClose)
 								)
 							)
-							((Said 'help') (Print 256 5))
-							((Said 'converse') (Print 256 6))
+							((Said 'help')
+								(Print 256 5)
+							)
+							((Said 'converse')
+								(Print 256 6)
+							)
 						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance showCloseup of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 2))
+			(0
+				(HandsOff)
+				(= seconds 2)
+			)
 			(1
 				(WilburBlock
 					top: (Body nsTop?)
@@ -119,7 +129,11 @@
 			)
 			(2
 				(myMusic play:)
-				(Print 256 7 #at 10 75 #icon 423 1 0 #mode 1)
+				(Print 256 7
+					#at 10 75
+					#icon 423 1 0
+					#mode teJustCenter
+				)
 				(= cycles 1)
 			)
 			(3
@@ -131,7 +145,6 @@
 )
 
 (instance pickUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -140,18 +153,20 @@
 				(= cycles 2)
 			)
 			(1
-				(ego view: 17 cel: 0 setMotion: 0 setCycle: End self)
+				(ego view: 17 cel: 0 setMotion: 0 setCycle: EndLoop self)
 			)
 			(2
 				(Print 256 8)
-				(if (not (ego has: 1))
+				(if (not (ego has: iMonocle))
 					(Print 256 9)
-					(= gotItem 1)
-					(ego get: 1)
+					(= gotItem TRUE)
+					(ego get: iMonocle)
 				)
 				(= cycles 1)
 			)
-			(3 (ego setCycle: Beg self))
+			(3
+				(ego setCycle: BegLoop self)
+			)
 			(4
 				(HandsOn)
 				(ego view: 0 setCycle: Walk)

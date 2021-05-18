@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 242)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -12,12 +12,9 @@
 	tunnelReg 0
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
-(instance tunnelReg of Rgn
-	(properties)
+(instance tunnelReg of Region
 	
 	(method (init)
 		(super init:)
@@ -30,42 +27,46 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp newEvent temp1 temp2 castFirst theCastFirst temp5)
-		(if (event claimed?) (return 1))
+	(method (handleEvent event &tmp evt temp1 temp2 node nextNode obj)
+		(if (event claimed?) (return TRUE))
 		(if
 			(and
-				(== (event type?) evMOUSEBUTTON)
-				(not (& (event modifiers?) emSHIFT))
+				(== (event type?) mouseDown)
+				(not (& (event modifiers?) shiftDown))
 				(or
 					(== curRoomNum 51)
 					(== curRoomNum 55)
-					(and (== curRoomNum 56) (& (ego onControl:) $0004))
+					(and (== curRoomNum 56) (& (ego onControl:) cGREEN))
 				)
 			)
-			(event claimed: 1)
-			(while (!= 2 ((= newEvent (Event new:)) type?))
-				(ego setMotion: MoveTo (newEvent x?) (ego y?))
-				(newEvent dispose:)
+			(event claimed: TRUE)
+			(while (!= 2 ((= evt (Event new:)) type?))
+				(ego setMotion: MoveTo (evt x?) (ego y?))
+				(evt dispose:)
 			)
-			(newEvent dispose:)
+			(evt dispose:)
 		)
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(= temp1 (= temp2 0))
-						(= castFirst (cast first:))
-						(while castFirst
-							(= theCastFirst (cast next: castFirst))
+						(= node (cast first:))
+						(while node
+							(= nextNode (cast next: node))
 							(if
 								(and
-									(IsObject (= temp5 (NodeValue castFirst)))
-									(== (temp5 view?) 155)
-									(not (& (temp5 signal?) $0080))
+									(IsObject (= obj (NodeValue node)))
+									(== (obj view?) 155)
+									(not (& (obj signal?) actorHidden))
 								)
-								(if (== (temp5 loop?) 0) (= temp2 1) else (= temp1 1))
+								(if (== (obj loop?) 0)
+									(= temp2 1)
+								else
+									(= temp1 1)
+								)
 							)
-							(= castFirst theCastFirst)
+							(= node nextNode)
 						)
 						(cond 
 							((Said '/beam')
@@ -75,8 +76,12 @@
 									(DontSee)
 								)
 							)
-							((or (Said '/dirt') (Said '<down[/!*]')) (Print 242 1))
-							((Said '/wall') (Print 242 2))
+							((or (Said '/dirt') (Said '<down[/!*]'))
+								(Print 242 1)
+							)
+							((Said '/wall')
+								(Print 242 2)
+							)
 							((Said '/boulder')
 								(if (and (== curRoomNum 55) temp1)
 									(Print 242 3)
@@ -84,15 +89,23 @@
 									(DontSee)
 								)
 							)
-							((Said '/eye') (Print 242 4))
-							((Said '/mouse') (DontSee))
+							((Said '/eye')
+								(Print 242 4)
+							)
+							((Said '/mouse')
+								(DontSee)
+							)
 						)
 					)
-					((Said 'hear') (Print 242 5))
-					((Said 'extinguish,extinguish,(rotate<off)') (Print 242 6))
+					((Said 'hear')
+						(Print 242 5)
+					)
+					((Said 'extinguish,extinguish,(rotate<off)')
+						(Print 242 6)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)

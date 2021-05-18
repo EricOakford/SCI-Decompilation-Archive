@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 266)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -17,9 +17,9 @@
 )
 
 (local
-	local0
+	talkCount
 )
-(instance cBlock of Blk
+(instance cBlock of Block
 	(properties
 		top 101
 		left 260
@@ -28,13 +28,12 @@
 	)
 )
 
-(instance celirock of Rgn
-	(properties)
+(instance celirock of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
-		(LoadMany 128 480 901)
+		(Load FONT 4)
+		(LoadMany VIEW 480 901)
 		(= global208 2)
 		(if global135
 			(LoadMany 143 243 283)
@@ -43,7 +42,7 @@
 			(LoadMany 143 243 228)
 			(= [global377 1] 228)
 		)
-		(Celie cycleSpeed: 1 setCycle: Fwd init:)
+		(Celie cycleSpeed: 1 setCycle: Forward init:)
 		(chair init: hide:)
 		(myMusic number: 33 loop: -1 play:)
 		(ego observeBlocks: cBlock)
@@ -59,17 +58,21 @@
 	
 	(method (handleEvent event &tmp temp0 temp1)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
-		(= theTalker 2)
+		(if (event claimed?) (return TRUE))
+		(= theTalker talkCELIE)
 		(return
 			(cond 
-				((Said 'examine/darning') (Print 266 0))
-				((Said 'get/darning') (Print 266 1))
+				((Said 'examine/darning')
+					(Print 266 0)
+				)
+				((Said 'get/darning')
+					(Print 266 1)
+				)
 				((Said 'hold,deliver/necklace')
-					(if (ego has: 0)
+					(if (ego has: iNecklace)
 						(if (< (ego distanceTo: Celie) 40)
 							(Say 1 266 2)
-							(ego put: 0)
+							(ego put: iNecklace)
 							(= global135 1)
 							(= temp0 7)
 							(= temp1 0)
@@ -86,10 +89,12 @@
 						(DontHave)
 					)
 				)
-				((Said 'hear/celie') (Print 266 3))
+				((Said 'hear/celie')
+					(Print 266 3)
+				)
 				((Said 'converse/celie')
 					(if global135
-						(switch local0
+						(switch talkCount
 							(0 (Say 1 266 4))
 							(1 (Say 1 266 5))
 							(2 (Say 1 266 6))
@@ -99,7 +104,7 @@
 							(else  (Print 266 10))
 						)
 					else
-						(switch local0
+						(switch talkCount
 							(0 (Say 1 266 11))
 							(1 (Say 1 266 12))
 							(2 (Say 1 266 13))
@@ -107,7 +112,7 @@
 							(else  (Print 266 15))
 						)
 					)
-					(++ local0)
+					(++ talkCount)
 				)
 			)
 		)
@@ -115,20 +120,19 @@
 )
 
 (instance enter of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (& (ego onControl: 1) $0001))
+				(if (not (& (ego onControl: origin) cBLACK))
 					(ego setMotion: MoveTo 218 100 self)
 				else
 					(= cycles 1)
 				)
 			)
 			(1
-				(Celie loop: 3 cel: 0 setCycle: End self)
+				(Celie loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(ego loop: 3)
@@ -142,12 +146,12 @@
 			)
 			(3
 				(Face Celie gDoor)
-				(gDoor setCycle: End self)
+				(gDoor setCycle: EndLoop self)
 			)
 			(4
 				(Celie
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 240 91 self
 				)
 			)
@@ -159,7 +163,7 @@
 	)
 )
 
-(instance Celie of Act
+(instance Celie of Actor
 	(properties
 		y 102
 		x 270
@@ -170,14 +174,16 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(cond 
-			(
-			(and (MousedOn self event 3) (not (& global207 $0002))) (event claimed: 1) (ParseName {celie}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0002)))
+				(event claimed: TRUE)
+				(ParseName {celie})
+			)
 			(
 				(and
 					(& global207 $0002)
-					(or (MousedOn self event 3) (Said 'examine/celie'))
+					(or (MousedOn self event shiftDown) (Said 'examine/celie'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 266 16)
 			)
 		)
@@ -203,6 +209,4 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

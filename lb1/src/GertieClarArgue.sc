@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 217)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use atsgl)
 (use Intrface)
@@ -20,62 +20,49 @@
 )
 
 (local
-	local0
-	local1
+	gertieTalkCount
+	clarenceTalkCount
 	local2
 	local3
 	local4
 	local5
-	local6
+	argueCount
 )
-(procedure (localproc_000c)
-	(Gertie loop: 2 cycleSpeed: 1 setCycle: Fwd)
+(procedure (GertiePrint)
+	(Gertie loop: 2 cycleSpeed: 1 setCycle: Forward)
 	(Clarence setCycle: 0)
-	(Print
-		&rest
-		#at
-		10
-		140
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+	(Print &rest
+		#at 10 140
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(procedure (localproc_0048)
+(procedure (ClarPrint)
 	(Gertie loop: 1 cel: 1 stopUpd:)
-	(Clarence loop: 3 cel: 0 cycleSpeed: 1 setCycle: Fwd)
-	(Print
-		&rest
-		#at
-		101
-		140
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+	(Clarence loop: 3 cel: 0 cycleSpeed: 1 setCycle: Forward)
+	(Print &rest
+		#at 101 140
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(instance GertieClarArgue of Rgn
-	(properties)
+(instance GertieClarArgue of Region
 	
 	(method (init)
 		(super init:)
 		(if (not (& global173 $0002))
-			(LoadMany 135 4 41)
-			(Load rsVIEW 642)
-			(LoadMany 132 29 94 95 96)
-			(Load rsSCRIPT 406)
+			(LoadMany FONT 4 41)
+			(Load VIEW 642)
+			(LoadMany SOUND 29 94 95 96)
+			(Load SCRIPT 406)
 		)
 		(LoadMany 143 243 218)
 		(LoadMany 142 7 1)
@@ -90,7 +77,7 @@
 			(LoadMany 143 216)
 			(Gertie init:)
 			(self setScript: argue)
-			(= global208 (| global208 $0001))
+			(|= global208 $0001)
 		)
 	)
 	
@@ -99,65 +86,78 @@
 	)
 	
 	(method (dispose)
-		(if
-		(and (not (& global173 $0002)) (== [global368 1] 0))
+		(if (and (not (& global173 $0002)) (== [global368 1] 0))
 			(= [global368 1] 1800)
 		)
 		(DisposeScript 204)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
-							((Said '/butt') (Bset 13) (Print 217 0))
-							((Said '/drink,glass') (Print 217 1))
+							((Said '/butt')
+								(Bset fExaminedCigar)
+								(Print 217 0)
+							)
+							((Said '/drink,glass')
+								(Print 217 1)
+							)
 						)
 					)
-					((Said 'hear/attorney,gertie') (Print 217 2))
-					((Said 'get/butt') (Print 217 3))
-					((Said 'get/drink,glass') (Print 217 4))
+					((Said 'hear/attorney,gertie')
+						(Print 217 2)
+					)
+					((Said 'get/butt')
+						(Print 217 3)
+					)
+					((Said 'get/drink,glass')
+						(Print 217 4)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance argue of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not global216) (= state -1))
+					((not global216)
+						(= state -1)
+					)
 					((not (& global118 $0002))
-						(= global118 (| global118 $0002))
+						(|= global118 $0002)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
 			(1
-				(User canInput: 0)
-				(if (== (= local6 (& global172 $7fff)) global172)
+				(User canInput: FALSE)
+				(if (== (= argueCount (& global172 $7fff)) global172)
 					(if (< global172 10)
 						(++ global172)
 					else
 						(= global172 -32767)
 					)
 				else
-					(switch local6
+					(switch argueCount
 						(1 (= global172 -32766))
 						(2 (= global172 -32763))
 						(5 (= global172 -32762))
@@ -166,28 +166,28 @@
 						(10 (= global172 -32767))
 					)
 				)
-				(switch local6
-					(0 (localproc_0048 217 5))
-					(1 (localproc_000c 217 6))
-					(2 (localproc_0048 217 7))
-					(3 (localproc_000c 217 8))
-					(4 (localproc_0048 217 9))
-					(5 (localproc_000c 217 10))
-					(6 (localproc_0048 217 11))
-					(7 (localproc_000c 217 12))
-					(8 (localproc_0048 217 13))
-					(9 (localproc_000c 217 14))
-					(10 (localproc_0048 217 15))
+				(switch argueCount
+					(0 (ClarPrint 217 5))
+					(1 (GertiePrint 217 6))
+					(2 (ClarPrint 217 7))
+					(3 (GertiePrint 217 8))
+					(4 (ClarPrint 217 9))
+					(5 (GertiePrint 217 10))
+					(6 (ClarPrint 217 11))
+					(7 (GertiePrint 217 12))
+					(8 (ClarPrint 217 13))
+					(9 (GertiePrint 217 14))
+					(10 (ClarPrint 217 15))
 				)
 				(= seconds 5)
 			)
 			(2
 				(cls)
-				(switch local6
-					(0 (localproc_0048 217 16))
-					(3 (localproc_000c 217 17))
-					(7 (localproc_0048 217 18))
-					(8 (localproc_000c 217 19))
+				(switch argueCount
+					(0 (ClarPrint 217 16))
+					(3 (GertiePrint 217 17))
+					(7 (ClarPrint 217 18))
+					(8 (GertiePrint 217 19))
 					(else 
 						(Clarence setCycle: 0)
 						(Gertie loop: 1 cel: 1 stopUpd:)
@@ -199,7 +199,7 @@
 				(cls)
 				(Gertie loop: 1 cel: 1 stopUpd: setScript: gertActions)
 				(Clarence stopUpd: setScript: clarActions)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(client setScript: 0)
 			)
 		)
@@ -207,7 +207,6 @@
 )
 
 (instance gertActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -221,15 +220,15 @@
 				(= seconds (Random 3 8))
 			)
 			(2
-				(Gertie loop: 0 cel: 0 setCycle: End)
+				(Gertie loop: 0 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 3 5))
 			)
 			(3
-				(Gertie loop: 0 cel: 0 setCycle: End)
+				(Gertie loop: 0 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 3 8))
 			)
 			(4
-				(Gertie loop: 3 setCycle: Fwd)
+				(Gertie loop: 3 setCycle: Forward)
 				(= seconds (Random 3 8))
 			)
 			(5
@@ -242,23 +241,27 @@
 )
 
 (instance clarActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= state 5) (= cycles 1))
+			(0
+				(= state 5)
+				(= cycles 1)
+			)
 			(1
-				(Clarence setLoop: 1 cel: 0 setCycle: End self)
+				(Clarence setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(= local3 (Random 1 3))
 				(= local4 0)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(Clarence setLoop: 4 cel: 1)
 				(= cycles 1)
 			)
 			(4
-				(Smoke cel: 0 setCycle: End self show:)
+				(Smoke cel: 0 setCycle: EndLoop self show:)
 			)
 			(5
 				(if (< local4 local3)
@@ -271,7 +274,7 @@
 					(Clarence
 						cel: (- (NumCels Clarence) 3)
 						cycleSpeed: 2
-						setCycle: Beg
+						setCycle: BegLoop
 					)
 					(= seconds (Random 3 6))
 				)
@@ -282,7 +285,7 @@
 				(= cycles 1)
 			)
 			(7
-				(Clarence setCycle: Beg)
+				(Clarence setCycle: BegLoop)
 				(switch (Random 1 4)
 					(1 (= state 0))
 					(3 (= state 8))
@@ -290,17 +293,21 @@
 				(= seconds (Random 3 6))
 			)
 			(8
-				(Clarence setCycle: End)
+				(Clarence setCycle: EndLoop)
 				(= seconds (Random 3 (= state 6)))
 			)
 			(9
-				(Clarence setLoop: 9 cel: 0 setCycle: End)
+				(Clarence setLoop: 9 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 1 2))
 			)
 			(10
-				(Clarence setCycle: Beg)
+				(Clarence setCycle: BegLoop)
 				(= seconds (Random 3 6))
-				(if (< seconds 5) (= state 0) else (= state 5))
+				(if (< seconds 5)
+					(= state 0)
+				else
+					(= state 5)
+				)
 			)
 		)
 	)
@@ -314,36 +321,47 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(< (ego distanceTo: Gertie) (ego distanceTo: Clarence))
+		(if (< (ego distanceTo: Gertie) (ego distanceTo: Clarence))
 			(= global214 1)
 		else
 			(= global214 64)
 		)
-		(= theTalker 1)
+		(= theTalker talkGERTIE)
 		(cond 
-			((Said 'examine/people') (Print 217 20))
-			((Said 'examine,converse/person') (Print 217 21))
-			((Said 'converse/people') (Print 217 22))
-			((Said 'ask[/gertie]/attorney<about') (= global212 1) (= global209 event) (proc243_1 4 217 23))
+			((Said 'examine/people')
+				(Print 217 20)
+			)
+			((Said 'examine,converse/person')
+				(Print 217 21)
+			)
+			((Said 'converse/people')
+				(Print 217 22)
+			)
+			((Said 'ask[/gertie]/attorney<about')
+				(= global212 1)
+				(= global209 event)
+				(proc243_1 4 217 23)
+			)
 			((Said 'converse/gertie')
-				(switch local0
+				(switch gertieTalkCount
 					(0 (Say 1 217 24))
 					(1 (Say 1 217 25))
 					(2 (Say 1 217 26))
 					(else  (Say 1 217 27))
 				)
-				(++ local0)
+				(++ gertieTalkCount)
 			)
-			(
-			(and (MousedOn self event 3) (not (& global207 $0001))) (event claimed: 1) (ParseName {gertie}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0001)))
+				(event claimed: TRUE)
+				(ParseName {gertie})
+			)
 			(
 				(and
 					(& global207 $0001)
-					(or (MousedOn self event 3) (Said 'examine/gertie'))
+					(or (MousedOn self event shiftDown) (Said 'examine/gertie'))
 				)
 				(Print 217 28)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
@@ -358,26 +376,32 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 7)
+		(= theTalker talkCLARENCE)
 		(cond 
 			((Said 'converse/attorney')
-				(switch local1
+				(switch clarenceTalkCount
 					(0 (Say 1 217 29))
 					(1 (Say 1 217 30))
 					(2 (Say 1 217 31))
 					(else  (Say 1 217 32))
 				)
-				(++ local1)
+				(++ clarenceTalkCount)
 			)
-			((Said 'ask[/attorney]/gertie<about') (= global212 1) (= global209 event) (proc243_1 9 217 33))
-			(
-			(and (MousedOn self event 3) (not (& global207 $0040))) (event claimed: 1) (ParseName {clarence}))
+			((Said 'ask[/attorney]/gertie<about')
+				(= global212 1)
+				(= global209 event)
+				(proc243_1 9 217 33)
+			)
+			((and (MousedOn self event shiftDown) (not (& global207 $0040)))
+				(event claimed: TRUE)
+				(ParseName {clarence})
+			)
 			(
 				(and
 					(& global207 $0040)
-					(or (MousedOn self event 3) (Said 'examine/attorney'))
+					(or (MousedOn self event shiftDown) (Said 'examine/attorney'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 217 20)
 			)
 		)
@@ -402,7 +426,7 @@
 	)
 )
 
-(instance gBlock of Blk
+(instance gBlock of Block
 	(properties
 		top 98
 		left 115

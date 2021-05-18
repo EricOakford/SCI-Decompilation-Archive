@@ -248,7 +248,7 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(cond 
-			((and (Btst fFlag51) (Said 'tell[/c]/gertie<about'))
+			((and (Btst fSawDeadGuest) (Said 'tell[/c]/gertie<about'))
 				(if (>= global154 4)
 					(= theTalker talkWILBUR)
 					(if (& deadGuests $0001)

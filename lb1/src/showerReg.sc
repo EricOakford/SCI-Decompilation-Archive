@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 215)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Sound)
 (use Motion)
@@ -15,16 +15,16 @@
 (local
 	local0
 )
-(instance showerReg of Rm
+(instance showerReg of Room
 	(properties
 		picture 71
-		style $0008
+		style DISSOLVE
 	)
 	
 	(method (init)
 		(super init:)
 		(HandsOff)
-		(Load rsSOUND 8)
+		(Load SOUND 8)
 		(myMusic number: 7 loop: -1 play:)
 		(spike setPri: 9 init: stopUpd: hide:)
 		(door init: stopUpd:)
@@ -35,7 +35,7 @@
 			cel: 0
 			posn: 212 35
 			setPri: 11
-			setCycle: Fwd
+			setCycle: Forward
 			init:
 		)
 		(knife
@@ -84,28 +84,29 @@
 )
 
 (instance showerUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (shadow setCycle: End self))
+			(0
+				(shadow setCycle: EndLoop self)
+			)
 			(1
-				(shadow cel: 0 loop: 1 cycleSpeed: 1 setCycle: End self)
+				(shadow cel: 0 loop: 1 cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(2
-				(shadow cel: 0 loop: 2 setCycle: End self)
+				(shadow cel: 0 loop: 2 setCycle: EndLoop self)
 			)
 			(3
-				(door setCycle: End self)
+				(door setCycle: EndLoop self)
 				(spike show:)
-				(shadow setLoop: 3 cel: 0 cycleSpeed: 0 setCycle: Fwd)
+				(shadow setLoop: 3 cel: 0 cycleSpeed: 0 setCycle: Forward)
 			)
 			(4
 				(killer setCycle: Walk setMotion: MoveTo 30 115 self)
 			)
 			(5
-				(door setCycle: Beg self)
-				(spike setCycle: Beg)
+				(door setCycle: BegLoop self)
+				(spike setCycle: BegLoop)
 			)
 			(6
 				(door dispose:)
@@ -114,24 +115,24 @@
 					loop: 2
 					cel: (- (NumCels shadow) 1)
 					cycleSpeed: 1
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(7
-				(shadow loop: 4 setCycle: End self)
+				(shadow loop: 4 setCycle: EndLoop self)
 			)
 			(8
-				(shadow loop: 5 cel: 0 cycleSpeed: 0 setCycle: Fwd)
+				(shadow loop: 5 cel: 0 cycleSpeed: 0 setCycle: Forward)
 				(= seconds 3)
 			)
 			(9
 				(myMusic stop:)
 				(myMusic number: 8 loop: 1 play:)
-				(knife setCycle: End setMotion: MoveTo 187 107 self)
+				(knife setCycle: EndLoop setMotion: MoveTo 187 107 self)
 			)
 			(10
 				(knife dispose:)
-				(hand setCycle: End self)
+				(hand setCycle: EndLoop self)
 			)
 			(11
 				(if (< (++ local0) 4)
@@ -142,7 +143,7 @@
 								loop: 7
 								setPri: 12
 								posn: 187 77
-								setCycle: End
+								setCycle: EndLoop
 								init:
 							)
 						)
@@ -152,7 +153,7 @@
 								loop: 8
 								setPri: 12
 								posn: 197 87
-								setCycle: End
+								setCycle: EndLoop
 								init:
 							)
 						)
@@ -162,7 +163,7 @@
 								loop: 9
 								setPri: 12
 								posn: 177 97
-								setCycle: End
+								setCycle: EndLoop
 								init:
 							)
 							(blood4
@@ -171,13 +172,13 @@
 								setPri: 12
 								posn: 180 122
 								cycleSpeed: 1
-								setCycle: End
+								setCycle: EndLoop
 								init:
 							)
 						)
 					)
 					(= state 9)
-					(shadow view: 271 loop: 5 cycleSpeed: 1 setCycle: End)
+					(shadow view: 271 loop: 5 cycleSpeed: 1 setCycle: EndLoop)
 					(self cue:)
 				else
 					(self cue:)
@@ -188,13 +189,16 @@
 					view: 271
 					loop: 7
 					posn: 181 145
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 1
 					init:
 				)
-				(shadow setCycle: End self)
+				(shadow setCycle: EndLoop self)
 			)
-			(12 (= seconds 7))
+			;NOTE: This case already exists, and will probably never be executed
+;;;			(12
+;;;				(= seconds 7)
+;;;			)
 			(13
 				(= cIcon 271)
 				(= deathLoop 9)
@@ -204,20 +208,16 @@
 	)
 )
 
-(instance shadow of Act
-	(properties)
-)
+(instance shadow of Actor)
 
-(instance killer of Act
+(instance killer of Actor
 	(properties
 		y 95
 		view 271
 	)
 )
 
-(instance knife of Act
-	(properties)
-)
+(instance knife of Actor)
 
 (instance door of Prop
 	(properties
@@ -234,34 +234,18 @@
 	)
 )
 
-(instance water of Prop
-	(properties)
-)
+(instance water of Prop)
 
-(instance hand of Prop
-	(properties)
-)
+(instance hand of Prop)
 
-(instance blood1 of Prop
-	(properties)
-)
+(instance blood1 of Prop)
 
-(instance blood2 of Prop
-	(properties)
-)
+(instance blood2 of Prop)
 
-(instance blood3 of Prop
-	(properties)
-)
+(instance blood3 of Prop)
 
-(instance blood4 of Prop
-	(properties)
-)
+(instance blood4 of Prop)
 
-(instance drip of Prop
-	(properties)
-)
+(instance drip of Prop)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

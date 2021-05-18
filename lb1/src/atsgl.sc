@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 243)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use System)
@@ -14,15 +14,15 @@
 )
 
 (local
-	[local0 18] = [243 0 243 1 243 2 243 3 243 4 243 5 243 6 243 7 243 8]
-	[local18 24] = [243 9 243 10 243 11 243 12 243 13 243 14 243 15 243 16 243 17 243 18 243 19 243 20]
-	[local42 10] = ['ask//*<about>' 'tell//*<about>' 'hold>' 'deliver>' 'examine>' 'get>' 'kill>' 'kiss>' 'embrace>' 'flirt>']
-	[local52 30] = ['/celie>' '/attorney>' '/colonel>' '/ethel>' '/fifi>' '/gertie>' '/actress>' '/butler>' '/lil>' '/rudolph>' '/c>' '/beauregard>' '/blaze>' '/bag>' '/bible>' '/bone>' '/cane>' '/butt>' '/diary>' '/valve,handle>' '/necklace>' '/magic>' '/diamond>' '/control>' '/parrot>' '/handkerchief>' '/sarah,(crouton<sarah)>' '/ghost>' '/acres>' '/crouton,frances,francois,claudette,s,claude,william>']
-	[local82 11] = ['/*<celie>' '/*<attorney>' '/*<colonel>' '/*<ethel>' '/*<fifi>' '/*<gertie>' '/*<actress>' '/*<butler>' '/*<lil>' '/*<rudolph>' '/*<c>']
-	[local93 30] = ['//celie>' '//attorney>' '//colonel>' '//ethel>' '//fifi>' '//gertie>' '//actress>' '//butler>' '//lil>' '//rudolph>' '//c>' '//beauregard>' '//blaze>' '//bag>' '//bible>' '//bone>' '//cane>' '//butt>' '//diary>' '//valve,handle>' '//necklace>' '//magic>' '//diamond>' '//control>' '//parrot>' '//handkerchief>' '//sarah,(crouton<sarah)>' '//ghost>' '//acres>' '//crouton,frances,francois,claudette,s,claude,william>']
-	[local123 10] = [1 2 3 4 5 6 7 8 9 10]
-	[local133 30] = [2 64 512 8 16 1 4 1024 32 256 128 8256 8320 8200 10240 8704 8196 9216 8224 8208 12288 16384 16385 8194 16388 16392 16400 16416 16448 16512]
-	[local163 11] = [1 2 3 4 5 6 7 8 9 10 11]
+	local0 = [243 0 243 1 243 2 243 3 243 4 243 5 243 6 243 7 243 8]
+	local18 = [243 9 243 10 243 11 243 12 243 13 243 14 243 15 243 16 243 17 243 18 243 19 243 20]
+	local42 = ['ask//*<about>' 'tell//*<about>' 'hold>' 'deliver>' 'examine>' 'get>' 'kill>' 'kiss>' 'embrace>' 'flirt>']
+	local52 = ['/celie>' '/attorney>' '/colonel>' '/ethel>' '/fifi>' '/gertie>' '/actress>' '/butler>' '/lil>' '/rudolph>' '/c>' '/beauregard>' '/blaze>' '/bag>' '/bible>' '/bone>' '/cane>' '/butt>' '/diary>' '/valve,handle>' '/necklace>' '/magic>' '/diamond>' '/control>' '/parrot>' '/handkerchief>' '/sarah,(crouton<sarah)>' '/ghost>' '/acres>' '/crouton,frances,francois,claudette,s,claude,william>']
+	local82 = ['/*<celie>' '/*<attorney>' '/*<colonel>' '/*<ethel>' '/*<fifi>' '/*<gertie>' '/*<actress>' '/*<butler>' '/*<lil>' '/*<rudolph>' '/*<c>']
+	local93 = ['//celie>' '//attorney>' '//colonel>' '//ethel>' '//fifi>' '//gertie>' '//actress>' '//butler>' '//lil>' '//rudolph>' '//c>' '//beauregard>' '//blaze>' '//bag>' '//bible>' '//bone>' '//cane>' '//butt>' '//diary>' '//valve,handle>' '//necklace>' '//magic>' '//diamond>' '//control>' '//parrot>' '//handkerchief>' '//sarah,(crouton<sarah)>' '//ghost>' '//acres>' '//crouton,frances,francois,claudette,s,claude,william>']
+	local123 = [1 2 3 4 5 6 7 8 9 10]
+	local133 = [2 64 512 8 16 1 4 1024 32 256 128 8256 8320 8200 10240 8704 8196 9216 8224 8208 12288 16384 16385 8194 16388 16392 16400 16416 16448 16512]
+	local163 = [1 2 3 4 5 6 7 8 9 10 11]
 	local174
 	local175
 	local176
@@ -154,8 +154,7 @@ code_0534:
 )
 
 (instance atsgl of Script
-	(properties)
-	
+
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 243)
@@ -164,7 +163,7 @@ code_0534:
 	(method (handleEvent event &tmp temp0 temp1 temp2 temp3)
 		(cond 
 			((event claimed?))
-			((== (event type?) evSAID)
+			((== (event type?) saidEvent)
 				(= global210 (= global211 (= global212 0)))
 				(= global209 event)
 				(= local174 0)

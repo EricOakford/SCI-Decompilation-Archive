@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 260)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -30,23 +30,22 @@
 			(or
 				(Said 'examine/attorney')
 				(Said 'examine[<at]/bed')
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 			(Print 260 0)
 		)
 	)
 )
 
-(instance csleep of Rgn
-	(properties)
+(instance csleep of Region
 	
 	(method (init)
 		(super init:)
 		(= global195 64)
-		(Clarence setPri: 6 cycleSpeed: 4 setCycle: Fwd init:)
+		(Clarence setPri: 6 cycleSpeed: 4 setCycle: Forward init:)
 		(snores setPri: 6 init:)
-		(LoadMany 132 114 115)
+		(LoadMany SOUND 114 115)
 	)
 	
 	(method (doit)
@@ -59,7 +58,7 @@
 		)
 		(if (== (Clarence cel?) 0)
 			(snoring number: 114 loop: 1 play:)
-			(snores cel: 0 setCycle: End)
+			(snores cel: 0 setCycle: EndLoop)
 		)
 		(super doit:)
 	)
@@ -69,9 +68,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'deliver,hold/*')
 						(if (and theInvItem haveInvItem)
@@ -80,11 +79,15 @@
 							(DontHave)
 						)
 					)
-					((Said 'ask,tell//*<about') (Print 260 1))
-					((and (Said '(*,!*)>') (Said '/attorney')) (Print 260 1))
+					((Said 'ask,tell//*<about')
+						(Print 260 1)
+					)
+					((and (Said '(*,!*)>') (Said '/attorney'))
+						(Print 260 1)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -100,6 +103,4 @@
 	)
 )
 
-(instance snoring of Sound
-	(properties)
-)
+(instance snoring of Sound)

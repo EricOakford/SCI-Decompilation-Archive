@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 264)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -19,37 +19,30 @@
 
 (local
 	local0
-	local1
+	talkCount
 	local2
 )
-(procedure (localproc_000c)
-	(Print
-		&rest
-		#at
-		40
-		10
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+(procedure (ReadPrint)
+	(Print &rest
+		#at 40 10
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(instance lillGun of Rgn
-	(properties)
+(instance lillGun of Region
 	
 	(method (init)
 		(super init:)
 		(if (not (& global118 $0002))
-			(LoadMany 135 4 41)
-			(LoadMany 132 29 94 95 96)
-			(Load rsSCRIPT 406)
+			(LoadMany FONT 4 41)
+			(LoadMany SOUND 29 94 95 96)
+			(Load SCRIPT 406)
 		)
-		(Load rsVIEW 642 904)
+		(Load VIEW 642 904)
 		(LoadMany 143 243 295)
 		(= global208 32)
 		(= [global377 5] 295)
@@ -72,66 +65,84 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
 			(cond 
 				((Said 'converse/lil')
-					(= theTalker 6)
-					(switch local1
-						(0 (Say 1 264 0) (Say 1 264 1))
-						(1 (Say 1 264 2))
+					(= theTalker talkLILLIAN)
+					(switch talkCount
+						(0
+							(Say 1 264 0)
+							(Say 1 264 1)
+						)
+						(1
+							(Say 1 264 2)
+						)
 						(2
 							(Say 1 264 3)
 							(Say 1 264 4)
 							(Say 1 264 5)
 						)
-						(3 (Say 1 264 6))
-						(4 (Say 1 264 7))
-						(5 (Say 1 264 8))
-						(else  (Say 1 264 9))
+						(3
+							(Say 1 264 6)
+						)
+						(4
+							(Say 1 264 7)
+						)
+						(5
+							(Say 1 264 8)
+						)
+						(else
+							(Say 1 264 9)
+						)
 					)
-					(++ local1)
+					(++ talkCount)
 				)
-				((Said 'hear/lil') (Print 264 10))
+				((Said 'hear/lil')
+					(Print 264 10)
+				)
 			)
 		)
 	)
 )
 
 (instance reading of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if (== currentAct 3)
 					(cond 
-						((not global216) (= state -1))
+						((not global216)
+							(= state -1)
+						)
 						((not (& global118 $0002))
-							(= global118 (| global118 $0002))
+							(|= global118 $0002)
 							(self setScript: (ScriptID 406 0))
 							(= state -1)
 						)
-						((self script?) (= state -1))
+						((self script?)
+							(= state -1)
+						)
 					)
 				)
 				(= cycles 1)
 			)
 			(1
-				(localproc_000c 264 11)
+				(ReadPrint 264 11)
 				(= seconds 7)
 			)
 			(2
 				(cls)
 				(Face Lillian ego)
-				(gDoor setCycle: Beg)
-				(= theTalker 6)
+				(gDoor setCycle: BegLoop)
+				(= theTalker talkLILLIAN)
 				(Say 1 264 12)
 				(= seconds 3)
 			)
 			(3
 				(Lillian
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 262 120 self
 				)
 			)
@@ -146,8 +157,8 @@
 					setAvoider: 0
 					setScript: lilActions
 				)
-				(ego observeControl: 16384)
-				(DisposeScript 985)
+				(ego observeControl: cYELLOW)
+				(DisposeScript AVOIDER)
 				(client setScript: 0)
 			)
 		)
@@ -155,22 +166,23 @@
 )
 
 (instance headActions of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(if (not local2)
 					(lHead
 						loop: (if (< (Random 1 100) 51) 1 else 2)
-						setCycle: End
+						setCycle: EndLoop
 					)
 				)
 				(= seconds (Random 6 12))
 			)
 			(2
-				(lHead setCycle: Beg)
+				(lHead setCycle: BegLoop)
 				(= state 0)
 				(= seconds (Random 6 12))
 			)
@@ -179,52 +191,55 @@
 )
 
 (instance lilActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOn)
-				(Lillian loop: 0 cycleSpeed: 1 setCycle: End)
-				(if (< (Random 1 100) 50) (= state 5))
+				(Lillian loop: 0 cycleSpeed: 1 setCycle: EndLoop)
+				(if (< (Random 1 100) 50)
+					(= state 5)
+				)
 				(= seconds (Random 6 12))
 			)
 			(1
-				(Lillian loop: 5 setCycle: Fwd)
+				(Lillian loop: 5 setCycle: Forward)
 				(= seconds (Random 5 8))
 			)
 			(2
 				(Lillian
 					loop: 0
 					cel: (- (NumCels Lillian) 1)
-					setCycle: Beg
+					setCycle: BegLoop
 				)
 				(= local2 1)
-				(if (!= (lHead cel?) 0) (lHead setCycle: Beg))
+				(if (!= (lHead cel?) 0)
+					(lHead setCycle: BegLoop)
+				)
 				(= seconds (Random 5 8))
 			)
 			(3
-				(Lillian loop: 3 cel: 0 setCycle: End self)
+				(Lillian loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(Lillian loop: 4 setCycle: Fwd)
+				(Lillian loop: 4 setCycle: Forward)
 				(= seconds 2)
 			)
 			(5
 				(Lillian
 					loop: 3
 					cel: (- (NumCels Lillian) 1)
-					setCycle: Beg
+					setCycle: BegLoop
 				)
 				(= seconds (Random 5 8))
 			)
 			(6
 				(= local2 0)
-				(Lillian loop: 6 cel: 0 setCycle: End)
+				(Lillian loop: 6 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 5 8))
 			)
 			(7
-				(Lillian setCycle: Beg)
+				(Lillian setCycle: BegLoop)
 				(= seconds (Random 5 8))
 			)
 			(8
@@ -236,13 +251,12 @@
 )
 
 (instance goSee of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= theTalker 6)
+				(= theTalker talkLILLIAN)
 				(Say 1 264 13)
 				(if
 					(or
@@ -262,21 +276,21 @@
 					loop: 2
 					setCycle: Walk
 					cycleSpeed: 0
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setAvoider: ((Avoider new:) offScreenOK: TRUE)
 					setMotion: MoveTo 94 123 self
 				)
 			)
 			(2
-				(gMySound setCycle: End)
-				(gBdoor setCycle: End self)
+				(gMySound setCycle: EndLoop)
+				(gBdoor setCycle: EndLoop self)
 				(doorFX number: 43 loop: 1 play:)
 			)
 			(3
 				(Lillian setMotion: MoveTo 44 123 self)
 			)
 			(4
-				(gMySound setCycle: Beg)
-				(gBdoor setCycle: Beg self)
+				(gMySound setCycle: BegLoop)
+				(gBdoor setCycle: BegLoop self)
 				(doorFX number: 44 loop: 1 play:)
 			)
 			(5
@@ -285,16 +299,16 @@
 			)
 			(6
 				(cls)
-				(gMySound setCycle: End)
-				(gBdoor setCycle: End self)
+				(gMySound setCycle: EndLoop)
+				(gBdoor setCycle: EndLoop self)
 				(doorFX number: 43 loop: 1 play:)
 			)
 			(7
 				(Lillian setMotion: MoveTo 94 123 self)
 			)
 			(8
-				(gMySound setCycle: Beg)
-				(gBdoor setCycle: Beg self)
+				(gMySound setCycle: BegLoop)
+				(gBdoor setCycle: BegLoop self)
 				(doorFX number: 44 loop: 1 play:)
 				(= theTalker 6)
 				(Say 1 264 15)
@@ -315,7 +329,7 @@
 					setAvoider: 0
 					setScript: lilActions
 				)
-				(DisposeScript 985)
+				(DisposeScript AVOIDER)
 				(HandsOn)
 				(client setScript: 0)
 			)
@@ -323,7 +337,7 @@
 	)
 )
 
-(instance Lillian of Act
+(instance Lillian of Actor
 	(properties
 		y 95
 		x 128
@@ -332,60 +346,66 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 6)
+		(= theTalker talkLILLIAN)
 		(cond 
 			(
-			(and (Btst 51) (Said 'tell[/lil]/gertie<about'))
-				(if (& deadGuests $0001)
+			(and (Btst fSawDeadGuest) (Said 'tell[/lil]/gertie<about'))
+				(if (& deadGuests deadGERTRUDE)
 					(if (& global145 $0001)
 						(Say 1 264 16)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					else
-						(= global145 (| global145 $0001))
+						(|= global145 $0001)
 						(self setScript: goSee)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
 			(
-			(and (Btst 51) (Said 'tell[/lil]/actress<about>'))
-				(if (& deadGuests $0004)
+			(and (Btst fSawDeadGuest) (Said 'tell[/lil]/actress<about>'))
+				(if (& deadGuests deadGLORIA)
 					(if (& global145 $0001)
 						(Say 1 264 16)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					else
-						(= global145 (| global145 $0001))
+						(|= global145 $0001)
 						(self setScript: goSee)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
-			((and (Btst 51) (Said 'tell[/lil]/c<about'))
-				(if (& deadGuests $0002)
+			((and (Btst fSawDeadGuest) (Said 'tell[/lil]/wilbur<about'))
+				(if (& deadGuests deadWILBUR)
 					(if (& global145 $0001)
 						(Say 1 264 16)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					else
-						(= global145 (| global145 $0001))
+						(|= global145 $0001)
 						(self setScript: goSee)
 					)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
-			(
-			(and (MousedOn self event 3) (not (& global207 $0020))) (event claimed: 1) (ParseName {lillian}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0020)))
+				(event claimed: TRUE)
+				(ParseName {lillian})
+			)
 			(
 				(and
 					(& global207 $0020)
-					(or (MousedOn self event 3) (Said 'examine/lil'))
+					(or (MousedOn self event shiftDown) (Said 'examine/lil'))
 				)
-				(event claimed: 1)
-				(if local0 (Print 264 17) else (Print 264 18))
+				(event claimed: TRUE)
+				(if local0
+					(Print 264 17)
+				else
+					(Print 264 18)
+				)
 			)
 		)
 	)
@@ -400,6 +420,4 @@
 	)
 )
 
-(instance doorFX of Sound
-	(properties)
-)
+(instance doorFX of Sound)

@@ -288,7 +288,7 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((and (Btst fFlag51) (Said 'tell[/rudolph]/actress<about'))
+			((and (Btst fSawDeadGuest) (Said 'tell[/rudolph]/actress<about'))
 				(= theTalker 9)
 				(if (& deadGuests deadGLORIA)
 					(if (& global145 $0080)
@@ -303,7 +303,7 @@
 				)
 			)
 			(
-			(and (Btst fFlag51) (Said 'tell[/rudolph]/gertie<about'))
+			(and (Btst fSawDeadGuest) (Said 'tell[/rudolph]/gertie<about'))
 				(= theTalker talkRUDY)
 				(if (& deadGuests deadGERTRUDE)
 					(if (& global145 $0080)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 239)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -16,21 +16,25 @@
 )
 
 (local
-	local0
+	dogState
 	local1
 	local2
 	local3
 )
-(instance jfeed of Rgn
-	(properties)
+(instance jfeed of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
-		(LoadMany 130 985)
-		(Load rsVIEW 520)
-		(if (> currentAct 1) (= global155 17))
-		(if (ego has: 12) (Load rsVIEW 48) (Load rsSCRIPT 991))
+		(Load FONT 4)
+		(LoadMany SCRIPT AVOIDER)
+		(Load VIEW 520)
+		(if (> currentAct 1)
+			(= global155 17)
+		)
+		(if (ego has: iSoupBone)
+			(Load VIEW 48)
+			(Load SCRIPT JUMP)
+		)
 		(if (>= global155 2)
 			(Dish init: stopUpd:)
 		else
@@ -40,14 +44,14 @@
 		(if (>= currentAct 1)
 			(if (or (> global155 1) (> currentAct 1))
 				(= global162 1)
-				(= local0 2)
+				(= dogState 2)
 				(Rover
 					view: 520
 					illegalBits: 0
 					posn: 163 155
 					loop: 2
 					cel: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					init:
 					setScript: dogActions
 					stopUpd:
@@ -58,7 +62,7 @@
 			(= gMySound Rover)
 		)
 		(if (and (< global155 2) (== currentAct 1))
-			(LoadMany 128 440 445 526)
+			(LoadMany VIEW 440 445 526)
 			(if (== global155 0)
 				(Jeeves loop: 2 posn: 128 117)
 			else
@@ -81,12 +85,12 @@
 	(method (doit)
 		(if
 			(and
-				(& (ego onControl: 1) $0001)
+				(& (ego onControl: origin) cBLACK)
 				(< global155 2)
 				(== currentAct 1)
 				(not script)
 			)
-			(DisposeScript 990)
+			(DisposeScript SAVE)
 			(self setScript: (ScriptID 386 0))
 		)
 		(if
@@ -98,8 +102,7 @@
 			(Rover setScript: dogActions)
 		)
 		(if (and (== [global368 2] 100) (== currentAct 1))
-			(if
-			(and (& (ego onControl: 1) $0001) (User controls?))
+			(if (and (& (ego onControl: origin) cBLACK) (User controls?))
 				(Jeeves view: 440 x: 235 y: 53)
 				(self setScript: (ScriptID 387 0))
 			else
@@ -111,21 +114,26 @@
 	
 	(method (dispose)
 		(super dispose:)
-		(DisposeScript 991)
-		(DisposeScript 985)
+		(DisposeScript JUMP)
+		(DisposeScript AVOIDER)
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(DisposeScript 990)
-		(if (event claimed?) (return 1))
+		(DisposeScript SAVE)
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'hold/bone[<beauregard]')
-						(if (ego has: 12)
-							(switch local0
-								(2 (Print 239 0) (= local3 1))
-								(else  (Print 239 1))
+						(if (ego has: iSoupBone)
+							(switch dogState
+								(2
+									(Print 239 0)
+									(= local3 1)
+								)
+								(else
+									(Print 239 1)
+								)
 							)
 						else
 							(DontHave)
@@ -134,12 +142,10 @@
 					(
 						(or
 							(Said 'feed,deliver,drop,throw/bone')
-							(Said
-								'feed,deliver,drop,throw/bone[/(beauregard,doghouse)<away,from]'
-							)
+							(Said 'feed,deliver,drop,throw/bone[/(beauregard,doghouse)<away,from]')
 						)
 						(if (Rover script?)
-							(if (ego has: 12)
+							(if (ego has: iSoupBone)
 								(if (and (> (ego y?) 95) (> (ego x?) 45))
 									(HandsOff)
 									(self setScript: toss)
@@ -167,30 +173,35 @@
 							(Said 'get/bone')
 						)
 						(cond 
-							((== local0 3) (Print 239 5))
-							((== ((inventory at: 12) owner?) 12) (Print 239 6))
-							(else (event claimed: 0))
+							((== dogState 3)
+								(Print 239 5)
+							)
+							((== ((inventory at: iSoupBone) owner?) 12)
+								(Print 239 6)
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance toss of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if (and (== state 1) (== (ego cel?) 6))
-			(ego put: 12 12)
+			(ego put: iSoupBone 12)
 			(Bone
 				cycleSpeed: 1
 				setLoop: 4
-				setCycle: Fwd
+				setCycle: Forward
 				moveSpeed: 2
 				setMotion: JumpTo 293 155 self
 				init:
@@ -210,24 +221,28 @@
 			(1
 				(DirLoop ego (GetAngle (ego x?) (ego y?) 293 155))
 				(Ok)
-				(if (ego inRect: 242 152 320 200) (ego setPri: 14))
-				(ego view: 48 cel: 0 setCycle: End)
+				(if (ego inRect: 242 152 320 200)
+					(ego setPri: 14)
+				)
+				(ego view: 48 cel: 0 setCycle: EndLoop)
 				(Bone
 					setPri: 13
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					posn:
 						(switch (ego loop?)
 							(0 (+ (ego x?) 11))
 							(1 (- (ego x?) 11))
 							(2 (- (ego x?) 7))
-							(else  (+ (ego x?) 4))
+							(else
+								(+ (ego x?) 4)
+							)
 						)
 						(- (ego y?) 26)
 				)
 			)
 			(2
-				(DisposeScript 991)
+				(DisposeScript JUMP)
 				(Bone setCycle: 0 cel: 0 setPri: -1 stopUpd:)
 				(ego view: 0 setLoop: -1 setPri: -1 setCycle: Walk)
 				(= cycles 1)
@@ -241,17 +256,27 @@
 )
 
 (instance dogActions of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(cond 
-			(local1 (if (< state 5) (= state 6) (= cycles 1)))
-			(local2 (= local2 0) (= state 1) (= cycles 2) (= local0 4))
+			(local1
+				(if (< state 5)
+					(= state 6)
+					(= cycles 1)
+				)
+			)
+			(local2
+				(= local2 0)
+				(= state 1)
+				(= cycles 2)
+				(= dogState 4)
+			)
 			(local3
-			(switch local0
-				(2 (= state 0) (= cycles 1))
-			))
+				(switch dogState
+					(2 (= state 0) (= cycles 1))
+				)
+			)
 		)
 	)
 	
@@ -264,10 +289,10 @@
 					cel: 0
 					setCycle: 0
 					setAvoider: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					stopUpd:
 				)
-				(= local0 2)
+				(= dogState 2)
 			)
 			(1
 				(= local3 0)
@@ -276,19 +301,19 @@
 					setLoop: 0
 					cel: 0
 					posn: 159 155
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(= state -1)
 				(= seconds 3)
 			)
 			(2
-				(Rover loop: 6 posn: 159 155 setCycle: Beg self)
+				(Rover loop: 6 posn: 159 155 setCycle: BegLoop self)
 			)
 			(3
 				(Rover
 					view: 520
 					setLoop: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCycle: Walk
 					setMotion: MoveTo 194 155 self
 				)
@@ -302,15 +327,18 @@
 					loop: 4
 					cel: (- (NumCels Rover) 1)
 					ignoreActors: 0
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(= global162 0)
 			)
-			(6 (HandsOn) (= cycles 2))
+			(6
+				(HandsOn)
+				(= cycles 2)
+			)
 			(7
-				(= local0 3)
+				(= dogState 3)
 				(Bone dispose:)
-				(Rover view: 522 loop: 4 setCycle: Fwd)
+				(Rover view: 522 loop: 4 setCycle: Forward)
 				(= seconds 5)
 			)
 			(8
@@ -323,32 +351,31 @@
 )
 
 (instance PetDog of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo (+ (Rover x?) 26) (+ (Rover y?) 5) self
 				)
 			)
 			(1
-				(ego view: 22 loop: 0 setAvoider: 0 setCycle: End self)
+				(ego view: 22 loop: 0 setAvoider: 0 setCycle: EndLoop self)
 			)
 			(2
-				(ego loop: 5 cel: 0 setCycle: End self)
+				(ego loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(ego loop: 7 setCycle: Fwd)
+				(ego loop: 7 setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
 				(ego
 					loop: 0
 					cel: (- (NumCels ego) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(5
@@ -371,39 +398,41 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/dish')) (event claimed: 1) (Print 239 7))
-			((Said 'get/dish') (Print 239 8))
+			((or (MousedOn self event shiftDown) (Said 'examine/dish'))
+				(event claimed: TRUE)
+				(Print 239 7)
+			)
+			((Said 'get/dish')
+				(Print 239 8)
+			)
 		)
 	)
 )
 
-(instance Rover of Act
-	(properties)
+(instance Rover of Actor
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/beauregard'))
-				(switch local0
+			((or (MousedOn self event shiftDown) (Said 'examine/beauregard'))
+				(switch dogState
 					(0 (Print 239 9))
 					(1 (Print 239 10))
 					(2 (Print 239 11))
 					(3 (Print 239 12))
 					(4 (Print 239 13))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 			((Said '/beauregard>')
 				(cond 
 					((Said 'get,move,drag,get')
-						(switch local0
+						(switch dogState
 							(2 (Print 239 14))
 							(else  (Print 239 15))
 						)
 					)
 					((Said 'pat')
-						(switch local0
+						(switch dogState
 							(0 (Print 239 16))
 							(1 (Print 239 16))
 							(3 (Print 239 16))
@@ -421,7 +450,7 @@
 					((Said 'kill') (Print 239 19))
 					((Said 'kiss') (Print 239 20))
 					((Said 'feed')
-						(switch local0
+						(switch dogState
 							(0 (Print 239 21))
 							(1 (Print 239 1))
 							(2 (Print 239 22))
@@ -434,7 +463,7 @@
 	)
 )
 
-(instance Jeeves of Act
+(instance Jeeves of Actor
 	(properties
 		y 161
 		x 256
@@ -443,23 +472,24 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'converse,ask,tell/butler') (Print 239 24))
-			(
-			(or (MousedOn self event 3) (Said 'examine/butler'))
+			((Said 'converse,ask,tell/butler')
+				(Print 239 24)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/butler'))
 				(if (& global207 $0400)
 					(Print 239 25)
 				else
-					(= global207 (| global207 $0400))
-					(= theTalker 11)
+					(|= global207 $0400)
+					(= theTalker talkJEEVES)
 					(Say 0 239 26)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
 )
 
-(instance Bone of Act
+(instance Bone of Actor
 	(properties
 		y 159
 		x 176

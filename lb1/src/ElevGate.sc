@@ -1,35 +1,35 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 201)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
 (use Actor)
 
 
-(procedure (localproc_0fc6 param1)
-	(Printf 201 16 param1)
+(procedure (UpOrDown pushOrPull)
+	(Printf 201 16 pushOrPull)
 )
 
-(procedure (localproc_0fd4)
+(procedure (EnterFirst)
 	(Print 201 3)
 )
 
-(procedure (localproc_0fdf param1)
-	(Printf 201 17 param1)
+(procedure (WrongFloor upOrDown)
+	(Printf 201 17 upOrDown)
 )
 
-(procedure (localproc_0fed param1)
-	(Printf 201 18 param1)
+(procedure (AlreadyInOrOut inOrOut)
+	(Printf 201 18 inOrOut)
 )
 
 (procedure (localproc_0ffb param1 param2)
 	(cast eachElementDo: #hide)
 	(param1 show:)
 	(param2 show:)
-	(DrawPic 66 dpOPEN_CENTEREDGE)
+	(DrawPic 66 IRISOUT)
 	(Print 201 19 #at 120 32)
-	(DrawPic curRoomNum dpOPEN_EDGECENTER)
+	(DrawPic curRoomNum IRISIN)
 	(addToPics doit:)
 	(cast eachElementDo: #show)
 	(param1 hide:)
@@ -39,33 +39,6 @@
 
 (class ElevGate of Prop
 	(properties
-		y 0
-		x 0
-		z 0
-		heading 0
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
 		chainID 0
 		elevatorID 0
 		downID 0
@@ -117,14 +90,14 @@
 				)
 				(self lastCel:)
 			else
-				(= global109 (& global109 (~ gateStMask)))
+				(&= global109 (~ gateStMask))
 				0
 			)
 		)
 		(elevatorID
 			view: 242
 			setPri: 6
-			ignoreActors: 1
+			ignoreActors: TRUE
 			illegalBits: 0
 		)
 		(ego init:)
@@ -136,7 +109,7 @@
 				cel: 0
 				x: 72
 				y: 177
-				ignoreActors: 1
+				ignoreActors: TRUE
 				init:
 				hide:
 			)
@@ -146,21 +119,21 @@
 				cel: 1
 				x: 139
 				y: 151
-				ignoreActors: 1
+				ignoreActors: TRUE
 				init:
 				hide:
 			)
 			(= elevatorIDLastCel 0)
 			(if (== global111 curRoomNum)
-				(Load rsPIC 66)
-				(LoadMany 132 9 66 79 80 81 89 90 103)
+				(Load PICTURE 66)
+				(LoadMany SOUND 9 66 79 80 81 89 90 103)
 				(elevatorID loop: 0 y: elevY stopUpd:)
 				(cSound stop: prevSignal: 0)
 			else
 				(ego
 					posn: elevX (- elevY 2)
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					hide:
 				)
 				(if (< prevRoomNum curRoomNum)
@@ -168,7 +141,7 @@
 					(chainID
 						view: 242
 						setLoop: 3
-						ignoreActors: 1
+						ignoreActors: TRUE
 						illegalBits: 0
 						posn: elevX (+ chainY 50)
 						setPri: 6
@@ -179,8 +152,8 @@
 				else
 					(= temp1 -52)
 				)
-				(= global111 (& global111 $7fff))
-				(= global109 (| global109 $0040))
+				(&= global111 $7fff)
+				(&= global109 $0040)
 				(HandsOff)
 				(= global110 0)
 				(elevatorID
@@ -193,16 +166,20 @@
 			)
 			(elevatorID cel: elevatorIDLastCel init:)
 		else
-			(Load rsVIEW 5)
+			(Load VIEW 5)
 			(if (& global109 $0020)
 				(HandsOff)
-				(if (== curRoomNum 32) (= temp1 0) else (= temp1 60))
+				(if (== curRoomNum 32)
+					(= temp1 0)
+				else
+					(= temp1 60)
+				)
 				(= global110 15)
 				(ego
 					view: 5
 					setLoop: 4
 					setCel: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					posn: elevX (- elevY 60)
 					setPri: 6
@@ -213,7 +190,7 @@
 			)
 			(cond 
 				((== curRoomNum 32)
-					(self setPri: 9 ignoreActors: 1)
+					(self setPri: 9 ignoreActors: TRUE)
 					(elevatorID
 						loop: 4
 						cel: (* (& global109 gateStMask) 1)
@@ -235,16 +212,16 @@
 				(not (& global109 $0020))
 			)
 			(cond 
-				((& (ego onControl: 1) $0010)
+				((& (ego onControl: origin) cRED)
 					(= global110 15)
-					(= global109 (| global109 $0020))
+					(|= global109 $0020)
 					(HandsOff)
 					(ego
 						view: 5
 						setLoop: 4
 						setCel: 0
 						setPri: 6
-						ignoreActors: 1
+						ignoreActors: TRUE
 						illegalBits: 0
 						setStep: 0 7
 						moveSpeed: 0
@@ -254,7 +231,7 @@
 				)
 				(
 					(and
-						(& (ego onControl: 1) $0008)
+						(& (ego onControl: origin) cCYAN)
 						(== curRoomNum global111)
 					)
 					(self elevatorFunc:)
@@ -263,8 +240,13 @@
 		)
 		(if (== (& global109 $0050) 16)
 			(cond 
-				((> (ego y?) (- gateY 2)) (ego posn: elevX (- elevY 2)) (self elevatorFunc:))
-				((!= (ego x?) elevX) (ego posn: elevX (- elevY 2)))
+				((> (ego y?) (- gateY 2))
+					(ego posn: elevX (- elevY 2))
+					(self elevatorFunc:)
+				)
+				((!= (ego x?) elevX)
+					(ego posn: elevX (- elevY 2))
+				)
 			)
 		)
 		(if
@@ -289,7 +271,7 @@
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				(
 					(and
@@ -300,7 +282,9 @@
 				)
 				((Said 'examine>')
 					(cond 
-						((Said '/archway') (Print 201 1))
+						((Said '/archway')
+							(Print 201 1)
+						)
 						((Said '<in,in,in/elevator,lift')
 							(if (& global109 $0010)
 								(Print 201 2)
@@ -308,26 +292,46 @@
 								(Print 201 3)
 							)
 						)
-						((Said '/elevator,lift') (Print 201 4))
+						((Said '/elevator,lift')
+							(Print 201 4)
+						)
 						((Said '/control')
 							(cond 
-								((!= curRoomNum global111) (CantDo))
-								((& global109 $0010) (localproc_0ffb downID upID))
-								(else (Print 201 3))
+								((!= curRoomNum global111)
+									(CantDo)
+								)
+								((& global109 $0010)
+									(localproc_0ffb downID upID)
+								)
+								(else
+									(Print 201 3)
+								)
 							)
 						)
 						((Said '/keyhole')
 							(cond 
-								((!= curRoomNum global111) (CantDo))
-								((& global109 $0010) (Print 201 5))
-								(else (Print 201 3))
+								((!= curRoomNum global111)
+									(CantDo)
+								)
+								((& global109 $0010)
+									(Print 201 5)
+								)
+								(else
+									(Print 201 3)
+								)
 							)
 						)
 						((Said '/shaft')
 							(cond 
-								((< curRoomNum global111) (localproc_0fdf {up}))
-								((> curRoomNum global111) (localproc_0fdf {down}))
-								((not (& (ego onControl: 1) $0028)) (NotClose))
+								((< curRoomNum global111)
+									(WrongFloor {up})
+								)
+								((> curRoomNum global111)
+									(WrongFloor {down})
+								)
+								((not (& (ego onControl: origin) (| cMAGENTA cCYAN)))
+									(NotClose)
+								)
 							)
 						)
 					)
@@ -341,7 +345,7 @@
 				)
 				((Said 'enter/elevator,lift')
 					(if (& global109 $0010)
-						(localproc_0fed {ARE})
+						(AlreadyInOrOut {ARE})
 					else
 						(self elevatorFunc:)
 					)
@@ -350,24 +354,30 @@
 					(if (& global109 $0010)
 						(self elevatorFunc:)
 					else
-						(localproc_0fed {AREN'T})
+						(AlreadyInOrOut {AREN'T})
 					)
 				)
 				((Said 'close/archway,elevator,lift')
 					(cond 
 						((not (& global109 gateStMask)) (AlreadyClosed))
-						((& (ego onControl: 1) $0008)
+						((& (ego onControl: origin) cCYAN)
 							(if (and (== (ego y?) gateY) (== curRoomNum 32))
 								(Print 201 6)
 								(return)
 							)
 							(self gateFunc: 0 3)
 						)
-						((& (ego onControl: 1) $0020) (self gateFunc: 0 2))
-						(else (NotClose))
+						((& (ego onControl: origin) cMAGENTA)
+							(self gateFunc: 0 2)
+						)
+						(else
+							(NotClose)
+						)
 					)
 				)
-				((Said 'get/control') (Print 201 7))
+				((Said 'get/control')
+					(Print 201 7)
+				)
 				(
 					(or
 						(Said '(press,drag,move)<up/control,handle')
@@ -380,14 +390,14 @@
 								(!= upRoomNo -1)
 								(or (!= upRoomNo 75) (& global109 $0008))
 							)
-							(= global109 (| global109 $0040))
+							(|= global109 $0040)
 							(= global110 9)
 							(self cue:)
 						else
-							(localproc_0fc6 {push})
+							(UpOrDown {push})
 						)
 					else
-						(localproc_0fd4)
+						(EnterFirst)
 					)
 				)
 				(
@@ -398,23 +408,25 @@
 					)
 					(if (& global109 $0010)
 						(if (!= downRoomNo -1)
-							(= global109 (| global109 $0040))
+							(|= global109 $0040)
 							(= global110 12)
 							(self cue:)
 						else
-							(localproc_0fc6 {pull})
+							(UpOrDown {pull})
 						)
 					else
-						(localproc_0fd4)
+						(EnterFirst)
 					)
 				)
-				((Said '(use,press,drag,move)/control,handle') (Print 201 8))
+				((Said '(use,press,drag,move)/control,handle')
+					(Print 201 8)
+				)
 				((Said 'latch/elevator,lift,control')
 					(if (& global109 $0010)
-						(if (ego has: 18)
+						(if (ego has: iBrassKey)
 							(if (& global109 $0008)
 								(Print 201 9)
-								(= global109 (& global109 $fff7))
+								(&= global109 $fff7)
 							else
 								(Print 201 10)
 							)
@@ -422,7 +434,7 @@
 							(Print 201 11)
 						)
 					else
-						(localproc_0fd4)
+						(EnterFirst)
 					)
 				)
 				(
@@ -431,21 +443,23 @@
 						(Said 'attach/key/keyhole,eyehole,control')
 					)
 					(if (& global109 $0010)
-						(if (ego has: 18)
+						(if (ego has: iBrassKey)
 							(if (& global109 $0008)
 								(Print 201 12)
 							else
 								(Print 201 9)
-								(= global109 (| global109 $0008))
+								(|= global109 $0008)
 							)
 						else
 							(Print 201 11)
 						)
 					else
-						(localproc_0fd4)
+						(EnterFirst)
 					)
 				)
-				((Said 'attach/key') (Print 201 13))
+				((Said 'attach/key')
+					(Print 201 13)
+				)
 			)
 		)
 	)
@@ -454,14 +468,16 @@
 		(switch (++ global110)
 			(0
 				(self stopUpd:)
-				(= global109 (& global109 $ffbf))
-				(if (!= curRoomNum global111) (= global110 -1))
+				(&= global109 $ffbf)
+				(if (!= curRoomNum global111)
+					(= global110 -1)
+				)
 				(HandsOn)
 			)
 			(1
 				(cSound number: 80 loop: 1 play:)
 				(chainID stopUpd:)
-				(elevatorID cycleSpeed: 2 setCycle: Beg self)
+				(elevatorID cycleSpeed: 2 setCycle: BegLoop self)
 				(if (and (== curRoomNum 42) (& global109 $0008))
 					(HandsOn)
 					(= global110 -1)
@@ -492,25 +508,27 @@
 			)
 			(4 (self gateFunc: 0 3))
 			(5
-				(if (& (ego onControl: 1) $0008)
+				(if (& (ego onControl: origin) cCYAN)
 					(ego
 						loop: 2
-						illegalBits: -32768
+						illegalBits: cWHITE
 						ignoreActors: 0
 						setMotion: MoveTo (ego x?) (+ (ego y?) (ego yStep?)) self
 					)
 					(-- global110)
 				else
-					(if (and (FirstEntry) msgID) (Print msgID))
+					(if (and (FirstEntry) msgID)
+						(Print msgID)
+					)
 					(HandsOn)
-					(= global109 (& global109 $ffef))
+					(&= global109 $ffef)
 					(= global110 -1)
 					(self cue:)
 				)
 			)
 			(6
 				(HandsOff)
-				(= global109 (| global109 $0010))
+				(|= global109 $0010)
 				(self gateFunc: 1 -1)
 				(ego
 					setMotion: MoveTo elevX (+ gateY (ego yStep?))
@@ -519,7 +537,7 @@
 			)
 			(7
 				(ego
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo elevX (- elevY 2) self
 				)
 			)
@@ -533,7 +551,7 @@
 				(ego
 					posn: elevX (- elevY 2)
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 				)
 				(= global110 -1)
 				(self cue:)
@@ -542,7 +560,7 @@
 				(cSound number: 66 prevSignal: 0 loop: 1 play:)
 				(= global111 (| upRoomNo $8000))
 				(HandsOff)
-				(elevatorID cycleSpeed: 2 setCycle: End self)
+				(elevatorID cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(11
 				(elevatorID
@@ -557,13 +575,13 @@
 				(cSound number: 66 prevSignal: 0 loop: 1 play:)
 				(= global111 (| downRoomNo $8000))
 				(HandsOff)
-				(elevatorID cycleSpeed: 2 setCycle: End self)
+				(elevatorID cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(14
 				(chainID
 					view: 242
 					setLoop: 3
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					posn: elevX chainY
 					setPri: 6
@@ -590,14 +608,20 @@
 						)
 						(self cue:)
 					)
-					((== curRoomNum 32) (ego view: 5 setCel: -1 posn: 297 125 setCycle: End self))
-					((== curRoomNum 75) (curRoom newRoom: 42))
-					(else (curRoom newRoom: 32))
+					((== curRoomNum 32)
+						(ego view: 5 setCel: -1 posn: 297 125 setCycle: EndLoop self)
+					)
+					((== curRoomNum 75)
+						(curRoom newRoom: 42)
+					)
+					(else
+						(curRoom newRoom: 32)
+					)
 				)
 			)
 			(17
 				(cSound number: 90 loop: 1 play:)
-				(ShakeScreen 10 5)
+				(ShakeScreen 10 (| shakeSRight shakeSDiagonal))
 				(= cIcon 5)
 				(= deathLoop 4)
 				(= deathCel (ego lastCel:))
@@ -612,7 +636,7 @@
 					setLoop: 4
 					setCel: 0
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					posn: 297 125
 					setPri: 6
 					moveSpeed: 1
@@ -633,11 +657,11 @@
 					loop: 6
 					cel: 0
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					posn: 295 126
 					priority: 8
 					cycleSpeed: 7
-					setCycle: End
+					setCycle: EndLoop
 					init:
 				)
 			)
@@ -657,44 +681,50 @@
 		(self startUpd:)
 		(if (== param1 1)
 			(cSound number: 81)
-			(self setCycle: End self)
-			(= global109 (| global109 gateStMask))
+			(self setCycle: EndLoop self)
+			(|= global109 gateStMask)
 		else
 			(cSound number: 79)
-			(self setCycle: Beg self)
-			(= global109 (& global109 (~ gateStMask)))
+			(self setCycle: BegLoop self)
+			(|= global109 (~ gateStMask))
 		)
 		(cSound loop: 1 play:)
-		(if
-		(and (== curRoomNum 32) (!= curRoomNum global111))
+		(if (and (== curRoomNum 32) (!= curRoomNum global111))
 			(elevatorID cel: param1 forceUpd:)
-			(if
-			(and (& (ego onControl: 1) $0020) (== param1 0))
+			(if (and (& (ego onControl: origin) cMAGENTA) (== param1 0))
 				(= global110 17)
 			)
 		)
-		(if (!= param2 -1) (ego loop: param2))
+		(if (!= param2 -1)
+			(ego loop: param2)
+		)
 	)
 	
 	(method (elevatorFunc)
 		(cond 
-			((& global109 gateStMask) (AlreadyOpen))
-			((& (ego onControl: 1) $0008)
+			((& global109 gateStMask)
+				(AlreadyOpen)
+			)
+			((& (ego onControl: origin) cCYAN)
 				(if (!= curRoomNum global111)
 					(self gateFunc: 1 3)
 				else
-					(= global109 (| global109 $0040))
+					(|= global109 $0040)
 					(= global110 5)
 					(self cue:)
 				)
 			)
-			((& (ego onControl: 1) $0020) (self gateFunc: 1 2))
+			((& (ego onControl: origin) cMAGENTA)
+				(self gateFunc: 1 2)
+			)
 			((& global109 $0010)
-				(= global109 (| global109 $0040))
+				(|= global109 $0040)
 				(= global110 1)
 				(self cue:)
 			)
-			(else (NotClose))
+			(else
+				(NotClose)
+			)
 		)
 	)
 )

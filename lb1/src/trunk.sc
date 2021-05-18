@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 274)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -16,24 +16,23 @@
 )
 
 (local
-	local0
+	talkCount
 	local1
-	local2
+	askCount
 )
-(instance trunk of Rgn
-	(properties)
+(instance trunk of Region
 	
 	(method (init)
 		(super init:)
 		(if (not (& global118 $0002))
-			(LoadMany 135 4 41)
+			(LoadMany FONT 4 41)
 			(LoadMany 143 406)
-			(Load rsVIEW 642)
-			(LoadMany 132 29 94 95 96)
+			(Load VIEW 642)
+			(LoadMany SOUND 29 94 95 96)
 		)
-		(LHead setPri: 11 ignoreActors: 1)
-		(suit2 setPri: 11 ignoreActors: 1 init: stopUpd:)
-		(Lillian setPri: 11 ignoreActors: 1 init:)
+		(LHead setPri: 11 ignoreActors: TRUE)
+		(suit2 setPri: 11 ignoreActors: TRUE init: stopUpd:)
+		(Lillian setPri: 11 ignoreActors: TRUE init:)
 		(= global195 32)
 		(self setScript: suitCase)
 	)
@@ -48,12 +47,11 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(return (if (event claimed?) (return 1) else 0))
+		(return (if (event claimed?) (return TRUE) else FALSE))
 	)
 )
 
 (instance suitCase of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -61,11 +59,13 @@
 				(cond 
 					((not global216) (= state -1))
 					((not (& global118 $0002))
-						(= global118 (| global118 $0002))
+						(|= global118 $0002)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
@@ -74,16 +74,18 @@
 					(= cycles 1)
 					(= state 3)
 				else
-					(Lillian cycleSpeed: 1 setCycle: Fwd)
+					(Lillian cycleSpeed: 1 setCycle: Forward)
 					(++ gCurRoomNum_2)
 					(= seconds 2)
 				)
 			)
 			(2
-				(Lillian loop: 0 cel: 0 setCycle: End self)
+				(Lillian loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(if (not gCurRoomNum_2) (Print 274 0))
+				(if (not gCurRoomNum_2)
+					(Print 274 0)
+				)
 				(= cycles 1)
 			)
 			(4
@@ -91,11 +93,11 @@
 				(= cycles 1)
 			)
 			(5
-				(Lillian loop: 4 cycleSpeed: 1 setCycle: End)
+				(Lillian loop: 4 cycleSpeed: 1 setCycle: EndLoop)
 				(= seconds (Random 6 15))
 			)
 			(6
-				(Lillian setCycle: Beg)
+				(Lillian setCycle: BegLoop)
 				(= seconds (Random 6 15))
 				(= state 4)
 			)
@@ -104,16 +106,15 @@
 )
 
 (instance headActions of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LHead setCycle: End)
+				(LHead setCycle: EndLoop)
 				(= seconds (Random 6 15))
 			)
 			(1
-				(LHead setCycle: Beg)
+				(LHead setCycle: BegLoop)
 				(= seconds (Random 6 15))
 				(= state -1)
 			)
@@ -130,33 +131,40 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 6)
+		(= theTalker talkLILLIAN)
 		(cond 
 			(
 				(and
 					(not (& global207 $0020))
-					(or (MousedOn self event 3) (Said 'examine/lil'))
+					(or (MousedOn self event shiftDown) (Said 'examine/lil'))
 				)
-				(= global207 (| global207 $0020))
-				(= theTalker 6)
-				(event claimed: 1)
+				(|= global207 $0020)
+				(= theTalker talkLILLIAN)
+				(event claimed: TRUE)
 				(Say 0 274 1)
 			)
 			(
 				(and
 					(& global207 $0020)
-					(or (MousedOn self event 3) (Said 'examine/lil'))
+					(or (MousedOn self event shiftDown) (Said 'examine/lil'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 274 2)
 			)
 			((Said 'ask//*<about')
-				(switch local2
-					(0 (Say 1 274 3) (++ local2))
-					(1 (Print 274 4))
+				(switch askCount
+					(0
+						(Say 1 274 3)
+						(++ askCount)
+					)
+					(1
+						(Print 274 4)
+					)
 				)
 			)
-			((Said 'tell//*<about') (Print 274 5))
+			((Said 'tell//*<about')
+				(Print 274 5)
+			)
 			((Said 'deliver/*')
 				(if (and theInvItem haveInvItem)
 					(Print 274 6)
@@ -174,7 +182,7 @@
 			((Said '/lil>')
 				(cond 
 					((Said 'converse')
-						(switch local0
+						(switch talkCount
 							(0 (Say 1 274 8))
 							(1 (Say 1 274 9))
 							(2 (Say 1 274 10))
@@ -182,7 +190,7 @@
 							(4 (Say 1 274 12))
 							(else  (Print 274 13))
 						)
-						(++ local0)
+						(++ talkCount)
 					)
 					((Said 'hear') (Print 274 14))
 					((Said 'get') (Print 274 15))

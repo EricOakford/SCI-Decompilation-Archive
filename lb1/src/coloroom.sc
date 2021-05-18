@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 240)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -18,67 +18,65 @@
 
 (local
 	local0
-	local1
+	talkCount
 )
 (instance Colonel of Prop
-	(properties)
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(and (MousedOn self event 3) (not (& global207 $0200))) (event claimed: 1) (ParseName {colonel}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0200)))
+				(event claimed: TRUE)
+				(ParseName {colonel})
+			)
 			(
 				(and
 					(& global207 $0200)
-					(or (MousedOn self event 3) (Said 'examine/colonel'))
+					(or (MousedOn self event shiftDown) (Said 'examine/colonel'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 240 0)
 			)
 		)
 	)
 )
 
-(instance smoke1 of Prop
-	(properties)
-)
+(instance smoke1 of Prop)
 
-(instance smoke2 of Prop
-	(properties)
-)
+(instance smoke2 of Prop)
 
-(instance coloroom of Rgn
-	(properties)
+(instance coloroom of Region
 	
-	(method (init &tmp temp0 temp1 temp2)
+	(method (init &tmp temp0 theX theY)
 		(super init:)
-		(= temp1 175)
-		(= temp2 140)
+		(= theX 175)
+		(= theY 140)
 		(switch currentAct
 			(1
 				(= temp0 253)
-				(= temp1 133)
-				(= temp2 98)
+				(= theX 133)
+				(= theY 98)
 			)
 			(2 (= temp0 285))
 			(3
 				(= temp0 292)
-				(= temp1 229)
-				(= temp2 95)
+				(= theX 229)
+				(= theY 95)
 			)
 			(5 (= temp0 374))
 			(6 (= temp0 375))
-			(else  (= temp0 376))
+			(else
+				(= temp0 376)
+			)
 		)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(LoadMany 143 243 temp0)
-		(Load rsVIEW 909)
+		(Load VIEW 909)
 		(= global208 512)
 		(= [global377 9] temp0)
 		(Colonel
 			view: 304
-			x: temp1
-			y: temp2
+			x: theX
+			y: theY
 			init:
 			stopUpd:
 			setScript: colonelActions
@@ -118,26 +116,33 @@
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'get,move,press/wheelchair') (Print 240 1))
-					((Said 'examine/butt') (Bset 13) (Print 240 2))
-					((Said 'hear/colonel') (Print 240 3))
+					((Said 'get,move,press/wheelchair')
+						(Print 240 1)
+					)
+					((Said 'examine/butt')
+						(Bset fExaminedCigar)
+						(Print 240 2)
+					)
+					((Said 'hear/colonel')
+						(Print 240 3)
+					)
 					((Said 'get/butt') (Print 240 4))
 					((and (Said 'converse>') (Said '/colonel'))
-						(= theTalker 10)
+						(= theTalker talkCOLONEL)
 						(switch currentAct
 							(7
-								(switch local1
+								(switch talkCount
 									(0 (Say 1 240 5))
 									(1 (Say 1 240 6))
 									(else  (Print 240 7))
 								)
 							)
 							(else 
-								(switch local1
+								(switch talkCount
 									(0 (Say 1 240 8))
 									(1 (Say 1 240 9))
 									(2 (Say 1 240 10))
@@ -145,27 +150,26 @@
 								)
 							)
 						)
-						(++ local1)
+						(++ talkCount)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance colonelActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(smoke2 cel: 0 hide:)
-				(Colonel loop: 0 cel: 0 setCycle: End self)
+				(Colonel loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(Glow show: loop: 1 cel: 0 setCycle: Fwd)
+				(Glow show: loop: 1 cel: 0 setCycle: Forward)
 				(= cycles 18)
 			)
 			(2
@@ -173,12 +177,12 @@
 				(Colonel
 					loop: 0
 					cel: (- (NumCels Colonel) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3
-				(smoke2 setCycle: Fwd show:)
-				(smoke1 show: setCycle: End self)
+				(smoke2 setCycle: Forward show:)
+				(smoke1 show: setCycle: EndLoop self)
 			)
 			(4
 				(smoke1 cel: 0 hide:)

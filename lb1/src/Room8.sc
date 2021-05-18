@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 8)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DCIcon)
@@ -22,10 +22,10 @@
 (local
 	local0
 	local1
-	local2
+	dying
 	local3
 )
-(instance Room8 of Rm
+(instance Room8 of Room
 	(properties
 		picture 8
 	)
@@ -37,19 +37,19 @@
 		(super init:)
 		(addToPics add: limb gator1 eachElementDo: #init doit:)
 		(self setRegions: 205 setFeatures: gator1)
-		(LoadMany 128 3 35 650)
-		(Load rsSOUND 10 82)
+		(LoadMany VIEW 3 35 650)
+		(Load SOUND 10 82)
 		(if howFast
 			(ripple1
-				ignoreActors: 1
+				ignoreActors: TRUE
 				cycleSpeed: 1
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			(ripple2
-				ignoreActors: 1
+				ignoreActors: TRUE
 				cycleSpeed: 1
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			(flyCage left: 160 right: 321 bottom: 191 top: 100 init:)
@@ -58,10 +58,10 @@
 				cel: 0
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				setMotion: Wander 5
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			(Fly2
@@ -69,10 +69,10 @@
 				cel: 1
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				setMotion: Wander 5
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			(Fly3
@@ -80,10 +80,10 @@
 				cel: 2
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				setMotion: Wander 5
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			(Fly4
@@ -91,10 +91,10 @@
 				cel: 3
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				setMotion: Wander 5
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			(Fly5
@@ -102,10 +102,10 @@
 				cel: 4
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
+				ignoreHorizon: TRUE
 				setMotion: Wander 5
 				cycleSpeed: 2
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 		)
@@ -130,23 +130,33 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 8 0))
+		(if (FirstEntry)
+			(Print 8 0)
+		)
 		(cond 
-			((< (ego y?) 141) (= local3 1))
-			((> (ego y?) 176) (= local3 2))
-			((and (< (ego y?) 167) (> (ego y?) 151)) (= local3 3))
-			(else (= local3 0))
+			((< (ego y?) 141)
+				(= local3 1)
+			)
+			((> (ego y?) 176)
+				(= local3 2)
+			)
+			((and (< (ego y?) 167) (> (ego y?) 151))
+				(= local3 3)
+			)
+			(else
+				(= local3 0)
+			)
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $0002)
-				(not local2)
+				(& (ego onControl: origin) cBLUE)
+				(not dying)
 				(not local0)
 			)
-			(= local2 1)
+			(= dying TRUE)
 			(self setScript: sink)
 		)
-		(if (== (ego edgeHit?) 4)
+		(if (== (ego edgeHit?) WEST)
 			(if (< (ego y?) 165)
 				(curRoom newRoom: 18)
 			else
@@ -157,22 +167,22 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 976)
+		(DisposeScript WANDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
 			(if
 				(and
-					(== (event type?) evSAID)
+					(== (event type?) saidEvent)
 					(Said 'examine>')
 					(Said '[<around,at][/room]')
 				)
 				(Print 8 0)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -183,7 +193,6 @@
 )
 
 (instance gatorScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -192,15 +201,21 @@
 		)
 		(if (> state 1)
 			(cond 
-				(local3 (if local1 (= cycles 1)))
-				((not local1) (= cycles 1))
+				(local3
+					(if local1
+						(= cycles 1)
+					)
+				)
+				((not local1)
+					(= cycles 1)
+				)
 			)
 			(if
 				(and
 					(< (ego distanceTo: Gator) 21)
 					(== local1 0)
 					(not local0)
-					(& (ego onControl: 1) $0002)
+					(& (ego onControl: origin) cBLUE)
 				)
 				(= local0 1)
 				(self changeState: 6)
@@ -210,9 +225,11 @@
 	
 	(method (changeState newState &tmp deathIconLastCel)
 		(switch (= state newState)
-			(0 (= seconds 5))
+			(0
+				(= seconds 5)
+			)
 			(1
-				(Gator cycleSpeed: 2 setCycle: End self)
+				(Gator cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(2 (= local1 1))
 			(3
@@ -232,28 +249,30 @@
 						)
 					loop: 5
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
-				(Gator loop: 6 setCycle: Fwd)
+				(Gator loop: 6 setCycle: Forward)
 			)
 			(5
 				(= local1 (= state 1))
-				(Gator loop: 5 cel: 3 setCycle: Beg self)
+				(Gator loop: 5 cel: 3 setCycle: BegLoop self)
 			)
 			(6
 				(HandsOff)
 				(cSound stop:)
 				(myMusic number: 10 loop: 1 play:)
-				(if (== local3 1) (Gator setPri: 9))
+				(if (== local3 1)
+					(Gator setPri: 9)
+				)
 				(Gator
 					view: 3
 					loop: 0
 					cel: 3
 					illegalBits: 0
 					posn: (- (ego x?) 3) (+ (ego y?) 4)
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 				(ego hide:)
@@ -304,7 +323,7 @@
 							(3 (- (ego y?) 3))
 							(else  (ego y?))
 						)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (ego hide:) (= seconds 3))
@@ -325,7 +344,7 @@
 	)
 )
 
-(instance Gator of Act
+(instance Gator of Actor
 	(properties
 		y 148
 		x 275
@@ -335,15 +354,27 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/alligator')) (event claimed: 1) (Print 8 3))
+			((or (MousedOn self event shiftDown) (Said 'examine/alligator'))
+				(event claimed: TRUE)
+				(Print 8 3)
+			)
 			((Said '/alligator>')
 				(cond 
-					((Said 'get,capture/alligator') (Print 8 4))
-					((Said 'pat/alligator') (Print 8 5))
-					((Said 'converse/alligator') (Print 8 6))
-					((Said 'kiss/alligator') (Print 8 7))
-					((Said 'kill/alligator') (Print 8 8))
+					((Said 'get,capture/alligator')
+						(Print 8 4)
+					)
+					((Said 'pat/alligator')
+						(Print 8 5)
+					)
+					((Said 'converse/alligator')
+						(Print 8 6)
+					)
+					((Said 'kiss/alligator')
+						(Print 8 7)
+					)
+					((Said 'kill/alligator')
+						(Print 8 8)
+					)
 				)
 			)
 			(
@@ -353,7 +384,11 @@
 					(Said 'feed,deliver/*<alligator')
 				)
 				(if theInvItem
-					(if haveInvItem (Print 8 9) else (DontHave))
+					(if haveInvItem
+						(Print 8 9)
+					else
+						(DontHave)
+					)
 				else
 					(Print 8 9)
 				)
@@ -405,22 +440,21 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 8 3)
 		)
 	)
 )
 
 (instance deathIcon of DCIcon
-	(properties)
 	
 	(method (init)
-		((= cycler (End new:)) init: self)
+		((= cycler (EndLoop new:)) init: self)
 	)
 )
 
-(instance Fly of Act
+(instance Fly of Actor
 	(properties
 		y 123
 		x 274
@@ -428,7 +462,7 @@
 	)
 )
 
-(instance Fly2 of Act
+(instance Fly2 of Actor
 	(properties
 		y 179
 		x 297
@@ -436,7 +470,7 @@
 	)
 )
 
-(instance Fly3 of Act
+(instance Fly3 of Actor
 	(properties
 		y 139
 		x 287
@@ -444,7 +478,7 @@
 	)
 )
 
-(instance Fly4 of Act
+(instance Fly4 of Actor
 	(properties
 		y 179
 		x 257
@@ -452,7 +486,7 @@
 	)
 )
 
-(instance Fly5 of Act
+(instance Fly5 of Actor
 	(properties
 		y 139
 		x 197
@@ -460,6 +494,4 @@
 	)
 )
 
-(instance flyCage of Cage
-	(properties)
-)
+(instance flyCage of Cage)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 238)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -17,50 +17,37 @@
 )
 
 (local
-	local0
-	local1
+	talkCount
+	chatCount
 )
-(procedure (localproc_000c)
-	(Ethel loop: 1 setCycle: Fwd)
-	(Print
-		&rest
-		#at
-		80
-		145
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+(procedure (EthelPrint)
+	(Ethel loop: 1 setCycle: Forward)
+	(Print &rest
+		#at 80 145
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(procedure (localproc_003a)
-	(Print
-		&rest
-		#at
-		171
-		145
-		#font
-		4
-		#width
-		125
-		#mode
-		1
+(procedure (ParrotPrint)
+	(Print &rest
+		#at 171 145
+		#font 4
+		#width 125
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
 )
 
-(instance etheparr of Rgn
-	(properties)
+(instance etheparr of Region
 	
 	(method (init)
 		(super init:)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(= global195 8)
 		(Ethel init: setScript: ethelParrot)
 	)
@@ -74,12 +61,15 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
-		(if
-		(and (== (event type?) evSAID) (Said '/drink,glass>'))
+		(if (event claimed?) (return TRUE))
+		(if (and (== (event type?) saidEvent) (Said '/drink,glass>'))
 			(cond 
-				((Said 'examine') (Print 238 0))
-				((Said 'get') (Print 238 1))
+				((Said 'examine')
+					(Print 238 0)
+				)
+				((Said 'get')
+					(Print 238 1)
+				)
 			)
 		)
 		(return (super handleEvent: event))
@@ -87,71 +77,78 @@
 )
 
 (instance ethelParrot of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Ethel loop: 0 setCycle: End self)
+				(Ethel loop: 0 setCycle: EndLoop self)
 			)
 			(1
-				(User canInput: 0)
-				(if local1
-					(switch local1
-						(1 (localproc_000c 238 2))
-						(2 (localproc_000c 238 3))
-						(3 (localproc_003a 238 4))
-						(4 (localproc_000c 238 5))
-						(else  (localproc_000c 238 6))
+				(User canInput: FALSE)
+				(if chatCount
+					(switch chatCount
+						(1 (EthelPrint 238 2))
+						(2 (EthelPrint 238 3))
+						(3 (ParrotPrint 238 4))
+						(4 (EthelPrint 238 5))
+						(else  (EthelPrint 238 6))
 					)
 				else
-					(localproc_000c 238 7)
+					(EthelPrint 238 7)
 				)
 				(= seconds 5)
 			)
 			(2
 				(Ethel setCycle: 0)
-				(if local1
-					(switch local1
-						(1 (localproc_003a 238 8))
-						(2 (localproc_003a 238 9))
-						(3 (localproc_000c 238 10))
-						(4 (localproc_003a 238 11))
-						(else  (localproc_003a 238 12))
+				(if chatCount
+					(switch chatCount
+						(1 (ParrotPrint 238 8))
+						(2 (ParrotPrint 238 9))
+						(3 (EthelPrint 238 10))
+						(4 (ParrotPrint 238 11))
+						(else  (ParrotPrint 238 12))
 					)
 				else
-					(localproc_003a 238 13)
+					(ParrotPrint 238 13)
 				)
-				(++ local1)
+				(++ chatCount)
 				(= seconds 3)
 			)
 			(3
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(cls)
-				(Ethel loop: 0 cel: 3 setCycle: Beg)
-				(if (< (Random 1 100) 20) (= state 6))
+				(Ethel loop: 0 cel: 3 setCycle: BegLoop)
+				(if (< (Random 1 100) 20)
+					(= state 6)
+				)
 				(= seconds 10)
 			)
 			(4
-				(Ethel loop: 2 cel: 0 cycleSpeed: 2 setCycle: End)
+				(Ethel loop: 2 cel: 0 cycleSpeed: 2 setCycle: EndLoop)
 				(= seconds 3)
 			)
-			(5 (Ethel setCycle: Beg self))
+			(5
+				(Ethel setCycle: BegLoop self)
+			)
 			(6
-				(if (< (Random 1 100) 20) (= state -1))
+				(if (< (Random 1 100) 20)
+					(= state -1)
+				)
 				(= seconds 10)
 			)
 			(7
-				(Ethel loop: 3 setCycle: End)
-				(if (< (Random 1 100) 20) (= state -1))
+				(Ethel loop: 3 setCycle: EndLoop)
+				(if (< (Random 1 100) 20)
+					(= state -1)
+				)
 				(= seconds (Random 6 12))
 			)
 			(8
-				(Ethel loop: 4 cel: 0 setCycle: End)
+				(Ethel loop: 4 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 3 6))
 			)
 			(9
-				(Ethel loop: 5 cel: 0 setCycle: End)
+				(Ethel loop: 5 cel: 0 setCycle: EndLoop)
 				(if (< (Random 1 100) 20)
 					(= state -1)
 				else
@@ -163,7 +160,7 @@
 	)
 )
 
-(instance Ethel of Act
+(instance Ethel of Actor
 	(properties
 		y 102
 		x 168
@@ -172,7 +169,7 @@
 	)
 	
 	(method (handleEvent event)
-		(= theTalker 4)
+		(= theTalker talkETHEL)
 		(cond 
 			(
 				(or
@@ -181,15 +178,14 @@
 					(Said 'hold,deliver/*<parrot>')
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/ethel'))
+			((or (MousedOn self event shiftDown) (Said 'examine/ethel'))
 				(if (not (& global207 $0008))
-					(= global207 (| global207 $0008))
+					(|= global207 $0008)
 					(Say 0 238 14)
 				else
 					(Print 238 15)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 			((Said 'ask,tell//*<about')
 				(switch (Random 1 8)
@@ -203,8 +199,7 @@
 					(else  (Print 238 23))
 				)
 			)
-			(
-			(or (Said 'deliver/*<ethel') (Said 'deliver/*[/ethel]'))
+			((or (Said 'deliver/*<ethel') (Said 'deliver/*[/ethel]'))
 				(if (and theInvItem haveInvItem)
 					(Print 238 24)
 				else
@@ -222,17 +217,19 @@
 			((Said '/ethel>')
 				(cond 
 					((Said 'converse')
-						(switch local0
-							(0 (Print 238 26))
+						(switch talkCount
+							(0
+								(Print 238 26)
+							)
 							(1
 								(Say 1 238 27)
 								(Say 1 238 28)
 							)
 							(2
 								(Say 1 238 29)
-								(= theTalker 12)
+								(= theTalker talkLAURA)
 								(Say 1 238 30)
-								(= theTalker 4)
+								(= theTalker talkETHEL)
 								(Say 1 238 31)
 							)
 							(3
@@ -242,18 +239,30 @@
 							)
 							(4
 								(Say 1 238 35)
-								(= theTalker 12)
+								(= theTalker talkLAURA)
 								(Say 1 238 36)
 							)
-							(else  (Print 238 37))
+							(else
+								(Print 238 37)
+							)
 						)
-						(++ local0)
+						(++ talkCount)
 					)
-					((Said 'hear') (Print 238 38))
-					((Said 'get') (Print 238 39))
-					((Said 'kill') (Print 238 40))
-					((Said 'kiss') (Print 238 41))
-					((Said 'embrace') (Print 238 42))
+					((Said 'hear')
+						(Print 238 38)
+					)
+					((Said 'get')
+						(Print 238 39)
+					)
+					((Said 'kill')
+						(Print 238 40)
+					)
+					((Said 'kiss')
+						(Print 238 41)
+					)
+					((Said 'embrace')
+						(Print 238 42)
+					)
 				)
 			)
 		)

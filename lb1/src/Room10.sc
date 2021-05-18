@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 10)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -18,10 +18,10 @@
 (local
 	local0
 	local1
-	local2
+	firstTime
 	local3
 )
-(instance Room10 of Rm
+(instance Room10 of Room
 	(properties
 		picture 10
 	)
@@ -31,23 +31,23 @@
 		(= east 15)
 		(= north 3)
 		(super init:)
-		(= local2 (FirstEntry))
+		(= firstTime (FirstEntry))
 		(self
 			setRegions: 206
 			setFeatures: Window1 Window2 Window3
 		)
-		(LoadMany 132 43 44)
+		(LoadMany SOUND 43 44)
 		(Door
 			cel: (if (== prevRoomNum 31) 3 else 0)
 			setPri: 6
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			stopUpd:
 		)
 		(= gDoor Door)
 		(if howFast
-			(Splash1 ignoreActors: 1 init: hide:)
-			(Splash2 ignoreActors: 1 init: hide:)
+			(Splash1 ignoreActors: TRUE init: hide:)
+			(Splash2 ignoreActors: TRUE init: hide:)
 		)
 		(switch prevRoomNum
 			(4 (ego posn: 56 50))
@@ -59,9 +59,13 @@
 			(15 (ego posn: 317 181))
 			(21 (ego posn: 160 185))
 		)
-		(ego view: 0 illegalBits: -32766 init:)
-		(if (== currentAct 1) (self setRegions: 381))
-		(if (== currentAct 5) (self setRegions: 277))
+		(ego view: 0 illegalBits: (| cWHITE cBLUE) init:)
+		(if (== currentAct 1)
+			(self setRegions: 381)
+		)
+		(if (== currentAct 5)
+			(self setRegions: 277)
+		)
 		(if
 			(and
 				(>= currentAct 2)
@@ -80,7 +84,7 @@
 		(if (and (== currentAct 1) (== global154 0))
 			(= [global368 0] 1800)
 			(= local3 1)
-			(LoadMany 128 400 420 404)
+			(LoadMany VIEW 400 420 404)
 			(Clarence init:)
 			(CHead setPri: 10 init:)
 			(Wilbur init:)
@@ -90,28 +94,32 @@
 	)
 	
 	(method (doit)
-		(if local2
-			(= local2 0)
+		(if firstTime
+			(= firstTime FALSE)
 			(Print 10 0)
-			(if (== prevRoomNum 31) (ego setScript: comeDown))
+			(if (== prevRoomNum 31)
+				(ego setScript: comeDown)
+			)
 		)
-		(if (& (ego onControl: 0) $0004)
+		(if (& (ego onControl: FALSE) cGREEN)
 			(if (and (== currentAct 1) (== global154 14))
 				(= global154 2)
 			)
 			(curRoom newRoom: 4)
 		)
-		(if (& (ego onControl: 1) $0002) (curRoom newRoom: 31))
+		(if (& (ego onControl: origin) cBLUE)
+			(curRoom newRoom: 31)
+		)
 		(if
 			(and
-				(& (ego onControl: 1) $0020)
+				(& (ego onControl: origin) cMAGENTA)
 				(or (== (ego loop?) 0) (== (ego loop?) 3))
 				(== local0 0)
 			)
 			(= local0 1)
 			(self setScript: myDoor)
 		)
-		(if (== (ego edgeHit?) 4)
+		(if (== (ego edgeHit?) WEST)
 			(if (and (== currentAct 1) (== global154 14))
 				(= global154 2)
 			)
@@ -123,7 +131,7 @@
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $4000)
+				(& (ego onControl: origin) cYELLOW)
 				(!= (ego mover?) 0)
 				howFast
 			)
@@ -134,7 +142,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 5)
@@ -142,7 +150,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
@@ -152,7 +160,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 5)
@@ -160,7 +168,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
@@ -170,7 +178,7 @@
 							posn: (- (ego x?) 2) (+ (ego y?) 1)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 4)
@@ -178,7 +186,7 @@
 							posn: (- (ego x?) 2) (+ (ego y?) 1)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
@@ -188,44 +196,59 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event &tmp temp0)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room<!*]') (Print 10 0))
-							((Said '/fence') (Print 10 1))
-							((Said '/path') (Print 10 2))
-							((Said '/stair') (Print 10 3))
-							((Said '/up') (Print 10 4))
+							((Said '[<around,at][/room<!*]')
+								(Print 10 0)
+							)
+							((Said '/fence')
+								(Print 10 1)
+							)
+							((Said '/path')
+								(Print 10 2)
+							)
+							((Said '/stair')
+								(Print 10 3)
+							)
+							((Said '/up')
+								(Print 10 4)
+							)
 						)
 					)
-					((Said 'climb/fence') (Print 10 5))
+					((Said 'climb/fence')
+						(Print 10 5)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (newRoom n)
 		(cond 
-			((== n 31) (cSound stop:) (ego setLoop: -1))
-			((and (== currentAct 1) (< global154 3)) (= global154 3))
+			((== n 31) (cSound stop:)
+				(ego setLoop: -1)
+			)
+			((and (== currentAct 1) (< global154 3))
+				(= global154 3)
+			)
 		)
 		(super newRoom: n)
 	)
 )
 
 (instance Argue of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -240,45 +263,51 @@
 				(= cycles 1)
 			)
 			(1
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(cond 
-					((not (& (ego onControl: 1) $0001)) (= state 0))
-					((not global216) (= state 0))
+					((not (& (ego onControl: origin) cBLACK))
+						(= state 0)
+					)
+					((not global216)
+						(= state 0)
+					)
 					((not (& global118 $0001))
-						(= global118 (| global118 $0001))
+						(|= global118 $0001)
 						(self setScript: (ScriptID 406 0))
 						(= state 0)
 					)
-					((self script?) (= state 0))
+					((self script?)
+						(= state 0)
+					)
 				)
 				(= cycles 3)
 			)
 			(2
-				(Wilbur loop: 0 cel: 0 setCycle: End self)
+				(Wilbur loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(Wilbur loop: 2 setCycle: Fwd)
-				(WHead setCycle: Fwd)
+				(Wilbur loop: 2 setCycle: Forward)
+				(WHead setCycle: Forward)
 				(Print 10 6 #at 25 145 #dispose)
 				(= seconds 5)
 			)
 			(4
-				(Wilbur loop: 0 cel: 3 setCycle: Beg)
-				(Clarence loop: 1 setCycle: End self)
+				(Wilbur loop: 0 cel: 3 setCycle: BegLoop)
+				(Clarence loop: 1 setCycle: EndLoop self)
 				(WHead setCycle: 0)
 			)
 			(5
 				(cls)
 				(Wilbur setCycle: 0)
-				(Clarence loop: 3 setCycle: Fwd)
-				(CHead setCycle: Fwd)
+				(Clarence loop: 3 setCycle: Forward)
+				(CHead setCycle: Forward)
 				(Print 10 7 #at 55 145 #dispose)
 				(= seconds 2)
 			)
 			(6
 				(cls)
 				(Print 10 8 #at 25 145 #dispose)
-				(Clarence loop: 1 cel: 2 setCycle: Beg)
+				(Clarence loop: 1 cel: 2 setCycle: BegLoop)
 				(= seconds 1)
 			)
 			(7
@@ -302,7 +331,7 @@
 			)
 			(9
 				(= global154 1)
-				(Door setCycle: End self)
+				(Door setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 priority: 5 play:)
 			)
 			(10
@@ -310,14 +339,17 @@
 				(Wilbur illegalBits: 0 setMotion: MoveTo 177 119 self)
 			)
 			(11
-				(Door setCycle: Beg self)
+				(Door setCycle: BegLoop self)
 				(myMusic number: 44 loop: 1 priority: 5 play:)
 			)
 			(12
 				(Door stopUpd:)
 				(= cycles 1)
 			)
-			(13 (HandsOn) (= seconds 20))
+			(13
+				(HandsOn)
+				(= seconds 20)
+			)
 			(14
 				(== global154 3)
 				(client setScript: 0)
@@ -327,18 +359,22 @@
 )
 
 (instance comeDown of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 3))
+			(0
+				(HandsOff)
+				(= cycles 3)
+			)
 			(1
 				(ego setMotion: MoveTo 118 144 self)
-				(Door cycleSpeed: 1 setCycle: Beg)
+				(Door cycleSpeed: 1 setCycle: BegLoop)
 				(myMusic number: 44 loop: 1 priority: 5 play:)
 			)
 			(2
-				(if (not local3) (HandsOn))
+				(if (not local3)
+					(HandsOn)
+				)
 				(if (== gCurRoomNum_2 curRoomNum)
 					(if (!= currentAct 3) (Door stopUpd:))
 				else
@@ -351,20 +387,19 @@
 )
 
 (instance myDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(ego setLoop: 0 setMotion: MoveTo 135 134 self)
 			)
 			(1
 				(ego setMotion: MoveTo 146 120 self)
 			)
 			(2
-				(ego setMotion: 0 illegalBits: -32768)
-				(Door cycleSpeed: 1 ignoreActors: 1 setCycle: End self)
+				(ego setMotion: 0 illegalBits: cYELLOW)
+				(Door cycleSpeed: 1 ignoreActors: 1 setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 priority: 5 play:)
 			)
 			(3
@@ -386,7 +421,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
+		(if (MousedOn self event shiftDown)
 			(event claimed: 1)
 			(ParseName {door})
 		)
@@ -416,8 +451,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -432,8 +467,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -448,14 +483,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
 )
 
-(instance Wilbur of Act
+(instance Wilbur of Actor
 	(properties
 		y 142
 		x 64
@@ -463,7 +498,7 @@
 	)
 )
 
-(instance Clarence of Act
+(instance Clarence of Actor
 	(properties
 		y 142
 		x 97
@@ -490,6 +525,4 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

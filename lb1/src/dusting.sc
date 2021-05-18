@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 267)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -17,25 +17,24 @@
 )
 
 (local
-	local0
-	local1
-	[local2 12] = [96 145 216 143 165 155 189 104 111 104 34 92]
+	fifiDir
+	talkCount
+	toXY = [96 145 216 143 165 155 189 104 111 104 34 92]
 	local14
 )
-(instance dusting of Rgn
-	(properties)
+(instance dusting of Region
 	
 	(method (init)
 		(super init:)
 		(= global192 1)
-		(Load rsFONT 4)
+		(Load FONT 4)
 		(LoadMany 143 243 294)
-		(LoadMany 128 470 904)
+		(LoadMany VIEW 470 904)
 		(= global208 16)
 		(= [global377 4] 294)
 		(Fifi
 			view: 464
-			setAvoider: ((Avoid new:) offScreenOK: 1)
+			setAvoider: ((Avoider new:) offScreenOK: TRUE)
 			init:
 			setScript: fifiActions
 		)
@@ -46,7 +45,7 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
@@ -56,19 +55,18 @@
 )
 
 (instance fifiActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (== local0 3)
+				(if (== fifiDir 3)
 					(Fifi setMotion: MoveTo 177 144 self)
 				else
 					(= cycles 1)
 				)
 			)
 			(1
-				(if (== local0 3)
+				(if (== fifiDir 3)
 					(Fifi setMotion: MoveTo 170 124 self)
 				else
 					(= cycles 1)
@@ -79,11 +77,11 @@
 				(Fifi
 					view: 464
 					setCycle: Walk
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setMotion:
 						MoveTo
-						[local2 (* local0 2)]
-						[local2 (+ (* local0 2) 1)]
+						[toXY (* fifiDir 2)]
+						[toXY (+ (* fifiDir 2) 1)]
 						self
 				)
 			)
@@ -92,7 +90,7 @@
 					view: 470
 					cel: 0
 					loop:
-					(switch local0
+					(switch fifiDir
 						(0 4)
 						(1 4)
 						(2 5)
@@ -100,13 +98,13 @@
 						(4 0)
 						(5 1)
 					)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(Fifi
 					loop:
-					(switch local0
+					(switch fifiDir
 						(0 6)
 						(1 6)
 						(2 7)
@@ -114,7 +112,7 @@
 						(4 2)
 						(5 3)
 					)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 4)
 			)
@@ -122,7 +120,7 @@
 				(Fifi
 					cel: 2
 					loop:
-					(switch local0
+					(switch fifiDir
 						(0 4)
 						(1 4)
 						(2 5)
@@ -130,12 +128,15 @@
 						(4 0)
 						(5 1)
 					)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(6
-				(Fifi view: 464 setCycle: Walk ignoreActors: 0)
-				(if (< local0 5) (++ local0) (= state -1))
+				(Fifi view: 464 setCycle: Walk ignoreActors: FALSE)
+				(if (< fifiDir 5)
+					(++ fifiDir)
+					(= state -1)
+				)
 				(= cycles 1)
 			)
 			(7
@@ -149,7 +150,7 @@
 	)
 )
 
-(instance Fifi of Act
+(instance Fifi of Actor
 	(properties
 		y 140
 		x 196
@@ -157,31 +158,34 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(and (MousedOn self event 3) (not (& global207 $0010))) (event claimed: 1) (ParseName {fifi}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0010)))
+				(event claimed: TRUE)
+				(ParseName {fifi})
+			)
 			(
 				(and
 					(& global207 $0010)
-					(or (MousedOn self event 3) (Said 'examine/fifi'))
+					(or (MousedOn self event shiftDown) (Said 'examine/fifi'))
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 267 0)
 			)
-			(
-			(and (== (event type?) evSAID) (Said '*/fifi>'))
+			((and (== (event type?) saidEvent) (Said '*/fifi>'))
 				(cond 
 					((Said 'converse')
-						(= theTalker 5)
-						(switch local1
+						(= theTalker talkFIFI)
+						(switch talkCount
 							(0 (Say 1 267 1))
 							(1 (Say 1 267 2))
 							(2 (Say 1 267 3))
 							(3 (Say 1 267 4))
 							(else  (Say 1 267 5))
 						)
-						(++ local1)
+						(++ talkCount)
 					)
-					((Said 'hear') (Print 267 6))
+					((Said 'hear')
+						(Print 267 6)
+					)
 				)
 			)
 		)
