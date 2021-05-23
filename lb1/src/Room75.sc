@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 75)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use ElevGate)
 (use Intrface)
@@ -23,23 +23,17 @@
 	local0
 	local1
 )
-(procedure (localproc_000c)
-	(Print
-		&rest
-		#at
-		10
-		125
-		#font
-		4
-		#width
-		250
-		#mode
-		1
+(procedure (LowPrint)
+	(Print &rest
+		#at 10 125
+		#font 4
+		#width 250
+		#mode teJustCenter
 		#dispose
 	)
 )
 
-(instance Room75 of Rm
+(instance Room75 of Room
 	(properties
 		picture 75
 	)
@@ -53,9 +47,9 @@
 			)
 		)
 		(self setFeatures: Window1 Shaft Junk)
-		(if (& deadGuests $0040)
-			(User canControl: 0 canInput: 1)
-			(= saveDisabled 1)
+		(if (& deadGuests deadLILLIAN)
+			(User canControl: FALSE canInput: TRUE)
+			(= saveDisabled TRUE)
 			(self setRegions: 290)
 		else
 			(head init: hide: stopUpd:)
@@ -68,7 +62,7 @@
 				(if (== prevRoomNum 42) (Bclr 46))
 				(ego posn: 80 188)
 			)
-			(ego view: 0 illegalBits: -32768)
+			(ego view: 0 illegalBits: cWHITE)
 		)
 		(paper init: stopUpd:)
 		((= gGate gate)
@@ -77,7 +71,8 @@
 			downID: down
 			upID: up
 			msgID:
-				{What a dark and creepy attic! It helps to have the moonlight shining in through those big windows. Among all the junk, a stack of old newspapers catches your eye.}
+				{What a dark and creepy attic! It helps to have the moonlight shining in through those big windows. 
+				Among all the junk, a stack of old newspapers catches your eye.}
 			init:
 		)
 	)
@@ -85,13 +80,13 @@
 	(method (doit)
 		(if
 			(and
-				(not (& deadGuests $0040))
+				(not (& deadGuests deadLILLIAN))
 				(not (& global109 $0010))
 				(FirstEntry)
 			)
 			(Print 75 0)
 		)
-		(if (== (ego edgeHit?) 3)
+		(if (== (ego edgeHit?) SOUTH)
 			(if (< (ego x?) 189)
 				(curRoom newRoom: 76)
 			else
@@ -99,9 +94,15 @@
 			)
 		)
 		(cond 
-			((< (ego x?) 130) (= vertAngle 30))
-			((< (ego x?) 190) (= vertAngle 0))
-			(else (= vertAngle 150))
+			((< (ego x?) 130)
+				(= vertAngle 30)
+			)
+			((< (ego x?) 190)
+				(= vertAngle 0)
+			)
+			(else
+				(= vertAngle 150)
+			)
 		)
 		(super doit:)
 	)
@@ -114,29 +115,45 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
-				((Said 'get,move/box') (Print 75 1))
+				((Said 'get,move/box')
+					(Print 75 1)
+				)
 				((Said 'examine>')
 					(cond 
 						((Said '[<around,at][/room]')
-							(if (& deadGuests $0040)
+							(if (& deadGuests deadLILLIAN)
 								(Print 75 2)
 							else
 								(Print 75 0)
 							)
 						)
-						((Said '<in/box') (Print 75 3))
-						((Said '/box') (Print 75 4))
-						((Said '<in/chest') (Print 75 5))
-						((Said '/chest') (Print 75 6))
-						((Said '[<at]/window') (Print 75 7))
+						((Said '<in/box')
+							(Print 75 3)
+						)
+						((Said '/box')
+							(Print 75 4)
+						)
+						((Said '<in/chest')
+							(Print 75 5)
+						)
+						((Said '/chest')
+							(Print 75 6)
+						)
+						((Said '[<at]/window')
+							(Print 75 7)
+						)
 					)
 				)
 				((Said 'open>')
 					(cond 
-						((Said '/box') (Print 75 3))
-						((Said '/chest') (Print 75 5))
+						((Said '/box')
+							(Print 75 3)
+						)
+						((Said '/chest')
+							(Print 75 5)
+						)
 					)
 				)
 			)
@@ -149,8 +166,7 @@
 )
 
 (instance readNewspaper of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -163,7 +179,7 @@
 					cel: 0
 					loop: 1
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -173,21 +189,24 @@
 				(arms posn: (- (ego x?) 3) (- (ego y?) 26) show:)
 				(= cycles 2)
 			)
-			(3 (Print 75 8) (= cycles 1))
+			(3
+				(Print 75 8)
+				(= cycles 1)
+			)
 			(4
 				(++ local1)
-				(head setCycle: Fwd)
+				(head setCycle: Forward)
 				(switch local1
-					(1 (localproc_000c 75 9))
-					(2 (localproc_000c 75 10))
-					(3 (localproc_000c 75 11))
+					(1 (LowPrint 75 9))
+					(2 (LowPrint 75 10))
+					(3 (LowPrint 75 11))
 				)
 			)
 			(5
 				(cls)
 				(if (< local1 3)
 					(= state 3)
-					(arms setCycle: End self)
+					(arms setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -195,7 +214,7 @@
 			(6
 				(paper show: forceUpd:)
 				(ego loop: 1)
-				(ego cel: (ego lastCel:) setCycle: Beg self)
+				(ego cel: (ego lastCel:) setCycle: BegLoop self)
 				(head hide: forceUpd:)
 				(arms hide: forceUpd:)
 			)
@@ -207,7 +226,7 @@
 					view: 0
 					loop: 1
 					cycleSpeed: 0
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setCycle: Walk
 				)
 				(head dispose:)
@@ -222,17 +241,17 @@
 			(and
 				(not (event claimed?))
 				(or
-					(== (event type?) evMOUSEBUTTON)
-					(== (event type?) evKEYBOARD)
-					(== (event type?) evJOYSTICK)
+					(== (event type?) mouseDown)
+					(== (event type?) keyDown)
+					(== (event type?) direction)
 				)
 				(== state 4)
 			)
-			(if (!= (event type?) evJOYSTICK)
+			(if (!= (event type?) direction)
 				(= seconds 0)
 				(= cycles 1)
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -248,14 +267,22 @@
 		(if
 			(or
 				(Said 'get,read,examine/newspaper')
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 			(cond 
-				((& global109 $0010) (Print 75 13))
-				(local0 (Print 75 14))
-				((< (ego distanceTo: paper) 50) (Room75 setScript: readNewspaper))
-				(else (NotClose))
+				((& global109 $0010)
+					(Print 75 13)
+				)
+				(local0
+					(Print 75 14)
+				)
+				((< (ego distanceTo: paper) 50)
+					(Room75 setScript: readNewspaper)
+				)
+				(else
+					(NotClose)
+				)
 			)
 		)
 	)
@@ -286,8 +313,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -302,8 +329,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {elevator})
 		)
 	)
@@ -320,33 +347,25 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/garbage,possession,furniture')
 			)
 			(Print 75 15)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
 
-(instance gate of ElevGate
-	(properties)
-)
+(instance gate of ElevGate)
 
-(instance chain of Act
-	(properties)
-)
+(instance chain of Actor)
 
-(instance elevator of Act
+(instance elevator of Actor
 	(properties
 		y -10
 	)
 )
 
-(instance down of View
-	(properties)
-)
+(instance down of View)
 
-(instance up of View
-	(properties)
-)
+(instance up of View)

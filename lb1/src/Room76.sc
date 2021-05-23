@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 76)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -20,7 +20,7 @@
 (local
 	local0
 )
-(instance Room76 of Rm
+(instance Room76 of Room
 	(properties
 		picture 76
 	)
@@ -31,7 +31,7 @@
 		(= east 74)
 		(= currentPalette 0)
 		(super init:)
-		(Load rsSOUND 117)
+		(Load SOUND 117)
 		(if (not global388)
 			(= global388
 				(| (<< gameHours $0008) (* gameMinutes 15))
@@ -64,11 +64,13 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 76 0))
+		(if (FirstEntry)
+			(Print 76 0)
+		)
 		(super doit:)
 		(if
 			(and
-				(& (ego onControl: 1) $4000)
+				(& (ego onControl: origin) cYELLOW)
 				(not script)
 				(not (Btst 46))
 				(< currentAct 7)
@@ -82,9 +84,9 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
@@ -186,8 +188,7 @@
 )
 
 (instance Strangle of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if
@@ -206,10 +207,10 @@
 			(0
 				(HandsOff)
 				(myMusic prevSignal: 0 number: 117 loop: 1 play:)
-				(Killer show: setCycle: End self)
+				(Killer show: setCycle: EndLoop self)
 			)
 			(1
-				(Killer loop: 1 cycleSpeed: 1 setCycle: Fwd)
+				(Killer loop: 1 cycleSpeed: 1 setCycle: Forward)
 				(ego cel: 0 hide:)
 				(= cycles 5)
 			)
@@ -218,14 +219,14 @@
 				(= seconds 3)
 			)
 			(3
-				(Killer loop: 2 cel: 0 setCycle: End)
+				(Killer loop: 2 cel: 0 setCycle: EndLoop)
 				(ego
 					show:
 					view: 62
 					loop: 3
 					cel: 0
 					posn: 155 92
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(4
@@ -274,8 +275,10 @@
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/chest')) (event claimed: 1) (Print 76 38))
+			((or (MousedOn self event shiftDown) (Said 'examine/chest'))
+				(event claimed: TRUE)
+				(Print 76 38)
+			)
 		)
 	)
 )
@@ -289,8 +292,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {elevator})
 		)
 	)
@@ -307,11 +310,11 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/garbage,possession,furniture')
 			)
 			(Print 76 38)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -324,6 +327,4 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

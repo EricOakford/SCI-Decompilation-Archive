@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 64)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -14,10 +14,10 @@
 )
 
 (local
-	theSpeed
-	local1
+	oldSpeed
+	doorIsOpen
 )
-(instance Room64 of Rm
+(instance Room64 of Room
 	(properties
 		picture 64
 	)
@@ -31,15 +31,15 @@
 		(lArm setPri: 11 init:)
 	)
 	
-	(method (doit &tmp temp0 temp1)
+	(method (doit &tmp theX theY)
 		(if (== (rArm loop?) 7)
 			(switch (rArm cel?)
-				(0 (= temp0 30) (= temp1 10))
-				(1 (= temp0 12) (= temp1 7))
-				(2 (= temp0 1) (= temp1 1))
+				(0 (= theX 30) (= theY 10))
+				(1 (= theX 12) (= theY 7))
+				(2 (= theX 1) (= theY 1))
 			)
 			(nightie
-				posn: (- (rArm x?) temp0) (+ (rArm y?) temp1)
+				posn: (- (rArm x?) theX) (+ (rArm y?) theY)
 			)
 		)
 		(super doit:)
@@ -55,20 +55,19 @@
 )
 
 (instance Undressing of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= global192 64)
-				(lArm cycleSpeed: 2 setCycle: End self)
+				(lArm cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(1
-				(lArm cycleSpeed: 2 setCycle: Beg self)
+				(lArm cycleSpeed: 2 setCycle: BegLoop self)
 			)
 			(2
-				(dress setPri: 12 setCycle: End self init:)
+				(dress setPri: 12 setCycle: EndLoop self init:)
 				(bra setPri: 12 stopUpd: init:)
 				(panties setPri: 12 stopUpd: init:)
 				(hose setLoop: 1 setPri: 12 stopUpd: init:)
@@ -77,7 +76,7 @@
 				(Fifi cel: 1 forceUpd:)
 			)
 			(3
-				(= theSpeed speed)
+				(= oldSpeed speed)
 				(theGame setSpeed: 1)
 				(dress
 					setLoop: 3
@@ -89,13 +88,13 @@
 			)
 			(4
 				(HandsOn)
-				(dress setCel: -1 cycleSpeed: 2 setCycle: End self)
+				(dress setCel: -1 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(5
-				(theGame setSpeed: theSpeed)
+				(theGame setSpeed: oldSpeed)
 				(dress stopUpd:)
 				(HandsOff)
-				(if local1 (= state 4))
+				(if doorIsOpen (= state 4))
 				(= cycles 1)
 			)
 			(6
@@ -112,7 +111,7 @@
 				(hose stopUpd:)
 				(rArm setCel: 1 forceUpd:)
 				(lArm setCel: 1 forceUpd:)
-				(panties startUpd: setCycle: End self)
+				(panties startUpd: setCycle: EndLoop self)
 			)
 			(8
 				(rArm setCel: 0 forceUpd:)
@@ -127,12 +126,12 @@
 			(9
 				(rArm setCel: 2 forceUpd:)
 				(lArm setCel: 2 forceUpd:)
-				(panties setCycle: End self)
+				(panties setCycle: EndLoop self)
 			)
 			(10
 				(panties stopUpd:)
 				(lArm setCel: 0 forceUpd:)
-				(bra setCycle: End self)
+				(bra setCycle: EndLoop self)
 			)
 			(11
 				(rArm setCel: 0 forceUpd:)
@@ -144,14 +143,14 @@
 					setMotion: MoveTo 131 110 self
 				)
 			)
-			(12 (bra setCycle: End self))
+			(12 (bra setCycle: EndLoop self))
 			(13
 				(bra stopUpd:)
-				(rArm loop: 6 cel: 0 startUpd: setCycle: End self)
+				(rArm loop: 6 cel: 0 startUpd: setCycle: EndLoop self)
 			)
 			(14
 				(HandsOff)
-				(if local1
+				(if doorIsOpen
 					(= state 5)
 					(= cycles 1)
 				else
@@ -160,18 +159,18 @@
 				)
 			)
 			(15
-				(rArm loop: 7 cel: 0 setCycle: End self)
+				(rArm loop: 7 cel: 0 setCycle: EndLoop self)
 				(nightie cel: (- (NumCels nightie) 1))
 			)
 			(16
 				(rArm loop: 5)
 				(rArm cel: (- (NumCels rArm) 1))
-				(lArm startUpd: setCycle: End self)
+				(lArm startUpd: setCycle: EndLoop self)
 			)
 			(17
-				(rArm setCycle: Beg)
-				(lArm setCycle: Beg)
-				(nightie posn: 149 56 setCycle: Beg)
+				(rArm setCycle: BegLoop)
+				(lArm setCycle: BegLoop)
+				(nightie posn: 149 56 setCycle: BegLoop)
 				(= seconds 3)
 			)
 			(18
@@ -183,11 +182,12 @@
 )
 
 (instance DoorOpening of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (LDoor setCycle: End self))
+			(0
+				(LDoor setCycle: EndLoop self)
+			)
 			(1
 				(if (!= (dress cel?) (- (NumCels dress) 1))
 					(= state 0)
@@ -196,22 +196,24 @@
 				)
 				(= cycles 1)
 			)
-			(2 (LDoor setCycle: Beg self))
+			(2
+				(LDoor setCycle: BegLoop self)
+			)
 			(3
-				(= local1 0)
+				(= doorIsOpen 0)
 				(client setScript: 0)
 			)
 		)
 	)
 )
 
-(instance RDoor of PV
+(instance RDoor of PicView
 	(properties
 		y 131
 		x 213
 		view 164
 		priority 14
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -221,19 +223,19 @@
 		x 106
 		view 164
 		loop 1
-		signal $4000
+		signal ignrAct
 		cycleSpeed 1
 	)
 	
 	(method (handleEvent event)
 		(if
 			(and
-				(not local1)
+				(not doorIsOpen)
 				(User canInput?)
-				(or (MousedOn self event 3) (Said 'open/door'))
+				(or (MousedOn self event shiftDown) (Said 'open/door'))
 			)
-			(event claimed: 1)
-			(= local1 1)
+			(event claimed: TRUE)
+			(= doorIsOpen TRUE)
 			(LDoor setScript: DoorOpening)
 		)
 	)
@@ -244,7 +246,7 @@
 		y 158
 		x 145
 		view 473
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -254,7 +256,7 @@
 		x 138
 		view 473
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -264,7 +266,7 @@
 		x 138
 		view 473
 		loop 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -274,49 +276,49 @@
 		x 92
 		view 473
 		loop 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance dress of Act
+(instance dress of Actor
 	(properties
 		y 110
 		x 158
 		yStep 6
 		view 473
 		loop 2
-		signal $4000
+		signal ignrAct
 		cycleSpeed 2
 	)
 )
 
-(instance bra of Act
+(instance bra of Actor
 	(properties
 		y 71
 		x 131
 		yStep 6
 		view 463
 		loop 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance panties of Act
+(instance panties of Actor
 	(properties
 		y 109
 		x 146
 		yStep 6
 		view 463
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance hose of Act
+(instance hose of Actor
 	(properties
 		y 109
 		x 144
 		yStep 6
 		view 463
-		signal $4000
+		signal ignrAct
 	)
 )

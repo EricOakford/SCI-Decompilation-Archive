@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 59)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -19,10 +19,10 @@
 )
 
 (local
-	local0
-	local1
+	egoSitting
+	askedForCarrot
 )
-(instance Room59 of Rm
+(instance Room59 of Room
 	(properties
 		picture 59
 	)
@@ -46,9 +46,9 @@
 			eachElementDo: #init
 			doit:
 		)
-		(Load rsSCRIPT 985)
-		(Load rsVIEW 2)
-		(if (== ((inventory at: 17) owner?) 59)
+		(Load SCRIPT AVOIDER)
+		(Load VIEW 2)
+		(if (== ((inventory at: iCarrot) owner?) 59)
 			(carrot setPri: 8 init: stopUpd:)
 		)
 		(self
@@ -71,8 +71,8 @@
 				Bed
 		)
 		(if howFast
-			(boil loop: 7 setPri: 8 setCycle: Fwd init:)
-			(fire setPri: 9 setCycle: Fwd init:)
+			(boil loop: 7 setPri: 8 setCycle: Forward init:)
+			(fire setPri: 9 setCycle: Forward init:)
 		else
 			(fire setPri: 9 init: stopUpd:)
 			(boil loop: 7 setPri: 8 init: stopUpd:)
@@ -82,7 +82,7 @@
 			(self setRegions: 262)
 		)
 		(LoadMany 143 243)
-		(Load rsVIEW 901)
+		(Load VIEW 901)
 		(= global208 2)
 		(switch currentAct
 			(2
@@ -99,58 +99,77 @@
 			)
 		)
 		(if (== currentAct 5)
-			(= global118 (| global118 $0001))
+			(|= global118 $0001)
 		)
 		(ego view: 0 posn: 115 160 init:)
 		(HandsOn)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 59 0))
-		(if (& (ego onControl: 0) $0002) (curRoom newRoom: 6))
+		(if (FirstEntry)
+			(Print 59 0)
+		)
+		(if (& (ego onControl: FALSE) cBLUE)
+			(curRoom newRoom: 6)
+		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
-		(= enteredCelieHouse 1)
+		(DisposeScript AVOIDER)
+		(= enteredCelieHouse TRUE)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(if
 					(and
 						global208
-						(Said
-							'ask,tell,hold,deliver,examine,get,kill,kiss,embrace,flirt>'
-						)
+						(Said 'ask,tell,hold,deliver,examine,get,kill,kiss,embrace,flirt>')
 					)
-					(DisposeScript 990)
+					(DisposeScript SAVE)
 					(self setScript: (ScriptID 243 0))
 					((self script?) handleEvent: event)
-					(if (event claimed?) (return (event claimed?)))
+					(if (event claimed?)
+						(return (event claimed?))
+					)
 				)
 				(cond 
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room]') (Print 59 0))
-							((Said '/painting') (Print 59 1))
-							((Said '/wall') (Print 59 2))
-							((Said '/curtain') (Print 59 3))
-							((or (Said '/ceiling') (Said '<up')) (Print 59 4))
-							((or (Said '/dirt') (Said '<down')) (Print 59 5))
+							((Said '[<around,at][/room]')
+								(Print 59 0)
+							)
+							((Said '/painting')
+								(Print 59 1)
+							)
+							((Said '/wall')
+								(Print 59 2)
+							)
+							((Said '/curtain')
+								(Print 59 3)
+							)
+							((or (Said '/ceiling') (Said '<up'))
+								(Print 59 4)
+							)
+							((or (Said '/dirt') (Said '<down'))
+								(Print 59 5)
+							)
 						)
 					)
-					((Said 'get/painting') (Print 59 6))
-					(
-					(or (Said 'get/gumbo') (Said 'eat[/gumbo,food]')) (Print 59 7))
+					((Said 'get/painting')
+						(Print 59 6)
+					)
+					((or (Said 'get/gumbo') (Said 'eat[/gumbo,food]'))
+						(Print 59 7)
+					)
 					((Said 'sit[/down,*]')
 						(if (ego inRect: 180 145 222 185)
-							(if (not local0)
-								(= local0 1)
+							(if (not egoSitting)
+								(= egoSitting TRUE)
 								(HandsOff)
 								(ego setScript: sitDown)
 							else
@@ -161,8 +180,8 @@
 						)
 					)
 					((Said 'stand[/up,*]')
-						(if local0
-							(= local0 0)
+						(if egoSitting
+							(= egoSitting FALSE)
 							(HandsOff)
 							(ego setScript: standUp)
 						else
@@ -180,7 +199,7 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -191,21 +210,20 @@
 )
 
 (instance sitDown of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 202 165 self
 				)
 			)
 			(1
-				(ego view: 2 setPri: 13 loop: 2 cel: 0 setCycle: End self)
+				(ego view: 2 setPri: 13 loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(client setScript: 0)
 			)
 		)
@@ -213,12 +231,11 @@
 )
 
 (instance standUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego setAvoider: 0 setPri: -1 setCycle: Beg self)
+				(ego setAvoider: 0 setPri: -1 setCycle: BegLoop self)
 			)
 			(1
 				(ego view: 0 loop: 3 setCycle: Walk)
@@ -235,14 +252,18 @@
 		x 212
 		view 159
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/oven')) (event claimed: 1) (Print 59 11))
-			((Said 'examine/log,oak') (Print 59 12))
+			((or (MousedOn self event shiftDown) (Said 'examine/oven'))
+				(event claimed: TRUE)
+				(Print 59 11)
+			)
+			((Said 'examine/log,oak')
+				(Print 59 12)
+			)
 		)
 	)
 )
@@ -254,14 +275,18 @@
 		view 159
 		loop 1
 		priority 11
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			((Said '(examine<in),search,open/dresser,drawer') (Print 59 13))
-			(
-			(or (MousedOn self event 3) (Said 'examine/dresser')) (event claimed: 1) (Print 59 14))
+			((Said '(examine<in),search,open/dresser,drawer')
+				(Print 59 13)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/dresser'))
+				(event claimed: TRUE)
+				(Print 59 14)
+			)
 		)
 	)
 )
@@ -273,14 +298,18 @@
 		view 159
 		loop 2
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine<below/pillow') (Print 59 15))
-			(
-			(or (MousedOn self event 3) (Said 'examine/pillow')) (event claimed: 1) (Print 59 16))
+			((Said 'examine<below/pillow')
+				(Print 59 15)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/pillow'))
+				(event claimed: TRUE)
+				(Print 59 16)
+			)
 		)
 	)
 )
@@ -296,21 +325,25 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/mirror') (Print 59 17))
+			((Said 'get/mirror')
+				(Print 59 17)
+			)
 			(
 				(or
 					(Said 'examine<in/mirror')
 					(Said 'examine/reflection')
 				)
 				(if (< (ego distanceTo: mirror) 50)
-					(= theTalker 12)
+					(= theTalker talkLAURA)
 					(Say 0 59 18)
 				else
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/mirror')) (event claimed: 1) (Print 59 19))
+			((or (MousedOn self event shiftDown) (Said 'examine/mirror'))
+				(event claimed: TRUE)
+				(Print 59 19)
+			)
 		)
 	)
 )
@@ -335,10 +368,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/bottle') (Print 59 20))
-			((Said 'examine/bottle') (Print 59 21))
-			(
-			(or (MousedOn self event 3) (Said 'examine/shelf')) (event claimed: 1) (Print 59 22))
+			((Said 'get/bottle')
+				(Print 59 20)
+			)
+			((Said 'examine/bottle')
+				(Print 59 21)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/shelf'))
+				(event claimed: TRUE)
+				(Print 59 22)
+			)
 		)
 	)
 )
@@ -381,14 +420,13 @@
 		loop 1
 		cel 3
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/nightstand'))
-			(event claimed: 1)
-			(if (== ((inventory at: 17) owner?) 59)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/nightstand'))
+			(event claimed: TRUE)
+			(if (== ((inventory at: iCarrot) owner?) 59)
 				(Print 59 23)
 			else
 				(Print 59 24)
@@ -406,8 +444,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 59 25)
 		)
 	)
@@ -422,9 +460,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/chair'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/chair'))
+			(event claimed: TRUE)
 			(Print 59 25)
 		)
 	)
@@ -450,19 +487,29 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'ask[/celie]/carrot<for') (= theTalker 2) (Say 1 59 26) (++ local1))
+			((Said 'ask[/celie]/carrot<for')
+				(= theTalker talkCELIE)
+				(Say 1 59 26)
+				(++ askedForCarrot)
+			)
 			((Said 'get/carrot')
 				(if (< (ego distanceTo: carrot) 40)
-					(if (not local1) (Print 59 27) else (Ok))
+					(if (not askedForCarrot)
+						(Print 59 27)
+					else
+						(Ok)
+					)
 					(carrot dispose:)
-					(= gotItem 1)
-					(ego get: 17)
+					(= gotItem TRUE)
+					(ego get: iCarrot)
 				else
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/carrot')) (event claimed: 1) (Print 59 23))
+			((or (MousedOn self event shiftDown) (Said 'examine/carrot'))
+				(event claimed: TRUE)
+				(Print 59 23)
+			)
 		)
 	)
 )
@@ -477,14 +524,18 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/caldron,gumbo') (Print 59 7))
-			((Said 'get/caldron') (Print 59 7))
+			((Said 'get/caldron,gumbo')
+				(Print 59 7)
+			)
+			((Said 'get/caldron')
+				(Print 59 7)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/caldron,pan,gumbo')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 59 28)
 			)
 		)
@@ -501,11 +552,19 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open/window') (Print 59 29))
-			((Said 'break/window') (Print 59 30))
-			((Said 'examine<(out,through)/window') (Print 59 31))
-			(
-			(or (MousedOn self event 3) (Said 'examine/window')) (event claimed: 1) (Print 59 32))
+			((Said 'open/window')
+				(Print 59 29)
+			)
+			((Said 'break/window')
+				(Print 59 30)
+			)
+			((Said 'examine<(out,through)/window')
+				(Print 59 31)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/window'))
+				(event claimed: TRUE)
+				(Print 59 32)
+			)
 		)
 	)
 )
@@ -519,8 +578,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 59 32)
 		)
 	)
@@ -536,9 +595,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'move,(examine<below)/carpet') (Print 59 33))
-			(
-			(or (MousedOn self event 3) (Said 'examine/carpet')) (event claimed: 1) (Print 59 34))
+			((Said 'move,(examine<below)/carpet')
+				(Print 59 33)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/carpet'))
+				(event claimed: TRUE)
+				(Print 59 34)
+			)
 		)
 	)
 )
@@ -553,9 +616,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine<below/bed') (Print 59 35))
-			(
-			(or (MousedOn self event 3) (Said 'examine/bed')) (event claimed: 1) (Print 59 36))
+			((Said 'examine<below/bed')
+				(Print 59 35)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/bed'))
+				(event claimed: TRUE)
+				(Print 59 36)
+			)
 		)
 	)
 )

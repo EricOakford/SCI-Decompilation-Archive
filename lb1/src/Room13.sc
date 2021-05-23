@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 13)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -22,7 +22,7 @@
 	local0
 	local1
 )
-(instance Room13 of Rm
+(instance Room13 of Room
 	(properties
 		picture 13
 	)
@@ -31,11 +31,13 @@
 		(= north 9)
 		(= horizon 100)
 		(super init:)
-		(LoadMany 132 107 108)
-		(if (== currentAct 1) (self setRegions: 381))
+		(LoadMany SOUND 107 108)
+		(if (== currentAct 1)
+			(self setRegions: 381)
+		)
 		(Door
 			cel: (if (== prevRoomNum 69) 3 else 0)
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			stopUpd:
 		)
@@ -43,11 +45,11 @@
 		(mySound init:)
 		(= gMySound mySound)
 		(if howFast
-			(Splash1 ignoreActors: 1 init: hide:)
-			(Splash2 ignoreActors: 1 init: hide:)
+			(Splash1 ignoreActors: TRUE init: hide:)
+			(Splash2 ignoreActors: TRUE init: hide:)
 		)
 		(self setFeatures: Window1 Window2 Window3 Hay1 Hay2)
-		(ego illegalBits: -32766)
+		(ego illegalBits: (| cWHITE cBLUE))
 		(if (and (>= currentAct 2) (< currentAct 4))
 			(self setRegions: 202)
 		)
@@ -74,10 +76,12 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 13 0))
+		(if (FirstEntry)
+			(Print 13 0)
+		)
 		(if
 			(and
-				(& (ego onControl: 0) $0010)
+				(& (ego onControl: FALSE) cRED)
 				(or (== (ego loop?) 3) (== (ego loop?) 1))
 				(not local0)
 				(== (Door cel?) 0)
@@ -95,10 +99,12 @@
 			(= local1 1)
 			(Door stopUpd:)
 		)
-		(if (& (ego onControl: 1) $0002) (curRoom newRoom: 69))
+		(if (& (ego onControl: origin) cBLUE)
+			(curRoom newRoom: 69)
+		)
 		(if
 			(and
-				(& (ego onControl: 1) $4000)
+				(& (ego onControl: origin) cYELLOW)
 				(!= (ego mover?) 0)
 				howFast
 			)
@@ -109,7 +115,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 5)
@@ -117,7 +123,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
@@ -127,7 +133,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 5)
@@ -135,7 +141,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
@@ -145,7 +151,7 @@
 							posn: (- (ego x?) 2) (+ (ego y?) 1)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 4)
@@ -153,21 +159,21 @@
 							posn: (- (ego x?) 2) (+ (ego y?) 1)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
 			)
 		)
 		(switch (ego edgeHit?)
-			(2
+			(EAST
 				(if (< (ego y?) 135)
 					(curRoom newRoom: 14)
 				else
 					(curRoom newRoom: 21)
 				)
 			)
-			(3
+			(SOUTH
 				(if (> (ego x?) 188)
 					(curRoom newRoom: 20)
 				else
@@ -183,20 +189,32 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room]') (Print 13 0))
-							((Said '<in/room') (Print 13 1))
-							((Said '/chapel') (Print 13 2))
-							((Said '<(in,above)/fence') (Print 13 3))
-							((Said '/fence') (Print 13 4))
+							((Said '[<around,at][/room]')
+								(Print 13 0)
+							)
+							((Said '<in/room')
+								(Print 13 1)
+							)
+							((Said '/chapel')
+								(Print 13 2)
+							)
+							((Said '<(in,above)/fence')
+								(Print 13 3)
+							)
+							((Said '/fence')
+								(Print 13 4)
+							)
 						)
 					)
-					((Said '/archway') (Print 13 5))
+					((Said '/archway')
+						(Print 13 5)
+					)
 					(
 						(or
 							(Said 'climb,hop/fence')
@@ -206,30 +224,36 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (newRoom n)
 		(cond 
-			((== n 69) (cSound stop:))
-			((== global198 200) (++ global198) (= deadGuests (| deadGuests $0002)))
+			((== n 69)
+				(cSound stop:)
+			)
+			((== global198 200)
+				(++ global198)
+				(|= deadGuests deadWILBUR)
+			)
 		)
 		(super newRoom: n)
 	)
 )
 
 (instance myDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(mySound number: 107 loop: 1 play:)
-				(Door cycleSpeed: 3 setCycle: End self)
-				(if (not gMyMusic) (ego ignoreControl: 2))
+				(Door cycleSpeed: 3 setCycle: EndLoop self)
+				(if (not gMyMusic)
+					(ego ignoreControl: cBLUE)
+				)
 			)
 			(1
 				(Door stopUpd:)
@@ -249,12 +273,11 @@
 )
 
 (instance exit of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Door setCycle: Beg self)
+				(Door setCycle: BegLoop self)
 				(mySound number: 108 loop: 1 play:)
 			)
 			(1
@@ -274,9 +297,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/door'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/door'))
+			(event claimed: TRUE)
 			(Print 13 7)
 		)
 	)
@@ -306,10 +328,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open,examine<(in,through)/window,room') (Print 13 8))
-			((Said 'break/window') (Print 13 9))
-			(
-			(or (MousedOn self event 3) (Said 'examine/window')) (event claimed: 1) (Print 13 10))
+			((Said 'open,examine<(in,through)/window,room')
+				(Print 13 8)
+			)
+			((Said 'break/window')
+				(Print 13 9)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/window'))
+				(event claimed: TRUE)
+				(Print 13 10)
+			)
 		)
 	)
 )
@@ -323,8 +351,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 13 10)
 		)
 	)
@@ -339,8 +367,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 13 10)
 		)
 	)
@@ -356,10 +384,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'move,press/bale') (Print 13 11))
-			((Said 'get/bale') (Print 13 12))
-			(
-			(or (MousedOn self event 3) (Said 'examine/bale')) (event claimed: 1) (Print 13 13))
+			((Said 'move,press/bale')
+				(Print 13 11)
+			)
+			((Said 'get/bale')
+				(Print 13 12)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/bale'))
+				(event claimed: TRUE)
+				(Print 13 13)
+			)
 		)
 	)
 )
@@ -373,8 +407,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 13 13)
 		)
 	)

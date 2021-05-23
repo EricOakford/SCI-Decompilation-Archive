@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 61)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -18,17 +18,17 @@
 )
 
 (local
-	local0
+	oilCanHere
 	local1
 )
-(instance Room61 of Rm
+(instance Room61 of Room
 	(properties
 		picture 61
 	)
 	
 	(method (init)
 		(super init:)
-		(if (= local0 (== ((inventory at: 3) owner?) 61))
+		(if (= oilCanHere (== ((inventory at: iOilcan) owner?) 61))
 			(OilCan init: stopUpd:)
 		)
 		(addToPics
@@ -39,15 +39,18 @@
 		(self
 			setFeatures: harness anchor preserver Car Box Boat Table
 		)
-		(Load rsVIEW 60)
+		(Load VIEW 60)
 		(if
 			(and
 				(>= currentAct 4)
-				(not (& deadGuests $0040))
+				(not (& deadGuests deadLILLIAN))
 				(!= global200 101)
 			)
 			(cond 
-				((== global170 61) (self setRegions: 268) (= local1 1))
+				((== global170 61)
+					(self setRegions: 268)
+					(= local1 1)
+				)
 				((not (== global170 5))
 					(switch (Random 1 2)
 						(1
@@ -59,12 +62,17 @@
 				)
 			)
 		)
-		(ego view: 0 illegalBits: -32768 posn: 102 173 init:)
+		(ego view: 0 illegalBits: cWHITE posn: 102 173 init:)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 61 0))
-		(if (& (ego onControl: 1) $0002) (curRoom newRoom: 20))
+		(if
+			(FirstEntry)
+			(Print 61 0)
+		)
+		(if (& (ego onControl: origin) cBLUE)
+			(curRoom newRoom: 20)
+		)
 		(super doit:)
 	)
 	
@@ -74,28 +82,50 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room]') (Print 61 0))
-							((or (Said '/dirt') (Said '<down')) (Print 61 1))
-							((Said '/wall') (Print 61 2))
-							((or (Said '/ceiling') (Said '<up')) (Print 61 3))
-							((Said '<(out,through)/window') (Print 61 4))
-							((Said '/window') (Print 61 5))
-							((Said '/door') (Print 61 6))
-							((Said '<below/nightstand') (Print 61 7))
+							((Said '[<around,at][/room]')
+								(Print 61 0)
+							)
+							((or (Said '/dirt') (Said '<down'))
+								(Print 61 1)
+							)
+							((Said '/wall')
+								(Print 61 2)
+							)
+							((or (Said '/ceiling') (Said '<up'))
+								(Print 61 3)
+							)
+							((Said '<(out,through)/window')
+								(Print 61 4)
+							)
+							((Said '/window')
+								(Print 61 5)
+							)
+							((Said '/door')
+								(Print 61 6)
+							)
+							((Said '<below/nightstand')
+								(Print 61 7)
+							)
 						)
 					)
-					((Said 'break/window') (Print 61 8))
-					((Said 'open/window') (Print 61 9))
-					((Said 'open/door') (Print 61 10))
+					((Said 'break/window')
+						(Print 61 8)
+					)
+					((Said 'open/window')
+						(Print 61 9)
+					)
+					((Said 'open/door')
+						(Print 61 10)
+					)
 					((Said 'get/crowbar')
-						(if (& (ego onControl: 0) $0004)
-							(if (== ((inventory at: 7) owner?) 61)
+						(if (& (ego onControl: FALSE) cGREEN)
+							(if (== ((inventory at: iCrowbar) owner?) 61)
 								(self setScript: getBar)
 							else
 								(Print 61 11)
@@ -106,7 +136,7 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -117,7 +147,6 @@
 )
 
 (instance getBar of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -127,11 +156,11 @@
 			)
 			(1
 				(Print 61 12)
-				(ego get: 7 view: 60 cel: 0 setCycle: End self)
+				(ego get: iCrowbar view: 60 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(= gotItem 1)
-				(ego view: 0 loop: 0 setCycle: Walk illegalBits: -32768)
+				(= gotItem TRUE)
+				(ego view: 0 loop: 0 setCycle: Walk illegalBits: cWHITE)
 				(HandsOn)
 			)
 		)
@@ -148,9 +177,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/anchor') (Print 61 13))
-			(
-			(or (MousedOn self event 3) (Said 'examine/anchor')) (event claimed: 1) (Print 61 14))
+			((Said 'get/anchor')
+				(Print 61 13)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/anchor'))
+				(event claimed: TRUE)
+				(Print 61 14)
+			)
 		)
 	)
 )
@@ -165,9 +198,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/bit'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/bit'))
+			(event claimed: TRUE)
 			(Print 61 15)
 		)
 	)
@@ -184,20 +216,22 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/preserver[<life]') (Print 61 16))
+			((Said 'get/preserver[<life]')
+				(Print 61 16)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/preserver[<life]')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 61 17)
 			)
 		)
 	)
 )
 
-(instance minnow of PV
+(instance minnow of PicView
 	(properties
 		y 141
 		x 69
@@ -223,17 +257,27 @@
 				)
 				(Print 61 18)
 			)
-			((Said 'get/boat') (Print 61 19))
-			((Said 'examine<below/boat,buggy') (Print 61 20))
+			((Said 'get/boat')
+				(Print 61 19)
+			)
+			((Said 'examine<below/boat,buggy')
+				(Print 61 20)
+			)
 			((Said 'search,(examine<in)/boat')
-				(if (& (ego onControl: 0) $0008)
-					(if local1 (Print 61 21) else (Print 61 22))
+				(if (& (ego onControl: FALSE) cCYAN)
+					(if local1
+						(Print 61 21)
+					else
+						(Print 61 22)
+					)
 				else
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/boat')) (event claimed: 1) (Print 61 23))
+			((or (MousedOn self event shiftDown) (Said 'examine/boat'))
+				(event claimed: TRUE)
+				(Print 61 23)
+			)
 		)
 	)
 )
@@ -248,12 +292,22 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine,get/oar') (Print 61 24))
-			((Said 'open/box,box') (Print 61 25))
-			((Said 'get,move/box,box') (Print 61 26))
-			((Said 'examine<in/box') (Print 61 25))
-			(
-			(or (MousedOn self event 3) (Said 'examine/box')) (event claimed: 1) (Print 61 27))
+			((Said 'examine,get/oar')
+				(Print 61 24)
+			)
+			((Said 'open/box,box')
+				(Print 61 25)
+			)
+			((Said 'get,move/box,box')
+				(Print 61 26)
+			)
+			((Said 'examine<in/box')
+				(Print 61 25)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/box'))
+				(event claimed: TRUE)
+				(Print 61 27)
+			)
 		)
 	)
 )
@@ -275,10 +329,12 @@
 				)
 				(Print 61 28)
 			)
-			((Said 'get/buggy') (Print 61 29))
+			((Said 'get/buggy')
+				(Print 61 29)
+			)
 			((Said 'search,(examine<in)/buggy')
-				(if (& (ego onControl: 0) $0004)
-					(if (== ((inventory at: 7) owner?) 61)
+				(if (& (ego onControl: FALSE) cGREEN)
+					(if (== ((inventory at: iCrowbar) owner?) 61)
 						(Room61 setScript: getBar)
 					else
 						(Print 61 11)
@@ -287,8 +343,10 @@
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/buggy')) (event claimed: 1) (Print 61 30))
+			((or (MousedOn self event shiftDown) (Said 'examine/buggy'))
+				(event claimed: TRUE)
+				(Print 61 30)
+			)
 		)
 	)
 )
@@ -303,14 +361,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/can')) (event claimed: 1) (Print 61 31))
+			((or (MousedOn self event shiftDown) (Said 'examine/can'))
+				(event claimed: TRUE)
+				(Print 61 31)
+			)
 			((Said 'get/can')
-				(if (& (ego onControl: 1) $0010)
+				(if (& (ego onControl: origin) cRED)
 					(Ok)
-					(ego get: 3)
-					(= local0 0)
-					(= gotItem 1)
+					(ego get: iOilcan)
+					(= oilCanHere FALSE)
+					(= gotItem TRUE)
 					(OilCan dispose:)
 				else
 					(NotClose)
@@ -320,9 +380,7 @@
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
 (instance Table of RFeature
 	(properties
@@ -333,10 +391,13 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/nightstand'))
-			(if local0 (Print 61 32) else (Print 61 33))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/nightstand'))
+			(if oilCanHere
+				(Print 61 32)
+			else
+				(Print 61 33)
+			)
+			(event claimed: TRUE)
 		)
 	)
 )

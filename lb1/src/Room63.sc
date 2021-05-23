@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 63)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -15,14 +15,16 @@
 	(doll bear toy)
 )
 
-(instance Room63 of Rm
+(instance Room63 of Room
 	(properties
 		picture 63
 	)
 	
 	(method (init)
 		(super init:)
-		(if (>= currentAct 6) (addToPics add: Chalk))
+		(if (>= currentAct 6)
+			(addToPics add: Chalk)
+		)
 		(if
 			(and
 				(not (== currentAct 2))
@@ -41,20 +43,28 @@
 			view: 0
 			loop: 1
 			posn: 200 153
-			illegalBits: -32768
+			illegalBits: cWHITE
 			init:
 		)
 		(switch currentAct
-			(2 (self setRegions: 257))
+			(2
+				(self setRegions: 257)
+			)
 			(6
-				(if (not (& global118 $0002)) (self setRegions: 282))
+				(if (not (& global118 $0002))
+					(self setRegions: 282)
+				)
 			)
 		)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 63 0))
-		(if (& (ego onControl: 0) $0002) (curRoom newRoom: 14))
+		(if (FirstEntry)
+			(Print 63 0)
+		)
+		(if (& (ego onControl: FALSE) cBLUE)
+			(curRoom newRoom: 14)
+		)
 		(super doit:)
 	)
 	
@@ -64,7 +74,7 @@
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(if
 				(and
 					global208
@@ -72,7 +82,7 @@
 						'ask,tell,hold,deliver,examine,get,kill,kiss,embrace,flirt>'
 					)
 				)
-				(DisposeScript 990)
+				(DisposeScript SAVE)
 				(self setScript: (ScriptID 243 0))
 				((self script?) handleEvent: event)
 				(if (event claimed?) (return))
@@ -89,13 +99,17 @@
 							)
 							(Print 63 1)
 						)
-						((Said '/door') (Print 63 2))
-						((Said '/window') (Print 63 3))
+						((Said '/door')
+							(Print 63 2)
+						)
+						((Said '/window')
+							(Print 63 3)
+						)
 						((Said '/wall')
 							(if (>= currentAct 5)
 								(Print 63 4)
 							else
-								(event claimed: 0)
+								(event claimed: FALSE)
 							)
 						)
 					)
@@ -104,10 +118,12 @@
 					(if (>= currentAct 5)
 						(Print 63 5)
 					else
-						(event claimed: 0)
+						(event claimed: FALSE)
 					)
 				)
-				((Said 'open/window') (Print 63 6))
+				((Said 'open/window')
+					(Print 63 6)
+				)
 			)
 		)
 	)
@@ -126,10 +142,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/nightstand'))
+		(if (or (MousedOn self event shiftDown) (Said 'examine/nightstand'))
 			(Print 63 7)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -143,10 +158,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/chair'))
+		(if (or (MousedOn self event shiftDown) (Said 'examine/chair'))
 			(Print 63 8)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -160,9 +174,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
+		(if (MousedOn self event shiftDown)
 			(Print 63 9)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -177,20 +191,25 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'play[/doll]') (Print 63 10) (event claimed: 1))
+			((Said 'play[/doll]')
+				(Print 63 10)
+				(event claimed: TRUE)
+			)
 			((Said 'examine/doll')
 				(if (== currentAct 2)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				else
 					(Print 63 11)
 				)
 			)
-			((Said 'get/doll') (Print 63 12))
+			((Said 'get/doll')
+				(Print 63 12)
+			)
 		)
 	)
 )
 
-(instance SmallDoll of PV
+(instance SmallDoll of PicView
 	(properties
 		y 141
 		x 204
@@ -202,7 +221,7 @@
 	)
 )
 
-(instance MedDoll of PV
+(instance MedDoll of PicView
 	(properties
 		y 138
 		x 134
@@ -212,7 +231,7 @@
 	)
 )
 
-(instance Bear of PV
+(instance Bear of PicView
 	(properties
 		y 137
 		x 150
@@ -222,7 +241,7 @@
 	)
 )
 
-(instance Poster of PV
+(instance Poster of PicView
 	(properties
 		y 139
 		x 208
@@ -232,7 +251,7 @@
 	)
 )
 
-(instance Chalk of PV
+(instance Chalk of PicView
 	(properties
 		y 139
 		x 235

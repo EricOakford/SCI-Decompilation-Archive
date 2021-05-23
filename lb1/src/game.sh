@@ -78,6 +78,7 @@
 ;Event flags
 (define fSawShadowyFigure 0)
 (define fReadDiary 3)
+(define fGotMonocle	5)
 (define fExaminedHandkerchief 6)
 (define fExaminedRollingPin 7)
 (define fExaminedPoker 8)
