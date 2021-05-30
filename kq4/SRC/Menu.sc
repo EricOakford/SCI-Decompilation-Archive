@@ -12,17 +12,21 @@
 (class TheMenuBar of MenuBar
 	
 	(method (init)
-		(AddMenu { \01_} {About KQ4`^a:Help`#1})
-		(AddMenu
-			{ File_}
+		(AddMenu { \01_}
+			{About KQ4`^a:Help`#1}
+		)
+		(AddMenu { File_}
 			{Save`#5:Restore`#7:-!:Restart`#9:Quit`^q}
 		)
-		(AddMenu { Action_} {Pause`^p:Inventory`^i:Retype`#3})
-		(AddMenu
-			{ Speed_}
+		(AddMenu { Action_}
+			{Pause`^p:Inventory`^i:Retype`#3}
+		)
+		(AddMenu { Speed_}
 			{Speed`^s:-!:Faster`+:Normal`=:Slower`-}
 		)
-		(AddMenu { Sound_} {Volume`^v:-!:Turn Off=1`#2})
+		(AddMenu { Sound_}
+			{Volume`^v:-!:Turn Off=1`#2}
+		)
 		(SetMenu soundI
 			p_text (if (DoSound SoundOn) {Turn Off} else {Turn On})
 		)
@@ -34,8 +38,8 @@
 		(SetMenu invI p_said 'inventory')
 	)
 	
-	(method (handleEvent event &tmp temp0 i [temp2 4] oldPause [str2 288])
-		(switch (= temp0 (super handleEvent: event))
+	(method (handleEvent event &tmp evt i [temp2 4] oldPause [str2 288])
+		(switch (= evt (super handleEvent: event))
 			(aboutI
 				(= oldPause (Sound pause: TRUE))
 				(Print
@@ -135,7 +139,9 @@
 				)
 			)
 			(fasterI
-				(if (> speed 1) (theGame setSpeed: (-- speed)))
+				(if (> speed 1)
+					(theGame setSpeed: (-- speed))
+				)
 			)
 			(normalI
 				(theGame setSpeed: 6)
@@ -175,7 +181,9 @@
 				(DoSound SoundOn (not i))
 			)
 			(else 
-				(if global202 (global202 doit: temp0))
+				(if debugMenu
+					(debugMenu doit: evt)
+				)
 			)
 		)
 	)

@@ -518,8 +518,7 @@
 			#width 290
 			#edit @userInput 30
 		)
-		(if
-		(and debugging (= i (ReadNumber @userInput)))
+		(if (and debugging (= i (ReadNumber @userInput)))
 			(TheMenuBar draw:)
 			(StatusLine enable:)
 			(self newRoom: i)
@@ -537,7 +536,9 @@
 		(cond
 			;Bobalu was only in 1988 release -- enable if you want it. -- Kawa
 			;((not (StrCmp @userInput {BOBALU})) (curRoom newRoom: 700))
-			((== inputSum requestSum) (curRoom newRoom: 700))
+			((== inputSum requestSum)
+				(curRoom newRoom: 700)
+			)
 			(else
 				(Print 701 1)
 				(= quit TRUE)

@@ -379,9 +379,9 @@
 	)
 	
 	(method (handleEvent event &tmp inventorySaidMe)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'look[<around][/room,ocean,ocean,water]')
 						(cond 

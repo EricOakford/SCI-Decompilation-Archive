@@ -20,7 +20,7 @@
 	rosella
 	rosellaBody
 	local6
-	local7
+	i
 )
 (instance Room694 of Room
 	(properties
@@ -37,9 +37,8 @@
 )
 
 (instance actions of Script
-	(properties)
-	
-	(method (changeState newState &tmp [secretCode 12])
+
+	(method (changeState newState &tmp [buf 12])
 		(switch (= state newState)
 			(0
 				(= local6 1)
@@ -672,20 +671,20 @@
 			;EO: This state was used in earlier versions, but was rendered inaccessible later on,
 			;since the promotion it was for had since ended. However, it's still present here.
 			(600
-				(StrAt @secretCode 10)
-				(= local7 0)
-				(while (<= local7 9)
-					(StrAt @secretCode local7 (+ (Random 0 25) 65))
-					(++ local7)
+				(StrAt @buf 10)
+				(= i 0)
+				(while (<= i 9)
+					(StrAt @buf i (+ (Random 0 25) 65))
+					(++ i)
 				)
-				(StrAt @secretCode 10 0)
+				(StrAt @buf 10 0)
 				(if (== score 230)
-					(StrAt @secretCode 2 69)
-					(StrAt @secretCode 6 52)
-					(StrAt @secretCode 9 65)
+					(StrAt @buf 2 69)
+					(StrAt @buf 6 52)
+					(StrAt @buf 9 65)
 				)
 				(Print
-					(Format @str {Your Secret Code is:\n\n___%s} @secretCode)
+					(Format @str {Your Secret Code is:\n\n___%s} @buf)
 				)
 			)
 		)

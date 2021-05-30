@@ -32,7 +32,6 @@ $600 debugM
 )
 
 (instance DebugMenu of Script
-	(properties)
 	
 	(method (init)
 		(AddMenu
@@ -44,7 +43,7 @@ $600 debugM
 		)
 	)
 	
-	(method (doit event &tmp oldPause [temp1 6] [roomNum 33])
+	(method (doit event &tmp oldPause [temp1 6] [buf 33])
 		(switch event
 			(egoI
 				(Print
@@ -53,7 +52,7 @@ $600 debugM
 				)
 			)
 			(roomI
-				(Print (Format @roomNum 801 1 curRoomNum))
+				(Print (Format @buf 801 1 curRoomNum))
 			)
 			(memI
 				(theGame showMem:)
@@ -68,7 +67,7 @@ $600 debugM
 			;	(= debugOn TRUE)
 			)
 			(clicksI
-				(if (= debugging (^ debugging $0001))
+				(if (^= debugging TRUE)
 					(Print 801 2)
 				)
 			)

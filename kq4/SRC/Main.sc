@@ -241,7 +241,7 @@
 	hourMetFisherman
 	woreFrogCrown
 	putBoardOverSwamp
-	global202
+	debugMenu
 	crow
 	isHandsOff
 	inCutscene
@@ -599,13 +599,15 @@
 (class newInvItem of InvItem
 	
 	(method (showSelf)
-		(Print 0 0 #title name #icon view loop cel)
+		(Print 0 0
+			#title name
+			#icon view loop cel
+		)
 	)
 )
 
 (instance statusCode of Code
-	(properties)
-	
+
 	(method (doit strg)
 		(Format strg 0 1 score possibleScore
 			{ KQ\n__The Perils of Rosella}
@@ -636,8 +638,7 @@
 )
 
 (instance KQ4 of Game
-	(properties)
-	
+
 	(method (init)
 		(= systemWindow SysWindow)
 		(super init:)
@@ -693,7 +694,7 @@
 		(getItemMusic init:)
 		(tweet init:)
 		(= whereIsMinstrel (Random 1 3))
-		(User canInput: FALSE canControl: FALSE echo: 32)
+		(User canInput: FALSE canControl: FALSE echo: SPACEBAR)
 		(= inCutscene TRUE)
 		(StatusLine code: statusCode)
 		(= possibleScore 230)
@@ -715,14 +716,15 @@
 	
 	(method (doit)
 		(cond 
-			((and inCinematic (!= global221 2)) (= global221 2)
+			((and inCinematic (!= global221 2))
+				(= global221 2)
 				(self setCursor: 666 (HaveMouse))
 			)
 			((and (== global221 2) (not inCinematic))
 				(self setCursor: normalCursor (HaveMouse))
 				(= global221 0)
 			)
-			((and (== (User controls?) 0) (== global221 0))
+			((and (== (User controls?) FALSE) (== global221 0))
 				(= global221 1)
 				(self setCursor: normalCursor TRUE)
 			)
@@ -771,12 +773,11 @@
 				(= oldSysTime thisTime)
 				(if (>= (= gameSeconds (+ gameSeconds 4)) 60)
 					(++ gameMinutes)
-					(= gameSeconds (- gameSeconds 60))
+					(-= gameSeconds 60)
 					(if (and (== gameHours 31) (== gameMinutes 59))
 						(curRoom setScript: (ScriptID 302 0))	;Time Over
 					)
-					(if
-					(and (== gameHours 20) (== (mod gameMinutes 15) 0))
+					(if (and (== gameHours 20) (== (mod gameMinutes 15) 0))
 						(Print 0 4)
 					)
 					(if (== gameMinutes 60)
@@ -838,7 +839,7 @@
 	(method (startRoom roomNum &tmp region)
 		(if (and global216 (HaveMem 1200))
 			(= global216 0)
-			((= global202 (ScriptID 801)) init:)
+			((= debugMenu (ScriptID 801)) init:)
 		)
 		(DisposeScript AVOIDER)
 		(if debugOn
@@ -4068,8 +4069,7 @@ code_1bc6:
 )
 
 (instance smallBase of Code
-	(properties)
-	
+
 	(method (doit theActor)
 		(theActor brTop: (- (theActor y?) (theActor yStep?)))
 		(theActor brLeft: (- (theActor x?) (/ (theActor xStep?) 2)))
@@ -4078,14 +4078,8 @@ code_1bc6:
 	)
 )
 
-(instance timer1 of Timer
-	(properties)
-)
+(instance timer1 of Timer)
 
-(instance timer2 of Timer
-	(properties)
-)
+(instance timer2 of Timer)
 
-(instance timer3 of Timer
-	(properties)
-)
+(instance timer3 of Timer)

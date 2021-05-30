@@ -103,7 +103,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(event claimed: TRUE)
 		(= local8 0)
 		(if oldDeadState
@@ -127,34 +127,36 @@
 					)
 					(theGame restart:)
 				)
-				(else (cast eachElementDo: #dispose) (curRoom newRoom: 98))
+				(else
+					(cast eachElementDo: #dispose)
+					(curRoom newRoom: 98)
+				)
 			)
 		)
 	)
 )
 
 (instance spark1 of Script
-	(properties)
 	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 		(client init:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp rand)
 		(switch (= state newState)
 			(0
-				(= temp0 (/ (Random 10 40) 10))
+				(= rand (/ (Random 10 40) 10))
 				(client
 					posn:
-						(switch temp0
+						(switch rand
 							(1 96)
 							(2 135)
 							(3 230)
 							(4 260)
 							(else  150)
 						)
-						(switch temp0
+						(switch rand
 							(1 39)
 							(2 158)
 							(3 18)
@@ -176,26 +178,25 @@
 )
 
 (instance spark2 of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+
+	(method (init who)
+		(super init: who)
 		(client init:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp rand)
 		(switch (= state newState)
 			(0
-				(= temp0 (/ (Random 10 40) 10))
+				(= rand (/ (Random 10 40) 10))
 				(client
 					posn:
-						(switch temp0
+						(switch rand
 							(1 80)
 							(2 204)
 							(3 141)
 							(4 267)
 						)
-						(switch temp0
+						(switch rand
 							(1 83)
 							(2 121)
 							(3 80)
@@ -216,26 +217,25 @@
 )
 
 (instance spark3 of Script
-	(properties)
 	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 		(client init:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp rand)
 		(switch (= state newState)
 			(0
-				(= temp0 (/ (Random 10 40) 10))
+				(= rand (/ (Random 10 40) 10))
 				(client
 					posn:
-						(switch temp0
+						(switch rand
 							(1 197)
 							(2 182)
 							(3 116)
 							(4 104)
 						)
-						(switch temp0
+						(switch rand
 							(1 47)
 							(2 158)
 							(3 49)
@@ -256,26 +256,25 @@
 )
 
 (instance spark4 of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+
+	(method (init who)
+		(super init: who)
 		(client init:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp rand)
 		(switch (= state newState)
 			(0
-				(= temp0 (/ (Random 10 40) 10))
+				(= rand (/ (Random 10 40) 10))
 				(client
 					posn:
-						(switch temp0
+						(switch rand
 							(1 141)
 							(2 102)
 							(3 268)
 							(4 210)
 						)
-						(switch temp0
+						(switch rand
 							(1 80)
 							(2 117)
 							(3 96)
@@ -302,7 +301,6 @@
 )
 
 (instance playMusic of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

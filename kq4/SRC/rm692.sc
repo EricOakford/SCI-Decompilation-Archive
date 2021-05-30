@@ -28,7 +28,6 @@
 )
 
 (instance escort of Prop
-	(properties)
 	
 	(method (cue)
 		(self addToPic:)
@@ -211,7 +210,7 @@
 			init:
 			addToPic:
 		)
-		(User canControl: 0 canInput: 0)
+		(User canControl: FALSE canInput: FALSE)
 		((= lolotte (Prop new:))
 			view: 807
 			loop: 3

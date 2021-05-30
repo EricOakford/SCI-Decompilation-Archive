@@ -11,7 +11,6 @@
 )
 
 (instance Room700 of Room
-	(properties)
 	
 	(method (init)
 		(curRoom drawPic: 700 IRISIN)
@@ -40,7 +39,9 @@
 				)
 				(= seconds 3)
 			)
-			(1 (curRoom newRoom: 699))
+			(1
+				(curRoom newRoom: 699)
+			)
 		)
 	)
 )

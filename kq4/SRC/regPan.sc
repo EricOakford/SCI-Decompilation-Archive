@@ -65,7 +65,10 @@
 					init:
 				)
 				(Load VIEW 157)
-				(if (ego has: 9) (Load rsVIEW 54) (Load rsVIEW 150))
+				(if (ego has: iLute)
+					(Load VIEW 54)
+					(Load VIEW 150)
+				)
 				(= pan (Actor new:))
 				(pan
 					posn: (Random 10 300) (Random (+ (curRoom horizon?) 20) 169)

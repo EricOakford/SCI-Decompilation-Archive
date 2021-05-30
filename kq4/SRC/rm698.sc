@@ -16,9 +16,7 @@
 	local0
 	[credit 84]
 )
-(instance creditMusic of Sound
-	(properties)
-)
+(instance creditMusic of Sound)
 
 (instance Room698 of Room
 	(properties
@@ -67,7 +65,6 @@
 )
 
 (instance creditActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

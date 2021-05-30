@@ -54,8 +54,7 @@
 )
 
 (instance egoActions of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

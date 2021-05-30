@@ -36,15 +36,15 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 5)
-		(Load rsVIEW 6)
-		(Load rsVIEW 7)
-		(Load rsVIEW 10)
-		(Load rsVIEW 372)
-		(Load rsVIEW 377)
-		(Load rsVIEW 193)
-		(Load rsVIEW 680)
-		(Load rsVIEW 370)
+		(Load VIEW 5)
+		(Load VIEW 6)
+		(Load VIEW 7)
+		(Load VIEW 10)
+		(Load VIEW 372)
+		(Load VIEW 377)
+		(Load VIEW 193)
+		(Load VIEW 680)
+		(Load VIEW 370)
 		(= local0 0)
 		(ego viewer: swamp)
 		(super init:)
@@ -290,8 +290,7 @@
 )
 
 (instance drinking of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
