@@ -79,7 +79,6 @@
 )
 
 (instance rm31Script of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)

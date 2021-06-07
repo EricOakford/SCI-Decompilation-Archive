@@ -20,9 +20,7 @@
 	bainsCar
 	carDust
 )
-(instance bains of Actor
-	(properties)
-)
+(instance bains of Actor)
 
 (instance rm60 of Room
 	(properties
@@ -94,7 +92,6 @@
 )
 
 (instance bainsScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -184,8 +181,7 @@
 				(keith setMotion: Follow bainsCar 500)
 				(ego view: 6 setMotion: Follow bainsCar 500)
 				(bainsCar
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(ego x?)
 						(if (> (ego y?) 140) (ego y?) else 140)
 						self
@@ -195,8 +191,7 @@
 			)
 			(9
 				(bainsCar
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						430
 						(if (> (ego y?) 120) (+ (ego y?) 35) else 140)
 						self

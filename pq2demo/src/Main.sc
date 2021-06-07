@@ -21,8 +21,8 @@
 	HandsOff 11
 	HandsOn 12
 	DontHaveGun 13
-	CheckItemOwner 14
-	SetItemOwner 15
+	InRoom 14
+	PutInRoom 15
 	Bset 16
 	Bclr 17
 	Btst 18
@@ -274,8 +274,8 @@
 	muggerArrested
 	gMethaneGasTimer
 	fieldKitOpen
-	global241
-	global242
+	thisTime
+	oldSysTime
 	global243
 	global244
 	global245
@@ -336,8 +336,12 @@
 
 (procedure (HandsOff)
 	(cond 
-		((== argc 1) (= global243 1))
-		(global243 (= global244 1))
+		((== argc 1)
+			(= global243 1)
+		)
+		(global243
+			(= global244 1)
+		)
 	)
 	(= isHandsOff TRUE)
 	(User canControl: FALSE canInput: FALSE)
@@ -359,18 +363,18 @@
 	(Print 0 5)
 )
 
-(procedure (CheckItemOwner item owner)
+(procedure (InRoom what where)
 	(return
 		(==
-			((inventory at: item) owner?)
-			(if (== argc 1) curRoomNum else owner)
+			((inventory at: what) owner?)
+			(if (== argc 1) curRoomNum else where)
 		)
 	)
 )
 
-(procedure (SetItemOwner item owner)
-	((inventory at: item)
-		owner: (if (== argc 1) curRoomNum else owner)
+(procedure (PutInRoom what where)
+	((inventory at: what)
+		owner: (if (== argc 1) curRoomNum else where)
 	)
 )
 
@@ -407,11 +411,11 @@
 		setPri: -1
 		setMotion: 0
 		setCycle: Walk
-		illegalBits: -32768
+		illegalBits: cWHITE
 		cycleSpeed: 0
 		moveSpeed: 0
 		setStep: 3 2
-		ignoreActors: 0
+		ignoreActors: FALSE
 	)
 )
 
@@ -426,7 +430,6 @@
 )
 
 (instance statusCode of Code
-	(properties)
 	
 	(method (doit strg)
 		(Format strg 0 0 score possibleScore)
@@ -434,8 +437,7 @@
 )
 
 (instance PQ of Game
-	(properties)
-	
+
 	(method (init &tmp [temp0 21])
 		(super init:)
 		(TheMenuBar init:)
@@ -448,7 +450,11 @@
 			number: 6
 			init:
 		)
-		(music owner: self number: 6 init:)
+		(music
+			owner: self
+			number: 6
+			init:
+		)
 		(if (GameIsRestarting)
 			(TheMenuBar draw:)
 			(StatusLine enable:)
@@ -462,8 +468,8 @@
 	(method (doit)
 		(super doit:)
 		(diverClock doit:)
-		(if (!= global242 (= global241 (GetTime TRUE)))
-			(= global242 global241)
+		(if (!= oldSysTime (= thisTime (GetTime TRUE)))
+			(= oldSysTime thisTime)
 			(if (> captainWarningTimer 1)
 				(-- captainWarningTimer)
 			)
@@ -494,8 +500,7 @@
 			(diverClock set: 500)
 			(= diverState 11)
 		)
-		(if
-		(and (== diverState 11) (< (diverClock timeLeft?) 1))
+		(if (and (== diverState 11) (< (diverClock timeLeft?) 1))
 			(= removedBodyFromRiver TRUE)
 			(= diverState 12)
 		)

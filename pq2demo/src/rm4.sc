@@ -53,7 +53,6 @@
 )
 
 (instance rm4Script of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

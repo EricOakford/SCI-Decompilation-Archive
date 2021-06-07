@@ -25,13 +25,9 @@
 	local12
 	[hoodPosn 10]
 )
-(instance keithAct of Actor
-	(properties)
-)
+(instance keithAct of Actor)
 
-(instance gasBomb of Actor
-	(properties)
-)
+(instance gasBomb of Actor)
 
 (instance rm25 of Room
 	(properties
@@ -101,7 +97,7 @@
 			setPri: 0
 			posn: 67 7
 			init:
-			ignoreActors: 0
+			ignoreActors: FALSE
 			addToPic:
 		)
 		((View new:)
@@ -145,8 +141,7 @@
 )
 
 (instance pLight of Prop
-	(properties)
-	
+
 	(method (doit)
 		(self posn: (+ (lightPosn x?) 4) (- (lightPosn y?) 29))
 		(super doit:)
@@ -154,7 +149,6 @@
 )
 
 (instance swatArrives of Script
-	(properties)
 	
 	(method (changeState newState)
 		(asm
