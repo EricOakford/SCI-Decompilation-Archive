@@ -122,7 +122,7 @@
 					(1 (Chicken loop: 5))
 				)
 			)
-			(if (== (Chicken onControl: origin) 16384)
+			(if (== (Chicken onControl: origin) cYELLOW)
 				(= local15 1)
 				(self setScript: blowUp)
 			)
@@ -185,7 +185,7 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(switch (event type?)
-			(evKEYBOARD
+			(keyDown
 				(switch (event message?)
 					(`+
 						(if (> speed 1) (theGame setSpeed: (-- speed)))
@@ -213,8 +213,11 @@
 					((Said 'read,look,use/instruction') (Print 290 2))
 					((Said 'insert,use,drop[<in]/bill') (DoDisplay))
 					((Said 'play[/game,astro,astro]') (DoDisplay))
-					(
-					(or (Said 'disembark,quit[/game,device]') (Said '/bye')) (= saveDisabled FALSE) (= global159 0) (= quit TRUE))
+					((or (Said 'disembark,quit[/game,device]') (Said '/bye'))
+						(= saveDisabled FALSE)
+						(= global159 0)
+						(= quit TRUE)
+					)
 					((Said 'beat,tilt/game,device') (Print 290 3))
 					((Said 'look[/area,around,game,device]') (Print 290 4))
 					((Said 'look/letter')
@@ -235,10 +238,9 @@
 						(= global159 1)
 						(RedrawCast)
 						(if (ego has: iDecoderRing)
-							(if
-							(and (< astroChickenScore 120) (not decodedMessage) local18)
+							(if (and (< astroChickenScore 120) (not decodedMessage) local18)
 								(theGame changeScore: 20)
-								(= astroChickenScore (+ astroChickenScore 20))
+								(+= astroChickenScore 20)
 								(= decodedMessage TRUE)
 							)
 							(= saveBits
@@ -359,7 +361,7 @@
 						(<= (event y?) 189)
 						(not local16)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(DoDisplay)
 				)
 			)
@@ -368,8 +370,7 @@
 )
 
 (instance intro of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -454,7 +455,7 @@
 				(++ currentLevel)
 				(if (< astroChickenScore 50)
 					(theGame changeScore: 5)
-					(= astroChickenScore (+ astroChickenScore 5))
+					(+= astroChickenScore 5)
 				)
 				(if
 					(or
@@ -504,7 +505,7 @@
 				(Chicken dispose:)
 				(if (< astroChickenScore 100)
 					(theGame changeScore: 50)
-					(= astroChickenScore (+ astroChickenScore 50))
+					(+= astroChickenScore 50)
 				)
 				(client drawPic: 290)
 				(= local18 1)
@@ -528,7 +529,6 @@
 )
 
 (instance blowUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -556,8 +556,7 @@
 )
 
 (instance tooHigh of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -576,8 +575,7 @@
 )
 
 (instance death of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -608,7 +606,6 @@
 )
 
 (instance byeBye of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -633,8 +630,7 @@
 )
 
 (instance Chicken of Actor
-	(properties)
-	
+
 	(method (init)
 		(super init:)
 		(self
@@ -651,7 +647,6 @@
 )
 
 (instance guysLeft of Prop
-	(properties)
 	
 	(method (init)
 		(super init:)
@@ -673,8 +668,7 @@
 )
 
 (instance Bacock of Prop
-	(properties)
-	
+
 	(method (init)
 		(super init:)
 		(self
@@ -687,7 +681,6 @@
 )
 
 (instance gameOver of Prop
-	(properties)
 	
 	(method (init)
 		(super init:)
@@ -696,7 +689,6 @@
 )
 
 (instance explosion of Prop
-	(properties)
 	
 	(method (init)
 		(super init:)

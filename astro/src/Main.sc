@@ -760,12 +760,9 @@
 	)
 )
 
-(instance logFile of File
-	(properties)
-)
+(instance logFile of File)
 
 (instance SQ3 of Game
-	(properties)
 	
 	(method (init)
 		(super init:)
