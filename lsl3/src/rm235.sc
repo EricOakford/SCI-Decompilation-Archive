@@ -19,7 +19,7 @@
 	)
 	
 	(method (init)
-		(if (CheckItemOwner iOrchids)
+		(if (InRoom iOrchids)
 			(Load VIEW 236)
 		)
 		(super init:)
@@ -116,7 +116,7 @@
 						(Print 235 10)
 					)
 					((and (== orchidMinutes 1) (== orchidSeconds 0)) (self changeState: 1))
-					((not (CheckItemOwner iOrchids)) (Print 235 11))
+					((not (InRoom iOrchids)) (Print 235 11))
 					(else (self changeState: 1))
 				)
 			)

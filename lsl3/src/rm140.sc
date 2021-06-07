@@ -668,43 +668,43 @@ code_06a0:
 			(keyDown
 				(= temp0 (event modifiers?))
 				(switch (event message?)
-					(KEY_F2
+					(`#2
 						(event claimed?)
 						(ToggleSound)
 					)
-					(KEY_a
+					(`a
 						(= printRet 1)
 						(self cue:)
 					)
-					(KEY_b
+					(`b
 						(= printRet 2)
 						(self cue:)
 					)
-					(KEY_c
+					(`c
 						(= printRet 3)
 						(self cue:)
 					)
-					(KEY_d
+					(`d
 						(= printRet 4)
 						(self cue:)
 					)
-					(KEY_A
+					(`A
 						(= printRet 1)
 						(self cue:)
 					)
-					(KEY_B
+					(`B
 						(= printRet 2)
 						(self cue:)
 					)
-					(KEY_C
+					(`C
 						(= printRet 3)
 						(self cue:)
 					)
-					(KEY_D
+					(`D
 						(= printRet 4)
 						(self cue:)
 					)
-					(KEY_ALT_x
+					(`@x
 						(if (& temp0 $0004)
 							(event claimed: TRUE)
 							(Print 140 0)

@@ -44,7 +44,7 @@
 	(method (init)
 		(if
 			(and
-				(CheckItemOwner iGrass)
+				(InRoom iGrass)
 				(ego has: iGinsuKnife)
 				(== 21 ((Inventory at: iGinsuKnife) view?))
 			)
@@ -144,7 +144,7 @@
 				(cond 
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					(playingAsPatti (Print 230 0))
-					((not (CheckItemOwner iGrass)) (AlreadyTook))
+					((not (InRoom iGrass)) (AlreadyTook))
 					((not (& (ego onControl:) cRED)) (NotClose))
 					(else (Print 230 0))
 				)
@@ -153,7 +153,7 @@
 				(cond 
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					(playingAsPatti (Print 230 0))
-					((not (CheckItemOwner 4)) (AlreadyTook))
+					((not (InRoom 4)) (AlreadyTook))
 					((not (& (ego onControl:) cRED)) (NotClose))
 					(
 					(or (not (Said '//ginsu')) (not (ego has: iGinsuKnife))) (Print 230 1))
@@ -166,7 +166,7 @@
 				(cond 
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					((not (ego has: iGinsuKnife)) (DontHave))
-					((not (CheckItemOwner iGrass)) (AlreadyTook))
+					((not (InRoom iGrass)) (AlreadyTook))
 					((not (& (ego onControl:) cRED)) (NotClose))
 					((not (Said '//blade<carve')) (Print 230 3))
 					((!= ((Inventory at: iGinsuKnife) view?) 21) (Print 230 2))
@@ -185,7 +185,7 @@
 						)
 					)
 					((Said '/boulder,cliff') (Print 230 7))
-					((and (CheckItemOwner iGrass) (Said '/blade')) (Print 230 8) (Print 230 9 #at -1 144))
+					((and (InRoom iGrass) (Said '/blade')) (Print 230 8) (Print 230 9 #at -1 144))
 					((Said '/flower') (Print 230 10))
 					((Said '/palm') (Print 230 11) (Print 230 12 #at -1 144))
 					((Said '[/area]')
@@ -215,8 +215,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look/door')
@@ -287,7 +286,7 @@
 				(theGame changeScore: 43)
 				(Print 230 45 #icon 25 0 0)
 				(= dollars 0)
-				(SetItemOwner iMoney)
+				(PutInRoom iMoney)
 				(aDoorman setLoop: 2 setCycle: Forward)
 				(= cycles 0)
 				(= seconds 3)

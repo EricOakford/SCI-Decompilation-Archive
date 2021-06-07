@@ -21,6 +21,7 @@
 (use Intrface)
 (use Sound)
 (use Motion)
+(use SortCopy)
 (use Menu)
 (use Actor)
 (use System)
@@ -184,12 +185,11 @@
 		;; Pass a said event parsed from user input to the various elements of
 		;; the game.
 		
-		;EO: no SORTCOPY.SC in LSL3
-;;;		(if useSortedFeatures
-;;;			(SortedAdd alterEgo sortedFeatures cast features)
-;;;		else
+		(if useSortedFeatures
+			(SortedAdd alterEgo sortedFeatures cast features)
+		else
 			(sortedFeatures add: cast features)
-;;;		)
+		)
 		
 		(if TheMenuBar 
 			(sortedFeatures addToFront: TheMenuBar)	;menu gets said first

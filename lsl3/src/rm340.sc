@@ -57,7 +57,7 @@
 		(aDrummer init:)
 		(aComic init:)
 		(aSign init:)
-		(if (and (CheckItemOwner iBottleOfWine) (ego has: iPenthouseKey))
+		(if (and (InRoom iBottleOfWine) (ego has: iPenthouseKey))
 			(aBottle setPri: 10 ignoreActors: init:)
 		)
 		(self setScript: RoomScript)
@@ -239,7 +239,7 @@
 					(
 					(and (!= currentStatus 16) (!= currentStatus egoSITTING)) (GoodIdea))
 					(
-					(or (not (CheckItemOwner iBottleOfWine)) (not (ego has: iPenthouseKey))) (Print 340 11))
+					(or (not (InRoom iBottleOfWine)) (not (ego has: iPenthouseKey))) (Print 340 11))
 					((not (& (ego onControl:) cLGREY)) (NotClose))
 					(else
 						(Ok)
@@ -304,7 +304,7 @@
 						)
 					)
 					((Said '/bottle')
-						(if (and (CheckItemOwner iBottleOfWine) (ego has: iPenthouseKey))
+						(if (and (InRoom iBottleOfWine) (ego has: iPenthouseKey))
 							(Print 340 28)
 						else
 							(Print 340 11)
@@ -328,7 +328,7 @@
 						(if
 							(and
 								(& (ego onControl:) $0080)
-								(CheckItemOwner iBottleOfWine)
+								(InRoom iBottleOfWine)
 								(ego has: iPenthouseKey)
 							)
 							(Print 340 28)

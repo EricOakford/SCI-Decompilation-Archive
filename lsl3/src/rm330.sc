@@ -180,7 +180,7 @@
 			(16
 				(Print 330 39 #icon 14 0 0 #at -1 10)
 				(ego cycleSpeed: 1 setLoop: 2 cel: 0 setCycle: EndLoop)
-				(SetItemOwner 14)
+				(PutInRoom iPanties)
 				(aPanties
 					posn: (ego x?) (ego y?)
 					setMotion: JumpTo 42 96 self
@@ -439,7 +439,7 @@
 				(= local2 3)
 			)
 			(17
-				(if (CheckItemOwner iPanties 330)
+				(if (InRoom iPanties 330)
 					(aPanties hide:)
 					((Inventory at: iPanties) owner: 335)
 				)
@@ -474,14 +474,14 @@
 			)
 			(21 (Print 330 47))
 			(22
-				(if (or local5 (CheckItemOwner 14 335))
+				(if (or local5 (InRoom 14 335))
 					(= local2 6)
 					(aDale
 						ignoreActors:
 						illegalBits: 0
 						setMotion: MoveTo 283 121 self
 					)
-					(if (CheckItemOwner 14 335)
+					(if (InRoom 14 335)
 						(Print 330 48)
 					else
 						(Print 330 49)

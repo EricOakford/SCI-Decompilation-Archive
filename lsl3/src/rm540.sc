@@ -218,8 +218,8 @@
 			((Said 'climb/palm') (Print 540 3))
 			((Said '(backdrop<on),wear/bra')
 				(cond 
-					((CheckItemOwner iBra 484) (Print 540 4))
-					((CheckItemOwner iBra -1) (DontHave))
+					((InRoom iBra 484) (Print 540 4))
+					((InRoom iBra -1) (DontHave))
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					((not (Btst fRemovedBra)) (Print 540 5))
 					((Btst fCoconutsInBra) (Print 540 6))
@@ -228,8 +228,8 @@
 			)
 			((Said 'drain,(off<get),(get<off)/bra')
 				(cond 
-					((CheckItemOwner iBra 484) (Print 540 4))
-					((CheckItemOwner iBra -1) (DontHave))
+					((InRoom iBra 484) (Print 540 4))
+					((InRoom iBra -1) (DontHave))
 					((Btst fRemovedBra) (Print 540 7))
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					(else (self changeState: 1))
@@ -263,7 +263,7 @@
 					(Said 'throw/bra')
 				)
 				(cond 
-					((CheckItemOwner iBra 484) (Print 540 4))
+					((InRoom iBra 484) (Print 540 4))
 					((not (ego has: iBra)) (DontHave))
 					((not (Btst fRemovedBra)) (Print 540 15))
 					((!= currentStatus egoNORMAL) (GoodIdea))

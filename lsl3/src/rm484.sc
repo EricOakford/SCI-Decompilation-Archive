@@ -103,7 +103,7 @@
 		(super init:)
 		(self
 			setPri: 11
-			setCel: (if (CheckItemOwner iDress 484) 0 else 255)
+			setCel: (if (InRoom iDress 484) 0 else 255)
 			ignoreActors:
 			stopUpd:
 		)
@@ -129,11 +129,11 @@
 	
 	(method (init)
 		(super init:)
-		(aWine init: setCel: (if (CheckItemOwner iBottleOfWine) 1 else 0))
+		(aWine init: setCel: (if (InRoom iBottleOfWine) 1 else 0))
 		(aDoor init: setCel: 255 stopUpd:)
-		(if (CheckItemOwner iPanties) (aPanties init:))
-		(if (CheckItemOwner iBra) (aBra init:))
-		(if (CheckItemOwner iPantyhose) (aPantyhose init:))
+		(if (InRoom iPanties) (aPanties init:))
+		(if (InRoom iBra) (aBra init:))
+		(if (InRoom iPantyhose) (aPantyhose init:))
 		(aDress init:)
 		(addToPics add: atpTelescope doit:)
 		(self setScript: RoomScript)
@@ -154,13 +154,13 @@
 			(= playingAsPatti TRUE)
 			(= currentEgo (Format @egoName 484 0))
 			(= newspaperState NSlMissing)
-			(SetItemOwner iMoney 450)
+			(PutInRoom iMoney 450)
 			((Inventory at: iMoney) view: 25)
 			(Format ((Inventory at: iMoney) name?) 484 1)
-			(SetItemOwner iMagicMarker 450)
-			(SetItemOwner iGinsuKnife -1)
-			(SetItemOwner iBeachTowel -1)
-			(SetItemOwner iSpaKeycard -1)
+			(PutInRoom iMagicMarker 450)
+			(PutInRoom iGinsuKnife -1)
+			(PutInRoom iBeachTowel -1)
+			(PutInRoom iSpaKeycard -1)
 			(ego get: iPenthouseKey)
 			((Inventory at: iPenthouseKey) view: 30)
 			(Format ((Inventory at: iPenthouseKey) name?) 484 2)
@@ -218,7 +218,7 @@
 			)
 			(2
 				(Ok)
-				(SetItemOwner iDress)
+				(PutInRoom iDress)
 				(ego view: 482)
 				(theGame changeScore: -10)
 				(Print 484 37)
@@ -259,7 +259,7 @@
 					)
 					((Said '/beer,bottle')
 						(cond 
-							((not (CheckItemOwner iBottleOfWine)) (AlreadyTook))
+							((not (InRoom iBottleOfWine)) (AlreadyTook))
 							((not (ego inRect: 126 126 196 141)) (NotClose))
 							(else
 								(Ok)
@@ -271,7 +271,7 @@
 					)
 					((Said '/panties')
 						(cond 
-							((not (CheckItemOwner iPanties)) (AlreadyTook))
+							((not (InRoom iPanties)) (AlreadyTook))
 							((not (& (ego onControl:) cRED)) (Print 484 5))
 							(else
 								(Ok)
@@ -284,7 +284,7 @@
 					)
 					((Said '/bra')
 						(cond 
-							((not (CheckItemOwner iBra)) (AlreadyTook))
+							((not (InRoom iBra)) (AlreadyTook))
 							((not (& (ego onControl:) cRED)) (Print 484 5))
 							((ego has: iBra) (Print 484 9))
 							(else
@@ -299,7 +299,7 @@
 					((Said '/hose')
 						(cond 
 							((!= currentStatus egoNORMAL) (GoodIdea))
-							((not (CheckItemOwner iPantyhose)) (AlreadyTook))
+							((not (InRoom iPantyhose)) (AlreadyTook))
 							((not (& (ego onControl:) cRED)) (Print 484 5))
 							(else
 								(Ok)
@@ -313,7 +313,7 @@
 					((Said '/dress')
 						(cond 
 							((!= currentStatus egoNORMAL) (GoodIdea))
-							((not (CheckItemOwner iDress)) (AlreadyTook))
+							((not (InRoom iDress)) (AlreadyTook))
 							((not (& (ego onControl:) cRED)) (Print 484 5))
 							(else (self changeState: 1))
 						)
@@ -331,24 +331,24 @@
 				(cond 
 					((Said '/lotion,(buffet<dressing),cloth')
 						(cond 
-							((CheckItemOwner iPantyhose) (Print 484 19))
-							((CheckItemOwner iPanties) (Print 484 20))
-							((CheckItemOwner iBra) (Print 484 21))
+							((InRoom iPantyhose) (Print 484 19))
+							((InRoom iPanties) (Print 484 20))
+							((InRoom iBra) (Print 484 21))
 							(else (Print 484 22))
 						)
-						(if (CheckItemOwner iDress) (Print 484 23))
+						(if (InRoom iDress) (Print 484 23))
 					)
 					((Said '/buffet')
-						(if (CheckItemOwner iBottleOfWine)
+						(if (InRoom iBottleOfWine)
 							(Print 484 24)
 						else
 							(Print 484 25)
 						)
 						(if
 							(or
-								(CheckItemOwner iPantyhose)
-								(CheckItemOwner iPanties)
-								(CheckItemOwner iBra)
+								(InRoom iPantyhose)
+								(InRoom iPanties)
+								(InRoom iBra)
 							)
 							(Print 484 26)
 						else
@@ -356,13 +356,13 @@
 						)
 					)
 					((Said '/tray')
-						(if (CheckItemOwner iBottleOfWine)
+						(if (InRoom iBottleOfWine)
 							(Print 484 27)
 						else
 							(Print 484 25)
 						)
 					)
-					((and (CheckItemOwner iBottleOfWine) (Said '/bottle')) (Print 484 27))
+					((and (InRoom iBottleOfWine) (Said '/bottle')) (Print 484 27))
 					((Said '/bed') (Print 484 28))
 					((Said '/keyboard') (Print 484 29))
 					((Said '/binocular') (Print 484 30))

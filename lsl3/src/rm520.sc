@@ -279,8 +279,8 @@
 			)
 			((Said 'drain,(off<get),(get<off)/hose')
 				(cond 
-					((CheckItemOwner iPantyhose 484) (Print 520 3))
-					((CheckItemOwner iPantyhose -1) (DontHave))
+					((InRoom iPantyhose 484) (Print 520 3))
+					((InRoom iPantyhose -1) (DontHave))
 					((Btst fRemovedPantyhose) (Print 520 4))
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					(else (self changeState: 15))
@@ -288,8 +288,8 @@
 			)
 			((Said '(backdrop<on),wear/hose')
 				(cond 
-					((CheckItemOwner iPantyhose 484) (Print 520 3))
-					((CheckItemOwner iPantyhose -1) (DontHave))
+					((InRoom iPantyhose 484) (Print 520 3))
+					((InRoom iPantyhose -1) (DontHave))
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					((not (Btst fRemovedPantyhose)) (Print 520 5))
 					(else (Print 520 6) (theGame changeScore: -15) (Bclr fRemovedPantyhose))

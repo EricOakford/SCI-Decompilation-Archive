@@ -37,8 +37,8 @@
 	Bclr 20
 	Btoggle 21
 	Btst 22
-	CheckItemOwner 23
-	SetItemOwner 24
+	InRoom 23
+	PutInRoom 24
 	SetPrintTime 25
 )
 
@@ -440,18 +440,18 @@
 	)
 )
 
-(procedure (CheckItemOwner item owner)
+(procedure (InRoom what where)
 	(return
 		(==
-			((inventory at: item) owner?)
-			(if (< argc 2) curRoomNum else owner)
+			((inventory at: what) owner?)
+			(if (< argc 2) curRoomNum else where)
 		)
 	)
 )
 
-(procedure (SetItemOwner item owner)
-	((inventory at: item)
-		owner: (if (< argc 2) curRoomNum else owner)
+(procedure (PutInRoom what where)
+	((inventory at: what)
+		owner: (if (< argc 2) curRoomNum else where)
 	)
 )
 
@@ -461,7 +461,6 @@
 )
 
 (instance LSL3 of Game
-	(properties)
 	
 	(method (init &tmp startingRoom)
 		((= systemWindow theWindow)

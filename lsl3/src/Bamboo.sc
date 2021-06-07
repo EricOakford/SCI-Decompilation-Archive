@@ -280,7 +280,7 @@
 							(music number: 500 loop: global108 play:)
 							(Print 500 7 #icon 29 0 0)
 							(Print 500 8)
-							(SetItemOwner iBottleOfWine)
+							(PutInRoom iBottleOfWine)
 							(NormalEgo)
 							(ego baseSetter: SteadyBase setCycle: SlowWalk)
 							(self changeState: 0)

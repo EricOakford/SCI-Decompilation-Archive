@@ -166,7 +166,7 @@
 			)
 			(15
 				(aMailBox
-					setCel: (if (CheckItemOwner iCreditCard) 1 else 2)
+					setCel: (if (InRoom iCreditCard) 1 else 2)
 					stopUpd:
 				)
 				(ego setCycle: BegLoop self)
@@ -293,7 +293,7 @@
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					((not (& (ego onControl:) cBLUE)) (NotClose))
 					((not mailboxOpen) (Print 216 11))
-					((CheckItemOwner iCreditCard) (Print 216 12))
+					((InRoom iCreditCard) (Print 216 12))
 					(else (Print 216 13) (Print 216 14))
 				)
 			)
@@ -317,7 +317,7 @@
 			((Said 'get/card,letter,letter,envelope')
 				(cond 
 					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (CheckItemOwner iCreditCard)) (Print 216 15))
+					((not (InRoom iCreditCard)) (Print 216 15))
 					((not (& (ego onControl:) cBLUE)) (NotClose))
 					((not mailboxOpen) (Print 216 16))
 					(else (self changeState: 23))
@@ -335,7 +335,7 @@
 				(cond 
 					(
 						(and
-							(CheckItemOwner iCreditCard)
+							(InRoom iCreditCard)
 							(Said '/letter,letter,envelope,card')
 						)
 						(Print 216 22)

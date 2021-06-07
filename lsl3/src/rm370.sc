@@ -71,7 +71,7 @@
 				(ego has: iBeachTowel)
 			)
 			(Print 370 0 #at 10 -1 #width 290)
-			(SetItemOwner iBeachTowel 375)
+			(PutInRoom iBeachTowel 375)
 		)
 		(super newRoom: newRoomNumber)
 	)

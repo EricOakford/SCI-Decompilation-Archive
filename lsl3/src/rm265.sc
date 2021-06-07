@@ -24,7 +24,9 @@
 	)
 	
 	(method (init)
-		(if (ego has: 1) (Load rsVIEW 1))
+		(if (ego has: iCreditCard)
+			(Load VIEW 1)
+		)
 		(super init:)
 		(self setRegions: FACE setLocales: GIRL setScript: RoomScript)
 		(NotifyScript 71 1 115 77)

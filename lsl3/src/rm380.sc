@@ -517,13 +517,13 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (and currentActivity (== (event type?) evKEYBOARD))
+		(if (and currentActivity (== (event type?) keyDown))
 			(cond 
 				(
 					(or
-						(== (event message?) KEY_UP)
-						(== (event message?) KEY_NUMPAD7)
-						(== (event message?) KEY_PAGEDOWN)
+						(== (event message?) UPARROW)
+						(== (event message?) HOMEKEY)
+						(== (event message?) PAGEUP)
 					)
 					(cond 
 						((== local12 3) (self cue:))
@@ -532,9 +532,9 @@
 				)
 				(
 					(or
-						(== (event message?) KEY_NUMPAD2)
-						(== (event message?) KEY_NUMPAD1)
-						(== (event message?) KEY_PAGEUP)
+						(== (event message?) DOWNARROW)
+						(== (event message?) ENDKEY)
+						(== (event message?) PAGEDOWN)
 					)
 					(cond 
 						((== local12 4) (self cue:))

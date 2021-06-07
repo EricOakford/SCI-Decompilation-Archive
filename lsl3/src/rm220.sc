@@ -192,8 +192,8 @@
 			(27 (aBooth stopUpd:))
 			(28
 				(NormalEgo 0)
-				(SetItemOwner iWood 210)
-				(SetItemOwner iCreditCard 216)
+				(PutInRoom iWood 210)
+				(PutInRoom iCreditCard 216)
 				(= currentStatus egoNORMAL)
 				(music number: 299 loop: global108 play:)
 			)

@@ -128,7 +128,7 @@
 		(super init:)
 		(self
 			setPri: 11
-			setCel: (if (CheckItemOwner iDress 484) 0 else 255)
+			setCel: (if (InRoom iDress 484) 0 else 255)
 			ignoreActors:
 			stopUpd:
 		)
@@ -251,7 +251,7 @@
 				(ego setMotion: MoveTo egoX egoY self)
 			)
 			(6
-				(SetItemOwner iBottleOfWine 484)
+				(PutInRoom iBottleOfWine 484)
 				((Inventory at: iBottleOfWine) view: 28)
 				(Format ((Inventory at: iBottleOfWine) name?) 480 20)
 				(ego loop: 3)
@@ -274,7 +274,11 @@
 				(Format @str 480 21)
 				(= seconds (YouSay))
 				(ego loop: 2)
-				(Display 480 22 dsCOORD 0 180 dsCOLOR 4 dsFONT userFont)
+				(Display 480 22
+					p_at 0 180
+					p_color vRED
+					p_font userFont
+				)
 			)
 			(10
 				(ego

@@ -104,7 +104,7 @@
 			)
 			((Said '/bar,blackboard,drink,club,dance') (PersonSays 335 7))
 			((Said 'give')
-				(if (CheckItemOwner iPanties 330)
+				(if (InRoom iPanties 330)
 					(PersonSays 335 8)
 				else
 					(PersonSays 335 9)

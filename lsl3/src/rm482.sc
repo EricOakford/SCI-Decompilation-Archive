@@ -101,7 +101,7 @@
 		(super init:)
 		(self
 			setPri: 11
-			setCel: (if (CheckItemOwner iDress 484) 0 else 255)
+			setCel: (if (InRoom iDress 484) 0 else 255)
 			ignoreActors:
 			stopUpd:
 		)

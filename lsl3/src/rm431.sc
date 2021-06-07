@@ -19,7 +19,7 @@
 (local
 	[actors 6]
 	[veggies 6]
-	[local12 9] = [999 113 127 141 155 169 183 197 999]
+	local12 = [999 113 127 141 155 169 183 197 999]
 	[msgBuf 40]
 	[titleBuf 22]
 )
@@ -274,14 +274,17 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			(
-			(or (Said '/naked,dance') (Said 'naked,dance')) (self changeState: 15))
-			((Said 'address') (Print 431 0) (Print 431 1))
+			((or (Said '/naked,dance') (Said 'naked,dance'))
+				(self changeState: 15)
+			)
+			((Said 'address')
+				(Print 431 0)
+				(Print 431 1)
+			)
 			(
 				(and
 					(Said 'look>')
@@ -294,25 +297,15 @@
 	)
 )
 
-(instance aActor1 of Actor
-	(properties)
-)
+(instance aActor1 of Actor)
 
-(instance aActor2 of Actor
-	(properties)
-)
+(instance aActor2 of Actor)
 
-(instance aActor3 of Actor
-	(properties)
-)
+(instance aActor3 of Actor)
 
-(instance aActor4 of Actor
-	(properties)
-)
+(instance aActor4 of Actor)
 
-(instance aActor5 of Actor
-	(properties)
-)
+(instance aActor5 of Actor)
 
 (instance aSpotlight of Prop
 	(properties
@@ -345,7 +338,6 @@
 )
 
 (instance VeggieScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -367,7 +359,6 @@
 )
 
 (instance MoneyScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

@@ -45,7 +45,7 @@
 			add: atpChair4
 			add: atpChair5
 			add:
-				(if (and playingAsPatti (CheckItemOwner iMagicMarker))
+				(if (and playingAsPatti (InRoom iMagicMarker))
 					atpBlackboard2
 				else
 					atpBlackboard1
@@ -53,7 +53,7 @@
 			doit:
 		)
 		(self setScript: RoomScript)
-		(if (and playingAsPatti (CheckItemOwner iMagicMarker))
+		(if (and playingAsPatti (InRoom iMagicMarker))
 			(aMarker init:)
 		)
 		(NormalEgo)
@@ -78,7 +78,7 @@
 				(RoomScript changeState: 10)
 			)
 			(else
-				(if (and (== showroomState SRdone) (CheckItemOwner iPenthouseKey))
+				(if (and (== showroomState SRdone) (InRoom iPenthouseKey))
 					(= pattiPlayingPiano 1)
 					(if (== (Random 0 3) 3) (aRoger init:))
 					(if (== (Random 0 3) 3) (aElvis init:))
@@ -241,7 +241,7 @@
 				(cond 
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					((not playingAsPatti) (Print 450 6))
-					((not (CheckItemOwner iMagicMarker)) (AlreadyTook))
+					((not (InRoom iMagicMarker)) (AlreadyTook))
 					((not (ego inRect: 10 152 55 160)) (NotClose))
 					(else
 						(Ok)
@@ -302,11 +302,11 @@
 					(
 						(or
 							(Said '/blackboard')
-							(and (CheckItemOwner iMagicMarker) (Said '/marker'))
+							(and (InRoom iMagicMarker) (Said '/marker'))
 						)
 						(cond 
 							((not playingAsPatti) (Print 450 25))
-							((not (CheckItemOwner 18)) (Print 450 26))
+							((not (InRoom 18)) (Print 450 26))
 							(else (Print 450 27))
 						)
 					)
@@ -327,7 +327,7 @@
 					((Said '/keyboard,entertainer')
 						(cond 
 							((< showroomState SRdone) (Print 450 38))
-							((CheckItemOwner iPenthouseKey) (Print 450 39) (Print 450 40 #at -1 144))
+							((InRoom iPenthouseKey) (Print 450 39) (Print 450 40 #at -1 144))
 							((not playingAsPatti) (Print 450 41))
 							((Btst fGotTipJar) (Print 450 42))
 							(else (Print 450 43))
@@ -626,7 +626,7 @@
 				(Print 450 62)
 				(Print 450 63)
 				(ego get: iPenthouseKey)
-				(SetItemOwner iBottleOfWine 340)
+				(PutInRoom iBottleOfWine 340)
 				(theGame changeScore: 25)
 				(aPatti setLoop: -1 setMotion: MoveTo 168 112 self)
 			)

@@ -62,7 +62,7 @@
 	
 	(method (newRoom newRoomNumber)
 		(soundFX fade:)
-		(if (CheckItemOwner iBeachTowel 375) (ego get: iBeachTowel) (Print 375 0))
+		(if (InRoom iBeachTowel 375) (ego get: iBeachTowel) (Print 375 0))
 		(super newRoom: newRoomNumber)
 	)
 )

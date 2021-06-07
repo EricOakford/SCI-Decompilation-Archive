@@ -63,7 +63,7 @@
 		)
 		(super init:)
 		(self setScript: RoomScript)
-		(if (CheckItemOwner iSoap) (aSoap init:))
+		(if (InRoom iSoap) (aSoap init:))
 		(aDoor setPri: 10 ignoreActors: init:)
 		(ego posn: 1 171)
 		(NormalEgo)
@@ -215,7 +215,10 @@
 				(= currentEgoView 700)
 				(= currentStatus egoNORMAL)
 				(NormalEgo 3)
-				(if (ego has: iMoney) (SetItemOwner iGrass -1) (Print 253 36))
+				(if (ego has: iMoney)
+					(PutInRoom iGrass -1)
+					(Print 253 36)
+				)
 			)
 		)
 	)
@@ -263,7 +266,7 @@
 			((Said 'get/soap')
 				(cond 
 					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (CheckItemOwner iSoap)) (AlreadyTook))
+					((not (InRoom iSoap)) (AlreadyTook))
 					((not (& (ego onControl:) $0080)) (NotClose))
 					(else (self changeState: 1))
 				)
@@ -309,14 +312,14 @@
 					((Said '/bathroom,building') (Print 253 12))
 					((Said '/basin')
 						(Printf 253 13
-							(if (CheckItemOwner iSoap)
+							(if (InRoom iSoap)
 								{ A bar of soap hangs over the sink, suspended by a rope looped over a nail.}
 							else
 								{}
 							)
 						)
 					)
-					((and (CheckItemOwner iSoap) (Said '/soap,hemp')) (Print 253 14))
+					((and (InRoom iSoap) (Said '/soap,hemp')) (Print 253 14))
 					((and (not (ego has: iBottleOfWine)) (Said '/water')) (Print 253 15))
 					((Said '/wall,clovis')
 						(if (& (ego onControl:) $0010)

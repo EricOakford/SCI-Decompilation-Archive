@@ -39,7 +39,7 @@
 			((not (Btst fBrokeUp)) (Load VIEW 53))
 			((not (Btst fCredits210)) (Load VIEW 212) (aCredit1 init:) (aCredit2 init:))
 		)
-		(if (CheckItemOwner iWood) (Load VIEW 709) (aWood init:))
+		(if (InRoom iWood) (Load VIEW 709) (aWood init:))
 		(cond 
 			((== prevRoomNum 200) (ego posn: 317 126 loop: 1))
 			((== prevRoomNum 216) (ego posn: 2 163))
@@ -155,7 +155,7 @@
 		(if (Said 'look>')
 			(if (Said '/palm')
 				(Printf 210 0
-					(if (CheckItemOwner iWood)
+					(if (InRoom iWood)
 						{ Beneath its outstretched boughs lies a beautiful piece of wood, probably cut by a native then forgotten.}
 					else
 						{}
@@ -163,7 +163,7 @@
 				)
 			)
 			(if
-			(and (CheckItemOwner iWood) (Said '/backdrop,granadilla'))
+			(and (InRoom iWood) (Said '/backdrop,granadilla'))
 				(Print 210 1)
 			)
 			(if (Said '[/area]') (Print 210 2))
@@ -171,7 +171,7 @@
 		(if (Said 'get/granadilla')
 			(cond 
 				((!= currentStatus egoNORMAL) (GoodIdea))
-				((not (CheckItemOwner iWood)) (Print 210 3))
+				((not (InRoom iWood)) (Print 210 3))
 				((not (& (ego onControl:) cBROWN)) (Print 210 4))
 				(else (self changeState: 4))
 			)

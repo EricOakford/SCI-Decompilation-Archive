@@ -103,7 +103,9 @@
 							#icon (ego view?) (ego loop?) (ego cel?)
 						)
 					)
-					(JOY_UPLEFT (theGame showMem:))
+					(8
+						(theGame showMem:)
+					)
 				)
 			)
 			(saidEvent

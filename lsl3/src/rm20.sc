@@ -193,7 +193,7 @@
 							(ego cel?)
 						)
 					)
-					(JOY_UPLEFT	 ;no idea what key binding this is, and there's already one for showing memory
+					(8	 ;no idea what key binding this is, and there's already one for showing memory
 						(theGame showMem:)
 					)
 													
