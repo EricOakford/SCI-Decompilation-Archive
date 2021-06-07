@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 18)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -17,7 +17,7 @@
 	(garden bush)
 )
 
-(instance Room18 of Rm
+(instance Room18 of Room
 	(properties
 		picture 18
 	)
@@ -46,20 +46,24 @@
 			(8 (ego posn: 315 180 loop: 1))
 			(65 (ego posn: 158 168))
 		)
-		(ego view: 0 illegalBits: -32768 init:)
+		(ego view: 0 illegalBits: cWHITE init:)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 18 0))
-		(if (& (ego onControl: 0) $0004) (curRoom newRoom: 65))
-		(if (== (ego edgeHit?) 4)
+		(if (FirstEntry)
+			(Print 18 0)
+		)
+		(if (& (ego onControl: FALSE) cGREEN)
+			(curRoom newRoom: 65)
+		)
+		(if (== (ego edgeHit?) WEST)
 			(if (< (ego y?) 170)
 				(curRoom newRoom: 12)
 			else
 				(curRoom newRoom: 17)
 			)
 		)
-		(if (== (ego edgeHit?) 3)
+		(if (== (ego edgeHit?) SOUTH)
 			(if (< (ego x?) 120)
 				(curRoom newRoom: 23)
 			else
@@ -74,9 +78,9 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(if
 					(and
 						global208
@@ -90,14 +94,22 @@
 				)
 				(if (Said 'examine>')
 					(cond 
-						((Said '[<around,at][/room]') (Print 18 0))
-						((Said '<(in,through)/garden,archway') (Print 18 1))
-						((Said '/garden') (Print 18 2))
-						((Said '/path,(boulder<stepping)') (Print 18 3))
+						((Said '[<around,at][/room]')
+							(Print 18 0)
+						)
+						((Said '<(in,through)/garden,archway')
+							(Print 18 1)
+						)
+						((Said '/garden')
+							(Print 18 2)
+						)
+						((Said '/path,(boulder<stepping)')
+							(Print 18 3)
+						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -109,27 +121,33 @@
 )
 
 (instance showers of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(light1 setCycle: Fwd)
-				(light2 setCycle: Fwd)
-				(light3 setCycle: Fwd)
+				(light1 setCycle: Forward)
+				(light2 setCycle: Forward)
+				(light3 setCycle: Forward)
 				(= cycles 7)
 			)
 			(1
-				(light1 setCycle: End)
-				(light2 setCycle: End)
-				(light3 setCycle: End self)
+				(light1 setCycle: EndLoop)
+				(light2 setCycle: EndLoop)
+				(light3 setCycle: EndLoop self)
 			)
-			(2 (Thunder loop: 1 play: self))
+			(2
+				(Thunder loop: 1 play: self)
+			)
 			(3
-				(if (< (Random 1 100) 25) (= state -1))
+				(if (< (Random 1 100) 25)
+					(= state -1)
+				)
 				(= cycles 7)
 			)
-			(4 (= state 2) (= seconds 5))
+			(4
+				(= state 2)
+				(= seconds 5)
+			)
 		)
 	)
 )
@@ -163,9 +181,7 @@
 	)
 )
 
-(instance Thunder of Sound
-	(properties)
-)
+(instance Thunder of Sound)
 
 (instance House of RFeature
 	(properties
@@ -176,9 +192,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/cabin'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/cabin'))
+			(event claimed: TRUE)
 			(Print 18 4)
 		)
 	)
@@ -194,10 +209,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'close/archway') (Print 18 5))
-			((Said 'open/archway') (Print 18 6))
-			(
-			(or (MousedOn self event 3) (Said 'examine/archway')) (event claimed: 1) (Print 18 7))
+			((Said 'close/archway')
+				(Print 18 5)
+			)
+			((Said 'open/archway')
+				(Print 18 6)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/archway'))
+				(event claimed: TRUE)
+				(Print 18 7)
+			)
 		)
 	)
 )

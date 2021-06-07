@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 21)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -21,7 +21,7 @@
 (local
 	local0
 )
-(instance Room21 of Rm
+(instance Room21 of Room
 	(properties
 		picture 21
 	)
@@ -39,7 +39,9 @@
 			(light3 init:)
 		)
 		(addToPics add: House doit:)
-		(if (== currentAct 1) (self setRegions: 381))
+		(if (== currentAct 1)
+			(self setRegions: 381)
+		)
 		(if (and (>= currentAct 2) (< currentAct 4))
 			(self setRegions: 202)
 		)
@@ -61,21 +63,29 @@
 			(27 (ego posn: 183 188))
 			(else  (ego posn: 7 150))
 		)
-		(ego illegalBits: -32768 view: 0 init:)
+		(ego illegalBits: cWHITE view: 0 init:)
 	)
 	
 	(method (doit)
-		(if (== (ego edgeHit?) 4)
+		(if (== (ego edgeHit?) WEST)
 			(if (< (ego y?) 166)
 				(curRoom newRoom: 13)
 			else
 				(curRoom newRoom: 20)
 			)
 		)
-		(if (FirstEntry) (Print 21 0))
-		(if (& (ego onControl: 0) $0008) (curRoom newRoom: 14))
-		(if (& (ego onControl: 0) $0004) (curRoom newRoom: 10))
-		(if (& (ego onControl: 0) $0010) (curRoom newRoom: 13))
+		(if (FirstEntry)
+			(Print 21 0)
+		)
+		(if (& (ego onControl: FALSE) cCYAN)
+			(curRoom newRoom: 14)
+		)
+		(if (& (ego onControl: FALSE) cGREEN)
+			(curRoom newRoom: 10)
+		)
+		(if (& (ego onControl: FALSE) cRED)
+			(curRoom newRoom: 13)
+		)
 		(super doit:)
 	)
 	
@@ -84,18 +94,26 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) evSAID) (Said 'examine>'))
+			(if (and (== (event type?) saidEvent) (Said 'examine>'))
 				(cond 
-					((Said '[<around,at][/room]') (Print 21 0))
-					((Said '/path') (Print 21 1))
-					((Said '/monument') (Print 21 2))
-					((Said '/lamp[<gallery]') (event claimed: 1) (ParseName {door}))
+					((Said '[<around,at][/room]')
+						(Print 21 0)
+					)
+					((Said '/path')
+						(Print 21 1)
+					)
+					((Said '/monument')
+						(Print 21 2)
+					)
+					((Said '/lamp[<gallery]')
+						(event claimed: TRUE)
+						(ParseName {door})
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -106,28 +124,30 @@
 )
 
 (instance showers of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (= state 3)))
 			(1
-				(light1 setCycle: Fwd)
-				(light2 setCycle: Fwd)
-				(light3 setCycle: Fwd)
+				(light1 setCycle: Forward)
+				(light2 setCycle: Forward)
+				(light3 setCycle: Forward)
 				(= cycles 7)
 			)
 			(2
-				(light1 setCycle: End)
-				(light2 setCycle: End)
-				(light3 setCycle: End self)
+				(light1 setCycle: EndLoop)
+				(light2 setCycle: EndLoop)
+				(light3 setCycle: EndLoop self)
 			)
 			(3 (Thunder loop: 1 play: self))
 			(4
 				(if (< (Random 1 100) 25) (= state 0))
 				(= cycles 7)
 			)
-			(5 (= state 3) (= seconds 5))
+			(5
+				(= state 3)
+				(= seconds 5)
+			)
 		)
 	)
 )
@@ -197,8 +217,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {house})
 		)
 	)

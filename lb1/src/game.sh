@@ -77,14 +77,17 @@
 
 ;Event flags
 (define fSawShadowyFigure 0)
+(define fOpenedFloorboard	1)
 (define fReadDiary 3)
 (define fGotMonocle	5)
 (define fExaminedHandkerchief 6)
 (define fExaminedRollingPin 7)
 (define fExaminedPoker 8)
 (define fExaminedRecord 9)
+(define fExaminedGlass	10)
 (define fExaminedDiary 12)
 (define fExaminedCigar 13)
+(define fGotBible		14)
 (define fExaminedMagazine 17)
 (define fSawFifiJeevesTogether 22)
 (define fFlag36	36)

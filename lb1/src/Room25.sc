@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 25)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DCIcon)
@@ -25,7 +25,7 @@
 	local2
 	local3
 )
-(instance Room25 of Rm
+(instance Room25 of Room
 	(properties
 		picture 25
 	)
@@ -35,7 +35,7 @@
 		(= east 26)
 		(= north 13)
 		(super init:)
-		(Load rsSOUND 82)
+		(Load SOUND 82)
 		(if howFast
 			(owlHead setScript: owl init:)
 			(light1 setScript: showers init:)
@@ -47,8 +47,8 @@
 				cel: 0
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -58,8 +58,8 @@
 				cel: 1
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -69,8 +69,8 @@
 				cel: 2
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -80,8 +80,8 @@
 				cel: 3
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -90,7 +90,7 @@
 			(owlHead loop: 4 cel: 2 addToPic:)
 		)
 		(self setRegions: 205 207 setFeatures: owlBody Barn House)
-		(Load rsVIEW 35)
+		(Load VIEW 35)
 		(Thunder number: 17 loop: 0)
 		(addToPics add: owlBody eachElementDo: #init doit:)
 		(if (and (>= currentAct 2) (< currentAct 4))
@@ -109,7 +109,7 @@
 		(if
 			(and
 				(>= currentAct 4)
-				(== ((inventory at: 4) owner?) 25)
+				(== ((inventory at: iRollingPin) owner?) 25)
 			)
 			(Pin init: stopUpd:)
 		)
@@ -117,16 +117,21 @@
 			(20 (ego posn: 305 119))
 			(13 (ego posn: 171 119))
 		)
-		(ego view: 0 illegalBits: -32768 init:)
+		(ego view: 0 illegalBits: cWHITE init:)
 		(HandsOn)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 25 0))
-		(if (& (ego onControl: 0) $0002) (curRoom newRoom: 20))
-		(if (& (ego onControl: 0) $0004) (curRoom newRoom: 13))
-		(if
-		(and (& (ego onControl: 1) $0008) (== local0 0))
+		(if (FirstEntry)
+			(Print 25 0)
+		)
+		(if (& (ego onControl: 0) cBLUE)
+			(curRoom newRoom: 20)
+		)
+		(if (& (ego onControl: 0) cGREEN)
+			(curRoom newRoom: 13)
+		)
+		(if (and (& (ego onControl: origin) cCYAN) (== local0 0))
 			(= local0 1)
 			(self setScript: sink)
 		)
@@ -134,37 +139,47 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 976)
+		(DisposeScript WANDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
-				(DisposeScript 990)
+			(if (== (event type?) saidEvent)
+				(DisposeScript SAVE)
 				(if (Said 'examine>')
 					(cond 
-						((Said '[<around,at][/room]') (Print 25 0))
-						((Said '/drive') (Print 25 1))
+						((Said '[<around,at][/room]')
+							(Print 25 0)
+						)
+						((Said '/drive')
+							(Print 25 1)
+						)
 						((Said '/bootprint')
 							(if (== currentAct 4)
 								(Print 25 2)
 							else
-								(event claimed: 0)
+								(event claimed: FALSE)
 							)
 						)
 						((or (Said '/dirt') (Said '<down'))
 							(cond 
-								((cast contains: Pin) (Print 25 3))
-								((== currentAct 4) (Print 25 4))
-								(else (event claimed: 0))
+								((cast contains: Pin)
+									(Print 25 3)
+								)
+								((== currentAct 4)
+									(Print 25 4)
+								)
+								(else
+									(event claimed: FALSE)
+								)
 							)
 						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -175,34 +190,41 @@
 )
 
 (instance showers of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (= state 3)))
+			(0
+				(= seconds (= state 3))
+			)
 			(1
-				(light1 setCycle: Fwd)
-				(light2 setCycle: Fwd)
-				(light3 setCycle: Fwd)
+				(light1 setCycle: Forward)
+				(light2 setCycle: Forward)
+				(light3 setCycle: Forward)
 				(= cycles 7)
 			)
 			(2
-				(light1 setCycle: End)
-				(light2 setCycle: End)
-				(light3 setCycle: End self)
+				(light1 setCycle: EndLoop)
+				(light2 setCycle: EndLoop)
+				(light3 setCycle: EndLoop self)
 			)
-			(3 (Thunder loop: 1 play: self))
+			(3
+				(Thunder loop: 1 play: self)
+			)
 			(4
-				(if (< (Random 1 100) 20) (= state 0))
+				(if (< (Random 1 100) 20)
+					(= state 0)
+				)
 				(= cycles 7)
 			)
-			(5 (= state 3) (= seconds 5))
+			(5
+				(= state 3)
+				(= seconds 5)
+			)
 		)
 	)
 )
 
 (instance sink of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -226,15 +248,18 @@
 							(else  (ego y?))
 						)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(1 (ego hide:) (= seconds 3))
+			(1
+				(ego hide:)
+				(= seconds 3)
+			)
 			(2
 				(= cIcon myIcon)
 				(= deathLoop 5)
 				(= deathCel 0)
-				(= cyclingIcon 1)
+				(= cyclingIcon TRUE)
 				(EgoDead 25 5)
 			)
 		)
@@ -242,22 +267,25 @@
 )
 
 (instance owl of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 2 7)))
 			(1
 				(if (== (owlHead cel?) 0)
-					(owlHead setCycle: End self)
+					(owlHead setCycle: EndLoop self)
 					(= local2 (Random 0 3))
 				else
-					(owlHead setCycle: Beg self)
+					(owlHead setCycle: BegLoop self)
 					(= state -1)
 				)
 			)
 			(2
-				(if local2 (= cycles 1) else (= seconds (Random 2 5)))
+				(if local2
+					(= cycles 1)
+				else
+					(= seconds (Random 2 5))
+				)
 			)
 			(3
 				(if local2
@@ -273,7 +301,11 @@
 				(= cycles 5)
 			)
 			(5
-				(if (-- local2) (= state 2) else (= state 0))
+				(if (-- local2)
+					(= state 2)
+				else
+					(= state 0)
+				)
 				(= cycles 1)
 			)
 		)
@@ -281,15 +313,14 @@
 )
 
 (instance lookFoot of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if (== (ego loop?) 3)
-					(ego view: 125 cel: 0 loop: 7 setCycle: End self)
+					(ego view: 125 cel: 0 loop: 7 setCycle: EndLoop self)
 				else
-					(ego view: 125 cel: 0 loop: 6 setCycle: End self)
+					(ego view: 125 cel: 0 loop: 6 setCycle: EndLoop self)
 				)
 			)
 			(1
@@ -297,7 +328,9 @@
 				(Bset 4)
 				(= cycles 1)
 			)
-			(2 (ego setCycle: Beg self))
+			(2
+				(ego setCycle: BegLoop self)
+			)
 			(3
 				(ego view: 0 setCycle: Walk)
 				(HandsOn)
@@ -308,7 +341,6 @@
 )
 
 (instance pickUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -319,19 +351,19 @@
 			)
 			(1
 				(if (== (ego loop?) 3)
-					(ego view: 125 cel: 0 loop: 7 setCycle: End self)
+					(ego view: 125 cel: 0 loop: 7 setCycle: EndLoop self)
 				else
-					(ego view: 125 cel: 0 loop: 6 setCycle: End self)
+					(ego view: 125 cel: 0 loop: 6 setCycle: EndLoop self)
 				)
 			)
 			(2
 				(Print 25 7)
 				(Pin hide:)
-				(= gotItem 1)
+				(= gotItem TRUE)
 				(ego get: 4)
 				(= cycles 2)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(HandsOn)
 				(ego view: 0 setCycle: Walk)
@@ -352,8 +384,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {owl})
 		)
 	)
@@ -395,27 +427,36 @@
 		view 125
 		loop 3
 		priority 15
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((Said 'deliver,feed,hold>')
-				(if
-				(or (Said '/*<bird') (Said '/bird') (Said '/*/bird'))
-					(event claimed: 1)
+				(if (or (Said '/*<bird') (Said '/bird') (Said '/*/bird'))
+					(event claimed: TRUE)
 					(if theInvItem
-						(if haveInvItem (Print 25 8) else (DontHave))
+						(if haveInvItem
+							(Print 25 8)
+						else
+							(DontHave)
+						)
 					else
 						(Print 25 8)
 					)
 				)
 			)
-			((Said 'converse/bird') (Print 25 9))
-			((Said 'capture,get/bird') (Print 25 10))
-			(
-			(or (MousedOn self event 3) (Said 'examine/bird')) (event claimed: 1) (Print 25 11))
+			((Said 'converse/bird')
+				(Print 25 9)
+			)
+			((Said 'capture,get/bird')
+				(Print 25 10)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/bird'))
+				(event claimed: TRUE)
+				(Print 25 11)
+			)
 		)
 	)
 )
@@ -435,7 +476,7 @@
 					(Said 'examine<use<monocle/bootprint')
 					(Said '(examine<at),examine/bootprint/monocle<with')
 				)
-				(if (ego has: 1)
+				(if (ego has: iMonocle)
 					(if (< (ego distanceTo: Foot) 10)
 						(if (>= currentAct 4)
 							(HandsOff)
@@ -451,8 +492,10 @@
 					(DontHave)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/bootprint')) (event claimed: 1) (Print 25 4))
+			((or (MousedOn self event shiftDown) (Said 'examine/bootprint'))
+				(event claimed: TRUE)
+				(Print 25 4)
+			)
 		)
 	)
 )
@@ -469,10 +512,10 @@
 		(cond 
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/pin<rolling')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 25 13)
 			)
 			((Said 'get/pin<rolling')
@@ -486,13 +529,9 @@
 	)
 )
 
-(instance Thunder of Sound
-	(properties)
-)
+(instance Thunder of Sound)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
 (instance myIcon of DCIcon
 	(properties
@@ -501,11 +540,11 @@
 	)
 	
 	(method (init)
-		((= cycler (End new:)) init: self)
+		((= cycler (EndLoop new:)) init: self)
 	)
 )
 
-(instance Fly of Act
+(instance Fly of Actor
 	(properties
 		y 123
 		x 74
@@ -513,7 +552,7 @@
 	)
 )
 
-(instance Fly2 of Act
+(instance Fly2 of Actor
 	(properties
 		y 150
 		x 37
@@ -521,7 +560,7 @@
 	)
 )
 
-(instance Fly3 of Act
+(instance Fly3 of Actor
 	(properties
 		y 139
 		x 17
@@ -529,7 +568,7 @@
 	)
 )
 
-(instance Fly4 of Act
+(instance Fly4 of Actor
 	(properties
 		y 130
 		x 67
@@ -537,9 +576,7 @@
 	)
 )
 
-(instance flyCage of Cage
-	(properties)
-)
+(instance flyCage of Cage)
 
 (instance Barn of RFeature
 	(properties
@@ -550,9 +587,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/barn'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/barn'))
+			(event claimed: TRUE)
 			(Print 25 14)
 		)
 	)
@@ -567,9 +603,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/cabin'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/cabin'))
+			(event claimed: TRUE)
 			(Print 25 15)
 		)
 	)

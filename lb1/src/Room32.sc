@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 32)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use ElevGate)
 (use Intrface)
@@ -29,9 +29,9 @@
 	local5
 	local6
 	local7
-	[local8 4] = [32 0 32 1]
+	msgID = [32 0 32 1]
 )
-(instance Room32 of Rm
+(instance Room32 of Room
 	(properties
 		picture 32
 	)
@@ -40,8 +40,8 @@
 		(= east 33)
 		(super init:)
 		(if (== (& global111 $7fff) curRoomNum)
-			(= [local8 0] [local8 2])
-			(= [local8 1] [local8 3])
+			(= [msgID 0] [msgID 2])
+			(= [msgID 1] [msgID 3])
 		)
 		(addToPics
 			add:
@@ -57,9 +57,9 @@
 				table
 				tools
 		)
-		(lamp1 setPri: 5 setCycle: Fwd init:)
-		(lamp2 setPri: 5 setCycle: Fwd init:)
-		(fire loop: (/ currentAct 2) setCycle: Fwd init:)
+		(lamp1 setPri: 5 setCycle: Forward init:)
+		(lamp2 setPri: 5 setCycle: Forward init:)
+		(fire loop: (/ currentAct 2) setCycle: Forward init:)
 		(if (not howFast)
 			(lamp1 addToPic:)
 			(lamp2 addToPic:)
@@ -72,22 +72,21 @@
 				else
 					(ego posn: 55 120)
 				)
-				(ego view: 0 illegalBits: -32768 setPri: -1)
+				(ego view: 0 illegalBits: cWHITE setPri: -1)
 			else
-				(ego view: 0 illegalBits: -32768 setPri: -1 posn: 252 167)
+				(ego view: 0 illegalBits: cWHITE setPri: -1 posn: 252 167)
 				(= local6 1)
 			)
 		)
 		(if (>= currentAct 2)
-			(Mag ignoreActors: 1 init: stopUpd:)
+			(Mag ignoreActors: TRUE init: stopUpd:)
 			(if (< currentAct 3)
-				(Feather setPri: 8 ignoreActors: 1 init:)
+				(Feather setPri: 8 ignoreActors: TRUE init:)
 				(chair1 view: 132 loop: 2 cel: 3 y: 135)
 				(tools cel: 1)
 			)
-			(if
-			(and ((inventory at: 6) ownedBy: 32) (< currentAct 3))
-				(Load rsVIEW 17)
+			(if (and ((inventory at: iPoker) ownedBy: 32) (< currentAct 3))
+				(Load VIEW 17)
 				(poker setPri: 9 stopUpd: init:)
 			)
 			(addToPics add: chair1 tools)
@@ -111,7 +110,9 @@
 				mantle
 				Mirror
 		)
-		(if (not howFast) (self setFeatures: lamp1 lamp2 fire))
+		(if (not howFast)
+			(self setFeatures: lamp1 lamp2 fire)
+		)
 		(if
 			(and
 				(<= (Random 1 100) 35)
@@ -138,10 +139,14 @@
 					(= local7 1)
 					(self setRegions: 402)
 				)
-				(if (<= global154 3) (addToPics add: chair1))
+				(if (<= global154 3)
+					(addToPics add: chair1)
+				)
 			)
 			(2
-				(if (< global198 100) (= global198 100))
+				(if (< global198 100)
+					(= global198 100)
+				)
 			)
 			(3
 				(if
@@ -170,7 +175,7 @@
 					(if (& global109 $0001)
 						(- (NumCels elevGate) 1)
 					else
-						(= global109 (& global109 $fffe))
+						(&= global109 $fffe)
 					)
 				setPri: 9
 				init:
@@ -182,14 +187,26 @@
 	)
 	
 	(method (doit)
-		(if (and (== currentAct 3) (== gDoor 1)) (= local7 1))
-		(if (and (== currentAct 3) (== gDoor 0)) (= local7 0))
-		(if (and (not (& global109 $0010)) (FirstEntry))
-			(Print [local8 0] [local8 1])
+		(if (and (== currentAct 3) (== gDoor 1))
+			(= local7 1)
 		)
-		(if local6 (= local6 0) (Print 32 2))
-		(if (== global198 100) (= global198 101) (Print 32 3))
-		(if (& (ego onControl: 1) $0004) (curRoom newRoom: 31))
+		(if (and (== currentAct 3) (== gDoor 0))
+			(= local7 0)
+		)
+		(if (and (not (& global109 $0010)) (FirstEntry))
+			(Print [msgID 0] [msgID 1])
+		)
+		(if local6
+			(= local6 0)
+			(Print 32 2)
+		)
+		(if (== global198 100)
+			(= global198 101)
+			(Print 32 3)
+		)
+		(if (& (ego onControl: origin) cGREEN)
+			(curRoom newRoom: 31)
+		)
 		(cond 
 			((< (ego x?) 140) (= vertAngle 44))
 			((< (ego x?) 260) (= vertAngle 27))
@@ -207,8 +224,8 @@
 	(method (handleEvent event &tmp temp0)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
-			(DisposeScript 990)
+		(if (== (event type?) saidEvent)
+			(DisposeScript SAVE)
 			(if
 				(and
 					global208
@@ -223,16 +240,19 @@
 			(if (== local0 1)
 				(= local4 -1)
 				(cond 
-					(
-					(or (Said '*/elevator,lift') (Said 'lift[<open][/*]')) (Print 32 4))
+					((or (Said '*/elevator,lift') (Said 'lift[<open][/*]'))
+						(Print 32 4)
+					)
 					((Said 'examine>')
 						(cond 
-							((Said '/archway') (Print 32 5))
+							((Said '/archway')
+								(Print 32 5)
+							)
 							((Said '/shaft')
 								(cond 
 									((< curRoomNum global111) (Print 32 6))
 									((> curRoomNum global111) (Print 32 7))
-									((not (& (ego onControl: 1) $0028)) (NotClose))
+									((not (& (ego onControl: origin) (| cMAGENTA cCYAN))) (NotClose))
 								)
 							)
 						)
@@ -241,25 +261,31 @@
 						(= local3 1)
 						(cond 
 							((& global109 $0001) (AlreadyOpen))
-							((& (ego onControl: 1) $0008) (= local4 3))
-							((& (ego onControl: 1) $0020) (= local4 2))
+							((& (ego onControl: origin) cCYAN) (= local4 3))
+							((& (ego onControl: origin) cMAGENTA) (= local4 2))
 							(else (NotClose))
 						)
 					)
 					((Said 'close/archway')
 						(= local3 0)
 						(cond 
-							((not (& global109 $0001)) (AlreadyClosed))
-							((& (ego onControl: 1) $0008)
+							((not (& global109 $0001))
+								(AlreadyClosed)
+							)
+							((& (ego onControl: origin) cRED)
 								(if (== (ego y?) (elevGate y?)) (Print 32 8) (return))
 								(= local4 3)
 							)
-							((& (ego onControl: 1) $0020) (= local4 2))
+							((& (ego onControl: origin) cMAGENTA)
+								(= local4 2)
+							)
 							(else (NotClose))
 						)
 					)
 				)
-				(if (!= local4 -1) (elevGate setScript: GateFunc))
+				(if (!= local4 -1)
+					(elevGate setScript: GateFunc)
+				)
 			)
 			(if (event claimed?) (return))
 			(cond 
@@ -290,57 +316,70 @@
 						((Said '[<around,at][/room]')
 							(cond 
 								((cast contains: poker)
-									(= global166 (& global166 (~ (<< $0001 currentAct))))
+									(&= global166 (~ (<< $0001 currentAct)))
 									(Print 32 3)
 								)
-								((& (ego onControl: 0) $0020) (Print 32 12))
-								(else (Print [local8 0] [local8 1]))
+								((& (ego onControl: 0) cMAGENTA) (Print 32 12))
+								(else (Print [msgID 0] [msgID 1]))
 							)
 						)
 						((or (Said '<up') (Said '/elevator'))
-							(if (& (ego onControl: 0) $0020)
+							(if (& (ego onControl: 0) cMAGENTA)
 								(Print 32 6)
 							else
-								(event claimed: 0)
+								(event claimed: FALSE)
 							)
 						)
 						((Said '<behind,below/mirror') (Print 32 13))
 						((or (Said '<in/mirror') (Said '/reflection'))
 							(if (< (ego distanceTo: fire) 70)
-								(= theTalker 12)
+								(= theTalker talkLAURA)
 								(Say 0 32 14)
 							else
 								(NotClose)
 							)
 						)
-						((Said '/mirror') (Print 32 15))
+						((Said '/mirror')
+							(Print 32 15)
+						)
 						((>= currentAct 2)
 							(cond 
 								((Said '[<down][/dirt]')
 									(cond 
-										((== currentAct 2) (if (not (ego has: 6)) (Print 32 16)) (Print 32 17))
-										(
-										(and (== currentAct 3) (not (& global141 $0002))) (Print 32 17))
-										(else (event claimed: 0) (return))
+										((== currentAct 2)
+											(if (not (ego has: 6))
+												(Print 32 16)
+											)
+											(Print 32 17)
+										)
+										((and (== currentAct 3) (not (& global141 $0002)))
+											(Print 32 17)
+										)
+										(else
+											(event claimed: FALSE)
+											(return)
+										)
 									)
 								)
 								((Said '/chair')
 									(if (< currentAct 3)
 										(Print 32 18)
 									else
-										(event claimed: 0)
+										(event claimed: FALSE)
 									)
 								)
-								((Said '/nightstand') (Print 32 19))
+								((Said '/nightstand')
+									(Print 32 19)
+								)
 								((Said '/magazine')
-									(if (& (ego onControl:) $0040)
+									(if (& (ego onControl:) cBROWN)
 										(Print 32 20)
 									else
 										(NotClose)
 									)
 								)
 								((Said '/racehorse')
-									(if (& (ego onControl:) $0040)
+									(if (& (ego onControl:) cBROWN)
 										(Print 32 21)
 									else
 										(Print 32 22)
@@ -348,13 +387,20 @@
 								)
 							)
 						)
-						((Said '/eye,(painting<eye)') (Print 32 23))
-						((Said '<behind,below/painting') (Print 32 24))
-						(
-						(or (Said '/painting') (Said '/painting/painting')) (Print 32 25))
+						((Said '/eye,(painting<eye)')
+							(Print 32 23)
+						)
+						((Said '<behind,below/painting')
+							(Print 32 24)
+						)
+						((or (Said '/painting') (Said '/painting/painting'))
+							(Print 32 25)
+						)
 					)
 				)
-				((Said 'move,get/painting') (Print 32 26))
+				((Said 'move,get/painting')
+					(Print 32 26)
+				)
 				((Said 'get>')
 					(cond 
 						((Said '/fire,log') (Print 32 27))
@@ -364,8 +410,8 @@
 						((and (>= currentAct 2) (< currentAct 3))
 							(cond 
 								((Said '/poker')
-									(if (not (ego has: 6))
-										(if (& (ego onControl:) $0200)
+									(if (not (ego has: iPoker))
+										(if (& (ego onControl:) cLBLUE)
 											(self setScript: pickUp)
 										else
 											(NotClose)
@@ -374,7 +420,9 @@
 										(AlreadyTook)
 									)
 								)
-								((Said '/magazine') (Print 32 31))
+								((Said '/magazine')
+									(Print 32 31)
+								)
 							)
 						)
 					)
@@ -384,7 +432,7 @@
 						((Said '/book/nightstand') (Print 32 28))
 						((Said '/book') (Print 32 29))
 						((and (>= currentAct 2) (Said '/magazine'))
-							(if (& (ego onControl:) $0040)
+							(if (& (ego onControl:) cBROWN)
 								(Print 32 20)
 							else
 								(NotClose)
@@ -403,23 +451,24 @@
 )
 
 (instance GateFunc of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(elevGate startUpd:)
 				(if (== local3 1)
 					(cSound number: 81)
-					(elevGate setCycle: End)
-					(= global109 (| global109 $0001))
+					(elevGate setCycle: EndLoop)
+					(|= global109 $0001)
 				else
 					(cSound number: 79)
-					(elevGate setCycle: Beg)
-					(= global109 (& global109 $fffe))
+					(elevGate setCycle: BegLoop)
+					(&= global109 $fffe)
 				)
 				(cSound loop: 1 play: self)
-				(if (!= local4 -1) (ego loop: local4))
+				(if (!= local4 -1)
+					(ego loop: local4)
+				)
 			)
 			(1
 				(elevGate ignoreActors: (elevGate cel?) stopUpd:)
@@ -430,8 +479,7 @@
 )
 
 (instance pickUp of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -440,16 +488,18 @@
 				(= cycles 2)
 			)
 			(1
-				(ego view: 17 cel: 0 setMotion: 0 setCycle: End self)
+				(ego view: 17 cel: 0 setMotion: 0 setCycle: EndLoop self)
 			)
 			(2
 				(Print 32 32)
 				(poker hide:)
-				(= gotItem 1)
-				(ego get: 6)
+				(= gotItem TRUE)
+				(ego get: iPoker)
 				(= cycles 2)
 			)
-			(3 (ego setCycle: Beg self))
+			(3
+				(ego setCycle: BegLoop self)
+			)
 			(4
 				(HandsOn)
 				(ego loop: 0 view: 0 setCycle: Walk)
@@ -460,7 +510,6 @@
 )
 
 (instance shadowWalk of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -482,12 +531,12 @@
 		x 192
 		view 132
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {mantel})
 		)
 	)
@@ -500,14 +549,18 @@
 		view 132
 		loop 1
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine/book/nightstand') (Print 32 33))
-			(
-			(or (MousedOn self event 3) (Said 'examine/book')) (Print 32 33) (event claimed: 1))
+			((Said 'examine/book/nightstand')
+				(Print 32 33)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/book'))
+				(Print 32 33)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
@@ -527,10 +580,13 @@
 				(if (== currentAct 2)
 					(Print 32 34)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
-			((MousedOn self event 3) (event claimed: 1) (ParseName {chair}))
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(ParseName {chair})
+			)
 		)
 	)
 )
@@ -545,8 +601,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -562,8 +618,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -579,8 +635,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -596,8 +652,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -613,8 +669,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -626,12 +682,12 @@
 		x 131
 		view 132
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {couch})
 		)
 	)
@@ -643,12 +699,12 @@
 		x 212
 		view 132
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {couch})
 		)
 	)
@@ -661,18 +717,18 @@
 		view 132
 		loop 1
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 32 35)
 		)
 	)
 )
 
-(instance tools of PV
+(instance tools of PicView
 	(properties
 		y 91
 		x 166
@@ -690,9 +746,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/log'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/log'))
+			(event claimed: TRUE)
 			(ParseName {fire})
 		)
 	)
@@ -708,8 +763,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 32 16)
 		)
 	)
@@ -724,8 +779,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -740,8 +795,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -757,9 +812,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/feather') (Print 32 36))
-			(
-			(or (Said 'examine/feather') (MousedOn self event 3)) (Print 32 37) (event claimed: 1))
+			((Said 'get/feather')
+				(Print 32 36)
+			)
+			((or (Said 'examine/feather') (MousedOn self event shiftDown))
+				(Print 32 37)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
@@ -772,18 +831,20 @@
 		loop 1
 		cel 5
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open/magazine') (AlreadyOpen))
-			(
-			(or (Said 'rotate/page') (Said 'read<more/magazine')) (Print 32 38))
-			(
-			(or (Said 'examine/magazine') (MousedOn self event 3))
-				(event claimed: 1)
-				(if (& (ego onControl:) $0040)
+			((Said 'open/magazine')
+				(AlreadyOpen)
+			)
+			((or (Said 'rotate/page') (Said 'read<more/magazine'))
+				(Print 32 38)
+			)
+			((or (Said 'examine/magazine') (MousedOn self event shiftDown))
+				(event claimed: TRUE)
+				(if (& (ego onControl:) cBROWN)
 					(Print 32 20)
 				else
 					(NotClose)
@@ -802,8 +863,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {elevator})
 		)
 	)
@@ -818,8 +879,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {mirror})
 		)
 	)
@@ -833,9 +894,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/bookcase'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/bookcase'))
+			(event claimed: TRUE)
 			(Print 32 39)
 		)
 	)
@@ -850,35 +910,26 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/bookcase'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/bookcase'))
+			(event claimed: TRUE)
 			(Print 32 39)
 		)
 	)
 )
 
-(instance Shadow of Act
+(instance Shadow of Actor
 	(properties
 		view 110
 	)
 )
 
-(instance chain of Act
-	(properties)
-)
+(instance chain of Actor)
 
-(instance elevator of Act
-	(properties)
-)
+(instance elevator of Actor)
 
-(instance down of View
-	(properties)
-)
+(instance down of View)
 
-(instance up of View
-	(properties)
-)
+(instance up of View)
 
 (instance elevGate of Prop
 	(properties

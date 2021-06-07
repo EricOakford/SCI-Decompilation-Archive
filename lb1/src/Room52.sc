@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 52)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use HighLite)
 (use Intrface)
@@ -24,15 +24,24 @@
 )
 
 (local
-	[local0 16] = [70 151 187 161 187 161 70 151 70 151 208 111 208 111 70 151]
-	local16
+	scurryXY = [
+		70 151
+		187 161
+		187 161
+		70 151
+		70 151
+		208 111
+		208 111
+		70 151
+		]
+	i
 	local17
 	local18
-	local19
+	doorState
 	local20
 	local21
 )
-(instance Room52 of Rm
+(instance Room52 of Room
 	(properties
 		picture 52
 	)
@@ -41,7 +50,7 @@
 		(= horizon 0)
 		(super init:)
 		(addToPics add: rags tub eachElementDo: #init doit:)
-		(= deadGuests (| deadGuests $003f))
+		(|= deadGuests $003f)
 		(self
 			setRegions: 242
 			setFeatures:
@@ -59,24 +68,24 @@
 				Floor1
 				Floor2
 		)
-		(LoadMany 128 51 924)
-		(LoadMany 132 45 84 126)
+		(LoadMany VIEW 51 924)
+		(LoadMany SOUND 45 84 126)
 		(if howFast
-			(Splash1 ignoreActors: 1 setPri: 3 init: hide:)
-			(Splash2 ignoreActors: 1 setPri: 3 init: hide:)
+			(Splash1 ignoreActors: TRUE setPri: 3 init: hide:)
+			(Splash2 ignoreActors: TRUE setPri: 3 init: hide:)
 		)
 		(rat
 			setStep: 5 5
 			setScript: Scurry
 			setCycle: Walk
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			hide:
 		)
 		(bodies setPri: 14 init: stopUpd:)
 		(drip setPri: 3 cycleSpeed: 1 setScript: Drip init:)
 		(panelCrank setPri: 8 init:)
-		(if (== ((inventory at: 20) owner?) curRoomNum)
+		(if (== ((inventory at: iCrank) owner?) curRoomNum)
 			(panelCrank stopUpd:)
 			(ego observeBlocks: cBlock)
 		else
@@ -87,7 +96,7 @@
 			(door cel: (- (NumCels door) 1))
 		else
 			(door cel: 0)
-			(ego illegalBits: -32764)
+			(ego illegalBits: (| cWHITE cBLUE))
 		)
 		(if (== global189 51)
 			(ego setPri: 3 posn: 195 63)
@@ -99,10 +108,12 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 52 0))
+		(if (FirstEntry)
+			(Print 52 0)
+		)
 		(if
 			(and
-				(& (ego onControl: 0) $0040)
+				(& (ego onControl: FALSE) cBROWN)
 				(!= (ego mover?) 0)
 				howFast
 			)
@@ -113,7 +124,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 5)
@@ -121,7 +132,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
@@ -131,7 +142,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 5)
@@ -139,7 +150,7 @@
 							posn: (+ (ego x?) 5) (ego y?)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
@@ -149,7 +160,7 @@
 							posn: (- (ego x?) 2) (+ (ego y?) 1)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 					(if (== (ego cel?) 4)
@@ -157,14 +168,16 @@
 							posn: (- (ego x?) 2) (+ (ego y?) 1)
 							cel: 0
 							show:
-							setCycle: End
+							setCycle: EndLoop
 						)
 					)
 				)
 			)
 		)
 		(cond 
-			((and (& global205 $0002) (bodies cel?)) (= local20 1))
+			((and (& global205 $0002) (bodies cel?))
+				(= local20 1)
+			)
 			(
 				(and
 					(== (bodies cel?) (- (NumCels bodies) 1))
@@ -174,29 +187,41 @@
 				(= theTalker 25)
 				(Say 0 52 1)
 				(Print 52 2)
-				(= global205 (| global205 $0002))
+				(|= global205 $0002)
 				(= global200 101)
 			)
-			(else (= local20 0))
+			(else
+				(= local20 0)
+			)
 		)
-		(switch (ego onControl: 1)
-			(2
-				(ego illegalBits: -32768)
+		(switch (ego onControl: origin)
+			(cBLUE
+				(ego illegalBits: cWHITE)
 				(= global189 51)
 				(curRoom newRoom: 55)
 			)
-			(4
+			(cGREEN
 				(= global189 52)
 				(curRoom newRoom: 55)
 			)
-			(2048 (bodies cel: 1 forceUpd:))
-			(4096 (bodies cel: 2 forceUpd:))
-			(8192 (bodies cel: 3 forceUpd:))
-			(16384
+			(cLCYAN
+				(bodies cel: 1 forceUpd:)
+			)
+			(cLRED
+				(bodies cel: 2 forceUpd:)
+			)
+			(cLMAGENTA
+				(bodies cel: 3 forceUpd:)
+			)
+			(cYELLOW
 				(bodies cel: 4 forceUpd:)
 			)
-			(1 (bodies cel: 0 forceUpd:))
-			(16 (bodies cel: 0 forceUpd:))
+			(cBLACK
+				(bodies cel: 0 forceUpd:)
+			)
+			(cRED
+				(bodies cel: 0 forceUpd:)
+			)
 		)
 		(if (< (ego y?) 66)
 			(ego setPri: 3)
@@ -206,7 +231,7 @@
 		(if
 			(or
 				(< (ego y?) 66)
-				(and (& global205 $0001) (& (ego onControl:) $0014))
+				(and (& global205 $0001) (& (ego onControl:) (| cGREEN cRED)))
 			)
 			(glow show:)
 		else
@@ -221,31 +246,37 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(DisposeScript 214)
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp temp0 [temp1 250])
+	(method (handleEvent event &tmp temp0 [str 250])
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
-				((ego has: 20)
+				((ego has: iCrank)
 					(cond 
-						((Said 'attach/control') (= local19 1))
+						((Said 'attach/control')
+							(= doorState 1)
+						)
 						(
 							(and
 								(Said '/panel,door>')
 								(or (Said 'open<control') (Said 'open//control'))
 							)
-							(= local19 3)
+							(= doorState 3)
 						)
 					)
 				)
-				((== ((inventory at: 20) owner?) curRoomNum)
+				((== ((inventory at: iCrank) owner?) curRoomNum)
 					(cond 
-						((Said 'attach/control') (Print 52 3))
-						((Said 'rotate/control,handle') (= local19 2))
+						((Said 'attach/control')
+							(Print 52 3)
+						)
+						((Said 'rotate/control,handle')
+							(= doorState 2)
+						)
 						((Said 'open/panel,door')
 							(if (& global205 $0001)
 								(AlreadyOpen)
@@ -253,8 +284,15 @@
 								(Print 52 4)
 							)
 						)
-						((Said 'get,detach,drag/control') (= local19 4))
-						((Said 'examine/control') (Print (Format @temp1 52 5 52 6) #icon 624 0 1))
+						((Said 'get,detach,drag/control')
+							(= doorState 4)
+						)
+						((Said 'examine/control')
+							(Print
+								(Format @str 52 5 52 6)
+								#icon 624 0 1
+							)
+						)
 					)
 				)
 				(
@@ -267,7 +305,9 @@
 			)
 			(if (not (event claimed?))
 				(cond 
-					((Said 'attach/control') (Print 52 7))
+					((Said 'attach/control')
+						(Print 52 7)
+					)
 					((Said 'close/panel,door')
 						(if (& global205 $0001)
 							(Print 52 4)
@@ -284,11 +324,15 @@
 									(Print 52 8)
 								)
 							)
-							(
-							(or (Said 'examine/dirt') (Said 'examine<down')) (Print 52 9))
-							(
-							(or (Said 'examine/ceiling') (Said 'examine<up')) (Print 52 10))
-							((Said '/brick,(wall<brick)') (Print 52 11))
+							((or (Said 'examine/dirt') (Said 'examine<down'))
+								(Print 52 9)
+							)
+							((or (Said 'examine/ceiling') (Said 'examine<up'))
+								(Print 52 10)
+							)
+							((Said '/brick,(wall<brick)')
+								(Print 52 11)
+							)
 							((Said '/passage')
 								(if (& global205 $0001)
 									(Print 52 12)
@@ -296,7 +340,9 @@
 									(Print 52 13)
 								)
 							)
-							((Said '/water,mud') (Print 52 14))
+							((Said '/water,mud')
+								(Print 52 14)
+							)
 						)
 					)
 					(
@@ -306,11 +352,16 @@
 						)
 						(Print 52 15)
 					)
-					(
-					(Said 'search,get,detach,move/body[/pile[<from]]') (if (& global205 $0002) (Print 52 16) else (DontSee)))
+					((Said 'search,get,detach,move/body[/pile[<from]]')
+						(if (& global205 $0002)
+							(Print 52 16)
+						else
+							(DontSee)
+						)
+					)
 				)
 			)
-			(if (and local19 (not local17))
+			(if (and doorState (not local17))
 				(panelCrank setScript: CrankIt)
 			)
 		)
@@ -323,7 +374,6 @@
 )
 
 (instance Drip of Script
-	(properties)
 	
 	(method (doit)
 		(if
@@ -339,9 +389,11 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 5 10)))
+			(0
+				(= seconds (Random 5 10))
+			)
 			(1
-				(drip setCycle: End self)
+				(drip setCycle: EndLoop self)
 				(= state -1)
 			)
 		)
@@ -349,21 +401,20 @@
 )
 
 (instance Scurry of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 10 18)))
 			(1
-				(= local16 (* (Random 0 3) 4))
+				(= i (* (Random 0 3) 4))
 				(rat
-					setLoop: (if (< [local0 local16] [local0 (+ local16 2)])
+					setLoop: (if (< [scurryXY i] [scurryXY (+ i 2)])
 						2
 					else
 						3
 					)
-					posn: [local0 local16] [local0 (++ local16)]
-					setMotion: MoveTo [local0 (++ local16)] [local0 (++ local16)] self
+					posn: [scurryXY i] [scurryXY (++ i)]
+					setMotion: MoveTo [scurryXY (++ i)] [scurryXY (++ i)] self
 					show:
 				)
 				(soundFX
@@ -383,8 +434,7 @@
 )
 
 (instance CrankIt of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -393,7 +443,7 @@
 					(= cycles 1)
 				else
 					(ego
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: MoveTo 85 120 self
 					)
 				)
@@ -418,13 +468,13 @@
 			)
 			(3
 				(cond 
-					((or (== local19 1) (== local19 3))
+					((or (== doorState 1) (== doorState 3))
 						(ego observeBlocks: cBlock)
 						(Print 52 17 #at 90 55)
-						((inventory at: 20) moveTo: curRoomNum)
-						(if (== local19 1) (= local19 0) else (= state 4))
+						((inventory at: iCrank) moveTo: curRoomNum)
+						(if (== doorState 1) (= doorState 0) else (= state 4))
 					)
-					((== local19 2)
+					((== doorState 2)
 						(if (not (& global205 $0001))
 							(= state 4)
 						else
@@ -432,13 +482,17 @@
 							(= state 6)
 						)
 					)
-					((== local19 4) (Print 52 18 #at 90 55) (= state 6))
+					((== doorState 4)
+						(Print 52 18
+							#at 90 55
+						)
+						(= state 6)
+					)
 				)
 				(= cycles 1)
 			)
 			(4
-				(if
-				(and local17 (== (ego x?) 57) (== (ego y?) 126))
+				(if (and local17 (== (ego x?) 57) (== (ego y?) 126))
 					(= state 2)
 				else
 					(= state 6)
@@ -449,27 +503,27 @@
 				(HandsOff)
 				(Print 52 19 #at 90 55)
 				(soundFX number: 126 loop: 1 play:)
-				(door cycleSpeed: 2 setCycle: End self)
-				(panelCrank setCycle: Fwd)
+				(door cycleSpeed: 2 setCycle: EndLoop self)
+				(panelCrank setCycle: Forward)
 			)
 			(6
-				(panelCrank setCycle: End self)
-				(= global205 (| global205 $0001))
+				(panelCrank setCycle: EndLoop self)
+				(|= global205 $0001)
 			)
 			(7
 				(cls)
-				(User controls: 1 canInput: 1)
+				(User controls: TRUE canInput: TRUE)
 				(panelCrank view: 152 loop: 2 cel: 2 posn: 67 90)
 				(ego
 					setLoop: -1
 					posn: 57 126
 					ignoreBlocks: crankCage
 					observeBlocks: cBlock
-					illegalBits: -32768
+					illegalBits: cWHITE
 					show:
 					setCycle: Walk
 				)
-				(= local19 (= local17 0))
+				(= doorState (= local17 0))
 				(client setScript: 0)
 			)
 		)
@@ -484,14 +538,19 @@
 		nsRight 58
 	)
 	
-	(method (handleEvent event &tmp [temp0 75])
-		(if
-		(or (MousedOn self event 3) (Said 'examine/nameplate'))
-			(event claimed: 1)
-			(if (== ((inventory at: 20) owner?) curRoomNum)
-				(Print (Format @temp0 52 5 52 6) #icon 624 0 1)
+	(method (handleEvent event &tmp [str 75])
+		(if (or (MousedOn self event shiftDown) (Said 'examine/nameplate'))
+			(event claimed: TRUE)
+			(if (== ((inventory at: iCrank) owner?) curRoomNum)
+				(Print
+					(Format @str 52 5 52 6)
+					#icon 624 0 1
+				)
 			else
-				(Print (Format @temp0 52 20 52 6) #icon 624 0 0)
+				(Print
+					(Format @str 52 20 52 6)
+					#icon 624 0 0
+				)
 			)
 		)
 		(cond 
@@ -501,22 +560,40 @@
 					(Said 'attach/key')
 					(Said 'unbar/nameplate')
 				)
-				(if (or (ego has: 5) (ego has: 18))
+				(if (or (ego has: iSkeletonKey) (ego has: iBrassKey))
 					(Print 52 21)
 				else
 					(DontHave)
 				)
 			)
-			((Said 'attach/poker') (if (ego has: 6) (Print 52 22) else (DontHave)))
-			((Said 'attach/crowbar') (if (ego has: 7) (Print 52 22) else (DontHave)))
-			((Said 'attach/key')
-				(if (or (ego has: 18) (ego has: 5))
+			((Said 'attach/poker')
+				(if (ego has: iPoker)
 					(Print 52 22)
 				else
 					(DontHave)
 				)
 			)
-			((Said 'force/nameplate') (if (ego has: 7) (Print 52 23) else (DontHave)))
+			((Said 'attach/crowbar')
+				(if (ego has: iCrowbar)
+					(Print 52 22)
+				else
+					(DontHave)
+				)
+			)
+			((Said 'attach/key')
+				(if (or (ego has: iBrassKey) (ego has: iSkeletonKey))
+					(Print 52 22)
+				else
+					(DontHave)
+				)
+			)
+			((Said 'force/nameplate')
+				(if (ego has: iCrowbar)
+					(Print 52 23)
+				else
+					(DontHave)
+				)
+			)
 		)
 	)
 )
@@ -533,14 +610,15 @@
 		(cond 
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine[<up]/chute[<laundry]')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 52 24)
 			)
-			(
-			(Said '(enter,go,get,climb)[<(up,in)]/chute[<laundry]') (Print 52 25))
+			((Said '(enter,go,get,climb)[<(up,in)]/chute[<laundry]')
+				(Print 52 25)
+			)
 		)
 	)
 )
@@ -554,8 +632,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 52 11)
 		)
 	)
@@ -571,15 +649,21 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((MousedOn self event 3)
-				(event claimed: 1)
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
 				(if (& global205 $0001)
 					(Print 52 26)
 				else
 					(Print 52 11)
 				)
 			)
-			((Said 'examine/door,panel[<hidden,hidden]') (if (& global205 $0001) (Print 52 26) else (DontSee)))
+			((Said 'examine/door,panel[<hidden,hidden]')
+				(if (& global205 $0001)
+					(Print 52 26)
+				else
+					(DontSee)
+				)
+			)
 			(
 				(and
 					(& global205 $0001)
@@ -600,8 +684,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 52 11)
 		)
 	)
@@ -616,8 +700,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 52 11)
 		)
 	)
@@ -632,8 +716,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 52 11)
 		)
 	)
@@ -648,7 +732,10 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((MousedOn self event 3) (event claimed: 1) (Print 52 27))
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(Print 52 27)
+			)
 			((Said 'examine/wall')
 				(if (& global205 $0001)
 					(Print 52 28)
@@ -668,9 +755,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/beam'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/beam'))
+			(event claimed: TRUE)
 			(Print 52 30)
 		)
 	)
@@ -685,8 +771,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 52 31)
 		)
 	)
@@ -701,8 +787,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {floor})
 		)
 	)
@@ -716,15 +802,24 @@
 		loop 2
 		cel 1
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			((MousedOn self event 3) (event claimed: 1) (ParseName {equipment}))
-			((Said 'scrub/cloth') (Print 52 32))
-			((Said 'get/cloth') (Print 52 33))
-			((Said 'examine/cloth') (Print 52 34))
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(ParseName {equipment})
+			)
+			((Said 'scrub/cloth')
+				(Print 52 32)
+			)
+			((Said 'get/cloth')
+				(Print 52 33)
+			)
+			((Said 'examine/cloth')
+				(Print 52 34)
+			)
 		)
 	)
 )
@@ -740,9 +835,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(Said 'rotate,examine/bath,equipment[<laundry,scrub]') (Print 52 35))
-			((MousedOn self event 3) (event claimed: 1) (ParseName {equipment}))
+			((Said 'rotate,examine/bath,equipment[<laundry,scrub]')
+				(Print 52 35)
+			)
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(ParseName {equipment})
+			)
 		)
 	)
 )
@@ -752,7 +851,7 @@
 		y 49
 		x 60
 		view 152
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -762,13 +861,12 @@
 		x 69
 		view 152
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (Said '/body,pile>') (Said '/pile/body[<dead]>'))
+			((or (Said '/body,pile>') (Said '/pile/body[<dead]>'))
 				(if (Said '(examine<in),search,get')
 					(if (or local20 (& global205 $0002))
 						(Print 52 16)
@@ -777,10 +875,17 @@
 					)
 				)
 				(if (Said 'examine[<at]')
-					(if local20 (Print 52 36) else (Print 52 37))
+					(if local20
+						(Print 52 36)
+					else
+						(Print 52 37)
+					)
 				)
 			)
-			((and local20 (MousedOn self event 3)) (event claimed: 1) (Print 52 36))
+			((and local20 (MousedOn self event shiftDown))
+				(event claimed: TRUE)
+				(Print 52 36)
+			)
 		)
 	)
 )
@@ -792,12 +897,12 @@
 		view 152
 		loop 2
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local17) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local17) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {crank})
 		)
 	)
@@ -815,11 +920,11 @@
 		x 117
 		view 152
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance rat of Act
+(instance rat of Actor
 	(properties
 		view 151
 		illegalBits $0000
@@ -829,19 +934,38 @@
 		(cond 
 			((Said '/mouse>')
 				(cond 
-					((Said 'examine') (if (rat mover?) (Print 52 38) else (DontSee)))
-					((Said 'get,capture') (if (rat mover?) (Print 52 39) else (DontSee)))
-					((Said 'kill') (if (rat mover?) (Print 52 40) else (DontSee)))
+					((Said 'examine')
+						(if (rat mover?)
+							(Print 52 38)
+						else
+							(DontSee)
+						)
+					)
+					((Said 'get,capture')
+						(if (rat mover?)
+							(Print 52 39)
+						else
+							(DontSee)
+						)
+					)
+					((Said 'kill')
+						(if (rat mover?)
+							(Print 52 40)
+						else
+							(DontSee)
+						)
+					)
 				)
 			)
-			((and (rat mover?) (MousedOn self event 3)) (event claimed: 1) (Print 52 38))
+			((and (rat mover?) (MousedOn self event shiftDown))
+				(event claimed: TRUE)
+				(Print 52 38)
+			)
 		)
 	)
 )
 
-(instance glow of HighLite
-	(properties)
-)
+(instance glow of HighLite)
 
 (instance Splash1 of Prop
 	(properties
@@ -857,7 +981,7 @@
 	)
 )
 
-(instance cBlock of Blk
+(instance cBlock of Block
 	(properties
 		top 117
 		left 54

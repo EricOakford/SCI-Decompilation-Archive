@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 49)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -20,27 +20,31 @@
 )
 
 (local
-	[local0 8] = [49 0 49 1 49 2 49 3]
+	msgID = [49 0 49 1 49 2 49 3]
 	local8
 	local9
-	[local10 5] = [163 106 186 99 -32768]
-	[local15 5] = [175 100 150 109 -32768]
-	[local20 5] = [215 100 197 99 -32768]
-	[local25 5] = [206 99 227 109 -32768]
+	leftUpPts = [163 106 186 99 PATHEND]
+	leftDwnPts = [175 100 150 109 PATHEND]
+	rightUpPts = [215 100 197 99 PATHEND]
+	rightDwnPts = [206 99 227 109 PATHEND]
 	local30
 	local31
 	local32
 	local33
 )
-(procedure (localproc_011c &tmp temp0)
+(procedure (localproc_011c &tmp i)
 	(if (not local8)
 		(= local8 1)
-		(DrawPic 62 dpOPEN_CENTEREDGE)
+		(DrawPic 62 IRISOUT)
 		(cast eachElementDo: #hide)
 		(myMusic number: 27 loop: -1 play:)
-		(if local31 (= temp0 0) else (= temp0 4))
-		(if (== (ego loop?) 3) (= temp0 (+ temp0 2)))
-		(Print [local0 temp0] [local0 (++ temp0)] 67 65 67 88)
+		(if local31 (= i 0) else (= i 4))
+		(if (== (ego loop?) 3) (= i (+ i 2)))
+		(Print
+			[msgID i] [msgID (++ i)]
+			#at 65 67
+			#dispose
+		)
 		(LookAround seconds: 4)
 	)
 )
@@ -48,7 +52,7 @@
 (procedure (localproc_0192)
 	(if local8
 		(= local8 0)
-		(DrawPic 40 dpOPEN_EDGECENTER)
+		(DrawPic 40 IRISIN)
 		(myMusic fade:)
 		(addToPics doit:)
 		(cast eachElementDo: #show)
@@ -57,38 +61,34 @@
 )
 
 (instance rightUpPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local20 param1])
+
+	(method (at n)
+		(return [rightUpPts n])
 	)
 )
 
 (instance leftUpPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local10 param1])
+
+	(method (at n)
+		(return [leftUpPts n])
 	)
 )
 
 (instance rightDwnPath of Path
-	(properties)
 	
-	(method (at param1)
-		(return [local25 param1])
+	(method (at n)
+		(return [rightDwnPts n])
 	)
 )
 
 (instance leftDwnPath of Path
-	(properties)
 	
-	(method (at param1)
-		(return [local15 param1])
+	(method (at n)
+		(return [leftDwnPts n])
 	)
 )
 
-(instance Room49 of Rm
+(instance Room49 of Room
 	(properties
 		picture 40
 	)
@@ -110,9 +110,11 @@
 			(= south 46)
 		)
 		(super init:)
-		(Load rsPIC 62)
-		(LoadMany 132 27 74 75 106)
-		(if (== south 46) (fprotrait cel: 1))
+		(Load PICTURE 62)
+		(LoadMany SOUND 27 74 75 106)
+		(if (== south 46)
+			(fprotrait cel: 1)
+		)
 		(addToPics add: fprotrait bprotrait doit:)
 		(self setFeatures: Platform)
 		(if
@@ -127,14 +129,14 @@
 		(if
 			(and
 				(== curRoomNum (- global119 (curRoom east?)))
-				(not (ego has: 21))
+				(not (ego has: iCane))
 			)
 			(cane init:)
 		)
 		(if
 			(and
 				(>= currentAct 3)
-				(not (ego has: 8))
+				(not (ego has: iCigarButt))
 				(== global168 0)
 				(< prevRoomNum 49)
 				(==
@@ -143,23 +145,23 @@
 				)
 			)
 			(if (> global119 85)
-				(= global168 (- global168 10))
+				(-= global168 10)
 			else
-				(= global168 (+ global168 10))
+				(-= global168 10)
 			)
 		)
 		(if
 			(and
 				(== curRoomNum (- global168 (curRoom east?)))
-				(not (ego has: 8))
+				(not (ego has: iCigarButt))
 			)
-			(cigar ignoreActors: 1 init:)
+			(cigar ignoreActors: TRUE init:)
 		)
 		(fpanel
 			setLoop: 5
 			setCel: 1
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setPri: 7
 			init:
 			stopUpd:
@@ -191,7 +193,7 @@
 				init:
 			)
 		else
-			(ego view: 0 setPri: 6 illegalBits: -32768 init:)
+			(ego view: 0 setPri: 6 illegalBits: cWHITE init:)
 		)
 	)
 	
@@ -232,7 +234,7 @@
 		else
 			(= vertAngle 0)
 		)
-		(if (& (ego onControl: 1) $0002)
+		(if (& (ego onControl: origin) cBLUE)
 			(if
 				(and
 					(== currentAct 0)
@@ -244,7 +246,7 @@
 			(curRoom newRoom: east)
 		)
 		(if (not local9)
-			(if (& (ego onControl:) $0040)
+			(if (& (ego onControl:) cBROWN)
 				(= local9 1)
 				(= vertAngle 0)
 				(ego illegalBits: 0)
@@ -255,7 +257,7 @@
 					(ego setLoop: 1 setMotion: leftDwnPath self)
 				)
 			)
-			(if (& (ego onControl:) $0020)
+			(if (& (ego onControl:) cMAGENTA)
 				(= local9 1)
 				(= vertAngle 0)
 				(ego illegalBits: 0)
@@ -276,22 +278,42 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
-					((and (not global107) (Said 'smell')) (Print 49 5))
+					((and (not global107) (Said 'smell'))
+						(Print 49 5)
+					)
 					((Said 'examine>')
 						(cond 
-							((or (Said '/room<billiard') (Said '/library')) (if (== west 33) (Print 49 6) else (event claimed: 0)))
-							((or (Said '/room<guest') (Said '/bedroom')) (if (== west 43) (Print 49 6) else (event claimed: 0)))
-							((Said '[<around,at][/room]') (Print 49 4))
-							((Said '/painting') (Print 49 7))
-							((Said '/door') (Print 49 8))
+							((or (Said '/room<billiard') (Said '/library'))
+								(if (== west 33)
+									(Print 49 6)
+								else
+									(event claimed: FALSE)
+								)
+							)
+							((or (Said '/room<guest') (Said '/bedroom'))
+								(if (== west 43)
+									(Print 49 6)
+								else
+									(event claimed: FALSE)
+								)
+							)
+							((Said '[<around,at][/room]')
+								(Print 49 4)
+							)
+							((Said '/painting')
+								(Print 49 7)
+							)
+							((Said '/door')
+								(Print 49 8)
+							)
 							((or (Said '/dirt') (Said '<down'))
 								(if
 									(and
-										(not (ego has: 21))
+										(not (ego has: iCane))
 										(== curRoomNum (- global119 prevRoomNum))
 									)
 									(= local32 1)
@@ -299,13 +321,15 @@
 								)
 								(if
 									(and
-										(not (ego has: 8))
+										(not (ego has: iCigarButt))
 										(== curRoomNum (- global168 prevRoomNum))
 									)
 									(= local32 1)
 									(Print 49 10)
 								)
-								(if (not local32) (event claimed: 0))
+								(if (not local32)
+									(event claimed: FALSE)
+								)
 								(= local32 0)
 							)
 							((Said '/clock')
@@ -323,7 +347,7 @@
 								)
 							)
 							((Said '[<through,in]/eyehole,eye')
-								(if (& (ego onControl: 1) $0010)
+								(if (& (ego onControl: origin) cRED)
 									(if (or (== (ego loop?) 2) (== (ego loop?) 3))
 										(eyes setScript: LookAround)
 									else
@@ -337,34 +361,40 @@
 					)
 					((Said 'move,open/door')
 						(cond 
-							((& (ego onControl: 1) $0008)
+							((& (ego onControl: origin) cCYAN)
 								(switch (curRoom south?)
 									(36
-										(= global175 (| global175 $0004))
+										(|= global175 $0004)
 									)
 									(46
-										(= global175 (| global175 $0040))
+										(|= global175 $0040)
 									)
 								)
 								(HandsOff)
 								(self setScript: Front)
 							)
-							((& (ego onControl: 1) $0004)
+							((& (ego onControl: origin) cGREEN)
 								(switch (curRoom north?)
 									(32
-										(= global175 (| global175 $0001))
+										(|= global175 $0001)
 									)
 									(42
-										(= global175 (| global175 $0010))
+										(|= global175 $0010)
 									)
 								)
 								(self setScript: Back)
 							)
-							(else (NotClose))
+							(else
+								(NotClose)
+							)
 						)
 					)
-					((Said 'close/door') (Print 49 16))
-					((Said 'get/painting') (Print 49 7))
+					((Said 'close/door')
+						(Print 49 16)
+					)
+					((Said 'get/painting')
+						(Print 49 7)
+					)
 					((Said 'close,drag,press,open/clock')
 						(if (== (curRoom east?) 33)
 							(Print 49 17)
@@ -381,21 +411,20 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (cue)
 		(HandsOn)
-		(ego illegalBits: -32768 setLoop: -1)
+		(ego illegalBits: cWHITE setLoop: -1)
 		(= local9 0)
 	)
 	
 	(method (newRoom n)
 		(ego setPri: -1)
-		(if
-		(and (or (Btst 38) (Btst 37)) (!= n 42) (!= n 43))
+		(if (and (or (Btst 38) (Btst 37)) (!= n 42) (!= n 43))
 			(Bclr 38)
 			(Bclr 37)
 		)
@@ -404,8 +433,7 @@
 )
 
 (instance Front of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -458,7 +486,7 @@
 			)
 			(5
 				(fpanel stopUpd:)
-				(ego illegalBits: -32768)
+				(ego illegalBits: cWHITE)
 				(HandsOn)
 			)
 		)
@@ -466,7 +494,6 @@
 )
 
 (instance Back of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -487,7 +514,7 @@
 								(Btst 38)
 								(and
 									(< gameMinutes 3)
-									(not (& deadGuests $0040))
+									(not (& deadGuests deadLILLIAN))
 									(not (Btst 37))
 								)
 							)
@@ -504,7 +531,13 @@
 						)
 					)
 				)
-				(if local30 (Print 49 19 #at 105 10) else (= state 3))
+				(if local30
+					(Print 49 19
+						#at 105 10
+					)
+				else
+					(= state 3)
+				)
 				(= cycles 1)
 			)
 			(2
@@ -514,7 +547,7 @@
 			(3
 				(bpanel stopUpd:)
 				(HandsOn)
-				(ego setLoop: -1 illegalBits: -32768)
+				(ego setLoop: -1 illegalBits: cWHITE)
 				(client setScript: 0)
 			)
 			(4
@@ -540,7 +573,7 @@
 				(mySound number: 75 loop: 1 play:)
 			)
 			(8
-				(ego setLoop: -1 illegalBits: -32768)
+				(ego setLoop: -1 illegalBits: cWHITE)
 				(client setScript: 0)
 				(curRoom newRoom: (curRoom north?))
 			)
@@ -549,7 +582,6 @@
 )
 
 (instance Entering of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -567,14 +599,13 @@
 			)
 			(3
 				(HandsOn)
-				(ego illegalBits: -32768 setScript: 0)
+				(ego illegalBits: cWHITE setScript: 0)
 			)
 		)
 	)
 )
 
 (instance LookAround of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -591,7 +622,7 @@
 				(ego yStep: 2)
 				(if (== (ego y?) 104)
 					(ego loop: 2)
-					(eyes cycleSpeed: 3 setCycle: Fwd show:)
+					(eyes cycleSpeed: 3 setCycle: Forward show:)
 					(= seconds 3)
 				else
 					(ego loop: 3)
@@ -611,8 +642,12 @@
 									)
 								)
 							)
-							((== (curRoom east?) 33) (= temp0 321))
-							((& global173 $0002) (= temp0 351))
+							((== (curRoom east?) 33)
+								(= temp0 321)
+							)
+							((& global173 $0002)
+								(= temp0 351)
+							)
 						)
 					)
 					(1
@@ -624,7 +659,9 @@
 									(= temp0 352)
 								)
 							)
-							((== (curRoom east?) 33) (= temp0 323))
+							((== (curRoom east?) 33)
+								(= temp0 323)
+							)
 						)
 					)
 					(2
@@ -659,8 +696,7 @@
 						)
 					)
 					(4
-						(if
-						(and (== (ego loop?) 3) (== (curRoom east?) 43))
+						(if (and (== (ego loop?) 3) (== (curRoom east?) 43))
 							(cond 
 								(
 									(or
@@ -679,7 +715,7 @@
 							(and
 								(== (ego loop?) 3)
 								(== (curRoom east?) 43)
-								(not (& deadGuests $0040))
+								(not (& deadGuests deadLILLIAN))
 							)
 							(= temp0 352)
 						)
@@ -714,7 +750,6 @@
 )
 
 (instance pickUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -724,22 +759,22 @@
 				(= cycles 2)
 			)
 			(1
-				(ego view: 17 cel: 0 setMotion: 0 setCycle: End self)
+				(ego view: 17 cel: 0 setMotion: 0 setCycle: EndLoop self)
 			)
 			(2
 				(if (== local33 1)
 					(Ok)
 					(cane hide:)
-					(ego get: 21)
+					(ego get: iCane)
 				else
 					(Print 49 20)
 					(cigar hide:)
-					(ego get: 8)
+					(ego get: iCigarButt)
 				)
-				(= gotItem 1)
+				(= gotItem TRUE)
 				(= cycles 2)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(HandsOn)
 				(ego view: 0 setCycle: Walk)
@@ -750,13 +785,12 @@
 )
 
 (instance grabbed of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 43 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 43 loop: 0 cel: 0 setCycle: EndLoop self)
 				(mySound number: 87 loop: 1 play:)
 			)
 			(1 (= seconds 5))
@@ -770,7 +804,7 @@
 	)
 )
 
-(instance fprotrait of PV
+(instance fprotrait of PicView
 	(properties
 		y 78
 		x 189
@@ -779,7 +813,7 @@
 	)
 )
 
-(instance bprotrait of PV
+(instance bprotrait of PicView
 	(properties
 		y 70
 		x 198
@@ -789,15 +823,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/door'))
+		(if (or (MousedOn self event shiftDown) (Said 'examine/door'))
 			(Print 49 8)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
 
-(instance fpanel of Act
+(instance fpanel of Actor
 	(properties
 		y 119
 		x 126
@@ -805,14 +838,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
+		(if (MousedOn self event shiftDown)
 			(Print 49 8)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
 
-(instance bpanel of Act
+(instance bpanel of Actor
 	(properties
 		y 103
 		x 250
@@ -839,8 +872,10 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/cane')) (event claimed: 1) (Print 49 22))
+			((or (MousedOn self event shiftDown) (Said 'examine/cane'))
+				(event claimed: TRUE)
+				(Print 49 22)
+			)
 			((Said 'get/cane')
 				(if (< (ego distanceTo: cane) 25)
 					(= local33 1)
@@ -863,8 +898,10 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/butt')) (event claimed: 1) (Print 49 23))
+			((or (MousedOn self event shiftDown) (Said 'examine/butt'))
+				(event claimed: TRUE)
+				(Print 49 23)
+			)
 			((Said 'get/butt')
 				(if (< (ego distanceTo: cigar) 10)
 					(= local33 0)
@@ -886,17 +923,13 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {platform})
 		)
 	)
 )
 
-(instance mySound of Sound
-	(properties)
-)
+(instance mySound of Sound)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

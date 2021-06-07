@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 51)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use HighLite)
 (use Intrface)
@@ -22,11 +22,9 @@
 (local
 	local0
 )
-(instance glow of HighLite
-	(properties)
-)
+(instance glow of HighLite)
 
-(instance Room51 of Rm
+(instance Room51 of Room
 	(properties
 		picture 51
 	)
@@ -59,7 +57,7 @@
 				setLoop: 3
 				setStep: 5 5
 				illegalBits: 0
-				ignoreActors: 1
+				ignoreActors: TRUE
 				posn: 139 171
 				setCycle: Walk
 				init:
@@ -79,14 +77,18 @@
 	)
 	
 	(method (doit)
-		(if (and (FirstEntry) lanternIsLit) (Print 51 0))
-		(if (and (not local0) (< (ego x?) 117)) (= local0 1))
-		(if (and local0 (& (ego onControl: 1) $0008))
+		(if (and (FirstEntry) lanternIsLit)
+			(Print 51 0)
+		)
+		(if (and (not local0) (< (ego x?) 117))
+			(= local0 1)
+		)
+		(if (and local0 (& (ego onControl: origin) cCYAN))
 			(HandsOff)
 			(ego illegalBits: 0 setMotion: MoveTo 244 80)
 		)
-		(if (& (ego onControl: 1) $0002)
-			(ego illegalBits: -32768)
+		(if (& (ego onControl: origin) cBLUE)
+			(ego illegalBits: cWHITE)
 			(curRoom newRoom: 65)
 		)
 		(super doit:)
@@ -99,27 +101,43 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
-				((Said '*/dinosaur') (Print 51 1))
-				((Said '*/bone') (Print 51 2))
+				((Said '*/dinosaur')
+					(Print 51 1)
+				)
+				((Said '*/bone')
+					(Print 51 2)
+				)
 				((Said 'examine>')
 					(cond 
-						((Said '[<around,at][/room]') (Print 51 0))
-						((Said '/stair') (Print 51 3))
-						((Said '/boulder') (Print 51 4))
+						((Said '[<around,at][/room]')
+							(Print 51 0)
+						)
+						((Said '/stair')
+							(Print 51 3)
+						)
+						((Said '/boulder')
+							(Print 51 4)
+						)
 					)
 				)
-				((Said 'open/trapdoor') (Print 51 5))
-				((Said 'close/trapdoor') (Print 51 6))
-				((Said 'climb/stair') (Print 51 7))
+				((Said 'open/trapdoor')
+					(Print 51 5)
+				)
+				((Said 'close/trapdoor')
+					(Print 51 6)
+				)
+				((Said 'climb/stair')
+					(Print 51 7)
+				)
 			)
 		)
 	)
 	
 	(method (cue)
 		(HandsOn)
-		(ego illegalBits: -32768)
+		(ego illegalBits: cWHITE)
 	)
 	
 	(method (newRoom n)
@@ -134,19 +152,19 @@
 		(switch (= state newState)
 			(0
 				(Falling priority: 5 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(1
 				(ego
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					xStep: 8
 					yStep: 8
 					setMotion: MoveTo 100 158 self
 				)
 			)
 			(2
-				(ego posn: 103 171 setLoop: 5 cel: 0 setCycle: End self)
+				(ego posn: 103 171 setLoop: 5 cel: 0 setCycle: EndLoop self)
 				(ShakeScreen 5 5)
 			)
 			(3
@@ -160,8 +178,7 @@
 )
 
 (instance Scurry of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 3 5)))
@@ -177,19 +194,39 @@
 	)
 )
 
-(instance rat of Act
-	(properties)
+(instance rat of Actor
 	
 	(method (handleEvent event)
 		(cond 
 			((Said '/mouse>')
 				(cond 
-					((Said 'examine') (if (rat mover?) (Print 51 9) else (DontSee)))
-					((Said 'get,capture') (if (rat mover?) (Print 51 10) else (DontSee)))
-					((Said 'kill') (if (rat mover?) (Print 51 11) else (DontSee)))
+					((Said 'examine')
+						(if (rat mover?)
+							(Print 51 9)
+						else
+							(DontSee)
+						)
+					)
+					((Said 'get,capture')
+						(if (rat mover?)
+							(Print 51 10)
+						else
+							(DontSee)
+						)
+					)
+					((Said 'kill')
+						(if (rat mover?)
+							(Print 51 11)
+						else
+							(DontSee)
+						)
+					)
 				)
 			)
-			((and (rat mover?) (MousedOn self event 3)) (event claimed: 1) (Print 51 9))
+			((and (rat mover?) (MousedOn self event shiftDown))
+				(event claimed: TRUE)
+				(Print 51 9)
+			)
 		)
 	)
 )
@@ -217,11 +254,11 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/trapdoor')
 				(Said 'examine<up')
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 			(Print 51 12)
 		)
 	)

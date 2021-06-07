@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 47)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DCIcon)
@@ -24,14 +24,14 @@
 
 (local
 	local0
-	local1
+	LdoorIsOpen
 	local2
 	local3
 	local4
 	local5
 	local6
 )
-(instance Room47 of Rm
+(instance Room47 of Room
 	(properties
 		picture 47
 	)
@@ -63,32 +63,32 @@
 			setRegions: 211
 			setFeatures: Stair table1 table2 wardL wardR Rail
 		)
-		(LoadMany 128 9 38 651)
-		(LoadMany 132 38 43 44 47 57 87 109)
-		(if (and global177 (not (Btst 0)))
+		(LoadMany VIEW 9 38 651)
+		(LoadMany SOUND 38 43 44 47 57 87 109)
+		(if (and global177 (not (Btst fSawShadowyFigure)))
 			(= local5 1)
 			(ego loop: 2)
-			(Load rsPIC 11)
-			(Load rsVIEW 507)
+			(Load PICTURE 11)
+			(Load VIEW 507)
 		)
 		(if howFast
 			(chand setPri: 15 init: stopUpd: setScript: jiggle)
-			(lampL setPri: 8 setCycle: Fwd init:)
-			(lampR setPri: 8 setCycle: Fwd init:)
-			(lamp3 setPri: 15 setCycle: Fwd ignoreActors: 1 init:)
-			(lamp4 setPri: 15 setCycle: Fwd ignoreActors: 1 init:)
+			(lampL setPri: 8 setCycle: Forward init:)
+			(lampR setPri: 8 setCycle: Forward init:)
+			(lamp3 setPri: 15 setCycle: Forward ignoreActors: TRUE init:)
+			(lamp4 setPri: 15 setCycle: Forward ignoreActors: TRUE init:)
 		else
 			(chand setPri: 15 init: stopUpd:)
 			(lampL setPri: 8 init: stopUpd:)
 			(lampR setPri: 8 init: stopUpd:)
-			(lamp3 setPri: 15 ignoreActors: 1 init: stopUpd:)
-			(lamp4 setPri: 15 ignoreActors: 1 init: stopUpd:)
+			(lamp3 setPri: 15 ignoreActors: TRUE init: stopUpd:)
+			(lamp4 setPri: 15 ignoreActors: TRUE init: stopUpd:)
 		)
 		(Ldoor init: stopUpd:)
-		(rail1 setPri: 11 ignoreActors: 1 init: stopUpd:)
-		(rail2 setPri: 11 ignoreActors: 1 init: stopUpd:)
-		(if (and (== currentAct 1) (not (ego has: 23)))
-			(Load rsVIEW 17)
+		(rail1 setPri: 11 ignoreActors: TRUE init: stopUpd:)
+		(rail2 setPri: 11 ignoreActors: TRUE init: stopUpd:)
+		(if (and (== currentAct 1) (not (ego has: iHandkerchief)))
+			(Load VIEW 17)
 			(hanky init:)
 		)
 		(switch prevRoomNum
@@ -113,16 +113,18 @@
 				)
 			)
 		)
-		(ego view: 0 illegalBits: -32768 init:)
+		(ego view: 0 illegalBits: cWHITE init:)
 	)
 	
 	(method (doit &tmp temp0)
-		(if (FirstEntry) (Print 47 0))
+		(if (FirstEntry)
+			(Print 47 0)
+		)
 		(if (and global216 (== local5 1))
 			(= local5 2)
 			(self setScript: (ScriptID 408 0))
 		)
-		(if (and (== local5 2) (Btst 0))
+		(if (and (== local5 2) (Btst fSawShadowyFigure))
 			(= local5 0)
 			(addToPics
 				add:
@@ -147,8 +149,8 @@
 		(if (not local4)
 			(if
 				(or
-					(& (ego onControl: 0) $0008)
-					(& (ego onControl: 0) $0010)
+					(& (ego onControl: FALSE) cCYAN)
+					(& (ego onControl: FALSE) cRED)
 				)
 				(= temp0 9)
 			else
@@ -156,10 +158,10 @@
 			)
 			(ego setPri: temp0)
 		)
-		(switch (ego onControl: 1)
-			(4 (curRoom newRoom: 46))
-			(2 (curRoom newRoom: 48))
-			(16
+		(switch (ego onControl: origin)
+			(cGREEN (curRoom newRoom: 46))
+			(cBLUE (curRoom newRoom: 48))
+			(cRED
 				(if (== (ego loop?) 3) (curRoom newRoom: 74))
 			)
 			(2048
@@ -174,7 +176,11 @@
 					(ego setMotion: MoveTo 280 190)
 				)
 			)
-			(1 (if local3 (= local3 0)))
+			(1
+				(if local3
+					(= local3 0)
+				)
+			)
 			(128
 				(if
 					(and
@@ -210,15 +216,16 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'examine<down[/!*]') (Print 47 1))
 					((Said 'examine>')
 						(cond 
 							((Said '[<around,at,down][/room]') (Print 47 0))
 							((Said '/door<hidden') (Print 47 2))
-							(
-							(or (Said '/door<bathroom') (Said '/bathroom')) (Print 47 3))
+							((or (Said '/door<bathroom') (Said '/bathroom'))
+								(Print 47 3)
+							)
 							((Said '/bird,post[<newel]') (Print 47 4))
 							((Said '/curtain') (Print 47 5))
 						)
@@ -228,18 +235,18 @@
 					((Said '*/armoire') (NotClose))
 				)
 			)
-			(evMOUSEBUTTON
+			(mouseDown
 				(if
 					(or
 						(== (User controls?) 0)
-						(& (ego onControl: 0) $0001)
-						(& (ego onControl: 0) $0008)
-						(& (ego onControl: 0) $0080)
+						(& (ego onControl: 0) cBLACK)
+						(& (ego onControl: 0) cCYAN)
+						(& (ego onControl: 0) cLGREY)
 					)
 					(return)
 				)
 				(switch (ego onControl: 0)
-					(512
+					(cLBLUE
 						(ego
 							setMotion:
 								MoveTo
@@ -253,7 +260,7 @@
 								)
 						)
 					)
-					(1024
+					(cLGREEN
 						(ego
 							setMotion:
 								MoveTo
@@ -268,44 +275,44 @@
 						)
 					)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
-			(evJOYSTICK
+			(direction
 				(if
 					(or
 						(== (User controls?) 0)
-						(& (ego onControl: 0) $0001)
-						(& (ego onControl: 0) $0008)
-						(& (ego onControl: 0) $0020)
-						(& (ego onControl: 0) $0080)
+						(& (ego onControl: 0) cBLACK)
+						(& (ego onControl: 0) cCYAN)
+						(& (ego onControl: 0) cMAGENTA)
+						(& (ego onControl: 0) cLGREY)
 					)
 					(return)
 				)
 				(switch (event message?)
-					(JOY_UP
+					(dirN
 						(switch (ego onControl: 0)
-							(512
+							(cLBLUE
 								(ego setMotion: MoveTo 60 136)
 							)
-							(1024
+							(cLGREEN
 								(ego setMotion: MoveTo 261 136)
 							)
 						)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
-					(JOY_DOWN
+					(dirS
 						(switch (ego onControl: 0)
-							(512
+							(cLBLUE
 								(ego setMotion: MoveTo 39 190)
 							)
-							(1024
+							(cLGREEN
 								(ego setMotion: MoveTo 280 190)
 							)
 						)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 					(else 
-						(event claimed: 1)
+						(event claimed: TRUE)
 						(return)
 					)
 				)
@@ -314,8 +321,7 @@
 	)
 	
 	(method (newRoom n)
-		(if
-		(and (!= n 46) (or (== global177 1) (== global177 3)))
+		(if (and (!= n 46) (or (== global177 1) (== global177 3)))
 			(= global177 2)
 		)
 		(super newRoom: n)
@@ -323,7 +329,6 @@
 )
 
 (instance myDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -337,7 +342,7 @@
 			)
 			(1
 				(Face ego Ldoor)
-				(Ldoor ignoreActors: 1 cycleSpeed: 2 setCycle: End self)
+				(Ldoor ignoreActors: TRUE cycleSpeed: 2 setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 play:)
 			)
 			(2
@@ -345,7 +350,7 @@
 			)
 			(3
 				(ego loop: 3)
-				(= local1 1)
+				(= LdoorIsOpen 1)
 				(if
 					(and
 						(> currentAct 0)
@@ -362,21 +367,21 @@
 			)
 			(5
 				(ego loop: 1)
-				(Ldoor ignoreActors: 0 cycleSpeed: 2 setCycle: Beg self)
+				(Ldoor ignoreActors: 0 cycleSpeed: 2 setCycle: BegLoop self)
 				(myMusic number: 44 loop: 1 play:)
-				(= local1 0)
+				(= LdoorIsOpen 0)
 			)
 			(6
 				(HandsOn)
 				(client setScript: 0)
 			)
 			(7
-				(hand setCycle: End self init:)
+				(hand setCycle: EndLoop self init:)
 				(myMusic number: 87 loop: 1 play:)
 				(ego hide:)
 			)
 			(8
-				(myIcon view: 651 cycler: End)
+				(myIcon view: 651 cycler: EndLoop)
 				(= cIcon myIcon)
 				(= deathLoop 0)
 				(= deathCel 0)
@@ -388,13 +393,11 @@
 )
 
 (instance jiggle of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if
-				(and (not local5) (< (Random 1 100) 10) (== local4 0))
+				(if (and (not local5) (< (Random 1 100) 10) (== local4 0))
 					(= cycles 1)
 				else
 					(= state -1)
@@ -434,20 +437,19 @@
 )
 
 (instance falling of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= local4 1)
 				(Print 47 9)
-				(ego view: 9 setLoop: 0 setCycle: End self)
+				(ego view: 9 setLoop: 0 setCycle: EndLoop self)
 			)
 			(1
 				(myMusic number: 38 loop: 1 play:)
-				(ego setLoop: 1 setCycle: Fwd)
-				(client view: 9 cel: 0 setLoop: 3 setCycle: End self)
+				(ego setLoop: 1 setCycle: Forward)
+				(client view: 9 cel: 0 setLoop: 3 setCycle: EndLoop self)
 			)
 			(2
 				(client
@@ -458,7 +460,7 @@
 				(ego
 					setLoop: 2
 					setPri: 15
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 				)
 			)
@@ -486,11 +488,11 @@
 					setCel: -1
 					setLoop: 0
 					setPri: 15
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 3 3
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
-					ignoreHorizon: 1
+					ignoreHorizon: TRUE
 					setMotion: MoveTo (ego x?) -50 self
 				)
 			)
@@ -505,18 +507,18 @@
 	)
 )
 
-(instance post1 of PV
+(instance post1 of PicView
 	(properties
 		y 122
 		x 78
 		view 147
 		loop 2
 		priority 15
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance post2 of PV
+(instance post2 of PicView
 	(properties
 		y 121
 		x 243
@@ -524,11 +526,11 @@
 		loop 2
 		cel 1
 		priority 15
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance cabL of PV
+(instance cabL of PicView
 	(properties
 		y 53
 		x 124
@@ -539,7 +541,7 @@
 	)
 )
 
-(instance cabR of PV
+(instance cabR of PicView
 	(properties
 		y 53
 		x 199
@@ -550,7 +552,7 @@
 	)
 )
 
-(instance cat of PV
+(instance cat of PicView
 	(properties
 		y 53
 		x 143
@@ -561,7 +563,7 @@
 	)
 )
 
-(instance vase of PV
+(instance vase of PicView
 	(properties
 		y 52
 		x 177
@@ -583,9 +585,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/armoire'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/armoire'))
+			(event claimed: TRUE)
 			(Print 47 11)
 		)
 	)
@@ -602,15 +603,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/armoire'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/armoire'))
+			(event claimed: TRUE)
 			(Print 47 11)
 		)
 	)
 )
 
-(instance chain2 of PV
+(instance chain2 of PicView
 	(properties
 		y 47
 		x 162
@@ -621,7 +621,7 @@
 	)
 )
 
-(instance chain3 of PV
+(instance chain3 of PicView
 	(properties
 		y 65
 		x 162
@@ -642,8 +642,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -659,8 +659,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -678,14 +678,16 @@
 	(method (handleEvent event)
 		(if (not local5)
 			(cond 
-				((Said 'get/chandelier') (Print 47 12))
+				((Said 'get/chandelier')
+					(Print 47 12)
+				)
 				(
 					(or
-						(MousedOn self event 3)
+						(MousedOn self event shiftDown)
 						(Said 'examine/chandelier,ceiling')
 						(Said 'examine<up')
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(Print 47 13)
 				)
 			)
@@ -708,17 +710,19 @@
 				((Said 'bang/door,closet') (Print 47 14))
 				((Said 'open,(examine<in)/door,closet')
 					(cond 
-						(local1 (AlreadyOpen))
-						((& (ego onControl: 0) $0020) (self setScript: myDoor))
+						(LdoorIsOpen (AlreadyOpen))
+						((& (ego onControl: 0) cMAGENTA)
+							(self setScript: myDoor)
+						)
 						(else (NotClose))
 					)
 				)
 				(
 					(or
-						(MousedOn self event 3)
+						(MousedOn self event shiftDown)
 						(Said 'examine/closet,(door<closet),(door[<!*])')
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(Print 47 15)
 				)
 			)
@@ -726,7 +730,7 @@
 	)
 )
 
-(instance rail1 of Act
+(instance rail1 of Actor
 	(properties
 		y 141
 		x 115
@@ -736,7 +740,7 @@
 	)
 )
 
-(instance rail2 of Act
+(instance rail2 of Actor
 	(properties
 		y 141
 		x 208
@@ -755,8 +759,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local5) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local5) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -771,8 +775,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local5) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local5) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -787,8 +791,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local5) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local5) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -803,8 +807,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local5) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local5) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -832,11 +836,11 @@
 			(cond 
 				(
 					(or
-						(MousedOn self event 3)
+						(MousedOn self event shiftDown)
 						(Said 'examine/handkerchief,dirt')
 						(and (< (ego y?) 128) (Said 'examine<down[/!*]'))
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(Print 47 16)
 				)
 				((Said 'get/handkerchief[/dirt]')
@@ -852,7 +856,6 @@
 )
 
 (instance pickUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -862,7 +865,7 @@
 				(= cycles 2)
 			)
 			(1
-				(ego view: 17 cel: 0 setMotion: 0 setCycle: End self)
+				(ego view: 17 cel: 0 setMotion: 0 setCycle: EndLoop self)
 			)
 			(2
 				(Ok)
@@ -871,7 +874,7 @@
 				(ego get: 23)
 				(= cycles 2)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(HandsOn)
 				(ego view: 0 setCycle: Walk)
@@ -893,7 +896,7 @@
 		(if
 		(or (MousedOn self event 3) (Said 'examine/balcony'))
 			(Print 47 17)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -909,7 +912,7 @@
 	(method (handleEvent event)
 		(if (MousedOn self event 3)
 			(Print 47 18)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -924,6 +927,6 @@
 	)
 	
 	(method (init)
-		((= cycler (Fwd new:)) init: self)
+		((= cycler (Forward new:)) init: self)
 	)
 )

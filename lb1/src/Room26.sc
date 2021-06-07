@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 26)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -10,7 +10,7 @@
 	Room26 0
 )
 
-(instance Room26 of Rm
+(instance Room26 of Room
 	(properties
 		picture 26
 	)
@@ -32,7 +32,9 @@
 			)
 			(self setRegions: 281)
 		)
-		(if (== prevRoomNum 20) (ego posn: 180 125))
+		(if (== prevRoomNum 20)
+			(ego posn: 180 125)
+		)
 		(if (and (== prevRoomNum 25) (< (ego y?) 157))
 			(ego posn: 1 145)
 		)
@@ -41,7 +43,9 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 26 0))
+		(if (FirstEntry)
+			(Print 26 0)
+		)
 		(super doit:)
 	)
 	
@@ -50,24 +54,42 @@
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room]') (Print 26 0))
-							((Said '/drive') (Print 26 1))
-							((Said '/archway') (Print 26 2))
-							((Said '/box') (Print 26 3))
+							((Said '[<around,at][/room]')
+								(Print 26 0)
+							)
+							((Said '/drive')
+								(Print 26 1)
+							)
+							((Said '/archway')
+								(Print 26 2)
+							)
+							((Said '/box')
+								(Print 26 3)
+							)
 						)
 					)
-					((Said 'get/box') (Print 26 4))
-					((Said 'close,open/archway') (Print 26 5))
-					((Said 'oil/archway') (if (ego has: 3) (Print 26 6) else (Print 26 7)))
+					((Said 'get/box')
+						(Print 26 4)
+					)
+					((Said 'close,open/archway')
+						(Print 26 5)
+					)
+					((Said 'oil/archway')
+						(if (ego has: iOilcan)
+							(Print 26 6)
+						else
+							(Print 26 7)
+						)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -86,9 +108,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/cabin'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/cabin'))
+			(event claimed: TRUE)
 			(Print 26 8)
 		)
 	)

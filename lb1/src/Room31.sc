@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 31)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -26,10 +26,10 @@
 	local5
 	local6
 	local7
-	local8
+	firstTime
 	local9
 )
-(instance Room31 of Rm
+(instance Room31 of Room
 	(properties
 		picture 31
 	)
@@ -37,7 +37,7 @@
 	(method (init)
 		(= east 32)
 		(super init:)
-		(= local8 (FirstEntry))
+		(= firstTime (FirstEntry))
 		(addToPics
 			add:
 				crossbow
@@ -57,7 +57,7 @@
 			eachElementDo: #init
 			doit:
 		)
-		(LoadMany 132 43 44)
+		(LoadMany SOUND 43 44)
 		(self
 			setRegions: 213
 			setFeatures:
@@ -81,8 +81,8 @@
 				Window2
 		)
 		(if howFast
-			(lamp1 setPri: 5 setCycle: Fwd init:)
-			(lamp2 setPri: 11 setCycle: Fwd init:)
+			(lamp1 setPri: 5 setCycle: Forward init:)
+			(lamp2 setPri: 11 setCycle: Forward init:)
 		else
 			(lamp1 setPri: 5 init: stopUpd:)
 			(lamp2 setPri: 11 init: stopUpd:)
@@ -90,14 +90,14 @@
 		(derringer
 			cel: (if (< currentAct 6) 3 else 4)
 			setPri: 11
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			stopUpd:
 		)
 		(Fdoor
 			cel: (if (== prevRoomNum 10) 2 else 0)
 			priority: 7
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			stopUpd:
 		)
@@ -153,20 +153,20 @@
 			(ego posn: 310 123)
 		else
 			(ego posn: 84 124)
-			(if (not local8) (Fdoor setScript: closeDoor))
+			(if (not firstTime) (Fdoor setScript: closeDoor))
 		)
-		(ego view: 0 illegalBits: -32764 init:)
+		(ego view: 0 illegalBits: (| cWHITE cGREEN) init:)
 	)
 	
 	(method (doit)
-		(if local8
+		(if firstTime
 			(Print 31 0)
 			(if (== prevRoomNum 10) (Fdoor setScript: closeDoor))
-			(= local8 0)
+			(= firstTime 0)
 		)
 		(if
 			(and
-				(& (ego onControl: 0) $0010)
+				(& (ego onControl: 0) cRED)
 				(== (ego loop?) 1)
 				(not script)
 			)
@@ -178,7 +178,7 @@
 		else
 			(ego setPri: -1)
 		)
-		(if (& (ego onControl: 1) $0004)
+		(if (& (ego onControl: origin) cGREEN)
 			(curRoom newRoom: 10)
 			(if (or (== global154 1) (== global154 2))
 				(= global154 3)
@@ -193,16 +193,16 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 974)
-		(DisposeScript 985)
+		(DisposeScript FOLLOW)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(DisposeScript 990)
-		(if (== (event type?) evSAID)
+		(DisposeScript SAVE)
+		(if (== (event type?) saidEvent)
 			(if
 				(and
 					global208
@@ -210,7 +210,7 @@
 						'ask,tell,hold,deliver,examine,get,kill,kiss,embrace,flirt>'
 					)
 				)
-				(DisposeScript 990)
+				(DisposeScript SAVE)
 				(self setScript: (ScriptID 243 0))
 				((self script?) handleEvent: event)
 				(if (event claimed?) (return))
@@ -218,7 +218,9 @@
 			(cond 
 				((Said 'examine>')
 					(cond 
-						((Said '[<around,at][/room]') (Print 31 0))
+						((Said '[<around,at][/room]')
+							(Print 31 0)
+						)
 						((Said '/boomerang[<australian]')
 							(if (< (ego distanceTo: gundoor) 30)
 								(= local4 1)
@@ -245,7 +247,11 @@
 						)
 						((Said '/dagger[<pearl]')
 							(if (< (ego distanceTo: gundoor) 30)
-								(if (>= currentAct 5) (= local4 5) else (= local4 4))
+								(if (>= currentAct 5)
+									(= local4 5)
+								else
+									(= local4 4)
+								)
 								(gundoor setScript: cabinetDrawer)
 							else
 								(NotClose)
@@ -259,29 +265,75 @@
 								(NotClose)
 							)
 						)
-						((Said '/top/armoire') (if (< (ego x?) 160) (Print 31 1) else (Print 31 2)))
-						((Said '/armoire')
-							(cond 
-								((< (ego distanceTo: gundoor) 80) (if (Btst 47) (Print 31 3) else (Print 31 4)))
-								((< (ego distanceTo: cabDoor) 80) (Print 31 5))
-								(else (NotClose))
+						((Said '/top/armoire')
+							(if (< (ego x?) 160)
+								(Print 31 1)
+							else
+								(Print 31 2)
 							)
 						)
-						((Said '/weapon') (Print 31 6))
-						((Said '/door') (Print 31 7))
-						((Said '<above,above/fireplace') (Print 31 8))
-						((Said '/mantel') (Print 31 9))
+						((Said '/armoire')
+							(cond 
+								((< (ego distanceTo: gundoor) 80)
+									(if (Btst 47)
+										(Print 31 3)
+									else
+										(Print 31 4)
+									)
+								)
+								((< (ego distanceTo: cabDoor) 80)
+									(Print 31 5)
+								)
+								(else
+									(NotClose)
+								)
+							)
+						)
+						((Said '/weapon')
+							(Print 31 6)
+						)
+						((Said '/door')
+							(Print 31 7)
+						)
+						((Said '<above,above/fireplace')
+							(Print 31 8)
+						)
+						((Said '/mantel')
+							(Print 31 9)
+						)
 					)
 				)
-				((Said 'move/case') (Print 31 10))
-				((Said 'open/case') (if (< currentAct 6) (Print 31 11) else (Print 31 12)))
-				((Said 'unbar/case') (if (< currentAct 6) (Print 31 13) else (Print 31 14)))
+				((Said 'move/case')
+					(Print 31 10)
+				)
+				((Said 'open/case')
+					(if (< currentAct 6)
+						(Print 31 11)
+					else
+						(Print 31 12)
+					)
+				)
+				((Said 'unbar/case')
+					(if (< currentAct 6)
+						(Print 31 13)
+					else
+						(Print 31 14)
+					)
+				)
 				((Said 'get>')
 					(cond 
-						((Said '/weapon') (Print 31 15))
-						((Said '/boomerang[<australian]') (Print 31 16))
-						((Said '/cutlass[<steel]') (Print 31 16))
-						((Said '/mace[<antique]') (Print 31 16))
+						((Said '/weapon')
+							(Print 31 15)
+						)
+						((Said '/boomerang[<australian]')
+							(Print 31 16)
+						)
+						((Said '/cutlass[<steel]')
+							(Print 31 16)
+						)
+						((Said '/mace[<antique]')
+							(Print 31 16)
+						)
 						((Said '/dagger[<pearl]')
 							(if (>= currentAct 5)
 								(Bset 28)
@@ -291,7 +343,9 @@
 								(Print 31 16)
 							)
 						)
-						((Said '/rifle') (Print 31 18))
+						((Said '/rifle')
+							(Print 31 18)
+						)
 						((Said '/derringer')
 							(if (< currentAct 6)
 								(Bset 25)
@@ -313,14 +367,13 @@
 )
 
 (instance spin of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= local0 1)
-				(sphere cycleSpeed: 0 setCycle: Fwd)
+				(sphere cycleSpeed: 0 setCycle: Forward)
 				(= seconds 4)
 			)
 			(1
@@ -343,7 +396,6 @@
 )
 
 (instance shadowWalk of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -360,13 +412,12 @@
 )
 
 (instance cabinetDrawer of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if local6
-					(= theTalker 6)
+					(= theTalker talkLILLIAN)
 					(switch local7
 						(0 (Say 1 31 21))
 						(else  (Say 1 31 22))
@@ -378,7 +429,7 @@
 					(ego loop: 3)
 					(cond 
 						(local9 (= state 2) (= cycles 1))
-						((not (Btst 47)) (client setCycle: End self))
+						((not (Btst 47)) (client setCycle: EndLoop self))
 						(else (= cycles (= state 1)))
 					)
 				)
@@ -394,9 +445,7 @@
 							(4 (Bset 27) (Print 31 26))
 							(5 (Bset 28) (Print 31 17))
 							(0
-								(Printf
-									31
-									27
+								(Printf 31 27
 									(if (>= currentAct 5)
 										{,}
 									else
@@ -412,7 +461,7 @@
 				)
 				(= cycles 1)
 			)
-			(3 (client setCycle: Beg self))
+			(3 (client setCycle: BegLoop self))
 			(4
 				(client stopUpd:)
 				(= local9 (= local1 0))
@@ -425,7 +474,6 @@
 )
 
 (instance myDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -441,8 +489,8 @@
 				)
 			)
 			(2
-				(Bdoor cycleSpeed: 1 ignoreActors: 1 setCycle: End)
-				(Fdoor cycleSpeed: 1 ignoreActors: 1 setCycle: End self)
+				(Bdoor cycleSpeed: 1 ignoreActors: TRUE setCycle: EndLoop)
+				(Fdoor cycleSpeed: 1 ignoreActors: TRUE setCycle: EndLoop self)
 				(mySound number: 43 play:)
 			)
 			(3
@@ -463,15 +511,21 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'examine<in/rhino,head') (Print 31 30))
-			(
-			(or (MousedOn self event 3) (Said 'examine/rhino,head')) (event claimed: 1) (Print 31 8))
-			((Said 'get/rhino,head') (Print 31 31))
+			((Said 'examine<in/rhino,head')
+				(Print 31 30)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/rhino,head'))
+				(event claimed: TRUE)
+				(Print 31 8)
+			)
+			((Said 'get/rhino,head')
+				(Print 31 31)
+			)
 		)
 	)
 )
 
-(instance firetools of PV
+(instance firetools of PicView
 	(properties
 		y 87
 		x 226
@@ -491,14 +545,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {fireplace})
 		)
 	)
 )
 
-(instance bookcase of PV
+(instance bookcase of PicView
 	(properties
 		y 114
 		x 88
@@ -521,9 +575,13 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (MousedOn self event 3) (Said 'examine/alligator')) (event claimed: 1) (Print 31 1))
-			((Said 'get/bird,alligator') (Print 31 32))
+			((or (MousedOn self event shiftDown) (Said 'examine/alligator'))
+				(event claimed: TRUE)
+				(Print 31 1)
+			)
+			((Said 'get/bird,alligator')
+				(Print 31 32)
+			)
 		)
 	)
 )
@@ -536,12 +594,12 @@
 		loop 1
 		cel 1
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -558,8 +616,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -572,12 +630,12 @@
 		view 131
 		loop 1
 		priority 12
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -590,12 +648,12 @@
 		view 131
 		cel 5
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -611,8 +669,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -630,8 +688,10 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (MousedOn self event 3) (Said 'examine/bird')) (event claimed: 1) (Print 31 2))
+			((or (MousedOn self event shiftDown) (Said 'examine/bird'))
+				(event claimed: TRUE)
+				(Print 31 2)
+			)
 		)
 	)
 )
@@ -648,13 +708,25 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'move/globe') (Print 31 33))
-			((Said 'examine<below/globe') (Print 31 34))
-			((Said 'examine<in/globe') (Print 31 35))
-			(
-			(or (MousedOn self event 3) (Said 'examine/globe')) (event claimed: 1) (Print 31 36))
-			((Said 'get/globe') (Print 31 37))
-			((Said 'open/globe') (Print 31 35))
+			((Said 'move/globe')
+				(Print 31 33)
+			)
+			((Said 'examine<below/globe')
+				(Print 31 34)
+			)
+			((Said 'examine<in/globe')
+				(Print 31 35)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/globe'))
+				(event claimed: TRUE)
+				(Print 31 36)
+			)
+			((Said 'get/globe')
+				(Print 31 37)
+			)
+			((Said 'open/globe')
+				(Print 31 35)
+			)
 			((Said 'rotate,spin/globe')
 				(if (== local0 0)
 					(if (< (ego distanceTo: sphere) 30)
@@ -684,13 +756,15 @@
 			((super handleEvent: event))
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/crossbow[<antique]')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 31 39)
 			)
-			((Said 'get/crossbow[<antique]') (Print 31 16))
+			((Said 'get/crossbow[<antique]')
+				(Print 31 16)
+			)
 		)
 	)
 )
@@ -705,8 +779,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -722,8 +796,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -743,13 +817,15 @@
 			((super handleEvent: event))
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/ax[<feathered]')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 31 40)
 			)
-			((Said 'get/ax[<feathered]') (Print 31 16))
+			((Said 'get/ax[<feathered]')
+				(Print 31 16)
+			)
 		)
 	)
 )
@@ -764,9 +840,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/spear') (Print 31 41))
-			(
-			(or (MousedOn self event 3) (Said 'examine/spear')) (event claimed: 1) (Print 31 42))
+			((Said 'get/spear')
+				(Print 31 41)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/spear'))
+				(event claimed: TRUE)
+				(Print 31 42)
+			)
 		)
 	)
 )
@@ -781,11 +861,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open,(examine<in)/desk,(drawer[<desk])') (Print 31 43))
-			(
-			(or (MousedOn self event 3) (Said 'examine/desk'))
-				(event claimed: 1)
-				(if (< currentAct 6) (Print 31 44) else (Print 31 45))
+			((Said 'open,(examine<in)/desk,(drawer[<desk])')
+				(Print 31 43)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/desk'))
+				(event claimed: TRUE)
+				(if (< currentAct 6)
+					(Print 31 44)
+				else
+					(Print 31 45)
+				)
 			)
 		)
 	)
@@ -800,8 +885,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -816,8 +901,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -833,8 +918,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {door})
 		)
 	)
@@ -848,8 +933,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {door})
 		)
 	)
@@ -874,10 +959,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'move/armoire') (Print 31 46))
-			((MousedOn self event 3)
-				(event claimed: 1)
-				(if (Btst 47) (Print 31 3) else (Print 31 4))
+			((Said 'move/armoire')
+				(Print 31 46)
+			)
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(if (Btst 47)
+					(Print 31 3)
+				else
+					(Print 31 4)
+				)
 			)
 		)
 	)
@@ -893,8 +984,7 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(Said '(examine<in),open/armoire,(door<armoire)>')
+			((Said '(examine<in),open/armoire,(door<armoire)>')
 				(= local4 0)
 				(cond 
 					((< (ego distanceTo: gundoor) 30)
@@ -904,18 +994,31 @@
 							(gundoor setScript: cabinetDrawer)
 						)
 					)
-					((< (ego distanceTo: cabDoor) 30) (cabDoor setScript: cabinetDrawer))
-					(else (NotClose))
+					((< (ego distanceTo: cabDoor) 30)
+						(cabDoor setScript: cabinetDrawer)
+					)
+					(else
+						(NotClose)
+					)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
-			((MousedOn self event 3) (event claimed: 1) (Print 31 5))
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(Print 31 5)
+			)
 			((Said 'close/armoire,(door<armoire)')
 				(cond 
-					(
-					(or (< (ego distanceTo: cabDoor) 30) (not (Btst 47))) (AlreadyClosed))
-					((< (ego distanceTo: gundoor) 30) (= local9 1) (gundoor setScript: cabinetDrawer))
-					(else (NotClose))
+					((or (< (ego distanceTo: cabDoor) 30) (not (Btst 47)))
+						(AlreadyClosed)
+					)
+					((< (ego distanceTo: gundoor) 30)
+						(= local9 1)
+						(gundoor setScript: cabinetDrawer)
+					)
+					(else
+						(NotClose)
+					)
 				)
 			)
 		)
@@ -942,7 +1045,10 @@
 					(Print 31 14)
 				)
 			)
-			((Said 'feel<in/case') (Bset 25) (Print 31 48))
+			((Said 'feel<in/case')
+				(Bset 25)
+				(Print 31 48)
+			)
 			((Said 'get/glass,case')
 				(if (< currentAct 6)
 					(Bset 25)
@@ -953,10 +1059,10 @@
 			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/case[<glass]')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(if (< currentAct 6)
 					(Bset 25)
 					(Print 31 51)
@@ -978,7 +1084,7 @@
 	)
 )
 
-(instance Shadow of Act
+(instance Shadow of Actor
 	(properties
 		view 110
 	)
@@ -991,22 +1097,24 @@
 )
 
 (instance closeDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 3))
+			(0
+				(HandsOff)
+				(= cycles 3)
+			)
 			(1
-				(ego ignoreActors: 0 setMotion: MoveTo 99 122)
-				(Fdoor setCycle: Beg)
-				(Bdoor setCycle: Beg self)
+				(ego ignoreActors: FALSE setMotion: MoveTo 99 122)
+				(Fdoor setCycle: BegLoop)
+				(Bdoor setCycle: BegLoop self)
 				(mySound number: 44 play:)
 			)
 			(2
 				(if (and (!= global154 1) (not local6))
-					(User canInput: 1)
+					(User canInput: TRUE)
 				)
-				(User canControl: 1)
+				(User canControl: TRUE)
 				(Bdoor stopUpd:)
 				(Fdoor stopUpd:)
 				(client setScript: 0)

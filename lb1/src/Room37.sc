@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 37)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DCIcon)
@@ -26,13 +26,13 @@
 )
 
 (local
-	local0
+	saveBits
 	local1 =  150
-	[local2 25] = [65 173 91 171 96 156 82 175 122 210 104 163 157 145 92 142 128 145 154 171 174 162 179 174 157]
-	[local27 7] = [103 178 56 150 30 148 -32768]
-	[local34 7] = [218 177 269 148 290 148 -32768]
-	[local41 5] = [263 152 205 183 -32768]
-	[local46 5] = [57 153 117 182 -32768]
+	local2 = [65 173 91 171 96 156 82 175 122 210 104 163 157 145 92 142 128 145 154 171 174 162 179 174 157]
+	leftBotPts = [103 178 56 150 30 148 PATHEND]
+	rightBotPts = [218 177 269 148 290 148 PATHEND]
+	leftTopPts = [263 152 205 183 PATHEND]
+	rightTopPts = [57 153 117 182 PATHEND]
 	local51
 	local52
 	local53
@@ -44,18 +44,12 @@
 	theCSound
 	local60
 )
-(procedure (localproc_000c)
-	(Print
-		&rest
-		#at
-		160
-		150
-		#font
-		4
-		#width
-		140
-		#mode
-		1
+(procedure (RoomPrint)
+	(Print &rest
+		#at 160 150
+		#font 4
+		#width 140
+		#mode teJustCenter
 		#draw
 		#dispose
 	)
@@ -64,29 +58,23 @@
 (procedure (localproc_002d)
 	(if (not local53)
 		(= local53 1)
-		(User canControl: 0)
-		(Room37 drawPic: 49 7)
+		(User canControl: FALSE)
+		(Room37 drawPic: 49 IRISOUT)
 		(cast eachElementDo: #hide)
 		(Visor show:)
 		(note show:)
-		(if (not (ego has: 13)) (valve setPri: 1 init:))
+		(if (not (ego has: iValveHandle))
+			(valve setPri: 1 init:)
+		)
 		(if local57
-			(= local0
-				(Display
-					37
-					0
-					dsCOORD
-					48
-					8
-					dsWIDTH
-					256
-					dsCOLOR
-					15
-					dsBACKGROUND
-					-1
-					dsFONT
-					0
-					dsSAVEPIXELS
+			(= saveBits
+				(Display 37 0
+					p_at 48 8
+					p_width 256
+					p_color vWHITE
+					p_back -1
+					p_font SYSFONT
+					p_save
 				)
 			)
 		)
@@ -97,8 +85,8 @@
 	(if local53
 		(cls)
 		(= local53 0)
-		(User canControl: 1)
-		(if local57 (Display 37 1 108 local0))
+		(User canControl: TRUE)
+		(if local57 (Display 37 1 p_restore saveBits))
 		(Room37 drawPic: curRoomNum 6)
 		(cast eachElementDo: #show)
 		(addToPics
@@ -110,14 +98,13 @@
 		(Visor hide:)
 		(note hide:)
 		(valve hide:)
-		(if
-		(and (!= local52 2) (!= local52 5) (!= local52 6))
+		(if (and (!= local52 2) (!= local52 5) (!= local52 6))
 			(HandsOn)
 		)
 	)
 )
 
-(instance Room37 of Rm
+(instance Room37 of Room
 	(properties
 		picture 37
 	)
@@ -127,17 +114,17 @@
 		(= south 16)
 		(= global102 0)
 		(super init:)
-		(Load rsFONT 4)
-		(Load rsPIC 49)
-		(LoadMany 128 10 12)
-		(LoadMany 132 9 36 83 73)
-		(Load rsSCRIPT 985)
+		(Load FONT 4)
+		(Load PICTURE 49)
+		(LoadMany VIEW 10 12)
+		(LoadMany SOUND 9 36 83 73)
+		(Load SCRIPT AVOIDER)
 		(if
 			(and
 				(or (not (Btst 41)) (not (Btst 42)) (not (Btst 43)))
 				(> currentAct 0)
 			)
-			(Load rsVIEW 925)
+			(Load VIEW 925)
 			(LoadMany 143 412)
 			(= local60 1)
 		)
@@ -154,12 +141,12 @@
 		(lampL setPri: 7 init: stopUpd:)
 		(lampR setPri: 7 init: stopUpd:)
 		(if howFast
-			(lampR startUpd: setCycle: Fwd)
-			(lampL startUpd: setCycle: Fwd)
+			(lampR startUpd: setCycle: Forward)
+			(lampL startUpd: setCycle: Forward)
 		)
-		(Can setStep: 5 5 ignoreHorizon: 1 init: hide:)
+		(Can setStep: 5 5 ignoreHorizon: TRUE init: hide:)
 		(Visor setPri: 2 init: hide:)
-		(knight ignoreActors: 1 init: stopUpd:)
+		(knight ignoreActors: TRUE init: stopUpd:)
 		(chand
 			setLoop: 2
 			ignoreHorizon:
@@ -175,16 +162,16 @@
 		)
 		(switch prevRoomNum
 			(36
-				(ego illegalBits: 16384 setPri: -1 posn: 92 88)
+				(ego illegalBits: cYELLOW setPri: -1 posn: 92 88)
 			)
 			(38
-				(ego illegalBits: 16384 setPri: -1 posn: 229 88)
+				(ego illegalBits: cYELLOW setPri: -1 posn: 229 88)
 			)
 			(47
 				(HandsOff)
 				(= local54 1)
 				(ego
-					illegalBits: 8192
+					illegalBits: cLMAGENTA
 					setPri: 14
 					setMotion: MoveTo (if (< (ego x?) 160) 30 else 290) 150
 				)
@@ -194,7 +181,7 @@
 				(if (> (ego x?) 222) (ego posn: 205 (ego y?)))
 			)
 			(else 
-				(ego illegalBits: 16384 setPri: -1)
+				(ego illegalBits: cYELLOW setPri: -1)
 			)
 		)
 		(ego view: 0 init:)
@@ -212,7 +199,7 @@
 					(= north 47)
 					(HandsOff)
 					(ego
-						ignoreActors: 1
+						ignoreActors: TRUE
 						illegalBits: 0
 						setPri: 14
 						setMotion: rightBotPath
@@ -237,7 +224,7 @@
 					(= local56 1)
 					(HandsOn)
 					(= global101 0)
-					(ego illegalBits: 16384 setPri: -1)
+					(ego illegalBits: cYELLOW setPri: -1)
 					(= horizon 80)
 					(= north 33)
 					(= local54 0)
@@ -251,7 +238,7 @@
 					(= global101 0)
 					(= local55 1)
 					(HandsOn)
-					(ego ignoreActors: 0 illegalBits: 8192)
+					(ego ignoreActors: 0 illegalBits: cLMAGENTA)
 				)
 			)
 			(64
@@ -260,7 +247,7 @@
 					(= local58 0)
 					(= global101 0)
 					(HandsOn)
-					(ego ignoreActors: 0 illegalBits: 8192)
+					(ego ignoreActors: 0 illegalBits: cLMAGENTA)
 				)
 			)
 			(128
@@ -309,8 +296,10 @@
 			(else (= vertAngle 170))
 		)
 		(super doit:)
-		(if (FirstEntry) (Print 37 2))
-		(if (and local60 (& (ego onControl: 1) $0001))
+		(if (FirstEntry)
+			(Print 37 2)
+		)
+		(if (and local60 (& (ego onControl: origin) cBLACK))
 			(HandsOff)
 			(= local60 0)
 			(self setScript: (ScriptID 412 0))
@@ -318,8 +307,8 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 983)
-		(DisposeScript 985)
+		(DisposeScript PATH)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
@@ -1133,7 +1122,7 @@ code_0d30:
 			pushi    #handleEvent
 			pushi    1
 			lsp      event
-			super    Rm,  6
+			super    Room,  6
 			jmp      code_0f17
 code_0d3b:
 			dup     
@@ -1427,7 +1416,6 @@ code_0f17:
 )
 
 (instance crush of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -1438,7 +1426,7 @@ code_0f17:
 				(== state 0)
 			)
 			(= local51 1)
-			(ego view: 10 loop: 0 cel: 0 setCycle: End)
+			(ego view: 10 loop: 0 cel: 0 setCycle: EndLoop)
 		)
 	)
 	
@@ -1453,7 +1441,7 @@ code_0f17:
 			(1
 				(Crash number: 36 play:)
 				(chand hide:)
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(Fall stop:)
@@ -1473,7 +1461,6 @@ code_0f17:
 )
 
 (instance openVisor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -1483,34 +1470,37 @@ code_0f17:
 					(= cycles 1)
 				else
 					(ego
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: MoveTo 107 152 self
 					)
 				)
 			)
-			(1 (ego loop: 1) (= cycles 3))
+			(1
+				(ego loop: 1)
+				(= cycles 3)
+			)
 			(2
 				(localproc_002d)
 				(= cycles 7)
 			)
 			(3
-				(Visor cycleSpeed: 3 setCycle: End self)
+				(Visor cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(4
-				(if (== ((inventory at: 13) owner?) 37)
+				(if (== ((inventory at: iValveHandle) owner?) 37)
 					(Print 37 25 #at 60 60)
 				)
 				(= cycles 1)
 			)
 			(5
-				(if (== ((inventory at: 13) owner?) 37)
+				(if (== ((inventory at: iValveHandle) owner?) 37)
 					(Print 37 26 #at 60 60)
 					(valve dispose:)
 				)
 				(= cycles 1)
 			)
 			(6
-				(if (== ((inventory at: 13) owner?) 37)
+				(if (== ((inventory at: iValveHandle) owner?) 37)
 					(Print 37 27 #at 60 60)
 				else
 					(Print 37 11 #at 60 60)
@@ -1518,18 +1508,21 @@ code_0f17:
 				(= cycles 1)
 			)
 			(7
-				(User canInput: 0)
-				(if (== ((inventory at: 13) owner?) 37)
+				(User canInput: FALSE)
+				(if (== ((inventory at: iValveHandle) owner?) 37)
 					(Print 37 28 #at 60 90)
-					(= gotItem 1)
-					(ego get: 13)
+					(= gotItem TRUE)
+					(ego get: iValveHandle)
 				else
 					(Print 37 29 #at 70 90)
 				)
 				(= cycles 1)
 			)
-			(8 (Print 37 30) (= cycles 1))
-			(9 (Visor setCycle: Beg self))
+			(8
+				(Print 37 30)
+				(= cycles 1)
+			)
+			(9 (Visor setCycle: BegLoop self))
 			(10
 				(localproc_00ab)
 				(ego setAvoider: 0)
@@ -1543,22 +1536,30 @@ code_0f17:
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
-					((Said '(examine,read,get)/letter') (if (== state 3) (= cycles 1) else (Print 37 24)))
-					((Said 'close/helmet') (= state 6) (= cycles 1))
+					((Said '(examine,read,get)/letter')
+						(if (== state 3)
+							(= cycles 1)
+						else
+							(Print 37 24)
+						)
+					)
+					((Said 'close/helmet')
+						(= state 6)
+						(= cycles 1)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance oiling of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -1570,7 +1571,7 @@ code_0f17:
 				else
 					(= seconds (= cycles 0))
 					(ego
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: MoveTo 107 152 self
 					)
 				)
@@ -1587,7 +1588,7 @@ code_0f17:
 							[local2 (<< (- local52 1) $0001)]
 							self
 					)
-					(localproc_000c 37 31)
+					(RoomPrint 37 31)
 				else
 					(= state 5)
 					(= cycles 1)
@@ -1595,7 +1596,7 @@ code_0f17:
 			)
 			(3
 				(cls)
-				(if local52 (Can setLoop: 2 setCycle: Fwd))
+				(if local52 (Can setLoop: 2 setCycle: Forward))
 				(= cycles 1)
 			)
 			(4
@@ -1606,8 +1607,7 @@ code_0f17:
 				(Crash stop:)
 				(if local52
 					(Can setLoop: 1 setMotion: MoveTo 225 100 self)
-					(if
-					(or (== local52 2) (== local52 5) (== local52 6))
+					(if (or (== local52 2) (== local52 5) (== local52 6))
 						(= state 6)
 					else
 						(= local52 0)
@@ -1617,7 +1617,7 @@ code_0f17:
 				)
 			)
 			(6
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(client setScript: 0)
 			)
 			(7
@@ -1627,7 +1627,7 @@ code_0f17:
 			)
 			(8
 				(ego setPri: 12)
-				(knight setCycle: End self)
+				(knight setCycle: EndLoop self)
 				(Crash number: 83 loop: 1 play:)
 			)
 			(9
@@ -1639,7 +1639,7 @@ code_0f17:
 					illegalBits: 0
 					posn: 104 153
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10
@@ -1655,7 +1655,7 @@ code_0f17:
 	)
 )
 
-(instance postR of PV
+(instance postR of PicView
 	(properties
 		y 142
 		x 219
@@ -1665,7 +1665,7 @@ code_0f17:
 	)
 )
 
-(instance postL of PV
+(instance postL of PicView
 	(properties
 		y 145
 		x 103
@@ -1685,8 +1685,8 @@ code_0f17:
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local53) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local53) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -1702,8 +1702,8 @@ code_0f17:
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local53) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local53) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -1718,14 +1718,14 @@ code_0f17:
 		priority 3
 	)
 	
-	(method (handleEvent event &tmp [temp0 250])
+	(method (handleEvent event &tmp [str 250])
 		(if
 			(and
 				(not local53)
-				(or (MousedOn self event 3) (Said 'examine[<at]/clock'))
+				(or (MousedOn self event shiftDown) (Said 'examine[<at]/clock'))
 			)
-			(event claimed: 1)
-			(Print (Format @temp0 37 33 37 34))
+			(event claimed: TRUE)
+			(Print (Format @str 37 33 37 34))
 		)
 	)
 )
@@ -1740,7 +1740,7 @@ code_0f17:
 		priority 3
 	)
 	
-	(method (handleEvent event &tmp [temp0 35])
+	(method (handleEvent event &tmp [str 35])
 		(cond 
 			(
 				(or
@@ -1750,17 +1750,19 @@ code_0f17:
 				)
 				(NotClose)
 			)
-			((Said 'rotate,rotate/mirror') (NotClose))
+			((Said 'rotate,rotate/mirror')
+				(NotClose)
+			)
 			(
 				(and
 					(not local53)
 					(or
-						(MousedOn self event 3)
+						(MousedOn self event shiftDown)
 						(Said 'examine[<at]/mirror')
 					)
 				)
-				(event claimed: 1)
-				(Print (Format @temp0 37 33 37 35))
+				(event claimed: TRUE)
+				(Print (Format @str 37 33 37 35))
 			)
 		)
 	)
@@ -1784,14 +1786,14 @@ code_0f17:
 				(Print 37 36)
 			)
 			((Said 'get/letter')
-				(if (== ((inventory at: 13) owner?) 37)
+				(if (== ((inventory at: iValveHandle) owner?) 37)
 					(Print 37 37)
 				else
 					(Print 37 38)
 				)
 			)
 			((Said 'get/valve,handle')
-				(if (== ((inventory at: 13) owner?) 37)
+				(if (== ((inventory at: iValveHandle) owner?) 37)
 					(Print 37 37)
 				else
 					(AlreadyTook)
@@ -1799,13 +1801,13 @@ code_0f17:
 			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(and
 						(Said 'examine/armor,cloth>')
 						(not (Said 'examine<in>'))
 					)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(if (not local53) (localproc_002d))
 				(Print 37 39 #at 110 110)
 				(if (not local57) (localproc_00ab))
@@ -1823,8 +1825,8 @@ code_0f17:
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local53) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local53) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -1839,8 +1841,8 @@ code_0f17:
 	)
 	
 	(method (handleEvent event)
-		(if (and (not local53) (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and (not local53) (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -1873,7 +1875,7 @@ code_0f17:
 	)
 )
 
-(instance chand of Act
+(instance chand of Actor
 	(properties
 		y -1
 		x 158
@@ -1881,7 +1883,7 @@ code_0f17:
 	)
 )
 
-(instance Can of Act
+(instance Can of Actor
 	(properties
 		y 100
 		x 225
@@ -1899,8 +1901,8 @@ code_0f17:
 	)
 	
 	(method (handleEvent event)
-		(if (and local53 (MousedOn self event 3))
-			(event claimed: 1)
+		(if (and local53 (MousedOn self event shiftDown))
+			(event claimed: TRUE)
 			(Print 37 39 #at 110 110)
 		)
 	)
@@ -1917,11 +1919,11 @@ code_0f17:
 	(method (handleEvent event)
 		(if
 			(or
-				(and local53 (MousedOn self event 3))
+				(and local53 (MousedOn self event shiftDown))
 				(Said 'examine/ax[<battle]')
 			)
 			(Print 37 13)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -1935,8 +1937,8 @@ code_0f17:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {carpet})
 		)
 	)
@@ -1951,42 +1953,38 @@ code_0f17:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {sofa})
 		)
 	)
 )
 
 (instance leftBotPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local27 param1])
+
+	(method (at n)
+		(return [leftBotPts n])
 	)
 )
 
 (instance rightBotPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local34 param1])
+
+	(method (at n)
+		(return [rightBotPts n])
 	)
 )
 
 (instance leftTopPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local41 param1])
+
+	(method (at n)
+		(return [leftTopPts n])
 	)
 )
 
 (instance rightTopPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local46 param1])
+
+	(method (at n)
+		(return [rightTopPts n])
 	)
 )
 
@@ -2004,6 +2002,4 @@ code_0f17:
 	)
 )
 
-(instance myIcon of DCIcon
-	(properties)
-)
+(instance myIcon of DCIcon)

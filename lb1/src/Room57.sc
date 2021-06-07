@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 57)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -22,49 +22,51 @@
 )
 
 (local
-	local0
+	thisControl
 	local1
 	theCycles
-	local3
-	local4
+	toX
+	toY
 	local5
 	local6
 	local7
 	local8
 	local9
-	theMarysCover
+	theCover
 	local11
-	local12
+	barredMsg
 	local13
-	local14
-	local15
+	firstTime
+	noGetInMsg
 )
-(procedure (localproc_15be &tmp [temp0 250])
+(procedure (LookRoom &tmp [str 250])
 	(if (== tombDoorState 1)
-		(Printf 57 33 57 34 @temp0)
+		(Printf 57 33 57 34 @str)
 	else
-		(Printf 57 33 57 35 @temp0)
+		(Printf 57 33 57 35 @str)
 	)
 )
 
-(procedure (localproc_15f0 &tmp [temp0 50])
-	(switch local0
-		(4
-			(if (ego has: 22)
+(procedure (LookDoor &tmp [str 50])
+	(switch thisControl
+		(cGREEN
+			(if (ego has: iPouch)
 				(Print 57 24)
 			else
 				(Print 57 25)
 				(Print 57 26)
 			)
 		)
-		(8 (Printf 57 36 57 37 @temp0))
+		(cCYAN
+			(Printf 57 36 57 37 @str)
+		)
 		(else 
-			(Printf 57 36 57 38 @temp0)
+			(Printf 57 36 57 38 @str)
 		)
 	)
 )
 
-(procedure (localproc_1659)
+(procedure (PutLanternHere)
 	(lantern
 		view: 27
 		loop: 3
@@ -74,10 +76,10 @@
 		stopUpd:
 		init:
 	)
-	((inventory at: 2) moveTo: curRoomNum)
+	((inventory at: iLantern) moveTo: curRoomNum)
 )
 
-(instance Room57 of Rm
+(instance Room57 of Room
 	(properties
 		picture 57
 	)
@@ -87,9 +89,9 @@
 		(super init:)
 		(addToPics add: skeleton casket skeletons doit:)
 		(self setFeatures: Box Window1 Window2)
-		(LoadMany 128 27 28 29 30)
-		(LoadMany 130 985 991)
-		(LoadMany 132 60 71 122 123 124)
+		(LoadMany VIEW 27 28 29 30)
+		(LoadMany SCRIPT 985 991)
+		(LoadMany SOUND 60 71 122 123 124)
 		(if (== prevRoomNum 2)
 			(= local13 1)
 			(ego view: 0 posn: 43 148 init:)
@@ -99,19 +101,19 @@
 			loop: 0
 			posn: 228 84
 			setPri: 8
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 		)
-		(if (== ((inventory at: 2) owner?) curRoomNum)
-			(localproc_1659)
+		(if (== ((inventory at: iLantern) owner?) curRoomNum)
+			(PutLanternHere)
 		)
-		(if (not (ego has: 22))
+		(if (not (ego has: iPouch))
 			(pouch setPri: 1 stopUpd: init:)
 		)
 		(marysCover
 			view: 157
 			loop: 2
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 			init:
 		)
@@ -123,7 +125,7 @@
 		(rubysCover
 			view: 157
 			loop: 2
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 			init:
 		)
@@ -138,7 +140,7 @@
 		(tomsCover
 			view: 157
 			loop: 3
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 			init:
 		)
@@ -150,7 +152,7 @@
 		(claudesCover
 			view: 157
 			loop: 3
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 			init:
 		)
@@ -165,7 +167,7 @@
 		(skull
 			view: 157
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			priority: 1
 		)
 		(if (& global169 $0200)
@@ -176,50 +178,76 @@
 		)
 		(skull stopUpd: init:)
 		(if (FirstEntry)
-			(= local14 1)
+			(= firstTime 1)
 			(myMusic number: 71 loop: 1 play:)
-			(lid cel: 0 cycleSpeed: 4 setCycle: End self)
+			(lid cel: 0 cycleSpeed: 4 setCycle: EndLoop self)
 		else
 			(ego init:)
 			(lid cel: (- (NumCels lid) 1) stopUpd:)
-			(if (!= prevRoomNum 2) (self setScript: GettingOut))
+			(if (!= prevRoomNum 2)
+				(self setScript: GettingOut)
+			)
 		)
 	)
 	
 	(method (doit)
 		(cond 
-			((== tombDoorState 1) (if (& (ego onControl: 1) $0200) (curRoom newRoom: 2)))
-			((& (ego onControl: 1) $0200) (if (not local12) (= local12 1) (Print 57 0)))
-			(else (= local12 0))
-		)
-		(if (and (& (ego onControl: 1) $0020) local13)
-			(cond 
-				(lanternIsLit (self setScript: GettingIn))
-				((not local15) (= local15 1) (Print 57 1))
+			((== tombDoorState 1)
+				(if (& (ego onControl: origin) cBLUE)
+					(curRoom newRoom: 2)
+				)
+			)
+			((& (ego onControl: origin) cLBLUE)
+				(if (not barredMsg)
+					(= barredMsg TRUE)
+					(Print 57 0)
+				)
+			)
+			(else
+				(= barredMsg FALSE)
 			)
 		)
-		(if (& (ego onControl: 1) $0001) (= local15 0))
+		(if (and (& (ego onControl: origin) cRED) local13)
+			(cond 
+				(lanternIsLit
+					(self setScript: GettingIn)
+				)
+				((not noGetInMsg)
+					(= noGetInMsg TRUE)
+					(Print 57 1)
+				)
+			)
+		)
+		(if (& (ego onControl: origin) cBLACK)
+			(= noGetInMsg FALSE)
+		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
-		(DisposeScript 991)
+		(DisposeScript AVOIDER)
+		(DisposeScript JUMP)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event &tmp temp0)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				((Said '(examine<in),get,open/casket>')
-					(if (& global169 $0008) (Print 57 2) else (DontSee))
-					(event claimed: 1)
+					(if (& global169 $0008)
+						(Print 57 2)
+					else
+						(DontSee)
+					)
+					(event claimed: TRUE)
 				)
-				((or (Said 'latch,bar/*') (Said 'lower/bar')) (Print 57 3))
+				((or (Said 'latch,bar/*') (Said 'lower/bar'))
+					(Print 57 3)
+				)
 				(
 					(and
-						(not (ego has: 7))
+						(not (ego has: iCrowbar))
 						(or
 							(Said '*/crowbar')
 							(Said '*/*/crowbar')
@@ -231,11 +259,21 @@
 				(
 				(or (Said 'examine,read/nameplate') (Said 'read/vault'))
 					(cond 
-						((& (ego onControl: 0) $0002) (Print 57 4))
-						((& (ego onControl: 0) $0004) (Print 57 5))
-						((& (ego onControl: 0) $0008) (Print 57 6))
-						((& (ego onControl: 0) $0010) (Print 57 7))
-						(else (NotClose))
+						((& (ego onControl: FALSE) cBLUE)
+							(Print 57 4)
+						)
+						((& (ego onControl: FALSE) cGREEN)
+							(Print 57 5)
+						)
+						((& (ego onControl: FALSE) cCYAN)
+							(Print 57 6)
+						)
+						((& (ego onControl: FALSE) cRED)
+							(Print 57 7)
+						)
+						(else
+							(NotClose)
+						)
 					)
 				)
 				(
@@ -245,23 +283,26 @@
 						(Said '//vault,(door<vault)>')
 						(and (Said '//door>') (Said '//vault>'))
 					)
-					(= local0 2)
-					(while (<= local0 16)
-						(if (& (ego onControl: 1) local0)
+					(= thisControl cBLUE)
+					(while (<= thisControl cRED)
+						(if (& (ego onControl: origin) thisControl)
 							(= temp0 2)
 							(if theInvItem
 								(if (not haveInvItem) (return))
-								(= temp0 (!= whichItem 7))
+								(= temp0 (!= whichItem iCrowbar))
 							)
 							(if (Said 'examine>')
-								(if (not (& global169 local0))
+								(if (not (& global169 thisControl))
 									(Print 57 8)
-									(event claimed: 1)
+									(event claimed: TRUE)
 									(break)
 								)
-								(if (Said '<in') (localproc_15f0) (break))
+								(if (Said '<in')
+									(LookDoor)
+									(break)
+								)
 								(Print 57 9)
-								(event claimed: 1)
+								(event claimed: TRUE)
 								(break)
 							)
 							(if
@@ -270,7 +311,10 @@
 									(Said '(break,lift,force)<use<cane')
 									(Said 'open//cane')
 								)
-								(if (ego has: 21) (Print 57 10) (break))
+								(if (ego has: iCane)
+									(Print 57 10)
+									(break)
+								)
 								(DontHave)
 								(break)
 							)
@@ -280,14 +324,17 @@
 									(Said '(break,lift,force)<use<poker')
 									(Said 'open//poker')
 								)
-								(if (ego has: 6) (Print 57 11) (break))
+								(if (ego has: iPoker)
+									(Print 57 11)
+									(break)
+								)
 								(DontHave)
 								(break)
 							)
 							(if
 								(and
 									(!= temp0 1)
-									(not (& global169 local0))
+									(not (& global169 thisControl))
 									(or
 										(Said '(break,force)[<(open,up)]//crowbar')
 										(Said '(break,lift,force)<use<crowbar')
@@ -295,13 +342,19 @@
 										(Said 'open<use<crowbar')
 									)
 								)
-								(if (ego has: 7) (self setScript: OpenVault) (break))
+								(if (ego has: iCrowbar)
+									(self setScript: OpenVault)
+									(break)
+								)
 								(Print 57 12)
 								(break)
 							)
 							(if (Said 'break,force,open')
-								(if (& global169 local0) (AlreadyOpen) (break))
-								(if (not (& global169 (<< local0 $0008)))
+								(if (& global169 thisControl)
+									(AlreadyOpen)
+									(break)
+								)
+								(if (not (& global169 (<< thisControl cCYAN)))
 									(Print 57 13)
 									(break)
 								)
@@ -309,20 +362,29 @@
 								(break)
 							)
 							(if (Said 'close')
-								(if (not (& global169 local0)) (AlreadyClosed) (break))
+								(if (not (& global169 thisControl))
+									(AlreadyClosed)
+									(break)
+								)
 								(ego illegalBits: 0)
 								(self setScript: CloseVault)
 								(break)
 							)
 							(if (Said 'unbar')
-								(if (not (& global169 local0)) (Print 57 14) (break))
+								(if (not (& global169 thisControl))
+									(Print 57 14)
+									(break)
+								)
 								(AlreadyOpen)
 								(break)
 							)
 						)
-						(= local0 (<< local0 $0001))
+						(= thisControl (<< thisControl $0001))
 					)
-					(if (> local0 16) (NotClose) (event claimed: 1))
+					(if (> thisControl cRED)
+						(NotClose)
+						(event claimed: TRUE)
+					)
 				)
 				(
 					(or
@@ -347,8 +409,8 @@
 						((Said 'unbar,unbar,detach,lift,lift,move')
 							(if
 								(or
-									(& (ego onControl: 0) $0200)
-									(& (ego onControl: 0) $0040)
+									(& (ego onControl: FALSE) cLBLUE)
+									(& (ego onControl: FALSE) cBROWN)
 								)
 								(if (== tombDoorState 0)
 									(= tombDoorState 1)
@@ -364,37 +426,71 @@
 				)
 				((Said 'examine>')
 					(cond 
-						((Said '[<around,at][/room]') (localproc_15be))
-						((Said '/stair') (Print 57 18))
-						((Said '/wall') (Print 57 19))
-						((or (Said '/dirt') (Said '<down')) (Print 57 20))
-						((or (Said '/ceiling') (Said '<up')) (Print 57 21))
+						((Said '[<around,at][/room]')
+							(LookRoom)
+						)
+						((Said '/stair')
+							(Print 57 18)
+						)
+						((Said '/wall')
+							(Print 57 19)
+						)
+						((or (Said '/dirt') (Said '<down'))
+							(Print 57 20)
+						)
+						((or (Said '/ceiling') (Said '<up'))
+							(Print 57 21)
+						)
 						((Said '/frances,(crouton<frances)')
 							(cond 
-								((not (& global169 $0002)) (Print 57 22))
-								((not (& (ego onControl: 1) $0002)) (NotClose))
-								(else (Print 57 23))
+								((not (& global169 $0002))
+									(Print 57 22)
+								)
+								((not (& (ego onControl: origin) cBLUE))
+									(NotClose)
+								)
+								(else
+									(Print 57 23)
+								)
 							)
 						)
 						((Said '/s,(crouton<s)')
 							(cond 
-								((not (& global169 $0008)) (Print 57 22))
-								((not (& (ego onControl: 1) $0008)) (NotClose))
-								(else (Print 57 23))
+								((not (& global169 $0008))
+									(Print 57 22)
+								)
+								((not (& (ego onControl: origin) cCYAN))
+									(NotClose)
+								)
+								(else
+									(Print 57 23)
+								)
 							)
 						)
 						((Said '/claude,(crouton<claude)')
 							(cond 
-								((not (& global169 $0010)) (Print 57 22))
-								((not (& (ego onControl: 1) $0010)) (NotClose))
-								(else (Print 57 23))
+								((not (& global169 $0010))
+									(Print 57 22)
+								)
+								((not (& (ego onControl: origin) cRED))
+									(NotClose)
+								)
+								(else
+									(Print 57 23)
+								)
 							)
 						)
 						((Said '/ruby,(crouton<ruby)')
 							(cond 
-								((not (& global169 $0004)) (Print 57 22))
-								((not (& (ego onControl: 1) $0004)) (NotClose))
-								((ego has: 22) (Print 57 24))
+								((not (& global169 $0004))
+									(Print 57 22)
+								)
+								((not (& (ego onControl: origin) cGREEN))
+									(NotClose)
+								)
+								((ego has: iPouch)
+									(Print 57 24)
+								)
 								(else
 									(Print 57 25)
 									(myMusic number: 60 loop: 1 play:)
@@ -403,26 +499,35 @@
 							)
 						)
 						((Said '/skeleton,casket>')
-							(= local0 2)
-							(while (<= local0 16)
+							(= thisControl cBLUE)
+							(while (<= thisControl cRED)
 								(if
 									(and
-										(& (ego onControl: 1) local0)
-										(& global169 local0)
+										(& (ego onControl: origin) thisControl)
+										(& global169 thisControl)
 									)
-									(if (== local0 4) (DontSee) (break))
+									(if (== thisControl cGREEN)
+										(DontSee)
+										(break)
+									)
 									(if (Said '/skeleton')
-										(if (== local0 8) (DontSee) (break))
+										(if (== thisControl cCYAN)
+											(DontSee)
+											(break)
+										)
 										(Print 57 23)
 										(break)
 									)
-									(if (!= local0 8) (DontSee) (break))
+									(if (!= thisControl cCYAN)
+										(DontSee)
+										(break)
+									)
 									(Print 57 27)
 									(break)
 								)
-								(= local0 (<< local0 $0001))
+								(= thisControl (<< thisControl $0001))
 							)
-							(if (> local0 16)
+							(if (> thisControl 16)
 								(if global169
 									(if
 										(or
@@ -437,7 +542,7 @@
 									(DontSee)
 								)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -452,24 +557,28 @@
 								(Print 57 2)
 							else
 								(DontSee)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 						)
 						((Said '/lantern')
-							(if (ego has: 2)
+							(if (ego has: iLantern)
 								(AlreadyTook)
 							else
 								(HandsOff)
 								(ego
-									setAvoider: (Avoid new:)
+									setAvoider: (Avoider new:)
 									setMotion: MoveTo 144 112 self
 								)
 							)
 						)
 					)
 				)
-				((Said 'open/window') (Print 57 28))
-				((Said 'break/window') (Print 57 29))
+				((Said 'open/window')
+					(Print 57 28)
+				)
+				((Said 'break/window')
+					(Print 57 29)
+				)
 				((Said '(close,cover)>')
 					(if
 						(or
@@ -479,20 +588,22 @@
 						(Print 57 30)
 					)
 				)
-				((Said 'extinguish,extinguish,(rotate<off)') (Print 57 31))
+				((Said 'extinguish,extinguish,(rotate<off)')
+					(Print 57 31)
+				)
 			)
 		)
 	)
 	
 	(method (cue)
-		(if (ego has: 2)
+		(if (ego has: iLantern)
 			(lid stopUpd:)
 			(ego init:)
 			(self setScript: GettingOut)
 		else
 			(lantern hide:)
 			(ego loop: 0 setAvoider: 0)
-			((inventory at: 2) moveTo: ego)
+			((inventory at: iLantern) moveTo: ego)
 			(HandsOn)
 		)
 	)
@@ -503,7 +614,6 @@
 )
 
 (instance OpenVault of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -522,10 +632,10 @@
 		(switch (= state newState)
 			(0
 				(Bset 2)
-				(if (not (& global169 (= local1 local0)))
+				(if (not (& global169 (= local1 thisControl)))
 					(HandsOff)
 					(if (not (& global169 (<< local1 $0008)))
-						(Print 57 32 #at 90 110 #mode 1)
+						(Print 57 32 #at 90 110 #mode teJustCenter)
 						(= theCycles 10)
 					else
 						(Ok)
@@ -533,69 +643,69 @@
 					)
 					(switch local1
 						(2
-							(= local3 78)
-							(= local4 108)
+							(= toX 78)
+							(= toY 108)
 							(= local5 0)
-							(= theMarysCover marysCover)
+							(= theCover marysCover)
 						)
 						(4
-							(= local3 99)
-							(= local4 103)
+							(= toX 99)
+							(= toY 103)
 							(= local5 1)
-							(= theMarysCover rubysCover)
+							(= theCover rubysCover)
 						)
 						(8
-							(= local3 209)
-							(= local4 104)
+							(= toX 209)
+							(= toY 104)
 							(= local5 0)
-							(= theMarysCover tomsCover)
+							(= theCover tomsCover)
 						)
 						(16
-							(= local3 234)
-							(= local4 111)
+							(= toX 234)
+							(= toY 111)
 							(= local5 1)
-							(= theMarysCover claudesCover)
+							(= theCover claudesCover)
 						)
 					)
-					(ego illegalBits: 0 setMotion: MoveTo local3 local4 self)
+					(ego illegalBits: 0 setMotion: MoveTo toX toY self)
 				else
 					(AlreadyOpen)
 					(client setScript: 0)
 				)
 			)
 			(1
-				(ego view: 29 loop: local5 cel: 0 setCycle: End self)
+				(ego view: 29 loop: local5 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(ego loop: (+ local5 2) cel: 0 setCycle: End self)
+				(ego loop: (+ local5 2) cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(ego loop: (+ local5 4) cel: 0 setCycle: Fwd)
+				(ego loop: (+ local5 4) cel: 0 setCycle: Forward)
 				(= cycles theCycles)
 			)
 			(4
 				(switch local1
 					(2
-						(theMarysCover loop: 2 posn: 32 87)
+						(theCover loop: 2 posn: 32 87)
 					)
 					(4
-						(theMarysCover loop: 2 posn: 116 69)
+						(theCover loop: 2 posn: 116 69)
 					)
 					(8
-						(theMarysCover loop: 3 posn: 192 71)
+						(theCover loop: 3 posn: 192 71)
 					)
 					(16
-						(theMarysCover loop: 3 posn: 281 91)
+						(theCover loop: 3 posn: 281 91)
 					)
 				)
-				(theMarysCover cel: 0 setCycle: End)
+				(theCover cel: 0 setCycle: EndLoop)
 				(myMusic number: 123 loop: 1 play:)
 				(ego loop: (+ local5 2))
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(5
 				(ego loop: 0)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(6
 				(ego
@@ -603,7 +713,7 @@
 					loop: 2
 					cel: 6
 					setCycle: Walk
-					illegalBits: -32768
+					illegalBits: cWHITE
 				)
 				(= global169 (| global169 (<< local1 $0008) local1))
 				(cls)
@@ -615,14 +725,14 @@
 )
 
 (instance CloseVault of Script
-	(properties)
 	
 	(method (doit &tmp egoCel)
 		(super doit:)
 		(if (== state 2)
 			(cond 
-				(
-				(and (> (= egoCel (ego cel?)) 2) (< egoCel 6)) (theMarysCover cel: (- 5 egoCel)))
+				((and (> (= egoCel (ego cel?)) 2) (< egoCel 6))
+					(theCover cel: (- 5 egoCel))
+				)
 				((== egoCel 6)
 					(switch local1
 						(2
@@ -646,7 +756,7 @@
 							(= local9 3)
 						)
 					)
-					(theMarysCover loop: 1 cel: local9 posn: local6 local7)
+					(theCover loop: 1 cel: local9 posn: local6 local7)
 				)
 			)
 		)
@@ -655,44 +765,44 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (& global169 local0)
+				(if (& global169 thisControl)
 					(HandsOff)
-					(= local1 local0)
-					(= global169 (& global169 (~ local0)))
+					(= local1 thisControl)
+					(= global169 (& global169 (~ thisControl)))
 					(Ok)
 					(switch local1
 						(2
 							(= local6 53)
 							(= local7 115)
 							(= local8 0)
-							(= theMarysCover marysCover)
+							(= theCover marysCover)
 							(= local11 15)
 						)
 						(4
 							(= local6 146)
 							(= local7 99)
 							(= local8 0)
-							(= theMarysCover rubysCover)
+							(= theCover rubysCover)
 							(= local11 15)
 						)
 						(8
 							(= local6 169)
 							(= local7 100)
 							(= local8 1)
-							(= theMarysCover tomsCover)
+							(= theCover tomsCover)
 							(= local11 -15)
 						)
 						(16
 							(= local6 260)
 							(= local7 121)
 							(= local8 1)
-							(= theMarysCover claudesCover)
+							(= theCover claudesCover)
 							(= local11 -15)
 						)
 					)
 					(ego setMotion: MoveTo local6 local7 self)
 				else
-					(ego illegalBits: -32768)
+					(ego illegalBits: cWHITE)
 					(AlreadyClosed)
 					(client setScript: 0)
 				)
@@ -702,7 +812,7 @@
 				(= cycles 1)
 			)
 			(2
-				(ego view: 30 loop: local8 cel: 0 setCycle: End self)
+				(ego view: 30 loop: local8 cel: 0 setCycle: EndLoop self)
 				(myMusic number: 123 loop: 1 play:)
 			)
 			(3
@@ -712,7 +822,7 @@
 					cel: 6
 					posn: (+ (ego x?) local11) (+ (ego y?) 3)
 					setCycle: Walk
-					illegalBits: -32768
+					illegalBits: cWHITE
 				)
 				(HandsOn)
 				(client setScript: 0)
@@ -722,7 +832,6 @@
 )
 
 (instance RollSkull of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -731,7 +840,7 @@
 					startUpd:
 					setPri: 15
 					setStep: 6 4
-					setCycle: Fwd
+					setCycle: Forward
 					moveSpeed: 0
 					cycleSpeed: 0
 					setMotion: MoveTo 75 117 self
@@ -743,7 +852,7 @@
 			)
 			(2
 				(myMusic number: 124 loop: 1 play:)
-				(skull loop: 6 cel: 0 setPri: -1 setCycle: End self)
+				(skull loop: 6 cel: 0 setPri: -1 setCycle: EndLoop self)
 			)
 			(3
 				(skull stopUpd:)
@@ -754,7 +863,6 @@
 )
 
 (instance GettingIn of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -771,7 +879,7 @@
 					posn: 176 107
 					setPri: 8
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -780,20 +888,20 @@
 					(self cue:)
 				else
 					(ego loop: 0 cycleSpeed: 1)
-					(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+					(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 					(ego get: 2)
 					(lantern hide:)
 				)
 			)
 			(3
 				(ego loop: 4 cycleSpeed: 2)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(4
 				(ego
 					setPri: -1
 					cycleSpeed: 0
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setCycle: Walk
 				)
 				(HandsOn)
@@ -805,7 +913,6 @@
 )
 
 (instance GettingOut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -820,16 +927,16 @@
 					posn: 167 81
 					setPri: 8
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego loop: 0 cel: 0 cycleSpeed: 1 setCycle: End self)
+				(ego loop: 0 cel: 0 cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(2
 				(ego view: 28 loop: 0 posn: 176 107 cycleSpeed: 2)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
-				(localproc_1659)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
+				(PutLanternHere)
 			)
 			(3
 				(ego
@@ -844,60 +951,54 @@
 				)
 			)
 			(4
-				(ego illegalBits: -32768)
+				(ego illegalBits: cWHITE)
 				(HandsOn)
-				(if local14 (localproc_15be))
+				(if firstTime (LookRoom))
 				(= local13 1)
-				(= local14 0)
+				(= firstTime 0)
 				(client setScript: 0)
 			)
 		)
 	)
 )
 
-(instance lid of Prop
-	(properties)
-)
+(instance lid of Prop)
 
 (instance marysCover of Prop
-	(properties)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 57 4)
 		)
 	)
 )
 
 (instance rubysCover of Prop
-	(properties)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 57 5)
 		)
 	)
 )
 
 (instance tomsCover of Prop
-	(properties)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 57 6)
 		)
 	)
 )
 
 (instance claudesCover of Prop
-	(properties)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 57 7)
 		)
 	)
@@ -916,30 +1017,33 @@
 		(cond 
 			((Said 'get/diamond')
 				(cond 
-					((& (ego onControl: 0) $0004)
-						(= gotItem 1)
-						(ego get: 22)
+					((& (ego onControl: FALSE) cGREEN)
+						(= gotItem TRUE)
+						(ego get: iPouch)
 						(pouch dispose:)
 						(Print 57 39)
 					)
-					((& global169 $0004) (NotClose))
-					(else (DontSee))
+					((& global169 $0004)
+						(NotClose)
+					)
+					(else
+						(DontSee)
+					)
 				)
 			)
-			((MousedOn self event 3) (event claimed: 1) (Print 57 26))
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(Print 57 26)
+			)
 		)
 	)
 )
 
-(instance lantern of Prop
-	(properties)
-)
+(instance lantern of Prop)
 
-(instance skull of Act
-	(properties)
-)
+(instance skull of Actor)
 
-(instance skeleton of PV
+(instance skeleton of PicView
 	(properties
 		y 81
 		x 40
@@ -949,7 +1053,7 @@
 	)
 )
 
-(instance casket of PV
+(instance casket of PicView
 	(properties
 		y 66
 		x 182
@@ -960,7 +1064,7 @@
 	)
 )
 
-(instance skeletons of PV
+(instance skeletons of PicView
 	(properties
 		y 87
 		x 272
@@ -984,10 +1088,10 @@
 			(or
 				(Said 'examine/window')
 				(Said 'examine/glass<stained')
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 			)
 			(Print 57 40)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -1001,9 +1105,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
+		(if (MousedOn self event shiftDown)
 			(Print 57 40)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -1019,15 +1123,13 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/sarcophagus')
 			)
 			(Print 57 41)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

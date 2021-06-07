@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 30)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DCIcon)
@@ -19,7 +19,7 @@
 (local
 	local0
 )
-(instance Room30 of Rm
+(instance Room30 of Room
 	(properties
 		picture 30
 	)
@@ -29,16 +29,16 @@
 		(= west 29)
 		(= north 8)
 		(super init:)
-		(Load rsSOUND 82)
+		(Load SOUND 82)
 		(self setRegions: 205 207 setFeatures: House)
-		(Load rsVIEW 35)
+		(Load VIEW 35)
 		(Thunder number: 17 loop: 0)
 		(if howFast
-			(reflect1 cycleSpeed: 1 setCycle: Fwd init:)
+			(reflect1 cycleSpeed: 1 setCycle: Forward init:)
 			(reflect2
-				ignoreActors: 1
+				ignoreActors: TRUE
 				cycleSpeed: 1
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			(light1 init: setScript: showers)
@@ -51,8 +51,8 @@
 				cel: 0
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -62,8 +62,8 @@
 				cel: 1
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -73,8 +73,8 @@
 				cel: 2
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -84,8 +84,8 @@
 				cel: 3
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -95,8 +95,8 @@
 				cel: 4
 				setStep: 3 3
 				observeBlocks: flyCage
-				ignoreHorizon: 1
-				setCycle: Fwd
+				ignoreHorizon: TRUE
+				setCycle: Forward
 				cycleSpeed: 2
 				setMotion: Wander 5
 				init:
@@ -117,37 +117,39 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 30 0))
-		(if (& (ego onControl: 0) $0008) (curRoom newRoom: 24))
-		(if
-		(and (& (ego onControl: 1) $0002) (== local0 0))
+		(if (FirstEntry)
+			(Print 30 0)
+		)
+		(if (& (ego onControl: 0) cCYAN)
+			(curRoom newRoom: 24)
+		)
+		(if (and (& (ego onControl: origin) cBLUE) (== local0 0))
 			(= local0 1)
 			(self setScript: sink)
 		)
-		(if
-		(and (& (ego onControl: 0) $0004) (== local0 0))
+		(if (and (& (ego onControl: 0) cGREEN) (== local0 0))
 			(curRoom newRoom: 8)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(DisposeScript 976)
+		(DisposeScript WANDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
 			(if
 				(and
-					(== (event type?) evSAID)
+					(== (event type?) saidEvent)
 					(Said 'examine>')
 					(Said '[<around,at][/room][/!*]')
 				)
 				(Print 30 0)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -158,37 +160,40 @@
 )
 
 (instance showers of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (= state 3)))
 			(1
-				(light1 setCycle: Fwd)
-				(light2 setCycle: Fwd)
-				(light3 setCycle: Fwd)
-				(light4 setCycle: Fwd)
+				(light1 setCycle: Forward)
+				(light2 setCycle: Forward)
+				(light3 setCycle: Forward)
+				(light4 setCycle: Forward)
 				(= cycles 7)
 			)
 			(2
-				(light1 setCycle: End)
-				(light2 setCycle: End)
-				(light3 setCycle: End)
-				(light4 setCycle: End self)
+				(light1 setCycle: EndLoop)
+				(light2 setCycle: EndLoop)
+				(light3 setCycle: EndLoop)
+				(light4 setCycle: EndLoop self)
 			)
 			(3 (Thunder loop: 1 play: self))
 			(4
-				(if (< (Random 1 100) 25) (= state 0))
+				(if (< (Random 1 100) 25)
+					(= state 0)
+				)
 				(= cycles 7)
 			)
-			(5 (= state 3) (= seconds 5))
+			(5
+				(= state 3)
+				(= seconds 5)
+			)
 		)
 	)
 )
 
 (instance sink of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -213,15 +218,18 @@
 							(else  (ego y?))
 						)
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(1 (ego hide:) (= seconds 3))
+			(1
+				(ego hide:)
+				(= seconds 3)
+			)
 			(2
 				(= cIcon myIcon)
 				(= deathLoop 5)
 				(= deathCel 0)
-				(= cyclingIcon 1)
+				(= cyclingIcon TRUE)
 				(EgoDead 30 1)
 			)
 		)
@@ -285,13 +293,9 @@
 	)
 )
 
-(instance Thunder of Sound
-	(properties)
-)
+(instance Thunder of Sound)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
 (instance myIcon of DCIcon
 	(properties
@@ -300,11 +304,11 @@
 	)
 	
 	(method (init)
-		((= cycler (End new:)) init: self)
+		((= cycler (EndLoop new:)) init: self)
 	)
 )
 
-(instance Fly of Act
+(instance Fly of Actor
 	(properties
 		y 123
 		x 274
@@ -312,7 +316,7 @@
 	)
 )
 
-(instance Fly2 of Act
+(instance Fly2 of Actor
 	(properties
 		y 179
 		x 297
@@ -320,7 +324,7 @@
 	)
 )
 
-(instance Fly3 of Act
+(instance Fly3 of Actor
 	(properties
 		y 139
 		x 217
@@ -328,7 +332,7 @@
 	)
 )
 
-(instance Fly4 of Act
+(instance Fly4 of Actor
 	(properties
 		y 179
 		x 257
@@ -336,7 +340,7 @@
 	)
 )
 
-(instance Fly5 of Act
+(instance Fly5 of Actor
 	(properties
 		y 139
 		x 197
@@ -344,9 +348,7 @@
 	)
 )
 
-(instance flyCage of Cage
-	(properties)
-)
+(instance flyCage of Cage)
 
 (instance House of RFeature
 	(properties
@@ -356,9 +358,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/gazebo'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/gazebo'))
+			(event claimed: TRUE)
 			(Print 30 2)
 		)
 	)

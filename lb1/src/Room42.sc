@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 42)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use ElevGate)
 (use Intrface)
@@ -25,12 +25,12 @@
 	newPV
 	newPV_2
 )
-(procedure (localproc_000c)
-	(= theTalker 10)
+(procedure (ColPrint)
+	(= theTalker talkCOLONEL)
 	(Say 1 &rest)
 )
 
-(instance Room42 of Rm
+(instance Room42 of Room
 	(properties
 		picture 42
 	)
@@ -43,9 +43,9 @@
 			add: bed table1 table2 table3 sofa mirror stand vase flower cannon
 		)
 		(if howFast
-			(lamp1 setCycle: Fwd init:)
-			(lamp2 setPri: 11 setCycle: Fwd init:)
-			(logs setCycle: Fwd init:)
+			(lamp1 setCycle: Forward init:)
+			(lamp2 setPri: 11 setCycle: Forward init:)
+			(logs setCycle: Forward init:)
 		else
 			(logs init: stopUpd:)
 			(lamp1 init: stopUpd:)
@@ -68,7 +68,7 @@
 				SDress
 				Shaft
 		)
-		(if (& deadGuests $0040)
+		(if (& deadGuests deadLILLIAN)
 			(Dbag init: stopUpd:)
 			(addToPics add: Chair eachElementDo: #init doit:)
 			(self setFeatures: Chair)
@@ -78,7 +78,7 @@
 			(43 (ego posn: 315 149))
 			(49 (ego posn: 252 167))
 		)
-		(ego view: 0 illegalBits: -32768 setPri: -1)
+		(ego view: 0 illegalBits: cWHITE setPri: -1)
 		(= global193 0)
 		(if (not (& global109 $0030))
 			(cond 
@@ -96,7 +96,7 @@
 						(Btst 38)
 						(and
 							(< gameMinutes 3)
-							(not (& deadGuests $0040))
+							(not (& deadGuests deadLILLIAN))
 							(not (Btst 37))
 						)
 					)
@@ -110,10 +110,10 @@
 					)
 				)
 				((and (== currentAct 4) (== gameMinutes 3))
-					(LoadMany 135 4 41)
-					(LoadMany 132 29 94 95 96)
-					(Load rsVIEW 642)
-					(Load rsSCRIPT 406)
+					(LoadMany FONT 4 41)
+					(LoadMany SOUND 29 94 95 96)
+					(Load VIEW 642)
+					(Load SCRIPT 406)
 					(addToPics add: Chair eachElementDo: #init doit:)
 					(self setFeatures: Chair setScript: missColo)
 				)
@@ -121,14 +121,14 @@
 		)
 		(if global193
 			(= global111 42)
-			((= newPV (PV new:))
+			((= newPV (PicView new:))
 				view: 242
 				loop: 0
 				cel: 0
 				x: 296
 				y: 126
 			)
-			((= newPV_2 (PV new:))
+			((= newPV_2 (PicView new:))
 				view: 242
 				loop: 2
 				cel: 0
@@ -137,7 +137,7 @@
 			)
 			(addToPics add: newPV newPV_2 doit:)
 			(ego init:)
-			(= global109 (& global109 $fff7))
+			(&= global109 $fff7)
 		else
 			(if
 				(and
@@ -151,7 +151,9 @@
 						(3 75)
 					)
 				)
-				(if (== currentAct 1) (= global111 75))
+				(if (== currentAct 1)
+					(= global111 75)
+				)
 			)
 			(= newPV_2 (ElevGate new:))
 			(newPV_2
@@ -172,7 +174,9 @@
 				(Print 42 1)
 			)
 		)
-		(if (& (ego onControl: 1) $0004) (curRoom newRoom: 41))
+		(if (& (ego onControl: origin) cGREEN)
+			(curRoom newRoom: 41)
+		)
 		(if (not (& global109 $0020))
 			(if (ego inRect: 137 144 176 161)
 				(ego setPri: 14)
@@ -196,8 +200,8 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evSAID)
-			(DisposeScript 990)
+		(if (== (event type?) saidEvent)
+			(DisposeScript SAVE)
 			(if
 				(and
 					global208
@@ -219,12 +223,14 @@
 								(Print 42 1)
 							)
 						)
-						((Said '/mantel') (Print 42 2))
+						((Said '/mantel')
+							(Print 42 2)
+						)
 						((Said '<in/elevator,lift')
 							(if (not (& global109 $0010))
 								(Print 42 3)
 							else
-								(event claimed: 0)
+								(event claimed: FALSE)
 							)
 						)
 						((Said '/elevator,lift') (Print 42 4))
@@ -237,40 +243,49 @@
 					)
 				)
 				((Said 'move,get/boy') (Print 42 11))
-				(
-				(and (not global193) (Said 'get,move,press/wheelchair')) (Print 42 12))
+				((and (not global193) (Said 'get,move,press/wheelchair'))
+					(Print 42 12)
+				)
 				((Said 'get>')
 					(cond 
 						((Said '/key[<brass]')
 							(cond 
-								((not ((inventory at: 18) ownedBy: 42)) (AlreadyTook))
-								((& (ego onControl: 1) $0020)
-									(if ((inventory at: 18) ownedBy: 42)
+								((not ((inventory at: iBrassKey) ownedBy: 42))
+									(AlreadyTook)
+								)
+								((& (ego onControl: origin) cMAGENTA)
+									(if ((inventory at: iBrassKey) ownedBy: 42)
 										(if (!= global193 1)
-											(= gotItem 1)
-											(ego get: 18)
+											(= gotItem TRUE)
+											(ego get: iBrassKey)
 											(Print 42 13)
 										else
-											(localproc_000c 42 14)
+											(ColPrint 42 14)
 										)
 									else
 										(DontSee)
 									)
 								)
-								(else (NotClose))
+								(else
+									(NotClose)
+								)
 							)
 						)
-						((Said '/cannon') (Print 42 15))
+						((Said '/cannon')
+							(Print 42 15)
+						)
 					)
 				)
-				((and (not global193) (Said 'sit/wheelchair')) (Print 42 16))
+				((and (not global193) (Said 'sit/wheelchair'))
+					(Print 42 16)
+				)
 				(global193
 					(cond 
 						(
 							(Said
 								'open,enter,go/archway,elevator,lift[<elevator,lift]'
 							)
-							(localproc_000c 42 17)
+							(ColPrint 42 17)
 						)
 						((Said 'smoke/butt') (Print 42 18))
 						((Said 'sit[<down,in<in]/wheelchair') (Print 42 19))
@@ -284,22 +299,21 @@
 	(method (newRoom n)
 		(if (and (!= n 41) (== global201 200))
 			(++ global201)
-			(= deadGuests (| deadGuests $0020))
+			(|= deadGuests deadRUDY)
 		)
 		(super newRoom: n)
 	)
 )
 
 (instance missColo of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
 					((not global216) (= state -1))
 					((not (& global118 $0004))
-						(= global118 (| global118 $0004))
+						(|= global118 $0004)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
@@ -322,14 +336,13 @@
 		view 142
 		loop 1
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine[<!*]/bed'))
+		(if (or (MousedOn self event shiftDown) (Said 'examine[<!*]/bed'))
 			(Print 42 21)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -345,8 +358,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -363,8 +376,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -380,8 +393,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {couch})
 		)
 	)
@@ -395,7 +408,7 @@
 		loop 1
 		cel 1
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -406,24 +419,31 @@
 					(Said 'examine<in/mirror')
 				)
 				(if (< (ego distanceTo: mirror) 60)
-					(= theTalker 12)
+					(= theTalker talkLAURA)
 					(Say 0 42 22)
 				else
 					(NotClose)
 				)
 			)
-			((Said 'examine<behind,below/mirror') (Print 42 23))
-			((Said 'get,move/mirror') (Print 42 24))
-			((Said 'examine/mirror') (Print 42 25))
-			(
-			(Said 'open,(examine<in)/vanity,(nightstand<dressing)') (Print 42 26))
+			((Said 'examine<behind,below/mirror')
+				(Print 42 23)
+			)
+			((Said 'get,move/mirror')
+				(Print 42 24)
+			)
+			((Said 'examine/mirror')
+				(Print 42 25)
+			)
+			((Said 'open,(examine<in)/vanity,(nightstand<dressing)')
+				(Print 42 26)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/vanity,(nightstand<dressing)')
 				)
 				(Print 42 27)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
@@ -440,8 +460,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -460,8 +480,8 @@
 		(cond 
 			(
 			(Said 'search,(examine<(in,in,in))/cannon,barrel')
-				(if (& (ego onControl: 1) $0020)
-					(if ((inventory at: 18) ownedBy: 42)
+				(if (& (ego onControl: origin) cMAGENTA)
+					(if ((inventory at: iBrassKey) ownedBy: 42)
 						(Print 42 28)
 					else
 						(Print 42 29)
@@ -470,9 +490,13 @@
 					(NotClose)
 				)
 			)
-			((Said 'attach/key/cannon') (Print 42 30))
-			(
-			(or (MousedOn self event 3) (Said 'examine/cannon')) (event claimed: 1) (Print 42 31))
+			((Said 'attach/key/cannon')
+				(Print 42 30)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/cannon'))
+				(event claimed: TRUE)
+				(Print 42 31)
+			)
 		)
 	)
 )
@@ -487,8 +511,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {vase})
 		)
 	)
@@ -504,8 +528,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {vase})
 		)
 	)
@@ -521,15 +545,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/wheelchair'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/wheelchair'))
+			(event claimed: TRUE)
 			(Print 42 32)
 		)
 	)
 )
 
-(instance stand of PV
+(instance stand of PicView
 	(properties
 		y 90
 		x 169
@@ -550,9 +573,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/oak,log'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/oak,log'))
+			(event claimed: TRUE)
 			(ParseName {fire})
 		)
 	)
@@ -566,8 +588,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -582,8 +604,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -601,8 +623,12 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(cond 
-			((Said 'get/bag') (Print 42 33))
-			((Said 'open/bag') (AlreadyOpen))
+			((Said 'get/bag')
+				(Print 42 33)
+			)
+			((Said 'open/bag')
+				(AlreadyOpen)
+			)
 			((Said 'examine<in/bag')
 				(if (< (ego distanceTo: Dbag) 10)
 					(Print 42 34)
@@ -612,35 +638,31 @@
 			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/bag,dirt')
 					(Said 'examine<down')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 42 35)
 			)
 		)
-		(if (event claimed?) (Bset 32))
+		(if (event claimed?)
+			(Bset 32)
+		)
 	)
 )
 
-(instance chain of Act
-	(properties)
-)
+(instance chain of Actor)
 
-(instance elevator of Act
+(instance elevator of Actor
 	(properties
 		y -10
 	)
 )
 
-(instance down of View
-	(properties)
-)
+(instance down of View)
 
-(instance up of View
-	(properties)
-)
+(instance up of View)
 
 (instance Shaft of RFeature
 	(properties
@@ -651,8 +673,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {elevator})
 		)
 	)
@@ -669,8 +691,10 @@
 	(method (handleEvent event)
 		(cond 
 			((Said '(examine<in),open/drawer') (Print 42 36))
-			(
-			(or (MousedOn self event 3) (Said 'examine/drawer')) (event claimed: 1) (Print 42 37))
+			((or (MousedOn self event shiftDown) (Said 'examine/drawer'))
+				(event claimed: TRUE)
+				(Print 42 37)
+			)
 		)
 	)
 )
@@ -696,7 +720,7 @@
 					)
 					((and (& global175 $0010) (Said 'open,move'))
 						(if (not global193)
-							(if (& (ego onControl: 1) $0080)
+							(if (& (ego onControl: origin) cLGREY)
 								(curRoom newRoom: 49)
 							else
 								(NotClose)
@@ -715,8 +739,10 @@
 				)
 				(Print 42 42)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/armoire')) (event claimed: 1) (Print 42 43))
+			((or (MousedOn self event shiftDown) (Said 'examine/armoire'))
+				(event claimed: TRUE)
+				(Print 42 43)
+			)
 		)
 	)
 )

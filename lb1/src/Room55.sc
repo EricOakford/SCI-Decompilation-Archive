@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 55)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use HighLite)
 (use Intrface)
@@ -18,16 +18,37 @@
 )
 
 (local
-	[local0 80] = [2 35 131 5 3 72 128 5 1 80 132 5 2 87 129 5 3 140 130 5 1 187 130 5 2 242 131 5 1 270 132 5 0 80 132 4 0 254 132 4 1 42 130 4 3 83 131 5 2 89 131 5 2 143 130 5 1 175 132 5 3 208 129 5 2 270 132 5 0 56 132 4 0 160 132 4 0 255 132 4]
+	local0 = [
+		2 35 131 5
+		3 72 128 5
+		1 80 132 5
+		2 87 129 5
+		3 140 130 5
+		1 187 130 5
+		2 242 131 5
+		1 270 132 5
+		0 80 132 4
+		0 254 132 4
+		1 42 130 4
+		3 83 131 5
+		2 89 131 5
+		2 143 130 5
+		1 175 132 5
+		3 208 129 5
+		2 270 132 5
+		0 56 132 4
+		0 160 132 4
+		0 255 132 4
+		]
 	local80 =  1
 	[local81 2]
 )
-(instance Room55 of Rm
+(instance Room55 of Room
 	(properties
 		picture 55
 	)
 	
-	(method (init &tmp [theRock1 10] temp10 temp11)
+	(method (init &tmp [obj 10] i j)
 		(= horizon 0)
 		(if (== global189 51)
 			(= east 51)
@@ -51,42 +72,42 @@
 		(ego y: 136 view: 15 xStep: 2 init:)
 		(eyes
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setScript: ShowEyes
 			setPri: 15
-			setCycle: Fwd
+			setCycle: Forward
 			init:
 			hide:
 		)
 		(glow deltaX: 6 deltaY: 2 eyesID: eyes init:)
-		(= [theRock1 0] rock1)
-		(= [theRock1 1] rock2)
-		(= [theRock1 2] rock3)
-		(= [theRock1 3] rock4)
-		(= [theRock1 4] rock5)
-		(= [theRock1 5] rock6)
-		(= [theRock1 6] rock7)
-		(= [theRock1 7] timber1)
-		(= [theRock1 8] timber2)
-		(= [theRock1 9] rockTim)
-		(if (== global189 51) (= temp11 -1) else (= temp11 39))
-		(= temp10 0)
-		(while (< temp10 10)
-			([theRock1 temp10]
+		(= [obj 0] rock1)
+		(= [obj 1] rock2)
+		(= [obj 2] rock3)
+		(= [obj 3] rock4)
+		(= [obj 4] rock5)
+		(= [obj 5] rock6)
+		(= [obj 6] rock7)
+		(= [obj 7] timber1)
+		(= [obj 8] timber2)
+		(= [obj 9] rockTim)
+		(if (== global189 51) (= j -1) else (= j 39))
+		(for ((= i 0)) (< i 10) ((++ i))
+			([obj i]
 				view: 155
-				loop: [local0 (++ temp11)]
-				posn: [local0 (++ temp11)] [local0 (++ temp11)]
-				setPri: [local0 (++ temp11)]
+				loop: [local0 (++ j)]
+				posn: [local0 (++ j)] [local0 (++ j)]
+				setPri: [local0 (++ j)]
 				init:
 				stopUpd:
 				hide:
 			)
-			(++ temp10)
 		)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 55 0))
+		(if (FirstEntry)
+			(Print 55 0)
+		)
 		(if
 			(eyes
 				inRect: (glow nsLeft?) (glow nsTop?) (glow nsRight?) (glow nsBottom?)
@@ -106,7 +127,7 @@
 		(super handleEvent: event)
 		(if
 			(and
-				(== (event type?) evSAID)
+				(== (event type?) saidEvent)
 				(Said 'examine[<around,at][/room]')
 			)
 			(Print 55 0)
@@ -120,8 +141,7 @@
 )
 
 (instance ShowEyes of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -138,14 +158,14 @@
 							)
 						)
 						(eyes show:)
-						(= local80 (^ local80 $0001))
+						(^= local80 1)
 						(= seconds (Random 2 3))
 					else
 						(= cycles 1)
 					)
 				else
 					(eyes hide:)
-					(= local80 (^ local80 $0001))
+					(^= local80 1)
 					(= seconds (Random 1 2))
 				)
 				(= state -1)
@@ -154,49 +174,27 @@
 	)
 )
 
-(instance glow of HighLite
-	(properties)
-)
+(instance glow of HighLite)
 
-(instance rock1 of Prop
-	(properties)
-)
+(instance rock1 of Prop)
 
-(instance rock2 of Prop
-	(properties)
-)
+(instance rock2 of Prop)
 
-(instance rock3 of Prop
-	(properties)
-)
+(instance rock3 of Prop)
 
-(instance rock4 of Prop
-	(properties)
-)
+(instance rock4 of Prop)
 
-(instance rock5 of Prop
-	(properties)
-)
+(instance rock5 of Prop)
 
-(instance rock6 of Prop
-	(properties)
-)
+(instance rock6 of Prop)
 
-(instance rock7 of Prop
-	(properties)
-)
+(instance rock7 of Prop)
 
-(instance timber1 of Prop
-	(properties)
-)
+(instance timber1 of Prop)
 
-(instance timber2 of Prop
-	(properties)
-)
+(instance timber2 of Prop)
 
-(instance rockTim of Prop
-	(properties)
-)
+(instance rockTim of Prop)
 
 (instance moodMusic of Sound
 	(properties
@@ -205,7 +203,7 @@
 	)
 )
 
-(instance eyes of Act
+(instance eyes of Actor
 	(properties
 		view 155
 		cycleSpeed 2
@@ -215,12 +213,21 @@
 		(cond 
 			((Said '/mouse>')
 				(cond 
-					((Said 'examine') (Print 55 1))
-					((Said 'get,capture') (Print 55 2))
-					((Said 'kill') (Print 55 3))
+					((Said 'examine')
+						(Print 55 1)
+					)
+					((Said 'get,capture')
+						(Print 55 2)
+					)
+					((Said 'kill')
+						(Print 55 3)
+					)
 				)
 			)
-			((MousedOn self event 3) (event claimed: 1) (ParseName {eye}))
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(ParseName {eye})
+			)
 		)
 	)
 )

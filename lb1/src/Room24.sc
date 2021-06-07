@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 24)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -22,7 +22,7 @@
 	local1
 	local2
 )
-(instance Room24 of Rm
+(instance Room24 of Room
 	(properties
 		picture 24
 	)
@@ -35,11 +35,10 @@
 		(if
 			(and
 				(>= currentAct 3)
-				(not (& deadGuests $0004))
-				(not (& deadGuests $0040))
+				(not (& deadGuests deadGLORIA))
+				(not (& deadGuests deadLILLIAN))
 			)
-			(if
-			(and (!= gCurRoomNum 23) (!= gCurRoomNum curRoomNum))
+			(if (and (!= gCurRoomNum 23) (!= gCurRoomNum curRoomNum))
 				(switch (Random 1 2)
 					(1 (= gCurRoomNum curRoomNum))
 					(2 (= gCurRoomNum 23))
@@ -60,7 +59,7 @@
 			)
 			(Clarence init: setScript: clarActions)
 			(LoadMany 143 243 248)
-			(Load rsVIEW 906)
+			(Load VIEW 906)
 			(= global208 64)
 			(= [global377 6] 248)
 		)
@@ -75,13 +74,17 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 24 0))
+		(if (FirstEntry)
+			(Print 24 0)
+		)
 		(switch (ego onControl: 0)
-			(2 (curRoom newRoom: 18))
-			(16
+			(cBLUE
+				(curRoom newRoom: 18)
+			)
+			(cRED
 				(if (and (not local1) (not local2))
 					(= local1 1)
-					(User canControl: 0)
+					(User canControl: FALSE)
 					(if (< (ego y?) 150)
 						(ego setMotion: MoveTo 189 172)
 					else
@@ -93,7 +96,7 @@
 				(if local1 (= local1 0) (User canControl: 1))
 			)
 		)
-		(if (== (ego edgeHit?) 3)
+		(if (== (ego edgeHit?) SOUTH)
 			(if (< (ego x?) 159)
 				(curRoom newRoom: 29)
 			else
@@ -108,20 +111,18 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(if
 			(and
 				global208
-				(Said
-					'ask,tell,hold,deliver,examine,get,kill,kiss,embrace,flirt>'
-				)
+				(Said 'ask,tell,hold,deliver,examine,get,kill,kiss,embrace,flirt>')
 			)
 			(self setScript: (ScriptID 243 0))
 			((self script?) handleEvent: event)
 			(if (event claimed?) (return (event claimed?)))
 		)
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(if
 					(and
 						global208
@@ -140,25 +141,27 @@
 							((Said '/path') (Print 24 1))
 							((Said '/stair,stair') (Print 24 2))
 							((Said '[<down][/dirt]')
-								(if (& (ego onControl: 0) $4000)
+								(if (& (ego onControl: 0) cYELLOW)
 									(Print 24 3)
 								else
-									(event claimed: 0)
+									(event claimed: FALSE)
 								)
 							)
 							((or (Said '/ceiling') (Said '<up'))
-								(if (& (ego onControl: 0) $4000)
+								(if (& (ego onControl: 0) cYELLOW)
 									(Print 24 4)
 								else
-									(event claimed: 0)
+									(event claimed: FALSE)
 								)
 							)
 						)
 					)
-					((Said 'climb/stair') (Print 24 5))
+					((Said 'climb/stair')
+						(Print 24 5)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -169,23 +172,22 @@
 )
 
 (instance clarActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Clarence loop: 0 cel: 0 cycleSpeed: 1 setCycle: End)
+				(Clarence loop: 0 cel: 0 cycleSpeed: 1 setCycle: EndLoop)
 				(= seconds 4)
 			)
 			(1
-				(Clarence loop: 1 cel: 0 setCycle: End self)
+				(Clarence loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(Clarence setCycle: Beg)
+				(Clarence setCycle: BegLoop)
 				(= seconds (Random 5 10))
 			)
 			(3
-				(Clarence loop: 2 cel: 0 setCycle: Fwd)
+				(Clarence loop: 2 cel: 0 setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
@@ -211,20 +213,25 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(cond 
-			(
-			(and (MousedOn self event 3) (not (& global207 $0040))) (event claimed: 1) (ParseName {clarence}))
+			((and (MousedOn self event shiftDown) (not (& global207 $0040)))
+				(event claimed: TRUE)
+				(ParseName {clarence})
+			)
 			(
 				(and
 					(& global207 $0040)
 					(or
-						(MousedOn self event 3)
+						(MousedOn self event shiftDown)
 						(Said 'examine/attorney,attorney')
 					)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 24 6)
 			)
-			((Said 'converse/attorney,attorney') (= theTalker 7) (Say 1 24 7))
+			((Said 'converse/attorney,attorney')
+				(= theTalker talkCLARENCE)
+				(Say 1 24 7)
+			)
 		)
 	)
 )
@@ -239,10 +246,10 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/garden,bush')
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 			(Print 24 8)
 		)
 	)
@@ -258,10 +265,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine<in/gazebo') (Print 24 9))
-			((Said 'examine<below/gazebo') (Print 24 10))
-			(
-			(or (MousedOn self event 3) (Said 'examine/gazebo')) (event claimed: 1) (Print 24 11))
+			((Said 'examine<in/gazebo')
+				(Print 24 9)
+			)
+			((Said 'examine<below/gazebo')
+				(Print 24 10)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/gazebo'))
+				(event claimed: TRUE)
+				(Print 24 11)
+			)
 		)
 	)
 )

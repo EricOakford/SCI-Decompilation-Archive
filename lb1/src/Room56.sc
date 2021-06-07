@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 56)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use HighLite)
 (use Intrface)
@@ -15,11 +15,9 @@
 	(stair upstair)
 )
 
-(instance glow of HighLite
-	(properties)
-)
+(instance glow of HighLite)
 
-(instance Room56 of Rm
+(instance Room56 of Room
 	(properties
 		picture 56
 	)
@@ -40,9 +38,10 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 56 0))
-		(if
-		(and (& (ego onControl:) $0002) (== script 0))
+		(if (FirstEntry)
+			(Print 56 0)
+		)
+		(if (and (& (ego onControl:) cBLUE) (== script 0))
 			(self setScript: GoingUp)
 		)
 		(super doit:)
@@ -56,12 +55,17 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(super handleEvent: event)
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
-				((Said 'examine[<around,at][/room]') (Print 56 0))
-				((Said 'examine/passage') (Print 56 1))
-				(
-				(or (Said 'examine/stair,stair') (Said 'examine<up')) (Print 56 2))
+				((Said 'examine[<around,at][/room]')
+					(Print 56 0)
+				)
+				((Said 'examine/passage')
+					(Print 56 1)
+				)
+				((or (Said 'examine/stair,stair') (Said 'examine<up'))
+					(Print 56 2)
+				)
 			)
 		)
 	)
@@ -99,14 +103,14 @@
 				)
 			)
 			(2
-				(ego loop: 1 cel: 0 cycleSpeed: 1 setCycle: End self)
+				(ego loop: 1 cel: 0 cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(3
-				(ego loop: 2 cel: 0 setCycle: End self)
+				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(HandsOn)
-				(ego setLoop: -1 cycleSpeed: -1 illegalBits: -32768)
+				(ego setLoop: -1 cycleSpeed: -1 illegalBits: cWHITE)
 				(client setScript: 0)
 				(curRoom newRoom: 57)
 			)
@@ -115,8 +119,7 @@
 )
 
 (instance GoingDown of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -130,7 +133,7 @@
 			)
 			(1
 				(HandsOn)
-				(ego setLoop: -1 illegalBits: -32768)
+				(ego setLoop: -1 illegalBits: cWHITE)
 				(client setScript: 0)
 			)
 		)

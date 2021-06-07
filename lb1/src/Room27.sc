@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 27)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -13,7 +13,7 @@
 	Room27 0
 )
 
-(instance Room27 of Rm
+(instance Room27 of Room
 	(properties
 		picture 27
 	)
@@ -25,7 +25,7 @@
 		(= north 21)
 		(super init:)
 		(if howFast
-			(star1 cycleSpeed: 2 setCycle: Fwd init:)
+			(star1 cycleSpeed: 2 setCycle: Forward init:)
 			(star2 init: setScript: twinkle)
 		)
 		(self setRegions: 207 405 setFeatures: House)
@@ -47,7 +47,9 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 27 0))
+		(if (FirstEntry)
+			(Print 27 0)
+		)
 		(super doit:)
 	)
 	
@@ -56,16 +58,20 @@
 	)
 	
 	(method (handleEvent event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
 			(if
-			(and (== (event type?) evSAID) (Said 'examine>'))
+			(and (== (event type?) saidEvent) (Said 'examine>'))
 				(cond 
-					((Said '[<around,at][/room]') (Print 27 0))
-					((Said '/cabin,mansion') (Print 27 1))
+					((Said '[<around,at][/room]')
+						(Print 27 0)
+					)
+					((Said '/cabin,mansion')
+						(Print 27 1)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -76,11 +82,12 @@
 )
 
 (instance twinkle of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (star2 setCycle: End self))
+			(0
+				(star2 setCycle: EndLoop self)
+			)
 			(1
 				(if (< (Random 1 100) 35)
 					(= state -1)
@@ -120,9 +127,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/playhouse'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/playhouse'))
+			(event claimed: TRUE)
 			(Print 27 2)
 		)
 	)

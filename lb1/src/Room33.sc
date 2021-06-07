@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 33)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -26,16 +26,16 @@
 	theCSound
 	local4
 )
-(procedure (localproc_000c)
+(procedure (LookInMIrror)
 	(if (< (ego distanceTo: Mirror) 50)
-		(= theTalker 12)
+		(= theTalker talkLAURA)
 		(Say 0 33 0)
 	else
 		(NotClose)
 	)
 )
 
-(instance Room33 of Rm
+(instance Room33 of Room
 	(properties
 		picture 33
 	)
@@ -45,15 +45,15 @@
 		(= north 4)
 		(= south 37)
 		(super init:)
-		(LoadMany 128 33 103)
-		(LoadMany 132 43 44 71 72)
+		(LoadMany VIEW 33 103)
+		(LoadMany SOUND 43 44 71 72)
 		(clockFace init: hide:)
 		(hourHand init: hide:)
 		(minuteHand init: hide:)
 		(if howFast
 			(mirrorImage setPri: 12 init:)
-			(lampL setPri: 4 setCycle: Fwd init:)
-			(lampR setPri: 4 setCycle: Fwd init:)
+			(lampL setPri: 4 setCycle: Forward init:)
+			(lampR setPri: 4 setCycle: Forward init:)
 		else
 			(lampL addToPic:)
 			(lampR addToPic:)
@@ -65,10 +65,10 @@
 				(> currentAct 0)
 			)
 			(= local4 1)
-			(Load rsVIEW 925)
+			(Load VIEW 925)
 			(LoadMany 143 412)
 		)
-		(Clock stopUpd: ignoreActors: 1 init:)
+		(Clock stopUpd: ignoreActors: TRUE init:)
 		(if
 			(and
 				(== currentAct 2)
@@ -77,7 +77,7 @@
 				(== global139 0)
 				(== global140 0)
 			)
-			(Clock cel: 1 ignoreActors: 0)
+			(Clock cel: 1 ignoreActors: FALSE)
 		)
 		(= theCSound cSound)
 		(if (!= prevRoomNum 33)
@@ -95,11 +95,11 @@
 			init:
 		)
 		(self setFeatures: phone lamp Case2 Case1)
-		(ego view: 0 illegalBits: -32762 init:)
+		(ego view: 0 illegalBits: (| cWHITE cBLUE cGREEN) init:)
 		(switch prevRoomNum
 			(4
-				(rDoor setCycle: Beg)
-				(lDoor setCycle: Beg)
+				(rDoor setCycle: BegLoop)
+				(lDoor setCycle: BegLoop)
 				(ego posn: 159 110 setMotion: MoveTo 159 118)
 				(mySound loop: 1 play:)
 			)
@@ -108,11 +108,11 @@
 				(ego setPri: -1 posn: 254 136)
 			)
 			(49
-				(ego ignoreControl: 2 posn: 52 165)
+				(ego ignoreControl: cBLUE posn: 52 165)
 				(Clock cel: (- (NumCels Clock) 1) setScript: CloseClock)
 			)
 			(50
-				(ego posn: 266 159 ignoreControl: 4)
+				(ego posn: 266 159 ignoreControl: cGREEN)
 				(Mirror
 					cel: (- (NumCels Mirror) 1)
 					setScript: CloseMirror
@@ -122,7 +122,9 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 33 1))
+		(if (FirstEntry)
+			(Print 33 1)
+		)
 		(if local4
 			(HandsOff)
 			(= local4 0)
@@ -130,7 +132,7 @@
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $0020)
+				(& (ego onControl: origin) cMAGENTA)
 				(not local1)
 				(== (ego loop?) 3)
 			)
@@ -138,9 +140,9 @@
 			(= local1 1)
 			(self setScript: myDoor)
 		)
-		(switch (ego onControl: 1)
-			(16 (curRoom newRoom: 32))
-			(8 (curRoom newRoom: 34))
+		(switch (ego onControl: origin)
+			(cMAGENTA (curRoom newRoom: 32))
+			(cRED (curRoom newRoom: 34))
 		)
 		(cond 
 			((< (ego x?) 130) (= vertAngle 20))
@@ -166,21 +168,21 @@
 	
 	(method (dispose)
 		(DisposeScript 200)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
 							((Said '[<around,at][/room]') (Print 33 1))
 							((Said '/door<hidden') (Print 33 2))
 							((Said '/door<front') (Print 33 3))
-							((Said '/reflection[/mirror]') (localproc_000c))
+							((Said '/reflection[/mirror]') (LookInMIrror))
 							((Said '/door') (Print 33 4))
 							((Said '/pendulum') (Print 33 5))
 							((or (Said '/dirt') (Said '<down')) (Print 33 6))
@@ -217,7 +219,7 @@
 					((Said 'break/mirror') (Print 33 8))
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -231,24 +233,27 @@
 )
 
 (instance MoveClock of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego
 					observeControl: 16
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 85 165 self
 				)
 			)
 			(1
-				(ego loop: 1 ignoreControl: 2)
-				(Clock cycleSpeed: 3 setCycle: End self)
+				(ego loop: 1 ignoreControl: cBLUE)
+				(Clock cycleSpeed: 3 setCycle: EndLoop self)
 				(mySound number: 71 loop: 1 play:)
 			)
 			(2
-				(if (== global139 0) (Print 33 9 #at 76 40))
+				(if (== global139 0)
+					(Print 33 9
+						#at 76 40
+					)
+				)
 				(Clock stopUpd:)
 				(ego setMotion: MoveTo 46 165 self)
 			)
@@ -263,21 +268,20 @@
 )
 
 (instance CloseClock of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreControl: 2 setMotion: MoveTo 85 165 self)
+				(ego ignoreControl: cBLUE setMotion: MoveTo 85 165 self)
 			)
 			(1
-				(Clock cycleSpeed: 3 setCycle: Beg self)
+				(Clock cycleSpeed: 3 setCycle: BegLoop self)
 				(mySound number: 71 loop: 1 play:)
 			)
 			(2
 				(Clock stopUpd:)
-				(ego illegalBits: -32762)
+				(ego illegalBits: (| cWHITE cBLUE cGREEN))
 				(HandsOn)
 				(client setScript: 0)
 			)
@@ -286,23 +290,26 @@
 )
 
 (instance PushMirror of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 256 159 self
 				)
 			)
 			(1
-				(ego loop: 0 cel: 1 ignoreControl: 4)
-				(Mirror cycleSpeed: 3 setCycle: End self)
+				(ego loop: 0 cel: 1 ignoreControl: cGREEN)
+				(Mirror cycleSpeed: 3 setCycle: EndLoop self)
 				(mySound number: 72 loop: 1 play:)
 			)
 			(2
-				(if (== global140 0) (Print 33 10 #at 70 36))
+				(if (== global140 0)
+					(Print 33 10
+						#at 70 36
+					)
+				)
 				(Mirror stopUpd:)
 				(ego
 					view: 33
@@ -310,9 +317,11 @@
 					cel: 0
 					posn: 266 159
 					setPri: 13
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(if howFast (mirrorImage loop: 7 cel: 0 setCycle: End))
+				(if howFast
+					(mirrorImage loop: 7 cel: 0 setCycle: EndLoop)
+				)
 			)
 			(3
 				(HandsOn)
@@ -325,7 +334,6 @@
 )
 
 (instance CloseMirror of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -337,9 +345,11 @@
 					cel: 0
 					posn: 266 159
 					setPri: 13
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(if howFast (mirrorImage loop: 7 cel: 0 setCycle: End))
+				(if howFast
+					(mirrorImage loop: 7 cel: 0 setCycle: EndLoop)
+				)
 			)
 			(1
 				(ego
@@ -349,13 +359,13 @@
 					posn: 257 159
 					setPri: -1
 					setCycle: Walk
-					observeControl: 4
+					observeControl: cGREEN
 				)
-				(Mirror cycleSpeed: 3 setCycle: Beg self)
+				(Mirror cycleSpeed: 3 setCycle: BegLoop self)
 				(mySound number: 72 loop: 1 play:)
 			)
 			(2
-				(ego illegalBits: -32762)
+				(ego illegalBits: (| cWHITE cBLUE cGREEN))
 				(Mirror stopUpd:)
 				(HandsOn)
 				(client setScript: 0)
@@ -365,7 +375,6 @@
 )
 
 (instance myDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -379,8 +388,8 @@
 			)
 			(2
 				(ego loop: 3)
-				(rDoor cycleSpeed: 1 ignoreActors: 1 setCycle: End self)
-				(lDoor cycleSpeed: 1 ignoreActors: 1 setCycle: End self)
+				(rDoor cycleSpeed: 1 ignoreActors: TRUE setCycle: EndLoop self)
+				(lDoor cycleSpeed: 1 ignoreActors: TRUE setCycle: EndLoop self)
 				(mySound number: 43 loop: 1 play:)
 			)
 			(3
@@ -391,14 +400,13 @@
 )
 
 (instance ShowTime of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if howFast
-					(clockFace cel: 0 setCycle: End self show:)
+					(clockFace cel: 0 setCycle: EndLoop self show:)
 				else
 					(clockFace cel: 5 show:)
 					(= cycles 1)
@@ -429,7 +437,7 @@
 				(hourHand hide:)
 				(minuteHand hide:)
 				(if howFast
-					(clockFace setCycle: Beg self)
+					(clockFace setCycle: BegLoop self)
 				else
 					(clockFace hide:)
 					(= cycles 1)
@@ -453,8 +461,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -470,8 +478,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -491,10 +499,12 @@
 				(if (== (Clock cel?) 1)
 					(Print 33 12)
 				else
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
-			((Said 'hear/clock') (Print 33 13))
+			((Said 'hear/clock')
+				(Print 33 13)
+			)
 			((Said 'open,(examine<(in,in,in))/clock')
 				(if (< (ego distanceTo: Clock) 30)
 					(Print 33 14)
@@ -515,16 +525,16 @@
 			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'read,examine[<at]/clock,time')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(if (== (Clock cel?) 1)
 					(Print 33 17)
 				else
 					(self setScript: ShowTime)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
@@ -541,8 +551,12 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open/mirror') (Print 33 18))
-			((Said '(examine<(in,in))/mirror') (localproc_000c))
+			((Said 'open/mirror')
+				(Print 33 18)
+			)
+			((Said '(examine<(in,in))/mirror')
+				(LookInMIrror)
+			)
 			((Said 'examine<behind/mirror')
 				(if (< (ego distanceTo: Mirror) 30)
 					(Print 33 19)
@@ -552,11 +566,11 @@
 			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine[<at]/mirror')
 				)
 				(Print 33 20)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
@@ -581,8 +595,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {door})
 		)
 	)
@@ -598,8 +612,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {door})
 		)
 	)
@@ -618,10 +632,10 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/curtain<lamp')
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -637,8 +651,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -651,7 +665,7 @@
 		view 103
 		loop 1
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 )
@@ -662,7 +676,7 @@
 		x 81
 		view 103
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 )
@@ -673,7 +687,7 @@
 		x 81
 		view 103
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 )
@@ -687,10 +701,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/armoire'))
+		(if (or (MousedOn self event shiftDown) (Said 'examine/armoire'))
 			(Print 33 21)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -705,8 +718,12 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open,(examine<in)/drawer') (Print 33 22))
-			((Said 'move/armoire') (Print 33 23))
+			((Said 'open,(examine<in)/drawer')
+				(Print 33 22)
+			)
+			((Said 'move/armoire')
+				(Print 33 23)
+			)
 			((Said 'open,(examine<in)/armoire')
 				(if
 					(or
@@ -718,8 +735,10 @@
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/armoire')) (Print 33 21) (event claimed: 1))
+			((or (MousedOn self event shiftDown) (Said 'examine/armoire'))
+				(Print 33 21)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 17)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -20,21 +20,21 @@
 	local1
 	local2
 	local3
-	local4
+	firstTime
 )
-(instance Room17 of Rm
+(instance Room17 of Room
 	(properties
 		picture 17
 	)
 	
 	(method (init)
 		(super init:)
-		(= local4 (FirstEntry))
+		(= firstTime (FirstEntry))
 		(self
 			setRegions: 206
 			setFeatures: Window1 Window2 Window3 Window4
 		)
-		(LoadMany 132 43 44)
+		(LoadMany SOUTH 43 44)
 		(= south 22)
 		(= west 16)
 		(= north 12)
@@ -43,11 +43,13 @@
 		(Door
 			cel: (if (== prevRoomNum 38) 3 else 0)
 			setPri: 6
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			stopUpd:
 		)
-		(if (== currentAct 1) (self setRegions: 381))
+		(if (== currentAct 1)
+			(self setRegions: 381)
+		)
 		(switch prevRoomNum
 			(16
 				(if (== global102 1)
@@ -61,7 +63,7 @@
 				(if (not (FirstEntry))
 					(ego setMotion: MoveTo 216 141)
 					(= local2 1)
-					(Door setCycle: Beg)
+					(Door setCycle: BegLoop)
 					(User canControl: 0)
 					(myMusic number: 44 loop: 1 priority: 5 play:)
 				)
@@ -69,20 +71,20 @@
 			(23 (ego posn: 310 188))
 			(12 (ego posn: 310 140))
 		)
-		(ego view: 0 illegalBits: -32766 init:)
+		(ego view: 0 illegalBits: (| cWHITE cBLUE) init:)
 	)
 	
 	(method (doit)
-		(if local4
+		(if firstTime
 			(Print 17 0)
 			(if (== prevRoomNum 38)
 				(ego setMotion: MoveTo 216 141)
 				(= local2 1)
-				(Door setCycle: Beg)
-				(User canControl: 0)
+				(Door setCycle: BegLoop)
+				(User canControl: FALSE)
 				(myMusic number: 44 loop: 1 priority: 5 play:)
 			)
-			(= local4 0)
+			(= firstTime 0)
 		)
 		(if
 			(and
@@ -93,15 +95,15 @@
 			(= local3 1)
 			(Door stopUpd:)
 		)
-		(if (and local2 (& (ego onControl: 1) $0001))
-			(User canControl: 1)
-			(ego illegalBits: -32768)
+		(if (and local2 (& (ego onControl: origin) cBLACK))
+			(User canControl: TRUE)
+			(ego illegalBits: cWHITE)
 			(= local2 0)
 		)
 		(if
 			(or
-				(& (ego onControl: 0) $0002)
-				(& (ego onControl: 0) $0010)
+				(& (ego onControl: FALSE) cBLUE)
+				(& (ego onControl: FALSE) cRED)
 			)
 			(ego setPri: 7)
 		else
@@ -119,30 +121,32 @@
 				(curRoom newRoom: 18)
 			)
 		)
-		(if (& (ego onControl: 1) $0002) (curRoom newRoom: 38))
+		(if (& (ego onControl: origin) cBLUE)
+			(curRoom newRoom: 38)
+		)
 		(if
 			(and
-				(& (ego onControl: 1) $0008)
+				(& (ego onControl: origin) cCYAN)
 				(or (== (ego loop?) 3) (== (ego loop?) 1))
 				(== local2 0)
 			)
 			(= local2 1)
-			(User canControl: 0)
+			(User canControl: FALSE)
 			(ego illegalBits: 0 setMotion: MoveTo 69 154)
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $0004)
+				(& (ego onControl: origin) cGREEN)
 				(or (== (ego loop?) 2) (== (ego loop?) 0))
 				(== local2 0)
 			)
 			(= local2 1)
-			(User canControl: 0)
+			(User canControl: FALSE)
 			(ego illegalBits: 0 setMotion: MoveTo 98 181)
 		)
 		(if
 			(and
-				(& (ego onControl: 0) $0010)
+				(& (ego onControl: FALSE) cRED)
 				(not local1)
 				(or (== (ego loop?) 1) (== (ego loop?) 3))
 			)
@@ -158,42 +162,48 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) evSAID) (Said 'examine>'))
+			(if (and (== (event type?) saidEvent) (Said 'examine>'))
 				(cond 
-					((Said '[<around,at][/room]') (Print 17 0))
-					((Said '/stair') (Print 17 1))
-					((Said '/up') (Print 17 2))
+					((Said '[<around,at][/room]')
+						(Print 17 0)
+					)
+					((Said '/stair')
+						(Print 17 1)
+					)
+					((Said '/up')
+						(Print 17 2)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (newRoom n)
-		(if (== n 38) (cSound stop:))
+		(if (== n 38)
+			(cSound stop:)
+		)
 		(super newRoom: n)
 	)
 )
 
 (instance myDoor2 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(ego setMotion: MoveTo 199 128 self)
 			)
 			(1
 				(ego setMotion: MoveTo 189 114 self)
 			)
 			(2
-				(ego setMotion: 0 illegalBits: -32768)
-				(Door cycleSpeed: 1 ignoreActors: 1 setCycle: End self)
+				(ego setMotion: 0 illegalBits: cWHITE)
+				(Door cycleSpeed: 1 ignoreActors: TRUE setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 priority: 5 play:)
 			)
 			(3
@@ -211,8 +221,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {door})
 		)
 	)
@@ -227,8 +237,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -243,8 +253,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -259,8 +269,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -275,13 +285,11 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

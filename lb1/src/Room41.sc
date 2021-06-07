@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 41)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -22,7 +22,7 @@
 (local
 	local0
 )
-(instance Room41 of Rm
+(instance Room41 of Room
 	(properties
 		picture 41
 	)
@@ -43,11 +43,13 @@
 			(
 				(and
 					(>= currentAct 6)
-					(not (& deadGuests $0020))
-					(not (& deadGuests $0040))
+					(not (& deadGuests deadRUDY))
+					(not (& deadGuests deadLILLIAN))
 				)
 				(cond 
-					((== gCurRoomNum_3 41) (++ local0) (self setRegions: 278))
+					((== gCurRoomNum_3 41) (++ local0)
+						(self setRegions: 278)
+					)
 					((not (== gCurRoomNum_3 73))
 						(switch (Random 1 2)
 							(1
@@ -62,23 +64,25 @@
 		)
 		(Bed
 			cel: (if (Btst 35) 0 else 4)
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			stopUpd:
 		)
-		(Load rsVIEW 30)
+		(Load VIEW 30)
 		(if howFast
-			(lamp1 setCycle: Fwd init:)
-			(lamp2 setCycle: Fwd init:)
+			(lamp1 setCycle: Forward init:)
+			(lamp2 setCycle: Forward init:)
 		else
 			(lamp1 init: stopUpd:)
 			(lamp2 init: stopUpd:)
 		)
-		(ego view: 0 posn: 304 122 illegalBits: -32760 init:)
+		(ego view: 0 posn: 304 122 illegalBits: (| cWHITE cCYAN) init:)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 41 0))
+		(if (FirstEntry)
+			(Print 41 0)
+		)
 		(if (< (ego x?) 250)
 			(= vertAngle 44)
 		else
@@ -92,15 +96,18 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
-					((Said '*/blind,curtain') (Print 41 1))
+					((Said '*/blind,curtain')
+						(Print 41 1)
+					)
 					((Said 'examine>')
 						(cond 
-							(
-							(and (not (cast contains: bag)) (Said '/bag')) (DontSee))
+							((and (not (cast contains: bag)) (Said '/bag'))
+								(DontSee)
+							)
 							((Said '[<around,at][/room]') (Print 41 0))
 							((Said '/furniture[<covered]') (Print 41 2))
 							((Said '<in/closet') (Print 41 3))
@@ -132,10 +139,15 @@
 					(Said 'close,lift,lift,attach,press/bed[<murphy,up,away]')
 						(if (not (cast contains: bag))
 							(cond 
-								(
-								(and (== gCurRoomNum_3 41) (not (& deadGuests $0020))) (Print 41 8))
-								((not (Btst 35)) (self setScript: myBed))
-								(else (AlreadyClosed))
+								((and (== gCurRoomNum_3 41) (not (& deadGuests deadRUDY)))
+									(Print 41 8)
+								)
+								((not (Btst 35))
+									(self setScript: myBed)
+								)
+								(else
+									(AlreadyClosed)
+								)
 							)
 						else
 							(Bset 31)
@@ -144,19 +156,18 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (newRoom n)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super newRoom: n)
 	)
 )
 
 (instance myBed of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -164,12 +175,12 @@
 				(HandsOff)
 				(if (Btst 35)
 					(ego
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: MoveTo 243 90 self
 					)
 				else
 					(ego
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: MoveTo 189 99 self
 					)
 				)
@@ -178,17 +189,17 @@
 				(if (Btst 35)
 					(Bclr 35)
 					(ego loop: 1 observeControl: 8)
-					(Bed cycleSpeed: 3 setCycle: End self)
+					(Bed cycleSpeed: 3 setCycle: EndLoop self)
 				else
 					(Bset 35)
 					(ego
 						view: 30
 						cel: 0
 						loop: 1
-						setCycle: End
+						setCycle: EndLoop
 						ignoreControl: 8
 					)
-					(Bed cycleSpeed: 3 setCycle: Beg self)
+					(Bed cycleSpeed: 3 setCycle: BegLoop self)
 				)
 			)
 			(2
@@ -220,9 +231,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said '(examine<in),open/armoire') (Print 41 7))
-			(
-			(or (MousedOn self event 3) (Said 'examine/armoire')) (event claimed: 1) (Print 41 4))
+			((Said '(examine<in),open/armoire')
+				(Print 41 7)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/armoire'))
+				(event claimed: TRUE)
+				(Print 41 4)
+			)
 		)
 	)
 )
@@ -238,8 +253,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -258,10 +273,10 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine[<!*]/drawer')
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 			(Print 41 10)
 		)
 	)
@@ -279,10 +294,19 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((MousedOn self event 3) (event claimed: 1) (ParseName {chair}))
-			((Said '(examine<in),open/box') (Print 41 11))
-			((Said 'examine/box') (Print 41 12))
-			((Said 'move,get/box') (Print 41 13))
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(ParseName {chair})
+			)
+			((Said '(examine<in),open/box')
+				(Print 41 11)
+			)
+			((Said 'examine/box')
+				(Print 41 12)
+			)
+			((Said 'move,get/box')
+				(Print 41 13)
+			)
 		)
 	)
 )
@@ -297,18 +321,29 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine<below/bed') (Print 41 14))
+			((Said 'examine<below/bed')
+				(Print 41 14)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/bed[<murphy]')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(cond 
-					(local0 (Print 41 15))
-					((== (Bed cel?) 0) (Print 41 16))
-					((cast contains: bag) (Bset 31) (Print 41 17))
-					(else (Print 41 18))
+					(local0
+						(Print 41 15)
+					)
+					((== (Bed cel?) 0)
+						(Print 41 16)
+					)
+					((cast contains: bag)
+						(Bset 31)
+						(Print 41 17)
+					)
+					(else
+						(Print 41 18)
+					)
 				)
 			)
 		)
@@ -327,11 +362,17 @@
 	(method (handleEvent event)
 		(if (not (event claimed?))
 			(cond 
-				((Said 'search,move,get,open,(examine<in)/bag') (Print 41 19))
-				(
-				(or (MousedOn self event 3) (Said 'examine/bag')) (event claimed: 1) (Print 41 20))
+				((Said 'search,move,get,open,(examine<in)/bag')
+					(Print 41 19)
+				)
+				((or (MousedOn self event shiftDown) (Said 'examine/bag'))
+					(event claimed: TRUE)
+					(Print 41 20)
+				)
 			)
-			(if (event claimed?) (Bset 31))
+			(if (event claimed?)
+				(Bset 31)
+			)
 		)
 	)
 )
@@ -345,8 +386,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -362,8 +403,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -379,10 +420,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said '(examine<in),open/box') (Print 41 11))
-			((Said 'move,get/box') (Print 41 13))
-			(
-			(or (MousedOn self event 3) (Said 'examine/box')) (event claimed: 1) (Print 41 12))
+			((Said '(examine<in),open/box')
+				(Print 41 11)
+			)
+			((Said 'move,get/box')
+				(Print 41 13)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/box'))
+				(event claimed: TRUE)
+				(Print 41 12)
+			)
 		)
 	)
 )

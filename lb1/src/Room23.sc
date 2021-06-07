@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 23)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Reverse)
@@ -26,13 +26,13 @@
 	local2
 	local3
 	local4
-	[local5 7] = [222 130 186 137 193 142 -32768]
-	[local12 5] = [222 149 193 142 -32768]
-	[local17 7] = [222 130 186 137 210 147 -32768]
-	[local24 5] = [222 149 201 147 -32768]
+	TopPts = [222 130 186 137 193 142 PATHEND]
+	BotPts = [222 149 193 142 PATHEND]
+	TopLPts = [222 130 186 137 210 147 PATHEND]
+	BotLPts = [222 149 201 147 PATHEND]
 	local29
 )
-(instance Room23 of Rm
+(instance Room23 of Room
 	(properties
 		picture 23
 	)
@@ -46,11 +46,13 @@
 		(super init:)
 		(addToPics add: Well eachElementDo: #init doit:)
 		(self setRegions: 206 setFeatures: Well House)
-		(if (== currentAct 1) (self setRegions: 381))
-		(Load rsSCRIPT 985)
-		(Load rsPIC 70)
-		(LoadMany 128 51 55 170)
-		(LoadMany 132 82 120)
+		(if (== currentAct 1)
+			(self setRegions: 381)
+		)
+		(Load SCRIPT AVOIDER)
+		(Load PICTURE 70)
+		(LoadMany VIEW 51 55 170)
+		(LoadMany SOUND 82 120)
 		(Thunder number: 17 loop: 0)
 		(mySound number: 82 loop: 0)
 		(Bucket init: setPri: 10 stopUpd:)
@@ -65,7 +67,7 @@
 		(if
 			(and
 				(>= currentAct 3)
-				(not (& deadGuests $0004))
+				(not (& deadGuests deadGLORIA))
 				(!= gCurRoomNum 24)
 				(!= gCurRoomNum curRoomNum)
 			)
@@ -92,54 +94,91 @@
 				)
 			)
 		)
-		(ego illegalBits: -32768 view: 0 init:)
+		(ego illegalBits: cWHITE view: 0 init:)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 23 0))
-		(if (& (ego onControl: 0) $0002) (curRoom newRoom: 12))
-		(if (& (ego onControl: 0) $0004) (curRoom newRoom: 18))
+		(if (FirstEntry)
+			(Print 23 0)
+		)
+		(if (& (ego onControl: 0) cBLUE)
+			(curRoom newRoom: 12)
+		)
+		(if (& (ego onControl: 0) cGREEN)
+			(curRoom newRoom: 18)
+		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(DisposeScript 983)
-		(DisposeScript 985)
-		(DisposeScript 973)
+		(DisposeScript PATH)
+		(DisposeScript AVOIDER)
+		(DisposeScript REVERSE)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said '/body,actress>')
 						(cond 
-							((!= gCurRoomNum curRoomNum) (event claimed: 1) (Print 23 1))
+							((!= gCurRoomNum curRoomNum)
+								(event claimed: TRUE)
+								(Print 23 1)
+							)
 							((Said 'lift')
 								(cond 
-									(local1 (Print 23 2))
-									((Windlass cycler?) (Print 23 3))
-									(else (self setScript: raiseBucket))
+									(local1
+										(Print 23 2)
+									)
+									((Windlass cycler?)
+										(Print 23 3)
+									)
+									(else
+										(self setScript: raiseBucket)
+									)
 								)
 							)
-							((Said 'lower,unwind') (if (not local1) (Print 23 4) else (= local0 1)))
-							((Said 'kill') (Print 23 5))
-							((Said 'kiss') (Print 23 6))
-							((Said 'embrace') (Print 23 7))
-							(
-							(Said 'search,get,drag,drag,press,move,(examine<in)') (Print 23 8))
-							((Said 'examine') (Print 23 9))
-							((Said 'help') (Print 23 10))
+							((Said 'lower,unwind')
+								(if (not local1)
+									(Print 23 4)
+								else
+									(= local0 1)
+								)
+							)
+							((Said 'kill')
+								(Print 23 5)
+							)
+							((Said 'kiss')
+								(Print 23 6)
+							)
+							((Said 'embrace')
+								(Print 23 7)
+							)
+							((Said 'search,get,drag,drag,press,move,(examine<in)')
+								(Print 23 8)
+							)
+							((Said 'examine')
+								(Print 23 9)
+							)
+							((Said 'help')
+								(Print 23 10)
+							)
 						)
 					)
-					(
-					(and (== gCurRoomNum curRoomNum) (Said 'examine/boa')) (Print 23 11))
+					((and (== gCurRoomNum curRoomNum) (Said 'examine/boa'))
+						(Print 23 11)
+					)
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room]') (Print 23 0))
-							((Said '/path') (Print 23 12))
+							((Said '[<around,at][/room]')
+								(Print 23 0)
+							)
+							((Said '/path')
+								(Print 23 12)
+							)
 							((Said '<(in,down,in)/well')
 								(if (and local1 (== gCurRoomNum curRoomNum))
 									(Print 23 13)
@@ -147,11 +186,21 @@
 									(WHandle setScript: lookInWell)
 								)
 							)
-							((Said '<in/doghouse') (NotClose))
-							((Said '/hemp') (Print 23 14))
-							((Said '/(door<basement),basement') (Print 23 15))
-							((Said '/door,lamp') (Print 23 16))
-							((Said '/monument') (Print 23 17))
+							((Said '<in/doghouse')
+								(NotClose)
+							)
+							((Said '/hemp')
+								(Print 23 14)
+							)
+							((Said '/(door<basement),basement')
+								(Print 23 15)
+							)
+							((Said '/door,lamp')
+								(Print 23 16)
+							)
+							((Said '/monument')
+								(Print 23 17)
+							)
 							(
 								(or
 									(Said 'examine/doghouse')
@@ -161,12 +210,21 @@
 							)
 						)
 					)
-					((Said 'get/hemp') (Print 23 19))
-					((Said 'get/control') (Print 23 20))
-					((Said 'open/(door[<basement]),basement') (NotClose))
-					((Said 'chop,untie/hemp,bucket') (Print 23 21))
-					(
-					(and (== local2 1) (Said 'drop/control,handle,bucket')) (= local2 0))
+					((Said 'get/hemp')
+						(Print 23 19)
+					)
+					((Said 'get/control')
+						(Print 23 20)
+					)
+					((Said 'open/(door[<basement]),basement')
+						(NotClose)
+					)
+					((Said 'chop,untie/hemp,bucket')
+						(Print 23 21)
+					)
+					((and (== local2 1) (Said 'drop/control,handle,bucket'))
+						(= local2 0)
+					)
 					((Said 'wind,rotate/control,handle,hemp')
 						(cond 
 							(local1 (= local0 1))
@@ -192,7 +250,7 @@
 	
 	(method (newRoom n)
 		(if local4
-			(= deadGuests (| deadGuests $0004))
+			(|= deadGuests deadGLORIA)
 			(= gCurRoomNum 0)
 		)
 		(super newRoom: n)
@@ -200,13 +258,12 @@
 )
 
 (instance raiseBucket of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego setAvoider: (Avoid new:))
+				(ego setAvoider: (Avoider new:))
 				(cond 
 					((ego inRect: 222 115 320 139) (ego setMotion: TopPath self))
 					((ego inRect: 222 139 320 158) (ego setMotion: BotPath self))
@@ -225,11 +282,11 @@
 					posn: 193 142
 					cycleSpeed: 1
 				)
-				(Windlass cycleSpeed: 1 setCycle: Fwd)
+				(Windlass cycleSpeed: 1 setCycle: Forward)
 				(= local3 0)
 				(= cycles 1)
 			)
-			(2 (WHandle setCycle: End self))
+			(2 (WHandle setCycle: EndLoop self))
 			(3
 				(if (!= (++ local3) 5) (= state 1))
 				(= cycles 1)
@@ -239,22 +296,29 @@
 					loop: (if (== gCurRoomNum curRoomNum) 5 else 4)
 					cel: 0
 					cycleSpeed: 4
-					setCycle: End
+					setCycle: EndLoop
 				)
-				(WHandle setCycle: End self)
+				(WHandle setCycle: EndLoop self)
 			)
 			(5
 				(myMusic stop:)
-				(if (not local1) (= local1 1) (HandsOn))
+				(if (not local1)
+					(= local1 1)
+					(HandsOn)
+				)
 				(if
 					(and
 						(== gCurRoomNum curRoomNum)
-						(not (& deadGuests $0040))
+						(not (& deadGuests deadLILLIAN))
 						(not local4)
 					)
 					(mySound number: 120 loop: 1 play:)
 					(= local4 1)
-					(Print 23 23 #at 10 20 #icon 363 2 0 #mode 1)
+					(Print 23 23
+						#at 10 20
+						#icon 363 2 0
+						#mode teJustCenter
+					)
 				)
 				(Windlass setCycle: 0)
 				(cond 
@@ -265,8 +329,10 @@
 						(= state 9)
 						(= cycles 1)
 					)
-					(
-					(and local2 (== (ego x?) 193) (== (ego y?) 142)) (= state 4) (= cycles 1))
+					((and local2 (== (ego x?) 193) (== (ego y?) 142))
+						(= state 4)
+						(= cycles 1)
+					)
 					(else
 						(= local1 0)
 						(ego
@@ -284,20 +350,22 @@
 							cel: 0
 							posn: 207 109
 							cycleSpeed: 0
-							setCycle: End self
+							setCycle: EndLoop self
 						)
-						(Windlass cycleSpeed: 0 setCycle: Fwd)
-						(Bucket cycleSpeed: 0 setCycle: Beg)
+						(Windlass cycleSpeed: 0 setCycle: Forward)
+						(Bucket cycleSpeed: 0 setCycle: BegLoop)
 						(= local3 0)
 					)
 				)
 			)
 			(6
 				(Bucket loop: 7 cel: 1 stopUpd:)
-				(WHandle cel: 0 setCycle: End self)
+				(WHandle cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				(if (!= (++ local3) 5) (= state 5))
+				(if (!= (++ local3) 5)
+					(= state 5)
+				)
 				(= cycles 1)
 			)
 			(8
@@ -314,7 +382,7 @@
 			)
 			(9
 				(mySound number: 82 play:)
-				(Splash setCycle: End self show:)
+				(Splash setCycle: EndLoop self show:)
 			)
 			(10
 				(Splash cel: 0 hide:)
@@ -326,14 +394,13 @@
 )
 
 (instance lowerBucket of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Windlass cycleSpeed: 1 setCycle: Fwd)
-				(Bucket setCycle: Beg self)
-				(WHandle setCycle: Rev)
+				(Windlass cycleSpeed: 1 setCycle: Forward)
+				(Bucket setCycle: BegLoop self)
+				(WHandle setCycle: Reverse)
 				(myMusic loop: -1 play:)
 				(= local3 0)
 			)
@@ -341,9 +408,11 @@
 				(Bucket loop: 7 cel: 1 stopUpd:)
 				(= cycles 1)
 			)
-			(2 (WHandle setCycle: Beg self))
+			(2 (WHandle setCycle: BegLoop self))
 			(3
-				(if (!= (++ local3) 5) (= state 1))
+				(if (!= (++ local3) 5)
+					(= state 1)
+				)
 				(= cycles 1)
 			)
 			(4
@@ -366,7 +435,6 @@
 )
 
 (instance lookInWell of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -374,11 +442,15 @@
 				(HandsOff)
 				(cond 
 					(local1 (= cycles 1))
-					((ego inRect: 222 115 320 139) (ego setAvoider: (Avoid new:) setMotion: TopLPath self))
-					((ego inRect: 222 139 320 158) (ego setAvoider: (Avoid new:) setMotion: BotLPath self))
+					((ego inRect: 222 115 320 139)
+						(ego setAvoider: (Avoider new:) setMotion: TopLPath self)
+					)
+					((ego inRect: 222 139 320 158)
+						(ego setAvoider: (Avoider new:) setMotion: BotLPath self)
+					)
 					(else
 						(ego
-							setAvoider: (Avoid new:)
+							setAvoider: (Avoider new:)
 							setMotion: MoveTo 211 147 self
 						)
 					)
@@ -388,28 +460,34 @@
 				(if local1
 					(= cycles 1)
 				else
-					(ego view: 55 loop: 0 cel: 0 setCycle: End self)
+					(ego view: 55 loop: 0 cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(2
 				(cast eachElementDo: #hide)
 				(if local1 (BigBucket show:))
-				(DrawPic 70 dpOPEN_CENTEREDGE)
+				(DrawPic 70 IRISOUT)
 				(if local29
 					(if local1
-						(Print 23 24 #at 160 132 #width 140)
+						(Print 23 24
+							#at 160 132
+							#width 140
+						)
 					else
 						(DontSee)
 					)
 				else
-					(Print 23 25 #at 160 132 #width 140)
+					(Print 23 25
+						#at 160 132
+						#width 140
+					)
 				)
 				(= cycles 1)
 			)
 			(3
 				(= local29 0)
 				(cls)
-				(DrawPic curRoomNum dpOPEN_EDGECENTER)
+				(DrawPic curRoomNum IRISIN)
 				(addToPics doit:)
 				(cast eachElementDo: #show)
 				(Splash hide:)
@@ -419,7 +497,7 @@
 					(ego posn: 193 142 observeBlocks: wellCage hide:)
 					(= cycles 1)
 				else
-					(ego setAvoider: 0 setCycle: Beg self)
+					(ego setAvoider: 0 setCycle: BegLoop self)
 				)
 			)
 			(4
@@ -432,19 +510,18 @@
 )
 
 (instance showers of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (= state 3)))
 			(1
-				(Light1 setCycle: Fwd)
-				(Light2 setCycle: Fwd)
+				(Light1 setCycle: Forward)
+				(Light2 setCycle: Forward)
 				(= cycles 7)
 			)
 			(2
-				(Light1 setCycle: End)
-				(Light2 setCycle: End self)
+				(Light1 setCycle: EndLoop)
+				(Light2 setCycle: EndLoop self)
 			)
 			(3 (Thunder loop: 1 play: self))
 			(4
@@ -462,13 +539,12 @@
 		x 223
 		view 123
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine[<at]/well'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine[<at]/well'))
+			(event claimed: TRUE)
 			(Print 23 26)
 		)
 	)
@@ -512,14 +588,15 @@
 	(method (handleEvent event)
 		(cond 
 			((Said 'examine/control')
-				(if (ego has: 20)
-					(event claimed: 0)
+				(if (ego has: iCrank)
+					(event claimed: FALSE)
 				else
 					(Print 23 27)
 				)
 			)
-			(
-			(Said 'enter,(go,hop,climb,get,sit)<in/bucket,well') (Print 23 28))
+			((Said 'enter,(go,hop,climb,get,sit)<in/bucket,well')
+				(Print 23 28)
+			)
 			((Said 'examine<in/bucket')
 				(if (and local1 (== gCurRoomNum curRoomNum))
 					(Print 23 13)
@@ -535,11 +612,18 @@
 					(else (Room23 setScript: raiseBucket))
 				)
 			)
-			((Said 'lower,unwind/bucket,hemp') (if (not local1) (Print 23 4) else (= local0 1)))
-			((Said 'get/bucket') (Print 23 29))
-			(
-			(or (MousedOn self event 3) (Said 'examine/bucket'))
-				(event claimed: 1)
+			((Said 'lower,unwind/bucket,hemp')
+				(if (not local1)
+					(Print 23 4)
+				else
+					(= local0 1)
+				)
+			)
+			((Said 'get/bucket')
+				(Print 23 29)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/bucket'))
+				(event claimed: TRUE)
 				(cond 
 					((not local1) (DontSee))
 					((== gCurRoomNum curRoomNum) (Print 23 30))
@@ -586,20 +670,16 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {house})
 		)
 	)
 )
 
-(instance Thunder of Sound
-	(properties)
-)
+(instance Thunder of Sound)
 
-(instance mySound of Sound
-	(properties)
-)
+(instance mySound of Sound)
 
 (instance myMusic of Sound
 	(properties
@@ -609,34 +689,30 @@
 )
 
 (instance TopPath of Path
-	(properties)
 	
-	(method (at param1)
-		(return [local5 param1])
+	(method (at n)
+		(return [TopPts n])
 	)
 )
 
 (instance BotPath of Path
-	(properties)
 	
-	(method (at param1)
-		(return [local12 param1])
+	(method (at n)
+		(return [BotPts n])
 	)
 )
 
 (instance TopLPath of Path
-	(properties)
 	
-	(method (at param1)
-		(return [local17 param1])
+	(method (at n)
+		(return [TopLPts n])
 	)
 )
 
 (instance BotLPath of Path
-	(properties)
 	
-	(method (at param1)
-		(return [local24 param1])
+	(method (at n)
+		(return [BotLPts n])
 	)
 )
 

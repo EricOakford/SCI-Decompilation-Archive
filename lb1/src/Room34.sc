@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 34)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DCIcon)
@@ -22,7 +22,7 @@
 	local2
 	local3
 )
-(instance Room34 of Rm
+(instance Room34 of Room
 	(properties
 		picture 34
 	)
@@ -30,8 +30,8 @@
 	(method (init)
 		(super init:)
 		(= west 33)
-		(Load rsVIEW 22)
-		(LoadMany 132 9 47 74 75)
+		(Load VIEW 22)
+		(LoadMany SOUND 9 47 74 75)
 		(addToPics
 			add:
 				chair1
@@ -75,10 +75,10 @@
 				Mirror
 		)
 		(if howFast
-			(gas setPri: 9 ignoreActors: 1 setCycle: Fwd init:)
-			(fire loop: (/ currentAct 2) setCycle: Fwd init:)
+			(gas setPri: 9 ignoreActors: TRUE setCycle: Forward init:)
+			(fire loop: (/ currentAct 2) setCycle: Forward init:)
 		else
-			(gas setPri: 9 ignoreActors: 1 init: stopUpd:)
+			(gas setPri: 9 ignoreActors: TRUE init: stopUpd:)
 			(fire loop: (/ currentAct 2) init: stopUpd:)
 		)
 		(chute
@@ -86,7 +86,7 @@
 			yStep: 5
 			illegalBits: 0
 			setPri: 2
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			stopUpd:
 			setScript: chuteActions
@@ -106,7 +106,9 @@
 					(if (== [global368 0] 1)
 						(= global154 4)
 					else
-						(if (== global154 3) (User canInput: 0))
+						(if (== global154 3)
+							(User canInput: FALSE)
+						)
 						(= local2 1)
 						(self setRegions: 237)
 					)
@@ -132,11 +134,11 @@
 			else
 				(ego posn: 265 120)
 			)
-			(ego illegalBits: -32768 view: 0 init:)
+			(ego illegalBits: cWHITE view: 0 init:)
 		else
 			(ego
 				view: 0
-				illegalBits: -32768
+				illegalBits: cWHITE
 				setPri: -1
 				posn: 68 167
 				init:
@@ -146,9 +148,16 @@
 	)
 	
 	(method (doit)
-		(if local3 (= local3 0) (Print 34 0))
-		(if (FirstEntry) (Print 34 1))
-		(if (& (ego onControl: 1) $0004) (curRoom newRoom: 35))
+		(if local3
+			(= local3 0)
+			(Print 34 0)
+		)
+		(if (FirstEntry)
+			(Print 34 1)
+		)
+		(if (& (ego onControl: origin) cGREEN)
+			(curRoom newRoom: 35)
+		)
 		(if (not local1)
 			(if (and (< (ego x?) 51) (> (ego y?) 126))
 				(ego setPri: 10)
@@ -157,9 +166,15 @@
 			)
 		)
 		(cond 
-			((< (ego x?) 30) (= vertAngle 0))
-			((< (ego x?) 140) (= vertAngle 163))
-			(else (= vertAngle 137))
+			((< (ego x?) 30)
+				(= vertAngle 0)
+			)
+			((< (ego x?) 140)
+				(= vertAngle 163)
+			)
+			(else
+				(= vertAngle 137)
+			)
 		)
 		(super doit:)
 	)
@@ -490,30 +505,32 @@ code_05bf:
 )
 
 (instance chuteActions of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (cls))
 			(1
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(ego illegalBits: 0 setMotion: MoveTo 33 127 self)
 			)
 			(2
-				(ego view: 22 loop: 0 cel: 0 setCycle: End)
+				(ego view: 22 loop: 0 cel: 0 setCycle: EndLoop)
 				(chute setMotion: MoveTo 19 167 self)
 				(myMusic number: 74 loop: 1 play:)
 			)
-			(3 (= local0 1) (Print 34 20))
+			(3
+				(= local0 1)
+				(Print 34 20)
+			)
 			(4
 				(chute setMotion: MoveTo 23 121)
 				(= local0 0)
 				(myMusic number: 75 loop: 1 play:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
-				(ego view: 0 loop: 1 setCycle: Walk illegalBits: -32768)
-				(User canControl: 1)
+				(ego view: 0 loop: 1 setCycle: Walk illegalBits: cWHITE)
+				(User canControl: TRUE)
 			)
 			(6
 				(myMusic number: 9 loop: 1 play:)
@@ -521,7 +538,7 @@ code_05bf:
 					setLoop: 2
 					cel: 0
 					setMotion: MoveTo 27 128
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -559,16 +576,35 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				((event claimed?))
-				((Said 'examine<(down,up)') (if local0 (Print 34 15) else (event claimed: 0)))
-				((Said 'examine/chute') (if local0 (Print 34 15) else (Print 34 16)))
+				((Said 'examine<(down,up)')
+					(if local0
+						(Print 34 15)
+					else
+						(event claimed: FALSE)
+					)
+				)
+				((Said 'examine/chute')
+					(if local0
+						(Print 34 15)
+					else
+						(Print 34 16)
+					)
+				)
 				((Said 'open/door[<chute]')
 					(cond 
-						(local0 (Print 34 17))
-						((ego inRect: 5 126 40 135) (= state 0) (= cycles 1))
-						(else (NotClose))
+						(local0
+							(Print 34 17)
+						)
+						((ego inRect: 5 126 40 135)
+							(= state 0)
+							(= cycles 1)
+						)
+						(else
+							(NotClose)
+						)
 					)
 				)
 				((Said 'hop,crawl,go,enter/chute')
@@ -580,18 +616,25 @@ code_05bf:
 						(Print 34 18)
 					)
 				)
-				((or (Said 'stand') (Said 'close/door,chute')) (if local0 (= cycles 1) else (Print 34 19)))
+				((or (Said 'stand') (Said 'close/door,chute'))
+					(if local0
+						(= cycles 1)
+					else
+						(Print 34 19)
+					)
+				)
 			)
 		)
 	)
 )
 
 (instance shadowWalk of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 8))
+			(0
+				(= seconds 8)
+			)
 			(1
 				(Shadow setMotion: MoveTo 295 82 self)
 			)
@@ -614,8 +657,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -632,8 +675,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -650,8 +693,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -668,8 +711,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -685,8 +728,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -703,8 +746,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -720,8 +763,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -738,8 +781,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -755,8 +798,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -772,8 +815,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -789,8 +832,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -806,8 +849,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -830,14 +873,24 @@ code_05bf:
 					(Said 'pour,get,drink/cup,coffee')
 				)
 				(cond 
-					((== currentAct 4) (Print 34 23))
-					((ego inRect: 259 139 320 200) (Print 34 13))
-					(else (NotClose))
+					((== currentAct 4)
+						(Print 34 23)
+					)
+					((ego inRect: 259 139 320 200)
+						(Print 34 13)
+					)
+					(else
+						(NotClose)
+					)
 				)
 			)
-			((Said 'get/urn') (Print 34 24))
-			(
-			(or (MousedOn self event 3) (Said 'examine/urn')) (event claimed: 1) (Print 34 25))
+			((Said 'get/urn')
+				(Print 34 24)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/urn'))
+				(event claimed: TRUE)
+				(Print 34 25)
+			)
 		)
 	)
 )
@@ -852,15 +905,14 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/chandelier'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/chandelier'))
+			(event claimed: TRUE)
 			(Print 34 26)
 		)
 	)
 )
 
-(instance flowers of PV
+(instance flowers of PicView
 	(properties
 		y 55
 		x 129
@@ -880,9 +932,8 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/log'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/log'))
+			(event claimed: TRUE)
 			(ParseName {fire})
 		)
 	)
@@ -898,14 +949,14 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
 )
 
-(instance chute of Act
+(instance chute of Actor
 	(properties
 		y 121
 		x 23
@@ -914,15 +965,14 @@ code_05bf:
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/door'))
+		(if (or (MousedOn self event shiftDown) (Said 'examine/door'))
 			(Print 34 5)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
 
-(instance Shadow of Act
+(instance Shadow of Actor
 	(properties
 		view 110
 	)
@@ -938,10 +988,13 @@ code_05bf:
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (Said 'examine<in/armoire') (Said 'open/armoire')) (Print 34 27))
-			(
-			(or (MousedOn self event 3) (Said 'examine/armoire')) (Print 34 28) (event claimed: 1))
+			((or (Said 'examine<in/armoire') (Said 'open/armoire'))
+				(Print 34 27)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/armoire'))
+				(Print 34 28)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
@@ -957,11 +1010,11 @@ code_05bf:
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/nightstand<dining')
 			)
 			(Print 34 29)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -975,10 +1028,9 @@ code_05bf:
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said '/nightstand<little'))
+		(if (or (MousedOn self event shiftDown) (Said '/nightstand<little'))
 			(Print 34 30)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -993,28 +1045,30 @@ code_05bf:
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine<behind,below/mirror') (Print 34 31))
+			((Said 'examine<behind,below/mirror')
+				(Print 34 31)
+			)
 			(
 				(or
 					(Said 'examine<in/mirror')
 					(Said 'examine[<at]/reflection')
 				)
 				(if (< (ego distanceTo: fire) 80)
-					(= theTalker 12)
+					(= theTalker talkLAURA)
 					(Say 0 34 32)
 				else
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/mirror')) (Print 34 33) (event claimed: 1))
+			((or (MousedOn self event shiftDown) (Said 'examine/mirror'))
+				(Print 34 33)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)
 
 (instance myIcon of DCIcon
 	(properties

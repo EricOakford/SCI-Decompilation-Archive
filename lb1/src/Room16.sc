@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 16)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -21,9 +21,9 @@
 (local
 	local0
 	local1
-	local2
+	firstTime
 )
-(instance Room16 of Rm
+(instance Room16 of Room
 	(properties
 		picture 16
 	)
@@ -36,8 +36,8 @@
 		(= horizon 115)
 		(super init:)
 		(if howFast
-			(Lamp setCycle: Fwd init:)
-			(Lamp2 setCycle: Fwd init:)
+			(Lamp setCycle: Forward init:)
+			(Lamp2 setCycle: Forward init:)
 		else
 			(Lamp addToPic:)
 			(Lamp2 addToPic:)
@@ -47,13 +47,13 @@
 			setRegions: 206
 			setFeatures: Knocker Window1 Window2 Mat
 		)
-		(LoadMany 132 43 44 128)
+		(LoadMany SOUND 43 44 128)
 		(if (== currentAct 7)
 			(if (!= global203 500)
 				(Note
 					illegalBits: 0
-					ignoreActors: 1
-					ignoreHorizon: 1
+					ignoreActors: TRUE
+					ignoreHorizon: TRUE
 					init:
 					stopUpd:
 				)
@@ -72,14 +72,18 @@
 				(ego posn: 318 124)
 			)
 		)
-		(= local2 (FirstEntry))
+		(= firstTime (FirstEntry))
 		(switch prevRoomNum
 			(37
 				(HandsOff)
 				(ego posn: 145 121)
-				(if (not local2) (self setScript: exit))
+				(if (not firstTime)
+					(self setScript: exit)
+				)
 			)
-			(22 (ego posn: 160 188))
+			(22
+				(ego posn: 160 188)
+			)
 			(17
 				(if global102 (ego posn: 310 126))
 			)
@@ -88,10 +92,12 @@
 	)
 	
 	(method (doit)
-		(if local2
-			(= local2 0)
+		(if firstTime
+			(= firstTime FALSE)
 			(Print 16 0)
-			(if (== prevRoomNum 37) (self setScript: exit))
+			(if (== prevRoomNum 37)
+				(self setScript: exit)
+			)
 		)
 		(if
 			(and
@@ -109,7 +115,7 @@
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $0004)
+				(& (ego onControl: origin) cGREEN)
 				(not local0)
 				(== (ego loop?) 3)
 			)
@@ -124,41 +130,57 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room]') (Print 16 0))
-							((Said '/stair') (Print 16 1))
-							((Said '/down') (if global102 (Print 16 2) else (event claimed: 0)))
-							((Said '/up') (Print 16 3))
+							((Said '[<around,at][/room]')
+								(Print 16 0)
+							)
+							((Said '/stair')
+								(Print 16 1)
+							)
+							((Said '/down')
+								(if global102
+									(Print 16 2)
+								else
+									(event claimed: FALSE)
+								)
+							)
+							((Said '/up')
+								(Print 16 3)
+							)
 						)
 					)
-					((Said 'drop/room') (= howFast 0) (event claimed: 1))
+					((Said 'drop/room')
+						(= howFast slow)
+						(event claimed: TRUE)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (newRoom n)
-		(if (== n 37) (cSound stop:))
+		(if (== n 37)
+			(cSound stop:)
+		)
 		(super newRoom: n)
 	)
 )
 
 (instance myDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(ego loop: 3)
-				(Door cycleSpeed: 1 ignoreActors: 1 setCycle: End self)
+				(Door cycleSpeed: 1 ignoreActors: TRUE setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 priority: 5 play:)
 			)
 			(1
@@ -172,12 +194,11 @@
 )
 
 (instance bark of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(if (and (== state 5) (== (Rover cel?) 0))
-			(if (<= (DoSound sndCHECK_DRIVER) 3)
+			(if (<= (DoSound NumVoices) 3)
 				(myBark number: 128)
 			)
 			(myBark loop: 1 play: self)
@@ -186,27 +207,29 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 3))
+			(0 
+				(= cycles 3)
+			)
 			(1
 				(cSound stop:)
-				(Rover loop: 3 cycleSpeed: 1 setCycle: Fwd)
+				(Rover loop: 3 cycleSpeed: 1 setCycle: Forward)
 				(= cycles 12)
 			)
 			(2
-				(Rover loop: 5 cel: 0 setCycle: End self)
+				(Rover loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(Rover loop: 6 setCycle: Fwd)
+				(Rover loop: 6 setCycle: Forward)
 				(= cycles 12)
 			)
 			(4
-				(Rover loop: 5 cel: 1 setCycle: Beg self)
+				(Rover loop: 5 cel: 1 setCycle: BegLoop self)
 			)
 			(5
-				(Rover loop: 4 setCycle: End)
+				(Rover loop: 4 setCycle: EndLoop)
 			)
 			(6
-				(Rover setCycle: Beg)
+				(Rover setCycle: BegLoop)
 				(if (< (Random 1 100) 40)
 					(= state 4)
 				else
@@ -229,7 +252,7 @@
 				(Note
 					setLoop: 4
 					setStep: 5 5
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 330 105 self
 				)
 			)
@@ -247,7 +270,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Door setCycle: Beg self)
+				(Door setCycle: BegLoop self)
 				(myMusic number: 44 loop: 1 priority: 5 play:)
 			)
 			(1
@@ -270,9 +293,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/ignite') (Print 16 5))
-			(
-			(or (MousedOn self event 3) (Said 'examine/ignite')) (event claimed: 1) (Print 16 6))
+			((Said 'get/ignite')
+				(Print 16 5)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/ignite'))
+				(event claimed: TRUE)
+				(Print 16 6)
+			)
 		)
 	)
 )
@@ -287,8 +314,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 16 6)
 		)
 	)
@@ -303,15 +330,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/door'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/door'))
+			(event claimed: TRUE)
 			(Print 16 7)
 		)
 	)
 )
 
-(instance Note of Act
+(instance Note of Actor
 	(properties
 		y 86
 		x 172
@@ -322,14 +348,18 @@
 	(method (handleEvent event)
 		(if (!= global203 500)
 			(cond 
-				((Said 'examine/door,doorknocker') (Print 16 8))
-				((Said 'get/letter') (Print 16 9))
+				((Said 'examine/door,doorknocker')
+					(Print 16 8)
+				)
+				((Said 'get/letter')
+					(Print 16 9)
+				)
 				(
 					(or
 						(Said 'read,examine/letter')
-						(MousedOn self event 3)
+						(MousedOn self event shiftDown)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(if (ego inRect: 158 115 186 126)
 						(Print 16 10)
 						(self setScript: blowAway)
@@ -342,7 +372,7 @@
 	)
 )
 
-(instance Rover of Act
+(instance Rover of Actor
 	(properties
 		y 120
 		x 112
@@ -352,8 +382,12 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'pat,get,move/beauregard') (Print 16 11))
-			((Said 'feed/beauregard') (Print 16 12))
+			((Said 'pat,get,move/beauregard')
+				(Print 16 11)
+			)
+			((Said 'feed/beauregard')
+				(Print 16 12)
+			)
 			(
 				(or
 					(Said 'deliver,feed,hold/*[/beauregard]')
@@ -365,9 +399,13 @@
 					(DontHave)
 				)
 			)
-			((Said 'converse,calm/beauregard') (Print 16 13))
-			(
-			(or (MousedOn self event 3) (Said '*/beauregard')) (event claimed: 1) (Print 16 14))
+			((Said 'converse,calm/beauregard')
+				(Print 16 13)
+			)
+			((or (MousedOn self event shiftDown) (Said '*/beauregard'))
+				(event claimed: TRUE)
+				(Print 16 14)
+			)
 		)
 	)
 )
@@ -382,7 +420,9 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'what/doorknocker<big') (Print 16 15))
+			((Said 'what/doorknocker<big')
+				(Print 16 15)
+			)
 			(
 				(or
 					(Said 'bang/[<door,doorknocker]')
@@ -392,10 +432,10 @@
 			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/doorknocker')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 16 17)
 			)
 		)
@@ -417,8 +457,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -433,8 +473,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {window})
 		)
 	)
@@ -450,25 +490,24 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'move,get/doormat,(door<doormat)') (Print 16 18))
-			(
-			(Said 'lift,(examine<below)/doormat,(door<doormat)') (Print 16 19))
+			((Said 'move,get/doormat,(door<doormat)')
+				(Print 16 18)
+			)
+			((Said 'lift,(examine<below)/doormat,(door<doormat)')
+				(Print 16 19)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/doormat,(door<doormat)')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 16 20)
 			)
 		)
 	)
 )
 
-(instance Wind of Sound
-	(properties)
-)
+(instance Wind of Sound)
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

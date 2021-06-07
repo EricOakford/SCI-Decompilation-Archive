@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 45)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -24,10 +24,10 @@
 
 (local
 	local0
-	local1
+	talkCount
 	local2
 )
-(instance Room45 of Rm
+(instance Room45 of Room
 	(properties
 		picture 45
 	)
@@ -71,27 +71,29 @@
 		)
 		(switch currentAct
 			(0
-				(if (== [global368 4] 0) (= [global368 4] 1800))
+				(if (== [global368 4] 0)
+					(= [global368 4] 1800)
+				)
 				(if (== global200 0)
 					(LoadMany 143 243 221)
 					(LoadMany 128 325 903)
 					(= global208 8)
 					(= [global377 3] 221)
 					(Ethel
-						ignoreActors: 1
+						ignoreActors: TRUE
 						cycleSpeed: 1
 						init:
 						setScript: ethelActions
 					)
 					(eHead
-						ignoreActors: 1
+						ignoreActors: TRUE
 						cycleSpeed: 1
 						setPri: 6
 						cycleSpeed: 1
 						init:
 					)
 					(Mouth
-						ignoreActors: 1
+						ignoreActors: TRUE
 						cycleSpeed: 1
 						setPri: 6
 						init:
@@ -104,7 +106,9 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 45 0))
+		(if (FirstEntry)
+			(Print 45 0)
+		)
 		(if (and (> (ego x?) 126) (< (ego y?) 104))
 			(ego setPri: 4)
 		else
@@ -119,14 +123,14 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event &tmp temp0)
 		(if (event claimed?) (return (event claimed?)))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(if
 					(and
 						global208
@@ -136,27 +140,34 @@
 					)
 					(self setScript: (ScriptID 243 0))
 					((self script?) handleEvent: event)
-					(if (event claimed?) (return 1))
+					(if (event claimed?) (return TRUE))
 				)
 				(cond 
-					((Said 'examine[<around,at][/room]') (Print 45 0))
-					((Said 'examine/blind,curtain') (Print 45 1))
-					((Said 'close,open/blind,curtain') (CantDo))
+					((Said 'examine[<around,at][/room]')
+						(Print 45 0)
+					)
+					((Said 'examine/blind,curtain')
+						(Print 45 1)
+					)
+					((Said 'close,open/blind,curtain')
+						(CantDo)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (newRoom n)
-		(if (== [global368 4] 1) (= global125 1))
+		(if (== [global368 4] 1)
+			(= global125 1)
+		)
 		(super newRoom: n)
 	)
 )
 
 (instance ethelActions of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -171,34 +182,34 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Ethel cel: 0 loop: 0 setCycle: End self)
+				(Ethel cel: 0 loop: 0 setCycle: EndLoop self)
 			)
 			(1
-				(Mouth show: setCycle: Fwd)
+				(Mouth show: setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
 				(Mouth hide:)
-				(Ethel setCycle: Beg self)
+				(Ethel setCycle: BegLoop self)
 			)
 			(3
 				(if (< (Random 1 100) 60) (= state -1))
 				(= seconds (Random 6 12))
 			)
 			(4
-				(eHead loop: (Random 1 2) setCycle: End)
+				(eHead loop: (Random 1 2) setCycle: EndLoop)
 				(= seconds (Random 6 12))
 			)
 			(5
-				(eHead setCycle: Beg)
+				(eHead setCycle: BegLoop)
 				(= seconds (Random 6 12))
 			)
 			(6
-				(Ethel loop: 4 cel: 0 setCycle: End)
+				(Ethel loop: 4 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 6 12))
 			)
 			(7
-				(Ethel loop: 4 cel: 0 setCycle: Beg)
+				(Ethel loop: 4 cel: 0 setCycle: BegLoop)
 				(= state -1)
 				(= seconds (Random 6 12))
 			)
@@ -210,8 +221,8 @@
 					setLoop: 0
 					ignoreActors: 0
 					cycleSpeed: 0
-					setCycle: Fwd
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setCycle: Forward
+					setAvoider: ((Avoider new:) offScreenOK: TRUE)
 					setMotion: MoveTo -10 124 self
 				)
 			)
@@ -234,8 +245,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -250,8 +261,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -264,16 +275,21 @@
 		view 145
 		cel 2
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'move/armoire,dollhouse') (Print 45 2))
-			(
-			(Said '(examine<in),open/armoire,(door<armoire)') (Print 45 3))
-			(
-			(or (MousedOn self event 3) (Said 'examine/armoire')) (Print 45 4) (event claimed: 1))
+			((Said 'move/armoire,dollhouse')
+				(Print 45 2)
+			)
+			((Said '(examine<in),open/armoire,(door<armoire)')
+				(Print 45 3)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/armoire'))
+				(Print 45 4)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
@@ -290,11 +306,11 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine[<at]/drawer')
 			)
 			(Print 45 5)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -306,12 +322,12 @@
 		view 145
 		cel 1
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {bed})
 		)
 	)
@@ -326,8 +342,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {chair})
 		)
 	)
@@ -343,8 +359,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {table})
 		)
 	)
@@ -361,10 +377,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/toy,animal') (Print 45 6))
-			((Said 'play') (Print 45 7))
-			(
-			(or (MousedOn self event 3) (Said 'examine/toy,animal')) (Print 45 8) (event claimed: 1))
+			((Said 'get/toy,animal')
+				(Print 45 6)
+			)
+			((Said 'play')
+				(Print 45 7)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/toy,animal'))
+				(Print 45 8)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
@@ -376,19 +398,21 @@
 		view 145
 		cel 6
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine<in/dollhouse,(cabin<doll)') (Print 45 9))
+			((Said 'examine<in/dollhouse,(cabin<doll)')
+				(Print 45 9)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/(cabin<doll),dollhouse')
 				)
 				(Print 45 10)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
@@ -404,8 +428,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {couch})
 		)
 	)
@@ -421,10 +445,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/shelf'))
+		(if (or (MousedOn self event shiftDown) (Said 'examine/shelf'))
 			(Print 45 11)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -439,9 +462,9 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
+		(if (MousedOn self event shiftDown)
 			(Print 45 11)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -456,15 +479,21 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open,(examine<in)/luggage') (Print 45 12))
-			((Said 'get/luggage') (Print 45 13))
-			(
-			(or (MousedOn self event 3) (Said 'examine/luggage')) (Print 45 14) (event claimed: 1))
+			((Said 'open,(examine<in)/luggage')
+				(Print 45 12)
+			)
+			((Said 'get/luggage')
+				(Print 45 13)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/luggage'))
+				(Print 45 14)
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
 
-(instance Ethel of Act
+(instance Ethel of Actor
 	(properties
 		y 100
 		x 68
@@ -475,37 +504,46 @@
 	(method (handleEvent event)
 		(return
 			(cond 
-				((Said 'examine<in/drink,glass') (Print 45 15))
-				(
-				(Said 'examine/drink,glass,deliver,handkerchief') (Print 45 16))
+				((Said 'examine<in/drink,glass')
+					(Print 45 15)
+				)
+				((Said 'examine/drink,glass,deliver,handkerchief')
+					(Print 45 16)
+				)
 				((Said 'get>')
 					(cond 
-						((Said '/drink,glass') (Print 45 17))
-						((Said '/handkerchief') (Print 45 18))
+						((Said '/drink,glass')
+							(Print 45 17)
+						)
+						((Said '/handkerchief')
+							(Print 45 18)
+						)
 					)
 				)
-				(
-				(and (MousedOn self event 3) (not (& global207 $0008))) (event claimed: 1) (ParseName {ethel}))
+				((and (MousedOn self event shiftDown) (not (& global207 $0008)))
+					(event claimed: TRUE)
+					(ParseName {ethel})
+				)
 				(
 					(and
 						(& global207 $0008)
-						(or (MousedOn self event 3) (Said 'examine/ethel'))
+						(or (MousedOn self event shiftDown) (Said 'examine/ethel'))
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(Print 45 19)
 				)
 				((Said 'converse/ethel')
-					(= theTalker 4)
-					(switch local1
+					(= theTalker talkETHEL)
+					(switch talkCount
 						(0
 							(Say 1 45 20)
-							(= theTalker 12)
+							(= theTalker talkLAURA)
 							(Say 1 45 21)
 						)
 						(1 (Say 1 45 22))
 						(else  (Say 1 45 23))
 					)
-					(++ local1)
+					(++ talkCount)
 				)
 			)
 		)

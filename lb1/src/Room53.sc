@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 53)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -20,9 +20,9 @@
 (local
 	[local0 2]
 	local2
-	local3
+	talkCount
 )
-(instance Room53 of Rm
+(instance Room53 of Room
 	(properties
 		picture 53
 	)
@@ -31,7 +31,7 @@
 		(= horizon 60)
 		(= north 12)
 		(super init:)
-		(Load rsVIEW 910)
+		(Load VIEW 910)
 		(addToPics
 			add: bed chair sofa chest dresser1 sink toilet
 			eachElementDo: #init
@@ -42,7 +42,7 @@
 			setFeatures: bed chest sink toilet sofa chair dresser1
 		)
 		(if howFast
-			(lamp1 setCycle: Fwd init:)
+			(lamp1 setCycle: Forward init:)
 		else
 			(lamp1 init: stopUpd:)
 		)
@@ -51,16 +51,18 @@
 		(if (not (ego has: 11))
 			(crackerBox setPri: 10 init: stopUpd:)
 		)
-		(ego view: 0 illegalBits: -32768 posn: 155 64 init:)
+		(ego view: 0 illegalBits: cWHITE posn: 155 64 init:)
 		(self setScript: stairWell)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 53 0))
+		(if (FirstEntry)
+			(Print 53 0)
+		)
 		(super doit:)
 		(if
 			(and
-				(& (ego onControl:) $0002)
+				(& (ego onControl:) cBLUE)
 				(== (ego loop?) 0)
 				(== local2 0)
 			)
@@ -75,33 +77,57 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room]') (Print 53 0))
-							((Said '/brick') (Print 53 1))
-							((Said '/stair,upstair') (Print 53 2))
-							((Said '/wall') (Print 53 3))
-							((Said '<in/closet') (Print 53 4))
-							((Said '/closet') (Print 53 5))
+							((Said '[<around,at][/room]')
+								(Print 53 0)
+							)
+							((Said '/brick')
+								(Print 53 1)
+							)
+							((Said '/stair,upstair')
+								(Print 53 2)
+							)
+							((Said '/wall')
+								(Print 53 3)
+							)
+							((Said '<in/closet')
+								(Print 53 4)
+							)
+							((Said '/closet')
+								(Print 53 5)
+							)
 						)
 					)
 					((Said 'open>')
 						(cond 
-							((Said '/dresser') (Print 53 6))
-							((Said '/closet') (Print 53 4))
+							((Said '/dresser')
+								(Print 53 6)
+							)
+							((Said '/closet')
+								(Print 53 4)
+							)
 						)
 					)
-					((Said 'get/brick') (Print 53 7))
-					((Said 'get/drink') (Print 53 8))
-					((Said 'get,move/carpet') (Print 53 9))
-					((Said 'sit,go,use/bathroom,toilet') (Print 53 10))
+					((Said 'get/brick')
+						(Print 53 7)
+					)
+					((Said 'get/drink')
+						(Print 53 8)
+					)
+					((Said 'get,move/carpet')
+						(Print 53 9)
+					)
+					((Said 'sit,go,use/bathroom,toilet')
+						(Print 53 10)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -122,8 +148,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 53 11)
 		)
 	)
@@ -139,14 +165,19 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine[<at]/bed'))
+		(if (or (MousedOn self event shiftDown) (Said 'examine[<at]/bed'))
 			(cond 
-				((== currentAct 4) (Print 53 12))
-				((== currentAct 4) (Print 53 13))
-				(else (Print 53 14))
+				((== currentAct 4)
+					(Print 53 12)
+				)
+				((== currentAct 4)
+					(Print 53 13)
+				)
+				(else
+					(Print 53 14)
+				)
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
@@ -162,9 +193,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/chair'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/chair'))
+			(event claimed: TRUE)
 			(Print 53 15)
 		)
 	)
@@ -181,9 +211,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/couch'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/couch'))
+			(event claimed: TRUE)
 			(Print 53 16)
 		)
 	)
@@ -201,17 +230,23 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open,(examine<in)/nightstand') (Print 53 17))
+			((Said 'open,(examine<in)/nightstand')
+				(Print 53 17)
+			)
 			((Said 'examine/nightstand')
-				(if (ego has: 11)
+				(if (ego has: iCrackers)
 					(Print 53 18)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
-			((Said 'examine<in/dresser') (Print 53 6))
-			(
-			(or (MousedOn self event 3) (Said 'examine/dresser')) (event claimed: 1) (Print 53 11))
+			((Said 'examine<in/dresser')
+				(Print 53 6)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/dresser'))
+				(event claimed: TRUE)
+				(Print 53 11)
+			)
 		)
 	)
 )
@@ -227,11 +262,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (Said 'scrub,rotate/deliver,water') (Said 'scrub')) (Print 53 19))
-			((Said 'examine<in/sink') (Print 53 20))
-			(
-			(or (MousedOn self event 3) (Said 'examine/sink')) (event claimed: 1) (Print 53 21))
+			((or (Said 'scrub,rotate/deliver,water') (Said 'scrub'))
+				(Print 53 19)
+			)
+			((Said 'examine<in/sink')
+				(Print 53 20)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/sink'))
+				(event claimed: TRUE)
+				(Print 53 21)
+			)
 		)
 	)
 )
@@ -247,7 +287,9 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine/bathroom') (Print 53 22))
+			((Said 'examine/bathroom')
+				(Print 53 22)
+			)
 			(
 				(or
 					(Said 'flush,use/toilet,bathroom')
@@ -255,14 +297,16 @@
 				)
 				(Print 53 23)
 			)
-			((Said 'open,(examine<in)/toilet') (Print 53 24))
+			((Said 'open,(examine<in)/toilet')
+				(Print 53 24)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/toilet')
 					(Said 'sit/toilet')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 53 23)
 			)
 		)
@@ -298,9 +342,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/lamp'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/lamp'))
+			(event claimed: TRUE)
 			(Print 53 25)
 		)
 	)
@@ -316,31 +359,42 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((not (ego has: 11))
+			((not (ego has: iCrackers))
 				(cond 
-					(
-					(or (MousedOn self event 3) (Said 'examine/cracker')) (event claimed: 1) (Print 53 26))
-					((Said 'ask/butler/cracker<for') (= theTalker 11) (Say 1 53 27) (++ local3))
+					((or (MousedOn self event shiftDown) (Said 'examine/cracker'))
+						(event claimed: TRUE)
+						(Print 53 26)
+					)
+					((Said 'ask/butler/cracker<for')
+						(= theTalker talkJEEVES)
+						(Say 1 53 27)
+						(++ talkCount)
+					)
 					((Said 'get/cracker')
 						(if (< (ego distanceTo: crackerBox) 30)
-							(if (not local3) (Print 53 28))
-							(= gotItem 1)
-							(ego get: 11)
+							(if (not talkCount)
+								(Print 53 28)
+							)
+							(= gotItem TRUE)
+							(ego get: iCrackers)
 							(crackerBox dispose:)
 						else
 							(NotClose)
 						)
 					)
-					((Said 'examine/nightstand') (Print 53 29))
+					((Said 'examine/nightstand')
+						(Print 53 29)
+					)
 				)
 			)
-			((Said 'get/cracker') (Print 53 30))
+			((Said 'get/cracker')
+				(Print 53 30)
+			)
 		)
 	)
 )
 
 (instance stairWell of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

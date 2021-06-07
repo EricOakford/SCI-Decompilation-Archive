@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 43)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -26,7 +26,7 @@
 	local1
 	local2
 )
-(instance Room43 of Rm
+(instance Room43 of Room
 	(properties
 		picture 43
 	)
@@ -36,7 +36,7 @@
 		(= horizon 100)
 		(= south 47)
 		(= north 73)
-		(LoadMany 132 43 44 71)
+		(LoadMany SOUND 43 44 71)
 		(addToPics
 			add: vase cat statueL statueR lamp phone
 			eachElementDo: #init
@@ -46,8 +46,8 @@
 			setFeatures: phone lamp cat statueL statueR vase Dresser1 Dresser2
 		)
 		(if howFast
-			(lampL setPri: 3 setCycle: Fwd init:)
-			(lampR setPri: 3 setCycle: Fwd init:)
+			(lampL setPri: 3 setCycle: Forward init:)
+			(lampR setPri: 3 setCycle: Forward init:)
 		else
 			(lampL setPri: 3 init: stopUpd:)
 			(lampR setPri: 3 init: stopUpd:)
@@ -57,29 +57,29 @@
 			init:
 			stopUpd:
 		)
-		(doorR ignoreActors: 1 init: stopUpd:)
-		(doorL ignoreActors: 1 init: stopUpd:)
+		(doorR ignoreActors: TRUE init: stopUpd:)
+		(doorL ignoreActors: TRUE init: stopUpd:)
 		(wardL
 			cel: (if (== prevRoomNum 49) 4 else 0)
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setPri: 12
 			init:
 			stopUpd:
 		)
 		(wardR
 			cel: (if (== prevRoomNum 50) 4 else 0)
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setPri: 12
 			init:
 			stopUpd:
 		)
 		(switch prevRoomNum
 			(49
-				(ego illegalBits: -32768 posn: 62 164)
+				(ego illegalBits: cWHITE posn: 62 164)
 				(wardL setScript: closing)
 			)
 			(50
-				(ego illegalBits: -32768 posn: 259 161)
+				(ego illegalBits: cWHITE posn: 259 161)
 				(wardR setScript: closing)
 			)
 			(42
@@ -104,7 +104,9 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 43 0))
+		(if (FirstEntry)
+			(Print 43 0)
+		)
 		(cond 
 			(
 				(and
@@ -117,14 +119,14 @@
 			)
 			(local2
 				(= local2 0)
-				(Door setCycle: Beg)
+				(Door setCycle: BegLoop)
 				(myMusic number: 44 loop: 1 play:)
 			)
 		)
-		(switch (ego onControl: 1)
-			(32 (curRoom newRoom: 42))
-			(16 (curRoom newRoom: 44))
-			(2
+		(switch (ego onControl: origin)
+			(cMAGENTA (curRoom newRoom: 42))
+			(cRED (curRoom newRoom: 44))
+			(cBLUE
 				(if (and (not local0) (== (ego loop?) 3))
 					(= local0 1)
 					(self setScript: myDoor)
@@ -144,10 +146,9 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) evSAID) (Said 'examine>'))
+			(if (and (== (event type?) saidEvent) (Said 'examine>'))
 				(cond 
 					((Said '[<around,at][/room]') (Print 43 0))
 					((Said '/door<hidden') (Print 43 1))
@@ -156,18 +157,16 @@
 					((or (Said '/dirt') (Said '<down')) (Print 43 4))
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (newRoom n)
-		(if
-		(and (== currentAct 6) (& global118 $0004) (!= n 44))
+		(if (and (== currentAct 6) (& global118 $0004) (!= n 44))
 			(Bset 36)
 		)
-		(if
-		(and (or (Btst 38) (Btst 37)) (!= n 42) (!= n 49))
+		(if (and (or (Btst 38) (Btst 37)) (!= n 42) (!= n 49))
 			(Bclr 38)
 			(Bclr 37)
 		)
@@ -188,14 +187,13 @@
 				(== global201 200)
 			)
 			(++ global201)
-			(= deadGuests (| deadGuests $0020))
+			(|= deadGuests deadRUDY)
 		)
 		(super newRoom: n)
 	)
 )
 
 (instance Lcloset of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -203,7 +201,7 @@
 				(HandsOff)
 				(doorL hide:)
 				(doorR hide:)
-				(if (& (ego onControl: 0) $0080)
+				(if (& (ego onControl: 0) cLGREY)
 					(if (== global143 0) (Print 43 5))
 					(if (ego inRect: 81 162 83 166)
 						(= cycles 1)
@@ -221,17 +219,17 @@
 			)
 			(1
 				(Face ego client)
-				(if (& (ego onControl: 0) $0080)
-					(ego ignoreControl: 4)
+				(if (& (ego onControl: 0) cLGREY)
+					(ego ignoreControl: cGREEN)
 				else
-					(ego ignoreControl: 8)
+					(ego ignoreControl: cCYAN)
 				)
-				(client cycleSpeed: 3 setCycle: End self)
+				(client cycleSpeed: 3 setCycle: EndLoop self)
 				(myMusic number: 71 loop: 1 play:)
 			)
 			(2
 				(client stopUpd:)
-				(if (& (ego onControl: 0) $0080)
+				(if (& (ego onControl: 0) cLGREY)
 					(ego setMotion: MoveTo 40 (ego y?) self)
 				else
 					(ego setMotion: MoveTo 283 (ego y?) self)
@@ -250,7 +248,6 @@
 )
 
 (instance closing of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -263,7 +260,7 @@
 				)
 			)
 			(1
-				(client setCycle: Beg self)
+				(client setCycle: BegLoop self)
 				(myMusic number: 71 loop: 1 play:)
 			)
 			(2
@@ -279,19 +276,18 @@
 )
 
 (instance leak of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 3))
 			(1
-				(Door setCycle: Beg self)
+				(Door setCycle: BegLoop self)
 				(myMusic number: 44 loop: 1 play:)
 			)
 			(2 (= seconds 3))
 			(3 (Print 43 6) (= cycles 1))
 			(4
-				(Door setCycle: End self)
+				(Door setCycle: EndLoop self)
 				(myMusic number: 43 loop: 1 play:)
 			)
 			(5
@@ -303,7 +299,6 @@
 )
 
 (instance Lopen of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -323,11 +318,11 @@
 			)
 			(1
 				(Face ego client)
-				(client setCycle: End self)
+				(client setCycle: EndLoop self)
 				(= cycles 7)
 			)
 			(2 (Print 43 7) (= cycles 1))
-			(3 (client setCycle: Beg self))
+			(3 (client setCycle: BegLoop self))
 			(4
 				(HandsOn)
 				(client stopUpd:)
@@ -338,15 +333,14 @@
 )
 
 (instance myDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canControl: 0 canInput: 0)
-				(ego setMotion: 0 illegalBits: -32768)
+				(User canControl: FALSE canInput: FALSE)
+				(ego setMotion: 0 illegalBits: cWHITE)
 				(myMusic number: 43 loop: 1 play:)
-				(Door cycleSpeed: 1 ignoreActors: 1 setCycle: End self)
+				(Door cycleSpeed: 1 ignoreActors: 1 setCycle: EndLoop self)
 			)
 			(1
 				(ego setMotion: MoveTo (ego x?) (- (ego y?) 50))
@@ -366,10 +360,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/vase') (Print 43 8))
-			((Said 'examine<in/vase') (Print 43 9))
-			(
-			(or (MousedOn self event 3) (Said 'examine/vase')) (event claimed: 1) (Print 43 10))
+			((Said 'get/vase')
+				(Print 43 8)
+			)
+			((Said 'examine<in/vase')
+				(Print 43 9)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/vase'))
+				(event claimed: TRUE)
+				(Print 43 10)
+			)
 		)
 	)
 )
@@ -385,9 +385,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/cat') (Print 43 11))
-			(
-			(or (MousedOn self event 3) (Said 'examine/cat')) (event claimed: 1) (Print 43 12))
+			((Said 'get/cat')
+				(Print 43 11)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/cat'))
+				(event claimed: TRUE)
+				(Print 43 12)
+			)
 		)
 	)
 )
@@ -402,10 +406,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get,move/monument') (Print 43 13))
-			((Said '(examine<below),behind/monument') (Print 43 14))
-			(
-			(or (MousedOn self event 3) (Said 'examine/monument')) (event claimed: 1) (Print 43 15))
+			((Said 'get,move/monument')
+				(Print 43 13)
+			)
+			((Said '(examine<below),behind/monument')
+				(Print 43 14)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/monument'))
+				(event claimed: TRUE)
+				(Print 43 15)
+			)
 		)
 	)
 )
@@ -420,8 +430,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 43 15)
 		)
 	)
@@ -437,8 +447,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -455,8 +465,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -491,8 +501,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 43 16)
 		)
 	)
@@ -526,8 +536,8 @@
 					(Said 'open<(drag,press)/armoire')
 				)
 				(cond 
-					((& (ego onControl: 0) $0080) (wardL setScript: Lcloset))
-					((& (ego onControl: 0) $0100) (wardR setScript: Lcloset))
+					((& (ego onControl: 0) cLGREY) (wardL setScript: Lcloset))
+					((& (ego onControl: 0) cGREY) (wardR setScript: Lcloset))
 					(else (NotClose))
 				)
 			)
@@ -538,13 +548,15 @@
 					(Said 'search,open,(examine<in)/armoire')
 				)
 				(cond 
-					((& (ego onControl: 0) $0080) (doorL setScript: Lopen))
-					((& (ego onControl: 0) $0100) (doorR setScript: Lopen))
+					((& (ego onControl: 0) cLGREY) (doorL setScript: Lopen))
+					((& (ego onControl: 0) cGREY) (doorR setScript: Lopen))
 					(else (NotClose))
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/armoire')) (event claimed: 1) (Print 43 16))
+			((or (MousedOn self event shiftDown) (Said 'examine/armoire'))
+				(event claimed: TRUE)
+				(Print 43 16)
+			)
 		)
 	)
 )
@@ -558,8 +570,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -574,8 +586,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -591,9 +603,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/door'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/door'))
+			(event claimed: TRUE)
 			(Print 43 19)
 		)
 	)
@@ -609,9 +620,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'search,open,(examine<in)/drawer') (Print 43 20))
-			(
-			(or (MousedOn self event 3) (Said 'examine/drawer')) (event claimed: 1) (Print 43 21))
+			((Said 'search,open,(examine<in)/drawer')
+				(Print 43 20)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/drawer'))
+				(event claimed: TRUE)
+				(Print 43 21)
+			)
 		)
 	)
 )
@@ -625,13 +640,11 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 43 21)
 		)
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

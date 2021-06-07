@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 20)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -19,7 +19,7 @@
 	local1
 	local2
 )
-(instance Room20 of Rm
+(instance Room20 of Room
 	(properties
 		picture 20
 	)
@@ -30,16 +30,17 @@
 		(= north 14)
 		(= horizon 96)
 		(super init:)
-		(LoadMany 132 43 44)
-		(if howFast (Squirel init: setScript: runAway))
+		(LoadMany SOUND 43 44)
+		(if howFast
+			(Squirel init: setScript: runAway)
+		)
 		(Door
 			cel: (if (== prevRoomNum 61) 3 else 0)
 			init:
 			stopUpd:
 		)
 		(self setFeatures: Window1 Window2 Window3 Window4 Box)
-		(if
-		(and (>= currentAct 2) (== global113 curRoomNum))
+		(if (and (>= currentAct 2) (== global113 curRoomNum))
 			(self setRegions: 202)
 		)
 		(if
@@ -63,22 +64,26 @@
 			)
 			(13 (ego posn: 3 177))
 		)
-		(ego view: 0 illegalBits: -32768 init:)
+		(ego view: 0 illegalBits: cWHITE init:)
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 20 0))
+		(if (FirstEntry)
+			(Print 20 0)
+		)
 		(if
 			(and
-				(& (ego onControl: 1) $0008)
+				(& (ego onControl: origin) cCYAN)
 				(== (ego loop?) 3)
 				(not local0)
 			)
 			(= local0 1)
 			(self setScript: myDoor)
 		)
-		(if (& (ego onControl: 1) $0002) (curRoom newRoom: 61))
-		(if (== (ego edgeHit?) 3)
+		(if (& (ego onControl: origin) cBLUE)
+			(curRoom newRoom: 61)
+		)
+		(if (== (ego edgeHit?) SOUTH)
 			(if (< (ego x?) 188)
 				(curRoom newRoom: 25)
 			else
@@ -93,9 +98,9 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if (event claimed?) (return 1))
+		(if (event claimed?) (return TRUE))
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'examine>')
 						(cond 
@@ -106,40 +111,47 @@
 								)
 								(Print 20 0)
 							)
-							((Said '/drive,path') (Print 20 1))
+							((Said '/drive,path')
+								(Print 20 1)
+							)
 						)
 					)
-					((Said 'open/box,box') (Print 20 2))
-					((Said 'move,press,get/box,box') (Print 20 3))
+					((Said 'open/box,box')
+						(Print 20 2)
+					)
+					((Said 'move,press,get/box,box')
+						(Print 20 3)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
 	(method (newRoom n)
-		(if (and (& deadGuests $0008) (!= n 61))
+		(if (and (& deadGuests deadETHEL) (!= n 61))
 			(= global200 101)
 		)
-		(if (== n 61) (cSound stop:))
+		(if (== n 61)
+			(cSound stop:)
+		)
 		(super newRoom: n)
 	)
 )
 
 (instance myDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego illegalBits: 0)
 				(myMusic number: 43 loop: 1 play:)
-				(Door cycleSpeed: 3 setCycle: End self)
+				(Door cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(1
-				(Door ignoreActors: 1 stopUpd:)
+				(Door ignoreActors: TRUE stopUpd:)
 				(if (ego inRect: 80 0 84 200)
 					(= cycles 1)
 				else
@@ -155,8 +167,7 @@
 )
 
 (instance enterFrom61 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -164,7 +175,7 @@
 				(ego setMotion: MoveTo 82 175 self)
 			)
 			(1
-				(Door cycleSpeed: 1 setCycle: Beg self)
+				(Door cycleSpeed: 1 setCycle: BegLoop self)
 				(myMusic number: 44 loop: 1 play:)
 			)
 			(2
@@ -178,14 +189,13 @@
 )
 
 (instance runAway of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 3 8)))
-			(1 (Squirel setCycle: End self))
+			(1 (Squirel setCycle: EndLoop self))
 			(2
-				(Squirel posn: 309 (Squirel y?) setCycle: End self)
+				(Squirel posn: 309 (Squirel y?) setCycle: EndLoop self)
 			)
 			(3
 				(Squirel dispose:)
@@ -204,9 +214,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get,capture/squirrel') (Print 20 4))
-			(
-			(or (MousedOn self event 3) (Said 'examine/squirrel')) (event claimed: 1) (Print 20 5))
+			((Said 'get,capture/squirrel')
+				(Print 20 4)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/squirrel'))
+				(event claimed: TRUE)
+				(Print 20 5)
+			)
 		)
 	)
 )
@@ -219,9 +233,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/door'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/door'))
+			(event claimed: TRUE)
 			(Print 20 6)
 		)
 	)
@@ -236,18 +249,23 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open/window') (Print 20 7))
-			((Said 'break/window') (Print 20 8))
-			(
-			(Said 'examine<(in,through)/window,(cabin<buggy)')
-				(if (& (ego onControl: 0) $0040)
+			((Said 'open/window')
+				(Print 20 7)
+			)
+			((Said 'break/window')
+				(Print 20 8)
+			)
+			((Said 'examine<(in,through)/window,(cabin<buggy)')
+				(if (& (ego onControl: FALSE) cBROWN)
 					(Print 20 9)
 				else
 					(NotClose)
 				)
 			)
-			(
-			(or (MousedOn self event 3) (Said 'examine/window')) (event claimed: 1) (Print 20 10))
+			((or (MousedOn self event shiftDown) (Said 'examine/window'))
+				(event claimed: TRUE)
+				(Print 20 10)
+			)
 		)
 	)
 )
@@ -261,8 +279,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 20 10)
 		)
 	)
@@ -277,8 +295,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 20 10)
 		)
 	)
@@ -293,8 +311,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 20 10)
 		)
 	)
@@ -310,13 +328,15 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine<in/box') (Print 20 2))
-			(
-			(or (MousedOn self event 3) (Said 'examine/box')) (event claimed: 1) (Print 20 11))
+			((Said 'examine<in/box')
+				(Print 20 2)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/box'))
+				(event claimed: TRUE)
+				(Print 20 11)
+			)
 		)
 	)
 )
 
-(instance myMusic of Sound
-	(properties)
-)
+(instance myMusic of Sound)

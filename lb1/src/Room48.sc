@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 48)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -23,11 +23,9 @@
 (local
 	local0
 )
-(instance mySound of Sound
-	(properties)
-)
+(instance mySound of Sound)
 
-(instance Room48 of Rm
+(instance Room48 of Room
 	(properties
 		picture 48
 	)
@@ -38,10 +36,10 @@
 		(LoadMany 132 74 75)
 		(if (== currentAct 6)
 			(if (not (& global118 $0001))
-				(Load rsFONT 41)
-				(LoadMany 132 29 94 95 96)
-				(Load rsSCRIPT 406)
-				(Load rsVIEW 642)
+				(Load FONT 41)
+				(LoadMany SOUND 29 94 95 96)
+				(Load SCRIPT 406)
+				(Load VIEW 642)
 			)
 			(chair cel: 4)
 			(stain setPri: 4 ignoreActors: 1 init:)
@@ -66,8 +64,8 @@
 				desk
 		)
 		(if howFast
-			(lamp1 setPri: 1 setCycle: Fwd init:)
-			(lamp2 setPri: 5 setCycle: Fwd init:)
+			(lamp1 setPri: 1 setCycle: Forward init:)
+			(lamp2 setPri: 5 setCycle: Forward init:)
 		else
 			(lamp1 setPri: 1 init: stopUpd:)
 			(lamp2 setPri: 5 init: stopUpd:)
@@ -93,7 +91,7 @@
 			)
 			(2
 				(if (and (& global118 $0004) (< [global368 2] 2))
-					(= global173 (| global173 $0008))
+					(|= global173 $0008)
 					(= local0 1)
 					(self setRegions: 260)
 				else
@@ -111,11 +109,11 @@
 			)
 		)
 		(if (!= prevRoomNum 50)
-			(ego view: 0 posn: 8 96 illegalBits: -32760 init:)
+			(ego view: 0 posn: 8 96 illegalBits: (| cWHITE cCYAN) init:)
 		else
 			(ego
 				view: 0
-				illegalBits: -32768
+				illegalBits: cWHITE
 				setPri: 2
 				loop: 2
 				posn: 175 79
@@ -129,19 +127,19 @@
 	)
 	
 	(method (doit)
-		(if
-		(and (not (& global173 $0008)) (== currentAct 6))
-			(= global173 (| global173 $0008))
+		(if (and (not (& global173 $0008)) (== currentAct 6))
+			(|= global173 $0008)
 			(Print 48 0)
 		)
-		(if (FirstEntry) (Print 48 1))
+		(if (FirstEntry)
+			(Print 48 1)
+		)
 		(if (ego inRect: 110 84 143 107)
 			(ego setPri: 5)
 		else
 			(ego setPri: -1)
 		)
-		(if
-		(and (& (ego onControl: 0) $0008) (== global204 0))
+		(if (and (& (ego onControl: 0) cCYAN) (== global204 0))
 			(curRoom newRoom: 50)
 		)
 		(if (< (ego x?) 140)
@@ -159,9 +157,11 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (event claimed?) (return (event claimed?)))
+		(if (event claimed?)
+			(return (event claimed?))
+		)
 		(return
-			(if (== (event type?) evSAID)
+			(if (== (event type?) saidEvent)
 				(if
 					(and
 						global208
@@ -171,14 +171,14 @@
 					)
 					(self setScript: (ScriptID 243 0))
 					((self script?) handleEvent: event)
-					(if (event claimed?) (return 1))
+					(if (event claimed?) (return TRUE))
 				)
 				(cond 
 					((Said '/panel,(door<hidden)>')
 						(cond 
 							((and (& global175 $0080) (Said 'open,move'))
 								(if (not local0)
-									(if (& (ego onControl: 0) $0004)
+									(if (& (ego onControl: 0) cGREEN)
 										(HandsOff)
 										(self setScript: exiting)
 									else
@@ -188,25 +188,36 @@
 									(Print 48 2)
 								)
 							)
-							((Said 'examine') (if (& global175 $0080) (Print 48 3) else (Print 48 4)))
+							((Said 'examine')
+								(if (& global175 $0080)
+									(Print 48 3)
+								else
+									(Print 48 4)
+								)
+							)
 						)
 					)
 					((Said 'examine>')
 						(cond 
-							((Said '[<around,at][/room]') (if (>= currentAct 6) (Print 48 0) else (Print 48 1)))
-							(
-							(or (Said '/carpet,dirt,blood,stain') (Said '<down'))
+							((Said '[<around,at][/room]')
+								(if (>= currentAct 6)
+									(Print 48 0)
+								else
+									(Print 48 1)
+								)
+							)
+							((or (Said '/carpet,dirt,blood,stain') (Said '<down'))
 								(if (== currentAct 6)
 									(Print 48 5)
 								else
-									(event claimed: 0)
+									(event claimed: FALSE)
 								)
 							)
 						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -217,8 +228,7 @@
 )
 
 (instance enterPanel of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -231,7 +241,7 @@
 				(ego setMotion: MoveTo (ego x?) (+ (ego y?) 15) self)
 			)
 			(2
-				(ego setPri: -1 illegalBits: -32760)
+				(ego setPri: -1 illegalBits: (| cWHITE cCYAN))
 				(panel setMotion: MoveTo 169 84 self)
 				(mySound number: 75 loop: 1 play:)
 			)
@@ -246,7 +256,6 @@
 )
 
 (instance exiting of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -260,11 +269,11 @@
 				(if (ego inRect: 168 87 169 89)
 					(= cycles 1)
 				else
-					(ego illegalBits: -32768 setMotion: MoveTo 169 88 self)
+					(ego illegalBits: cWHITE setMotion: MoveTo 169 88 self)
 				)
 			)
 			(2
-				(ego illegalBits: -32768 setMotion: MoveTo 169 79 self)
+				(ego illegalBits: cWHITE setMotion: MoveTo 169 79 self)
 			)
 			(3
 				(ego setPri: 2)
@@ -281,18 +290,19 @@
 )
 
 (instance LookNote of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
 					((not (& global118 $0001))
-						(= global118 (| global118 $0001))
+						(|= global118 $0001)
 						(self setScript: (ScriptID 406 0))
 						(= state -1)
 					)
-					((self script?) (= state -1))
+					((self script?)
+						(= state -1)
+					)
 				)
 				(= cycles 1)
 			)
@@ -301,7 +311,9 @@
 				(Print 48 8)
 				(= cycles 1)
 			)
-			(2 (client setScript: 0))
+			(2
+				(client setScript: 0)
+			)
 		)
 	)
 )
@@ -317,9 +329,15 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'examine<behind,below/painting') (Print 48 9))
-			((Said 'get/painting') (Print 48 10))
-			((Said 'open/painting') (Print 48 11))
+			((Said 'examine<behind,below/painting')
+				(Print 48 9)
+			)
+			((Said 'get/painting')
+				(Print 48 10)
+			)
+			((Said 'open/painting')
+				(Print 48 11)
+			)
 			(
 				(or
 					(and (Said 'examine/eye>') (Said 'examine/girl'))
@@ -330,11 +348,11 @@
 			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/painting')
 					(Said 'examine/girl/painting')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 48 13)
 			)
 		)
@@ -348,12 +366,12 @@
 		view 148
 		loop 2
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {bed})
 		)
 	)
@@ -376,10 +394,10 @@
 			((Said 'get/luggage') (Print 48 16))
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine[<at]/drawer')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 48 17)
 			)
 		)
@@ -394,12 +412,12 @@
 		loop 2
 		cel 1
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {bed})
 		)
 	)
@@ -417,12 +435,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(Said 'open,(examine<in)/(drawer<desk),desk,(top[<desk])') (Print 48 18))
-			(
-			(or (MousedOn self event 3) (Said 'examine/desk'))
-				(event claimed: 1)
-				(if (== currentAct 5) (Print 48 19) else (Print 48 20))
+			((Said 'open,(examine<in)/(drawer<desk),desk,(top[<desk])')
+				(Print 48 18)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/desk'))
+				(event claimed: TRUE)
+				(if (== currentAct 5)
+					(Print 48 19)
+				else
+					(Print 48 20)
+				)
 			)
 		)
 	)
@@ -439,8 +461,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 48 17)
 		)
 	)
@@ -459,12 +481,16 @@
 	(method (handleEvent event)
 		(if (== currentAct 6)
 			(cond 
-				((Said 'get,straighten/chair') (Print 48 21))
-				(
-				(or (Said 'examine/chair') (MousedOn self event 3)) (event claimed: 1) (Print 48 22))
+				((Said 'get,straighten/chair')
+					(Print 48 21)
+				)
+				((or (Said 'examine/chair') (MousedOn self event shiftDown))
+					(event claimed: TRUE)
+					(Print 48 22)
+				)
 			)
 		)
-		(if (MousedOn self event 3)
+		(if (MousedOn self event shiftDown)
 			(event claimed: 1)
 			(ParseName {chair})
 		)
@@ -482,8 +508,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {couch})
 		)
 	)
@@ -502,12 +528,17 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(MousedOn self event 3)
+				(MousedOn self event shiftDown)
 				(Said 'examine/nightstand>')
 			)
 			(cond 
-				((and (== currentAct 2) (> [global368 2] 2)) (Print 48 23) (event claimed: 1))
-				((MousedOn self event 3) (ParseName {table}) (event claimed: 1))
+				((and (== currentAct 2) (> [global368 2] 2))
+					(Print 48 23)
+					(event claimed: TRUE)
+				)
+				((MousedOn self event shiftDown) (ParseName {table})
+					(event claimed: TRUE)
+				)
 			)
 		)
 	)
@@ -523,8 +554,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 48 15)
 		)
 	)
@@ -540,8 +571,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 48 15)
 		)
 	)
@@ -561,11 +592,11 @@
 		(cond 
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/desk')
 					(Said 'examine/top[<desk]')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 48 24)
 			)
 			((Said 'rotate/page') (Print 48 25))
@@ -592,8 +623,8 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
@@ -607,14 +638,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(ParseName {lamp})
 		)
 	)
 )
 
-(instance panel of Act
+(instance panel of Actor
 	(properties
 		y 84
 		view 148

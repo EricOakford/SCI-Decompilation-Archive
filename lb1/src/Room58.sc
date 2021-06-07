@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 58)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -24,22 +24,22 @@
 
 (local
 	local0
-	local1
-	local2
+	thisControl
+	gotBible
 	local3
-	[local4 7] = [117 113 232 115 216 92 -32768]
-	[local11 7] = [238 115 117 113 115 94 -32768]
+	inPath = [117 113 232 115 216 92 PATHEND]
+	outPath = [238 115 117 113 115 94 PATHEND]
 	local18
 )
-(instance Room58 of Rm
+(instance Room58 of Room
 	(properties
 		picture 58
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsVIEW 50)
-		(LoadMany 132 43 44)
+		(Load VIEW 50)
+		(LoadMany SOUND 43 44)
 		(addToPics
 			add: statueRight statueLeft
 			eachElementDo: #init
@@ -64,9 +64,9 @@
 		)
 		(if (or (== global155 11) (>= currentAct 2))
 			(if howFast
-				(flame1 setPri: 7 setCycle: Fwd init:)
-				(flame2 setPri: 7 setCycle: Fwd init:)
-				(flame3 setPri: 7 setCycle: Fwd init:)
+				(flame1 setPri: 7 setCycle: Forward init:)
+				(flame2 setPri: 7 setCycle: Forward init:)
+				(flame3 setPri: 7 setCycle: Forward init:)
 			else
 				(flame1 setPri: 7 init: stopUpd:)
 				(flame2 setPri: 7 init: stopUpd:)
@@ -78,10 +78,10 @@
 		(board
 			cel:
 				(if (== global134 2)
-					(= local1 8)
+					(= thisControl 8)
 					(- (NumCels board) 1)
 				else
-					(= local1 0)
+					(= thisControl 0)
 				)
 			setPri: (if (== global134 2) 9 else 2)
 			ignoreActors: 1
@@ -89,8 +89,8 @@
 		)
 		(switch currentAct
 			(1
-				(LoadMany 130 985 983)
-				(LoadMany 128 440 441)
+				(LoadMany SOUND 985 983)
+				(LoadMany VIEW 440 441)
 				(if (or (== global155 10) (== global155 11))
 					(Jeeves view: 441 illegalBits: 0 init:)
 					(HandsOff)
@@ -106,17 +106,17 @@
 		(if
 			(and
 				(== global121 58)
-				(not (& deadGuests $0002))
-				(not (& deadGuests $0040))
+				(not (& deadGuests deadWILBUR))
+				(not (& deadGuests deadLILLIAN))
 			)
-			(= deadGuests (| deadGuests $0002))
+			(|= deadGuests deadWILBUR)
 			(self setRegions: 256)
 		)
 		(ego
 			view: 0
 			x: (if global133 115 else 226)
 			y: (if global133 87 else 154)
-			illegalBits: (| local1 (<< (^ global133 $0001) $0004) $8000)
+			illegalBits: (| thisControl (<< (^ global133 $0001) $0004) $8000)
 			init:
 		)
 		(if global133 (HandsOff) (self setScript: myDoor))
@@ -124,10 +124,13 @@
 	)
 	
 	(method (doit)
-		(if (FirstEntry) (Print 58 0))
+		(if
+			(FirstEntry)
+			(Print 58 0)
+		)
 		(if
 			(and
-				(& (ego onControl: 1) $0004)
+				(& (ego onControl: origin) cGREEN)
 				(not local3)
 				(not global133)
 			)
@@ -135,7 +138,7 @@
 			(HandsOff)
 			(self setScript: myDoor)
 		)
-		(if (& (ego onControl: 1) $0008)
+		(if (& (ego onControl: origin) cCYAN)
 			(if
 			(and (== global134 0) (not local0) (not script))
 				(Creak loop: 1 play:)
@@ -147,7 +150,7 @@
 		else
 			(= local0 0)
 		)
-		(if (& (ego onControl: 1) $0002)
+		(if (& (ego onControl: origin) cBLUE)
 			(= global133 0)
 			(curRoom newRoom: 9)
 		)
@@ -173,8 +176,8 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
-		(DisposeScript 983)
+		(DisposeScript AVOIDER)
+		(DisposeScript PATH)
 		(super dispose:)
 	)
 	
@@ -182,23 +185,29 @@
 		(if (event claimed?) (return))
 		(if
 			(or
-				(& (ego onControl: 0) $0001)
-				(& (ego onControl: 0) $0008)
+				(& (ego onControl: FALSE) cBLACK)
+				(& (ego onControl: FALSE) cCYAN)
 			)
 			(= temp1 1)
 		else
 			(= temp1 0)
 		)
-		(if (== (event type?) evSAID)
+		(if (== (event type?) saidEvent)
 			(cond 
 				((or (Said '/board>') (Said '//board>'))
 					(= temp0 2)
 					(if theInvItem
 						(if (not haveInvItem) (return))
-						(= temp0 (!= whichItem 7))
+						(= temp0 (!= whichItem iCrowbar))
 					)
 					(cond 
-						((Said 'examine') (if (== global134 2) (Print 58 2) else (Print 58 3)))
+						((Said 'examine')
+							(if (== global134 2)
+								(Print 58 2)
+							else
+								(Print 58 3)
+							)
+						)
 						(
 							(and
 								(!= temp0 1)
@@ -209,10 +218,14 @@
 									(Said 'open//crowbar')
 								)
 							)
-							(if (ego has: 7)
+							(if (ego has: iCrowbar)
 								(cond 
-									((== global134 2) (AlreadyOpen))
-									(temp1 (self setScript: PryBoard))
+									((== global134 2)
+										(AlreadyOpen)
+									)
+									(temp1
+										(self setScript: PryBoard)
+									)
 									(else (Print 58 4))
 								)
 							else
@@ -225,7 +238,11 @@
 								(Said 'get,open,move,drag,break,lift,force')
 							)
 							(if (== global134 0)
-								(if temp1 (self setScript: tryBoard) else (Print 58 4))
+								(if temp1
+									(self setScript: tryBoard)
+								else
+									(Print 58 4)
+								)
 							else
 								(AlreadyOpen)
 							)
@@ -236,7 +253,9 @@
 								(Said '(break,lift,force)<use<poker')
 								(Said 'open//poker')
 							)
-							(if (ego has: 6) (Print 58 5))
+							(if (ego has: iPoker)
+								(Print 58 5)
+							)
 						)
 						(
 							(or
@@ -244,38 +263,67 @@
 								(Said '(break,lift,force)<use<cane')
 								(Said 'open//cane')
 							)
-							(if (ego has: 21) (Print 58 6))
+							(if (ego has: iCane)
+								(Print 58 6)
+							)
 						)
 						((Said 'press,close')
 							(cond 
-								((< global134 2) (AlreadyClosed))
-								(temp1 (self setScript: CloseBoard))
-								(else (Print 58 4))
+								((< global134 2)
+									(AlreadyClosed)
+								)
+								(temp1
+									(self setScript: CloseBoard)
+								)
+								(else
+									(Print 58 4)
+								)
 							)
 						)
 					)
 				)
 				((Said '/bible>')
 					(cond 
-						((!= global134 2) (DontSee) (event claimed: 1))
+						((!= global134 2)
+							(DontSee)
+							(event claimed: TRUE)
+						)
 						((Said 'get,open,read,examine')
-							(if (not local2)
-								(= local2 1)
-								(Bset 14)
+							(if (not gotBible)
+								(= gotBible TRUE)
+								(Bset fGotBible)
 								(self setScript: GetBible)
 							)
 						)
-						((Said 'drop,(attach[<(back,down)])') (if local2 (self setScript: CloseBoard) else (DontHave)))
+						((Said 'drop,(attach[<(back,down)])')
+							(if gotBible
+								(self setScript: CloseBoard)
+							else
+								(DontHave)
+							)
+						)
 					)
 				)
 				((Said 'examine>')
 					(cond 
-						((Said '[<around,at][/room]') (Print 58 0))
-						((Said '/cross') (Print 58 7))
-						((Said '/cemetery') (Print 58 8))
-						((or (Said '/ceiling') (Said '<up')) (Print 58 9))
-						((Said '/wall') (Print 58 10))
-						((or (Said '/platform,dirt') (Said '<down')) (Print 58 3))
+						((Said '[<around,at][/room]')
+							(Print 58 0)
+						)
+						((Said '/cross')
+							(Print 58 7)
+						)
+						((Said '/cemetery')
+							(Print 58 8)
+						)
+						((or (Said '/ceiling') (Said '<up'))
+							(Print 58 9)
+						)
+						((Said '/wall')
+							(Print 58 10)
+						)
+						((or (Said '/platform,dirt') (Said '<down'))
+							(Print 58 3)
+						)
 						((Said '/eyehole')
 							(if (== global134 2)
 								(if (< (ego distanceTo: board) 40)
@@ -289,25 +337,32 @@
 						)
 					)
 				)
-				((Said 'pray[/altar]') (if temp1 (self setScript: pray) else (Print 58 12)))
+				((Said 'pray[/altar]')
+					(if temp1
+						(self setScript: pray)
+					else
+						(Print 58 12)
+					)
+				)
 			)
 		)
 	)
 	
 	(method (newRoom n)
-		(if (cast contains: Jeeves) (= global155 11))
+		(if (cast contains: Jeeves)
+			(= global155 11)
+		)
 		(super newRoom: n)
 	)
 )
 
 (instance lightCandles of Script
-	(properties)
 	
 	(method (doit)
 		(if
 			(or
-				(& (Jeeves onControl: 0) $0001)
-				(& (Jeeves onControl: 0) $0040)
+				(& (Jeeves onControl: FALSE) cBLACK)
+				(& (Jeeves onControl: FALSE) cBROWN)
 			)
 			(Jeeves setPri: -1)
 		else
@@ -321,7 +376,7 @@
 			(0
 				(== [global368 2] 699)
 				(if local18
-					(Door startUpd: cycleSpeed: 3 setCycle: End self)
+					(Door startUpd: cycleSpeed: 3 setCycle: EndLoop self)
 					(Jeeves
 						view: 440
 						setPri: 2
@@ -338,7 +393,7 @@
 					(Jeeves
 						setPri: -1
 						setMotion: PathIn self
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 					)
 					(if (ego inRect: 203 86 272 117)
 						(ego setMotion: MoveTo 245 120)
@@ -353,30 +408,30 @@
 					view: 441
 					cel: 0
 					illegalBits: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
-				(flame1 setPri: 7 setCycle: Fwd init:)
+				(flame1 setPri: 7 setCycle: Forward init:)
 				(= cycles 17)
 			)
 			(4
 				(Jeeves cel: 4)
-				(flame2 setPri: 7 setCycle: Fwd init:)
+				(flame2 setPri: 7 setCycle: Forward init:)
 				(= cycles 17)
 			)
 			(5
 				(Jeeves cel: 5)
-				(flame3 setPri: 7 setCycle: Fwd init:)
+				(flame3 setPri: 7 setCycle: Forward init:)
 				(lamp cel: 0 forceUpd:)
 				(= cycles 7)
 			)
-			(6 (Jeeves setCycle: End self))
+			(6 (Jeeves setCycle: EndLoop self))
 			(7
 				(Jeeves
 					view: 440
 					setCycle: Walk
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setMotion: PathOut self
 				)
 				(if (ego inRect: 106 77 137 113)
@@ -385,7 +440,7 @@
 			)
 			(8
 				(if (== (Door cel?) 0)
-					(Door startUpd: cycleSpeed: 3 setCycle: End self)
+					(Door startUpd: cycleSpeed: 3 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -394,7 +449,7 @@
 				(Jeeves setMotion: MoveTo 115 86 self)
 			)
 			(10
-				(Door startUpd: cycleSpeed: 3 setCycle: Beg self)
+				(Door startUpd: cycleSpeed: 3 setCycle: BegLoop self)
 			)
 			(11
 				(Door stopUpd:)
@@ -407,7 +462,6 @@
 )
 
 (instance myDoor of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -421,8 +475,8 @@
 				)
 			)
 			(2
-				(ego illegalBits: -32768 loop: 3)
-				(Door startUpd: cycleSpeed: 3 setCycle: End self)
+				(ego illegalBits: cWHITE loop: 3)
+				(Door startUpd: cycleSpeed: 3 setCycle: EndLoop self)
 				(mySound number: 43 priority: 5 loop: 1 play:)
 			)
 			(3
@@ -437,13 +491,15 @@
 				(ego setMotion: MoveTo 115 100 self)
 			)
 			(6
-				(ego illegalBits: (| local1 $8010))
-				(Door startUpd: setCycle: Beg self)
+				(ego illegalBits: (| thisControl cWHITE cRED))
+				(Door startUpd: setCycle: BegLoop self)
 				(mySound number: 44 loop: 1 priority: 5 play:)
 			)
 			(7
 				(= global133 0)
-				(if (not (Jeeves script?)) (HandsOn))
+				(if (not (Jeeves script?))
+					(HandsOn)
+				)
 				(Door stopUpd:)
 				(client setScript: 0)
 			)
@@ -452,16 +508,15 @@
 )
 
 (instance PryBoard of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset 1)
+				(Bset fOpenedFloorboard)
 				(= global134 1)
 				(HandsOff)
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 101 133 self
 				)
 			)
@@ -471,18 +526,18 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego loop: 2 cel: 0 posn: 98 133 setCycle: End self)
+				(ego loop: 2 cel: 0 posn: 98 133 setCycle: EndLoop self)
 			)
 			(3
-				(ego loop: 4 cel: 0 setCycle: Fwd)
+				(ego loop: 4 cel: 0 setCycle: Forward)
 				(= cycles 8)
 			)
 			(4
-				(board setPri: 9 setCycle: End self)
+				(board setPri: 9 setCycle: EndLoop self)
 				(= global134 2)
 			)
 			(5
@@ -490,8 +545,8 @@
 				(ego loop: 2)
 				(ego
 					cel: (- (NumCels ego) 1)
-					illegalBits: (| (ego illegalBits?) $0008)
-					setCycle: Beg self
+					illegalBits: (| (ego illegalBits?) cCYAN)
+					setCycle: BegLoop self
 				)
 			)
 			(6
@@ -513,19 +568,18 @@
 )
 
 (instance GetBible of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 84 138 self
 				)
 			)
 			(1
-				(ego view: 17 cel: 0 loop: 1 setCycle: End self)
+				(ego view: 17 cel: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(2
 				(ego
@@ -535,16 +589,16 @@
 					posn: 83 138
 					setAvoider: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(ego cel: 0 loop: 1 cycleSpeed: 2 setCycle: End self)
+				(ego cel: 0 loop: 1 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(4
 				(Print 58 13)
 				(Print 58 14 #font 4 #width 270)
-				(ego cel: 0 loop: 2 setCycle: Fwd)
+				(ego cel: 0 loop: 2 setCycle: Forward)
 				(= cycles 30)
 			)
 			(5
@@ -552,7 +606,7 @@
 				(ego cel: (- (NumCels ego) 1))
 				(Print 58 15)
 				(Print 58 16 #font 4)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(self setScript: CloseBoard)
 				(= cycles 1)
 			)
@@ -575,19 +629,19 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not local2)
+				(if (not gotBible)
 					(ego
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: MoveTo 84 138 self
 					)
 				else
 					(ego loop: 0)
-					(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+					(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 					(= state 1)
 				)
 			)
 			(1
-				(ego view: 17 cel: 0 loop: 1 setCycle: End self)
+				(ego view: 17 cel: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(2
 				(ego
@@ -596,7 +650,7 @@
 					loop: 3
 					posn: 83 138
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -616,9 +670,13 @@
 				(= cycles 1)
 			)
 			(4
-				(if local2 (Print 58 17) else (Print 58 18))
+				(if gotBible
+					(Print 58 17)
+				else
+					(Print 58 18)
+				)
 				(HandsOn)
-				(= global134 (= local2 0))
+				(= global134 (= gotBible 0))
 				(client setScript: 0)
 			)
 		)
@@ -626,19 +684,18 @@
 )
 
 (instance tryBoard of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 84 138 self
 				)
 			)
 			(1
-				(ego view: 17 cel: 0 loop: 1 setCycle: End self)
+				(ego view: 17 cel: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(2
 				(ego
@@ -648,15 +705,15 @@
 					posn: 83 138
 					setAvoider: 0
 					cycleSpeed: 2
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
 				(Print 58 19 #dispose)
-				(ego loop: 4 cycleSpeed: 4 setCycle: Fwd)
+				(ego loop: 4 cycleSpeed: 4 setCycle: Forward)
 				(= cycles 21)
 			)
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				(cls)
 				(ego
@@ -664,7 +721,7 @@
 					cel: 3
 					loop: 1
 					cycleSpeed: 2
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(6
@@ -677,14 +734,13 @@
 )
 
 (instance pray of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 104 128 self
 				)
 			)
@@ -696,12 +752,12 @@
 					posn: 103 128
 					setAvoider: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(Print 58 20)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego view: 0 loop: 1 cycleSpeed: 0 setCycle: Walk)
@@ -723,13 +779,15 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/monument') (Print 58 21))
+			((Said 'get/monument')
+				(Print 58 21)
+			)
 			(
 				(or
-					(MousedOn self event 3)
+					(MousedOn self event shiftDown)
 					(Said 'examine/monument,alcove')
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(Print 58 22)
 			)
 		)
@@ -747,8 +805,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 58 22)
 		)
 	)
@@ -765,10 +823,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'get/candle') (Print 58 23))
-			((Said 'ignite/candle') (Print 58 24))
-			(
-			(or (MousedOn self event 3) (Said 'examine/candle')) (event claimed: 1) (Print 58 25))
+			((Said 'get/candle')
+				(Print 58 23)
+			)
+			((Said 'ignite/candle')
+				(Print 58 24)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/candle'))
+				(event claimed: TRUE)
+				(Print 58 25)
+			)
 		)
 	)
 )
@@ -783,10 +847,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			(
-			(or (MousedOn self event 3) (Said 'examine/door<back')) (event claimed: 1) (Print 58 26))
-			((Said 'examine/door<front') (Print 58 27))
-			((Said 'examine/door') (Print 58 28))
+			((or (MousedOn self event shiftDown) (Said 'examine/door<back'))
+				(event claimed: TRUE)
+				(Print 58 26)
+			)
+			((Said 'examine/door<front')
+				(Print 58 27)
+			)
+			((Said 'examine/door')
+				(Print 58 28)
+			)
 		)
 	)
 )
@@ -829,7 +899,7 @@
 	)
 )
 
-(instance Jeeves of Act
+(instance Jeeves of Actor
 	(properties
 		y 92
 		x 216
@@ -856,18 +926,16 @@
 )
 
 (instance PathIn of Path
-	(properties)
 	
-	(method (at param1)
-		(return [local4 param1])
+	(method (at n)
+		(return [inPath n])
 	)
 )
 
 (instance PathOut of Path
-	(properties)
 	
-	(method (at param1)
-		(return [local11 param1])
+	(method (at n)
+		(return [outPath n])
 	)
 )
 
@@ -880,9 +948,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (MousedOn self event 3) (Said 'examine/window'))
-			(event claimed: 1)
+		(if (or (MousedOn self event shiftDown) (Said 'examine/window'))
+			(event claimed: TRUE)
 			(Print 58 29)
 		)
 	)
@@ -898,9 +965,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'open,(examine<in)/altar') (Print 58 30))
-			(
-			(or (MousedOn self event 3) (Said 'examine/altar')) (event claimed: 1) (Print 58 31))
+			((Said 'open,(examine<in)/altar')
+				(Print 58 30)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/altar'))
+				(event claimed: TRUE)
+				(Print 58 31)
+			)
 		)
 	)
 )
@@ -915,10 +986,19 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'break/window') (Print 58 32))
-			((Said 'open/window') (Print 58 33))
-			((Said 'examine<(out,through)/window') (Print 58 34))
-			((MousedOn self event 3) (event claimed: 1) (Print 58 35))
+			((Said 'break/window')
+				(Print 58 32)
+			)
+			((Said 'open/window')
+				(Print 58 33)
+			)
+			((Said 'examine<(out,through)/window')
+				(Print 58 34)
+			)
+			((MousedOn self event shiftDown)
+				(event claimed: TRUE)
+				(Print 58 35)
+			)
 		)
 	)
 )
@@ -932,8 +1012,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 58 35)
 		)
 	)
@@ -949,10 +1029,16 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((Said 'sit[/down,bench]') (Print 58 36))
-			((Said 'examine<below/bench') (Print 58 37))
-			(
-			(or (MousedOn self event 3) (Said 'examine/bench')) (event claimed: 1) (Print 58 38))
+			((Said 'sit[/down,bench]')
+				(Print 58 36)
+			)
+			((Said 'examine<below/bench')
+				(Print 58 37)
+			)
+			((or (MousedOn self event shiftDown) (Said 'examine/bench'))
+				(event claimed: TRUE)
+				(Print 58 38)
+			)
 		)
 	)
 )
@@ -966,8 +1052,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (MousedOn self event 3)
-			(event claimed: 1)
+		(if (MousedOn self event shiftDown)
+			(event claimed: TRUE)
 			(Print 58 38)
 		)
 	)
