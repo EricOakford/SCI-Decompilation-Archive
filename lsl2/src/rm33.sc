@@ -276,7 +276,7 @@
 				(Print 33 49)
 				(Print 33 50)
 				(Print 33 51 #at -1 152)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			(14 (= mamaInRoom 2) (= seconds 5))
 			(15

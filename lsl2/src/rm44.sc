@@ -279,15 +279,18 @@
 				(= seconds 4)
 			)
 			(21
-				(if (> filthLevel 10) (Print 44 66) else (Print 44 67))
-				(= currentStatus egoDEAD)
+				(if (> filthLevel 10)
+					(Print 44 66)
+				else
+					(Print 44 67)
+				)
+				(= currentStatus egoDYING)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look<below/bed')

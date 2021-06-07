@@ -114,7 +114,7 @@
 			(5
 				(Print 73 12)
 				(Print 73 13)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)

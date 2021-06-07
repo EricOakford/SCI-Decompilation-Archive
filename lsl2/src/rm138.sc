@@ -310,7 +310,7 @@
 			)
 			(26
 				(Print 138 20 #at -1 20)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)

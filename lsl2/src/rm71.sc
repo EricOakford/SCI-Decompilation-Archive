@@ -206,7 +206,7 @@
 			(15
 				(Print 71 23)
 				(theSound dispose:)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			(16
 				(Print 71 24)

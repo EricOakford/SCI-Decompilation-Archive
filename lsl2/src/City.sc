@@ -26,7 +26,7 @@
 				(> roomSeconds 5)
 				(== currentStatus egoNORMAL)
 			)
-			(= currentStatus egoDEAD)
+			(= currentStatus egoDYING)
 			(= gameState NULL)
 			(Print CITY 0)
 			(Print CITY 1)

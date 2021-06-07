@@ -29,7 +29,7 @@
 				(> roomSeconds 5)
 				(== currentStatus egoNORMAL)
 			)
-			(= currentStatus egoDEAD)
+			(= currentStatus egoDYING)
 			(= gameState NULL)
 			(Print SHIP 0)
 			(Print SHIP 1)

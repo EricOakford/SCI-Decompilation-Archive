@@ -247,7 +247,7 @@
 				(cls)
 				(= currentStatus egoSTOPPED)
 				(Print 79 28)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(if (== debugging TRUE)
 					(NormalEgo)
 					(ego posn: egoX egoY)

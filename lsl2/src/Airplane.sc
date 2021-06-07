@@ -25,7 +25,7 @@
 				(> roomSeconds 5)
 				(== currentStatus egoNORMAL)
 			)
-			(= currentStatus egoDEAD)
+			(= currentStatus egoDYING)
 			(= gameState NULL)
 			(ego hide:)
 			(Print AIRPLANE 0 #draw)

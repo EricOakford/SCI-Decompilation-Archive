@@ -341,7 +341,7 @@
 				(ego setMotion: 0 cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(27 (= seconds 3))
-			(28 (= currentStatus egoDEAD))
+			(28 (= currentStatus egoDYING))
 		)
 	)
 )

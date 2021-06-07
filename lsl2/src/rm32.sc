@@ -226,7 +226,7 @@
 				(= seconds 1)
 			)
 			(22
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(if (== local2 2)
 					(Print 32 36)
 				else

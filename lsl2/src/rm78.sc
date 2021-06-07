@@ -508,7 +508,7 @@
 				(= seconds 3)
 			)
 			(48
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(Print 78 31)
 			)
 		)

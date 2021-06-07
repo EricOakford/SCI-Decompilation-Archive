@@ -156,14 +156,14 @@
 			(ego hide:)
 			(Print 38 13 #draw)
 			(Print 38 14 #at -1 152)
-			(= currentStatus egoDEAD)
+			(= currentStatus egoDYING)
 		)
 		(if (Said '(hop<off),dive,hop/overboard,craft')
 			(Print 38 12)
 			(ego hide:)
 			(Print 38 15 #draw)
 			(Print 38 14 #at -1 152)
-			(= currentStatus egoDEAD)
+			(= currentStatus egoDYING)
 		)
 		(if
 			(and

@@ -298,7 +298,7 @@
 					(Print 34 28)
 					(Print 34 29)
 				)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(ego hide:)
 			)
 			(4
@@ -405,7 +405,7 @@
 			)
 			(14
 				(Print 34 33 #at -1 20 #draw)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			(15
 				(= seconds (= cycles 0))

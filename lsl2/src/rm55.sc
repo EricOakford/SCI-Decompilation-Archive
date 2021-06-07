@@ -266,7 +266,7 @@
 				(Print 55 43)
 				(Print 55 44)
 				(Print 55 45 #at -1 152)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)

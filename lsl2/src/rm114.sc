@@ -210,7 +210,7 @@
 			(11
 				(Print 114 38)
 				(Print 114 39)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			(12
 				(HandsOff)

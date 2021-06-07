@@ -52,7 +52,7 @@
 			)
 			(3
 				(Print 96 2 #at -1 15 #width 280)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)

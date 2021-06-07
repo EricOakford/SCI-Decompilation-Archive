@@ -384,7 +384,7 @@
 			)
 			(2
 				(Print 50 28)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)

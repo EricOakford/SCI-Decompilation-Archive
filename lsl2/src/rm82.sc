@@ -150,7 +150,7 @@
 				(cls)
 				(= currentStatus egoSTOPPED)
 				(Print 82 23)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(if (== debugging TRUE)
 					(NormalEgo)
 					(ego observeControl: cYELLOW posn: egoX egoY)
@@ -170,7 +170,7 @@
 					(HandsOff)
 					(Print 82 25)
 					(Print 82 26 #at -1 152)
-					(= currentStatus egoDEAD)
+					(= currentStatus egoDYING)
 				)
 			)
 			(8
@@ -188,7 +188,7 @@
 					(HandsOff)
 					(Print 82 25)
 					(Print 82 26 #at -1 152)
-					(= currentStatus egoDEAD)
+					(= currentStatus egoDYING)
 				else
 					(= bombHasWick 1)
 					(User canInput: TRUE)
@@ -307,7 +307,7 @@
 			(23
 				(Print 82 40)
 				(Print 82 41)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)

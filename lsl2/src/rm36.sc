@@ -369,7 +369,7 @@
 			(10
 				(ego hide:)
 				(Print 36 16 #draw)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)

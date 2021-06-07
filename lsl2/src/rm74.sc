@@ -274,7 +274,7 @@
 			(9
 				(Print 74 20)
 				(Print 74 21)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			(10
 				(Ok)

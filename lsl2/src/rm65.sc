@@ -86,8 +86,12 @@
 			(2 (ego hide:) (= seconds 3))
 			(3
 				(Print 65 12)
-				(if (Random 0 1) (Print 65 13) else (Print 65 14))
-				(= currentStatus egoDEAD)
+				(if (Random 0 1)
+					(Print 65 13)
+				else
+					(Print 65 14)
+				)
+				(= currentStatus egoDYING)
 			)
 			(4
 				(= currentStatus egoLAUNCHPARACHUTE)

@@ -133,7 +133,7 @@
 				(cls)
 				(= currentStatus egoSTOPPED)
 				(Print 181 5)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(if debugging
 					(NormalEgo)
 					(ego

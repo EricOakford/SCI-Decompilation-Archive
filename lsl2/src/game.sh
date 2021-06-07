@@ -5,10 +5,43 @@
 (include colors.sh)
 
 ; Views
-(define vBEChagrin 111)
-(define vBEDismay 112)
-(define vAuthors 118)
-(define vEgoPause 119)
+(define vEgo			0)
+(define vBigEgo			110)
+(define vBEChagrin		111)
+(define vBEDismay		112)
+(define vBEDismembered	113)
+(define vAuthors		118)
+(define vEgoPause		119)
+(define vTrapBed		191)
+(define vEgoMowLawn		192)
+(define vEgoMaze		193)
+(define vEveHouseStuff	253)
+(define vAirplanes		511)
+(define vTitle			800)
+(define vCredits		801)
+(define vEve			802)
+(define vDogExitCar		803)
+(define vDogPiss		804)
+(define vMountain		806)
+(define vTitleGirl		809)
+(define vTitleSparkle	815)
+(define vThroneStuff	816)
+(define vNonookee		818)
+(define vFanGirl		819)
+(define vGrapeGirl		820)
+(define vHelicopter		821)
+
+;Pictures
+(define pCredits		91)
+
+; Sounds
+(define sScore		7)
+(define sHelicopter	17)
+(define sThemeSong	101)
+(define sMeanwhile	102)
+(define sDeath		103)
+(define sNonookee	110)
+
 
 ;doorState
 (enum
@@ -114,8 +147,8 @@
 )
 
 (define egoSTOPPED			1000)
-(define egoDEAD				1001)
-(define egoDEATHMESSAGE		1002)
+(define egoDYING			1001)
+(define egoDEAD				1002)
 (define egoSLEEPING			1005)
 (define egoSWIMMING			1006)
 (define egoDROWNING			1008)
@@ -138,6 +171,14 @@
 (define	HENCHWOMAN		8)
 (define	BOSSKEY			9)
 (define	COPYPROTECT		10)
+(define TITLE			90)
+(define SPEED			99)
+
+;Actual rooms
+(define rEveHouse		23)
+(define rIntroEveHouse	91)
+(define rIsland			92)
+(define rNonookeeThrone	93)
 
 ;Regions
 (define CITY		200)

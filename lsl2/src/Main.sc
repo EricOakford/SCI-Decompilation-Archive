@@ -550,7 +550,9 @@
 )
 
 (procedure (NormalEgo theLoop)
-	(if (> argc 0) (ego loop: theLoop))
+	(if (> argc 0)
+		(ego loop: theLoop)
+	)
 	(ego
 		view: currentEgoView
 		setLoop: -1
@@ -646,8 +648,8 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_10 param1 param2)
-	(param1 loop: param2 changeState:)
+(procedure (proc0_10 theObj theLoop)
+	(theObj loop: theLoop changeState:)
 )
 
 (procedure (cls)
@@ -724,7 +726,7 @@
 		(Load FONT bigFont)
 		(Load CURSOR normalCursor)
 		(Load CURSOR waitCursor)
-		(ego view: 100 setCycle: Walk)
+		(ego view: vEgo setCycle: Walk)
 		(Inventory
 			empty: {Your leisure suit is empty!}
 			add:
@@ -764,10 +766,10 @@
 		(if (GameIsRestarting)
 			(StatusLine disable:)
 			(TheMenuBar hide:)
-			(self newRoom: 99)
+			(self newRoom: SPEED)
 		else
-			(self newRoom: 90) ;EO: Skip the copy protection screen
-			;(self newRoom: 10)
+			(self newRoom: TITLE) ;EO: Skip the copy protection screen
+			;(self newRoom: COPYPROTECT)
 		)
 	)
 	
@@ -787,7 +789,7 @@
 		(if (and gameState (> rgSeconds 0))
 			(-- rgSeconds)
 		)
-		(if (== currentStatus egoDEAD)
+		(if (== currentStatus egoDYING)
 			(curRoom setScript: dyingScript)
 		)
 	)
@@ -824,7 +826,9 @@
 		(if (> delta 25)
 			(= ranking {Big Hero})
 		else
-			(if (> delta 0) (scoreSnd play:))
+			(if (> delta 0)
+				(scoreSnd play:)
+			)
 			(switch (Random 1 22)
 				(1 (= ranking {Novice}))
 				(2 (= ranking {Kumquat}))
@@ -856,8 +860,7 @@
 	(method (handleEvent event &tmp temp0 i [temp2 3])
 		(super handleEvent: event)
 		;EO: Any Said command with "/!" in it does not parse correctly, giving a "Bad Said Spec" error.
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'praise/lord')
@@ -919,14 +922,14 @@
 				(Print 0 17)
 				(ego hide: put: iGrotesqueGulp -1)
 				(Print 0 18 #draw)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			((and (ego has: iFruit) (Said 'look,look/note,basket'))
 				(Fruit showSelf:)
 			)
 			((and (ego has: iOnklunk) (Said 'give/onklunk'))
 				(Print 0 19)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			((and (ego has: iOnklunk) (Said 'play,apply/music,music,onklunk'))
 				(Print 0 20)
@@ -1487,15 +1490,13 @@
 	)
 )
 
-(instance NoInv of Iitem
-	(properties)
-)
+(instance NoInv of Iitem)
 
 (instance Dollar_Bill of Iitem
 	(properties
 		said '/(bill<buck)'
 		owner 23
-		view 1
+		view iDollarBill
 		name "Dollar Bill"
 	)
 )
@@ -1504,7 +1505,7 @@
 	(properties
 		said '/ticket[<bucko]'
 		owner 114
-		view 2
+		view iLotteryTicket
 		name "Lottery Ticket"
 	)
 )
@@ -1513,7 +1514,7 @@
 	(properties
 		said '/ticket[<cruise]'
 		owner 103
-		view 3
+		view iCruiseTicket
 		name "Cruise Ticket"
 	)
 )
@@ -1522,7 +1523,7 @@
 	(properties
 		said '/((bill<buck)<million),(buck<million)'
 		owner 104
-		view 4
+		view iMillionDollarBill
 		name "Million Dollar Bill"
 	)
 )
@@ -1531,7 +1532,7 @@
 	(properties
 		said '/job'
 		owner 116
-		view 5
+		view iSwimsuit
 	)
 )
 
@@ -1539,7 +1540,7 @@
 	(properties
 		said '/buck,wad'
 		owner 116
-		view 6
+		view iWadODough
 		name "Wad O' Dough"
 	)
 )
@@ -1548,7 +1549,7 @@
 	(properties
 		said '/passport'
 		owner 23
-		view 7
+		view iPassport
 	)
 )
 
@@ -1556,7 +1557,7 @@
 	(properties
 		said '/coke[<grotesque]'
 		owner 114
-		view 8
+		view iGrotesqueGulp
 		name "Grotesque Gulp"
 	)
 )
@@ -1565,7 +1566,7 @@
 	(properties
 		said '/lotion'
 		owner 118
-		view 9
+		view iSunscreen
 	)
 )
 
@@ -1573,7 +1574,7 @@
 	(properties
 		said '/onklunk'
 		owner 115
-		view 10
+		view iOnklunk
 	)
 )
 
@@ -1581,7 +1582,7 @@
 	(properties
 		said '/basket'
 		owner 32
-		view 11
+		view iFruit
 	)
 )
 
@@ -1589,7 +1590,7 @@
 	(properties
 		said '/kit[<sew]'
 		owner 33
-		view 12
+		view iSewingKit
 		name "Sewing Kit"
 	)
 )
@@ -1598,7 +1599,7 @@
 	(properties
 		said '/bread[<spinach]'
 		owner 35
-		view 13
+		view iSpinachDip
 		name "Spinach Dip"
 	)
 )
@@ -1607,7 +1608,7 @@
 	(properties
 		said '/wig'
 		owner 37
-		view 14
+		view iWig
 	)
 )
 
@@ -1615,7 +1616,7 @@
 	(properties
 		said '/top[<bikini]'	;EO: Fixed Said Spec error
 		owner 134
-		view 15
+		view iBikiniTop
 		name "Bikini Top"
 	)
 )
@@ -1624,7 +1625,7 @@
 	(properties
 		said '/bottom[<bikini]'
 		owner 41
-		view 16
+		view iBikiniBottom
 		name "Bikini Bottom"
 	)
 )
@@ -1633,7 +1634,7 @@
 	(properties
 		said '/gun'
 		owner 43
-		view 17
+		view iKnife
 	)
 )
 
@@ -1641,7 +1642,7 @@
 	(properties
 		said '/soap'
 		owner 44
-		view 18
+		view iSoap
 	)
 )
 
@@ -1649,7 +1650,7 @@
 	(properties
 		said '/match'
 		owner 44
-		view 19
+		view iMatches
 	)
 )
 
@@ -1657,7 +1658,7 @@
 	(properties
 		said '/flower'
 		owner 40
-		view 20
+		view iFlower
 	)
 )
 
@@ -1665,7 +1666,7 @@
 	(properties
 		said '/rejuvenator[<hair]'
 		owner 45
-		view 21
+		view iHairRejuvenator
 		name "Hair Rejuvenator"
 	)
 )
@@ -1674,7 +1675,7 @@
 	(properties
 		said '/baggage'
 		owner 54
-		view 22
+		view iSuitcase
 	)
 )
 
@@ -1682,7 +1683,7 @@
 	(properties
 		said '/ticket[<airline,airline]'
 		owner 52
-		view 23
+		view iAirlineTicket
 		name "Airline Ticket"
 	)
 )
@@ -1691,7 +1692,7 @@
 	(properties
 		said '/parachute'
 		owner 55
-		view 24
+		view iParachute
 	)
 )
 
@@ -1699,7 +1700,7 @@
 	(properties
 		said '/bobbypin[<bobby]'
 		owner 55
-		view 25
+		view iBobbyPin
 		name "Bobby Pin"
 	)
 )
@@ -1708,7 +1709,7 @@
 	(properties
 		said '/pamphlet'
 		owner 57
-		view 26
+		view iPamphlet
 	)
 )
 
@@ -1716,7 +1717,7 @@
 	(properties
 		said '/bag[<airsick]'
 		owner 62
-		view 27
+		view iAirsickBag
 		name "Airsick Bag"
 	)
 )
@@ -1725,7 +1726,7 @@
 	(properties
 		said '/stick'
 		owner 71
-		view 28
+		view iStoutStick
 		name "Stout Stick"
 	)
 )
@@ -1734,7 +1735,7 @@
 	(properties
 		said '/landscape'
 		owner 74
-		view 29
+		view iVine
 	)
 )
 
@@ -1742,7 +1743,7 @@
 	(properties
 		said '/ash' ;EO: fixed decompiler goof
 		owner 77
-		view 30
+		view iAshes
 	)
 )
 
@@ -1750,19 +1751,18 @@
 	(properties
 		said '/beach'
 		owner 75
-		view 31
+		view iSand
 	)
 )
 
 (instance dyingScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= currentStatus egoDEATHMESSAGE)
+				(= currentStatus egoDEAD)
 				(HandsOff)
-				(Load SOUND 103)
+				(Load SOUND sDeath)
 				(= seconds 3)
 			)
 			(1
@@ -1805,8 +1805,7 @@
 )
 
 (instance statusCode of Code
-	(properties)
-	
+
 	(method (doit strg)
 		(Format strg 0 129
 			score possibleScore 0 130
@@ -1817,7 +1816,7 @@
 
 (instance scoreSnd of Sound
 	(properties
-		number 7
+		number sScore
 		priority -10
 		owner -1
 	)
@@ -1825,7 +1824,7 @@
 
 (instance deadSnd of Sound
 	(properties
-		number 103
+		number sDeath
 		priority 255
 	)
 )

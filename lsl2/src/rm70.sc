@@ -84,7 +84,7 @@
 			(2
 				(Print 70 10)
 				(Print 70 11)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			(3
 				(User canInput: FALSE)

@@ -15,9 +15,9 @@
 		openSnd 0
 		closeSnd 0
 		doorState 0
-		doorCtrl 2
+		doorCtrl cBLUE
 		doorBlock cYELLOW
-		roomCtrl 4
+		roomCtrl cGREEN
 		code 0
 		illegalBits $0000
 		force 0
@@ -48,8 +48,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (> roomCtrl 0) (& (ego onControl:) roomCtrl))
+		(if (and (> roomCtrl 0) (& (ego onControl:) roomCtrl))
 			(curRoom newRoom: entranceTo)
 		)
 	)
@@ -169,8 +168,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -199,8 +197,7 @@
 	)
 	
 	(method (open)
-		(if
-		(and (not locked) (!= doorState 1) (!= doorState 2))
+		(if (and (not locked) (!= doorState doorOpening) (!= doorState 2))
 			(= doorState doorOpening)
 			(self setCycle: EndLoop self)
 			(if openSnd

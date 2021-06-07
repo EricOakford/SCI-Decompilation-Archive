@@ -610,7 +610,7 @@
 			(7 (= seconds 3))
 			(8
 				(Print 62 66 #draw)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			(9
 				(= seconds (= cycles 0))

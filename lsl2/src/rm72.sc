@@ -157,7 +157,7 @@
 			(11
 				(aBurp dispose:)
 				(Print 72 16 #draw)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 			(12
 				(= snakeState snakeSTICKINMOUTH)

@@ -26,7 +26,7 @@
 				(> roomSeconds 5)
 				(or (== currentStatus egoNORMAL) (== currentStatus egoINTERMINAL))
 			)
-			(= currentStatus egoDEAD)
+			(= currentStatus egoDYING)
 			(= gameState NULL)
 			(Print 500 0)
 			(Print 500 1)

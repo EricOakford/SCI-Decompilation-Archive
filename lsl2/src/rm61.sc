@@ -339,7 +339,7 @@
 			(17 (= seconds 3))
 			(18
 				(Print 61 20)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)

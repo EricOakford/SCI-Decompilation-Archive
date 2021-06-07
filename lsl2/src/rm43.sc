@@ -592,7 +592,7 @@
 			)
 			(123
 				(Print 43 66)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 			)
 		)
 	)
