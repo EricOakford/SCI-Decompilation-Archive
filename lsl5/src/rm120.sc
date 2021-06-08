@@ -74,6 +74,7 @@
 		view 1122
 		loop 3
 		talkWidth 280
+		name "Vinnie"
 	)
 	
 	(method (init)
@@ -108,6 +109,7 @@
 		view 1123
 		loop 3
 		talkWidth 200
+		name "Bruno"
 	)
 	
 	(method (init)

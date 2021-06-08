@@ -2,4 +2,4 @@
   Game version 1.000 (September 11, 1991)
   Interpreter version T.A00.169
 
-  Being tested.
+  Tested to completion with some minor issues with talkers sometimes not animating.

@@ -59,7 +59,7 @@
 				(boardingSign init:)
 			)
 			((and (ego has: iBoardingPass) (Btst fFlightAvailable))
-				(StartTimer 90 0 curRoom)
+				(StartTimer 90 1 curRoom)	;EO: is now a cycle timer because I'm impatient
 			)
 		)
 		(self

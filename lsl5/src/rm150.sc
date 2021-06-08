@@ -110,6 +110,7 @@
 		view 1151
 		loop 3
 		talkWidth 314
+		name "You"
 	)
 	
 	(method (init)
@@ -134,7 +135,7 @@
 		view 1150
 		loop 3
 		talkWidth 240
-		name "Silas Scruemall\_a"
+		name "Silas Scruemall"
 	)
 	
 	(method (init)
@@ -168,7 +169,7 @@
 		nsLeft 6
 		view 1150
 		cycleSpeed 5
-		name "Silas Scruemall\_b"
+		name "Silas Scruemall"
 	)
 )
 
@@ -181,7 +182,7 @@
 		view 1145
 		loop 3
 		talkWidth 280
-		name "Silas Scruemall\_c"
+		name "Silas Scruemall"
 	)
 	
 	(method (init)

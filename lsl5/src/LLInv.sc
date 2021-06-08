@@ -340,7 +340,7 @@
 		cursor 934
 		signal IMMEDIATE
 		description {the videotape}
-		name "A Blank Videotape\_a"
+		name "A Blank Videotape"
 	)
 	
 	(method (doVerb theVerb theItem)
@@ -394,7 +394,7 @@
 		cursor 934
 		signal IMMEDIATE
 		description {the videotape}
-		name "A Blank Videotape\_b"
+		name "A Blank Videotape"
 	)
 	
 	(method (doVerb theVerb theItem)
@@ -448,7 +448,7 @@
 		cursor 934
 		signal IMMEDIATE
 		description {the videotape}
-		name "A Blank Videotape\_c"
+		name "A Blank Videotape"
 	)
 	
 	(method (doVerb theVerb theItem)
