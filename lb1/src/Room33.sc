@@ -141,8 +141,8 @@
 			(self setScript: myDoor)
 		)
 		(switch (ego onControl: origin)
-			(cMAGENTA (curRoom newRoom: 32))
-			(cRED (curRoom newRoom: 34))
+			(cRED (curRoom newRoom: 32))
+			(cCYAN (curRoom newRoom: 34))
 		)
 		(cond 
 			((< (ego x?) 130) (= vertAngle 20))
