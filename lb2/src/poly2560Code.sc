@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 2560)
-(include sci.sh)
+(include game.sh)
 (use MuseumPoints)
 (use Polygon)
 (use System)
@@ -11,17 +11,51 @@
 )
 
 (local
-	[thePoints 20] = [3 131 3 185 314 184 310 158 280 148 258 147 172 129 91 139 50 150 14 152]
-	[thePoints_2 8] = [42 160 59 172 27 179 13 170]
-	[thePoints_3 14] = [132 142 162 143 235 162 229 166 119 173 69 165 69 154]
-	[thePoints_4 10] = [264 150 256 156 224 156 172 142 173 140]
-	[thePoints_5 8] = [280 162 302 174 283 179 250 169]
+	pts = [
+		3 131
+		3 185
+		314 184
+		310 158
+		280 148
+		258 147
+		172 129
+		91 139
+		50 150
+		14 152
+		]
+	pts2 = [
+		42 160
+		59 172
+		27 179
+		13 170
+		]
+	pts3 = [
+		132 142
+		162 143
+		235 162
+		229 166
+		119 173
+		69 165
+		69 154
+	]
+	pts4 = [
+		264 150
+		256 156
+		224 156
+		172 142
+		173 140
+		]
+	pts5 = [
+		280 162
+		302 174
+		283 179
+		250 169
+		]
 )
 (instance poly2560Code of Code
-	(properties)
 	
-	(method (doit param1)
-		(param1
+	(method (doit obj)
+		(obj
 			add:
 				(poly2560a init: yourself:)
 				(poly2560b init: yourself:)
@@ -33,52 +67,47 @@
 )
 
 (instance poly2560a of Polygon
-	(properties)
-	
+
 	(method (init)
-		(= type 3)
+		(= type PContainedAccess)
 		(= size 10)
-		(= points @thePoints)
+		(= points @pts)
 	)
 )
 
 (instance poly2560b of Polygon
-	(properties)
 	
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 4)
-		(= points @thePoints_2)
+		(= points @pts2)
 	)
 )
 
 (instance poly2560c of Polygon
-	(properties)
-	
+
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 7)
-		(= points @thePoints_3)
+		(= points @pts3)
 	)
 )
 
 (instance poly2560d of Polygon
-	(properties)
-	
+
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 5)
-		(= points @thePoints_4)
+		(= points @pts4)
 	)
 )
 
 (instance poly2560e of Polygon
-	(properties)
-	
+
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 4)
-		(= points @thePoints_5)
+		(= points @pts5)
 	)
 )
 

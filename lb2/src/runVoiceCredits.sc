@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 781)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Motion)
 (use Actor)
@@ -12,7 +12,7 @@
 
 (local
 	local0 =  20
-	local1
+	i
 	local2
 	[local3 16]
 	[local19 16]
@@ -20,9 +20,9 @@
 )
 (procedure (localproc_0014)
 	(= local2 0)
-	(= local1 0)
-	(while (< local1 (creditTitle lastCel:))
-		(= [local3 local1]
+	(= i 0)
+	(while (< i (creditTitle lastCel:))
+		(= [local3 i]
 			(creditName
 				x: 15
 				view:
@@ -34,17 +34,17 @@
 				new:
 			)
 		)
-		([local3 local1] setLoop: 0 setCel: (+ local1 1))
+		([local3 i] setLoop: 0 setCel: (+ i 1))
 		(++ local2)
-		(++ local1)
+		(++ i)
 	)
 )
 
 (procedure (localproc_007c)
 	(= local2 0)
-	(= local1 0)
-	(while (< local1 (creditTitle lastCel:))
-		(= [local19 local1]
+	(= i 0)
+	(while (< i (creditTitle lastCel:))
+		(= [local19 i]
 			(creditName
 				x: 210
 				view:
@@ -56,15 +56,14 @@
 				new:
 			)
 		)
-		([local19 local1] setLoop: 1 setCel: (+ local1 1))
+		([local19 i] setLoop: 1 setCel: (+ i 1))
 		(++ local2)
-		(++ local1)
+		(++ i)
 	)
 )
 
 (instance runVoiceCredits of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 100])
 		(switch (= state newState)
 			(0
@@ -85,23 +84,23 @@
 			)
 			(1
 				(= local35 40)
-				(= local1 0)
+				(= i 0)
 				(= cycles 1)
 			)
 			(2
-				([local3 local1] init:)
-				([local19 local1] init:)
-				([local3 local1] setMotion: MoveTo 15 local35)
-				([local19 local1] setMotion: MoveTo 210 local35 self)
+				([local3 i] init:)
+				([local19 i] init:)
+				([local3 i] setMotion: MoveTo 15 local35)
+				([local19 i] setMotion: MoveTo 210 local35 self)
 				(= cycles 1)
 			)
 			(3
-				(if (>= (+ local1 1) local2) (= state 4) else 0)
+				(if (>= (+ i 1) local2) (= state 4) else 0)
 			)
 			(4
-				([local3 local1] addToPic:)
-				([local19 local1] addToPic:)
-				(++ local1)
+				([local3 i] addToPic:)
+				([local19 i] addToPic:)
+				(++ i)
 				(= local35 (+ (/ 164 local2) local35))
 				(= state 1)
 				(self cue:)
@@ -141,7 +140,7 @@
 		x 86
 		y 220
 		cel 1
-		signal $4000
+		signal ignrAct
 		moveSpeed 1
 	)
 )

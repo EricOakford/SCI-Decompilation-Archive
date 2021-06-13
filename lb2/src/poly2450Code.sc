@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 2450)
-(include sci.sh)
+(include game.sh)
 (use MuseumPoints)
 (use Polygon)
 (use System)
@@ -11,17 +11,45 @@
 )
 
 (local
-	[thePoints 16] = [0 0 319 0 319 189 314 189 314 141 272 125 224 120 0 120]
-	[thePoints_2 8] = [18 124 137 124 137 144 18 144]
-	[thePoints_3 8] = [7 150 61 150 61 177 7 177]
-	[thePoints_4 8] = [94 147 153 147 153 180 94 180]
-	[thePoints_5 8] = [202 136 239 136 239 153 202 153]
+	pts = [
+		0 0
+		319 0
+		319 189
+		314 189
+		314 141
+		272 125
+		224 120
+		0 120
+		]
+	pts2 = [
+		18 124
+		137 124
+		137 144
+		18 144
+		]
+	pts3 = [
+		7 150
+		61 150
+		61 177
+		7 177
+		]
+	pts4 = [
+		94 147
+		153 147
+		153 180
+		94 180
+		]
+	pts5 = [
+		202 136
+		239 136
+		239 153
+		202 153
+		]
 )
 (instance poly2450Code of Code
-	(properties)
-	
-	(method (doit param1)
-		(param1
+
+	(method (doit obj)
+		(obj
 			add:
 				(poly2450a init: yourself:)
 				(poly2450b init: yourself:)
@@ -33,52 +61,47 @@
 )
 
 (instance poly2450a of Polygon
-	(properties)
-	
+
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 8)
-		(= points @thePoints)
+		(= points @pts)
 	)
 )
 
 (instance poly2450b of Polygon
-	(properties)
 	
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 4)
-		(= points @thePoints_2)
+		(= points @pts2)
 	)
 )
 
 (instance poly2450c of Polygon
-	(properties)
 	
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 4)
-		(= points @thePoints_3)
+		(= points @pts3)
 	)
 )
 
 (instance poly2450d of Polygon
-	(properties)
 	
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 4)
-		(= points @thePoints_4)
+		(= points @pts4)
 	)
 )
 
 (instance poly2450e of Polygon
-	(properties)
-	
+
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 4)
-		(= points @thePoints_5)
+		(= points @pts5)
 	)
 )
 

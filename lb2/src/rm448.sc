@@ -12,9 +12,6 @@
 (use Feature)
 (use MoveFwd)
 (use LoadMany)
-(use Sound)
-(use Motion)
-(use Actor)
 (use System)
 
 (public

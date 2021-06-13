@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 0)
-(include game.sh)
+(include game.sh) (include "0.shm")
 (use LBIconItem)
 (use LBRoom)
 (use LBEgo)
@@ -752,7 +752,7 @@
 					)
 				)
 				(if (> (= soundNum (self at: currentSound)) 1000)
-					(= soundNum (- soundNum 1000))
+					(-= soundNum 1000)
 					(= temp2 1)
 				else
 					(= temp2 0)
@@ -917,7 +917,7 @@
 		(self newRoom: transferRoom)
 	)
 	
-	(method (doit &tmp thePanelObj thePanelSelector)
+	(method (doit &tmp obj sel)
 		(if
 			(and
 				(exitHandler size?)
@@ -926,10 +926,10 @@
 			(exitHandler eachElementDo: #doit)
 		)
 		(if panelObj
-			(= thePanelObj panelObj)
-			(= thePanelSelector panelSelector)
+			(= obj panelObj)
+			(= sel panelSelector)
 			(= panelObj (= panelSelector 0))
-			(Eval thePanelObj thePanelSelector)
+			(Eval obj sel)
 		)
 		(super doit:)
 	)
@@ -983,51 +983,11 @@
 		)
 		(if
 			(and
-				(OneOf
-					roomNum
-					335
-					340
-					350
-					355
-					360
-					370
-					400
-					420
-					500
-					510
-					520
-					525
-					530
-					540
-					550
-					560
-					565
-					430
-					435
-					440
-					448
-					450
-					454
-					455
-					456
-					460
-					480
-					490
-					521
-					600
-					610
-					620
-					630
-					640
-					650
-					666
-					660
-					700
-					710
-					715
-					720
-					730
-					740
+				(OneOf roomNum
+					335 340 350 355 360 370 400 420 500 510 520 525 530
+					540 550 560 565 430 435 440 448 450 454 455 456 460
+					480 490 521 600 610 620 630 640 650 666 660 700 710
+					715 720 730 740
 				)
 				(!= currentAct 5)
 			)
@@ -1040,41 +1000,23 @@
 			)
 			(ScriptID 93)
 		)
-		(if (OneOf roomNum 280 210 260 300) (ScriptID 91))
+		(if (OneOf roomNum 280 210 260 300)
+			(ScriptID 91)
+		)
 		(if
 			(and
 				(== currentAct 5)
-				(OneOf
-					roomNum
-					420
-					430
-					435
-					440
-					448
-					450
-					454
-					460
-					480
-					490
-					660
+				(OneOf roomNum
+					420 430 435 440 448 450 454
+					460 480 490 660
 				)
 			)
 			(ScriptID 94)
 		)
 		(if
-			(OneOf
-				roomNum
-				100
-				105
-				110
-				120
-				140
-				150
-				155
-				160
-				180
-				190
-				220
+			(OneOf roomNum
+				100 105 110 120 140 150 155 160
+				180 190 220
 			)
 			(ScriptID 92)
 		)
@@ -1091,66 +1033,61 @@
 			)
 			(ego setLoop: stopGroop)
 		)
-		(if (== (theIconBar curIcon?) (theIconBar at: 5))
-			(theIconBar curIcon: (theIconBar at: 0))
+		(if (== (theIconBar curIcon?) (theIconBar at: ICON_ITEM))
+			(theIconBar curIcon: (theIconBar at: ICON_WALK))
 		)
 	)
 	
 	(method (restart)
-		(curRoom style: 6 drawPic: 780)
+		(curRoom style: IRISIN drawPic: 780)
 		(cast eachElementDo: #hide)
-		(Animate (cast elements?) 0)
+		(Animate (cast elements?) FALSE)
 		(MemorySegment 0 @transferRoom 2)
 		(super restart:)
 	)
 	
-	(method (restore &tmp theSystemWindow theNormalCursor temp2 newEventHandler)
+	(method (restore &tmp oldWin oldCur newCur newEventHandler)
 		(= newEventHandler (EventHandler new:))
-		(= temp2 0)
-		(while (< temp2 (addToPics size?))
-			(newEventHandler add: (addToPics at: temp2))
-			(++ temp2)
+		(for ((= newCur 0)) (< newCur (addToPics size?)) ((++ newCur))
+			(newEventHandler add: (addToPics at: newCur))
 		)
 		(DrawPic 780 IRISOUT)
 		(cast eachElementDo: #hide)
 		(Animate 0)
-		(= theNormalCursor normalCursor)
-		(= normalCursor 999)
-		(= theSystemWindow systemWindow)
+		(= oldCur normalCursor)
+		(= normalCursor ARROW_CURSOR)
+		(= oldWin systemWindow)
 		(= systemWindow SysWindow)
 		(super restore: &rest)
 		(DrawPic (curRoom picture?) PLAIN)
 		(cast eachElementDo: #show)
-		(= temp2 0)
-		(while (< temp2 (newEventHandler size?))
-			(addToPics add: (newEventHandler at: temp2))
-			(++ temp2)
+		(for ((= newCur 0)) (< newCur (newEventHandler size?)) ((++ newCur))
+			(addToPics add: (newEventHandler at: newCur))
 		)
 		(newEventHandler release: dispose:)
 		(addToPics doit:)
-		(Animate (cast elements?) 0)
-		(= systemWindow theSystemWindow)
-		(= normalCursor theNormalCursor)
-		(if
-		(== (= temp2 ((theIconBar curIcon?) cursor?)) 999)
+		(Animate (cast elements?) FALSE)
+		(= systemWindow oldWin)
+		(= normalCursor oldCur)
+		(if (== (= newCur ((theIconBar curIcon?) cursor?)) ARROW_CURSOR)
 			(theGame setCursor: waitCursor)
 		else
-			(theGame setCursor: temp2)
+			(theGame setCursor: newCur)
 		)
 	)
 	
-	(method (save &tmp theSystemWindow theNormalCursor temp2)
-		(= theNormalCursor normalCursor)
-		(= normalCursor 999)
-		(= theSystemWindow systemWindow)
+	(method (save &tmp oldWin oldCur newCur)
+		(= oldCur normalCursor)
+		(= normalCursor ARROW_CURSOR)
+		(= oldWin systemWindow)
 		(= systemWindow SysWindow)
 		(super save: &rest)
-		(= systemWindow theSystemWindow)
-		(= normalCursor theNormalCursor)
-		(if (== (= temp2 ((theIconBar curIcon?) cursor?)) 999)
+		(= systemWindow oldWin)
+		(= normalCursor oldCur)
+		(if (== (= newCur ((theIconBar curIcon?) cursor?)) ARROW_CURSOR)
 			(theGame setCursor: waitCursor)
 		else
-			(theGame setCursor: temp2)
+			(theGame setCursor: newCur)
 		)
 	)
 	
@@ -1161,48 +1098,54 @@
 				(keyDown
 					(switch (event message?)
 						(TAB
-							(if (not (& ((theIconBar at: 6) signal?) $0004))
+							(if (not (& ((theIconBar at: ICON_INVENTORY) signal?) DISABLED))
 								(if fastCast (return fastCast))
 								(ego showInv:)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 						)
 						(SHIFTTAB
-							(if (not (& ((theIconBar at: 6) signal?) $0004))
+							(if (not (& ((theIconBar at: ICON_INVENTORY) signal?) DISABLED))
 								(if fastCast (return fastCast))
 								(ego showInv:)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 						)
 						(`^q
 							(theGame quitGame:)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 						(`^c
-							(if (not (& ((theIconBar at: 7) signal?) $0004))
+							(if (not (& ((theIconBar at: ICON_CONTROL) signal?) DISABLED))
 								(theGame showControls:)
 							)
 						)
 						(`#2
 							(cond 
-								((theGame masterVolume:) (theGame masterVolume: 0))
-								((> numVoices 1) (theGame masterVolume: 15))
-								(else (theGame masterVolume: 1))
+								((theGame masterVolume:)
+									(theGame masterVolume: 0)
+								)
+								((> numVoices 1)
+									(theGame masterVolume: 15)
+								)
+								(else
+									(theGame masterVolume: 1)
+								)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 						(`#5
-							(if (not (& ((theIconBar at: 7) signal?) $0004))
+							(if (not (& ((theIconBar at: ICON_CONTROL) signal?) DISABLED))
 								(if fastCast (return fastCast))
 								(theGame save:)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 						)
 						(`#7
-							(if (not (& ((theIconBar at: 7) signal?) $0004))
+							(if (not (& ((theIconBar at: ICON_CONTROL) signal?) DISABLED))
 								(if fastCast (return fastCast))
 								(theGame restore:)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 						)
 						(`+
@@ -1218,7 +1161,9 @@
 							)
 						)
 						(`=
-							(if (user controls?) (ego setSpeed: 6))
+							(if (user controls?)
+								(ego setSpeed: 6)
+							)
 						)
 					)
 				)
@@ -1226,8 +1171,8 @@
 		)
 	)
 	
-	(method (setCursor form showIt theX theY &tmp theTheCursor)
-		(= theTheCursor theCursor)
+	(method (setCursor form showIt theX theY &tmp oldCur)
+		(= oldCur theCursor)
 		(if argc
 			(if (IsObject form)
 				((= theCursor form) init:)
@@ -1235,33 +1180,37 @@
 				(SetCursor (= theCursor form) 0 0)
 			)
 		)
-		(if (and (> argc 1) (not showIt)) (SetCursor 996 0 0))
+		(if (and (> argc 1) (not showIt))
+			(SetCursor INVIS_CURSOR 0 0)
+		)
 		(if (> argc 2)
 			(if (< theX 0) (= theX 0))
 			(if (< theY 0) (= theY 0))
 			(SetCursor theX theY)
 		)
-		(return theTheCursor)
+		(return oldCur)
 	)
 	
 	(method (quitGame)
 		(if
 			(Print
-				addText: 12 0 0 1 0 0 0
+				addText: N_QUIT NULL NULL 1 0 0 0
 				addIcon: 992 0 0 0 25
-				addButton: 1 12 0 8 1 140 67 0
-				addButton: 0 12 0 9 1 140 87 0
-				saveCursor: 1
+				addButton: 1 N_QUIT NULL C_YES 1 140 67 0
+				addButton: 0 N_QUIT NULL C_NO 1 140 87 0
+				saveCursor: TRUE
 				init:
 			)
-			(super quitGame: 1)
+			(super quitGame: TRUE)
 		)
 	)
 	
 	(method (pragmaFail)
-		(if modelessDialog (modelessDialog dispose:))
+		(if modelessDialog
+			(modelessDialog dispose:)
+		)
 		(if (user canInput:)
-			(messager say: 0 ((user curEvent?) message?))
+			(messager say: NULL ((user curEvent?) message?))
 		)
 	)
 	
@@ -1271,40 +1220,45 @@
 		)
 		(= oldCanControl (user canControl:))
 		(= oldCanInput (user canInput:))
-		(user canControl: 0 canInput: 0)
+		(user canControl: FALSE canInput: FALSE)
 		(ego setMotion: 0)
-		(= disabledIcons 0)
+		(= disabledIcons NULL)
 		(theIconBar eachElementDo: #perform checkIcon)
-		(theIconBar curIcon: (theIconBar at: 7))
-		(theIconBar disable: 0 1 2 3 4 5 6)
+		(theIconBar curIcon: (theIconBar at: ICON_CONTROL))
+		(theIconBar disable:
+			ICON_WALK
+			ICON_LOOK
+			ICON_DO
+			ICON_TALK
+			ICON_ASK
+			ICON_ITEM
+			ICON_INVENTORY
+		)
 		(if (not (HaveMouse))
-			(theGame setCursor: 996)
+			(theGame setCursor: INVIS_CURSOR)
 		else
 			(theGame setCursor: waitCursor)
 		)
 	)
 	
 	(method (handsOn param1)
-		(user canControl: 1 canInput: 1)
-		(theIconBar enable: 0 1 2 3 4 5 6)
-		(if (not (curRoom inset:)) (theIconBar enable: 7))
+		(user canControl: TRUE canInput: TRUE)
+		(theIconBar enable:
+			ICON_WALK
+			ICON_LOOK
+			ICON_DO
+			ICON_TALK
+			ICON_ASK
+			ICON_ITEM
+			ICON_INVENTORY
+		)
+		(if (not (curRoom inset:))
+			(theIconBar enable: ICON_CONTROL)
+		)
 		(if
-			(OneOf
-				curRoomNum
-				310
-				420
-				454
-				500
-				520
-				525
-				550
-				560
-				620
-				630
-				640
-				700
-				730
-				740
+			(OneOf curRoomNum
+				310 420 454 500 520 525 550
+				560 620 630 640 700 730 740
 			)
 			(theIconBar disable: 7)
 		)
@@ -1334,9 +1288,13 @@
 		(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
 	)
 	
-	(method (points param1 param2)
-		(if (and (> argc 1) (Bset param2)) (= param1 0))
-		(if param1 (theGame changeScore: param1))
+	(method (points pValue pFlag)
+		(if (and (> argc 1) (Bset pFlag))
+			(= pValue 0)
+		)
+		(if pValue
+			(theGame changeScore: pValue)
+		)
 	)
 	
 	(method (showControls &tmp temp0)
@@ -1347,29 +1305,13 @@
 		(if
 			(or
 				(== currentAct 2)
-				(OneOf
-					curRoomNum
-					435
-					440
-					450
-					454
-					455
-					520
-					521
-					525
-					550
-					560
-					565
-					620
-					630
-					650
-					700
-					710
-					715
-					720
+				(OneOf curRoomNum
+					435 440 450 454 455 520 521 525
+					550 560 565 620 630 650 700 710
+					715 720
 				)
 			)
-			(messager say: 11 0 0 0 0 0)
+			(messager say: N_NO_MEMORY NULL NULL 0 0 0)
 		else
 			((ScriptID 13 0) doit:)
 		)
@@ -1381,13 +1323,13 @@
 		view 990
 		loop 0
 		cel 0
-		type $5000
+		type (| userEvent walkEvent)
 		message V_WALK
-		signal $0041
+		signal (| HIDEBAR RELVERIFY)
 		maskView 990
 		maskLoop 9
-		noun 1
-		helpVerb 12
+		noun N_WALK
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -1399,9 +1341,9 @@
 		(return
 			(if (super select: &rest)
 				(theIconBar hide:)
-				(return 1)
+				(return TRUE)
 			else
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
@@ -1413,11 +1355,11 @@
 		loop 1
 		cel 0
 		message V_LOOK
-		signal $0041
+		signal (| HIDEBAR RELVERIFY)
 		maskView 990
 		maskLoop 9
-		noun 2
-		helpVerb 12
+		noun N_LOOK
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -1432,11 +1374,11 @@
 		loop 2
 		cel 0
 		message V_DO
-		signal $0041
+		signal (| HIDEBAR RELVERIFY)
 		maskView 990
 		maskLoop 9
-		noun 3
-		helpVerb 12
+		noun N_DO
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -1450,12 +1392,12 @@
 		view 990
 		loop 3
 		cel 0
-		message 2
-		signal $0041
+		message V_TALK
+		signal (| HIDEBAR RELVERIFY)
 		maskView 990
 		maskLoop 9
-		noun 4
-		helpVerb 12
+		noun N_TALK
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -1469,12 +1411,12 @@
 		view 990
 		loop 4
 		cel 0
-		message 6
-		signal $0041
+		message V_ASK
+		signal (| HIDEBAR RELVERIFY)
 		maskView 990
 		maskLoop 9
-		noun 5
-		helpVerb 12
+		noun N_ASK
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -1488,32 +1430,31 @@
 		view 990
 		loop 5
 		cel 0
-		cursor 999
-		message 0
-		signal $0041
+		cursor ARROW_CURSOR
+		message NULL
+		signal (| HIDEBAR RELVERIFY)
 		maskView 990
 		maskLoop 9
 		maskCel 1
-		noun 9
-		helpVerb 12
+		noun N_ITEM
+		helpVerb V_HELP
 	)
 	
-	(method (select param1 &tmp newEvent temp1 theIconBarCurInvIcon temp3 temp4)
+	(method (select relVer &tmp event whichCel thisIcon theX theY)
 		(return
 			(cond 
-				((& signal $0004) 0)
-				((and argc param1 (& signal $0001))
-					(if
-					(= theIconBarCurInvIcon (theIconBar curInvIcon?))
-						(= temp3
+				((& signal DISABLED) 0)
+				((and argc relVer (& signal RELVERIFY))
+					(if (= thisIcon (theIconBar curInvIcon?))
+						(= theX
 							(+
 								(/
 									(-
 										(- nsRight nsLeft)
 										(CelWide
-											(theIconBarCurInvIcon view?)
-											(+ (theIconBarCurInvIcon loop?) 1)
-											(theIconBarCurInvIcon cel?)
+											(thisIcon view?)
+											(+ (thisIcon loop?) 1)
+											(thisIcon cel?)
 										)
 									)
 									2
@@ -1521,16 +1462,16 @@
 								nsLeft
 							)
 						)
-						(= temp4
+						(= theY
 							(+
 								(theIconBar y?)
 								(/
 									(-
 										(- nsBottom nsTop)
 										(CelHigh
-											(theIconBarCurInvIcon view?)
-											(+ (theIconBarCurInvIcon loop?) 1)
-											(theIconBarCurInvIcon cel?)
+											(thisIcon view?)
+											(+ (thisIcon loop?) 1)
+											(thisIcon cel?)
 										)
 									)
 									2
@@ -1539,76 +1480,72 @@
 							)
 						)
 					)
-					(DrawCel view loop (= temp1 1) nsLeft nsTop -1)
-					(if
-					(= theIconBarCurInvIcon (theIconBar curInvIcon?))
+					(DrawCel view loop (= whichCel 1) nsLeft nsTop -1)
+					(if (= thisIcon (theIconBar curInvIcon?))
 						(DrawCel
-							(theIconBarCurInvIcon view?)
-							(+ 1 (theIconBarCurInvIcon loop?))
-							(theIconBarCurInvIcon cel?)
-							temp3
-							temp4
+							(thisIcon view?)
+							(+ 1 (thisIcon loop?))
+							(thisIcon cel?)
+							theX
+							theY
 							-1
 						)
 					)
-					(Graph GShowBits nsTop nsLeft nsBottom nsRight 1)
-					(while (!= ((= newEvent (Event new:)) type?) 2)
-						(newEvent localize:)
+					(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
+					(while (!= ((= event (Event new:)) type?) mouseUp)
+						(event localize:)
 						(cond 
-							((self onMe: newEvent)
-								(if (not temp1)
-									(DrawCel view loop (= temp1 1) nsLeft nsTop -1)
-									(if
-									(= theIconBarCurInvIcon (theIconBar curInvIcon?))
+							((self onMe: event)
+								(if (not whichCel)
+									(DrawCel view loop (= whichCel 1) nsLeft nsTop -1)
+									(if (= thisIcon (theIconBar curInvIcon?))
 										(DrawCel
-											(theIconBarCurInvIcon view?)
-											(+ 1 (theIconBarCurInvIcon loop?))
-											(theIconBarCurInvIcon cel?)
-											temp3
-											temp4
+											(thisIcon view?)
+											(+ 1 (thisIcon loop?))
+											(thisIcon cel?)
+											theX
+											theY
 											-1
 										)
 									)
-									(Graph GShowBits nsTop nsLeft nsBottom nsRight 1)
+									(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
 								)
 							)
-							(temp1
-								(DrawCel view loop (= temp1 0) nsLeft nsTop -1)
-								(if
-								(= theIconBarCurInvIcon (theIconBar curInvIcon?))
+							(whichCel
+								(DrawCel view loop (= whichCel 0) nsLeft nsTop -1)
+								(if (= thisIcon (theIconBar curInvIcon?))
 									(DrawCel
-										(theIconBarCurInvIcon view?)
-										(+ 1 (theIconBarCurInvIcon loop?))
-										(theIconBarCurInvIcon cel?)
-										temp3
-										temp4
+										(thisIcon view?)
+										(+ 1 (thisIcon loop?))
+										(thisIcon cel?)
+										theX
+										theY
 										-1
 									)
 								)
-								(Graph GShowBits nsTop nsLeft nsBottom nsRight 1)
+								(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
 							)
 						)
-						(newEvent dispose:)
+						(event dispose:)
 					)
-					(newEvent dispose:)
-					(if (== temp1 1)
+					(event dispose:)
+					(if (== whichCel 1)
 						(DrawCel view loop 0 nsLeft nsTop -1)
-						(if
-						(= theIconBarCurInvIcon (theIconBar curInvIcon?))
+						(if (= thisIcon (theIconBar curInvIcon?))
 							(DrawCel
-								(theIconBarCurInvIcon view?)
-								(+ 1 (theIconBarCurInvIcon loop?))
-								(theIconBarCurInvIcon cel?)
-								temp3
-								temp4
+								(thisIcon view?)
+								(+ 1 (thisIcon loop?))
+								(thisIcon cel?)
+								theX
+								theY
 								-1
 							)
 						)
-						(Graph GShowBits nsTop nsLeft nsBottom nsRight 1)
+						(Graph GShowBits nsTop nsLeft nsBottom nsRight VMAP)
 					)
-					temp1
+					whichCel
 				)
-				(else 1)
+				(else TRUE)
 			)
 		)
 	)
@@ -1619,14 +1556,14 @@
 		view 990
 		loop 6
 		cel 0
-		cursor 999
-		type $0000
-		message 0
-		signal $0043
+		cursor ARROW_CURSOR
+		type NULL
+		message NULL
+		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		maskView 990
 		maskLoop 9
-		noun 6
-		helpVerb 12
+		noun N_INVENTORY
+		helpVerb V_HELP
 	)
 	
 	(method (show)
@@ -1639,9 +1576,9 @@
 			(if (super select: &rest)
 				(theIconBar hide:)
 				(ego showInv:)
-				(return 1)
+				(return TRUE)
 			else
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
@@ -1652,13 +1589,13 @@
 		view 990
 		loop 7
 		cel 0
-		cursor 999
-		message 7
-		signal $0043
+		cursor ARROW_CURSOR
+		message V_BASEBALL
+		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		maskView 990
 		maskLoop 9
-		noun 7
-		helpVerb 12
+		noun N_CONTROLS
+		helpVerb V_HELP
 	)
 	
 	(method (select)
@@ -1666,9 +1603,9 @@
 			(if (super select: &rest)
 				(theIconBar hide:)
 				(theGame showControls:)
-				(return 1)
+				(return TRUE)
 			else
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
@@ -1680,13 +1617,13 @@
 		loop 8
 		cel 0
 		cursor 9
-		type $2000
-		message 12
-		signal $0003
+		type helpEvent
+		message V_HELP
+		signal (| RELVERIFY IMMEDIATE)
 		maskView 990
 		maskLoop 9
-		noun 8
-		helpVerb 12
+		noun N_HELP
+		helpVerb V_HELP
 	)
 )
 
@@ -1695,12 +1632,12 @@
 		view 990
 		loop 10
 		cel 0
-		message 13
-		signal $0041
+		message V_EXIT
+		signal (| HIDEBAR RELVERIFY)
 		maskView 990
 		maskLoop 9
-		noun 10
-		helpVerb 12
+		noun N_EXIT
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -1712,27 +1649,26 @@
 		(return
 			(if (super select: &rest)
 				(theIconBar hide:)
-				(return 1)
+				(return TRUE)
 			else
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
 )
 
 (instance checkIcon of Code
-	(properties)
 	
-	(method (doit param1)
+	(method (doit theIcon)
 		(if
 			(and
-				(param1 isKindOf: IconItem)
-				(& (param1 signal?) $0004)
+				(theIcon isKindOf: IconItem)
+				(& (theIcon signal?) DISABLED)
 			)
 			(= disabledIcons
 				(|
 					disabledIcons
-					(>> $8000 (theIconBar indexOf: param1))
+					(>> $8000 (theIconBar indexOf: theIcon))
 				)
 			)
 		)
@@ -1740,190 +1676,271 @@
 )
 
 (instance lb2DoVerbCode of Code
-	(properties)
-	
-	(method (doit param1 param2)
-		(DftDoVerb param2 param1)
+
+	(method (doit theVerb theNoun)
+		(DftDoVerb theNoun theVerb)
 	)
 )
 
 (instance lb2FtrInit of Code
-	(properties)
 	
-	(method (doit param1)
-		(if (== (param1 sightAngle?) 26505)
-			(param1 sightAngle: 40)
+	(method (doit obj)
+		(if (== (obj sightAngle?) ftrDefault)
+			(obj sightAngle: 40)
 		)
-		(if (== (param1 actions?) 26505) (param1 actions: 0))
+		(if (== (obj actions?) ftrDefault)
+			(obj actions: 0)
+		)
 		(if
 			(and
-				(not (param1 approachX?))
-				(not (param1 approachY?))
+				(not (obj approachX?))
+				(not (obj approachY?))
 			)
-			(param1 approachX: (param1 x?) approachY: (param1 y?))
+			(obj approachX: (obj x?) approachY: (obj y?))
 		)
 	)
 )
 
 (instance lb2Messager of Messager
-	(properties)
 	
-	(method (findTalker param1 &tmp temp0)
+	(method (findTalker who &tmp theTalker)
 		(if
-			(= temp0
-				(switch param1
-					(99 narrator)
-					(22 (ScriptID 310 22))
-					(20 (ScriptID 1904 20))
-					(33 (ScriptID 260 33))
-					(14 (ScriptID 1903 14))
-					(17 (ScriptID 300 17))
-					(16 (ScriptID 1901 16))
-					(21
+			(= theTalker
+				(switch who
+					(NARRATOR narrator)
+					(BARTENDER
+						(ScriptID 310 22)
+					)
+					(BEAR
+						(ScriptID 1904 20)
+					)
+					(BIFF
+						(ScriptID 260 33)
+					)
+					(BOB
+						(ScriptID 1903 14)
+					)
+					(BOUNCER
+						(ScriptID 300 17)
+					)
+					(BUM
+						(ScriptID 1901 16)
+					)
+					(CORONER
 						(if (== curRoomNum 750)
 							(ScriptID 750 21)
 						else
 							(ScriptID 1899 21)
 						)
 					)
-					(29 (ScriptID 1884 29))
-					(7
-						(if (Btst 30) (ScriptID 230 7) else (ScriptID 1896 7))
+					(COUNTESS
+						(ScriptID 1884 29)
 					)
-					(1 (ScriptID 1880 1))
-					(41 (ScriptID 280 41))
-					(23
+					(CRODFOLLER
+						(if (Btst 30)
+							(ScriptID 230 7)
+						else
+							(ScriptID 1896 7)
+						)
+					)
+					(DAD
+						(ScriptID 1880 1)
+					)
+					(DRUNK
+						(ScriptID 280 41)
+					)
+					(ERNIE
 						(if (== curRoomNum 355)
 							(ScriptID 355 23)
 						else
 							(ScriptID 1893 23)
 						)
 					)
-					(8 (ScriptID 1906 8))
-					(18 (ScriptID 1889 18))
-					(15 (ScriptID 1900 15))
-					(2
+					(FLAPPER
+						(ScriptID 1906 8)
+					)
+					(HEIMLICH
+						(ScriptID 1889 18)
+					)
+					(IRMGAARD
+						(ScriptID 1900 15)
+					)
+					(LAURA
 						(cond 
-							((Btst 30) (ScriptID 230 2))
-							((== curRoomNum 155) (ScriptID 155 2))
-							((== curRoomNum 220) (ScriptID 220 2))
-							((== curRoomNum 330) (ScriptID 330 2))
-							((and (== curRoomNum 355) (not (Btst 91))) (ScriptID 355 2))
-							(
-							(and (== curRoomNum 710) (== (curRoom picture?) 716)) (ScriptID 710 2))
-							(else (ScriptID 1881 2))
+							((Btst 30)
+								(ScriptID 230 2)
+							)
+							((== curRoomNum 155)
+								(ScriptID 155 2)
+							)
+							((== curRoomNum 220)
+								(ScriptID 220 2)
+							)
+							((== curRoomNum 330)
+								(ScriptID 330 2)
+							)
+							((and (== curRoomNum 355) (not (Btst 91)))
+								(ScriptID 355 2)
+							)
+							((and (== curRoomNum 710) (== (curRoom picture?) 716))
+								(ScriptID 710 2)
+							)
+							(else
+								(ScriptID 1881 2)
+							)
 						)
 					)
-					(4 (ScriptID 1895 4))
-					(24 (ScriptID 1907 24))
-					(37
-						(if (== curRoomNum 230) (ScriptID 230 37))
+					(LOFAT
+						(ScriptID 1895 4)
 					)
-					(36
-						(if (== curRoomNum 230) (ScriptID 230 37))
+					(LUIGI
+						(ScriptID 1907 24)
 					)
-					(35
-						(if (== curRoomNum 230) (ScriptID 230 37))
-					)
-					(25 (ScriptID 1892 25))
-					(19
-						(cond 
-							((== curRoomNum 295) (ScriptID 295 19))
-							((== curRoomNum 770) (ScriptID 770 19))
-							(else (ScriptID 1888 19))
+					(MAN3
+						(if (== curRoomNum 230)
+							(ScriptID 230 37)
 						)
 					)
-					(30 (ScriptID 310 30))
-					(10 (ScriptID 1882 10))
-					(27
-						(if
-						(and (== curRoomNum 710) (== (curRoom picture?) 716))
+					(MAN2
+						(if (== curRoomNum 230)
+							(ScriptID 230 37)
+						)
+					)
+					(MAN1
+						(if (== curRoomNum 230)
+							(ScriptID 230 37)
+						)
+					)
+					(OLYMPIA
+						(ScriptID 1892 25)
+					)
+					(ORILEY
+						(cond 
+							((== curRoomNum 295)
+								(ScriptID 295 19)
+							)
+							((== curRoomNum 770)
+								(ScriptID 770 19)
+							)
+							(else
+								(ScriptID 1888 19)
+							)
+						)
+					)
+					(PIANO_PLAYER
+						(ScriptID 310 30)
+					)
+					(PIPPIN
+						(ScriptID 1882 10)
+					)
+					(RAMESES
+						(if (and (== curRoomNum 710) (== (curRoom picture?) 716))
 							(ScriptID 710 27)
 						else
 							(ScriptID 1891 27)
 						)
 					)
-					(39 (ScriptID 480 39))
-					(13 (ScriptID 1902 13))
-					(3
+					(REX
+						(ScriptID 480 39)
+					)
+					(ROCCO
+						(ScriptID 1902 13)
+					)
+					(SAM
 						(if (== curRoomNum 220)
 							(ScriptID 220 3)
 						else
 							(ScriptID 1894 3)
 						)
 					)
-					(5 (ScriptID 1897 5))
-					(31 (ScriptID 310 31))
-					(12
+					(SARGEANT
+						(ScriptID 1897 5)
+					)
+					(SINGER
+						(ScriptID 310 31)
+					)
+					(STEVE
 						(cond 
-							((== curRoomNum 240) (ScriptID 240 12))
-							((== curRoomNum 330) (ScriptID 330 12))
-							((== curRoomNum 775) (ScriptID 775 12))
-							(else (ScriptID 1887 12))
+							((== curRoomNum 240)
+								(ScriptID 240 12)
+							)
+							((== curRoomNum 330)
+								(ScriptID 330 12)
+							)
+							((== curRoomNum 775)
+								(ScriptID 775 12)
+							)
+							(else
+								(ScriptID 1887 12)
+							)
 						)
 					)
-					(32 (ScriptID 260 32))
-					(34 (ScriptID 260 34))
-					(9 (ScriptID 1883 9))
-					(38 (ScriptID 290 38))
-					(11 (ScriptID 1886 11))
-					(28 (ScriptID 1885 28))
-					(6 (ScriptID 1890 6))
+					(STINKY
+						(ScriptID 260 32)
+					)
+					(TUBBY
+						(ScriptID 260 34)
+					)
+					(TUTSMITH
+						(ScriptID 1883 9)
+					)
+					(WANDERER
+						(ScriptID 290 38)
+					)
+					(WATNEY
+						(ScriptID 1886 11)
+					)
+					(YVETTE
+						(ScriptID 1885 28)
+					)
+					(ZIGGY
+						(ScriptID 1890 6)
+					)
 				)
 			)
 			(return)
 		else
-			(super findTalker: param1)
+			(super findTalker: who)
 		)
 	)
 )
 
 (instance lb2ApproachCode of Code
-	(properties)
 	
-	(method (doit param1)
-		(switch param1
-			(1 1)
-			(2 2)
-			(3 4)
-			(4 8)
-			(6 16)
-			(13 32)
-			(8 64)
-			(38 128)
-			(else  -32768)
+	(method (doit theVerb)
+		(switch theVerb
+			(V_LOOK $0001)
+			(V_TALK $0002)
+			(V_WALK $0004)
+			(V_DO $0008)
+			(V_ASK $0010)
+			(V_EXIT $0020)
+			(V_MAGNIFIER $0040)
+			(V_WATERGLASS $0080)
+			(else  $8000)
 		)
 	)
 )
 
 (instance lb2Win of SysWindow
 	(properties
-		type $0080
+		type wCustom
 	)
 	
-	(method (open &tmp temp0 temp1)
+	(method (open &tmp thePort theLoop)
 		(cond 
-			((OneOf curRoomNum 280 210 330 240 260 300) (= temp1 0))
-			(
-				(OneOf
-					curRoomNum
-					210
-					220
-					230
-					260
-					270
-					280
-					290
-					295
-					300
-					310
-					320
-				)
-				(= temp1 1)
+			((OneOf curRoomNum 280 210 330 240 260 300)
+				(= theLoop 0)
 			)
 			(
-				(OneOf
-					curRoomNum
+				(OneOf curRoomNum
+					210 220 230 260 270 280
+					290 295 300 310 320
+				)
+				(= theLoop 1)
+			)
+			(
+				(OneOf curRoomNum
 					100
 					105
 					110
@@ -1943,10 +1960,10 @@
 					370
 					400
 				)
-				(= temp1 2)
+				(= theLoop 2)
 			)
 			(
-			(OneOf curRoomNum 460 660 700 710 715 720 730 740) (= temp1 4))
+			(OneOf curRoomNum 460 660 700 710 715 720 730 740) (= theLoop 4))
 			(
 				(OneOf
 					curRoomNum
@@ -1994,19 +2011,17 @@
 					730
 					740
 				)
-				(= temp1 3)
+				(= theLoop 3)
 			)
-			(else (= temp1 4))
+			(else (= theLoop 4))
 		)
-		(= lsLeft (- left (/ (CelWide 994 temp1 0) 2)))
+		(= lsLeft (- left (/ (CelWide 994 theLoop 0) 2)))
 		(= lsTop (- top (if title 19 else 10)))
-		(= lsRight (+ right (/ (CelWide 994 temp1 0) 2)))
-		(= lsBottom
-			(Max (+ bottom 3) (+ lsTop (CelHigh 994 temp1 0) 3))
-		)
+		(= lsRight (+ right (/ (CelWide 994 theLoop 0) 2)))
+		(= lsBottom (Max (+ bottom 3) (+ lsTop (CelHigh 994 theLoop 0) 3)))
 		(= priority 15)
 		(super open:)
-		(= temp0 (GetPort))
+		(= thePort (GetPort))
 		(SetPort 0)
 		(Graph GFillRect top left bottom right 3 myBackColor 15)
 		(Graph
@@ -2045,32 +2060,32 @@
 			global151
 			15
 		)
-		(Graph GShowBits top left bottom right 1)
+		(Graph GShowBits top left bottom right VMAP)
 		(Graph
 			GShowBits
 			lsTop
 			lsLeft
-			(+ lsTop (CelHigh 994 temp1 0))
-			(+ lsLeft (CelWide 994 temp1 0))
-			1
+			(+ lsTop (CelHigh 994 theLoop 0))
+			(+ lsLeft (CelWide 994 theLoop 0))
+			VMAP
 		)
 		(Graph
 			GShowBits
 			lsTop
-			(- lsRight (CelWide 994 temp1 0))
-			(+ lsTop (CelHigh 994 temp1 0))
+			(- lsRight (CelWide 994 theLoop 0))
+			(+ lsTop (CelHigh 994 theLoop 0))
 			lsRight
-			1
+			VMAP
 		)
-		(DrawCel 994 temp1 0 (+ lsLeft 1) (+ lsTop 1) -1)
+		(DrawCel 994 theLoop 0 (+ lsLeft 1) (+ lsTop 1) -1)
 		(DrawCel
 			994
-			temp1
+			theLoop
 			1
-			(- (- lsRight (CelWide 994 temp1 0)) 1)
+			(- (- lsRight (CelWide 994 theLoop 0)) 1)
 			(+ lsTop 1)
 			-1
 		)
-		(SetPort temp0)
+		(SetPort thePort)
 	)
 )

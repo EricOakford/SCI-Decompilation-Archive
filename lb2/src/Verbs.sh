@@ -16,4 +16,6 @@
 (define V_BASEBALL 7)
 (define V_MAGNIFIER 8)
 (define V_WATERGLASS 38)
+(define V_HELP 12)
+(define V_EXIT 13)
 

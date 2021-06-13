@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 2700)
-(include sci.sh)
+(include game.sh)
 (use Polygon)
 (use System)
 
@@ -10,25 +10,34 @@
 )
 
 (local
-	[thePoints 20] = [99 148 175 148 182 144 176 134 179 127 173 119 156 119 156 125 131 125 131 136]
+	pts = [
+		99 148
+		175 148
+		182 144
+		176 134
+		179 127
+		173 119
+		156 119
+		156 125
+		131 125
+		131 136
+		]
 )
 (procedure (proc2700_1)
 )
 
 (instance poly2700Code of Code
-	(properties)
 	
-	(method (doit param1)
-		(param1 add: (poly2700a init: yourself:))
+	(method (doit obj)
+		(obj add: (poly2700a init: yourself:))
 	)
 )
 
 (instance poly2700a of Polygon
-	(properties)
-	
+
 	(method (init)
-		(= type 3)
+		(= type PContainedAccess)
 		(= size 10)
-		(= points @thePoints)
+		(= points @pts)
 	)
 )

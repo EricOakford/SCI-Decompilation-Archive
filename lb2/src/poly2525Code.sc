@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 2525)
-(include sci.sh)
+(include game.sh)
 (use MuseumPoints)
 (use Polygon)
 (use System)
@@ -11,26 +11,27 @@
 )
 
 (local
-	[thePoints 8] = [0 0 5 0 5 5 0 5]
+	pts = [
+		0 0
+		5 0
+		5 5
+		0 5
+		]
 )
 (instance poly2525Code of Code
-	(properties)
-	
-	(method (doit param1)
-		(param1 add: (poly2525a init: yourself:))
+
+	(method (doit obj)
+		(obj add: (poly2525a init: yourself:))
 	)
 )
 
 (instance poly2525a of Polygon
-	(properties)
 	
 	(method (init)
-		(= type 2)
+		(= type PBarredAccess)
 		(= size 4)
-		(= points @thePoints)
+		(= points @pts)
 	)
 )
 
-(instance pts2525 of MuseumPoints
-	(properties)
-)
+(instance pts2525 of MuseumPoints)

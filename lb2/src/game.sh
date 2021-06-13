@@ -6,7 +6,7 @@
 ;**************************************************************
 
 (include system.sh) (include sci2.sh) ;system and kernel functions
-(include verbs.sh)
+(include verbs.sh) (include talkers.sh)
 
 (define DISPOSE	11)
 (define LBINIT	14)
@@ -22,6 +22,8 @@
 	ICON_TALK
 	ICON_ASK
 	ICON_ITEM
+	ICON_INVENTORY
+	ICON_CONTROL
 )
 ;Event flags
 (define fFlag25			25)

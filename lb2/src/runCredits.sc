@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 782)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Jump)
 (use Motion)
@@ -13,16 +13,16 @@
 
 (local
 	local0
-	local1
+	i
 	local2
 	[local3 16]
 	local19
 )
 (procedure (localproc_0024)
 	(= local2 0)
-	(= local1 0)
-	(while (< local1 (creditTitle lastCel:))
-		(= [local3 local1]
+	(= i 0)
+	(while (< i (creditTitle lastCel:))
+		(= [local3 i]
 			(creditName
 				view:
 					(switch local0
@@ -40,7 +40,7 @@
 				new:
 			)
 		)
-		([local3 local1]
+		([local3 i]
 			setLoop:
 				(switch local0
 					(11 0)
@@ -54,15 +54,14 @@
 					(19 6)
 					(else  local0)
 				)
-			setCel: (+ local1 1)
+			setCel: (+ i 1)
 		)
 		(++ local2)
-		(++ local1)
+		(++ i)
 	)
 )
 
 (instance runCredits of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 100])
 		(switch (= state newState)
@@ -104,10 +103,10 @@
 					stopUpd:
 					cel: 0
 					ignoreActors:
-					setCycle: (if (OneOf local0 14 15 16) Fwd else 0)
+					setCycle: (if (OneOf local0 14 15 16) Forward else 0)
 				)
 				(if (OneOf local0 14 15 16)
-					(creditProp2 init: setCycle: Fwd)
+					(creditProp2 init: setCycle: Forward)
 				)
 				(switch local0
 					(0
@@ -207,23 +206,23 @@
 				else
 					(= local19 40)
 				)
-				(= local1 0)
-				([local3 local1] init:)
+				(= i 0)
+				([local3 i] init:)
 				(= cycles 1)
 			)
 			(2
-				([local3 local1] setMotion: MoveTo 86 local19 self)
-				(if (< (+ local1 1) local2)
-					([local3 (+ local1 1)] init:)
+				([local3 i] setMotion: MoveTo 86 local19 self)
+				(if (< (+ i 1) local2)
+					([local3 (+ i 1)] init:)
 				)
 				(= cycles 1)
 			)
 			(3
-				(if (>= (+ local1 1) local2) (= state 4) else 0)
+				(if (>= (+ i 1) local2) (= state 4) else 0)
 			)
 			(4
-				([local3 local1] addToPic:)
-				(++ local1)
+				([local3 i] addToPic:)
+				(++ i)
 				(if (== local0 6)
 					(= local19 (+ local19 40))
 				else
@@ -235,34 +234,34 @@
 			(5
 				(switch local0
 					(0
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(1
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(2 (= ticks 300))
 					(3
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(4
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(5
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(6
-						(creditProp setCycle: Fwd setMotion: MoveTo 75 189 self)
+						(creditProp setCycle: Forward setMotion: MoveTo 75 189 self)
 					)
 					(7
-						(creditProp setCycle: Fwd setMotion: MoveTo 235 189 self)
+						(creditProp setCycle: Forward setMotion: MoveTo 235 189 self)
 					)
 					(8
-						(creditProp setCycle: Fwd setMotion: MoveTo 235 189 self)
+						(creditProp setCycle: Forward setMotion: MoveTo 235 189 self)
 					)
 					(9
 						(creditProp setScript: sPlay self)
@@ -271,31 +270,31 @@
 						(creditProp setScript: sPlay self)
 					)
 					(11
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(12
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(13
-						(creditProp3 cycleSpeed: 1 setCycle: Fwd init:)
+						(creditProp3 cycleSpeed: 1 setCycle: Forward init:)
 						(= ticks 300)
 					)
 					(14 (= ticks 300))
 					(15 (= ticks 300))
 					(16 (= ticks 300))
 					(17
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(18
-						(creditProp2 setCycle: End)
-						(creditProp3 setCycle: End)
+						(creditProp2 setCycle: EndLoop)
+						(creditProp3 setCycle: EndLoop)
 						(= ticks 300)
 					)
 					(19
-						(creditProp setCycle: End)
+						(creditProp setCycle: EndLoop)
 						(= ticks 300)
 					)
 				)
@@ -330,28 +329,27 @@
 )
 
 (instance sPlay of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(volleyBall show: setCycle: Fwd)
-				(creditProp setCycle: End self)
+				(volleyBall show: setCycle: Forward)
+				(creditProp setCycle: EndLoop self)
 				(volleyBall setMotion: JumpTo 283 125 self)
 			)
 			(1 0)
 			(2
-				(sunnyTwo setCycle: End self)
+				(sunnyTwo setCycle: EndLoop self)
 				(volleyBall setMotion: JumpTo 43 124 self)
 			)
 			(3 0)
 			(4
-				(creditProp setCycle: End self)
+				(creditProp setCycle: EndLoop self)
 				(volleyBall setMotion: JumpTo 283 125 self)
 			)
 			(5 0)
 			(6
-				(sunnyTwo setCycle: End self)
+				(sunnyTwo setCycle: EndLoop self)
 				(volleyBall dispose:)
 			)
 			(7 (self dispose:))
@@ -371,7 +369,7 @@
 		x 86
 		y 220
 		cel 1
-		signal $4000
+		signal ignrAct
 		moveSpeed 1
 	)
 )

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 775)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Inset)
@@ -23,12 +23,12 @@
 (instance rm775 of LBRoom
 	(properties
 		picture 120
-		style $000a
+		style FALSE
 	)
 	
 	(method (init)
-		(LoadMany 128 123 121 1125 125)
-		(LoadMany 132 121 120)
+		(LoadMany RES_VIEW 123 121 1125 125)
+		(LoadMany RES_SOUND 121 120)
 		(ego init: normalize: setScale: 167 posn: 240 160)
 		(super init:)
 		(theIconBar disable:)
@@ -36,23 +36,30 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 3
-					init: 84 154 83 176 183 176 241 168 241 149 199 149 126 149 91 154
+					type: PContainedAccess
+					init:
+						84 154
+						83 176
+						183 176
+						241 168
+						241 149
+						199 149
+						126 149
+						91 154
 					yourself:
 				)
 		)
-		(theMusic number: 332 flags: 1 loop: -1 play:)
+		(theMusic number: 332 flags: mNOPAUSE loop: -1 play:)
 		(steve init: setScale: 158)
 		(curRoom setScript: sTalkSteve)
 	)
 )
 
 (instance sTalkSteve of Script
-	(properties)
 	
 	(method (doit)
 		(if (and local0 local1)
-			(Palette palSET_INTENSITY 0 255 (-- local1))
+			(Palette PALIntensity 0 255 (-- local1))
 			(if (not local1) (self cue:))
 		)
 		(super doit:)
@@ -70,7 +77,7 @@
 				(togetherView init: setPri: 14)
 				(= cycles 4)
 			)
-			(3 (messager say: 1 0 0 0 self))
+			(3 (messager say: 1 NULL NULL 0 self))
 			(4
 				(curRoom setInset: inDagger)
 				(= seconds 4)
@@ -79,9 +86,9 @@
 				(inDagger dispose:)
 				(= cycles 2)
 			)
-			(6 (messager say: 1 0 1 0 self))
+			(6 (messager say: 1 NULL 1 0 self))
 			(7
-				(messager say: 1 0 2 0 self)
+				(messager say: 1 NULL 2 0 self)
 				(theMusic number: 334 flags: 1 loop: 1 play: self)
 			)
 			(8 (= local0 1))
@@ -111,7 +118,7 @@
 		y 100
 		view 1125
 		loop 3
-		disposeWhenDone 0
+		disposeWhenDone FALSE
 		talkWidth 110
 		back 15
 		textX 81
@@ -161,6 +168,6 @@
 		view 123
 		x 95
 		y 57
-		hideTheCast 1
+		hideTheCast TRUE
 	)
 )

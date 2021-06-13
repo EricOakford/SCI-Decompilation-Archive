@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 790)
-(include sci.sh)
+(include game.sh) (include "790.shm")
 (use Main)
 (use LBRoom)
 (use PolyPath)
@@ -16,15 +16,15 @@
 (instance rm790 of LBRoom
 	(properties
 		picture 790
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 128 790)
+		(LoadMany RES_VIEW 790)
 		(super init:)
 		(theMusic number: 110 loop: -1 flags: 1 play:)
 		(theIconBar disable:)
-		(theGame setCursor: 996)
+		(theGame setCursor: INVIS_CURSOR)
 		(sleeper init:)
 		(badGuy init:)
 		(self setScript: sCartoon)
@@ -32,10 +32,9 @@
 )
 
 (instance sCartoon of Script
-	(properties)
 	
 	(method (doit)
-		(Palette palANIMATE 24 28 10)
+		(Palette PALCycle 24 28 10)
 		(super doit: &rest)
 	)
 	
@@ -50,18 +49,18 @@
 				)
 			)
 			(2
-				(badGuy loop: 1 cel: 0 setCycle: End self)
+				(badGuy loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(narrator x: 120 y: 140)
-				(messager say: 1 0 0 0 self)
+				(messager say: N_ROOM NULL NULL 0 self)
 			)
 			(4
-				(badGuy loop: 2 cel: 0 setCycle: Fwd)
-				(sleeper setCycle: Fwd)
-				(bullets init: setPri: 15 setCycle: End self)
-				(theMusic number: 1 loop: 1 flags: 1 play:)
-				(theMusic2 number: 653 loop: -1 flags: 1 play:)
+				(badGuy loop: 2 cel: 0 setCycle: Forward)
+				(sleeper setCycle: Forward)
+				(bullets init: setPri: 15 setCycle: EndLoop self)
+				(theMusic number: 1 loop: 1 flags: mNOPAUSE play:)
+				(theMusic2 number: 653 loop: -1 flags: mNOPAUSE play:)
 			)
 			(5
 				(sleeper setCycle: 0)
@@ -70,7 +69,7 @@
 				(theMusic2 stop:)
 			)
 			(6
-				(badGuy loop: 3 cel: 0 setCycle: End self)
+				(badGuy loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(badGuy
@@ -91,7 +90,7 @@
 	(properties
 		y 257
 		view 790
-		signal $4000
+		signal ignrAct
 	)
 )
 

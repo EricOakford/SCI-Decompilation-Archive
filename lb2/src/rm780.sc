@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 780)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Inset)
@@ -16,24 +16,23 @@
 (instance rm780 of LBRoom
 	(properties
 		picture 780
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 132 795)
+		(LoadMany RES_SOUND 795)
 		(super init:)
 		(wrapMusic
 			init: 1 795 1312 (if (== numVoices 32) 310 else 314) 311
 		)
 		(theGame handsOff:)
 		(theIconBar disable:)
-		(theGame setCursor: 996 1)
+		(theGame setCursor: INVIS_CURSOR TRUE)
 		(self setScript: runTheCredits)
 	)
 )
 
 (instance runTheCredits of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 100])
 		(switch (= state newState)
@@ -58,13 +57,12 @@
 				(curRoom setInset: daggerInset self)
 			)
 			(8 (= seconds 3))
-			(9 (= quit 1))
+			(9 (= quit TRUE))
 		)
 	)
 )
 
 (instance wrapMusic of WrapMusic
-	(properties)
 	
 	(method (init)
 		(= wrapSound creditSound)
@@ -72,9 +70,7 @@
 	)
 )
 
-(instance creditSound of Sound
-	(properties)
-)
+(instance creditSound of Sound)
 
 (instance daggerEnd of View
 	(properties
@@ -103,7 +99,7 @@
 	
 	(method (handleEvent event)
 		(theGame handsOff:)
-		(event claimed: 1)
+		(event claimed: TRUE)
 		(daggerEnd dispose:)
 		(self dispose:)
 	)
