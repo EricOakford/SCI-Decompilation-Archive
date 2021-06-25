@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 14)
-(include sci.sh)
+(script# LBINIT)
+(include game.sh)
 (use Main)
 (use ColorInit)
 (use Print)
@@ -12,9 +12,8 @@
 )
 
 (instance lb2InitCode of Code
-	(properties)
 	
-	(method (init &tmp temp0)
+	(method (init &tmp versionFile)
 		(= possibleScore 1000)
 		(= userFont 69)
 		(= bigFont 2108)
@@ -26,31 +25,34 @@
 		((= narrator Narrator)
 			font: userFont
 			back: 15
-			keepWindow: 1
+			keepWindow: TRUE
 		)
-		(= msgType 1)
+		(= msgType TEXT_MSG)
 		(= systemWindow (ScriptID 0 9))
-		(= temp0 (FileIO fiOPEN {version} 1))
-		(FileIO fiREAD_STRING version 11 temp0)
-		(FileIO fiREAD_STRING usPhone 20 temp0)
-		(FileIO fiREAD_STRING intPhone 20 temp0)
-		(FileIO fiREAD_STRING hintPhone 20 temp0)
-		(FileIO fiCLOSE temp0)
+		(= versionFile (FileIO fileOpen {version} 1))
+		(FileIO fileFGets version 11 versionFile)
+		(FileIO fileFGets usPhone 20 versionFile)
+		(FileIO fileFGets intPhone 20 versionFile)
+		(FileIO fileFGets hintPhone 20 versionFile)
+		(FileIO fileClose versionFile)
 		(ColorInit)
-		(= useSortedFeatures 1)
+		(= useSortedFeatures TRUE)
 		(= eatMice 30)
 		(StrCpy @sysLogPath {})
-		(theGame setCursor: theCursor 1 304 172 detailLevel: 5)
+		(theGame
+			setCursor: theCursor TRUE 304 172
+			detailLevel: 5
+		)
 		(= textSpeed 2)
-		(= numVoices (DoSound sndGET_POLYPHONY))
+		(= numVoices (DoSound NumVoices))
 		(if
 			(and
-				(>= (= numColors (Graph grGET_COLOURS)) 2)
+				(>= (= numColors (Graph GDetect)) 2)
 				(<= numColors 16)
 			)
-			(Bclr 0)
+			(Bclr fIsVGA)
 		else
-			(Bset 0)
+			(Bset fIsVGA)
 		)
 		(systemWindow color: 0 back: myBackColor)
 		((ScriptID 15 1)

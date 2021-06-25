@@ -539,7 +539,7 @@
 			)
 			(5
 				(theGame handsOn:)
-				(= global150 0)
+				(= numSnakeOil 0)
 				(= local63 1)
 				(self dispose:)
 			)
@@ -673,7 +673,7 @@
 			(25
 				(if (< cel 3)
 					(++ cel)
-					(= global150 4)
+					(= numSnakeOil 4)
 					(cond 
 						((Btst 106) (Bclr 106) (Bset 105))
 						((Btst 107) (Bclr 107) (Bset 106))
@@ -717,7 +717,7 @@
 				)
 			)
 			(25
-				(if global150
+				(if numSnakeOil
 					(curRoom setScript: sDumpIt)
 				else
 					(messager say: 3 25 15)
@@ -1072,9 +1072,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(25
-				(if global150
+				(if numSnakeOil
 					(messager say: 18 25 14)
-					(-- global150)
+					(-- numSnakeOil)
 				else
 					(messager say: 18 25 15)
 				)
@@ -1100,9 +1100,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(25
-				(if global150
+				(if numSnakeOil
 					(messager say: 19 25 14)
-					(-- global150)
+					(-- numSnakeOil)
 				else
 					(messager say: 19 25 15)
 				)

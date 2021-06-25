@@ -1,10 +1,10 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 30)
-(include sci.sh)
+(include game.sh)
 (use System)
 
 
-(class MuseumPoints of Obj
+(class MuseumPoints of Object
 	(properties
 		midPtX 0
 		midPtY 0

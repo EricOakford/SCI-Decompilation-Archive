@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 28)
-(include sci.sh)
+(script# SPEED)
+(include game.sh)
 (use Main)
 (use LoadMany)
 (use Motion)
@@ -13,26 +13,24 @@
 )
 
 (local
-	local0
-	local1
+	machineSpeed
+	doneTime
 )
-(instance speedRoom of Rm
+(instance speedRoom of Room
 	(properties
 		picture 780
 	)
 	
 	(method (init)
-		(LoadMany 128 104)
+		(LoadMany RES_VIEW 104)
 		(super init:)
 		(theGame handsOff:)
 		(self setScript: speedTest)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp i)
 		(super doit:)
-		(= temp0 0)
-		(while (< temp0 500)
-			(++ temp0)
+		(for ((= i 0)) (< i 500) ((++ i))
 		)
 	)
 )
@@ -44,8 +42,7 @@
 )
 
 (instance speedTest of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -54,18 +51,18 @@
 					illegalBits: 0
 					posn: 0 0
 					setStep: 1 1
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(= cycles 1)
 			)
 			(1
-				(= local1 (GetTime))
+				(= doneTime (GetTime))
 				(fred setMotion: MoveTo 320 190)
 				(= cycles 50)
 			)
 			(2
-				(= local0 (- (GetTime) local1))
+				(= machineSpeed (- (GetTime) doneTime))
 				(startGame doit:)
 			)
 		)
@@ -73,25 +70,24 @@
 )
 
 (instance startGame of Code
-	(properties)
-	
-	(method (doit &tmp [temp0 100])
+
+	(method (doit &tmp [str 100])
 		(cond 
-			((> local0 160) (= howFast 0))
-			((> local0 150) (= howFast 1))
-			((> local0 140) (= howFast 2))
-			((> local0 130) (= howFast 3))
-			((> local0 120) (= howFast 4))
-			((> local0 110) (= howFast 5))
-			((> local0 100) (= howFast 6))
-			((> local0 90) (= howFast 7))
-			((> local0 80) (= howFast 8))
-			((> local0 70) (= howFast 9))
-			((> local0 60) (= howFast 10))
-			((> local0 50) (= howFast 11))
-			((> local0 40) (= howFast 12))
-			((> local0 30) (= howFast 13))
-			((> local0 20) (= howFast 14))
+			((> machineSpeed 160) (= howFast 0))
+			((> machineSpeed 150) (= howFast 1))
+			((> machineSpeed 140) (= howFast 2))
+			((> machineSpeed 130) (= howFast 3))
+			((> machineSpeed 120) (= howFast 4))
+			((> machineSpeed 110) (= howFast 5))
+			((> machineSpeed 100) (= howFast 6))
+			((> machineSpeed 90) (= howFast 7))
+			((> machineSpeed 80) (= howFast 8))
+			((> machineSpeed 70) (= howFast 9))
+			((> machineSpeed 60) (= howFast 10))
+			((> machineSpeed 50) (= howFast 11))
+			((> machineSpeed 40) (= howFast 12))
+			((> machineSpeed 30) (= howFast 13))
+			((> machineSpeed 20) (= howFast 14))
 			(else (= howFast 15))
 		)
 		(theGame

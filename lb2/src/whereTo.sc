@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 29)
-(include sci.sh)
+(script# WHERETO)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use LBEgo)

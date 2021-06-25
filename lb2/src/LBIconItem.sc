@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 15)
-(include sci.sh)
+(script# LBINV)
+(include game.sh) (include "15.shm")
 (use Main)
 (use BordWind)
 (use IconBar)
@@ -18,65 +18,16 @@
 )
 
 (local
-	[local0 20]
+	[str 20]
 )
-(class LBIconItem of IconI
-	(properties
-		view -1
-		loop -1
-		cel -1
-		nsLeft 0
-		nsTop -1
-		nsRight 0
-		nsBottom 0
-		state $0000
-		cursor -1
-		type $4000
-		message -1
-		modifiers $0000
-		signal $0001
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		highlightColor 0
-		lowlightColor 0
-		noun 0
-		modNum 0
-		helpVerb 0
-	)
+(class LBIconItem of IconItem
 	
 	(method (ownedBy)
-		(return 0)
+		(return FALSE)
 	)
 )
 
-(class LBInvItem of InvI
-	(properties
-		view 0
-		loop 0
-		cel 0
-		nsLeft 0
-		nsTop 0
-		nsRight 0
-		nsBottom 0
-		state $0000
-		cursor 999
-		type $4000
-		message 0
-		modifiers $0000
-		signal $0000
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		highlightColor 0
-		lowlightColor 0
-		noun 0
-		modNum -1
-		helpVerb 0
-		owner 0
-		script 0
-		value 0
-	)
+(class LBInvItem of InvItem
 	
 	(method (init)
 		(= lowlightColor myInsideColor)
@@ -84,24 +35,33 @@
 	)
 	
 	(method (doVerb theVerb theItem)
-		(Message msgGET 15 noun 48 0 1 @local0)
-		(narrator name: @local0 showTitle: 1)
+		(Message MsgGet LBINV noun V_TITLE NULL 1 @str)
+		(narrator name: @str showTitle: TRUE)
 		(cond 
-			((and (> argc 1) theItem) (messager say: noun theVerb 0 0 0 15))
-			((== theVerb 1) (messager say: noun 1 0 0 0 15))
-			((== theVerb 8) (messager say: noun 8 0 0 0 15))
-			((not (OneOf theVerb 3 4 2 6 12 13)) (messager say: 0 47 0 0 0 15))
-			(else (super doVerb: theVerb))
+			((and (> argc 1) theItem)
+				(messager say: noun theVerb NULL 0 0 LBINV)
+			)
+			((== theVerb V_LOOK)
+				(messager say: noun V_LOOK NULL 0 0 LBINV)
+			)
+			((== theVerb V_MAGNIFIER)
+				(messager say: noun V_MAGNIFIER NULL 0 0 LBINV)
+			)
+			((not (OneOf theVerb V_WALK V_DO V_TALK V_ASK V_HELP V_EXIT))
+				(messager say: NULL V_PRAGFAIL NULL 0 0 15)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance invCode of Code
-	(properties)
 	
 	(method (init)
-		(= inventory Inv)
-		(Inv
+		(= inventory Inventory)
+		(Inventory
 			init:
 			window: invWin
 			helpIconItem: invHelp
@@ -150,9 +110,9 @@
 				invHelp
 				ok
 			eachElementDo: #highlightColor myHighlightColor
-			eachElementDo: #modNum 15
+			eachElementDo: #modNum LBINV
 			eachElementDo: #init
-			state: 2048
+			state: NOCLICKHELP
 		)
 	)
 )
@@ -163,25 +123,22 @@
 		botBordHgt 5
 	)
 	
-	(method (open &tmp temp0 inventoryFirst temp2)
-		(= temp0 0)
-		(= inventoryFirst (inventory first:))
-		(while inventoryFirst
+	(method (open &tmp theWidth node obj)
+		(= theWidth 0)
+		(= node (inventory first:))
+		(while node
 			(if
 				(not
-					((= temp2 (NodeValue inventoryFirst)) isKindOf: InvI)
+					((= obj (NodeValue node)) isKindOf: InvItem)
 				)
-				(= temp0
-					(+
-						temp0
-						(CelWide (temp2 view?) (temp2 loop?) (temp2 cel?))
-					)
+				(+= theWidth
+					(CelWide (obj view?) (obj loop?) (obj cel?))
 				)
 			)
-			(= inventoryFirst (inventory next: inventoryFirst))
+			(= node (inventory next: node))
 		)
 		(super open:)
-		(invLook nsLeft: (/ (- (- right left) temp0) 2))
+		(invLook nsLeft: (/ (- (- right left) theWidth) 2))
 	)
 )
 
@@ -190,10 +147,10 @@
 		view 991
 		loop 3
 		cel 0
-		cursor 999
-		signal $0043
-		noun 17
-		helpVerb 12
+		cursor ARROW_CURSOR
+		signal (| HIDEBAR RELVERIFY IMMEDIATE)
+		noun N_OK
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -208,10 +165,10 @@
 		loop 2
 		cel 0
 		cursor 1
-		message 1
-		signal $0081
-		noun 16
-		helpVerb 12
+		message V_LOOK
+		signal (| FIXED_POSN RELVERIFY)
+		noun N_LOOK
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -226,9 +183,9 @@
 		loop 0
 		cel 0
 		cursor 2
-		message 4
-		noun 14
-		helpVerb 12
+		message V_DO
+		noun N_DO
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -243,10 +200,10 @@
 		loop 1
 		cel 0
 		cursor 9
-		message 12
-		signal $0003
-		noun 15
-		helpVerb 12
+		message V_HELP
+		signal (| RELVERIFY IMMEDIATE)
+		noun N_HELP
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -260,9 +217,9 @@
 		view 991
 		loop 4
 		cel 0
-		cursor 999
-		noun 18
-		helpVerb 12
+		cursor ARROW_CURSOR
+		noun N_SELECT
+		helpVerb V_HELP
 	)
 	
 	(method (init)
@@ -276,9 +233,9 @@
 		view 83
 		loop 1
 		cursor 83
-		message 10
-		signal $0002
-		noun 7
+		message V_COUPON
+		signal IMMEDIATE
+		noun N_COUPON
 	)
 )
 
@@ -287,9 +244,9 @@
 		view 59
 		loop 1
 		cursor 59
-		message 5
-		signal $0002
-		noun 6
+		message V_CLAIM_TICKET
+		signal IMMEDIATE
+		noun N_CLAIM_TICKET
 	)
 )
 
@@ -298,19 +255,21 @@
 		view 50
 		loop 1
 		cursor 50
-		message 14
-		signal $0002
-		noun 24
+		message V_NOTEBOOK
+		signal IMMEDIATE
+		noun N_NOTEBOOK
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(inventory hide:)
 				(curRoom setInset: (ScriptID 20 0))
 				(return)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -320,15 +279,19 @@
 		view 53
 		loop 1
 		cursor 53
-		message 15
-		signal $0002
-		noun 29
+		message V_SANDWICH
+		signal IMMEDIATE
+		noun N_SANDWICH
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(11 (super doVerb: theVerb 1))
-			(else  (super doVerb: theVerb))
+			(V_PRESS_PASS
+				(super doVerb: theVerb 1)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -338,9 +301,9 @@
 		view 54
 		loop 1
 		cursor 54
-		message 7
-		signal $0002
-		noun 1
+		message V_BASEBALL
+		signal IMMEDIATE
+		noun N_BASEBALL
 	)
 )
 
@@ -349,9 +312,9 @@
 		view 52
 		loop 1
 		cursor 52
-		message 16
-		signal $0002
-		noun 9
+		message V_DESK_KEY
+		signal IMMEDIATE
+		noun N_DESK_KEY
 	)
 )
 
@@ -360,9 +323,9 @@
 		view 51
 		loop 1
 		cursor 51
-		message 11
-		signal $0002
-		noun 27
+		message V_PRESS_PASS
+		signal IMMEDIATE
+		noun N_PRESS_PASS
 	)
 )
 
@@ -370,9 +333,9 @@
 	(properties
 		view 2075
 		cursor 75
-		message 17
-		signal $0002
-		noun 26
+		message V_POCKET_WATCH
+		signal IMMEDIATE
+		noun N_POCKET_WATCH
 	)
 )
 
@@ -381,9 +344,9 @@
 		view 58
 		loop 1
 		cursor 58
-		message 18
-		signal $0002
-		noun 30
+		message V_SKELETON_KEY
+		signal IMMEDIATE
+		noun N_SKELETON_KEY
 	)
 )
 
@@ -392,9 +355,9 @@
 		view 64
 		loop 1
 		cursor 64
-		message 19
-		signal $0002
-		noun 22
+		message V_MEAT
+		signal IMMEDIATE
+		noun N_MEAT
 	)
 )
 
@@ -403,9 +366,9 @@
 		view 76
 		loop 1
 		cursor 76
-		message 21
-		signal $0002
-		noun 38
+		message V_WIRECUTTERS
+		signal IMMEDIATE
+		noun N_WIRECUTTERS
 	)
 )
 
@@ -414,9 +377,9 @@
 		view 71
 		loop 1
 		cursor 71
-		message 22
-		signal $0002
-		noun 8
+		message V_DAGGER
+		signal IMMEDIATE
+		noun N_DAGGER
 	)
 )
 
@@ -425,9 +388,9 @@
 		view 70
 		loop 1
 		cursor 70
-		message 23
-		signal $0002
-		noun 40
+		message V_BOOT
+		signal IMMEDIATE
+		noun N_BOOT
 	)
 )
 
@@ -436,9 +399,9 @@
 		view 68
 		loop 1
 		cursor 68
-		message 24
-		signal $0002
-		noun 31
+		message V_SALTS
+		signal IMMEDIATE
+		noun N_SALTS
 	)
 )
 
@@ -447,26 +410,38 @@
 		view 61
 		loop 1
 		cursor 61
-		message 25
-		signal $0002
-		noun 33
+		message V_SNAKE_OIL
+		signal IMMEDIATE
+		noun N_SNAKE_OIL
 		owner 520
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1
-				(Message msgGET 15 noun 48 0 1 @local0)
-				(narrator name: @local0 showTitle: 1)
+			(V_LOOK
+				(Message MsgGet LBINV noun V_TITLE NULL 1 @str)
+				(narrator name: @str showTitle: TRUE)
 				(cond 
-					((== global150 4) (messager say: 33 1 9 0 0 15))
-					((== global150 3) (messager say: 33 1 10 0 0 15))
-					((== global150 2) (messager say: 33 1 11 0 0 15))
-					((== global150 1) (messager say: 33 1 12 0 0 15))
-					(else (messager say: 33 1 8 0 0 15))
+					((== numSnakeOil 4)
+						(messager say: N_SNAKE_OIL V_LOOK C_FULL 0 0 LBINV)
+					)
+					((== numSnakeOil 3)
+						(messager say: N_SNAKE_OIL V_LOOK C_3_USES 0 0 LBINV)
+					)
+					((== numSnakeOil 2)
+						(messager say: N_SNAKE_OIL V_LOOK C_2_USES 0 0 LBINV)
+					)
+					((== numSnakeOil 1)
+						(messager say: N_SNAKE_OIL V_LOOK C_1_USE 0 0 LBINV)
+					)
+					(else
+						(messager say: N_SNAKE_OIL V_LOOK C_EMPTY 0 0 LBINV)
+					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -476,24 +451,26 @@
 		view 84
 		loop 1
 		cursor 84
-		message 26
-		signal $0002
-		noun 19
+		message V_LANTERN
+		signal IMMEDIATE
+		noun N_LANTERN
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(if (== cel 0)
 					(if (curRoom inset:)
-						(messager say: noun 4 4 0 0 15)
+						(messager say: noun V_DO C_CANT_USE_LANTERN 0 0 LBINV)
 					else
 						(inventory hide:)
 						(curRoom setScript: sCrankLantern)
 					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -503,9 +480,9 @@
 		view 63
 		loop 1
 		cursor 63
-		message 27
-		signal $0002
-		noun 5
+		message V_CHEESE
+		signal IMMEDIATE
+		noun N_CHEESE
 	)
 )
 
@@ -514,9 +491,9 @@
 		view 80
 		loop 1
 		cursor 80
-		message 28
-		signal $0002
-		noun 12
+		message V_GARTER
+		signal IMMEDIATE
+		noun N_GARTER
 	)
 )
 
@@ -525,9 +502,9 @@
 		view 65
 		loop 1
 		cursor 65
-		message 29
-		signal $0002
-		noun 10
+		message V_BONE
+		signal IMMEDIATE
+		noun N_BONE
 	)
 )
 
@@ -536,9 +513,9 @@
 		view 62
 		loop 1
 		cursor 62
-		message 30
-		signal $0002
-		noun 32
+		message V_LASSO
+		signal IMMEDIATE
+		noun N_LASSO
 	)
 )
 
@@ -547,9 +524,9 @@
 		view 73
 		loop 1
 		cursor 73
-		message 31
-		signal $0002
-		noun 23
+		message V_ANKH
+		signal IMMEDIATE
+		noun N_ANKH
 	)
 )
 
@@ -559,9 +536,9 @@
 		loop 1
 		cel 1
 		cursor 79
-		message 32
-		signal $0002
-		noun 25
+		message V_PIPPIN_PAD
+		signal IMMEDIATE
+		noun N_PIPPIN_PAD
 		name "pippin'sPad"
 	)
 	
@@ -569,19 +546,21 @@
 		(switch theVerb
 			(43
 				(inventory hide:)
-				(Bset 35)
+				(Bset fRubbedPad)
 				(self cel: 0 signal: 2)
 				(theGame setScript: sRubPad)
 			)
-			(1
-				(= noun (if (Btst 35) 46 else 45))
+			(V_LOOK
+				(= noun (if (Btst fRubbedPad) N_PAD_AFTER_RUB else N_PAD_BEFORE_RUB))
 				(super doVerb: theVerb)
 			)
-			(8
-				(= noun (if (Btst 35) 46 else 45))
+			(V_MAGNIFIER
+				(= noun (if (Btst fRubbedPad) N_PAD_AFTER_RUB else N_PAD_BEFORE_RUB))
 				(super doVerb: theVerb)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -591,9 +570,9 @@
 		view 55
 		loop 1
 		cursor 55
-		message 8
-		signal $0002
-		noun 21
+		message V_MAGNIFIER
+		signal IMMEDIATE
+		noun N_MAGNIFIER
 	)
 )
 
@@ -602,9 +581,9 @@
 		view 67
 		loop 1
 		cursor 67
-		message 33
-		signal $0002
-		noun 20
+		message V_LIGHTBULB
+		signal IMMEDIATE
+		noun N_LIGHTBULB
 	)
 )
 
@@ -613,9 +592,9 @@
 		view 72
 		loop 1
 		cursor 72
-		message 34
-		signal $0002
-		noun 37
+		message V_WATNEY_FILE
+		signal IMMEDIATE
+		noun N_WATNEY_FILE
 		name "watney'sFile"
 	)
 )
@@ -625,9 +604,9 @@
 		view 82
 		loop 1
 		cursor 82
-		message 35
-		signal $0002
-		noun 35
+		message V_WARTHOG_HAIR
+		signal IMMEDIATE
+		noun N_WARTHOG_HAIR
 	)
 )
 
@@ -636,9 +615,9 @@
 		view 78
 		loop 1
 		cursor 78
-		message 36
-		signal $0002
-		noun 2
+		message V_BIFOCALS
+		signal IMMEDIATE
+		noun N_BIFOCALS
 	)
 )
 
@@ -647,9 +626,9 @@
 		view 74
 		loop 1
 		cursor 74
-		message 37
-		signal $0002
-		noun 28
+		message V_RED_HAIR
+		signal IMMEDIATE
+		noun N_RED_HAIR
 	)
 )
 
@@ -658,9 +637,9 @@
 		view 57
 		loop 1
 		cursor 57
-		message 38
-		signal $0002
-		noun 36
+		message V_WATERGLASS
+		signal IMMEDIATE
+		noun N_WATER_GLASS
 	)
 )
 
@@ -670,9 +649,9 @@
 		loop 1
 		cel 1
 		cursor 77
-		message 39
-		signal $0002
-		noun 3
+		message V_CARBON_PAPER
+		signal IMMEDIATE
+		noun N_CARBON_PAPER
 	)
 )
 
@@ -681,9 +660,9 @@
 		view 85
 		loop 1
 		cursor 85
-		message 40
-		signal $0002
-		noun 41
+		message V_SHOE
+		signal IMMEDIATE
+		noun N_SHOE
 		name "yvette'sShoe"
 	)
 )
@@ -693,9 +672,9 @@
 		view 81
 		loop 1
 		cursor 81
-		message 41
-		signal $0002
-		noun 13
+		message V_GRAPES
+		signal IMMEDIATE
+		noun N_GRAPES
 	)
 )
 
@@ -704,9 +683,9 @@
 		view 60
 		loop 1
 		cursor 60
-		message 42
-		signal $0002
-		noun 11
+		message V_GOWN
+		signal IMMEDIATE
+		noun N_GOWN
 	)
 )
 
@@ -715,9 +694,9 @@
 		view 56
 		loop 1
 		cursor 56
-		message 43
-		signal $0002
-		noun 4
+		message V_CHARCOAL
+		signal IMMEDIATE
+		noun N_CHARCOAL
 	)
 )
 
@@ -726,9 +705,9 @@
 		view 66
 		loop 1
 		cursor 66
-		message 44
-		signal $0002
-		noun 39
+		message V_WIRE
+		signal IMMEDIATE
+		noun N_WIRE
 	)
 )
 
@@ -737,16 +716,15 @@
 		view 87
 		loop 1
 		cursor 87
-		message 9
-		signal $0002
-		noun 42
+		message V_MUMMY
+		signal IMMEDIATE
+		noun N_MUMMY
 	)
 )
 
 (instance sCrankLantern of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp theCur)
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
@@ -765,19 +743,19 @@
 			(2
 				(lanternCrank dispose:)
 				(lantern cel: (- 1 (lantern cel?)))
-				(= temp0 (if (lantern cel?) 88 else 84))
+				(= theCur (if (lantern cel?) 88 else 84))
 				(theIconBar
 					curIcon: (theIconBar useIconItem?)
-					curInvIcon: (lantern cursor: temp0 yourself:)
-					enable: (theIconBar at: 5)
+					curInvIcon: (lantern cursor: theCur yourself:)
+					enable: (theIconBar at: ICON_ITEM)
 				)
 				(lanternTimer setReal: lanternTimer 0 3)
-				((theIconBar curIcon?) cursor: temp0)
+				((theIconBar curIcon?) cursor: theCur)
 				(theGame
 					handsOn:
-					setCursor: ((theIconBar at: 5) cursor?)
+					setCursor: ((theIconBar at: ICON_ITEM) cursor?)
 				)
-				(theIconBar select: (theIconBar at: 5))
+				(theIconBar select: (theIconBar at: ICON_ITEM))
 				(self dispose:)
 			)
 		)
@@ -789,13 +767,12 @@
 		view 84
 		loop 3
 		priority 15
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 12
 	)
 )
 
 (instance sRubPad of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -824,7 +801,7 @@
 				)
 				(rubbingPad dispose:)
 				(theGame handsOn:)
-				(ego put: 33)
+				(ego put: iCharcoal)
 				(register dispose:)
 				(self dispose:)
 			)
@@ -839,12 +816,11 @@
 		view 566
 		loop 1
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 )
 
 (instance lanternTimer of Timer
-	(properties)
 	
 	(method (cue)
 		(if (< curRoomNum 730)
@@ -852,31 +828,29 @@
 			(if (== (theIconBar curInvIcon?) lantern)
 				((theIconBar useIconItem?) cursor: 84)
 			)
-			(if (== theCursor 88) (theGame setCursor: 84))
+			(if (== theCursor 88)
+				(theGame setCursor: 84)
+			)
 		)
 	)
 )
 
-(class OscRubPad of Osc
+(class OscRubPad of Oscillate
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-		howManyCycles -1
 		soundOsc 1
 	)
 	
-	(method (init param1 theHowManyCycles theSoundOsc theCaller)
+	(method (init who howMany theSoundOsc whoCares)
 		(if (>= argc 2)
-			(= howManyCycles theHowManyCycles)
+			(= howManyCycles howMany)
 			(if (>= argc 3)
 				(= soundOsc theSoundOsc)
-				(if (>= argc 4) (= caller theCaller))
+				(if (>= argc 4)
+					(= caller whoCares)
+				)
 			)
 		)
-		(super init: param1 theHowManyCycles theCaller)
+		(super init: who howMany whoCares)
 	)
 	
 	(method (cycleDone)

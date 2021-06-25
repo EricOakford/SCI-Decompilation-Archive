@@ -807,7 +807,7 @@
 			(25
 				(cond 
 					((== (curRoom picture?) 780) 0)
-					((== global150 0) (ego setScript: sThrowBottle))
+					((== numSnakeOil 0) (ego setScript: sThrowBottle))
 					((< (ego distanceTo: snake1) 65) (curRoom setScript: sRepelSnakes))
 					(else (theGame handsOff:) (ego setScript: sSprinkleOil))
 				)
@@ -1011,7 +1011,7 @@ code_1553:
 			jmp      code_1561
 code_1561:
 			bnt      code_15b1
-			lsg      global150
+			lsg      numSnakeOil
 			ldi      0
 			eq?     
 			bnt      code_157a

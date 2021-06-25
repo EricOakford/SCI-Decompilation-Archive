@@ -317,8 +317,8 @@
 				)
 				(cond 
 					(
-					(or (> local6 13) (and (> local6 3) (< local6 9))) (= global150 0) (-- local6) (messager say: 30 0 5))
-					((> global150 0) (-- global150) (cobraDoor setScript: sLauraOil))
+					(or (> local6 13) (and (> local6 3) (< local6 9))) (= numSnakeOil 0) (-- local6) (messager say: 30 0 5))
+					((> numSnakeOil 0) (-- numSnakeOil) (cobraDoor setScript: sLauraOil))
 					(else (messager say: 30 0 5))
 				)
 			)

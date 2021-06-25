@@ -195,7 +195,7 @@
 	global147
 	global148
 	global149
-	global150 =  4
+	numSnakeOil =  4
 	global151
 	global152
 	global153

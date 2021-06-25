@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 18)
-(include sci.sh)
+(include game.sh) (include "18.shm")
 (use Main)
 (use LBRoom)
 (use LoadMany)
@@ -14,19 +14,15 @@
 
 (local
 	clientCel
-	local1
-	local2
+	theSeq
+	nextRoom
 	local3 =  25
 	[local4 25] = [0 1 1 2 3 4 5 5 5 6 6 6 7 7 7 7 8 8 8 9 9 10 10 10 11]
 	local29 =  1
 )
-(instance tempList of List
-	(properties)
-)
+(instance tempList of List)
 
-(instance goodList of List
-	(properties)
-)
+(instance goodList of List)
 
 (instance rm18 of LBRoom
 	(properties
@@ -176,13 +172,12 @@ code_0116:
 	)
 	
 	(method (handleEvent)
-		(return 0)
+		(return FALSE)
 	)
 )
 
 (instance sInitEm of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0 (= seconds 2))
@@ -206,19 +201,20 @@ code_0116:
 )
 
 (instance sFlipIt of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= clientCel (client cel?))
 				(client loop: 1 cel: 0)
-				(client setCycle: End self)
+				(client setCycle: EndLoop self)
 			)
 			(1
 				(theMusic2 number: 55 flags: 1 loop: 1 play:)
 				(client loop: 0 cel: clientCel addToPic:)
-				(if (== register 11) (theGame handsOn: 1))
+				(if (== register 11)
+					(theGame handsOn: 1)
+				)
 				(self dispose:)
 			)
 		)
@@ -226,68 +222,53 @@ code_0116:
 )
 
 (instance sAskIt of Script
-	(properties)
 	
-	(method (changeState newState &tmp [temp0 50])
+	(method (changeState newState &tmp [str 50])
 		(switch (= state newState)
 			(0 (= cycles 1))
 			(1
 				(if
 					(or
-						(== (= local1 (Random 1 local3)) global146)
-						(== local1 global147)
+						(== (= theSeq (Random 1 local3)) global146)
+						(== theSeq global147)
 					)
 					(-- state)
 					(self cue:)
 				else
 					(switch currentAct
 						(1
-							(= global146 local1)
-							(= local2 230)
+							(= global146 theSeq)
+							(= nextRoom 230)
 						)
 						(3
-							(= global147 local1)
-							(= local2 355)
+							(= global147 theSeq)
+							(= nextRoom 355)
 						)
-						(5 (= local2 420))
+						(5 (= nextRoom 420))
 					)
 				)
 				(= seconds 2)
 			)
 			(2
-				(Message msgGET 18 2 0 0 local1 @temp0)
-				(Display
-					@temp0
-					dsCOORD
-					15
-					15
-					dsFONT
-					61
-					dsWIDTH
-					280
-					dsALIGN
-					1
-					dsCOLOR
-					global151
+				(Message MsgGet 18 N_ROOM NULL NULL theSeq @str)
+				(Display @str
+					p_at 15 15
+					p_font 61
+					p_width 280
+					p_mode teJustCenter
+					p_color global151
 				)
-				(Display
-					@temp0
-					dsCOORD
-					15
-					15
-					dsFONT
-					60
-					dsWIDTH
-					280
-					dsALIGN
-					1
-					dsCOLOR
-					23
+				(Display @str
+					p_at 15 15
+					p_font 60
+					p_width 280
+					p_mode teJustCenter
+					p_color 23
 				)
 			)
 			(3
 				(if local29 (Bset 34) else (Bclr 34))
-				(curRoom newRoom: local2)
+				(curRoom newRoom: nextRoom)
 			)
 		)
 	)
@@ -300,8 +281,8 @@ code_0116:
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(if (== cel [local4 (- local1 1)])
+			(V_DO
+				(if (== cel [local4 (- theSeq 1)])
 					(sAskIt cue:)
 				else
 					(= local29 0)
@@ -314,7 +295,6 @@ code_0116:
 )
 
 (instance checkCel of Code
-	(properties)
 	
 	(method (doit param1 param2)
 		(return (== (param1 cel?) param2))

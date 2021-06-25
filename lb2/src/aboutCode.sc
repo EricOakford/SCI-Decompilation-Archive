@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 13)
-(include sci.sh)
+(script# LBABOUT)
+(include game.sh) (include "13.shm")
 (use Main)
 (use Print)
 (use DCIcon)
@@ -12,13 +12,13 @@
 )
 
 (local
-	theGForm
-	local1
+	oldCur
+	fwdIcon
 )
-(procedure (localproc_0572 param1 param2 param3)
+(procedure (DoCredits param1 param2 theLoop)
 	(Print
-		addText: 2 0 0 param1 param2 0 13
-		addIcon: (theIcon1 loop: param3 yourself:)
+		addText: N_CREDITS NULL NULL param1 param2 0 13
+		addIcon: (theIcon1 loop: theLoop yourself:)
 		init:
 	)
 )
@@ -26,47 +26,55 @@
 (instance aboutCode of Code
 	(properties)
 	
-	(method (doit &tmp [temp0 300] [temp300 300])
-		(= theGForm theCursor)
-		(theGame setCursor: 999)
-		(Load rsVIEW 993 989)
-		(if
-			(not
-				(Print font: userFont addText: 1 0 0 1 0 0 13 init:)
-			)
-			(self dispose:)
-			(return)
-		)
-		(if
-			(not
-				(Print font: userFont addText: 1 0 0 2 0 0 13 init:)
-			)
-			(self dispose:)
-			(return)
-		)
-		(Message msgGET 13 1 0 0 3 @temp0)
-		(Format @temp300 @temp0 version)
-		(if (not (Print addText: @temp300 init:))
-			(self dispose:)
-			(return)
-		)
-		(if (not (Print addText: 1 0 0 4 0 0 13 init:))
-			(self dispose:)
-			(return)
-		)
-		(if (not (Print addText: 2 0 0 1 0 0 13 init:))
-			(self dispose:)
-			(return)
-		)
-		(if (not (Print addText: 2 0 0 2 0 0 13 init:))
-			(self dispose:)
-			(return)
-		)
-		(= local1 1)
+	(method (doit &tmp [str 300] [str2 300])
+		(= oldCur theCursor)
+		(theGame setCursor: ARROW_CURSOR)
+		(Load RES_VIEW 993 989)
 		(if
 			(not
 				(Print
-					addText: 2 0 0 3 0 0 13
+					font: userFont
+					addText: N_ABOUT NULL NULL 1 0 0 13
+					init:
+				)
+			)
+			(self dispose:)
+			(return)
+		)
+		(if
+			(not
+				(Print
+					font: userFont
+					addText: N_ABOUT NULL NULL 2 0 0 13
+					init:
+				)
+			)
+			(self dispose:)
+			(return)
+		)
+		(Message MsgGet 13 N_ABOUT NULL NULL 3 @str)
+		(Format @str2 @str version)
+		(if (not (Print addText: @str2 init:))
+			(self dispose:)
+			(return)
+		)
+		(if (not (Print addText: N_ABOUT NULL NULL 4 0 0 13 init:))
+			(self dispose:)
+			(return)
+		)
+		(if (not (Print addText: N_CREDITS 0 0 1 0 0 13 init:))
+			(self dispose:)
+			(return)
+		)
+		(if (not (Print addText: N_CREDITS NULL NULL 2 0 0 13 init:))
+			(self dispose:)
+			(return)
+		)
+		(= fwdIcon TRUE)
+		(if
+			(not
+				(Print
+					addText: N_CREDITS NULL NULL 3 0 0 13
 					addIcon: (theIcon1 view: 993 loop: 0 yourself:) 0 0 0 50
 					addIcon: (theIcon2 view: 993 loop: 1 yourself:) 0 0 50 50
 					addIcon: (theIcon3 view: 993 loop: 2 yourself:) 0 0 75 50
@@ -79,7 +87,7 @@
 		(if
 			(not
 				(Print
-					addText: 2 0 0 4 0 0 13
+					addText: N_CREDITS NULL NULL 4 0 0 13
 					addIcon: theIcon1 0 0 0 50
 					addIcon: theIcon2 0 0 50 50
 					addIcon: theIcon3 0 0 75 50
@@ -89,92 +97,92 @@
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 5 35 3))
+		(if (not (DoCredits 5 35 3))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 6 35 3))
+		(if (not (DoCredits 6 35 3))
 			(self dispose:)
 			(return)
 		)
-		(= local1 0)
+		(= fwdIcon FALSE)
 		(theIcon1 view: 989)
-		(if (not (localproc_0572 31 35 1))
+		(if (not (DoCredits 31 35 1))
 			(self dispose:)
 			(return)
 		)
 		(theIcon1 view: 993)
-		(if (not (localproc_0572 7 35 4))
+		(if (not (DoCredits 7 35 4))
 			(self dispose:)
 			(return)
 		)
-		(= local1 0)
+		(= fwdIcon FALSE)
 		(theIcon1 view: 989)
-		(if (not (localproc_0572 8 35 1))
+		(if (not (DoCredits 8 35 1))
 			(self dispose:)
 			(return)
 		)
-		(= local1 1)
+		(= fwdIcon TRUE)
 		(theIcon1 view: 993)
-		(if (not (localproc_0572 9 35 12))
+		(if (not (DoCredits 9 35 12))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 10 35 5))
+		(if (not (DoCredits 10 35 5))
 			(self dispose:)
 			(return)
 		)
-		(= local1 0)
-		(if (not (localproc_0572 11 45 6 0))
+		(= fwdIcon FALSE)
+		(if (not (DoCredits 11 45 6 0))
 			(self dispose:)
 			(return)
 		)
-		(= local1 1)
-		(if (not (localproc_0572 12 35 7 1))
+		(= fwdIcon TRUE)
+		(if (not (DoCredits 12 35 7 1))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 13 50 8))
+		(if (not (DoCredits 13 50 8))
 			(self dispose:)
 			(return)
 		)
-		(= local1 1)
-		(if (not (localproc_0572 32 35 7 1))
+		(= fwdIcon TRUE)
+		(if (not (DoCredits 32 35 7 1))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 14 35 9))
+		(if (not (DoCredits 14 35 9))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 29 35 9))
+		(if (not (DoCredits 29 35 9))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 15 35 10))
+		(if (not (DoCredits 15 35 10))
 			(self dispose:)
 			(return)
 		)
-		(= local1 0)
+		(= fwdIcon FALSE)
 		(theIcon1 view: 989)
-		(if (not (localproc_0572 16 50 0))
+		(if (not (DoCredits 16 50 0))
 			(self dispose:)
 			(return)
 		)
-		(= local1 1)
-		(if (not (localproc_0572 17 35 1))
+		(= fwdIcon TRUE)
+		(if (not (DoCredits 17 35 1))
 			(self dispose:)
 			(return)
 		)
-		(= local1 1)
-		(if (not (localproc_0572 30 35 1))
+		(= fwdIcon TRUE)
+		(if (not (DoCredits 30 35 1))
 			(self dispose:)
 			(return)
 		)
 		(if
 			(not
 				(Print
-					addText: 2 0 0 18 40 0 13
+					addText: N_CREDITS NULL NULL 18 40 0 13
 					addIcon: (theIcon1 view: 989 loop: 2 yourself:) 0 0 0 0
 					addIcon: (theIcon2 view: 989 loop: 3 yourself:) 0 0 130 0
 					init:
@@ -183,11 +191,11 @@
 			(self dispose:)
 			(return)
 		)
-		(= local1 0)
+		(= fwdIcon FALSE)
 		(if
 			(not
 				(Print
-					addText: 2 0 0 19 0 0 13
+					addText: N_CREDITS NULL NULL 19 0 0 13
 					addIcon: (theIcon1 loop: 4 yourself:) 0 0 150 20
 					init:
 				)
@@ -195,44 +203,44 @@
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 20 35 5))
+		(if (not (DoCredits 20 35 5))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 21 35 6))
+		(if (not (DoCredits 21 35 6))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 22 35 7))
+		(if (not (DoCredits 22 35 7))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 23 35 8))
+		(if (not (DoCredits 23 35 8))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 24 75 9))
+		(if (not (DoCredits 24 75 9))
 			(self dispose:)
 			(return)
 		)
 		(theIcon1 view: 993)
-		(= local1 1)
-		(if (not (localproc_0572 25 55 4))
+		(= fwdIcon TRUE)
+		(if (not (DoCredits 25 55 4))
 			(self dispose:)
 			(return)
 		)
 		(theIcon1 view: 989)
-		(= local1 0)
-		(if (not (localproc_0572 26 35 10))
+		(= fwdIcon FALSE)
+		(if (not (DoCredits 26 35 10))
 			(self dispose:)
 			(return)
 		)
-		(if (not (localproc_0572 27 35 5))
+		(if (not (DoCredits 27 35 5))
 			(self dispose:)
 			(return)
 		)
-		(= local1 1)
-		(if (not (localproc_0572 28 35 11))
+		(= fwdIcon TRUE)
+		(if (not (DoCredits 28 35 11))
 			(self dispose:)
 			(return)
 		)
@@ -240,10 +248,10 @@
 	)
 	
 	(method (dispose)
-		(= normalCursor theGForm)
+		(= normalCursor oldCur)
 		(theGame setCursor: normalCursor)
-		(DisposeScript 967)
-		(DisposeScript 13)
+		(DisposeScript DCICON)
+		(DisposeScript LBABOUT)
 	)
 )
 
@@ -253,11 +261,11 @@
 	)
 	
 	(method (init)
-		(if local1
-			((= cycler (Fwd new:)) init: self)
+		(if fwdIcon
+			((= cycler (Forward new:)) init: self)
 		else
 			(= cel 0)
-			((= cycler (End new:)) init: self)
+			((= cycler (EndLoop new:)) init: self)
 		)
 	)
 )
@@ -268,7 +276,7 @@
 	)
 	
 	(method (init)
-		((= cycler (Fwd new:)) init: self)
+		((= cycler (Forward new:)) init: self)
 	)
 )
 
@@ -278,6 +286,6 @@
 	)
 	
 	(method (init)
-		((= cycler (Fwd new:)) init: self)
+		((= cycler (Forward new:)) init: self)
 	)
 )
