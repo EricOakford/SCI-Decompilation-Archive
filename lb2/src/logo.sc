@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 105)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use LoadMany)
@@ -19,41 +19,43 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 108)
-		(LoadMany 129 780)
-		(LoadMany 132 105)
+		(LoadMany RES_VIEW 108)
+		(LoadMany RES_PIC 780)
+		(LoadMany RES_SOUND 105)
 		(self setRegions: 92)
 		(curRoom drawPic: 780)
 		(super init:)
 		(sparkle init:)
-		(user canControl: 0 canInput: 0)
-		(theMusic number: 105 flags: 1 loop: 1 play:)
+		(user canControl: FALSE canInput: FALSE)
+		(theMusic number: 105 flags: mNOPAUSE loop: 1 play:)
 		(self setScript: sRunIt)
 	)
 )
 
 (instance sRunIt of Script
-	(properties)
 	
 	(method (doit)
-		(Palette palANIMATE 64 235 1)
+		(Palette PALCycle 64 235 1)
 		(super doit: &rest)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Palette palSET_INTENSITY 0 254 0)
+				(Palette PALIntensity 0 254 0)
 				(curRoom drawPic: 105 10)
 				(= cycles 1)
 			)
 			(1
-				(theGame handsOff: setCursor: 996 1 304 172)
+				(theGame
+					handsOff:
+					setCursor: INVIS_CURSOR TRUE 304 172
+				)
 				(= seconds 6)
 			)
 			(2
 				(if (== (theMusic prevSignal?) 20)
-					(sparkle setCycle: End self)
+					(sparkle setCycle: EndLoop self)
 				else
 					(-- state)
 					(= cycles 1)
@@ -61,7 +63,7 @@
 			)
 			(3
 				(if (== (theMusic prevSignal?) 30)
-					(sparkle x: 60 y: 145 loop: 1 cel: 0 setCycle: End self)
+					(sparkle x: 60 y: 145 loop: 1 cel: 0 setCycle: EndLoop self)
 				else
 					(-- state)
 					(= cycles 1)
@@ -94,6 +96,6 @@
 		y 54
 		view 108
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 )

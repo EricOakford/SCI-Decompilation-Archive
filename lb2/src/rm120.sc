@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 120)
-(include sci.sh)
+(include game.sh) (include "120.shm")
 (use Main)
 (use LBRoom)
 (use LoadMany)
@@ -15,17 +15,17 @@
 (instance rm120 of LBRoom
 	(properties
 		picture 120
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 128 131 121 130)
-		(LoadMany 132 120 121)
+		(LoadMany RES_VIEW 131 121 130)
+		(LoadMany RES_SOUND 120 121)
 		(self setRegions: 92)
 		(super init:)
 		(person1 init: setScale: 122)
 		(person2 init: setScale: 122)
-		(theMusic number: 120 flags: 1 loop: -1 play:)
+		(theMusic number: 120 flags: mNOPAUSE loop: -1 play:)
 		(curRoom setScript: sIntroScript)
 	)
 	
@@ -36,7 +36,6 @@
 )
 
 (instance moveIt of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -64,8 +63,7 @@
 )
 
 (instance sIntroScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -97,8 +95,7 @@
 )
 
 (instance sCloseUp of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -126,8 +123,8 @@
 					setCycle: Walk
 				)
 				((ScriptID 1882 10)
-					modeless: 1
-					disposeWhenDone: 0
+					modeless: TRUE
+					disposeWhenDone: FALSE
 					x: 224
 					y: 21
 					textX: -214
@@ -135,8 +132,8 @@
 					talkWidth: 284
 				)
 				((ScriptID 1883 9)
-					modeless: 1
-					disposeWhenDone: 0
+					modeless: TRUE
+					disposeWhenDone: FALSE
 					x: 3
 					y: 2
 					textX: 7
@@ -147,8 +144,8 @@
 			)
 			(1
 				((ScriptID 1887 12)
-					modeless: 1
-					disposeWhenDone: 0
+					modeless: TRUE
+					disposeWhenDone: FALSE
 					x: 224
 					y: 21
 					textX: -214
@@ -156,8 +153,8 @@
 					talkWidth: 284
 				)
 				((ScriptID 1886 11)
-					modeless: 1
-					disposeWhenDone: 0
+					modeless: TRUE
+					disposeWhenDone: FALSE
 					x: 4
 					y: 22
 					textX: 7
@@ -200,8 +197,7 @@
 )
 
 (instance sDisembark of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 2))
@@ -215,7 +211,7 @@
 			)
 			(2
 				(if register
-					(person1 loop: 4 setCycle: End self)
+					(person1 loop: 4 setCycle: EndLoop self)
 					(person2 setCycle: 0)
 				else
 					(= cycles 2)
@@ -223,12 +219,12 @@
 			)
 			(3
 				(theMusic setVol: 40)
-				(messager say: (if register 1 else 2) 0 0 0 self)
+				(messager say: (if register N_DISEMBARK else N_TRUNK) NULL NULL 0 self)
 			)
 			(4
 				(theMusic setVol: 127)
 				(if register
-					(person1 setCycle: Beg self)
+					(person1 setCycle: BegLoop self)
 				else
 					(++ state)
 					(= cycles 2)
@@ -262,7 +258,7 @@
 		y 121
 		view 121
 		priority 3
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		moveSpeed 10
 	)
 )
@@ -274,7 +270,7 @@
 		view 121
 		loop 1
 		priority 3
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		moveSpeed 10
 	)
 )
@@ -285,7 +281,7 @@
 		y 42
 		view 130
 		priority 8
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -296,6 +292,6 @@
 		view 130
 		cel 1
 		priority 9
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )

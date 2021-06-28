@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 25)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Print)
@@ -18,26 +18,25 @@
 (local
 	newDButton
 	local1
-	theGForm
+	oldCur
 )
 (instance dInvD of Dialog
-	(properties)
-	
-	(method (init &tmp temp0 temp1 temp2 temp3 newDText inventoryFirst temp6)
-		(= temp2 (= temp0 (= temp1 4)))
-		(= temp3 0)
-		(= inventoryFirst (inventory first:))
-		(while inventoryFirst
-			(= temp6 (NodeValue inventoryFirst))
-			(++ temp3)
-			(if (temp6 isKindOf: InvI)
+
+	(method (init &tmp l t temp2 i theText node obj)
+		(= temp2 (= l (= t MARGIN)))
+		(= i 0)
+		(= node (inventory first:))
+		(while node
+			(= obj (NodeValue node))
+			(++ i)
+			(if (obj isKindOf: InvItem)
 				(self
 					add:
-						((= newDText (DText new:))
-							value: temp6
-							text: (temp6 name?)
-							nsLeft: temp0
-							nsTop: temp1
+						((= theText (DText new:))
+							value: obj
+							text: (obj name?)
+							nsLeft: l
+							nsTop: t
 							state: 3
 							font: smallFont
 							setSize:
@@ -45,22 +44,21 @@
 						)
 				)
 			)
-			(if
-			(< temp2 (- (newDText nsRight?) (newDText nsLeft?)))
-				(= temp2 (- (newDText nsRight?) (newDText nsLeft?)))
+			(if (< temp2 (- (theText nsRight?) (theText nsLeft?)))
+				(= temp2 (- (theText nsRight?) (theText nsLeft?)))
 			)
 			(if
 				(>
-					(= temp1
-						(+ temp1 (- (newDText nsBottom?) (newDText nsTop?)) 1)
+					(= t
+						(+ t (- (theText nsBottom?) (theText nsTop?)) 1)
 					)
 					140
 				)
-				(= temp1 4)
-				(= temp0 (+ temp0 temp2 10))
+				(= t 4)
+				(= l (+ l temp2 10))
 				(= temp2 0)
 			)
-			(= inventoryFirst (inventory next: inventoryFirst))
+			(= node (inventory next: node))
 		)
 		(= window systemWindow)
 		(self setSize:)
@@ -74,7 +72,7 @@
 			move: (- (newDButton nsLeft?) (newDButton nsRight?)) 0
 		)
 		(self add: newDButton setSize: center:)
-		(return temp3)
+		(return i)
 	)
 	
 	(method (doit &tmp theNewDButton)
@@ -90,55 +88,58 @@
 				)
 				(break)
 			)
-			(ego get: -1 (Inv indexOf: (theNewDButton value?)))
+			(ego get: -1 (Inventory indexOf: (theNewDButton value?)))
 		)
 		(self eachElementDo: #dispose 1 dispose:)
 	)
 	
-	(method (handleEvent event &tmp eventMessage eventType)
-		(= eventMessage (event message?))
-		(switch (= eventType (event type?))
-			(4
-				(switch eventMessage
-					(KEY_UP (= eventMessage 3840))
-					(KEY_NUMPAD2 (= eventMessage 9))
+	(method (handleEvent event &tmp eMsg eType)
+		(= eMsg (event message?))
+		(switch (= eType (event type?))
+			(keyDown
+				(switch eMsg
+					(UPARROW
+						(= eMsg SHIFTTAB)
+					)
+					(DOWNARROW
+						(= eMsg TAB)
+					)
 				)
 			)
-			(64
-				(switch eventMessage
-					(JOY_UP
-						(= eventMessage 3840)
-						(= eventType 4)
+			(direction
+				(switch eMsg
+					(dirN
+						(= eMsg SHIFTTAB)
+						(= eType keyDown)
 					)
-					(JOY_DOWN
-						(= eventMessage 9)
-						(= eventType 4)
+					(dirS
+						(= eMsg TAB)
+						(= eType keyDown)
 					)
 				)
 			)
 		)
-		(event type: eventType message: eventMessage)
+		(event type: eType message: eMsg)
 		(super handleEvent: event)
 	)
 )
 
 (instance dCastD of Dialog
-	(properties)
-	
-	(method (init &tmp temp0 temp1 temp2 temp3 newDText castFirst temp6)
-		(= temp2 (= temp0 (= temp1 4)))
-		(= temp3 0)
-		(= castFirst (cast first:))
-		(while castFirst
-			(= temp6 (NodeValue castFirst))
-			(++ temp3)
+
+	(method (init &tmp l t temp2 i theText node obj)
+		(= temp2 (= l (= t 4)))
+		(= i 0)
+		(= node (cast first:))
+		(while node
+			(= obj (NodeValue node))
+			(++ i)
 			(self
 				add:
-					((= newDText (DText new:))
-						value: temp6
-						text: (temp6 name?)
-						nsLeft: temp0
-						nsTop: temp1
+					((= theText (DText new:))
+						value: obj
+						text: (obj name?)
+						nsLeft: l
+						nsTop: t
 						state: 3
 						font: smallFont
 						setSize:
@@ -146,21 +147,21 @@
 					)
 			)
 			(if
-			(< temp2 (- (newDText nsRight?) (newDText nsLeft?)))
-				(= temp2 (- (newDText nsRight?) (newDText nsLeft?)))
+			(< temp2 (- (theText nsRight?) (theText nsLeft?)))
+				(= temp2 (- (theText nsRight?) (theText nsLeft?)))
 			)
 			(if
 				(>
-					(= temp1
-						(+ temp1 (- (newDText nsBottom?) (newDText nsTop?)) 1)
+					(= t
+						(+ t (- (theText nsBottom?) (theText nsTop?)) 1)
 					)
 					100
 				)
-				(= temp1 4)
-				(= temp0 (+ temp0 temp2 10))
+				(= t 4)
+				(= l (+ l temp2 10))
 				(= temp2 0)
 			)
-			(= castFirst (cast next: castFirst))
+			(= node (cast next: node))
 		)
 		(= window systemWindow)
 		(self setSize:)
@@ -174,7 +175,7 @@
 			move: (- (newDButton nsLeft?) (newDButton nsRight?)) 0
 		)
 		(self add: newDButton setSize: center:)
-		(return temp3)
+		(return i)
 	)
 	
 	(method (doit &tmp theNewDButton temp1)
@@ -195,76 +196,78 @@
 		(self dispose:)
 	)
 	
-	(method (handleEvent event &tmp eventMessage eventType)
-		(= eventMessage (event message?))
-		(switch (= eventType (event type?))
-			(4
-				(switch eventMessage
-					(KEY_UP (= eventMessage 3840))
-					(KEY_NUMPAD2 (= eventMessage 9))
+	(method (handleEvent event &tmp eMsg eType)
+		(= eMsg (event message?))
+		(switch (= eType (event type?))
+			(keyDown
+				(switch eMsg
+					(UPARROW
+						(= eMsg SHIFTTAB)
+					)
+					(DOWNARROW
+						(= eMsg TAB)
+					)
 				)
 			)
-			(64
-				(switch eventMessage
-					(JOY_UP
-						(= eventMessage 3840)
-						(= eventType 4)
+			(direction
+				(switch eMsg
+					(dirN
+						(= eMsg SHIFTTAB)
+						(= eType keyDown)
 					)
-					(JOY_DOWN
-						(= eventMessage 9)
-						(= eventType 4)
+					(dirS
+						(= eMsg TAB)
+						(= eType keyDown)
 					)
 				)
 			)
 		)
-		(event type: eventType message: eventMessage)
+		(event type: eType message: eMsg)
 		(super handleEvent: event)
 	)
 )
 
 (instance showFeatureCode of Code
-	(properties)
 	
-	(method (doit param1 param2 &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8 temp9 temp10 temp11)
+	(method (doit obj param2 &tmp t l r b temp4 temp5 temp6 temp7 temp8 temp9 temp10 temp11)
 		(if param2
-			(= temp0 (param1 brTop?))
-			(= temp1 (param1 brLeft?))
-			(= temp3 (param1 brBottom?))
-			(= temp2 (param1 brRight?))
-			(Graph grDRAW_LINE temp0 temp1 temp0 temp2 global159)
-			(Graph grDRAW_LINE temp3 temp1 temp3 temp2 global159)
-			(Graph grDRAW_LINE temp0 temp1 temp3 temp1 global159)
-			(Graph grDRAW_LINE temp0 temp2 temp3 temp2 global159)
+			(= t (obj brTop?))
+			(= l (obj brLeft?))
+			(= b (obj brBottom?))
+			(= r (obj brRight?))
+			(Graph GDrawLine t l t r global159)
+			(Graph GDrawLine b l b r global159)
+			(Graph GDrawLine t l b l global159)
+			(Graph GDrawLine t r b r global159)
 		else
-			(= temp0 (param1 nsTop?))
-			(= temp1 (param1 nsLeft?))
-			(= temp3 (param1 nsBottom?))
-			(= temp2 (param1 nsRight?))
-			(Graph grDRAW_LINE temp0 temp1 temp0 temp2 global151)
-			(Graph grDRAW_LINE temp3 temp1 temp3 temp2 global151)
-			(Graph grDRAW_LINE temp0 temp1 temp3 temp1 global151)
-			(Graph grDRAW_LINE temp0 temp2 temp3 temp2 global151)
+			(= t (obj nsTop?))
+			(= l (obj nsLeft?))
+			(= b (obj nsBottom?))
+			(= r (obj nsRight?))
+			(Graph GDrawLine t l t r global151)
+			(Graph GDrawLine b l b r global151)
+			(Graph GDrawLine t l b l global151)
+			(Graph GDrawLine t r b r global151)
 		)
-		(= temp4 (- (param1 y?) 1))
-		(= temp5 (- (param1 x?) 1))
-		(= temp7 (+ (param1 y?) 1))
-		(= temp6 (+ (param1 x?) 1))
-		(Graph grDRAW_LINE temp4 temp5 temp4 temp6 global162)
+		(= temp4 (- (obj y?) 1))
+		(= temp5 (- (obj x?) 1))
+		(= temp7 (+ (obj y?) 1))
+		(= temp6 (+ (obj x?) 1))
+		(Graph GDrawLine temp4 temp5 temp4 temp6 global162)
 		(Graph
-			grDRAW_LINE
+			GDrawLine
 			(+ temp4 1)
 			temp5
 			(+ temp4 1)
 			temp6
 			global162
 		)
-		(Graph grDRAW_LINE temp7 temp5 temp7 temp6 global162)
-		(= temp8 (Min temp0 temp4))
-		(= temp9 (Min temp1 temp5))
-		(= temp11 (Max temp3 temp7))
-		(= temp10 (Max temp2 temp6))
-		(Graph
-			grREDRAW_BOX
+		(Graph GDrawLine temp7 temp5 temp7 temp6 global162)
+		(= temp8 (Min t temp4))
+		(= temp9 (Min l temp5))
+		(= temp11 (Max b temp7))
+		(= temp10 (Max r temp6))
+		(Graph GReAnimate
 			temp8
 			temp9
 			(+ temp11 1)
@@ -274,21 +277,19 @@
 )
 
 (class NameFeatureCode of Code
-	(properties)
 	
 	(method (init)
 		(keyDownHandler addToFront: self)
-		(theGame setCursor: 999)
+		(theGame setCursor: ARROW_CURSOR)
 		(self doit:)
 	)
 	
-	(method (doit &tmp onMeAndLowYTheObj [temp1 40] newEvent [temp42 10])
-		(while
-		(not (self handleEvent: (= newEvent (Event new:))))
-			(newEvent localize:)
+	(method (doit &tmp onMeAndLowYTheObj [str 40] event [temp42 10])
+		(while (not (self handleEvent: (= event (Event new:))))
+			(event localize:)
 			(OnMeAndLowY init:)
-			(features eachElementDo: #perform OnMeAndLowY newEvent)
-			(cast eachElementDo: #perform OnMeAndLowY newEvent)
+			(features eachElementDo: #perform OnMeAndLowY event)
+			(cast eachElementDo: #perform OnMeAndLowY event)
 			(if (= onMeAndLowYTheObj (OnMeAndLowY theObj?))
 				(cond 
 					(
@@ -311,21 +312,18 @@
 					(else (Format @temp42 25 2 {}))
 				)
 				(DrawStatus
-					(Format
-						@temp1
-						25
-						3
-						(newEvent x?)
-						(newEvent y?)
+					(Format @str 25 3
+						(event x?)
+						(event y?)
 						(onMeAndLowYTheObj name?)
 						((onMeAndLowYTheObj -super-?) name?)
 						@temp42
 					)
 				)
 			)
-			(newEvent dispose:)
+			(event dispose:)
 		)
-		(newEvent dispose:)
+		(event dispose:)
 		(self dispose:)
 	)
 	
@@ -339,7 +337,7 @@
 				addButton: 1 {Yes} 40 12
 				init:
 			)
-			(DrawPic (curRoom picture?) dpOPEN_NO_TRANSITION)
+			(DrawPic (curRoom picture?) PLAIN)
 			(if addToPics (addToPics doit:))
 		)
 		(keyDownHandler delete: self)
@@ -351,19 +349,19 @@
 		(return
 			(if
 				(and
-					(== (event type?) evKEYBOARD)
-					(== (event message?) KEY_ESCAPE)
+					(== (event type?) keyDown)
+					(== (event message?) ESC)
 				)
-				(event claimed: 1)
-				(return 1)
+				(event claimed: TRUE)
+				(return TRUE)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
-(class JustifyText of Obj
+(class JustifyText of Object
 	(properties
 		lastX 0
 		lastY 0
@@ -384,9 +382,9 @@
 			50
 			{Enter text (after this, get help with '?')}
 		)
-		(theIconBar curIcon: (theIconBar at: 5))
-		(= theGForm theCursor)
-		(theGame setCursor: 69 0)
+		(theIconBar curIcon: (theIconBar at: ICON_ITEM))
+		(= oldCur theCursor)
+		(theGame setCursor: 69 FALSE)
 		(self doit: 1)
 	)
 	
@@ -470,28 +468,28 @@ code_0b6e:
 		(keyDownHandler delete: self)
 		(directionHandler delete: self)
 		(theDoits delete: self)
-		(theGame setCursor: theGForm 1)
-		(UnLoad 133 unders)
+		(theGame setCursor: oldCur TRUE)
+		(UnLoad RES_MEMORY unders)
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp temp0 eventX eventY eventType eventMessage eventModifiers [temp6 25])
-		(= eventX (event x?))
-		(= eventY (event y?))
-		(= eventType (event type?))
-		(= eventMessage (event message?))
-		(= eventModifiers (event modifiers?))
+	(method (handleEvent event &tmp temp0 eX eY eType eMsg eMod [temp6 25])
+		(= eX (event x?))
+		(= eY (event y?))
+		(= eType (event type?))
+		(= eMsg (event message?))
+		(= eMod (event modifiers?))
 		(cond 
-			((== eventType evKEYBOARD)
-				(switch eventMessage
-					(KEY_ESCAPE
-						(Display 25 4 108 unders)
+			((== eType keyDown)
+				(switch eMsg
+					(ESC
+						(Display 25 4 p_save unders)
 						(self dispose:)
 					)
-					(KEY_RETURN
+					(ENTER
 						(self showCoord: event)
 					)
-					(JOY_DOWNLEFT
+					(6
 						(switch font
 							(1207 (= font 2107))
 							(2107 (= font 2108))
@@ -504,7 +502,7 @@ code_0b6e:
 								(= font (GetNumber {Font Number:}))
 							)
 						)
-						(theGame setCursor: theCursor 0 eventX eventY)
+						(theGame setCursor: theCursor FALSE eX eY)
 						(self doit: 1)
 					)
 					(14
@@ -516,49 +514,64 @@ code_0b6e:
 							(self doit: 1)
 						)
 					)
-					(JOY_RIGHT
+					(3
 						(if (> (++ color) 15) (= color 0))
 						(self doit: 1)
 					)
-					(KEY_QUESTION
+					(`?
 						(Prints
-							{Move text with mouse or direction keys\nSHIFT + arrows for fine adjustment\n\nENTER or click shows text position\n\nCtrl-F (shift click) changes font\nCtrl-N to enter new text\nCtrl-C (control click) changes color\nESC aborts}
+							{Move text with mouse or direction keys\n
+							SHIFT + arrows for fine adjustment\n\n
+							ENTER or click shows text position\n\n
+							Ctrl-F (shift click) changes font\n
+							Ctrl-N to enter new text\n
+							Ctrl-C (control click) changes color\n
+							ESC aborts}
 						)
 					)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
-			((== eventType evMOUSEBUTTON)
+			((== eType mouseDown)
 				(cond 
-					((& eventModifiers emSHIFT) (event type: 4 message: 6) (self handleEvent: event))
-					((& eventModifiers emCTRL) (event type: 4 message: 3) (self handleEvent: event))
-					(else (self showCoord: event) (event claimed: 1))
+					((& eMod shiftDown)
+						(event type: keyDown message: 6)
+						(self handleEvent: event)
+					)
+					((& eMod ctrlDown)
+						(event type: keyDown message: 3)
+						(self handleEvent: event)
+					)
+					(else
+						(self showCoord: event)
+						(event claimed: TRUE)
+					)
 				)
 			)
-			((& eventType evJOYSTICK)
-				(= temp0 (if (& eventModifiers emSHIFT) 1 else 10))
-				(if (OneOf eventMessage 3 2 4)
-					(= eventX (+ eventX temp0))
+			((& eType direction)
+				(= temp0 (if (& eMod shiftDown) 1 else 10))
+				(if (OneOf eMsg dirE dirNE dirSE)
+					(+= eX temp0)
 				)
-				(if (OneOf eventMessage 7 8 6)
-					(= eventX (- eventX temp0))
+				(if (OneOf eMsg dirW dirNW dirSW)
+					(+= eX temp0)
 				)
-				(if (OneOf eventMessage 8 1 2)
-					(= eventY (- eventY temp0))
+				(if (OneOf eMsg dirNW dirN dirNE)
+					(-= eY temp0)
 				)
-				(if (OneOf eventMessage 6 5 4)
-					(= eventY (+ eventY temp0))
+				(if (OneOf eMsg dirSW dirS dirSE)
+					(+= eY temp0)
 				)
-				(event claimed: 1)
-				(theGame setCursor: theCursor 0 eventX eventY)
+				(event claimed: TRUE)
+				(theGame setCursor: theCursor FALSE eX eY)
 				(self doit:)
 			)
 		)
 	)
 	
-	(method (showCoord param1 &tmp [temp0 20])
+	(method (showCoord obj &tmp [str 20])
 		(Print
-			addTextF: @temp0 {Position: %d, %d} (param1 x?) (param1 y?)
+			addTextF: @str {Position: %d, %d} (obj x?) (obj y?)
 			init:
 		)
 		(self dispose:)

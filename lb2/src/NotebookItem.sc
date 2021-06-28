@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 20)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Inset)
 (use Feature)
@@ -13,41 +13,37 @@
 )
 
 (local
-	local0
+	pageNum
 	local1
 	local2
 	local3
 	theSubject_2
 	theX
 	theY_2
-	local7
+	saveBits
 	theTheSubject_2
 	local9
 )
 (procedure (localproc_03c0 &tmp temp0 temp1 temp2)
 	(backPage hide:)
 	(morePage hide:)
-	(DrawPic 851 dpOPEN_CENTEREDGE)
+	(DrawPic 851 IRISOUT)
 	(notebookList eachElementDo: #subject 0)
-	(Display {} dsRESTOREPIXELS local7)
-	(= local7
+	(Display {} p_restore saveBits)
+	(= saveBits
 		(Display
 			@global136
-			dsCOORD
-			(- 160 (* 7 (StrLen @global136)))
-			170
-			dsFONT
-			global119
-			dsCOLOR
-			myHighlightColor
-			dsSAVEPIXELS
+			p_at (- 160 (* 7 (StrLen @global136))) 170
+			p_font global119
+			p_color myHighlightColor
+			p_save
 		)
 	)
-	(= local2 (= temp0 (* (- local0 1) 8)))
+	(= local2 (= temp0 (* (- pageNum 1) 8)))
 	(while
 		(and
 			(< local2 (+ 8 temp0))
-			(= temp1 (Memory memPEEK (+ local1 (* 2 local2))))
+			(= temp1 (Memory MReadWord (+ local1 (* 2 local2))))
 		)
 		(if
 			((= temp2 (notebookList at: (mod local2 8)))
@@ -60,7 +56,7 @@
 	(if
 		(and
 			(== (mod local2 8) 0)
-			(Memory memPEEK (+ local1 (* 2 local2)))
+			(Memory MReadWord (+ local1 (* 2 local2)))
 		)
 		(morePage show:)
 	)
@@ -86,11 +82,11 @@
 		)
 	)
 	(titlePage hide:)
-	(= local0 1)
+	(= pageNum 1)
 	(localproc_03c0)
 )
 
-(class NotebookItem of Obj
+(class NotebookItem of Object
 	(properties
 		subject 0
 		x 0
@@ -120,56 +116,49 @@
 			(= temp0 (/ subject 256))
 			(= temp1 (mod subject 256))
 			(self posn: theText)
-			(Message msgGET 20 temp0 1 0 temp1 @temp2)
-			(Display
-				@temp2
-				dsFONT
-				10
-				dsCOORD
-				x
-				y
-				dsCOLOR
-				(if (== theSubject_2 theSubject) global160 else 0)
-				dsWIDTH
-				100
+			(Message MsgGet 20 temp0 1 0 temp1 @temp2)
+			(Display @temp2
+				p_font 10
+				p_at x y
+				p_color (if (== theSubject_2 theSubject) global160 else 0)
+				p_width 100
 			)
 		)
 	)
 	
 	(method (handleEvent event &tmp temp0)
 		(cond 
-			((event claimed?) (return 1))
-			(
-			(and (& (event type?) evVERB) (self onMe: event)) (event claimed: 1) (self doVerb: (event message?)))
+			((event claimed?) (return TRUE))
+			((and (& (event type?) userEvent) (self onMe: event))
+				(event claimed: TRUE)
+				(self doVerb: (event message?))
+			)
 		)
 		(return (event claimed?))
 	)
 	
 	(method (doVerb theVerb &tmp [temp0 100] temp100 temp101)
 		(switch theVerb
-			(13 (inNotebook doVerb: 13))
-			(4
+			(V_EXIT
+				(inNotebook doVerb: V_EXIT)
+			)
+			(V_DO
 				(if (< subject 256)
 					(= theSubject_2 0)
 					(if (< (StrLen @global136) 16)
 						(Format @global136 {%s%c} @global136 subject)
-						(Display {} dsRESTOREPIXELS local7)
-						(= local7
-							(Display
-								@global136
-								dsCOORD
-								(- 160 (* 7 (StrLen @global136)))
-								170
-								dsFONT
-								global119
-								dsCOLOR
-								myHighlightColor
-								dsSAVEPIXELS
+						(Display {} p_restore saveBits)
+						(= saveBits
+							(Display @global136
+								p_at (- 160 (* 7 (StrLen @global136))) 170
+								p_font global119
+								p_color myHighlightColor
+								p_save
 							)
 						)
 					)
 				else
-					(Display {} dsRESTOREPIXELS local7)
+					(Display {} p_restore saveBits)
 					(= global136 0)
 					(= temp100 (/ theSubject_2 256))
 					(= temp101 (mod theSubject_2 256))
@@ -180,26 +169,24 @@
 								firstTrue: #perform oldOnePresent theSubject_2
 							)
 						)
-						(Message msgGET 20 temp100 1 0 temp101 @temp0)
-						(Display @temp0 dsFONT 10 dsCOORD theX theY_2 dsWIDTH 100)
+						(Message MsgGet 20 temp100 1 0 temp101 @temp0)
+						(Display @temp0
+							p_font 10
+							p_at theX theY_2
+							p_width 100
+						)
 					)
 					(= theSubject_2 subject)
 					(= theX x)
 					(= theY_2 y)
 					(= temp100 (/ theSubject_2 256))
 					(= temp101 (mod theSubject_2 256))
-					(Message msgGET 20 temp100 1 0 temp101 @temp0)
-					(Display
-						@temp0
-						dsFONT
-						10
-						dsCOORD
-						theX
-						theY_2
-						dsCOLOR
-						global160
-						dsWIDTH
-						100
+					(Message MsgGet 20 temp100 1 0 temp101 @temp0)
+					(Display @temp0
+						p_font 10
+						p_at theX theY_2
+						p_color global160
+						p_width 100
 					)
 				)
 			)
@@ -243,16 +230,13 @@
 )
 
 (instance oldOnePresent of Code
-	(properties)
-	
+
 	(method (doit param1 param2)
 		(return (== (param1 subject?) param2))
 	)
 )
 
-(instance notebookList of EventHandler
-	(properties)
-)
+(instance notebookList of EventHandler)
 
 (instance titlePage of View
 	(properties
@@ -285,8 +269,8 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(++ local0)
+			(V_DO
+				(++ pageNum)
 				(localproc_03c0)
 				(backPage show:)
 			)
@@ -311,10 +295,10 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
-				(-- local0)
+			(V_DO
+				(-- pageNum)
 				(localproc_03c0)
-				(if (== local0 1) (self hide:) else (self show:))
+				(if (== pageNum 1) (self hide:) else (self show:))
 			)
 			(else 
 				(inNotebook doVerb: theVerb)
@@ -331,7 +315,7 @@
 		view 851
 		loop 1
 		priority 5
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (initialize)
@@ -339,7 +323,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4 (localproc_049e 1))
+			(V_DO
+				(localproc_049e 1)
+			)
 			(else 
 				(inNotebook doVerb: theVerb)
 			)
@@ -372,7 +358,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4 (localproc_049e 2))
+			(V_DO
+				(localproc_049e 2)
+			)
 			(else 
 				(inNotebook doVerb: theVerb)
 			)
@@ -399,7 +387,7 @@
 		loop 1
 		cel 2
 		priority 4
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (initialize)
@@ -407,7 +395,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4 (localproc_049e 3))
+			(V_DO
+				(localproc_049e 3)
+			)
 			(else 
 				(inNotebook doVerb: theVerb)
 			)
@@ -433,7 +423,7 @@
 		loop 1
 		cel 3
 		priority 3
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (initialize)
@@ -441,7 +431,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4 (localproc_049e 4))
+			(V_DO
+				(localproc_049e 4)
+			)
 			(else 
 				(inNotebook doVerb: theVerb)
 			)
@@ -471,20 +463,15 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(StrAt @global136 (- (StrLen @global136) 1) 0)
-				(Display {} dsRESTOREPIXELS local7)
-				(= local7
-					(Display
-						@global136
-						dsCOORD
-						(- 160 (* 7 (StrLen @global136)))
-						170
-						dsFONT
-						global119
-						dsCOLOR
-						myHighlightColor
-						dsSAVEPIXELS
+				(Display {} p_restore saveBits)
+				(= saveBits
+					(Display @global136
+						p_at (- 160 (* 7 (StrLen @global136))) 170
+						p_font global119
+						p_color myHighlightColor
+						p_save
 					)
 				)
 			)
@@ -498,17 +485,19 @@
 (instance inNotebook of Inset
 	(properties
 		picture 851
-		style $000a
+		style FADEOUT
 		modNum 20
 	)
 	
 	(method (init)
-		(if
-		(= local9 (!= (((theIconBar at: 0) cursor?) view?) 6))
+		(if (= local9 (!= (((theIconBar at: 0) cursor?) view?) 6))
 			(InFirstPerson 1)
 		)
 		(theGame handsOff:)
-		(theIconBar disable: 7 enable: 2 0)
+		(theIconBar
+			disable: ICON_CONTROL
+			enable: ICON_DO ICON_WALK
+		)
 		(super init: &rest)
 		(= theSubject_2 0)
 		(= theTheSubject_2 0)
@@ -529,9 +518,9 @@
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)
 		(directionHandler addToFront: self)
-		(theIconBar select: (theIconBar at: 2))
+		(theIconBar select: (theIconBar at: ICON_DO))
 		(theGame setCursor: 2)
-		((user curEvent?) claimed: 1)
+		((user curEvent?) claimed: TRUE)
 		(self doit:)
 	)
 	
@@ -752,17 +741,17 @@ code_0a0a:
 	(method (dispose)
 		(notebookList dispose:)
 		(super dispose: &rest)
-		(Animate (cast elements?) 0)
+		(Animate (cast elements?) FALSE)
 		(= gameTime (+ tickOffset (GetTime)))
 		(if local9 (InFirstPerson 0))
 		(theGame handsOn: 1)
-		(theIconBar enable: 7)
+		(theIconBar enable: ICON_CONTROL)
 		(DisposeScript 20)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(theGame setCursor: waitCursor)
 				(if (not theSubject_2) (= theSubject_2 -1))
 				(= theTheSubject_2 theSubject_2)

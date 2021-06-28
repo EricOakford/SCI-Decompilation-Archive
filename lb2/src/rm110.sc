@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 110)
-(include sci.sh)
+(include game.sh) (include "110.shm")
 (use Main)
 (use LBRoom)
 (use PolyPath)
@@ -17,41 +17,30 @@
 (instance rm110 of LBRoom
 	(properties
 		picture 110
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 128 151 110 111 112 113)
-		(LoadMany 132 110 112)
+		(LoadMany RES_VIEW 151 110 111 112 113)
+		(LoadMany RES_SOUND 110 112)
 		(self setRegions: 92)
 		(super init:)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						138
-						90
-						129
-						183
-						175
-						182
-						175
-						189
-						0
-						189
-						0
-						0
-						319
-						0
-						319
-						114
-						238
-						117
-						223
-						63
-						221
-						89
+						138 90
+						129 183
+						175 182
+						175 189
+						0 189
+						0 0
+						319 0
+						319 114
+						238 117
+						223 63
+						221 89
 					yourself:
 				)
 		)
@@ -60,7 +49,7 @@
 		(badGuy init:)
 		(inTrunk init:)
 		(lid init:)
-		(theMusic number: 110 flags: 1 loop: -1 play: sCartoon)
+		(theMusic number: 110 flags: mNOPAUSE loop: -1 play: sCartoon)
 		(cond 
 			((> howFast 12) 0)
 			((> howFast 8)
@@ -79,14 +68,21 @@
 )
 
 (instance sCartoon of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
-			(1 (thedoor setCycle: End self))
-			(2 (= ticks 120))
-			(3 (thedoor setCycle: Beg self))
+			(0
+				(= seconds 2)
+			)
+			(1
+				(thedoor setCycle: EndLoop self)
+			)
+			(2
+				(= ticks 120)
+			)
+			(3
+				(thedoor setCycle: BegLoop self)
+			)
 			(4
 				(badGuy
 					setLoop: 0
@@ -103,28 +99,32 @@
 					cel: 0
 					posn: 122 91
 					setPri: -1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(narrator x: 20 y: 160 modeless: 1)
+				(narrator x: 20 y: 160 modeless: TRUE)
 			)
 			(6
-				(theMusic number: 112 flags: 1 loop: 1 play: sCartoon)
-				(messager say: 1 0 0 0)
-				(badGuy setCycle: CT 9 -1 self)
+				(theMusic number: 112 flags: mNOPAUSE loop: 1 play: sCartoon)
+				(messager say: N_VICTIM NULL NULL 0)
+				(badGuy setCycle: CycleTo 9 -1 self)
 			)
-			(7 (badGuy setCycle: End self))
+			(7
+				(badGuy setCycle: EndLoop self)
+			)
 			(8
-				(badGuy setCycle: CT 11 -1)
+				(badGuy setCycle: CycleTo 11 -1)
 				(= ticks 30)
 			)
 			(9
-				(badGuy setCycle: End)
+				(badGuy setCycle: EndLoop)
 				(= ticks 120)
 			)
 			(10
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(narrator dispose:)
-				(badGuy loop: 2 cel: 0 setCycle: End self)
+				(badGuy loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(11
 				(badGuy
@@ -132,7 +132,7 @@
 					loop: 0
 					cel: 0
 					posn: 150 87
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
@@ -141,11 +141,11 @@
 					loop: 0
 					cel: 0
 					posn: 150 87
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13
-				(mirror setCycle: End self)
+				(mirror setCycle: EndLoop self)
 				(badGuy
 					loop: 1
 					cel: 0
@@ -154,9 +154,11 @@
 					setMotion: PolyPath 234 93 self
 				)
 			)
-			(14 (mirror dispose:))
+			(14
+				(mirror dispose:)
+			)
 			(15
-				(badGuy loop: 2 cel: 0 posn: 234 91 setCycle: End self)
+				(badGuy loop: 2 cel: 0 posn: 234 91 setCycle: EndLoop self)
 			)
 			(16
 				(inTrunk loop: 0 posn: 247 64 setPri: 4 show:)
@@ -165,12 +167,12 @@
 					cel: 0
 					posn: 242 93
 					setPri: 8
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(17
-				(badGuy setCycle: CT 9 1 self)
-				(lid setCycle: End)
+				(badGuy setCycle: CycleTo 9 1 self)
+				(lid setCycle: EndLoop)
 			)
 			(18
 				(inTrunk dispose:)
@@ -179,7 +181,7 @@
 					cel: 0
 					posn: 227 88
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(19
@@ -205,9 +207,13 @@
 			)
 			(25 0)
 			(26
-				(if (== (theMusic prevSignal?) -1) (= cycles 1))
+				(if (== (theMusic prevSignal?) -1)
+					(= cycles 1)
+				)
 			)
-			(27 (curRoom newRoom: 120))
+			(27
+				(curRoom newRoom: 120)
+			)
 		)
 	)
 )
@@ -218,7 +224,7 @@
 		y 257
 		yStep 3
 		view 111
-		signal $4000
+		signal ignrAct
 		xStep 4
 	)
 )
@@ -229,7 +235,7 @@
 		y 188
 		view 110
 		loop 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -240,7 +246,7 @@
 		view 110
 		loop 1
 		priority 8
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -259,7 +265,7 @@
 		y 124
 		view 151
 		loop 2
-		signal $0800
+		signal fixedLoop
 		moveSpeed 0
 	)
 )
@@ -271,7 +277,7 @@
 		view 151
 		loop 2
 		cel 1
-		signal $0800
+		signal fixedLoop
 		moveSpeed 0
 	)
 )
@@ -283,6 +289,6 @@
 		view 110
 		loop 2
 		priority 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )

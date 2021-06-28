@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 24)
-(include sci.sh)
+(script# LBCONTROL)
+(include game.sh) (include "24.shm")
 (use Main)
 (use Print)
 (use SlideIcon)
@@ -14,7 +14,6 @@
 )
 
 (instance lb2GameControls of GameControls
-	(properties)
 	
 	(method (init)
 		(= gameControls self)
@@ -22,21 +21,21 @@
 			add:
 				iconOk
 				detailSlider
-				(volumeSlider theObj: theGame selector: 391 yourself:)
-				(speedSlider theObj: ego selector: 325 yourself:)
+				(volumeSlider theObj: theGame selector: #masterVolume yourself:)
+				(speedSlider theObj: ego selector: #setSpeed yourself:)
 				textSlider
-				(iconSave theObj: theGame selector: 75 yourself:)
-				(iconRestore theObj: theGame selector: 76 yourself:)
-				(iconRestart theObj: theGame selector: 101 yourself:)
-				(iconQuit theObj: theGame selector: 100 yourself:)
-				(iconAbout theObj: theGame selector: 636 yourself:)
-				(iconMode theObj: theGame selector: 57 yourself:)
+				(iconSave theObj: theGame selector: #save yourself:)
+				(iconRestore theObj: theGame selector: #restore yourself:)
+				(iconRestart theObj: theGame selector: #restart yourself:)
+				(iconQuit theObj: theGame selector: #quitGame yourself:)
+				(iconAbout theObj: theGame selector: #showAbout yourself:)
+				(iconMode theObj: theGame selector: #doit yourself:)
 				iconHelp
 			eachElementDo: #highlightColor global169
 			eachElementDo: #lowlightColor global151
 			helpIconItem: iconHelp
 			curIcon: iconSave
-			state: 2048
+			state: NOCLICKHELP
 			window: gcWin
 		)
 		(super init: &rest)
@@ -45,21 +44,20 @@
 	(method (dispose)
 		(super dispose:)
 		(theGame setCursor: normalCursor)
-		(DisposeScript 934)
-		(DisposeScript 978)
-		(DisposeScript 24)
+		(DisposeScript SLIDEICON)
+		(DisposeScript GCONTROL)
+		(DisposeScript LBCONTROL)
 	)
 	
 	(method (show)
-		(theGame setCursor: 999)
+		(theGame setCursor: ARROW_CURSOR)
 		(super show: &rest)
 	)
 )
 
 (instance gcWin of SysWindow
-	(properties)
 	
-	(method (open &tmp temp0 [temp1 4] temp5 [temp6 20])
+	(method (open &tmp thePort [temp1 4] temp5 [temp6 20])
 		(= type 128)
 		(= top (/ (- 200 (+ (CelHigh 995 1 1) 6)) 2))
 		(= left (/ (- 320 (+ 191 (CelWide 995 0 1))) 2))
@@ -83,25 +81,22 @@
 		(= lsBottom (+ bottom 6))
 		(= priority 15)
 		(super open:)
-		(= temp0 (GetPort))
+		(= thePort (GetPort))
 		(SetPort 0)
-		(Graph grFILL_BOX top left bottom right 3 global151 15)
-		(Graph grDRAW_LINE 33 49 33 269 global171 15)
-		(Graph grDRAW_LINE 34 50 34 268 myInsideColor 15)
-		(Graph grDRAW_LINE 35 51 35 267 global170 15)
-		(Graph grDRAW_LINE 33 49 166 49 global171 15)
-		(Graph grDRAW_LINE 34 50 165 50 myInsideColor 15)
-		(Graph grDRAW_LINE 35 51 164 51 global170 15)
-		(Graph grDRAW_LINE 166 49 166 269 global171 15)
-		(Graph grDRAW_LINE 165 50 165 268 myInsideColor 15)
-		(Graph grDRAW_LINE 164 51 164 267 global170 15)
-		(Graph grDRAW_LINE 33 269 166 269 global171 15)
-		(Graph grDRAW_LINE 34 268 165 268 myInsideColor 15)
-		(Graph grDRAW_LINE 35 267 164 267 global170 15)
-		(DrawCel
-			995
-			0
-			6
+		(Graph GFillRect top left bottom right 3 global151 15)
+		(Graph GDrawLine 33 49 33 269 global171 15)
+		(Graph GDrawLine 34 50 34 268 myInsideColor 15)
+		(Graph GDrawLine 35 51 35 267 global170 15)
+		(Graph GDrawLine 33 49 166 49 global171 15)
+		(Graph GDrawLine 34 50 165 50 myInsideColor 15)
+		(Graph GDrawLine 35 51 164 51 global170 15)
+		(Graph GDrawLine 166 49 166 269 global171 15)
+		(Graph GDrawLine 165 50 165 268 myInsideColor 15)
+		(Graph GDrawLine 164 51 164 267 global170 15)
+		(Graph GDrawLine 33 269 166 269 global171 15)
+		(Graph GDrawLine 34 268 165 268 myInsideColor 15)
+		(Graph GDrawLine 35 267 164 267 global170 15)
+		(DrawCel 995 0 6
 			(WhichLanguage 155 155 178 155 155)
 			(WhichLanguage 42 45 45 45 45)
 			temp5
@@ -112,40 +107,26 @@
 		(DrawCel 995 1 0 146 73 temp5)
 		(DrawCel 995 1 0 186 73 temp5)
 		(DrawCel 995 1 0 226 73 temp5)
-		(DrawCel
-			995
-			0
-			4
-			116
+		(DrawCel 995 0 4 116
 			(WhichLanguage 58 60 59 60 60)
 			temp5
 		)
-		(DrawCel
-			995
-			0
-			3
+		(DrawCel 995 0 3
 			(WhichLanguage 145 154 154 154 154)
 			(WhichLanguage 134 60 59 60 60)
 			temp5
 		)
-		(DrawCel
-			995
-			0
-			2
+		(DrawCel 995 0 2
 			(WhichLanguage 178 198 193 198 198)
 			(WhichLanguage 58 60 59 60 60)
 			temp5
 		)
-		(DrawCel
-			995
-			0
-			5
-			238
+		(DrawCel 995 0 5 238
 			(WhichLanguage 134 60 59 60 60)
 			temp5
 		)
-		(Graph grUPDATE_BOX lsTop lsLeft lsBottom lsRight 1)
-		(SetPort temp0)
+		(Graph GShowBits lsTop lsLeft lsBottom lsRight VMAP)
+		(SetPort thePort)
 	)
 )
 
@@ -156,17 +137,17 @@
 		cel 1
 		nsLeft 67
 		nsTop 35
-		signal $0080
-		noun 1
-		modNum 24
-		helpVerb 12
+		signal FIXED_POSN
+		noun N_DETAIL
+		modNum LBCONTROL
+		helpVerb V_HELP
 		sliderView 995
 		bottomValue 1
 		topValue 5
 	)
 	
-	(method (doit param1)
-		(if argc (theGame detailLevel: param1))
+	(method (doit newDetail)
+		(if argc (theGame detailLevel: newDetail))
 		(theGame detailLevel:)
 	)
 )
@@ -178,10 +159,10 @@
 		cel 1
 		nsLeft 107
 		nsTop 35
-		signal $0080
-		noun 2
-		modNum 24
-		helpVerb 12
+		signal FIXED_POSN
+		noun N_DETAIL
+		modNum LBCONTROL
+		helpVerb V_HELP
 		sliderView 995
 		topValue 15
 	)
@@ -194,26 +175,29 @@
 		cel 1
 		nsLeft 147
 		nsTop 35
-		signal $0080
-		noun 3
-		modNum 24
-		helpVerb 12
+		signal FIXED_POSN
+		noun N_SPEED
+		modNum LBCONTROL
+		helpVerb V_HELP
 		sliderView 995
 		bottomValue 15
 	)
 	
-	(method (doit param1)
-		(if argc (ego setSpeed: param1) (= global369 param1))
+	(method (doit theSpeed)
+		(if argc
+			(ego setSpeed: theSpeed)
+			(= global369 theSpeed)
+		)
 		(ego moveSpeed?)
 	)
 	
 	(method (show)
 		(if (not (user controls?))
-			(= signal 132)
+			(= signal (| FIXED_POSN DISABLED))
 			(= sliderLoop 9)
 		else
 			(= sliderLoop 0)
-			(= signal 128)
+			(= signal FIXED_POSN)
 		)
 		(super show: &rest)
 	)
@@ -222,7 +206,9 @@
 	)
 	
 	(method (move)
-		(if (user controls?) (super move: &rest))
+		(if (user controls?)
+			(super move: &rest)
+		)
 	)
 )
 
@@ -233,17 +219,17 @@
 		cel 1
 		nsLeft 187
 		nsTop 35
-		signal $0080
-		noun 4
-		modNum 24
-		helpVerb 12
+		signal FIXED_POSN
+		noun N_TEXT
+		modNum LBCONTROL
+		helpVerb V_HELP
 		sliderView 995
 		bottomValue 24
 		topValue 1
 	)
 	
-	(method (doit theTextSpeed)
-		(if argc (= textSpeed theTextSpeed))
+	(method (doit newSpeed)
+		(if argc (= textSpeed newSpeed))
 		(return textSpeed)
 	)
 )
@@ -255,11 +241,11 @@
 		cel 0
 		nsLeft 8
 		nsTop 8
-		message 8
-		signal $01c3
-		noun 5
-		modNum 24
-		helpVerb 12
+		message V_MAGNIFIER
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
+		noun N_SAVE
+		modNum LBCONTROL
+		helpVerb V_HELP
 	)
 )
 
@@ -270,11 +256,11 @@
 		cel 0
 		nsLeft 8
 		nsTop 28
-		message 8
-		signal $01c3
-		noun 6
-		modNum 24
-		helpVerb 12
+		message V_MAGNIFIER
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
+		noun N_RESTORE
+		modNum LBCONTROL
+		helpVerb V_HELP
 	)
 )
 
@@ -285,11 +271,11 @@
 		cel 0
 		nsLeft 8
 		nsTop 48
-		message 8
-		signal $01c3
-		noun 7
-		modNum 24
-		helpVerb 12
+		message V_MAGNIFIER
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
+		noun N_RESTART
+		modNum LBCONTROL
+		helpVerb V_HELP
 	)
 )
 
@@ -300,11 +286,11 @@
 		cel 0
 		nsLeft 8
 		nsTop 68
-		message 8
-		signal $01c3
-		noun 8
-		modNum 24
-		helpVerb 12
+		message V_MAGNIFIER
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
+		noun N_QUIT
+		modNum LBCONTROL
+		helpVerb V_HELP
 	)
 )
 
@@ -315,15 +301,15 @@
 		cel 0
 		nsLeft 8
 		nsTop 88
-		message 8
-		signal $01c3
-		noun 9
-		modNum 24
-		helpVerb 12
+		message V_MAGNIFIER
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
+		noun N_ABOUT
+		modNum LBCONTROL
+		helpVerb V_HELP
 	)
 )
 
-(instance iconHelp of IconI
+(instance iconHelp of IconItem
 	(properties
 		view 995
 		loop 7
@@ -331,15 +317,15 @@
 		nsLeft 34
 		nsTop 88
 		cursor 9
-		message 12
-		signal $0183
-		noun 10
-		modNum 24
-		helpVerb 12
+		message V_HELP
+		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE)
+		noun N_HELP
+		modNum LBCONTROL
+		helpVerb V_HELP
 	)
 )
 
-(instance iconOk of IconI
+(instance iconOk of IconItem
 	(properties
 		view 995
 		loop 8
@@ -347,11 +333,11 @@
 		nsLeft 8
 		nsTop 108
 		cursor 9
-		message 8
-		signal $01c3
-		noun 11
-		modNum 24
-		helpVerb 12
+		message V_MAGNIFIER
+		signal (| VICON FIXED_POSN HIDEBAR RELVERIFY IMMEDIATE)
+		noun N_OK
+		modNum LBCONTROL
+		helpVerb V_HELP
 	)
 )
 
@@ -362,11 +348,11 @@
 		cel 0
 		nsLeft 90
 		nsTop 108
-		message 8
-		signal $0183
-		noun 14
-		modNum 24
-		helpVerb 12
+		message V_MAGNIFIER
+		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE)
+		noun N_MODE
+		modNum LBCONTROL
+		helpVerb V_HELP
 	)
 	
 	(method (doit &tmp temp0)

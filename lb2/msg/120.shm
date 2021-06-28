@@ -1,13 +1,12 @@
 ;;; Sierra Script
-;;; 99.shm -- Produced by SCI Companion
+;;; 120.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
 ;;; NOUNS
 
-(define N_DEATH 1)
-(define N_BUTTON 2)
+(define N_DISEMBARK 1)
+(define N_TRUNK 2)
 
 ;;; CASES
 
-(define C_RUN_OVER 10)
 

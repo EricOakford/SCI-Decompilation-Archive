@@ -46,7 +46,7 @@
 			setStep: 3 2
 			z: 0
 			illegalBits: cWHITE
-			ignoreActors: 0
+			ignoreActors: FALSE
 			setSpeed: global369
 		)
 	)

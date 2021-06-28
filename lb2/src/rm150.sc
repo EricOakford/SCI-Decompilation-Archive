@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 150)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use LoadMany)
@@ -15,24 +15,23 @@
 (instance rm150 of LBRoom
 	(properties
 		picture 150
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 128 151 150)
-		(LoadMany 132 150)
+		(LoadMany RES_VIEW 151 150)
+		(LoadMany RES_SOUND 150)
 		(self setRegions: 92)
 		(super init:)
-		(theMusic number: 150 flags: 1 loop: -1 play:)
+		(theMusic number: 150 flags: mNOPAUSE loop: -1 play:)
 		(lauraTrain init:)
 		(self setScript: sCartoon)
 	)
 )
 
 (instance sCartoon of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp theWidth)
 		(switch (= state newState)
 			(0
 				(lauraTrain setMotion: MoveTo -245 56)
@@ -45,23 +44,23 @@
 			(2 0)
 			(3 (= seconds 3))
 			(4
-				(= temp0 (CelWide 151 4 0))
-				(creditTitle setMotion: MoveTo (- 0 temp0) 107 self)
+				(= theWidth (CelWide 151 4 0))
+				(creditTitle setMotion: MoveTo (- 0 theWidth) 107 self)
 				(creditName setMotion: MoveTo -250 151 self)
 			)
 			(5 0)
 			(6 (= seconds 3))
 			(7
-				(= temp0 (CelWide 151 5 0))
+				(= theWidth (CelWide 151 5 0))
 				(creditName
 					posn: 590 130
 					loop: 5
 					setMotion: MoveTo -222 130 self
 				)
 				(creditTitle
-					posn: (- (- (creditName x?) temp0) 20) 130
+					posn: (- (- (creditName x?) theWidth) 20) 130
 					loop: 5
-					setMotion: MoveTo (- 0 temp0) 130 self
+					setMotion: MoveTo (- 0 theWidth) 130 self
 				)
 			)
 			(8 0)
@@ -81,8 +80,8 @@
 			(11 0)
 			(12 (= seconds 3))
 			(13
-				(= temp0 (CelWide 151 6 0))
-				(creditTitle setMotion: MoveTo (- 0 temp0) 119 self)
+				(= theWidth (CelWide 151 6 0))
+				(creditTitle setMotion: MoveTo (- 0 theWidth) 119 self)
 				(creditName setMotion: MoveTo -145 146 self)
 			)
 			(14 0)
@@ -109,7 +108,7 @@
 		y 200
 		view 151
 		loop 4
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 		moveSpeed 0
 	)
 )
@@ -121,7 +120,7 @@
 		view 151
 		loop 4
 		cel 1
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 		moveSpeed 0
 	)
 )

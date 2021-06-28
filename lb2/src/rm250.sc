@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 250)
-(include sci.sh)
+(include game.sh) (include "250.shm")
 (use Main)
 (use LBRoom)
 (use n027)
@@ -19,24 +19,24 @@
 )
 
 (local
-	local0
+	nextRoom
 	theTrash
 	local2
 )
 (instance rm250 of LBRoom
 	(properties
-		noun 14
+		noun N_ROOM
 		picture 250
 	)
 	
 	(method (init &tmp [temp0 50])
-		(LoadMany 128 250 251 252 253 254)
-		(LoadMany 132 300 41 250 252)
-		(noise number: 41 flags: 1 play:)
+		(LoadMany RES_VIEW 250 251 252 253 254)
+		(LoadMany RES_SOUND 300 41 250 252)
+		(noise number: 41 flags: mNOPAUSE play:)
 		(super init:)
-		(InFirstPerson 1)
+		(InFirstPerson TRUE)
 		(walkHandler addToFront: curRoom)
-		(User canInput: 1)
+		(User canInput: TRUE)
 		(laura cel: (if (ego wearingGown?) 1 else 0) addToPic:)
 		(license init:)
 		(if (TriggerEvent 16 1)
@@ -49,8 +49,8 @@
 			(if
 				(and
 					(not (ego wearingGown?))
-					(not (ego has: 1))
-					(not (ego has: 32))
+					(not (ego has: iClaimTicket))
+					(not (ego has: iEveningGown))
 				)
 				(ticket init:)
 			)
@@ -66,21 +66,25 @@
 		(win5 init: stopUpd:)
 		(narrator y: 120)
 		(cond 
-			((and (== prevRoomNum 300) (ego wearingGown?)) (self setScript: sACTBREAK))
-			((not (ego has: 6))
+			((and (== prevRoomNum 300) (ego wearingGown?))
+				(self setScript: sACTBREAK)
+			)
+			((not (ego has: iPressPass))
 				(if (cast contains: trash1)
 					(self setScript: sNoPressPassD)
 				else
 					(self setScript: sNoPressPassC)
 				)
 			)
-			(else (self setScript: sHasPressPass))
+			(else
+				(self setScript: sHasPressPass)
+			)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -90,10 +94,14 @@
 	)
 	
 	(method (newRoom)
-		(if inset (inset dispose:))
+		(if inset
+			(inset dispose:)
+		)
 		(walkHandler delete: curRoom)
-		(InFirstPerson 0)
-		(if (& msgType $0002) (DoAudio 3))
+		(InFirstPerson FALSE)
+		(if (& msgType CD_MSG)
+			(DoAudio Stop)
+		)
 		(theMusic stop:)
 		(theMusic2 stop:)
 		(super newRoom: &rest)
@@ -101,20 +109,19 @@
 )
 
 (instance sACTBREAK of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theIconBar disable:)
-				(theIconBar disable: 7)
+				(theIconBar disable: ICON_CONTROL)
 				(proc27_2)
 				((ScriptID 21 1) doit: 1029)
-				(win1 setCycle: Fwd)
-				(win2 setCycle: Fwd)
-				(win3 setCycle: Fwd)
-				(win4 setCycle: Fwd)
-				(win5 setCycle: Fwd)
+				(win1 setCycle: Forward)
+				(win2 setCycle: Forward)
+				(win3 setCycle: Forward)
+				(win4 setCycle: Forward)
+				(win5 setCycle: Forward)
 				(theMusic2 send: 2 224 2400)
 				(= cycles 1)
 			)
@@ -132,7 +139,7 @@
 			)
 			(4
 				(theMusic2 send: 2 224 4000)
-				(theMusic number: 300 loop: 1 flags: 1 play: self)
+				(theMusic number: 300 loop: 1 flags: mNOPAUSE play: self)
 			)
 			(5
 				(theMusic2 send: 2 224 3000)
@@ -164,25 +171,30 @@
 )
 
 (instance sNoPressPassD of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= cycles 1)
 			)
-			(1 (messager say: 1 0 9 1 self))
-			(2
-				(messager say: 1 0 10 1 self)
+			(1
+				(messager say: N_CABBIE NULL C_NO_PASS_BOB 1 self)
 			)
-			(3 (messager say: 1 0 9 2 self))
+			(2
+				(messager say: N_CABBIE NULL C_LAURA_INSISTS 1 self)
+			)
+			(3
+				(messager say: N_CABBIE NULL C_NO_PASS_BOB 2 self)
+			)
 			(4
 				(theGame handsOn:)
 				(= seconds 15)
 			)
-			(5 (messager say: 1 0 9 3 self))
+			(5
+				(messager say: N_CABBIE NULL C_NO_PASS_BOB 3 self)
+			)
 			(6
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
@@ -191,25 +203,26 @@
 )
 
 (instance sNoPressPassC of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= cycles 1)
 			)
-			(1 (messager say: 1 0 1 1 self))
+			(1 (messager say: N_CABBIE NULL C_NO_PASS_ROCCO 1 self))
 			(2
-				(messager say: 1 0 10 1 self)
+				(messager say: N_CABBIE NULL C_LAURA_INSISTS 1 self)
 			)
-			(3 (messager say: 1 0 1 2 self))
+			(3
+				(messager say: N_CABBIE NULL C_NO_PASS_ROCCO 2 self)
+			)
 			(4
 				(theGame handsOn:)
 				(= seconds 15)
 			)
-			(5 (messager say: 1 0 1 3 self))
+			(5 (messager say: N_CABBIE NULL C_NO_PASS_ROCCO 3 self))
 			(6
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
@@ -218,20 +231,25 @@
 )
 
 (instance sHasPressPass of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= cycles 1)
 			)
 			(1
 				(cond 
-					((and (cast contains: trash1) (not (Btst 26))) (client setScript: s1stTimeInDirtyTaxi self))
-					((cast contains: trash1) (messager say: 1 0 7 6 self))
-					((not (cast contains: trash1)) (messager say: 1 0 8 0 self))
+					((and (cast contains: trash1) (not (Btst fBeenInDirtyTaxi)))
+						(client setScript: s1stTimeInDirtyTaxi self)
+					)
+					((cast contains: trash1)
+						(messager say: N_CABBIE NULL C_BOB 6 self)
+					)
+					((not (cast contains: trash1))
+						(messager say: N_CABBIE NULL C_ROCCO 0 self)
+					)
 					(else (= cycles 1))
 				)
 			)
@@ -244,35 +262,38 @@
 )
 
 (instance s1stTimeInDirtyTaxi of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= cycles 1)
 			)
-			(1 (messager say: 1 0 7 1 self))
+			(1 (messager say: N_CABBIE NULL C_BOB 1 self))
 			(2
-				(messager say: 1 0 7 2 self)
-				(Bset 26)
+				(messager say: N_CABBIE NULL C_BOB 2 self)
+				(Bset fBeenInDirtyTaxi)
 			)
 			(3
 				(= register 0)
 				(switch
 					(Print
-						addText: 16 0 0 0
-						addButton: 1 15 0 0 1 5 18
-						addButton: 2 15 0 0 2 5 48
+						addText: N_RESPONSE_TITLE NULL NULL 0
+						addButton: 1 N_RESPONSE NULL NULL 1 5 18
+						addButton: 2 N_RESPONSE NULL NULL 2 5 48
 						init:
 					)
-					(1 (messager say: 1 0 7 6 self))
+					(1
+						(messager say: N_CABBIE NULL C_BOB 6 self)
+					)
 					(2
-						(messager say: 1 0 7 5 self)
+						(messager say: N_CABBIE NULL C_BOB 5 self)
 						(= register 1)
 					)
-					(else  (= cycles 1))
+					(else
+						(= cycles 1)
+					)
 				)
 			)
 			(4 (= seconds 1))
@@ -292,47 +313,46 @@
 )
 
 (instance sWhereToBud of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= cycles 1)
 			)
 			(1
 				(if (not (cast contains: trash1))
-					(messager say: 5 11 8 0 self)
+					(messager say: N_ROCCO V_PRESS_PASS C_ROCCO 0 self)
 				else
-					(messager say: 4 11 7 0 self)
+					(messager say: N_BOB V_PRESS_PASS C_BOB 0 self)
 				)
 			)
 			(2
 				(switch (curRoom setInset: (ScriptID 20 0))
-					(513 (= local0 210))
-					(515 (= local0 260))
-					(516 (= local0 240))
-					(514 (= local0 280))
-					(518 (= local0 300))
-					(520 (= local0 300))
-					(517 (= local0 330))
+					(513 (= nextRoom 210))
+					(515 (= nextRoom 260))
+					(516 (= nextRoom 240))
+					(514 (= nextRoom 280))
+					(518 (= nextRoom 300))
+					(520 (= nextRoom 300))
+					(517 (= nextRoom 330))
 					(519
 						(= local2 1)
-						(= local0 250)
+						(= nextRoom 250)
 						(if (not (cast contains: trash1))
-							(messager say: 17 14 8 0)
+							(messager say: N_BE_SPECIFIC V_NOTEBOOK C_ROCCO 0)
 						else
-							(messager say: 17 14 7 0)
+							(messager say: N_BE_SPECIFIC V_NOTEBOOK C_BOB 0)
 						)
 					)
-					(-1 (= local0 250))
+					(-1 (= nextRoom 250))
 					(else 
-						(= local0 250)
+						(= nextRoom 250)
 						(if (not (cast contains: trash1))
-							(messager say: 12 14 8 0)
+							(messager say: N_HUH V_NOTEBOOK C_ROCCO 0)
 						else
-							(messager say: 12 14 7 0)
+							(messager say: N_HUH V_NOTEBOOK C_BOB 0)
 						)
 					)
 				)
@@ -340,16 +360,22 @@
 			)
 			(3
 				(cond 
-					(
-					(or (== local0 prevRoomNum) (== local0 curRoomNum)) (theGame handsOn:) (= cycles 1))
-					((not (cast contains: trash1)) (curRoom setScript: sDoTakeOffFlight))
-					(else (curRoom setScript: sMoveBuildings))
+					((or (== nextRoom prevRoomNum) (== nextRoom curRoomNum))
+						(theGame handsOn:)
+						(= cycles 1)
+					)
+					((not (cast contains: trash1))
+						(curRoom setScript: sDoTakeOffFlight)
+					)
+					(else
+						(curRoom setScript: sMoveBuildings)
+					)
 				)
 			)
 			(4
-				(theIconBar enable: 5)
-				(if (!= local0 curRoomNum)
-					(curRoom newRoom: local0)
+				(theIconBar enable: ICON_ITEM)
+				(if (!= nextRoom curRoomNum)
+					(curRoom newRoom: nextRoom)
 				else
 					(self dispose:)
 				)
@@ -359,27 +385,26 @@
 )
 
 (instance sDoTakeOffFlight of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= cycles 1)
 			)
 			(1
-				(win1 setCycle: Fwd)
-				(win2 setCycle: Fwd)
-				(win3 setCycle: Fwd)
-				(win4 setCycle: Fwd)
-				(win5 setCycle: Fwd)
+				(win1 setCycle: Forward)
+				(win2 setCycle: Forward)
+				(win3 setCycle: Forward)
+				(win4 setCycle: Forward)
+				(win5 setCycle: Forward)
 				(= cycles 1)
 			)
 			(2
-				(theMusic number: 250 loop: 1 flags: 1 play:)
+				(theMusic number: 250 loop: 1 flags: mNOPAUSE play:)
 				(theGame handsOn:)
-				(theIconBar disable: 5 6 0)
+				(theIconBar disable: ICON_ITEM ICON_INVENTORY ICON_WALK)
 				(= cycles 1)
 			)
 			(3
@@ -396,13 +421,13 @@
 			)
 			(6
 				(theMusic2 send: 2 224 4000)
-				((ScriptID 1902 13) modeless: 1)
-				((ScriptID 1903 14) modeless: 1)
+				((ScriptID 1902 13) modeless: TRUE)
+				((ScriptID 1903 14) modeless: TRUE)
 				(= register (Random 11 17))
 				(cond 
 					((== register 17) (= seconds 8))
 					((== register 16) (= seconds 8))
-					(else (messager say: 10 0 register 0 self))
+					(else (messager say: 10 NULL register 0 self))
 				)
 			)
 			(7
@@ -416,7 +441,7 @@
 			(9
 				(if
 					(not
-						(if (== (DoAudio 6) -1)
+						(if (== (DoAudio Loc) -1)
 							(== (theMusic prevSignal?) -1)
 						)
 					)
@@ -439,11 +464,11 @@
 			)
 			(12
 				(theMusic2 send: 2 224 0)
-				(if (& msgType $0002) ((ScriptID 1902 13) dispose:))
+				(if (& msgType CD_MSG) ((ScriptID 1902 13) dispose:))
 				(theGame handsOn:)
-				(theIconBar enable: 5)
-				(if (!= local0 curRoomNum)
-					(curRoom newRoom: local0)
+				(theIconBar enable: ICON_ITEM)
+				(if (!= nextRoom curRoomNum)
+					(curRoom newRoom: nextRoom)
 				else
 					(self dispose:)
 				)
@@ -453,22 +478,21 @@
 )
 
 (instance sMoveBuildings of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(win1 setCycle: Fwd)
-				(win2 setCycle: Fwd)
-				(win3 setCycle: Fwd)
-				(win4 setCycle: Fwd)
-				(win5 setCycle: Fwd)
+				(win1 setCycle: Forward)
+				(win2 setCycle: Forward)
+				(win3 setCycle: Forward)
+				(win4 setCycle: Forward)
+				(win5 setCycle: Forward)
 				(= cycles 1)
 			)
 			(1
-				(theMusic number: 250 loop: 1 flags: 1 play:)
+				(theMusic number: 250 loop: 1 flags: mNOPAUSE play:)
 				(theGame handsOn:)
-				(theIconBar disable: 5 6 0)
+				(theIconBar disable: ICON_ITEM ICON_INVENTORY ICON_WALK)
 				(= cycles 1)
 			)
 			(2
@@ -490,7 +514,7 @@
 			(6
 				(if
 					(not
-						(if (== (DoAudio 6) -1)
+						(if (== (DoAudio Loc) -1)
 							(== (theMusic prevSignal?) -1)
 						)
 					)
@@ -500,10 +524,10 @@
 			)
 			(7
 				(theMusic fade:)
-				(theIconBar enable: 5)
-				(if (& msgType $0002) ((ScriptID 1903 14) dispose:))
-				(if (!= local0 curRoomNum)
-					(curRoom newRoom: local0)
+				(theIconBar enable: ICON_ITEM)
+				(if (& msgType CD_MSG) ((ScriptID 1903 14) dispose:))
+				(if (!= nextRoom curRoomNum)
+					(curRoom newRoom: nextRoom)
 				else
 					(self dispose:)
 				)
@@ -518,11 +542,11 @@
 		z 75
 		view 251
 		priority 10
-		signal $1011
+		signal (| skipCheck fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 13)
+		(if (== theVerb V_EXIT)
 			(curRoom newRoom: (if prevRoomNum else 210))
 		else
 			(ego doVerb: theVerb &rest)
@@ -534,35 +558,43 @@
 	(properties
 		x 232
 		y 104
-		noun 4
+		noun N_BOB
 		view 252
 		loop 1
 		priority 4
-		signal $1811
+		signal (| skipCheck fixedLoop fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb &tmp temp0)
 		(switch theVerb
-			(1 (messager say: 4 1 7 0))
-			(4 (messager say: 4 4 7 0))
-			(13
+			(V_LOOK
+				(messager say: N_BOB V_LOOK C_BOB 0)
+			)
+			(V_DO
+				(messager say: N_BOB V_DO C_BOB 0)
+			)
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
-			(6
+			(V_ASK
 				(cond 
-					(local2 (curRoom setScript: sWhereToBud))
+					(local2
+						(curRoom setScript: sWhereToBud)
+					)
 					(
 						(and
 							(<= 512 (= temp0 (curRoom setInset: (ScriptID 20 0))))
 							(<= temp0 665)
 						)
-						(messager say: 11 6 7 0)
+						(messager say: 11 V_ASK C_BOB 0)
 					)
-					(else (messager say: 12 6 7 0))
+					(else (messager say: 12 V_ASK C_BOB 0))
 				)
 			)
-			(2 (messager say: 4 2 7 0))
-			(11
+			(V_TALK
+				(messager say: N_BOB V_TALK C_BOB 0)
+			)
+			(V_PRESS_PASS
 				(curRoom setScript: sWhereToBud)
 			)
 			(else 
@@ -576,17 +608,21 @@
 	(properties
 		x 232
 		y 104
-		noun 5
+		noun N_ROCCO
 		view 252
 		priority 4
-		signal $1811
+		signal (| skipCheck fixedLoop fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb &tmp temp0)
 		(switch theVerb
-			(1 (messager say: 5 1 8 0))
-			(4 (messager say: 5 4 8 0))
-			(6
+			(V_LOOK
+				(messager say: N_ROCCO V_LOOK C_ROCCO 0)
+			)
+			(V_DO
+				(messager say: N_ROCCO V_DO C_ROCCO 0)
+			)
+			(V_ASK
 				(cond 
 					(local2 (curRoom setScript: sWhereToBud))
 					(
@@ -594,16 +630,18 @@
 							(<= 512 (= temp0 (curRoom setInset: (ScriptID 20 0))))
 							(<= temp0 665)
 						)
-						(messager say: 11 6 8 0)
+						(messager say: 11 V_ASK C_ROCCO 0)
 					)
-					(else (messager say: 12 6 8 0))
+					(else (messager say: 12 V_ASK C_ROCCO 0))
 				)
 			)
-			(2 (messager say: 5 2 8 0))
-			(13
+			(V_TALK
+				(messager say: N_ROCCO V_TALK C_ROCCO 0)
+			)
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
-			(11
+			(V_PRESS_PASS
 				(curRoom setScript: sWhereToBud)
 			)
 			(else 
@@ -617,16 +655,16 @@
 	(properties
 		x 87
 		y 96
-		noun 6
+		noun N_WINDOW
 		view 253
 		priority 2
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 		cycleSpeed 7
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -640,17 +678,17 @@
 	(properties
 		x 141
 		y 97
-		noun 6
+		noun N_WINDOW
 		view 253
 		loop 1
 		priority 2
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 		cycleSpeed 7
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -664,16 +702,16 @@
 	(properties
 		x 159
 		y 92
-		noun 6
+		noun N_WINDOW
 		view 254
 		priority 2
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 		cycleSpeed 7
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -687,17 +725,17 @@
 	(properties
 		x 213
 		y 88
-		noun 6
+		noun N_WINDOW
 		view 254
 		loop 1
 		priority 2
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 		cycleSpeed 7
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -711,17 +749,17 @@
 	(properties
 		x 268
 		y 89
-		noun 6
+		noun N_WINDOW
 		view 254
 		loop 2
 		priority 2
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 		cycleSpeed 7
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -736,20 +774,20 @@
 		view 250
 		x 190
 		y 154
-		disposeNotOnMe 1
-		noun 9
+		disposeNotOnMe TRUE
+		noun N_TICKET
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				((ScriptID 21 0) doit: 770)
 				(ticket dispose:)
 				(inTicket dispose:)
-				(ego get: -1 1)
-				(Bset 27)
+				(ego get: -1 iClaimTicket)
+				(Bset fGotClaimTicket)
 			)
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -760,8 +798,7 @@
 )
 
 (instance showTicket of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -769,7 +806,7 @@
 				(= cycles 5)
 			)
 			(1
-				(inTicket doVerb: 1)
+				(inTicket doVerb: V_LOOK)
 				(self dispose:)
 			)
 		)
@@ -783,21 +820,21 @@
 		view 250
 		loop 2
 		priority 8
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(1
+			(V_LOOK
 				(curRoom setScript: showTicket)
 			)
-			(4
-				(ego get: 1)
-				(Bset 27)
+			(V_DO
+				(ego get: iClaimTicket)
+				(Bset fGotClaimTicket)
 				((ScriptID 21 0) doit: 770)
 				(self dispose:)
 			)
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -819,9 +856,13 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (cast contains: trash1) (= noun 7) else (= noun 8))
+		(if (cast contains: trash1)
+			(= noun N_BOB_LICENSE)
+		else
+			(= noun N_ROCCO_LICENSE)
+		)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
 			(else 
@@ -833,43 +874,10 @@
 
 (class Trash of View
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 2
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		state $0000
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
+		noun N_TRASH
 		view 250
 		loop 1
 		cel 0
-		priority 0
-		underBits 0
-		signal $0101
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
 		boundryLeft 0
 		boundryRight 319
 		boundryTop 155
@@ -902,47 +910,53 @@
 		(cond 
 			(
 				(and
-					(== (event message?) KEY_RETURN)
-					(== (event type?) evKEYBOARD)
-					(== (theIconBar curIcon?) (theIconBar at: 2))
+					(== (event message?) ENTER)
+					(== (event type?) keyDown)
+					(== (theIconBar curIcon?)
+						(theIconBar at: ICON_DO)
+					)
 					(self onMe: event)
 				)
 				(if (!= theTrash self)
 					(= theTrash self)
-					(noise number: 54 loop: 1 flags: 1 play:)
+					(noise number: 54 loop: 1 flags: mNOPAUSE play:)
 				else
 					(= theTrash 0)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 			(
 				(and
-					(== (event type?) evMOUSEBUTTON)
-					(== (theIconBar curIcon?) (theIconBar at: 2))
+					(== (event type?) mouseDown)
+					(== (theIconBar curIcon?) (theIconBar at: ICON_DO))
 					(self onMe: event)
 				)
-				(noise number: 54 loop: 1 flags: 1 play:)
+				(noise number: 54 loop: 1 flags: mNOPAUSE play:)
 				(= theTrash self)
 				(event claimed: 1)
 			)
 			(
 				(and
-					(== (event type?) evMOUSERELEASE)
+					(== (event type?) mouseUp)
 					(self onMe: event)
 				)
 				(= theTrash 0)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
-			(else (super handleEvent: event &rest))
+			(else
+				(super handleEvent: event &rest)
+			)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(13
+			(V_EXIT
 				(curRoom newRoom: (if prevRoomNum else 210))
 			)
-			(1 (messager say: 3 1 4))
+			(V_LOOK
+				(messager say: 3 V_LOOK C_GOT_TICKET)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -966,7 +980,7 @@
 		x 166
 		y 176
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -975,7 +989,7 @@
 		x 145
 		y 163
 		cel 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -984,7 +998,7 @@
 		x 148
 		y 181
 		cel 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -993,7 +1007,7 @@
 		x 112
 		y 174
 		cel 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1001,7 +1015,7 @@
 	(properties
 		x 58
 		y 174
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1009,25 +1023,35 @@
 	(properties
 		x 261
 		y 189
-		noun 2
+		noun N_TRASH
 		view 250
 		loop 3
 		priority 1
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(4
 				(cond 
-					((Btst 27) (messager say: 2 4 4))
-					((TriggerEvent 16 1) (messager say: 2 4 2))
-					((ego wearingGown?) (messager say: 2 4 4))
-					((ego has: 0) (messager say: 2 4 4))
-					(else (messager say: 2 4 4))
+					((Btst fGotClaimTicket)
+						(messager say: N_TRASH V_DO C_GOT_TICKET)
+					)
+					((TriggerEvent 16 1)
+						(messager say: N_TRASH V_DO C_FIND_TICKET))
+					((ego wearingGown?)
+						(messager say: N_TRASH V_DO C_GOT_TICKET))
+					((ego has: iCoupon)
+						(messager say: N_TRASH V_DO C_GOT_TICKET)
+					)
+					(else
+						(messager say: N_TRASH V_DO C_GOT_TICKET)
+					)
 				)
 			)
-			(1 (messager say: 3 1 4))
+			(V_LOOK
+				(messager say: 3 V_LOOK C_GOT_TICKET)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -1037,6 +1061,6 @@
 
 (instance noise of Sound
 	(properties
-		flags $0001
+		flags mNOPAUSE
 	)
 )

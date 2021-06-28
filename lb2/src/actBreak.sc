@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 26)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use LoadMany)
@@ -13,7 +13,7 @@
 )
 
 (local
-	local0
+	nextRoom
 	local1
 	local2
 	local3 =  5
@@ -26,35 +26,35 @@
 (instance actBreak of LBRoom
 	(properties
 		picture 780
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 128 26)
-		(LoadMany 132 30)
+		(LoadMany RES_VIEW 26)
+		(LoadMany RES_SOUND 30)
 		(theGame handsOff:)
 		(switch currentAct
-			(0 (= local0 230))
+			(0 (= nextRoom 230))
 			(1
 				(= local8 (/ (* score 100) local3))
-				(= local0 330)
+				(= nextRoom 330)
 			)
 			(2
 				(= local8 (/ (* score 100) local4))
-				(= local0 355)
+				(= nextRoom 355)
 			)
 			(3
 				(= local8 (/ (* score 100) local5))
 				(= global111 11)
-				(= local0 (if (== prevRoomNum 620) 610 else 510))
+				(= nextRoom (if (== prevRoomNum 620) 610 else 510))
 			)
 			(4
 				(= local8 (/ (* score 100) local6))
-				(= local0 420)
+				(= nextRoom 420)
 			)
 			(5
 				(= local8 (/ (* score 100) local7))
-				(= local0 750)
+				(= nextRoom 750)
 			)
 		)
 		(super init: &rest)
@@ -66,13 +66,12 @@
 			((and (< 80 local8) (< local8 101)) (= local1 6) (= local2 global135) (++ global135))
 		)
 		(actView init: cel: currentAct)
-		(theMusic number: 30 flags: 1 loop: -1 play:)
+		(theMusic number: 30 flags: mNOPAUSE loop: -1 play:)
 		(self setScript: sBreakIt)
 	)
 )
 
 (instance sBreakIt of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -123,7 +122,7 @@
 				(theMusic fade: 0 10 20 1)
 				(++ currentAct)
 				(= triggeredEvents 0)
-				(curRoom newRoom: local0)
+				(curRoom newRoom: nextRoom)
 				(self dispose:)
 			)
 		)
@@ -138,7 +137,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 2)
+		(if (== theVerb V_TALK)
 			(sBreakIt changeState: 8)
 		else
 			(super doVerb: theVerb)

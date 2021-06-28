@@ -17,8 +17,10 @@
 (define LBDOOR		16)
 (define LBROOM		17)
 (define LBEGO		19)
+(define LBCONTROL	24)
 (define SPEED		28)
 (define WHERETO		29)
+(define DEATH		99)
 
 ;Icon bar
 (enum
@@ -72,10 +74,20 @@
 	iMummy			;35
 )
 
+;Death reasons
+(define deathRUNOVER	9)
+
 ;Event flags
 (enum
 	fIsVGA				;0
 )
 (define fFlag25			25)
+(define fBeenInDirtyTaxi	26)
+(define fGotClaimTicket		27)
+(define fTalkedToLuigi	28)
+(define fDeskUnlocked	29)
+(define fEgoSits		30)
 (define fRubbedPad		35)
 (define fCountessDead	92)
+(define fGetPressPass	128)
+(define fEndGame		147)

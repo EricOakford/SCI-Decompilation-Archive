@@ -1,0 +1,23 @@
+;;; Sierra Script
+;;; 240.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_TAXI_SIGN 13)
+(define N_STEVE 10)
+(define N_STEVEDORE 9)
+(define N_WAREHOUSES 4)
+(define N_SHIP 1)
+(define N_CRATE 5)
+(define N_CITY 3)
+(define N_SKY 2)
+(define N_WATER 7)
+(define N_PILING 8)
+(define N_DOCKS 6)
+(define N_NO_CONV 14)
+
+;;; CASES
+
+(define C_MUSEUM 19)
+

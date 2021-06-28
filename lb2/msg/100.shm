@@ -1,0 +1,14 @@
+;;; Sierra Script
+;;; 100.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+
+;;; NOUNS
+
+(define N_INTRO 1)
+(define N_PLAY 2)
+(define N_CONTINUE 3)
+(define N_QUIT 4)
+

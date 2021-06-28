@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 27)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use System)
 
@@ -21,7 +21,7 @@
 			(>> $8000 (mod param1 16))
 		)
 	)
-	(Memory memPOKE param2 temp0)
+	(Memory MWriteWord param2 temp0)
 )
 
 (procedure (proc27_2 &tmp temp0 temp1)

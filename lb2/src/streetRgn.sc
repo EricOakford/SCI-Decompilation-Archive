@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 91)
-(include sci.sh)
+(include game.sh) (include "91.shm")
 (use Main)
 (use Feature)
 (use MoveFwd)
@@ -17,21 +17,22 @@
 )
 
 (local
-	local0
-	local1
+	lookedLeft
+	lookedRight
 	local2
 	local3
 )
-(instance streetRgn of Rgn
-	(properties)
+(instance streetRgn of Region
 	
 	(method (init)
-		(Load rsVIEW 853)
-		(LoadMany 132 96 94 81)
+		(Load RES_VIEW 853)
+		(LoadMany RES_SOUND 96 94 81)
 		(leftFeature init:)
 		(rightFeature init:)
 		(car setLoop: 3 setCel: 3 xStep: 6 moveSpeed: 3 hide:)
-		(if (not (streetSounds handle?)) (streetSounds play:))
+		(if (not (streetSounds handle?))
+			(streetSounds play:)
+		)
 		(super init:)
 	)
 	
@@ -40,20 +41,22 @@
 			((curRoom script?))
 			(
 				(and
-					(== local0 1)
-					(== local1 1)
-					(IsObjectOnControl ego 4)
+					(== lookedLeft TRUE)
+					(== lookedRight TRUE)
+					(IsObjectOnControl ego cGREEN)
 				)
 				(curRoom setScript: sLeaveNow)
 			)
 			(
 				(and
-					(not (if (== local0 1) (== local1 1)))
-					(IsObjectOnControl ego 4)
+					(not (if (== lookedLeft TRUE) (== lookedRight TRUE)))
+					(IsObjectOnControl ego cGREEN)
 				)
 				(curRoom setScript: sRunOver)
 			)
-			((IsObjectOnControl ego 256) (curRoom setScript: sHitEdgeScreen))
+			((IsObjectOnControl ego cGREY)
+				(curRoom setScript: sHitEdgeScreen)
+			)
 		)
 		(super doit:)
 	)
@@ -85,14 +88,17 @@
 )
 
 (instance sRunOver of Script
-	(properties)
 	
 	(method (doit)
 		(cond 
-			(
-			(and (< (car distanceTo: ego) 160) (not local2)) (mRunOver number: 96 loop: -1 play:) (= local2 1))
-			(
-			(and (< (car distanceTo: ego) 100) (not local3)) (mRunOver number: 81 loop: 1 play:) (= local3 1))
+			((and (< (car distanceTo: ego) 160) (not local2))
+				(mRunOver number: 96 loop: -1 play:)
+				(= local2 1)
+			)
+			((and (< (car distanceTo: ego) 100) (not local3))
+				(mRunOver number: 81 loop: 1 play:)
+				(= local3 1)
+			)
 		)
 		(super doit:)
 	)
@@ -139,29 +145,30 @@
 					cel: 0
 					posn: (- (ego x?) 19) (- (ego y?) 1)
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(= seconds 7)
-				(if (ego looper?) (ego setLoop: 0))
+				(if (ego looper?)
+					(ego setLoop: 0)
+				)
 			)
 			(5
-				(= deathReason 9)
-				(curRoom newRoom: 99)
+				(= deathReason deathRUNOVER)
+				(curRoom newRoom: DEATH)
 			)
 		)
 	)
 )
 
 (instance sHitEdgeScreen of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(messager say: 4 3 0 0 self 91)
+				(messager say: N_EDGE V_WALK NULL 0 self 91)
 			)
 			(1
 				(if (> (ego heading?) 180)
@@ -191,11 +198,13 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1
-				(= local0 1)
-				(messager say: 1 1 0 0 0 91)
+			(V_LOOK
+				(= lookedLeft TRUE)
+				(messager say: N_LEFT V_LOOK NULL 0 0 91)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -214,10 +223,12 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(= local1 1)
-				(messager say: 2 1 0 0 0 91)
+				(= lookedRight TRUE)
+				(messager say: N_RIGHT V_LOOK NULL 0 0 91)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -229,20 +240,20 @@
 		view 213
 		loop 3
 		cel 3
-		signal $4000
+		signal ignrAct
 		moveSpeed 3
 	)
 )
 
 (instance mRunOver of Sound
 	(properties
-		flags $0001
+		flags mNOPAUSE
 	)
 )
 
 (instance streetSounds of Sound
 	(properties
-		flags $0001
+		flags mNOPAUSE
 		number 94
 		loop -1
 	)

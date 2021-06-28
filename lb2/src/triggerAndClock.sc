@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 22)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Inset)
 (use Sound)
@@ -12,20 +12,19 @@
 )
 
 (local
-	local0
-	local1
+	hourCel
+	quarterCel
 	local2
 	[local3 2] = [33 18]
 	[local5 5]
 )
 (instance triggerAndClock of Code
-	(properties)
 	
 	(method (doit param1 param2)
 		(if (& param1 $ff00)
-			(= local0 (>> (= local0 (& param1 $f000)) $000c))
-			(= local1 (>> (= local1 (& param1 $0f00)) $0008))
-			(switch (= local2 (+ (* local0 100) (* 15 local1)))
+			(= hourCel (>> (= hourCel (& param1 $f000)) $000c))
+			(= quarterCel (>> (= quarterCel (& param1 $0f00)) $0008))
+			(switch (= local2 (+ (* hourCel 100) (* 15 quarterCel)))
 				(815 (Bset 1))
 				(1015 (Bset 2))
 				(1115 (Bset 3))
@@ -36,14 +35,13 @@
 			(curRoom
 				setInset: clockInset (if (> argc 1) param2 else 0)
 			)
-			(= param1 (& param1 $00ff))
+			(&= param1 $00ff)
 		)
-		(= triggeredEvents (+ triggeredEvents param1))
+		(+= triggeredEvents param1)
 	)
 )
 
 (instance saveVolume of Code
-	(properties)
 	
 	(method (doit param1)
 		(if (param1 handle?)
@@ -56,7 +54,6 @@
 )
 
 (instance restoreVolume of Code
-	(properties)
 	
 	(method (doit param1 &tmp temp0)
 		(if (= temp0 [local5 (sounds indexOf: param1)])
@@ -66,20 +63,19 @@
 )
 
 (instance sShowClock of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 40] temp40)
 		(switch (= state newState)
 			(0
-				(quarterHand cel: local1 init:)
-				(hourHand cel: local0 init:)
+				(quarterHand cel: quarterCel init:)
+				(hourHand cel: hourCel init:)
 				(sounds eachElementDo: #perform saveVolume)
 				(= ticks 60)
 			)
 			(1
 				(clockSound
 					number:
-					(switch local1
+					(switch quarterCel
 						(0 23)
 						(1 20)
 						(2 21)
@@ -118,7 +114,7 @@
 		view 22
 		loop 2
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -129,7 +125,7 @@
 		view 22
 		loop 1
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -163,8 +159,8 @@
 				((ScriptID 90 4) goTo: 430)
 			)
 			(215
-				(if (== ((inventory at: 14) owner?) 520)
-					((inventory at: 14) owner: 630)
+				(if (== ((inventory at: iSnakeOil) owner?) 520)
+					((inventory at: iSnakeOil) owner: 630)
 				)
 			)
 			(245
@@ -172,37 +168,32 @@
 				((ScriptID 90 1) goTo: 520)
 			)
 		)
-		(if
-		(and (Btst 1) (cast contains: (ScriptID 35 0)))
+		(if (and (Btst 1) (cast contains: (ScriptID 35 0)))
 			((ScriptID 35 0) dispose:)
 		)
-		(if
-		(and (Btst 2) (cast contains: (ScriptID 90 7)))
+		(if (and (Btst 2) (cast contains: (ScriptID 90 7)))
 			((ScriptID 90 7) wandering: 0 setScript: 0 moveTo: -2)
 		)
-		(if
-		(and (Btst 3) (cast contains: (ScriptID 90 5)))
+		(if (and (Btst 3) (cast contains: (ScriptID 90 5)))
 			((ScriptID 90 5) wandering: 0 setScript: 0 moveTo: -2)
 		)
-		(if
-		(and (Btst 5) (cast contains: (ScriptID 90 6)))
+		(if (and (Btst 5) (cast contains: (ScriptID 90 6)))
 			((ScriptID 90 6) wandering: 0 setScript: 0 moveTo: -2)
 		)
-		(if
-		(and (Btst 6) (cast contains: (ScriptID 90 1)))
+		(if (and (Btst 6) (cast contains: (ScriptID 90 1)))
 			((ScriptID 90 1) wandering: 0 setScript: 0 room: -2)
 		)
 		(DisposeScript 22)
 	)
 	
 	(method (handleEvent event)
-		(event claimed: 1)
+		(event claimed: TRUE)
 		(super handleEvent: event)
 	)
 )
 
 (instance clockSound of Sound
 	(properties
-		flags $0001
+		flags mNOPAUSE
 	)
 )

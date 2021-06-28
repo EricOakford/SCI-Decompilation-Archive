@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 180)
-(include sci.sh)
+(include game.sh) (include "180.shm")
 (use Main)
 (use LBRoom)
 (use PolyPath)
@@ -23,8 +23,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 151 181 185)
-		(LoadMany 132 94 180)
+		(LoadMany RES_VIEW 151 181 185)
+		(LoadMany RES_SOUND 94 180)
 		(self setRegions: 92)
 		(ego
 			view: 185
@@ -40,8 +40,12 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 305 189 222 168 319 175 319 189
+					type: PBarredAccess
+					init:
+						305 189
+						222 168
+						319 175
+						319 189
 					yourself:
 				)
 		)
@@ -73,7 +77,6 @@
 )
 
 (instance sCartoon of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -84,7 +87,7 @@
 				((ScriptID 1881 2) modeless: 1)
 				(= cycles 2)
 			)
-			(2 (messager say: 1 0 0 0 self))
+			(2 (messager say: N_CARTOON NULL NULL 0 self))
 			(3
 				(ego setLoop: 6 setMotion: PolyPath 245 168 self)
 			)
@@ -162,7 +165,6 @@
 )
 
 (instance sCarGo1 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -186,7 +188,6 @@
 )
 
 (instance sP1Walk of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -219,7 +220,7 @@
 		view 181
 		loop 3
 		cel 4
-		signal $4800
+		signal (| ignrAct fixedLoop)
 	)
 )
 
@@ -272,7 +273,7 @@
 		y 102
 		view 151
 		loop 7
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 		moveSpeed 0
 	)
 )
@@ -284,7 +285,7 @@
 		view 151
 		loop 7
 		cel 1
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 		moveSpeed 0
 	)
 )
@@ -295,7 +296,7 @@
 		y 153
 		view 181
 		loop 2
-		signal $4800
+		signal (| ignrAct fixedLoop)
 	)
 )
 
@@ -306,6 +307,6 @@
 		view 181
 		loop 5
 		cel 1
-		signal $4800
+		signal (| ignrAct fixedLoop)
 	)
 )

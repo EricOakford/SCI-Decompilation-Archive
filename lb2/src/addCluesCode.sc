@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 21)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use System)
 
@@ -14,8 +14,7 @@
 	local1
 )
 (instance addCluesCode of Code
-	(properties)
-	
+
 	(method (doit param1 &tmp temp0)
 		(switch (/ param1 256)
 			(1
@@ -39,13 +38,13 @@
 		(while (< temp0 local1)
 			(if
 				(==
-					(mod (Memory memPEEK (+ local0 (* 2 temp0))) 4096)
+					(mod (Memory MReadWord (+ local0 (* 2 temp0))) 4096)
 					param1
 				)
 				(= temp0 local1)
 			)
-			(if (not (Memory memPEEK (+ local0 (* 2 temp0))))
-				(Memory memPOKE (+ local0 (* 2 temp0)) param1)
+			(if (not (Memory MReadWord (+ local0 (* 2 temp0))))
+				(Memory MWriteWord (+ local0 (* 2 temp0)) param1)
 				(= temp0 local1)
 			)
 			(++ temp0)
@@ -54,7 +53,6 @@
 )
 
 (instance dropCluesCode of Code
-	(properties)
 	
 	(method (doit param1 &tmp temp0 temp1)
 		(switch (/ param1 256)
@@ -79,7 +77,7 @@
 		(while (< temp0 local1)
 			(if
 				(==
-					(mod (Memory memPEEK (+ local0 (* 2 temp0))) 4096)
+					(mod (Memory MReadWord (+ local0 (* 2 temp0))) 4096)
 					param1
 				)
 				(= temp1 temp0)
@@ -89,13 +87,12 @@
 		)
 		(= temp0 temp1)
 		(while (< temp0 local1)
-			(Memory
-				memPOKE
+			(Memory MWriteWord
 				(+ local0 (* 2 temp0))
-				(Memory memPEEK (+ local0 (* 2 temp0) 2))
+				(Memory MReadWord (+ local0 (* 2 temp0) 2))
 			)
 			(++ temp0)
 		)
-		(Memory memPOKE (+ local0 (* 2 (- local1 1))) 0)
+		(Memory MWriteWord (+ local0 (* 2 (- local1 1))) 0)
 	)
 )

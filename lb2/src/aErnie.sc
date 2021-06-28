@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 31)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use n027)
 (use MuseumRgn)
@@ -17,9 +17,9 @@
 		room 630
 	)
 	
-	(method (doVerb theVerb theItem &tmp temp0 temp1 temp2)
+	(method (doVerb theVerb theItem &tmp temp0 theSeq temp2)
 		(switch theVerb
-			(6
+			(V_ASK
 				(if
 					(==
 						(= temp0
@@ -34,7 +34,7 @@
 					(return)
 				)
 				(= temp2 (& temp0 $00ff))
-				(= temp1
+				(= theSeq
 					(switch (& temp0 $ff00)
 						(256 (+ temp2 1))
 						(512 (+ temp2 18))
@@ -43,15 +43,21 @@
 					)
 				)
 				(cond 
-					((not (Message msgGET modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
-					((proc27_0 1 [global296 (- temp1 2)]) (messager say: noun 6 1 0 0 modNum))
+					((not (Message MsgGet modNum noun V_ASK theSeq 1))
+						(messager say: noun V_ASK 81 0 0 modNum)
+					)
+					((proc27_0 1 [global296 (- theSeq 2)])
+						(messager say: noun V_ASK 1 0 0 modNum)
+					)
 					(else
-						(messager say: noun 6 temp1 0 0 modNum)
-						(proc27_1 1 @[global296 (- temp1 2)])
+						(messager say: noun 6 theSeq 0 0 modNum)
+						(proc27_1 1 @[global296 (- theSeq 2)])
 					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	

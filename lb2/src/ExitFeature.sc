@@ -1,18 +1,18 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 23)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use PolyPath)
 (use System)
 
 
-(class ExitFeature of Obj
+(class ExitFeature of Object
 	(properties
 		nsTop 0
 		nsLeft 0
 		nsBottom 0
 		nsRight 0
-		cursor 999
+		cursor ARROW_CURSOR
 		lastCursor -1
 		exitDir 0
 		noun 0
@@ -72,21 +72,24 @@
 			(
 				(or
 					(and
-						(== (event type?) evKEYBOARD)
-						(!= (event message?) KEY_RETURN)
+						(== (event type?) keyDown)
+						(!= (event message?) ENTER)
 					)
 					(and
-						(== (event type?) evMOUSEBUTTON)
+						(== (event type?) mouseDown)
 						(event modifiers?)
 					)
-					(not (OneOf (event type?) 1 4))
+					(not (OneOf (event type?) mouseDown keyDown))
 				)
 				(= lastCursor -1)
 			)
-			((== theCursor ((theIconBar at: 1) cursor?)) (event claimed: 1) (messager say: noun 1))
+			((== theCursor ((theIconBar at: ICON_LOOK) cursor?))
+				(event claimed: TRUE)
+				(messager say: noun V_LOOK)
+			)
 			((!= theCursor cursor))
 			(else
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(switch exitDir
 					(1
 						(ego setMotion: PolyPath mouseX 0)

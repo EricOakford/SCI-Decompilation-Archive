@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 750)
-(include sci.sh)
+(include game.sh) (include "750.shm")
 (use Main)
 (use LBRoom)
 (use Print)
@@ -17,52 +17,52 @@
 )
 
 (local
-	local0 =  1
-	local1
-	local2
+	questionNum =  1
+	pickedPerson
+	pickedMotive
 	local3
-	local4 =  1
-	local5 =  1
+	correctAnswer =  TRUE
+	correctAnswer2 =  TRUE
 )
-(procedure (localproc_013c)
-	(= local1
+(procedure (PickPerson)
+	(= pickedPerson
 		(Print
 			font: 69
-			addText: 5 0 0 1 (WhichLanguage 0 0 42 0 0) 0
-			addButton: 1 4 0 0 1 0 17
-			addButton: 2 4 0 0 2 0 34
-			addButton: 3 4 0 0 3 112 34
-			addButton: 4 4 0 0 4 0 51
-			addButton: 5 4 0 0 5 112 51
-			addButton: 6 4 0 0 6 0 68
-			addButton: 8 4 0 0 8 112 68
-			addButton: 7 4 0 0 7 0 85
-			addButton: 9 4 0 0 9 0 102
-			addButton: 10 4 0 0 10 0 119
-			addButton: 11 4 0 0 11 0 136
-			addButton: 12 4 0 0 12 0 153
+			addText: N_TITLE NULL NULL 1 (WhichLanguage 0 0 42 0 0) 0
+			addButton: 1 N_PERSON NULL NULL 1 0 17
+			addButton: 2 N_PERSON NULL NULL 2 0 34
+			addButton: 3 N_PERSON NULL NULL 3 112 34
+			addButton: 4 N_PERSON NULL NULL 4 0 51
+			addButton: 5 N_PERSON NULL NULL 5 112 51
+			addButton: 6 N_PERSON NULL NULL 6 0 68
+			addButton: 8 N_PERSON NULL NULL 8 112 68
+			addButton: 7 N_PERSON NULL NULL 7 0 85
+			addButton: 9 N_PERSON NULL NULL 9 0 102
+			addButton: 10 N_PERSON NULL NULL 10 0 119
+			addButton: 11 N_PERSON NULL NULL 11 0 136
+			addButton: 12 N_PERSON NULL NULL 12 0 153
 			init:
 		)
 	)
 )
 
-(procedure (localproc_0221)
-	(= local2
+(procedure (PickMotive)
+	(= pickedMotive
 		(Print
-			addText: 5 0 0 2 (WhichLanguage 0 0 67 0 0) 0
-			addButton: 1 6 0 0 1 0 17
-			addButton: 2 6 0 0 2 (WhichLanguage 128 80 128 80 96) 17
-			addButton: 3 6 0 0 3 0 34
-			addButton: 4 6 0 0 4 (WhichLanguage 80 80 128 80 80) 34
-			addButton: 5 6 0 0 5 0 51
-			addButton: 6 6 0 0 6 (WhichLanguage 80 80 128 80 80) 51
-			addButton: 7 6 0 0 7 0 68
-			addButton: 8 6 0 0 8 0 85
-			addButton: 9 6 0 0 9 0 102
-			addButton: 10 6 0 0 10 (WhichLanguage 0 0 8 0 0) 119
-			addButton: 11 6 0 0 11 0 136
-			addButton: 12 6 0 0 12 0 153
-			addButton: 13 6 0 0 13 (WhichLanguage 48 48 64 48 80) 153
+			addText: N_TITLE NULL NULL 2 (WhichLanguage 0 0 67 0 0) 0
+			addButton: 1 N_MOTIVE NULL NULL 1 0 17
+			addButton: 2 N_MOTIVE NULL NULL 2 (WhichLanguage 128 80 128 80 96) 17
+			addButton: 3 N_MOTIVE NULL NULL 3 0 34
+			addButton: 4 N_MOTIVE NULL NULL 4 (WhichLanguage 80 80 128 80 80) 34
+			addButton: 5 N_MOTIVE NULL NULL 5 0 51
+			addButton: 6 N_MOTIVE NULL NULL 6 (WhichLanguage 80 80 128 80 80) 51
+			addButton: 7 N_MOTIVE NULL NULL 7 0 68
+			addButton: 8 N_MOTIVE NULL NULL 8 0 85
+			addButton: 9 N_MOTIVE NULL NULL 9 0 102
+			addButton: 10 N_MOTIVE NULL NULL 10 (WhichLanguage 0 0 8 0 0) 119
+			addButton: 11 N_MOTIVE NULL NULL 11 0 136
+			addButton: 12 N_MOTIVE NULL NULL 12 0 153
+			addButton: 13 N_MOTIVE NULL NULL 13 (WhichLanguage 48 48 64 48 80) 153
 			init:
 		)
 	)
@@ -71,18 +71,18 @@
 (instance rm750 of LBRoom
 	(properties
 		picture 750
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 129 760)
-		(LoadMany 132 760 120)
-		(LoadMany 128 1750 752 753 760)
-		(Bset 147)
+		(LoadMany RES_PIC 760)
+		(LoadMany RES_SOUND 760 120)
+		(LoadMany RES_VIEW 1750 752 753 760)
+		(Bset fEndGame)
 		(super init:)
-		(ego wearingGown: 0)
+		(ego wearingGown: FALSE)
 		(theIconBar disable:)
-		(theMusic number: 120 flags: 1 loop: -1 play:)
+		(theMusic number: 120 flags: mNOPAUSE loop: -1 play:)
 		(reporters init:)
 		(reporterHeads init:)
 		(r_arm init: setCycle: RandCycle cycleSpeed: 48)
@@ -97,7 +97,6 @@
 )
 
 (instance sBeforeAsking of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -106,8 +105,8 @@
 				(= cycles 2)
 			)
 			(1
-				(theGame setCursor: 999)
-				(messager say: 2 0 0 0 self)
+				(theGame setCursor: ARROW_CURSOR)
+				(messager say: N_BEFORE_ASKING NULL NULL 0 self)
 			)
 			(2
 				(= next sFirstFive)
@@ -118,32 +117,39 @@
 )
 
 (instance sFirstFive of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(messager say: 1 0 0 local0 self)
+				(messager say: N_QUESTION NULL NULL questionNum self)
 			)
 			(1
-				(localproc_013c)
-				(if (!= local1 9) (= local4 0))
-				(localproc_0221)
-				(cond 
-					((!= local0 4) (if (and (!= local2 9) (!= local2 10)) (= local4 0)))
-					((and (!= local2 6) (!= local2 3)) (= local4 0))
+				(PickPerson)
+				(if (!= pickedPerson 9)
+					(= correctAnswer FALSE)
 				)
-				(if (< (++ local0) 6)
+				(PickMotive)
+				(cond 
+					((!= questionNum 4)
+						(if (and (!= pickedMotive 9) (!= pickedMotive 10))
+							(= correctAnswer FALSE)
+						)
+					)
+					((and (!= pickedMotive 6) (!= pickedMotive 3))
+						(= correctAnswer FALSE)
+					)
+				)
+				(if (< (++ questionNum) 6)
 					(self changeState: 0)
 				else
 					(= cycles 2)
 				)
 			)
 			(2
-				(if (Btst 147)
+				(if (Btst fEndGame)
 					(= next sSixToNine)
 				else
-					(= local4 0)
+					(= correctAnswer FALSE)
 					(= next sTenOn)
 				)
 				(self dispose:)
@@ -153,43 +159,47 @@
 )
 
 (instance sSixToNine of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= local0 6) (= cycles 1))
+			(0
+				(= questionNum 6)
+				(= cycles 1)
+			)
 			(1
-				(messager say: 1 0 0 local0 self)
+				(messager say: N_QUESTION NULL NULL questionNum self)
 			)
 			(2
-				(localproc_013c)
-				(switch local0
+				(PickPerson)
+				(switch questionNum
 					(6
-						(if (!= local1 1)
-							(= local4 0)
+						(if (!= pickedPerson 1)
+							(= correctAnswer 0)
 							(self changeState: 4)
 						else
-							(++ local0)
+							(++ questionNum)
 						)
 					)
 					(9
-						(if (!= local1 9) (= local4 0))
-						(++ local0)
+						(if (!= pickedPerson 9) (= correctAnswer 0))
+						(++ questionNum)
 					)
 					(else 
-						(if (!= local1 6) (= local4 0))
-						(++ local0)
+						(if (!= pickedPerson 6) (= correctAnswer 0))
+						(++ questionNum)
 					)
 				)
-				(if (< local0 10)
+				(if (< questionNum 10)
 					(self changeState: 1)
 				else
 					(= cycles 1)
 				)
 			)
 			(3
-				(localproc_0221)
-				(if (and (!= local2 9) (!= local2 10)) (= local4 0))
+				(PickMotive)
+				(if (and (!= pickedMotive 9) (!= pickedMotive 10))
+					(= correctAnswer 0)
+				)
 				(= cycles 1)
 			)
 			(4
@@ -201,77 +211,76 @@
 )
 
 (instance sTenOn of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= local0 10) (= cycles 1))
+			(0 (= questionNum 10) (= cycles 1))
 			(1
-				(messager say: 1 0 0 local0 self)
+				(messager say: N_QUESTION NULL NULL questionNum self)
 			)
 			(2
-				(localproc_013c)
-				(switch local0
+				(PickPerson)
+				(switch questionNum
 					(10
-						(if (!= local1 6)
-							(= local5 0)
-							(= local0 (+ local0 2))
+						(if (!= pickedPerson 6)
+							(= correctAnswer2 0)
+							(= questionNum (+ questionNum 2))
 						else
-							(++ local0)
+							(++ questionNum)
 						)
 						(= cycles 1)
 					)
 					(11
-						(if (!= local1 9) (= local5 0))
-						(++ local0)
+						(if (!= pickedPerson 9) (= correctAnswer2 0))
+						(++ questionNum)
 						(= cycles 1)
 					)
 					(12
-						(if (!= local1 11)
-							(= local0 15)
-							(messager say: 8 0 6 0 self)
+						(if (!= pickedPerson 11)
+							(= questionNum 15)
+							(messager say: 8 NULL 6 0 self)
 						else
-							(++ local0)
-							(messager say: 8 0 5 0 self)
+							(++ questionNum)
+							(messager say: 8 NULL 5 0 self)
 						)
 					)
 					(13
-						(if (!= local1 6)
-							(= local0 15)
+						(if (!= pickedPerson 6)
+							(= questionNum 15)
 							(messager say: 8 0 6 0 self)
 						else
-							(++ local0)
+							(++ questionNum)
 							(messager say: 8 0 5 0 self)
 						)
 					)
 					(14
-						(if (!= local1 12)
+						(if (!= pickedPerson 12)
 							(messager say: 8 0 6 0 self)
 						else
 							(messager say: 8 0 5 0 self)
 						)
-						(++ local0)
+						(++ questionNum)
 					)
 					(15
-						(if (!= local1 8)
-							(messager say: 9 0 0 0 self)
+						(if (!= pickedPerson 8)
+							(messager say: 9 NULL NULL 0 self)
 						else
 							(messager say: 9 0 7 0 self)
 						)
-						(++ local0)
+						(++ questionNum)
 					)
 					(16
-						(if (!= local1 5)
-							(messager say: 10 0 0 0 self)
+						(if (!= pickedPerson 5)
+							(messager say: 10 NULL NULL 0 self)
 						else
 							(messager say: 10 0 8 0 self)
 						)
-						(++ local0)
+						(++ questionNum)
 					)
 				)
 			)
 			(3
-				(if (> local0 16)
+				(if (> questionNum 16)
 					(= cycles 1)
 				else
 					(self changeState: 1)
@@ -286,8 +295,7 @@
 )
 
 (instance sAfterQuestions of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 100])
 		(switch (= state newState)
 			(0
@@ -298,8 +306,8 @@
 							(ego has: 26)
 							(ego has: 27)
 							(ego has: 10)
-							local4
-							local5
+							correctAnswer
+							correctAnswer2
 							(ego has: 11)
 						)
 						(= local3 2)
@@ -310,11 +318,11 @@
 							(ego has: 26)
 							(ego has: 27)
 							(ego has: 10)
-							local4
+							correctAnswer
 						)
 						(= local3 1)
 					)
-					(local5 (= local3 4))
+					(correctAnswer2 (= local3 4))
 					((ego has: 11) (= local3 10))
 					(else (= local3 3))
 				)
@@ -325,8 +333,8 @@
 							(ego has: 26)
 							(ego has: 27)
 							(ego has: 10)
-							local4
-							local5
+							correctAnswer
+							correctAnswer2
 							(ego has: 11)
 						)
 						(= global126 1)
@@ -337,16 +345,16 @@
 							(ego has: 26)
 							(ego has: 27)
 							(ego has: 10)
-							local4
+							correctAnswer
 						)
 						(= global126 4)
 					)
-					(local5 (= global126 2))
+					(correctAnswer2 (= global126 2))
 					(else (= global126 3))
 				)
 				(if (or (== local3 1) (== local3 2))
 					(tut init:)
-					(messager say: 7 0 0 0 self)
+					(messager say: 7 NULL NULL 0 self)
 				else
 					(self changeState: 3)
 				)
@@ -362,11 +370,11 @@
 				(cond 
 					((== global126 1)
 						(theMusic2 number: 750 flags: 1 loop: 1 play:)
-						(reporterHeads setCycle: End self)
+						(reporterHeads setCycle: EndLoop self)
 					)
 					((or (== global126 2) (== global126 4))
 						(theMusic2 number: 751 flags: 1 loop: 1 play:)
-						(reporterHeads setCycle: End self)
+						(reporterHeads setCycle: EndLoop self)
 					)
 					(else
 						(theMusic2 number: 752 flags: 1 loop: 1 play:)
@@ -378,14 +386,14 @@
 				(if (== global126 3)
 					(self changeState: 8)
 				else
-					(reporterHeads setLoop: 2 setCel: 0 setCycle: End self)
+					(reporterHeads setLoop: 2 setCel: 0 setCycle: EndLoop self)
 				)
 			)
 			(6
-				(reporterHeads setLoop: 3 setCel: 0 setCycle: End self)
+				(reporterHeads setLoop: 3 setCel: 0 setCycle: EndLoop self)
 			)
 			(7
-				(reporterHeads setCel: 0 setLoop: 4 setCycle: Fwd)
+				(reporterHeads setCel: 0 setLoop: 4 setCycle: Forward)
 				(= seconds 4)
 			)
 			(8
@@ -403,7 +411,7 @@
 			(9
 				(theMusic number: 760 flags: 1 loop: 1 play:)
 				(paper show:)
-				(paper setCycle: End self)
+				(paper setCycle: EndLoop self)
 			)
 			(10
 				(curRoom drawPic: 760 100)

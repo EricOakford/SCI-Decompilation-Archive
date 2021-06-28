@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 770)
-(include sci.sh)
+(include game.sh) (include "770.shm")
 (use Main)
 (use LBRoom)
 (use Talker)
@@ -16,24 +16,24 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
+	theSeq
+	murdererCued
+	badguy1Cued
+	badguy2Cued
 )
 (instance rm770 of LBRoom
 	(properties
 		picture 770
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 128 770 771)
-		(LoadMany 132 770)
+		(LoadMany RES_VIEW 770 771)
+		(LoadMany RES_SOUND 770)
 		(super init:)
 		(theMusic number: 771 loop: -1 flags: 1 play:)
 		(theIconBar disable:)
-		(theGame setCursor: 996)
+		(theGame setCursor: INVIS_CURSOR)
 		(bird init: setScript: sFly)
 		(bird2 init: setScript: sLand 0 4)
 		(murderer init:)
@@ -54,12 +54,11 @@
 )
 
 (instance sFly of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setLoop: (Random 0 3) setPri: 15 setCycle: Fwd)
+				(client setLoop: (Random 0 3) setPri: 15 setCycle: Forward)
 				(switch (client loop?)
 					(0
 						(client posn: 329 30 setMotion: MoveTo -10 17 self)
@@ -81,21 +80,20 @@
 )
 
 (instance sLand of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp toX toY)
 		(switch (= state newState)
 			(0
-				(= temp0 (if (== register 4) 199 else 171))
-				(= temp1 (if (== register 4) 116 else 124))
+				(= toX (if (== register 4) 199 else 171))
+				(= toY (if (== register 4) 116 else 124))
 				(client
 					setLoop: register
-					setCycle: Fwd
-					setMotion: MoveTo temp0 temp1 self
+					setCycle: Forward
+					setMotion: MoveTo toX toY self
 				)
 			)
 			(1
-				(client setLoop: (+ register 2) setCycle: End self)
+				(client setLoop: (+ register 2) setCycle: EndLoop self)
 			)
 			(2
 				(client
@@ -112,48 +110,50 @@
 )
 
 (instance sRunIt of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(if
 			(and
-				(not local1)
+				(not murdererCued)
 				(== (murderer cel?) 4)
 				(== (murderer loop?) 0)
 			)
 			(theMusic2 number: 770 flags: 1 loop: 1 play: murderer)
-			(= local1 1)
+			(= murdererCued TRUE)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= local0 1) (= cycles 1))
+			(0
+				(= theSeq 1)
+				(= cycles 1)
+			)
 			(1
-				(messager say: 1 0 0 local0 self)
+				(messager say: N_ROOM NULL NULL theSeq self)
 			)
 			(2
-				(murderer setCycle: End self)
+				(murderer setCycle: EndLoop self)
 			)
 			(3
-				(if (< (++ local0) 4)
+				(if (< (++ theSeq) 4)
 					(self changeState: 1)
 				else
-					(messager say: 1 0 0 4 self)
+					(messager say: N_ROOM NULL NULL 4 self)
 				)
 			)
 			(4
-				(murderer setCycle: CT 4 1 self)
+				(murderer setCycle: CycleTo 4 1 self)
 			)
 			(5
-				(theMusic2 number: 770 flags: 1 loop: 1 play:)
-				(murderer loop: 1 cel: 0 setCycle: End self)
+				(theMusic2 number: 770 flags: mNOPAUSE loop: 1 play:)
+				(murderer loop: 1 cel: 0 setCycle: EndLoop self)
 			)
-			(6 (messager say: 1 0 0 5 self))
-			(7 (messager say: 1 0 0 6 self))
+			(6 (messager say: N_ROOM NULL NULL 5 self))
+			(7 (messager say: N_ROOM NULL NULL 6 self))
 			(8
-				(theMusic number: 772 flags: 1 loop: 1 play: self)
+				(theMusic number: 772 flags: mNOPAUSE loop: 1 play: self)
 			)
 			(9
 				(curRoom newRoom: (if (== global126 1) 775 else 785))
@@ -163,47 +163,44 @@
 )
 
 (instance sRandomScr of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(if
 			(and
-				(not local2)
-				(!= msgType 2)
+				(not badguy1Cued)
+				(!= msgType CD_MSG)
 				(== (client cel?) 4)
 				(!= (client loop?) 5)
 			)
-			(theMusic2 number: 770 flags: 1 loop: 1 play: badguy1)
-			(= local2 1)
+			(theMusic2 number: 770 flags: mNOPAUSE loop: 1 play: badguy1)
+			(= badguy1Cued TRUE)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks (Random 30 120)))
-			(1 (client setCycle: End self))
+			(1 (client setCycle: EndLoop self))
 			(2 (self changeState: 0))
 		)
 	)
 )
 
 (instance sRandomScr2 of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (not local3) (!= msgType 2) (== (client cel?) 4))
-			(theMusic2 number: 770 flags: 1 loop: 1 play: badguy2)
-			(= local3 1)
+		(if (and (not badguy2Cued) (!= msgType CD_MSG) (== (client cel?) 4))
+			(theMusic2 number: 770 flags: mNOPAUSE loop: 1 play: badguy2)
+			(= badguy2Cued 1)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks (Random 30 120)))
-			(1 (client setCycle: End self))
+			(1 (client setCycle: EndLoop self))
 			(2 (self changeState: 0))
 		)
 	)
@@ -215,7 +212,7 @@
 		y 17
 		view 771
 		loop 1
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		cycleSpeed 0
 		moveSpeed 0
 	)
@@ -227,7 +224,7 @@
 		y 8
 		view 771
 		loop 4
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		cycleSpeed 0
 		moveSpeed 0
 	)
@@ -239,7 +236,7 @@
 		y -18
 		view 771
 		loop 5
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		cycleSpeed 0
 		moveSpeed 0
 	)
@@ -255,7 +252,7 @@
 	)
 	
 	(method (cue)
-		(= local1 0)
+		(= murdererCued FALSE)
 		(super cue:)
 	)
 )
@@ -312,7 +309,7 @@
 	)
 	
 	(method (cue)
-		(= local2 0)
+		(= badguy1Cued FALSE)
 		(super cue:)
 	)
 )
@@ -327,7 +324,7 @@
 	)
 	
 	(method (cue)
-		(= local3 0)
+		(= badguy2Cued FALSE)
 		(super cue:)
 	)
 )
@@ -345,7 +342,7 @@
 	(properties
 		x 10
 		y 155
-		modeless 1
+		modeless TRUE
 		back 15
 		name "O'Riley"
 	)

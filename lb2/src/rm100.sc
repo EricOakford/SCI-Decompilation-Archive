@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 100)
-(include sci.sh)
+(include game.sh) (include "100.shm")
 (use Main)
 (use LBRoom)
 (use RandCyc)
@@ -16,113 +16,73 @@
 )
 
 (local
-	theFPlay
-	local1
-	local2
+	highlitOption
+	saveBits
+	saveBits2
 	local3
 	local4
-	[local5 25]
-	[local30 25]
-	[local55 25]
-	[local80 25]
+	[introBuf 25]
+	[playBuf 25]
+	[continueBuf 25]
+	[quitBuf 25]
 )
-(procedure (localproc_039e param1 param2 &tmp temp0 [temp1 4] temp5)
-	(= temp5 (if param2 myHighlightColor else global162))
-	(switch param1
+(procedure (DoDisplay args defColor &tmp theX [len 4] backColor)
+	(= backColor (if defColor myHighlightColor else global162))
+	(switch args
 		(fIntro
-			(TextSize @[temp1 0] @local5 61 0 0)
-			(= temp0 (- 240 (/ (- [temp1 3] [temp1 1]) 2)))
-			(Display
-				@local5
-				dsCOORD
-				temp0
-				103
-				dsFONT
-				61
-				dsCOLOR
-				global151
+			(TextSize @[len 0] @introBuf 61 0 0)
+			(= theX (- 240 (/ (- [len 3] [len 1]) 2)))
+			(Display @introBuf
+				p_at theX 103
+				p_font 61
+				p_color global151
 			)
-			(Display
-				@local5
-				dsCOORD
-				temp0
-				103
-				dsFONT
-				60
-				dsCOLOR
-				temp5
+			(Display @introBuf
+				p_at theX 103
+				p_font 60
+				p_color backColor
 			)
 		)
 		(fPlay
-			(TextSize @[temp1 0] @local30 61 0 0)
-			(= temp0 (- 240 (/ (- [temp1 3] [temp1 1]) 2)))
-			(Display
-				@local30
-				dsCOORD
-				temp0
-				113
-				dsFONT
-				61
-				dsCOLOR
-				global151
+			(TextSize @[len 0] @playBuf 61 0 0)
+			(= theX (- 240 (/ (- [len 3] [len 1]) 2)))
+			(Display @playBuf
+				p_at theX 113
+				p_font 61
+				p_color global151
 			)
-			(Display
-				@local30
-				dsCOORD
-				temp0
-				113
-				dsFONT
-				60
-				dsCOLOR
-				temp5
+			(Display @playBuf
+				p_at theX 113
+				p_font 60
+				p_color backColor
 			)
 		)
 		(fContinue
-			(TextSize @[temp1 0] @local55 61 0 0)
-			(= temp0 (- 240 (/ (- [temp1 3] [temp1 1]) 2)))
-			(Display
-				@local55
-				dsCOORD
-				temp0
-				123
-				dsFONT
-				61
-				dsCOLOR
-				global151
+			(TextSize @[len 0] @continueBuf 61 0 0)
+			(= theX (- 240 (/ (- [len 3] [len 1]) 2)))
+			(Display @continueBuf
+				p_at theX 123
+				p_font 61
+				p_color global151
 			)
-			(Display
-				@local55
-				dsCOORD
-				temp0
-				123
-				dsFONT
-				60
-				dsCOLOR
-				temp5
+			(Display @continueBuf
+				p_at theX 123
+				p_font 60
+				p_color backColor
 			)
 		)
 		(fQuit
-			(TextSize @[temp1 0] @local80 61 0 0)
-			(= temp0 (- 240 (/ (- [temp1 3] [temp1 1]) 2)))
-			(Display
-				@local80
-				dsCOORD
-				temp0
-				133
-				dsFONT
-				61
-				dsCOLOR
-				global151
+			(TextSize @[len 0] @quitBuf 61 0 0)
+			(= theX (- 240 (/ (- [len 3] [len 1]) 2)))
+			(Display @quitBuf
+				p_at theX 133
+				p_font 61
+				p_color global151
 			)
-			(Display
-				@local80
-				dsCOORD
-				temp0
-				133
-				dsFONT
-				60
-				dsCOLOR
-				temp5
+			(Display @quitBuf
+				p_at theX 133
+				p_font 60
+				p_color backColor
 			)
 		)
 	)
@@ -134,24 +94,24 @@
 	)
 	
 	(method (init)
-		(if (DoSound sndGET_AUDIO_CAPABILITY)
-			(= msgType 2)
+		(if (DoSound NumDACs)
+			(= msgType CD_MSG)
 		else
-			(= msgType 1)
+			(= msgType TEXT_MSG)
 		)
-		(LoadMany 128 108 151 101)
-		(LoadMany 132 100 20 23)
-		(LoadMany 130 964)
+		(LoadMany RES_VIEW 108 151 101)
+		(LoadMany RES_SOUND 100 20 23)
+		(LoadMany RES_SCRIPT DPATH)
 		(self setRegions: 92)
-		(Palette palSET_INTENSITY 0 255 0)
+		(Palette PALIntensity 0 255 0)
 		(super init:)
-		(Message msgGET 100 1 0 0 1 @local5)
-		(Message msgGET 100 2 0 0 1 @local30)
-		(Message msgGET 100 4 0 0 1 @local80)
-		(Message msgGET 100 3 0 0 1 @local55)
+		(Message MsgGet 100 N_INTRO NULL NULL 1 @introBuf)
+		(Message MsgGet 100 N_PLAY NULL NULL 1 @playBuf)
+		(Message MsgGet 100 N_QUIT NULL NULL 1 @quitBuf)
+		(Message MsgGet 100 N_CONTINUE NULL NULL 1 @continueBuf)
 		(theIconBar disable:)
-		(= local1 (Graph grSAVE_BOX 99 185 142 319 1))
-		(= local2 (Graph grSAVE_BOX 123 151 133 185 1))
+		(= saveBits (Graph GSaveBits 99 185 142 319 1))
+		(= saveBits2 (Graph GSaveBits 123 151 133 185 1))
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)
 		(directionHandler addToFront: self)
@@ -163,83 +123,84 @@
 		(self setScript: sStart)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp obj)
 		(super doit:)
 		(if script
 		else
-			(= temp0
+			(= obj
 				(features firstTrue: #onMe mouseX (- mouseY 10))
 			)
-			(if (and (IsObject temp0) (!= temp0 theFPlay))
-				(localproc_039e theFPlay 0)
-				(localproc_039e temp0 1)
-				(= theFPlay temp0)
+			(if (and (IsObject obj) (!= obj highlitOption))
+				(DoDisplay highlitOption 0)
+				(DoDisplay obj 1)
+				(= highlitOption obj)
 			)
 		)
 	)
 	
-	(method (handleEvent event &tmp temp0 temp1 temp2)
-		(= temp1 (event type?))
-		(= temp0 (event message?))
+	(method (handleEvent event &tmp eMsg eType temp2)
+		(= eType (event type?))
+		(= eMsg (event message?))
 		(cond 
 			(
 				(or
-					(and (== temp1 1) (not (event modifiers?)))
-					(and (== temp1 4) (== temp0 13))
+					(and (== eType mouseDown) (not (event modifiers?)))
+					(and (== eType keyDown) (== eMsg ENTER))
 				)
-				(event claimed: 1)
-				(switch theFPlay
+				(event claimed: TRUE)
+				(switch highlitOption
 					(fIntro
-						(Graph grRESTORE_BOX local1)
-						(Graph grRESTORE_BOX local2)
-						(Graph grUPDATE_BOX 99 185 142 319 1)
-						(Graph grUPDATE_BOX 123 151 133 185 1)
+						(Graph GRestoreBits saveBits)
+						(Graph GRestoreBits saveBits2)
+						(Graph GShowBits 99 185 142 319 1)
+						(Graph GShowBits 123 151 133 185 1)
 						(if (not (curRoom script?))
 							(curRoom setScript: sCartoon)
 						)
 					)
 					(fPlay
-						(ego get: -1 2)
+						(ego get: -1 iNotebook)
 						(if (not (curRoom script?))
 							(curRoom setScript: sCartoon)
 						)
 					)
 					(fContinue
 						(theGame restore:)
-						(localproc_039e fIntro 0)
-						(localproc_039e fPlay 0)
-						(localproc_039e fContinue 0)
-						(localproc_039e fQuit 0)
+						(DoDisplay fIntro 0)
+						(DoDisplay fPlay 0)
+						(DoDisplay fContinue 0)
+						(DoDisplay fQuit 0)
 						(mouseDownHandler addToFront: self)
 						(keyDownHandler addToFront: self)
 						(directionHandler addToFront: self)
 					)
-					(fQuit (= quit 1))
+					(fQuit
+						(= quit TRUE)
+					)
 				)
 			)
-			((not (& temp1 $0040)))
-			((== temp0 1)
-				(localproc_039e theFPlay 0)
-				(if
-				(>= (= temp2 (- (features indexOf: theFPlay) 1)) 0)
-					(= theFPlay (features at: temp2))
+			((not (& eType direction)))
+			((== eMsg mouseDown)
+				(DoDisplay highlitOption 0)
+				(if (>= (= temp2 (- (features indexOf: highlitOption) 1)) 0)
+					(= highlitOption (features at: temp2))
 				else
-					(= theFPlay (features at: (- (features size?) 1)))
+					(= highlitOption (features at: (- (features size?) 1)))
 				)
-				(localproc_039e theFPlay 1)
+				(DoDisplay highlitOption 1)
 			)
-			((== temp0 5)
-				(localproc_039e theFPlay 0)
+			((== eMsg 5)
+				(DoDisplay highlitOption 0)
 				(if
 					(<
-						(= temp2 (+ (features indexOf: theFPlay) 1))
+						(= temp2 (+ (features indexOf: highlitOption) 1))
 						(features size?)
 					)
-					(= theFPlay (features at: temp2))
+					(= highlitOption (features at: temp2))
 				else
-					(= theFPlay (features at: 0))
+					(= highlitOption (features at: 0))
 				)
-				(localproc_039e theFPlay 1)
+				(DoDisplay highlitOption 1)
 			)
 		)
 	)
@@ -248,18 +209,19 @@
 		(mouseDownHandler delete: self)
 		(keyDownHandler delete: self)
 		(directionHandler delete: self)
-		(user canInput: 0 canControl: 0)
+		(user canInput: FALSE canControl: FALSE)
 		(super newRoom: &rest)
 	)
 )
 
 (instance sStart of Script
-	(properties)
 	
 	(method (doit)
 		(if (< local3 100)
-			(Palette palSET_INTENSITY 0 255 (++ local3))
-			(if (== local3 100) (self cue:))
+			(Palette PALIntensity 0 255 (++ local3))
+			(if (== local3 100)
+				(self cue:)
+			)
 		)
 		(super doit:)
 	)
@@ -268,29 +230,29 @@
 		(switch (= state newState)
 			(0 0)
 			(1
-				(theGame setCursor: 996)
-				(user canInput: 1 canControl: 1)
+				(theGame setCursor: INVIS_CURSOR)
+				(user canInput: TRUE canControl: TRUE)
 				(theMusic number: 20 flags: 1 play:)
-				(localproc_039e fIntro 0)
+				(DoDisplay fIntro 0)
 				(= ticks 40)
 			)
 			(2
-				(localproc_039e fPlay 0)
+				(DoDisplay fPlay 0)
 				(= ticks 40)
 			)
 			(3
-				(localproc_039e fContinue 0)
+				(DoDisplay fContinue 0)
 				(= ticks 40)
 			)
 			(4
-				(localproc_039e fQuit 0)
+				(DoDisplay fQuit 0)
 				(= ticks 120)
 			)
 			(5
-				(theMusic number: 23 flags: 1 play:)
-				(localproc_039e fPlay 1)
-				(= theFPlay fPlay)
-				(theGame setCursor: 999)
+				(theMusic number: 23 flags: mNOPAUSE play:)
+				(DoDisplay fPlay 1)
+				(= highlitOption fPlay)
+				(theGame setCursor: ARROW_CURSOR)
 				(self dispose:)
 			)
 		)
@@ -298,73 +260,65 @@
 )
 
 (instance sCartoon of Script
-	(properties)
 	
 	(method (doit)
 		(if (and local4 local3)
-			(Palette palSET_INTENSITY 0 255 (-- local3))
-			(if (not local3) (self cue:))
+			(Palette PALIntensity 0 255 (-- local3))
+			(if (not local3)
+				(self cue:)
+			)
 		)
 		(super doit:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp theWidth)
 		(switch (= state newState)
 			(0
-				(if (== theFPlay fPlay)
+				(if (== highlitOption fPlay)
 					(self changeState: 18)
 				else
 					(sparkle init:)
 					(wake init: setCycle: RTRandCycle)
 					(smoke init: setCycle: RTRandCycle)
-					(theMusic number: 100 loop: 1 flags: 1 play: self)
-					(theGame handsOff: setCursor: 996 1 304 172)
+					(theMusic number: 100 loop: 1 flags: mNOPAUSE play: self)
+					(theGame handsOff: setCursor: INVIS_CURSOR TRUE 304 172)
 					(= seconds 3)
 				)
 			)
 			(1
 				(sparkle
 					setLoop: 2
-					setCycle: Fwd
-					setMotion:
-						DPath
-						17
-						93
-						39
-						91
-						55
-						95
-						116
-						115
-						138
-						117
-						160
-						113
-						167
-						101
-						161
-						94
+					setCycle: Forward
+					setMotion: DPath
+						17 93
+						39 91
+						55 95
+						116 115
+						138 117
+						160 113
+						167 101
+						161 94
 						self
 				)
 			)
 			(2
-				(sparkle setLoop: 3 setCel: 0 setCycle: End self)
+				(sparkle setLoop: 3 setCel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(sparkle
 					setLoop: 2
 					setCel: 0
 					posn: 84 27
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(sparkle
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					setLoop: 2
 					setCel: 0
 					posn: 66 153
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5 (= seconds 4))
@@ -377,8 +331,8 @@
 			(7 0)
 			(8 (= seconds 4))
 			(9
-				(= temp0 (CelWide 151 0 0))
-				(creditTitle setMotion: MoveTo (- 0 temp0) 102 self)
+				(= theWidth (CelWide 151 0 0))
+				(creditTitle setMotion: MoveTo (- 0 theWidth) 102 self)
 				(creditName setMotion: MoveTo 398 128 self)
 			)
 			(10 0)
@@ -397,7 +351,7 @@
 			(17 0)
 			(18 (= local4 1))
 			(19
-				(curRoom newRoom: (if (== theFPlay fPlay) 26 else 110))
+				(curRoom newRoom: (if (== highlitOption fPlay) 26 else 110))
 			)
 		)
 	)
@@ -479,7 +433,7 @@
 		x 12
 		y 190
 		view 151
-		signal $0800
+		signal fixedLoop
 		moveSpeed 0
 	)
 )
@@ -490,7 +444,7 @@
 		y 216
 		view 151
 		cel 1
-		signal $0800
+		signal fixedLoop
 		moveSpeed 0
 	)
 )
@@ -501,7 +455,7 @@
 		view 108
 		loop 2
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 4
 		moveSpeed 4
 	)

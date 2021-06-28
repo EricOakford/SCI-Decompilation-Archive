@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 140)
-(include sci.sh)
+(include game.sh) (include "140.shm")
 (use Main)
 (use LBRoom)
 (use Scaler)
@@ -17,14 +17,14 @@
 (instance rm140 of LBRoom
 	(properties
 		picture 140
-		style $000a
+		style FADEOUT
 		vanishingX 7
 		vanishingY 54
 	)
 	
 	(method (init)
-		(LoadMany 128 151 830 142)
-		(LoadMany 132 140)
+		(LoadMany RES_VIEW 151 830 142)
+		(LoadMany RES_SOUND 140)
 		(self setRegions: 92)
 		(ego
 			init:
@@ -37,7 +37,7 @@
 		)
 		(super init:)
 		(dad init:)
-		(theMusic number: 140 flags: 1 loop: -1 play:)
+		(theMusic number: 140 flags: mNOPAUSE loop: -1 play:)
 		(self setScript: sCartoon)
 	)
 	
@@ -48,13 +48,12 @@
 )
 
 (instance sCartoon of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				((ScriptID 1880 1)
-					disposeWhenDone: 0
+					disposeWhenDone: FALSE
 					x: 5
 					y: 5
 					textX: 10
@@ -62,7 +61,7 @@
 					talkWidth: 280
 				)
 				((ScriptID 1881 2)
-					disposeWhenDone: 0
+					disposeWhenDone: FALSE
 					x: 211
 					y: 5
 					textX: -196
@@ -73,7 +72,7 @@
 			)
 			(1
 				(narrator x: 60 y: 100 keepWindow: 0)
-				(messager say: 1 0 0 0 self)
+				(messager say: N_CARTOON NULL NULL 0 self)
 			)
 			(2 (= cycles 2))
 			(3
@@ -81,10 +80,10 @@
 			)
 			(4
 				(ego hide:)
-				(dad loop: 0 setCycle: End self)
+				(dad loop: 0 setCycle: EndLoop self)
 			)
 			(5 (= seconds 2))
-			(6 (dad setCycle: Beg self))
+			(6 (dad setCycle: BegLoop self))
 			(7
 				(ego show: setLoop: 4 setMotion: MoveTo 299 340 self)
 				(= cycles 1)
@@ -95,16 +94,16 @@
 					cel: 0
 					posn: 168 143
 					cycleSpeed: 10
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(9 (= ticks 20))
 			(10
-				(dad setCycle: CT 4 -1 self)
+				(dad setCycle: CycleTo 4 -1 self)
 			)
 			(11 (= ticks 20))
-			(12 (dad setCycle: CT 6 1 self))
-			(13 (dad setCycle: Beg self))
+			(12 (dad setCycle: CycleTo 6 1 self))
+			(13 (dad setCycle: BegLoop self))
 			(14 0)
 			(15
 				(dad addToPic:)
@@ -160,7 +159,7 @@
 		y 143
 		view 142
 		loop 1
-		signal $4000
+		signal ignrAct
 		cycleSpeed 10
 	)
 )
@@ -171,7 +170,7 @@
 		y -2
 		view 151
 		loop 3
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 		moveSpeed 0
 	)
 )
@@ -183,7 +182,7 @@
 		view 151
 		loop 3
 		cel 1
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 		moveSpeed 0
 	)
 )

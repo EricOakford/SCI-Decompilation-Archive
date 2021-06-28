@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 155)
-(include sci.sh)
+(include game.sh) (include "155.shm")
 (use Main)
 (use LBRoom)
 (use Talker)
@@ -18,21 +18,21 @@
 (instance rm155 of LBRoom
 	(properties
 		picture 155
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany 128 1155 156 157 155)
+		(LoadMany RES_VIEW 1155 156 157 155)
 		(self setRegions: 92)
 		(super init:)
-		(theMusic2 number: 151 flags: 1 loop: -1 play:)
+		(theMusic2 number: 151 flags: mNOPAUSE loop: -1 play:)
 		(grass init: addToPic:)
 		(moon init: addToPic:)
 		(cloud1 init: addToPic:)
 		(cloud2 init: addToPic:)
 		(blue init: addToPic:)
 		(lauraArm init: cycleSpeed: 15 setCycle: RandCycle)
-		(fan init: setCycle: Fwd)
+		(fan init: setCycle: Forward)
 		(trees1 init: setScript: sMoveTrees1)
 		(trees2 init: setScript: sMoveTrees2)
 		(curRoom setScript: sCartoon)
@@ -46,16 +46,15 @@
 )
 
 (instance sCartoon of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((ScriptID 1900 15) modeless: 1)
-				(Laura modeless: 1)
+				((ScriptID 1900 15) modeless: TRUE)
+				(Laura modeless: TRUE)
 				(= ticks 60)
 			)
-			(1 (messager say: 1 0 0 0 self))
+			(1 (messager say: N_CARTOON NULL NULL 0 self))
 			(2
 				(curRoom newRoom: 160)
 				(self dispose:)
@@ -65,8 +64,7 @@
 )
 
 (instance sMoveTrees1 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -86,8 +84,7 @@
 )
 
 (instance sMoveTrees2 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -112,7 +109,7 @@
 		view 155
 		loop 2
 		priority 3
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		moveSpeed 5
 	)
 )
@@ -124,7 +121,7 @@
 		loop 2
 		cel 1
 		priority 3
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		moveSpeed 5
 	)
 )
@@ -135,7 +132,7 @@
 		y 35
 		view 157
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -153,7 +150,7 @@
 		y 0
 		view 1155
 		loop 3
-		disposeWhenDone 0
+		disposeWhenDone FALSE
 		talkWidth 150
 		back 15
 		textX 10
@@ -197,7 +194,7 @@
 		view 155
 		loop 1
 		priority 2
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -207,7 +204,7 @@
 		y 60
 		view 155
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -219,7 +216,7 @@
 		loop 3
 		cel 1
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -230,7 +227,7 @@
 		view 155
 		loop 3
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -241,6 +238,6 @@
 		view 155
 		loop 3
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )

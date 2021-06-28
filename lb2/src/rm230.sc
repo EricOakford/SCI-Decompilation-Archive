@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 230)
-(include sci.sh)
+(include game.sh) (include "230.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -26,14 +26,14 @@
 )
 
 (local
-	local0 =  1
+	noticeCount =  1
 	local1 =  1
 	local2 =  1
 	local3 =  1
 )
 (instance rm230 of LBRoom
 	(properties
-		noun 18
+		noun N_ROOM
 		picture 230
 		south 210
 		vanishingX 150
@@ -41,10 +41,10 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 231 232 233 238 1231 1230 830 829)
-		(Load rsSOUND 210)
+		(LoadMany RES_VIEW 231 232 233 238 1231 1230 830 829)
+		(Load RES_SOUND 210)
 		(ego
-			signal: 4096
+			signal: skipCheck
 			init:
 			viewer: (if (== prevRoomNum 235) 0 else checkScaling)
 			normalize: 830
@@ -56,7 +56,7 @@
 			)
 			(26
 				(ego x: 160 y: 160)
-				((Inv at: 2) owner: ego)
+				((Inventory at: iNotebook) owner: ego)
 				(Face ego crod)
 				(self setScript: sDoTalking)
 			)
@@ -84,53 +84,36 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						319
-						0
-						319
-						189
-						313
-						189
-						313
-						164
-						254
-						164
-						242
-						158
-						219
-						158
-						207
-						165
-						142
-						158
-						142
-						148
-						113
-						148
-						103
-						158
-						45
-						158
-						5
-						167
-						5
-						189
-						0
-						189
-						0
-						0
+						319 0
+						319 189
+						313 189
+						313 164
+						254 164
+						242 158
+						219 158
+						207 165
+						142 158
+						142 148
+						113 148
+						103 158
+						45 158
+						5 167
+						5 189
+						0 189
+						0 0
 					yourself:
 				)
 		)
-		(theMusic number: 210 loop: -1 flags: 1 play:)
+		(theMusic number: 210 loop: -1 flags: mNOPAUSE play:)
 		(personS init: cycleSpeed: 10 setCycle: RandCycle)
 		(personT init: cycleSpeed: 10 setCycle: RandCycle)
 		(person1 init: setScript: sMoveIt)
 		(person2 init: setScript: sMoveIt2)
-		(gentsDoor approachVerbs: 1 4 init:)
+		(gentsDoor approachVerbs: V_LOOK V_DO init:)
 		(crod
-			approachVerbs: 1 4 2 6
+			approachVerbs: V_LOOK V_DO V_TALK V_ASK
 			setScript: sTypeAwayCrod
 			init:
 		)
@@ -138,11 +121,11 @@
 		(blotter init:)
 		(windowA init:)
 		(window1 init:)
-		(notice approachVerbs: 4 init:)
-		(aBulletin approachVerbs: 4 init:)
-		(herDesk setOnMeCheck: 1 16384 init:)
+		(notice approachVerbs: V_DO init:)
+		(aBulletin approachVerbs: V_DO init:)
+		(herDesk setOnMeCheck: ftrControl cYELLOW init:)
 		(chair init:)
-		(hisDesk setOnMeCheck: 1 8192 init:)
+		(hisDesk setOnMeCheck: ftrControl cLMAGENTA init:)
 		(if (!= prevRoomNum 235)
 			(southExitFeature init:)
 		else
@@ -159,7 +142,9 @@
 		(super doit:)
 		(cond 
 			(script)
-			((IsObjectOnControl ego 2) (curRoom setScript: sExitSouth))
+			((IsObjectOnControl ego cBLUE)
+				(curRoom setScript: sExitSouth)
+			)
 		)
 	)
 	
@@ -167,30 +152,36 @@
 		(theMusic fade:)
 		(walkHandler delete: curRoom)
 		(directionHandler delete: curRoom)
-		(DisposeScript 941)
+		(DisposeScript RANDCYC)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			(inset (inset handleEvent: event))
+			(inset
+				(inset handleEvent: event)
+			)
 			(
 				(and
-					(& (event type?) evJOYSTICK)
+					(& (event type?) direction)
 					(== (theIconBar curIcon?) (theIconBar walkIconItem?))
-					(!= (event message?) JOY_NULL)
+					(!= (event message?) dirStop)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(curRoom setScript: sStandUp)
 			)
-			((& (event type?) evMOVE) (super handleEvent: event))
-			(else (super handleEvent: event))
+			((& (event type?) walkEvent)
+				(super handleEvent: event)
+			)
+			(else
+				(super handleEvent: event)
+			)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(V_WALK
 				(curRoom setScript: sStandUp)
 			)
 			(else 
@@ -201,7 +192,6 @@
 )
 
 (instance sEnterNorth of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -223,7 +213,6 @@
 )
 
 (instance sExitSouth of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -240,7 +229,6 @@
 )
 
 (instance sDoTalking of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -254,10 +242,12 @@
 					loop: 1
 					posn: 273 152
 					setScript: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(2 (messager say: 1 0 0 0 self))
+			(2
+				(messager say: N_MEET_CROD NULL NULL 0 self)
+			)
 			(3
 				(theGame handsOn:)
 				(crod setScript: sTypeAwayCrod)
@@ -269,8 +259,7 @@
 )
 
 (instance sCopyProBack of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -283,10 +272,10 @@
 					loop: 1
 					posn: 273 152
 					setScript: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(2 (crod setCycle: Beg self))
+			(2 (crod setCycle: BegLoop self))
 			(3
 				(theGame handsOn:)
 				(crod setScript: sTypeAwayCrod)
@@ -297,7 +286,6 @@
 )
 
 (instance sSitAtDesk of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -306,7 +294,7 @@
 				(= cycles 1)
 			)
 			(1
-				(if (Btst 30)
+				(if (Btst fEgoSits)
 					(theGame handsOn:)
 					(self dispose:)
 				else
@@ -316,7 +304,7 @@
 			(2
 				(walkHandler addToFront: curRoom)
 				(directionHandler addToFront: curRoom)
-				(if (Btst 30)
+				(if (Btst fEgoSits)
 					(= cycles 1)
 				else
 					(ego setMotion: PolyPath 170 161 self)
@@ -330,9 +318,9 @@
 					posn: 211 164
 					setPri: 11
 					setScale: Scaler 100 100 91 90
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(Bset 30)
+				(Bset fEgoSits)
 			)
 			(4
 				(southExitFeature dispose:)
@@ -351,7 +339,6 @@
 )
 
 (instance sStandUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -360,7 +347,7 @@
 				(= seconds 1)
 			)
 			(1
-				(if (Btst 30)
+				(if (Btst fEgoSits)
 					(= cycles 1)
 				else
 					(theGame handsOn:)
@@ -372,7 +359,7 @@
 					view: 231
 					setLoop: 0
 					posn: 211 164
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3
@@ -386,10 +373,10 @@
 				(directionHandler delete: curRoom)
 				(southExitFeature init:)
 				(Bclr 30)
-				(gentsDoor approachVerbs: 1 4)
-				(crod approachVerbs: 1 4 2 6)
-				(notice approachVerbs: 4)
-				(aBulletin approachVerbs: 4)
+				(gentsDoor approachVerbs: V_LOOK V_DO)
+				(crod approachVerbs: V_LOOK V_DO V_TALK V_ASK)
+				(notice approachVerbs: V_DO)
+				(aBulletin approachVerbs: V_DO)
 				(= cycles 1)
 			)
 			(4
@@ -402,8 +389,7 @@
 )
 
 (instance sLookInset of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -414,15 +400,16 @@
 				(ego setScript: sSitAtDesk self)
 			)
 			(2
-				(messager say: 24 1 0 0 self)
+				(messager say: N_INSET_DESK V_LOOK NULL 0 self)
 			)
-			(3 (curRoom newRoom: 235))
+			(3
+				(curRoom newRoom: 235)
+			)
 		)
 	)
 )
 
 (instance sDigInTrash of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -434,22 +421,22 @@
 				(ego setScript: sSitAtDesk self)
 			)
 			(2
-				(ego view: 231 loop: 2 posn: 148 161 setCycle: End self)
+				(ego view: 231 loop: 2 posn: 148 161 setCycle: EndLoop self)
 			)
 			(3
 				(theGame handsOn:)
-				(if (and (not (ego has: 4)) (not (ego has: 22)))
+				(if (and (not (ego has: iBaseball)) (not (ego has: 22)))
 					(curRoom setInset: inBaseball self)
-					(messager say: 3 4 5)
+					(messager say: N_TRASHCAN V_DO C_BASEBALL_IN_TRASH)
 				else
-					(messager say: 3 4 6 0 self)
+					(messager say: N_TRASHCAN V_DO C_GOT_BASEBALL 0 self)
 				)
 			)
 			(4
 				(theGame handsOff:)
 				(= cycles 1)
 			)
-			(5 (ego setCycle: Beg self))
+			(5 (ego setCycle: BegLoop self))
 			(6
 				(ego setLoop: 0 cel: 10 posn: 211 164)
 				(= cycles 4)
@@ -463,8 +450,7 @@
 )
 
 (instance sGentsDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -475,11 +461,11 @@
 				(ego setMotion: PolyPath 41 155 self)
 			)
 			(2
-				(crod loop: 3 setScript: 0 setCycle: End self)
+				(crod loop: 3 setScript: 0 setCycle: EndLoop self)
 			)
 			(3
 				(crod posn: 277 153 cel: 0)
-				(messager say: 2 4 0 0 self)
+				(messager say: N_GENTS_DOOR V_DO NULL 0 self)
 			)
 			(4
 				(theGame handsOn:)
@@ -491,8 +477,7 @@
 )
 
 (instance sTalkCrod of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -504,18 +489,18 @@
 					loop: 1
 					posn: 273 152
 					setScript: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(if local1
 					(= local1 0)
-					(messager say: 12 2 11 0 self)
+					(messager say: N_CROD V_TALK 11 0 self)
 				else
-					(messager say: 12 2 12 0 self)
+					(messager say: N_CROD V_TALK 12 0 self)
 				)
 			)
-			(3 (crod setCycle: Beg self))
+			(3 (crod setCycle: BegLoop self))
 			(4
 				(theGame handsOn:)
 				(crod setScript: sTypeAwayCrod)
@@ -526,7 +511,6 @@
 )
 
 (instance sAskCrod of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -535,131 +519,131 @@
 					loop: 1
 					posn: 273 152
 					setScript: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(switch (= temp0 (curRoom setInset: (ScriptID 20 0)))
 					(1026
-						(messager say: 12 6 41 0 self)
+						(messager say: N_CROD V_ASK 41 0 self)
 					)
 					(257
-						(messager say: 12 6 19 0 self)
+						(messager say: N_CROD V_ASK 19 0 self)
 					)
 					(773
-						(messager say: 12 6 35 0 self)
+						(messager say: N_CROD V_ASK 35 0 self)
 					)
 					(273
-						(messager say: 12 6 31 0 self)
+						(messager say: N_CROD V_ASK 31 0 self)
 					)
 					(1027
 						((ScriptID 21 0) doit: 264)
 						((ScriptID 21 0) doit: 520)
 						((ScriptID 21 0) doit: 260)
 						((ScriptID 21 1) doit: 518)
-						(messager say: 12 6 42 0 self)
+						(messager say: N_CROD V_ASK 42 0 self)
 					)
 					(259
-						(messager say: 12 6 21 0 self)
+						(messager say: N_CROD V_ASK 21 0 self)
 					)
 					(770
-						(messager say: 12 6 37 0 self)
+						(messager say: N_CROD V_ASK 37 0 self)
 					)
 					(269
-						(messager say: 12 6 28 0 self)
+						(messager say: N_CROD V_ASK 28 0 self)
 					)
 					(769
-						(messager say: 12 6 36 0 self)
+						(messager say: N_CROD V_ASK 36 0 self)
 					)
 					(261
-						(messager say: 12 6 45 0 self)
+						(messager say: N_CROD V_ASK 45 0 self)
 					)
 					(780
-						(messager say: 12 6 39 0 self)
+						(messager say: N_CROD V_ASK 39 0 self)
 					)
 					(516
-						(messager say: 12 6 16 0 self)
+						(messager say: N_CROD V_ASK 16 0 self)
 					)
 					(1028
-						(messager say: 12 6 44 0 self)
+						(messager say: N_CROD V_ASK 44 0 self)
 					)
 					(518
 						((ScriptID 21 0) doit: 264)
 						((ScriptID 21 0) doit: 520)
 						((ScriptID 21 1) doit: 518)
-						(messager say: 12 6 47 0 self)
+						(messager say: N_CROD V_ASK 47 0 self)
 					)
 					(265
-						(messager say: 12 6 48 0 self)
+						(messager say: N_CROD V_ASK 48 0 self)
 					)
 					(774
-						(messager say: 12 6 33 0 self)
+						(messager say: N_CROD V_ASK 33 0 self)
 					)
 					(262
-						(messager say: 12 6 23 0 self)
+						(messager say: N_CROD V_ASK 23 0 self)
 					)
 					(515
-						(messager say: 12 6 15 0 self)
+						(messager say: N_CROD V_ASK 15 0 self)
 					)
 					(517
 						((ScriptID 21 0) doit: 259)
 						((ScriptID 21 0) doit: 258)
-						(messager say: 12 6 17 0 self)
+						(messager say: N_CROD V_ASK 17 0 self)
 					)
 					(270
-						(messager say: 12 6 29 0 self)
+						(messager say: N_CROD V_ASK 29 0 self)
 					)
 					(519
-						(messager say: 12 6 43 0 self)
+						(messager say: N_CROD V_ASK 43 0 self)
 					)
 					(771
-						(messager say: 12 6 32 0 self)
+						(messager say: N_CROD V_ASK 32 0 self)
 					)
 					(513
 						((ScriptID 21 0) doit: 257)
-						(messager say: 12 6 13 0 self)
+						(messager say: N_CROD V_ASK 13 0 self)
 					)
 					(260
-						(messager say: 12 6 22 0 self)
+						(messager say: N_CROD V_ASK 22 0 self)
 					)
 					(775
-						(messager say: 12 6 34 0 self)
+						(messager say: N_CROD V_ASK 34 0 self)
 					)
 					(258
-						(messager say: 12 6 20 0 self)
+						(messager say: N_CROD V_ASK 20 0 self)
 					)
 					(514
-						(messager say: 12 6 14 0 self)
+						(messager say: N_CROD V_ASK 14 0 self)
 					)
 					(772
-						(messager say: 12 6 38 0 self)
+						(messager say: N_CROD V_ASK 38 0 self)
 					)
 					(520
-						(messager say: 12 6 18 0 self)
+						(messager say: N_CROD V_ASK 18 0 self)
 					)
 					(263
-						(messager say: 12 6 24 0 self)
+						(messager say: N_CROD V_ASK 24 0 self)
 					)
 					(271
 						((ScriptID 21 0) doit: 258)
-						(messager say: 12 6 30 0 self)
+						(messager say: N_CROD V_ASK 30 0 self)
 					)
 					(266
-						(messager say: 12 6 27 0 self)
+						(messager say: N_CROD V_ASK 27 0 self)
 					)
 					(264
-						(messager say: 12 6 25 0 self)
+						(messager say: N_CROD V_ASK 25 0 self)
 					)
 					(else 
 						(if (== -1 temp0)
 							(= cycles 1)
 						else
-							(messager say: 12 6 26 0 self)
+							(messager say: N_CROD V_ASK 26 0 self)
 						)
 					)
 				)
 			)
-			(2 (crod setCycle: Beg self))
+			(2 (crod setCycle: BegLoop self))
 			(3
 				(theGame handsOn:)
 				(crod setScript: sTypeAwayCrod)
@@ -670,22 +654,23 @@
 )
 
 (instance sTypeAwayCrod of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(crod posn: 273 152 setLoop: 4 setCycle: RandCycle)
 				(= seconds (Random 5 10))
 			)
-			(1 (= state -1) (= cycles 1))
+			(1
+				(= state -1)
+				(= cycles 1)
+			)
 		)
 	)
 )
 
 (instance sMoveIt of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -696,19 +681,25 @@
 					setMotion: MoveTo 228 117 self
 				)
 			)
-			(1 (= seconds (Random 4 8)))
+			(1
+				(= seconds (Random 4 8))
+			)
 			(2
 				(person1 setLoop: 0 setMotion: MoveTo 330 117 self)
 			)
-			(3 (= seconds (Random 8 12)))
-			(4 (= state -1) (= cycles 1))
+			(3
+				(= seconds (Random 8 12))
+			)
+			(4
+				(= state -1)
+				(= cycles 1)
+			)
 		)
 	)
 )
 
 (instance sMoveIt2 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 4 9)))
@@ -747,7 +738,7 @@
 	(properties
 		x 273
 		y 152
-		noun 12
+		noun N_CROD
 		approachX 242
 		approachY 164
 		view 232
@@ -756,10 +747,10 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
+			(V_TALK
 				(curRoom setScript: sTalkCrod)
 			)
-			(6
+			(V_ASK
 				(curRoom setScript: sAskCrod)
 			)
 			(else 
@@ -773,7 +764,7 @@
 	(properties
 		x 152
 		y 139
-		noun 13
+		noun N_MAN1
 		view 233
 		loop 5
 	)
@@ -783,9 +774,9 @@
 			(2
 				(if local2
 					(= local2 0)
-					(messager say: 13 2 11)
+					(messager say: N_MAN1 V_TALK 11)
 				else
-					(messager say: 13 2 12)
+					(messager say: N_MAN1 V_TALK 12)
 				)
 			)
 			(6 (messager say: 13 6 46))
@@ -800,15 +791,17 @@
 	(properties
 		x 85
 		y 154
-		noun 14
+		noun N_MAN2
 		view 233
 		loop 6
-		signal $1000
+		signal skipCheck
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(6 (messager say: 13 6 46))
+			(V_ASK
+				(messager say: N_MAN2 V_ASK 46)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -820,7 +813,7 @@
 	(properties
 		x 330
 		y 110
-		noun 15
+		noun N_MAN3
 		view 233
 		loop 1
 	)
@@ -830,11 +823,11 @@
 	(properties
 		x 330
 		y 118
-		noun 15
+		noun N_MAN3
 		view 233
 		loop 3
 		priority 6
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -843,9 +836,9 @@
 		view 238
 		x 144
 		y 121
-		disposeNotOnMe 1
+		disposeNotOnMe TRUE
 		modNum 15
-		noun 1
+		noun N_MEET_CROD
 	)
 	
 	(method (init)
@@ -862,11 +855,13 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (messager say: 1 1 0 0 0 15))
-			(4
+			(V_LOOK
+				(messager say: N_MEET_CROD V_BASEBALL NULL 0 0 15)
+			)
+			(V_DO
 				((ScriptID 21 0) doit: 773)
 				(inBaseball dispose:)
-				(ego get: 4)
+				(ego get: iBaseball)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -876,7 +871,6 @@
 )
 
 (instance checkScaling of Code
-	(properties)
 	
 	(method (doit)
 		(return
@@ -900,7 +894,7 @@
 	(properties
 		x 164
 		y 146
-		noun 3
+		noun N_TRASHCAN
 		nsTop 140
 		nsLeft 157
 		nsBottom 152
@@ -910,7 +904,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(curRoom setScript: sDigInTrash)
 			)
 			(else 
@@ -924,7 +918,7 @@
 	(properties
 		x 194
 		y 117
-		noun 4
+		noun N_BLOTTER
 		nsTop 115
 		nsLeft 180
 		nsBottom 120
@@ -934,10 +928,10 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(curRoom setScript: sLookInset)
 			)
-			(1
+			(V_LOOK
 				(curRoom setScript: sLookInset)
 			)
 			(else 
@@ -951,7 +945,7 @@
 	(properties
 		x 19
 		y 115
-		noun 2
+		noun N_GENTS_DOOR
 		nsTop 78
 		nsBottom 152
 		nsRight 39
@@ -962,7 +956,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(curRoom setScript: sGentsDoor)
 			)
 			(else 
@@ -976,7 +970,7 @@
 	(properties
 		x 123
 		y 95
-		noun 5
+		noun N_WINDOW
 		nsTop 85
 		nsLeft 109
 		nsBottom 105
@@ -989,7 +983,7 @@
 	(properties
 		x 176
 		y 93
-		noun 5
+		noun N_WINDOW
 		nsTop 85
 		nsLeft 167
 		nsBottom 101
@@ -1002,7 +996,7 @@
 	(properties
 		x 61
 		y 98
-		noun 6
+		noun N_BULLETIN
 		nsTop 82
 		nsLeft 47
 		nsBottom 114
@@ -1021,7 +1015,7 @@
 	(properties
 		x 56
 		y 99
-		noun 7
+		noun N_NOTICE
 		nsTop 85
 		nsLeft 52
 		nsBottom 94
@@ -1032,26 +1026,26 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1
-				(if (Btst 30)
-					(messager say: 7 1 40)
+			(V_LOOK
+				(if (Btst fEgoSits)
+					(messager say: N_NOTICE V_LOOK C_SITTING)
 				else
-					(switch local0
+					(switch noticeCount
 						(1
-							(messager say: 7 1 11)
-							(++ local0)
+							(messager say: N_BULLETIN V_LOOK 11)
+							(++ noticeCount)
 						)
 						(2
-							(messager say: 7 1 8)
-							(++ local0)
+							(messager say: N_BULLETIN V_LOOK 8)
+							(++ noticeCount)
 						)
 						(3
-							(messager say: 7 1 9)
-							(++ local0)
+							(messager say: N_BULLETIN V_LOOK 9)
+							(++ noticeCount)
 						)
 						(else 
-							(messager say: 7 1 10)
-							(= local0 1)
+							(messager say: N_BULLETIN V_LOOK 10)
+							(= noticeCount 1)
 						)
 					)
 				)
@@ -1067,7 +1061,7 @@
 	(properties
 		x 195
 		y 138
-		noun 24
+		noun N_INSET_DESK
 		nsTop 119
 		nsLeft 179
 		nsBottom 158
@@ -1083,15 +1077,15 @@
 	(properties
 		x 195
 		y 145
-		noun 24
+		noun N_LAURA_DESK
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(curRoom setScript: sLookInset)
 			)
-			(1
+			(V_LOOK
 				(curRoom setScript: sLookInset)
 			)
 			(else 
@@ -1105,7 +1099,7 @@
 	(properties
 		x 230
 		y 145
-		noun 17
+		noun N_CROD_DESK
 	)
 )
 
@@ -1116,7 +1110,7 @@
 		nsRight 320
 		cursor 11
 		exitDir 3
-		noun 16
+		noun N_EXIT
 	)
 )
 

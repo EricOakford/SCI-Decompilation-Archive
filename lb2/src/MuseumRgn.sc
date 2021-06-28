@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 90)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use n027)
 (use Scaler)
@@ -60,15 +60,8 @@
 	)
 )
 
-(class MuseumRgn of Rgn
+(class MuseumRgn of Region
 	(properties
-		script 0
-		number 0
-		modNum -1
-		noun 0
-		timer 0
-		keep 0
-		initialized 0
 		northList 0
 		northModule 0
 		eastList 0
@@ -1212,7 +1205,7 @@
 				)
 				(else 
 					(cond 
-						((not (Message msgGET modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
+						((not (Message MsgGet modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
 						((proc27_0 0 [global296 (- temp1 2)]) (messager say: noun 6 1 0 0 modNum))
 						(else
 							(messager say: noun 6 temp1 0 0 modNum)
@@ -1460,7 +1453,7 @@ code_1442:
 				)
 				(else 
 					(cond 
-						((not (Message msgGET modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
+						((not (Message MsgGet modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
 						((proc27_0 3 [global296 (- temp1 2)]) (messager say: noun 6 1 0 0 modNum))
 						(else
 							(messager say: noun 6 temp1 0 0 modNum)
@@ -1745,7 +1738,7 @@ code_17f6:
 				)
 				(else 
 					(cond 
-						((not (Message msgGET modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
+						((not (Message MsgGet modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
 						((proc27_0 4 [global296 (- temp1 2)]) (messager say: noun 6 1 0 0 modNum))
 						(else
 							(messager say: noun 6 temp1 0 0 modNum)
@@ -1829,7 +1822,7 @@ code_17f6:
 				)
 				(else 
 					(cond 
-						((not (Message msgGET modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
+						((not (Message MsgGet modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
 						((proc27_0 7 [global296 (- temp1 2)]) (messager say: noun 6 1 0 0 modNum))
 						(else
 							(messager say: noun 6 temp1 0 0 modNum)
@@ -1992,7 +1985,7 @@ code_2188:
 				)
 				(else 
 					(cond 
-						((not (Message msgGET modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
+						((not (Message MsgGet modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
 						((proc27_0 8 [global296 (- temp1 2)]) (messager say: noun 6 1 0 0 modNum))
 						(else
 							(messager say: noun 6 temp1 0 0 modNum)
@@ -2207,7 +2200,7 @@ code_2475:
 					)
 					(else 
 						(cond 
-							((not (Message msgGET modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
+							((not (Message MsgGet modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
 							((proc27_0 9 [global296 (- temp1 2)]) (messager say: noun 6 1 0 0 modNum))
 							(else
 								(messager say: noun 6 temp1 0 0 modNum)
@@ -2254,7 +2247,7 @@ code_2475:
 				)
 			)
 			(cond 
-				((not (Message msgGET modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
+				((not (Message MsgGet modNum noun 6 temp1 1)) (messager say: noun 6 81 0 0 modNum))
 				((proc27_0 11 [global296 (- temp1 2)]) (messager say: noun 6 1 0 0 modNum))
 				(else
 					(messager say: noun 6 temp1 0 0 modNum)
@@ -2788,7 +2781,7 @@ code_2a51:
 					)
 				)
 				((ScriptID curRoomNum (client useDoor?))
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(altPolyList
 					delete: ((ScriptID curRoomNum (client useDoor?)) doorPoly?)
@@ -2815,7 +2808,7 @@ code_2a51:
 				)
 			)
 			(2
-				((ScriptID curRoomNum (client useDoor?)) setCycle: Beg)
+				((ScriptID curRoomNum (client useDoor?)) setCycle: BegLoop)
 				(altPolyList
 					add: ((ScriptID curRoomNum (client useDoor?)) doorPoly?)
 				)

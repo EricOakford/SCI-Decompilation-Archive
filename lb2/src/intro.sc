@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 92)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Game)
 (use System)
@@ -13,32 +13,31 @@
 	local0
 	local1 =  100
 )
-(instance intro of Rgn
-	(properties)
+(instance intro of Region
 	
 	(method (init)
 		(super init:)
 		(theIconBar disable:)
-		(theIconBar disable: 7)
-		(theGame setCursor: 996 1 304 172)
-		(user canInput: 1)
+		(theIconBar disable: ICON_CONTROL)
+		(theGame setCursor: INVIS_CURSOR TRUE 304 172)
+		(user canInput: TRUE)
 		(keyDownHandler addToFront: self)
 	)
 	
 	(method (handleEvent event)
 		(if
 			(and
-				(== (event type?) evKEYBOARD)
-				(== (event message?) KEY_ESCAPE)
+				(== (event type?) keyDown)
+				(== (event message?) ESC)
 			)
-			(event claimed: 1)
+			(event claimed: TRUE)
 			(curRoom setScript: sFadeToBlack)
 		)
 	)
 	
 	(method (newRoom n)
 		(keyDownHandler delete: self)
-		(= initialized 0)
+		(= initialized FALSE)
 		(if
 			(not
 				(= keep
@@ -51,20 +50,25 @@
 )
 
 (instance sFadeToBlack of Script
-	(properties)
 	
 	(method (doit)
 		(if (and local0 local1)
-			(Palette palSET_INTENSITY 0 255 (-- local1))
-			(if (not local1) (self cue:))
+			(Palette PALIntensity 0 255 (-- local1))
+			(if (not local1)
+				(self cue:)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= local0 1))
-			(1 (curRoom newRoom: 26))
+			(0
+				(= local0 1)
+			)
+			(1
+				(curRoom newRoom: 26)
+			)
 		)
 	)
 )

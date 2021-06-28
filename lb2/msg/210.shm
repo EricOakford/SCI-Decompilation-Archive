@@ -1,0 +1,28 @@
+;;; Sierra Script
+;;; 210.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_FIRST_TALK 1)
+(define C_TALK_AGAIN 2)
+(define C_GOT_COUPON 3)
+
+;;; NOUNS
+
+(define N_ROOM 16)
+(define N_LUIGI 3)
+(define N_SANDWICH 2)
+(define N_DUMMY1 1)
+(define N_CART 4)
+(define N_FRONT_DOOR 5)
+(define N_TAXI_SIGN 6)
+(define N_NEXT_BUILDING 7)
+(define N_DUMMY8 8)
+(define N_PERSON 9)
+(define N_TAXI 13)
+(define N_GREY_BUILDING 10)
+(define N_NEWS_BUILDING 15)
+(define N_TREE 19)
+(define N_SOUTH_EXIT 18)
+

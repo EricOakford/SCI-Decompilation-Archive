@@ -1,0 +1,31 @@
+;;; Sierra Script
+;;; 250.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 14)
+(define N_CABBIE 1)
+(define N_BOB 4)
+(define N_ROCCO 5)
+(define N_RESPONSE_TITLE 16)
+(define N_RESPONSE 15)
+(define N_BE_SPECIFIC 17)
+(define N_HUH 12)
+(define N_CABBIE_CHATS 10)
+(define N_WINDOW 6)
+(define N_TICKET 9)
+(define N_ROCCO_LICENSE 8)
+(define N_BOB_LICENSE 7)
+(define N_TRASH 2)
+
+;;; CASES
+
+(define C_NO_PASS_ROCCO 1)
+(define C_LAURA_INSISTS 10)
+(define C_NO_PASS_BOB 9)
+(define C_BOB 7)
+(define C_ROCCO 8)
+(define C_GOT_TICKET 4)
+(define C_FIND_TICKET 2)
+
