@@ -1,0 +1,29 @@
+;;; Sierra Script
+;;; 884.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_START_CREDITS 6)
+(define C_SEIBERT 7)
+(define C_PROGRAMMERS 1)
+(define C_ART 2)
+(define C_DESIGN 5)
+(define C_WOOLARD 3)
+(define C_GRANDSTAFF 4)
+
+;;; NOUNS
+
+(define N_CREDITS 1)
+(define N_EXIT 2)
+(define N_TITLE 3)
+(define N_SERVICE 4)
+(define N_SALES 5)
+(define N_TECHNICAL 6)
+(define N_TROUBLEShOOTING 7)
+(define N_WARRANTY 8)
+(define N_HINTS 9)
+(define N_TEAM 10)
+(define N_SHOW_SALES 12)
+(define N_SHOW_SERVICE 11)
+

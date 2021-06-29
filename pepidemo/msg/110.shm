@@ -1,0 +1,18 @@
+;;; Sierra Script
+;;; 110.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_MENU 8)
+
+;;; NOUNS
+
+(define N_ACT1 1)
+(define N_ACT2 2)
+(define N_ACT3 3)
+(define N_ACT4 4)
+(define N_ACT5 5)
+(define N_ACT6 6)
+(define N_ROOM 7)
+

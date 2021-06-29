@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 994.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_CANCEL_BUTTON 4)
+(define N_DISK_FULL 1)
+(define N_CHG_DIR_BUTTON 5)
+(define N_INSERT_DISK 6)
+(define N_OK_BUTTON 2)
+(define N_WRONG_INTERP 3)
+(define N_SAVE_DISK 7)
+(define N_GAME_DISK 8)
+(define N_INVALID_DIR 9)
+
+;;; CASES
+
+
