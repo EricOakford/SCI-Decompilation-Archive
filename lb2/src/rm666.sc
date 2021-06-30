@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 666)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Scaler)
@@ -22,7 +22,6 @@
 	local3
 )
 (instance rm666 of LBRoom
-	(properties)
 	
 	(method (init)
 		(self setRegions: 90)
@@ -35,18 +34,18 @@
 		)
 		(self
 			picture:
-				(if ((Inv at: 15) cel?)
+				(if ((Inventory at: iLantern) cel?)
 					(if (== prevRoomNum 520) 735 else 730)
 				else
 					780
 				)
 		)
-		(if ((Inv at: 15) cel?)
-			(Palette palSET_INTENSITY 0 255 0)
+		(if ((Inventory at: iLantern) cel?)
+			(Palette PALIntensity 0 255 0)
 		)
 		(theGame handsOff:)
 		(super init:)
-		(if ((Inv at: 15) cel?)
+		(if ((Inventory at: iLantern) cel?)
 			(WrapMusic pause: 0)
 			(= local0 1)
 			(if (== prevRoomNum 520)
@@ -64,13 +63,12 @@
 	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and (== (self picture?) 780) ((Inv at: 15) cel?))
+		(if (and (== (self picture?) 780) ((Inventory at: iLantern) cel?))
 			(theGame handsOff:)
 			(theMusic2 fade:)
 			(WrapMusic pause: 0)
 			(= local0 1)
-			(Palette palSET_INTENSITY 0 255 0)
+			(Palette PALIntensity 0 255 0)
 			(if (== prevRoomNum 520)
 				(self picture: 735 drawPic: 735)
 			else
@@ -102,7 +100,7 @@
 			(= local3 1)
 		)
 		(if local0
-			(Palette palSET_INTENSITY 0 255 (= local2 (+ local2 2)))
+			(Palette PALIntensity 0 255 (+= local2 2))
 			(if (>= local2 100)
 				(= local0 0)
 				(if local3
@@ -115,12 +113,7 @@
 			)
 		)
 		(if local1
-			(Palette
-				palSET_INTENSITY
-				0
-				255
-				(Max 0 (= local2 (- local2 3)))
-			)
+			(Palette PALIntensity 0 255 (Max 0 (-= local2 3)))
 			(if (== local2 0) (= local1 0))
 		)
 	)

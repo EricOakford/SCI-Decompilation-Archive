@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 335)
-(include sci.sh)
+(include game.sh) (include "335.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -18,7 +18,7 @@
 
 (instance rm335 of LBRoom
 	(properties
-		noun 5
+		noun N_ROOM
 		picture 335
 		north 350
 		south 330
@@ -33,7 +33,7 @@
 		(self setRegions: 90 93)
 		(switch prevRoomNum
 			(north
-				(Palette palSET_INTENSITY 0 255 60)
+				(Palette PALIntensity 0 255 60)
 				(if (and (TriggerEvent 8) (not (Btst 133)))
 					(frontDoor
 						cel: 255
@@ -124,12 +124,12 @@
 				)
 			)
 			(2
-				(DrawPic 780 dpOPEN_FADEPALETTE)
+				(DrawPic 780 FADEOUT)
 				(cast eachElementDo: #hide)
 				(= cycles 2)
 			)
 			(3
-				(Palette palSET_INTENSITY 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				((ScriptID 21 0) doit: 265)
 				(curRoom newRoom: (curRoom north?))
 			)
@@ -147,12 +147,12 @@
 				((ScriptID 32 0)
 					setLoop: 0
 					cycleSpeed: 6
-					setCycle: CT 8 1 self
+					setCycle: CycleTo 8 1 self
 				)
 			)
 			(1 (= ticks 15))
 			(2
-				((ScriptID 32 0) setCycle: End self)
+				((ScriptID 32 0) setCycle: EndLoop self)
 			)
 			(3
 				((ScriptID 32 0) setCel: 0)
@@ -189,7 +189,7 @@
 			)
 			(1
 				(DrawPic 335)
-				(Palette palSET_INTENSITY 0 255 60)
+				(Palette PALIntensity 0 255 60)
 				(= ticks 30)
 			)
 			(2

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 140)
-(include sci.sh)
+(include game.sh) (include "140.shm")
 (use Main)
 (use BalloonTalker)
 (use TWRoom)
@@ -22,10 +22,10 @@
 	local200
 	local201
 	[theCel 200]
-	[theTheCel_2 22] = [1 4 13 36 5 17 0 13 10 11 8 13 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
-	[theTheCel 24] = [7 4 11 11 14 36 19 7 0 3 3 4 20 18 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
-	[theTheCel_3 73] = [1 4 13 9 0 12 8 13 36 5 17 0 13 10 11 8 13 38 36 18 4 11 5 36 3 4 19 4 17 12 8 13 0 19 8 14 13 37 4 16 20 0 11 8 19 24 37 3 4 12 14 2 17 0 2 24 36 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
-	[theTheCel_4 4] = [-1 -1 -1 -1]
+	theTheCel_2 = [1 4 13 36 5 17 0 13 10 11 8 13 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+	theTheCel = [7 4 11 11 14 36 19 7 0 3 3 4 20 18 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+	theTheCel_3 = [1 4 13 9 0 12 8 13 36 5 17 0 13 10 11 8 13 38 36 18 4 11 5 36 3 4 19 4 17 12 8 13 0 19 8 14 13 37 4 16 20 0 11 8 19 24 37 3 4 12 14 2 17 0 2 24 36 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+	theTheCel_4 = [-1 -1 -1 -1]
 	local525
 )
 (procedure (localproc_0d5d param1 &tmp temp0 temp1)
@@ -60,7 +60,7 @@
 
 (instance rm140 of ADRoom
 	(properties
-		noun 1
+		noun N_ROOM
 		picture 140
 		north 150
 		vanishingY -60
@@ -75,52 +75,36 @@
 		else
 			(target init: addToPic:)
 		)
-		(books init: setOnMeCheck: 1 2)
-		(feet init: setOnMeCheck: 1 64)
-		(globe init: setOnMeCheck: 1 4)
-		(machine init: setOnMeCheck: 1 32)
-		(microwave init: setOnMeCheck: 1 16)
-		(paintBucket init: setOnMeCheck: 1 8)
+		(books init: setOnMeCheck: ftrControl cBLUE)
+		(feet init: setOnMeCheck: ftrControl cBROWN)
+		(globe init: setOnMeCheck: ftrControl cGREEN)
+		(machine init: setOnMeCheck: ftrControl cMAGENTA)
+		(microwave init: setOnMeCheck: ftrControl cRED)
+		(paintBucket init: setOnMeCheck: ftrControl cCYAN)
 		(beakers init:)
 		(redButton init:)
-		(displayIt init: setOnMeCheck: 1 256)
+		(displayIt init: setOnMeCheck: ftrControl cGREY)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						5
-						188
-						242
-						188
-						242
-						172
-						269
-						136
-						246
-						130
-						214
-						140
-						216
-						152
-						141
-						171
-						107
-						167
-						110
-						142
-						69
-						142
-						60
-						132
-						19
-						146
-						30
-						161
-						18
-						169
-						3
-						173
+						5 188
+						242 188
+						242 172
+						269 136
+						246 130
+						214 140
+						216 152
+						141 171
+						107 167
+						110 142
+						69 142
+						60 132
+						19 146
+						30 161
+						18 169
+						3 173
 					yourself:
 				)
 		)
@@ -141,7 +125,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 0)
+			(V_WALK 0)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -156,7 +140,6 @@
 )
 
 (instance endingCartoonScr of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -180,7 +163,7 @@
 					cel: 0
 					posn: 123 157
 					priority: 15
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(= cycles 1)
@@ -192,7 +175,7 @@
 					cel: 0
 					posn: 87 86
 					priority: 15
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 8
 					init:
 				)
@@ -205,7 +188,7 @@
 					cel: 0
 					posn: 24 73
 					priority: 15
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(= cycles 1)
@@ -228,7 +211,7 @@
 				(messager say: 12 0 7 1 self)
 			)
 			(6
-				(uncleFred view: 152 setLoop: 0 cel: 0 setCycle: Fwd)
+				(uncleFred view: 152 setLoop: 0 cel: 0 setCycle: Forward)
 				(= ticks 10)
 			)
 			(7
@@ -241,7 +224,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 265 155
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic2 number: 1410 setLoop: 1 flags: 1 play:)
 			)
@@ -253,7 +236,7 @@
 					cel: 0
 					posn: 32 99
 					setPri: 14
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= ticks 30)
 			)
@@ -303,11 +286,11 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 10
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(1
-				((ScriptID 895 0) setCycle: End self)
+				((ScriptID 895 0) setCycle: EndLoop self)
 				(theMusic3 number: 1357 setLoop: 1 play:)
 				(target init: stopUpd:)
 			)
@@ -370,17 +353,17 @@
 					setLoop: 0
 					cel: 0
 					posn: 181 175
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
-				(animationActor setLoop: 1 cel: 0 setCycle: CT 7 1 self)
+				(animationActor setLoop: 1 cel: 0 setCycle: CycleTo 7 1 self)
 			)
 			(10
 				(theMusic2 number: 1403 setLoop: 1 play: self)
 			)
 			(11
-				(animationActor setLoop: 1 cel: 8 setCycle: End self)
+				(animationActor setLoop: 1 cel: 8 setCycle: EndLoop self)
 			)
 			(12
 				(theMusic2 number: 1413 setLoop: -1 play:)
@@ -395,7 +378,7 @@
 				(messager say: 12 0 4 6 self)
 			)
 			(15
-				(target init: setCycle: Fwd)
+				(target init: setCycle: Forward)
 				(= cycles 1)
 			)
 			(16 (= seconds 2))
@@ -405,7 +388,7 @@
 					view: 144
 					setLoop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic3 number: 1407 setLoop: 1 play:)
 			)
@@ -457,7 +440,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 181 174
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 			)
@@ -589,7 +572,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init: &rest)
 	)
 )
@@ -606,7 +589,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init: &rest)
 	)
 )
@@ -621,7 +604,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(super init: &rest)
 	)
 )
@@ -671,7 +654,7 @@
 					loop: 1
 					cel: 0
 					posn: 282 113
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3

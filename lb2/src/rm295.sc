@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 295)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Talker)
@@ -20,10 +20,10 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 295 1295)
-		(LoadMany 132 295)
+		(LoadMany RES_VIEW 295 1295)
+		(LoadMany RES_SOUND 295)
 		(super init:)
-		(theMusic number: 295 flags: 1 loop: -1 play:)
+		(theMusic number: 295 flags: mNOPAUSE loop: -1 play:)
 		(curRoom setScript: sInsideRoom)
 	)
 	
@@ -34,7 +34,6 @@
 )
 
 (instance sInsideRoom of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

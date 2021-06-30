@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 212)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use CycleBet)
 (use BalloonTalker)
@@ -33,14 +33,21 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
-					init: 207 92 230 99 243 111 264 110 264 102 222 86 206 92
+					type: PContainedAccess
+					init:
+						207 92
+						230 99
+						243 111
+						264 110
+						264 102
+						222 86
+						206 92
 					yourself:
 				)
 		)
 		(super init: &rest)
-		(door init: ignoreActors: 1 addToPic:)
-		(woodThing init: ignoreActors: 1 addToPic:)
+		(door init: ignoreActors: TRUE addToPic:)
+		(woodThing init: ignoreActors: TRUE addToPic:)
 		(walkHandler add: barrels curRoom)
 		(barrels init:)
 		(switch prevRoomNum
@@ -54,8 +61,8 @@
 					y: 110
 					init:
 				)
-				(horse init: ignoreActors: 1 addToPic:)
-				(driver setPri: 13 init: ignoreActors: 1 addToPic:)
+				(horse init: ignoreActors: TRUE addToPic:)
+				(driver setPri: 13 init: ignoreActors: TRUE addToPic:)
 				(carriage
 					view: 224
 					setLoop: 0
@@ -63,7 +70,7 @@
 					x: 168
 					y: 152
 					init:
-					ignoreActors: 1
+					ignoreActors: TRUE
 					addToPic:
 				)
 				(imaWench view: 2008 x: 260 y: 155 init: stopUpd:)
@@ -106,14 +113,18 @@
 	(method (dispose)
 		(walkHandler delete: barrels curRoom)
 		((ScriptID 895 1) actions: 0)
-		(LoadMany 0 971)
+		(LoadMany FALSE FOLLOW)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3 (abductionScam seconds: 1))
-			(6 (super doVerb: theVerb))
+			(V_WALK
+				(abductionScam seconds: 1)
+			)
+			(V_LOOK
+				(super doVerb: theVerb)
+			)
 			(else 
 				(abductionScam seconds: 1)
 			)
@@ -142,10 +153,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((ScriptID 895 0) setCycle: End self)
+				((ScriptID 895 0) setCycle: EndLoop self)
 			)
 			(1
-				((ScriptID 895 0) setCycle: Beg self)
+				((ScriptID 895 0) setCycle: BegLoop self)
 			)
 			(2
 				(messager say: 1 0 3 12 self)
@@ -233,7 +244,7 @@
 					setPri: 7
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -247,7 +258,7 @@
 					ignoreActors: 1
 					init:
 					actions: ljActions
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
@@ -271,7 +282,7 @@
 			)
 			(17
 				(theMusic2 number: 953 setLoop: 1 play:)
-				(fourth setCycle: End self)
+				(fourth setCycle: EndLoop self)
 			)
 			(18
 				(fourth setStep: 7 4 setMotion: MoveTo 420 179)
@@ -285,7 +296,7 @@
 					y: 165
 					setLoop: 2
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(20
@@ -351,14 +362,14 @@
 					view: 217
 					setLoop: 4
 					cel: 0
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(27
 				(fourth dispose:)
 				(theMusic2 number: 2110 setLoop: 1 play:)
 				((ScriptID 895 1)
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: JumpTo 240 158 self
 				)
 			)
@@ -366,21 +377,21 @@
 				((ScriptID 895 1) setMotion: JumpTo 285 155 self)
 			)
 			(29
-				((ScriptID 895 1) setLoop: 5 setCycle: End self)
+				((ScriptID 895 1) setLoop: 5 setCycle: EndLoop self)
 			)
 			(30
 				(sfx number: 2111 setLoop: -1 play:)
 				((ScriptID 895 1) setCycle: CycleBet 4 6 -1)
-				(driver setCycle: End self)
+				(driver setCycle: EndLoop self)
 			)
 			(31
-				(carDoor init: setCycle: End self)
+				(carDoor init: setCycle: EndLoop self)
 				(theMusic2 number: 2113 setLoop: 1 play:)
 			)
 			(32
 				(driver addToPic:)
 				(carDoor addToPic:)
-				(imaWench init: setCycle: End self)
+				(imaWench init: setCycle: EndLoop self)
 			)
 			(33
 				(imaWench
@@ -391,7 +402,7 @@
 			)
 			(34
 				(imaWench view: 228 setLoop: 0 setCel: 0 stopUpd:)
-				(genPugh init: setCel: 0 setCycle: End self)
+				(genPugh init: setCel: 0 setCycle: EndLoop self)
 			)
 			(35
 				(genPugh
@@ -402,14 +413,14 @@
 			)
 			(36
 				(genPugh view: 228 setLoop: 1 stopUpd:)
-				(percy init: setCel: 0 setCycle: End self)
+				(percy init: setCel: 0 setCycle: EndLoop self)
 				(theMusic2 number: 2115 setLoop: 1 play:)
 			)
 			(37 (= seconds 3))
 			(38
 				(sfx stop:)
 				(theMusic number: 216 setLoop: -1 play:)
-				(percy view: 218 setLoop: 3 cel: 0 setCycle: End self)
+				(percy view: 218 setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(39
 				(percy view: 228 setLoop: 2 stopUpd:)
@@ -424,17 +435,17 @@
 				(watchMan stopUpd:)
 				(watchManTalker x: 95 y: 90 tailPosn: 4)
 				((ScriptID 2018 1) x: 130 y: 115 tailPosn: 1)
-				(genPugh view: 2007 setCycle: Fwd)
+				(genPugh view: 2007 setCycle: Forward)
 				(messager say: 1 0 2 4 self)
 			)
 			(41
 				(genPugh view: 228 setLoop: 1 setCycle: 0 stopUpd:)
-				(percy view: 2005 setCycle: Fwd)
+				(percy view: 2005 setCycle: Forward)
 				(messager say: 1 0 2 5 self)
 			)
 			(42
 				(percy view: 228 setLoop: 2 setCycle: 0 stopUpd:)
-				(imaWench view: 2008 setCycle: Fwd)
+				(imaWench view: 2008 setCycle: Forward)
 				(messager say: 1 0 2 6 self)
 			)
 			(43
@@ -442,7 +453,7 @@
 				(messager say: 1 0 2 7 self)
 			)
 			(44
-				(percy view: 2005 setCycle: Fwd)
+				(percy view: 2005 setCycle: Forward)
 				(messager say: 1 0 2 8 self)
 			)
 			(45
@@ -450,7 +461,7 @@
 				(messager say: 1 0 2 9 self)
 			)
 			(46
-				(percy view: 2005 setCycle: Fwd)
+				(percy view: 2005 setCycle: Forward)
 				(messager say: 1 0 2 10 self)
 			)
 			(47
@@ -458,7 +469,7 @@
 				(messager say: 1 0 2 11 self)
 			)
 			(48
-				(percy view: 2005 setCycle: Fwd)
+				(percy view: 2005 setCycle: Forward)
 				(messager say: 1 0 2 12 self)
 			)
 			(49
@@ -470,7 +481,7 @@
 				(messager say: 1 0 2 14 self)
 			)
 			(51
-				(percy view: 2005 setCycle: Fwd)
+				(percy view: 2005 setCycle: Forward)
 				(messager say: 1 0 2 15 self)
 			)
 			(52
@@ -508,7 +519,7 @@
 				(messager say: 1 0 3 1 self)
 			)
 			(59
-				(genPugh view: 2007 setCycle: Fwd)
+				(genPugh view: 2007 setCycle: Forward)
 				(messager say: 1 0 3 2 self)
 			)
 			(60
@@ -520,22 +531,22 @@
 			)
 			(62
 				(watchMan dispose:)
-				(imaWench view: 2008 setCycle: Fwd)
+				(imaWench view: 2008 setCycle: Forward)
 				(messager say: 1 0 3 4 self)
 			)
 			(63
 				(imaWench view: 228 setLoop: 0 setCycle: 0 stopUpd:)
-				(genPugh view: 2007 setCycle: Fwd)
+				(genPugh view: 2007 setCycle: Forward)
 				(messager say: 1 0 3 5 self)
 			)
 			(64
 				(genPugh view: 228 setLoop: 1 setCycle: 0 stopUpd:)
-				(imaWench view: 2008 setCycle: Fwd)
+				(imaWench view: 2008 setCycle: Forward)
 				(messager say: 1 0 3 6 self)
 			)
 			(65
 				(imaWench view: 228 setLoop: 0 setCycle: 0 stopUpd:)
-				(genPugh view: 2007 setCycle: Fwd)
+				(genPugh view: 2007 setCycle: Forward)
 				(messager say: 1 0 3 7 self)
 			)
 			(66
@@ -544,7 +555,7 @@
 					view: 227
 					setLoop: 2
 					setPri: 14
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(67
@@ -556,34 +567,34 @@
 					view: 227
 					setLoop: 3
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(69
 				(genPugh setCycle: CycleBet 7 4 1 self)
 			)
 			(70
-				(genPugh setCycle: Beg self)
+				(genPugh setCycle: BegLoop self)
 			)
 			(71
-				(genPugh view: 2007 setCycle: Fwd)
+				(genPugh view: 2007 setCycle: Forward)
 				(messager say: 1 0 3 10 self)
 			)
 			(72
 				(genPugh view: 228 setLoop: 1 stopUpd:)
-				(percy view: 2005 setCycle: Fwd)
+				(percy view: 2005 setCycle: Forward)
 				(messager say: 1 0 3 11 self)
 			)
 			(73
 				(percy view: 228 setLoop: 2 stopUpd:)
-				(imaWench setCycle: Beg self)
+				(imaWench setCycle: BegLoop self)
 			)
 			(74
 				(imaWench
 					view: 220
 					setLoop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(75 (= seconds 2))
@@ -854,13 +865,10 @@
 	)
 )
 
-(instance sfx of Sound
-	(properties)
-)
+(instance sfx of Sound)
 
 (instance ljActions of Actions
-	(properties)
-	
+
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb

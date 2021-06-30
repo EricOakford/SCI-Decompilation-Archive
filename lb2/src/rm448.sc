@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 448)
-(include sci.sh)
+(include game.sh) (include "448.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -26,7 +26,7 @@
 )
 (instance rm448 of LBRoom
 	(properties
-		noun 14
+		noun N_ROOM
 		picture 448
 		north 450
 		south 440
@@ -36,8 +36,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 449 440 424 423 448 426 831)
-		(LoadMany 132 444 443 445)
+		(LoadMany RES_VIEW 449 440 424 423 448 426 831)
+		(LoadMany RES_SOUND 444 443 445)
 		(ego
 			init:
 			normalize: (if (== currentAct 5) 426 else 831)
@@ -97,8 +97,13 @@
 		(super doit:)
 		(cond 
 			(script)
-			((IsObjectOnControl ego 2) (ego edgeHit: 4) (self newRoom: west))
-			((IsObjectOnControl ego 8) (self newRoom: north))
+			((IsObjectOnControl ego cBLUE)
+				(ego edgeHit: 4)
+				(self newRoom: west)
+			)
+			((IsObjectOnControl ego cCYAN)
+				(self newRoom: north)
+			)
 		)
 	)
 	
@@ -113,20 +118,22 @@
 		(cond 
 			(
 				(and
-					(& (event type?) evJOYSTICK)
+					(& (event type?) direction)
 					(== (theIconBar curIcon?) (theIconBar walkIconItem?))
-					(!= (event message?) JOY_NULL)
+					(!= (event message?) dirStop)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(curRoom setScript: sOffChair)
 			)
-			((& (event type?) evMOVE) (super handleEvent: event))
+			((& (event type?) walkEvent)
+				(super handleEvent: event)
+			)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(V_WALK
 				(curRoom setScript: sOffChair)
 			)
 			(else 
@@ -147,8 +154,7 @@
 )
 
 (instance sEnterWest of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -249,11 +255,11 @@
 				(= cycles 2)
 			)
 			(7
-				(oriley view: 424 cel: 0 setCycle: End self)
+				(oriley view: 424 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(noise number: 80 flags: 1 play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(9
 				(= deathReason 0)
@@ -294,7 +300,7 @@
 					posn: 112 133
 					ignoreActors: 0
 					illegalBits: -32768
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(chair
 					ignoreActors: 1
@@ -320,7 +326,7 @@
 					setScale: Scaler 100 100 190 35
 					posn: 107 124
 					setPri: 9
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(chair setPri: 7 stopUpd:)
 				(walkHandler addToFront: curRoom)
@@ -375,7 +381,7 @@
 					setScale: Scaler 100 100 190 35
 					ignoreActors: 0
 					illegalBits: -32768
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -416,7 +422,7 @@
 					setScale: Scaler 100 100 190 35
 					posn: 107 124
 					setPri: 10
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
@@ -464,12 +470,12 @@
 					posn: 104 112
 					ignoreActors: 1
 					illegalBits: 0
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(2
-				(ego setCycle: End self)
-				(transomWin setCycle: End)
+				(ego setCycle: EndLoop self)
+				(transomWin setCycle: EndLoop)
 				(noise number: 445 flags: 1 play:)
 			)
 			(3
@@ -506,12 +512,12 @@
 					ignoreActors: 1
 					illegalBits: 0
 					posn: 104 112
-					setCycle: CT 6 -1 self
+					setCycle: CycleTo 6 -1 self
 				)
 			)
 			(2
-				(ego setCycle: Beg self)
-				(transomWin setCycle: Beg)
+				(ego setCycle: BegLoop self)
+				(transomWin setCycle: BegLoop)
 				(noise number: 445 flags: 1 play:)
 			)
 			(3

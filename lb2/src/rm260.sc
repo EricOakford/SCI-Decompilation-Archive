@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 260)
-(include sci.sh)
+(include game.sh) (include "260.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -31,7 +31,7 @@
 )
 (instance rm260 of LBRoom
 	(properties
-		noun 13
+		noun N_ROOM
 		picture 260
 		north 270
 		south 300
@@ -39,8 +39,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 284 260 852 282 830)
-		(LoadMany 132 40 97 260 261)
+		(LoadMany RES_VIEW 284 260 852 282 830)
+		(LoadMany RES_SOUND 40 97 260 261)
 		(self setRegions: 91)
 		(ego init: normalize: 830 setScale: Scaler 98 0 190 50)
 		(switch prevRoomNum
@@ -59,53 +59,37 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						319
-						0
-						319
-						189
-						311
-						189
-						311
-						166
-						151
-						171
-						142
-						159
-						122
-						159
-						122
-						165
-						143
-						165
-						147
-						171
-						90
-						171
-						83
-						145
-						61
-						143
-						78
-						172
-						63
-						172
-						63
-						178
-						9
-						178
-						9
-						189
-						0
-						189
-						0
-						0
+						319 0
+						319 189
+						311 189
+						311 166
+						151 171
+						142 159
+						122 159
+						122 165
+						143 165
+						147 171
+						90 171
+						83 145
+						61 143
+						78 172
+						63 172
+						63 178
+						9 178
+						9 189
+						0 189
+						0 0
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 92 174 127 174 127 179 92 179
+					type: PBarredAccess
+					init:
+						92 174
+						127 174
+						127 179
+						92 179
 					yourself:
 				)
 		)
@@ -122,12 +106,12 @@
 			)
 			(kid
 				init:
-				approachVerbs: 6 4 2 8 15
+				approachVerbs: V_ASK V_DO V_TALK V_MAGNIFIER V_SANDWICH
 				setScript: (sKidsPlaying new:)
 			)
 		)
 		(southExitFeature init:)
-		(sky setOnMeCheck: 1 8 init:)
+		(sky setOnMeCheck: ftrControl cCYAN init:)
 		(window1 init:)
 		(window2 init:)
 		(store init:)
@@ -139,7 +123,7 @@
 		(plant2 init:)
 		(street init:)
 		(stairs init:)
-		(streetLamp setOnMeCheck: 1 2 init:)
+		(streetLamp setOnMeCheck: ftrControl cBLUE init:)
 		(frontDoor init:)
 		(taxiSign init:)
 		(taxi init: setScale: 220)
@@ -149,7 +133,9 @@
 		(super doit:)
 		(cond 
 			(script)
-			((IsObjectOnControl ego 16) (curRoom setScript: sDownStairs))
+			((IsObjectOnControl ego cRED)
+				(curRoom setScript: sDownStairs)
+			)
 		)
 	)
 	
@@ -161,7 +147,6 @@
 )
 
 (instance sDownStairs of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -173,7 +158,7 @@
 				(ego setMotion: PolyPath 91 174 self)
 			)
 			(2
-				(messager say: 11 0 11 0 self)
+				(messager say: 11 NULL 11 0 self)
 			)
 			(3
 				(theGame handsOn:)
@@ -184,8 +169,7 @@
 )
 
 (instance sUpCurb of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -201,8 +185,7 @@
 )
 
 (instance sOutCab of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -226,21 +209,20 @@
 )
 
 (instance sKidsPlaying of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setCycle: CT (Random 1 5) 1 self)
+				(client setCycle: CycleTo (Random 1 5) 1 self)
 			)
 			(1 (= ticks (Random 10 120)))
-			(2 (client setCycle: End self))
+			(2 (client setCycle: EndLoop self))
 			(3 (= ticks (Random 10 120)))
 			(4
-				(client setCycle: CT (Random 1 5) -1 self)
+				(client setCycle: CycleTo (Random 1 5) -1 self)
 			)
 			(5 (= ticks (Random 10 120)))
-			(6 (client setCycle: Beg self))
+			(6 (client setCycle: BegLoop self))
 			(7 (= ticks (Random 10 120)))
 			(8 (self changeState: 0))
 		)
@@ -262,18 +244,18 @@
 				(= cycles 1)
 			)
 			(2
-				(ego view: 282 loop: 5 cel: 0 setCycle: End self)
+				(ego view: 282 loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(messager say: 18 7 0 0 self)
-				(kidL setCycle: CT 8 1)
+				(kidL setCycle: CycleTo 8 1)
 			)
 			(4
-				(kid loop: 3 cel: 0 setCycle: CT 7 1 self)
+				(kid loop: 3 cel: 0 setCycle: CycleTo 7 1 self)
 			)
 			(5
-				(kid setCycle: End self)
-				(kidL setCycle: CT 0 -1)
+				(kid setCycle: EndLoop self)
+				(kidL setCycle: CycleTo 0 -1)
 			)
 			(6 (kid loop: 0) (= cycles 1))
 			(7
@@ -282,7 +264,7 @@
 				((ScriptID 22 0) doit: 4)
 				((ScriptID 21 0) doit: 791)
 				((ScriptID 21 1) doit: 773)
-				(ego put: 4 get: 22 setCycle: Beg self)
+				(ego put: 4 get: 22 setCycle: BegLoop self)
 			)
 			(8
 				(theMusic2 number: 261 flags: 1 loop: 1 play:)
@@ -315,7 +297,7 @@
 					loop: 0
 					setScale: Scaler 100 100 190 50
 					posn: (- (ego x?) 2) (ego y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic number: 97 flags: 1 loop: 1 play:)
 			)

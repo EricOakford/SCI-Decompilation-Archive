@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 720)
-(include sci.sh)
+(include game.sh) (include "720.shm")
 (use Main)
 (use LBRoom)
 (use Inset)
@@ -27,7 +27,7 @@
 )
 (instance rm720 of LBRoom
 	(properties
-		noun 23
+		noun N_ROOM
 		picture 720
 		north 730
 		west 715
@@ -39,12 +39,12 @@
 		((ScriptID 2720 0) doit: (curRoom obstacles?))
 		(ego init: normalize: 831 setScale: 145)
 		(self setScript: sEnterWest)
-		(Load rsVIEW 722)
-		(LoadMany 132 48 721 722 723 736 17)
+		(Load RES_VIEW 722)
+		(LoadMany RES_SOUND 48 721 722 723 736 17)
 		(if (not (ego has: 12))
 			(boot init: approachVerbs: 4 1 8)
 		)
-		((= temp0 (Inv at: 15)) cel: 0)
+		((= temp0 (Inventory at: iLantern)) cel: 0)
 		(temp0 cursor: 84)
 		(super init:)
 		(theMusic number: 720 flags: 1 loop: -1 play:)
@@ -116,7 +116,7 @@
 				(rileyTimer setReal: curRoom 30)
 				(curRoom timer: rileyTimer)
 				(theMusic2 number: 17 loop: -1 flags: 1 play:)
-				(Load rsSOUND 3)
+				(Load RES_SOUND 3)
 				(= local0 1)
 				(self dispose:)
 			)
@@ -182,18 +182,18 @@
 				(if (== (steve view?) 812) (steve setHeading: 270))
 			)
 			(3
-				(o_Riley setLoop: 5 setCel: 0 setCycle: End self)
+				(o_Riley setLoop: 5 setCel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(o_Riley setLoop: 6 setCel: 0 setCycle: CT 1 1 self)
+				(o_Riley setLoop: 6 setCel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(5
 				(sFX number: 52 loop: 1 flags: 1 play:)
-				(o_Riley setCycle: CT 1 1 self)
+				(o_Riley setCycle: CycleTo 1 1 self)
 			)
 			(6
 				(sFX play:)
-				(o_Riley setCycle: CT 0 1 self)
+				(o_Riley setCycle: CycleTo 0 1 self)
 			)
 			(7
 				(ego
@@ -202,7 +202,7 @@
 					setCel: 0
 					cycleSpeed: 12
 					setScale: Scaler 100 100 0 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8
@@ -238,15 +238,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(o_Riley setLoop: 6 setCel: 0 setCycle: CT 1 1 self)
+				(o_Riley setLoop: 6 setCel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(1
 				(sFX number: 52 loop: 1 flags: 1 play:)
-				(o_Riley setCycle: CT 1 1 self)
+				(o_Riley setCycle: CycleTo 1 1 self)
 			)
 			(2
 				(sFX play:)
-				(o_Riley setCycle: CT 0 1 self)
+				(o_Riley setCycle: CycleTo 0 1 self)
 			)
 			(3
 				(steve
@@ -254,7 +254,7 @@
 					setLoop: 3
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (self dispose:))
@@ -275,20 +275,20 @@
 				)
 			)
 			(1
-				(o_Riley setLoop: 5 setCel: 0 setCycle: End self)
+				(o_Riley setLoop: 5 setCel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(o_Riley setLoop: 6 setCel: 0 setCycle: CT 1 1 self)
+				(o_Riley setLoop: 6 setCel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(3
 				(sFX number: 52 loop: 1 flags: 1 play:)
-				(o_Riley setCycle: CT 1 1 self)
+				(o_Riley setCycle: CycleTo 1 1 self)
 			)
 			(4
 				(sFX play:)
-				(o_Riley setCycle: CT 0 1 self)
+				(o_Riley setCycle: CycleTo 0 1 self)
 			)
-			(5 (steve setCycle: Osc 1 self))
+			(5 (steve setCycle: Oscillate 1 self))
 			(6 (self dispose:))
 		)
 	)
@@ -307,18 +307,18 @@
 				)
 			)
 			(1
-				(o_Riley setLoop: 5 setCel: 0 setCycle: End self)
+				(o_Riley setLoop: 5 setCel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(o_Riley setLoop: 6 setCel: 0 setCycle: CT 1 1 self)
+				(o_Riley setLoop: 6 setCel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(3
 				(sFX number: 52 loop: 1 flags: 1 play:)
-				(o_Riley setCycle: CT 1 1 self)
+				(o_Riley setCycle: CycleTo 1 1 self)
 			)
 			(4
 				(sFX play:)
-				(o_Riley setCycle: CT 0 1 self)
+				(o_Riley setCycle: CycleTo 0 1 self)
 			)
 			(5
 				(steve setCel: (- (steve cel?) 1))
@@ -346,24 +346,24 @@
 					setCel: 0
 					setScale: Scaler 100 100 0 10
 					cycleSpeed: 12
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(1
-				(ego setCycle: End self)
-				(furnaceDoor cycleSpeed: 12 setCycle: End)
+				(ego setCycle: EndLoop self)
+				(furnaceDoor cycleSpeed: 12 setCycle: EndLoop)
 			)
 			(2
 				(sFX number: 736 loop: 1 flags: 1 play:)
-				(flames setCycle: End self)
+				(flames setCycle: EndLoop self)
 			)
 			(3
-				(flames setCycle: Beg)
+				(flames setCycle: BegLoop)
 				(ego
 					setLoop: 5
 					setCel: 0
 					cycleSpeed: 13
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= ticks 120))
@@ -391,13 +391,13 @@
 					setLoop: 0
 					setCel: 0
 					setScale: Scaler 100 100 0 10
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
 				(coalOnFace dispose:)
 				(coalOnFaceFeat dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3
 				(ego normalize: 831 loop: 0 setScale: 145)
@@ -424,10 +424,10 @@
 					setLoop: 0
 					setCel: 0
 					setScale: Scaler 100 100 0 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(2 (steve setCycle: Osc 1 self))
+			(2 (steve setCycle: Oscillate 1 self))
 			(3 (= ticks 60))
 			(4
 				(ego
@@ -443,7 +443,7 @@
 					setLoop: 2
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -470,7 +470,7 @@
 					setLoop: 1
 					setCel: 0
 					posn: 265 173
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= ticks 45))
@@ -479,7 +479,7 @@
 				(steve
 					setLoop: 2
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo 258 182 self
 				)
 				(sFX number: 722 flags: 1 play:)
@@ -507,7 +507,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(steve setLoop: 3 setCel: 0 setCycle: End self)
+				(steve setLoop: 3 setCel: 0 setCycle: EndLoop self)
 			)
 			(1 (= ticks 30))
 			(2
@@ -516,12 +516,12 @@
 					setLoop: 0
 					setCel: 0
 					posn: 265 173
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
 				(sFX number: 723 flags: 1 play:)
-				(steve setCycle: End self)
+				(steve setCycle: EndLoop self)
 			)
 			(4
 				(sFX stop:)
@@ -596,11 +596,11 @@
 					setCel: 0
 					cycleSpeed: 12
 					setScale: Scaler 100 100 0 10
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2 (= ticks 60))
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(messager say: 5 4 4)
 				(ego normalize: 831 setScale: 145 loop: 3)
@@ -629,7 +629,7 @@
 					setLoop: 7
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: Osc 1
+					setCycle: Oscillate 1
 				)
 				(steve
 					view: 721
@@ -637,7 +637,7 @@
 					setLoop: 6
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: Osc 1
+					setCycle: Oscillate 1
 				)
 				(stone setMotion: MoveTo 176 (stone y?) self)
 				(sFX number: 721 flags: 1 play:)
@@ -645,8 +645,8 @@
 			(3
 				(sFX stop:)
 				(stone stopUpd:)
-				(ego setCycle: Beg self)
-				(steve setCycle: Beg)
+				(ego setCycle: BegLoop self)
+				(steve setCycle: BegLoop)
 			)
 			(4
 				(ego normalize: 831 setScale: 145 loop: 3)
@@ -683,7 +683,7 @@
 					setLoop: 8
 					setCel: 0
 					setScale: Scaler 100 100 0 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -693,7 +693,7 @@
 					posn: 253 125
 					setPri: 7
 					cycleSpeed: 12
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 281 98 self
 				)
 			)
@@ -702,7 +702,7 @@
 				(steve setLoop: -1 setMotion: PolyPath 254 148 self)
 			)
 			(5
-				(steve view: 721 setLoop: 10 setCel: 0 setCycle: End self)
+				(steve view: 721 setLoop: 10 setCel: 0 setCycle: EndLoop self)
 			)
 			(6
 				(steve
@@ -711,7 +711,7 @@
 					posn: 254 129
 					setPri: 7
 					cycleSpeed: 9
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 285 94 self
 				)
 			)
@@ -739,14 +739,14 @@
 					setScale: Scaler 100 100 190 90
 					setLoop: 15
 					cycleSpeed: 16
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(boot dispose:)
 				(ego get: 12)
 				((ScriptID 21 0) doit: 781)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(theGame points: 1 150)

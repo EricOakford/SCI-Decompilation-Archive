@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 715)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use LoadMany)
@@ -19,37 +19,37 @@
 (instance rm715 of LBRoom
 	(properties
 		picture 715
-		style $000c
+		style SCROLLLEFT
 		east 720
 		west 710
 	)
 	
 	(method (init)
 		(ego
-			wearingGown: 1
+			wearingGown: TRUE
 			view: 715
 			loop: 3
 			cel: 0
 			posn: 121 142
 			init:
 		)
-		(LoadMany 132 710 712 713)
-		(LoadMany 128 711 712 713 715 710 714 716)
+		(LoadMany RES_SOUND 710 712 713)
+		(LoadMany RES_VIEW 711 712 713 715 710 714 716)
 		(super init:)
 		(WrapMusic init: 1 1710 1712 1713)
 		(theIconBar disable: 7)
 		(tut addToPic:)
 		(rameses init:)
-		(sunnie1 init: setCycle: Fwd)
-		(sunnie2 init: setCycle: Fwd)
-		(sunnie3 init: setCycle: Fwd)
-		(sunnie4 init: setCycle: Fwd)
-		(sunnie5 init: setCycle: Fwd)
-		(sunnie6 init: setCycle: Fwd)
-		(sunnie7 init: setCycle: Fwd)
-		(sunnie8 init: setCycle: Fwd)
-		(sunnie9 init: setCycle: Fwd)
-		(sunnie10 init: setCycle: Fwd)
+		(sunnie1 init: setCycle: Forward)
+		(sunnie2 init: setCycle: Forward)
+		(sunnie3 init: setCycle: Forward)
+		(sunnie4 init: setCycle: Forward)
+		(sunnie5 init: setCycle: Forward)
+		(sunnie6 init: setCycle: Forward)
+		(sunnie7 init: setCycle: Forward)
+		(sunnie8 init: setCycle: Forward)
+		(sunnie9 init: setCycle: Forward)
+		(sunnie10 init: setCycle: Forward)
 		(curRoom setScript: sQuestion)
 	)
 	
@@ -70,16 +70,16 @@
 			)
 			(1 (= ticks 180))
 			(2
-				(sunnie1 setCycle: End self)
-				(sunnie2 setCycle: End)
-				(sunnie3 setCycle: End self)
-				(sunnie4 setCycle: End)
-				(sunnie5 setCycle: End self)
-				(sunnie6 setCycle: End)
-				(sunnie7 setCycle: End)
-				(sunnie8 setCycle: End)
-				(sunnie9 setCycle: End)
-				(sunnie10 setCycle: End)
+				(sunnie1 setCycle: EndLoop self)
+				(sunnie2 setCycle: EndLoop)
+				(sunnie3 setCycle: EndLoop self)
+				(sunnie4 setCycle: EndLoop)
+				(sunnie5 setCycle: EndLoop self)
+				(sunnie6 setCycle: EndLoop)
+				(sunnie7 setCycle: EndLoop)
+				(sunnie8 setCycle: EndLoop)
+				(sunnie9 setCycle: EndLoop)
+				(sunnie10 setCycle: EndLoop)
 			)
 			(3)
 			(4)
@@ -103,7 +103,7 @@
 			)
 			(7
 				(curRoom setInset: (ScriptID 20 0))
-				(Message msgGET 715 3 0 5 1 @local1)
+				(Message MsgGet 715 3 0 5 1 @local1)
 				(= local0 (not (StrCmp @global136 @local1)))
 				(= cycles 1)
 			)
@@ -120,7 +120,7 @@
 			)
 			(9
 				(curRoom setInset: (ScriptID 20 0))
-				(Message msgGET 715 3 0 4 1 @local1)
+				(Message MsgGet 715 3 0 4 1 @local1)
 				(= local0 (not (StrCmp @global136 @local1)))
 				(= cycles 1)
 			)
@@ -135,7 +135,7 @@
 				)
 			)
 			(11
-				(rameses setCycle: End self)
+				(rameses setCycle: EndLoop self)
 			)
 			(12
 				(rameses stopUpd:)
@@ -174,41 +174,41 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (rameses setCycle: End self))
+			(0 (rameses setCycle: EndLoop self))
 			(1
 				(messager say: 1 0 1 1)
 				(= cycles 1)
 			)
 			(2
-				(rameses setLoop: 1 setCel: 0 setCycle: CT 5 1 self)
+				(rameses setLoop: 1 setCel: 0 setCycle: CycleTo 5 1 self)
 			)
 			(3
 				(wrap init:)
-				(rameses setPri: 15 setCycle: CT 0 1 self)
+				(rameses setPri: 15 setCycle: CycleTo 0 1 self)
 			)
 			(4
-				(rameses setPri: -1 setCycle: CT 5 1 self)
+				(rameses setPri: -1 setCycle: CycleTo 5 1 self)
 			)
 			(5
 				(wrap setCel: (+ (wrap cel?) 1))
-				(rameses setPri: 15 setCycle: CT 0 1 self)
+				(rameses setPri: 15 setCycle: CycleTo 0 1 self)
 			)
 			(6
-				(rameses setPri: -1 setCycle: CT 5 1 self)
+				(rameses setPri: -1 setCycle: CycleTo 5 1 self)
 			)
 			(7
 				(wrap setCel: (+ (wrap cel?) 1))
-				(rameses setPri: 15 setCycle: CT 0 1 self)
+				(rameses setPri: 15 setCycle: CycleTo 0 1 self)
 			)
 			(8
-				(rameses setPri: -1 setCycle: CT 5 1 self)
+				(rameses setPri: -1 setCycle: CycleTo 5 1 self)
 			)
 			(9
 				(wrap setCel: (+ (wrap cel?) 1))
-				(rameses setPri: 15 setCycle: CT 0 1 self)
+				(rameses setPri: 15 setCycle: CycleTo 0 1 self)
 			)
 			(10
-				(rameses setPri: -1 setCycle: CT 5 1 self)
+				(rameses setPri: -1 setCycle: CycleTo 5 1 self)
 			)
 			(11
 				(lauraWrap init:)

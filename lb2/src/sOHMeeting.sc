@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 442)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Scaler)
 (use PolyPath)
@@ -17,8 +17,7 @@
 	local0
 )
 (instance sOHMeeting of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 1))
@@ -65,8 +64,7 @@
 )
 
 (instance sOHNoMeet of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 1))
@@ -106,8 +104,7 @@
 )
 
 (instance sOHLeave of Script
-	(properties)
-	
+
 	(method (doit)
 		(if
 			(and

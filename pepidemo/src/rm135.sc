@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 135)
-(include sci.sh)
+(include game.sh) (include "135.shm")
 (use Main)
 (use BalloonTalker)
 (use TWRoom)
@@ -22,8 +22,8 @@
 	local200
 	local201
 	[theCel 200]
-	[theTheCel 73] = [1 4 13 9 0 12 8 13 36 5 17 0 13 10 11 8 13 38 36 18 4 11 5 36 3 4 19 4 17 12 8 13 0 19 8 14 13 37 4 16 20 0 11 8 19 24 37 3 4 12 14 2 17 0 2 24 36 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
-	[theTheCel_2 36] = [19 0 17 6 4 19 38 36 15 7 8 11 8 3 4 11 15 7 8 0 38 36 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+	theTheCel = [1 4 13 9 0 12 8 13 36 5 17 0 13 10 11 8 13 38 36 18 4 11 5 36 3 4 19 4 17 12 8 13 0 19 8 14 13 37 4 16 20 0 11 8 19 24 37 3 4 12 14 2 17 0 2 24 36 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+	theTheCel_2 = [19 0 17 6 4 19 38 36 15 7 8 11 8 3 4 11 15 7 8 0 38 36 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
 )
 (procedure (localproc_0f53 param1 &tmp temp0 temp1)
 	(= temp1 param1)
@@ -43,9 +43,9 @@
 
 (instance rm135 of ADRoom
 	(properties
-		noun 1
+		noun N_ROOM
 		picture 135
-		style $000e
+		style SCROLLDOWN
 		north 140
 		vanishingY -60
 	)
@@ -73,17 +73,17 @@
 			setCycle: 0
 		)
 		((ScriptID 2004 0) winX: 105 winY: 175 tailPosn: 0)
-		(windowFeature init: setOnMeCheck: 1 16)
-		(sky init: setOnMeCheck: 1 4)
-		(trees init: setOnMeCheck: 1 256)
-		(appleTree init: setOnMeCheck: 1 16384)
-		(peppersRoof init: setOnMeCheck: 1 2)
+		(windowFeature init: setOnMeCheck: ftrControl cRED)
+		(sky init: setOnMeCheck: ftrControl cGREEN)
+		(trees init: setOnMeCheck: ftrControl cGREY)
+		(appleTree init: setOnMeCheck: ftrControl cYELLOW)
+		(peppersRoof init: setOnMeCheck: ftrControl cBLUE)
 		(walkHandler addToFront: peppersRoof)
 		(walkHandler add: curRoom)
-		(roofTops init: setOnMeCheck: 1 32)
-		(upperPeppersRoof init: setOnMeCheck: 1 2048)
-		(obrienWindow init: setOnMeCheck: 1 128)
-		(obrienHouse init: setOnMeCheck: 1 64)
+		(roofTops init: setOnMeCheck: ftrControl cMAGENTA)
+		(upperPeppersRoof init: setOnMeCheck: ftrControl cLCYAN)
+		(obrienWindow init: setOnMeCheck: ftrControl cLGREY)
+		(obrienHouse init: setOnMeCheck: ftrControl cBROWN)
 		(theGame handsOn:)
 		(self setScript: onPipeScr)
 	)
@@ -95,8 +95,8 @@
 	
 	(method (doVerb theVerb)
 		(return
-			(if (== theVerb 3)
-				(return 1)
+			(if (== theVerb V_WALK)
+				(return TRUE)
 			else
 				(super doVerb: theVerb)
 			)
@@ -110,11 +110,10 @@
 )
 
 (instance onPipeScr of Script
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
-		(User canInput: 1 canControl: 0)
+		(User canInput: TRUE canControl: FALSE)
 	)
 	
 	(method (dispose)
@@ -131,7 +130,7 @@
 			)
 			(1
 				(theGame handsOff:)
-				(ego setLoop: 1 setSpeed: 10 setCycle: End self)
+				(ego setLoop: 1 setSpeed: 10 setCycle: EndLoop self)
 				(theMusic2 number: 1352 flags: 1 setLoop: 1 play:)
 			)
 			(2
@@ -153,11 +152,11 @@
 				((ScriptID 895 0)
 					setLoop: 2
 					cel: 0
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(7
-				((ScriptID 895 0) setCycle: End self)
+				((ScriptID 895 0) setCycle: EndLoop self)
 				(theMusic2 number: 1354 setLoop: 1 flags: 1 play:)
 			)
 			(8
@@ -360,7 +359,7 @@
 			(3
 				(theMusic2 number: 1355 loop: 1 play:)
 				(= ticks 130)
-				(ego view: 135 setLoop: 3 cel: 0 setCycle: Fwd)
+				(ego view: 135 setLoop: 3 cel: 0 setCycle: Forward)
 			)
 			(4
 				(ego normalize: 800)
@@ -407,17 +406,17 @@
 			)
 			(3 (= ticks 50))
 			(4
-				(uncleFred setCycle: CT 4 1 self)
+				(uncleFred setCycle: CycleTo 4 1 self)
 			)
 			(5
 				(book dispose:)
 				(= cycles 1)
 			)
 			(6
-				(uncleFred cel: 5 setCycle: End self)
+				(uncleFred cel: 5 setCycle: EndLoop self)
 			)
 			(7
-				(uncleFred setLoop: 2 cel: 0 setCycle: End self)
+				(uncleFred setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(fredTalker x: 32 y: 86 tailPosn: 1)
@@ -425,17 +424,17 @@
 			)
 			(9 (= ticks 60))
 			(10
-				(uncleFred setCycle: Beg self)
+				(uncleFred setCycle: BegLoop self)
 			)
 			(11
-				(uncleFred setLoop: 1 cel: 8 setCycle: CT 5 -1 self)
+				(uncleFred setLoop: 1 cel: 8 setCycle: CycleTo 5 -1 self)
 			)
 			(12
 				(book init: stopUpd:)
 				(= cycles 1)
 			)
 			(13
-				(uncleFred cel: 4 setCycle: CT 0 -1 self)
+				(uncleFred cel: 4 setCycle: CycleTo 0 -1 self)
 			)
 			(14 (= ticks 40))
 			(15
@@ -444,7 +443,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 265 155
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic2 number: 1410 setLoop: 1 flags: 1 play:)
 			)
@@ -472,14 +471,14 @@
 				(messager say: 12 0 3 7 8 self 140)
 			)
 			(20
-				(uncleFred view: 141 setLoop: 4 cel: 0 setCycle: End self)
+				(uncleFred view: 141 setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(21
 				(fredTalker x: 48 y: 110 tailPosn: 4)
 				(messager say: 12 0 3 9 self 140)
 			)
 			(22
-				(uncleFred setLoop: 5 setCycle: End self)
+				(uncleFred setLoop: 5 setCycle: EndLoop self)
 			)
 			(23
 				(messager say: 12 0 3 10 self 140)
@@ -490,7 +489,7 @@
 					setLoop: 0
 					cel: 0
 					posn: 265 155
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic2 number: 1410 setLoop: 1 flags: 1 play:)
 			)
@@ -506,12 +505,12 @@
 					cel: 0
 					posn: 27 115
 					setPri: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(27 (= ticks 40))
 			(28
-				(microBen setLoop: 1 cel: 0 setCycle: Fwd)
+				(microBen setLoop: 1 cel: 0 setCycle: Forward)
 				(= ticks 120)
 			)
 			(29 (= ticks 30))
@@ -545,7 +544,7 @@
 					cel: 0
 					posn: 144 157
 					setSpeed: 7
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				((ScriptID 2004 0)
@@ -566,7 +565,7 @@
 				)
 			)
 			(34
-				(alternateWindow setCycle: End self)
+				(alternateWindow setCycle: EndLoop self)
 			)
 			(35
 				(alternateDoggie dispose:)
@@ -576,7 +575,7 @@
 					setSpeed: 5
 					setLoop: 5
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(36

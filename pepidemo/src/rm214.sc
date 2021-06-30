@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 214)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use ExitFeature)
 (use OccasionalCycle)
@@ -341,7 +341,7 @@
 				(ShakeScreen 3 1)
 				(= cycles 2)
 			)
-			(7 (hari setCycle: End self))
+			(7 (hari setCycle: EndLoop self))
 			(8
 				(theMusic2 number: 2126 play:)
 				(hari view: 211 setLoop: 0 cel: 0 setCycle: 0)
@@ -354,7 +354,7 @@
 					x: 167
 					y: 109
 					cycleSpeed: 8
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 					moveSpeed: 0
 					setStep: 5 4
 					setMotion: MoveTo 172 107 self
@@ -363,56 +363,56 @@
 			(9)
 			(10
 				((ScriptID 895 0)
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 					setMotion: MoveTo 168 102 self
 				)
 			)
 			(11)
 			(12
 				((ScriptID 895 0)
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 					setMotion: MoveTo 145 88 self
 				)
 			)
 			(13)
 			(14
 				((ScriptID 895 0)
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 					setMotion: MoveTo 132 88 self
 				)
 			)
 			(15)
 			(16
 				((ScriptID 895 0)
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 					setMotion: MoveTo 118 95 self
 				)
 			)
 			(17)
 			(18
 				((ScriptID 895 0)
-					setCycle: CT 7 1 self
+					setCycle: CycleTo 7 1 self
 					setMotion: MoveTo 94 106 self
 				)
 			)
 			(19)
 			(20
 				((ScriptID 895 0)
-					setCycle: CT 8 1 self
+					setCycle: CycleTo 8 1 self
 					setMotion: MoveTo 88 121 self
 				)
 			)
 			(21)
 			(22
 				((ScriptID 895 0)
-					setCycle: CT 9 1 self
+					setCycle: CycleTo 9 1 self
 					setMotion: MoveTo 92 143 self
 				)
 			)
 			(23)
 			(24
 				((ScriptID 895 0)
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo 92 153 self
 				)
 			)
@@ -429,7 +429,7 @@
 					cel: 0
 					x: 124
 					y: 142
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(28
@@ -450,7 +450,7 @@
 					y: (- (hari y?) 31)
 					setPri: 15
 					ignoreActors: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic2 number: 2125 loop: 1 play:)
 			)
@@ -541,7 +541,7 @@
 			(0
 				(theMusic2 number: 2123 loop: 1 play:)
 				((ScriptID 895 1)
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 15
 					ignoreActors: 1
 					setMotion: MoveTo 107 175 self
@@ -554,13 +554,13 @@
 				(= ticks 10)
 			)
 			(2
-				((ScriptID 895 1) setCycle: CT 4 1 self)
+				((ScriptID 895 1) setCycle: CycleTo 4 1 self)
 			)
 			(3
-				((ScriptID 895 1) setCycle: End self)
+				((ScriptID 895 1) setCycle: EndLoop self)
 			)
 			(4
-				((ScriptID 895 1) setLoop: 4 cel: 0 setCycle: End self)
+				((ScriptID 895 1) setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(hole init: addToPic:)
@@ -611,7 +611,7 @@
 				(= ticks 30)
 			)
 			(2
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(theMusic2 number: 2103 loop: 1 play:)
 			)
 			(3
@@ -624,7 +624,7 @@
 				(poorRichard
 					view: 830
 					setLoop: 1
-					setCycle: Fwd
+					setCycle: Forward
 					ignoreActors: 1
 					illegalBits: 0
 					x: 59
@@ -688,7 +688,7 @@
 					setLoop: 1
 					setCel: 0
 					posn: 121 157
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 				((ScriptID 895 1)
 					normalize:
@@ -714,7 +714,7 @@
 				(= ticks 20)
 			)
 			(15
-				(watchMan cel: 7 setCycle: End self)
+				(watchMan cel: 7 setCycle: EndLoop self)
 				(theMusic2 number: 2102 setLoop: 1 play: self)
 			)
 			(16)
@@ -735,7 +735,7 @@
 					posn: 121 155
 					ignoreActors: 1
 					illegalBits: 0
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(21
@@ -744,7 +744,7 @@
 				(theMusic2 number: 902 loop: 1 play: self)
 			)
 			(22
-				((ScriptID 895 1) setCycle: End self)
+				((ScriptID 895 1) setCycle: EndLoop self)
 				(theMusic2 number: 2105 play:)
 			)
 			(23
@@ -777,7 +777,7 @@
 					view: 212
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -908,7 +908,7 @@
 					view: 212
 					setLoop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2

@@ -1,0 +1,26 @@
+;;; Sierra Script
+;;; 120.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_ROOM 22)
+(define N_PIPE 5)
+(define N_DRAINPIPE 21)
+(define N_HARD_GUM 9)
+(define N_PEPPER_ACTIONS 18)
+(define N_TREE 1)
+(define N_BIRD 2)
+(define N_SOFT_GUM 24)
+(define N_BROKEN_PIPE 20)
+(define N_DRAINPIPE_BROKEN 26)
+
+;;; CASES
+
+(define C_BIRD_EXHAUSTED 1)
+(define C_BIRD_IN_NEST 2)
+(define C_BIRD_LAYING_EGG 3)
+(define C_BIRD_LAID_EGG 4)
+(define C_STEP_IN_GUM 15)
+(define C_NEEDS_HARNESS 5)
+

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 290)
-(include sci.sh)
+(include game.sh) (include "290.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -29,15 +29,15 @@
 )
 (instance rm290 of LBRoom
 	(properties
-		noun 15
+		noun N_ROOM
 		picture 290
 		north 295
 		south 280
 	)
 	
 	(method (init)
-		(LoadMany 128 290 291 293 292)
-		(LoadMany 132 292 280)
+		(LoadMany RES_VIEW 290 291 293 292)
+		(LoadMany RES_SOUND 292 280)
 		(ego init: normalize: 830 setScale: Scaler 137 0 190 0)
 		(switch prevRoomNum
 			(north
@@ -56,53 +56,36 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						308
-						144
-						281
-						145
-						273
-						146
-						261
-						152
-						236
-						157
-						199
-						157
-						197
-						164
-						175
-						169
-						27
-						137
-						27
-						129
-						96
-						124
-						97
-						117
-						44
-						118
-						28
-						81
-						27
-						120
-						11
-						123
-						0
-						189
+						0 0
+						319 0
+						319 189
+						308 144
+						281 145
+						273 146
+						261 152
+						236 157
+						199 157
+						197 164
+						175 169
+						27 137
+						27 129
+						96 124
+						97 117
+						44 118
+						28 81
+						27 120
+						11 123
+						0 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 64 189 85 171 107 189
+					type: PBarredAccess
+					init:
+						64 189
+						85 171
+						107 189
 					yourself:
 				)
 		)
@@ -129,7 +112,9 @@
 	(method (doit)
 		(cond 
 			(script)
-			((IsObjectOnControl ego 16) (self setScript: sEgoLeaveSouth))
+			((IsObjectOnControl ego cRED)
+				(self setScript: sEgoLeaveSouth)
+			)
 		)
 		(super doit: &rest)
 	)
@@ -215,7 +200,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(sergeant setCycle: Fwd)
+				(sergeant setCycle: Forward)
 				(= seconds (Random 1 6))
 			)
 			(1
@@ -243,7 +228,7 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 10
-					setCycle: CT 8 1 self
+					setCycle: CycleTo 8 1 self
 				)
 				(ego
 					view: 292
@@ -252,13 +237,13 @@
 					cel: 0
 					setScale: Scaler 100 100 190 0
 					cycleSpeed: 10
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(3 (messager say: 2 15))
 			(4
-				(ego setCycle: End self)
-				(sergeant setCycle: End self)
+				(ego setCycle: EndLoop self)
+				(sergeant setCycle: EndLoop self)
 			)
 			(5 0)
 			(6
@@ -291,7 +276,7 @@
 			)
 			(2 (= ticks (Random 30 240)))
 			(3
-				(client setLoop: 2 cel: 0 setCycle: End self)
+				(client setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(client
@@ -386,7 +371,7 @@
 							((ScriptID 21 0) doit: 520)
 						)
 						(else 
-							(if (Message msgGET curRoomNum noun 6 temp1 1)
+							(if (Message MsgGet curRoomNum noun 6 temp1 1)
 								(messager say: noun 6 temp1)
 							else
 								(messager say: noun 6 43)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 530)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Scaler)
@@ -26,8 +26,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 530 541 542 831)
-		(LoadMany 132 540 541 542 543 558)
+		(LoadMany RES_VIEW 530 541 542 831)
+		(LoadMany RES_SOUND 540 541 542 543 558)
 		(ego init: normalize: 831 setScale: Scaler 105 0 190 0)
 		(self setRegions: 90)
 		(switch prevRoomNum
@@ -320,7 +320,7 @@
 					setCel: 0
 					posn: 153 158
 					setScale: Scaler 100 100 190 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
@@ -333,7 +333,7 @@
 				(darkPassage hide:)
 				(= cycles 1)
 			)
-			(5 (ego setCycle: End self))
+			(5 (ego setCycle: EndLoop self))
 			(6
 				((ScriptID 21 1) doit: 792)
 				(ego
@@ -372,7 +372,7 @@
 					setCel: 0
 					posn: 153 158
 					setScale: Scaler 100 100 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -380,7 +380,7 @@
 				(theGame points: 1 170)
 				(= cycles 1)
 			)
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				(ego
 					setLoop: 6
@@ -412,7 +412,7 @@
 					setCel: 0
 					posn: 169 148
 					setScale: Scaler 100 100 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -509,7 +509,7 @@
 					setCel: 0
 					posn: 127 165
 					setPri: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -615,14 +615,8 @@
 	)
 )
 
-(class ScrewInBulb of Osc
+(class ScrewInBulb of Oscillate
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-		howManyCycles -1
 		soundOsc 1
 	)
 	

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 490)
-(include sci.sh)
+(include game.sh) (include "490.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -28,7 +28,7 @@
 )
 (instance rm490 of LBRoom
 	(properties
-		noun 5
+		noun N_ROOM
 		picture 490
 		east 440
 		south 440
@@ -38,8 +38,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 491 424 423 818 426 831)
-		(LoadMany 132 490 1)
+		(LoadMany RES_VIEW 491 424 423 818 426 831)
+		(LoadMany RES_SOUND 490 1)
 		(ego
 			init:
 			normalize: (if (== currentAct 5) 426 else 831)
@@ -239,11 +239,11 @@
 			)
 			(3
 				(Face ego oriley)
-				(oriley view: 424 cel: 0 setCycle: End self)
+				(oriley view: 424 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(noise number: 80 flags: 1 loop: 1 play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(5
 				(= deathReason 0)
@@ -274,17 +274,17 @@
 							)
 						)
 				)
-				(zHead loop: 1 setCycle: End self)
+				(zHead loop: 1 setCycle: EndLoop self)
 			)
 			(2
-				(zHead setLoop: 2 cel: 2 posn: 211 131 setCycle: End self)
+				(zHead setLoop: 2 cel: 2 posn: 211 131 setCycle: EndLoop self)
 				(noise number: 490 flags: 1 play:)
 			)
 			(3
-				(zHead setCycle: End self setMotion: MoveTo 231 133)
+				(zHead setCycle: EndLoop self setMotion: MoveTo 231 133)
 			)
 			(4
-				(zHead setCycle: CT 1 1 self)
+				(zHead setCycle: CycleTo 1 1 self)
 			)
 			(5
 				(Bset 37)

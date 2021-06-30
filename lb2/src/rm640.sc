@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 640)
-(include sci.sh)
+(include game.sh) (include "640.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -29,7 +29,7 @@
 )
 (instance rm640 of LBRoom
 	(properties
-		noun 29
+		noun N_ROOM
 		picture 640
 		west 610
 		vanishingY 85
@@ -49,15 +49,15 @@
 			)
 		)
 		(super init:)
-		(LoadMany 132 640 641 643)
+		(LoadMany RES_SOUND 640 641 643)
 		(westDoor init:)
 		(if (not (Btst 4))
-			(Load rsVIEW 646)
+			(Load RES_VIEW 646)
 			(cond 
 				((not (TriggerEvent -20222))
-					(Load rsPIC 645)
+					(Load RES_PIC 645)
 					(theMusic2 number: 551 flags: 1 loop: -1 play:)
-					(ernie_Yvette init: cycleSpeed: 42 setCycle: Fwd)
+					(ernie_Yvette init: cycleSpeed: 42 setCycle: Forward)
 					(Bset 18)
 					(toolBoxClosed init:)
 					(desk init:)
@@ -130,13 +130,13 @@
 					)
 				)
 				(else
-					(Load rsPIC 645)
+					(Load RES_PIC 645)
 					(theMusic2 number: 551 flags: 1 loop: -1 play:)
 					(ernie_Yvette
 						init:
 						setLoop: 1
 						cycleSpeed: 42
-						setCycle: Fwd
+						setCycle: Forward
 					)
 					(Bset 18)
 				)
@@ -240,7 +240,7 @@
 					setLoop: 2
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -289,7 +289,7 @@
 					setLoop: 2
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -304,7 +304,7 @@
 					setCel: 0
 					cycleSpeed: 12
 					setScale: Scaler 100 100 155 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -346,7 +346,7 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -480,7 +480,7 @@
 					setCel: 0
 					cycleSpeed: 12
 					setScale: Scaler 100 100 15 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -521,18 +521,18 @@
 					setCel: 0
 					setScale: Scaler 100 100 15 5
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego setLoop: 1 setCel: 0 setCycle: End self)
+				(ego setLoop: 1 setCel: 0 setCycle: EndLoop self)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(ego
 					setLoop: 0
 					setCel: (ego lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(4
@@ -562,11 +562,11 @@
 					setCel: 0
 					setScale: Scaler 100 100 15 5
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= ticks 60))
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(if (ego has: 19)
 					(messager say: 24 1)
@@ -594,14 +594,14 @@
 					setCel: 0
 					setScale: 100 100 15 5
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(snakeLasso dispose:)
 				(= ticks 30)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(ego get: 19 normalize: 831 setScale: 155 loop: 1)
 				((ScriptID 21 0) doit: 788)
@@ -642,13 +642,13 @@
 					setLoop: 7
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= ticks 20))
 			(2
-				(ego setCycle: Beg)
-				(blotchOnWall setCycle: End self)
+				(ego setCycle: BegLoop)
+				(blotchOnWall setCycle: EndLoop self)
 				(sFX number: 558 loop: 1 flags: 1 play:)
 			)
 			(3

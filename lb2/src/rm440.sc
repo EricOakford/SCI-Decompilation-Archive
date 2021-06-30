@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 440)
-(include sci.sh)
+(include game.sh) (include "440.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -27,7 +27,7 @@
 
 (instance rm440 of LBRoom
 	(properties
-		noun 8
+		noun N_ROOM
 		picture 440
 		horizon 135
 		north 448
@@ -37,8 +37,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 432 424 423 858 831 426 442 440 443)
-		(LoadMany 132 442 440)
+		(LoadMany RES_VIEW 432 424 423 858 831 426 442 440 443)
+		(LoadMany RES_SOUND 442 440)
 		(ego
 			init:
 			normalize: (if (== currentAct 5) 426 else 831)
@@ -147,16 +147,20 @@
 				(inset (inset handleEvent: event))
 				(
 					(and
-						(& (event type?) evJOYSTICK)
+						(& (event type?) direction)
 						(== (theIconBar curIcon?) (theIconBar walkIconItem?))
-						(!= (event message?) JOY_NULL)
+						(!= (event message?) dirStop)
 						(== (ego view?) 443)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(ego setScript: sOutTapestry)
 				)
-				((& (event type?) evMOVE) (super handleEvent: event))
-				(else (return 0))
+				((& (event type?) walkEvent)
+					(super handleEvent: event)
+				)
+				(else
+					(return FALSE)
+				)
 			)
 		)
 	)
@@ -368,12 +372,12 @@
 					loop: 1
 					cel: 0
 					posn: 11 147
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(2
 				(noise number: 442 flags: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3
 				(ego setLoop: 0 cel: 0)
@@ -417,7 +421,7 @@
 				(if (== (curRoom script?) (ScriptID 441 0))
 					(curRoom script: 0)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(noise number: 442 flags: 1 play:)
 			)
 			(2
@@ -474,10 +478,10 @@
 					posn: 207 144
 					setScale: Scaler 100 100 190 90
 					cycleSpeed: 12
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(bolt setPri: (- (ego priority?) 1))
-				(bolt setCycle: End)
+				(bolt setCycle: EndLoop)
 			)
 			(3
 				(noise number: 446 flags: 1 loop: 1 play:)
@@ -535,9 +539,9 @@
 					posn: 207 144
 					setScale: Scaler 100 100 190 90
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(bolt setCycle: Beg)
+				(bolt setCycle: BegLoop)
 				(noise number: 446 flags: 1 loop: 1 play:)
 			)
 			(3

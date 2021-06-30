@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 740)
-(include sci.sh)
+(include game.sh) (include "740.shm")
 (use Main)
 (use LBRoom)
 (use PFollow)
@@ -30,7 +30,7 @@
 )
 (instance rm740 of LBRoom
 	(properties
-		noun 9
+		noun N_ROOM
 		picture 740
 		north 480
 		west 730
@@ -42,13 +42,13 @@
 		(ego
 			init:
 			normalize: 732
-			ignoreActors: 1
+			ignoreActors: TRUE
 			actions: egoActions
 		)
 		(theGame handsOff:)
-		(LoadMany 128 734 742 812 745)
-		(LoadMany 132 736 52)
-		(Palette palSET_INTENSITY 0 255 0)
+		(LoadMany RES_VIEW 734 742 812 745)
+		(LoadMany RES_SOUND 736 52)
+		(Palette PALIntensity 0 255 0)
 		(super init:)
 		(sFXRats play:)
 		(theIconBar disable: 7)
@@ -71,7 +71,7 @@
 	(method (doit)
 		(super doit:)
 		(if local0
-			(Palette palSET_INTENSITY 0 255 (= local1 (+ local1 2)))
+			(Palette PALIntensity 0 255 (= local1 (+ local1 2)))
 			(if (>= local1 100)
 				(= local0 0)
 				(steve setScript: sGunShots)
@@ -100,19 +100,19 @@
 			(cond 
 				(
 					(and
-						(& (event type?) evJOYSTICK)
+						(& (event type?) direction)
 						(== (theIconBar curIcon?) (theIconBar walkIconItem?))
 						(or
-							(== (event message?) JOY_LEFT)
-							(== (event message?) JOY_UPLEFT)
-							(== (event message?) JOY_DOWNLEFT)
+							(== (event message?) dirW)
+							(== (event message?) dirNW)
+							(== (event message?) dirSW)
 						)
 					)
 					(event claimed: 1)
 				)
-				((& (event type?) evMOVE)
+				((& (event type?) walkEvent)
 					(if (< mouseX (ego x?))
-						(event claimed: 1)
+						(event claimed: TRUE)
 					else
 						(return 0)
 					)
@@ -193,7 +193,7 @@
 					setCel: 0
 					ignoreActors: 1
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(steve ignoreActors: 1)
 			)
@@ -214,7 +214,7 @@
 			)
 			(3
 				(sFXFall play:)
-				(steve view: 744 setLoop: 1 setCel: 0 setCycle: End self)
+				(steve view: 744 setLoop: 1 setCel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(steve
@@ -227,15 +227,15 @@
 			(5 (= ticks 120))
 			(6
 				(theMusic number: 736 flags: 1 loop: 1 play:)
-				(furnaceExit setCycle: Osc 1 self)
+				(furnaceExit setCycle: Oscillate 1 self)
 			)
 			(7 (= ticks 120))
 			(8
 				(theMusic number: 736 flags: 1 loop: 1 play:)
-				(furnaceExit setCycle: CT 4 1 self)
+				(furnaceExit setCycle: CycleTo 4 1 self)
 			)
 			(9
-				(furnaceExit setCycle: Beg self)
+				(furnaceExit setCycle: BegLoop self)
 			)
 			(10 (= seconds 3))
 			(11
@@ -259,7 +259,7 @@
 					setLoop: 1
 					ignoreActors: 1
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(steve ignoreActors: 1)
 			)
@@ -271,7 +271,7 @@
 					view: 745
 					setLoop: 2
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo (ego x?) (- (ego y?) 2)
 				)
 			)
@@ -410,15 +410,15 @@
 				(theGame handsOff:)
 				(theMusic2 number: 3 loop: 1 flags: 1 play:)
 				(= local5 1)
-				(rat1 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat2 setLoop: 3 setCycle: Fwd setMotion: 0)
+				(rat1 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat2 setLoop: 3 setCycle: Forward setMotion: 0)
 				(rat3
 					setLoop: 9
 					setPri: 15
 					setMotion: MoveTo (rat3 x?) (- (rat3 y?) 24) self
 				)
-				(rat4 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat5 setLoop: 3 setCycle: Fwd setMotion: 0)
+				(rat4 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat5 setLoop: 3 setCycle: Forward setMotion: 0)
 			)
 			(1
 				(ego
@@ -426,7 +426,7 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 9
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(rat3
 					setLoop: 10
@@ -452,13 +452,13 @@
 		(switch (= state newState)
 			(0
 				(= local6 1)
-				(rat1 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat2 setLoop: 3 setCycle: Fwd setMotion: 0)
+				(rat1 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat2 setLoop: 3 setCycle: Forward setMotion: 0)
 				(rat3
 					setMotion: MoveTo (- (rat3 x?) 7) (+ (rat3 y?) 4) self
 				)
-				(rat4 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat5 setLoop: 3 setCycle: Fwd setMotion: 0)
+				(rat4 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat5 setLoop: 3 setCycle: Forward setMotion: 0)
 			)
 			(1
 				(rat3
@@ -474,7 +474,7 @@
 					setCel: 0
 					cycleSpeed: 9
 					ignoreActors: 1
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(rat3
 					setLoop: 10
@@ -482,7 +482,7 @@
 				)
 			)
 			(3
-				(rat3 setLoop: 3 setCycle: Fwd)
+				(rat3 setLoop: 3 setCycle: Forward)
 				(theMusic2 fade: self)
 				(= seconds 20)
 			)
@@ -503,33 +503,33 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(rat1 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat2 setLoop: 3 setCycle: Fwd setMotion: 0)
+				(rat1 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat2 setLoop: 3 setCycle: Forward setMotion: 0)
 				(if (rat3 script?)
 					(rat3 setScript: sRat3Return)
 				else
-					(rat3 setLoop: 3 setCycle: Fwd setMotion: 0)
+					(rat3 setLoop: 3 setCycle: Forward setMotion: 0)
 				)
 				(if (rat4 script?)
 					(rat4 setScript: sRat4Return)
 				else
-					(rat4 setLoop: 3 setCycle: Fwd setMotion: 0)
+					(rat4 setLoop: 3 setCycle: Forward setMotion: 0)
 				)
 				(if (rat5 script?)
 					(rat5 setScript: sRat5Return)
 				else
-					(rat5 setLoop: 3 setCycle: Fwd setMotion: 0)
+					(rat5 setLoop: 3 setCycle: Forward setMotion: 0)
 				)
 				(ego
 					view: 742
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(cheese
 					init:
 					posn: (+ (ego x?) 30) (- (ego y?) 31)
@@ -590,7 +590,7 @@
 				(rat3 setMotion: MoveTo 177 111 self)
 			)
 			(1
-				(rat3 setLoop: 3 setCycle: Fwd)
+				(rat3 setLoop: 3 setCycle: Forward)
 				(self dispose:)
 			)
 		)
@@ -606,7 +606,7 @@
 				(rat4 setMotion: MoveTo 187 101 self)
 			)
 			(1
-				(rat4 setLoop: 3 setCycle: Fwd)
+				(rat4 setLoop: 3 setCycle: Forward)
 				(self dispose:)
 			)
 		)
@@ -622,7 +622,7 @@
 				(rat5 setMotion: MoveTo 195 101 self)
 			)
 			(1
-				(rat5 setLoop: 3 setCycle: Fwd)
+				(rat5 setLoop: 3 setCycle: Forward)
 				(self dispose:)
 			)
 		)
@@ -636,21 +636,21 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(rat1 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat2 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat3 setLoop: 3 setScript: 0 setCycle: Fwd setMotion: 0)
-				(rat4 setLoop: 3 setScript: 0 setCycle: Fwd setMotion: 0)
-				(rat5 setLoop: 3 setScript: 0 setCycle: Fwd setMotion: 0)
+				(rat1 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat2 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat3 setLoop: 3 setScript: 0 setCycle: Forward setMotion: 0)
+				(rat4 setLoop: 3 setScript: 0 setCycle: Forward setMotion: 0)
+				(rat5 setLoop: 3 setScript: 0 setCycle: Forward setMotion: 0)
 				(ego
 					view: 742
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(cheese
 					init:
 					posn: (+ (ego x?) 30) (- (ego y?) 31)
@@ -673,7 +673,7 @@
 				(rat1 setLoop: 4 setMotion: MoveTo 211 104 self)
 			)
 			(4
-				(rat1 setLoop: 6 cycleSpeed: 6 setCycle: Osc 1 self)
+				(rat1 setLoop: 6 cycleSpeed: 6 setCycle: Oscillate 1 self)
 			)
 			(5
 				(rat1
@@ -692,7 +692,7 @@
 			)
 			(7
 				(rat2
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 5
 					setMotion: JumpTo 238 117 self
 				)
@@ -709,7 +709,7 @@
 				(rat3 setLoop: 4 setMotion: MoveTo 228 98 self)
 			)
 			(10
-				(rat3 setLoop: 6 cycleSpeed: 6 setCycle: Osc 1 self)
+				(rat3 setLoop: 6 cycleSpeed: 6 setCycle: Oscillate 1 self)
 			)
 			(11
 				(rat3
@@ -732,7 +732,7 @@
 			)
 			(14
 				(rat4
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 5
 					setMotion: JumpTo 246 94 self
 				)
@@ -756,7 +756,7 @@
 				(rat5
 					setLoop: 8
 					cycleSpeed: 9
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 5
 					setMotion: JumpTo 238 117 self
 				)
@@ -781,21 +781,21 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(rat1 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat2 setLoop: 3 setCycle: Fwd setMotion: 0)
-				(rat3 setLoop: 3 setScript: 0 setCycle: Fwd setMotion: 0)
-				(rat4 setLoop: 3 setScript: 0 setCycle: Fwd setMotion: 0)
-				(rat5 setLoop: 3 setScript: 0 setCycle: Fwd setMotion: 0)
+				(rat1 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat2 setLoop: 3 setCycle: Forward setMotion: 0)
+				(rat3 setLoop: 3 setScript: 0 setCycle: Forward setMotion: 0)
+				(rat4 setLoop: 3 setScript: 0 setCycle: Forward setMotion: 0)
+				(rat5 setLoop: 3 setScript: 0 setCycle: Forward setMotion: 0)
 				(ego
 					view: 742
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(cheese
 					init:
 					posn: (+ (ego x?) 30) (- (ego y?) 31)
@@ -818,7 +818,7 @@
 				(rat1 setLoop: 4 setMotion: MoveTo 266 103 self)
 			)
 			(4
-				(rat1 setLoop: 6 cycleSpeed: 6 setCycle: Osc 1 self)
+				(rat1 setLoop: 6 cycleSpeed: 6 setCycle: Oscillate 1 self)
 			)
 			(5
 				(rat1
@@ -837,7 +837,7 @@
 			)
 			(7
 				(rat2
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 5
 					setMotion: JumpTo 291 112 self
 				)
@@ -857,7 +857,7 @@
 				(rat3 setLoop: 4 setMotion: MoveTo 281 98 self)
 			)
 			(11
-				(rat3 setLoop: 6 cycleSpeed: 6 setCycle: Osc 1 self)
+				(rat3 setLoop: 6 cycleSpeed: 6 setCycle: Oscillate 1 self)
 			)
 			(12
 				(rat3
@@ -880,7 +880,7 @@
 			)
 			(15
 				(rat4
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 5
 					setMotion: JumpTo 299 94 self
 				)
@@ -904,7 +904,7 @@
 				(rat5
 					setLoop: 8
 					cycleSpeed: 9
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 5
 					setMotion: JumpTo 283 112 self
 				)

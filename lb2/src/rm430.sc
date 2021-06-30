@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 430)
-(include sci.sh)
+(include game.sh) (include "430.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -22,7 +22,7 @@
 
 (instance rm430 of LBRoom
 	(properties
-		noun 22
+		noun N_ROOM
 		picture 430
 		north 480
 		east 420
@@ -32,8 +32,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 430 432 423 431 858 424)
-		(LoadMany 132 430)
+		(LoadMany RES_VIEW 430 432 423 431 858 424)
+		(LoadMany RES_SOUND 430)
 		(ego
 			init:
 			normalize: (if (== currentAct 5) 426 else 831)
@@ -155,7 +155,7 @@
 					(doorWire dispose:)
 					(eastDoor caller: self open:)
 					(theMusic2 number: 444 flags: 1 loop: 1 play:)
-					(splinters init: setCycle: End)
+					(splinters init: setCycle: EndLoop)
 				else
 					(= cycles 1)
 				)
@@ -180,10 +180,10 @@
 				(Face oriley ego)
 				(= cycles 4)
 			)
-			(5 (oriley setCycle: End self))
+			(5 (oriley setCycle: EndLoop self))
 			(6
 				(thudSound play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(7
 				(= deathReason 0)
@@ -231,7 +231,7 @@
 					setScale: Scaler 100 100 12 5
 					loop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -264,11 +264,11 @@
 					setScale: 140
 					loop: 0
 					cel: 0
-					setCycle: CT 7 1 self
+					setCycle: CycleTo 7 1 self
 				)
 			)
 			(2
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(wireEnd dispose:)
 				(theMusic2 number: 430 flags: 1 loop: 1 play:)
 			)

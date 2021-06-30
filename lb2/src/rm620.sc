@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 620)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Inset)
@@ -49,7 +49,7 @@
 			init:
 			setLoop: (+ (churning loop?) local2)
 			x: (localproc_14a6 (churning x?))
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		(self setRegions: 90)
 		(switch global129
@@ -361,19 +361,19 @@
 					setCel: 0
 					posn: (localproc_14a6 201) 98
 					setPri: 13
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego setLoop: (- 3 local2) setCel: 0 setCycle: End self)
+				(ego setLoop: (- 3 local2) setCel: 0 setCycle: EndLoop self)
 				(sFX number: 611 loop: -1 flags: 1 play:)
 			)
 			(2
-				(ego setLoop: (- 5 local2) setCel: 0 setCycle: End self)
+				(ego setLoop: (- 5 local2) setCel: 0 setCycle: EndLoop self)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4 (= ticks 45))
-			(5 (ego setCycle: End self))
+			(5 (ego setCycle: EndLoop self))
 			(6
 				(sFX stop:)
 				(if (Btst 21)
@@ -383,7 +383,7 @@
 				)
 			)
 			(7
-				(ego setLoop: (- 11 local2) setCel: 0 setCycle: Fwd)
+				(ego setLoop: (- 11 local2) setCel: 0 setCycle: Forward)
 				(net
 					init:
 					posn: (if local2 130 else 183) 35
@@ -519,10 +519,10 @@
 				(= ticks 45)
 			)
 			(1
-				(ego setLoop: (- 7 local2) setCel: 0 setCycle: End self)
+				(ego setLoop: (- 7 local2) setCel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(ego setLoop: (- 9 local2) setCel: 0 setCycle: End self)
+				(ego setLoop: (- 9 local2) setCel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(sFX number: 612 flags: 1 play:)
@@ -533,7 +533,7 @@
 				)
 			)
 			(4
-				(bubbles init: setCycle: End self)
+				(bubbles init: setCycle: EndLoop self)
 			)
 			(5
 				(bubbles dispose:)
@@ -555,7 +555,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 180))
-			(1 (spark setCycle: End self))
+			(1 (spark setCycle: EndLoop self))
 			(2 (self dispose:))
 		)
 	)
@@ -666,7 +666,7 @@
 		loop 1
 		x 98
 		y 3
-		hideTheCast 1
+		hideTheCast TRUE
 	)
 	
 	(method (init)
@@ -678,6 +678,6 @@
 
 (instance sFX of Sound
 	(properties
-		flags $0001
+		flags mNOPAUSE
 	)
 )

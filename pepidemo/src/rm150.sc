@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 150)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TWRoom)
 (use Motion)
@@ -43,7 +43,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(Palette palANIMATE 64 235 -1)
+		(Palette PALCycle 64 235 -1)
 	)
 	
 	(method (newRoom)
@@ -53,7 +53,6 @@
 )
 
 (instance startScr of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -63,8 +62,8 @@
 			)
 			(1
 				(theMusic number: 150 setLoop: -1 play:)
-				(ego cycleSpeed: 5 setLoop: 3 setCycle: Fwd)
-				((ScriptID 895 1) cycleSpeed: 5 setCycle: Fwd)
+				(ego cycleSpeed: 5 setLoop: 3 setCycle: Forward)
+				((ScriptID 895 1) cycleSpeed: 5 setCycle: Forward)
 				(= seconds 6)
 			)
 			(2

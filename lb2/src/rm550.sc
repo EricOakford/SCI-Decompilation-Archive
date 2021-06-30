@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 550)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -41,9 +41,9 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 550 552 553 554 831)
-		(Load rsSCRIPT 956 939)
-		(LoadMany 132 550 551 553 555 556 558)
+		(LoadMany RES_VIEW 550 552 553 554 831)
+		(Load RES_SCRIPT 956 939)
+		(LoadMany RES_SOUND 550 551 553 555 556 558)
 		(ego init: normalize: 831 setScale: Scaler 110 0 190 0)
 		(self setRegions: 90)
 		(switch prevRoomNum
@@ -191,7 +191,7 @@
 				(paperCutter setScript: sErnieDead)
 			)
 			(if (OneOf global111 12 13)
-				(backRub init: setCycle: Fwd)
+				(backRub init: setCycle: Forward)
 				(= theEmbrace backRub)
 				(paperCutter setScript: sBackRubViewing)
 			)
@@ -330,10 +330,10 @@
 			(4
 				(if (== cel 0)
 					(Bset 88)
-					(self setCycle: End self)
+					(self setCycle: EndLoop self)
 				else
 					(Bclr 88)
-					(self setCycle: Beg self)
+					(self setCycle: BegLoop self)
 				)
 			)
 			(else 
@@ -1147,11 +1147,11 @@
 					(lampCycle
 						init:
 						setCel: (lampCycle lastCel:)
-						setCycle: CT 5 -1 self
+						setCycle: CycleTo 5 -1 self
 					)
 				else
 					(deskLamp setCel: 0)
-					(lampCycle init: setCel: 0 setCycle: CT 6 1 self)
+					(lampCycle init: setCel: 0 setCycle: CycleTo 6 1 self)
 				)
 			)
 			(1
@@ -1166,10 +1166,10 @@
 			(2
 				(if (Btst 40)
 					(Bclr 40)
-					(lampCycle setCycle: Beg self)
+					(lampCycle setCycle: BegLoop self)
 				else
 					(Bset 40)
-					(lampCycle setCycle: End self)
+					(lampCycle setCycle: EndLoop self)
 				)
 			)
 			(3 (= ticks 30))
@@ -1202,7 +1202,7 @@
 					cycleSpeed: 12
 					setPri: 13
 					setScale: Scaler 100 100 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1212,7 +1212,7 @@
 				(ego get: 23)
 				((ScriptID 21 0) doit: 792)
 				(Bset 64)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(4
 				(ego
@@ -1249,7 +1249,7 @@
 					setCel: 0
 					cycleSpeed: 12
 					setScale: Scaler 100 100 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= ticks 90))
@@ -1298,12 +1298,12 @@
 					setPri: 15
 					cycleSpeed: 12
 					setScale: Scaler 100 100 190 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(4
 				(shoe dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(ego setPri: -1)
 			)
 			(5
@@ -1346,7 +1346,7 @@
 				)
 			)
 			(2
-				(yvette setCycle: Fwd)
+				(yvette setCycle: Forward)
 				(ego
 					setLoop: 6
 					setCel: 0
@@ -1393,7 +1393,7 @@
 					cycleSpeed: 6
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1452,7 +1452,7 @@
 		(switch (= state newState)
 			(0
 				(theGame points: 1 177)
-				(backRub setLoop: 3 setCel: 0 setCycle: End self)
+				(backRub setLoop: 3 setCel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(messager say: 3 0 0 0 self 1550)
@@ -1487,11 +1487,11 @@
 				)
 			)
 			(3
-				(embrace setCel: 0 cycleSpeed: 24 setCycle: CT 3 1)
+				(embrace setCel: 0 cycleSpeed: 24 setCycle: CycleTo 3 1)
 				(= ticks (* 3 (Random 60 120)))
 			)
 			(4
-				(embrace setCycle: End)
+				(embrace setCycle: EndLoop)
 				(= ticks (* 4 (Random 60 120)))
 			)
 			(5
@@ -1524,7 +1524,7 @@
 					setLoop: 1
 					setCel: 0
 					setScale: Scaler 100 100 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= ticks 120))
@@ -1673,14 +1673,8 @@
 	)
 )
 
-(class UnscrewBulb of Osc
+(class UnscrewBulb of Oscillate
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-		howManyCycles -1
 		soundOsc 1
 	)
 	

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 730)
-(include sci.sh)
+(include game.sh) (include "730.shm")
 (use Main)
 (use LBRoom)
 (use Talker)
@@ -34,7 +34,7 @@
 )
 (instance rm730 of LBRoom
 	(properties
-		noun 1
+		noun N_ROOM
 		east 740
 		south 720
 	)
@@ -43,30 +43,30 @@
 		(curRoom obstacles: (List new:))
 		((ScriptID 2730 0) doit: (curRoom obstacles?))
 		(ego init: normalize: 732 actions: egoActions)
-		(self picture: (if ((Inv at: 15) cel?) 730 else 780))
-		(if ((Inv at: 15) cel?)
+		(self picture: (if ((Inventory at: iLantern) cel?) 730 else 780))
+		(if ((Inventory at: iLantern) cel?)
 			(piece1 init:)
 			(piece2 init:)
 			(piece3 init:)
-			(Palette palSET_INTENSITY 0 255 0)
+			(Palette PALIntensity 0 255 0)
 		)
-		(LoadMany 132 732)
+		(LoadMany RES_SOUND 732)
 		(theGame handsOff:)
 		(super init:)
 		(if (!= (theMusic2 number?) 17)
 			(theMusic2 number: 17 loop: -1 flags: 1 play:)
 		)
-		(theIconBar disable: 7)
+		(theIconBar disable: ICON_CONTROL)
 		(steve init:)
 		(snake1 init:)
 		(snake2 init:)
 		(snake3 init:)
 		(snake4 init:)
 		(snake5 init:)
-		(floor init: setOnMeCheck: 1 4)
-		(wall init: setOnMeCheck: 1 16)
-		(hieroglyphics init: setOnMeCheck: 1 2)
-		(if ((Inv at: 15) cel?)
+		(floor init: setOnMeCheck: ftrControl cGREEN)
+		(wall init: setOnMeCheck: ftrControl cRED)
+		(hieroglyphics init: setOnMeCheck: ftrControl cBLUE)
+		(if ((Inventory at: iLantern) cel?)
 			(= local0 1)
 			(self setScript: sEnterSouthLight)
 		else
@@ -76,10 +76,9 @@
 	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and (== (self picture?) 780) ((Inv at: 15) cel?))
+		(if (and (== (self picture?) 780) ((Inventory at: iLantern) cel?))
 			(= local0 1)
-			(Palette palSET_INTENSITY 0 255 0)
+			(Palette PALIntensity 0 255 0)
 			(piece1 init:)
 			(piece2 init:)
 			(piece3 init:)
@@ -111,7 +110,7 @@
 				setCel: 0
 				posn: 248 72
 				cycleSpeed: 6
-				setCycle: Fwd
+				setCycle: Forward
 			)
 			(snake2
 				view: 731
@@ -119,7 +118,7 @@
 				setCel: 2
 				posn: 252 59
 				cycleSpeed: 6
-				setCycle: Fwd
+				setCycle: Forward
 			)
 			(snake3
 				view: 731
@@ -127,7 +126,7 @@
 				setCel: 0
 				posn: 266 62
 				cycleSpeed: 6
-				setCycle: Fwd
+				setCycle: Forward
 			)
 			(snake4
 				view: 731
@@ -135,7 +134,7 @@
 				setCel: 2
 				posn: 265 57
 				cycleSpeed: 6
-				setCycle: Fwd
+				setCycle: Forward
 			)
 			(snake5
 				view: 731
@@ -143,16 +142,16 @@
 				setCel: 0
 				posn: 276 55
 				cycleSpeed: 6
-				setCycle: Fwd
+				setCycle: Forward
 			)
-			(snake6 cycleSpeed: 6 setCycle: Fwd init:)
-			(snake7 cycleSpeed: 6 setCycle: Fwd init:)
-			(Load rsVIEW 734)
-			(Load rsSOUND 3)
+			(snake6 cycleSpeed: 6 setCycle: Forward init:)
+			(snake7 cycleSpeed: 6 setCycle: Forward init:)
+			(Load RES_VIEW 734)
+			(Load RES_SOUND 3)
 			(= local9 1)
 		)
 		(if local0
-			(Palette palSET_INTENSITY 0 255 (= local2 (+ local2 2)))
+			(Palette PALIntensity 0 255 (= local2 (+ local2 2)))
 			(if (>= local2 100)
 				(= local0 0)
 				(if (!= (curRoom script?) sEnterSouthLight)
@@ -167,7 +166,7 @@
 		)
 		(if local1
 			(Palette
-				palSET_INTENSITY
+				PALIntensity
 				0
 				255
 				(Max 0 (= local2 (- local2 3)))
@@ -241,7 +240,7 @@
 					setCel: 0
 					posn: 248 72
 					cycleSpeed: 6
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(snake2
 					view: 731
@@ -249,7 +248,7 @@
 					setCel: 2
 					posn: 252 59
 					cycleSpeed: 6
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(snake3
 					view: 731
@@ -257,7 +256,7 @@
 					setCel: 0
 					posn: 266 62
 					cycleSpeed: 6
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(snake4
 					view: 731
@@ -265,7 +264,7 @@
 					setCel: 2
 					posn: 265 57
 					cycleSpeed: 6
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(snake5
 					view: 731
@@ -273,12 +272,12 @@
 					setCel: 0
 					posn: 276 55
 					cycleSpeed: 6
-					setCycle: Fwd
+					setCycle: Forward
 				)
-				(snake6 cycleSpeed: 6 setCycle: Fwd init:)
-				(snake7 cycleSpeed: 6 setCycle: Fwd init:)
-				(Load rsVIEW 734)
-				(Load rsSOUND 3)
+				(snake6 cycleSpeed: 6 setCycle: Forward init:)
+				(snake7 cycleSpeed: 6 setCycle: Forward init:)
+				(Load RES_VIEW 734)
+				(Load RES_SOUND 3)
 			)
 			(1
 				(theGame handsOn:)
@@ -362,11 +361,11 @@
 				(= seconds 6)
 			)
 			(1
-				(snake1 setCycle: Beg)
-				(snake2 setCycle: Beg)
-				(snake3 setCycle: Beg)
-				(snake4 setCycle: Beg)
-				(snake5 setCycle: Beg)
+				(snake1 setCycle: BegLoop)
+				(snake2 setCycle: BegLoop)
+				(snake3 setCycle: BegLoop)
+				(snake4 setCycle: BegLoop)
+				(snake5 setCycle: BegLoop)
 				(= ticks 60)
 			)
 			(2
@@ -410,7 +409,7 @@
 				(ego setLoop: 1 setCel: 1 setMotion: JumpTo 98 148 self)
 			)
 			(7
-				(ego cycleSpeed: 18 setCycle: End self)
+				(ego cycleSpeed: 18 setCycle: EndLoop self)
 			)
 			(8
 				(snake1 setLoop: 4 setMotion: MoveTo 89 140)
@@ -423,7 +422,7 @@
 				(steve setLoop: 2 setCel: 1 setMotion: JumpTo 77 163 self)
 			)
 			(10
-				(steve cycleSpeed: 18 setCycle: End self)
+				(steve cycleSpeed: 18 setCycle: EndLoop self)
 			)
 			(11 (= ticks 60))
 			(12
@@ -495,17 +494,17 @@
 					setCel: 0
 					cycleSpeed: 12
 					ignoreActors: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(snake1 setCycle: Fwd setMotion: 0)
-				(snake2 setCycle: Fwd setMotion: 0)
-				(snake3 setCycle: Fwd setMotion: 0)
-				(snake4 setCycle: Fwd setMotion: 0)
-				(snake5 setCycle: Fwd setMotion: 0)
-				(snake6 setCycle: Fwd setMotion: 0)
-				(snake7 setCycle: Fwd setMotion: 0)
+				(snake1 setCycle: Forward setMotion: 0)
+				(snake2 setCycle: Forward setMotion: 0)
+				(snake3 setCycle: Forward setMotion: 0)
+				(snake4 setCycle: Forward setMotion: 0)
+				(snake5 setCycle: Forward setMotion: 0)
+				(snake6 setCycle: Forward setMotion: 0)
+				(snake7 setCycle: Forward setMotion: 0)
 				(= ticks 120)
 			)
 			(2
@@ -523,7 +522,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego setLoop: 1 setCel: 0 setCycle: CT 4 1 self)
+				(ego setLoop: 1 setCel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(1
 				(oil
@@ -558,13 +557,13 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(snake1 setCycle: Fwd setMotion: 0)
-				(snake2 setCycle: Fwd setMotion: 0)
-				(snake3 setCycle: Fwd setMotion: 0)
-				(snake4 setCycle: Fwd setMotion: 0)
-				(snake5 setCycle: Fwd setMotion: 0)
-				(snake6 setCycle: Fwd setMotion: 0)
-				(snake7 setCycle: Fwd setMotion: 0)
+				(snake1 setCycle: Forward setMotion: 0)
+				(snake2 setCycle: Forward setMotion: 0)
+				(snake3 setCycle: Forward setMotion: 0)
+				(snake4 setCycle: Forward setMotion: 0)
+				(snake5 setCycle: Forward setMotion: 0)
+				(snake6 setCycle: Forward setMotion: 0)
+				(snake7 setCycle: Forward setMotion: 0)
 				(if local3
 					(= cycles 1)
 				else
@@ -641,19 +640,19 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego setLoop: 1 setCel: 0 setCycle: CT 4 1 self)
+				(ego setLoop: 1 setCel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(1
 				(oilBottle
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					posn: (+ (ego x?) 23) (- (ego y?) 27)
 					setMotion: JumpTo (+ (ego x?) 59) (- (ego y?) 39) self
 				)
 				(ego setCel: 5)
 			)
 			(2
-				(oilBottle setLoop: 4 setCel: 0 setCycle: End self)
+				(oilBottle setLoop: 4 setCel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(oilBottle setCycle: 0 addToPic:)
@@ -769,7 +768,7 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(

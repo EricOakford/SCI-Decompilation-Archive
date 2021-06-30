@@ -219,11 +219,11 @@
 					view: (if (Btst 10) 805 else 839)
 					setLoop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				((ScriptID 895 0) setCycle: Beg self)
+				((ScriptID 895 0) setCycle: BegLoop self)
 			)
 			(3
 				((ScriptID 895 0) get: 4 normalize:)
@@ -255,7 +255,7 @@
 					view: 251
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ScriptID 895 1)
 					normalize:
@@ -268,7 +268,7 @@
 				(bone
 					view: 251
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					x: ((ScriptID 895 0) x?)
 					y: (- ((ScriptID 895 0) y?) 10)
 					init:
@@ -286,13 +286,13 @@
 					view: 251
 					setLoop: 4
 					setCel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(7
 				(theMusic2 number: 2502 setLoop: 1 play:)
 				(boyClothes hide:)
-				((ScriptID 895 1) setCycle: End self)
+				((ScriptID 895 1) setCycle: EndLoop self)
 			)
 			(8
 				(theGame points: 227 2)
@@ -360,7 +360,7 @@
 					view: 251
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ScriptID 895 1)
 					normalize:
@@ -372,7 +372,7 @@
 				(bone
 					view: 251
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					x: ((ScriptID 895 0) x?)
 					y: (- ((ScriptID 895 0) y?) 10)
 					init:
@@ -390,13 +390,13 @@
 					view: 251
 					setLoop: 5
 					setCel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(7
 				(theMusic2 number: 2502 setLoop: 1 setVol: 127 play: self)
 				(babyClothes hide:)
-				((ScriptID 895 1) setCycle: End self)
+				((ScriptID 895 1) setCycle: EndLoop self)
 			)
 			(8)
 			(9
@@ -466,7 +466,7 @@
 				(messager say: 18 121 9 1 3 self)
 			)
 			(3
-				(ego view: 252 setLoop: 2 setCel: 0 setCycle: End self)
+				(ego view: 252 setLoop: 2 setCel: 0 setCycle: EndLoop self)
 				((ScriptID 895 1) hide:)
 			)
 			(4
@@ -484,7 +484,7 @@
 				(ego
 					put: 8
 					setLoop: 5
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 222 146 self
 				)
 				(theIconBar advanceCurIcon:)
@@ -570,13 +570,13 @@
 					view: 839
 					setLoop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
 				(bone dispose:)
 				(roomPoly dispose:)
-				((ScriptID 895 0) setCycle: Beg self)
+				((ScriptID 895 0) setCycle: BegLoop self)
 			)
 			(10
 				((ScriptID 895 0)
@@ -689,7 +689,7 @@
 				)
 				(client
 					view: 815
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 204 92 self
 				)
 			)
@@ -710,7 +710,7 @@
 				(client
 					view: 815
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 151 92
 				)
 			)
@@ -735,13 +735,13 @@
 			(1
 				(if (== (client loop?) 3)
 					(client
-						setCycle: Fwd
+						setCycle: Forward
 						setLoop: 2
 						setMotion: MoveTo 263 92 self
 					)
 				else
 					(client
-						setCycle: Fwd
+						setCycle: Forward
 						setLoop: 3
 						setMotion: MoveTo 151 92 self
 					)
@@ -787,7 +787,7 @@
 					view: 250
 					setLoop: 2
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -829,7 +829,7 @@
 					view: 251
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ScriptID 895 1)
 					normalize:
@@ -843,7 +843,7 @@
 				(bone
 					view: 251
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					x: ((ScriptID 895 0) x?)
 					y: (- ((ScriptID 895 0) y?) 14)
 					init:
@@ -861,7 +861,7 @@
 					view: 251
 					setLoop: 3
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -894,7 +894,7 @@
 					view: 251
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -902,7 +902,7 @@
 					view: 251
 					setLoop: 3
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -943,11 +943,11 @@
 					view: (if (not (Btst 10)) 839 else 805)
 					setLoop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				((ScriptID 895 0) setCycle: Beg self)
+				((ScriptID 895 0) setCycle: BegLoop self)
 			)
 			(4
 				(if register

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 270)
-(include sci.sh)
+(include game.sh) (include "270.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -39,7 +39,7 @@
 )
 (instance rm270 of LBRoom
 	(properties
-		noun 10
+		noun N_ROOM
 		picture 270
 		south 260
 		vanishingX 3
@@ -134,7 +134,7 @@
 	
 	(method (handleEvent event)
 		(return
-			(if (& (event type?) evJOYSTICK)
+			(if (& (event type?) direction)
 				(sGetDress cue:)
 				(return 0)
 			else
@@ -228,7 +228,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(lofat setCycle: End self)
+				(lofat setCycle: EndLoop self)
 			)
 			(1
 				(ego setMotion: PolyPath 142 138 self)
@@ -238,22 +238,22 @@
 					view: 271
 					setScale: Scaler 100 100 190 29
 					loop: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
-				(lofat loop: 1 cel: 0 setCycle: CT 3 1 self)
+				(lofat loop: 1 cel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(4 (messager say: 1 5 0 1 self))
 			(5
-				(lofat setCycle: End self)
-				(ego setCycle: End self)
-				(smoke init: setCycle: Fwd)
+				(lofat setCycle: EndLoop self)
+				(ego setCycle: EndLoop self)
+				(smoke init: setCycle: Forward)
 			)
 			(6 0)
 			(7 (messager say: 1 5 0 2 self))
 			(8
-				(lofat loop: 2 setCycle: End self)
+				(lofat loop: 2 setCycle: EndLoop self)
 			)
 			(9 (messager say: 1 5 0 3 self))
 			(10
@@ -261,7 +261,7 @@
 				(dress dispose:)
 			)
 			(11
-				(lofat loop: 3 setCycle: End self)
+				(lofat loop: 3 setCycle: EndLoop self)
 			)
 			(12
 				(messager say: 1 5 0 5)
@@ -270,7 +270,7 @@
 				(ego put: 1)
 				((ScriptID 21 0) doit: 801)
 				((ScriptID 21 1) doit: 770)
-				(lofat loop: 4 cel: 0 setCycle: End self)
+				(lofat loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(13
 				(messager say: 1 5 0 6 self)
@@ -291,12 +291,12 @@
 					loop: 1
 					cel: 0
 					setScale: Scaler 100 100 190 29
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(17
 				(dress dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(18
 				(ego
@@ -312,7 +312,7 @@
 				(southExitFeature dispose:)
 			)
 			(20
-				(lofat loop: 5 cel: 0 setCycle: End self)
+				(lofat loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(21
 				(smoke dispose:)
@@ -452,7 +452,7 @@
 						)
 					)
 					(else 
-						(if (Message msgGET curRoomNum noun 6 temp1 1)
+						(if (Message MsgGet curRoomNum noun 6 temp1 1)
 							(messager say: noun 6 temp1)
 						else
 							(messager say: noun 6 1)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 300)
-(include sci.sh)
+(include game.sh) (include "300.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -29,7 +29,7 @@
 )
 (instance rm300 of LBRoom
 	(properties
-		noun 20
+		noun N_ROOM
 		picture 300
 		north 310
 		south 260
@@ -37,8 +37,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 303 301 852 304 284)
-		(LoadMany 132 94 40)
+		(LoadMany RES_VIEW 303 301 852 304 284)
+		(LoadMany RES_SOUND 94 40)
 		(self setRegions: 91)
 		(ego
 			init:
@@ -240,7 +240,7 @@
 					posn: (- (mugger x?) 5) (- (mugger y?) 1)
 					cycleSpeed: 12
 					moveSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(noise stop:)
 				(sFX number: 3 play:)
@@ -254,7 +254,7 @@
 					posn: (ego x?) (- (ego y?) 3)
 					cycleSpeed: 12
 					moveSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -263,7 +263,7 @@
 			)
 			(10
 				(= deathReason 12)
-				(curRoom newRoom: 99)
+				(curRoom newRoom: DEATH)
 			)
 		)
 	)
@@ -288,7 +288,7 @@
 					setScale: Scaler 100 100 167 125
 					cycleSpeed: 10
 					moveSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -333,7 +333,7 @@
 					setLoop: (if (ego wearingGown?) 2 else 0)
 					posn: (- (ego x?) 2) (- (ego y?) 1)
 					setScale: Scaler 105 0 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic number: 97 loop: 1 flags: 1 play:)
 			)
@@ -391,16 +391,16 @@
 					posn: (+ (ego x?) 10) (ego y?)
 					setScale: Scaler 100 100 167 125
 					setSpeed: 6
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(2
 				(sFX number: 297 play:)
-				(ego setCycle: CT 6 1 self)
+				(ego setCycle: CycleTo 6 1 self)
 			)
-			(3 (ego setCycle: CT 2 -1 self))
-			(4 (ego setCycle: CT 5 1 self))
-			(5 (ego setCycle: CT 6 1 self))
+			(3 (ego setCycle: CycleTo 2 -1 self))
+			(4 (ego setCycle: CycleTo 5 1 self))
+			(5 (ego setCycle: CycleTo 6 1 self))
 			(6
 				(ego
 					loop: 6

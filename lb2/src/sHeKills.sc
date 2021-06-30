@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 444)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Scaler)
 (use PolyPath)
@@ -18,13 +18,17 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (== (ego view?) 443) (theIconBar disable: 0 3 4))
+				(if (== (ego view?) 443)
+					(theIconBar disable: 0 3 4)
+				)
 				(theGame handsOff:)
 				(= cycles 1)
 			)
 			(1
 				(cond 
-					((and (Btst 41) (not (Btst 47))) (self setScript: sSmashedDoorOpen self))
+					((and (Btst 41) (not (Btst 47)))
+						(self setScript: sSmashedDoorOpen self)
+					)
 					(
 						(and
 							(== ((ScriptID 440 2) doorState?) 0)
@@ -55,11 +59,11 @@
 				)
 			)
 			(4
-				(oriley view: 424 cel: 0 setCycle: End self)
+				(oriley view: 424 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				((ScriptID 440 3) number: 80 flags: 1 play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(6
 				(if
@@ -130,7 +134,7 @@
 			)
 			(1
 				((ScriptID 440 3) number: 444 loop: 1 flags: 1 play:)
-				(shavings setCycle: End self)
+				(shavings setCycle: EndLoop self)
 			)
 			(2
 				(messager say: 37 0 5 0 self)
@@ -144,13 +148,13 @@
 			)
 			(4
 				((ScriptID 440 3) number: 444 loop: 1 flags: 1 play:)
-				(shavings setCycle: End self)
+				(shavings setCycle: EndLoop self)
 			)
 			(5
 				((ScriptID 440 3) number: 444 loop: 1 flags: 1 play:)
-				(shavings setCycle: End self)
+				(shavings setCycle: EndLoop self)
 				((ScriptID 440 2) locked: 0 open:)
-				((ScriptID 440 4) setCycle: Beg)
+				((ScriptID 440 4) setCycle: BegLoop)
 			)
 			(6
 				(shavings addToPic:)

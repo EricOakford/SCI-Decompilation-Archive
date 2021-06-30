@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 443)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use MuseumRgn)
 (use Inset)
@@ -23,8 +23,7 @@
 	local0
 )
 (instance sFindPippin of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -38,12 +37,12 @@
 					cel: 0
 					posn: 129 162
 					setScale: Scaler 100 100 190 90
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(2
 				(noise number: 440 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3 (= seconds 3))
 			(4
@@ -62,7 +61,6 @@
 )
 
 (instance sGetBoot of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -76,14 +74,14 @@
 					setScale: Scaler 100 100 190 90
 					setLoop: 6
 					cycleSpeed: 16
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(boot dispose:)
-				(ego get: 12)
+				(ego get: iWorkBoot)
 				((ScriptID 21 0) doit: 781)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(theGame points: 1 150)

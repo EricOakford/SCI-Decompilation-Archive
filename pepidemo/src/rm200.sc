@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 200)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use BalloonTalker)
 (use TWRoom)
@@ -25,7 +25,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(Load rsSOUND 1500)
+		(Load RES_SOUND 1500)
 		(if
 			(and
 				(not (== prevRoomNum 212))
@@ -36,7 +36,7 @@
 				y: -30
 				init:
 				normalize:
-				ignoreActors: 1
+				ignoreActors: TRUE
 				setScale: Scaler 22 150 189 0
 			)
 			((ScriptID 895 1)
@@ -49,8 +49,8 @@
 		(switch prevRoomNum
 			(212
 				(if (== (Random 1 10) 5) (flag y: 28) (flag2 y: 39))
-				(flag setCycle: Fwd init:)
-				(flag2 setCycle: Fwd init:)
+				(flag setCycle: Forward init:)
+				(flag2 setCycle: Forward init:)
 				(coach loop: 0 cel: 0 init:)
 				(self setScript: overTheHills)
 			)
@@ -62,22 +62,23 @@
 )
 
 (instance overTheHills of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theMusic number: 215 setLoop: -1 play:)
 				(= seconds 2)
 			)
-			(1 (coach setCycle: End self))
+			(1
+				(coach setCycle: EndLoop self)
+			)
 			(2
 				(coach
 					x: 36
 					y: 143
 					setLoop: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -99,7 +100,7 @@
 					y: 126
 					setLoop: 2
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -111,7 +112,6 @@
 )
 
 (instance sFallFromSky of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -125,7 +125,7 @@
 				(ego
 					view: 155
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: JumpTo 140 170 self
 				)
 				(= ticks 5)
@@ -133,7 +133,7 @@
 			(2
 				((ScriptID 895 1)
 					view: 155
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 4
 					setMotion: JumpTo 140 170 curRoom
 				)

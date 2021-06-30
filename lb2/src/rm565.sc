@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 565)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -38,9 +38,9 @@
 			ignoreActors:
 			setScale: Scaler 130 0 190 0
 		)
-		(LoadMany 128 560 561 562 563 564 565 831)
-		(LoadMany 132 2 6 721)
-		(LoadMany 129 465 565)
+		(LoadMany RES_VIEW 560 561 562 563 564 565 831)
+		(LoadMany RES_SOUND 2 6 721)
+		(LoadMany RES_PIC 465 565)
 		(self setRegions: 90)
 		(switch prevRoomNum
 			(north
@@ -62,7 +62,7 @@
 			(safePic init: stopUpd:)
 			(xWestDoor init:)
 			(if (== prevRoomNum north)
-				(Palette palSET_INTENSITY 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(self setScript: sEnterTunnel)
 			else
 				(secretDoor init: stopUpd:)
@@ -356,7 +356,7 @@
 			(2
 				(ego x: 306 y: 147 setPri: 5 setHeading: 180)
 				(sFX number: 721 flags: 1 setLoop: 1 play:)
-				(secretDoor init: setCycle: End self)
+				(secretDoor init: setCycle: EndLoop self)
 			)
 			(3
 				(sFX stop:)
@@ -365,7 +365,7 @@
 			(4
 				(ego setMotion: PolyPath 265 180 self)
 				(sFX number: 721 flags: 1 setLoop: 1 play:)
-				(secretDoor setCycle: Beg self)
+				(secretDoor setCycle: BegLoop self)
 			)
 			(5 0)
 			(6
@@ -443,7 +443,7 @@
 				(InFirstPerson 1)
 				(walkHandler addToFront: self)
 				(theIconBar disable: 7)
-				(bloodDrip init: cycleSpeed: 12 setCycle: Fwd)
+				(bloodDrip init: cycleSpeed: 12 setCycle: Forward)
 				(feCpBlood init: setOnMeCheck: 1 16384)
 				(feQuills init: setOnMeCheck: 1 8192)
 				(fePorcupine init: setOnMeCheck: 1 4096)

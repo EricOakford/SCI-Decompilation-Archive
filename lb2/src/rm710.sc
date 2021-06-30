@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 710)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Talker)
@@ -30,22 +30,22 @@
 		(ego
 			init:
 			normalize: 831
-			wearingGown: 1
-			scaleSignal: 1
+			wearingGown: TRUE
+			scaleSignal: scalable
 			scaleX: 110
 			scaleY: 110
 			setPri: 10
 			posn: 63 155
 		)
-		(LoadMany 132 710 712 713 714 715 716)
-		(LoadMany 128 710 714 717 716 994)
-		(Load rsMESSAGE 710)
-		(Load rsFONT 69)
+		(LoadMany RES_SOUND 710 712 713 714 715 716)
+		(LoadMany RES_VIEW 710 714 717 716 994)
+		(Load RES_MESSAGE 710)
+		(Load RES_FONT 69)
 		(super init:)
 		(WrapMusic init: 1 1710 1712 1713)
 		(wrapMusic2 init: 1 714 715 716)
-		(sunnie1 init: setCycle: Fwd)
-		(sunnie2 init: setCycle: Fwd)
+		(sunnie1 init: setCycle: Forward)
+		(sunnie2 init: setCycle: Forward)
 		(tut init: setCycle: Walk setLoop: 0)
 		(rameses init: setCycle: StopWalk -1)
 		(bugsWithMeat init: setLoop: 0 setCycle: Walk)
@@ -78,16 +78,16 @@
 				(= cycles 1)
 			)
 			(3
-				(sunnie1 setCycle: End sunnie1)
-				(sunnie2 setCycle: End sunnie2)
+				(sunnie1 setCycle: EndLoop sunnie1)
+				(sunnie2 setCycle: EndLoop sunnie2)
 			)
 			(4)
 			(5
 				(WrapMusic dispose:)
 				(wrapMusic2 dispose: 1)
-				(LoadMany 132 636 637)
-				(LoadMany 128 635 632)
-				(Load rsPIC 716)
+				(LoadMany RES_SOUND 636 637)
+				(LoadMany RES_VIEW 635 632)
+				(Load RES_PIC 716)
 				(= ticks 60)
 			)
 			(6
@@ -98,7 +98,7 @@
 					setLoop: 4
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(sunnie1 stopUpd:)
 				(sunnie2 stopUpd:)
@@ -123,14 +123,14 @@
 				(sFXBeetles fade:)
 			)
 			(11
-				(rameses setLoop: 3 setCel: 2 setCycle: CT 6 1 self)
+				(rameses setLoop: 3 setCel: 2 setCycle: CycleTo 6 1 self)
 			)
 			(12
 				(rameses
 					view: 716
 					setLoop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13
@@ -179,7 +179,7 @@
 	
 	(method (cue)
 		(messager say: 1 0 0 3)
-		(self view: 716 setLoop: 1 setCel: 0 setCycle: End)
+		(self view: 716 setLoop: 1 setCel: 0 setCycle: EndLoop)
 	)
 )
 
@@ -229,7 +229,7 @@
 			view: 716
 			setLoop: 2
 			setCel: 0
-			setCycle: End sEnterRoom
+			setCycle: EndLoop sEnterRoom
 		)
 	)
 )
@@ -249,7 +249,7 @@
 			view: 716
 			setLoop: 3
 			setCel: 0
-			setCycle: End sEnterRoom
+			setCycle: EndLoop sEnterRoom
 		)
 	)
 )

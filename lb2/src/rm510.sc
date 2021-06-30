@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 510)
-(include sci.sh)
+(include game.sh) (include "510.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -29,7 +29,7 @@
 )
 (instance rm510 of LBRoom
 	(properties
-		noun 10
+		noun N_ROOM
 		picture 510
 		north 530
 		east 550
@@ -39,12 +39,12 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 510 511 831)
+		(LoadMany RES_VIEW 510 511 831)
 		(if (and (== currentAct 4) (== global111 11))
-			(LoadMany 128 820 812 817)
-			(Load rsSOUND 332)
+			(LoadMany RES_VIEW 820 812 817)
+			(Load RES_SOUND 332)
 		)
-		(LoadMany 132 531 721)
+		(LoadMany RES_SOUND 531 721)
 		(ego init: normalize: 831 setScale: Scaler 120 0 190 0)
 		(self setRegions: 90)
 		(switch prevRoomNum
@@ -89,9 +89,9 @@
 			(south
 				(self cue:)
 				(WrapMusic pause: 0)
-				(if (== ((Inv at: 14) owner?) 0)
+				(if (== ((Inventory at: iSnakeOil) owner?) 0)
 					(self setScript: sFollowOlympia)
-					((Inv at: 14) owner: 630)
+					((Inventory at: iSnakeOil) owner: 630)
 				)
 			)
 			(else 
@@ -580,15 +580,15 @@
 					posn: 174 184
 					cycleSpeed: 12
 					setScale: Scaler 100 100 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(sFX number: 531 flags: 1 play:)
 				(if (Btst 31)
-					(rodinDudeHead setCycle: End self)
+					(rodinDudeHead setCycle: EndLoop self)
 				else
-					(rodinDudeHead setCycle: Beg self)
+					(rodinDudeHead setCycle: BegLoop self)
 				)
 				(ego
 					normalize: 831
@@ -667,7 +667,7 @@
 			)
 			(15 (= ticks 60))
 			(16
-				(eastDoor setCycle: End self)
+				(eastDoor setCycle: EndLoop self)
 				(doorSound number: 46 play:)
 				(altPolyList delete: (eastDoor doorPoly?))
 			)
@@ -746,7 +746,7 @@
 				(= cycles 1)
 			)
 			(38
-				(eastDoor setCycle: Beg self)
+				(eastDoor setCycle: BegLoop self)
 				(doorSound number: 47 play:)
 				(altPolyList add: (eastDoor doorPoly?))
 				(= ticks 60)

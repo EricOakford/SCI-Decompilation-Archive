@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 400)
-(include sci.sh)
+(include game.sh) (include "400.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -19,7 +19,7 @@
 
 (instance rm400 of LBRoom
 	(properties
-		noun 28
+		noun N_ROOM
 		picture 400
 		west 370
 		vanishingY 50

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 355)
-(include sci.sh)
+(include game.sh) (include "355.shm")
 (use Main)
 (use LBRoom)
 (use Inset)
@@ -23,25 +23,24 @@
 )
 (instance rm355 of LBRoom
 	(properties
-		noun 5
+		noun N_ROOM
 		picture 350
 	)
 	
 	(method (init)
 		(ego init: normalize: 831 setScale: Scaler 95 0 190 0)
 		(self setRegions: 90)
-		(Palette palSET_INTENSITY 0 255 0)
+		(Palette PALIntensity 0 255 0)
 		(self setScript: sPartysOver)
 		(super init:)
 	)
 )
 
 (instance sPartysOver of Script
-	(properties)
-	
+
 	(method (doit)
 		(if (< local0 100)
-			(Palette palSET_INTENSITY 0 255 (= local0 (+ local0 2)))
+			(Palette PALIntensity 0 255 (= local0 (+ local0 2)))
 			(if (== local0 100) (self cue:))
 		)
 		(super doit:)
@@ -101,7 +100,7 @@
 			(2 0)
 			(3
 				(messager say: 2)
-				((ScriptID 90 3) setCycle: Osc 2 self)
+				((ScriptID 90 3) setCycle: Oscillate 2 self)
 			)
 			(4
 				((ScriptID 22 0) doit: -24576 self)
@@ -112,14 +111,14 @@
 				((ScriptID 90 6) setMotion: PolyPath 146 184)
 			)
 			(6
-				((ScriptID 90 3) setCycle: Osc 3 self)
+				((ScriptID 90 3) setCycle: Oscillate 3 self)
 			)
 			(7
 				((ScriptID 90 1) setMotion: PolyPath 350 182)
 				((ScriptID 90 6) setMotion: PolyPath 184 184 self)
 			)
 			(8
-				((ScriptID 90 3) setCycle: Osc 2 self)
+				((ScriptID 90 3) setCycle: Oscillate 2 self)
 			)
 			(9
 				((ScriptID 90 6) setMotion: PolyPath 350 182 self)
@@ -179,7 +178,7 @@
 	
 	(method (doit)
 		(if (< local0 100)
-			(Palette palSET_INTENSITY 0 255 (= local0 (+ local0 2)))
+			(Palette PALIntensity 0 255 (+= local0 2))
 			(if (== local0 100) (self cue:))
 		)
 		(super doit:)

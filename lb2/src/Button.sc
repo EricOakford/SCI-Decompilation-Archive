@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 562)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Inset)
 (use Timer)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 310)
-(include sci.sh)
+(include game.sh) (include "310.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -67,7 +67,7 @@
 
 (instance rm310 of LBRoom
 	(properties
-		noun 13
+		noun N_ROOM
 		picture 310
 		north 320
 		south 300
@@ -76,8 +76,8 @@
 	)
 	
 	(method (init &tmp [temp0 3] temp3 [temp4 30])
-		(LoadMany 128 311 317 312 313 314 315 318 831 830)
-		(LoadMany 132 310 311 312 314)
+		(LoadMany RES_VIEW 311 317 312 313 314 315 318 831 830)
+		(LoadMany RES_SOUND 310 311 312 314)
 		(ego
 			setScale: Scaler 137 0 190 -20
 			init:
@@ -92,7 +92,7 @@
 			(south
 				(ego x: 195)
 				(= temp3
-					(switch (DoSound sndGET_POLYPHONY)
+					(switch (DoSound NumVoices)
 						(32 310)
 						(6 315)
 						(else  314)
@@ -105,8 +105,8 @@
 			)
 		)
 		(super init:)
-		(LoadMany 128 311 317 312 313 314 315 318 831 830)
-		(LoadMany 132 310 311 312 314)
+		(LoadMany RES_VIEW 311 317 312 313 314 315 318 831 830)
+		(LoadMany RES_SOUND 310 311 312 314)
 		(if (== prevRoomNum south)
 			(switch (Random 0 2)
 				(0
@@ -123,42 +123,25 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						26
-						189
-						0
-						189
-						0
-						0
-						319
-						0
-						319
-						189
-						287
-						189
-						238
-						172
-						201
-						118
-						245
-						111
-						245
-						97
-						274
-						92
-						258
-						69
-						219
-						108
-						194
-						115
-						171
-						127
-						120
-						127
-						85
-						152
+						26 189
+						0 189
+						0 0
+						319 0
+						319 189
+						287 189
+						238 172
+						201 118
+						245 111
+						245 97
+						274 92
+						258 69
+						219 108
+						194 115
+						171 127
+						120 127
+						85 152
 					yourself:
 				)
 		)
@@ -169,9 +152,9 @@
 		(woman2 addToPic:)
 		(dancersA init: setScript: sRDancers)
 		(dancersB init: setScript: sMDancers)
-		(dancersC setCycle: Fwd init:)
-		(flapper setCycle: Fwd init:)
-		(pianoplayer init: setCycle: Fwd)
+		(dancersC setCycle: Forward init:)
+		(flapper setCycle: Forward init:)
+		(pianoplayer init: setCycle: Forward)
 		(sleeper addToPic:)
 		(woman1 addToPic:)
 		(bathroomDoor init:)
@@ -209,11 +192,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(dancersA view: 313 loop: 0 setCycle: Fwd)
+				(dancersA view: 313 loop: 0 setCycle: Forward)
 				(= seconds (Random 5 10))
 			)
 			(1
-				(dancersA view: 313 loop: 1 setCycle: Fwd)
+				(dancersA view: 313 loop: 1 setCycle: Forward)
 				(= seconds (Random 4 6))
 			)
 			(2 (= state -1) (= cycles 1))
@@ -227,18 +210,18 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(dancersB view: 313 loop: 2 setCycle: Fwd)
+				(dancersB view: 313 loop: 2 setCycle: Forward)
 				(= seconds (Random 4 7))
 			)
 			(1
-				(dancersB view: 314 loop: 2 setCycle: End self)
+				(dancersB view: 314 loop: 2 setCycle: EndLoop self)
 			)
 			(2
-				(dancersB view: 313 loop: 3 setCycle: Fwd)
+				(dancersB view: 313 loop: 3 setCycle: Forward)
 				(= seconds (Random 4 8))
 			)
 			(3
-				(dancersB view: 314 loop: 2 cel: 11 setCycle: Beg self)
+				(dancersB view: 314 loop: 2 cel: 11 setCycle: BegLoop self)
 			)
 			(4 (= state -1) (= cycles 1))
 		)
@@ -282,18 +265,18 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ziggy setCycle: End self))
+			(0 (ziggy setCycle: EndLoop self))
 			(1 (= seconds (Random 1 6)))
 			(2
 				(switch (Random 0 2)
 					(0 (= cycles 1))
 					(else 
-						(ziggy cel: 3 setCycle: End self)
+						(ziggy cel: 3 setCycle: EndLoop self)
 					)
 				)
 			)
 			(3
-				(ziggy cel: 3 setCycle: CT 0 -1 self)
+				(ziggy cel: 3 setCycle: CycleTo 0 -1 self)
 			)
 			(4 (= seconds (Random 2 4)))
 			(5 (= state -1) (= cycles 1))
@@ -306,9 +289,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (woman2 setCycle: End self))
+			(0 (woman2 setCycle: EndLoop self))
 			(1 (= cycles (Random 1 10)))
-			(2 (woman2 setCycle: Beg self))
+			(2 (woman2 setCycle: BegLoop self))
 			(3 (= cycles (Random 10 20)))
 			(4 (= state -1) (= cycles 1))
 		)
@@ -367,7 +350,7 @@
 	)
 )
 
-(instance bartender of View
+(instance bartender of Actor ;View
 	(properties
 		x 47
 		y 115
@@ -561,7 +544,7 @@
 	)
 )
 
-(instance woman2 of View
+(instance woman2 of Actor ;View
 	(properties
 		x 236
 		y 101
@@ -658,11 +641,11 @@
 			(
 				(or
 					(and
-						(== (event type?) evKEYBOARD)
-						(!= (event message?) KEY_RETURN)
+						(== (event type?) keyDown)
+						(!= (event message?) ENTER)
 					)
 					(and
-						(== (event type?) evMOUSEBUTTON)
+						(== (event type?) mouseDown)
 						(event modifiers?)
 					)
 					(not (OneOf (event type?) 1 4))

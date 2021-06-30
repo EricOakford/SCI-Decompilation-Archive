@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 610)
-(include sci.sh)
+(include game.sh) (include "610.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -25,10 +25,10 @@
 )
 
 (local
-	[local0 15] = [-1 198 202 209 216 234 169 165 160 148 129 79 64 46 23]
-	[local15 15] = [-1 132 136 145 151 150 127 132 136 144 154 138 139 143 150]
-	[local30 15] = [-1 82 90 112 118 130 82 90 97 112 130 94 98 111 125]
-	[local45 15] = [-1 10 13 22 32 41 10 13 20 29 41 17 20 22 30]
+	toVatX = [-1 198 202 209 216 234 169 165 160 148 129 79 64 46 23]
+	toVatY = [-1 132 136 145 151 150 127 132 136 144 154 138 139 143 150]
+	local30 = [-1 82 90 112 118 130 82 90 97 112 130 94 98 111 125]
+	local45 = [-1 10 13 22 32 41 10 13 20 29 41 17 20 22 30]
 	local60
 	gEgoCel_2 =  -1
 	gEgoCel =  -1
@@ -36,7 +36,7 @@
 )
 (instance rm610 of LBRoom
 	(properties
-		noun 29
+		noun N_ROOM
 		picture 610
 		north 630
 		east 640
@@ -65,7 +65,7 @@
 				(theIconBar enable: 7)
 			)
 			(666
-				(Palette palSET_INTENSITY 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(ego posn: 84 132)
 				(self setScript: sEnterFromTunnel)
 			)
@@ -79,7 +79,7 @@
 		)
 		(theMusic2 number: 610 loop: -1 flags: 1 play:)
 		(super init:)
-		(LoadMany 128 611 612)
+		(LoadMany RES_VIEW 611 612)
 		(northDoor init:)
 		(if
 			(or
@@ -132,90 +132,93 @@
 			)
 			(= local60 1)
 		else
+		;EO: this code was a total mess! It's been cleaned up.
+		; I guess a for loop wasn't possible here.
 			(vat14
-				approachVerbs: 4
-				approachX: [local0 14]
-				approachY:
-					[local15 (vat13
-						approachVerbs: 4
-						approachX: [local0 13]
-						approachY:
-							[local15 (vat12
-								approachVerbs: 4
-								approachX: [local0 12]
-								approachY:
-									[local15 (vat11
-										approachVerbs: 4
-										approachX: [local0 11]
-										approachY:
-											[local15 (vat10
-												approachX: [local0 10]
-												approachY:
-													[local15 (vat9
-														approachVerbs: 4
-														approachX: [local0 9]
-														approachY:
-															[local15 (vat8
-																approachVerbs: 4
-																approachX: [local0 8]
-																approachY:
-																	[local15 (vat7
-																		approachVerbs: 4
-																		approachX: [local0 7]
-																		approachY:
-																			[local15 (vat6
-																				approachVerbs: 4
-																				approachX: [local0 6]
-																				approachY:
-																					[local15 (vat5
-																						approachVerbs: 4
-																						approachX: [local0 5]
-																						approachY:
-																							[local15 (vat4
-																								approachVerbs: 4
-																								approachX: [local0 4]
-																								approachY:
-																									[local15 (vat3
-																										approachVerbs: 4
-																										approachX: [local0 3]
-																										approachY:
-																											[local15 (vat2
-																												approachVerbs: 4
-																												approachX: [local0 2]
-																												approachY:
-																													[local15 (vat1
-																														approachVerbs: 4
-																														approachX: [local0 1]
-																														approachY: [local15 (Load rsSOUND 40)]
-																														init:
-																													)]
-																												init:
-																											)]
-																										init:
-																									)]
-																								init:
-																							)]
-																						init:
-																					)]
-																				init:
-																			)]
-																		init:
-																	)]
-																init:
-															)]
-														init:
-													)]
-												approachVerbs: 4
-												init:
-											)]
-										init:
-									)]
-								init:
-							)]
-						init:
-					)]
+				approachVerbs: V_DO
+				approachX: [toVatX 14]
+				approachY: [toVatY 14]
 				init:
 			)
+			(vat13
+				approachVerbs: V_DO
+				approachX: [toVatX 13]
+				approachY: [toVatY 13]
+				init:
+			)
+			(vat12
+				approachVerbs: V_DO
+				approachX: [toVatX 12]
+				approachY: [toVatY 12]
+				init:
+			)
+			(vat11
+				approachVerbs: V_DO
+				approachX: [toVatX 11]
+				approachY: [toVatY 11]
+				init:
+			)
+			(vat10
+				approachVerbs: V_DO
+				approachX: [toVatX 10]
+				approachY: [toVatY 10]
+				init:
+			)
+			(vat9
+				approachVerbs: V_DO
+				approachX: [toVatX 9]
+				approachY: [toVatY 9]
+				init:
+			)
+			(vat8
+				approachVerbs: V_DO
+				approachX: [toVatX 8]
+				approachY: [toVatY 8]
+				init:
+			)
+			(vat7
+				approachVerbs: V_DO
+				approachX: [toVatX 7]
+				approachY: [toVatY 7]
+				init:
+			)
+			(vat6
+				approachVerbs: V_DO
+				approachX: [toVatX 6]
+				approachY: [toVatY 6]
+				init:
+			)
+			(vat5
+				approachVerbs: V_DO
+				approachX: [toVatX 5]
+				approachY: [toVatY 5]
+				init:
+			)
+			(vat4
+				approachVerbs: V_DO
+				approachX: [toVatX 4]
+				approachY: [toVatY 4]
+				init:
+			)
+			(vat3
+				approachVerbs: V_DO
+				approachX: [toVatX 3]
+				approachY: [toVatY 3]
+				init:
+			)
+			(vat2
+				approachVerbs: V_DO
+				approachX: [toVatX 2]
+				approachY: [toVatY 2]
+				init:
+			)
+			(vat1
+				approachVerbs: V_DO
+				approachX: [toVatX 1]
+				approachY: [toVatY 1]
+				init:
+			)
+			(Load RES_SOUND 40)
 		)
 	)
 	
@@ -223,7 +226,7 @@
 		(if
 			(and
 				(== (ego edgeHit?) 3)
-				(& ((theIconBar at: 7) signal?) $0004)
+				(& ((theIconBar at: 7) signal?) DISABLED)
 			)
 			(theIconBar enable: 7)
 		)
@@ -366,14 +369,14 @@
 							(= register 0)
 						)]
 					setScale:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(ego
 					setLoop: (+ register 2)
 					setCel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (ego x?) (- (ego y?) [local45 global129]) self
 				)
 			)
@@ -428,9 +431,9 @@
 					setLoop: (+ register 2)
 					setCel: (ego lastCel:)
 					posn:
-						[local0 global129]
+						[toVatX global129]
 						(-
-							[local15 (if (> [local0 global129] 180)
+							[toVatY (if (> [toVatX global129] 180)
 								(= register 1)
 							else
 								(= register 0)
@@ -441,12 +444,12 @@
 					scaleX: [local30 global129]
 					scaleY: [local30 global129]
 					setScale:
-					setCycle: Rev
-					setMotion: MoveTo [local0 global129] [local15 global129] self
+					setCycle: Reverse
+					setMotion: MoveTo [toVatX global129] [toVatY global129] self
 				)
 			)
 			(1
-				(ego setLoop: register setCel: 13 setCycle: Beg self)
+				(ego setLoop: register setCel: 13 setCycle: BegLoop self)
 			)
 			(2
 				(ego
@@ -525,11 +528,11 @@
 					setLoop: 3
 					setCel: 0
 					setScale: Scaler 100 100 190 88
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= ticks 20))
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(ego normalize: 831 loop: 0 setScale: Scaler 123 0 190 88)
 				(= cycles 1)

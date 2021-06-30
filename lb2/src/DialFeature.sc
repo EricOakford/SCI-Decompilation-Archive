@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 561)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Inset)
 (use PolyPath)
@@ -58,11 +58,11 @@
 				(cond 
 					((== (self cel?) 0)
 						(sFX number: 44 flags: 1 setLoop: 1 play:)
-						(self setCycle: End)
+						(self setCycle: EndLoop)
 					)
 					((== (safeDoor cel?) 0)
 						(sFX number: 45 flags: 1 setLoop: 1 play:)
-						(self setCycle: Beg)
+						(self setCycle: BegLoop)
 					)
 				)
 			)
@@ -100,7 +100,7 @@
 						(if (== (self cel?) 0)
 							(= local3 0)
 							(sFX number: 560 flags: 1 setLoop: 1 play:)
-							(self setPri: 7 setCycle: End)
+							(self setPri: 7 setCycle: EndLoop)
 							(= local1 1)
 						else
 							(= local0 0)
@@ -253,7 +253,7 @@
 				(= temp0 (if (mod local2 2) -1 else 1))
 				(sFX number: 562 flags: 1 play: setLoop: -1)
 				(dialNumber
-					setCycle: CT (mod (+ dialNumberCel register) 10) temp0 self
+					setCycle: CycleTo (mod (+ dialNumberCel register) 10) temp0 self
 				)
 			)
 			(1
@@ -293,7 +293,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(safeDoor setPri: 5 setCycle: Beg self)
+				(safeDoor setPri: 5 setCycle: BegLoop self)
 			)
 			(1
 				(sFX number: 561 flags: 1 play: setLoop: 1)

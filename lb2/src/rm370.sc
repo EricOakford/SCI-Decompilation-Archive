@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 370)
-(include sci.sh)
+(include game.sh) (include "370.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -18,9 +18,9 @@
 
 (instance rm370 of LBRoom
 	(properties
-		noun 5
+		noun N_ROOM
 		picture 370
-		style $000c
+		style SCROLLLEFT
 		east 400
 		west 350
 	)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 630)
-(include sci.sh)
+(include game.sh) (include "630.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -30,7 +30,7 @@
 )
 (instance rm630 of LBRoom
 	(properties
-		noun 21
+		noun N_ROOM
 		picture 630
 		east 610
 		vanishingY 105
@@ -62,7 +62,7 @@
 		(trunk approachVerbs: 1 4 8 init:)
 		(fridgeDoor approachVerbs: 4 init:)
 		(bag init:)
-		(if (== ((Inv at: 14) owner?) 630)
+		(if (== ((Inventory at: iSnakeOil) owner?) 630)
 			(snakeOil init: approachVerbs: 4 1 8)
 		)
 		(if
@@ -70,8 +70,8 @@
 				(and (== currentAct 3) (TriggerEvent 4104))
 				(>= currentAct 4)
 			)
-			(LoadMany 128 630 631 633 632 634 635)
-			(LoadMany 132 631 632 633 634 85 635 636)
+			(LoadMany RES_VIEW 630 631 633 632 634 635)
+			(LoadMany RES_SOUND 631 632 633 634 85 635 636)
 			(boxFrontLeft init:)
 			(assortedBoxes init:)
 			(meatLocker init:)
@@ -100,7 +100,7 @@
 			)
 			(if (and (not (Btst 12)) (not (Btst 60)))
 				(ferret init:)
-				(Load rsSOUND 637)
+				(Load RES_SOUND 637)
 				(ferretTimer setReal: ferret (Random 5 30))
 			)
 		else
@@ -189,17 +189,17 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
-				(ego setCycle: End)
-				(fridgeDoor setCycle: End self)
+				(ego setCycle: EndLoop)
+				(fridgeDoor setCycle: EndLoop self)
 				(sFX number: 631 flags: 1 play:)
 			)
 			(2
 				(fridgeDoor stopUpd:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego loop: 1 normalize: 827 xStep: 4)
@@ -223,12 +223,12 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego setCycle: Beg)
-				(fridgeDoor setCycle: Beg self)
+				(ego setCycle: BegLoop)
+				(fridgeDoor setCycle: BegLoop self)
 			)
 			(2
 				(sFX number: 632 flags: 1 play:)
@@ -262,11 +262,11 @@
 					setCel: 0
 					setPri: 11
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= ticks 30))
-			(3 (ferret setCycle: Beg self))
+			(3 (ferret setCycle: BegLoop self))
 			(4
 				(ferret
 					setLoop: 5
@@ -295,18 +295,18 @@
 				)
 			)
 			(8
-				(ferret setLoop: 3 setCel: 0 setCycle: End self)
+				(ferret setLoop: 3 setCel: 0 setCycle: EndLoop self)
 			)
-			(9 (ferret setCycle: Beg self))
+			(9 (ferret setCycle: BegLoop self))
 			(10
-				(ferret setLoop: 2 setCel: 0 setCycle: End self)
+				(ferret setLoop: 2 setCel: 0 setCycle: EndLoop self)
 			)
 			(11
 				(ferret
 					posn: 268 142
 					setLoop: 1
 					setCel: (ferret lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(12
@@ -348,19 +348,19 @@
 					setCel: 0
 					setPri: 12
 					cycleSpeed: 12
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(2
-				(ego setCycle: CT 4 1 self)
+				(ego setCycle: CycleTo 4 1 self)
 				(trunk x: 314)
 			)
 			(3
-				(ego setCycle: CT 5 1 self)
+				(ego setCycle: CycleTo 5 1 self)
 				(trunk x: 305)
 			)
 			(4
-				(ego setCycle: CT 6 1 self)
+				(ego setCycle: CycleTo 6 1 self)
 				(trunk x: 299)
 			)
 			(5
@@ -369,10 +369,10 @@
 					init:
 					approachVerbs: 1 4 8
 					cycleSpeed: 12
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(sFX number: 633 flags: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(6
 				(trunk stopUpd:)
@@ -385,10 +385,10 @@
 			(7
 				(theGame handsOff:)
 				(sFX number: 635 flags: 1 play:)
-				(ego view: 634 setLoop: 0 setCel: 0 setCycle: End self)
+				(ego view: 634 setLoop: 0 setCel: 0 setCycle: EndLoop self)
 			)
 			(8
-				(ego setLoop: 1 setCel: 0 setCycle: End self)
+				(ego setLoop: 1 setCel: 0 setCycle: EndLoop self)
 			)
 			(9 (sFX stop:) (= ticks 120))
 			(10
@@ -407,13 +407,13 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(ego setLoop: 2 setCel: 0 setCycle: End self)
+				(ego setLoop: 2 setCel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(ego
 					setLoop: 1
 					setCel: (ego lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
@@ -423,7 +423,7 @@
 				(= ticks 120)
 			)
 			(3
-				(bugsWithMeat init: setCycle: End self)
+				(bugsWithMeat init: setCycle: EndLoop self)
 			)
 			(4
 				(bugsWithMeat
@@ -431,7 +431,7 @@
 					setLoop: 0
 					setCel: 0
 					posn: 260 146
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 4
 					moveSpeed: 4
 					setMotion: MoveTo 157 157 self
@@ -466,16 +466,16 @@
 					setCel: 0
 					setPri: 12
 					cycleSpeed: 12
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(1
-				(ego setCycle: End self)
-				(trunkLid setCycle: End)
+				(ego setCycle: EndLoop self)
+				(trunkLid setCycle: EndLoop)
 				(sFX number: 633 flags: 1 play:)
 			)
 			(2
-				(ego setCel: 5 setCycle: Beg self)
+				(ego setCel: 5 setCycle: BegLoop self)
 			)
 			(3
 				(Bset 13)
@@ -501,18 +501,18 @@
 					setCel: 0
 					setPri: 12
 					cycleSpeed: 12
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(1
-				(ego setCel: (ego lastCel:) setCycle: CT 9 -1 self)
+				(ego setCel: (ego lastCel:) setCycle: CycleTo 9 -1 self)
 			)
 			(2
-				(ego setCycle: CT 6 -1 self)
-				(trunkLid setCycle: Beg)
+				(ego setCycle: CycleTo 6 -1 self)
+				(trunkLid setCycle: BegLoop)
 				(sFX number: 634 flags: 1 play:)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(Bclr 13)
 				(trunkLid stopUpd:)

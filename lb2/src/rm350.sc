@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 350)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -26,1253 +26,1253 @@
 	local0
 )
 (procedure (proc350_2)
-	(asm
-		+ag      global14336
-		ssgi     ego
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    10
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    149
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    12
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-		dup     
-		ldi      2
-		eq?     
-		bnt      code_04d9
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    3
-		pushi    153
-		pushi    2
-		pushi    140
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    1
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    1
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    12
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_04d9:
-		dup     
-		ldi      3
-		eq?     
-		bnt      code_054d
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    3
-		pushi    153
-		pushi    2
-		pushi    140
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    1
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    12
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_054d:
-		dup     
-		ldi      4
-		eq?     
-		bnt      code_059c
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    1
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    2
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_059c:
-		dup     
-		ldi      5
-		eq?     
-		bnt      code_05eb
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    1
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    160
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    12
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_05eb:
-		dup     
-		ldi      6
-		eq?     
-		bnt      code_063c
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_063c:
-		dup     
-		ldi      7
-		eq?     
-		bnt      code_068d
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_068d:
-		dup     
-		ldi      8
-		eq?     
-		bnt      code_0701
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    1
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    150
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    2
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    180
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    11
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_0701:
-		dup     
-		ldi      9
-		eq?     
-		bnt      code_077a
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    2
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    179
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		dup     
-		pushi    306
-		pushi    1
-		pushi    170
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     30
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    155
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    11
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_077a:
-		dup     
-		ldi      10
-		eq?     
-		bnt      code_07cb
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_07cb:
-		dup     
-		ldi      11
-		eq?     
-		bnt      code_081c
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_081c:
-		dup     
-		ldi      12
-		eq?     
-		bnt      code_086a
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    1
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    160
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    11
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_086a:
-		dup     
-		ldi      13
-		eq?     
-		bnt      code_08b7
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    160
-		pushi    181
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    8
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    2
-		pushi    153
-		pushi    2
-		pushi    175
-		pushi    183
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    11
-		callk    ScriptID,  4
-		send     24
-code_08b7:
-		toss    
-		lsg      prevRoomNum
-		ldi      340
-		eq?     
-		bnt      code_08f7
-		lsg      curRoomNum
-		pushi    #convRoom
-		pushi    0
-		class    RotundaRgn
-		send     4
-		eq?     
-		bnt      code_08f7
-code_08cd:
-		pushi    2
-		lsg      ego
-		pushi    8
-		callb    IsObjectOnControl,  4
-		bnt      code_08f7
-		pushi    1
-		pushi    1
-		pushi    #x
-		pushi    0
-		lag      ego
-		send     4
-		push    
-		ldi      1
-		sub     
-		push    
-		pushi    0
-		pushi    1
-		pushi    #y
-		pushi    0
-		lag      ego
-		send     4
-		push    
-		ldi      1
-		sub     
-		push    
-		lag      ego
-		send     12
-		jmp      code_08cd
-code_08f7:
-		ret     
-	)
+;;;	(asm
+;;;		+ag      global14336
+;;;		ssgi     ego
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    10
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    149
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    12
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;		dup     
+;;;		ldi      2
+;;;		eq?     
+;;;		bnt      code_04d9
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    3
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    140
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    1
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    12
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_04d9:
+;;;		dup     
+;;;		ldi      3
+;;;		eq?     
+;;;		bnt      code_054d
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    3
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    140
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    1
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    12
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_054d:
+;;;		dup     
+;;;		ldi      4
+;;;		eq?     
+;;;		bnt      code_059c
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    1
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_059c:
+;;;		dup     
+;;;		ldi      5
+;;;		eq?     
+;;;		bnt      code_05eb
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    1
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    160
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    12
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_05eb:
+;;;		dup     
+;;;		ldi      6
+;;;		eq?     
+;;;		bnt      code_063c
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_063c:
+;;;		dup     
+;;;		ldi      7
+;;;		eq?     
+;;;		bnt      code_068d
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_068d:
+;;;		dup     
+;;;		ldi      8
+;;;		eq?     
+;;;		bnt      code_0701
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    150
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    180
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    11
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_0701:
+;;;		dup     
+;;;		ldi      9
+;;;		eq?     
+;;;		bnt      code_077a
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    179
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		dup     
+;;;		pushi    306
+;;;		pushi    1
+;;;		pushi    170
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     30
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    155
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    11
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_077a:
+;;;		dup     
+;;;		ldi      10
+;;;		eq?     
+;;;		bnt      code_07cb
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_07cb:
+;;;		dup     
+;;;		ldi      11
+;;;		eq?     
+;;;		bnt      code_081c
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_081c:
+;;;		dup     
+;;;		ldi      12
+;;;		eq?     
+;;;		bnt      code_086a
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    160
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    11
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_086a:
+;;;		dup     
+;;;		ldi      13
+;;;		eq?     
+;;;		bnt      code_08b7
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    160
+;;;		pushi    181
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    8
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    175
+;;;		pushi    183
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    11
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;code_08b7:
+;;;		toss    
+;;;		lsg      prevRoomNum
+;;;		ldi      340
+;;;		eq?     
+;;;		bnt      code_08f7
+;;;		lsg      curRoomNum
+;;;		pushi    #convRoom
+;;;		pushi    0
+;;;		class    RotundaRgn
+;;;		send     4
+;;;		eq?     
+;;;		bnt      code_08f7
+;;;code_08cd:
+;;;		pushi    2
+;;;		lsg      ego
+;;;		pushi    8
+;;;		callb    IsObjectOnControl,  4
+;;;		bnt      code_08f7
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    #x
+;;;		pushi    0
+;;;		lag      ego
+;;;		send     4
+;;;		push    
+;;;		ldi      1
+;;;		sub     
+;;;		push    
+;;;		pushi    0
+;;;		pushi    1
+;;;		pushi    #y
+;;;		pushi    0
+;;;		lag      ego
+;;;		send     4
+;;;		push    
+;;;		ldi      1
+;;;		sub     
+;;;		push    
+;;;		lag      ego
+;;;		send     12
+;;;		jmp      code_08cd
+;;;code_08f7:
+;;;		ret     
+;;;	)
 )
 
 (procedure (proc350_23)
-	(asm
-		+ag      global14336
-		ssgi     ego
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    10
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    149
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    12
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-		dup     
-		ldi      2
-		eq?     
-		bnt      code_04d9
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    3
-		pushi    153
-		pushi    2
-		pushi    140
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    1
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    1
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    12
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_04d9:
-		dup     
-		ldi      3
-		eq?     
-		bnt      code_054d
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    3
-		pushi    153
-		pushi    2
-		pushi    140
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    1
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    12
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_054d:
-		dup     
-		ldi      4
-		eq?     
-		bnt      code_059c
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    1
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    2
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_059c:
-		dup     
-		ldi      5
-		eq?     
-		bnt      code_05eb
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    1
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    160
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    12
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_05eb:
-		dup     
-		ldi      6
-		eq?     
-		bnt      code_063c
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_063c:
-		dup     
-		ldi      7
-		eq?     
-		bnt      code_068d
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_068d:
-		dup     
-		ldi      8
-		eq?     
-		bnt      code_0701
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    1
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    150
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    2
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    180
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    11
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_0701:
-		dup     
-		ldi      9
-		eq?     
-		bnt      code_077a
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    2
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    179
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		dup     
-		pushi    306
-		pushi    1
-		pushi    170
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     30
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    155
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    11
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_077a:
-		dup     
-		ldi      10
-		eq?     
-		bnt      code_07cb
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_07cb:
-		dup     
-		ldi      11
-		eq?     
-		bnt      code_081c
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    5
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    165
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    9
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_081c:
-		dup     
-		ldi      12
-		eq?     
-		bnt      code_086a
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    1
-		pushi    153
-		pushi    2
-		pushi    180
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    7
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    0
-		pushi    153
-		pushi    2
-		pushi    160
-		pushi    182
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    11
-		callk    ScriptID,  4
-		send     24
-		jmp      code_08b7
-code_086a:
-		dup     
-		ldi      13
-		eq?     
-		bnt      code_08b7
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    4
-		pushi    153
-		pushi    2
-		pushi    160
-		pushi    181
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    8
-		callk    ScriptID,  4
-		send     24
-		pushi    #setLoop
-		pushi    1
-		pushi    8
-		pushi    156
-		pushi    1
-		pushi    2
-		pushi    153
-		pushi    2
-		pushi    175
-		pushi    183
-		pushi    304
-		pushi    0
-		pushi    2
-		pushi    93
-		pushi    11
-		callk    ScriptID,  4
-		send     24
-code_08b7:
-		toss    
-		lsg      prevRoomNum
-		ldi      340
-		eq?     
-		bnt      code_08f7
-		lsg      curRoomNum
-		pushi    #convRoom
-		pushi    0
-		class    RotundaRgn
-		send     4
-		eq?     
-		bnt      code_08f7
-code_08cd:
-		pushi    2
-		lsg      ego
-		pushi    8
-		callb    IsObjectOnControl,  4
-		bnt      code_08f7
-		pushi    1
-		pushi    1
-		pushi    #x
-		pushi    0
-		lag      ego
-		send     4
-		push    
-		ldi      1
-		sub     
-		push    
-		pushi    0
-		pushi    1
-		pushi    #y
-		pushi    0
-		lag      ego
-		send     4
-		push    
-		ldi      1
-		sub     
-		push    
-		lag      ego
-		send     12
-		jmp      code_08cd
-code_08f7:
-		ret     
-	)
+;;;	(asm
+;;;		+ag      global14336
+;;;		ssgi     ego
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    10
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    149
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    12
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;		dup     
+;;;		ldi      2
+;;;		eq?     
+;;;		bnt      code_04d9
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    3
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    140
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    1
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    12
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_04d9:
+;;;		dup     
+;;;		ldi      3
+;;;		eq?     
+;;;		bnt      code_054d
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    3
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    140
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    1
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    12
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_054d:
+;;;		dup     
+;;;		ldi      4
+;;;		eq?     
+;;;		bnt      code_059c
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    1
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_059c:
+;;;		dup     
+;;;		ldi      5
+;;;		eq?     
+;;;		bnt      code_05eb
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    1
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    160
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    12
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_05eb:
+;;;		dup     
+;;;		ldi      6
+;;;		eq?     
+;;;		bnt      code_063c
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_063c:
+;;;		dup     
+;;;		ldi      7
+;;;		eq?     
+;;;		bnt      code_068d
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_068d:
+;;;		dup     
+;;;		ldi      8
+;;;		eq?     
+;;;		bnt      code_0701
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    150
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    180
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    11
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_0701:
+;;;		dup     
+;;;		ldi      9
+;;;		eq?     
+;;;		bnt      code_077a
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    179
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		dup     
+;;;		pushi    306
+;;;		pushi    1
+;;;		pushi    170
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     30
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    155
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    11
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_077a:
+;;;		dup     
+;;;		ldi      10
+;;;		eq?     
+;;;		bnt      code_07cb
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_07cb:
+;;;		dup     
+;;;		ldi      11
+;;;		eq?     
+;;;		bnt      code_081c
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    5
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    165
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    9
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_081c:
+;;;		dup     
+;;;		ldi      12
+;;;		eq?     
+;;;		bnt      code_086a
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    180
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    7
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    0
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    160
+;;;		pushi    182
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    11
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		jmp      code_08b7
+;;;code_086a:
+;;;		dup     
+;;;		ldi      13
+;;;		eq?     
+;;;		bnt      code_08b7
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    4
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    160
+;;;		pushi    181
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    8
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;		pushi    #setLoop
+;;;		pushi    1
+;;;		pushi    8
+;;;		pushi    156
+;;;		pushi    1
+;;;		pushi    2
+;;;		pushi    153
+;;;		pushi    2
+;;;		pushi    175
+;;;		pushi    183
+;;;		pushi    304
+;;;		pushi    0
+;;;		pushi    2
+;;;		pushi    93
+;;;		pushi    11
+;;;		callk    ScriptID,  4
+;;;		send     24
+;;;code_08b7:
+;;;		toss    
+;;;		lsg      prevRoomNum
+;;;		ldi      340
+;;;		eq?     
+;;;		bnt      code_08f7
+;;;		lsg      curRoomNum
+;;;		pushi    #convRoom
+;;;		pushi    0
+;;;		class    RotundaRgn
+;;;		send     4
+;;;		eq?     
+;;;		bnt      code_08f7
+;;;code_08cd:
+;;;		pushi    2
+;;;		lsg      ego
+;;;		pushi    8
+;;;		callb    IsObjectOnControl,  4
+;;;		bnt      code_08f7
+;;;		pushi    1
+;;;		pushi    1
+;;;		pushi    #x
+;;;		pushi    0
+;;;		lag      ego
+;;;		send     4
+;;;		push    
+;;;		ldi      1
+;;;		sub     
+;;;		push    
+;;;		pushi    0
+;;;		pushi    1
+;;;		pushi    #y
+;;;		pushi    0
+;;;		lag      ego
+;;;		send     4
+;;;		push    
+;;;		ldi      1
+;;;		sub     
+;;;		push    
+;;;		lag      ego
+;;;		send     12
+;;;		jmp      code_08cd
+;;;code_08f7:
+;;;		ret     
+;;;	)
 )
 
 (instance rm350 of LBRoom
@@ -1656,7 +1656,7 @@ code_08f7:
 	)
 	
 	(method (newRoom n)
-		(if (== n south) (DrawPic 780 dpOPEN_FADEPALETTE))
+		(if (== n south) (DrawPic 780 FADEOUT))
 		(super newRoom: n)
 	)
 )
@@ -1819,7 +1819,7 @@ code_08f7:
 					setCel: 0
 					setLoop: (if (== register waterGlass3) 0 else 1)
 					cycleSpeed: 12
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(1
@@ -1855,11 +1855,11 @@ code_08f7:
 				(theMusic number: 3 flags: 1 loop: 1 play:)
 			)
 			(2
-				(oriley view: 424 setLoop: 0 setCel: 0 setCycle: End self)
+				(oriley view: 424 setLoop: 0 setCel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(thudSound play:)
-				(ego setMotion: 0 view: 858 setLoop: 4 setCycle: End self)
+				(ego setMotion: 0 view: 858 setLoop: 4 setCycle: EndLoop self)
 			)
 			(4 (= ticks 60))
 			(5

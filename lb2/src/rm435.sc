@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 435)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Inset)
@@ -20,15 +20,15 @@
 )
 (instance rm435 of LBRoom
 	(properties
-		style $800a
+		style (| BLACKOUT FADEOUT)
 	)
 	
 	(method (init)
 		(theIconBar disable: 7)
 		(self picture: (if (Btst 72) 436 else 430))
-		(LoadMany 128 431 430)
-		(LoadMany 129 436 780)
-		(LoadMany 132 90 6 2)
+		(LoadMany RES_VIEW 431 430)
+		(LoadMany RES_PIC 436 780)
+		(LoadMany RES_SOUND 90 6 2)
 		(if (== currentAct 5)
 			(self setRegions: 94)
 		else

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 320)
-(include sci.sh)
+(include game.sh) (include "320.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -24,15 +24,15 @@
 )
 (instance rm320 of LBRoom
 	(properties
-		noun 7
+		noun N_ROOM
 		picture 320
 		south 310
 		vanishingY -60
 	)
 	
 	(method (init)
-		(LoadMany 128 321 322 318 831 830)
-		(Load rsSOUND 321)
+		(LoadMany RES_VIEW 321 322 318 831 830)
+		(Load RES_SOUND 321)
 		(ego
 			init:
 			x: 133
@@ -229,13 +229,13 @@
 					cycleSpeed: 10
 					setScale: Scaler 100 100 190 0
 					moveSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(clothes init: cycleSpeed: 10 setCel: 0 setCycle: End)
+				(clothes init: cycleSpeed: 10 setCel: 0 setCycle: EndLoop)
 			)
 			(4
 				(messager say: 2 0 0 0)
-				(ego view: 321 loop: 1 setCycle: End self)
+				(ego view: 321 loop: 1 setCycle: EndLoop self)
 			)
 			(5
 				(ego
@@ -289,11 +289,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(sleazy setLoop: 0 setCycle: CT 9 1 self)
+				(sleazy setLoop: 0 setCycle: CycleTo 9 1 self)
 			)
-			(1 (smoke setCycle: End self))
+			(1 (smoke setCycle: EndLoop self))
 			(2
-				(sleazy setCycle: End self)
+				(sleazy setCycle: EndLoop self)
 				(smoke cel: 0)
 			)
 			(3 (= cycles (Random 30 70)))
@@ -308,7 +308,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(sleazy cel: 0 setLoop: 2 setCycle: End self)
+				(sleazy cel: 0 setLoop: 2 setCycle: EndLoop self)
 			)
 			(1 (= cycles 100))
 			(2
@@ -325,16 +325,16 @@
 				)
 			)
 			(3
-				(sleazy setLoop: 3 setCycle: Fwd)
+				(sleazy setLoop: 3 setCycle: Forward)
 				(= cycles (Random 30 60))
 			)
-			(4 (sleazy setCycle: End self))
+			(4 (sleazy setCycle: EndLoop self))
 			(5
 				(sleazy setLoop: 2)
 				(= cycles 1)
 			)
 			(6
-				(sleazy cel: (sleazy lastCel:) setCycle: Beg self)
+				(sleazy cel: (sleazy lastCel:) setCycle: BegLoop self)
 			)
 			(7 (self dispose:))
 		)

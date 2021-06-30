@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 521)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use Scaler)
@@ -62,25 +62,29 @@
 		(switch (= state newState)
 			(0
 				(curRoom picture: 780 curPic: 780)
-				(DrawPic 780 dpOPEN_PIXELATION)
+				(DrawPic 780 PIXELDISSOLVE)
 				(theGame handsOff:)
 				(= cycles 2)
 			)
 			(1
-				(DrawPic 780 dpOPEN_SCROLL_RIGHT)
-				(Message msgGET 0 13 0 0 1 @temp0)
-				(Display @temp0 dsCOORD 100 85 dsCOLOR 14 dsFONT 0)
+				(DrawPic 780 SCROLLRIGHT)
+				(Message MsgGet 0 13 0 0 1 @temp0)
+				(Display @temp0
+					p_at 100 85
+					p_color 14
+					p_font SYSFONT
+				)
 				(= seconds 5)
 			)
 			(2
-				(DrawPic 780 dpOPEN_SCROLL_RIGHT)
+				(DrawPic 780 SCROLLRIGHT)
 				(= cycles 1)
 			)
 			(3
 				(Bset 92)
 				(curRoom picture: 520 curPic: 520)
 				(curRoom picture: 520)
-				(DrawPic 520 dpOPEN_PIXELATION)
+				(DrawPic 520 PIXELDISSOLVE)
 				(WrapMusic pause: 1)
 				(theMusic2 number: 520 flags: 1 loop: -1 play:)
 				(if (not (Btst 49))
@@ -108,7 +112,7 @@
 					view: 523
 					setLoop: 4
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -134,7 +138,7 @@
 					view: 523
 					setLoop: 5
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11 (= ticks 60))

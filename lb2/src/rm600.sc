@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 600)
-(include sci.sh)
+(include game.sh) (include "600.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -31,7 +31,7 @@
 )
 (instance rm600 of LBRoom
 	(properties
-		noun 6
+		noun N_ROOM
 		picture 600
 		north 650
 		east 610
@@ -83,7 +83,7 @@
 		else
 			(glass approachVerbs: 4 1 init:)
 			(lantern approachVerbs: 1 4 init:)
-			(Load rsSOUND 600)
+			(Load RES_SOUND 600)
 		)
 		(northDoor approachVerbs: 4 init:)
 		(doorbell approachVerbs: 4 init:)
@@ -97,15 +97,15 @@
 		(ceiling init:)
 		(southExit init:)
 		(if (not (Btst 16))
-			(Load rsSOUND 637)
+			(Load RES_SOUND 637)
 			(ferret init:)
 			(ferretTimer setReal: ferret (Random 15 45))
 		else
 			(Bclr 16)
 		)
 		(if (and (Btst 12) (not (Btst 61)))
-			(Load rsVIEW 635)
-			(Load rsSOUND 636)
+			(Load RES_VIEW 635)
+			(Load RES_SOUND 636)
 			(meatTimer setReal: bugsWithMeat 5)
 		)
 		(if
@@ -203,16 +203,16 @@
 					setLoop: (if (== register 29) 1 else 2)
 					setCel: 0
 					setPri: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(sFX number: 600 flags: 1 loop: 1 play:)
-				(glass setCycle: CT 3 1 self)
+				(glass setCycle: CycleTo 3 1 self)
 			)
 			(4
 				(lantern setPri: 14 y: (+ (lantern y?) 50) z: 50)
-				(glass setCycle: End self)
+				(glass setCycle: EndLoop self)
 			)
 			(5
 				(Bset 10)
@@ -228,14 +228,14 @@
 				(cond 
 					((Btst 109) (theGame handsOn:) (self dispose:))
 					((and (Btst 108) (not (Random 0 2)))
-						(Load rsVIEW 814)
-						(Load rsSOUND 19)
+						(Load RES_VIEW 814)
+						(Load RES_SOUND 19)
 						(Bset 109)
 						(self setScript: sTakeAwayLantern)
 					)
 					((and (not (Btst 108)) (Random 0 1))
-						(Load rsVIEW 814)
-						(Load rsSOUND 19)
+						(Load RES_VIEW 814)
+						(Load RES_SOUND 19)
 						(Bset 108)
 						(self setScript: sTakeAwayLantern)
 					)
@@ -302,7 +302,7 @@
 				)
 				(WrapMusic pause: 1)
 				(theMusic2 number: 19 flags: 1 loop: -1 play:)
-				(northDoor setCycle: End self)
+				(northDoor setCycle: EndLoop self)
 				(sFX number: 46 flags: 1 loop: 1 play:)
 				(altPolyList delete: (northDoor doorPoly?))
 			)
@@ -313,7 +313,7 @@
 				)
 			)
 			(3
-				(northDoor setCycle: Beg self)
+				(northDoor setCycle: BegLoop self)
 				(sFX number: 47 flags: 1 loop: 1 play:)
 				(altPolyList add: (northDoor doorPoly?))
 			)
@@ -403,7 +403,7 @@
 			)
 			(1
 				(sFX number: 46 flags: 1 play:)
-				(eastDoor setCycle: End self)
+				(eastDoor setCycle: EndLoop self)
 				(altPolyList delete: (eastDoor doorPoly?))
 			)
 			(2
@@ -417,7 +417,7 @@
 			)
 			(3
 				(sFX number: 47 flags: 1 play:)
-				(eastDoor setCycle: Beg self)
+				(eastDoor setCycle: BegLoop self)
 				(altPolyList add: (eastDoor doorPoly?))
 			)
 			(4
@@ -463,13 +463,13 @@
 				(olympia setMotion: PolyPath 285 176 self)
 			)
 			(6
-				(eastDoor setCycle: End)
+				(eastDoor setCycle: EndLoop)
 				(altPolyList delete: (eastDoor doorPoly?))
 				(olympia setMotion: PolyPath 314 157 self)
 			)
 			(7
 				(altPolyList add: (eastDoor doorPoly?))
-				(eastDoor setCycle: Beg self)
+				(eastDoor setCycle: BegLoop self)
 			)
 			(8
 				(theGame handsOn:)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 360)
-(include sci.sh)
+(include game.sh) (include "360.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -17,9 +17,9 @@
 
 (instance rm360 of LBRoom
 	(properties
-		noun 1
+		noun N_ROOM
 		picture 360
-		style $000b
+		style SCROLLRIGHT
 		east 350
 	)
 	

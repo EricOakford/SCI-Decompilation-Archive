@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 441)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use PolyPath)
 (use Timer)
@@ -16,7 +16,6 @@
 )
 
 (instance sCountessMeeting of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -46,7 +45,7 @@
 			)
 			(7
 				(if (== (ego view?) 443)
-					((ScriptID 90 1) setCycle: End self)
+					((ScriptID 90 1) setCycle: EndLoop self)
 				else
 					(theGame handsOn: 1)
 					(self dispose:)
@@ -54,7 +53,7 @@
 			)
 			(8 (= seconds 2))
 			(9
-				((ScriptID 90 1) setCycle: Beg self)
+				((ScriptID 90 1) setCycle: BegLoop self)
 			)
 			(10 (= seconds 3))
 			(11

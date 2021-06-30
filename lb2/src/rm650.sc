@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 650)
-(include sci.sh)
+(include game.sh) (include "650.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -27,7 +27,7 @@
 )
 (instance rm650 of LBRoom
 	(properties
-		noun 41
+		noun N_ROOM
 		picture 650
 		north 666
 		south 600
@@ -35,7 +35,7 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 652 654)
+		(LoadMany RES_VIEW 652 654)
 		(ego init: normalize: 831 setScale: Scaler 140 0 190 -30)
 		(self setRegions: 90)
 		(switch prevRoomNum
@@ -46,7 +46,7 @@
 			)
 		)
 		(super init:)
-		(LoadMany 132 651 652 655 49 721)
+		(LoadMany RES_SOUND 651 652 655 49 721)
 		(theMusic2 number: 650 flags: 1 loop: -1 play:)
 		(chair init:)
 		(shelf init:)
@@ -210,21 +210,21 @@
 					setLoop: 2
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(theMusic2 stop:)
 				(sFX number: 654 flags: 1 loop: 1 play:)
-				(string1 setCycle: End self)
+				(string1 setCycle: EndLoop self)
 			)
 			(3
 				(string1 stopUpd:)
-				(string2 setCycle: End self)
+				(string2 setCycle: EndLoop self)
 			)
 			(4
 				(string2 stopUpd:)
-				(string3 setCycle: End self)
+				(string3 setCycle: EndLoop self)
 			)
 			(5
 				(string3 stopUpd:)
@@ -232,14 +232,14 @@
 				(= ticks 60)
 			)
 			(6
-				(gun setCycle: Fwd)
+				(gun setCycle: Forward)
 				(sFX number: 653 flags: 1 loop: -1 play:)
-				(gunFire init: cycleSpeed: 10 setCycle: End)
+				(gunFire init: cycleSpeed: 10 setCycle: EndLoop)
 				(ego
 					setLoop: 3
 					setCel: 0
 					setMotion: MoveTo (+ (ego x?) 7) (+ (ego y?) 3)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7 (= ticks 60))
@@ -282,7 +282,7 @@
 					setPri: 13
 					cycleSpeed: 12
 					setScale: Scaler 100 100 190 -30
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -292,15 +292,15 @@
 					loop: 1
 					setScale: Scaler 140 0 190 -30
 				)
-				(string1 setCycle: End self)
+				(string1 setCycle: EndLoop self)
 			)
 			(4
 				(string1 stopUpd:)
-				(string2 setCycle: End self)
+				(string2 setCycle: EndLoop self)
 			)
 			(5
 				(string2 stopUpd:)
-				(string3 setCycle: End self)
+				(string3 setCycle: EndLoop self)
 			)
 			(6
 				(string3 stopUpd:)
@@ -308,9 +308,9 @@
 				(= ticks 60)
 			)
 			(7
-				(gun setCycle: Fwd)
+				(gun setCycle: Forward)
 				(sFX number: 653 flags: 1 loop: -1 play:)
-				(gunFire init: cycleSpeed: 10 setCycle: End)
+				(gunFire init: cycleSpeed: 10 setCycle: EndLoop)
 				(= ticks 180)
 			)
 			(8
@@ -340,7 +340,7 @@
 					setLoop: 2
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -350,7 +350,7 @@
 				(= cycles 1)
 			)
 			(3
-				(ego view: 652 setLoop: 2 setCel: 0 setCycle: Beg self)
+				(ego view: 652 setLoop: 2 setCel: 0 setCycle: BegLoop self)
 			)
 			(4
 				(ego
@@ -401,18 +401,18 @@
 					setLoop: 4
 					setCel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(theMusic2 stop:)
 				(sFX number: 655 flags: 1 loop: 1 play:)
-				(ego setLoop: 5 setCel: 0 setCycle: CT 5 1 self)
+				(ego setLoop: 5 setCel: 0 setCycle: CycleTo 5 1 self)
 				(sword dispose:)
 			)
 			(3
 				(sFX number: 652 flags: 1 loop: 1 play:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4 (= ticks 150))
 			(5
@@ -446,7 +446,7 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 4
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2
@@ -455,7 +455,7 @@
 			)
 			(3
 				(sFX number: 651 flags: 1 play:)
-				(ego setCycle: Osc 1 self)
+				(ego setCycle: Oscillate 1 self)
 			)
 			(4 (sFX stop:) (= ticks 30))
 			(5
@@ -463,11 +463,11 @@
 					setLoop: 1
 					setCel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6 (= ticks 150))
-			(7 (ego setCycle: Beg self))
+			(7 (ego setCycle: BegLoop self))
 			(8
 				(ego normalize: 831 loop: 0)
 				(theGame handsOn:)
@@ -489,7 +489,7 @@
 					setLoop: 2
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -498,11 +498,11 @@
 					setLoop: 0
 					setCel: 4
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(sFX number: 651 flags: 1 loop: -1 play:)
 			)
-			(2 (ego setCycle: CT 4 -1 self))
+			(2 (ego setCycle: CycleTo 4 -1 self))
 			(3
 				(sFX stop:)
 				(ego
@@ -516,7 +516,7 @@
 			(4
 				(messager say: 35 21 0 0 self)
 			)
-			(5 (ego setCycle: Beg self))
+			(5 (ego setCycle: BegLoop self))
 			(6
 				(ego normalize: 831 loop: 1)
 				(theGame handsOn:)
@@ -538,7 +538,7 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 4
-					setCycle: Osc 1 self
+					setCycle: Oscillate 1 self
 				)
 				(sFX number: 651 flags: 1 loop: -1 play:)
 			)
@@ -548,13 +548,13 @@
 					setLoop: 1
 					setCel: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(messager say: 35 21 0 0 self)
 			)
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				(ego normalize: 831 loop: 0)
 				(theGame handsOn:)
@@ -570,7 +570,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego view: 652 setLoop: 4 setCel: 0 setCycle: CT 3 1 self)
+				(ego view: 652 setLoop: 4 setCel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(1
 				(sFX number: 49 flags: 1 loop: 1 play: self)
@@ -650,11 +650,11 @@
 						(sFX number: 49 flags: 1 loop: 1 play:)
 						(if cel
 							(secretButton dispose:)
-							(self setCycle: Beg self)
+							(self setCycle: BegLoop self)
 							(Bclr 117)
 						else
 							(secretButton init: approachVerbs: 4)
-							(self setCycle: End self)
+							(self setCycle: EndLoop self)
 							(Bset 117)
 						)
 					else

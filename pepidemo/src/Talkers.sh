@@ -6,4 +6,7 @@
 
 (define NARRATOR 99)
 (define PEPPER 48)
+(define MOM 3)
+(define DAD 4)
+(define FRED 19)
 

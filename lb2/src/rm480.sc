@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 480)
-(include sci.sh)
+(include game.sh) (include "480.shm")
 (use Main)
 (use LBRoom)
 (use Inset)
@@ -29,15 +29,15 @@
 )
 (instance rm480 of LBRoom
 	(properties
-		noun 1
+		noun N_ROOM
 		picture 480
 		north 430
 	)
 	
 	(method (init)
-		(LoadMany 128 423 424 741 426 482 442 483 481 480 831)
-		(LoadMany 132 52 483 480 481 482)
-		(Load rsSCRIPT 939)
+		(LoadMany RES_VIEW 423 424 741 426 482 442 483 481 480 831)
+		(LoadMany RES_SOUND 52 483 480 481 482)
+		(Load RES_SCRIPT 939)
 		(ego
 			init:
 			normalize: (if (== currentAct 5) 426 else 831)
@@ -109,17 +109,19 @@
 				(narrator modeless?)
 				(or
 					(and
-						(== (event type?) evKEYBOARD)
-						(OneOf (event message?) 27 13)
+						(== (event type?) keyDown)
+						(OneOf (event message?) ESC ENTER)
 					)
 					(and
-						(== (event type?) evMOUSEBUTTON)
+						(== (event type?) mouseDown)
 						(not (event modifiers?))
 					)
 				)
 			)
-			(event claimed: 1)
-			(if modelessDialog (modelessDialog dispose:))
+			(event claimed: TRUE)
+			(if modelessDialog
+				(modelessDialog dispose:)
+			)
 		else
 			(super handleEvent: event)
 		)
@@ -171,11 +173,11 @@
 				(= cycles 3)
 			)
 			(6
-				(oriley view: 424 cel: 0 setCycle: End self)
+				(oriley view: 424 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(noise number: 80 flags: 1 loop: 1 play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(8
 				(= deathReason 0)
@@ -199,15 +201,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LoadMany 128 482)
-				(Load rsSOUND 480)
+				(LoadMany RES_VIEW 482)
+				(Load RES_SOUND 480)
 				(theMusic2 stop:)
 				(theMusic number: 482 loop: -1 flags: 1 play:)
 				(theGame handsOff:)
 				(= cycles 1)
 			)
 			(1
-				(rexMouth setCycle: End self)
+				(rexMouth setCycle: EndLoop self)
 				(noise number: 480 flags: 1 play:)
 			)
 			(2
@@ -218,7 +220,7 @@
 				)
 			)
 			(3
-				(lump cel: 0 setCycle: End self)
+				(lump cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(ego
@@ -230,12 +232,12 @@
 					posn: 184 141
 					setPri: 12
 					setScale: Scaler 100 100 190 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 179 160 self
 				)
 			)
 			(5
-				(ego setLoop: 0 setCycle: End self)
+				(ego setLoop: 0 setCycle: EndLoop self)
 				(= gEgoMoveSpeed (ego moveSpeed?))
 			)
 			(6
@@ -244,13 +246,13 @@
 					setLoop: 6
 					yStep: 2
 					posn: 171 158
-					setCycle: Rev
+					setCycle: Reverse
 					setSpeed: 10
 					setMotion: MoveTo 165 162 self
 				)
 			)
 			(7
-				(lump cel: 0 setCycle: End self)
+				(lump cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(steve show: setCel: 0 yStep: 8 setLoop: 1)
@@ -270,7 +272,7 @@
 					approachY: 189
 					approachVerbs: 4 1
 				)
-				(steve posn: 179 160 setCycle: End self)
+				(steve posn: 179 160 setCycle: EndLoop self)
 			)
 			(11
 				(steve setLoop: 1 setMotion: MoveTo 160 158 self)
@@ -311,13 +313,13 @@
 		(switch (= state newState)
 			(0
 				(theGame points: 1 138)
-				(rexMouth setCycle: End self)
+				(rexMouth setCycle: EndLoop self)
 			)
 			(1
-				(lump cel: 0 setCycle: End self)
+				(lump cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(rexMouth setCycle: End self)
+				(rexMouth setCycle: EndLoop self)
 				(noise number: 480 flags: 1 play:)
 			)
 			(3 (oriley show:) (= cycles 1))
@@ -328,7 +330,7 @@
 					setPri: 15
 					setMotion: MoveTo 182 120 self
 				)
-				(rexMouth setCycle: End self)
+				(rexMouth setCycle: EndLoop self)
 			)
 			(5
 				(= local1 1)
@@ -337,13 +339,13 @@
 				0
 			)
 			(6
-				(rexMouth setCycle: Beg self)
-				(oriley setCycle: End)
+				(rexMouth setCycle: BegLoop self)
+				(oriley setCycle: EndLoop)
 			)
 			(7
-				(oriley setCycle: CT 3 -1 self)
+				(oriley setCycle: CycleTo 3 -1 self)
 			)
-			(8 (oriley setCycle: End self))
+			(8 (oriley setCycle: EndLoop self))
 			(9
 				(= seconds 2)
 				(steve ignoreActors: 1)
@@ -358,7 +360,7 @@
 					loop: 13
 					cel: 0
 					setScale: 135
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13 (= seconds 3))
@@ -389,16 +391,16 @@
 				(= cycles 1)
 			)
 			(1
-				(lump cel: 0 setCycle: End self)
+				(lump cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(oriley setLoop: 1 posn: 186 141 show:)
 				(= cycles 1)
 			)
-			(3 (oriley setCycle: End self))
+			(3 (oriley setCycle: EndLoop self))
 			(4
 				(noise number: 52 flags: 1 loop: 1 play:)
-				(oriley setLoop: 5 posn: 177 143 setCycle: End self)
+				(oriley setLoop: 5 posn: 177 143 setCycle: EndLoop self)
 			)
 			(5
 				(steve
@@ -407,7 +409,7 @@
 					cel: 0
 					posn: 125 169
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -420,7 +422,7 @@
 					((and (>= (ego x?) 180) (<= (ego y?) 141)) (oriley setLoop: 7))
 					(else (oriley setLoop: 8))
 				)
-				(oriley setCycle: End self)
+				(oriley setCycle: EndLoop self)
 				(noise number: 52 flags: 1 loop: 1 play:)
 			)
 			(7
@@ -466,11 +468,11 @@
 					setLoop: 0
 					cel: 0
 					setScale: Scaler 100 100 190 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(bone dispose:)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3
 				(ego view: 831 loop: 7)
 				(= cycles 1)
@@ -512,7 +514,7 @@
 				(noise number: 480 play: self)
 			)
 			(3
-				(rexMouth setCycle: Osc)
+				(rexMouth setCycle: Oscillate)
 				(messager say: 5 4 2 0 self)
 			)
 			(4

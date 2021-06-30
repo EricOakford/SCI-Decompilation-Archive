@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 240)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use CycleBet)
 (use BalloonTalker)
@@ -390,7 +390,7 @@
 				(= cycles 2)
 			)
 			(7
-				(ego setCycle: CT 2 1 self)
+				(ego setCycle: CycleTo 2 1 self)
 				(theMusic2 number: 2401 setLoop: 1 play:)
 			)
 			(8
@@ -406,7 +406,7 @@
 				(= ticks 20)
 			)
 			(10
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(theMusic2 number: 2401 setLoop: 1 play:)
 			)
 			(11 (= ticks 20))
@@ -473,7 +473,7 @@
 					setCel: 0
 					x: 128
 					y: 154
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -483,16 +483,16 @@
 					setCel: 0
 					x: 130
 					y: 131
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(3
 				(theMusic2 number: 2400 setLoop: 1 play:)
-				(ego setCycle: CT 7 1 self)
+				(ego setCycle: CycleTo 7 1 self)
 			)
 			(4
 				(theMusic2 number: 2400 setLoop: 1 play:)
-				(ego setCycle: CT 12 1 self)
+				(ego setCycle: CycleTo 12 1 self)
 			)
 			(5
 				(theMusic2 number: 2400 setLoop: 1 play:)
@@ -504,7 +504,7 @@
 					cel: 0
 					forceUpd:
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(6
 				(canvasCover
@@ -528,7 +528,7 @@
 					x: 90
 					y: 153
 					put: 6
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(8
@@ -575,7 +575,7 @@
 			(5
 				(digSpot init: approachVerbs: 86 30 6)
 				(roomPoly dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(theMusic2 number: 2402 setLoop: 1 play:)
 			)
 			(6
@@ -889,7 +889,7 @@
 					setLoop: 4
 					setCel: 0
 					posn: 247 140
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -899,7 +899,7 @@
 					y: 107
 					setLoop: 3
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6 (= cycles 2))
@@ -911,7 +911,7 @@
 				(Bset 57)
 				(= seconds 2)
 			)
-			(9 (ego setCycle: Beg self))
+			(9 (ego setCycle: BegLoop self))
 			(10
 				((ScriptID 895 0)
 					view: 240
@@ -919,7 +919,7 @@
 					y: 140
 					setLoop: 4
 					setCel: 10
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(11
@@ -964,7 +964,7 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6 (= ticks 30))
@@ -974,7 +974,7 @@
 					setLoop: 1
 					setCel: 0
 					setPri: 14
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8
@@ -1024,7 +1024,7 @@
 					setLoop: 3
 					setCel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic2 number: 903 setLoop: -1 play:)
 			)
@@ -1057,7 +1057,7 @@
 				((ScriptID 895 1) ignoreActors: 0)
 				(= cycles 2)
 			)
-			(9 (ego setCycle: Beg self))
+			(9 (ego setCycle: BegLoop self))
 			(10
 				(ego normalize:)
 				(roomPoly dispose:)
@@ -1139,7 +1139,7 @@
 					setLoop: 4
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -1206,7 +1206,7 @@
 					(self dispose:)
 				)
 			)
-			(5 (ego setCycle: End self))
+			(5 (ego setCycle: EndLoop self))
 			(6
 				(if (and (ego has: 7) (ego has: 8))
 					((ScriptID 895 0)

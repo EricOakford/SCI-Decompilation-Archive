@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 560)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -34,8 +34,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 560 561 562 563 564 814 831)
-		(LoadMany 132 560 561 558 562 564 566 565 44 45 721 567)
+		(LoadMany RES_VIEW 560 561 562 563 564 814 831)
+		(LoadMany RES_SOUND 560 561 558 562 564 566 565 44 45 721 567)
 		(ego
 			init:
 			normalize: 831
@@ -71,7 +71,7 @@
 		)
 		(super init:)
 		(if (== prevRoomNum north)
-			(Palette palSET_INTENSITY 0 255 100)
+			(Palette PALIntensity 0 255 100)
 		)
 		(theMusic2 number: 565 loop: -1 flags: 1 play:)
 		(if
@@ -916,7 +916,7 @@
 					posn: 78 141
 					setScale: Scaler 100 100 190 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -924,7 +924,7 @@
 				(theGame points: 1 175)
 				(= cycles 3)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego
 					normalize: 831
@@ -969,13 +969,13 @@
 					cel: 0
 					posn: 218 153
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= ticks 30))
 			(4
 				(sFX number: 566 flags: 1 loop: 1 play:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5 (= ticks 60))
 			(6
@@ -1008,7 +1008,7 @@
 						((ScriptID 561 1) lastCel:)
 					)
 					(theGame handsOff:)
-					((ScriptID 561 1) setPri: 5 setCycle: Beg self)
+					((ScriptID 561 1) setPri: 5 setCycle: BegLoop self)
 					(= local1 1)
 				else
 					(= cycles 1)
@@ -1025,7 +1025,7 @@
 			)
 			(2
 				(if (!= ((ScriptID 561 0) cel?) 0)
-					((ScriptID 561 0) setCycle: Beg self)
+					((ScriptID 561 0) setCycle: BegLoop self)
 					(sFX number: 45 flags: 1 loop: 1 play:)
 				else
 					(= cycles 1)
@@ -1058,7 +1058,7 @@
 			(2
 				(ego x: 306 y: 147 setPri: 5 setHeading: 180)
 				(sFX number: 721 flags: 1 loop: 1 play:)
-				(secretDoor setCycle: End self)
+				(secretDoor setCycle: EndLoop self)
 			)
 			(3
 				(sFX stop:)
@@ -1066,7 +1066,7 @@
 			)
 			(4
 				(sFX number: 721 flags: 1 loop: 1 play:)
-				(secretDoor setCycle: Beg self)
+				(secretDoor setCycle: BegLoop self)
 			)
 			(5
 				(secretDoor stopUpd:)

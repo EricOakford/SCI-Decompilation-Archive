@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 660)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -30,8 +30,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 132 662 661 660)
-		(LoadMany 130 94 2660)
+		(LoadMany RES_SOUND 662 661 660)
+		(LoadMany RES_SCRIPT 94 2660)
 		(if (== currentAct 5)
 			(self setRegions: 94)
 			(curRoom obstacles: (List new:))
@@ -102,10 +102,10 @@
 				(Face oriley ego)
 				(= cycles 4)
 			)
-			(3 (oriley setCycle: End self))
+			(3 (oriley setCycle: EndLoop self))
 			(4
 				(thudSound play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(5
 				(= deathReason 0)
@@ -162,12 +162,12 @@
 					loop: 0
 					cel: 0
 					setScale: Scaler 100 100 0 10
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(2
-				(ego setCycle: End self)
-				(crank setCycle: End self)
+				(ego setCycle: EndLoop self)
+				(crank setCycle: EndLoop self)
 				(theMusic2 number: 661 flags: 1 loop: 1 play:)
 			)
 			(3
@@ -183,8 +183,8 @@
 					maxScale: 256
 				)
 				(theMusic2 number: 662 flags: 1 loop: -1 play:)
-				(wall1 setCycle: Fwd)
-				(wall2 setCycle: Fwd)
+				(wall1 setCycle: Forward)
+				(wall2 setCycle: Forward)
 				(= cycles 1)
 			)
 			(5 (= cycles 10))
@@ -199,8 +199,8 @@
 				(if (< (wall1 cycleSpeed?) 8)
 					(self changeState: 8)
 				else
-					(wall1 setCycle: End)
-					(wall2 setCycle: End)
+					(wall1 setCycle: EndLoop)
+					(wall2 setCycle: EndLoop)
 					(= cycles 1)
 				)
 			)

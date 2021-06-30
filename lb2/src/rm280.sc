@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 280)
-(include sci.sh)
+(include game.sh) (include "280.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -30,7 +30,7 @@
 )
 (instance rm280 of LBRoom
 	(properties
-		noun 6
+		noun N_ROOM
 		picture 280
 		north 290
 		south 210
@@ -38,8 +38,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 285 284 852 281 830 283)
-		(LoadMany 132 40 97 281 280 252)
+		(LoadMany RES_VIEW 285 284 852 281 830 283)
+		(LoadMany RES_SOUND 40 97 281 280 252)
 		(self setRegions: 91)
 		(ego init: normalize: 830 setScale: Scaler 90 20 190 0)
 		(switch prevRoomNum
@@ -58,69 +58,45 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						121
-						129
-						101
-						129
-						123
-						151
-						124
-						160
-						94
-						163
-						94
-						179
-						55
-						182
-						49
-						187
-						206
-						187
-						195
-						189
-						0
-						189
-						0
-						0
-						319
-						0
-						319
-						189
-						311
-						139
-						256
-						144
-						288
-						152
-						226
-						161
-						209
-						151
-						182
-						154
-						168
-						127
-						140
-						127
-						140
-						116
-						148
-						116
-						148
-						120
-						162
-						120
-						162
-						106
-						121
-						106
+						121 129
+						101 129
+						123 151
+						124 160
+						94 163
+						94 179
+						55 182
+						49 187
+						206 187
+						195 189
+						0 189
+						0 0
+						319 0
+						319 189
+						311 139
+						256 144
+						288 152
+						226 161
+						209 151
+						182 154
+						168 127
+						140 127
+						140 116
+						148 116
+						148 120
+						162 120
+						162 106
+						121 106
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 246 164 277 162 275 167 249 170
+					type: PBarredAccess
+					init:
+						246 164
+						277 162
+						275 167
+						249 170
 					yourself:
 				)
 		)
@@ -147,7 +123,7 @@
 		(stuckDoor init: approachVerbs: 4)
 		(taxiSign init:)
 		(taxi init: setScale: 200)
-		(Message msgGET 280 2 48 0 1 @local0)
+		(Message MsgGet 280 2 48 0 1 @local0)
 		(theDrunk name: @local0)
 	)
 	
@@ -233,15 +209,15 @@
 					setScale: Scaler 100 100 190 0
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(drunk setScript: 0 cycleSpeed: 10 setCycle: End self)
+				(drunk setScript: 0 cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(4
 				(messager say: 2 4 1 2)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
 				(ego
@@ -269,11 +245,11 @@
 					setScale: Scaler 100 100 190 0
 					loop: 0
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(newsPaper dispose:)
 			)
-			(1 (ego setCycle: End self))
+			(1 (ego setCycle: EndLoop self))
 			(2
 				(theGame handsOn:)
 				(ego get: 0)
@@ -299,12 +275,12 @@
 		(switch (= state newState)
 			(0 (= ticks 30))
 			(1
-				(drunk setCycle: CT 2 1)
+				(drunk setCycle: CycleTo 2 1)
 				(carSound number: 281 flags: 1 loop: 1 play: self)
 			)
 			(2 (= ticks 30))
 			(3
-				(drunk setCycle: CT 0 -1 self)
+				(drunk setCycle: CycleTo 0 -1 self)
 			)
 			(4 (self init:))
 		)
@@ -328,7 +304,7 @@
 					view: 852
 					loop: 0
 					posn: (- (ego x?) 2) (ego y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic number: 97 flags: 1 loop: 1 play:)
 			)

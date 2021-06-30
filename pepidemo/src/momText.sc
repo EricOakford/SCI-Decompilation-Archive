@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 121)
-(include sci.sh)
+(include game.sh) (include "121.shm")
 (use Main)
 (use rm120)
 (use CycleBet)
@@ -19,20 +19,20 @@
 )
 
 (local
-	local0
-	local1
+	savePepSpeed
+	saveDogSpeed
 )
 (instance mom of Actor
 	(properties
 		view 123
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 )
 
 (instance dad of Actor
 	(properties
 		view 123
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 )
 
@@ -50,7 +50,7 @@
 	)
 	
 	(method (say)
-		(mom setCycle: Fwd)
+		(mom setCycle: Forward)
 		(super say: &rest)
 	)
 )
@@ -69,13 +69,12 @@
 	)
 	
 	(method (say)
-		(dad setCycle: Fwd)
+		(dad setCycle: Forward)
 		(super say: &rest)
 	)
 )
 
 (instance parentsCartoonScr of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -100,7 +99,7 @@
 				(cast eachElementDo: #stopUpd)
 			)
 			(5
-				(messager say: 1 0 1 0 self 121)
+				(messager say: N_PARENTS ALL C_PARENTS_TALK 0 self 121)
 			)
 			(6
 				(theMusic2 loop: 0)
@@ -118,7 +117,6 @@
 )
 
 (instance lockjawChewGumScr of Script
-	(properties)
 	
 	(method (dispose)
 		((ScriptID 895 1) normal: 1)
@@ -131,8 +129,8 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(= local0 ((ScriptID 895 0) cycleSpeed?))
-				(= local1 ((ScriptID 895 1) cycleSpeed?))
+				(= savePepSpeed ((ScriptID 895 0) cycleSpeed?))
+				(= saveDogSpeed ((ScriptID 895 1) cycleSpeed?))
 				(proc120_2 1)
 				(Bset 6)
 				(= cycles 2)
@@ -161,7 +159,7 @@
 				(= cycles 3)
 			)
 			(4
-				(messager say: 2 104 0 1 self 121)
+				(messager say: 2 104 ALL 1 self 121)
 			)
 			(5
 				((ScriptID 895 1) x: 1000 hide: stopUpd:)
@@ -171,12 +169,12 @@
 					cel: 0
 					cycleSpeed: 5
 					posn: 215 154
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
 				(theMusic2 number: 1204 loop: 1 play: self)
-				(ego setLoop: 5 cel: 0 setCycle: Fwd)
+				(ego setLoop: 5 cel: 0 setCycle: Forward)
 			)
 			(7
 				(theMusic2 number: 1205 loop: 1 play: self)
@@ -184,7 +182,7 @@
 					cycleSpeed: 4
 					setLoop: 3
 					cel: 0
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(8)
@@ -204,7 +202,7 @@
 			)
 			(13
 				((ScriptID 2000 3) winX: 0 winY: 0)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(14)
 			(15
@@ -218,7 +216,7 @@
 					ignoreActors: 1
 					init:
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic2 number: 949 loop: 1 play: self)
 			)
@@ -231,12 +229,12 @@
 					cel: 0
 					x: (- (ego x?) 2)
 					y: (+ (ego y?) 1)
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(18
 				(theMusic2 number: 1206 loop: 1 play: self)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(19)
 			(20
@@ -245,7 +243,7 @@
 					view: 838
 					setLoop: 1
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					cycleSpeed: 6
 					x: 207
 					y: 154
@@ -259,7 +257,7 @@
 					y: 155
 					loop: 8
 					cel: 5
-					cycleSpeed: local0
+					cycleSpeed: savePepSpeed
 				)
 				((ScriptID 120 4) init: posn: 261 154)
 				(proc120_2)
@@ -328,14 +326,14 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8
 				(messager say: 1 7 3 1 self 121)
 			)
 			(9
-				((ScriptID 895 0) setCycle: Beg self)
+				((ScriptID 895 0) setCycle: BegLoop self)
 			)
 			(10
 				((ScriptID 895 1) show:)
@@ -382,7 +380,7 @@
 					view: 838
 					setLoop: 1
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(ego setMotion: PolyPath 45 111 self)
 			)

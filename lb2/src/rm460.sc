@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 460)
-(include sci.sh)
+(include game.sh) (include "460.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -23,14 +23,93 @@
 (local
 	local0
 	local1
-	[thePoints 44] = [83 148 64 168 297 169 296 154 246 154 246 138 217 141 229 146 230 157 189 157 187 146 187 138 162 139 174 150 160 160 104 152 144 141 102 146 103 120 72 120 92 123 96 146]
-	[thePoints_2 30] = [70 160 64 168 297 169 296 154 246 154 246 138 217 141 229 146 230 157 189 157 187 146 187 138 162 139 174 150 160 160]
-	[thePoints_3 46] = [83 148 64 168 297 169 296 154 270 154 280 119 269 141 217 141 229 146 230 157 189 157 187 146 187 138 162 139 174 150 160 160 119 155 144 141 102 146 103 120 72 120 92 123 96 146]
-	[thePoints_4 30] = [73 156 64 168 297 169 296 154 274 154 277 120 267 139 217 141 229 146 230 157 189 157 187 146 187 138 162 139 170 156]
+	thePoints = [
+		83 148
+		64 168
+		297 169
+		296 154
+		246 154
+		246 138
+		217 141
+		229 146
+		230 157
+		189 157
+		187 146
+		187 138
+		162 139
+		174 150
+		160 160
+		104 152
+		144 141
+		102 146
+		103 120
+		72 120
+		92 123
+		96 146
+		]
+	thePoints_2 = [
+		70 160
+		64 168
+		297 169
+		296 154
+		246 154
+		246 138
+		217 141
+		229 146
+		230 157
+		189 157
+		187 146
+		187 138
+		162 139
+		174 150
+		160 160
+		]
+	thePoints_3 = [
+		83 148
+		64 168
+		297 169
+		296 154
+		270 154
+		280 119
+		269 141
+		217 141
+		229 146
+		230 157
+		189 157
+		187 146
+		187 138
+		162 139
+		174 150
+		160 160
+		119 155
+		144 141
+		102 146
+		103 120
+		72 120
+		92 123
+		96 146
+		]
+	thePoints_4 = [
+		73 156
+		64 168
+		297 169
+		296 154
+		274 154
+		277 120
+		267 139
+		217 141
+		229 146
+		230 157
+		189 157
+		187 146
+		187 138
+		162 139
+		170 156
+		]
 )
 (instance rm460 of LBRoom
 	(properties
-		noun 1
+		noun N_ROOM
 		picture 460
 		east 660
 		west 448
@@ -38,8 +117,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 460 462 461 858 423 424)
-		(LoadMany 132 462 460)
+		(LoadMany RES_VIEW 460 462 461 858 423 424)
+		(LoadMany RES_SOUND 462 460)
 		(self setRegions: 94)
 		(ego init: setScale: 165 normalize: 426)
 		(switch prevRoomNum
@@ -177,9 +256,9 @@
 				(if (Btst 102) (= cycles 1) else (self changeState: 4))
 			)
 			(3
-				(oriley view: 424 setCycle: Fwd)
-				(moverCrate setCycle: End self)
-				(splinters init: setCycle: End)
+				(oriley view: 424 setCycle: Forward)
+				(moverCrate setCycle: EndLoop self)
+				(splinters init: setCycle: EndLoop)
 				(theMusic2 number: 444 flags: 1 loop: 1 play:)
 			)
 			(4
@@ -196,10 +275,10 @@
 				(Face oriley ego)
 				(= cycles 4)
 			)
-			(6 (oriley setCycle: End self))
+			(6 (oriley setCycle: EndLoop self))
 			(7
 				(thudSound play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(8
 				(= deathReason 0)
@@ -236,13 +315,13 @@
 					cel: 0
 					posn: 256 136
 					setScale: Scaler 100 100 190 21
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
 				(theMusic2 number: 721 flags: 1 loop: 1 play:)
 				(= local1 1)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(shoveCrate setMotion: MoveTo 281 140 self)
 			)
 			(3 0)
@@ -288,7 +367,7 @@
 					cel: 0
 					posn: 196 147
 					setScale: Scaler 100 100 190 21
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -297,9 +376,9 @@
 					setLoop: 3
 					posn: 108 32
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(cable setCycle: End self)
+				(cable setCycle: EndLoop self)
 			)
 			(2
 				(theMusic2 number: 462 flags: 1 play:)
@@ -347,10 +426,10 @@
 					cel: 0
 					setPri: 14
 					setScale: Scaler 100 100 190 21
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(crane setCycle: End self)
-				(moverCrate setCycle: End self)
+				(crane setCycle: EndLoop self)
+				(moverCrate setCycle: EndLoop self)
 			)
 			(3 0)
 			(4 0)

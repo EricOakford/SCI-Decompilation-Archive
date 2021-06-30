@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 330)
-(include sci.sh)
+(include game.sh) (include "330.shm")
 (use Main)
 (use LBRoom)
 (use Inset)
@@ -26,7 +26,7 @@
 )
 (instance rm330 of LBRoom
 	(properties
-		noun 7
+		noun N_ROOM
 		picture 330
 		horizon 125
 		north 335
@@ -36,9 +36,9 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 1410 1411 330 331 213)
-		(LoadMany 132 332 330 40)
-		(LoadMany 129 415 410)
+		(LoadMany RES_VIEW 1410 1411 330 331 213)
+		(LoadMany RES_SOUND 332 330 40)
+		(LoadMany RES_PIC 415 410)
 		(ego
 			normalize: (if (ego wearingGown?) 831 else 830)
 			init:
@@ -82,57 +82,36 @@
 			)
 		)
 		(if (> currentAct 1)
-			(Palette palSET_INTENSITY 0 255 60)
+			(Palette PALIntensity 0 255 60)
 		)
 		(super init:)
 		(theMusic2 number: 333 flags: 1 loop: -1 play:)
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						0
-						143
-						0
-						169
-						62
-						162
-						106
-						158
-						178
-						152
-						196
-						144
-						288
-						140
-						300
-						137
-						319
-						137
-						319
-						127
-						277
-						128
-						270
-						134
-						239
-						134
-						212
-						116
-						166
-						116
-						150
-						116
-						154
-						131
-						110
-						140
-						62
-						144
-						32
-						139
-						0
-						141
+						0 143
+						0 169
+						62 162
+						106 158
+						178 152
+						196 144
+						288 140
+						300 137
+						319 137
+						319 127
+						277 128
+						270 134
+						239 134
+						212 116
+						166 116
+						150 116
+						154 131
+						110 140
+						62 144
+						32 139
+						0 141
 					yourself:
 				)
 		)
@@ -149,8 +128,8 @@
 		(steps setOnMeCheck: 1 16384 init:)
 		(if (< currentAct 2) (taxi init: stopUpd:))
 		(street setOnMeCheck: 1 64 init:)
-		(fountain1 init: setCycle: Fwd)
-		(fountain2 init: setCycle: Fwd)
+		(fountain1 init: setCycle: Forward)
+		(fountain2 init: setCycle: Forward)
 	)
 	
 	(method (doit)
@@ -271,18 +250,18 @@
 			)
 			(4
 				(curRoom drawPic: 330)
-				(Palette palSET_INTENSITY 0 255 60)
+				(Palette PALIntensity 0 255 60)
 				(cast eachElementDo: #show)
 				(steve setLoop: 0)
 				(ego setMotion: PolyPath 158 146 self)
 			)
 			(5
-				(DrawPic 780 dpOPEN_FADEPALETTE)
+				(DrawPic 780 FADEOUT)
 				(cast eachElementDo: #hide)
 				(= cycles 2)
 			)
 			(6
-				(Palette palSET_INTENSITY 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(curRoom newRoom: 350)
 				(self dispose:)
 			)

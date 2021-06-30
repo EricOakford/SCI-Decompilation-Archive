@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 450)
-(include sci.sh)
+(include game.sh) (include "450.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -25,7 +25,7 @@
 )
 (instance rm450 of LBRoom
 	(properties
-		noun 13
+		noun N_ROOM
 		picture 450
 		south 448
 		west 454
@@ -34,9 +34,9 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 454 423 452 858 424)
-		(LoadMany 132 450 600)
-		(LoadMany 130 2450)
+		(LoadMany RES_VIEW 454 423 452 858 424)
+		(LoadMany RES_SOUND 450 600)
+		(LoadMany RES_SCRIPT 2450)
 		(ego
 			init:
 			normalize: (if (== currentAct 5) 426 else 831)
@@ -293,10 +293,10 @@
 				(Face oriley ego)
 				(= cycles 4)
 			)
-			(3 (oriley setCycle: End self))
+			(3 (oriley setCycle: EndLoop self))
 			(4
 				(thudSound play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(5
 				(= deathReason 0)
@@ -328,12 +328,12 @@
 					cel: 0
 					cycleSpeed: 12
 					setScale: Scaler 100 100 190 21
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(1
-				(ego setCycle: End self)
-				(glass setCycle: End self)
+				(ego setCycle: EndLoop self)
+				(glass setCycle: EndLoop self)
 			)
 			(2 0)
 			(3 (messager say: 4 4 1 0 self))

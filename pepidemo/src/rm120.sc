@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 120)
-(include sci.sh)
+(include game.sh) (include "120.shm")
 (use Main)
 (use CycleBet)
 (use BalloonTalker)
@@ -25,48 +25,54 @@
 	obrienTalker 15
 )
 
+(enum 6	;room inventory items
+	iHardGum	;6
+	iSoftGum	;7
+	iDrainPipe	;8
+)
+
 (local
 	local0
 	local1
 	local2
-	[local3 2] = [0 1]
+	local3 = [0 1]
 	local5
 	local6 =  1
 	local7
-	[local8 8]
-	[local16 8] = [10 10 20 10 20 20 10 20]
+	[lockjawPts1 8]
+	lockjawPts2 = [10 10 20 10 20 20 10 20]
 	local24
-	local25
+	birdLookCount
 	local26
 	local27
-	[local28 5] = [0 17 18 19 20]
+	local28 = [0 17 18 19 20]
 	local33
 	local34
-	[local35 9] = [163 154 3 3 86 0 0 120]
+	local35 = [163 154 3 3 86 0 0 120]
 )
 (procedure (proc120_2 &tmp temp0 temp1 temp2 temp3)
 	(= temp0 (+ ((ScriptID 895 1) x?) 23))
 	(= temp1 (- ((ScriptID 895 1) x?) 23))
 	(= temp2 (- ((ScriptID 895 1) y?) 11))
 	(= temp3 (+ ((ScriptID 895 1) y?) 7))
-	(= [local8 0] temp0)
-	(= [local8 1] temp2)
-	(= [local8 2] temp0)
-	(= [local8 3] temp3)
-	(= [local8 4] temp1)
-	(= [local8 5] temp3)
-	(= [local8 6] temp1)
-	(= [local8 7] temp2)
+	(= [lockjawPts1 0] temp0)
+	(= [lockjawPts1 1] temp2)
+	(= [lockjawPts1 2] temp0)
+	(= [lockjawPts1 3] temp3)
+	(= [lockjawPts1 4] temp1)
+	(= [lockjawPts1 5] temp3)
+	(= [lockjawPts1 6] temp1)
+	(= [lockjawPts1 7] temp2)
 	(if (not argc)
-		(lockjawPoly points: @local8 size: 4)
+		(lockjawPoly points: @lockjawPts1 size: 4)
 	else
-		(lockjawPoly points: @local16 size: 4)
+		(lockjawPoly points: @lockjawPts2 size: 4)
 	)
 )
 
 (instance rm120 of ADRoom
 	(properties
-		noun 22
+		noun N_ROOM
 		picture 120
 		north 135
 		vanishingY 20
@@ -74,16 +80,15 @@
 	
 	(method (init)
 		(super init: &rest)
-		(LoadMany 128 121 132 807 122)
+		(LoadMany RES_VIEW 121 132 807 122)
 		(inventory
-			addAfter:
-				(inventory at: 5)
+			addAfter: (inventory at: iFleas)
 				(Hard_Gum init: yourself:)
 				(Soft_Gum init: yourself:)
 				(Drain_Pipe init: yourself:)
 		)
 		(if (Btst 4)
-			(pipeFeature noun: 5)
+			(pipeFeature noun: N_PIPE)
 			(Bset 3)
 			(drainPipe
 				init:
@@ -91,125 +96,144 @@
 				x: 88
 				y: 67
 				setPri: 5
-				noun: 5
+				noun: N_PIPE
 				approachX: 64
 				approachY: 117
-				approachVerbs: 85 7 6 86 30 89
+				approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_PAW V_TEETH
 				addToPic:
 			)
 		else
 			(drainPipe
 				init:
-				approachVerbs: 85 7 6 86 30 89 10
+				approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH V_SOFT_GUM
 				stopUpd:
 			)
 		)
 		(if (Btst 6)
 			(Bset 54)
-			(if (not (Btst 4)) (ego get: 7))
+			(if (not (Btst 4))
+				(ego get: iSoftGum)
+			)
 		else
 			(hardGum init:)
 		)
-		(mrsOWindow init: approachVerbs: 85 7 6 86 30 89)
+		(mrsOWindow
+			init:
+			approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH
+		)
 		(house init:)
-		(pipeFeature init: approachVerbs: 7 6 103)
-		(porch init: setOnMeCheck: 1 8192)
+		(pipeFeature
+			init:
+			approachVerbs: V_DO V_LOOK V_DRAINPIPE
+		)
+		(porch
+			init:
+			setOnMeCheck: ftrControl cLMAGENTA
+		)
 		(flowerBed
 			init:
-			approachVerbs: 7 6 86 30
-			setOnMeCheck: 1 256
+			approachVerbs: V_DO V_LOOK V_NOSE V_PAW
+			setOnMeCheck: ftrControl cGREY
 		)
 		(lockJawHouse
 			init:
-			approachVerbs: 85 7 6 86 30 89
-			setOnMeCheck: 1 8
+			approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH
+			setOnMeCheck: ftrControl cCYAN
 		)
 		(appleTree
 			init:
-			approachVerbs: 85 7 6 86 30 89
-			setOnMeCheck: 1 2
+			approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH
+			setOnMeCheck: ftrControl cBLUE
 		)
-		(obrienHouse init: approachVerbs: 7 6)
-		(waterSpicket init: approachVerbs: 7 6 86)
-		(waterDish init: approachVerbs: 85 7 6 86 30 89 10 9)
+		(obrienHouse
+			init:
+			approachVerbs: V_DO V_LOOK
+		)
+		(waterSpicket
+			init:
+			approachVerbs: V_DO V_LOOK V_NOSE
+		)
+		(waterDish
+			init:
+			approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH V_SOFT_GUM V_HARD_GUM
+		)
 		(fence
 			init:
-			approachVerbs: 7 6 30 89 86 85
-			setOnMeCheck: 1 128
+			approachVerbs: V_DO V_LOOK V_PAW V_TEETH V_NOSE V_TALK
+			setOnMeCheck: ftrControl cLGREY
 		)
 		(sideWalk
 			init:
-			approachVerbs: 85 7 6 86 30 89
-			setOnMeCheck: 1 1024
+			approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH
+			setOnMeCheck: ftrControl cLGREEN
 		)
 		(pepperWindow
 			init:
-			approachVerbs: 85 7 6 86 30 89
-			setOnMeCheck: 2048
+			approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH
+			setOnMeCheck: ftrControl cLCYAN
 		)
 		(foliage
 			init:
-			setOnMeCheck: 1 256
-			approachVerbs: 85 7 6 86 30 89
+			setOnMeCheck: ftrControl cGREY
+			approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH
 		)
-		(door init: approachVerbs: 7 6 30 86 85)
-		(theMusic number: 120 flags: 1 setLoop: 1 play: self)
+		(door
+			init:
+			approachVerbs: V_DO V_LOOK V_PAW V_NOSE V_TALK
+		)
+		(theMusic
+			number: 120
+			flags: mNOPAUSE
+			setLoop: 1
+			play: self
+		)
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 122 125 155 125 181 141 181 150 139 160 111 160 85 153 85 142
+					type: PBarredAccess
+					init:
+						122 125
+						155 125
+						181 141
+						181 150
+						139 160
+						111 160
+						85 153
+						85 142
 					yourself:
 				)
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						319
-						189
-						319
-						163
-						263
-						163
-						263
-						151
-						319
-						151
-						319
-						132
-						249
-						132
-						249
-						99
-						203
-						99
-						196
-						103
-						196
-						132
-						181
-						132
-						181
-						139
-						154
-						123
-						115
-						123
-						115
-						126
-						64
-						126
-						64
-						117
-						44
-						110
-						0
-						115
-						0
-						189
+						319 189
+						319 163
+						263 163
+						263 151
+						319 151
+						319 132
+						249 132
+						249 99
+						203 99
+						196 103
+						196 132
+						181 132
+						181 139
+						154 123
+						115 123
+						115 126
+						64 126
+						64 117
+						44 110
+						0 115
+						0 189
 					yourself:
 				)
 		)
-		(bird init: setScript: sBird approachVerbs: 7 6 85)
+		(bird
+			init:
+			setScript: sBird
+			approachVerbs: V_DO V_LOOK V_TALK
+		)
 		(self setScript: initScr)
 		(narrator y: 25 x: 20)
 	)
@@ -220,11 +244,7 @@
 			(
 				(and
 					(not (Btst 54))
-					(InRect
-						212
-						139
-						222
-						151
+					(InRect 212 139 222 151
 						((ScriptID 895 0) x?)
 						((ScriptID 895 0) y?)
 					)
@@ -298,17 +318,16 @@
 )
 
 (instance lockjawDoVerb of Actions
-	(properties)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(9
-				(ego put: 6 curRoomNum)
+			(V_HARD_GUM
+				(ego put: iHardGum curRoomNum)
 				(curRoom setScript: (ScriptID 121 3))
 				(= local0 2)
 			)
-			(17
-				(theGame points: 200 1)
+			(V_DOG_HARNESS
+				(theGame points: fPutHarnessOnLockjaw 1)
 				(curRoom setScript: sFinalClimb)
 			)
 			(else 
@@ -319,12 +338,15 @@
 )
 
 (instance pepperDoVerb of Actions
-	(properties)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(9 (messager say: 18 9))
-			(10 (messager say: 18 10))
+			(V_HARD_GUM
+				(messager say: N_PEPPER_ACTIONS V_HARD_GUM)
+			)
+			(V_SOFT_GUM
+				(messager say: N_PEPPER_ACTIONS V_SOFT_GUM)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -337,12 +359,12 @@
 		view 127
 		loop 4
 		priority 14
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 6)
-			(messager say: 2 6 4 2)
+		(if (== theVerb V_LOOK)
+			(messager say: N_BIRD V_LOOK C_BIRD_LAID_EGG 2)
 		else
 			(bird doVerb: theVerb)
 		)
@@ -354,53 +376,69 @@
 		x 262
 		y 161
 		z 100
-		noun 2
+		noun N_BIRD
 		approachX 260
 		approachY 170
 		view 127
 		loop 2
 		priority 14
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(6
-				(++ local25)
+			(V_LOOK
+				(++ birdLookCount)
 				(cond 
-					((== local26 1) (messager say: 2 6 4 1))
-					((> local25 3) (messager say: 2 6 1 1))
-					((== local25 3) (self setScript: sLayEgg))
-					((== local25 2) (messager say: 2 6 3 1))
-					(else (messager say: 2 6 2 1))
+					((== local26 1)
+						(messager say: N_BIRD V_LOOK C_BIRD_LAID_EGG 1)
+					)
+					((> birdLookCount 3)
+						(messager say: N_BIRD V_LOOK C_BIRD_EXHAUSTED 1)
+					)
+					((== birdLookCount 3)
+						(self setScript: sLayEgg)
+					)
+					((== birdLookCount 2)
+						(messager say: N_BIRD V_LOOK C_BIRD_LAYING_EGG 1)
+					)
+					(else
+						(messager say: N_BIRD V_LOOK C_BIRD_IN_NEST 1)
+					)
 				)
 			)
-			(7
+			(V_DO
 				(if (== local26 2)
-					(messager say: 2 7 1)
+					(messager say: N_BIRD V_DO C_BIRD_EXHAUSTED)
 				else
-					(messager say: 2 7 2)
+					(messager say: N_BIRD V_DO C_BIRD_IN_NEST)
 				)
 			)
-			(86 (messager say: 2 86))
-			(30 (messager say: 2 30))
-			(85
+			(V_NOSE
+				(messager say: N_BIRD V_NOSE)
+			)
+			(V_PAW
+				(messager say: N_BIRD V_PAW)
+			)
+			(V_TALK
 				(if (== local26 2)
 					(specialTalker x: 100 y: 45 tailPosn: 4)
-					(messager say: 2 85 2)
+					(messager say: N_BIRD V_TALK C_BIRD_IN_NEST)
 				else
 					(specialTalker x: 107 y: 66 tailPosn: 4)
-					(messager say: 2 85 1)
+					(messager say: N_BIRD V_TALK C_BIRD_EXHAUSTED)
 				)
 			)
-			(89
+			(V_TEETH
 				(if (== local26 2)
-					(messager say: 2 89 1)
+					(messager say: N_BIRD V_TEETH C_BIRD_EXHAUSTED)
 				else
-					(messager say: 2 89 2)
+					(messager say: N_BIRD V_TEETH C_BIRD_IN_NEST)
 				)
 			)
-			(9 (messager say: 2 9))
+			(V_HARD_GUM
+				(messager say: N_BIRD V_HARD_GUM)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -420,7 +458,7 @@
 	(properties
 		x 215
 		y 145
-		noun 9
+		noun N_HARD_GUM
 		approachX 217
 		approachY 141
 		_approachVerbs 33
@@ -441,8 +479,10 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(6 (messager say: 9 6 15))
-			(7
+			(V_LOOK
+				(messager say: N_HARD_GUM V_LOOK C_STEP_IN_GUM)
+			)
+			(V_DO
 				(curRoom setScript: gumWalkScr self 1)
 			)
 			(else 
@@ -452,7 +492,7 @@
 	)
 	
 	(method (cue)
-		(ego get: 6)
+		(ego get: iHardGum)
 	)
 )
 
@@ -460,22 +500,30 @@
 	(properties
 		x 215
 		y 145
-		noun 24
+		noun N_SOFT_GUM
 		approachX 255
 		approachY 150
 		view 120
 		cel 1
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(6 (messager say: 24 6 15))
-			(7
+			(V_LOOK
+				(messager say: N_SOFT_GUM V_LOOK C_STEP_IN_GUM)
+			)
+			(V_DO
 				(cond 
-					((== local0 3) (pipeFeature doVerb: 7))
-					((== local0 5) (drainPipe doVerb: 7))
-					(else (curRoom setScript: sGetGum))
+					((== local0 3)
+						(pipeFeature doVerb: V_DO)
+					)
+					((== local0 5)
+						(drainPipe doVerb: V_DO)
+					)
+					(else
+						(curRoom setScript: sGetGum)
+					)
 				)
 			)
 			(else 
@@ -489,39 +537,42 @@
 	(properties
 		x 97
 		y 119
-		noun 21
+		noun N_DRAINPIPE
 		approachX 96
 		approachY 125
 		view 120
 		cel 2
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(7
+			(V_DO
 				(theGame points: 233 1)
 				(cond 
-					((not (Btst 4)) (curRoom setScript: sGetPipe))
-					(
-					(and (not (cast contains: hole)) (not (ego has: 0)))
+					((not (Btst fGotDrainPipe))
+						(curRoom setScript: sGetPipe)
+					)
+					((and (not (cast contains: hole)) (not (ego has: iDogHarness)))
 						(theGame points: 204 1)
 						(curRoom setScript: (ScriptID 121 4))
 					)
-					(else (messager say: 5 7 5))
+					(else
+						(messager say: N_PIPE V_DO C_NEEDS_HARNESS)
+					)
 				)
 			)
-			(10
-				(if (& (inventory state?) $0020)
+			(V_SOFT_GUM
+				(if (& (inventory state?) IB_ACTIVE)
 					(inventory curIcon: Drain_Pipe)
-					(Drain_Pipe noun: 20 cel: 2)
+					(Drain_Pipe noun: N_BROKEN_PIPE cel: 2)
 					((ScriptID 894 2) init:)
 					(inventory hide:)
 					(= local0 4)
 				else
 					(softGum
 						init:
-						approachVerbs: 85 7 6 86 30 89
+						approachVerbs: V_TALK V_DO V_LOOK V_NOSE V_TEETH
 						setLoop: 0
 						cel: 1
 						x: 102
@@ -536,9 +587,9 @@
 				(theGame handsOff:)
 				((ScriptID 895 1) normal: 0 stopUpd:)
 				((ScriptID 895 0) forceUpd: stopUpd:)
-				(ego put: 7)
+				(ego put: iSoftGum)
 				(Bset 3)
-				(messager say: 26 10 0 1 self)
+				(messager say: N_DRAINPIPE_BROKEN V_SOFT_GUM ALL 1 self)
 			)
 			(6
 				(if (not (Btst 4))
@@ -552,7 +603,7 @@
 				(theGame handsOff:)
 				((ScriptID 895 1) normal: 0 stopUpd:)
 				((ScriptID 895 0) stopUpd:)
-				(messager say: 21 9 0 0 self)
+				(messager say: 21 ALL ALL 0 self)
 			)
 			(85
 				(if (not (Btst 3))
@@ -615,7 +666,7 @@
 					(obrienTimer setReal: self 2)
 				else
 					(= local34 0)
-					(self cel: 6 cycleSpeed: 4 setCycle: Beg self)
+					(self cel: 6 cycleSpeed: 4 setCycle: BegLoop self)
 				)
 			)
 			(3
@@ -626,7 +677,7 @@
 			(100
 				(theGame handsOff:)
 				(= local34 0)
-				(self cel: 6 cycleSpeed: 4 setCycle: Beg self)
+				(self cel: 6 cycleSpeed: 4 setCycle: BegLoop self)
 			)
 			(101
 				(= local24 0)
@@ -657,7 +708,7 @@
 	(method (doVerb theVerb &tmp [temp0 900])
 		(cond 
 			((cast contains: mrsOBrien) (mrsOBrien doVerb: theVerb))
-			((Message msgGET 120 15 theVerb 21 1 @temp0) (messager say: 15 theVerb 21))
+			((Message MsgGet 120 15 theVerb 21 1 @temp0) (messager say: 15 theVerb 21))
 			(else (super doVerb: theVerb &rest))
 		)
 	)
@@ -697,7 +748,7 @@
 					x: 84
 					y: 65
 					setPri: 4
-					approachVerbs: 85 7 6 86 30 89
+					approachVerbs: V_TALK V_DO V_LOOK V_NOSE 89
 				)
 				(= local0 3)
 				(softGum approachX: 83 approachY: 56)
@@ -937,7 +988,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (not (OneOf theVerb 85 7 6 86 30 89))
+		(if (not (OneOf theVerb V_TALK V_DO V_LOOK V_NOSE 89))
 			(super doVerb: theVerb &rest)
 		else
 			(messager say: 19 theVerb)
@@ -1030,15 +1081,17 @@
 (instance Hard_Gum of TWInvItem
 	(properties
 		cel 3
-		message 9
-		noun 9
+		message V_HARD_GUM
+		noun N_HARD_GUM
 		modNum 120
 		name "Hard Gum"
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(103 (drainPipe doVerb: 9))
+			(103
+				(drainPipe doVerb: V_HARD_GUM)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -1049,7 +1102,7 @@
 (instance Soft_Gum of TWInvItem
 	(properties
 		cel 4
-		message 10
+		message V_SOFT_GUM
 		noun 24
 		modNum 120
 		name "Soft Gum"
@@ -1071,24 +1124,29 @@
 (instance Drain_Pipe of TWInvItem
 	(properties
 		cel 1
-		message 103
-		noun 21
+		message V_DRAINPIPE
+		noun N_DRAINPIPE
 		modNum 120
 		name "Drain Pipe"
 	)
 	
 	(method (init)
-		(if (Btst 3) (= noun 20) (= cel 2))
+		(if (Btst 3)
+			(= noun 20)
+			(= cel 2)
+		)
 		(super init: &rest)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(10
-				(drainPipe doVerb: 10)
+			(V_SOFT_GUM
+				(drainPipe doVerb: V_SOFT_GUM)
 				(theGame points: 232 2)
 			)
-			(9 (drainPipe doVerb: 9))
+			(9
+				(drainPipe doVerb: 9)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -1114,7 +1172,7 @@
 
 (instance lockjawPoly of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
@@ -1163,9 +1221,9 @@
 				((ScriptID 895 1) normal: 0 stopUpd:)
 				(if (!= local34 1)
 					(if (not (cast contains: mrsOBrien))
-						(mrsOBrien init: approachVerbs: 85 7 6 86 30 89)
+						(mrsOBrien init: approachVerbs: V_TALK V_DO V_LOOK V_NOSE 89)
 					)
-					(mrsOBrien setCycle: CT 5 1 self)
+					(mrsOBrien setCycle: CycleTo 5 1 self)
 				else
 					(= cycles 2)
 				)
@@ -1280,7 +1338,7 @@
 			)
 			(1
 				(theMusic2 number: 1228 setLoop: 1 play:)
-				(bird setCycle: End self)
+				(bird setCycle: EndLoop self)
 			)
 			(2 (= seconds 2))
 			(3
@@ -1318,21 +1376,21 @@
 					(egg setLoop: 4)
 					(bird setPri: 15 y: 31 z: 0)
 				)
-				(bird setScript: 0 setLoop: 0 setCycle: Fwd)
+				(bird setScript: 0 setLoop: 0 setCycle: Forward)
 				((ScriptID 895 1)
 					view: 130
 					setLoop: 2
 					cel: 0
 					x: 262
 					y: 154
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic2 number: 1226 setLoop: 1 play:)
 				(= local26 1)
 			)
 			(3 (= ticks 60))
 			(4
-				((ScriptID 895 1) setCycle: Beg self)
+				((ScriptID 895 1) setCycle: BegLoop self)
 			)
 			(5
 				((ScriptID 895 1)
@@ -1379,12 +1437,12 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 8
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(2 (= ticks 30))
 			(3
-				(ego get: 8 setCycle: Beg self)
+				(ego get: 8 setCycle: BegLoop self)
 				(if (== local0 5)
 					(softGum dispose:)
 					(= local0 4)
@@ -1436,13 +1494,13 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= ticks 30))
 			(3
 				(softGum dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(4
 				(theGame points: 234 1)
@@ -1472,7 +1530,7 @@
 		(switch (= state newState)
 			(0
 				(if (not modelessDialog)
-					(client setLoop: (Random 1 2) cel: 0 setCycle: End self)
+					(client setLoop: (Random 1 2) cel: 0 setCycle: EndLoop self)
 				else
 					(client stopUpd:)
 					(= cycles 2)
@@ -1481,7 +1539,7 @@
 			(1 (= ticks (Random 20 60)))
 			(2
 				(if (not modelessDialog)
-					(client setCycle: Beg self)
+					(client setCycle: BegLoop self)
 				else
 					(client stopUpd:)
 					(= cycles 2)
@@ -1538,11 +1596,11 @@
 			(3
 				(mrsOBrien
 					init:
-					setCycle: CT 5 1 self
-					approachVerbs: 85 7 6 86 30 89
+					setCycle: CycleTo 5 1 self
+					approachVerbs: V_TALK V_DO V_LOOK V_NOSE 89
 				)
 				(= local34 1)
-				(ego view: 839 setLoop: 1 cel: 0 setCycle: End self)
+				(ego view: 839 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(4)
 			(5
@@ -1561,7 +1619,7 @@
 			)
 			(6
 				(mrsOBrien setCycle: 0 stopUpd:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(7
 				(ego normalize: setHeading: 125 self)
@@ -1652,7 +1710,7 @@
 				)
 			)
 			(4
-				(Load rsVIEW 130)
+				(Load RES_VIEW 130)
 				((ScriptID 895 0) loop: 8 cel: 6)
 				(= ticks 30)
 			)
@@ -1663,13 +1721,13 @@
 					cycleSpeed: 8
 					setLoop: 0
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(theGame points: 194 1)
 			)
 			(6
 				(theMusic2 number: 1226 setLoop: 1 play:)
-				((ScriptID 895 0) setCycle: End self)
+				((ScriptID 895 0) setCycle: EndLoop self)
 			)
 			(7
 				(theMusic2 stop:)
@@ -1699,7 +1757,7 @@
 					setLoop: 1
 					cel: 0
 					setPri: 1
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 6
 				)
 				(= seconds (Random 4 6))
@@ -1786,20 +1844,20 @@
 					posn: 224 147
 					setLoop: 0
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(messager say: 9 7 15 1 self)
 			)
 			(4
-				((ScriptID 895 0) setCycle: Beg self)
+				((ScriptID 895 0) setCycle: BegLoop self)
 			)
 			(5
 				(if register
 					(theGame points: 195 1)
 					(hardGum dispose:)
-					((ScriptID 895 0) setLoop: 1 setCycle: End self)
+					((ScriptID 895 0) setLoop: 1 setCycle: EndLoop self)
 				else
 					(= cycles 2)
 				)
@@ -1865,14 +1923,14 @@
 					cel: 0
 					cycleSpeed: 5
 					put: 8
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(1
 				(theMusic2 number: 1207 loop: 1 play: self)
 			)
 			(2
-				(ego cel: 3 setCycle: End self)
+				(ego cel: 3 setCycle: EndLoop self)
 			)
 			(3
 				(theMusic2 loop: -1)
@@ -1887,7 +1945,7 @@
 							x: 72
 							y: 105
 							setPri: 5
-							setCycle: CT 4 1 self
+							setCycle: CycleTo 4 1 self
 						)
 					)
 					(1
@@ -1900,7 +1958,7 @@
 			(4
 				(if (not register)
 					(theMusic2 number: 1214 setLoop: 1 play:)
-					(drainPipe setCycle: CT 10 1 self)
+					(drainPipe setCycle: CycleTo 10 1 self)
 				else
 					(self cue:)
 				)
@@ -1908,7 +1966,7 @@
 			(5
 				(if (not register)
 					(theMusic2 number: 1214 setLoop: 1 play:)
-					(drainPipe setCycle: End self)
+					(drainPipe setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
@@ -1926,7 +1984,7 @@
 						stopUpd:
 					)
 				)
-				(ego setCycle: Rev setMotion: MoveTo 57 121 self)
+				(ego setCycle: Reverse setMotion: MoveTo 57 121 self)
 			)
 			(7
 				(if
@@ -1961,7 +2019,7 @@
 		approachY 111
 		view 120
 		priority 1
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -1986,7 +2044,7 @@
 					(messager say: 11 7 0 0 self)
 				else
 					(++ state)
-					(ego view: 839 setLoop: 1 cel: 0 setCycle: CT 3 1 self)
+					(ego view: 839 setLoop: 1 cel: 0 setCycle: CycleTo 3 1 self)
 				)
 			)
 			(1
@@ -1995,7 +2053,7 @@
 			)
 			(2
 				(hole setLoop: 1 cel: 0)
-				(ego get: 0 setCycle: Beg self)
+				(ego get: 0 setCycle: BegLoop self)
 				(messager say: 10 7 0 0 self)
 			)
 			(3)
@@ -2068,17 +2126,17 @@
 					posn: 31 109
 					cel: 0
 					cycleSpeed: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (not (theMusic2 handle?))
 					(theMusic2 number: 903 setLoop: -1 play:)
 				)
 			)
 			(9
-				((ScriptID 895 1) setCycle: CT 3 -1 self)
+				((ScriptID 895 1) setCycle: CycleTo 3 -1 self)
 			)
 			(10
-				((ScriptID 895 1) cel: 3 setCycle: End self)
+				((ScriptID 895 1) cel: 3 setCycle: EndLoop self)
 			)
 			(11
 				(if (not (-- register))
@@ -2089,12 +2147,12 @@
 						cel: 7
 						posn: 36 108
 					)
-					(hole init: approachVerbs: 85 7 6 86 30 89 stopUpd:)
+					(hole init: approachVerbs: V_TALK V_DO V_LOOK V_NOSE 89 stopUpd:)
 					(theMusic2 stop:)
 					(mrsOBrien
 						init:
-						setCycle: CT 5 1 self
-						approachVerbs: 85 7 6 86 30 89
+						setCycle: CycleTo 5 1 self
+						approachVerbs: V_TALK V_DO V_LOOK V_NOSE 89
 					)
 					(= local34 1)
 				else
@@ -2147,13 +2205,13 @@
 				(= ticks 30)
 			)
 			(18
-				((ScriptID 895 0) cycleSpeed: 4 setCycle: End self)
+				((ScriptID 895 0) cycleSpeed: 4 setCycle: EndLoop self)
 			)
 			(19
 				(messager say: 6 30 13 4 self)
 			)
 			(20
-				((ScriptID 895 0) setCycle: Beg self)
+				((ScriptID 895 0) setCycle: BegLoop self)
 			)
 			(21
 				((ScriptID 895 0) normalize: loop: 8 cel: 2 x: 73 y: 158)
@@ -2263,7 +2321,7 @@
 					y: 54
 					setPri: 6
 					cycleSpeed: 12
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 				(theMusic number: 122 setLoop: 1 flags: 1 play:)
 			)
@@ -2274,7 +2332,7 @@
 				(messager say: 12 107 16 5 7 self)
 			)
 			(11
-				((ScriptID 895 0) setCycle: End self)
+				((ScriptID 895 0) setCycle: EndLoop self)
 			)
 			(12
 				((ScriptID 895 1) setScript: (ScriptID 838 0))

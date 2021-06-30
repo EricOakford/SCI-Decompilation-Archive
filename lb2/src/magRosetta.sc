@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 456)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Feature)
 (use Game)
@@ -9,7 +9,7 @@
 	magRosetta 0
 )
 
-(instance magRosetta of Rm
+(instance magRosetta of Room
 	(properties
 		picture 780
 	)
@@ -54,9 +54,9 @@
 		(super init: &rest)
 		(theIconBar curIcon: (theIconBar at: 1) disable:)
 		(if (== prevRoomNum 454)
-			(DrawPic 455 dpOPEN_NO_TRANSITION)
+			(DrawPic 455 PLAIN)
 		else
-			(DrawPic 521 dpOPEN_NO_TRANSITION)
+			(DrawPic 521 PLAIN)
 		)
 		(theGame setCursor: 996)
 		(if (== prevRoomNum 454)
@@ -64,7 +64,7 @@
 		else
 			(SetCursor 2 79 55 239 144 86 0 0 527 53)
 		)
-		(Animate (cast elements?) 0)
+		(Animate (cast elements?) FALSE)
 	)
 	
 	(method (dispose)
@@ -78,12 +78,12 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(== (event type?) evMOUSEBUTTON)
-				(== (event type?) evKEYBOARD)
+				(== (event type?) mouseDown)
+				(== (event type?) keyDown)
 			)
 			(SetCursor -1)
-			(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
-			(event claimed: 1)
+			(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
+			(event claimed: TRUE)
 			(self dispose:)
 			(theIconBar enable:)
 		)

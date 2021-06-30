@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 500)
-(include sci.sh)
+(include game.sh) (include "500.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -30,7 +30,7 @@
 )
 (instance rm500 of LBRoom
 	(properties
-		noun 40
+		noun N_ROOM
 		picture 500
 		north 420
 		south 510
@@ -38,17 +38,19 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 500 504 505 831)
-		(Load rsPIC 501)
-		(Load rsSOUND 501 19)
-		(if (Btst 4) (Load rsSOUND 502))
+		(LoadMany RES_VIEW 500 504 505 831)
+		(Load RES_PIC 501)
+		(Load RES_SOUND 501 19)
+		(if (Btst 4)
+			(Load RES_SOUND 502)
+		)
 		(if
 			(or
 				(> currentAct 4)
 				(and (== currentAct 4) (TriggerEvent 12548 1))
 			)
-			(LoadMany 129 556 505)
-			(LoadMany 132 500 3 6 84)
+			(LoadMany RES_PIC 556 505)
+			(LoadMany RES_SOUND 500 3 6 84)
 		)
 		(ego
 			init:
@@ -202,11 +204,11 @@
 					posn: (+ (oRiley x?) 4) (oRiley y?)
 					setLoop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(ego setMotion: 0 view: 858 setLoop: 4 setCycle: End self)
+				(ego setMotion: 0 view: 858 setLoop: 4 setCycle: EndLoop self)
 				(sFX number: 80 flags: 1 play:)
 			)
 			(4 (= ticks 60))
@@ -1053,13 +1055,13 @@
 					loop: 1
 					cel: 0
 					setScale: Scaler 100 100 190 0
-					setCycle: CT 10 1 self
+					setCycle: CycleTo 10 1 self
 				)
 			)
 			(2
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(sFX number: 500 play:)
-				(yvetteStatue setCycle: End self)
+				(yvetteStatue setCycle: EndLoop self)
 			)
 			(3 0)
 			(4
@@ -1146,7 +1148,7 @@
 			(1 (= ticks 300))
 			(2
 				(if (and (> (ego y?) 168) (< (ego y?) 187))
-					(keyGlint setCel: 0 setCycle: End)
+					(keyGlint setCel: 0 setCycle: EndLoop)
 					(= ticks (* 60 (Random 3 10)))
 				else
 					(= cycles 1)
@@ -1163,7 +1165,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(keyGlintInset setCel: 0 setCycle: End)
+				(keyGlintInset setCel: 0 setCycle: EndLoop)
 				(= ticks (* 60 (Random 2 5)))
 			)
 			(1 (self changeState: 0))

@@ -44,4 +44,7 @@
 (define V_PEBBLES 96)
 (define V_PRAGFAIL_PEP 88)
 (define V_PRAGFAIL_DOG 90)
+(define V_SOFT_GUM 10)
+(define V_DRAINPIPE 103)
+(define V_HARD_GUM 9)
 

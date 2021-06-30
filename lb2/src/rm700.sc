@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 700)
-(include sci.sh)
+(include game.sh) (include "700.shm")
 (use Main)
 (use LbDoor)
 (use LBRoom)
@@ -25,7 +25,7 @@
 )
 (instance rm700 of LBRoom
 	(properties
-		noun 19
+		noun N_ROOM
 		picture 700
 		north 660
 		west 710
@@ -65,7 +65,7 @@
 		(snake init: approachVerbs: 4)
 		(mummy init:)
 		(walkHandler addToFront: mummyDoorCase)
-		(northDoor setCycle: End self)
+		(northDoor setCycle: EndLoop self)
 		(sFXDoor number: 46 play:)
 		(altPolyList delete: (northDoor doorPoly?))
 	)
@@ -112,7 +112,7 @@
 					setLoop: 0
 					setCel: 0
 					setScale: Scaler 100 100 10 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(mummy hide:)
 			)
@@ -141,7 +141,7 @@
 					setLoop: 1
 					setScale: 125
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -211,14 +211,14 @@
 					setPri: 10
 					cycleSpeed: 12
 					setScale: 143
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
 				(sFX number: 49 loop: 1 flags: 1 play:)
 				(= cycles 1)
 			)
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				(if local0
 					(messager say: 15 0 1)
@@ -274,7 +274,7 @@
 					setLoop: 1
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(riley setMotion: MoveTo (riley x?) 125)
 				(backg setLoop: 5 setMotion: MoveTo (backg x?) 125 self)
@@ -291,7 +291,7 @@
 				(blood
 					init:
 					posn: (+ (ego x?) 13) (+ (ego y?) 11)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= ticks 180))
@@ -343,7 +343,7 @@
 				(if (northDoor cel?)
 					(= cycles 1)
 				else
-					(northDoor setCycle: End self)
+					(northDoor setCycle: EndLoop self)
 					(sFXDoor number: 46 play:)
 					(= register 1)
 					(altPolyList delete: (northDoor doorPoly?))
@@ -371,7 +371,7 @@
 					setCel: 0
 					setScale: Scaler 100 100 5 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -379,12 +379,12 @@
 					view: 424
 					setLoop: 1
 					setCel: 0
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(7
 				(sFX number: 80 flags: 1 loop: 1 play:)
-				(riley setCycle: End self)
+				(riley setCycle: EndLoop self)
 			)
 			(8
 				(ego
@@ -392,7 +392,7 @@
 					setLoop: 1
 					setCel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9 (= ticks 120))
@@ -537,12 +537,12 @@
 				(cond 
 					((self cel?)
 						(sFX number: 453 loop: 1 flags: 1 play:)
-						(self setCycle: Beg self)
+						(self setCycle: BegLoop self)
 						(snake init:)
 					)
 					(local0
 						(sFX number: 452 loop: 1 flags: 1 play:)
-						(self setCycle: End self)
+						(self setCycle: EndLoop self)
 						(snake dispose:)
 					)
 					(else (messager say: 14 4 1))
@@ -583,12 +583,12 @@
 			(4
 				(if (self cel?)
 					(sFX number: 453 loop: 1 flags: 1 play:)
-					(self setCycle: Beg self)
+					(self setCycle: BegLoop self)
 					(= y (- y 100))
 					(= z (- z 100))
 				else
 					(sFX number: 452 loop: 1 flags: 1 play:)
-					(self setCycle: End self)
+					(self setCycle: EndLoop self)
 					(= y (+ y 100))
 					(= z (+ z 100))
 				)

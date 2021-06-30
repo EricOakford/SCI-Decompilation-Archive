@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 454)
-(include sci.sh)
+(include game.sh) (include "454.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -28,21 +28,21 @@
 )
 (instance rm454 of LBRoom
 	(properties
-		noun 11
+		noun N_ROOM
 		picture 454
-		style $000b
+		style SCROLLRIGHT
 		east 450
 		vanishingY 20
 	)
 	
 	(method (init)
-		(LoadMany 132 1 451 450)
-		(LoadMany 130 2450)
+		(LoadMany RES_SOUND 1 451 450)
+		(LoadMany RES_SCRIPT 2450)
 		(switch prevRoomNum
 			(666
 				(theGame handsOff:)
 				(theMusic2 number: 450 flags: 1 loop: -1 play:)
-				(Palette palSET_INTENSITY 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= style 100)
 				(ego
 					normalize: 831
@@ -229,10 +229,10 @@
 				(Face oriley ego)
 				(= cycles 4)
 			)
-			(3 (oriley setCycle: End self))
+			(3 (oriley setCycle: EndLoop self))
 			(4
 				(thudSound play:)
-				(ego view: 858 setCycle: End self)
+				(ego view: 858 setCycle: EndLoop self)
 			)
 			(5
 				(= deathReason 0)
@@ -258,7 +258,7 @@
 					posn: 248 121
 					setScale: Scaler 100 100 190 21
 					cycleSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(nCreak number: 452 play:)
 			)
@@ -268,7 +268,7 @@
 				)
 			)
 			(2
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 				(nCreak number: 453 play:)
 			)
 			(3
@@ -299,7 +299,7 @@
 					posn: 184 122
 					cycleSpeed: 16
 					setScale: Scaler 100 100 190 21
-					setCycle: (if register End else Beg) self
+					setCycle: (if register EndLoop else BegLoop) self
 				)
 				(nCreak number: (if register 452 else 453) play:)
 			)
@@ -379,7 +379,7 @@
 					setPri: 6
 					posn: 184 122
 					setScale: Scaler 100 100 190 21
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(nCreak number: 453 play:)
 			)
@@ -392,7 +392,7 @@
 				)
 			)
 			(5
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 				(nCreak number: 452 play:)
 			)
 			(6
@@ -432,12 +432,12 @@
 					loop: 4
 					cel: 0
 					setScale: Scaler 100 100 190 21
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(1
 				(medallion dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(ego get: 20)
 			)
 			(2
@@ -456,7 +456,7 @@
 	
 	(method (doit)
 		(if (and local1 local0)
-			(Palette palSET_INTENSITY 0 255 (-- local0))
+			(Palette PALIntensity 0 255 (-- local0))
 			(if (not local0) (self cue:))
 		)
 		(super doit:)
@@ -531,7 +531,7 @@
 				(theMusic2 number: 451 flags: 1 loop: 1 play: self)
 			)
 			(2
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(nCreak number: 452 play: self)
 			)
 			(3 0)

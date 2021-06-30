@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 520)
-(include sci.sh)
+(include game.sh) (include "520.shm")
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -42,9 +42,9 @@
 )
 (procedure (localproc_2000 param1 &tmp temp0 temp1 temp2 temp3 temp4 [temp5 200])
 	(if (== param1 522)
-		(Message msgGET 520 60 0 10 1 @temp5)
+		(Message MsgGet 520 60 0 10 1 @temp5)
 	else
-		(Message msgGET 520 60 0 11 1 @temp5)
+		(Message MsgGet 520 60 0 11 1 @temp5)
 	)
 	(= local0 0)
 	(= local1 0)
@@ -68,22 +68,17 @@
 		(= local0 0)
 		(= local1 (+ local1 param2))
 	)
-	(Display
-		@temp1
-		dsCOORD
-		local0
-		local1
-		dsFONT
-		1900
-		dsCOLOR
-		7
+	(Display @temp1
+		p_at local0 local1
+		p_font 1900
+		p_color 7
 	)
-	(= local0 (+ local0 temp0))
+	(+= local0 temp0)
 )
 
 (instance rm520 of LBRoom
 	(properties
-		noun 58
+		noun N_ROOM
 		picture 520
 		north 666
 		south 510
@@ -371,8 +366,8 @@
 			(30
 				(cond 
 					(local7 (self setScript: sPutCobraBack))
-					((== (self cel?) 0) (self setCycle: End))
-					(else (self setCycle: Beg))
+					((== (self cel?) 0) (self setCycle: EndLoop))
+					(else (self setCycle: BegLoop))
 				)
 			)
 			(else  (super doVerb: theVerb))
@@ -1142,7 +1137,7 @@
 					setLoop: 14
 					setCel: 0
 					setScale: Scaler 100 100 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1191,13 +1186,13 @@
 					view: 525
 					setLoop: 2
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= ticks 30))
 			(4
 				(snakeOil dispose:)
-				((ScriptID 90 2) setCycle: Beg self)
+				((ScriptID 90 2) setCycle: BegLoop self)
 			)
 			(5
 				((ScriptID 90 2)
@@ -1232,7 +1227,7 @@
 			(10
 				((ScriptID 90 2) moveTo: -2)
 				(ego startUpd:)
-				((Inv at: 14) owner: 0)
+				((Inventory at: iSnakeOil) owner: 0)
 				(theGame handsOn:)
 				(theIconBar disable: 7)
 				(self dispose:)
@@ -1260,20 +1255,20 @@
 				(cobraLoose
 					init:
 					setLoop: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 86 158 self
 				)
 			)
 			(5
 				(Face ego cobraLoose)
-				(cobraLoose setCycle: End self)
+				(cobraLoose setCycle: EndLoop self)
 			)
 			(6
 				(cobraLoose
 					setLoop: 9
 					setCel: 0
 					posn: 90 159
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -1281,7 +1276,7 @@
 					setLoop: 11
 					setCel: 0
 					posn: 92 159
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= ticks 30)
 			)
@@ -1358,7 +1353,7 @@
 					setLoop: local10
 					setScale: Scaler 100 100 190 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1390,20 +1385,20 @@
 				(= cycles 1)
 			)
 			(4
-				(cobraLoose setLoop: 4 setCel: 0 setCycle: End self)
+				(cobraLoose setLoop: 4 setCel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(if (< (cobraLoose x?) (ego x?))
-					(cobraLoose setLoop: 9 setCel: 0 setCycle: End self)
+					(cobraLoose setLoop: 9 setCel: 0 setCycle: EndLoop self)
 				else
-					(cobraLoose setLoop: 10 setCel: 0 setCycle: End self)
+					(cobraLoose setLoop: 10 setCel: 0 setCycle: EndLoop self)
 				)
 			)
 			(6
 				(if (< (cobraLoose x?) (ego x?))
-					(cobraLoose setLoop: 11 setCel: 0 setCycle: Fwd)
+					(cobraLoose setLoop: 11 setCel: 0 setCycle: Forward)
 				else
-					(cobraLoose setLoop: 12 setCel: 0 setCycle: Fwd)
+					(cobraLoose setLoop: 12 setCel: 0 setCycle: Forward)
 				)
 				(= cycles 1)
 			)
@@ -1440,10 +1435,10 @@
 				(cobraLoose setLoop: 3 setCel: 0 setCycle: 0)
 				(= cycles 1)
 			)
-			(4 (ego setCycle: CT 3 1 self))
+			(4 (ego setCycle: CycleTo 3 1 self))
 			(5
 				(cobraLoose hide: dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(6
 				(ego
@@ -1491,9 +1486,9 @@
 			)
 			(2
 				(cobraLoose hide: dispose:)
-				(ego view: 522 setLoop: 6 cel: 0 setCycle: End self)
+				(ego view: 522 setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego
 					view: 528
@@ -1527,13 +1522,13 @@
 				(if local9
 					(cobraLoose
 						setLoop: 0
-						setCycle: Fwd
+						setCycle: Forward
 						setMotion: PolyPath (- (ego x?) 34) (+ (ego y?) 10) self
 					)
 				else
 					(cobraLoose
 						setLoop: 1
-						setCycle: Fwd
+						setCycle: Forward
 						setMotion: PolyPath (+ (ego x?) 35) (+ (ego y?) 11) self
 					)
 				)
@@ -1546,19 +1541,19 @@
 						setLoop: 2
 						setCel: 0
 						posn: (- (ego x?) 21) (+ (ego y?) 6)
-						setCycle: CT 4 1 self
+						setCycle: CycleTo 4 1 self
 					)
 				else
 					(cobraLoose
 						setLoop: 3
 						setCel: 0
 						posn: (+ (ego x?) 21) (+ (ego y?) 7)
-						setCycle: CT 4 1 self
+						setCycle: CycleTo 4 1 self
 					)
 				)
 			)
 			(2
-				(cobraLoose setCycle: End self)
+				(cobraLoose setCycle: EndLoop self)
 				(sFX number: 481 flags: 1 setLoop: 1 play:)
 			)
 			(3
@@ -1567,7 +1562,7 @@
 					setLoop: 0
 					setCel: 0
 					posn: (+ (ego x?) 15) (+ (ego y?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -1595,23 +1590,23 @@
 					setLoop: 4
 					setCel: 0
 					posn: 126 98
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(2
-				(cobraDoor setCycle: End self)
+				(cobraDoor setCycle: EndLoop self)
 			)
 			(3
 				(theMusic2 fade:)
-				(ego setCycle: CT 9 1 self)
+				(ego setCycle: CycleTo 9 1 self)
 			)
 			(4
 				(cobra init: stopUpd:)
 				(= cycles 1)
 			)
 			(5
-				(ego setCycle: End)
-				(cobraDoor setCycle: Beg self)
+				(ego setCycle: EndLoop)
+				(cobraDoor setCycle: BegLoop self)
 			)
 			(6
 				(sFX number: 441 flags: 1 setLoop: 1 play:)
@@ -1654,7 +1649,7 @@
 					setLoop: 7
 					setCel: 0
 					setScale: Scaler 100 100 190 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= ticks 60))
@@ -1666,7 +1661,7 @@
 					x: (+ (ego x?) 4)
 					y: (+ (ego y?) 3)
 				)
-				(ego view: 523 setLoop: 0 setCel: 0 setCycle: End self)
+				(ego view: 523 setLoop: 0 setCel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(= deathReason 11)
@@ -1684,16 +1679,16 @@
 		(switch (= state newState)
 			(0
 				(if local9
-					(cobraLoose setLoop: 5 setCel: 0 setCycle: End self)
+					(cobraLoose setLoop: 5 setCel: 0 setCycle: EndLoop self)
 				else
-					(cobraLoose setLoop: 4 setCel: 0 setCycle: End self)
+					(cobraLoose setLoop: 4 setCel: 0 setCycle: EndLoop self)
 				)
 			)
 			(1
 				(if local9
-					(cobraLoose setLoop: 11 setCel: 0 setCycle: End self)
+					(cobraLoose setLoop: 11 setCel: 0 setCycle: EndLoop self)
 				else
-					(cobraLoose setLoop: 12 setCel: 0 setCycle: End self)
+					(cobraLoose setLoop: 12 setCel: 0 setCycle: EndLoop self)
 				)
 			)
 			(2 (self dispose:))
@@ -1752,20 +1747,20 @@
 					setScale: Scaler 100 100 190 0
 					setLoop: 0
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(ego cycleSpeed: 12 setCycle: Beg self)
+				(ego cycleSpeed: 12 setCycle: BegLoop self)
 				(sFX number: 49 flags: 1 setLoop: 1 play:)
-				(mountedSkull setCycle: End self)
+				(mountedSkull setCycle: EndLoop self)
 			)
 			(4 0)
 			(5
 				(ego normalize: 831 setScale: Scaler 120 100 190 0)
 				(Face ego secretDoor)
 				(sFX number: 721 flags: 1 setLoop: 1 play:)
-				(secretDoor setCycle: End self)
+				(secretDoor setCycle: EndLoop self)
 			)
 			(6
 				(sFX stop:)
@@ -1777,7 +1772,7 @@
 			(8
 				(ego setPri: 2)
 				(sFX number: 721 flags: 1 setLoop: 1 play:)
-				(secretDoor setCycle: Beg self)
+				(secretDoor setCycle: BegLoop self)
 			)
 			(9
 				(sFX stop:)

@@ -32,8 +32,10 @@
 ;Event flags
 (define fIsVGA	1)
 (define fCantSave	2)
+(define fGotDrainPipe	4)
 (define fPepperInBoyClothes 10)
 (define fDemoAbout	172)
+(define fPutHarnessOnLockjaw	200)
 
 ;Talker scripts
 (define tlkPepper	2000)

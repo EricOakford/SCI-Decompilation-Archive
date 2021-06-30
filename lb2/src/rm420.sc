@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 420)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use LBRoom)
 (use ExitFeature)
@@ -36,16 +36,16 @@
 	
 	(method (init)
 		(theGame handsOff:)
-		(LoadMany 128 420 423 424 426 831)
+		(LoadMany RES_VIEW 420 423 424 426 831)
 		(if
 			(or
 				(> currentAct 3)
 				(and (== currentAct 3) (TriggerEvent 8512 1))
 			)
-			(LoadMany 129 556 429)
-			(LoadMany 132 3 80 6 84)
+			(LoadMany RES_PIC 556 429)
+			(LoadMany RES_SOUND 3 80 6 84)
 		)
-		(Load rsSOUND 19)
+		(Load RES_SOUND 19)
 		(ego
 			init:
 			normalize: (if (== currentAct 5) 426 else 831)
@@ -702,7 +702,7 @@
 				(= cycles 4)
 			)
 			(2
-				(oriley cel: 0 setCycle: End self)
+				(oriley cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(sFX number: 80 flags: 1 loop: 1 play:)
@@ -710,7 +710,7 @@
 					view: 858
 					setScale: Scaler 100 100 190 0
 					posn: (+ (ego x?) 13) (ego y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= seconds 4))
