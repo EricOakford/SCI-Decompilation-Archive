@@ -1,61 +1,74 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 941)
-(include sci.sh)
+;;;;
+;;;;	RANDCYC.SC
+;;;;
+;;;;	(c) Sierra On-Line, Inc, 1990
+;;;;
+;;;;	Written:
+;;;;		Doug Oldfield
+;;;;		July 25, 1990
+;;;;
+;;;;
+;;;;	Cycles cels randomly & constantly
+;;;;
+;;;;	Classes:
+;;;;	  RandCycle
+
+
+(script# RANDCYC)
+(include game.sh)
 (use Main)
 (use Motion)
 
 
-(class RandCycle of Cycle
+(class RandCycle kindof Cycle
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
-		count -1
+		count		-1
 	)
-	
-	(method (init param1 theCount theCaller)
-		(super init: param1)
-		(if (>= argc 2)
-			(= count theCount)
-			(if (>= argc 3) (= caller theCaller))
-		else
+
+	(method (init obj theTime whoCares)
+		(super init: obj)
+		(if (>= argc 2)			
+			(= count theTime)
+			(if (>= argc 3)		
+				(= caller whoCares)
+			)
+		else 
 			(= count -1)
 		)
 	)
-	
+
 	(method (doit)
-		(if
-		(>= (Abs (- gameTime cycleCnt)) (client cycleSpeed?))
+		(++ cycleCnt)
+		(if (> cycleCnt (client cycleSpeed?))
 			(if count
 				(if (> count 0) (-- count))
 				(client cel: (self nextCel:))
-				(= cycleCnt gameTime)
+				(= cycleCnt 0)
 			else
 				(self cycleDone:)
 			)
 		)
 	)
-	
-	(method (nextCel &tmp temp0)
+
+	(method (nextCel &tmp newCel)
 		(return
 			(if (!= (NumCels client) 1)
-				(while
-					(==
-						(= temp0 (Random 0 (client lastCel:)))
-						(client cel?)
-					)
-				)
-				temp0
-			else
-				0
+				(while (== (= newCel (Random 0 (client lastCel?))) (client cel?)))
+				newCel
 			)
 		)
 	)
-	
+
 	(method (cycleDone)
-		(= completed 1)
-		(if caller (= doMotionCue 1) else (self motionCue:))
+		(= completed TRUE)
+		
+		;If we have a caller which needs cue:ing, set the flag for a delayed cue:.
+		;Otherwise, just cue: ourselves to complete the motion.
+		(if caller
+			(= doMotionCue TRUE)
+		else
+			(self motionCue:)
+		)
 	)
 )
