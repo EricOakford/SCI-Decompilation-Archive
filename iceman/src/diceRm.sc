@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 39)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use ForCount)
@@ -48,13 +48,13 @@
 	local4
 	local5
 	local6 =  1
-	[local7 9] = [180 0 45 90 135 180 225 270 315]
+	local7 = [180 0 45 90 135 180 225 270 315]
 	local16
 	local17
 	local18
 	local19
 	local20
-	local21
+	numReplays
 )
 (procedure (proc39_1)
 	(if (> (oldSaltDice diceScore?) 500)
@@ -165,15 +165,15 @@
 	)
 )
 
-(procedure (proc39_22 param1 &tmp temp0 temp1 temp2)
-	(= temp2 0)
-	(= temp0 (FirstNode (param1 elements?)))
-	(while temp0
-		(= temp1 (NextNode temp0))
-		(if ((NodeValue temp0) selected?) (++ temp2))
-		(= temp0 temp1)
+(procedure (proc39_22 param1 &tmp node nextNode ret)
+	(= ret 0)
+	(= node (FirstNode (param1 elements?)))
+	(while node
+		(= nextNode (NextNode node))
+		(if ((NodeValue node) selected?) (++ ret))
+		(= node nextNode)
 	)
-	(return temp2)
+	(return ret)
 )
 
 (procedure (localproc_1ae6 param1 &tmp temp0)
@@ -205,8 +205,7 @@
 )
 
 (instance rollDieScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -223,33 +222,6 @@
 
 (class Die of Prop
 	(properties
-		y 0
-		x 0
-		z 0
-		heading 0
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
 		selected 0
 		mousable 1
 		box 0
@@ -271,17 +243,21 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((and mousable (MousedOn self event)) (self select:) (event claimed: 1))
+			((and mousable (MousedOn self event))
+				(self select:)
+				(event claimed: TRUE)
+			)
 		)
 	)
 	
 	(method (roll)
-		(if selected (self setScript: (Clone rollDieScript)))
+		(if selected
+			(self setScript: (Clone rollDieScript))
+		)
 	)
 	
 	(method (select param1)
-		(if
-		(= selected (if argc param1 else (not selected)))
+		(if (= selected (if argc param1 else (not selected)))
 			(box show:)
 		else
 			(box hide:)
@@ -291,19 +267,16 @@
 
 (class DiceGame of List
 	(properties
-		elements 0
-		size 0
 		selected 0
 		view 0
 		loop 0
 	)
 	
-	(method (init param1 &tmp temp0 newDie)
+	(method (init param1 &tmp i newDie)
 		(if argc
-			(= temp0 0)
-			(while (<= temp0 (- argc 2))
+			(for ((= i 0)) (<= i (- argc 2)) ((++ i))
 				((= newDie (Die new:))
-					posn: [param1 temp0] [param1 (++ temp0)]
+					posn: [param1 i] [param1 (++ i)]
 					view: view
 					loop: loop
 					init:
@@ -311,7 +284,6 @@
 				)
 				(newDie setCel: (Random 0 (newDie lastCel:)))
 				(self add: newDie)
-				(++ temp0)
 			)
 		)
 		(super init:)
@@ -329,11 +301,6 @@
 
 (class oldSaltDice of DiceGame
 	(properties
-		elements 0
-		size 0
-		selected 0
-		view 0
-		loop 0
 		diceScore 0
 		highPair 0
 	)
@@ -393,22 +360,20 @@
 )
 
 (instance reverseLT of Code
-	(properties)
-	
+
 	(method (doit param1 param2)
 		(return (> (param1 cel?) (param2 cel?)))
 	)
 )
 
 (instance diceCount of Code
-	(properties)
-	
+
 	(method (doit param1 param2)
 		(return (== (param1 cel?) (param2 cel?)))
 	)
 )
 
-(class CursorCoords of Obj
+(class CursorCoords of Object
 	(properties
 		cursorX 0
 		cursorY 0
@@ -416,13 +381,9 @@
 )
 
 (class InputList of Set
-	(properties
-		elements 0
-		size 0
-	)
 	
 	(method (handleEvent event &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8 temp9 eventX eventY temp12 temp13)
-		(if (== (event type?) evJOYSTICK)
+		(if (== (event type?) direction)
 			(= temp7 [local7 (event message?)])
 			(= temp3 60)
 			(= temp4 400)
@@ -479,17 +440,17 @@
 	)
 )
 
-(instance diceRm of Rm
+(instance diceRm of Room
 	(properties
 		picture 39
 	)
 	
 	(method (init)
 		(super init:)
-		(LoadMany 130 375 376 377 378 379 380 381 382)
-		(LoadMany 128 39 239 439 539 139)
-		(LoadMany 132 76 77 75)
-		(= useSortedFeatures 0)
+		(LoadMany SCRIPT 375 376 377 378 379 380 381 382)
+		(LoadMany VIEW 39 239 439 539 139)
+		(LoadMany SOUND 76 77 75)
+		(= useSortedFeatures FALSE)
 		(self setRegions: 314)
 		(oldSaltDice
 			view: 39
@@ -579,17 +540,41 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'cease,stand[<up]') (SetCursor theCursor 1 310 180) (curRoom newRoom: 32))
-			((Said 'bet/bottle') (if (ego has: 4) (Print 39 3) else (Print 39 4)))
-			((Said 'drink/rum') (if (ego has: 4) (Print 39 5) else (Print 39 4)))
-			((Said 'look>')
-				(cond 
-					((Said '[<around][/room]') (Print 39 6) (Print 39 7))
-					((Said '/table') (Print 39 8))
+			((Said 'cease,stand[<up]') 
+				(SetCursor theCursor TRUE 310 180)
+				(curRoom newRoom: 32)
+			)
+			((Said 'bet/bottle')
+				(if (ego has: iRumBottle)
+					(Print 39 3)
+				else
+					(Print 39 4)
 				)
 			)
-			((Said 'address') (Print 39 9))
-			((Said 'count/money') (Print 39 10))
+			((Said 'drink/rum')
+				(if (ego has: iRumBottle)
+					(Print 39 5)
+				else
+					(Print 39 4)
+				)
+			)
+			((Said 'look>')
+				(cond 
+					((Said '[<around][/room]')
+						(Print 39 6)
+						(Print 39 7)
+					)
+					((Said '/table')
+						(Print 39 8)
+					)
+				)
+			)
+			((Said 'address')
+				(Print 39 9)
+			)
+			((Said 'count/money')
+				(Print 39 10)
+			)
 		)
 	)
 	
@@ -635,24 +620,26 @@
 	)
 	
 	(method (replay)
-		(if (< 2 (++ local21))
-			(Print 39 0)
-			(if (not (ego has: 4))
-				((inventory at: 4) owner: curRoomNum)
-			)
-			(SetCursor theCursor 1 310 180)
-			(curRoom newRoom: 32)
-		else
-			(switch local21
-				(1 (Print 39 1))
-				(2 (Print 39 2))
-			)
-		)
+		;EO: Commenting out the code, since, while it's
+		; a good anti-cheat measure, it's also an unfair
+		; no-win situation.
+;;;		(if (< 2 (++ numReplays))
+;;;			(Print 39 0)
+;;;			(if (not (ego has: iRumBottle))
+;;;				((inventory at: iRumBottle) owner: curRoomNum)
+;;;			)
+;;;			(SetCursor theCursor TRUE 310 180)
+;;;			(curRoom newRoom: 32)
+;;;		else
+;;;			(switch numReplays
+;;;				(1 (Print 39 1))
+;;;				(2 (Print 39 2))
+;;;			)
+;;;		)
 	)
 )
 
 (instance blinkerScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -671,7 +658,6 @@
 )
 
 (instance smokeCigar of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -681,17 +667,17 @@
 					(self init:)
 				else
 					(= register 1)
-					(saltLArmP setLoop: 5 setCycle: End self)
+					(saltLArmP setLoop: 5 setCycle: EndLoop self)
 				)
 			)
 			(2 (= cycles 10))
 			(3
-				(saltLArmP setCycle: Beg self)
+				(saltLArmP setCycle: BegLoop self)
 			)
 			(4
 				(= register 0)
 				(saltMouth loop: 9 cel: 0)
-				(cigarSmoke show: setCycle: End self)
+				(cigarSmoke show: setCycle: EndLoop self)
 			)
 			(5
 				(saltMouth loop: 1 cel: 1 setCycle: 0)
@@ -703,7 +689,6 @@
 )
 
 (instance johnTwitch of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -755,13 +740,17 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[/man]') (Print 39 11))
-			((Said 'kiss/man') (Print 39 12))
+			((Said 'look[/man]')
+				(Print 39 11)
+			)
+			((Said 'kiss/man')
+				(Print 39 12)
+			)
 		)
 	)
 )
 
-(instance johnnyPV of PV
+(instance johnnyPV of PicView
 	(properties
 		y 176
 		x 261
@@ -833,8 +822,16 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at][/bottle]') (Print 39 13))
-			((Said 'get[/bottle]') (if (ego has: 4) (AlreadyTook) else (Print 39 14)))
+			((Said 'look[<at][/bottle]')
+				(Print 39 13)
+			)
+			((Said 'get[/bottle]')
+				(if (ego has: iRumBottle)
+					(AlreadyTook)
+				else
+					(Print 39 14)
+				)
+			)
 		)
 	)
 )
@@ -1010,6 +1007,4 @@
 	)
 )
 
-(instance objList of InputList
-	(properties)
-)
+(instance objList of InputList)

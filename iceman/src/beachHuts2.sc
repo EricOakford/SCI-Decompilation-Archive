@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 5)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use GoToSaid)
@@ -17,14 +17,14 @@
 
 (local
 	[local0 2]
-	[local2 14] = [0 0 0 0 0 142 179 179 163 111 97 99 104 109]
-	[local16 14] = [81 105 117 170 181 81 162 173 173 162 168 147 148 147]
-	[local30 14] = [141 141 141 96 178 319 319 319 178 179 110 105 109 141]
-	[local44 14] = [104 116 147 173 189 160 173 189 179 173 173 151 156 160]
-	[local58 14] = [148 148 148 102 184 153 178 190 175 110 116 148 148 152]
-	[local72 14] = [104 112 146 172 185 163 166 172 172 167 172 148 155 154]
+	inLeft = [0 0 0 0 0 142 179 179 163 111 97 99 104 109]
+	inUpper = [81 105 117 170 181 81 162 173 173 162 168 147 148 147]
+	inRight = [141 141 141 96 178 319 319 319 178 179 110 105 109 141]
+	inBottom = [104 116 147 173 189 160 173 189 179 173 173 151 156 160]
+	toX = [148 148 148 102 184 153 178 190 175 110 116 148 148 152]
+	toY = [104 112 146 172 185 163 166 172 172 167 172 148 155 154]
 )
-(instance beachHuts2 of Rm
+(instance beachHuts2 of Room
 	(properties
 		picture 5
 		horizon 80
@@ -73,26 +73,35 @@
 					(ego posn: 13 172 loop: 0)
 				)
 			)
-			(else  (ego posn: 120 82))
+			(else
+				(ego posn: 120 82)
+			)
 		)
 	)
 	
 	(method (doit)
 		(super doit: &rest)
 		(cond 
-			((and (> (ego y?) 198) (> (ego x?) 100)) (self newRoom: 4))
-			((== (ego onControl: 1) 32) (self newRoom: 6))
+			((and (> (ego y?) 198) (> (ego x?) 100))
+				(self newRoom: 4)
+			)
+			((== (ego onControl: origin) cMAGENTA)
+				(self newRoom: 6)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(and (Said 'look>') (Said '[<around,at][/beach]'))
+			((and (Said 'look>') (Said '[<around,at][/beach]'))
 				(switch (Random 1 5)
-					(1 (Print 5 0))
-					(else  (Print 5 1))
+					(1
+						(Print 5 0)
+					)
+					(else
+						(Print 5 1)
+					)
 				)
 			)
 		)
@@ -117,17 +126,23 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event))
-					((Said 'look[<at]') (Print 5 2))
+					((Said 'look[<at]')
+						(Print 5 2)
+					)
 					((Said 'open,unlock')
-						(if (ego has: 5)
+						(if (ego has: iTahitiKey)
 							(HandsOff)
 							(ego setScript: openDoorScript)
 						else
 							(Print 5 3)
 						)
 					)
-					((or (Said 'lock') (Said 'lock<to<key<use')) (Print 5 4))
-					((Said 'knock') (Print 5 5))
+					((or (Said 'lock') (Said 'lock<to<key<use'))
+						(Print 5 4)
+					)
+					((Said 'knock')
+						(Print 5 5)
+					)
 				)
 			)
 		)
@@ -135,26 +150,26 @@
 )
 
 (instance openDoorScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1)
+
+	(method (changeState newState &tmp i isInRange)
 		(switch (= state newState)
 			(0
-				(= temp1 0)
-				(= temp0 0)
-				(while (< temp0 14)
+				(= isInRange 0)
+				(for ((= i 0)) (< i 14) ((++ i))
 					(if
 						(ego
-							inRect: [local2 temp0] [local16 temp0] [local30 temp0] [local44 temp0]
+							inRect: [inLeft i] [inUpper i] [inRight i] [inBottom i]
 						)
 						(ego
-							setMotion: MoveTo [local58 temp0] [local72 temp0] self
+							setMotion: MoveTo [toX i] [toY i] self
 						)
-						(= temp1 1)
+						(= isInRange TRUE)
 					)
-					(++ temp0)
 				)
-				(if (not temp1) (HandsOn) (curRoom newRoom: 6))
+				(if (not isInRange)
+					(HandsOn)
+					(curRoom newRoom: 6)
+				)
 			)
 			(1
 				(if (and (== (ego x?) 110) (== (ego y?) 167))
@@ -185,10 +200,18 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event '*/*'))
-					((Said 'look[<at]') (Print 5 6))
-					((Said 'open,unlock') (Print 5 7))
-					((Said 'knock') (Print 5 8))
-					((or (Said 'lock') (Said 'lock<to<key<use')) (Print 5 4))
+					((Said 'look[<at]')
+						(Print 5 6)
+					)
+					((Said 'open,unlock')
+						(Print 5 7)
+					)
+					((Said 'knock')
+						(Print 5 8)
+					)
+					((or (Said 'lock') (Said 'lock<to<key<use'))
+						(Print 5 4)
+					)
 				)
 			)
 		)
@@ -210,11 +233,17 @@
 			((super handleEvent: event))
 			((Said '[/shutter]>')
 				(cond 
-					((Said 'look[<at]') (Print 5 9))
-					((Said 'look<in,through') (Print 5 10))
+					((Said 'look[<at]')
+						(Print 5 9)
+					)
+					((Said 'look<in,through')
+						(Print 5 10)
+					)
 				)
 			)
-			((Said 'look[<in]/building') (Print 5 10))
+			((Said 'look[<in]/building')
+				(Print 5 10)
+			)
 		)
 	)
 )
@@ -232,7 +261,9 @@
 			((Said '[/bush]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 5 11))
+					((Said 'look[<at]')
+						(Print 5 11)
+					)
 				)
 			)
 		)
@@ -249,7 +280,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((and (Said 'look[<at]>') (Said '[/beach]')) (Print 5 12))
+			((and (Said 'look[<at]>') (Said '[/beach]'))
+				(Print 5 12)
+			)
 		)
 	)
 )
@@ -267,7 +300,9 @@
 			((Said 'look[<at]>')
 				(cond 
 					((TurnIfSaid self event '[/water,bay]/*'))
-					((Said '[/water,bay]') (Print 5 13))
+					((Said '[/water,bay]')
+						(Print 5 13)
+					)
 				)
 			)
 		)
@@ -283,7 +318,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at][/horizon]') (Print 5 14))
+			((Said 'look[<at][/horizon]')
+				(Print 5 14)
+			)
 		)
 	)
 )

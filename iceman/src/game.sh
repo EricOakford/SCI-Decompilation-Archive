@@ -95,4 +95,7 @@
 )
 
 ;Tahiti flags
-(define fWearingShirt	$4000)
+(define fOpenedCloset		$0020)
+(define fOrdersFromBraxton	$0080)
+(define fCalledForDinghy	$0200)
+(define fWearingShirt		$4000)

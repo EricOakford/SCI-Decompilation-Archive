@@ -12,6 +12,7 @@
 $100 sierraM
 	aboutI
 	helpI
+	debugHelpI
 )
 
 (enum

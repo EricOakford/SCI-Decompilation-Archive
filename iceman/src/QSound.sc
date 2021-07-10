@@ -35,21 +35,27 @@
 		)
 		
 		(while (!= (= theSignal signal) prevSignal)
-			
-			;;loop body
-			;;---------
-			
-			(if (IsObject client)
-				(for
-					(	(= cues (- theSignal (or prevSignal 127)))
-					)
-					cues
-					(	(-- cues)
-					)
+			;EO: This original code does not compile properly.
+			;So the code being used is from the decompiled script.
+;;;			(if (IsObject client)
+;;;				(for
+;;;					(	(= cues (- theSignal (or prevSignal 127)))
+;;;					)
+;;;					cues
+;;;					(	(-- cues)
+;;;					)
+;;;
+;;;					;;loop body
+;;;					;;---------
+;;;					(client cue: self)
+;;;				)
+;;;			)
 
-					;;loop body
-					;;---------
+			(if (IsObject client)
+				(= cues (- theSignal (if prevSignal else 127)))
+				(while cues
 					(client cue: self)
+					(-- cues)
 				)
 			)
 			(= prevSignal theSignal)
@@ -57,4 +63,5 @@
 		(= signal 0)
 		(return TRUE)
 	)
+
 )

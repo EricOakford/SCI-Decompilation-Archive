@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 7)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use GoToSaid)
@@ -11,7 +11,7 @@
 	endBeach 0
 )
 
-(instance endBeach of Rm
+(instance endBeach of Room
 	(properties
 		picture 7
 		north 15
@@ -21,8 +21,8 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsVIEW 200)
-		(ego init: observeControl: 1024)
+		(Load VIEW 200)
+		(ego init: observeControl: cLGREEN)
 		(switch prevRoomNum
 			(south (ego y: 187))
 			(west
@@ -33,18 +33,25 @@
 	)
 	
 	(method (dispose)
-		(ego ignoreControl: 1024)
+		(ego ignoreControl: cLGREEN)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,scene,beach]') (Print 7 0))
-			((Said 'look<up') (Print 7 1))
-			(
-			(Said 'look[<at]/building,hotel,building,building') (Print 7 2))
-			((Said 'look/cloud') (Print 7 3))
+			((Said 'look[<at,around][/room,scene,beach]')
+				(Print 7 0)
+			)
+			((Said 'look<up')
+				(Print 7 1)
+			)
+			((Said 'look[<at]/building,hotel,building,building')
+				(Print 7 2)
+			)
+			((Said 'look/cloud')
+				(Print 7 3)
+			)
 		)
 	)
 )
@@ -65,8 +72,12 @@
 			((Said '[/bush,bush]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 7 4))
-					((Said 'enter') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 7 4)
+					)
+					((Said 'enter')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -88,8 +99,12 @@
 			((Said '[bay,water]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 7 5))
-					((Said 'enter') (Print 7 6))
+					((Said 'look[<at]')
+						(Print 7 5)
+					)
+					((Said 'enter')
+						(Print 7 6)
+					)
 				)
 			)
 		)

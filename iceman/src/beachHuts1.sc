@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 4)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use InitAllFeatures)
@@ -18,7 +18,7 @@
 (local
 	local0
 )
-(instance beachHuts1 of Rm
+(instance beachHuts1 of Room
 	(properties
 		picture 4
 		east 3
@@ -33,7 +33,7 @@
 			((User alterEgo?) edgeHit: 0)
 		)
 		(super init:)
-		(LoadMany 128 200 206)
+		(LoadMany VIEW 200 206)
 		(switch prevRoomNum
 			(east
 				(switch (ego view?)
@@ -84,8 +84,10 @@
 	
 	(method (doit)
 		(super doit:)
-		(switch (ego onControl: 1)
-			(8192 (self newRoom: 5))
+		(switch (ego onControl: origin)
+			(cLMAGENTA
+				(self newRoom: 5)
+			)
 		)
 	)
 	
@@ -102,13 +104,12 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if
-		(and (== newRoomNumber south) (> (ego x?) 80))
+	(method (newRoom nRoom)
+		(if (and (== nRoom south) (> (ego x?) 80))
 			(super newRoom: 3)
 			(ego loop: 0)
 		else
-			(super newRoom: newRoomNumber)
+			(super newRoom: nRoom)
 		)
 	)
 )
@@ -130,9 +131,15 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event '*/*'))
-					((Said 'look[<at]') (Print 4 1))
-					((Said 'open,unlock') (Print 4 2))
-					((Said 'knock') (Print 4 3))
+					((Said 'look[<at]')
+						(Print 4 1)
+					)
+					((Said 'open,unlock')
+						(Print 4 2)
+					)
+					((Said 'knock')
+						(Print 4 3)
+					)
 				)
 			)
 		)
@@ -156,9 +163,15 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event '*/*'))
-					((Said 'look[<at]') (Print 4 4))
-					((Said 'open,unlock') (Print 4 2))
-					((Said 'knock') (Print 4 3))
+					((Said 'look[<at]')
+						(Print 4 4)
+					)
+					((Said 'open,unlock')
+						(Print 4 2)
+					)
+					((Said 'knock')
+						(Print 4 3)
+					)
 				)
 			)
 		)
@@ -181,8 +194,12 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event '*/*'))
-					((Said 'look[<at]') (Print 4 5))
-					((Said 'look<in') (Print 4 6))
+					((Said 'look[<at]')
+						(Print 4 5)
+					)
+					((Said 'look<in')
+						(Print 4 6)
+					)
 				)
 			)
 		)
@@ -202,7 +219,9 @@
 			((Said '[/bush]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 4 7))
+					((Said 'look[<at]')
+						(Print 4 7)
+					)
 				)
 			)
 		)
@@ -222,7 +241,9 @@
 			((Said '[/beach]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 4 8))
+					((Said 'look[<at]')
+						(Print 4 8)
+					)
 				)
 			)
 		)
@@ -239,7 +260,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at][/water,bay]') (Print 4 9))
+			((Said 'look[<at][/water,bay]')
+				(Print 4 9)
+			)
 		)
 	)
 )

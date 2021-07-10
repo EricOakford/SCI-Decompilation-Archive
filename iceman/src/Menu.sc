@@ -11,7 +11,8 @@
 
 	(method (init)
 		(AddMenu { \01_}
-			{ About Iceman `^a: Help`#1_}
+			;EO: Debug help added from beta
+			{ About Iceman `^a: Help`#1: Debug Help`#4__}
 		)
 		(AddMenu { File_}
 			{ Save Game`#5: Restore Game`#7: --!: Restart Game`#9: Quit`^q_}
@@ -22,7 +23,9 @@
 		(AddMenu { Speed_}
 			{ Set Speed`^s: --!: Faster`+: Normal`=: Slower`-_}
 		)
-		(AddMenu { Sound_} { Volume...`^v: Turn Off`#2=1_})
+		(AddMenu { Sound_}
+			{ Volume...`^v: Turn Off`#2=1_}
+		)
 		(SetMenu helpI p_said 'help[/!*]')
 		(SetMenu saveI p_said 'save[/game]')
 		(SetMenu restoreI p_said 'restore[/game]')
@@ -73,6 +76,23 @@
 			)
 			(helpI
 				(Print MENU 5 #font smallFont)
+			)
+			(debugHelpI
+				(Print
+				      "Debug items available in\n
+				      rooms with sufficient heap\n
+				      Alt F_____Show Memory\n
+				      Alt G_____Set Global Variable\n
+				      Alt V_____Show Visual Map\n
+				      Alt P_____Show Priority Map\n
+				      Alt C_____Show Control Map\n
+				      Alt A_____Show Cast\n
+				      Alt T_____Teleport\n
+				      Alt N_____Make Note (Bug List)\n
+				      Alt R_____Show Current Room Number\n
+				      Alt D_____Toggle Debug at Room Change\n
+				      Alt Y_____Vanishing Point"
+				)
 			)
 			(saveI
 				(theGame save:)

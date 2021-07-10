@@ -1,8 +1,8 @@
-### Codename Iceman demo (ICEDEMO)
+### Codename Iceman (ICEMAN)
+  Game version 1.033
   Interpreter version 0.000.685
 
-  This game does not contain VOCAB.997, so the one from the SCI0 version of Mixed-Up Mother Goose has been enclosed.
+Some debug code from the beta has been restored.
 
-  The Dice room was particularly hard to get decompiled for this reason. Fortunately, it seems to compile and play okay.
-
-  Tested to completion with no known issues.
+The dice game's anti-restore code has been commented out.
+While I liked the idea, the fact that it leads to an unwinnable situation makes it greatly unfair.

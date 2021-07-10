@@ -31,7 +31,6 @@
 )
 
 (instance debugHandler of Feature
-	(properties)
 	
 	(method (init)
 		(super init:)

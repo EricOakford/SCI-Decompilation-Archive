@@ -132,6 +132,10 @@
 			(if (not (OneOf roomNum 50 51)) Submarine)
 			(ScriptID 827)
 		)
+		;EO: debug code added from beta
+		(if (not (OneOf roomNum 11 99 27 3 39 33 25))
+			((ScriptID rgDebug) init:)
+		)
 		(if (= useSortedFeatures (not (OneOf roomNum 39 27)))
 			(ScriptID SORTCOPY)
 			(ScriptID SIGHT)
