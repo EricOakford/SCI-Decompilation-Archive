@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 20)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use n316)
@@ -21,9 +21,9 @@
 )
 
 (local
-	local0
+	elevator2
 )
-(instance pentagonHall of Rm
+(instance pentagonHall of Room
 	(properties
 		picture 20
 	)
@@ -31,15 +31,15 @@
 	(method (init)
 		(super init: &rest)
 		(self setRegions: 302)
-		(LoadMany 128 20 120)
+		(LoadMany VIEW 20 120)
 		(addToPics add: chair ashTray doit:)
 		(InitAllFeatures)
 		(door init:)
 		(elevator1 init:)
 		(button1 init: stopUpd:)
 		(button2 init: stopUpd:)
-		((= local0 (Clone elevator1))
-			signal: 16385
+		((= elevator2 (Clone elevator1))
+			signal: (| ignrAct stopUpdOn)
 			posn: 31 108
 			loop: 1
 			init:
@@ -47,7 +47,7 @@
 		(guard
 			init:
 			setCycle: Walk
-			setLoop: Grooper
+			setLoop: GradualLooper
 			loop: 3
 			heading: 0
 			setScript: guardScript
@@ -69,12 +69,14 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room]') (Print 20 0))
+			((Said 'look[<at,around][/room]')
+				(Print 20 0)
+			)
 			((Said 'read/order')
 				(if (== prevRoomNum 21)
 					(Print 20 1)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
 		)
@@ -82,19 +84,18 @@
 )
 
 (instance exitBriefScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(door ignoreActors: 1 setCycle: End self)
+				(door ignoreActors: TRUE setCycle: EndLoop self)
 			)
 			(1
 				(ego posn: 309 83 setMotion: MoveTo 309 93 self)
 			)
 			(2
-				(door ignoreActors: 0 setCycle: Beg)
+				(door ignoreActors: FALSE setCycle: BegLoop)
 				(ego setMotion: MoveTo 309 109 self)
 			)
 			(3
@@ -112,7 +113,7 @@
 		x 109
 		view 20
 		priority 5
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
@@ -121,8 +122,12 @@
 			((Said '[/elevator]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 20 2))
-					((Said 'open') (Print 20 3))
+					((Said 'look[<at]')
+						(Print 20 2)
+					)
+					((Said 'open')
+						(Print 20 3)
+					)
 				)
 			)
 		)
@@ -135,19 +140,23 @@
 )
 
 (instance elevatorScript of Script
-	(properties)
 	
 	(method (init)
-		(= start 0)
+		(= start FALSE)
 		(super init: &rest)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 4))
-			(1 (client setCycle: End self))
+			(0
+				(HandsOff)
+				(= seconds 4)
+			)
+			(1
+				(client setCycle: EndLoop self)
+			)
 			(2
-				(ego illegalBits: -32768 setAvoider: Avoid)
+				(ego illegalBits: cWHITE setAvoider: Avoider)
 				(if register
 					(ego setMotion: MoveTo 3 105 self)
 				else
@@ -159,13 +168,13 @@
 				((ego looper?) doit: ego (ego heading?))
 				(= cycles 5)
 			)
-			(4 (client setCycle: Beg self))
+			(4 (client setCycle: BegLoop self))
 			(5 (curRoom newRoom: 19))
 		)
 	)
 )
 
-(instance guard of Act
+(instance guard of Actor
 	(properties
 		y 162
 		x 112
@@ -178,14 +187,18 @@
 			((super handleEvent: event))
 			((or (Said '/id,card>') (Said '//id,card>'))
 				(cond 
-					(
-					(TurnIfSaid self event 'examine,check,read,look[<at]/*'))
+					((TurnIfSaid self event 'examine,check,read,look[<at]/*'))
 					((Said 'examine,check,read,look[<at]')
 						(cond 
-							(
-							(and (ego has: 2) (== ((inventory at: 2) cel?) 1)) (Print 20 4))
-							((ego has: 2) (Print 20 5))
-							((== ((inventory at: 2) owner?) curRoomNum) (Print 20 6))
+							((and (ego has: iIDCard) (== ((inventory at: iIDCard) cel?) 1))
+								(Print 20 4)
+							)
+							((ego has: iIDCard)
+								(Print 20 5)
+							)
+							((== ((inventory at: iIDCard) owner?) curRoomNum)
+								(Print 20 6)
+							)
 						)
 					)
 					((GoToIfSaid self event self 20 0 20 7))
@@ -193,30 +206,30 @@
 						(cond 
 							(
 								(and
-									(ego has: 2)
-									(== ((inventory at: 2) cel?) 0)
+									(ego has: iIDCard)
+									(== ((inventory at: iIDCard) cel?) 0)
 									(== prevRoomNum 21)
 								)
 								(Print 20 8)
 							)
-							(
-							(and (ego has: 2) (== ((inventory at: 2) cel?) 0))
+							((and (ego has: iIDCard) (== ((inventory at: iIDCard) cel?) 0))
 								(Print 20 9)
 								(Print 20 10)
-								(ego put: 2 curRoomNum)
+								(ego put: iIDCard curRoomNum)
 								(theGame changeScore: 1)
 								(guardScript cue:)
 								(HandsOn)
 							)
-							(
-							(and (ego has: 2) (== ((inventory at: 2) cel?) 1))
+							((and (ego has: iIDCard) (== ((inventory at: iIDCard) cel?) 1))
 								(Print 20 11)
 								(Print 20 12)
 								(Print 20 13)
-								((inventory at: 2) cel: 0)
+								((inventory at: iIDCard) cel: 0)
 								(theGame changeScore: 1)
 							)
-							((IsInvItemInRoom curRoomNum 2) (Print 20 14))
+							((IsInvItemInRoom curRoomNum iIDCard)
+								(Print 20 14)
+							)
 						)
 					)
 					(
@@ -226,18 +239,24 @@
 							(Said 'ask/')
 						)
 						(cond 
-							(
-							(and (ego has: 2) (== ((inventory at: 2) cel?) 0)) (Print 20 15))
-							(
-							(and (ego has: 2) (== ((inventory at: 2) cel?) 1))
+							((and (ego has: iIDCard) (== ((inventory at: iIDCard) cel?) 0))
+								(Print 20 15)
+							)
+							((and (ego has: iIDCard) (== ((inventory at: iIDCard) cel?) 1))
 								(Print 20 16)
 								(Print 20 12)
 								(Print 20 17)
-								((inventory at: 2) cel: 0)
+								((inventory at: iIDCard) cel: 0)
 								(theGame changeScore: 1)
 							)
-							((and (not (ego has: 2)) (== prevRoomNum 21)) (Print 20 18) ((inventory at: 2) cel: 1) (ego get: 2))
-							((not (ego has: 2)) (Print 20 19))
+							((and (not (ego has: iIDCard)) (== prevRoomNum 21))
+								(Print 20 18)
+								((inventory at: iIDCard) cel: 1)
+								(ego get: iIDCard)
+							)
+							((not (ego has: iIDCard))
+								(Print 20 19)
+							)
 						)
 					)
 				)
@@ -245,19 +264,29 @@
 			((Said '[/guard,man]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 20 20))
+					((Said 'look[<at]')
+						(Print 20 20)
+					)
 					((GoToIfSaid self event self 20 0 20 7))
 					((Said 'address')
 						(cond 
 							(
 								(and
 									(!= prevRoomNum 21)
-									(not (== ((inventory at: 2) owner?) curRoomNum))
+									(not (== ((inventory at: iIDCard) owner?) curRoomNum))
 								)
-								(if (Random 0 1) (Print 20 21) else (Print 20 22))
+								(if (Random 0 1)
+									(Print 20 21)
+								else
+									(Print 20 22)
+								)
 							)
-							((== prevRoomNum 21) (Print 20 23))
-							(else (Print 20 24))
+							((== prevRoomNum 21)
+								(Print 20 23)
+							)
+							(else
+								(Print 20 24)
+							)
 						)
 					)
 				)
@@ -267,7 +296,6 @@
 )
 
 (instance guardScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit: &rest)
@@ -283,7 +311,7 @@
 		(switch (= state newState)
 			(0)
 			(1
-				(if (IsInvItemInRoom curRoomNum 2)
+				(if (IsInvItemInRoom curRoomNum iIDCard)
 					(HandsOn)
 					(self dispose:)
 				else
@@ -295,7 +323,9 @@
 				(ego setMotion: Follow guard 15)
 				(= cycles 5)
 			)
-			(3 (HandsOn))
+			(3
+				(HandsOn)
+			)
 			(4
 				(guard setMotion: MoveTo 112 166 self)
 			)
@@ -328,7 +358,9 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 20 26))
+					((Said 'look[<at]')
+						(Print 20 26)
+					)
 					((GoToIfSaid self event self 20 0 20 7))
 					((Said 'knock')
 						(if (== prevRoomNum 21)
@@ -339,9 +371,17 @@
 					)
 					((Said 'open')
 						(cond 
-							((== prevRoomNum 21) (Print 20 29))
-							((ego has: 2) (Print 20 30) (guard loop: 0))
-							(else (HandsOff) (self setScript: openDoorScript))
+							((== prevRoomNum 21)
+								(Print 20 29)
+							)
+							((ego has: iIDCard)
+								(Print 20 30)
+								(guard loop: 0)
+							)
+							(else
+								(HandsOff)
+								(self setScript: openDoorScript)
+							)
 						)
 					)
 				)
@@ -351,26 +391,27 @@
 )
 
 (instance openDoorScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(door setPri: 2 ignoreActors: 1 setCycle: End self)
+				(door setPri: 2 ignoreActors: TRUE setCycle: EndLoop self)
 			)
 			(1
 				(ego
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 310 86 self
 				)
 			)
-			(2 (curRoom newRoom: 21))
+			(2
+				(curRoom newRoom: 21)
+			)
 		)
 	)
 )
 
-(instance ashTray of PV
+(instance ashTray of PicView
 	(properties
 		y 105
 		x 91
@@ -384,15 +425,19 @@
 			((Said '[/ashtray]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 20 31))
-					((Said 'use') (Print 20 32))
+					((Said 'look[<at]')
+						(Print 20 31)
+					)
+					((Said 'use')
+						(Print 20 32)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance chair of PV
+(instance chair of PicView
 	(properties
 		y 108
 		x 73
@@ -406,8 +451,12 @@
 			((Said '[/chair]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 20 33))
-					((Said 'sit') (Print 20 34))
+					((Said 'look[<at]')
+						(Print 20 33)
+					)
+					((Said 'sit')
+						(Print 20 34)
+					)
 				)
 			)
 		)
@@ -423,12 +472,14 @@
 		loop 2
 		cel 1
 		priority 6
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(if (< numColors 16) (self cel: 2))
+		(if (< numColors 16)
+			(self cel: 2)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -437,10 +488,14 @@
 			((Said '[/button]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 20 35))
-					(
-					(GoToIfSaid self event self 30 'push,press' 20 7))
-					((Said 'push,press') (Print 20 36) (elevator1 setScript: elevatorScript 0 0))
+					((Said 'look[<at]')
+						(Print 20 35)
+					)
+					((GoToIfSaid self event self 30 'push,press' 20 7))
+					((Said 'push,press')
+						(Print 20 36)
+						(elevator1 setScript: elevatorScript 0 0)
+					)
 				)
 			)
 		)
@@ -455,12 +510,14 @@
 		loop 2
 		cel 1
 		priority 6
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (init)
 		(super init: &rest)
-		(if (< numColors 16) (self cel: 2))
+		(if (< numColors 16)
+			(self cel: 2)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -469,10 +526,14 @@
 			((Said '[/button]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 20 35))
-					(
-					(GoToIfSaid self event self 30 'push,press' 20 7))
-					((Said 'push,press') (Print 20 36) (local0 setScript: elevatorScript 0 1))
+					((Said 'look[<at]')
+						(Print 20 35)
+					)
+					((GoToIfSaid self event self 30 'push,press' 20 7))
+					((Said 'push,press')
+						(Print 20 36)
+						(elevator2 setScript: elevatorScript 0 1)
+					)
 				)
 			)
 		)
@@ -480,38 +541,42 @@
 )
 
 (instance leavingElevator of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 5))
+			(0
+				(HandsOff)
+				(= seconds 5)
+			)
 			(1
 				(if (> (ego x?) 159)
 					(ego posn: 118 94 0)
-					(elevator1 setCel: 0 setCycle: End self)
+					(elevator1 setCel: 0 setCycle: EndLoop self)
 					(= register 1)
 				else
 					(ego posn: 13 104 0)
-					(local0 setCel: 0 setCycle: End self)
+					(elevator2 setCel: 0 setCycle: EndLoop self)
 					(= register 0)
 				)
 			)
 			(2
 				(elevator1 stopUpd:)
-				(local0 stopUpd:)
+				(elevator2 stopUpd:)
 				(ego
 					setMotion: MoveTo (+ (ego x?) 4) (+ (ego y?) 24) self
 				)
 			)
 			(3
-				(ego observeControl: 20480)
+				(ego observeControl: (| cYELLOW cLRED))
 				(if register
-					(elevator1 setCycle: Beg self)
+					(elevator1 setCycle: BegLoop self)
 				else
-					(local0 setCycle: Beg self)
+					(elevator2 setCycle: BegLoop self)
 				)
 			)
-			(4 (= seconds 1))
+			(4
+				(= seconds 1)
+			)
 			(5
 				(guardScript cue:)
 				(= cycles 10)
@@ -520,7 +585,7 @@
 				(if register
 					(elevator1 stopUpd:)
 				else
-					(local0 stopUpd:)
+					(elevator2 stopUpd:)
 				)
 				(self dispose:)
 			)

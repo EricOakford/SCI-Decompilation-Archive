@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 9)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tahiti)
@@ -17,7 +17,7 @@
 	hotelEntrance 0
 )
 
-(instance hotelEntrance of Rm
+(instance hotelEntrance of Room
 	(properties
 		picture 9
 		horizon 128
@@ -30,9 +30,9 @@
 	(method (init)
 		(super init:)
 		(addToPics add: newsStand eachElementDo: #init doit:)
-		(Load rsSOUND 42)
-		(Load rsSOUND 36)
-		(LoadMany 128 9 9 206 200 109 209)
+		(Load SOUND 42)
+		(Load SOUND 36)
+		(LoadMany VIEW 9 9 206 200 109 209)
 		(self
 			setRegions: 300 301
 			setFeatures:
@@ -81,7 +81,7 @@
 					yourself:
 				)
 		)
-		(ego init: observeControl: 16384)
+		(ego init: observeControl: cYELLOW)
 		(switch prevRoomNum
 			(north (ego posn: 106 135))
 			(else  (ego posn: 106 188))
@@ -93,13 +93,15 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room]') (Print 9 0))
+			((Said 'look[<at,around][/room]')
+				(Print 9 0)
+			)
 		)
 	)
 	
 	(method (newRoom)
 		(super newRoom: &rest)
-		(ego ignoreControl: 16384)
+		(ego ignoreControl: cYELLOW)
 	)
 )
 
@@ -128,7 +130,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/glass,reflection') (Print 9 1 #time 10))
+			((Said 'look[<at]/glass,reflection')
+				(Print 9 1 #time 10)
+			)
 		)
 	)
 )
@@ -149,7 +153,7 @@
 				(self
 					setCel: (self lastCel:)
 					ignoreActors:
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(theSound number: (SoundFX 42) loop: 1 play:)
 			)
@@ -165,18 +169,20 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 9 2))
-					((Said 'close/*') (Print 9 3))
-					((Said 'knock/*') (Print 9 4))
+					((Said 'look[<at]')
+						(Print 9 2)
+					)
+					((Said 'close/*')
+						(Print 9 3)
+					)
+					((Said 'knock/*')
+						(Print 9 4)
+					)
 					(
-						(GoToIfSaid
-							self
-							event
+						(GoToIfSaid self event
 							(- (lobbyDoor x?) 14)
 							(+ (lobbyDoor y?) 2)
-							0
-							9
-							5
+							0 9 5
 						)
 					)
 					((Said 'open/*')
@@ -197,19 +203,18 @@
 )
 
 (instance openDoorScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego loop: 3 heading: 0)
-				(lobbyDoor setCycle: End self)
+				(lobbyDoor setCycle: EndLoop self)
 				(theSound number: (SoundFX 36) loop: 1 play:)
 			)
 			(1
 				(ego
-					ignoreControl: 16384
+					ignoreControl: cYELLOW
 					setMotion: MoveTo (ego x?) (- (ego y?) 8)
 					setAvoider: 0
 				)
@@ -226,7 +231,7 @@
 		heading 180
 		view 109
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -249,11 +254,15 @@
 			((Said '[/newspaper,news,times,newspaper]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 9 10))
+					((Said 'look[<at]')
+						(Print 9 10)
+					)
 					((GoToIfSaid self event self 25 0 9 5))
-					((Said 'get,get') (Print 9 11))
+					((Said 'get,get')
+						(Print 9 11)
+					)
 					((Said 'buy')
-						(if (ego has: 4)
+						(if (ego has: iChange)
 							(Print 9 12)
 							(ego setScript: readPaperScript)
 						else
@@ -265,10 +274,9 @@
 			((Said '[/money,change,cent,coin]>')
 				(cond 
 					((TurnIfSaid self event 'deposit,insert'))
-					(
-					(GoToIfSaid self event self 25 'deposit,insert' 9 5))
+					((GoToIfSaid self event self 25 'deposit,insert' 9 5))
 					((Said 'deposit,insert')
-						(if (ego has: 4)
+						(if (ego has: iChange)
 							(Print 9 12)
 							(ego setScript: readPaperScript)
 						else
@@ -282,34 +290,33 @@
 )
 
 (instance readPaperScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(tahiti flags: (| (tahiti flags?) $0008))
+				(tahiti flags: (| (tahiti flags?) fReadNewspaper))
 				(ego
-					put: 4 curRoomNum
+					put: iChange curRoomNum
 					setLoop: (if (== (ego view?) 206) 1 else 2)
 					view: 109
 					cycleSpeed: 1
 					setCel: (ego lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(1
 				(Print 9 14 #at 65 120)
 				(Print 9 15 #at 65 120)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3
 				(Print 9 16 #at 65 120)
 				(Print 9 17 #at 65 120)
 				(Print 9 18 #at 65 120)
 				(Print 9 19 #at 30 120 #width 260)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4
 				(ego
@@ -347,7 +354,9 @@
 			((Said '[/planter,flower,box]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]'))
-					((Said 'look[<at]') (Print 9 21))
+					((Said 'look[<at]')
+						(Print 9 21)
+					)
 				)
 			)
 		)
@@ -399,7 +408,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]'))
-					((Said 'look[<at]') (Print 9 2))
+					((Said 'look[<at]')
+						(Print 9 2)
+					)
 				)
 			)
 		)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 14)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tahiti)
@@ -25,11 +25,11 @@
 )
 
 (local
-	local0
-	local1
-	local2
+	agent
+	fireWork
+	fireWork2
 )
-(instance inHerHut of Rm
+(instance inHerHut of Room
 	(properties
 		picture 14
 		west 13
@@ -38,16 +38,16 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsSOUND 42)
-		(Load rsSOUND 36)
-		(LoadMany 128 206 212 14 200 208 106 114 314 2)
-		(LoadMany 132 14 29)
+		(Load SOUND 42)
+		(Load SOUND 36)
+		(LoadMany VIEW 206 212 14 200 208 106 114 314 2)
+		(LoadMany SOUND 14 29)
 		(door
 			init:
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setCel: 16
 			setPri: 0
-			setCycle: Beg door
+			setCycle: BegLoop door
 		)
 		(Lamp init:)
 		(Couch init:)
@@ -58,7 +58,7 @@
 		(Plant2 init:)
 		(addToPics doit:)
 		(InitAllFeatures)
-		((= local0 (ScriptID 309 0))
+		((= agent (ScriptID 309 0))
 			init:
 			view: 212
 			posn: 55 139
@@ -73,7 +73,7 @@
 			posn: 55 142
 			loop: 0
 			setLoop: -1
-			observeControl: 16384
+			observeControl: cYELLOW
 			init:
 		)
 		(self
@@ -104,9 +104,11 @@
 	(method (handleEvent event &tmp temp0)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look/bush') (Print 14 0))
+			((Said 'look/bush')
+				(Print 14 0)
+			)
 			((Said 'look[<around,at][/room][/!*]')
-				(if (cast contains: local0)
+				(if (cast contains: agent)
 					(switch (Random 0 2)
 						(0 (Print 14 1))
 						(1 (Print 14 2))
@@ -117,18 +119,24 @@
 					(Print 14 5)
 				)
 			)
-			((Said 'look[<at]//earring') (Print 14 6))
-			((Said 'call<use') (Print 14 7))
+			((Said 'look[<at]//earring')
+				(Print 14 6)
+			)
+			((Said 'call<use')
+				(Print 14 7)
+			)
 			((Said 'kiss')
-				(if (cast contains: local0)
+				(if (cast contains: agent)
 					(Print 14 8)
 				else
 					(Print 14 9)
 				)
 			)
-			((Said '(stand[<up]),(get<up)') (Print 14 10))
+			((Said '(stand[<up]),(get<up)')
+				(Print 14 10)
+			)
 			((Said 'detach/clothes,shirt')
-				(if (cast contains: local0)
+				(if (cast contains: agent)
 					(Print 14 11)
 				else
 					(Print 14 12)
@@ -152,8 +160,12 @@
 			((Said '[/plant][/floor,corner]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 13))
-					((Said 'move') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 14 13)
+					)
+					((Said 'move')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -174,8 +186,12 @@
 			((Said '[/plant][/floor,corner]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 13))
-					((Said 'move') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 14 13)
+					)
+					((Said 'move')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -196,8 +212,12 @@
 			((Said '[/lamp][/floor,table]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 14))
-					((Said 'turn[<on,off]') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 14 14)
+					)
+					((Said 'turn[<on,off]')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -225,30 +245,38 @@
 							(Print 14 16)
 						)
 					)
-					((Said 'look<below') (Print 14 17))
+					((Said 'look<below')
+						(Print 14 17)
+					)
 					((GoToIfSaid self event self 25 'smell' 14 18))
-					((Said 'smell') (Print 14 19))
+					((Said 'smell')
+						(Print 14 19)
+					)
 				)
 			)
 			((Said '[/drawer]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 20))
-					((Said 'open') (Print 14 21))
+					((Said 'look[<at]')
+						(Print 14 20)
+					)
+					((Said 'open')
+						(Print 14 21)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance Carpet of PV
+(instance Carpet of PicView
 	(properties
 		y 112
 		x 204
 		view 14
 		cel 2
 		priority 0
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -257,9 +285,13 @@
 			((Said '[/carpet,carpet][/floor]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at,on]') (Print 14 22))
+					((Said 'look[<at,on]')
+						(Print 14 22)
+					)
 					((GoToIfSaid self event self 5 0 14 18))
-					((Said 'look[<below]') (Print 14 23))
+					((Said 'look[<below]')
+						(Print 14 23)
+					)
 				)
 			)
 		)
@@ -282,9 +314,13 @@
 			((Said '[/carpet,carpet][/floor]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 22))
+					((Said 'look[<at]')
+						(Print 14 22)
+					)
 					((GoToIfSaid self event self 5 0 14 18))
-					((Said 'look[<below]') (Print 14 23))
+					((Said 'look[<below]')
+						(Print 14 23)
+					)
 				)
 			)
 		)
@@ -297,7 +333,7 @@
 		x 204
 		view 14
 		cel 3
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -306,7 +342,9 @@
 			((Said '[/carpet,(table[<coffee])][/floor]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<on,at]') (Print 14 24))
+					((Said 'look[<on,at]')
+						(Print 14 24)
+					)
 				)
 			)
 		)
@@ -318,7 +356,7 @@
 		y 114
 		x 237
 		view 14
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -327,10 +365,16 @@
 			((Said '[/couch][/floor]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 25))
-					((Said 'look<below') (Print 14 26))
+					((Said 'look[<at]')
+						(Print 14 25)
+					)
+					((Said 'look<below')
+						(Print 14 26)
+					)
 					((GoToIfSaid self event 220 115 'sit[<on]' 14 18))
-					((Said 'sit[<on]') (ego setScript: sitScript))
+					((Said 'sit[<on]')
+						(ego setScript: sitScript)
+					)
 				)
 			)
 		)
@@ -338,13 +382,12 @@
 )
 
 (instance sitScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreControl: -32768 setMotion: MoveTo 225 111 self)
+				(ego ignoreControl: cWHITE setMotion: MoveTo 225 111 self)
 			)
 			(1
 				(ego heading: 270)
@@ -352,19 +395,21 @@
 				(= cycles 8)
 			)
 			(2
-				(ego view: 106 loop: 6 setCel: 0 setCycle: End self)
+				(ego view: 106 loop: 6 setCel: 0 setCycle: EndLoop self)
 			)
-			(3 (User canInput: 1))
+			(3
+				(User canInput: TRUE)
+			)
 			(4
-				(User canInput: 0)
-				(ego setCycle: Beg self)
+				(User canInput: FALSE)
+				(ego setCycle: BegLoop self)
 			)
 			(5
 				(ego
 					view: 206
 					loop: 1
 					setCycle: Walk
-					observeControl: -32768
+					observeControl: cWHITE
 					setScript: 0
 				)
 				(HandsOn)
@@ -375,8 +420,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(and (Said '(stand[<up]),(get<up)') (== state 3)) (= cycles 1))
+			((and (Said '(stand[<up]),(get<up)') (== state 3))
+				(= cycles 1)
+			)
 		)
 	)
 )
@@ -397,12 +443,19 @@
 			((Said '[/bed][/floor]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 27))
-					(
-					(GoToIfSaid self event self 30 'look[<below]' 14 18))
-					((Said 'look[<below]') (Print 14 28))
-					((Said 'make/') (Print 14 29))
-					((Said 'look[<in]') (Print 14 30))
+					((Said 'look[<at]')
+						(Print 14 27)
+					)
+					((GoToIfSaid self event self 30 'look[<below]' 14 18))
+					((Said 'look[<below]')
+						(Print 14 28)
+					)
+					((Said 'make/')
+						(Print 14 29)
+					)
+					((Said 'look[<in]')
+						(Print 14 30)
+					)
 					((Said 'sit[/*]')
 						(if (== (ego view?) 206)
 							(ego setScript: egoSitScript)
@@ -412,30 +465,31 @@
 					)
 				)
 			)
-			((Said 'look/pillow') (SeeNothing))
+			((Said 'look/pillow')
+				(SeeNothing)
+			)
 		)
 	)
 )
 
 (instance agentScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(local0
-					ignoreControl: -32768
+				(agent
+					ignoreControl: cWHITE
 					setMotion: MoveTo 117 106 self
 				)
 				(theSound number: (SoundFX 42) loop: 1 play:)
 			)
 			(1
-				(local0 setLoop: 2)
+				(agent setLoop: 2)
 				(= cycles 1)
 			)
 			(2
-				(local0 view: 14 setLoop: 4 setCycle: End self)
+				(agent view: 14 setLoop: 4 setCycle: EndLoop self)
 			)
 			(3
 				(HandsOn)
@@ -455,17 +509,19 @@
 					(5 (Print 14 36 #at 70 150))
 				)
 			)
-			(8 (Print 14 37 #at 70 150))
+			(8
+				(Print 14 37 #at 70 150)
+			)
 			(9
 				(ego
-					observeControl: -32768
+					observeControl: cWHITE
 					ignoreActors: 0
 					setLoop: -1
 					setScript: 0
 				)
 				(ego hide:)
 				(door hide:)
-				(local0 dispose:)
+				(agent dispose:)
 				(HandsOff)
 				(theGame changeScore: 6)
 				(curRoom drawPic: 99 setScript: messageSexWithAgentScript)
@@ -494,7 +550,9 @@
 				(if (== (ego view?) 106)
 					(Print 14 42)
 				else
-					(if (== state 3) (self cue:))
+					(if (== state 3)
+						(self cue:)
+					)
 					(ego setScript: egoSitScript)
 				)
 			)
@@ -504,7 +562,9 @@
 					(== state 3)
 					(Said 'affirmative')
 				)
-				(if (== state 3) (self cue:))
+				(if (== state 3)
+					(self cue:)
+				)
 				(ego setScript: egoSitScript)
 			)
 			(
@@ -522,15 +582,21 @@
 )
 
 (instance talkScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					(register (Print 14 46) (self dispose:))
-					((== (ego view?) 106) (Print 14 47))
-					(else (ego setLoop: 8 ignoreActors: 1 setCycle: End self))
+					(register
+						(Print 14 46)
+						(self dispose:)
+					)
+					((== (ego view?) 106)
+						(Print 14 47)
+					)
+					(else
+						(ego setLoop: 8 ignoreActors: TRUE setCycle: EndLoop self)
+					)
 				)
 			)
 			(1
@@ -539,8 +605,8 @@
 				(Print 14 50)
 				(Print 14 51)
 				(Print 14 52)
-				(= register 1)
-				(tahiti flags: (| (tahiti flags?) $0400))
+				(= register TRUE)
+				(tahiti flags: (| (tahiti flags?) fTalkedToStacy))
 				(self dispose:)
 			)
 		)
@@ -548,30 +614,29 @@
 )
 
 (instance egoSitScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego ignoreActors: setAvoider: Avoid)
+				(ego ignoreActors: setAvoider: Avoider)
 				(HandsOff)
 				(if
 					(and
-						(< (ego y?) (+ 5 (local0 y?)))
-						(< (- (local0 x?) 28) (ego x?))
-						(< (ego x?) (local0 x?))
+						(< (ego y?) (+ 5 (agent y?)))
+						(< (- (agent x?) 28) (ego x?))
+						(< (ego x?) (agent x?))
 					)
 					(= cycles 1)
 				else
 					(ego
-						setMotion: MoveTo (- (local0 x?) 14) (+ 5 (local0 y?)) self
+						setMotion: MoveTo (- (agent x?) 14) (+ 5 (agent y?)) self
 					)
 				)
 			)
 			(1
 				(ego
-					ignoreControl: -32768
-					setMotion: MoveTo (- (local0 x?) 14) (local0 y?) self
+					ignoreControl: cWHITE
+					setMotion: MoveTo (- (agent x?) 14) (agent y?) self
 				)
 			)
 			(2
@@ -582,21 +647,21 @@
 				(ego
 					view: 14
 					setLoop: 3
-					ignoreControl: -32768
-					setCycle: End self
+					ignoreControl: cWHITE
+					setCycle: EndLoop self
 				)
 			)
 			(4
-				(local0 z: 1000)
+				(agent z: 1000)
 				(ego view: 14 heading: 180)
-				(if (cast contains: local0)
+				(if (cast contains: agent)
 					(ego setLoop: 5 cel: 0 setScript: kissScript)
 				else
 					(ego setLoop: 3 cel: 2)
 				)
 				(HandsOn)
-				(User canControl: 0)
-				(ego setAvoider: 0 ignoreActors: 0)
+				(User canControl: FALSE)
+				(ego setAvoider: 0 ignoreActors: FALSE)
 			)
 		)
 	)
@@ -604,8 +669,12 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'sit') (Print 14 53))
-			((Said '(stand[<up]),(get<up)') (ego setScript: egoStandScript))
+			((Said 'sit')
+				(Print 14 53)
+			)
+			((Said '(stand[<up]),(get<up)')
+				(ego setScript: egoStandScript)
+			)
 		)
 	)
 )
@@ -620,7 +689,7 @@
 		(super init:)
 		(self
 			posn: (+ 10 (ego x?)) (- (ego y?) 40)
-			setCycle: End self
+			setCycle: EndLoop self
 		)
 	)
 	
@@ -631,34 +700,33 @@
 )
 
 (instance kissScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(if (OneOf (ego loop?) 9 8)
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
 			)
 			(2
 				(HandsOff)
-				(ego setLoop: 5 setCycle: End self)
+				(ego setLoop: 5 setCycle: EndLoop self)
 			)
 			(3 (Mushroom init:))
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				(if (Random 0 1)
-					(ego setLoop: 9 setCycle: End self)
+					(ego setLoop: 9 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
 			)
 			(6
 				(HandsOn)
-				(User canControl: 0)
-				(local0 cue:)
+				(User canControl: FALSE)
+				(agent cue:)
 				(if client (self init:))
 			)
 		)
@@ -667,28 +735,33 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'sit') (Print 14 53 #at -1 100))
-			((Said 'kiss') (ego cue:))
-			((Said '(stand[<up]),(get<up)') (ego setScript: egoStandScript))
+			((Said 'sit')
+				(Print 14 53 #at -1 100)
+			)
+			((Said 'kiss')
+				(ego cue:)
+			)
+			((Said '(stand[<up]),(get<up)')
+				(ego setScript: egoStandScript)
+			)
 		)
 	)
 )
 
 (instance egoStandScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(local0 z: 0)
-				(ego setLoop: 3 setCel: 16 setCycle: Beg self)
+				(agent z: 0)
+				(ego setLoop: 3 setCel: 16 setCycle: BegLoop self)
 			)
 			(1
 				(ego
 					view: 206
 					setLoop: -1
 					setCycle: Walk
-					observeControl: -16384
+					observeControl: cYELLOW
 					loop: 2
 					posn: (ego x?) (+ (ego y?) 2)
 				)
@@ -699,8 +772,7 @@
 )
 
 (instance messageSexWithAgentScript of Script
-	(properties)
-	
+
 	(method (init)
 		(keyDownHandler add: self)
 		(mouseDownHandler add: self)
@@ -717,9 +789,9 @@
 		(switch (= state newState)
 			(0
 				(Print 14 54 #dispose)
-				(tahiti flags: (| (tahiti flags?) $0040))
-				(= global142 1)
-				(Load rsSOUND 29)
+				(tahiti flags: (| (tahiti flags?) fAskedForSex))
+				(= metAgentStacy TRUE)
+				(Load SOUND 29)
 				(self setScript: fireWorkScript)
 			)
 			(1
@@ -730,7 +802,7 @@
 			(2
 				(smoochSong number: 29 loop: -1 play:)
 				(HandsOn)
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(curRoom drawPic: 14)
 				(door show:)
 				(Lamp init:)
@@ -749,7 +821,7 @@
 				(sandals init: ignoreActors:)
 				(ego
 					show:
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					view: 314
 					loop: 0
 					cel: 0
@@ -759,11 +831,11 @@
 			)
 			(3
 				(bed2 addToPic:)
-				(ego loop: 1 cel: 0 setCycle: End self)
+				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(sandals dispose:)
-				(ego loop: 2 cel: 0 setCycle: End self)
+				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(ego
@@ -778,14 +850,14 @@
 			)
 			(6
 				(shirt hide:)
-				(ego view: 208 loop: 0 setCycle: End self)
+				(ego view: 208 loop: 0 setCycle: EndLoop self)
 			)
 			(7
 				(ego
-					observeControl: -32768
+					observeControl: cWHITE
 					view: 206
 					setCycle: Walk
-					setLoop: Grooper
+					setLoop: GradualLooper
 				)
 				(HandsOn)
 				(self dispose:)
@@ -795,22 +867,26 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((== state 0) (self cue:))
+			((== state 0)
+				(self cue:)
+			)
 			((super handleEvent: event))
-			((Said 'get/note') (Print 14 55))
-			(
-			(or (Said 'stand,get[<up,dress]') (Said 'get<out/bed')) (ego setCycle: End self))
+			((Said 'get/note')
+				(Print 14 55)
+			)
+			((or (Said 'stand,get[<up,dress]') (Said 'get<out/bed'))
+				(ego setCycle: EndLoop self)
+			)
 		)
 	)
 )
 
 (instance fireWorkScript of Script
-	(properties)
 	
 	(method (dispose)
 		(if register (register dispose:))
-		(if local1 (local1 dispose:))
-		(if local2 (local2 dispose:))
+		(if fireWork (fireWork dispose:))
+		(if fireWork2 (fireWork2 dispose:))
 		(super dispose:)
 	)
 	
@@ -825,15 +901,17 @@
 						cel: 0
 						x: (Random 20 300)
 						y: (Random 20 180)
-						setCycle: End
+						setCycle: EndLoop
 						yourself:
 					)
 				)
 				(= cycles 3)
 			)
 			(1
-				(if local1 (local1 dispose:))
-				(= local1
+				(if fireWork
+					(fireWork dispose:)
+				)
+				(= fireWork
 					((Prop new:)
 						init:
 						view: 114
@@ -841,15 +919,15 @@
 						cel: 0
 						x: (Random 20 300)
 						y: (Random 20 180)
-						setCycle: End
+						setCycle: EndLoop
 						yourself:
 					)
 				)
 				(= cycles 3)
 			)
 			(2
-				(if local2 (local2 dispose:))
-				(= local2
+				(if fireWork2 (fireWork2 dispose:))
+				(= fireWork2
 					((Prop new:)
 						init:
 						view: 114
@@ -857,21 +935,23 @@
 						cel: 0
 						x: (Random 20 300)
 						y: (Random 20 180)
-						setCycle: End
+						setCycle: EndLoop
 						yourself:
 					)
 				)
 				(= cycles 3)
 			)
 			(3
-				(if register (register dispose:))
+				(if register
+					(register dispose:)
+				)
 				(self init:)
 			)
 		)
 	)
 )
 
-(instance messedUpBed of PV
+(instance messedUpBed of PicView
 	(properties
 		y 105
 		x 96
@@ -912,7 +992,7 @@
 		(super doit:)
 		(if
 			(and
-				(== (ego onControl: 1) 8192)
+				(== (ego onControl: origin) cLMAGENTA)
 				(not (self script?))
 			)
 			(HandsOff)
@@ -926,10 +1006,16 @@
 			((Said '[/door[<building,room]]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 56))
-					((Said 'close') (Print 14 57))
+					((Said 'look[<at]')
+						(Print 14 56)
+					)
+					((Said 'close')
+						(Print 14 57)
+					)
 					((GoToIfSaid self event 42 146 'open' 14 18))
-					((Said 'open') (Print 14 58))
+					((Said 'open')
+						(Print 14 58)
+					)
 				)
 			)
 		)
@@ -941,12 +1027,11 @@
 )
 
 (instance doorScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setCycle: End self)
+				(client setCycle: EndLoop self)
 				(theSound number: (SoundFX 36) loop: 1 play:)
 			)
 			(1
@@ -997,7 +1082,9 @@
 			((super handleEvent: event))
 			((Said '/note,letter,message>')
 				(cond 
-					((Said 'look[<at]') (Print 14 59))
+					((Said 'look[<at]')
+						(Print 14 59)
+					)
 					((TurnIfSaid self event 'look[<at]/*'))
 					((GoToIfSaid self event self 30 'get,read' 14 18))
 					((Said 'get,read')
@@ -1029,8 +1116,12 @@
 			((Said '[/closet]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 14 63))
-					((Said 'open,examine') (Print 14 64))
+					((Said 'look[<at]')
+						(Print 14 63)
+					)
+					((Said 'open,examine')
+						(Print 14 64)
+					)
 				)
 			)
 		)
@@ -1053,7 +1144,9 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at,out]') (Print 14 0))
+					((Said 'look[<at,out]')
+						(Print 14 0)
+					)
 				)
 			)
 		)

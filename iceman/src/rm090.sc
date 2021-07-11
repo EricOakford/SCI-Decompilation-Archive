@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 90)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -13,14 +13,14 @@
 	rm090 0
 )
 
-(instance rm090 of Rm
+(instance rm090 of Room
 	(properties
 		picture 99
 	)
 	
 	(method (init)
-		(Load rsVIEW 90)
-		(Load rsSOUND 93)
+		(Load VIEW 90)
+		(Load SOUND 93)
 		(super init:)
 		(aFace init:)
 		(aGeneral init:)
@@ -30,7 +30,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
@@ -51,19 +50,12 @@
 				(= seconds 9)
 			)
 			(1
-				(aFace setCycle: Fwd)
-				(Print
-					90
-					1
-					#title
-					{Captain}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(aFace setCycle: Forward)
+				(Print 90 1
+					#title {Captain}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 9)
@@ -73,19 +65,12 @@
 				(= cycles 3)
 			)
 			(3
-				(aFace setCycle: Fwd)
-				(Print
-					90
-					2
-					#title
-					{Captain}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(aFace setCycle: Forward)
+				(Print 90 2
+					#title {Captain}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 9)
@@ -95,19 +80,12 @@
 				(= cycles 3)
 			)
 			(5
-				(aFace setCycle: Fwd)
-				(Print
-					90
-					3
-					#title
-					{Captain}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(aFace setCycle: Forward)
+				(Print 90 3
+					#title {Captain}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 9)
@@ -117,19 +95,12 @@
 				(= cycles 3)
 			)
 			(7
-				(aFace setCycle: Fwd)
-				(Print
-					90
-					4
-					#title
-					{Captain}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(aFace setCycle: Forward)
+				(Print 90 4
+					#title {Captain}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 9)
@@ -139,19 +110,12 @@
 				(= cycles 3)
 			)
 			(9
-				(aFace setCycle: Fwd)
-				(Print
-					90
-					5
-					#title
-					{Captain}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(aFace setCycle: Forward)
+				(Print 90 5
+					#title {Captain}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 9)
@@ -161,19 +125,12 @@
 				(= cycles 3)
 			)
 			(11
-				(aFace setCycle: Fwd)
-				(Print
-					90
-					6
-					#title
-					{Captain}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(aFace setCycle: Forward)
+				(Print 90 6
+					#title {Captain}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 9)
@@ -183,19 +140,12 @@
 				(= cycles 3)
 			)
 			(13
-				(aFace setCycle: Fwd)
-				(Print
-					90
-					7
-					#title
-					{Captain}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(aFace setCycle: Forward)
+				(Print 90 7
+					#title {Captain}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 9)
@@ -205,19 +155,12 @@
 				(= cycles 3)
 			)
 			(15
-				(aFace setCycle: Fwd)
-				(Print
-					90
-					8
-					#title
-					{Captain}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(aFace setCycle: Forward)
+				(Print 90 8
+					#title {Captain}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 9)
@@ -240,12 +183,14 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evKEYBOARD) (event claimed?))
+		(if (or (!= (event type?) keyDown) (event claimed?))
 			(return)
 		)
-		(if modelessDialog (cls) (self cue:))
-		(event claimed: 1)
+		(if modelessDialog
+			(cls)
+			(self cue:)
+		)
+		(event claimed: TRUE)
 	)
 )
 
@@ -268,7 +213,7 @@
 		x 157
 		view 90
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)

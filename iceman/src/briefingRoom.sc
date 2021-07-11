@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 21)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use washington)
@@ -20,10 +20,10 @@
 )
 
 (local
-	local0
-	local1
+	chair2
+	chair3
 )
-(instance briefingRoom of Rm
+(instance briefingRoom of Room
 	(properties
 		picture 21
 		vanishingX 153
@@ -33,7 +33,7 @@
 	(method (init)
 		(super init:)
 		(self setRegions: 302)
-		(LoadMany 128 204 421 21 121 221 421 521)
+		(LoadMany VIEW 204 421 21 121 221 421 521)
 		(slideShowWest init:)
 		(slideShowEast init:)
 		(Braxton init:)
@@ -42,8 +42,8 @@
 		(coffeeCup init:)
 		(HandsOff)
 		(chair init:)
-		((= local0 (Clone chair)) x: 156 y: 144 init:)
-		((= local1 (Clone chair)) x: 95 y: 145 init:)
+		((= chair2 (Clone chair)) x: 156 y: 144 init:)
+		((= chair3 (Clone chair)) x: 95 y: 145 init:)
 		(flag init:)
 		(addToPics doit:)
 		(ego
@@ -66,14 +66,16 @@
 	(method (dispose)
 		(cls)
 		(globalSound fade:)
-		(washington beenBriefed: 1)
+		(washington beenBriefed: TRUE)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<around][/room]') (Print 21 0))
+			((Said 'look[<around][/room]')
+				(Print 21 0)
+			)
 			((Said 'stand,(get<up)')
 				(if (== (ego view?) 204)
 					(Print 21 1)
@@ -81,8 +83,12 @@
 					(ego setScript: egoStandScript)
 				)
 			)
-			((Said 'drink,get/drink,cup,coffee,water') (Print 21 2))
-			((Said 'open/door') (Print 21 3))
+			((Said 'drink,get/drink,cup,coffee,water')
+				(Print 21 2)
+			)
+			((Said 'open/door')
+				(Print 21 3)
+			)
 		)
 	)
 )
@@ -184,37 +190,23 @@
 		(switch (= state newState)
 			(0 (= cycles 40))
 			(1
-				(lips init: setCycle: Fwd)
-				(Print
-					21
-					4
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(lips init: setCycle: Forward)
+				(Print 21 4
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(2
 				(cls)
-				(Print
-					21
-					5
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 5
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
@@ -225,7 +217,7 @@
 				(Braxton illegalBits: 0 setMotion: MoveTo 165 123 self)
 				(ego
 					setMotion: MoveTo (- (chair x?) 30) (chair y?) self
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					ignoreActors:
 				)
 			)
@@ -243,60 +235,39 @@
 					posn: (chair x?) (chair y?)
 					cycleSpeed: 1
 					heading: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
 				(ego stopUpd:)
-				(lips init: posn: 166 86 setCycle: Fwd)
-				(Print
-					21
-					6
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(lips init: posn: 166 86 setCycle: Forward)
+				(Print 21 6
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(8
 				(cls)
-				(Print
-					21
-					7
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 7
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(9
 				(cls)
-				(Print
-					21
-					8
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 8
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
@@ -310,20 +281,20 @@
 					setLoop: 0
 					cycleSpeed: 1
 					posn: (Braxton x?) (- (Braxton y?) 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= seconds 5)
 			)
 			(11
-				(Braxton setCycle: CT 2 -1)
+				(Braxton setCycle: CycleTo 2 -1)
 				(= seconds 3)
 			)
 			(12
-				(Braxton setCycle: End)
+				(Braxton setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(13
-				(Braxton setCycle: Beg self)
+				(Braxton setCycle: BegLoop self)
 			)
 			(14
 				(coffeeCup init:)
@@ -333,126 +304,77 @@
 					cel: 5
 					posn: (Braxton x?) (+ (Braxton y?) 2)
 				)
-				(Print
-					21
-					9
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 9
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(15
-				(lips init: posn: 166 87 setCycle: Fwd)
-				(Print
-					21
-					10
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(lips init: posn: 166 87 setCycle: Forward)
+				(Print 21 10
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(16
 				(cls)
-				(Print
-					21
-					11
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 11
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(17
 				(cls)
-				(Print
-					21
-					12
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 12
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 17)
 			)
 			(18
 				(cls)
-				(Print
-					21
-					13
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 13
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(19
 				(cls)
-				(Print
-					21
-					14
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 14
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(20
 				(cls)
-				(Print
-					21
-					15
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 15
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
@@ -461,23 +383,23 @@
 				(cls)
 				(lips dispose:)
 				(coffeeCup dispose:)
-				(Braxton view: 521 setLoop: 0 cycleSpeed: 1 setCycle: End)
+				(Braxton view: 521 setLoop: 0 cycleSpeed: 1 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(22
-				(Braxton setCycle: CT 2 -1)
+				(Braxton setCycle: CycleTo 2 -1)
 				(= seconds 3)
 			)
 			(23
-				(Braxton setCycle: End)
+				(Braxton setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(24
-				(Braxton setCycle: Beg self)
+				(Braxton setCycle: BegLoop self)
 			)
 			(25
 				(coffeeCup init:)
-				(lips init: setCycle: Fwd)
+				(lips init: setCycle: Forward)
 				(Braxton
 					view: 121
 					cycleSpeed: 0
@@ -485,18 +407,11 @@
 					cel: 5
 					setCycle: Walk
 				)
-				(Print
-					21
-					16
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 16
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 					#draw
 				)
@@ -508,13 +423,13 @@
 				(Braxton setLoop: -1 setMotion: MoveTo 58 123 self)
 			)
 			(27
-				(Agent illegalBits: 0 setCycle: Beg self)
+				(Agent illegalBits: 0 setCycle: BegLoop self)
 				(Braxton setScript: braxSitScript)
 			)
 			(28
 				(Agent
 					view: 221
-					posn: (- (local0 x?) 10) (- (local0 y?) 1)
+					posn: (- (chair2 x?) 10) (- (chair2 y?) 1)
 					setLoop: -1
 					setCycle: Walk
 					setMotion: DPath 91 150 58 150 58 123 165 123 self
@@ -523,7 +438,7 @@
 			(29
 				(Agent loop: 2)
 				(blackOutSlide init:)
-				(slideShowWest setCycle: End self)
+				(slideShowWest setCycle: EndLoop self)
 			)
 			(30
 				(Agent stopUpd:)
@@ -533,51 +448,37 @@
 			(31
 				(blackOutSlide hide:)
 				(slideWest setCel: 4 init:)
-				(Agent setLoop: 5 setCel: 0 setCycle: End)
+				(Agent setLoop: 5 setCel: 0 setCycle: EndLoop)
 				(= cycles 5)
 			)
 			(32
-				(lips init: posn: 164 87 setCycle: Fwd)
-				(Print
-					21
-					17
-					#title
-					{Agent}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(lips init: posn: 164 87 setCycle: Forward)
+				(Print 21 17
+					#title {Agent}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 18)
 			)
-			(33 (Agent setCycle: Beg self))
+			(33 (Agent setCycle: BegLoop self))
 			(34
 				(Agent setLoop: 2 setCel: 0)
 				(lips hide:)
 				(cls)
-				(Print
-					21
-					18
-					#title
-					{Agent}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 18
+					#title {Agent}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(blackOutSlide
 					posn: (slideEast x?) (slideEast y?)
 					show:
 				)
-				(slideShowEast setCycle: End self)
+				(slideShowEast setCycle: EndLoop self)
 			)
 			(35
 				(lips show:)
@@ -587,30 +488,23 @@
 			(36
 				(blackOutSlide hide:)
 				(slideEast setCel: 1 init:)
-				(Agent setLoop: 4 setCycle: End)
+				(Agent setLoop: 4 setCycle: EndLoop)
 				(lips x: 167)
 				(= seconds 10)
 			)
 			(37
 				(cls)
-				(Print
-					21
-					19
-					#title
-					{Agent}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 19
+					#title {Agent}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 15)
 			)
 			(38
-				(Agent setCycle: Beg)
+				(Agent setCycle: BegLoop)
 				(= seconds 5)
 			)
 			(39
@@ -630,23 +524,16 @@
 			)
 			(41
 				(slideWest loop: 6 setCel: 2 init:)
-				(Agent setLoop: 5 setCycle: End)
+				(Agent setLoop: 5 setCycle: EndLoop)
 				(= cycles 10)
 			)
 			(42
-				(lips init: x: 164 setCycle: Fwd)
-				(Print
-					21
-					21
-					#title
-					{Agent}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(lips init: x: 164 setCycle: Forward)
+				(Print 21 21
+					#title {Agent}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
@@ -654,7 +541,7 @@
 			(43
 				(cls)
 				(lips dispose:)
-				(Agent setCycle: Beg)
+				(Agent setCycle: BegLoop)
 				(Print 21 20 #title {Agent} #at 5 10 #dispose)
 				(blackOutSlide
 					posn: (slideEast x?) (slideEast y?)
@@ -669,69 +556,48 @@
 				(= seconds 2)
 			)
 			(45
-				(lips init: x: 166 setCycle: Fwd)
-				(Print
-					21
-					22
-					#title
-					{Agent}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(lips init: x: 166 setCycle: Forward)
+				(Print 21 22
+					#title {Agent}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(46
 				(cls)
-				(Print
-					21
-					23
-					#title
-					{Agent}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 23
+					#title {Agent}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(47
 				(cls)
-				(Print
-					21
-					24
-					#title
-					{Agent}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 24
+					#title {Agent}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
-				(slideShowWest setCycle: Beg)
+				(slideShowWest setCycle: BegLoop)
 				(= seconds 10)
 			)
 			(48
-				(slideShowEast setCycle: Beg self)
+				(slideShowEast setCycle: BegLoop self)
 				(cls)
 			)
 			(49
 				(lips dispose:)
 				(slideShowWest cue:)
 				(slideShowEast cue:)
-				(Braxton setCycle: Beg self)
+				(Braxton setCycle: BegLoop self)
 			)
 			(50
 				(Agent setScript: agentSitScript)
@@ -744,74 +610,46 @@
 				)
 			)
 			(51
-				(lips init: posn: 166 87 setCycle: Fwd)
+				(lips init: posn: 166 87 setCycle: Forward)
 				(Braxton loop: 2 cel: 5)
-				(Print
-					21
-					25
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 25
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 15)
 			)
 			(52
 				(cls)
-				(Print
-					21
-					26
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 26
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(53
 				(cls)
-				(Print
-					21
-					27
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 27
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
 			)
 			(54
 				(cls)
-				(Print
-					21
-					28
-					#title
-					{Braxton}
-					#at
-					5
-					10
-					#width
-					305
-					#font
-					3
+				(Print 21 28
+					#title {Braxton}
+					#at 5 10
+					#width 305
+					#font 3
 					#dispose
 				)
 				(= seconds 20)
@@ -819,19 +657,19 @@
 			(55
 				(cls)
 				(lips dispose:)
-				(Agent setCycle: Beg self)
+				(Agent setCycle: BegLoop self)
 			)
 			(56
 				(Braxton
 					illegalBits: 0
 					setLoop: -1
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: DPath 40 123 40 154 95 158 224 159 265 165 267 240 self
 				)
 				(Agent
 					view: 221
 					setCycle: Walk
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setLoop: -1
 					setMotion: DPath 156 158 224 159 265 165 267 240 self
@@ -840,7 +678,7 @@
 			(57)
 			(58
 				(HandsOn)
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(self dispose:)
 			)
 		)
@@ -855,8 +693,8 @@
 		(if
 			(or
 				(OneOf state 47 48)
-				(!= (event type?) evKEYBOARD)
-				(!= (event message?) KEY_RETURN)
+				(!= (event type?) keyDown)
+				(!= (event message?) ENTER)
 				(event claimed?)
 			)
 			(return)
@@ -865,11 +703,11 @@
 			(modelessDialog dispose:)
 			(self cue:)
 		)
-		(event claimed: 1)
+		(event claimed: TRUE)
 	)
 )
 
-(instance Braxton of Act
+(instance Braxton of Actor
 	(properties
 		y 123
 		x 144
@@ -879,12 +717,11 @@
 	
 	(method (init)
 		(super init:)
-		(self ignoreActors: ignoreControl: -32768 setCycle: Walk)
+		(self ignoreActors: ignoreControl: cWHITE setCycle: Walk)
 	)
 )
 
 (instance braxSitScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -893,7 +730,7 @@
 			)
 			(1
 				(Braxton
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					ignoreActors:
 					setMotion: MoveTo 85 144 self
 				)
@@ -905,14 +742,14 @@
 					view: 421
 					setLoop: 2
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 		)
 	)
 )
 
-(instance Agent of Act
+(instance Agent of Actor
 	(properties
 		y 144
 		x 156
@@ -923,8 +760,8 @@
 	(method (init)
 		(super init:)
 		(self
-			ignoreActors: 1
-			ignoreControl: -32768
+			ignoreActors: TRUE
+			ignoreControl: cWHITE
 			cel: (self lastCel:)
 		)
 	)
@@ -943,9 +780,13 @@
 			((super handleEvent: event))
 			((Said '[/chair]>')
 				(cond 
-					((Said 'sit') (DontNeedTo))
+					((Said 'sit')
+						(DontNeedTo)
+					)
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 21 29))
+					((Said 'look[<at]')
+						(Print 21 29)
+					)
 				)
 			)
 		)
@@ -968,7 +809,9 @@
 			((Said '[/flag]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 21 30))
+					((Said 'look[<at]')
+						(Print 21 30)
+					)
 					((Said 'salute')
 						(if (== (ego view?) 204)
 							(Print 21 31)
@@ -983,8 +826,7 @@
 )
 
 (instance agentSitScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -992,16 +834,16 @@
 			)
 			(1
 				(Agent
-					setMotion: MoveTo (- (local0 x?) 10) (- (local0 y?) 1) self
+					setMotion: MoveTo (- (chair2 x?) 10) (- (chair2 y?) 1) self
 				)
 			)
 			(2
 				(Agent
 					view: 421
 					loop: 1
-					posn: (local0 x?) (local0 y?)
+					posn: (chair2 x?) (chair2 y?)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (curRoom cue:))
@@ -1026,7 +868,9 @@
 		(cond 
 			((super handleEvent: event))
 			((TurnIfSaid self event 'look[<at]/coffee,cup'))
-			((Said 'look[<at]/coffee,cup') (Print 21 33))
+			((Said 'look[<at]/coffee,cup')
+				(Print 21 33)
+			)
 		)
 	)
 )
@@ -1046,18 +890,19 @@
 )
 
 (instance egoStandScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: Beg self))
+			(0
+				(ego setCycle: BegLoop self)
+			)
 			(1
 				(ego
 					view: 204
 					loop: 3
 					posn: (- (chair x?) 10) (- (chair y?) 1)
 					setCycle: Walk
-					observeControl: -32768
+					observeControl: cWHITE
 					ignoreActors: 0
 					cycleSpeed: 0
 					moveSpeed: 0
@@ -1083,17 +928,31 @@
 			((super handleEvent: event))
 			((Said '/[envelope,order,instructions]>')
 				(cond 
-					((Said 'drop') (if (ego has: 0) (Print 21 34) else (Print 21 35)))
-					((and (ego has: 0) (Said 'open,look[<at,in]')) (Print 21 36))
+					((Said 'drop')
+						(if (ego has: iEnvelope)
+							(Print 21 34)
+						else
+							(Print 21 35)
+						)
+					)
+					((and (ego has: iEnvelope) (Said 'open,look[<at,in]'))
+						(Print 21 36)
+					)
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 21 37))
-					((Said 'open,look[<in]') (Print 21 38))
-					((and (ego has: 0) (Said 'get')) (Print 21 39))
+					((Said 'look[<at]')
+						(Print 21 37)
+					)
+					((Said 'open,look[<in]')
+						(Print 21 38)
+					)
+					((and (ego has: iEnvelope) (Said 'get'))
+						(Print 21 39)
+					)
 					((GoToIfSaid self event envelope 40 'get' 21 40))
 					((Said 'get')
 						(Print 21 41)
 						(envelope hide:)
-						(ego get: 0)
+						(ego get: iEnvelope)
 						(theGame changeScore: 1)
 					)
 				)
@@ -1103,7 +962,6 @@
 )
 
 (instance egoEnters of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -1118,7 +976,7 @@
 				(ego setMotion: MoveTo 215 160 self)
 			)
 			(2
-				(ego illegalBits: -32768 loop: 3)
+				(ego illegalBits: cWHITE loop: 3)
 				(briefingRoom south: 20)
 			)
 		)
@@ -1141,7 +999,13 @@
 			((Said '[/table]>')
 				(cond 
 					((TurnIfSaid self event 'look[<on,at]/*'))
-					((Said 'look[<on,at]') (if (ego has: 0) (Print 21 42) else (Print 21 43)))
+					((Said 'look[<on,at]')
+						(if (ego has: iEnvelope)
+							(Print 21 42)
+						else
+							(Print 21 43)
+						)
+					)
 				)
 			)
 		)

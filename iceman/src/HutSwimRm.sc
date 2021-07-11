@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 8)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use InitAllFeatures)
@@ -17,7 +17,7 @@
 (local
 	local0
 )
-(instance HutSwimRm of Rm
+(instance HutSwimRm of Room
 	(properties
 		picture 8
 		horizon 120
@@ -108,10 +108,18 @@
 			((super handleEvent: event))
 			((Said 'look[<at]>')
 				(cond 
-					((Said '/building') (Print 8 0))
-					((Said '/hotel') (Print 8 1))
-					((Said '/palm') (Print 8 2))
-					((Said '/bush') (Print 8 3))
+					((Said '/building')
+						(Print 8 0)
+					)
+					((Said '/hotel')
+						(Print 8 1)
+					)
+					((Said '/palm')
+						(Print 8 2)
+					)
+					((Said '/bush')
+						(Print 8 3)
+					)
 				)
 			)
 		)
@@ -154,7 +162,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/building') (Print 8 4))
+			((Said 'look[<at]/building')
+				(Print 8 4)
+			)
 		)
 	)
 )
@@ -170,7 +180,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/building') (Print 8 5))
+			((Said 'look[<at]/building')
+				(Print 8 5)
+			)
 		)
 	)
 )
@@ -186,7 +198,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/building') (Print 8 6))
+			((Said 'look[<at]/building')
+				(Print 8 6)
+			)
 		)
 	)
 )
@@ -202,7 +216,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/building') (Print 8 7))
+			((Said 'look[<at]/building')
+				(Print 8 7)
+			)
 		)
 	)
 )
@@ -218,7 +234,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/building,hotel') (Print 8 8))
+			((Said 'look[<at]/building,hotel')
+				(Print 8 8)
+			)
 		)
 	)
 )
@@ -234,12 +252,14 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/palm') (Print 8 9))
+			((Said 'look[<at]/palm')
+				(Print 8 9)
+			)
 		)
 	)
 )
 
-(instance pixelPerson of Act
+(instance pixelPerson of Actor
 	(properties
 		view 1
 		loop 5
@@ -261,7 +281,6 @@
 )
 
 (instance paceScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

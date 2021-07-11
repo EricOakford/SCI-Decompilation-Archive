@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 22)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use EgoDead)
@@ -16,7 +16,7 @@
 	honoluluAirportRm 0
 )
 
-(instance honoluluAirportRm of Rm
+(instance honoluluAirportRm of Room
 	(properties
 		picture 22
 	)
@@ -24,7 +24,7 @@
 	(method (init)
 		(super init:)
 		(self setRegions: 302)
-		(LoadMany 128 22 17)
+		(LoadMany VIEW 22 17)
 		(globalSound
 			number: 84
 			owner: theGame
@@ -48,16 +48,23 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,scene]') (Print 22 0))
-			((Said 'look/airport') (Print 22 1))
-			((Said 'look/car') (Print 22 2))
-			((Said 'open/door') (Print 22 3))
+			((Said 'look[<at,around][/room,scene]')
+				(Print 22 0)
+			)
+			((Said 'look/airport')
+				(Print 22 1)
+			)
+			((Said 'look/car')
+				(Print 22 2)
+			)
+			((Said 'open/door')
+				(Print 22 3)
+			)
 		)
 	)
 )
 
 (instance walkToDriverScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -68,14 +75,14 @@
 				)
 			)
 			(1
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(self dispose:)
 			)
 		)
 	)
 )
 
-(instance driver of Act
+(instance driver of Actor
 	(properties
 		y 164
 		x 60
@@ -88,18 +95,27 @@
 			((super handleEvent: event))
 			((Said '[/man,driver]>')
 				(cond 
-					((Said 'look') (Print 22 4))
-					((Said 'salute') (Print 22 5))
-					((Said 'address') (Print 22 6) (self setScript: driverResponseScript))
+					((Said 'look')
+						(Print 22 4)
+					)
+					((Said 'salute')
+						(Print 22 5)
+					)
+					((Said 'address')
+						(Print 22 6)
+						(self setScript: driverResponseScript)
+					)
 				)
 			)
-			((Said 'show/order') (Print 22 6) (self setScript: driverResponseScript))
+			((Said 'show/order')
+				(Print 22 6)
+				(self setScript: driverResponseScript)
+			)
 		)
 	)
 )
 
 (instance driverResponseScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -120,19 +136,26 @@
 					(Print 22 7)
 				)
 			)
-			((Said 'show/id,order') (Print 22 8))
-			((Said 'n') (curRoom setScript: endOfGameScript 0 0))
+			((Said 'show/id,order')
+				(Print 22 8)
+			)
+			((Said 'n')
+				(curRoom setScript: endOfGameScript 0 0)
+			)
 		)
 	)
 )
 
 (instance showIdScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Print 22 9))
-			(1 (self dispose:))
+			(0
+				(Print 22 9)
+			)
+			(1
+				(self dispose:)
+			)
 		)
 	)
 	
@@ -140,7 +163,7 @@
 		(cond 
 			((super handleEvent: event))
 			((or (Said 'show/order') (Said 'affirmative'))
-				(if (ego has: 0)
+				(if (ego has: iEnvelope)
 					(Print 22 10)
 					(self cue:)
 				else
@@ -168,18 +191,19 @@
 )
 
 (instance newRoomScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (driver setCycle: End self))
+			(0
+				(driver setCycle: EndLoop self)
+			)
 			(1
 				(driver
 					loop: 5
 					setPri: (- (doorProp priority?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(doorProp show: setCycle: End self)
+				(doorProp show: setCycle: EndLoop self)
 			)
 			(2 (= seconds 2))
 			(3
@@ -190,8 +214,7 @@
 )
 
 (instance messageLeavePearlScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -199,7 +222,7 @@
 				(Print 22 15)
 				(Print 22 16)
 				(Print 22 17)
-				(ego put: 6 3)
+				(ego put: iEarring 3)
 				(HandsOn)
 				(curRoom newRoom: 23)
 			)
@@ -228,9 +251,11 @@
 					(< (= temp0 (ego distanceTo: self)) 45)
 					(not cel)
 				)
-				(self setCycle: End self)
+				(self setCycle: EndLoop self)
 			)
-			((and (>= temp0 45) cel) (self setCycle: Beg self))
+			((and (>= temp0 45) cel)
+				(self setCycle: BegLoop self)
+			)
 		)
 	)
 	
@@ -239,7 +264,7 @@
 	)
 )
 
-(instance plane of Act
+(instance plane of Actor
 	(properties
 		view 17
 		loop 5
@@ -249,7 +274,7 @@
 		(super init:)
 		(self
 			setLoop: loop
-			ignoreControl: -32768
+			ignoreControl: cWHITE
 			setScript: planeScript
 			stopUpd:
 		)
@@ -259,13 +284,14 @@
 		(cond 
 			((super handleEvent: event))
 			((IsOffScreen self))
-			((Said 'look[<at][/airplane,airplane,jet]') (Print 22 18))
+			((Said 'look[<at][/airplane,airplane,jet]')
+				(Print 22 18)
+			)
 		)
 	)
 )
 
 (instance planeScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -277,12 +303,14 @@
 				(client stopUpd:)
 				(= seconds (Random 20 40))
 			)
-			(3 (self init: client))
+			(3
+				(self init: client)
+			)
 		)
 	)
 )
 
-(instance alohaSignPic of PV
+(instance alohaSignPic of PicView
 	(properties
 		y 189
 		x 289
@@ -290,7 +318,7 @@
 	)
 )
 
-(instance limoPic of PV
+(instance limoPic of PicView
 	(properties
 		y 189
 		x 34

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 12)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use SoundSyncWave)
@@ -15,7 +15,7 @@
 	beachHuts3 0
 )
 
-(instance beachHuts3 of Rm
+(instance beachHuts3 of Room
 	(properties
 		picture 12
 		east 13
@@ -25,7 +25,7 @@
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 12 112)
+		(LoadMany VIEW 12 112)
 		(addToPics
 			add: beachLayer1 beachLayer2
 			eachElementDo: #init
@@ -61,9 +61,15 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<around,at][/room,beach]') (Print 12 0))
-			((Said 'look[<at]/building') (Print 12 1))
-			((Said 'look[<at]/people') (Print 12 2))
+			((Said 'look[<around,at][/room,beach]')
+				(Print 12 0)
+			)
+			((Said 'look[<at]/building')
+				(Print 12 1)
+			)
+			((Said 'look[<at]/people')
+				(Print 12 2)
+			)
 		)
 	)
 )
@@ -84,11 +90,23 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 12 3))
+					((Said 'look[<at]')
+						(Print 12 3)
+					)
 					((GoToIfSaid self event 148 82 0 12 4))
-					((Said 'open') (Print 12 5))
-					((Said 'unlock') (if (ego has: 5) (Print 12 6) else (Print 12 7)))
-					((Said 'knock') (Print 12 8))
+					((Said 'open')
+						(Print 12 5)
+					)
+					((Said 'unlock')
+						(if (ego has: iTahitiKey)
+							(Print 12 6)
+						else
+							(Print 12 7)
+						)
+					)
+					((Said 'knock')
+						(Print 12 8)
+					)
 				)
 			)
 		)
@@ -102,7 +120,7 @@
 		view 12
 		loop 1
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -111,14 +129,26 @@
 			((Said '[/babe]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 12 9))
-					((Said 'address') (Print 12 10))
-					((Said 'wake,kick') (Print 12 11))
-					((Said 'kiss') (Print 12 12))
+					((Said 'look[<at]')
+						(Print 12 9)
+					)
+					((Said 'address')
+						(Print 12 10)
+					)
+					((Said 'wake,kick')
+						(Print 12 11)
+					)
+					((Said 'kiss')
+						(Print 12 12)
+					)
 				)
 			)
-			((Said 'look/towel') (Print 12 13))
-			((Said 'kick/sand') (Print 12 14))
+			((Said 'look/towel')
+				(Print 12 13)
+			)
+			((Said 'kick/sand')
+				(Print 12 14)
+			)
 		)
 	)
 )
@@ -130,7 +160,7 @@
 		view 12
 		loop 1
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -139,10 +169,18 @@
 			((Said '[/man,people]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 12 15))
-					((Said 'address') (Print 12 16))
-					((Said 'wake,kick') (Print 12 17))
-					((Said 'kiss') (Print 12 12))
+					((Said 'look[<at]')
+						(Print 12 15)
+					)
+					((Said 'address')
+						(Print 12 16)
+					)
+					((Said 'wake,kick')
+						(Print 12 17)
+					)
+					((Said 'kiss')
+						(Print 12 12)
+					)
 				)
 			)
 		)
@@ -165,7 +203,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at][/wave]') (Print 12 18))
+			((Said 'look[<at][/wave]')
+				(Print 12 18)
+			)
 		)
 	)
 )
@@ -188,8 +228,12 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 12 19))
-					((Said 'look<in') (Print 12 20))
+					((Said 'look[<at]')
+						(Print 12 19)
+					)
+					((Said 'look<in')
+						(Print 12 20)
+					)
 				)
 			)
 		)
@@ -214,8 +258,12 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 12 19))
-					((Said 'look<in') (Print 12 20))
+					((Said 'look[<at]')
+						(Print 12 19)
+					)
+					((Said 'look<in')
+						(Print 12 20)
+					)
 				)
 			)
 		)
@@ -240,8 +288,12 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 12 19))
-					((Said 'look<in') (Print 12 20))
+					((Said 'look[<at]')
+						(Print 12 19)
+					)
+					((Said 'look<in')
+						(Print 12 20)
+					)
 				)
 			)
 		)
@@ -257,7 +309,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at][/bush,palm]') (Print 12 21))
+			((Said 'look[<at][/bush,palm]')
+				(Print 12 21)
+			)
 		)
 	)
 )
@@ -275,7 +329,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at][/palm]') (Print 12 22))
+			((Said 'look[<at][/palm]')
+				(Print 12 22)
+			)
 		)
 	)
 )

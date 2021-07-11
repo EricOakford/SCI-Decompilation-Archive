@@ -188,7 +188,7 @@
 	numVoices
 	numColors
 	global141 =  1
-	global142
+	metAgentStacy
 	earRingState
 	startingRoom
 )

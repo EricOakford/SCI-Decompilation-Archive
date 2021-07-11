@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 16)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use InitAllFeatures)
@@ -15,7 +15,7 @@
 	beachSwimRm 0
 )
 
-(instance beachSwimRm of Rm
+(instance beachSwimRm of Room
 	(properties
 		picture 16
 		horizon 120
@@ -26,7 +26,7 @@
 	
 	(method (init)
 		(self setRegions: 301 300 308)
-		(LoadMany 128 217 1 16)
+		(LoadMany VIEW 217 1 16)
 		(ego view: 217 init:)
 		(super init:)
 		(addToPics
@@ -88,13 +88,15 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,water]') (Print 16 0))
+			((Said 'look[<at,around][/room,water]')
+				(Print 16 0)
+			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(super newRoom: newRoomNumber)
-		(switch newRoomNumber
+	(method (newRoom nRoom)
+		(super newRoom: nRoom)
+		(switch nRoom
 			(2 (ego x: (* (ego x?) 2)))
 			(12
 				(ego x: (+ (/ (* (- (ego x?) 40) 26) 6) 60))
@@ -120,7 +122,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/building') (Print 16 1))
+			((Said 'look[<at]/building')
+				(Print 16 1)
+			)
 		)
 	)
 )
@@ -137,7 +141,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/building') (Print 16 1))
+			((Said 'look[<at]/building')
+				(Print 16 1)
+			)
 		)
 	)
 )
@@ -154,12 +160,14 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/building') (Print 16 1))
+			((Said 'look[<at]/building')
+				(Print 16 1)
+			)
 		)
 	)
 )
 
-(instance palmTree of PV
+(instance palmTree of PicView
 	(properties
 		y 95
 		x 151
@@ -170,7 +178,7 @@
 	)
 )
 
-(instance palmTree2 of PV
+(instance palmTree2 of PicView
 	(properties
 		y 95
 		x 103
@@ -180,7 +188,7 @@
 	)
 )
 
-(instance palmTree3 of PV
+(instance palmTree3 of PicView
 	(properties
 		y 89
 		x 9
@@ -191,7 +199,7 @@
 	)
 )
 
-(instance palmTree4 of PV
+(instance palmTree4 of PicView
 	(properties
 		y 95
 		x 28
@@ -201,7 +209,7 @@
 	)
 )
 
-(instance palmTree5 of PV
+(instance palmTree5 of PicView
 	(properties
 		y 93
 		x 45
@@ -211,7 +219,7 @@
 	)
 )
 
-(instance palmTree6 of PV
+(instance palmTree6 of PicView
 	(properties
 		y 96
 		x 142
@@ -221,7 +229,7 @@
 	)
 )
 
-(instance palmTree7 of PV
+(instance palmTree7 of PicView
 	(properties
 		y 92
 		x 198
@@ -231,7 +239,7 @@
 	)
 )
 
-(instance palmTree8 of PV
+(instance palmTree8 of PicView
 	(properties
 		y 90
 		x 210
@@ -242,7 +250,7 @@
 	)
 )
 
-(instance palmTree9 of PV
+(instance palmTree9 of PicView
 	(properties
 		y 92
 		x 230
@@ -252,7 +260,7 @@
 	)
 )
 
-(instance palmTree10 of PV
+(instance palmTree10 of PicView
 	(properties
 		y 90
 		x 252
@@ -262,7 +270,7 @@
 	)
 )
 
-(instance palmTree11 of PV
+(instance palmTree11 of PicView
 	(properties
 		y 91
 		x 270
@@ -272,7 +280,7 @@
 	)
 )
 
-(instance pixelPerson of Act
+(instance pixelPerson of Actor
 	(properties
 		view 1
 		loop 5
@@ -294,8 +302,7 @@
 )
 
 (instance paceScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 2 10)))

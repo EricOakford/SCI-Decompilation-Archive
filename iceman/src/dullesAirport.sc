@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 17)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use EgoDead)
@@ -17,7 +17,7 @@
 	dullesAirport 0
 )
 
-(instance dullesAirport of Rm
+(instance dullesAirport of Room
 	(properties
 		picture 17
 		vanishingX 154
@@ -27,7 +27,7 @@
 	(method (init)
 		(super init:)
 		(self setRegions: 302)
-		(Load rsVIEW 204 17 417)
+		(Load VIEW 204 17 417)
 		(ego
 			view: 204
 			posn: 210 175
@@ -49,30 +49,39 @@
 	)
 	
 	(method (dispose)
-		(ego ignoreActors: 0)
+		(ego ignoreActors: FALSE)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,airport]') (Print 17 0))
-			((Said 'look[<at,through,out]/shutter') (Print 17 1))
-			((Said 'look[<up,down,at][/floor,ceiling,wall]') (SeeNothing))
+			((Said 'look[<at,around][/room,airport]')
+				(Print 17 0)
+			)
+			((Said 'look[<at,through,out]/shutter')
+				(Print 17 1)
+			)
+			((Said 'look[<up,down,at][/floor,ceiling,wall]')
+				(SeeNothing)
+			)
 		)
 	)
 	
 	(method (cue)
-		(if script (script cue:) else (self newRoom: 18))
+		(if script
+			(script cue:)
+		else
+			(self newRoom: 18)
+		)
 	)
 )
 
 (instance keepOutOfAirportScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if (== (ego onControl: 1) 16384)
+		(if (== (ego onControl: origin) cYELLOW)
 			(if (not register)
 				(switch (Random 0 3)
 					(0 (Print 17 2))
@@ -80,16 +89,15 @@
 					(2 (Print 17 4))
 					(3 (Print 17 5))
 				)
-				(= register 1)
+				(= register TRUE)
 			)
 		else
-			(= register 0)
+			(= register FALSE)
 		)
 	)
 )
 
 (instance limoScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -101,7 +109,7 @@
 				(limo stopUpd:)
 				(driver
 					init:
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					setScript: driverScript
 				)
 			)
@@ -118,14 +126,13 @@
 )
 
 (instance driverScript of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if (and register (< (client distanceTo: ego) 20))
 			(self cue:)
 			(ego setMotion: 0)
-			(= register 0)
+			(= register FALSE)
 		)
 	)
 	
@@ -137,7 +144,9 @@
 			(1
 				(driver setPri: -1 setMotion: MoveTo 222 130 self)
 			)
-			(2 (= register 1))
+			(2
+				(= register TRUE)
+			)
 			(3
 				(Print 17 6)
 				(driver setScript: waitForResponseScript)
@@ -150,19 +159,15 @@
 			((super handleEvent: event))
 			((< state 2))
 			(
-				(GoToIfSaid
-					client
-					event
-					client
-					15
+				(GoToIfSaid client event client 15
 					'show,give/id,card'
 					17
 					7
 				)
-				(= register 0)
+				(= register FALSE)
 			)
 			((Said 'show,give/id,card')
-				(if (ego has: 2)
+				(if (ego has: iIDCard)
 					(getEgoIdScript start: 1)
 					(driver setScript: getEgoIdScript)
 				else
@@ -176,17 +181,18 @@
 )
 
 (instance waitForResponseScript of Script
-	(properties)
-	
+
 	(method (handleEvent)
 		(cond 
-			((Said 'affirmative') (driver setScript: getEgoIdScript))
+			((Said 'affirmative')
+				(driver setScript: getEgoIdScript)
+			)
 			((Said 'n')
 				(driver setScript: driverBackScript)
 				(curRoom setScript: notWestlandScript)
 			)
 			((Said 'show,give/id,card')
-				(if (ego has: 2)
+				(if (ego has: iIDCard)
 					(getEgoIdScript start: 1)
 					(driver setScript: getEgoIdScript)
 				else
@@ -195,7 +201,9 @@
 					(driver setScript: driverBackScript)
 				)
 			)
-			((Said 'address/man') (Print 17 6))
+			((Said 'address/man')
+				(Print 17 6)
+			)
 		)
 	)
 )
@@ -212,8 +220,7 @@
 )
 
 (instance notWestlandScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 0)
@@ -226,8 +233,7 @@
 )
 
 (instance driverBackScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -244,7 +250,7 @@
 					setLoop: 8
 					setCel: 0
 					posn: 145 97
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -256,14 +262,15 @@
 )
 
 (instance getEgoIdScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Print 17 11))
+			(0
+				(Print 17 11)
+			)
 			(1
 				(Print 17 12)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(Print 17 13)
 				(theGame changeScore: 1)
 				(= seconds 1)
@@ -278,29 +285,32 @@
 		(cond 
 			((super handleEvent: event))
 			((Said 'show,give/id,card')
-				(if (ego has: 2)
-					(if (== state 0) (self cue:))
+				(if (ego has: iIDCard)
+					(if (== state 0)
+						(self cue:)
+					)
 				else
 					(Print 17 8)
 					(curRoom setScript: endOfGameScript)
 					(driver setScript: driverBackScript)
 				)
 			)
-			((Said 'address') (Print 17 14))
+			((Said 'address')
+				(Print 17 14)
+			)
 		)
 	)
 )
 
 (instance getInLimoScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 202 133 self
 				)
 			)
@@ -321,19 +331,19 @@
 				)
 			)
 			(3
-				(driver setLoop: 6 cycleSpeed: 2 setCycle: End self)
+				(driver setLoop: 6 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(4
 				(ego
 					view: 417
 					setLoop: 7
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(ego y: 0 dispose:)
-				(driver setCycle: Beg self)
+				(driver setCycle: BegLoop self)
 			)
 			(6
 				(driver
@@ -351,7 +361,7 @@
 	)
 )
 
-(instance limo of Act
+(instance limo of Actor
 	(properties
 		y 124
 		x -50
@@ -362,24 +372,24 @@
 	(method (init)
 		(self
 			setLoop: 2
-			ignoreControl: -32768
+			ignoreControl: cWHITE
 			stopUpd:
 			setPri: -1
 		)
 		(super init:)
 		(if howFast
 			(wheel1
-				ignoreControl: -32768
+				ignoreControl: cWHITE
 				illegalBits: illegalBits
 				init:
 			)
 			(wheel2
-				ignoreControl: -32768
+				ignoreControl: cWHITE
 				illegalBits: illegalBits
 				init:
 			)
 			(flag
-				ignoreControl: -32768
+				ignoreControl: cWHITE
 				illegalBits: illegalBits
 				init:
 			)
@@ -391,16 +401,22 @@
 			((super handleEvent: event))
 			((Said 'call/cab[/cab]')
 				(cond 
-					((& signal $0008) (Print 17 15))
-					((OneOf (script state?) 3 4) (Print 17 16))
-					(else (Print 17 17))
+					((& signal hideActor)
+						(Print 17 15)
+					)
+					((OneOf (script state?) 3 4)
+						(Print 17 16)
+					)
+					(else
+						(Print 17 17)
+					)
 				)
 			)
 			((Said '[/limo,car]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
 					((Said 'look[<at]')
-						(if (& (limo signal?) $0008)
+						(if (& (limo signal?) hideActor)
 							(Print 17 18)
 						else
 							(Print 17 19)
@@ -431,12 +447,20 @@
 	
 	(method (hide)
 		(super hide:)
-		(if howFast (wheel1 hide:) (wheel2 hide:) (flag hide:))
+		(if howFast
+			(wheel1 hide:)
+			(wheel2 hide:)
+			(flag hide:)
+		)
 	)
 	
 	(method (show)
 		(super show:)
-		(if howFast (wheel1 show:) (wheel2 show:) (flag show:))
+		(if howFast
+			(wheel1 show:)
+			(wheel2 show:)
+			(flag show:)
+		)
 	)
 	
 	(method (setMotion)
@@ -449,7 +473,7 @@
 	)
 )
 
-(instance driver of Act
+(instance driver of Actor
 	(properties
 		y 118
 		x 147
@@ -467,14 +491,16 @@
 			((Said '[/driver,man]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 17 20))
+					((Said 'look[<at]')
+						(Print 17 20)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance wheel1 of Act
+(instance wheel1 of Actor
 	(properties
 		view 17
 		loop 4
@@ -492,14 +518,16 @@
 				(cond 
 					((not y))
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 17 21))
+					((Said 'look[<at]')
+						(Print 17 21)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance wheel2 of Act
+(instance wheel2 of Actor
 	(properties
 		view 17
 		loop 4
@@ -517,14 +545,16 @@
 				(cond 
 					((not y))
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 17 21))
+					((Said 'look[<at]')
+						(Print 17 21)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance flag of Act
+(instance flag of Actor
 	(properties
 		view 17
 		loop 3
@@ -542,14 +572,16 @@
 				(cond 
 					((not y))
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 17 22))
+					((Said 'look[<at]')
+						(Print 17 22)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance slidingDoor1 of Act
+(instance slidingDoor1 of Actor
 	(properties
 		y 137
 		x 93
@@ -560,7 +592,7 @@
 		(super init:)
 		(self
 			ignoreActors:
-			ignoreControl: -32768
+			ignoreControl: cWHITE
 			setPri: 10
 			setLoop:
 			stopUpd:
@@ -569,7 +601,7 @@
 			init:
 			setLoop:
 			ignoreActors:
-			ignoreControl: -32768
+			ignoreControl: cWHITE
 			setPri: 10
 			stopUpd:
 		)
@@ -596,9 +628,15 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look') (Print 17 23))
-					((Said 'open') (Print 17 24))
-					((Said 'close') (Print 17 25))
+					((Said 'look')
+						(Print 17 23)
+					)
+					((Said 'open')
+						(Print 17 24)
+					)
+					((Said 'close')
+						(Print 17 25)
+					)
 				)
 			)
 		)
@@ -609,7 +647,7 @@
 	)
 )
 
-(instance auxDoor1 of Act
+(instance auxDoor1 of Actor
 	(properties
 		y 137
 		x 148
@@ -623,7 +661,7 @@
 	)
 )
 
-(instance slidingDoor2 of Act
+(instance slidingDoor2 of Actor
 	(properties
 		y 137
 		x 175
@@ -635,14 +673,14 @@
 		(self
 			ignoreActors:
 			setPri: 10
-			ignoreControl: -32768
+			ignoreControl: cWHITE
 			setLoop:
 			stopUpd:
 		)
 		(auxDoor2
 			ignoreActors:
 			setPri: 10
-			ignoreControl: -32768
+			ignoreControl: cWHITE
 			init:
 			setLoop:
 			stopUpd:
@@ -652,8 +690,7 @@
 	(method (doit)
 		(super doit:)
 		(cond 
-			(
-			(and (not (InRect 120 120 290 160 ego)) (== x 146))
+			((and (not (InRect 120 120 290 160 ego)) (== x 146))
 				(self setMotion: MoveTo 175 137 self)
 				(auxDoor2 setMotion: MoveTo 230 137 auxDoor2)
 			)
@@ -670,9 +707,15 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look') (Print 17 23))
-					((Said 'open') (Print 17 24))
-					((Said 'close') (Print 17 25))
+					((Said 'look')
+						(Print 17 23)
+					)
+					((Said 'open')
+						(Print 17 24)
+					)
+					((Said 'close')
+						(Print 17 25)
+					)
 				)
 			)
 		)
@@ -683,7 +726,7 @@
 	)
 )
 
-(instance auxDoor2 of Act
+(instance auxDoor2 of Actor
 	(properties
 		y 137
 		x 230
@@ -697,12 +740,12 @@
 	)
 )
 
-(instance plane of Act
+(instance plane of Actor
 	(properties
 		yStep 1
 		view 17
 		loop 5
-		signal $0800
+		signal fixedLoop
 		illegalBits $0000
 	)
 	
@@ -715,15 +758,15 @@
 		(cond 
 			((super handleEvent: event))
 			((not (OneOf (script state?) 2 3)))
-			(
-			(TurnIfSaid self event 'look[<at]/airplane,airplane,jet'))
-			((Said 'look[<at][/airplane,airplane,jet]') (Print 17 26))
+			((TurnIfSaid self event 'look[<at]/airplane,airplane,jet'))
+			((Said 'look[<at][/airplane,airplane,jet]')
+				(Print 17 26)
+			)
 		)
 	)
 )
 
 (instance planeScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

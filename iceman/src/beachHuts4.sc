@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 13)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tahiti)
@@ -26,11 +26,11 @@
 )
 
 (local
-	local0
+	agent
 	local1
 	local2
 )
-(instance beachHuts4 of Rm
+(instance beachHuts4 of Room
 	(properties
 		picture 13
 		east 24
@@ -40,16 +40,16 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsSOUND 42)
-		(Load rsSOUND 36)
-		(LoadMany 128 206 112 212 12 13 213 313)
+		(Load SOUND 42)
+		(Load SOUND 36)
+		(LoadMany VIEW 206 112 212 12 13 213 313)
 		(addToPics add: beachLayer eachElementDo: #init doit:)
 		(InitAllFeatures)
 		(hutDoor2 init:)
 		(if
 			(or
-				(and (ego has: 6) (== earRingState 2))
-				(not global142)
+				(and (ego has: iEarring) (== earRingState earringSEARCHED))
+				(not metAgentStacy)
 			)
 			(hutDoor2 stopUpd:)
 		)
@@ -107,16 +107,16 @@
 			(west (ego x: 10))
 			(14
 				(ego posn: 210 59 loop: 1)
-				(hutDoor2 setCel: 16 setCycle: Beg hutDoor2)
+				(hutDoor2 setCel: 16 setCycle: BegLoop hutDoor2)
 				(HandsOn)
 			)
 			(11
-				((= local0 (ScriptID 309 0))
+				((= agent (ScriptID 309 0))
 					init:
 					view: 212
 					illegalBits: 0
 					posn: 220 54
-					ignoreActors: 1
+					ignoreActors: TRUE
 					loop: 1
 					heading: 270
 					setScript: agentInFrontOfHutScript
@@ -127,16 +127,16 @@
 				(ego
 					view: 213
 					ignoreActors:
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					setLoop: 0
 					posn: 210 54
 					heading: 90
 					cel: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 				)
 				(HandsOn)
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(features add: agentFeature)
 			)
 			(else 
@@ -146,18 +146,22 @@
 				)
 			)
 		)
-		(if global142 (earRing init:))
+		(if metAgentStacy
+			(earRing init:)
+		)
 	)
 	
 	(method (dispose)
-		(ego ignoreActors: 0)
+		(ego ignoreActors: FALSE)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,beach]') (Print 13 0))
+			((Said 'look[<at,around][/room,beach]')
+				(Print 13 0)
+			)
 		)
 	)
 )
@@ -177,11 +181,23 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 13 1))
+					((Said 'look[<at]')
+						(Print 13 1)
+					)
 					((GoToIfSaid self event 13 68 0 13 2))
-					((Said 'open') (Print 13 3))
-					((Said 'unlock') (if (ego has: 5) (Print 13 4) else (Print 13 5)))
-					((Said 'knock') (Print 13 6))
+					((Said 'open')
+						(Print 13 3)
+					)
+					((Said 'unlock')
+						(if (ego has: iTahitiKey)
+							(Print 13 4)
+						else
+							(Print 13 5)
+						)
+					)
+					((Said 'knock')
+						(Print 13 6)
+					)
 				)
 			)
 		)
@@ -193,7 +209,7 @@
 		y 54
 		x 228
 		view 13
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (handleEvent event)
@@ -202,11 +218,23 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 13 7))
+					((Said 'look[<at]')
+						(Print 13 7)
+					)
 					((GoToIfSaid self event self 20 0 13 2))
-					((Said 'open') (Print 13 3))
-					((Said 'unlock') (if (ego has: 5) (Print 13 8) else (Print 13 5)))
-					((Said 'knock') (Print 13 6))
+					((Said 'open')
+						(Print 13 3)
+					)
+					((Said 'unlock')
+						(if (ego has: iTahitiKey)
+							(Print 13 8)
+						else
+							(Print 13 5)
+						)
+					)
+					((Said 'knock')
+						(Print 13 6)
+					)
 				)
 			)
 		)
@@ -215,8 +243,8 @@
 	(method (cue)
 		(if
 			(or
-				(and (ego has: 6) (== earRingState 2))
-				(not global142)
+				(and (ego has: iEarring) (== earRingState earringSEARCHED))
+				(not metAgentStacy)
 			)
 			(hutDoor2 stopUpd:)
 		)
@@ -225,20 +253,23 @@
 )
 
 (instance agentInFrontOfHutScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds 3))
-			(2 (ego setCycle: Beg self))
+			(1
+				(= seconds 3)
+			)
+			(2
+				(ego setCycle: BegLoop self)
+			)
 			(3
 				(Print 13 16)
 				(Print 13 17)
 				(++ register)
-				(User canInput: 1)
+				(User canInput: TRUE)
 			)
 			(4
-				(ego observeControl: -32768 ignoreActors: 0)
+				(ego observeControl: cWHITE ignoreActors: FALSE)
 				(curRoom newRoom: 14)
 			)
 		)
@@ -247,18 +278,22 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'thank/ya') (Print 13 9))
+			((Said 'thank/ya')
+				(Print 13 9)
+			)
 			((Said 'go,come<in')
 				(if register
-					(local0 posn: 220 54 loop: 0 z: 0)
+					(agent posn: 220 54 loop: 0 z: 0)
 					(ego view: 206 setLoop: -1 loop: 0 setCycle: Walk)
-					(hutDoor2 setCycle: End self)
+					(hutDoor2 setCycle: EndLoop self)
 					(doorSound number: (SoundFX 42) loop: 1 play:)
 				else
 					(Print 13 10)
 				)
 			)
-			((Said 'address[/babe,stacy]') (Print 13 11))
+			((Said 'address[/babe,stacy]')
+				(Print 13 11)
+			)
 			((Said 'kiss[/babe,stacy]')
 				(if register
 					(Print 13 12)
@@ -267,27 +302,30 @@
 					(ego
 						view: 213
 						ignoreActors:
-						ignoreControl: -32768
+						ignoreControl: cWHITE
 						setLoop: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 					(SolvePuzzle tahiti 413 8 1)
 				)
 			)
 			((Said 'affirmative')
 				(if register
-					(local0 posn: 220 54 loop: 0 z: 0)
+					(agent posn: 220 54 loop: 0 z: 0)
 					(ego view: 206 setLoop: -1 loop: 0 setCycle: Walk)
-					(hutDoor2 setCycle: End self)
+					(hutDoor2 setCycle: EndLoop self)
 					(doorSound number: (SoundFX 42) loop: 1 play:)
 				else
 					(Print 13 13)
 				)
 			)
-			((or (Said 'n') (Said 'exit/babe')) (Print 13 14) (client setScript: agentLeavesAngryScript))
+			((or (Said 'n') (Said 'exit/babe'))
+				(Print 13 14)
+				(client setScript: agentLeavesAngryScript)
+			)
 			((Said 'fuck,fondle')
 				(Print 13 15)
-				(tahiti flags: (| (tahiti flags?) $0040))
+				(tahiti flags: (| (tahiti flags?) fAskedForSex))
 				(client setScript: agentLeavesAngryScript)
 			)
 		)
@@ -295,8 +333,7 @@
 )
 
 (instance agentLeavesAngryScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -308,31 +345,31 @@
 					setCycle: Walk
 					illegalBits: -26624
 				)
-				(local0 view: 212 loop: 1 z: 0)
-				(hutDoor2 setCycle: End self)
+				(agent view: 212 loop: 1 z: 0)
+				(hutDoor2 setCycle: EndLoop self)
 				(doorSound number: (SoundFX 42) loop: 1 play:)
 			)
 			(1
-				(local0
+				(agent
 					setPri: 1
 					setCycle: Walk
-					setMotion: MoveTo 260 (local0 y?) self
+					setMotion: MoveTo 260 (agent y?) self
 				)
 			)
 			(2
-				(hutDoor2 setCycle: Beg self)
+				(hutDoor2 setCycle: BegLoop self)
 				(doorSound number: (SoundFX 36) loop: 1 play:)
 			)
 			(3
-				(hutDoor2 ignoreActors: 0)
+				(hutDoor2 ignoreActors: FALSE)
 				(if
 					(or
-						(and (ego has: 6) (== earRingState 2))
-						(not global142)
+						(and (ego has: iEarring) (== earRingState earringSEARCHED))
+						(not metAgentStacy)
 					)
 					(hutDoor2 stopUpd:)
 				)
-				(local0 dispose:)
+				(agent dispose:)
 				(HandsOn)
 			)
 		)
@@ -345,7 +382,7 @@
 		x 307
 		view 12
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -354,11 +391,21 @@
 			((Said '[/man,towel]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at][/man]') (Print 13 18))
-					((Said 'look[<at][/towel]') (Print 13 19))
-					((Said 'wake,kick,jump,walk[<above][/man]') (Print 13 20))
-					((Said 'address[/man]') (Print 13 21))
-					((Said 'kiss[/man]') (Print 13 22))
+					((Said 'look[<at][/man]')
+						(Print 13 18)
+					)
+					((Said 'look[<at][/towel]')
+						(Print 13 19)
+					)
+					((Said 'wake,kick,jump,walk[<above][/man]')
+						(Print 13 20)
+					)
+					((Said 'address[/man]')
+						(Print 13 21)
+					)
+					((Said 'kiss[/man]')
+						(Print 13 22)
+					)
 				)
 			)
 		)
@@ -385,7 +432,9 @@
 			((Said '[/wave]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 13 23))
+					((Said 'look[<at]')
+						(Print 13 23)
+					)
 				)
 			)
 		)
@@ -412,8 +461,12 @@
 					((TurnIfSaid self event 'look[<at,in]/*'))
 					((Said 'look>')
 						(cond 
-							((Said '[<at]') (Print 13 24))
-							((Said '[<in]') (Print 13 25))
+							((Said '[<at]')
+								(Print 13 24)
+							)
+							((Said '[<in]')
+								(Print 13 25)
+							)
 						)
 					)
 				)
@@ -442,8 +495,12 @@
 					((TurnIfSaid self event 'look[<at,in]/*'))
 					((Said 'look>')
 						(cond 
-							((Said '[<at]') (Print 13 24))
-							((Said '[<in]') (Print 13 26))
+							((Said '[<at]')
+								(Print 13 24)
+							)
+							((Said '[<in]')
+								(Print 13 26)
+							)
 						)
 					)
 				)
@@ -467,7 +524,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 13 27))
+					((Said 'look[<at]')
+						(Print 13 27)
+					)
 				)
 			)
 		)
@@ -490,7 +549,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 13 27))
+					((Said 'look[<at]')
+						(Print 13 27)
+					)
 				)
 			)
 		)
@@ -504,13 +565,13 @@
 		view 313
 		loop 2
 		priority 4
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doit)
 		(super doit:)
 		(if (< (ego distanceTo: self) 30)
-			(if (and (not cycler) local2 (not (ego has: 6)))
+			(if (and (not cycler) local2 (not (ego has: iEarring)))
 				(self setCycle: ForwardCounter 4 self)
 			)
 		else
@@ -521,7 +582,7 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((ego has: 6))
+			((ego has: iEarring))
 			(
 				(or
 					(Said 'look[<down][/floor]')
@@ -530,25 +591,23 @@
 				(Print 13 28)
 			)
 			((Said 'look[<at]/glimmer,sparkle')
-				(if (& (tahiti flags?) $0400)
+				(if (& (tahiti flags?) fTalkedToStacy)
 					(Print 13 29)
 				else
 					(Print 13 30)
 				)
 			)
 			(
-				(GoToIfSaid
-					self
-					event
-					self
-					20
+				(GoToIfSaid self event self 20
 					'get,(pick<up)/earring,glimmer,sparkle,object'
-					13
-					2
+					13 2
 				)
 			)
-			(
-			(Said 'get,(pick<up)/earring,glimmer,sparkle,object') (Print 13 31) (ego get: 6) (self dispose:))
+			((Said 'get,(pick<up)/earring,glimmer,sparkle,object')
+				(Print 13 31)
+				(ego get: iEarring)
+				(self dispose:)
+			)
 		)
 	)
 	
@@ -565,7 +624,7 @@
 	)
 	
 	(method (handleEvent event)
-		(local0 handleEvent: event)
+		(agent handleEvent: event)
 	)
 )
 

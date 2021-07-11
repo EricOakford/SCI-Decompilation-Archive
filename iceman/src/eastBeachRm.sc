@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 24)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use SoundSyncWave)
@@ -14,7 +14,7 @@
 	eastBeachRm 0
 )
 
-(instance eastBeachRm of Rm
+(instance eastBeachRm of Room
 	(properties
 		picture 24
 		east 16
@@ -24,7 +24,7 @@
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 24 703)
+		(LoadMany VIEW 24 703)
 		(ego init:)
 		(self setFeatures: rocks building setRegions: 301 300)
 		(wave init: globalSound setPri: 3)
@@ -34,7 +34,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,scene]') (Print 24 0))
+			((Said 'look[<at,around][/room,scene]')
+				(Print 24 0)
+			)
 		)
 	)
 )
@@ -50,8 +52,12 @@
 			((super handleEvent: event))
 			((Said '[/rock]>')
 				(cond 
-					((Said 'look[<at]') (Print 24 1))
-					((Said 'climb') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 24 1)
+					)
+					((Said 'climb')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -71,8 +77,12 @@
 			((super handleEvent: event))
 			((Said '[/wave]>')
 				(cond 
-					((Said 'look[<at]') (Print 24 2))
-					((Said 'swim') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 24 2)
+					)
+					((Said 'swim')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -91,8 +101,12 @@
 			((super handleEvent: event))
 			((Said '[/wave]>')
 				(cond 
-					((Said 'look[<at]') (Print 24 2))
-					((Said 'swim') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 24 2)
+					)
+					((Said 'swim')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -113,11 +127,17 @@
 			((Said '[/building,room]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 24 3))
-					((Said 'enter') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 24 3)
+					)
+					((Said 'enter')
+						(DontNeedTo)
+					)
 				)
 			)
-			((Said 'look<in/shutter') (Print 24 4))
+			((Said 'look<in/shutter')
+				(Print 24 4)
+			)
 		)
 	)
 )

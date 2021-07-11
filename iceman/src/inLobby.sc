@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 10)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tahiti)
@@ -23,10 +23,10 @@
 )
 
 (local
-	local0
-	local1
+	clerkCued
+	clerkTimer
 )
-(instance inLobby of Rm
+(instance inLobby of Room
 	(properties
 		picture 10
 		east 11
@@ -46,9 +46,9 @@
 			eachElementDo: #init
 			doit:
 		)
-		(Load rsSOUND 42)
-		(Load rsSOUND 36)
-		(LoadMany 128 10 910 110 310)
+		(Load SOUND 42)
+		(Load SOUND 36)
+		(LoadMany VIEW 10 910 110 310)
 		(ego init:)
 		(self
 			setRegions: 300
@@ -64,19 +64,25 @@
 			)
 		)
 		(InitAllFeatures)
-		(RemoveInvItems curRoomNum 5)
+		(RemoveInvItems curRoomNum iTahitiKey)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (> (ego y?) 180) (self newRoom: south))
+		(if (> (ego y?) 180)
+			(self newRoom: south)
+		)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,scene,lobby]') (Print 10 0))
-			((Said 'look<up') (Print 10 1))
+			((Said 'look[<at,around][/room,scene,lobby]')
+				(Print 10 0)
+			)
+			((Said 'look<up')
+				(Print 10 1)
+			)
 		)
 	)
 	
@@ -125,14 +131,16 @@
 	(method (init)
 		(super init:)
 		(self setPri: 15)
-		(= signal (& signal $feff))
+		(&= signal (~ staticView))
 		(keyDownHandler add: self)
 		(SolvePuzzle tahiti 413 4 1)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (> (ego distanceTo: signPic) 60) (self dispose:))
+		(if (> (ego distanceTo: signPic) 60)
+			(self dispose:)
+		)
 	)
 	
 	(method (dispose)
@@ -143,8 +151,8 @@
 	(method (handleEvent event)
 		(if
 			(or
-				(== (event type?) evMOUSEBUTTON)
-				(== (event type?) evKEYBOARD)
+				(== (event type?) mouseDown)
+				(== (event type?) keyDown)
 			)
 			(self dispose:)
 		)
@@ -167,7 +175,9 @@
 			((Said '[/painting,(wall<left)]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 10 3))
+					((Said 'look[<at]')
+						(Print 10 3)
+					)
 				)
 			)
 		)
@@ -182,7 +192,7 @@
 		view 10
 		loop 5
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -191,7 +201,9 @@
 			((Said '[/sign,(wall<right)]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 10 4))
+					((Said 'look[<at]')
+						(Print 10 4)
+					)
 				)
 			)
 		)
@@ -208,13 +220,12 @@
 	
 	(method (init)
 		(super init:)
-		(self ignoreActors: 1 setPri: 6 stopUpd:)
+		(self ignoreActors: TRUE setPri: 6 stopUpd:)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== (ego onControl: 1) 512) (not (self script?)))
+		(if (and (== (ego onControl: origin) cLBLUE) (not (self script?)))
 			(HandsOff)
 			(self setScript: barDoorScript)
 		)
@@ -226,10 +237,16 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 10 5))
-					((Said 'close') (Print 10 6))
+					((Said 'look[<at]')
+						(Print 10 5)
+					)
+					((Said 'close')
+						(Print 10 6)
+					)
 					((GoToIfSaid self event 229 115 'open' 10 7))
-					((Said 'open') (return))
+					((Said 'open')
+						(return)
+					)
 				)
 			)
 		)
@@ -237,12 +254,11 @@
 )
 
 (instance barDoorScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setCycle: End self)
+				(client setCycle: EndLoop self)
 				(theSound number: (SoundFX 36) loop: 1 play:)
 			)
 			(1
@@ -252,13 +268,13 @@
 					(= register 1)
 				)
 				(ego
-					illegalBits: (if (== register 1) 0 else -32768)
+					illegalBits: (if (== register 1) 0 else cWHITE)
 					setMotion: MoveTo (+ (ego x?) (* 45 register)) (ego y?) self
 				)
 			)
 			(2
-				(ego illegalBits: -32768)
-				(client setCycle: Beg self)
+				(ego illegalBits: cWHITE)
+				(client setCycle: BegLoop self)
 				(theSound number: (SoundFX 42) loop: 1 play:)
 			)
 			(3
@@ -266,7 +282,9 @@
 					(HandsOn)
 					(curRoom newRoom: 11)
 				else
-					(if (not (curRoom script?)) (HandsOn))
+					(if (not (curRoom script?))
+						(HandsOn)
+					)
 					(self dispose:)
 				)
 			)
@@ -309,9 +327,13 @@
 			((Said '[/babe,cunt,boob]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 10 8))
+					((Said 'look[<at]')
+						(Print 10 8)
+					)
 					((GoToIfSaid self event self 40 0 10 7))
-					((Said 'address') (Print 10 9))
+					((Said 'address')
+						(Print 10 9)
+					)
 					(
 						(or
 							(Said 'kiss')
@@ -321,16 +343,22 @@
 						)
 						(Print 10 10)
 					)
-					((Said 'buy,order/drink[<babe][/babe]') (Print 10 11))
-					((Said 'fuck,suck,hug') (Print 10 12))
+					((Said 'buy,order/drink[<babe][/babe]')
+						(Print 10 11)
+					)
+					((Said 'fuck,suck,hug')
+						(Print 10 12)
+					)
 				)
 			)
-			((Said 'look[<at]/chair') (Print 10 13))
+			((Said 'look[<at]/chair')
+				(Print 10 13)
+			)
 		)
 	)
 )
 
-(instance clerk of Act
+(instance clerk of Actor
 	(properties
 		y 106
 		x 118
@@ -343,22 +371,26 @@
 		(self setPri: 6 stopUpd:)
 		(if
 			(and
-				(& (tahiti flags?) $0008)
+				(& (tahiti flags?) fReadNewspaper)
 				(not (& (tahiti flags?) $0100))
 			)
-			(= local1 (Random 50 100))
+			(= clerkTimer (Random 50 100))
 		)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (and local1 (not (-- local1))) (self cue:))
+		(if (and clerkTimer (not (-- clerkTimer)))
+			(self cue:)
+		)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'ask,get/time') (Print 10 14))
+			((Said 'ask,get/time')
+				(Print 10 14)
+			)
 			((Said '[/babe,babe,clerk,ya,cunt,boob]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
@@ -370,8 +402,12 @@
 						)
 					)
 					((GoToIfSaid self event self 20 0 10 7))
-					((Said 'fuck,suck') (Print 10 16))
-					((Said '/cunt,boob') (Print 10 12))
+					((Said 'fuck,suck')
+						(Print 10 16)
+					)
+					((Said '/cunt,boob')
+						(Print 10 12)
+					)
 					((Said 'address')
 						(switch (Random 0 2)
 							(0 (Print 10 17))
@@ -380,7 +416,9 @@
 						)
 						(SolvePuzzle tahiti 413 32 1)
 					)
-					((Said 'thank') (Print 10 20))
+					((Said 'thank')
+						(Print 10 20)
+					)
 					(
 						(or
 							(Said 'kiss')
@@ -390,8 +428,9 @@
 						)
 						(Print 10 21)
 					)
-					(
-					(Said 'buy,order/drink[<babe,clerk][/babe,clerk]') (Print 10 22))
+					((Said 'buy,order/drink[<babe,clerk][/babe,clerk]')
+						(Print 10 22)
+					)
 					(
 						(or
 							(Said 'get,call,dial,(pick<up)/call')
@@ -405,66 +444,74 @@
 			)
 			(
 			(TurnIfSaid self event '[/headband,message,note]'))
-			((Said 'look[<at]/headband') (Print 10 24))
+			((Said 'look[<at]/headband')
+				(Print 10 24)
+			)
 			((Said '/message,note,mail>')
 				(cond 
-					((not (& (tahiti flags?) $0008)) (DontNeedTo) (event claimed: 1))
+					((not (& (tahiti flags?) fReadNewspaper))
+						(DontNeedTo)
+						(event claimed: TRUE)
+					)
 					((TurnIfSaid self event 'look[<at]/*'))
 					(
-						(GoToIfSaid
-							self
-							event
-							self
-							20
+						(GoToIfSaid self event self 20
 							'get,get,read,look[<at]'
-							10
-							7
+							10 7
 						)
 					)
 					((Said 'get,get,read,look[<at]')
 						(cond 
-							((& (tahiti flags?) $0100) (AlreadyTook))
-							(local0
+							((& (tahiti flags?) fMessageFromBraxton)
+								(AlreadyTook)
+							)
+							(clerkCued
 								(Print 10 25)
 								(Print 10 26)
 								(Print 10 27)
 								(theGame changeScore: 1)
-								(tahiti flags: (| (tahiti flags?) $0100))
+								(tahiti flags: (| (tahiti flags?) fMessageFromBraxton))
 							)
-							(else (event claimed: 0))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 				)
 			)
-			((or (Said '/bar') (Said '//bar')) (Print 10 28))
-			((or (Said '/transport') (Said '//transport')) (Print 10 29))
-			((Said 'get/information') (Print 10 30))
-			((Said 'pay/bill,tab,room') (Print 10 31))
+			((or (Said '/bar') (Said '//bar'))
+				(Print 10 28)
+			)
+			((or (Said '/transport') (Said '//transport'))
+				(Print 10 29)
+			)
+			((Said 'get/information')
+				(Print 10 30)
+			)
+			((Said 'pay/bill,tab,room')
+				(Print 10 31)
+			)
 			((Said '/key,room>')
 				(cond 
 					(
-						(GoToIfSaid
-							self
-							event
-							self
-							20
+						(GoToIfSaid self event self 20
 							'get,get,rent,buy,need,reserve,adjust,give,return,drop'
 							10
 							7
 						)
 					)
 					((Said 'get,get,rent,buy,need,reserve')
-						(if (IsInvItemInRoom curRoomNum 5)
+						(if (IsInvItemInRoom curRoomNum iTahitiKey)
 							(self setScript: keyScript 0 0)
-							(ego get: 5)
+							(ego get: iTahitiKey)
 							(SolvePuzzle tahiti 413 2 1)
 						else
 							(AlreadyTook)
 						)
 					)
 					((Said 'adjust,give,return,drop')
-						(if (ego has: 5)
-							(ego put: 5 curRoomNum)
+						(if (ego has: iTahitiKey)
+							(ego put: iTahitiKey curRoomNum)
 							(self setScript: keyScript 0 1)
 						else
 							(DontHave)
@@ -479,10 +526,10 @@
 		(super cue: &rest)
 		(if
 			(and
-				(not (& (tahiti flags?) $0100))
-				(& (tahiti flags?) $0008)
+				(not (& (tahiti flags?) fMessageFromBraxton))
+				(& (tahiti flags?) fReadNewspaper)
 			)
-			(= local0 1)
+			(= clerkCued TRUE)
 			(Print 10 32 #time 10)
 			(Print 10 33)
 			(tahiti setScript: (ScriptID 300 2))
@@ -491,21 +538,24 @@
 )
 
 (instance keyScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if register (Print 10 34))
-				(clerk loop: 0 setCycle: End self)
+				(if register
+					(Print 10 34)
+				)
+				(clerk loop: 0 setCycle: EndLoop self)
 			)
 			(1 (= seconds 2))
 			(2
-				(clerk loop: 1 setCycle: End self)
+				(clerk loop: 1 setCycle: EndLoop self)
 			)
 			(3
 				(clerk loop: 0 cel: 0)
-				(if (not register) (Print 10 35))
+				(if (not register)
+					(Print 10 35)
+				)
 			)
 		)
 	)
@@ -557,10 +607,16 @@
 			((Said '[/flower,centerpiece,table]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 10 36))
+					((Said 'look[<at]')
+						(Print 10 36)
+					)
 					((GoToIfSaid self event self 50 0 10 7))
-					((Said 'smell') (Print 10 37))
-					((Said 'get') (Print 10 38))
+					((Said 'smell')
+						(Print 10 37)
+					)
+					((Said 'get')
+						(Print 10 38)
+					)
 				)
 			)
 		)
@@ -583,10 +639,16 @@
 			((Said '[/plant,fern]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 10 39))
+					((Said 'look[<at]')
+						(Print 10 39)
+					)
 					((GoToIfSaid self event self 40 0 10 7))
-					((Said 'move,get') (DontNeedTo))
-					((Said 'smell') (Print 10 40))
+					((Said 'move,get')
+						(DontNeedTo)
+					)
+					((Said 'smell')
+						(Print 10 40)
+					)
 				)
 			)
 		)
@@ -606,11 +668,12 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(Said '[/cubbyhole,box,(wall<center,medium,rear)]>')
+			((Said '[/cubbyhole,box,(wall<center,medium,rear)]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'check,look[<at]') (Print 10 41))
+					((Said 'check,look[<at]')
+						(Print 10 41)
+					)
 				)
 			)
 		)

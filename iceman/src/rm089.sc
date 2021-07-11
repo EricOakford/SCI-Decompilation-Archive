@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 89)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use LoadMany)
@@ -15,18 +15,18 @@
 )
 
 (local
-	local0
+	saveBits
 )
-(instance rm089 of Rm
+(instance rm089 of Room
 	(properties
 		picture 89
-		style $0008
+		style DISSOLVE
 	)
 	
 	(method (init)
-		(LoadMany 128 89 189 289)
-		(LoadMany 135 3 999 2)
-		(LoadMany 132 65 92)
+		(LoadMany VIEW 89 189 289)
+		(LoadMany FONT 3 999 2)
+		(LoadMany SOUND 65 92)
 		(super init:)
 		(aBand init:)
 		(aAdmiral init:)
@@ -64,7 +64,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
 	
 	(method (init)
 		(keyDownHandler add: self)
@@ -172,7 +171,7 @@
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
-				(aBand setCycle: Fwd)
+				(aBand setCycle: Forward)
 				(theSong number: 65 loop: 1 play:)
 				(Print 89 0 #at -1 140 #dispose)
 			)
@@ -224,7 +223,7 @@
 				(= seconds 2)
 			)
 			(14
-				(aAdmiral setLoop: 7 cel: 0 setCycle: End)
+				(aAdmiral setLoop: 7 cel: 0 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(15
@@ -233,7 +232,7 @@
 			(16
 				(Print 89 9 #at -1 140 #dispose)
 				(aPinner setCel: 2)
-				(aAdmiral cycleSpeed: 2 setLoop: 7 cel: 0 setCycle: End)
+				(aAdmiral cycleSpeed: 2 setLoop: 7 cel: 0 setCycle: EndLoop)
 				(aMedal posn: 281 92 init:)
 				(aSmallMedal posn: 201 82 init:)
 				(= seconds 2)
@@ -285,10 +284,10 @@
 				(aRightJet init:)
 				(aLeftJet init:)
 				(Print 89 13 #at -1 140 #dispose)
-				(aKiss setLoop: 1 setCel: 0 init: setCycle: End)
+				(aKiss setLoop: 1 setCel: 0 init: setCycle: EndLoop)
 			)
 			(26
-				(aKiss setLoop: 2 cel: 0 setCycle: End self)
+				(aKiss setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(27
 				(cls)
@@ -361,20 +360,13 @@
 				(= seconds 3)
 			)
 			(39
-				(= local0
-					(Display
-						89
-						14
-						dsCOORD
-						95
-						18
-						dsCOLOR
-						15
-						dsFONT
-						999
-						dsWIDTH
-						190
-						dsSAVEPIXELS
+				(= saveBits
+					(Display 89 14
+						p_at 95 18
+						p_color vWHITE
+						p_font 999
+						p_width 190
+						p_save
 					)
 				)
 				(aCredit1 setLoop: 0 setCel: 0 posn: 84 35 init:)
@@ -384,24 +376,17 @@
 				(= seconds 8)
 			)
 			(40
-				(Display 89 15 108 local0)
+				(Display 89 15 p_restore saveBits)
 				(= cycles 4)
 			)
 			(41
-				(= local0
-					(Display
-						89
-						16
-						dsCOORD
-						95
-						18
-						dsCOLOR
-						15
-						dsFONT
-						999
-						dsWIDTH
-						190
-						dsSAVEPIXELS
+				(= saveBits
+					(Display 89 16
+						p_at 95 18
+						p_color vWHITE
+						p_font 999
+						p_width 190
+						p_save
 					)
 				)
 				(aCredit1 setLoop: 1 setCel: 0 posn: 67 35 init:)
@@ -411,24 +396,17 @@
 				(= seconds 8)
 			)
 			(42
-				(Display 89 15 108 local0)
+				(Display 89 15 p_restore saveBits)
 				(= cycles 2)
 			)
 			(43
-				(= local0
-					(Display
-						89
-						17
-						dsCOORD
-						90
-						18
-						dsCOLOR
-						15
-						dsFONT
-						999
-						dsWIDTH
-						190
-						dsSAVEPIXELS
+				(= saveBits
+					(Display 89 17
+						p_at 90 18
+						p_color vWHITE
+						p_font 999
+						p_width 190
+						p_save
 					)
 				)
 				(aCredit1 dispose:)
@@ -438,7 +416,7 @@
 				(= seconds 6)
 			)
 			(44
-				(Display 89 15 108 local0)
+				(Display 89 15 p_restore saveBits)
 				(= state 38)
 				(= cycles 2)
 			)
@@ -446,7 +424,7 @@
 	)
 )
 
-(instance aLeftJet of Act
+(instance aLeftJet of Actor
 	(properties
 		y 1043
 		x 137
@@ -459,7 +437,7 @@
 	)
 )
 
-(instance aMiddleJet of Act
+(instance aMiddleJet of Actor
 	(properties
 		y 1045
 		x 148
@@ -472,7 +450,7 @@
 	)
 )
 
-(instance aRightJet of Act
+(instance aRightJet of Actor
 	(properties
 		y 1043
 		x 159
@@ -490,12 +468,12 @@
 		y 189
 		x 132
 		view 189
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)
 		(super init:)
-		(self isExtra: 1 setCycle: Fwd)
+		(self isExtra: TRUE setCycle: Forward)
 	)
 )
 
@@ -505,12 +483,12 @@
 		x 103
 		view 189
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)
 		(super init:)
-		(self isExtra: 1 setCycle: Fwd)
+		(self isExtra: TRUE setCycle: Forward)
 	)
 )
 
@@ -520,12 +498,12 @@
 		x 64
 		view 189
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)
 		(super init:)
-		(self isExtra: 1 setCycle: Fwd)
+		(self isExtra: 1 setCycle: Forward)
 	)
 )
 
@@ -535,12 +513,12 @@
 		x 33
 		view 189
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)
 		(super init:)
-		(self isExtra: 1 setCycle: Fwd)
+		(self isExtra: TRUE setCycle: Forward)
 	)
 )
 
@@ -564,12 +542,12 @@
 		x 17
 		view 89
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)
 		(super init:)
-		(self isExtra: 1 setCycle: Fwd setPri: 3 cycleSpeed: 5)
+		(self isExtra: 1 setCycle: Forward setPri: 3 cycleSpeed: 5)
 	)
 )
 
@@ -583,7 +561,7 @@
 	
 	(method (init)
 		(super init:)
-		(self setPri: 3 setCycle: Fwd)
+		(self setPri: 3 setCycle: Forward)
 	)
 )
 
@@ -597,7 +575,7 @@
 	
 	(method (init)
 		(super init:)
-		(self setPri: 3 setCycle: Fwd)
+		(self setPri: 3 setCycle: Forward)
 	)
 )
 
@@ -615,60 +593,60 @@
 	)
 )
 
-(instance atpShipNumber of PV
+(instance atpShipNumber of PicView
 	(properties
 		y 144
 		x 260
 		view 89
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance atpJet of PV
+(instance atpJet of PicView
 	(properties
 		y 76
 		x 77
 		view 89
 		cel 1
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance atpRow1 of PV
+(instance atpRow1 of PicView
 	(properties
 		y 145
 		x 151
 		view 89
 		loop 2
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance atpRow2 of PV
+(instance atpRow2 of PicView
 	(properties
 		y 147
 		x 134
 		view 89
 		loop 2
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance atpOff1 of PV
+(instance atpOff1 of PicView
 	(properties
 		y 120
 		x 228
 		view 89
 		loop 2
 		cel 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance atpOff2 of PV
+(instance atpOff2 of PicView
 	(properties
 		y 116
 		x 246
@@ -676,7 +654,7 @@
 		loop 2
 		cel 2
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -828,7 +806,7 @@
 		y 1000
 		x 1000
 		view 289
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (init)

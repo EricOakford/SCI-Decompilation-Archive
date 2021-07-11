@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 18)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use LoadMany)
@@ -14,7 +14,7 @@
 	pentagonFront 0
 )
 
-(instance pentagonFront of Rm
+(instance pentagonFront of Room
 	(properties
 		picture 18
 		north 19
@@ -59,10 +59,18 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/building,pentagon]') (Print 18 0))
-			((Said 'look[<at]/driver,man') (Print 18 1))
-			((Said 'look[<at]/car') (Print 18 2))
-			((Said 'address') (Print 18 3))
+			((Said 'look[<at,around][/building,pentagon]')
+				(Print 18 0)
+			)
+			((Said 'look[<at]/driver,man')
+				(Print 18 1)
+			)
+			((Said 'look[<at]/car')
+				(Print 18 2)
+			)
+			((Said 'address')
+				(Print 18 3)
+			)
 		)
 	)
 	
@@ -72,8 +80,7 @@
 )
 
 (instance arriveScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -91,8 +98,8 @@
 			(2
 				(littleLimo stopUpd:)
 				(Print 18 4)
-				(limoProp init: setPri: 10 setCycle: End self)
-				(User canInput: 1)
+				(limoProp init: setPri: 10 setCycle: EndLoop self)
+				(User canInput: TRUE)
 			)
 			(3
 				(limoProp dispose:)
@@ -125,7 +132,7 @@
 	)
 )
 
-(instance littleLimo of Act
+(instance littleLimo of Actor
 	(properties
 		view 18
 		xStep 2
@@ -148,8 +155,7 @@
 )
 
 (instance departScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -172,7 +178,7 @@
 				(limoProp
 					init:
 					setCel: (limoProp lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
@@ -187,7 +193,7 @@
 	)
 )
 
-(instance cars1Pic of PV
+(instance cars1Pic of PicView
 	(properties
 		y 136
 		x 107
@@ -197,7 +203,7 @@
 	)
 )
 
-(instance cars2Pic of PV
+(instance cars2Pic of PicView
 	(properties
 		y 135
 		x 263
@@ -208,7 +214,7 @@
 	)
 )
 
-(instance jimsCarPic of PV
+(instance jimsCarPic of PicView
 	(properties
 		y 169
 		x 189
@@ -218,7 +224,7 @@
 	)
 )
 
-(instance limmoPic of PV
+(instance limmoPic of PicView
 	(properties
 		y 113
 		x 174

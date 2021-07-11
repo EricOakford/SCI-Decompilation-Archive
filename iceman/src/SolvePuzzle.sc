@@ -7,10 +7,10 @@
 	SolvePuzzle 0
 )
 
-(procedure (SolvePuzzle param1 param2 param3 pValue)
-	(if (not (& (param1 param2?) param3))
+(procedure (SolvePuzzle region flags pFlag pValue)
+	(if (not (& (region flags?) pFlag))
 		(theGame changeScore: pValue)
-		(param1 param2: (| (param1 param2?) param3))
+		(region flags: (| (region flags?) pFlag))
 	)
 	(DisposeScript 828)
 )
