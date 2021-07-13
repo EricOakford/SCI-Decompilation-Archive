@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 42)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Reverse)
@@ -15,7 +15,7 @@
 	bHatchTubeRm 0
 )
 
-(instance bHatchTubeRm of Rm
+(instance bHatchTubeRm of Room
 	(properties
 		picture 42
 		north 41
@@ -43,7 +43,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,scene]') (Print 42 0))
+			((Said 'look[<at,around][/room,scene]')
+				(Print 42 0)
+			)
 		)
 	)
 	
@@ -51,15 +53,14 @@
 		(self setScript: roomControlScript)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom nRoom)
 		(ego setPri: -1 setLoop: -1 setCycle: Walk)
 		(HandsOn)
-		(super newRoom: newRoomNumber)
+		(super newRoom: nRoom)
 	)
 )
 
 (instance cameFromNorthScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -69,7 +70,7 @@
 				(ego
 					view: 42
 					posn: 124 27
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 3
 					setMotion: MoveTo 124 95 self
 				)
@@ -79,9 +80,9 @@
 					view: 232
 					setCycle: Walk
 					heading: 0
-					observeControl: -32768
+					observeControl: cWHITE
 					setLoop: -1
-					setLoop: Grooper
+					setLoop: GradualLooper
 				)
 				(HandsOn)
 				(self dispose:)
@@ -91,8 +92,7 @@
 )
 
 (instance cameFromEastScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -116,8 +116,7 @@
 )
 
 (instance cameFromWestScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -141,19 +140,25 @@
 )
 
 (instance roomControlScript of Script
-	(properties)
 	
 	(method (doit)
 		(cond 
-			((< (ego x?) 104) (client setScript: goWestScript))
-			((> (ego x?) 144) (client setScript: goEastScript))
+			((< (ego x?) 104)
+				(client setScript: goWestScript)
+			)
+			((> (ego x?) 144)
+				(client setScript: goEastScript)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'go,climb[<up][/ladder]') (ego setScript: climbStairsScript) (self dispose:))
+			((Said 'go,climb[<up][/ladder]')
+				(ego setScript: climbStairsScript)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -167,14 +172,14 @@
 				(HandsOff)
 				(ego
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 89 102 self
 				)
 				(westDoor setMotion: MoveTo 95 51 self)
 			)
 			(1)
 			(2
-				(ego illegalBits: -32768 ignoreActors: 0)
+				(ego illegalBits: cWHITE ignoreActors: FALSE)
 				(curRoom newRoom: (curRoom west?))
 			)
 		)
@@ -182,7 +187,6 @@
 )
 
 (instance goEastScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -190,14 +194,14 @@
 				(HandsOff)
 				(ego
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 159 102 self
 				)
 				(eastDoor setMotion: MoveTo 151 51 self)
 			)
 			(1)
 			(2
-				(ego illegalBits: -32768 ignoreActors: 0)
+				(ego illegalBits: cWHITE ignoreActors: FALSE)
 				(curRoom newRoom: (curRoom east?))
 			)
 		)
@@ -205,7 +209,6 @@
 )
 
 (instance climbStairsScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -217,7 +220,7 @@
 				(ego
 					view: 42
 					heading: 0
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					setMotion: MoveTo 124 27 self
 				)
 			)
@@ -228,7 +231,7 @@
 	)
 )
 
-(instance eastDoor of Act
+(instance eastDoor of Actor
 	(properties
 		y 101
 		x 151
@@ -237,7 +240,7 @@
 	
 	(method (init)
 		(super init:)
-		(self setPri: 14 ignoreActors: 1 ignoreControl: -32768)
+		(self setPri: 14 ignoreActors: TRUE ignoreControl: cWHITE)
 	)
 	
 	(method (stopUpd)
@@ -251,7 +254,7 @@
 	)
 )
 
-(instance westDoor of Act
+(instance westDoor of Actor
 	(properties
 		y 101
 		x 95
@@ -261,7 +264,7 @@
 	
 	(method (init)
 		(super init:)
-		(self setPri: 14 ignoreActors: 1 ignoreControl: -32768)
+		(self setPri: 14 ignoreActors: TRUE ignoreControl: cWHITE)
 	)
 	
 	(method (stopUpd)

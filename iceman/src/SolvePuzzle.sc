@@ -7,10 +7,10 @@
 	SolvePuzzle 0
 )
 
-(procedure (SolvePuzzle region flags pFlag pValue)
-	(if (not (& (region flags?) pFlag))
+(procedure (SolvePuzzle region rgFlags pFlag pValue)
+	(if (not (& (region rgFlags?) pFlag))
 		(theGame changeScore: pValue)
-		(region flags: (| (region flags?) pFlag))
+		(region rgFlags: (| (region rgFlags?) pFlag))
 	)
 	(DisposeScript 828)
 )

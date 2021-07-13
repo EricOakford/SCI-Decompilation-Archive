@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 37)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use subMarine)
@@ -22,7 +22,7 @@
 )
 
 (local
-	local0
+	printRet
 	local1
 	local2
 	[local3 3]
@@ -39,11 +39,11 @@
 	)
 )
 
-(procedure (localproc_0047)
+(procedure (AbortInput)
 	(Print 37 1)
 )
 
-(procedure (localproc_0740)
+(procedure (ProgramDiver)
 	(= local2 -1)
 	(if
 		(==
@@ -52,7 +52,7 @@
 			)
 			-1
 		)
-		(localproc_0047)
+		(AbortInput)
 		(return)
 	else
 		(subMarine dist1: local2)
@@ -65,7 +65,7 @@
 			)
 			-1
 		)
-		(localproc_0047)
+		(AbortInput)
 		(return)
 	else
 		(subMarine head1: local2)
@@ -78,7 +78,7 @@
 			)
 			-1
 		)
-		(localproc_0047)
+		(AbortInput)
 		(return)
 	else
 		(subMarine dist2: local2)
@@ -91,14 +91,14 @@
 			)
 			-1
 		)
-		(localproc_0047)
+		(AbortInput)
 		(return)
 	else
 		(subMarine head2: local2)
 	)
 )
 
-(instance engineRm of Rm
+(instance engineRm of Room
 	(properties
 		picture 37
 		north 38
@@ -106,9 +106,9 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 37)
-		(Load rsVIEW 232)
-		(Load rsSOUND 3)
+		(Load VIEW 37)
+		(Load VIEW 232)
+		(Load SOUND 3)
 		(super init:)
 		(globalSound
 			number: 3
@@ -123,17 +123,21 @@
 		(drawer init:)
 		(drawerInset init:)
 		(ego init:)
-		(if (< numColors 16) (addToPics add: buttonPV))
+		(if (< numColors 16)
+			(addToPics add: buttonPV)
+		)
 		(addToPics add: doorPV eachElementDo: #init doit:)
 		(InitAllFeatures)
 		(switch prevRoomNum
 			(north
 				(ego view: 232 posn: 30 67 setScript: downLadderScript)
-				(if (ego has: 6)
+				(if (ego has: iDiver)
 					(diveUnitDoor setScript: hasDiverScript)
 				)
 			)
-			(else  (ego posn: 310 110))
+			(else
+				(ego posn: 310 110)
+			)
 		)
 		(self
 			setRegions: 314
@@ -156,17 +160,37 @@
 			((super handleEvent: event))
 			((Said 'look>')
 				(cond 
-					((Said '[<at,around][/room,scene]') (Print 37 2) (Print 37 3) (Print 37 4))
-					((Said '/pipe<green') (Print 37 5))
-					((Said '/pipe<red') (Print 37 6))
-					((Said '/pipe<blue') (Print 37 7))
-					((Said '/pipe<purple') (Print 37 8))
-					((Said '/pipe[<!*]') (Print 37 9))
-					((Said '/pipe<*') (Print 37 10))
+					((Said '[<at,around][/room,scene]')
+						(Print 37 2)
+						(Print 37 3)
+						(Print 37 4)
+					)
+					((Said '/pipe<green')
+						(Print 37 5)
+					)
+					((Said '/pipe<red')
+						(Print 37 6)
+					)
+					((Said '/pipe<blue')
+						(Print 37 7)
+					)
+					((Said '/pipe<purple')
+						(Print 37 8)
+					)
+					((Said '/pipe[<!*]')
+						(Print 37 9)
+					)
+					((Said '/pipe<*')
+						(Print 37 10)
+					)
 				)
 			)
-			((Said 'cycle/equipment') (Print 37 11))
-			((Said 'cycle/diver') (DontHave))
+			((Said 'cycle/equipment')
+				(Print 37 11)
+			)
+			((Said 'cycle/diver')
+				(DontHave)
+			)
 		)
 	)
 )
@@ -178,13 +202,13 @@
 		view 37
 		loop 1
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (init)
 		(super init:)
-		(if (> howFast 0)
-			(self setCycle: Fwd)
+		(if (> howFast slow)
+			(self setCycle: Forward)
 		else
 			(self stopUpd:)
 		)
@@ -196,8 +220,12 @@
 			((Said '[/shaft<drive]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 12))
-					((Said 'examine') (Print 37 13))
+					((Said 'look[<at]')
+						(Print 37 12)
+					)
+					((Said 'examine')
+						(Print 37 13)
+					)
 				)
 			)
 		)
@@ -210,13 +238,13 @@
 		x 172
 		view 37
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (init)
 		(super init:)
-		(if (> howFast 0)
-			(self setCycle: Fwd)
+		(if (> howFast slow)
+			(self setCycle: Forward)
 		else
 			(self stopUpd:)
 		)
@@ -237,15 +265,19 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 14))
-					((Said 'open,close') (CantDo))
+					((Said 'look[<at]')
+						(Print 37 14)
+					)
+					((Said 'open,close')
+						(CantDo)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance buttonPV of PV
+(instance buttonPV of PicView
 	(properties
 		y 79
 		x 69
@@ -263,32 +295,55 @@
 		z 15
 		view 37
 		priority 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(Said '[/door,bulkhead,wall,compartment,cabinet]>')
+			((Said '[/door,bulkhead,wall,compartment,cabinet]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
 					((Said 'look[<at]')
 						(cond 
-							((not cel) (Print 37 15))
-							((not (ego has: 6)) (Print 37 16))
-							(else (Print 37 17))
+							((not cel)
+								(Print 37 15)
+							)
+							((not (ego has: iDiver))
+								(Print 37 16)
+							)
+							(else
+								(Print 37 17)
+							)
 						)
 						(Print 37 18)
 					)
 					((GoToIfSaid self event self 5 0 37 19))
-					((Said 'open') (if cel (ItIs) else (self setCycle: End)))
-					((Said 'close') (if cel (self setCycle: Beg) else (ItIs)))
+					((Said 'open')
+						(if cel
+							(ItIs)
+						else
+							(self setCycle: EndLoop)
+						)
+					)
+					((Said 'close')
+						(if cel
+							(self setCycle: BegLoop)
+						else
+							(ItIs)
+						)
+					)
 					((Said 'look[<in]')
 						(cond 
-							((not cel) (Print 37 20))
-							((ego has: 6) (Print 37 21))
-							(else (Print 37 22))
+							((not cel)
+								(Print 37 20)
+							)
+							((ego has: iDiver)
+								(Print 37 21)
+							)
+							(else
+								(Print 37 22)
+							)
 						)
 					)
 				)
@@ -296,23 +351,33 @@
 			((Said '[/button]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 23))
-					(
-					(GoToIfSaid self event self 3 'push,press/*' 37 19))
-					((Said 'push,press') (if cel (self setCycle: Beg) else (self setCycle: End)))
+					((Said 'look[<at]')
+						(Print 37 23)
+					)
+					((GoToIfSaid self event self 3 'push,press/*' 37 19))
+					((Said 'push,press')
+						(if cel
+							(self setCycle: BegLoop)
+						else
+							(self setCycle: EndLoop)
+						)
+					)
 				)
 			)
 			((Said '/diver,vehicle[<dive]>')
 				(cond 
-					((ego has: 6) (if (Said 'cycle,fix,repair') (Print 37 24)))
+					((ego has: iDiver)
+						(if (Said 'cycle,fix,repair')
+							(Print 37 24)
+						)
+					)
 					((TurnIfSaid self event 'get[<!*]/*'))
-					(
-					(GoToIfSaid self event self 5 'get[<!*]/*' 37 19))
+					((GoToIfSaid self event self 5 'get[<!*]/*' 37 19))
 					((Said 'get[<!*]/*')
 						(if (not cel)
 							(Print 37 25)
 						else
-							(ego get: 6)
+							(ego get: iDiver)
 							(self setLoop: 7 setScript: hasDiverScript)
 						)
 					)
@@ -323,11 +388,10 @@
 )
 
 (instance hasDiverScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if (and (== (ego onControl: 1) 2) (== state 0))
+		(if (and (== (ego onControl: origin) cBLUE) (== state 0))
 			(self cue:)
 		)
 	)
@@ -339,13 +403,13 @@
 				(HandsOff)
 				(Print 37 26)
 				(ego
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setMotion: Approach diveUnitDoor 5 self
 				)
 			)
 			(2
 				(if (not (diveUnitDoor cel?))
-					(diveUnitDoor setCycle: End self)
+					(diveUnitDoor setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -355,7 +419,7 @@
 				(= cycles 15)
 			)
 			(4
-				(diveUnitDoor setCycle: Beg self)
+				(diveUnitDoor setCycle: BegLoop self)
 			)
 			(5
 				(ego put: 6 setAvoider: 0)
@@ -382,9 +446,16 @@
 							(Print 37 29)
 						)
 					)
-					((Said 'program') (localproc_0740))
-					((Said 'get[<!*]/*') (AlreadyTook))
-					((Said 'return,replace,drop,(adjust[<away])') (self cue:) (event claimed: 1))
+					((Said 'program')
+						(ProgramDiver)
+					)
+					((Said 'get[<!*]/*')
+						(AlreadyTook)
+					)
+					((Said 'return,replace,drop,(adjust[<away])')
+						(self cue:)
+						(event claimed: TRUE)
+					)
 				)
 			)
 			((Said 'examine,check/vibration')
@@ -417,26 +488,42 @@
 							(Print 37 34)
 						)
 					)
-					((not (& (subMarine roomFlags?) $0040)) (Print 37 35))
-					((not (& (subMarine roomFlags?) $0020)) (Print 37 36))
+					((not (& (subMarine roomFlags?) $0040))
+						(Print 37 35)
+					)
+					((not (& (subMarine roomFlags?) $0020))
+						(Print 37 36)
+					)
 				)
 			)
-			((Said 'look[<at]/shaft') (Print 37 37))
+			((Said 'look[<at]/shaft')
+				(Print 37 37)
+			)
 			((Said 'measure/shaft')
-				(if (not (ego has: 13))
+				(if (not (ego has: iVernierCaliper))
 					(Print 37 38)
 				else
 					(Print 37 39)
-					(SolvePuzzle subMarine 406 8192 5)
+					(SolvePuzzle subMarine 406 $2000 5)
 				)
 			)
 			((Said '/prop>')
 				(cond 
-					((Said 'look[<at]') (Print 37 40))
-					((Said 'examine,check') (Print 37 41))
-					((Said 'measure') (DontNeedTo))
-					((Said 'fix,install') (DontNeedTo))
-					((Said 'tighten') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 37 40)
+					)
+					((Said 'examine,check')
+						(Print 37 41)
+					)
+					((Said 'measure')
+						(DontNeedTo)
+					)
+					((Said 'fix,install')
+						(DontNeedTo)
+					)
+					((Said 'tighten')
+						(DontNeedTo)
+					)
 				)
 			)
 			(
@@ -445,38 +532,60 @@
 					(Said 'washer<use')
 				)
 				(cond 
-					((& (subMarine roomFlags?) $0020) (Print 37 42))
-					((not (ego has: 10)) (Print 37 43))
-					((== (subMarine invStatus4?) 1) (Print 37 44))
-					((> (subMarine invStatus4?) 2) (Print 37 45))
-					((& (subMarine roomFlags?) $0040) (Print 37 46))
+					((& (subMarine roomFlags?) $0020)
+						(Print 37 42)
+					)
+					((not (ego has: iWasher))
+						(Print 37 43)
+					)
+					((== (subMarine invStatus4?) 1)
+						(Print 37 44)
+					)
+					((> (subMarine invStatus4?) 2)
+						(Print 37 45)
+					)
+					((& (subMarine roomFlags?) $0040)
+						(Print 37 46)
+					)
 					(else
 						(Print 37 47)
 						(subMarine roomFlags: (| (subMarine roomFlags?) $0020))
-						(SolvePuzzle subMarine 407 2048 1)
+						(SolvePuzzle subMarine #pointFlag2 $0800 1)
 						(ego put: 10)
 					)
 				)
 			)
 			((Said 'get,detach,(get<off)/washer')
 				(cond 
-					((!= ((inventory at: 10) owner?) curRoom) (event claimed: 0))
-					((& (subMarine roomFlags?) $0040) (Print 37 48))
+					((!= ((inventory at: iWasher) owner?) curRoom)
+						(event claimed: FALSE)
+					)
+					((& (subMarine roomFlags?) $0040)
+						(Print 37 48)
+					)
 					(else
 						(Print 37 49)
-						(ego get: 10)
+						(ego get: iWasher)
 						(subMarine roomFlags: (& (subMarine roomFlags?) $ffdf))
-						(ego put: 10 curRoom)
+						(ego put: iWasher curRoom)
 					)
 				)
 			)
 			(
 			(or (Said 'install,(adjust<on)/nut') (Said 'nut<use'))
 				(cond 
-					((& (subMarine roomFlags?) $0040) (Print 37 42))
-					((not (ego has: 11)) (Print 37 50))
-					((== (subMarine invStatus3?) 1) (Print 37 51))
-					((> (subMarine invStatus3?) 2) (Print 37 52))
+					((& (subMarine roomFlags?) $0040)
+						(Print 37 42)
+					)
+					((not (ego has: iNut))
+						(Print 37 50)
+					)
+					((== (subMarine invStatus3?) 1)
+						(Print 37 51)
+					)
+					((> (subMarine invStatus3?) 2)
+						(Print 37 52)
+					)
 					(else
 						(if (& (subMarine roomFlags?) $0020)
 							(Print 37 53)
@@ -490,46 +599,63 @@
 			)
 			((Said 'tighten/nut')
 				(cond 
-					((not (& (subMarine roomFlags?) $0040)) (event claimed: 0))
-					((& (subMarine roomFlags?) $0080) (Print 37 42))
-					(
-					(and (ego has: 16) (== (subMarine invStatus2?) 2))
-						(Print 37 55)
-						(subMarine roomFlags: (| (subMarine roomFlags?) $0080))
-						(SolvePuzzle subMarine 407 4096 3)
+					((not (& (subMarine roomFlags?) $0040))
+						(event claimed: FALSE)
+					)
+					((& (subMarine roomFlags?) $0080)
+						(Print 37 42)
 					)
 					(
-					(and (ego has: 16) (!= (subMarine invStatus2?) 2)) (Print 37 56))
-					(else (Print 37 57))
+					(and (ego has: iOpenEndWrench) (== (subMarine invStatus2?) 2))
+						(Print 37 55)
+						(subMarine roomFlags: (| (subMarine roomFlags?) $0080))
+						(SolvePuzzle subMarine #pointFlag2 $1000 3)
+					)
+					((and (ego has: iOpenEndWrench) (!= (subMarine invStatus2?) 2))
+						(Print 37 56)
+					)
+					(else
+						(Print 37 57)
+					)
 				)
 			)
 			((Said 'get,detach,(get<off)/nut')
 				(cond 
-					((ego has: 11) (Print 37 58))
-					((!= ((inventory at: 11) owner?) curRoom) (event claimed: 0))
+					((ego has: iNut)
+						(Print 37 58)
+					)
+					((!= ((inventory at: iNut) owner?) curRoom)
+						(event claimed: FALSE)
+					)
 					((not (& (subMarine roomFlags?) $0080))
 						(Print 37 59)
 						(subMarine roomFlags: (& (subMarine roomFlags?) $ffbf))
-						(ego get: 11)
+						(ego get: iNut)
 					)
 					((& (subMarine roomFlags?) $0080)
 						(cond 
-							((not (ego has: 16)) (Print 37 60))
-							((!= (subMarine invStatus2?) 2) (Print 37 56))
+							((not (ego has: iOpenEndWrench))
+								(Print 37 60)
+							)
+							((!= (subMarine invStatus2?) 2)
+								(Print 37 56)
+							)
 							(else
 								(Print 37 59)
 								(subMarine roomFlags: (& (subMarine roomFlags?) $ff7f))
 								(subMarine roomFlags: (& (subMarine roomFlags?) $ffbf))
-								(ego get: 11)
+								(ego get: iNut)
 							)
 						)
 					)
 				)
 			)
-			(
-			(Said 'enter,program/heading,distance,coordinate') (localproc_0740))
-			(
-			(or (Said 'repair,fix/shaft') (Said 'use/wrench')) (Print 37 24))
+			((Said 'enter,program/heading,distance,coordinate')
+				(ProgramDiver)
+			)
+			((or (Said 'repair,fix/shaft') (Said 'use/wrench'))
+				(Print 37 24)
+			)
 		)
 	)
 )
@@ -541,7 +667,7 @@
 		view 37
 		loop 4
 		priority 7
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
@@ -550,77 +676,106 @@
 			((Said '[/drawer]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at,in]/*'))
-					((Said 'look[<at,in]') (Print 37 61) (if cel (drawerInset show:)))
+					((Said 'look[<at,in]')
+						(Print 37 61)
+						(if cel
+							(drawerInset show:)
+						)
+					)
 					((GoToIfSaid self event self 20 0 37 19))
 					((Said 'open')
 						(if cel
 							(ItIs)
 						else
-							(self setCycle: End self)
+							(self setCycle: EndLoop self)
 							(ego heading: 0)
 							((ego looper?) doit: ego (ego heading?))
 						)
 					)
-					((Said 'close') (if cel (self setCycle: Beg self) else (ItIs)))
+					((Said 'close')
+						(if cel
+							(self setCycle: BegLoop self)
+						else
+							(ItIs)
+						)
+					)
 				)
 			)
 			((Said '/hammer>')
 				(cond 
-					((and (ego has: 15) (Said 'look[<at]')) (event claimed: 0))
+					((and (ego has: iHammer) (Said 'look[<at]'))
+						(event claimed: FALSE)
+					)
 					((TurnIfSaid self event 'look[<at]'))
-					((Said 'look[<at]') (if (not cel) (Print 37 62) else (Print 37 63)))
-					(
-					(GoToIfSaid self event self 20 'get[<!*]/*,adjust' 37 19))
+					((Said 'look[<at]')
+						(if (not cel)
+							(Print 37 62)
+						else
+							(Print 37 63)
+						)
+					)
+					((GoToIfSaid self event self 20 'get[<!*]/*,adjust' 37 19))
 					((Said 'get[<!*]/*')
 						(cond 
-							((not cel) (Print 37 62))
-							((ego has: 15) (Print 37 64))
-							(else (ego get: 15) (drawerInset show: forceUpd:))
+							((not cel)
+								(Print 37 62)
+							)
+							((ego has: iHammer)
+								(Print 37 64)
+							)
+							(else
+								(ego get: iHammer)
+								(drawerInset show: forceUpd:)
+							)
 						)
 					)
 					((Said 'adjust')
 						(cond 
-							((not (ego has: 15)) (Print 37 65))
-							((not cel) (Print 37 62))
-							(else (ego put: 15) (drawerInset show: forceUpd:))
+							((not (ego has: iHammer))
+								(Print 37 65)
+							)
+							((not cel)
+								(Print 37 62)
+							)
+							(else
+								(ego put: iHammer)
+								(drawerInset show: forceUpd:)
+							)
 						)
 					)
 				)
 			)
 			((Said '/wrench>')
 				(cond 
-					((and (ego has: 16) (Said 'look[<at]')) (event claimed: 0))
+					((and (ego has: iOpenEndWrench) (Said 'look[<at]'))
+						(event claimed: FALSE)
+					)
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (if (not cel) (Print 37 62) else (Print 37 66)))
-					(
-					(GoToIfSaid self event self 20 'get[<!*]/*,adjust' 37 19))
+					((Said 'look[<at]')
+						(if (not cel)
+							(Print 37 62)
+						else
+							(Print 37 66)
+						)
+					)
+					((GoToIfSaid self event self 20 'get[<!*]/*,adjust' 37 19))
 					((Said 'get[<!*]/*')
 						(cond 
-							((not cel) (Print 37 62))
+							((not cel)
+								(Print 37 62)
+							)
 							(
-								(= local0
-									(MachinePrint
-										37
-										67
-										150
-										{ 1/4"_}
-										1
-										150
-										{ 1/2"_}
-										2
-										150
-										{ 3/4"_}
-										3
-										150
-										{__1"__}
-										4
+								(= printRet
+									(MachinePrint 37 67
+										#theItem { 1/4"_} 1
+										#theItem { 1/2"_} 2
+										#theItem { 3/4"_} 3
+										#theItem {__1"__} 4
 									)
 								)
-								(if (ego has: 16)
-									(Printf
-										37
-										68
-										(switch local0
+								(if (ego has: iOpenEndWrench)
+									(Printf 37 68
+										(switch printRet
 											(1 {1/4})
 											(2 {1/2})
 											(3 {3/4})
@@ -628,10 +783,8 @@
 										)
 									)
 								else
-									(Printf
-										37
-										69
-										(switch local0
+									(Printf 37 69
+										(switch printRet
 											(1 {1/4})
 											(2 {1/2})
 											(3 {3/4})
@@ -639,19 +792,29 @@
 										)
 									)
 								)
-								(ego get: 16)
-								(subMarine invStatus2: local0)
+								(ego get: iOpenEndWrench)
+								(subMarine invStatus2: printRet)
 								(drawerInset show: forceUpd:)
-								(if (== local0 2) (SolvePuzzle subMarine 406 16384 2))
+								(if (== printRet 2)
+									(SolvePuzzle subMarine #pointFlag1 $4000 2)
+								)
 							)
-							(else (Print 37 70))
+							(else
+								(Print 37 70)
+							)
 						)
 					)
 					((Said 'adjust')
 						(cond 
-							((not (ego has: 16)) (Print 37 71))
-							((not cel) (Print 37 62))
-							(else (ego put: 16) (drawerInset show: forceUpd:))
+							((not (ego has: iOpenEndWrench))
+								(Print 37 71)
+							)
+							((not cel)
+								(Print 37 62)
+							)
+							(else (ego put: iOpenEndWrench)
+								(drawerInset show: forceUpd:)
+							)
 						)
 					)
 				)
@@ -660,10 +823,8 @@
 				(if (not cel)
 					(Print 37 62)
 				else
-					(Printf
-						37
-						72
-						(if (ego has: 15) {} else { a hammer and})
+					(Printf 37 72
+						(if (ego has: iHammer) {} else { a hammer and})
 					)
 				)
 			)
@@ -671,9 +832,15 @@
 	)
 	
 	(method (cue)
-		(if cel (drawerInset show:) else (drawerInset hide:))
+		(if cel
+			(drawerInset show:)
+		else
+			(drawerInset hide:)
+		)
 		(self stopUpd:)
-		(if cel (Print 37 73))
+		(if cel
+			(Print 37 73)
+		)
 	)
 )
 
@@ -693,25 +860,27 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (CantBeSeen self ego 180) (self hide:))
+		(if (CantBeSeen self ego 180)
+			(self hide:)
+		)
 	)
 	
 	(method (hide)
 		(super hide:)
-		(= signal (| signal $0100))
+		(|= signal staticView)
 	)
 	
 	(method (show)
 		(self
 			cel:
 				(cond 
-					((ego has: 16) (if (ego has: 15) 3 else 2))
-					((ego has: 15) 1)
+					((ego has: iOpenEndWrench) (if (ego has: iHammer) 3 else 2))
+					((ego has: iHammer) 1)
 					(else 0)
 				)
 		)
 		(super show:)
-		(= signal (& signal $feff))
+		(&= signal (~ staticView))
 	)
 )
 
@@ -727,11 +896,17 @@
 			((Said '[/ladder]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 74))
+					((Said 'look[<at]')
+						(Print 37 74)
+					)
 					(
 					(GoToIfSaid self event self 20 'climb[<up]' 37 19))
-					((Said 'climb[<up]') (ego setScript: climbLadderScript))
-					((Said 'climb<down') (Print 37 75))
+					((Said 'climb[<up]')
+						(ego setScript: climbLadderScript)
+					)
+					((Said 'climb<down')
+						(Print 37 75)
+					)
 				)
 			)
 		)
@@ -750,7 +925,9 @@
 			((Said '[/ladder]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 76))
+					((Said 'look[<at]')
+						(Print 37 76)
+					)
 				)
 			)
 		)
@@ -758,8 +935,7 @@
 )
 
 (instance climbLadderScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -775,13 +951,13 @@
 			)
 			(2
 				(client
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					setPri: 5
 					setMotion: MoveTo 30 64 self
 				)
 			)
 			(3
-				(client observeControl: -32768 setPri: -1)
+				(client observeControl: cWHITE setPri: -1)
 				(HandsOn)
 				(curRoom newRoom: 38)
 			)
@@ -790,14 +966,13 @@
 )
 
 (instance downLadderScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(client
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					posn: 30 67
 					setPri: 5
 					setMotion: MoveTo 30 100 self
@@ -805,7 +980,7 @@
 				)
 			)
 			(1
-				(client observeControl: -32768 setPri: -1 setLoop: -1)
+				(client observeControl: cWHITE setPri: -1 setLoop: -1)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -829,8 +1004,12 @@
 			((Said '[/transducer]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 77))
-					((Said 'examine') (Print 37 78))
+					((Said 'look[<at]')
+						(Print 37 77)
+					)
+					((Said 'examine')
+						(Print 37 78)
+					)
 				)
 			)
 		)
@@ -853,8 +1032,12 @@
 			((Said '[/transducer]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 77))
-					((Said 'examine') (Print 37 78))
+					((Said 'look[<at]')
+						(Print 37 77)
+					)
+					((Said 'examine')
+						(Print 37 78)
+					)
 				)
 			)
 		)
@@ -877,8 +1060,12 @@
 			((Said '[/turbine]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 79))
-					((Said 'examine') (Print 37 80))
+					((Said 'look[<at]')
+						(Print 37 79)
+					)
+					((Said 'examine')
+						(Print 37 80)
+					)
 				)
 			)
 		)
@@ -901,8 +1088,12 @@
 			((Said '[/generator]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 81))
-					((Said 'examine') (Print 37 82))
+					((Said 'look[<at]')
+						(Print 37 81)
+					)
+					((Said 'examine')
+						(Print 37 82)
+					)
 				)
 			)
 		)
@@ -925,8 +1116,12 @@
 			((Said '[/engine]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 83))
-					((Said 'examine') (Print 37 78))
+					((Said 'look[<at]')
+						(Print 37 83)
+					)
+					((Said 'examine')
+						(Print 37 78)
+					)
 				)
 			)
 		)
@@ -949,8 +1144,12 @@
 			((Said '[/pump]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 84))
-					((Said 'examine') (Print 37 78))
+					((Said 'look[<at]')
+						(Print 37 84)
+					)
+					((Said 'examine')
+						(Print 37 78)
+					)
 				)
 			)
 		)
@@ -973,7 +1172,9 @@
 			((Said '[/tank]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 85))
+					((Said 'look[<at]')
+						(Print 37 85)
+					)
 				)
 			)
 		)
@@ -996,7 +1197,9 @@
 			((Said '[/tank]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 37 86))
+					((Said 'look[<at]')
+						(Print 37 86)
+					)
 				)
 			)
 		)

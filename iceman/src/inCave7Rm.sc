@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 43)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Game)
 
@@ -8,7 +8,7 @@
 	inCave7Rm 0
 )
 
-(instance inCave7Rm of Rm
+(instance inCave7Rm of Room
 	(properties
 		picture 43
 	)

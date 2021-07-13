@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 57)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use scubaRg)
 (use Motion)
@@ -11,7 +11,7 @@
 	westDeadEndRm 0
 )
 
-(instance westDeadEndRm of Rm
+(instance westDeadEndRm of Room
 	(properties
 		picture 57
 		north 999
@@ -53,7 +53,6 @@
 )
 
 (instance fromTheDeep of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

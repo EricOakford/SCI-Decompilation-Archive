@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 74)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use GoToSaid)
@@ -13,7 +13,7 @@
 	pathFeat 1
 )
 
-(instance pathToRoadRm of Rm
+(instance pathToRoadRm of Room
 	(properties
 		picture 74
 		north 77
@@ -41,7 +41,9 @@
 	
 	(method (doit)
 		(super doit: &rest)
-		(if (== (ego onControl: 1) 2) (self newRoom: north))
+		(if (== (ego onControl: origin) cBLUE)
+			(self newRoom: north)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -49,18 +51,28 @@
 			((super handleEvent: event))
 			((Said 'look>')
 				(cond 
-					((Said '[<at,around][/room,scene]') (Print 74 0))
-					((Said '<down') (Print 74 1))
-					((Said '<up') (SeeNothing))
-					((Said '/building') (Print 74 2))
-					((Said '/pathway') (SeeNothing))
+					((Said '[<at,around][/room,scene]')
+						(Print 74 0)
+					)
+					((Said '<down')
+						(Print 74 1)
+					)
+					((Said '<up')
+						(SeeNothing)
+					)
+					((Said '/building')
+						(Print 74 2)
+					)
+					((Said '/pathway')
+						(SeeNothing)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance rockPic of PV
+(instance rockPic of PicView
 	(properties
 		y 154
 		x 168
@@ -84,7 +96,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 74 2))
+					((Said 'look[<at]')
+						(Print 74 2)
+					)
 				)
 			)
 		)

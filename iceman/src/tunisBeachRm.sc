@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 61)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use scubaRg)
 (use Motion)
@@ -10,7 +10,7 @@
 	tunisBeachRm 0
 )
 
-(instance tunisBeachRm of Rm
+(instance tunisBeachRm of Room
 	(properties
 		picture 61
 		east 58
@@ -21,7 +21,7 @@
 	(method (init)
 		(super init:)
 		(self setRegions: 305)
-		(ego init: observeControl: 1024)
+		(ego init: observeControl: cLGREEN)
 		(switch prevRoomNum
 			(54
 				(ego x: 10 loop: 0 setMotion: MoveTo 325 (ego y?))

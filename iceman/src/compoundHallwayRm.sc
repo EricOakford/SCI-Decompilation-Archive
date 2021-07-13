@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 86)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Follow)
 (use Motion)
@@ -12,7 +12,7 @@
 	compoundHallwayRm 0
 )
 
-(instance compoundHallwayRm of Rm
+(instance compoundHallwayRm of Room
 	(properties
 		picture 86
 		north 87
@@ -23,11 +23,11 @@
 		(super init:)
 		(self setRegions: 310)
 		(HandsOff)
-		(Load rsVIEW 86)
+		(Load VIEW 86)
 		(switch prevRoomNum
 			(south
-				(Load rsVIEW 85)
-				(Load rsVIEW 787)
+				(Load VIEW 85)
+				(Load VIEW 787)
 				(globalSound
 					number: 80
 					owner: theGame
@@ -38,8 +38,8 @@
 				(self setScript: withGuardScript)
 			)
 			(else 
-				(Load rsVIEW 684)
-				(Load rsVIEW 787)
+				(Load VIEW 684)
+				(Load VIEW 787)
 				(self setScript: withAmbScript)
 			)
 		)
@@ -48,8 +48,7 @@
 )
 
 (instance withGuardScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -69,16 +68,17 @@
 				)
 			)
 			(1
-				(door setCycle: End self)
+				(door setCycle: EndLoop self)
 				(guard setMotion: 0)
 			)
-			(2 (curRoom newRoom: 87))
+			(2
+				(curRoom newRoom: 87)
+			)
 		)
 	)
 )
 
 (instance withAmbScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -87,23 +87,25 @@
 				(ambass
 					setLoop: 2
 					setCycle: Walk
-					ignoreActors: 1
+					ignoreActors: TRUE
 					init:
 					illegalBits: 0
 					setPri: 4
 				)
-				(door init: setPri: 5 setCycle: End self)
+				(door init: setPri: 5 setCycle: EndLoop self)
 			)
 			(1
 				(ego setMotion: MoveTo 146 164 self)
 				(ambass setMotion: Follow ego 20)
 			)
-			(2 (curRoom newRoom: 81))
+			(2
+				(curRoom newRoom: 81)
+			)
 		)
 	)
 )
 
-(instance guard of Act
+(instance guard of Actor
 	(properties
 		y 168
 		x 148
@@ -111,7 +113,7 @@
 	)
 )
 
-(instance ambass of Act
+(instance ambass of Actor
 	(properties
 		y 101
 		x 159

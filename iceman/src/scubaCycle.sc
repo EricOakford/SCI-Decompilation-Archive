@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 51)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use subMarine)
@@ -19,7 +19,7 @@
 )
 
 (local
-	[local0 9] = [87 176 268 364 466 577 700 839 1000]
+	local0 = [87 176 268 364 466 577 700 839 1000]
 	local9
 	local10
 	local11
@@ -164,7 +164,7 @@
 	(= local18 (/ (+ (SinMult param4 param3) 95) 190))
 )
 
-(instance scubaCycle of Rm
+(instance scubaCycle of Room
 	(properties
 		picture 51
 	)
@@ -172,24 +172,24 @@
 	(method (init)
 		(super init:)
 		(HandsOn)
-		(LoadMany 128 54 952 151 152 953 155)
-		(LoadMany 132 56 73)
+		(LoadMany VIEW 54 952 151 152 953 155)
+		(LoadMany SOUND 56 73)
 		(ego
 			cycleSpeed: 2
 			loop: 3
 			setLoop: -1
 			setLoop: scubaLooper
-			ignoreHorizon: 1
+			ignoreHorizon: TRUE
 			init:
 		)
-		(if (ego has: 6)
+		(if (ego has: iDiver)
 			(= local28 1)
 			(ego view: 54)
 			(scubaLooper vNormal: 54 vChangeDir: 55)
 			(headingGaugeProp
 				init:
 				setPri: 14
-				ignoreActors: 1
+				ignoreActors: TRUE
 				setScript: showGauge
 				stopUpd:
 			)
@@ -208,11 +208,17 @@
 					setMotion: MoveTo -5 100
 				)
 			)
-			((== prevRoomNum 47) (ego loop: 2 posn: 155 5 setMotion: MoveTo 155 200))
-			(else (ego posn: (ego x?) 5 setMotion: MoveTo (ego x?) 200))
+			((== prevRoomNum 47)
+				(ego loop: 2 posn: 155 5 setMotion: MoveTo 155 200)
+			)
+			(else
+				(ego posn: (ego x?) 5 setMotion: MoveTo (ego x?) 200)
+			)
 		)
 		(air init: ignoreActors: setPri: 15)
-		(if (<= (/ theQueuedSound 800) 0) (air hide:))
+		(if (<= (/ theQueuedSound 800) 0)
+			(air hide:)
+		)
 		(bubbles init:)
 		(soundBubbles
 			number: (SoundFX 66)
@@ -302,10 +308,12 @@
 						(== local11 local9)
 						(== local12 (+ local10 1))
 					)
-					(ego edgeHit: 1)
+					(ego edgeHit: NORTH)
 				)
 			)
-			((not (ego script?)) (ego setScript: outOfAir))
+			((not (ego script?))
+				(ego setScript: outOfAir)
+			)
 		)
 		(super doit:)
 	)
@@ -322,51 +330,67 @@
 			((super handleEvent: event))
 			((Said '[adjust,adjust]/bomb')
 				(cond 
-					((not (ego has: 3)) (Print 51 0))
-					(local26 (Print 51 1))
-					(else (ego setScript: setExplosive))
+					((not (ego has: iExplosive))
+						(Print 51 0)
+					)
+					(local26
+						(Print 51 1)
+					)
+					(else
+						(ego setScript: setExplosive)
+					)
 				)
 			)
 			((Said 'look[<at]/bomb')
 				(cond 
-					((not (ego has: 3)) (Print 51 0))
-					(local26 (Print 51 1))
-					(else (Print 51 2))
+					((not (ego has: iExplosive))
+						(Print 51 0)
+					)
+					(local26
+						(Print 51 1)
+					)
+					(else
+						(Print 51 2)
+					)
 				)
 			)
 			((Said 'look[<at]/timer')
 				(cond 
-					((ego has: 3) (Print 51 3))
-					((IsInvItemInRoom self 3) (Print 51 4))
-					(else (Print 51 5))
+					((ego has: iExplosive)
+						(Print 51 3)
+					)
+					((IsInvItemInRoom self iExplosive)
+						(Print 51 4)
+					)
+					(else
+						(Print 51 5)
+					)
 				)
 			)
 			((Said 'look[<at]/target')
 				(cond 
 					(local25
-						(Printf
-							51
-							6
+						(Printf 51 6
 							(localproc_1ade local17 local18)
 							(localproc_1b23 local17 local18)
 						)
 					)
-					(local29 (Print 51 7))
+					(local29
+						(Print 51 7)
+					)
 					(else
-						(Printf
-							51
-							8
+						(Printf 51 8
 							(localproc_1ade local15 local16)
 							(localproc_1b23 local15 local16)
 						)
 					)
 				)
 			)
-			((Said 'look[<at]/instrument,pod') (Print 51 9))
+			((Said 'look[<at]/instrument,pod')
+				(Print 51 9)
+			)
 			(
-				(Said
-					'examine,look[<at]/gear,scuba,coat,wetsuit,equipment'
-				)
+				(Said 'examine,look[<at]/gear,scuba,coat,wetsuit,equipment')
 				(Print 51 10)
 			)
 		)
@@ -374,12 +398,12 @@
 	
 	(method (newRoom)
 		(switch (ego edgeHit?)
-			(1 (++ local10) (ego y: 185))
-			(3 (-- local10) (ego y: 0))
-			(2 (++ local9) (ego x: 0))
-			(4 (-- local9) (ego x: 315))
+			(NORTH (++ local10) (ego y: 185))
+			(SOUTH (-- local10) (ego y: 0))
+			(EAST (++ local9) (ego x: 0))
+			(WEST (-- local9) (ego x: 315))
 		)
-		(ego illegalBits: -32768)
+		(ego illegalBits: cWHITE)
 		(if
 			(and
 				(== local10 local14)
@@ -405,22 +429,24 @@
 			)
 		else
 			(bubbles hide:)
-			(if local26 (plastic hide:))
+			(if local26
+				(plastic hide:)
+			)
 			(cond 
-				(local24 (curRoom drawPic: 51))
+				(local24
+					(curRoom drawPic: 51)
+				)
 				((localproc_1cb6)
 					(curRoom drawPic: 51)
 					(cond 
-						(
-						(and (== local9 local11) (== local10 (- local12 1)))
+						((and (== local9 local11) (== local10 (- local12 1)))
 							(addToPics add: rigNorth doit:)
 							(cond 
 								(local21 (ego y: 80))
 								((< (ego y?) 80) (ego y: 80))
 							)
 						)
-						(
-						(and (== local10 local12) (== local9 (- local11 1)))
+						((and (== local10 local12) (== local9 (- local11 1)))
 							(addToPics
 								add: pilingRightFT pilingRightFB pilingRightB
 								doit:
@@ -429,8 +455,7 @@
 							(if local26 (plastic posn: 289 155 show:))
 							(if local21 (ego x: 220))
 						)
-						(
-						(and (== local10 local12) (== local9 (+ local11 1)))
+						((and (== local10 local12) (== local9 (+ local11 1)))
 							(addToPics
 								add: pilingLeftFT pilingLeftFB pilingLeftB
 								doit:
@@ -445,20 +470,29 @@
 					(= local21 1)
 					(curRoom drawPic: 52)
 					(= local25 1)
-					(if local26 (plastic posn: 69 160 show:))
+					(if local26
+						(plastic posn: 69 160 show:)
+					)
 					(switch (ego edgeHit?)
-						(1 (ego y: 185))
-						(3 (ego y: 70))
-						(2
+						(SOUTH
+							(ego y: 185)
+						)
+						(NORTH
+							(ego y: 70)
+						)
+						(EAST
 							(ego x: 97)
 							(if (< (ego y?) 70) (ego y: 70))
 						)
-						(4
+						(WEST
 							(ego x: 283)
 							(if (< (ego y?) 70) (ego y: 70))
 						)
 					)
-					(if local27 (= local27 0) (ego setScript: setExplosive))
+					(if local27
+						(= local27 0)
+						(ego setScript: setExplosive)
+					)
 				)
 				(else
 					(if (and (== local15 local9) (== local16 local10))
@@ -472,11 +506,11 @@
 				)
 			)
 			(gauge init: setPri: 15 addToPic:)
-			(if (ego has: 6)
+			(if (ego has: iDiver)
 				(headingGaugeProp
 					init:
 					setPri: 14
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setScript: showGauge
 					stopUpd:
 				)
@@ -492,28 +526,28 @@
 	)
 )
 
-(instance rigNorth of PV
+(instance rigNorth of PicView
 	(properties
 		y 100
 		x 160
 		view 952
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance pilingRightFT of PV
+(instance pilingRightFT of PicView
 	(properties
 		y 140
 		x 294
 		view 952
 		loop 6
 		priority 14
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance pilingRightFB of PV
+(instance pilingRightFB of PicView
 	(properties
 		y 189
 		x 293
@@ -521,33 +555,33 @@
 		loop 6
 		cel 1
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance pilingRightB of PV
+(instance pilingRightB of PicView
 	(properties
 		y 189
 		x 255
 		view 952
 		loop 4
 		priority 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance pilingLeftFT of PV
+(instance pilingLeftFT of PicView
 	(properties
 		y 139
 		x 24
 		view 952
 		loop 7
 		priority 14
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance pilingLeftFB of PV
+(instance pilingLeftFB of PicView
 	(properties
 		y 189
 		x 25
@@ -555,18 +589,18 @@
 		loop 7
 		cel 1
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance pilingLeftB of PV
+(instance pilingLeftB of PicView
 	(properties
 		y 189
 		x 62
 		view 952
 		loop 5
 		priority 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -592,7 +626,7 @@
 	)
 )
 
-(instance bubbles of Act
+(instance bubbles of Actor
 	(properties
 		yStep 3
 		view 54
@@ -628,7 +662,6 @@
 )
 
 (instance egosBubbleScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -651,18 +684,19 @@
 				(bubbles hide:)
 				(= cycles 2)
 			)
-			(3 (self init:))
+			(3
+				(self init:)
+			)
 		)
 	)
 )
 
 (instance outOfAir of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (ego has: 6)
+				(if (ego has: iDiver)
 					(EgoDead 157 0 1 51 11)
 				else
 					(EgoDead 157 0 1 51 12)
@@ -681,9 +715,8 @@
 )
 
 (instance headingGauge of Code
-	(properties)
-	
-	(method (doit &tmp [temp0 3])
+
+	(method (doit &tmp [str 3])
 		(cond 
 			(local25
 				(= local22 (localproc_1ade local17 local18))
@@ -695,69 +728,40 @@
 				(= local23 (mod (localproc_1b23 local15 local16) 10000))
 			)
 		)
-		(Display
-			51
-			13
-			dsCOORD
-			219
-			17
-			dsCOLOR
-			8
-			dsALIGN
-			-1
-			dsWIDTH
-			25
-			dsFONT
-			30
+		(Display 51 13
+			p_at 219 17
+			p_color vGREY
+			p_mode teJustLeft
+			p_width 25
+			p_font 30
 		)
 		(Display
-			(Format @temp0 51 14 local22)
-			dsCOORD
-			219
-			17
-			dsCOLOR
-			14
-			dsALIGN
-			-1
-			dsWIDTH
-			25
-			dsFONT
-			30
+			(Format @str 51 14 local22)
+			p_at 219 17
+			p_color vYELLOW
+			p_mode teJustLeft
+			p_width 25
+			p_font 30
+		)
+		(Display 51 13
+			p_at 267 17
+			p_color vGREY
+			p_mode teJustLeft
+			p_width 25
+			p_font 30
 		)
 		(Display
-			51
-			13
-			dsCOORD
-			267
-			17
-			dsCOLOR
-			8
-			dsALIGN
-			-1
-			dsWIDTH
-			25
-			dsFONT
-			30
-		)
-		(Display
-			(Format @temp0 51 14 local23)
-			dsCOORD
-			267
-			17
-			dsCOLOR
-			14
-			dsALIGN
-			-1
-			dsWIDTH
-			25
-			dsFONT
-			30
+			(Format @str 51 14 local23)
+			p_at 267 17
+			p_color vYELLOW
+			p_mode teJustLeft
+			p_width 25
+			p_font 30
 		)
 	)
 )
 
 (instance showGauge of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -768,8 +772,7 @@
 )
 
 (instance setExplosive of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -780,32 +783,37 @@
 						(Print 51 15)
 						(ego illegalBits: 0 setMotion: MoveTo 184 (ego y?) self)
 					)
-					(
-					(and (== local10 local12) (== local9 (- local11 1)))
+					((and (== local10 local12) (== local9 (- local11 1)))
 						(= local27 1)
 						(ego
 							illegalBits: 0
 							setMotion: MoveTo 300 (if (< (ego y?) 70) 70 else (ego y?)) self
 						)
 					)
-					(
-					(and (== local10 local12) (== local9 (+ local11 1)))
+					((and (== local10 local12) (== local9 (+ local11 1)))
 						(= local27 1)
 						(ego
 							illegalBits: 0
 							setMotion: MoveTo 20 (if (< (ego y?) 70) 70 else (ego y?)) self
 						)
 					)
-					(else (= local26 0) (Print 51 16) (HandsOn) (self dispose:))
+					(else
+						(= local26 0)
+						(Print 51 16)
+						(HandsOn)
+						(self dispose:)
+					)
 				)
 			)
 			(1
 				(cond 
 					((localproc_1cf6) (ego setMotion: MoveTo 184 176 self))
-					(
-					(and (== local10 local12) (== local9 (- local11 1))) (ego setMotion: MoveTo 330 (ego y?)))
-					(
-					(and (== local10 local12) (== local9 (+ local11 1))) (ego setMotion: MoveTo -5 (ego y?)))
+					((and (== local10 local12) (== local9 (- local11 1)))
+						(ego setMotion: MoveTo 330 (ego y?))
+					)
+					((and (== local10 local12) (== local9 (+ local11 1)))
+						(ego setMotion: MoveTo -5 (ego y?))
+					)
 				)
 			)
 			(2
@@ -818,9 +826,9 @@
 					setLoop: 0
 					setCel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
-				(if (ego has: 6)
+				(if (ego has: iDiver)
 					(DV-3X
 						init:
 						view: 155
@@ -833,7 +841,7 @@
 				)
 			)
 			(4
-				(ego setLoop: 2 setCel: 0 setCycle: End self)
+				(ego setLoop: 2 setCel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(plastic
@@ -845,26 +853,30 @@
 					setPri: 9
 					posn: 69 155
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(6
 				(Print 51 17)
-				(ego setLoop: 0 setCel: 4 setCycle: Beg self)
+				(ego setLoop: 0 setCel: 4 setCycle: BegLoop self)
 				(theGame changeScore: 1)
-				(ego put: 3 curRoomNum)
+				(ego put: iExplosive curRoomNum)
 			)
 			(7
-				(if (ego has: 6) (DV-3X dispose:))
+				(if (ego has: iDiver)
+					(DV-3X dispose:)
+				)
 				(ego
-					view: (if (ego has: 6) 54 else 154)
+					view: (if (ego has: iDiver) 54 else 154)
 					loop: 1
 					setLoop: -1
 					cel: 5
 					setCycle: Walk
 					cycleSpeed: 2
-					illegalBits: -32768
+					illegalBits: cWHITE
 				)
-				(if (not howFast) (ego xStep: 6))
+				(if (not howFast)
+					(ego xStep: 6)
+				)
 				(soundBubbles dispose:)
 				(client setScript: blowUp)
 				(HandsOn)
@@ -874,7 +886,6 @@
 )
 
 (instance blowUp of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0 temp1)
 		(switch (= state newState)
@@ -891,7 +902,10 @@
 						(HandsOff)
 						(self setScript: blowUp1)
 					)
-					((localproc_1cb6) (HandsOff) (self setScript: blowUp2))
+					((localproc_1cb6)
+						(HandsOff)
+						(self setScript: blowUp2)
+					)
 					(else
 						(cond 
 							((< local9 (- local11 1)) (= temp0 324) (= temp1 88))
@@ -905,7 +919,7 @@
 							setCel: 0
 							posn: temp0 temp1
 							show:
-							setCycle: CT 2 1 self
+							setCycle: CycleTo 2 1 self
 						)
 					)
 				)
@@ -941,7 +955,6 @@
 )
 
 (instance blowUp1 of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0 temp1)
 		(switch (= state newState)
@@ -954,7 +967,7 @@
 					setCel: 0
 					setPri: 15
 					show:
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(1
@@ -978,13 +991,12 @@
 					xStep: 7
 					yStep: 7
 					illegalBits: 0
-					setCycle: Fwd
-					setMotion:
-						MoveTo
+					setCycle: Forward
+					setMotion: MoveTo
 						(+ (ego x?) (* temp0 80))
 						(+ (ego y?) (* temp1 40))
 				)
-				(if (ego has: 6)
+				(if (ego has: iDiver)
 					(DV-3X
 						init:
 						view: 152
@@ -993,7 +1005,7 @@
 						ignoreActors:
 						illegalBits: 0
 						posn: (- (ego x?) 28) (- (ego y?) 3)
-						setCycle: Fwd
+						setCycle: Forward
 						setMotion:
 							MoveTo
 							(+ (ego x?) (* temp0 90))
@@ -1011,7 +1023,6 @@
 )
 
 (instance blowUp2 of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0 temp1)
 		(switch (= state newState)
@@ -1019,9 +1030,15 @@
 				(ego setMotion: MoveTo (- (ego x?) 3) (ego y?) self)
 				(= local24 1)
 				(cond 
-					((== local12 local10) (plastic x: -1 y: 100))
-					((== local12 (+ local10 1)) (plastic x: 155 y: 80))
-					(else (plastic x: 155 y: 191))
+					((== local12 local10)
+						(plastic x: -1 y: 100)
+					)
+					((== local12 (+ local10 1))
+						(plastic x: 155 y: 80)
+					)
+					(else
+						(plastic x: 155 y: 191)
+					)
 				)
 				(plastic
 					view: 953
@@ -1029,7 +1046,7 @@
 					setCel: 0
 					setPri: 15
 					show:
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(1
@@ -1053,13 +1070,12 @@
 					xStep: 7
 					yStep: 7
 					illegalBits: 0
-					setCycle: Fwd
-					setMotion:
-						MoveTo
+					setCycle: Forward
+					setMotion: MoveTo
 						(+ (ego x?) (* temp0 80))
 						(+ (ego y?) (* temp1 50))
 				)
-				(if (ego has: 6)
+				(if (ego has: iDiver)
 					(DV-3X
 						init:
 						view: 152
@@ -1068,9 +1084,8 @@
 						ignoreActors:
 						illegalBits: 0
 						posn: (- (ego x?) 28) (- (ego y?) 3)
-						setCycle: Fwd
-						setMotion:
-							MoveTo
+						setCycle: Forward
+						setMotion: MoveTo
 							(+ (ego x?) (* temp0 90))
 							(+ (ego y?) (* temp1 80))
 					)
@@ -1085,7 +1100,7 @@
 	)
 )
 
-(instance DV-3X of Act
+(instance DV-3X of Actor
 	(properties
 		yStep 5
 		view 152
@@ -1093,17 +1108,14 @@
 	)
 )
 
-(instance plastic of Prop
-	(properties)
-)
+(instance plastic of Prop)
 
 (instance loseDiver of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (ego has: 6)
+				(if (ego has: iDiver)
 					(HandsOff)
 					(ego setMotion: MoveTo (- (ego x?) 3) (ego y?) self)
 				else
@@ -1111,7 +1123,13 @@
 				)
 			)
 			(1
-				(ego put: 6 view: 152 setLoop: 0 setCel: 1 viewer: 0)
+				(ego
+					put: iDiver
+					view: 152
+					setLoop: 0
+					setCel: 1
+					viewer: 0
+				)
 				(= local28 5)
 				(DV-3X
 					init:
@@ -1119,11 +1137,11 @@
 					setLoop: 4
 					setCel: 0
 					setPri: (ego priority?)
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					posn: (- (ego x?) 28) (- (ego y?) 3)
 					cycleSpeed: 4
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (- (ego x?) 28) 200 self
 				)
 			)
@@ -1142,9 +1160,15 @@
 			(3
 				(HandsOn)
 				(cond 
-					((not (& (subMarine roomFlags?) $0020)) (Print 51 19))
-					((not (& (subMarine roomFlags?) $0040)) (Print 51 20))
-					(else (Print 51 21))
+					((not (& (subMarine roomFlags?) $0020))
+						(Print 51 19)
+					)
+					((not (& (subMarine roomFlags?) $0040))
+						(Print 51 20)
+					)
+					(else
+						(Print 51 21)
+					)
 				)
 				(self dispose:)
 			)

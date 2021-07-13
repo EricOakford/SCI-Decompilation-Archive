@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 71)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use n802)
@@ -18,7 +18,7 @@
 (local
 	local0 =  1
 )
-(instance tunaBeachRm1 of Rm
+(instance tunaBeachRm1 of Room
 	(properties
 		picture 71
 		north 74
@@ -29,7 +29,7 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsVIEW 576)
+		(Load VIEW 576)
 		(self setRegions: 310 306)
 		(if (== prevRoomNum 45) (globalSound stop:))
 		(switch prevRoomNum
@@ -43,16 +43,18 @@
 				(ego posn: 70 105 view: 71 loop: 0)
 			)
 		)
-		(ego init: observeControl: 64 cycleSpeed: 0)
+		(ego init: observeControl: cBROWN cycleSpeed: 0)
 		(addToPics add: rockPic doit:)
-		(if (== (ego view?) 54) (ego view: 71))
+		(if (== (ego view?) 54)
+			(ego view: 71)
+		)
 		(wave init:)
 		((Clone wave)
 			x: 206
 			y: 140
 			loop: 1
 			priority: 10
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		((Clone wave)
@@ -60,7 +62,7 @@
 			y: 161
 			loop: 2
 			priority: 10
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 	)
@@ -76,19 +78,21 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room]') (Print 71 1))
+			((Said 'look[<at,around][/room]')
+				(Print 71 1)
+			)
 		)
 	)
 )
 
-(instance rockPic of PV
+(instance rockPic of PicView
 	(properties
 		y 94
 		x 261
 		view 576
 		loop 2
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -99,7 +103,7 @@
 		view 271
 		priority 10
 		cycleSpeed 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 5
 		maxPause 5
 		minCycles 2
@@ -108,7 +112,7 @@
 	
 	(method (init)
 		(super init:)
-		(self isExtra: 1)
+		(self isExtra: TRUE)
 	)
 	
 	(method (handleEvent event param2)

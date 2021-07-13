@@ -95,11 +95,15 @@
 )
 
 ;Tahiti flags
-(define fReadNewspaper		$0008)
-(define fOpenedCloset		$0020)
-(define fAskedForSex		$0040)
-(define fOrdersFromBraxton	$0080)
-(define fMessageFromBraxton	$0100)
-(define fCalledForDinghy	$0200)
-(define fTalkedToStacy		$0400)
-(define fWearingShirt		$4000)
+(define fReadNewspaper			$0008)
+(define fOpenedCloset			$0020)
+(define fAskedForSex			$0040)
+(define fOrdersFromBraxton		$0080)
+(define fMessageFromBraxton		$0100)
+(define fCalledForDinghy		$0200)
+(define fTalkedToStacy			$0400)
+(define fWearingShirt			$4000)
+
+;Submarine flags
+(define fObservationScopeBroken		$0010)
+(define fAttackScopeBroken			$0020)

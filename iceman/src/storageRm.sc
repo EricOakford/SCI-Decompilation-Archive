@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 35)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use subMarine)
@@ -20,9 +20,9 @@
 )
 
 (local
-	local0
+	lookedAtFood
 )
-(instance storageRm of Rm
+(instance storageRm of Room
 	(properties
 		picture 35
 		east 42
@@ -30,8 +30,8 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 35)
-		(Load rsVIEW 935)
+		(Load VIEW 35)
+		(Load VIEW 935)
 		(super init:)
 		(HandsOn)
 		(self
@@ -72,7 +72,7 @@
 					view: 135
 					illegalBits: 0
 					posn: -22 103
-					ignoreActors: 1
+					ignoreActors: TRUE
 					init:
 					setScript: fryToDeathScript
 				)
@@ -82,7 +82,7 @@
 					posn: 245 102
 					loop: 1
 					heading: 90
-					observeControl: 2
+					observeControl: cBLUE
 					init:
 				)
 			)
@@ -92,9 +92,11 @@
 	(method (doit)
 		(if (> (ego x?) 277)
 			(self newRoom: east)
-			(ego ignoreControl: 2)
+			(ego ignoreControl: cBLUE)
 		else
-			(if (& (ego onControl: 0) $0002) (self newRoom: west))
+			(if (& (ego onControl: 0) cBLUE)
+				(self newRoom: west)
+			)
 			(super doit:)
 		)
 	)
@@ -104,28 +106,42 @@
 			((super handleEvent: event))
 			((Said 'look>')
 				(cond 
-					((Said '[<around,in][/room,scene]') (Print 35 0))
-					((Said '[<around,in][/freezer]') (Print 35 1))
-					((Said 'box,provision') (Print 35 2))
-					((Said 'soup,nut,food') (if local0 (Print 35 3) else (Print 35 4) (= local0 1)))
+					((Said '[<around,in][/room,scene]')
+						(Print 35 0)
+					)
+					((Said '[<around,in][/freezer]')
+						(Print 35 1)
+					)
+					((Said 'box,provision')
+						(Print 35 2)
+					)
+					((Said 'soup,nut,food')
+						(if lookedAtFood
+							(Print 35 3)
+						else
+							(Print 35 4)
+							(= lookedAtFood TRUE)
+						)
+					)
 				)
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (not (ego script?)) (super newRoom: newRoomNumber))
+	(method (newRoom nRoom)
+		(if (not (ego script?))
+			(super newRoom: nRoom)
+		)
 	)
 )
 
 (instance fryToDeathScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(radDoor setCycle: End self)
+				(radDoor setCycle: EndLoop self)
 			)
 			(1
 				(Print 35 5)
@@ -150,14 +166,14 @@
 					setLoop: 1
 					setCel: 0
 					cycleSpeed: 2
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(7
-				(ego cycleSpeed: 0 setCycle: End self)
+				(ego cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(8
-				(ego setLoop: 2 setCycle: Fwd)
+				(ego setLoop: 2 setCycle: Forward)
 				(= seconds 5)
 			)
 			(9 (EgoDead 337 3 0 35 8))
@@ -181,8 +197,12 @@
 			((Said '[/egg]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 9))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 9)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -205,8 +225,12 @@
 			((Said '[/milk]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 10))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 10)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -229,8 +253,12 @@
 			((Said '[/pork,beef]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 11))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 11)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -253,8 +281,12 @@
 			((Said '[/apple]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 12))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 12)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -276,8 +308,12 @@
 			((Said '[/bean]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 13))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 13)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -300,8 +336,12 @@
 			((Said '[/potatoe]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 14))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 14)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -324,8 +364,12 @@
 			((Said '[/flour]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 15))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 15)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -348,8 +392,12 @@
 			((Said '[/juice]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 16))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 16)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -372,8 +420,12 @@
 			((Said '[/box]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 17))
-					((Said 'get,open') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 17)
+					)
+					((Said 'get,open')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -396,8 +448,12 @@
 			((Said '[/box]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 18))
-					((Said 'get') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 35 18)
+					)
+					((Said 'get')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -417,10 +473,24 @@
 			((Said '[/door,freezer]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 19))
+					((Said 'look[<at]')
+						(Print 35 19)
+					)
 					((GoToIfSaid self event 94 106 0 35 20))
-					((Said 'open') (if (not cel) (self setCycle: End self) else (ItIs)))
-					((Said 'close') (if cel (self setCycle: Beg self) else (ItIs)))
+					((Said 'open')
+						(if (not cel)
+							(self setCycle: EndLoop self)
+						else
+							(ItIs)
+						)
+					)
+					((Said 'close')
+						(if cel
+							(self setCycle: BegLoop self)
+						else
+							(ItIs)
+						)
+					)
 				)
 			)
 		)
@@ -445,10 +515,24 @@
 			((Said '[/door,freezer]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 21))
+					((Said 'look[<at]')
+						(Print 35 21)
+					)
 					((GoToIfSaid self event 221 106 0 35 20))
-					((Said 'open') (if (not cel) (self setCycle: End self) else (ItIs)))
-					((Said 'close') (if cel (self setCycle: Beg self) else (ItIs)))
+					((Said 'open')
+						(if (not cel)
+							(self setCycle: EndLoop self)
+						else
+							(ItIs)
+						)
+					)
+					((Said 'close')
+						(if cel
+							(self setCycle: BegLoop self)
+						else
+							(ItIs)
+						)
+					)
 				)
 			)
 		)
@@ -475,19 +559,27 @@
 					((TurnIfSaid self event 'look[<at]/*'))
 					((Said 'look[<at]')
 						(cond 
-							((not cel) (Print 35 22))
-							((== (subMarine suitRoom?) 38) (Print 35 23))
-							(else (Print 35 24))
+							((not cel)
+								(Print 35 22)
+							)
+							((== (subMarine suitRoom?) 38)
+								(Print 35 23)
+							)
+							(else
+								(Print 35 24)
+							)
 						)
 					)
 					((GoToIfSaid self event 52 106 0 35 20))
 					((Said 'open,unlock')
 						(cond 
-							(cel (ItIs))
-							((ego has: 5)
+							(cel
+								(ItIs)
+							)
+							((ego has: iSubKey)
 								(Print 35 25)
-								(self setCycle: End self)
-								(scubaDoorRight setCycle: End scubaDoorRight)
+								(self setCycle: EndLoop self)
+								(scubaDoorRight setCycle: EndLoop scubaDoorRight)
 								(if (!= (subMarine suitRoom?) 38)
 									(willie
 										illegalBits: 0
@@ -498,13 +590,15 @@
 									(theGame changeScore: 1)
 								)
 							)
-							(else (Print 35 26))
+							(else
+								(Print 35 26)
+							)
 						)
 					)
 					((Said 'close')
 						(if cel
-							(self setCycle: Beg self)
-							(scubaDoorRight setCycle: Beg scubaDoorRight)
+							(self setCycle: BegLoop self)
+							(scubaDoorRight setCycle: BegLoop scubaDoorRight)
 						else
 							(ItIs)
 						)
@@ -514,9 +608,15 @@
 			(
 			(Said 'wear,get[/scuba,equipment,gear][/gear,equipment]')
 				(cond 
-					((not cel) (Print 35 27))
-					((== (subMarine suitRoom?) 38) (Print 35 28))
-					(else (Print 35 29))
+					((not cel)
+						(Print 35 27)
+					)
+					((== (subMarine suitRoom?) 38)
+						(Print 35 28)
+					)
+					(else
+						(Print 35 29)
+					)
 				)
 			)
 		)
@@ -553,20 +653,22 @@
 			((Said '[/door,reactor]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 30))
+					((Said 'look[<at]')
+						(Print 35 30)
+					)
 					((GoToIfSaid self event 28 107 0 35 20))
 					((Said 'open')
 						(if (not cel)
-							(self setCycle: End self)
-							(ego ignoreControl: 2)
+							(self setCycle: EndLoop self)
+							(ego ignoreControl: cBLUE)
 						else
 							(ItIs)
 						)
 					)
 					((Said 'close')
 						(if cel
-							(self setCycle: Beg self)
-							(ego observeControl: 2)
+							(self setCycle: BegLoop self)
+							(ego observeControl: cBLUE)
 						else
 							(ItIs)
 						)
@@ -590,7 +692,7 @@
 	)
 )
 
-(instance willie of Act
+(instance willie of Actor
 	(properties
 		y 105
 		x 275
@@ -600,11 +702,13 @@
 )
 
 (instance willieScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 3))
+			(0
+				(HandsOff)
+				(= seconds 3)
+			)
 			(1
 				(ego setMotion: MoveTo (ego x?) (+ (ego y?) 20) self)
 				(willie setMotion: MoveTo 53 105 self)
@@ -628,12 +732,15 @@
 				(willie setMotion: MoveTo 275 105 self)
 			)
 			(6
-				(scubaDoorLeft setCycle: Beg scubaDoorLeft)
-				(scubaDoorRight setCycle: Beg scubaDoorRight)
+				(scubaDoorLeft setCycle: BegLoop scubaDoorLeft)
+				(scubaDoorRight setCycle: BegLoop scubaDoorRight)
 				(ego heading: 90)
 				((ego looper?) doit: ego (ego heading?))
 			)
-			(7 (HandsOn) (willie dispose:))
+			(7
+				(HandsOn)
+				(willie dispose:)
+			)
 		)
 	)
 )
@@ -655,7 +762,9 @@
 			((Said '[/sign,symbol]>')
 				(cond 
 					((TurnIfSaid self event 'read,look[<at]/*'))
-					((Said 'read,look[<at]') (Print 35 32))
+					((Said 'read,look[<at]')
+						(Print 35 32)
+					)
 				)
 			)
 		)
@@ -678,9 +787,13 @@
 			((Said '[/thermometer,meter,gauge]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 35 33))
+					((Said 'look[<at]')
+						(Print 35 33)
+					)
 					((GoToIfSaid self event 149 102 0 35 20))
-					((Said 'read,check') (Print 35 34))
+					((Said 'read,check')
+						(Print 35 34)
+					)
 				)
 			)
 		)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 87)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tunisia)
@@ -26,10 +26,10 @@
 )
 
 (local
-	theWestGuard
-	local1
+	shotGuard
+	gotGun
 )
-(instance inCompoundRm of Rm
+(instance inCompoundRm of Room
 	(properties
 		picture 87
 		vanishingX 117
@@ -39,9 +39,9 @@
 	(method (init)
 		(super init:)
 		(HandsOn)
-		(User canControl: 0)
-		(LoadMany 128 85 684 187 287 387 487 687 787 887 987)
-		(LoadMany 132 23 223 27 227 81 90)
+		(User canControl: FALSE)
+		(LoadMany VIEW 85 684 187 287 387 487 687 787 887 987)
+		(LoadMany SOUND 23 223 27 227 81 90)
 		(gunShot number: (SoundFX 27))
 		(machineGun number: (SoundFX 23))
 		(ego
@@ -49,7 +49,7 @@
 			posn: 126 179
 			loop: 3
 			setLoop: -1
-			ignoreActors: 0
+			ignoreActors: FALSE
 			cycleSpeed: 0
 			init:
 			setCycle: Walk
@@ -65,7 +65,7 @@
 		(westGuard
 			init:
 			setCycle: Walk
-			setLoop: Grooper
+			setLoop: GradualLooper
 			setScript: westGuardScript
 		)
 		(ambassador init: setScript: ambassScript)
@@ -76,29 +76,50 @@
 			((super handleEvent: event))
 			((Said 'load/gun')
 				(cond 
-					((not (ego has: 8)) (event claimed: 0))
-					((== (backGuard view?) 287) (Print 87 0))
-					(else (Print 87 1))
+					((not (ego has: iTranquilizerGun))
+						(event claimed: FALSE)
+					)
+					((== (backGuard view?) 287)
+						(Print 87 0)
+					)
+					(else
+						(Print 87 1)
+					)
 				)
 			)
-			((or (Said 'exit[/room]') (Said 'go<out')) (Print 87 2))
-			((Said 'throw/food') (Print 87 3))
-			((Said 'kill/man,guard') (Print 87 4))
+			((or (Said 'exit[/room]') (Said 'go<out'))
+				(Print 87 2)
+			)
+			((Said 'throw/food')
+				(Print 87 3)
+			)
+			((Said 'kill/man,guard')
+				(Print 87 4)
+			)
 			((Said 'shoot,fire[/guard,gun]')
 				(cond 
-					((ego script?) (event claimed: 0))
-					((== (backGuard view?) 287) (Print 87 0))
-					(else (Print 87 5))
+					((ego script?)
+						(event claimed: FALSE)
+					)
+					((== (backGuard view?) 287)
+						(Print 87 0)
+					)
+					(else
+						(Print 87 5)
+					)
 				)
 			)
-			((Said 'look<out/shutter') (Print 87 6))
-			((Said 'get/gun<guard') (Print 87 7))
+			((Said 'look<out/shutter')
+				(Print 87 6)
+			)
+			((Said 'get/gun<guard')
+				(Print 87 7)
+			)
 		)
 	)
 )
 
 (instance messageScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -113,8 +134,7 @@
 )
 
 (instance ambassScript of Script
-	(properties)
-	
+
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
@@ -134,7 +154,9 @@
 							(client setScript: freeAmbassadorScript)
 						)
 					)
-					((Said 'look') (Print 87 13))
+					((Said 'look')
+						(Print 87 13)
+					)
 				)
 			)
 		)
@@ -142,7 +164,6 @@
 )
 
 (instance westGuardScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -155,7 +176,9 @@
 				(= seconds 15)
 			)
 			(2
-				(if (not (ego script?)) (= cycles 2))
+				(if (not (ego script?))
+					(= cycles 2)
+				)
 			)
 			(3
 				(HandsOff)
@@ -167,41 +190,43 @@
 				)
 			)
 			(4
-				(ego setAvoider: Avoid setMotion: MoveTo 126 179 self)
+				(ego setAvoider: Avoider setMotion: MoveTo 126 179 self)
 			)
 			(5
 				(westGuard illegalBits: 0 setMotion: MoveTo 106 178 self)
 				(ego illegalBits: 0 setMotion: MoveTo 126 225)
 			)
-			(6 (EgoDead 918 0 0 87 15))
+			(6
+				(EgoDead 918 0 0 87 15)
+			)
 		)
 	)
 )
 
 (instance walkToEgoScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(Print 87 14 #at 10 10)
 				(westGuard setMotion: MoveTo 155 139)
-				(User canInput: 1)
+				(User canInput: TRUE)
 			)
 		)
 	)
 )
 
 (instance forcedOutScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego
 					setLoop: -1
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setMotion: MoveTo (- (table x?) 40) (- (table y?) 3) self
 				)
 			)
@@ -210,10 +235,10 @@
 				(ego
 					view: 187
 					loop: 1
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					heading: 90
 					ignoreActors:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -223,7 +248,7 @@
 					loop: 0
 					setLoop: -1
 					setCycle: Walk
-					observeControl: -32768
+					observeControl: cWHITE
 					setAvoider: 0
 					put: 13
 				)
@@ -234,7 +259,6 @@
 )
 
 (instance setDownFoodScript of Script
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
@@ -245,8 +269,13 @@
 		(super doit:)
 		(cond 
 			((< state 2))
-			(register (-- register))
-			((westGuardScript client?) (westGuardScript cue:) (= register 30000))
+			(register
+				(-- register)
+			)
+			((westGuardScript client?)
+				(westGuardScript cue:)
+				(= register 30000)
+			)
 		)
 	)
 	
@@ -261,31 +290,33 @@
 				(HandsOff)
 				(ego
 					setLoop: -1
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setMotion: MoveTo (- (table x?) 40) (- (table y?) 3) self
 				)
 			)
 			(1
-				(if (not demoScripts) (Print 87 16 #at 10 10))
+				(if (not demoScripts)
+					(Print 87 16 #at 10 10)
+				)
 				(ego
 					view: 187
 					loop: 1
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					heading: 90
 					ignoreActors:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(if demoScripts (self dispose:))
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(foodView init:)
 				(ego
 					view: 684
 					loop: 0
 					setLoop: -1
 					setCycle: Walk
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setAvoider: 0
 					ignoreActors: 0
 				)
@@ -302,21 +333,21 @@
 					setAvoider: 0
 					illegalBits: 0
 					ignoreActors: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(foodLidView init:)
 				(HandsOn)
-				(ego illegalBits: -32768 ignoreActors: 0)
-				(User canControl: 0)
+				(ego illegalBits: cWHITE ignoreActors: FALSE)
+				(User canControl: FALSE)
 				(westGuard setScript: walkToEgoScript)
 			)
 			(5
 				(Print 87 17 #at 10 10)
-				(= local1 1)
-				(ego view: 687 cel: 0 loop: 0 setCycle: End)
-				(= theWestGuard westGuard)
+				(= gotGun 1)
+				(ego view: 687 cel: 0 loop: 0 setCycle: EndLoop)
+				(= shotGuard westGuard)
 			)
 		)
 	)
@@ -327,15 +358,14 @@
 			(
 				(or
 					(and
-						(== (event type?) evKEYBOARD)
-						(== (event message?) KEY_F10)
+						(== (event type?) keyDown)
+						(== (event message?) `#a)
 					)
 					(Said 'shoot,fire[/guard,gun,man]')
 				)
 				(cond 
-					((== theWestGuard westGuard)
-						(if
-						(and (== (westGuard x?) 155) (== (westGuard y?) 139))
+					((== shotGuard westGuard)
+						(if (and (== (westGuard x?) 155) (== (westGuard y?) 139))
 							(westGuard setScript: westShootEgoScript)
 						else
 							(westGuard setScript: westGetsShotScript)
@@ -343,13 +373,15 @@
 							(globalSound number: 81 play:)
 						)
 					)
-					((== theWestGuard backGuard)
+					((== shotGuard backGuard)
 						(backGuard setScript: backGetsShotScript)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
-					(else (Print 87 18))
+					(else
+						(Print 87 18)
+					)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 			((Said '[/lid,cover]>')
 				(if
@@ -367,12 +399,20 @@
 					)
 				)
 			)
-			((Said 'get/gun<guard') (Print 87 7))
+			((Said 'get/gun<guard')
+				(Print 87 7)
+			)
 			((Said 'get/gun')
 				(cond 
-					((== state 4) (self cue:))
-					(local1 (Print 87 20))
-					(else (Print 87 21))
+					((== state 4)
+						(self cue:)
+					)
+					(gotGun
+						(Print 87 20)
+					)
+					(else
+						(Print 87 21)
+					)
 				)
 			)
 		)
@@ -380,8 +420,7 @@
 )
 
 (instance westShootEgoScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -389,7 +428,7 @@
 					view: 187
 					setLoop: 0
 					setCel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 				(machineGun play:)
 			)
@@ -399,20 +438,21 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End
+					setCycle: EndLoop
 					setScript: 0
 				)
-				(client setCycle: End)
+				(client setCycle: EndLoop)
 				(= seconds 4)
 			)
-			(2 (EgoDead 970 1 0 87 22))
+			(2
+				(EgoDead 970 1 0 87 22)
+			)
 		)
 	)
 )
 
 (instance westGetsShotScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -422,19 +462,18 @@
 					setLoop: 1
 					cycleSpeed: 1
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(backGuard setScript: backShootEgoScript)
-				(= theWestGuard backGuard)
+				(= shotGuard backGuard)
 			)
 		)
 	)
 )
 
 (instance backShootEgoScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 20))
@@ -445,23 +484,24 @@
 					view: 187
 					setLoop: 6
 					setCel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 				(machineGun play:)
 			)
 			(2
-				(ego view: 687 loop: 2 cel: 0 cycleSpeed: 1 setCycle: End)
-				(client setCycle: End)
+				(ego view: 687 loop: 2 cel: 0 cycleSpeed: 1 setCycle: EndLoop)
+				(client setCycle: EndLoop)
 				(= seconds 4)
 			)
-			(3 (EgoDead 970 1 0 87 22))
+			(3
+				(EgoDead 970 1 0 87 22)
+			)
 		)
 	)
 )
 
 (instance backGetsShotScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -471,10 +511,10 @@
 					cel: 0
 					loop: 0
 					setScript: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(setDownFoodScript dispose:)
-				(= theWestGuard 0)
+				(= shotGuard 0)
 				(gunShot play:)
 				(globalSound number: 90 play:)
 			)
@@ -485,9 +525,9 @@
 					setLoop: 0
 					cycleSpeed: 1
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(= seconds 3)
 			)
 			(2
@@ -500,7 +540,7 @@
 					setCycle: Walk
 					heading: 270
 					loop: 1
-					setLoop: Grooper
+					setLoop: GradualLooper
 				)
 			)
 		)
@@ -508,14 +548,13 @@
 )
 
 (instance freeAmbassadorScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(backGuard ignoreActors: 1)
-				(ego setAvoider: Avoid setCycle: Walk)
+				(backGuard ignoreActors: TRUE)
+				(ego setAvoider: Avoider setCycle: Walk)
 				(if (< (ego y?) (+ (ambassador y?) 10))
 					(ego setMotion: MoveTo 79 116 self)
 				else
@@ -523,7 +562,7 @@
 				)
 			)
 			(1
-				(ego view: 187 loop: 7 setCycle: End self)
+				(ego view: 187 loop: 7 setCycle: EndLoop self)
 			)
 			(2
 				(ego setAvoider: 0)
@@ -541,18 +580,18 @@
 				)
 			)
 			(4
-				(ego view: 187 loop: 8 setCycle: End self)
+				(ego view: 187 loop: 8 setCycle: EndLoop self)
 			)
 			(5
 				(ambassador cel: 1)
 				(ego view: 684 loop: 3 setCycle: Walk)
 				(HandsOn)
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(= seconds 3)
 			)
 			(6
 				(chairView init:)
-				(ambassador setCycle: End self)
+				(ambassador setCycle: EndLoop self)
 			)
 			(7
 				(ambassador view: 287 loop: 4)
@@ -589,24 +628,32 @@
 				(client setScript: changeClothesScript)
 				(self dispose:)
 			)
-			((Said 'address/man,ambassador') (= seconds 0) (self cue:))
-			((Said 'bind/man,guard') (Print 87 32))
-			((Said 'untie/guard') (Print 87 33))
+			((Said 'address/man,ambassador')
+				(= seconds 0)
+				(self cue:)
+			)
+			((Said 'bind/man,guard')
+				(Print 87 32)
+			)
+			((Said 'untie/guard')
+				(Print 87 33)
+			)
 		)
 	)
 )
 
 (instance moveToGuard of MoveTo
-	(properties)
-	
+
 	(method (onTarget)
-		(if (super onTarget:) else (client isBlocked:))
+		(if (super onTarget:)
+		else
+			(client isBlocked:)
+		)
 	)
 )
 
 (instance changeClothesScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -614,7 +661,7 @@
 				(ambassador
 					view: 287
 					setLoop: 4
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setMotion: moveToGuard 120 130 self
 					setCycle: Walk
@@ -630,19 +677,19 @@
 					view: 287
 					setLoop: 2
 					cycleSpeed: 2
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setCel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
-				(ambassador setCycle: End self)
+				(ambassador setCycle: EndLoop self)
 				(westGuard
 					view: 287
 					loop: 3
 					cel: 0
 					cycleSpeed: 5
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4)
@@ -667,13 +714,18 @@
 					(client setScript: 0)
 				)
 			)
-			((Said 'address/man,ambassador') (if (< state 5) (Print 87 35) else (Print 87 36)))
+			((Said 'address/man,ambassador')
+				(if (< state 5)
+					(Print 87 35)
+				else
+					(Print 87 36)
+				)
+			)
 		)
 	)
 )
 
 (instance leaveRoomScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -687,13 +739,14 @@
 					setMotion: Follow ego
 				)
 			)
-			(1 (curRoom newRoom: 86))
+			(1
+				(curRoom newRoom: 86)
+			)
 		)
 	)
 )
 
 (instance tookTooLongScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -703,20 +756,22 @@
 					view: 987
 					setLoop: 0
 					setCel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(1
 				(Print 87 38 #at 10 10)
-				(backGuard setCycle: CT 4 1 self)
+				(backGuard setCycle: CycleTo 4 1 self)
 			)
 			(2
-				(ego view: 687 setLoop: 3 setCel: 0 setCycle: End)
-				(backGuard setCycle: End)
+				(ego view: 687 setLoop: 3 setCel: 0 setCycle: EndLoop)
+				(backGuard setCycle: EndLoop)
 				(machineGun play:)
 				(= seconds 3)
 			)
-			(3 (EgoDead 970 1 0 87 39))
+			(3
+				(EgoDead 970 1 0 87 39)
+			)
 		)
 	)
 )
@@ -737,16 +792,28 @@
 			((super handleEvent: event))
 			((Said 'look[<at]/platter,food')
 				(cond 
-					(local1 (Print 87 40))
-					((cast contains: foodLidView) (Print 87 41))
-					(else (Print 87 42))
+					(gotGun
+						(Print 87 40)
+					)
+					((cast contains: foodLidView)
+						(Print 87 41)
+					)
+					(else
+						(Print 87 42)
+					)
 				)
 			)
 			((Said 'get/gun')
 				(cond 
-					(local1 (AlreadyTook))
-					((not (cast contains: foodLidView)) (Print 87 43))
-					(else (CantDo))
+					(gotGun
+						(AlreadyTook)
+					)
+					((not (cast contains: foodLidView))
+						(Print 87 43)
+					)
+					(else
+						(CantDo)
+					)
 				)
 			)
 		)
@@ -769,7 +836,7 @@
 	)
 )
 
-(instance westGuard of Act
+(instance westGuard of Actor
 	(properties
 		y 178
 		x 106
@@ -789,10 +856,12 @@
 						else
 							(Print 87 45)
 							(Print 87 46 #icon 387 0 0)
-							(SolvePuzzle tunisia 413 8 3)
+							(SolvePuzzle tunisia #pointFlag $0008 3)
 						)
 					)
-					((Said 'address') (self cue:))
+					((Said 'address')
+						(self cue:)
+					)
 				)
 			)
 			((Said 'look/ring')
@@ -802,12 +871,14 @@
 					(Print 87 47 #icon 387 0 0)
 				)
 			)
-			((Said 'get/ring') (DontNeedTo))
+			((Said 'get/ring')
+				(DontNeedTo)
+			)
 		)
 	)
 )
 
-(instance backGuard of Act
+(instance backGuard of Actor
 	(properties
 		y 110
 		x 160
@@ -819,13 +890,18 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(and (Said '[/guard,man]>') (Said 'look[<at]')) (if (== view 487) (Print 87 44) else (Print 87 45)))
+			((and (Said '[/guard,man]>') (Said 'look[<at]'))
+				(if (== view 487)
+					(Print 87 44)
+				else
+					(Print 87 45)
+				)
+			)
 		)
 	)
 )
 
-(instance ambassador of Act
+(instance ambassador of Actor
 	(properties
 		y 118
 		x 79
@@ -836,8 +912,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(and (Said '[/ambassador,man]>') (Said 'look[<at]')) (Print 87 48))
+			((and (Said '[/ambassador,man]>') (Said 'look[<at]'))
+				(Print 87 48)
+			)
 		)
 	)
 )
@@ -847,7 +924,7 @@
 		view 187
 		loop 3
 		cel 2
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (init)
@@ -862,7 +939,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'sit/chair') (DontNeedTo))
+			((Said 'sit/chair')
+				(DontNeedTo)
+			)
 		)
 	)
 )
@@ -874,7 +953,7 @@
 		view 187
 		loop 3
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -887,7 +966,9 @@
 					(ego setScript: setDownFoodScript)
 				)
 			)
-			((Said 'look[<at][/table]') (Print 87 50))
+			((Said 'look[<at][/table]')
+				(Print 87 50)
+			)
 		)
 	)
 )
@@ -907,7 +988,9 @@
 			((Said '[/wall,painting,mosaic]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 87 51))
+					((Said 'look[<at]')
+						(Print 87 51)
+					)
 				)
 			)
 		)

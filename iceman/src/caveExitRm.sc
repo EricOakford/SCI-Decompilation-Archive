@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 68)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Motion)
 (use Game)
@@ -9,7 +9,7 @@
 	caveExitRm 0
 )
 
-(instance caveExitRm of Rm
+(instance caveExitRm of Room
 	(properties
 		picture 68
 	)

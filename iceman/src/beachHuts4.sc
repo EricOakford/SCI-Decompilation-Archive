@@ -306,7 +306,7 @@
 						setLoop: 0
 						setCycle: EndLoop self
 					)
-					(SolvePuzzle tahiti 413 8 1)
+					(SolvePuzzle tahiti #pointFlag $0008 1)
 				)
 			)
 			((Said 'affirmative')

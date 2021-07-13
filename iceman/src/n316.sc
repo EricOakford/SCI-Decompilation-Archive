@@ -18,7 +18,7 @@
 
 (procedure (IsInvItemInRoom where what &tmp i)
 	(return
-		(if ((= i (inventory at: where)) ownedBy: where)
+		(if ((= i (inventory at: what)) ownedBy: where)
 			i
 		else
 			0

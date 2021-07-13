@@ -133,7 +133,7 @@
 		(self setPri: 15)
 		(&= signal (~ staticView))
 		(keyDownHandler add: self)
-		(SolvePuzzle tahiti 413 4 1)
+		(SolvePuzzle tahiti #pointFlag $0004 1)
 	)
 	
 	(method (doit)
@@ -372,7 +372,7 @@
 		(if
 			(and
 				(& (tahiti flags?) fReadNewspaper)
-				(not (& (tahiti flags?) $0100))
+				(not (& (tahiti flags?) fMessageFromBraxton))
 			)
 			(= clerkTimer (Random 50 100))
 		)
@@ -414,7 +414,7 @@
 							(1 (Print 10 18))
 							(2 (Print 10 19))
 						)
-						(SolvePuzzle tahiti 413 32 1)
+						(SolvePuzzle tahiti #pointFlag $0020 1)
 					)
 					((Said 'thank')
 						(Print 10 20)
@@ -496,15 +496,14 @@
 					(
 						(GoToIfSaid self event self 20
 							'get,get,rent,buy,need,reserve,adjust,give,return,drop'
-							10
-							7
+							10 7
 						)
 					)
 					((Said 'get,get,rent,buy,need,reserve')
 						(if (IsInvItemInRoom curRoomNum iTahitiKey)
 							(self setScript: keyScript 0 0)
 							(ego get: iTahitiKey)
-							(SolvePuzzle tahiti 413 2 1)
+							(SolvePuzzle tahiti #pointFlag $0002 1)
 						else
 							(AlreadyTook)
 						)

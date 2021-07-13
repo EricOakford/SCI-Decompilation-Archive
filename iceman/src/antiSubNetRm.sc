@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 53)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use scubaRg)
@@ -18,7 +18,7 @@
 	local0
 	local1
 )
-(instance antiSubNetRm of Rm
+(instance antiSubNetRm of Room
 	(properties
 		picture 53
 		north 45
@@ -72,8 +72,14 @@
 	
 	(method (doit)
 		(cond 
-			((and local0 (< (ego y?) 40)) (= local0 0) (theGame changeScore: 1))
-			((and local1 (< 60 (ego y?))) (= local1 0) (theGame changeScore: -11))
+			((and local0 (< (ego y?) 40))
+				(= local0 0)
+				(theGame changeScore: 1)
+			)
+			((and local1 (< 60 (ego y?)))
+				(= local1 0)
+				(theGame changeScore: -11)
+			)
 			(
 				(and
 					(< 45 (ego y?))
@@ -101,19 +107,31 @@
 			((super handleEvent: event))
 			((Said '(turn<on),use,activate/device')
 				(cond 
-					((not (ego has: 8)) (Print 53 0))
-					((or local0 local1) (Print 53 1))
+					((not (ego has: iDevice))
+						(Print 53 0)
+					)
+					((or local0 local1)
+						(Print 53 1)
+					)
 					(else
 						(Print 53 2)
-						(if (< 54 (ego y?)) (= local0 1) else (= local1 1))
+						(if (< 54 (ego y?))
+							(= local0 1)
+						else
+							(= local1 1)
+						)
 					)
 				)
 			)
 			((Said '(turn<off),cease/device')
 				(cond 
 					((or local0 local1) (== local0 0) (== local1 0))
-					((ego has: 8) (Print 53 3))
-					(else (Print 53 4))
+					((ego has: iDevice)
+						(Print 53 3)
+					)
+					(else
+						(Print 53 4)
+					)
 				)
 			)
 		)
@@ -129,7 +147,10 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look<through/net') (Print 53 5) (Print 53 6))
+			((Said 'look<through/net')
+				(Print 53 5)
+				(Print 53 6)
+			)
 		)
 	)
 )
@@ -143,13 +164,14 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look<through/net') (Print 53 7))
+			((Said 'look<through/net')
+				(Print 53 7)
+			)
 		)
 	)
 )
 
 (instance exitCave of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -157,7 +179,7 @@
 				(ego setMotion: MoveTo 100 33 self)
 			)
 			(1
-				(ego illegalBits: -32768 setMotion: MoveTo 280 -5 self)
+				(ego illegalBits: cWHITE setMotion: MoveTo 280 -5 self)
 			)
 			(2
 				(HandsOn)
@@ -168,8 +190,7 @@
 )
 
 (instance enterCave of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (antiSubNetRm newRoom: 68))
@@ -178,7 +199,6 @@
 )
 
 (instance hitNet of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

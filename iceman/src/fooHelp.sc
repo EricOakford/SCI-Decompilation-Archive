@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 88)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use EgoDead)
@@ -36,24 +36,24 @@
 	local16
 	[local17 12]
 )
-(instance rm088 of Rm
+(instance rm088 of Room
 	(properties
 		picture 88
 		picAngle 80
 	)
 	
 	(method (init)
-		(Load rsVIEW 88)
-		(Load rsVIEW 188)
-		(Load rsVIEW 288)
-		(Load rsVIEW 388)
-		(Load rsVIEW 488)
-		(Load rsVIEW 988)
-		(Load rsSOUND 69)
-		(Load rsSOUND 78)
-		(Load rsSOUND 79)
-		(Load rsSOUND 20)
-		(Load rsPIC 99)
+		(Load VIEW 88)
+		(Load VIEW 188)
+		(Load VIEW 288)
+		(Load VIEW 388)
+		(Load VIEW 488)
+		(Load VIEW 988)
+		(Load SOUND 69)
+		(Load SOUND 78)
+		(Load SOUND 79)
+		(Load SOUND 20)
+		(Load PICTURE 99)
 		(super init:)
 		(theMeter init:)
 		(theNeedle init:)
@@ -63,12 +63,11 @@
 		(theJeep init:)
 		(self setScript: VanScript)
 		(aControls setPri: 15 init:)
-		(User canInput: 0 canControl: 1 blocks: 1)
+		(User canInput: FALSE canControl: TRUE blocks: 1)
 	)
 )
 
 (instance VanScript of Script
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
@@ -144,9 +143,24 @@
 			(
 			(and (& (theVan onControl:) $2000) (== local1 0))
 				(cond 
-					((< (VanScript state?) 6) (= local2 280) (= local3 176) (= local9 1) (= local4 3))
-					((< (VanScript state?) 16) (= local2 227) (= local3 107) (= local9 3) (= local4 4))
-					((< (VanScript state?) 23) (= local2 192) (= local3 61) (= local9 5) (= local4 5))
+					((< (VanScript state?) 6)
+						(= local2 280)
+						(= local3 176)
+						(= local9 1)
+						(= local4 3)
+					)
+					((< (VanScript state?) 16)
+						(= local2 227)
+						(= local3 107)
+						(= local9 3)
+						(= local4 4)
+					)
+					((< (VanScript state?) 23)
+						(= local2 192)
+						(= local3 61)
+						(= local9 5)
+						(= local4 5)
+					)
 				)
 				(if (> local0 (Random 4 7))
 					(= local1 16)
@@ -223,7 +237,7 @@
 				(if howFast (= cycles theCycles) else (= cycles 1))
 			)
 			(7
-				(theVan posn: 263 162 setLoop: 1 setCycle: Fwd)
+				(theVan posn: 263 162 setLoop: 1 setCycle: Forward)
 				(if howFast (= cycles theCycles) else (= cycles 1))
 			)
 			(8
@@ -248,7 +262,7 @@
 				(theVan
 					posn: 96 124
 					setLoop: 4
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: local0 local6
 					setMotion: MoveTo 221 109 self
 				)
@@ -272,7 +286,7 @@
 			(16
 				(theVan
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 109 82 self
 				)
 				(= local1 0)
@@ -296,7 +310,7 @@
 					setStep: local0 local6
 					setMotion: MoveTo 187 60 self
 					setLoop: 6
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= local1 0)
 			)
@@ -317,7 +331,7 @@
 				(= local1 0)
 				(theVan
 					setLoop: 5
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 123 40 self
 				)
 			)
@@ -358,7 +372,7 @@
 					setLoop: 1
 					posn: 185 25
 					cycleSpeed: 3
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(31
@@ -375,7 +389,7 @@
 				(theChopper
 					setLoop: 4
 					setMotion: MoveTo 100 29 self
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 5 5
 					moveSpeed: 0
 				)
@@ -405,7 +419,7 @@
 					(theProp hide:)
 					(theGame changeScore: -10)
 				)
-				(curRoom drawPic: 99 8)
+				(curRoom drawPic: 99 DISSOLVE)
 				(= cycles 25)
 			)
 			(35 (curRoom newRoom: 90))
@@ -431,7 +445,7 @@
 				(theVan
 					setStep: local5 local5
 					setMotion: Jump
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 1
 					setPri: 1
 				)
@@ -455,7 +469,7 @@
 					setMotion: MoveTo (+ local2 5) (- local3 1)
 					setLoop: local9
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 0
 				)
 				(theJeep setScript: 0 setMotion: 0 setCel: 0)
@@ -466,14 +480,14 @@
 					view: 388
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					posn: (+ local2 5) (- local3 6)
 					setPri: 15
 				)
 				(theSong number: (SoundFX 20) loop: 1 play:)
 			)
 			(43
-				(theVan setLoop: (+ local9 1) setCycle: Fwd)
+				(theVan setLoop: (+ local9 1) setCycle: Forward)
 				(theProp dispose:)
 				(= cycles 10)
 			)
@@ -496,8 +510,8 @@
 			((super handleEvent: event))
 			(
 				(and
-					(== (event type?) evKEYBOARD)
-					(== (event message?) KEY_F8)
+					(== (event type?) keyDown)
+					(== (event message?) `#8)
 				)
 				(theSong dispose:)
 				(theJeep setScript: 0 setMotion: 0)
@@ -506,22 +520,26 @@
 				(VanScript changeState: 34)
 			)
 			(
-			(and (== (event type?) evJOYSTICK) (== local1 0))
+			(and (== (event type?) direction) (== local1 0))
 				(switch (event message?)
-					(JOY_UP
+					(dirN
 						(++ local0)
 						(++ local6)
 						(theVan setStep: local0 local6)
 						(if (> theCycles 2) (-- theCycles))
 					)
-					(JOY_DOWN
+					(dirS
 						(if (> local6 1) (-- local6))
 						(if (> local0 1) (-- local0))
 						(++ theCycles)
 						(theVan setStep: local0 local6)
 					)
-					(JOY_RIGHT (= local13 14))
-					(JOY_LEFT (= local13 15))
+					(dirE
+						(= local13 14)
+					)
+					(dirW
+						(= local13 15)
+					)
 				)
 				(switch local0
 					(1 (= local7 114))
@@ -542,8 +560,7 @@
 )
 
 (instance JeepScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0)
@@ -551,7 +568,7 @@
 				(theJeep
 					view: 188
 					setStep: (Random 4 6) (Random 3 5)
-					setCycle: Fwd
+					setCycle: Forward
 					moveSpeed: 0
 					setMotion: MoveTo 127 191 self
 				)
@@ -583,7 +600,7 @@
 				(theJeep
 					setLoop: 2
 					posn: 271 163
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: (Random 5 6) (Random 4 5)
 					setMotion: MoveTo 91 137 self
 				)
@@ -609,7 +626,7 @@
 			(11
 				(theJeep
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: (Random 4 6) (Random 3 5)
 					setMotion: MoveTo 221 108 self
 				)
@@ -631,7 +648,7 @@
 			(15
 				(theJeep
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: (Random 4 6) (Random 3 5)
 					setMotion: MoveTo 110 84 self
 				)
@@ -657,7 +674,7 @@
 			(19
 				(theJeep
 					setLoop: 5
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: (Random 4 6) (Random 3 5)
 					setMotion: MoveTo 183 62 self
 				)
@@ -679,7 +696,7 @@
 			(23
 				(theJeep
 					setLoop: 4
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 2 2
 					setMotion: MoveTo 128 41 self
 				)
@@ -697,7 +714,7 @@
 				(= cycles 4)
 			)
 			(27
-				(theJeep view: 488 setLoop: 7 setCycle: Fwd posn: 128 32)
+				(theJeep view: 488 setLoop: 7 setCycle: Forward posn: 128 32)
 			)
 			(28 (theJeep hide:))
 		)
@@ -717,7 +734,7 @@
 	)
 )
 
-(instance theJeep of Act
+(instance theJeep of Actor
 	(properties
 		y 229
 		x -20
@@ -749,7 +766,7 @@
 	)
 )
 
-(instance theNeedle of Act
+(instance theNeedle of Actor
 	(properties
 		y 189
 		x 133
@@ -771,7 +788,7 @@
 	)
 )
 
-(instance theChopper of Act
+(instance theChopper of Actor
 	(properties
 		view 488
 	)
@@ -784,12 +801,12 @@
 			posn: 211 37
 			illegalBits: 0
 			setLoop: 2
-			setCycle: Fwd
+			setCycle: Forward
 		)
 	)
 )
 
-(instance theVan of Act
+(instance theVan of Actor
 	(properties
 		y 227
 		x -7
@@ -803,7 +820,7 @@
 			ignoreActors:
 			illegalBits: 0
 			setLoop: 2
-			setCycle: Fwd
+			setCycle: Forward
 			setScript: VanScript
 		)
 	)
@@ -815,7 +832,7 @@
 		x 41
 		view 488
 		loop 9
-		signal $4000
+		signal ignrAct
 	)
 )
 

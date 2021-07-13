@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 23)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use InitAllFeatures)
@@ -19,31 +19,31 @@
 )
 
 (local
-	local0
+	salutedFlag
 	local1
 	local2
-	local3
+	officerState
 	local4
 	[local5 11]
 )
-(procedure (localproc_02d2 param1)
-	(return (== (param1 onControl: 1) 16384))
+(procedure (OnPier obj)
+	(return (== (obj onControl: origin) cYELLOW))
 )
 
-(instance pierRm of Rm
+(instance pierRm of Room
 	(properties
 		picture 23
 	)
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 123 23 423 23 523)
+		(LoadMany VIEW 123 23 423 23 523)
 		(ego
 			view: 123
 			loop: 0
-			ignoreControl: 16384
+			ignoreControl: cYELLOW
 			ignoreControl: 16
-			observeControl: -32768
+			observeControl: cWHITE
 			posn: 20 145
 			init:
 			setScript: egoControlScript
@@ -70,14 +70,24 @@
 			((super handleEvent: event))
 			((Said 'look>')
 				(cond 
-					(
-					(Said '[<around,at][/room,sub,sub,boat,blackhawk]') (Print 23 0))
-					((Said '<up') (SeeNothing))
-					((Said '<down') (Print 23 1))
-					((Said '<man,officer') (Print 23 2))
-					(
-					(Said '/entrance,bridge,walkway,deck,pier,gangplank') (Print 23 3))
-					((Said '/crane') (Print 23 4))
+					((Said '[<around,at][/room,sub,sub,boat,blackhawk]')
+						(Print 23 0)
+					)
+					((Said '<up')
+						(SeeNothing)
+					)
+					((Said '<down')
+						(Print 23 1)
+					)
+					((Said '<man,officer')
+						(Print 23 2)
+					)
+					((Said '/entrance,bridge,walkway,deck,pier,gangplank')
+						(Print 23 3)
+					)
+					((Said '/crane')
+						(Print 23 4)
+					)
 				)
 			)
 			(
@@ -85,22 +95,24 @@
 					(Said 'come<aboard<ask<permission<to')
 					(Said 'ask/permission/board')
 				)
-				(if (& (ego onControl:) $4000)
+				(if (& (ego onControl:) cYELLOW)
 					(NotClose)
 				else
-					(= local3 2)
+					(= officerState 2)
 					(curRoom setScript: comeAboardScript)
 				)
 			)
 			((Said 'address[/man]')
-				(if (& (ego onControl:) $4000)
+				(if (& (ego onControl:) cYELLOW)
 					(NotClose)
 				else
-					(++ local3)
+					(++ officerState)
 					(curRoom setScript: comeAboardScript)
 				)
 			)
-			((Said 'board/boat,sub') (Print 23 5))
+			((Said 'board/boat,sub')
+				(Print 23 5)
+			)
 		)
 	)
 )
@@ -113,17 +125,15 @@
 )
 
 (instance egoControlScript of Script
-	(properties)
 	
 	(method (doit)
-		(if
-		(or (== (ego onControl: 1) 16) (Said 'walk/plank'))
+		(if (or (== (ego onControl: origin) cRED) (Said 'walk/plank'))
 			(ego setMotion: 0 setScript: walkUpPlankScript)
 		)
 	)
 )
 
-(instance officer of Act
+(instance officer of Actor
 	(properties
 		y 115
 		x 156
@@ -136,10 +146,14 @@
 			((super handleEvent: event))
 			((Said '[/officer,man]>')
 				(cond 
-					((Said 'look[<at]') (Print 23 2))
+					((Said 'look[<at]')
+						(Print 23 2)
+					)
 					((Said 'salute')
 						(cond 
-							(local1 (Print 23 6))
+							(local1
+								(Print 23 6)
+							)
 							(
 								(or
 									(> (ego distanceTo: self) 15)
@@ -148,37 +162,39 @@
 								(Print 23 7)
 							)
 							(else
-								(if (== (++ local4) 2) (++ local4))
+								(if (== (++ local4) 2)
+									(++ local4)
+								)
 								(Print 23 8 #at -1 120 #dispose)
-								(User canInput: 0)
+								(User canInput: FALSE)
 								(ego setScript: saluteOfficerScript)
 							)
 						)
 					)
 				)
 			)
-			((localproc_02d2 ego))
+			((OnPier ego))
 			((Said 'come<aboard<ask<permission<to')
-				(if (& (ego onControl:) $4000)
+				(if (& (ego onControl:) cYELLOW)
 					(NotClose)
 				else
-					(= local3 2)
+					(= officerState 2)
 					(curRoom setScript: comeAboardScript)
 				)
 			)
 			((Said 'show/order')
-				(if (& (ego onControl:) $4000)
+				(if (& (ego onControl:) cYELLOW)
 					(NotClose)
 				else
-					(++ local3)
+					(++ officerState)
 					(curRoom setScript: comeAboardScript)
 				)
 			)
 			((Said 'address[/man]')
-				(if (& (ego onControl:) $4000)
+				(if (& (ego onControl:) cYELLOW)
 					(NotClose)
 				else
-					(++ local3)
+					(++ officerState)
 					(curRoom setScript: comeAboardScript)
 				)
 			)
@@ -187,7 +203,6 @@
 )
 
 (instance walkUpPlankScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -203,14 +218,13 @@
 				(ego setMotion: MoveTo 161 116 self)
 			)
 			(2
-				(User canInput: 1 canControl: 0)
+				(User canInput: TRUE canControl: FALSE)
 			)
 		)
 	)
 )
 
 (instance comeAboardScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -220,11 +234,11 @@
 				((ego looper?) doit: ego 0 self)
 			)
 			(1
-				(if (> local3 1)
+				(if (> officerState 1)
 					(= cycles 3)
 				else
 					(Print 23 9)
-					(User canInput: 1)
+					(User canInput: TRUE)
 				)
 			)
 			(2
@@ -261,8 +275,7 @@
 )
 
 (instance saluteFlagScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -275,22 +288,22 @@
 					setLoop: 1
 					setCel: 0
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(Print 23 18 #at -1 120 #dispose)
 				(= seconds 3)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(cls)
 				(ego view: 123 cycleSpeed: 0 setLoop: 0 setCel: 16)
-				(= local0 1)
+				(= salutedFlag TRUE)
 				(= cycles 2)
 			)
 			(5
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(self dispose:)
 			)
 		)
@@ -298,8 +311,7 @@
 )
 
 (instance saluteOfficerScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -312,13 +324,13 @@
 					setLoop: 2
 					setCel: 0
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= seconds 3))
 			(3
 				(cls)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 				(= local1 1)
 			)
 			(4
@@ -329,15 +341,14 @@
 					cel: 2
 					setCycle: Walk
 				)
-				(User canInput: 1)
+				(User canInput: TRUE)
 			)
 		)
 	)
 )
 
 (instance downTheHatchScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -360,7 +371,7 @@
 					loop: 4
 					setPri: 10
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (ego hide:) (= cycles 5))
@@ -383,7 +394,9 @@
 	)
 	
 	(method (handleEvent)
-		(if (Said 'look[<at]/wave') (Print 23 19))
+		(if (Said 'look[<at]/wave')
+			(Print 23 19)
+		)
 	)
 	
 	(method (addToPic)
@@ -404,7 +417,9 @@
 	)
 	
 	(method (handleEvent)
-		(if (Said 'look[<at]/wave') (Print 23 19))
+		(if (Said 'look[<at]/wave')
+			(Print 23 19)
+		)
 	)
 )
 
@@ -418,8 +433,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(wave cel: 0 setCycle: End self)
-				(wave2 cel: 0 setCycle: End self)
+				(wave cel: 0 setCycle: EndLoop self)
+				(wave2 cel: 0 setCycle: EndLoop self)
 			)
 			(1)
 			(2
@@ -443,7 +458,7 @@
 	
 	(method (init)
 		(super init:)
-		(self setCycle: End self isExtra: 1)
+		(self setCycle: EndLoop self isExtra: TRUE)
 	)
 	
 	(method (addToPic)
@@ -452,7 +467,7 @@
 	)
 	
 	(method (cue)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 		(flagFeat nsLeft: nsLeft)
 		(flagFeat nsRight: nsRight)
 		(flagFeat nsTop: nsTop)
@@ -470,13 +485,19 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/man,officer') (Print 23 20))
+			((Said 'look[<at]/man,officer')
+				(Print 23 20)
+			)
 			((Said '[/flag,ensign]>')
 				(cond 
-					((Said 'look[<at]') (Print 23 21))
+					((Said 'look[<at]')
+						(Print 23 21)
+					)
 					((Said 'salute')
 						(cond 
-							(local0 (Print 23 6))
+							(salutedFlag
+								(Print 23 6)
+							)
 							(
 								(or
 									(> (ego distanceTo: self) 130)
@@ -486,7 +507,7 @@
 							)
 							(else
 								(++ local4)
-								(User canInput: 0)
+								(User canInput: FALSE)
 								(ego setScript: saluteFlagScript)
 							)
 						)
@@ -511,16 +532,22 @@
 			((super handleEvent: event))
 			((Said '[/hatch]>')
 				(cond 
-					((Said 'look[<at]') (Print 23 23))
-					((Said 'open,close') (Print 23 24))
-					((or (Said 'climb<down') (Said 'down[<the]')) (ego setScript: downTheHatchScript))
+					((Said 'look[<at]')
+						(Print 23 23)
+					)
+					((Said 'open,close')
+						(Print 23 24)
+					)
+					((or (Said 'climb<down') (Said 'down[<the]'))
+						(ego setScript: downTheHatchScript)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance bird of Act
+(instance bird of Actor
 	(properties
 		y 20
 		x 100
@@ -531,7 +558,7 @@
 		(super init:)
 		(self
 			setMotion: Wander 100
-			setCycle: Fwd
+			setCycle: Forward
 			x: (Random 50 270)
 			setLoop: 5
 			setPri: 0
@@ -541,7 +568,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look/bird') (Print 23 25))
+			((Said 'look/bird')
+				(Print 23 25)
+			)
 		)
 	)
 	

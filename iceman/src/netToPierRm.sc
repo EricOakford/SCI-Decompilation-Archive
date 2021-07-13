@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 46)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -10,7 +10,7 @@
 	netToPierRm 0
 )
 
-(instance netToPierRm of Rm
+(instance netToPierRm of Room
 	(properties
 		picture 54
 		north 71
@@ -21,12 +21,12 @@
 	
 	(method (init)
 		(super init:)
-		(self setRegions: 305)
+		(self setRegions: rgScuba)
 		(ego init:)
 		(switch prevRoomNum
 			(45
 				(ego
-					illegalBits: -32768
+					illegalBits: cWHITE
 					loop: 0
 					posn: 10 (ego y?)
 					setMotion: MoveTo 325 (ego y?)
@@ -34,7 +34,7 @@
 			)
 			(else 
 				(ego
-					illegalBits: -32768
+					illegalBits: cWHITE
 					loop: 1
 					posn: 285 100
 					setMotion: MoveTo 150 100
@@ -46,9 +46,17 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(Said 'bind,conceal,adjust,drop,park/vehicle,diver') (if (ego has: 6) (Print 46 0) else (Print 46 1)))
-			((Said 'look') (Print 46 2) (Print 46 3))
+			((Said 'bind,conceal,adjust,drop,park/vehicle,diver')
+				(if (ego has: iDiver)
+					(Print 46 0)
+				else
+					(Print 46 1)
+				)
+			)
+			((Said 'look')
+				(Print 46 2)
+				(Print 46 3)
+			)
 		)
 	)
 )

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 44)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use NormalEgo)
 (use Motion)
@@ -13,15 +13,15 @@
 )
 
 (local
-	local0
+	saveBits
 )
-(instance inPlane of Rm
+(instance inPlane of Room
 	(properties
 		picture 44
 	)
 	
 	(method (init)
-		(Load rsVIEW 44)
+		(Load VIEW 44)
 		(super init:)
 		(HandsOff)
 		(globalSound
@@ -34,23 +34,23 @@
 		(addToPics add: head doit:)
 		(cloud1
 			init:
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setScript: (Clone cloudScript)
 		)
 		(cloud2
 			init:
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setScript: (Clone cloudScript)
 		)
-		(if (== howFast 2)
+		(if (== howFast fast)
 			(cloud3
 				init:
-				ignoreActors: 1
+				ignoreActors: TRUE
 				setScript: (Clone cloudScript)
 			)
 			(cloud4
 				init:
-				ignoreActors: 1
+				ignoreActors: TRUE
 				setScript: (Clone cloudScript)
 			)
 		)
@@ -66,8 +66,7 @@
 )
 
 (instance flyToWashingtonScript of Script
-	(properties)
-	
+
 	(method (init)
 		(super init: &rest)
 		(keyDownHandler add: self)
@@ -82,60 +81,39 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0
-					(Display
-						44
-						1
-						dsALIGN
-						0
-						dsCOORD
-						20
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(= saveBits
+					(Display 44 1
+						p_mode teJustLeft
+						p_at 20 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(1
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						2
-						dsALIGN
-						0
-						dsCOORD
-						20
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 2
+						p_mode teJustLeft
+						p_at 20 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(2
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						3
-						dsALIGN
-						0
-						dsCOORD
-						20
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 3
+						p_mode teJustLeft
+						p_at 20 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
@@ -155,17 +133,19 @@
 	(method (handleEvent event)
 		(if
 			(and
-				(== (event message?) KEY_RETURN)
-				(== (event type?) evKEYBOARD)
+				(== (event message?) ENTER)
+				(== (event type?) keyDown)
 			)
-			(if local0 (Display 44 0 108 local0) (self cue:))
-			(event claimed: 1)
+			(if saveBits
+				(Display 44 0 p_restore saveBits)
+				(self cue:)
+			)
+			(event claimed: TRUE)
 		)
 	)
 )
 
 (instance flyToHawaiiScript of Script
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
@@ -181,170 +161,114 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0
-					(Display
-						44
-						4
-						dsALIGN
-						0
-						dsCOORD
-						20
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(= saveBits
+					(Display 44 4
+						p_mode teJustLeft
+						p_at 20 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(1
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						5
-						dsALIGN
-						0
-						dsCOORD
-						10
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 5
+						p_mode teJustLeft
+						p_at 10 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(2
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						6
-						dsALIGN
-						0
-						dsCOORD
-						10
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 6
+						p_mode teJustLeft
+						p_at 10 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(3
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						7
-						dsALIGN
-						0
-						dsCOORD
-						30
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 7
+						p_mode teJustLeft
+						p_at 30 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(4
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						8
-						dsALIGN
-						0
-						dsCOORD
-						40
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 8
+						p_mode teJustLeft
+						p_at 40 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(5
-				(Display 44 0 108 local0)
-				(if (ego has: 0)
+				(Display 44 0 p_restore saveBits)
+				(if (ego has: iEnvelope)
 					(client setScript: ordersScript)
 				else
-					(= local0
-						(Display
-							44
-							9
-							dsALIGN
-							0
-							dsCOORD
-							40
-							10
-							dsWIDTH
-							300
-							dsCOLOR
-							15
-							dsSAVEPIXELS
+					(= saveBits
+						(Display 44 9
+							p_mode teJustLeft
+							p_at 40 10
+							p_width 300
+							p_color vWHITE
+							p_save
 						)
 					)
 				)
 				(= seconds 10)
 			)
 			(6
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						10
-						dsALIGN
-						0
-						dsCOORD
-						40
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 10
+						p_mode teJustLeft
+						p_at 40 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(7
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						11
-						dsALIGN
-						0
-						dsCOORD
-						40
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 11
+						p_mode teJustLeft
+						p_at 40 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(8
-				(Display 44 0 108 local0)
+				(Display 44 0 p_restore saveBits)
 				(HandsOn)
 				(NormalEgo 204)
 				(curRoom newRoom: 22)
@@ -361,17 +285,19 @@
 	(method (handleEvent event)
 		(if
 			(and
-				(== (event message?) KEY_RETURN)
-				(== (event type?) evKEYBOARD)
+				(== (event message?) ENTER)
+				(== (event type?) keyDown)
 			)
-			(if local0 (Display 44 0 108 local0) (self cue:))
-			(event claimed: 1)
+			(if saveBits
+				(Display 44 0 p_restore saveBits)
+				(self cue:)
+			)
+			(event claimed: TRUE)
 		)
 	)
 )
 
 (instance ordersScript of Script
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
@@ -395,20 +321,13 @@
 				)
 			)
 			(1
-				(= local0
-					(Display
-						44
-						12
-						dsALIGN
-						0
-						dsCOORD
-						40
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(= saveBits
+					(Display 44 12
+						p_mode teJustLeft
+						p_at 40 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
@@ -417,47 +336,33 @@
 				(hand setMotion: MoveTo 169 172 self)
 			)
 			(3
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						13
-						dsALIGN
-						0
-						dsCOORD
-						40
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 13
+						p_mode teJustLeft
+						p_at 40 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(4
-				(Display 44 0 108 local0)
-				(= local0
-					(Display
-						44
-						11
-						dsALIGN
-						0
-						dsCOORD
-						40
-						10
-						dsWIDTH
-						300
-						dsCOLOR
-						15
-						dsSAVEPIXELS
+				(Display 44 0 p_restore saveBits)
+				(= saveBits
+					(Display 44 11
+						p_mode teJustLeft
+						p_at 40 10
+						p_width 300
+						p_color vWHITE
+						p_save
 					)
 				)
 				(= seconds 10)
 			)
 			(5
-				(Display 44 0 108 local0)
+				(Display 44 0 p_restore saveBits)
 				(HandsOn)
 				(NormalEgo 204)
 				(curRoom newRoom: 22)
@@ -472,17 +377,18 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evKEYBOARD) (event claimed?))
+		(if (or (!= (event type?) keyDown) (event claimed?))
 			(return)
 		)
-		(if local0 (Display 44 0 108 local0) (self cue:))
-		(event claimed: 1)
+		(if saveBits
+			(Display 44 0 p_restore saveBits)
+			(self cue:)
+		)
+		(event claimed: TRUE)
 	)
 )
 
 (instance cloudScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0 temp1 temp2)
 		(switch (= state newState)
@@ -524,7 +430,7 @@
 	)
 )
 
-(instance head of PV
+(instance head of PicView
 	(properties
 		y 189
 		x 110
@@ -533,7 +439,7 @@
 	)
 )
 
-(instance hand of Act
+(instance hand of Actor
 	(properties
 		y 172
 		x 169
@@ -542,25 +448,25 @@
 	)
 )
 
-(instance cloud1 of Act
+(instance cloud1 of Actor
 	(properties
 		view 44
 	)
 )
 
-(instance cloud2 of Act
+(instance cloud2 of Actor
 	(properties
 		view 44
 	)
 )
 
-(instance cloud3 of Act
+(instance cloud3 of Actor
 	(properties
 		view 44
 	)
 )
 
-(instance cloud4 of Act
+(instance cloud4 of Actor
 	(properties
 		view 44
 	)

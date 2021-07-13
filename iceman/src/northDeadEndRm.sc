@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 66)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Game)
 
@@ -8,7 +8,7 @@
 	northDeadEndRm 0
 )
 
-(instance northDeadEndRm of Rm
+(instance northDeadEndRm of Room
 	(properties
 		picture 66
 	)

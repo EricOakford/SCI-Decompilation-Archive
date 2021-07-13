@@ -582,7 +582,7 @@
 				(HandsOff)
 				(ego setCycle: BegLoop self)
 				(proc11_2 0)
-				(SolvePuzzle tahiti 413 64 7)
+				(SolvePuzzle tahiti #pointFlag $0040 7)
 				(agentHuff
 					setPri: (- (agentHuff priority?) 1)
 					setLoop: 1

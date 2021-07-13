@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 36)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Game)
@@ -9,7 +9,7 @@
 	passagewayRm2 0
 )
 
-(instance passagewayRm2 of Rm
+(instance passagewayRm2 of Room
 	(properties
 		picture 36
 		east 34
@@ -41,14 +41,23 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,scene]') (Print 36 0) (Print 36 1))
-			((Said 'look/reactor') (Print 36 2))
-			((Said 'get/reactor') (Print 36 3))
+			((Said 'look[<at,around][/room,scene]')
+				(Print 36 0)
+				(Print 36 1)
+			)
+			((Said 'look/reactor')
+				(Print 36 2)
+			)
+			((Said 'get/reactor')
+				(Print 36 3)
+			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (> (ego y?) 80) (= newRoomNumber 35))
-		(super newRoom: newRoomNumber)
+	(method (newRoom nRoom)
+		(if (> (ego y?) 80)
+			(= nRoom 35)
+		)
+		(super newRoom: nRoom)
 	)
 )

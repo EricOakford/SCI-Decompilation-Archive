@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 27)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use subMarine)
@@ -33,7 +33,7 @@
 	local1
 	submarineRoll
 	submarinePitch_2
-	local4
+	saveSpeed
 	local5
 	[local6 6] = [5 0 5 20 40 60]
 )
@@ -123,14 +123,19 @@
 			)
 			(= local1 0)
 		)
-		(
-		(not (OneOf ((subMarine script?) state?) 14 9 5)) (Print 27 7))
-		((== ((subMarine script?) state?) 5) (EgoDead 7 0 0 27 12))
-		((not (& (Submarine flags?) $0100)) (Print 27 13))
+		((not (OneOf ((subMarine script?) state?) 14 9 5))
+			(Print 27 7)
+		)
+		((== ((subMarine script?) state?) 5)
+			(EgoDead 7 0 0 27 12)
+		)
+		((not (& (Submarine flags?) $0100))
+			(Print 27 13)
+		)
 	)
 )
 
-(instance controlPanel of Rm
+(instance controlPanel of Room
 	(properties
 		picture 27
 		horizon 1
@@ -142,7 +147,7 @@
 		(butSnd init:)
 		(tV init:)
 		(super init:)
-		(= local4 (theGame setSpeed: 1))
+		(= saveSpeed (theGame setSpeed: 1))
 		(wheel init: posn: (Submarine wheelX?))
 		(directionHandler add: wheel)
 		(HandsOn)
@@ -174,7 +179,7 @@
 		(sonarSwitch init:)
 		(if (& (Submarine flags?) $0080)
 			(sonarSwitch
-				handleEvent: ((= newEvent (Event new:)) type: 4 message: 22016)
+				handleEvent: ((= newEvent (Event new:)) type: keyDown message: $5600)
 			)
 			(newEvent dispose:)
 		)
@@ -184,7 +189,7 @@
 		(ebs init: hide:)
 		(positionBlip init:)
 		(compassNeedle init:)
-		(Load rsFONT 100)
+		(Load FONT 100)
 		(hatch1Ind
 			init:
 			setCel: (if (& (Submarine flags?) $0008) 3 else 4)
@@ -270,7 +275,7 @@
 		)
 		(if
 			(!=
-				(= theGLastM (>> (& (GetTime 1) $0fc0) $0006))
+				(= theGLastM (>> (& (GetTime SYSTIME1) $0fc0) $0006))
 				gLastM
 			)
 			(= gLastM theGLastM)
@@ -290,7 +295,7 @@
 			delete: mBut bBut sonarSwitch silentSwitch
 		)
 		(mouseDownHandler release: add: cast features)
-		(theGame setSpeed: local4)
+		(theGame setSpeed: saveSpeed)
 		(depthDG dispose:)
 		(speedDG dispose:)
 		(tempDG dispose:)
@@ -308,9 +313,14 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'stand,exit,exit,get[<up][/room,panel]') (DisposeScript 370) (self newRoom: 25))
-			(
-			(or (Said 'look/panel,control') (Said 'look[<around]')) (Print 27 1) (Print 27 2))
+			((Said 'stand,exit,exit,get[<up][/room,panel]')
+				(DisposeScript 370)
+				(self newRoom: 25)
+			)
+			((or (Said 'look/panel,control') (Said 'look[<around]'))
+				(Print 27 1)
+				(Print 27 2)
+			)
 			((Said 'close/hatch')
 				(if (& (Submarine flags?) $0008)
 					(Print 27 3)
@@ -325,7 +335,7 @@
 	
 	(method (replay)
 		(RedrawControlPanel)
-		(PicNotValid 1)
+		(PicNotValid TRUE)
 		(depthDG init: Submarine 352)
 		(speedDG init: Submarine 358)
 		(rpmDG init: Submarine 362)
@@ -338,9 +348,7 @@
 	)
 )
 
-(instance srForward of Fwd
-	(properties)
-)
+(instance srForward of Forward)
 
 (instance butSnd of Sound
 	(properties
@@ -427,7 +435,7 @@
 		loop 8
 		cel 6
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (dispose)
@@ -439,10 +447,10 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(switch (event message?)
-			(JOY_LEFT
+			(dirW
 				(self posn: (- x 16))
 			)
-			(JOY_RIGHT
+			(dirE
 				(self posn: (+ x 14))
 			)
 		)
@@ -476,7 +484,7 @@
 		x 210
 		view 27
 		priority 12
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (cue)
@@ -484,9 +492,7 @@
 	)
 )
 
-(instance sSEndLoop of End
-	(properties)
-)
+(instance sSEndLoop of EndLoop)
 
 (instance sonarSwitch of View
 	(properties
@@ -500,9 +506,8 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (MousedOn self event) (== (event message?) 22016))
-				(event claimed: 1)
+			((or (MousedOn self event) (== (event message?) $5600))
+				(event claimed: TRUE)
 				(butSnd number: (SoundFX 47) play:)
 				(if (== cel 3)
 					(self setCel: 4)
@@ -523,12 +528,9 @@
 	)
 )
 
-(instance swEndLoop of End
-	(properties)
-)
+(instance swEndLoop of EndLoop)
 
 (instance vSonarScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -547,17 +549,12 @@
 	)
 )
 
-(instance vS1MoveTo of MoveTo
-	(properties)
-)
+(instance vS1MoveTo of MoveTo)
 
-(instance vS2MoveTo of MoveTo
-	(properties)
-)
+(instance vS2MoveTo of MoveTo)
 
 (instance bottomScanCycle of Cycle
-	(properties)
-	
+
 	(method (doit)
 		(if
 			(>
@@ -572,8 +569,7 @@
 )
 
 (instance topScanCycle of Cycle
-	(properties)
-	
+
 	(method (doit)
 		(if
 			(>
@@ -604,8 +600,7 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (MousedOn self event) (== (event message?) 22272))
+			((or (MousedOn self event) (== (event message?) $5700))
 				(butSnd number: (SoundFX 47) play:)
 				(localproc_0e92 (!= cel 2))
 				(event claimed: 1)
@@ -614,15 +609,11 @@
 	)
 )
 
-(instance sVForward of Fwd
-	(properties)
-)
+(instance sVForward of Forward)
 
-(instance sVEndLoop of End
-	(properties)
-)
+(instance sVEndLoop of EndLoop)
 
-(instance vSLine1 of Act
+(instance vSLine1 of Actor
 	(properties
 		y 46
 		x 225
@@ -630,11 +621,11 @@
 		loop 2
 		cel 1
 		priority 13
-		signal $4811
+		signal (| ignrAct fixedLoop fixPriOn stopUpdOn)
 	)
 )
 
-(instance vSLine2 of Act
+(instance vSLine2 of Actor
 	(properties
 		y 46
 		x 225
@@ -642,11 +633,11 @@
 		loop 2
 		cel 1
 		priority 13
-		signal $4811
+		signal (| ignrAct fixedLoop fixPriOn stopUpdOn)
 	)
 )
 
-(instance scanPanelBlip of Act
+(instance scanPanelBlip of Actor
 	(properties
 		y 129
 		x 123
@@ -654,13 +645,12 @@
 		loop 5
 		cel 5
 		priority 12
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		illegalBits $0000
 	)
 )
 
 (instance scanLightsScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -675,9 +665,7 @@
 	)
 )
 
-(instance sLMoveTo of MoveTo
-	(properties)
-)
+(instance sLMoveTo of MoveTo)
 
 (instance mBut of View
 	(properties
@@ -686,20 +674,19 @@
 		view 27
 		loop 5
 		priority 11
-		signal $0111
+		signal (| staticView fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (MousedOn self event) (== (event message?) 21504))
-				(event claimed: 1)
+			((or (MousedOn self event) (== (event message?) $5400))
+				(event claimed: TRUE)
 				(butSnd number: (SoundFX 47) play:)
 				(if (== cel 0)
 					(self setCel: 1)
 					(if (fCPanel cel?)
-						(fCPanel setCycle: Beg fCPanel)
+						(fCPanel setCycle: BegLoop fCPanel)
 						(bBut setCel: 0)
 					)
 					(if (== ((subMarine script?) state?) 11)
@@ -727,17 +714,16 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (MousedOn self event) (== (event message?) 21760))
+			((or (MousedOn self event) (== (event message?) $5500))
 				(event claimed: 1)
 				(butSnd number: (SoundFX 47) play:)
 				(if (== cel 0)
 					(self setCel: 1)
-					(fCPanel setCycle: End fCPanel)
+					(fCPanel setCycle: EndLoop fCPanel)
 					(mBut setCel: 0)
 				else
 					(self setCel: 0)
-					(fCPanel setCycle: Beg fCPanel)
+					(fCPanel setCycle: BegLoop fCPanel)
 				)
 			)
 		)
@@ -795,7 +781,7 @@
 		view 127
 		loop 6
 		priority 12
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 10
 	)
 	
@@ -811,7 +797,7 @@
 		view 127
 		loop 6
 		priority 12
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 10
 	)
 	
@@ -827,7 +813,7 @@
 		view 127
 		loop 6
 		priority 12
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 10
 	)
 	
@@ -843,7 +829,7 @@
 		view 127
 		loop 6
 		priority 12
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 10
 	)
 	
@@ -859,7 +845,7 @@
 		view 27
 		loop 7
 		priority 12
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doit &tmp submarinePitch)
@@ -882,7 +868,7 @@
 		view 27
 		loop 6
 		priority 12
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doit &tmp submarinePitch)
@@ -905,7 +891,7 @@
 		view 27
 		loop 9
 		priority 12
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doit &tmp submarinePitch)
@@ -928,7 +914,7 @@
 		view 27
 		loop 8
 		priority 12
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doit &tmp submarinePitch)
@@ -944,7 +930,7 @@
 	)
 )
 
-(instance bankTurnInd of Act
+(instance bankTurnInd of Actor
 	(properties
 		y 146
 		x 156
@@ -953,7 +939,7 @@
 		loop 1
 		cel 4
 		priority 12
-		signal $4811
+		signal (| ignrAct fixedLoop fixPriOn stopUpdOn)
 		cycleSpeed 4
 		illegalBits $0000
 		moveSpeed 4
@@ -989,13 +975,9 @@
 	)
 )
 
-(instance tBCycleTo of CT
-	(properties)
-)
+(instance tBCycleTo of CycleTo)
 
-(instance tBMoveTo of MoveTo
-	(properties)
-)
+(instance tBMoveTo of MoveTo)
 
 (instance silentRunInd of Prop
 	(properties
@@ -1020,7 +1002,7 @@
 		loop 6
 		cel 3
 		priority 12
-		signal $0010
+		signal fixPriOn
 		top 139
 		left 266
 		bottom 149
@@ -1036,10 +1018,12 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (== (event type?) evJOYSTICK)
+		(if (== (event type?) direction)
 			(switch (event message?)
-				(JOY_UP (self posn: x (- y 2)))
-				(JOY_DOWN
+				(dirN
+					(self posn: x (- y 2))
+				)
+				(dirS
 					(self posn: x (+ y 2))
 				)
 			)
@@ -1060,9 +1044,7 @@
 	)
 )
 
-(instance dICycleTo of CT
-	(properties)
-)
+(instance dICycleTo of CycleTo)
 
 (instance diveIndLights of Prop
 	(properties
@@ -1109,19 +1091,19 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(switch (event message?)
-				(KEY_EXECUTE
+				(`+
 					(self posn: x (- y 2))
 					(self cue:)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(return)
 				)
-				(KEY_SUBTRACT
+				(`-
 					(self posn: x (+ y 2))
 					(theGame setSpeed: 0)
 					(self cue:)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(return)
 				)
 			)
@@ -1189,7 +1171,7 @@
 		loop 3
 		cel 4
 		priority 12
-		signal $0111
+		signal (| staticView fixPriOn stopUpdOn)
 	)
 )
 
@@ -1216,20 +1198,20 @@
 		loop 5
 		cel 1
 		priority 12
-		signal $0111
+		signal (| staticView fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
 			((MousedOn self event)
-				(if (& signal $0080)
+				(if (& signal actorHidden)
 					(self show:)
-					(eBalGauge setCycle: End eBalGauge)
+					(eBalGauge setCycle: EndLoop eBalGauge)
 					(Submarine emergencyBallast: 0 vSpeed:)
 				else
 					(self hide:)
-					(eBalGauge setCycle: Beg eBalGauge)
+					(eBalGauge setCycle: BegLoop eBalGauge)
 					(Submarine emergencyBallast: 480 vSpeed:)
 				)
 			)
@@ -1241,12 +1223,12 @@
 	(properties
 		view 527
 		priority 13
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (init)
 		(super init:)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 	)
 )
 
@@ -1256,7 +1238,7 @@
 		x 83
 		view 127
 		priority 13
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doit &tmp temp0)
@@ -1281,7 +1263,7 @@
 		loop 3
 		cel 4
 		priority 13
-		signal $4111
+		signal (| ignrAct staticView fixPriOn stopUpdOn)
 	)
 )
 
@@ -1292,7 +1274,7 @@
 		view 427
 		loop 2
 		priority 14
-		signal $0111
+		signal (| staticView fixPriOn stopUpdOn)
 	)
 	
 	(method (delete)
@@ -1308,11 +1290,13 @@
 		view 27
 		loop 3
 		priority 12
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doit)
-		(if local0 (-- local0))
+		(if local0
+			(-- local0)
+		)
 		(super doit:)
 	)
 	
@@ -1320,32 +1304,30 @@
 		(cond 
 			((super handleEvent: event))
 			((!= cel 9))
-			((== (event type?) evKEYBOARD)
+			((== (event type?) keyDown)
 				(switch (event message?)
-					(22528
+					($5800
 						(localproc_21a5)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
-					(22784
+					($5900
 						(localproc_21c4)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
-					(23040
+					($5A00
 						(localproc_2252)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
-					(23296
+					($5B00
 						(localproc_2272 event)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				)
 			)
 			((MousedOn self event)
 				(cond 
-					(
-					(not (if (<= 22 (event y?)) (<= (event y?) 26))))
-					(
-					(and (<= 143 (= eventX (event x?))) (<= eventX 147)) (localproc_21a5))
+					((not (if (<= 22 (event y?)) (<= (event y?) 26))))
+					((and (<= 143 (= eventX (event x?))) (<= eventX 147)) (localproc_21a5))
 					((and (<= 150 eventX) (<= eventX 154)) (localproc_21c4))
 					((and (<= 157 eventX) (<= eventX 161)) (localproc_2252))
 					((and (<= 164 eventX) (<= eventX 168)) (localproc_2272 event))
@@ -1355,7 +1337,7 @@
 	)
 	
 	(method (setCycle theCycler)
-		(if (and argc theCycler (theCycler isKindOf: Beg))
+		(if (and argc theCycler (theCycler isKindOf: BegLoop))
 			(missleSelector hide:)
 		)
 		(super setCycle: theCycler &rest)

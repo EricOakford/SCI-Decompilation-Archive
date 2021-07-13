@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 80)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tunisia)
@@ -15,7 +15,7 @@
 	agentsBuildingRm 0
 )
 
-(instance agentsBuildingRm of Rm
+(instance agentsBuildingRm of Room
 	(properties
 		picture 80
 		horizon 1
@@ -25,7 +25,7 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 280)
+		(Load VIEW 280)
 		(super init:)
 		(self
 			setRegions: 310 312
@@ -87,7 +87,7 @@
 		(ego init:)
 		(switch prevRoomNum
 			(east
-				(ego posn: 310 (ego y?) loop: 1 illegalBits: -32768)
+				(ego posn: 310 (ego y?) loop: 1 illegalBits: cWHITE)
 				(door stopUpd:)
 			)
 			(else 
@@ -100,29 +100,32 @@
 				)
 				(ego posn: 286 80 loop: 2)
 				(if (tunisia bagBound?)
-					(Load rsVIEW 185)
+					(Load VIEW 185)
 					(van init: setScript: driveAwayScript)
 				)
 			)
 		)
-		(if (not (ego has: 6)) (ego illegalBits: -32766))
+		(if (not (ego has: iTunisiaKey))
+			(ego illegalBits: (| cWHITE cBLUE))
+		)
 	)
 	
 	(method (dispose)
-		(ego illegalBits: -32768)
+		(ego illegalBits: cWHITE)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,town,scene]') (Print 80 0))
+			((Said 'look[<at,around][/room,town,scene]')
+				(Print 80 0)
+			)
 		)
 	)
 )
 
 (instance driveAwayScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -153,7 +156,9 @@
 			(7
 				(van setStep: 8 8 setMotion: MoveTo 380 (van y?) self)
 			)
-			(8 (curRoom newRoom: 81))
+			(8
+				(curRoom newRoom: 81)
+			)
 		)
 	)
 )
@@ -163,7 +168,7 @@
 		y 84
 		x 284
 		view 280
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doit)
@@ -171,11 +176,11 @@
 		(if
 			(and
 				(or
-					(== (ego onControl: 1) 2)
-					(== (ego onControl: 1) 4)
+					(== (ego onControl: origin) cBLUE)
+					(== (ego onControl: origin) cGREEN)
 				)
 				(not (self script?))
-				(ego has: 6)
+				(ego has: iTunisiaKey)
 			)
 			(HandsOff)
 			(self setScript: doorScript)
@@ -188,15 +193,25 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event))
-					((Said 'look[<at]') (Print 80 1))
-					((Said 'lock,knock') (Print 80 2))
+					((Said 'look[<at]')
+						(Print 80 1)
+					)
+					((Said 'lock,knock')
+						(Print 80 2)
+					)
 					((GoToIfSaid self event 287 88 0 80 3))
-					((Said 'open') (if (not (ego has: 6)) (Print 80 4)))
-					((and (Said 'unlock') (not (ego has: 6))) (Print 80 4))
+					((Said 'open')
+						(if (not (ego has: iTunisiaKey))
+							(Print 80 4)
+						)
+					)
+					((and (Said 'unlock') (not (ego has: iTunisiaKey)))
+						(Print 80 4)
+					)
 				)
 			)
 			((Said 'use/key')
-				(if (ego has: 6)
+				(if (ego has: iTunisiaKey)
 					(HandsOff)
 					(ego setMotion: MoveTo 287 88)
 				else
@@ -208,11 +223,10 @@
 )
 
 (instance doorScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1
 				(if (> (ego y?) (client y?))
 					(= register 0)
@@ -222,19 +236,27 @@
 					(ego setMotion: MoveTo (ego x?) 92 self)
 				)
 			)
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3
 				(cond 
-					((== register 0) (curRoom newRoom: 84))
-					((tunisia bagBound?) (driveAwayScript cue:))
-					(else (HandsOn) (client stopUpd:) (self dispose:))
+					((== register 0)
+						(curRoom newRoom: 84)
+					)
+					((tunisia bagBound?)
+						(driveAwayScript cue:)
+					)
+					(else
+						(HandsOn)
+						(client stopUpd:)
+						(self dispose:)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance van of Act
+(instance van of Actor
 	(properties
 		y 126
 		x 251
@@ -278,7 +300,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 80 6))
+					((Said 'look[<at]')
+						(Print 80 6)
+					)
 				)
 			)
 		)
@@ -300,9 +324,15 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 80 7))
-					((Said 'close,open,(climb<(in,through))') (BadIdea))
-					((Said 'look<(in,through)') (Print 80 8))
+					((Said 'look[<at]')
+						(Print 80 7)
+					)
+					((Said 'close,open,(climb<(in,through))')
+						(BadIdea)
+					)
+					((Said 'look<(in,through)')
+						(Print 80 8)
+					)
 				)
 			)
 		)

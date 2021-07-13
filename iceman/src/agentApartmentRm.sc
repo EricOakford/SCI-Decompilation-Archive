@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 84)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tunisia)
@@ -24,7 +24,7 @@
 )
 
 (local
-	[local0 20]
+	[str 20]
 	tunisiaBagTimer =  10000
 	local21
 	local22
@@ -80,7 +80,7 @@
 	)
 )
 
-(instance agentApartmentRm of Rm
+(instance agentApartmentRm of Room
 	(properties
 		picture 84
 		north 85
@@ -91,8 +91,8 @@
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 284 684 250 584 85 884 784 984)
-		(Load rsSOUND 67)
+		(LoadMany VIEW 284 684 250 584 85 884 784 984)
+		(Load SOUND 67)
 		(globalSound
 			number: 67
 			owner: theGame
@@ -104,7 +104,7 @@
 			setRegions: 310
 			setFeatures: windowski sink kitchen kounter bed cabinet northWall door
 		)
-		(LoadMany 130 362 365 363 369 319)
+		(LoadMany SOUND 362 365 363 369 319)
 		(fridge init:)
 		(sugar init:)
 		(flour init:)
@@ -127,7 +127,7 @@
 					view: 84
 					posn: 113 150
 					loop: 3
-					observeControl: 16384
+					observeControl: cYELLOW
 					init:
 				)
 			)
@@ -137,7 +137,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== (ego onControl: 1) 2) (curRoom newRoom: 80))
+		(if (== (ego onControl: origin) cBLUE)
+			(curRoom newRoom: 80)
+		)
 		(switch tunisiaBagTimer
 			(0)
 			(1
@@ -145,15 +147,21 @@
 				(self setScript: tossEverythingScript)
 			)
 			(10000)
-			(else  (-- tunisiaBagTimer))
+			(else
+				(-- tunisiaBagTimer)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<around][/room]') (Print 84 0))
-			((Said 'examine/room,apartment') (Print 84 1))
+			((Said 'look[<around][/room]')
+				(Print 84 0)
+			)
+			((Said 'examine/room,apartment')
+				(Print 84 1)
+			)
 			((Said 'eat/food')
 				(if (== (tunisia fridgeIs?) 0)
 					(CantSee)
@@ -162,34 +170,46 @@
 				)
 			)
 			((Said 'read/note,newspaper')
-				(if (ego has: 14)
+				(if (ego has: iNote)
 					(Print 84 3)
 					(Print 84 4)
 					(Print 84 5)
-					(SolvePuzzle tunisia 413 4 4)
+					(SolvePuzzle tunisia #pointFlag $0004 4)
 				else
 					(DontHave)
 				)
 			)
-			((Said 'load/gun') (if (ego has: 8) (Print 84 6) else (event claimed: 0)))
+			((Said 'load/gun')
+				(if (ego has: iTranquilizerGun)
+					(Print 84 6)
+				else
+					(event claimed: FALSE)
+				)
+			)
 			(
 				(or
 					(and
-						(== (event type?) evKEYBOARD)
-						(== (event message?) KEY_F10)
+						(== (event type?) keyDown)
+						(== (event message?) `#a)
 					)
 					(Said 'shoot')
 					(Said 'shoot,use,fire/gun')
 					(Said 'kill,shoot/bagdad,man')
 				)
 				(cond 
-					((not (ego has: 8)) (Print 84 7))
-					((tunisia bagBound?) (Print 84 8))
-					(else (BadIdea))
+					((not (ego has: iTranquilizerGun))
+						(Print 84 7)
+					)
+					((tunisia bagBound?)
+						(Print 84 8)
+					)
+					(else
+						(BadIdea)
+					)
 				)
 			)
 			((Said 'read/card[<business]')
-				(if (ego has: 12)
+				(if (ego has: iBusinessCard)
 					(Print 84 9 #icon 384 1 1)
 				else
 					(Print 84 10)
@@ -206,46 +226,57 @@
 				(if (tunisia bagBound?)
 					(Print 84 13)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
-			((Said 'conceal,adjust<in,below/gun/hat') (if (ego has: 8) (DontNeedTo) else (event claimed: 0)))
+			((Said 'conceal,adjust<in,below/gun/hat')
+				(if (ego has: iTranquilizerGun)
+					(DontNeedTo)
+				else
+					(event claimed: FALSE)
+				)
+			)
 			((Said 'untie/man,bagdad')
 				(if (tunisia bagBound?)
 					(Print 84 14)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
-			((Said 'throw/canister') (Print 84 15))
+			((Said 'throw/canister')
+				(Print 84 15)
+			)
 			((Said 'heist,get/man,money[/man<from]')
 				(if (tunisia bagBound?)
 					(Print 84 16)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom nRoom)
 		(cond 
-			((== (ego script?) stayHereScript) (return))
+			((== (ego script?) stayHereScript)
+				(return)
+			)
 			(
 				(and
 					(or (& (tunisia flags?) $0001) (== tunisiaBagTimer 0))
-					(== newRoomNumber 80)
+					(== nRoom 80)
 				)
 				(ego setScript: stayHereScript)
 			)
-			(else (globalSound fade:) (super newRoom: newRoomNumber &rest))
+			(else (globalSound fade:)
+				(super newRoom: nRoom &rest)
+			)
 		)
 	)
 )
 
 (instance tossEverythingScript of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if (and (== state 0) (== (tunisia fridgeIs?) 0))
@@ -269,7 +300,7 @@
 			(3
 				((ScriptID 365 1) dispose:)
 				(DisposeScript 365)
-				(Animate (cast elements?) 0)
+				(Animate (cast elements?) FALSE)
 				(if (& (tunisia flags?) $0004)
 					(self setScript: (ScriptID 319 0))
 				else
@@ -290,14 +321,12 @@
 )
 
 (instance stayHereScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if
-				(and local22 (localproc_000c (ScriptID 310 3)))
+				(if (and local22 (localproc_000c (ScriptID 310 3)))
 					(Print 84 17)
 				else
 					(Print 84 18)
@@ -306,13 +335,15 @@
 					setMotion: stayMoveTo (ego x?) (- (ego y?) 10) self
 				)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance stayMoveTo of MoveTo
-	(properties)
 	
 	(method (dispose)
 		(if (and (IsObject caller) (caller client?))
@@ -323,8 +354,7 @@
 )
 
 (instance phoneScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -333,35 +363,35 @@
 					view: 984
 					loop: (if (== (ego view?) 84) 1 else 2)
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(1
 				(phone cel: 1 forceUpd:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(2
-				(Print 84 19 #edit @local0 20)
+				(Print 84 19 #edit @str 20)
 				(= seconds 3)
 			)
 			(3
 				(cond 
-					((not (StrCmp @local0 {})) (self cue:))
-					((not (StrCmp @local0 {13-555-8097}))
+					((not (StrCmp @str {})) (self cue:))
+					((not (StrCmp @str {13-555-8097}))
 						(if (not (& register $0001))
 							(Print 84 20 #time 10)
 							(Print 84 21)
-							(User canInput: 1)
+							(User canInput: TRUE)
 							(= seconds 10)
 						else
 							(Print 84 22)
 							(ego setScript: putDownPhoneScript)
 						)
 					)
-					((not (StrCmp @local0 {03-120-1204}))
+					((not (StrCmp @str {03-120-1204}))
 						(if (not (& register $0002))
 							(Print 84 23 #time 10)
-							(User canInput: 1)
+							(User canInput: TRUE)
 							(= seconds 10)
 						else
 							(Print 84 24)
@@ -384,26 +414,26 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((not (StrCmp @local0 {03-120-1204}))
+			((not (StrCmp @str {03-120-1204}))
 				(if (Said 'address[/man,guard,basal]')
-					(= register (| register $0002))
-					(tunisia madeCall: 1)
+					(|= register $0002)
+					(tunisia madeCall: TRUE)
 					(Print 84 27)
 					(theGame changeScore: 2)
 				else
 					(Print 84 28)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 				(Print 84 26)
 				(ego setScript: putDownPhoneScript)
 			)
-			((not (StrCmp @local0 {13-555-8097}))
+			((not (StrCmp @str {13-555-8097}))
 				(if
 					(or
 						(Said 'address[/man,bagdad,bagdad]')
 						(Said 'order/food')
 					)
-					(= register (| register $0001))
+					(|= register $0001)
 					(Print 84 29)
 					(Print 84 30)
 					(= tunisiaBagTimer 200)
@@ -411,7 +441,7 @@
 					(theGame changeScore: 2)
 				else
 					(Print 84 28)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 				(Print 84 26)
 				(ego setScript: putDownPhoneScript)
@@ -421,14 +451,13 @@
 )
 
 (instance putDownPhoneScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: CT 3 -1 self))
+			(0 (ego setCycle: CycleTo 3 -1 self))
 			(1
 				(phone cel: 0 forceUpd:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(2
 				(ego
@@ -462,7 +491,9 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 31))
+					((Said 'look[<at]')
+						(Print 84 31)
+					)
 					((GoToIfSaid self event 160 96 0 84 32))
 					((Said 'look[<out,through]')
 						(if (& (tunisia flags?) $0001)
@@ -495,14 +526,25 @@
 			((Said '[/kitchen]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 34) (Print 84 35))
+					((Said 'look[<at]')
+						(Print 84 34)
+						(Print 84 35)
+					)
 				)
 			)
-			((Said '/drawer>') (if (Said 'open,examine,look[<at,in]') (Print 84 36)))
+			((Said '/drawer>')
+				(if (Said 'open,examine,look[<at,in]')
+					(Print 84 36)
+				)
+			)
 			((Said '/stove>')
 				(cond 
-					((Said 'open,examine,look[<at,in]') (Print 84 36))
-					((Said 'use,turn<on,off') (DontNeedTo))
+					((Said 'open,examine,look[<at,in]')
+						(Print 84 36)
+					)
+					((Said 'use,turn<on,off')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -526,9 +568,15 @@
 			((Said '[/sink]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 37))
-					((Said 'look<below') (SeeNothing))
-					((Said 'use') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 84 37)
+					)
+					((Said 'look<below')
+						(SeeNothing)
+					)
+					((Said 'use')
+						(DontNeedTo)
+					)
 				)
 			)
 			(
@@ -559,8 +607,12 @@
 			((Said '[/cabinet]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 38))
-					((Said 'open,(look<in)') (Print 84 39))
+					((Said 'look[<at]')
+						(Print 84 38)
+					)
+					((Said 'open,(look<in)')
+						(Print 84 39)
+					)
 				)
 			)
 		)
@@ -584,7 +636,9 @@
 			((Said '[/counter]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at,on]') (Print 84 40))
+					((Said 'look[<at,on]')
+						(Print 84 40)
+					)
 				)
 			)
 		)
@@ -598,7 +652,7 @@
 		heading 270
 		view 284
 		priority 9
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
@@ -611,7 +665,9 @@
 				)
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 41))
+					((Said 'look[<at]')
+						(Print 84 41)
+					)
 					((Said 'examine,look<in')
 						(if (not cel)
 							(Print 84 42)
@@ -633,7 +689,13 @@
 							(self setScript: (ScriptID 362 1))
 						)
 					)
-					((Said 'look/top/freezer,(box<ice)') (if (ego has: 7) (SeeNothing) else (Print 84 49)))
+					((Said 'look/top/freezer,(box<ice)')
+						(if (ego has: iDuctTape)
+							(SeeNothing)
+						else
+							(Print 84 49)
+						)
+					)
 					(
 						(and
 							(or (tunisia bagBound?) (& (tunisia flags?) $0001))
@@ -641,8 +703,12 @@
 						)
 						(Print 84 50)
 					)
-					((and local21 (Said 'open')) (Print 84 51))
-					((and cel (Said 'open')) (Print 84 52))
+					((and local21 (Said 'open'))
+						(Print 84 51)
+					)
+					((and cel (Said 'open'))
+						(Print 84 52)
+					)
 					((GoToIfSaid self event self 12 'open' 84 32))
 					((Said 'open')
 						(HandsOff)
@@ -655,14 +721,14 @@
 	)
 )
 
-(instance fridgeSide of PV
+(instance fridgeSide of PicView
 	(properties
 		y 142
 		x 306
 		view 284
 		loop 3
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -675,7 +741,7 @@
 		view 284
 		loop 1
 		priority 9
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
@@ -687,8 +753,12 @@
 					(Said '[/canister<big]>')
 				)
 				(cond 
-					((Said 'drop,adjust,replace') (localproc_003c 0))
-					((and local21 (Said '(get[<!*])/*')) (Print 84 53))
+					((Said 'drop,adjust,replace')
+						(localproc_003c 0)
+					)
+					((and local21 (Said '(get[<!*])/*'))
+						(Print 84 53)
+					)
 					(local21)
 					((TurnIfSaid self event 'look[<at]/*'))
 					((Said 'look[<at]') (Print 84 54))
@@ -699,12 +769,15 @@
 						)
 						(Print 84 55)
 					)
-					((or (Said 'open') (Said 'empty,pour[<out]')) (Print 84 56))
-					(
-					(GoToIfSaid self event self 15 '(get[<!*])/*' 84 32))
+					((or (Said 'open') (Said 'empty,pour[<out]'))
+						(Print 84 56)
+					)
+					((GoToIfSaid self event self 15 '(get[<!*])/*' 84 32))
 					((Said '(get[<!*])/*')
 						(Print 84 57)
-						(if (not (ego has: 8)) (Print 84 58))
+						(if (not (ego has: iTranquilizerGun))
+							(Print 84 58)
+						)
 						(localproc_003c self)
 					)
 				)
@@ -727,7 +800,7 @@
 		loop 1
 		cel 1
 		priority 9
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
@@ -739,11 +812,17 @@
 					(Said '[/canister<medium]>')
 				)
 				(cond 
-					((Said 'drop,adjust,replace') (localproc_003c 0))
-					((and local21 (Said '(get[<!*])/*')) (Print 84 53))
+					((Said 'drop,adjust,replace')
+						(localproc_003c 0)
+					)
+					((and local21 (Said '(get[<!*])/*'))
+						(Print 84 53)
+					)
 					(local21)
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 54))
+					((Said 'look[<at]')
+						(Print 84 54)
+					)
 					(
 						(and
 							(or (& (tunisia flags?) $0001) (tunisia bagBound?))
@@ -751,10 +830,14 @@
 						)
 						(Print 84 55)
 					)
-					((or (Said 'open') (Said 'empty,pour[<out]')) (Print 84 56))
-					(
-					(GoToIfSaid self event self 15 '(get[<!*])/*' 84 32))
-					((Said '(get[<!*])/*') (Print 84 59) (localproc_003c self))
+					((or (Said 'open') (Said 'empty,pour[<out]'))
+						(Print 84 56)
+					)
+					((GoToIfSaid self event self 15 '(get[<!*])/*' 84 32))
+					((Said '(get[<!*])/*')
+						(Print 84 59)
+						(localproc_003c self)
+					)
 				)
 			)
 		)
@@ -775,7 +858,7 @@
 		loop 1
 		cel 2
 		priority 9
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
@@ -787,11 +870,17 @@
 					(Said '[/canister<little]>')
 				)
 				(cond 
-					((Said 'drop,adjust,replace') (localproc_003c 0))
-					((and local21 (Said '(get[<!*])/*')) (Print 84 53))
+					((Said 'drop,adjust,replace')
+						(localproc_003c 0)
+					)
+					((and local21 (Said '(get[<!*])/*'))
+						(Print 84 53)
+					)
 					(local21)
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 54))
+					((Said 'look[<at]')
+						(Print 84 54)
+					)
 					(
 						(and
 							(or (& (tunisia flags?) $0001) (tunisia bagBound?))
@@ -799,10 +888,14 @@
 						)
 						(Print 84 55)
 					)
-					((or (Said 'open') (Said 'empty,pour[<out]')) (Print 84 56))
-					(
-					(GoToIfSaid self event self 15 '(get[<!*])/*' 84 32))
-					((Said '(get[<!*])/*') (Print 84 60) (localproc_003c self))
+					((or (Said 'open') (Said 'empty,pour[<out]'))
+						(Print 84 56)
+					)
+					((GoToIfSaid self event self 15 '(get[<!*])/*' 84 32))
+					((Said '(get[<!*])/*')
+						(Print 84 60)
+						(localproc_003c self)
+					)
 				)
 			)
 		)
@@ -826,8 +919,12 @@
 			((Said '[/call]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 61))
-					((Said 'shoot') (Print 84 62))
+					((Said 'look[<at]')
+						(Print 84 61)
+					)
+					((Said 'shoot')
+						(Print 84 62)
+					)
 					(
 						(and
 							(& (tunisia flags?) $0001)
@@ -848,7 +945,7 @@
 						)
 						(if (User controls?)
 							(HandsOff)
-							(ego setAvoider: Avoid setMotion: MoveTo 187 95 self)
+							(ego setAvoider: Avoider setMotion: MoveTo 187 95 self)
 						else
 							(Print 84 32)
 						)
@@ -877,14 +974,16 @@
 			((Said '[/card]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 64))
+					((Said 'look[<at]')
+						(Print 84 64)
+					)
 					((GoToIfSaid self event 187 95 0 84 32))
 					((Said '(get[<!*])/*')
-						(if (ego has: 12)
+						(if (ego has: iBusinessCard)
 							(AlreadyTook)
 						else
 							(Print 84 65)
-							(ego get: 12)
+							(ego get: iBusinessCard)
 							(self dispose:)
 						)
 					)
@@ -909,11 +1008,13 @@
 			((Said '[/tape]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 66))
+					((Said 'look[<at]')
+						(Print 84 66)
+					)
 					((GoToIfSaid self event fridge 12 0 84 32))
 					((Said '(get[<!*])/*')
 						(Print 84 67)
-						(ego get: 7)
+						(ego get: iDuctTape)
 						(theGame changeScore: 1)
 						(self dispose:)
 					)
@@ -939,11 +1040,21 @@
 			((Said '[/bed]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 68))
-					((Said 'look<below,on') (SeeNothing))
-					((Said 'sit') (Print 84 69))
-					((Said 'rest') (Print 84 70))
-					((Said 'make') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 84 68)
+					)
+					((Said 'look<below,on')
+						(SeeNothing)
+					)
+					((Said 'sit')
+						(Print 84 69)
+					)
+					((Said 'rest')
+						(Print 84 70)
+					)
+					((Said 'make')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -966,7 +1077,12 @@
 			((Said '[/wall]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 71) (if (not (ego has: 12)) (Print 84 72)))
+					((Said 'look[<at]')
+						(Print 84 71)
+						(if (not (ego has: iBusinessCard))
+							(Print 84 72)
+						)
+					)
 				)
 			)
 		)
@@ -989,7 +1105,9 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 84 73))
+					((Said 'look[<at]')
+						(Print 84 73)
+					)
 				)
 			)
 		)

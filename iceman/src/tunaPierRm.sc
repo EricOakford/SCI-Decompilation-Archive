@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 47)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -12,7 +12,7 @@
 	tunaPierRm 0
 )
 
-(instance tunaPierRm of Rm
+(instance tunaPierRm of Room
 	(properties
 		picture 61
 		north 72
@@ -29,8 +29,8 @@
 		(switch prevRoomNum
 			(46
 				(ego
-					illegalBits: -32768
-					observeControl: 4096
+					illegalBits: cWHITE
+					observeControl: cLRED
 					loop: 0
 					posn: 10 145
 					setMotion: MoveTo 325 145
@@ -38,8 +38,8 @@
 			)
 			(else 
 				(ego
-					illegalBits: -32768
-					observeControl: 4096
+					illegalBits: cWHITE
+					observeControl: cLRED
 					loop: 0
 					posn: 315 100
 					setMotion: MoveTo -5 100
@@ -51,42 +51,49 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(Said 'bind,conceal,adjust,drop,park/vehicle,diver')
-				(if (ego has: 6)
+			((Said 'bind,conceal,adjust,drop,park/vehicle,diver')
+				(if (ego has: iDiver)
 					(ego setScript: hideVehicle)
 				else
 					(Print 47 0)
 				)
 			)
-			((Said 'get/vehicle,diver') (if (ego has: 6) (Print 47 1) else (Print 47 2)))
-			((Said 'look') (Print 47 3))
+			((Said 'get/vehicle,diver')
+				(if (ego has: iDiver)
+					(Print 47 1)
+				else
+					(Print 47 2)
+				)
+			)
+			((Said 'look')
+				(Print 47 3)
+			)
 		)
 	)
 )
 
-(instance shadow of PV
+(instance shadow of PicView
 	(properties
 		y 158
 		x 108
 		view 61
 		priority 0
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance fLeg of PV
+(instance fLeg of PicView
 	(properties
 		y 133
 		x 87
 		view 61
 		loop 1
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance bLeg of PV
+(instance bLeg of PicView
 	(properties
 		y 94
 		x 211
@@ -94,12 +101,11 @@
 		loop 1
 		cel 1
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
 (instance hideVehicle of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

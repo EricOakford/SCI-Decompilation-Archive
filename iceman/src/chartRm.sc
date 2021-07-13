@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 40)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use subMarine)
@@ -22,29 +22,29 @@
 	egoY
 	egoView
 	egoLoop
-	[local4 20]
+	[str 20]
 	[local24 27]
-	local51 =  5
+	theY =  5
 	egoX_2
 	egoY_2
 	local54
 	local55
 	[local56 5]
-	local61 =  160
-	local62 =  89
-	local63 =  160
-	local64 =  89
-	local65 =  285
-	local66 =  77
-	[local67 28] = [0 15 30 45 60 75 90 105 120 130 135 140 145 150 155 141 129 116 104 94 83 69 55 41 37 28 16 4]
-	[local95 42] = [0 15 30 45 60 75 90 105 120 135 150 165 180 195 210 225 235 285 315 316 298 282 270 260 250 235 223 209 195 180 165 155 143 128 118 106 67 37]
+	subMarkerX =  160
+	subMarkerY =  89
+	locMarkerX =  160
+	locMarkerY =  89
+	destMarkerX =  285
+	destMarkerY =  77
+	local67 = [0 15 30 45 60 75 90 105 120 130 135 140 145 150 155 141 129 116 104 94 83 69 55 41 37 28 16 4]
+	local95 = [0 15 30 45 60 75 90 105 120 135 150 165 180 195 210 225 235 285 315 316 298 282 270 260 250 235 223 209 195 180 165 155 143 128 118 106 67 37]
 	egoX_3
 	egoY_3
 	local139
 	local140
 	local141
 	local142
-	[local143 12] = [151 83 151 39 226 12 301 19 274 48 285 77]
+	local143 = [151 83 151 39 226 12 301 19 274 48 285 77]
 	[local155 14]
 	local169
 	local170
@@ -88,8 +88,7 @@
 
 (procedure (localproc_0a2f param1 &tmp temp0 temp1)
 	(= temp0 (= temp1 0))
-	(while
-	(and (< [local95 temp1] param1) (< param1 [local95 18]))
+	(while (and (< [local95 temp1] param1) (< param1 [local95 18]))
 		(= temp0 temp1)
 		(++ temp1)
 	)
@@ -142,8 +141,7 @@
 
 (procedure (localproc_0aef param1 &tmp temp0 temp1)
 	(= temp0 (= temp1 0))
-	(while
-	(and (< [local67 temp1] param1) (< param1 [local67 13]))
+	(while (and (< [local67 temp1] param1) (< param1 [local67 13]))
 		(= temp0 temp1)
 		(++ temp1)
 	)
@@ -164,8 +162,7 @@
 
 (procedure (localproc_0b6d &tmp temp0)
 	(if (<= (markerList size?) 1) (return))
-	(if
-	(IsObject (= temp0 (NodeValue (markerList first:))))
+	(if (IsObject (= temp0 (NodeValue (markerList first:))))
 		(courseMarker posn: (temp0 x?) (temp0 y?))
 		(if
 			(IsObject
@@ -181,36 +178,25 @@
 	)
 )
 
-(procedure (localproc_0bf5 &tmp temp0)
-	(= temp0 0)
-	(while (< temp0 7)
-		(if (> (markerList size?) temp0)
-			(Format
-				@local4
-				40
-				12
-				(Abs (localproc_0a8b ((markerList at: temp0) y?)))
-				(Abs (localproc_09b8 ((markerList at: temp0) x?)))
+(procedure (localproc_0bf5 &tmp i)
+	(for ((= i 0)) (< i 7) ((++ i))
+		(if (> (markerList size?) i)
+			(Format @str 40 12
+				(Abs (localproc_0a8b ((markerList at: i) y?)))
+				(Abs (localproc_09b8 ((markerList at: i) x?)))
 			)
 		else
-			(Format @local4 40 12 0 0)
+			(Format @str 40 12 0 0)
 		)
-		(Display
-			@local4
-			dsCOORD
-			0
-			local51
-			dsBACKGROUND
-			0
-			dsCOLOR
-			15
-			dsFONT
-			30
+		(Display @str
+			p_at 0 theY
+			p_back vBLACK
+			p_color vWHITE
+			p_font 30
 		)
-		(= local51 (+ local51 15))
-		(++ temp0)
+		(+= theY 15)
 	)
-	(= local51 11)
+	(= theY 11)
 )
 
 (procedure (localproc_0eda param1 &tmp markerListFirst temp1)
@@ -401,14 +387,14 @@ code_14f7:
 	)
 )
 
-(instance chartRm of Rm
+(instance chartRm of Room
 	(properties
 		picture 40
 		north 25
 	)
 	
 	(method (init &tmp temp0)
-		(= useSortedFeatures 0)
+		(= useSortedFeatures FALSE)
 		(= egoX (ego x?))
 		(= egoY (ego y?))
 		(= egoView (ego view?))
@@ -420,16 +406,16 @@ code_14f7:
 			setScript: delayedInit
 		)
 		(locationMarker init:)
-		(courseMarker init: penDown: 1)
-		(User canControl: 0)
+		(courseMarker init: penDown: TRUE)
+		(User canControl: FALSE)
 		(keyDownHandler addToFront: self)
 		(directionHandler addToFront: self)
-		(= local63 (localproc_0a2f 185))
-		(= local64 (localproc_0aef 90))
-		(= local61
+		(= locMarkerX (localproc_0a2f 185))
+		(= locMarkerY (localproc_0aef 90))
+		(= subMarkerX
 			(localproc_0a2f (+ (Submarine longitude?) 15))
 		)
-		(= local62
+		(= subMarkerY
 			(localproc_0aef (+ (Submarine latitude?) 60))
 		)
 		(ego
@@ -438,22 +424,22 @@ code_14f7:
 			cel: 0
 			xStep: 1
 			yStep: 1
-			posn: local63 local64
+			posn: locMarkerX locMarkerY
 			ignoreActors: 1
 			init:
 			setScript: stealMouse
 		)
-		(subMarker x: local61 y: local62 init: setCycle: Fwd)
-		(destMarker x: local65 y: local66 init: setCycle: Fwd)
+		(subMarker x: subMarkerX y: subMarkerY init: setCycle: Forward)
+		(destMarker x: destMarkerX y: destMarkerY init: setCycle: Forward)
 		(markerList
 			addToEnd:
 				((locationMarker new:)
 					view: 40
 					loop: 1
-					x: local63
-					y: local64
+					x: locMarkerX
+					y: locMarkerY
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					yourself:
 				)
 		)
@@ -491,8 +477,8 @@ code_14f7:
 				(if
 					(or
 						local142
-						(!= local61 (localproc_0a2f 185))
-						(!= local62 (localproc_0aef 90))
+						(!= subMarkerX (localproc_0a2f 185))
+						(!= subMarkerY (localproc_0aef 90))
 					)
 					(localproc_0eda 374)
 					(localproc_0f08 375)
@@ -518,16 +504,24 @@ code_14f7:
 	(method (replay &tmp temp0)
 		(= local55 local54)
 		(= local54 0)
-		(= local51 5)
+		(= theY 5)
 		(= temp0 0)
 		(while (<= temp0 6)
-			(Format @local4 40 7 temp0)
-			(Display @local4 dsCOORD 0 local51 dsCOLOR 10 dsFONT 30)
-			(= local51 (+ local51 15))
+			(Format @str 40 7 temp0)
+			(Display @str
+				p_at 0 theY
+				p_color vLGREEN
+				p_font 30
+			)
+			(+= theY 15)
 			(++ temp0)
 		)
-		(= local51 11)
-		(Display 40 8 dsCOORD 100 172 dsCOLOR 10 dsFONT 104)
+		(= theY 11)
+		(Display 40 8
+			p_at 100 172
+			p_color vLGREEN
+			p_font 104
+		)
 		(if (Submarine wayPoint1X?)
 			(= local142 1)
 			(markerList
@@ -536,7 +530,7 @@ code_14f7:
 						x: (Submarine wayPoint1X?)
 						y: (Submarine wayPoint1Y?)
 						init:
-						setCycle: Fwd
+						setCycle: Forward
 						yourself:
 					)
 			)
@@ -549,7 +543,7 @@ code_14f7:
 						x: (Submarine wayPoint2X?)
 						y: (Submarine wayPoint2Y?)
 						init:
-						setCycle: Fwd
+						setCycle: Forward
 						yourself:
 					)
 			)
@@ -562,7 +556,7 @@ code_14f7:
 						x: (Submarine wayPoint3X?)
 						y: (Submarine wayPoint3Y?)
 						init:
-						setCycle: Fwd
+						setCycle: Forward
 						yourself:
 					)
 			)
@@ -575,7 +569,7 @@ code_14f7:
 						x: (Submarine wayPoint4X?)
 						y: (Submarine wayPoint4Y?)
 						init:
-						setCycle: Fwd
+						setCycle: Forward
 						yourself:
 					)
 			)
@@ -588,7 +582,7 @@ code_14f7:
 						x: (Submarine wayPoint5X?)
 						y: (Submarine wayPoint5Y?)
 						init:
-						setCycle: Fwd
+						setCycle: Forward
 						yourself:
 					)
 			)
@@ -600,10 +594,10 @@ code_14f7:
 					((locationMarker new:)
 						view: 40
 						loop: 2
-						x: local65
-						y: local66
+						x: destMarkerX
+						y: destMarkerY
 						init:
-						setCycle: Fwd
+						setCycle: Forward
 						yourself:
 					)
 			)
@@ -659,8 +653,8 @@ code_14f7:
 				)
 				(if
 					(and
-						(== local61 (localproc_0a2f 185))
-						(== local62 (localproc_0aef 90))
+						(== subMarkerX (localproc_0a2f 185))
+						(== subMarkerY (localproc_0aef 90))
 					)
 					(if (== (chartRm script?) startPlot)
 						(Print 40 9)
@@ -732,46 +726,8 @@ code_14f7:
 	)
 )
 
-(class Turtle of Act
+(class Turtle of Actor
 	(properties
-		y 0
-		x 0
-		z 0
-		heading 0
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
-		xStep 3
-		moveSpeed 0
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
 		penColor 0
 		penDown 0
 	)
@@ -779,7 +735,7 @@ code_14f7:
 	(method (doit)
 		(super doit:)
 		(if penDown
-			(DrawCel 40 1 (if (!= penColor 7) 2 else 0) x y 1)
+			(DrawCel 40 1 (if (!= penColor vLGREY) 2 else 0) x y 1)
 		)
 	)
 )
@@ -793,12 +749,11 @@ code_14f7:
 	
 	(method (init)
 		(super init: &rest)
-		(self setLoop: ignoreActors: 1 ignoreControl: -32768)
+		(self setLoop: ignoreActors: TRUE ignoreControl: cWHITE)
 	)
 	
 	(method (doit)
-		(if
-		(and (& (proc802_0 self 3) $2000) (!= penColor 0))
+		(if (and (& (proc802_0 self 3) $2000) (!= penColor vBLACK))
 			(= local141 1)
 		)
 		(super doit: &rest)
@@ -806,7 +761,6 @@ code_14f7:
 )
 
 (instance drawLastLine of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -830,7 +784,6 @@ code_14f7:
 )
 
 (instance backOneScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -854,7 +807,6 @@ code_14f7:
 )
 
 (instance unDrawLast of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -885,7 +837,6 @@ code_14f7:
 )
 
 (instance startPlot of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -913,7 +864,6 @@ code_14f7:
 )
 
 (instance PlotCourse of Script
-	(properties)
 	
 	(method (doit &tmp temp0 temp1)
 		(if
@@ -924,25 +874,22 @@ code_14f7:
 			(= egoX_2 (ego x?))
 			(= egoY_2 (ego y?))
 			(if local24
-				(Display @local24 dsCOORD 100 172 dsCOLOR 0 dsFONT 104)
+				(Display @local24
+					p_at 100 172
+					p_color vBLACK
+					p_font 104
+				)
 			)
 			(Display
-				(Format
-					@local24
-					40
-					13
+				(Format @local24 40 13
 					(Abs (= temp1 (localproc_0a8b (ego y?))))
 					(if (< 0 temp1) {N} else {S})
 					(Abs (= temp0 (localproc_09b8 (ego x?))))
 					(if (< 0 temp0) {W} else {E})
 				)
-				dsCOORD
-				100
-				172
-				dsCOLOR
-				10
-				dsFONT
-				104
+				p_at 100 172
+				p_color vLGREEN
+				p_font 104
 			)
 		)
 		(super doit:)
@@ -977,7 +924,7 @@ code_14f7:
 									x: egoX_3
 									y: egoY_3
 									init:
-									setCycle: Fwd
+									setCycle: Forward
 									yourself:
 								)
 						)
@@ -1009,10 +956,10 @@ code_14f7:
 				(markerList
 					addToEnd:
 						((locationMarker new:)
-							x: local65
-							y: local66
+							x: destMarkerX
+							y: destMarkerY
 							init:
-							setCycle: Fwd
+							setCycle: Forward
 							yourself:
 						)
 				)
@@ -1066,7 +1013,7 @@ code_14f7:
 	)
 	
 	(method (handleEvent event)
-		(if (& (event modifiers?) emSHIFT)
+		(if (& (event modifiers?) shiftDown)
 			(if (== (ego xStep?) 1)
 				(ego xStep: 4)
 				(ego yStep: 4)
@@ -1088,11 +1035,11 @@ code_14f7:
 			(
 				(and
 					local54
-					(== (event type?) evKEYBOARD)
-					(== (event message?) KEY_RETURN)
+					(== (event type?) keyDown)
+					(== (event message?) ENTER)
 				)
-				(event claimed: 1)
-				(User canControl: 0)
+				(event claimed: TRUE)
+				(User canControl: FALSE)
 				(self cue:)
 			)
 		)
@@ -1100,11 +1047,10 @@ code_14f7:
 )
 
 (instance stealMouse of Script
-	(properties)
 	
 	(method (handleEvent event)
-		(if (== (event type?) evMOUSEBUTTON)
-			(event claimed: 1)
+		(if (== (event type?) mouseDown)
+			(event claimed: TRUE)
 		)
 	)
 )

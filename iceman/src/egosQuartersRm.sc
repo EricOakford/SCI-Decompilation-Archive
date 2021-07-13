@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 31)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use subMarine)
@@ -23,13 +23,21 @@
 )
 
 (local
-	[local0 55] = [0 0 0 0 0 0 0 0 {} {DESTROY} {COONTZ} {DEGREE} {COURSE} {SHIP} {LATITUDE} {RUSSIAN} {REDWOOD} {4100} {TACTIC} {WAR} {STEER} {DIRECTLY} {ARIZONA} {OCEAN} {} {destroy} {coontz} {degree} {course} {ship} {latitude} {russian} {redwood} {4100} {tactic} {war} {steer} {directly} {arizona} {ocean}]
+	local0 = [
+		0 0 0 0 0 0 0 0
+		{} {DESTROY} {COONTZ} {DEGREE} {COURSE} {SHIP} {LATITUDE}
+		{RUSSIAN} {REDWOOD} {4100} {TACTIC} {WAR} {STEER} {DIRECTLY}
+		{ARIZONA} {OCEAN}
+		{} {destroy} {coontz} {degree} {course} {ship} {latitude}
+		{russian} {redwood} {4100} {tactic} {war} {steer} {directly}
+		{arizona} {ocean}
+		]
 	local55
-	local56
-	local57
+	lightIsOn
+	drawerIsOpen
 	[local58 15]
 )
-(instance egosQuartersRm of Rm
+(instance egosQuartersRm of Room
 	(properties
 		picture 31
 		west 25
@@ -40,8 +48,8 @@
 	(method (init)
 		(super init:)
 		(HandsOff)
-		(= local56 (Random 0 1))
-		(ego init: observeControl: 2 view: 232 setPri: -1)
+		(= lightIsOn (Random 0 1))
+		(ego init: observeControl: cBLUE view: 232 setPri: -1)
 		(if (== prevRoomNum 23)
 			(ego
 				posn: 295 115
@@ -57,20 +65,20 @@
 				setMotion: MoveTo 72 119
 			)
 		)
-		(LoadMany 128 31 431)
+		(LoadMany VIEW 31 431)
 		(map init:)
 		(wallPic init:)
 		(addToPics doit:)
-		(entryDoor init: ignoreActors: 1 stopUpd:)
-		(bathDoor init: cel: 0 stopUpd: ignoreActors: 1)
-		(RemoveInvItems curRoomNum 14 13)
+		(entryDoor init: ignoreActors: TRUE stopUpd:)
+		(bathDoor init: cel: 0 stopUpd: ignoreActors: TRUE)
+		(RemoveInvItems curRoomNum iCodeBook iVernierCaliper)
 		(computer init:)
 		(credenza init: setPri: 5 stopUpd:)
-		(codeBook init: cel: (if (ego has: 14) 1 else 0))
+		(codeBook init: cel: (if (ego has: iCodeBook) 1 else 0))
 		(microMeterView init:)
 		(drawerView init: hide:)
 		(self
-			setRegions: 314
+			setRegions: rgSubmarine
 			setFeatures:
 				bunk
 				purpleThing
@@ -95,7 +103,7 @@
 	)
 	
 	(method (dispose)
-		(ego ignoreControl: 2)
+		(ego ignoreControl: cBLUE)
 		(super dispose:)
 	)
 	
@@ -103,8 +111,7 @@
 		(cond 
 			((super handleEvent: event))
 			((Said 'look[<at,around][/room,scene]')
-				(if
-				(and (> (ego x?) (bathDoor x?)) (< (ego y?) 120))
+				(if (and (> (ego x?) (bathDoor x?)) (< (ego y?) 120))
 					(Print 31 0)
 				else
 					(Print 31 1)
@@ -123,18 +130,18 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(bathDoor setCycle: End self)
+				(bathDoor setCycle: EndLoop self)
 			)
 			(2
 				(HandsOff)
 				(Print 31 3 #time 5 #at -1 20 #dispose)
-				(ego ignoreControl: 2 setMotion: MoveTo 245 115 self)
+				(ego ignoreControl: cBLUE setMotion: MoveTo 245 115 self)
 			)
 			(3
-				(bathDoor setCycle: Beg self)
+				(bathDoor setCycle: BegLoop self)
 			)
 			(4
-				(ego observeControl: 2)
+				(ego observeControl: cBLUE)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -152,7 +159,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (and (== (ego onControl: 1) 4) (not script))
+		(if (and (== (ego onControl: origin) cGREEN) (not script))
 			(HandsOff)
 			(self setScript: entryDoorScript)
 		)
@@ -164,11 +171,18 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 31 4))
-					((Said 'close') (ItIs))
+					((Said 'look[<at]')
+						(Print 31 4)
+					)
+					((Said 'close')
+						(ItIs)
+					)
 					((> (ego x?) (bathDoor x?)))
 					((GoToIfSaid self event 55 123 'open' 31 5))
-					((Said 'open') (HandsOff) (self setScript: entryDoorScript))
+					((Said 'open')
+						(HandsOff)
+						(self setScript: entryDoorScript)
+					)
 				)
 			)
 		)
@@ -176,11 +190,12 @@
 )
 
 (instance entryDoorScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0
+				(client setCycle: EndLoop self)
+			)
 			(1
 				(if (> (ego x?) (client x?))
 					(= register -1)
@@ -188,13 +203,13 @@
 					(= register 1)
 				)
 				(ego
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setPri: 8
 					setMotion: MoveTo (+ (ego x?) (* 35 register)) (ego y?) self
 				)
 			)
 			(2
-				(client setCycle: Beg self)
+				(client setCycle: BegLoop self)
 				(HandsOn)
 			)
 			(3
@@ -225,16 +240,24 @@
 			((Said '[/door<bathroom]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 31 6))
-					((Said 'close') (ItIs))
+					((Said 'look[<at]')
+						(Print 31 6)
+					)
+					((Said 'close')
+						(ItIs)
+					)
 					(
 						(and
 							(< (ego x?) x)
 							(GoToIfSaid self event stupidAvoider 3 'open' 31 5)
 						)
 					)
-					((and (>= (ego x?) x) (Said 'open')) (self setScript: bathDoorScript))
-					((Said 'open') (self setScript: bathDoorScript))
+					((and (>= (ego x?) x) (Said 'open'))
+						(self setScript: bathDoorScript)
+					)
+					((Said 'open')
+						(self setScript: bathDoorScript)
+					)
 				)
 			)
 		)
@@ -246,12 +269,16 @@
 )
 
 (instance egosInBathRoom of Script
-	(properties)
-	
+
 	(method (handleEvent event)
 		(cond 
-			((Said 'look[<at,around][/room]') (Print 31 7) (Print 31 8))
-			((Said 'look/sink') (Print 31 9))
+			((Said 'look[<at,around][/room]')
+				(Print 31 7)
+				(Print 31 8)
+			)
+			((Said 'look/sink')
+				(Print 31 9)
+			)
 			(
 				(or
 					(Said 'use/sink')
@@ -260,17 +287,33 @@
 				)
 				(Print 31 10)
 			)
-			((Said 'look/mirror') (Print 31 11))
-			((Said 'comb/hair') (Print 31 12))
-			((Said 'look/shower') (Print 31 13))
-			((Said '(turn<on),use,get/shower') (Print 31 14))
+			((Said 'look/mirror')
+				(Print 31 11)
+			)
+			((Said 'comb/hair')
+				(Print 31 12)
+			)
+			((Said 'look/shower')
+				(Print 31 13)
+			)
+			((Said '(turn<on),use,get/shower')
+				(Print 31 14)
+			)
 			((Said 'look/light')
 				(Print 31 15)
 				(Print 31 16)
 				(Print 31 17)
-				(if local56 (Print 31 18) else (Print 31 19))
+				(if lightIsOn
+					(Print 31 18)
+				else
+					(Print 31 19)
+				)
 			)
-			((Said 'look/toilet') (Print 31 15) (Print 31 16) (Print 31 20))
+			((Said 'look/toilet')
+				(Print 31 15)
+				(Print 31 16)
+				(Print 31 20)
+			)
 			((Said 'flush[/toilet]')
 				(cond 
 					(local55
@@ -280,17 +323,38 @@
 						(Print 31 22)
 						(theGame changeScore: -3)
 					)
-					(local56 (Print 31 23) (= local56 (Random 0 1)) (= local55 1))
-					(else (Print 31 24) (= local56 (Random 0 1)))
+					(lightIsOn
+						(Print 31 23)
+						(= lightIsOn (Random 0 1))
+						(= local55 1)
+					)
+					(else
+						(Print 31 24)
+						(= lightIsOn (Random 0 1))
+					)
 				)
 			)
-			((Said 'sit,use/toilet,bathroom') (Print 31 25))
-			((or (Said 'leak') (Said 'get//leak')) (Print 31 26))
-			((or (Said 'crap') (Said 'get//crap')) (Print 31 27))
-			((Said 'get/*') (Print 31 28))
-			((Said 'look/*') (Print 31 29))
-			((Said 'open[/door]>') (bathDoor handleEvent: event))
-			((Said '*') (Print 31 30))
+			((Said 'sit,use/toilet,bathroom')
+				(Print 31 25)
+			)
+			((or (Said 'leak') (Said 'get//leak'))
+				(Print 31 26)
+			)
+			((or (Said 'crap') (Said 'get//crap'))
+				(Print 31 27)
+			)
+			((Said 'get/*')
+				(Print 31 28)
+			)
+			((Said 'look/*')
+				(Print 31 29)
+			)
+			((Said 'open[/door]>')
+				(bathDoor handleEvent: event)
+			)
+			((Said '*')
+				(Print 31 30)
+			)
 		)
 	)
 )
@@ -303,13 +367,12 @@
 )
 
 (instance bathDoorScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(client setCycle: End self)
+				(client setCycle: EndLoop self)
 			)
 			(1
 				(= register (< (ego x?) (client x?)))
@@ -319,10 +382,10 @@
 				)
 			)
 			(2
-				(client setCycle: Beg client)
+				(client setCycle: BegLoop client)
 				(HandsOn)
 				(ego
-					observeControl: 2 -32768
+					observeControl: cBLUE cWHITE
 					setScript: (if (> (ego x?) (client x?)) egosInBathRoom else 0)
 				)
 				(self dispose:)
@@ -345,20 +408,27 @@
 			((Said '[/book[<code,decode]]>')
 				(cond 
 					((Said 'read,open')
-						(if (ego has: 14)
-							((inventory at: 14) showSelf:)
+						(if (ego has: iCodeBook)
+							((inventory at: iCodeBook) showSelf:)
 						else
-							(event claimed: 0)
+							(event claimed: FALSE)
 						)
 					)
 					((not (credenza cel?)))
-					(
-					(and cel (not (event modifiers?)) (Said 'look[<at]')) (event claimed: 0))
+					((and cel (not (event modifiers?)) (Said 'look[<at]'))
+						(event claimed: FALSE)
+					)
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (if cel (Print 31 31) else (Print 31 32)))
+					((Said 'look[<at]')
+						(if cel
+							(Print 31 31)
+						else
+							(Print 31 32)
+						)
+					)
 					((GoToIfSaid self event 235 115 'get' 31 5))
 					((Said 'get')
-						(if (IsInvItemInRoom curRoomNum 14)
+						(if (IsInvItemInRoom curRoomNum iCodeBook)
 							(ego setScript: getBookScript)
 						else
 							(AlreadyTook)
@@ -371,19 +441,18 @@
 )
 
 (instance getBookScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 131 loop: 0 setCycle: End self)
+				(ego view: 131 loop: 0 setCycle: EndLoop self)
 			)
 			(1
 				(Print 31 33)
-				(ego get: 14)
+				(ego get: iCodeBook)
 				(codeBook cel: 1 forceUpd:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(2
 				(HandsOn)
@@ -394,26 +463,25 @@
 )
 
 (instance putBookScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if (not (credenza cel?))
-					(credenza setCycle: End self)
+					(credenza setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
 			)
 			(1
 				(HandsOff)
-				(ego view: 131 loop: 0 setCycle: End self)
+				(ego view: 131 loop: 0 setCycle: EndLoop self)
 			)
 			(2
 				(Print 31 34)
-				(ego put: 14 curRoomNum)
+				(ego put: iCodeBook curRoomNum)
 				(codeBook cel: 0 forceUpd:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(HandsOn)
@@ -430,14 +498,16 @@
 		view 31
 		cel 1
 		priority 9
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
 			((TurnIfSaid self event 'look[<at]/painting'))
-			((Said 'look[<at][/wall,painting]') (Print 31 35))
+			((Said 'look[<at][/wall,painting]')
+				(Print 31 35)
+			)
 		)
 	)
 )
@@ -453,8 +523,12 @@
 		(cond 
 			((super handleEvent: event))
 			((TurnIfSaid self event 'look[<at]/map'))
-			((Said 'look[<at][/map]') (Print 31 36))
-			((Said 'move/map,painting') (DontNeedTo))
+			((Said 'look[<at][/map]')
+				(Print 31 36)
+			)
+			((Said 'move/map,painting')
+				(DontNeedTo)
+			)
 		)
 	)
 )
@@ -472,10 +546,13 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(TurnIfSaid self event 'look[<at]/thing[<purple]'))
-			((Said 'look[<at]/thing<purple') (Print 31 37))
-			((Said 'look[<at][/thing]') (Print 31 38))
+			((TurnIfSaid self event 'look[<at]/thing[<purple]'))
+			((Said 'look[<at]/thing<purple')
+				(Print 31 37)
+			)
+			((Said 'look[<at][/thing]')
+				(Print 31 38)
+			)
 		)
 	)
 )
@@ -494,7 +571,9 @@
 		(cond 
 			((super handleEvent: event))
 			((TurnIfSaid self event 'look[<at]/desk'))
-			((Said 'look[<at][/desk]') (Print 31 39))
+			((Said 'look[<at][/desk]')
+				(Print 31 39)
+			)
 		)
 	)
 )
@@ -513,9 +592,15 @@
 		(cond 
 			((super handleEvent: event))
 			((TurnIfSaid self event 'look[<at]/bunk,bed'))
-			((Said 'look[<at][/bunk,bed]') (Print 31 40))
-			((Said 'look<below/bunk,bed') (Print 31 41))
-			((Said 'sit[<on,down][/bed,bunk]') (Print 31 42))
+			((Said 'look[<at][/bunk,bed]')
+				(Print 31 40)
+			)
+			((Said 'look<below/bunk,bed')
+				(Print 31 41)
+			)
+			((Said 'sit[<on,down][/bed,bunk]')
+				(Print 31 42)
+			)
 		)
 	)
 )
@@ -539,18 +624,21 @@
 					((Said 'look[<at,in]')
 						(Print 31 43)
 						(cond 
-							(
-							(or (> (ego distanceTo: self) 40) (not local57)) 0)
-							((& (drawerView signal?) $0008)
+							((or (> (ego distanceTo: self) 40) (not drawerIsOpen)) 0)
+							((& (drawerView signal?) hideActor)
 								(drawerView show:)
-								(if (IsInvItemInRoom curRoomNum 13)
+								(if (IsInvItemInRoom curRoomNum iVernierCaliper)
 									(Print 31 44)
 								else
 									(Print 31 45)
 								)
 							)
-							((IsInvItemInRoom curRoomNum 13) (Print 31 44))
-							(else (Print 31 45))
+							((IsInvItemInRoom curRoomNum iVernierCaliper)
+								(Print 31 44)
+							)
+							(else
+								(Print 31 45)
+							)
 						)
 					)
 					((GoToIfSaid self event 239 120 0 31 5))
@@ -558,18 +646,18 @@
 						(ego heading: 0)
 						((ego looper?) doit: ego (ego heading?))
 						(drawerView show:)
-						(if (IsInvItemInRoom curRoomNum 13)
+						(if (IsInvItemInRoom curRoomNum iVernierCaliper)
 							(Print 31 46)
 						else
 							(Print 31 47)
 						)
-						(= local57 1)
+						(= drawerIsOpen TRUE)
 					)
 					((Said 'close')
 						(ego heading: 0)
 						((ego looper?) doit: ego (ego heading?))
 						(drawerView hide:)
-						(= local57 0)
+						(= drawerIsOpen FALSE)
 					)
 				)
 			)
@@ -586,20 +674,22 @@
 	)
 	
 	(method (doit)
-		(if (CantBeSeen self ego) (self hide:))
+		(if (CantBeSeen self ego)
+			(self hide:)
+		)
 		(super doit:)
 	)
 	
 	(method (hide)
 		(super hide: &rest)
-		(= signal (| signal $0100))
+		(|= signal staticView)
 		(microMeterView hide:)
 	)
 	
 	(method (show)
 		(super show: &rest)
-		(= signal (& signal $feff))
-		(if (IsInvItemInRoom curRoomNum 13)
+		(&= signal (~ staticView))
+		(if (IsInvItemInRoom curRoomNum iVernierCaliper)
 			(microMeterView show:)
 		)
 	)
@@ -617,23 +707,22 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((not local57))
+			((not drawerIsOpen))
 			((TurnIfSaid self event 'look[<at]/caliper'))
-			(
-			(GoToIfSaid self event 239 120 'get,adjust/caliper' 31 5))
+			((GoToIfSaid self event 239 120 'get,adjust/caliper' 31 5))
 			((Said 'get/caliper')
-				(if (IsInvItemInRoom curRoomNum 13)
+				(if (IsInvItemInRoom curRoomNum iVernierCaliper)
 					(self hide:)
-					(ego get: 13)
-					(SolvePuzzle subMarine 406 1 1)
+					(ego get: iVernierCaliper)
+					(SolvePuzzle subMarine #pointFlag1 $0001 1)
 				else
 					(AlreadyTook)
 				)
 			)
 			((Said 'adjust/caliper[<in][/drawer]')
-				(if (ego has: 13)
-					(ego put: 13 curRoomNum)
-					(if (not (& (drawerView signal?) $0008)) (self show:))
+				(if (ego has: iVernierCaliper)
+					(ego put: iVernierCaliper curRoomNum)
+					(if (not (& (drawerView signal?) hideActor)) (self show:))
 				else
 					(DontHave)
 				)
@@ -654,28 +743,47 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(Said '[/bookcase,bookcase,shelf,briefcase<[book]]>')
+			((Said '[/bookcase,bookcase,shelf,briefcase<[book]]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
 					((Said 'look[<at,in]')
 						(cond 
-							((not cel) (Print 31 48))
-							((ego has: 14) (Print 31 31))
-							(else (Print 31 32))
+							((not cel)
+								(Print 31 48)
+							)
+							((ego has: iCodeBook)
+								(Print 31 31)
+							)
+							(else
+								(Print 31 32)
+							)
 						)
 					)
 					((GoToIfSaid self event 235 115 0 31 5))
-					((Said 'open') (if cel (ItIs) else (self setCycle: End self)))
-					((Said 'close') (if cel (self setCycle: Beg self) else (ItIs)))
+					((Said 'open')
+						(if cel
+							(ItIs)
+						else
+							(self setCycle: EndLoop self)
+						)
+					)
+					((Said 'close')
+						(if cel
+							(self setCycle: BegLoop self)
+						else
+							(ItIs)
+						)
+					)
 				)
 			)
 			((Said '/book>')
 				(cond 
-					((not (ego has: 14)))
+					((not (ego has: iCodeBook)))
 					((TurnIfSaid self event 'adjust'))
 					((GoToIfSaid self event 235 115 'adjust' 31 5))
-					((Said 'adjust') (ego setScript: putBookScript))
+					((Said 'adjust')
+						(ego setScript: putBookScript)
+					)
 				)
 			)
 		)
@@ -700,7 +808,9 @@
 			((Said '[/computer]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 31 49))
+					((Said 'look[<at]')
+						(Print 31 49)
+					)
 					((GoToIfSaid self event 232 115 0 31 5))
 					((Said 'use,(turn<on)/*')
 						(if script
@@ -711,7 +821,9 @@
 					)
 				)
 			)
-			((Said 'decode') (Print 31 51))
+			((Said 'decode')
+				(Print 31 51)
+			)
 		)
 	)
 )
@@ -732,9 +844,15 @@
 			((Said '[/closet,cabinet]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 31 52))
-					((Said 'unlock,open,(look<in)') (Print 31 53))
-					((Said 'close') (ItIs))
+					((Said 'look[<at]')
+						(Print 31 52)
+					)
+					((Said 'unlock,open,(look<in)')
+						(Print 31 53)
+					)
+					((Said 'close')
+						(ItIs)
+					)
 				)
 			)
 		)
@@ -757,8 +875,12 @@
 			((Said '[/couch]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 31 54))
-					((Said 'sit[<down,on][/couch]') (Print 31 42))
+					((Said 'look[<at]')
+						(Print 31 54)
+					)
+					((Said 'sit[<down,on][/couch]')
+						(Print 31 42)
+					)
 				)
 			)
 		)
@@ -781,8 +903,12 @@
 			((Said '[/table]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 31 55))
-					((Said 'look<below') (Print 31 56))
+					((Said 'look[<at]')
+						(Print 31 55)
+					)
+					((Said 'look<below')
+						(Print 31 56)
+					)
 				)
 			)
 		)
@@ -805,9 +931,15 @@
 			((Said '[/dresser]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 31 57))
-					((Said 'open') (DontNeedTo))
-					((Said 'close') (ItIs))
+					((Said 'look[<at]')
+						(Print 31 57)
+					)
+					((Said 'open')
+						(DontNeedTo)
+					)
+					((Said 'close')
+						(ItIs)
+					)
 				)
 			)
 		)

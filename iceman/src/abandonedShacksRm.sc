@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 75)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use GoToSaid)
@@ -16,18 +16,17 @@
 (local
 	local0
 )
-(procedure (localproc_000e)
+(procedure (IsInside)
 	(return
-		(if
-		(and (== (ego onControl: 1) 2) (< (ego x?) 115))
-			1
+		(if (and (== (ego onControl: origin) cBLUE) (< (ego x?) 115))
+			TRUE
 		else
-			0
+			FALSE
 		)
 	)
 )
 
-(instance abandonedShacksRm of Rm
+(instance abandonedShacksRm of Room
 	(properties
 		picture 75
 		east 74
@@ -77,38 +76,80 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room]') (if (localproc_000e) (Print 75 0) else (Print 75 1)))
-			((Said 'move,get/box') (if (localproc_000e) (Print 75 2) else (CantSee)))
+			((Said 'look[<at,around][/room]')
+				(if (IsInside)
+					(Print 75 0)
+				else
+					(Print 75 1)
+				)
+			)
+			((Said 'move,get/box')
+				(if (IsInside)
+					(Print 75 2)
+				else
+					(CantSee)
+				)
+			)
 			((Said 'look<in/box')
 				(cond 
-					((!= local0 1) (Print 75 3))
-					((== (ego view?) 84) (Print 75 4))
-					(else (Print 75 5))
+					((!= local0 1)
+						(Print 75 3)
+					)
+					((== (ego view?) 84)
+						(Print 75 4)
+					)
+					(else
+						(Print 75 5)
+					)
 				)
 			)
 			((Said 'examine,look,open[<at]/box')
 				(cond 
-					((not (localproc_000e)) (CantSee))
-					((or (== local0 1) (== (ego view?) 84)) (Print 75 6))
-					((== (ego onControl: 1) 2) (Print 75 7) (= local0 1))
+					((not (IsInside))
+						(CantSee)
+					)
+					((or (== local0 1) (== (ego view?) 84))
+						(Print 75 6)
+					)
+					((== (ego onControl: origin) cBLUE)
+						(Print 75 7)
+						(= local0 1)
+					)
 				)
 			)
 			((Said 'look[<at]/clothes')
 				(cond 
-					((or (not (localproc_000e)) (== local0 0)) (CantSee))
-					((== (ego view?) 84) (Print 75 8))
-					(else (Print 75 9))
+					((or (not (IsInside)) (== local0 0))
+						(CantSee)
+					)
+					((== (ego view?) 84)
+						(Print 75 8)
+					)
+					(else
+						(Print 75 9)
+					)
 				)
 			)
 			(
 			(Said 'get,change,wear,(adjust<on)/clothes,disguise')
 				(cond 
-					((== (ego view?) 84) (DontNeedTo))
-					((or (not (localproc_000e)) (== local0 0)) (CantSee))
+					((== (ego view?) 84)
+						(DontNeedTo)
+					)
+					((or (not (IsInside)) (== local0 0))
+						(CantSee)
+					)
 					(else
 						(Print 75 10)
-						(if (ego has: 3) (Print 75 11))
-						(ego put: 3 put: 4 put: 5 view: 84)
+						(if (ego has: iFish)
+							(Print 75 11)
+						)
+						(ego
+							put: iFish
+							put: iCapsule
+							put: iMap
+							view: 84
+						)
 						(theGame changeScore: 2)
 					)
 				)
@@ -120,32 +161,46 @@
 					(Print 75 12)
 				)
 			)
-			((Said 'rip,destroy/map') (DontNeedTo))
+			((Said 'rip,destroy/map')
+				(DontNeedTo)
+			)
 			((Said 'get/map')
 				(cond 
-					((ego has: 5) (Print 75 13))
-					((localproc_000e) (Print 75 14))
-					(else (CantSee))
+					((ego has: iMap)
+						(Print 75 13)
+					)
+					((IsInside)
+						(Print 75 14)
+					)
+					(else
+						(CantSee)
+					)
 				)
 			)
 			((Said 'get/fish')
 				(cond 
-					((ego has: 3) (Print 75 15))
-					((localproc_000e) (Print 75 14))
-					(else (CantSee))
+					((ego has: iFish)
+						(Print 75 15)
+					)
+					((IsInside)
+						(Print 75 14)
+					)
+					(else
+						(CantSee)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance shackRock of PV
+(instance shackRock of PicView
 	(properties
 		y 135
 		x 233
 		view 75
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -163,7 +218,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 75 16))
+					((Said 'look[<at]')
+						(Print 75 16)
+					)
 				)
 			)
 		)
@@ -186,8 +243,12 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 75 17))
-					((Said '(climb,look<(in,through)),open') (BadIdea))
+					((Said 'look[<at]')
+						(Print 75 17)
+					)
+					((Said '(climb,look<(in,through)),open')
+						(BadIdea)
+					)
 				)
 			)
 		)
@@ -210,9 +271,15 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 75 18))
-					((Said 'open') (Print 75 19))
-					((Said 'close') (Print 75 20))
+					((Said 'look[<at]')
+						(Print 75 18)
+					)
+					((Said 'open')
+						(Print 75 19)
+					)
+					((Said 'close')
+						(Print 75 20)
+					)
 				)
 			)
 		)
@@ -235,9 +302,15 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 75 21))
-					((Said 'open') (Print 75 22))
-					((Said 'close') (Print 75 23))
+					((Said 'look[<at]')
+						(Print 75 21)
+					)
+					((Said 'open')
+						(Print 75 22)
+					)
+					((Said 'close')
+						(Print 75 23)
+					)
 				)
 			)
 		)

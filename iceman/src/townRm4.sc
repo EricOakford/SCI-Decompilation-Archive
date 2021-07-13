@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 83)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use GoToSaid)
@@ -12,7 +12,7 @@
 	townRm4 0
 )
 
-(instance townRm4 of Rm
+(instance townRm4 of Room
 	(properties
 		picture 83
 		south 79
@@ -20,7 +20,7 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 82)
+		(Load VIEW 82)
 		(super init:)
 		(switch prevRoomNum
 			(south
@@ -66,33 +66,35 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said '[<around][/room,town,scene]') (Print 83 0))
+			((Said '[<around][/room,town,scene]')
+				(Print 83 0)
+			)
 		)
 	)
 )
 
-(instance wall1 of PV
+(instance wall1 of PicView
 	(properties
 		y 69
 		x 21
 		view 82
 		priority 3
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 )
 
-(instance wall2 of PV
+(instance wall2 of PicView
 	(properties
 		y 69
 		x 87
 		view 82
 		cel 1
 		priority 3
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 )
 
-(instance wall3 of PV
+(instance wall3 of PicView
 	(properties
 		y 68
 		x 85
@@ -100,18 +102,18 @@
 		loop 1
 		cel 1
 		priority 0
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 )
 
-(instance wall4 of PV
+(instance wall4 of PicView
 	(properties
 		y 67
 		x 7
 		view 82
 		loop 1
 		priority 0
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 )
 
@@ -130,7 +132,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 83 1))
+					((Said 'look[<at]')
+						(Print 83 1)
+					)
 				)
 			)
 		)
@@ -153,8 +157,12 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 83 2))
-					((Said 'open,(look,climb<(in,through))') (BadIdea))
+					((Said 'look[<at]')
+						(Print 83 2)
+					)
+					((Said 'open,(look,climb<(in,through))')
+						(BadIdea)
+					)
 				)
 			)
 		)
@@ -175,7 +183,9 @@
 			((Said '[/arch]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 83 3))
+					((Said 'look[<at]')
+						(Print 83 3)
+					)
 				)
 			)
 		)
@@ -197,7 +207,9 @@
 			((Said '[/roof]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 83 4))
+					((Said 'look[<at]')
+						(Print 83 4)
+					)
 				)
 			)
 		)
@@ -220,8 +232,12 @@
 			((Said '[/door]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 83 5))
-					((Said 'open,close,knock') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 83 5)
+					)
+					((Said 'open,close,knock')
+						(DontNeedTo)
+					)
 				)
 			)
 		)

@@ -45,7 +45,7 @@
 	(= temp1 (& (= thisDate (GetTime SYSDATE)) $001f))
 	(Printf 301 22
 		(& (>> thisDate $0005) $000f)
-		(+ (if (< temp1 29) global142 else 0) thisDate)
+		(+ (if (< temp1 29) metAgentStacy else 0) thisDate)
 		(- (>> thisDate $0009) 60)
 	)
 )

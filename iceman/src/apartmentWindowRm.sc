@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 85)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tunisia)
@@ -16,7 +16,7 @@
 	apartmentWindowRm 0
 )
 
-(instance apartmentWindowRm of Rm
+(instance apartmentWindowRm of Room
 	(properties
 		picture 85
 		horizon 1
@@ -25,7 +25,7 @@
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 81 487 787)
+		(LoadMany VIEW 81 487 787)
 		(self setRegions: 310)
 		(globalSound
 			number: 63
@@ -43,7 +43,7 @@
 				(== (tunisia bagTimer?) 10000)
 				(not (& (tunisia flags?) $0002))
 			)
-			(LoadMany 128 184 185 485)
+			(LoadMany VIEW 184 185 485)
 			(van init:)
 			(vanDoor init: setScript: roomScript)
 		else
@@ -54,22 +54,32 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room]') (Print 85 0))
-			((Said 'look/door') (Print 85 1))
-			((Said 'look/guard') (Print 85 2))
-			((Said 'shoot/guard') (Print 85 3))
-			((Said 'exit') (globalSound fade:) (curRoom newRoom: 84))
+			((Said 'look[<at,around][/room]')
+				(Print 85 0)
+			)
+			((Said 'look/door')
+				(Print 85 1)
+			)
+			((Said 'look/guard')
+				(Print 85 2)
+			)
+			((Said 'shoot/guard')
+				(Print 85 3)
+			)
+			((Said 'exit')
+				(globalSound fade:)
+				(curRoom newRoom: 84)
+			)
 		)
 	)
 )
 
 (instance lookScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(= seconds 10)
 			)
 			(1
@@ -81,7 +91,6 @@
 )
 
 (instance roomScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -106,7 +115,7 @@
 				(van stopUpd:)
 				(vanDoor
 					setPri: (+ (van priority?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -114,7 +123,7 @@
 				((ScriptID 310 4)
 					view: 184
 					loop: 3
-					setLoop: Grooper
+					setLoop: GradualLooper
 					posn: (- (van x?) 8) (+ (van y?) 3)
 					setPri: (+ (van priority?) 1)
 					illegalBits: 0
@@ -161,7 +170,7 @@
 					setMotion: MoveTo ((ScriptID 310 4) x?) (- ((ScriptID 310 4) y?) 3)
 				)
 				(guardRight
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setCycle: Walk
 					setMotion:
@@ -181,11 +190,11 @@
 					view: 485
 					loop: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13
-				(guardRight setCycle: Beg self)
+				(guardRight setCycle: BegLoop self)
 			)
 			(14
 				(guardRight
@@ -194,7 +203,7 @@
 					setCycle: Walk
 					loop: 3
 				)
-				(door setCycle: End)
+				(door setCycle: EndLoop)
 				((ScriptID 310 4)
 					setMotion:
 						MoveTo
@@ -211,10 +220,10 @@
 			)
 			(16
 				(guardRight dispose:)
-				(door setCycle: Beg self)
+				(door setCycle: BegLoop self)
 			)
 			(17
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= seconds 5)
 			)
 			(18
@@ -225,24 +234,24 @@
 	)
 )
 
-(instance arch of PV
+(instance arch of PicView
 	(properties
 		y 86
 		x 187
 		view 81
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance guardLeft of PV
+(instance guardLeft of PicView
 	(properties
 		y 95
 		x 154
 		view 487
 		loop 2
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -251,11 +260,11 @@
 		y 86
 		x 155
 		view 81
-		signal $4001
+		signal (| ignrAct stopUpdOn)
 	)
 )
 
-(instance van of Act
+(instance van of Actor
 	(properties
 		y 112
 		x 329
@@ -275,7 +284,7 @@
 	)
 )
 
-(instance guardRight of Act
+(instance guardRight of Actor
 	(properties
 		y 95
 		x 223

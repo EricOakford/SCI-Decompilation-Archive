@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 56)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use scubaRg)
@@ -17,7 +17,7 @@
 (local
 	local0 =  1
 )
-(instance caveEntranceRm of Rm
+(instance caveEntranceRm of Room
 	(properties
 		picture 56
 		north 999
@@ -61,15 +61,15 @@
 		(addToPics doit:)
 		(if
 			(and
-				(not (ego has: 4))
-				(not ((inventory at: 4) ownedBy: 55))
+				(not (ego has: iRumBottle))
+				(not ((inventory at: iRumBottle) ownedBy: 55))
 			)
 			(bottle init: cel: (if (< numColors 7) 2 else 1))
 		)
 	)
 	
 	(method (doit)
-		(if (and local0 (== (ego onControl: 1) 16))
+		(if (and local0 (== (ego onControl: origin) cRED))
 			(ego setScript: goInCaveScript)
 		)
 		(super doit:)
@@ -78,7 +78,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,for,around][/room,cave]') (Print 56 0))
+			((Said 'look[<at,for,around][/room,cave]')
+				(Print 56 0)
+			)
 		)
 	)
 	
@@ -96,19 +98,20 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at]/cave') (Print 56 1))
+			((Said 'look[<at]/cave')
+				(Print 56 1)
+			)
 		)
 	)
 )
 
 (instance goInCaveScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreControl: -32768 setMotion: MoveTo 50 83 self)
+				(ego ignoreControl: cWHITE setMotion: MoveTo 50 83 self)
 			)
 			(1
 				(HandsOn)
@@ -137,7 +140,7 @@
 						(Said '/bottle,object,thing')
 						(InRect 200 85 300 125 ego)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(Print 56 2)
 				)
 			)
@@ -153,7 +156,6 @@
 )
 
 (instance getBottle of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -161,10 +163,18 @@
 				(HandsOff)
 				(ego illegalBits: 0)
 				(cond 
-					((InRect 160 85 263 102 ego) (ego setMotion: MoveTo 200 94 self))
-					((InRect 263 85 300 102 ego) (ego setMotion: MoveTo 275 94 self))
-					((InRect 160 102 263 125 ego) (ego setMotion: MoveTo 200 110 self))
-					(else (ego setMotion: MoveTo 275 110 self))
+					((InRect 160 85 263 102 ego)
+						(ego setMotion: MoveTo 200 94 self)
+					)
+					((InRect 263 85 300 102 ego)
+						(ego setMotion: MoveTo 275 94 self)
+					)
+					((InRect 160 102 263 125 ego)
+						(ego setMotion: MoveTo 200 110 self)
+					)
+					(else
+						(ego setMotion: MoveTo 275 110 self)
+					)
 				)
 			)
 			(1
@@ -175,7 +185,7 @@
 				)
 			)
 			(2
-				(ego get: 4)
+				(ego get: iRumBottle)
 				(if (< 102 (ego y?))
 					(ego setMotion: MoveTo 263 94 self)
 				else
@@ -185,11 +195,14 @@
 			(3
 				(bottle dispose:)
 				(ego
-					illegalBits: -32768
+					illegalBits: cWHITE
 					setMotion: MoveTo 155 (ego y?) self
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )

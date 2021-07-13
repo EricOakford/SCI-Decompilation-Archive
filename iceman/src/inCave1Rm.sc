@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 59)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Game)
@@ -9,7 +9,7 @@
 	inCave1Rm 0
 )
 
-(instance inCave1Rm of Rm
+(instance inCave1Rm of Room
 	(properties
 		picture 59
 		south 56
@@ -19,7 +19,9 @@
 		(super init:)
 		(ego init:)
 		(self setRegions: 304)
-		(if (== prevRoomNum south) (ego posn: 143 133 loop: 3))
+		(if (== prevRoomNum south)
+			(ego posn: 143 133 loop: 3)
+		)
 	)
 	
 	(method (handleEvent event)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 33)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use subMarine)
@@ -31,24 +31,36 @@
 )
 
 (local
-	[local0 12] = [198 196 193 192 189 189 190 189 190 188 187 187]
-	[local12 12] = [16 17 17 18 19 19 21 22 24 26 28 28]
-	local24
+	missileX = [198 196 193 192 189 189 190 189 190 188 187 187]
+	missileY = [16 17 17 18 19 19 21 22 24 26 28 28]
+	talkedToTorpedoMan
 )
-(procedure (localproc_2222)
+(procedure (CheckForExplosive)
 	(explosivesDoor stopUpd:)
 	(cond 
-		((and (not (ego has: 3)) (== numFlares 0)) (Print 33 68))
-		((and (not (ego has: 3)) (== numFlares 4)) (Print 33 69))
-		((not (ego has: 3)) (Print 33 70))
-		((== numFlares 0) (Print 33 71))
-		((== numFlares 4) (Print 33 72))
-		(else (Print 33 73))
+		((and (not (ego has: iExplosive)) (== numFlares 0))
+			(Print 33 68)
+		)
+		((and (not (ego has: iExplosive)) (== numFlares 4))
+			(Print 33 69)
+		)
+		((not (ego has: iExplosive))
+			(Print 33 70)
+		)
+		((== numFlares 0)
+			(Print 33 71)
+		)
+		((== numFlares 4)
+			(Print 33 72)
+		)
+		(else
+			(Print 33 73)
+		)
 	)
 	(HandsOn)
 )
 
-(instance torpedoRm of Rm
+(instance torpedoRm of Room
 	(properties
 		picture 33
 		west 42
@@ -57,26 +69,9 @@
 	(method (init)
 		(super init:)
 		(User x: 13 y: 140)
-		(LoadMany
-			132
-			13
-			213
-			19
-			219
-			33
-			233
-			87
-			287
-			86
-			286
-			48
-			248
-			85
-			285
-			88
-			288
-			24
-			224
+		(LoadMany SOUND
+			13 213 19 219 33 233 87 287 86 286 48
+			248 85 285 88 288 24 224
 		)
 		(entryDoor init:)
 		(missileTube init:)
@@ -94,7 +89,7 @@
 				loop: 3
 				heading: 0
 				setCycle: Walk
-				setLoop: Grooper
+				setLoop: GradualLooper
 				setScript: torpedoManScript
 			)
 		)
@@ -129,11 +124,11 @@
 		(ego
 			init:
 			illegalBits: 0
-			ignoreActors: 0
+			ignoreActors: FALSE
 			view: 232
 			posn: 9 52
 		)
-		(doorScript register: 1)
+		(doorScript register: TRUE)
 		(if (& (subMarine roomFlags?) $0800)
 			(conveyorBelt posn: 91 93 setPri: 8 setScript: 0 stopUpd:)
 			(conveyorStand posn: 97 117 setPri: 7 stopUpd:)
@@ -148,18 +143,25 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,scene]') (Print 33 0) (Print 33 1) (Print 33 2) (Print 33 3))
-			((Said 'look/floor') (Print 33 4))
+			((Said 'look[<at,around][/room,scene]')
+				(Print 33 0)
+				(Print 33 1)
+				(Print 33 2)
+				(Print 33 3)
+			)
+			((Said 'look/floor')
+				(Print 33 4)
+			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom nRoom)
 		(User x: -1 y: -1)
-		(super newRoom: newRoomNumber)
+		(super newRoom: nRoom)
 	)
 )
 
-(instance torpedoMan of Act
+(instance torpedoMan of Actor
 	(properties
 		y 55
 		x 116
@@ -172,15 +174,19 @@
 			((Said '[/man<old]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 5))
+					((Said 'look[<at]')
+						(Print 33 5)
+					)
 					((GoToIfSaid self event self 30 0 33 6))
-					((Said 'ask,get/name[<man]') (Print 33 7))
+					((Said 'ask,get/name[<man]')
+						(Print 33 7)
+					)
 					((Said 'address')
-						(if local24
+						(if talkedToTorpedoMan
 							(Print 33 8)
 						else
 							(Print 33 9)
-							(= local24 1)
+							(= talkedToTorpedoMan TRUE)
 						)
 					)
 				)
@@ -195,8 +201,7 @@
 )
 
 (instance torpedoManScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 3))
@@ -220,12 +225,11 @@
 )
 
 (instance saltOutScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(Print 33 11 #time 5 #dispose)
 				(torpedoMan
 					illegalBits: 0
@@ -245,7 +249,9 @@
 				(entryDoor setMotion: MoveTo 0 58 self)
 			)
 			(4
-				(if (not (conveyorBelt script?)) (HandsOn))
+				(if (not (conveyorBelt script?))
+					(HandsOn)
+				)
 				(entryDoor stopUpd:)
 				(torpedoMan cue:)
 				(self dispose:)
@@ -270,29 +276,35 @@
 			((Said '[/control,panel]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 12))
+					((Said 'look[<at]')
+						(Print 33 12)
+					)
 				)
 			)
 			((Said '/button>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 13))
+					((Said 'look[<at]')
+						(Print 33 13)
+					)
 					((GoToIfSaid self event 261 84 'push,press' 33 6))
-					((Said 'push,press,(turn<on)') (conveyorBelt setScript: cycleEquipment))
+					((Said 'push,press,(turn<on)')
+						(conveyorBelt setScript: cycleEquipment)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance conveyorBelt of Act
+(instance conveyorBelt of Actor
 	(properties
 		y 93
 		x 91
 		view 233
 		loop 5
 		priority 8
-		signal $4811
+		signal (| ignrAct fixedLoop fixPriOn stopUpdOn)
 		illegalBits $0000
 	)
 	
@@ -305,30 +317,39 @@
 				)
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 14))
+					((Said 'look[<at]')
+						(Print 33 14)
+					)
 					(
-						(GoToIfSaid
-							self
-							event
-							261
-							84
+						(GoToIfSaid self event 261 84
 							'cycle,check,begin,(turn<on)'
-							33
-							6
+							33 6
 						)
 					)
-					((Said 'cycle,check,begin,(turn<on)') (conveyorBelt setScript: cycleEquipment))
+					((Said 'cycle,check,begin,(turn<on)')
+						(conveyorBelt setScript: cycleEquipment)
+					)
 					((GoToIfSaid self event 105 95 0 33 6))
 					((Said 'measure')
 						(HandsOff)
 						(ego heading: 180)
 						((ego looper?) doit: ego (ego heading?) self)
 						(cond 
-							((not (& (subMarine roomFlags?) $0800)) (Print 33 15))
-							((not (ego has: 13)) (Print 33 16))
-							((not (& (subMarine roomFlags?) $4000)) (Print 33 17))
-							((not (& (subMarine roomFlags?) $1000)) (Print 33 18))
-							(else (Print 33 19))
+							((not (& (subMarine roomFlags?) $0800))
+								(Print 33 15)
+							)
+							((not (ego has: iVernierCaliper))
+								(Print 33 16)
+							)
+							((not (& (subMarine roomFlags?) $4000))
+								(Print 33 17)
+							)
+							((not (& (subMarine roomFlags?) $1000))
+								(Print 33 18)
+							)
+							(else
+								(Print 33 19)
+							)
 						)
 					)
 					((Said 'check,examine,examine')
@@ -340,7 +361,7 @@
 									(not (& (subMarine roomFlags?) $4000))
 								)
 								(Print 33 20)
-								(ego get: 12)
+								(ego get: iMetalCylinder)
 								(subMarine invStatus1: 4)
 								(subMarine roomFlags: (| (subMarine roomFlags?) $4000))
 							)
@@ -351,24 +372,33 @@
 								)
 								(Print 33 21)
 							)
-							((& (subMarine roomFlags?) $1000) (Print 33 22))
-							(else (Print 33 23))
+							((& (subMarine roomFlags?) $1000)
+								(Print 33 22)
+							)
+							(else
+								(Print 33 23)
+							)
 						)
 					)
-					((Said 'cease') (Print 33 24))
-					((Said 'fix,repair') (ego setScript: fixEquipment))
+					((Said 'cease')
+						(Print 33 24)
+					)
+					((Said 'fix,repair')
+						(ego setScript: fixEquipment)
+					)
 				)
 			)
-			((Said 'use/pin') (if (ego has: 9) (Print 33 25) else (DontHave)))
+			((Said 'use/pin')
+				(if (ego has: iCotterPin)
+					(Print 33 25)
+				else
+					(DontHave)
+				)
+			)
 			(
-				(GoToIfSaid
-					self
-					event
-					105
-					95
+				(GoToIfSaid self event 105 95
 					'insert,install,(adjust[<in,on])/pin[/conveyor,equipment]'
-					33
-					6
+					33 6
 				)
 			)
 			(
@@ -381,13 +411,15 @@
 				(cond 
 					((Said 'measure')
 						(cond 
-							((not (ego has: 12)) (Print 33 26))
-							((not (ego has: 13)) (Print 33 27))
+							((not (ego has: iMetalCylinder))
+								(Print 33 26)
+							)
+							((not (ego has: iVernierCaliper))
+								(Print 33 27)
+							)
 							(
-							(and (ego has: 12) (!= (subMarine invStatus1?) 4))
-								(Printf
-									33
-									28
+							(and (ego has: iMetalCylinder) (!= (subMarine invStatus1?) 4))
+								(Printf 33 28
 									(switch (subMarine invStatus1?)
 										(1 {3})
 										(2 {4})
@@ -395,9 +427,7 @@
 									)
 								)
 								(if (subMarine cylDiam?)
-									(Printf
-										33
-										29
+									(Printf 33 29
 										(switch (subMarine cylDiam?)
 											(1 {1"})
 											(2 {1.5"})
@@ -406,9 +436,7 @@
 									)
 								)
 								(if (subMarine holeSize?)
-									(Printf
-										33
-										30
+									(Printf 33 30
 										(switch (subMarine holeSize?)
 											(1 {1/32"})
 											(2 {1/16"})
@@ -426,17 +454,27 @@
 									(Print 33 32)
 								)
 							)
-							(else (Print 33 33) (SolvePuzzle subMarine 406 32 5))
+							(else
+								(Print 33 33)
+								(SolvePuzzle subMarine #pointFlag1 $0020 5))
 						)
 					)
 					(
 					(TurnIfSaid self event 'examine,examine,look[<at]/*'))
 					((Said 'examine,examine,look[<at]')
 						(cond 
-							((not (& (subMarine roomFlags?) $4000)) (Print 33 34))
-							((& (Submarine flags?) $0100) (Print 33 35))
-							((& (subMarine roomFlags?) $1000) (Print 33 36))
-							(else ((inventory at: 12) showSelf:))
+							((not (& (subMarine roomFlags?) $4000))
+								(Print 33 34)
+							)
+							((& (Submarine flags?) $0100)
+								(Print 33 35)
+							)
+							((& (subMarine roomFlags?) $1000)
+								(Print 33 36)
+							)
+							(else
+								((inventory at: iMetalCylinder) showSelf:)
+							)
 						)
 					)
 					((GoToIfSaid self event 105 95 0 33 6))
@@ -445,25 +483,31 @@
 						(ego heading: 180)
 						((ego looper?) doit: ego (ego heading?) self)
 						(cond 
-							((not (& (subMarine roomFlags?) $0800)) (Print 33 15))
-							((& (Submarine flags?) $0100) (Print 33 37))
+							((not (& (subMarine roomFlags?) $0800))
+								(Print 33 15)
+							)
+							((& (Submarine flags?) $0100)
+								(Print 33 37)
+							)
 							((& (subMarine roomFlags?) $1000)
 								(Print 33 38)
-								(ego get: 12)
+								(ego get: iMetalCylinder)
 								(subMarine roomFlags: (& (subMarine roomFlags?) $efff))
 							)
-							(
-							(and (ego has: 12) (== (subMarine invStatus1?) 4)) (Print 33 39))
+							((and (ego has: 12) (== (subMarine invStatus1?) 4))
+								(Print 33 39)
+							)
 							(else
 								(Print 33 40)
-								(ego get: 12)
+								(ego get: iMetalCylinder)
 								(subMarine invStatus1: 4)
 								(subMarine roomFlags: (| (subMarine roomFlags?) $4000))
 							)
 						)
 					)
-					(
-					(Said '(adjust<in,on),repair,fix,install,insert,replace') (ego setScript: fixEquipment))
+					((Said '(adjust<in,on),repair,fix,install,insert,replace')
+						(ego setScript: fixEquipment)
+					)
 				)
 			)
 		)
@@ -476,14 +520,17 @@
 )
 
 (instance fixEquipment of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((not (& (subMarine roomFlags?) $0800)) (Print 33 15))
-					((& (Submarine flags?) $0100) (Print 33 41))
+					((not (& (subMarine roomFlags?) $0800))
+						(Print 33 15)
+					)
+					((& (Submarine flags?) $0100)
+						(Print 33 41)
+					)
 					(
 						(and
 							(& (subMarine roomFlags?) $1000)
@@ -493,20 +540,26 @@
 					)
 					(
 						(or
-							(not (ego has: 12))
-							(and (ego has: 12) (== (subMarine invStatus1?) 4))
+							(not (ego has: iMetalCylinder))
+							(and (ego has: iMetalCylinder) (== (subMarine invStatus1?) 4))
 						)
 						(Print 33 43)
 					)
-					((!= (subMarine invStatus1?) 3) (Print 33 44))
-					((!= (subMarine cylDiam?) 1) (Print 33 45))
-					((not (& (subMarine roomFlags?) $0004)) (Print 33 46))
+					((!= (subMarine invStatus1?) 3)
+						(Print 33 44)
+					)
+					((!= (subMarine cylDiam?) 1)
+						(Print 33 45)
+					)
+					((not (& (subMarine roomFlags?) $0004))
+						(Print 33 46)
+					)
 					(else
 						(Print 33 47)
 						(Print 33 48)
-						(ego put: 12)
+						(ego put: iMetalCylinder)
 						(subMarine roomFlags: (| (subMarine roomFlags?) $1000))
-						(SolvePuzzle subMarine 407 1024 1)
+						(SolvePuzzle subMarine #pointFlag2 $0400 1)
 					)
 				)
 				(self dispose:)
@@ -516,36 +569,64 @@
 )
 
 (instance installGoodCotterPin of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp pinSuccess)
 		(switch (= state newState)
 			(0
-				(= temp0 1)
+				(= pinSuccess TRUE)
 				(HandsOff)
 				(ego heading: 180)
 				((ego looper?) doit: ego (ego heading?))
 				(cond 
-					((not (ego has: 9)) (Print 33 49) (= temp0 0))
-					((& (Submarine flags?) $0100) (Print 33 50) (= temp0 0))
-					((not (& (subMarine roomFlags?) $1000)) (Print 33 51) (= temp0 0))
-					((not (ego has: 15)) (Print 33 52) (= temp0 0))
-					((not (subMarine holeSize?)) (Print 33 53) (= temp0 0))
-					((< (subMarine holeSize?) 4) (Print 33 54) (= temp0 0))
-					((> (subMarine holeSize?) 4) (Print 33 55) (= temp0 0))
+					((not (ego has: iCotterPin))
+						(Print 33 49)
+						(= pinSuccess FALSE)
+					)
+					((& (Submarine flags?) $0100)
+						(Print 33 50)
+						(= pinSuccess FALSE)
+					)
+					((not (& (subMarine roomFlags?) $1000))
+						(Print 33 51)
+						(= pinSuccess FALSE)
+					)
+					((not (ego has: iHammer))
+						(Print 33 52)
+						(= pinSuccess FALSE)
+					)
+					((not (subMarine holeSize?))
+						(Print 33 53)
+						(= pinSuccess FALSE)
+					)
+					((< (subMarine holeSize?) 4)
+						(Print 33 54)
+						(= pinSuccess FALSE)
+					)
+					((> (subMarine holeSize?) 4)
+						(Print 33 55)
+						(= pinSuccess FALSE)
+					)
 				)
-				(if temp0 (= cycles 1) else (self dispose:) (HandsOn))
+				(if pinSuccess
+					(= cycles 1)
+				else
+					(self dispose:)
+					(HandsOn)
+				)
 			)
 			(1
 				(ego
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setMotion: Approach conveyorBelt 60 self
 				)
 			)
 			(2
 				(theSound number: (SoundFX 33) loop: 4 play:)
 				(Print 33 56)
-				(ego setAvoider: 0 put: 9)
+				(ego
+					setAvoider: 0
+					put: iCotterPin
+				)
 				(theGame changeScore: 1)
 				(subMarine cylDiam: 0)
 				(subMarine holeSize: 0)
@@ -559,7 +640,6 @@
 )
 
 (instance cycleEquipment of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -571,7 +651,7 @@
 				(not script)
 			)
 			(missileOne
-				posn: [local0 (missileGrabber cel?)] [local12 (missileGrabber cel?)]
+				posn: [missileX (missileGrabber cel?)] [missileY (missileGrabber cel?)]
 			)
 		)
 	)
@@ -646,7 +726,7 @@
 			)
 			(7
 				(theSound number: (SoundFX 48) loop: 1 play:)
-				(missileGrabber setCycle: End self)
+				(missileGrabber setCycle: EndLoop self)
 			)
 			(8
 				(theSound number: (SoundFX 86) loop: 1 play: self)
@@ -696,8 +776,7 @@
 )
 
 (instance cycleEquipmentPartTwoScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -740,13 +819,12 @@
 )
 
 (instance goodConveyorScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(conveyorBelt setCycle: Fwd)
+				(conveyorBelt setCycle: Forward)
 				(missileOne setPri: 11 setMotion: MoveTo 241 107 self)
 			)
 			(1
@@ -764,7 +842,6 @@
 )
 
 (instance messedUpConveyorScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -776,7 +853,7 @@
 				(conveyorBelt
 					posn: (- (conveyorBelt x?) 1) (- (conveyorBelt y?) 1)
 				)
-				(conveyorBelt setCycle: CT 3 1 self)
+				(conveyorBelt setCycle: CycleTo 3 1 self)
 			)
 			(1
 				(missileOne
@@ -785,7 +862,7 @@
 				(conveyorBelt
 					posn: (+ (conveyorBelt x?) 1) (+ (conveyorBelt y?) 1)
 				)
-				(conveyorBelt setCycle: CT 0 -1 self)
+				(conveyorBelt setCycle: CycleTo 0 -1 self)
 			)
 			(2
 				(if (> (++ register) 3)
@@ -808,14 +885,14 @@
 	)
 )
 
-(instance missileTube of Act
+(instance missileTube of Actor
 	(properties
 		y 147
 		x 274
 		view 233
 		loop 7
 		priority 10
-		signal $4811
+		signal (| ignrAct fixedLoop fixPriOn stopUpdOn)
 		illegalBits $0000
 	)
 )
@@ -825,7 +902,7 @@
 		y 68
 		x 240
 		view 233
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 		nsTop 19
 		nsLeft 183
 		nsBottom 60
@@ -838,7 +915,9 @@
 			((Said '[/arm<hydraulic]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 64))
+					((Said 'look[<at]')
+						(Print 33 64)
+					)
 				)
 			)
 		)
@@ -859,7 +938,9 @@
 			((Said '[/arm<hydraulic]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 64))
+					((Said 'look[<at]')
+						(Print 33 64)
+					)
 				)
 			)
 		)
@@ -881,26 +962,28 @@
 			((Said '[/arm<hydraulic]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 64))
+					((Said 'look[<at]')
+						(Print 33 64)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance missileGrabber of Act
+(instance missileGrabber of Actor
 	(properties
 		y 16
 		x 197
 		view 233
 		loop 1
 		priority 1
-		signal $4811
+		signal (| ignrAct fixedLoop fixPriOn stopUpdOn)
 		illegalBits $0000
 	)
 )
 
-(instance missileOne of Act
+(instance missileOne of Actor
 	(properties
 		y 16
 		x 198
@@ -909,7 +992,7 @@
 		loop 4
 		cel 3
 		priority 1
-		signal $4811
+		signal (| ignrAct fixedLoop fixPriOn stopUpdOn)
 		illegalBits $0000
 		xStep 1
 	)
@@ -920,7 +1003,9 @@
 			((Said '[/missile]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 65))
+					((Said 'look[<at]')
+						(Print 33 65)
+					)
 				)
 			)
 		)
@@ -943,7 +1028,9 @@
 			((Said '[/torpedo]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 66))
+					((Said 'look[<at]')
+						(Print 33 66)
+					)
 				)
 			)
 		)
@@ -965,7 +1052,9 @@
 			((Said '[/missile]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 65))
+					((Said 'look[<at]')
+						(Print 33 65)
+					)
 				)
 			)
 		)
@@ -988,7 +1077,9 @@
 			((Said '[/decoy]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 67))
+					((Said 'look[<at]')
+						(Print 33 67)
+					)
 				)
 			)
 		)
@@ -1011,7 +1102,9 @@
 			((Said '[/torpedo]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 66))
+					((Said 'look[<at]')
+						(Print 33 66)
+					)
 				)
 			)
 		)
@@ -1033,7 +1126,9 @@
 			((Said '[/missile]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 65))
+					((Said 'look[<at]')
+						(Print 33 65)
+					)
 				)
 			)
 		)
@@ -1056,7 +1151,9 @@
 			((Said '[/decoy]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 67))
+					((Said 'look[<at]')
+						(Print 33 67)
+					)
 				)
 			)
 		)
@@ -1079,32 +1176,34 @@
 			((Said '[/decoy]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 33 67))
+					((Said 'look[<at]')
+						(Print 33 67)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance conveyorStand of Act
+(instance conveyorStand of Actor
 	(properties
 		y 117
 		x 97
 		view 233
 		cel 3
 		priority 7
-		signal $4811
+		signal (| ignrAct fixedLoop fixPriOn stopUpdOn)
 		illegalBits $0000
 	)
 )
 
-(instance entryDoor of Act
+(instance entryDoor of Actor
 	(properties
 		y 3
 		view 233
 		cel 4
 		priority 2
-		signal $6811
+		signal (| ignrAct ignrHrz fixPriOn stopUpdOn)
 		illegalBits $0000
 	)
 	
@@ -1113,7 +1212,7 @@
 		(if
 			(and
 				(User controls?)
-				(== (ego onControl: 1) 4)
+				(== (ego onControl: origin) cGREEN)
 				(not (self script?))
 			)
 			(HandsOff)
@@ -1138,8 +1237,7 @@
 )
 
 (instance doorScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1155,9 +1253,11 @@
 			)
 			(2
 				(entryDoor setMotion: MoveTo 0 58 entryDoor)
-				(ego illegalBits: -32768 ignoreActors: 0 setPri: -1)
-				(if (not register) (curRoom newRoom: 42))
-				(= register 0)
+				(ego illegalBits: cWHITE ignoreActors: FALSE setPri: -1)
+				(if (not register)
+					(curRoom newRoom: 42)
+				)
+				(= register FALSE)
 				(HandsOn)
 				(client setScript: 0)
 			)
@@ -1172,14 +1272,14 @@
 		view 233
 		loop 8
 		priority 4
-		signal $0001
+		signal stopUpdOn
 	)
 	
 	(method (doit)
 		(super doit:)
 		(if
 			(and
-				(== (ego onControl: 1) 2048)
+				(== (ego onControl: origin) cLCYAN)
 				(not (CantBeSeen self ego))
 				(not (self script?))
 			)
@@ -1193,26 +1293,35 @@
 			((Said '[/door,compartment,closet,cabinet]>')
 				(cond 
 					((Said 'look<in')
-						(if (== (ego onControl: 1) 2048)
-							(localproc_2222)
+						(if (== (ego onControl: origin) cLCYAN)
+							(CheckForExplosive)
 						else
 							(Print 33 74)
 						)
 					)
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'close') (DontNeedTo))
-					((Said 'look[<at]') (Print 33 75))
+					((Said 'close')
+						(DontNeedTo)
+					)
+					((Said 'look[<at]')
+						(Print 33 75)
+					)
 					((GoToIfSaid self event self 10 'open' 33 6))
-					((Said 'open') (ego setMotion: MoveTo 39 31))
+					((Said 'open')
+						(ego setMotion: MoveTo 39 31)
+					)
 				)
 			)
 			((Said '/flare>')
 				(cond 
-					((not cel) (event claimed: 1) (CantSee))
+					((not cel)
+						(event claimed: TRUE)
+						(CantSee)
+					)
 					((TurnIfSaid self event 'look[<at]'))
 					((Said 'look[<at]')
 						(if (>= numFlares 8)
-							(event claimed: 0)
+							(event claimed: FALSE)
 						else
 							(Print 33 76)
 						)
@@ -1220,32 +1329,45 @@
 					((Said 'get')
 						(cond 
 							((not numFlares)
-								(= numFlares (+ numFlares 4))
-								(ego get: 7)
+								(+= numFlares 4)
+								(ego get: iFlare)
 								(Print 33 77)
 							)
 							((== numFlares 4)
-								(= numFlares (+ numFlares 4))
+								(+= numFlares 4)
 								(theGame changeScore: 1)
 								(Print 33 78)
 							)
-							(else (CantSee))
+							(else
+								(CantSee)
+							)
 						)
 					)
-					((Said 'light') (CantDo))
+					((Said 'light')
+						(CantDo)
+					)
 				)
 			)
 			((Said '/bomb>')
 				(cond 
-					((not cel) (event claimed: 1) (CantSee))
+					((not cel)
+						(event claimed: TRUE)
+						(CantSee)
+					)
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (if (ego has: 3) (event claimed: 0) else (Print 33 79)))
+					((Said 'look[<at]')
+						(if (ego has: iExplosive)
+							(event claimed: FALSE)
+						else
+							(Print 33 79)
+						)
+					)
 					((Said 'get')
-						(if (ego has: 3)
+						(if (ego has: iExplosive)
 							(AlreadyTook)
 						else
 							(Print 33 80)
-							(ego get: 3)
+							(ego get: iExplosive)
 						)
 					)
 				)
@@ -1265,17 +1387,16 @@
 )
 
 (instance openExplosivesDoorScript of Script
-	(properties)
-	
+
 	(method (doit)
 		(if
 			(and
-				(!= (ego onControl: 1) 2048)
+				(!= (ego onControl: origin) cLCYAN)
 				(client cel?)
 				(not (client cycler?))
 				(CantBeSeen client ego 180 20)
 			)
-			(client setCycle: Beg client)
+			(client setCycle: BegLoop client)
 		)
 		(super doit:)
 	)
@@ -1284,9 +1405,11 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(explosivesDoor setCycle: End self)
+				(explosivesDoor setCycle: EndLoop self)
 			)
-			(1 (localproc_2222))
+			(1
+				(CheckForExplosive)
+			)
 		)
 	)
 )

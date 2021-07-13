@@ -789,7 +789,7 @@
 				(Print 2 25)
 				(Print 2 26)
 				(Print 2 27)
-				(SolvePuzzle tahiti 413 1 1)
+				(SolvePuzzle tahiti #pointFlag $0001 1)
 				(= seconds 2)
 			)
 			(5

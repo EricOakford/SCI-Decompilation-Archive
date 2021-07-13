@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 76)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tunisia)
@@ -21,16 +21,21 @@
 	oasisFeat 1
 )
 
-(procedure (localproc_000e)
+(procedure (GetMap)
 	(cond 
-		((ego has: 5) (Print 76 0))
-		((ego has: 2) (ego get: 5) ((inventory at: 5) loop: 1 cel: 0))
+		((ego has: iMap)
+			(Print 76 0)
+		)
+		((ego has: iIDCard)
+			(ego get: iMap)
+			((inventory at: iMap) loop: 1 cel: 0)
+		)
 		(else
 			(Print 76 1)
-			(ego get: 5 6 2)
-			((inventory at: 5) loop: 1 cel: 0)
+			(ego get: iMap iTunisiaKey iIDCard)
+			((inventory at: iMap) loop: 1 cel: 0)
 			(theGame changeScore: 1)
-			((inventory at: 2) view: 372 loop: 0 cel: 0)
+			((inventory at: iIDCard) view: 372 loop: 0 cel: 0)
 			(Print 76 2)
 			(Print 76 3)
 			(Print 76 4)
@@ -38,7 +43,7 @@
 	)
 )
 
-(instance oasisRm of Rm
+(instance oasisRm of Room
 	(properties
 		picture 76
 		east 77
@@ -46,8 +51,8 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 76 84 250 276 376 576)
-		(Load rsSOUND 72)
+		(LoadMany VIEW 76 84 250 276 376 576)
+		(Load SOUND 72)
 		(HandsOn)
 		(super init:)
 		(globalSound
@@ -61,8 +66,12 @@
 		(water4 init:)
 		(water5 init:)
 		(ego init:)
-		(if (not (ego has: 2)) (agent init:))
-		(if (> howFast 1) (flamingo init:))
+		(if (not (ego has: iIDCard))
+			(agent init:)
+		)
+		(if (> howFast medium)
+			(flamingo init:)
+		)
 		(addToPics
 			add: palmTree treeTrunk rock1 rock2 rock3
 			doit:
@@ -86,7 +95,9 @@
 				(if (cast contains: agent)
 					(Print 76 5)
 					(Print 76 6)
-					(if global142 (Print 76 7))
+					(if metAgentStacy
+						(Print 76 7)
+					)
 				else
 					(Print 76 8)
 				)
@@ -94,9 +105,9 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom nRoom)
 		(globalSound fade:)
-		(super newRoom: newRoomNumber)
+		(super newRoom: nRoom)
 	)
 	
 	(method (notify)
@@ -111,7 +122,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (client setCycle: End))
+			(1 (client setCycle: EndLoop))
 		)
 	)
 	
@@ -124,7 +135,13 @@
 				(client setScript: saidIceManScript)
 				(self dispose:)
 			)
-			((Said 'look[<at][/babe,babe,agent]') (if global142 (Print 76 7) else (Print 76 9)))
+			((Said 'look[<at][/babe,babe,agent]')
+				(if metAgentStacy
+					(Print 76 7)
+				else
+					(Print 76 9)
+				)
+			)
 			((Said '[/babe,babe,stacy,agent]')
 				(InitArab ego)
 				(Print 76 10 #at 100 40)
@@ -138,7 +155,6 @@
 )
 
 (instance saidIceManScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -157,7 +173,7 @@
 				(DisposeArab)
 				(HandsOn)
 				(Print 76 13 #at 100 40)
-				(if global142
+				(if metAgentStacy
 					(Print 76 14 #at 100 40)
 				else
 					(Print 76 15 #at 100 40)
@@ -174,28 +190,30 @@
 			((Said '[/babe,babe,stacy,agent]>')
 				(cond 
 					((TurnIfSaid client event 'look/*'))
-					((Said 'look[<at]') (Print 76 17))
-					((Said 'address') (Print 76 18))
-					((Said 'kiss') (Print 76 19))
+					((Said 'look[<at]')
+						(Print 76 17)
+					)
+					((Said 'address')
+						(Print 76 18)
+					)
+					((Said 'kiss')
+						(Print 76 19)
+					)
 				)
 			)
 			(
-				(GoToIfSaid
-					self
-					event
+				(GoToIfSaid self event
 					(+ (agent x?) 25)
 					(- (agent y?) 3)
-					0
-					76
-					20
+					0 76 20
 				)
 			)
-			((Said 'get/map') (localproc_000e))
+			((Said 'get/map') (GetMap))
 			((Said 'drop,throw,give,return/map')
-				(if (and (ego has: 5) ((inventory at: 5) loop?))
+				(if (and (ego has: iMap) ((inventory at: iMap) loop?))
 					(Print 76 21)
-					(ego put: 5)
-					(SolvePuzzle tunisia 413 2 1)
+					(ego put: iMap)
+					(SolvePuzzle tunisia #pointFlag $0002 1)
 				else
 					(Print 76 22)
 				)
@@ -205,13 +223,12 @@
 )
 
 (instance agentLeaveScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if (== (agent loop?) 1)
-					(agent loop: 0 setCel: 16 setCycle: Beg self)
+					(agent loop: 0 setCel: 16 setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
@@ -219,21 +236,22 @@
 			(1
 				(agent
 					view: 250
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setStep: 3 2
 					cycleSpeed: 0
 					setCycle: Walk
 					setMotion: MoveTo 332 143 self
 				)
 			)
-			(2 (agent dispose:))
+			(2
+				(agent dispose:)
+			)
 		)
 	)
 )
 
 (instance flamingoDriver of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 5 15)))
@@ -242,7 +260,7 @@
 					setMotion: 0
 					loop: (+ (flamingo loop?) 2)
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(= seconds (Random 3 7))
 				(= register (Random 0 1))
@@ -252,7 +270,7 @@
 					(flamingo
 						loop: (+ (flamingo loop?) 2)
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(= cycles 1)
@@ -260,7 +278,7 @@
 			)
 			(3
 				(if register
-					(flamingo loop: (+ (flamingo loop?) 2) setCycle: Fwd)
+					(flamingo loop: (+ (flamingo loop?) 2) setCycle: Forward)
 					(= seconds (Random 3 7))
 				else
 					(= cycles 1)
@@ -271,7 +289,7 @@
 					(flamingo
 						loop: (- (flamingo loop?) 2)
 						setCel: 16
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
 				else
 					(= cycles 1)
@@ -285,7 +303,7 @@
 						(flamingo loop?)
 					)
 					setCel: 16
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(6
@@ -301,7 +319,7 @@
 	)
 )
 
-(instance agent of Act
+(instance agent of Actor
 	(properties
 		y 143
 		x 207
@@ -322,7 +340,7 @@
 	)
 )
 
-(instance flamingo of Act
+(instance flamingo of Actor
 	(properties
 		y 156
 		x 45
@@ -347,8 +365,12 @@
 			((Said '[/bird,flamingo]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 76 23))
-					((Said 'catch,scare,kill') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 76 23)
+					)
+					((Said 'catch,scare,kill')
+						(DontNeedTo)
+					)
 				)
 			)
 		)
@@ -397,7 +419,9 @@
 			((Said '[/palm<palm]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]'))
-					((Said 'look[<at]') (Print 76 24))
+					((Said 'look[<at]')
+						(Print 76 24)
+					)
 				)
 			)
 		)
@@ -418,14 +442,16 @@
 			((Said '[/palm<palm]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]'))
-					((Said 'look[<at]') (Print 76 24))
+					((Said 'look[<at]')
+						(Print 76 24)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance rock1 of PV
+(instance rock1 of PicView
 	(properties
 		y 99
 		x 214
@@ -435,7 +461,7 @@
 	)
 )
 
-(instance rock2 of PV
+(instance rock2 of PicView
 	(properties
 		y 84
 		x 270
@@ -445,7 +471,7 @@
 	)
 )
 
-(instance rock3 of PV
+(instance rock3 of PicView
 	(properties
 		y 96
 		x 138
@@ -471,7 +497,9 @@
 			((Said '[/waterfall]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 76 25))
+					((Said 'look[<at]')
+						(Print 76 25)
+					)
 				)
 			)
 		)
@@ -494,7 +522,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 76 26))
+					((Said 'look[<at]')
+						(Print 76 26)
+					)
 				)
 			)
 		)
@@ -517,8 +547,12 @@
 			((Said '[/water,pond]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 76 27))
-					((Said 'get,swim,drink') (DontNeedTo))
+					((Said 'look[<at]')
+						(Print 76 27)
+					)
+					((Said 'get,swim,drink')
+						(DontNeedTo)
+					)
 				)
 			)
 		)

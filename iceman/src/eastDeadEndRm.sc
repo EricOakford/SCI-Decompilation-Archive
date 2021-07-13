@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 58)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use scubaRg)
 (use Motion)
@@ -10,7 +10,7 @@
 	eastDeadEndRm 0
 )
 
-(instance eastDeadEndRm of Rm
+(instance eastDeadEndRm of Room
 	(properties
 		picture 58
 		north 999

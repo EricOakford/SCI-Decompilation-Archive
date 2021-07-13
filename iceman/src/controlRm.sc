@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 25)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use subMarine)
@@ -35,15 +35,20 @@
 (local
 	local0
 )
-(instance controlRm of Rm
+
+;Room flags
+(define fAttackScopeWarning			$0100)
+(define fObservationScopeWarning	$0200)
+
+(instance controlRm of Room
 	(properties
 		picture 25
 	)
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 232 133 25 125 225 525)
-		(LoadMany 130 385 390 391 393 394)
+		(LoadMany VIEW 232 133 25 125 225 525)
+		(LoadMany SCRIPT 385 390 391 393 394)
 		(ego init: setScript: egosControlScript)
 		(NormalEgo)
 		(HandsOn)
@@ -136,60 +141,55 @@
 					(if
 						(OneOf
 							((subMarine script?) state?)
-							0
-							2
-							5
-							6
-							7
-							14
-							11
-							9
-							10
-							13
-							14
-							15
-							8
+							0 2 5 6 7 14 11 9 10 13
+							14 15 8
 						)
 					else
 						(== prevRoomNum 27)
 					)
 				)
 			)
-			(ego observeControl: 8192)
+			(ego observeControl: cLMAGENTA)
 		)
 		(if (!= prevRoomNum 27) (controlPanelChair init:))
 		(scopeProp init:)
 		(scopeProp2 init:)
 		(leftArms init:)
-		(rightArms init: isExtra: 1)
-		(turningProp init: setCycle: Fwd isExtra: 1)
-		(rowOfLights init: setCycle: Fwd isExtra: 1)
-		(scanningProp init: setCycle: Fwd isExtra: 1)
-		(viewerProp init: setCycle: Fwd isExtra: 1)
-		(rotateCap init: setCycle: Fwd isExtra: 1)
-		(redCap init: setCycle: Fwd isExtra: 1)
-		(redCap2 init: setCycle: Fwd isExtra: 1)
-		(rotatingGauge init: setCycle: Fwd isExtra: 1)
-		(rotatingGauge2 init: setCycle: Fwd isExtra: 1)
-		(rotatingGauge3 init: setCycle: Fwd isExtra: 1)
-		(anotherGauge init: setCycle: Fwd isExtra: 1)
+		(rightArms init: isExtra: TRUE)
+		(turningProp init: setCycle: Forward isExtra: TRUE)
+		(rowOfLights init: setCycle: Forward isExtra: TRUE)
+		(scanningProp init: setCycle: Forward isExtra: TRUE)
+		(viewerProp init: setCycle: Forward isExtra: TRUE)
+		(rotateCap init: setCycle: Forward isExtra: TRUE)
+		(redCap init: setCycle: Forward isExtra: TRUE)
+		(redCap2 init: setCycle: Forward isExtra: TRUE)
+		(rotatingGauge init: setCycle: Forward isExtra: TRUE)
+		(rotatingGauge2 init: setCycle: Forward isExtra: TRUE)
+		(rotatingGauge3 init: setCycle: Forward isExtra: TRUE)
+		(anotherGauge init: setCycle: Forward isExtra: TRUE)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 395 391 393 390 394)
+		(LoadMany FALSE 395 391 393 390 394)
 		(cls)
-		(ego illegalBits: -32768)
+		(ego illegalBits: cWHITE)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<around][/room]') (Print 25 0) (Print 25 1) (Print 25 2))
-			((Said 'examine,cycle/equipment') (Print 25 3))
+			((Said 'look[<around][/room]')
+				(Print 25 0)
+				(Print 25 1)
+				(Print 25 2)
+			)
+			((Said 'examine,cycle/equipment')
+				(Print 25 3)
+			)
 			((Said 'look,open,read/book[<code]')
-				(if (ego has: 14)
-					((inventory at: 14) showSelf:)
+				(if (ego has: iCodeBook)
+					((inventory at: iCodeBook) showSelf:)
 				else
 					(DontHave)
 				)
@@ -204,12 +204,13 @@
 	)
 	
 	(method (changeState newState)
-		(if (= state newState) (curRoom newRoom: register))
+		(if (= state newState)
+			(curRoom newRoom: register)
+		)
 	)
 )
 
 (instance standUpScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -223,63 +224,68 @@
 	)
 )
 
-(instance captain of Act
+(instance captain of Actor
 	(properties
 		view 133
 	)
 )
 
 (instance egosControlScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(if (User controls?)
-			(switch (ego onControl: 1)
-				(-32768 (return))
-				(16384
+			(switch (ego onControl: origin)
+				(cWHITE
+					(return)
+				)
+				(cYELLOW
 					(ego setScript: walkDownStairsScript)
 				)
-				(4096
+				(cLRED
 					(ego setScript: (ScriptID 393))
 				)
-				(8192
+				(cLMAGENTA
 					(ego setScript: sitControlPanelScript)
 				)
-				(2048 (curRoom newRoom: 31))
-				(1024 (curRoom newRoom: 30))
+				(cLCYAN
+					(curRoom newRoom: 31)
+				)
+				(cLGREEN
+					(curRoom newRoom: 30)
+				)
 			)
 		)
 	)
 )
 
 (instance walkDownStairsScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreControl: -16384 setMotion: MoveTo 67 103 self)
+				(ego ignoreControl: (| cWHITE cYELLOW) setMotion: MoveTo 67 103 self)
 			)
 			(1
 				(ego setMotion: MoveTo 43 120 self)
 			)
-			(2 (curRoom newRoom: 32))
+			(2
+				(curRoom newRoom: 32)
+			)
 		)
 	)
 )
 
 (instance sitControlPanelScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 187 80 self
 				)
 			)
@@ -294,11 +300,15 @@
 					loop: 1
 					cel: 0
 					posn: 209 80
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(3 (= cycles 2))
-			(4 (curRoom newRoom: 27))
+			(3
+				(= cycles 2)
+			)
+			(4
+				(curRoom newRoom: 27)
+			)
 		)
 	)
 )
@@ -308,7 +318,7 @@
 		y 146
 		x 159
 		view 25
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -318,7 +328,9 @@
 				(cond 
 					((TurnIfSaid self event))
 					((GoToIfSaid self event self 30 0 25 4))
-					((Said 'look,draw,use') (curRoom newRoom: 40))
+					((Said 'look,draw,use')
+						(curRoom newRoom: 40)
+					)
 				)
 			)
 		)
@@ -334,7 +346,7 @@
 		loop 1
 		cel 2
 		priority 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
@@ -343,14 +355,16 @@
 			((Said '[/map,chart]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 25 5))
+					((Said 'look[<at]')
+						(Print 25 5)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance scopePic2 of PV
+(instance scopePic2 of PicView
 	(properties
 		y 112
 		x 110
@@ -360,7 +374,7 @@
 	)
 )
 
-(instance scopePic of PV
+(instance scopePic of PicView
 	(properties
 		y 100
 		x 144
@@ -378,40 +392,45 @@
 		view 25
 		loop 3
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (Said 'raise,up/periscope') (Said 'periscope<use'))
+			((or (Said 'raise,up/periscope') (Said 'periscope<use'))
 				(cond 
-					((scopeProp2 cel?) (Print 25 6))
-					((& (Submarine flags?) $0010) (Print 25 7))
-					((>= (Submarine _depth?) 70) (Print 25 8))
+					((scopeProp2 cel?)
+						(Print 25 6)
+					)
+					((& (Submarine flags?) fObservationScopeBroken)
+						(Print 25 7)
+					)
+					((>= (Submarine _depth?) 70)
+						(Print 25 8)
+					)
 					((<= (Submarine hSpeed?) 12)
 						(if cel
 							(Print 25 9)
 						else
 							(HandsOff)
-							(self setCycle: End self)
+							(self setCycle: EndLoop self)
 						)
 					)
-					((& (subMarine roomFlags?) $0200)
+					((& (subMarine roomFlags?) fObservationScopeWarning)
 						(Print 25 10)
-						(Submarine flags: (| (Submarine flags?) $0010))
+						(Submarine flags: (| (Submarine flags?) fObservationScopeBroken))
 					)
 					(else
 						(Print 25 11)
-						(subMarine roomFlags: (| (subMarine roomFlags?) $0200))
+						(subMarine roomFlags: (| (subMarine roomFlags?) fObservationScopeWarning))
 					)
 				)
 			)
 			((Said 'lower,down/periscope')
 				(if cel
 					(HandsOff)
-					(self setCycle: Beg self)
+					(self setCycle: BegLoop self)
 					(HandsOff)
 				else
 					(Print 25 12)
@@ -423,14 +442,16 @@
 				else
 					(Print 25 13)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
 	
 	(method (cue)
 		(HandsOn)
-		(if cel (QueScript self watchSpeedScript 0 12))
+		(if cel
+			(QueScript self watchSpeedScript 0 12)
+		)
 		(self stopUpd:)
 	)
 )
@@ -442,40 +463,45 @@
 		view 25
 		loop 3
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (Said 'raise,up/periscope') (Said 'periscope<use'))
+			((or (Said 'raise,up/periscope') (Said 'periscope<use'))
 				(cond 
-					((scopeProp cel?) (Print 25 6))
-					((& (Submarine flags?) $0020) (Print 25 14))
-					((>= (Submarine _depth?) 70) (Print 25 8))
+					((scopeProp cel?)
+						(Print 25 6)
+					)
+					((& (Submarine flags?) fAttackScopeBroken)
+						(Print 25 14)
+					)
+					((>= (Submarine _depth?) 70)
+						(Print 25 8)
+					)
 					((<= (Submarine hSpeed?) 5)
 						(if cel
 							(Print 25 9)
 						else
 							(HandsOff)
-							(self setCycle: End self)
+							(self setCycle: EndLoop self)
 						)
 					)
-					((& (subMarine roomFlags?) $0100)
+					((& (subMarine roomFlags?) fAttackScopeWarning)
 						(Print 25 15)
-						(Submarine flags: (| (Submarine flags?) $0020))
+						(Submarine flags: (| (Submarine flags?) fAttackScopeBroken))
 					)
 					(else
 						(Print 25 16)
-						(subMarine roomFlags: (| (subMarine roomFlags?) $0100))
+						(subMarine roomFlags: (| (subMarine roomFlags?) fAttackScopeWarning))
 					)
 				)
 			)
 			((Said 'lower,down/periscope')
 				(if cel
 					(HandsOff)
-					(self setCycle: Beg self)
+					(self setCycle: BegLoop self)
 				else
 					(Print 25 12)
 				)
@@ -486,30 +512,32 @@
 				else
 					(Print 25 13)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 			)
 		)
 	)
 	
 	(method (cue)
 		(HandsOn)
-		(if cel (QueScript self watchSpeedScript 0 5))
+		(if cel
+			(QueScript self watchSpeedScript 0 5)
+		)
 		(self stopUpd:)
 	)
 )
 
-(instance mapPic of PV
+(instance mapPic of PicView
 	(properties
 		y 98
 		x 56
 		view 25
 		loop 1
 		priority 0
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance cornerPic of PV
+(instance cornerPic of PicView
 	(properties
 		y 75
 		x 130
@@ -517,51 +545,53 @@
 		loop 1
 		cel 1
 		priority 0
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance chairPic of PV
+(instance chairPic of PicView
 	(properties
 		y 89
 		x 72
 		view 25
 		cel 1
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance rail1Pic of PV
+(instance rail1Pic of PicView
 	(properties
 		y 108
 		x 30
 		view 25
 		cel 2
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance rail2Pic of PV
+(instance rail2Pic of PicView
 	(properties
 		y 116
 		x 58
 		view 25
 		cel 3
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[/stair]') (Print 25 17))
+			((Said 'look[/stair]')
+				(Print 25 17)
+			)
 		)
 	)
 )
 
-(instance poleToRailPic of PV
+(instance poleToRailPic of PicView
 	(properties
 		y 108
 		x 73
@@ -577,7 +607,7 @@
 		x 84
 		view 125
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -588,7 +618,7 @@
 		view 125
 		loop 1
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -599,7 +629,7 @@
 		view 125
 		loop 2
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -610,7 +640,7 @@
 		view 125
 		loop 3
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -621,7 +651,7 @@
 		view 125
 		loop 4
 		priority 3
-		signal $4200
+		signal (| ignrAct anExtra)
 		maxPause 100
 		minCycles 10
 		maxCycles 60
@@ -635,7 +665,7 @@
 		view 125
 		loop 6
 		priority 2
-		signal $4200
+		signal (| ignrAct anExtra)
 		maxPause 100
 		minCycles 10
 		maxCycles 60
@@ -649,7 +679,7 @@
 		view 125
 		loop 5
 		priority 3
-		signal $4200
+		signal (| ignrAct anExtra)
 		maxPause 100
 		minCycles 10
 		maxCycles 60
@@ -682,7 +712,9 @@
 				)
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look') (Print 25 18))
+					((Said 'look')
+						(Print 25 18)
+					)
 					((GoToIfSaid self event self 40 0 25 4))
 					((Said 'address')
 						(if (== ((subMarine script?) state?) 15)
@@ -691,7 +723,9 @@
 							(Print 25 20)
 						)
 					)
-					((Said 'get/distance/!*') (Print 25 21))
+					((Said 'get/distance/!*')
+						(Print 25 21)
+					)
 					(
 						(or
 							(Said 'ping/rig[<oil]')
@@ -700,7 +734,7 @@
 						(if (== ((subMarine script?) state?) 15)
 							(Print 25 22)
 							(Print 25 23)
-							(SolvePuzzle subMarine 407 256 1)
+							(SolvePuzzle subMarine #pointFlag2 $0100 1)
 						else
 							(Print 25 24)
 						)
@@ -710,7 +744,7 @@
 						(if (== ((subMarine script?) state?) 15)
 							(Print 25 25)
 							(Print 25 26)
-							(SolvePuzzle subMarine 407 512 1)
+							(SolvePuzzle subMarine #pointFlag2 $0200 1)
 						else
 							(Print 25 24)
 						)
@@ -740,7 +774,7 @@
 		(leftArms
 			setScript: 0
 			stopUpd:
-			signal: (| (leftArms signal?) $0100)
+			signal: (| (leftArms signal?) staticView)
 		)
 		(super addToPic: &rest)
 	)
@@ -758,27 +792,29 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'read,decode/message') (Print 25 27))
-			(
-			(Said '[/message,radioman,operator,man[<radio]]>')
+			((Said 'read,decode/message')
+				(Print 25 27)
+			)
+			((Said '[/message,radioman,operator,man[<radio]]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
 					((GoToIfSaid self event self 30 0 25 4))
-					((Said 'look[<at]') (Print 25 28))
+					((Said 'look[<at]')
+						(Print 25 28)
+					)
 					((or (Said 'address') (Said '/message'))
 						(Print 25 29)
-						(if
-						(+ (proc385_0 6 0) (proc385_0 10 4) (proc385_0 13 8))
+						(if (+ (proc385_0 6 0) (proc385_0 10 4) (proc385_0 13 8))
 							(switch ((subMarine script?) state?)
 								(6
-									(SolvePuzzle subMarine 406 -32768 1)
+									(SolvePuzzle subMarine #pointFlag1 $8000 1)
 								)
 								(10
-									(SolvePuzzle subMarine 407 64 1)
+									(SolvePuzzle subMarine #pointFlag2 $0040 1)
 									(subMarine cue:)
 								)
 								(13
-									(SolvePuzzle subMarine 407 128 1)
+									(SolvePuzzle subMarine #pointFlag2 $0080 1)
 									(subMarine cue:)
 								)
 							)
@@ -817,7 +853,9 @@
 			((Said '[/chair,panel[<control]]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 25 31))
+					((Said 'look[<at]')
+						(Print 25 31)
+					)
 					((GoToIfSaid self event self 20 'sit' 25 4))
 					((Said 'sit')
 						(if local0
@@ -832,25 +870,26 @@
 	)
 )
 
-(instance controlPanelPic of PV
+(instance controlPanelPic of PicView
 	(properties
 		y 92
 		x 203
 		view 225
 		priority 4
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[/panel,console]') (Print 25 33))
+			((Said 'look[/panel,console]')
+				(Print 25 33)
+			)
 		)
 	)
 )
 
 (instance sonarMansArmScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -861,14 +900,14 @@
 			)
 			(1
 				(rightArms hide:)
-				(leftArms show: setCycle: End self)
+				(leftArms show: setCycle: EndLoop self)
 			)
 			(2
 				(leftArms stopUpd:)
 				(= seconds (Random 1 4))
 			)
 			(3
-				(leftArms setCycle: Beg self)
+				(leftArms setCycle: BegLoop self)
 			)
 			(4
 				(leftArms stopUpd:)
@@ -876,14 +915,14 @@
 			)
 			(5
 				(leftArms hide:)
-				(rightArms show: setCycle: End self)
+				(rightArms show: setCycle: EndLoop self)
 			)
 			(6
 				(rightArms stopUpd:)
 				(= seconds (Random 1 4))
 			)
 			(7
-				(rightArms setCycle: Beg self)
+				(rightArms setCycle: BegLoop self)
 			)
 			(8 (self init: client))
 		)
@@ -891,14 +930,13 @@
 )
 
 (instance lookScopeScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setMotion: MoveTo (- (client x?) 6) (+ (client y?) 4) self
 				)
 			)
@@ -906,7 +944,7 @@
 				(if (client cel?)
 					(= cycles 1)
 				else
-					(client setCycle: End self)
+					(client setCycle: EndLoop self)
 				)
 			)
 			(2
@@ -917,7 +955,7 @@
 					heading: 0
 					cel: 0
 					setAvoider: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (curRoom newRoom: 26))
@@ -933,11 +971,11 @@
 			(0
 				(HandsOff)
 				(client setCel: (client lastCel:))
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(1
 				(ego view: 232 loop: 3 setCycle: Walk)
-				(client setCycle: Beg self)
+				(client setCycle: BegLoop self)
 			)
 			(2
 				(HandsOn)
@@ -955,7 +993,7 @@
 		view 125
 		loop 7
 		priority 1
-		signal $4000
+		signal ignrAct
 		cycleSpeed 2
 	)
 )
@@ -967,7 +1005,7 @@
 		view 125
 		loop 9
 		priority 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -977,7 +1015,7 @@
 		x 92
 		view 525
 		priority 2
-		signal $4200
+		signal (| ignrAct anExtra)
 		maxPause 100
 		minCycles 10
 		maxCycles 60
@@ -991,7 +1029,7 @@
 		view 25
 		loop 8
 		priority 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -1020,9 +1058,13 @@
 			((Said '[/ladder]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look') (Print 25 35))
+					((Said 'look')
+						(Print 25 35)
+					)
 					((GoToIfSaid self event x y 'climb[<up]' 25 4))
-					((Said 'climb[<up]') (ego setScript: (ScriptID 393)))
+					((Said 'climb[<up]')
+						(ego setScript: (ScriptID 393))
+					)
 				)
 			)
 		)
@@ -1041,17 +1083,14 @@
 			((Said '/stair>')
 				(cond 
 					(
-						(GoToIfSaid
-							self
-							event
-							self
-							2
+						(GoToIfSaid self event self 2
 							'walk,climb,down[<down]/*'
-							25
-							4
+							25 4
 						)
 					)
-					((Said 'walk,climb,down[<down]/*') (ego setMotion: MoveTo 67 103))
+					((Said 'walk,climb,down[<down]/*')
+						(ego setMotion: MoveTo 67 103)
+					)
 				)
 			)
 		)
@@ -1059,11 +1098,9 @@
 )
 
 (instance watchSpeedScript of Script
-	(properties)
 	
 	(method (doit)
-		(if
-		(and (not state) (> (Submarine hSpeed?) register))
+		(if (and (not state) (> (Submarine hSpeed?) register))
 			(self cue:)
 		)
 		(super doit: &rest)
@@ -1075,13 +1112,13 @@
 			(1
 				(Print 25 36)
 				(if (== register 12)
-					(subMarine roomFlags: (| (subMarine roomFlags?) $0200))
-					(Submarine flags: (| (Submarine flags?) $0010))
+					(subMarine roomFlags: (| (subMarine roomFlags?) fObservationScopeWarning))
+					(Submarine flags: (| (Submarine flags?) fObservationScopeBroken))
 				else
-					(subMarine roomFlags: (| (subMarine roomFlags?) $0100))
-					(Submarine flags: (| (Submarine flags?) $0020))
+					(subMarine roomFlags: (| (subMarine roomFlags?) fAttackScopeWarning))
+					(Submarine flags: (| (Submarine flags?) fAttackScopeBroken))
 				)
-				(client setCycle: Beg client)
+				(client setCycle: BegLoop client)
 			)
 		)
 	)

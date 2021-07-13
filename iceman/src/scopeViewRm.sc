@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 26)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Submarine_806)
@@ -19,13 +19,15 @@
 	submarineAbsHeading
 	local3
 )
-(instance scopeViewRm of Rm
+(instance scopeViewRm of Room
 	(properties
 		picture 26
 	)
 	
 	(method (init)
-		(if (== (ego x?) 104) (= local3 1))
+		(if (== (ego x?) 104)
+			(= local3 1)
+		)
 		(self setRegions: 314)
 		(super init:)
 		(HandsOn)
@@ -54,52 +56,18 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'down/periscope') (self newRoom: 25))
-			((Said 'look[/periscope]') (Print 26 0))
+			((Said 'down/periscope')
+				(self newRoom: 25)
+			)
+			((Said 'look[/periscope]')
+				(Print 26 0)
+			)
 		)
 	)
 )
 
-(class ScopeActor of Act
+(class ScopeActor of Actor
 	(properties
-		y 0
-		x 0
-		z 0
-		heading 0
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
-		xStep 3
-		moveSpeed 0
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
 		degreesFromSub 0
 	)
 	
@@ -137,7 +105,7 @@
 				(if (and (< 129 x) (< x 189))
 					(Print 26 1)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
 		)
@@ -161,7 +129,7 @@
 				(if (and (< 119 x) (< x 199))
 					(Print 26 2)
 				else
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
 			)
 		)
@@ -221,7 +189,7 @@
 		view 26
 		cel 3
 		priority 10
-		signal $4000
+		signal ignrAct
 		illegalBits $0000
 	)
 )
@@ -237,37 +205,22 @@
 )
 
 (instance headingGauge of Code
-	(properties)
-	
-	(method (doit &tmp [temp0 3])
-		(Display
-			26
-			3
-			dsCOORD
-			225
-			151
-			dsCOLOR
-			8
-			dsALIGN
-			-1
-			dsWIDTH
-			25
-			dsFONT
-			30
+
+	(method (doit &tmp [str 3])
+		(Display 26 3
+			p_at 225 151
+			p_color vGREY
+			p_mode teJustRight
+			p_width 25
+			p_font 30
 		)
 		(Display
-			(Format @temp0 26 4 submarineAbsHeading)
-			dsCOORD
-			225
-			151
-			dsCOLOR
-			12
-			dsALIGN
-			-1
-			dsWIDTH
-			25
-			dsFONT
-			30
+			(Format @str 26 4 submarineAbsHeading)
+			p_at 225 151
+			p_color vLRED
+			p_mode teJustRight
+			p_width 25
+			p_font 30
 		)
 	)
 )
@@ -299,12 +252,14 @@
 			((super handleEvent: event))
 			(
 				(and
-					(== (event type?) evJOYSTICK)
-					(== (event message?) JOY_LEFT)
+					(== (event type?) direction)
+					(== (event message?) dirW)
 				)
 				(self setScript: (Clone upKeyScript) self 0 setCel: 4)
 			)
-			((MousedOn self event) (self setScript: upButtonScript self 0 setCel: 4))
+			((MousedOn self event)
+				(self setScript: upButtonScript self 0 setCel: 4)
+			)
 		)
 	)
 	
@@ -339,12 +294,14 @@
 			((super handleEvent: event))
 			(
 				(and
-					(== (event type?) evJOYSTICK)
-					(== (event message?) JOY_RIGHT)
+					(== (event type?) direction)
+					(== (event message?) dirE)
 				)
 				(self setScript: (Clone upKeyScript) self 1 setCel: 3)
 			)
-			((MousedOn self event) (self setScript: upButtonScript self 1 setCel: 3))
+			((MousedOn self event)
+				(self setScript: upButtonScript self 1 setCel: 3)
+			)
 		)
 	)
 	
@@ -380,18 +337,19 @@
 			((super handleEvent: event))
 			(
 				(and
-					(== (event type?) evJOYSTICK)
-					(== (event message?) JOY_DOWN)
+					(== (event type?) direction)
+					(== (event message?) dirS)
 				)
 				(self setScript: downScopeScript)
 			)
-			((MousedOn self event) (self setScript: downScopeScript))
+			((MousedOn self event)
+				(self setScript: downScopeScript)
+			)
 		)
 	)
 )
 
 (instance downScopeScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -405,10 +363,9 @@
 )
 
 (instance upButtonScript of Script
-	(properties)
-	
+
 	(method (doit)
-		(if (== ((User curEvent?) type?) 2)
+		(if (== ((User curEvent?) type?) mouseUp)
 			(self dispose:)
 		else
 			(= submarineAbsHeading
@@ -424,8 +381,7 @@
 )
 
 (instance upKeyScript of Script
-	(properties)
-	
+
 	(method (doit)
 		(asm
 			pushi    #type

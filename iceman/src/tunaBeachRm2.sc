@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 72)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use n802)
@@ -19,7 +19,7 @@
 (local
 	local0 =  1
 )
-(instance tunaBeachRm2 of Rm
+(instance tunaBeachRm2 of Room
 	(properties
 		picture 72
 		south 47
@@ -53,7 +53,9 @@
 					yourself:
 				)
 		)
-		(if (== prevRoomNum 45) (globalSound stop:))
+		(if (== prevRoomNum 45)
+			(globalSound stop:)
+		)
 		(switch prevRoomNum
 			(west
 				(ego posn: 10 (ego y?) loop: 0)
@@ -62,15 +64,17 @@
 				(ego posn: 70 105 view: 71 loop: 0)
 			)
 		)
-		(ego init: observeControl: 64 cycleSpeed: 0)
-		(if (== (ego view?) 54) (ego view: 71))
-		(wave init: isExtra: 1)
+		(ego init: observeControl: cBROWN cycleSpeed: 0)
+		(if (== (ego view?) 54)
+			(ego view: 71)
+		)
+		(wave init: isExtra: TRUE)
 		((Clone wave)
 			x: 288
 			y: 157
 			loop: 0
 			priority: 11
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		((Clone wave)
@@ -78,7 +82,7 @@
 			y: 155
 			loop: 1
 			priority: 11
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		((Clone wave)
@@ -86,7 +90,7 @@
 			y: 133
 			loop: 1
 			priority: 9
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		((Clone wave)
@@ -94,7 +98,7 @@
 			y: 165
 			loop: 1
 			priority: 12
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 	)
@@ -110,7 +114,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room]') (Print 72 1))
+			((Said 'look[<at,around][/room]')
+				(Print 72 1)
+			)
 		)
 	)
 )
@@ -122,7 +128,7 @@
 		view 72
 		priority 10
 		cycleSpeed 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 5
 		maxPause 5
 		minCycles 2
@@ -135,7 +141,9 @@
 			((Said '[/wave]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 72 2))
+					((Said 'look[<at]')
+						(Print 72 2)
+					)
 				)
 			)
 		)
@@ -158,7 +166,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 72 3))
+					((Said 'look[<at]')
+						(Print 72 3)
+					)
 				)
 			)
 		)

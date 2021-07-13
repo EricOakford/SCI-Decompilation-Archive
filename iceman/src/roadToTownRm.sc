@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 77)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use GoToSaid)
@@ -11,7 +11,7 @@
 	roadToTownRm 0
 )
 
-(instance roadToTownRm of Rm
+(instance roadToTownRm of Room
 	(properties
 		picture 77
 		east 78
@@ -60,7 +60,9 @@
 					(1 (Print 77 1))
 				)
 			)
-			((Said 'look/road') (Print 77 2))
+			((Said 'look/road')
+				(Print 77 2)
+			)
 		)
 	)
 )
@@ -81,7 +83,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 77 3))
+					((Said 'look[<at]')
+						(Print 77 3)
+					)
 				)
 			)
 		)
@@ -104,8 +108,12 @@
 			((Said '[/shutter]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 77 4))
-					((Said 'open,(look,climb<(in,through))') (BadIdea))
+					((Said 'look[<at]')
+						(Print 77 4)
+					)
+					((Said 'open,(look,climb<(in,through))')
+						(BadIdea)
+					)
 				)
 			)
 		)

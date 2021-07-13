@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 73)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use RFeature)
@@ -11,7 +11,7 @@
 	cliffFeat 1
 )
 
-(instance cliffsRm of Rm
+(instance cliffsRm of Room
 	(properties
 		picture 73
 		west 74
@@ -26,7 +26,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room]') (Print 73 0))
+			((Said 'look[<at,around][/room]')
+				(Print 73 0)
+			)
 		)
 	)
 )

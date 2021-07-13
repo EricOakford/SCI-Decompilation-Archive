@@ -2,7 +2,7 @@
 (script# 378)
 (include game.sh)
 (use Main)
-(use Die)
+(use DiceRm)
 (use Intrface)
 (use Motion)
 (use System)

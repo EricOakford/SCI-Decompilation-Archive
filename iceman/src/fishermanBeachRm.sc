@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 70)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use tunisia)
@@ -28,7 +28,7 @@
 	local2
 	local3
 )
-(instance fishermanBeachRm of Rm
+(instance fishermanBeachRm of Room
 	(properties
 		picture 70
 		north 75
@@ -38,12 +38,14 @@
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 68 70 170 71 270)
-		(if (== prevRoomNum 45) (globalSound stop:))
+		(LoadMany VIEW 68 70 170 71 270)
+		(if (== prevRoomNum 45)
+			(globalSound stop:)
+		)
 		(ego
 			init:
-			ignoreActors: 0
-			observeControl: 64
+			ignoreActors: FALSE
+			observeControl: cBROWN
 			cycleSpeed: 0
 		)
 		(switch prevRoomNum
@@ -59,8 +61,7 @@
 		)
 		(self
 			setRegions: 310 306
-			setFeatures:
-				building
+			setFeatures: building
 				((Clone building)
 					x: 243
 					y: 26
@@ -78,7 +79,7 @@
 			y: 179
 			loop: 2
 			priority: 14
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		((Clone wave)
@@ -86,7 +87,7 @@
 			y: 150
 			loop: 1
 			priority: 11
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		((Clone wave)
@@ -94,33 +95,42 @@
 			y: 181
 			loop: 0
 			priority: 14
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(if (not (& (tunisia flags?) $0008))
 			(fisherMan init:)
 		)
-		(RemoveInvItems curRoomNum 3)
+		(RemoveInvItems curRoomNum iFish)
 	)
 	
 	(method (doit)
 		(cond 
-			((and local0 (& (proc802_0 ego 3) $0040)) (Print 70 0) (= local0 0))
-			((== (ego onControl: 1) 16384) (self newRoom: north))
+			((and local0 (& (proc802_0 ego 3) $0040))
+				(Print 70 0)
+				(= local0 0)
+			)
+			((== (ego onControl: origin) cYELLOW)
+				(self newRoom: north)
+			)
 		)
 		(super doit: &rest)
 	)
 	
 	(method (dispose)
-		(ego ignoreControl: 64)
+		(ego ignoreControl: cBROWN)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room]') (Print 70 1))
-			((Said 'look/rock') (Print 70 2))
+			((Said 'look[<at,around][/room]')
+				(Print 70 1)
+			)
+			((Said 'look/rock')
+				(Print 70 2)
+			)
 		)
 	)
 )
@@ -143,8 +153,7 @@
 )
 
 (instance fisherManScript of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit: &rest)
 		(cond 
@@ -177,8 +186,8 @@
 				(client setLoop: 3 cycleSpeed: 3)
 				(= seconds (Random 2 6))
 			)
-			(1 (client setCycle: End self))
-			(2 (client setCycle: Beg self))
+			(1 (client setCycle: EndLoop self))
+			(2 (client setCycle: BegLoop self))
 			(3 (self init: client))
 		)
 	)
@@ -186,36 +195,53 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'give/password') (Print 70 3))
-			(
-			(Said '[/man,iceman,(man<ice),disguise,fisherman]>')
+			((Said 'give/password')
+				(Print 70 3)
+			)
+			((Said '[/man,iceman,(man<ice),disguise,fisherman]>')
 				(cond 
 					((CantBeSeen client ego 270)
 						(cond 
-							((Said 'look[<at]/man,fisherman') (Print 70 4))
-							((Said 'address') (Print 70 5))
-							((Said '/iceman') (Print 70 6))
+							((Said 'look[<at]/man,fisherman')
+								(Print 70 4)
+							)
+							((Said 'address')
+								(Print 70 5)
+							)
+							((Said '/iceman')
+								(Print 70 6)
+							)
 						)
 					)
-					((Said 'look[<at]') (Print 70 7))
-					((> (ego distanceTo: fisherMan) 35) (Print 70 8) (event claimed: 1))
+					((Said 'look[<at]')
+						(Print 70 7)
+					)
+					((> (ego distanceTo: fisherMan) 35)
+						(Print 70 8)
+						(event claimed: TRUE)
+					)
 					((Said 'get/disguise')
-						(if (IsInvItemInRoom curRoomNum 3)
+						(if (IsInvItemInRoom curRoomNum iFish)
 							(Print 70 9)
 						else
 							(= local2 1)
 						)
 					)
-					((or (ego has: 3) (ego has: 4) (ego has: 5)) (Print 70 10) (event claimed: 1))
+					((or (ego has: iFish) (ego has: iCapsule) (ego has: iMap))
+						(Print 70 10)
+						(event claimed: TRUE)
+					)
 					((Said '/iceman,(man<ice)')
-						(if (IsInvItemInRoom curRoomNum 3)
+						(if (IsInvItemInRoom curRoomNum iFish)
 							(= local1 1)
 						else
 							(Print 70 11)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
-					((Said 'address[/man,fisherman]') (= local3 1))
+					((Said 'address[/man,fisherman]')
+						(= local3 1)
+					)
 				)
 			)
 		)
@@ -243,8 +269,7 @@
 )
 
 (instance acknowledgeScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -255,11 +280,11 @@
 				(DisposeArab)
 				(Print 70 12 #at 25 10)
 				(Print 70 13 #at 25 10)
-				(fisherMansHead show: loop: 1 setCycle: End self)
+				(fisherMansHead show: loop: 1 setCycle: EndLoop self)
 				(fisherMan loop: 2 setCel: 0)
 			)
 			(2
-				(fisherMansHead setCycle: Beg self)
+				(fisherMansHead setCycle: BegLoop self)
 			)
 			(3
 				(fisherMansHead hide:)
@@ -282,7 +307,7 @@
 				)
 			)
 			(6
-				(ego ignoreControl: -32768 setMotion: MoveTo 108 157 self)
+				(ego ignoreControl: cWHITE setMotion: MoveTo 108 157 self)
 			)
 			(7
 				(ego heading: 270 cycleSpeed: 1)
@@ -291,26 +316,26 @@
 			)
 			(8
 				(Print 70 14)
-				(fisherMansHead loop: 0 show: setCel: 0 setCycle: End)
+				(fisherMansHead loop: 0 show: setCel: 0 setCycle: EndLoop)
 				(fisherMan
 					loop: 2
 					setCel: 0
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
-				(ego view: 170 loop: 0 cycleSpeed: 0 setCycle: End self)
+				(ego view: 170 loop: 0 cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(10
 				(ego
-					get: 3
+					get: iFish
 					loop: 1
 					setCel: 16
 					cycleSpeed: 0
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
-				(fisherMan loop: 4 cel: 0 cycleSpeed: 1 setCycle: End)
+				(fisherMan loop: 4 cel: 0 cycleSpeed: 1 setCycle: EndLoop)
 				(fisherMansHead hide:)
 			)
 			(11
@@ -321,7 +346,7 @@
 					setAvoider: 0
 					cel: 0
 					setCycle: Walk
-					observeControl: -32768
+					observeControl: cWHITE
 				)
 				(tunisia flags: (| (tunisia flags?) $0008))
 				(HandsOn)
@@ -332,7 +357,6 @@
 )
 
 (instance giveDirectionScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -352,11 +376,11 @@
 					loop: 4
 					cycleSpeed: 1
 					setCel: 16
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(3
-				(fisherMan setCycle: End self)
+				(fisherMan setCycle: EndLoop self)
 			)
 			(4 (= seconds 3))
 			(5
@@ -364,7 +388,7 @@
 					view: 68
 					loop: 3
 					setCel: (fisherMan lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(HandsOn)
 				(self dispose:)
@@ -374,8 +398,7 @@
 )
 
 (instance wontTalkScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -400,7 +423,7 @@
 		loop 3
 		priority 8
 		cycleSpeed 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 5
 		maxPause 5
 		minCycles 2
@@ -409,7 +432,7 @@
 	
 	(method (init)
 		(super init:)
-		(self isExtra: 1)
+		(self isExtra: TRUE)
 	)
 	
 	(method (handleEvent event)
@@ -418,7 +441,9 @@
 			((Said '[/wave]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 70 18))
+					((Said 'look[<at]')
+						(Print 70 18)
+					)
 				)
 			)
 		)
@@ -441,7 +466,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 70 19))
+					((Said 'look[<at]')
+						(Print 70 19)
+					)
 				)
 			)
 		)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 79)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use GoToSaid)
@@ -11,7 +11,7 @@
 	townRm2 0
 )
 
-(instance townRm2 of Rm
+(instance townRm2 of Room
 	(properties
 		picture 79
 		horizon 65
@@ -109,7 +109,9 @@
 			((Said '[/building]>')
 				(cond 
 					((TurnIfSaid self event 'look/*'))
-					((Said 'look[<at]') (Print 79 1))
+					((Said 'look[<at]')
+						(Print 79 1)
+					)
 				)
 			)
 		)

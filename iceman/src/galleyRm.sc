@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 32)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use n316)
@@ -19,7 +19,7 @@
 	galleyRm 0
 )
 
-(instance galleyRm of Rm
+(instance galleyRm of Room
 	(properties
 		picture 32
 		horizon 12
@@ -33,13 +33,13 @@
 	(method (init)
 		(super init:)
 		(ego init: setPri: -1)
-		(if (IsInvItemInRoom curRoomNum 4)
-			(rumBottle init: setPri: 8 ignoreActors: 1)
+		(if (IsInvItemInRoom curRoomNum iRumBottle)
+			(rumBottle init: setPri: 8 ignoreActors: TRUE)
 		)
 		(switch prevRoomNum
 			(25
 				(ego
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					posn: 93 21
 					view: 32
 					setLoop: 3
@@ -48,11 +48,13 @@
 			)
 			(39
 				(egoChair hide:)
-				(if (ego looper?) ((ego looper?) dispose:))
+				(if (ego looper?)
+					((ego looper?) dispose:)
+				)
 				(ego
 					view: 32
 					setLoop: 7
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					posn: (egoChair x?) (egoChair y?)
 					setCel: 16
 					cycleSpeed: 2
@@ -61,7 +63,7 @@
 				)
 				(oldSalt
 					init:
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					posn: (oldSaltChair x?) (oldSaltChair y?)
 					view: 32
 					cycleSpeed: 2
@@ -71,7 +73,9 @@
 				)
 				(rumBottle dispose:)
 			)
-			(west (ego posn: 59 108))
+			(west
+				(ego posn: 59 108)
+			)
 			(south
 				(ego posn: 109 141 heading: 45 loop: 6)
 			)
@@ -80,7 +84,7 @@
 				(ego posn: 116 122 view: 232)
 			)
 		)
-		(oldSaltChair init: ignoreActors: 1)
+		(oldSaltChair init: ignoreActors: TRUE)
 		(egoChair init:)
 		(chef init: stopUpd: setScript: chefScript)
 		(addToPics add: pipes skillet doit:)
@@ -90,7 +94,7 @@
 	)
 	
 	(method (doit)
-		(if (== (ego onControl: 1) 16384)
+		(if (== (ego onControl: origin) cYELLOW)
 			(self newRoom: 34)
 		else
 			(super doit:)
@@ -109,27 +113,35 @@
 			)
 			((Said 'look>')
 				(cond 
-					((Said '[<at,around][/room]') (Print 32 1) (Print 32 2) (Print 32 3))
+					((Said '[<at,around][/room]')
+						(Print 32 1)
+						(Print 32 2)
+						(Print 32 3)
+					)
 					((Said '/table')
 						(if
 							(and
 								(cast contains: rumBottle)
-								(not (& (rumBottle signal?) $0008))
+								(not (& (rumBottle signal?) hideActor))
 							)
 							(Print 32 4)
 						else
 							(Print 32 5)
 						)
 					)
-					((Said '/kitchen') (Print 32 6))
-					((Said '/menu') (Print 32 7))
+					((Said '/kitchen')
+						(Print 32 6)
+					)
+					((Said '/menu')
+						(Print 32 7)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance pipes of PV
+(instance pipes of PicView
 	(properties
 		y 185
 		x 193
@@ -143,14 +155,16 @@
 			((Said '[/pipe]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 32 8))
+					((Said 'look[<at]')
+						(Print 32 8)
+					)
 				)
 			)
 		)
 	)
 )
 
-(instance skillet of PV
+(instance skillet of PicView
 	(properties
 		y 45
 		x 164
@@ -163,7 +177,9 @@
 		(cond 
 			((super handleEvent: event))
 			((TurnIfSaid self event 'look[<at]/pan,pan'))
-			((Said 'look[<at][/pan,pan]') (Print 32 9))
+			((Said 'look[<at][/pan,pan]')
+				(Print 32 9)
+			)
 		)
 	)
 )
@@ -183,9 +199,15 @@
 			((Said '[/chef,man,cook]>')
 				(cond 
 					((TurnIfSaid self event 'address,(look[<at])/*'))
-					((Said 'look[<at]') (Print 32 10))
-					((Said 'address') (Print 32 11))
-					((Said 'ask//key') (Print 32 12))
+					((Said 'look[<at]')
+						(Print 32 10)
+					)
+					((Said 'address')
+						(Print 32 11)
+					)
+					((Said 'ask//key')
+						(Print 32 12)
+					)
 				)
 			)
 		)
@@ -193,13 +215,12 @@
 )
 
 (instance serveItScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(Print 32 13 #at 30 20 #time 8 #dispose)
-				(chef setLoop: 5 cycleSpeed: 2 setCycle: End self)
+				(chef setLoop: 5 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(1
 				(burger init:)
@@ -239,7 +260,7 @@
 				)
 			)
 			(2
-				(client setLoop: 1 setCycle: End self)
+				(client setLoop: 1 setCycle: EndLoop self)
 			)
 			(3
 				(client stopUpd:)
@@ -257,16 +278,28 @@
 					(and (not register) (Said 'eat'))
 				)
 				(cond 
-					((!= (ego view?) 232) (NotNow))
-					(register (Print 32 14))
-					(else (client setScript: serveItScript) (= register 1))
+					((!= (ego view?) 232)
+						(NotNow)
+					)
+					(register
+						(Print 32 14)
+					)
+					(else
+						(client setScript: serveItScript)
+						(= register 1)
+					)
 				)
 			)
 			((Said 'eat[/food,sandwich,burger]')
 				(cond 
 					((!= (ego view?) 232) (NotNow))
-					((cast contains: burger) (Print 32 15) (burger dispose:))
-					(else (Print 32 16))
+					((cast contains: burger)
+						(Print 32 15)
+						(burger dispose:)
+					)
+					(else
+						(Print 32 16)
+					)
 				)
 			)
 		)
@@ -274,7 +307,6 @@
 )
 
 (instance egoStandsScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -284,7 +316,7 @@
 					heading: 90
 					yStep: 2
 					setMotion: MoveTo (egoChair x?) (egoChair y?)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(1
@@ -295,7 +327,7 @@
 					heading: 270
 					view: 232
 					setLoop: -1
-					setLoop: Grooper
+					setLoop: GradualLooper
 					setCycle: Walk
 					setMotion: MoveTo 229 106 self
 				)
@@ -306,7 +338,7 @@
 			)
 			(3
 				(HandsOn)
-				(ego observeControl: -32768)
+				(ego observeControl: cWHITE)
 				(self dispose:)
 			)
 		)
@@ -325,16 +357,24 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((& signal $0008))
+			((& signal hideActor))
 			((Said '[/bottle[<rum]]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 32 17))
+					((Said 'look[<at]')
+						(Print 32 17)
+					)
 					((Said 'get,drink')
 						(cond 
-							((>= (ego distanceTo: self) 40) (NotClose))
-							((cast contains: oldSalt) (event claimed: 0))
-							(else (oldSalt init: setScript: oldSaltScript))
+							((>= (ego distanceTo: self) 40)
+								(NotClose)
+							)
+							((cast contains: oldSalt)
+								(event claimed: FALSE)
+							)
+							(else
+								(oldSalt init: setScript: oldSaltScript)
+							)
 						)
 					)
 				)
@@ -343,7 +383,7 @@
 	)
 )
 
-(instance oldSalt of Act
+(instance oldSalt of Actor
 	(properties
 		y 112
 		x 46
@@ -352,21 +392,26 @@
 	
 	(method (init)
 		(super init:)
-		(self ignoreControl: -32768 setCycle: Walk)
+		(self ignoreControl: cWHITE setCycle: Walk)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
 			((TurnIfSaid self event 'look[<at]/man[<old]'))
-			((Said 'look[<at][/man[<old]]') (Print 32 18))
-			((Said 'ask[/name]') (Print 32 19) (Print 32 20) (Print 32 21))
+			((Said 'look[<at][/man[<old]]')
+				(Print 32 18)
+			)
+			((Said 'ask[/name]')
+				(Print 32 19)
+				(Print 32 20)
+				(Print 32 21)
+			)
 		)
 	)
 )
 
 (instance oldSaltScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -374,7 +419,7 @@
 				(HandsOff)
 				(Print 32 22 #at 30 20 #dispose)
 				(oldSalt
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo (- (oldSaltChair x?) 13) (oldSaltChair y?) self
 				)
 				(if (InRect 210 115 257 124 ego)
@@ -385,7 +430,9 @@
 				(if (and (== (ego x?) 209) (== (ego y?) 120))
 					(ego loop: 0)
 				)
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(oldSaltChair hide:)
 				(oldSalt
 					x: (+ (oldSalt x?) 13)
@@ -393,7 +440,7 @@
 					cycleSpeed: 2
 					setLoop: 6
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -402,12 +449,12 @@
 			)
 			(3
 				(Print 32 24 #at 30 20)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= seconds 10)
 			)
 			(4
 				(Print 32 25 #at 30 20)
-				((inventory at: 4) moveTo: -1)
+				((inventory at: iRumBottle) moveTo: -1)
 				(rumBottle hide:)
 				(client setScript: oldSaltStandScript)
 			)
@@ -418,19 +465,28 @@
 		(cond 
 			((super handleEvent: event))
 			((!= state 3))
-			((or (Said 'affirmative') (Said 'play[/game]')) (ego setScript: diceGameScript) (self dispose:))
-			((Said 'n') (self cue:))
+			((or (Said 'affirmative') (Said 'play[/game]'))
+				(ego setScript: diceGameScript)
+				(self dispose:)
+			)
+			((Said 'n')
+				(self cue:)
+			)
 		)
 	)
 )
 
 (instance oldSaltStandScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(oldSalt ignoreActors: 1 heading: 90 setCycle: Beg self)
+				(oldSalt
+					ignoreActors: TRUE
+					heading: 90
+					setCycle: BegLoop
+					self
+				)
 			)
 			(1
 				(oldSaltChair show:)
@@ -438,7 +494,7 @@
 					view: 132
 					setCycle: Walk
 					setLoop: -1
-					setLoop: Grooper
+					setLoop: GradualLooper
 					heading: 270
 				)
 				((oldSalt looper?) doit: oldSalt (oldSalt heading?))
@@ -454,8 +510,12 @@
 				)
 			)
 			(3
-				(if (not (ego mover?)) (HandsOn))
-				(if (!= (ego view?) 232) (User canControl: 0))
+				(if (not (ego mover?))
+					(HandsOn)
+				)
+				(if (!= (ego view?) 232)
+					(User canControl: FALSE)
+				)
 				(self dispose:)
 			)
 		)
@@ -472,7 +532,6 @@
 )
 
 (instance diceGameScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -483,18 +542,19 @@
 					(= cycles 1)
 				)
 			)
-			(1 (curRoom newRoom: 39))
+			(1
+				(curRoom newRoom: 39)
+			)
 		)
 	)
 )
 
 (instance egoSitScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0 temp1)
 		(switch (= state newState)
 			(0
-				(if (== (ego onControl: 1) 8192)
+				(if (== (ego onControl: origin) cLMAGENTA)
 					(ego setMotion: MoveTo 179 120 self)
 				else
 					(= cycles 1)
@@ -508,8 +568,8 @@
 						(= temp1 (< (ego y?) (- (egoChair y?) 8)))
 					)
 					(ego
-						setAvoider: Avoid
-						observeControl: 8192
+						setAvoider: Avoider
+						observeControl: cLMAGENTA
 						setMotion: MoveTo (- (egoChair x?) 32) (- (egoChair y?) 8) self
 					)
 				else
@@ -533,18 +593,18 @@
 					setCel: 0
 					cycleSpeed: 1
 					yStep: 1
-					setCycle: CT 7 1 self
+					setCycle: CycleTo 7 1 self
 				)
 			)
 			(4
 				(ego
 					setMotion: MoveTo (egoChair x?) (+ (egoChair y?) 4)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(HandsOn)
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(self dispose:)
 			)
 		)
@@ -553,7 +613,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'sit') (Print 32 0))
+			((Said 'sit')
+				(Print 32 0)
+			)
 		)
 	)
 )
@@ -593,9 +655,13 @@
 			((Said '[/stair,ladder]>')
 				(cond 
 					((TurnIfSaid self event 'look[<at]/*'))
-					((Said 'look[<at]') (Print 32 26))
+					((Said 'look[<at]')
+						(Print 32 26)
+					)
 					((GoToIfSaid self event 62 130 'climb' 32 27))
-					((Said 'climb') (ego setScript: climbStairsScript))
+					((Said 'climb')
+						(ego setScript: climbStairsScript)
+					)
 				)
 			)
 		)
@@ -603,7 +669,6 @@
 )
 
 (instance climbStairsScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -617,7 +682,9 @@
 				(= cycles 4)
 			)
 			(2
-				(if (ego looper?) ((ego looper?) dispose:))
+				(if (ego looper?)
+					((ego looper?) dispose:)
+				)
 				(ego
 					view: 32
 					setLoop: 2
@@ -633,20 +700,19 @@
 				(ego posn: (+ (ego x?) 2) (- (ego y?) 7) setCel: 1)
 				(= cycles 2)
 			)
-			(4 (ego setCycle: CT 3 1 self))
+			(4 (ego setCycle: CycleTo 3 1 self))
 			(5
 				(ego posn: (+ (ego x?) 2) (- (ego y?) 7) setCel: 4)
 				(= cycles 2)
 			)
-			(6 (ego setCycle: CT 0 1 self))
+			(6 (ego setCycle: CycleTo 0 1 self))
 			(7 (self init:))
 		)
 	)
 )
 
 (instance decendStairsScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -666,12 +732,12 @@
 				(ego posn: (- (ego x?) 2) (- (ego y?) -7) setCel: 1)
 				(= cycles 2)
 			)
-			(2 (ego setCycle: CT 3 1 self))
+			(2 (ego setCycle: CycleTo 3 1 self))
 			(3
 				(ego posn: (- (ego x?) 2) (- (ego y?) -7) setCel: 4)
 				(= cycles 2)
 			)
-			(4 (ego setCycle: CT 0 1 self))
+			(4 (ego setCycle: CycleTo 0 1 self))
 			(5
 				(if (< (ego y?) 125)
 					(self init:)
@@ -682,10 +748,10 @@
 						loop: 2
 						setCycle: Walk
 						setLoop: -1
-						setLoop: Grooper
+						setLoop: GradualLooper
 						cycleSpeed: 0
 						setPri: -1
-						observeControl: -32768
+						observeControl: cWHITE
 					)
 					(HandsOn)
 				)

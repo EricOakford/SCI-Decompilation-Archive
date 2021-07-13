@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 28)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CyclingProp)
@@ -15,7 +15,7 @@
 	bridgeRm 0
 )
 
-(instance bridgeRm of Rm
+(instance bridgeRm of Room
 	(properties
 		picture 28
 		south 25
@@ -39,7 +39,7 @@
 		)
 		(ego
 			init:
-			ignoreActors: 1
+			ignoreActors: TRUE
 			posn: 83 80
 			view: 228
 			loop: 0
@@ -48,19 +48,21 @@
 		(captainP init: setScript: captainsScript)
 		(binocularV init: hide:)
 		(HandsOn)
-		(User canControl: 0)
+		(User canControl: FALSE)
 	)
 	
 	(method (dispose)
 		(cls)
-		(ego ignoreActors: 0)
+		(ego ignoreActors: FALSE)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'look[<at,around][/room,scene,bay,water]') (Print 28 0))
+			((Said 'look[<at,around][/room,scene,bay,water]')
+				(Print 28 0)
+			)
 			(
 				(or
 					(Said 'use,get,(look[<at])/binoculars')
@@ -135,7 +137,7 @@
 	)
 )
 
-(instance destroyer1PV of PV
+(instance destroyer1PV of PicView
 	(properties
 		y 36
 		x 304
@@ -143,7 +145,7 @@
 	)
 )
 
-(instance destroyer2PV of PV
+(instance destroyer2PV of PicView
 	(properties
 		y 36
 		x 286
@@ -163,7 +165,7 @@
 	(method (init)
 		(keyDownHandler add: self)
 		(mouseDownHandler add: self)
-		(self ignoreActors: 1)
+		(self ignoreActors: TRUE)
 		(super init: &rest)
 	)
 	
@@ -201,11 +203,15 @@
 			(2
 				(keyDownHandler delete: self)
 				(mouseDownHandler delete: self)
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(= seconds 10)
 			)
 			(3
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(Print 28 3)
 				(= start state)
 				(= seconds 10)
@@ -216,9 +222,13 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((== state 1) (= cycles 1))
+			((== state 1)
+				(= cycles 1)
+			)
 			((super handleEvent: event))
-			((Said 'address[/man,captain]') (client setScript: binocularScript))
+			((Said 'address[/man,captain]')
+				(client setScript: binocularScript)
+			)
 			(
 				(or
 					(Said 'exit,exit')
@@ -232,15 +242,18 @@
 )
 
 (instance binocularScript of Script
-	(properties)
 	
 	(method (dispose)
-		(if modelessDialog (modelessDialog dispose:))
+		(if modelessDialog
+			(modelessDialog dispose:)
+		)
 		(super dispose:)
 	)
 	
 	(method (changeState newState)
-		(if modelessDialog (modelessDialog dispose:))
+		(if modelessDialog
+			(modelessDialog dispose:)
+		)
 		(switch (= state newState)
 			(0
 				(HandsOff)
@@ -249,16 +262,18 @@
 			(1 (Print 28 6 #dispose))
 			(2 (Print 28 7 #dispose))
 			(3
-				(captainP setPri: 6 setCycle: CT 7 1 self)
+				(captainP setPri: 6 setCycle: CycleTo 7 1 self)
 			)
 			(4 (= cycles 3))
 			(5
-				(ego setPri: 7 setCycle: CT 4 1 self)
+				(ego setPri: 7 setCycle: CycleTo 4 1 self)
 			)
 			(6
-				(captainP setCycle: End self)
+				(captainP setCycle: EndLoop self)
 			)
-			(7 (ego setCycle: End self))
+			(7
+				(ego setCycle: EndLoop self)
+			)
 			(8
 				(binocularV show: 2)
 				(= seconds 10)
@@ -268,23 +283,23 @@
 				(Print 28 8 #dispose)
 			)
 			(10
-				(ego setPri: 6 setCycle: CT 4 -1 self)
+				(ego setPri: 6 setCycle: CycleTo 4 -1 self)
 			)
 			(11
-				(captainP setPri: 7 setCycle: CT 7 -1 self)
+				(captainP setPri: 7 setCycle: CycleTo 7 -1 self)
 			)
 			(12
-				(ego setCycle: Beg self)
-				(captainP setCycle: Beg self)
+				(ego setCycle: BegLoop self)
+				(captainP setCycle: BegLoop self)
 			)
 			(13)
 			(14
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(Print 28 9 #dispose)
 				(= seconds 15)
 			)
 			(15
-				(User canInput: 0)
+				(User canInput: FALSE)
 				(Print 28 10 #dispose)
 			)
 			(16
@@ -304,7 +319,7 @@
 			((super handleEvent: event))
 			((== state 14)
 				(cond 
-					((== (event type?) evSAID)
+					((== (event type?) saidEvent)
 						(if
 							(or
 								(Said 'get,(look[<at])/binoculars')
@@ -313,30 +328,35 @@
 							(self setScript: lookBinocsScript self seconds: 0)
 						)
 					)
-					(modelessDialog (modelessDialog dispose:))
+					(modelessDialog
+						(modelessDialog dispose:)
+					)
 				)
 			)
-			((OneOf state 0 1 2 9 15 16) (= cycles 2))
+			((OneOf state 0 1 2 9 15 16)
+				(= cycles 2)
+			)
 		)
 	)
 )
 
 (instance lookBinocsScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(captainP setPri: 6 setCycle: CT 7 1 self)
+				(captainP setPri: 6 setCycle: CycleTo 7 1 self)
 			)
 			(1 (= cycles 3))
 			(2
-				(ego setPri: 7 setCycle: CT 4 1 self)
+				(ego setPri: 7 setCycle: CycleTo 4 1 self)
 			)
 			(3
-				(captainP setCycle: End self)
+				(captainP setCycle: EndLoop self)
 			)
-			(4 (ego setCycle: End self))
+			(4
+				(ego setCycle: EndLoop self)
+			)
 			(5
 				(binocularV show: 3)
 				(= seconds 5)
@@ -344,17 +364,19 @@
 			(6
 				(binocularV hide:)
 				(Print 28 8 #dispose)
-				(ego setPri: 6 setCycle: CT 4 -1 self)
+				(ego setPri: 6 setCycle: CycleTo 4 -1 self)
 			)
 			(7
-				(captainP setPri: 7 setCycle: CT 7 -1 self)
+				(captainP setPri: 7 setCycle: CycleTo 7 -1 self)
 			)
 			(8
-				(ego setCycle: Beg self)
-				(captainP setCycle: Beg self)
+				(ego setCycle: BegLoop self)
+				(captainP setCycle: BegLoop self)
 			)
 			(9)
-			(10 (self dispose:))
+			(10
+				(self dispose:)
+			)
 		)
 	)
 )
