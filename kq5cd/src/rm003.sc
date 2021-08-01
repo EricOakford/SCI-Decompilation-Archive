@@ -275,7 +275,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 180)
+					(SpeakAudio 180)
 					(event claimed: 1)
 				)
 			)
@@ -302,7 +302,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 180)
+					(SpeakAudio 180)
 					(event claimed: 1)
 				)
 			)
@@ -362,7 +362,7 @@ code_08b1:
 			bnt      code_08c7
 			pushi    1
 			pushi    181
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			pushi    #claimed
 			pushi    1
 			pushi    1
@@ -437,7 +437,7 @@ code_0915:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 182)
+					(SpeakAudio 182)
 					(event claimed: 1)
 				)
 			)
@@ -459,7 +459,7 @@ code_0915:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 183)
+					(SpeakAudio 183)
 					(event claimed: 1)
 				)
 			)
@@ -489,7 +489,7 @@ code_0915:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 184)
+					(SpeakAudio 184)
 					(event claimed: 1)
 				)
 			)
@@ -519,11 +519,11 @@ code_0915:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 185)
+					(SpeakAudio 185)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 187)
+					(SpeakAudio 187)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -557,7 +557,7 @@ code_0915:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 186)
+					(SpeakAudio 186)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -566,10 +566,10 @@ code_0915:
 						(proc762_1 @local136 3029)
 					else
 						(switch (Random 0 3)
-							(0 (proc0_29 75))
-							(1 (proc0_29 76))
-							(2 (proc0_29 77))
-							(else  (proc0_29 78))
+							(0 (SpeakAudio 75))
+							(1 (SpeakAudio 76))
+							(2 (SpeakAudio 77))
+							(else  (SpeakAudio 78))
 						)
 					)
 					(event claimed: 1)

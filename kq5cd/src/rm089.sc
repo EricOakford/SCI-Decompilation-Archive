@@ -83,7 +83,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc0_29 411 0 1)
+				(SpeakAudio 411 0 1)
 				(DoDisplay (Format @global185 89 0))
 				(= seconds 8)
 			)

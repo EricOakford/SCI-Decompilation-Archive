@@ -72,7 +72,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 15))
-			(1 (cls) (proc0_29 1135 self))
+			(1
+				(cls)
+				(SpeakAudio 1135 self)
+			)
 			(2
 				(ego setScript: putDownOwl)
 				(hermit cycleSpeed: 2 setCycle: End self)
@@ -111,7 +114,7 @@
 			)
 			(11
 				(hermit_mouth setCycle: MouthSync 1136)
-				(proc0_29 1136 self)
+				(SpeakAudio 1136 self)
 			)
 			(12
 				(putDownOwl cue:)
@@ -156,7 +159,7 @@
 			)
 			(20
 				(owlHead setCycle: MouthSync 1137)
-				(proc0_29 1137 self)
+				(SpeakAudio 1137 self)
 			)
 			(21
 				(owlHead setCycle: 0 hide:)
@@ -181,13 +184,13 @@
 			)
 			(23
 				(hermit_mouth setCycle: MouthSync 1138)
-				(proc0_29 1138 self)
+				(SpeakAudio 1138 self)
 			)
 			(24
 				(hermit_mouth setCycle: 0)
 				(cls)
 				(owlHead show: setCycle: MouthSync 1139)
-				(proc0_29 1139 self)
+				(SpeakAudio 1139 self)
 			)
 			(25
 				(owlHead setCycle: 0 hide:)
@@ -196,7 +199,7 @@
 			(26
 				(cls)
 				(hermit_mouth setCycle: MouthSync 1141)
-				(proc0_29 1141 self)
+				(SpeakAudio 1141 self)
 			)
 			(27
 				(cls)
@@ -273,7 +276,7 @@
 				)
 			)
 			(3
-				(gPolyList15 view: 138 setLoop: 8 setCycle: End self)
+				(globalCedric view: 138 setLoop: 8 setCycle: End self)
 			)
 			(4
 				(theMusic fade:)

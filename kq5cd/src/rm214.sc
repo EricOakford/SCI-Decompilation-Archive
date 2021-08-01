@@ -151,7 +151,7 @@
 				(door setCycle: Beg self)
 			)
 			(1
-				(proc0_29 7037)
+				(SpeakAudio 7037)
 				(door stopUpd:)
 				(HandsOn)
 				(client setScript: 0)
@@ -189,7 +189,7 @@
 					)
 				)
 			)
-			(2 (proc0_29 7038 self))
+			(2 (SpeakAudio 7038 self))
 			(3
 				(if local1
 					(theAudio number: 8053 loop: 2 play:)
@@ -214,10 +214,10 @@
 			(5
 				(cls)
 				(if local1
-					(proc0_29 7039 self)
+					(SpeakAudio 7039 self)
 					(brokenStaff init:)
 				else
-					(proc0_29 782)
+					(SpeakAudio 782)
 					(ego
 						normal: 1
 						view: 2
@@ -298,7 +298,7 @@
 					setCycle: End self
 				)
 			)
-			(5 (proc0_29 9114 self))
+			(5 (SpeakAudio 9114 self))
 			(6
 				(guard1 setLoop: 4 cycleSpeed: 4 setCycle: Fwd)
 				(theAudio number: 8053 loop: 3 play:)
@@ -366,7 +366,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 764)
+					(SpeakAudio 764)
 					(event claimed: 1)
 				)
 			)
@@ -392,11 +392,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 778)
+					(SpeakAudio 778)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 783)
+					(SpeakAudio 783)
 					(event claimed: 1)
 				)
 			)
@@ -423,11 +423,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 778)
+					(SpeakAudio 778)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 783)
+					(SpeakAudio 783)
 					(event claimed: 1)
 				)
 			)
@@ -456,7 +456,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 779)
+					(SpeakAudio 779)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -465,7 +465,7 @@
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 7038)
+					(SpeakAudio 7038)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -480,7 +480,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 785)
+							(SpeakAudio 785)
 							(event claimed: 1)
 						)
 					)
@@ -507,7 +507,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 780)
+					(SpeakAudio 780)
 					(event claimed: 1)
 				)
 			)
@@ -628,11 +628,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 781)
+					(SpeakAudio 781)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 784)
+					(SpeakAudio 784)
 					(event claimed: 1)
 				)
 			)

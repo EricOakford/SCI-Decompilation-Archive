@@ -326,7 +326,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(proc0_29 524 0 1)
+				(SpeakAudio 524 0 1)
 				(ego
 					view: 128
 					normal: 0
@@ -673,9 +673,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: cedric)
-						(proc0_29 527)
+						(SpeakAudio 527)
 					else
-						(proc0_29 9061)
+						(SpeakAudio 9061)
 					)
 					(event claimed: 1)
 				)
@@ -701,7 +701,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 528)
+					(SpeakAudio 528)
 					(event claimed: 1)
 				)
 			)
@@ -728,7 +728,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 529)
+					(SpeakAudio 529)
 					(event claimed: 1)
 				)
 			)
@@ -756,7 +756,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 529)
+					(SpeakAudio 529)
 					(event claimed: 1)
 				)
 			)
@@ -851,7 +851,7 @@
 		else
 			(switch (event message?)
 				(JOY_DOWN
-					(proc0_29 532)
+					(SpeakAudio 532)
 					(event claimed: 1)
 				)
 			)
@@ -880,7 +880,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 530)
+					(SpeakAudio 530)
 					(event claimed: 1)
 				)
 			)
@@ -908,7 +908,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 530)
+					(SpeakAudio 530)
 					(event claimed: 1)
 				)
 			)
@@ -979,9 +979,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: cedric)
-						(proc0_29 531)
+						(SpeakAudio 531)
 					else
-						(proc0_29 9062)
+						(SpeakAudio 9062)
 					)
 					(event claimed: 1)
 				)
@@ -1091,7 +1091,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 9063)
+					(SpeakAudio 9063)
 					(event claimed: 1)
 				)
 			)
@@ -1123,7 +1123,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 9063)
+					(SpeakAudio 9063)
 					(event claimed: 1)
 				)
 			)

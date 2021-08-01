@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 994)
-(include sci.sh)
+(script# GAME)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Polygon)
@@ -12,153 +12,120 @@
 (use System)
 
 
-(procedure (localproc_0f34 param1 &tmp temp0 [temp1 40] [temp41 40] temp81)
-	(= temp81 (Memory 1 (if 0 200 else 80)))
-	(= temp0 1)
-	(DeviceInfo 0 curSaveDir @temp1)
-	(DeviceInfo 1 @temp41)
-	(if
-		(and
-			(DeviceInfo 3 @temp41)
-			(or
-				(DeviceInfo 2 @temp1 @temp41)
-				(not (DeviceInfo 6 (theGame name?)))
-			)
-		)
-		(Format
-			temp81
-			994
-			3
-			(if param1 {SAVE GAME} else {GAME})
-			@temp1
-		)
-		(Load rsFONT userFont)
-		(DeviceInfo 4)
-		(if
-			(==
-				(= temp0
-					(if param1
-						(Print
-							temp81
-							#font
-							0
-							#button
-							{OK}
-							1
-							#button
-							{Cancel}
-							0
-							#button
-							{Change Directory}
-							2
-						)
-					else
-						(Print temp81 #font 0 #button {OK} 1)
-					)
-				)
-				2
-			)
-			(= temp0 (GetDirectory curSaveDir))
-		)
+(instance theCast of EventHandler
+	(properties
+		name "cast"
 	)
-	(Memory 3 temp81)
-	(return temp0)
 )
 
-(instance cast of EventHandler
-	(properties)
+(instance theFeatures of EventHandler
+	(properties
+		name "features"
+	)
 )
 
-(instance features of EventHandler
-	(properties)
+(instance demons of EventHandler
+	(properties
+		name "theDoits"
+	)
 )
 
-(instance theDoits of EventHandler
-	(properties)
-)
-
-(instance sFeatures of EventHandler
-	(properties)
+(instance theSortedFeatures of EventHandler
+	(properties
+		name "sFeatures"
+	)
 	
-	(method (delete param1)
-		(super delete: param1)
+	(method (delete theElement)
+		(super delete: theElement)
 		(if
 			(and
 				useSortedFeatures
-				(param1 isKindOf: Collect)
-				(not (OneOf param1 regions locales))
+				(theElement isKindOf: Collection)
+				(not (OneOf theElement regions locales))
 			)
-			(param1 release: dispose:)
+			(theElement release: dispose:)
 		)
 	)
 )
 
-(instance sounds of EventHandler
-	(properties)
+(instance theSounds of EventHandler
+	(properties
+		name "sounds"
+	)
 	
-	(method (pause param1)
-		(self
-			eachElementDo: #perform mayPause (if argc param1 else 1)
-		)
+	(method (pause tOrF)
+		(self eachElementDo: #perform mayPause (if argc tOrF else 1))
 	)
 )
 
 (instance mayPause of Code
 	(properties)
 	
-	(method (doit param1 param2)
-		(if (not (& (param1 flags:) $0001))
-			(param1 pause: param2)
+	(method (doit theSound tOrF)
+		(if (not (& (theSound flags?) mNOPAUSE))
+			(theSound pause: tOrF)
 		)
 	)
 )
 
-(instance regions of EventHandler
-	(properties)
+(instance theRegions of EventHandler
+	(properties
+		name "regions"
+	)
 )
 
-(instance locales of EventHandler
-	(properties)
+(instance theLocales of EventHandler
+	(properties
+		name "locales"
+	)
 )
 
-(instance addToPics of EventHandler
-	(properties)
+(instance theAddToPics of EventHandler
+	(properties
+		name "addToPics"
+	)
 	
 	(method (doit)
-		(self eachElementDo: #perform aTOC)
+		(self eachElementDo: #perform addToObstaclesCode)
 		(AddToPic elements)
 	)
 )
 
-(instance controls of Controls
-	(properties)
+(instance roomControls of Controls
+	(properties
+		name "controls"
+	)
 )
 
-(instance timers of Set
-	(properties)
+(instance theTimers of Set
+	(properties
+		name "timers"
+	)
 )
 
-(instance aTOC of Code
-	(properties)
+(instance addToObstaclesCode of Code
+	(properties
+		name "aTOC"
+	)
 	
-	(method (doit param1 &tmp temp0 temp1)
-		(if (not (| (param1 signal?) $4000))
-			(= temp0
+	(method (doit thePV &tmp dX dY)
+		(if (not (| (thePV signal?) ignrAct))
+			(= dX
 				(+ (ego xStep?) (/ (CelWide (ego view?) 2 0) 2))
 			)
-			(= temp1 (* (ego yStep?) 2))
+			(= dY (* (ego yStep?) 2))
 			(curRoom
 				addObstacle:
 					((Polygon new:)
 						init:
-							(- (param1 brLeft?) temp0)
-							(- (CoordPri 1 (CoordPri (param1 y?))) temp1)
-							(+ (param1 brRight?) temp0)
-							(- (CoordPri 1 (CoordPri (param1 y?))) temp1)
-							(+ (param1 brRight?) temp0)
-							(+ (param1 y?) temp1)
-							(- (param1 brLeft?) temp0)
-							(+ (param1 y?) temp1)
+							(- (thePV brLeft?) dX)
+							(- (CoordPri 1 (CoordPri (thePV y?))) dY)
+							(+ (thePV brRight?) dX)
+							(- (CoordPri 1 (CoordPri (thePV y?))) dY)
+							(+ (thePV brRight?) dX)
+							(+ (thePV y?) dY)
+							(- (thePV brLeft?) dX)
+							(+ (thePV y?) dY)
 						yourself:
 					)
 			)
@@ -166,12 +133,12 @@
 	)
 )
 
-(class Game of Obj
+(class Game of Object
 	(properties
-		script 0
-		parseLang 1
-		printLang 1
-		subtitleLang 0
+		script NULL
+		parseLang ENGLISH
+		printLang ENGLISH
+		subtitleLang NULL
 		_detailLevel 3
 		egoMoveSpeed 0
 	)
@@ -179,19 +146,19 @@
 	(method (init)
 		Motion
 		Sound
-		(ScriptID 932)
-		((= cast cast) add:)
-		((= features features) add:)
-		((= sortedFeatures sFeatures) add:)
-		((= sounds sounds) add:)
-		((= regions regions) add:)
-		((= locales locales) add:)
-		((= addToPics addToPics) add:)
-		((= timers timers) add:)
-		((= theDoits theDoits) add:)
-		(= fastCast 0)
+		(ScriptID LANGUAGE)
+		((= cast theCast) add:)
+		((= features theFeatures) add:)
+		((= sortedFeatures theSortedFeatures) add:)
+		((= sounds theSounds) add:)
+		((= regions theRegions) add:)
+		((= locales theLocales) add:)
+		((= addToPics theAddToPics) add:)
+		((= timers theTimers) add:)
+		((= theDoits demons) add:)
+		(= fastCast NULL)
 		(= curSaveDir (GetSaveDir))
-		(Inv init:)
+		(Inventory init:)
 		(if (not user) (= user User))
 		(user init:)
 	)
@@ -200,8 +167,7 @@
 		(if fastCast
 			(while fastCast
 				(fastCast eachElementDo: #doit)
-				(if
-				(and ((= newEvent (Event new:)) type?) fastCast)
+				(if (and ((= newEvent (Event new:)) type?) fastCast)
 					(fastCast firstTrue: #handleEvent newEvent)
 				)
 				(newEvent dispose:)
@@ -210,9 +176,9 @@
 			(sounds eachElementDo: #check)
 			(timers eachElementDo: #doit)
 			(if modelessDialog (modelessDialog check:))
-			(Animate (cast elements?) 1)
+			(Animate (cast elements?) TRUE)
 			(if doMotionCue
-				(= doMotionCue 0)
+				(= doMotionCue FALSE)
 				(cast eachElementDo: #motionCue)
 			)
 			(if script (script doit:))
@@ -223,7 +189,7 @@
 				(self newRoom: newRoomNum)
 			)
 			(timers eachElementDo: #delete)
-			(GameIsRestarting 0)
+			(GameIsRestarting FALSE)
 		)
 	)
 	
@@ -232,13 +198,13 @@
 		(= curSaveDir (GetSaveDir))
 		(if (not (GameIsRestarting)) (GetCWD curSaveDir))
 		(self
-			setCursor: waitCursor 1
+			setCursor: waitCursor TRUE
 			init:
 			setCursor: normalCursor (HaveMouse)
 		)
 		(while (not quit)
 			(self doit:)
-			(= aniInterval (Wait speed))
+			(= aniInterval (Wait speed))			
 		)
 	)
 	
@@ -246,40 +212,58 @@
 		(if lastEvent (lastEvent dispose:))
 		(sortedFeatures release:)
 		(if modelessDialog (modelessDialog dispose:))
-		(cast eachElementDo: #perform RU)
-		(theGame setCursor: waitCursor 1)
-		(DrawPic (curRoom curPic?) 100 TRUE currentPalette)
+		(cast eachElementDo: #perform RestoreUpdate)
+		(theGame setCursor: waitCursor TRUE)
+		(DrawPic (curRoom curPic?) PLAIN TRUE currentPalette)
 		(if (!= overlays -1)
-			(DrawPic overlays 100 FALSE currentPalette)
+			(DrawPic overlays PLAIN FALSE currentPalette)
 		)
 		(if (curRoom controls?) ((curRoom controls?) draw:))
 		(addToPics doit:)
-		(theGame
-			setCursor:
-				(if (and theIconBar (theIconBar curIcon?))
-					((theIconBar curIcon?) cursor?)
-				else
-					normalCursor
-				)
-				(HaveMouse)
+		(theGame setCursor:
+			(if (and theIconBar (theIconBar curIcon?))
+				((theIconBar curIcon?) cursor?)
+			else
+				normalCursor
+			)
+			(HaveMouse)
 		)
-		(SL doit:)
-		(DoSound sndNOP)
-		(Sound pause: 0)
+		(StatusLine doit:)
+		(DoSound RestoreSound)
+		(Sound pause: FALSE)
 		(while (not quit)
 			(self doit:)
-			(= aniInterval (Wait speed))
+			(= aniInterval (Wait speed))			
 		)
 	)
 	
-	(method (newRoom n &tmp [temp0 5] temp5)
-		(addToPics eachElementDo: #dispose release:)
-		(features eachElementDo: #perform fDC release:)
-		(cast eachElementDo: #dispose eachElementDo: #delete)
-		(timers eachElementDo: #delete)
-		(regions eachElementDo: #perform DNKR release:)
-		(locales eachElementDo: #dispose release:)
-		(theDoits release:)
+	(method (newRoom n &tmp mX mY theMover theEgo oldCur evt)
+		(addToPics
+			eachElementDo: #dispose
+			release:
+		)
+		(features
+			eachElementDo: #perform featureDisposeCode
+			release:
+		)
+		(cast
+			eachElementDo: #dispose
+			eachElementDo: #delete
+		)
+		(timers
+			eachElementDo: #delete
+		)
+		(regions
+			eachElementDo: #perform DisposeNonKeptRegion
+			release:
+		)
+		(locales
+			eachElementDo: #dispose
+			release:
+		)
+		(theDoits
+			release:
+		)
 		(Animate 0)
 		(= prevRoomNum curRoomNum)
 		(= curRoomNum n)
@@ -287,120 +271,123 @@
 		(FlushResources n)
 		(self startRoom: curRoomNum checkAni:)
 		(SetSynonyms regions)
-		(while ((= temp5 (Event new: 3)) type?)
-			(temp5 dispose:)
+		(while ((= evt (Event new: (| mouseDown mouseUp))) type?)
+			(evt dispose:)
 		)
-		(temp5 dispose:)
+		(evt dispose:)
 	)
 	
 	(method (startRoom roomNum)
-		(if debugOn (SetDebug))
+		(if debugOn
+			(SetDebug)
+		)
 		(regions addToFront: (= curRoom (ScriptID roomNum)))
 		(curRoom init:)
 	)
 	
 	(method (restart)
-		(if modelessDialog (modelessDialog dispose:))
+		(if modelessDialog
+			(modelessDialog dispose:)
+		)
 		(RestartGame)
 	)
 	
-	(method (restore param1 &tmp [temp0 20] temp20 temp21 theParseLang)
-		(= theParseLang parseLang)
-		(= parseLang 1)
-		(Load rsFONT smallFont)
-		(ScriptID 990)
-		(= temp21 (theGame setCursor: normalCursor))
-		(Sound pause: 1)
-		(if (localproc_0f34 1)
+	(method (restore &tmp [comment 20] num oldCur oldLang)
+		(= oldLang parseLang)
+		(= parseLang ENGLISH)
+		(Load FONT smallFont)
+		(ScriptID SAVE)
+		(= oldCur (theGame setCursor: normalCursor))
+		(Sound pause: TRUE)
+		(if (PromptForDiskChange TRUE)
 			(if modelessDialog (modelessDialog dispose:))
-			(if (!= (= temp20 (Restore doit: &rest)) -1)
-				(theGame setCursor: waitCursor 1)
-				(if (CheckSaveGame name temp20 version)
-					(RestoreGame name temp20 version)
+			(if (!= (= num (Restore doit: &rest)) -1)
+				(theGame setCursor: waitCursor TRUE)
+				(if (CheckSaveGame name num version)
+					(RestoreGame name num version)
 				else
-					(Print 994 1 #font 0 #button {OK} 1)
-					(theGame setCursor: temp21 (HaveMouse))
-					(= parseLang theParseLang)
+					(Print GAME 1 #font 0 #button {OK} 1)
+					(theGame setCursor: oldCur (HaveMouse))
+					(= parseLang oldLang)
 				)
 			else
-				(= parseLang theParseLang)
+				(= parseLang oldLang)
 			)
-			(localproc_0f34 0)
+			(PromptForDiskChange FALSE)
 		)
-		(Sound pause: 0)
-		(DisposeScript 990)
+		(Sound pause: FALSE)
+		(DisposeScript SAVE)
 	)
-	
-	(method (save &tmp [temp0 20] temp20 temp21 theParseLang)
-		(= theParseLang parseLang)
-		(= parseLang 1)
-		(Load rsFONT smallFont)
-		(Load rsCURSOR 456)
-		(ScriptID 990)
-		(= temp21 (theGame setCursor: normalCursor))
-		(Sound pause: 1)
-		(if (localproc_0f34 1)
+
+	(method (save &tmp [comment 20] num oldCur oldLang)
+		(= oldLang parseLang)
+		(= parseLang ENGLISH)
+		(Load FONT smallFont)
+		(ScriptID SAVE)
+		(= oldCur (theGame setCursor: normalCursor))
+		(Sound pause: TRUE)
+		(if (PromptForDiskChange TRUE)
 			(if modelessDialog (modelessDialog dispose:))
-			(if (!= (= temp20 (Save doit: @temp0)) -1)
-				(= parseLang theParseLang)
-				(= temp21 (theGame setCursor: waitCursor 1))
-				(if (not (SaveGame name temp20 @temp0 version))
-					(Print 994 0 #font 0 #button {OK} 1)
+			(if (!= (= num (Save doit: @comment)) -1)
+				(= parseLang oldLang)
+				(= oldCur (theGame setCursor: waitCursor TRUE))
+				(if (not (SaveGame name num @comment version))
+					(Print GAME 0 #font 0 #button {OK} 1)
 				)
-				(theGame setCursor: temp21 (HaveMouse))
+				(theGame setCursor: oldCur (HaveMouse))
 			)
-			(localproc_0f34 0)
+			(PromptForDiskChange FALSE)
 		)
-		(Sound pause: 0)
-		(= parseLang theParseLang)
-		(DisposeScript 990)
+		(Sound pause: FALSE)
+		(= parseLang oldLang)
+		(DisposeScript SAVE)
 	)
 	
 	(method (changeScore delta)
 		(= score (+ score delta))
-		(SL doit:)
+		(StatusLine doit:)
 	)
 	
 	(method (handleEvent event)
 		(cond 
-			((event claimed?) 1)
-			((and script (script handleEvent: event)) 1)
-			((== (event type?) 16384) (self pragmaFail:))
+			((event claimed?) TRUE)
+			((and script (script handleEvent: event)) TRUE)
+			((== (event type?) userEvent) (self pragmaFail:))
 		)
 		(event claimed?)
 	)
-	
+
 	(method (showMem)
 		(Printf
 			{Free Heap: %u Bytes\nLargest ptr: %u Bytes\nFreeHunk: %u KBytes\nLargest hunk: %u Bytes}
-			(MemoryInfo 1)
-			(MemoryInfo 0)
-			(>> (MemoryInfo 3) $0006)
-			(MemoryInfo 2)
+			(MemoryInfo FreeHeap)
+			(MemoryInfo LargestPtr)
+			(>> (MemoryInfo FreeHunk) 6)
+			(MemoryInfo LargestHandle)
 		)
 	)
 	
-	(method (setSpeed theSpeed &tmp theSpeed_2)
-		(= theSpeed_2 speed)
-		(= speed theSpeed)
-		(return theSpeed_2)
+	(method (setSpeed newSpeed &tmp oldSpeed)
+		(= oldSpeed speed)
+		(= speed newSpeed)
+		(return oldSpeed)
 	)
 	
-	(method (setCursor form &tmp theTheCursor)
-		(= theTheCursor theCursor)
+	(method (setCursor form &tmp oldCur)
+		(= oldCur theCursor)
 		(= theCursor form)
 		(SetCursor form &rest)
-		(return theTheCursor)
+		(return oldCur)
 	)
 	
-	(method (checkAni &tmp temp0)
-		(Animate (cast elements?) 0)
+	(method (checkAni &tmp theExtra)
+		(Animate (cast elements?) FALSE)
 		(Wait 0)
-		(Animate (cast elements?) 0)
+		(Animate (cast elements?) FALSE)
 		(while (> (Wait 0) aniThreshold)
-			(breakif (== (= temp0 (cast firstTrue: #isExtra)) 0))
-			(temp0 addToPic:)
-			(Animate (cast elements?) 0)
+			(breakif (== (= theExtra (cast firstTrue: #isExtra)) NULL))
+			(theExtra addToPic:)
+			(Animate (cast elements?) FALSE)
 			(cast eachElementDo: #delete)
 		)
 	)
@@ -409,29 +396,37 @@
 	)
 	
 	(method (setScript newScript)
-		(if script (script dispose:))
-		(if newScript (newScript init: self &rest))
-	)
-	
-	(method (cue)
-		(if script (script cue:))
-	)
-	
-	(method (quitGame param1)
-		(if (or (not argc) param1) (= quit 1))
-	)
-	
-	(method (masterVolume param1)
-		(if argc
-			(DoSound sndINIT param1)
-		else
-			(DoSound sndINIT)
+		(if script
+			(script dispose:)
+		)
+		(if newScript
+			(newScript init: self &rest)
 		)
 	)
 	
-	(method (detailLevel the_detailLevel)
+	(method (cue)
+		(if script
+			(script cue:)
+		)
+	)
+	
+	(method (quitGame tOrF)
+		(if (or (not argc) tOrF)
+			(= quit TRUE)
+		)
+	)
+	
+	(method (masterVolume newVol)
 		(if argc
-			(= _detailLevel the_detailLevel)
+			(DoSound MasterVol newVol)
+		else
+			(DoSound MasterVol)
+		)
+	)
+	
+	(method (detailLevel theLevel)
+		(if argc
+			(= _detailLevel theLevel)
 			(cast eachElementDo: #checkDetail)
 		)
 		(return _detailLevel)
@@ -441,8 +436,9 @@
 	)
 )
 
-(class Rgn of Obj
+(class Region of Object
 	(properties
+		name "Rgn"
 		script 0
 		number 0
 		timer 0
@@ -453,7 +449,7 @@
 	
 	(method (init)
 		(if (not initialized)
-			(= initialized 1)
+			(= initialized TRUE)
 			(if (not (regions contains: self))
 				(regions addToEnd: self)
 			)
@@ -475,30 +471,23 @@
 	
 	(method (handleEvent event)
 		(cond 
-			((event claimed?) 1)
+			((event claimed?) TRUE)
 			(
 				(not
 					(if
-					(and script (or (script handleEvent: event) 1))
+					(and script (or (script handleEvent: event) TRUE))
 						(event claimed?)
 					)
 				)
-				(event
-					claimed:
-						(self
-							doVerb:
-								(event message?)
-								(if
-									(and
-										inventory
-										theIconBar
-										(== (event message?) JOY_DOWNRIGHT)
-									)
-									(inventory indexOf: (theIconBar curInvIcon?))
-								else
-									0
-								)
+				(event claimed:
+					(self doVerb: (event message?)
+						(if
+							(and inventory theIconBar (== (event message?) verbUse))
+							(inventory indexOf: (theIconBar curInvIcon?))
+						else
+							FALSE
 						)
+					)
 				)
 			)
 		)
@@ -507,11 +496,11 @@
 	
 	(method (doVerb theVerb)
 		(return
-			(if (and (== theVerb 2) lookStr)
-				(Printf 994 2 lookStr)
-				(return 1)
+			(if (and (== theVerb verbLook) lookStr)
+				(Printf GAME 2 lookStr)
+				(return TRUE)
 			else
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
@@ -532,16 +521,11 @@
 	)
 )
 
-(class Rm of Rgn
+(class Room of Region
 	(properties
-		script 0
-		number 0
-		timer 0
-		keep 0
-		initialized 0
-		lookStr 0
+		name "Rm"
 		picture 0
-		style $ffff
+		style -1
 		horizon 0
 		controls 0
 		north 0
@@ -555,9 +539,9 @@
 		obstacles 0
 	)
 	
-	(method (init &tmp temp0)
+	(method (init &tmp how)
 		(= number curRoomNum)
-		(= controls controls)
+		(= controls roomControls)
 		(= perspective picAngle)
 		(if picture (self drawPic: picture))
 		(self
@@ -566,13 +550,13 @@
 		((user alterEgo?) edgeHit: 0)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp nRoom)
 		(if script (script doit:))
 		(if
-			(= temp0
+			(= nRoom
 				(self edgeToRoom: ((user alterEgo?) edgeHit?))
 			)
-			(self newRoom: temp0)
+			(self newRoom: nRoom)
 		)
 	)
 	
@@ -600,33 +584,33 @@
 		(super newRoom: n)
 	)
 	
-	(method (setRegions region &tmp temp0 theRegion temp2)
-		(= temp0 0)
-		(while (< temp0 argc)
-			(= theRegion [region temp0])
-			((= temp2 (ScriptID theRegion)) number: theRegion)
-			(regions add: temp2)
-			(if (not (temp2 initialized?)) (temp2 init:))
-			(++ temp0)
+	(method (setRegions region &tmp i n regID)
+		(= i 0)
+		(while (< i argc)
+			(= n [region i])
+			((= regID (ScriptID n)) number: n)
+			(regions add: regID)
+			(if (not (regID initialized?)) (regID init:))
+			(++ i)
 		)
 	)
 	
-	(method (setFeatures feature &tmp temp0 [temp1 2])
-		(= temp0 0)
-		(while (< temp0 argc)
-			(features add: [feature temp0])
-			(++ temp0)
+	(method (setFeatures feature &tmp i n featureID)
+		(= i 0)
+		(while (< i argc)
+			(features add: [feature i])
+			(++ i)
 		)
 	)
 	
-	(method (setLocales locale &tmp temp0 theLocale temp2)
-		(= temp0 0)
-		(while (< temp0 argc)
-			(= theLocale [locale temp0])
-			((= temp2 (ScriptID theLocale)) number: theLocale)
-			(locales add: temp2)
-			(temp2 init:)
-			(++ temp0)
+	(method (setLocales locale &tmp i n locID)
+		(= i 0)
+		(while (< i argc)
+			(= n [locale i])
+			((= locID (ScriptID n)) number: n)
+			(locales add: locID)
+			(locID init:)
+			(++ i)
 		)
 	)
 	
@@ -636,8 +620,7 @@
 		)
 		(= curPic pic)
 		(= overlays -1)
-		(DrawPic
-			pic
+		(DrawPic pic
 			(cond 
 				((== argc 2) theStyle)
 				((!= style -1) style)
@@ -650,8 +633,7 @@
 	
 	(method (overlay pic theStyle)
 		(= overlays pic)
-		(DrawPic
-			pic
+		(DrawPic pic
 			(cond 
 				((== argc 2) theStyle)
 				((!= style -1) style)
@@ -662,46 +644,46 @@
 		)
 	)
 	
-	(method (addObstacle param1)
+	(method (addObstacle obstacle)
 		(if (not (IsObject obstacles))
 			(= obstacles (List new:))
 		)
-		(obstacles add: param1 &rest)
+		(obstacles add: obstacle &rest)
 	)
 	
-	(method (reflectPosn param1 param2)
-		(switch param2
-			(1 (param1 y: 188))
-			(4
-				(param1 x: (- 319 (param1 xStep?)))
+	(method (reflectPosn theActor theEdge)
+		(switch theEdge
+			(NORTH (theActor y: (- southEdge 1)))
+			(WEST
+				(theActor x: (- eastEdge (theActor xStep?)))
 			)
-			(3
-				(param1 y: (+ horizon (param1 yStep?)))
+			(SOUTH
+				(theActor y: (+ horizon (theActor yStep?)))
 			)
-			(2 (param1 x: 1))
+			(EAST (theActor x: 1))
 		)
 	)
 	
-	(method (edgeToRoom param1)
-		(switch param1
-			(1 north)
-			(2 east)
-			(3 south)
-			(4 west)
+	(method (edgeToRoom edge)
+		(switch edge
+			(NORTH north)
+			(EAST east)
+			(SOUTH south)
+			(WEST west)
 		)
 	)
 	
-	(method (roomToEdge param1)
-		(switch param1
-			(north 1)
-			(south 3)
-			(east 2)
-			(west 4)
+	(method (roomToEdge rm)
+		(switch rm
+			(north NORTH)
+			(south SOUTH)
+			(east EAST)
+			(west WEST)
 		)
 	)
 )
 
-(class Locale of Obj
+(class Locale of Object
 	(properties
 		number 0
 	)
@@ -716,68 +698,120 @@
 	)
 )
 
-(class SL of Obj
+(class StatusLine of Object
 	(properties
-		state $0000
+		name "SL"
+		state FALSE
 		code 0
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp theLine)
 		(if code
-			(= temp0 (Memory 1 (if 0 240 else 82)))
-			(code doit: temp0)
-			(DrawStatus (if state temp0 else 0))
-			(Memory 3 temp0)
+			(= theLine (Memory MNeedPtr (if 0 240 else 82)))
+			(code doit: theLine)
+			(DrawStatus (if state theLine else 0))
+			(Memory MDisposePtr theLine)
 		)
 	)
 	
 	(method (enable)
-		(= state 1)
+		(= state TRUE)
 		(self doit:)
 	)
 	
 	(method (disable)
-		(= state 0)
+		(= state FALSE)
 		(self doit:)
 	)
 )
 
-(instance RU of Code
-	(properties)
+(procedure (PromptForDiskChange saveDisk &tmp ret [saveDevice 40] [curDevice 40] str)
+	(= str (Memory MNeedPtr (if 0 200 else 80)))
+	(= ret TRUE)
+	(DeviceInfo GetDevice curSaveDir @saveDevice)
+	(DeviceInfo CurDevice @curDevice)
+	(if
+		(and
+			(DeviceInfo DevRemovable @curDevice)
+			(or
+				(DeviceInfo SameDevice @saveDevice @curDevice)
+				(not (DeviceInfo SaveDirMounted (theGame name?)))
+			)
+		)
+		(Format str GAME 3
+			(if saveDisk {SAVE GAME} else {GAME})
+			@saveDevice
+		)
+		(Load FONT userFont)
+		(DeviceInfo CloseDevice)
+		(if
+			(==
+				(= ret
+					(if saveDisk
+						(Print str
+							#font SYSFONT
+							#button {OK} TRUE
+							#button {Cancel} FALSE
+							#button {Change Directory} 2
+						)
+					else
+						(Print str
+							#font SYSFONT
+							#button {OK} TRUE
+						)
+					)
+				)
+				2
+			)
+			(= ret (GetDirectory curSaveDir))
+		)
+	)
+	(Memory MDisposePtr str)
+	(return ret)
+)
+
+(instance RestoreUpdate of Code
+	(properties
+		name "RU"
+	)
 	
-	(method (doit param1 &tmp temp0)
-		(if (param1 underBits?)
-			(= temp0
+	(method (doit obj &tmp sigBits)
+		(if (obj underBits?)
+			(= sigBits
 				(&
-					(= temp0 (| (= temp0 (param1 signal?)) $0001))
+					(= sigBits (| (= sigBits (obj signal?)) stopUpdOn))
 					$fffb
 				)
 			)
-			(param1 underBits: 0 signal: temp0)
+			(obj underBits: 0 signal: sigBits)
 		)
 	)
 )
 
-(instance DNKR of Code
-	(properties)
+(instance DisposeNonKeptRegion of Code
+	(properties
+		name "DNKR"
+	)
 	
-	(method (doit param1)
-		(if (not (param1 keep?)) (param1 dispose:))
+	(method (doit region)
+		(if (not (region keep?)) (region dispose:))
 	)
 )
 
-(instance fDC of Code
-	(properties)
+(instance featureDisposeCode of Code
+	(properties
+		name "fDC"
+	)
 	
-	(method (doit param1)
-		(if (param1 respondsTo: #delete)
-			(param1
-				signal: (& (param1 signal?) $ffdf)
+	(method (doit theFeature)
+		(if (theFeature respondsTo: #delete)
+			(theFeature
+				signal: (& (theFeature signal?) (~ viewAdded))
 				dispose:
 				delete:
 			)
 		else
-			(param1 dispose:)
+			(theFeature dispose:)
 		)
 	)
 )

@@ -64,7 +64,7 @@
 		(cond 
 			(script (script doit:))
 			(
-			(and (not (Btst 16)) (not local1) (>= (ego x?) 30)) (proc0_29 444) (= local1 1))
+			(and (not (Btst 16)) (not local1) (>= (ego x?) 30)) (SpeakAudio 444) (= local1 1))
 			(
 			(and (not (Btst 16)) local1 (>= (ego x?) 105)) (curRoom setScript: hungerDeath))
 			((not local0) (++ local0) (self setScript: catchCedric))
@@ -98,7 +98,7 @@
 								)
 								(28 (event claimed: 0))
 								(else 
-									(proc0_29 442)
+									(SpeakAudio 442)
 									(event claimed: 1)
 								)
 							)
@@ -263,7 +263,7 @@
 			)
 			(2
 				(wolf setMotion: MoveTo 43 122 self)
-				(proc0_29 3075 0 1)
+				(SpeakAudio 3075 0 1)
 			)
 			(3
 				(wolf
@@ -274,7 +274,7 @@
 				)
 			)
 			(4
-				(gPolyList15 dispose:)
+				(globalCedric dispose:)
 				(wolf cel: 3 setMotion: MoveTo 200 122 setCycle: End self)
 			)
 			(5
@@ -314,7 +314,7 @@
 			(9
 				(ego normal: 1 view: 10 loop: 0 setCycle: KQ5SyncWalk)
 				((ego head?) show:)
-				(= gPolyList15 0)
+				(= globalCedric 0)
 				(cls)
 				(wolf dispose:)
 				(HandsOn)
@@ -363,7 +363,7 @@
 				(ego setMotion: MoveTo 120 117 self)
 			)
 			(1
-				(= gPolyList15 100)
+				(= globalCedric 100)
 				(curRoom newRoom: 33)
 			)
 		)
@@ -384,7 +384,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 439)
+					(SpeakAudio 439)
 					(event claimed: 1)
 				)
 			)
@@ -406,7 +406,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 440)
+					(SpeakAudio 440)
 					(event claimed: 1)
 				)
 			)
@@ -431,7 +431,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 441)
+					(SpeakAudio 441)
 					(event claimed: 1)
 				)
 			)

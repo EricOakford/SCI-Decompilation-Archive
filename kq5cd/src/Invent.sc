@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 995)
-(include sci.sh)
+(script# INVENT)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use IconBar)
@@ -11,51 +11,40 @@
 (local
 	numCols
 )
-(class InvI of IconI
+(class InvItem of IconItem
 	(properties
+		name "InvI"
 		view 0
 		loop 0
 		cel 0
-		nsLeft 0
 		nsTop 0
-		nsRight 0
-		nsBottom 0
-		state $0000
-		cursor 999
-		type $4000
-		message 4
-		modifiers $0000
-		signal $0000
-		helpStr 0
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		highlightColor 0
-		lowlightColor 0
+		cursor ARROW_CURSOR
+		message verbUse
+		signal 0
 		description 0
 		owner 0
 		script 0
 		value 0
 	)
 	
-	(method (show &tmp [temp0 4])
+	(method (show &tmp iconNo iX tmpX celWide)
 		(DrawCel view loop cel nsLeft nsTop -1)
 	)
 	
-	(method (highlight param1 &tmp temp0 temp1 temp2 temp3 temp4)
-		(= temp4
-			(if (and argc param1) highlightColor else lowlightColor)
+	(method (highlight tOrF &tmp t l b r sColor)
+		(= sColor
+			(if (and argc tOrF) highlightColor else lowlightColor)
 		)
-		(= temp0 (- nsTop 2))
-		(= temp1 (- nsLeft 2))
-		(= temp2 (+ nsBottom 1))
-		(= temp3 (+ nsRight 1))
-		(Graph grDRAW_LINE temp0 temp1 temp0 temp3 temp4 -1 -1)
-		(Graph grDRAW_LINE temp0 temp3 temp2 temp3 temp4 -1 -1)
-		(Graph grDRAW_LINE temp2 temp3 temp2 temp1 temp4 -1 -1)
-		(Graph grDRAW_LINE temp2 temp1 temp0 temp1 temp4 -1 -1)
+		(= t (- nsTop 2))
+		(= l (- nsLeft 2))
+		(= b (+ nsBottom 1))
+		(= r (+ nsRight 1))
+		(Graph GDrawLine t l t r sColor -1 -1)
+		(Graph GDrawLine t r b r sColor -1 -1)
+		(Graph GDrawLine b r b l sColor -1 -1)
+		(Graph GDrawLine b l t l sColor -1 -1)
 		(Graph
-			grUPDATE_BOX
+			GShowBits
 			(- nsTop 2)
 			(- nsLeft 2)
 			(+ nsBottom 2)
@@ -67,20 +56,20 @@
 	(method (onMe theObjOrX)
 		(return
 			(if (super onMe: theObjOrX)
-				(not (& signal $0004))
+				(not (& signal DISABLED))
 			else
 				0
 			)
 		)
 	)
 	
-	(method (ownedBy param1)
-		(return (== owner param1))
+	(method (ownedBy id)
+		(return (== owner id))
 	)
 	
-	(method (moveTo theOwner)
-		(= owner theOwner)
-		(if (and value (= theOwner ego))
+	(method (moveTo id)
+		(= owner id)
+		(if (and value (= id ego))
 			(theGame changeScore: value)
 			(= value 0)
 		)
@@ -89,30 +78,15 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (Printf 995 0 description))
+			(verbLook (Printf INVENT 0 description))
 		)
 	)
 )
 
-(class Inv of IconBar
+(class Inventory of IconBar
 	(properties
-		elements 0
-		size 0
-		height 10
-		underBits 0
-		oldMouseX 0
-		oldMouseY 0
-		curIcon 0
-		highlightedIcon 0
-		prevIcon 0
-		curInvIcon 0
-		useIconItem 0
-		helpIconItem 0
-		port 0
-		window 0
-		state $0400
-		activateHeight 10
-		y 0
+		name "Inv"
+		activateHeight 0
 		normalHeading {Roger is carrying:}
 		heading 0
 		empty {nothing!}
@@ -123,95 +97,104 @@
 		selectIcon 0
 	)
 	
-	(procedure (localproc_01a2 param1 param2 &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 inventoryFirst temp9 temp10 temp11 temp12 temp13 temp14 temp15 temp16 temp17 temp18 temp19 theNumCols)
-		(= temp0
-			(= temp1 (= temp2 (= temp3 (= temp4 (= temp5 0)))))
-		)
-		(= inventoryFirst (inventory first:))
-		(while inventoryFirst
-			(cond 
-				(
-				((= temp9 (NodeValue inventoryFirst)) isKindOf: InvI)
-					(if (temp9 ownedBy: param1)
-						(temp9 signal: (& (temp9 signal?) $fffb))
-						(++ temp0)
-						(if
-							(>
-								(= temp6
-									(CelWide (temp9 view?) (temp9 loop?) (temp9 cel?))
-								)
-								temp2
-							)
-							(= temp2 temp6)
+	(procedure (DrawInvWindow whom selection &tmp
+			numOwned tallestInv widestInv numIcons tallestIcon iconBarWidth
+			cWide cHigh node obj invW invH iTop iLeft iBottom iRight numRows atX atY firstX i)
+		(= numOwned
+			(= tallestInv
+				(= widestInv
+					(= numIcons
+						(= tallestIcon
+							(= iconBarWidth 0)
 						)
-						(if
-							(>
-								(= temp7
-									(CelHigh (temp9 view?) (temp9 loop?) (temp9 cel?))
-								)
-								temp1
-							)
-							(= temp1 temp7)
-						)
-					else
-						(temp9 signal: (| (temp9 signal?) $0004))
 					)
 				)
-				((not (& (temp9 signal?) $0004))
-					(++ temp3)
-					(= temp5
+			)
+		)
+		(= node (inventory first:))
+		(while node
+			(cond 
+				(
+				((= obj (NodeValue node)) isKindOf: InvItem)
+					(if (obj ownedBy: whom)
+						(obj signal: (& (obj signal?) (~ DISABLED)))
+						(++ numOwned)
+						(if
+							(>
+								(= cWide
+									(CelWide (obj view?) (obj loop?) (obj cel?))
+								)
+								widestInv
+							)
+							(= widestInv cWide)
+						)
+						(if
+							(>
+								(= cHigh
+									(CelHigh (obj view?) (obj loop?) (obj cel?))
+								)
+								tallestInv
+							)
+							(= tallestInv cHigh)
+						)
+					else
+						(obj signal: (| (obj signal?) DISABLED))
+					)
+				)
+				((not (& (obj signal?) DISABLED))
+					(++ numIcons)
+					(= iconBarWidth
 						(+
-							temp5
-							(CelWide (temp9 view?) (temp9 loop?) (temp9 cel?))
+							iconBarWidth
+							(CelWide (obj view?) (obj loop?) (obj cel?))
 						)
 					)
 					(if
 						(>
-							(= temp7
-								(CelHigh (temp9 view?) (temp9 loop?) (temp9 cel?))
+							(= cHigh
+								(CelHigh (obj view?) (obj loop?) (obj cel?))
 							)
-							temp4
+							tallestIcon
 						)
-						(= temp4 temp7)
+						(= tallestIcon cHigh)
 					)
 				)
 			)
-			(= inventoryFirst (inventory next: inventoryFirst))
+			(= node (inventory next: node))
 		)
-		(if (not temp0)
-			(Printf 995 1 normalHeading empty)
+		(if (not numOwned)
+			(Printf INVENT 1 normalHeading empty)
 			(return)
 		)
-		(if (> (* (= temp16 (Sqrt temp0)) temp16) temp0)
-			(-- temp16)
+		(if (> (* (= numRows (Sqrt numOwned)) numRows) numOwned)
+			(-- numRows)
 		)
-		(if (> temp16 3) (= temp16 3))
-		(if
-		(< (* temp16 (= numCols (/ temp0 temp16))) temp0)
+		(if (> numRows 3) (= numRows 3))
+		(if (< (* numRows (= numCols (/ numOwned numRows))) numOwned)
 			(++ numCols)
 		)
-		(= temp10 (Max (+ 4 temp5) (* numCols (+ 4 temp2))))
-		(= temp12
+		(= invW (Max (+ 4 iconBarWidth) (* numCols (+ 4 widestInv))))
+		(= iTop
 			(/
-				(- 190 (= temp11 (+ (* temp16 (+ 4 temp1)) temp4)))
+				(- 190 (= invH (+ (* numRows (+ 4 tallestInv)) tallestIcon)))
 				2
 			)
 		)
-		(= temp13 (/ (- 320 temp10) 2))
-		(= temp14 (+ temp12 temp11))
-		(= temp15 (+ temp13 temp10))
+		(= iLeft (/ (- 320 invW) 2))
+		(= iBottom (+ iTop invH))
+		(= iRight (+ iLeft invW))
 		(if (inventory window?)
 			((inventory window?)
-				top: temp12
-				left: temp13
-				right: temp15
-				bottom: temp14
+				top: iTop
+				left: iLeft
+				right: iRight
+				bottom: iBottom
 				open:
 			)
 		)
-		(= theNumCols numCols)
-		(if temp0
-			(= temp18
+		(= i numCols)
+		(if numOwned
+			(= atY
 				(+
 					2
 					(if ((inventory window?) respondsTo: #yOffset)
@@ -221,8 +204,8 @@
 					)
 				)
 			)
-			(= temp19
-				(= temp17
+			(= firstX
+				(= atX
 					(+
 						4
 						(if ((inventory window?) respondsTo: #xOffset)
@@ -233,28 +216,28 @@
 					)
 				)
 			)
-			(= inventoryFirst (inventory first:))
-			(while inventoryFirst
+			(= node (inventory first:))
+			(while node
 				(if
 					(and
 						(not
 							(&
-								((= temp9 (NodeValue inventoryFirst)) signal?)
+								((= obj (NodeValue node)) signal?)
 								$0004
 							)
 						)
-						(temp9 isKindOf: InvI)
+						(obj isKindOf: InvItem)
 					)
-					(if (not (& (temp9 signal?) $0080))
-						(temp9
+					(if (not (& (obj signal?) $0080))
+						(obj
 							nsLeft:
 								(+
-									temp17
+									atX
 									(/
 										(-
-											temp2
-											(= temp6
-												(CelWide (temp9 view?) (temp9 loop?) (temp9 cel?))
+											widestInv
+											(= cWide
+												(CelWide (obj view?) (obj loop?) (obj cel?))
 											)
 										)
 										2
@@ -262,90 +245,90 @@
 								)
 							nsTop:
 								(+
-									temp18
+									atY
 									(/
 										(-
-											temp1
-											(= temp7
-												(CelHigh (temp9 view?) (temp9 loop?) (temp9 cel?))
+											tallestInv
+											(= cHigh
+												(CelHigh (obj view?) (obj loop?) (obj cel?))
 											)
 										)
 										2
 									)
 								)
 						)
-						(temp9
-							nsRight: (+ (temp9 nsLeft?) temp6)
-							nsBottom: (+ (temp9 nsTop?) temp7)
+						(obj
+							nsRight: (+ (obj nsLeft?) cWide)
+							nsBottom: (+ (obj nsTop?) cHigh)
 						)
-						(if (-- theNumCols)
-							(= temp17 (+ temp17 temp2))
+						(if (-- i)
+							(= atX (+ atX widestInv))
 						else
-							(= theNumCols numCols)
-							(= temp18 (+ temp18 temp1))
-							(= temp17 temp19)
+							(= i numCols)
+							(= atY (+ atY tallestInv))
+							(= atX firstX)
 						)
 					else
-						(= temp17 (temp9 nsLeft?))
-						(= temp18 (temp9 nsTop?))
+						(= atX (obj nsLeft?))
+						(= atY (obj nsTop?))
 					)
-					(temp9 show:)
-					(if (== temp9 param2)
-						(theGame setCursor: invCursor 1)
-						(temp9 highlight:)
+					(obj show:)
+					(if (== obj selection)
+						(theGame setCursor: invCursor TRUE)
+						(obj highlight:)
 					)
 				)
-				(= inventoryFirst (inventory next: inventoryFirst))
+				(= node (inventory next: node))
 			)
 		)
-		(= temp17
+		(= atX
 			(/
 				(-
 					(-
 						((inventory window?) right?)
 						((inventory window?) left?)
 					)
-					temp5
+					iconBarWidth
 				)
 				2
 			)
 		)
-		(= temp11
+		(= invH
 			(-
 				((inventory window?) bottom?)
 				((inventory window?) top?)
 			)
 		)
-		(= temp18 32767)
-		(= inventoryFirst (inventory first:))
-		(while inventoryFirst
+		(= atY 32767)
+		(= node (inventory first:))
+		(while node
 			(if
 				(and
 					(not
-						((= temp9 (NodeValue inventoryFirst)) isKindOf: InvI)
+						((= obj (NodeValue node)) isKindOf: InvItem)
 					)
-					(not (& (temp9 signal?) $0004))
+					(not (& (obj signal?) DISABLED))
 				)
-				(= temp6
-					(CelWide (temp9 view?) (temp9 loop?) (temp9 cel?))
+				(= cWide
+					(CelWide (obj view?) (obj loop?) (obj cel?))
 				)
-				(= temp7
-					(CelHigh (temp9 view?) (temp9 loop?) (temp9 cel?))
+				(= cHigh
+					(CelHigh (obj view?) (obj loop?) (obj cel?))
 				)
-				(if (not (& (temp9 signal?) $0080))
-					(if (== temp18 32767) (= temp18 (- temp11 temp7)))
-					(temp9
-						nsLeft: temp17
-						nsTop: temp18
-						nsBottom: temp11
-						nsRight: (+ temp17 temp6)
+				(if (not (& (obj signal?) $0080))
+					(if (== atY 32767) (= atY (- invH cHigh)))
+					(obj
+						nsLeft: atX
+						nsTop: atY
+						nsBottom: invH
+						nsRight: (+ atX cWide)
 					)
 				)
-				(= temp17 (+ (temp9 nsLeft?) temp6))
-				(= temp18 (temp9 nsTop?))
-				(temp9 signal: (& (temp9 signal?) $fffb) show:)
+				(= atX (+ (obj nsLeft?) cWide))
+				(= atY (obj nsTop?))
+				(obj signal: (& (obj signal?) $fffb) show:)
 			)
-			(= inventoryFirst (inventory next: inventoryFirst))
+			(= node (inventory next: node))
 		)
 	)
 	
@@ -355,60 +338,64 @@
 		(= heading normalHeading)
 	)
 	
-	(method (doit &tmp theCurIcon newEvent newEventType temp3 systemWindowEraseOnly [temp5 3] temp8)
-		(while
-		(and (= newEvent (Event new:)) (& state $0020))
-			(= temp8 0)
-			(newEvent localize:)
+	(method (doit &tmp thisIcon event eType [temp3 3] eO oldPort keyInvoked)
+		(while ((= event (Event new:)) type?)
+			(event dispose:)
+		)
+		(event dispose:)
+		(= event 0)
+		(while (and (= event (Event new:)) (& state IB_ACTIVE))
+			(= keyInvoked FALSE)
+			(event localize:)
 			(if
 				(and
 					curIcon
-					(not (newEvent modifiers?))
+					(not (event modifiers?))
 					(!= curIcon selectIcon)
 					(or
-						(== (newEvent type?) 1)
+						(== (event type?) mouseDown)
 						(and
-							(== (newEvent type?) 4)
-							(== (newEvent message?) 13)
-							(= temp8 1)
+							(== (event type?) keyDown)
+							(== (event message?) ENTER)
+							(= keyInvoked TRUE)
 						)
-						(and (== (newEvent type?) 256) (= temp8 1))
+						(and (== (event type?) joyDown) (= keyInvoked TRUE))
 					)
 					(or
 						(!= curIcon helpIconItem)
-						(& (helpIconItem signal?) $0010)
+						(& (helpIconItem signal?) TRANSLATOR)
 					)
 				)
-				(newEvent type: 16384 message: (curIcon message?))
+				(event type: userEvent message: (curIcon message?))
 			)
-			(MapKeyToDir newEvent)
+			(MapKeyToDir event)
 			(cond 
 				(
 					(and
-						(== (= newEventType (newEvent type?)) 1)
-						(newEvent modifiers?)
+						(== (= eType (event type?)) mouseDown)
+						(event modifiers?)
 					)
 					(self advanceCurIcon:)
-					(newEvent claimed: 1)
+					(event claimed: TRUE)
 				)
 				(
 					(and
-						(== newEventType 0)
-						(= theCurIcon (self firstTrue: #onMe newEvent))
-						(!= theCurIcon highlightedIcon)
+						(== eType nullEvt)
+						(= thisIcon (self firstTrue: #onMe event))
+						(!= thisIcon highlightedIcon)
 					)
-					(self highlight: theCurIcon)
+					(self highlight: thisIcon)
 				)
 				(
 					(or
-						(== newEventType 1)
-						(and (== newEventType 4) (== (newEvent message?) 13))
-						(== newEventType 256)
+						(== eType mouseDown)
+						(and (== eType keyDown) (== (event message?) ENTER))
+						(== eType joyDown)
 					)
 					(if
 						(and
 							(IsObject highlightedIcon)
-							(self select: highlightedIcon (== newEventType 1))
+							(self select: highlightedIcon (== eType mouseDown))
 						)
 						(if (== highlightedIcon okButton) (break))
 						(if (== highlightedIcon helpIconItem)
@@ -416,109 +403,116 @@
 								(theGame setCursor: (helpIconItem cursor?))
 							)
 							(if helpIconItem
-								(helpIconItem signal: (| (helpIconItem signal?) $0010))
+								(helpIconItem signal: (| (helpIconItem signal?) TRANSLATOR))
 							)
+
 						else
 							(= curIcon highlightedIcon)
-							(theGame setCursor: (curIcon cursor?) 1)
+							(theGame setCursor: (curIcon cursor?) TRUE)
 						)
 					)
 				)
-				((& newEventType $0040)
-					(switch (newEvent message?)
-						(3 (self advance:))
-						(7 (self retreat:))
-						(1 (self retreat: numCols))
-						(5 (self advance: numCols))
-						(0
-							(if (& newEventType $0004) (self advanceCurIcon:))
+				((& eType direction)
+					(switch (event message?)
+						(dirE (self advance:))
+						(dirW (self retreat:))
+						(dirN (self retreat: numCols))
+						(dirS (self advance: numCols))
+						(dirStop
+							(if (& eType DISABLED) (self advanceCurIcon:))
 						)
 					)
 				)
-				((== newEventType 4)
-					(switch (newEvent message?)
-						(9 (self advance:))
-						(3840 (self retreat:))
+				((== eType keyDown)
+					(switch (event message?)
+						(TAB (self advance:))
+						(SHIFTTAB (self retreat:))
 					)
 				)
 				(
 					(and
-						(== newEventType 16384)
-						(= theCurIcon (self firstTrue: #onMe newEvent))
+						(== eType userEvent)
+						(= thisIcon (self firstTrue: #onMe event))
 					)
-					(if (== (newEvent message?) 6)
-						(if (and theCurIcon (theCurIcon helpStr?))
-							(DoAudio 2 (theCurIcon helpStr?))
+					(if (== (event message?) verbHelp)
+						(if (and thisIcon (thisIcon helpStr?))
+							(DoAudio Play (thisIcon helpStr?))
 						)
 						(helpIconItem signal: (& (helpIconItem signal?) $ffef))
 						(theGame setCursor: normalCursor)
 					else
-						(if (== theCurIcon okButton) (break))
+						(if (== thisIcon okButton) (break))
 						(cond 
-							((not (theCurIcon isKindOf: InvI))
-								(if (self select: theCurIcon (not temp8))
-									(= curIcon theCurIcon)
-									(theGame setCursor: (curIcon cursor?) 1)
+							((not (thisIcon isKindOf: InvItem))
+								(if (self select: thisIcon (not keyInvoked))
+									(= curIcon thisIcon)
+									(theGame setCursor: (curIcon cursor?) TRUE)
 								)
 							)
 							(curIcon
 								(if (systemWindow respondsTo: #eraseOnly)
-									(= systemWindowEraseOnly (systemWindow eraseOnly?))
-									(systemWindow eraseOnly: 1)
+									(= eO (systemWindow eraseOnly?))
+									(systemWindow eraseOnly: TRUE)
 								)
-								(if (curIcon isKindOf: InvI)
-									(theCurIcon
+								(if (curIcon isKindOf: InvItem)
+									(thisIcon
 										doVerb: (curIcon message?) (self indexOf: curIcon)
 									)
 								else
-									(theCurIcon doVerb: (newEvent message?))
+									(thisIcon doVerb: (event message?))
 								)
 								(if (systemWindow respondsTo: #eraseOnly)
-									(systemWindow eraseOnly: systemWindowEraseOnly)
+									(systemWindow eraseOnly: eO)
 								)
 							)
 						)
 					)
 				)
 			)
-			(newEvent dispose:)
+			(event dispose:)
 		)
-		(newEvent dispose:)
+		(event dispose:)
 		(self hide:)
 	)
 	
-	(method (showSelf param1)
+	(method (showSelf who)
 		(sounds pause:)
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
 		)
-		(if (theIconBar height?) (theIconBar hide:))
-		(if (not window) (= window (SysWindow new:)))
-		(if (window window?) (window dispose:) (= window 0))
+		(if (theIconBar height?)
+			(theIconBar hide:)
+		)
+		(if (not window)
+			(= window (SysWindow new:))
+		)
+		(if (window window?)
+			(window dispose:) (= window 0)
+		)
 		(if (not okButton)
 			(= okButton (NodeValue (self first:)))
 		)
-		(= curIcon 0)
+		(= curIcon NULL)
 		(theGame setCursor: (selectIcon cursor?))
-		(self show: (if argc param1 else ego) doit:)
+		(self show: (if argc who else ego) doit:)
 	)
 	
-	(method (show param1)
-		(= state (| state $0020))
-		(localproc_01a2
-			(if argc param1 else ego)
+	(method (show who)
+		(= state (| state IB_ACTIVE))
+		(DrawInvWindow
+			(if argc who else ego)
 			(theIconBar curIcon?)
 		)
 	)
 	
 	(method (hide)
-		(if (& state $0020)
-			(sounds pause: 0)
-			(= state (& state $ffdf))
+		(if (& state IB_ACTIVE)
+			(sounds pause: FALSE)
+			(= state (& state (~ IB_ACTIVE)))
 		)
 		(if window (window dispose:))
 		(if
-		(and (IsObject curIcon) (curIcon isKindOf: InvI))
+		(and (IsObject curIcon) (curIcon isKindOf: InvItem))
 			(if (not (theIconBar curInvIcon?))
 				(theIconBar enable: (theIconBar useIconItem?))
 			)
@@ -531,103 +525,99 @@
 				curInvIcon: curIcon
 			)
 			(if (curIcon cursor?)
-				(theGame setCursor: (curIcon cursor?) 1)
+				(theGame setCursor: (curIcon cursor?) TRUE)
 			)
 		)
 	)
 	
-	(method (advance param1 &tmp temp0 temp1 temp2 temp3)
-		(= temp1 (if argc param1 else 1))
-		(= temp3
-			(+ temp1 (= temp2 (self indexOf: highlightedIcon)))
+	(method (advance amount &tmp theIcon toMove highlightedNo nextIcon)
+		(= toMove (if argc amount else 1))
+		(= nextIcon
+			(+ toMove (= highlightedNo (self indexOf: highlightedIcon)))
 		)
 		(repeat
-			(= temp0
+			(= theIcon
 				(self
-					at: (if (<= temp3 size) temp3 else (mod temp3 (- size 1)))
+					at: (if (<= nextIcon size) nextIcon else (mod nextIcon (- size 1)))
 				)
 			)
-			(if (not (IsObject temp0))
-				(= temp0 (NodeValue (self first:)))
+			(if (not (IsObject theIcon))
+				(= theIcon (NodeValue (self first:)))
 			)
-			(if (not (& (temp0 signal?) $0004)) (break))
-			(++ temp3)
+			(if (not (& (theIcon signal?) DISABLED)) (break))
+			(++ nextIcon)
 		)
 		(if global400
 			(theGame
-				setCursor:
-					theCursor
-					1
+				setCursor: theCursor TRUE
 					(+
-						(temp0 nsLeft?)
-						(/ (- (temp0 nsRight?) (temp0 nsLeft?)) 2)
+						(theIcon nsLeft?)
+						(/ (- (theIcon nsRight?) (theIcon nsLeft?)) 2)
 					)
-					(- (temp0 nsBottom?) 3)
+					(- (theIcon nsBottom?) 3)
 			)
 		else
-			(theGame setCursor: theCursor 1)
+			(theGame setCursor: theCursor TRUE)
 			(Intersections
 				(+
-					(temp0 nsLeft?)
-					(/ (- (temp0 nsRight?) (temp0 nsLeft?)) 2)
+					(theIcon nsLeft?)
+					(/ (- (theIcon nsRight?) (theIcon nsLeft?)) 2)
 				)
-				(- (temp0 nsBottom?) 3)
+				(- (theIcon nsBottom?) 3)
 			)
 		)
-		(self highlight: temp0)
+		(self highlight: theIcon)
 	)
 	
-	(method (retreat param1 &tmp temp0 temp1 temp2 temp3)
-		(= temp1 (if argc param1 else 1))
-		(= temp3
-			(- (= temp2 (self indexOf: highlightedIcon)) temp1)
+	(method (retreat amount &tmp theIcon toMove highlightedNo nextIcon)
+		(= toMove (if argc amount else 1))
+		(= nextIcon
+			(- (= highlightedNo (self indexOf: highlightedIcon)) toMove)
 		)
 		(repeat
-			(= temp0 (self at: temp3))
-			(if (not (IsObject temp0))
-				(= temp0 (NodeValue (self last:)))
+			(= theIcon (self at: nextIcon))
+			(if (not (IsObject theIcon))
+				(= theIcon (NodeValue (self last:)))
 			)
-			(if (not (& (temp0 signal?) $0004)) (break))
-			(-- temp3)
+			(if (not (& (theIcon signal?) DISABLED)) (break))
+			(-- nextIcon)
 		)
 		(if global400
 			(theGame
-				setCursor:
-					theCursor
-					1
+				setCursor: theCursor TRUE
 					(+
-						(temp0 nsLeft?)
-						(/ (- (temp0 nsRight?) (temp0 nsLeft?)) 2)
+						(theIcon nsLeft?)
+						(/ (- (theIcon nsRight?) (theIcon nsLeft?)) 2)
 					)
-					(- (temp0 nsBottom?) 3)
+					(- (theIcon nsBottom?) 3)
 			)
 		else
-			(theGame setCursor: theCursor 1)
+			(theGame setCursor: theCursor TRUE)
 			(Intersections
 				(+
-					(temp0 nsLeft?)
-					(/ (- (temp0 nsRight?) (temp0 nsLeft?)) 2)
+					(theIcon nsLeft?)
+					(/ (- (theIcon nsRight?) (theIcon nsLeft?)) 2)
 				)
-				(- (temp0 nsBottom?) 3)
+				(- (theIcon nsBottom?) 3)
 			)
 		)
-		(self highlight: temp0)
+		(self highlight: theIcon)
 	)
 	
-	(method (advanceCurIcon &tmp theCurIcon)
-		(= theCurIcon curIcon)
+	(method (advanceCurIcon &tmp theIcon)
+		(= theIcon curIcon)
 		(while
-			((= theCurIcon
-				(self at: (mod (+ (self indexOf: theCurIcon) 1) size))
+			((= theIcon
+				(self at: (mod (+ (self indexOf: theIcon) 1) size))
 			)
-				isKindOf: InvI
+				isKindOf: InvItem
 			)
 		)
-		(= curIcon theCurIcon)
-		(theGame setCursor: (curIcon cursor?) 1)
+		(= curIcon theIcon)
+		(theGame setCursor: (curIcon cursor?) TRUE)
 	)
 	
-	(method (ownedBy param1)
-		(self firstTrue: #ownedBy param1)
+	(method (ownedBy id)
+		(self firstTrue: #ownedBy id)
 	)
 )

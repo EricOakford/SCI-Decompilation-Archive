@@ -121,7 +121,7 @@
 			)
 			(10
 				(babyRoc2 cycleSpeed: 2 setCycle: RandCycle)
-				(proc0_29 9116 self)
+				(SpeakAudio 9116 self)
 			)
 			(11
 				(cls)
@@ -142,7 +142,7 @@
 			)
 			(1 (locket hide:) (= cycles 2))
 			(2
-				(proc0_29 501)
+				(SpeakAudio 501)
 				(locket dispose:)
 				(ego loop: 0)
 			)
@@ -170,17 +170,17 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (>= (hatch state?) 4)
-						(proc0_29 495)
+						(SpeakAudio 495)
 					else
-						(proc0_29 496)
+						(SpeakAudio 496)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (>= (hatch state?) 4)
-						(proc0_29 502)
+						(SpeakAudio 502)
 					else
-						(proc0_29 503)
+						(SpeakAudio 503)
 					)
 					(event claimed: 1)
 				)
@@ -209,7 +209,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 497)
+					(SpeakAudio 497)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -245,14 +245,14 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (>= (hatch state?) 4)
-						(proc0_29 498)
+						(SpeakAudio 498)
 						(event claimed: 1)
 					)
 				)
 				(JOY_RIGHT
 					(if (not local0)
 						(++ local0)
-						(proc0_29 504)
+						(SpeakAudio 504)
 						(event claimed: 1)
 					)
 				)
@@ -283,14 +283,14 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (>= (hatch state?) 4)
-						(proc0_29 498)
+						(SpeakAudio 498)
 						(event claimed: 1)
 					)
 				)
 				(JOY_RIGHT
 					(if (not local0)
 						(++ local0)
-						(proc0_29 504)
+						(SpeakAudio 504)
 						(event claimed: 1)
 					)
 				)
@@ -298,7 +298,7 @@
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 505)
+							(SpeakAudio 505)
 							(event claimed: 1)
 						)
 					)
@@ -326,9 +326,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (>= (hatch state?) 4)
-						(proc0_29 499)
+						(SpeakAudio 499)
 					else
-						(proc0_29 500)
+						(SpeakAudio 500)
 					)
 					(event claimed: 1)
 				)

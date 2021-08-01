@@ -324,7 +324,7 @@
 			)
 			(3
 				(SolvePuzzle 5)
-				(proc0_29 686)
+				(SpeakAudio 686)
 				(if (IsObject (ego head?)) ((ego head?) show:))
 				(ego
 					normal: 1
@@ -362,10 +362,10 @@
 						(== ((inventory at: 28) owner?) curRoomNum)
 						(== ((inventory at: 35) owner?) curRoomNum)
 					)
-					(proc0_29 677)
+					(SpeakAudio 677)
 					(Bset 60)
 				else
-					(proc0_29 687)
+					(SpeakAudio 687)
 					(mWand setCycle: Fwd)
 				)
 				(ego normal: 1 setLoop: -1 setCel: -1)
@@ -849,7 +849,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 678)
+					(SpeakAudio 678)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -883,12 +883,12 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 679)
+					(SpeakAudio 679)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (Btst 60)
-						(proc0_29 683)
+						(SpeakAudio 683)
 						(event claimed: 1)
 					else
 						(HandsOff)
@@ -925,11 +925,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 680)
+					(SpeakAudio 680)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 684)
+					(SpeakAudio 684)
 					(event claimed: 1)
 				)
 			)
@@ -955,11 +955,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if (Btst 60) (proc0_29 681) else (proc0_29 682))
+					(if (Btst 60) (SpeakAudio 681) else (SpeakAudio 682))
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 685)
+					(SpeakAudio 685)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -977,7 +977,7 @@
 							(event claimed: 1)
 						)
 						(else 
-							(proc0_29 688)
+							(SpeakAudio 688)
 							(event claimed: 1)
 						)
 					)

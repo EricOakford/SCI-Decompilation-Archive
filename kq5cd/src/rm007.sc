@@ -205,7 +205,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 217)
+					(SpeakAudio 217)
 					(event claimed: 1)
 				)
 			)
@@ -232,12 +232,12 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 218)
+					(SpeakAudio 218)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (!= (bird x?) 108)
-						(proc0_29 221)
+						(SpeakAudio 221)
 						(event claimed: 1)
 					else
 						(event claimed: 0)
@@ -260,7 +260,7 @@
 		(cond 
 			(
 				(and
-					(MousedOn gPolyList15 event)
+					(MousedOn globalCedric event)
 					(== (event message?) JOY_DOWN)
 				)
 				(proc762_1 @local80 3034)
@@ -277,11 +277,11 @@
 			(else
 				(switch (event message?)
 					(JOY_UPRIGHT
-						(proc0_29 219)
+						(SpeakAudio 219)
 						(event claimed: 1)
 					)
 					(JOY_RIGHT
-						(proc0_29 222)
+						(SpeakAudio 222)
 						(event claimed: 1)
 					)
 					(JOY_DOWN
@@ -292,7 +292,7 @@
 					(JOY_DOWNRIGHT
 						(if
 						(!= (inventory indexOf: (theIconBar curInvIcon?)) 28)
-							(proc0_29 224)
+							(SpeakAudio 224)
 							(event claimed: 1)
 						)
 					)
@@ -339,21 +339,21 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 220)
+					(SpeakAudio 220)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 223)
+					(SpeakAudio 223)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 226)
+					(SpeakAudio 226)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(if
 					(!= (inventory indexOf: (theIconBar curInvIcon?)) 28)
-						(proc0_29 225)
+						(SpeakAudio 225)
 						(event claimed: 1)
 					)
 				)
@@ -403,7 +403,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 217)
+					(SpeakAudio 217)
 					(event claimed: 1)
 				)
 			)

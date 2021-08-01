@@ -69,7 +69,7 @@
 			)
 			(1
 				(theMouth setCycle: MouthSync 5099)
-				(proc0_29 5099 self)
+				(SpeakAudio 5099 self)
 			)
 			(2
 				(cls)
@@ -197,7 +197,7 @@
 				((ego head?) show:)
 			)
 			(5
-				(proc0_29 5096 self)
+				(SpeakAudio 5096 self)
 				(elf setScript: elfComesDown)
 			)
 			(6
@@ -290,7 +290,7 @@
 					cycleSpeed: 8
 					setCycle: RandCycle
 				)
-				(proc0_29 5097 self)
+				(SpeakAudio 5097 self)
 			)
 			(4
 				(cls)
@@ -311,7 +311,7 @@
 					cycleSpeed: 8
 					setCycle: RandCycle
 				)
-				(proc0_29 5098 self)
+				(SpeakAudio 5098 self)
 			)
 			(5
 				(cls)

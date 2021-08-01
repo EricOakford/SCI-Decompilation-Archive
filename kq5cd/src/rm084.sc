@@ -57,7 +57,7 @@
 			(0 (= seconds 3))
 			(1
 				(theMouth setCycle: MouthSync 5099)
-				(proc0_29 5099 self)
+				(SpeakAudio 5099 self)
 			)
 			(2
 				(cls)

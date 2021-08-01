@@ -139,7 +139,7 @@
 				(ego illegalBits: 0 ignoreActors: 1)
 			)
 			(1
-				(proc0_29 5900)
+				(SpeakAudio 5900)
 				(if (> (ego distanceTo: bandit) 25)
 					(bandit
 						view: 392
@@ -170,7 +170,7 @@
 					setCycle: End self
 				)
 			)
-			(4 (proc0_29 7772 0 1))
+			(4 (SpeakAudio 7772 0 1))
 			(5 (= seconds 3))
 			(6
 				(= deathMessage 318)
@@ -208,7 +208,7 @@
 			(3
 				(SolvePuzzle 2)
 				(staff dispose:)
-				(proc0_29 319)
+				(SpeakAudio 319)
 				(ego
 					normal: 1
 					view: 0
@@ -286,7 +286,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 323)
+					(SpeakAudio 323)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -335,13 +335,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 324)
+					(SpeakAudio 324)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (not local1)
 						(++ local1)
-						(proc0_29 320)
+						(SpeakAudio 320)
 						(event claimed: 1)
 					)
 				)
@@ -370,15 +370,15 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: bandit)
-						(proc0_29 321)
+						(SpeakAudio 321)
 					else
-						(proc0_29 322)
+						(SpeakAudio 322)
 					)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
 					(if (cast contains: bandit)
-						(proc0_29 9104)
+						(SpeakAudio 9104)
 						(curRoom setScript: wakeUp)
 						(event claimed: 1)
 					)

@@ -173,7 +173,7 @@
 					)
 					(28 (event claimed: 0))
 					(else 
-						(proc0_29 559)
+						(SpeakAudio 559)
 						(event claimed: 1)
 					)
 				)
@@ -469,15 +469,15 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if (Btst 35) (proc0_29 554) else (proc0_29 555))
+					(if (Btst 35) (SpeakAudio 554) else (SpeakAudio 555))
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 556)
+					(SpeakAudio 556)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 561)
+					(SpeakAudio 561)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -490,7 +490,10 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(if (not (Btst 35)) (proc0_29 560) (event claimed: 1))
+							(if (not (Btst 35))
+								(SpeakAudio 560)
+								(event claimed: 1)
+							)
 						)
 					)
 				)
@@ -516,7 +519,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 557)
+					(SpeakAudio 557)
 					(event claimed: 1)
 				)
 			)
@@ -538,7 +541,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 558)
+					(SpeakAudio 558)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

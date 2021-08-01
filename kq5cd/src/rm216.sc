@@ -163,7 +163,7 @@
 			(else
 				(switch (event message?)
 					(JOY_DOWN
-						(proc0_29 9059)
+						(SpeakAudio 9059)
 						(event claimed: 1)
 					)
 				)
@@ -203,7 +203,7 @@
 			(3 (= cycles 15))
 			(4 (ego setCycle: Beg self))
 			(5
-				(proc0_29 799)
+				(SpeakAudio 799)
 				(ego
 					normal: 1
 					view: 0
@@ -267,7 +267,7 @@
 			)
 			(1
 				(theMusic number: 129 priority: 500 loop: 1 play:)
-				(proc0_29 5902 0 1)
+				(SpeakAudio 5902 0 1)
 				(crowd1 setScript: 0 setCycle: 0)
 				(crowd2 setScript: 0 setCycle: 0)
 				(girl setScript: 0 setCycle: 0)
@@ -429,8 +429,8 @@
 			(1
 				(if (== ((theIconBar curIcon?) message?) 3)
 					(waterJug cycleSpeed: 12)
-					(proc0_29 311)
-					(= gPolyList15 0)
+					(SpeakAudio 311)
+					(= globalCedric 0)
 					(= local110 1)
 					(= cycles 1)
 				else
@@ -445,7 +445,7 @@
 					((ego head?) hide:)
 					(waterJug cel: 1 setCycle: End self)
 				else
-					(proc0_29 789)
+					(SpeakAudio 789)
 					(= cycles 1)
 				)
 			)
@@ -505,10 +505,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(2
-				(if (Btst 32) (proc0_29 790) else (proc0_29 791))
+				(if (Btst 32) (SpeakAudio 790) else (SpeakAudio 791))
 			)
 			(3
-				(if (Btst 32) (proc0_29 801) else (proc0_29 802))
+				(if (Btst 32) (SpeakAudio 801) else (SpeakAudio 802))
 			)
 			(else  (super doVerb: &rest))
 		)
@@ -526,12 +526,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 789))
+			(2 (SpeakAudio 789))
 			(3
 				(if local109
 					(curRoom setScript: walkToJug)
 				else
-					(proc0_29 800)
+					(SpeakAudio 800)
 				)
 			)
 			(else  (super doVerb: &rest))
@@ -550,7 +550,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 794))
+			(2 (SpeakAudio 794))
 			(else  (super doVerb: &rest))
 		)
 	)
@@ -568,7 +568,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 794))
+			(2 (SpeakAudio 794))
 			(else  (super doVerb: &rest))
 		)
 	)
@@ -585,10 +585,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(2
-				(if (Btst 32) (proc0_29 790) else (proc0_29 791))
+				(if (Btst 32) (SpeakAudio 790) else (SpeakAudio 791))
 			)
 			(3
-				(if (Btst 32) (proc0_29 801) else (proc0_29 802))
+				(if (Btst 32) (SpeakAudio 801) else (SpeakAudio 802))
 			)
 			(else  (super doVerb: &rest))
 		)
@@ -604,14 +604,14 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 792))
+			(2 (SpeakAudio 792))
 			(3
-				(if (not local0) (++ local0) (proc0_29 803))
+				(if (not local0) (++ local0) (SpeakAudio 803))
 			)
 			(4
 				(switch (inventory indexOf: (theIconBar curInvIcon?))
 					(28 0)
-					(else  (proc0_29 805))
+					(else  (SpeakAudio 805))
 				)
 			)
 			(else  (super doVerb: &rest))
@@ -629,12 +629,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 792))
-			(3 (proc0_29 803))
+			(2 (SpeakAudio 792))
+			(3 (SpeakAudio 803))
 			(4
 				(switch (inventory indexOf: (theIconBar curInvIcon?))
 					(28 0)
-					(else  (proc0_29 805))
+					(else  (SpeakAudio 805))
 				)
 			)
 			(else  (super doVerb: &rest))
@@ -652,12 +652,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 792))
-			(3 (proc0_29 803))
+			(2 (SpeakAudio 792))
+			(3 (SpeakAudio 803))
 			(4
 				(switch (inventory indexOf: (theIconBar curInvIcon?))
 					(28 0)
-					(else  (proc0_29 805))
+					(else  (SpeakAudio 805))
 				)
 			)
 			(else  (super doVerb: &rest))
@@ -677,12 +677,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 793))
-			(3 (proc0_29 804))
+			(2 (SpeakAudio 793))
+			(3 (SpeakAudio 804))
 			(4
 				(switch (inventory indexOf: (theIconBar curInvIcon?))
 					(28 0)
-					(else  (proc0_29 806))
+					(else  (SpeakAudio 806))
 				)
 			)
 			(else  (super doVerb: &rest))
@@ -698,7 +698,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(2
-				(if (Btst 32) (proc0_29 794) else (proc0_29 795))
+				(if (Btst 32) (SpeakAudio 794) else (SpeakAudio 795))
 			)
 			(else  (super doVerb: &rest))
 		)
@@ -712,7 +712,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 796))
+			(2 (SpeakAudio 796))
 			(else  (super doVerb: &rest))
 		)
 	)
@@ -725,7 +725,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 797))
+			(2 (SpeakAudio 797))
 			(else  (super doVerb: &rest))
 		)
 	)
@@ -744,7 +744,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2 (proc0_29 797))
+			(2 (SpeakAudio 797))
 			(else  (super doVerb: &rest))
 		)
 	)
@@ -773,7 +773,7 @@
 				(if (self script?)
 					(proc759_0 216 0)
 				else
-					(proc0_29 798)
+					(SpeakAudio 798)
 				)
 			)
 			(3

@@ -195,11 +195,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 658)
+					(SpeakAudio 658)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 663)
+					(SpeakAudio 663)
 					(event claimed: 1)
 				)
 			)
@@ -226,7 +226,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 659)
+					(SpeakAudio 659)
 					(event claimed: 1)
 				)
 			)
@@ -251,7 +251,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 660)
+					(SpeakAudio 660)
 					(event claimed: 1)
 				)
 			)
@@ -305,9 +305,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (not (Btst 21))
-						(proc0_29 661)
+						(SpeakAudio 661)
 					else
-						(proc0_29 662)
+						(SpeakAudio 662)
 					)
 					(event claimed: 1)
 				)
@@ -317,7 +317,7 @@
 						(proc550_17)
 						(curRoom setScript: lookBook)
 					else
-						(proc0_29 664)
+						(SpeakAudio 664)
 					)
 					(event claimed: 1)
 				)
@@ -365,7 +365,7 @@
 				(cast eachElementDo: #hide)
 				(curRoom drawPic: 219)
 				(SolvePuzzle 3)
-				(proc0_29 665 self)
+				(SpeakAudio 665 self)
 			)
 			(4
 				(cast eachElementDo: #show)
@@ -531,14 +531,14 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (not (Btst 21))
-						(proc0_29 661)
+						(SpeakAudio 661)
 					else
-						(proc0_29 662)
+						(SpeakAudio 662)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 666)
+					(SpeakAudio 666)
 					(event claimed: 1)
 				)
 			)

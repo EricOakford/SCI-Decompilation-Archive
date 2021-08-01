@@ -428,7 +428,10 @@
 				(ego loop: 7 cel: 3)
 				(= cycles 2)
 			)
-			(2 (proc0_29 162) (= cycles 1))
+			(2
+				(SpeakAudio 162)
+				(= cycles 1)
+			)
 			(3
 				(HandsOn)
 				(client setScript: 0)
@@ -473,7 +476,7 @@
 				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: Beg self)
 			)
 			(6
-				(proc0_29 9070)
+				(SpeakAudio 9070)
 				(ego
 					normal: 1
 					view: 2
@@ -530,12 +533,12 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 163)
+					(SpeakAudio 163)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (Btst 37)
-						(proc0_29 171)
+						(SpeakAudio 171)
 					else
 						(HandsOff)
 						(ego setScript: openDoor)
@@ -561,7 +564,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 164)
+					(SpeakAudio 164)
 					(event claimed: 1)
 				)
 			)
@@ -583,7 +586,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 165)
+					(SpeakAudio 165)
 					(event claimed: 1)
 				)
 			)
@@ -610,7 +613,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 166)
+					(SpeakAudio 166)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -642,7 +645,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 167)
+					(SpeakAudio 167)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -668,7 +671,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 168)
+					(SpeakAudio 168)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -700,7 +703,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 169)
+					(SpeakAudio 169)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -726,7 +729,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 170)
+					(SpeakAudio 170)
 					(event claimed: 1)
 				)
 			)

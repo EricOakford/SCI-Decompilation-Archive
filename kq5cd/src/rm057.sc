@@ -362,13 +362,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 602)
+					(SpeakAudio 602)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (not local2)
 						(++ local2)
-						(proc0_29 609)
+						(SpeakAudio 609)
 						(event claimed: 1)
 					)
 				)
@@ -394,7 +394,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 603)
+					(SpeakAudio 603)
 					(event claimed: 1)
 				)
 			)
@@ -437,22 +437,22 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== ((inventory at: 25) owner?) 57)
-						(proc0_29 604)
+						(SpeakAudio 604)
 					else
 						(switch (princess loop?)
-							(0 (proc0_29 605))
-							(1 (proc0_29 606))
+							(0 (SpeakAudio 605))
+							(1 (SpeakAudio 606))
 						)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (== ((inventory at: 25) owner?) 57)
-						(proc0_29 610)
+						(SpeakAudio 610)
 					else
 						(switch (princess loop?)
-							(0 (proc0_29 611))
-							(1 (proc0_29 612))
+							(0 (SpeakAudio 611))
+							(1 (SpeakAudio 612))
 						)
 					)
 					(event claimed: 1)
@@ -466,7 +466,7 @@
 						(28 (event claimed: 0))
 						(else 
 							(if (== ((inventory at: 25) owner?) 57)
-								(proc0_29 613)
+								(SpeakAudio 613)
 							else
 								(curRoom setScript: noThanks)
 							)
@@ -484,7 +484,7 @@
 									(princess setScript: friendTalk)
 								)
 								(2
-									(proc0_29 614)
+									(SpeakAudio 614)
 									(event claimed: 1)
 								)
 								(else  (event claimed: 0))
@@ -499,7 +499,7 @@
 									(princess setScript: scaredTalk)
 								)
 								(else 
-									(proc0_29 615)
+									(SpeakAudio 615)
 									(event claimed: 1)
 								)
 							)
@@ -596,7 +596,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 607)
+					(SpeakAudio 607)
 					(event claimed: 1)
 				)
 			)
@@ -618,7 +618,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 608)
+					(SpeakAudio 608)
 					(event claimed: 1)
 				)
 			)

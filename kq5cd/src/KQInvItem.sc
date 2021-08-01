@@ -100,7 +100,7 @@
 	
 	(method (doVerb theVerb &tmp temp0 newEvent temp2)
 		(if (== theVerb 2)
-			(proc0_29 description)
+			(SpeakAudio description)
 		else
 			(if (User canInput:)
 				(= temp0 (theGame setCursor: theXCursor))
@@ -351,26 +351,26 @@
 			(switch theVerb
 				(2
 					(cond 
-						((== global312 -1) (proc0_29 96))
-						(global312 (proc0_29
-							(switch global312
+						((== numEmeralds -1) (SpeakAudio 96))
+						(numEmeralds (SpeakAudio
+							(switch numEmeralds
 								(3 97)
 								(2 98)
 								(1 99)
 							)))
-						(else (proc0_29 100))
+						(else (SpeakAudio 100))
 					)
 				)
 				(3
-					(if (== global312 -1)
-						(= global312 3)
+					(if (== numEmeralds -1)
+						(= numEmeralds 3)
 						(proc0_30 131 891 0 6)
 						(inventory hide:)
 						(self loop: 4 cel: 1)
 						(ego get: 14)
 						(inventory show: ego)
 					else
-						(proc0_29 132)
+						(SpeakAudio 132)
 					)
 					(return 0)
 				)
@@ -390,12 +390,13 @@
 	(method (doVerb theVerb &tmp [temp0 50])
 		(switch theVerb
 			(2
-				(proc0_29
-					(switch global312
+				(SpeakAudio
+					(switch numEmeralds
 						(3 101)
 						(2 102)
 						(1 103)
-					))
+					)
+				)
 			)
 			(else  (super doVerb: theVerb))
 		)
@@ -455,7 +456,7 @@
 	(method (doVerb theVerb &tmp [temp0 50])
 		(switch theVerb
 			(2
-				(if global316 (proc0_29 109) else (proc0_29 108))
+				(if eatLambCount (SpeakAudio 109) else (SpeakAudio 108))
 			)
 			(else  (super doVerb: theVerb))
 		)
@@ -514,9 +515,9 @@
 		(switch theVerb
 			(2
 				(if (Btst 63)
-					(proc0_29 115)
+					(SpeakAudio 115)
 				else
-					(proc0_29 description)
+					(SpeakAudio description)
 				)
 			)
 			(else  (super doVerb: theVerb))
@@ -535,7 +536,7 @@
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(3 (proc0_29 133) (return 0))
+				(3 (SpeakAudio 133) (return 0))
 				(else  (super doVerb: theVerb))
 			)
 		)
@@ -565,9 +566,9 @@
 		(switch theVerb
 			(2
 				(if (Btst 84)
-					(proc0_29 119)
+					(SpeakAudio 119)
 				else
-					(proc0_29 description)
+					(SpeakAudio description)
 				)
 			)
 			(else  (super doVerb: theVerb))
@@ -595,9 +596,9 @@
 		(switch theVerb
 			(2
 				(if (Btst 60)
-					(proc0_29 121)
+					(SpeakAudio 121)
 				else
-					(proc0_29 description)
+					(SpeakAudio description)
 				)
 			)
 			(else  (super doVerb: theVerb))
@@ -684,9 +685,9 @@
 		(switch theVerb
 			(2
 				(if (Btst 60)
-					(proc0_29 128)
+					(SpeakAudio 128)
 				else
-					(proc0_29 description)
+					(SpeakAudio description)
 				)
 			)
 			(else  (super doVerb: theVerb))

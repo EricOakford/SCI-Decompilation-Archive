@@ -64,14 +64,14 @@
 			(south
 				(ego posn: (ego x?) 186 view: 0 init:)
 				(if
-				(and (cast contains: gPolyList15) (not (Btst 105)))
+				(and (cast contains: globalCedric) (not (Btst 105)))
 					(self setScript: (ScriptID 202 1))
 				)
 			)
 			(else  (ego posn: 84 186 init:))
 		)
-		(if (cast contains: gPolyList15)
-			(gPolyList15 setPri: 8)
+		(if (cast contains: globalCedric)
+			(globalCedric setPri: 8)
 		)
 		(poly1 points: @local24 size: 20)
 		(poly2 points: @local64 size: 4)
@@ -101,7 +101,7 @@
 					(= temp0 (self edgeToRoom: (ego edgeHit?)))
 				)
 				(if
-				(and (cast contains: gPolyList15) (!= temp0 47))
+				(and (cast contains: globalCedric) (!= temp0 47))
 					(ego setLoop: -1)
 					((ScriptID 202 2) register: (ego edgeHit?))
 					(self setScript: (ScriptID 202 2))
@@ -207,7 +207,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gPolyList15
+				(globalCedric
 					view: 618
 					setLoop: 11
 					setCycle: Fwd
@@ -218,7 +218,7 @@
 				)
 			)
 			(1
-				(gPolyList15
+				(globalCedric
 					setLoop: 12
 					setMotion: MoveTo (Random 200 320) 50 self
 				)
@@ -311,7 +311,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 511)
+					(SpeakAudio 511)
 					(event claimed: 1)
 				)
 			)
@@ -339,7 +339,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 512)
+					(SpeakAudio 512)
 					(event claimed: 1)
 				)
 			)
@@ -365,11 +365,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 513)
+					(SpeakAudio 513)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 514)
+					(SpeakAudio 514)
 					(event claimed: 1)
 				)
 			)
@@ -394,7 +394,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 511)
+					(SpeakAudio 511)
 					(event claimed: 1)
 				)
 			)

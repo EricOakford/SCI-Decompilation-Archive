@@ -129,7 +129,7 @@
 				(= local8 1)
 				(iceQueen loop: 5 cycleSpeed: 8 setCycle: RandCycle show:)
 				(theMouth setCycle: MouthSync 935 show:)
-				(proc0_29 935 self)
+				(SpeakAudio 935 self)
 			)
 			(4
 				(= local8 0)
@@ -142,7 +142,7 @@
 				(iceQueen loop: 6 cel: 0 setCycle: End)
 				(ego loop: 12 cel: 2)
 				(theMouth setCycle: MouthSync 936 show:)
-				(proc0_29 936 self)
+				(SpeakAudio 936 self)
 			)
 			(6
 				(= local8 1)
@@ -157,7 +157,7 @@
 				(curRoom drawPic: 95)
 				(qArm cycleSpeed: 8 setCycle: RandCycle init:)
 				(theMouth setCycle: MouthSync 937)
-				(proc0_29 937 self)
+				(SpeakAudio 937 self)
 			)
 			(7
 				(= local8 0)
@@ -243,7 +243,7 @@
 			)
 			(19
 				(theMouth setCycle: MouthSync 938 show:)
-				(proc0_29 938 0 1)
+				(SpeakAudio 938 0 1)
 				(wolf1 cycleSpeed: 2 setLoop: 5 setCycle: End)
 				(wolf2
 					cycleSpeed: 2
@@ -282,11 +282,11 @@
 			)
 			(22
 				(theMouth setCycle: MouthSync 939 show:)
-				(proc0_29 939 self)
+				(SpeakAudio 939 self)
 			)
 			(23
 				(theMouth setCycle: MouthSync 940)
-				(proc0_29 940 self)
+				(SpeakAudio 940 self)
 				(theMusic fade:)
 			)
 			(24
@@ -323,21 +323,21 @@
 			)
 			(26
 				(theMouth setCycle: MouthSync 941)
-				(proc0_29 941 self)
+				(SpeakAudio 941 self)
 			)
 			(27
 				(= local8 1)
 				(ego setCycle: Beg)
 				(theMouth setCycle: MouthSync 942)
-				(proc0_29 942 self)
+				(SpeakAudio 942 self)
 			)
 			(28
 				(theMouth setCycle: MouthSync 943)
-				(proc0_29 943 self)
+				(SpeakAudio 943 self)
 			)
 			(29
 				(theMouth setCycle: MouthSync 944)
-				(proc0_29 944 self)
+				(SpeakAudio 944 self)
 			)
 			(30
 				(= local8 0)
@@ -443,19 +443,19 @@
 			(3
 				(iceQueen loop: 5 cycleSpeed: 8 setCycle: RandCycle)
 				(theMouth setCycle: MouthSync 945 show:)
-				(proc0_29 945 self)
+				(SpeakAudio 945 self)
 			)
 			(4
 				(ego loop: 8 cycleSpeed: 6 setScript: (moveScript new:))
 				(iceQueen setCycle: 0)
 				(theMouth hide:)
-				(proc0_29 946 self)
+				(SpeakAudio 946 self)
 			)
 			(5
 				(ego loop: 13 cel: 3 setCycle: 0 setScript: 0)
 				(iceQueen loop: 5 cycleSpeed: 8 setCycle: RandCycle)
 				(theMouth setCycle: MouthSync 947 show:)
-				(proc0_29 947 self)
+				(SpeakAudio 947 self)
 			)
 			(6
 				(cls)
@@ -471,7 +471,7 @@
 				)
 				((ego head?) show:)
 				(theMouth setCycle: MouthSync 948)
-				(proc0_29 948 self)
+				(SpeakAudio 948 self)
 			)
 			(8
 				(theMouth hide:)
@@ -495,7 +495,7 @@
 				(iceQueen loop: 5 cycleSpeed: 8 setCycle: RandCycle)
 				(cage dispose:)
 				(theMouth setCycle: MouthSync 949 show:)
-				(proc0_29 949 self)
+				(SpeakAudio 949 self)
 			)
 			(15
 				(wolf1 cycleSpeed: 3 setCycle: Beg self)
@@ -632,7 +632,7 @@
 							(event claimed: 1)
 						)
 						(28 (event claimed: 0))
-						(else  (proc0_29 756))
+						(else  (SpeakAudio 756))
 					)
 				)
 			)

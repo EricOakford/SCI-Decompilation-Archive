@@ -105,7 +105,7 @@
 					)
 					(28 (event claimed: 0))
 					(else 
-						(proc0_29 753)
+						(SpeakAudio 753)
 						(event claimed: 1)
 					)
 				)
@@ -354,62 +354,62 @@
 			)
 			(1
 				(h2Mouth cue: 1)
-				(proc0_29 5060 self)
+				(SpeakAudio 5060 self)
 			)
 			(2
 				(localproc_000e)
 				(h4Mouth cue: 1)
-				(proc0_29 5061 self)
+				(SpeakAudio 5061 self)
 			)
 			(3
 				(localproc_000e)
 				(h3Mouth cue: 1)
-				(proc0_29 5062 self)
+				(SpeakAudio 5062 self)
 			)
 			(4
 				(localproc_000e)
 				(h4Mouth cue: 1)
-				(proc0_29 5063 self)
+				(SpeakAudio 5063 self)
 			)
 			(5
 				(localproc_000e)
 				(h1Mouth cue: 1)
-				(proc0_29 5064 self)
+				(SpeakAudio 5064 self)
 			)
 			(6
 				(localproc_000e)
 				(h2Mouth cue: 1)
-				(proc0_29 5065 self)
+				(SpeakAudio 5065 self)
 			)
 			(7
 				(localproc_000e)
 				(h3Mouth cue: 1)
-				(proc0_29 5066 self)
+				(SpeakAudio 5066 self)
 			)
 			(8
 				(localproc_000e)
 				(h2Mouth cue: 1)
-				(proc0_29 5067 self)
+				(SpeakAudio 5067 self)
 			)
 			(9
 				(localproc_000e)
 				(h3Mouth cue: 1)
-				(proc0_29 5068 self)
+				(SpeakAudio 5068 self)
 			)
 			(10
 				(localproc_000e)
 				(h2Mouth cue: 1)
-				(proc0_29 5069 self)
+				(SpeakAudio 5069 self)
 			)
 			(11
 				(localproc_000e)
 				(h3Mouth cue: 1)
-				(proc0_29 5070 self)
+				(SpeakAudio 5070 self)
 			)
 			(12
 				(localproc_000e)
 				(h1Mouth cue: 1)
-				(proc0_29 5071 self)
+				(SpeakAudio 5071 self)
 			)
 			(13
 				(localproc_000e)
@@ -430,7 +430,7 @@
 				(localproc_000e)
 				(harpy1 setScript: 0)
 				(h1Mouth cue: 1)
-				(proc0_29 5077 self)
+				(SpeakAudio 5077 self)
 			)
 			(1
 				(localproc_000e)
@@ -592,12 +592,12 @@
 			(1
 				(ego setCycle: RandCycle)
 				(h3Mouth cue: 1)
-				(proc0_29 5072 self)
+				(SpeakAudio 5072 self)
 			)
 			(2
 				(localproc_000e)
 				(h2Mouth cue: 1)
-				(proc0_29 5073 self)
+				(SpeakAudio 5073 self)
 			)
 			(3
 				(localproc_000e)
@@ -644,7 +644,7 @@
 				(h1Mouth cue: 1)
 				(h3Mouth cue: 1)
 				(h4Mouth cue: 1)
-				(proc0_29 5074 self)
+				(SpeakAudio 5074 self)
 			)
 			(8
 				(localproc_000e)
@@ -759,12 +759,12 @@
 			(0
 				(localproc_000e)
 				(h3Mouth cue: 1)
-				(proc0_29 5075 self)
+				(SpeakAudio 5075 self)
 			)
 			(1
 				(localproc_000e)
 				(h4Mouth cue: 1)
-				(proc0_29 5076 self)
+				(SpeakAudio 5076 self)
 			)
 			(2
 				(localproc_000e)
@@ -807,9 +807,9 @@
 			)
 			(1
 				(if (cast contains: harpy1)
-					(proc0_29 751)
+					(SpeakAudio 751)
 				else
-					(proc0_29 750)
+					(SpeakAudio 750)
 				)
 				(= register (ego view?))
 				(if (== (ego view?) 2) ((ego head?) hide:))
@@ -872,17 +872,17 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(cls)
-					(proc0_29 745)
+					(SpeakAudio 745)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(cls)
-					(proc0_29 752)
+					(SpeakAudio 752)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
 					(cls)
-					(proc0_29 755)
+					(SpeakAudio 755)
 					(event claimed: 1)
 				)
 			)
@@ -916,17 +916,17 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(cls)
-					(proc0_29 745)
+					(SpeakAudio 745)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(cls)
-					(proc0_29 752)
+					(SpeakAudio 752)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
 					(cls)
-					(proc0_29 755)
+					(SpeakAudio 755)
 					(event claimed: 1)
 				)
 			)
@@ -961,17 +961,17 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(cls)
-					(proc0_29 745)
+					(SpeakAudio 745)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(cls)
-					(proc0_29 752)
+					(SpeakAudio 752)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
 					(cls)
-					(proc0_29 755)
+					(SpeakAudio 755)
 					(event claimed: 1)
 				)
 			)
@@ -1005,17 +1005,17 @@
 				(harpy1 species event)
 				(JOY_UPRIGHT
 					(cls)
-					(proc0_29 745)
+					(SpeakAudio 745)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(cls)
-					(proc0_29 752)
+					(SpeakAudio 752)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
 					(cls)
-					(proc0_29 755)
+					(SpeakAudio 755)
 					(event claimed: 1)
 				)
 			)
@@ -1273,9 +1273,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: harpy2)
-						(proc0_29 746)
+						(SpeakAudio 746)
 					else
-						(proc0_29 747)
+						(SpeakAudio 747)
 					)
 					(event claimed: 1)
 				)
@@ -1289,7 +1289,7 @@
 						(else 
 							(cond 
 								((not (cast contains: harpy2)) 0)
-								((== local22 1000) (cls) (proc0_29 754) (event claimed: 1))
+								((== local22 1000) (cls) (SpeakAudio 754) (event claimed: 1))
 								(else
 									(HandsOff)
 									(= local22 (+ (argueScript state?) 1))
@@ -1319,7 +1319,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 748)
+					(SpeakAudio 748)
 					(event claimed: 1)
 				)
 			)
@@ -1347,7 +1347,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 749)
+					(SpeakAudio 749)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

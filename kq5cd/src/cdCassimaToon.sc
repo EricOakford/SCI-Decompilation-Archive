@@ -171,19 +171,19 @@
 					setScript: girlBlinkScript
 				)
 				(theMouth setCycle: MouthSync 1078)
-				(proc0_29 1078 self)
+				(SpeakAudio 1078 self)
 			)
 			(11
 				(cassimaLips init:)
 				(egoFace hide:)
 				(theMouth changeMouth: 1 setCycle: MouthSync 1079)
-				(proc0_29 1079 self)
+				(SpeakAudio 1079 self)
 			)
 			(12
 				(egoFace show:)
 				(cassimaLips hide:)
 				(theMouth changeMouth: 0 setCycle: MouthSync 1080)
-				(proc0_29 1080 self)
+				(SpeakAudio 1080 self)
 			)
 			(13
 				(cls)
@@ -192,7 +192,7 @@
 			)
 			(14
 				(theMouth setCycle: MouthSync 1081)
-				(proc0_29 1081 self)
+				(SpeakAudio 1081 self)
 			)
 			(15
 				(cls)
@@ -201,7 +201,7 @@
 			)
 			(16
 				(theMouth setCycle: MouthSync 1082)
-				(proc0_29 1082 self)
+				(SpeakAudio 1082 self)
 			)
 			(17
 				(cls)
@@ -236,21 +236,21 @@
 					setCycle: End self
 				)
 			)
-			(20 (proc0_29 1068 self))
+			(20 (SpeakAudio 1068 self))
 			(21
 				((ego head?) setScript: 0)
 				(theMouth show: changeMouth: 2 setCycle: MouthSync 1069)
-				(proc0_29 1069 self)
+				(SpeakAudio 1069 self)
 			)
 			(22
 				(theMouth hide:)
 				((ego head?) setScript: egoHeadMove)
-				(proc0_29 1070 self)
+				(SpeakAudio 1070 self)
 			)
 			(23
 				((ego head?) setScript: 0)
 				(theMouth show: setCycle: MouthSync 1071)
-				(proc0_29 1071 self)
+				(SpeakAudio 1071 self)
 				(theMusic fade:)
 			)
 			(24

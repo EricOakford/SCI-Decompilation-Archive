@@ -133,31 +133,31 @@
 				(switch global363
 					(0
 						(boyHead setCycle: MouthSync 5038)
-						(proc0_29 5038 self)
+						(SpeakAudio 5038 self)
 					)
 					(1
 						(boyHead setCycle: MouthSync 5039)
-						(proc0_29 5039 self)
+						(SpeakAudio 5039 self)
 					)
 					(2
 						(boyHead setCycle: MouthSync 5040)
-						(proc0_29 5040 self)
+						(SpeakAudio 5040 self)
 					)
 					(3
 						(boyHead setCycle: MouthSync 5041)
-						(proc0_29 5041 self)
+						(SpeakAudio 5041 self)
 					)
 					(4
 						(boyHead setCycle: MouthSync 5042)
-						(proc0_29 5042 self)
+						(SpeakAudio 5042 self)
 					)
 					(5
 						(boyHead setCycle: MouthSync 5043)
-						(proc0_29 5043 self)
+						(SpeakAudio 5043 self)
 					)
 					(else 
 						(boyHead setCycle: MouthSync 5044)
-						(proc0_29 5044 self)
+						(SpeakAudio 5044 self)
 					)
 				)
 			)
@@ -168,31 +168,31 @@
 				(switch global363
 					(0
 						(theMouth setCycle: MouthSync 5049)
-						(proc0_29 5049 self)
+						(SpeakAudio 5049 self)
 					)
 					(1
 						(theMouth setCycle: MouthSync 5050)
-						(proc0_29 5050 self)
+						(SpeakAudio 5050 self)
 					)
 					(2
 						(theMouth setCycle: MouthSync 5051)
-						(proc0_29 5051 self)
+						(SpeakAudio 5051 self)
 					)
 					(3
 						(theMouth setCycle: MouthSync 5052)
-						(proc0_29 5052 self)
+						(SpeakAudio 5052 self)
 					)
 					(4
 						(theMouth setCycle: MouthSync 5053)
-						(proc0_29 5053 self)
+						(SpeakAudio 5053 self)
 					)
 					(5
 						(theMouth setCycle: MouthSync 5054)
-						(proc0_29 5054 self)
+						(SpeakAudio 5054 self)
 					)
 					(else 
 						(theMouth setCycle: MouthSync 5055)
-						(proc0_29 5055 self)
+						(SpeakAudio 5055 self)
 					)
 				)
 			)
@@ -203,19 +203,19 @@
 				(switch global363
 					(0
 						(boyHead setCycle: MouthSync 5045)
-						(proc0_29 5045 self)
+						(SpeakAudio 5045 self)
 					)
 					(1
 						(boyHead setCycle: MouthSync 5046)
-						(proc0_29 5046 self)
+						(SpeakAudio 5046 self)
 					)
 					(4
 						(boyHead setCycle: MouthSync 5047)
-						(proc0_29 5047 self)
+						(SpeakAudio 5047 self)
 					)
 					(5
 						(boyHead setCycle: MouthSync 5048)
-						(proc0_29 5048 self)
+						(SpeakAudio 5048 self)
 					)
 					(else  (= seconds 1))
 				)
@@ -368,7 +368,7 @@
 			)
 			(1
 				(girlHead init: setCycle: MouthSync 5001)
-				(proc0_29 5001 self)
+				(SpeakAudio 5001 self)
 			)
 			(2
 				(toyHead loop: 15 x: 158 init:)
@@ -377,22 +377,22 @@
 			(3
 				(girlHead setCycle: 0 hide:)
 				(theMouth x: 159 init: setCycle: MouthSync 5002)
-				(proc0_29 5002 self)
+				(SpeakAudio 5002 self)
 			)
 			(4
 				(theMouth setCycle: 0)
 				(girlHead show: setCycle: MouthSync 5003)
-				(proc0_29 5003 self)
+				(SpeakAudio 5003 self)
 			)
 			(5
 				(girlHead setCycle: 0 hide:)
 				(theMouth setCycle: MouthSync 5004)
-				(proc0_29 5004 self)
+				(SpeakAudio 5004 self)
 			)
 			(6
 				(theMouth setCycle: 0)
 				(girlHead show: setCycle: MouthSync 5005)
-				(proc0_29 5005 self)
+				(SpeakAudio 5005 self)
 			)
 			(7
 				(girlHead setCycle: 0 dispose:)
@@ -659,11 +659,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 838)
+					(SpeakAudio 838)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9071)
+					(SpeakAudio 9071)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -674,7 +674,7 @@
 						(HandsOff)
 						(toyShop setScript: manTalk)
 					else
-						(proc0_29 847)
+						(SpeakAudio 847)
 					)
 					(event claimed: 1)
 				)
@@ -686,7 +686,7 @@
 								(= local4 0)
 								(toyShop setScript: getSled)
 							else
-								(proc0_29 849)
+								(SpeakAudio 849)
 							)
 							(event claimed: 1)
 						)
@@ -696,7 +696,7 @@
 								(= local4 1)
 								(toyShop setScript: getSled)
 							else
-								(proc0_29 849)
+								(SpeakAudio 849)
 							)
 							(event claimed: 1)
 						)
@@ -705,7 +705,7 @@
 								(= local4 2)
 								(toyShop setScript: getSled)
 							else
-								(proc0_29 849)
+								(SpeakAudio 849)
 							)
 							(event claimed: 1)
 						)
@@ -726,7 +726,7 @@
 								(RedrawCast)
 								(proc762_0 @local19 @local10 @local101)
 							else
-								(proc0_29 849)
+								(SpeakAudio 849)
 							)
 							(event claimed: 1)
 						)
@@ -735,12 +735,12 @@
 								(= local4 3)
 								(toyShop setScript: getSled)
 							else
-								(proc0_29 849)
+								(SpeakAudio 849)
 							)
 							(event claimed: 1)
 						)
 						(else 
-							(proc0_29 850)
+							(SpeakAudio 850)
 							(event claimed: 1)
 						)
 					)
@@ -771,7 +771,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 839)
+					(SpeakAudio 839)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -779,7 +779,7 @@
 						(++ local2)
 						(toyShop setScript: lookSled)
 					else
-						(proc0_29 844)
+						(SpeakAudio 844)
 					)
 					(event claimed: 1)
 				)
@@ -807,7 +807,7 @@
 							(event claimed: 1)
 						)
 						(else 
-							(proc0_29 850)
+							(SpeakAudio 850)
 							(event claimed: 1)
 						)
 					)
@@ -850,11 +850,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 840)
+					(SpeakAudio 840)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 845)
+					(SpeakAudio 845)
 					(event claimed: 1)
 				)
 			)
@@ -895,7 +895,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 841)
+					(SpeakAudio 841)
 					(event claimed: 1)
 				)
 			)
@@ -937,22 +937,22 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 842)
+					(SpeakAudio 842)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 846)
+					(SpeakAudio 846)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 848)
+					(SpeakAudio 848)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 851)
+							(SpeakAudio 851)
 							(event claimed: 1)
 						)
 					)
@@ -979,7 +979,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 843)
+					(SpeakAudio 843)
 					(event claimed: 1)
 				)
 			)

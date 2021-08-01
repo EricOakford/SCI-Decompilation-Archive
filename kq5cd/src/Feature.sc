@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 950)
-(include sci.sh)
+(script# FEATURE)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use PolyPath)
@@ -9,19 +9,8 @@
 
 (class CueObj of Script
 	(properties
-		client 0
-		state $ffff
-		start 0
-		timer 0
-		cycles 0
-		seconds 0
-		lastSeconds 0
-		register 0
-		script 0
-		caller 0
-		next 0
-		theVerb 0
-		theInvItem 0
+		theVerb NULL
+		theInvItem NULL
 	)
 	
 	(method (changeState newState)
@@ -49,7 +38,7 @@
 	)
 )
 
-(class Feature of Obj
+(class Feature of Object
 	(properties
 		x 0
 		y 0
@@ -61,19 +50,19 @@
 		nsBottom 0
 		nsRight 0
 		description 0
-		sightAngle 26505
+		sightAngle ftrDefault
 		actions 0
-		onMeCheck $6789
+		onMeCheck ftrDefault
 		approachX 0
 		approachY 0
 		approachDist 0
-		_approachVerbs 26505
+		_approachVerbs ftrDefault
 		lookStr 0
 	)
 	
-	(method (init param1)
+	(method (init theInitializer)
 		(cond 
-			((and argc param1) (self perform: param1))
+			((and argc theInitializer) (self perform: theInitializer))
 			(ftrInitializer (self perform: ftrInitializer))
 		)
 		(if (self respondsTo: #underBits)
@@ -84,10 +73,10 @@
 	)
 	
 	(method (dispose)
-		(if actions (actions dispose:) (= actions 0))
+		(if actions (actions dispose:) (= actions NULL))
 		(if (IsObject onMeCheck)
 			(onMeCheck dispose:)
-			(= onMeCheck 0)
+			(= onMeCheck NULL)
 		)
 		(features delete: self)
 		(super dispose:)
@@ -95,10 +84,10 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(cond 
-			((event claimed?) (return 1))
+			((event claimed?) (return TRUE))
 			(
 				(and
-					(== (event type?) 16384)
+					(== (event type?) userEvent)
 					(self onMe: event)
 					(self isNotHidden:)
 				)
@@ -111,29 +100,31 @@
 						(if
 							(and
 								theIconBar
-								(== (event message?) JOY_DOWNRIGHT)
+								(== (event message?) verbUse)
 								inventory
 							)
 							(inventory indexOf: (theIconBar curInvIcon?))
 						else
-							0
+							FALSE
 						)
 				)
-				(event claimed: 1)
+				(event claimed: TRUE)
 				(if
 					(and
 						(user canControl:)
-						(!= _approachVerbs 26505)
+						(!= _approachVerbs ftrDefault)
 						(&
 							_approachVerbs
-							(<< $0001 (- (event message?) JOY_UP))
+							(<< $0001 (- (event message?) verbWalk))
 						)
 					)
 					(ego
 						setMotion: PolyPath approachX (+ (ego z?) approachY) CueObj
 					)
 				else
-					(ego setMotion: 0)
+					;(if (user canControl:)
+						(ego setMotion: 0)
+					;)
 					(CueObj changeState: 3)
 				)
 			)
@@ -145,85 +136,85 @@
 		((if doVerbCode else dftDoVerb) doit: theVerb self &rest)
 	)
 	
-	(method (notFacing &tmp temp0)
+	(method (notFacing &tmp event)
 		(ego setMotion: 0)
 		(CueObj client: self state: 0 cycles: 0 cue:)
 	)
 	
-	(method (facingMe param1 &tmp temp0 temp1)
-		(= temp0 (if argc param1 else ego))
+	(method (facingMe act &tmp theActor theAngle)
+		(= theActor (if argc act else ego))
 		(if
 			(>
-				(= temp1
+				(= theAngle
 					(Abs
 						(-
-							(GetAngle (temp0 x?) (temp0 y?) x y)
-							(temp0 heading?)
+							(GetAngle (theActor x?) (theActor y?) x y)
+							(theActor heading?)
 						)
 					)
 				)
 				180
 			)
-			(= temp1 (- 360 temp1))
+			(= theAngle (- 360 theAngle))
 		)
 		(return
-			(if (<= temp1 sightAngle)
-				(return 1)
+			(if (<= theAngle sightAngle)
+				(return TRUE)
 			else
 				(self notFacing:)
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
 	
 	(method (isNotHidden)
-		(return 1)
+		(return TRUE)
 	)
 	
-	(method (onMe theObjOrX theY &tmp temp0 temp1)
+	(method (onMe theObjOrX theY &tmp oX oY)
 		(if (IsObject theObjOrX)
-			(= temp0 (theObjOrX x?))
-			(= temp1 (theObjOrX y?))
+			(= oX (theObjOrX x?))
+			(= oY (theObjOrX y?))
 		else
-			(= temp0 theObjOrX)
-			(= temp1 theY)
+			(= oX theObjOrX)
+			(= oY theY)
 		)
 		(return
 			(cond 
-				((IsObject onMeCheck) (AvoidPath temp0 temp1 onMeCheck))
+				((IsObject onMeCheck) (AvoidPath oX oY onMeCheck))
 				(
 					(or
 						(not (if (or nsLeft nsRight nsTop) else nsBottom))
 						(and
-							(<= nsLeft temp0)
-							(<= temp0 nsRight)
-							(<= nsTop temp1)
-							(<= temp1 nsBottom)
+							(<= nsLeft oX)
+							(<= oX nsRight)
+							(<= nsTop oY)
+							(<= oY nsBottom)
 						)
 					)
-					(if (!= onMeCheck 26505)
-						(& onMeCheck (OnControl 4 temp0 temp1))
+					(if (!= onMeCheck ftrDefault)
+						(& onMeCheck (OnControl CMAP oX oY))
 					else
-						1
+						TRUE
 					)
 				)
 			)
 		)
 	)
 	
-	(method (approachVerbs param1 &tmp temp0)
-		(= temp0 (= _approachVerbs 0))
-		(while (< temp0 argc)
-			(if param1
+	(method (approachVerbs args &tmp i)
+		(= i (= _approachVerbs 0))
+		(while (< i argc)
+			(if args
 				(self
 					_approachVerbs:
 						(|
 							(self _approachVerbs?)
-							(<< $0001 (- [param1 temp0] 1))
+							(<< $0001 (- [args i] 1))
 						)
 				)
 			)
-			(++ temp0)
+			(++ i)
 		)
 	)
 )
@@ -231,22 +222,22 @@
 (instance dftDoVerb of Code
 	(properties)
 	
-	(method (doit param1 param2 param3 &tmp temp0 temp1)
-		(= temp0 (param2 description?))
-		(switch param1
-			(2
-				(if (param2 lookStr?)
-					(Print (param2 lookStr?))
+	(method (doit theVerb theObj theItem &tmp objDesc invDesc)
+		(= objDesc (theObj description?))
+		(switch theVerb
+			(verbLook
+				(if (theObj lookStr?)
+					(Print (theObj lookStr?))
 				else
-					(Printf 950 0 temp0 temp0)
+					(Printf 950 0 objDesc objDesc)
 				)
 			)
-			(4
-				(if (= temp1 (inventory at: param3))
-					(Printf 950 1 (temp1 description?) temp0)
+			(verbUse
+				(if (= invDesc (inventory at: theItem))
+					(Printf 950 1 (invDesc description?) objDesc)
 				)
 			)
-			(5 (Printf 950 2 temp0))
+			(verbTalk (Printf 950 2 objDesc))
 		)
 	)
 )

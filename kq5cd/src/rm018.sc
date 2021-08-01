@@ -73,7 +73,7 @@
 			)
 			(1
 				(cls)
-				(proc0_29 328)
+				(SpeakAudio 328)
 				((ego head?) hide:)
 				(ego normal: 0 view: 56 loop: 1 cel: 0 setCycle: End self)
 			)
@@ -186,7 +186,7 @@
 					(-- state)
 					(= cycles 1)
 				else
-					(proc0_29 330 0 1)
+					(SpeakAudio 330 0 1)
 					(= seconds 4)
 				)
 			)
@@ -227,7 +227,7 @@
 			)
 			(1
 				(cls)
-				(proc0_29 329)
+				(SpeakAudio 329)
 				((ego head?) hide:)
 				(ego
 					normal: 0
@@ -282,7 +282,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 332)
+					(SpeakAudio 332)
 					(event claimed: 1)
 				)
 			)
@@ -310,7 +310,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 325)
+					(SpeakAudio 325)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -351,7 +351,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 326)
+					(SpeakAudio 326)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -378,11 +378,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 327)
+					(SpeakAudio 327)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9055)
+					(SpeakAudio 9055)
 					(HandsOff)
 					(ego setScript: getLoot)
 					(event claimed: 1)

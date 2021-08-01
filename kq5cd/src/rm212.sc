@@ -24,7 +24,7 @@
 )
 (procedure (localproc_04b8)
 	(ego setMotion: 0 setCycle: 0)
-	(= gPolyList15 (++ theGPolyList15))
+	(= globalCedric (++ theGPolyList15))
 	(curRoom drawPic: 212)
 	(addToPics dispose:)
 	(switch (mod global314 4)
@@ -63,7 +63,7 @@
 		(switch prevRoomNum
 			(15
 				(ego posn: (ego x?) 187)
-				(= theGPolyList15 gPolyList15)
+				(= theGPolyList15 globalCedric)
 			)
 			(14
 				(= global314 1)
@@ -71,7 +71,7 @@
 				(= theGPolyList15 1)
 			)
 			(else 
-				(= theGPolyList15 gPolyList15)
+				(= theGPolyList15 globalCedric)
 			)
 		)
 		(ego
@@ -90,14 +90,14 @@
 	(method (doit &tmp egoEdgeHit)
 		(cond 
 			(script (script doit:))
-			((and (== theGPolyList15 5) (not local2)) (= local2 1) (proc0_29 315))
+			((and (== theGPolyList15 5) (not local2)) (= local2 1) (SpeakAudio 315))
 			((> theGPolyList15 6) (self setScript: dying))
 			((= egoEdgeHit (ego edgeHit?))
 				(switch egoEdgeHit
 					(3
 						(++ global315)
 						(curRoom newRoom: 15)
-						(= gPolyList15 theGPolyList15)
+						(= globalCedric theGPolyList15)
 					)
 					(2
 						(cond 
@@ -149,7 +149,7 @@
 				(ego setPri: 14 setMotion: PolyPath 163 160 self)
 			)
 			(2
-				(proc0_29 316 self)
+				(SpeakAudio 316 self)
 				(ego view: 358 cycleSpeed: 2 normal: 0 setCycle: End self)
 				((ego head?) hide:)
 			)
@@ -227,7 +227,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 764)
+					(SpeakAudio 764)
 					(event claimed: 1)
 				)
 			)
@@ -252,11 +252,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 765)
+					(SpeakAudio 765)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 766)
+					(SpeakAudio 766)
 					(event claimed: 1)
 				)
 			)

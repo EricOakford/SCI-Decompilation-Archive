@@ -126,7 +126,7 @@
 		(= eatMice aniInterval)
 		(cond 
 			((and (not global327) debugging) (DebugTP))
-			(gPolyList15 (ego get: 28) (curRoom newRoom: 1))
+			(globalCedric (ego get: 28) (curRoom newRoom: 1))
 			(else (= global287 (GetTime)) (curRoom newRoom: 119))
 		)
 	)

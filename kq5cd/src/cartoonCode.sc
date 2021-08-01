@@ -17,7 +17,7 @@
 	(method (doit &tmp temp0 temp1)
 		(= temp1 (theGame setCursor: normalCursor))
 		(= temp0 (Sound pause: 1))
-		(proc0_29 9249 0 1)
+		(SpeakAudio 9249 0 1)
 		(switch
 			(Print
 				763

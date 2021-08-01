@@ -343,7 +343,7 @@
 				(wolf loop: 11 cel: 4 setCycle: Beg self)
 			)
 			(1
-				(proc0_29 468)
+				(SpeakAudio 468)
 				(ego setMotion: PolyPath 105 145 self)
 			)
 			(2
@@ -370,7 +370,7 @@
 				(wolf loop: 11 cel: 4 setCycle: Beg self)
 			)
 			(1
-				(proc0_29 469)
+				(SpeakAudio 469)
 				(ego setMotion: PolyPath 85 (ego y?) self)
 			)
 			(2 (wolf setCycle: End self))
@@ -532,15 +532,15 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(cond 
-						((Btst 57) (proc0_29 466))
-						((!= ((inventory at: 2) owner?) 36) (proc0_29 468))
-						(else (proc0_29 460))
+						((Btst 57) (SpeakAudio 466))
+						((!= ((inventory at: 2) owner?) 36) (SpeakAudio 468))
+						(else (SpeakAudio 460))
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (!= ((inventory at: 2) owner?) 36)
-						(proc0_29 464)
+						(SpeakAudio 464)
 						(event claimed: 1)
 					)
 				)
@@ -548,14 +548,14 @@
 					(cond 
 						((!= ((inventory at: 2) owner?) 36)
 							(if (Btst 27)
-								(proc0_29 465)
+								(SpeakAudio 465)
 							else
 								(Bset 27)
 								(HandsOff)
 								(curRoom setScript: nowHoldOn)
 							)
 						)
-						((Btst 57) (proc0_29 466))
+						((Btst 57) (SpeakAudio 466))
 						(else (HandsOff) (curRoom setScript: heyBudIWon))
 					)
 					(event claimed: 1)
@@ -564,7 +564,7 @@
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 467)
+							(SpeakAudio 467)
 							(event claimed: 1)
 						)
 					)
@@ -593,7 +593,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if (Btst 57) (proc0_29 461) else (proc0_29 462))
+					(if (Btst 57) (SpeakAudio 461) else (SpeakAudio 462))
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -619,7 +619,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 463)
+					(SpeakAudio 463)
 					(event claimed: 1)
 				)
 			)

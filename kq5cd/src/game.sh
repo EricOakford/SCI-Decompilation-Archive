@@ -64,7 +64,9 @@
 ;Event flags
 (define fWearingCloak	15)
 (define fHaveEaten		16)
+(define fWitchCastSpell	18)
 (define fSnakeGone		47)
+(define fCaughtElf		56)
 (define fWandRecharged	60)
 (define fHoldingCedric	74)
 (define fWearingAmulet	84)

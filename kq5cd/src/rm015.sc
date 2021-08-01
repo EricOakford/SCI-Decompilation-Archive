@@ -84,11 +84,11 @@
 		((and (not global314) (> global315 3)) (curRoom newRoom: 211))
 		((not global314) (curRoom newRoom: 14))
 		((== global315 1)
-			(= gPolyList15 (++ theGPolyList15))
+			(= globalCedric (++ theGPolyList15))
 			(curRoom newRoom: (if (== global314 7) 213 else 212))
 		)
 		((localproc_113c 10 7)
-			(= gPolyList15 (++ theGPolyList15))
+			(= globalCedric (++ theGPolyList15))
 			(curRoom newRoom: 216)
 		)
 		(else
@@ -318,7 +318,7 @@
 		)
 		(switch prevRoomNum
 			(212
-				(= theGPolyList15 gPolyList15)
+				(= theGPolyList15 globalCedric)
 				(= local6 3)
 				(ego
 					view: 2
@@ -335,7 +335,7 @@
 				)
 			)
 			(213
-				(= theGPolyList15 gPolyList15)
+				(= theGPolyList15 globalCedric)
 				(= local6 3)
 				(ego
 					view: 2
@@ -352,12 +352,12 @@
 				)
 			)
 			(216
-				(= theGPolyList15 gPolyList15)
+				(= theGPolyList15 globalCedric)
 				(ego y: 170 init: setPri: 14)
 				(= local6 1)
 			)
 			(else 
-				(= theGPolyList15 gPolyList15)
+				(= theGPolyList15 globalCedric)
 				(ego y: 170 init: setPri: 14)
 				(= local6 1)
 			)
@@ -543,7 +543,7 @@
 		)
 		(cond 
 			(script (script doit:))
-			((and (== theGPolyList15 5) (not local19)) (= local19 1) (proc0_29 315))
+			((and (== theGPolyList15 5) (not local19)) (= local19 1) (SpeakAudio 315))
 			((and (& temp0 $0008) (== local6 3))
 				(-- global315)
 				(= gEgoEdgeHit 1)
@@ -654,7 +654,7 @@
 				(ego setPri: 14 setMotion: PolyPath 163 160 self)
 			)
 			(2
-				(proc0_29 316 self)
+				(SpeakAudio 316 self)
 				(ego
 					view: 358
 					cel: 0
@@ -773,7 +773,7 @@
 				(ego cel: 0 setCycle: End self)
 			)
 			(6
-				(proc0_29 311)
+				(SpeakAudio 311)
 				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: Beg self)
 			)
 			(7
@@ -850,7 +850,7 @@
 				(= seconds 4)
 			)
 			(7
-				(proc0_29 311)
+				(SpeakAudio 311)
 				(ego loop: 8 cel: 0 setCycle: End self)
 			)
 			(8
@@ -903,7 +903,7 @@
 				(ego setCycle: Beg self)
 			)
 			(3
-				(proc0_29 9073)
+				(SpeakAudio 9073)
 				(ego
 					normal: 1
 					view: 0
@@ -939,7 +939,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if local20 (proc0_29 305) else (proc0_29 306))
+					(if local20 (SpeakAudio 305) else (SpeakAudio 306))
 					(event claimed: 1)
 				)
 			)
@@ -968,15 +968,15 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 307)
+					(SpeakAudio 307)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 312)
+					(SpeakAudio 312)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 314)
+					(SpeakAudio 314)
 					(event claimed: 1)
 				)
 			)
@@ -1006,7 +1006,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 308)
+					(SpeakAudio 308)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1061,7 +1061,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 309)
+					(SpeakAudio 309)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1072,7 +1072,7 @@
 						(if (not (Btst 42)) (Bset 42) (SolvePuzzle 2))
 						(curRoom setScript: useWell)
 					else
-						(proc0_29 313)
+						(SpeakAudio 313)
 					)
 					(event claimed: 1)
 				)
@@ -1127,9 +1127,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== (curRoom curPic?) 210)
-						(proc0_29 9072)
+						(SpeakAudio 9072)
 					else
-						(proc0_29 310)
+						(SpeakAudio 310)
 					)
 					(event claimed: 1)
 				)
@@ -1146,7 +1146,7 @@
 							(curRoom setScript: getDrink)
 						)
 					else
-						(proc0_29 313)
+						(SpeakAudio 313)
 					)
 					(event claimed: 1)
 				)

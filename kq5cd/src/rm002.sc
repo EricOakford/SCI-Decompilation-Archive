@@ -102,7 +102,7 @@
 				((ScriptID 202 2) register: (ego edgeHit?))
 				(self setScript: (ScriptID 202 2))
 			)
-			((Btst 15) (proc0_29 177) (Bclr 15))
+			((Btst 15) (SpeakAudio 177) (Bclr 15))
 		)
 	)
 	
@@ -125,7 +125,7 @@
 								(HandsOff)
 								(curRoom setScript: shakeTambourine)
 							else
-								(proc0_29 174)
+								(SpeakAudio 174)
 							)
 							(event claimed: 1)
 						)
@@ -254,7 +254,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 172)
+					(SpeakAudio 172)
 					(event claimed: 1)
 				)
 			)
@@ -303,7 +303,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 173)
+					(SpeakAudio 173)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -311,7 +311,7 @@
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 176)
+					(SpeakAudio 176)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -326,7 +326,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 175)
+							(SpeakAudio 175)
 							(event claimed: 1)
 						)
 					)
@@ -383,7 +383,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 172)
+					(SpeakAudio 172)
 					(event claimed: 1)
 				)
 			)

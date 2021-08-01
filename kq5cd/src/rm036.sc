@@ -335,9 +335,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (!= ((inventory at: 2) owner?) 36)
-						(proc0_29 472)
+						(SpeakAudio 472)
 					else
-						(proc0_29 473)
+						(SpeakAudio 473)
 					)
 					(event claimed: 1)
 				)
@@ -363,7 +363,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 474)
+					(SpeakAudio 474)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -374,13 +374,13 @@
 									(HandsOff)
 									(curRoom setScript: throwPie)
 								else
-									(proc0_29 477 0 1)
+									(SpeakAudio 477 0 1)
 								)
 								(event claimed: 1)
 							)
 							(28 (event claimed: 0))
 							(else 
-								(proc0_29 478)
+								(SpeakAudio 478)
 								(event claimed: 1)
 							)
 						)
@@ -423,11 +423,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 475)
+					(SpeakAudio 475)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 476)
+					(SpeakAudio 476)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -443,13 +443,13 @@
 								(HandsOff)
 								(curRoom setScript: throwPie)
 							else
-								(proc0_29 477 0 1)
+								(SpeakAudio 477 0 1)
 							)
 							(event claimed: 1)
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 478)
+							(SpeakAudio 478)
 							(event claimed: 1)
 						)
 					)

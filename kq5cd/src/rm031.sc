@@ -436,7 +436,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gPolyList15
+				(globalCedric
 					view: 138
 					loop: 2
 					cel: 0
@@ -446,7 +446,7 @@
 				(ego cycleSpeed: 1 setMotion: MoveTo (ego x?) 189 self)
 			)
 			(1
-				(gPolyList15 setScript: (ScriptID 202 3))
+				(globalCedric setScript: (ScriptID 202 3))
 				(ego setLoop: 2 setCycle: 0 cel: 0 posn: 49 181)
 				(= cycles 3)
 			)
@@ -519,7 +519,7 @@
 				(= cycles 3)
 			)
 			(7
-				(gPolyList15
+				(globalCedric
 					view: 138
 					loop: 8
 					cel: 0
@@ -553,7 +553,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 435)
+					(SpeakAudio 435)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -584,7 +584,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 435)
+					(SpeakAudio 435)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -616,7 +616,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 435)
+					(SpeakAudio 435)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -648,7 +648,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 436)
+					(SpeakAudio 436)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -680,7 +680,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 436)
+					(SpeakAudio 436)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -717,7 +717,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 436)
+					(SpeakAudio 436)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -755,7 +755,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 436)
+					(SpeakAudio 436)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -797,7 +797,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 436)
+					(SpeakAudio 436)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -843,7 +843,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 436)
+					(SpeakAudio 436)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -878,7 +878,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 437)
+					(SpeakAudio 437)
 					(event claimed: 1)
 				)
 			)
@@ -900,7 +900,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 435)
+					(SpeakAudio 435)
 					(event claimed: 1)
 				)
 			)
@@ -922,7 +922,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 438)
+					(SpeakAudio 438)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -930,7 +930,7 @@
 						(HandsOff)
 						(curRoom setScript: climbDownScript)
 					else
-						(proc0_29 9074)
+						(SpeakAudio 9074)
 					)
 					(event claimed: 1)
 				)

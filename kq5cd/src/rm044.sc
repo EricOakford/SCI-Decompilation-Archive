@@ -78,13 +78,13 @@
 			(south
 				(ego view: 0 posn: 130 187)
 				(if
-				(and (cast contains: gPolyList15) (not (Btst 105)))
+				(and (cast contains: globalCedric) (not (Btst 105)))
 					(self setScript: (ScriptID 202 1))
 				)
 			)
 			(north
 				(ego view: 0 posn: 246 114)
-				(if (cast contains: gPolyList15)
+				(if (cast contains: globalCedric)
 					(self setScript: (ScriptID 202 1))
 				)
 			)
@@ -137,7 +137,7 @@
 				)
 			)
 			((& temp1 $4000)
-				(if (cast contains: gPolyList15)
+				(if (cast contains: globalCedric)
 					((ScriptID 202 2) register: 1)
 					(self setScript: (ScriptID 202 2))
 				else
@@ -162,7 +162,7 @@
 					(= temp0 (self edgeToRoom: (ego edgeHit?)))
 				)
 				(if
-				(and (cast contains: gPolyList15) (!= temp0 47))
+				(and (cast contains: globalCedric) (!= temp0 47))
 					((ScriptID 202 2) register: (ego edgeHit?))
 					(self setScript: (ScriptID 202 2))
 				else
@@ -607,7 +607,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 506)
+					(SpeakAudio 506)
 					(event claimed: 1)
 				)
 			)
@@ -629,7 +629,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 507)
+					(SpeakAudio 507)
 					(event claimed: 1)
 				)
 			)
@@ -651,7 +651,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 506)
+					(SpeakAudio 506)
 					(event claimed: 1)
 				)
 			)
@@ -678,7 +678,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 508)
+					(SpeakAudio 508)
 					(event claimed: 1)
 				)
 			)
@@ -706,7 +706,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 509)
+					(SpeakAudio 509)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -809,7 +809,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 510)
+					(SpeakAudio 510)
 					(event claimed: 1)
 				)
 			)

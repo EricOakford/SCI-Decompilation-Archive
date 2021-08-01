@@ -170,7 +170,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if (== view 620) (proc0_29 533) else (proc0_29 534))
+					(if (== view 620)
+						(SpeakAudio 533)
+					else
+						(SpeakAudio 534)
+					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT (event claimed: 1))
@@ -196,7 +200,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 535)
+					(SpeakAudio 535)
 					(event claimed: 1)
 				)
 			)

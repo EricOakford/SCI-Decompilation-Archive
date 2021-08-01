@@ -192,7 +192,7 @@
 			)
 			(3
 				(cupboard stopUpd:)
-				(proc0_29 597)
+				(SpeakAudio 597)
 				(bCel1 init: stopUpd:)
 				(bCel2 init: stopUpd:)
 				(ego
@@ -223,7 +223,7 @@
 				(ego setMotion: MoveTo 70 161 self)
 			)
 			(1
-				(proc0_29 598)
+				(SpeakAudio 598)
 				((ego head?) hide:)
 				(ego
 					normal: 0
@@ -285,7 +285,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 591)
+					(SpeakAudio 591)
 					(event claimed: 1)
 				)
 			)
@@ -307,7 +307,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 592)
+					(SpeakAudio 592)
 					(event claimed: 1)
 				)
 			)
@@ -329,11 +329,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 593)
+					(SpeakAudio 593)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 599)
+					(SpeakAudio 599)
 					(event claimed: 1)
 				)
 			)
@@ -358,7 +358,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 591)
+					(SpeakAudio 591)
 					(event claimed: 1)
 				)
 			)
@@ -385,14 +385,14 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 594)
+					(SpeakAudio 594)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(cond 
-						((!= ((inventory at: 24) owner?) 56) (proc0_29 600))
+						((!= ((inventory at: 24) owner?) 56) (SpeakAudio 600))
 						((not local2) (++ local2) (HandsOff) (curRoom setScript: openCupboard))
-						((== ((inventory at: 24) owner?) 56) (proc0_29 601))
+						((== ((inventory at: 24) owner?) 56) (SpeakAudio 601))
 					)
 					(event claimed: 1)
 				)
@@ -423,7 +423,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 595)
+					(SpeakAudio 595)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -481,7 +481,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 596)
+					(SpeakAudio 596)
 					(event claimed: 1)
 				)
 			)
@@ -511,7 +511,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 594)
+					(SpeakAudio 594)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -519,7 +519,7 @@
 						(HandsOff)
 						(curRoom setScript: getPeas)
 					else
-						(proc0_29 600)
+						(SpeakAudio 600)
 					)
 					(event claimed: 1)
 				)

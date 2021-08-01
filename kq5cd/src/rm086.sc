@@ -113,7 +113,7 @@
 				(ego setMotion: PolyPath 150 138 self)
 			)
 			(1
-				(proc0_29 9054)
+				(SpeakAudio 9054)
 				((ego head?) hide:)
 				(ego normal: 0 view: 56 loop: 1 cel: 0 setCycle: End self)
 			)
@@ -150,7 +150,10 @@
 				(HandsOff)
 				(ego setMotion: PolyPath 175 110 self)
 			)
-			(1 (proc0_29 736) (= cycles 1))
+			(1
+				(SpeakAudio 736)
+				(= cycles 1)
+			)
 			(2
 				((ego head?) hide:)
 				(ego
@@ -242,7 +245,7 @@
 		(switch (= state newState)
 			(0 (= cycles 55))
 			(1
-				(proc0_29 740 0 1)
+				(SpeakAudio 740 0 1)
 				(= seconds 7)
 			)
 			(2
@@ -268,7 +271,7 @@
 		(switch (= state newState)
 			(0 (= cycles 55))
 			(1
-				(proc0_29 740 0 1)
+				(SpeakAudio 740 0 1)
 				(= seconds 7)
 			)
 			(2
@@ -383,7 +386,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 729)
+					(SpeakAudio 729)
 					(event claimed: 1)
 				)
 			)
@@ -410,11 +413,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 730)
+					(SpeakAudio 730)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 734)
+					(SpeakAudio 734)
 					(event claimed: 1)
 				)
 			)
@@ -439,7 +442,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 731)
+					(SpeakAudio 731)
 					(event claimed: 1)
 				)
 			)
@@ -477,12 +480,12 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 729)
+					(SpeakAudio 729)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (not local36)
-						(proc0_29 735)
+						(SpeakAudio 735)
 					else
 						(HandsOff)
 						(curRoom setScript: exitRoom)
@@ -492,7 +495,7 @@
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(1
-							(proc0_29 737)
+							(SpeakAudio 737)
 							(event claimed: 1)
 						)
 						(22
@@ -501,13 +504,13 @@
 								(++ local36)
 								(curRoom setScript: useHammer)
 							else
-								(proc0_29 738)
+								(SpeakAudio 738)
 							)
 							(event claimed: 1)
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 739)
+							(SpeakAudio 739)
 							(event claimed: 1)
 						)
 					)
@@ -538,7 +541,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 732)
+					(SpeakAudio 732)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

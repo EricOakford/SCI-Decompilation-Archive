@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 934)
-(include sci.sh)
+(script# GCONTROL)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use IconBar)
@@ -10,27 +10,14 @@
 	GameControls 0
 )
 
-(class Slider of IconI
+(define	CTRL_BOX_TOP		46)
+(define	CTRL_BOX_LEFT		24)
+(define	CTRL_BOX_BOTTOM	155)
+(define	CTRL_BOX_RIGHT		296)
+
+
+(class Slider of IconItem
 	(properties
-		view -1
-		loop -1
-		cel -1
-		nsLeft 0
-		nsTop -1
-		nsRight 0
-		nsBottom 0
-		state $0000
-		cursor -1
-		type $4000
-		message -1
-		modifiers $0000
-		signal $0001
-		helpStr 0
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		highlightColor 0
-		lowlightColor 0
 		sliderView 0
 		sliderLoop 0
 		sliderCel 0
@@ -41,7 +28,7 @@
 		minY 0
 		underBits 0
 		yStep 1
-		theObj 0
+		theObj NULL
 		selector 0
 		bottomValue 0
 		topValue 0
@@ -63,33 +50,26 @@
 		)
 		(= sTop (self valueToPosn:))
 		(DrawCel sliderView sliderLoop sliderCel sLeft sTop -1)
-		(Graph
-			grUPDATE_BOX
-			(- nsTop 1)
-			(- nsLeft 1)
-			(+ 2 nsBottom)
-			(+ 2 nsRight)
-			1
-		)
+		(Graph GShowBits (- nsTop 1) (- nsLeft 1) (+ 2 nsBottom) (+ 2 nsRight) VMAP)
 	)
 	
-	(method (select param1 &tmp newEvent)
+	(method (select relVar &tmp event)
 		(return
-			(if (and argc param1)
-				(while (!= ((= newEvent (Event new:)) type?) 2)
-					(newEvent localize:)
+			(if (and argc relVar)
+				(while (!= ((= event (Event new:)) type?) mouseUp)
+					(event localize:)
 					(cond 
-						((< (newEvent y?) (- sTop yStep)) (self move: yStep (not (& signal $0200))))
-						((> (newEvent y?) (+ sTop yStep)) (self move: (- yStep) (not (& signal $0200))))
+						((< (event y?) (- sTop yStep)) (self move: yStep (not (& signal RELSEND))))
+						((> (event y?) (+ sTop yStep)) (self move: (- yStep) (not (& signal RELSEND))))
 					)
-					(newEvent dispose:)
+					(event dispose:)
 				)
-				(if (& signal $0200)
+				(if (& signal RELSEND)
 					(self doit: (self posnToValue: sTop))
 				)
-				(newEvent dispose:)
+				(event dispose:)
 			else
-				(return 1)
+				(return TRUE)
 			)
 		)
 	)
@@ -109,9 +89,9 @@
 						)
 					)
 				)
-				(not (& signal $0200))
+				(not (& signal RELSEND))
 		)
-		(if (& signal $0200)
+		(if (& signal RELSEND)
 			(self doit: (self posnToValue: sTop))
 		)
 	)
@@ -128,68 +108,61 @@
 						)
 					)
 				)
-				(not (& signal $0200))
+				(not (& signal RELSEND))
 		)
-		(if (& signal $0200)
+		(if (& signal RELSEND)
 			(self doit: (self posnToValue: sTop))
 		)
 	)
 	
-	(method (move param1 param2 &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7)
-		(= temp7 (if (not argc) else param2))
-		(= temp5 (sign param1))
-		(= temp4 param1)
-		(while (<= yStep (Abs temp4))
-			(= temp0 (- sTop (* temp5 yStep)))
-			(= temp1 (CelHigh sliderView sliderLoop sliderCel))
+	(method (move amount doSend &tmp newTop cHigh pnv newValue i dir retVal doSendTmp)
+		(= doSendTmp (if (not argc) else doSend))
+		(= dir (sign amount))
+		(= i amount)
+		(while (<= yStep (Abs i))
+			(= newTop (- sTop (* dir yStep)))
+			(= cHigh (CelHigh sliderView sliderLoop sliderCel))
 			(= sTop
 				(cond 
-					((< temp0 minY) minY)
-					((> temp0 maxY) maxY)
-					(else temp0)
+					((< newTop minY) minY)
+					((> newTop maxY) maxY)
+					(else newTop)
 				)
 			)
-			(= temp2 (PicNotValid))
-			(PicNotValid 1)
+			(= pnv (PicNotValid))
+			(PicNotValid TRUE)
 			(DrawCel view loop cel nsLeft nsTop -1)
 			(DrawCel sliderView sliderLoop sliderCel sLeft sTop -1)
-			(Graph
-				grUPDATE_BOX
-				(- nsTop 1)
-				(- nsLeft 1)
-				(+ 2 nsBottom)
-				(+ 2 nsRight)
-				1
+			(Graph GShowBits (- nsTop 1) (- nsLeft 1) (+ 2 nsBottom) (+ 2 nsRight) VMAP)
+			(PicNotValid pnv)
+			(= newValue (self posnToValue: sTop))
+			(= retVal
+				(if doSendTmp (self doit: newValue) else (self doit:))
 			)
-			(PicNotValid temp2)
-			(= temp3 (self posnToValue: sTop))
-			(= temp6
-				(if temp7 (self doit: temp3) else (self doit:))
-			)
-			(= temp4 (- temp4 (* yStep temp5)))
+			(= i (- i (* yStep dir)))
 		)
-		(return temp6)
+		(return retVal)
 	)
 	
-	(method (valueToPosn param1 &tmp temp0)
+	(method (valueToPosn val &tmp selVal)
 		(return
 			(cond 
 				(
 					(and
 						(<
-							(= temp0 (if argc param1 else (self doit:)))
+							(= selVal (if argc val else (self doit:)))
 							topValue
 						)
-						(< temp0 bottomValue)
+						(< selVal bottomValue)
 					)
 					(if (< bottomValue topValue) maxY else minY)
 				)
-				((and (> temp0 topValue) (> temp0 bottomValue)) (if (< bottomValue topValue) minY else maxY))
+				((and (> selVal topValue) (> selVal bottomValue)) (if (< bottomValue topValue) minY else maxY))
 				(else
 					(+
 						minY
 						(/
-							(* (Abs (- topValue temp0)) (- maxY minY))
+							(* (Abs (- topValue selVal)) (- maxY minY))
 							(Abs (- topValue bottomValue))
 						)
 					)
@@ -198,12 +171,12 @@
 		)
 	)
 	
-	(method (posnToValue param1)
+	(method (posnToValue yPosn)
 		(return
 			(+
 				bottomValue
 				(/
-					(* (- maxY param1) (- topValue bottomValue))
+					(* (- maxY yPosn) (- topValue bottomValue))
 					(- maxY minY)
 				)
 			)
@@ -213,79 +186,63 @@
 
 (class GameControls of IconBar
 	(properties
-		elements 0
-		size 0
+		window NULL
 		height 200
-		underBits 0
-		oldMouseX 0
-		oldMouseY 0
-		curIcon 0
-		highlightedIcon 0
-		prevIcon 0
-		curInvIcon 0
-		useIconItem 0
-		helpIconItem 0
-		port 0
-		window 0
-		state $0000
-		activateHeight 0
-		y 0
 		okButton 0
+		state 0
 	)
 	
-	(method (show &tmp temp0 temp1 temp2 temp3 temp4 temp5)
-		(= temp5 (PicNotValid))
-		(PicNotValid 0)
+	(method (show &tmp theX theY node nextNode obj pnv)
+		(= pnv (PicNotValid))
+		(PicNotValid 0)		
 		(sounds pause:)
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
 		)
-		(= state (| state $0020))
+		(= state (| state IB_ACTIVE))
 		(if (IsObject window)
 			(window open:)
 		else
 			(= window
 				((systemWindow new:)
-					top: 46
-					left: 24
-					bottom: 155
-					right: 296
+					top: CTRL_BOX_TOP
+					left: CTRL_BOX_LEFT
+					bottom: CTRL_BOX_BOTTOM
+					right: CTRL_BOX_RIGHT
 					priority: 15
 					open:
 					yourself:
 				)
 			)
 		)
-		(= temp0 30)
-		(= temp1 30)
-		(= temp2 (FirstNode elements))
-		(while temp2
-			(= temp3 (NextNode temp2))
-			(if (not (IsObject (= temp4 (NodeValue temp2))))
+		(= theX 30)
+		(= theY 30)
+		(= node (FirstNode elements))
+		(while node
+			(= nextNode (NextNode node))
+			(if (not (IsObject (= obj (NodeValue node))))
 				(return)
 			)
 			(if
 				(and
-					(not (& (temp4 signal?) $0080))
-					(<= (temp4 nsRight?) 0)
+					(not (& (obj signal?) FIXED_POSN))
+					(<= (obj nsRight?) 0)
 				)
-				(temp4 show: temp0 temp1)
-				(= temp0 (+ 20 (temp4 nsRight?)))
+				(obj show: theX theY)
+				(= theX (+ 20 (obj nsRight?)))
 			else
-				(temp4 show:)
+				(obj show:)
 			)
-			(= temp2 temp3)
+			(= node nextNode)
 		)
-		(PicNotValid temp5)
+		(PicNotValid pnv)
 		(if (not okButton)
 			(= okButton (NodeValue (self first:)))
 		)
 		(if curIcon
 			(if global400
 				(theGame
-					setCursor:
-						theCursor
-						1
+					setCursor: theCursor TRUE
 						(+
 							(curIcon nsLeft?)
 							(/ (- (curIcon nsRight?) (curIcon nsLeft?)) 2)
@@ -293,7 +250,7 @@
 						(- (curIcon nsBottom?) 3)
 				)
 			else
-				(theGame setCursor: theCursor 1)
+				(theGame setCursor: theCursor TRUE)
 				(Intersections
 					(+
 						(curIcon nsLeft?)
@@ -308,53 +265,53 @@
 	
 	(method (hide)
 		(if window (window dispose:))
-		(if (& state $0020)
-			(sounds pause: 0)
-			(= state (& state $ffdf))
+		(if (& state IB_ACTIVE)
+			(sounds pause: FALSE)
+			(&= state (~ IB_ACTIVE))
 		)
 	)
 	
-	(method (select param1 param2)
-		(param1 select: (if (>= argc 2) param2 else 0))
+	(method (select theIcon relVer)
+		(theIcon select: (if (>= argc 2) relVer else 0))
 	)
 	
 	(method (swapCurIcon)
 	)
 	
-	(method (advanceCurIcon &tmp temp0)
+	(method (advanceCurIcon &tmp theIcon)
 	)
 	
-	(method (dispatchEvent event &tmp systemWindowEraseOnly temp1 temp2)
+	(method (dispatchEvent event &tmp eO thisIcon thePort)
 		(return
 			(cond 
 				(
 					(and
-						(& (event type?) $4000)
-						(== (event message?) JOY_DOWNLEFT)
+						(& (event type?) userEvent)
+						(== (event message?) verbHelp)
 					)
-					(= temp1 (self firstTrue: #onMe event))
+					(= thisIcon (self firstTrue: #onMe event))
 					(event dispose:)
-					(if (and temp1 (temp1 helpStr?))
-						(= temp2 (GetPort))
+					(if (and thisIcon (thisIcon helpStr?))
+						(= thePort (GetPort))
 						(if (systemWindow respondsTo: #eraseOnly)
-							(= systemWindowEraseOnly (systemWindow eraseOnly?))
-							(systemWindow eraseOnly: 1)
-							(Printf 934 0 (temp1 helpStr?))
-							(systemWindow eraseOnly: systemWindowEraseOnly)
+							(= eO (systemWindow eraseOnly?))
+							(systemWindow eraseOnly: TRUE)
+							(Printf GCONTROL 0 (thisIcon helpStr?))
+							(systemWindow eraseOnly: eO)
 						else
-							(Printf 934 0 (temp1 helpStr?))
+							(Printf GCONTROL 0 (thisIcon helpStr?))
 						)
-						(SetPort temp2)
+						(SetPort thePort)
 					)
 					(if helpIconItem
-						(helpIconItem signal: (& (helpIconItem signal?) $ffef))
+						(helpIconItem signal: (& (helpIconItem signal?) (~ TRANSLATOR)))
 					)
-					(theGame setCursor: 999)
-					(return 0)
+					(theGame setCursor: ARROW_CURSOR)
+					(return FALSE)
 				)
-				((& (event type?) evJOYSTICK)
+				((& (event type?) direction)
 					(switch (event message?)
-						(JOY_DOWN
+						(dirS
 							(event dispose:)
 							(cond 
 								(
@@ -363,19 +320,19 @@
 										(highlightedIcon respondsTo: #retreat)
 									)
 									(highlightedIcon retreat:)
-									(return 0)
+									(return FALSE)
 								)
 								(
 									(or
 										(not (IsObject highlightedIcon))
-										(& (highlightedIcon signal?) $0100)
+										(& (highlightedIcon signal?) VICON)
 									)
 									(self advance:)
-									(return 0)
+									(return FALSE)
 								)
 							)
 						)
-						(JOY_UP
+						(dirN
 							(event dispose:)
 							(cond 
 								(
@@ -384,15 +341,15 @@
 										(highlightedIcon respondsTo: #advance)
 									)
 									(highlightedIcon advance:)
-									(return 0)
+									(return FALSE)
 								)
 								(
 									(or
 										(not (IsObject highlightedIcon))
-										(& (highlightedIcon signal?) $0100)
+										(& (highlightedIcon signal?) VICON)
 									)
 									(self retreat:)
-									(return 0)
+									(return FALSE)
 								)
 							)
 						)
@@ -407,27 +364,8 @@
 	)
 )
 
-(class ControlIcon of IconI
+(class ControlIcon of IconItem
 	(properties
-		view -1
-		loop -1
-		cel -1
-		nsLeft 0
-		nsTop -1
-		nsRight 0
-		nsBottom 0
-		state $0000
-		cursor -1
-		type $4000
-		message -1
-		modifiers $0000
-		signal $0001
-		helpStr 0
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		highlightColor 0
-		lowlightColor 0
 		theObj 0
 		selector 0
 	)
@@ -435,7 +373,7 @@
 	(method (select)
 		(if theObj
 			(if (super select: &rest)
-				(if (& signal $0040)
+				(if (& signal HIDEBAR)
 					((if gameControls else GameControls) hide:)
 				)
 				(Eval theObj selector)

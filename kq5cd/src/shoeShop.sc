@@ -6,7 +6,7 @@
 (use CodeCue)
 (use Chase)
 (use RFeature)
-(use Avoid)
+(use Avoider)
 (use Motion)
 (use Game)
 (use Actor)
@@ -288,7 +288,7 @@
 			)
 			(17)
 			(18
-				(curRoom obstacles: gPolyList15)
+				(curRoom obstacles: globalCedric)
 				(dog dispose:)
 				(shoeMaker setAvoider: 0 dispose:)
 				(woman setAvoider: 0 dispose:)
@@ -378,21 +378,21 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: woman)
-						(proc0_29 808)
+						(SpeakAudio 808)
 					else
-						(proc0_29 809)
+						(SpeakAudio 809)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (not local1)
 						(++ local1)
-						(proc0_29 814)
+						(SpeakAudio 814)
 						(event claimed: 1)
 					)
 				)
 				(JOY_DOWN
-					(proc0_29 814)
+					(SpeakAudio 814)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -407,7 +407,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 816)
+							(SpeakAudio 816)
 							(event claimed: 1)
 						)
 					)
@@ -438,21 +438,21 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: woman)
-						(proc0_29 808)
+						(SpeakAudio 808)
 					else
-						(proc0_29 809)
+						(SpeakAudio 809)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (not local1)
 						(++ local1)
-						(proc0_29 814)
+						(SpeakAudio 814)
 						(event claimed: 1)
 					)
 				)
 				(JOY_DOWN
-					(proc0_29 814)
+					(SpeakAudio 814)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -514,13 +514,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 810)
+					(SpeakAudio 810)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (not local2)
 						(++ local2)
-						(proc0_29 9067)
+						(SpeakAudio 9067)
 						(event claimed: 1)
 					)
 				)
@@ -533,7 +533,7 @@
 							(event claimed: 1)
 						)
 						(1
-							(proc0_29 820)
+							(SpeakAudio 820)
 							(event claimed: 1)
 						)
 					)
@@ -550,7 +550,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 817)
+							(SpeakAudio 817)
 							(event claimed: 1)
 						)
 					)
@@ -613,22 +613,22 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 811)
+					(SpeakAudio 811)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 815)
+					(SpeakAudio 815)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 821)
+					(SpeakAudio 821)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 818)
+							(SpeakAudio 818)
 							(event claimed: 1)
 						)
 					)
@@ -656,9 +656,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: woman)
-						(proc0_29 812)
+						(SpeakAudio 812)
 					else
-						(proc0_29 813)
+						(SpeakAudio 813)
 					)
 					(event claimed: 1)
 				)

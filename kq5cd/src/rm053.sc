@@ -51,7 +51,7 @@
 				(ego view: 2 observeControl: 16384 posn: 57 146)
 				(= local0 1)
 				(if (not (Btst 55))
-					(gPolyList15
+					(globalCedric
 						view: 138
 						loop: 2
 						cel: 0
@@ -334,11 +334,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 562)
+					(SpeakAudio 562)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 565)
+					(SpeakAudio 565)
 					(event claimed: 1)
 				)
 			)
@@ -365,7 +365,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 563)
+					(SpeakAudio 563)
 					(event claimed: 1)
 				)
 			)
@@ -391,7 +391,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 564)
+					(SpeakAudio 564)
 					(event claimed: 1)
 				)
 			)
@@ -418,11 +418,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 563)
+					(SpeakAudio 563)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 565)
+					(SpeakAudio 565)
 					(event claimed: 1)
 				)
 			)
@@ -449,11 +449,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 562)
+					(SpeakAudio 562)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 565)
+					(SpeakAudio 565)
 					(event claimed: 1)
 				)
 			)
@@ -480,11 +480,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 562)
+					(SpeakAudio 562)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 565)
+					(SpeakAudio 565)
 					(event claimed: 1)
 				)
 			)

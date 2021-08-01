@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 977)
-(include sci.sh)
+(script# GROOPER)
+(include game.sh)
 (use Main)
 (use Sight)
 (use Motion)
@@ -9,37 +9,38 @@
 
 (local
 	[trans1 8] = [2 6 4 0 3 5 1 7]
-	[trans2 8] = [3 6 0 4 2 5 1 7]
+	[trans2 8] = [loopN loopNE loopE loopSE loopS loopSW loopW loopNW]
 )
-(class Grooper of Code
+(class GradualLooper of Code
 	(properties
+		name "Grooper"
 		client 0
 		oldCycler 0
 		oldMover 0
 		caller 0
 	)
 	
-	(method (doit theClient param2 theCaller param4 &tmp theTrans1 temp1)
-		(if (not client) (= client theClient))
-		(if (& (client signal?) $0800)
+	(method (doit c h whoCares dontGroop &tmp lastDir numLoops)
+		(if (not client) (= client c))
+		(if (& (client signal?) fixedLoop)
 			(if caller (caller cue:))
 			(= caller 0)
 			(return)
 		)
-		(if (>= argc 3) (= caller theCaller))
-		(= temp1 (if (< (NumLoops client) 8) 4 else 8))
+		(if (>= argc 3) (= caller whoCares))
+		(= numLoops (if (< (NumLoops client) 8) 4 else 8))
 		(if
 			(or
 				(not (cast contains: client))
-				(and (>= argc 4) param4)
+				(and (>= argc 4) dontGroop)
 			)
 			(client
 				loop:
 					[trans2 (*
-						(if (== temp1 4) 2 else 1)
+						(if (== numLoops 4) 2 else 1)
 						(/
-							(umod (+ (client heading?) (/ 180 temp1)) 360)
-							(/ 360 temp1)
+							(umod (+ (client heading?) (/ 180 numLoops)) 360)
+							(/ 360 numLoops)
 						)
 					)]
 			)
@@ -47,14 +48,14 @@
 			(= caller 0)
 			(return)
 		)
-		(= theTrans1 [trans1 (client loop?)])
+		(= lastDir [trans1 (client loop?)])
 		(if oldMover (oldMover dispose:) (= oldMover 0))
 		(if
 			(and
 				(IsObject oldCycler)
 				(or
-					(oldCycler isMemberOf: Grycler)
-					(not ((client cycler?) isMemberOf: Grycler))
+					(oldCycler isMemberOf: GradualCycler)
+					(not ((client cycler?) isMemberOf: GradualCycler))
 				)
 			)
 			(oldCycler dispose:)
@@ -64,7 +65,7 @@
 		(if
 			(and
 				(client cycler?)
-				((client cycler?) isMemberOf: Grycler)
+				((client cycler?) isMemberOf: GradualCycler)
 			)
 			((client cycler?) dispose:)
 		)
@@ -73,57 +74,53 @@
 			cycler: 0
 			mover: 0
 			setMotion: 0
-			setCycle: Grycler self theTrans1
+			setCycle: GradualCycler self lastDir
 		)
 	)
 	
 	(method (dispose)
 		(if (IsObject oldCycler)
 			(oldCycler dispose:)
-			(= oldCycler 0)
+			(= oldCycler NULL)
 		)
 		(if (IsObject oldMover)
 			(oldMover dispose:)
-			(= oldMover 0)
+			(= oldMover NULL)
 		)
 		(if client (client looper: 0))
 		(super dispose:)
 	)
 	
-	(method (cue &tmp theCaller)
+	(method (cue &tmp oldCaller)
 		(if (not (IsObject (client mover?)))
 			(client mover: oldMover)
 		)
 		(if (IsObject oldCycler) (client cycler: oldCycler))
-		(= theCaller caller)
+		(= oldCaller caller)
 		(= caller (= oldMover (= oldCycler 0)))
-		(if theCaller (theCaller cue: &rest))
+		(if oldCaller (oldCaller cue: &rest))
 	)
 )
 
-(class Grycler of Cycle
+(class GradualCycler of Cycle
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
-		cycleCnt 0
-		completed 0
+		name "Grycler"
 		loopIndex 0
 		numOfLoops 0
 	)
 	
-	(method (init param1 theCaller theLoopIndex)
-		(super init: param1)
-		(= caller theCaller)
+	(method (init act whoCares oldDir)
+		(super init: act)
+		(= caller whoCares)
 		(= numOfLoops (if (< (NumLoops client) 8) 4 else 8))
 		(= cycleDir
 			(-
 				(sign
-					(AngleDiff (* theLoopIndex 45) (param1 heading?))
+					(AngleDiff (* oldDir 45) (act heading?))
 				)
 			)
 		)
-		(= loopIndex theLoopIndex)
+		(= loopIndex oldDir)
 		(if (self loopIsCorrect:) (self cycleDone:))
 	)
 	
@@ -153,7 +150,7 @@
 	)
 	
 	(method (cycleDone)
-		(= doMotionCue (= completed 1))
+		(= doMotionCue (= completed TRUE))
 	)
 	
 	(method (loopIsCorrect)

@@ -328,7 +328,7 @@
 			)
 			(1 (ego loop: 3) (= cycles 2))
 			(2
-				(if local91 (proc0_29 246) else (proc0_29 247))
+				(if local91 (SpeakAudio 246) else (SpeakAudio 247))
 				(HandsOn)
 				(client setScript: 0)
 			)
@@ -350,7 +350,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 238)
+					(SpeakAudio 238)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -366,7 +366,7 @@
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(1
-							(proc0_29 251)
+							(SpeakAudio 251)
 							(event claimed: 1)
 						)
 					)
@@ -390,12 +390,12 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 239)
+					(SpeakAudio 239)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (cast contains: oldGnome)
-						(proc0_29 248)
+						(SpeakAudio 248)
 					else
 						(HandsOff)
 						(= local91 1)
@@ -427,7 +427,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 240)
+					(SpeakAudio 240)
 					(event claimed: 1)
 				)
 			)
@@ -454,11 +454,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 241)
+					(SpeakAudio 241)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 249)
+					(SpeakAudio 249)
 					(event claimed: 1)
 				)
 			)
@@ -496,7 +496,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 242)
+					(SpeakAudio 242)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -552,22 +552,22 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 243)
+					(SpeakAudio 243)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 250)
+					(SpeakAudio 250)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 253)
+					(SpeakAudio 253)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 252)
+							(SpeakAudio 252)
 							(event claimed: 1)
 						)
 					)
@@ -654,7 +654,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if (== local90 1) (proc0_29 244) else (proc0_29 245))
+					(if (== local90 1)
+						(SpeakAudio 244)
+					else
+						(SpeakAudio 245)
+					)
 					(event claimed: 1)
 				)
 			)

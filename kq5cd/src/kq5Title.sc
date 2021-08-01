@@ -148,7 +148,7 @@
 				(if (== (DoSound sndDISPOSE) 32)
 					(theMusic number: 72 loop: 1 playBed:)
 				else
-					(proc0_29 9997 self)
+					(SpeakAudio 9997 self)
 				)
 				(= cycles 30)
 			)
@@ -171,7 +171,7 @@
 				(User canControl: 1 canInput: 1)
 				(theIconBar disable:)
 				(= isHandsOff 0)
-				(proc0_29 9247 0 1)
+				(SpeakAudio 9247 0 1)
 				(theGame setCursor: normalCursor 1)
 				(= global103 1)
 				(if global327

@@ -61,20 +61,20 @@
 				(hermitMouth cycleSpeed: 2)
 				(hermit_eyes cycleSpeed: 20 setCycle: RandCycle)
 				(hermitMouth setCycle: MouthSync 1142)
-				(proc0_29 1142 self)
+				(SpeakAudio 1142 self)
 			)
 			(2
 				(cls)
 				(hermitMouth setCycle: 0)
 				(egoMouth cycleSpeed: 2)
 				(egoMouth setCycle: MouthSync 1143)
-				(proc0_29 1143 self)
+				(SpeakAudio 1143 self)
 			)
 			(3
 				(egoMouth setCycle: 0)
 				(cls)
 				(hermitMouth setCycle: MouthSync 1144)
-				(proc0_29 1144 self)
+				(SpeakAudio 1144 self)
 			)
 			(4
 				(hermitMouth setCycle: 0)
@@ -83,7 +83,7 @@
 			)
 			(5
 				(hermitMouth setCycle: MouthSync 1145)
-				(proc0_29 1145 self)
+				(SpeakAudio 1145 self)
 			)
 			(6
 				(hermitMouth setCycle: 0)
@@ -92,7 +92,7 @@
 			)
 			(7
 				(hermitMouth setCycle: MouthSync 1146)
-				(proc0_29 1146 self)
+				(SpeakAudio 1146 self)
 			)
 			(8
 				(hermitMouth setCycle: 0)

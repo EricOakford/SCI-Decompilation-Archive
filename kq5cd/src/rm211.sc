@@ -113,11 +113,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 762)
+					(SpeakAudio 762)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 761)
+					(SpeakAudio 761)
 					(event claimed: 1)
 				)
 			)

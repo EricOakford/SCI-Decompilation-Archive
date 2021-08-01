@@ -63,7 +63,7 @@
 				(eagle setMotion: MoveTo 155 47 self)
 			)
 			(2
-				(proc0_29 958)
+				(SpeakAudio 958)
 				(eagle setMotion: MoveTo 161 52 self)
 			)
 			(3

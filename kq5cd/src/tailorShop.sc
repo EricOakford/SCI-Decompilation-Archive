@@ -8,7 +8,7 @@
 (use PolyPath)
 (use Follow)
 (use RFeature)
-(use Avoid)
+(use Avoider)
 (use Motion)
 (use Game)
 (use Actor)
@@ -133,7 +133,7 @@
 			(0
 				(if (ego has: 26)
 					(HandsOff)
-					(proc0_29 833)
+					(SpeakAudio 833)
 					(client setScript: 0)
 					(HandsOn)
 				else
@@ -370,17 +370,17 @@
 				(if (not (curRoom script?))
 					(theMouth z: 34 setCycle: RandCycle)
 					(switch local5
-						(0 (proc0_29 1219 self))
-						(1 (proc0_29 1220 self))
-						(2 (proc0_29 1221 self))
-						(3 (proc0_29 1222 self))
-						(4 (proc0_29 1223 self))
-						(5 (proc0_29 1224 self))
-						(6 (proc0_29 1225 self))
-						(7 (proc0_29 1226 self))
-						(8 (proc0_29 1227 self))
-						(9 (proc0_29 1228 self))
-						(10 (proc0_29 1229 self))
+						(0 (SpeakAudio 1219 self))
+						(1 (SpeakAudio 1220 self))
+						(2 (SpeakAudio 1221 self))
+						(3 (SpeakAudio 1222 self))
+						(4 (SpeakAudio 1223 self))
+						(5 (SpeakAudio 1224 self))
+						(6 (SpeakAudio 1225 self))
+						(7 (SpeakAudio 1226 self))
+						(8 (SpeakAudio 1227 self))
+						(9 (SpeakAudio 1228 self))
+						(10 (SpeakAudio 1229 self))
 					)
 				else
 					(= cycles 1)
@@ -505,13 +505,17 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if (ego has: 26) (proc0_29 824) else (proc0_29 825))
+					(if (ego has: 26)
+						(SpeakAudio 824)
+					else
+						(SpeakAudio 825)
+					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(cond 
-						((== ((inventory at: 3) owner?) 203) (proc0_29 830) (event claimed: 1))
-						((not local0) (++ local0) (proc0_29 9076) (event claimed: 1))
+						((== ((inventory at: 3) owner?) 203) (SpeakAudio 830) (event claimed: 1))
+						((not local0) (++ local0) (SpeakAudio 9076) (event claimed: 1))
 					)
 				)
 				(JOY_DOWNRIGHT
@@ -565,7 +569,11 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(if (ego has: 26) (proc0_29 833) else (proc0_29 834))
+							(if (ego has: 26)
+								(SpeakAudio 833)
+							else
+								(SpeakAudio 834)
+							)
 							(event claimed: 1)
 						)
 					)
@@ -574,7 +582,7 @@
 					(switch local4
 						(0
 							(if (ego has: 26)
-								(proc0_29 833)
+								(SpeakAudio 833)
 							else
 								(Bset 58)
 								(++ local4)
@@ -584,7 +592,7 @@
 							(event claimed: 1)
 						)
 						(1
-							(proc0_29 835)
+							(SpeakAudio 835)
 							(event claimed: 1)
 						)
 					)
@@ -614,7 +622,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 826)
+					(SpeakAudio 826)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -697,15 +705,15 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 827)
+					(SpeakAudio 827)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 831)
+					(SpeakAudio 831)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 836)
+					(SpeakAudio 836)
 					(event claimed: 1)
 				)
 			)
@@ -766,15 +774,15 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 828)
+					(SpeakAudio 828)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 832)
+					(SpeakAudio 832)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 832)
+					(SpeakAudio 832)
 					(event claimed: 1)
 				)
 			)
@@ -799,7 +807,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 829)
+					(SpeakAudio 829)
 					(event claimed: 1)
 				)
 			)

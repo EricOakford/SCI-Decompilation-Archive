@@ -123,11 +123,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= cycles 3))
-			(1 (proc0_29 1048 self))
+			(1 (SpeakAudio 1048 self))
 			(2
 				(cls)
 				(bakerMouth init: setCycle: RandCycle)
-				(proc0_29 1181 self)
+				(SpeakAudio 1181 self)
 			)
 			(3
 				(bakerMouth z: 1000)
@@ -143,7 +143,7 @@
 				)
 				(RedrawCast)
 			)
-			(5 (proc0_29 1049 self))
+			(5 (SpeakAudio 1049 self))
 			(6
 				(cls)
 				(arm cel: 0)
@@ -155,10 +155,10 @@
 				(woman setCycle: Beg)
 			)
 			(8 (= seconds 1))
-			(9 (proc0_29 1050 self))
+			(9 (SpeakAudio 1050 self))
 			(10
 				(bakerMouth z: 0)
-				(proc0_29 1182 self)
+				(SpeakAudio 1182 self)
 			)
 			(11
 				(bakerMouth dispose:)
@@ -173,13 +173,13 @@
 			)
 			(13
 				(baker view: 226 loop: 3 cel: 7)
-				(proc0_29 1051 self)
+				(SpeakAudio 1051 self)
 			)
 			(14
 				(cls)
 				(woman setCycle: End self)
 			)
-			(15 (proc0_29 1052 self))
+			(15 (SpeakAudio 1052 self))
 			(16
 				(cls)
 				(woman view: 550 loop: 3 cel: 0 setCycle: End self)
@@ -277,7 +277,7 @@
 			(3
 				(baker view: 226 loop: 3 cel: 0)
 				(theMouth init: setCycle: RandCycle)
-				(proc0_29 1178 self)
+				(SpeakAudio 1178 self)
 			)
 			(4
 				(cls)
@@ -776,11 +776,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 1)
+					(SpeakAudio 1)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9056)
+					(SpeakAudio 9056)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -794,7 +794,7 @@
 							)
 							(1
 								(Bset 25)
-								(proc0_29 9057)
+								(SpeakAudio 9057)
 								(event claimed: 1)
 							)
 							(2
@@ -803,7 +803,7 @@
 							)
 							(3
 								(Bset 25)
-								(proc0_29 13)
+								(SpeakAudio 13)
 								(event claimed: 1)
 							)
 						)
@@ -838,13 +838,13 @@
 											(curRoom setScript: getPie)
 										)
 										(else 
-											(proc0_29 19)
+											(SpeakAudio 19)
 											(event claimed: 1)
 										)
 									)
 								)
-								((== ((inventory at: 2) owner?) ego) (proc0_29 20) (event claimed: 1))
-								(else (proc0_29 13) (event claimed: 1))
+								((== ((inventory at: 2) owner?) ego) (SpeakAudio 20) (event claimed: 1))
+								(else (SpeakAudio 13) (event claimed: 1))
 							)
 						)
 					)
@@ -903,15 +903,15 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 2)
+					(SpeakAudio 2)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9)
+					(SpeakAudio 9)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 14)
+					(SpeakAudio 14)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -919,7 +919,7 @@
 					(== (inventory indexOf: (theIconBar curInvIcon?)) 28)
 						(event claimed: 0)
 					else
-						(proc0_29 21)
+						(SpeakAudio 21)
 						(event claimed: 1)
 					)
 				)
@@ -971,15 +971,15 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 3)
+					(SpeakAudio 3)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 15)
+					(SpeakAudio 15)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 10)
+					(SpeakAudio 10)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -987,7 +987,7 @@
 					(== (inventory indexOf: (theIconBar curInvIcon?)) 28)
 						(event claimed: 0)
 					else
-						(proc0_29 22)
+						(SpeakAudio 22)
 						(event claimed: 1)
 					)
 				)
@@ -1018,7 +1018,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 4)
+					(SpeakAudio 4)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1031,8 +1031,8 @@
 								(curRoom setScript: doPie)
 								(event claimed: 1)
 							)
-							((ego has: 2) (proc0_29 11) (event claimed: 1))
-							(else (proc0_29 12) (event claimed: 1))
+							((ego has: 2) (SpeakAudio 11) (event claimed: 1))
+							(else (SpeakAudio 12) (event claimed: 1))
 						)
 					)
 				)
@@ -1060,11 +1060,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 5)
+					(SpeakAudio 5)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 16)
+					(SpeakAudio 16)
 					(event claimed: 1)
 				)
 			)
@@ -1089,7 +1089,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 6)
+					(SpeakAudio 6)
 					(event claimed: 1)
 				)
 			)
@@ -1111,7 +1111,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 4)
+					(SpeakAudio 4)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1124,8 +1124,8 @@
 								(curRoom setScript: doPie)
 								(event claimed: 1)
 							)
-							((ego has: 2) (proc0_29 11) (event claimed: 1))
-							(else (proc0_29 12) (event claimed: 1))
+							((ego has: 2) (SpeakAudio 11) (event claimed: 1))
+							(else (SpeakAudio 12) (event claimed: 1))
 						)
 					)
 				)
@@ -1163,13 +1163,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 7)
+					(SpeakAudio 7)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
 					(event claimed: 1)
 					(if (or local6 (> (boy y?) (+ (ego y?) 25)))
-						(proc0_29 17)
+						(SpeakAudio 17)
 					else
 						(++ local6)
 						(User canInput: 0)
@@ -1200,13 +1200,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 8)
+					(SpeakAudio 8)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
 					(event claimed: 1)
 					(if (or local5 (> (woman y?) (+ (ego y?) 25)))
-						(proc0_29 18)
+						(SpeakAudio 18)
 					else
 						(++ local5)
 						(User canInput: 0)

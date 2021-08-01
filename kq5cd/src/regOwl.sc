@@ -80,13 +80,13 @@
 			)
 			(= [local71 8] 3048)
 		)
-		(= gPolyList15 cedric)
+		(= globalCedric cedric)
 		(self setScript: messageTime)
 	)
 	
 	(method (doit)
 		(cond 
-			((== gPolyList15 50) (= gPolyList15 cedric) (= [local71 8] 3048))
+			((== globalCedric 50) (= globalCedric cedric) (= [local71 8] 3048))
 			(script (script doit:))
 		)
 	)
@@ -117,7 +117,7 @@
 				(= seconds (Random 120 240))
 			)
 			(1
-				(if gPolyList15
+				(if globalCedric
 					(localproc_001e)
 					(proc762_1 @local0 global325 self)
 				)
@@ -244,7 +244,7 @@ code_0468:
 			pushi    1
 			lat      temp0
 			lsli     local52
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			jmp      code_048f
 			ret     
 code_048a:
@@ -257,7 +257,7 @@ code_048f:
 			pushi    1
 			lat      temp0
 			lsli     local52
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 code_049d:
 			pushi    #claimed
 			pushi    1
@@ -400,7 +400,7 @@ code_0582:
 			bnt      code_05a0
 			pushi    1
 			pushi    75
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			jmp      code_05c6
 code_05a0:
 			dup     
@@ -409,7 +409,7 @@ code_05a0:
 			bnt      code_05b0
 			pushi    1
 			pushi    76
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			jmp      code_05c6
 code_05b0:
 			dup     
@@ -418,12 +418,12 @@ code_05b0:
 			bnt      code_05c0
 			pushi    1
 			pushi    77
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			jmp      code_05c6
 code_05c0:
 			pushi    1
 			pushi    78
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 code_05c6:
 			toss    
 code_05c7:

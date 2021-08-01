@@ -9,7 +9,7 @@
 (use Polygon)
 (use Block)
 (use Reverse)
-(use Avoid)
+(use Avoider)
 (use Jump)
 (use Motion)
 (use Game)
@@ -279,17 +279,17 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(switch global333
-						(3 (proc0_29 32))
-						(7 (proc0_29 33))
-						(8 (proc0_29 33))
+						(3 (SpeakAudio 32))
+						(7 (SpeakAudio 33))
+						(8 (SpeakAudio 33))
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (and (!= global333 7) (!= global333 8))
-						(proc0_29 42)
+						(SpeakAudio 42)
 					else
-						(proc0_29 43)
+						(SpeakAudio 43)
 					)
 					(event claimed: 1)
 				)
@@ -301,7 +301,7 @@
 								((== ((inventory at: 24) cel?) 4)
 									(proc550_17)
 									(= local6 2)
-									(proc0_29 47)
+									(SpeakAudio 47)
 									(proc550_18)
 									(event claimed: 1)
 								)
@@ -309,7 +309,7 @@
 								(and (< (ego distanceTo: self) 70) (!= global333 7))
 									(proc550_17)
 									(= local6 2)
-									(proc0_29 48)
+									(SpeakAudio 48)
 									(event claimed: 1)
 								)
 								(else
@@ -320,13 +320,13 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 49)
+							(SpeakAudio 49)
 							(event claimed: 1)
 						)
 					)
 				)
 				(JOY_DOWN
-					(proc0_29 52)
+					(SpeakAudio 52)
 					(event claimed: 1)
 				)
 			)
@@ -358,7 +358,7 @@
 				(Bset 63)
 				((inventory at: 24)
 					cel: (+ 1 ((inventory at: 24) cel?))
-					cursor: gEmptyBagCursor
+					cursor: theEmptyBagCursor
 					yourself:
 				)
 				(ego put: 24 curRoomNum)
@@ -517,12 +517,12 @@
 		else
 			(switch (event message?)
 				(JOY_RIGHT
-					(proc0_29 44)
+					(SpeakAudio 44)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
 					(switch global331
-						(5 (proc0_29 53))
+						(5 (SpeakAudio 53))
 					)
 					(event claimed: 1)
 				)
@@ -530,9 +530,9 @@
 					(switch global331
 						(5
 							(if (== curRoomNum 64)
-								(proc0_29 34)
+								(SpeakAudio 34)
 							else
-								(proc0_29 35)
+								(SpeakAudio 35)
 							)
 						)
 					)
@@ -730,17 +730,21 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(switch global332
-						(2 (proc0_29 36))
-						(3 (proc0_29 37))
-						(4 (proc0_29 38))
-						(6 (proc0_29 39))
-						(7 (proc0_29 40))
-						(else  (proc0_29 41))
+						(2 (SpeakAudio 36))
+						(3 (SpeakAudio 37))
+						(4 (SpeakAudio 38))
+						(6 (SpeakAudio 39))
+						(7 (SpeakAudio 40))
+						(else  (SpeakAudio 41))
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(if (== global332 7) (proc0_29 45) else (proc0_29 46))
+					(if (== global332 7)
+						(SpeakAudio 45)
+					else
+						(SpeakAudio 46)
+					)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -751,7 +755,7 @@
 						)
 						(24
 							(cond 
-								((not (Btst 63)) (proc0_29 50))
+								((not (Btst 63)) (SpeakAudio 50))
 								((not (Btst 62)) (theCat setScript: (ScriptID 550 14)))
 								(else
 									(= global332 5)
@@ -761,7 +765,7 @@
 							)
 						)
 						(28 (event claimed: 0))
-						(else  (proc0_29 51))
+						(else  (SpeakAudio 51))
 					)
 					(event claimed: 1)
 				)
@@ -769,7 +773,7 @@
 					(if (!= global332 7)
 						(theCat setScript: theCatRunScript)
 					else
-						(proc0_29 5800)
+						(SpeakAudio 5800)
 					)
 					(event claimed: 1)
 				)

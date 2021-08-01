@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 889)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -332,7 +332,7 @@ code_023f:
 			bnt      code_0259
 			pushi    1
 			pushi    160
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			jmp      code_033b
 code_0259:
 			pushi    #save
@@ -351,7 +351,7 @@ code_0263:
 			bnt      code_027d
 			pushi    1
 			pushi    161
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			jmp      code_033b
 code_027d:
 			pushi    #restore
@@ -428,7 +428,7 @@ code_02e3:
 code_0301:
 			pushi    1
 			lst      temp0
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			jmp      code_033b
 code_030a:
 			dup     

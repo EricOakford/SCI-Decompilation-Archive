@@ -154,7 +154,7 @@
 					cycleSpeed: 4
 				)
 				(gNewActorCloner setCycle: MouthSync 918)
-				(proc0_29 918 self)
+				(SpeakAudio 918 self)
 			)
 			(6
 				(gNewActorCloner setCycle: 0 setCel: 0)
@@ -405,7 +405,7 @@
 				(ego setLoop: 0 cel: 1 setCycle: 0)
 				(gNewActorCloner z: 0)
 				(gNewActorCloner_2 z: 0)
-				(proc0_29 922 0 1)
+				(SpeakAudio 922 0 1)
 				(= seconds 4)
 			)
 			(12
@@ -690,7 +690,7 @@
 					setPri: (- (gNewActorCloner_3 priority?) 1)
 				)
 				(gNewActorCloner setCycle: MouthSync 923)
-				(proc0_29 923 0 1)
+				(SpeakAudio 923 0 1)
 				(= seconds 10)
 			)
 			(15
@@ -935,7 +935,7 @@
 			)
 			(7
 				(gMordObj setLoop: 14 cycleSpeed: 3 setCycle: Fwd)
-				(proc0_29 924 0 1)
+				(SpeakAudio 924 0 1)
 				(= seconds 5)
 			)
 			(8
@@ -1094,7 +1094,7 @@
 			)
 			(30
 				(gMordObj setLoop: 14 cycleSpeed: 1 setCycle: Fwd)
-				(proc0_29 925 0 1)
+				(SpeakAudio 925 0 1)
 				(= seconds 4)
 			)
 			(31
@@ -1543,9 +1543,9 @@
 							(repeat
 								(if (== (event type?) evMOUSEBUTTON)
 									(theGame setCursor: 999 1)
-									(proc0_8 0 4 3840 0)
+									(CueEvent 0 4 3840 0)
 								else
-									(proc0_8 0 4 9 0)
+									(CueEvent 0 4 9 0)
 								)
 								(if
 									(>

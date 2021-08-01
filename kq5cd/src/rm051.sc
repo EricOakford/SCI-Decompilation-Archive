@@ -60,7 +60,7 @@
 				(if (not (Btst 55))
 					(self setRegions: 202)
 					(self setScript: (ScriptID 202 1))
-					(gPolyList15 setPri: 14)
+					(globalCedric setPri: 14)
 				else
 					(ego setMotion: MoveTo 222 51)
 				)
@@ -194,7 +194,7 @@
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
-				(if (cast contains: gPolyList15)
+				(if (cast contains: globalCedric)
 					(proc762_1 @local116 9108)
 				)
 				(= cycles 1)
@@ -216,17 +216,17 @@
 				(ego setMotion: MoveTo (- (ego x?) 10) 36 self)
 			)
 			(1
-				(if (not (cast contains: gPolyList15))
+				(if (not (cast contains: globalCedric))
 					(curRoom newRoom: 52)
 				else
-					(gPolyList15 setScript: 0)
-					(if (cast contains: gPolyList15)
-						(gPolyList15 view: 138 loop: 5 setCycle: End self)
+					(globalCedric setScript: 0)
+					(if (cast contains: globalCedric)
+						(globalCedric view: 138 loop: 5 setCycle: End self)
 					)
 				)
 			)
 			(2
-				(gPolyList15 loop: 9 setCycle: End self)
+				(globalCedric loop: 9 setCycle: End self)
 			)
 			(3
 				(HandsOn)
@@ -422,7 +422,7 @@
 			(0
 				(HandsOff)
 				(ego normal: 0)
-				(if (cast contains: gPolyList15)
+				(if (cast contains: globalCedric)
 					(proc762_1 @local116 3032 self)
 				else
 					(= cycles 1)
@@ -548,7 +548,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 546)
+					(SpeakAudio 546)
 					(event claimed: 1)
 				)
 			)
@@ -570,7 +570,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 547)
+					(SpeakAudio 547)
 					(event claimed: 1)
 				)
 			)
@@ -595,7 +595,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 548)
+					(SpeakAudio 548)
 					(event claimed: 1)
 				)
 			)
@@ -623,13 +623,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 549)
+					(SpeakAudio 549)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (and (not (Btst 55)) (not local0))
 						(++ local0)
-						(proc0_29 552)
+						(SpeakAudio 552)
 						(event claimed: 1)
 					)
 				)
@@ -658,13 +658,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 549)
+					(SpeakAudio 549)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (and (not (Btst 55)) (not local0))
 						(++ local0)
-						(proc0_29 552)
+						(SpeakAudio 552)
 						(event claimed: 1)
 					)
 				)
@@ -683,8 +683,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (cast contains: gPolyList15)
-			(gPolyList15 handleEvent: event)
+		(if (cast contains: globalCedric)
+			(globalCedric handleEvent: event)
 		)
 		(if
 			(or
@@ -696,13 +696,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 549)
+					(SpeakAudio 549)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (and (not (Btst 55)) (not local0))
 						(++ local0)
-						(proc0_29 552)
+						(SpeakAudio 552)
 						(event claimed: 1)
 					)
 				)
@@ -731,13 +731,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 549)
+					(SpeakAudio 549)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (and (not (Btst 55)) (not local0))
 						(++ local0)
-						(proc0_29 552)
+						(SpeakAudio 552)
 						(event claimed: 1)
 					)
 				)
@@ -767,7 +767,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 550)
+					(SpeakAudio 550)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -805,7 +805,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 551)
+					(SpeakAudio 551)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

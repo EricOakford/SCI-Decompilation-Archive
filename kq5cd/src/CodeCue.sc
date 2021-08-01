@@ -125,7 +125,7 @@
 					(== (event message?) KEY_ESCAPE)
 				)
 				(= disposeWhenDone (= local9 1))
-				(proc0_8 self 4 13)
+				(CueEvent self 4 13)
 			)
 			(
 				(and

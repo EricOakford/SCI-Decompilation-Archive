@@ -179,7 +179,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 617)
+					(SpeakAudio 617)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -214,11 +214,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 618)
+					(SpeakAudio 618)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 621)
+					(SpeakAudio 621)
 					(event claimed: 1)
 				)
 			)
@@ -240,7 +240,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 619)
+					(SpeakAudio 619)
 					(event claimed: 1)
 				)
 			)
@@ -262,7 +262,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 620)
+					(SpeakAudio 620)
 					(event claimed: 1)
 				)
 			)
@@ -379,7 +379,7 @@
 		(switch (= state newState)
 			(0
 				(if (== global333 2)
-					(proc0_29 616)
+					(SpeakAudio 616)
 				else
 					(proc550_17)
 					(= local0 1)
@@ -390,7 +390,7 @@
 			(1
 				(Face ego evilMask 5)
 				(RedrawCast)
-				(proc0_29 622)
+				(SpeakAudio 622)
 				(theMusic number: 128 loop: 1 play: self)
 				(leftSnake
 					setCycle: (if (== (theGame detailLevel:) 3) Fwd else 0)

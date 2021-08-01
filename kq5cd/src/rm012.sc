@@ -9,7 +9,7 @@
 (use Polygon)
 (use LoadMany)
 (use RFeature)
-(use Avoid)
+(use Avoider)
 (use Jump)
 (use Motion)
 (use User)
@@ -180,7 +180,7 @@
 		(switch (= state newState)
 			(0 (= cycles 15))
 			(1
-				(proc0_29 273)
+				(SpeakAudio 273)
 				(HandsOn)
 				(client setScript: 0)
 			)
@@ -306,7 +306,7 @@
 				)
 			)
 			(1
-				(proc0_29 969 0 1)
+				(SpeakAudio 969 0 1)
 				((ego head?) hide:)
 				(ego
 					normal: 0
@@ -403,7 +403,7 @@
 				(= cycles 3)
 			)
 			(12
-				(= gPolyList15 50)
+				(= globalCedric 50)
 				(theMusic fade:)
 				(= cycles 20)
 			)
@@ -547,26 +547,26 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 274)
+					(SpeakAudio 274)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 281)
+					(SpeakAudio 281)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 277)
+					(SpeakAudio 277)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(16
-							(proc0_29 279)
+							(SpeakAudio 279)
 							(event claimed: 1)
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 279)
+							(SpeakAudio 279)
 							(event claimed: 1)
 						)
 					)
@@ -633,15 +633,15 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 275)
+					(SpeakAudio 275)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 278)
+					(SpeakAudio 278)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 282)
+					(SpeakAudio 282)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -674,7 +674,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 280)
+							(SpeakAudio 280)
 							(event claimed: 1)
 						)
 					)
@@ -705,7 +705,7 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 276)
+					(SpeakAudio 276)
 					(event claimed: 1)
 				)
 			)

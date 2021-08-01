@@ -316,7 +316,7 @@
 				(= cycles 1)
 			)
 			(10
-				(proc0_29 853)
+				(SpeakAudio 853)
 				(= cycles 1)
 			)
 			(11
@@ -432,7 +432,7 @@
 				(ego setCycle: End self)
 			)
 			(4
-				(= gPolyList15 200)
+				(= globalCedric 200)
 				(= gGEgoX (ego x?))
 				(= gGEgoY (ego y?))
 				(localproc_0012)
@@ -552,14 +552,14 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== curRoomNum 22)
-						(proc0_29 854)
+						(SpeakAudio 854)
 					else
-						(proc0_29 855)
+						(SpeakAudio 855)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(if (and (ego has: 27) (Btst 18)) (proc0_29 856))
+					(if (and (ego has: 27) (Btst 18)) (SpeakAudio 856))
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -571,7 +571,7 @@
 						(28 (event claimed: 0))
 						(27
 							(event claimed: 1)
-							(proc0_29 857)
+							(SpeakAudio 857)
 						)
 						(else 
 							(localproc_0012)
@@ -603,10 +603,10 @@
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
-			(0 (proc0_29 858 self))
+			(0 (SpeakAudio 858 self))
 			(1
 				(= temp0 (Random 4001 4005))
-				(proc0_29 temp0 self)
+				(SpeakAudio temp0 self)
 			)
 			(2 (self dispose:))
 		)

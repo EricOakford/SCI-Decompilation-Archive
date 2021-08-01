@@ -360,7 +360,7 @@
 	global309
 	global310
 	global311
-	global312 =  -1
+	numEmeralds =  -1
 	global313
 	global314
 	global315

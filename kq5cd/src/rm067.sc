@@ -56,7 +56,7 @@
 		(Load rsVIEW 904)
 		(Load rsSOUND 97)
 		(Load rsSOUND 62)
-		(= gPolyList15 actor_1)
+		(= globalCedric actor_1)
 		(self setRegions: 550 setFeatures: mouseHole hole grate)
 		(switch prevRoomNum
 			(55
@@ -141,9 +141,9 @@
 				(switch (event message?)
 					(JOY_UPRIGHT
 						(if (& (OnControl 4 (event x?) (event y?)) $0004)
-							(proc0_29 9050)
+							(SpeakAudio 9050)
 						else
-							(proc0_29 9051)
+							(SpeakAudio 9051)
 						)
 						(event claimed: 1)
 					)
@@ -268,7 +268,7 @@
 			)
 			(5
 				((curRoom obstacles?) delete: poly4)
-				(gPolyList15
+				(globalCedric
 					init:
 					view: 882
 					setLoop: 8
@@ -291,45 +291,45 @@
 				)
 			)
 			(6
-				(gPolyList15 setCycle: CT 4 1 self)
+				(globalCedric setCycle: CT 4 1 self)
 			)
 			(7
 				(localproc_000e)
 				(proc762_0 @local62 @local71 @local80 self)
 			)
 			(8
-				(gPolyList15 setCycle: End self)
+				(globalCedric setCycle: End self)
 				(= local14 2)
 			)
 			(9
-				(gPolyList15 setLoop: 9 cel: 0 setCycle: End self)
+				(globalCedric setLoop: 9 cel: 0 setCycle: End self)
 			)
 			(10
-				(gPolyList15 setCycle: Beg self)
+				(globalCedric setCycle: Beg self)
 			)
 			(11
 				(if (-- local14)
 					(= state (- state 2))
 				else
-					(gPolyList15 setLoop: 8)
+					(globalCedric setLoop: 8)
 				)
 				(= cycles 1)
 			)
 			(12
-				(gPolyList15
-					cel: (gPolyList15 lastCel:)
+				(globalCedric
+					cel: (globalCedric lastCel:)
 					setCycle: Beg self
 				)
 				(theMusic fade:)
 			)
 			(13
-				(gPolyList15 setCel: 0 setMotion: MoveTo 20 144 self)
+				(globalCedric setCel: 0 setMotion: MoveTo 20 144 self)
 			)
 			(14
 				(theMusic number: 67 loop: -1 vol: 127 play:)
 				(Bset 69)
 				(Bset 96)
-				(gPolyList15 dispose: delete:)
+				(globalCedric dispose: delete:)
 				((ego head?) moveHead: 1)
 				(proc550_18)
 				(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
@@ -405,7 +405,7 @@
 			)
 			(2
 				(if (and (not local19) (not local16))
-					(gPolyList15
+					(globalCedric
 						view: 214
 						setLoop: 0
 						cel: 0
@@ -429,13 +429,13 @@
 				(theIconBar enable:)
 				(= isHandsOff 0)
 				(= global103 0)
-				(gPolyList15 setMotion: 0 hide:)
+				(globalCedric setMotion: 0 hide:)
 				(prop1
 					view: 882
 					loop: 1
 					cel: 1
-					posn: (gPolyList15 x?) (+ (gPolyList15 y?) 5)
-					setPri: (+ (gPolyList15 priority?) 1)
+					posn: (globalCedric x?) (+ (globalCedric y?) 5)
+					setPri: (+ (globalCedric priority?) 1)
 					setCycle: 0
 					init:
 					show:
@@ -443,7 +443,7 @@
 				(= cycles 2)
 			)
 			(4
-				(proc0_29 691)
+				(SpeakAudio 691)
 				(if (not local16)
 					(= local18 1)
 					(= state (+ state 3))
@@ -459,12 +459,12 @@
 			(6
 				(if (not local19)
 					(cond 
-						(local16 (proc0_29 698) (= local16 0))
-						(local17 (proc0_29 699) (++ local17))
-						(else (proc0_29 700) (++ local17))
+						(local16 (SpeakAudio 698) (= local16 0))
+						(local17 (SpeakAudio 699) (++ local17))
+						(else (SpeakAudio 700) (++ local17))
 					)
 				else
-					(proc0_29 705)
+					(SpeakAudio 705)
 					(= local17 2)
 					(SolvePuzzle 4)
 					(ego get: 32)
@@ -478,7 +478,7 @@
 			)
 			(8
 				(= local18 0)
-				(gPolyList15 hide:)
+				(globalCedric hide:)
 				(prop1 hide:)
 				(ego setCycle: Beg self)
 			)
@@ -508,7 +508,7 @@
 		(switch (= state newState)
 			(0
 				(theMusic3 number: 62 loop: 1 play:)
-				(gPolyList15
+				(globalCedric
 					view: 882
 					setLoop: 4
 					posn: 64 189
@@ -522,19 +522,19 @@
 				)
 			)
 			(1
-				(gPolyList15 setLoop: 3 posn: 61 159)
+				(globalCedric setLoop: 3 posn: 61 159)
 				(= cycles 10)
 			)
 			(2
-				(gPolyList15 setMotion: MoveTo 119 148 self)
+				(globalCedric setMotion: MoveTo 119 148 self)
 			)
 			(3 (= cycles 10))
 			(4
-				(gPolyList15 setMotion: MoveTo 153 148 self)
+				(globalCedric setMotion: MoveTo 153 148 self)
 			)
 			(5 (= cycles 10))
 			(6
-				(gPolyList15
+				(globalCedric
 					setLoop: 4
 					posn: 157 152
 					setPri: 4
@@ -580,7 +580,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 692)
+					(SpeakAudio 692)
 					(event claimed: 1)
 					(return)
 				)
@@ -591,7 +591,7 @@
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(31
 							(if (ego has: 32)
-								(proc0_29 706)
+								(SpeakAudio 706)
 								(event claimed: 1)
 							else
 								(= local19 1)
@@ -602,7 +602,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 707)
+							(SpeakAudio 707)
 							(event claimed: 1)
 						)
 					)
@@ -658,15 +658,15 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(cond 
-						((== (stone cel?) (stone lastCel:)) (proc0_29 693) (event claimed: 1))
-						((Btst 96) (proc0_29 694) (event claimed: 1))
+						((== (stone cel?) (stone lastCel:)) (SpeakAudio 693) (event claimed: 1))
+						((Btst 96) (SpeakAudio 694) (event claimed: 1))
 						(else (event claimed: 0))
 					)
 				)
 				(JOY_RIGHT
 					(cond 
-						((== (stone cel?) (stone lastCel:)) (proc0_29 701) (event claimed: 1))
-						((Btst 96) (proc0_29 702) (event claimed: 1))
+						((== (stone cel?) (stone lastCel:)) (SpeakAudio 701) (event claimed: 1))
+						((Btst 96) (SpeakAudio 702) (event claimed: 1))
 						(else (event claimed: 0))
 					)
 				)
@@ -704,7 +704,7 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(cond 
-						((ego has: 32) (proc0_29 695) (event claimed: 1))
+						((ego has: 32) (SpeakAudio 695) (event claimed: 1))
 						((== (curRoom script?) lookInMseHole) (event claimed: 0))
 						(else (rm067 setScript: lookInMseHole) (event claimed: 1))
 					)
@@ -723,12 +723,12 @@
 								(event claimed: 1)
 							)
 							(1
-								(proc0_29 699)
+								(SpeakAudio 699)
 								(event claimed: 1)
 							)
 						)
 					else
-						(proc0_29 703)
+						(SpeakAudio 703)
 						(event claimed: 1)
 					)
 				)
@@ -745,13 +745,13 @@
 								(rm067 setScript: lookInMseHole)
 								(event claimed: 1)
 							else
-								(proc0_29 703)
+								(SpeakAudio 703)
 								(event claimed: 1)
 							)
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 707)
+							(SpeakAudio 707)
 							(event claimed: 1)
 						)
 					)
@@ -781,7 +781,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 696)
+					(SpeakAudio 696)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -822,7 +822,10 @@
 				(proc550_17)
 				(ego setMotion: PolyPath 90 160 self)
 			)
-			(2 (proc0_29 689) (= cycles 1))
+			(2
+				(SpeakAudio 689)
+				(= cycles 1)
+			)
 			(3
 				((ego head?) hide:)
 				(ego
@@ -861,11 +864,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 697)
+					(SpeakAudio 697)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 704)
+					(SpeakAudio 704)
 					(event claimed: 1)
 				)
 			)
@@ -1036,7 +1039,7 @@
 				(= seconds 2)
 			)
 			(9
-				(gPolyList15 setScript: mouseRunning)
+				(globalCedric setScript: mouseRunning)
 				(= seconds 3)
 			)
 			(10

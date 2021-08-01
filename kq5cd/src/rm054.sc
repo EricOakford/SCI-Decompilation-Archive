@@ -303,8 +303,8 @@
 				(if (not (Btst 55))
 					(cond 
 						((< (theGame detailLevel:) 3) (= cycles 1))
-						((== (gPolyList15 cel?) 0) (gPolyList15 setScript: 0 setCycle: CT 1 1 self))
-						((> (gPolyList15 cel?) 1) (gPolyList15 setScript: 0 setCycle: CT 1 -1 self))
+						((== (globalCedric cel?) 0) (globalCedric setScript: 0 setCycle: CT 1 1 self))
+						((> (globalCedric cel?) 1) (globalCedric setScript: 0 setCycle: CT 1 -1 self))
 						(else (= cycles 1))
 					)
 				else
@@ -363,7 +363,10 @@
 					setCycle: End self
 				)
 			)
-			(2 (proc0_29 571) (= cycles 1))
+			(2
+				(SpeakAudio 571)
+				(= cycles 1)
+			)
 			(3 (ego setCycle: Beg self))
 			(4
 				(ego
@@ -407,7 +410,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if (Btst 41) (proc0_29 566) else (proc0_29 567))
+					(if (Btst 41) (SpeakAudio 566) else (SpeakAudio 567))
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -417,7 +420,7 @@
 								(cast contains: (ScriptID 550 3))
 								(>= (((ScriptID 550 3) script?) state?) 1)
 							)
-							(proc0_29 9069)
+							(SpeakAudio 9069)
 						)
 						((Btst 41) (HandsOff) (curRoom setScript: enterGrate))
 						(else (HandsOff) (curRoom setScript: pullGrate))
@@ -433,9 +436,9 @@
 						(28 (event claimed: 0))
 						(else 
 							(if (== ((inventory at: 30) owner?) 54)
-								(proc0_29 572)
+								(SpeakAudio 572)
 							else
-								(proc0_29 573)
+								(SpeakAudio 573)
 							)
 							(event claimed: 1)
 						)
@@ -467,7 +470,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 568)
+					(SpeakAudio 568)
 					(event claimed: 1)
 				)
 			)
@@ -489,7 +492,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 569)
+					(SpeakAudio 569)
 					(event claimed: 1)
 				)
 			)
@@ -514,7 +517,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 570)
+					(SpeakAudio 570)
 					(event claimed: 1)
 				)
 			)

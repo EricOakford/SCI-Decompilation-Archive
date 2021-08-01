@@ -1,27 +1,30 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 969)
-(include sci.sh)
+(script# REVERSE)
+(include game.sh)
 (use Motion)
 
 
-(class Rev of Cycle
+(class Reverse kindof Cycle
+	;;; Cycles client's cel constantly in reverse, wrapping to the last cel
+	;;; in the client's loop when the cel goes below 0.
+	
 	(properties
-		client 0
-		caller 0
+		name "Rev"
 		cycleDir -1
-		cycleCnt 0
-		completed 0
 	)
 	
-	(method (doit &tmp revNextCel)
-		(if (< (= revNextCel (self nextCel:)) 0)
+	(method (doit &tmp newCel)
+		(= newCel (self nextCel:))
+		(if (< newCel 0)
 			(self cycleDone:)
 		else
-			(client cel: revNextCel)
+			(client cel:newCel)
 		)
 	)
 	
+	
 	(method (cycleDone)
+		;; When 'done', reset to last cel and keep going.
 		(client cel: (client lastCel:))
 	)
 )

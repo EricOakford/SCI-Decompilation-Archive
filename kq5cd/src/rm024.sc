@@ -57,7 +57,7 @@
 						(== ((inventory at: 6) owner?) 200)
 						(not (Btst 56))
 					)
-					(proc0_29 379)
+					(SpeakAudio 379)
 					(return 1)
 				)
 			)
@@ -201,7 +201,7 @@
 				(= cycles 5)
 			)
 			(3
-				(proc0_29 380)
+				(SpeakAudio 380)
 				(ego
 					normal: 1
 					view: 0
@@ -244,19 +244,19 @@
 					cycleSpeed: 1
 					x: (+ (ego x?) 8)
 				)
-				(if (== global312 1)
+				(if (== numEmeralds 1)
 					(ego loop: 2 setCycle: End self)
 				else
 					(ego loop: 1 setCycle: CT 5 1 self)
 				)
 			)
 			(2
-				(if (== global312 1)
+				(if (== numEmeralds 1)
 					(self cue:)
 				else
 					(ego setCycle: End)
 					(gem x: 145 y: 107 init:)
-					(if (== global312 2)
+					(if (== numEmeralds 2)
 						(gem setMotion: JumpTo 164 120 self)
 					else
 						(gem setMotion: JumpTo 184 120 self)
@@ -264,7 +264,7 @@
 				)
 			)
 			(3
-				(if (== global312 1)
+				(if (== numEmeralds 1)
 					(self cue:)
 				else
 					(gem setMotion: JumpTo (+ (gem x?) 5) 120 self)
@@ -272,7 +272,7 @@
 				)
 			)
 			(4
-				(if (== (-- global312) 0)
+				(if (== (-- numEmeralds) 0)
 					(gem
 						init:
 						x: 140
@@ -282,10 +282,10 @@
 					(ego put: 14 24)
 					(theAudio number: 8105 loop: 1 play:)
 				else
-					((inventory at: 14) cel: (+ (- global312 1) 4))
+					((inventory at: 14) cel: (+ (- numEmeralds 1) 4))
 					((inventory at: 14)
 						cursor:
-							(switch global312
+							(switch numEmeralds
 								(3 threeEmeraldCursor)
 								(2 twoEmeraldCursor)
 								(1 oneEmeraldCursor)
@@ -324,7 +324,7 @@
 				)
 				(if
 					(and
-						(== global312 0)
+						(== numEmeralds 0)
 						(== ((inventory at: 17) owner?) 24)
 					)
 					(= state 12)
@@ -339,8 +339,8 @@
 				(elf setCycle: End self)
 			)
 			(9
-				(if (== global312 0)
-					(proc0_29 5094 self)
+				(if (== numEmeralds 0)
+					(SpeakAudio 5094 self)
 				else
 					(= cycles 1)
 				)
@@ -377,7 +377,7 @@
 			)
 			(12
 				(elf view: 468 loop: 1 posn: 222 76 setScript: blink)
-				(if global312
+				(if numEmeralds
 					(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
 				else
 					(theGame setCursor: arrowCursor)
@@ -459,7 +459,7 @@
 				(Face ego jinx)
 				((ego head?) show:)
 				(jinx setCycle: End)
-				(proc0_29 5089 0 1)
+				(SpeakAudio 5089 0 1)
 				(= seconds 7)
 			)
 			(24
@@ -486,7 +486,7 @@
 			(26
 				(cls)
 				(jinxHead dispose:)
-				(proc0_29 5090 0 1)
+				(SpeakAudio 5090 0 1)
 				(gem dispose:)
 				(jinx
 					setLoop: 9
@@ -543,7 +543,7 @@
 			)
 			(36
 				(HandsOn)
-				(if global312
+				(if numEmeralds
 					(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
 				else
 					(theGame setCursor: arrowCursor)
@@ -589,7 +589,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 371)
+					(SpeakAudio 371)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -617,7 +617,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 372)
+					(SpeakAudio 372)
 					(event claimed: 1)
 				)
 			)
@@ -649,11 +649,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 373)
+					(SpeakAudio 373)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(if (not local1) (proc0_29 377))
+					(if (not local1) (SpeakAudio 377))
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -664,11 +664,11 @@
 								(++ local0)
 								(proc762_0 @local68 @local68 @local60)
 							else
-								(proc0_29 383)
+								(SpeakAudio 383)
 							)
 						)
-						((not local0) (++ local0) (proc0_29 384))
-						(else (proc0_29 383))
+						((not local0) (++ local0) (SpeakAudio 384))
+						(else (SpeakAudio 383))
 					)
 					(event claimed: 1)
 				)
@@ -676,7 +676,7 @@
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(14
 							(if (!= ((inventory at: 6) owner?) 200)
-								(proc0_29 381)
+								(SpeakAudio 381)
 								(event claimed: 1)
 							else
 								(if (not (curRoom script?))
@@ -688,7 +688,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 382)
+							(SpeakAudio 382)
 							(event claimed: 1)
 						)
 					)
@@ -719,7 +719,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 374)
+					(SpeakAudio 374)
 					(event claimed: 1)
 				)
 			)
@@ -749,21 +749,21 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (< (self x?) 100)
-						(proc0_29 375)
+						(SpeakAudio 375)
 					else
-						(proc0_29 376)
+						(SpeakAudio 376)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (> (self x?) 100)
-						(proc0_29 378)
+						(SpeakAudio 378)
 						(event claimed: 1)
 					)
 				)
 				(JOY_DOWN
 					(if (> (self x?) 100)
-						(proc0_29 385)
+						(SpeakAudio 385)
 						(event claimed: 1)
 					)
 				)

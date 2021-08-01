@@ -165,7 +165,7 @@
 			)
 			(2 (ego setCycle: Beg self))
 			(3
-				(proc0_29 673)
+				(SpeakAudio 673)
 				(if (IsObject (ego head?)) ((ego head?) show:))
 				(ego
 					normal: 1
@@ -395,7 +395,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 667)
+					(SpeakAudio 667)
 					(event claimed: 1)
 				)
 			)
@@ -422,7 +422,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 668)
+					(SpeakAudio 668)
 					(event claimed: 1)
 				)
 			)
@@ -449,11 +449,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 669)
+					(SpeakAudio 669)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 674)
+					(SpeakAudio 674)
 					(event claimed: 1)
 				)
 			)
@@ -480,12 +480,12 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 670)
+					(SpeakAudio 670)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (< (ego y?) 100)
-						(proc0_29 675)
+						(SpeakAudio 675)
 						(event claimed: 1)
 					else
 						(proc550_17)
@@ -517,14 +517,14 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 671)
+					(SpeakAudio 671)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (< (ego y?) 100)
 						(ego setMotion: PolyPath 214 69)
 					else
-						(proc0_29 676)
+						(SpeakAudio 676)
 					)
 					(event claimed: 1)
 				)
@@ -562,7 +562,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 672)
+					(SpeakAudio 672)
 					(event claimed: 1)
 				)
 			)

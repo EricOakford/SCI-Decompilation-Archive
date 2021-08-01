@@ -80,7 +80,7 @@
 			(4
 				(egoHead init:)
 				(valHead init:)
-				(proc0_29 5236 self)
+				(SpeakAudio 5236 self)
 			)
 			(5
 				(family setLoop: 2 setCycle: End self)
@@ -88,14 +88,14 @@
 			(6 (egoHead setCycle: End self))
 			(7
 				(cls)
-				(proc0_29 5237 self)
+				(SpeakAudio 5237 self)
 				(= seconds 5)
 			)
 			(8
 				(cls)
 				(egoHead setCycle: Beg)
 				(valHead setLoop: 11 setCycle: MouthSync 5238)
-				(proc0_29 5238 self)
+				(SpeakAudio 5238 self)
 			)
 			(9
 				(cls)

@@ -10,7 +10,7 @@
 (use Polygon)
 (use Chase)
 (use RFeature)
-(use Avoid)
+(use Avoider)
 (use Motion)
 (use Actor)
 (use System)
@@ -198,7 +198,7 @@
 						setCycle: MouthSync 5403
 						init:
 					)
-					(proc0_29 5403 self)
+					(SpeakAudio 5403 self)
 				else
 					(= cycles 1)
 				)
@@ -213,10 +213,10 @@
 				)
 				(if (not (Btst 39))
 					(innHead setCycle: MouthSync 5404)
-					(proc0_29 5404 self)
+					(SpeakAudio 5404 self)
 				else
 					(innHead setCycle: MouthSync 5406)
-					(proc0_29 5406 self)
+					(SpeakAudio 5406 self)
 				)
 			)
 			(8
@@ -319,11 +319,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 720)
+					(SpeakAudio 720)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 724)
+					(SpeakAudio 724)
 					(event claimed: 1)
 				)
 			)
@@ -358,11 +358,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 720)
+					(SpeakAudio 720)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 724)
+					(SpeakAudio 724)
 					(event claimed: 1)
 				)
 			)
@@ -396,11 +396,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 720)
+					(SpeakAudio 720)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 724)
+					(SpeakAudio 724)
 					(event claimed: 1)
 				)
 			)
@@ -426,11 +426,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 720)
+					(SpeakAudio 720)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 724)
+					(SpeakAudio 724)
 					(event claimed: 1)
 				)
 			)
@@ -460,11 +460,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 720)
+					(SpeakAudio 720)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 724)
+					(SpeakAudio 724)
 					(event claimed: 1)
 				)
 			)
@@ -491,15 +491,15 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 721)
+					(SpeakAudio 721)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 725)
+					(SpeakAudio 725)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 727)
+					(SpeakAudio 727)
 					(event claimed: 1)
 				)
 			)
@@ -526,11 +526,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 722)
+					(SpeakAudio 722)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 726)
+					(SpeakAudio 726)
 					(event claimed: 1)
 				)
 			)
@@ -555,13 +555,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 723)
+					(SpeakAudio 723)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(10
-							(proc0_29 728)
+							(SpeakAudio 728)
 							(++ local0)
 							(ego setMotion: MoveTo (ego x?) 145)
 						)

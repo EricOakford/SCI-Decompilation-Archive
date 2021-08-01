@@ -143,7 +143,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 710)
+					(SpeakAudio 710)
 					(event claimed: 1)
 				)
 			)

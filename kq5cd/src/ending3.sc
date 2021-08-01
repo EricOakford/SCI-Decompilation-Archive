@@ -47,13 +47,13 @@
 				(cls)
 				(arm setScript: armScript)
 				(egoMouth setCycle: MouthSync 5210)
-				(proc0_29 5210 self)
+				(SpeakAudio 5210 self)
 			)
 			(1
 				(cls)
 				(egoMouth setCycle: 0 dispose:)
 				(alTalking init: setCycle: MouthSync 5211)
-				(proc0_29 5211 self)
+				(SpeakAudio 5211 self)
 			)
 			(2
 				(cls)

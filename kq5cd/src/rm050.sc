@@ -199,7 +199,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 542)
+					(SpeakAudio 542)
 					(event claimed: 1)
 				)
 			)
@@ -221,7 +221,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 543)
+					(SpeakAudio 543)
 					(event claimed: 1)
 				)
 			)
@@ -248,17 +248,17 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 544)
+					(SpeakAudio 544)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
-					(proc0_29 3003)
+					(SpeakAudio 3003)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(if
 					(!= (inventory indexOf: (theIconBar curInvIcon?)) 28)
-						(proc0_29 545)
+						(SpeakAudio 545)
 						(event claimed: 1)
 					else
 						(event claimed: 0)

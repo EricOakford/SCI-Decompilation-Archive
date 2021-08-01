@@ -165,17 +165,17 @@
 				)
 				(cassimaLips cycleSpeed: 2)
 				(cassimaLips setCycle: MouthSync 1078)
-				(proc0_29 1078 self)
+				(SpeakAudio 1078 self)
 			)
 			(2
 				(cassimaLips setCycle: 0 setCel: 4)
 				(egoFace setCycle: MouthSync 1079)
-				(proc0_29 1079 self)
+				(SpeakAudio 1079 self)
 			)
 			(3
 				(egoFace setCycle: 0 setCel: 0)
 				(cassimaLips setCycle: MouthSync 1080)
-				(proc0_29 1080 self)
+				(SpeakAudio 1080 self)
 			)
 			(4
 				(cls)
@@ -184,7 +184,7 @@
 			)
 			(5
 				(cassimaLips setCycle: MouthSync 1081)
-				(proc0_29 1081 self)
+				(SpeakAudio 1081 self)
 			)
 			(6
 				(cls)
@@ -193,7 +193,7 @@
 			)
 			(7
 				(cassimaLips setCycle: MouthSync 1082)
-				(proc0_29 1082 self)
+				(SpeakAudio 1082 self)
 			)
 			(8
 				(cls)

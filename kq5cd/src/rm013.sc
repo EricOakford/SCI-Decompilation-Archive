@@ -458,7 +458,7 @@
 				(ego get: 34 setCycle: Beg self)
 			)
 			(3
-				(proc0_29 291)
+				(SpeakAudio 291)
 				(ego
 					normal: 1
 					view: 0
@@ -497,7 +497,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 283)
+					(SpeakAudio 283)
 					(event claimed: 1)
 				)
 			)
@@ -522,7 +522,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 284)
+					(SpeakAudio 284)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -579,13 +579,13 @@
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(2 (proc0_29 285))
-			(3 (proc0_29 292))
-			(5 (proc0_29 295))
+			(2 (SpeakAudio 285))
+			(3 (SpeakAudio 292))
+			(5 (SpeakAudio 295))
 			(4
 				(switch theItem
 					(28 1)
-					(else  (proc0_29 297))
+					(else  (SpeakAudio 297))
 				)
 			)
 		)
@@ -626,11 +626,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 286)
+					(SpeakAudio 286)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 293)
+					(SpeakAudio 293)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -665,7 +665,7 @@
 					)
 				)
 				(JOY_DOWN
-					(proc0_29 296)
+					(SpeakAudio 296)
 					(event claimed: 1)
 				)
 			)
@@ -745,20 +745,20 @@
 				(JOY_DOWN
 					(if
 					(and (not (cast contains: gypsy)) (not local53))
-						(proc0_29 296)
+						(SpeakAudio 296)
 						(++ local53)
 						(event claimed: 1)
 					)
 				)
 				(JOY_UPRIGHT
 					(if (not (cast contains: gypsy))
-						(proc0_29 286)
+						(SpeakAudio 286)
 						(event claimed: 1)
 					)
 				)
 				(JOY_RIGHT
 					(if (not (cast contains: gypsy))
-						(proc0_29 293)
+						(SpeakAudio 293)
 						(event claimed: 1)
 					)
 				)
@@ -799,11 +799,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 287)
+					(SpeakAudio 287)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 293)
+					(SpeakAudio 293)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -842,7 +842,7 @@
 					)
 				)
 				(JOY_DOWN
-					(proc0_29 296)
+					(SpeakAudio 296)
 					(event claimed: 1)
 				)
 			)
@@ -895,11 +895,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 288)
+					(SpeakAudio 288)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 294)
+					(SpeakAudio 294)
 					(event claimed: 1)
 				)
 			)
@@ -928,11 +928,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 288)
+					(SpeakAudio 288)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 294)
+					(SpeakAudio 294)
 					(event claimed: 1)
 				)
 			)
@@ -957,7 +957,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 289)
+					(SpeakAudio 289)
 					(event claimed: 1)
 				)
 			)
@@ -998,7 +998,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 290)
+					(SpeakAudio 290)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

@@ -86,7 +86,7 @@
 					(not (== egoView 108))
 					(> (ego x?) 20)
 				)
-				(proc0_29 410)
+				(SpeakAudio 410)
 				((ego head?) hide:)
 				(ego view: 106)
 			)
@@ -126,7 +126,7 @@
 										(if (not (Btst 48)) (Bset 48) (SolvePuzzle 4))
 										(theMusic2 fade:)
 										(Bset 15)
-										(proc0_29 415)
+										(SpeakAudio 415)
 										(ego view: (if (== (ego view?) 108) 14 else 12))
 										((ego head?) show:)
 										(event claimed: 1)
@@ -134,7 +134,10 @@
 								)
 								(28 (event claimed: 0))
 								(else 
-									(if (not (Btst 15)) (proc0_29 416) (event claimed: 1))
+									(if (not (Btst 15))
+										(SpeakAudio 416)
+										(event claimed: 1)
+									)
 								)
 							)
 						)
@@ -151,7 +154,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc0_29 411 0 1)
+				(SpeakAudio 411 0 1)
 				(DoDisplay (Format @global185 29 0))
 				(= seconds 30)
 			)
@@ -221,7 +224,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 413)
+					(SpeakAudio 413)
 					(event claimed: 1)
 				)
 			)
@@ -243,7 +246,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 414)
+					(SpeakAudio 414)
 					(event claimed: 1)
 				)
 			)

@@ -78,8 +78,8 @@
 				(if (not (Btst 54)) (self setRegions: 202))
 			)
 		)
-		(if (cast contains: gPolyList15)
-			(gPolyList15 setPri: 13)
+		(if (cast contains: globalCedric)
+			(globalCedric setPri: 13)
 		)
 		(chimney init:)
 		(if (== (theGame detailLevel:) 3)
@@ -121,7 +121,7 @@
 				((= temp0 (self edgeToRoom: (ego edgeHit?)))
 					(if
 						(and
-							(cast contains: gPolyList15)
+							(cast contains: globalCedric)
 							(!= temp0 47)
 							((ScriptID 202 2) register: 2)
 						)
@@ -133,7 +133,7 @@
 				)
 				((ego inRect: 234 100 257 115)
 					(ego setMotion: 0)
-					(if (cast contains: gPolyList15)
+					(if (cast contains: globalCedric)
 						((ScriptID 202 2) register: 1)
 						(self setScript: (ScriptID 202 2))
 					else
@@ -306,7 +306,7 @@
 					cycleSpeed: 2
 					posn: (+ (hermit_a x?) 3) (- (hermit_a y?) 37)
 				)
-				(proc0_29 1147 self)
+				(SpeakAudio 1147 self)
 			)
 			(9
 				(theMouth setCycle: 0)
@@ -315,25 +315,25 @@
 			)
 			(10
 				(theMouth setCycle: RandCycle)
-				(proc0_29 1148 self)
+				(SpeakAudio 1148 self)
 			)
 			(11
 				(theMouth setCycle: 0)
 				(cls)
 				((ego head?) setCel: 1 setScript: egoHeadMove)
-				(proc0_29 9102 self)
+				(SpeakAudio 9102 self)
 			)
 			(12
 				((ego head?) setCel: 1 loop: 4 setScript: 0)
 				(theMouth setCycle: RandCycle)
 				(cls)
-				(proc0_29 1151 self)
+				(SpeakAudio 1151 self)
 			)
 			(13
 				(theMouth setCycle: 0)
 				(cls)
 				((ego head?) setCel: 1 setScript: egoHeadMove)
-				(proc0_29 9104 self)
+				(SpeakAudio 9104 self)
 			)
 			(14
 				((ego head?) setCel: -1 setScript: 0)
@@ -505,7 +505,7 @@
 				(theMusic3 stop:)
 				(theAudio stop:)
 				(++ local0)
-				(proc0_29 515)
+				(SpeakAudio 515)
 				((ego head?) show:)
 				(ego
 					view: 0
@@ -531,13 +531,13 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gPolyList15 view: 138 loop: 1 setCycle: End self)
+				(globalCedric view: 138 loop: 1 setCycle: End self)
 			)
 			(1
-				(gPolyList15 view: 138 loop: 4 cel: 7 setCycle: Beg self)
+				(globalCedric view: 138 loop: 4 cel: 7 setCycle: Beg self)
 			)
 			(2
-				(gPolyList15 stopUpd:)
+				(globalCedric stopUpd:)
 				(client setScript: 0)
 			)
 		)
@@ -1029,7 +1029,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 516)
+					(SpeakAudio 516)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT (event claimed: 0))
@@ -1037,7 +1037,7 @@
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 517)
+							(SpeakAudio 517)
 							(event claimed: 1)
 						)
 					)
@@ -1070,7 +1070,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 518)
+					(SpeakAudio 518)
 					(event claimed: 1)
 				)
 			)
@@ -1122,7 +1122,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 519)
+					(SpeakAudio 519)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -1133,7 +1133,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 522)
+							(SpeakAudio 522)
 							(event claimed: 1)
 						)
 					)
@@ -1166,14 +1166,14 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 520)
+					(SpeakAudio 520)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 517)
+							(SpeakAudio 517)
 							(event claimed: 1)
 						)
 					)
@@ -1215,7 +1215,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 521)
+					(SpeakAudio 521)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

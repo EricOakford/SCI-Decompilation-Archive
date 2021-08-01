@@ -150,7 +150,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 208)
+					(SpeakAudio 208)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -359,7 +359,7 @@
 			(0
 				(theAudio stop:)
 				(curRoom setFeatures: catStrip)
-				(proc0_29 207)
+				(SpeakAudio 207)
 				(rat setCycle: Walk setMotion: MoveTo 330 151)
 				(cat setCycle: Walk setMotion: Chase rat 10 self)
 			)
@@ -546,7 +546,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 208)
+					(SpeakAudio 208)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -636,7 +636,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 209)
+					(SpeakAudio 209)
 					(event claimed: 1)
 				)
 			)
@@ -658,7 +658,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 210)
+					(SpeakAudio 210)
 					(event claimed: 1)
 				)
 			)
@@ -680,7 +680,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 211)
+					(SpeakAudio 211)
 					(event claimed: 1)
 				)
 			)
@@ -707,7 +707,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 212)
+					(SpeakAudio 212)
 					(event claimed: 1)
 				)
 			)
@@ -734,7 +734,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 213)
+					(SpeakAudio 213)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -813,18 +813,18 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 214)
+					(SpeakAudio 214)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(if local0 (proc0_29 215) else (proc0_29 216))
+					(if local0 (SpeakAudio 215) else (SpeakAudio 216))
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(8
 							(if local0
-								(proc0_29 215)
+								(SpeakAudio 215)
 							else
 								(= local1 1)
 								(ego put: 8 6)
@@ -835,7 +835,7 @@
 						)
 						(16
 							(if local0
-								(proc0_29 215)
+								(SpeakAudio 215)
 							else
 								(SolvePuzzle 4)
 								(= local2 1)
@@ -847,7 +847,7 @@
 						)
 						(19
 							(if local0
-								(proc0_29 215)
+								(SpeakAudio 215)
 							else
 								(= local2 3)
 								(= local1 1)
@@ -858,7 +858,7 @@
 						)
 						(5
 							(if local0
-								(proc0_29 215)
+								(SpeakAudio 215)
 							else
 								(= local2 2)
 								(= local1 1)
@@ -895,7 +895,7 @@
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(8
 							(if local0
-								(proc0_29 215)
+								(SpeakAudio 215)
 							else
 								(= local1 1)
 								(ego put: 8 6)
@@ -906,7 +906,7 @@
 						)
 						(16
 							(if local0
-								(proc0_29 215)
+								(SpeakAudio 215)
 							else
 								(= local2 1)
 								(= local1 1)
@@ -917,7 +917,7 @@
 						)
 						(5
 							(if local0
-								(proc0_29 215)
+								(SpeakAudio 215)
 							else
 								(= local2 2)
 								(= local1 1)
@@ -954,7 +954,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 214)
+					(SpeakAudio 214)
 					(event claimed: 1)
 				)
 			)

@@ -26,7 +26,7 @@
 		(Load rsSOUND 76)
 		(= local0 1)
 		(= local1 1)
-		(if (== gPolyList15 200)
+		(if (== globalCedric 200)
 			(witch
 				view: 451
 				loop: 0
@@ -171,14 +171,14 @@
 				(genie setLoop: 4 cel: 0 setCycle: End self)
 			)
 			(11
-				(if (== gPolyList15 200)
+				(if (== globalCedric 200)
 					(bottle loop: 3 cel: 0 setCycle: End self)
 				else
 					(= cycles 1)
 				)
 			)
 			(12
-				(if (== gPolyList15 200)
+				(if (== globalCedric 200)
 					(= local0 1)
 					(= local1 1)
 					(genie setLoop: 4 cel: 0 setCycle: End self)
@@ -191,7 +191,7 @@
 			)
 			(14 (= seconds 3))
 			(15
-				(if (== gPolyList15 200)
+				(if (== globalCedric 200)
 					(curRoom newRoom: prevRoomNum)
 				else
 					(= deathMessage 55)

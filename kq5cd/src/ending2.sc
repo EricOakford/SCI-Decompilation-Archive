@@ -42,22 +42,22 @@
 		(switch (= state newState)
 			(0
 				(theMouth setCycle: MouthSync 5202)
-				(proc0_29 5202 self)
+				(SpeakAudio 5202 self)
 			)
 			(1
 				(cls)
 				(theMouth setCycle: MouthSync 5203)
-				(proc0_29 5203 self)
+				(SpeakAudio 5203 self)
 			)
 			(2
 				(cls)
 				(theMouth setCycle: MouthSync 5204)
-				(proc0_29 5204 self)
+				(SpeakAudio 5204 self)
 			)
 			(3
 				(cls)
 				(theMouth setCycle: MouthSync 5205)
-				(proc0_29 5205 self)
+				(SpeakAudio 5205 self)
 			)
 			(4
 				(theMouth setCycle: 0)

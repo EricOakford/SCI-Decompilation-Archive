@@ -124,7 +124,7 @@
 	(properties)
 	
 	(method (doit)
-		(proc0_29 350)
+		(SpeakAudio 350)
 		(ego
 			normal: 1
 			view: 4
@@ -330,7 +330,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 352)
+					(SpeakAudio 352)
 					(event claimed: 1)
 				)
 			)
@@ -352,7 +352,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 353)
+					(SpeakAudio 353)
 					(event claimed: 1)
 				)
 			)
@@ -374,7 +374,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 354)
+					(SpeakAudio 354)
 					(event claimed: 1)
 				)
 			)
@@ -396,7 +396,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 355)
+					(SpeakAudio 355)
 					(event claimed: 1)
 				)
 			)
@@ -423,7 +423,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 356)
+					(SpeakAudio 356)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -455,7 +455,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 357)
+					(SpeakAudio 357)
 					(event claimed: 1)
 				)
 			)

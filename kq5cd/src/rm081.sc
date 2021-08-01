@@ -171,7 +171,7 @@
 				(elf init: cycleSpeed: 1 setCycle: Fwd)
 				(= cycles 15)
 			)
-			(1 (proc0_29 5095 self))
+			(1 (SpeakAudio 5095 self))
 			(2
 				(cls)
 				(elf
@@ -217,7 +217,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 708)
+					(SpeakAudio 708)
 					(event claimed: 1)
 				)
 			)
@@ -242,7 +242,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 709)
+					(SpeakAudio 709)
 					(event claimed: 1)
 				)
 			)

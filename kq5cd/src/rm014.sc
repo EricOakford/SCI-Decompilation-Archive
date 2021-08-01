@@ -305,7 +305,7 @@
 			(script (script doit:))
 			(
 			(and (not local0) (= gEgoEdgeHit (ego edgeHit?)))
-				(if (== prevRoomNum east) (= gPolyList15 0))
+				(if (== prevRoomNum east) (= globalCedric 0))
 				(theGame setCursor: waitCursor 1)
 				(= local0 1)
 				(switch gEgoEdgeHit
@@ -405,7 +405,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 298)
+					(SpeakAudio 298)
 					(event claimed: 1)
 				)
 			)
@@ -427,7 +427,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 299)
+					(SpeakAudio 299)
 					(event claimed: 1)
 				)
 			)
@@ -455,7 +455,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 300)
+					(SpeakAudio 300)
 					(event claimed: 1)
 				)
 			)
@@ -484,14 +484,14 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(switch (curRoom east?)
-						(13 (proc0_29 301))
-						(12 (proc0_29 302))
+						(13 (SpeakAudio 301))
+						(12 (SpeakAudio 302))
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (== (curRoom east?) 13)
-						(proc0_29 766)
+						(SpeakAudio 766)
 						(event claimed: 1)
 					)
 				)
@@ -522,11 +522,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 301)
+					(SpeakAudio 301)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 766)
+					(SpeakAudio 766)
 					(event claimed: 1)
 				)
 			)
@@ -591,11 +591,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 303)
+					(SpeakAudio 303)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9118)
+					(SpeakAudio 9118)
 					(event claimed: 1)
 				)
 			)

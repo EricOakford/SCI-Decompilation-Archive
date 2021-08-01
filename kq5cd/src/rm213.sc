@@ -82,7 +82,7 @@
 			(script (script doit:))
 			((not (Btst 43)) (Bset 43) (SolvePuzzle 3))
 			((= temp0 (self edgeToRoom: (ego edgeHit?)))
-				(++ gPolyList15)
+				(++ globalCedric)
 				(switch (ego edgeHit?)
 					(3 (++ global315))
 					(4 (++ global314))
@@ -154,8 +154,8 @@
 				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: Beg self)
 			)
 			(6
-				(= gPolyList15 0)
-				(proc0_29 311)
+				(= globalCedric 0)
+				(SpeakAudio 311)
 				(ego
 					normal: 1
 					view: 2
@@ -184,7 +184,7 @@
 				(= cycles 1)
 			)
 			(2
-				(proc0_29 767)
+				(SpeakAudio 767)
 				(theMusic2 stop:)
 				(theMusic number: 47 loop: 1 vol: 127 playBed:)
 				(= seconds 8)
@@ -383,7 +383,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc0_29 5901 0 1)
+				(SpeakAudio 5901 0 1)
 				(guard2 setStep: 6 6 setCycle: Walk init:)
 				(if (< (ego y?) 132)
 					(guard2
@@ -436,7 +436,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 764)
+					(SpeakAudio 764)
 					(event claimed: 1)
 				)
 			)
@@ -458,7 +458,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 770)
+					(SpeakAudio 770)
 					(event claimed: 1)
 				)
 			)
@@ -483,11 +483,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 771)
+					(SpeakAudio 771)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 774)
+					(SpeakAudio 774)
 					(event claimed: 1)
 				)
 			)
@@ -509,11 +509,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 772)
+					(SpeakAudio 772)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 775)
+					(SpeakAudio 775)
 					(event claimed: 1)
 				)
 			)
@@ -535,15 +535,15 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 773)
+					(SpeakAudio 773)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(cond 
 						(
-						(and (== (guard1 script?) rideIn) (rideIn state?)) (proc0_29 776))
+						(and (== (guard1 script?) rideIn) (rideIn state?)) (SpeakAudio 776))
 						((not local1) (++ local1) (HandsOff) (curRoom setScript: getDrink))
-						(else (proc0_29 777))
+						(else (SpeakAudio 777))
 					)
 					(event claimed: 1)
 				)

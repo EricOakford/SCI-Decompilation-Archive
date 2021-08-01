@@ -130,7 +130,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 392)
+					(SpeakAudio 392)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -187,7 +187,7 @@
 		(switch (= state newState)
 			(0
 				(ego setMotion: PolyPath 89 113 self)
-				(gPolyList15
+				(globalCedric
 					view: 140
 					loop: 2
 					cel: 0
@@ -270,12 +270,12 @@
 			(2
 				(cond 
 					(register
-						(proc0_29 402)
+						(SpeakAudio 402)
 						(HandsOn)
 						(self register: 0)
 						(client setScript: 0)
 					)
-					((not (Btst 79)) (proc0_29 398) (HandsOn) (client setScript: 0))
+					((not (Btst 79)) (SpeakAudio 398) (HandsOn) (client setScript: 0))
 					(else
 						(Face ego SDoor 5)
 						(theAudio number: 8123 loop: 1 play:)
@@ -332,7 +332,7 @@
 						(== ((inventory at: 3) owner?) 27)
 					)
 					(theAudio stop:)
-					(proc0_29 400)
+					(SpeakAudio 400)
 					(ego
 						normal: 1
 						view: 2
@@ -347,7 +347,7 @@
 					(ants1 cycleSpeed: 3 setCycle: End init:)
 					(= seconds 8)
 				else
-					(proc0_29 401 0 1)
+					(SpeakAudio 401 0 1)
 					(HandsOn)
 					(ego
 						normal: 1
@@ -373,7 +373,7 @@
 			)
 			(8)
 			(9
-				(gPolyList15 setPri: 10)
+				(globalCedric setPri: 10)
 				(= cycles 1)
 			)
 			(10
@@ -433,7 +433,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (proc0_29 9998 self))
+			(0 (SpeakAudio 9998 self))
 			(1
 				(client cue:)
 				(self dispose:)
@@ -555,7 +555,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 391)
+					(SpeakAudio 391)
 					(event claimed: 1)
 				)
 			)
@@ -585,7 +585,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 392)
+					(SpeakAudio 392)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -620,7 +620,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 392)
+					(SpeakAudio 392)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -646,7 +646,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 393)
+					(SpeakAudio 393)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -677,11 +677,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 394)
+					(SpeakAudio 394)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 399)
+					(SpeakAudio 399)
 					(event claimed: 1)
 				)
 			)
@@ -708,7 +708,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 395)
+					(SpeakAudio 395)
 					(event claimed: 1)
 				)
 			)
@@ -735,7 +735,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 396)
+					(SpeakAudio 396)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -768,7 +768,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 397)
+					(SpeakAudio 397)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -810,12 +810,12 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 397)
+					(SpeakAudio 397)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (not (Btst 79))
-						(proc0_29 398)
+						(SpeakAudio 398)
 					else
 						(curRoom setScript: enterKitchen)
 					)

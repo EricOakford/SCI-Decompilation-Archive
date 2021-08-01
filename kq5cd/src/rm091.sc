@@ -40,17 +40,17 @@
 			(0 (= seconds 3))
 			(1
 				(h1Mouth setCycle: MouthSync 5057)
-				(proc0_29 5057 self)
+				(SpeakAudio 5057 self)
 			)
 			(2
 				(h1Mouth setCycle: 0)
 				(h2Mouth setCycle: MouthSync 5058)
-				(proc0_29 5058 self)
+				(SpeakAudio 5058 self)
 			)
 			(3
 				(h2Mouth setCycle: 0)
 				(h1Mouth setCycle: MouthSync 5059)
-				(proc0_29 5059 self)
+				(SpeakAudio 5059 self)
 			)
 			(4
 				(h1Mouth setCycle: 0)

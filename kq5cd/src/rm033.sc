@@ -32,7 +32,7 @@
 	
 	(method (init)
 		(super init:)
-		(if (== gPolyList15 100)
+		(if (== globalCedric 100)
 			(theMusic2 number: 106 loop: -1 playBed:)
 			(Load rsVIEW 520)
 			(Load rsSOUND 83)
@@ -271,7 +271,7 @@
 				((ego head?) show:)
 				(sled stopUpd:)
 				(client setScript: 0)
-				(= gPolyList15 0)
+				(= globalCedric 0)
 			)
 		)
 	)
@@ -351,7 +351,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 445)
+					(SpeakAudio 445)
 					(event claimed: 1)
 				)
 			)
@@ -373,7 +373,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 446)
+					(SpeakAudio 446)
 					(event claimed: 1)
 				)
 			)
@@ -395,11 +395,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 447)
+					(SpeakAudio 447)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 450)
+					(SpeakAudio 450)
 					(event claimed: 1)
 				)
 			)
@@ -427,22 +427,22 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 447)
+					(SpeakAudio 447)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 450)
+					(SpeakAudio 450)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(29
-							(proc0_29 452)
+							(SpeakAudio 452)
 							(event claimed: 1)
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 453)
+							(SpeakAudio 453)
 							(event claimed: 1)
 						)
 					)
@@ -466,7 +466,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 448)
+					(SpeakAudio 448)
 					(event claimed: 1)
 				)
 			)
@@ -495,13 +495,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 449)
+					(SpeakAudio 449)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (not local0)
 						(++ local0)
-						(proc0_29 451)
+						(SpeakAudio 451)
 						(event claimed: 1)
 					)
 				)

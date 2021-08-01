@@ -102,7 +102,7 @@
 			(3 (= seconds 1))
 			(4
 				(theMouth setCycle: MouthSync 973)
-				(proc0_29 973 self)
+				(SpeakAudio 973 self)
 			)
 			(5
 				(theMouth setScript: 0 setCycle: 0 cel: 4)
@@ -139,9 +139,9 @@
 					show:
 				)
 				(theMouth setCycle: 0 hide:)
-				(proc0_29 974 self)
+				(SpeakAudio 974 self)
 			)
-			(7 (proc0_29 975 self))
+			(7 (SpeakAudio 975 self))
 			(8
 				(= local2 0)
 				(muscha loop: 2 cel: 0 setCycle: End self)
@@ -162,22 +162,22 @@
 			(10 (= seconds 2))
 			(11
 				(mordac setCycle: MouthSync 927)
-				(proc0_29 927 self)
+				(SpeakAudio 927 self)
 			)
 			(12
 				(cls)
 				(mordac setCycle: MouthSync 928)
-				(proc0_29 928 self)
+				(SpeakAudio 928 self)
 			)
 			(13
 				(cls)
 				(mordac setCycle: MouthSync 929)
-				(proc0_29 929 self)
+				(SpeakAudio 929 self)
 			)
 			(14
 				(cls)
 				(mordac setCycle: 0)
-				(proc0_29 930 self)
+				(SpeakAudio 930 self)
 			)
 			(15
 				(cls)
@@ -192,7 +192,7 @@
 			(16 (alex setCycle: Beg self))
 			(17
 				(alexFace init: setCycle: MouthSync 931)
-				(proc0_29 931 self)
+				(SpeakAudio 931 self)
 			)
 			(18
 				(alexFace hide:)
@@ -201,7 +201,7 @@
 			(19 (alex setCycle: Beg self))
 			(20
 				(alexFace show: setCycle: MouthSync 932)
-				(proc0_29 932 self)
+				(SpeakAudio 932 self)
 			)
 			(21
 				(alexFace hide:)
@@ -216,12 +216,12 @@
 				(mHand show:)
 				(cat show:)
 				(mordac setCycle: MouthSync 933)
-				(proc0_29 933 self)
+				(SpeakAudio 933 self)
 			)
 			(23
 				(cls)
 				(mordac setCycle: MouthSync 934)
-				(proc0_29 934 self)
+				(SpeakAudio 934 self)
 			)
 			(24
 				(theMusic number: 802 loop: -1 playBed:)
@@ -241,7 +241,7 @@
 				)
 				(ego show:)
 				(smallMouth init: setCycle: MouthSync 976)
-				(proc0_29 976 self)
+				(SpeakAudio 976 self)
 			)
 			(25
 				(smallMouth hide:)
@@ -253,7 +253,7 @@
 					x: (+ (smallMouth x?) 1)
 					show:
 				)
-				(proc0_29 977 self)
+				(SpeakAudio 977 self)
 			)
 			(27
 				(smallMouth hide:)
@@ -279,13 +279,13 @@
 			(29 (= seconds 2))
 			(30
 				(theMouth setCycle: MouthSync 978)
-				(proc0_29 978 self)
+				(SpeakAudio 978 self)
 			)
 			(31
 				(theMouth setScript: 0 setCycle: 0 cel: 4)
 				(muscha setScript: 0 setCycle: 0 cel: 0)
 				(cls)
-				(proc0_29 979 self)
+				(SpeakAudio 979 self)
 			)
 			(32
 				(theMusic fade:)

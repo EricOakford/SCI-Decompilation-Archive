@@ -219,7 +219,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 648)
+					(SpeakAudio 648)
 					(event claimed: 1)
 				)
 			)
@@ -257,7 +257,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(if local1 (proc0_29 649) (event claimed: 1))
+					(if local1 (SpeakAudio 649) (event claimed: 1))
 				)
 				(JOY_RIGHT
 					(if local1
@@ -285,7 +285,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 650)
+					(SpeakAudio 650)
 					(event claimed: 1)
 				)
 			)
@@ -308,17 +308,17 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: (ScriptID 550 7))
-						(proc0_29 35)
+						(SpeakAudio 35)
 					else
-						(proc0_29 651)
+						(SpeakAudio 651)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (cast contains: (ScriptID 550 7))
-						(proc0_29 655)
+						(SpeakAudio 655)
 					else
-						(proc0_29 656)
+						(SpeakAudio 656)
 					)
 					(event claimed: 1)
 				)
@@ -341,7 +341,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 652)
+					(SpeakAudio 652)
 					(event claimed: 1)
 				)
 			)
@@ -378,7 +378,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 653)
+					(SpeakAudio 653)
 					(event claimed: 1)
 				)
 			)
@@ -494,7 +494,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 649)
+					(SpeakAudio 649)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -726,7 +726,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 654)
+					(SpeakAudio 654)
 					(event claimed: 1)
 				)
 			)

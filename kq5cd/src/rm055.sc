@@ -671,7 +671,7 @@ code_063f:
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc0_29 9000 self)
+				(SpeakAudio 9000 self)
 				(if (== (dink cel?) 6)
 					(dinkTalk init: setCycle: MouthSync 9000)
 				)
@@ -1003,7 +1003,7 @@ code_063f:
 				(= seconds 2)
 			)
 			(8
-				(proc0_29 582)
+				(SpeakAudio 582)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -1037,7 +1037,7 @@ code_063f:
 				(= seconds 1)
 			)
 			(3
-				(proc0_29 587)
+				(SpeakAudio 587)
 				(Bset 68)
 				(HandsOn)
 				(= global103 0)
@@ -1071,7 +1071,7 @@ code_063f:
 			(3
 				((ego head?) show:)
 				(ego normal: 1 view: 0 setLoop: -1 setCycle: KQ5SyncWalk)
-				(proc0_29 583)
+				(SpeakAudio 583)
 				(HandsOn)
 				(= global103 0)
 				(self dispose:)
@@ -1337,11 +1337,11 @@ code_063f:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 575)
+					(SpeakAudio 575)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 584)
+					(SpeakAudio 584)
 					(event claimed: 1)
 				)
 			)
@@ -1365,11 +1365,11 @@ code_063f:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 576)
+					(SpeakAudio 576)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 585)
+					(SpeakAudio 585)
 					(event claimed: 1)
 				)
 			)
@@ -1393,7 +1393,7 @@ code_063f:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 577)
+					(SpeakAudio 577)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1423,7 +1423,7 @@ code_063f:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 578)
+					(SpeakAudio 578)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1439,12 +1439,12 @@ code_063f:
 				(JOY_DOWNRIGHT
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(1
-							(proc0_29 251)
+							(SpeakAudio 251)
 							(event claimed: 1)
 						)
 						(36
 							(if (Btst 68)
-								(proc0_29 588)
+								(SpeakAudio 588)
 							else
 								(HandsOff)
 								(curRoom setScript: pickLockScript)
@@ -1453,7 +1453,7 @@ code_063f:
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 589)
+							(SpeakAudio 589)
 							(event claimed: 1)
 						)
 					)
@@ -1511,11 +1511,11 @@ code_063f:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 579)
+					(SpeakAudio 579)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 586)
+					(SpeakAudio 586)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -1527,14 +1527,14 @@ code_063f:
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 590)
+							(SpeakAudio 590)
 							(event claimed: 1)
 						)
 					)
 				)
 				(JOY_DOWN
 					(HandsOff)
-					(proc0_29 (Random 9000 9003) self)
+					(SpeakAudio (Random 9000 9003) self)
 					(if (== (dink cel?) 6)
 						(dinkTalk init: setCycle: MouthSync 9001)
 					)
@@ -1659,7 +1659,7 @@ code_063f:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 580)
+					(SpeakAudio 580)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1701,7 +1701,7 @@ code_063f:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 581)
+					(SpeakAudio 581)
 					(event claimed: 1)
 				)
 			)

@@ -570,7 +570,7 @@
 					setCycle: KQ5SyncWalk
 				)
 				(RedrawCast)
-				(proc0_29 203)
+				(SpeakAudio 203)
 				(HandsOn)
 				(client setScript: 0)
 			)
@@ -620,7 +620,7 @@
 					setCycle: KQ5SyncWalk
 				)
 				(RedrawCast)
-				(proc0_29 9064)
+				(SpeakAudio 9064)
 				(HandsOn)
 				(client setScript: 0)
 			)
@@ -686,9 +686,9 @@
 					(fish init:)
 					(barrelClone init:)
 					(RedrawCast)
-					(proc0_29 192)
+					(SpeakAudio 192)
 				else
-					(proc0_29 193)
+					(SpeakAudio 193)
 				)
 				(HandsOn)
 				(client setScript: 0)
@@ -725,7 +725,7 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 194)
+					(SpeakAudio 194)
 					(event claimed: 1)
 				)
 			)
@@ -753,11 +753,11 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 195)
+					(SpeakAudio 195)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 205)
+					(SpeakAudio 205)
 					(event claimed: 1)
 				)
 			)
@@ -962,7 +962,7 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 196)
+					(SpeakAudio 196)
 					(event claimed: 1)
 				)
 			)
@@ -990,7 +990,7 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 197)
+					(SpeakAudio 197)
 					(event claimed: 1)
 				)
 			)
@@ -1018,7 +1018,7 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 198)
+					(SpeakAudio 198)
 					(event claimed: 1)
 				)
 			)
@@ -1048,11 +1048,11 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 199)
+					(SpeakAudio 199)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9065)
+					(SpeakAudio 9065)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -1088,7 +1088,7 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 200)
+					(SpeakAudio 200)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1124,9 +1124,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== ((inventory at: 5) owner?) 4)
-						(proc0_29 192)
+						(SpeakAudio 192)
 					else
-						(proc0_29 193)
+						(SpeakAudio 193)
 					)
 					(event claimed: 1)
 				)
@@ -1135,7 +1135,7 @@
 						(HandsOff)
 						(curRoom setScript: getFish)
 					else
-						(proc0_29 204)
+						(SpeakAudio 204)
 					)
 					(event claimed: 1)
 				)
@@ -1167,7 +1167,7 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 192)
+					(SpeakAudio 192)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1200,11 +1200,11 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 201)
+					(SpeakAudio 201)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9066)
+					(SpeakAudio 9066)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -1235,11 +1235,11 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 201)
+					(SpeakAudio 201)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9066)
+					(SpeakAudio 9066)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -1281,11 +1281,11 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 201)
+					(SpeakAudio 201)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9066)
+					(SpeakAudio 9066)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -1318,11 +1318,11 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 201)
+					(SpeakAudio 201)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 9066)
+					(SpeakAudio 9066)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -1356,7 +1356,7 @@
 			(cls)
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 202)
+					(SpeakAudio 202)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -1398,8 +1398,8 @@
 	
 	(method (doit)
 		(switch (Random 1 2)
-			(1 (proc0_29 5701))
-			(2 (proc0_29 5705))
+			(1 (SpeakAudio 5701))
+			(2 (SpeakAudio 5705))
 		)
 	)
 )
@@ -1409,9 +1409,9 @@
 	
 	(method (doit)
 		(switch (Random 1 3)
-			(1 (proc0_29 5702))
-			(2 (proc0_29 5703))
-			(3 (proc0_29 5704))
+			(1 (SpeakAudio 5702))
+			(2 (SpeakAudio 5703))
+			(3 (SpeakAudio 5704))
 		)
 	)
 )
@@ -1421,9 +1421,9 @@
 	
 	(method (doit)
 		(switch (Random 1 3)
-			(1 (proc0_29 4007))
-			(2 (proc0_29 4008))
-			(3 (proc0_29 5706))
+			(1 (SpeakAudio 4007))
+			(2 (SpeakAudio 4008))
+			(3 (SpeakAudio 5706))
 		)
 	)
 )

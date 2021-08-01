@@ -111,7 +111,7 @@
 			(4
 				(if (== ((inventory at: 15) owner?) 23)
 					(wheel init: stopUpd:)
-					(proc0_29 362)
+					(SpeakAudio 362)
 				)
 				(ego
 					normal: 1
@@ -153,7 +153,7 @@
 				)
 			)
 			(2
-				(proc0_29 366)
+				(SpeakAudio 366)
 				(ego loop: 3 cel: 0 setCycle: End self)
 			)
 			(3
@@ -215,7 +215,7 @@
 			(3
 				(if (== ((inventory at: 13) owner?) 23)
 					(pouch init: stopUpd:)
-					(proc0_29 365)
+					(SpeakAudio 365)
 				)
 				(ego
 					normal: 1
@@ -257,7 +257,7 @@
 				)
 			)
 			(2
-				(proc0_29 9052)
+				(SpeakAudio 9052)
 				(ego loop: 5 cel: 0 setCycle: End self)
 			)
 			(3
@@ -308,7 +308,7 @@
 				)
 			)
 			(2
-				(proc0_29 9053)
+				(SpeakAudio 9053)
 				(glint dispose:)
 				(SolvePuzzle 2)
 				(ego get: 1 setCycle: Beg self)
@@ -380,11 +380,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 358)
+					(SpeakAudio 358)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 367)
+					(SpeakAudio 367)
 					(event claimed: 1)
 				)
 			)
@@ -406,7 +406,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 359)
+					(SpeakAudio 359)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -423,7 +423,7 @@
 							(curRoom setScript: getPouch)
 							(event claimed: 1)
 						)
-						(else (proc0_29 368) (event claimed: 1))
+						(else (SpeakAudio 368) (event claimed: 1))
 					)
 				)
 			)
@@ -450,7 +450,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 360)
+					(SpeakAudio 360)
 					(event claimed: 1)
 				)
 			)
@@ -477,7 +477,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 361)
+					(SpeakAudio 361)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -494,7 +494,7 @@
 							(curRoom setScript: getWheel)
 							(event claimed: 1)
 						)
-						(else (proc0_29 369) (event claimed: 1))
+						(else (SpeakAudio 369) (event claimed: 1))
 					)
 				)
 			)
@@ -526,7 +526,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 362)
+					(SpeakAudio 362)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -559,9 +559,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== ((inventory at: 1) owner?) 23)
-						(proc0_29 363)
+						(SpeakAudio 363)
 					else
-						(proc0_29 364)
+						(SpeakAudio 364)
 					)
 					(event claimed: 1)
 				)
@@ -571,7 +571,7 @@
 						(curRoom setScript: getKey)
 						(event claimed: 1)
 					else
-						(proc0_29 370)
+						(SpeakAudio 370)
 						(event claimed: 1)
 					)
 				)
@@ -600,7 +600,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 359)
+					(SpeakAudio 359)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -615,7 +615,7 @@
 							(curRoom setScript: getPouch)
 							(event claimed: 1)
 						)
-						((not local5) (proc0_29 368) (++ local5) (event claimed: 1))
+						((not local5) (SpeakAudio 368) (++ local5) (event claimed: 1))
 					)
 				)
 			)
@@ -646,7 +646,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 365)
+					(SpeakAudio 365)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

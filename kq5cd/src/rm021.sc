@@ -136,10 +136,10 @@
 			)
 			(3
 				(if register
-					(proc0_29 339)
+					(SpeakAudio 339)
 					(= cycles 1)
 				else
-					(proc0_29 341 self)
+					(SpeakAudio 341 self)
 				)
 			)
 			(4
@@ -160,7 +160,7 @@
 					loop: -1
 					setCycle: KQ5SyncWalk
 				)
-				(if (not register) (heart init:) (proc0_29 342))
+				(if (not register) (heart init:) (SpeakAudio 342))
 				((ego head?) show:)
 				(HandsOn)
 				(client setScript: 0)
@@ -197,7 +197,7 @@
 				(theMusic number: 36 loop: 1 play:)
 			)
 			(3
-				(proc0_29 340)
+				(SpeakAudio 340)
 				(ego loop: 1 cel: 3 setCycle: Beg self)
 				(theAudio number: 8124 loop: 1 play:)
 			)
@@ -309,7 +309,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 345)
+					(SpeakAudio 345)
 					(event claimed: 1)
 				)
 			)
@@ -331,7 +331,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 346)
+					(SpeakAudio 346)
 					(event claimed: 1)
 				)
 			)
@@ -358,15 +358,15 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== ((inventory at: 9) owner?) 21)
-						(proc0_29 347)
+						(SpeakAudio 347)
 					else
-						(proc0_29 348)
+						(SpeakAudio 348)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(cond 
-						((!= ((inventory at: 9) owner?) 21) (proc0_29 348))
+						((!= ((inventory at: 9) owner?) 21) (SpeakAudio 348))
 						((Btst 73) (openDoor register: 0) (curRoom setScript: getHeart))
 						(else
 							(openDoor register: 1)
@@ -380,8 +380,8 @@
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
 						(1
 							(cond 
-								((!= ((inventory at: 9) owner?) 21) (proc0_29 348))
-								((Btst 73) (proc0_29 343))
+								((!= ((inventory at: 9) owner?) 21) (SpeakAudio 348))
+								((Btst 73) (SpeakAudio 343))
 								(else
 									(++ local1)
 									(HandsOff)
@@ -394,7 +394,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 344)
+							(SpeakAudio 344)
 							(event claimed: 1)
 						)
 					)
@@ -431,7 +431,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 342)
+					(SpeakAudio 342)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

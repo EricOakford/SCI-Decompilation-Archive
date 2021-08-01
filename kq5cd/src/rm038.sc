@@ -226,7 +226,7 @@
 						setCycle: KQ5SyncWalk
 					)
 					((ego head?) show:)
-					(proc0_29 480)
+					(SpeakAudio 480)
 					(HandsOn)
 					(client setScript: 0)
 				)
@@ -266,7 +266,7 @@
 				)
 			)
 			(11
-				(proc0_29 483)
+				(SpeakAudio 483)
 				(SolvePuzzle 4)
 				(crystal dispose:)
 				(ego get: 21 setCycle: Beg self)
@@ -320,13 +320,13 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 479)
+					(SpeakAudio 479)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
 					(if (and (not (ego has: 21)) (not local16))
 						(++ local16)
-						(proc0_29 481)
+						(SpeakAudio 481)
 						(event claimed: 1)
 					)
 				)
@@ -358,7 +358,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 482)
+					(SpeakAudio 482)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -376,7 +376,7 @@
 							(curRoom setScript: hammerCrystal)
 						)
 						(28 (event claimed: 0))
-						(else  (proc0_29 484))
+						(else  (SpeakAudio 484))
 					)
 				)
 			)

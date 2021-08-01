@@ -56,7 +56,7 @@
 		(poly5 points: @local82 size: 18)
 		(polyList15 add: poly4)
 		(= theObstacles obstacles)
-		(= gPolyList15 polyList15)
+		(= globalCedric polyList15)
 	)
 	
 	(method (doit &tmp temp0)

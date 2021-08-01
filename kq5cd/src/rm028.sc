@@ -106,7 +106,7 @@
 				)
 			)
 			(1
-				(if (not (Btst 79)) (Bset 79) (proc0_29 403))
+				(if (not (Btst 79)) (Bset 79) (SpeakAudio 403))
 				(= cycles 1)
 			)
 			(2
@@ -138,7 +138,7 @@
 				(if (== ((inventory at: 19) owner?) 28)
 					(ego setMotion: MoveTo 185 130 self)
 				else
-					(proc0_29 404)
+					(SpeakAudio 404)
 					(HandsOn)
 					(client setScript: 0)
 				)
@@ -164,7 +164,7 @@
 			(4
 				(User canInput: 1)
 				(lambInset init: stopUpd:)
-				(proc0_29 405)
+				(SpeakAudio 405)
 				(ego
 					normal: 1
 					view: 0
@@ -207,7 +207,7 @@
 				)
 			)
 			(2
-				(proc0_29 9075)
+				(SpeakAudio 9075)
 				(lambInset dispose:)
 				(ego get: 19)
 				(SolvePuzzle 2)
@@ -257,7 +257,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 406)
+					(SpeakAudio 406)
 					(event claimed: 1)
 				)
 			)
@@ -286,7 +286,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 407)
+					(SpeakAudio 407)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -320,7 +320,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 408)
+					(SpeakAudio 408)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -352,7 +352,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 409)
+					(SpeakAudio 409)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -395,7 +395,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 405)
+					(SpeakAudio 405)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT

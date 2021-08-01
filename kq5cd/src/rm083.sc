@@ -191,7 +191,7 @@
 					cycleSpeed: 8
 					setCycle: RandCycle
 				)
-				(proc0_29 5097 self)
+				(SpeakAudio 5097 self)
 			)
 			(4
 				(cls)
@@ -212,7 +212,7 @@
 					cycleSpeed: 8
 					setCycle: RandCycle
 				)
-				(proc0_29 5098 self)
+				(SpeakAudio 5098 self)
 			)
 			(5
 				(cls)
@@ -306,7 +306,7 @@
 						setMotion: MoveTo (- (ego x?) 5) (ego y?) self
 					)
 				else
-					(proc0_29 5096 self)
+					(SpeakAudio 5096 self)
 					(elf setScript: elfComesDown)
 				)
 			)
@@ -522,7 +522,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 711)
+					(SpeakAudio 711)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -554,7 +554,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 712)
+					(SpeakAudio 712)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -586,11 +586,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 713)
+					(SpeakAudio 713)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 717)
+					(SpeakAudio 717)
 					(event claimed: 1)
 				)
 			)
@@ -617,7 +617,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 714)
+					(SpeakAudio 714)
 					(event claimed: 1)
 				)
 			)
@@ -644,11 +644,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 715)
+					(SpeakAudio 715)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 718)
+					(SpeakAudio 718)
 					(event claimed: 1)
 				)
 			)
@@ -673,7 +673,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 716)
+					(SpeakAudio 716)
 					(event claimed: 1)
 				)
 			)

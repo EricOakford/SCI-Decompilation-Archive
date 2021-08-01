@@ -290,7 +290,7 @@
 			)
 			(3
 				(wFace setCycle: MouthSync 992)
-				(proc0_29 992 self)
+				(SpeakAudio 992 self)
 			)
 			(4
 				(wFace setCycle: 0)
@@ -298,7 +298,7 @@
 			)
 			(5
 				(wFace setCycle: MouthSync 994)
-				(proc0_29 994 self)
+				(SpeakAudio 994 self)
 			)
 			(6
 				(wFace setCycle: 0)
@@ -306,11 +306,11 @@
 			)
 			(7
 				(wFace setCycle: MouthSync 996)
-				(proc0_29 996 self)
+				(SpeakAudio 996 self)
 			)
 			(8
 				(wFace setCycle: MouthSync 997)
-				(proc0_29 997 self)
+				(SpeakAudio 997 self)
 			)
 			(9
 				(wFace setCycle: 0)
@@ -318,11 +318,11 @@
 			)
 			(10
 				(wFace setCycle: MouthSync 999)
-				(proc0_29 999 self)
+				(SpeakAudio 999 self)
 			)
 			(11
 				(wFace setCycle: MouthSync 1000)
-				(proc0_29 1000 self)
+				(SpeakAudio 1000 self)
 			)
 			(12
 				(wFace
@@ -370,7 +370,7 @@
 					(self dispose:)
 				else
 					(wFace loop: 2 setCycle: MouthSync 1001)
-					(proc0_29 1001 self)
+					(SpeakAudio 1001 self)
 				)
 			)
 			(2
@@ -457,7 +457,7 @@
 				)
 				(willow view: 256 loop: 1 cycleSpeed: 0 cel: 0)
 				(eHair setCycle: MouthSync 1002)
-				(proc0_29 1002 self)
+				(SpeakAudio 1002 self)
 			)
 			(15
 				(eHair setCycle: 0 hide:)
@@ -497,7 +497,7 @@
 			(19
 				(eHair x: (willow x?) y: (willow y?) z: 31 show:)
 				(eHair setCycle: MouthSync 1003)
-				(proc0_29 1003 self)
+				(SpeakAudio 1003 self)
 			)
 			(20
 				(eHair hide:)
@@ -519,7 +519,7 @@
 					show:
 				)
 				(eHair setCycle: MouthSync 1004)
-				(proc0_29 1004 self)
+				(SpeakAudio 1004 self)
 				(willow loop: 1)
 			)
 			(22
@@ -532,7 +532,7 @@
 					setMotion: MoveTo 91 105 self
 					init:
 				)
-				(proc0_29 1005 0 1)
+				(SpeakAudio 1005 0 1)
 			)
 			(23
 				(cls)
@@ -564,7 +564,7 @@
 					init:
 				)
 				(wHair setCycle: MouthSync 1006)
-				(proc0_29 1006 self)
+				(SpeakAudio 1006 self)
 			)
 			(27
 				(eHair
@@ -577,7 +577,7 @@
 				)
 				(wHair setCycle: 0 dispose:)
 				(eHair setCycle: MouthSync 1007)
-				(proc0_29 1007 self)
+				(SpeakAudio 1007 self)
 			)
 			(28
 				(eHair setCycle: 0 dispose:)
@@ -622,7 +622,7 @@
 					setLoop: 1
 					setCycle: MouthSync 1012
 				)
-				(proc0_29 1012 self)
+				(SpeakAudio 1012 self)
 				(HandsOff)
 			)
 			(1
@@ -681,7 +681,7 @@
 				(ego loop: 0 cel: 1 setCycle: Beg self)
 			)
 			(4
-				(proc0_29 7058 self)
+				(SpeakAudio 7058 self)
 				(ego view: 46 loop: 0 setCycle: Fwd)
 			)
 			(5
@@ -770,7 +770,7 @@
 					setCycle: MouthSync 9999
 				)
 				(= local151 1)
-				(proc0_29 9999 self)
+				(SpeakAudio 9999 self)
 			)
 			(2
 				(HandsOn)
@@ -797,9 +797,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: willow)
-						(proc0_29 233)
+						(SpeakAudio 233)
 					else
-						(proc0_29 234)
+						(SpeakAudio 234)
 					)
 					(event claimed: 1)
 				)
@@ -830,7 +830,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 235)
+					(SpeakAudio 235)
 					(event claimed: 1)
 				)
 			)
@@ -885,7 +885,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 236)
+					(SpeakAudio 236)
 					(event claimed: 1)
 				)
 				(JOY_DOWN
@@ -902,7 +902,7 @@
 							setLoop: 1
 							setCycle: MouthSync 1013
 						)
-						(proc0_29 1013 self)
+						(SpeakAudio 1013 self)
 						(= local151 1)
 						(HandsOff)
 					)
@@ -926,7 +926,7 @@
 							)
 							(HandsOff)
 							(= local151 1)
-							(proc0_29 1015 self)
+							(SpeakAudio 1015 self)
 							(event claimed: 1)
 						)
 					)
@@ -1036,7 +1036,7 @@
 		(if
 			(and
 				(not (wFace script?))
-				(== (gPolyList15 loop?) 8)
+				(== (globalCedric loop?) 8)
 				(== local151 0)
 			)
 			(wFace setScript: faceMove)
@@ -1049,7 +1049,7 @@
 		(cond 
 			(
 				(and
-					(MousedOn gPolyList15 event)
+					(MousedOn globalCedric event)
 					(== (event message?) JOY_DOWN)
 					(not local113)
 				)
@@ -1068,7 +1068,7 @@
 			(else
 				(switch (event message?)
 					(JOY_UPRIGHT
-						(proc0_29 236)
+						(SpeakAudio 236)
 						(event claimed: 1)
 					)
 					(JOY_DOWN
@@ -1085,7 +1085,7 @@
 								setLoop: 1
 								setCycle: MouthSync 1013
 							)
-							(proc0_29 1013 self)
+							(SpeakAudio 1013 self)
 							(HandsOff)
 							(= local151 1)
 						)
@@ -1109,7 +1109,7 @@
 								)
 								(HandsOff)
 								(= local151 1)
-								(proc0_29 1015 self)
+								(SpeakAudio 1015 self)
 								(event claimed: 1)
 							)
 						)
@@ -1155,9 +1155,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (cast contains: willow)
-						(proc0_29 236)
+						(SpeakAudio 236)
 					else
-						(proc0_29 237)
+						(SpeakAudio 237)
 					)
 					(event claimed: 1)
 				)
@@ -1213,7 +1213,7 @@
 			)
 			(1
 				(wFace loop: 2 setCycle: MouthSync 1001)
-				(proc0_29 1001 self)
+				(SpeakAudio 1001 self)
 			)
 			(2
 				(cls)
@@ -1252,7 +1252,7 @@
 				(willow signal: (& (willow signal?) $feff))
 				(willow view: 256 loop: 1 cycleSpeed: 0 cel: 0)
 				(eHair setCycle: MouthSync 1002)
-				(proc0_29 1002 self)
+				(SpeakAudio 1002 self)
 			)
 			(4
 				(cls)
@@ -1283,7 +1283,7 @@
 			(7
 				(eHair x: (willow x?) y: (willow y?) z: 31 show:)
 				(eHair setCycle: MouthSync 1003)
-				(proc0_29 1003 self)
+				(SpeakAudio 1003 self)
 			)
 			(8
 				(eHair hide:)
@@ -1305,7 +1305,7 @@
 					show:
 				)
 				(eHair setCycle: MouthSync 1004)
-				(proc0_29 1004 self)
+				(SpeakAudio 1004 self)
 				(willow loop: 1)
 			)
 			(10
@@ -1318,7 +1318,7 @@
 					setMotion: MoveTo 91 105 self
 					init:
 				)
-				(proc0_29 1005 0 1)
+				(SpeakAudio 1005 0 1)
 			)
 			(11
 				(cls)
@@ -1350,7 +1350,7 @@
 					init:
 				)
 				(wHair setCycle: MouthSync 1006)
-				(proc0_29 1006 self)
+				(SpeakAudio 1006 self)
 			)
 			(15
 				(eHair
@@ -1363,7 +1363,7 @@
 				)
 				(wHair setCycle: 0 dispose:)
 				(eHair setCycle: MouthSync 1007)
-				(proc0_29 1007 self)
+				(SpeakAudio 1007 self)
 			)
 			(16
 				(eHair setCycle: 0 dispose:)

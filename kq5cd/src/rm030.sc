@@ -115,7 +115,7 @@
 								(if (not (Btst 15))
 									(if (not (Btst 48)) (Bset 48) (SolvePuzzle 4))
 									(Bset 15)
-									(proc0_29 415)
+									(SpeakAudio 415)
 									(ego view: 12)
 									((ego head?) show:)
 									(event claimed: 1)
@@ -123,7 +123,10 @@
 							)
 							(28 (event claimed: 0))
 							(else 
-								(if (not (Btst 15)) (proc0_29 416) (event claimed: 1))
+								(if (not (Btst 15))
+									(SpeakAudio 416)
+									(event claimed: 1)
+								)
 							)
 						)
 					)
@@ -139,7 +142,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gPolyList15
+				(globalCedric
 					view: 140
 					loop: 2
 					cel: 0
@@ -160,7 +163,7 @@
 				)
 			)
 			(2
-				(gPolyList15 setScript: (ScriptID 202 3))
+				(globalCedric setScript: (ScriptID 202 3))
 				((ego head?) show:)
 				(ego
 					normal: 1
@@ -253,7 +256,7 @@
 			(1
 				(if (and (not (Btst 14)) (not (Btst 16)))
 					(Bset 14)
-					(proc0_29 418)
+					(SpeakAudio 418)
 				)
 				(= cycles 1)
 			)
@@ -369,7 +372,7 @@
 				(cls)
 				(if register
 					(if (== (theGame detailLevel:) 3)
-						(gPolyList15
+						(globalCedric
 							view: 140
 							loop: 5
 							cycleSpeed: 0
@@ -401,7 +404,7 @@
 			(6
 				(if register
 					(if (== (theGame detailLevel:) 3)
-						(gPolyList15
+						(globalCedric
 							cycleSpeed: 1
 							loop: 9
 							cel: 0
@@ -504,7 +507,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 421)
+					(SpeakAudio 421)
 					(event claimed: 1)
 				)
 			)
@@ -530,11 +533,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 422)
+					(SpeakAudio 422)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 431)
+					(SpeakAudio 431)
 					(event claimed: 1)
 				)
 			)
@@ -556,8 +559,8 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 423)
-					(proc0_29 424)
+					(SpeakAudio 423)
+					(SpeakAudio 424)
 					(event claimed: 1)
 				)
 			)
@@ -580,14 +583,14 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== ((inventory at: 20) owner?) 30)
-						(proc0_29 425)
+						(SpeakAudio 425)
 					else
-						(proc0_29 426)
+						(SpeakAudio 426)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 432)
+					(SpeakAudio 432)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -627,14 +630,14 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== ((inventory at: 20) owner?) 31)
-						(proc0_29 427)
+						(SpeakAudio 427)
 					else
-						(proc0_29 428)
+						(SpeakAudio 428)
 					)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 433)
+					(SpeakAudio 433)
 					(event claimed: 1)
 				)
 				(JOY_DOWNRIGHT
@@ -675,9 +678,9 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(if (== ((inventory at: 20) owner?) 30)
-						(proc0_29 429)
+						(SpeakAudio 429)
 					else
-						(proc0_29 430)
+						(SpeakAudio 430)
 					)
 					(event claimed: 1)
 				)

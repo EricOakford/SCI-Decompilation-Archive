@@ -52,7 +52,7 @@
 			(= global320 100)
 			(= global321 140)
 			(curRoom setRegions: 202)
-			(gPolyList15 setScript: myRotate)
+			(globalCedric setScript: myRotate)
 		)
 		(hermit
 			view: 628
@@ -79,10 +79,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gPolyList15 view: 138 loop: 2 setCycle: End self)
+				(globalCedric view: 138 loop: 2 setCycle: End self)
 			)
 			(1
-				(gPolyList15
+				(globalCedric
 					view: 137
 					loop: 8
 					cycleSpeed: 50
@@ -205,7 +205,7 @@
 					posn: (+ (hermit x?) 3) (- (hermit y?) 37)
 				)
 				(hermit_mouth setCycle: MouthSync 1147)
-				(proc0_29 1147 self)
+				(SpeakAudio 1147 self)
 			)
 			(9
 				(hermit_mouth setCycle: 0)
@@ -214,32 +214,32 @@
 			)
 			(10
 				(hermit_mouth setCycle: MouthSync 1148)
-				(proc0_29 1148 self)
+				(SpeakAudio 1148 self)
 			)
 			(11
 				(hermit_mouth setCycle: 0)
 				(cls)
 				((ego head?) setCel: 1 setScript: egoHeadMove)
 				(if (not (Btst 55))
-					(proc0_29 1149 self)
+					(SpeakAudio 1149 self)
 				else
-					(proc0_29 9101 self)
+					(SpeakAudio 9101 self)
 				)
 			)
 			(12
 				((ego head?) setCel: 1 loop: 4 setScript: 0)
 				(cls)
 				(hermit_mouth setCycle: MouthSync 1151)
-				(proc0_29 1151 self)
+				(SpeakAudio 1151 self)
 			)
 			(13
 				(hermit_mouth setCycle: 0)
 				(cls)
 				((ego head?) setCel: 1 setScript: egoHeadMove)
 				(if (not (Btst 55))
-					(proc0_29 1152 self)
+					(SpeakAudio 1152 self)
 				else
-					(proc0_29 9102 self)
+					(SpeakAudio 9102 self)
 				)
 			)
 			(14
@@ -335,7 +335,7 @@
 				(movingBoat setMotion: 0)
 				(sail setMotion: 0)
 				(if (not (Btst 55))
-					(gPolyList15
+					(globalCedric
 						view: 138
 						setLoop: 6
 						cycleSpeed: 0

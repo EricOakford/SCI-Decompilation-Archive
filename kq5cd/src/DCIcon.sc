@@ -1,51 +1,56 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 967)
-(include sci.sh)
+(script# DCICON)
+(include game.sh)
 (use Intrface)
 (use Motion)
 
 
-(class DCIcon of DIcon
+(class DCIcon 	kindof DIcon
+	;;; Cycling Icons are a sub-class of DIcon.
+	;;; An instance of DCIcon may be passed to Print for use in
+	;;; a dialog.
+
+	;;; additional properties are required to 
+	;;;allow cycling via the Cycler classes.
 	(properties
-		type $0004
-		state $0000
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		key 0
-		said 0
-		value 0
-		view 0
-		loop 0
-		cel 0
-		cycler 0
-		cycleSpeed 16
-		signal $0000
+		cycler 0		; a cycler must be attached dynamically
+		cycleSpeed 16	; 60ths second between cels. 
+		signal 0		; just to satisfy cycler
+		;KQ5 properties
 		count -1
 		talker 0
-		loops 0
+		loops 0		
 	)
-	
+
+;;;	(methods
+;;;		lastCel			; required by cycler class
+;;;	)
+
+	;;; Do not pass a caller to this cycler
 	(method (init)
 		(cond 
-			((== cycler -1) (= cycler 0))
-			(cycler ((= cycler (cycler new:)) init: self))
-			(else ((= cycler (Fwd new:)) init: self))
+			((== cycler -1)
+				(= cycler 0)
+			)
+			(cycler
+				((= cycler (cycler new:)) init: self)
+			)
+			(else
+				((= cycler (Forward new:)) init: self)
+			)
 		)
 		(= loops 0)
 	)
-	
-	(method (dispose)
-		(if cycler (cycler dispose:))
-		(super dispose:)
-	)
-	
-	(method (cycle &tmp theCel)
+
+	;;; invoked at 60 times per second by the Dialog doit: loop
+	(method (cycle &tmp oldCel)
 		(if cycler
-			(= theCel cel)
+			;; remember current cel
+			(= oldCel cel)
 			(cycler doit:)
-			(if (!= cel theCel)
+			
+			;;; show new cel if it changed
+			(if (!= cel oldCel)
 				(if (and (!= count -1) (> loops count))
 					(if talker
 						(= loop (= cel 0))
@@ -67,20 +72,31 @@
 							(> (NumLoops self) 1)
 							(or loop (< (Random 1 100) 51))
 						)
-						(= loop (^ loop $0001))
+						(^= loop $0001)
 					)
 				)
 			)
+
 		)
 	)
+		
+	;;; A completion type cycler may have already disposed of itself
+	(method (dispose)
+		(if cycler
+			(cycler dispose:)
+		)
+		(super dispose:)
+	)
 	
+	;; Return the number of the last cel in the current loop of this object.
+	;; this method is called by cycler		
 	(method (lastCel)
 		(return (- (NumCels self) 1))
 	)
-	
+
 	(method (setCel)
 	)
 	
 	(method (startUpd)
-	)
+	)	
 )

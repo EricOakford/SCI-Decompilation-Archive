@@ -140,8 +140,8 @@
 			(3
 				(bird dispose:)
 				(curRoom setRegions: 202)
-				(if (== curRoomNum 45) (gPolyList15 setPri: 8))
-				(proc770_0 @local24 gPolyList15)
+				(if (== curRoomNum 45) (globalCedric setPri: 8))
+				(proc770_0 @local24 globalCedric)
 				(proc762_1 @local24 3001 self)
 			)
 			(4
@@ -157,7 +157,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (cast contains: gPolyList15) (gPolyList15 hide:))
+		(if (cast contains: globalCedric) (globalCedric hide:))
 		(if
 			(and
 				(& (ego onControl: 1) $2000)
@@ -410,7 +410,7 @@
 			(11
 				(if
 					(and
-						(cast contains: gPolyList15)
+						(cast contains: globalCedric)
 						(not (Btst 55))
 						(not (Btst 54))
 					)
@@ -423,11 +423,11 @@
 			(12
 				(if
 					(and
-						(cast contains: gPolyList15)
+						(cast contains: globalCedric)
 						(not (Btst 55))
 						(not (Btst 54))
 					)
-					(proc770_0 @local24 gPolyList15)
+					(proc770_0 @local24 globalCedric)
 					(proc762_1 @local24 3002 self)
 				else
 					(= cycles 1)
@@ -437,9 +437,9 @@
 				(ego setMotion: 0)
 				(sailBoat setMotion: 0)
 				(sail setMotion: 0)
-				(if (cast contains: gPolyList15)
+				(if (cast contains: globalCedric)
 					(cls)
-					(gPolyList15 view: 138 setLoop: 6 setCycle: End self)
+					(globalCedric view: 138 setLoop: 6 setCycle: End self)
 					(= cycles 5)
 				else
 					(= cycles 1)
@@ -512,7 +512,7 @@
 				(= cycles 1)
 			)
 			(6
-				(proc0_29 30)
+				(SpeakAudio 30)
 				(HandsOn)
 				(= cycles 1)
 			)
@@ -544,11 +544,11 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(cond 
-						((and (not (Btst 55)) (Btst 54) (Btst 71)) (proc0_29 24))
-						((and (not (Btst 55)) (Btst 54)) (proc0_29 25))
+						((and (not (Btst 55)) (Btst 54) (Btst 71)) (SpeakAudio 24))
+						((and (not (Btst 55)) (Btst 54)) (SpeakAudio 25))
 						(
-						(or (> (ego distanceTo: self) 40) (not (ego has: 18))) (proc0_29 26))
-						(else (proc0_29 27))
+						(or (> (ego distanceTo: self) 40) (not (ego has: 18))) (SpeakAudio 26))
+						(else (SpeakAudio 27))
 					)
 					(event claimed: 1)
 				)
@@ -569,14 +569,14 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 31)
+							(SpeakAudio 31)
 							(event claimed: 1)
 						)
 					)
 				)
 				(JOY_DOWN
 					(if (and (not (Btst 55)) (Btst 54))
-						(proc0_29 3003)
+						(SpeakAudio 3003)
 						(event claimed: 1)
 					else
 						(event claimed: 0)
@@ -614,10 +614,10 @@
 			(switch (event message?)
 				(JOY_UPRIGHT
 					(cond 
-						((and (not (Btst 55)) (Btst 54)) (proc0_29 28))
+						((and (not (Btst 55)) (Btst 54)) (SpeakAudio 28))
 						(
-						(or (> (ego distanceTo: self) 40) (not (ego has: 18))) (proc0_29 26))
-						(else (proc0_29 27))
+						(or (> (ego distanceTo: self) 40) (not (ego has: 18))) (SpeakAudio 26))
+						(else (SpeakAudio 27))
 					)
 					(event claimed: 1)
 				)
@@ -626,7 +626,7 @@
 						(curRoom setScript: leave)
 						(event claimed: 1)
 					else
-						(proc0_29 29)
+						(SpeakAudio 29)
 					)
 					(event claimed: 1)
 				)
@@ -638,7 +638,7 @@
 						)
 						(28 (event claimed: 0))
 						(else 
-							(proc0_29 31)
+							(SpeakAudio 31)
 							(event claimed: 1)
 						)
 					)

@@ -124,11 +124,11 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 642)
+					(SpeakAudio 642)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc0_29 647)
+					(SpeakAudio 647)
 					(event claimed: 1)
 				)
 			)
@@ -150,7 +150,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 643)
+					(SpeakAudio 643)
 					(event claimed: 1)
 				)
 			)
@@ -172,7 +172,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 644)
+					(SpeakAudio 644)
 					(event claimed: 1)
 				)
 			)
@@ -194,7 +194,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 645)
+					(SpeakAudio 645)
 					(event claimed: 1)
 				)
 			)
@@ -352,7 +352,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 646)
+					(SpeakAudio 646)
 					(event claimed: 1)
 				)
 			)

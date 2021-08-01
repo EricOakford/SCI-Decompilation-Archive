@@ -135,7 +135,7 @@
 				(cond 
 					((!= (ego view?) 661) (ego view: 22))
 					(local58 0)
-					(else (if (not script) (proc0_29 536)) (= local58 1))
+					(else (if (not script) (SpeakAudio 536)) (= local58 1))
 				)
 			)
 			(
@@ -297,7 +297,7 @@
 				(harpy2 setCycle: Fwd setMotion: getCed self)
 			)
 			(1
-				(proc0_29 3075 0 1)
+				(SpeakAudio 3075 0 1)
 				(harpy2 setLoop: 4 setCel: 0 setCycle: End self)
 				(cedric dispose:)
 			)
@@ -571,7 +571,7 @@
 					get: 23
 				)
 				(SolvePuzzle 2)
-				(proc0_29 9068)
+				(SpeakAudio 9068)
 				(= local135 0)
 				(HandsOn)
 				(= global103 0)
@@ -749,7 +749,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 538)
+					(SpeakAudio 538)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -802,7 +802,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 539)
+					(SpeakAudio 539)
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
@@ -976,7 +976,7 @@ code_1bc7:
 			bnt      code_1be5
 			pushi    1
 			pushi    540
-			callb    proc0_29,  2
+			callb    SpeakAudio,  2
 			pushi    #claimed
 			pushi    1
 			pushi    1
@@ -1004,7 +1004,7 @@ code_1be6:
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc0_29 541)
+					(SpeakAudio 541)
 					(event claimed: 1)
 				)
 			)
