@@ -151,7 +151,7 @@
 	debugging
 	global101 =  5
 	isHandsOff
-	global103 =  1
+	inCartoon =  1
 	global104
 	numColors
 	gGTheGameCursor
@@ -379,29 +379,29 @@
 	theAudio
 	theMusic2
 	deathMessage
-	global331
-	global332
-	global333
+	wizardState
+	catState
+	henchmanState
 	global334
 	global335
 	global336
 	global337
-	gGNumber_3
-	global339
-	global340
+	catRoom
+	baggedCatX
+	baggedCatY
 	global341
 	global342
 	global343
 	global344
 	global345
 	global346
-	global347
-	global348
-	global349
-	global350
-	global351
-	global352
-	global353
+	magicDoorX
+	magicDoorY
+	wizardX
+	wizardY
+	wizardAngle
+	wizardTimer
+	henchmanTimer
 	global354
 	global355
 	global356
@@ -414,11 +414,11 @@
 	global363
 	gTheHenchManX
 	gTheHenchManY
-	global366
-	global367
-	global368
-	global369
-	global370
+	henchmanPts
+		global367
+		global368
+		global369
+		global370
 	global371
 	global372
 	global373
@@ -611,7 +611,7 @@
 
 (procedure (DebugTP &tmp nRoom)
 	(while (not (!= (= nRoom (GetNumber {Teleport to:})) -1)))
-	(= global103 0)
+	(= inCartoon 0)
 	(theGame setCursor: (= gGTheGameCursor gameCursor) TRUE)
 	(curRoom newRoom: nRoom)
 )
@@ -1340,7 +1340,7 @@ code_1396:
 			disable: icon4
 		)
 		((ScriptID 758) init:)
-		(= global103 0)
+		(= inCartoon FALSE)
 		(= gGTheGameCursor (= gameCursor 6))
 		(self setCursor: theGameCursor)
 		(= useObstacles TRUE)

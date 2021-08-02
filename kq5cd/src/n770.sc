@@ -1,29 +1,29 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 770)
-(include sci.sh)
+(include game.sh)
 (use System)
 
 (public
 	proc770_0 0
 )
 
-(procedure (proc770_0 param1 param2 param3 &tmp temp0 temp1 temp2)
+(procedure (proc770_0 param1 obj param3 &tmp temp0 temp1 temp2)
 	(if (> argc 1)
 		(= temp0 (= temp1 0))
-		(if (= temp2 (IsObject param2))
-			(if (RespondsTo param2 4) (= temp0 (param2 x?)))
-			(if (RespondsTo param2 3)
+		(if (= temp2 (IsObject obj))
+			(if (RespondsTo obj 4) (= temp0 (obj x?)))
+			(if (RespondsTo obj 3)
 				(if (> argc 2)
-					(if (!= param3 0) (= temp1 (+ (param2 y?) param3 32)))
+					(if (!= param3 0) (= temp1 (+ (obj y?) param3 32)))
 				else
 					(= temp1
 						(-
-							(param2 y?)
+							(obj y?)
 							(+
 								33
-								(if (RespondsTo param2 7)
+								(if (RespondsTo obj 7)
 									(/
-										(CelHigh (param2 view?) (param2 loop?) (param2 cel?))
+										(CelHigh (obj view?) (obj loop?) (obj cel?))
 										2
 									)
 								else
@@ -35,10 +35,10 @@
 				)
 			)
 		else
-			(= temp0 param2)
+			(= temp0 obj)
 			(if (> argc 2) (= temp1 param3))
 		)
-		(Memory 6 (+ param1 2) (Min (Max 0 (- temp0 40)) 239))
+		(Memory MWriteWord (+ param1 2) (Min (Max 0 (- temp0 40)) 239))
 		(if
 			(or
 				(and (< argc 3) temp2)
@@ -47,8 +47,7 @@
 					(or (not temp2) (and temp2 (!= param3 0)))
 				)
 			)
-			(Memory
-				6
+			(Memory MWriteWord
 				(+ param1 4)
 				(Min (Max 40 (- temp1 33)) 123)
 			)

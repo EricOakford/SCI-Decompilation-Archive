@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 550)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -33,10 +33,10 @@
 	theThrowFishScript 13
 	theCatRunScript 14
 	theBagCatScript 15
-	proc550_16 16
-	proc550_17 17
-	proc550_18 18
-	proc550_19 19
+	InitCat 16
+	CastleHandsOff 17
+	CastleHandsOn 18
+	CastleEgoSpeed 19
 )
 
 (local
@@ -48,50 +48,56 @@
 	local5
 	local6
 	local7
-	local8
-	local9
-	local10
-	local11
-	local12
+	thisTime
+	henchmanRectLeft
+	henchmanRectTop
+	henchmanRectRight
+	henchmanRectBottom
 	local13
 	local14
-	[local15 9] = [1002 116 63 4 11 29 20 28 29]
-	[local24 9] = [1003 10 10 4 11 25 23 31 31]
-	[local33 9] = [1003 160 20 4 11 25 23 31 31]
-	[local42 9] = [1038 160 20 2 11 22 31 16 37]
-	[local51 9] = [1038 10 10 2 11 22 31 16 37]
-	[local60 8] = [0 5801 1 7016 0 5803]
+	local15 = [1002 116 63 4 11 29 20 28 29]
+	local24 = [1003 10 10 4 11 25 23 31 31]
+	local33 = [1003 160 20 4 11 25 23 31 31]
+	local42 = [1038 160 20 2 11 22 31 16 37]
+	local51 = [1038 10 10 2 11 22 31 16 37]
+	local60 = [0 5801 1 7016 0 5803]
 )
-(procedure (proc550_16)
-	(if (and (!= global332 7) (> (Random 0 100) 20))
-		(Load rsSOUND 835)
+(procedure (InitCat)
+	(if (and (!= catState 7) (> (Random 0 100) 20))
+		(Load SOUND 835)
 		(switch curRoomNum
-			(57 (theCat posn: 91 172 init:))
+			(57
+				(theCat posn: 91 172 init:)
+			)
 			(58
 				(theCat posn: 103 115 init:)
 			)
 			(59
 				(theCat posn: 209 162 init:)
 			)
-			(60 (theCat posn: 88 149 init:))
+			(60
+				(theCat posn: 88 149 init:)
+			)
 			(61
 				(theCat posn: 138 144 init:)
 			)
-			(63 (theCat posn: 88 169 init:))
+			(63
+				(theCat posn: 88 169 init:)
+			)
 			(64
 				(theCat posn: 170 173 init:)
 			)
 		)
-		(= gGNumber_3 curRoomNum)
-		(= global332 1)
+		(= catRoom curRoomNum)
+		(= catState 1)
 	)
 )
 
-(procedure (proc550_17)
+(procedure (CastleHandsOff)
 	(HandsOff)
 )
 
-(procedure (proc550_18)
+(procedure (CastleHandsOn)
 	(HandsOn)
 	(ego
 		setLoop: -1
@@ -101,100 +107,101 @@
 		setCycle: KQ5SyncWalk
 		setStep: 3 2
 		normal: 1
-		illegalBits: -32768
-		ignoreActors: 0
+		illegalBits: cWHITE
+		ignoreActors: FALSE
 	)
 )
 
-(procedure (proc550_19)
+(procedure (CastleEgoSpeed)
 	(cond 
-		((< (theGame egoMoveSpeed?) 3) (ego cycleSpeed: 2))
-		((< (theGame egoMoveSpeed?) 6) (ego cycleSpeed: 4))
-		(else (ego cycleSpeed: 6))
+		((< (theGame egoMoveSpeed?) 3)
+			(ego cycleSpeed: 2)
+		)
+		((< (theGame egoMoveSpeed?) 6)
+			(ego cycleSpeed: 4)
+		)
+		(else
+			(ego cycleSpeed: 6)
+		)
 	)
 )
 
-(class castle of Rgn
-	(properties
-		script 0
-		number 0
-		timer 0
-		keep 0
-		initialized 0
-		lookStr 0
-	)
+(class castle of Region
 	
 	(method (init)
 		(super init: &rest)
-		(if
-		(and (== global332 7) (== gGNumber_3 curRoomNum))
-			(theCat init: ignoreActors: 0 setScript: catInBag)
+		(if (and (== catState 7) (== catRoom curRoomNum))
+			(theCat init: ignoreActors: FALSE setScript: catInBag)
 		)
 		(if (== curRoomNum 58)
-			(Load rsVIEW 898)
+			(Load VIEW 898)
 		else
-			(Load rsVIEW 884)
+			(Load VIEW 884)
 		)
 		(if
 			(and
-				(< global333 4)
+				(< henchmanState 4)
 				(!= (theMusic number?) 836)
 				(not (OneOf curRoomNum 54 67 96 57))
 			)
 			(theMusic number: 836 loop: -1 playBed:)
 		)
-		(Bclr 64)
+		(Bclr fCastleTimeStopped)
 	)
 	
 	(method (doit &tmp temp0)
 		(super doit:)
-		(if
-		(and (not (Btst 64)) (!= local8 (GetTime 1)))
-			(= local8 (GetTime 1))
+		(if (and (not (Btst fCastleTimeStopped)) (!= thisTime (GetTime SYSTIME1)))
+			(= thisTime (GetTime SYSTIME1))
 			(= local5 1)
 		)
 		(if local5
 			(= local5 0)
-			(if (> global352 1)
-				(if (== (-- global352) 2)
+			(if (> wizardTimer 1)
+				(if (== (-- wizardTimer) 2)
 					(switch curRoomNum
 						(58
-							(Load rsVIEW 701)
-							(Load rsVIEW 704)
+							(Load VIEW 701)
+							(Load VIEW 704)
 						)
 						(65
-							(Load rsVIEW 702)
-							(Load rsVIEW 127)
+							(Load VIEW 702)
+							(Load VIEW 127)
 						)
 						(else 
-							(Load rsVIEW 705)
-							(Load rsVIEW 132)
+							(Load VIEW 705)
+							(Load VIEW 132)
 						)
 					)
 				)
-				(if (== global352 1) (= global331 3) (Bset 64))
-			)
-			(if (and global353 (not (-- global353)))
-				(if (not global333)
-					(if (== curRoomNum 63)
-						(= global331 6)
-					else
-						(= global352 3)
-					)
-				else
-					(= global353 5)
+				(if (== wizardTimer 1)
+					(= wizardState 3)
+					(Bset fCastleTimeStopped)
 				)
 			)
-			(if (and local6 (not (-- local6))) (proc550_18))
+			(if (and henchmanTimer (not (-- henchmanTimer)))
+				(if (not henchmanState)
+					(if (== curRoomNum 63)
+						(= wizardState 6)
+					else
+						(= wizardTimer 3)
+					)
+				else
+					(= henchmanTimer 5)
+				)
+			)
+			(if (and local6 (not (-- local6)))
+				(CastleHandsOn)
+			)
 		)
 	)
 	
 	(method (dispose)
-		(DisposeScript 941)
-		(DisposeScript 969)
-		(DisposeScript 972)
-		(DisposeScript 991)
-		(DisposeScript 985)
+		(DisposeScript RANDCYC)
+		(DisposeScript REVERSE)
+		(DisposeScript CHASE)
+		(DisposeScript JUMP)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 	
@@ -206,15 +213,19 @@
 	)
 	
 	(method (newRoom n)
-		(= initialized 0)
+		(= initialized FALSE)
 		(theCat setScript: 0 dispose:)
 		(theHenchMan setScript: 0 dispose:)
 		(theWizard setScript: 0 dispose:)
-		(if (and (!= global332 7) (== global332 1))
-			(= global333 0)
-			(= global332 6)
-			(= global331 2)
-			(if global353 (= global353 3) else (= global352 10))
+		(if (and (!= catState 7) (== catState 1))
+			(= henchmanState 0)
+			(= catState 6)
+			(= wizardState 2)
+			(if henchmanTimer
+				(= henchmanTimer 3)
+			else
+				(= wizardTimer 10)
+			)
 		)
 		(super newRoom: n &rest)
 	)
@@ -223,7 +234,7 @@
 (instance theMagicDoor of Prop
 	(properties
 		view 695
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 	)
 )
 
@@ -231,14 +242,14 @@
 	(properties
 		view 703
 		priority 15
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 )
 
 (instance theRings of Prop
 	(properties
 		view 697
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 	)
 )
 
@@ -246,7 +257,7 @@
 	(properties
 		x 1000
 		y 1000
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		xStep 4
 	)
 	
@@ -259,10 +270,14 @@
 			looper: 0
 			setScript: theHenchManScript
 		)
-		(if (not global333) (= global333 1))
-		(if (!= global332 7) (= gGNumber_3 0))
-		(if (and (== curRoomNum 59) (== global333 8))
-			(henchmanPoly points: @global366 size: 4)
+		(if (not henchmanState)
+			(= henchmanState 1)
+		)
+		(if (!= catState 7)
+			(= catRoom 0)
+		)
+		(if (and (== curRoomNum 59) (== henchmanState 8))
+			(henchmanPoly points: @henchmanPts size: 4)
 			(curRoom addObstacle: henchmanPoly)
 		)
 	)
@@ -271,63 +286,66 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
-					(switch global333
+				(verbLook
+					(switch henchmanState
 						(3 (SpeakAudio 32))
 						(7 (SpeakAudio 33))
 						(8 (SpeakAudio 33))
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
-					(if (and (!= global333 7) (!= global333 8))
+				(verbDo
+					(if (and (!= henchmanState 7) (!= henchmanState 8))
 						(SpeakAudio 42)
 					else
 						(SpeakAudio 43)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(24
+						(iPeas
 							(cond 
-								((== global333 4) (event claimed: 0))
-								((== ((inventory at: 24) cel?) 4)
-									(proc550_17)
+								((== henchmanState 4)
+									(event claimed: FALSE)
+								)
+								((== ((inventory at: iPeas) cel?) 4)
+									(CastleHandsOff)
 									(= local6 2)
 									(SpeakAudio 47)
-									(proc550_18)
-									(event claimed: 1)
+									(CastleHandsOn)
+									(event claimed: TRUE)
 								)
-								(
-								(and (< (ego distanceTo: self) 70) (!= global333 7))
-									(proc550_17)
+								((and (< (ego distanceTo: self) 70) (!= henchmanState 7))
+									(CastleHandsOff)
 									(= local6 2)
 									(SpeakAudio 48)
-									(event claimed: 1)
+									(event claimed: TRUE)
 								)
 								(else
 									(curRoom setScript: theThrowPeasScript)
-									(event claimed: 1)
+									(event claimed: TRUE)
 								)
 							)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 49)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 52)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -337,32 +355,37 @@
 (instance thePeas of Actor
 	(properties
 		view 909
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 )
 
 (instance theThrowPeasScript of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
-				(if (!= global333 3) (self init:) else (self cue:))
+				(if (!= henchmanState 3)
+					(self init:)
+				else
+					(self cue:)
+				)
 			)
 			(2
-				(ego put: 24)
-				(proc550_17)
+				(ego put: iPeas)
+				(CastleHandsOff)
 				(ego setMotion: 0)
 				(SolvePuzzle 3)
-				(Bset 63)
-				((inventory at: 24)
+				(Bset fThrewPeas)
+				((inventory at: iPeas)
 					cel: (+ 1 ((inventory at: 24) cel?))
 					cursor: theEmptyBagCursor
 					yourself:
 				)
-				(ego put: 24 curRoomNum)
-				(ego get: 24)
+				(ego put: iPeas curRoomNum)
+				(ego get: iPeas)
 				(theHenchMan setScript: 0)
 				((ego head?) hide:)
 				(ego
@@ -370,10 +393,10 @@
 					normal: 0
 					setCel: 0
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setLoop: (if (< (ego x?) (theHenchMan x?)) 0 else 1)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -398,7 +421,7 @@
 			)
 			(4
 				(theMusic number: 136 loop: 1 playBed:)
-				(DoAudio 1 7066)
+				(DoAudio Play 7066)
 				(thePeas
 					setCel: 1
 					setStep: 15 15
@@ -406,13 +429,12 @@
 					setPri: 4
 					setMotion: MoveTo (theHenchMan x?) (+ (theHenchMan y?) 4) self
 				)
-				(if
-				(and (== curRoomNum 59) (> (theHenchMan y?) 189))
+				(if (and (== curRoomNum 59) (> (theHenchMan y?) 189))
 					(theHenchMan setMotion: MoveTo (theHenchMan x?) 189)
 				else
 					(theHenchMan setMotion: 0)
 				)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 			)
 			(5
 				(if (theHenchMan mover?)
@@ -424,62 +446,62 @@
 						view: (if (== curRoomNum 58) 906 else 894)
 						setLoop: (if (< (ego x?) (theHenchMan x?)) 1 else 0)
 						posn: (theHenchMan x?) (- (theHenchMan y?) 5)
-						setCycle: Fwd
+						setCycle: Forward
 						cycleSpeed: 2
-						ignoreActors: 0
+						ignoreActors: FALSE
 					)
 					(thePeas hide:)
 				)
 			)
 			(6
 				(if (== curRoomNum 59)
-					(= global333 8)
+					(= henchmanState 8)
 				else
-					(= global333 7)
+					(= henchmanState 7)
 				)
 				(theAudio number: 8892 loop: 1 play:)
 				(theHenchMan
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setLoop: (if (< (ego x?) (theHenchMan x?)) 2 else 3)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= gTheHenchManX (theHenchMan x?))
 				(= gTheHenchManY (theHenchMan y?))
 				(cond 
 					((== curRoomNum 58)
-						(= local9 (- (theHenchMan brLeft?) 5))
-						(= local10 (- (theHenchMan brTop?) 5))
-						(= local11 (+ (theHenchMan brRight?) 2))
-						(= local12 (+ (theHenchMan brBottom?) 2))
+						(= henchmanRectLeft (- (theHenchMan brLeft?) 5))
+						(= henchmanRectTop (- (theHenchMan brTop?) 5))
+						(= henchmanRectRight (+ (theHenchMan brRight?) 2))
+						(= henchmanRectBottom (+ (theHenchMan brBottom?) 2))
 					)
 					((== (theHenchMan loop?) 2)
-						(= local9 (- (theHenchMan brLeft?) 21))
-						(= local10 (- (theHenchMan brTop?) 5))
-						(= local11 (+ (theHenchMan brRight?) 1))
-						(= local12 (+ (theHenchMan brBottom?) 2))
+						(= henchmanRectLeft (- (theHenchMan brLeft?) 21))
+						(= henchmanRectTop (- (theHenchMan brTop?) 5))
+						(= henchmanRectRight (+ (theHenchMan brRight?) 1))
+						(= henchmanRectBottom (+ (theHenchMan brBottom?) 2))
 					)
 					(else
-						(= local9 (- (theHenchMan brLeft?) 1))
-						(= local10 (- (theHenchMan brTop?) 5))
-						(= local11 (+ (theHenchMan brRight?) 19))
-						(= local12 (+ (theHenchMan brBottom?) 2))
+						(= henchmanRectLeft (- (theHenchMan brLeft?) 1))
+						(= henchmanRectTop (- (theHenchMan brTop?) 5))
+						(= henchmanRectRight (+ (theHenchMan brRight?) 19))
+						(= henchmanRectBottom (+ (theHenchMan brBottom?) 2))
 					)
 				)
-				(= [global366 0] (= [global366 6] local9))
-				(= [global366 1] (= [global366 3] local10))
-				(= [global366 2] (= [global366 4] local11))
-				(= [global366 5] (= [global366 7] local12))
-				(henchmanPoly points: @global366 size: 4)
+				(= [henchmanPts 0] (= [henchmanPts 6] henchmanRectLeft))
+				(= [henchmanPts 1] (= [henchmanPts 3] henchmanRectTop))
+				(= [henchmanPts 2] (= [henchmanPts 4] henchmanRectRight))
+				(= [henchmanPts 5] (= [henchmanPts 7] henchmanRectBottom))
+				(henchmanPoly points: @henchmanPts size: 4)
 				(curRoom addObstacle: henchmanPoly)
 			)
 			(7
-				(proc550_18)
+				(CastleHandsOn)
 				(ego
 					get: 24
 					view: (if (== curRoomNum 58) 34 else 0)
-					normal: 1
-					ignoreActors: 0
+					normal: TRUE
+					ignoreActors: FALSE
 					cycleSpeed: 0
 				)
 				((ego head?) show:)
@@ -494,14 +516,14 @@
 	(properties
 		view 321
 		loop 2
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 		illegalBits $0000
 	)
 )
 
 (instance theWizard of Actor
 	(properties
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		detailLevel 3
 		illegalBits $0000
 	)
@@ -510,24 +532,24 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 44)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
-					(switch global331
+				(verbTalk
+					(switch wizardState
 						(5 (SpeakAudio 53))
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_UPRIGHT
-					(switch global331
+				(verbLook
+					(switch wizardState
 						(5
 							(if (== curRoomNum 64)
 								(SpeakAudio 34)
@@ -536,7 +558,7 @@
 							)
 						)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -544,7 +566,6 @@
 )
 
 (instance theThrowFishScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -553,11 +574,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego put: 37)
-				(proc550_17)
+				(ego put: iCatFish)
+				(CastleHandsOff)
 				(ego setMotion: 0)
-				(Load rsSCRIPT 991)
-				(Load rsVIEW 321)
+				(Load SCRIPT JUMP)
+				(Load VIEW 321)
 				(theFish
 					init:
 					x: (if (< (ego x?) 163)
@@ -570,7 +591,7 @@
 					setCycle: Walk
 					hide:
 				)
-				(Bset 64)
+				(Bset fCastleTimeStopped)
 				(= cycles 1)
 			)
 			(1
@@ -583,7 +604,7 @@
 					setLoop: (if (< (ego x?) 163) 0 else 1)
 					cycleSpeed: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -601,10 +622,10 @@
 				)
 			)
 			(3
-				(ego view: 0 normal: 1)
+				(ego view: 0 normal: TRUE)
 				((ego head?) show:)
 				(theFish setCycle: 0)
-				(Bset 62)
+				(Bset fGaveCatFish)
 				(theCat setScript: catGetFish)
 				(client setScript: 0)
 			)
@@ -613,43 +634,48 @@
 )
 
 (instance theCatScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
 				(theCat
-					ignoreActors: 1
+					ignoreActors: TRUE
 					cycleSpeed: 2
 					setLoop: 9
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(1 (= seconds (Random 1 3)))
+			(1
+				(= seconds (Random 1 3))
+			)
 			(2
 				(if (not (Random 0 1))
-					(theCat setLoop: 9 setCycle: Beg self)
+					(theCat setLoop: 9 setCycle: BegLoop self)
 				else
 					(self init:)
 				)
 			)
-			(3 (= seconds (Random 1 3)))
+			(3
+				(= seconds (Random 1 3))
+			)
 			(4
 				(if (not (Random 0 1))
-					(theCat setLoop: 0 cel: 0 setCycle: End self)
+					(theCat setLoop: 0 cel: 0 setCycle: EndLoop self)
 				else
 					(self init:)
 				)
 			)
-			(5 (= seconds (Random 1 3)))
+			(5
+				(= seconds (Random 1 3))
+			)
 			(6
 				(if (not (Random 0 1))
-					(theCat setLoop: 2 cel: 0 setCycle: End self)
+					(theCat setLoop: 2 cel: 0 setCycle: EndLoop self)
 				else
 					(if (not local7)
 						(theCat
 							setLoop: 6
-							setCycle: Fwd
+							setCycle: Forward
 							cycleSpeed: 1
 							moveSpeed: 2
 							setMotion: MoveTo (+ theCatX 50) theCatY self
@@ -658,7 +684,7 @@
 					else
 						(theCat
 							setLoop: 7
-							setCycle: Fwd
+							setCycle: Forward
 							cycleSpeed: 1
 							moveSpeed: 2
 							setMotion: MoveTo theCatX theCatY self
@@ -670,8 +696,7 @@
 			)
 			(7 (= seconds (Random 2 4)))
 			(8
-				(if
-				(and (!= global332 2) (not (curRoom script?)))
+				(if (and (!= catState 2) (not (curRoom script?)))
 					(theCat setScript: theCatRunScript)
 				else
 					(self init:)
@@ -685,7 +710,7 @@
 				)
 				(= cycles (Random 10 20))
 			)
-			(92 (theCat setCycle: Beg self))
+			(92 (theCat setCycle: BegLoop self))
 			(93 (self init:))
 		)
 	)
@@ -699,8 +724,10 @@
 	
 	(method (init)
 		(super init:)
-		(self ignoreHorizon: 1 setScript: theCatScript show:)
-		(if (!= global333 8) (= global333 0))
+		(self ignoreHorizon: TRUE setScript: theCatScript show:)
+		(if (!= henchmanState 8)
+			(= henchmanState 0)
+		)
 		(= theCatX (theCat x?))
 		(= theCatY (theCat y?))
 	)
@@ -711,7 +738,7 @@
 			(and
 				(not (curRoom script?))
 				(< (ego distanceTo: self) 15)
-				(not (OneOf global332 7 5 2))
+				(not (OneOf catState 7 5 2))
 			)
 			(Face ego self 5)
 			(self setScript: theCatRunScript)
@@ -722,14 +749,14 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
-					(switch global332
+				(verbLook
+					(switch catState
 						(2 (SpeakAudio 36))
 						(3 (SpeakAudio 37))
 						(4 (SpeakAudio 38))
@@ -737,45 +764,53 @@
 						(7 (SpeakAudio 40))
 						(else  (SpeakAudio 41))
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
-					(if (== global332 7)
+				(verbDo
+					(if (== catState 7)
 						(SpeakAudio 45)
 					else
 						(SpeakAudio 46)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(37
-							(= global332 2)
+						(iCatFish
+							(= catState 2)
 							(curRoom setScript: theThrowFishScript)
 						)
-						(24
+						(iPeas
 							(cond 
-								((not (Btst 63)) (SpeakAudio 50))
-								((not (Btst 62)) (theCat setScript: (ScriptID 550 14)))
+								((not (Btst fThrewPeas))
+									(SpeakAudio 50)
+								)
+								((not (Btst fGaveCatFish))
+									(theCat setScript: (ScriptID 550 14))
+								)
 								(else
-									(= global332 5)
+									(= catState 5)
 									(theCat setScript: 0)
 									(curRoom setScript: theBagCatScript)
 								)
 							)
 						)
-						(28 (event claimed: 0))
-						(else  (SpeakAudio 51))
+						(iWand
+							(event claimed: FALSE)
+						)
+						(else
+							(SpeakAudio 51)
+						)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
-					(if (!= global332 7)
+				(verbTalk
+					(if (!= catState 7)
 						(theCat setScript: theCatRunScript)
 					else
 						(SpeakAudio 5800)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -783,12 +818,11 @@
 )
 
 (instance catGetFish of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(= global332 2)
+				(= catState 2)
 				(theCat
 					setLoop: (if (< (theCat x?) (theFish x?)) 4 else 5)
 					setCycle: Walk
@@ -798,15 +832,15 @@
 				)
 			)
 			(1
-				(= global332 3)
+				(= catState 3)
 				(theFish hide:)
-				(proc550_18)
-				(theCat setLoop: 10 cel: 0 setCycle: End self)
+				(CastleHandsOn)
+				(theCat setLoop: 10 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(theCat
 					setLoop: 11
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: (Random 3 6)
 				)
 				(= seconds (Random 1 3))
@@ -814,7 +848,7 @@
 			(3
 				(theCat
 					setLoop: 12
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: (Random 3 6)
 				)
 				(= seconds (Random 1 3))
@@ -822,14 +856,14 @@
 			(4
 				(theCat
 					setLoop: 11
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: (Random 3 6)
 				)
 				(= seconds (Random 1 3))
 			)
 			(5 (= seconds 9))
 			(6
-				(= global332 4)
+				(= catState 4)
 				(theFish dispose:)
 				(theCat cycleSpeed: 0 setScript: theCatRunScript)
 			)
@@ -838,31 +872,30 @@
 )
 
 (instance theBagCatScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(ego put: 24)
-				(proc550_17)
+				(ego put: iPeas)
+				(CastleHandsOff)
 				(if (< (ego x?) (theCat x?))
 					(= register 0)
 					(ego
 						illegalBits: 0
-						ignoreActors: 1
+						ignoreActors: TRUE
 						setMotion: PolyPath (- (theCat x?) 27) (theCat y?) self
 					)
 				else
 					(= register 1)
 					(ego
 						illegalBits: 0
-						ignoreActors: 1
+						ignoreActors: TRUE
 						setMotion: PolyPath (+ (theCat x?) 19) (theCat y?) self
 					)
 				)
 			)
 			(1
-				(if (== (DoAudio 6) -1)
+				(if (== (DoAudio Loc) -1)
 					(theAudio number: 7063 loop: 1 play:)
 				)
 				(SolvePuzzle 2)
@@ -872,7 +905,7 @@
 					cel: 0
 					setLoop: register
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 				(theFish hide:)
@@ -882,22 +915,24 @@
 				(ego
 					setLoop: (+ (ego loop?) 2)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(if (== curRoomNum 63) (= global359 91))
-				(= global332 7)
-				(= gGNumber_3 curRoomNum)
-				(= global339 ((ScriptID 550 2) x?))
-				(= global340 ((ScriptID 550 2) y?))
-				(theCat view: 914 setScript: catInBag ignoreActors: 0)
-				(ego normal: 1 view: 0)
+				(if (== curRoomNum 63)
+					(= global359 91)
+				)
+				(= catState 7)
+				(= catRoom curRoomNum)
+				(= baggedCatX ((ScriptID 550 2) x?))
+				(= baggedCatY ((ScriptID 550 2) y?))
+				(theCat view: 914 setScript: catInBag ignoreActors: FALSE)
+				(ego normal: TRUE view: 0)
 				((ego head?) show:)
 				(= cycles 3)
 			)
 			(4
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -905,19 +940,20 @@
 )
 
 (instance theCatRunScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(theMusic stop:)
 				(theMusic3 number: 837 loop: -1 playBed:)
-				(if (not (curRoom script?)) (ego setMotion: 0))
-				(if (== global332 4)
+				(if (not (curRoom script?))
+					(ego setMotion: 0)
+				)
+				(if (== catState 4)
 					(self cue:)
 				else
-					(= global332 5)
+					(= catState 5)
 					(if (< (ego x?) (theCat x?))
 						(proc762_0 @local42 @local24 @local60)
 					else
@@ -928,12 +964,12 @@
 			)
 			(1
 				(theCat
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: (if (== curRoomNum 64) 2 else 0)
 					moveSpeed: (if (== curRoomNum 64) 2 else 0)
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
-					ignoreHorizon: 1
+					ignoreHorizon: TRUE
 				)
 				(= cycles 1)
 			)
@@ -961,15 +997,15 @@
 				)
 			)
 			(3
-				(proc550_18)
-				(= global333 0)
-				(= global332 6)
-				(= global331 2)
+				(CastleHandsOn)
+				(= henchmanState 0)
+				(= catState 6)
+				(= wizardState 2)
 				(theCat posn: 1000 1000 stopUpd:)
-				(if global353
-					(= global353 3)
+				(if henchmanTimer
+					(= henchmanTimer 3)
 				else
-					(= global352 (Random 5 10))
+					(= wizardTimer (Random 5 10))
 				)
 				(theMusic number: 836 loop: -1 playBed:)
 			)
@@ -978,7 +1014,6 @@
 )
 
 (instance catInBag of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
@@ -986,7 +1021,7 @@
 				(theCat
 					view: 914
 					setLoop: 4
-					posn: global339 global340
+					posn: baggedCatX baggedCatY
 					show:
 				)
 				(= cycles 1)
@@ -999,9 +1034,9 @@
 					(theCat setLoop: 5)
 				)
 				(if (Random 0 1)
-					(theCat setCycle: Fwd cycleSpeed: (Random 1 4))
+					(theCat setCycle: Forward cycleSpeed: (Random 1 4))
 				else
-					(theCat setCycle: Rev cycleSpeed: (Random 1 4))
+					(theCat setCycle: Reverse cycleSpeed: (Random 1 4))
 				)
 				(= seconds (Random 2 5))
 			)
@@ -1018,7 +1053,7 @@
 	)
 )
 
-(instance blockOne of Blk
+(instance blockOne of Block
 	(properties
 		top 1000
 		left -1000
@@ -1029,24 +1064,30 @@
 
 (instance henchmanPoly of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance theHenchManScript of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
 				(cond 
-					(
-					(and (== global332 7) (== gGNumber_3 curRoomNum)) (client setScript: 0))
-					((== curRoomNum 67) (client setScript: 0))
-					((== global333 3)
+					((and (== catState 7) (== catRoom curRoomNum))
+						(client setScript: 0)
+					)
+					((== curRoomNum 67)
+						(client setScript: 0)
+					)
+					((== henchmanState 3)
 						(switch curRoomNum
-							(59 (= cycles 1))
-							(else  (= seconds 2))
+							(59
+								(= cycles 1)
+							)
+							(else
+								(= seconds 2)
+							)
 						)
 					)
 					(else
@@ -1098,7 +1139,10 @@
 						)
 						(= cycles 1)
 					)
-					((and (== curRoomNum 60) (> (ego x?) 79)) (theHenchMan posn: -52 160) (= cycles 1))
+					((and (== curRoomNum 60) (> (ego x?) 79))
+						(theHenchMan posn: -52 160)
+						(= cycles 1)
+					)
 					((and (== curRoomNum 61) (< (ego x?) 255))
 						(theMagicDoor
 							init:
@@ -1126,57 +1170,76 @@
 						(theHenchMan posn: 163 296)
 						(= cycles 1)
 					)
-					(else (self init:))
+					(else
+						(self init:)
+					)
 				)
 			)
 			(2
 				(if (!= curRoomNum 58)
 					(cond 
-						((not (HaveMouse)) (theHenchMan moveSpeed: 2))
-						((== (ego moveSpeed?) 0) (theHenchMan moveSpeed: 0))
-						(else (theHenchMan moveSpeed: 1))
+						((not (HaveMouse))
+							(theHenchMan moveSpeed: 2)
+						)
+						((== (ego moveSpeed?) 0)
+							(theHenchMan moveSpeed: 0)
+						)
+						(else
+							(theHenchMan moveSpeed: 1)
+						)
 					)
 					(theHenchMan setStep: 4 2)
 				else
 					(cond 
-						((not (HaveMouse)) (theHenchMan setStep: 2 1))
-						((== (ego moveSpeed?) 0) (theHenchMan setStep: 4 2))
-						(else (theHenchMan setStep: 3 2))
+						((not (HaveMouse))
+							(theHenchMan setStep: 2 1)
+						)
+						((== (ego moveSpeed?) 0)
+							(theHenchMan setStep: 4 2)
+						)
+						(else
+							(theHenchMan setStep: 3 2)
+						)
 					)
 					(theHenchMan moveSpeed: 0)
 				)
 				(= cycles 1)
 			)
 			(3
-				(Load rsSOUND 135)
-				(Load rsSOUND 136)
-				(= global333 3)
+				(Load SOUND 135)
+				(Load SOUND 136)
+				(= henchmanState 3)
 				(theMusic number: 135 loop: -1 playBed:)
 				(theHenchMan
 					show:
 					illegalBits: 0
-					ignoreActors: 1
-					ignoreHorizon: 1
+					ignoreActors: TRUE
+					ignoreHorizon: TRUE
 					setMotion: MoveTo global345 global346 self
 				)
-				(if (== curRoomNum 59) (ego setMotion: 0))
+				(if (== curRoomNum 59)
+					(ego setMotion: 0)
+				)
 			)
 			(4
-				(= global333 3)
+				(= henchmanState 3)
 				(if (== curRoomNum 58)
-					(theHenchMan setAvoider: (Avoid new:))
+					(theHenchMan setAvoider: (Avoider new:))
 				)
 				(theHenchMan illegalBits: 0 setMotion: PChase ego 20 self)
 			)
 			(5
-				(if (not (Btst 77)) (Bset 77) (SolvePuzzle 2))
-				(= global333 4)
-				(proc550_17)
+				(if (not (Btst fCaughtByHenchman))
+					(Bset fCaughtByHenchman)
+					(SolvePuzzle 2)
+				)
+				(= henchmanState 4)
+				(CastleHandsOff)
 				(curRoom setScript: 0)
 				(ego setMotion: 0 hide:)
 				(if (!= curRoomNum 60)
 					(theAudio number: 8018 loop: 1 play:)
-					(theMagicDoor show: cycleSpeed: 1 setCycle: End)
+					(theMagicDoor show: cycleSpeed: 1 setCycle: EndLoop)
 				)
 				(if (< (ego x?) (theHenchMan x?))
 					(theHenchMan
@@ -1184,7 +1247,7 @@
 						setLoop: 1
 						cel: 0
 						cycleSpeed: 3
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(theHenchMan
@@ -1192,7 +1255,7 @@
 						setLoop: 0
 						cycleSpeed: 3
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 				((ego head?) hide:)
@@ -1207,12 +1270,12 @@
 					cycleSpeed: 0
 					illegalBits: 0
 					ignoreActors: 1
-					setMotion: PolyPath global347 global348 self
+					setMotion: PolyPath magicDoorX magicDoorY self
 				)
 			)
 			(7
 				(if (== curRoomNum 60)
-					(= global333 5)
+					(= henchmanState 5)
 					(curRoom newRoom: 59)
 				else
 					(theHenchMan
@@ -1243,7 +1306,7 @@
 					cel: 0
 					cycleSpeed: 3
 					setPri: 8
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -1257,7 +1320,7 @@
 				(theMagicDoor
 					setCel: 255
 					cycleSpeed: 2
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(11
@@ -1271,13 +1334,12 @@
 )
 
 (instance theWizardScript of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if (or (== state 6) (== state 108))
 			(cond 
-				((not local14) (= local14 (GetTime 1)))
+				((not local14) (= local14 (GetTime SYSTIME1)))
 				((> (- (GetTime 1) local14) 10) (= cycles 1) (= seconds 0))
 			)
 		)
@@ -1287,17 +1349,17 @@
 		(switch (= state newState)
 			(0
 				(= local14 0)
-				(proc550_17)
-				(= global331 4)
-				(if global333 (theHenchMan setScript: 0 setMotion: 0))
-				(if (< (ego x?) global349)
+				(CastleHandsOff)
+				(= wizardState 4)
+				(if henchmanState (theHenchMan setScript: 0 setMotion: 0))
+				(if (< (ego x?) wizardX)
 					(= temp0 0)
 				else
 					(= temp0 1)
 				)
 				(ego
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCel: temp0
 					setMotion: 0
 				)
@@ -1310,11 +1372,11 @@
 					play:
 				)
 				(if (OneOf curRoomNum 58 62)
-					(Load rsVIEW 701)
-					(Load rsVIEW 704)
+					(Load VIEW 701)
+					(Load VIEW 704)
 					(self changeState: 100)
 				else
-					(switch global351
+					(switch wizardAngle
 						(135 (= temp0 0))
 						(225 (= temp0 1))
 						(45 (= temp0 2))
@@ -1322,31 +1384,31 @@
 					)
 					(theWizard
 						view: (if (== curRoomNum 65) 702 else 705)
-						posn: global349 global350
+						posn: wizardX wizardY
 						setLoop: temp0
 						cel: 0
 						show:
 						cycleSpeed: 1
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 					(Face ego theWizard 5)
 				)
 			)
 			(1
-				(switch global351
+				(switch wizardAngle
 					(135 (= temp0 4))
 					(225 (= temp0 5))
 					(45 (= temp0 6))
 					(315 (= temp0 7))
 				)
-				(theWizard setLoop: temp0 cel: 0 setCycle: End self)
+				(theWizard setLoop: temp0 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(proc762_1 @local15 926 self)
 			)
 			(3
 				(theMusic number: 835 loop: 1 playBed: self)
-				(switch global351
+				(switch wizardAngle
 					(135
 						(= temp0 8)
 						(= local1 19)
@@ -1380,13 +1442,13 @@
 					setLoop: temp0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(4
 				(theAura
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					posn:
 						(+ ((ScriptID 550 7) x?) local1)
 						(+ ((ScriptID 550 7) y?) local2)
@@ -1405,7 +1467,7 @@
 					normal: 0
 					view: (if (== curRoomNum 65) 127 else 132)
 					setLoop: temp0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 3
 				)
 			)
@@ -1413,7 +1475,7 @@
 				(theAudio number: 7058 loop: 1 play:)
 				(ego
 					setLoop: (+ (ego loop?) 2)
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 3
 				)
 			)
@@ -1427,10 +1489,10 @@
 					(45 (= temp0 10))
 					(315 (= temp0 11))
 				)
-				(ego setLoop: temp0 cel: 0 setCycle: End self)
+				(ego setLoop: temp0 cel: 0 setCycle: EndLoop self)
 			)
 			(8
-				(theWizard setCycle: Beg)
+				(theWizard setCycle: BegLoop)
 				(= seconds 4)
 				(= global103 0)
 			)
@@ -1441,36 +1503,36 @@
 			(100
 				(theWizard
 					view: 701
-					posn: global349 global350
-					setLoop: (if (== global351 90) 1 else 0)
+					posn: wizardX wizardY
+					setLoop: (if (== wizardAngle 90) 1 else 0)
 					cel: 0
 					show:
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(Face ego theWizard 5)
 			)
 			(101
 				(theWizard
-					setLoop: (if (== global351 90) 3 else 2)
+					setLoop: (if (== wizardAngle 90) 3 else 2)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(102 (= seconds 2))
 			(103
 				(theMusic number: 835 loop: 1 playBed: self)
 				(theWizard
-					setLoop: (if (== global351 90) 5 else 4)
+					setLoop: (if (== wizardAngle 90) 5 else 4)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(104
 				(proc762_1 @local15 926 self)
 			)
 			(105
-				(if (== global351 90)
+				(if (== wizardAngle 90)
 					(= temp0 7)
 					(= local1 -28)
 					(= local2 -30)
@@ -1483,13 +1545,13 @@
 					setLoop: temp0
 					cel: 0
 					cycleSpeed: 3
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(106
 				(theAura
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					posn:
 						(+ ((ScriptID 550 7) x?) local1)
 						(+ ((ScriptID 550 7) y?) local2)
@@ -1503,14 +1565,14 @@
 					view: 704
 					setLoop: (if (== global354 90) 0 else 1)
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(108
 				(theAudio number: 7058 loop: 1 play:)
 				(ego
 					setLoop: (if (== global354 90) 3 else 2)
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 2
 				)
 			)
@@ -1521,12 +1583,12 @@
 					setLoop: (if (== global354 90) 4 else 5)
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(110
 				(theAudio stop:)
-				(theWizard cycleSpeed: 2 setCycle: Beg)
+				(theWizard cycleSpeed: 2 setCycle: BegLoop)
 				(= seconds 3)
 				(= global103 0)
 			)
@@ -1539,16 +1601,15 @@
 )
 
 (instance ringsScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(if (< (DoSound sndDISPOSE) 8)
-					(theRings setCycle: End self)
+				(if (< (DoSound NumVoices) 8)
+					(theRings setCycle: EndLoop self)
 				else
 					(theAudio number: 8071 loop: 1 play: self)
-					((ScriptID 550 5) setCycle: End)
+					((ScriptID 550 5) setCycle: EndLoop)
 				)
 			)
 			(1 (= cycles 5))

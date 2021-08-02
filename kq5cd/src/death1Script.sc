@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 604)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use CodeCue)
 (use Motion)
@@ -18,10 +18,9 @@
 )
 
 (local
-	[local0 9] = [1000 233 21 4 11 24 19 23 30]
+	local0 = [1000 233 21 4 11 24 19 23 30]
 )
 (instance death1Script of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -48,18 +47,17 @@
 )
 
 (instance death2Script of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theMusic number: 896 loop: 1 play:)
-				(gNewActorCloner_3 setCycle: End self)
+				(gNewActorCloner_3 setCycle: EndLoop self)
 				(switch global387
 					(4
 						(gNewActorCloner dispose:)
 						(gNewActorCloner_2 dispose:)
-						(ego view: 722 setLoop: 11 cel: 0 setCycle: CT 1 1)
+						(ego view: 722 setLoop: 11 cel: 0 setCycle: CycleTo 1 1)
 					)
 				)
 			)
@@ -83,7 +81,7 @@
 						self
 				)
 				(theAudio number: 8200 loop: 1 play:)
-				(gNewActorCloner_3 setCycle: Beg)
+				(gNewActorCloner_3 setCycle: BegLoop)
 			)
 			(2
 				(if (!= global387 4)
@@ -92,21 +90,21 @@
 				)
 				(gNewActorCloner_5 dispose:)
 				(switch global387
-					(4 (ego setCycle: End self))
+					(4 (ego setCycle: EndLoop self))
 					(2
-						(ego view: 719 setLoop: 2 cel: 0 setCycle: End self)
+						(ego view: 719 setLoop: 2 cel: 0 setCycle: EndLoop self)
 					)
 					(1
-						(ego view: 719 setLoop: 0 cel: 0 setCycle: End self)
+						(ego view: 719 setLoop: 0 cel: 0 setCycle: EndLoop self)
 					)
 					(3
-						(ego view: 719 setLoop: 3 z: 0 cel: 0 setCycle: End self)
+						(ego view: 719 setLoop: 3 z: 0 cel: 0 setCycle: EndLoop self)
 					)
 				)
 			)
 			(3
 				(if (== global387 4)
-					(ego view: 728 setLoop: 7 cel: 0 setCycle: End self)
+					(ego view: 728 setLoop: 7 cel: 0 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -121,16 +119,15 @@
 )
 
 (instance death3Script of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
 				(theMusic number: 896 loop: 1 play:)
-				(gMordObj setLoop: 12 cycleSpeed: 2 setCycle: End self)
+				(gMordObj setLoop: 12 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(1
-				(gMordObj setCycle: Beg)
+				(gMordObj setCycle: BegLoop)
 				(switch global387
 					(4 (= temp0 5))
 					(2 (= temp0 6))
@@ -145,7 +142,7 @@
 					cycleSpeed: 2
 					cel: 0
 					z: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (= seconds 2))
@@ -187,11 +184,11 @@
 					setLoop: temp0
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(ego view: 719 setLoop: 1 cel: 0 setCycle: End self)
+				(ego view: 719 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(4 (= seconds 2))
 			(5
@@ -219,10 +216,10 @@
 		(if (== (client script?) self)
 			(switch (= state newState)
 				(0
-					(client setCycle: End self)
+					(client setCycle: EndLoop self)
 					(theAudio number: 7064 loop: 1 play:)
 				)
-				(1 (client setCycle: Beg self))
+				(1 (client setCycle: BegLoop self))
 				(2 (= seconds (Random 1 5)))
 				(3
 					(if (> (DoAudio 6) -1) (-- state))
@@ -250,13 +247,13 @@
 					posn: 227 66 0
 					init:
 				)
-				(gMordObj setLoop: 1 cel: 0 setCycle: End self)
+				(gMordObj setLoop: 1 cel: 0 setCycle: EndLoop self)
 				(theMusic2 number: 838 loop: 1 play:)
 			)
 			(1
 				(gNewActorCloner
 					setPri: 15
-					setCycle: Fwd
+					setCycle: Forward
 					posn: 215 59
 					moveSpeed: 1
 					setMotion: (ScriptID 124 2) self
@@ -270,10 +267,10 @@
 			)
 			(3
 				(gNewActorCloner view: 712 setPri: -1 z: 1000 setCycle: 0)
-				(gMordObj setLoop: 2 cel: 0 setCycle: End self)
+				(gMordObj setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(if (not (Btst 55))
+				(if (not (Btst fCedricWontSaveEgo))
 					(proc762_1 @local0 3000)
 					(= cycles 1)
 				else
@@ -281,7 +278,7 @@
 				)
 			)
 			(5
-				(if (not (Btst 55))
+				(if (not (Btst fCedricWontSaveEgo))
 					(cls)
 					(= seconds 2)
 				else
@@ -289,7 +286,7 @@
 				)
 			)
 			(6
-				(if (not (Btst 55))
+				(if (not (Btst fCedricWontSaveEgo))
 					(cedric
 						init:
 						setLoop: 4
@@ -303,7 +300,7 @@
 				(= cycles 1)
 			)
 			(7
-				(gMordObj setLoop: 3 cel: 0 setCycle: End self)
+				(gMordObj setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(8 (self dispose:))
 		)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 610)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use Sync)
@@ -14,33 +14,32 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
-	local4
+	underbits
+	underbits2
+	underbits3
+	underbits4
+	textColor
 )
-(instance introSlide_1 of Rm
+(instance introSlide_1 of Room
 	(properties
 		picture 68
 	)
 	
 	(method (init)
-		(= local4 (if isVGA 7 else 15))
+		(= textColor (if isVGA 7 else 15))
 		(super init: &rest)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
-		(= global103 1)
-		(Load rsPIC 55)
-		(LoadMany 128 755 754)
-		(Load rsFONT 8)
+		(theGame setCursor: invCursor TRUE)
+		(= inCartoon TRUE)
+		(Load PICTURE 55)
+		(LoadMany VIEW 755 754)
+		(Load FONT 8)
 		(aCastle init:)
 		(self setScript: openingCartoon)
 	)
 )
 
 (instance openingCartoon of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -56,92 +55,92 @@
 				(self setScript: scene1Script)
 			)
 			(3
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 68)
-				(Load rsPIC 69)
-				(LoadMany 128 748 749)
-				(LoadMany 135 600 8)
+				(UnLoad PICTURE 68)
+				(Load PICTURE 69)
+				(LoadMany VIEW 748 749)
+				(LoadMany FONT 600 8)
 				(= seconds 2)
 			)
 			(4
 				(self setScript: scene2Script)
 			)
 			(5
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 69)
-				(Load rsPIC 68)
-				(LoadMany 128 748 757 760)
+				(UnLoad PICTURE 69)
+				(Load PICTURE 68)
+				(LoadMany VIEW 748 757 760)
 				(= seconds 2)
 			)
 			(6
 				(self setScript: scene3Script)
 			)
 			(7
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 68)
-				(Load rsPIC 70)
-				(LoadMany 128 761)
+				(UnLoad PICTURE 68)
+				(Load PICTURE 70)
+				(LoadMany VIEW 761)
 				(= seconds 2)
 			)
 			(8
 				(self setScript: scene4Script)
 			)
 			(9
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 70)
-				(Load rsPIC 71)
-				(LoadMany 128 757 763)
+				(UnLoad PICTURE 70)
+				(Load PICTURE 71)
+				(LoadMany VIEW 757 763)
 				(= seconds 2)
 			)
 			(10
 				(self setScript: scene5Script)
 			)
 			(11
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 71)
-				(Load rsPIC 72)
-				(LoadMany 128 761)
+				(UnLoad PICTURE 71)
+				(Load PICTURE 72)
+				(LoadMany VIEW 761)
 				(= seconds 2)
 			)
 			(12
 				(self setScript: scene6Script)
 			)
 			(13
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 72)
-				(Load rsPIC 70)
-				(LoadMany 128 761)
+				(UnLoad PICTURE 72)
+				(Load PICTURE 70)
+				(LoadMany VIEW 761)
 				(= seconds 2)
 			)
 			(14
 				(self setScript: scene7Script)
 			)
 			(15
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 70)
-				(Load rsPIC 71)
-				(LoadMany 128 763 757 758 759 785)
+				(UnLoad PICTURE 70)
+				(Load PICTURE 71)
+				(LoadMany VIEW 763 757 758 759 785)
 				(= seconds 2)
 			)
 			(16
@@ -154,7 +153,6 @@
 )
 
 (instance scene1Script of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -164,61 +162,71 @@
 				(= seconds 1)
 			)
 			(1
-				(= local1
-					(Display 610 0 dsCOORD 80 100 dsFONT 8 dsCOLOR 0)
+				(= underbits2
+					(Display 610 0
+						p_at 80 100
+						p_font 8
+						p_color 0
+					)
 				)
-				(= local0
-					(Display 610 0 dsCOORD 79 99 dsFONT 8 dsCOLOR local4)
+				(= underbits
+					(Display 610 0
+						p_at 79 99
+						p_font 8
+						p_color textColor
+					)
 				)
 				(= seconds 3)
 			)
 			(2
-				(DrawPic 68 dpCLOSEREOPEN_HCENTER FALSE)
+				(DrawPic 68 PIXELDISSOLVE FALSE)
 				(= cycles 1)
 			)
-			(3 (= waitForCue 4608))
+			(3
+				(= waitForCue 4608)
+			)
 			(4
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(mordack init:)
 				(= cycles 1)
 			)
 			(5
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 5120)
 			)
 			(6
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(mordack loop: 2 cel: 4 show:)
 				(lightning init:)
 				(clouds init:)
 				(= cycles 1)
 			)
 			(7
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 5200)
 			)
 			(8
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(lightning loop: 5 cel: 2 show:)
 				(clouds loop: 2 cel: 2 show:)
 				(= cycles 1)
 			)
 			(9
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 5376)
 			)
 			(10
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(lightning loop: 5 cel: 4 show:)
 				(clouds cel: 3 show:)
 				(= cycles 1)
 			)
 			(11
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 5632)
 			)
 			(12
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(aCastle hide:)
 				(lightning hide:)
 				(mordack loop: 5 cel: 3 show:)
@@ -226,20 +234,20 @@
 				(= cycles 1)
 			)
 			(13
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 5888)
 			)
 			(14
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(cast eachElementDo: #hide)
 				(= cycles 1)
 			)
 			(15
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 3)
 			)
 			(16
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(17 (= seconds 1))
@@ -252,85 +260,52 @@
 )
 
 (instance scene2Script of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 69 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 69 FADEOUT)
 				(theEgo init:)
 				(theHead init:)
 				(water init:)
-				(= local3
-					(Display
-						610
-						1
-						dsCOORD
-						70
-						10
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits4
+					(Display 610 1
+						p_at 70 10
+						p_width 140
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						610
-						2
-						dsCOORD
-						70
-						26
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 610 2
+						p_at 70 26
+						p_width 140
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						610
-						1
-						dsCOORD
-						69
-						9
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 610 1
+						p_at 69 9
+						p_width 140
+						p_mode teJustCenter
+						p_color textColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						610
-						2
-						dsCOORD
-						69
-						25
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 610 2
+						p_at 69 25
+						p_width 140
+						p_mode teJustCenter
+						p_color textColor
+						p_font 8
+						p_save
 					)
 				)
 				(= seconds 2)
@@ -340,109 +315,77 @@
 				(= seconds 6)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo x: 146 y: 112 view: 748 show:)
 				(theHead x: 146 y: 112 view: 748 show:)
 				(water cel: 2 show:)
-				(Display 610 3 108 local0)
-				(Display 610 3 108 local1)
-				(Display 610 3 108 local3)
-				(Display 610 3 108 local2)
-				(= local3
-					(Display
-						610
-						4
-						dsCOORD
-						11
-						75
-						dsWIDTH
-						120
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(Display 610 3 p_restore underbits)
+				(Display 610 3 p_restore underbits2)
+				(Display 610 3 p_restore underbits4)
+				(Display 610 3 p_restore underbits3)
+				(= underbits4
+					(Display 610 4
+						p_at 11 75
+						p_width 120
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						610
-						5
-						dsCOORD
-						11
-						91
-						dsWIDTH
-						120
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 610 5
+						p_at 11 91
+						p_width 120
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						610
-						4
-						dsCOORD
-						10
-						74
-						dsWIDTH
-						120
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 610 4
+						p_at 10 74
+						p_width 120
+						p_mode teJustCenter
+						p_color textColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						610
-						5
-						dsCOORD
-						10
-						90
-						dsWIDTH
-						120
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 610 5
+						p_at 10 90
+						p_width 120
+						p_mode teJustCenter
+						p_color textColor
+						p_font 8
+						p_save
 					)
 				)
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 5)
 			)
 			(4
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo x: 158 y: 112 loop: 5 cel: 6 show:)
 				(theHead hide:)
 				(water loop: 0 cel: 3 show:)
-				(Display 610 3 108 local0)
-				(Display 610 3 108 local1)
-				(Display 610 3 108 local2)
-				(Display 610 3 108 local3)
+				(Display 610 3 p_restore underbits)
+				(Display 610 3 p_restore underbits2)
+				(Display 610 3 p_restore underbits3)
+				(Display 610 3 p_restore underbits4)
 				(= cycles 1)
 			)
 			(5
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 1)
 			)
 			(6
-				(DrawPic 69 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 69 PIXELDISSOLVE)
 				(theEgo loop: 7 cel: 1 show:)
 				(water
 					x: 185
@@ -456,85 +399,53 @@
 				(= seconds 1)
 			)
 			(7
-				(DrawPic 69 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 69 PIXELDISSOLVE)
 				(theEgo loop: 7 cel: 5 show:)
 				(water x: 185 y: 169 loop: 1 cel: 5 show:)
-				(= local3
-					(Display
-						610
-						6
-						dsCOORD
-						70
-						10
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits4
+					(Display 610 6
+						p_at 70 10
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						610
-						7
-						dsCOORD
-						70
-						26
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 610 7
+						p_at 70 26
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						610
-						6
-						dsCOORD
-						69
-						9
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 610 6
+						p_at 69 9
+						p_width 240
+						p_mode teJustCenter
+						p_color textColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						610
-						7
-						dsCOORD
-						69
-						25
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 610 7
+						p_at 69 25
+						p_width 240
+						p_mode teJustCenter
+						p_color textColor
+						p_font 8
+						p_save
 					)
 				)
 				(= seconds 6)
 			)
 			(8
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo x: 222 y: 119 loop: 6 cel: 6 show:)
 				(theHead x: 222 y: 119 loop: 4 cel: 0 priority: 8 show:)
 				(water
@@ -546,177 +457,113 @@
 					priority: 11
 					show:
 				)
-				(Display 610 3 108 local0)
-				(Display 610 3 108 local1)
-				(Display 610 3 108 local2)
-				(Display 610 3 108 local3)
-				(= local3
-					(Display
-						610
-						8
-						dsCOORD
-						121
-						24
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(Display 610 3 p_restore underbits)
+				(Display 610 3 p_restore underbits2)
+				(Display 610 3 p_restore underbits3)
+				(Display 610 3 p_restore underbits4)
+				(= underbits4
+					(Display 610 8
+						p_at 121 24
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						610
-						9
-						dsCOORD
-						121
-						40
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 610 9
+						p_at 121 40
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						610
-						8
-						dsCOORD
-						120
-						23
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 610 8
+						p_at 120 23
+						p_width 240
+						p_mode teJustCenter
+						p_color textColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						610
-						9
-						dsCOORD
-						120
-						39
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 610 9
+						p_at 120 39
+						p_width 240
+						p_mode teJustCenter
+						p_color textColor
+						p_font 8
+						p_save
 					)
 				)
 				(= cycles 1)
 			)
 			(9
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 6)
 			)
 			(10
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo x: 290 y: 90 cel: 0 show:)
 				(theHead x: 290 y: 90 priority: 5 show:)
 				(water loop: 0 cel: 2 show:)
-				(Display 610 3 108 local0)
-				(Display 610 3 108 local1)
-				(Display 610 3 108 local2)
-				(Display 610 3 108 local3)
-				(= local3
-					(Display
-						610
-						10
-						dsCOORD
-						21
-						11
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(Display 610 3 p_restore underbits)
+				(Display 610 3 p_restore underbits2)
+				(Display 610 3 p_restore underbits3)
+				(Display 610 3 p_restore underbits4)
+				(= underbits4
+					(Display 610 10
+						p_at 21 11
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						610
-						11
-						dsCOORD
-						21
-						27
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 610 11
+						p_at 21 27
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						610
-						10
-						dsCOORD
-						20
-						10
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 610 10
+						p_at 20 10
+						p_width 240
+						p_mode teJustCenter
+						p_color textColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						610
-						11
-						dsCOORD
-						20
-						26
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 610 11
+						p_at 20 26
+						p_width 240
+						p_mode teJustCenter
+						p_color textColor
+						p_font 8
+						p_save
 					)
 				)
 				(= cycles 1)
 			)
 			(11
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 6)
 			)
 			(12
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo x: 323 y: 84 loop: 6 cel: 7 show:)
 				(theHead
 					x: 323
@@ -728,90 +575,60 @@
 					show:
 				)
 				(water loop: 0 cel: 2 show:)
-				(Display 610 3 108 local0)
-				(Display 610 3 108 local1)
-				(Display 610 3 108 local2)
-				(Display 610 3 108 local3)
-				(= local3
-					(Display
-						610
-						12
-						dsCOORD
-						11
-						75
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(Display 610 3 p_restore underbits)
+				(Display 610 3 p_restore underbits2)
+				(Display 610 3 p_restore underbits3)
+				(Display 610 3 p_restore underbits4)
+				(= underbits4
+					(Display 610 12
+						p_at 11 75
+						p_width 140
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						610
-						13
-						dsCOORD
-						11
-						91
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 610 13
+						p_at 11 91
+						p_width 140
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						610
-						12
-						dsCOORD
-						10
-						74
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 610 12
+						p_at 10 74
+						p_width 140
+						p_mode teJustCenter
+						p_color textColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						610
-						13
-						dsCOORD
-						10
-						90
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						local4
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 610 13
+						p_at 10 90
+						p_width 140
+						p_mode teJustCenter
+						p_color textColor
+						p_font 8
+						p_save
 					)
 				)
 				(= cycles 1)
 			)
 			(13
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 6)
 			)
 			(14
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1)
+					(-- state)
+				)
 				(= cycles 1)
 			)
 			(15
@@ -823,12 +640,11 @@
 )
 
 (instance scene3Script of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 68 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 68 FADEOUT)
 				(theEgo
 					x: 44
 					y: 162
@@ -846,7 +662,7 @@
 				(= waitForCue 800)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo
 					x: 44
 					y: 162
@@ -868,11 +684,11 @@
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 1)
 			)
 			(4
-				(DrawPic 68 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 68 PIXELDISSOLVE)
 				(theEgo
 					x: 44
 					y: 162
@@ -894,10 +710,14 @@
 				(= cycles 1)
 			)
 			(5
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1)
+					(-- state)
+				)
 				(= cycles 1)
 			)
-			(6 (= seconds 1))
+			(6
+				(= seconds 1)
+			)
 			(7
 				(client cue:)
 				(self dispose:)
@@ -907,12 +727,11 @@
 )
 
 (instance scene4Script of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 70 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 70 FADEOUT)
 				(theMouth init:)
 				(owlEyes init:)
 				(egoEyes init:)
@@ -936,7 +755,7 @@
 				(= waitForCue 4356)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl
 					x: 177
 					y: 79
@@ -963,14 +782,18 @@
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(4
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1)
+					(-- state)
+				)
 				(= cycles 1)
 			)
-			(5 (= seconds 1))
+			(5
+				(= seconds 1)
+			)
 			(6
 				(client cue:)
 				(self dispose:)
@@ -980,12 +803,11 @@
 )
 
 (instance scene5Script of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 71 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 71 FADEOUT)
 				(theHead
 					x: 81
 					y: 118
@@ -1060,7 +882,7 @@
 				(= waitForCue 5124)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo hide:)
 				(rightLimb loop: 4 cel: 0)
 				(leftLimb loop: 6 cel: 4)
@@ -1068,14 +890,18 @@
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(4
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1)
+					(-- state)
+				)
 				(= cycles 1)
 			)
-			(5 (= seconds 1))
+			(5
+				(= seconds 1)
+			)
 			(6
 				(client cue:)
 				(self dispose:)
@@ -1085,12 +911,11 @@
 )
 
 (instance scene6Script of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 72 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 72 FADEOUT)
 				(owlEyes
 					x: 154
 					y: 54
@@ -1117,19 +942,23 @@
 				(= waitForCue 5892)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theMouth cel: 4)
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(4
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1)
+					(-- state)
+				)
 				(= cycles 1)
 			)
-			(5 (= seconds 2))
+			(5
+				(= seconds 2)
+			)
 			(6
 				(client cue:)
 				(self dispose:)
@@ -1139,12 +968,11 @@
 )
 
 (instance scene7Script of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 70 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 70 FADEOUT)
 				(owl
 					x: 177
 					y: 79
@@ -1208,7 +1036,7 @@
 				(= waitForCue 6404)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl hide:)
 				(theMouth
 					x: 177
@@ -1233,14 +1061,18 @@
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(4
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1)
+					(-- state)
+				)
 				(= cycles 1)
 			)
-			(5 (= seconds 1))
+			(5
+				(= seconds 1)
+			)
 			(6
 				(client cue:)
 				(self dispose:)
@@ -1250,12 +1082,11 @@
 )
 
 (instance scene8Script of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 71 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 71 FADEOUT)
 				(theEgo
 					x: 81
 					y: 118
@@ -1327,7 +1158,7 @@
 				(= waitForCue 9216)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl view: 758 loop: 2 cel: 9 priority: 1)
 				(owlEyes hide:)
 				(rightLimb hide:)
@@ -1336,11 +1167,11 @@
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 9296)
 			)
 			(4
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo
 					x: 101
 					y: 105
@@ -1354,20 +1185,20 @@
 				(= cycles 1)
 			)
 			(5
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 2)
 			)
 			(6
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl x: 203 y: 180 view: 758 loop: 3 cel: 2)
 				(= cycles 1)
 			)
 			(7
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 9472)
 			)
 			(8
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl x: 203 y: 242 view: 758 loop: 3 cel: 0)
 				(leaves
 					x: 197
@@ -1381,17 +1212,17 @@
 				(= cycles 1)
 			)
 			(9
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= seconds 2)
 			)
 			(10
-				(DrawPic 71 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 71 PIXELDISSOLVE)
 				(owl x: 192 y: 168 view: 759 loop: 0 cel: 0 priority: 0)
 				(leaves hide:)
 				(= cycles 10)
 			)
 			(11
-				(DrawPic 71 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 71 PIXELDISSOLVE)
 				(theEgo x: 81 y: 118 view: 763 loop: 0 cel: 2)
 				(egoBody
 					x: 102
@@ -1441,7 +1272,7 @@
 				(= waitForCue 10240)
 			)
 			(12
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(egoBody hide:)
 				(theMouth
 					x: 102
@@ -1454,11 +1285,11 @@
 				(= cycles 1)
 			)
 			(13
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 10496)
 			)
 			(14
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(egoBody
 					x: 102
 					y: 109
@@ -1479,11 +1310,11 @@
 				(= cycles 1)
 			)
 			(15
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 10576)
 			)
 			(16
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl x: 189 y: 86 view: 759 loop: 2 cel: 8 priority: 10)
 				(owlEyes hide:)
 				(rightLimb hide:)
@@ -1492,11 +1323,11 @@
 				(= cycles 1)
 			)
 			(17
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 10608)
 			)
 			(18
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl x: 189 y: 86 view: 759 loop: 3 cel: 6 priority: 10)
 				(theMouth
 					x: 192
@@ -1510,21 +1341,21 @@
 				(= cycles 1)
 			)
 			(19
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 13056)
 			)
 			(20
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl x: 180 y: 83 view: 785 loop: 5 cel: 0 priority: 10)
 				(theMouth hide:)
 				(= cycles 1)
 			)
 			(21
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(22
-				(DrawPic 71 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 71 PIXELDISSOLVE)
 				(theEgo
 					x: 97
 					y: 109
@@ -1539,13 +1370,13 @@
 				(= seconds 2)
 			)
 			(23
-				(DrawPic 71 dpOPEN_TOP)
+				(DrawPic 71 WIPEDOWN)
 				(owl x: 110 y: 48 view: 785 loop: 6 cel: 4 priority: 10)
 				(dust init:)
 				(= waitForCue 13568)
 			)
 			(24
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(owl x: 110 y: 48 view: 785 loop: 10 cel: 2 priority: 10)
 				(dust hide:)
 				(theMouth
@@ -1561,11 +1392,11 @@
 				(= cycles 1)
 			)
 			(25
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 13904)
 			)
 			(26
-				(DrawPic 71 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 71 PIXELDISSOLVE)
 				(theEgo
 					x: 103
 					y: 108
@@ -1579,10 +1410,14 @@
 				(= cycles 1)
 			)
 			(27
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1)
+					(-- state)
+				)
 				(= cycles 1)
 			)
-			(28 (= seconds 1))
+			(28
+				(= seconds 1)
+			)
 			(29
 				(client cue:)
 				(self dispose:)
@@ -1598,7 +1433,7 @@
 		view 755
 		loop 4
 		priority 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1609,7 +1444,7 @@
 		view 754
 		cel 1
 		priority 13
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1620,7 +1455,7 @@
 		view 755
 		loop 5
 		priority 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1632,7 +1467,7 @@
 		loop 1
 		cel 3
 		priority 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1644,7 +1479,7 @@
 		loop 3
 		cel 8
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1656,7 +1491,7 @@
 		view 748
 		loop 4
 		priority 7
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1667,7 +1502,7 @@
 		view 749
 		cel 1
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1678,7 +1513,7 @@
 		view 757
 		cel 13
 		priority 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1689,7 +1524,7 @@
 		view 761
 		loop 1
 		priority 7
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1700,7 +1535,7 @@
 		view 761
 		cel 3
 		priority 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1712,7 +1547,7 @@
 		loop 2
 		cel 1
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1723,7 +1558,7 @@
 		view 761
 		loop 5
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1734,7 +1569,7 @@
 		view 761
 		loop 6
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1745,7 +1580,7 @@
 		view 761
 		loop 4
 		priority 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1757,7 +1592,7 @@
 		loop 4
 		cel 11
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1768,7 +1603,7 @@
 		view 785
 		loop 9
 		priority 9
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1780,10 +1615,8 @@
 		loop 7
 		cel 5
 		priority 12
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
-(instance syncIt of Prop
-	(properties)
-)
+(instance syncIt of Prop)
