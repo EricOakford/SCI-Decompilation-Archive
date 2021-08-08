@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 753)
-(include sci.sh)
+(include game.sh)
 (use Intrface)
 (use System)
 
@@ -9,10 +9,9 @@
 )
 
 (local
-	[local0 10] = [9237 9238 9239 9240 9241 9242 9243 9244 9245 9246]
+	local0 = [9237 9238 9239 9240 9241 9242 9243 9244 9245 9246]
 )
 (instance help of Code
-	(properties)
 	
 	(method (doit &tmp temp0 temp1)
 		(asm

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 701)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use Sync)
@@ -13,49 +13,53 @@
 )
 
 (local
-	local0
+	thePic
 	local1
 	[local2 8]
-	local10
-	local11
-	local12
+	theFont
+	backColor
+	foreColor
 )
-(procedure (localproc_0e58)
-	(DrawPic local0 dpCLOSEREOPEN_HCENTER FALSE)
+(procedure (RedrawPic)
+	(DrawPic thePic PIXELDISSOLVE FALSE)
 )
 
-(instance rm701 of Rm
-	(properties)
+(instance rm701 of Room
 	
 	(method (init)
-		(= local0 2050)
-		(self picture: local0 yourself: setScript: closingCartoon)
+		(= thePic 2050)
+		(self
+			picture: thePic
+			yourself:
+			setScript: closingCartoon
+		)
 		(if isVGA
-			(= local11 7)
-			(= local12 0)
-			(= local10 1)
+			(= backColor 7)
+			(= foreColor 0)
+			(= theFont USERFONT)
 		else
-			(= local11 15)
-			(= local12 0)
-			(= local10 0)
+			(= backColor vWHITE)
+			(= foreColor vBLACK)
+			(= theFont SYSFONT)
 		)
 		(super init: &rest)
 	)
 )
 
 (instance closingCartoon of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
 				((ScriptID 763) doit:)
 				(= cycles 1)
 			)
 			(2
 				(HandsOff)
-				(++ local0)
+				(++ thePic)
 				(syncIt init: setCycle: MouthSync 10121 hide:)
 				(theAudio number: 10121 play:)
 				(= waitForCue 8960)
@@ -134,7 +138,7 @@
 			)
 			(19
 				(doDrawPic doit:)
-				(= local0 2067)
+				(= thePic 2067)
 				(curRoom setScript: creditsScript)
 			)
 		)
@@ -142,1189 +146,600 @@
 )
 
 (instance creditsScript of Script
-	(properties)
 	
-	(method (changeState newState &tmp [temp0 60])
+	(method (changeState newState &tmp [str 60])
 		(switch (= state newState)
 			(0
-				(Display
-					701
-					0
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 0
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
+				)
+				(Display 701 0
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(Display
-					701
-					0
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+					(Format @str 701 1 score possibleScore)
+					p_at 90 80
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
 				(Display
-					(Format @temp0 701 1 score possibleScore)
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
-				)
-				(Display
-					(Format @temp0 701 1 score possibleScore)
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+					(Format @str 701 1 score possibleScore)
+					p_at 89 79
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 10)
 			)
 			(1
-				(localproc_0e58)
-				(Display
-					701
-					2
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 2
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					2
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 2
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					3
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 3
+					p_at 90 80
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					3
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 3
+					p_at 89 79
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 4)
 			)
 			(2
-				(localproc_0e58)
-				(Display
-					701
-					4
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 4
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					4
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 4
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					5
-					dsCOORD
-					35
-					80
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 5
+					p_at 35 80
+					p_width 130
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					5
-					dsCOORD
-					34
-					79
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 5
+					p_at 34 79
+					p_width 130
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					6
-					dsCOORD
-					145
-					80
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 6
+					p_at 145 80
+					p_width 130
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					6
-					dsCOORD
-					144
-					79
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 6
+					p_at 144 79
+					p_width 130
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 12)
 			)
 			(3
-				(localproc_0e58)
-				(Display
-					701
-					4
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 4
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					4
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 4
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					7
-					dsCOORD
-					35
-					80
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 7
+					p_at 35 80
+					p_width 130
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					7
-					dsCOORD
-					34
-					79
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 7
+					p_at 34 79
+					p_width 130
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					8
-					dsCOORD
-					145
-					80
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 8
+					p_at 145 80
+					p_width 130
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					8
-					dsCOORD
-					144
-					79
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 8
+					p_at 144 79
+					p_width 130
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 8)
 			)
 			(4
-				(localproc_0e58)
-				(Display
-					701
-					9
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 9
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					9
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 9
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					10
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 10
+					p_at 90 80
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					10
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 10
+					p_at 89 79
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 10)
 			)
 			(5
-				(localproc_0e58)
-				(Display
-					701
-					11
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 11
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					11
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 11
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					12
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 12
+					p_at 90 80
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					12
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 12
+					p_at 89 79
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 4)
 			)
 			(6
-				(localproc_0e58)
-				(Display
-					701
-					13
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 13
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					13
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 13
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					14
-					dsCOORD
-					35
-					80
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 14
+					p_at 35 80
+					p_width 130
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					14
-					dsCOORD
-					34
-					79
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 14
+					p_at 34 79
+					p_width 130
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					15
-					dsCOORD
-					145
-					80
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 15
+					p_at 145 80
+					p_width 130
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					15
-					dsCOORD
-					144
-					79
-					dsWIDTH
-					130
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 15
+					p_at 144 79
+					p_width 130
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 12)
 			)
 			(7
-				(localproc_0e58)
-				(Display
-					701
-					16
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 16
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					16
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 16
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					17
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 17
+					p_at 90 80
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					17
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 17
+					p_at 89 79
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 4)
 			)
 			(8
-				(localproc_0e58)
+				(RedrawPic)
 				(theIconBar enable:)
-				(theIconBar disable: 0 1 2 3)
-				(Display
-					701
-					18
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(theIconBar disable: ICON_WALK ICON_LOOK ICON_DO ICON_TALK)
+				(Display 701 18
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					18
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 18
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					19
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 19
+					p_at 90 80
+					p_width 320
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					19
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 19
+					p_at 89 79
+					p_width 320
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 10)
 			)
 			(9
-				(localproc_0e58)
-				(Display
-					701
-					18
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 18
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					18
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 18
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					20
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 20
+					p_at 90 80
+					p_width 320
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					20
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 20
+					p_at 89 79
+					p_width 320
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 10)
 			)
 			(10
-				(localproc_0e58)
-				(Display
-					701
-					18
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 18
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					18
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 18
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					21
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 21
+					p_at 90 80
+					p_width 320
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					21
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 21
+					p_at 89 79
+					p_width 320
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 10)
 			)
 			(11
-				(localproc_0e58)
-				(Display
-					701
-					18
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 18
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					18
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 18
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					22
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 22
+					p_at 90 80
+					p_width 320
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					22
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 22
+					p_at 89 79
+					p_width 320
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 10)
 			)
 			(12
-				(localproc_0e58)
-				(Display
-					701
-					18
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 18
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					18
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 18
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					23
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 23
+					p_at 90 80
+					p_width 320
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					23
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 23
+					p_at 89 79
+					p_width 320
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 10)
 			)
 			(13
-				(localproc_0e58)
-				(Display
-					701
-					18
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 18
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					18
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 18
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					24
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 24
+					p_at 90 80
+					p_width 320
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					24
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 24
+					p_at 89 79
+					p_width 320
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 10)
 			)
 			(14
-				(localproc_0e58)
-				(Display
-					701
-					18
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 18
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					18
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 18
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					25
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 25
+					p_at 90 80
+					p_width 320
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					25
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					320
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 25
+					p_at 89 79
+					p_width 320
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 5)
 			)
 			(15
-				(localproc_0e58)
-				(Display
-					701
-					26
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 26
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					26
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 26
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					27
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 27
+					p_at 90 80
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					27
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 27
+					p_at 89 79
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 5)
 			)
 			(16
-				(localproc_0e58)
-				(Display
-					701
-					28
-					dsCOORD
-					90
-					60
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(RedrawPic)
+				(Display 701 28
+					p_at 90 60
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					28
-					dsCOORD
-					89
-					59
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 28
+					p_at 89 59
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
-				(Display
-					701
-					29
-					dsCOORD
-					90
-					80
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local12
-					dsFONT
-					local10
+				(Display 701 29
+					p_at 90 80
+					p_width 140
+					p_mode teJustCenter
+					p_color foreColor
+					p_font theFont
 				)
-				(Display
-					701
-					29
-					dsCOORD
-					89
-					79
-					dsWIDTH
-					140
-					dsALIGN
-					1
-					dsCOLOR
-					local11
-					dsFONT
-					local10
+				(Display 701 29
+					p_at 89 79
+					p_width 140
+					p_mode teJustCenter
+					p_color backColor
+					p_font theFont
 				)
 				(= seconds 5)
 			)
 			(17
-				(localproc_0e58)
+				(RedrawPic)
 				(self init:)
 			)
 		)
@@ -1332,18 +747,19 @@
 )
 
 (instance syncIt of Prop
-	(properties)
-	
+
 	(method (init)
-		(if (not local1) (++ local1) (super init: &rest))
+		(if (not local1)
+			(++ local1)
+			(super init: &rest)
+		)
 	)
 )
 
 (instance doDrawPic of Code
-	(properties)
-	
+
 	(method (doit)
-		(DrawPic local0)
-		(return (++ local0))
+		(DrawPic thePic)
+		(return (++ thePic))
 	)
 )

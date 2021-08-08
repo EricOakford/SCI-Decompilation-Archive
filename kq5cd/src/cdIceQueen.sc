@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 682)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -18,7 +18,7 @@
 )
 
 (local
-	[local0 8] = [90 60 160 20 93 29 141 11]
+	local0 = [90 60 160 20 93 29 141 11]
 	local8
 	gGameEgoMoveSpeed
 )
@@ -33,13 +33,13 @@
 		(super init:)
 		(= gGameEgoMoveSpeed (theGame egoMoveSpeed?))
 		(theGame egoMoveSpeed: 1)
-		(Load rsSCRIPT 941)
-		(Load rsSCRIPT 929)
-		(Load rsPIC 92)
-		(Load rsSOUND 118)
+		(Load SCRIPT 941)
+		(Load SCRIPT 929)
+		(Load PICTURE 92)
+		(Load SOUND 118)
 		(switch prevRoomNum
 			(39
-				(LoadMany 142 945 947 948 949)
+				(LoadMany RES_SYNC 945 947 948 949)
 				(ego setPri: -1 posn: 135 157)
 				(theMusic number: 118 loop: -1 play:)
 				(wolf2 cel: 4 init:)
@@ -48,18 +48,18 @@
 				(self setScript: cartoon2)
 			)
 			(else 
-				(Load rsPIC 95)
-				(Load rsSCRIPT 971)
-				(Load rsSOUND 93)
-				(Load rsSOUND 94)
-				(Load rsVIEW 10)
-				(LoadMany 142 935 936 937)
+				(Load PICTURE 95)
+				(Load SCRIPT 971)
+				(Load SOUND 93)
+				(Load SOUND 94)
+				(Load VIEW 10)
+				(LoadMany RES_SYNC 935 936 937)
 				(ego loop: 3 cel: 3 posn: 135 157)
 				(HandsOff)
 				(self setScript: cartoon1)
 			)
 		)
-		(LoadMany 128 846 917 138 848 856 0)
+		(LoadMany VIEW 846 917 138 848 856 0)
 		(iceQueen init:)
 		(wolf1 init:)
 		(wolf2 init:)
@@ -109,8 +109,7 @@
 )
 
 (instance cartoon1 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 1))
@@ -118,12 +117,12 @@
 				(theMusic2 stop:)
 				(theMusic number: 92 loop: -1 play:)
 				(theMouth init: hide:)
-				(wolf1 cycleSpeed: 2 setCycle: End init:)
-				(wolf2 cycleSpeed: 2 setCycle: End init:)
+				(wolf1 cycleSpeed: 2 setCycle: EndLoop init:)
+				(wolf2 cycleSpeed: 2 setCycle: EndLoop init:)
 				(= cycles 30)
 			)
 			(2
-				(iceQueen cycleSpeed: 3 setCycle: End self)
+				(iceQueen cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(3
 				(= local8 1)
@@ -136,10 +135,10 @@
 				(theMouth hide:)
 				(iceQueen setCycle: 0)
 				(cls)
-				(ego cycleSpeed: 3 setCycle: End self)
+				(ego cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(5
-				(iceQueen loop: 6 cel: 0 setCycle: End)
+				(iceQueen loop: 6 cel: 0 setCycle: EndLoop)
 				(ego loop: 12 cel: 2)
 				(theMouth setCycle: MouthSync 936 show:)
 				(SpeakAudio 936 self)
@@ -163,7 +162,7 @@
 				(= local8 0)
 				(cls)
 				(curRoom drawPic: 92)
-				(theIconBar disable: 0 1 2 3)
+				(theIconBar disable: ICON_WALK ICON_LOOK ICON_DO ICON_TALK)
 				(wolf1 show:)
 				(wolf2 show:)
 				(cedric show:)
@@ -187,8 +186,8 @@
 				(if (HaveMouse) (= cycles 1) else (= seconds 12))
 			)
 			(9
-				(wolf1 setCycle: Beg self)
-				(wolf2 setCycle: Beg self)
+				(wolf1 setCycle: BegLoop self)
+				(wolf2 setCycle: BegLoop self)
 			)
 			(10)
 			(11
@@ -210,31 +209,31 @@
 				(theIconBar disable:)
 				(HandsOff)
 				(theMusic number: 94 loop: 1 play:)
-				(ego loop: 10 cel: 0 setCycle: End self)
+				(ego loop: 10 cel: 0 setCycle: EndLoop self)
 			)
 			(14
-				(wolf1 view: 917 loop: 1 cel: 0 setCycle: End self)
-				(wolf2 view: 917 loop: 0 cel: 0 setCycle: End)
+				(wolf1 view: 917 loop: 1 cel: 0 setCycle: EndLoop self)
+				(wolf2 view: 917 loop: 0 cel: 0 setCycle: EndLoop)
 			)
 			(15 (= cycles 1))
 			(16
 				(cls)
 				(= deathMessage 757)
-				(EgoDead 543 0 Fwd)
+				(EgoDead 543 0 Forward)
 			)
 			(17
 				(HandsOff)
 				((ScriptID 763) doit:)
-				(UnLoad 129 95)
-				(UnLoad 142 935)
-				(UnLoad 142 936)
-				(UnLoad 142 937)
-				(Load rsSOUND 817)
-				(LoadMany 142 938)
+				(UnLoad PICTURE 95)
+				(UnLoad RES_SYNC 935)
+				(UnLoad RES_SYNC 936)
+				(UnLoad RES_SYNC 937)
+				(Load SOUND 817)
+				(LoadMany RES_SYNC 938)
 				(= cycles 1)
 			)
 			(18
-				(ego loop: 2 setCycle: Fwd cycleSpeed: 4)
+				(ego loop: 2 setCycle: Forward cycleSpeed: 4)
 				(note init: setScript: noteScript)
 				(theMusic number: 817 loop: 1 play: self)
 				(wolf1 setMotion: 0 setCycle: 0)
@@ -244,13 +243,13 @@
 			(19
 				(theMouth setCycle: MouthSync 938 show:)
 				(SpeakAudio 938 0 1)
-				(wolf1 cycleSpeed: 2 setLoop: 5 setCycle: End)
+				(wolf1 cycleSpeed: 2 setLoop: 5 setCycle: EndLoop)
 				(wolf2
 					cycleSpeed: 2
 					setPri: 1
 					setLoop: 4
-					ignoreActors: 1
-					setCycle: End
+					ignoreActors: TRUE
+					setCycle: EndLoop
 				)
 			)
 			(20
@@ -261,10 +260,10 @@
 			)
 			(21
 				(UnLoad 142 938)
-				(Load rsPIC 93)
-				(LoadMany 128 852 1030)
-				(Load rsSOUND 118)
-				(LoadMany 142 939 940 941 942 943 944)
+				(Load PICTURE 93)
+				(LoadMany VIEW 852 1030)
+				(Load SOUND 118)
+				(LoadMany RES_SYNC 939 940 941 942 943 944)
 				(theMouth hide:)
 				(theMusic number: 118 loop: -1 play:)
 				(cls)
@@ -295,17 +294,17 @@
 			)
 			(25
 				(glint dispose:)
-				(UnLoad 129 93)
+				(UnLoad PICTURE 93)
 				(UnLoad 142 939)
 				(UnLoad 142 940)
 				(UnLoad 142 941)
 				(UnLoad 142 942)
 				(UnLoad 142 943)
 				(UnLoad 142 944)
-				(UnLoad 128 852)
-				(UnLoad 128 1030)
-				(Load rsPIC 92)
-				(Load rsVIEW 10)
+				(UnLoad VIEW 852)
+				(UnLoad VIEW 1030)
+				(Load PICTURE 92)
+				(Load VIEW 10)
 				(LoadMany 142 941 942 943 944)
 				(RedrawCast)
 				(cls)
@@ -327,7 +326,7 @@
 			)
 			(27
 				(= local8 1)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(theMouth setCycle: MouthSync 942)
 				(SpeakAudio 942 self)
 			)
@@ -343,7 +342,7 @@
 				(= local8 0)
 				(theMouth hide:)
 				(iceQueen cel: 0 setCycle: 0)
-				(wolf1 setCycle: Beg self)
+				(wolf1 setCycle: BegLoop self)
 			)
 			(31
 				(cls)
@@ -381,7 +380,6 @@
 )
 
 (instance glintScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -391,7 +389,7 @@
 					x: [local0 (* temp0 2)]
 					y: [local0 (+ (* temp0 2) 1)]
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -403,13 +401,12 @@
 )
 
 (instance moveScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= cycles 10))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3
 				(= state -1)
 				(= seconds (Random 3 10))
@@ -419,7 +416,6 @@
 )
 
 (instance cartoon2 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -435,10 +431,10 @@
 			)
 			(1
 				((ego head?) hide:)
-				(ego normal: 0 cycleSpeed: 3 setCycle: End self)
+				(ego normal: 0 cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(2
-				(iceQueen cycleSpeed: 3 setCycle: End self)
+				(iceQueen cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(3
 				(iceQueen loop: 5 cycleSpeed: 8 setCycle: RandCycle)
@@ -459,7 +455,7 @@
 			)
 			(6
 				(cls)
-				(ego cycleSpeed: 2 setCycle: Beg self)
+				(ego cycleSpeed: 2 setCycle: BegLoop self)
 			)
 			(7
 				(ego
@@ -475,20 +471,20 @@
 			)
 			(8
 				(theMouth hide:)
-				(iceQueen cycleSpeed: 5 setCycle: End self)
+				(iceQueen cycleSpeed: 5 setCycle: EndLoop self)
 			)
 			(9 (= cycles 10))
 			(10
-				(iceQueen loop: 8 cel: 0 setCycle: End self)
+				(iceQueen loop: 8 cel: 0 setCycle: EndLoop self)
 				(theAudio number: 8018 loop: 1 play:)
 			)
 			(11 (= cycles 10))
 			(12
 				(cls)
-				(cage loop: 3 cel: 0 cycleSpeed: 8 setCycle: End self)
+				(cage loop: 3 cel: 0 cycleSpeed: 8 setCycle: EndLoop self)
 			)
 			(13
-				(iceQueen setCycle: Beg)
+				(iceQueen setCycle: BegLoop)
 				(= cycles 10)
 			)
 			(14
@@ -498,7 +494,7 @@
 				(SpeakAudio 949 self)
 			)
 			(15
-				(wolf1 cycleSpeed: 3 setCycle: Beg self)
+				(wolf1 cycleSpeed: 3 setCycle: BegLoop self)
 			)
 			(16
 				(theMouth hide:)
@@ -527,15 +523,14 @@
 )
 
 (instance cedricLeave of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cedric cycleSpeed: 2 setCycle: CT 4 1 self)
+				(cedric cycleSpeed: 2 setCycle: CycleTo 4 1 self)
 			)
 			(1
-				(cedric setLoop: 6 setCycle: End self)
+				(cedric setLoop: 6 setCycle: EndLoop self)
 			)
 			(2
 				(theMusic fade:)
@@ -547,7 +542,6 @@
 )
 
 (instance noteScript of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -585,19 +579,19 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn ego event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(if (MousedOn ego event)
 						(switch (inventory indexOf: (theIconBar curInvIcon?))
-							(10
+							(iHarp
 								(SolvePuzzle 4)
 								(cartoon1 changeState: 17)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 						)
 					)
@@ -618,21 +612,25 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(10
+						(iHarp
 							(SolvePuzzle 4)
 							(cartoon1 changeState: 17)
 							(event claimed: 1)
 						)
-						(28 (event claimed: 0))
-						(else  (SpeakAudio 756))
+						(iWand
+							(event claimed: FALSE)
+						)
+						(else
+							(SpeakAudio 756)
+						)
 					)
 				)
 			)
@@ -673,7 +671,7 @@
 		view 848
 		loop 4
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (changeMouth param1)
@@ -720,7 +718,7 @@
 		view 848
 		loop 1
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -728,10 +726,8 @@
 	(properties
 		view 856
 		loop 3
-		signal $0800
+		signal fixedLoop
 	)
 )
 
-(instance theScriptSync of ScriptSync
-	(properties)
-)
+(instance theScriptSync of ScriptSync)

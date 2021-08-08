@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 653)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use RFeature)
@@ -16,25 +16,25 @@
 (local
 	local0
 )
-(instance cdIntro4 of Rm
+(instance cdIntro4 of Room
 	(properties
 		picture 70
 	)
 	
 	(method (init)
-		(Load rsPIC 70)
+		(Load PICTURE 70)
 		(super init:)
 		(if (== prevRoomNum 655)
-			(UnLoad 129 72)
-			(Load 142 10107)
+			(UnLoad PICTURE 72)
+			(Load RES_SYNC 10107)
 		else
-			(UnLoad 129 68)
-			(Load 142 10104)
+			(UnLoad PICTURE 68)
+			(Load RES_SYNC 10104)
 		)
-		(Load rsVIEW 761)
-		(Load rsSCRIPT 929)
+		(Load VIEW 761)
+		(Load SCRIPT 929)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
+		(theGame setCursor: invCursor TRUE)
 		(owlFace init:)
 		(theMouth init: hide:)
 		(owlEyes init:)
@@ -54,13 +54,14 @@
 	
 	(method (newRoom n)
 		(super newRoom: n)
-		(if (== prevRoomNum 655) (Bset 30))
+		(if (== prevRoomNum 655)
+			(Bset 30)
+		)
 	)
 )
 
 (instance sceneFourScript of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -82,7 +83,7 @@
 			)
 			(3
 				(= local0 0)
-				(if (> (DoAudio 6) -1) (-- state))
+				(if (> (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(4 (curRoom newRoom: 654))
@@ -91,8 +92,7 @@
 )
 
 (instance sceneSevenScript of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 15))
@@ -112,7 +112,7 @@
 				(= cycles 1)
 			)
 			(3
-				(if (> (DoAudio 6) -1) (-- state))
+				(if (> (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(4 (curRoom newRoom: 664))
@@ -126,7 +126,7 @@
 		y 79
 		view 761
 		priority 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 )
@@ -138,7 +138,7 @@
 		view 761
 		loop 1
 		priority 7
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doit)
@@ -159,7 +159,7 @@
 		y 75
 		view 761
 		loop 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 	)
 	
@@ -182,7 +182,7 @@
 		view 761
 		loop 6
 		priority 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 	)
 	
@@ -205,7 +205,7 @@
 		view 761
 		loop 4
 		priority 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -216,7 +216,7 @@
 		view 761
 		loop 3
 		priority 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 )
@@ -228,7 +228,7 @@
 		view 761
 		loop 2
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doit)
@@ -248,9 +248,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= cycles 15))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3 (client setScript: 0))
 		)
 	)
@@ -262,7 +262,7 @@
 		y 79
 		view 761
 		priority 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 	

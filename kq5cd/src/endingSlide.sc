@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 612)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use Sync)
@@ -13,19 +13,19 @@
 	endingSlide 0
 )
 
-(instance endingSlide of Rm
+(instance endingSlide of Room
 	(properties
 		picture 65
-		style $0009
+		style PIXELDISSOLVE
 	)
 	
 	(method (init)
 		(super init: &rest)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
-		(= global103 1)
-		(Load rsPIC 55)
-		(LoadMany 128 916 2 918 922)
+		(theGame setCursor: invCursor TRUE)
+		(= inCartoon TRUE)
+		(Load PICTURE 55)
+		(LoadMany VIEW 916 2 918 922)
 		(theEgo
 			x: 152
 			y: 146
@@ -68,7 +68,6 @@
 )
 
 (instance endingCartoon of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -76,52 +75,52 @@
 				(self setScript: slEnd_Scene_1)
 			)
 			(1
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 65)
-				(Load rsPIC 217)
-				(LoadMany 128 932)
+				(UnLoad VIEW 65)
+				(Load PICTURE 217)
+				(LoadMany VIEW 932)
 				(= seconds 2)
 			)
 			(2
 				(self setScript: slEnd_Scene_2)
 			)
 			(3
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 217)
-				(LoadMany 128 720 918 922 2 933 935 929 925 916)
-				(Load rsPIC 65)
+				(UnLoad PICTURE 217)
+				(LoadMany VIEW 720 918 922 2 933 935 929 925 916)
+				(Load PICTURE 65)
 				(= seconds 2)
 			)
 			(4
 				(self setScript: slEnd_Scene_3)
 			)
 			(5
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 65)
-				(LoadMany 128 936)
-				(Load rsPIC 218)
+				(UnLoad PICTURE 65)
+				(LoadMany VIEW 936)
+				(Load PICTURE 218)
 				(= seconds 2)
 			)
 			(6
 				(self setScript: slEnd_Scene_4)
 			)
 			(7
-				(DrawPic 55 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 55 FADEOUT)
 				(cast eachElementDo: #hide)
 				(cast eachElementDo: #dispose)
 				(cast release:)
-				(UnLoad 129 218)
-				(LoadMany 128 720 925 929 922 2 933 918 916)
-				(Load rsPIC 65)
+				(UnLoad PICTURE 218)
+				(LoadMany VIEW 720 925 929 922 2 933 918 916)
+				(Load PICTURE 65)
 				(= seconds 2)
 			)
 			(8
@@ -134,8 +133,7 @@
 )
 
 (instance slEnd_Scene_1 of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 4))
@@ -145,7 +143,7 @@
 				(= waitForCue 8448)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo
 					x: 87
 					y: 177
@@ -167,11 +165,11 @@
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 8704)
 			)
 			(4
-				(DrawPic 65 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 65 PIXELDISSOLVE)
 				(theEgo x: 87 y: 177 view: 2 loop: 7 cel: 2 priority: 13)
 				(eMagic hide:)
 				(theHead
@@ -205,7 +203,7 @@
 				(= cycles 1)
 			)
 			(5
-				(DrawPic 65 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 65 PIXELDISSOLVE)
 				(cassima
 					x: 35
 					y: 161
@@ -226,7 +224,7 @@
 				(= cycles 1)
 			)
 			(6
-				(DrawPic 65 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 65 PIXELDISSOLVE)
 				(theEgo
 					x: 87
 					y: 177
@@ -255,7 +253,7 @@
 				(= waitForCue 10752)
 			)
 			(7
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo
 					x: 87
 					y: 177
@@ -301,11 +299,11 @@
 				(= cycles 1)
 			)
 			(8
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(9
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(10 (= seconds 1))
@@ -318,12 +316,11 @@
 )
 
 (instance slEnd_Scene_2 of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 217 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 217 FADEOUT)
 				(theEyes
 					x: 213
 					y: 79
@@ -360,7 +357,7 @@
 			)
 			(2 (= cycles 1))
 			(3
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(4 (= seconds 1))
@@ -373,12 +370,11 @@
 )
 
 (instance slEnd_Scene_3 of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 65 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 65 FADEOUT)
 				(cedric
 					x: 232
 					y: 152
@@ -466,7 +462,7 @@
 				(= waitForCue 13824)
 			)
 			(3
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(crispin loop: 2 cel: 3)
 				(crispinMouth hide:)
 				(theMouth
@@ -490,11 +486,11 @@
 				(= cycles 1)
 			)
 			(4
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 14336)
 			)
 			(5
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo cel: 0)
 				(theHead cel: 1)
 				(theMouth
@@ -519,11 +515,11 @@
 				(= cycles 1)
 			)
 			(6
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 14848)
 			)
 			(7
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(cassima loop: 6 cel: 0)
 				(theMouth
 					x: 71
@@ -546,11 +542,11 @@
 				(= cycles 1)
 			)
 			(8
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 15360)
 			)
 			(9
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(crispin loop: 7 cel: 5)
 				(theEgo cel: 3)
 				(theHead cel: 7)
@@ -576,11 +572,11 @@
 				(= cycles 1)
 			)
 			(10
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 15616)
 			)
 			(11
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theHead hide:)
 				(theEgo
 					x: 115
@@ -605,11 +601,11 @@
 				(= cycles 1)
 			)
 			(12
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 16640)
 			)
 			(13
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theEgo
 					x: 96
 					y: 139
@@ -624,11 +620,11 @@
 				(= cycles 1)
 			)
 			(14
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(15
-				(DrawPic 65 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 65 PIXELDISSOLVE)
 				(cassima
 					x: 92
 					y: 167
@@ -651,11 +647,11 @@
 				(= cycles 1)
 			)
 			(16
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(17
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(18 (= seconds 1))
@@ -668,12 +664,11 @@
 )
 
 (instance slEnd_Scene_4 of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 218 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 218 FADEOUT)
 				(theMouth
 					x: 116
 					y: 34
@@ -736,7 +731,7 @@
 				(= cycles 1)
 			)
 			(2
-				(DrawPic 218 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 218 PIXELDISSOLVE)
 				(theMouth
 					x: 116
 					y: 34
@@ -749,7 +744,7 @@
 				(= cycles 1)
 			)
 			(3
-				(DrawPic 218 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 218 PIXELDISSOLVE)
 				(theMouth
 					x: 116
 					y: 34
@@ -762,7 +757,7 @@
 				(= waitForCue 17408)
 			)
 			(4
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(theMouth
 					x: 270
 					y: 32
@@ -774,11 +769,11 @@
 				(= cycles 1)
 			)
 			(5
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(6
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(7 (= seconds 1))
@@ -791,12 +786,11 @@
 )
 
 (instance slEnd_Scene_5 of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 65 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 65 FADEOUT)
 				(cedric
 					x: 232
 					y: 152
@@ -888,7 +882,7 @@
 				(= waitForCue 5888)
 			)
 			(2
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(valanice hide:)
 				(rosella hide:)
 				(alexander hide:)
@@ -931,11 +925,11 @@
 				(= cycles 1)
 			)
 			(3
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 6656)
 			)
 			(4
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(cassima
 					x: 71
 					y: 135
@@ -964,11 +958,11 @@
 				(= cycles 1)
 			)
 			(5
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(6
-				(DrawPic 65 dpCLOSEREOPEN_HCENTER)
+				(DrawPic 65 PIXELDISSOLVE)
 				(cassima
 					x: 71
 					y: 135
@@ -999,7 +993,7 @@
 				(= waitForCue 7936)
 			)
 			(7
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(cassima
 					x: 71
 					y: 135
@@ -1029,11 +1023,11 @@
 				(= cycles 1)
 			)
 			(8
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 9216)
 			)
 			(9
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(cassima
 					x: 71
 					y: 135
@@ -1063,11 +1057,11 @@
 				(= cycles 1)
 			)
 			(10
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 9728)
 			)
 			(11
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(cassima
 					x: 71
 					y: 135
@@ -1090,11 +1084,11 @@
 				(= cycles 1)
 			)
 			(12
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 10320)
 			)
 			(13
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(cedric
 					x: 232
 					y: 152
@@ -1132,11 +1126,11 @@
 				(= cycles 1)
 			)
 			(14
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 11264)
 			)
 			(15
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(cassima
 					x: 71
 					y: 135
@@ -1166,11 +1160,11 @@
 				(= cycles 1)
 			)
 			(16
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 12800)
 			)
 			(17
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(crispin
 					x: 68
 					y: 163
@@ -1201,11 +1195,11 @@
 				(= cycles 1)
 			)
 			(18
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 13056)
 			)
 			(19
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(crispin
 					x: 68
 					y: 163
@@ -1226,11 +1220,11 @@
 				(= cycles 1)
 			)
 			(20
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= waitForCue 14416)
 			)
 			(21
-				(Palette 4 0 255 0)
+				(Palette PALIntensity 0 255 0)
 				(crispin
 					x: 68
 					y: 163
@@ -1253,11 +1247,11 @@
 				(= cycles 1)
 			)
 			(22
-				(Palette 4 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(23
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(24 (= seconds 1))
@@ -1277,7 +1271,7 @@
 		loop 1
 		cel 6
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1290,7 +1284,7 @@
 		loop 4
 		cel 5
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1302,7 +1296,7 @@
 		loop 2
 		cel 2
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1313,7 +1307,7 @@
 		view 933
 		loop 15
 		priority 12
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1324,7 +1318,7 @@
 		view 918
 		loop 5
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1336,7 +1330,7 @@
 		loop 1
 		cel 3
 		priority 12
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1348,7 +1342,7 @@
 		loop 3
 		cel 4
 		priority 13
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1359,7 +1353,7 @@
 		view 918
 		cel 4
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1370,7 +1364,7 @@
 		view 922
 		loop 1
 		priority 12
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1381,7 +1375,7 @@
 		view 932
 		loop 1
 		priority 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1391,7 +1385,7 @@
 		y 79
 		view 932
 		priority 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1402,7 +1396,7 @@
 		view 922
 		loop 10
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1424,7 +1418,7 @@
 		view 929
 		cel 12
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1436,7 +1430,7 @@
 		loop 2
 		cel 13
 		priority 9
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1448,7 +1442,7 @@
 		loop 1
 		cel 2
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1458,7 +1452,7 @@
 		y 40
 		view 936
 		loop 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1468,7 +1462,7 @@
 		y 28
 		view 936
 		loop 2
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1478,7 +1472,7 @@
 		y 18
 		view 936
 		loop 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1488,7 +1482,7 @@
 		y 32
 		view 936
 		loop 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1498,7 +1492,7 @@
 		y 37
 		view 936
 		loop 6
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1509,7 +1503,7 @@
 		view 933
 		loop 12
 		priority 7
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1520,7 +1514,7 @@
 		view 922
 		loop 6
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1532,7 +1526,7 @@
 		loop 2
 		cel 4
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1543,7 +1537,7 @@
 		view 934
 		loop 3
 		priority 13
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1554,7 +1548,7 @@
 		view 934
 		loop 11
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1565,7 +1559,7 @@
 		view 918
 		loop 5
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1577,10 +1571,8 @@
 		loop 8
 		cel 1
 		priority 9
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
-(instance syncIt of Prop
-	(properties)
-)
+(instance syncIt of Prop)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 681)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 (use Sync)
@@ -26,16 +26,16 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsPIC 84)
-		(Load rsSCRIPT 941)
-		(Load rsSCRIPT 929)
-		(Load rsSCRIPT 969)
-		(Load rsSOUND 90)
-		(Load rsVIEW 796)
-		(Load rsVIEW 797)
-		(Load rsVIEW 2)
-		(Load rsVIEW 1032)
-		(Load rsVIEW 780)
+		(Load PICTURE 84)
+		(Load SCRIPT 941)
+		(Load SCRIPT 929)
+		(Load SCRIPT 969)
+		(Load SOUND 90)
+		(Load VIEW 796)
+		(Load VIEW 797)
+		(Load VIEW 2)
+		(Load VIEW 1032)
+		(Load VIEW 780)
 		(Load 142 5099)
 		(= gGameEgoMoveSpeed (theGame egoMoveSpeed?))
 		(theGame egoMoveSpeed: 1)
@@ -51,7 +51,6 @@
 )
 
 (instance cartoon of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -77,7 +76,7 @@
 				(= seconds 2)
 			)
 			(3
-				(arms cycleSpeed: 1 setCycle: End)
+				(arms cycleSpeed: 1 setCycle: EndLoop)
 				(= local0 1)
 				(= seconds 2)
 			)
@@ -99,7 +98,7 @@
 		view 1032
 		cel 4
 		priority 10
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 		cycleSpeed 2
 	)
 )
@@ -111,14 +110,13 @@
 		view 780
 		loop 1
 		priority 10
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 	)
 	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and (== (Random 1 40) 1) (not cycler) (not local0))
-			(self setCycle: End)
+		(if (and (== (Random 1 40) 1) (not cycler) (not local0))
+			(self setCycle: EndLoop)
 		)
 	)
 )
@@ -130,13 +128,12 @@
 		view 780
 		loop 2
 		priority 10
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 	)
 )
 
 (instance enterRoom of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -145,14 +142,14 @@
 					(theMusic number: 90 loop: -1 vol: 127 playBed:)
 				)
 				(workers setLoop: 2 init:)
-				(worker2 setLoop: 3 cycleSpeed: 2 setCycle: Fwd init:)
+				(worker2 setLoop: 3 cycleSpeed: 2 setCycle: Forward init:)
 				(elf setLoop: 1 posn: 48 87 init:)
 				(ego
 					init:
 					view: 796
 					setLoop: 8
 					cel: 2
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setStep: 2 1
 					posn: 280 24
@@ -163,7 +160,7 @@
 			)
 			(1
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: MoveTo 271 51 self
 					cycleSpeed: 1
 					moveSpeed: 1
@@ -181,7 +178,7 @@
 					setLoop: 9
 					posn: 251 124
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 2
 				)
 			)
@@ -216,33 +213,32 @@
 )
 
 (instance elfComesDown of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(elf cel: 0 cycleSpeed: 2 setCycle: Fwd)
+				(elf cel: 0 cycleSpeed: 2 setCycle: Forward)
 				(= cycles 30)
 			)
 			(1
 				(elf
 					setLoop: 4
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 40 93 self
 				)
 			)
 			(2
-				(elf cel: 0 posn: 40 100 setLoop: 5 setCycle: End self)
+				(elf cel: 0 posn: 40 100 setLoop: 5 setCycle: EndLoop self)
 			)
 			(3
-				(elf posn: 49 127 setLoop: 6 cel: 0 setCycle: End self)
+				(elf posn: 49 127 setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(4 (elf cel: 0 setLoop: 7))
 			(5
-				(ego get: 33)
+				(ego get: iElfShoes)
 				(SolvePuzzle 2)
-				(elf setCycle: End self)
+				(elf setCycle: EndLoop self)
 			)
 			(6 (= cycles 10))
 			(7
@@ -252,7 +248,7 @@
 					view: 796
 					setLoop: 0
 					setCel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 					cycleSpeed: 3
 				)
 			)
@@ -262,7 +258,6 @@
 )
 
 (instance exitRoom of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -276,11 +271,11 @@
 				(ego cel: 4)
 				(= cycles 15)
 			)
-			(1 (ego setCycle: End self))
+			(1 (ego setCycle: EndLoop self))
 			(2
 				(ego view: 2 normal: 1 setLoop: 1)
 				((ego head?) show:)
-				(elf loop: 1 cel: 0 setCycle: CT 6 1 self)
+				(elf loop: 1 cel: 0 setCycle: CycleTo 6 1 self)
 			)
 			(3
 				(elf
@@ -294,7 +289,7 @@
 			)
 			(4
 				(cls)
-				(elf loop: 5 cel: 0 setCycle: Beg)
+				(elf loop: 5 cel: 0 setCycle: BegLoop)
 				(ego
 					normal: 0
 					view: 797
@@ -332,30 +327,30 @@
 					view: 796
 					loop: 11
 					cel: 1
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(7
-				(ego loop: 12 cel: 0 setCycle: End self)
+				(ego loop: 12 cel: 0 setCycle: EndLoop self)
 			)
 			(8
-				(ego loop: 13 setCycle: End self)
+				(ego loop: 13 setCycle: EndLoop self)
 			)
 			(9
-				(elf cycleSpeed: 5 setCycle: End self)
-				(ego cycleSpeed: 3 setCycle: Fwd)
+				(elf cycleSpeed: 5 setCycle: EndLoop self)
+				(ego cycleSpeed: 3 setCycle: Forward)
 			)
 			(10
 				(ego
 					loop: 12
 					cel: 2
 					cycleSpeed: (theGame egoMoveSpeed?)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(11
-				(elf setCycle: Beg self)
-				(ego loop: 11 cel: 4 setCycle: CT 1 -1 self)
+				(elf setCycle: BegLoop self)
+				(ego loop: 11 cel: 4 setCycle: CycleTo 1 -1 self)
 			)
 			(12)
 			(13
@@ -367,8 +362,7 @@
 )
 
 (instance crawlThroughHole of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -381,7 +375,7 @@
 					view: 796
 					setLoop: 14
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 				((ego head?) hide:)
 			)
@@ -417,7 +411,7 @@
 		(super doit:)
 		(if (== (theMusic prevSignal?) 10)
 			(theMusic prevSignal: 0)
-			(self cel: 0 setCycle: End)
+			(self cel: 0 setCycle: EndLoop)
 		)
 	)
 )
@@ -436,7 +430,7 @@
 		y 93
 		view 796
 		priority 9
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -445,6 +439,6 @@
 		view 797
 		loop 2
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 )

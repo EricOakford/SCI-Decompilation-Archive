@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 749)
-(include sci.sh)
+(include game.sh)
 (use Intrface)
 (use System)
 
@@ -9,8 +9,7 @@
 )
 
 (instance KQInvMsg of Code
-	(properties)
-	
+
 	(method (init)
 		(Print 749 0)
 		(Print 749 1)

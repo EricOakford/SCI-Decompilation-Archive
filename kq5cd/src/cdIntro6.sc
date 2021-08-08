@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 655)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use LoadMany)
@@ -12,21 +12,21 @@
 	cdIntro6 0
 )
 
-(instance cdIntro6 of Rm
+(instance cdIntro6 of Room
 	(properties
 		picture 72
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
 		(HandsOff)
-		(Load rsPIC 72)
-		(theGame setCursor: invCursor 1)
+		(Load PICTURE 72)
+		(theGame setCursor: invCursor TRUE)
 		(self setScript: sceneSixScript setRegions: 769)
 		(super init:)
-		(UnLoad 129 71)
-		(Load rsSCRIPT 929)
-		(LoadMany 128 98 1070)
+		(UnLoad PICTURE 71)
+		(Load SCRIPT 929)
+		(LoadMany VIEW 98 1070)
 		(Load 142 866)
 		(intro_eyes init:)
 		(intro_mouth init:)
@@ -65,12 +65,12 @@
 		y 54
 		view 98
 		priority 10
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 	)
 	
 	(method (doit)
 		(switch (Random 1 40)
-			(1 (intro_eyes setCycle: End))
+			(1 (intro_eyes setCycle: EndLoop))
 		)
 		(super doit:)
 	)
@@ -84,7 +84,7 @@
 		loop 1
 		cel 4
 		priority 10
-		signal $0810
+		signal (| fixPriOn fixPriOn)
 		cycleSpeed 1
 	)
 )

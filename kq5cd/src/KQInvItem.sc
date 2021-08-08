@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 758)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5InvWindow)
 (use KQCursor)
@@ -13,113 +13,45 @@
 	KQInv 0
 )
 
-(class KQInvItem of InvI
-	(properties
-		view 0
-		loop 0
-		cel 0
-		nsLeft 0
-		nsTop 0
-		nsRight 0
-		nsBottom 0
-		state $0000
-		cursor 999
-		type $4000
-		message 4
-		modifiers $0000
-		signal $0000
-		helpStr 0
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		highlightColor 0
-		lowlightColor 0
-		description 0
-		owner 0
-		script 0
-		value 0
+(class KQInvItem of InvItem
+	
+	(method (highlight tOrF &tmp t l b r sColor)
+		(= sColor
+			(if (and argc tOrF) highlightColor else lowlightColor)
+		)
+		(= t nsTop)
+		(= l nsLeft)
+		(= b nsBottom)
+		(= r nsRight)
+		(Graph GDrawLine t l t r sColor -1 -1)
+		(Graph GDrawLine t r b r sColor -1 -1)
+		(Graph GDrawLine b r b l sColor -1 -1)
+		(Graph GDrawLine b l t l sColor -1 -1)
+		(Graph GShowBits (- nsTop 2) (- nsLeft 2) (+ nsBottom 2) (+ nsRight 2) VMAP)
 	)
 	
-	(method (highlight param1 &tmp theNsTop theNsLeft theNsBottom theNsRight temp4)
-		(= temp4
-			(if (and argc param1) highlightColor else lowlightColor)
-		)
-		(= theNsTop nsTop)
-		(= theNsLeft nsLeft)
-		(= theNsBottom nsBottom)
-		(= theNsRight nsRight)
-		(Graph
-			grDRAW_LINE
-			theNsTop
-			theNsLeft
-			theNsTop
-			theNsRight
-			temp4
-			-1
-			-1
-		)
-		(Graph
-			grDRAW_LINE
-			theNsTop
-			theNsRight
-			theNsBottom
-			theNsRight
-			temp4
-			-1
-			-1
-		)
-		(Graph
-			grDRAW_LINE
-			theNsBottom
-			theNsRight
-			theNsBottom
-			theNsLeft
-			temp4
-			-1
-			-1
-		)
-		(Graph
-			grDRAW_LINE
-			theNsBottom
-			theNsLeft
-			theNsTop
-			theNsLeft
-			temp4
-			-1
-			-1
-		)
-		(Graph
-			grUPDATE_BOX
-			(- nsTop 2)
-			(- nsLeft 2)
-			(+ nsBottom 2)
-			(+ nsRight 2)
-			1
-		)
-	)
-	
-	(method (doVerb theVerb &tmp temp0 newEvent temp2)
-		(if (== theVerb 2)
+	(method (doVerb theVerb &tmp oldCur event thisTime)
+		(if (== theVerb verbLook)
 			(SpeakAudio description)
 		else
 			(if (User canInput:)
-				(= temp0 (theGame setCursor: theXCursor))
+				(= oldCur (theGame setCursor: theXCursor))
 				(= global126 0)
-				(= temp2 (GetTime))
-				(while (< (Abs (- temp2 (GetTime))) 40)
-					(breakif (OneOf ((= newEvent (Event new:)) type?) 4 1)
+				(= thisTime (GetTime))
+				(while (< (Abs (- thisTime (GetTime))) 40)
+					(breakif (OneOf ((= event (Event new:)) type?) keyDown mouseDown)
 					)
-					(newEvent dispose:)
+					(event dispose:)
 				)
-				(if (IsObject newEvent) (newEvent dispose:))
-				(theGame setCursor: temp0 1)
+				(if (IsObject event) (event dispose:))
+				(theGame setCursor: oldCur TRUE)
 			)
 			(super doVerb: theVerb &rest)
 		)
 	)
 )
 
-(instance KQInv of Inv
+(instance KQInv of Inventory
 	(properties
 		normalHeading {Graham is carrying:}
 		empty {Nothing!}
@@ -158,7 +90,7 @@
 				(Cloak cursor: cloakCursor yourself:)
 				(Amulet cursor: amuletCursor yourself:)
 				(Wand
-					cursor: (if (not (Btst 60)) cwandCursor else cGlowWandCursor)
+					cursor: (if (not (Btst fWandRecharged)) cwandCursor else cGlowWandCursor)
 					yourself:
 				)
 				(Sled cursor: sledCursor yourself:)
@@ -185,7 +117,7 @@
 				(switch numColors
 					(256 23)
 					(32 15)
-					(else  7)
+					(else  vLGREY)
 				)
 			eachElementDo: #init
 			window: KQ5InvWindow
@@ -207,7 +139,7 @@
 		view 892
 		loop 2
 		cel 4
-		signal $0002
+		signal IMMEDIATE
 		description 84
 		owner 23
 	)
@@ -217,7 +149,7 @@
 	(properties
 		view 892
 		cel 9
-		signal $0002
+		signal IMMEDIATE
 		description 85
 		owner 206
 	)
@@ -227,7 +159,7 @@
 	(properties
 		view 892
 		cel 10
-		signal $0002
+		signal IMMEDIATE
 		description 86
 		owner 27
 		name "Golden Needle"
@@ -238,7 +170,7 @@
 	(properties
 		view 892
 		cel 1
-		signal $0002
+		signal IMMEDIATE
 		description 87
 		owner 4
 	)
@@ -247,7 +179,7 @@
 (instance Fish of KQInvItem
 	(properties
 		view 891
-		signal $0002
+		signal IMMEDIATE
 		description 88
 		owner 4
 	)
@@ -257,7 +189,7 @@
 	(properties
 		view 891
 		cel 1
-		signal $0002
+		signal IMMEDIATE
 		description 89
 		owner 18
 		name "Brass Bottle"
@@ -266,12 +198,14 @@
 	(method (doVerb theVerb &tmp [temp0 75])
 		(return
 			(switch theVerb
-				(3
+				(verbDo
 					(inventory hide:)
 					(curRoom newRoom: 208)
-					(return 1)
+					(return TRUE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -281,7 +215,7 @@
 	(properties
 		view 891
 		cel 2
-		signal $0002
+		signal IMMEDIATE
 		description 90
 		owner 17
 	)
@@ -291,7 +225,7 @@
 	(properties
 		view 892
 		cel 6
-		signal $0002
+		signal IMMEDIATE
 		description 91
 		owner 15
 	)
@@ -302,7 +236,7 @@
 		view 892
 		loop 2
 		cel 7
-		signal $0002
+		signal IMMEDIATE
 		description 92
 		owner 21
 	)
@@ -311,7 +245,7 @@
 (instance Harp of KQInvItem
 	(properties
 		view 893
-		signal $0002
+		signal IMMEDIATE
 		description 93
 		owner 9
 	)
@@ -321,7 +255,7 @@
 	(properties
 		view 891
 		cel 3
-		signal $0002
+		signal IMMEDIATE
 		description 94
 		owner 18
 		name "Gold Coin"
@@ -332,7 +266,7 @@
 	(properties
 		view 892
 		cel 7
-		signal $0002
+		signal IMMEDIATE
 		description 95
 	)
 )
@@ -342,26 +276,33 @@
 		view 892
 		loop 2
 		cel 5
-		signal $0002
+		signal IMMEDIATE
 		owner 23
 	)
 	
 	(method (doVerb theVerb &tmp [temp0 75])
 		(return
 			(switch theVerb
-				(2
+				(verbLook
 					(cond 
-						((== numEmeralds -1) (SpeakAudio 96))
-						(numEmeralds (SpeakAudio
-							(switch numEmeralds
-								(3 97)
-								(2 98)
-								(1 99)
-							)))
-						(else (SpeakAudio 100))
+						((== numEmeralds -1)
+							(SpeakAudio 96)
+						)
+						(numEmeralds
+							(SpeakAudio
+								(switch numEmeralds
+									(3 97)
+									(2 98)
+									(1 99)
+								)
+							)
+						)
+						(else
+							(SpeakAudio 100)
+						)
 					)
 				)
-				(3
+				(verbDo
 					(if (== numEmeralds -1)
 						(= numEmeralds 3)
 						(proc0_30 131 891 0 6)
@@ -372,9 +313,11 @@
 					else
 						(SpeakAudio 132)
 					)
-					(return 0)
+					(return FALSE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -384,12 +327,12 @@
 	(properties
 		view 891
 		cel 6
-		signal $0002
+		signal IMMEDIATE
 	)
 	
 	(method (doVerb theVerb &tmp [temp0 50])
 		(switch theVerb
-			(2
+			(verbLook
 				(SpeakAudio
 					(switch numEmeralds
 						(3 101)
@@ -398,7 +341,9 @@
 					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -419,7 +364,7 @@
 		view 892
 		loop 2
 		cel 1
-		signal $0002
+		signal IMMEDIATE
 		description 105
 		owner 11
 	)
@@ -429,7 +374,7 @@
 	(properties
 		view 891
 		cel 7
-		signal $0002
+		signal IMMEDIATE
 		description 106
 		owner 11
 	)
@@ -439,7 +384,7 @@
 	(properties
 		view 892
 		loop 2
-		signal $0002
+		signal IMMEDIATE
 		description 107
 	)
 )
@@ -448,17 +393,23 @@
 	(properties
 		view 892
 		cel 4
-		signal $0002
+		signal IMMEDIATE
 		owner 28
 		name "Leg of Lamb"
 	)
 	
 	(method (doVerb theVerb &tmp [temp0 50])
 		(switch theVerb
-			(2
-				(if eatLambCount (SpeakAudio 109) else (SpeakAudio 108))
+			(verbLook
+				(if eatLambCount
+					(SpeakAudio 109)
+				else
+					(SpeakAudio 108)
+				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -467,7 +418,7 @@
 	(properties
 		view 892
 		cel 8
-		signal $0002
+		signal IMMEDIATE
 		description 110
 		owner 86
 	)
@@ -477,7 +428,7 @@
 	(properties
 		view 893
 		cel 1
-		signal $0002
+		signal IMMEDIATE
 		description 111
 		owner 38
 	)
@@ -487,7 +438,7 @@
 	(properties
 		view 892
 		loop 4
-		signal $0002
+		signal IMMEDIATE
 		description 112
 	)
 )
@@ -496,7 +447,7 @@
 	(properties
 		view 893
 		cel 2
-		signal $0002
+		signal IMMEDIATE
 		description 113
 	)
 )
@@ -505,7 +456,7 @@
 	(properties
 		view 893
 		cel 3
-		signal $0002
+		signal IMMEDIATE
 		description 114
 		owner 56
 		name "Bag of Peas"
@@ -513,14 +464,16 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
-				(if (Btst 63)
+			(verbLook
+				(if (Btst fThrewPeas)
 					(SpeakAudio 115)
 				else
 					(SpeakAudio description)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -529,15 +482,20 @@
 	(properties
 		view 893
 		cel 6
-		signal $0002
+		signal IMMEDIATE
 		description 116
 	)
 	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(3 (SpeakAudio 133) (return 0))
-				(else  (super doVerb: theVerb))
+				(verbDo
+					(SpeakAudio 133)
+					(return 0)
+				)
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -547,7 +505,7 @@
 	(properties
 		view 892
 		cel 2
-		signal $0002
+		signal IMMEDIATE
 		description 117
 		owner 203
 	)
@@ -558,20 +516,22 @@
 		view 892
 		loop 2
 		cel 2
-		signal $0002
+		signal IMMEDIATE
 		description 118
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
-				(if (Btst 84)
+			(verbLook
+				(if (Btst fWearingAmulet)
 					(SpeakAudio 119)
 				else
 					(SpeakAudio description)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -579,12 +539,12 @@
 (instance Wand of KQInvItem
 	(properties
 		view 892
-		signal $0002
+		signal IMMEDIATE
 		description 120
 	)
 	
 	(method (moveTo)
-		(if (and (Btst 60) (!= cursor cGlowWandCursor))
+		(if (and (Btst fWandRecharged) (!= cursor cGlowWandCursor))
 			(= loop 4)
 			(= cel 2)
 			(= cursor cGlowWandCursor)
@@ -594,14 +554,16 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
-				(if (Btst 60)
+			(verbLook
+				(if (Btst fWandRecharged)
 					(SpeakAudio 121)
 				else
 					(SpeakAudio description)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -610,7 +572,7 @@
 	(properties
 		view 892
 		cel 3
-		signal $0002
+		signal IMMEDIATE
 		description 122
 		owner 204
 	)
@@ -620,7 +582,7 @@
 	(properties
 		view 893
 		cel 5
-		signal $0002
+		signal IMMEDIATE
 		description 123
 		owner 44
 		name "Iron Bar"
@@ -631,7 +593,7 @@
 	(properties
 		view 893
 		cel 11
-		signal $0002
+		signal IMMEDIATE
 		description 124
 		owner 54
 	)
@@ -641,7 +603,7 @@
 	(properties
 		view 893
 		cel 7
-		signal $0002
+		signal IMMEDIATE
 		description 692
 		owner 67
 		name "Moldy Cheese"
@@ -653,7 +615,7 @@
 		view 892
 		loop 2
 		cel 8
-		signal $0002
+		signal IMMEDIATE
 		description 125
 		owner 83
 		name "Elf Shoes_"
@@ -665,7 +627,7 @@
 		view 892
 		loop 2
 		cel 3
-		signal $0002
+		signal IMMEDIATE
 		description 126
 		owner 13
 	)
@@ -675,7 +637,7 @@
 	(properties
 		view 893
 		cel 8
-		signal $0002
+		signal IMMEDIATE
 		description 127
 		owner 13
 		name "Mordack's Wand"
@@ -683,14 +645,16 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
-				(if (Btst 60)
+			(verbLook
+				(if (Btst fWandRecharged)
 					(SpeakAudio 128)
 				else
 					(SpeakAudio description)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -699,7 +663,7 @@
 	(properties
 		view 893
 		cel 9
-		signal $0002
+		signal IMMEDIATE
 		description 129
 		owner 55
 	)
@@ -709,7 +673,7 @@
 	(properties
 		view 893
 		cel 10
-		signal $0002
+		signal IMMEDIATE
 		description 88
 		owner 51
 		name "Cat Fish"
@@ -720,7 +684,7 @@
 	(properties
 		view 712
 		loop 2
-		signal $0002
+		signal IMMEDIATE
 		owner 65
 		name "Mongoose Spell"
 	)
@@ -731,7 +695,7 @@
 		view 712
 		loop 2
 		cel 1
-		signal $0002
+		signal IMMEDIATE
 		owner 65
 		name "Bunny Spell"
 	)
@@ -742,7 +706,7 @@
 		view 712
 		loop 2
 		cel 2
-		signal $0002
+		signal IMMEDIATE
 		owner 65
 		name "Rain Spell"
 	)
@@ -753,20 +717,20 @@
 		view 712
 		loop 2
 		cel 3
-		signal $0002
+		signal IMMEDIATE
 		owner 65
 		name "Tiger Spell"
 	)
 )
 
-(instance ok of IconI
+(instance ok of IconItem
 	(properties
 		view 901
 		loop 3
 		cel 0
 		nsLeft 40
 		cursor 999
-		signal $0043
+		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		helpStr 9250
 	)
 	
@@ -779,13 +743,13 @@
 	)
 )
 
-(instance invLook of IconI
+(instance invLook of IconItem
 	(properties
 		view 901
 		loop 2
 		cel 0
 		cursor 7
-		message 2
+		message verbLook
 		helpStr 9251
 	)
 	
@@ -798,13 +762,13 @@
 	)
 )
 
-(instance invHand of IconI
+(instance invHand of IconItem
 	(properties
 		view 901
 		loop 0
 		cel 0
 		cursor 8
-		message 3
+		message verbDo
 		helpStr 9252
 	)
 	
@@ -817,13 +781,13 @@
 	)
 )
 
-(instance invHelp of IconI
+(instance invHelp of IconItem
 	(properties
 		view 901
 		loop 1
 		cel 0
 		cursor 70
-		message 6
+		message verbHelp
 	)
 	
 	(method (init)
@@ -835,12 +799,12 @@
 	)
 )
 
-(instance invSelect of IconI
+(instance invSelect of IconItem
 	(properties
 		view 901
 		loop 4
 		cel 0
-		cursor 999
+		cursor ARROW_CURSOR
 		helpStr 9253
 	)
 	

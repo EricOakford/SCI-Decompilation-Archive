@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 754)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use System)
@@ -58,7 +58,6 @@
 )
 
 (instance CPCheckD of Dialog
-	(properties)
 	
 	(method (init param1 &tmp temp0 temp1 temp2 newDButton temp4 temp5 temp6 temp7 temp8 temp9 temp10 newDButtonNsRight)
 		(= temp0 (= temp2 0))

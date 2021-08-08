@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 659)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use LoadMany)
@@ -20,19 +20,19 @@
 	local5
 	local6
 )
-(instance cdIntro10 of Rm
+(instance cdIntro10 of Room
 	(properties
 		picture 76
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(Load rsPIC 76)
+		(Load PICTURE 76)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
+		(theGame setCursor: invCursor TRUE)
 		(super init:)
-		(UnLoad 129 1)
-		(LoadMany 128 764 766 0 768 777 783 1101)
+		(UnLoad PICTURE 1)
+		(LoadMany VIEW 764 766 0 768 777 783 1101)
 		(owl
 			init:
 			cycleSpeed:
@@ -69,14 +69,13 @@
 )
 
 (instance a2s5Script of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load rsSCRIPT 929)
-				(LoadMany 128 765 1103 771 775 767 769 1100 1102 779)
-				(Load 142 10113)
+				(Load SCRIPT 929)
+				(LoadMany VIEW 765 1103 771 775 767 769 1100 1102 779)
+				(Load RES_SYNC 10113)
 				(= cycles 1)
 			)
 			(1
@@ -84,7 +83,7 @@
 				(= waitForCue 4096)
 			)
 			(2
-				(owlHead setCycle: End)
+				(owlHead setCycle: EndLoop)
 				(ego setScript: egoDrinkTea)
 				(owl setScript: owlDrinkingTea)
 				(= waitForCue 4352)
@@ -96,7 +95,7 @@
 			)
 			(5
 				(if (== howFast 2)
-					(ego view: 767 setLoop: 2 setCycle: End self)
+					(ego view: 767 setLoop: 2 setCycle: EndLoop self)
 				else
 					(ego view: 767 setLoop: 2)
 					(ego setCel: (- (NumCels ego) 1))
@@ -111,7 +110,7 @@
 			)
 			(7
 				(if (== howFast 2)
-					(ego setLoop: 2 setCycle: Beg self show:)
+					(ego setLoop: 2 setCycle: BegLoop self show:)
 					(ego cel: (- (NumCels ego) 1))
 				else
 					(ego setLoop: 2 cel: 0 show:)
@@ -123,7 +122,7 @@
 				(ego setScript: egoDrinkTea)
 				(owl setScript: owlDrinkingTea)
 				(crispin hide:)
-				(crispinTop init: setCycle: End)
+				(crispinTop init: setCycle: EndLoop)
 				(crispinBottom init:)
 				(= waitForCue 5632)
 			)
@@ -144,7 +143,7 @@
 						(2 1)
 						(else  0)
 					)
-					setCycle: Beg
+					setCycle: BegLoop
 				)
 				(= waitForCue 6144)
 			)
@@ -157,7 +156,7 @@
 				(owlMouth setCycle: 0 setCel: 0 show:)
 				(theMouth hide:)
 				(if (== howFast 2)
-					(crispinTop setLoop: 5 setCycle: End)
+					(crispinTop setLoop: 5 setCycle: EndLoop)
 					(= waitForCue 8192)
 				else
 					(crispinTop setLoop: 5)
@@ -191,7 +190,7 @@
 						(2 2)
 						(else  1)
 					)
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(crispinTop setCel: 0 show:)
 				(theMouth setCel: 255)
@@ -217,7 +216,7 @@
 						(2 2)
 						(else  1)
 					)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(crispinTop hide:)
 				(if (== howFast 2)
@@ -229,7 +228,7 @@
 							(else  0)
 						)
 						setPri: (crispinTop priority?)
-						setCycle: End
+						setCycle: EndLoop
 					)
 				else
 					(crispinBottom
@@ -267,7 +266,7 @@
 				(owlMouth setCycle: 0 setCel: 0)
 				(theMouth hide:)
 				(= local6 0)
-				(crispinBottom setCycle: Beg self)
+				(crispinBottom setCycle: BegLoop self)
 			)
 			(26
 				(crispinBottom setLoop: 0 cycleSpeed: 0 cel: 1)
@@ -289,12 +288,12 @@
 						(else  0)
 					)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(28
 				(crispinCup addToPic:)
-				(crispin cel: 0 setLoop: 10 setCycle: End self)
+				(crispin cel: 0 setLoop: 10 setCycle: EndLoop self)
 			)
 			(29
 				(crispin
@@ -302,7 +301,7 @@
 					setLoop: 1
 					cycleSpeed: (if (== howFast 2) 6 else 1)
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					signal: (| (crispin signal?) $4800)
 					setMotion: MoveTo 145 126 self
 					moveSpeed: (if (== howFast 2) 14 else 3)
@@ -315,7 +314,7 @@
 				(ego view: 1100 setLoop: 4 cel: 0)
 				(crispin
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 219 118 self
 				)
 			)
@@ -336,17 +335,17 @@
 					view: 775
 					setLoop: 4
 					cel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(34 (= waitForCue 12544))
 			(35
-				(crispin setCycle: End self)
+				(crispin setCycle: EndLoop self)
 			)
 			(36
 				(crispin
 					setLoop: 5
-					setCycle: Fwd
+					setCycle: Forward
 					cel: 0
 					setScript: searchThroughChest self
 				)
@@ -358,7 +357,7 @@
 			)
 			(39
 				(if (== howFast 2)
-					(crispin setLoop: 6 cel: 0 setCycle: End self)
+					(crispin setLoop: 6 cel: 0 setCycle: EndLoop self)
 				else
 					(crispin setLoop: 6)
 					(crispin cel: (- (NumCels crispin) 1))
@@ -367,7 +366,7 @@
 			)
 			(40
 				(if (== howFast 2)
-					(crispin setLoop: 7 cel: 0 setCycle: End self)
+					(crispin setLoop: 7 cel: 0 setCycle: EndLoop self)
 				else
 					(crispin setLoop: 7)
 					(crispin cel: (- (NumCels crispin) 1))
@@ -402,7 +401,7 @@
 							(else  0)
 						)
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(crispin
@@ -431,13 +430,13 @@
 					)
 					setLoop: 4
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(46
 				(if (== howFast 2)
-					(ego cel: 4 setCycle: End self)
-					(crispin setLoop: 3 cel: 0 setCycle: End)
+					(ego cel: 4 setCycle: EndLoop self)
+					(crispin setLoop: 3 cel: 0 setCycle: EndLoop)
 				else
 					(ego cel: (- (NumCels ego) 1))
 					(crispin setLoop: 3)
@@ -448,7 +447,7 @@
 			(47 (= waitForCue 16384))
 			(48
 				(theMouth changeMouth: 5 show:)
-				(ego ignoreActors: 1 setLoop: 5 setCycle: End)
+				(ego ignoreActors: 1 setLoop: 5 setCycle: EndLoop)
 				(= waitForCue 16640)
 			)
 			(49
@@ -472,7 +471,7 @@
 					posn: 206 100
 					setLoop: 5
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 					show:
 				)
@@ -484,7 +483,7 @@
 			)
 			(53
 				(if (== howFast 2)
-					(crispinTop setCycle: End self)
+					(crispinTop setCycle: EndLoop self)
 				else
 					(crispinTop setCycle: 0)
 					(crispinTop cel: (- (NumCels crispinTop) 1))
@@ -517,7 +516,7 @@
 							(else  0)
 						)
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(crispin
@@ -535,12 +534,12 @@
 				)
 			)
 			(57
-				(ego view: 769 get: 28 setLoop: 3 setCycle: CT 3 1 self)
+				(ego view: 769 get: 28 setLoop: 3 setCycle: CycleTo 3 1 self)
 			)
 			(58
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(if (== howFast 2)
-					(crispin view: 1103 setLoop: 1 cel: 0 setCycle: End)
+					(crispin view: 1103 setLoop: 1 cel: 0 setCycle: EndLoop)
 				else
 					(crispin view: 1103 setLoop: 1)
 					(crispin cel: (- (NumCels crispin) 1))
@@ -578,19 +577,19 @@
 				(owlHead hide:)
 				(owlWing hide:)
 				(owlMouth hide:)
-				(owl setLoop: 7 cel: 0 setCycle: End self)
+				(owl setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(66
-				(owl setLoop: 8 cel: 0 setCycle: End self)
+				(owl setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(67
-				(crispin view: 771 setLoop: 11 setCycle: End)
+				(crispin view: 771 setLoop: 11 setCycle: EndLoop)
 				(owl
 					setLoop: 9
 					signal: 18432
 					posn: 110 103
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 146 178 self
 				)
 			)
@@ -599,7 +598,7 @@
 				(= cycles 1)
 			)
 			(69
-				(ego view: 766 setLoop: 1 setCycle: End self)
+				(ego view: 766 setLoop: 1 setCycle: EndLoop self)
 			)
 			(70
 				(egoCup addToPic:)
@@ -637,7 +636,7 @@
 				(= waitForCue 13056)
 			)
 			(2
-				(crispin setCycle: Fwd)
+				(crispin setCycle: Forward)
 				(= waitForCue 13312)
 			)
 			(3
@@ -645,7 +644,7 @@
 				(= waitForCue 13568)
 			)
 			(4
-				(crispin setCycle: Fwd)
+				(crispin setCycle: Forward)
 				(= cycles 1)
 			)
 			(5 (client setScript: 0))
@@ -669,17 +668,17 @@
 						(else  0)
 					)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego setLoop: 1 cel: 0 setCycle: End self)
+				(ego setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2 (= seconds 2))
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego setLoop: 0)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(5
 				(ego view: 766 setLoop: 0)
@@ -696,9 +695,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= seconds 2))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3 (client setScript: 0))
 		)
 	)
@@ -939,10 +938,10 @@
 				(owlHead hide:)
 				(owlMouth hide:)
 				(owlWing hide:)
-				(owl setLoop: 2 setCycle: End self)
+				(owl setLoop: 2 setCycle: EndLoop self)
 			)
 			(1 (= seconds 2))
-			(2 (owl setCycle: Beg self))
+			(2 (owl setCycle: BegLoop self))
 			(3
 				(owlHead show:)
 				(owlMouth show:)

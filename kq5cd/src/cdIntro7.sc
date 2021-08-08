@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 656)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use LoadMany)
@@ -13,21 +13,21 @@
 	cdIntro7 0
 )
 
-(instance cdIntro7 of Rm
+(instance cdIntro7 of Room
 	(properties
 		picture 73
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
 		(self setScript: egoFlyingScript setRegions: 769)
-		(User canInput: 0 controls: 0)
-		(Load rsPIC 73)
+		(User canInput: FALSE controls: FALSE)
+		(Load PICTURE 73)
 		(syncIt init: hide: play: 10111 658)
 		(super init:)
-		(UnLoad 129 68)
-		(Load rsPIC 74)
-		(LoadMany 128 750 760 751)
+		(UnLoad PICTURE 68)
+		(Load PICTURE 74)
+		(LoadMany VIEW 750 760 751)
 		(ego
 			view: 750
 			setLoop: 3
@@ -37,7 +37,7 @@
 			init:
 		)
 		((ego head?) hide:)
-		(myWater init: setCycle: Fwd)
+		(myWater init: setCycle: Forward)
 		(owl init: setStep: 1 1 posn: 207 211)
 	)
 	
@@ -48,7 +48,6 @@
 )
 
 (instance owlFlyingScript of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -57,15 +56,15 @@
 				(owl
 					setLoop: 6
 					cycleSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 184 70 self
 				)
 			)
-			(2 (owl setCycle: End self))
+			(2 (owl setCycle: EndLoop self))
 			(3
 				(owl
 					setLoop: 7
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo 140 70
 				)
 			)
@@ -81,21 +80,24 @@
 )
 
 (instance egoFlyingScript of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(owl setScript: owlFlyingScript)
-				(if (== howFast 2) (= seconds 7) else (= seconds 5))
+				(if (== howFast 2)
+					(= seconds 7)
+				else
+					(= seconds 5)
+				)
 			)
 			(1
-				(ego setCycle: Fwd setMotion: MoveTo 280 176 self)
+				(ego setCycle: Forward setMotion: MoveTo 280 176 self)
 			)
 			(2
 				(ego
 					setCel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 4
 					setMotion: MoveTo 210 80 self
 				)
@@ -105,7 +107,7 @@
 					setCel: 0
 					setLoop: 5
 					setMotion: MoveTo 140 70
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= waitForCue 16644))
@@ -123,21 +125,20 @@
 )
 
 (instance a2s2Script of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 74 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 74 FADEOUT)
 				((ego head?) hide:)
 				(owl
 					show:
 					view: 760
-					signal: 16384
+					signal: ignrAct
 					cycleSpeed: 2
 					illegalBits: 0
 					setLoop: 8
-					setCycle: Fwd
+					setCycle: Forward
 					posn: 247 207
 				)
 				(ego
@@ -146,7 +147,7 @@
 					normal: 0
 					posn: 163 224
 					cycleSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					show:
 				)
 				(= waitForCue 16724)
@@ -156,7 +157,7 @@
 				(= seconds 5)
 			)
 			(2
-				(ego setCycle: Fwd setMotion: MoveTo 143 85)
+				(ego setCycle: Forward setMotion: MoveTo 143 85)
 				(= waitForCue 17668)
 			)
 			(3
@@ -164,19 +165,19 @@
 					setLoop: 7
 					moveSpeed: 0
 					setMotion: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(ego
 					setLoop: 8
 					setMotion: MoveTo 138 88
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(ego setMotion: 0)
-				(if (> (DoAudio 6) -1) (-- state))
+				(if (> (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(6 (curRoom newRoom: 658))
@@ -185,41 +186,40 @@
 )
 
 (instance owlFlying of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(owl setMotion: MoveTo 254 90)
 				(= waitForCue 16900)
 			)
-			(1 (owl setCycle: End self))
+			(1 (owl setCycle: EndLoop self))
 			(2
-				(owl setLoop: 9 setCycle: End self)
+				(owl setLoop: 9 setCycle: EndLoop self)
 			)
 			(3
-				(owl setLoop: 10 moveSpeed: 1 setCycle: Fwd)
+				(owl setLoop: 10 moveSpeed: 1 setCycle: Forward)
 				(= waitForCue 17156)
 			)
 			(4
 				(cls)
-				(owl setCycle: End self)
+				(owl setCycle: EndLoop self)
 			)
 			(5
-				(owl setLoop: 11 setCycle: End self)
+				(owl setLoop: 11 setCycle: EndLoop self)
 			)
 			(6
 				(owl
 					setLoop: 12
 					moveSpeed: 0
 					setMotion: MoveTo 133 90
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
 				(owl
 					setLoop: 13
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: MoveTo 133 90 self
 				)
 			)
@@ -237,6 +237,4 @@
 	)
 )
 
-(instance syncIt of MonoAudioProp
-	(properties)
-)
+(instance syncIt of MonoAudioProp)

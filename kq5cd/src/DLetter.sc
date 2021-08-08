@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 759)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 
@@ -8,14 +8,14 @@
 	proc759_0 0
 )
 
-(procedure (proc759_0 param1 param2 &tmp temp0 temp1 temp2 temp3 temp4 [temp5 400] [temp405 400])
+(procedure (proc759_0 theString moreStuff &tmp temp0 temp1 temp2 temp3 temp4 [temp5 400] [temp405 400])
 	(if (> argc 2)
-		(Print param1 param2 &rest)
+		(Print theString moreStuff &rest)
 	else
-		(if (u< param1 1000)
-			(GetFarText param1 param2 @temp5)
+		(if (u< theString 1000)
+			(GetFarText theString moreStuff @temp5)
 		else
-			(StrCpy @temp5 param1)
+			(StrCpy @temp5 theString)
 		)
 		(= temp1 (StrAt @temp5 0))
 		(= temp2 (StrAt @temp5 1))
@@ -132,18 +132,7 @@
 
 (class DLetter of DIcon
 	(properties
-		type $0004
-		state $0000
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		key 0
-		said 0
-		value 0
-		view 0
-		loop 0
-		cel 0
+		type dIcon
 		letter 0
 		priority -1
 	)

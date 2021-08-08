@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 762)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Talker)
 (use Actor)
@@ -121,16 +121,16 @@
 		(cond 
 			(
 				(and
-					(& (event type?) evKEYBOARD)
-					(== (event message?) KEY_ESCAPE)
+					(& (event type?) keyDown)
+					(== (event message?) ESC)
 				)
 				(= disposeWhenDone (= local9 1))
 				(CueEvent self 4 13)
 			)
 			(
 				(and
-					(== (event type?) evMOUSEBUTTON)
-					(== (event modifiers?) emSHIFT)
+					(== (event type?) mouseDown)
+					(== (event modifiers?) shiftDown)
 				)
 				(= disposeWhenDone (= local9 1))
 			)
@@ -182,7 +182,6 @@
 )
 
 (instance talkerObject of CodeCue
-	(properties)
 	
 	(method (doit)
 		(if (not local10)
@@ -273,8 +272,7 @@
 	)
 	
 	(method (cue)
-		(if
-		(or (== (WordAt local1 (+ local2 1)) 0) local7 local9)
+		(if (or (== (WordAt local1 (+ local2 1)) 0) local7 local9)
 			(self dispose:)
 		else
 			(self doit:)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 755)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use BertaWindow)
 (use KQCursor)
@@ -13,66 +13,64 @@
 )
 
 (local
-	local0
+	pnv
 )
-(procedure (localproc_0012 param1 param2 param3 param4 param5)
+(procedure (WhichLanguage german spanish french italian english)
 	(switch (theGame printLang?)
-		(49 param1)
-		(34 param2)
-		(33 param3)
-		(39 param4)
-		(else  param5)
+		(GERMAN german)
+		(SPANISH spanish)
+		(FRENCH french)
+		(ITALIAN italian)
+		(else english)
 	)
 )
 
 (procedure (localproc_004e)
-	(localproc_0012 1026 1040 1051 1050 946)
+	(WhichLanguage 1026 1040 1051 1050 946)
 )
 
 (class KQ5Controls of GameControls
-	(properties
-		elements 0
-		size 0
-		height 200
-		underBits 0
-		oldMouseX 0
-		oldMouseY 0
-		curIcon 0
-		highlightedIcon 0
-		prevIcon 0
-		curInvIcon 0
-		useIconItem 0
-		helpIconItem 0
-		port 0
-		window 0
-		state $0000
-		activateHeight 0
-		y 0
-		okButton 0
-	)
 	
 	(method (init)
-		(Load rsVIEW 946)
+		(Load VIEW 946)
 		(= gameControls self)
 		(self
 			add:
 				iconOk
-				(iconSave init: theObj: theGame selector: 78 yourself:)
-				(iconRestore init: theObj: theGame selector: 79 yourself:)
+				(iconSave
+					init:
+					theObj: theGame
+					selector: #save
+					yourself:
+				)
+				(iconRestore
+					init:
+					theObj: theGame
+					selector: #restore
+					yourself:
+				)
 				(iconRestart
 					init:
 					theObj: theGame
-					selector: 104
+					selector: #restart
 					yourself:
 				)
-				(iconQuit init: theObj: theGame selector: 103 yourself:)
+				(iconQuit
+					init:
+					theObj: theGame
+					selector: #quitGame
+					yourself:
+				)
 				(iconAbout
 					init:
 					theObj: (ScriptID 756 0)
-					selector: 60
+					selector: #doit
 					yourself:
 				)
-				(iconHelp cursor: helpCursor yourself:)
+				(iconHelp
+					cursor: helpCursor
+					yourself:
+				)
 			eachElementDo: #highlightColor 0
 			eachElementDo: #lowlightColor (if isVGA 19 else 7)
 			helpIconItem: iconHelp
@@ -81,29 +79,31 @@
 		(super init: &rest)
 	)
 	
-	(method (dispatchEvent event &tmp temp0 temp1 temp2)
+	(method (dispatchEvent event &tmp thePort obj temp2)
 		(return
 			(if
 				(and
-					(== (event type?) 16384)
-					(== (event message?) JOY_DOWNLEFT)
+					(== (event type?) userEvent)
+					(== (event message?) verbHelp)
 				)
 				(= temp2 0)
-				(= temp1 (self firstTrue: #onMe event))
+				(= obj (self firstTrue: #onMe event))
 				(event dispose:)
-				(if (and temp1 (temp1 helpStr?))
+				(if (and obj (obj helpStr?))
 					(self hide:)
-					(= temp0 (GetPort))
-					(DoAudio 2 (temp1 helpStr?))
-					(SetPort temp0)
+					(= thePort (GetPort))
+					(DoAudio Play (obj helpStr?))
+					(SetPort thePort)
 					(= temp2 1)
 				)
 				(if helpIconItem
-					(helpIconItem signal: (& (helpIconItem signal?) $ffef))
+					(helpIconItem signal: (& (helpIconItem signal?) (~ TRANSLATOR)))
 				)
 				(theGame setCursor: normalCursor)
-				(if temp2 (self show:))
-				(return temp1)
+				(if temp2
+					(self show:)
+				)
+				(return obj)
 			else
 				(super dispatchEvent: event)
 			)
@@ -112,7 +112,6 @@
 )
 
 (instance fastControls of KQ5Controls
-	(properties)
 	
 	(method (init)
 		(self
@@ -129,11 +128,11 @@
 									320
 									(+
 										67
-										(localproc_0012 -2 4 4 4 0)
+										(WhichLanguage -2 4 4 4 0)
 										(CelWide (localproc_004e) 0 1)
-										(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-										(localproc_0012 2 2 2 2 4)
-										(localproc_0012 30 30 30 30 0)
+										(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+										(WhichLanguage 2 2 2 2 4)
+										(WhichLanguage 30 30 30 30 0)
 									)
 								)
 								2
@@ -145,31 +144,31 @@
 							(CelHigh (localproc_004e) 1 1)
 							6
 							(/ (- 200 (+ (CelHigh (localproc_004e) 1 1) 6)) 2)
-							(localproc_0012 -1 -1 -1 -1 10)
+							(WhichLanguage -1 -1 -1 -1 10)
 						)
 					right:
 						(+
 							67
-							(localproc_0012 -2 4 4 4 0)
+							(WhichLanguage -2 4 4 4 0)
 							(CelWide (localproc_004e) 0 1)
-							(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-							(localproc_0012 2 2 2 2 4)
-							(localproc_0012 30 30 30 30 0)
+							(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+							(WhichLanguage 2 2 2 2 4)
+							(WhichLanguage 30 30 30 30 0)
 							(/
 								(-
 									320
 									(+
 										67
-										(localproc_0012 -2 4 4 4 0)
+										(WhichLanguage -2 4 4 4 0)
 										(CelWide (localproc_004e) 0 1)
-										(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-										(localproc_0012 2 2 2 2 4)
-										(localproc_0012 30 30 30 30 0)
+										(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+										(WhichLanguage 2 2 2 2 4)
+										(WhichLanguage 30 30 30 30 0)
 									)
 								)
 								2
 							)
-							(localproc_0012 5 -5 -5 -5 10)
+							(WhichLanguage 5 -5 -5 -5 10)
 						)
 					yourself:
 				)
@@ -177,7 +176,7 @@
 				(detailSlider
 					init:
 					theObj: theGame
-					selector: 290
+					selector: #detailLevel
 					topValue: 3
 					bottomValue: 0
 					yStep: 2
@@ -186,7 +185,7 @@
 				(volumeSlider
 					init:
 					theObj: theGame
-					selector: 379
+					selector: #masterVolume
 					topValue: 15
 					bottomValue: 0
 					yStep: 2
@@ -207,7 +206,6 @@
 )
 
 (instance slowControls of KQ5Controls
-	(properties)
 	
 	(method (init)
 		(self
@@ -224,11 +222,11 @@
 									320
 									(+
 										67
-										(localproc_0012 -2 4 4 4 0)
+										(WhichLanguage -2 4 4 4 0)
 										(CelWide (localproc_004e) 0 1)
-										(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-										(localproc_0012 2 2 2 2 4)
-										(localproc_0012 30 30 30 30 0)
+										(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+										(WhichLanguage 2 2 2 2 4)
+										(WhichLanguage 30 30 30 30 0)
 									)
 								)
 								2
@@ -240,31 +238,31 @@
 							(CelHigh (localproc_004e) 1 1)
 							6
 							(/ (- 200 (+ (CelHigh (localproc_004e) 1 1) 6)) 2)
-							(localproc_0012 -1 -1 -1 -1 10)
+							(WhichLanguage -1 -1 -1 -1 10)
 						)
 					right:
 						(+
 							67
-							(localproc_0012 -2 4 4 4 0)
+							(WhichLanguage -2 4 4 4 0)
 							(CelWide (localproc_004e) 0 1)
-							(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-							(localproc_0012 2 2 2 2 4)
-							(localproc_0012 30 30 30 30 0)
+							(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+							(WhichLanguage 2 2 2 2 4)
+							(WhichLanguage 30 30 30 30 0)
 							(/
 								(-
 									320
 									(+
 										67
-										(localproc_0012 -2 4 4 4 0)
+										(WhichLanguage -2 4 4 4 0)
 										(CelWide (localproc_004e) 0 1)
-										(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-										(localproc_0012 2 2 2 2 4)
-										(localproc_0012 30 30 30 30 0)
+										(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+										(WhichLanguage 2 2 2 2 4)
+										(WhichLanguage 30 30 30 30 0)
 									)
 								)
 								2
 							)
-							(localproc_0012 5 -5 -5 -5 10)
+							(WhichLanguage 5 -5 -5 -5 10)
 						)
 					yourself:
 				)
@@ -272,7 +270,7 @@
 				(volumeSlider
 					init:
 					theObj: theGame
-					selector: 379
+					selector: #masterVolume
 					topValue: 15
 					bottomValue: 0
 					yStep: 2
@@ -293,12 +291,11 @@
 )
 
 (instance fastWin of BertaWindow
-	(properties)
 	
-	(method (open &tmp temp0 [temp1 4] [temp5 45])
+	(method (open &tmp thePort [len 4] [buf 45])
 		(super open:)
-		(= local0 (PicNotValid))
-		(PicNotValid 1)
+		(= pnv (PicNotValid))
+		(PicNotValid TRUE)
 		(DrawCel
 			(localproc_004e)
 			0
@@ -309,15 +306,15 @@
 						(-
 							(+
 								67
-								(localproc_0012 -2 4 4 4 0)
+								(WhichLanguage -2 4 4 4 0)
 								(CelWide (localproc_004e) 0 1)
-								(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-								(localproc_0012 2 2 2 2 4)
-								(localproc_0012 30 30 30 30 0)
+								(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+								(WhichLanguage 2 2 2 2 4)
+								(WhichLanguage 30 30 30 30 0)
 							)
 							(+
-								(localproc_0012 2 2 2 2 4)
-								(localproc_0012 2 2 2 2 0)
+								(WhichLanguage 2 2 2 2 4)
+								(WhichLanguage 2 2 2 2 0)
 								(CelWide (localproc_004e) 1 1)
 							)
 						)
@@ -325,12 +322,12 @@
 					)
 					2
 				)
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				(CelWide (localproc_004e) 1 1)
 				10
 			)
-			(+ (localproc_0012 -2 0 0 0 6) 10)
+			(+ (WhichLanguage -2 0 0 0 6) 10)
 			-1
 			0
 		)
@@ -339,11 +336,11 @@
 			1
 			1
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				10
 			)
-			(+ (- 3 (localproc_0012 5 5 5 5 0)) 10)
+			(+ (- 3 (WhichLanguage 5 5 5 5 0)) 10)
 			-1
 			0
 		)
@@ -353,8 +350,8 @@
 			0
 			(+
 				67
-				(localproc_0012 -2 4 4 4 0)
-				(localproc_0012 42 41 41 41 27)
+				(WhichLanguage -2 4 4 4 0)
+				(WhichLanguage 42 41 41 41 27)
 				10
 			)
 			48
@@ -367,12 +364,12 @@
 			0
 			(+
 				67
-				(localproc_0012 -2 4 4 4 0)
+				(WhichLanguage -2 4 4 4 0)
 				(-
-					(+ 40 (localproc_0012 10 15 15 15 0))
-					(localproc_0012 3 8 8 8 0)
+					(+ 40 (WhichLanguage 10 15 15 15 0))
+					(WhichLanguage 3 8 8 8 0)
 				)
-				(localproc_0012 42 48 48 48 28)
+				(WhichLanguage 42 48 48 48 28)
 				10
 			)
 			48
@@ -385,8 +382,8 @@
 			4
 			(+
 				(-
-					(+ 67 (localproc_0012 -2 4 4 4 0))
-					(localproc_0012 -2 0 0 0 4)
+					(+ 67 (WhichLanguage -2 4 4 4 0))
+					(WhichLanguage -2 0 0 0 4)
 				)
 				10
 			)
@@ -402,13 +399,13 @@
 				(-
 					(+
 						67
-						(localproc_0012 -2 4 4 4 0)
+						(WhichLanguage -2 4 4 4 0)
 						(-
-							(+ 40 (localproc_0012 10 15 15 15 0))
-							(localproc_0012 3 8 8 8 0)
+							(+ 40 (WhichLanguage 10 15 15 15 0))
+							(WhichLanguage 3 8 8 8 0)
 						)
 					)
-					(localproc_0012 -2 1 1 1 6)
+					(WhichLanguage -2 1 1 1 6)
 				)
 				10
 			)
@@ -424,17 +421,17 @@
 				(-
 					(+
 						67
-						(localproc_0012 -2 4 4 4 0)
+						(WhichLanguage -2 4 4 4 0)
 						(-
-							(+ 40 (localproc_0012 10 15 15 15 0))
-							(localproc_0012 3 8 8 8 0)
+							(+ 40 (WhichLanguage 10 15 15 15 0))
+							(WhichLanguage 3 8 8 8 0)
 						)
 						(-
-							(+ 40 (localproc_0012 10 15 15 15 0))
-							(localproc_0012 15 15 15 15 0)
+							(+ 40 (WhichLanguage 10 15 15 15 0))
+							(WhichLanguage 15 15 15 15 0)
 						)
 					)
-					(localproc_0012 -5 -10 -10 -10 1)
+					(WhichLanguage -5 -10 -10 -10 1)
 				)
 				10
 			)
@@ -442,53 +439,50 @@
 			-1
 			0
 		)
-		(PicNotValid local0)
-		(= temp0 (GetPort))
+		(PicNotValid pnv)
+		(= thePort (GetPort))
 		(SetPort 0)
-		(Graph grUPDATE_BOX lsTop lsLeft lsBottom lsRight 1)
-		(SetPort temp0)
-		(Format @temp5 755 0 score possibleScore)
-		(TextSize @temp1 @temp5 69 0)
-		(Display
-			@temp5
-			dsFONT
-			69
-			dsCOLOR
-			0
-			dsCOORD
+		(Graph GShowBits lsTop lsLeft lsBottom lsRight VMAP)
+		(SetPort thePort)
+		(Format @buf 755 0 score possibleScore)
+		(TextSize @len @buf 69 0)
+		(Display @buf
+			p_font 69
+			p_color 0
+			p_at
 			(+
 				6
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				(CelWide (localproc_004e) 1 1)
 				(/
 					(-
 						(-
 							(+
 								67
-								(localproc_0012 -2 4 4 4 0)
+								(WhichLanguage -2 4 4 4 0)
 								(CelWide (localproc_004e) 0 1)
-								(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-								(localproc_0012 2 2 2 2 4)
-								(localproc_0012 30 30 30 30 0)
+								(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+								(WhichLanguage 2 2 2 2 4)
+								(WhichLanguage 30 30 30 30 0)
 							)
 							(+
 								6
-								(localproc_0012 2 2 2 2 4)
-								(localproc_0012 2 2 2 2 0)
+								(WhichLanguage 2 2 2 2 4)
+								(WhichLanguage 2 2 2 2 0)
 								(CelWide (localproc_004e) 1 1)
-								(localproc_0012 2 2 2 2 4)
+								(WhichLanguage 2 2 2 2 4)
 								2
 							)
 						)
-						[temp1 3]
+						[len 3]
 					)
 					2
 				)
 				10
 			)
 			(+
-				(localproc_0012 6 3 3 3 9)
+				(WhichLanguage 6 3 3 3 9)
 				37
 				(CelHigh (localproc_004e) 0 1)
 				3
@@ -499,11 +493,10 @@
 )
 
 (instance slowWin of BertaWindow
-	(properties)
-	
-	(method (open &tmp temp0 [temp1 4] [temp5 45])
+
+	(method (open &tmp thePort [len 4] [buf 45])
 		(super open:)
-		(= local0 (PicNotValid))
+		(= pnv (PicNotValid))
 		(PicNotValid 1)
 		(DrawCel
 			(localproc_004e)
@@ -515,15 +508,15 @@
 						(-
 							(+
 								67
-								(localproc_0012 -2 4 4 4 0)
+								(WhichLanguage -2 4 4 4 0)
 								(CelWide (localproc_004e) 0 1)
-								(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-								(localproc_0012 2 2 2 2 4)
-								(localproc_0012 30 30 30 30 0)
+								(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+								(WhichLanguage 2 2 2 2 4)
+								(WhichLanguage 30 30 30 30 0)
 							)
 							(+
-								(localproc_0012 2 2 2 2 4)
-								(localproc_0012 2 2 2 2 0)
+								(WhichLanguage 2 2 2 2 4)
+								(WhichLanguage 2 2 2 2 0)
 								(CelWide (localproc_004e) 1 1)
 							)
 						)
@@ -531,12 +524,12 @@
 					)
 					2
 				)
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				(CelWide (localproc_004e) 1 1)
 				10
 			)
-			(+ (localproc_0012 -2 0 0 0 6) 10)
+			(+ (WhichLanguage -2 0 0 0 6) 10)
 			-1
 			0
 		)
@@ -545,11 +538,11 @@
 			1
 			1
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				10
 			)
-			(+ (- 3 (localproc_0012 5 5 5 5 0)) 10)
+			(+ (- 3 (WhichLanguage 5 5 5 5 0)) 10)
 			-1
 			0
 		)
@@ -560,12 +553,12 @@
 			(-
 				(+
 					67
-					(localproc_0012 -2 4 4 4 0)
+					(WhichLanguage -2 4 4 4 0)
 					(-
-						(+ 40 (localproc_0012 10 15 15 15 0))
-						(localproc_0012 3 8 8 8 0)
+						(+ 40 (WhichLanguage 10 15 15 15 0))
+						(WhichLanguage 3 8 8 8 0)
 					)
-					(localproc_0012 42 48 48 48 28)
+					(WhichLanguage 42 48 48 48 28)
 				)
 				10
 			)
@@ -581,13 +574,13 @@
 				(-
 					(+
 						67
-						(localproc_0012 -2 4 4 4 0)
+						(WhichLanguage -2 4 4 4 0)
 						(-
-							(+ 40 (localproc_0012 10 15 15 15 0))
-							(localproc_0012 3 8 8 8 0)
+							(+ 40 (WhichLanguage 10 15 15 15 0))
+							(WhichLanguage 3 8 8 8 0)
 						)
 					)
-					(localproc_0012 -2 1 1 1 6)
+					(WhichLanguage -2 1 1 1 6)
 				)
 				20
 			)
@@ -602,69 +595,66 @@
 			(-
 				(+
 					67
-					(localproc_0012 -2 4 4 4 0)
+					(WhichLanguage -2 4 4 4 0)
 					(-
-						(+ 40 (localproc_0012 10 15 15 15 0))
-						(localproc_0012 3 8 8 8 0)
+						(+ 40 (WhichLanguage 10 15 15 15 0))
+						(WhichLanguage 3 8 8 8 0)
 					)
 					(-
-						(+ 40 (localproc_0012 10 15 15 15 0))
-						(localproc_0012 15 15 15 15 0)
+						(+ 40 (WhichLanguage 10 15 15 15 0))
+						(WhichLanguage 15 15 15 15 0)
 					)
 				)
-				(localproc_0012 -5 -10 -10 -10 1)
+				(WhichLanguage -5 -10 -10 -10 1)
 			)
 			(+ (- 37 (+ (CelHigh (localproc_004e) 0 4) 3)) 10)
 			-1
 			0
 		)
-		(PicNotValid local0)
-		(= temp0 (GetPort))
+		(PicNotValid pnv)
+		(= thePort (GetPort))
 		(SetPort 0)
-		(Graph grUPDATE_BOX lsTop lsLeft lsBottom lsRight 1)
-		(SetPort temp0)
-		(Format @temp5 755 0 score possibleScore)
-		(TextSize @temp1 @temp5 69 0)
-		(Display
-			@temp5
-			dsFONT
-			69
-			dsCOLOR
-			0
-			dsCOORD
+		(Graph GShowBits lsTop lsLeft lsBottom lsRight VMAP)
+		(SetPort thePort)
+		(Format @buf 755 0 score possibleScore)
+		(TextSize @len @buf 69 0)
+		(Display @buf
+			p_font 69
+			p_color 0
+			p_at
 			(+
 				6
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				(CelWide (localproc_004e) 1 1)
 				(/
 					(-
 						(-
 							(+
 								67
-								(localproc_0012 -2 4 4 4 0)
+								(WhichLanguage -2 4 4 4 0)
 								(CelWide (localproc_004e) 0 1)
-								(* (+ 40 (localproc_0012 10 15 15 15 0)) 2)
-								(localproc_0012 2 2 2 2 4)
-								(localproc_0012 30 30 30 30 0)
+								(* (+ 40 (WhichLanguage 10 15 15 15 0)) 2)
+								(WhichLanguage 2 2 2 2 4)
+								(WhichLanguage 30 30 30 30 0)
 							)
 							(+
 								6
-								(localproc_0012 2 2 2 2 4)
-								(localproc_0012 2 2 2 2 0)
+								(WhichLanguage 2 2 2 2 4)
+								(WhichLanguage 2 2 2 2 0)
 								(CelWide (localproc_004e) 1 1)
-								(localproc_0012 2 2 2 2 4)
+								(WhichLanguage 2 2 2 2 4)
 								2
 							)
 						)
-						[temp1 3]
+						[len 3]
 					)
 					2
 				)
 				10
 			)
 			(+
-				(localproc_0012 6 3 3 3 9)
+				(WhichLanguage 6 3 3 3 9)
 				37
 				(CelHigh (localproc_004e) 0 1)
 				3
@@ -678,14 +668,14 @@
 	(properties
 		loop 0
 		cel 1
-		signal $0080
+		signal FIXED_POSN
 		helpStr 9220
 		topValue 3
 	)
 	
 	(method (init)
 		(= view (localproc_004e))
-		(= nsLeft (+ 67 (localproc_0012 -2 4 4 4 0) 10))
+		(= nsLeft (+ 67 (WhichLanguage -2 4 4 4 0) 10))
 		(= nsTop 47)
 		(= sliderView (localproc_004e))
 		(super init: &rest)
@@ -694,12 +684,12 @@
 	(method (show)
 		(= view (localproc_004e))
 		(= nsLeft
-			(localproc_0012
-				(+ 67 (localproc_0012 -2 4 4 4 0) 20)
-				(+ 67 (localproc_0012 -2 4 4 4 0) 20)
-				(+ 67 (localproc_0012 -2 4 4 4 0) 20)
-				(+ 67 (localproc_0012 -2 4 4 4 0) 20)
-				(+ 67 (localproc_0012 -2 4 4 4 0) 10)
+			(WhichLanguage
+				(+ 67 (WhichLanguage -2 4 4 4 0) 20)
+				(+ 67 (WhichLanguage -2 4 4 4 0) 20)
+				(+ 67 (WhichLanguage -2 4 4 4 0) 20)
+				(+ 67 (WhichLanguage -2 4 4 4 0) 20)
+				(+ 67 (WhichLanguage -2 4 4 4 0) 10)
 			)
 		)
 		(= sliderView (localproc_004e))
@@ -713,7 +703,7 @@
 	(properties
 		loop 0
 		cel 1
-		signal $0080
+		signal FIXED_POSN
 		helpStr 9221
 		topValue 15
 	)
@@ -723,10 +713,10 @@
 		(= nsLeft
 			(+
 				67
-				(localproc_0012 -2 4 4 4 0)
+				(WhichLanguage -2 4 4 4 0)
 				(-
-					(+ 40 (localproc_0012 10 15 15 15 0))
-					(localproc_0012 3 8 8 8 0)
+					(+ 40 (WhichLanguage 10 15 15 15 0))
+					(WhichLanguage 3 8 8 8 0)
 				)
 				10
 			)
@@ -742,10 +732,10 @@
 			(if (== gameControls fastControls)
 				(+
 					67
-					(localproc_0012 -2 4 4 4 0)
+					(WhichLanguage -2 4 4 4 0)
 					(-
-						(+ 40 (localproc_0012 10 15 15 15 0))
-						(localproc_0012 3 8 8 8 0)
+						(+ 40 (WhichLanguage 10 15 15 15 0))
+						(WhichLanguage 3 8 8 8 0)
 					)
 					10
 				)
@@ -753,10 +743,10 @@
 				(-
 					(+
 						67
-						(localproc_0012 -2 4 4 4 0)
+						(WhichLanguage -2 4 4 4 0)
 						(-
-							(+ 40 (localproc_0012 10 15 15 15 0))
-							(localproc_0012 3 8 8 8 0)
+							(+ 40 (WhichLanguage 10 15 15 15 0))
+							(WhichLanguage 3 8 8 8 0)
 						)
 					)
 					20
@@ -774,7 +764,7 @@
 	(properties
 		loop 0
 		cel 1
-		signal $0080
+		signal FIXED_POSN
 		helpStr 9222
 		bottomValue 15
 	)
@@ -784,14 +774,14 @@
 		(= nsLeft
 			(+
 				67
-				(localproc_0012 -2 4 4 4 0)
+				(WhichLanguage -2 4 4 4 0)
 				(-
-					(+ 40 (localproc_0012 10 15 15 15 0))
-					(localproc_0012 3 8 8 8 0)
+					(+ 40 (WhichLanguage 10 15 15 15 0))
+					(WhichLanguage 3 8 8 8 0)
 				)
 				(-
-					(+ 40 (localproc_0012 10 15 15 15 0))
-					(localproc_0012 15 15 15 15 0)
+					(+ 40 (WhichLanguage 10 15 15 15 0))
+					(WhichLanguage 15 15 15 15 0)
 				)
 				10
 			)
@@ -815,28 +805,28 @@
 			(if (== gameControls fastControls)
 				(+
 					67
-					(localproc_0012 -2 4 4 4 0)
+					(WhichLanguage -2 4 4 4 0)
 					(-
-						(+ 40 (localproc_0012 10 15 15 15 0))
-						(localproc_0012 3 8 8 8 0)
+						(+ 40 (WhichLanguage 10 15 15 15 0))
+						(WhichLanguage 3 8 8 8 0)
 					)
 					(-
-						(+ 40 (localproc_0012 10 15 15 15 0))
-						(localproc_0012 15 15 15 15 0)
+						(+ 40 (WhichLanguage 10 15 15 15 0))
+						(WhichLanguage 15 15 15 15 0)
 					)
 					10
 				)
 			else
 				(+
 					67
-					(localproc_0012 -2 4 4 4 0)
+					(WhichLanguage -2 4 4 4 0)
 					(-
-						(+ 40 (localproc_0012 10 15 15 15 0))
-						(localproc_0012 3 8 8 8 0)
+						(+ 40 (WhichLanguage 10 15 15 15 0))
+						(WhichLanguage 3 8 8 8 0)
 					)
 					(-
-						(+ 40 (localproc_0012 10 15 15 15 0))
-						(localproc_0012 15 15 15 15 0)
+						(+ 40 (WhichLanguage 10 15 15 15 0))
+						(WhichLanguage 15 15 15 15 0)
 					)
 				)
 			)
@@ -852,7 +842,7 @@
 		loop 2
 		cel 0
 		message 9
-		signal $01c3
+		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
 		helpStr 9223
 	)
 	
@@ -860,15 +850,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
 				10
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 3 else 4)
 				10
 			)
@@ -880,15 +870,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
-				(localproc_0012 10 11 11 11 10)
+				(WhichLanguage 10 11 11 11 10)
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 3 else 4)
 				10
 			)
@@ -902,7 +892,7 @@
 		loop 3
 		cel 0
 		message 9
-		signal $01c3
+		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
 		helpStr 9224
 	)
 	
@@ -910,15 +900,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
 				10
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 23 else 24)
 				10
 			)
@@ -930,15 +920,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
-				(localproc_0012 10 11 11 11 10)
+				(WhichLanguage 10 11 11 11 10)
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 23 else 24)
 				10
 			)
@@ -952,7 +942,7 @@
 		loop 4
 		cel 0
 		message 9
-		signal $01c3
+		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
 		helpStr 9225
 	)
 	
@@ -960,15 +950,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
 				10
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 43 else 44)
 				10
 			)
@@ -980,15 +970,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
-				(localproc_0012 10 11 11 11 10)
+				(WhichLanguage 10 11 11 11 10)
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 43 else 44)
 				10
 			)
@@ -1002,7 +992,7 @@
 		loop 5
 		cel 0
 		message 9
-		signal $01c3
+		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
 		helpStr 9226
 	)
 	
@@ -1010,15 +1000,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
 				10
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 63 else 64)
 				10
 			)
@@ -1030,15 +1020,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
-				(localproc_0012 10 11 11 11 10)
+				(WhichLanguage 10 11 11 11 10)
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 63 else 64)
 				10
 			)
@@ -1052,7 +1042,7 @@
 		loop 6
 		cel 0
 		message 9
-		signal $01c3
+		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
 		helpStr 9227
 	)
 	
@@ -1060,15 +1050,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
 				10
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 83 else 84)
 				10
 			)
@@ -1080,15 +1070,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
-				(localproc_0012 10 11 11 11 10)
+				(WhichLanguage 10 11 11 11 10)
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 83 else 84)
 				10
 			)
@@ -1097,27 +1087,27 @@
 	)
 )
 
-(instance iconHelp of IconI
+(instance iconHelp of IconItem
 	(properties
 		loop 7
 		cel 0
-		message 6
-		signal $0183
+		message verbHelp
+		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE)
 	)
 	
 	(method (show)
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
-				(localproc_0012 32 32 32 32 30)
-				(localproc_0012 10 11 11 11 10)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
+				(WhichLanguage 32 32 32 32 30)
+				(WhichLanguage 10 11 11 11 10)
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 83 else 84)
 				10
 			)
@@ -1126,12 +1116,12 @@
 	)
 )
 
-(instance iconOk of IconI
+(instance iconOk of IconItem
 	(properties
 		loop 8
 		cel 0
 		message 9
-		signal $01c3
+		signal (| VICON HIDEBAR FIXED_POSN RELVERIFY IMMEDIATE)
 		helpStr 9228
 	)
 	
@@ -1139,15 +1129,15 @@
 		(= view (localproc_004e))
 		(= nsLeft
 			(+
-				(localproc_0012 2 2 2 2 4)
-				(localproc_0012 2 2 2 2 0)
+				(WhichLanguage 2 2 2 2 4)
+				(WhichLanguage 2 2 2 2 0)
 				4
-				(localproc_0012 10 11 11 11 10)
+				(WhichLanguage 10 11 11 11 10)
 			)
 		)
 		(= nsTop
 			(+
-				(- 3 (localproc_0012 5 5 5 5 0))
+				(- 3 (WhichLanguage 5 5 5 5 0))
 				(if isVGA 103 else 104)
 				10
 			)

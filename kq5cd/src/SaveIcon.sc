@@ -6,8 +6,11 @@
 (use IconBar)
 (use File)
 
+;NOTE: This is a rather weird script.
+; It seems to be a simplified save/restore dialog!
+; Was this going to be used instead of the regular dialog?
 
-(class SaveIcon_a of IconI
+(class SaveIcon of IconItem
 	(properties
 		view -1
 		loop -1
@@ -338,7 +341,7 @@
 	)
 )
 
-(instance diskSave of IconI
+(instance diskSave of IconItem
 	(properties
 		view 1998
 		loop 10
@@ -360,7 +363,7 @@
 	)
 )
 
-(instance diskRestore of IconI
+(instance diskRestore of IconItem
 	(properties
 		view 1998
 		loop 10
@@ -369,7 +372,7 @@
 	)
 )
 
-(instance trash of IconI
+(instance trash of IconItem
 	(properties
 		view 1998
 		loop 11
@@ -417,7 +420,7 @@
 	)
 )
 
-(class SaveIcon_b of IconI
+(class SaveIcon_b of IconItem
 	(properties
 		view -1
 		loop -1
@@ -445,7 +448,7 @@
 	)
 )
 
-(instance cancel of IconI
+(instance cancel of IconItem
 	(properties
 		view 1998
 		loop 13

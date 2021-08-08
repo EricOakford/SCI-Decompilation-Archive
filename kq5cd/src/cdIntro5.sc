@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 654)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use LoadMany)
@@ -17,18 +17,18 @@
 	local0
 	[local1 4]
 )
-(instance cdIntro5 of Rm
+(instance cdIntro5 of Room
 	(properties
 		picture 71
 	)
 	
 	(method (init)
-		(Load rsPIC 71)
+		(Load PICTURE 71)
 		(super init:)
-		(UnLoad 129 70)
-		(Load rsSCRIPT 929)
-		(LoadMany 128 757 763)
-		(Load 142 10105)
+		(UnLoad PICTURE 70)
+		(Load SCRIPT 929)
+		(LoadMany VIEW 757 763)
+		(Load RES_SYNC 10105)
 		(= local0 1)
 		(HandsOff)
 		(theGame setCursor: invCursor 1)
@@ -46,7 +46,7 @@
 		(owl
 			view: 757
 			setPri: 10
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setLoop: 1
 			init:
 		)
@@ -62,7 +62,7 @@
 			setPri: (+ (owl priority?) 2)
 			setLoop: 4
 			posn: (- (owl x?) 5) (- (owl y?) 28)
-			signal: 16384
+			signal: ignrAct
 			setScript: rWingScript
 			init:
 		)
@@ -72,7 +72,7 @@
 			setLoop: 5
 			posn: (+ (owl x?) 7) (- (owl y?) 26)
 			setScript: lWingScript
-			signal: 16384
+			signal: ignrAct
 			init:
 		)
 		(self setRegions: 769)
@@ -88,8 +88,7 @@
 )
 
 (instance sceneFiveScript of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -109,7 +108,7 @@
 				(= waitForCue 5380)
 			)
 			(3
-				(if (< (DoAudio 6) -1) (-- state))
+				(if (< (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(4 (= seconds 2))
@@ -119,35 +118,34 @@
 )
 
 (instance lWingScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 1))
 			(1
-				(lWing cycleSpeed: 2 setLoop: 5 setCycle: End)
+				(lWing cycleSpeed: 2 setLoop: 5 setCycle: EndLoop)
 				(= seconds 4)
 			)
 			(2
-				(lWing setLoop: 6 setCycle: End)
+				(lWing setLoop: 6 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(3)
 			(4
-				(lWing setLoop: 5 setCycle: End)
+				(lWing setLoop: 5 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(5
-				(lWing setLoop: 6 setCycle: End)
+				(lWing setLoop: 6 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(6)
 			(7
-				(lWing setLoop: 5 setCycle: End)
+				(lWing setLoop: 5 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(8
-				(lWing setLoop: 6 setCycle: End)
+				(lWing setLoop: 6 setCycle: EndLoop)
 				(= seconds 4)
 			)
 		)
@@ -155,22 +153,21 @@
 )
 
 (instance rWingScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 1))
 			(1
-				(rWing cycleSpeed: 2 setCycle: End)
+				(rWing cycleSpeed: 2 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(2
-				(rWing setCycle: Beg)
+				(rWing setCycle: BegLoop)
 				(= seconds 3)
 			)
 			(3
 				(= local0 0)
-				(rWing setLoop: 7 setCycle: End)
+				(rWing setLoop: 7 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(4
@@ -180,34 +177,34 @@
 			)
 			(5)
 			(6
-				(rWing setCycle: End)
+				(rWing setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(7
-				(rWing setCycle: Beg)
+				(rWing setCycle: BegLoop)
 				(= seconds 3)
 			)
 			(8)
 			(9
-				(rWing setCycle: End)
+				(rWing setCycle: EndLoop)
 				(= seconds 4)
 			)
 			(10
-				(rWing setCycle: Beg)
+				(rWing setCycle: BegLoop)
 				(= seconds 2)
 			)
 			(11)
 			(12
 				(= local0 0)
-				(rWing setLoop: 7 setCycle: End self)
+				(rWing setLoop: 7 setCycle: EndLoop self)
 			)
 			(13
 				(= local0 1)
-				(rWing setLoop: 4 cel: 0 setCycle: End)
+				(rWing setLoop: 4 cel: 0 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(14
-				(rWing setCycle: Beg)
+				(rWing setCycle: BegLoop)
 				(= seconds 4)
 			)
 		)
@@ -221,7 +218,7 @@
 		(super doit:)
 		(if (== local0 0)
 			(if (> (intro_eyes cel?) 0)
-				(intro_eyes setCycle: Beg self)
+				(intro_eyes setCycle: BegLoop self)
 			else
 				(= cycles 1)
 			)
@@ -233,10 +230,10 @@
 		(switch (= state newState)
 			(0 (= seconds 3))
 			(1
-				(intro_eyes setCycle: End self)
+				(intro_eyes setCycle: EndLoop self)
 			)
 			(2
-				(intro_eyes setCycle: Beg self)
+				(intro_eyes setCycle: BegLoop self)
 				(= state -1)
 			)
 			(3 (client setScript: 0))
@@ -305,7 +302,7 @@
 		view 763
 		cel 2
 		priority 10
-		signal $6010
+		signal (| ignrAct ignrHrz fixPriOn)
 	)
 	
 	(method (init)

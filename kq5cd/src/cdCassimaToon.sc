@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 683)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use castle)
 (use KQ5Room)
@@ -15,9 +15,9 @@
 )
 
 (local
-	gEgoView
-	gEgoCycleSpeed
-	gGameEgoMoveSpeed
+	saveEgoView
+	saveCycleSpeed
+	saveMoveSpeed
 )
 (instance cdCassimaToon of KQ5Room
 	(properties
@@ -26,123 +26,121 @@
 	
 	(method (init)
 		(self setRegions: 550)
-		(Load rsPIC 96)
-		(Load rsVIEW 690)
-		(Load rsVIEW 686)
-		(Load rsVIEW 688)
-		(Load rsVIEW 860)
-		(Load rsVIEW 1036)
-		(Load rsSCRIPT 929)
-		(Load rsSOUND 103)
-		(Load 142 1078)
-		(Load 142 1079)
-		(Load 142 1080)
-		(Load 142 1081)
-		(Load 142 1082)
-		(Load 142 1068)
-		(Load 142 1069)
-		(Load 142 1070)
-		(Load 142 1071)
+		(Load PICTURE 96)
+		(Load VIEW 690)
+		(Load VIEW 686)
+		(Load VIEW 688)
+		(Load VIEW 860)
+		(Load VIEW 1036)
+		(Load SCRIPT 929)
+		(Load SOUND 103)
+		(Load RES_SYNC 1078)
+		(Load RES_SYNC 1079)
+		(Load RES_SYNC 1080)
+		(Load RES_SYNC 1081)
+		(Load RES_SYNC 1082)
+		(Load RES_SYNC 1068)
+		(Load RES_SYNC 1069)
+		(Load RES_SYNC 1070)
+		(Load RES_SYNC 1071)
 		(ego init: yStep: 3)
 		((ego head?)
 			x: (ego x?)
 			y: (ego y?)
 			z: (CelHigh (ego view?) (ego loop?) (ego cel?))
-			moveHead: 1
+			moveHead: TRUE
 			show:
 		)
 		(princess
 			setPri: 11
 			setLoop: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
 			posn: 70 152
 			init:
-			ignoreActors: 1
+			ignoreActors: TRUE
 		)
 		(fireplace
 			cycleSpeed: 8
-			setCycle: (if (> (theGame detailLevel:) 1) Fwd else 0)
+			setCycle: (if (> (theGame detailLevel:) 1) Forward else 0)
 			init:
 		)
-		(self style: 3)
+		(self style: WIPERIGHT)
 		(super init:)
-		(= gGameEgoMoveSpeed (theGame egoMoveSpeed?))
+		(= saveMoveSpeed (theGame egoMoveSpeed?))
 		(theGame egoMoveSpeed: 1)
 		(self setScript: giveLocketScript)
 	)
 	
 	(method (dispose)
-		(theGame egoMoveSpeed: gGameEgoMoveSpeed)
+		(theGame egoMoveSpeed: saveMoveSpeed)
 		(super dispose: &rest)
 	)
 )
 
 (instance goBack of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(princess setLoop: 1 cel: 0 setCycle: End)
+				(princess setLoop: 1 cel: 0 setCycle: EndLoop)
 			)
 		)
 	)
 )
 
 (instance giveLocketScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoView (ego view?))
+				(= saveCycleSpeed (ego cycleSpeed?))
+				(= saveEgoView (ego view?))
 				(theMusic number: 103 loop: -1 playBed:)
 				(if (!= (princess loop?) 1)
-					(princess cycleSpeed: 1 setLoop: 1 cel: 0 setCycle: End)
+					(princess cycleSpeed: 1 setLoop: 1 cel: 0 setCycle: EndLoop)
 				)
 				(ego cycleSpeed: 2 setMotion: PolyPath 98 153 self)
 			)
 			(1
 				((ego head?) hide:)
 				(egoBody init: posn: (ego x?) (ego y?))
-				(proc550_19)
+				(CastleEgoSpeed)
 				(ego
 					normal: 0
 					view: 690
 					posn: (+ (ego x?) 2) (- (ego y?) 37)
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego cel: 0 setLoop: 1 setCycle: End self)
+				(ego cel: 0 setLoop: 1 setCycle: EndLoop self)
 			)
 			(3
 				(princess
 					cycleSpeed: 2
 					setLoop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
-				(princess setLoop: 3 cel: 0 setCycle: CT 3 1 self)
+				(princess setLoop: 3 cel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(5
-				(ego cel: 0 setLoop: 2 setCycle: End self)
+				(ego cel: 0 setLoop: 2 setCycle: EndLoop self)
 				(princess setCel: 255)
 			)
 			(6
-				(princess setLoop: 4 cel: 0 setCycle: End self)
+				(princess setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(ego
 					normal: 1
-					view: gEgoView
-					cycleSpeed: gEgoCycleSpeed
+					view: saveEgoView
+					cycleSpeed: saveCycleSpeed
 					setCycle: KQ5SyncWalk
 					setStep: 3 2
 					setLoop: 5
@@ -156,7 +154,7 @@
 				(egoBody hide:)
 				(princess hide:)
 				(fireplace hide:)
-				(curRoom drawPic: 96 10)
+				(curRoom drawPic: 96 FADEOUT)
 				(hisEyes init: setCel: 0 setScript: boyBlinkScript)
 				(theMouth init:)
 				(cassimaEyes init:)
@@ -164,7 +162,10 @@
 				(locket init: setScript: locketScript)
 				(= cycles 1)
 			)
-			(9 (proc550_17) (= seconds 2))
+			(9
+				(CastleHandsOff)
+				(= seconds 2)
+			)
 			(10
 				(cassimaEyes
 					setPri: (+ (theMouth priority?) 1)
@@ -225,7 +226,7 @@
 					show:
 				)
 				(fireplace show:)
-				(proc550_17)
+				(CastleHandsOff)
 				(= cycles 2)
 			)
 			(19
@@ -233,7 +234,7 @@
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(20 (SpeakAudio 1068 self))
@@ -256,7 +257,7 @@
 			(24
 				(theMouth setCycle: 0 dispose:)
 				(cls)
-				(proc550_18)
+				(CastleHandsOn)
 				(Bclr 64)
 				(theMusic number: 101 loop: -1 play:)
 				(= seconds 2)
@@ -270,7 +271,6 @@
 )
 
 (instance egoHeadMove of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -284,8 +284,7 @@
 )
 
 (instance kingScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -298,16 +297,15 @@
 )
 
 (instance girlBlinkScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cassimaEyes setLoop: 1 cycleSpeed: 0 setCycle: End self)
+				(cassimaEyes setLoop: 1 cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(1 (= cycles (Random 1 4)))
 			(2
-				(cassimaEyes setCycle: Beg self)
+				(cassimaEyes setCycle: BegLoop self)
 			)
 			(3 (= seconds (Random 1 3)))
 			(4 (self init:))
@@ -316,15 +314,14 @@
 )
 
 (instance boyBlinkScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(hisEyes setLoop: 5 cycleSpeed: 0 setCycle: End self)
+				(hisEyes setLoop: 5 cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(1 (= cycles (Random 1 4)))
-			(2 (hisEyes setCycle: Beg self))
+			(2 (hisEyes setCycle: BegLoop self))
 			(3 (= seconds (Random 3 9)))
 			(4 (self init:))
 		)
@@ -332,13 +329,12 @@
 )
 
 (instance locketScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(locket
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: (Random 3 4)
 					cycleSpeed: (Random 1 3)
 				)
@@ -357,7 +353,7 @@
 	(properties
 		view 690
 		loop 3
-		signal $6800
+		signal (| ignrAct ignrHrz fixedLoop)
 	)
 )
 

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 651)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Waters)
 (use AudioScript)
@@ -14,31 +14,31 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
+	underbits
+	underbits2
+	underbits3
+	underbits4
 	local4
 	local5
-	local6
-	gGameEgoMoveSpeed
-	[theX 9] = [40 154 80 185 169 80 267 189 80]
+	theColor
+	saveSpeed
+	theX = [40 154 80 185 169 80 267 189 80]
 )
-(instance cdIntro2 of Rm
+(instance cdIntro2 of Room
 	(properties
 		picture 69
 	)
 	
 	(method (init)
-		(Load rsPIC 69)
-		(LoadMany 135 600 8)
-		(LoadMany 128 748 749)
-		(Load rsSCRIPT 771)
+		(Load PICTURE 69)
+		(LoadMany FONT 600 8)
+		(LoadMany VIEW 748 749)
+		(Load SCRIPT 771)
 		(super init:)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
-		(= local6 (if isVGA 7 else 15))
-		(= gGameEgoMoveSpeed (theGame egoMoveSpeed?))
+		(theGame setCursor: invCursor TRUE)
+		(= theColor (if isVGA 7 else vWHITE))
+		(= saveSpeed (theGame egoMoveSpeed?))
 		(theGame egoMoveSpeed: 4)
 		(ego
 			normal: 1
@@ -56,7 +56,7 @@
 			view: 748
 			setLoop: 4
 			moveHead: 2048
-			signal: (| $2000 ((ego head?) signal?))
+			signal: (| ignrHrz ((ego head?) signal?))
 		)
 		(self setScript: creditsScript setRegions: 769)
 		(water init:)
@@ -64,7 +64,7 @@
 	)
 	
 	(method (dispose)
-		(theGame egoMoveSpeed: gGameEgoMoveSpeed)
+		(theGame egoMoveSpeed: saveSpeed)
 		(DisposeScript 401)
 		(super dispose:)
 	)
@@ -81,7 +81,6 @@
 )
 
 (instance sceneTwoScript of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -103,18 +102,18 @@
 				)
 				(= seconds 3)
 			)
-			(3 (ego setCycle: End self))
+			(3 (ego setCycle: EndLoop self))
 			(4 (= seconds 2))
 			(5
-				(ego setLoop: 7 cel: 0 setCycle: End self)
+				(ego setLoop: 7 cel: 0 setCycle: EndLoop self)
 			)
 			(6 (= seconds 2))
 			(7
-				(ego setLoop: 8 cel: 0 setCycle: End self)
+				(ego setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(ego
-					normal: 1
+					normal: TRUE
 					setLoop: 6
 					cycleSpeed: 2
 					setStep: 2 2
@@ -136,7 +135,7 @@
 				(ego setMotion: MoveTo 323 84 self)
 			)
 			(13
-				(if (or local5 (> (DoAudio 6) -1))
+				(if (or local5 (> (DoAudio Loc) -1))
 					(-- state)
 					(= cycles 1)
 				else
@@ -148,502 +147,309 @@
 )
 
 (instance creditsScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setScript: sceneTwoScript)
 				(= local5 1)
-				(= local3
-					(Display
-						651
-						0
-						dsCOORD
-						70
-						10
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits4
+					(Display 651 0
+						p_at 70 10
+						p_width 140
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						651
-						1
-						dsCOORD
-						70
-						26
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 651 1
+						p_at 70 26
+						p_width 140
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						651
-						0
-						dsCOORD
-						69
-						9
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 651 0
+						p_at 69 9
+						p_width 140
+						p_mode teJustCenter
+						p_color theColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						651
-						1
-						dsCOORD
-						69
-						25
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 651 1
+						p_at 69 25
+						p_width 140
+						p_mode teJustCenter
+						p_color theColor
+						p_font 8
+						p_save
 					)
 				)
 				(= seconds 7)
 			)
 			(1
-				(Display 651 2 108 local1)
-				(Display 651 2 108 local0)
-				(Display 651 2 108 local3)
-				(Display 651 2 108 local2)
+				(Display 651 2 p_restore underbits2)
+				(Display 651 2 p_restore underbits)
+				(Display 651 2 p_restore underbits4)
+				(Display 651 2 p_restore underbits3)
 				(= cycles 1)
 			)
 			(2
-				(= local3
-					(Display
-						651
-						3
-						dsCOORD
-						11
-						75
-						dsWIDTH
-						120
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits4
+					(Display 651 3
+						p_at 11 75
+						p_width 120
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						651
-						4
-						dsCOORD
-						11
-						91
-						dsWIDTH
-						120
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 651 4
+						p_at 11 91
+						p_width 120
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						651
-						3
-						dsCOORD
-						10
-						74
-						dsWIDTH
-						120
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 651 3
+						p_at 10 74
+						p_width 120
+						p_mode teJustCenter
+						p_color theColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						651
-						4
-						dsCOORD
-						10
-						90
-						dsWIDTH
-						120
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 651 4
+						p_at 10 90
+						p_width 120
+						p_mode teJustCenter
+						p_color theColor
+						p_font 8
+						p_save
 					)
 				)
 				(= seconds 6)
 			)
 			(3
-				(Display 651 2 108 local0)
-				(Display 651 2 108 local1)
-				(Display 651 2 108 local2)
-				(Display 651 2 108 local3)
+				(Display 651 2 p_restore underbits)
+				(Display 651 2 p_restore underbits2)
+				(Display 651 2 p_restore underbits3)
+				(Display 651 2 p_restore underbits4)
 				(= cycles 1)
 			)
 			(4
-				(= local3
-					(Display
-						651
-						5
-						dsCOORD
-						70
-						10
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits4
+					(Display 651 5
+						p_at 70 10
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						651
-						6
-						dsCOORD
-						70
-						26
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 651 6
+						p_at 70 26
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						651
-						5
-						dsCOORD
-						69
-						9
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 651 5
+						p_at 69 9
+						p_width 240
+						p_mode teJustCenter
+						p_color theColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						651
-						6
-						dsCOORD
-						69
-						25
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 651 6
+						p_at 69 25
+						p_width 240
+						p_mode teJustCenter
+						p_color theColor
+						p_font 8
+						p_save
 					)
 				)
 				(= seconds 6)
 			)
 			(5
-				(Display 651 2 108 local0)
-				(Display 651 2 108 local1)
-				(Display 651 2 108 local2)
-				(Display 651 2 108 local3)
+				(Display 651 2 p_restore underbits)
+				(Display 651 2 p_restore underbits2)
+				(Display 651 2 p_restore underbits3)
+				(Display 651 2 p_restore underbits4)
 				(= cycles 1)
 			)
 			(6
-				(= local3
-					(Display
-						651
-						7
-						dsCOORD
-						121
-						24
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits4
+					(Display 651 7
+						p_at 121 24
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						651
-						8
-						dsCOORD
-						121
-						40
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 651 8
+						p_at 121 40
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						651
-						7
-						dsCOORD
-						120
-						23
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 651 7
+						p_at 120 23
+						p_width 240
+						p_mode teJustCenter
+						p_color theColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						651
-						8
-						dsCOORD
-						120
-						39
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 651 8
+						p_at 120 39
+						p_width 240
+						p_mode teJustCenter
+						p_color theColor
+						p_font 8
+						p_save
 					)
 				)
 				(= seconds 5)
 			)
 			(7
-				(Display 651 2 108 local0)
-				(Display 651 2 108 local1)
-				(Display 651 2 108 local2)
-				(Display 651 2 108 local3)
+				(Display 651 2 p_restore underbits)
+				(Display 651 2 p_restore underbits2)
+				(Display 651 2 p_restore underbits3)
+				(Display 651 2 p_restore underbits4)
 				(= cycles 1)
 			)
 			(8
-				(= local3
-					(Display
-						651
-						9
-						dsCOORD
-						21
-						11
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits4
+					(Display 651 9
+						p_at 21 11
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						651
-						10
-						dsCOORD
-						21
-						27
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 651 10
+						p_at 21 27
+						p_width 240
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						651
-						9
-						dsCOORD
-						20
-						10
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 651 9
+						p_at 20 10
+						p_width 240
+						p_mode teJustCenter
+						p_color theColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						651
-						10
-						dsCOORD
-						20
-						26
-						dsWIDTH
-						240
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 651 10
+						p_at 20 26
+						p_width 240
+						p_mode teJustCenter
+						p_color theColor
+						p_font 8
+						p_save
 					)
 				)
 				(= seconds 5)
 			)
 			(9
-				(Display 651 2 108 local0)
-				(Display 651 2 108 local1)
-				(Display 651 2 108 local2)
-				(Display 651 2 108 local3)
+				(Display 651 2 p_restore underbits)
+				(Display 651 2 p_restore underbits2)
+				(Display 651 2 p_restore underbits3)
+				(Display 651 2 p_restore underbits4)
 				(= cycles 1)
 			)
 			(10
-				(= local3
-					(Display
-						651
-						11
-						dsCOORD
-						11
-						75
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits4
+					(Display 651 11
+						p_at 11 75
+						p_width 140
+						p_mode teJustCenter
+						p_color 0
+						p_font 600
+						p_save
 					)
 				)
-				(= local2
-					(Display
-						651
-						12
-						dsCOORD
-						11
-						91
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						0
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits3
+					(Display 651 12
+						p_at 11 91
+						p_width 140
+						p_mode teJustCenter
+						p_color 0
+						p_font 8
+						p_save
 					)
 				)
-				(= local1
-					(Display
-						651
-						11
-						dsCOORD
-						10
-						74
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						600
-						dsSAVEPIXELS
+				(= underbits2
+					(Display 651 11
+						p_at 10 74
+						p_width 140
+						p_mode teJustCenter
+						p_color theColor
+						p_font 600
+						p_save
 					)
 				)
-				(= local0
-					(Display
-						651
-						12
-						dsCOORD
-						10
-						90
-						dsWIDTH
-						140
-						dsALIGN
-						1
-						dsCOLOR
-						local6
-						dsFONT
-						8
-						dsSAVEPIXELS
+				(= underbits
+					(Display 651 12
+						p_at 10 90
+						p_width 140
+						p_mode teJustCenter
+						p_color theColor
+						p_font 8
+						p_save
 					)
 				)
 				(= seconds 5)
 			)
 			(11
-				(Display 651 2 108 local0)
-				(Display 651 2 108 local1)
-				(Display 651 2 108 local2)
-				(Display 651 2 108 local3)
+				(Display 651 2 p_restore underbits)
+				(Display 651 2 p_restore underbits2)
+				(Display 651 2 p_restore underbits3)
+				(Display 651 2 p_restore underbits4)
 				(= local5 0)
 			)
 		)
@@ -668,6 +474,4 @@
 	)
 )
 
-(instance audioTrak of MonoAudioProp
-	(properties)
-)
+(instance audioTrak of MonoAudioProp)

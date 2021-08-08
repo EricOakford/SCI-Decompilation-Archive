@@ -1,13 +1,13 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 765)
-(include sci.sh)
+(include game.sh)
 (use System)
 
 
 (local
 	local0
 )
-(class Audio of Obj
+(class Audio of Object
 	(properties
 		number 0
 		loop 1
@@ -16,49 +16,61 @@
 		stopped 1
 	)
 	
-	(method (play param1)
+	(method (play newVol)
 		(= local0 0)
 		(cond 
-			((DoAudio 2 number)
-				(= stopped 0)
-				(if (IsObject param1) (= local0 param1))
+			((DoAudio Play number)
+				(= stopped FALSE)
+				(if (IsObject newVol)
+					(= local0 newVol)
+				)
 				(self check:)
 			)
-			(
-			(and (IsObject param1) (!= (= local0 param1) 0)) (local0 cue:))
+			((and (IsObject newVol) (!= (= local0 newVol) 0))
+				(local0 cue:)
+			)
 		)
 	)
 	
 	(method (stop)
-		(= stopped 1)
-		(DoAudio 3)
+		(= stopped TRUE)
+		(DoAudio Stop)
 	)
 	
 	(method (pause)
-		(if (not paused) (DoAudio 4) (self paused: 1))
+		(if (not paused)
+			(DoAudio Pause)
+			(self paused: TRUE)
+		)
 	)
 	
 	(method (resume)
-		(if paused (DoAudio 5) (self paused: 0))
+		(if paused (DoAudio Resume)
+			(self paused: FALSE)
+		)
 	)
 	
-	(method (setLoop param1)
-		(self loop: param1)
+	(method (setLoop newLoop)
+		(self loop: newLoop)
 	)
 	
-	(method (setLang param1)
-		(if argc (DoAudio 9 param1))
+	(method (setLang newLang)
+		(if argc
+			;NOTE: This probably isn't the correct define, but it is the correct number 
+			(DoAudio DACFound newLang)
+		)
 	)
 	
-	(method (setRate param1)
-		(if argc (DoAudio 7 param1))
+	(method (setRate newRate)
+		(if argc
+			(DoAudio Rate newRate)
+		)
 	)
 	
 	(method (check &tmp temp0)
-		(if
-		(and (not stopped) (== (DoAudio 6) -1) (== loop 1))
-			(= doNotStop 0)
-			(= stopped 1)
+		(if (and (not stopped) (== (DoAudio Loc) -1) (== loop 1))
+			(= doNotStop FALSE)
+			(= stopped TRUE)
 			(if (!= local0 0)
 				(= temp0 local0)
 				(= local0 0)
@@ -68,14 +80,14 @@
 		(if
 			(and
 				(not stopped)
-				(== (DoAudio 6) -1)
+				(== (DoAudio Loc) -1)
 				(or (> loop 1) (== loop -1))
 			)
 			(self play:)
 		)
 	)
 	
-	(method (playBed param1)
+	(method (playBed newVol)
 		(self play: &rest)
 	)
 )

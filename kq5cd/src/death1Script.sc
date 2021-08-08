@@ -270,7 +270,7 @@
 				(gMordObj setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(if (not (Btst fCedricWontSaveEgo))
+				(if (not (Btst fCedricInjured))
 					(proc762_1 @local0 3000)
 					(= cycles 1)
 				else
@@ -278,7 +278,7 @@
 				)
 			)
 			(5
-				(if (not (Btst fCedricWontSaveEgo))
+				(if (not (Btst fCedricInjured))
 					(cls)
 					(= seconds 2)
 				else
@@ -286,7 +286,7 @@
 				)
 			)
 			(6
-				(if (not (Btst fCedricWontSaveEgo))
+				(if (not (Btst fCedricInjured))
 					(cedric
 						init:
 						setLoop: 4

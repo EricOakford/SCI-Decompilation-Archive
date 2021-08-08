@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 660)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Waters)
 (use Door)
@@ -18,7 +18,7 @@
 )
 
 (local
-	[theX 18] = [277 113 80 278 154 80 277 188 80 400 0 80 400 0 80 400 0 80]
+	theX = [277 113 80 278 154 80 277 188 80 400 0 80 400 0 80 400 0 80]
 	local18 =  1
 	gGameEgoMoveSpeed
 )
@@ -29,12 +29,12 @@
 	)
 	
 	(method (init)
-		(LoadMany 128 624 626 628 623 625 26 618 138 615 137 0)
-		(Load rsSOUND 821)
-		(Load rsSCRIPT 941)
-		(Load rsSCRIPT 401)
-		(Load rsSCRIPT 929)
-		(Load rsSOUND 7)
+		(LoadMany VIEW 624 626 628 623 625 26 618 138 615 137 0)
+		(Load SOUND 821)
+		(Load SCRIPT 941)
+		(Load SCRIPT 401)
+		(Load SCRIPT 929)
+		(Load SOUND 7)
 		(LoadMany 142 1147 1148 1151)
 		(theMusic number: 7 loop: -1 play:)
 		(ego init: hide:)
@@ -48,15 +48,15 @@
 			(movingBoat init: ignoreActors:)
 			(sail
 				posn: (- (movingBoat x?) 10) (movingBoat y?)
-				setCycle: Fwd
+				setCycle: Forward
 				ignoreActors:
 				cycleSpeed: 30
 				init:
 			)
 		)
 		(theAudio number: 7055 loop: -1 doNotStop: 1 play:)
-		(chimney setCycle: Fwd cycleSpeed: 3 init:)
-		(if (not (Btst 55))
+		(chimney setCycle: Forward cycleSpeed: 3 init:)
+		(if (not (Btst fCedricInjured))
 			(= global320 100)
 			(= global321 140)
 			(curRoom setRegions: 202)
@@ -82,12 +82,11 @@
 )
 
 (instance myRotate of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(globalCedric view: 138 loop: 2 setCycle: End self)
+				(globalCedric view: 138 loop: 2 setCycle: EndLoop self)
 			)
 			(1
 				(globalCedric
@@ -103,7 +102,6 @@
 )
 
 (instance egoHeadMove of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -117,13 +115,11 @@
 )
 
 (instance cartoon2 of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(sail posn: (- (movingBoat x?) 10) (movingBoat y?))
-		(if
-		(and (== state 4) (== (theMusic3 prevSignal?) -1))
+		(if (and (== state 4) (== (theMusic3 prevSignal?) -1))
 			(self cue:)
 		)
 	)
@@ -135,7 +131,7 @@
 					view: 624
 					posn: 120 148
 					normal: 1
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					init:
 					setPri: -1
@@ -145,7 +141,7 @@
 					setCycle: Walk
 					cycleSpeed: 0
 					setLoop: -1
-					ignoreActors: 1
+					ignoreActors: TRUE
 					posn: 90 148
 					illegalBits: 0
 					show:
@@ -160,7 +156,7 @@
 			(2
 				(ego
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 					setLoop: 13
 					setMotion: MoveTo 130 148 self
 				)
@@ -181,13 +177,13 @@
 					posn: (- (hermit x?) 5) (- (hermit y?) 32)
 					setPri: (+ (hermit priority?) 1)
 					loop: 1
-					setCycle: CT 8 1
+					setCycle: CycleTo 8 1
 					init:
 				)
 				(theMusic3 number: 821 loop: 1 play:)
 			)
 			(5
-				(arm setCycle: End)
+				(arm setCycle: EndLoop)
 				(hermit setLoop: 2)
 				(= seconds 5)
 			)
@@ -197,20 +193,20 @@
 					setLoop: 8
 					cycleSpeed: 2
 					posn: 275 155
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theAudio number: 9302 play:)
 			)
 			(7
-				(mermaid setLoop: 7 cycleSpeed: 3 setCycle: Fwd)
+				(mermaid setLoop: 7 cycleSpeed: 3 setCycle: Forward)
 				(= cycles 1)
 			)
 			(8
-				(if (!= (DoAudio 6) -1) (-- state))
+				(if (!= (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(9
-				(mermaid setCycle: Beg self)
+				(mermaid setCycle: BegLoop self)
 				(theAudio number: 9302 play:)
 			)
 			(10
@@ -227,7 +223,7 @@
 			(11
 				(hermit_mouth setCycle: 0)
 				(cls)
-				(mermaid setCycle: Beg self)
+				(mermaid setCycle: BegLoop self)
 				(theAudio number: 9302 play:)
 			)
 			(12 (= seconds 1))
@@ -240,7 +236,7 @@
 				(hermit_mouth setCycle: 0)
 				(cls)
 				((ego head?) setCel: 1 setScript: egoHeadMove)
-				(if (not (Btst 55))
+				(if (not (Btst fCedricInjured))
 					(SpeakAudio 1149 self)
 				else
 					(SpeakAudio 9102 self)
@@ -256,7 +252,7 @@
 				(hermit_mouth setCycle: 0)
 				(cls)
 				((ego head?) setCel: 1 setScript: egoHeadMove)
-				(if (not (Btst 55))
+				(if (not (Btst fCedricInjured))
 					(SpeakAudio 1152 self)
 				else
 					(SpeakAudio 9101 self)
@@ -266,11 +262,11 @@
 				(theAudio number: 9302 play:)
 				((ego head?) setCel: -1 setScript: 0)
 				(cls)
-				(mermaid setLoop: 10 cycleSpeed: 2 setCycle: End self)
+				(mermaid setLoop: 10 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(18
 				(theAudio number: 7055 loop: -1 doNotStop: 1 play:)
-				(if (and (Btst 55) (!= gGNumber_2 46))
+				(if (and (Btst fCedricInjured) (!= gGNumber_2 46))
 					(self dispose:)
 					(curRoom setScript: goGetBoatScript)
 				else
@@ -301,14 +297,14 @@
 					cycleSpeed: 2
 					setPri: 14
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(22
 				(ego
 					setLoop: 3
 					posn: (+ (ego x?) 31) (ego y?)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 2)
 			)
@@ -316,7 +312,7 @@
 				(ego
 					posn: (ego x?) (- (ego y?) 18)
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(hermit_mouth dispose:)
 				(hermit
@@ -331,7 +327,7 @@
 			)
 			(24
 				(theGame egoMoveSpeed: gGameEgoMoveSpeed)
-				(ego setLoop: 1 cycleSpeed: 2 setCycle: End self)
+				(ego setLoop: 1 cycleSpeed: 2 setCycle: EndLoop self)
 				(movingBoat
 					setStep: 1 1
 					setMotion: MoveTo 400 (movingBoat y?)
@@ -344,7 +340,7 @@
 			)
 			(25
 				(if (not (hermit mover?))
-					(door setCycle: Beg init:)
+					(door setCycle: BegLoop init:)
 					(theAudio number: 8124 loop: 1 play: self)
 				else
 					(= cycles 1)
@@ -364,12 +360,12 @@
 				(ego setMotion: 0)
 				(movingBoat setMotion: 0)
 				(sail setMotion: 0)
-				(if (not (Btst 55))
+				(if (not (Btst fCedricInjured))
 					(globalCedric
 						view: 138
 						setLoop: 6
 						cycleSpeed: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(= cycles 1)
@@ -381,8 +377,7 @@
 )
 
 (instance goGetBoatScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -398,7 +393,7 @@
 				)
 			)
 			(1
-				(door setCycle: Beg self init:)
+				(door setCycle: BegLoop self init:)
 				(ego setCycle: KQ5SyncWalk setLoop: -1 view: 0)
 				(NormalEgo)
 			)
