@@ -120,7 +120,7 @@
 						)
 						((Said 'look>')
 							(cond 
-								((Said '/skeleton,[') (Print 83 1))
+								((Said '/skeleton,bone') (Print 83 1))
 								((Said '/machine') (Print 83 2))
 								((Said '/whip') (Print 83 3))
 								((Said '/chain') (Print 83 4))
@@ -137,7 +137,7 @@
 						((Said 'break/window') (Print 83 11))
 						((Said 'open/door') (if (< gamePhase killedLolotte) (Print 83 12) else (Print 83 13)))
 						((Said 'unlatch/door') (if (< gamePhase killedLolotte) (Print 83 14) else (Print 83 15)))
-						((Said 'call,help,,') (Print 83 16))
+						((Said 'call/help') (Print 83 16))
 					)
 				)
 			)
