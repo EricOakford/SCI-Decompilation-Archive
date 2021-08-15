@@ -695,7 +695,7 @@ code_063f:
 			(3
 				(= seconds 1)
 				(Load rsVIEW 545)
-				(= global103 0)
+				(= inCartoon 0)
 			)
 			(4 (cls) (= seconds 3))
 			(5
@@ -1040,7 +1040,7 @@ code_063f:
 				(SpeakAudio 587)
 				(Bset 68)
 				(HandsOn)
-				(= global103 0)
+				(= inCartoon 0)
 				(self dispose:)
 			)
 		)
@@ -1073,7 +1073,7 @@ code_063f:
 				(ego normal: 1 view: 0 setLoop: -1 setCycle: KQ5SyncWalk)
 				(SpeakAudio 583)
 				(HandsOn)
-				(= global103 0)
+				(= inCartoon 0)
 				(self dispose:)
 			)
 		)

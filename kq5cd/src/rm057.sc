@@ -82,7 +82,7 @@
 				((ego head?) setCel: -1 setLoop: 4 moveHead: 1)
 				(Bclr 64)
 				(theMusic number: 101 loop: -1 play:)
-				(proc550_18)
+				(CastleHandsOn)
 				(Bclr 111)
 			)
 			((and (== prevRoomNum 683) (not (Btst 111)))
@@ -96,7 +96,7 @@
 					setCel: 1
 				)
 				(princess setLoop: 5 setCel: 255 posn: 80 151)
-				(proc550_18)
+				(CastleHandsOn)
 				((ego head?) setCel: -1 setLoop: 4 moveHead: 1)
 				(Bclr 64)
 				(theMusic number: 101 loop: -1 play:)
@@ -129,10 +129,10 @@
 		(cond 
 			(script (script doit:))
 			(
-			(and (== global331 3) (ego inRect: 59 163 185 193))
-				(= global349 238)
-				(= global350 153)
-				(= global351 225)
+			(and (== wizardState 3) (ego inRect: 59 163 185 193))
+				(= wizardX 238)
+				(= wizardY 153)
+				(= wizardAngle 225)
 				(= global354 135)
 				((ScriptID 550 7) init: setScript: (ScriptID 550 12))
 			)
@@ -140,7 +140,7 @@
 				(and
 					(not (== (princess loop?) 1))
 					(not (princess script?))
-					(== global331 4)
+					(== wizardState 4)
 				)
 				(princess setScript: goBack)
 			)
@@ -167,7 +167,7 @@
 				(princess setScript: scrubFloor)
 			)
 			((ego inRect: 256 140 281 148)
-				(proc550_17)
+				(CastleHandsOff)
 				(ego illegalBits: 0 setScript: 0)
 				(princess setScript: 0)
 				(curRoom setScript: exitEast)
@@ -177,7 +177,7 @@
 					(ego edgeHit?)
 					(= temp0 (self edgeToRoom: (ego edgeHit?)))
 				)
-				(proc550_17)
+				(CastleHandsOff)
 				(ego illegalBits: 0 setScript: 0)
 				(princess setScript: 0)
 				(curRoom setScript: exitSouth)
@@ -200,7 +200,7 @@
 		(switch (= state newState)
 			(0
 				(ego put: 25 57)
-				(proc550_17)
+				(CastleHandsOff)
 				(SolvePuzzle 4)
 				(Bset 64)
 				(= gEgoView (ego view?))
@@ -252,7 +252,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: 0)
 				(theMusic number: 102 loop: -1 playBed: self)
 				(Face ego princess 5)
@@ -271,7 +271,7 @@
 				(theMusic fade: 0 100 1 1)
 				(cls)
 				(theMusic number: 101 loop: -1 play:)
-				(proc550_18)
+				(CastleHandsOn)
 				(= local0 1)
 				(client setScript: 0)
 			)
@@ -285,7 +285,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: 0)
 				(Face ego princess 5)
 				(= cycles 2)
@@ -297,7 +297,7 @@
 			)
 			(2
 				(cls)
-				(proc550_18)
+				(CastleHandsOn)
 				(if (!= (princess loop?) 0)
 					(princess
 						setLoop: 8
@@ -323,7 +323,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(theMusic number: 101 loop: -1 play:)
 				(ego
 					setPri: 10
@@ -335,7 +335,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -408,12 +408,12 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(theMusic number: 101 loop: -1 play:)
 				(ego loop: 3 posn: 138 243 setMotion: MoveTo 138 186 self)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -559,7 +559,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(theMusic fade:)
 				(ego illegalBits: 0 setMotion: MoveTo 309 141 self)
 			)
@@ -632,7 +632,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(if (< (ego x?) 82)
 					(ego setMotion: PolyPath 114 161 self)
 				else
@@ -654,7 +654,7 @@
 				(if (> (ego distanceTo: princess) 80)
 					(princess setScript: scrubFloor)
 				)
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)

@@ -79,7 +79,7 @@
 				)
 				((ego head?) moveHead: 0 hide:)
 				(Load rsSOUND 67)
-				(proc550_17)
+				(CastleHandsOff)
 				(self setScript: henchCaught)
 			)
 		)
@@ -246,7 +246,7 @@
 				(theMusic fade:)
 			)
 			(2
-				(proc550_17)
+				(CastleHandsOff)
 				(ego observeControl: 8 setMotion: 0)
 				(theAudio number: 7065 play:)
 				(= local13 ((ego head?) loop?))
@@ -331,7 +331,7 @@
 				(Bset 96)
 				(globalCedric dispose: delete:)
 				((ego head?) moveHead: 1)
-				(proc550_18)
+				(CastleHandsOn)
 				(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
 				(client setScript: 0)
 			)
@@ -345,7 +345,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					normal: 0
 					illegalBits: 0
@@ -375,7 +375,7 @@
 				)
 			)
 			(3
-				(proc550_18)
+				(CastleHandsOn)
 				(curRoom newRoom: 55)
 			)
 		)
@@ -388,7 +388,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: MoveTo 183 150 self)
 			)
 			(1
@@ -428,7 +428,7 @@
 				(User canControl: 0)
 				(theIconBar enable:)
 				(= isHandsOff 0)
-				(= global103 0)
+				(= inCartoon 0)
 				(globalCedric setMotion: 0 hide:)
 				(prop1
 					view: 882
@@ -453,7 +453,7 @@
 				)
 			)
 			(5
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: 0 loop: 6 cel: 0 setCycle: End self)
 			)
 			(6
@@ -472,7 +472,7 @@
 				(ego setCycle: Beg self)
 			)
 			(7
-				(proc550_17)
+				(CastleHandsOff)
 				(ego loop: 5 cel: (ego lastCel:) setMotion: 0)
 				(= cycles 1)
 			)
@@ -483,7 +483,7 @@
 				(ego setCycle: Beg self)
 			)
 			(9
-				(proc550_18)
+				(CastleHandsOn)
 				(theGame setCursor: ((theIconBar curIcon?) cursor?) 1)
 				(ego
 					view: 0
@@ -785,7 +785,7 @@
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc550_17)
+					(CastleHandsOff)
 					(curRoom setScript: gotoHole)
 					(event claimed: 1)
 				)
@@ -819,7 +819,7 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 30 60)))
 			(1
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: PolyPath 90 160 self)
 			)
 			(2
@@ -835,7 +835,7 @@
 					setLoop: 1
 					setCycle: End self
 				)
-				(= global103 0)
+				(= inCartoon 0)
 			)
 			(4
 				(= deathMessage 690)
@@ -929,7 +929,7 @@
 			(2
 				(reflection setPri: 3 init:)
 				(drop setScript: drippingWater init: hide:)
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -1007,10 +1007,10 @@
 				((ego head?) moveHead: 1 show:)
 				(reflection setPri: 3 init:)
 				((ScriptID 550 3) dispose:)
-				(= global333 0)
-				(if (== global331 5)
+				(= henchmanState 0)
+				(if (== wizardState 5)
 					(Bset 64)
-					(if (< global353 120) (= global353 120))
+					(if (< henchmanTimer 120) (= henchmanTimer 120))
 				)
 				((ScriptID 550 5) dispose:)
 				(theAudio number: 8018 loop: 1 play:)
@@ -1043,7 +1043,7 @@
 				(= seconds 3)
 			)
 			(10
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)

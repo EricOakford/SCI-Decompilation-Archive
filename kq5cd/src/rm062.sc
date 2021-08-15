@@ -29,7 +29,7 @@
 	
 	(method (init)
 		(super init:)
-		(= global333 0)
+		(= henchmanState 0)
 		(Load rsVIEW 34)
 		(self
 			setFeatures: stairs skull doorWay1 doorWay2 theWindows
@@ -58,16 +58,16 @@
 		(cond 
 			(script (script doit:))
 			(
-			(and (== global331 3) (ego inRect: 109 128 207 159))
+			(and (== wizardState 3) (ego inRect: 109 128 207 159))
 				(if (Random 0 1)
-					(= global349 45)
-					(= global350 129)
-					(= global351 270)
+					(= wizardX 45)
+					(= wizardY 129)
+					(= wizardAngle 270)
 					(= global354 90)
 				else
-					(= global349 245)
-					(= global350 125)
-					(= global351 90)
+					(= wizardX 245)
+					(= wizardY 125)
+					(= wizardAngle 90)
 					(= global354 270)
 				)
 				((ScriptID 550 7) init: setScript: (ScriptID 550 12))
@@ -226,7 +226,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					illegalBits: 0
 					ignoreActors: 1
@@ -245,7 +245,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					init:
 					view: 34
@@ -255,7 +255,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -268,7 +268,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					init:
 					view: 34
@@ -277,7 +277,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -290,7 +290,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					init:
 					view: 34
@@ -299,7 +299,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(= global359 0)
 				(client setScript: 0)
 			)
@@ -313,7 +313,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: MoveTo -2 139 self)
 			)
 			(1 (curRoom newRoom: 63))
@@ -327,7 +327,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: MoveTo 358 139 self)
 			)
 			(1

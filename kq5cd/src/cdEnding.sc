@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 670)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use KQ5Room)
@@ -14,7 +14,7 @@
 )
 
 (local
-	gGameEgoMoveSpeed
+	saveSpeed
 )
 (instance cdEnding of KQ5Room
 	(properties
@@ -22,21 +22,25 @@
 	)
 	
 	(method (init &tmp temp0)
-		(Load rsPIC 65)
-		(Load rsSCRIPT 941)
-		(Load rsSCRIPT 929)
-		(LoadMany 128 916 2 922 933 929 918 935 720 0)
+		(Load PICTURE 65)
+		(Load SCRIPT 941)
+		(Load SCRIPT 929)
+		(LoadMany VIEW 916 2 922 933 929 918 935 720 0)
 		(cond 
-			((== prevRoomNum 672) (self setScript: cartoon3))
+			((== prevRoomNum 672)
+				(self setScript: cartoon3)
+			)
 			((== prevRoomNum 671)
-				(Load rsVIEW 925)
-				(LoadMany 142 5206 5208)
+				(Load VIEW 925)
+				(LoadMany RES_SYNC 5206 5208)
 				(self setScript: cartoon2)
 			)
 			(else
-				(if (!= prevRoomNum 124) (ego posn: 164 140))
-				(LoadMany 142 1083 1084 1085 1086 1087 5201)
-				(= gGameEgoMoveSpeed (theGame egoMoveSpeed?))
+				(if (!= prevRoomNum 124)
+					(ego posn: 164 140)
+				)
+				(LoadMany RES_SYNC 1083 1084 1085 1086 1087 5201)
+				(= saveSpeed (theGame egoMoveSpeed?))
 				(theGame egoMoveSpeed: 1)
 				(self style: 3)
 				(ego
@@ -58,25 +62,23 @@
 		(coals setCycle: RandCycle init:)
 		(super init:)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
+		(theGame setCursor: invCursor TRUE)
 	)
 	
 	(method (dispose)
 		(DisposeScript 941)
-		(theGame egoMoveSpeed: gGameEgoMoveSpeed)
+		(theGame egoMoveSpeed: saveSpeed)
 		(super dispose:)
 	)
 )
 
 (instance cartoon of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cedric init:)
-				(if
-				(and (!= prevRoomNum 671) (!= prevRoomNum 672))
+				(if (and (!= prevRoomNum 671) (!= prevRoomNum 672))
 					((ScriptID 763) doit:)
 				)
 				(= cycles 1)
@@ -94,17 +96,17 @@
 						normal: 0
 						view: 916
 						setLoop: 0
-						ignoreActors: 1
+						ignoreActors: TRUE
 						cycleSpeed: (if (== howFast 2) 1 else 0)
 						moveSpeed: 1
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(ego
 						normal: 0
 						view: 916
 						setLoop: 0
-						ignoreActors: 1
+						ignoreActors: TRUE
 						cycleSpeed: (if (== howFast 2) 1 else 0)
 						moveSpeed: 1
 					)
@@ -118,21 +120,21 @@
 				(egoMagic
 					init:
 					cycleSpeed: (if (== howFast 2) 1 else 0)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
 				(egoMagic dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(7 (= waitForCue 8704))
 			(8
-				(ego setLoop: 2 setCycle: End self)
+				(ego setLoop: 2 setCycle: EndLoop self)
 			)
 			(9
 				(ego normal: 1 view: 2 setLoop: -1)
 				((ego head?) show:)
-				(egoWand init: setCycle: End self)
+				(egoWand init: setCycle: EndLoop self)
 			)
 			(10
 				(egoWand stopUpd:)
@@ -140,7 +142,7 @@
 				(= seconds 2)
 			)
 			(11
-				(cassima setCycle: End self)
+				(cassima setCycle: EndLoop self)
 			)
 			(12 (= seconds 2))
 			(13
@@ -215,7 +217,7 @@
 					cycleSpeed: (if (== howFast 2) 2 else 0)
 					moveSpeed: 2
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 			)
@@ -238,7 +240,6 @@
 )
 
 (instance cartoon2 of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -266,7 +267,7 @@
 			)
 			(2
 				(if (== howFast 2)
-					(crispin setLoop: 1 setCycle: End self)
+					(crispin setLoop: 1 setCycle: EndLoop self)
 				else
 					(crispin setLoop: 1)
 					(crispin setCel: (crispin lastCel:))
@@ -281,7 +282,7 @@
 			(5
 				(crispinMouth hide: setCycle: 0)
 				(theMouth hide:)
-				(crispin setLoop: 2 setCycle: End)
+				(crispin setLoop: 2 setCycle: EndLoop)
 				(= waitForCue 13824)
 			)
 			(6
@@ -289,7 +290,7 @@
 					init:
 					setPri: (+ (crispin priority?) 1)
 					cycleSpeed: (if (== howFast 2) 2 else 0)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7 (= waitForCue 14080))
@@ -297,13 +298,13 @@
 				(cMagic
 					setLoop: 4
 					posn: 118 165
-					setCycle: End
+					setCycle: EndLoop
 					cycleSpeed: (if (== howFast 2) 3 else 0)
 				)
 				(= waitForCue 14336)
 			)
 			(9
-				(alexander init: cycleSpeed: 0 setCycle: End self)
+				(alexander init: cycleSpeed: 0 setCycle: EndLoop self)
 				(Face ego alexander 5)
 			)
 			(10 (= waitForCue 14592))
@@ -315,45 +316,45 @@
 					cel: 0
 					setMotion: MoveTo (- (cMagic x?) 3) (- (cMagic y?) 3)
 					cycleSpeed: (if (== howFast 2) 3 else 0)
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(= waitForCue 14848)
 			)
 			(12
-				(rosella init: cycleSpeed: 0 setCycle: End self)
+				(rosella init: cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(13 (= waitForCue 15104))
 			(14
-				(rosella cel: 0 setLoop: 3 setCycle: End)
+				(rosella cel: 0 setLoop: 3 setCycle: EndLoop)
 				(cMagic
 					setStep: 6 6
 					posn: 118 165
 					cel: 0
 					setMotion: MoveTo (- (cMagic x?) 8) (- (cMagic y?) 8)
-					setCycle: End
+					setCycle: EndLoop
 					cycleSpeed: (if (== howFast 2) 3 else 0)
 				)
 				(= waitForCue 15360)
 			)
 			(15
 				(cMagic dispose:)
-				(valanice init: cycleSpeed: 0 setCycle: End self)
+				(valanice init: cycleSpeed: 0 setCycle: EndLoop self)
 				(Face ego rosella 5)
 			)
 			(16
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(17
-				(crispin view: 922 setLoop: 7 setCycle: End self)
+				(crispin view: 922 setLoop: 7 setCycle: EndLoop self)
 			)
 			(18
-				(valanice cel: 0 setLoop: 1 setCycle: End)
+				(valanice cel: 0 setLoop: 1 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(19
 				(if (== howFast 2)
-					(valanice setCycle: Beg)
-					(rosella setCycle: Beg)
+					(valanice setCycle: BegLoop)
+					(rosella setCycle: BegLoop)
 				)
 				(= waitForCue 15616)
 			)
@@ -385,11 +386,11 @@
 					setLoop: 5
 					cycleSpeed: 2
 					moveSpeed: (if (== howFast 2) 2 else 0)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(23 (= seconds 2))
-			(24 (ego setCycle: Beg self))
+			(24 (ego setCycle: BegLoop self))
 			(25
 				(valanice show:)
 				((ego head?) show:)
@@ -415,10 +416,10 @@
 					normal: 0
 					setLoop: 6
 					cycleSpeed: (if (== howFast 2) 3 else 1)
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
-			(28 (ego setCycle: Beg self))
+			(28 (ego setCycle: BegLoop self))
 			(29
 				(alexander show:)
 				(valanice show:)
@@ -460,17 +461,17 @@
 					normal: 0
 					setLoop: 7
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(34
 				(= waitForCue 16896)
-				(ego cycleSpeed: 2 setLoop: 10 setCycle: Fwd)
+				(ego cycleSpeed: 2 setLoop: 10 setCycle: Forward)
 			)
-			(35 (ego setCycle: Beg self))
+			(35 (ego setCycle: BegLoop self))
 			(36
 				(ego setLoop: 7)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(37
 				(ego
@@ -490,13 +491,13 @@
 					setLoop: 1
 					cycleSpeed: 2
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 91 169 self
 				)
 			)
 			(39
 				(cassima
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 6
 					setMotion: MoveTo 97 150 self
 				)
@@ -507,8 +508,7 @@
 )
 
 (instance cartoon3 of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -570,21 +570,21 @@
 					setLoop: 4
 					cycleSpeed: 3
 					moveSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(theMouth init: hide: play: 10125 673)
-				(alexander setLoop: 5 setCycle: End self)
+				(alexander setLoop: 5 setCycle: EndLoop self)
 			)
 			(6
-				(alexander setCycle: Beg self)
+				(alexander setCycle: BegLoop self)
 			)
 			(7
 				(alexander setLoop: 4)
 				(alexander
 					cel: (- (NumCels alexander) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(8
@@ -597,8 +597,8 @@
 				(cassima show:)
 				(alexander
 					view: 928
-					ignoreActors: 1
-					setCycle: Fwd
+					ignoreActors: TRUE
+					setCycle: Forward
 					setLoop: 1
 					setMotion: MoveTo (- (alexander x?) 5) (alexander y?) self
 				)
@@ -635,7 +635,7 @@
 				(theMouth hide:)
 				(crispin
 					cel: (- (NumCels crispin) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(13
@@ -654,7 +654,7 @@
 					setLoop: 3
 					cycleSpeed: (if (== howFast 2) 2 else 0)
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					init:
 				)
 				(= waitForCue 6912)
@@ -665,7 +665,7 @@
 					init:
 					ignoreActors: 1
 					cycleSpeed: (if (== howFast 2) 2 else 0)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(17
@@ -673,7 +673,7 @@
 				(crispin
 					setLoop: 7
 					cycleSpeed: (if (== howFast 2) 2 else 0)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(18 (= waitForCue 7168))
@@ -683,18 +683,18 @@
 				(= waitForCue 7424)
 			)
 			(20
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(21 (= waitForCue 7680))
 			(22
 				(theMouth show: changeMouth: 5)
-				(crispin setLoop: 8 setCycle: End)
+				(crispin setLoop: 8 setCycle: EndLoop)
 				(= waitForCue 7936)
 			)
 			(23 (= waitForCue 8448))
 			(24
 				(theMouth cel: 0)
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(25 (= waitForCue 8704))
 			(26
@@ -703,7 +703,7 @@
 				(= waitForCue 8960)
 			)
 			(27
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(28
 				(ego setLoop: 8)
@@ -713,7 +713,7 @@
 						view: 916
 						setLoop: 8
 						posn: 93 136
-						setCycle: End
+						setCycle: EndLoop
 					)
 				else
 					(egoTemp init: view: 916 setLoop: 8 posn: 93 136)
@@ -725,7 +725,7 @@
 			(30 (= waitForCue 9472))
 			(31
 				(if (== howFast 2)
-					(egoTemp setCycle: Beg self)
+					(egoTemp setCycle: BegLoop self)
 				else
 					(egoTemp cel: 0)
 					(= cycles 1)
@@ -747,22 +747,22 @@
 			)
 			(34 (= waitForCue 10240))
 			(35
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(36
-				(crispin setLoop: 8 setCycle: End self)
+				(crispin setLoop: 8 setCycle: EndLoop self)
 			)
 			(37 (= waitForCue 10320))
 			(38
-				(crispin setCycle: Beg)
-				(cedric cel: 0 setLoop: 8 setCycle: End self)
+				(crispin setCycle: BegLoop)
+				(cedric cel: 0 setLoop: 8 setCycle: EndLoop self)
 			)
 			(39
-				(cedric setLoop: 5 cycleSpeed: 2 setCycle: Fwd)
+				(cedric setLoop: 5 cycleSpeed: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(40
-				(cedric setLoop: 6 setCycle: End self)
+				(cedric setLoop: 6 setCycle: EndLoop self)
 			)
 			(41 (= waitForCue 10496))
 			(42
@@ -786,7 +786,7 @@
 				(= waitForCue 11344)
 			)
 			(46
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(47 (= waitForCue 11520))
 			(48
@@ -796,7 +796,7 @@
 				(theMouth changeMouth: 1 show:)
 			)
 			(49
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(50 (= waitForCue 12032))
 			(51 (= waitForCue 12288))
@@ -806,17 +806,17 @@
 				(= waitForCue 12544)
 			)
 			(53
-				(alexHead setLoop: 12 show: setCycle: Beg)
+				(alexHead setLoop: 12 show: setCycle: BegLoop)
 				(theMouth hide:)
-				(crispin setLoop: 8 cel: 0 setCycle: End self)
+				(crispin setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(54
 				(theMouth changeMouth: 6 show:)
 				(= waitForCue 12800)
 			)
 			(55
-				(crispin setCycle: Beg)
-				(cassima view: 933 setLoop: 7 setCycle: End self)
+				(crispin setCycle: BegLoop)
+				(cassima view: 933 setLoop: 7 setCycle: EndLoop self)
 			)
 			(56
 				(cassima dispose:)
@@ -831,7 +831,7 @@
 			)
 			(59
 				(theMouth changeMouth: 7 show:)
-				(crispin setCycle: Beg self)
+				(crispin setCycle: BegLoop self)
 			)
 			(60 (= waitForCue 13824))
 			(61
@@ -846,16 +846,16 @@
 			)
 			(62 (= waitForCue 14336))
 			(63
-				(crispin setLoop: 8 cel: 0 setCycle: End self)
+				(crispin setLoop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(64 (= waitForCue 14416))
 			(65
 				(alexHead dispose:)
-				(ego cycleSpeed: 2 setLoop: 0 setCycle: End self)
+				(ego cycleSpeed: 2 setLoop: 0 setCycle: EndLoop self)
 			)
 			(66
 				(ego setLoop: 1)
-				(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+				(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 			)
 			(67 (ego hide:) (= seconds 2))
 			(68
@@ -905,7 +905,7 @@
 	(properties
 		view 922
 		loop 10
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doit)
@@ -956,7 +956,7 @@
 		view 935
 		loop 6
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -967,7 +967,7 @@
 		view 720
 		loop 2
 		cel 2
-		signal $4000
+		signal ignrAct
 		illegalBits $0000
 	)
 )
@@ -993,13 +993,11 @@
 	
 	(method (init)
 		(super init:)
-		(self signal: 16384)
+		(self signal: ignrAct)
 	)
 )
 
-(instance egoTemp of Prop
-	(properties)
-)
+(instance egoTemp of Prop)
 
 (instance egoHead of Prop
 	(properties
@@ -1012,7 +1010,7 @@
 	
 	(method (init)
 		(super init:)
-		(self signal: 16400 setPri: 10)
+		(self signal: (| ignrAct fixPriOn) setPri: 10)
 	)
 )
 
@@ -1023,7 +1021,7 @@
 		view 933
 		loop 15
 		priority 12
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 10
 		detailLevel 3
 	)
@@ -1075,7 +1073,8 @@
 					view: 916
 					loop: 9
 					setPri: 10
-					cel: 0 signal 16400
+					cel: 0
+					signal: (| ignrAct fixPriOn)
 					posn: 93 110
 				)
 			)
@@ -1089,7 +1088,13 @@
 				)
 			)
 			(7
-				(theMouth view: 720 loop: 7 x: 229 y: 144 signal: 16384)
+				(theMouth
+					view: 720
+					loop: 7
+					x: 229
+					y: 144
+					signal: ignrAct
+				)
 			)
 			(8
 				(theMouth view: 933 x: 81 y: 110 setLoop: 13)

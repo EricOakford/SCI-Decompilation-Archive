@@ -173,7 +173,7 @@
 				(= isHandsOff 0)
 				(SpeakAudio 9247 0 1)
 				(theGame setCursor: normalCursor 1)
-				(= global103 1)
+				(= inCartoon 1)
 				(if global327
 					(= local0 0)
 				else
@@ -305,7 +305,7 @@
 			(11 (= seconds 2))
 			(12
 				(theGame setCursor: normalCursor 1)
-				(= global103 1)
+				(= inCartoon 1)
 				(if global327
 					(= local0 0)
 				else

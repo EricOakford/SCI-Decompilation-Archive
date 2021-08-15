@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 672)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use KQ5Room)
@@ -20,11 +20,11 @@
 	(method (init)
 		(super init:)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
-		(Load rsSCRIPT 941)
-		(Load rsSCRIPT 929)
-		(Load rsVIEW 936)
-		(Load 142 10124)
+		(theGame setCursor: invCursor TRUE)
+		(Load SCRIPT 941)
+		(Load SCRIPT 929)
+		(Load VIEW 936)
+		(Load RES_SYNC 10124)
 		(theMouth init:)
 		(arm init:)
 		(casEyes init:)
@@ -41,7 +41,6 @@
 )
 
 (instance cartoon of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -63,7 +62,7 @@
 				(= cycles 1)
 			)
 			(4
-				(if (> (DoAudio 6) -1) (-- state))
+				(if (> (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(5
@@ -114,8 +113,7 @@
 		(super doit:)
 		(switch (Random 1 40)
 			(1
-				(if
-				(and (not script) (== (theGame detailLevel:) 3))
+				(if (and (not script) (== (theGame detailLevel:) 3))
 					(self setScript: (bodyScript new:))
 				)
 			)
@@ -220,25 +218,23 @@
 )
 
 (instance armScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= seconds 6))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3 (client setScript: 0))
 		)
 	)
 )
 
 (instance bodyScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
-			(1 (client setCycle: Beg self))
+			(0 (client setCycle: EndLoop self))
+			(1 (client setCycle: BegLoop self))
 			(2 (client setScript: 0))
 		)
 	)

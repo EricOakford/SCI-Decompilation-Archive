@@ -37,7 +37,7 @@
 		)
 		(self setFeatures: island)
 		(HandsOff)
-		(= global103 0)
+		(= inCartoon 0)
 		(switch prevRoomNum
 			(49
 				(if (== (ego view?) 21)

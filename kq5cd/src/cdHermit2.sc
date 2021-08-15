@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 661)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 (use Sync)
@@ -14,45 +14,25 @@
 )
 
 (local
-	gGameEgoMoveSpeed
+	saveSpeed
 )
 (instance cdHermit2 of KQ5Room
 	(properties
 		picture 87
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
-		(LoadMany
-			128
-			832
-			626
-			1042
-			828
-			1041
-			826
-			0
-			824
-			624
-			625
-			618
-			827
+		(LoadMany VIEW
+			832 626 1042 828 1041 826
+			0 824 624 625 618 827
 		)
-		(Load rsSCRIPT 941)
-		(Load rsSCRIPT 929)
-		(Load rsSOUND 820)
-		(LoadMany
-			142
-			1136
-			1137
-			1138
-			1139
-			1141
-			1142
-			1143
-			1144
-			1145
-			1146
+		(Load SCRIPT 941)
+		(Load SCRIPT 929)
+		(Load SOUND 820)
+		(LoadMany 142
+			1136 1137 1138 1139 1141
+			1142 1143 1144 1145 1146
 		)
 		(if (!= (theMusic number?) 820)
 			(theMusic number: 820 loop: -1 vol: 127 playBed:)
@@ -94,20 +74,19 @@
 				init:
 			)
 		)
-		(chimney setCycle: Fwd init:)
+		(chimney setCycle: Forward init:)
 		(super init:)
-		(= gGameEgoMoveSpeed (theGame egoMoveSpeed?))
+		(= saveSpeed (theGame egoMoveSpeed?))
 		(theGame egoMoveSpeed: 1)
 	)
 	
 	(method (dispose)
-		(theGame egoMoveSpeed: gGameEgoMoveSpeed)
+		(theGame egoMoveSpeed: saveSpeed)
 		(super dispose: &rest)
 	)
 )
 
 (instance cartoon of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -118,21 +97,21 @@
 			)
 			(2
 				(ego setScript: putDownOwl)
-				(hermit cycleSpeed: 2 setCycle: End self)
+				(hermit cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(3
-				(hermit setLoop: 1 setCycle: End self)
+				(hermit setLoop: 1 setCycle: EndLoop self)
 			)
 			(4
-				(hermit setLoop: 2 setCycle: Fwd)
+				(hermit setLoop: 2 setCycle: Forward)
 				(= cycles 10)
 			)
-			(5 (hermit setCycle: End self))
+			(5 (hermit setCycle: EndLoop self))
 			(6
-				(hermit setLoop: 1 setCycle: Beg self)
+				(hermit setLoop: 1 setCycle: BegLoop self)
 			)
 			(7
-				(hermit setLoop: 0 setCycle: Beg self)
+				(hermit setLoop: 0 setCycle: BegLoop self)
 			)
 			(8
 				(cls)
@@ -181,16 +160,16 @@
 					view: 1041
 					setLoop: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(15
-				(hermit view: 828 setLoop: 2 setCycle: Fwd)
+				(hermit view: 828 setLoop: 2 setCycle: Forward)
 				(= cycles 20)
 			)
-			(16 (hermit setCycle: End self))
+			(16 (hermit setCycle: EndLoop self))
 			(17
-				(hermit setLoop: 3 setCycle: End self)
+				(hermit setLoop: 3 setCycle: EndLoop self)
 			)
 			(18 (cls) (= seconds 3))
 			(19
@@ -213,7 +192,7 @@
 					loop: 4
 					cycleSpeed: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(23
@@ -273,7 +252,7 @@
 					loop: 4
 					setCel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(31
@@ -286,12 +265,11 @@
 )
 
 (instance cartoon3 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(DrawPic 87 dpCLOSEREOPEN_VCENTER)
+				(DrawPic 87 FADEOUT)
 				(hermit view: 626 posn: 136 118 moveSpeed: 1 show:)
 				(ego view: 0 normal: 1 posn: 158 121 setLoop: 5 show:)
 				((ego head?) show:)
@@ -329,7 +307,7 @@
 				)
 			)
 			(3
-				(globalCedric view: 138 setLoop: 8 setCycle: End self)
+				(globalCedric view: 138 setLoop: 8 setCycle: EndLoop self)
 			)
 			(4
 				(theMusic fade:)
@@ -352,11 +330,10 @@
 )
 
 (instance putDownOwl of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: End self))
+			(0 (ego setCycle: EndLoop self))
 			(1 (= seconds 2))
 			(2
 				(owl setLoop: 1 posn: 201 115 cycleSpeed: 2 cel: 0 init:)
@@ -388,12 +365,11 @@
 )
 
 (instance getBetterScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(owl view: 824 cel: 0 setLoop: 0 setCycle: End self)
+				(owl view: 824 cel: 0 setLoop: 0 setCycle: EndLoop self)
 			)
 			(1
 				(owl setLoop: 1 cel: 0)
@@ -402,17 +378,17 @@
 					setLoop: 2
 					cel: 0
 					posn: (- (owl x?) 1) (- (owl y?) 9)
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(= cycles 10)
 			)
-			(2 (owlHead setCycle: End self))
+			(2 (owlHead setCycle: EndLoop self))
 			(3
-				(owl setLoop: 3 cel: 0 setCycle: End self)
+				(owl setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(owl setLoop: 4 cel: 0 setCycle: End self)
+				(owl setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(owlHead setPri: (+ (owl priority?) 1) setLoop: 5)
@@ -474,7 +450,7 @@
 		view 618
 		cel 1
 		priority -1
-		signal $4001
+		signal (| ignrAct stopUpdOn)
 	)
 )
 
@@ -483,7 +459,7 @@
 		z 15
 		view 618
 		loop 3
-		signal $4001
+		signal (| ignrAct stopUpdOn)
 	)
 )
 

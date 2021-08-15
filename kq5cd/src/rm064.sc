@@ -46,12 +46,12 @@
 		(eyeBall init: stopUpd:)
 		(book init: stopUpd:)
 		(poly1 points: @local2 size: 28)
-		(switch global331
+		(switch wizardState
 			(5
 				((ScriptID 550 7) init: setScript: wizSleepingScript)
 			)
 			(7
-				(= global352 2)
+				(= wizardTimer 2)
 				(= global359 0)
 			)
 		)
@@ -61,16 +61,16 @@
 		(cond 
 			(script (script doit:))
 			(
-			(and (ego inRect: 77 147 260 171) (== global331 3))
+			(and (ego inRect: 77 147 260 171) (== wizardState 3))
 				(if (< (ego x?) 158)
-					(= global349 263)
-					(= global350 176)
-					(= global351 315)
+					(= wizardX 263)
+					(= wizardY 176)
+					(= wizardAngle 315)
 					(= global354 135)
 				else
-					(= global349 72)
-					(= global350 145)
-					(= global351 135)
+					(= wizardX 72)
+					(= wizardY 145)
+					(= wizardAngle 135)
 					(= global354 225)
 				)
 				((ScriptID 550 7) init: setScript: (ScriptID 550 12))
@@ -80,10 +80,10 @@
 					(ego edgeHit?)
 					(== 63 (self edgeToRoom: (ego edgeHit?)))
 				)
-				(if (and (== global331 5) (== global332 6))
-					(= global331 6)
-					(= global353 0)
-					(= global352 0)
+				(if (and (== wizardState 5) (== catState 6))
+					(= wizardState 6)
+					(= henchmanTimer 0)
+					(= wizardTimer 0)
 					(= global359 0)
 				)
 				(curRoom newRoom: 63)
@@ -95,8 +95,8 @@
 					(!= local1 (GetTime 1))
 				)
 				(= local1 (GetTime 1))
-				(if (and (not (-- global359)) (== global331 0))
-					(= global331 5)
+				(if (and (not (-- global359)) (== wizardState 0))
+					(= wizardState 5)
 					((ScriptID 550 7) init: setScript: zzzScript)
 				)
 			)
@@ -271,11 +271,11 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego posn: 158 130 init: setMotion: PolyPath 158 142 self)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -314,7 +314,7 @@
 				(JOY_RIGHT
 					(if (not (Btst 21))
 						(Bset 21)
-						(proc550_17)
+						(CastleHandsOff)
 						(curRoom setScript: lookBook)
 					else
 						(SpeakAudio 664)
@@ -385,7 +385,7 @@
 			)
 			(5
 				(Bset 21)
-				(proc550_18)
+				(CastleHandsOn)
 				(= local0 0)
 				(client setScript: 0)
 			)
@@ -399,7 +399,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				((ScriptID 550 7)
 					view: 706
 					setLoop: 8
@@ -421,8 +421,8 @@
 				)
 			)
 			(5
-				(= global353 180)
-				(proc550_18)
+				(= henchmanTimer 180)
+				(CastleHandsOn)
 				((ScriptID 550 7) setLoop: 5)
 				(= cycles 1)
 			)
@@ -436,10 +436,10 @@
 				)
 				(= seconds (Random 2 6))
 				(= state 5)
-				(if (not global353) (= state 6))
+				(if (not henchmanTimer) (= state 6))
 			)
 			(7
-				(proc550_17)
+				(CastleHandsOff)
 				((ScriptID 550 7) setLoop: 6 cel: 0 setCycle: End self)
 			)
 			(8 (= cycles (Random 5 10)))
@@ -451,7 +451,7 @@
 				((ScriptID 550 7) setLoop: 8 cel: 11 setCycle: Beg self)
 			)
 			(12
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 664)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use LoadMany)
@@ -20,36 +20,24 @@
 	local4
 	owlCycleSpeed
 )
-(instance cdIntro5B of Rm
+(instance cdIntro5B of Room
 	(properties
 		picture 71
 	)
 	
 	(method (init)
-		(Load rsPIC 71)
+		(Load PICTURE 71)
 		(super init:)
-		(UnLoad 129 70)
-		(Load rsSCRIPT 929)
-		(LoadMany 128 757 758 759 785 763)
-		(LoadMany
-			142
-			869
-			870
-			872
-			873
-			874
-			875
-			876
-			877
-			878
-			879
-			880
-			881
-			882
+		(UnLoad PICTURE 70)
+		(Load SCRIPT 929)
+		(LoadMany VIEW 757 758 759 785 763)
+		(LoadMany RES_SYNC
+			869 870 872 873 874 875 876
+			877 878 879 880 881 882
 		)
 		(= local0 1)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
+		(theGame setCursor: invCursor TRUE)
 		(egoHead init:)
 		(ego
 			view: 763
@@ -64,7 +52,7 @@
 		(owl
 			view: 757
 			setPri: 10
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setLoop: 1
 			init:
 		)
@@ -111,7 +99,6 @@
 )
 
 (instance sceneEightScript of AudioScript
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -131,7 +118,7 @@
 					posn: 189 86
 					setPri: 10
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= waitForCue 9216))
@@ -145,22 +132,22 @@
 					cel: 1
 					setPri: 1
 					setLoop: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(if (< (theSync prevCue?) 9296)
-					(owl cel: 7 setCycle: CT 10 1 self)
+					(owl cel: 7 setCycle: CycleTo 10 1 self)
 					(-- state)
 				else
-					(owl cel: 7 setCycle: End self)
+					(owl cel: 7 setCycle: EndLoop self)
 				)
 			)
 			(6
 				(owl
 					setLoop: 3
 					setStep: 10 13
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 203 200 self
 				)
 			)
@@ -180,7 +167,7 @@
 					posn: 197 188
 					setPri: 14
 					setLoop: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -193,7 +180,7 @@
 					view: 759
 					setLoop: 0
 					setPri: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 3 2
 					cycleSpeed: 2
 					setMotion: MoveTo 189 150 self
@@ -207,9 +194,9 @@
 				(egoHead setCel: 2)
 				(owl setMotion: MoveTo 189 86 self)
 			)
-			(15 (owl setCycle: End self))
+			(15 (owl setCycle: EndLoop self))
 			(16
-				(owl setLoop: 1 setPri: 10 setCel: 0 setCycle: End self)
+				(owl setLoop: 1 setPri: 10 setCel: 0 setCycle: EndLoop self)
 			)
 			(17
 				(intro_eyes
@@ -273,7 +260,7 @@
 							(= owlCycleSpeed (owl cycleSpeed?))
 							(if (== howFast 2) 2 else 0)
 						)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= waitForCue 10608)
 			)
@@ -281,7 +268,7 @@
 				(owl
 					setLoop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: owlCycleSpeed
 				)
 			)
@@ -312,12 +299,12 @@
 				(rWing dispose:)
 				(theMouth hide:)
 				(cls)
-				(owl view: 785 setLoop: 4 setCycle: End self)
+				(owl view: 785 setLoop: 4 setCycle: EndLoop self)
 			)
 			(30
 				(owl
 					setLoop: 5
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 110 58 self
 					moveSpeed: (if (== howFast 2) 2 else 0)
 				)
@@ -326,33 +313,33 @@
 				(egoHead setCel: 4)
 				(= waitForCue 13136)
 			)
-			(32 (owl setCycle: End self))
+			(32 (owl setCycle: EndLoop self))
 			(33
-				(owl setLoop: 6 setCycle: Fwd setScript: dustingEgo self)
+				(owl setLoop: 6 setCycle: Forward setScript: dustingEgo self)
 			)
 			(34
-				(owl setLoop: 6 setCycle: End self)
+				(owl setLoop: 6 setCycle: EndLoop self)
 			)
 			(35
 				(sack
 					init:
 					illegalBits: 0
-					signal: 16384
+					signal: ignrAct
 					setStep: 5 5
 					setPri: (- (egoHead priority?) 1)
 					posn: 91 37
 					setLoop: 9
 					setMotion: MoveTo 59 201
 				)
-				(owl setLoop: 10 setCycle: End self)
+				(owl setLoop: 10 setCycle: EndLoop self)
 			)
 			(36
-				(owl setLoop: 10 cel: 0 setCycle: Fwd)
+				(owl setLoop: 10 cel: 0 setCycle: Forward)
 				(sack setPri: (- (egoHead priority?) 1))
 				(= waitForCue 13316)
 			)
 			(37
-				(ego setCycle: Fwd)
+				(ego setCycle: Forward)
 				(= waitForCue 13568)
 			)
 			(38
@@ -371,7 +358,7 @@
 				(= cycles 1)
 			)
 			(41
-				(if (> (DoAudio 6) -1) (-- state))
+				(if (> (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(42 (curRoom newRoom: 650))
@@ -386,29 +373,29 @@
 		(switch (= state newState)
 			(0 (= seconds 1))
 			(1
-				(lWing cycleSpeed: 2 setLoop: 5 setCycle: End)
+				(lWing cycleSpeed: 2 setLoop: 5 setCycle: EndLoop)
 				(= seconds 4)
 			)
 			(2
-				(lWing setLoop: 6 setCycle: End)
+				(lWing setLoop: 6 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(3)
 			(4
-				(lWing setLoop: 5 setCycle: End)
+				(lWing setLoop: 5 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(5
-				(lWing setLoop: 6 setCycle: End)
+				(lWing setLoop: 6 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(6)
 			(7
-				(lWing setLoop: 5 setCycle: End)
+				(lWing setLoop: 5 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(8
-				(lWing setLoop: 6 setCycle: End)
+				(lWing setLoop: 6 setCycle: EndLoop)
 				(= seconds 4)
 			)
 		)
@@ -416,22 +403,21 @@
 )
 
 (instance rWingScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 1))
 			(1
-				(rWing cycleSpeed: 2 setCycle: End)
+				(rWing cycleSpeed: 2 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(2
-				(rWing setCycle: Beg)
+				(rWing setCycle: BegLoop)
 				(= seconds 3)
 			)
 			(3
 				(= local0 0)
-				(rWing setLoop: 7 setCycle: End)
+				(rWing setLoop: 7 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(4
@@ -441,34 +427,34 @@
 			)
 			(5)
 			(6
-				(rWing setCycle: End)
+				(rWing setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(7
-				(rWing setCycle: Beg)
+				(rWing setCycle: BegLoop)
 				(= seconds 3)
 			)
 			(8)
 			(9
-				(rWing setCycle: End)
+				(rWing setCycle: EndLoop)
 				(= seconds 4)
 			)
 			(10
-				(rWing setCycle: Beg)
+				(rWing setCycle: BegLoop)
 				(= seconds 2)
 			)
 			(11)
 			(12
 				(= local0 0)
-				(rWing setLoop: 7 setCycle: End self)
+				(rWing setLoop: 7 setCycle: EndLoop self)
 			)
 			(13
 				(= local0 1)
-				(rWing setLoop: 4 cel: 0 setCycle: End)
+				(rWing setLoop: 4 cel: 0 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(14
-				(rWing setCycle: Beg)
+				(rWing setCycle: BegLoop)
 				(= seconds 4)
 			)
 		)
@@ -476,13 +462,12 @@
 )
 
 (instance blinkScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(if (== local0 0)
 			(if (> (intro_eyes cel?) 0)
-				(intro_eyes setCycle: Beg self)
+				(intro_eyes setCycle: BegLoop self)
 			else
 				(= cycles 1)
 			)
@@ -494,10 +479,10 @@
 		(switch (= state newState)
 			(0 (= seconds 3))
 			(1
-				(intro_eyes setCycle: End self)
+				(intro_eyes setCycle: EndLoop self)
 			)
 			(2
-				(intro_eyes setCycle: Beg self)
+				(intro_eyes setCycle: BegLoop self)
 				(= state -1)
 			)
 			(3 (client setScript: 0))
@@ -506,7 +491,6 @@
 )
 
 (instance dustingEgo of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -523,7 +507,7 @@
 							)
 						setLoop: 7
 						posn: 81 75
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(= state -1)
@@ -647,7 +631,7 @@
 		view 763
 		cel 2
 		priority 10
-		signal $6010
+		signal (| ignrAct ignrHrz fixPriOn)
 	)
 	
 	(method (init)
@@ -684,8 +668,7 @@
 )
 
 (instance leaveRoomScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

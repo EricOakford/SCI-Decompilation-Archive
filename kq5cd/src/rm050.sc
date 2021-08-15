@@ -114,7 +114,7 @@
 			)
 			(2
 				(= seconds 2)
-				(= global103 0)
+				(= inCartoon 0)
 			)
 			(3
 				(theAudio number: 8068 play: self)
@@ -176,7 +176,7 @@
 			(6
 				(Bclr 55)
 				(Bset 74)
-				(= global103 0)
+				(= inCartoon 0)
 				(HandsOn)
 				(theMusic number: 814 loop: -1 vol: 127 playBed:)
 				(self dispose:)

@@ -163,7 +163,7 @@
 				(harpy1 setMotion: MoveTo 350 20 self)
 			)
 			(2
-				(= global103 0)
+				(= inCartoon 0)
 				(= cycles 1)
 			)
 			(3
@@ -201,7 +201,7 @@
 				)
 			)
 			(2
-				(= global103 0)
+				(= inCartoon 0)
 				(theAudio number: 8068 play:)
 				(= seconds 2)
 			)
@@ -324,7 +324,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOn)
-				(= global103 0)
+				(= inCartoon 0)
 				(ego init:)
 				(NormalEgo 11 2)
 				(ego
@@ -468,7 +468,7 @@
 				)
 			)
 			(5
-				(= global103 0)
+				(= inCartoon 0)
 				(= cycles 2)
 			)
 			(6
@@ -546,7 +546,7 @@
 				(harpy1 setLoop: 2 setCycle: Fwd setMotion: MoveTo -40 70)
 			)
 			(7
-				(= global103 0)
+				(= inCartoon 0)
 				(= cycles 2)
 			)
 			(8
@@ -840,7 +840,7 @@
 			)
 			(4
 				(HandsOn)
-				(= global103 0)
+				(= inCartoon 0)
 				(self dispose:)
 			)
 		)

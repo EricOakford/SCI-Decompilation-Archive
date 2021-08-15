@@ -157,7 +157,10 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (proc550_17) (= seconds 2))
+			(0
+				(CastleHandsOff)
+				(= seconds 2)
+			)
 			(1
 				(cassimaEyes
 					setPri: (+ (cassimaLips priority?) 1)

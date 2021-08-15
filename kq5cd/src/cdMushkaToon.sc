@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 680)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 (use Sync)
@@ -14,11 +14,11 @@
 )
 
 (local
-	local0
+	saveCursor
 	local1
 	local2
 	local3
-	gGameEgoMoveSpeed
+	saveSpeed
 )
 (instance cdMushkaToon of KQ5Room
 	(properties
@@ -28,16 +28,16 @@
 	
 	(method (init)
 		(super init:)
-		(= gGameEgoMoveSpeed (theGame egoMoveSpeed?))
+		(= saveSpeed (theGame egoMoveSpeed?))
 		(theGame egoMoveSpeed: 1)
-		(LoadMany 128 778 782 784 776 1027 1031)
-		(Load rsPIC 78)
-		(Load rsSCRIPT 929)
-		(Load rsSOUND 800)
+		(LoadMany VIEW 778 782 784 776 1027 1031)
+		(Load PICTURE 78)
+		(Load SCRIPT 929)
+		(Load SOUND 800)
 		(LoadMany 142 973 927 928 929 931 932 933 934 976 977 978)
 		(= local3 0)
 		(HandsOff)
-		(= local0 (theGame setCursor: invCursor 1))
+		(= saveCursor (theGame setCursor: invCursor TRUE))
 		(muscha init:)
 		(ego
 			normal: 0
@@ -53,16 +53,18 @@
 		(theMusic number: 800 loop: -1 vol: 127 playBed:)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp edge)
 		(cond 
 			(script (script doit:))
-			((= temp0 (self edgeToRoom: (ego edgeHit?))) (curRoom newRoom: temp0))
+			((= edge (self edgeToRoom: (ego edgeHit?)))
+				(curRoom newRoom: edge)
+			)
 		)
 	)
 	
 	(method (dispose)
-		(theGame setCursor: local0 1)
-		(theGame egoMoveSpeed: gGameEgoMoveSpeed)
+		(theGame setCursor: saveCursor TRUE)
+		(theGame egoMoveSpeed: saveSpeed)
 		(super dispose:)
 	)
 	
@@ -75,26 +77,25 @@
 )
 
 (instance cartoon of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load rsPIC 78)
-				(smallArm cycleSpeed: 3 setCycle: End self init:)
+				(Load PICTURE 78)
+				(smallArm cycleSpeed: 3 setCycle: EndLoop self init:)
 				(muscha loop: 0 cel: 0)
 				(theMouth init: hide:)
 			)
 			(1
 				(= local2 1)
-				(smallArm loop: 5 setCycle: Fwd)
+				(smallArm loop: 5 setCycle: Forward)
 				(= cycles 25)
 			)
 			(2
 				(curRoom drawPic: 78)
 				(smallArm dispose:)
 				(ball1 init:)
-				(ball2 cycleSpeed: 3 setCycle: Fwd init:)
+				(ball2 cycleSpeed: 3 setCycle: Forward init:)
 				(muscha
 					view: 778
 					loop: 0
@@ -124,7 +125,7 @@
 					view: 776
 					loop: 7
 					posn: 126 100
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 3
 				)
 				(ball2 dispose:)
@@ -155,16 +156,16 @@
 			(8 (SpeakAudio 975 self))
 			(9
 				(= local2 0)
-				(muscha loop: 2 cel: 0 setCycle: End self)
+				(muscha loop: 2 cel: 0 setCycle: EndLoop self)
 				(theMusic fade:)
 			)
 			(10
-				(LoadMany 128 778 782 784 776 1027 1031)
-				(Load rsPIC 79)
-				(Load rsPIC 80)
-				(Load rsSCRIPT 929)
+				(LoadMany VIEW 778 782 784 776 1027 1031)
+				(Load PICTURE 79)
+				(Load PICTURE 80)
+				(Load SCRIPT 929)
 				(LoadMany 142 973 927 928 929 931 932 933 934 976 977 978)
-				(Load rsSOUND 801)
+				(Load SOUND 801)
 				(= local2 1)
 				(theMusic number: 801 loop: -1 playBed:)
 				(ball1 dispose:)
@@ -172,7 +173,7 @@
 				(ego hide:)
 				(curRoom drawPic: 79)
 				(theMouth changeMouth: 2 show:)
-				(mHand cycleSpeed: 2 setCycle: Fwd init:)
+				(mHand cycleSpeed: 2 setCycle: Forward init:)
 				(cat cycleSpeed: 1 setScript: catMove init:)
 				(= cycles 1)
 			)
@@ -204,25 +205,25 @@
 				(cat hide:)
 				(wArm hide:)
 				(eArm hide:)
-				(alex init: setCycle: End self cycleSpeed: 3)
+				(alex init: setCycle: EndLoop self cycleSpeed: 3)
 			)
-			(17 (alex setCycle: Beg self))
+			(17 (alex setCycle: BegLoop self))
 			(18
 				(theMouth setCycle: MouthSync 931 show:)
 				(SpeakAudio 931 self)
 			)
 			(19
 				(theMouth hide:)
-				(alex setCycle: End self)
+				(alex setCycle: EndLoop self)
 			)
-			(20 (alex setCycle: Beg self))
+			(20 (alex setCycle: BegLoop self))
 			(21
 				(theMouth setCycle: MouthSync 932 show:)
 				(SpeakAudio 932 self)
 			)
 			(22
 				(theMouth hide:)
-				(alex setCycle: Beg self)
+				(alex setCycle: BegLoop self)
 			)
 			(23
 				(cls)
@@ -244,13 +245,13 @@
 				(SpeakAudio 934 self)
 			)
 			(27
-				(LoadMany 128 778 782 784 776 1027 1031)
-				(Load rsPIC 77)
-				(Load rsPIC 78)
-				(Load rsSCRIPT 929)
+				(LoadMany VIEW 778 782 784 776 1027 1031)
+				(Load PICTURE 77)
+				(Load PICTURE 78)
+				(Load SCRIPT 929)
 				(LoadMany 142 973 927 928 929 931 932 933 934 976 977 978)
-				(Load rsSOUND 65)
-				(Load rsSOUND 802)
+				(Load SOUND 65)
+				(Load SOUND 802)
 				(theMusic number: 802 loop: -1 playBed:)
 				(curRoom drawPic: 77)
 				(mHand dispose:)
@@ -270,7 +271,7 @@
 			)
 			(28
 				(theMouth hide:)
-				(muscha loop: 8 cel: 0 cycleSpeed: 4 setCycle: End self)
+				(muscha loop: 8 cel: 0 cycleSpeed: 4 setCycle: EndLoop self)
 			)
 			(29
 				(theMouth x: (+ (theMouth x?) 1) show:)
@@ -279,9 +280,9 @@
 			)
 			(30
 				(theMouth hide:)
-				(ego get: 27)
+				(ego get: iAmulet)
 				(SolvePuzzle 2)
-				(muscha loop: 9 cel: 0 setCycle: End self)
+				(muscha loop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(31
 				(cls)
@@ -317,12 +318,11 @@
 )
 
 (instance catMove of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setCycle: Beg)
+				(client setCycle: BegLoop)
 				(= state -1)
 				(= seconds (Random 5 8))
 			)
@@ -331,15 +331,14 @@
 )
 
 (instance muschaMove of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cycleSpeed: 5 loop: 0 cel: 0 setCycle: End self)
+				(client cycleSpeed: 5 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(client loop: 1 cel: 0 setCycle: Fwd)
+				(client loop: 1 cel: 0 setCycle: Forward)
 				(= cycles 1)
 			)
 			(2 (self dispose:))
@@ -362,7 +361,7 @@
 		view 776
 		loop 4
 		priority 4
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -372,7 +371,7 @@
 		y 105
 		view 776
 		priority 3
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -383,7 +382,7 @@
 		view 1027
 		cel 4
 		priority 5
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (changeMouth param1)
@@ -443,7 +442,7 @@
 		view 778
 		loop 3
 		priority 8
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -454,7 +453,7 @@
 		view 778
 		loop 2
 		priority 8
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -465,7 +464,7 @@
 		view 782
 		cel 4
 		priority 7
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -476,7 +475,7 @@
 		view 782
 		loop 1
 		priority 7
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -487,7 +486,7 @@
 		view 778
 		loop 4
 		priority 15
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 )
 
@@ -499,6 +498,6 @@
 		loop 5
 		cel 2
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )

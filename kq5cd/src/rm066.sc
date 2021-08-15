@@ -73,7 +73,7 @@
 					(if (not (-- local52)) (self newRoom: 124))
 				)
 			)
-			((== global331 3) (curRoom newRoom: 124))
+			((== wizardState 3) (curRoom newRoom: 124))
 			((= temp0 (self edgeToRoom: (ego edgeHit?))) (curRoom newRoom: temp0))
 		)
 	)
@@ -143,7 +143,7 @@
 					setCycle: KQ5SyncWalk
 				)
 				(HandsOn)
-				(= global103 0)
+				(= inCartoon 0)
 				(if local52 (User canControl: 0))
 				(self dispose:)
 			)
@@ -188,7 +188,7 @@
 					setCycle: KQ5SyncWalk
 				)
 				(HandsOn)
-				(= global103 0)
+				(= inCartoon 0)
 				(if local52 (User canControl: 0))
 				(self dispose:)
 			)
@@ -274,7 +274,7 @@
 					setCycle: KQ5SyncWalk
 				)
 				(HandsOn)
-				(= global103 0)
+				(= inCartoon 0)
 				(if local52 (User canControl: 0))
 				(self dispose:)
 			)

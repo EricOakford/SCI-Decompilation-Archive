@@ -149,7 +149,7 @@
 				)
 			)
 			(20
-				(= global103 0)
+				(= inCartoon 0)
 				(curRoom newRoom: 42)
 			)
 		)

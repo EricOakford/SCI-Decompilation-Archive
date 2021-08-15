@@ -5,33 +5,33 @@
 (use Intrface)
 
 (public
-	proc759_0 0
+	KQPrint 0
 )
 
-(procedure (proc759_0 theString moreStuff &tmp temp0 temp1 temp2 temp3 temp4 [temp5 400] [temp405 400])
+(procedure (KQPrint theString moreStuff &tmp temp0 temp1 temp2 temp3 temp4 [buffer 400] [temp405 400])
 	(if (> argc 2)
 		(Print theString moreStuff &rest)
 	else
 		(if (u< theString 1000)
-			(GetFarText theString moreStuff @temp5)
+			(GetFarText theString moreStuff @buffer)
 		else
-			(StrCpy @temp5 theString)
+			(StrCpy @buffer theString)
 		)
-		(= temp1 (StrAt @temp5 0))
-		(= temp2 (StrAt @temp5 1))
+		(= temp1 (StrAt @buffer 0))
+		(= temp2 (StrAt @buffer 1))
 		(if (and (<= 65 temp1) (<= temp1 90))
-			(StrAt @temp5 0 32)
+			(StrAt @buffer 0 32)
 			(if (== temp2 32)
 				(Format @temp405 {___})
 			else
 				(Format @temp405 {__})
 			)
-			(StrCat @temp405 @temp5)
+			(StrCat @temp405 @buffer)
 			(= temp3 (+ 0 (/ (- temp1 65) 13)))
 			(= temp4 (mod (- temp1 65) 13))
 			(localproc_0147 @temp405 &rest 82 945 temp3 temp4 1)
 		else
-			(Print @temp5 &rest)
+			(Print @buffer &rest)
 		)
 	)
 )

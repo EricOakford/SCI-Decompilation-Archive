@@ -33,8 +33,8 @@
 		(= global356 164)
 		(= global357 247)
 		(= global358 176)
-		(= global347 51)
-		(= global348 159)
+		(= magicDoorX 51)
+		(= magicDoorY 159)
 		(self
 			setFeatures: statue doorWay1 doorWay2 room
 			setRegions: 550
@@ -51,11 +51,11 @@
 		(if
 			(and
 				(Btst 104)
-				(not global352)
-				(not global353)
+				(not wizardTimer)
+				(not henchmanTimer)
 				(> (Random 0 100) 25)
 			)
-			(proc550_16)
+			(InitCat)
 		)
 		(Bset 104)
 		(poly1 points: @local0 size: 15)
@@ -66,16 +66,16 @@
 		(cond 
 			(script (script doit:))
 			(
-			(and (== global331 3) (ego inRect: 29 133 174 184))
+			(and (== wizardState 3) (ego inRect: 29 133 174 184))
 				(if (Random 0 1)
-					(= global349 46)
-					(= global350 153)
-					(= global351 135)
+					(= wizardX 46)
+					(= wizardY 153)
+					(= wizardAngle 135)
 					(= global354 225)
 				else
-					(= global349 243)
-					(= global350 157)
-					(= global351 225)
+					(= wizardX 243)
+					(= wizardY 157)
+					(= wizardAngle 225)
 					(= global354 135)
 				)
 				((ScriptID 550 7) init: setScript: (ScriptID 550 12))
@@ -213,7 +213,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					init:
 					illegalBits: 0
@@ -225,13 +225,13 @@
 			)
 			(1
 				(ego view: 0)
-				(proc550_18)
+				(CastleHandsOn)
 				(if
 					(and
 						(> (Random 0 100) 50)
-						(== global332 0)
-						(not global352)
-						(not global353)
+						(== catState 0)
+						(not wizardTimer)
+						(not henchmanTimer)
 					)
 					((ScriptID 550 3) init:)
 				)
@@ -247,7 +247,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					ignoreActors: 1
 					illegalBits: 0
@@ -266,7 +266,7 @@
 		(switch (= state newState)
 			(0 (= cycles 1))
 			(1
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					init:
 					illegalBits: 0
@@ -277,13 +277,13 @@
 				)
 			)
 			(2
-				(proc550_18)
+				(CastleHandsOn)
 				(if
 					(and
 						(> (Random 0 100) 50)
-						(== global332 0)
-						(not global352)
-						(not global353)
+						(== catState 0)
+						(not wizardTimer)
+						(not henchmanTimer)
 					)
 					((ScriptID 550 3) init:)
 				)
@@ -311,7 +311,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					illegalBits: 0
 					ignoreActors: 1
@@ -320,7 +320,7 @@
 				)
 			)
 			(1
-				(if (!= global333 4)
+				(if (!= henchmanState 4)
 					(if (< (ego distanceTo: (ScriptID 550 3)) 30)
 						((ScriptID 550 3) setScript: 0 setMotion: 0)
 					)

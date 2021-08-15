@@ -77,8 +77,8 @@
 		(if
 			(and
 				(< (Random 1 100) 30)
-				(not global352)
-				(not global353)
+				(not wizardTimer)
+				(not henchmanTimer)
 				(not (== prevRoomNum 66))
 			)
 			((ScriptID 550 7)
@@ -98,8 +98,8 @@
 			(script (script doit:))
 			((ego inRect: 0 148 12 154) (curRoom setScript: exitLeft))
 			((& (= temp1 (ego onControl: 0)) $0002) (curRoom newRoom: 66))
-			((& temp1 $0010) (proc550_17) (self setScript: upStairScript))
-			((& temp1 $0080) (proc550_17) (self setScript: downStairScript))
+			((& temp1 $0010) (CastleHandsOff) (self setScript: upStairScript))
+			((& temp1 $0080) (CastleHandsOff) (self setScript: downStairScript))
 			(
 				(and
 					(ego edgeHit?)
@@ -109,18 +109,18 @@
 			)
 			(
 				(and
-					(== global331 3)
+					(== wizardState 3)
 					(or (ego inRect: 75 142 191 171) (== local0 1))
 				)
 				(if (< (ego x?) 144)
-					(= global349 185)
-					(= global350 136)
-					(= global351 225)
+					(= wizardX 185)
+					(= wizardY 136)
+					(= wizardAngle 225)
 					(= global354 135)
 				else
-					(= global349 105)
-					(= global350 124)
-					(= global351 135)
+					(= wizardX 105)
+					(= wizardY 124)
+					(= wizardAngle 135)
 					(= global354 315)
 				)
 				((ScriptID 550 7) init: setScript: (ScriptID 550 12))
@@ -177,8 +177,8 @@
 					cycleSpeed: 0
 					setCycle: KQ5SyncWalk
 				)
-				(proc550_18)
-				(= global103 0)
+				(CastleHandsOn)
+				(= inCartoon 0)
 				(self dispose:)
 			)
 		)
@@ -207,7 +207,7 @@
 			)
 			(5
 				(ego setPri: -1)
-				(proc550_18)
+				(CastleHandsOn)
 				(self dispose:)
 			)
 		)
@@ -238,7 +238,7 @@
 			)
 			(4
 				(ego setPri: -1)
-				(proc550_18)
+				(CastleHandsOn)
 				(self dispose:)
 			)
 		)
@@ -251,7 +251,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					view: 2
 					setStep: 2 2
@@ -262,7 +262,7 @@
 			(1
 				(if (not local0)
 					(theMusic number: 891 loop: -1 playBed:)
-					(proc550_18)
+					(CastleHandsOn)
 				else
 					(ego normal: 0)
 					(mordacksHere cue:)
@@ -279,7 +279,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(theMusic fade:)
 				(ego setMotion: MoveTo -7 152 self)
 			)
@@ -488,8 +488,8 @@
 						(SpeakAudio 675)
 						(event claimed: 1)
 					else
-						(proc550_17)
-						(= global103 1)
+						(CastleHandsOff)
+						(= inCartoon 1)
 						(curRoom setScript: lookBottleScript)
 						(event claimed: 1)
 					)
@@ -625,7 +625,7 @@
 				(theAudio stop:)
 				((ScriptID 550 7) setCycle: Beg)
 				(= seconds 3)
-				(= global103 0)
+				(= inCartoon 0)
 			)
 			(8
 				(= deathMessage 657)

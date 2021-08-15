@@ -771,7 +771,7 @@
 		(switch theVerb
 			(2
 				(if (self script?)
-					(proc759_0 216 0)
+					(KQPrint 216 0)
 				else
 					(SpeakAudio 798)
 				)

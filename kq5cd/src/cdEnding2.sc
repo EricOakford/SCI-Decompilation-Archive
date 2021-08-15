@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 671)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AudioScript)
 (use KQ5Room)
@@ -19,13 +19,13 @@
 	)
 	
 	(method (init)
-		(Load rsSCRIPT 941)
-		(Load rsSCRIPT 929)
-		(Load rsVIEW 932)
-		(LoadMany 142 5202 5203 5204 5205)
+		(Load SCRIPT 941)
+		(Load SCRIPT 929)
+		(Load VIEW 932)
+		(LoadMany RES_SYNC 5202 5203 5204 5205)
 		(super init:)
 		(HandsOff)
-		(theGame setCursor: invCursor 1)
+		(theGame setCursor: invCursor TRUE)
 		(theEyes init:)
 		(eyelid init:)
 		(theMouth init:)
@@ -39,8 +39,7 @@
 )
 
 (instance cartoon of AudioScript
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 2))
@@ -56,13 +55,13 @@
 				(theMouth setCycle: 0)
 				(eyelid setScript: 0)
 				(if (not (== (eyelid cel?) 0))
-					(eyelid setCycle: Beg self)
+					(eyelid setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
 			)
 			(7
-				(if (> (DoAudio 6) -1) (-- state))
+				(if (> (DoAudio Loc) -1) (-- state))
 				(= cycles 1)
 			)
 			(8 (curRoom newRoom: 670))
@@ -71,7 +70,6 @@
 )
 
 (instance eyesScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -89,7 +87,6 @@
 )
 
 (instance bodyScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -98,11 +95,11 @@
 					(= state 2)
 					(= cycles 1)
 				else
-					(client setCycle: End self)
+					(client setCycle: EndLoop self)
 				)
 			)
 			(1 (= seconds 2))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3 (client setScript: 0))
 		)
 	)
@@ -115,7 +112,7 @@
 		view 932
 		loop 1
 		priority 5
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (init)
@@ -132,7 +129,7 @@
 		y 79
 		view 932
 		priority 6
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doit)
@@ -155,7 +152,7 @@
 		view 932
 		loop 2
 		priority 5
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 )
@@ -167,7 +164,7 @@
 		view 932
 		loop 3
 		priority 11
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doit)

@@ -38,7 +38,7 @@
 	[local129 15] = [0 920 0 921 0 0 1000 233 21 4 11 24 19 23 30]
 )
 (procedure (localproc_2d75)
-	(= global103 0)
+	(= inCartoon 0)
 	(User canInput: 1)
 	(theIconBar enable:)
 	(theIconBar disable: 0 1 2 3)
@@ -208,7 +208,7 @@
 					setCycle: End
 				)
 				(if (Btst 55)
-					(= global103 0)
+					(= inCartoon 0)
 					(ego cycleSpeed: 1 setCycle: End self)
 				else
 					((ScriptID 604 5)
@@ -221,7 +221,7 @@
 			)
 			(13
 				(if (Btst 55)
-					(= global103 0)
+					(= inCartoon 0)
 					(= deathMessage 318)
 					(EgoDead)
 				else

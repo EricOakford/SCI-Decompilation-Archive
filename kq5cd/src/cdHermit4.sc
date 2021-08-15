@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 663)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DLetter)
@@ -16,7 +16,7 @@
 (instance cdHermit4 of KQ5Room
 	(properties
 		picture 47
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
@@ -36,7 +36,6 @@
 )
 
 (instance waves of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -44,28 +43,28 @@
 				(wave1
 					init:
 					show:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave2
 					init:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave3
 					init:
-					setCycle: End
+					setCycle: EndLoop
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
 				)
 				(wave4
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 2
 					ignoreActors:
 					cycleSpeed: (Random 5 10)
@@ -78,13 +77,12 @@
 )
 
 (instance swim of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(mermaid
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 9
 					cycleSpeed: 2
 					moveSpeed: 1
@@ -97,7 +95,6 @@
 )
 
 (instance sailInScript of Script
-	(properties)
 	
 	(method (doit)
 		(if (sailBoat mover?) ((sailBoat mover?) doit:))
@@ -120,7 +117,7 @@
 					init:
 					posn: 0 140
 					setPri: -1
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 5
 					setStep: 1 1
 					moveSpeed: 1
@@ -136,7 +133,9 @@
 					setCycle: 0
 				)
 				((ego head?) hide:)
-				(if (not (Btst 55)) (cedric init: z: 8))
+				(if (not (Btst fCedricInjured))
+					(cedric init: z: 8)
+				)
 			)
 			(1 (curRoom newRoom: 89))
 		)
@@ -156,15 +155,15 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
-					(proc759_0 663 0)
-					(event claimed: 1)
+				(verbLook
+					(KQPrint 663 0)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -176,7 +175,7 @@
 		x 146
 		y 133
 		view 649
-		signal $7900
+		signal (| ignrAct ignrHrz fixedLoop fixedCel staticView)
 	)
 )
 
@@ -184,7 +183,7 @@
 	(properties
 		view 654
 		loop 2
-		signal $7800
+		signal (| ignrAct ignrHrz fixedLoop fixedCel)
 	)
 )
 
@@ -199,15 +198,15 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 56)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -220,22 +219,22 @@
 		y 33
 		view 630
 		cel 3
-		signal $7900
+		signal (| ignrAct ignrHrz fixedLoop fixedCel staticView)
 	)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 56)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)

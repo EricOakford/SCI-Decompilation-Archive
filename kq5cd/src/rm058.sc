@@ -35,8 +35,8 @@
 		((ego head?) setPri: (ego priority?))
 		(= global345 260)
 		(= global346 140)
-		(= global347 159)
-		(= global348 116)
+		(= magicDoorX 159)
+		(= magicDoorY 116)
 		(Load rsVIEW 34)
 		(Load rsVIEW 692)
 		(Load rsVIEW 906)
@@ -57,11 +57,11 @@
 		(leftSnake init: stopUpd:)
 		(evilMask init:)
 		(cond 
-			((== global333 3) ((ScriptID 550 3) init:))
+			((== henchmanState 3) ((ScriptID 550 3) init:))
 			(
 				(and
-					(not global353)
-					(not global352)
+					(not henchmanTimer)
+					(not wizardTimer)
 					(> (Random 0 100) 50)
 				)
 				((ScriptID 550 3) init:)
@@ -75,16 +75,16 @@
 		(cond 
 			(script (script doit:))
 			(
-			(and (== global331 3) (ego inRect: 131 95 210 198))
+			(and (== wizardState 3) (ego inRect: 131 95 210 198))
 				(if (Random 0 1)
-					(= global349 78)
-					(= global350 130)
-					(= global351 270)
+					(= wizardX 78)
+					(= wizardY 130)
+					(= wizardAngle 270)
 					(= global354 90)
 				else
-					(= global349 246)
-					(= global350 125)
-					(= global351 90)
+					(= wizardX 246)
+					(= wizardY 125)
+					(= wizardAngle 90)
 					(= global354 270)
 				)
 				((ScriptID 550 7) init: setScript: (ScriptID 550 12))
@@ -187,7 +187,7 @@
 						(local2 (event claimed: 0))
 						((and (not local0) (not (curRoom script?)))
 							(++ local2)
-							(if (== global333 1)
+							(if (== henchmanState 1)
 								((ScriptID 550 3) setScript: 0 setMotion: 0)
 							)
 							(evilMask setScript: playOrgan)
@@ -276,7 +276,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					illegalBits: 0
 					posn: -4 130
@@ -284,7 +284,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(self dispose:)
 			)
 		)
@@ -297,7 +297,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					illegalBits: 0
 					posn: 317 130
@@ -305,7 +305,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(self dispose:)
 			)
 		)
@@ -318,7 +318,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(if local0 (theMusic fade:))
 				(ego illegalBits: 0 setMotion: MoveTo 317 130 self)
 			)
@@ -327,8 +327,8 @@
 			)
 			(2
 				(ego view: 0)
-				(= global333 0)
-				(if local0 (= global352 10))
+				(= henchmanState 0)
+				(if local0 (= wizardTimer 10))
 				(curRoom newRoom: 59)
 			)
 		)
@@ -341,18 +341,18 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
-				(if (!= global333 3) (theMusic fade:))
+				(CastleHandsOff)
+				(if (!= henchmanState 3) (theMusic fade:))
 				(ego illegalBits: 0 setMotion: MoveTo -4 130 self)
 			)
 			(1
 				(if local0 (= seconds 2) else (= cycles 1))
 			)
 			(2
-				(if (or (< global333 3) (== global333 7))
-					(= global333 0)
+				(if (or (< henchmanState 3) (== henchmanState 7))
+					(= henchmanState 0)
 					(ego view: 0)
-					(if local0 (= global352 10))
+					(if local0 (= wizardTimer 10))
 					(curRoom newRoom: 57)
 				)
 			)
@@ -378,10 +378,10 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(if (== global333 2)
+				(if (== henchmanState 2)
 					(SpeakAudio 616)
 				else
-					(proc550_17)
+					(CastleHandsOff)
 					(= local0 1)
 					(theMusic fade:)
 					(ego setMotion: PolyPath 158 114 self)
@@ -416,7 +416,7 @@
 					cycleSpeed: (Random 2 8)
 					setCycle: (if (> (theGame detailLevel:) 1) Fwd else 0)
 				)
-				(proc550_18)
+				(CastleHandsOn)
 			)
 			(2
 				(leftSnake stopUpd:)
@@ -424,10 +424,10 @@
 				(keys1 hide: stopUpd:)
 				(keys2 hide: stopUpd:)
 				(keys3 hide: stopUpd:)
-				(if (or (== global333 3) (== global333 2))
+				(if (or (== henchmanState 3) (== henchmanState 2))
 					((ScriptID 550 3) setScript: 0 setMotion: 0 stopUpd:)
 				)
-				(if (!= global333 3) (= global352 3))
+				(if (!= henchmanState 3) (= wizardTimer 3))
 				(client setScript: 0)
 			)
 		)

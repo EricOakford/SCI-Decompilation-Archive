@@ -68,7 +68,7 @@
 		)
 		(NormalEgo)
 		(ego cycleSpeed: (ego moveSpeed?))
-		(= global103 0)
+		(= inCartoon 0)
 		(HandsOn)
 		(Bclr 22 33)
 		(= global320 107)

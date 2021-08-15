@@ -44,15 +44,15 @@
 		(= global355 45)
 		(= global356 160)
 		(cond 
-			((== global331 5)
+			((== wizardState 5)
 				(if (not (Btst 66)) (wand init:) (= local1 1))
 				((ScriptID 550 7) init: setScript: wizSleepingScript)
 			)
-			((== global331 6)
-				(proc550_17)
-				(= global331 8)
+			((== wizardState 6)
+				(CastleHandsOff)
+				(= wizardState 8)
 				(= local2 1)
-				(= global351 135)
+				(= wizardAngle 135)
 				(= global354 315)
 				((ScriptID 550 7)
 					view: 706
@@ -63,12 +63,12 @@
 					setScript: wakeUpScript
 				)
 			)
-			((not global352)
+			((not wizardTimer)
 				(if (> (Random 0 100) 90)
 					(Load rsSOUND 835)
 					(Load rsVIEW 703)
 					(= local2 1)
-					(= global351 135)
+					(= wizardAngle 135)
 					(= global354 315)
 					((ScriptID 550 7)
 						init:
@@ -77,8 +77,8 @@
 						setScript: wizWaitingScript
 					)
 				else
-					(if (> (Random 0 100) 20) (proc550_16))
-					(if (== global332 1)
+					(if (> (Random 0 100) 20) (InitCat))
+					(if (== catState 1)
 						(= global359 0)
 					else
 						(= global359 121)
@@ -120,16 +120,16 @@
 				)
 			)
 			((ego inRect: 53 141 125 206)
-				(= global351 135)
+				(= wizardAngle 135)
 				(= global354 135)
-				(switch global331
+				(switch wizardState
 					(3
-						(= global349 87)
-						(= global350 157)
+						(= wizardX 87)
+						(= wizardY 157)
 						((ScriptID 550 7) init: setScript: (ScriptID 550 12))
 					)
 					(6
-						(= global331 7)
+						(= wizardState 7)
 						((ScriptID 550 7) setScript: wakeUpScript)
 					)
 				)
@@ -140,21 +140,21 @@
 				else
 					(= global354 315)
 				)
-				(switch global331
+				(switch wizardState
 					(3
 						(if (< (ego x?) 230)
-							(= global351 225)
+							(= wizardAngle 225)
 							(= global354 45)
 						else
-							(= global351 135)
+							(= wizardAngle 135)
 							(= global354 315)
 						)
-						(= global349 230)
-						(= global350 135)
+						(= wizardX 230)
+						(= wizardY 135)
 						((ScriptID 550 7) init: setScript: (ScriptID 550 12))
 					)
 					(6
-						(= global331 7)
+						(= wizardState 7)
 						((ScriptID 550 7) setScript: wakeUpScript)
 					)
 				)
@@ -167,15 +167,15 @@
 				(!= local5 (GetTime 1))
 			)
 			(= local5 (GetTime 1))
-			(if (not (-- global359)) (= global352 2))
+			(if (not (-- global359)) (= wizardTimer 2))
 		)
 		(if (< (ego y?) 133)
 			(if
 				(and
 					(not local0)
-					(or (== global331 3) (== global331 6))
+					(or (== wizardState 3) (== wizardState 6))
 				)
-				(proc550_17)
+				(CastleHandsOff)
 				(= local0 1)
 				(ego setMotion: PolyPath 267 151)
 			)
@@ -261,7 +261,7 @@
 				)
 				(JOY_RIGHT
 					(if local1
-						(proc550_17)
+						(CastleHandsOff)
 						(curRoom setScript: getWand)
 						(event claimed: 1)
 					)
@@ -392,7 +392,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					view: 0
 					posn: 319 142
@@ -400,7 +400,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(if local2 (wizWaitingScript cue:))
 				(client setScript: 0)
 			)
@@ -414,8 +414,8 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
-				(if (or (== global331 3) (== global331 6))
+				(CastleHandsOff)
+				(if (or (== wizardState 3) (== wizardState 6))
 					(self changeState: 100)
 				else
 					(ego setMotion: MoveTo 319 142 self)
@@ -426,16 +426,16 @@
 				(ego setMotion: MoveTo 267 151 self)
 			)
 			(101
-				(switch global331
+				(switch wizardState
 					(3
-						(= global351 135)
+						(= wizardAngle 135)
 						(= global354 225)
-						(= global349 230)
-						(= global350 135)
+						(= wizardX 230)
+						(= wizardY 135)
 						((ScriptID 550 7) init: setScript: (ScriptID 550 12))
 					)
 					(6
-						(= global331 7)
+						(= wizardState 7)
 						((ScriptID 550 7) setScript: wakeUpScript)
 					)
 				)
@@ -450,7 +450,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: MoveTo 151 273 self)
 			)
 			(1 (curRoom newRoom: 64))
@@ -498,7 +498,7 @@
 					(event claimed: 1)
 				)
 				(JOY_RIGHT
-					(proc550_17)
+					(CastleHandsOff)
 					(curRoom setScript: getWand)
 					(event claimed: 1)
 				)
@@ -520,7 +520,7 @@
 				)
 			)
 			(1
-				(proc550_19)
+				(CastleEgoSpeed)
 				((ego head?) hide:)
 				(ego
 					normal: 0
@@ -534,7 +534,7 @@
 			(3
 				(= local1 0)
 				(wand dispose:)
-				(proc550_19)
+				(CastleEgoSpeed)
 				(ego loop: 1 cel: 0 setCycle: End self)
 				(Bset 66)
 				(ego get: 35)
@@ -543,7 +543,7 @@
 			(4
 				((ego head?) show:)
 				(ego normal: 1 view: 0)
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -588,7 +588,7 @@
 			(0
 				(Load rsSOUND 835)
 				(Load rsVIEW 703)
-				(proc550_17)
+				(CastleHandsOff)
 				((ScriptID 550 7)
 					setLoop: 1
 					cycleSpeed: 0
@@ -618,8 +618,8 @@
 				(theMusic stop:)
 				(theMusic3 number: 835 loop: 1 playBed:)
 				(cond 
-					((== global331 7) (self cue:))
-					((!= global331 8)
+					((== wizardState 7) (self cue:))
+					((!= wizardState 8)
 						(switch prevRoomNum
 							(64
 								((ScriptID 550 7) posn: 101 163)
@@ -632,19 +632,19 @@
 				)
 			)
 			(1
-				(proc550_17)
+				(CastleHandsOff)
 				(ego setMotion: 0)
-				(if (not global351)
+				(if (not wizardAngle)
 					(if (< (ego x?) ((ScriptID 550 7) x?))
-						(= global351 225)
+						(= wizardAngle 225)
 						(= global354 45)
 					else
-						(= global351 135)
+						(= wizardAngle 135)
 						(= global354 315)
 					)
 				)
 				(proc762_1 @local61 926)
-				(switch global351
+				(switch wizardAngle
 					(135 (= temp0 8))
 					(225 (= temp0 9))
 					(45 (= temp0 10))
@@ -674,7 +674,7 @@
 					(45 (= temp0 6))
 					(315 (= temp0 7))
 				)
-				(proc550_19)
+				(CastleEgoSpeed)
 				(ego
 					view: 132
 					normal: 0
@@ -683,7 +683,7 @@
 				)
 			)
 			(4
-				(proc550_19)
+				(CastleEgoSpeed)
 				(ego setLoop: (+ (ego loop?) 2) setCycle: Fwd)
 				(= seconds 6)
 			)
@@ -696,13 +696,13 @@
 					(45 (= temp0 10))
 					(315 (= temp0 11))
 				)
-				(proc550_19)
+				(CastleEgoSpeed)
 				(ego setLoop: temp0 cel: 0 setCycle: End self)
 			)
 			(6
 				((ScriptID 550 7) cycleSpeed: 3 setCycle: Beg)
 				(= seconds 4)
-				(= global103 0)
+				(= inCartoon 0)
 			)
 			(7
 				(= deathMessage 657)
@@ -740,7 +740,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					view: 0
 					posn: 151 273
@@ -748,7 +748,7 @@
 				)
 			)
 			(1
-				(if local2 (wizWaitingScript cue:) else (proc550_18))
+				(if local2 (wizWaitingScript cue:) else (CastleHandsOn))
 				(client setScript: 0)
 			)
 		)
@@ -769,7 +769,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc759_0 63 0)
+					(KQPrint 63 0)
 					(event claimed: 1)
 				)
 			)

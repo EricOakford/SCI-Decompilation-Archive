@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 662)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 (use Sync)
@@ -14,24 +14,24 @@
 )
 
 (local
-	gGameEgoMoveSpeed
+	saveSpeed
 )
 (instance cdHermit3 of KQ5Room
 	(properties
 		picture 88
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(= gGameEgoMoveSpeed (theGame egoMoveSpeed?))
+		(= saveSpeed (theGame egoMoveSpeed?))
 		(theGame egoMoveSpeed: 1)
-		(Load rsSCRIPT 941)
-		(Load rsSCRIPT 929)
-		(Load rsSOUND 820)
-		(Load rsVIEW 827)
-		(Load rsVIEW 625)
-		(Load rsVIEW 618)
+		(Load SCRIPT 941)
+		(Load SCRIPT 929)
+		(Load SOUND 820)
+		(Load VIEW 827)
+		(Load VIEW 625)
+		(Load VIEW 618)
 		(Load 142 1142)
 		(Load 142 1143)
 		(Load 142 1144)
@@ -55,19 +55,18 @@
 		)
 		(egoMouth init:)
 		(hermit_eyes init:)
-		(chimney setCycle: Fwd init:)
+		(chimney setCycle: Forward init:)
 		(self setScript: cartoon2)
 	)
 	
 	(method (dispose)
-		(theGame egoMoveSpeed: gGameEgoMoveSpeed)
+		(theGame egoMoveSpeed: saveSpeed)
 		(DisposeScript 941)
 		(super dispose:)
 	)
 )
 
 (instance cartoon2 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -114,7 +113,7 @@
 			(10
 				(theMouth setCycle: 0 hide:)
 				(theMusic fade:)
-				(if (Btst 55)
+				(if (Btst fCedricInjured)
 					(curRoom newRoom: 660)
 				else
 					(curRoom newRoom: 661)
@@ -180,7 +179,7 @@
 		view 618
 		cel 1
 		priority -1
-		signal $4001
+		signal (| ignrAct stopUpdOn)
 	)
 )
 
@@ -189,6 +188,6 @@
 		z 15
 		view 618
 		loop 2
-		signal $4001
+		signal (| ignrAct stopUpdOn)
 	)
 )

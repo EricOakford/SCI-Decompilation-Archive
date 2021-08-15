@@ -33,7 +33,7 @@
 		(super init:)
 		(theMusic number: 836 loop: -1 playBed:)
 		(HandsOff)
-		(= global103 0)
+		(= inCartoon 0)
 		(ego illegalBits: 0 init:)
 		(switch prevRoomNum
 			(north

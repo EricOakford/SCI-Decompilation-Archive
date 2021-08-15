@@ -557,7 +557,7 @@
 						(curRoom setScript: leave)
 						(event claimed: 1)
 					else
-						(proc759_0 220 0)
+						(KQPrint 220 0)
 					)
 					(event claimed: 1)
 				)

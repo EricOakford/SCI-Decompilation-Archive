@@ -163,7 +163,7 @@
 		else
 			(switch (event message?)
 				(JOY_UPRIGHT
-					(proc759_0 113 0)
+					(KQPrint 113 0)
 					(event claimed: 1)
 				)
 			)

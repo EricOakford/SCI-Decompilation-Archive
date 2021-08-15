@@ -22,7 +22,7 @@
 		(super init:)
 		(theMusic number: 826 loop: -1 vol: 127 playBed:)
 		(HandsOff)
-		(= global103 1)
+		(= inCartoon 1)
 		(eagle ignoreActors: 1 init:)
 		(roc cycleSpeed: 3 ignoreActors: 1 init:)
 		(self setScript: rescue)
@@ -81,7 +81,7 @@
 			)
 			(7 (= seconds 3))
 			(8
-				(= global103 0)
+				(= inCartoon 0)
 				(curRoom newRoom: 44)
 			)
 		)

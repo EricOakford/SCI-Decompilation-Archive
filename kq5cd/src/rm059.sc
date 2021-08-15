@@ -32,8 +32,8 @@
 		(= global358 174)
 		(= global355 68)
 		(= global356 171)
-		(= global347 296)
-		(= global348 172)
+		(= magicDoorX 296)
+		(= magicDoorY 172)
 		(Load rsVIEW 896)
 		(self
 			setFeatures: firePlace birdMan1 birdMan2 table doorWay room
@@ -55,17 +55,17 @@
 			)
 		)
 		(ego init:)
-		(if (and (== prevRoomNum 60) (== global333 3))
-			(= global333 5)
+		(if (and (== prevRoomNum 60) (== henchmanState 3))
+			(= henchmanState 5)
 		)
 		(cond 
-			((== global333 5)
+			((== henchmanState 5)
 				(Load rsVIEW 896)
 				(Load rsVIEW 904)
 				(Load rsSOUND 135)
 				(curRoom setScript: caughtScript)
 			)
-			((== global333 8)
+			((== henchmanState 8)
 				((ScriptID 550 3)
 					init:
 					posn: gTheHenchManX gTheHenchManY
@@ -79,8 +79,8 @@
 			)
 			(
 				(and
-					(not global352)
-					(not global353)
+					(not wizardTimer)
+					(not henchmanTimer)
 					(> (Random 0 100) 25)
 				)
 				((ScriptID 550 3) init:)
@@ -95,19 +95,19 @@
 			(script (script doit:))
 			(
 				(and
-					(== global331 3)
+					(== wizardState 3)
 					(not ((ScriptID 550 7) script?))
 					(ego inRect: 97 158 224 187)
 				)
 				(if (Random 0 1)
-					(= global349 43)
-					(= global350 168)
-					(= global351 135)
+					(= wizardX 43)
+					(= wizardY 168)
+					(= wizardAngle 135)
 					(= global354 225)
 				else
-					(= global349 288)
-					(= global350 169)
-					(= global351 225)
+					(= wizardX 288)
+					(= wizardY 169)
+					(= wizardAngle 225)
 					(= global354 135)
 				)
 				((ScriptID 550 7) init: setScript: (ScriptID 550 12))
@@ -297,7 +297,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					ignoreActors: 1
 					illegalBits: 0
@@ -308,10 +308,10 @@
 				(if
 					(or
 						(> (ego distanceTo: (ScriptID 550 3)) 50)
-						(< global333 3)
-						(== global333 8)
+						(< henchmanState 3)
+						(== henchmanState 8)
 					)
-					(= global333 0)
+					(= henchmanState 0)
 					(curRoom newRoom: 58)
 				)
 			)
@@ -325,7 +325,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					illegalBits: 0
 					posn: -17 170
@@ -333,7 +333,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -346,7 +346,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(ego
 					illegalBits: 0
 					posn: (ego x?) 249
@@ -354,7 +354,7 @@
 				)
 			)
 			(1
-				(proc550_18)
+				(CastleHandsOn)
 				(client setScript: 0)
 			)
 		)
@@ -379,8 +379,8 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(= global333 4)
-				(proc550_17)
+				(= henchmanState 4)
+				(CastleHandsOff)
 				(ego normal: 0 hide:)
 				((ego head?) hide:)
 				((ScriptID 550 3)
@@ -396,7 +396,7 @@
 					illegalBits: 0
 					ignoreActors: 1
 					moveSpeed: 1
-					setMotion: MoveTo global347 global348 self
+					setMotion: MoveTo magicDoorX magicDoorY self
 				)
 				(theMusic number: 135 loop: -1 playBed:)
 				((ScriptID 550 4)
@@ -434,7 +434,7 @@
 			)
 			(2
 				(theMusic fade:)
-				(= global333 4)
+				(= henchmanState 4)
 				((ScriptID 550 3) hide:)
 				((ScriptID 550 5) hide:)
 				((ScriptID 550 4)
@@ -468,10 +468,13 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(proc550_17)
+				(CastleHandsOff)
 				(if
-				(and (== global333 3) (> ((ScriptID 550 3) y?) 200))
-					(= global333 6)
+					(and
+						(== henchmanState 3)
+						(> ((ScriptID 550 3) y?) 200)
+					)
+					(= henchmanState 6)
 				)
 				(ego
 					ignoreActors: 1
@@ -485,8 +488,8 @@
 					((> (ego x?) 220) (ego x: 243))
 					(else (ego x: 190))
 				)
-				(if (!= global333 4)
-					(if (!= global333 8) (= global333 0))
+				(if (!= henchmanState 4)
+					(if (!= henchmanState 8) (= henchmanState 0))
 					(curRoom newRoom: 60)
 				)
 			)
