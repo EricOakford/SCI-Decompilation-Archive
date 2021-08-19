@@ -2,7 +2,7 @@
 
 
 (include system.sh) (include sci2.sh)
-(include colors.sh)
+(include colors.sh) (include loop.sh)
 
 ; Views
 (define vEgo			0)

@@ -38,63 +38,46 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	volume =  12
-	version =  {LSL2}
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	sortedCast
-	deleteCastMember
-	skipFactor =  1
+	ego									;pointer to ego
+	theGame								;ID of the Game instance
+	curRoom								;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	volume		=		12				;sound volume
+	version		=		{x.yyy.zzz}		;pointer to 'incver' version string			
+	locales								;set of current locales
+	[curSaveDir 20]						;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	sortedCast							;cast sorted by "visibility" to ego
+	deleteCastMember					;a member of the cast needs deleting
+
+	skipFactor =  1						;default=1, set to 2 or 3 if we're really crawling
 	;globals 57-99 are unused
 		global57
 		global58
@@ -139,57 +122,59 @@
 		global97
 		global98
 	lastSysGlobal
-	debugging
-	currentStatus
-	currentEgoView
-	henchView
-	gameSeconds
-	gameMinutes
-	gameHours
-	ranking
-	rgSeconds
-	rgMinutes
-	gameState
-	global111
-	global112
-	oldSysTime
-	global114
-	roomSeconds
-	global116
-	global117
-	global118
-	speedTestQA
-	machineSpeed
-	gotHaircutInCity
-	gotOnklunk
-	filthLevel
-	boughtSunscreen
-	sunscreenState
-	lifeboatLeverPulled
-	henchwomanIsHere
-	metMama
-	woreWigAtSea
-	hairDyedBlonde
-	gotHaircutAtResort
-	resortMazeNextRoom
-	stuffedBra
-	resortMazeVisits
-	talkedToMaitreD
-	gaveFlowerToKrishna
-	passedCustoms
-	suitcaseBombState
-	missedFlight
-	airportEntranceMessage
-	boreState
-	wearingParachute
-	emergencyExitState
-	avoidedBees
-	snakeState
-	passedQuicksand
-	passedPiranhaWater
-	endGameState
-	global149
-	triteStr
+	;globals 100 and above are for game use
+	debugging				;debug mode enabled
+	currentStatus			;current ego status
+	currentEgoView			;ego's current view
+	henchView				;henchman's view
+	gameSeconds				;elapsed seconds
+	gameMinutes				;elapsed minutes
+	gameHours				;elapsed hours
+	ranking					;ranking shown on status line
+	rgSeconds				;current remaining seconds
+	rgMinutes				;current remaining minutes
+	gameState				;current region
+	global111				;unknown
+	global112				;unused
+	oldSysTime				;previous value of system's real-time clock
+	global114				;unused
+	roomSeconds				;elapsed seconds in current room (resets to 0 on room change)
+	global116				;unused
+	global117				;used in menu		
+	global118				;unused
+	speedTestQA				;never set, but if TRUE, prints the speed rating at the speed tester
+	machineSpeed			;used by the speed tester to test how fast the system is
+							; and used in determining game speed.
+	gotHaircutInCity		;ego got his haircut, so the music store is now open
+	gotOnklunk				;ego got the onklunk, so now he's targeted by the KGB
+	filthLevel				;the higher the setting, the stronger some language is
+	boughtSunscreen			;bought some sunscreen, get 9 points
+	sunscreenState			;does ego have sunscreen applied? Did it wash off in water?
+	lifeboatLeverPulled		;lever is pulled, so ego can escape the ship in a lifeboat
+	henchwomanIsHere		;henchwoman is here; if you follow her, you'll get dismembered and dissolved in acid!
+	metMama					;met Mama Bimbo in her room
+	woreWigAtSea			;ego is wearing a wig, so his scalp won't burn in the sun
+	hairDyedBlonde			;ego's got blonde hair, as part of his disguise
+	gotHaircutAtResort		;ego got his haircut, so now his hair is blonde
+	resortMazeNextRoom		;the room ego goes to after the resort maze
+	stuffedBra				;ego's bikini is stuffed, as part of his disguise
+	resortMazeVisits		;number of times ego went through the resort maze
+	talkedToMaitreD			;ego talked to the maitre'd
+	gaveFlowerToKrishna		;ego gave KGBishna a flower, so he can enter the airport
+	passedCustoms			;ego made it through customs
+	suitcaseBombState		;current state of the suitcase bomb
+	missedFlight			;ego missed his flight
+	airportEntranceMessage	;which message to show when entering the airport
+	boreState				;current state of bore in airplant
+	wearingParachute		;ego is wearing the parachute
+	emergencyExitState		;state of the airplane's emergency exit
+	avoidedBees				;ego successfully avoided the bees
+	snakeState				;current state of the snake
+	passedQuicksand			;ego made it past the quicksand
+	passedPiranhaWater		;ego made it through the piranha pond
+	endGameState			;current state of endgame
+	global149				;unused
+	triteStr				;buffer for trite phrase, this is part of an array
 		global151
 		global152
 		global153
@@ -207,9 +192,9 @@
 		global165
 		global166
 		global167
-		global168
-	tritePhrase
-	str
+		global168			;end of triteStr array
+	tritePhrase				;current trite phrase
+	str						;general buffer for strings, this is part of an array
 		global171
 		global172
 		global173
@@ -508,27 +493,27 @@
 		global466
 		global467
 		global468
-		global469
-	;end of str array
-	introductoryPhrase
-	lookedThroughKnothole
-	tookSwimInShipPool
-	boardedLifeboat
-	satInGreenRoom
-	servedAtResortRestaurant
-	lookedAtJogger
-	appliedSunscreen
-	lookedAtRosella
-	appliedSunscreenAgain
-	wornParachute	;EO: This was not in the list, but is referenced when Larry
-					;puts on the parachute for the first time. As a result,
-					;this originally resulted in the points not being awarded
-					;when the game is played in ScummVM.
+		global469				;end of str array
+	introductoryPhrase			;"My name is Larry; Larry Laffer." Was this going to be changeable?
+	lookedThroughKnothole		;ego looked through the knothole and found a PQ reference
+	tookSwimInShipPool			;ego took a swim in the ship's pool
+	boardedLifeboat				;ego boarded the lifeboat
+	satInGreenRoom				;ego sat in the green room
+	servedAtResortRestaurant	;ego was served at the resort restaurant
+	lookedAtJogger				;ego looked at the jogger in the city
+	appliedSunscreen			;ego first applied sunscreen
+	lookedAtRosella				;ego looked at Rosella and found a KQ reference
+	appliedSunscreenAgain		;ego applied sunscreen after it washed off in the pool
+	wornParachute				;ego wore parachute for the first time
+								; NOTE: This was not in the list, but is referenced when Larry
+								; puts on the parachute for the first time. As a result,
+								; this originally resulted in the points not being awarded
+								; when the game is played in ScummVM.
 )
 
 (procedure (Face actor1 actor2)
-	(DirLoop
-		actor1
+	;make one actor face another
+	(DirLoop actor1
 		(GetAngle
 			(actor1 x?)
 			(actor1 y?)
@@ -537,8 +522,7 @@
 		)
 	)
 	(if (== argc 3)
-		(DirLoop
-			actor2
+		(DirLoop actor2
 			(GetAngle
 				(actor2 x?)
 				(actor2 y?)
@@ -550,6 +534,7 @@
 )
 
 (procedure (NormalEgo theLoop)
+	;normalizes ego's animation
 	(if (> argc 0)
 		(ego loop: theLoop)
 	)
@@ -570,9 +555,10 @@
 )
 
 (procedure (IsObjectOnControl obj event)
+	;check if an object is on a specific control
 	(if (< argc 2) (= event (| keyDown mouseDown)))
 	(switch (obj loop?)
-		(0
+		(loopE
 			(OnControl
 				(obj x?)
 				(obj y?)
@@ -581,7 +567,7 @@
 			)
 			(return)
 		)
-		(1
+		(loopW
 			(OnControl
 				(- (obj x?) event)
 				(obj y?)
@@ -590,7 +576,7 @@
 			)
 			(return)
 		)
-		(2
+		(loopS
 			(OnControl
 				(obj x?)
 				(obj y?)
@@ -599,7 +585,7 @@
 			)
 			(return)
 		)
-		(3
+		(loopN
 			(OnControl
 				(obj x?)
 				(- (obj y?) event)
@@ -612,6 +598,7 @@
 )
 
 (procedure (AddViewToPic obj)
+	;creates a new view and makes it an addToPic
 	(if obj
 		((View new:)
 			view: (obj view?)
@@ -626,33 +613,40 @@
 )
 
 (procedure (HandsOff)
+	;disable ego control
 	(User canControl: FALSE canInput: FALSE)
 	(ego setMotion: 0)
 )
 
 (procedure (HandsOn)
+	;enable ego control
 	(User canControl: TRUE canInput: TRUE)
 	(ego setMotion: 0)
 )
 
 (procedure (NotifyScript i)
+	;notify multiple scripts
 	(= i (ScriptID i))
 	(i notify: &rest)
 )
 
 (procedure (HaveMem howMuch)
+	;check how much heap is available
 	(return (> (MemoryInfo FreeHeap) howMuch))
 )
 
 (procedure (RedrawCast)
+	;re-animate the cast without cycling
 	(Animate (cast elements?) FALSE)
 )
 
 (procedure (proc0_10 theObj theLoop)
+	;not sure, never used, but it seems to change an object's loop and state
 	(theObj loop: theLoop changeState:)
 )
 
 (procedure (cls)
+	;clear modeless dialog from the screen
 	(if modelessDialog
 		(modelessDialog dispose:)
 	)
@@ -702,9 +696,8 @@
 )
 
 (instance LSL2 of Game
-	(properties)
-	
 	(method (init &tmp temp0)
+		;set up the game's objects and globals
 		(super init:)
 		(= volume 15)
 		(DoSound ChangeVolume volume)
@@ -727,10 +720,11 @@
 		(Load CURSOR normalCursor)
 		(Load CURSOR waitCursor)
 		(ego view: vEgo setCycle: Walk)
+		;set up the inventory
 		(Inventory
 			empty: {Your leisure suit is empty!}
 			add:
-				NoInv
+				NoInv	;dummy item
 				Dollar_Bill
 				Lottery_Ticket
 				Cruise_Ticket
@@ -775,6 +769,7 @@
 	
 	(method (doit &tmp thisTime)
 		(super doit:)
+		;let the game's clock tick
 		(if (!= oldSysTime (= thisTime (GetTime TRUE)))
 			(= oldSysTime thisTime)
 			(++ roomSeconds)
@@ -786,15 +781,18 @@
 				)
 			)
 		)
+		;if there's a region timer, count down the seconds
 		(if (and gameState (> rgSeconds 0))
 			(-- rgSeconds)
 		)
+		;if ego died, bring up the death handler
 		(if (== currentStatus egoDYING)
 			(curRoom setScript: dyingScript)
 		)
 	)
 	
 	(method (replay)
+		;set up after restoring a game
 		(TheMenuBar draw:)
 		(StatusLine enable:)
 		(SetMenu soundI
@@ -803,7 +801,8 @@
 		(super replay:)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
+		;clean up after a room change
 		(DisposeScript JUMP)
 		(DisposeScript EXTRA)
 		(DisposeScript DOOR)
@@ -812,7 +811,7 @@
 		(= henchwomanIsHere FALSE)
 		(= showStyle (Random 0 5))
 		(= roomSeconds 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 		(if debugging
 			(curRoom setLocales: DEBUG)
 		)
@@ -823,12 +822,14 @@
 	)
 	
 	(method (changeScore delta)
+		;change the score and update the status line
 		(if (> delta 25)
 			(= ranking {Big Hero})
 		else
 			(if (> delta 0)
 				(scoreSnd play:)
 			)
+			;random ranking. This is just for fun.
 			(switch (Random 1 22)
 				(1 (= ranking {Novice}))
 				(2 (= ranking {Kumquat}))
@@ -858,13 +859,14 @@
 	)
 	
 	(method (handleEvent event &tmp temp0 i [temp2 3])
-		(super handleEvent: event)
+		(super handleEvent: event) ;rooms, regions, and locales
 		;EO: Any Said command with "/!" in it does not parse correctly, giving a "Bad Said Spec" error.
 		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
+		;gamewide events
 		(if (Said 'praise/lord')
-			(if (= debugging (^ debugging TRUE))
+			(if (^= debugging TRUE)
 				(Print 0 5)
 			else
 				(Print 0 6)
@@ -954,11 +956,12 @@
 					)
 				)
 			)
-			((and (ego has: iKnife) (or (Said 'apply/gun') (Said 'attack')))
+			((and (ego has: iKnife) (or (Said 'apply/knife') (Said 'attack')))
 				(Print 0 25)
 			)
 			((and (ego has: iMatches) (Said 'apply,burn/match'))
 				(if (ego has: iHairRejuvenator)
+					;oops, blown up
 					(HandsOff)
 					(Ok)
 					(= currentStatus egoBLOWNUP)
@@ -1123,6 +1126,7 @@
 				(Print 0 61)
 			)
 			((Said 'cheat')
+				;no fair cheating!
 				(Print 0 62)
 				(Print 0 63 #at -1 152)
 				(= quit TRUE)
@@ -1460,18 +1464,22 @@
 			((or (Said '//bimbo') (Said '/bimbo/') (Said '/bimbo'))
 				(Print 0 125)
 			)
+			;end of saidEvents
 		)
 	)
 	
 	(method (wordFail word)
+		;don't recognize a word
 		(Print (Format @str 0 1 word))
 	)
 	
 	(method (syntaxFail)
+		;can't parse input
 		(Print 0 2)
 	)
 	
 	(method (pragmaFail)
+		;no response to event
 		(if (<= filthLevel 4)
 			(Print 0 3)
 		else
@@ -1481,7 +1489,8 @@
 )
 
 (class Iitem of InvItem
-	
+	;this subclass allows item descriptions to be called
+	;from TEXT.002 (item descriptions)
 	(method (showSelf)
 		(Print INVDESC view
 			#title name
@@ -1490,7 +1499,7 @@
 	)
 )
 
-(instance NoInv of Iitem)
+(instance NoInv of Iitem)	;dummy item to take up number 0
 
 (instance Dollar_Bill of Iitem
 	(properties
@@ -1756,7 +1765,7 @@
 )
 
 (instance dyingScript of Script
-	
+	;if ego dies, bring up the death handler
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1805,7 +1814,7 @@
 )
 
 (instance statusCode of Code
-
+	;draw the status line
 	(method (doit strg)
 		(Format strg 0 129
 			score possibleScore 0 130
@@ -1815,6 +1824,7 @@
 )
 
 (instance scoreSnd of Sound
+	;sound that plays when you get points
 	(properties
 		number sScore
 		priority -10
@@ -1823,6 +1833,7 @@
 )
 
 (instance deadSnd of Sound
+	;sound that plays on death
 	(properties
 		number sDeath
 		priority 255

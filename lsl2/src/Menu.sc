@@ -9,25 +9,26 @@
 
 
 (local
-	hPause
+	oldPause
 )
 (class TheMenuBar of MenuBar
 	
 	(method (init)
-		(AddMenu { \01_} {About LSL2`^a:Help`#1})
-		(AddMenu
-			{ File_}
+		(AddMenu { \01_}
+			{About LSL2`^a:Help`#1}
+		)
+		(AddMenu { File_}
 			{Save Game`#5:Restore Game`#7:--! :Restart Game`#9:Quit`^q}
 		)
-		(AddMenu
-			{ Action_}
+		(AddMenu { Action_}
 			{Pause Game`^p:Inventory`^I:Retype`#3:--! :Boss Key`^b:Filth Level`^f:Trite Phrase`^t}
 		)
-		(AddMenu
-			{ Speed_}
+		(AddMenu { Speed_}
 			{Change...`^s:--!:Faster`+:Normal`=:Slower`-}
 		)
-		(AddMenu { Sound_} {Volume...`^v:Turn Off`#2=1})
+		(AddMenu { Sound_}
+			{Volume...`^v:Turn Off`#2=1}
+		)
 		(SetMenu soundI
 			p_text (if (DoSound SoundOn) {Turn Off} else {Turn On})
 		)
@@ -66,8 +67,14 @@
 				)
 			)
 			(helpI
-				(Print MENU 4 #font smallFont #at 15 -1 #width 280)
-				(Print MENU 5 #font smallFont)
+				(Print MENU 4
+					#font smallFont
+					#at 15 -1
+					#width 280
+				)
+				(Print MENU 5
+					#font smallFont
+				)
 			)
 			(saveI
 				(theGame save:)
@@ -99,14 +106,14 @@
 				)
 			)
 			(pauseI
-				(= hPause (Sound pause: TRUE))
+				(= oldPause (Sound pause: TRUE))
 				(Print MENU 8
 					#title {This game is paused.}
 					#icon vEgoPause 0 0
 					#font bigFont
 					#button {Ok. I'm back.} 1
 				)
-				(Sound pause: hPause)
+				(Sound pause: oldPause)
 			)
 			(invI
 				(if (not (HaveMem InvSize))
@@ -188,7 +195,7 @@
 				(theGame setSpeed: (++ speed))
 			)
 			(volumeI
-				(if (not (HaveMem 2048))
+				(if (not (HaveMem GaugeSize))
 					(Print MENU 15)
 				else
 					(= i
@@ -218,7 +225,9 @@
 				)
 			)
 			(else 
-				(if global117 (global117 doit: temp0))
+				(if global117
+					(global117 doit: temp0)
+				)
 			)
 		)
 	)
