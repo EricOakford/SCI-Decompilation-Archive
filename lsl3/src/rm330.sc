@@ -361,7 +361,7 @@
 				(aCurtain setCycle: EndLoop self)
 			)
 			(3
-				(= oldSpeed (theGame setSpeed: 6))
+				(= saveSpeed (theGame setSpeed: 6))
 				(aCurtain stopUpd:)
 				(music number: 330 loop: -1 play:)
 				(aDale setLoop: 0 setMotion: MoveTo 89 86 self)
@@ -453,9 +453,9 @@
 				(= seconds 5)
 			)
 			(19
-				(theGame setSpeed: oldSpeed)
+				(theGame setSpeed: saveSpeed)
 				(aCurtain dispose:)
-				(music stop: number: 332 loop: global108 play:)
+				(music stop: number: 332 loop: musicLoop play:)
 				(= seconds (Random 7 15))
 			)
 			(20

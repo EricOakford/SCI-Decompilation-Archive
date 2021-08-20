@@ -51,7 +51,7 @@
 			doit:
 		)
 		(self setScript: RoomScript)
-		(= oldSpeed (theGame setSpeed: 6))
+		(= saveSpeed (theGame setSpeed: 6))
 		(NormalEgo 6 650)
 		(HandsOff)
 		(ego

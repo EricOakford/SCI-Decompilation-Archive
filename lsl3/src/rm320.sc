@@ -54,7 +54,7 @@
 			(ego loop: 3 posn: 156 186)
 		)
 		(if (!= prevRoomNum 323)
-			(music number: 323 loop: global108 play:)
+			(music number: 323 loop: musicLoop play:)
 		)
 		(NormalEgo)
 		(ego init:)

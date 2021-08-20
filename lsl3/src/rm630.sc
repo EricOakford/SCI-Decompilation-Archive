@@ -54,7 +54,7 @@
 		)
 		(self setScript: RoomScript)
 		(= currentStatus 630)
-		(music number: 630 loop: global108 play:)
+		(music number: 630 loop: musicLoop play:)
 	)
 	
 	(method (newRoom newRoomNumber)
@@ -145,7 +145,7 @@
 			(7
 				(aSwitch stopUpd:)
 				(aGeneratorTop setCel: 0 stopUpd:)
-				(if (== global108 -1)
+				(if (== musicLoop SND_DONE)
 					(music number: 631 loop: 1 play: self)
 				else
 					(= cycles 22)
@@ -153,7 +153,11 @@
 			)
 			(8
 				(Print 630 12)
-				(if (== global108 -1) (= seconds 2) else (= cycles 22))
+				(if (== musicLoop SND_DONE)
+					(= seconds 2)
+				else
+					(= cycles 22)
+				)
 			)
 			(9
 				(= currentStatus 2)
@@ -201,7 +205,7 @@
 				(NormalEgo 3)
 				(NormalActor aLarry 3 720)
 				(aLarry setMotion: Follow ego 28)
-				(music number: 699 loop: global108 play:)
+				(music number: 699 loop: musicLoop play:)
 				(Print 630 14)
 			)
 		)

@@ -11,12 +11,10 @@
 )
 
 (instance rm399 of Locale
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(if (not (OneOf prevRoomNum 360 370 375 380 390))
-			(music number: 399 loop: global108 play:)
+			(music number: 399 loop: musicLoop play:)
 		)
 	)
 	

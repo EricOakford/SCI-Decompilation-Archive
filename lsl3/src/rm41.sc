@@ -21,8 +21,6 @@
 	[titleBuf 22]
 )
 (instance rm41 of Region
-	(properties)
-	
 	(method (init)
 		(Load SOUND 4)
 		(if playingAsPatti
@@ -34,18 +32,16 @@
 		(self setScript: FallScript)
 	)
 	
-	(method (notify param1 param2)
-		(= egoPri param1)
-		(= jumpY param2)
+	(method (notify thePri theY)
+		(= egoPri thePri)
+		(= jumpY theY)
 		(FallScript changeState: 1)
 	)
 )
 
 (instance FallScript of Script
-	(properties)
-	
 	(method (doit)
-		(if (and debugging (== currentStatus 0))
+		(if (and debugging (== currentStatus egoNORMAL))
 			(= egoX (ego x?))
 			(= egoY (ego y?))
 		)
@@ -74,7 +70,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(2 (ego setMotion: theJump))
+			(2
+				(ego setMotion: theJump)
+			)
 			(3
 				(cls)
 				(if debugging
@@ -95,8 +93,6 @@
 )
 
 (instance theJump of Jump
-	(properties)
-	
 	(method (init)
 		(super init: ego FallScript)
 		(self yStep: 5 y: jumpY)

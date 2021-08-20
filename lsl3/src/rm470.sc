@@ -38,13 +38,11 @@
 		(ego posn: 161 137 init:)
 		(if (> prevRoomNum curRoomNum) (= floorNumber 8))
 		(aLight setPri: 4 setCel: floorNumber init: stopUpd:)
-		(music number: 32 loop: global108 play:)
+		(music number: 32 loop: musicLoop play:)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0 (= seconds 12))

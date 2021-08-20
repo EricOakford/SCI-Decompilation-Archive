@@ -15,13 +15,11 @@
 	oldIllBits
 )
 (instance LeiingScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= oldSpeed (theGame setSpeed: 6))
+				(= saveSpeed (theGame setSpeed: 6))
 				(= oldIllBits (ego illegalBits?))
 				(ego
 					view: 710
@@ -55,7 +53,7 @@
 				)
 				(NormalEgo 0)
 				(ego illegalBits: oldIllBits)
-				(theGame setScript: 0 setSpeed: oldSpeed)
+				(theGame setScript: 0 setSpeed: saveSpeed)
 				(DisposeScript LEIING)
 			)
 		)

@@ -23,7 +23,7 @@
 		(Bset fAutoSaveDisabled)
 		(music number: 600 loop: -1 play:)
 		(super init:)
-		(= oldSpeed (theGame setSpeed: 3))
+		(= saveSpeed (theGame setSpeed: 3))
 		(ego view: 601 setLoop: 1 setStep: 22 12 init:)
 		(self setScript: RoomScript)
 	)
@@ -44,7 +44,7 @@
 			(8 (Print 600 2))
 			(9 (Print 600 3))
 			(10
-				(theGame setSpeed: oldSpeed)
+				(theGame setSpeed: saveSpeed)
 				(music fade:)
 				(curRoom newRoom: 610)
 			)

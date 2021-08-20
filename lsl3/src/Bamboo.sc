@@ -71,7 +71,7 @@
 		(Load SOUND 502)
 		(Load SOUND 503)
 		(super init:)
-		(music number: 500 loop: global108 play:)
+		(music number: 500 loop: musicLoop play:)
 		(if (not playingAsPatti)
 			(= playingAsPatti TRUE)
 			(= currentEgoView 800)
@@ -189,7 +189,7 @@
 							(<= thirstTimer 13)
 							(!= 501 (music number?))
 						)
-						(music number: 501 loop: global108 play:)
+						(music number: 501 loop: musicLoop play:)
 					)
 					(
 						(and
@@ -197,7 +197,7 @@
 							(<= thirstTimer 16)
 							(!= 502 (music number?))
 						)
-						(music number: 502 loop: global108 play:)
+						(music number: 502 loop: musicLoop play:)
 					)
 					(
 						(and
@@ -205,7 +205,7 @@
 							(>= thirstTimer 17)
 							(!= 503 (music number?))
 						)
-						(music number: 503 loop: global108 play:)
+						(music number: 503 loop: musicLoop play:)
 					)
 				)
 				(cond 
@@ -277,7 +277,7 @@
 							(Ok)
 							(theGame changeScore: 20)
 							(= thirstTimer 0)
-							(music number: 500 loop: global108 play:)
+							(music number: 500 loop: musicLoop play:)
 							(Print 500 7 #icon 29 0 0)
 							(Print 500 8)
 							(PutInRoom iBottleOfWine)

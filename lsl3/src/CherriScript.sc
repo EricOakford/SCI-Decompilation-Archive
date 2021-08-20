@@ -59,9 +59,9 @@
 					(theGame changeScore: 5)
 				)
 				(Print 422 6)
-				(= gGEgoX (ego x?))
-				(= gGEgoY (ego y?))
-				(= gGEgoLoop (ego loop?))
+				(= saveEgoX (ego x?))
+				(= saveEgoY (ego y?))
+				(= saveEgoLoop (ego loop?))
 				(curRoom newRoom: 435)
 			)
 			(3 (HandsOff) (= seconds 3))
@@ -83,17 +83,17 @@
 					(ego setCycle: Walk setMotion: MoveTo 97 (ego y?))
 				)
 			)
-			(6 (gADoor setCycle: EndLoop self))
+			(6 (theDoor setCycle: EndLoop self))
 			(7
 				(Print 422 9)
-				(gADoor stopUpd:)
+				(theDoor stopUpd:)
 				(client setMotion: MoveTo -20 140 self)
 			)
-			(8 (gADoor setCycle: BegLoop self))
+			(8 (theDoor setCycle: BegLoop self))
 			(9
 				(soundFX number: 11 loop: 1 play:)
 				(= showroomState SRcherriBackstage)
-				(gADoor stopUpd:)
+				(theDoor stopUpd:)
 				(NormalEgo)
 				(ego observeControl: cYELLOW cLMAGENTA)
 				(client dispose:)
@@ -106,12 +106,12 @@
 					(= cycles 2)
 				else
 					(HandsOff)
-					(gADoor setCycle: EndLoop self)
+					(theDoor setCycle: EndLoop self)
 					(= seconds 0)
 				)
 			)
 			(12
-				(gADoor stopUpd:)
+				(theDoor stopUpd:)
 				(client
 					posn: 13 140
 					loop: 0
@@ -120,10 +120,10 @@
 					setMotion: MoveTo 45 140 self
 				)
 			)
-			(13 (gADoor setCycle: BegLoop self))
+			(13 (theDoor setCycle: BegLoop self))
 			(14
 				(soundFX number: 11 loop: 1 play:)
-				(gADoor stopUpd:)
+				(theDoor stopUpd:)
 				(client setMotion: MoveTo 82 124 self)
 			)
 			(15

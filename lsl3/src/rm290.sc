@@ -42,6 +42,10 @@
 	
 	(method (doit)
 		(super doit:)
+		;EO: The reason for the speed bugs is that
+		; the speed tester didn't account for newer machines.
+		; Later games fixed this by using the howFast global,
+		; with only a few possible values and an upper limit.
 		(if (== (++ machineSpeed) 1)
 			(= doneTime (+ 60 (GetTime)))
 		)
@@ -72,9 +76,9 @@
 				)
 			)
 			(if (> (DoSound NumVoices) 3)
-				(= global108 -1)
+				(= musicLoop SND_DONE)
 			else
-				(= global108 1)
+				(= musicLoop SND_READY)
 			)
 			(= global112 0)
 			(= minutesBetweenReminders 5)

@@ -81,7 +81,7 @@
 				(ego observeControl: cYELLOW posn: 295 144 init:)
 			)
 		)
-		(music number: 32 loop: global108 play:)
+		(music number: 32 loop: musicLoop play:)
 	)
 )
 

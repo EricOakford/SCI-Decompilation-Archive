@@ -15,8 +15,6 @@
 	oldIllBits
 )
 (instance CarvingScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -24,7 +22,7 @@
 					(= cycles 1)
 				else
 					(HandsOff)
-					(= oldSpeed (theGame setSpeed: 6))
+					(= saveSpeed (theGame setSpeed: 6))
 					(= oldIllBits (ego illegalBits?))
 					(ego view: 711 loop: 0 cel: 0 setCycle: EndLoop self)
 				)
@@ -46,7 +44,7 @@
 					(HandsOn)
 					(NormalEgo 0)
 					(ego illegalBits: oldIllBits)
-					(theGame setSpeed: oldSpeed)
+					(theGame setSpeed: saveSpeed)
 				)
 				(theGame setScript: 0)
 				(DisposeScript CARVING)

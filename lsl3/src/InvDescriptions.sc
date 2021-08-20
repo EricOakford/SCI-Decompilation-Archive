@@ -9,8 +9,6 @@
 )
 
 (instance rm046 of Code
-	(properties)
-	
 	(method (init)
 		(Print INVDESC 0)
 		(Print INVDESC 1)

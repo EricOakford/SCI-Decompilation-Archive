@@ -15,8 +15,6 @@
 	[num3Buf 20]
 )
 (instance LockerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

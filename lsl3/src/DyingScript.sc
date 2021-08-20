@@ -158,7 +158,6 @@
 ;;;)
 
 (instance DyingScript of Script
-	(properties)
 	;EO: This script is a recreation based on the original asm, which
 	; has been commented out but intact above.
 	; Also referred to is Brian Provinciano's original SCI0 template,
@@ -217,8 +216,6 @@
 
 
 (instance deadIcon of DCIcon
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(if (== curRoomNum 540)

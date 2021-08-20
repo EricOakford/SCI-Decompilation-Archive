@@ -14,8 +14,6 @@
 )
 
 (instance rm20 of Locale
-	(properties)
-	
 	(method (handleEvent event &tmp n i saveBits evt [str1 30] [str2 30] [str3 30])
 		(if (or (not debugging) (event claimed?)) (return))
 		(switch (event type?)
@@ -31,7 +29,7 @@
 								#dispose
 							)
 						)
-						(while (!= 2 ((= evt (Event new:)) type?))
+						(while (!= mouseUp ((= evt (Event new:)) type?))
 							(evt dispose:)
 						)
 						(saveBits dispose:)
@@ -40,7 +38,7 @@
 					((& (event modifiers?) ctrlDown)
 						(event claimed: TRUE)
 						(User canControl: TRUE)
-						(while (!= 2 ((= evt (Event new:)) type?))
+						(while (!= mouseUp ((= evt (Event new:)) type?))
 							(GlobalToLocal evt)
 							(ego posn: (evt x?) (evt y?) setMotion: 0)
 							(Animate (cast elements?) FALSE)
@@ -55,7 +53,7 @@
 					(`@c
 						(Show CMAP)
 						(Animate (cast elements?) FALSE)
-						(while (== 0 ((= event (Event new:)) type?))
+						(while (== nullEvt ((= event (Event new:)) type?))
 							(event dispose:)
 						)
 						(event dispose:)
@@ -66,14 +64,13 @@
 						(SetDebug)
 					)
 					(`@e
-						(if
-						(Load VIEW (= n (GetNumber {New Ego View:})))
+						(if (Load VIEW (= n (GetNumber {New Ego View:})))
 							(= currentEgoView n)
 							(NormalEgo)
 						)
 					)
 					(`@f
-						(= debugOn (^ debugOn TRUE))
+						(^= debugOn TRUE)
 						(Print
 							(Format @str1 20 1 (if debugOn {_} else { NOT_}))
 						)
@@ -187,16 +184,12 @@
 								(ego onControl:)
 								(ego onControl: origin)
 							)
-							#icon
-							(ego view?)
-							(ego loop?)
-							(ego cel?)
+							#icon (ego view?) (ego loop?) (ego cel?)
 						)
 					)
-					(8	 ;no idea what key binding this is, and there's already one for showing memory
+					(BACKSPACE
 						(theGame showMem:)
 					)
-													
 				)
 			)
 			(saidEvent

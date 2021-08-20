@@ -47,8 +47,7 @@
 		else
 			(ego ignoreControl: doorBlock)
 		)
-		(if
-		(and roomCtrl entranceTo (& (ego onControl:) roomCtrl))
+		(if (and roomCtrl entranceTo (& (ego onControl:) roomCtrl))
 			(curRoom newRoom: entranceTo)
 		)
 	)

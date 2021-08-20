@@ -149,7 +149,7 @@
 				(Ok)
 				(Bclr fRemovedBra)
 				(music stop:)
-				(= oldSpeed (theGame setSpeed: 6))
+				(= saveSpeed (theGame setSpeed: 6))
 				(= currentStatus 540)
 				(ego
 					view: 541
@@ -198,10 +198,10 @@
 				(NormalEgo 3)
 				(= currentStatus egoNORMAL)
 				(Print 540 33 #at -1 144)
-				(music number: 599 loop: global108 play:)
+				(music number: 599 loop: musicLoop play:)
 				(Bset fBeatFeralPig)
 				(theGame changeScore: 100)
-				(theGame setSpeed: oldSpeed)
+				(theGame setSpeed: saveSpeed)
 			)
 		)
 	)

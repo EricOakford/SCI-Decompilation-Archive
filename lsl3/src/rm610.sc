@@ -25,7 +25,7 @@
 		(Bset fSaveDisabled)
 		(Bset fCursorHidden)
 		(Bset fAutoSaveDisabled)
-		(= oldSpeed (theGame setSpeed: 6))
+		(= saveSpeed (theGame setSpeed: 6))
 		(= playingAsPatti TRUE)
 		(= currentEgoView 801)
 		(= currentEgo (Format @egoName 610 0))
@@ -243,10 +243,10 @@
 			)
 			(29 (ego loop: 1))
 			(30
-				(Bclr 3)
-				(Bclr 5)
-				(Bclr 4)
-				(theGame setSpeed: oldSpeed)
+				(Bclr fSaveDisabled)
+				(Bclr fCursorHidden)
+				(Bclr fAutoSaveDisabled)
+				(theGame setSpeed: saveSpeed)
 				(NormalEgo 1)
 				(ego setPri: 7)
 				(aLarry
@@ -260,7 +260,7 @@
 			(31
 				(Print 610 20)
 				(Print 610 21)
-				(music number: 699 loop: global108 play:)
+				(music number: 699 loop: musicLoop play:)
 			)
 		)
 	)

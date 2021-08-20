@@ -47,7 +47,7 @@
 		(aActor3 ignoreActors: init:)
 		(aActor4 ignoreActors: init:)
 		(aActor5 ignoreActors: init:)
-		(= oldSpeed (theGame setSpeed: 6))
+		(= saveSpeed (theGame setSpeed: 6))
 		(= [actors 1] aActor1)
 		(= [actors 2] aActor2)
 		(= [actors 3] aActor3)
@@ -353,7 +353,7 @@
 				(= seconds 2)
 			)
 			(45
-				(theGame setSpeed: oldSpeed)
+				(theGame setSpeed: saveSpeed)
 				(= currentStatus oldStatus)
 				(curRoom newRoom: 420)
 			)

@@ -32,7 +32,7 @@
 			(self picture: 376)
 			(Load PICTURE 375)
 			(Load VIEW 376)
-			(soundFX number: 375 loop: global108 play:)
+			(soundFX number: 375 loop: musicLoop play:)
 		else
 			(self picture: 375)
 			(Load PICTURE 376)
@@ -125,7 +125,7 @@
 							(aWater4 show:)
 						)
 						(aDrain show:)
-						(soundFX number: 375 loop: global108 play:)
+						(soundFX number: 375 loop: musicLoop play:)
 					)
 				)
 			)

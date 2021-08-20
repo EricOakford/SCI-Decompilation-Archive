@@ -11,13 +11,10 @@
 )
 
 (instance rm499 of Locale
-	(properties)
-	
 	(method (init)
 		(super init:)
-		(if
-		(not (OneOf prevRoomNum 400 410 415 416 420 460))
-			(music number: 499 loop: global108 play:)
+		(if (not (OneOf prevRoomNum 400 410 415 416 420 460))
+			(music number: 499 loop: musicLoop play:)
 		)
 	)
 	
@@ -26,8 +23,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 

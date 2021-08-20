@@ -31,7 +31,7 @@
 		(Load SOUND 4)
 		(HandsOff)
 		(cls)
-		(= oldSpeed (theGame setSpeed: 6))
+		(= saveSpeed (theGame setSpeed: 6))
 		(super init:)
 		(ego
 			view: 525

@@ -265,7 +265,7 @@
 				(ego setMotion: MoveTo 194 132 self)
 			)
 			(9
-				(= oldSpeed (theGame setSpeed: 6))
+				(= saveSpeed (theGame setSpeed: 6))
 				(music number: 480 loop: -1 play:)
 				(StatusLine disable:)
 				(TheMenuBar hide: state: FALSE)

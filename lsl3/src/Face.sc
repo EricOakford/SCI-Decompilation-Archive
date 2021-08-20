@@ -23,7 +23,9 @@
 	[str 300]
 )
 (procedure (AnimateFace param1 param2 param3)
-	(if (< argc 1) (= param1 0))
+	(if (< argc 1)
+		(= param1 0)
+	)
 	(if (> argc 1)
 		(= theCycles param2)
 	else
@@ -94,8 +96,6 @@
 )
 
 (instance rm71 of Region
-	(properties)
-	
 	(method (init)
 		(Load SCRIPT REVERSE)
 		(super init:)
@@ -126,9 +126,9 @@
 				(else  {Carlos})
 			)
 		)
-		(= oldSpeed (theGame setSpeed: 6))
+		(= saveSpeed (theGame setSpeed: 6))
 		(if (!= curRoomNum 325)
-			(music number: curRoomNum loop: global108 play:)
+			(music number: curRoomNum loop: musicLoop play:)
 		)
 		(self setScript: RegionScript)
 		(aEyeWest init:)
@@ -139,10 +139,10 @@
 		(aMouth init:)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(theGame setSpeed: oldSpeed)
+	(method (newRoom n)
+		(theGame setSpeed: saveSpeed)
 		(if (!= curRoomNum 325) (music fade:))
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 	
 	(method (notify param1 param2 param3)
@@ -166,8 +166,6 @@
 )
 
 (instance RegionScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -192,8 +190,7 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -217,8 +214,6 @@
 )
 
 (instance EyeScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -266,8 +261,6 @@
 )
 
 (instance EyelidScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles (Random 11 33)))
@@ -313,8 +306,6 @@
 )
 
 (instance NoseScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles (Random 22 66)))
@@ -343,8 +334,6 @@
 )
 
 (instance MouthScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -384,8 +373,6 @@
 )
 
 (instance aEyeWest of Prop
-	(properties)
-	
 	(method (init)
 		(self view: curRoomNum setPri: 2 setScript: EyeScript)
 		(super init:)

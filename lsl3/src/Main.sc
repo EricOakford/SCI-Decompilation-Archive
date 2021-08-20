@@ -9,6 +9,7 @@
 (use Game)
 (use Invent)
 (use User)
+(use File)
 (use Menu)
 (use Actor)
 (use System)
@@ -31,8 +32,8 @@
 	HaveMem 14
 	AddViewToPic 15
 	SetOrchidTimer 16
-	proc0_17 17
-	proc0_18 18
+	LogIt 17
+	LogPragFail 18
 	Bset 19
 	Bclr 20
 	Btoggle 21
@@ -43,69 +44,55 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	volume =  12
-	version =  {LSL3}
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	demoScripts
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
+	ego									;pointer to ego
+	theGame								;ID of the Game instance
+	curRoom								;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	volume		=		12				;sound volume
+	version		=		{x.yyy.zzz}		;pointer to 'incver' version string			
+	locales								;set of current locales
+	[curSaveDir 20]						;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	useSortedFeatures					;enable cast & feature sorting?
+	demoScripts							;add to curRoomNum to find room demo script
+	egoBlindSpot						;used by sortCopy to exclude
+										;actors behind ego within angle 
+										;from straight behind. 
+										;Default zero is no blind spot
+	overlays	=		-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
+	demoDialogTime	=	3				;how long Prints stay up in demo mode
 	currentPalette
 	modelessPort
+	;globals 63-99 are unused
 		global63
 		global64
 		global65
@@ -142,57 +129,60 @@
 		global96
 		global97
 		global98
-		lastSysGlobal
-	debugging
-	currentStatus
-	currentEgoView
-	gameSeconds
-	gameMinutes
-	gameHours
-	oldSysTime
-	roomSeconds
-	global108
-	orchidSeconds
-	orchidMinutes
-	gameFlags ;16 * 7 = 102 flags
+	lastSysGlobal
+	;globals 100 and above are for game use
+	debugging				;debug mode enabled
+	currentStatus			;current ego status
+	currentEgoView			;ego's current view
+	gameSeconds				;elapsed seconds
+	gameMinutes				;elapsed minutes
+	gameHours				;elapsed hours
+	oldSysTime				;previous value of system's real-time clock
+	roomSeconds				;elapsed seconds in current room (resets to 0 on room change)
+	musicLoop				;saved value of music loop state
+	orchidSeconds			;seconds before the orchids wilt
+	orchidMinutes			;minutes before the orchids wilt
+	gameFlags				;16 * 7 = 102 flags
 		global112
 		global113
 		global114
 		global115
 		global116
 		global117
-	currentEgo
-	egoName
-	global120
-	global121
-	global122
-	machineSpeed
-	filthLevel
-	global125
-	global126
-	global127
-	bambooStalksSeen
-	oldScore
-	dollars
-	music
-	tawniState
-	programControl
-	newspaperState
-	lawyerState
-	vendorView
-	oldSpeed
-	gGEgoX
-	gGEgoY
-	showroomState
-	myTextColor
-	myBackColor
-	gADoor
-	playingAsPatti
-	soundFX
-	printTime
-	lockerNum1
-	lockerNum2
-	lockerNum3
+	currentEgo				;are you playing as Larry or Patti?
+	egoName					;what's your name?
+	global120				;unused
+	global121				;unused
+	global122				;unused
+	machineSpeed			;used by the speed tester to test how fast the system is
+							; and used in determining game speed.
+	filthLevel				;the higher the setting, the stronger some language is
+	global125				;unused
+	global126				;unused
+	global127				;unused
+	bambooStalksSeen		;number of times ego "looked" at a bamboo stalk
+	oldScore				;score on the previous cycle. This
+							; allows for gradual incrementation on the status line
+	dollars					;how much money ego has
+	music					;pointer for global music object
+	tawniState				;Tawni's current state
+	programControl			;if TRUE, disable control on the next cycle
+	newspaperState			;current state of the newspaper
+	lawyerState				;current state of Suzi
+	vendorView				;view of the vendor hawking his goods
+	saveSpeed				;saved speed during certain sequences
+	saveEgoX				;saved x coord of ego
+	saveEgoY				;saved y coord of ego
+	showroomState			;current state of showroom and Cherri
+	myTextColor				;color of text in message boxes
+	myBackColor				;color of message boxes
+	theDoor					;pointer for backstage door
+	playingAsPatti			;are you now playing as Patti?
+	soundFX					;pointer for global sound FX object
+	printTime				;seconds to display Print
+	lockerNum1				;randomized locker number 1
+	lockerNum2				;randomized locker number 2
+	lockerNum3				;randomized locker number 3
 	
 	;amount of exercise needed to become fit
 	requiredPoundsPumped
@@ -200,53 +190,53 @@
 	requiredPullUps
 	requiredBarPulls
 	
-	larryBuffed
-	gGEgoLoop
-	oldStatus
-	global157
-	global158
-	global159
-	global160
-	global161
-	global162
-	global163
-	global164
-	global165
-	global166
-	global167
-	global168
-	global169
-	filthStr
-	global171
-	global172
-	global173
-	global174
-	global175
-	global176
-	global177
-	global178
-	global179
-	global180
-	global181
-	global182
-	global183
-	global184
-	global185
-	global186
-	global187
-	global188
-	global189
-	global190
-	global191
-	global192
-	global193
-	global194
-	global195
-	global196
-	global197
-	global198
-	global199
-	expletiveStr
+	larryBuffed				;Larry's all buffed up!
+	saveEgoLoop				;saved loop of ego
+	oldStatus				;saved value of currentStatus		
+	global157				;unused
+	global158				;unused
+	global159				;unused
+	global160				;unused
+	global161				;unused
+	global162				;unused
+	global163				;unused
+	global164				;unused
+	global165				;unused
+	global166				;unused
+	global167				;unused
+	global168				;unused
+	global169				;unused
+	filthStr				;buffer for filth ranking, this is part of an array			
+		global171
+		global172
+		global173
+		global174
+		global175
+		global176
+		global177
+		global178
+		global179
+		global180
+		global181
+		global182
+		global183
+		global184
+		global185
+		global186
+		global187
+		global188
+		global189
+		global190
+		global191
+		global192
+		global193
+		global194
+		global195
+		global196
+		global197
+		global198
+		global199			;end of filthStr
+	expletiveStr			;buffer for expletive, this is part of an array
 		global201
 		global202
 		global203
@@ -264,23 +254,26 @@
 		global215
 		global216
 		global217
-		global218
-	expletive
-	introductoryPhrase
-	minutesBetweenReminders
-	autoSaveTimer
-	secondsBetweenReminders
-	global224
-	global225
-	global226
-	global227
-	global228
-	global229
-	global230
-	global231
-	global232
+		global218			;end of expletiveStr
+	expletive				;current expletive
+	introductoryPhrase		;"My name is Larry; Larry Laffer." Was this going to be changeable?
+	minutesBetweenReminders	;total minutes between save reminders
+	autoSaveTimer			;remaining time before save reminder
+	secondsBetweenReminders	;total seconds between save reminders
+	
+	;these globals are used by the QA logger
+	QANoteBuf
+		global225
+		global226
+		global227
+		global228
+	noteFileNameBuf
+		global230
+		global231
+	noteNum
 )
 (procedure (NormalEgo theLoop theView)
+	;normalizes ego's animation
 	(HandsOn)
 	(ego edgeHit: 0)
 	(switch argc
@@ -300,8 +293,13 @@
 )
 
 (procedure (NormalActor theActor theLoop theView)
-	(if (> argc 1) (theActor loop: theLoop))
-	(if (> argc 2) (theActor view: theView))
+	;normalizes an actor's animation
+	(if (> argc 1)
+		(theActor loop: theLoop)
+	)
+	(if (> argc 2)
+		(theActor view: theView)
+	)
 	(theActor
 		setLoop: -1
 		setPri: -1
@@ -315,16 +313,19 @@
 )
 
 (procedure (HandsOff)
+	;disable ego control
 	(User canControl: FALSE canInput: FALSE)
 	(ego setMotion: 0)
 )
 
 (procedure (HandsOn)
+	;enable ego control
 	(User canControl: TRUE canInput: TRUE)
 	(ego setMotion: 0)
 )
 
 (procedure (cls)
+	;clear modeless dialog from the screen
 	(if modelessDialog
 		(modelessDialog dispose:)
 	)
@@ -359,11 +360,13 @@
 )
 
 (procedure (NotifyScript i)
+	;notify multiple scripts
 	(= i (ScriptID i))
 	(i notify: &rest)
 )
 
 (procedure (HaveMem howMuch)
+	;check how much heap is available
 	(return
 		(if (> (MemoryInfo FreeHeap) howMuch)
 			(return TRUE)
@@ -375,6 +378,7 @@
 )
 
 (procedure (AddViewToPic obj)
+	;creates a new view object and makes it an addToPic
 	(if obj
 		((View new:)
 			view: (obj view?)
@@ -389,17 +393,37 @@
 )
 
 (procedure (SetOrchidTimer minutes seconds param3)
+	;sets the time before the orchids wilt
 	(= orchidMinutes minutes)
 	(= orchidSeconds (* 10 (+ param3 (* seconds 60))))
 )
 
-(procedure (proc0_17 &tmp [temp0 70])
+(procedure (LogIt why &tmp [str 70])
+	;code taken from demo
+	(File
+		name: {input.log}
+		write:
+			(Format @str
+				"[r%3d %s v%3d %3dx/%3dy ES%-5d] %s\n"
+				curRoomNum
+				version
+				(ego view?) (ego x?) (ego y?)
+				currentStatus
+				why
+			)
+		close:
+	)
+	
 )
 
-(procedure (proc0_18 &tmp [temp0 50])
+(procedure (LogPragFail &tmp [str 50])
+	;code taken from demo
+	(LogIt (Format @str "Lame response to \"%s\"" (User inputLineAddr?)))
 )
+
 
 (procedure (Bset flagEnum)
+	;Set a boolean game flag
 	(= [gameFlags (/ flagEnum 16)]
 		(|
 			[gameFlags (/ flagEnum 16)]
@@ -409,6 +433,7 @@
 )
 
 (procedure (Bclr flagEnum)
+	;Clear a boolean game flag
 	(= [gameFlags (/ flagEnum 16)]
 		(&
 			[gameFlags (/ flagEnum 16)]
@@ -417,7 +442,9 @@
 	)
 )
 
-(procedure (Btoggle flagEnum) ;this procedure doesn't seem to be used
+(procedure (Btoggle flagEnum)
+	;Toggle a boolean game flag.
+	; This procedure doesn't seem to be used.
 	(= [gameFlags (/ flagEnum 16)]
 		(^
 			[gameFlags (/ flagEnum 16)]
@@ -427,6 +454,7 @@
 )
 
 (procedure (Btst flagEnum)
+	;Test a boolean game flag
 	(return
 		(if
 			(&
@@ -441,6 +469,8 @@
 )
 
 (procedure (InRoom what where)
+	;check whether an inventory object is in a room.
+	; If no room is specified, it assumes the current room.
 	(return
 		(==
 			((inventory at: what) owner?)
@@ -450,6 +480,8 @@
 )
 
 (procedure (PutInRoom what where)
+	;put an inventory object in a room.
+	; If no room is specified, it assumes the current room.
 	((inventory at: what)
 		owner: (if (< argc 2) curRoomNum else where)
 	)
@@ -463,11 +495,13 @@
 (instance LSL3 of Game
 	
 	(method (init &tmp startingRoom)
+		;set up the game's objects and globals
 		((= systemWindow theWindow)
 			color: (= myTextColor vBLUE)
 			back: (= myBackColor vWHITE)
 		)
 		(super init:)
+		(Bset fQAEnabled)	;EO: Added for QA debug
 		(= introductoryPhrase {"My name is Larry; Larry Laffer."})
 		(= version {1.021})
 		(= volume 15)
@@ -491,6 +525,7 @@
 		(Load CURSOR waitCursor)
 		(Load CURSOR 666)
 		(Load CURSOR 992)
+		;set up the game's inventory
 		(Inventory
 			add:
 				Nothing
@@ -520,12 +555,16 @@
 		else
 			(= startingRoom 120)
 		)
+		;go to the starting room
 		(self newRoom: startingRoom)
 	)
 	
 	(method (doit &tmp [str 50])
 		(super doit:)
-		(if programControl (User canControl: FALSE canInput: FALSE))
+		(if programControl
+			(User canControl: FALSE canInput: FALSE)
+		)
+		;let the game's clock tick
 		(if (!= oldSysTime (= oldSysTime (GetTime TRUE)))
 			(if (>= (++ gameSeconds) 60)
 				(= gameSeconds 0)
@@ -535,6 +574,8 @@
 				)
 			)
 			(++ roomSeconds)
+			;if not much progress is made early on,
+			; give the player a hint
 			(if
 				(and
 					(< score 20)
@@ -549,6 +590,7 @@
 				(Print 0 1 #at -1 144)
 			)
 			(if
+				;remind the player to save the game
 				(and
 					(not (Btst fAutoSaveDisabled))
 					minutesBetweenReminders
@@ -575,6 +617,8 @@
 				)
 			)
 		)
+		;increment or decrement the score on the status line
+		; when you get or lose points
 		(if (> oldScore score)
 			(if (> machineSpeed 39)
 				(-- oldScore)
@@ -606,6 +650,7 @@
 				(self setCursor: normalCursor (HaveMouse))
 			)
 		)
+		;countdown the time before the orchids wilt
 		(return
 			(if (and orchidMinutes orchidSeconds)
 				(-- orchidSeconds)
@@ -677,6 +722,7 @@
 	)
 	
 	(method (startRoom roomNum)
+		;clean up after a room change
 		(LoadMany FALSE
 			FILE JUMP EXTRA WINDOW TIMER FOLLOW REVERSE
 			DCICON CHANGE_SCRIPT DOOR AUTODOOR
@@ -688,14 +734,14 @@
 		)
 		(soundFX stop: number: 1)
 		(super startRoom: roomNum &rest)
-		(if
-		(and (not (OneOf roomNum 530 260 420)) debugging)
+		(if (and (not (OneOf roomNum 530 260 420)) debugging)
 			(curRoom setLocales: DEBUG)
 		)
 		(if (Btst fQAEnabled)
 			(curRoom setLocales: DEBUG_22)
 		)
 		(cond 
+			;set the current region based on the new room
 			(
 				(OneOf roomNum
 					200 203 210 213 216 220 230 235 240 245
@@ -722,7 +768,7 @@
 	)
 	
 	(method (changeScore delta)
-		(= score (+ score delta))
+		(+= score delta)
 		(if (> delta 0)
 			(scoreSound playMaybe:)
 		)
@@ -733,9 +779,10 @@
 		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
+		;start saidEvents
 		(cond 
 			((Said 'ascot/backdrop')
-				(if (= debugging (^ debugging TRUE))
+				(if (^= debugging TRUE)
 					(Print 0 14)
 				else
 					(Print 0 15)
@@ -743,9 +790,15 @@
 			)
 			((or (Said 'caress/ginsu') (Said 'sharpen/ginsu'))
 				(cond 
-					((not (ego has: iGinsuKnife)) (DontHave))
-					((== (Ginsu_Knife view?) 21) (ItIs))
-					((!= curRoomNum 250) (Print 0 16))
+					((not (ego has: iGinsuKnife))
+						(DontHave)
+					)
+					((== (Ginsu_Knife view?) 21)
+						(ItIs)
+					)
+					((!= curRoomNum 250)
+						(Print 0 16)
+					)
 				)
 			)
 			((or (Said 'backdrop/*/bottle') (Said 'fill/bottle'))
@@ -1018,7 +1071,7 @@
 							)
 							(else
 								(Print 0 62)
-								(proc0_18)
+								(LogPragFail)
 							)
 						)
 					)
@@ -1139,7 +1192,10 @@
 							(Print 0 98)
 						)
 					)
-					(else (Print 0 99) (event claimed: 1))
+					(else
+						(Print 0 99)
+						(event claimed: TRUE)
+					)
 				)
 			)
 			((Said 'throw>')
@@ -1318,7 +1374,7 @@
 							(44 (Print 0 62))
 						)
 						(event claimed: TRUE)
-						(proc0_18)
+						(LogPragFail)
 					)
 				)
 			)
@@ -1344,7 +1400,7 @@
 					)
 					(else
 						(Print 0 151)
-						(proc0_18)
+						(LogPragFail)
 					)
 				)
 				(event claimed: TRUE)
@@ -1367,7 +1423,7 @@
 					)
 					(else
 						(Print 0 155)
-						(proc0_18)
+						(LogPragFail)
 					)
 				)
 				(event claimed: TRUE)
@@ -1395,7 +1451,7 @@
 							(34 (Print 0 162))
 							(35 (Print 0 163))
 						)
-						(proc0_18)
+						(LogPragFail)
 					)
 				)
 				(event claimed: TRUE)
@@ -1430,6 +1486,7 @@
 	)
 	
 	(method (wordFail word &tmp [str 50])
+		;don't recognize a word
 		(switch (Random 0 4)
 			(0
 				(Print (Format @str 0 3 word))
@@ -1450,6 +1507,7 @@
 	)
 	
 	(method (syntaxFail &tmp [str 40])
+		;can't parse input
 		(switch (Random 0 2)
 			(0 (Print 0 8))
 			(1 (Print 0 9))
@@ -1458,6 +1516,7 @@
 	)
 	
 	(method (pragmaFail &tmp [str 40])
+		;no response to input
 		(switch (Random 0 2)
 			(0 (Print 0 11))
 			(1 (Print 0 12))
@@ -1467,7 +1526,8 @@
 )
 
 (class Iitem of InvItem
-	
+	;this subclass allows item descriptions to be called
+	;from TEXT.030 (item descriptions)
 	(method (showSelf)
 		(Print 30 view
 			#title name
@@ -1476,9 +1536,7 @@
 	)
 )
 
-(instance Nothing of Iitem
-	(properties)
-)
+(instance Nothing of Iitem)	;dummy item to take up number 0
 
 (instance Credit_Card of Iitem
 	(properties
@@ -1727,6 +1785,7 @@
 )
 
 (instance scoreSound of Sound
+	;sound that plays when you get points
 	(properties
 		number 1
 		priority 10
@@ -1734,12 +1793,14 @@
 )
 
 (instance theMusic of Sound
+	;music object
 	(properties
 		number 1
 	)
 )
 
 (instance theSoundFX of Sound
+	;sound FX object
 	(properties
 		number 1
 		priority 5
@@ -1747,11 +1808,10 @@
 )
 
 (instance theWindow of SysWindow
-	(properties)
-	
+	;LSL3's custom window
 	(method (open)
 		(if (< (Graph GDetect) 9)
-			(if (or (< color 7) (== color 8))
+			(if (or (< color vLGREY) (== color vGREY))
 				(= color vBLACK)
 				(= back vWHITE)
 			else
@@ -1764,13 +1824,15 @@
 )
 
 (instance NormalBase of Code
-	(properties)
-	
-	(method (doit &tmp temp0)
-		(if (== curRoomNum 253) (= temp0 22) else (= temp0 10))
+	(method (doit &tmp theX)
+		(if (== curRoomNum 253)
+			(= theX 22)
+		else
+			(= theX 10)
+		)
 		(ego brBottom: (+ (ego y?) 1))
 		(ego brTop: (- (ego brBottom?) (ego yStep?)))
-		(ego brLeft: (- (ego x?) temp0))
-		(ego brRight: (+ (ego x?) temp0))
+		(ego brLeft: (- (ego x?) theX))
+		(ego brRight: (+ (ego x?) theX))
 	)
 )

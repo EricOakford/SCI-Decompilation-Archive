@@ -69,7 +69,7 @@
 		)
 		(if (< showroomState SRknowsAboutDeed)
 			(aManager init:)
-			(= gADoor aDoor)
+			(= theDoor aDoor)
 		)
 		(if
 			(or
@@ -78,7 +78,7 @@
 				(== showroomState SRknowsAboutDeed)
 			)
 			(aCherri init:)
-			(= gADoor aDoor)
+			(= theDoor aDoor)
 		)
 		(cond 
 			((== prevRoomNum 440)
@@ -90,8 +90,8 @@
 			((== prevRoomNum 435)
 				(= currentStatus egoNORMAL)
 				(ego
-					loop: gGEgoLoop
-					posn: (if gGEgoX else 99) (if gGEgoY else 124)
+					loop: saveEgoLoop
+					posn: (if saveEgoX else 99) (if saveEgoY else 124)
 				)
 				(aCherri init:)
 			)
@@ -103,8 +103,8 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(if (== gADoor aDoor)
-			(= gADoor 0)
+		(if (== theDoor aDoor)
+			(= theDoor 0)
 			(DisposeScript 421)
 			(DisposeScript 422)
 		)

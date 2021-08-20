@@ -164,7 +164,7 @@
 			(ego get: iPenthouseKey)
 			((Inventory at: iPenthouseKey) view: 30)
 			(Format ((Inventory at: iPenthouseKey) name?) 484 2)
-			(theGame setSpeed: oldSpeed)
+			(theGame setSpeed: saveSpeed)
 			(Load VIEW 800)
 			(ego
 				view: 482
@@ -173,7 +173,7 @@
 				baseSetter: SheetBase
 				init:
 			)
-			(music number: 492 loop: global108 play:)
+			(music number: 492 loop: musicLoop play:)
 		)
 	)
 	

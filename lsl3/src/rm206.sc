@@ -36,7 +36,7 @@
 		(aShade3 init:)
 		(aGull init:)
 		(aGirl init:)
-		(= oldSpeed (theGame setSpeed: 6))
+		(= saveSpeed (theGame setSpeed: 6))
 	)
 )
 
@@ -214,7 +214,7 @@
 			(25 (= girlStage 6) (= seconds 3))
 			(26
 				(Bset fLookedInBinoculars)
-				(theGame changeScore: 2 setSpeed: oldSpeed)
+				(theGame changeScore: 2 setSpeed: saveSpeed)
 				(Print 206 15)
 				(= currentStatus oldStatus)
 				(curRoom newRoom: 200)

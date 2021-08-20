@@ -13,8 +13,6 @@
 )
 
 (instance rm22 of Locale
-	(properties)
-	
 	(method (handleEvent event &tmp i [temp1 3] [buf1 30] [buf2 30] [buf3 30])
 		(if (or (not (Btst fQAEnabled)) (event claimed?))
 			(return)
@@ -25,7 +23,7 @@
 					(`@c
 						(Show CMAP)
 						(Animate (cast elements?) FALSE)
-						(while (== 0 ((= event (Event new:)) type?))
+						(while (== nullEvt ((= event (Event new:)) type?))
 							(event dispose:)
 						)
 						(event dispose:)
@@ -45,20 +43,17 @@
 						(= buf2 0)
 						(= buf3 0)
 						(= i 1)
-						(++ global232)
-						(while
-						(GetInput @buf3 40 {Press "Enter" or "ESC" when done.})
-							(Format @buf1 22 0 (theGame name?) @global229)
+						(++ noteNum)
+						(while (GetInput @buf3 40 {Press "Enter" or "ESC" when done.})
+							(Format @buf1 22 0 (theGame name?) @noteFileNameBuf)
 							(Format @buf2 22 1
 								curRoomNum
 								version
-								@global224
-								@global229
-								global232
+								@QANoteBuf
+								@noteFileNameBuf
+								noteNum
 								i
-								(ego view?)
-								(ego x?)
-								(ego y?)
+								(ego view?) (ego x?) (ego y?)
 							)
 							(File
 								name: @buf1
@@ -69,13 +64,21 @@
 							(++ i)
 						)
 					)
-					(`@p (Show PMAP))
+					(`@p
+						(Show PMAP)
+					)
 					(`@r
 						(Print (Format @buf1 22 2 curRoomNum))
 					)
-					(`@v (Show VMAP))
-					(`@x (= quit TRUE))
-					(`@z (= quit TRUE))
+					(`@v
+						(Show VMAP)
+					)
+					(`@x
+						(= quit TRUE)
+					)
+					(`@z
+						(= quit TRUE)
+					)
 					(`^d
 						(= i (GetNumber {Teleport to}))
 						(if (Load SCRIPT i)

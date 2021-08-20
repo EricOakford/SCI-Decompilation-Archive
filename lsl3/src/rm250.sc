@@ -207,7 +207,7 @@
 				(Print 250 19 #icon 2 0 0)
 				(= local4 0)
 				(= seconds 2)
-				(= oldSpeed (theGame setSpeed: 6))
+				(= saveSpeed (theGame setSpeed: 6))
 			)
 			(9
 				(soundFX number: 250 loop: 1 play:)
@@ -219,7 +219,7 @@
 				((Inventory at: iGinsuKnife) view: 21)
 				(Format ((Inventory at: iGinsuKnife) name?) 250 20)
 				(soundFX stop:)
-				(theGame setSpeed: oldSpeed changeScore: 50)
+				(theGame setSpeed: saveSpeed changeScore: 50)
 				(ego view: 709 loop: 0 setCel: 255 setCycle: BegLoop self)
 			)
 			(11

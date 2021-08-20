@@ -42,7 +42,7 @@
 		(self setScript: RoomScript)
 		(aRope init:)
 		(if (!= prevRoomNum 525)
-			(music number: 599 loop: global108 play:)
+			(music number: 599 loop: musicLoop play:)
 		)
 		(cond 
 			((== prevRoomNum 535)
@@ -178,11 +178,11 @@
 				(addToPics add: atpTits doit:)
 			)
 			(6
-				(music number: 599 loop: global108 play:)
+				(music number: 599 loop: musicLoop play:)
 				(ego posn: 170 155 cel: 1)
 				(NormalEgo 2)
 				(= currentStatus egoNORMAL)
-				(theGame setSpeed: oldSpeed)
+				(theGame setSpeed: saveSpeed)
 			)
 			(7
 				(if (not (Btst fGotPot))

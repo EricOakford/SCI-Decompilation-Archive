@@ -113,7 +113,7 @@
 			(2 (music stop:))
 			(3
 				(music stop:)
-				(= oldSpeed (theGame setSpeed: 6))
+				(= saveSpeed (theGame setSpeed: 6))
 				(Print 390 10)
 				(music number: 390 loop: -1 play: self)
 				(aSpeakerLeft init:)
@@ -223,7 +223,7 @@
 				)
 				(aBambi setScript: BambiScript)
 				(BambiScript changeState: 6)
-				(theGame setSpeed: oldSpeed)
+				(theGame setSpeed: saveSpeed)
 			)
 			(24
 				(ego setMotion: MoveTo 200 134 self)

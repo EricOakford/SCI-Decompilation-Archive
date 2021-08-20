@@ -195,7 +195,7 @@
 				(PutInRoom iWood 210)
 				(PutInRoom iCreditCard 216)
 				(= currentStatus egoNORMAL)
-				(music number: 299 loop: global108 play:)
+				(music number: 299 loop: musicLoop play:)
 			)
 		)
 	)

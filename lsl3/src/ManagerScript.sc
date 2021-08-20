@@ -30,11 +30,11 @@
 			)
 			(1
 				(Print 421 0)
-				(gADoor setCycle: EndLoop self)
+				(theDoor setCycle: EndLoop self)
 				(music number: 6 loop: -1 play:)
 			)
 			(2
-				(gADoor stopUpd:)
+				(theDoor stopUpd:)
 				(client setPri: 9 setCycle: Forward posn: 33 143)
 				(= seconds 3)
 			)
@@ -82,7 +82,7 @@
 			(9
 				(music stop: number: 12 loop: 1 play:)
 				(client hide:)
-				(gADoor setCycle: BegLoop self)
+				(theDoor setCycle: BegLoop self)
 			)
 			(10
 				(theGame setScript: (ScriptID DYING))

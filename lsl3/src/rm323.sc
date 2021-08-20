@@ -44,21 +44,21 @@
 		(self setScript: RoomScript)
 		(= str 0)
 		(if (!= prevRoomNum 325)
-			(= gGEgoX 41)
-			(= gGEgoY 156)
-			(= gGEgoLoop 0)
+			(= saveEgoX 41)
+			(= saveEgoY 156)
+			(= saveEgoLoop 0)
 		)
 		(if (== currentStatus 323)
 			(HandsOff)
 			(ego view: 326 setCel: 255)
-			(= gGEgoLoop 0)
+			(= saveEgoLoop 0)
 			(RoomScript changeState: 4)
 		else
 			(NormalEgo)
 		)
 		(ego
-			posn: gGEgoX gGEgoY
-			loop: gGEgoLoop
+			posn: saveEgoX saveEgoY
+			loop: saveEgoLoop
 			observeBlocks: blockOne blockTwo wallBlockLeft wallBlockRight
 			init:
 		)
@@ -241,9 +241,9 @@
 							(6 (Print 323 39))
 							(else 
 								(Ok)
-								(= gGEgoX (ego x?))
-								(= gGEgoY (ego y?))
-								(= gGEgoLoop (ego loop?))
+								(= saveEgoX (ego x?))
+								(= saveEgoY (ego y?))
+								(= saveEgoLoop (ego loop?))
 								(if (== currentStatus 1004) (= currentStatus 323))
 								(curRoom newRoom: 325)
 							)

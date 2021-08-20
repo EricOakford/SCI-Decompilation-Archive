@@ -61,7 +61,7 @@
 					(HandsOff)
 					(aBambi init:)
 					(ego view: 720 posn: 191 122 illegalBits: 0 ignoreActors:)
-					(music number: 399 loop: global108 play:)
+					(music number: 399 loop: musicLoop play:)
 					(RoomScript changeState: 11)
 				)
 			)

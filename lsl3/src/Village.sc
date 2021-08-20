@@ -22,7 +22,7 @@
 					240 245 250 253 300 305 310
 				)
 			)
-			(music stop: number: 299 loop: global108 play:)
+			(music stop: number: 299 loop: musicLoop play:)
 		)
 	)
 	

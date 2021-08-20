@@ -616,7 +616,7 @@
 			)
 			(5)
 			(6
-				(music stop: number: 499 loop: global108 play:)
+				(music stop: number: 499 loop: musicLoop play:)
 				(= seconds 3)
 			)
 			(7

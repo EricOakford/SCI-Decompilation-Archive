@@ -11,13 +11,11 @@
 )
 
 (instance rm599 of Locale
-	(properties)
-	
 	(method (init)
 		(if (< currentEgoView 800) (= currentEgoView 800))
 		(super init:)
 		(if (not (OneOf prevRoomNum 510 520 523 540 550))
-			(music number: 599 loop: global108 play:)
+			(music number: 599 loop: musicLoop play:)
 		)
 	)
 	

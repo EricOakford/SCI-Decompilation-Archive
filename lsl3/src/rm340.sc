@@ -1199,7 +1199,7 @@ code_1068:
 			pushi    341
 			pushi    6
 			pushi    1
-			lsg      global108
+			lsg      musicLoop
 			pushi    42
 			pushi    0
 			lag      music

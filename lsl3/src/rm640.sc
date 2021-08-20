@@ -41,7 +41,7 @@
 		(NormalActor aLarry 0 720)
 		(aLarry posn: 8 174 init: stopUpd:)
 		(self setScript: RoomScript)
-		(= oldSpeed (theGame setSpeed: 6))
+		(= saveSpeed (theGame setSpeed: 6))
 		(NormalEgo 0)
 		(ego posn: 12 183 init: stopUpd:)
 		(HandsOff)
