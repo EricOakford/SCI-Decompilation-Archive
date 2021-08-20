@@ -12,9 +12,15 @@
 	)
 	
 	(method (init)
-		(AddMenu { \01_} {About Iceman`^a})
-		(AddMenu { Action_} {Restart Demo`#9:Quit`^q})
-		(AddMenu { Sound_} {Volume...`^v:Turn Off`#2=1})
+		(AddMenu { \01_}
+			{About Iceman`^a}
+		)
+		(AddMenu { Action_}
+			{Restart Demo`#9:Quit`^q}
+		)
+		(AddMenu { Sound_}
+			{Volume...`^v:Turn Off`#2=1}
+		)
 	)
 	
 	(method (handleEvent event &tmp i [str 100] oldPause)
@@ -51,7 +57,9 @@
 				)
 				(Sound pause: oldPause)
 			)
-			(restartI (theGame restart:))
+			(restartI
+				(theGame restart:)
+			)
 			(quitI
 				(= oldPause (Sound pause: TRUE))
 				(= quit

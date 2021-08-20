@@ -23,12 +23,15 @@
 )
 
 (instance prettyAsAPicture of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
-			(1 (curRoom newRoom: 2))
+			(0
+				(= seconds 5)
+			)
+			(1
+				(curRoom newRoom: 2)
+			)
 		)
 	)
 )

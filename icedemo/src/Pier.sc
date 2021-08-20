@@ -85,8 +85,6 @@
 )
 
 (instance presentArms of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -122,7 +120,7 @@
 	
 	(method (init)
 		(super init:)
-		(if (== detailLevel 0)
+		(if (== howFast slow)
 			(self addToPic:)
 		else
 			(self setCycle: Forward)
@@ -142,7 +140,7 @@
 	
 	(method (init)
 		(super init:)
-		(if (== detailLevel 0)
+		(if (== howFast slow)
 			(self addToPic:)
 		else
 			(self setCycle: Forward)
@@ -161,7 +159,7 @@
 	
 	(method (init)
 		(super init:)
-		(if (== detailLevel 0)
+		(if (== howFast slow)
 			(self addToPic:)
 		else
 			(self setCycle: Forward)

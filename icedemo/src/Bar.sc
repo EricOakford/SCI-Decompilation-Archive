@@ -122,8 +122,6 @@
 )
 
 (instance goDance of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -296,7 +294,7 @@
 		x 98
 		z 15
 		view 611
-		signal $0001
+		signal stopUpdOn
 	)
 )
 
@@ -340,14 +338,12 @@
 )
 
 (instance extraControl of Code
-	(properties)
-	
-	(method (doit param1 param2)
-		(if (param1 isKindOf: Extra)
-			(if param2
-				(param1 startExtra:)
+	(method (doit obj startIt)
+		(if (obj isKindOf: Extra)
+			(if startIt
+				(obj startExtra:)
 			else
-				(param1 stopExtra:)
+				(obj stopExtra:)
 			)
 		)
 	)

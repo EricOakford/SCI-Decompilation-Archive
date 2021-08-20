@@ -196,7 +196,7 @@
 					ignoreControl: cWHITE
 					init:
 				)
-				(if (!= detailLevel 2)
+				(if (!= howFast fast)
 					(sierraLogo posn: 181 129)
 				else
 					(sierraLogo setMotion: MoveTo 181 129)
@@ -269,7 +269,7 @@
 					ignoreControl: cWHITE
 					init:
 				)
-				(if (!= detailLevel 2)
+				(if (!= howFast fast)
 					(presents posn: 212 160)
 				else
 					(presents setMotion: MoveTo 212 160)
@@ -278,7 +278,7 @@
 			)
 			(3)
 			(4
-				(if (== detailLevel 2)
+				(if (== howFast fast)
 					((= missile (Actor new:))
 						view: 800
 						loop: 0
@@ -296,7 +296,7 @@
 				)
 			)
 			(5
-				(if (== detailLevel 0)
+				(if (== howFast slow)
 					(theS dispose:)
 					(theI dispose:)
 					(theE dispose:)
@@ -307,36 +307,38 @@
 					(self changeState: 10)
 				else
 					(theS setCycle: EndLoop)
-					(= cycles (if (!= detailLevel 2) 1 else 3))
+					(= cycles (if (!= howFast fast) 1 else 3))
 				)
 			)
 			(6
 				(theI setCycle: EndLoop)
-				(= cycles (if (!= detailLevel 2) 1 else 3))
+				(= cycles (if (!= howFast fast) 1 else 3))
 			)
 			(7
-				(if (== detailLevel 2) (missile xStep: 20))
+				(if (== howFast fast) (missile xStep: 20))
 				(theE setCycle: EndLoop)
-				(= cycles (if (!= detailLevel 2) 1 else 3))
+				(= cycles (if (!= howFast fast) 1 else 3))
 			)
 			(8
-				(if (== detailLevel 2) (missile xStep: 18))
+				(if (== howFast fast) (missile xStep: 18))
 				(theR1 setCycle: EndLoop)
 				(presents setCycle: EndLoop)
-				(= cycles (if (!= detailLevel 2) 1 else 3))
+				(= cycles (if (!= howFast fast) 1 else 3))
 			)
 			(9
-				(if (== detailLevel 2) (missile xStep: 16))
+				(if (== howFast fast) (missile xStep: 16))
 				(theR2 setCycle: EndLoop)
-				(= cycles (if (!= detailLevel 2) 1 else 3))
+				(= cycles (if (!= howFast fast) 1 else 3))
 			)
 			(10
-				(switch detailLevel
-					(2
+				(switch howFast
+					(fast
 						(missile xStep: 2)
 						(theA setCycle: EndLoop)
 					)
-					(1 (theA setCycle: EndLoop))
+					(medium
+						(theA setCycle: EndLoop)
+					)
 				)
 			)
 			(11
@@ -387,7 +389,7 @@
 	(method (init)
 		(super init:)
 		(self setLoop: loop setPri: 11)
-		(if (!= detailLevel 2)
+		(if (!= howFast fast)
 			(self posn: 140 172 cue:)
 		else
 			(self setMotion: MoveTo 140 172 self)
@@ -415,7 +417,7 @@
 	(method (init)
 		(super init:)
 		(self setLoop: loop setPri: 11)
-		(if (!= detailLevel 2)
+		(if (!= howFast fast)
 			(self posn: 226 171 cue:)
 		else
 			(self setMotion: MoveTo 226 171 self)

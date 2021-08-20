@@ -114,7 +114,7 @@
 			setStep: 3 4
 		)
 		(swimmer setScript: swimRight)
-		(music number: sGhosts play:)
+		(globalMusic number: sGhosts play:)
 		(self setScript: demoMsg)
 	)
 	

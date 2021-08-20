@@ -29,7 +29,7 @@
 		(LoadMany VIEW vBear rKoboldCave)
 		(Load SOUND sCave)
 		(super init:)
-		(music number: sCave play:)
+		(globalMusic number: sCave play:)
 		(bear ignoreActors: init: setPri: 11 stopUpd:)
 		(drip init: setScript: dripScript)
 		(= dripIndex (Random 0 4))

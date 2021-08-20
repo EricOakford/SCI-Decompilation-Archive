@@ -26,7 +26,7 @@
 		(Load VIEW vCheetaur)
 		(super init:)
 		(ego posn: 318 140 init:)
-		(music number: sForest play:)
+		(globalMusic number: sForest play:)
 		(self setScript: mosey)
 	)
 	

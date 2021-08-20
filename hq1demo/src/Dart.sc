@@ -274,9 +274,9 @@
 					)
 				)
 				(if egosTurn
-					(= egoPoints (+ egoPoints addPoints))
+					(+= egoPoints addPoints)
 				else
-					(= chiefPoints (+ chiefPoints addPoints))
+					(+= chiefPoints addPoints)
 				)
 				(theGame setSpeed: saveSpeed)
 				(client cue:)

@@ -52,7 +52,7 @@
 			(theThunder number: sThunder)
 			(theTeleport number: sTeleport)
 		)
-		(music number: sMagicShop loop: 1 play:)
+		(globalMusic number: sMagicShop loop: 1 play:)
 		(ego loop: 3 posn: 159 188 init:)
 		((= [thunderingCloud 0] (Prop new:))
 			view: rMagicShop
@@ -186,7 +186,7 @@
 			)
 			(9
 				(curRoom newRoom: DART)
-				(music fade:)
+				(globalMusic fade:)
 			)
 		)
 	)

@@ -18,69 +18,55 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	volume =  12
-	version =  {ego}
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	demoScripts
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
+	ego									;pointer to ego
+	theGame								;ID of the Game instance
+	curRoom								;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	volume		=		12				;sound volume
+	version		=		{x.yyy.zzz}		;pointer to 'incver' version string			
+	locales								;set of current locales
+	[curSaveDir 20]						;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	useSortedFeatures					;enable cast & feature sorting?
+	demoScripts							;add to curRoomNum to find room demo script
+	egoBlindSpot						;used by sortCopy to exclude
+										;actors behind ego within angle 
+										;from straight behind. 
+										;Default zero is no blind spot
+	overlays	=		-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
+	demoDialogTime	=	3				;how long Prints stay up in demo mode
 	currentPalette
 	modelessPort
+	;globals 63-99 are unused
 		global63
 		global64
 		global65
@@ -118,9 +104,11 @@
 		global97
 		global98
 	lastSysGlobal
+	;globals 100 and above are for game use.
+	; Most of them are unused unless stated otherwise.
 	global100
 	global101
-	theQueuedSound
+	theQueuedSound		;pointer for QueuedSound
 	global103
 	global104
 	global105
@@ -150,33 +138,35 @@
 	global129
 	global130
 	global131
-	detailLevel
+	howFast		;machine speed level (0 = slow, 1 = medium, 2 = fast)
 	global133
-	global134
-	global135
+	global134	;these two globals are set in the control panel room,
+	global135	; but are never used
 	global136
 	global137
-	globalSound
-	numVoices
-	numColors
+	globalSound	;pointer for global music object
+	numVoices	;number of voices supported by sound driver
+	numColors	;number of colors supported by graphics driver
 	global141 =  1
 	global142
 	global143
 	global144
-	debugging
+	debugging	;debug mode enabled
 	global146
 	global147
 	global148
 	global149
-	isHandsOff
+	isHandsOff	;ego can't be controlled
 )
 (procedure (HandsOff)
+	;disable ego control
 	(= isHandsOff TRUE)
 	(User canControl: FALSE canInput: FALSE)
 	(ego setMotion: 0)
 )
 
 (procedure (NormalEgo)
+	;normalizes ego's animation
 	(ego
 		setLoop: -1
 		setPri: -1
@@ -186,16 +176,20 @@
 		cycleSpeed: 0
 		moveSpeed: 0
 		setStep: 3 2
-		ignoreActors: 0
+		ignoreActors: FALSE
 		looper: 0
 	)
 )
 
 (procedure (SoundFX soundNum)
+	;deals with machine-dependent sound files.
+	; low-res sounds have resource numbers in the 200-range,
+	; while standard res sounds have resource numbers in the 000-range
 	(return
+		;4 or less voices for PC Speaker and Tandy, 12 voices for CMS
 		(if (or (< numVoices 4) (== numVoices 12))
 			(+ soundNum 200)
-		else
+		else ;for Adlib and MT-32
 			soundNum
 		)
 	)
@@ -208,8 +202,7 @@
 )
 
 (instance statusCode of Code
-	(properties)
-	
+	;draw the status line
 	(method (doit strg)
 		(Format strg 0 0)
 	)
@@ -222,16 +215,19 @@
 )
 
 (instance iceDemo of Game
-	(properties)
-	
 	(method (init)
+		;set up the game's objects and globals
 		(SysWindow color: vBLACK back: vLCYAN)
 		(= numColors (Graph GDetect))
 		(= systemWindow SysWindow)
 		(super init:)
 		(= numVoices (DoSound NumVoices))
 		(= ego egoObj)
-		(User alterEgo: ego blocks: 0 y: 155)
+		(User
+			alterEgo: ego
+			blocks: 0
+			y: 155
+		)
 		(= showStyle HSHUTTER)
 		(TheMenuBar init: hide:)
 		(StatusLine code: statusCode enable:)
@@ -241,7 +237,11 @@
 		else
 			(self setCursor: normalCursor FALSE 350 200)
 		)
-		((= globalSound iceGlobalSound) init: owner: self)
+		((= globalSound iceGlobalSound)
+			init:
+			owner: self
+		)
+		;now go to the speed tester
 		(self newRoom: SPEED)
 	)
 	
@@ -250,9 +250,11 @@
 	)
 	
 	(method (startRoom roomNum &tmp temp0)
+		;clean up after a room change
 		(if modelessDialog
 			(modelessDialog dispose:)
 		)
+		;if memory is fragmented and debugging is on, bring up a warning and the internal debugger
 		(if debugging
 			(if
 				(and
@@ -270,6 +272,7 @@
 	)
 	
 	(method (handleEvent event)
+		;only allow input if debugging is enabled
 		(if debugging
 			(if
 				(and

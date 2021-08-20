@@ -34,7 +34,7 @@
 		(Load SOUND sTown)
 		(super init:)
 		(= yoYoState 1)
-		(music number: sTown play:)
+		(globalMusic number: sTown play:)
 		((= townGate (View new:))
 			posn: 114 173
 			cel: 1

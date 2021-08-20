@@ -104,6 +104,7 @@
 		]
 )
 (procedure (DoDisplay)
+	;do the display of the text
 	(Display 1 0
 		p_restore saveBits1
 	)
@@ -228,7 +229,9 @@
 	)
 	
 	(method (doit)
-		(if (< (-- currentPage) 1) (= currentPage totalPages))
+		(if (< (-- currentPage) 1)
+			(= currentPage totalPages)
+		)
 		(DoDisplay)
 	)
 )
@@ -244,7 +247,9 @@
 	)
 	
 	(method (doit)
-		(if (> (++ currentPage) totalPages) (= currentPage 1))
+		(if (> (++ currentPage) totalPages)
+			(= currentPage 1)
+		)
 		(DoDisplay)
 	)
 )

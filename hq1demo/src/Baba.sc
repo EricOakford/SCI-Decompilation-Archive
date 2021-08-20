@@ -30,7 +30,7 @@
 		(Load SOUND sBabaHutOutside)
 		(= currentPalette 0)
 		(super init:)
-		(music number: sBabaHutOutside play:)
+		(globalMusic number: sBabaHutOutside play:)
 		(ego
 			view: vEgoStanding
 			loop: loopN

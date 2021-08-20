@@ -7,6 +7,7 @@
 (include system.sh) (include sci2.sh)
 
 ;Script defines
+(define MAIN		0)
 (define ISLE		1)
 (define HUT			2)
 (define BAR			11)
@@ -23,3 +24,10 @@
 (define DANCE		199)
 (define SHOWMAP		370)
 (define DEBUG		800)
+
+; howFast values
+(enum
+	slow
+	medium
+	fast
+)

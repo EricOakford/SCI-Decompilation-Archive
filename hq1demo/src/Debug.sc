@@ -24,7 +24,7 @@
 					((& (event modifiers?) ctrlDown)
 						(event claimed: TRUE)
 						(User canControl: TRUE)
-						(while (!= 2 ((= evt (Event new:)) type?))
+						(while (!= mouseUp ((= evt (Event new:)) type?))
 							(GlobalToLocal evt)
 							(Animate (cast elements?) FALSE)
 							(ego posn: (evt x?) (evt y?) setMotion: 0)
@@ -44,7 +44,7 @@
 								#dispose
 							)
 						)
-						(while (!= 2 ((= evt (Event new:)) type?))
+						(while (!= mouseUp ((= evt (Event new:)) type?))
 							(evt dispose:)
 						)
 						(obj dispose:)

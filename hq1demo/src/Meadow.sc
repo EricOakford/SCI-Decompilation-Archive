@@ -30,7 +30,7 @@
 			setMotion: MoveTo 160 150
 		)
 		(magicStone posn: 109 145 init:)
-		(music
+		(globalMusic
 			number: (if (== numVoices 1) sEranasPeaceIBM else sEranasPeace)
 			loop: 1
 			play:

@@ -51,8 +51,7 @@
 )
 
 (instance smallBikiniScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -133,8 +132,7 @@
 )
 
 (instance walkOnBy of Script
-	(properties)
-	
+
 	(method (doit)
 		(cond 
 			((< (client x?) 190) (ego setCel: 0))

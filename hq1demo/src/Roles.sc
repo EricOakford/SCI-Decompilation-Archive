@@ -172,7 +172,7 @@
 			stopUpd:
 		)
 		(self setScript: selScript)
-		(music
+		(globalMusic
 			number: (if (== numVoices 1) sBrigandIBM else sBrigand)
 			loop: -1
 			play:
@@ -232,7 +232,7 @@
 					(++ whichChar)
 					(HighlightCharacter)
 				else
-					(music fade:)
+					(globalMusic fade:)
 					(curRoom newRoom: TOWN)
 				)
 			)

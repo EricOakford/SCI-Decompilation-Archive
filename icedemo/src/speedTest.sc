@@ -16,12 +16,10 @@
 )
 
 (local
-	endTime
-	howFast
+	doneTime
+	machineSpeed
 )
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance speedTest of Room
 	(properties
@@ -47,18 +45,25 @@
 			init:
 		)
 		(theGame setSpeed: 0)
-		(= howFast 0)
+		(= machineSpeed 0)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (== (++ howFast) 1) (= endTime (+ 60 (GetTime))))
-		(if
-		(and (u< endTime (GetTime)) (not (self script?)))
+		(if (== (++ machineSpeed) 1)
+			(= doneTime (+ 60 (GetTime)))
+		)
+		(if (and (u< doneTime (GetTime)) (not (self script?)))
 			(cond 
-				((<= howFast 30) (= detailLevel 0))
-				((<= howFast 60) (= detailLevel 1))
-				(else (= detailLevel 2))
+				((<= machineSpeed 30)
+					(= howFast slow)
+				)
+				((<= machineSpeed 60)
+					(= howFast medium)
+				)
+				(else
+					(= howFast fast)
+				)
 			)
 			(self setScript: speedScript)
 		)
@@ -71,11 +76,11 @@
 )
 
 (instance speedScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp nextRoom [str 20])
 		(switch (= state newState)
-			(0 (= cycles 1))
+			(0
+				(= cycles 1)
+			)
 			(1
 				(theGame setSpeed: 6)
 				(= cycles (if debugging 1 else 30))
@@ -97,7 +102,9 @@
 							)
 						)
 						(if str (= nextRoom (ReadNumber @str)))
-						(if (> nextRoom 0) (break))
+						(if (> nextRoom 0)
+							(break)
+						)
 					)
 				else
 					(= nextRoom INTRO)

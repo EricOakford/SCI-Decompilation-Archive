@@ -51,7 +51,7 @@
 		(heroSBar init:)
 		(heroMBar init:)
 		(catHBar cel: catHealth init:)
-		(music
+		(globalMusic
 			number: (if (== numVoices 1) sHardBattleIBM else sHardBattle)
 			loop: -1
 			play:
@@ -418,7 +418,7 @@
 			)
 			(2
 				(if (< catHealth 2)
-					(music
+					(globalMusic
 						number: (if (== numVoices 1) 138 else 38)
 						loop: 1
 						play:

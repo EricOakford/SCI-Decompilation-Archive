@@ -52,8 +52,6 @@
 )
 
 (instance messageScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 10))
@@ -66,8 +64,6 @@
 )
 
 (instance westGuardScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -83,8 +79,6 @@
 )
 
 (instance setDownFoodScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

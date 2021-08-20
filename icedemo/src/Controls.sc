@@ -74,8 +74,7 @@
 )
 
 (instance sitControlPanelScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= cycles 5))

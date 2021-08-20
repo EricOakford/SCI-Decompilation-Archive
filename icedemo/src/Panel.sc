@@ -53,7 +53,7 @@
 		(DisplayNumbers 167 77 90)
 		(DisplayNumbers 30 124 108)
 		(DisplayNumbers 30 157 108)
-		(if detailLevel
+		(if howFast
 			(scanPanelBlip init: setScript: scanLightsScript)
 		)
 		(mBut init:)

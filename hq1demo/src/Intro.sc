@@ -17,9 +17,9 @@
 (local
 	local0 =  2
 	preTextTime =  2
-	[local2 2] = [2 10]
+	local2 = [2 10]
 	cyclesBeforeShake2 =  10
-	[local5 4] = [3 3 3 2]
+	local5 = [3 3 3 2]
 	titleX =  160
 	titleY =  120
 	targState

@@ -99,8 +99,6 @@
 )
 
 (instance egosBubbleScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -241,8 +239,6 @@
 )
 
 (instance rayScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -301,8 +297,6 @@
 )
 
 (instance swimAround of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

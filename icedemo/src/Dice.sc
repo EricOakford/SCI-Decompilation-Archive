@@ -30,8 +30,7 @@
 )
 
 (instance rollDieScript_a of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -175,16 +174,14 @@
 )
 
 (instance reverseLT_a of Code
-	(properties)
-	
+
 	(method (doit param1 param2)
 		(return (> (param1 cel?) (param2 cel?)))
 	)
 )
 
 (instance diceCount_a of Code
-	(properties)
-	
+
 	(method (doit param1 param2)
 		(return (== (param1 cel?) (param2 cel?)))
 	)
@@ -239,7 +236,7 @@
 		(curRoom setScript: pickJohnnyDice)
 		(globalSound stop:)
 		(soundDice number: (SoundFX 76) init:)
-		(if (= detailLevel 2)
+		(if (= howFast fast)
 			(saltLArmP setScript: smokeCigar)
 			(saltEyes setScript: blinkerScript)
 			(johnnyLArmP setScript: johnTwitch)
@@ -275,8 +272,7 @@
 )
 
 (instance smokeCigar of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 50))
@@ -303,8 +299,7 @@
 )
 
 (instance johnTwitch of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles (Random 50 100)))
