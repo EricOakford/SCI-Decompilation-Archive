@@ -166,7 +166,7 @@
 				)
 			)
 			(3
-				(music number: 44 loop: 1 priority: 2 play:)
+				(theMusic number: 44 loop: 1 priority: 2 play:)
 				(guard
 					setLoop: (if (== (guard loop?) 2) 4 else 5)
 					cel: 255

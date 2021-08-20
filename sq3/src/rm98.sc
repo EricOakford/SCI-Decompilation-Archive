@@ -42,7 +42,7 @@
 	
 	(method (doit)
 		(if
-		(and (== (self state?) 3) (== (music prevSignal?) 10))
+		(and (== (self state?) 3) (== (theMusic prevSignal?) 10))
 			(self cue:)
 		)
 		(super doit:)

@@ -81,7 +81,7 @@
 			p_color vLGREEN
 		)
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon TRUE)
 		(self setScript: ElmoTalk)
 	)
 	

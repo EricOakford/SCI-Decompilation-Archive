@@ -22,7 +22,7 @@
 	(method (init &tmp [temp0 50])
 		(= showStyle HSHUTTER)
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon TRUE)
 		(TheMenuBar hide:)
 		(StatusLine disable:)
 		(Load VIEW 52)

@@ -102,7 +102,7 @@
 					(lp2 init:)
 					(lp3 init:)
 					(lp4 init:)
-					(music number: 69 loop: -1 play:)
+					(theMusic number: 69 loop: -1 play:)
 				)
 			)
 			(17
@@ -156,7 +156,7 @@
 					(lp3 init:)
 					(lp4 init:)
 					(SitDown)
-					(music number: 69 loop: -1 play:)
+					(theMusic number: 69 loop: -1 play:)
 				)
 			)
 			(20
@@ -173,7 +173,7 @@
 					((== shipLocation shipPESTULON_LAND) (wallA init: setLoop: 5 stopUpd:) (= thePlanet {Pestulon}))
 				)
 				(RedrawCast)
-				(music stop:)
+				(theMusic stop:)
 				(powerDown play:)
 				(= global208 0)
 				(ShakeScreen 10 3)
@@ -195,7 +195,7 @@
 					(lp3 init:)
 					(lp4 init:)
 					(SitDown)
-					(music number: 69 loop: -1 play:)
+					(theMusic number: 69 loop: -1 play:)
 				else
 					(SitDown)
 					(wallA init: setLoop: 4 setCel: 0)
@@ -206,7 +206,7 @@
 			(49
 				(wallA init: setLoop: 3 stopUpd:)
 				(StandUp)
-				(music fade:)
+				(theMusic fade:)
 				(= local1 1)
 				(= shipLocation shipPHLEEBHUT_LAND)
 				(= global206 0)
@@ -215,7 +215,7 @@
 			(62
 				(wallA init: setLoop: 2 stopUpd:)
 				(StandUp)
-				(music fade:)
+				(theMusic fade:)
 				(= local1 1)
 				(= shipLocation shipORTEGA_LAND)
 				(= global206 0)
@@ -224,7 +224,7 @@
 			(80
 				(wallA init: setLoop: 5 stopUpd:)
 				(StandUp)
-				(music fade:)
+				(theMusic fade:)
 				(= local1 1)
 				(= shipLocation shipPESTULON_LAND)
 				(= global206 0)
@@ -255,7 +255,7 @@
 			)
 		)
 		(if
-		(or (not (CheckItemOwner iReactor)) (not (CheckItemOwner iWire)))
+		(or (not (InRoom iReactor)) (not (InRoom iWire)))
 			(floorPanel init:)
 		)
 		(if
@@ -266,7 +266,7 @@
 			(HandsOn)
 		)
 		(= programControl FALSE)
-		(= global159 0)
+		(= inCartoon FALSE)
 	)
 	
 	(method (doit)
@@ -527,7 +527,7 @@
 								(cond 
 									((== global209 6) (Print 14 40))
 									((== sittingInCockpit FALSE) (cls) (curRoom newRoom: 16))
-									((and (CheckItemOwner iReactor) (CheckItemOwner iWire)) (cls) (curRoom newRoom: 17))
+									((and (InRoom iReactor) (InRoom iWire)) (cls) (curRoom newRoom: 17))
 									(else (Print 14 42))
 								)
 							)
@@ -611,7 +611,7 @@
 						)
 						(cond 
 							((== sittingInCockpit FALSE) (cls) (curRoom newRoom: 16))
-							((and (CheckItemOwner iReactor) (CheckItemOwner iWire)) (cls) (curRoom newRoom: 17))
+							((and (InRoom iReactor) (InRoom iWire)) (cls) (curRoom newRoom: 17))
 							(else (Print 14 42))
 						)
 					)
@@ -622,7 +622,7 @@
 						(cond 
 							((Said '/generator')
 								(cond 
-									((CheckItemOwner iReactor) (Print 14 73))
+									((InRoom iReactor) (Print 14 73))
 									((not (ego has: iReactor)) (DontHave))
 									((== sittingInCockpit FALSE) (self setScript: reactorScript))
 									(else (Print 14 74))
@@ -631,7 +631,7 @@
 							(
 							(or (Said '/cable') (Said '<cable') (Said 'cable<use'))
 								(cond 
-									((CheckItemOwner iWire) (Print 14 73))
+									((InRoom iWire) (Print 14 73))
 									((not (ego has: iWire)) (DontHave))
 									((== sittingInCockpit 0) (self setScript: wireScript))
 									(else (Print 14 74))
@@ -650,7 +650,7 @@
 					((Said 'get/generator')
 						(cond 
 							((ego has: iReactor) (Print 14 77))
-							((CheckItemOwner iReactor 14) (Print 14 78))
+							((InRoom iReactor 14) (Print 14 78))
 							(else (Print 14 79))
 						)
 					)
@@ -689,7 +689,7 @@
 			(DisposeScript 23)
 			(DisposeScript 24)
 		)
-		(if (== (music number?) 69) (music fade:))
+		(if (== (theMusic number?) 69) (theMusic fade:))
 		(super newRoom: newRoomNumber)
 	)
 )
@@ -705,7 +705,7 @@
 				(= cycles 15)
 			)
 			(1
-				(if (CheckItemOwner iReactor)
+				(if (InRoom iReactor)
 					(Print 14 86)
 					(= shipRepairLevel 4)
 					(floorPanel dispose:)
@@ -737,7 +737,7 @@
 				(= cycles 15)
 			)
 			(1
-				(if (CheckItemOwner iWire)
+				(if (InRoom iWire)
 					(Print 14 88)
 					(floorPanel dispose:)
 					(= shipRepairLevel 4)
@@ -823,7 +823,7 @@
 		(switch (= state newState)
 			(0
 				(= local0 (Print 14 90 #at -1 130 #width 280 #dispose))
-				(music fade:)
+				(theMusic fade:)
 				(= seconds 4)
 			)
 			(1

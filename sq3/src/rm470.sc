@@ -98,8 +98,8 @@
 		(mouth init:)
 		(balloon init: setCel: 3)
 		(if
-		(or (== (music state?) 0) (== (music number?) 22))
-			(music number: 13 priority: 3 loop: -1 play:)
+		(or (== (theMusic state?) 0) (== (theMusic number?) 22))
+			(theMusic number: 13 priority: 3 loop: -1 play:)
 		)
 		(= saveBits 0)
 		(self setScript: Howdy)
@@ -342,7 +342,7 @@
 			(1
 				(localproc_1788)
 				(RedrawCast)
-				(music fade:)
+				(theMusic fade:)
 				(curRoom newRoom: 43)
 			)
 		)

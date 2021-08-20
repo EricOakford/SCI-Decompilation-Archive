@@ -19,7 +19,7 @@
 	
 	(method (init &tmp [temp0 50])
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon TRUE)
 		(Load VIEW 194)
 		(Load VIEW 68)
 		(Load VIEW 210)
@@ -80,7 +80,7 @@
 				(ego show:)
 				(guard1 show:)
 				(guard2 show:)
-				(music number: 30 loop: -1 priority: 1 play:)
+				(theMusic number: 30 loop: -1 priority: 1 play:)
 				(= cycles 2)
 			)
 			(5

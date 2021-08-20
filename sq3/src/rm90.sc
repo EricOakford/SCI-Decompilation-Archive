@@ -253,7 +253,7 @@
 					(Timer setCycle: self 3)
 				else
 					(HandsOn)
-					(if (CheckItemOwner iCoveralls)
+					(if (InRoom iCoveralls)
 						(Print 90 35)
 					else
 						(Print 90 36)

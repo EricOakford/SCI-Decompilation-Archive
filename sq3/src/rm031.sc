@@ -25,7 +25,7 @@
 		(self picture: 31)
 		(= showStyle HSHUTTER)
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon TRUE)
 		(TheMenuBar hide:)
 		(StatusLine disable:)
 		(Load VIEW 54)
@@ -52,7 +52,7 @@
 			(0 (= cycles 5))
 			(1
 				(ship setMotion: MoveTo 164 110 self)
-				(music number: 9 play:)
+				(theMusic number: 9 play:)
 			)
 			(2
 				(ship
@@ -67,15 +67,15 @@
 				else
 					(= cycles 2)
 				)
-				(music stop:)
+				(theMusic stop:)
 			)
 			(4 (= seconds 2) (hit stop:))
 			(5
 				(if (not sawTerminator)
-					(music number: 10 play:)
+					(theMusic number: 10 play:)
 					(= seconds 3)
 				else
-					(music fade:)
+					(theMusic fade:)
 					(curRoom newRoom: 14)
 				)
 			)
@@ -127,7 +127,7 @@
 			(7
 				(termShip cel: 0 setLoop: 8 setCycle: EndLoop self)
 				(hit number: 80 play:)
-				(music stop:)
+				(theMusic stop:)
 			)
 			(8 (= seconds 2))
 			(9 (curRoom newRoom: 14))

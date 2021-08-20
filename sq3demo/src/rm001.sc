@@ -74,7 +74,11 @@
 				(StatusLine enable:)
 				(= saveBits
 					(Display
-						{It has been an indeterminate amount\nof time since Roger Wilco rocketed\naway from Vohaul's burning space\nfortress. Time stands still for our\nhero in suspended animation.}
+						{It has been an indeterminate amount\n
+						of time since Roger Wilco rocketed\n
+						away from Vohaul's burning space\n
+						fortress. Time stands still for our\n
+						hero in suspended animation.}
 						p_width 250
 						p_at 35 65
 						p_mode teJustCenter
@@ -94,7 +98,13 @@
 			(6
 				(= saveBits
 					(Display
-						{Its engines long spent, the small\nescape pod drifts aimlessly through\nunfamiliar star fields, its course\naltered many times by small asteroids\nand space debris. Inside, Roger lies\nundisturbed in his sleep chamber....\n...but not for long.}
+						{Its engines long spent, the small\n
+						escape pod drifts aimlessly through\n
+						unfamiliar star fields, its course\n
+						altered many times by small asteroids\n
+						and space debris. Inside, Roger lies\n
+						undisturbed in his sleep chamber....\n
+						...but not for long.}
 						p_width 250
 						p_at 35 65
 						p_mode teJustCenter
@@ -126,7 +136,10 @@
 				(Mark stopUpd:)
 				(= saveBits
 					(Display
-						{Meanwhile, the Two Guys From\nAndromeda are the victims of foul play.\nRuthlessly abducted, their fate may\nlie in Roger's hands. (Scary, isn't it?!)}
+						{Meanwhile, the Two Guys From\n
+						Andromeda are the victims of foul play.\n
+						Ruthlessly abducted, their fate may\n
+						lie in Roger's hands. (Scary, isn't it?!)}
 						p_width 250
 						p_at 35 90
 						p_mode teJustCenter
@@ -144,7 +157,7 @@
 				(= cycles 2)
 			)
 			(13
-				(music number: 2 play:)
+				(theMusic number: 2 play:)
 				(pod init: setMotion: MoveTo 129 97 self)
 			)
 			(14
@@ -231,7 +244,7 @@
 				(= seconds 12)
 			)
 			(33
-				(music stop:)
+				(theMusic stop:)
 				(curRoom newRoom: 2)
 			)
 		)

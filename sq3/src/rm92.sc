@@ -42,7 +42,7 @@
 		(nerd6 init:)
 		(nerd7 init:)
 		(nerd8 init:)
-		(if (CheckItemOwner iElmoPicture)
+		(if (InRoom iElmoPicture)
 			(Load VIEW 103)
 			(photoBoss init:)
 			(if (not scumSoftAlerted)
@@ -88,7 +88,7 @@
 							((Said '/original')
 								(cond 
 									(
-									(and (CheckItemOwner iElmoPicture) (ego inRect: 0 180 200 190)) (= temp0 1) (Print 92 1 #icon 103 0 1 #title {the Boss}))
+									(and (InRoom iElmoPicture) (ego inRect: 0 180 200 190)) (= temp0 1) (Print 92 1 #icon 103 0 1 #title {the Boss}))
 									((ego has: iElmoPicture) (= temp0 1) ((inventory at: 14) showSelf:))
 								)
 							)

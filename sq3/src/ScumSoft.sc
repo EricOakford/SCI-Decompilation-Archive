@@ -47,9 +47,9 @@
 		(jelloSound init:)
 		(vaporizeSound init:)
 		(if (not (== curRoomNum 93))
-			(music number: 102 loop: -1 play:)
+			(theMusic number: 102 loop: -1 play:)
 		else
-			(music stop:)
+			(theMusic stop:)
 		)
 		(announce state: scumSoftAnnouncement)
 		(if scumSoftAlerted
@@ -187,7 +187,7 @@
 				(myNerd setCel: (if (myNerd cel?) 0 else 3))
 				(if
 				(and (not (== curRoomNum 93)) (== 1 (Random 1 2)))
-					(music
+					(theMusic
 						number: (if (== 1 (Random 1 2)) 103 else 102)
 						play:
 					)
@@ -372,7 +372,7 @@
 				(ego setMotion: 0)
 				(= scriptClient (self client?))
 				(alertBalloon init:)
-				(music number: 84 loop: -1 play:)
+				(theMusic number: 84 loop: -1 play:)
 				(= local1 5)
 				(if (> (scriptClient loop?) 3)
 					(self cue:)
@@ -604,11 +604,11 @@
 				(HandsOff)
 				(= local2 1)
 				(= local3 0)
-				(music number: 46 loop: 1 play:)
+				(theMusic number: 46 loop: 1 play:)
 				(swoopDroid init:)
 			)
 			(1
-				(music number: 47 loop: -1 play:)
+				(theMusic number: 47 loop: -1 play:)
 				(shadowDroid init:)
 				(securityDroid init:)
 				(= local1 6)
@@ -678,7 +678,7 @@
 			(9
 				(securityDroid dispose:)
 				(shadowDroid dispose:)
-				(music number: 46 loop: 1 play:)
+				(theMusic number: 46 loop: 1 play:)
 				(= local2 -1)
 				(= local3 62)
 				(swoopDroid init:)
@@ -686,13 +686,13 @@
 			(10
 				(swoopDroid dispose:)
 				(if (not (== curRoomNum 93))
-					(music number: 102 loop: -1 play:)
+					(theMusic number: 102 loop: -1 play:)
 				)
 				(= scumSoftAlerted 0)
 				(Timer setReal: self 6)
 			)
 			(11
-				(music stop:)
+				(theMusic stop:)
 				(EgoDead 901 0 7 (if (ego has: iCoveralls) 9 else 15))
 			)
 		)

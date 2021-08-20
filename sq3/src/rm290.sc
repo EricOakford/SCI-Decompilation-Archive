@@ -219,7 +219,7 @@
 					(`#6
 						(event claimed: TRUE)
 						(= saveDisabled FALSE)
-						(= global159 0)
+						(= inCartoon 0)
 						(curRoom newRoom: 29)
 					)
 				)
@@ -233,7 +233,7 @@
 					(
 					(or (Said 'disembark,quit[/game,device]') (Said '/bye'))
 						(= saveDisabled FALSE)
-						(= global159 0)
+						(= inCartoon 0)
 						(curRoom newRoom: 29)
 					)
 					((Said 'beat,tilt/game,device') (Print 290 4))
@@ -253,7 +253,7 @@
 					)
 					(
 					(or (Said 'use/decoder,relic') (Said 'decode/letter'))
-						(= global159 1)
+						(= inCartoon 1)
 						(RedrawCast)
 						(if (ego has: iDecoderRing)
 							(if
@@ -272,7 +272,7 @@
 							)
 							(= local18 0)
 							(= saveDisabled 0)
-							(= global159 0)
+							(= inCartoon 0)
 							(self newRoom: 29)
 						else
 							(Print 290 11)
@@ -381,7 +381,7 @@
 					)
 					(event claimed: TRUE)
 					(= saveDisabled FALSE)
-					(= global159 0)
+					(= inCartoon FALSE)
 					(curRoom newRoom: 29)
 				)
 				(if
@@ -407,7 +407,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOn)
-				(= global159 0)
+				(= inCartoon FALSE)
 				(guysLeft dispose:)
 				(client drawPic: 291)
 				(Display 290 12
@@ -556,7 +556,7 @@
 					p_color vBLACK
 				)
 				(= local18 1)
-				(= global159 TRUE)
+				(= inCartoon TRUE)
 				(TheMenuBar draw: state: TRUE)
 				(User canInput: TRUE)
 				(= saveBits

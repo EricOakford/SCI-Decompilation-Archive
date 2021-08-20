@@ -671,7 +671,7 @@ code_019f:
 				(= cycles 2)
 			)
 			(3
-				(music number: 59 loop: -1 priority: 0 play:)
+				(theMusic number: 59 loop: -1 priority: 0 play:)
 				(responseScript changeState: 11)
 				(= global208 2)
 				(= programControl 0)
@@ -730,7 +730,7 @@ code_019f:
 				(if (and (== shipLocation 0) (== global207 2))
 					(curRoom setScript: StupidCrash)
 				)
-				(music stop:)
+				(theMusic stop:)
 				(powerDown play:)
 			)
 			(0

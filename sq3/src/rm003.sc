@@ -55,7 +55,7 @@
 		)
 		(if (or (== prevRoomNum 4) (== prevRoomNum 15))
 			(Load SOUND 11)
-			(music number: 11 loop: -1 play:)
+			(theMusic number: 11 loop: -1 play:)
 		)
 		(super init:)
 		(if (and (!= prevRoomNum 15) (!= prevRoomNum 4))
@@ -109,7 +109,7 @@
 							(
 								(and
 									climbedOutOfReactorRoom
-									(CheckItemOwner iLadder 15)
+									(InRoom iLadder 15)
 									(Said 'look/ladder')
 								)
 								(if (ego inRect: 22 149 66 175)
@@ -165,7 +165,7 @@
 						(or (ego has: iLadder) ((inventory at: iLadder) ownedBy: 8))
 							(if (ego inRect: 22 149 66 175)
 								(if (ego has: iLadder)
-									(SetItemOwner iLadder 15)
+									(PutInRoom iLadder 15)
 									(theGame changeScore: -10)
 									(Print 3 20)
 								else
@@ -183,7 +183,7 @@
 						(if climbedOutOfReactorRoom
 							(if (ego inRect: 22 149 66 175)
 								(if
-								(and (not (ego has: iLadder)) (not (CheckItemOwner iLadder 8)))
+								(and (not (ego has: iLadder)) (not (InRoom iLadder 8)))
 									(ego hide:)
 									(RedrawCast)
 									(curRoom newRoom: 15)
@@ -230,7 +230,7 @@
 	(method (newRoom newRoomNumber)
 		(if
 		(or (== newRoomNumber 15) (== newRoomNumber 4))
-			(music stop:)
+			(theMusic stop:)
 		)
 		(super newRoom: newRoomNumber)
 	)
@@ -285,7 +285,7 @@
 						(= motivatorState gGGGNorth)
 						(motivator init:)
 						(= roomWithMotivator curRoomNum)
-						(music number: 76 loop: 1 play:)
+						(theMusic number: 76 loop: 1 play:)
 						(theGame changeScore: -15)
 						(RedrawCast)
 						(Print 3 32)
@@ -300,7 +300,7 @@
 						(= roomWithMotivator 0)
 						(= motivatorState motivatorGRABBED)
 						(= grabberState 5)
-						(music number: 76 loop: 1 play:)
+						(theMusic number: 76 loop: 1 play:)
 						(theGame changeScore: 15)
 						(RedrawCast)
 						(Print 3 33)

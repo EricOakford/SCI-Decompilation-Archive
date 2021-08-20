@@ -65,14 +65,15 @@
 							(
 							(or (!= prevRoomNum 280) (not monolithBurgerBill)) (Print 25 1))
 							((>= buckazoids monolithBurgerBill)
-								(if
-								(not (= buckazoids (- buckazoids monolithBurgerBill)))
+								(if (not (-= buckazoids monolithBurgerBill))
 									(ego put: iBuckazoids -1)
 								)
 								(= global247 1)
 								(= monolithBurgerBill 0)
 								(= global248 1)
-								(if mealHasDecoderRing (theGame changeScore: 10))
+								(if mealHasDecoderRing
+									(theGame changeScore: 10)
+								)
 								(= saveDisabled FALSE)
 								(curRoom setScript: LeaveRoom)
 							)

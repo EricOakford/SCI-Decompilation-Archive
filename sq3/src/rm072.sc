@@ -36,9 +36,9 @@
 				)
 				(RedrawCast)
 				(if forceBeamDestroyed
-					(music number: 71 loop: -1 priority: 0 play:)
+					(theMusic number: 71 loop: -1 priority: 0 play:)
 				else
-					(music number: 51 loop: -1 priority: 0 play:)
+					(theMusic number: 51 loop: -1 priority: 0 play:)
 				)
 				(Print 72 0)
 			)

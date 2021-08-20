@@ -20,7 +20,7 @@
 	
 	(method (init &tmp [temp0 50])
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon 1)
 		(Load VIEW 759)
 		(= global207 1)
 		(super init:)
@@ -30,7 +30,7 @@
 	(method (doit)
 		(if (and (== global220 1) (== script 0))
 			(Print 20 0)
-			(= global159 0)
+			(= inCartoon 0)
 			(curRoom newRoom: 17)
 		)
 		(super doit:)
@@ -79,7 +79,7 @@
 					(theGame changeScore: 25)
 					(= shipLocation shipSPACE)
 					(= global206 3)
-					(= global159 0)
+					(= inCartoon 0)
 					(curRoom newRoom: 14)
 				else
 					(Print 20 3 #at -1 130 #width 280)

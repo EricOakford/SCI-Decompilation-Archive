@@ -20,7 +20,7 @@
 		(Load VIEW 63)
 		(Load SOUND 17)
 		(super init:)
-		(music number: 17 loop: -1 play:)
+		(theMusic number: 17 loop: -1 play:)
 		(self setScript: rmScript)
 	)
 	

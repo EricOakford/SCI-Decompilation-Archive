@@ -8,22 +8,18 @@
 
 
 (class TheMenuBar of MenuBar
-	(properties
-		state $0000
-	)
 	
 	(method (init)
-		(AddMenu { \01_} {About game`^a :Help`#1 :VaporCalc`^c_})
-		(AddMenu
-			{ File_}
+		(AddMenu { \01_}
+			{About game`^a :Help`#1 :VaporCalc`^c_}
+		)
+		(AddMenu { File_}
 			{Save Game`#5 :Restore Game`#7 :--! :Restart Game`#9 :Quit`^q_}
 		)
-		(AddMenu
-			{ Action_}
+		(AddMenu { Action_}
 			{Pause Game`^p :Inventory`^I :Retype`#3 :--! :Boss Key`^b_}
 		)
-		(AddMenu
-			{ Speed_}
+		(AddMenu { Speed_}
 			{Change...`^s :--! :Faster`+ :Normal`= :Slower`-_}
 		)
 		(AddMenu { Sound_} {Volume...`^v :Sound Off`#2=1_})
@@ -49,18 +45,28 @@
 					#title {Space Quest \0B}
 				)
 			)
-			(helpI (Print MENU 1 #font 3))
+			(helpI
+				(Print MENU 1
+					#font 3
+				)
+			)
 			(vaporCalcI
 				(if (or (== curRoomNum 900) (== curRoomNum 1))
 					(event claimed: FALSE)
 				else
-					(= vaporCalcOn TRUE)
+					(= vaporCalcCued TRUE)
 				)
 			)
 			(saveI
-				(if saveDisabled (Print MENU 2) else (theGame save:))
+				(if saveDisabled
+					(Print MENU 2)
+				else
+					(theGame save:)
+				)
 			)
-			(restoreI (theGame restore:))
+			(restoreI
+				(theGame restore:)
+			)
 			(restartI
 				(if
 					(Print MENU 3
@@ -98,37 +104,45 @@
 				)
 				(DoSound PauseSound oldPause)
 			)
-			(invI (inventory showSelf: ego))
+			(invI
+				(inventory showSelf: ego)
+			)
 			(repeatI
 				(event claimed: FALSE type: keyDown message: (User echo?))
 			)
 			(bossI
 				(Print MENU 6)
 				(Print
-					(Format
-						@str
+					(Format @str
 						{In fact, you don't want your boss to know that you've been playing Space Quest ]I[ for %d hours, %d minutes and %d seconds.}
-						gameHours
-						gameMinutes
-						gameSeconds
+						gameHours gameMinutes gameSeconds
 					)
 				)
 				(Print MENU 7)
 			)
 			(speedI
-				(if
-				(!= (= i (GetNumber {Speed (1 - 16)?} speed)) -1)
-					(if (< i 1) (= i 1))
-					(if (> i 16) (= i 16))
+				(if (!= (= i (GetNumber {Speed (1 - 16)?} speed)) -1)
+					(if (< i 1)
+						(= i 1)
+					)
+					(if (> i 16)
+						(= i 16)
+					)
 					(theGame setSpeed: i)
 				)
 			)
 			(fasterI
-				(if (> speed 1) (theGame setSpeed: (-- speed)))
+				(if (> speed 1)
+					(theGame setSpeed: (-- speed))
+				)
 			)
-			(normalI (theGame setSpeed: 5))
+			(normalI
+				(theGame setSpeed: 5)
+			)
 			(slowerI
-				(if (< speed 16) (theGame setSpeed: (++ speed)))
+				(if (< speed 16)
+					(theGame setSpeed: (++ speed))
+				)
 			)
 			(volumeI
 				(if
@@ -138,8 +152,12 @@
 						)
 						-1
 					)
-					(if (< (-- i) 0) (= i 0))
-					(if (> i 15) (= i 15))
+					(if (< (-- i) 0)
+						(= i 0)
+					)
+					(if (> i 15)
+						(= i 15)
+					)
 					(DoSound ChangeVolume i)
 				)
 			)

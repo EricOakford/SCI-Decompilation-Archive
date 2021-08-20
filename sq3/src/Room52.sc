@@ -70,7 +70,7 @@
 				stopUpd:
 			)
 		)
-		(if (CheckItemOwner iInvisibilityBelt 52)
+		(if (InRoom iInvisibilityBelt 52)
 			((= theBelt (View new:))
 				view: 120
 				loop: 5
@@ -425,7 +425,7 @@
 										(Format @invStr 52 0
 											(if
 												(and
-													(CheckItemOwner iInvisibilityBelt 52)
+													(InRoom iInvisibilityBelt 52)
 													(< (ego distanceTo: terminatorRemains) 60)
 													(== global104 0)
 												)
@@ -467,7 +467,7 @@
 							)
 							(cond 
 								((ego has: iInvisibilityBelt) (Print 52 11))
-								((not (CheckItemOwner iInvisibilityBelt 52)) (Print 52 2))
+								((not (InRoom iInvisibilityBelt 52)) (Print 52 2))
 								((not (ego has: iOratOnAStick)) (Print 52 12))
 								((!= terminatorState terminatorDEAD) (Print 52 13))
 								(
@@ -483,7 +483,7 @@
 						((or (Said 'get/belt/pole') (Said 'use/pole'))
 							(cond 
 								((ego has: iMetalPole) (Print 52 11))
-								((not (CheckItemOwner iInvisibilityBelt 52)) (Print 52 2))
+								((not (InRoom iInvisibilityBelt 52)) (Print 52 2))
 								((not (ego has: iMetalPole)) (Print 52 12))
 								((!= terminatorState terminatorDEAD) (Print 52 13))
 								(
@@ -497,7 +497,7 @@
 							)
 						)
 						((Said 'get/belt')
-							(if (CheckItemOwner iInvisibilityBelt 52)
+							(if (InRoom iInvisibilityBelt 52)
 								(Print 52 15)
 							else
 								(Print 52 2)
@@ -686,7 +686,7 @@
 				)
 				(= terminatorState terminatorDEAD)
 				(= roomWithDeadTerminator 52)
-				(SetItemOwner iInvisibilityBelt 52)
+				(PutInRoom iInvisibilityBelt 52)
 				(curRoom setScript: 0)
 			)
 		)

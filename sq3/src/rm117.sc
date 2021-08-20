@@ -44,7 +44,7 @@
 	(method (init)
 		(= showStyle HSHUTTER)
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon TRUE)
 		(TheMenuBar state: TRUE draw:)
 		(StatusLine enable:)
 		(Load VIEW 54)
@@ -72,7 +72,7 @@
 						p_save
 					)
 				)
-				(music number: 81 loop: -1 play:)
+				(theMusic number: 81 loop: -1 play:)
 				(= cycles 2)
 			)
 			(1

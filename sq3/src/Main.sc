@@ -29,77 +29,63 @@
 	RedrawCast 10
 	proc0_11 11
 	cls 12
-	CheckItemOwner 13
-	SetItemOwner 14
+	InRoom 13
+	PutInRoom 14
 	IsObjectOnControl 15
 	proc0_16 16
 	EgoDead 17
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	volume =  12
-	version =  {Space Quest \0B}
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	demoScripts
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
+	ego									;pointer to ego
+	theGame								;ID of the Game instance
+	curRoom								;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	volume		=		12				;sound volume
+	version		=		{x.yyy.zzz}		;pointer to 'incver' version string			
+	locales								;set of current locales
+	[curSaveDir 20]						;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	useSortedFeatures					;enable cast & feature sorting?
+	demoScripts							;add to curRoomNum to find room demo script
+	egoBlindSpot						;used by sortCopy to exclude
+										;actors behind ego within angle 
+										;from straight behind. 
+										;Default zero is no blind spot
+	overlays	=		-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
+	demoDialogTime	=	3				;how long Prints stay up in demo mode
 	currentPalette
 	modelessPort
+	;globals 63-99 are unused
 		global63
 		global64
 		global65
@@ -136,68 +122,70 @@
 		global96
 		global97
 		global98
-		lastSysGlobal
-	programControl
-	orderedBigBelcherCombo
-	global102
-	haggledWithFester
-	global104
-	egoInvisible
+	lastSysGlobal
+	;globals 100 and above are for game use
+	programControl			;if TRUE, don't allow player control
+	orderedBigBelcherCombo	;ego ordered Big Belcher Combo, and he'll throw up afterwards
+	global102				;used in Aluminum Mallard
+	haggledWithFester		;ego haggled with Fester Blatz over the gem
+	global104				;used in Phleebhut
+	egoInvisible			;if TRUE, ego is invisible thanks to the belt
 	gPEventMessage
 	gGEgoX_5
 	gGEgoY_4
 	global109
-	terminatorState
-	terminator
+	terminatorState			;current state of the Terminator
+	terminator				;pointer for Terminator object
 	gGEgoX_4
 	gGEgoY_3
-	notifyCountdown
-	global115
-	global116
-	roomWithDeadTerminator
-	visitedPhleebhut
-	sawScorpion
-	beltState
-	beltTimer =  1000
-	pestulonGuardState
-	machineSpeed
-	howFast
-	startingRoom
-	wearingBelt
-	terminatorRemains
-	theBelt
-	foundScumSoft
-	wearingChickenHat
-	ratStoleReactor
-	global132
-	climbedOutOfReactorRoom
-	global134
-	motivatorState =  motivatorONFLOOR
-	shipRepairLevel	;when this is at 4, the Aluminum Mallard is ready to go.
-	global137
-	global138
-	global139
-	global140
-	global141
-	global142
-	global143
-	global144
-	global145
-	global146
-	gGGGNorth
-	grabberState
-	roomWithMotivator =  2
-	searchedPilotSeat
-	sawTerminator
-	visitedPhleebhutStore
-	music
-	buckazoids
-	isHandsOff
-	global156
-	global157
-	enterpriseLeftMonolithBurger
-	global159 =  1
-	grabberRect
+	notifyCountdown			;time before notification
+	global115				;unused
+	global116				;unused
+	roomWithDeadTerminator	;room where the Terminator was killed
+	visitedPhleebhut		;been on Phleebhut
+	sawScorpion				;saw the scorpion on Phleebhut
+	beltState				;current state of the invisibility belt
+	beltTimer =  1000		;time left of the invisibility belt
+	pestulonGuardState		;current state of the Pestulon guards
+	machineSpeed			;used by the speed tester to test how fast the system is
+							; and used in determining game speed. (used in conjunction with howFast)
+	howFast					;machine speed level (0 = slow, 1 = medium, 2 = fast)
+	startingRoom			;room to start the game in
+	wearingBelt				;ego is wearing the invisibility belt
+	terminatorRemains		;pointer for Terminator remains
+	theBelt					;pointer for invisibility belt object
+	foundScumSoft			;ego found ScumSoft on Pestulon
+	wearingChickenHat		;ego is wearing the Astro-Chicken hat
+	ratStoleReactor			;the rat stole back the reactor. He won't do this again.
+	global132				;? used for grabber
+	climbedOutOfReactorRoom	;made it out of the reactor room. You can re-enter.
+	global134				;related to getting the ladder, but is never set
+	motivatorState	=	motivatorONFLOOR	;current state of warp drive motivator
+	shipRepairLevel							;when this is at 4, the Aluminum Mallard is ready to go.
+	global137				;unused
+	global138				;unused
+	global139				;unused
+	global140				;unused
+	global141				;unused
+	global142				;unused
+	global143				;unused
+	global144				;unused
+	global145				;unused
+	global146				;unused
+	gGGGNorth				;related to the warp drive motivator and grabber
+	grabberState			;current state of the grabber
+	roomWithMotivator =  2	;current room with warp drive motivator
+	searchedPilotSeat		;searched the pilot's seat, got buckazoids
+	sawTerminator			;saw the Terminator in Phleebhut
+	visitedPhleebhutStore	;visited Fester Blatz's store
+	theMusic				;pointer for music object
+	buckazoids				;number of buckazoids in hand
+	isHandsOff				;ego can't be controlled
+	global156				;unused
+	global157				;checked in room 6, but is never set
+	enterpriseLeftMonolithBurger	;The U.S.S. Enterprise left Monolith Burger
+	inCartoon =  TRUE		;if TRUE, the game is running a cutscene
+	grabberRect				;rectangle of grabber
 	global161
 	gGEgoY_5
 	global163
@@ -206,43 +194,43 @@
 	global166
 	global167
 	global168
-	examinedMallard
-	decodedMessage
-	fryToDeathTimer
-	rockSankInLava
-	global173
-	shipShieldHealth =  12
+	examinedMallard			;examined the Aluminum Mallard
+	decodedMessage			;decoded the secret message in Astro Chicken
+	fryToDeathTimer			;time before dying on Ortega
+	rockSankInLava			;the rock has sunk into the lava
+	global173				;unused
+	shipShieldHealth =  12	;amount of health the Mallard's shields have
 	global175
 	global176
 	global177
-	twoGuysOnBoard
+	twoGuysOnBoard			;saved the Two Guys, and now they're on board
 	global179
-	fallingIntoLava
+	fallingIntoLava			;ego is falling into the lava
 	global181
-	wearingUnderwear
-	steppedOnUnstableRock
-	ortegaEarthquakeWarning
-	badWordCount
-	motivatorKnown
-	global187
-	certainDeath
-	teleportRoom
-	deathView
-	deathLoop
-	deathCel
-	saveDisabled
-	ladderOnGround
-	global195
-	global196
-	dead
-	thisTime
-	oldSysTime
-	debugging
-	grabberX
-	grabberY
-	sittingInCockpit
-	global204
-	shieldActivated
+	wearingUnderwear		;ego is wearing the ThermoWeave shorts, and won't burn
+	steppedOnUnstableRock	;ego stepped on the unstable rock
+	ortegaEarthquakeWarning	;warned of Ortega earthquake
+	badWordCount			;times said profanity in parser
+	motivatorKnown			;ego knows the ship needs a warp drive motivator
+	global187				;unused
+	certainDeath			;message to play when ego dies
+	teleportRoom			;room to teleport to in debug
+	deathView				;death icon view
+	deathLoop				;death icon loop
+	deathCel				;death icon cel
+	saveDisabled			;if TRUE, can't save
+	ladderOnGround			;ladder fell on the ground
+	global195				;unused
+	global196				;unused
+	dead					;if TRUE, bring up death message
+	thisTime				;current system time
+	oldSysTime				;previous system time
+	debugging				;debug enabled
+	grabberX				;x coord of grabber
+	grabberY				;y coord of grabber
+	sittingInCockpit		;ego is sitting in the pilot's seat
+	global204				;unused
+	shieldActivated			;if TRUE< the ship's shield is on
 	global206
 	global207
 	global208
@@ -263,40 +251,40 @@
 	global223
 	global224
 	global225
-	gameSeconds
-	gameMinutes
-	gameHours
-	global229
-	oldCursor
-	enteredMallard
-	elmoAtDesk
-	scumSoftAlerted
-	global234
-	global235
-	shadowDroidX
-	shadowDroidY
-	bridgeExtended
-	enteredConveyorBucket
-	global240
-	jumpedOntoRailing
-	scumSoftAnnouncement
+	gameSeconds				;elapsed seconds
+	gameMinutes				;elapsed minutes
+	gameHours				;elapsed hour
+	global229				;unused
+	oldCursor				;saved cursor
+	enteredMallard			;has entered the Aluminum Mallard
+	elmoAtDesk				;Elmo is at his desk
+	scumSoftAlerted			;ScumSoft has been alerted to an intruder
+	global234				;unused
+	global235				;unused
+	shadowDroidX			;x coord of droid shadow
+	shadowDroidY			;y coord of droid shadow
+	bridgeExtended			;bridge has been extended
+	enteredConveyorBucket	;ego entered the conveyor bucket
+	global240				;unused
+	jumpedOntoRailing		;ego grabbed the railing
+	scumSoftAnnouncement	;ScumSoft made its announcement
 	global243
-	monolithBurgerBill
+	monolithBurgerBill		;total owed for Monolith Burger order
 	gGEgoX_3
 	gGEgoY_2
 	global247
 	global248
-	mealHasDecoderRing
+	mealHasDecoderRing		;does the meal have a decoder ring?
 	global250
-	vaporCalcOn
-	vaporCalcOnScreen
-	ortegaWorkersLeft
-	lookedAtForceBeam
+	vaporCalcCued			;VaporCalc cued to appear
+	calcOn		;VaporCalc is on screen
+	ortegaWorkersLeft		;Ortega workers have left the planet
+	lookedAtForceBeam		;ego saw the force beam
 	global255
-	forceBeamDestroyed
-	shakeTimer
+	forceBeamDestroyed		;Force beam has been destroyed. Pestulon can now be visited.
+	shakeTimer				;time between screen shakes
 	global258
-	deathMessage
+	deathMessage			;buffer for death message
 		global260
 		global261
 		global262
@@ -357,7 +345,7 @@
 		global317
 		global318
 		global319
-	deathTitle
+	deathTitle			;buffer for death title			
 		global321
 		global322
 		global323
@@ -388,7 +376,7 @@
 		global348
 		global349
 		global350
-	theInvItem
+	theInvItem			;current inventory item
 	global352
 	global353
 	global354
@@ -626,25 +614,28 @@
 	global586
 	global587
 	global588
-	astroChickenPlays
-	astroChickenScore
+	astroChickenPlays	;number of times you played Astro Chicken
+	astroChickenScore	;top score on Astro Chicken
 	global591
 	global592
 	ortegaPostBeamRooms	;number of room transitions after Ortega's force beam is destroyed.
 						; if you take too long to leave the planet, you'll be killed by the earthquakes.
 	global594
-	global595	;appears to be unused
+	global595			;appears to be unused
 	climbedDownBattlebot
 	enteredScumSoftHQ
-	numColors
-	global599	;appears to be unused
+	numColors			;number of colors supported by driver
+	global599			;appears to be unused
 	thePostcard
 	mallardRisenFromDebris
 )
 (procedure (NormalEgo theLoop theView)
+	;normalizes ego's animation
 	(if (> argc 0)
 		(ego loop: theLoop)
-		(if (> argc 1) (ego view: theView))
+		(if (> argc 1)
+			(ego view: theView)
+		)
 	)
 	(ego
 		setLoop: -1
@@ -656,22 +647,25 @@
 		illegalBits: cWHITE
 		cycleSpeed: 0
 		moveSpeed: 0
-		ignoreActors: 0
+		ignoreActors: FALSE
 	)
 )
 
 (procedure (HandsOff)
+	;Disable ego control
 	(User canControl: FALSE canInput: FALSE)
 	(ego setMotion: 0)
 	(= isHandsOff TRUE)
 )
 
 (procedure (HandsOn)
+	;Enable ego control
 	(User canControl: TRUE canInput: TRUE)
 	(= isHandsOff FALSE)
 )
 
 (procedure (HaveMem howMuch)
+	;check how much heap is available
 	(return (> (MemoryInfo FreeHeap) howMuch))
 )
 
@@ -696,18 +690,23 @@
 )
 
 (procedure (RedrawCast)
+	;re-animate the cast without cycling
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_11 param1 param2)
-	(param1 loop: param2 changeState:)
+(procedure (proc0_11 theObj theLoop)
+	;not sure, never used, but it seems to change an object's loop and state
+	(theObj loop: theLoop changeState:)
 )
 
 (procedure (cls)
-	(if modelessDialog (modelessDialog dispose:))
+	;Clear modeless dialog from the screen
+	(if modelessDialog
+		(modelessDialog dispose:)
+	)
 )
 
-(procedure (CheckItemOwner item owner)
+(procedure (InRoom item owner)
 	(return
 		(==
 			((inventory at: item) owner?)
@@ -716,14 +715,17 @@
 	)
 )
 
-(procedure (SetItemOwner item owner)
+(procedure (PutInRoom item owner)
 	((inventory at: item)
 		owner: (if (== argc 1) curRoomNum else owner)
 	)
 )
 
 (procedure (IsObjectOnControl obj event)
-	(if (< argc 2) (= event 5))
+	;check if an object is on a specific control
+	(if (< argc 2)
+		(= event (| keyDown mouseDown))
+	)
 	(OnControl
 		(- (obj x?) event)
 		(- (obj y?) event)
@@ -733,9 +735,11 @@
 )
 
 (procedure (proc0_16)
+	;Dummy proc?
 )
 
 (procedure (EgoDead theView theLoop theCel theDeath)
+	;ego dies
 	(HandsOff)
 	(= dead TRUE)
 	(if (not theView)
@@ -749,8 +753,7 @@
 )
 
 (instance statusCode of Code
-	(properties)
-	
+	;draw the status line
 	(method (doit strg)
 		(Format strg 0 0
 			score possibleScore 0 1
@@ -771,15 +774,13 @@
 	)
 )
 
-(instance logFile of File
-	(properties)
-)
+(instance logFile of File)
 
 (instance SQ3 of Game
-	(properties)
 	
 	(method (init &tmp versionFile)
 		(super init:)
+		;set up the game's objects and globals
 		(= numColors (Graph GDetect))
 		(= version {0.000.001})
 		(= versionFile (FOpen {version} 1))
@@ -787,8 +788,8 @@
 		(FClose versionFile)
 		(= saveDisabled TRUE)
 		(longSong owner: self init:)
-		(= music longSong)
-		(User blocks: 0 canControl: 0 x: -1 y: 160)
+		(= theMusic longSong)
+		(User blocks: 0 canControl: FALSE x: -1 y: 160)
 		(= ego egoObj)
 		(User alterEgo: ego)
 		(StatusLine code: statusCode)
@@ -800,6 +801,7 @@
 		(ScriptID SORTCOPY)
 		(= possibleScore 738)
 		(= userFont 300)
+		;set up the inventory
 		(inventory
 			add:
 				Glowing_Gem
@@ -833,7 +835,7 @@
 		)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp haveMouse)
 		;EO: this is a recreation, based on the decompiled doit: for Astro Chicken
 		(if
 			(and
@@ -841,27 +843,35 @@
 				(!= curRoomNum 1)
 				(!= curRoomNum 155)
 			)
-			(= temp0 (HaveMouse))
+			(= haveMouse (HaveMouse))
 			(if (not global592)
 				(cond 
-					(global159 (= oldCursor 69))
-					((== (User controls?) FALSE) (= temp0 1) (= oldCursor waitCursor))
-					(else (= oldCursor normalCursor))
+					(inCartoon
+						(= oldCursor 69)
+					)
+					((== (User controls?) FALSE)
+						(= haveMouse TRUE)
+						(= oldCursor waitCursor)
+					)
+					(else
+						(= oldCursor normalCursor)
+					)
 				)
 				(if (!= theCursor oldCursor)
-					(self setCursor: oldCursor temp0)
+					(self setCursor: oldCursor haveMouse)
 				)
 			)
 		)
-		(if (== vaporCalcOn TRUE)
-			(= vaporCalcOn FALSE)
-			(= vaporCalcOnScreen TRUE)
+		(if (== vaporCalcCued TRUE)
+			(= vaporCalcCued FALSE)
+			(= calcOn TRUE)
 			(calc init:)
 		)
 
+		;if ego died, bring up the death handler
 		(if dead
-			(= global159 0)
-			(music
+			(= inCartoon FALSE)
+			(theMusic
 				number: (Random 23 24)
 				loop: 1
 				priority: 500
@@ -965,9 +975,10 @@
 		else	;end of deaths
 			(= global219 0)
 			(= global223 0)
+			;let the game's clock tick
 			(if (!= (= thisTime (GetTime SYSTIME1)) oldSysTime)
 				(= oldSysTime thisTime)
-				(= gameSeconds (+ gameSeconds 1))
+				(+= gameSeconds 1)
 				(= global219 1)
 				(if (>= gameSeconds 60)
 					(++ gameMinutes)
@@ -994,6 +1005,7 @@
 	)
 	
 	(method (startRoom roomNum)
+		;clean up after a room change
 		(LoadMany FALSE
 			RELDPATH TIMER GROOPER RFEATURE QSCRIPT DPATH SMOOPER COUNT 952
 			FOLLOW STOPWALK DCICON WANDER MOUSER LASTLINK QSOUND SORT CAT GOTOSAID FORCOUNT
@@ -1004,6 +1016,7 @@
 			(= debugOn FALSE)
 			(SetDebug)
 		)
+		;if memory is fragmented, bring up a warning and the internal debugger
 		(if
 			(and
 				(u> (MemoryInfo FreeHeap) (+ 20 (MemoryInfo LargestPtr)))
@@ -1020,9 +1033,9 @@
 	(method (handleEvent event &tmp item saveBits evt temp3 nextRoom evtX evtY evtMod temp8 [str 50])
 		(if (event claimed?) (return))
 		(super handleEvent: event)
-		(if (== vaporCalcOnScreen TRUE)
+		(if (== calcOn TRUE)
 			(event claimed: TRUE)
-			(= vaporCalcOnScreen FALSE)
+			(= calcOn FALSE)
 			(calc dispose:)
 		)
 		(switch (event type?)
@@ -1033,15 +1046,15 @@
 							(event claimed: FALSE)
 						else
 							(User canControl: TRUE)
-							(= programControl 0)
+							(= programControl FALSE)
 							(if
 								(and
 									(!= (= nextRoom (GetNumber {Teleport to:})) 1)
 									(!= nextRoom 900)
 									(!= nextRoom 155)
 								)
-								(music stop:)
-								(= global159 0)
+								(theMusic stop:)
+								(= inCartoon FALSE)
 								(= oldCursor normalCursor)
 								(theGame setCursor: normalCursor (HaveMouse))
 							)
@@ -1050,8 +1063,13 @@
 							(curRoom newRoom: nextRoom)
 						)
 					)
-					((Said 'pump,backstage/shark,pass') (Print 0 3) (= debugging TRUE))
-					((Said 'wait') (Print 0 4))
+					((Said 'pump,backstage/shark,pass')
+						(Print 0 3)
+						(= debugging TRUE)
+					)
+					((Said 'wait')
+						(Print 0 4)
+					)
 					((or (Said 'wear/belt') (Said 'drop<on/belt'))
 						(if (ego has: iInvisibilityBelt)
 							(if (not wearingBelt)
@@ -1072,17 +1090,31 @@
 							(Said 'switch<on/belt')
 						)
 						(cond 
-							((not (ego has: iInvisibilityBelt)) (DontHave))
-							((not wearingBelt) (Print 0 7))
-							((== beltState beltDEPLETED) (Print 0 8))
-							(else (Print 0 9))
+							((not (ego has: iInvisibilityBelt))
+								(DontHave)
+							)
+							((not wearingBelt)
+								(Print 0 7)
+							)
+							((== beltState beltDEPLETED)
+								(Print 0 8)
+							)
+							(else
+								(Print 0 9)
+							)
 						)
 					)
 					((Said 'wear,(drop<on)/panties')
 						(cond 
-							((not (ego has: iThermoUnderwear)) (DontHave))
-							(wearingUnderwear (Print 0 10))
-							(else (Print 0 11))
+							((not (ego has: iThermoUnderwear))
+								(DontHave)
+							)
+							(wearingUnderwear
+								(Print 0 10)
+							)
+							(else
+								(Print 0 11)
+							)
 						)
 					)
 					((Said 'wear,(drop<on)/decoder')
@@ -1101,13 +1133,31 @@
 						)
 						(Print 0 13)
 					)
-					((Said 'wear/cap') (if (ego has: iChickenHat) (Print 0 14) else (DontHave)))
-					((Said 'look/anemometer') (if (ego has: iMetalPole) (Print 0 15) else (DontHave)))
+					((Said 'wear/cap')
+						(if (ego has: iChickenHat)
+							(Print 0 14)
+						else
+							(DontHave)
+						)
+					)
+					((Said 'look/anemometer')
+						(if (ego has: iMetalPole)
+							(Print 0 15)
+						else
+							(DontHave)
+						)
+					)
 					((Said 'look/belt')
 						(cond 
-							((not (ego has: iInvisibilityBelt)) (DontHave))
-							((!= beltState beltDEPLETED) (Print 0 16))
-							(else (Print 0 17))
+							((not (ego has: iInvisibilityBelt))
+								(DontHave)
+							)
+							((!= beltState beltDEPLETED)
+								(Print 0 16)
+							)
+							(else
+								(Print 0 17)
+							)
 						)
 					)
 					(
@@ -1121,7 +1171,9 @@
 							(Print 0 18)
 						)
 					)
-					((Said 'eat,drop,use') (Print 0 19))
+					((Said 'eat,drop,use')
+						(Print 0 19)
+					)
 					((Said 'get')
 						(cond 
 							(
@@ -1131,15 +1183,29 @@
 								)
 								(Print 0 20)
 							)
-							((item ownedBy: ego) (Print 0 21))
-							(else (event claimed: FALSE))
+							((item ownedBy: ego)
+								(Print 0 21)
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
-					((Said 'smell') (Print 0 22))
-					((Said 'throw') (Print 0 23))
-					((Said 'press') (Print 0 24))
-					((Said 'jump') (Print 0 25))
-					((Said 'jog') (Print 0 26))
+					((Said 'smell')
+						(Print 0 22)
+					)
+					((Said 'throw')
+						(Print 0 23)
+					)
+					((Said 'press')
+						(Print 0 24)
+					)
+					((Said 'jump')
+						(Print 0 25)
+					)
+					((Said 'jog')
+						(Print 0 26)
+					)
 					((Said 'ass')
 						(if (> (++ badWordCount) 25)
 							(Print 0 27)
@@ -1147,17 +1213,18 @@
 							(Print 0 28)
 						)
 					)
-					(
-					(or (Said 'inventory') (Said 'look,get/inventory')) (inventory showSelf: ego))
+					((or (Said 'inventory') (Said 'look,get/inventory'))
+						(inventory showSelf: ego)
+					)
 				)
 			)
 			(mouseDown
+				;debug code
 				(if debugging
 					(= evtX (event x?))
 					(= evtY (event y?))
 					(cond 
-						(
-						(== (= evtMod (event modifiers?)) 10)
+						((== (= evtMod (event modifiers?)) 10)
 							(event claimed: TRUE)
 							((User alterEgo?) setMotion: JumpTo evtX evtY)
 						)
@@ -1169,15 +1236,23 @@
 									#at
 									(cond 
 										((< evtX 20) evtX)
-										((< 300 evtX) (- evtX 40))
-										(else (- evtX 20))
+										((< 300 evtX)
+											(- evtX 40)
+										)
+										(else
+											(- evtX 20)
+										)
 									)
-									(if (< evtY 16) evtY else (- evtY 6))
+									(if (< evtY 16)
+										evtY
+									else
+										(- evtY 6)
+									)
 									#font 999
 									#dispose
 								)
 							)
-							(while (!= 2 ((= evt (Event new:)) type?))
+							(while (!= mouseUp ((= evt (Event new:)) type?))
 								(evt dispose:)
 							)
 							(saveBits dispose:)
@@ -1185,7 +1260,7 @@
 						)
 						((& evtMod ctrlDown)
 							(event claimed: TRUE)
-							(while (!= 2 ((= evt (Event new:)) type?))
+							(while (!= mouseUp ((= evt (Event new:)) type?))
 								((User alterEgo?)
 									posn: (evt x?) (- (evt y?) 10)
 									setMotion: 0
@@ -1195,11 +1270,15 @@
 							)
 							(evt dispose:)
 						)
-						((& evtMod altDown) (event claimed: TRUE) ((User alterEgo?) showSelf:))
+						((& evtMod altDown)
+							(event claimed: TRUE)
+							((User alterEgo?) showSelf:)
+						)
 					)
 				)
 			)
 			(keyDown
+				;more debugging code
 				(if (not debugging) (return))
 				(switch (event message?)
 					(`@l
@@ -1212,12 +1291,14 @@
 						)
 					)
 					(`@z
-						(if debugging (event claimed: TRUE) (= quit TRUE))
+						(if debugging
+							(event claimed: TRUE)
+							(= quit TRUE)
+						)
 					)
 					(`@e
 						(Print
-							(Format
-								@str
+							(Format @str
 								{view: %d loop: %d cel: %d posn: %d %d pri: %d OnControl: $%x Origin on: $%x}
 								(ego view?)
 								(ego loop?)
@@ -1238,8 +1319,12 @@
 					(`@r
 						(Print (Format @str 0 30 curRoomNum))
 					)
-					(`@v (Show VMAP))
-					(`@p (Show PMAP))
+					(`@v
+						(Show VMAP)
+					)
+					(`@p
+						(Show PMAP)
+					)
 					(`@y
 						(= invStr 0)
 						(GetInput @invStr 8 {Inv. Object})
@@ -1271,14 +1356,17 @@
 	)
 	
 	(method (wordFail word &tmp [str 100])
+		;don't recognize a word
 		(Print (Format @str 0 31 word))
 	)
 	
 	(method (syntaxFail)
+		;can't parse input
 		(Print 0 32)
 	)
 	
 	(method (pragmaFail &tmp [str 100])
+		;no response to event
 		(Print 0 33)
 	)
 )
@@ -1376,10 +1464,7 @@
 	(method (showSelf)
 		(Print
 			(Format @invStr 0 34 buckazoids)
-			#icon
-			view
-			loop
-			cel
+			#icon view loop cel
 		)
 	)
 )
@@ -1481,7 +1566,6 @@
 )
 
 (instance calc of Prop
-	(properties)
 	
 	(method (init)
 		(super init:)
@@ -1489,7 +1573,7 @@
 			view: 27
 			setLoop: 0
 			setCel: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setPri: 15
 			posn: 159 94
 			stopUpd:
@@ -1497,6 +1581,4 @@
 	)
 )
 
-(instance sysWindow of SysWindow
-	(properties)
-)
+(instance sysWindow of SysWindow)

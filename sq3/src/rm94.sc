@@ -47,7 +47,7 @@
 			)
 			(120
 				(User canInput: FALSE canControl: FALSE)
-				(= global159 1)
+				(= inCartoon TRUE)
 				(Load SOUND 38)
 				(Load SOUND 40)
 				(addToPics add: ship1 ship2 ship3 ship4 ship5 robo)
@@ -67,7 +67,7 @@
 			)
 			(else 
 				(User canInput: FALSE canControl: FALSE)
-				(= global159 1)
+				(= inCartoon TRUE)
 				(Load SOUND 38)
 				(Load SOUND 40)
 				(addToPics add: ship1 ship2 ship3 ship4 ship5 robo)

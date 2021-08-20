@@ -66,7 +66,7 @@
 					(curRoom setScript: makeBurger)
 				)
 				(= local1 1)
-				(music number: 16 loop: -1 play:)
+				(theMusic number: 16 loop: -1 play:)
 			)
 			(28
 				(HandsOn)
@@ -76,7 +76,7 @@
 			(280
 				(HandsOn)
 				(ego init: posn: gGEgoX_3 gGEgoY_2)
-				(music number: 16 loop: -1 play:)
+				(theMusic number: 16 loop: -1 play:)
 			)
 			(290
 				(TheMenuBar draw:)
@@ -84,7 +84,7 @@
 				(HandsOn)
 				(NormalEgo 0 0)
 				(ego posn: 172 111)
-				(music number: 16 loop: -1 play:)
+				(theMusic number: 16 loop: -1 play:)
 			)
 			(else 
 				(ego init: posn: 172 111)
@@ -332,7 +332,7 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(if (!= newRoomNumber 28) (music stop:))
+		(if (!= newRoomNumber 28) (theMusic stop:))
 		(super newRoom: newRoomNumber)
 	)
 )
@@ -426,7 +426,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon 1)
 				(= standingUp 2)
 				(= local5 7)
 				(ego setLoop: 0 setCel: 0 setCycle: EndLoop self)
@@ -493,7 +493,7 @@
 				(Print 29 36)
 				(ego setCycle: 0)
 				(User canInput: 1)
-				(= global159 0)
+				(= inCartoon 0)
 				(= mealHasDecoderRing FALSE)
 				(= monolithBurgerBill 0)
 				(ego put: iBagOfFastFood)

@@ -48,7 +48,7 @@
 			(ego init:)
 		)
 		(Load SOUND 41)
-		(music number: 41 loop: -1 priority: 1 play:)
+		(theMusic number: 41 loop: -1 priority: 1 play:)
 		(bucket init:)
 		(super init:)
 		(if (== prevRoomNum 9)
@@ -167,7 +167,7 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(if (!= newRoomNumber 9) (music fade:))
+		(if (!= newRoomNumber 9) (theMusic fade:))
 		(super newRoom: newRoomNumber)
 	)
 )

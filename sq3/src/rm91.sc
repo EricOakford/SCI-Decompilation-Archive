@@ -83,7 +83,7 @@
 			)
 			(ego posn: (ego x?) 187 setDirection: 0)
 		else
-			(if (== newRoomNumber 90) (music stop:))
+			(if (== newRoomNumber 90) (theMusic stop:))
 			(timers eachElementDo: #dispose 84)
 			(super newRoom: newRoomNumber)
 		)

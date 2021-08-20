@@ -34,7 +34,7 @@
 		(if (event type?)
 			(= normalCursor ARROW_CURSOR)
 			(theGame setCursor: normalCursor (HaveMouse))
-			(music stop:)
+			(theMusic stop:)
 			(curRoom newRoom: 2)
 		)
 	)
@@ -51,8 +51,8 @@
 				(= cycles 10)
 			)
 			(1
-				(= global159 1)
-				(music play:)
+				(= inCartoon TRUE)
+				(theMusic play:)
 				(= cycles 10)
 			)
 			(2

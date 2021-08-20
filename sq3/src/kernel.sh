@@ -94,6 +94,7 @@
 			ChangeSndState
 			FadeSound
 			NumVoices
+			UpdateCues	;EO: added per Iceman demo
 		)
 ;;;
 ;;;	;List handling.

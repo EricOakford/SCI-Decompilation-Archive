@@ -45,7 +45,7 @@
 		(self setRegions: DUNE)
 		(super init:)
 		(NormalEgo)
-		(music stop:)
+		(theMusic stop:)
 		(User canControl: FALSE canInput: TRUE)
 		(ego posn: 155 95 view: 0 init: setMotion: MoveTo 155 105)
 		(aSnake
@@ -103,7 +103,7 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(music number: 22 priority: 0 loop: -1 play:)
+		(theMusic number: 22 priority: 0 loop: -1 play:)
 		(HandsOn)
 		(= global104 0)
 		(super newRoom: newRoomNumber)

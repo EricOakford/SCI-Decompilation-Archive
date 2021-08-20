@@ -34,7 +34,7 @@
 			moveSpeed: 0
 			setStep: 3 2
 		)
-		(music number: 16 loop: -1 play:)
+		(theMusic number: 16 loop: -1 play:)
 		(self setScript: arrivalScript)
 	)
 	

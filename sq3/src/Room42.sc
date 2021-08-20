@@ -71,7 +71,7 @@
 			)
 			(420
 				(NormalEgo)
-				(music number: 22 priority: 0 loop: -1 play:)
+				(theMusic number: 22 priority: 0 loop: -1 play:)
 				(ego view: 0 loop: 1 posn: 266 107)
 			)
 			(54
@@ -187,7 +187,7 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(if (== newRoomNumber 420) (music fade:))
+		(if (== newRoomNumber 420) (theMusic fade:))
 		(if
 			(and
 				(cast contains: terminator)
@@ -227,7 +227,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOn)
-				(music number: 22 priority: 0 loop: -1 play:)
+				(theMusic number: 22 priority: 0 loop: -1 play:)
 				(= fester (Actor new:))
 				(fester
 					view: 67

@@ -215,7 +215,7 @@
 					((Said 'play[/game,astro,astro]') (DoDisplay))
 					((or (Said 'disembark,quit[/game,device]') (Said '/bye'))
 						(= saveDisabled FALSE)
-						(= global159 0)
+						(= inCartoon 0)
 						(= quit TRUE)
 					)
 					((Said 'beat,tilt/game,device') (Print 290 3))
@@ -235,7 +235,7 @@
 					)
 					(
 					(or (Said 'use/decoder,prize') (Said 'decode/letter'))
-						(= global159 1)
+						(= inCartoon 1)
 						(RedrawCast)
 						(if (ego has: iDecoderRing)
 							(if (and (< astroChickenScore 120) (not decodedMessage) local18)
@@ -253,7 +253,7 @@
 							)
 							(= local18 0)
 							(= saveDisabled FALSE)
-							(= global159 0)
+							(= inCartoon 0)
 							(self newRoom: 290)
 						else
 							(Print 290 10)
@@ -375,7 +375,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOn)
-				(= global159 0)
+				(= inCartoon 0)
 				(guysLeft dispose:)
 				(client drawPic: 291)
 				(Display 290 11
@@ -437,8 +437,7 @@
 )
 
 (instance landedOK of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp [temp0 5])
 		(switch (= state newState)
 			(0
@@ -496,7 +495,6 @@
 )
 
 (instance youWon of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -509,7 +507,7 @@
 				)
 				(client drawPic: 290)
 				(= local18 1)
-				(= global159 1)
+				(= inCartoon 1)
 				(TheMenuBar draw: state: TRUE)
 				(StatusLine enable: state: TRUE)
 				(User canInput: TRUE)

@@ -20,68 +20,54 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	volume =  12
-	version =  {statusCode}
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	demoScripts
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime
+	ego									;pointer to ego
+	theGame								;ID of the Game instance
+	curRoom								;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	volume		=		12				;sound volume
+	version		=		{x.yyy.zzz}		;pointer to 'incver' version string			
+	locales								;set of current locales
+	[curSaveDir 20]						;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	useSortedFeatures					;enable cast & feature sorting?
+	demoScripts							;add to curRoomNum to find room demo script
+	egoBlindSpot						;used by sortCopy to exclude
+										;actors behind ego within angle 
+										;from straight behind. 
+										;Default zero is no blind spot
+	overlays	=		-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
+	demoDialogTime	=	3				;how long Prints stay up in demo mode
 	currentPalette
+	;globals 62-99 are unused
 		global62
 		global63
 		global64
@@ -120,6 +106,7 @@
 		global97
 		global98
 		lastSysGlobal
+		;globals 100 and above are for game use
 	global100
 	global101
 	global102
@@ -173,13 +160,13 @@
 	global150
 	sawTerminator
 	global152
-	music
+	theMusic
 	global154
 	isHandsOff
 	global156
 	global157
 	global158
-	global159
+	inCartoon
 	global160
 	global161
 	global162
@@ -429,7 +416,7 @@
 	global406
 	global407
 	global408
-	vaporCalcOn
+	vaporCalcCued
 	global410
 	global411
 	global412
@@ -772,37 +759,42 @@
 	global749
 )
 (procedure (HandsOff)
+	;Disable ego control
 	(User canControl: FALSE canInput: FALSE)
 	(ego setMotion: 0)
 	(= isHandsOff TRUE)
 )
 
 (procedure (HandsOn)
+	;Enable ego control
 	(User canControl: TRUE canInput: TRUE)
 	(= isHandsOff FALSE)
 )
 
 (procedure (HaveMem howMuch)
+	;check how much heap is available	
 	(return (> (MemoryInfo FreeHeap) howMuch))
 )
 
 (procedure (RedrawCast)
+	;re-animate the cast without cycling
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_11 param1 param2)
-	(param1 loop: param2 changeState:)
+(procedure (proc0_11 theObj theLoop)
+	;not sure, never used, but it seems to change an object's loop and state
+	(theObj loop: theLoop changeState:)
 )
 
 (procedure (cls)
+	;Clear modeless dialog from the screen
 	(if modelessDialog
 		(modelessDialog dispose:)
 	)
 )
 
 (instance statusCode of Code
-	(properties)
-	
+	;draw the status line
 	(method (doit strg)
 		(Format strg 0 0 0 1)
 	)
@@ -821,13 +813,13 @@
 )
 
 (instance SQ3 of Game
-	(properties)
 	
 	(method (init)
 		(super init:)
+		;set up the game's objects and globals
 		(= version {1.0A - 3/23/89})
 		(longSong owner: self init:)
-		(= music longSong)
+		(= theMusic longSong)
 		(User blocks: 0 canControl: FALSE x: -1 y: 160)
 		(= ego egoObj)
 		(User alterEgo: ego)
@@ -849,26 +841,33 @@
 		)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp haveMouse)
 		(if
 			(and
 				(!= curRoomNum 900)
 				(!= curRoomNum 1)
 				(!= curRoomNum 155)
 			)
-			(= temp0 (HaveMouse))
+			(= haveMouse (HaveMouse))
 			(cond 
-				(global159 (= oldCursor 2))
-				((== (User controls?) 0) (= temp0 1) (= oldCursor waitCursor))
-				(else (= oldCursor normalCursor))
+				(inCartoon
+					(= oldCursor 2)
+				)
+				((== (User controls?) FALSE)
+					(= haveMouse TRUE)
+					(= oldCursor waitCursor)
+				)
+				(else
+					(= oldCursor normalCursor)
+				)
 			)
 			(if (!= theCursor oldCursor)
-				(self setCursor: oldCursor temp0)
+				(self setCursor: oldCursor haveMouse)
 			)
 		)
 		(if dead
-			(= global159 0)
-			(music
+			(= inCartoon FALSE)
+			(theMusic
 				number: (Random 23 24)
 				loop: 1
 				priority: 500
@@ -879,7 +878,7 @@
 			(= global223 0)
 			(if (!= (= thisTime (GetTime SYSTIME1)) oldSysTime)
 				(= oldSysTime thisTime)
-				(= gameSeconds (+ gameSeconds 1))
+				(+= gameSeconds 1)
 				(= global219 1)
 				(if (>= gameSeconds 60)
 					(++ gameMinutes)
@@ -905,11 +904,13 @@
 	)
 	
 	(method (startRoom roomNum)
+		;clean up after a room change
 		(DisposeScript AVOIDER)
 		(if debugOn
 			(= debugOn FALSE)
 			(SetDebug)
 		)
+		;if memory is fragmented, bring up a warning and the internal debugger
 		(if
 			(and
 				(u> (MemoryInfo FreeHeap) (+ 20 (MemoryInfo LargestPtr)))
@@ -923,7 +924,7 @@
 		(super startRoom: roomNum)
 	)
 	
-	(method (handleEvent event &tmp [temp0 59])
+	(method (handleEvent event &tmp [str 59])
 		(if (event claimed?) (return))
 		(super handleEvent: event)
 		(switch (event type?)

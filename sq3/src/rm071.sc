@@ -46,7 +46,7 @@
 						(+ (curRoom horizon?) 10)
 					init:
 				)
-				(music number: 71 loop: -1 priority: 0 play:)
+				(theMusic number: 71 loop: -1 priority: 0 play:)
 			)
 		)
 		(TheMenuBar draw:)

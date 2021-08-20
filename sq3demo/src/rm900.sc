@@ -49,8 +49,8 @@
 				(= cycles 10)
 			)
 			(1
-				(= global159 1)
-				(music play:)
+				(= inCartoon TRUE)
+				(theMusic play:)
 				(= cycles 10)
 			)
 			(2

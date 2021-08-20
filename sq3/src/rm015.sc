@@ -40,7 +40,7 @@
 		(Load VIEW 34)
 		(Load VIEW 35)
 		(if
-		(and (not (CheckItemOwner iLadder 8)) (not (ego has: iLadder)))
+		(and (not (InRoom iLadder 8)) (not (ego has: iLadder)))
 			(Load VIEW 15)
 		else
 			(Load VIEW 288)
@@ -57,7 +57,7 @@
 	)
 	
 	(method (doit)
-		(if (CheckItemOwner iReactor)
+		(if (InRoom iReactor)
 			(if
 				(and
 					(== (ego view?) 0)
@@ -75,7 +75,7 @@
 		)
 		(if
 			(and
-				(CheckItemOwner iLadder 8)
+				(InRoom iLadder 8)
 				(not isHandsOff)
 				(ego inRect: 165 150 175 186)
 			)
@@ -97,14 +97,14 @@
 		(cond 
 			((Said 'look>')
 				(cond 
-					((Said '[<around,at,in][/area,!*]') (if (CheckItemOwner iReactor) (Print 15 0) else (Print 15 1)))
-					((Said '/lamp') (if (CheckItemOwner iReactor) (Print 15 2) else (Print 15 3)))
+					((Said '[<around,at,in][/area,!*]') (if (InRoom iReactor) (Print 15 0) else (Print 15 1)))
+					((Said '/lamp') (if (InRoom iReactor) (Print 15 2) else (Print 15 3)))
 					((Said '/cable') (Print 15 4))
 					((and local0 (Said '/hook')) (Print 15 5))
 					((and local0 (Said '/mice,animal,animal')) (Print 15 6))
 					((or (Said '/hal<cable') (Said '/cable<hal'))
 						(if (ego inRect: 0 125 38 155)
-							(if (CheckItemOwner iReactor) (Print 15 7) else (Print 15 8))
+							(if (InRoom iReactor) (Print 15 7) else (Print 15 8))
 						else
 							(Print 15 9)
 						)
@@ -117,24 +117,24 @@
 										(cond 
 											(
 												(and
-													(CheckItemOwner iReactor)
-													(CheckItemOwner iGlowingGem)
-													(CheckItemOwner iWire)
+													(InRoom iReactor)
+													(InRoom iGlowingGem)
+													(InRoom iWire)
 												)
 												{a tiny reactor which seems to be providing power for the lights, a formerly lustrous gem, and an unconnected wire}
 											)
-											((and (CheckItemOwner iReactor) (CheckItemOwner iGlowingGem))
+											((and (InRoom iReactor) (InRoom iGlowingGem))
 												{a tiny reactor which seems to be providing power for the lights and a formerly lustrous gem}
 											)
-											((and (CheckItemOwner iReactor) (CheckItemOwner iWire))
+											((and (InRoom iReactor) (InRoom iWire))
 												{a tiny reactor which seems to be providing power for the lights and an unconnected wire}
 											)
-											((and (CheckItemOwner iGlowingGem) (CheckItemOwner iWire)) {a formerly lustrous gem, and an unconnected wire})
-											((CheckItemOwner iReactor)
+											((and (InRoom iGlowingGem) (InRoom iWire)) {a formerly lustrous gem, and an unconnected wire})
+											((InRoom iReactor)
 												{a tiny reactor which seems to be providing power for the lights}
 											)
-											((CheckItemOwner iWire) {an unconnected wire})
-											((CheckItemOwner iGlowingGem) {a formerly lustrous gem})
+											((InRoom iWire) {an unconnected wire})
+											((InRoom iGlowingGem) {a formerly lustrous gem})
 											(else {nothing but crusty wire ends})
 										)
 									)
@@ -150,7 +150,7 @@
 					((Said 'climb/support,cover') (Print 15 15))
 					((Said '/system,door[<garbage]') (Print 15 16))
 					((Said 'look/ladder')
-						(if (CheckItemOwner iLadder)
+						(if (InRoom iLadder)
 							(Print 15 17)
 						else
 							(event claimed: 0)
@@ -167,7 +167,7 @@
 			(
 			(or (Said 'climb[/ladder]') (Said 'go<up/ladder'))
 				(if
-				(and (ego inRect: 248 69 265 77) (CheckItemOwner iLadder))
+				(and (ego inRect: 248 69 265 77) (InRoom iLadder))
 					(ego setScript: ladderScript)
 				else
 					(Print 15 23)
@@ -177,15 +177,15 @@
 				(cond 
 					((Said '/all')
 						(if (ego inRect: 0 125 38 155)
-							(if (CheckItemOwner iGlowingGem)
+							(if (InRoom iGlowingGem)
 								(ego get: iGlowingGem)
 								(theGame changeScore: 5)
 							)
-							(if (CheckItemOwner iWire)
+							(if (InRoom iWire)
 								(ego get: iWire)
 								(theGame changeScore: 5)
 							)
-							(if (CheckItemOwner iReactor)
+							(if (InRoom iReactor)
 								(ego get: iReactor)
 								(Print 15 24)
 								(reactorScript init:)
@@ -214,14 +214,14 @@
 					)
 					((or (Said '/hal<cable') (Said '/cable<hal'))
 						(if (ego inRect: 0 125 38 155)
-							(if (CheckItemOwner iWire) (Print 15 7) else (Print 15 28))
+							(if (InRoom iWire) (Print 15 7) else (Print 15 28))
 						else
 							(Print 15 28)
 						)
 					)
 					((Said '/artifact,support,cover') (Print 15 29))
 					((Said '/generator')
-						(if (CheckItemOwner iReactor)
+						(if (InRoom iReactor)
 							(if (ego inRect: 0 125 38 155)
 								(theGame changeScore: 15)
 								(Print 15 30)
@@ -234,7 +234,7 @@
 						)
 					)
 					((Said '/cable')
-						(if (CheckItemOwner iWire)
+						(if (InRoom iWire)
 							(if (ego inRect: 0 125 38 155)
 								(Print 15 24)
 								(ego get: iWire)
@@ -247,7 +247,7 @@
 						)
 					)
 					((Said '/crystal')
-						(if (CheckItemOwner iGlowingGem)
+						(if (InRoom iGlowingGem)
 							(if (ego inRect: 0 125 38 155)
 								(Print 15 24)
 								(ego get: iGlowingGem)
@@ -268,7 +268,7 @@
 				(Print 15 33)
 			)
 			((Said 'use,afix,(jar<up)/generator')
-				(if (or (ego has: iReactor) (CheckItemOwner iReactor))
+				(if (or (ego has: iReactor) (InRoom iReactor))
 					(Print 15 34)
 				else
 					(event claimed: 0)
@@ -346,7 +346,7 @@
 			(6
 				(HandsOn)
 				(ego
-					view: (if (CheckItemOwner iReactor) 32 else 6)
+					view: (if (InRoom iReactor) 32 else 6)
 					illegalBits: cWHITE
 					posn: 80 132
 					setLoop: -1
@@ -358,12 +358,12 @@
 					setCycle: Walk
 				)
 				(if
-				(and (CheckItemOwner iReactor) (not (CheckItemOwner iLadder 8)))
+				(and (InRoom iReactor) (not (InRoom iLadder 8)))
 					(rat1 setScript: ratsScript)
 				)
 				(if
 				(and climbedOutOfReactorRoom (== prevRoomNum 3))
-					(music number: 11 loop: -1 play:)
+					(theMusic number: 11 loop: -1 play:)
 				)
 				(= programControl FALSE)
 			)
@@ -458,7 +458,7 @@
 				(HandsOff)
 				(ego
 					view: 19
-					setLoop: (if (CheckItemOwner iReactor) 0 else 1)
+					setLoop: (if (InRoom iReactor) 0 else 1)
 					setPri: 4
 					illegalBits: 0
 					ignoreActors: 1
@@ -479,7 +479,7 @@
 					(ego
 						setPri: -1
 						setLoop: -1
-						view: (if (not (CheckItemOwner iReactor)) 6 else 0)
+						view: (if (not (InRoom iReactor)) 6 else 0)
 						setCycle: Walk
 						illegalBits: cWHITE
 						ignoreActors: 0
@@ -507,11 +507,11 @@
 			(1
 				(ego loop: 3)
 				(ladder
-					setLoop: (if (CheckItemOwner iReactor) 0 else 1)
+					setLoop: (if (InRoom iReactor) 0 else 1)
 					init:
 					stopUpd:
 				)
-				(SetItemOwner iLadder)
+				(PutInRoom iLadder)
 				(theGame changeScore: -10)
 				(= programControl FALSE)
 				(User canControl: TRUE)
@@ -554,7 +554,7 @@
 		(super init:)
 		(self
 			view: 33
-			loop: (if (CheckItemOwner iReactor) 0 else 1)
+			loop: (if (InRoom iReactor) 0 else 1)
 			cel: 0
 			posn: 64 110
 			setPri: 8
@@ -570,7 +570,7 @@
 		(super init:)
 		(self
 			view: 29
-			setLoop: (if (CheckItemOwner iReactor) 0 else 1)
+			setLoop: (if (InRoom iReactor) 0 else 1)
 			setCel: 0
 			posn: 256 70
 		)
@@ -584,7 +584,7 @@
 		(super init:)
 		(self
 			view: 34
-			setLoop: (if (CheckItemOwner iReactor) 0 else 4)
+			setLoop: (if (InRoom iReactor) 0 else 4)
 			setCel: 0
 			setStep: 3 3
 			illegalBits: 0
@@ -601,7 +601,7 @@
 		(super init:)
 		(self
 			view: 34
-			setLoop: (if (CheckItemOwner iReactor) 0 else 4)
+			setLoop: (if (InRoom iReactor) 0 else 4)
 			setCel: 1
 			setStep: 3 3
 			illegalBits: 0
@@ -618,7 +618,7 @@
 		(super init:)
 		(self
 			view: 34
-			setLoop: (if (CheckItemOwner iReactor) 0 else 4)
+			setLoop: (if (InRoom iReactor) 0 else 4)
 			setCel: 2
 			setStep: 3 3
 			illegalBits: 0
@@ -636,7 +636,7 @@
 		(super init:)
 		(self
 			view: 34
-			loop: (if (CheckItemOwner iReactor) 1 else 5)
+			loop: (if (InRoom iReactor) 1 else 5)
 			cel: 0
 			posn: 18 171
 			setPri: 15
@@ -658,7 +658,7 @@
 		(super init:)
 		(self
 			view: 34
-			loop: (if (CheckItemOwner iReactor) 2 else 6)
+			loop: (if (InRoom iReactor) 2 else 6)
 			cel: 0
 			posn: 285 153
 			setPri: 15
@@ -680,7 +680,7 @@
 		(super init:)
 		(self
 			view: 34
-			loop: (if (CheckItemOwner iReactor) 3 else 7)
+			loop: (if (InRoom iReactor) 3 else 7)
 			cel: 0
 			posn: 249 30
 			setPri: 15

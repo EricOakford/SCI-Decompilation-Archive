@@ -2,6 +2,13 @@
 
 (include system.sh) (include sci2.sh)
 
+; howFast values
+(enum
+	slow
+	medium
+	fast
+)
+
 ;Inventory items
 (enum	
 	iGlowingGem				;0

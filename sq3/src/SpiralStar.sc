@@ -29,7 +29,7 @@
 	
 	(method (init)
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon TRUE)
 		(TheMenuBar hide:)
 		(StatusLine disable:)
 		(= saveDisabled TRUE)
@@ -44,7 +44,7 @@
 			((= [spiralStar i] (SpiralStar new:)) init:)
 			(++ i)
 		)
-		(music number: 94 loop: -1 play:)
+		(theMusic number: 94 loop: -1 play:)
 		(curRoom setScript: startShip)
 	)
 )
@@ -57,7 +57,7 @@
 			(0 (Timer setReal: self 10))
 			(1
 				(= local7 1)
-				(music number: 93 loop: -1 play:)
+				(theMusic number: 93 loop: -1 play:)
 				(Timer setReal: self 2)
 			)
 			(2 (= local6 1))

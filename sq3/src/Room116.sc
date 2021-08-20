@@ -84,7 +84,7 @@
 		(= horizon -4000)
 		(theGame setSpeed: 5)
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon TRUE)
 		(super init:)
 		(self setScript: Actions)
 	)
@@ -112,7 +112,7 @@
 				)
 			)
 			(1
-				(music number: 83 loop: 1 play:)
+				(theMusic number: 83 loop: 1 play:)
 				(ship setCel: 1 setMotion: MoveTo 0 92 self)
 			)
 			(2
@@ -133,7 +133,7 @@
 				(ship setStep: 2 1 setMotion: MoveTo 0 158 self)
 			)
 			(4
-				(music fade:)
+				(theMusic fade:)
 				(shadow setMotion: 0)
 				(= seconds 5)
 			)
@@ -152,7 +152,7 @@
 				)
 			)
 			(6
-				(music number: 99 loop: -1 play:)
+				(theMusic number: 99 loop: -1 play:)
 				(Mark
 					view: 215
 					setLoop: 4
@@ -221,8 +221,8 @@
 			)
 			(11
 				(if (== musicChannels 1)
-					(music stop:)
-					(music number: 16 loop: -1 play:)
+					(theMusic stop:)
+					(theMusic number: 16 loop: -1 play:)
 				)
 				(mMouth setCycle: Forward)
 				(Print 116 0 #title {Mark} #dispose #at -1 156 #width 320)
@@ -350,7 +350,7 @@
 				(= cycles 2)
 			)
 			(23
-				(music fade:)
+				(theMusic fade:)
 				(cast eachElementDo: #show)
 				(bigRoger dispose:)
 				(curRoom drawPic: 116 DISSOLVE)
@@ -397,7 +397,7 @@
 				(cockPit dispose:)
 				(ship setMotion: MoveTo 0 132 self)
 				(Print 116 11 #at -1 10 #width 310 #time 12)
-				(music number: 40 loop: 1 play:)
+				(theMusic number: 40 loop: 1 play:)
 				(shadow setMotion: MoveTo 5 199)
 			)
 			(31
@@ -411,7 +411,7 @@
 				(ship setCel: 0 setMotion: MoveTo 0 -20 self)
 			)
 			(34
-				(music number: 38 loop: 1 play:)
+				(theMusic number: 38 loop: 1 play:)
 				(ship
 					setLoop: 8
 					setCel: 0

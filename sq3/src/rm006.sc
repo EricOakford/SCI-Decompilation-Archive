@@ -46,7 +46,7 @@
 		)
 		(User prevDir: (if (== prevRoomNum 5) 3 else 7))
 		(shadow init:)
-		(if (CheckItemOwner 1) (wire init:))
+		(if (InRoom 1) (wire init:))
 	)
 	
 	(method (doit)
@@ -92,8 +92,8 @@
 							)
 							(
 							(Said '[<around,at,in][/area,tube,cave,pit,stage,!*]') (Print 6 5))
-							((Said '/cable<left,fine') (if (CheckItemOwner 1) (Print 6 6)))
-							((Said '/cable[<bad,jagged,all]') (if (CheckItemOwner 1) (Print 6 7) else (Print 6 8)))
+							((Said '/cable<left,fine') (if (InRoom 1) (Print 6 6)))
+							((Said '/cable[<bad,jagged,all]') (if (InRoom 1) (Print 6 7) else (Print 6 8)))
 							((Said '[<in,at,through,in]/grate') (Print 6 9))
 							((Said '/mice,animal')
 								(cond 
@@ -108,7 +108,7 @@
 					)
 					((Said 'climb/craft,pit,craft,side') (Print 6 15))
 					((Said 'get,(drag[<on])/cable')
-						(if (CheckItemOwner iWire)
+						(if (InRoom iWire)
 							(if (ego inRect: 64 147 85 149)
 								(self setScript: wireScript)
 							else
@@ -295,11 +295,11 @@
 				(biff setCel: 1 posn: (+ (rat x?) 17) (- (rat y?) 12))
 				(= seconds 2)
 				(if (ego has: iReactor)
-					(SetItemOwner iReactor 15)
+					(PutInRoom iReactor 15)
 					(theGame changeScore: -15)
 				)
 				(if (ego has: iWire)
-					(SetItemOwner iWire 15)
+					(PutInRoom iWire 15)
 					(theGame changeScore: -5)
 				)
 			)

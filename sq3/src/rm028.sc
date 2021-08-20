@@ -64,9 +64,9 @@
 		(= local5 1)
 		(= monolithBurgerBill 0)
 		(= global247 1)
-		(music number: 16)
+		(theMusic number: 16)
 		(if (and (!= prevRoomNum 29) (!= prevRoomNum 27))
-			(music play:)
+			(theMusic play:)
 		)
 		(switch prevRoomNum
 			(17
@@ -329,7 +329,7 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(if (!= newRoomNumber 29) (music fade:))
+		(if (!= newRoomNumber 29) (theMusic fade:))
 		(super newRoom: newRoomNumber)
 	)
 )
@@ -393,7 +393,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon 1)
 				(= local6 7)
 				(ego setLoop: 0 setCel: 0 setCycle: EndLoop self)
 			)
@@ -459,7 +459,7 @@
 				(Print 28 34)
 				(ego setCycle: 0)
 				(User canInput: 1)
-				(= global159 0)
+				(= inCartoon 0)
 				(= mealHasDecoderRing FALSE)
 				(= monolithBurgerBill 0)
 				(ego put: iBagOfFastFood)
@@ -535,7 +535,7 @@
 				(ego setMotion: MoveTo 202 82 self)
 			)
 			(1
-				(= global159 1)
+				(= inCartoon 1)
 				(chairMan setCycle: BegLoop self)
 				(ego hide:)
 			)
@@ -551,7 +551,7 @@
 			)
 			(4
 				(= global206 3)
-				(= global159 0)
+				(= inCartoon 0)
 				(curRoom newRoom: 14)
 			)
 		)

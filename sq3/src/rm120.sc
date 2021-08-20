@@ -159,7 +159,7 @@
 		(Mark init: setMotion: Follow Scott 10)
 		(egoPower init:)
 		(bgPower init:)
-		(= global159 0)
+		(= inCartoon FALSE)
 		(self setScript: StartScript)
 	)
 	
@@ -823,7 +823,7 @@
 			)
 			(11
 				(guy dispose:)
-				(music stop:)
+				(theMusic stop:)
 				(= cycles 2)
 			)
 			(12 (curRoom newRoom: 94))

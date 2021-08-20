@@ -134,7 +134,7 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(if (== newRoomNumber 94) (music stop:))
+		(if (== newRoomNumber 94) (theMusic stop:))
 		(timers eachElementDo: #dispose 84)
 		(super newRoom: newRoomNumber)
 	)

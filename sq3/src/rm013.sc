@@ -311,7 +311,7 @@
 	
 	(method (newRoom newRoomNumber)
 		(if (!= local0 3)
-			(if (== newRoomNumber 15) (music fade:))
+			(if (== newRoomNumber 15) (theMusic fade:))
 			(super newRoom: newRoomNumber)
 		)
 	)
@@ -549,7 +549,7 @@
 					setStep: 3 20
 					setMotion: MoveTo (ego x?) 220 self
 				)
-				(music number: 45 loop: 1 play:)
+				(theMusic number: 45 loop: 1 play:)
 			)
 			(3
 				(= saveBits (Print 13 33 #dispose))
@@ -603,23 +603,23 @@
 						((and (== global132 4) (!= (ego loop?) 0)) (ego loop: 0))
 						((and (== global132 5) (!= (ego loop?) 1)) (ego loop: 1))
 					)
-					(if (== (music state?) 3) (music stop:))
+					(if (== (theMusic state?) 3) (theMusic stop:))
 				)
 				((== global132 4)
 					(cond 
 						(
 							(and
 								(== (ego loop?) 0)
-								(or (!= (music number?) 52) (!= (music state?) 3))
+								(or (!= (theMusic number?) 52) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 52 play:)
+							(theMusic stop: number: 52 play:)
 						)
 						(
 							(and
 								(== (ego loop?) 1)
-								(or (!= (music number?) 53) (!= (music state?) 3))
+								(or (!= (theMusic number?) 53) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 53 play:)
+							(theMusic stop: number: 53 play:)
 						)
 					)
 				)
@@ -628,16 +628,16 @@
 						(
 							(and
 								(== (ego loop?) 1)
-								(or (!= (music number?) 52) (!= (music state?) 3))
+								(or (!= (theMusic number?) 52) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 52 play:)
+							(theMusic stop: number: 52 play:)
 						)
 						(
 							(and
 								(== (ego loop?) 0)
-								(or (!= (music number?) 53) (!= (music state?) 3))
+								(or (!= (theMusic number?) 53) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 53 play:)
+							(theMusic stop: number: 53 play:)
 						)
 					)
 				)
@@ -869,7 +869,7 @@
 						)
 						(self state: 4)
 					)
-					(music number: 45 loop: 1 play:)
+					(theMusic number: 45 loop: 1 play:)
 				)
 			)
 			(3

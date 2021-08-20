@@ -24,7 +24,7 @@
 		(super init:)
 		(ship init:)
 		(= enterpriseState 3)
-		(music number: 16 loop: -1 play:)
+		(theMusic number: 16 loop: -1 play:)
 		(self setScript: arrivalScript)
 	)
 )

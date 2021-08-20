@@ -38,7 +38,7 @@
 	
 	(method (doit)
 		(if
-		(and (== (self state?) 1) (== (music prevSignal?) 20))
+		(and (== (self state?) 1) (== (theMusic prevSignal?) 20))
 			(self cue:)
 		)
 		(super doit:)

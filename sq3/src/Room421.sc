@@ -94,7 +94,7 @@
 				stopUpd:
 			)
 		)
-		(if (CheckItemOwner 16 421)
+		(if (InRoom 16 421)
 			((= theBelt (View new:))
 				view: 120
 				loop: 5
@@ -114,7 +114,7 @@
 			setScript: gearActions
 			init:
 		)
-		(music number: 85 loop: -1 play:)
+		(theMusic number: 85 loop: -1 play:)
 		(pulley1
 			view: 120
 			setLoop: 1
@@ -323,7 +323,7 @@
 										)
 										(Print
 											(Format @invStr 421 11
-												(if (CheckItemOwner iInvisibilityBelt 421)
+												(if (InRoom iInvisibilityBelt 421)
 													{Looking closely, you notice that the terminator's invisibility belt has survived relatively intact.}
 												else
 													{}
@@ -344,7 +344,7 @@
 								)
 								(Print
 									(Format @invStr 421 11
-										(if (CheckItemOwner iInvisibilityBelt 421)
+										(if (InRoom iInvisibilityBelt 421)
 											{Looking closely, you notice that the terminator's invisibility belt has survived relatively intact.}
 										else
 											{}
@@ -388,7 +388,7 @@
 						)
 						(Print
 							(Format @invStr 421 11
-								(if (CheckItemOwner iInvisibilityBelt 421)
+								(if (InRoom iInvisibilityBelt 421)
 									{Looking closely, you notice that the terminator's invisibility belt has survived relatively intact.}
 								else
 									{}
@@ -441,7 +441,7 @@
 				((Said 'get/belt')
 					(cond 
 						((ego has: 16) (Print 421 32))
-						((not (CheckItemOwner 16 421)) (Print 421 33))
+						((not (InRoom 16 421)) (Print 421 33))
 						((> (ego distanceTo: theBelt) 12) (NotClose))
 						(else
 							(Print 421 34)
@@ -1054,7 +1054,7 @@
 					init:
 				)
 				(theGame changeScore: 35)
-				(SetItemOwner iInvisibilityBelt 421)
+				(PutInRoom iInvisibilityBelt 421)
 				(ego setScript: 0)
 				(curRoom setScript: bringOnFester)
 				(= roomWithDeadTerminator 421)
@@ -1131,7 +1131,7 @@
 				(pulley1 startUpd:)
 				(pulley2 setPri: 14 startUpd:)
 				(gear setCycle: Forward startUpd:)
-				(music loop: -1 play:)
+				(theMusic loop: -1 play:)
 				(== local8 -200)
 				(RedrawCast)
 				(Print 421 48 #at 66 53 #dispose #title {Fester})
@@ -1280,7 +1280,7 @@
 							)
 							(= local8 0)
 							(gear setCycle: Forward startUpd:)
-							(music loop: -1 play:)
+							(theMusic loop: -1 play:)
 							(= local4 1)
 						else
 							(++ local8)
@@ -1296,7 +1296,7 @@
 						)
 						(= local4 0)
 						(gear setCycle: 0 stopUpd:)
-						(music stop:)
+						(theMusic stop:)
 						(= local8 0)
 					)
 					(else (++ local8))

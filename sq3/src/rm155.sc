@@ -47,7 +47,7 @@
 			(bub1 dispose:)
 			(bub2 dispose:)
 			(bub3 dispose:)
-			(music stop:)
+			(theMusic stop:)
 			(curRoom drawPic: 777)
 			(RedrawCast)
 			(curRoom newRoom: 2)
@@ -59,18 +59,18 @@
 	(properties)
 	
 	(method (doit)
-		(if (== (music prevSignal?) -1)
+		(if (== (theMusic prevSignal?) -1)
 			(if
 				(and
-					(== (music number?) 64)
-					(!= (music state?) 3)
+					(== (theMusic number?) 64)
+					(!= (theMusic state?) 3)
 					(== (self state?) 1)
 				)
 				(self cue:)
 			)
 			(if
-			(and (== (music number?) 66) (!= (music state?) 3))
-				(if (< (self state?) 19) (music play:))
+			(and (== (theMusic number?) 66) (!= (theMusic state?) 3))
+				(if (< (self state?) 19) (theMusic play:))
 				(if (== (self state?) 19) (self cue:))
 			)
 		)
@@ -80,7 +80,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(music number: 64 loop: 1 play:)
+				(theMusic number: 64 loop: 1 play:)
 				(eyes init:)
 				(= seconds 4)
 			)
@@ -105,7 +105,7 @@
 			)
 			(3
 				(doorSound stop:)
-				(music number: 66 loop: 1 play:)
+				(theMusic number: 66 loop: 1 play:)
 				(eyes setCycle: CycleTo 3 1 self)
 			)
 			(4 (= seconds 3))
@@ -151,7 +151,7 @@
 			(20
 				(= oldCursor normalCursor)
 				(theGame setCursor: normalCursor (HaveMouse))
-				(music stop:)
+				(theMusic stop:)
 				(eyes dispose:)
 				(curRoom drawPic: 777)
 				(RedrawCast)

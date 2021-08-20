@@ -161,7 +161,7 @@
 					(Print 62 2)
 					(= fryToDeathTimer 10)
 				)
-				(music number: 71 loop: -1 priority: 0 play:)
+				(theMusic number: 71 loop: -1 priority: 0 play:)
 				(curRoom setScript: 0)
 			)
 		)

@@ -135,8 +135,8 @@
 			(HandsOff)
 			(self setScript: kid1Script)
 		else
-			(if (!= (music number?) 22)
-				(music number: 22 priority: 1 loop: -1 play:)
+			(if (!= (theMusic number?) 22)
+				(theMusic number: 22 priority: 1 loop: -1 play:)
 			)
 			(ego view: 0 setStep: 3 2 illegalBits: -32768 init:)
 			(switch prevRoomNum
@@ -302,8 +302,8 @@
 		(if (or (not script) (== script tActions))
 			(ego illegalBits: cWHITE)
 			(cond 
-				((!= newRoomNumber 470) (music owner: -1 number: 22 priority: 0 loop: -1 play:))
-				((== (music number?) 22) (music fade:))
+				((!= newRoomNumber 470) (theMusic owner: -1 number: 22 priority: 0 loop: -1 play:))
+				((== (theMusic number?) 22) (theMusic fade:))
 			)
 			(if
 				(and
@@ -324,7 +324,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(music number: 13 priority: 3 loop: -1 play:)
+				(theMusic number: 13 priority: 3 loop: -1 play:)
 				(kid1 init: setMotion: MoveTo 188 137 self)
 			)
 			(1
@@ -880,7 +880,7 @@
 				)
 				(if wearingChickenHat
 					(= wearingChickenHat FALSE)
-					(SetItemOwner iChickenHat -1)
+					(PutInRoom iChickenHat -1)
 					(= hat (Actor new:))
 					(hat
 						view: 755

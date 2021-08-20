@@ -279,7 +279,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon 1)
 				(ego setMotion: MoveTo 229 206 self)
 			)
 			(1
@@ -338,7 +338,7 @@
 				(theGame changeScore: 20)
 				(Print 66 8)
 				(HandsOn)
-				(= global159 0)
+				(= inCartoon 0)
 				(client setScript: 0)
 			)
 		)

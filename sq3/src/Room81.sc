@@ -81,7 +81,7 @@
 		else
 			(curRoom setScript: Actions)
 		)
-		(music number: 86 loop: -1 play:)
+		(theMusic number: 86 loop: -1 play:)
 	)
 	
 	(method (doit)
@@ -186,7 +186,7 @@
 	)
 	
 	(method (newRoom newRoomNumber)
-		(music fade:)
+		(theMusic fade:)
 		(super newRoom: newRoomNumber)
 	)
 )

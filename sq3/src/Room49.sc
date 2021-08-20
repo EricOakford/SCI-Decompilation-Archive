@@ -77,7 +77,7 @@
 			(14
 				(ego view: 63)
 				(curRoom setScript: Actions)
-				(music owner: -1 number: 22 priority: 1 loop: -1 play:)
+				(theMusic owner: -1 number: 22 priority: 1 loop: -1 play:)
 				(= programControl TRUE)
 			)
 			(else 
@@ -149,7 +149,7 @@
 	(method (newRoom newRoomNumber)
 		(NormalEgo)
 		(DisposeScript EXTRA)
-		(if (== newRoomNumber 14) (music fade:))
+		(if (== newRoomNumber 14) (theMusic fade:))
 		(if (or (not isHandsOff) (== newRoomNumber 40))
 			(super newRoom: newRoomNumber)
 		)

@@ -9,16 +9,18 @@
 (class TheMenuBar of MenuBar
 	
 	(method (init)
-		(AddMenu { \01_} {About Demo`^a :Help`#1 :VaporCalc`^c_})
-		(AddMenu
-			{ File_}
+		(AddMenu { \01_}
+			{About Demo`^a :Help`#1 :VaporCalc`^c_}
+		)
+		(AddMenu { File_}
 			{Pause Demo`^p :Restart Demo`#9 :Quit`^q_}
 		)
-		(AddMenu
-			{ Speed_}
+		(AddMenu { Speed_}
 			{Change...`^s :--! :Faster`+ :Normal`= :Slower`-_}
 		)
-		(AddMenu { Sound_} {Volume...`^v :Sound Off`#2=1_})
+		(AddMenu { Sound_}
+			{Volume...`^v :Sound Off`#2=1_}
+		)
 		(SetMenu restartI p_said 'restart')
 		(SetMenu quitI p_said 'quit')
 		(SetMenu pauseI p_said 'pause')
@@ -37,8 +39,14 @@
 					#title {Space Quest I I I}
 				)
 			)
-			(helpI (Print MENU 1 #font 3))
-			(vaporCalcI (= vaporCalcOn TRUE))
+			(helpI
+				(Print MENU 1
+					#font 3
+				)
+			)
+			(vaporCalcI
+				(= vaporCalcCued TRUE)
+			)
 			(pauseI
 				(Print MENU 2
 					#title {This demo is paused.}
@@ -92,7 +100,9 @@
 					(theGame setSpeed: (-- speed))
 				)
 			)
-			(normalI (theGame setSpeed: 5))
+			(normalI
+				(theGame setSpeed: 5)
+			)
 			(slowerI
 				(theGame setSpeed: (++ speed))
 			)

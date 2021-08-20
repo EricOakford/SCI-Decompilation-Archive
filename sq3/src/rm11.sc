@@ -164,7 +164,7 @@
 					setMotion: MoveTo (ego x?) 244 self
 					setCycle: 0
 				)
-				(music number: 45 loop: 1 play:)
+				(theMusic number: 45 loop: 1 play:)
 			)
 			(3
 				(ego hide:)
@@ -193,23 +193,23 @@
 						((and (== global132 4) (!= (ego loop?) 0)) (ego loop: 0))
 						((and (== global132 5) (!= (ego loop?) 1)) (ego loop: 1))
 					)
-					(if (== (music state?) 3) (music stop:))
+					(if (== (theMusic state?) 3) (theMusic stop:))
 				)
 				((== global132 4)
 					(cond 
 						(
 							(and
 								(== (ego loop?) 0)
-								(or (!= (music number?) 52) (!= (music state?) 3))
+								(or (!= (theMusic number?) 52) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 52 play:)
+							(theMusic stop: number: 52 play:)
 						)
 						(
 							(and
 								(== (ego loop?) 1)
-								(or (!= (music number?) 53) (!= (music state?) 3))
+								(or (!= (theMusic number?) 53) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 53 play:)
+							(theMusic stop: number: 53 play:)
 						)
 					)
 				)
@@ -218,16 +218,16 @@
 						(
 							(and
 								(== (ego loop?) 1)
-								(or (!= (music number?) 52) (!= (music state?) 3))
+								(or (!= (theMusic number?) 52) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 52 play:)
+							(theMusic stop: number: 52 play:)
 						)
 						(
 							(and
 								(== (ego loop?) 0)
-								(or (!= (music number?) 53) (!= (music state?) 3))
+								(or (!= (theMusic number?) 53) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 53 play:)
+							(theMusic stop: number: 53 play:)
 						)
 					)
 				)
@@ -374,7 +374,7 @@
 				(cond 
 					((ego mover?) (Print 11 7))
 					((and (!= grabberState 2) (!= grabberState 3))
-						(= global159 1)
+						(= inCartoon 1)
 						(HandsOff)
 						(ego setMotion: 0)
 						(clunk number: 74 loop: 1 play:)
@@ -448,7 +448,7 @@
 					)
 					(claw dispose:)
 					(HandsOn)
-					(= global159 0)
+					(= inCartoon 0)
 					(clunk
 						number: (if (== grabberState 4) 75 else 76)
 						play:

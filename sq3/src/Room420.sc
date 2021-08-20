@@ -209,7 +209,7 @@
 	
 	(method (newRoom newRoomNumber)
 		(if (!= newRoomNumber 421)
-			(music owner: -1 number: 22 priority: 1 loop: -1 play:)
+			(theMusic owner: -1 number: 22 priority: 1 loop: -1 play:)
 		)
 		(super newRoom: newRoomNumber)
 	)

@@ -54,7 +54,7 @@
 		(if (event type?)
 			(Display 1 0 p_restore saveBits1)
 			(Display 1 0 p_restore saveBits2)
-			(music stop:)
+			(theMusic stop:)
 			(curRoom newRoom: 2)
 		)
 	)
@@ -65,7 +65,7 @@
 	
 	(method (doit)
 		(if
-		(and (== (music prevSignal?) -1) (== local2 1))
+		(and (== (theMusic prevSignal?) -1) (== local2 1))
 			(= local2 0)
 			(openingScript cue:)
 		)
@@ -217,11 +217,11 @@
 			(14
 				(Display 1 0 p_restore saveBits1)
 				(RedrawCast)
-				(music number: 72 play:)
+				(theMusic number: 72 play:)
 				(pod init: setMotion: MoveTo 129 97 self)
 			)
 			(15
-				(music number: 73 loop: -1 play:)
+				(theMusic number: 73 loop: -1 play:)
 				(curRoom overlay: 151 6)
 				(podOutline init: setCycle: Forward)
 				(pod setMotion: MoveTo -54 97 self)
@@ -284,7 +284,7 @@
 			)
 			(28
 				(beam init: stopUpd:)
-				(music stop:)
+				(theMusic stop:)
 			)
 			(29 (= cycles 20))
 			(30

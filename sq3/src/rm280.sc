@@ -296,7 +296,6 @@
 )
 
 (instance ChooseFood of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -366,8 +365,7 @@
 )
 
 (instance Quitting of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

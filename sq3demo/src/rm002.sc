@@ -52,7 +52,7 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript 991)
+		(DisposeScript JUMP)
 		(super dispose:)
 	)
 )
@@ -146,12 +146,11 @@
 )
 
 (instance demoScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(music number: 11 play:)
+				(theMusic number: 11 play:)
 				(ego loop: 1)
 				(= seconds 4)
 			)

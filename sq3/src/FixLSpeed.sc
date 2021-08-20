@@ -125,7 +125,7 @@
 				(lp2 init:)
 				(lp3 init:)
 				(lp4 init:)
-				(music number: 69 loop: -1 play:)
+				(theMusic number: 69 loop: -1 play:)
 				(= seconds 2)
 			)
 			(10
@@ -174,7 +174,7 @@
 				(lp3 setCycle: 0)
 				(lp4 setCycle: 0)
 				(= global258 1)
-				(music fade:)
+				(theMusic fade:)
 				(curRoom newRoom: 99)
 			)
 		)

@@ -18,13 +18,12 @@
 	[local2 2]
 )
 (instance rm031 of Room
-	(properties)
 	
 	(method (init &tmp [temp0 50])
 		(self picture: 31)
 		(= showStyle HSHUTTER)
 		(HandsOff)
-		(= global159 1)
+		(= inCartoon TRUE)
 		(Load rsVIEW 54)
 		(if (not sawTerminator)
 			(Load VIEW 58)
@@ -49,7 +48,7 @@
 			(0 (= cycles 5))
 			(1
 				(ship setMotion: MoveTo 164 110 self)
-				(music number: 9 play:)
+				(theMusic number: 9 play:)
 			)
 			(2
 				(ship cycleSpeed: 0 setCycle: EndLoop self)
@@ -57,11 +56,11 @@
 			(3
 				(ship cel: 0 setLoop: 1 setCycle: EndLoop self)
 				(hit number: 79 play:)
-				(music stop:)
+				(theMusic stop:)
 			)
 			(4 (= seconds 2) (hit stop:))
 			(5
-				(music number: 10 play:)
+				(theMusic number: 10 play:)
 				(= seconds 3)
 			)
 			(6
@@ -112,7 +111,7 @@
 			(7
 				(termShip cel: 0 setLoop: 8 setCycle: EndLoop self)
 				(hit number: 80 play:)
-				(music stop:)
+				(theMusic stop:)
 			)
 			(8 (= seconds 2))
 			(9 (curRoom newRoom: 62))

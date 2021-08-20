@@ -229,7 +229,7 @@
 			(9
 				(HandsOff)
 				(RedrawCast)
-				(music number: 44 loop: 1 priority: 2 play:)
+				(theMusic number: 44 loop: 1 priority: 2 play:)
 				(cond 
 					((ego inRect: 24 41 125 184)
 						(guard setLoop: 5 cel: 0 setCycle: EndLoop self)

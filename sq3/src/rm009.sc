@@ -55,7 +55,7 @@
 		else
 			(Load SOUND 41)
 		)
-		(music priority: 1)
+		(theMusic priority: 1)
 		(ego setStep: -1 1)
 		(super init:)
 		(self setScript: rmScript)
@@ -138,7 +138,7 @@
 	(method (newRoom newRoomNumber)
 		(if (== global132 2) (ego cycleSpeed: 0))
 		(if (and (!= global132 4) (!= global132 5))
-			(music stop:)
+			(theMusic stop:)
 		)
 		(super newRoom: newRoomNumber)
 	)
@@ -286,7 +286,7 @@
 				)
 			)
 			(2
-				(music number: 45 loop: 1 priority: 15 play:)
+				(theMusic number: 45 loop: 1 priority: 15 play:)
 				(ego
 					setStep: 1 15
 					setMotion: JumpTo (ego x?) 244 self
@@ -314,23 +314,23 @@
 						((and (== global132 4) (!= (ego loop?) 0)) (ego loop: 0))
 						((and (== global132 5) (!= (ego loop?) 1)) (ego loop: 1))
 					)
-					(if (== (music state?) 3) (music stop:))
+					(if (== (theMusic state?) 3) (theMusic stop:))
 				)
 				((== global132 4)
 					(cond 
 						(
 							(and
 								(== (ego loop?) 0)
-								(or (!= (music number?) 52) (!= (music state?) 3))
+								(or (!= (theMusic number?) 52) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 52 play:)
+							(theMusic stop: number: 52 play:)
 						)
 						(
 							(and
 								(== (ego loop?) 1)
-								(or (!= (music number?) 53) (!= (music state?) 3))
+								(or (!= (theMusic number?) 53) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 53 play:)
+							(theMusic stop: number: 53 play:)
 						)
 					)
 				)
@@ -339,16 +339,16 @@
 						(
 							(and
 								(== (ego loop?) 1)
-								(or (!= (music number?) 52) (!= (music state?) 3))
+								(or (!= (theMusic number?) 52) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 52 play:)
+							(theMusic stop: number: 52 play:)
 						)
 						(
 							(and
 								(== (ego loop?) 0)
-								(or (!= (music number?) 53) (!= (music state?) 3))
+								(or (!= (theMusic number?) 53) (!= (theMusic state?) 3))
 							)
-							(music stop: number: 53 play:)
+							(theMusic stop: number: 53 play:)
 						)
 					)
 				)
@@ -416,7 +416,7 @@
 					((ego mover?) (Print 9 10))
 					((and (!= grabberState 2) (!= grabberState 3))
 						(HandsOff)
-						(= global159 1)
+						(= inCartoon TRUE)
 						(ego setMotion: 0)
 						(clunk number: 74 loop: 1 play:)
 						(ego setScript: clawScript)
@@ -493,7 +493,7 @@
 						play:
 					)
 					(HandsOn)
-					(= global159 0)
+					(= inCartoon FALSE)
 					(if (== grabberState 4)
 						(= grabberState 0)
 					else

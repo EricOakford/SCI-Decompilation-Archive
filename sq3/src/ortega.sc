@@ -139,7 +139,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon TRUE)
 				(= fryToDeathTimer 0)
 				(Print 600 31)
 				(ego
@@ -160,7 +160,7 @@
 			(4
 				(Print 600 32)
 				(EgoDead 0 0 8 11)
-				(= global159 0)
+				(= inCartoon FALSE)
 				(HandsOn)
 			)
 		)

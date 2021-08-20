@@ -40,7 +40,6 @@
 )
 
 (instance rmScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -50,11 +49,11 @@
 				(= cycles 10)
 			)
 			(1
-				(= global159 1)
+				(= inCartoon TRUE)
 				(= cycles 10)
 			)
 			(2
-				(if global124
+				(if howFast
 					(logo0 setMotion: MoveTo 158 17 self)
 					(shadow0 setMotion: MoveTo 166 20)
 				else
@@ -66,7 +65,7 @@
 			(3
 				(logo0 stopUpd:)
 				(shadow0 stopUpd:)
-				(if (>= global124 1)
+				(if (>= howFast 1)
 					(logo1 init: setMotion: MoveTo 158 23 self)
 					(shadow1 init: setMotion: MoveTo 167 26)
 				else
@@ -78,7 +77,7 @@
 			(4
 				(logo1 stopUpd:)
 				(shadow1 stopUpd:)
-				(if global124
+				(if howFast
 					(logo2 init: setMotion: MoveTo 158 29 self)
 					(shadow2 init: setMotion: MoveTo 167 32)
 				else
@@ -90,7 +89,7 @@
 			(5
 				(logo2 stopUpd:)
 				(shadow2 stopUpd:)
-				(if global124
+				(if howFast
 					(logo3 init: setMotion: MoveTo 158 35 self)
 					(shadow3 init: setMotion: MoveTo 166 38)
 				else
@@ -102,7 +101,7 @@
 			(6
 				(logo3 stopUpd:)
 				(shadow3 stopUpd:)
-				(if global124
+				(if howFast
 					(logo4 init: setMotion: MoveTo 158 41 self)
 					(shadow4 init: setMotion: MoveTo 165 44)
 				else
@@ -114,7 +113,7 @@
 			(7
 				(logo4 stopUpd:)
 				(shadow4 stopUpd:)
-				(if global124
+				(if howFast
 					(logo5 init: setMotion: MoveTo 158 47 self)
 					(shadow5 init: setMotion: MoveTo 166 50)
 				else
@@ -126,7 +125,7 @@
 			(8
 				(logo5 stopUpd:)
 				(shadow5 stopUpd:)
-				(if global124
+				(if howFast
 					(logo6 init: setMotion: MoveTo 158 53 self)
 					(shadow6 init: setMotion: MoveTo 166 56)
 				else
@@ -138,7 +137,7 @@
 			(9
 				(logo6 stopUpd:)
 				(shadow6 stopUpd:)
-				(if global124
+				(if howFast
 					(logo7 init: setMotion: MoveTo 158 59 self)
 					(shadow7 init: setMotion: MoveTo 167 62)
 				else
@@ -150,7 +149,7 @@
 			(10
 				(logo7 stopUpd:)
 				(shadow7 stopUpd:)
-				(if global124
+				(if howFast
 					(logo8 init: setMotion: MoveTo 158 65 self)
 					(shadow8 init: setMotion: MoveTo 166 68)
 				else
@@ -162,7 +161,7 @@
 			(11
 				(logo8 stopUpd:)
 				(shadow8 stopUpd:)
-				(if global124
+				(if howFast
 					(logo9 init: setMotion: MoveTo 158 71 self)
 					(shadow9 init: setMotion: MoveTo 166 74)
 				else
@@ -174,7 +173,7 @@
 			(12
 				(logo9 stopUpd:)
 				(shadow9 stopUpd:)
-				(if global124
+				(if howFast
 					(logo10 init: setMotion: MoveTo 158 77 self)
 					(shadow10 init: setMotion: MoveTo 166 80)
 				else
@@ -186,7 +185,7 @@
 			(13
 				(logo10 stopUpd:)
 				(shadow10 stopUpd:)
-				(if global124
+				(if howFast
 					(logo11 init: setMotion: MoveTo 158 83 self)
 					(shadow11 init: setMotion: MoveTo 166 86)
 				else
@@ -198,7 +197,7 @@
 			(14
 				(logo11 stopUpd:)
 				(shadow11 stopUpd:)
-				(if global124
+				(if howFast
 					(logo12 init: setMotion: MoveTo 158 89 self)
 					(shadow12 init: setMotion: MoveTo 166 92)
 				else
@@ -210,7 +209,7 @@
 			(15
 				(logo12 stopUpd:)
 				(shadow12 stopUpd:)
-				(if global124
+				(if howFast
 					(logo13 init: setMotion: MoveTo 158 95 self)
 					(shadow13 init: setMotion: MoveTo 166 98)
 				else
@@ -222,7 +221,7 @@
 			(16
 				(logo13 stopUpd:)
 				(shadow13 stopUpd:)
-				(if global124
+				(if howFast
 					(logo14 init: setMotion: MoveTo 158 101 self)
 					(shadow14 init: setMotion: MoveTo 166 104)
 				else
@@ -234,7 +233,7 @@
 			(17
 				(logo14 stopUpd:)
 				(shadow14 stopUpd:)
-				(if global124
+				(if howFast
 					(logo15 init: setMotion: MoveTo 158 107 self)
 					(shadow15 init: setMotion: MoveTo 166 110)
 				else
@@ -246,7 +245,7 @@
 			(18
 				(logo15 stopUpd:)
 				(shadow15 stopUpd:)
-				(if global124
+				(if howFast
 					(logo16 init: setMotion: MoveTo 158 113 self)
 					(shadow16 init: setMotion: MoveTo 166 116)
 				else
@@ -930,7 +929,7 @@
 		(self
 			view: 900
 			setLoop: 4
-			cel: (if (>= global124 1) 0 else 4)
+			cel: (if (>= howFast 1) 0 else 4)
 			posn: 77 132
 			ignoreActors: TRUE
 		)
@@ -945,7 +944,7 @@
 		(self
 			view: 900
 			setLoop: 5
-			cel: (if (>= global124 1) 0 else 4)
+			cel: (if (>= howFast 1) 0 else 4)
 			posn: 102 132
 			ignoreActors: TRUE
 		)
@@ -960,7 +959,7 @@
 		(self
 			view: 900
 			setLoop: 6
-			cel: (if (>= global124 1) 0 else 4)
+			cel: (if (>= howFast 1) 0 else 4)
 			posn: 127 133
 			ignoreActors: TRUE
 		)
@@ -975,7 +974,7 @@
 		(self
 			view: 900
 			setLoop: 7
-			cel: (if (>= global124 1) 0 else 4)
+			cel: (if (>= howFast 1) 0 else 4)
 			posn: 163 133
 			ignoreActors: TRUE
 		)
@@ -990,7 +989,7 @@
 		(self
 			view: 900
 			setLoop: 7
-			cel: (if (>= global124 1) 0 else 4)
+			cel: (if (>= howFast 1) 0 else 4)
 			posn: 201 133
 			ignoreActors: TRUE
 		)
@@ -1005,7 +1004,7 @@
 		(self
 			view: 900
 			setLoop: 8
-			cel: (if (>= global124 1) 0 else 4)
+			cel: (if (>= howFast 1) 0 else 4)
 			posn: 237 133
 			ignoreActors: TRUE
 		)

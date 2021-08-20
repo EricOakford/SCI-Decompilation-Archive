@@ -79,7 +79,7 @@
 			(pile1 init:)
 			(fallPile init:)
 			(shredder init:)
-			(music number: 42 loop: -1 priority: 0 play:)
+			(theMusic number: 42 loop: -1 priority: 0 play:)
 		else
 			(shredder init: addToPic:)
 		)
@@ -227,7 +227,7 @@
 	
 	(method (newRoom newRoomNumber)
 		(if (!= global132 2)
-			(music stop:)
+			(theMusic stop:)
 			(super newRoom: newRoomNumber)
 		)
 	)
@@ -444,7 +444,7 @@
 					setMotion: MoveTo (ego x?) 244 self
 					setCycle: 0
 				)
-				(music number: 45 loop: 1 priority: 15 play:)
+				(theMusic number: 45 loop: 1 priority: 15 play:)
 			)
 			(2
 				(ego hide:)

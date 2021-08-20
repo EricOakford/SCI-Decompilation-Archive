@@ -95,7 +95,7 @@
 						(if (ego has: iMetalPole) (Print 69 5) else (Print 69 6))
 					)
 					((Said '/pole')
-						(if (CheckItemOwner iMetalPole)
+						(if (InRoom iMetalPole)
 							(Print 69 7)
 						else
 							(event claimed: FALSE)

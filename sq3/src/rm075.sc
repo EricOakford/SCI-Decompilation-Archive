@@ -37,7 +37,7 @@
 		(Load SOUND 33)
 		(Load SOUND 45)
 		(super init:)
-		(music number: 50 loop: -1 priority: 0 play:)
+		(theMusic number: 50 loop: -1 priority: 0 play:)
 		(curRoom setScript: UpLadder)
 	)
 	
@@ -145,7 +145,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon 1)
 				(ego
 					illegalBits: 0
 					posn: 313 219
@@ -169,7 +169,7 @@
 			(2
 				(ego loop: 1)
 				(HandsOn)
-				(= global159 0)
+				(= inCartoon 0)
 				(curRoom setScript: 0)
 			)
 		)
@@ -183,7 +183,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon 1)
 				(ego illegalBits: 0 setMotion: MoveTo 173 113 self)
 			)
 			(1
@@ -201,7 +201,7 @@
 				(= local2 0)
 				(= local3 1)
 				(HandsOn)
-				(= global159 0)
+				(= inCartoon 0)
 				(curRoom setScript: 0)
 			)
 		)
@@ -215,7 +215,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon 1)
 				(ego illegalBits: 0 setMotion: MoveTo 169 105 self)
 			)
 			(1
@@ -229,7 +229,7 @@
 			(2
 				(= local0 1)
 				(curRoom setScript: 0)
-				(= global159 0)
+				(= inCartoon 0)
 				(HandsOn)
 			)
 		)
@@ -302,7 +302,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon 1)
 				(falling play:)
 				(ego
 					view: 99
@@ -376,7 +376,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= global159 1)
+				(= inCartoon 1)
 				(ego view: 100 setLoop: 0 setCel: 0)
 				(bomb init:)
 				;(ego put: (= cycles 10))	;EO: This seems to be a decompiler error
@@ -400,16 +400,16 @@
 			)
 			(4
 				(ShakeScreen 20 3)
-				(music stop:)
+				(theMusic stop:)
 				(RedrawCast)
-				(music number: 71 loop: -1 priority: 0 play:)
+				(theMusic number: 71 loop: -1 priority: 0 play:)
 				(if decodedMessage (Print 75 20) else (Print 75 21))
 				(ego view: 0 setLoop: -1 setCel: -1 cel: 0 loop: 1)
 				(theGame changeScore: 20)
 				(= forceBeamDestroyed TRUE)
 				(= shakeTimer 300)
 				(HandsOn)
-				(= global159 0)
+				(= inCartoon 0)
 				(curRoom setScript: 0)
 			)
 		)

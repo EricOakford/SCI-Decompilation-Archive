@@ -70,7 +70,7 @@
 			((== prevRoomNum 14)
 				(= ladderAtMallard TRUE)
 				((inventory at: iLadder) moveTo: 8)
-				(music number: 11 loop: -1 play:)
+				(theMusic number: 11 loop: -1 play:)
 			)
 			((== prevRoomNum 11)
 				(Load VIEW 258)
@@ -96,7 +96,7 @@
 				)
 			)
 		)
-		(if (CheckItemOwner iLadder) (ladder init: stopUpd:))
+		(if (InRoom iLadder) (ladder init: stopUpd:))
 		(hatch init:)
 		(super init:)
 		(if (== prevRoomNum 11) (self setScript: grabScript))
@@ -204,7 +204,7 @@
 					)
 					((Said '/leggo,domino,artifact') (Print 8 21))
 					((Said '/ladder')
-						(if (CheckItemOwner iLadder)
+						(if (InRoom iLadder)
 							(Print 8 22)
 						else
 							(event claimed: FALSE)
@@ -229,7 +229,7 @@
 					((Said '/plug[<modular]') (if climbedUpMallard (Print 8 29) else (event claimed: FALSE)))
 					((Said '/leggo,domino,artifact') (Print 8 30))
 					((Said '/ladder')
-						(if (CheckItemOwner iLadder)
+						(if (InRoom iLadder)
 							(cond 
 								((and ladderOnGround (ego inRect: 220 115 274 140))
 									(ego get: iLadder)
@@ -354,7 +354,7 @@
 			)
 			((Said 'descend,climb[<down,up]/ladder')
 				(cond 
-					((CheckItemOwner iLadder)
+					((InRoom iLadder)
 						(cond 
 							((== (ladder cel?) 1) (ego setScript: climbLadderScript))
 							((== (ladder cel?) 2) (Print 8 49))
@@ -373,7 +373,7 @@
 							(ego inRect: 193 73 222 102)
 							(ego inRect: 215 114 226 121)
 						)
-						(if (CheckItemOwner iLadder)
+						(if (InRoom iLadder)
 							(cond 
 								((== (ladder cel?) 1) (ego setScript: climbLadderScript))
 								((== (ladder cel?) 2) (Print 8 49))
@@ -394,7 +394,7 @@
 					(Said 'descend/ladder,craft,aluminum,aluminum')
 				)
 				(if (ego inRect: 193 73 222 102)
-					(if (CheckItemOwner iLadder)
+					(if (InRoom iLadder)
 						(cond 
 							((== (ladder cel?) 1) (ego setScript: climbLadderScript))
 							((== (ladder cel?) 2) (Print 8 49))
@@ -411,7 +411,7 @@
 				(cond 
 					((ego inRect: 241 48 261 55) (rmScript changeState: 2))
 					((ego inRect: 215 114 226 121)
-						(if (CheckItemOwner iLadder)
+						(if (InRoom iLadder)
 							(cond 
 								((== (ladder cel?) 1) (ego setScript: climbLadderScript))
 								((== (ladder cel?) 2) (Print 8 49))
@@ -426,7 +426,7 @@
 			)
 			((Said 'descend,(climb<down)[/!*]')
 				(if (ego inRect: 193 73 222 102)
-					(if (CheckItemOwner 2)
+					(if (InRoom 2)
 						(cond 
 							((== (ladder cel?) 1) (ego setScript: climbLadderScript))
 							((== (ladder cel?) 2) (Print 8 49))
@@ -467,7 +467,7 @@
 				(Said 'climb/ladder,craft,aluminum,aluminum')
 			)
 			(if (ego inRect: 215 114 226 121)
-				(if (CheckItemOwner iLadder)
+				(if (InRoom iLadder)
 					(cond 
 						((== (ladder cel?) 1) (ego setScript: climbLadderScript))
 						((== (ladder cel?) 2) (Print 8 49))
@@ -736,7 +736,7 @@
 			)
 			(6
 				(if (not ladderAtMallard)
-					(music fade:)
+					(theMusic fade:)
 					(if (not enteredMallard)
 						(= enteredMallard TRUE)
 						(theGame changeScore: 10)
@@ -766,7 +766,7 @@
 				(ego setAvoider: Avoider setMotion: MoveTo 220 120 self)
 			)
 			(1
-				(SetItemOwner iLadder curRoomNum)
+				(PutInRoom iLadder curRoomNum)
 				(theGame changeScore: 5)
 				(ego setAvoider: 0 loop: 1)
 				(ladder init: ignoreActors: TRUE stopUpd:)
@@ -841,14 +841,14 @@
 				(cond 
 					((== motivatorState motivatorGRABBED)
 						(if (== gGGGNorth 1)
-							(music number: 76 loop: 1 play:)
+							(theMusic number: 76 loop: 1 play:)
 							(theGame changeScore: 15)
 							(RedrawCast)
 							(Print 8 64)
 							(= motivatorState motivatorINSHIP)
 							(= roomWithMotivator gGGGNorth)
 						else
-							(music number: 76 loop: 1 play:)
+							(theMusic number: 76 loop: 1 play:)
 							(theGame changeScore: -15)
 							(RedrawCast)
 							(Print 8 65)
@@ -871,7 +871,7 @@
 						(= roomWithMotivator 0)
 						(= motivatorState motivatorGRABBED)
 						(= grabberState 5)
-						(music number: 76 loop: 1 play:)
+						(theMusic number: 76 loop: 1 play:)
 						(theGame changeScore: 15)
 						(RedrawCast)
 						(Print 8 66)
