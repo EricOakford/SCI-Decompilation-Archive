@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 206)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -23,23 +23,50 @@
 	local0
 	[local1 2]
 	local3
-	local4
-	local5
-	local6
-	local7
-	[local8 36] = [0 0 319 0 319 189 176 189 176 170 226 170 207 141 261 141 244 119 144 119 144 112 107 112 95 126 127 126 102 170 146 170 146 189 0 189]
-	[local44 9] = [1003 140 74 3 9 24 21 30 29]
-	[local53 9] = [1003 150 60 3 9 24 21 30 29]
-	[local62 9] = [1018 170 44 4 9 31 22 27 26]
-	[local71 9] = [1020 200 67 4 9 26 28 27 33]
-	[local80 9] = [1021 178 74 4 11 27 29 22 33]
-	[local89 6] = [0 1179 0 1180]
-	[local95 12] = [1 1154 0 1155 1 1156 0 1157 1 1158]
-	[local107 14] = [0 1159 1 1160 0 1161 1 1162 0 1163 1 1164]
-	[local121 6] = [0 1171 1 1188]
-	[local127 8] = [0 1043 1 1044 0 1045]
-	[local135 7] = [0 1046 1 1047]
+	bakerTalkCount
+	womanTalkCount
+	boyTalkCount
+	paidWhat
+	pts1 = [
+		0 0
+		319 0
+		319 189
+		176 189
+		176 170
+		226 170
+		207 141
+		261 141
+		244 119
+		144 119
+		144 112
+		107 112
+		95 126
+		127 126
+		102 170
+		146 170
+		146 189
+		0 189
+		]
+	local44 = [1003 140 74 3 9 24 21 30 29]
+	local53 = [1003 150 60 3 9 24 21 30 29]
+	local62 = [1018 170 44 4 9 31 22 27 26]
+	local71 = [1020 200 67 4 9 26 28 27 33]
+	local80 = [1021 178 74 4 11 27 29 22 33]
+	local89 = [0 1179 0 1180]
+	local95 = [1 1154 0 1155 1 1156 0 1157 1 1158]
+	local107 = [0 1159 1 1160 0 1161 1 1162 0 1163 1 1164]
+	local121 = [0 1171 1 1188]
+	local127 = [0 1043 1 1044 0 1045]
+	local135 = [0 1046 1 1047]
 )
+
+(enum ;what's exchanged for pie
+	paySilver
+	payNeedle
+	payHeart
+	payGoldCoin
+)
+
 (procedure (localproc_245a)
 	(baker setScript: 0 loop: 3 cel: 0)
 )
@@ -51,7 +78,7 @@
 	
 	(method (init)
 		(super init:)
-		(LoadMany 128 226 224 1120)
+		(LoadMany VIEW 226 224 1120)
 		(HandsOff)
 		(theMusic vol: 0 stop:)
 		(self
@@ -59,13 +86,16 @@
 			addObstacle: poly1
 			setScript: walkInScript
 		)
-		(if (Btst 25) (++ local4))
-		(if (ego has: 2) (++ local4))
-		(if
-		(and (== ((inventory at: 2) owner?) 206) (Btst 50))
+		(if (Btst 25)
+			(++ bakerTalkCount)
+		)
+		(if (ego has: iPie)
+			(++ bakerTalkCount)
+		)
+		(if (and (== ((inventory at: iPie) owner?) 206) (Btst fBeenInBakery))
 			(pie init:)
 		)
-		(if (not (Btst 50))
+		(if (not (Btst fBeenInBakery))
 			(woman init:)
 			(boy init:)
 			(arm init:)
@@ -78,23 +108,27 @@
 		(brother init:)
 		(if (> (theGame detailLevel:) 1)
 			(cat setScript: catScript init:)
-			(tail init: cycleSpeed: 2 setCycle: Fwd)
+			(tail init: cycleSpeed: 2 setCycle: Forward)
 		else
 			(cat signal: 1 init:)
 			(tail signal: 1 init:)
 		)
 		(ego view: 0 setStep: 3 2 posn: 168 200 setPri: -1 init:)
-		(poly1 points: @local8 size: 18)
+		(poly1 points: @pts1 size: 18)
 	)
 	
 	(method (doit &tmp temp0)
-		(if
-		(and (!= local4 3) (== ((inventory at: 2) owner?) 1))
-			(= local4 3)
+		(if (and (!= bakerTalkCount 3) (== ((inventory at: iPie) owner?) 1))
+			(= bakerTalkCount 3)
 		)
 		(cond 
-			(script (script doit:))
-			((& (ego onControl: 0) $4000) (HandsOff) (curRoom setScript: walkOutScript))
+			(script
+				(script doit:)
+			)
+			((& (ego onControl: 0) cYELLOW)
+				(HandsOff)
+				(curRoom setScript: walkOutScript)
+			)
 		)
 	)
 	
@@ -111,19 +145,23 @@
 	)
 	
 	(method (newRoom n)
-		(Bset 50)
+		(Bset fBeenInBakery)
 		(theMusic fade:)
 		(super newRoom: n)
 	)
 )
 
 (instance doWinners of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 3))
-			(1 (SpeakAudio 1048 self))
+			(0
+				(HandsOff)
+				(= cycles 3)
+			)
+			(1
+				(SpeakAudio 1048 self)
+			)
 			(2
 				(cls)
 				(bakerMouth init: setCycle: RandCycle)
@@ -132,18 +170,20 @@
 			(3
 				(bakerMouth z: 1000)
 				(cls)
-				(arm cycleSpeed: 7 setCycle: End self)
+				(arm cycleSpeed: 7 setCycle: EndLoop self)
 			)
 			(4
 				(woman
 					view: 550
 					setLoop: 4
 					cycleSpeed: 2
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 				(RedrawCast)
 			)
-			(5 (SpeakAudio 1049 self))
+			(5
+				(SpeakAudio 1049 self)
+			)
 			(6
 				(cls)
 				(arm cel: 0)
@@ -151,11 +191,15 @@
 			)
 			(7
 				(arm dispose:)
-				(boy loop: 5 cycleSpeed: 2 setCycle: End self)
-				(woman setCycle: Beg)
+				(boy loop: 5 cycleSpeed: 2 setCycle: EndLoop self)
+				(woman setCycle: BegLoop)
 			)
-			(8 (= seconds 1))
-			(9 (SpeakAudio 1050 self))
+			(8
+				(= seconds 1)
+			)
+			(9
+				(SpeakAudio 1050 self)
+			)
 			(10
 				(bakerMouth z: 0)
 				(SpeakAudio 1182 self)
@@ -177,17 +221,19 @@
 			)
 			(14
 				(cls)
-				(woman setCycle: End self)
+				(woman setCycle: EndLoop self)
 			)
-			(15 (SpeakAudio 1052 self))
+			(15
+				(SpeakAudio 1052 self)
+			)
 			(16
 				(cls)
-				(woman view: 550 loop: 3 cel: 0 setCycle: End self)
+				(woman view: 550 loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(17
 				(theIconBar enable:)
-				(theIconBar disable: 0)
-				(User canInput: 1)
+				(theIconBar disable: ICON_WALK)
+				(User canInput: TRUE)
 				(theGame setCursor: crownCursor)
 				(= cycles 1)
 			)
@@ -196,7 +242,7 @@
 					setLoop: 0
 					cycleSpeed: (if (== (theGame detailLevel:) 3) 4 else 1)
 					moveSpeed: (if (== (theGame detailLevel:) 3) 4 else 1)
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: PolyPath 168 200
 				)
 				(= seconds 1)
@@ -207,7 +253,7 @@
 					setLoop: 0
 					cycleSpeed: (if (== (theGame detailLevel:) 3) 4 else 1)
 					moveSpeed: (if (== (theGame detailLevel:) 3) 4 else 1)
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: PolyPath 224 128 self
 				)
 			)
@@ -224,17 +270,18 @@
 )
 
 (instance walkInScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 15))
+			(0
+				(= cycles 15)
+			)
 			(1
 				(theMusic number: 61 loop: -1 playBed:)
 				(ego setMotion: MoveTo 168 148 self)
 			)
 			(2
-				(if (not (Btst 50))
+				(if (not (Btst fBeenInBakery))
 					(curRoom setScript: doWinners)
 				else
 					(if (> (theGame detailLevel:) 1)
@@ -250,29 +297,32 @@
 )
 
 (instance walkOutScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: PolyPath 168 200 self)
 			)
-			(1 (curRoom newRoom: 6))
+			(1
+				(curRoom newRoom: 6)
+			)
 		)
 	)
 )
 
 (instance greet of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 10))
+			(0
+				(HandsOff)
+				(= cycles 10)
+			)
 			(1
-				(brother cycleSpeed: 2 setCycle: Beg self)
+				(brother cycleSpeed: 2 setCycle: BegLoop self)
 			)
 			(2
-				(brother loop: 12 setCycle: CT 2 1 self)
+				(brother loop: 12 setCycle: CycleTo 2 1 self)
 			)
 			(3
 				(baker view: 226 loop: 3 cel: 0)
@@ -281,11 +331,14 @@
 			)
 			(4
 				(cls)
-				(brother setCycle: End)
-				(baker setCycle: End self)
+				(brother setCycle: EndLoop)
+				(baker setCycle: EndLoop self)
 				(theMouth dispose:)
 			)
-			(5 (pie show:) (= cycles 20))
+			(5
+				(pie show:)
+				(= cycles 20)
+			)
 			(6
 				(= local0 1)
 				(proc762_0 @local62 @local62 @local89 self)
@@ -304,7 +357,7 @@
 				)
 			)
 			(8
-				(theIconBar enable: 0)
+				(theIconBar enable: ICON_WALK)
 				(baker setScript: bakerScript)
 				(HandsOn)
 				(client setScript: 0)
@@ -314,22 +367,27 @@
 )
 
 (instance greetAgain of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(baker view: 225 loop: 0 setCycle: End self)
+				(baker view: 225 loop: 0 setCycle: EndLoop self)
 			)
 			(1
 				(cond 
-					((== ((inventory at: 2) owner?) 206) (proc762_1 @local62 1175 self))
-					((== ((inventory at: 2) owner?) ego) (proc762_1 @local62 1176 self))
-					(else (proc762_1 @local62 1177 self))
+					((== ((inventory at: iPie) owner?) 206)
+						(proc762_1 @local62 1175 self)
+					)
+					((== ((inventory at: iPie) owner?) ego)
+						(proc762_1 @local62 1176 self)
+					)
+					(else
+						(proc762_1 @local62 1177 self)
+					)
 				)
 			)
 			(2
-				(if (== ((inventory at: 2) owner?) 206)
+				(if (== ((inventory at: iPie) owner?) 206)
 					(greet start: 7)
 					(curRoom setScript: greet)
 				else
@@ -343,8 +401,7 @@
 )
 
 (instance doPie of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -352,7 +409,13 @@
 			)
 			(1
 				((ego head?) hide:)
-				(ego normal: 0 view: 226 loop: 4 cel: 0 setCycle: CT 3 1)
+				(ego
+					normal: FALSE
+					view: 226
+					loop: 4
+					cel: 0
+					setCycle: CycleTo 3 1
+				)
 				(= seconds 2)
 			)
 			(2
@@ -363,7 +426,7 @@
 				(proc762_0 @local53 @local62 @local95 self)
 			)
 			(4
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(= cycles 1)
 			)
 			(5
@@ -372,7 +435,7 @@
 					setLoop: 0
 					setMotion: 0
 					setCycle: KQ5SyncWalk
-					normal: 1
+					normal: TRUE
 				)
 				((ego head?) show:)
 				(ego setLoop: -1)
@@ -388,21 +451,20 @@
 )
 
 (instance talkBakerScript of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp egoAngle)
 		(switch (= state newState)
 			(0
-				(= temp0
+				(= egoAngle
 					(GetAngle (ego x?) (ego y?) (baker x?) (baker y?))
 				)
 				(ego
 					cel:
 						(cond 
-							((< temp0 45) 3)
-							((< temp0 135) 0)
-							((< temp0 225) 2)
-							((< temp0 315) 1)
+							((< egoAngle 45) 3)
+							((< egoAngle 135) 0)
+							((< egoAngle 225) 2)
+							((< egoAngle 315) 1)
 							(else 3)
 						)
 				)
@@ -419,7 +481,6 @@
 )
 
 (instance getPie of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -438,17 +499,17 @@
 				(proc762_1 @local62 1166 self)
 			)
 			(4
-				(switch local7
-					(0
+				(switch paidWhat
+					(paySilver
 						(proc762_1 @local53 1167 self)
 					)
-					(3
+					(payGoldCoin
 						(proc762_1 @local53 1168 self)
 					)
-					(1
+					(payNeedle
 						(proc762_1 @local53 1169 self)
 					)
-					(2
+					(payHeart
 						(proc762_1 @local53 1170 self)
 					)
 				)
@@ -460,23 +521,31 @@
 					view: 226
 					loop: 4
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
-				(ego get: 2)
-				(= local4 2)
-				(Bset 25)
+				(ego get: iPie)
+				(= bakerTalkCount 2)
+				(Bset fGotPie)
 				(SolvePuzzle 2)
-				(switch local7
-					(0 (ego put: 4 206))
-					(3 (ego put: 11 206))
-					(1 (ego put: 3 206))
-					(2 (ego put: 9 206))
+				(switch paidWhat
+					(paySilver
+						(ego put: iCoin 206)
+					)
+					(payGoldCoin
+						(ego put: iGold 206)
+					)
+					(payNeedle
+						(ego put: iNeedle 206)
+					)
+					(payHeart
+						(ego put: iHeart 206)
+					)
 				)
 			)
 			(6 (= cycles 1))
 			(7
-				(switch local7
-					(0
+				(switch paidWhat
+					(paySilver
 						(proc762_1 @local62 1171 self)
 					)
 					(else 
@@ -485,9 +554,9 @@
 				)
 			)
 			(8
-				(ego setCycle: End self)
-				(switch local7
-					(0
+				(ego setCycle: EndLoop self)
+				(switch paidWhat
+					(paySilver
 						(proc762_1 @local53 1173 self)
 					)
 					(else 
@@ -503,7 +572,7 @@
 					setLoop: 0
 					setMotion: 0
 					setCycle: KQ5SyncWalk
-					normal: 1
+					normal: TRUE
 				)
 				((ego head?) show:)
 				(ego setLoop: -1)
@@ -516,102 +585,102 @@
 )
 
 (instance bakerScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(baker view: 225 loop: 3 cel: 0 setCycle: End)
+				(baker view: 225 loop: 3 cel: 0 setCycle: EndLoop)
 				(= cycles (Random 80 140))
 			)
 			(1
-				(baker setCycle: CT 1 -1)
+				(baker setCycle: CycleTo 1 -1)
 				(= cycles 6)
 			)
 			(2
-				(baker setCycle: End self)
+				(baker setCycle: EndLoop self)
 				(= cycles (Random 50 100))
 			)
 			(3
-				(baker setCycle: Beg)
+				(baker setCycle: BegLoop)
 				(= cycles (Random 60 120))
 			)
 			(4
-				(baker loop: 4 cel: 0 setCycle: CT 6 1)
+				(baker loop: 4 cel: 0 setCycle: CycleTo 6 1)
 				(= cycles 12)
 			)
 			(5
 				(if (Random 0 1)
-					(baker setCycle: CT 3 -1 self)
+					(baker setCycle: CycleTo 3 -1 self)
 				else
-					(baker setCycle: End self)
+					(baker setCycle: EndLoop self)
 				)
 			)
 			(6
-				(baker setCycle: End)
+				(baker setCycle: EndLoop)
 				(= cycles (Random 60 120))
 			)
 			(7
-				(baker loop: 1 setCycle: Fwd)
+				(baker loop: 1 setCycle: Forward)
 				(= cycles (Random 40 60))
 			)
 			(8
 				(if (curRoom script?)
 					(= cycles 1)
 				else
-					(baker loop: 0 cel: 7 setCycle: Beg self)
+					(baker loop: 0 cel: 7 setCycle: BegLoop self)
 				)
 			)
-			(9 (baker setCycle: End self))
+			(9 (baker setCycle: EndLoop self))
 			(10
-				(baker view: 225 loop: 3 cel: 0 setCycle: End)
+				(baker view: 225 loop: 3 cel: 0 setCycle: EndLoop)
 				(= cycles (Random 80 140))
 			)
 			(11
-				(baker setCycle: CT 1 -1)
+				(baker setCycle: CycleTo 1 -1)
 				(= cycles (Random 50 100))
 			)
 			(12
-				(baker setCycle: End)
+				(baker setCycle: EndLoop)
 				(= cycles (Random 80 140))
 			)
 			(13
-				(baker setCycle: Beg)
+				(baker setCycle: BegLoop)
 				(= cycles (Random 80 140))
 			)
 			(14
 				(if (curRoom script?)
 					(self init:)
 				else
-					(baker loop: 2 setCycle: CT 3 1)
+					(baker loop: 2 setCycle: CycleTo 3 1)
 					(= cycles 50)
 				)
 			)
-			(15 (baker setCycle: End self))
+			(15 (baker setCycle: EndLoop self))
 			(16 (self init:))
 		)
 	)
 )
 
 (instance catScript of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (< (Random 1 1000) 100) (= state 2))
+				(if (< (Random 1 1000) 100)
+					(= state 2)
+				)
 				(= cycles (Random 5 12))
 			)
 			(1
-				(cat loop: 6 setCycle: End self)
+				(cat loop: 6 setCycle: EndLoop self)
 			)
 			(2
-				(cat loop: 6 setCycle: Beg self)
+				(cat loop: 6 setCycle: BegLoop self)
 				(= state -1)
 			)
 			(3
 				(tail hide:)
-				(cat loop: (+ 2 register) cel: 0 setCycle: CT 4 1 self)
+				(cat loop: (+ 2 register) cel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(4
 				(cat
@@ -630,15 +699,15 @@
 					loop: (+ 4 register)
 					cel: 0
 					cycleSpeed: 2
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(6
 				(if (Random 0 1) (cat cel: 1))
-				(cat setCycle: End self)
+				(cat setCycle: EndLoop self)
 			)
 			(7
-				(tail show: setCycle: Fwd)
+				(tail show: setCycle: Forward)
 				(= cycles (Random 200 400))
 			)
 			(8
@@ -650,7 +719,6 @@
 )
 
 (instance brotherScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -667,32 +735,32 @@
 					cel: 0
 					setLoop: -1
 					loop: 7
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(brother loop: 9 cel: 0 cycleSpeed: 3 setCycle: End)
+				(brother loop: 9 cel: 0 cycleSpeed: 3 setCycle: EndLoop)
 				(= seconds (Random 1 3))
 				(if (< (Random 1 100) 50) (-- state))
 			)
 			(3
-				(brother loop: 7 cel: 6 cycleSpeed: 2 setCycle: Beg self)
+				(brother loop: 7 cel: 6 cycleSpeed: 2 setCycle: BegLoop self)
 			)
 			(4
-				(brother loop: 8 cel: 2 cycleSpeed: 3 setCycle: Beg self)
+				(brother loop: 8 cel: 2 cycleSpeed: 3 setCycle: BegLoop self)
 			)
 			(5
-				(brother loop: 11 cycleSpeed: 2 setCycle: Fwd)
+				(brother loop: 11 cycleSpeed: 2 setCycle: Forward)
 				(= cycles (Random 80 200))
 			)
 			(6
-				(brother loop: 8 cel: 0 cycleSpeed: 2 setCycle: End self)
+				(brother loop: 8 cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(7
 				(if (Random 0 1)
 					(brother
 						setLoop: 14
-						setCycle: Fwd
+						setCycle: Forward
 						setMotion:
 							MoveTo
 							(if (Random 0 1) (- (brother x?) 140) else 167)
@@ -720,8 +788,7 @@
 )
 
 (instance boyTalk of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -729,7 +796,7 @@
 				(proc762_0 @local44 @local80 @local127 self)
 			)
 			(1
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(client setScript: 0)
 			)
 		)
@@ -737,7 +804,6 @@
 )
 
 (instance womanTalk of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -746,7 +812,7 @@
 				(proc762_0 @local44 @local71 @local135 self)
 			)
 			(1
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(client setScript: 0)
 			)
 		)
@@ -760,7 +826,7 @@
 		view 226
 		loop 3
 		priority 7
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 		illegalBits $0000
 	)
@@ -769,82 +835,89 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 1)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9056)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(if (not (curRoom script?))
-						(switch local4
+						(switch bakerTalkCount
 							(0
-								(++ local4)
+								(++ bakerTalkCount)
 								(HandsOff)
 								(curRoom setScript: talkBakerScript)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 							(1
-								(Bset 25)
+								(Bset fGotPie)
 								(SpeakAudio 9057)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 							(2
 								(proc762_0 @local62 @local53 @local121)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 							(3
-								(Bset 25)
+								(Bset fGotPie)
 								(SpeakAudio 13)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
 						)
 					)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(cond 
-						(
-						(== (inventory indexOf: (theIconBar curInvIcon?)) 28) (event claimed: 0))
+						((== (inventory indexOf: (theIconBar curInvIcon?)) iWand)
+							(event claimed: FALSE)
+						)
 						((not (curRoom script?))
 							(cond 
-								((== ((inventory at: 2) owner?) 206)
+								((== ((inventory at: iPie) owner?) 206)
 									(switch (inventory indexOf: (theIconBar curInvIcon?))
-										(4
-											(event claimed: 1)
-											(= local7 0)
+										(iCoin
+											(event claimed: TRUE)
+											(= paidWhat paySilver)
 											(curRoom setScript: getPie)
 										)
-										(11
-											(event claimed: 1)
-											(= local7 3)
+										(iGold
+											(event claimed: TRUE)
+											(= paidWhat payGoldCoin)
 											(curRoom setScript: getPie)
 										)
-										(3
-											(event claimed: 1)
-											(= local7 1)
+										(iNeedle
+											(event claimed: TRUE)
+											(= paidWhat payNeedle)
 											(curRoom setScript: getPie)
 										)
-										(9
-											(event claimed: 1)
-											(= local7 2)
+										(iHeart
+											(event claimed: TRUE)
+											(= paidWhat payHeart)
 											(curRoom setScript: getPie)
 										)
 										(else 
 											(SpeakAudio 19)
-											(event claimed: 1)
+											(event claimed: TRUE)
 										)
 									)
 								)
-								((== ((inventory at: 2) owner?) ego) (SpeakAudio 20) (event claimed: 1))
-								(else (SpeakAudio 13) (event claimed: 1))
+								((== ((inventory at: iPie) owner?) ego)
+									(SpeakAudio 20)
+									(event claimed: TRUE)
+								)
+								(else
+									(SpeakAudio 13)
+									(event claimed: TRUE)
+								)
 							)
 						)
 					)
@@ -861,7 +934,7 @@
 		view 225
 		loop 5
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 	)
 )
@@ -873,7 +946,7 @@
 		view 225
 		loop 6
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 	)
 )
@@ -885,7 +958,7 @@
 		view 224
 		loop 8
 		cel 2
-		signal $4000
+		signal ignrAct
 		cycleSpeed 3
 		illegalBits $0000
 		xStep 2
@@ -895,32 +968,31 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
-				(& (OnControl 4 (event x?) (event y?)) $0004)
+				(& (OnControl CMAP (event x?) (event y?)) cGREEN)
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 2)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 14)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
-					(if
-					(== (inventory indexOf: (theIconBar curInvIcon?)) 28)
-						(event claimed: 0)
+				(verbUse
+					(if (== (inventory indexOf: (theIconBar curInvIcon?)) iWand)
+						(event claimed: FALSE)
 					else
 						(SpeakAudio 21)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				)
 			)
@@ -934,7 +1006,7 @@
 		y 107
 		view 224
 		loop 15
-		signal $4000
+		signal ignrAct
 		cycleSpeed 2
 	)
 	
@@ -964,31 +1036,30 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 3)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 15)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 10)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
-					(if
-					(== (inventory indexOf: (theIconBar curInvIcon?)) 28)
-						(event claimed: 0)
+				(verbUse
+					(if (== (inventory indexOf: (theIconBar curInvIcon?)) iWand)
+						(event claimed: FALSE)
 					else
 						(SpeakAudio 22)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				)
 			)
@@ -1004,35 +1075,40 @@
 		loop 10
 		cel 1
 		priority 8
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 4)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not (curRoom script?))
 						(cond 
-							(
-							(and (not local3) (== ((inventory at: 2) owner?) 206))
+							((and (not local3) (== ((inventory at: iPie) owner?) 206))
 								(++ local3)
 								(HandsOff)
 								(curRoom setScript: doPie)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
-							((ego has: 2) (SpeakAudio 11) (event claimed: 1))
-							(else (SpeakAudio 12) (event claimed: 1))
+							((ego has: iPie)
+								(SpeakAudio 11)
+								(event claimed: TRUE)
+							)
+							(else
+								(SpeakAudio 12)
+								(event claimed: TRUE)
+							)
 						)
 					)
 				)
@@ -1053,19 +1129,19 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 5)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 16)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -1082,15 +1158,15 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 6)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -1098,34 +1174,38 @@
 )
 
 (instance counterTop of RFeature
-	(properties)
-	
+
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
-				(not (& (OnControl 4 (event x?) (event y?)) $0002))
+				(not (== (event type?) userEvent))
+				(not (& (OnControl CMAP (event x?) (event y?)) cBLUE))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 4)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not (curRoom script?))
 						(cond 
-							(
-							(and (not local3) (== ((inventory at: 2) owner?) 206))
+							((and (not local3) (== ((inventory at: iPie) owner?) 206))
 								(++ local3)
 								(HandsOff)
 								(curRoom setScript: doPie)
-								(event claimed: 1)
+								(event claimed: TRUE)
 							)
-							((ego has: 2) (SpeakAudio 11) (event claimed: 1))
-							(else (SpeakAudio 12) (event claimed: 1))
+							((ego has: iPie)
+								(SpeakAudio 11)
+								(event claimed: TRUE)
+							)
+							(else
+								(SpeakAudio 12)
+								(event claimed: TRUE)
+							)
 						)
 					)
 				)
@@ -1156,23 +1236,23 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 7)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
-					(event claimed: 1)
-					(if (or local6 (> (boy y?) (+ (ego y?) 25)))
+				(verbTalk
+					(event claimed: TRUE)
+					(if (or boyTalkCount (> (boy y?) (+ (ego y?) 25)))
 						(SpeakAudio 17)
 					else
-						(++ local6)
-						(User canInput: 0)
+						(++ boyTalkCount)
+						(User canInput: FALSE)
 						(boy setScript: boyTalk)
 					)
 				)
@@ -1193,23 +1273,23 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 8)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
-					(event claimed: 1)
-					(if (or local5 (> (woman y?) (+ (ego y?) 25)))
+				(verbTalk
+					(event claimed: TRUE)
+					(if (or womanTalkCount (> (woman y?) (+ (ego y?) 25)))
 						(SpeakAudio 18)
 					else
-						(++ local5)
-						(User canInput: 0)
+						(++ womanTalkCount)
+						(User canInput: FALSE)
 						(woman setScript: womanTalk)
 					)
 				)
@@ -1225,7 +1305,7 @@
 		view 550
 		loop 7
 		priority 8
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -1240,6 +1320,6 @@
 
 (instance poly1 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )

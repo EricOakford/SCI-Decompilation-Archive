@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 215)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -20,11 +20,11 @@
 	
 	(method (init)
 		(super init:)
-		(Load rsVIEW 792)
+		(Load VIEW 792)
 		(HandsOff)
 		(if (== prevRoomNum 8)
 			(ego
-				normal: 0
+				normal: FALSE
 				view: 792
 				setLoop: 2
 				setStep: 3 2
@@ -35,7 +35,7 @@
 			(self setScript: fromRoom8)
 		else
 			(ego
-				normal: 0
+				normal: FALSE
 				view: 792
 				setLoop: 1
 				setStep: 3 2
@@ -63,7 +63,6 @@
 )
 
 (instance enterScreen of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -92,13 +91,14 @@
 			(6
 				(ego setMotion: MoveTo 315 -25 self)
 			)
-			(7 (curRoom newRoom: 8))
+			(7
+				(curRoom newRoom: 8)
+			)
 		)
 	)
 )
 
 (instance fromRoom8 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -121,7 +121,9 @@
 			(4
 				(ego setMotion: MoveTo -30 141 self)
 			)
-			(5 (curRoom newRoom: 83))
+			(5
+				(curRoom newRoom: 83)
+			)
 		)
 	)
 )
@@ -136,15 +138,15 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 710)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)

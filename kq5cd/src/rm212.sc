@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 212)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -18,16 +18,29 @@
 
 (local
 	local0
-	theGPolyList15
-	local2
-	[local3 24] = [0 0 319 0 319 112 213 117 193 121 164 117 145 118 121 113 77 116 57 120 17 109 0 112]
+	thirstCount
+	thirstWarning
+	pts1 = [
+		0 0
+		319 0
+		319 112
+		213 117
+		193 121
+		164 117
+		145 118
+		121 113
+		77 116
+		57 120
+		17 109
+		0 112
+		]
 )
-(procedure (localproc_04b8)
+(procedure (InitDesertRoom)
 	(ego setMotion: 0 setCycle: 0)
-	(= globalCedric (++ theGPolyList15))
+	(= globalCedric (++ thirstCount))
 	(curRoom drawPic: 212)
 	(addToPics dispose:)
-	(switch (mod global314 4)
+	(switch (mod desertRoomX 4)
 		(0
 			(addToPics add: cliff1 doit:)
 		)
@@ -63,60 +76,71 @@
 		(switch prevRoomNum
 			(15
 				(ego posn: (ego x?) 187)
-				(= theGPolyList15 globalCedric)
+				(= thirstCount globalCedric)
 			)
 			(14
-				(= global314 1)
-				(= global315 1)
-				(= theGPolyList15 1)
+				(= desertRoomX 1)
+				(= desertRoomY 1)
+				(= thirstCount 1)
 			)
 			(else 
-				(= theGPolyList15 globalCedric)
+				(= thirstCount globalCedric)
 			)
 		)
 		(ego
 			view: 0
 			setPri: -1
-			illegalBits: -32768
+			illegalBits: cWHITE
 			setStep: 3 2
 			init:
 		)
-		(poly1 points: @local3 size: 12)
+		(poly1 points: @pts1 size: 12)
 		(self addObstacle: poly1)
 		(theMusic2 number: 3 loop: -1 play: 112)
 		(theMusic number: 2 loop: -1 play: 112)
 	)
 	
-	(method (doit &tmp egoEdgeHit)
+	(method (doit &tmp edge)
 		(cond 
 			(script (script doit:))
-			((and (== theGPolyList15 5) (not local2)) (= local2 1) (SpeakAudio 315))
-			((> theGPolyList15 6) (self setScript: dying))
-			((= egoEdgeHit (ego edgeHit?))
-				(switch egoEdgeHit
-					(3
-						(++ global315)
+			((and (== thirstCount 5) (not thirstWarning))
+				(= thirstWarning TRUE)
+				(SpeakAudio 315)
+			)
+			((> thirstCount 6)
+				(self setScript: dying)
+			)
+			((= edge (ego edgeHit?))
+				(switch edge
+					(SOUTH
+						(++ desertRoomY)
 						(curRoom newRoom: 15)
-						(= globalCedric theGPolyList15)
+						(= globalCedric thirstCount)
 					)
-					(2
+					(EAST
 						(cond 
-							((== (-- global314) 7)
+							((== (-- desertRoomX) 7)
 								(curRoom newRoom: 213)
 								(theMusic2 fade:)
 								(theMusic fade:)
 							)
-							((== global314 0) (= global314 0) (= global315 1) (curRoom newRoom: 14))
-							(else (localproc_04b8) (ego setCycle: KQ5SyncWalk))
+							((== desertRoomX 0)
+								(= desertRoomX 0)
+								(= desertRoomY 1)
+								(curRoom newRoom: 14)
+							)
+							(else (InitDesertRoom)
+								(ego setCycle: KQ5SyncWalk)
+							)
 						)
 					)
-					(4
-						(if (== (++ global314) 7)
+					(WEST
+						(if (== (++ desertRoomX) 7)
 							(theMusic2 fade:)
 							(theMusic fade:)
 							(curRoom newRoom: 213)
 						else
-							(localproc_04b8)
+							(InitDesertRoom)
 							(ego setCycle: KQ5SyncWalk)
 						)
 					)
@@ -138,36 +162,37 @@
 )
 
 (instance dying of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp toX temp1)
 		(switch (= state newState)
-			(0 (= cycles 5))
+			(0
+				(= cycles 5)
+			)
 			(1
 				(theMusic2 number: 785 loop: 1 play:)
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(ego setPri: 14 setMotion: PolyPath 163 160 self)
 			)
 			(2
 				(SpeakAudio 316 self)
-				(ego view: 358 cycleSpeed: 2 normal: 0 setCycle: End self)
+				(ego view: 358 cycleSpeed: 2 normal: 0 setCycle: EndLoop self)
 				((ego head?) hide:)
 			)
 			(3
 				(switch (ego loop?)
-					(0 (= temp0 25))
-					(else  (= temp0 60))
+					(0 (= toX 25))
+					(else  (= toX 60))
 				)
 				(buzzard2 init: setScript: dying2)
 				(buzzard
 					init:
 					setLoop: 6
 					setCycle: Walk
-					setMotion: MoveTo (- (ego x?) temp0) (ego y?) self
+					setMotion: MoveTo (- (ego x?) toX) (ego y?) self
 				)
 			)
 			(4
-				(buzzard setLoop: 4 cel: 4 setCycle: Beg self)
+				(buzzard setLoop: 4 cel: 4 setCycle: BegLoop self)
 			)
 			(5
 				(theMusic fade:)
@@ -179,30 +204,29 @@
 			(7
 				(cls)
 				(= deathMessage 317)
-				(EgoDead 264 0 End 20)
+				(EgoDead 264 0 EndLoop 20)
 			)
 		)
 	)
 )
 
 (instance dying2 of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1)
+
+	(method (changeState newState &tmp temp0 toX)
 		(switch (= state newState)
 			(0
 				(switch (ego loop?)
-					(0 (= temp1 60))
-					(else  (= temp1 25))
+					(0 (= toX 60))
+					(else  (= toX 25))
 				)
 				(buzzard2
 					setLoop: 7
 					setCycle: Walk
-					setMotion: MoveTo (+ (ego x?) temp1) (ego y?) self
+					setMotion: MoveTo (+ (ego x?) toX) (ego y?) self
 				)
 			)
 			(1
-				(buzzard2 setLoop: 5 cel: 4 setCycle: Beg self)
+				(buzzard2 setLoop: 5 cel: 4 setCycle: BegLoop self)
 			)
 			(2 (buzzard2 setLoop: 1 cel: 0))
 		)
@@ -221,14 +245,14 @@
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 764)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -246,18 +270,18 @@
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 765)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 766)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -270,7 +294,7 @@
 		y 48
 		view 360
 		priority 15
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 		illegalBits $0000
 	)
@@ -282,7 +306,7 @@
 		y 74
 		view 360
 		priority 15
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 		illegalBits $0000
 	)
@@ -330,6 +354,6 @@
 
 (instance poly1 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )

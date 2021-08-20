@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 200)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -18,29 +18,28 @@
 )
 
 (local
-	local0
+	bigView
 	local1
 	local2
 	local3
-	[local4 9] = [1010 100 62 4 11 32 30 32 35]
-	[local13 16] = [1 980 0 981 1 982 0 983 1 984 0 985 1 986]
-	[local29 9] = [1003 130 62 4 11 25 23 31 31]
+	local4 = [1010 100 62 4 11 32 30 32 35]
+	local13 = [1 980 0 981 1 982 0 983 1 984 0 985 1 986]
+	local29 = [1003 130 62 4 11 25 23 31 31]
 )
 (procedure (localproc_0012)
 	(= [local4 1] (Min (Max 0 (- (witch x?) 40)) 239))
 	(= [local29 1] (Min (Max 0 (- (ego x?) 40)) 239))
 )
 
-(instance witchRegion of Rgn
-	(properties)
+(instance witchRegion of Region
 	
 	(method (init)
 		(super init:)
 		(if (== curRoomNum 22)
-			(LoadMany 128 447 446 454 440 442)
-			(= local0 0)
+			(LoadMany VIEW 447 446 454 440 442)
+			(= bigView 0)
 		else
-			(= local0 1)
+			(= bigView 1)
 		)
 		(if (== prevRoomNum 208)
 			(self setScript: witchMsgScript)
@@ -49,22 +48,24 @@
 			(or
 				(and
 					(== curRoomNum 22)
-					(!= ((inventory at: 6) owner?) 200)
+					(!= ((inventory at: iBottle) owner?) 200)
 				)
 				(and
 					(!= curRoomNum 19)
 					(or
-						(and (Btst 18) (!= ((inventory at: 6) owner?) 200))
-						(and (not (Btst 18)) (< (Random 1 1000) 500))
+						(and (Btst fWitchCastSpell) (!= ((inventory at: iBottle) owner?) 200))
+						(and (not (Btst fWitchCastSpell)) (< (Random 1 1000) 500))
 					)
 				)
 			)
-			(witch view: (+ 440 local0) init:)
-			(Bset 90)
+			(witch view: (+ 440 bigView) init:)
+			(Bset fWitchHere)
 		)
 		(cond 
-			((== curRoomNum 22) (theMusic number: 41 loop: -1 vol: 127 playBed:))
-			((Btst 90)
+			((== curRoomNum 22)
+				(theMusic number: 41 loop: -1 vol: 127 playBed:)
+			)
+			((Btst fWitchHere)
 				(if (!= (theMusic number?) 20)
 					(theMusic number: 20 loop: -1 vol: 127 playBed:)
 				)
@@ -72,8 +73,8 @@
 			(
 				(and
 					(== curRoomNum 24)
-					(== ((inventory at: 6) owner?) 200)
-					(not (Btst 56))
+					(== ((inventory at: iBottle) owner?) 200)
+					(not (Btst fCaughtElf))
 				)
 				(theMusic number: 28 loop: -1 vol: 127 playBed:)
 			)
@@ -84,17 +85,20 @@
 				)
 				(theMusic number: 34 loop: -1 vol: 127 playBed:)
 			)
-			(
-			(or (!= (theMusic number?) 4) (== curRoomNum 19)) (theMusic number: 4 loop: -1 vol: 127 playBed:))
+			((or (!= (theMusic number?) 4) (== curRoomNum 19))
+				(theMusic number: 4 loop: -1 vol: 127 playBed:)
+			)
 		)
 	)
 	
 	(method (doit)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (dispose)
-		(Bclr 90)
+		(Bclr fWitchHere)
 		(super dispose:)
 	)
 	
@@ -111,7 +115,6 @@
 )
 
 (instance witchMsgScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -126,8 +129,7 @@
 )
 
 (instance poofOutScript of Script
-	(properties)
-	
+
 	(method (changeState newState &tmp egoX egoY)
 		(switch (= state newState)
 			(0
@@ -135,25 +137,25 @@
 				(= egoX (ego x?))
 				(= egoY (ego y?))
 				(switch register
-					(1 (= egoY (- egoY 0)))
-					(3 (= egoY (+ egoY 60)))
-					(2 (= egoX (+ egoX 20)))
-					(4 (= egoX (- egoX 20)))
+					(1 (-= egoY 0))
+					(3 (+= egoY 60))
+					(2 (+= egoX 20))
+					(4 (-= egoX 20))
 				)
-				(ego ignoreActors: 1 setMotion: MoveTo egoX egoY self)
-				(if (Btst 90)
+				(ego ignoreActors: TRUE setMotion: MoveTo egoX egoY self)
+				(if (Btst fWitchHere)
 					(witch
-						view: (+ 442 local0)
+						view: (+ 442 bigView)
 						loop: 0
 						cel: 6
 						cycleSpeed: 2
-						setCycle: Beg
+						setCycle: BegLoop
 					)
 					(theAudio number: 8095 loop: 1 play:)
 				)
 			)
 			(1
-				(if (Btst 90)
+				(if (Btst fWitchHere)
 					(switch register
 						(1 (= cycles 25))
 						(3 (= cycles 1))
@@ -172,36 +174,37 @@
 )
 
 (instance poofIn of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(witch
-					view: (+ 442 local0)
+					view: (+ 442 bigView)
 					loop: 0
 					cel: 0
 					cycleSpeed: 2
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
-				(witch setCycle: End self)
+				(witch setCycle: EndLoop self)
 				(theAudio number: 8095 loop: 1 play:)
 			)
 			(2
-				(witch view: (+ 440 local0))
+				(witch view: (+ 440 bigView))
 				(Face witch ego 5)
 				(self cue:)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance zapHim of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if
@@ -232,61 +235,63 @@
 		)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp ang1To2)
 		(switch (= state newState)
 			(0
-				(= temp0
+				(= ang1To2
 					(GetAngle (witch x?) (witch y?) (ego x?) (ego y?))
 				)
 				(witch
-					view: (+ 442 local0)
+					view: (+ 442 bigView)
 					loop: (cond 
-						((< temp0 135) 0)
-						((< temp0 225) 2)
+						((< ang1To2 135) 0)
+						((< ang1To2 225) 2)
 						(else 1)
 					)
 					cel: 0
 					cycleSpeed: 2
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
-				(witch setCycle: End self)
+				(witch setCycle: EndLoop self)
 				(theAudio number: 8095 loop: 1 play:)
 			)
 			(2
-				(Bset 18)
-				(= temp0
+				(Bset fWitchCastSpell)
+				(= ang1To2
 					(GetAngle (witch x?) (witch y?) (ego x?) (ego y?))
 				)
 				(witch
-					view: (+ 446 local0)
+					view: (+ 446 bigView)
 					loop:
 						(cond 
-							((< temp0 45) 3)
-							((< temp0 135) 0)
-							((< temp0 225) 2)
-							((< temp0 315) 1)
+							((< ang1To2 45) 3)
+							((< ang1To2 135) 0)
+							((< ang1To2 225) 2)
+							((< ang1To2 315) 1)
 							(else 3)
 						)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(3 (witch setCycle: End))
+			(3
+				(witch setCycle: EndLoop)
+			)
 			(4
-				(if (and (ego has: 27) (Btst 84))
-					(fireball loop: 9 cel: 0 setCycle: End self)
+				(if (and (ego has: iAmulet) (Btst fWearingAmulet))
+					(fireball loop: 9 cel: 0 setCycle: EndLoop self)
 					(theAudio number: 8082 loop: 1 play:)
-					(= state (+ state 4))
+					(+= state 4)
 				else
 					(fireball dispose:)
 					((ego head?) hide:)
 					(ego
 						normal: 0
-						view: (+ 454 local0)
+						view: (+ 454 bigView)
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 					(theMusic3 number: 79 priority: 15 loop: 1 vol: 127 play:)
 					(theMusic stop:)
@@ -300,7 +305,7 @@
 			)
 			(7
 				(if (not register)
-					(= state (- state 2))
+					(-= state 2)
 					(++ register)
 					(= seconds 2)
 				else
@@ -322,7 +327,7 @@
 			(11
 				(= register (witch loop?))
 				(witch
-					view: (+ 448 local0)
+					view: (+ 448 bigView)
 					loop: (if (not register) 1 else 0)
 					cel:
 					(switch register
@@ -330,11 +335,11 @@
 						(3 0)
 						(else  1)
 					)
-					setCycle: CT 6 1 self
+					setCycle: CycleTo 6 1 self
 				)
 			)
 			(12
-				(witch setCycle: End self)
+				(witch setCycle: EndLoop self)
 				(theAudio number: 8083 loop: 1 play:)
 			)
 			(13
@@ -343,21 +348,21 @@
 					(3 (= register 0))
 					(else  (= register 1))
 				)
-				(witch setCycle: CT register -1 self)
+				(witch setCycle: CycleTo register -1 self)
 			)
 			(14
 				(= local1 1)
-				(= temp0
+				(= ang1To2
 					(GetAngle (witch x?) (witch y?) (ego x?) (ego y?))
 				)
 				(witch
-					view: (+ 440 local0)
+					view: (+ 440 bigView)
 					loop:
 						(cond 
-							((< temp0 45) 3)
-							((< temp0 135) 0)
-							((< temp0 225) 2)
-							((< temp0 315) 1)
+							((< ang1To2 45) 3)
+							((< ang1To2 135) 0)
+							((< ang1To2 225) 2)
+							((< ang1To2 315) 1)
 							(else 3)
 						)
 				)
@@ -369,8 +374,7 @@
 )
 
 (instance talkToWitch of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -387,12 +391,11 @@
 )
 
 (instance killTheBitch of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego put: 6 200)
+				(ego put: iBottle 200)
 				(SolvePuzzle 4)
 				(HandsOff)
 				(ego
@@ -411,7 +414,7 @@
 					(ego view: 408 loop: 1)
 				)
 				((ego head?) hide:)
-				(ego normal: 0 cel: 0 cycleSpeed: 2 setCycle: CT 3 1 self)
+				(ego normal: 0 cel: 0 cycleSpeed: 2 setCycle: CycleTo 3 1 self)
 			)
 			(3
 				(if (== curRoomNum 22)
@@ -429,7 +432,7 @@
 						init:
 					)
 				)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4
 				(= globalCedric 200)
@@ -445,7 +448,7 @@
 (instance fireball of Actor
 	(properties
 		view 452
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
@@ -464,14 +467,12 @@
 	)
 )
 
-(instance witchCage of Cage
-	(properties)
-)
+(instance witchCage of Cage)
 
 (instance witch of Actor
 	(properties
 		view 440
-		signal $4000
+		signal ignrAct
 		illegalBits $0000
 	)
 	
@@ -494,7 +495,7 @@
 			(26 (self posn: 243 121))
 		)
 		(HandsOff)
-		(if (Btst 18)
+		(if (Btst fWitchCastSpell)
 			(= local1 1)
 			(HandsOff)
 			(curRoom setScript: poofIn)
@@ -544,53 +545,57 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (== curRoomNum 22)
 						(SpeakAudio 854)
 					else
 						(SpeakAudio 855)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
-					(if (and (ego has: 27) (Btst 18)) (SpeakAudio 856))
-					(event claimed: 1)
+				(verbDo
+					(if (and (ego has: iAmulet) (Btst fWitchCastSpell))
+						(SpeakAudio 856)
+					)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(6
-							(event claimed: 1)
+						(iBottle
+							(event claimed: TRUE)
 							(self setScript: killTheBitch)
 						)
-						(28 (event claimed: 0))
-						(27
-							(event claimed: 1)
+						(iWand
+							(event claimed: FALSE)
+						)
+						(iAmulet
+							(event claimed: TRUE)
 							(SpeakAudio 857)
 						)
 						(else 
 							(localproc_0012)
 							(proc762_1 @local4 989)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
-				(JOY_DOWN
-					(if (Btst 19)
+				(verbTalk
+					(if (Btst fTalkedToWitch)
 						(if (not (self script?))
 							(self setScript: talkToTheBitch)
 						)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					else
-						(Bset 19)
+						(Bset fTalkedToWitch)
 						(HandsOff)
 						(self setScript: talkToWitch)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				)
 			)
@@ -599,7 +604,6 @@
 )
 
 (instance talkToTheBitch of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
@@ -615,6 +619,6 @@
 
 (instance bottle of View
 	(properties
-		signal $0004
+		signal notUpd
 	)
 )

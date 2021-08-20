@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 208)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use KQ5Room)
 (use Motion)
@@ -23,7 +23,7 @@
 	(method (init)
 		(super init:)
 		(HandsOff)
-		(Load rsSOUND 76)
+		(Load SOUND 76)
 		(= local0 1)
 		(= local1 1)
 		(if (== globalCedric 200)
@@ -52,16 +52,18 @@
 		(theMusic number: 109 loop: -1 vol: 127 playBed:)
 		(if (not (HaveMouse))
 			(if global400
-				(theGame setCursor: theCursor 1 164 162)
+				(theGame setCursor: theCursor TRUE 164 162)
 			else
-				(theGame setCursor: theCursor 1)
+				(theGame setCursor: theCursor TRUE)
 				(Intersections 164 162)
 			)
 		)
 	)
 	
 	(method (doit &tmp temp0)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (dispose)
@@ -79,8 +81,7 @@
 )
 
 (instance OpenBottle of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
 		(if
@@ -102,10 +103,10 @@
 			(0 (= cycles 15))
 			(1
 				(theAudio number: 8075 loop: 1 play:)
-				(client setCycle: End self)
+				(client setCycle: EndLoop self)
 			)
 			(2
-				(client loop: 1 cel: 0 setCycle: End)
+				(client loop: 1 cel: 0 setCycle: EndLoop)
 				(= cycles 15)
 			)
 			(3
@@ -117,7 +118,7 @@
 					init:
 					stopUpd:
 				)
-				(client loop: 2 cel: 0 setCycle: End self)
+				(client loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(client
@@ -133,7 +134,7 @@
 					illegalBits: 0
 					posn: (- (bottle x?) 2) (- (bottle y?) 18)
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 				(theMusic4 number: 74 loop: 1 vol: 127 play:)
@@ -141,18 +142,18 @@
 			(5)
 			(6
 				(theMusic4 stop:)
-				(genie loop: 2 setCycle: Fwd)
+				(genie loop: 2 setCycle: Forward)
 				(theAudio number: 9112 loop: 1 play: self)
 			)
 			(7
 				(cls)
-				(genie loop: 3 cel: 0 setCycle: End self)
+				(genie loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(theAudio number: 8073 loop: 1 play:)
 				(genie
 					setLoop: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (+ (genie x?) 20) (genie y?)
 				)
 				(client
@@ -160,19 +161,19 @@
 					loop: 2
 					cel: 0
 					posn: (- (bottle x?) 1) (- (bottle y?) 19)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
 				(client hide:)
-				(bottle setCycle: End self)
+				(bottle setCycle: EndLoop self)
 			)
 			(10
-				(genie setLoop: 4 cel: 0 setCycle: End self)
+				(genie setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(11
 				(if (== globalCedric 200)
-					(bottle loop: 3 cel: 0 setCycle: End self)
+					(bottle loop: 3 cel: 0 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -181,15 +182,17 @@
 				(if (== globalCedric 200)
 					(= local0 1)
 					(= local1 1)
-					(genie setLoop: 4 cel: 0 setCycle: End self)
+					(genie setLoop: 4 cel: 0 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
 			)
 			(13
-				(genie setLoop: 5 cel: 0 setCycle: End self)
+				(genie setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
-			(14 (= seconds 3))
+			(14
+				(= seconds 3)
+			)
 			(15
 				(if (== globalCedric 200)
 					(curRoom newRoom: prevRoomNum)
@@ -202,13 +205,9 @@
 	)
 )
 
-(instance genie of Actor
-	(properties)
-)
+(instance genie of Actor)
 
-(instance witch of Actor
-	(properties)
-)
+(instance witch of Actor)
 
 (instance bottle of Prop
 	(properties

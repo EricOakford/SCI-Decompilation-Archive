@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 204)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -21,31 +21,38 @@
 	[local0 2]
 	local2
 	local3
-	local4
+	paidWhat
 	local5
 	local6
 	local7
 	local8
 	local9
-	[local10 9] = [1019 140 48 3 11 26 20 24 27]
-	[local19 9] = [1003 140 70 4 11 25 23 31 31]
-	[local28 9] = [1003 200 70 4 11 25 23 31 31]
-	[local37 8] = [0 5007 1 5008 0 5009]
-	[local45 14] = [0 5010 1 5011 0 5012 1 5013 0 5014 1 5015]
-	[local59 16] = [0 5016 1 5017 0 5018 1 5019 0 5020 1 5021 0 5022]
-	[local75 6] = [0 5023 1 5024]
-	[local81 10] = [0 5025 1 5026 0 5027 1 5028]
-	[local91 10] = [0 5029 1 5030 0 5031 1 5032]
-	[local101 6] = [0 5036 1 5037]
+	local10 = [1019 140 48 3 11 26 20 24 27]
+	local19 = [1003 140 70 4 11 25 23 31 31]
+	local28 = [1003 200 70 4 11 25 23 31 31]
+	local37 = [0 5007 1 5008 0 5009]
+	local45 = [0 5010 1 5011 0 5012 1 5013 0 5014 1 5015]
+	local59 = [0 5016 1 5017 0 5018 1 5019 0 5020 1 5021 0 5022]
+	local75 = [0 5023 1 5024]
+	local81 = [0 5025 1 5026 0 5027 1 5028]
+	local91 = [0 5029 1 5030 0 5031 1 5032]
+	local101 = [0 5036 1 5037]
 )
-(instance toyShop of Rgn
-	(properties)
+
+(enum ;paid what
+	paidPuppet
+	paidNeedle
+	paidHeart
+	paidGold
+)
+
+(instance toyShop of Region
 	
 	(method (init)
 		(super init:)
 		(curRoom setFeatures: fishBowl shopRoom)
 		(theMusic number: 61 loop: -1 play:)
-		(fish cycleSpeed: 3 setCycle: Fwd init:)
+		(fish cycleSpeed: 3 setCycle: Forward init:)
 		(toyMaker init: stopUpd:)
 		(door init:)
 		(curRoom setScript: greet)
@@ -55,15 +62,21 @@
 		(if (== (theGame detailLevel:) 3)
 			(girl setScript: girlPlay)
 		)
-		(if (== ((inventory at: 29) owner?) 204)
+		(if (== ((inventory at: iSled) owner?) 204)
 			(sled init: stopUpd:)
 		)
 		(= local8 100)
 	)
 	
 	(method (doit &tmp [temp0 2])
-		(if (< global363 7) (++ local5) else (= global363 0))
-		(if (< local6 1005) (++ local6))
+		(if (< global363 7)
+			(++ local5)
+		else
+			(= global363 0)
+		)
+		(if (< local6 1005)
+			(++ local6)
+		)
 		(cond 
 			(script (script doit:))
 			(
@@ -107,24 +120,23 @@
 )
 
 (instance sonScript of Script
-	(properties)
 	
-	(method (doit &tmp newEvent)
+	(method (doit &tmp event)
 		(super doit:)
 		(if
 			(or
-				(== ((= newEvent (Event new:)) type?) 1)
-				(== (newEvent type?) 4)
+				(== ((= event (Event new:)) type?) 1)
+				(== (event type?) 4)
 			)
 			(= seconds 0)
 			(= cycles 1)
 		)
-		(newEvent dispose:)
+		(event dispose:)
 	)
 	
 	(method (changeState newState &tmp temp0 temp1)
 		(switch (= state newState)
-			(0 (door setCycle: End self))
+			(0 (door setCycle: EndLoop self))
 			(1
 				(toyMaker setScript: 0 setCycle: 0)
 				(toyHead loop: 14 x: 159 show: init:)
@@ -223,7 +235,7 @@
 			(4
 				(boyHead setCycle: 0 dispose:)
 				(cls)
-				(door setCycle: Beg self)
+				(door setCycle: BegLoop self)
 			)
 			(5
 				(theIconBar enable:)
@@ -241,8 +253,7 @@
 )
 
 (instance greet of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -266,8 +277,7 @@
 )
 
 (instance lookSled of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -295,49 +305,47 @@
 )
 
 (instance buildToy of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(lArm show: loop: 5 stopUpd:)
-				(rArm show: loop: 6 x: 160 setCycle: Fwd)
+				(rArm show: loop: 6 x: 160 setCycle: Forward)
 				(= seconds (Random 3 8))
 			)
 			(1
-				(rArm setCycle: End)
+				(rArm setCycle: EndLoop)
 				(= seconds (Random 3 8))
 				(= state -1)
 			)
 			(2
-				(toyMaker loop: 0 cycleSpeed: 3 setCycle: Fwd)
+				(toyMaker loop: 0 cycleSpeed: 3 setCycle: Forward)
 			)
 		)
 	)
 )
 
 (instance girlPlay of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(girl loop: 0 cycleSpeed: 2 setCycle: End)
+				(girl loop: 0 cycleSpeed: 2 setCycle: EndLoop)
 				(= seconds (Random 3 8))
 			)
-			(1 (girl setCycle: Beg self))
+			(1 (girl setCycle: BegLoop self))
 			(2
-				(girl loop: 1 setCycle: End self)
+				(girl loop: 1 setCycle: EndLoop self)
 			)
 			(3
-				(girl loop: 3 cycleSpeed: 4 setCycle: Fwd)
+				(girl loop: 3 cycleSpeed: 4 setCycle: Forward)
 				(= seconds (Random 5 10))
 			)
 			(4
-				(girl loop: 1 cycleSpeed: 1 setCycle: Beg self)
+				(girl loop: 1 cycleSpeed: 1 setCycle: BegLoop self)
 			)
 			(5
-				(girl loop: 2 cycleSpeed: 4 setCycle: Fwd)
+				(girl loop: 2 cycleSpeed: 4 setCycle: Forward)
 				(= seconds (Random 5 10))
 				(= state -1)
 			)
@@ -346,25 +354,24 @@
 )
 
 (instance girlTalk of Script
-	(properties)
-	
-	(method (doit &tmp newEvent)
+
+	(method (doit &tmp event)
 		(super doit:)
 		(if
 			(or
-				(== ((= newEvent (Event new:)) type?) 1)
-				(== (newEvent type?) 4)
+				(== ((= event (Event new:)) type?) mouseDown)
+				(== (event type?) keyDown)
 			)
 			(= seconds 0)
 			(= cycles 1)
 		)
-		(newEvent dispose:)
+		(event dispose:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(girl loop: 4 cel: 0 setScript: 0 setCycle: End self)
+				(girl loop: 4 cel: 0 setScript: 0 setCycle: EndLoop self)
 			)
 			(1
 				(girlHead init: setCycle: MouthSync 5001)
@@ -410,7 +417,6 @@
 )
 
 (instance manTalk of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -437,31 +443,38 @@
 )
 
 (instance getSled of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(switch local4
-					(0 (ego put: 12 204))
-					(1 (ego put: 3 204))
-					(2 (ego put: 9 204))
-					(3 (ego put: 11 204))
+				(switch paidWhat
+					(paidPuppet
+						(ego put: iPuppet 204)
+					)
+					(paidNeedle
+						(ego put: iNeedle 204)
+					)
+					(paidHeart
+						(ego put: iHeart 204)
+					)
+					(paidGold
+						(ego put: iGold 204)
+					)
 				)
 				(HandsOff)
 				(toyMaker setScript: 0)
 				(ego setMotion: PolyPath 172 134 self)
 			)
 			(1
-				(if (== local4 0)
+				(if (== paidWhat paidPuppet)
 					((ego head?) hide:)
 					(ego
-						normal: 0
+						normal: FALSE
 						view: 178
 						loop: 12
 						cel: 0
 						cycleSpeed: 3
-						setCycle: CT 1 1 self
+						setCycle: CycleTo 1 1 self
 					)
 				else
 					(= cycles 1)
@@ -475,22 +488,22 @@
 					loop: 6
 					cel: 0
 					cycleSpeed: 3
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(3
-				(if (== local4 0)
-					(ego setCycle: End self)
-					(toyMaker setCycle: End self)
+				(if (== paidWhat paidPuppet)
+					(ego setCycle: EndLoop self)
+					(toyMaker setCycle: EndLoop self)
 				else
-					(toyMaker setCycle: Beg self)
+					(toyMaker setCycle: BegLoop self)
 					(= cycles 1)
 				)
 			)
 			(4)
 			(5
 				(ego
-					normal: 1
+					normal: TRUE
 					view: 0
 					loop: 3
 					cycleSpeed: 0
@@ -500,23 +513,23 @@
 				(= cycles 3)
 			)
 			(6
-				(switch local4
-					(0
+				(switch paidWhat
+					(paidPuppet
 						(proc762_0 @local10 @local19 @local59)
 					)
-					(1
+					(paidNeedle
 						(proc762_0 @local19 @local10 @local75)
 					)
-					(2
+					(paidHeart
 						(proc762_0 @local19 @local10 @local81)
 					)
-					(3
+					(paidGold
 						(proc762_0 @local19 @local10 @local91)
 					)
 				)
 				(ego setMotion: MoveTo 232 131 self)
-				(if (== local4 0)
-					(toyMaker loop: 11 setCycle: End self)
+				(if (== paidWhat paidPuppet)
+					(toyMaker loop: 11 setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -529,20 +542,20 @@
 					view: 178
 					loop: 7
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(9
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(sled hide: dispose:)
-				(ego get: 29)
+				(ego get: iSled)
 			)
 			(10
 				(proc762_1 @local28 5033 self)
 			)
 			(11
-				(switch local4
-					(0
+				(switch paidWhat
+					(paidPuppet
 						(proc762_1 @local10 5035 self)
 					)
 					(else 
@@ -582,7 +595,7 @@
 		y 87
 		view 182
 		priority 5
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 3
 		detailLevel 3
 	)
@@ -598,7 +611,7 @@
 		view 178
 		loop 9
 		priority 6
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 	
@@ -614,7 +627,7 @@
 		view 182
 		loop 3
 		priority 5
-		signal $0010
+		signal fixPriOn
 		detailLevel 3
 	)
 	
@@ -629,7 +642,7 @@
 		view 178
 		loop 14
 		priority 5
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 		cycleSpeed 2
 	)
 	
@@ -645,30 +658,30 @@
 		view 182
 		loop 1
 		priority 4
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 838)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 9071)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
-					(if (not (Btst 108))
-						(Bset 108)
+				(verbTalk
+					(if (not (Btst fTalkedToToyMaker))
+						(Bset fTalkedToToyMaker)
 						(self setScript: 0)
 						(Face ego toyMaker 5)
 						(HandsOff)
@@ -676,41 +689,43 @@
 					else
 						(SpeakAudio 847)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(12
-							(if (not (ego has: 29))
+						(iPuppet
+							(if (not (ego has: iSled))
 								(SolvePuzzle 4)
-								(= local4 0)
+								(= paidWhat paidPuppet)
 								(toyShop setScript: getSled)
 							else
 								(SpeakAudio 849)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(28 (event claimed: 0))
-						(3
-							(if (not (ego has: 29))
-								(= local4 1)
+						(iWand
+							(event claimed: FALSE)
+						)
+						(iNeedle
+							(if (not (ego has: iSled))
+								(= paidWhat paidNeedle)
 								(toyShop setScript: getSled)
 							else
 								(SpeakAudio 849)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(9
-							(if (not (ego has: 29))
-								(= local4 2)
+						(iHeart
+							(if (not (ego has: iSled))
+								(= paidWhat paidHeart)
 								(toyShop setScript: getSled)
 							else
 								(SpeakAudio 849)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(4
-							(if (not (ego has: 29))
+						(iCoin
+							(if (not (ego has: iSled))
 								(Face ego toyMaker 5)
 								(RedrawCast)
 								((ego head?)
@@ -728,20 +743,20 @@
 							else
 								(SpeakAudio 849)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(11
-							(if (not (ego has: 29))
-								(= local4 3)
+						(iGold
+							(if (not (ego has: iSled))
+								(= paidWhat paidGold)
 								(toyShop setScript: getSled)
 							else
 								(SpeakAudio 849)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 						(else 
 							(SpeakAudio 850)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -757,58 +772,60 @@
 		view 178
 		loop 1
 		priority 9
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 839)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local2)
 						(++ local2)
 						(toyShop setScript: lookSled)
 					else
 						(SpeakAudio 844)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(12
+						(iPuppet
 							(SolvePuzzle 4)
-							(= local4 0)
+							(= paidWhat paidPuppet)
 							(toyShop setScript: getSled)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(28 (event claimed: 0))
-						(3
-							(= local4 1)
+						(iWand
+							(event claimed: FALSE)
+						)
+						(iNeedle
+							(= paidWhat paidNeedle)
 							(toyShop setScript: getSled)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(9
-							(= local4 2)
+						(iHeart
+							(= paidWhat paidHeart)
 							(toyShop setScript: getSled)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(4
+						(iCoin
 							(proc762_0 @local19 @local10 @local101)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 						(else 
 							(SpeakAudio 850)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -824,7 +841,7 @@
 		view 178
 		loop 13
 		priority 2
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 		cycleSpeed 2
 	)
 )
@@ -836,26 +853,26 @@
 		view 178
 		loop 2
 		priority 1
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 840)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 845)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -868,7 +885,7 @@
 		y 100
 		view 178
 		priority 9
-		signal $0010
+		signal fixPriOn
 		detailLevel 3
 	)
 	
@@ -888,15 +905,15 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 841)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -910,7 +927,7 @@
 		view 190
 		loop 5
 		priority 5
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 		cycleSpeed 2
 		detailLevel 3
 	)
@@ -922,7 +939,7 @@
 		y 132
 		view 190
 		priority 2
-		signal $0010
+		signal fixPriOn
 		detailLevel 3
 	)
 	
@@ -930,30 +947,32 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 842)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 846)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 848)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 851)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -972,15 +991,15 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 843)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)

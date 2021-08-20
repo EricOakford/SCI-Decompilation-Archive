@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 203)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -22,37 +22,43 @@
 	local0
 	[local1 2]
 	local3
-	local4
-	local5
-	local6
-	gEgoIllegalBits
+	tailorTalkCount
+	helpCounterCount
+	paidWhat
+	saveIllegalBits
 	[local8 2]
-	[local10 9] = [1015 130 90 4 8 32 26 28 29]
-	[local19 9] = [1003 138 100 4 11 25 23 31 31]
-	[local28 14] = [0 1190 1 1191 0 1192 1 1193 1 1194 0 1197]
-	[local42 6] = [0 1196 1 1198]
-	[local48 6] = [0 1195 1 1199]
-	[local54 6] = [0 1200 1 1201]
-	[local60 8] = [1 1202 1 1203 1 1204]
-	[local68 6] = [0 1205 1 1206]
-	[local74 12] = [0 1207 0 1208 0 1209 1 1210 0 1211]
-	[local86 6] = [0 1212 1 1213]
+	local10 = [1015 130 90 4 8 32 26 28 29]
+	local19 = [1003 138 100 4 11 25 23 31 31]
+	local28 = [0 1190 1 1191 0 1192 1 1193 1 1194 0 1197]
+	local42 = [0 1196 1 1198]
+	local48 = [0 1195 1 1199]
+	local54 = [0 1200 1 1201]
+	local60 = [1 1202 1 1203 1 1204]
+	local68 = [0 1205 1 1206]
+	local74 = [0 1207 0 1208 0 1209 1 1210 0 1211]
+	local86 = [0 1212 1 1213]
 )
-(instance tailorShop of Rgn
-	(properties)
+
+(enum ;paid what
+	paidNeedle
+	paidGold
+	paidHeart
+)
+
+(instance tailorShop of Region
 	
 	(method (init)
 		(super init:)
 		(curRoom setFeatures: shopRoom)
 		(theMusic number: 61 loop: -1 play:)
-		(= gEgoIllegalBits (ego illegalBits?))
+		(= saveIllegalBits (ego illegalBits?))
 		(ego
 			view: 0
 			loop: 3
 			setStep: 3 2
 			posn: 152 166
 			ignoreActors: 0
-			illegalBits: -32768
+			illegalBits: cWHITE
 		)
 		(if (== (theGame detailLevel:) 3)
 			(employee
@@ -69,12 +75,14 @@
 		(tailor
 			setCycle: Walk
 			ignoreActors: 0
-			observeControl: 2
+			observeControl: cBLUE
 			init:
 		)
 		(curRoom setScript: greet)
-		(if (Btst 58) (++ local4))
-		(if (== ((inventory at: 26) owner?) 203)
+		(if (Btst 58)
+			(++ tailorTalkCount)
+		)
+		(if (== ((inventory at: iCloak) owner?) 203)
 			(cloak init:)
 		)
 		(if (== (theGame detailLevel:) 3)
@@ -85,13 +93,15 @@
 	)
 	
 	(method (doit)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (dispose)
-		(ego illegalBits: gEgoIllegalBits)
-		(DisposeScript 971)
-		(DisposeScript 985)
+		(ego illegalBits: saveIllegalBits)
+		(DisposeScript FOLLOW)
+		(DisposeScript AVOIDER)
 		(theMusic fade:)
 		(super dispose:)
 	)
@@ -105,11 +115,13 @@
 )
 
 (instance greet of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 5))
+			(0
+				(HandsOff)
+				(= cycles 5)
+			)
 			(1
 				(ego setMotion: MoveTo 152 152 self)
 			)
@@ -126,27 +138,30 @@
 )
 
 (instance soldCloak of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (ego has: 26)
+				(if (ego has: iCloak)
 					(HandsOff)
 					(SpeakAudio 833)
 					(client setScript: 0)
 					(HandsOn)
 				else
-					(switch local6
-						(0
-							(ego put: 3 203)
+					(switch paidWhat
+						(paidNeedle
+							(ego put: iNeedle 203)
 							(SolvePuzzle 4)
 						)
-						(1 (ego put: 11 203))
-						(2 (ego put: 9 203))
+						(paidGold
+							(ego put: iGold 203)
+						)
+						(paidHeart
+							(ego put: iHeart 203)
+						)
 					)
 					(HandsOff)
-					(if (& (ego onControl: 0) $0010)
+					(if (& (ego onControl: 0) cRED)
 						(ego setMotion: MoveTo 197 128 self)
 					else
 						(= cycles 1)
@@ -155,7 +170,7 @@
 			)
 			(1
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo (- (tailor x?) 8) (+ (tailor y?) 8) self
 				)
 			)
@@ -167,8 +182,8 @@
 					loop: 0
 					cel: 0
 					setAvoider: 0
-					ignoreControl: 8192
-					setCycle: End self
+					ignoreControl: cLCYAN
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -177,44 +192,44 @@
 					view: 164
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
-				(ego setCycle: Beg self)
-				(tailor setCycle: Beg self)
+				(ego setCycle: BegLoop self)
+				(tailor setCycle: BegLoop self)
 			)
 			(5)
 			(6
-				(ego view: 0 normal: 1 loop: 3 setCycle: KQ5SyncWalk)
+				(ego view: 0 normal: TRUE loop: 3 setCycle: KQ5SyncWalk)
 				((ego head?) show:)
 				(= cycles 2)
 			)
 			(7
 				(RedrawCast)
-				(switch local6
-					(0
-						(ego get: 26)
+				(switch paidWhat
+					(paidNeedle
+						(ego get: iCloak)
 						(proc762_0 @local10 @local19 @local28)
 					)
-					(1
-						(ego get: 26)
+					(paidGold
+						(ego get: iCloak)
 						(proc762_0 @local19 @local10 @local42)
 					)
-					(2
-						(ego get: 26)
+					(paidHeart
+						(ego get: iCloak)
 						(proc762_0 @local19 @local10 @local48)
 					)
 				)
 				(tailor
 					view: 162
 					setCycle: Walk
-					ignoreControl: 2
-					setAvoider: (Avoid new:)
+					ignoreControl: cBLUE
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 216 127 self
 				)
 				(ego
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 205 133 self
 				)
 			)
@@ -226,13 +241,13 @@
 					cel: 0
 					setPri: 7
 					setAvoider: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego loop: 7 cel: 3 setAvoider: 0)
 				(cloak dispose:)
 			)
 			(10
-				(tailor loop: 4 cel: 0 setCycle: End self)
+				(tailor loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(11
 				(proc762_0 @local19 @local10 @local54)
@@ -243,8 +258,8 @@
 					setLoop: -1
 					setCycle: Walk
 					setPri: -1
-					illegalBits: 2048
-					setAvoider: (Avoid new:)
+					illegalBits: cLCYAN
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 202 116 self
 				)
 			)
@@ -262,14 +277,13 @@
 )
 
 (instance helpWithCloak of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(tailor
-					ignoreControl: 2
-					setAvoider: (Avoid new:)
+					ignoreControl: cBLUE
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 216 127 self
 				)
 				(ego setMotion: PolyPath 205 133 self)
@@ -285,11 +299,11 @@
 					setPri: 7
 					cel: 0
 					setAvoider: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(tailor loop: 4 cel: 0 setCycle: End self)
+				(tailor loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(ego view: 10)
@@ -297,10 +311,10 @@
 				((ego head?) cel: -1)
 				(proc762_0 @local19 @local10 @local60)
 				(ego view: 0)
-				(tailor view: 164 loop: 4 setCycle: Beg self)
+				(tailor view: 164 loop: 4 setCycle: BegLoop self)
 			)
 			(5
-				(tailor loop: 3 cel: 7 setCycle: Beg self)
+				(tailor loop: 3 cel: 7 setCycle: BegLoop self)
 			)
 			(6
 				(cloak show:)
@@ -323,7 +337,6 @@
 )
 
 (instance helpCounter of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -335,12 +348,12 @@
 				)
 			)
 			(1
-				(employee setLoop: 0 cel: 0 setCycle: End)
+				(employee setLoop: 0 cel: 0 setCycle: EndLoop)
 				(empHand cel: (Random 0 3))
 				(= seconds 5)
 			)
 			(2
-				(employee setCycle: Beg self)
+				(employee setCycle: BegLoop self)
 			)
 			(3
 				(employee
@@ -350,18 +363,18 @@
 				)
 			)
 			(4
-				(employee setLoop: 1 setCycle: End)
+				(employee setLoop: 1 setCycle: EndLoop)
 				(= seconds 5)
 			)
 			(5
-				(curtain setCycle: End)
+				(curtain setCycle: EndLoop)
 				(if (not (curRoom script?))
 					(theAudio number: 8859 loop: 1 play:)
 				)
 				(= seconds 10)
 			)
 			(6
-				(curtain setCycle: Beg self)
+				(curtain setCycle: BegLoop self)
 				(if (not (curRoom script?))
 					(theAudio number: 8859 loop: 1 play:)
 				)
@@ -369,7 +382,7 @@
 			(7
 				(if (not (curRoom script?))
 					(theMouth z: 34 setCycle: RandCycle)
-					(switch local5
+					(switch helpCounterCount
 						(0 (SpeakAudio 1219 self))
 						(1 (SpeakAudio 1220 self))
 						(2 (SpeakAudio 1221 self))
@@ -385,7 +398,11 @@
 				else
 					(= cycles 1)
 				)
-				(if (< local5 10) (++ local5) else (= local5 0))
+				(if (< helpCounterCount 10)
+					(++ helpCounterCount)
+				else
+					(= helpCounterCount 0)
+				)
 			)
 			(8
 				(theMouth z: 1000 setCycle: 0)
@@ -396,7 +413,6 @@
 )
 
 (instance tailorTalk of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -413,8 +429,8 @@
 					cycleSpeed: 0
 					setLoop: -1
 					setCycle: Walk
-					illegalBits: 2048
-					setAvoider: (Avoid new:)
+					illegalBits: cLCYAN
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 202 116 self
 				)
 			)
@@ -439,7 +455,7 @@
 					cycleSpeed: 0
 					setLoop: -1
 					setCycle: Walk
-					illegalBits: 2048
+					illegalBits: cLCYAN
 					setMotion: MoveTo 195 116 self
 				)
 			)
@@ -468,8 +484,8 @@
 		y 142
 		view 162
 		loop 2
-		signal $4000
-		illegalBits $0800
+		signal ignrAct
+		illegalBits cLCYAN
 	)
 	
 	(method (doit &tmp tailorLoop)
@@ -477,7 +493,7 @@
 		(if
 			(and
 				(not (curRoom script?))
-				(== ((inventory at: 26) owner?) 203)
+				(== ((inventory at: iCloak) owner?) 203)
 			)
 			(if (> (ego distanceTo: tailor) 40)
 				(if (not mover)
@@ -498,35 +514,42 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
-					(if (ego has: 26)
+				(verbLook
+					(if (ego has: iCloak)
 						(SpeakAudio 824)
 					else
 						(SpeakAudio 825)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
-						((== ((inventory at: 3) owner?) 203) (SpeakAudio 830) (event claimed: 1))
-						((not local0) (++ local0) (SpeakAudio 9076) (event claimed: 1))
+						((== ((inventory at: iNeedle) owner?) 203)
+							(SpeakAudio 830)
+							(event claimed: TRUE)
+						)
+						((not local0)
+							(++ local0)
+							(SpeakAudio 9076)
+							(event claimed: TRUE)
+						)
 					)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(3
-							(= local6 0)
+						(iNeedle
+							(= paidWhat paidNeedle)
 							(curRoom setScript: soldCloak)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(4
-							(if (not (ego has: 26))
+						(iCoin
+							(if (not (ego has: iCloak))
 								(Face ego tailor 5)
 								(RedrawCast)
 								((ego head?)
@@ -555,45 +578,47 @@
 								)
 								(proc762_1 @local10 1214)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(11
-							(= local6 1)
+						(iGold
+							(= paidWhat paidGold)
 							(curRoom setScript: soldCloak)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(9
-							(= local6 2)
+						(iHeart
+							(= paidWhat paidHeart)
 							(curRoom setScript: soldCloak)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
-							(if (ego has: 26)
+							(if (ego has: iCloak)
 								(SpeakAudio 833)
 							else
 								(SpeakAudio 834)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
-				(JOY_DOWN
-					(switch local4
+				(verbTalk
+					(switch tailorTalkCount
 						(0
-							(if (ego has: 26)
+							(if (ego has: iCloak)
 								(SpeakAudio 833)
 							else
-								(Bset 58)
-								(++ local4)
+								(Bset fTalkedToTailor)
+								(++ tailorTalkCount)
 								(HandsOff)
 								(curRoom setScript: tailorTalk)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 						(1
 							(SpeakAudio 835)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -608,24 +633,24 @@
 		y 123
 		view 176
 		loop 9
-		signal $0001
+		signal stopUpdOn
 	)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 826)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local3)
 						(++ local3)
 						(HandsOff)
@@ -634,16 +659,16 @@
 					else
 						(proc762_1 @local10 1216)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(3
-							(= local6 0)
+						(iNeedle
+							(= paidWhat paidNeedle)
 							(curRoom setScript: soldCloak)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(4
+						(iCoin
 							(Face ego tailor 5)
 							(RedrawCast)
 							((ego head?)
@@ -657,26 +682,28 @@
 								forceUpd:
 							)
 							(proc762_0 @local19 @local10 @local86)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(11
-							(= local6 1)
+						(iGold
+							(= paidWhat paidGold)
 							(curRoom setScript: soldCloak)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(9
-							(= local6 2)
+						(iHeart
+							(= paidWhat paidHeart)
 							(curRoom setScript: soldCloak)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(28 (event claimed: 0))
-						(26
+						(iWand
+							(event claimed: FALSE)
+						)
+						(iCloak
 							(proc762_1 @local10 1217)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 						(else 
 							(proc762_1 @local10 1218)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -698,23 +725,23 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 827)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 831)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 836)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -760,30 +787,30 @@
 		view 176
 		loop 1
 		detailLevel 3
-		illegalBits $0800
+		illegalBits cLCYAN
 	)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 828)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 832)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 832)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -800,15 +827,15 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 829)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)

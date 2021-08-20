@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 205)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -22,26 +22,27 @@
 	local2
 	local3
 	local4
-	local5
-	[local6 9] = [1017 170 70 3 7 25 23 25 32]
-	[local15 9] = [1025 70 63 5 7 29 24 29 27]
-	[local24 9] = [1025 200 70 5 7 29 24 29 27]
-	[local33 9] = [1003 120 79 3 9 24 21 30 29]
-	[local42 10] = [0 1017 1 1018 0 1019 1 1020]
-	[local52 12] = [1 1024 1 1025 0 1026 1 1027 0 1028]
-	[local64 12] = [1 1030 1 1031 0 1032 1 1033 0 1034]
-	[local76 8] = [1 1035 1 1036 0 1037]
-	[local84 8] = [0 1038 1 1039 1 1040]
+	talkCount
+	local6 = [1017 170 70 3 7 25 23 25 32]
+	local15 = [1025 70 63 5 7 29 24 29 27]
+	local24 = [1025 200 70 5 7 29 24 29 27]
+	local33 = [1003 120 79 3 9 24 21 30 29]
+	local42 = [0 1017 1 1018 0 1019 1 1020]
+	local52 = [1 1024 1 1025 0 1026 1 1027 0 1028]
+	local64 = [1 1030 1 1031 0 1032 1 1033 0 1034]
+	local76 = [1 1035 1 1036 0 1037]
+	local84 = [0 1038 1 1039 1 1040]
 )
-(instance shoeShop of Rgn
-	(properties)
+(instance shoeShop of Region
 	
 	(method (init)
 		(super init:)
-		(if (Btst 24) (++ local5))
+		(if (Btst 24)
+			(++ talkCount)
+		)
 		(curRoom setFeatures: shopRoom)
 		(theMusic number: 61 loop: -1 play:)
-		(if (!= ((inventory at: 33) owner?) 205)
+		(if (!= ((inventory at: iElfShoes) owner?) 205)
 			(woman init:)
 			(if (> (theGame detailLevel:) 0)
 				(shoeArm init: setScript: makeShoe)
@@ -51,7 +52,7 @@
 			(shoeMaker init: stopUpd:)
 			(dog init: stopUpd:)
 			(if (> (theGame detailLevel:) 0)
-				(tail setCycle: Fwd init:)
+				(tail setCycle: Forward init:)
 			else
 				(tail init: stopUpd:)
 			)
@@ -62,12 +63,14 @@
 	)
 	
 	(method (doit &tmp temp0)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
-		(DisposeScript 972)
+		(DisposeScript AVOIDER)
+		(DisposeScript CHASE)
 		(theMusic fade:)
 		(super dispose:)
 	)
@@ -81,11 +84,13 @@
 )
 
 (instance enterIn of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 5))
+			(0
+				(HandsOff)
+				(= cycles 5)
+			)
 			(1
 				(ego illegalBits: 0 setMotion: MoveTo 138 154 self)
 			)
@@ -98,33 +103,35 @@
 )
 
 (instance greet of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 5))
+			(0
+				(HandsOff)
+				(= cycles 5)
+			)
 			(1
 				(ego illegalBits: 0 setMotion: MoveTo 138 154 self)
 			)
 			(2
-				(ego illegalBits: -32768)
-				(if (Btst 23)
+				(ego illegalBits: cWHITE)
+				(if (Btst fBeenInShoeShop)
 					(proc762_1 @local15 1023 self)
 				else
 					(proc762_0 @local33 @local15 @local52 self)
 				)
 			)
 			(3
-				(if (Btst 23)
+				(if (Btst fBeenInShoeShop)
 					(if (== (theGame detailLevel:) 3)
-						(wHands cycleSpeed: 3 setCycle: Fwd init:)
+						(wHands cycleSpeed: 3 setCycle: Forward init:)
 					)
 					(HandsOn)
 					(client setScript: 0)
 				else
-					(Bset 23)
+					(Bset fBeenInShoeShop)
 					(if (== (theGame detailLevel:) 3)
-						(woman setCycle: Beg self)
+						(woman setCycle: BegLoop self)
 					else
 						(self cue:)
 					)
@@ -133,7 +140,7 @@
 			(4
 				(RedrawCast)
 				(if (== (theGame detailLevel:) 3)
-					(wHands cycleSpeed: 3 setCycle: Fwd init:)
+					(wHands cycleSpeed: 3 setCycle: Forward init:)
 				)
 				(HandsOn)
 				(client setScript: 0)
@@ -143,7 +150,6 @@
 )
 
 (instance giveShoes of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -154,13 +160,13 @@
 					loop: 7
 					cel: 4
 					cycleSpeed: 2
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(1
 				(proc762_1 @local6 1029)
 				(wHands dispose:)
-				(woman setCycle: End self)
+				(woman setCycle: EndLoop self)
 			)
 			(2
 				(ego setMotion: MoveTo 138 148 self)
@@ -172,7 +178,7 @@
 					posn: 96 140
 					setPri: -1
 					setCycle: Walk
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					cycleSpeed: 0
 					moveSpeed: 0
 					setMotion: MoveTo 127 146 self
@@ -186,15 +192,15 @@
 					view: 200
 					loop: 11
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(woman setLoop: 8 setMotion: Chase shoeMaker 10 self)
 				(shoeMaker
 					view: 198
-					observeControl: 2
+					observeControl: cBLUE
 					cycleSpeed: 0
 					setLoop: -1
 					loop: 2
@@ -205,7 +211,7 @@
 			)
 			(6
 				(ego
-					normal: 1
+					normal: TRUE
 					view: 0
 					loop: 7
 					cel: 0
@@ -213,7 +219,7 @@
 				)
 				((ego head?) show:)
 				(Face ego shoeMaker 5)
-				(shoeMaker view: 200 loop: 10 cel: 0 setCycle: CT 3 1)
+				(shoeMaker view: 200 loop: 10 cel: 0 setCycle: CycleTo 3 1)
 				(woman setLoop: -1 setMotion: MoveTo 225 133 self)
 			)
 			(7
@@ -224,34 +230,34 @@
 				(proc762_0 @local33 @local6 @local64 self)
 			)
 			(9
-				(shoeMaker loop: 10 cycleSpeed: 3 setCycle: End self)
+				(shoeMaker loop: 10 cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(10
-				(shoeMaker loop: 8 cel: 0 setCycle: End self)
+				(shoeMaker loop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(11
 				(proc762_0 @local33 @local6 @local76)
 				(ego
-					normal: 1
+					normal: TRUE
 					view: 0
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setCycle: KQ5SyncWalk
 					setMotion: MoveTo 195 134 self
 				)
 				((ego head?) show:)
 			)
 			(12
-				(ego setAvoider: 0 normal: 1)
+				(ego setAvoider: 0 normal: TRUE)
 				(Face ego shoeMaker 5)
 				(= cycles 5)
 			)
 			(13
-				(shoeMaker loop: 9 cel: 0 setCycle: End self)
+				(shoeMaker loop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(14
 				(shoeMaker
 					view: 198
-					observeControl: 2
+					observeControl: cBLUE
 					cycleSpeed: 0
 					setLoop: -1
 					setCycle: Walk
@@ -260,7 +266,7 @@
 				(proc762_0 @local24 @local6 @local84)
 				(ego setMotion: MoveTo (- (ego x?) 10) (ego y?) self)
 				(tail dispose:)
-				(dog loop: 3 cel: 0 setCycle: End self)
+				(dog loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(15)
 			(16
@@ -272,7 +278,7 @@
 				(ego loop: 7 cel: 2)
 				(shoeMaker
 					view: 198
-					observeControl: 2
+					observeControl: cBLUE
 					cycleSpeed: 0
 					setLoop: -1
 					setCycle: Walk
@@ -302,7 +308,6 @@
 )
 
 (instance makeShoe of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -319,11 +324,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(shoeArm cycleSpeed: 3 loop: 4 setCycle: Fwd)
+				(shoeArm cycleSpeed: 3 loop: 4 setCycle: Forward)
 				(= seconds (Random 3 8))
 			)
 			(1
-				(shoeArm loop: 6 setCycle: Fwd)
+				(shoeArm loop: 6 setCycle: Forward)
 				(= seconds (Random 3 6))
 				(= state -1)
 			)
@@ -332,7 +337,6 @@
 )
 
 (instance womanScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -340,12 +344,14 @@
 				(HandsOff)
 				(Face ego woman 5)
 				(wHands hide:)
-				(woman setCycle: End self)
+				(woman setCycle: EndLoop self)
 			)
 			(1
 				(proc762_0 @local33 @local15 @local42 self)
 			)
-			(2 (woman setCycle: Beg self))
+			(2
+				(woman setCycle: BegLoop self)
+			)
 			(3
 				(wHands show:)
 				(HandsOn)
@@ -362,7 +368,7 @@
 		view 200
 		loop 4
 		priority 9
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 	
@@ -370,45 +376,47 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: woman)
 						(SpeakAudio 808)
 					else
 						(SpeakAudio 809)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local1)
 						(++ local1)
 						(SpeakAudio 814)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 814)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(33
-							(event claimed: 1)
-							(ego put: 33 205)
+						(iElfShoes
+							(event claimed: TRUE)
+							(ego put: iElfShoes 205)
 							(SolvePuzzle 4)
 							(HandsOff)
-							(ego get: 22)
+							(ego get: iHammer)
 							(curRoom setScript: giveShoes)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 816)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -430,45 +438,47 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: woman)
 						(SpeakAudio 808)
 					else
 						(SpeakAudio 809)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local1)
 						(++ local1)
 						(SpeakAudio 814)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 814)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(33
-							(event claimed: 1)
-							(ego put: 33 205)
+						(iElfShoes
+							(event claimed: TRUE)
+							(ego put: iElfShoes 205)
 							(SolvePuzzle 4)
 							(HandsOff)
-							(ego get: 22)
+							(ego get: iHammer)
 							(curRoom setScript: giveShoes)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(proc762_1 @local15 1021)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -484,7 +494,7 @@
 		view 210
 		loop 4
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 	)
 )
@@ -497,61 +507,63 @@
 		loop 5
 		cel 3
 		priority 10
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 		detailLevel 3
-		illegalBits $0800
+		illegalBits cLCYAN
 	)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 810)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(if (not local2)
 						(++ local2)
 						(SpeakAudio 9067)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 				)
-				(JOY_DOWN
-					(switch local5
+				(verbTalk
+					(switch talkCount
 						(0
-							(Bset 24)
-							(++ local5)
+							(Bset fTalkedToShoeMakerWife)
+							(++ talkCount)
 							(curRoom setScript: womanScript)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 						(1
 							(SpeakAudio 820)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(33
-							(ego get: 22)
-							(ego put: 33 205)
+						(iElfShoes
+							(ego get: iHammer)
+							(ego put: iElfShoes 205)
 							(SolvePuzzle 4)
 							(HandsOff)
 							(curRoom setScript: giveShoes)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 817)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -567,7 +579,7 @@
 		view 196
 		loop 1
 		priority 9
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 3
 		detailLevel 3
 	)
@@ -578,7 +590,7 @@
 		x 130
 		y 134
 		view 196
-		signal $4000
+		signal ignrAct
 		detailLevel 3
 	)
 	
@@ -593,11 +605,17 @@
 						(!= local4 0)
 					)
 					(= local4 0)
-					(self loop: 0 setCycle: End)
+					(self loop: 0 setCycle: EndLoop)
 					(tail hide:)
 				)
-				((and (> temp0 21) (!= local4 1)) (= local4 1) (self setCycle: Beg))
-				((and (not cel) (== local4 1)) (self loop: 2) (tail show:))
+				((and (> temp0 21) (!= local4 1))
+					(= local4 1)
+					(self setCycle: BegLoop)
+				)
+				((and (not cel) (== local4 1))
+					(self loop: 2)
+					(tail show:)
+				)
 			)
 		)
 	)
@@ -606,30 +624,32 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 811)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 815)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 821)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 818)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -648,19 +668,19 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(if (cast contains: woman)
 						(SpeakAudio 812)
 					else
 						(SpeakAudio 813)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)

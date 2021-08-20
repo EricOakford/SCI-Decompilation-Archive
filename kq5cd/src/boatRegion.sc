@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 220)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DLetter)
@@ -19,22 +19,29 @@
 )
 
 (local
-	[local0 8] = [319 143 319 154 211 154 218 143]
-	[local8 8] = [319 164 319 175 212 175 218 164]
-	[local16 8] = [319 164 319 175 212 175 224 164]
-	[local24 9] = [1000 100 62 4 11 24 19 23 30]
-	[local33 9] = [1003 131 62 4 11 25 23 31 31]
-	[local42 9] = [1003 235 105 4 11 25 23 31 31]
+	pts1 = [
+		319 143
+		319 154
+		211 154
+		218 143
+		]
+	pts2 = [
+		319 164
+		319 175
+		212 175
+		218 164
+		]
+	pts3 = [
+		319 164
+		319 175
+		212 175
+		224 164
+		]
+	local24 = [1000 100 62 4 11 24 19 23 30]
+	local33 = [1003 131 62 4 11 25 23 31 31]
+	local42 = [1003 235 105 4 11 25 23 31 31]
 )
-(class boatRegion of Rgn
-	(properties
-		script 0
-		number 0
-		timer 0
-		keep 0
-		initialized 0
-		lookStr 0
-	)
+(class boatRegion of Region
 	
 	(method (init)
 		(super init: &rest)
@@ -52,9 +59,9 @@
 				(poly5
 					points:
 					(switch curRoomNum
-						(45 @local8)
-						(46 @local16)
-						(44 @local0)
+						(45 @pts2)
+						(46 @pts3)
+						(44 @pts1)
 					)
 					size: 4
 				)
@@ -63,9 +70,9 @@
 			)
 			((== curRoomNum gGNumber_2)
 				(if (or (== curRoomNum 45) (== curRoomNum 46))
-					(poly5 points: @local8 size: 4)
+					(poly5 points: @pts2 size: 4)
 				else
-					(poly5 points: @local0 size: 4)
+					(poly5 points: @pts1 size: 4)
 				)
 				(curRoom addObstacle: poly5)
 				(sailBoat
@@ -76,7 +83,7 @@
 				)
 				(sail
 					posn: (+ (sailBoat x?) 8) (sailBoat y?)
-					setCycle: (if (== (theGame detailLevel:) 3) 0 else Fwd)
+					setCycle: (if (== (theGame detailLevel:) 3) 0 else Forward)
 					cycleSpeed: 30
 					ignoreActors:
 					setPri: (sailBoat priority?)
@@ -85,11 +92,15 @@
 				(wake
 					init:
 					posn: (sailBoat x?) (sailBoat y?)
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 5
 				)
-				(if (!= (theGame detailLevel:) 3) (wake setCycle: 0))
-				(if (Btst 105) (curRoom setScript: leave))
+				(if (!= (theGame detailLevel:) 3)
+					(wake setCycle: 0)
+				)
+				(if (Btst 105)
+					(curRoom setScript: leave)
+				)
 			)
 		)
 	)
@@ -100,16 +111,17 @@
 				(not
 					(OneOf (ego view?) 628 624 615 616 0 56 100 97 618)
 				)
-				(not (& (ego onControl: 1) $2650))
+				(not (& (ego onControl: origin) $2650))
 			)
 			(ego view: 0)
 		)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 )
 
 (instance flyIn of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -118,12 +130,12 @@
 					view: 618
 					setLoop: 9
 					posn: (- (bird x?) 20) (- (bird y?) 17)
-					setCycle: Fwd
+					setCycle: Forward
 					moveSpeed: 0
 					cycleSpeed: 0
 					setPri: 15
 					setStep: 4 3
-					setMotion: MoveTo global320 (- global321 10) self
+					setMotion: MoveTo cedricX (- cedricY 10) self
 				)
 			)
 			(1
@@ -131,16 +143,18 @@
 					view: 138
 					setLoop: 1
 					posn: (bird x?) (+ (bird y?) 10)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(bird view: 138 setLoop: 4 cel: 3 setCycle: Beg self)
+				(bird view: 138 setLoop: 4 cel: 3 setCycle: BegLoop self)
 			)
 			(3
 				(bird dispose:)
 				(curRoom setRegions: 202)
-				(if (== curRoomNum 45) (globalCedric setPri: 8))
+				(if (== curRoomNum 45)
+					(globalCedric setPri: 8)
+				)
 				(proc770_0 @local24 globalCedric)
 				(proc762_1 @local24 3001 self)
 			)
@@ -153,14 +167,13 @@
 )
 
 (instance sailIn of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
 		(if (cast contains: globalCedric) (globalCedric hide:))
 		(if
 			(and
-				(& (ego onControl: 1) $2000)
+				(& (ego onControl: origin) cLMAGENTA)
 				(== (ego view?) 0)
 				(not (sailBoat mover?))
 			)
@@ -178,7 +191,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (and (not (Btst 54)) (not (Btst 55)))
+				(if (and (not (Btst 54)) (not (Btst fCedricInjured)))
 					(bird
 						init:
 						view: 138
@@ -192,7 +205,7 @@
 				(wake
 					init:
 					posn: (sailBoat x?) (sailBoat y?)
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 5
 				)
 				(if (!= (theGame detailLevel:) 3) (wake setCycle: 0))
@@ -219,7 +232,7 @@
 			(1
 				(sail
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					ignoreActors:
 					cycleSpeed: 20
 					setPri: (+ (sailBoat priority?) 2)
@@ -237,7 +250,7 @@
 					setPri: (- (sailBoat priority?) 1)
 					ignoreActors: 1
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(sailBoat stopUpd:)
 			)
@@ -254,7 +267,7 @@
 				(wake
 					init:
 					posn: (sailBoat x?) (sailBoat y?)
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 5
 				)
 				(if (!= (theGame detailLevel:) 3) (wake setCycle: 0))
@@ -262,7 +275,7 @@
 				(= cycles 1)
 			)
 			(4
-				(if (and (not (Btst 55)) (not (Btst 54)))
+				(if (and (not (Btst fCedricInjured)) (not (Btst 54)))
 					(proc770_0 @local33 ego)
 					(proc762_1 @local33 7042 self)
 				else
@@ -271,7 +284,7 @@
 			)
 			(5
 				((ego head?) show:)
-				(if (and (not (Btst 55)) (not (Btst 54)))
+				(if (and (not (Btst fCedricInjured)) (not (Btst 54)))
 					(client setScript: flyIn)
 				else
 					(HandsOn)
@@ -284,14 +297,13 @@
 )
 
 (instance leave of Script
-	(properties)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp thisControl)
 		(if
 			(and
 				(or
-					(& (= temp0 (ego onControl: 1)) $0040)
-					(& temp0 $2000)
+					(& (= thisControl (ego onControl: origin)) cBROWN)
+					(& thisControl cLMAGENTA)
 				)
 				(!= (ego view?) 26)
 				(== state 1)
@@ -333,7 +345,7 @@
 					view: 9
 					setPri: 15
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cel: 0
 					moveSpeed: 0
 					illegalBits: 0
@@ -348,7 +360,7 @@
 					setCycle: KQ5SyncWalk
 					setLoop: -1
 					setPri: -1
-					illegalBits: -32768
+					illegalBits: cWHITE
 					moveSpeed: (theGame egoMoveSpeed?)
 					setMotion: MoveTo 68 55 self
 				)
@@ -366,7 +378,7 @@
 					loop: 2
 					setPri: (+ (sailBoat priority?) 1)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(sail setPri: (+ (ego priority?) 1))
 			)
@@ -374,7 +386,7 @@
 				(ego
 					setLoop: 3
 					posn: (+ (ego x?) 31) (ego y?)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 2)
 			)
@@ -391,13 +403,13 @@
 				(ego
 					posn: (ego x?) (- (ego y?) 18)
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(sailBoat setStep: 2 1)
 				(ego setStep: 2 1 setMotion: MoveTo 400 (ego y?))
 			)
 			(9
-				(ego setLoop: 1 cel: 0 setCycle: End self)
+				(ego setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(10
 				(ego
@@ -424,7 +436,7 @@
 				(if
 					(and
 						(cast contains: globalCedric)
-						(not (Btst 55))
+						(not (Btst fCedricInjured))
 						(not (Btst 54))
 					)
 					(proc770_0 @local24 globalCedric)
@@ -439,7 +451,7 @@
 				(sail setMotion: 0)
 				(if (cast contains: globalCedric)
 					(cls)
-					(globalCedric view: 138 setLoop: 6 setCycle: End self)
+					(globalCedric view: 138 setLoop: 6 setCycle: EndLoop self)
 					(= cycles 5)
 				else
 					(= cycles 1)
@@ -457,12 +469,11 @@
 )
 
 (instance fixBoat of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego put: 18)
+				(ego put: iWax)
 				(SolvePuzzle 5)
 				(HandsOff)
 				(ego
@@ -495,11 +506,11 @@
 					loop: 3
 					setPri: (- (sailBoat priority?) 1)
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (= seconds 3))
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				((ego head?) show:)
 				(ego
@@ -528,7 +539,7 @@
 		view 618
 		cel 1
 		priority -1
-		signal $4001
+		signal (| ignrAct stopUpdOn)
 		detailLevel 3
 	)
 	
@@ -536,50 +547,52 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(cond 
-						((and (not (Btst 55)) (Btst 54) (Btst 71)) (SpeakAudio 24))
-						((and (not (Btst 55)) (Btst 54)) (SpeakAudio 25))
+						((and (not (Btst fCedricInjured)) (Btst 54) (Btst 71)) (SpeakAudio 24))
+						((and (not (Btst fCedricInjured)) (Btst 54)) (SpeakAudio 25))
 						(
 						(or (> (ego distanceTo: self) 40) (not (ego has: 18))) (SpeakAudio 26))
 						(else (SpeakAudio 27))
 					)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
-					(if (not (Btst 94))
+				(verbDo
+					(if (not (Btst fFailedBoatCP))
 						(curRoom setScript: leave)
-						(event claimed: 1)
+						(event claimed: true)
 					else
 						(KQPrint 220 0)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(18
-							(event claimed: 1)
+						(iWax
+							(event claimed: TRUE)
 							(curRoom setScript: fixBoat)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 31)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
-				(JOY_DOWN
-					(if (and (not (Btst 55)) (Btst 54))
+				(verbTalk
+					(if (and (not (Btst fCedricInjured)) (Btst 54))
 						(SpeakAudio 3003)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					else
-						(event claimed: 0)
+						(event claimed: FALSE)
 					)
 				)
 			)
@@ -606,40 +619,47 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(cond 
-						((and (not (Btst 55)) (Btst 54)) (SpeakAudio 28))
-						(
-						(or (> (ego distanceTo: self) 40) (not (ego has: 18))) (SpeakAudio 26))
-						(else (SpeakAudio 27))
+						((and (not (Btst fCedricInjured)) (Btst 54))
+							(SpeakAudio 28)
+						)
+						((or (> (ego distanceTo: self) 40) (not (ego has: iWax)))
+							(SpeakAudio 26)
+						)
+						(else
+							(SpeakAudio 27)
+						)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
-					(if (not (Btst 94))
+				(verbDo
+					(if (not (Btst fFailedBoatCP))
 						(curRoom setScript: leave)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					else
 						(SpeakAudio 29)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(18
-							(event claimed: 1)
+						(iWax
+							(event claimed: TRUE)
 							(curRoom setScript: fixBoat)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 31)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -650,7 +670,7 @@
 
 (instance poly5 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
@@ -668,12 +688,9 @@
 	)
 )
 
-(instance bird of Actor
-	(properties)
-)
+(instance bird of Actor)
 
 (instance flunkedProtection of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -688,7 +705,7 @@
 				(ego
 					cel: (- (NumCels ego) 1)
 					cycleSpeed: 2
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(sail setPri: (sailBoat priority?))
 			)
@@ -700,7 +717,7 @@
 					setPri: -1
 					ignoreActors: 0
 					setLoop: -1
-					illegalBits: -32768
+					illegalBits: cWHITE
 					cycleSpeed: 0
 					setStep: 3 2
 				)

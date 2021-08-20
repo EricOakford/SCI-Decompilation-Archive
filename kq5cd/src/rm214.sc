@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 214)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -17,9 +17,30 @@
 
 (local
 	local0
-	local1
-	[local2 18] = [0 189 0 0 141 0 141 159 129 177 16 177 16 179 41 179 17 189]
-	[local20 20] = [253 189 248 185 264 179 296 179 295 173 200 177 180 159 180 0 319 0 319 189]
+	usingStaff
+	pts1 = [
+		0 189
+		0 0
+		141 0
+		141 159
+		129 177
+		16 177
+		16 179
+		41 179
+		17 189
+		]
+	pts2 = [
+		253 189
+		248 185
+		264 179
+		296 179
+		295 173
+		200 177
+		180 159
+		180 0
+		319 0
+		319 189
+		]
 )
 (instance rm214 of KQ5Room
 	(properties
@@ -29,17 +50,17 @@
 	
 	(method (init)
 		(super init:)
-		(if (== ((inventory at: 7) owner?) 214)
+		(if (== ((inventory at: iStaff) owner?) 214)
 			(brokenStaff init:)
 		)
 		(door init:)
 		(switch prevRoomNum
 			(213
-				(if (and (not (Btst 32)) (Btst 52))
+				(if (and (not (Btst fSawBandits)) (Btst fBanditsEnterTemple))
 					(horseBody1 init:)
 					(horseHead1 init: setScript: (tailSwish new:))
 					(horseTail1
-						ignoreActors: 1
+						ignoreActors: TRUE
 						init:
 						setScript: (tailSwish new:)
 					)
@@ -47,7 +68,7 @@
 					(guardHead2 init: setScript: (tailSwish new:))
 					(horseHead2 init: setScript: tailSwish)
 					(horseTail2
-						ignoreActors: 1
+						ignoreActors: TRUE
 						init:
 						setScript: (tailSwish new:)
 					)
@@ -57,8 +78,8 @@
 						view: 2
 						posn: 158 186
 						setStep: 2 1
-						illegalBits: -32768
-						observeControl: 16384
+						illegalBits: cWHITE
+						observeControl: cYELLOW
 						init:
 					)
 					(door setScript: musicScript)
@@ -72,7 +93,7 @@
 					setStep: 2 1
 					loop: 11
 					cel: 2
-					observeControl: 16384
+					observeControl: cYELLOW
 					init:
 				)
 				(door cel: (- (NumCels door) 1))
@@ -83,27 +104,31 @@
 					view: 2
 					posn: 158 162
 					setStep: 2 1
-					illegalBits: -32768
-					observeControl: 16384
+					illegalBits: cWHITE
+					observeControl: cYELLOW
 					init:
 				)
 			)
 		)
 		(self setFeatures: horse1 horse2 sands room)
-		(poly1 points: @local2 size: 9)
-		(poly2 points: @local20 size: 10)
+		(poly1 points: @pts1 size: 9)
+		(poly2 points: @pts2 size: 10)
 		(self addObstacle: poly1 poly2)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp edge)
 		(cond 
-			(script (script doit:))
-			((= temp0 (self edgeToRoom: (ego edgeHit?))) (curRoom newRoom: temp0))
+			(script
+				(script doit:)
+			)
+			((= edge (self edgeToRoom: (ego edgeHit?)))
+				(curRoom newRoom: edge)
+			)
 		)
 	)
 	
 	(method (dispose)
-		(ego ignoreControl: 16384)
+		(ego ignoreControl: cYELLOW)
 		(super dispose:)
 	)
 	
@@ -122,13 +147,12 @@
 )
 
 (instance musicScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Btst 70))
-					(Bset 70)
+				(if (not (Btst fBeenAtTemple))
+					(Bset fBeenAtTemple)
 					(theMusic number: 43 loop: 1 vol: 127 playBed: self)
 				else
 					(= cycles 1)
@@ -142,13 +166,12 @@
 )
 
 (instance exitTemple of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theAudio number: 8018 loop: 1 play:)
-				(door setCycle: Beg self)
+				(door setCycle: BegLoop self)
 			)
 			(1
 				(SpeakAudio 7037)
@@ -161,8 +184,7 @@
 )
 
 (instance knockDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -170,56 +192,58 @@
 			)
 			(1
 				((ego head?) hide:)
-				(if local1
+				(if usingStaff
 					(ego
-						normal: 0
+						normal: FALSE
 						view: 362
 						loop: 0
 						cycleSpeed: 3
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(ego
-						normal: 0
+						normal: FALSE
 						view: 384
 						loop: 0
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
-			(2 (SpeakAudio 7038 self))
+			(2
+				(SpeakAudio 7038 self)
+			)
 			(3
-				(if local1
+				(if usingStaff
 					(theAudio number: 8053 loop: 2 play:)
-					(ego loop: 1 cycleSpeed: 6 setCycle: Fwd)
+					(ego loop: 1 cycleSpeed: 6 setCycle: Forward)
 					(= seconds 3)
 				else
 					(theAudio number: 8104 loop: -1 play:)
-					(ego loop: 1 cycleSpeed: 8 setCycle: Fwd)
+					(ego loop: 1 cycleSpeed: 8 setCycle: Forward)
 					(= seconds 4)
 				)
 			)
 			(4
-				(if local1
-					(ego loop: 2 cel: 0 cycleSpeed: 3 setCycle: End self)
+				(if usingStaff
+					(ego loop: 2 cel: 0 cycleSpeed: 3 setCycle: EndLoop self)
 					(theAudio number: 8856 loop: 1 play:)
 				else
 					(theAudio stop:)
 					(ego loop: 0)
-					(ego cel: (- (NumCels ego) 1) setCycle: Beg self)
+					(ego cel: (- (NumCels ego) 1) setCycle: BegLoop self)
 				)
 			)
 			(5
 				(cls)
-				(if local1
+				(if usingStaff
 					(SpeakAudio 7039 self)
 					(brokenStaff init:)
 				else
 					(SpeakAudio 782)
 					(ego
-						normal: 1
+						normal: TRUE
 						view: 2
 						loop: 7
 						cel: 3
@@ -232,9 +256,9 @@
 				)
 			)
 			(6
-				(if local1
+				(if usingStaff
 					(theAudio number: 8018 loop: 1 play:)
-					(door setCycle: End self)
+					(door setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -244,18 +268,20 @@
 				(theMusic3 stop:)
 				(= cycles 10)
 			)
-			(9 (cls) (curRoom newRoom: 18))
+			(9
+				(cls)
+				(curRoom newRoom: 18)
+			)
 		)
 	)
 )
 
 (instance tailSwish of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setCycle: End)
+				(client setCycle: EndLoop)
 				(= seconds (Random 2 4))
 				(-- state)
 			)
@@ -264,18 +290,17 @@
 )
 
 (instance guardEnter of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(theMusic number: 44 loop: -1 vol: 127 play:)
-				(horseBody1 cycleSpeed: 3 setCycle: End self)
+				(horseBody1 cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(1
-				(guard1 init: cycleSpeed: 3 setCycle: End self)
-				(horseBody1 loop: 4 ignoreActors: 1)
+				(guard1 init: cycleSpeed: 3 setCycle: EndLoop self)
+				(horseBody1 loop: 4 ignoreActors: TRUE)
 			)
 			(2
 				(guard1
@@ -295,18 +320,20 @@
 					setLoop: 3
 					cycleSpeed: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(5 (SpeakAudio 9114 self))
+			(5
+				(SpeakAudio 9114 self)
+			)
 			(6
-				(guard1 setLoop: 4 cycleSpeed: 4 setCycle: Fwd)
+				(guard1 setLoop: 4 cycleSpeed: 4 setCycle: Forward)
 				(theAudio number: 8053 loop: 3 play:)
 				(= seconds 3)
 			)
 			(7
 				(theAudio number: 8018 loop: 1 play:)
-				(door setCycle: End self)
+				(door setCycle: EndLoop self)
 			)
 			(8
 				(cls)
@@ -314,16 +341,16 @@
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9 (= seconds 5))
 			(10
-				(guard1 view: 372 setLoop: 0 cel: 0 setCycle: End self)
+				(guard1 view: 372 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(11
 				(theAudio number: 8018 loop: 1 play:)
-				(door setCycle: Beg)
+				(door setCycle: BegLoop)
 				(guard1
 					setLoop: 1
 					cycleSpeed: 0
@@ -341,7 +368,7 @@
 					view: 368
 					loop: 1
 					cel: (- (NumCels guard1) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(14
@@ -353,21 +380,20 @@
 )
 
 (instance sands of RFeature
-	(properties)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (& (OnControl 4 (event x?) (event y?)) $0002))
+				(not (& (OnControl CMAP (event x?) (event y?)) cBLUE))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 764)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -386,18 +412,18 @@
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 778)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 783)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -417,18 +443,18 @@
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 778)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 783)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -441,7 +467,7 @@
 		y 163
 		view 369
 		priority 5
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 		cycleSpeed 1
 	)
 	
@@ -450,38 +476,40 @@
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 779)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(curRoom setScript: knockDoor)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 7038)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(7
-							(ego put: 7 214)
+						(iStaff
+							(ego put: iStaff 214)
 							(SolvePuzzle 2)
 							(HandsOff)
-							(= local1 1)
+							(= usingStaff TRUE)
 							(curRoom setScript: knockDoor)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 785)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -501,14 +529,14 @@
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 780)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -531,7 +559,7 @@
 		view 368
 		loop 1
 		priority 12
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 )
@@ -563,7 +591,7 @@
 		view 378
 		loop 2
 		priority 12
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 2
 	)
 )
@@ -575,7 +603,7 @@
 		view 378
 		loop 3
 		priority 14
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 4
 	)
 )
@@ -597,7 +625,7 @@
 		view 378
 		loop 5
 		priority 15
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 1
 	)
 )
@@ -609,7 +637,7 @@
 		view 362
 		loop 3
 		priority 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (init)
@@ -622,18 +650,18 @@
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 781)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 784)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -642,12 +670,12 @@
 
 (instance poly1 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly2 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )

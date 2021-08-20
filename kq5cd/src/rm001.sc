@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 1)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -20,29 +20,118 @@
 )
 
 (local
-	[local0 18] = [0 155 0 145 61 138 116 138 116 144 98 150 89 159 78 161 50 153]
-	[local18 16] = [259 0 258 115 216 112 208 106 192 106 166 115 165 104 250 27]
-	[local34 16] = [253 0 156 107 139 112 112 121 55 129 60 120 0 118]
-	[local50 18] = [319 0 319 189 80 189 104 172 304 175 310 140 305 122 284 121 285]
-	[local68 16] = [182 125 183 111 187 108 209 109 215 113 209 126 214 131 178 131]
-	[local84 8] = [97 126 133 126 133 134 97 134]
-	[local92 8] = [29 185 30 189 0 189 0 183]
-	[local100 18] = [0 163 32 163 92 167 97 172 98 175 76 176 62 183 30 181 0 174]
-	[local118 10] = [301 128 303 141 286 138 283 125 292 127]
-	[local128 8] = [174 148 173 156 155 158 156 148]
-	[local136 12] = [152 145 144 158 131 164 101 164 106 151 138 140]
-	[local148 8] = [261 0 282 0 281 123 262 118]
+	pts2 = [
+		0 155
+		0 145
+		61 138
+		116 138
+		116 144
+		98 150
+		89 159
+		78 161
+		50 153
+		]
+	pts3 = [
+		259 0
+		258 115
+		216 112
+		208 106
+		192 106
+		166 115
+		165 104
+		250 27
+		]
+	pts4 = [
+		253 0
+		156 107
+		139 112
+		112 121
+		55 129
+		60 120
+		0 118
+		]
+	pts5 = [
+		319 0
+		319 189
+		80 189
+		104 172
+		304 175
+		310 140
+		305 122
+		284 121
+		285
+		]
+	pts6 = [
+		182 125
+		183 111
+		187 108
+		209 109
+		215 113
+		209 126
+		214 131
+		178 131
+		]
+	pts7 = [
+		97 126
+		133 126
+		133 134
+		97 134
+		]
+	pts8 = [
+		29 185
+		30 189
+		0 189
+		0 183
+		]
+	pts9 = [
+		0 163
+		32 163
+		92 167
+		97 172
+		98 175
+		76 176
+		62 183
+		30 181
+		0 174
+		]
+	pts11 = [
+		301 128
+		303 141
+		286 138
+		283 125
+		292 127
+		]
+	pts12 = [
+		174 148
+		173 156
+		155 158
+		156 148
+		]
+	pts13 = [
+		152 145
+		144 158
+		131 164
+		101 164
+		106 151
+		138 140
+		]
+	pts14 = [
+		261 0
+		282 0
+		281 123
+		262 118
+		]
 	theScript
 	local157
 	local158
 	gEgoMoverX
 	gEgoMoverY
-	gEgoView
-	gEgoCycleSpeed
-	local163
-	[local164 9] = [1000 93 46 4 11 24 19 23 30]
-	[local173 10] = [1 9106 0 7040 1 9107 0 7041]
-	[local183 9] = [1003 140 100 4 11 25 23 31 31]
+	saveEgoView
+	saveCycleSpeed
+	inIntro
+	local164 = [1000 93 46 4 11 24 19 23 30]
+	local173 = [1 9106 0 7040 1 9107 0 7041]
+	local183 = [1003 140 100 4 11 25 23 31 31]
 )
 (instance rm001 of KQ5Room
 	(properties
@@ -51,9 +140,9 @@
 		west 8
 	)
 	
-	(method (init &tmp temp0 egoY temp2)
+	(method (init &tmp egoX egoY temp2)
 		(super init:)
-		(= local163
+		(= inIntro
 			(if
 				(or
 					(== prevRoomNum 109)
@@ -68,31 +157,33 @@
 		)
 		(NormalEgo)
 		(ego cycleSpeed: (ego moveSpeed?))
-		(= inCartoon 0)
+		(= inCartoon FALSE)
 		(HandsOn)
 		(Bclr 22 33)
-		(= global320 107)
-		(= global321 94)
+		(= cedricX 107)
+		(= cedricY 94)
 		(self setRegions: 202)
 		(= global325 3020)
-		(if (not (ego has: 28)) (ego get: 28))
+		(if (not (ego has: iWand))
+			(ego get: iWand)
+		)
 		(theMusic loop: -1 number: 24 play:)
-		(if local163
-			(= temp0 160)
+		(if inIntro
+			(= egoX 160)
 			(= egoY 108)
 		else
 			(switch prevRoomNum
 				(south
-					(= temp0 60)
+					(= egoX 60)
 					(= egoY 187)
 				)
 				(east
-					(= temp0 74)
+					(= egoX 74)
 					(= egoY 159)
 				)
 				(west
 					(= egoY (ego y?))
-					(= temp0 0)
+					(= egoX 0)
 					(if (< egoY 168)
 						(HandsOff)
 						(self setScript: enterFromTree)
@@ -100,20 +191,20 @@
 						(ego setMotion: MoveTo (+ (ego x?) 3) (ego y?))
 					)
 				)
-				(76 (= temp0 169) (= egoY 98))
+				(76 (= egoX 169) (= egoY 98))
 				(else 
-					(= temp0 140)
+					(= egoX 140)
 					(= egoY 136)
 				)
 			)
 		)
-		(LoadMany 128 27 9 0 2)
+		(LoadMany VIEW 27 9 0 2)
 		(ego
 			view: (if (== prevRoomNum south) 0 else 2)
-			posn: temp0 egoY
+			posn: egoX egoY
 			setStep: 2 1
 			setLoop: -1
-			illegalBits: -16384
+			illegalBits: (| cWHITE cYELLOW)
 			init:
 		)
 		(door
@@ -131,22 +222,22 @@
 			(HandsOff)
 			(self setScript: leaveCrispins)
 		)
-		(if local163
+		(if inIntro
 			(HandsOff)
 			(self setScript: introRoomScript)
 		)
-		(poly2 points: @local0 size: 9)
-		(poly3 points: @local18 size: 8)
-		(poly4 points: @local34 size: 8)
-		(poly5 points: @local50 size: 9)
-		(poly6 points: @local68 size: 8)
-		(poly7 points: @local84 size: 4)
-		(poly8 points: @local92 size: 4)
-		(poly9 points: @local100 size: 9)
-		(poly11 points: @local118 size: 5)
-		(poly12 points: @local128 size: 4)
-		(poly13 points: @local136 size: 6)
-		(poly14 points: @local148 size: 4)
+		(poly2 points: @pts2 size: 9)
+		(poly3 points: @pts3 size: 8)
+		(poly4 points: @pts4 size: 8)
+		(poly5 points: @pts5 size: 9)
+		(poly6 points: @pts6 size: 8)
+		(poly7 points: @pts7 size: 4)
+		(poly8 points: @pts8 size: 4)
+		(poly9 points: @pts9 size: 9)
+		(poly11 points: @pts11 size: 5)
+		(poly12 points: @pts12 size: 4)
+		(poly13 points: @pts13 size: 6)
+		(poly14 points: @pts14 size: 4)
 		(self
 			addObstacle:
 				poly2
@@ -163,55 +254,75 @@
 				poly14
 		)
 		(if (== (theGame detailLevel:) 3)
-			(water setCycle: Fwd init:)
-			(rippling setCycle: Fwd init:)
-			(rippling2 setCycle: Fwd init:)
+			(water setCycle: Forward init:)
+			(rippling setCycle: Forward init:)
+			(rippling2 setCycle: Forward init:)
 		)
 	)
 	
-	(method (doit &tmp temp0 temp1 temp2)
+	(method (doit &tmp edge temp1 thisControl)
 		(cond 
-			((& (= temp2 (ego onControl: 1)) $0008) (ego view: 27))
-			((== (ego view?) 27) (ego view: 2))
+			((& (= thisControl (ego onControl: origin)) cCYAN)
+				(ego view: 27)
+			)
+			((== (ego view?) 27)
+				(ego view: 2)
+			)
 		)
 		(cond 
-			(script (script doit:))
+			(script
+				(script doit:)
+			)
 			(
 				(and
 					(ego edgeHit?)
-					(= temp0 (self edgeToRoom: (ego edgeHit?)))
+					(= edge (self edgeToRoom: (ego edgeHit?)))
 				)
 				((ScriptID 202 2) register: (ego edgeHit?))
 				(self setScript: (ScriptID 202 2))
 			)
-			((or (& temp2 $0010) (& temp2 $0002)) (curRoom setScript: changeSize))
-			((& temp2 $01c0) (HandsOff) (self setScript: falling))
-			((ego inRect: 80 135 108 141) (ego setPri: 9))
-			((and (& temp2 $0008) (< (ego x?) 99)) (ego setPri: 9))
+			((or (& thisControl cRED) (& thisControl cBLUE))
+				(curRoom setScript: changeSize)
+			)
+			((& thisControl (| cGREY cLGREY cBROWN));$01c0
+				(HandsOff)
+				(self setScript: falling)
+			)
+			((ego inRect: 80 135 108 141)
+				(ego setPri: 9)
+			)
+			((and (& thisControl cCYAN) (< (ego x?) 99))
+				(ego setPri: 9)
+			)
 			(
 				(and
-					(& temp2 $0008)
+					(& thisControl cCYAN)
 					(< 99 (ego x?))
 					(< (ego x?) 150)
 				)
 				(ego setPri: 12)
 			)
-			((== (ego view?) 0) (ego setPri: 14))
-			((and (& temp2 $0008) (> (ego x?) 149)) (ego setPri: -1))
-			((& temp2 $0001) (ego setPri: -1))
+			((== (ego view?) 0)
+				(ego setPri: 14)
+			)
+			((and (& thisControl cCYAN) (> (ego x?) 149))
+				(ego setPri: -1)
+			)
+			((& thisControl cBLACK)
+				(ego setPri: -1)
+			)
 		)
 	)
 	
 	(method (dispose)
-		(ego illegalBits: -32768)
-		(DisposeScript 991)
+		(ego illegalBits: cWHITE)
+		(DisposeScript JUMP)
 		(super dispose:)
 	)
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if
-		(or (event claimed?) (not (== (event type?) 16384)))
+		(if (or (event claimed?) (not (== (event type?) userEvent)))
 			(return)
 		)
 	)
@@ -223,51 +334,56 @@
 )
 
 (instance enterFromTree of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: PolyPath 47 143 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance leaveCrispins of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo 160 109 self)
 			)
-			(1 (door setCycle: Beg self))
-			(2 (HandsOn) (self dispose:))
+			(1
+				(door setCycle: BegLoop self)
+			)
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance changeSize of Script
-	(properties)
 	
 	(method (changeState newState &tmp egoMover)
 		(switch (= state newState)
 			(0
-				(= gEgoView (ego view?))
+				(= saveEgoView (ego view?))
 				(= egoMover (ego mover?))
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(if (== gEgoView 2) (ego setPri: 1 illegalBits: 0))
+				(= saveCycleSpeed (ego cycleSpeed?))
+				(if (== saveEgoView 2) (ego setPri: 1 illegalBits: 0))
 				(if (IsObject egoMover)
 					(= gEgoMoverX (egoMover x?))
 					(= gEgoMoverY (egoMover y?))
 				)
 				(HandsOff)
 				(rail1 setPri: 1)
-				(if (== gEgoView 2)
+				(if (== saveEgoView 2)
 					(ego
-						signal: (| (ego signal?) $4810)
+						signal: (| (ego signal?) (| ignrAct fixedLoop fixPriOn))
 						setMotion: PolyPath 95 181 self
 					)
 				else
@@ -280,27 +396,27 @@
 					normal: 0
 					cycleSpeed: (ego moveSpeed?)
 					setPri: -1
-					setLoop: (if (== gEgoView 2) 0 else 1)
+					setLoop: (if (== saveEgoView 2) 0 else 1)
 					setStep: 4 3
 					illegalBits: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
-				(if (== gEgoView 2)
+				(if (== saveEgoView 2)
 					(ego setMotion: MoveTo 63 186)
 				else
 					(ego setMotion: MoveTo 92 174)
 				)
 			)
 			(2
-				(if (== gEgoView 0)
+				(if (== saveEgoView 0)
 					(ego
 						view: 2
 						setLoop: -1
 						setCycle: KQ5SyncWalk
 						setPri: 1
-						cycleSpeed: gEgoCycleSpeed
+						cycleSpeed: saveCycleSpeed
 						setMotion: PolyPath 100 170 self
 					)
 					((ego head?) show:)
@@ -310,18 +426,18 @@
 			)
 			(3
 				(ego
-					view: (if (== gEgoView 0) 2 else 0)
-					cycleSpeed: gEgoCycleSpeed
+					view: (if (== saveEgoView 0) 2 else 0)
+					cycleSpeed: saveCycleSpeed
 					cel: 0
 					normal: 1
 					setCycle: KQ5SyncWalk
 					setLoop: -1
 					setPri: 12
-					illegalBits: -16384
+					illegalBits: (| cWHITE cYELLOW)
 					signal: (& (ego signal?) $f7ff)
 				)
 				((ego head?) show:)
-				(if (== gEgoView 0)
+				(if (== saveEgoView 0)
 					(ego loop: 7 cel: 3 setStep: 2 1)
 				else
 					(ego loop: 7 cel: 2 setStep: 3 2)
@@ -331,10 +447,10 @@
 				else
 					(if
 						(and
-							(not (& (OnControl 4 gPEventX gPEventY) $0002))
-							(not (& (OnControl 4 gPEventX gPEventY) $0010))
-							(not (& (OnControl 4 gPEventX gPEventY) $0020))
-							(not (& (OnControl 4 gPEventX gPEventY) $0800))
+							(not (& (OnControl CMAP gPEventX gPEventY) cBLUE))
+							(not (& (OnControl CMAP gPEventX gPEventY) cRED))
+							(not (& (OnControl CMAP gPEventX gPEventY) cMAGENTA))
+							(not (& (OnControl CMAP gPEventX gPEventY) cLCYAN))
 						)
 						(ego setMotion: PolyPath gPEventX gPEventY)
 					)
@@ -348,8 +464,7 @@
 )
 
 (instance falling of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -357,9 +472,9 @@
 				(ego
 					normal: 0
 					view: 90
-					ignoreControl: -32768
+					ignoreControl: cWHITE
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: JumpTo 196 133 self
 				)
 			)
@@ -369,7 +484,7 @@
 					normal: 1
 					view: 2
 					setCycle: KQ5SyncWalk
-					observeControl: -32768
+					observeControl: cWHITE
 				)
 				((ego head?) show:)
 				(= cycles 3)
@@ -383,8 +498,7 @@
 )
 
 (instance openDoor of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -397,13 +511,13 @@
 				(= local157 0)
 				(= local158 0)
 				(= theScript 0)
-				(door setCycle: End self)
+				(door setCycle: EndLoop self)
 			)
 			(2
 				(ego setMotion: MoveTo 169 98 self)
 			)
 			(3
-				(Bset 37)
+				(Bset fEnteredCrispinHouse)
 				(curRoom newRoom: 76)
 			)
 		)
@@ -411,8 +525,7 @@
 )
 
 (instance lookWell of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -441,8 +554,7 @@
 )
 
 (instance getDrink of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -462,18 +574,18 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego loop: (+ (ego loop?) 4) cel: 0 setCycle: End self)
+				(ego loop: (+ (ego loop?) 4) cel: 0 setCycle: EndLoop self)
 			)
 			(3 (= cycles 20))
 			(4
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(5
-				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: Beg self)
+				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: BegLoop self)
 			)
 			(6
 				(SpeakAudio 9070)
@@ -498,7 +610,7 @@
 		view 770
 		loop 4
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -510,7 +622,7 @@
 		loop 4
 		cel 1
 		priority 12
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -527,23 +639,23 @@
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 163)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
-					(if (Btst 37)
+				(verbDo
+					(if (Btst fEnteredCrispinHouse)
 						(SpeakAudio 171)
 					else
 						(HandsOff)
 						(ego setScript: openDoor)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -551,21 +663,20 @@
 )
 
 (instance theWindows of RFeature
-	(properties)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
-				(not (& (OnControl 4 (event x?) (event y?)) $0200))
+				(not (== (event type?) userEvent))
+				(not (& (OnControl CMAP (event x?) (event y?)) cLBLUE))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 164)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -573,21 +684,20 @@
 )
 
 (instance house of RFeature
-	(properties)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
-				(not (& (OnControl 4 (event x?) (event y?)) $0004))
+				(not (== (event type?) userEvent))
+				(not (& (OnControl CMAP (event x?) (event y?)) cGREEN))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 165)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -606,20 +716,20 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 166)
 					(event claimed: 1)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(ego setScript: lookWell)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -638,19 +748,19 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 167)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(proc762_1 @local164 3021)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -658,26 +768,25 @@
 )
 
 (instance pond of RFeature
-	(properties)
-	
+
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
-				(not (& (OnControl 4 (event x?) (event y?)) $0008))
+				(not (== (event type?) userEvent))
+				(not (& (OnControl CMAP (event x?) (event y?)) cCYAN))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 168)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(HandsOff)
 					(ego setScript: getDrink)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -696,19 +805,19 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 169)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(proc762_1 @local164 3022)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -716,21 +825,20 @@
 )
 
 (instance bridge of RFeature
-	(properties)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
-				(not (& (OnControl 4 (event x?) (event y?)) $1000))
+				(not (== (event type?) userEvent))
+				(not (& (OnControl CMAP (event x?) (event y?)) cLRED))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 170)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -743,7 +851,7 @@
 		y 154
 		view 770
 		priority 1
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 4
 	)
 )
@@ -755,7 +863,7 @@
 		view 770
 		loop 1
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 9
 	)
 )
@@ -767,81 +875,84 @@
 		view 770
 		loop 2
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 2
 	)
 )
 
 (instance poly2 of Polygon
-	(properties)
+	(properties
+		type PTotalAccess
+	)
 )
 
 (instance poly3 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly4 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly5 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly6 of Polygon
-	(properties)
+	(properties
+		type PTotalAccess
+	)
 )
 
 (instance poly7 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly8 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly9 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly11 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly12 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly13 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly14 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance introRoomScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -860,7 +971,10 @@
 			(2
 				(proc762_0 @local183 @local164 @local173 self)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )

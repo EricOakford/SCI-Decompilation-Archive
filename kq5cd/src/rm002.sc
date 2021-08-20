@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 2)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -17,18 +17,55 @@
 )
 
 (local
-	gEgoView
+	saveEgoView
 	local1
 	local2
-	[local3 12] = [319 48 223 77 103 72 183 51 247 0 319]
-	[local15 22] = [107 63 78 71 132 90 159 90 180 97 149 109 0 121 0 0 238 0 196 27 140 55]
-	[local37 10] = [0 155 103 155 139 171 140 189 0 189]
-	[local47 12] = [319 189 286 189 141 125 142 118 239 83 319 81]
-	[local59 8] = [138 166 178 165 185 173 143 172]
+	pts1 = [
+		319 48
+		223 77
+		03 72
+		183 51
+		247 0
+		319
+		]
+	pts2 = [
+		107 63
+		78 71
+		132 90
+		159 90
+		180 97
+		149 109
+		0 121
+		0 0
+		238 0
+		196 27
+		140 55
+		]
+	pts3 = [
+		0 155
+		103 155
+		139 171
+		140 189
+		0 189
+		]
+	pts4 = [
+		319 189
+		286 189
+		141 125
+		142 118
+		239 83
+		319 81
+		]
+	pts5 = [
+		138 166
+		178 165
+		185 173
+		143 172
+		]
 	local67
-	[local68 9] = [1003 215 40 4 11 25 23 31 31]
-	[local77 9] = [1000 80 10 4 11 24 19 23 30]
-	[local86 9] = [1009 235 20 5 11 24 18 24 23]
+	local68 = [1003 215 40 4 11 25 23 31 31]
+	local77 = [1000 80 10 4 11 24 19 23 30]
+	local86 = [1009 235 20 5 11 24 18 24 23]
 )
 (instance rm002 of KQ5Room
 	(properties
@@ -42,10 +79,10 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 143)
-		(= global321 48)
+		(= cedricX 143)
+		(= cedricY 48)
 		(= global325 3023)
-		(ego normal: 1 setStep: 3 2 view: 0)
+		(ego normal: TRUE setStep: 3 2 view: 0)
 		(self
 			setFeatures: mountPath room
 			setRegions: 202
@@ -73,36 +110,45 @@
 			)
 			(else  (ego posn: 214 186))
 		)
-		(ego illegalBits: -32768 init:)
-		(if (not (Btst 47))
+		(ego illegalBits: cWHITE init:)
+		(if (not (Btst fSnakeGone))
 			(snake cycleSpeed: 4 cel: 0 init: stopUpd:)
-			(if (not (Btst 87))
-				(Bset 87)
-				(= local67 1)
+			(if (not (Btst fSnakeWarns))
+				(Bset fSnakeWarns)
+				(= local67 TRUE)
 				(snake setScript: warnScript)
 			)
 		)
-		(poly1 points: @local3 size: 6)
-		(poly2 points: @local15 size: 11)
-		(poly3 points: @local37 size: 5)
-		(poly4 points: @local47 size: 6)
-		(poly5 points: @local59 size: 4)
+		(poly1 points: @pts1 size: 6)
+		(poly2 points: @pts2 size: 11)
+		(poly3 points: @pts3 size: 5)
+		(poly4 points: @pts4 size: 6)
+		(poly5 points: @pts5 size: 4)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp edge)
 		(cond 
-			((& (ego onControl: 1) $4000) (ego view: 2))
-			((& (ego onControl: 1) $2000) (ego view: 0))
-			(script (script doit:))
+			((& (ego onControl: origin) cYELLOW)
+				(ego view: 2)
+			)
+			((& (ego onControl: origin) cLMAGENTA)
+				(ego view: 0)
+			)
+			(script
+				(script doit:)
+			)
 			(
 				(and
 					(ego edgeHit?)
-					(= temp0 (self edgeToRoom: (ego edgeHit?)))
+					(= edge (self edgeToRoom: (ego edgeHit?)))
 				)
 				((ScriptID 202 2) register: (ego edgeHit?))
 				(self setScript: (ScriptID 202 2))
 			)
-			((Btst 15) (SpeakAudio 177) (Bclr 15))
+			((Btst fWearingCloak)
+				(SpeakAudio 177)
+				(Bclr fWearingCloak)
+			)
 		)
 	)
 	
@@ -112,22 +158,22 @@
 			(script (return))
 			(else
 				(switch (event message?)
-					(JOY_DOWNRIGHT
+					(verbUse
 						(if
 							(and
-								(== (inventory indexOf: (theIconBar curInvIcon?)) 34)
+								(== (inventory indexOf: (theIconBar curInvIcon?)) iTambourine)
 								(MousedOn ego event)
 							)
 							(DoDisplay 0)
 							(if (cast contains: snake)
-								(Bset 47)
+								(Bset fSnakeGone)
 								(SolvePuzzle 3)
 								(HandsOff)
 								(curRoom setScript: shakeTambourine)
 							else
 								(SpeakAudio 174)
 							)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -137,7 +183,6 @@
 )
 
 (instance warnScript of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -156,16 +201,15 @@
 )
 
 (instance strike of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theMusic2 number: 27 loop: 1 play:)
-				(snake loop: 1 cel: 0 setCycle: CT 2 1 self)
+				(snake loop: 1 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(1
-				(snake setCycle: CT 4 1)
+				(snake setCycle: CycleTo 4 1)
 				((ego head?) hide:)
 				(ego
 					normal: 0
@@ -173,20 +217,22 @@
 					loop: 5
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(= deathMessage 178)
 				(EgoDead 243)
+				;That wasn't wise, Graham. He who speaks with forked tongue should NEVER be trusted.
 			)
 		)
 	)
 )
 
 (instance shakeTambourine of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -194,7 +240,7 @@
 				(ego setMotion: PolyPath 230 80 self)
 			)
 			(1
-				(= gEgoView (ego view?))
+				(= saveEgoView (ego view?))
 				((ego head?) hide:)
 				(ego
 					normal: 0
@@ -202,27 +248,27 @@
 					loop: 3
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(theMusic3 number: 51 loop: -1 playBed:)
-				(ego loop: 4 cycleSpeed: 0 setCycle: Fwd)
+				(ego loop: 4 cycleSpeed: 0 setCycle: Forward)
 				(= cycles 1)
 			)
 			(3 (= seconds 5))
 			(4
 				(theMusic4 stop:)
 				(theMusic3 stop:)
-				(ego loop: 3 cel: 2 cycleSpeed: 2 setCycle: Beg)
+				(ego loop: 3 cel: 2 cycleSpeed: 2 setCycle: BegLoop)
 				(proc762_1 @local68 5501)
-				(snake loop: 2 cel: 0 setCycle: End self)
+				(snake loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(snake dispose:)
 				(ego
 					normal: 1
-					view: gEgoView
+					view: saveEgoView
 					loop: 7
 					cel: 0
 					cycleSpeed: 0
@@ -241,21 +287,20 @@
 )
 
 (instance mountPath of RFeature
-	(properties)
-	
+
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
-				(not (& (OnControl 4 (event x?) (event y?)) $0002))
+				(not (== (event type?) userEvent))
+				(not (& (OnControl CMAP (event x?) (event y?)) cBLUE))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 172)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -270,11 +315,14 @@
 		loop 9
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp distToSnake)
 		(super doit:)
 		(cond 
-			((curRoom script?) (DoDisplay 0) (theMusic4 fade:))
-			((> (= temp0 (ego distanceTo: self)) 70)
+			((curRoom script?)
+				(DoDisplay 0)
+				(theMusic4 fade:)
+			)
+			((> (= distToSnake (ego distanceTo: self)) 70)
 				(if local2
 					(-- local2)
 					(self cel: 0 setCycle: 0)
@@ -282,11 +330,15 @@
 					(theMusic4 stop:)
 				)
 			)
-			((< temp0 30) (DoDisplay 0) (HandsOff) (curRoom setScript: strike))
+			((< distToSnake 30)
+				(DoDisplay 0)
+				(HandsOff)
+				(curRoom setScript: strike)
+			)
 			((not local2)
 				(DoDisplay 0)
 				(++ local2)
-				(self setCycle: Fwd)
+				(self setCycle: Forward)
 				(theMusic4 number: 38 loop: -1 play:)
 			)
 		)
@@ -296,38 +348,40 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 173)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(proc762_1 @local86 5502)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWN
+				(verbTalk
 					(SpeakAudio 176)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_DOWNRIGHT
+				(verbUse
 					(switch (inventory indexOf: (theIconBar curInvIcon?))
-						(34
+						(iTambourine
 							(DoDisplay 0)
-							(Bset 47)
+							(Bset fSnakeGone)
 							(SolvePuzzle 3)
 							(HandsOff)
 							(curRoom setScript: shakeTambourine)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
-						(28 (event claimed: 0))
+						(iWand
+							(event claimed: FALSE)
+						)
 						(else 
 							(SpeakAudio 175)
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 				)
@@ -338,31 +392,31 @@
 
 (instance poly1 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly2 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly3 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly4 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly5 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
@@ -376,15 +430,15 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 172)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)

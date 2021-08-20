@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 213)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -21,8 +21,32 @@
 (local
 	local0
 	local1
-	[local2 10] = [171 119 229 123 233 127 164 127 148 124]
-	[local12 34] = [199 48 194 6 110 6 98 58 142 111 85 112 68 108 64 112 36 113 11 107 0 109 0 0 319 0 319 120 278 115 242 112 185 115]
+	pts1 = [
+		171 119
+		229 123
+		233 127
+		164 127
+		148 124
+		]
+	pts2 = [
+		199 48
+		194 6
+		110 6
+		98 58
+		142 111
+		85 112
+		68 108
+		64 112
+		36 113
+		11 107
+		0 109
+		0 0
+		319 0
+		319 120
+		278 115
+		242 112
+		185 115
+		]
 )
 (procedure (localproc_000e param1 param2 param3)
 	(if (< param2 param1) (= param2 param1))
@@ -59,40 +83,50 @@
 			)
 			(else  (ego posn: 160 160))
 		)
-		(LoadMany 128 364 366 378 376)
+		(LoadMany VIEW 364 366 378 376)
 		(cond 
-			(
-			(and (Btst 52) (not (Btst 32)) (== prevRoomNum 214))
+			((and (Btst fBanditsEnterTemple) (not (Btst fSawBandits)) (== prevRoomNum 214))
 				(ego posn: gGEgoX gGEgoY)
-				(Bset 32)
+				(Bset fSawBandits)
 				(HandsOff)
 				(guard1 init: setScript: rideOut)
 				(guard2 init: setScript: rideOut2)
 			)
-			((not (Btst 32)) (guard1 init: setScript: rideIn))
+			((not (Btst fSawBandits))
+				(guard1 init: setScript: rideIn)
+			)
 		)
 		(self setFeatures: pond sands temple rock cliff)
-		(poly1 points: @local2 size: 5)
-		(poly2 points: @local12 size: 17)
+		(poly1 points: @pts1 size: 5)
+		(poly2 points: @pts2 size: 17)
 		(self addObstacle: poly1 poly2)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp edge)
 		(cond 
 			(script (script doit:))
-			((not (Btst 43)) (Bset 43) (SolvePuzzle 3))
-			((= temp0 (self edgeToRoom: (ego edgeHit?)))
+			((not (Btst fFoundTemple))
+				(Bset fFoundTemple)
+				(SolvePuzzle 3)
+			)
+			((= edge (self edgeToRoom: (ego edgeHit?)))
 				(++ globalCedric)
 				(switch (ego edgeHit?)
-					(3 (++ global315))
-					(4 (++ global314))
-					(2 (-- global314))
-					(1 0)
+					(SOUTH
+						(++ desertRoomY)
+					)
+					(WEST
+						(++ desertRoomX)
+					)
+					(EAST
+						(-- desertRoomY)
+					)
+					(NORTH 0)
 				)
 				(HandsOn)
-				(curRoom newRoom: temp0)
+				(curRoom newRoom: edge)
 			)
-			((& (ego onControl: 0) $4000)
+			((& (ego onControl: 0) cYELLOW)
 				(HandsOn)
 				(theMusic fade:)
 				(theMusic2 fade:)
@@ -103,15 +137,19 @@
 				(theMusic2 fade:)
 				(= gGEgoX (ego x?))
 				(= gGEgoY (ego y?))
-				(Bset 52)
+				(Bset fBanditsEnterTemple)
 				(curRoom newRoom: north)
 			)
 		)
 	)
 	
 	(method (dispose)
-		(if theMusic (theMusic fade:))
-		(if theMusic3 (theMusic3 fade:))
+		(if theMusic
+			(theMusic fade:)
+		)
+		(if theMusic3
+			(theMusic3 fade:)
+		)
 		(DisposeScript 971)
 		(super dispose:)
 	)
@@ -125,8 +163,7 @@
 )
 
 (instance getDrink of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -140,24 +177,24 @@
 					loop: 3
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego loop: (+ (ego loop?) 4) cel: 0 setCycle: End self)
+				(ego loop: (+ (ego loop?) 4) cel: 0 setCycle: EndLoop self)
 			)
 			(3 (= cycles 20))
 			(4
-				(ego cel: 0 setCycle: End self)
+				(ego cel: 0 setCycle: EndLoop self)
 			)
 			(5
-				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: Beg self)
+				(ego loop: (- (ego loop?) 4) cel: 3 setCycle: BegLoop self)
 			)
 			(6
 				(= globalCedric 0)
 				(SpeakAudio 311)
 				(ego
-					normal: 1
+					normal: TRUE
 					view: 2
 					setCycle: KQ5SyncWalk
 					cycleSpeed: 0
@@ -174,13 +211,16 @@
 )
 
 (instance rideIn of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 20))
+			(0
+				(= seconds 20)
+			)
 			(1
-				(if (curRoom script?) (-- state))
+				(if (curRoom script?)
+					(-- state)
+				)
 				(= cycles 1)
 			)
 			(2
@@ -191,8 +231,8 @@
 			)
 			(3
 				(HandsOff)
-				(if (not (& (ego onControl: 1) $0002))
-					(LoadMany 128 380)
+				(if (not (& (ego onControl: origin) cBLUE))
+					(LoadMany VIEW 380)
 					(curRoom setScript: attack)
 				else
 					(= cycles 1)
@@ -213,7 +253,7 @@
 					cel: 0
 					setLoop: 1
 					setMotion: MoveTo 142 115
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -223,7 +263,7 @@
 					cel: 0
 					setStep: 3 10
 					setMotion: MoveTo (+ (guard1 x?) 10) 121
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -235,7 +275,6 @@
 )
 
 (instance rideIn2 of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -252,7 +291,7 @@
 					cel: 0
 					setLoop: 1
 					setMotion: MoveTo 140 125
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -262,7 +301,7 @@
 					cel: 0
 					setStep: 3 10
 					setMotion: MoveTo (+ (guard2 x?) 10) 130
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -274,7 +313,6 @@
 )
 
 (instance rideOut of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -287,7 +325,7 @@
 					setStep: 1 1
 					posn: 143 110
 					setMotion: MoveTo 143 145
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -298,7 +336,7 @@
 					cel: 0
 					setLoop: 2
 					setMotion: MoveTo 125 145
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -309,9 +347,11 @@
 					setMotion: MoveTo -60 (guard1 y?) self
 				)
 			)
-			(3 (theMusic3 fade: self))
+			(3
+				(theMusic3 fade: self)
+			)
 			(4
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(client setScript: 0)
 			)
 		)
@@ -319,8 +359,7 @@
 )
 
 (instance rideOut2 of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -331,7 +370,7 @@
 					setStep: 1 1
 					posn: 141 115
 					setMotion: MoveTo 141 155
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -342,7 +381,7 @@
 					cel: 0
 					setLoop: 2
 					setMotion: MoveTo 123 155
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -363,7 +402,6 @@
 )
 
 (instance attack of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
@@ -375,7 +413,7 @@
 				loop: 3
 				cel: 0
 				cycleSpeed: 2
-				setCycle: End
+				setCycle: EndLoop
 			)
 		)
 	)
@@ -398,7 +436,7 @@
 					posn: -80 125
 					setStep: 6 6
 					setCycle: Walk
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: Follow guard2 30
 					init:
 				)
@@ -406,7 +444,7 @@
 			(1
 				(guard2
 					view: 380
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo (+ (guard2 x?) 300) (guard2 y?) self
 				)
 			)
@@ -423,21 +461,20 @@
 )
 
 (instance sands of RFeature
-	(properties)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
 				(not (MousedOn self event))
-				(not (& (OnControl 4 (event x?) (event y?)) $0040))
+				(not (& (OnControl CMAP (event x?) (event y?)) cBROWN))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 764)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -445,21 +482,20 @@
 )
 
 (instance temple of RFeature
-	(properties)
-	
+
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (& (OnControl 4 (event x?) (event y?)) $0200))
-				(not (== (event type?) 16384))
+				(not (& (OnControl CMAP (event x?) (event y?)) cLBLUE))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 770)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -467,28 +503,27 @@
 )
 
 (instance rock of RFeature
-	(properties)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
 				(and
-					(not (& (OnControl 4 (event x?) (event y?)) $0002))
-					(not (& (OnControl 4 (event x?) (event y?)) $0010))
+					(not (& (OnControl CMAP (event x?) (event y?)) cBLUE))
+					(not (& (OnControl CMAP (event x?) (event y?)) cRED))
 				)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 771)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 774)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -496,25 +531,24 @@
 )
 
 (instance cliff of RFeature
-	(properties)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (& (OnControl 4 (event x?) (event y?)) $0008))
-				(not (== (event type?) 16384))
+				(not (& (OnControl CMAP (event x?) (event y?)) cCYAN))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 772)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 775)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -522,30 +556,36 @@
 )
 
 (instance pond of RFeature
-	(properties)
 	
 	(method (handleEvent event)
 		(if
 			(or
 				(event claimed?)
-				(not (& (OnControl 4 (event x?) (event y?)) $0400))
-				(not (== (event type?) 16384))
+				(not (& (OnControl CMAP (event x?) (event y?)) cLGREEN))
+				(not (== (event type?) userEvent))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 773)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(cond 
-						(
-						(and (== (guard1 script?) rideIn) (rideIn state?)) (SpeakAudio 776))
-						((not local1) (++ local1) (HandsOff) (curRoom setScript: getDrink))
-						(else (SpeakAudio 777))
+						((and (== (guard1 script?) rideIn) (rideIn state?))
+							(SpeakAudio 776)
+						)
+						((not local1)
+							(++ local1)
+							(HandsOff)
+							(curRoom setScript: getDrink)
+						)
+						(else
+							(SpeakAudio 777)
+						)
 					)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -570,12 +610,12 @@
 
 (instance poly1 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance poly2 of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )

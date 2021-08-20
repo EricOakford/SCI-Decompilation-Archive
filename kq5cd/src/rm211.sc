@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 211)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use KQ5Room)
@@ -29,7 +29,9 @@
 	)
 	
 	(method (doit &tmp temp0)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (dispose)
@@ -45,12 +47,10 @@
 )
 
 (instance roomScript of Script
-	(properties)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== state 4) (== (theMusic prevSignal?) -1))
+		(if (and (== state 4) (== (theMusic prevSignal?) -1))
 			(self cue:)
 		)
 	)
@@ -62,7 +62,7 @@
 					setLoop: (+ 8 register)
 					x: (if register (+ (ego x?) 45) else (- (ego x?) 45))
 					y: (- (ego y?) 3)
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (ego x?) (+ (ego y?) 4) self
 				)
 			)
@@ -70,19 +70,19 @@
 				(scorpion
 					setLoop: (+ 12 register)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theMusic number: 39 loop: 1 vol: 127 play:)
 			)
 			(2
-				(scorpion setCycle: Beg self)
+				(scorpion setCycle: BegLoop self)
 			)
 			(3
-				(ego view: 358 cycleSpeed: 2 normal: 0 setCycle: End self)
+				(ego view: 358 cycleSpeed: 2 normal: 0 setCycle: EndLoop self)
 				((ego head?) hide:)
 				(scorpion
 					setLoop: (+ 8 (not register))
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (if register 330 else -10) (+ (scorpion y?) 30)
 				)
 			)
@@ -98,7 +98,7 @@
 (instance scorpion of Actor
 	(properties
 		view 352
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
@@ -106,19 +106,19 @@
 		(if
 			(or
 				(event claimed?)
-				(not (== (event type?) 16384))
+				(not (== (event type?) userEvent))
 				(not (MousedOn self event))
 			)
 			(return)
 		else
 			(switch (event message?)
-				(JOY_UPRIGHT
+				(verbLook
 					(SpeakAudio 762)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
-				(JOY_RIGHT
+				(verbDo
 					(SpeakAudio 761)
-					(event claimed: 1)
+					(event claimed: TRUE)
 				)
 			)
 		)
@@ -132,6 +132,6 @@
 		view 352
 		cel 3
 		priority 3
-		signal $0001
+		signal stopUpdOn
 	)
 )

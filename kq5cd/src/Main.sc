@@ -362,14 +362,14 @@
 	global311
 	numEmeralds =  -1
 	global313
-	global314
-	global315
+	desertRoomX
+	desertRoomY
 	eatLambCount
 	theMusic4
 	global318
 	global319
-	global320
-	global321
+	cedricX
+	cedricY
 	globalCedric
 	gPEventX
 	gPEventY

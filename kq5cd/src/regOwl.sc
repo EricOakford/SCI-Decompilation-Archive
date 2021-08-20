@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 202)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use CodeCue)
@@ -19,15 +19,15 @@
 )
 
 (local
-	[local0 10] = [1000 116 62 4 11 24 19 23 30]
+	local0 = [1000 116 62 4 11 24 19 23 30]
 	clientView
 	clientLoop
 	clientCel
 	local13
-	[local14 19] = [2 6 7 8 10 11 12 27 29 30 31 35 44 45 46 52 53 54 -1]
-	[local33 19] = [0 2 4 6 100 100 8 9 11 100 100 12 100 100 13 100 100 100 -1]
-	[local52 19] = [57 58 59 60 61 62 63 64 65 66 66 67 68 69 70 71 72 73 74]
-	[local71 14] = [3005 3006 3007 3008 3009 3010 3011 3012 3013 3014 3015 3016 3017 3018]
+	local14 = [2 6 7 8 10 11 12 27 29 30 31 35 44 45 46 52 53 54 -1]
+	local33 = [0 2 4 6 100 100 8 9 11 100 100 12 100 100 13 100 100 100 -1]
+	local52 = [57 58 59 60 61 62 63 64 65 66 66 67 68 69 70 71 72 73 74]
+	local71 = [3005 3006 3007 3008 3009 3010 3011 3012 3013 3014 3015 3016 3017 3018]
 	local85
 )
 (procedure (localproc_001e)
@@ -35,8 +35,7 @@
 	(= [local0 2] (Min (Max 0 (- (cedric y?) 40)) 239))
 )
 
-(instance owl of Rgn
-	(properties)
+(instance owl of Region
 	
 	(method (init)
 		(super init:)
@@ -55,13 +54,13 @@
 			(cedric view: 137)
 		)
 		(cedric
-			ignoreHorizon: 1
+			ignoreHorizon: TRUE
 			setPri: 14
 			loop: 8
 			cel: 0
 			setCycle: (if (== (theGame detailLevel:) 3) Walk else 0)
-			ignoreActors: 1
-			posn: global320 global321
+			ignoreActors: TRUE
+			posn: cedricX cedricY
 			init:
 			stopUpd:
 		)
@@ -75,8 +74,8 @@
 		)
 		(if
 			(or
-				(== ((inventory at: 16) owner?) 12)
-				(not (ego has: 16))
+				(== ((inventory at: iStick) owner?) 12)
+				(not (ego has: iStick))
 			)
 			(= [local71 8] 3048)
 		)
@@ -86,8 +85,13 @@
 	
 	(method (doit)
 		(cond 
-			((== globalCedric 50) (= globalCedric cedric) (= [local71 8] 3048))
-			(script (script doit:))
+			((== globalCedric 50)
+				(= globalCedric cedric)
+				(= [local71 8] 3048)
+			)
+			(script
+				(script doit:)
+			)
 		)
 	)
 	
@@ -100,12 +104,10 @@
 )
 
 (instance messageTime of Script
-	(properties)
-	
+
 	(method (doit)
 		(super doit:)
-		(if
-		(or (curRoom script?) (== (User controls?) 0))
+		(if (or (curRoom script?) (== (User controls?) 0))
 			(= state -1)
 			(= cycles 1)
 		)
@@ -129,57 +131,6 @@
 
 (class regOwl of Actor
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		description 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 26505
-		lookStr 0
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0000
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
-		xStep 3
-		moveSpeed 0
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
-		code 0
 		speak 0
 	)
 )
@@ -440,15 +391,20 @@ code_05d0:
 	)
 	
 	(method (delete)
-		(if (& signal $8000)
-			(if (!= mover -1) (self setMotion: 0))
+		(if (& signal delObj)
+			(if (!= mover -1)
+				(self setMotion: 0)
+			)
 			(self setScript: 0 setCycle: 0)
 		)
-		(if (& signal $8000)
-			(= signal (& signal $7fff))
+		(if (& signal delObj)
+			(&= signal $7fff)
 			(cast delete: self)
-			(if underBits (UnLoad 133 underBits) (= underBits 0))
-			(if (& signal $0020)
+			(if underBits
+				(UnLoad MEMORY underBits)
+				(= underBits 0)
+			)
+			(if (& signal viewAdded)
 				(addToPics
 					add:
 						((PicView new:)
@@ -467,7 +423,9 @@ code_05d0:
 			else
 				(DisposeClone self)
 			)
-			(if (IsObject actions) (actions dispose:))
+			(if (IsObject actions)
+				(actions dispose:)
+			)
 			(= actions 0)
 		)
 	)
@@ -476,7 +434,7 @@ code_05d0:
 (instance stdWalkIn of Script
 	(properties)
 	
-	(method (changeState newState &tmp theEgoX theEgoY egoX egoY temp4 temp5 temp6 [temp7 2])
+	(method (changeState newState &tmp theEgoX theEgoY egoX egoY egoWide egoHigh temp6 [temp7 2])
 		(switch (= state newState)
 			(0
 				(if (< (theGame detailLevel:) 3)
@@ -484,22 +442,22 @@ code_05d0:
 					(ego edgeHit: 0)
 					(HandsOff)
 					(= register (curRoom roomToEdge: prevRoomNum))
-					(= temp5 (CelHigh (ego view?) (ego loop?) (ego cel?)))
-					(= temp4 (CelWide (ego view?) (ego loop?) (ego cel?)))
+					(= egoHigh (CelHigh (ego view?) (ego loop?) (ego cel?)))
+					(= egoWide (CelWide (ego view?) (ego loop?) (ego cel?)))
 					(= egoX (ego x?))
 					(= egoY (ego y?))
 					(switch register
 						(3
 							(= theEgoX egoX)
-							(= theEgoY (+ 189 temp5))
+							(= theEgoY (+ 189 egoHigh))
 						)
 						(2
 							(= theEgoY egoY)
-							(= theEgoX (+ 319 temp4))
+							(= theEgoX (+ 319 egoWide))
 						)
 						(4
 							(= theEgoY egoY)
-							(= theEgoX (- 0 temp4))
+							(= theEgoX (- 0 egoWide))
 						)
 						(1
 							(= theEgoX egoX)
@@ -529,24 +487,24 @@ code_05d0:
 					(ego edgeHit: 0)
 					(HandsOff)
 					(= register (curRoom roomToEdge: prevRoomNum))
-					(= temp5 (CelHigh (ego view?) (ego loop?) (ego cel?)))
-					(= temp4 (CelWide (ego view?) (ego loop?) (ego cel?)))
+					(= egoHigh (CelHigh (ego view?) (ego loop?) (ego cel?)))
+					(= egoWide (CelWide (ego view?) (ego loop?) (ego cel?)))
 					(= egoX (ego x?))
 					(= egoY (ego y?))
 					(switch register
 						(3
 							(= theEgoX egoX)
-							(= theEgoY (+ 189 temp5))
+							(= theEgoY (+ 189 egoHigh))
 							(= temp6 3)
 						)
 						(2
 							(= theEgoY egoY)
-							(= theEgoX (+ 319 temp4))
+							(= theEgoX (+ 319 egoWide))
 							(= temp6 1)
 						)
 						(4
 							(= theEgoY egoY)
-							(= theEgoX (- 0 temp4))
+							(= theEgoX (- 0 egoWide))
 							(= temp6 0)
 						)
 						(1
@@ -566,7 +524,7 @@ code_05d0:
 						loop: temp6
 						cel: 0
 						cycleSpeed: 3
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -588,7 +546,6 @@ code_05d0:
 )
 
 (instance stdWalkOut of Script
-	(properties)
 	
 	(method (changeState newState &tmp egoX egoY temp2 temp3)
 		(switch (= state newState)
@@ -600,25 +557,25 @@ code_05d0:
 					(= temp3 5)
 					(switch register
 						(1
-							(= egoY (- egoY 10))
+							(-= egoY 10)
 							(= temp2 7)
 						)
 						(3
-							(= egoY (+ egoY 60))
+							(+= egoY 60)
 							(= temp2 0)
 						)
 						(2
-							(= egoX (+ egoX 20))
+							(+= egoX 20)
 							(= temp2 4)
 						)
 						(4
-							(= egoX (- egoX 20))
+							(-= egoX 20)
 							(= temp2 4)
 							(= temp3 4)
 						)
 					)
 					(if (!= register 1)
-						(ego ignoreActors: 1 setMotion: MoveTo egoX egoY self)
+						(ego ignoreActors: TRUE setMotion: MoveTo egoX egoY self)
 					else
 						(ego loop: 3)
 						(= cycles 1)
@@ -663,7 +620,7 @@ code_05d0:
 						(cedric
 							loop: temp3
 							cycleSpeed: 0
-							setCycle: CT temp2 1 self
+							setCycle: CycleTo temp2 1 self
 						)
 					else
 						(= cycles 1)
@@ -683,7 +640,7 @@ code_05d0:
 							cycleSpeed: 1
 							loop: 9
 							cel: 0
-							setCycle: CT 4 1 self
+							setCycle: CycleTo 4 1 self
 						)
 					)
 					(else
@@ -696,7 +653,7 @@ code_05d0:
 								(else  8)
 							)
 							cel: 0
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 				)
@@ -710,7 +667,6 @@ code_05d0:
 )
 
 (instance rotate of Script
-	(properties)
 	
 	(method (changeState newState &tmp temp0 temp1 temp2 temp3)
 		(switch (= state newState)
@@ -720,7 +676,7 @@ code_05d0:
 						cycleSpeed: 0
 						cel: (if (< (client loop?) 2) 4 else 7)
 						loop: (if (== (client loop?) 0) 5 else 4)
-						setCycle: CT 0 -1 self
+						setCycle: CycleTo 0 -1 self
 					)
 				else
 					(= cycles 1)
@@ -745,7 +701,7 @@ code_05d0:
 					((== temp1 4) (-- temp1) (= temp0 -1))
 					(else (++ temp1) (= temp0 1))
 				)
-				(client setCycle: CT temp1 temp0)
+				(client setCycle: CycleTo temp1 temp0)
 				(-- state)
 				(= seconds (Random 5 10))
 			)
