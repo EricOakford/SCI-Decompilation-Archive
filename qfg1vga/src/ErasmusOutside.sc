@@ -28,16 +28,16 @@
 	doorIsOpen
 	local45
 	local46
-	attackedGargoyle
+	gargoyleCued
 	[local48 3]
-	theUseSortedFeatures
-	theGNewSpeed
-	local53
+	saveSortedFeatures
+	saveSpeed
+	theEyeIcon
 	answer1
 	answer2
 	answer3
 	answer4
-	local58
+	answer5
 	local59
 	local60
 	local61
@@ -47,7 +47,7 @@
 )
 (procedure (ThatsNotNice)
 	(= local45 1)
-	(= attackedGargoyle TRUE)
+	(= gargoyleCued TRUE)
 )
 
 (instance rm29 of Room
@@ -89,44 +89,54 @@
 		
 		(super init:)
 		(cSound number: 114 loop: -1 init: play:)
-		(= theUseSortedFeatures useSortedFeatures)
-		(= useSortedFeatures 0)
-		(= theGNewSpeed speed)
+		(= saveSortedFeatures useSortedFeatures)
+		(= useSortedFeatures FALSE)
+		(= saveSpeed speed)
 		(StatusLine enable:)
 		(gargoyle init: cycleSpeed: 2 stopUpd:)
 		(theDoor cel: 0 posn: 113 118 init:)
-		(= local53 (theIconBar at: 1))
-		(theIconBar curIcon: local53)
-		(theGame setCursor: (local53 cursor?) 1)
+		(= theEyeIcon (theIconBar at: ICON_LOOK))
+		(theIconBar curIcon: theEyeIcon)
+		(theGame setCursor: (theEyeIcon cursor?) TRUE)
 		(ego setScript: walkIn)
 	)
 	
 	(method (doit)
 		(cond 
 			((ego script?))
-			((== (ego edgeHit?) 3) (ego setScript: egoExits))
-			(attackedGargoyle
-				(= attackedGargoyle 0)
+			((== (ego edgeHit?) SOUTH)
+				(ego setScript: egoExits)
+			)
+			(gargoyleCued
+				(= gargoyleCued FALSE)
 				(gargoyle setScript: 0)
 				(self setScript: teleportOut)
 			)
-			((and local41 (== (ego edgeHit?) 3)) (curRoom newRoom: 28))
+			((and local41 (== (ego edgeHit?) SOUTH))
+				(curRoom newRoom: 28)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(= useSortedFeatures theUseSortedFeatures)
+		(= useSortedFeatures saveSortedFeatures)
 		(Bset fBeenIn29)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_TALK (messager say: N_ROOM V_TALK))
+			(V_TALK
+				(messager say: N_ROOM V_TALK)
+			)
 			(V_OPEN
-				(if doorIsOpen (messager say: N_ROOM V_OPEN) else (ThatsNotNice))
+				(if doorIsOpen
+					(messager say: N_ROOM V_OPEN)
+				else
+					(ThatsNotNice)
+				)
 			)
 			(V_DETECT (ThatsNotNice))
 			(V_ZAP (ThatsNotNice))
@@ -188,20 +198,24 @@
 		view 29
 		loop 2
 		cel 2
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 	
 	(method (init)
 		(= nightPalette 129)
 		(PalVary PALVARYTARGET 129)
-		(kernel_128 29)
+		(AssertPalette 29)
 		(super init:)
 	)
 	
 	(method (doVerb theVerb param2)
 		(switch theVerb
-			(V_LOOK (messager say: N_GARGOYLE V_LOOK))
-			(V_FLAME (= attackedGargoyle TRUE))
+			(V_LOOK
+				(messager say: N_GARGOYLE V_LOOK)
+			)
+			(V_FLAME
+				(= gargoyleCued TRUE)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -223,7 +237,7 @@
 	(method (init)
 		(= nightPalette 2029)
 		(PalVary PALVARYTARGET 2029)
-		(kernel_128 1029)
+		(AssertPalette 1029)
 		(= font userFont)
 		(super init: gargBust gargMouth &rest)
 	)
@@ -232,7 +246,7 @@
 (instance gargBust of Prop
 	(properties
 		view 1029
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -242,7 +256,7 @@
 		nsLeft 33
 		view 1029
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -253,7 +267,7 @@
 		view 29
 		loop 1
 		priority 4
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -264,15 +278,13 @@
 		view 29
 		loop 3
 		priority 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 8
 	)
 )
 
 (instance walkIn of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp theSeq)
 		(switch (= state newState)
 			(0
 				(ego init: posn: 142 233)
@@ -283,10 +295,15 @@
 				(ChangeGait MOVE_WALK FALSE)
 				(UseStamina 50)
 				(cond 
-					((< [egoStats STAMINA] 20) (= passedOut TRUE))
-					((< [egoStats STAMINA] 60) (= wornOut TRUE))
+					((< [egoStats STAMINA] 20)
+						(= passedOut TRUE)
+					)
+					((< [egoStats STAMINA] 60)
+						(= wornOut TRUE)
+					)
 				)
 				(cond 
+					;hero's super tired
 					(passedOut
 						(ego
 							cycleSpeed: 12
@@ -296,6 +313,7 @@
 							setMotion: MoveTo 148 183 self
 						)
 					)
+					;hero's slightly tired
 					(wornOut
 						(ego
 							cycleSpeed: 6
@@ -303,7 +321,10 @@
 							setMotion: MoveTo 148 183 self
 						)
 					)
-					(else (ego setMotion: MoveTo 148 183 self))
+					;hero's not worn out
+					(else
+						(ego setMotion: MoveTo 148 183 self)
+					)
 				)
 			)
 			(2
@@ -342,9 +363,17 @@
 			)
 			(4
 				(cond 
-					(passedOut (ego cycleSpeed: 6 setCycle: BegLoop) (= ticks 180))
-					(wornOut (ego cycleSpeed: 6 setCycle: EndLoop) (= ticks 120))
-					(else (self cue:))
+					(passedOut
+						(ego cycleSpeed: 6 setCycle: BegLoop)
+						(= ticks 180)
+					)
+					(wornOut
+						(ego cycleSpeed: 6 setCycle: EndLoop)
+						(= ticks 120)
+					)
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(5
@@ -355,15 +384,26 @@
 					(self cue:)
 				)
 			)
-			(6 (NormalEgo 3) (= ticks 6))
+			(6
+				(NormalEgo loopN)
+				(= ticks 6)
+			)
 			(7
 				(= local41 1)
-				(= temp0 (Random 1 4))
+				(= theSeq (Random 1 4))
 				(cond 
-					((not (Btst fBeenIn29)) (messager say: N_ROOM 0 C_FIRST_ENTRY 0 self))
-					(passedOut (messager say: N_ROOM 0 C_PASS_OUT 1 self))
-					(wornOut (messager say: N_ROOM 0 C_WORN_OUT 1 self))
-					(else (messager say: N_ROOM 0 C_RETURN_ENTRY temp0 self))
+					((not (Btst fBeenIn29))
+						(messager say: N_ROOM NULL C_FIRST_ENTRY 0 self)
+					)
+					(passedOut
+						(messager say: N_ROOM NULL C_PASS_OUT 1 self)
+					)
+					(wornOut
+						(messager say: N_ROOM NULL C_WORN_OUT 1 self)
+					)
+					(else
+						(messager say: N_ROOM NULL C_RETURN_ENTRY theSeq self)
+					)
 				)
 			)
 			(8
@@ -371,25 +411,47 @@
 				(gargoyle cycleSpeed: 6 setCycle: BegLoop self)
 			)
 			(9
-				(ego setSpeed: theGNewSpeed)
+				(ego setSpeed: saveSpeed)
 				(= ticks 90)
 			)
 			(10
 				(cond 
-					((not (Btst fBeenIn29)) (messager say: N_GARGOYLE 0 C_FIRST_MEET_GARGOYLE 1 self))
-					(Night (messager say: N_GARGOYLE 0 C_NIGHT 1 self))
-					(passedOut (messager say: N_GARGOYLE 0 C_PASS_OUT 1 self))
-					(wornOut (messager say: N_GARGOYLE 0 C_WORN_OUT 1 self))
-					(else (messager say: N_GARGOYLE 0 C_HELLO_AGAIN 1 self))
+					((not (Btst fBeenIn29))
+						(messager say: N_GARGOYLE NULL C_FIRST_MEET_GARGOYLE 1 self)
+					)
+					(Night
+						(messager say: N_GARGOYLE NULL C_NIGHT 1 self)
+					)
+					(passedOut
+						(messager say: N_GARGOYLE NULL C_PASS_OUT 1 self)
+					)
+					(wornOut
+						(messager say: N_GARGOYLE NULL C_WORN_OUT 1 self)
+					)
+					(else
+						(messager say: N_GARGOYLE NULL C_HELLO_AGAIN 1 self)
+					)
 				)
 			)
 			(11
 				(cond 
-					((and Night (not (Btst fBeenIn29))) (messager say: N_GARGOYLE 0 C_NIGHT 1 self))
-					(Night (rm29 setScript: teleportOut) (self dispose:))
-					(passedOut (messager say: N_GARGOYLE 0 C_PASS_OUT_QUESTIONS 1 self))
-					((Btst fMetGargoyle) (messager say: N_GARGOYLE 0 C_RETURN_QUESTIONS 1 self))
-					(else (Bset fMetGargoyle) (messager say: N_GARGOYLE 0 C_ASK_QUEST 1 self))
+					((and Night (not (Btst fBeenIn29)))
+						(messager say: N_GARGOYLE NULL C_NIGHT 1 self)
+					)
+					(Night
+						(rm29 setScript: teleportOut)
+						(self dispose:)
+					)
+					(passedOut
+						(messager say: N_GARGOYLE NULL C_PASS_OUT_QUESTIONS 1 self)
+					)
+					((Btst fMetGargoyle)
+						(messager say: N_GARGOYLE NULL C_RETURN_QUESTIONS 1 self)
+					)
+					(else
+						(Bset fMetGargoyle)
+						(messager say: N_GARGOYLE NULL C_ASK_QUEST 1 self)
+					)
 				)
 			)
 			(12
@@ -405,30 +467,28 @@
 )
 
 (instance egoExits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo (ego x?) 245 self)
 			)
-			(1 (curRoom newRoom: 28))
+			(1
+				(curRoom newRoom: 28)
+			)
 		)
 	)
 )
 
 (instance askName of Script
-	(properties)
-	
 	(method (doit)
 		(if (and (== state 6) (< (ego y?) 175))
-			(= attackedGargoyle TRUE)
+			(= gargoyleCued TRUE)
 		)
 		(super doit:)
 	)
 	
-	(method (changeState newState &tmp temp0 temp1 temp2)
+	(method (changeState newState &tmp theY1 theY2 theY3)
 		(switch (= state newState)
 			(0
 				0
@@ -436,9 +496,11 @@
 				(= answer2 (Random 2 9))
 				(= answer3 (Random 2 9))
 				(= answer4 (Random 2 9))
-				(messager say: N_GARGOYLE 0 C_ASK_NAME 1 self)
+				(messager say: N_GARGOYLE NULL C_ASK_NAME 1 self)
 			)
-			(1 1 (self changeState: 5))
+			(1 1
+				(self changeState: 5)
+			)
 			(2
 				2
 				(= answer2 (Random 2 9))
@@ -457,8 +519,12 @@
 			(5
 				5
 				(cond 
-					((== answer2 answer1) (self changeState: 2))
-					((or (== answer3 answer1) (== answer3 answer2)) (self changeState: 3))
+					((== answer2 answer1)
+						(self changeState: 2)
+					)
+					((or (== answer3 answer1) (== answer3 answer2))
+						(self changeState: 3)
+					)
 					(
 						(or
 							(== answer4 answer1)
@@ -467,40 +533,48 @@
 						)
 						(self changeState: 4)
 					)
-					(else (self cue:))
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(6
 				6
-				(if (> answer1 8) (= temp0 60) else (= temp0 40))
-				(if (> answer2 8)
-					(= temp1 (+ temp0 40))
+				(if (> answer1 8)
+					(= theY1 60)
 				else
-					(= temp1 (+ temp0 20))
+					(= theY1 40)
+				)
+				(if (> answer2 8)
+					(= theY2 (+ theY1 40))
+				else
+					(= theY2 (+ theY1 20))
 				)
 				(if (> answer3 8)
-					(= temp2 (+ temp1 40))
+					(= theY3 (+ theY2 40))
 				else
-					(= temp2 (+ temp1 20))
+					(= theY3 (+ theY2 20))
 				)
 				(switch
+					;ego wasn't given a name
 					(if (== userName NULL)
 						(Print
-							addButton: 0 2 0 8 10 0 0 29
-							addButton: 1 2 0 8 answer1 0 20 29
-							addButton: 2 2 0 8 answer2 0 temp0 29
-							addButton: 3 2 0 8 answer3 0 temp1 29
-							addButton: 4 2 0 8 answer4 0 temp2 29
+							addButton: 0 N_GARGOYLE NULL C_ASK_NAME 10 0 0 29
+							addButton: 1 N_GARGOYLE NULL C_ASK_NAME answer1 0 20 29
+							addButton: 2 N_GARGOYLE NULL C_ASK_NAME answer2 0 theY1 29
+							addButton: 3 N_GARGOYLE NULL C_ASK_NAME answer3 0 theY2 29
+							addButton: 4 N_GARGOYLE NULL C_ASK_NAME answer4 0 theY3 29
 							width: 170
 							init:
 						)
 					else
+						;ego has a name
 						(Print
 							addButton: 0 @userName 0 0
-							addButton: 1 2 0 8 answer1 0 20 29
-							addButton: 2 2 0 8 answer2 0 temp0 29
-							addButton: 3 2 0 8 answer3 0 temp1 29
-							addButton: 4 2 0 8 answer4 0 temp2 29
+							addButton: 1 N_GARGOYLE NULL C_ASK_NAME answer1 0 20 29
+							addButton: 2 N_GARGOYLE NULL C_ASK_NAME answer2 0 theY1 29
+							addButton: 3 N_GARGOYLE NULL C_ASK_NAME answer3 0 theY2 29
+							addButton: 4 N_GARGOYLE NULL C_ASK_NAME answer4 0 theY3 29
 							width: 170
 							init:
 						)
@@ -510,25 +584,25 @@
 						(self dispose:)
 					)
 					(1
-						(= local58 answer1)
+						(= answer5 answer1)
 						(self cue:)
 					)
 					(2
-						(= local58 answer2)
+						(= answer5 answer2)
 						(self cue:)
 					)
 					(3
-						(= local58 answer3)
+						(= answer5 answer3)
 						(self cue:)
 					)
 					(4
-						(= local58 answer4)
+						(= answer5 answer4)
 						(self cue:)
 					)
 				)
 			)
 			(7
-				(messager say: N_GARGOYLE 0 C_WRONG_NAME local58 self)
+				(messager say: N_GARGOYLE NULL C_WRONG_NAME answer5 self)
 			)
 			(8
 				8
@@ -540,20 +614,18 @@
 )
 
 (instance askQuest of Script
-	(properties)
-	
 	(method (doit)
 		(if (and (== state 6) (< (ego y?) 175))
-			(= attackedGargoyle TRUE)
+			(= gargoyleCued TRUE)
 		)
 		(super doit:)
 	)
 	
-	(method (changeState newState &tmp temp0 temp1 temp2)
+	(method (changeState newState &tmp theY1 theY2 theY3)
 		(switch (= state newState)
 			(0
 				0
-				(messager say: N_GARGOYLE 0 C_ASK_QUEST 2 self)
+				(messager say: N_GARGOYLE NULL C_ASK_QUEST 2 self)
 				(= answer1 (Random 1 2))
 				(if [egoStats MAGIC]
 					(= answer2 3)
@@ -562,7 +634,7 @@
 				)
 				(= answer3 (Random 4 9))
 				(= answer4 (Random 4 9))
-				(= local58 (Random 4 9))
+				(= answer5 (Random 4 9))
 			)
 			(1 1 (self changeState: 5))
 			(2
@@ -576,19 +648,23 @@
 				(self changeState: 5)
 			)
 			(4
-				(= local58 (Random 4 9))
+				(= answer5 (Random 4 9))
 				(self changeState: 5)
 			)
 			(5
 				5
 				(cond 
-					((== answer3 answer2) (self changeState: 2))
-					((or (== answer4 answer3) (== answer4 answer2)) (self changeState: 3))
+					((== answer3 answer2)
+						(self changeState: 2)
+					)
+					((or (== answer4 answer3) (== answer4 answer2))
+						(self changeState: 3)
+					)
 					(
 						(or
-							(== local58 answer4)
-							(== local58 answer3)
-							(== local58 answer2)
+							(== answer5 answer4)
+							(== answer5 answer3)
+							(== answer5 answer2)
 						)
 						(self changeState: 4)
 					)
@@ -598,27 +674,45 @@
 			(6
 				6
 				(cond 
-					((> answer2 7) (= temp0 68))
-					((> answer2 6) (= temp0 51))
-					(else (= temp0 34))
+					((> answer2 7)
+						(= theY1 68)
+					)
+					((> answer2 6)
+						(= theY1 51)
+					)
+					(else
+						(= theY1 34)
+					)
 				)
 				(cond 
-					((> answer3 7) (= temp1 (+ temp0 51)))
-					((> answer3 6) (= temp1 (+ temp0 34)))
-					(else (= temp1 (+ temp0 17)))
+					((> answer3 7)
+						(= theY2 (+ theY1 51))
+					)
+					((> answer3 6)
+						(= theY2 (+ theY1 34))
+					)
+					(else
+						(= theY2 (+ theY1 17))
+					)
 				)
 				(cond 
-					((> answer4 7) (= temp2 (+ temp1 51)))
-					((> answer4 6) (= temp2 (+ temp1 34)))
-					(else (= temp2 (+ temp1 17)))
+					((> answer4 7)
+						(= theY3 (+ theY2 51))
+					)
+					((> answer4 6)
+						(= theY3 (+ theY2 34))
+					)
+					(else
+						(= theY3 (+ theY2 17))
+					)
 				)
 				(switch
 					(Print
-						addButton: 0 2 0 C_QUEST_ANSWERS answer1 0 0 29
-						addButton: 1 2 0 C_QUEST_ANSWERS answer2 0 17 29
-						addButton: 2 2 0 C_QUEST_ANSWERS answer3 0 temp0 29
-						addButton: 3 2 0 C_QUEST_ANSWERS answer4 0 temp1 29
-						addButton: 4 2 0 C_QUEST_ANSWERS local58 0 temp2 29
+						addButton: 0 N_GARGOYLE NULL C_QUEST_ANSWERS answer1 0 0 29
+						addButton: 1 N_GARGOYLE NULL C_QUEST_ANSWERS answer2 0 17 29
+						addButton: 2 N_GARGOYLE NULL C_QUEST_ANSWERS answer3 0 theY1 29
+						addButton: 3 N_GARGOYLE NULL C_QUEST_ANSWERS answer4 0 theY2 29
+						addButton: 4 N_GARGOYLE NULL C_QUEST_ANSWERS answer5 0 theY3 29
 						width: 150
 						init:
 					)
@@ -644,14 +738,14 @@
 						(self changeState: 7)
 					)
 					(4
-						(= answer1 local58)
+						(= answer1 answer5)
 						(self changeState: 7)
 					)
 				)
 			)
 			(7
 				7
-				(messager say: N_GARGOYLE 0 C_WRONG_QUEST answer1 self)
+				(messager say: N_GARGOYLE NULL C_WRONG_QUEST answer1 self)
 			)
 			(8
 				8
@@ -663,11 +757,9 @@
 )
 
 (instance askRand of Script
-	(properties)
-	
 	(method (doit)
 		(if (and (== state 1) (< (ego y?) 175))
-			(= attackedGargoyle 1)
+			(= gargoyleCued 1)
 		)
 		(super doit:)
 	)
@@ -868,11 +960,11 @@
 				)
 				(switch
 					(Print
-						addButton: 0 2 0 local63 2 0 temp0 29
-						addButton: 1 2 0 local63 3 0 temp1 29
-						addButton: 2 2 0 local63 4 0 temp2 29
-						addButton: 3 2 0 local63 5 0 temp3 29
-						addButton: 4 2 0 local63 6 0 temp4 29
+						addButton: 0 N_GARGOYLE NULL local63 2 0 temp0 29
+						addButton: 1 N_GARGOYLE NULL local63 3 0 temp1 29
+						addButton: 2 N_GARGOYLE NULL local63 4 0 temp2 29
+						addButton: 3 N_GARGOYLE NULL local63 5 0 temp3 29
+						addButton: 4 N_GARGOYLE NULL local63 6 0 temp4 29
 						width: 170
 						first: local60
 						init:
@@ -886,7 +978,7 @@
 			)
 			(2
 				2
-				(messager say: N_GARGOYLE 0 local63 7 self)
+				(messager say: N_GARGOYLE NULL local63 7 self)
 			)
 			(3
 				3
@@ -895,7 +987,7 @@
 			)
 			(4
 				4
-				(messager say: N_GARGOYLE 0 local63 8 self)
+				(messager say: N_GARGOYLE NULL local63 8 self)
 			)
 			(5
 				5
@@ -908,7 +1000,7 @@
 			)
 			(6
 				6
-				(messager say: N_GARGOYLE 0 local63 9 self)
+				(messager say: N_GARGOYLE NULL local63 9 self)
 			)
 			(7
 				7
@@ -917,7 +1009,7 @@
 			)
 			(8
 				8
-				(messager say: N_GARGOYLE 0 local63 10 self)
+				(messager say: N_GARGOYLE NULL local63 10 self)
 			)
 			(9
 				9
@@ -926,7 +1018,7 @@
 			)
 			(10
 				10
-				(messager say: N_GARGOYLE 0 local63 11 self)
+				(messager say: N_GARGOYLE NULL local63 11 self)
 			)
 			(11
 				11
@@ -938,15 +1030,15 @@
 )
 
 (instance letHimIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_GARGOYLE 0 C_WIZARD_WILL_SEE 1 self)
+				(messager say: N_GARGOYLE NULL C_WIZARD_WILL_SEE 1 self)
 			)
-			(1 (messager say: N_GARGOYLE 0 C_DIRECT_TO_TOWER 1 self))
+			(1
+				(messager say: N_GARGOYLE NULL C_DIRECT_TO_TOWER 1 self)
+			)
 			(2
 				(gargoyle cycleSpeed: 12 cel: 0 setCycle: EndLoop self)
 			)
@@ -963,7 +1055,7 @@
 				(theDoor ignoreActors: stopUpd:)
 				(HandsOn)
 				(User canControl: TRUE canInput: TRUE)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(gargoyle setCycle: EndLoop self)
 			)
 			(6 (self dispose:))
@@ -972,39 +1064,40 @@
 )
 
 (instance teleportOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 30))
+			(0
+				(HandsOff)
+				(= ticks 30)
+			)
 			(1
 				(switch (Random 0 6)
 					(0
-						(messager say: N_GARGOYLE 0 C_WARP_OUT 1)
+						(messager say: N_GARGOYLE NULL C_WARP_OUT 1)
 						(= ticks 360)
 					)
 					(1
-						(messager say: N_GARGOYLE 0 C_WARP_OUT 2)
+						(messager say: N_GARGOYLE NULL C_WARP_OUT 2)
 						(= ticks 360)
 					)
 					(2
-						(messager say: N_GARGOYLE 0 C_WARP_OUT 3)
+						(messager say: N_GARGOYLE NULL C_WARP_OUT 3)
 						(= ticks 360)
 					)
 					(3
-						(messager say: N_GARGOYLE 0 C_WARP_OUT 4)
+						(messager say: N_GARGOYLE NULL C_WARP_OUT 4)
 						(= ticks 360)
 					)
 					(4
-						(messager say: N_GARGOYLE 0 C_WARP_OUT 5)
+						(messager say: N_GARGOYLE NULL C_WARP_OUT 5)
 						(= ticks 420)
 					)
 					(5
-						(messager say: N_GARGOYLE 0 C_WARP_OUT 6)
+						(messager say: N_GARGOYLE NULL C_WARP_OUT 6)
 						(= ticks 300)
 					)
 					(6
-						(messager say: N_GARGOYLE 0 C_WARP_OUT 7)
+						(messager say: N_GARGOYLE NULL C_WARP_OUT 7)
 						(= ticks 300)
 					)
 				)

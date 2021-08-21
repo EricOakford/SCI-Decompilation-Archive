@@ -284,7 +284,7 @@
 		(= newRoomNum n)
 		(FlushResources n)
 		(self startRoom: curRoomNum checkAni:)
-		(Dummy regions)	;EO: should be SetSynonyms, but that is not in VOCAB.999
+		(SetSynonyms regions)
 		(while ((= evt (Event new: (| mouseDown mouseUp))) type?)
 			(evt dispose:)
 		)

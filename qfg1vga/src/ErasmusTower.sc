@@ -19,24 +19,25 @@
 	erasmus 1
 	fenrus 2
 )
-(enum 1
+(enum 1	;reasons for leaving
 	wontAnswerRiddles
 	knowAllPunchlines
 	thoughtsGiveYouAway
 	notInMyHouse
 	reallyMustGo
+	cantSleepHere
 )
 
 (local
-	local0
+	teleportCued
 	reasonForLeaving
 	local2
 	erasmusDrank
 	erasmusDrinking
-	local5
-	local6
-	local7
-	jokesSaidYesTo
+	teaTimer
+	jokeTimer
+	numJoke
+	yesCount
 	local9
 	askedErasmus
 	local11
@@ -47,24 +48,100 @@
 	oldSortedFeatures
 	local17
 	local18
-	local19
+	jokeCase
 	[local20 10]
-	[local30 7] = [0 11 12 -16 -5 -17 999]
-	[local37 6] = [0 28 -4 -10 -6 999]
-	[local43 5] = [0 20 27 19 999]
-	[local48 6] = [0 21 13 -26 9 999]
-	[local54 3] = [0 -23 999]
-	[local57 3] = [0 -8 999]
-	[local60 4] = [0 15 24 999]
-	[local64 4] = [0 14 25 999]
-	[local68 3] = [0 22 999]
-	[local71 3] = [0 -7 999]
-	[local74 3] = [0 18 999]
-	[local77 15]
-	[local92 12] = [0 -16 -5 -17 -10 -4 -6 -26 -23 -8 -7 999]
-	[local104 4] = [0 12 11 999]
-	[local108 6]
-	[local114 2] = [0 999]
+	erasmusTellMainBranch = [
+		STARTTELL
+		C_ERASMUS
+		C_FENRUS
+		-16		;C_MAGIC
+		-5		;C_BRIGANDS
+		-17		;C_MAGEMAZE
+		ENDTELL
+		]
+	erasmusTell1 = [
+		STARTTELL
+		C_ZARA
+		-4		;C_BABAYAGA
+		-10		;C_ERANA
+		-6		;C_SPELLCASTERS
+		ENDTELL
+		]
+	erasmusTell2 = [
+		STARTTELL
+		C_NINCOMPOOP
+		C_WARLOCK
+		C_NECROMANCER
+		ENDTELL
+		]
+	erasmusTell3 = [
+		STARTTELL
+		C_OPEN
+		C_FETCH
+		-26		;C_TRIGGER
+		C_DAZZLE
+		ENDTELL
+		]
+	erasmusTell4 = [
+		STARTTELL
+		-23		;C_PROTECTSPELL
+		ENDTELL
+		]
+	erasmusTell5 = [
+		STARTTELL
+		-8		;C_CURSES
+		ENDTELL
+		]
+	erasmusTell6 = [
+		STARTTELL
+		C_INITIATION
+		C_SPELLS
+		ENDTELL
+		]
+	erasmusTell7 = [
+		STARTTELL
+		C_HERMIT
+		C_TRAP
+		ENDTELL
+		]
+	erasmusTell8 = [
+		STARTTELL
+		C_PLACES
+		ENDTELL
+		]
+	erasmusTell9 = [
+		STARTTELL
+		-7		;C_COUNTERCURSE
+		ENDTELL
+		]
+	erasmusTell10 = [
+		STARTTELL
+		C_MAGICMIRROR
+		ENDTELL
+		]
+	[erasmusTellTree 15]
+	erasmusTellKeys = [
+		STARTTELL
+		-16		;C_MAGIC
+		-5		;C_BRIGANDS
+		-17		;C_MAGEMAZE
+		-10		;C_ERANA
+		-4		;C_BABAYAGA
+		-6		;C_SPELLCASTERS
+		-26		;C_TRIGGER
+		-23		;C_PROTECTSPELL
+		-8		;C_CURSES
+		-7		;C_COUNTERCURSE
+		ENDTELL
+		]
+	fenrusTellMainBranch = [
+		STARTTELL
+		C_FENRUS
+		C_ERASMUS
+		ENDTELL
+		]
+	[fenrusTellTree 6]
+	fenrusTellKeys = [STARTTELL ENDTELL]
 )
 (instance rm31 of Room
 	(properties
@@ -73,27 +150,27 @@
 	)
 	
 	(method (init)
-		(= [local77 0] @local30)
-		(= [local77 1] @local37)
-		(= [local77 2] @local43)
-		(= [local77 3] @local48)
-		(= [local77 4] @local54)
-		(= [local77 5] @local57)
-		(= [local77 6] @local60)
-		(= [local77 7] @local64)
-		(= [local77 8] @local68)
-		(= [local77 9] @local71)
-		(= [local77 10] @local74)
-		(= [local77 11] 999)
-		(= [local108 0] @local104)
-		(= [local108 1] 999)
+		(= [erasmusTellTree 0] @erasmusTellMainBranch)
+		(= [erasmusTellTree 1] @erasmusTell1)
+		(= [erasmusTellTree 2] @erasmusTell2)
+		(= [erasmusTellTree 3] @erasmusTell3)
+		(= [erasmusTellTree 4] @erasmusTell4)
+		(= [erasmusTellTree 5] @erasmusTell5)
+		(= [erasmusTellTree 6] @erasmusTell6)
+		(= [erasmusTellTree 7] @erasmusTell7)
+		(= [erasmusTellTree 8] @erasmusTell8)
+		(= [erasmusTellTree 9] @erasmusTell9)
+		(= [erasmusTellTree 10] @erasmusTell10)
+		(= [erasmusTellTree 11] ENDTELL)
+		(= [fenrusTellTree 0] @fenrusTellMainBranch)
+		(= [fenrusTellTree 1] ENDTELL)
 		(walkHandler add: self)
 		(LoadMany RES_VIEW 31 199 530 1034 1031)
 		(LoadMany RES_SOUND 28 36)
 		(Load RES_MESSAGE 31)
-		(= local5 (Random 50 100))
-		(= local6 100)
-		(= local7 (Random 0 7))
+		(= teaTimer (Random 50 100))
+		(= jokeTimer 100)
+		(= numJoke (Random 0 7))
 		(= local13 1)
 		(= local14 1)
 		(StatusLine enable:)
@@ -130,11 +207,11 @@
 		(wizChair addToPic:)
 		(egoChair addToPic:)
 		(cup init:)
-		(erasmusTeller init: wizard @local30 @local77 @local92)
+		(erasmusTeller init: wizard @erasmusTellMainBranch @erasmusTellTree @erasmusTellKeys)
 		(wizard init: setPri: 15 actions: erasmusTeller)
 		(if (== prevRoomNum 32)
 			(fenrusTeller
-				init: fenrusBody @local104 @local108 @local114
+				init: fenrusBody @fenrusTellMainBranch @fenrusTellTree @fenrusTellKeys
 			)
 			(fenrusBody
 				init:
@@ -155,58 +232,66 @@
 		;added to address timer bug
 		(if (< (Abs (- gameTime name)) 2) (return))
 		(= name gameTime)
-		(if (not (Btst 360))
+		(if (not (Btst fCharSheetActive))
 			(if (== postMazeGame TRUE)
 				(Palette PALCycle 232 246 -1)
 				(Palette PALCycle 247 254 -1)
 			)
-			(if local0
-				(= local0 0)
+			(if teleportCued
+				(= teleportCued FALSE)
 				(= local14 0)
 				(= local13 0)
 				(self setScript: teleportOut)
 			)
 			(cond 
 				((curRoom script?))
-				((and local13 (> local6 1)) (-- local6))
-				((== local6 1)
-					(if modelessDialog (modelessDialog dispose:))
+				((and local13 (> jokeTimer 1))
+					(-- jokeTimer)
+				)
+				((== jokeTimer 1)
+					(if modelessDialog
+						(modelessDialog dispose:)
+					)
 					(HandsOff)
 					(= local13 0)
 					(= local14 0)
-					(if (== local7 7) (= local7 0) else (++ local7))
-					(switch local7
+					(if (== numJoke 7)
+						(= numJoke 0)
+					else
+						(++ numJoke)
+					)
+					(switch numJoke
 						(0
 							(= local18 4)
-							(= local19 31)
+							(= jokeCase C_JOKE_BROOM)
 						)
 						(1
 							(= local18 3)
-							(= local19 32)
+							(= jokeCase C_JOKE_CHEETAUR)
 						)
 						(2
 							(= local18 3)
-							(= local19 33)
+							(= jokeCase C_JOKE_COW)
 						)
 						(3
 							(= local18 3)
-							(= local19 34)
+							(= jokeCase C_JOKE_OTTO)
 						)
 						(4
 							(= local18 4)
-							(= local19 35)
+							(= jokeCase C_JOKE_PURPLE)
 						)
 						(5
 							(= local18 2)
-							(= local19 36)
+							(= jokeCase C_JOKE_TORCH)
 						)
 						(6
 							(= local18 5)
-							(= local19 37)
+							(= jokeCase C_JOKE_TRICERATOPS)
 						)
 						(7
 							(= local18 3)
-							(= local19 38)
+							(= jokeCase C_JOKE_TYRANNOSAURUS)
 						)
 					)
 					(self setScript: tellJoke)
@@ -214,9 +299,11 @@
 			)
 			(cond 
 				((curRoom script?))
-				((and local14 (> local5 1)) (-- local5))
-				((== local5 1)
-					(= local5 (Random 450 750))
+				((and local14 (> teaTimer 1))
+					(-- teaTimer)
+				)
+				((== teaTimer 1)
+					(= teaTimer (Random 450 750))
 					(= local13 0)
 					(wizard setScript: drinkTea)
 				)
@@ -240,7 +327,7 @@
 				(curRoom setScript: teleportOut)
 			)
 			(V_SLEEP
-				(= reasonForLeaving 6)
+				(= reasonForLeaving cantSleepHere)
 				(= local13 0)
 				(curRoom setScript: teleportOut)
 			)
@@ -298,15 +385,15 @@
 )
 
 (instance erasmusTeller of Teller
-	(properties)
-	
 	(method (showDialog)
-		(super showDialog: -17 (Btst fWizKnowsEgoHasMagic))
+		(super showDialog:
+			-17 (Btst fWizKnowsEgoHasMagic)	;C_MAGEMAZE
+		)
 	)
 	
 	(method (doChild)
 		(return
-			(if (== query -17)
+			(if (== query -17)	;C_MAGEMAZE
 				(super doChild: query)
 				(return query)
 			else
@@ -316,19 +403,19 @@
 		)
 	)
 	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(egoHead setCel: 0)
 		(switch theVerb
 			(V_TALK
 				(= local14 0)
 				(= local13 0)
-				(= local6 (+ local6 5))
-				(SolvePuzzle POINTS_TALKTOERASMUS 1)
+				(+= jokeTimer 5)
+				(SolvePuzzle f31TalkToErasmus 1)
 				(if erasmusDrinking
 					(if askedErasmus
-						(messager say: N_ROOM 0 C_WIZ_DRINKING 1)
+						(messager say: N_ROOM NULL C_WIZ_DRINKING 1)
 					else
-						(messager say: N_ROOM 0 C_WIZ_DRINKING 2)
+						(messager say: N_ROOM NULL C_WIZ_DRINKING 2)
 					)
 				else
 					(super doVerb: theVerb &rest)
@@ -360,10 +447,10 @@
 		view 31
 		loop 2
 		priority 8
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(wizard doVerb: theVerb &rest)
 	)
 )
@@ -375,7 +462,7 @@
 		view 31
 		cel 3
 		priority 8
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -386,7 +473,7 @@
 		view 31
 		cel 2
 		priority 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -416,14 +503,14 @@
 		view 31
 		cel 1
 		priority 8
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb)
 		(if erasmusDrank
-			(messager say: N_CUP V_LOOK 0 1)
+			(messager say: N_CUP V_LOOK NULL 1)
 		else
-			(messager say: N_CUP V_LOOK 0 2)
+			(messager say: N_CUP V_LOOK NULL 2)
 		)
 	)
 )
@@ -441,7 +528,7 @@
 	(method (init)
 		(= nightPalette 2034)
 		(PalVary PALVARYTARGET 2034)
-		(kernel_128 1034)
+		(AssertPalette 1034)
 		(= font userFont)
 		(super init: wizBust wizEyes wizMouth &rest)
 	)
@@ -492,7 +579,7 @@
 	(method (init)
 		(= nightPalette 2031)
 		(PalVary PALVARYTARGET 2031)
-		(kernel_128 1031)
+		(AssertPalette 1031)
 		(= font userFont)
 		(super init: fenrusBust fenrusEyes fenrusMouth &rest)
 	)
@@ -540,9 +627,7 @@
 )
 
 (instance fenrusTeller of Teller
-	(properties)
-	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(egoHead setCel: 1)
 		(switch theVerb
 			(V_DO
@@ -604,7 +689,7 @@
 		x 131
 		view 31
 		loop 6
-		signal $4000
+		signal ignrAct
 		cycleSpeed 8
 	)
 	
@@ -713,20 +798,18 @@
 )
 
 (instance tellJoke of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= local14 0)
-				(messager say: N_ROOM 0 local19 1 self)
+				(messager say: N_ROOM NULL jokeCase 1 self)
 			)
 			(1
 				1
 				(switch
 					(Print
-						addButton: 0 10 0 0 2 0 19 31
-						addButton: 1 10 0 0 1 0 0 31
+						addButton: 0 N_ROOM NULL NULL 2 0 19 31
+						addButton: 1 N_ROOM NULL NULL 1 0 0 31
 						init:
 					)
 					(0 (self changeState: 3))
@@ -735,24 +818,26 @@
 			)
 			(2
 				(if (== local18 2)
-					(messager say: N_ROOM 0 local19 2)
+					(messager say: N_ROOM NULL jokeCase 2)
 				else
-					(messager say: N_ROOM 0 local19 3)
+					(messager say: N_ROOM NULL jokeCase 3)
 				)
-				(if (!= local19 2) (++ jokesSaidYesTo))
-				(if (== jokesSaidYesTo 7)
+				(if (!= jokeCase 2)
+					(++ yesCount)
+				)
+				(if (== yesCount 7)
 					(= reasonForLeaving knowAllPunchlines)
-					(= local0 1)
+					(= teleportCued TRUE)
 				)
 				(self changeState: 6)
 			)
 			(3
 				3
 				(if (== local18 2)
-					(messager say: N_ROOM 0 local19 2)
+					(messager say: N_ROOM NULL jokeCase 2)
 					(self changeState: 6)
 				else
-					(messager say: N_ROOM 0 local19 2 self)
+					(messager say: N_ROOM NULL jokeCase 2 self)
 				)
 			)
 			(4
@@ -760,7 +845,7 @@
 				(if (== local18 3)
 					(self changeState: 6)
 				else
-					(messager say: N_ROOM 0 local19 4 self)
+					(messager say: N_ROOM NULL jokeCase 4 self)
 				)
 			)
 			(5
@@ -768,7 +853,7 @@
 				(if (== local18 4)
 					(self cue:)
 				else
-					(messager say: N_ROOM 0 local19 5 self)
+					(messager say: N_ROOM NULL jokeCase 5 self)
 				)
 			)
 			(6
@@ -776,7 +861,7 @@
 				(= local14 1)
 				(= local13 1)
 				(HandsOn)
-				(= local6 (Random 300 400))
+				(= jokeTimer (Random 300 400))
 				(self dispose:)
 			)
 		)
@@ -784,8 +869,6 @@
 )
 
 (instance intoTheTower of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -802,7 +885,7 @@
 				(ego setMotion: MoveTo 177 145 self)
 			)
 			(2
-				(messager say: N_ROOM 0 30 1 self)
+				(messager say: N_ROOM NULL C_FIRST_MEETING 1 self)
 			)
 			(3
 				(ego setMotion: MoveTo 179 129 self)
@@ -821,13 +904,13 @@
 				(egoInChair init:)
 			)
 			(6
-				(messager say: N_ROOM 0 30 2 self)
-				(ego setCel: 5 signal: (| (ego signal?) $0001))
+				(messager say: N_ROOM NULL C_FIRST_MEETING 2 self)
+				(ego setCel: 5 signal: (| (ego signal?) stopUpdOn))
 				(egoHead posn: 161 88 show:)
 			)
 			(7
 				(fenrusTeller
-					init: fenrusBody @local104 @local108 @local114
+					init: fenrusBody @fenrusTellMainBranch @fenrusTellTree @fenrusTellKeys
 				)
 				(fenrusBody
 					init:
@@ -844,7 +927,7 @@
 				(fenrusBody setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(10
-				(messager say: N_ROOM 0 30 3 self)
+				(messager say: N_ROOM NULL C_FIRST_MEETING 3 self)
 			)
 			(11
 				(cheese
@@ -865,7 +948,7 @@
 				(= seconds 3)
 			)
 			(15
-				(messager say: N_ROOM 0 C_FIRST_MEETING 4 self)
+				(messager say: N_ROOM NULL C_FIRST_MEETING 4 self)
 			)
 			(16
 				(if (>= [egoStats MAGIC] 10)
@@ -890,22 +973,20 @@
 )
 
 (instance intoMaze of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if (Btst fErasmusAskedMaze)
-					(messager say: N_WIZARD 0 C_PRE_MAZE 12 self)
+					(messager say: N_WIZARD NULL C_PRE_MAZE 12 self)
 				else
-					(messager say: N_WIZARD 0 C_PRE_MAZE 11 self)
+					(messager say: N_WIZARD NULL C_PRE_MAZE 11 self)
 				)
 			)
 			(1
 				(switch
 					(Print
-						addButton: 0 10 0 0 2 0 0 31
-						addButton: 1 10 0 0 1 0 19 31
+						addButton: 0 N_ROOM NULL NULL 2 0 0 31
+						addButton: 1 N_ROOM NULL NULL 1 0 19 31
 						init:
 					)
 					(0 (self changeState: 2))
@@ -913,7 +994,7 @@
 				)
 			)
 			(2
-				(messager say: N_WIZARD 0 C_PRE_MAZE 13 self)
+				(messager say: N_WIZARD NULL C_PRE_MAZE 13 self)
 			)
 			(3
 				(HandsOn)
@@ -924,6 +1005,7 @@
 			(4
 				(if
 					(and
+						;? These can't be right
 						[egoStats 142]
 						[egoStats 144]
 						[egoStats 148]
@@ -939,19 +1021,17 @@
 )
 
 (instance askSpell of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(Bset fWizKnowsEgoHasMagic)
-				(messager say: N_WIZARD 0 C_PRE_MAZE (+ 1 (* 2 local11)) self)
+				(messager say: N_WIZARD NULL C_PRE_MAZE (+ 1 (* 2 local11)) self)
 			)
 			(1
 				(switch
 					(Print
-						addButton: 0 10 0 0 2 0 0 31
-						addButton: 1 10 0 0 1 0 19 31
+						addButton: 0 N_ROOM NULL NULL 2 0 0 31
+						addButton: 1 N_ROOM NULL NULL 1 0 19 31
 						init:
 					)
 					(0 (self changeState: 2))
@@ -959,7 +1039,7 @@
 				)
 			)
 			(2
-				(messager say: N_WIZARD 0 C_PRE_MAZE (+ 2 (* 2 local11)) self)
+				(messager say: N_WIZARD NULL C_PRE_MAZE (+ 2 (* 2 local11)) self)
 			)
 			(3
 				(HandsOn)
@@ -975,12 +1055,14 @@
 					(self cue:)
 				)
 			)
-			(5 (messager say: N_WIZARD 0 C_PRE_MAZE 9 self))
+			(5
+				(messager say: N_WIZARD NULL C_PRE_MAZE 9 self)
+			)
 			(6
 				(switch
 					(Print
-						addButton: 0 10 0 0 2 0 0 31
-						addButton: 1 10 0 0 1 0 19 31
+						addButton: 0 N_ROOM NULL NULL 2 0 0 31
+						addButton: 1 N_ROOM NULL NULL 1 0 19 31
 						init:
 					)
 					(0
@@ -997,7 +1079,7 @@
 				(if [egoStats DAZZLE]
 					(self cue:)
 				else
-					(messager say: N_WIZARD 0 C_PRE_MAZE 10 self)
+					(messager say: N_WIZARD NULL C_PRE_MAZE 10 self)
 				)
 			)
 			(8
@@ -1012,8 +1094,6 @@
 )
 
 (instance gameOver of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 60))
@@ -1036,10 +1116,10 @@
 				(doorSound stop:)
 				(door stopUpd:)
 				(= postMazeGame NULL)
-				(messager say: N_ROOM 0 C_POST_MAZE 1 self)
+				(messager say: N_ROOM NULL C_POST_MAZE 1 self)
 			)
 			(3
-				(ego signal: (| (ego signal?) $0001))
+				(ego signal: (| (ego signal?) stopUpdOn))
 				(= local13 1)
 				(= local14 1)
 				(theIconBar enable:)
@@ -1051,8 +1131,6 @@
 )
 
 (instance drinkTea of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1065,8 +1143,12 @@
 			(1
 				(wizard cycleSpeed: 12 setCycle: EndLoop self)
 			)
-			(2 (= ticks 120))
-			(3 (wizard setCycle: BegLoop self))
+			(2
+				(= ticks 120)
+			)
+			(3
+				(wizard setCycle: BegLoop self)
+			)
 			(4
 				(cup show:)
 				(= erasmusDrinking NULL)
@@ -1081,8 +1163,6 @@
 )
 
 (instance goGame of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1091,7 +1171,7 @@
 				(doorSound play:)
 			)
 			(1
-				(= postMazeGame 1)
+				(= postMazeGame TRUE)
 				(door setCycle: EndLoop self)
 			)
 			(2 (= seconds 5))
@@ -1106,20 +1186,20 @@
 )
 
 (instance teleportOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local6 0)
-				(= local5 0)
+				(= jokeTimer 0)
+				(= teaTimer 0)
 				(wizard setScript: 0)
-				(if (> reasonForLeaving notInMyHouse) (= reasonForLeaving notInMyHouse))
+				(if (> reasonForLeaving notInMyHouse)
+					(= reasonForLeaving notInMyHouse)
+				)
 				(= ticks 30)
 			)
 			(1
-				(messager say: 4 0 3 reasonForLeaving self)
+				(messager say: N_WIZARD NULL C_WARP_OUT reasonForLeaving self)
 			)
 			(2
 				(wizard setLoop: 3 cel: 0 setCycle: EndLoop self)
@@ -1212,7 +1292,6 @@
 )
 
 (instance egoActions of Actions
-	
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb V_WALK)

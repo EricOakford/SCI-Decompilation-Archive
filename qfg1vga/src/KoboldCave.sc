@@ -37,8 +37,8 @@
 )
 
 (local
-	[local0 3] = [299 306 317]
-	[local3 3] = [71 92 125]
+	dripX = [299 306 317]
+	dripY = [71 92 125]
 	local6
 	local7
 	theCycles
@@ -48,10 +48,10 @@
 	theSwParry
 	chestLockpickFail
 	newSound
-	[local15 5] = [-24 30 -21 27 3]
-	[local20 5] = [-11 -11 -11 -11 -23]
-	[local25 11] = [52 88 35 258 122 196 303 316 140 270 211]
-	[local36 11] = [12 113 96 146 -2 87 63 92 160 5 36]
+	kobX = [-24 30 -21 27 3]
+	kobY = [-11 -11 -11 -11 -23]
+	ballX = [52 88 35 258 122 196 303 316 140 270 211]
+	ballY = [12 113 96 146 -2 87 63 92 160 5 36]
 	theEgoKoboldBattleLoop_2
 	local48
 	gotKey
@@ -61,7 +61,7 @@
 	local53
 	local54
 	local55
-	local56
+	egoDying
 	takeItem
 )
 (procedure (KoboldFight param1)
@@ -89,16 +89,16 @@
 				(!= (kobold script?) kobWakeUp)
 			)
 			(kobold setScript: kobWakeUp)
-			(return 1)
+			(return TRUE)
 		else
-			(return 0)
+			(return FALSE)
 		)
 	)
 )
 
-(procedure (KoboldHurtEgo param1)
-	(if (and (not (TakeDamage param1)) (not local56))
-		(= local56 1)
+(procedure (KoboldHurtEgo damage)
+	(if (and (not (TakeDamage damage)) (not egoDying))
+		(= egoDying TRUE)
 		(= local50 0)
 		(ego setScript: egoDies)
 	)
@@ -108,8 +108,10 @@
 	(Bset fKoboldChestSearched)
 	(SolvePuzzle f15GetTreasure 5)
 	(messager say: N_ROOM NULL C_GET_TREASURE)
-	(if (IsObject treasure) (treasure dispose:))
-	(= koboldIllBits (& koboldIllBits $dfff))
+	(if (IsObject treasure)
+		(treasure dispose:)
+	)
+	(&= koboldIllBits $dfff)
 	(= takeItem cueTreasure)
 	(ego illegalBits: koboldIllBits setScript: getItCued)
 )
@@ -150,56 +152,37 @@
 
 (procedure (localproc_0377 param1 param2 param3)
 	(cond 
-		((Btst fKoboldAwake) (messager say: N_ROOM 0 18))
-		((CastSpell param1) (ego setScript: (ScriptID param2 param3)))
+		((Btst fKoboldAwake)
+			(messager say: N_ROOM NULL C_NOT_NOW)
+		)
+		((CastSpell param1)
+			(ego setScript: (ScriptID param2 param3))
+		)
 	)
 )
 
 (class KScript of Script
-	(properties
-		client 0
-		state $ffff
-		start 0
-		timer 0
-		cycles 0
-		seconds 0
-		lastSeconds 0
-		ticks 0
-		lastTicks 0
-		register 0
-		script 0
-		caller 0
-		next 0
-	)
 	
 	(method (cue)
-		(if client (super cue:))
+		(if client
+			(super cue:)
+		)
 	)
 )
 
 (class ballScript of KScript
-	(properties
-		client 0
-		state $ffff
-		start 0
-		timer 0
-		cycles 0
-		seconds 0
-		lastSeconds 0
-		ticks 0
-		lastTicks 0
-		register 0
-		script 0
-		caller 0
-		next 0
-	)
-	
 	(method (doit)
 		(cond 
-			((Btst fKoboldDead) (client dispose:))
-			(
-			(and (< state 2) (not (client inRect: 10 30 310 200))) (= register 0) (self changeState: 2))
-			(else (super doit:))
+			((Btst fKoboldDead)
+				(client dispose:)
+			)
+			((and (< state 2) (not (client inRect: 10 30 310 200)))
+				(= register 0)
+				(self changeState: 2)
+			)
+			(else
+				(super doit:)
+			)
 		)
 	)
 	
@@ -220,20 +203,25 @@
 					(client
 						setMotion:
 							MoveTo
-							[local25 register]
-							[local36 (= register (Random 0 2))]
+							[ballX register]
+							[ballY (= register (Random 0 2))]
 							self
 					)
 				)
 			)
 			(1
 				(cond 
-					((< (ego distanceTo: client) 20) (= register 1) (self cue:))
-					(
-					(>= (= register (+ register (Random 1 4))) 11) (= register 0) (self cue:))
+					((< (ego distanceTo: client) 20)
+						(= register 1)
+						(self cue:)
+					)
+					((>= (+= register (Random 1 4)) 11)
+						(= register 0)
+						(self cue:)
+					)
 					(else
 						(client
-							setMotion: MoveTo [local25 register] [local36 (= state 0)] self
+							setMotion: MoveTo [ballX register] [ballY (= state 0)] self
 						)
 					)
 				)
@@ -265,73 +253,52 @@
 	
 	(method (init &tmp [temp0 50])
 		(= local55 0)
-		(= disabledActions
-			(| (= disabledActions (| disabledActions ACTION_REST)) ACTION_RUN)
-		)
+		;(|= disabledActions ACTION_REST) ;commented out for unique sleep message
+		(|= disabledActions ACTION_RUN)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						0
-						57
-						99
-						56
-						111
-						62
-						99
-						96
-						91
-						102
-						5
-						102
-						6
-						162
-						68
-						162
-						67
-						147
-						107
-						148
-						115
-						148
-						119
-						152
-						136
-						165
-						185
-						169
-						309
-						169
-						313
-						89
-						240
-						89
-						216
-						77
-						184
-						77
-						147
-						68
-						144
-						63
-						148
-						57
-						78
-						39
-						81
-						32
-						67
-						29
-						0
-						29
-						0
-						56
+						0 57
+						99 56
+						111 62
+						99 96
+						91 102
+						5 102
+						6 162
+						68 162
+						67 147
+						107 148
+						115 148
+						119 152
+						136 165
+						185 169
+						309 169
+						313 89
+						240 89
+						216 77
+						184 77
+						147 68
+						144 63
+						148 57
+						78 39
+						81 32
+						67 29
+						0 29
+						0 56
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 261 98 279 114 260 136 208 136 189 118 190 107 204 98
+					type: PBarredAccess
+					init:
+						261 98
+						279 114
+						260 136
+						208 136
+						189 118
+						190 107
+						204 98
 					yourself:
 				)
 		)
@@ -380,7 +347,7 @@
 		(sunLight init:)
 		(if (not (Btst fKoboldChestUnlocked))
 			(chest init: approachVerbs: V_LOCKPICK stopUpd:)
-			(= koboldIllBits (| koboldIllBits cLMAGENTA))
+			(|= koboldIllBits cLMAGENTA)
 		)
 		(if (not (Btst fGotKoboldKey))
 			(if egoKoboldBattleLoop
@@ -406,8 +373,7 @@
 	)
 	
 	(method (doit)
-		(if
-		(and (< (ego x?) 35) (< (ego y?) 60) local55)
+		(if (and (< (ego x?) 35) (< (ego y?) 60) local55)
 			(ego setMotion: 0)
 			(curRoom newRoom: 14)
 		)
@@ -436,7 +402,7 @@
 				)
 				(V_LOOK
 					(= local53 1)
-					(messager say: N_ROOM V_LOOK 0 1 curRoom)
+					(messager say: N_ROOM V_LOOK NULL 1 curRoom)
 				)
 				(V_DETECT
 					(localproc_0377 DETMAGIC 111 1)
@@ -459,8 +425,7 @@
 					(return TRUE)
 				)
 				(V_FETCH
-					(if
-					(and (not (Btst fKoboldDead)) (cast contains: kobKey))
+					(if (and (not (Btst fKoboldDead)) (cast contains: kobKey))
 						(localproc_0377 FETCH 111 5)
 					else
 						(messager say: N_ROOM V_FETCH 0)
@@ -468,7 +433,9 @@
 					(return TRUE)
 				)
 				(V_DAZZLE
-					(if (not (Btst fKoboldDead)) (localproc_034f DAZZLE 111 0))
+					(if (not (Btst fKoboldDead))
+						(localproc_034f DAZZLE 111 0)
+					)
 					(return TRUE)
 				)
 				(V_CALM
@@ -484,8 +451,14 @@
 	
 	(method (cue)
 		(cond 
-			((== local53 0) (if (not (Btst fGotKoboldKey)) (messager say: N_KOBOLD V_LOOK C_KOBOLD_HAS_KEY)))
-			((not (Btst fKoboldDead)) (messager say: N_ROOM V_LOOK 0 2))
+			((== local53 0)
+				(if (not (Btst fGotKoboldKey))
+					(messager say: N_KOBOLD V_LOOK C_KOBOLD_HAS_KEY)
+				)
+			)
+			((not (Btst fKoboldDead))
+				(messager say: N_ROOM V_LOOK NULL 2)
+			)
 		)
 	)
 )
@@ -597,10 +570,10 @@
 			(V_SWORD
 				(cond 
 					((Btst fKoboldChestUnlocked)
-						(messager say: N_CHEST V_LOCKPICK 1)
+						(messager say: N_CHEST V_LOCKPICK C_CHEST_CLOSED)
 					)
 					((not (< (ego distanceTo: chest) 80))
-						(messager say: N_CHEST V_LOCKPICK 3)
+						(messager say: N_CHEST V_LOCKPICK C_CANT_REACH_TREASURE)
 					)
 					(else
 						(ego setScript: pickChest 0 1)
@@ -610,10 +583,10 @@
 			(V_DAGGER
 				(cond 
 					((Btst fKoboldChestUnlocked)
-						(messager say: N_CHEST V_LOCKPICK 1)
+						(messager say: N_CHEST V_LOCKPICK C_CHEST_CLOSED)
 					)
 					((not (< (ego distanceTo: chest) 80))
-						(messager say: N_CHEST V_LOCKPICK 3)
+						(messager say: N_CHEST V_LOCKPICK C_CANT_REACH_TREASURE)
 					)
 					(else
 						(ego setScript: pickChest 0 1)
@@ -630,13 +603,13 @@
 						(TakeTreasure treasure)
 					)
 					((Btst fKoboldChestSearched)
-						(messager say: N_CHEST V_DO 2)
+						(messager say: N_CHEST V_DO C_ALREADY_GOT_TREASURE)
 					)
 					((not (< (ego distanceTo: chest) 80))
-						(messager say: N_CHEST V_DO 3)
+						(messager say: N_CHEST V_DO C_CANT_REACH_TREASURE)
 					)
 					((not (Btst fKoboldChestUnlocked))
-						(messager say: N_CHEST V_DO 1)
+						(messager say: N_CHEST V_DO C_CHEST_CLOSED)
 					)
 					(else (TakeTreasure 0))
 				)
@@ -644,18 +617,20 @@
 			(V_LOCKPICK
 				(cond 
 					((or (not (Btst fKoboldChestKnown)) (not (cast contains: chest)))
-						(messager say: N_CHEST V_LOCKPICK 5)
+						(messager say: N_CHEST V_LOCKPICK C_CANT_SEE_TREASURE)
 					)
 					((Btst fKoboldChestUnlocked)
-						(messager say: N_CHEST V_LOCKPICK 1)
+						(messager say: N_CHEST V_LOCKPICK C_CHEST_CLOSED)
 					)
 					((not (< (ego distanceTo: chest) 80))
-						(messager say: N_CHEST V_LOCKPICK 3)
+						(messager say: N_CHEST V_LOCKPICK C_CANT_REACH_TREASURE)
 					)
 					((not [egoStats PICK])
 						(messager say: N_CHEST V_LOCKPICK C_NO_PICK)
 					)
-					(else (ego setScript: pickChest 0 0))
+					(else
+						(ego setScript: pickChest 0 0)
+					)
 				)
 			)
 			(V_BRASSKEY
@@ -665,12 +640,24 @@
 			)
 			(V_LOOK
 				(cond 
-					((cast contains: treasure) (messager say: N_CHEST V_LOOK 8))
-					((not (cast contains: chest)) (messager say: N_CHEST V_LOOK 7))
-					((not (Btst fKoboldChestKnown)) (messager say: N_CHEST V_LOOK 5))
-					((Btst fKoboldChestSearched) (messager say: N_CHEST V_LOOK C_ALREADY_GOT_TREASURE))
-					((Btst fKoboldChestUnlocked) (messager say: N_CHEST V_LOOK 1))
-					(else (messager say: N_CHEST V_LOOK 6))
+					((cast contains: treasure)
+						(messager say: N_CHEST V_LOOK C_CHEST_EXPLODED)
+					)
+					((not (cast contains: chest))
+						(messager say: N_CHEST V_LOOK C_DETECT_CHEST)
+					)
+					((not (Btst fKoboldChestKnown))
+						(messager say: N_CHEST V_LOOK C_CANT_SEE_TREASURE)
+					)
+					((Btst fKoboldChestSearched)
+						(messager say: N_CHEST V_LOOK C_ALREADY_GOT_TREASURE)
+					)
+					((Btst fKoboldChestUnlocked)
+						(messager say: N_CHEST V_LOOK C_CHEST_CLOSED)
+					)
+					(else
+						(messager say: N_CHEST V_LOOK C_CHEST_LOCKED)
+					)
 				)
 			)
 			(else 
@@ -681,10 +668,10 @@
 )
 
 (instance chestBlows of KScript
-	(properties)
-	
 	(method (dispose)
-		(if (>= state 1) (newSound dispose:))
+		(if (>= state 1)
+			(newSound dispose:)
+		)
 		(= chestLockpickFail 0)
 		(super dispose:)
 	)
@@ -716,14 +703,14 @@
 				(Bset fKoboldChestUnlocked)
 				(AwakenKobold)
 				(if (< (ego distanceTo: chest) 80)
-					(= chestLockpickFail 1)
+					(= chestLockpickFail TRUE)
 					(KoboldHurtEgo 20)
 				)
 			)
 			(2
 				(= cycles 1)
 				(if (< (ego distanceTo: chest) 80)
-					(messager say: N_ROOM 0 3)
+					(messager say: N_ROOM NULL C_CANT_REACH_TREASURE)
 					(= cycles 5)
 				)
 			)
@@ -751,7 +738,7 @@
 			(if (< (ego distanceTo: chest) 80)
 				(TakeTreasure treasure)
 			else
-				(messager say: N_CHEST V_DO 3)
+				(messager say: N_CHEST V_DO C_CANT_REACH_TREASURE)
 			)
 		else
 			(super doVerb: theVerb &rest)
@@ -796,10 +783,14 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_TOADSTOOLS V_LOOK))
+			(V_LOOK
+				(messager say: N_TOADSTOOLS V_LOOK)
+			)
 			(V_DO
 				(cond 
-					(fightingKobold (messager say: N_TOADSTOOLS V_DO C_CANT_GET_TOADSTOOLS))
+					(fightingKobold
+						(messager say: N_TOADSTOOLS V_DO C_CANT_GET_TOADSTOOLS)
+					)
 					((< (ego distanceTo: toadstools) 50)
 						(messager say: N_TOADSTOOLS V_DO C_GET_TOADSTOOLS)
 						(Bset fTookToadstools)
@@ -811,7 +802,9 @@
 						(= takeItem cueToadstools)
 						(ego setScript: getItCued)
 					)
-					(else (messager say: N_CHEST V_LOCKPICK 3 1))
+					(else
+						(messager say: N_CHEST V_LOCKPICK C_CANT_REACH_TREASURE 1)
+					)
 				)
 			)
 			(else 
@@ -829,7 +822,7 @@
 	(method (init)
 		(= nightPalette 1175)
 		(PalVary PALVARYTARGET 1175)
-		(kernel_128 175)
+		(AssertPalette 175)
 		(super init:)
 	)
 )
@@ -842,20 +835,18 @@
 )
 
 (instance dripper of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= register (Random 0 2))
 				(if (< register 2)
 					(bigDrip
-						posn: [local0 register] [local3 register]
+						posn: [dripX register] [dripY register]
 						setCycle: EndLoop self
 					)
 				else
 					(drip
-						posn: [local0 register] [local3 register]
+						posn: [dripX register] [dripY register]
 						setCycle: EndLoop self
 					)
 				)
@@ -903,7 +894,9 @@
 		(Bclr fFlag281)
 		(ballSound init:)
 		(= nightPalette 1175)
-		(if (Btst fGotKoboldKey) (self setLoop: 5))
+		(if (Btst fGotKoboldKey)
+			(self setLoop: 5)
+		)
 		(if (ego knows: FLAMEDART)
 			(= damageToKoboldFlame (+ 5 (/ [egoStats FLAMEDART] 3)))
 		)
@@ -953,12 +946,16 @@
 		(switch theVerb
 			(V_LOOK
 				(= local53 0)
-				(messager say: N_KOBOLD V_LOOK 0 0 curRoom)
+				(messager say: N_KOBOLD V_LOOK NULL 0 curRoom)
 			)
 			(V_TALK
 				(cond 
-					((not (Btst fKoboldAwake)) (AwakenKobold))
-					((not (Btst fKoboldDead)) (messager say: N_KOBOLD V_ALTTALK))
+					((not (Btst fKoboldAwake))
+						(AwakenKobold)
+					)
+					((not (Btst fKoboldDead))
+						(messager say: N_KOBOLD V_ALTTALK)
+					)
 				)
 			)
 			(V_DO
@@ -977,10 +974,10 @@
 							(kobKey dispose:)
 						)
 						((Btst fKoboldAwake)
-							(messager say: N_KOBOLD V_DO 15)
+							(messager say: N_KOBOLD V_DO C_KOBOLD_AWAKE)
 						)
 						((TrySkill STEALTH 35 0)
-							(messager say: N_KOBOLD V_DO 16)
+							(messager say: N_KOBOLD V_DO C_STEALTH_SUCCESS)
 							(= gotKey TRUE)
 							(= takeItem cueKey)
 							(self setLoop: 5)
@@ -989,17 +986,24 @@
 							(SolvePuzzle f15GetKey 7)
 							(kobKey dispose:)
 						)
-						(else (messager say: N_KOBOLD V_DO 13) (AwakenKobold))
+						(else
+							(messager say: N_KOBOLD V_DO C_STEALTH_FAIL)
+							(AwakenKobold)
+						)
 					)
 				)
 			)
 			(V_DAGGER
 				(cond 
-					(fightingKobold (messager say: N_KOBOLD V_DAGGER C_ALREADY_FIGHTING))
-					((Btst fKoboldDead) (messager say: N_KOBOLD V_DAGGER C_KOBOLD_DEAD))
+					(fightingKobold
+						(messager say: N_KOBOLD V_DAGGER C_ALREADY_FIGHTING)
+					)
+					((Btst fKoboldDead)
+						(messager say: N_KOBOLD V_DAGGER C_KOBOLD_DEAD)
+					)
 					(else
 						(AwakenKobold)
-						(if (not local56)
+						(if (not egoDying)
 							(pointBox setPri: 15 setLoop: 2 init: stopUpd:)
 							(curRoom setScript: startFight)
 						)
@@ -1008,11 +1012,15 @@
 			)
 			(V_SWORD
 				(cond 
-					(fightingKobold (messager say: N_KOBOLD V_SWORD C_ALREADY_FIGHTING))
-					((Btst fKoboldDead) (messager say: N_KOBOLD V_SWORD C_KOBOLD_DEAD))
+					(fightingKobold
+						(messager say: N_KOBOLD V_SWORD C_ALREADY_FIGHTING)
+					)
+					((Btst fKoboldDead)
+						(messager say: N_KOBOLD V_SWORD C_KOBOLD_DEAD)
+					)
 					(else
 						(AwakenKobold)
-						(if (not local56)
+						(if (not egoDying)
 							(pointBox setPri: 15 setLoop: 2 init: stopUpd:)
 							(curRoom setScript: startFight)
 						)
@@ -1025,18 +1033,15 @@
 		)
 	)
 	
-	(method (getHurt param1)
-		(= koboldHealth (- koboldHealth param1))
-		(if
-		(not (if (== script kobHurt) else (== script kobDies)))
+	(method (getHurt damage)
+		(-= koboldHealth damage)
+		(if (not (if (== script kobHurt) else (== script kobDies)))
 			(self setScript: kobHurt)
 		)
 	)
 )
 
 (instance kobDazzle of KScript
-	(properties)
-	
 	(method (dispose)
 		(= local7 (* register 5))
 		(super dispose:)
@@ -1047,7 +1052,9 @@
 			(0
 				(SkillUsed DAZZLE 5)
 				(= register (/ (+ 5 [egoStats DAZZLE]) 10))
-				(if (> register 6) (= register 6))
+				(if (> register 6)
+					(= register 6)
+				)
 				(client
 					view: 179
 					setCel: 0
@@ -1074,8 +1081,6 @@
 )
 
 (instance kobWakeUp of KScript
-	(properties)
-	
 	(method (dispose)
 		(if egoKoboldBattleLoop
 			(client posn: 62 80)
@@ -1105,8 +1110,6 @@
 )
 
 (instance kobAwake of KScript
-	(properties)
-	
 	(method (doit)
 		(localproc_02de)
 		(if (and (Btst 280) (== state 0))
@@ -1170,8 +1173,8 @@
 					setLoop: 5
 					setStep: 24 16
 					posn:
-						(+ (client x?) [local15 clientLoop])
-						(+ (client y?) [local20 clientLoop])
+						(+ (client x?) [kobX clientLoop])
+						(+ (client y?) [kobY clientLoop])
 						20
 					init:
 					setCycle: Forward
@@ -1198,8 +1201,6 @@
 )
 
 (instance castRev of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1224,8 +1225,6 @@
 )
 
 (instance castTele of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1257,8 +1256,6 @@
 )
 
 (instance egoDies of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1276,9 +1273,15 @@
 			)
 			(1
 				(cond 
-					((Btst fKoboldChestExploded) (EgoDead 96 97))
-					(chestLockpickFail (EgoDead 37 38))
-					(else (EgoDead 132 133))
+					((Btst fKoboldChestExploded)
+						(EgoDead 96 97)
+					)
+					(chestLockpickFail
+						(EgoDead 37 38)
+					)
+					(else
+						(EgoDead 132 133)
+					)
 				)
 			)
 		)
@@ -1286,8 +1289,6 @@
 )
 
 (instance kobHurt of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1328,8 +1329,6 @@
 )
 
 (instance kobDies of KScript
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
@@ -1340,7 +1339,7 @@
 				(Bclr fFlag281)
 				(ego setScript: 0)
 				(curRoom setScript: 0)
-				(= koboldIllBits (& koboldIllBits $bfff))
+				(&= koboldIllBits $bfff)
 				(client
 					view: 178
 					setLoop: 5
@@ -1383,8 +1382,6 @@
 )
 
 (instance kobEnter of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1404,8 +1401,6 @@
 )
 
 (instance egoFighting of KScript
-	(properties)
-	
 	(method (dispose)
 		(= local50 0)
 		(directionHandler delete: self)
@@ -1510,8 +1505,6 @@
 )
 
 (instance pickChest of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1559,10 +1552,12 @@
 )
 
 (instance searchCave of KScript
-	(properties)
-	
 	(method (doit)
-		(if (Btst fKoboldAwake) (self dispose:) else (super doit:))
+		(if (Btst fKoboldAwake)
+			(self dispose:)
+		else
+			(super doit:)
+		)
 	)
 	
 	(method (dispose)
@@ -1611,8 +1606,6 @@
 )
 
 (instance startFight of KScript
-	(properties)
-	
 	(method (dispose)
 		(= fightingKoboldStart 0)
 		(super dispose:)
@@ -1652,7 +1645,9 @@
 						(= koboldEvade 5)
 					)
 					(= damageToKobold (+ 9 (/ [egoStats STR] 10)))
-					(if (ego has: 2) (= damageToKobold (+ damageToKobold 3)))
+					(if (ego has: iSword)
+						(+= damageToKobold 3)
+					)
 					(if (< (ego y?) 105)
 						(self cue:)
 					else
@@ -1674,7 +1669,7 @@
 			(2
 				(= theEgoKoboldBattleLoop egoKoboldBattleLoop)
 				(if (not (ego has: iSword))
-					(= theEgoKoboldBattleLoop (+ theEgoKoboldBattleLoop 2))
+					(+= theEgoKoboldBattleLoop 2)
 				)
 				(if fightingKobold
 					(ego setCycle: 0)
@@ -1696,8 +1691,6 @@
 )
 
 (instance stopFight of KScript
-	(properties)
-	
 	(method (changeState newState &tmp theEgoKoboldBattleLoop)
 		(switch (= state newState)
 			(0
@@ -1705,7 +1698,7 @@
 				(= fightingKobold FALSE)
 				(= theEgoKoboldBattleLoop egoKoboldBattleLoop)
 				(if (not (ego has: iSword))
-					(= theEgoKoboldBattleLoop (+ theEgoKoboldBattleLoop 2))
+					(+= theEgoKoboldBattleLoop 2)
 				)
 				(ego
 					view: 502
@@ -1717,7 +1710,9 @@
 			(1
 				(NormalEgo)
 				(ego loop: egoKoboldBattleLoop)
-				(if (not (Btst fKoboldDead)) (ego illegalBits: koboldIllBits))
+				(if (not (Btst fKoboldDead))
+					(ego illegalBits: koboldIllBits)
+				)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -1726,8 +1721,6 @@
 )
 
 (instance swBlow of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1757,8 +1750,6 @@
 )
 
 (instance swDodge of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1774,8 +1765,6 @@
 )
 
 (instance swParry of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1791,8 +1780,6 @@
 )
 
 (instance knStab of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1823,8 +1810,6 @@
 )
 
 (instance knDodge of KScript
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1858,13 +1843,13 @@
 	
 	(method (init)
 		(theIconBar disable:)
-		(theGame setCursor: normalCursor 1 280 155)
+		(theGame setCursor: normalCursor TRUE 280 155)
 		(self setPri: 14 ignoreActors:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(theGame setCursor: normalCursor 1)
+		(theGame setCursor: normalCursor TRUE)
 		(theIconBar enable:)
 		(super dispose:)
 	)
@@ -1880,8 +1865,6 @@
 )
 
 (instance getItCued of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 60))

@@ -99,12 +99,8 @@
 					(= newDTextNsBottom (newDText nsBottom?))
 				)
 				(= temp8 (WordAt curArray temp1))
-				(Message MsgGet
-					curRoomNum
-					(client noun?)
-					2
-					(if (< temp8 0) (- temp8) else temp8)
-					1
+				(Message MsgGet curRoomNum (client noun?)
+					V_TALK (if (< temp8 0) (- temp8) else temp8) 1
 					(switch temp9
 						(0 @temp10)
 						(1 @temp20)
@@ -149,9 +145,18 @@
 		(newDialog add: newDText)
 		(= temp3 (newDialog setSize: center: open: 0 -1 doit: 0))
 		(cond 
-			((IsObject temp3) (if (temp3 isKindOf: DButton) (= temp3 (temp3 value?))))
-			(temp0 (newDialog dispose:) (return -999))
-			(else (= temp3 999))
+			((IsObject temp3)
+				(if (temp3 isKindOf: DButton)
+					(= temp3 (temp3 value?))
+				)
+			)
+			(temp0
+				(newDialog dispose:)
+				(return -999)
+			)
+			(else
+				(= temp3 999)
+			)
 		)
 		(newDialog eachElementDo: #dispose 1 dispose:)
 		(return temp3)

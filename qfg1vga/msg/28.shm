@@ -8,6 +8,10 @@
 (define C_RED_SIGN_APPEARS 6)
 (define C_CLIMBING_MOUNTAIN 8)
 (define C_AT_BASE 7)
+(define C_RAND1 1)
+(define C_RAND2 2)
+(define C_RAND3 3)
+(define C_RAND4 4)
 
 ;;; NOUNS
 

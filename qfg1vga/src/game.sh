@@ -530,7 +530,7 @@
 	fWornOut		 			;110
 	fHaveOrdered	 			;111
 	fShemaBringsOrder 			;112
-	fTookBarNote 			;113
+	fTookBarNote 				;113
 	fBeenInGraveyardNight		;114	;NOTE: this VISITED flag is outside of the regular visited flags.
 	fMerchantAtInn	 			;115
 	fMetMerchant				;116
@@ -603,8 +603,8 @@
 	fUncoveredSafe 		;183
 	fCrackedSafe 		;184
 	fUnused185		;----------- event 185 is unused
-	DANCED_FOR_FAIRIES 			;186
-	DANCING_FOR_FAIRIES 		;187
+	fDancedForFairies 			;186
+	fDancing 		;187
 	fFaeryAttention		 		;188
 	fKarlAttention 			;189
 	fClimbedSpireaLedge			;190
@@ -624,36 +624,36 @@
 	fAntwerpInSky 				;204
 	fOverloaded			 		;205
 	fAntwerpSplit 				;206
-	ATTACKED_BUSH_GOBLIN		;207	; Was used for meeting the fox in QFG1EGA; now it's used for attacking the Goblin who's hiding in a bush.
-	OBTAINED_GEM 				;208
-	LOOKED_IN_PTERESA_NEST 		;209
-	OBTAINED_RING 				;210
+	fAttackedBush		;207	; Was used for meeting the fox in QFG1EGA; now it's used for attacking the Goblin who's hiding in a bush.
+	fGotGem 				;208
+	fLookedInNest 		;209
+	fGotRing 				;210
 	fFlag211 					; event 211 is tested outside Healer's house, but is never set
-	PTERESA_LEFT_NEST 			;212
-	WHACKED_BY_GIANT 			;213
-	UNUSED_214		;----------- event 214 is unused
-	OBTAINED_BARNARD_REWARD 	;215
+	fNestAbandoned 			;212
+	fHitByGiant 			;213
+	fUnused214		;----------- event 214 is unused
+	fBarnardReward			 	;215
 	fKoboldChestKnown			;216
 	fStableClean 				;217
-	DISPEL_GAVE_DUST 			;218
-	DISPEL_GAVE_FUR 			;219
-	DISPEL_GAVE_FLOWERS 		;220
-	DISPEL_GAVE_ACORN 			;221
-	DISPEL_GAVE_WATER 			;222
-	DISPEL_HEALER_MAKING_POTION ;223
-	OBTAINED_DISPEL_POTION 		;224
-	MET_HEALER 					;225
+	fGaveDust		 			;218
+	fGaveFur 			;219
+	fGaveFlowers 		;220
+	fGaveAcorn 			;221
+	fGaveWater 			;222
+	fHealerMakingDispel ;223
+	fGotDispel 		;224
+	fMetHealer 					;225
 	fStolePotions		 		;226	; banned from Healer's hut
-	OBTAINED_GREEN_FUR 			;227
-	LEARNED_DETECT 				;228
-	MET_STABLEMAN 				;229
-	RETURNED_RING 				;230
+	fGotFur 			;227
+	fLearnedDetect 				;228
+	fMetStableman 				;229
+	fReturnedRing 				;230
 	fUnused231					;----------- event 231 is unused
 	fFoundGoblinHideout 		;232
 	fMonsterDazzled				;233
 	fUnused234					;----------- event 234 is unused
-	SPIED_THIEVES 				;235
-	HENRY_LADDER_KNOWN 			;236
+	fSpiedOnThieves 				;235
+	fLadderKnown 			;236
 	fMinotaurDead	 			;237	; He's not actually dead, just unconscious
 	fBrigGateOpen	 			;238
 	fFlag239 					;EVENT_FIGHTINGWEAPONMASTER?? Unsure
@@ -661,7 +661,7 @@
 	fSafeTP 				;241	; teleported away safely by Henry
 	fAskedForTrigger 		;242
 	fFlag243 					; Event 243 is related to the Weapons Master
-	BRIGANDS_BEHIND_LOG 		;244
+	fBrigsBehindLog 		;244
 	fGotBrutusKey 		;245
 	fSawNessie 			;246
 	fHidenGoseke 			;247
@@ -800,7 +800,7 @@
 	POINTS_FIGHTWEAPONMASTER ;607)        ; 3 points (Fighter only)
 	POINTS_DEFEATWEAPONMASTER ;608)       ; 10 points (Fighter only)
 ; no event 609
-	POINTS_UNUSED_609
+	fUnused609
 	POINTS_BUYCHAINMAIL ;610)         ; 3 points (Fighter only)
 	f450BeatTroll 	;611)            ; 4 points (Fighter only)
 	f440BeatCheetaur	;612)         ; 4 points (Fighter Only)
@@ -850,13 +850,13 @@
 	 f15GetTreasure ;650)      ; 5 points
 	 f16GetSeed ;651)              ; 8 points
 	 f21EnterHut ;652)     ; 2 points
-	 POINTS_TURNBABAYAGAINTOFROG ;653)     ; 50 points
-	 POINTS_GIVEMANDRAKEROOT ;654)     ; 3 points
+	 f21BabaFrog ;653)     ; 50 points
+	 f21GiveRoot ;654)     ; 3 points
 	 f22MakeTheDeal ;655)        ; 2 points
 	 f22GiveGem ;656)              ; 10 points
 	 f22HutSit ;657)               ; 7 points
-	 POINTS_ENTERERASMUSCASTLE ;658)       ; 3 points
-	 POINTS_TALKTOERASMUS ;659)        ; 1 point
+	 f30EnterTower ;658)       ; 3 points
+	 f31TalkToErasmus ;659)        ; 1 point
 	 POINTS_ENTERCASTLECOURTYARD ;660)         ; 1 point
 	 POINTS_TALKTOWEAPONMASTER ;661)       ; 1 point
 	 POINTS_WORKINSTABLES ;662)        ; 5 points

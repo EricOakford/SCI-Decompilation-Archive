@@ -2,22 +2,6 @@
 ;;; 22.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
-;;; NOUNS
-
-(define N_ROOM 6)
-(define N_FENCE 2)
-(define N_FEET 1)
-(define N_GATE 3)
-(define N_HUTDOOR 4)
-(define N_HUT 5)
-(define N_SKULL1 9)
-(define N_DUMMY1 7)
-(define N_DUMMY2 8)
-(define N_SKULL2 10)
-(define N_SKULL3 11)
-(define N_SKULL4 12)
-(define N_WINDOW 13)
-
 ;;; CASES
 
 (define C_BABA 7)
@@ -37,4 +21,27 @@
 (define C_AFTER_ROOT 22)
 (define C_CURSED 29)
 (define C_FROG_IN 36)
+(define C_GET_THERE_FIRST 1)
+(define C_GATE 2)
+(define C_CANT_DO 3)
+(define C_LOOK_FENCE1 4)
+(define C_LOOK_FENCE2 5)
+(define C_LOOK_FENCE3 6)
+(define C_ASK 23)
+
+;;; NOUNS
+
+(define N_ROOM 6)
+(define N_FENCE 2)
+(define N_FEET 1)
+(define N_GATE 3)
+(define N_HUTDOOR 4)
+(define N_HUT 5)
+(define N_SKULL1 9)
+(define N_DUMMY1 7)
+(define N_DUMMY2 8)
+(define N_SKULL2 10)
+(define N_SKULL3 11)
+(define N_SKULL4 12)
+(define N_WINDOW 13)
 

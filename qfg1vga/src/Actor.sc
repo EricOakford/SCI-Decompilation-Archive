@@ -613,7 +613,7 @@
 		)
 		(= ret
 			(cond 
-				((CanBeHere self (cast elements?)))
+				((CantBeHere self (cast elements?)))
 				(
 					(and
 						(not (& signal ignrHrz))

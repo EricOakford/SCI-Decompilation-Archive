@@ -25,20 +25,19 @@
 	)
 )
 
-(instance rightsWin of SysWindow
-	(properties)
-)
+(instance rightsWin of SysWindow)
 
 (instance sayRights of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
 				(= cycles 2)
 			)
 			(1
-				(if (< numColors 8) (rightsWin color: vBLACK back: vWHITE))
+				;EGA remnant
+				(if (< numColors 8)
+					(rightsWin color: vBLACK back: vWHITE)
+				)
 				(messager say: N_ROOM NULL C_SAYRIGHTS 0 self)
 			)
 			(2

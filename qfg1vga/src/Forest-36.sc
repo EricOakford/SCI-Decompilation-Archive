@@ -19,7 +19,7 @@
 		horizon 55
 		encChance 20
 		entrances (| reSOUTH reWEST reNORTH)
-		illBits -16384
+		illBits (| cWHITE cYELLOW)
 	)
 	
 	(method (init)

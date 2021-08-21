@@ -120,7 +120,7 @@
 		)
 		(ogre posn: 145 110)
 		(if (not (Btst fBeenIn13))
-			(= ogreHealth 112)
+			(= ogreHealth MAX_HP_OGRE)
 		)
 		(if (== prevRoomNum vOgre)
 			(if (<= (= ogreHealth monsterHealth) 0)
@@ -159,7 +159,7 @@
 						setMotion: PolyPath 30 160
 						cel: 4
 					)
-					(= disabledActions (| disabledActions ACTION_REST))
+					(|= disabledActions ACTION_REST)
 					(ChangeGait MOVE_RUN FALSE)
 					(ogre init: posn: 176 123 setScript: ogreVSego)
 				)
@@ -212,10 +212,10 @@
 					)
 					(
 						(>
-							(= ogreHealth (+ ogreHealth (* (- Day ogreDay) 25)))
-							112
+							(+= ogreHealth (* (- Day ogreDay) 25))
+							MAX_HP_OGRE
 						)
-						(= ogreHealth 112)
+						(= ogreHealth MAX_HP_OGRE)
 					)
 				)
 				(= monsterHealth ogreHealth)
@@ -731,7 +731,7 @@
 	
 	(method (getHurt damage)
 		(if (not (Btst fBeatOgre))
-			(if (<= (= monsterHealth (- monsterHealth damage)) 0)
+			(if (<= (-= monsterHealth damage) 0)
 				(Bset fBeatOgre)
 				(HandsOff)
 				(self setScript: ogreDies)
@@ -743,7 +743,6 @@
 )
 
 (instance ogreVSego of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -801,7 +800,6 @@
 )
 
 (instance ogreDies of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -826,8 +824,7 @@
 					(ego setHeading: 90)
 				)
 				(= ogreDeathDay Day)
-				(if
-				(not (if (== (ogre x?) 97) (== (ogre y?) 124)))
+				(if (not (if (== (ogre x?) 97) (== (ogre y?) 124)))
 					(ogre setMotion: PolyPath 97 124 self)
 				else
 					(self cue:)
@@ -888,8 +885,6 @@
 )
 
 (instance egoSearch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1064,8 +1059,6 @@
 )
 
 (instance doTheOpen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1126,7 +1119,6 @@
 )
 
 (instance ogreDazzled of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1153,7 +1145,6 @@
 )
 
 (instance ogreCalmed of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1174,7 +1165,6 @@
 )
 
 (instance moveOnOut of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1189,7 +1179,6 @@
 )
 
 (instance goOnIn of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1205,7 +1194,6 @@
 )
 
 (instance goOutside of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

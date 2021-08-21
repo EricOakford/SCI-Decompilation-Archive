@@ -12,7 +12,11 @@
 )
 
 (local
-	[buttonPts 6] = [14 68 120 138 140 141]
+	buttonPts = [
+		14 68
+		120 138
+		140 141
+		]
 	nextRoom
 )
 (instance notice2Room of Room
@@ -36,8 +40,6 @@
 )
 
 (instance startThisRoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -58,8 +60,6 @@
 )
 
 (instance startControls of GameControls
-	(properties)
-	
 	(method (init &tmp temp0)
 		(self
 			add:
@@ -116,7 +116,10 @@
 							(= highlightedIcon 0)
 						)
 					)
-					((and obj (!= obj highlightedIcon)) (= oldMouseY 0) (self highlight: obj))
+					((and obj (!= obj highlightedIcon))
+						(= oldMouseY 0)
+						(self highlight: obj)
+					)
 				)
 			)
 			((not (IsObject highlightedIcon)) 0)
@@ -204,8 +207,6 @@
 )
 
 (instance introCode of Code
-	(properties)
-	
 	(method (doit)
 		(= nextRoom 200)
 		(curRoom newRoom: nextRoom)
@@ -213,8 +214,6 @@
 )
 
 (instance charCode of Code
-	(properties)
-	
 	(method (doit)
 		(= nextRoom 202)
 		(curRoom newRoom: nextRoom)
@@ -222,8 +221,6 @@
 )
 
 (instance restoreCode of Code
-	(properties)
-	
 	(method (doit)
 		(theGame restore:)
 		(DrawCel 100 4 2 152 128 15)

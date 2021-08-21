@@ -22,9 +22,9 @@
 	(= possibleScore 500)
 	(= smallFont 999)
 	(= bigFont 300)
-	(= stamCounter 20)
-	(= healCounter 15)
-	(= manaCounter 5)
+	(= stamCounter STAM_RATE)
+	(= healCounter HEAL_RATE)
+	(= manaCounter MANA_RATE)
 	(Format @userName {Unknown Hero})
 	((= narrator Narrator)
 		x: -1
@@ -77,6 +77,7 @@
 
 (procedure (InitGlobals)
 	(= numVoices (DoSound NumVoices))
+	;remnants from EGA
 	(if (< (= numColors (Graph GDetect)) 8)
 		(= statusBarView vMonoStatusBar)
 		(= sameColor vBLACK)

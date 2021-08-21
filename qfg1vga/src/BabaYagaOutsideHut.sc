@@ -23,19 +23,44 @@
 )
 
 (local
-	local0
-	local1
+	entryCued
+	gateCued
 	hutX
 	hutY
 	gateOpen
 	crushedByHut
 	local6
-	[local7 5] = [0 -7 -10 -8 999]
-	[local12 3] = [0 11 999]
-	[local15 3] = [0 12 999]
-	[local18 4] = [0 9 13 999]
-	[local22 6]
-	[local28 5] = [0 -7 -10 -8 999]
+	skullTellMainBranch = [
+		STARTTELL
+		-7		;C_BABA
+		-10		;C_HUT
+		-8		;C_DEAL
+		ENDTELL
+	]
+	skullTell1 = [
+		STARTTELL
+		C_OGRESS
+		ENDTELL
+	]
+	skullTell2 = [
+		STARTTELL
+		C_RHYME
+		ENDTELL
+		]
+	skullTell3 = [
+		STARTTELL
+		C_GEM
+		C_SKULLS
+		ENDTELL
+		]
+	[skullTellTree 6]
+	skullTellKeys = [
+		STARTTELL
+		-7		;C_BABA
+		-10		;C_HUT
+		-8		;C_DEAL
+		ENDTELL
+		]
 )
 (instance skullTimer of Timer)
 
@@ -47,11 +72,11 @@
 	)
 	
 	(method (init)
-		(= [local22 0] @local7)
-		(= [local22 1] @local12)
-		(= [local22 2] @local15)
-		(= [local22 3] @local18)
-		(= [local22 4] 999)
+		(= [skullTellTree 0] @skullTellMainBranch)
+		(= [skullTellTree 1] @skullTell1)
+		(= [skullTellTree 2] @skullTell2)
+		(= [skullTellTree 3] @skullTell3)
+		(= [skullTellTree 4] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -98,7 +123,7 @@
 				(= hutState hutNODEAL)
 			)
 			((not (Btst fGaveSkullGem))
-				(= hutState 4)
+				(= hutState hutSTATE4)
 			)
 		)
 		(if (not (Btst fBabaFlyAway))
@@ -115,7 +140,7 @@
 			(if (>= hutState hutGAVEGEM)
 				(gateEyes init: setCycle: Forward)
 			)
-			(skullTeller init: gate @local7 @local22 @local28)
+			(skullTeller init: gate @skullTellMainBranch @skullTellTree @skullTellKeys)
 			(gate init: actions: skullTeller approachVerbs: V_DO V_TALK V_MAGICGEM)
 		)
 		(skull1 init: addToPic:)
@@ -125,9 +150,16 @@
 		(switch prevRoomNum
 			(21
 				(cond 
-					((< babaState babaBRING) (curRoom setScript: frogIn))
-					((== babaState babaFINALE) (LoadMany SOUND 28) (hut setScript: flyAway))
-					(else (curRoom setScript: frogIn))
+					((< babaState babaBRING)
+						(curRoom setScript: frogIn)
+					)
+					((== babaState babaFINALE)
+						(LoadMany SOUND 28)
+						(hut setScript: flyAway)
+					)
+					(else
+						(curRoom setScript: frogIn)
+					)
 				)
 			)
 			(else 
@@ -155,7 +187,7 @@
 				(HandsOff)
 				(Bclr fBabaHutOpen)
 				(Bclr fHutOnGround)
-				(= local0 1)
+				(= entryCued TRUE)
 				(ego setHeading: 360 self)
 			)
 		)
@@ -169,8 +201,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_SLEEP (messager say: N_ROOM V_SLEEP 0))
-			(V_DETECT (messager say: N_ROOM V_DETECT 0))
+			(V_SLEEP
+				(messager say: N_ROOM V_SLEEP NULL)
+			)
+			(V_DETECT
+				(messager say: N_ROOM V_DETECT NULL)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -178,19 +214,21 @@
 	)
 	
 	(method (cue)
-		(if local0 (curRoom newRoom: 21))
-		(if local1
-			(= local1 0)
-			(gate ignoreActors: 1 setScript: openGate)
+		(if entryCued
+			(curRoom newRoom: 21)
+		)
+		(if gateCued
+			(= gateCued FALSE)
+			(gate ignoreActors: TRUE setScript: openGate)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(skullTimer dispose: delete:)
 		(Bclr fMetSkull)
-		(Bclr fBabaHutOpen) ;comment out to allow for the hutUp script to execute in Room 33.
+		;(Bclr fBabaHutOpen) ;commented out to allow for the hutUp script to execute in Room 33.
 		(Bclr fHutOnGround)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
@@ -222,13 +260,19 @@
 		(switch theVerb
 			(V_LOOK
 				(switch (Random 1 3)
-					(1 (messager say: N_FENCE V_LOOK 4))
-					(2 (messager say: N_FENCE V_LOOK 6))
-					(3 (messager say: N_FENCE V_LOOK 5))
+					(1
+						(messager say: N_FENCE V_LOOK C_LOOK_FENCE1)
+					)
+					(2
+						(messager say: N_FENCE V_LOOK C_LOOK_FENCE3)
+					)
+					(3
+						(messager say: N_FENCE V_LOOK C_LOOK_FENCE2)
+					)
 				)
 			)
 			(V_DO
-				(messager say: N_FENCE V_DO 0)
+				(messager say: N_FENCE V_DO NULL)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -250,7 +294,7 @@
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: N_SKULL1 V_LOOK 0)
+			(messager say: N_SKULL1 V_LOOK NULL)
 		else
 			(fence doVerb: theVerb &rest)
 		)
@@ -271,13 +315,13 @@
 	(method (init)
 		(= nightPalette 123)
 		(PalVary PALVARYTARGET 123)
-		(kernel_128 23)
+		(AssertPalette 23)
 		(super init: &rest)
 	)
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: N_SKULL2 V_LOOK 0)
+			(messager say: N_SKULL2 V_LOOK NULL)
 		else
 			(fence doVerb: theVerb &rest)
 		)
@@ -297,7 +341,7 @@
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: N_SKULL3 V_LOOK 0)
+			(messager say: N_SKULL3 V_LOOK NULL)
 		else
 			(fence doVerb: theVerb &rest)
 		)
@@ -317,7 +361,7 @@
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_DO)
-			(messager say: N_SKULL4 V_LOOK 0)
+			(messager say: N_SKULL4 V_LOOK NULL)
 		else
 			(fence doVerb: theVerb &rest)
 		)
@@ -353,7 +397,7 @@
 		view 23
 		loop 3
 		priority 10
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 9
 	)
 )
@@ -366,17 +410,24 @@
 		view 22
 		loop 2
 		priority 1
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_FEET V_LOOK 0))
+			(V_LOOK
+				(messager say: N_FEET V_LOOK NULL)
+			)
 			(V_DO
 				(cond 
-					((Btst fBabaHutOpen) (messager say: N_FEET V_DO 3))
-					(gateOpen (messager say: N_FEET V_DO 2))
-					(else (messager say: N_FEET V_DO 1))
+					((Btst fBabaHutOpen)
+						(messager say: N_FEET V_DO C_CANT_DO)
+					)
+					(gateOpen
+						(messager say: N_FEET V_DO C_GATE))
+					(else
+						(messager say: N_FEET V_DO C_GET_THERE_FIRST)
+					)
 				)
 			)
 			(else 
@@ -412,20 +463,29 @@
 		yStep 4
 		view 22
 		priority 2
-		signal $6010
+		signal (| ignrAct ignrHrz fixPriOn)
 		illegalBits $0000
 		xStep 6
 	)
 	
 	(method (doVerb theVerb &tmp temp0)
 		(switch theVerb
-			(V_LOOK (messager say: N_HUT V_LOOK 0))
+			(V_LOOK
+				(messager say: N_HUT V_LOOK NULL))
 			(V_TALK
 				(cond 
-					((not gateOpen) (messager say: N_HUT V_ALTTALK 2))
-					((Btst fBabaHutOpen) (messager say: N_HUT V_ALTTALK 3))
-					((Btst fHutOnGround) (curRoom setScript: setAllTheWay))
-					(else (curRoom setScript: sHutDown1))
+					((not gateOpen)
+						(messager say: N_HUT V_ALTTALK C_GATE)
+					)
+					((Btst fBabaHutOpen)
+						(messager say: N_HUT V_ALTTALK C_CANT_DO)
+					)
+					((Btst fHutOnGround)
+						(curRoom setScript: setAllTheWay)
+					)
+					(else
+						(curRoom setScript: sHutDown1)
+					)
 				)
 			)
 			(else 
@@ -443,7 +503,7 @@
 		view 22
 		loop 5
 		priority 3
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 1
 		illegalBits $0000
 	)
@@ -452,9 +512,9 @@
 		(switch theVerb
 			(V_LOOK
 				(if (not cel)
-					(messager say: N_HUTDOOR V_LOOK 17)
+					(messager say: N_HUTDOOR V_LOOK C_DOOR_OPEN)
 				else
-					(messager say: N_HUTDOOR V_LOOK 18)
+					(messager say: N_HUTDOOR V_LOOK C_DOOR_CLOSED)
 				)
 			)
 			(else 
@@ -474,7 +534,7 @@
 		yStep 1
 		view 23
 		priority 2
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 		illegalBits $0000
 		xStep 1
 		moveSpeed 0
@@ -482,11 +542,8 @@
 )
 
 (instance skullTeller of Teller
-	(properties)
-	
 	(method (showDialog &tmp superShowDialog)
-		(if
-		(== (= superShowDialog (super showDialog:)) 12)
+		(if (== (= superShowDialog (super showDialog:)) C_RHYME)
 			(Bset fLearnedRhyme)
 		)
 		(if (and (== superShowDialog -8) (not (Btst fMadeDealWithSkull)))
@@ -499,7 +556,9 @@
 		(switch theVerb
 			(V_LOOK
 				(cond 
-					(gateOpen (messager say: N_GATE V_LOOK 2))
+					(gateOpen
+						(messager say: N_GATE V_LOOK C_GATE)
+					)
 					((not gateOpen)
 						(if (< hutState hutGAVEGEM)
 							(messager say: N_GATE V_LOOK C_SKULL_EYELESS)
@@ -543,7 +602,7 @@
 		x 138
 		y 176
 		view 531
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 )
 
@@ -560,8 +619,6 @@
 )
 
 (instance openGate of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -600,8 +657,6 @@
 )
 
 (instance flyAway of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -632,9 +687,15 @@
 				)
 				(hutDoor dispose:)
 				(hut setPri: (- (gate priority?) 1))
-				(if (cast contains: gate) (gate addToPic:))
-				(if (cast contains: dirt) (dirt addToPic:))
-				(if (cast contains: gateEyes) (gateEyes addToPic:))
+				(if (cast contains: gate)
+					(gate addToPic:)
+				)
+				(if (cast contains: dirt)
+					(dirt addToPic:)
+				)
+				(if (cast contains: gateEyes)
+					(gateEyes addToPic:)
+				)
 				(TP init: setCel: 255 setCycle: CycleTo 3 -1 self)
 			)
 			(1
@@ -643,13 +704,16 @@
 				(tpSound number: 28 init: play:)
 				(Face ego hut)
 			)
-			(2 (TP dispose:) (= seconds 5))
+			(2
+				(TP dispose:)
+				(= seconds 5)
+			)
 			(3
 				(feet
 					setStep: 1 1
 					setPri: (- (hut priority?) 1)
 					moveSpeed: 6
-					ignoreActors: 1
+					ignoreActors: TRUE
 					ignoreControl: cWHITE
 					setMotion: MoveTo (feet x?) -200
 				)
@@ -674,14 +738,14 @@
 				(Bclr fBabaHutOpen)
 				(messager say: N_ROOM NULL C_BABA_FLEES 1 self)
 			)
-			(6 (curRoom newRoom: 600))
+			(6
+				(curRoom newRoom: 600)
+			)
 		)
 	)
 )
 
 (instance frogIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -699,7 +763,7 @@
 						loop: 1
 						setCel: 255
 						posn: 138 176
-						ignoreActors: 1
+						ignoreActors: TRUE
 						init:
 					)
 				)
@@ -719,7 +783,7 @@
 					(NormalEgo)
 					(self changeState: 6)
 				else
-					(messager say: N_ROOM 0 C_FROG_IN 0 self)
+					(messager say: N_ROOM NULL C_FROG_IN 0 self)
 				)
 			)
 			(3
@@ -737,11 +801,13 @@
 				(HandsOn)
 				(switch babaState
 					(babaFETCH
-						(messager say: N_ROOM 0 C_CURSED)
+						(messager say: N_ROOM NULL C_CURSED)
 						(Bset fBabaCurse)
 						(= dayCursedByBabaYaga Day)
 					)
-					(babaBRING (messager say: N_ROOM 0 C_AFTER_ROOT))
+					(babaBRING
+						(messager say: N_ROOM NULL C_AFTER_ROOT)
+					)
 				)
 				(self dispose:)
 			)
@@ -750,8 +816,6 @@
 )
 
 (instance sRandomFlashingEyes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -793,22 +857,20 @@
 )
 
 (instance sExitSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo (ego x?) 245 self)
 			)
-			(1 (curRoom newRoom: 33))
+			(1
+				(curRoom newRoom: 33)
+			)
 		)
 	)
 )
 
 (instance sEnterFromSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -843,8 +905,6 @@
 )
 
 (instance sHutDown1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -898,8 +958,6 @@
 )
 
 (instance sHutDown2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -913,13 +971,17 @@
 				(= cycles 5)
 			)
 			(1
-				(if crushedByHut (ego setCel: 3))
+				(if crushedByHut
+					(ego setCel: 3)
+				)
 				(hut posn: 221 109)
 				(feet posn: 156 152)
 				(= cycles 3)
 			)
 			(2
-				(if crushedByHut (ego setCel: 5))
+				(if crushedByHut
+					(ego setCel: 5)
+				)
 				(hut posn: 221 116)
 				(= cycles 3)
 			)
@@ -934,7 +996,9 @@
 			)
 			(5
 				(hutDoor stopUpd:)
-				(if crushedByHut (EgoDead 157 158 3 7 516))
+				(if crushedByHut
+					(EgoDead 157 158 3 7 516)
+				)
 				(HandsOn)
 				(Bset fBabaHutOpen)
 				(self dispose:)
@@ -944,8 +1008,6 @@
 )
 
 (instance putEyes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -963,7 +1025,7 @@
 				(= cycles 2)
 			)
 			(2
-				(messager say: N_ROOM 0 0 4 self)
+				(messager say: N_ROOM NULL NULL 4 self)
 				(gateEyes init: setCycle: Forward)
 				(= hutState hutGAVEGEM)
 			)
@@ -982,28 +1044,38 @@
 				(gate stopUpd:)
 				(= cycles 2)
 			)
-			(6 (messager say: N_ROOM 0 0 5 self))
+			(6
+				(messager say: N_ROOM NULL NULL 5 self)
+			)
 			(7
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(= ticks 10)
 			)
-			(8 (messager say: N_ROOM 0 0 6 self))
-			(9 (= ticks 10))
+			(8
+				(messager say: N_ROOM NULL NULL 6 self)
+			)
+			(9
+				(= ticks 10)
+			)
 			(10
-				(messager say: N_ROOM 0 0 7 self)
+				(messager say: N_ROOM NULL NULL 7 self)
 			)
 			(11
 				(if (not (Btst fBeenIn21))
-					(messager say: N_ROOM 0 28 1 self)
+					(messager say: N_ROOM NULL 28 1 self)
 				else
-					(messager say: N_ROOM 0 33 1 self)
+					(messager say: N_ROOM NULL 33 1 self)
 				)
 			)
 			(12
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(ego startUpd:)
 				(gate startUpd:)
-				(= local1 1)
+				(= gateCued TRUE)
 				(skullTimer setReal: curRoom 2)
 				(self dispose:)
 			)
@@ -1012,17 +1084,14 @@
 )
 
 (instance openingScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if
-				(or (== hutState hutMETSKULL) (== hutState hutNODEAL))
+				(if (or (== hutState hutMETSKULL) (== hutState hutNODEAL))
 					(self cue:)
 				else
 					(= hutState hutMETSKULL)
-					(messager say: N_ROOM 0 34 1 self)
+					(messager say: N_ROOM NULL 34 1 self)
 				)
 			)
 			(1 (= seconds 10))
@@ -1031,7 +1100,7 @@
 					(self cue:)
 				else
 					(= hutState hutNODEAL)
-					(messager say: N_ROOM 0 31 1 self)
+					(messager say: N_ROOM NULL 31 1 self)
 				)
 			)
 			(3 (self dispose:))
@@ -1040,8 +1109,6 @@
 )
 
 (instance boneTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1067,7 +1134,7 @@
 						)
 					)
 					(3
-						(messager say: N_ROOM 0 30 1 self)
+						(messager say: N_ROOM NULL 30 1 self)
 						(= hutState hutNODEAL)
 						(gate setScript: makeTheDeal)
 					)
@@ -1076,10 +1143,10 @@
 					)
 					(else 
 						(if (and (Btst fBeenIn21) (ego has: iMandrake))
-							(messager say: N_ROOM 0 21)
+							(messager say: N_ROOM NULL 21)
 							(gate setScript: openGate)
 						else
-							(messager say: N_ROOM 0 27)
+							(messager say: N_ROOM NULL 27)
 							(gate setScript: openGate)
 						)
 					)
@@ -1095,7 +1162,7 @@
 							(> register 0)
 							(< register 3)
 						)
-						(= state (- state 2))
+						(-= state 2)
 					)
 					(= seconds 2)
 				)
@@ -1118,8 +1185,6 @@
 )
 
 (instance setAllTheWay of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= seconds 3))
@@ -1131,70 +1196,86 @@
 				(if (Btst fLearnedRhyme)
 					(switch
 						(Print
-							addText: 6 0 23 1 0 0 22
-							addButton: 0 6 0 23 9 0 18 22
-							addButton: 1 6 0 23 2 0 36 22
-							addButton: 2 6 0 23 3 0 54 22
-							addButton: 3 6 0 23 4 0 72 22
+							addText: N_ROOM NULL C_ASK 1 0 0 22
+							addButton: 0 N_ROOM NULL C_ASK 9 0 18 22
+							addButton: 1 N_ROOM NULL C_ASK 2 0 36 22
+							addButton: 2 N_ROOM NULL C_ASK 3 0 54 22
+							addButton: 3 N_ROOM NULL C_ASK 4 0 72 22
 							init:
 						)
-						(0 (HandsOn) (self dispose:))
-						(1 (messager say: N_ROOM 0 4 1 self))
-						(2 (messager say: N_ROOM 0 6 1 self))
+						(0
+							(HandsOn)
+							(self dispose:)
+						)
+						(1
+							(messager say: N_ROOM NULL 4 1 self)
+						)
+						(2
+							(messager say: N_ROOM NULL 6 1 self)
+						)
 						(3
-							(messager say: N_ROOM 0 5 1 self)
+							(messager say: N_ROOM NULL 5 1 self)
 							(curRoom setScript: sHutDown2)
 						)
 					)
 				else
 					(switch
 						(Print
-							addText: 6 0 23 5 0 0 22
-							addButton: 0 6 0 23 9 0 18 22
-							addButton: 1 6 0 23 6 0 36 22
+							addText: N_ROOM NULL C_ASK 5 0 0 22
+							addButton: 0 N_ROOM NULL C_ASK 9 0 18 22
+							addButton: 1 N_ROOM NULL C_ASK 6 0 36 22
 							addButton: 2 6 0 23 7 0 54 22
 							init:
 						)
-						(0 (HandsOn) (self dispose:))
-						(1 (messager say: N_ROOM 0 4 0 self))
-						(2 (messager say: N_ROOM 0 6 0 self))
+						(0
+							(HandsOn)
+							(self dispose:)
+						)
+						(1
+							(messager say: N_ROOM NULL 4 0 self)
+						)
+						(2
+							(messager say: N_ROOM NULL 6 0 self)
+						)
 					)
 				)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance doTheIntro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 34 1 self)
+				(messager say: N_ROOM NULL 34 1 self)
 			)
 			(1
 				(= hutState hutNODEAL)
-				(messager say: N_ROOM 0 31 1 self)
+				(messager say: N_ROOM NULL 31 1 self)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance hearTheDeal of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 35 1 self)
+				(messager say: N_ROOM NULL 35 1 self)
 			)
 			(1
-				(messager say: N_ROOM 0 37 1 self)
+				(messager say: N_ROOM NULL 37 1 self)
 			)
 			(2
 				(self setScript: makeTheDeal)
@@ -1204,15 +1285,15 @@
 )
 
 (instance makeTheDeal of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(Btst 292)
 				(Bset fSkullOfferedDeal)
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(= seconds 3)
 			)
 			(1
@@ -1247,8 +1328,6 @@
 )
 
 (instance respondToQuestion of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1305,7 +1384,7 @@
 	(method (init)
 		(= nightPalette 2022)
 		(PalVary PALVARYTARGET 2022)
-		(kernel_128 1022)
+		(AssertPalette 1022)
 		(= font userFont)
 		(if (Btst fGaveSkullGem)
 			(super init: skullBust bigEyes skullTalkerMouth &rest)

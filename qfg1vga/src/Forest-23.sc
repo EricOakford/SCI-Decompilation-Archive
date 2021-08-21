@@ -14,7 +14,7 @@
 (instance rm23 of EncRoom
 	(properties
 		picture 704
-		style $0008
+		style DISSOLVE
 		horizon 55
 		encChance 30
 		entrances (| reEAST reSOUTH)

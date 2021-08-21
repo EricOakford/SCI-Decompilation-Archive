@@ -90,10 +90,11 @@
 	(= theGamePrintLang (theGame printLang?))
 	(= theGameSubtitleLang (theGame subtitleLang?))
 	(theGame printLang: 1 subtitleLang: 0)
-	(StrSplit param1 @temp3 0)
+	;NOTE: ColorRemap should be StrSplit, but for the upgrade, we're getting rid of this script
+	(ColorRemap param1 @temp3 0)
 	(if (= temp2 0)
 		(theGame printLang: temp2)
-		(StrSplit param2 @temp3 0)
+		(ColorRemap param2 @temp3 0)
 	else
 		(StrCpy param2 {})
 	)

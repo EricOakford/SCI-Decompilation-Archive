@@ -20,11 +20,20 @@
 (local
 	oldSpeed
 	theNoun
-	[local2 16] = [153 164 153 176 139 181 73 181 73 175 33 175 33 157 135 157]
+	local2 = [
+		153 164
+		153 176
+		139 181
+		73 181
+		73 175
+		33 175
+		33 157
+		135 157
+		]
 	timesReadStone
 	stoneOpened
 	local20
-	local21 =  4
+	cycleTimer =  4
 	local22
 	tookAFruit
 )
@@ -82,9 +91,8 @@
 				)
 		)
 		(ChangeGait 0 0)
-		(= disabledActions
-			(| (= disabledActions (| disabledActions ACTION_RUN)) ACTION_SNEAK)
-		)
+		(|= disabledActions ACTION_RUN)
+		(|= disabledActions ACTION_SNEAK)
 		(Load VIEW 10)
 		(cSound stop: number: 24 loop: -1 play:)
 		(super init:)
@@ -100,8 +108,8 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (not (-- local21))
-			(= local21 10)
+		(if (not (-- cycleTimer))
+			(= cycleTimer 10)
 			(if (and (> numColors 16) (not (Btst fCharSheetActive)))
 				(Palette PALCycle 232 237 1)
 				(Palette PALCycle 238 243 -1)
@@ -367,7 +375,7 @@
 	(method (init)
 		(= nightPalette 110)
 		(PalVary PALVARYTARGET 110)
-		(kernel_128 10)
+		(AssertPalette 10)
 		(super init: &rest)
 	)
 	
@@ -485,7 +493,6 @@
 )
 
 (instance moveStoneAway of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -530,7 +537,6 @@
 )
 
 (instance sExitSouth of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -548,7 +554,6 @@
 )
 
 (instance goToSleep of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -624,7 +629,6 @@
 )
 
 (instance sTakeScroll of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -633,7 +637,7 @@
 			)
 			(1
 				(Bset fLearnedCalm)
-				(ego learn: 22 10)
+				(ego learn: CALM 10)
 				(SolvePuzzle f10LearnCalm 4 MAGIC_USER)
 				(ego view: 510 setLoop: 1 setCel: 0 setCycle: EndLoop self)
 			)
@@ -663,7 +667,6 @@
 )
 
 (instance sPickFlowers of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -715,7 +718,6 @@
 )
 
 (instance sEnterFromSouth of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -748,7 +750,6 @@
 )
 
 (instance sTakeAFruit of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

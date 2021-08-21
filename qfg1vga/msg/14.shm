@@ -14,6 +14,8 @@
 (define C_FIRST_ENTRY 11)
 (define C_TALKBEAR1 7)
 (define C_TALKBEAR2 8)
+(define C_BEAR_HERE 9)
+(define C_BEAR_GONE 10)
 
 ;;; NOUNS
 

@@ -147,10 +147,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(messager say: N_ROOM 1 17 0 self)
+				(messager say: N_ROOM V_LOOK C_LOOK_ROOM 0 self)
 			)
 			(V_MAGICMIRROR
-				(messager say: N_BABA 30 0)
+				(messager say: N_BABA V_MAGICMIRROR NULL)
 				(Bset fBabaFrog)
 			)
 			(else 
@@ -188,7 +188,7 @@
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: N_BUCKET 1)
+			(messager say: N_BUCKET V_LOOK)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -232,7 +232,7 @@
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: N_CAULDRON 1)
+			(messager say: N_CAULDRON V_LOOK)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -249,7 +249,7 @@
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: N_SKULL 1)
+			(messager say: N_SKULL V_LOOK)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -311,14 +311,16 @@
 		(if (== theVerb V_LOOK)
 			(switch seenWindow
 				(0
-					(messager say: N_WINDOW 1 3)
+					(messager say: N_WINDOW V_LOOK C_WINDOW3)
 					(++ seenWindow)
 				)
 				(1
-					(messager say: N_WINDOW 1 1)
+					(messager say: N_WINDOW V_LOOK C_WINDOW1)
 					(++ seenWindow)
 				)
-				(2 (messager say: N_WINDOW 1 2))
+				(2
+					(messager say: N_WINDOW V_LOOK C_WINDOW2)
+				)
 			)
 		else
 			(super doVerb: theVerb &rest)
@@ -341,7 +343,7 @@
 		noun N_SPIDER
 		view 21
 		priority pWHITE
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 12
 	)
 )
@@ -373,7 +375,7 @@
 		view 21
 		loop 7
 		priority pWHITE
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 8
 	)
 )
@@ -386,9 +388,11 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_BABA 1))
+			(V_LOOK
+				(messager say: N_BABA V_LOOK)
+			)
 			(V_MAGICMIRROR
-				(messager say: N_BABA 30 0)
+				(messager say: N_BABA V_MAGICMIRROR NULL)
 				(Bset fBabaFrog)
 			)
 			(else 
@@ -399,15 +403,15 @@
 )
 
 (instance firstWitch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 143 172 self)
 			)
-			(1 (= seconds 2))
+			(1
+				(= seconds 2)
+			)
 			(2
 				(TP posn: 195 132 setPri: 15 init: setCycle: CycleTo 4 1 self)
 			)
@@ -423,7 +427,7 @@
 			(5
 				(spider startUpd:)
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 0 1 self)
+				(messager say: N_ROOM NULL NULL 1 self)
 			)
 			(6
 				(= babaSpeaks FALSE)
@@ -433,7 +437,7 @@
 				(ego loop: 0)
 				(spider setCycle: 0)
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 0 2 self)
+				(messager say: N_ROOM NULL NULL 2 self)
 			)
 			(8
 				(= babaSpeaks FALSE)
@@ -441,7 +445,7 @@
 				(baba setLoop: 6 setCycle: EndLoop self)
 			)
 			(9
-				(messager say: N_ROOM 0 9 0 self)
+				(messager say: N_ROOM NULL C_FROZEN_SPELL 0 self)
 			)
 			(10
 				(baba
@@ -457,7 +461,7 @@
 				(= cycles 2)
 			)
 			(12
-				(messager say: N_ROOM 0 0 3 self)
+				(messager say: N_ROOM NULL NULL 3 self)
 				(= babaSpeaks TRUE)
 			)
 			(13
@@ -468,10 +472,10 @@
 			(14
 				(bat setCycle: 0)
 				(spider setCycle: 0)
-				(messager say: N_ROOM 0 0 4 self)
+				(messager say: N_ROOM NULL NULL 4 self)
 			)
 			(15
-				(messager say: N_ROOM 0 7 0 self)
+				(messager say: N_ROOM NULL C_FROG_LEGS 0 self)
 			)
 			(16
 				(spider setCycle: Forward)
@@ -479,12 +483,12 @@
 				(= seconds 3)
 			)
 			(17
-				(messager say: N_ROOM 0 0 5 self)
+				(messager say: N_ROOM NULL NULL 5 self)
 				(bat setCycle: 0)
 				(spider setCycle: 0)
 			)
 			(18
-				(messager say: N_ROOM 0 0 6 self)
+				(messager say: N_ROOM NULL NULL 6 self)
 			)
 			(19
 				(= babaSpeaks FALSE)
@@ -510,7 +514,7 @@
 				(spider setCycle: Forward)
 				(bat setCycle: Forward)
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 0 7 self)
+				(messager say: N_ROOM NULL NULL 7 self)
 			)
 			(25
 				(= babaSpeaks FALSE)
@@ -523,8 +527,6 @@
 )
 
 (instance firstTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -562,7 +564,7 @@
 			)
 			(2
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 0 8 self)
+				(messager say: N_ROOM NULL NULL 8 self)
 				(ego setCycle: 0)
 			)
 			(3
@@ -570,18 +572,18 @@
 				(bat setLoop: 1 cel: 4 setCycle: BegLoop self)
 			)
 			(4
-				(messager say: N_ROOM 0 0 9 self)
+				(messager say: N_ROOM NULL NULL 9 self)
 			)
 			(5 (self cue:))
 			(6
 				(= babaState babaNAME)
-				(messager say: N_ROOM 0 14 0 self)
+				(messager say: N_ROOM NULL C_ASK_NAME 0 self)
 			)
 			(7
 				(switch
 					(Print
-						addButton: sayYes 11 0 0 12 0 0 21
-						addButton: sayNo 11 0 0 13 0 18 21
+						addButton: sayYes N_ROOM NULL NULL 12 0 0 21
+						addButton: sayNo N_ROOM NULL NULL 13 0 18 21
 						init:
 					)
 					(sayYes
@@ -599,24 +601,24 @@
 				(self cue:)
 			)
 			(9
-				(messager say: N_ROOM 0 6 0 self)
+				(messager say: N_ROOM NULL C_YES_NAME 0 self)
 			)
 			(10
 				(ego setCycle: 0)
 				(baba setPri: 14)
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 0 10 self)
+				(messager say: N_ROOM NULL NULL 10 self)
 			)
 			(11 (= seconds 2))
 			(12
 				(= babaState babaBRAVE)
-				(messager say: N_ROOM 0 0 11 self)
+				(messager say: N_ROOM NULL NULL 11 self)
 			)
 			(13
 				(switch
 					(Print
-						addButton: sayYes 11 0 0 12 0 0 21
-						addButton: sayNo 11 0 0 13 0 18 21
+						addButton: sayYes N_ROOM NULL NULL 12 0 0 21
+						addButton: sayNo N_ROOM NULL NULL 13 0 18 21
 						init:
 					)
 					(sayYes
@@ -632,14 +634,14 @@
 				(self cue:)
 			)
 			(15
-				(messager say: N_ROOM 0 0 14 self)
+				(messager say: N_ROOM NULL NULL 14 self)
 			)
 			(16
 				(ego setCycle: 0)
-				(messager say: N_ROOM 0 0 15 self)
+				(messager say: N_ROOM NULL NULL 15 self)
 			)
 			(17
-				(messager say: N_ROOM 0 0 16 self)
+				(messager say: N_ROOM NULL NULL 16 self)
 			)
 			(18
 				(ego setCycle: Forward)
@@ -647,13 +649,13 @@
 			)
 			(19
 				(= babaState babaFETCH)
-				(messager say: N_ROOM 0 0 17 self)
+				(messager say: N_ROOM NULL NULL 17 self)
 			)
 			(20
 				(switch
 					(Print
-						addButton: sayYes 11 0 0 12 0 0 21
-						addButton: sayNo 11 0 0 13 0 18 21
+						addButton: sayYes N_ROOM NULL NULL 12 0 0 21
+						addButton: sayNo N_ROOM NULL NULL 13 0 18 21
 						init:
 					)
 					(sayYes
@@ -669,13 +671,13 @@
 				(self cue:)
 			)
 			(22
-				(messager say: N_ROOM 0 0 18 self)
+				(messager say: N_ROOM NULL NULL 18 self)
 			)
 			(23
 				(ego setCycle: 0)
 				(spider setCycle: Forward)
 				(bat setLoop: 5 setCycle: Forward)
-				(messager say: N_ROOM 0 0 19 self)
+				(messager say: N_ROOM NULL NULL 19 self)
 			)
 			(24
 				(ego setCycle: 0)
@@ -684,13 +686,13 @@
 			(25
 				(spider setCycle: 0)
 				(bat setCycle: 0)
-				(messager say: N_ROOM 0 0 20 self)
+				(messager say: N_ROOM NULL NULL 20 self)
 			)
 			(26
-				(messager say: N_ROOM 0 0 21 self)
+				(messager say: N_ROOM NULL NULL 21 self)
 			)
 			(27
-				(messager say: N_ROOM 0 0 22 self)
+				(messager say: N_ROOM NULL NULL 22 self)
 			)
 			(28
 				(= babaSpeaks FALSE)
@@ -722,7 +724,7 @@
 				(baba setCycle: CycleTo 0 -1 self)
 			)
 			(31
-				(messager say: N_ROOM 0 0 23 self)
+				(messager say: N_ROOM NULL NULL 23 self)
 			)
 			(32
 				(baba setLoop: 6 cel: 0 setCycle: EndLoop self)
@@ -744,17 +746,15 @@
 )
 
 (instance nameDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(baba setCel: 1 setPri: 13 setScript: 0)
 				(= yesNoTimer 0)
-				(messager say: N_ROOM 0 13 1 self)
+				(messager say: N_ROOM NULL C_NO_NAME 1 self)
 			)
 			(1
-				(messager say: N_ROOM 0 0 24 self)
+				(messager say: N_ROOM NULL NULL 24 self)
 			)
 			(2
 				(spider setCycle: Forward)
@@ -763,7 +763,7 @@
 			)
 			(3
 				(baba setCel: 1)
-				(messager say: N_ROOM 0 0 25 self)
+				(messager say: N_ROOM NULL NULL 25 self)
 			)
 			(4 (EgoDead 80 81))
 		)
@@ -771,20 +771,18 @@
 )
 
 (instance braveDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(baba setScript: 0)
 				(= yesNoTimer 0)
-				(messager say: N_ROOM 0 0 26 self)
+				(messager say: N_ROOM NULL NULL 26 self)
 			)
 			(1
 				(baba setCel: 1)
 				(spider setCycle: Forward)
 				(bat setCycle: Forward)
-				(messager say: N_ROOM 0 11 0 self)
+				(messager say: N_ROOM NULL C_NO_BRAVE 0 self)
 			)
 			(2 (EgoDead 39 40))
 		)
@@ -792,19 +790,17 @@
 )
 
 (instance noFetchDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(baba setScript: 0)
-				(messager say: N_ROOM 0 15 0 self)
+				(messager say: N_ROOM NULL C_NO_FETCH 0 self)
 			)
 			(1
 				(baba setCel: 1)
 				(spider setCycle: Forward)
 				(bat setCycle: Forward)
-				(messager say: N_ROOM 0 0 27 self)
+				(messager say: N_ROOM NULL NULL 27 self)
 			)
 			(2 (EgoDead 78 79))
 		)
@@ -812,13 +808,11 @@
 )
 
 (instance noBringDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(baba setScript: 0)
-				(messager say: N_ROOM 0 0 28 self)
+				(messager say: N_ROOM NULL NULL 28 self)
 			)
 			(1
 				(spider setCycle: Forward)
@@ -826,7 +820,7 @@
 				(= seconds 3)
 			)
 			(2
-				(messager say: N_ROOM 0 0 29 self)
+				(messager say: N_ROOM NULL NULL 29 self)
 			)
 			(3 (EgoDead 17 18))
 		)
@@ -834,8 +828,6 @@
 )
 
 (instance lastWitch of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
@@ -864,7 +856,7 @@
 			(5 (bat setCycle: EndLoop self))
 			(6
 				(HandsOn)
-				(theIconBar disable: 1 3 4 5 6)
+				(theIconBar disable: ICON_WALK ICON_DO ICON_TALK ICON_ACTIONS ICON_CAST)
 				(user canControl: FALSE)
 				(user canInput: TRUE)
 				(ego loop: 0)
@@ -877,7 +869,7 @@
 				(bat setCycle: 0)
 				(spider setCycle: 0)
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 0 32 self)
+				(messager say: N_ROOM NULL NULL 32 self)
 			)
 			(8
 				(theIconBar disable: ICON_WALK ICON_DO ICON_TALK ICON_ACTIONS ICON_CAST)
@@ -903,7 +895,7 @@
 			)
 			(11
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 0 33 self)
+				(messager say: N_ROOM NULL NULL 33 self)
 			)
 			(12
 				(baba setLoop: 6 setCycle: 0)
@@ -914,8 +906,6 @@
 )
 
 (instance endGame of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -953,19 +943,19 @@
 			)
 			(4
 				(baba setLoop: 1 setCycle: Forward)
-				(SolvePuzzle POINTS_TURNBABAYAGAINTOFROG 50)
+				(SolvePuzzle f21BabaFrog 50)
 				(= seconds 3)
 			)
 			(5
-				(messager say: N_ROOM 0 10 0 self)
+				(messager say: N_ROOM NULL C_BABA_FROG 0 self)
 			)
 			(6
-				(messager say: N_ROOM 0 0 34 self)
+				(messager say: N_ROOM NULL NULL 34 self)
 			)
 			(7
 				(NormalEgo)
 				(Face ego baba)
-				(messager say: N_ROOM 0 0 35 self)
+				(messager say: N_ROOM NULL NULL 35 self)
 			)
 			(8
 				(teleport play:)
@@ -991,8 +981,6 @@
 )
 
 (instance nextWitch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1014,7 +1002,7 @@
 				(bat setCycle: EndLoop self)
 			)
 			(5
-				(messager say: N_ROOM 0 0 36 self)
+				(messager say: N_ROOM NULL NULL 36 self)
 				(spider startUpd:)
 				(= babaSpeaks TRUE)
 			)
@@ -1022,7 +1010,7 @@
 			(7
 				(bat setCycle: 0)
 				(spider setCycle: 0)
-				(messager say: N_ROOM 0 5 1 self)
+				(messager say: N_ROOM NULL C_BABA_2ND_TIME 1 self)
 			)
 			(8
 				(= babaSpeaks FALSE)
@@ -1046,7 +1034,7 @@
 			(11 (= cycles 2))
 			(12
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 16 1 self)
+				(messager say: N_ROOM NULL C_STAY_THERE 1 self)
 			)
 			(13
 				(= babaSpeaks FALSE)
@@ -1054,10 +1042,10 @@
 			)
 			(14
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 8 1 self)
+				(messager say: N_ROOM NULL C_FROG_AGAIN 1 self)
 			)
 			(15
-				(messager say: N_ROOM 0 5 2 self)
+				(messager say: N_ROOM NULL C_BABA_2ND_TIME 2 self)
 			)
 			(16
 				(bat setLoop: 5 setCycle: Forward)
@@ -1068,7 +1056,7 @@
 				(= babaState babaBRING)
 				(bat setCycle: 0)
 				(spider setCycle: 0)
-				(messager say: N_ROOM 0 5 3 self)
+				(messager say: N_ROOM NULL C_BABA_2ND_TIME 3 self)
 			)
 			(18
 				(= babaSpeaks FALSE)
@@ -1076,14 +1064,14 @@
 			)
 			(19
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 6 2 self)
+				(messager say: N_ROOM NULL C_YES_NAME 2 self)
 			)
 			(20
-				(messager say: N_ROOM 0 5 4 self)
+				(messager say: N_ROOM NULL C_BABA_2ND_TIME 4 self)
 			)
 			(21 (self cue:))
 			(22
-				(messager say: N_ROOM 0 5 5 self)
+				(messager say: N_ROOM NULL C_BABA_2ND_TIME 5 self)
 			)
 			(23
 				(bat setCycle: Forward)
@@ -1093,11 +1081,11 @@
 			(24
 				(bat setCycle: 0)
 				(spider setCycle: 0)
-				(messager say: N_ROOM 0 5 6 self)
+				(messager say: N_ROOM NULL C_BABA_2ND_TIME 6 self)
 			)
 			(25 (self cue:))
 			(26
-				(messager say: N_ROOM 0 5 7 self)
+				(messager say: N_ROOM NULL C_BABA_2ND_TIME 7 self)
 			)
 			(27
 				(= babaSpeaks FALSE)
@@ -1111,10 +1099,11 @@
 				(NormalEgo)
 				(ego loop: 0)
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 5 8 self)
+				(messager say: N_ROOM NULL C_BABA_2ND_TIME 8 self)
 			)
 			(30
-				(if (ego has: 21) (SolvePuzzle 654 3))
+				(if (ego has: iMandrake)
+					(SolvePuzzle f21GiveRoot 3))
 				(= babaSpeaks FALSE)
 				(= cycles 5)
 			)
@@ -1122,7 +1111,7 @@
 				(if (ego has: iMandrake)
 					(baba setPri: 9)
 					(= babaSpeaks TRUE)
-					(messager say: N_ROOM 0 4 1 self)
+					(messager say: N_ROOM NULL C_BABA_GOT_ROOT 1 self)
 					(Bclr fBabaCurse)
 				else
 					(rm21 setScript: noBringDeath)
@@ -1131,7 +1120,7 @@
 			(32
 				(bat setCycle: Forward)
 				(spider setCycle: Forward)
-				(messager say: N_ROOM 0 12 9 self)
+				(messager say: N_ROOM NULL C_AFTER_ROOT 9 self)
 			)
 			(33
 				(ego use: iMandrake)
@@ -1145,10 +1134,10 @@
 			)
 			(35
 				(= babaSpeaks TRUE)
-				(messager say: N_ROOM 0 12 10 self)
+				(messager say: N_ROOM NULL C_AFTER_ROOT 10 self)
 			)
 			(36
-				(messager say: N_ROOM 0 12 11 self)
+				(messager say: N_ROOM NULL C_AFTER_ROOT 11 self)
 			)
 			(37
 				(bat setCycle: Forward)
@@ -1156,10 +1145,10 @@
 				(= seconds 4)
 			)
 			(38
-				(messager say: N_ROOM 0 12 12 self)
+				(messager say: N_ROOM NULL C_AFTER_ROOT 12 self)
 			)
 			(39
-				(messager say: N_ROOM 0 12 13 self)
+				(messager say: N_ROOM NULL C_AFTER_ROOT 13 self)
 			)
 			(40 (self cue:))
 			(41
@@ -1194,14 +1183,14 @@
 	(properties
 		flags $ffff
 		number 51
-		priority pMAGENTA
+		priority 5
 		loop -1
 	)
 )
 
 (instance teleport of Sound
 	(properties
-		priority pWHITE
+		priority 15
 	)
 )
 
@@ -1218,7 +1207,7 @@
 	(method (init)
 		(= nightPalette 2021)
 		(PalVary PALVARYTARGET 2021)
-		(kernel_128 1021)
+		(AssertPalette 1021)
 		(= font userFont)
 		(super
 			init: babaTalkerBust babaTalkerMouth babaTalkerEyes &rest

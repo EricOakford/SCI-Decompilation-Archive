@@ -2,6 +2,15 @@
 ;;; 30.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
+;;; CASES
+
+(define C_BEFORE_MET_ERASMUS 6)
+(define C_AFTER_MET_ERASMUS 5)
+(define C_WARNED 4)
+(define C_WARP_OUT 3)
+(define C_FEATHERS_SHOWN 1)
+(define C_FEATHERS_HIDDEN 2)
+
 ;;; NOUNS
 
 (define N_ARMOR 1)
@@ -23,11 +32,4 @@
 (define N_ERASMUS 17)
 (define N_VASE 18)
 (define N_WESTWALL 19)
-
-;;; CASES
-
-(define C_BEFORE_MET_ERASMUS 6)
-(define C_AFTER_MET_ERASMUS 5)
-(define C_WARNED 4)
-(define C_WARP_OUT 3)
 

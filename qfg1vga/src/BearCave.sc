@@ -33,7 +33,7 @@
 	local2
 	local3
 	bearKillsEgo
-	local5
+	distFromBear
 	burnedBear
 	hurtBear
 	dazzledBear
@@ -45,10 +45,10 @@
 	dartY
 	local15
 	local16
-	[local17 11] = [253 295 149 226 284 319 93 152 223 29 65]
-	[local28 11] = [101 64 19 164 152 103 91 61 58 130 54]
-	[local39 9] = [28 63 83 102 235 295 195 39 251]
-	[local48 13] = [93 85 79 79 86 99 98 103 90 146 124 319 189]
+	local17 = [253 295 149 226 284 319 93 152 223 29 65]
+	local28 = [101 64 19 164 152 103 91 61 58 130 54]
+	dripX = [28 63 83 102 235 295 195 39 251]
+	dripY = [93 85 79 79 86 99 98 103 90 146 124 319 189]
 )
 (procedure (withBearPoly)
 	(curRoom
@@ -138,7 +138,7 @@
 )
 
 (procedure (KilledByBear)
-	(EgoDead 13 14 0 0 800)
+	(EgoDead C_DIE_BEAR C_DIE_BEAR_TITLE 0 0 800)
 )
 
 (procedure (localproc_049f)
@@ -165,12 +165,12 @@
 		(if (not (Btst fBearGone))
 			(withBearPoly)
 			(LoadMany VIEW vBear 516 14 510)
-			(= monsterHealth 133)
+			(= monsterHealth MAX_HP_BEAR)
 			(= monsterNum vBear)
 		else
 			(noBearPoly)
 		)
-		(Load RES_SOUND 20)
+		(Load SOUND 20)
 		(super init:)
 		(if (== egoGait MOVE_RUN)
 			(ChangeGait MOVE_WALK FALSE)
@@ -238,10 +238,10 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(dazCalmTimer dispose: delete:)
 		(bearTimer dispose: delete:)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
@@ -294,9 +294,9 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
 			(if (not (Btst fBearGone))
-				(messager say: N_CAVEGLOW V_LOOK 9)
+				(messager say: N_CAVEGLOW V_LOOK C_BEAR_HERE)
 			else
-				(messager say: N_CAVEGLOW V_LOOK 10)
+				(messager say: N_CAVEGLOW V_LOOK C_BEAR_GONE)
 			)
 		else
 			(super doVerb: theVerb &rest)
@@ -337,7 +337,7 @@
 	)
 	
 	(method (doit)
-		(= local5 (ego distanceTo: self))
+		(= distFromBear (ego distanceTo: self))
 		(cond 
 			((or bearKillsEgo (OneOf local1 4 5)) 0)
 			(dazzledBear
@@ -350,12 +350,12 @@
 				(localproc_049f)
 				(if (OneOf local1 3 1) (self setScript: bearDrop))
 			)
-			((> local5 local2)
+			((> distFromBear local2)
 				(if (and (not hurtBear) (OneOf local1 1 3))
 					(self setScript: bearDrop)
 				)
 			)
-			((and (>= local2 local5) (>= local5 local3))
+			((and (>= local2 distFromBear) (>= distFromBear local3))
 				(if (and (not hurtBear) (== local1 0))
 					(self setScript: bearUp)
 				)
@@ -473,7 +473,7 @@
 	
 	(method (getHurt damage)
 		(cond 
-			((<= (= monsterHealth (- monsterHealth damage)) 0)
+			((<= (-= monsterHealth damage) 0)
 				(Bset fBearDying)
 				(curRoom newRoom: 171)
 			)
@@ -488,7 +488,6 @@
 )
 
 (instance movinOn of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -519,7 +518,6 @@
 )
 
 (instance cmonIn of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -560,8 +558,6 @@
 )
 
 (instance bearUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -570,7 +566,9 @@
 				(bear setCycle: CycleTo 4 1)
 				(= seconds 4)
 			)
-			(1 (bear setCycle: EndLoop self))
+			(1
+				(bear setCycle: EndLoop self)
+			)
 			(2
 				(if
 					(and
@@ -588,8 +586,6 @@
 )
 
 (instance bearDrop of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -607,8 +603,6 @@
 )
 
 (instance flameDart of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -629,7 +623,7 @@
 				(= local10 (Random 0 300))
 				(if
 					(or
-						(< local10 (= local5 (ego distanceTo: bear)))
+						(< local10 (= distFromBear (ego distanceTo: bear)))
 						(OneOf local1 1 2)
 					)
 					(dart setScript: bouncer)
@@ -640,7 +634,7 @@
 						setLoop: 2
 						setStep: 18 12
 						setPri: 12
-						ignoreActors: 1
+						ignoreActors: TRUE
 						posn: (ego x?) (ego y?)
 						show:
 						setCycle: Forward
@@ -653,7 +647,7 @@
 							(+ (bear y?) (- (Random 0 17) 19))
 							self
 					)
-					(bear getHurt: (+ 5 (/ [egoStats 0] 10)))
+					(bear getHurt: (+ 5 (/ [egoStats STR] 10)))
 				)
 			)
 			(2
@@ -673,10 +667,8 @@
 )
 
 (instance bouncer of Script
-	
 	(method (doit)
-		(if
-		(and local15 (not (dart inRect: 10 35 310 205)))
+		(if (and local15 (not (dart inRect: 10 35 310 205)))
 			(= local15 0)
 			(self cue:)
 		)
@@ -709,13 +701,14 @@
 					posn: (dart x?) (dart y?)
 					setCycle: EndLoop
 				)
-				(= local16 (+ local16 (Random 1 3)))
+				(+= local16 (Random 1 3))
 				(dart
 					setMotion: MoveTo [local17 local16] [local28 local16] self
 				)
 			)
 			(2
-				(if (< local16 10) (= state (- state 2)))
+				(if (< local16 10)
+					(-= state 2))
 				(self cue:)
 			)
 			(3
@@ -727,7 +720,6 @@
 )
 
 (instance bearKills of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -759,8 +751,6 @@
 )
 
 (instance bearKillsRm15 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -791,7 +781,6 @@
 )
 
 (instance useKey of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -826,16 +815,14 @@
 )
 
 (instance dripScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp dripIndex)
 		(switch (= state newState)
 			(0 (= ticks (Random 1 200)))
 			(1
-				(= temp0 (Random 0 8))
+				(= dripIndex (Random 0 8))
 				(client
 					cel: 0
-					posn: [local39 temp0] [local48 temp0]
+					posn: [dripX dripIndex] [dripY dripIndex]
 					init:
 					setCycle: EndLoop self
 				)
@@ -849,8 +836,6 @@
 )
 
 (instance cueItScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0 (= ticks 60))
@@ -869,18 +854,16 @@
 )
 
 (instance dazCalmTimer of Timer
-	(properties)
-	
 	(method (cue)
 		(= calmedBear (= dazzledBear FALSE))
 	)
 )
 
 (instance bearTimer of Timer
-	(properties)
-	
 	(method (cue)
-		(if (== local1 3) (bear setScript: 0))
+		(if (== local1 3)
+			(bear setScript: 0)
+		)
 	)
 )
 

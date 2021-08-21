@@ -14,7 +14,7 @@
 (instance rm24 of EncRoom
 	(properties
 		picture 700
-		style $0008
+		style DISSOLVE
 		horizon 65
 		encChance 30
 	)

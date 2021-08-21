@@ -48,7 +48,21 @@
 	local25
 	local26
 	local27
-	[egoFallCycle 25] = [2 0 138 83 2 1 150 91 2 4 160 100 2 5 169 107 2 5 172 123 2 5 173 139 -32768]
+	egoFallCycle = [
+		2 0
+		138 83
+		2 1
+		150 91
+		2 4
+		160 100
+		2 5
+		169 107
+		2 5
+		172 123
+		2 5
+		173 139
+		PATHEND
+		]
 )
 (procedure (AlreadyKilledFlower)
 	(messager say: N_ROOM NULL NULL 1)

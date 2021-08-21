@@ -496,7 +496,7 @@
 	
 	(method (doVerb theVerb theItem)
 		(switch theVerb
-			(V_DO
+			(V_LOOK
 				(ego setScript: pickUpARock)
 			)
 			(else 

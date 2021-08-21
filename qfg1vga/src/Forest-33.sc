@@ -25,7 +25,9 @@
 	
 	(method (init)
 		(Load VIEW 700)
-		(if (== prevRoomNum 22) (Load SOUND (SoundFX 66)))
+		(if (== prevRoomNum 22)
+			(Load SOUND (SoundFX 66))
+		)
 		(self setRegions: FOREST)
 		(super init:)
 		(mouseDownHandler add: self)

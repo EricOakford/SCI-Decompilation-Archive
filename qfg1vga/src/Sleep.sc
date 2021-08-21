@@ -38,8 +38,8 @@
 				(FixTime theHour theMin)
 			)
 		)
-		(if
-		(OneOf curRoomNum 10 40 141 76 83 302 300 310 320 330)	;safe sleep rooms
+		;safe sleep rooms
+		(if (OneOf curRoomNum 10 40 141 76 83 302 300 310 320 330)
 			(= sleptHours
 				(/ (mod (- (+ Clock GAMEDAY) oldTime) GAMEDAY) GAMEHOUR)
 			)
@@ -51,11 +51,15 @@
 				(TakeDamage (- (* sleptHours 2)))
 				(UseMana (- (* sleptHours 2)))
 			)
-			(if (> oldTime Clock) (NextDay))
-			(if (not (OneOf curRoomNum 300 302 310 320 330))	;town rooms
+			(if (> oldTime Clock)
+				(NextDay)
+			)
+			;town rooms
+			(if (not (OneOf curRoomNum 300 302 310 320 330))
 				(messager say: N_HOWLONG NULL NULL 7 0 SLEEP)
 			)
 		else
+			;unsafe, kill ego
 			(EgoDead C_DIE_NIGHT_GAUNT C_DIE_NIGHT_GAUNT_TITLE)
 		)
 	)
@@ -88,11 +92,15 @@
 			)
 			(sleepUntilMorning
 				(cond 
-					((not (NeedSleep)) (messager say: N_HOWLONG NULL NULL 6 0 SLEEP))
+					((not (NeedSleep))
+						(messager say: N_HOWLONG NULL NULL 6 0 SLEEP)
+					)
 					(
 						(OneOf curRoomNum
 							10 13 29 30 31 38 39 40 41 76 83
 							93 94 141 300 301 310 311 320 21 330 332
+							;rooms added for unique messages
+							15 22 55
 						)
 						((= evt (Event new:)) type: mouseDown message: V_SLEEP)
 						(if (not (mouseDownHandler handleEvent: evt))
