@@ -69,7 +69,7 @@
 			(openSpell
 				owner: ego
 				amount: [egoStats OPEN]
-				cost: spCostOpen
+				cost: spellCost	;spCostOpen
 			)
 		)
 		(if (& spellMask SPELL_DETECT)

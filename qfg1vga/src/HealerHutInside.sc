@@ -778,7 +778,7 @@
 					(
 						(and
 							(not (Btst DISPEL_HEALER_MAKING_POTION))
-							(or (not (Btst DISPEL_LEARNED_RECIPE)) (Btst fHealerKnowsDispel))
+							(or (not (Btst fLearnedDispel)) (Btst fHealerKnowsDispel))
 						)
 						(messager say: N_ROOM NULL C_RETURNED 1 self)
 					)
@@ -793,14 +793,14 @@
 				)
 			)
 			(4
-				(if (and (Btst DISPEL_LEARNED_RECIPE) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
+				(if (and (Btst fLearnedDispel) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
 					(messager say: N_ROOM NULL C_METDRYAD 1 self)
 				else
 					(self cue:)
 				)
 			)
 			(5
-				(if (and (Btst DISPEL_LEARNED_RECIPE) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
+				(if (and (Btst fLearnedDispel) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
 					(messager say: N_HEALER C_POTIONS NULL 1 self)
 					(Bset fHealerKnowsDispel)
 				else

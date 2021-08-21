@@ -60,7 +60,6 @@
 )
 
 (instance dumpMeMaybe of Code
-	(properties)
 	
 	(method (doit nr)
 		(if (nr respondsTo: #dumpIt)

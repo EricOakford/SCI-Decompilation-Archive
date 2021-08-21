@@ -149,7 +149,7 @@
 			)
 			(ghostMusic init: play:)
 		)
-		(= global272 0)
+		(= ghostCount 0)
 		(= local1 (Random 0 7))
 		(NormalEgo)
 		(ego
@@ -166,7 +166,7 @@
 			(72
 				(ego posn: 160 188 setMotion: MoveTo 160 180)
 				(if (and Night (not (Btst fGhostOil)))
-					(= global272 5)
+					(= ghostCount 5)
 					(self setScript: gotHim)
 				else
 					(self setScript: safeIntro)
@@ -924,7 +924,7 @@
 				(self cue:)
 			)
 			(4
-				(-- global272)
+				(-- ghostCount)
 				(= ticks 300)
 			)
 			(5 (self changeState: 2))
@@ -958,7 +958,7 @@
 				)
 			)
 			(2
-				(-- global272)
+				(-- ghostCount)
 				(switch (Random 1 2)
 					(1
 						(swimmer setCycle: 0 setMotion: 0 setLoop: 4 setCel: 4)
@@ -1143,7 +1143,7 @@
 				)
 			)
 			(4
-				(-- global272)
+				(-- ghostCount)
 				(tumbler
 					posn: (- (tumbler x?) 3) (- (tumbler y?) 5)
 					setCel: 12

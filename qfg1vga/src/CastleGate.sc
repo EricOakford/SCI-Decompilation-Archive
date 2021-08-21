@@ -140,10 +140,10 @@
 					0
 				else
 					(if
-					(or (and (Btst fSavedBarnard) (not (Btst GOT_KARL_ATTENTION))) (Btst fSavedElsa))
+					(or (and (Btst fSavedBarnard) (not (Btst fKarlAttention))) (Btst fSavedElsa))
 						(= invitedIntoCastle TRUE)
 						(karl init: actions: karlTeller setScript: karlGreets)
-						(Bset GOT_KARL_ATTENTION)
+						(Bset fKarlAttention)
 					else
 						(karl init: actions: karlTeller setScript: karlPatrols)
 					)

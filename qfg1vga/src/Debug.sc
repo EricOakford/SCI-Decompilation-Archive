@@ -203,7 +203,7 @@
 					(`@u
 						(HandsOn)
 					)
-					(`@b	;in the works
+					(`@b
 						(Printf @str
 							{You have %d gold and %d silvers.}
 							((inventory at: iGold) amount?)
@@ -221,19 +221,17 @@
 					(`@x
 						(= nr (GetNumber {Set stats to what?}))
 						(= n 0)
-						(while (< n OPEN)	;everything before the spells
+						;Everything before the spells
+						(for ((= n 0)) (< n OPEN) ((++ n))
 							(= [egoStats n] nr)
-							(++ n)
 						)
 						(= [egoStats EXPER] 1900)
 						(= [egoStats HEALTH] (MaxHealth))
 						(= [egoStats STAMINA] (MaxStamina))
 						(= [egoStats MANA] (MaxMana))
 						;now for the spells
-						(= i 0)
-						(while (< i NUM_SPELLS)
+						(for ((= i 0)) (< i NUM_SPELLS) ((++ i))
 							(ego learn: (+ (+ NUM_STATS NUM_SKILLS NUM_DERIVS) i) nr)
-							(++ i)
 						)
 						(Prints {Why, you feel better already!})
 					)

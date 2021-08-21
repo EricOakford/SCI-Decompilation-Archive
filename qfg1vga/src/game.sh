@@ -4,6 +4,8 @@
 (include "815.shm")
 
 (define MAZEBUG 238)
+(define STARTTELL 0)
+(define ENDTELL	999)
 
 ; howFast values
 (enum
@@ -22,6 +24,9 @@
 (define GAMEDAY 3600)	;number of ticks per game day
 (define GAMEHOUR 150) 	;number of ticks per game hour
 (define NUM_INVITEMS 40)
+(define STAM_RATE	20)		;recovery rate for stamina
+(define HEAL_RATE	15)		;recovery rate for health
+(define MANA_RATE	5)		;recovery rate for mana
 
 ; Priority States
 (define LowPri 4) ;pRED
@@ -505,32 +510,35 @@
 	fBeenIn302				 	;90
 	fBeenIn311				 	;91
 	fBeenIn313		 			;92
-	VISITED_MAGICSHOP_INSIDE 	;93
+	fBeenIn314 	;93
 	fBeenIn320		;94
-	VISITED_SHERIFF_HOUSE 		;95
-	VISITED_STORE 				;96
+	fBeenIn321 		;95
+	fBeenIn322 				;96
 	fBeenIn330 		;97
 	fBeenIn331 		;98
 	fBeenIn332 		;99
 	fBeenIn333		 			;100
 	fBeenIn334			 		;101
 	fNextMonster				;102	;for Brigands and Goblins, check if any are still alive
-)
-
-; 103 through 109 are not defined	
-(enum 110
+	fUnused103					;103
+	fUnused104					;104
+	fUnused105					;105
+	fUnused106					;106
+	fUnused107					;107
+	fUnused108					;108
+	fUnused109					;109
 	fWornOut		 			;110
 	fHaveOrdered	 			;111
 	fShemaBringsOrder 			;112
-	OBTAINED_BAR_NOTE 			;113
+	fTookBarNote 			;113
 	fBeenInGraveyardNight		;114	;NOTE: this VISITED flag is outside of the regular visited flags.
 	fMerchantAtInn	 			;115
 	fMetMerchant				;116
 	fBarThrownOut 				;117
 	fBarDrunk 					;118
-	MET_SHOPKEEPER 				;119
-	PURCHASED_FROM_DRYGOODS 	;120
-	UNUSED_121 		;-----------event 121 is unused
+	fMetShopkeeper				;119
+	fPurchasedFromShop 	;120
+	fUnused121 		;-----------event 121 is unused
 	fRentedRoom					;122
 	fLearnedThiefPassword 		;123
 	fHungry		 				;124
@@ -539,12 +547,12 @@
 	fSignedLogbook 				;127
 	fSleptAtInn 				;128
 	fSaveAllowed 				;129	; game saving is disabled in certain rooms, like during battles.
-	SEARCHED_LOL_COUCH 			;130
-	SEARCHED_LOL_BASKET 		;131
-	SEARCHED_LOL_PURSE 			;132
-	STOLE_CANDLESTICKS 			;133
-	SEARCHED_LOL_DESK 			;134
-	UNCOVERED_BIRDCAGE 			;135
+	fSearchedCouch 			;130
+	fSearchedBasket 		;131
+	fSearchedPurse 			;132
+	fStoleCandles 			;133
+	fSearchedDesk 			;134
+	fUncoveredCage 			;135
 	fGotSeed					;136
 	fKilledFlower1 			;137
 	fKilledFlower2 			;138
@@ -552,9 +560,9 @@
 	fPickedEranaFlowers 		;140
 	fLearnedCalm				;141
 	fErasmusWarpOut 			;142
-	WRONG_ANSWER 				;143
-	SEARCHED_SHERIFF_DRAWER 	;144
-	SEARCHED_SHERIFF_SAFE 		;145
+	fWrongAnswer 				;143
+	fSearchedDrawer 	;144
+	fSearchedSafe 		;145
 	fUnused146		;----------- event 146 is unused
 	fGotKoboldKey		 		;147
 	fHaveToadstools		 		;148	; replaced flag 174 in 1.200
@@ -586,33 +594,33 @@
 	fKoboldCastingReversal		;174	; originally used for checking if player has Kobold Toadstools
 	fKoboldChestSearched		;175
 	fFlag176					;176	;Replaced with the global variable "timesEntered67"
-	ENTERED_FOX_ROAD_2			;177
-	UNUSED_178		;----------- event 178 is unused
-	STOLE_SHERIFF_VASE 			;179
-	MOVED_SHERIFF_VASE 			;180
-	STOLE_SHERIFF_CANDELABRA 	;181
-	STOLE_OTTO_MUSIC_BOX 		;182
-	UNCOVERED_SHERIFF_SAFE 		;183
-	CRACKED_SHERIFF_SAFE 		;184
-	UNUSED_185		;----------- event 185 is unused
+	fFlag177			;177
+	fUnused178		;----------- event 178 is unused
+	fStoleVase 			;179
+	fMovedVase 			;180
+	fStoleCandelabra 	;181
+	fStoleMusicBox 		;182
+	fUncoveredSafe 		;183
+	fCrackedSafe 		;184
+	fUnused185		;----------- event 185 is unused
 	DANCED_FOR_FAIRIES 			;186
 	DANCING_FOR_FAIRIES 		;187
 	fFaeryAttention		 		;188
-	GOT_KARL_ATTENTION 			;189
+	fKarlAttention 			;189
 	fClimbedSpireaLedge			;190
-	EXITED_TOWN 				;191
+	fLeftTown				;191
 	fFlowersInactive			;192
 	fOttoBackToBed 			;193
 	fOpenMusicBox 				;194
-	OTTO_CLOSES_MUSIC_BOX 		;195
-	SHERIFF_AWAKENED 			;196
+	fOttoClosedMusicBox 		;195
+	fWokeUpSheriff 			;196
 	fMetDryad 					;197
-	DRYAD_AGREED_HELP 			;198
-	EXITED_TOWN_2 				;199
-	UNUSED_200		;----------- event 200 is unused
-	DISPEL_LEARNED_RECIPE 		;201
-	STAG_PRESENT 				;202
-	STAG_HURT 					;203
+	fAgreedToHelpDryad 			;198
+	fLeftTown2 				;199
+	fUnused200		;----------- event 200 is unused
+	fLearnedDispel 		;201
+	fStagHere 				;202
+	fStagHurt 					;203
 	fAntwerpInSky 				;204
 	fOverloaded			 		;205
 	fAntwerpSplit 				;206
@@ -649,16 +657,16 @@
 	fMinotaurDead	 			;237	; He's not actually dead, just unconscious
 	fBrigGateOpen	 			;238
 	fFlag239 					;EVENT_FIGHTINGWEAPONMASTER?? Unsure
-	HENRY_DEADLY_TP 			;240	; teleported dangerously away by henry.
-	HENRY_SAFE_TP 				;241	; teleported away safely by Henry
-	ASKED_TRIGGER_SCROLL 		;242
+	fDeadlyTP 			;240	; teleported dangerously away by henry.
+	fSafeTP 				;241	; teleported away safely by Henry
+	fAskedForTrigger 		;242
 	fFlag243 					; Event 243 is related to the Weapons Master
 	BRIGANDS_BEHIND_LOG 		;244
-	OBTAINED_BRUTUS_KEY 		;245
+	fGotBrutusKey 		;245
 	fSawNessie 			;246
-	SAID_HIDEN_GOSEKE 			;247
+	fHidenGoseke 			;247
 	fDiedInBattle		 		;248
-	DEFEATED_WEAPON_MASTER 		;249
+	fBeatMaster 		;249
 	fBeatFred 				;250
 	fBeatFred89 			;251
 	fTrollDoorUnlocked 		;252
@@ -763,9 +771,9 @@
 	fUnused349		;----------- 
 	fClawsKnown					;350
 	fFlag351					;351 set in arenaMantrayFight after killing the mantaray
-	HENRY_DOOR_OPEN 			;352
-	ERASMUS_KNOWS_HERO_HAS_MAGIC ;353
-	MET_GARGOYLE 				;354
+	fHenryDoorOpen 			;352
+	fWizKnowsEgoHasMagic ;353
+	fMetGargoyle				;354
 	fReadBarnardBulletin 		;355
 	fLearnedRhyme				;356
 	fFlag357					;set in egoThrust

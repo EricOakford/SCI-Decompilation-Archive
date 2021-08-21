@@ -1242,7 +1242,7 @@ code_02ef:
 				(if (not (Btst fBeatBrutus))
 					(brutus setScript: brutusThrows)
 				else
-					(messager say: N_BRUNO V_TALK)	;message uses wrong noun
+					(messager say: N_BRUNO V_LOOK)
 				)
 			)
 			(V_DO
@@ -1442,13 +1442,13 @@ code_02ef:
 						(Bclr fDaggerInBrutus) 
 						(messager say: N_ROOM NULL C_GET1DAGGER)
 					)
-					((Btst OBTAINED_BRUTUS_KEY)
+					((Btst fGotBrutusKey)
 						(messager say: N_ROOM V_SEARCH C_BRUTUSATTACKS)
 					)
 					(else
 						(= register 2)
 						(messager say: N_ROOM V_SEARCH C_FINDKEY)
-						(Bset OBTAINED_BRUTUS_KEY)
+						(Bset fGotBrutusKey)
 					)
 				)
 				(= seconds 2)

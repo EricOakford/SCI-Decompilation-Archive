@@ -48,31 +48,31 @@
 )
 
 (procedure (SearchPurse)
-	(if (Btst SEARCHED_LOL_PURSE)
+	(if (Btst fSearchedPurse)
 		(AlreadyDone)
 	else
 		(messager say: N_ROOM NULL C_SEARCHPURSE)
 		(= lootCue cuePurse)
-		(Bset SEARCHED_LOL_PURSE)
+		(Bset fSearchedPurse)
 		(SolvePuzzle POINTS_SEARCHLOLPURSE 1 THIEF)
 		(ego setScript: cuedIt)
 	)
 )
 
 (procedure (SearchBasket)
-	(if (Btst SEARCHED_LOL_BASKET)
+	(if (Btst fSearchedBasket)
 		(AlreadyDone)
 	else
 		(messager say: N_ROOM NULL C_SEARCHBASKET)
 		(= lootCue cueBasket)
-		(Bset SEARCHED_LOL_BASKET)
+		(Bset fSearchedBasket)
 		(SolvePuzzle POINTS_SEARCHLOLBASKET 1 THIEF)
 		(ego setScript: cuedIt)
 	)
 )
 
 (procedure (UncoverBirdcage)
-	(if (Btst UNCOVERED_BIRDCAGE)
+	(if (Btst fUncoveredCage)
 		(AlreadyDone)
 	else
 		(ego setScript: birdieSings)
@@ -232,7 +232,7 @@
 				V_VASE V_VEGETABLES
 			init:
 		)
-		(if (not (Btst STOLE_CANDLESTICKS))
+		(if (not (Btst fStoleCandles))
 			(candle1 cel: 0 ignoreActors: init:)
 			(candle2 cel: 0 ignoreActors: init:)
 		)
@@ -453,12 +453,12 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DO
-				(if (Btst SEARCHED_LOL_COUCH)
+				(if (Btst fSearchedCouch)
 					(messager say: N_COUCH V_DO C_ALREADYSEARCHEDCOUCH)
 				else
 					(messager say: N_COUCH V_DO C_SEARCHCOUCH)
 					(= lootCue cueCouch)
-					(Bset SEARCHED_LOL_COUCH)
+					(Bset fSearchedCouch)
 					(SolvePuzzle POINTS_SEARCHLOLCOUCH 1 THIEF)
 					(ego setScript: cuedIt)
 				)
@@ -518,7 +518,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DO
-				(if (Btst STOLE_CANDLESTICKS)
+				(if (Btst fStoleCandles)
 					(AlreadyDone)
 				else
 					(curRoom setScript: toTheCandles)
@@ -733,7 +733,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset UNCOVERED_BIRDCAGE)
+				(Bset fUncoveredCage)
 				(= birdcageUncovered TRUE)
 				(birdcage loop: 5 cel: 0 setCycle: EndLoop self startUpd:)
 			)
@@ -774,7 +774,7 @@
 			)
 			(3
 				(ego get: iSilver 1)
-				(Bset SEARCHED_LOL_DESK)
+				(Bset fSearchedDesk)
 				(drawer setCycle: BegLoop self)
 			)
 			(4
@@ -1276,7 +1276,7 @@
 			(3
 				(candle1 dispose:)
 				(candle2 dispose:)
-				(Bset STOLE_CANDLESTICKS)
+				(Bset fStoleCandles)
 				(SolvePuzzle POINTS_TAKECANDLESTICKS 1 THIEF)
 				(= ticks 60)
 			)

@@ -118,7 +118,7 @@
 			(and
 				(< TIME_DAWN timeODay)
 				(< timeODay TIME_SUNSET)
-				(not (Btst DEFEATED_WEAPON_MASTER))
+				(not (Btst fBeatMaster))
 				(!= masterDay Day)
 			)
 			(LoadMany RES_SCRIPT 212 222 223 224 217 220 218 216)
@@ -204,7 +204,7 @@
 			(and
 				(< TIME_DAWN timeODay)
 				(< timeODay TIME_SUNSET)
-				(not (Btst DEFEATED_WEAPON_MASTER))
+				(not (Btst fBeatMaster))
 				(!= masterDay Day)
 			)
 			(cond 

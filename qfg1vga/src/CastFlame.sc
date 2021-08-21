@@ -31,7 +31,9 @@
 	local12
 )
 (procedure (CastFlame obj param2 theX theY &tmp temp0 temp1 dart evt)
-	(if gClient (return gClient))
+	(if gClient
+		(return gClient)
+	)
 	(= global194 100)
 	(if (>= argc 3)
 		(= theGEgoX theX)

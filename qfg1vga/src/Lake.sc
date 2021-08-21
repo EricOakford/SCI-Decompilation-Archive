@@ -310,7 +310,8 @@
 			)
 			(2
 				(messager say: N_ROOM 0 0 1)
-				(if (Btst DISPEL_LEARNED_RECIPE) (messager say: N_ROOM 0 0 2)) ;messages now display properly
+				(if (Btst fLearnedDispel)
+					(messager say: N_ROOM 0 0 2)) ;messages now display properly
 				(self cue:)
 			)
 			(3 (ego setCycle: BegLoop self))

@@ -207,23 +207,23 @@
 			)
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(self setScript: TPego)
 			)
 			(V_TRIGGER
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(self setScript: TPego)
 			)
 ;			(V_DETECT				;This instance already exists, and will probably never be executed.
 ;									;In fact, this SHOULDN'T be executed, since Detect is harmless.
 ;				(messager say: N_HERMIT V_DAGGER)
-;				(Bset HENRY_DEADLY_TP)
+;				(Bset fDeadlyTP)
 ;				(self setScript: TPego)
 ;			)
 			(V_DAZZLE
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(self setScript: TPego)
 			)
 			(else 
@@ -296,7 +296,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO
@@ -329,7 +329,7 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_FLAME)
 			(messager say: N_HERMIT V_DAGGER)
-			(Bset HENRY_DEADLY_TP)
+			(Bset fDeadlyTP)
 			(curRoom setScript: TPego)
 		else
 			(super doVerb: theVerb)
@@ -353,7 +353,7 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_FLAME)
 			(messager say: N_HERMIT V_DAGGER)
-			(Bset HENRY_DEADLY_TP)
+			(Bset fDeadlyTP)
 			(curRoom setScript: TPego)
 		else
 			(super doVerb: theVerb &rest)
@@ -377,7 +377,7 @@
 		(switch theVerb
 			(81
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(4 (messager say: N_SKULL V_DO))
@@ -401,7 +401,7 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_FLAME)
 			(messager say: N_HERMIT V_DAGGER)
-			(Bset HENRY_DEADLY_TP)
+			(Bset fDeadlyTP)
 			(curRoom setScript: TPego)
 		else
 			(super doVerb: theVerb &rest)
@@ -421,7 +421,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -461,7 +461,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -484,7 +484,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -507,7 +507,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -530,7 +530,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -553,7 +553,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -576,7 +576,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -599,7 +599,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -622,7 +622,7 @@
 		(switch theVerb
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (messager say: N_SKULL V_DO))
@@ -642,7 +642,7 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_FLAME)
 			(messager say: N_HERMIT V_DAGGER)
-			(Bset HENRY_DEADLY_TP)
+			(Bset fDeadlyTP)
 			(curRoom setScript: TPego)
 		else
 			(super doVerb: theVerb &rest)
@@ -684,7 +684,7 @@
 			)
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(else 
@@ -722,11 +722,11 @@
 			(V_LOOK (messager say: N_SCROLL V_LOOK))
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO
-				(if (Btst ASKED_TRIGGER_SCROLL)
+				(if (Btst fAskedForTrigger)
 					(scroll dispose:)
 					(messager say: N_SCROLL V_DO C_LEARNTRIGGER)
 					(Bset fLearnedTrigger)
@@ -758,12 +758,12 @@
 		(switch theVerb
 			(V_DO
 				(messager say: N_CANDLE V_DO)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(else 
@@ -798,9 +798,9 @@
 							-16
 							(Btst fBeenIn83)
 							-15
-							(if (not (Btst fLearnedTrigger)) (not (Btst ASKED_TRIGGER_SCROLL)) else 0)
+							(if (not (Btst fLearnedTrigger)) (not (Btst fAskedForTrigger)) else 0)
 							-13
-							(if (Btst ASKED_TRIGGER_SCROLL) (not (Btst fLearnedTrigger)))
+							(if (Btst fAskedForTrigger) (not (Btst fLearnedTrigger)))
 							-14
 							(Btst fLearnedTrigger)
 					)
@@ -838,7 +838,7 @@
 			)
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
 			(V_DO (hermit setScript: sMisc))
@@ -854,19 +854,19 @@
 			(V_DAGGER
 				(if sittingDown (ego hide:))
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(hermit setScript: TPego)
 			)
 			(V_ROCK
 				(if sittingDown (ego hide:))
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(hermit setScript: TPego)
 			)
 			(V_SWORD
 				(if sittingDown (ego hide:))
 				(messager say: N_HERMIT V_DAGGER)
-				(Bset HENRY_DEADLY_TP)
+				(Bset fDeadlyTP)
 				(hermit setScript: TPego)
 			)
 			(else 
@@ -934,7 +934,7 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_FLAME)
 			(messager say: N_HERMIT V_DAGGER)
-			(Bset HENRY_DEADLY_TP)
+			(Bset fDeadlyTP)
 			(self setScript: TPego)
 		else
 			(super doVerb: theVerb &rest)
@@ -956,7 +956,7 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_FLAME)
 			(messager say: N_HERMIT V_DAGGER)
-			(Bset HENRY_DEADLY_TP)
+			(Bset fDeadlyTP)
 			(self setScript: TPego)
 		else
 			(super doVerb: theVerb &rest)
@@ -1208,7 +1208,7 @@
 				(messager say: N_ROOM 0 C_NORATIONS 1 self)
 			)
 			(1
-				(Bset HENRY_SAFE_TP)
+				(Bset fSafeTP)
 				(client setScript: TPego)
 			)
 		)
@@ -1224,8 +1224,8 @@
 				(0 (HandsOff) (= seconds 3))
 				(1
 					(cond 
-						((Btst ASKED_TRIGGER_SCROLL) (client setScript: sNixScroll))
-						([egoStats MAGIC] (Bset ASKED_TRIGGER_SCROLL) (= local3 1) (= ticks 60))
+						((Btst fAskedForTrigger) (client setScript: sNixScroll))
+						([egoStats MAGIC] (Bset fAskedForTrigger) (= local3 1) (= ticks 60))
 						(else
 							(messager say: N_ROOM 0 C_NOMAGIC)
 							(HandsOn)

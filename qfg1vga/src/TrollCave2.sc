@@ -89,7 +89,7 @@
 		(SolvePuzzle POINTS_ENTERSECRETENTRANCE 2)
 		(= trollState
 			(cond 
-				((or (Btst SAID_HIDEN_GOSEKE) (Btst fBeatFred)) 0)
+				((or (Btst fHidenGoseke) (Btst fBeatFred)) 0)
 				((== prevRoomNum vTroll) (= monsterNum 0) 2)
 				((Btst fBeatFred89)
 					(troll

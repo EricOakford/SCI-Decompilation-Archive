@@ -207,7 +207,7 @@
 		(Bset fBeenIn84)
 		(cond 
 			((!= newRoomNum 89)
-				(Bclr SAID_HIDEN_GOSEKE)
+				(Bclr fHidenGoseke)
 				(if (not (if (Btst fBeatFred) else (Btst fBeatFred89)))
 					(Bclr fTrollDoorOpen)
 					(Bclr fTrollDoorUnlocked)
@@ -498,13 +498,13 @@
 				(cond 
 					((not (ego inRect: 30 52 115 94)) (messager say: N_ROCKDOOR V_LOCKPICK C_SEENOLOCKS))
 					((Btst fTrollDoorUnlocked) (messager say: N_ROCKDOOR V_LOCKPICK C_UNLOCKED))
-					((Btst OBTAINED_BRUTUS_KEY) (messager say: N_ROCKDOOR V_BRASSKEY C_LOCKED) (Bset fTrollDoorUnlocked))
+					((Btst fGotBrutusKey) (messager say: N_ROCKDOOR V_BRASSKEY C_LOCKED) (Bset fTrollDoorUnlocked))
 					(else (messager say: N_ROCKDOOR V_BRASSKEY C_WRONGKEY))
 				)
 			)
 			(V_TALK
-				(if (and (Btst SPIED_THIEVES) (not (Btst SAID_HIDEN_GOSEKE)) (not (Btst fBeatFred)))
-					(Bset SAID_HIDEN_GOSEKE)
+				(if (and (Btst SPIED_THIEVES) (not (Btst fHidenGoseke)) (not (Btst fBeatFred)))
+					(Bset fHidenGoseke)
 					(SolvePuzzle POINTS_GIVECAVEPASSWORD 5)
 					(messager say: N_ROCKDOOR V_ALTTALK)
 				else

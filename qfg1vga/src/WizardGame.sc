@@ -406,7 +406,7 @@ code_0453:
 				(= dftStatusCode 0)
 				(localproc_193a listIndex)
 				(localproc_03e5)
-				(= global188 1)
+				(= magesMazeCommand 1)
 				(wizGame setScript: 0)
 			)
 		)
@@ -609,7 +609,7 @@ code_0453:
 		(= local1 0)
 		(objectList empty:)
 		(localproc_03e5)
-		(= global188 1)
+		(= magesMazeCommand 1)
 		(wizGame setScript: 0)
 	)
 	
@@ -1021,7 +1021,7 @@ code_0453:
 		(mouseDownHandler addToFront: self)
 		(keyDownHandler addToFront: self)
 		(objectList add:)
-		(= global188 1)
+		(= magesMazeCommand 1)
 		(Joystick 12 30)
 	)
 	
@@ -1037,13 +1037,13 @@ code_0453:
 				(timeBar value: dftStatusCode draw:)
 			else
 				(localproc_03e5)
-				(= global188 1)
+				(= magesMazeCommand 1)
 				(wizGame setScript: 0)
 			)
 		)
-		(if global188
-			(= temp1 global188)
-			(= global188 0)
+		(if magesMazeCommand
+			(= temp1 magesMazeCommand)
+			(= magesMazeCommand 0)
 			(switch temp1
 				(1
 					(self setScript: chooseSpell)
@@ -1218,7 +1218,7 @@ code_0453:
 		(switch (= state newState)
 			(0
 				(if (not (HaveMouse))
-					(theGame setCursor: theCursor 1 [local221 global187] 175)
+					(theGame setCursor: theCursor 1 [local221 magesMazeButtonIndex] 175)
 				)
 				(objectList empty:)
 				(localproc_0294)
@@ -1263,8 +1263,8 @@ code_0453:
 								(if (not local14) (Bset 337) (self dispose:))
 								(wizGame cue:)
 							else
-								(= global187 0)
-								(= global188 2)
+								(= magesMazeButtonIndex 0)
+								(= magesMazeCommand 2)
 								(self dispose:)
 							)
 							(return 1)
@@ -1274,8 +1274,8 @@ code_0453:
 								(if (not local14) (Bset 337) (self dispose:))
 								(wizGame cue:)
 							else
-								(= global187 1)
-								(= global188 3)
+								(= magesMazeButtonIndex 1)
+								(= magesMazeCommand 3)
 								(self dispose:)
 							)
 						)
@@ -1284,8 +1284,8 @@ code_0453:
 								(if (not local14) (Bset 337) (self dispose:))
 								(wizGame cue:)
 							else
-								(= global187 2)
-								(= global188 4)
+								(= magesMazeButtonIndex 2)
+								(= magesMazeCommand 4)
 								(self dispose:)
 							)
 						)
@@ -1294,8 +1294,8 @@ code_0453:
 								(if (not local14) (Bset 337) (self dispose:))
 								(wizGame cue:)
 							else
-								(= global187 3)
-								(= global188 5)
+								(= magesMazeButtonIndex 3)
+								(= magesMazeCommand 5)
 								(self dispose:)
 							)
 						)
@@ -1376,7 +1376,7 @@ code_0453:
 						)
 					)
 				else
-					(= global188 1)
+					(= magesMazeCommand 1)
 					(self dispose:)
 				)
 			)
@@ -1385,7 +1385,7 @@ code_0453:
 				(if (== register trigSign)
 					(playerBug changeForm:)
 					(localproc_03e5)
-					(= global188 1)
+					(= magesMazeCommand 1)
 					(self dispose:)
 				)
 			)
@@ -1432,7 +1432,7 @@ code_0453:
 					(theGame setCursor: normalCursor 1)
 					(flameSign setCycle: EndLoop self)
 				else
-					(= global188 1)
+					(= magesMazeCommand 1)
 					(self dispose:)
 				)
 			)
@@ -1481,7 +1481,7 @@ code_0453:
 				(event claimed: 1)
 				(= dftStatusCode (+ 4 (/ [egoStats 23] 5)))
 				(flame posn: (event x?) (event y?) setCycle: Forward)
-				(= global188 1)
+				(= magesMazeCommand 1)
 				(self dispose:)
 			)
 			(
@@ -1492,7 +1492,7 @@ code_0453:
 				(flame setPri: -1)
 				(event claimed: 1)
 				(= dftStatusCode (+ 4 (/ [egoStats 23] 5)))
-				(= global188 1)
+				(= magesMazeCommand 1)
 				(self dispose:)
 			)
 		)

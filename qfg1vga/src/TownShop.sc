@@ -147,7 +147,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(Bset VISITED_STORE)
+		(Bset fBeenIn322)
 		(super dispose:)
 	)
 	
@@ -641,20 +641,20 @@
 					(switch ((ScriptID 551 0) doit:)
 						(noFunds (messager say: N_SHOPKEEPER V_MONEY C_NOFUNDS))
 						(buyAFlask
-							(Bset PURCHASED_FROM_DRYGOODS)
+							(Bset fPurchasedFromShop)
 							(ego setScript: buyFlask)
 						)
 						(buyRations
-							(Bset PURCHASED_FROM_DRYGOODS)
+							(Bset fPurchasedFromShop)
 							(ego setScript: buyFood)
 						)
 						(buyADagger
-							(Bset PURCHASED_FROM_DRYGOODS)
+							(Bset fPurchasedFromShop)
 							(ego setScript: buyDagger)
 						)
 						(buyChainmail
 							(SolvePuzzle POINTS_BUYCHAINMAIL 3 FIGHTER)
-							(Bset PURCHASED_FROM_DRYGOODS)
+							(Bset fPurchasedFromShop)
 							(ego setScript: buyArmor)
 						)
 					)
@@ -778,7 +778,7 @@
 				(= local2 1)
 				(messager say: N_SHOPKEEPER 0 C_HITHERE 1 self)
 			)
-			(3 (Bset MET_SHOPKEEPER) (= ticks 10))
+			(3 (Bset fMetShopkeeper) (= ticks 10))
 			(4
 				(messager say: N_SHOPKEEPER 0 C_FIRSTMEET)
 				(self cue:)
@@ -823,14 +823,14 @@
 			)
 			(1 (NormalEgo) (= cycles 6))
 			(2
-				(if (Btst VISITED_STORE)
+				(if (Btst fBeenIn322)
 					(self cue:)
 				else
 					(messager say: N_ROOM 0 C_FIRSTENTRY 1 self)
 				)
 			)
 			(3
-				(if (Btst VISITED_STORE)
+				(if (Btst fBeenIn322)
 					(ego setScript: secondEntrance)
 				else
 					(ego setScript: proprietorScript)

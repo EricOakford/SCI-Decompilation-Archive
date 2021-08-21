@@ -263,10 +263,14 @@
 	(method (notify param1)
 		(cond 
 			((!= param1 1))
-			((not (sheriffDoor locked?)) (self setScript: inToSheriff))
-			((not (TrySkill PICK 50 lockPickBonus)) (messager say: N_ROOM 0 0 3))
-			((and (Btst VISITED_SHERIFF_HOUSE) (< daySheriffBreakIn Day))
-				(messager say: N_ROOM 0 0 4)
+			((not (sheriffDoor locked?))
+				(self setScript: inToSheriff))
+			((not (TrySkill PICK 50 lockPickBonus)
+				)
+				(messager say: N_ROOM NULL NULL 3)
+			)
+			((and (Btst fBeenIn321) (< daySheriffBreakIn Day))
+				(messager say: N_ROOM NULL NULL 4)
 			)
 			(else
 				(lockSound number: (SoundFX 35) init: play:)

@@ -210,7 +210,7 @@
 				(param2 xStep: 8 yStep: 5 setCycle: Forward)
 			)
 		)
-		(if global186
+		(if fastEgo
 			(param2
 				xStep: (* (param2 xStep?) 2)
 				yStep: (* (param2 yStep?) 2)

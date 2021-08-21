@@ -230,7 +230,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(Bset VISITED_MAGICSHOP_INSIDE)
+		(Bset fBeenIn314)
 		(super dispose:)
 	)
 	
@@ -852,7 +852,7 @@
 			)
 			(7
 				(familiar stopUpd:)
-				(if (not (Btst VISITED_MAGICSHOP_INSIDE))
+				(if (not (Btst fBeenIn314))
 					(self cue:)
 				else
 					(= local2 1)

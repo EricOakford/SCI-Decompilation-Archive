@@ -208,7 +208,7 @@
 				)
 			)
 			(4
-				(-- global272)
+				(-- ghostCount)
 				(twister stopUpd: setScript: 0)
 			)
 		)
@@ -242,7 +242,7 @@
 				)
 			)
 			(1
-				(-- global272)
+				(-- ghostCount)
 				(tumbler stopUpd: setScript: 0)
 			)
 		)
@@ -284,7 +284,7 @@
 				(swimmer1 setMotion: MoveTo 7 125 self)
 			)
 			(7
-				(-- global272)
+				(-- ghostCount)
 				(swimmer1 hide: stopUpd: setScript: 0)
 			)
 		)
@@ -330,7 +330,7 @@
 				(swimmer2 setMotion: MoveTo 260 165 self)
 			)
 			(9
-				(-- global272)
+				(-- ghostCount)
 				(swimmer2 hide: stopUpd: setScript: 0)
 			)
 		)

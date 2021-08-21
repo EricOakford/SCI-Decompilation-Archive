@@ -968,11 +968,11 @@
 					((not (ego has: iThiefLicense)) (messager say: N_BORIS V_DO 8))
 					(
 						(or
-							(Btst SEARCHED_LOL_BASKET)
-							(Btst STOLE_CANDLESTICKS)
-							(Btst STOLE_SHERIFF_VASE)
-							(Btst STOLE_SHERIFF_VASE)
-							(Btst STOLE_OTTO_MUSIC_BOX)
+							(Btst fSearchedBasket)
+							(Btst fStoleCandles)
+							(Btst fStoleVase)
+							(Btst fStoleVase)
+							(Btst fStoleMusicBox)
 						)
 						(messager say: N_BORIS V_DO C_CANTFENCETHAT)
 					)

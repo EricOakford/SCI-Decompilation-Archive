@@ -186,7 +186,7 @@
 		(= brunoWhines 0)
 		(if
 			(and
-				(Btst EXITED_TOWN_2)
+				(Btst fLeftTown2)
 				(or (== timeODay TIME_MIDDAY) (== timeODay TIME_MIDAFTERNOON))
 				(or (not (Btst fBearGone)) (Btst SPIED_THIEVES))
 			)
@@ -740,13 +740,13 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Btst EXITED_TOWN))
-					(Bset EXITED_TOWN)
+				(if (not (Btst fLeftTown))
+					(Bset fLeftTown)
 					(++ state)
 					(self cue:)
 				else
 					(ego setMotion: MoveTo 120 114 self)
-					(Bset EXITED_TOWN_2)
+					(Bset fLeftTown2)
 				)
 			)
 			(1 (HandsOn) (self dispose:))
@@ -756,7 +756,7 @@
 				(ego setMotion: MoveTo 75 114 self)
 			)
 			(3
-				(messager say: N_ROOM 0 C_LEAVETOWN 1 self)
+				(messager say: N_ROOM NULL C_LEAVETOWN 1 self)
 			)
 			(4 (HandsOn) (self dispose:))
 		)

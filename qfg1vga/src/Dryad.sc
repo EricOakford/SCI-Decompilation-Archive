@@ -63,7 +63,7 @@
 
 (procedure (SayNoToDryad)
 	(HandsOff)
-	(if (Btst DRYAD_AGREED_HELP)
+	(if (Btst fAgreedToHelpDryad)
 		(messager say: N_ROOM 0 C_DONTGIVESEED)
 	else
 		(messager say: N_ROOM 0 C_NOTFORESTFRIEND)
@@ -73,7 +73,7 @@
 
 (procedure (SayYesToDryad)
 	(HandsOff)
-	(if (Btst DRYAD_AGREED_HELP)
+	(if (Btst fAgreedToHelpDryad)
 		(if (ego has: iSeed)
 			(dryad setScript: hasSeed)
 		else
@@ -93,7 +93,7 @@
 	)
 	
 	(method (init)
-		(if (and (Btst STAG_PRESENT) (not Night))
+		(if (and (Btst fStagHere) (not Night))
 			(curRoom
 				addObstacle:
 					((Polygon new:)
@@ -149,7 +149,7 @@
 		(LoadMany RES_VIEW 77 72 510)
 		(LoadMany RES_SOUND 97 98)
 		(Load RES_SCRIPT JUMP)
-		(if (Btst STAG_PRESENT)
+		(if (Btst fStagHere)
 			(Load RES_VIEW 78)
 		)
 		(super init:)
@@ -188,7 +188,7 @@
 				hide:
 			)
 		)
-		(if (and (not Night) (Btst STAG_PRESENT))
+		(if (and (not Night) (Btst fStagHere))
 			(stag
 				view: 78
 				x: 318
@@ -204,7 +204,7 @@
 				actions: egoActions
 				setMotion: MoveTo 290 130
 			)
-			(Bclr STAG_PRESENT)
+			(Bclr fStagHere)
 			(= dryadState dryadAvailable)
 		)
 		(miscSound init: play:)
@@ -215,7 +215,7 @@
 			(
 			(and attackedStag (not (ego script?)) (< (stag x?) 50))
 				(= attackedStag 0)
-				(Bset STAG_HURT)
+				(Bset fStagHurt)
 				(HandsOff)
 				(ego setScript: priorTo)
 			)
@@ -224,9 +224,9 @@
 					(not (ego script?))
 					(not (stag script?))
 					(not (dryad script?))
-					(not (Btst DISPEL_LEARNED_RECIPE))
+					(not (Btst fLearnedDispel))
 					(== dryadState dryadHere)
-					(or dryadHostile (Btst STAG_HURT))
+					(or dryadHostile (Btst fStagHurt))
 				)
 				(HandsOff)
 				(= dryadHostile FALSE)
@@ -240,7 +240,7 @@
 					(>= dryadState dryadAvailable)
 					(not (== (ego script?) goTo77))
 				)
-				(Bclr STAG_PRESENT)
+				(Bclr fStagHere)
 				(ego setScript: goTo77)
 			)
 			(
@@ -248,11 +248,11 @@
 					(< (ego x?) 280)
 					(== dryadState dryadAvailable)
 					(not Night)
-					(not (Btst DISPEL_LEARNED_RECIPE))
+					(not (Btst fLearnedDispel))
 					(or
 						usedFlameDart
-						(not (Btst DISPEL_LEARNED_RECIPE))
-						(Btst STAG_HURT)
+						(not (Btst fLearnedDispel))
+						(Btst fStagHurt)
 						(Btst fKilledFlower1)
 						(Btst fKilledFlower2)
 						(Btst fKilledFlower3)
@@ -285,8 +285,8 @@
 				)
 			)
 			(V_DAZZLE
-				(if (and (Btst STAG_PRESENT) (< (stag x?) 50))
-					(Bset STAG_HURT)
+				(if (and (Btst fStagHere) (< (stag x?) 50))
+					(Bset fStagHurt)
 					(= attackedStag TRUE)
 				)
 				(if (== dryadState dryadHere) (= dryadHostile TRUE))
@@ -305,7 +305,7 @@
 				(= temp0 (if (cast contains: stag) stag else 0))
 				(if (CastDagger temp0)
 					(if (== dryadState dryadHere) (= dryadHostile TRUE))
-					(if (Btst STAG_PRESENT) (= attackedStag TRUE) (Bset STAG_HURT))
+					(if (Btst fStagHere) (= attackedStag TRUE) (Bset fStagHurt))
 					(if (cast contains: stag)
 						(Face ego stag)
 						(RedrawCast)
@@ -317,7 +317,7 @@
 				(= temp0 (if (cast contains: stag) stag else 0))
 				(if (CastRock temp0)
 					(if (== dryadState dryadHere) (= dryadHostile TRUE))
-					(if (Btst STAG_PRESENT) (= attackedStag TRUE) (Bset STAG_HURT))
+					(if (Btst fStagHere) (= attackedStag TRUE) (Bset fStagHurt))
 					(if (cast contains: stag)
 						(Face ego stag)
 						(RedrawCast)
@@ -524,8 +524,8 @@
 			(V_LOOK (messager say: N_STAG V_LOOK))
 			(V_DO (messager say: N_STAG V_DO))
 			(V_DAZZLE
-				(if (and (Btst STAG_PRESENT) (< (stag x?) 50))
-					(Bset STAG_HURT)
+				(if (and (Btst fStagHere) (< (stag x?) 50))
+					(Bset fStagHurt)
 					(= attackedStag TRUE)
 				)
 				(if (== dryadState dryadHere) (= dryadHostile TRUE))
@@ -533,7 +533,7 @@
 			)
 			(V_FLAME
 				(= attackedStag TRUE)
-				(Bset STAG_HURT)
+				(Bset fStagHurt)
 				(ego setScript: castADart)
 			)
 			(V_SWORD
@@ -542,17 +542,17 @@
 					(messager say: N_DRYADTREE V_DAGGER C_DRYADHERE)
 					(dryad setScript: egoToStag)
 				else
-					(Bset STAG_HURT)
+					(Bset fStagHurt)
 				)
 			)
 			(V_ROCK
-				(Bset STAG_HURT)
+				(Bset fStagHurt)
 				(= attackedStag TRUE)
 				(if (== dryadState dryadHere)
 					(messager say: N_DRYADTREE V_DAGGER C_DRYADHERE)
 					(dryad setScript: egoToStag)
 				else
-					(Bset STAG_HURT)
+					(Bset fStagHurt)
 				)
 			)
 			(else 
@@ -609,7 +609,7 @@
 				)
 			)
 			(V_DO
-				(if (Btst STAG_PRESENT)
+				(if (Btst fStagHere)
 					(messager say: N_DRYAD V_DO C_CANTREACHSTAG)
 					(if (== dryadState dryadHere) (messager say: N_DRYAD V_DO C_DRYADHERE))
 				else
@@ -738,8 +738,8 @@
 			)
 			(2
 				(cond 
-					((or usedFlameDart (Btst STAG_HURT)) (dryad setLoop: 1 cel: 6 forceUpd: setScript: egoToStag))
-					((Btst DRYAD_AGREED_HELP)
+					((or usedFlameDart (Btst fStagHurt)) (dryad setLoop: 1 cel: 6 forceUpd: setScript: egoToStag))
+					((Btst fAgreedToHelpDryad)
 						(switch
 							(Print
 								addText: 7 0 28 1 0 0 76
@@ -798,7 +798,7 @@
 				(= dryadState dryadOut)
 			)
 			(2
-				(if (Btst DISPEL_LEARNED_RECIPE)
+				(if (Btst fLearnedDispel)
 					(acorn init: setCycle: EndLoop)
 					(theAcorn init:)
 					(= magicAcornOnGround TRUE)
@@ -905,8 +905,8 @@
 			)
 			(19
 				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 10 self)
-				(Bset DISPEL_LEARNED_RECIPE)
-				(Bclr DRYAD_AGREED_HELP)
+				(Bset fLearnedDispel)
+				(Bclr fAgreedToHelpDryad)
 				(dryadTalker keepWindow: 0)
 				(dryad setScript: intoTree)
 			)
@@ -975,7 +975,7 @@
 				)
 			)
 			(4
-				(Bclr STAG_PRESENT)
+				(Bclr fStagHere)
 				(stag dispose:)
 				(HandsOn)
 				(self dispose:)
@@ -1115,7 +1115,7 @@
 			)
 			(1
 				(cond 
-					((Btst STAG_HURT) (messager say: N_ROOM 0 C_HURTSTAG 0 self))
+					((Btst fStagHurt) (messager say: N_ROOM 0 C_HURTSTAG 0 self))
 					(usedFlameDart (messager say: N_ROOM 0 C_USEDFLAMEDART 0 self))
 					(else (messager say: N_ROOM 0 C_GETREGULARACORN 2 self))
 				)
@@ -1190,7 +1190,7 @@
 			)
 			(1
 				(if (== dryadState dryadHere) (= dryadHostile TRUE))
-				(if (cast contains: stag) (= attackedStag TRUE) (Bset STAG_HURT))
+				(if (cast contains: stag) (= attackedStag TRUE) (Bset fStagHurt))
 				(= usedFlameDart TRUE)
 				(= ticks 6)
 			)
@@ -1207,7 +1207,7 @@
 			(0
 				(SolvePuzzle POINTS_AGREETOHELPDRYAD 1)
 				(messager say: N_ROOM 0 C_AIDME 0 self)
-				(Bset DRYAD_AGREED_HELP)
+				(Bset fAgreedToHelpDryad)
 			)
 			(1
 				(if (ego has: iSeed)

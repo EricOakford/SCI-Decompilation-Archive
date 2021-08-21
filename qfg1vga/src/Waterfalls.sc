@@ -60,7 +60,9 @@
 		(LoadMany RES_VIEW 82 510 81 537 517)
 		(LoadMany RES_SCRIPT 991 103)
 		(LoadMany RES_SOUND 78 9 10 84 104 (if Night 72 else 71))
-		(if (Btst HENRY_SAFE_TP) (Load RES_VIEW 531))
+		(if (Btst fSafeTP)
+			(Load RES_VIEW 531)
+		)
 		(super init: &rest)
 		(self
 			setFeatures:
@@ -98,11 +100,11 @@
 		(NormalEgo)
 		(if (== prevRoomNum 83)
 			(cond 
-				((Btst HENRY_DEADLY_TP)
+				((Btst fDeadlyTP)
 					(hermitDoor setCel: 0 stopUpd:)
 					(self setScript: deadlyTP)
 				)
-				((Btst HENRY_SAFE_TP)
+				((Btst fSafeTP)
 					(curRoom
 						addObstacle:
 							(bottomPoly
@@ -204,7 +206,7 @@
 	)
 	
 	(method (dispose)
-		(Bclr HENRY_DOOR_OPEN)
+		(Bclr fHenryDoorOpen)
 		(= disabledActions 0)
 		(Bset fBeenIn82)
 		(super dispose:)
@@ -236,7 +238,7 @@
 			)
 			(V_OPEN
 				(cond 
-					((Btst HENRY_DOOR_OPEN) (messager say: N_ROOM V_OPEN C_ALREADYOPEN))
+					((Btst fHenryDoorOpen) (messager say: N_ROOM V_OPEN C_ALREADYOPEN))
 					((CastSpell OPEN)
 						(cond 
 							((and (Btst fClimbedHenryCliff) (> [egoStats OPEN] 5))
@@ -922,7 +924,7 @@
 				(self cue:)
 			)
 			(3
-				(Bset HENRY_DOOR_OPEN)
+				(Bset fHenryDoorOpen)
 				(ego illegalBits: 0 ignoreActors: setMotion: 0)
 				(client view: 81 loop: 2 cel: 0 setCycle: CycleTo 2 1 self)
 			)
@@ -978,7 +980,7 @@
 				(self cue:)
 			)
 			(11
-				(Bclr HENRY_DOOR_OPEN)
+				(Bclr fHenryDoorOpen)
 				(if (Btst 276) (ego setScript: squashed))
 				(HandsOn)
 				(self dispose:)
@@ -1098,7 +1100,7 @@
 				(ego setCycle: EndLoop self)
 			)
 			(5
-				(if (and (TrySkill THROW 25) (not (Btst HENRY_DOOR_OPEN)))
+				(if (and (TrySkill THROW 25) (not (Btst fHenryDoorOpen)))
 					(++ rockKnockCount)
 					(= rockHitDoor TRUE)
 					(rock
@@ -1366,7 +1368,7 @@
 			)
 			(2
 				(HandsOff)
-				(Bset HENRY_DOOR_OPEN)
+				(Bset fHenryDoorOpen)
 				(hermitDoor view: 82 loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
@@ -1384,7 +1386,7 @@
 			(4 (messager say: N_ROOM 0 0 4 self))
 			(5 (client setCycle: BegLoop self))
 			(6
-				(Bclr HENRY_DOOR_OPEN)
+				(Bclr fHenryDoorOpen)
 				(HandsOn)
 				(hermitDoor stopUpd: setScript: 0)
 			)

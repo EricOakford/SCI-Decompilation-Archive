@@ -324,7 +324,6 @@
 )
 
 (instance endStatus of Code
-	(properties)
 	
 	(method (doit strg)
 		(Format strg 601 2 score)

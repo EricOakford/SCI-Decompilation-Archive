@@ -301,7 +301,7 @@
 	(properties)
 	
 	(method (showDialog)
-		(super showDialog: -17 (Btst ERASMUS_KNOWS_HERO_HAS_MAGIC))
+		(super showDialog: -17 (Btst fWizKnowsEgoHasMagic))
 	)
 	
 	(method (doChild)
@@ -944,7 +944,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset ERASMUS_KNOWS_HERO_HAS_MAGIC)
+				(Bset fWizKnowsEgoHasMagic)
 				(messager say: N_WIZARD 0 C_PRE_MAZE (+ 1 (* 2 local11)) self)
 			)
 			(1
@@ -1097,7 +1097,7 @@
 			(2 (= seconds 5))
 			(3
 				(doorSound stop:)
-				(Bset ERASMUS_KNOWS_HERO_HAS_MAGIC)
+				(Bset fWizKnowsEgoHasMagic)
 				(cSound fade:)
 				(curRoom newRoom: 32)
 			)

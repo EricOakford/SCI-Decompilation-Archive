@@ -388,8 +388,8 @@
 					((and Night (not (Btst fBeenIn29))) (messager say: N_GARGOYLE 0 C_NIGHT 1 self))
 					(Night (rm29 setScript: teleportOut) (self dispose:))
 					(passedOut (messager say: N_GARGOYLE 0 C_PASS_OUT_QUESTIONS 1 self))
-					((Btst MET_GARGOYLE) (messager say: N_GARGOYLE 0 C_RETURN_QUESTIONS 1 self))
-					(else (Bset MET_GARGOYLE) (messager say: N_GARGOYLE 0 C_ASK_QUEST 1 self))
+					((Btst fMetGargoyle) (messager say: N_GARGOYLE 0 C_RETURN_QUESTIONS 1 self))
+					(else (Bset fMetGargoyle) (messager say: N_GARGOYLE 0 C_ASK_QUEST 1 self))
 				)
 			)
 			(12

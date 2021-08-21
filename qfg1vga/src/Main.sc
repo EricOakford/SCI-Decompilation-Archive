@@ -41,132 +41,129 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	version
-	locales
-	curSaveDir
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime
+	ego								  	;pointer to ego
+	theGame							  	;ID of the Game instance
+	curRoom							  	;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	version			=	0			  	;pointer to 'incver' version string
+										;	WARNING!  Must be set in room 0
+										;	(usually to {x.yyy    } or {x.yyy.zzz})
+	locales								;set of current locales
+	curSaveDir							;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	useSortedFeatures					;enable cast & feature sorting?
+	egoBlindSpot						;used by sortCopy to exclude
+										;actors behind ego within angle 
+										;from straight behind. 
+										;Default zero is no blind spot
+	overlays			=	-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
+	demoDialogTime	=	3				;how long Prints stay up in demo mode
 	currentPalette
 	modelessPort
-	sysLogPath
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-		global50
-		global51
-		global52
-		global53
-		global54
-		global55
-		global56
-		global57
-		global58
-		global59
-		global60
-		global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  TRUE
+	[sysLogPath	20]						;-used for system standard logfile path	
+	endSysLogPath						;/		(uses 20 globals)
+	gameControls						;pointer to instance of game controls
+	ftrInitializer						;pointer to code that gets called from
+										;	a feature's init
+	doVerbCode							;pointer to code that gets invoked if
+										;	no feature claims a user event
+	approachCode						;pointer to code that translates verbs
+										;	into bits
+	useObstacles	=	TRUE			;will Ego use PolyPath or not?
 	theMenuBar
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
+	theIconBar							;points to TheIconBar or Null	
+	mouseX								;-last known mouse position
+	mouseY								;/
+	keyDownHandler						;-our EventHandlers, get called by game
+	mouseDownHandler					;/
+	directionHandler					;/
+	speechHandler						;a special handler for speech events
 	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
+	pMouse			=	NULL			;pointer to a Pseudo-Mouse, or NULL
+	theDoits		=	NULL			;list of objects to get doits each cycle
+	eatMice			=	60				;how many ticks before we can mouse
+	user			=	NULL			;pointer to specific applications User
+	syncBias							;-globals used by sync.sc
+	theSync								;/
 	cDAudio
-	fastCast
-	inputFont
-	tickOffset
-	howFast
-	gameTime
-	narrator
-	msgType
-	messager
-	prints
-	walkHandler
-	textSpeed =  2
-	altPolyList
-		global96
-		global97
-		global98
+	fastCast							;list of talkers on screen
+	inputFont		=	SYSFONT			;font used for user type-in
+	tickOffset							;used to adjust gameTime after restore
+	howFast								;measurment of how fast a machine is
+	gameTime							;ticks since game start
+	narrator							;pointer to narrator (normally Narrator)
+	msgType			=	TEXT_MSG		;type of messages used
+	messager							;pointer to messager (normally Messager)
+	prints								;list of Print's on screen
+	walkHandler							;list of objects to get walkEvents
+	textSpeed		=	2				;time text remains on screen
+	altPolyList							;list of alternate obstacles
+	;globals 96-99 are unused
+	global96
+	global97
+	global98
 	lastSysGlobal
-	egoGait
-	dongle =  1234
+	;globals 100 and above are for game use	
+	egoGait					;0 = walk, 1 = run, 2 = sneak
+	gameCode =  1234
 	isHandsOff
 	egoX
 	egoY
 	debugging
-	cSound
-	daySheriffBreakIn
-	dayLOLBreakIn
-	dayCursedByBabaYaga
-	exploringTown
-	yesNoTimer
-	lastRestTime
-	lastRestDay
+	cSound					;music object, current playing music?
+	daySheriffBreakIn		;this is the game day that you broke into the Sheriff's house.
+							;After this day, the door will be barred, and you can no longer break in.
+	dayLOLBreakIn			;this is the game day that you broke into the Little Old Lady's house.
+							;After this day, the door willbe barred, and you can no longer break in
+	dayCursedByBabaYaga		;this is the game day that Baba Yaga placed her curse on you.  
+							;If you don't bring her the mandrake root before the time is up, you will die.
+	exploringTown			;This is only ever set to FALSE (and never read)
+							;And even then, it's only referenced outside the sheriff and lol house, 
+							;when leaving to another part of town.
+	yesNoTimer				;a countdown used by several actors when they are waiting for a response
+	lastRestTime		
+	lastRestDay		
 	monsterDistX
 	monsterDistY
 	Clock
 	Night
 	Day
-	timeODay
-	barNote
+	timeODay				;time of day in game (morning, noon, etc)
+	barNote					;Note being passed at the bar
 	oldSysTime
-	heroType
+	heroType				;The Character Class. 0 = Fighter, 1 = Magic User or 2 = Thief
 	egoSpeed
 	startingRoom
-	egoStats
+	egoStats				;hero's skills (25 variable array)
 		gIntell
 		gAgil
 		gVit
@@ -190,12 +187,12 @@
 		global146
 		global147
 		global148
-		global149
-	skillTicks
-		global151
-		global152
-		global153
-		global154
+		global149			;end of egoStats
+	skillTicks				;skillTicks (25 variable array)
+		global151			;	determines when the skill is next increased 
+		global152			;	When skills are used (either by TrySkill, SkillUsed, or StatCheck)
+		global153			;	the skillTicks increase by an amount (either directly entered for SkillUsed and StatCheck, or inciredtly for TrySkill)
+		global154			;	When skillTicks goes above egoStats, then skillTicks resets, and egoStat increases by a random amount betweeen 1 and 3	
 		global155
 		global156
 		global157
@@ -215,35 +212,35 @@
 		global171
 		global172
 		global173
-		global174
-	lockPickBonus
-	spellCost
-		spCostOpen =  2
-		spCostDetect =  2
-		spCostTrigger =  3
-		spCostDazzle =  3
-		spCostZap =  3
-		spCostCalm =  4
-		spCostFlame =  5
-		spCostFetch =  5
+		global174			;end of skillTicks
+	lockPickBonus			;lock picking bonus (LockPick gives you 10 bonus, Tool Kit gives you 35 bonus)
+	;these 8 are part of an array
+	spellCost 	  		=	2 	;SpellMPUsage (Open)
+		spCostDetect	=	2 	;SpellMPUsage (Detect Magic)
+		spCostTrigger	=	3 	;SpellMPUsage (Trigger)
+		spCostDazzle	=	3 	;SpellMPUsage (Dazzle)
+		spCostZap		=	3 	;SpellMPUsage (Zap)
+		spCostCalm		=	4 	;SpellMPUsage (Calm)
+		spCostFlame		=	5 	;SpellMPUsage (Flame Dart)
+		spCostFetch		=	5 	;SpellMPUsage (Fetch)
 		spellCostEnd
-	global186
-	global187
-	global188
-	global189
-	global190
-	spellMask
-	theBuyDialog
-	wareList
-	global194
+	fastEgo						;double's ego's walking speed (option removed in 1.200)
+	magesMazeButtonIndex
+	magesMazeCommand
+	global189					;unused
+	global190					;unused
+	spellMask					;checks which spells will be in the spell inventory
+	theBuyDialog				;global pointer for buy dialog
+	wareList					;list of available wares in buy dialog
+	global194					;? set to 100 when casting Flame Dart
 	numColors
 	numVoices
-	stamCounter =  20
-	healCounter =  15
-	freeMeals
-	ghostOilTimer
-	oldStats
-		global202
+	stamCounter =  STAM_RATE
+	healCounter =  HEAL_RATE
+	freeMeals					;As the game progresses through the day, this gets reduced first. If this is 0, then you eat a ration.
+	ghostOilTimer				;number of game minutes left until the undead unguent wears off
+	oldStats					;(25 variable array) - These are the value of skills as last seen on the character sheet.
+		global202				; Changed skills will be shown in red.
 		global203
 		global204
 		global205
@@ -267,71 +264,69 @@
 		global223
 		global224
 		global225
-		global226
-		global227
-		global228
-	zapPower
-	monsterDazzle
-	targetAngles =  180
-		global232
-		global233 =  45
-		global234 =  90
-		global235 =  135
-		global236 =  180
-		global237 =  225
-		global238 =  270
-		global239 =  315
-	numFlowers
-	numMushrooms
-	numWater
-	brigandHead
-	numBrigands
-	egoCanFight
-	masterDay =  -1
-	lostSleep
-	totalDagNabItBet
-	thievesPassword
-	missedDaggers
-	hitDaggers
-	daggerRoom
-	sameColor =  42
-	changeColor =  54
-	shieldRoom
-	mandrakeDay =  -3
-	dftStatusCode
-	wizGameSpellTime
-	wizAskedSpells
-	koboldIllBits =  cWHITE
-	dayKoboldAwakened =  -1
-	bucks
-	theKobold
-	koboldCycles
-	ogreDay
-	ogreTime
-	fightingKoboldStart
-	fightingKobold
-	dartsBonus
-	statusBarView
-	global271
-	global272
-	hutState
-	babaState
+	endStats				;end of oldStats
+	global227				;unused
+	global228				;unused
+	zapPower			;the extra damage incurred by a zap-charged weapon
+	monsterDazzle			;number of animation cycles until the monster attacks again, in the arena
+		
+	;array of 9 variables, corresponding to direction event messages
+	targetAngles 	=  [180 0 45 90 135 180 225 270 315]
+	numFlowers				;times sold flowers to the healer
+	numMushrooms			;times sold mushrooms to the healer
+	numWater				;has the hero given flying water to the healer?
+	brigandHead				;which view to use for the current brigand in combat (not used in VGA)
+	numBrigands				;how many brigands is the hero fighting at once?
+	egoCanFight				;during an arena battle, can the hero fight, or is he in the middle of something?
+	masterDay =  -1			;when did the hero last fight the weapon master
+	lostSleep				;how many days has the hero gone without sleeping?
+	totalDagNabItBet		;CI: ?? just a guess, could be something else, but is related to DagNabIt somehow.
+	thievesPassword			; (unused in VGA)
+	missedDaggers			;EO: Daggers thrown on ground
+	hitDaggers				;EO: Daggers thrown in enemy
+	daggerRoom				;the last room the hero dropped daggers into. He can pick up all his daggers in this room.
+	sameColor =  42			;The colour of stats on the Character Screen
+	changeColor =  54		;The colour of stats that have changed since last viewing, on the Character Screen
+	shieldRoom				;the room hero dropped his shield in. He can pick it up later.
+	mandrakeDay =  -3		;the day hero last pulled the Mandrake Root
+	dftStatusCode			;default Status Bar refresh code. i.e. Quest for Glory I [%d of 500]
+	;wizard Erasmus variables
+	wizGameSpellTime		;time left for Fetch and Flame Dart in the wizard game.
+	wizAskedSpells			;What spells has Erasmus asked that you already know?
+
+	koboldIllBits =  cWHITE	;Kobold cave-related
+	dayKoboldAwakened =  -1	;The day the Kobold was last awakened
+	bucks					;Number of silvers on the monster in the current room
+	theKobold				;global variable holding the kobold TargetActor
+	koboldCycles			;not actually used for anything.
+	ogreDay					;the day the Ogre was last fought
+	ogreTime				;the time zone the Ogre was last fought
+	fightingKoboldStart		;the fight with the kobold has begun!
+	fightingKobold			;True if in battle with Kobold?
+	dartsBonus				;used for DagNabIt
+	statusBarView			;the View to use to display battle status
+	global271				;unused
+	ghostCount
+	hutState				;0, 1, 2, 3, 4 as possible values.
+	babaState				;0, 1, 2, 3, 4 as possible values.
 	deathMusic =  26
-	numApples
-	nestState
-	numGoblins
-	monsterNum
-	monsterHealth
-	brunoTimer
+	numApples				;The number of apples given to Frost Giant
+	nestState				;The state of the next outside the Healer's hut (0 = in tree, 1 = on ground, 2 = burnt)
+	numGoblins				;The number of dead goblins in the Goblin Ambush
+	monsterNum				;EO: Monster in the current room
+	monsterHealth			;HP of the current fighting monster
+	brunoTimer				;this counts down the game seconds after Bruno has left the target range.  
+							; If you don't wait long enough, you'll encounter him!
+	;kobold variables
 	koboldHealth
-	koboldEvade
-	damageToKobold
-	damageToKoboldFlame
-	egoKoboldBattleLoop
-	enter67
-	mountainSign
-	global289
-	gameFlags
+	koboldEvade				;the threshold to which the kobold avoids getting hit (lower values means less chance of getting hit)
+	damageToKobold			;how much damage will the kobold take if he gets hit?
+	damageToKoboldFlame		;how much damage from a flame dart will the kobold take?
+	egoKoboldBattleLoop		;EO: used for 1.200
+	enter67					;number of visits to room 67; this determines the appearance of the fox and Earl Sinclair.
+	mountainSign			;what the signs at Mount Zauberberg say
+	global289				;unused
+	gameFlags				;(50 variable arroy) - all event flags in the game
 		global291
 		global292
 		global293
@@ -381,7 +376,7 @@
 		global337
 		global338
 		global339
-	invDropped
+	invDropped			;dropped inventory (start of 50 variable array; 40 are used)
 		global341
 		global342
 		global343
@@ -453,23 +448,23 @@
 		global409
 	ogreX =  160
 	ogreY =  120
-	ogreHealth =  93
-	ogreDeathDay =  1000
-	brutusHealth
-	manaCounter =  5
-	spareSound
-	magesMazePlayCount
-	disabledIcons
-	global419
-	oldMouseX
-	oldMouseY
+	ogreHealth =  93				;ogre's current HP (CI: looks like his max used to 93, but was upped to 112 later on.)
+	ogreDeathDay =  1000			;day defeated Ogre
+	brutusHealth					;HP for Brutus in target range
+	manaCounter =  MANA_RATE		;MP Countdown
+	spareSound						;music playing in the arenas during a battle
+	magesMazePlayCount				;The number of times the hero has played Mage's Maze
+	disabledIcons					;which icons are disabled
+	global419						;unused
+	saveCursorX
+	saveCursorY
 	oldIcon
 	global423
 	oldScore
-	disabledActions
+	disabledActions					;which action icons are disabled
 	gClient
-	targetDaggers
-	userName
+	targetDaggers					;how many daggers are in the target
+	userName						;(40 variable array) - name of the user, as supplied by the user when starting a new game.
 		global429
 		global430
 		global431
@@ -492,11 +487,15 @@
 		global448
 		global449
 		global450
-	nightPalette
-	global452
+	nightPalette					;number of room's nighttime palette
+	global452						;unused
 )
 (procedure (HandsOff)
-	(if isHandsOff (return) (DisposeScript PROCS))
+	;disable ego control
+	(if isHandsOff
+		(return)
+		(DisposeScript PROCS)
+	)
 	(= isHandsOff TRUE)
 	(SaveTheCursor)
 	(User canControl: FALSE canInput: FALSE)
@@ -514,8 +513,8 @@
 		ICON_INVENTORY
 	)
 	(if (not (HaveMouse))
-		(= oldMouseX mouseX)
-		(= oldMouseY mouseY)
+		(= saveCursorX mouseX)
+		(= saveCursorY mouseY)
 		(theGame setCursor: waitCursor TRUE 310 185)
 	else
 		(theGame setCursor: waitCursor TRUE)
@@ -523,6 +522,7 @@
 )
 
 (procedure (HandsOn &tmp i)
+	;enable ego control
 	(if isHandsOff
 		(= isHandsOff FALSE)
 		(theGame setSpeed: egoSpeed)
@@ -570,171 +570,13 @@
 	(return
 		(if (not (HaveMouse))
 			(theGame
-				setCursor: ((theIconBar curIcon?) cursor?) TRUE oldMouseX oldMouseY
+				setCursor: ((theIconBar curIcon?) cursor?) TRUE saveCursorX saveCursorY
 			)
 		else
 			(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
 		)
 	)
 )
-
-;;;(procedure (HandsOn &tmp i)
-;;;	(asm
-;;;		lag      isHandsOff
-;;;		bnt      code_1468
-;;;		ldi      0
-;;;		sag      isHandsOff
-;;;		pushi    #setSpeed
-;;;		pushi    1
-;;;		lsg      egoSpeed
-;;;		lag      theGame
-;;;		send     6
-;;;		ldi      6
-;;;		sag      egoSpeed
-;;;		pushi    #canControl
-;;;		pushi    1
-;;;		pushi    1
-;;;		pushi    347
-;;;		pushi    1
-;;;		pushi    1
-;;;		class    User
-;;;		send     12
-;;;code_1468:
-;;;		pushi    #enable
-;;;		pushi    9
-;;;		pushi    1
-;;;		pushi    2
-;;;		pushi    3
-;;;		pushi    4
-;;;		pushi    5
-;;;		pushi    6
-;;;		pushi    7
-;;;		pushi    8
-;;;		pushi    9
-;;;		lag      theIconBar
-;;;		send     22
-;;;		pushi    14
-;;;		pushi    #x
-;;;		pushi    #signal
-;;;		pushi    0
-;;;		lag      ego
-;;;		send     4
-;;;		push    
-;;;		ldi      4096
-;;;		or      
-;;;		push    
-;;;		lag      ego
-;;;		send     6
-;;;		pushi    0
-;;;		calle    RestoreTheCursor,  0
-;;;		pushi    #curInvIcon
-;;;		pushi    0
-;;;		lag      theIconBar
-;;;		send     4
-;;;		not     
-;;;		bnt      code_14b2
-;;;		pushi    #disable
-;;;		pushi    1
-;;;		pushi    7
-;;;		lag      theIconBar
-;;;		send     6
-;;;code_14b2:
-;;;		ldi      12
-;;;		lagi     egoStats
-;;;		not     
-;;;		bt       code_14e5
-;;;		ldi      17
-;;;		sat      i
-;;;code_14be:
-;;;		lst      i
-;;;		ldi      24
-;;;		le?     
-;;;		bnt      code_14e1
-;;;		pushi    #knows
-;;;		pushi    1
-;;;		lst      i
-;;;		lag      ego
-;;;		send     6
-;;;		bnt      code_14dd
-;;;		ldi      1
-;;;		ret     
-;;;		pushi    1
-;;;		pushi    814
-;;;		callk    DisposeScript,  2
-;;;code_14dd:
-;;;		+at      i
-;;;		jmp      code_14be
-;;;code_14e1:
-;;;		not     
-;;;		bnt      code_14ef
-;;;code_14e5:
-;;;		pushi    #disable
-;;;		pushi    1
-;;;		pushi    6
-;;;		lag      theIconBar
-;;;		send     6
-;;;code_14ef:
-;;;		pushi    #curInvIcon
-;;;		pushi    0
-;;;		lag      theIconBar
-;;;		send     4
-;;;		not     
-;;;		bnt      code_1519
-;;;		pushi    #curIcon
-;;;		pushi    0
-;;;		lag      theIconBar
-;;;		send     4
-;;;		push    
-;;;		pushi    #at
-;;;		pushi    1
-;;;		pushi    7
-;;;		lag      theIconBar
-;;;		send     6
-;;;		eq?     
-;;;		bnt      code_1519
-;;;		pushi    #advanceCurIcon
-;;;		pushi    0
-;;;		lag      theIconBar
-;;;		send     4
-;;;code_1519:
-;;;		pushi    0
-;;;		callk    HaveMouse,  0
-;;;		not     
-;;;		bnt      code_1542
-;;;		pushi    #setCursor
-;;;		pushi    4
-;;;		pushi    #cursor
-;;;		pushi    0
-;;;		pushi    #curIcon
-;;;		pushi    0
-;;;		lag      theIconBar
-;;;		send     4
-;;;		send     4
-;;;		push    
-;;;		pushi    1
-;;;		lsg      oldMouseX
-;;;		lsg      oldMouseY
-;;;		lag      theGame
-;;;		send     12
-;;;		jmp      code_1559
-;;;code_1542:
-;;;		pushi    #setCursor
-;;;		pushi    2
-;;;		pushi    #cursor
-;;;		pushi    0
-;;;		pushi    #curIcon
-;;;		pushi    0
-;;;		lag      theIconBar
-;;;		send     4
-;;;		send     4
-;;;		push    
-;;;		pushi    1
-;;;		lag      theGame
-;;;		send     8
-;;;code_1559:
-;;;		ret     
-;;;	)
-;;;)
 
 (procedure (Bset flagEnum)
 	(= [gameFlags (/ flagEnum 16)]
@@ -764,6 +606,9 @@
 )
 
 (class HQEgo of Ego
+	;this is a special subclass of Ego to handle the
+	; Quest for Glory specific attributes the hero has 
+	; i.e. skill management, magic, etc.
 	(properties
 		view 0
 		noun N_EGO
@@ -810,7 +655,7 @@
 				(Print addText: @str init:)
 			)
 		)
-		(if (< (= num (+ num oldNum)) 0)
+		(if (< (+= num oldNum) 0)
 			(= num 0)
 			(if (== (theIconBar curInvIcon?) obj)
 				(theIconBar disable: (theIconBar useIconItem?))
@@ -873,19 +718,16 @@
 		(if
 		(and [egoStats MAGIC] (> num [egoStats what]))
 			(= [egoStats what] num)
-			(= spellMask
-				(|
-					spellMask
-					(switch (- what OPEN)
-						(0 SPELL_OPEN)
-						(1 SPELL_DETECT)
-						(2 SPELL_TRIGGER)
-						(3 SPELL_DAZZLE)
-						(4 SPELL_ZAP)
-						(5 SPELL_CALM)
-						(6 SPELL_FLAMEDART)
-						(7 SPELL_FETCH)
-					)
+			(|= spellMask
+				(switch (- what OPEN)
+					(0 SPELL_OPEN)
+					(1 SPELL_DETECT)
+					(2 SPELL_TRIGGER)
+					(3 SPELL_DAZZLE)
+					(4 SPELL_ZAP)
+					(5 SPELL_CALM)
+					(6 SPELL_FLAMEDART)
+					(7 SPELL_FETCH)
 				)
 			)
 			(theIconBar enable: ICON_CAST)
@@ -895,8 +737,7 @@
 )
 
 (instance stopGroop of GradualLooper
-	(properties)
-	
+	;ego's GradualLooper
 	(method (doit)
 		(if
 			(and
@@ -910,11 +751,11 @@
 )
 
 (instance statusCode of Code
-	(properties)
-	
+	;draw the status line
 	(method (doit roomNum &tmp [statusBuf 50] [scoreBuf 50])
 		(if
 			(not
+				;don't draw the status line in these rooms
 				(OneOf roomNum
 					LOGOROOM SPEED INTRO CHARSEL CHALLOC CHARSHEET NOTICE NOTICE2
 					32 340 ARENA 171 172
@@ -945,7 +786,6 @@
 )
 
 (class Actions of Code
-	
 	(method (doVerb)
 		(return FALSE)
 	)
@@ -977,6 +817,7 @@
 		(if
 			(= theTalker
 				(switch who
+					;all talkers in the game
 					(NARRATOR narrator)
 					(BORIS narrator)
 					(BAKER narrator)
@@ -1013,7 +854,7 @@
 					(KARL (ScriptID 37 1))
 					(MASTER (ScriptID 39 4))
 					(MEEP (ScriptID 160 0))
-					(STOOGE (ScriptID 95 1))
+					(STOOGE (ScriptID 95 1))	;just a guess, but there's no such talker in that room
 					(SHAMEEN (ScriptID 301 1))
 					(SHEMA (ScriptID 301 2))
 					(SHERIFF (ScriptID 300 1))
@@ -1035,9 +876,8 @@
 )
 
 (instance Glory of Game
-	(properties)
-	
 	(method (init &tmp egoSW versionFile)
+		;set up the game's objects and globals
 		StopWalk
 		PolyPath
 		Polygon
@@ -1140,22 +980,28 @@
 	(method (doit &tmp thisTime)
 		(super doit:)
 		(if
+			;if we've started the game, and time has passed since the last loop,
+			;run the regular cycle stuff
 			(and
 				(Btst fInMainGame)
 				(!= oldSysTime (= thisTime (GetTime SYSTIME1)))
 			)
 			(= oldSysTime thisTime)
 			(++ Clock)
+			;if it's passed day 7, then time passes twice as fast.			
 			(if (and (>= Day 7) (& Clock 1))
 				(++ Clock)
 			)
+			;if it's passed 3600, change to the next day.
 			(if (>= Clock GAMEDAY)
 				(= Clock 0)
 				(NextDay)
 			)
+			;if ego's sneaking, use the skill a bit
 			(if (== egoGait MOVE_SNEAK)
 				(SkillUsed STEALTH 1)
 			)
+			;if ego's cursed, and time is up, time to die!
 			(if
 				(and
 					(Btst fBabaCurse)
@@ -1167,39 +1013,50 @@
 				(Bclr fBabaCurse)
 				(messager say: N_CUE NULL C_BABA_CURSE 0 self SYSTEM)
 			)
+			;if Bruno has just left the target range, count down the seconds until he's out of range.
 			(if brunoTimer
 				(-- brunoTimer)
 			)
+			;if we advance to a new hour, change timeODay
 			(if (not (mod Clock GAMEHOUR))
 				(switch Clock
 					(300
+						;not yet dawn
 						(= timeODay TIME_NOTYETDAWN)
 					)
 					(750
+						;day is dawning
 						(= Night FALSE)
 						(= timeODay TIME_DAWN)
 						(Bclr fStableClean)
 						(PalVary PALVARYREVERSE 150)
 					)
 					(1050
+						;time for breakfast
 						(EatMeal)
 					)
 					(1200
+						;mid-morning
 						(= timeODay TIME_MIDMORNING)
 					)
 					(1650
+						;midday
 						(= timeODay TIME_MIDDAY)
 					)
 					(2100
+						;midafternoon
 						(= timeODay TIME_MIDAFTERNOON)
 					)
 					(2400
+						;time for dinner
 						(EatMeal)
 					)
 					(2550
+						;sunset approaches
 						(= timeODay TIME_SUNSET)
 					)
 					(3000
+						;night is still young
 						(= Night TRUE)
 						(PalVary PALVARYSTART (curRoom picture?) 150)
 						(if nightPalette
@@ -1208,11 +1065,13 @@
 						(= timeODay TIME_NIGHT)
 					)
 					(3450
+						;middle of the night
 						(Bset fFatigued)
 						(= timeODay TIME_MIDNIGHT)
 					)
 				)
 			)
+			;getting tired from lack of sleep
 			(if (and (Btst fFatigued) (not fastCast))
 				(Bclr fFatigued)
 				(if (== (++ lostSleep) 1)
@@ -1221,9 +1080,10 @@
 					(messager say: N_PROCS NULL NULL 9 0 PROCS)
 				)
 			)
+			;if ego has used the Undead Unguent, we should decrease its timer.
 			(if (Btst fGhostOil)
 				(switch (-- ghostOilTimer)
-					(24
+					(24	;getting close, so print a warning
 						(if fastCast
 							(= ghostOilTimer 30)
 						else
@@ -1231,6 +1091,7 @@
 						)
 					)
 					(0
+						;oil has worn off
 						(if fastCast
 							(= ghostOilTimer 5)
 						else
@@ -1240,29 +1101,35 @@
 					)
 				)
 			)
+			;every 20 game seconds, ego gets refreshed in Stamina.
 			(if (not (-- stamCounter))
 				(if fastCast
 					(= stamCounter 5)
 				else
-					(= stamCounter 20)
+					(= stamCounter STAM_RATE)
 					(cond 
+						;if the hero's starving, or has gone more than 1 day without sleep, reduce SP by 5
 						((or (Btst fStarving) (> lostSleep 1))
 							(UseStamina 5)
 						)
+						;if the Hero's running, then reduce SP by 2
 						((== egoGait MOVE_RUN)
 							(UseStamina 2)
 						)
+						;if the hero's not getting hungry, and hasn't gone a day without sleep, then regain by 1
 						((and (not (Btst fHungry)) (not lostSleep))
 							(UseStamina -1)
 						)
 					)
 				)
+				;mana gets refreshed once every 5 stamina refreshes
 				(if (not (-- manaCounter))
-					(= manaCounter 5)
+					(= manaCounter MANA_RATE)
 					(UseMana -1)
 				)
+				;health gets refreshed once every 15 stamina refreshes
 				(if (not (-- healCounter))
-					(= healCounter 15)
+					(= healCounter HEAL_RATE)
 					(TakeDamage -1)
 				)
 			)
@@ -1291,9 +1158,11 @@
 	(method (startRoom roomNum &tmp [scriptNum 10] [debugNum 10])
 		(SaveTheCursor)
 		(theGame setCursor: waitCursor TRUE)
-		(StartARoom roomNum)
+		(StartARoom roomNum) ;Most of the startRoom method was moved into its own script.
 		(Message MsgGet SYSTEM N_CUE NULL C_SCRIPT_NUM 1 @scriptNum)
 		(Format @debugNum @scriptNum DEBUG)
+		;if debugging and memory is fragmented, bring up a warning and the internal debugger
+		; WARNING: The debugger is not in the interpreter, so using it crashes the game!
 		(if (or debugging (FileIO fileExists @debugNum))
 			(if
 				(and
@@ -1322,6 +1191,7 @@
 			)
 		)
 		(if
+			;all rooms where you can encounter a monster
 			(OneOf roomNum
 				11 12 17 18 19 23 24 25 26 27 33
 				34 35 36 42 43 44 51 52 56 57 61
@@ -1529,6 +1399,7 @@
 	)
 	
 	(method (cue)
+		;cue death from Baba Yaga's curse
 		(EgoDead C_DIE_BABA_CURSE C_DIE_BABA_CURSE_TITLE)
 	)
 	
@@ -1552,27 +1423,18 @@
 )
 
 (instance checkIcon of Code
-	(properties)
-	
 	(method (doit theIcon)
 		(if
 			(and
 				(theIcon isKindOf: IconItem)
 				(& (theIcon signal?) DISABLED)
 			)
-			(= disabledIcons
-				(|
-					disabledIcons
-					(>> $8000 (theIconBar indexOf: theIcon))
-				)
-			)
+			(|= disabledIcons (>> $8000 (theIconBar indexOf: theIcon)))
 		)
 	)
 )
 
 (instance gcWin of GloryWindow
-	(properties)
-	
 	(method (open &tmp t l b r theColor theMaps thePri [str 15] [scoreBuf 15])
 		(= thePri -1)
 		(self
@@ -1809,8 +1671,6 @@
 )
 
 (instance hq1DoVerbCode of Code
-	(properties)
-	
 	(method (doit theVerb theObj &tmp oldCurIcon index [str 50] evt)
 		(if modelessDialog
 			(modelessDialog dispose:)
@@ -1850,8 +1710,7 @@
 						(evt dispose:)
 					)
 					(else 
-						(if
-						(= oldCurIcon (theIconBar curInvIcon?))
+						(if (= oldCurIcon (theIconBar curInvIcon?))
 							(switch (= index (inventory indexOf: oldCurIcon))
 								(iRock
 									(CastRock 0)
@@ -1875,8 +1734,6 @@
 )
 
 (instance hq1FtrInit of Code
-	(properties)
-	
 	(method (doit theObj &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8 temp9)
 		(if (== (theObj sightAngle?) ftrDefault)
 			(theObj sightAngle: 40)
@@ -1925,7 +1782,6 @@
 (instance longSong2 of Sound)
 
 (instance mainIconBar of IconBar
-	
 	(method (init)
 		(self
 			add:
@@ -1979,8 +1835,9 @@
 				(= prevIcon curIcon)
 				(= curIcon iconWalk)
 			)
-			(
-			(and prevIcon (not (& (prevIcon signal?) DISABLED))) (= curIcon prevIcon))
+			((and prevIcon (not (& (prevIcon signal?) DISABLED)))
+				(= curIcon prevIcon)
+			)
 		)
 		(theGame setCursor: (curIcon cursor?) TRUE)
 	)
@@ -2362,16 +2219,14 @@
 )
 
 (instance qg1ApproachCode of Code
-	(properties)
-	
 	(method (doit theVerb)
 		(switch theVerb
-			(V_LOOK 1)
-			(V_TALK 2)
-			(V_WALK 4)
-			(V_DO 8)
-			(V_MONEY 16)
-			(else  -32768)
+			(V_LOOK $0001)
+			(V_TALK $0002)
+			(V_WALK $0004)
+			(V_DO $0008)
+			(V_MONEY $0010)
+			(else  $8000)
 		)
 	)
 )

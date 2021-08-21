@@ -141,19 +141,19 @@
 		)
 		(crusherTeller init: crusher @local70 @bartenderAttention2 @bartenderAttention6)
 		(crusher init: posn: 31 164 stopUpd:)
-		(Bclr OBTAINED_BAR_NOTE)
+		(Bclr fTookBarNote)
 		(cond 
 			(
 				(or
 					(>= barNote noteNosyRead)
 					(and (> barNote 0) (not (Btst fBearGone)))
 				)
-				(Bset OBTAINED_BAR_NOTE)
+				(Bset fTookBarNote)
 			)
-			((Btst fBeatBrutus) (= barNote noteNosyRead) (Bset OBTAINED_BAR_NOTE))
+			((Btst fBeatBrutus) (= barNote noteNosyRead) (Bset fTookBarNote))
 			((and (Btst SPIED_THIEVES) (== barNote noteArchery)) (= barNote noteArcheryRead))
 			((and (Btst fBearGone) (<= barNote noteSuspicious)) (= barNote noteSuspiciousRead))
-			((== barNote noteArchery) (Bset OBTAINED_BAR_NOTE))
+			((== barNote noteArchery) (Bset fTookBarNote))
 		)
 		(curRoom
 			setFeatures:
@@ -189,7 +189,7 @@
 		(= drinkConsumed 0)
 		(= drinkOrdered 0)
 		(= numberOfAlesDrunk 0)
-		(if (not (Btst OBTAINED_BAR_NOTE))
+		(if (not (Btst fTookBarNote))
 			(paper init: approachVerbs: V_DO stopUpd:)
 		)
 		(rtStool init:)
@@ -270,7 +270,7 @@
 		(switch (++ noteState)
 			(1
 				(paper hide:)
-				(Bset OBTAINED_BAR_NOTE)
+				(Bset fTookBarNote)
 				(= tookNote TRUE)
 				(++ barNote)
 				(SolvePuzzle POINTS_PICKUPNOTE 2)
@@ -566,7 +566,7 @@
 		(switch theVerb
 			(V_LOOK
 				(if
-				(and (ego inRect: 137 138 180 155) (not (Btst OBTAINED_BAR_NOTE)))
+				(and (ego inRect: 137 138 180 155) (not (Btst fTookBarNote)))
 					(messager say: N_FLOOR V_LOOK C_SEEPAPER)
 				else
 					(messager say: N_FLOOR V_LOOK C_BARINTERACTIONS)
@@ -1889,7 +1889,7 @@
 			(2
 				(paper show:)
 				(= tookNote FALSE)
-				(Bclr OBTAINED_BAR_NOTE)
+				(Bclr fTookBarNote)
 				(messager say: N_ROOM 0 C_PUTITBACK 1 self)
 			)
 			(3 (self dispose:) (HandsOn))

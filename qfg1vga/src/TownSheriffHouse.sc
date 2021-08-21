@@ -142,9 +142,9 @@
 		(tumbleMusic init:)
 		(miscMusic init:)
 		(= deathMusic (SoundFX 52))
-		(if (Btst CRACKED_SHERIFF_SAFE) (= safeOpen TRUE))
-		(if (Btst UNCOVERED_SHERIFF_SAFE) (= safeRevealed TRUE))
-		(if (Btst STOLE_SHERIFF_VASE) (= vaseOutOfWay TRUE))
+		(if (Btst fCrackedSafe) (= safeOpen TRUE))
+		(if (Btst fUncoveredSafe) (= safeRevealed TRUE))
+		(if (Btst fStoleVase) (= vaseOutOfWay TRUE))
 		(NormalEgo)
 		(ego
 			posn: 163 188
@@ -159,11 +159,11 @@
 		(leftDoor ignoreActors: init: stopUpd:)
 		(rightDoor ignoreActors: init: stopUpd:)
 		(bottomDoor ignoreActors: init: stopUpd:)
-		(if (not (Btst STOLE_SHERIFF_VASE))
+		(if (not (Btst fStoleVase))
 			(theVase
 				illegalBits: 0
 				ignoreActors:
-				posn: (if (Btst MOVED_SHERIFF_VASE) 224 else 228) (if (Btst MOVED_SHERIFF_VASE) 150 else 120)
+				posn: (if (Btst fMovedVase) 224 else 228) (if (Btst fMovedVase) 150 else 120)
 				setPri: 10
 				init:
 				stopUpd:
@@ -171,15 +171,15 @@
 		)
 		(portrait
 			posn:
-				(if (not (Btst UNCOVERED_SHERIFF_SAFE)) 229 else 238)
-				(if (not (Btst UNCOVERED_SHERIFF_SAFE)) 104 else 88)
+				(if (not (Btst fUncoveredSafe)) 229 else 238)
+				(if (not (Btst fUncoveredSafe)) 104 else 88)
 			init:
 			stopUpd:
 		)
-		(if (not (Btst STOLE_SHERIFF_CANDELABRA))
+		(if (not (Btst fStoleCandelabra))
 			(candelabra setPri: 9 init: stopUpd:)
 		)
-		(if (not (Btst STOLE_OTTO_MUSIC_BOX)) (musicBox init: stopUpd:))
+		(if (not (Btst fStoleMusicBox)) (musicBox init: stopUpd:))
 		(sneakMusic play:)
 	)
 	
@@ -208,7 +208,7 @@
 				(and
 					local3
 					(ego inRect: 92 48 121 55)
-					(not (Btst SHERIFF_AWAKENED))
+					(not (Btst fWokeUpSheriff))
 					(or (== (ego loop?) 5) (== (ego loop?) 1))
 				)
 				(= local3 0)
@@ -220,7 +220,7 @@
 	
 	(method (dispose)
 		(Bclr fOttoBackToBed)
-		(Bset VISITED_SHERIFF_HOUSE)
+		(Bset fBeenIn321)
 		(DisposeScript DPATH)
 		(DisposeScript MOVECYC)
 		(= deathMusic (SoundFX 26))
@@ -261,7 +261,7 @@
 			(V_LOOK
 				(cond 
 					((not safeOpen) (messager say: N_SAFE V_LOOK C_LOOTSAFE))
-					((Btst SEARCHED_SHERIFF_SAFE) (messager say: N_SAFE V_LOOK C_SAFEEMPTY))
+					((Btst fSearchedSafe) (messager say: N_SAFE V_LOOK C_SAFEEMPTY))
 					(else (messager say: N_SAFE V_LOOK C_MYMISTAKE))
 				)
 			)
@@ -290,7 +290,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst SEARCHED_SHERIFF_DRAWER)
+				(if (Btst fSearchedDrawer)
 					(messager say: 10 1 2)
 				else
 					(messager say: 10 1 1)
@@ -323,7 +323,7 @@
 			(V_LOOK
 				(cond 
 					((not safeOpen) (messager say: 12 1 4))
-					((Btst SEARCHED_SHERIFF_SAFE) (messager say: 12 1 5))
+					((Btst fSearchedSafe) (messager say: 12 1 5))
 					(else (messager say: 12 1 3))
 				)
 			)
@@ -375,7 +375,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst STOLE_OTTO_MUSIC_BOX)
+				(if (Btst fStoleMusicBox)
 					(messager say: N_TABLE V_LOOK C_TOOKMUSICBOX)
 				else
 					(messager say: N_TABLE V_LOOK C_MUSICBOXONTABLE)
@@ -506,7 +506,7 @@
 			(V_LOOK
 				(cond 
 					((not safeOpen) (messager say: N_SAFEDOOR V_LOOK C_LOOTSAFE))
-					((Btst SEARCHED_SHERIFF_SAFE) (messager say: N_SAFEDOOR V_LOOK C_SAFEEMPTY))
+					((Btst fSearchedSafe) (messager say: N_SAFEDOOR V_LOOK C_SAFEEMPTY))
 					(else (messager say: N_SAFEDOOR V_LOOK C_LOOKINSAFE))
 				)
 			)
@@ -574,7 +574,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst SEARCHED_SHERIFF_DRAWER)
+				(if (Btst fSearchedDrawer)
 					(messager say: N_DRAWER V_LOOK C_DRAWERLOOTED)
 				else
 					(messager say: N_DRAWER V_LOOK C_DRAWERNOTLOOTED)
@@ -716,7 +716,7 @@
 				(ego setMotion: PolyPath 163 169 self)
 			)
 			(1
-				(if (and (!= prevRoomNum 0) (not (Btst VISITED_SHERIFF_HOUSE)))
+				(if (and (!= prevRoomNum 0) (not (Btst fBeenIn321)))
 					(= cycles 8)
 				else
 					(HandsOn)
@@ -828,7 +828,7 @@
 				(messager say: N_ROOM 0 0 7 self)
 			)
 			(1
-				(Bset MOVED_SHERIFF_VASE)
+				(Bset fMovedVase)
 				(= vaseOutOfWay TRUE)
 				(theVase posn: 224 150)
 				(self cue:)
@@ -956,10 +956,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Btst SEARCHED_SHERIFF_SAFE)) (ego get: iSilver 50))
+				(if (not (Btst fSearchedSafe)) (ego get: iSilver 50))
 				(HandsOff)
 				(miscMusic number: (SoundFX 35) loop: 1 play:)
-				(if (not (Btst CRACKED_SHERIFF_SAFE))
+				(if (not (Btst fCrackedSafe))
 					(safeDoor setCycle: EndLoop self)
 				else
 					(= seconds 2)
@@ -967,7 +967,7 @@
 			)
 			(1
 				(SolvePuzzle POINTS_CRACKSAFE 1 2)
-				(if (not (Btst CRACKED_SHERIFF_SAFE))
+				(if (not (Btst fCrackedSafe))
 					(++ safeCrackSuccess)
 					(onOpenSafe init:)
 					(messager say: N_ROOM 0 0 24 self)
@@ -975,20 +975,20 @@
 			)
 			(2 (= seconds 2))
 			(3
-				(if (Btst SEARCHED_SHERIFF_SAFE)
+				(if (Btst fSearchedSafe)
 					(messager say: N_ROOM 0 C_SAFEEMPTY 1 self)
 				else
 					(messager say: N_ROOM 0 C_FINDCOINBAG 1 self)
 				)
 			)
 			(4
-				(Bset CRACKED_SHERIFF_SAFE)
+				(Bset fCrackedSafe)
 				(= safeOpen TRUE)
 				(= ticks 30)
 			)
 			(5
-				(if (not (Btst SEARCHED_SHERIFF_SAFE))
-					(Bset SEARCHED_SHERIFF_SAFE)
+				(if (not (Btst fSearchedSafe))
+					(Bset fSearchedSafe)
 					(SolvePuzzle POINTS_TAKESAFEMONEY 1 THIEF)
 					(messager say: N_ROOM 0 C_LOOTSAFE 1 self)
 				else
@@ -1011,9 +1011,9 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(safeDoor cel: (if (Btst CRACKED_SHERIFF_SAFE) 1 else 0) init: stopUpd:)
+				(safeDoor cel: (if (Btst fCrackedSafe) 1 else 0) init: stopUpd:)
 				(portrait posn: 238 88)
-				(Bset UNCOVERED_SHERIFF_SAFE)
+				(Bset fUncoveredSafe)
 				(= cycles 2)
 			)
 			(1
@@ -1035,7 +1035,7 @@
 				(chestDrawer setCycle: EndLoop self)
 			)
 			(1
-				(Bset SEARCHED_SHERIFF_DRAWER)
+				(Bset fSearchedDrawer)
 				(messager say: N_ROOM 0 0 12 self)
 			)
 			(2
@@ -1055,7 +1055,7 @@
 			(0
 				(HandsOff)
 				(portrait posn: 229 104)
-				(Bclr UNCOVERED_SHERIFF_SAFE)
+				(Bclr fUncoveredSafe)
 				(= cycles 2)
 			)
 			(1
@@ -1105,7 +1105,7 @@
 				(= ticks 30)
 			)
 			(4
-				(otto setMotion: MoveTo STOLE_SHERIFF_CANDELABRA 134 self)
+				(otto setMotion: MoveTo fStoleCandelabra 134 self)
 			)
 			(5 (= ticks 60))
 			(6
@@ -1154,7 +1154,7 @@
 				(= ticks 30)
 			)
 			(5
-				(Bset SHERIFF_AWAKENED)
+				(Bset fWokeUpSheriff)
 				(ego
 					view: 525
 					setLoop: 3
@@ -1197,7 +1197,7 @@
 					setCel: 0
 					setCycle: 0
 					setMotion: 0
-					posn: 52 UNCOVERED_SHERIFF_SAFE
+					posn: 52 fUncoveredSafe
 				)
 				(egoHead
 					view: 507
@@ -1478,7 +1478,7 @@
 			(3
 				(= local7 0)
 				(= local8 0)
-				(if (Btst SEARCHED_SHERIFF_DRAWER)
+				(if (Btst fSearchedDrawer)
 					(messager say: N_ROOM 0 0 16 self)
 				else
 					(ego setScript: robDesk)
@@ -1524,8 +1524,8 @@
 				(= local8 0)
 				(cond 
 					((not vaseOutOfWay) (ego setScript: vaseScript))
-					((not (Btst UNCOVERED_SHERIFF_SAFE))
-						(Bset UNCOVERED_SHERIFF_SAFE)
+					((not (Btst fUncoveredSafe))
+						(Bset fUncoveredSafe)
 						(= safeRevealed TRUE)
 						(SolvePuzzle POINTS_MOVEPAINTING 1 THIEF)
 						(ego setScript: raisePainting)
@@ -1545,7 +1545,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (and safeOpen (not (Btst SEARCHED_SHERIFF_SAFE))) (ego get: iSilver 50))
+				(if (and safeOpen (not (Btst fSearchedSafe))) (ego get: iSilver 50))
 				(HandsOff)
 				(= local7 219)
 				(= local8 145)
@@ -1584,19 +1584,19 @@
 					(
 						(and
 							(TrySkill PICK 0 (- lockPickBonus 20))
-							(not (Btst CRACKED_SHERIFF_SAFE))
+							(not (Btst fCrackedSafe))
 						)
 						(ego setScript: openSafeDoor)
 					)
-					((and (Btst SEARCHED_SHERIFF_SAFE) (Btst CRACKED_SHERIFF_SAFE))
+					((and (Btst fSearchedSafe) (Btst fCrackedSafe))
 						(safeDoor setCycle: BegLoop)
-						(Bclr CRACKED_SHERIFF_SAFE)
+						(Bclr fCrackedSafe)
 						(= safeOpen FALSE)
 						(onOpenSafe dispose:)
 						(messager say: N_ROOM 0 C_SAFEEMPTY 2 self)
 					)
 					(safeOpen
-						(Bset SEARCHED_SHERIFF_SAFE)
+						(Bset fSearchedSafe)
 						(SolvePuzzle POINTS_TAKESAFEMONEY 1 THIEF)
 						(messager say: N_ROOM 0 C_LOOTSAFE 1 self)
 					)
@@ -1646,10 +1646,10 @@
 			(3
 				(= local7 0)
 				(= local8 0)
-				(if (Btst MOVED_SHERIFF_VASE)
-					(Bset STOLE_SHERIFF_VASE)
+				(if (Btst fMovedVase)
+					(Bset fStoleVase)
 					(= vaseOutOfWay TRUE)
-					(messager say: N_ROOM 0 0 18 self)
+					(messager say: N_ROOM NULL NULL 18 self)
 					(SolvePuzzle POINTS_TAKEVASE 1 THIEF)
 					(theVase dispose:)
 				else
@@ -1658,7 +1658,9 @@
 			)
 			(4
 				(HandsOn)
-				(if (Btst MOVED_SHERIFF_VASE) (ego get: iVase))
+				(if (Btst fMovedVase)
+					(ego get: iVase)
+				)
 				(self dispose:)
 			)
 		)
@@ -1698,7 +1700,7 @@
 			(3
 				(= local7 0)
 				(= local8 0)
-				(Bset STOLE_SHERIFF_CANDELABRA)
+				(Bset fStoleCandelabra)
 				(candelabra dispose:)
 				(messager say: N_ROOM 0 0 19 self)
 				(SolvePuzzle POINTS_TAKECANDELABRA 1 THIEF)
@@ -1746,20 +1748,20 @@
 			(3
 				(= local7 0)
 				(= local8 0)
-				(if (Btst STOLE_OTTO_MUSIC_BOX)
+				(if (Btst fStoleMusicBox)
 					(musicBox dispose:)
 					(miscMusic stop:)
 					(messager say: N_ROOM 0 0 20 self)
 					(onTable init:)
 					(SolvePuzzle POINTS_TAKEMUSICBOX 1 THIEF)
 				else
-					(Bset STOLE_OTTO_MUSIC_BOX)
+					(Bset fStoleMusicBox)
 					(ego setScript: faceTheMusicScript)
 				)
 			)
 			(4
 				(HandsOn)
-				(if (Btst STOLE_OTTO_MUSIC_BOX) (ego get: iMusicBox))
+				(if (Btst fStoleMusicBox) (ego get: iMusicBox))
 				(self dispose:)
 			)
 		)

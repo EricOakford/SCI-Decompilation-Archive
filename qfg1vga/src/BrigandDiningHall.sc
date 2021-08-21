@@ -1162,7 +1162,7 @@
 				(= ticks 120)
 			)
 			(14
-				(EgoDead C_DIE_DOOR_OPEN C_DIE_DOOR_OPEN_TITLE)
+				(EgoDead C_DIE_BLOCK_DOOR C_DIE_BLOCK_DOOR_TITLE)
 			)
 		)
 	)
