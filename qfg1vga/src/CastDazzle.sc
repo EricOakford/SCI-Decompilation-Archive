@@ -8,7 +8,7 @@
 (use System)
 
 (public
-	CastDazzle 0
+	CastDazz 0
 )
 
 (local
@@ -19,7 +19,7 @@
 	dazzSound
 	wasHandsOn
 )
-(procedure (CastDazzle theClient param2)
+(procedure (CastDazz theClient param2)
 	(if (not isHandsOff)
 		(= wasHandsOn TRUE)
 	)

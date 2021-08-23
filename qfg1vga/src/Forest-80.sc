@@ -45,8 +45,8 @@
 		(if (> brunoTimer 260)
 			(self encChance: 0)
 			(= monsterHealth (= monsterNum 0))
-			(User canInput: 0)
-			(ChangeGait MOVE_WALK 0)
+			(User canInput: FALSE)
+			(ChangeGait MOVE_WALK FALSE)
 			(switch prevRoomNum
 				(79
 					(ego setScript: egoDiesFrom79)
@@ -101,8 +101,6 @@
 )
 
 (instance egoLoses of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -189,8 +187,6 @@
 )
 
 (instance egoDiesFrom79 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -223,14 +219,14 @@
 					setMotion: MoveTo 61 96 self
 				)
 			)
-			(3 (EgoDead 31 32))
+			(3
+				(EgoDead 31 32)
+			)
 		)
 	)
 )
 
 (instance egoDiesFrom81 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

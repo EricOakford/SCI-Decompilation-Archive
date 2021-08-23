@@ -60,7 +60,7 @@
 					yourself:
 				)
 		)
-		(self style: -32761)
+		(self style: (| BLACKOUT IRISOUT))
 		(super init:)
 		(= oldSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)

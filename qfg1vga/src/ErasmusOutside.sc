@@ -1140,7 +1140,7 @@
 			(7
 				(Bset fErasmusWarpOut)
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 -32761)
+				(curRoom drawPic: 400 (| BLACKOUT IRISOUT))
 				(self cue:)
 			)
 			(8 (curRoom newRoom: 28))

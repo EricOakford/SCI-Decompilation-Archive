@@ -18,50 +18,42 @@
 (local
 	twisterX
 	twisterY
-	theTwisterX
-	theTwisterY
+	oldTwisterX
+	oldTwisterY
 	local4
 )
 (instance twister of Actor
-	(properties)
-	
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 )
 
 (instance tumbler of Actor
-	(properties)
-	
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 )
 
 (instance swimmer1 of Actor
-	(properties)
-	
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 )
 
 (instance swimmer2 of Actor
-	(properties)
-	
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 )
@@ -76,7 +68,7 @@
 	
 	(method (init)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(self setRegions: FOREST)
 		(super init: &rest)
 		(StatusLine enable:)
@@ -146,8 +138,6 @@
 )
 
 (instance twistIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -169,12 +159,12 @@
 				(= twisterY (twister y?))
 			)
 			(1
-				(= theTwisterX twisterX)
-				(= theTwisterY twisterY)
+				(= oldTwisterX twisterX)
+				(= oldTwisterY twisterY)
 				(= twisterX (Random 20 300))
 				(= twisterY (Random 10 130))
 				(twister
-					setCycle: (if (> twisterX theTwisterX) Forward else Reverse)
+					setCycle: (if (> twisterX oldTwisterX) Forward else Reverse)
 				)
 				(if (Btst fGhostsAttack)
 					(twister setMotion: Follow ego 30)
@@ -216,8 +206,6 @@
 )
 
 (instance spinAcross of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -235,7 +223,7 @@
 					noun: 2
 					startUpd:
 				)
-				(if (Btst 164)
+				(if (Btst fGhostsAttack)
 					(tumbler setMotion: Follow ego 30)
 				else
 					(tumbler setMotion: MoveTo 345 (Random 20 100) self)
@@ -250,8 +238,6 @@
 )
 
 (instance swimLeft of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -271,15 +257,21 @@
 				)
 				(swimmer1 setMotion: MoveTo 7 98 self)
 			)
-			(1 (= ticks (Random 20 80)))
+			(1
+				(= ticks (Random 20 80))
+			)
 			(2
 				(swimmer1 setMotion: MoveTo 7 125 self)
 			)
-			(3 (= ticks (Random 20 80)))
+			(3
+				(= ticks (Random 20 80))
+			)
 			(4
 				(swimmer1 setMotion: MoveTo 7 98 self)
 			)
-			(5 (= ticks (Random 20 80)))
+			(5
+				(= ticks (Random 20 80))
+			)
 			(6
 				(swimmer1 setMotion: MoveTo 7 125 self)
 			)
@@ -292,8 +284,6 @@
 )
 
 (instance swimRight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -313,19 +303,27 @@
 				)
 				(swimmer2 setMotion: MoveTo 260 165 self)
 			)
-			(1 (= ticks (Random 20 60)))
+			(1
+				(= ticks (Random 20 60))
+			)
 			(2
 				(swimmer2 setMotion: MoveTo 260 141 self)
 			)
-			(3 (= ticks (Random 20 60)))
+			(3
+				(= ticks (Random 20 60))
+			)
 			(4
 				(swimmer2 setMotion: MoveTo 260 165 self)
 			)
-			(5 (= ticks (Random 20 60)))
+			(5
+				(= ticks (Random 20 60))
+			)
 			(6
 				(swimmer2 setMotion: MoveTo 260 141 self)
 			)
-			(7 (= ticks (Random 20 60)))
+			(7
+				(= ticks (Random 20 60))
+			)
 			(8
 				(swimmer2 setMotion: MoveTo 260 165 self)
 			)

@@ -2,6 +2,26 @@
 ;;; 54.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
+;;; CASES
+
+(define C_NIGHT 1)
+(define C_BANNED 2)
+(define C_NO_PICK 3)
+(define C_HAVE_PICK 4)
+(define C_UPTREE 26)
+(define C_DAY 28)
+(define C_GETROCKS 27)
+(define C_NEST_BURNED 16)
+(define C_FIRST_TIME 19)
+(define C_FALL1 20)
+(define C_FALL2 21)
+(define C_NEST_ON_TREE 29)
+(define C_GET_RING 15)
+(define C_LOOK_HUT 5)
+(define C_MAGIC_ON_TREE 11)
+(define C_AFTER_RING 12)
+(define C_NEST_ON_GROUND 10)
+
 ;;; NOUNS
 
 (define N_ROOM 9)
@@ -15,15 +35,5 @@
 (define N_SIGN 10)
 (define N_PATHRIGHT 8)
 (define N_PATHLEFT 7)
-
-;;; CASES
-
-(define C_NIGHT 1)
-(define C_BANNED 2)
-(define C_NO_PICK 3)
-(define C_HAVE_PICK 4)
-(define C_UPTREE 26)
-(define C_DAY 28)
-(define C_GETROCKS 27)
-(define C_NEST_BURNED 16)
+(define N_TREE 12)
 

@@ -59,8 +59,6 @@
 )
 
 (instance peekABooScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 6 25)))

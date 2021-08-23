@@ -42,4 +42,13 @@
 (define C_SHEGOTIT 18)
 (define C_GOTOSLEEP 32)
 (define C_STARTLEDSTAG 33)
+(define C_FIRST_ENTER 14)
+(define C_FIRST_STAG 34)
+(define C_ENTER_AGAIN 31)
+(define C_STAG_AGAIN 15)
+(define C_ASK_BROUGHT_SEED 28)
+(define C_ASK_FIRST 30)
+(define C_ASK_AGAIN 29)
+(define C_PUT_REGULAR_ACORN 26)
+(define C_ASK_FOR_SEED 27)
 

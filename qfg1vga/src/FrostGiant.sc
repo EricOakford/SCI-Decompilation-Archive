@@ -25,17 +25,39 @@
 	local1
 	local2
 	throwProjectile
-	local4
-	triedToFight
-	local6
-	[local7 7] = [0 2 8 -1 6 3 999]
-	[local14 5] = [0 4 7 5 999]
-	[local19 5]
-	[local24 3] = [0 -1 999]
+	giantGone
+	fightWithSword
+	cueWhat
+	giantTellMainBranch = [
+		STARTTELL
+		C_BRAUGGI
+		C_NORTHLANDS
+		-1		;C_BARGAIN
+		C_HUNGER
+		C_FIGHTING
+		ENDTELL
+		]
+	giantTell1 = [
+		STARTTELL
+		C_FRUIT
+		C_MEAD
+		C_GEM
+		ENDTELL
+		]
+	[giantTellTree 5]
+	giantTellKeys = [
+		STARTTELL
+		-1		;C_BARGAIN
+		ENDTELL
+		]
 )
+
+(enum 1	;cueWhat
+	cueGiant
+	cueGem
+)
+
 (instance giantBlocks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -82,9 +104,9 @@
 	)
 	
 	(method (init)
-		(= [local19 0] @local7)
-		(= [local19 1] @local14)
-		(= [local19 2] 999)
+		(= [giantTellTree 0] @giantTellMainBranch)
+		(= [giantTellTree 1] @giantTell1)
+		(= [giantTellTree 2] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -107,7 +129,7 @@
 		)
 		(LoadMany RES_SOUND 47 9)
 		(LoadMany RES_VIEW 5 517 503)
-		(if (not (= local4 (Btst OBTAINED_GEM)))
+		(if (not (= giantGone (Btst fGotGem)))
 			(LoadMany RES_VIEW 59 502 513 515)
 			(LoadMany RES_SOUND 48 59 65 14)
 		)
@@ -138,7 +160,7 @@
 		(cSound fade:)
 		(NormalEgo)
 		(ChangeGait MOVE_WALK FALSE)
-		(if local4
+		(if giantGone
 			(cSound number: 47)
 			(ego posn: 1 158 init: setMotion: MoveTo 25 158)
 		else
@@ -146,7 +168,7 @@
 			(frostSound number: 14 init:)
 			(ego posn: 1 158 init: setScript: egoInit)
 			(caveMouth init:)
-			(giantTeller init: giant @local7 @local19 @local24)
+			(giantTeller init: giant @giantTellMainBranch @giantTellTree @giantTellKeys)
 		)
 		(cSound loop: 1 play: self)
 	)
@@ -167,11 +189,13 @@
 	(method (doVerb theVerb &tmp spell)
 		(switch theVerb
 			(V_LOOK
-				(= local6 TRUE)
-				(messager say: N_ROOM V_LOOK 0 0 self)
+				(= cueWhat 1)
+				(messager say: N_ROOM V_LOOK NULL 0 self)
 			)
 			(V_DETECT
-				(if (CastSpell spell) (messager say: N_ROOM V_DETECT 0))
+				(if (CastSpell spell)
+					(messager say: N_ROOM V_DETECT NULL)
+				)
 			)
 			(V_TRIGGER
 				(giant setScript: giantMagic)
@@ -192,24 +216,26 @@
 	)
 	
 	(method (cue)
-		(switch local6
-			(1
+		(switch cueWhat
+			(cueGiant
 				(if (not (cast contains: giant))
-					(if (Btst OBTAINED_GEM)
-						(messager say: N_ROOM V_LOOK 18)
+					(if (Btst fGotGem)
+						(messager say: N_ROOM V_LOOK C_GIANTGONE)
 					else
-						(messager say: N_ROOM V_LOOK 19)
+						(messager say: N_ROOM V_LOOK C_GIANTBORED)
 					)
 				)
 			)
-			(2
-				(if (not (ego has: iMagicGem)) (messager say: N_GIANT V_LOOK 9))
+			(cueGem
+				(if (not (ego has: iMagicGem))
+					(messager say: N_GIANT V_LOOK C_LOOKGEM)
+				)
 			)
 			(else 
 				(cSound number: 47 loop: -1 play:)
 			)
 		)
-		(= local6 0)
+		(= cueWhat 0)
 	)
 )
 
@@ -341,7 +367,7 @@
 		view 59
 		loop 4
 		priority 12
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -356,7 +382,7 @@
 		view 59
 		loop 7
 		priority 6
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
@@ -378,19 +404,17 @@
 	(method (init)
 		(= nightPalette 159)
 		(PalVary PALVARYTARGET 159)
-		(kernel_128 59)
+		(AssertPalette 59)
 		(super init: &rest)
 	)
 )
 
 (instance giantTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
 				(V_LOOK
-					(messager say: N_GIANT V_LOOK 0 0 curRoom)
+					(messager say: N_GIANT V_LOOK NULL 0 curRoom)
 					(return TRUE)
 				)
 				(V_DO
@@ -398,7 +422,7 @@
 					(return TRUE)
 				)
 				(V_SWORD
-					(= triedToFight TRUE)
+					(= fightWithSword TRUE)
 					(giant setScript: giantFights)
 					(return TRUE)
 				)
@@ -424,45 +448,13 @@
 				)
 				(else 
 					(if
-						(OneOf
-							theVerb
-							34
-							42
-							44
-							46
-							16
-							38
-							21
-							36
-							39
-							32
-							29
-							37
-							22
-							26
-							14
-							17
-							27
-							23
-							31
-							30
-							40
-							43
-							45
-							53
-							11
-							28
-							20
-							35
-							15
-							10
-							24
-							12
-							18
-							19
-							47
-							41
-							33
+						(OneOf theVerb
+							34 42 44 46 16 38 21
+							36 39 32 29 37 22 26
+							14 17 27 23 31 30 40
+							43 45 53 11 28 20 35
+							15 10 24 12 18 19 47
+							41 33
 						)
 						(messager say: N_GIANT V_LOOK C_NOTHANKS)
 						(return TRUE)
@@ -489,8 +481,6 @@
 )
 
 (instance egoInit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -517,8 +507,6 @@
 )
 
 (instance giantInit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -545,7 +533,7 @@
 				(legs actions: giantTeller init:)
 			)
 			(5
-				(if (== howFast 0)
+				(if (== howFast slow)
 					(self cue:)
 				else
 					(frostSound play:)
@@ -567,13 +555,11 @@
 )
 
 (instance giantExits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 C_GIANTLEAVES 1 self)
+				(messager say: N_ROOM NULL C_GIANTLEAVES 1 self)
 			)
 			(1
 				(legs dispose:)
@@ -605,7 +591,7 @@
 				(giant dispose:)
 				(caveMouth dispose:)
 				(cSound number: 47 play:)
-				(= local4 1)
+				(= giantGone TRUE)
 				(self dispose:)
 				(HandsOn)
 			)
@@ -614,18 +600,16 @@
 )
 
 (instance doneDeal of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 0 0 self)
+				(messager say: N_ROOM NULL NULL 0 self)
 			)
 			(1
 				(ego get: iMagicGem 1)
-				(Bset OBTAINED_GEM)
-				(SolvePuzzle POINTS_GETGLOWINGGEM 8)
+				(Bset fGotGem)
+				(SolvePuzzle f58GetGem 8)
 				(giant setScript: giantExits)
 			)
 		)
@@ -633,8 +617,6 @@
 )
 
 (instance ShowOff of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -663,15 +645,15 @@
 )
 
 (instance Challenge of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(self setScript: ShowOff self)
 			)
-			(1 (messager say: N_GIANT V_CONVERSATION C_FIGHTING 1 self))
+			(1
+				(messager say: N_GIANT V_CONVERSATION C_FIGHTING 1 self)
+			)
 			(2
 				(HandsOn)
 				(giant setScript: giantBlocks)
@@ -681,8 +663,6 @@
 )
 
 (instance WalkToGiant of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -695,7 +675,10 @@
 				)
 			)
 			(1
-				(ego ignoreActors: 0 illegalBits: -32768)
+				(ego
+					ignoreActors: FALSE
+					illegalBits: cWHITE
+				)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -704,13 +687,14 @@
 )
 
 (instance giantFights of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1 egoX egoY temp4 temp5 temp6 temp7)
+	(method (changeState newState &tmp theLoop temp1 theX theY temp4 temp5 theXStep theYStep)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreActors: 1 illegalBits: 0)
+				(ego
+					ignoreActors: TRUE
+					illegalBits: FALSE
+				)
 				(if (and (!= (ego x?) 163) (!= (ego y?) 127))
 					(ego setMotion: MoveTo 163 127 self)
 				else
@@ -719,12 +703,12 @@
 			)
 			(1 (self cue:))
 			(2
-				(= temp0 (if triedToFight 0 else 2))
+				(= theLoop (if fightWithSword 0 else 2))
 				(ego
 					illegalBits: 0
 					ignoreActors:
 					view: 502
-					setLoop: temp0
+					setLoop: theLoop
 					cel: 0
 					setCycle: EndLoop self
 				)
@@ -748,18 +732,18 @@
 					cel: 0
 					illegalBits: 0
 				)
-				(= egoX (ego x?))
-				(= egoY (ego y?))
+				(= theX (ego x?))
+				(= theY (ego y?))
 				(= temp4 144)
 				(= temp5 142)
-				(= temp6 (/ (- temp4 egoX) (- (ego lastCel:) 5)))
-				(= temp7 (/ (- temp5 egoY) (- (ego lastCel:) 5)))
+				(= theXStep (/ (- temp4 theX) (- (ego lastCel:) 5)))
+				(= theYStep (/ (- temp5 theY) (- (ego lastCel:) 5)))
 				(giant setCycle: EndLoop self)
-				(ego xStep: temp6 yStep: temp7 setCycle: CycleTo 5 1)
+				(ego xStep: theXStep yStep: theYStep setCycle: CycleTo 5 1)
 			)
 			(5
 				(frostSound play:)
-				(if (Btst WHACKED_BY_GIANT) (ego setCel: 5 setCycle: CycleTo 8 1))
+				(if (Btst fHitByGiant) (ego setCel: 5 setCycle: CycleTo 8 1))
 				(giant setCycle: BegLoop self)
 			)
 			(6
@@ -767,10 +751,10 @@
 				(= ticks 120)
 			)
 			(7
-				(if (or (Btst WHACKED_BY_GIANT) (not (TakeDamage 20)))
+				(if (or (Btst fHitByGiant) (not (TakeDamage 20)))
 					(EgoDead 86 87 3 3 59)
 				else
-					(Bset WHACKED_BY_GIANT)
+					(Bset fHitByGiant)
 					(self cue:)
 				)
 			)
@@ -799,7 +783,7 @@
 				(self setScript: ShowOff self)
 			)
 			(11
-				(messager say: N_ROOM 0 0 4)
+				(messager say: N_ROOM NULL NULL 4)
 				(HandsOn)
 				(giant setScript: giantBlocks)
 				(self dispose:)
@@ -809,13 +793,11 @@
 )
 
 (instance giveFruit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if (ego has: iFruit)
-					(= numApples (+ numApples (ego use: iFruit 50)))
+					(+= numApples (ego use: iFruit 50))
 					((inventory at: iFruit) amount: 1)
 				)
 				(HandsOff)
@@ -829,28 +811,36 @@
 				(if (ego has: iFruit)
 					(ego use: iFruit)
 					(cond 
-						((>= numApples 50) (giant setScript: doneDeal))
-						((>= numApples 40) (messager say: N_ROOM 0 C_ALMOSTENOUGH 1 self))
-						((== numApples 0) (messager say: N_ROOM 0 C_NOFRUIT 1 self))
-						(else (messager say: N_ROOM 0 C_NOTENOUGH 1 self))
+						((>= numApples 50)
+							(giant setScript: doneDeal)
+						)
+						((>= numApples 40)
+							(messager say: N_ROOM NULL C_ALMOSTENOUGH 1 self)
+						)
+						((== numApples 0)
+							(messager say: N_ROOM NULL C_NOFRUIT 1 self)
+						)
+						(else
+							(messager say: N_ROOM NULL C_NOTENOUGH 1 self)
+						)
 					)
 				else
-					(messager say: N_ROOM 0 C_NOFRUIT 1 self)
+					(messager say: N_ROOM NULL C_NOFRUIT 1 self)
 				)
 			)
-			((HandsOn) (self dispose:))
+			((HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance giantMagic of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreActors: 1 illegalBits: 0)
+				(ego ignoreActors: TRUE illegalBits: 0)
 				(if (and (!= (ego x?) 163) (!= (ego y?) 127))
 					(ego setMotion: MoveTo 163 127 self)
 				else
@@ -859,9 +849,9 @@
 			)
 			(1
 				(if throwProjectile
-					(messager say: N_ROOM 0 C_THROWSOMETHING 1 self)
+					(messager say: N_ROOM NULL C_THROWSOMETHING 1 self)
 				else
-					(messager say: N_ROOM 0 C_CASTSPELL 1 self)
+					(messager say: N_ROOM NULL C_CASTSPELL 1 self)
 				)
 			)
 			(2
@@ -898,8 +888,6 @@
 )
 
 (instance egoRuns of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -934,24 +922,34 @@
 			)
 			(4
 				(cond 
-					((and (> (ego y?) 180) (> (ego x?) 128)) (ego posn: (- (ego x?) 12) (- (ego y?) 10)))
-					((> (ego y?) 148) (ego posn: (ego x?) (ego y?)))
+					((and (> (ego y?) 180) (> (ego x?) 128))
+						(ego posn: (- (ego x?) 12) (- (ego y?) 10))
+					)
+					((> (ego y?) 148)
+						(ego posn: (ego x?) (ego y?))
+					)
 				)
 				(ego
 					setLoop: 1
 					cel: 0
 					posn: (+ (ego x?) 9) (+ (ego y?) 10)
-					illegalBits: -32768
+					illegalBits: cWHITE
 				)
 				(self cue:)
 			)
-			(5 (ego setCycle: EndLoop self))
+			(5
+				(ego setCycle: EndLoop self)
+			)
 			(6
-				(messager say: N_ROOM 0 C_NORUNNING 1 self)
-				(ChangeGait MOVE_WALK 0)
-				(TakeDamage 2)
+				(messager say: N_ROOM NULL C_NORUNNING 1 self)
+				(ChangeGait MOVE_WALK FALSE)
+				;(TakeDamage 2)
 			)
 			(7
+				;UPGRADE: Ego can now die from the fall
+				(if (not (TakeDamage 2))
+					(EgoDead C_DIE_FALL C_DIE_FALL_TITLE 0 1 3)
+				)
 				(HandsOn)
 				(ChangeTheCursor 1)
 				(NormalEgo)
@@ -975,7 +973,7 @@
 	(method (init)
 		(= nightPalette 2059)
 		(PalVary PALVARYTARGET 2059)
-		(kernel_128 1059)
+		(AssertPalette 1059)
 		(= font userFont)
 		(super init: brauggiBust brauggiEye brauggiMouth &rest)
 	)

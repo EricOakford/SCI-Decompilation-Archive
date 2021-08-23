@@ -23,45 +23,37 @@
 	local4
 )
 (instance twister of Actor
-	(properties)
-	
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 )
 
 (instance tumbler of Actor
-	(properties)
-	
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 )
 
 (instance swimmer1 of Actor
-	(properties)
-	
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 )
 
 (instance swimmer2 of Actor
-	(properties)
-	
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 )
@@ -127,8 +119,6 @@
 )
 
 (instance twistIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -197,8 +187,6 @@
 )
 
 (instance spinAcross of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -231,8 +219,6 @@
 )
 
 (instance swimLeft of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -273,8 +259,6 @@
 )
 
 (instance swimRight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

@@ -152,10 +152,8 @@
 					(self changeState: tryAgain)
 					(return)
 				)
-				(= whichSkill 0)
-				(while (< whichSkill NUM_ATTRIBS)
+				(for ((= whichSkill 0)) (< whichSkill NUM_ATTRIBS) ((++ whichSkill))
 					(= [codedStats whichSkill] [egoStats whichSkill])
-					(++ whichSkill)
 				)
 				(= oldGold (/ ((inventory at: iSilver) amount?) 10))
 				(= svCharType heroType)
@@ -234,7 +232,7 @@
 						)
 					)
 					(0
-						(messager say: N_CHARSAVE 0 (= state saveDone) 1 self)
+						(messager say: N_CHARSAVE NULL (= state saveDone) 1 self)
 					)
 					(1
 						(= printRet 2)
@@ -324,7 +322,6 @@
 )
 
 (instance endStatus of Code
-	
 	(method (doit strg)
 		(Format strg 601 2 score)
 	)

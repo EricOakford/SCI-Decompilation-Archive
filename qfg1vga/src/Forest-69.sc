@@ -60,11 +60,12 @@
 )
 
 (instance fairyWalkIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 90))
+			(0
+				(HandsOff)
+				(= ticks 90)
+			)
 			(1
 				(HandsOff)
 				(ego setMotion: PolyPath 140 120 self)

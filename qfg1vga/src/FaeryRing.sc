@@ -2,7 +2,7 @@
 (script# 70)
 (include game.sh) (include "70.shm")
 (use Main)
-(use CastFlame)
+(use CastDart)
 (use CastCalm)
 (use CastDazzle)
 (use Procs)
@@ -22,35 +22,36 @@
 
 (local
 	[local0 4]
-	local4
-	local5
-	local6
-	[local7 26] = [0 0 0 0 0 0 0 0 0 62 119 91 145 134 104 75 40 109 108 108 107 101 98 97 101]
+	pickEmX
+	pickEmY
+	pickEmLoop
+	local7 = [0 0 0 0 0 0 0 0 0 62 119 91 145 134 104 75 40 109 108 108 107 101 98 97 101]
 )
 (procedure (proc70_1 param1 param2)
-	(asm
-		pushi    0
-		sal      local4
-		ldi      95
-		sal      local5
-		ldi      0
-		sal      local6
-		pushi    #setScript
-		pushi    1
-		lofsa    pickEm
-		push    
-		lag      curRoom
-		send     6
-		jmp      code_042f
-		pushi    #doVerb
-		pushi    1
-		lsp      param1
-		&rest    param2
-		super    Feature,  6
-code_042f:
-		toss    
-		ret     
-	)
+	;NOTE: This procedure is unused
+;;;	(asm
+;;;		pushi    0
+;;;		sal      pickEmX
+;;;		ldi      95
+;;;		sal      pickEmY
+;;;		ldi      0
+;;;		sal      pickEmLoop
+;;;		pushi    #setScript
+;;;		pushi    1
+;;;		lofsa    pickEm
+;;;		push    
+;;;		lag      curRoom
+;;;		send     6
+;;;		jmp      code_042f
+;;;		pushi    #doVerb
+;;;		pushi    1
+;;;		lsp      param1
+;;;		&rest    param2
+;;;		super    Feature,  6
+;;;code_042f:
+;;;		toss    
+;;;		ret     
+;;;	)
 )
 
 (instance rm70 of Room
@@ -66,70 +67,82 @@ code_042f:
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						63
-						71
-						230
-						71
-						230
-						88
-						254
-						88
-						254
-						144
-						241
-						144
-						241
-						156
-						139
-						156
-						139
-						123
-						160
-						114
-						132
-						102
-						88
-						102
-						81
-						111
-						59
-						111
-						57
-						103
-						39
-						92
+						63 71
+						230 71
+						230 88
+						254 88
+						254 144
+						241 144
+						241 156
+						139 156
+						139 123
+						160 114
+						132 102
+						88 102
+						81 111
+						59 111
+						57 103
+						39 92
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 59 140 125 140 125 161 59 161
+					type: PBarredAccess
+					init:
+						59 140
+						125 140
+						125 161
+						59 161
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 66 115 102 115 132 121 132 138 97 124 66 124
+					type: PBarredAccess
+					init:
+						66 115
+						102 115
+						132 121
+						132 138
+						97 124
+						66 124
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 94 0 94 54 0 54 0 0
+					type: PBarredAccess
+					init:
+						94 0
+						94 54
+						0 54
+						0 0
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 319 0 319 54 149 54 150 -3
+					type: PBarredAccess
+					init:
+						319 0
+						319 54
+						149 54
+						150 -3
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 0 137 33 157 39 184 110 184 110 189 0 189
+					type: PBarredAccess
+					init:
+						0 137
+						33 157
+						39 184
+						110 184
+						110 189
+						0 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 163 189 163 187 319 187 319 189
+					type: PBarredAccess
+					init:
+						163 189
+						163 187
+						319 187
+						319 189
 					yourself:
 				)
 		)
@@ -172,33 +185,55 @@ code_042f:
 	(method (doit)
 		(cond 
 			(script)
-			((> (ego x?) 310) (HandsOff) (curRoom setScript: sExitEast))
-			((< (ego x?) 10) (HandsOff) (curRoom setScript: sExitWest))
-			((> (ego y?) 185) (HandsOff) (curRoom setScript: sExitSouth))
+			((> (ego x?) 310)
+				(HandsOff)
+				(curRoom setScript: sExitEast)
+			)
+			((< (ego x?) 10)
+				(HandsOff)
+				(curRoom setScript: sExitWest)
+			)
+			((> (ego y?) 185)
+				(HandsOff)
+				(curRoom setScript: sExitSouth)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ALTTALK (messager say: N_ROOM V_ALTTALK 0 1))
-			(V_DETECT (messager say: N_ROOM V_ALTTALK 0 2)) ;EO: This message uses the wrong verb in the MSG file, so we need to use that here.
-			(V_DAZZLE (CastDazzle))
-			(V_CALM (CastCalm))
-			(V_FLAME
-				(CastFlame 0)
+			(V_ALTTALK
+				(messager say: N_ROOM V_ALTTALK NULL 1)
 			)
-			(else  (messager say: N_ROOM 0 C_NONEEDTO))
+			(V_DETECT
+				;EO: This message uses the wrong verb in the MSG file, so we need to use that here.
+				(messager say: N_ROOM V_ALTTALK NULL 2)
+			)
+			(V_DAZZLE
+				(CastDazz)
+			)
+			(V_CALM
+				(CastCalm)
+			)
+			(V_FLAME
+				(CastDart 0)
+			)
+			(else
+				(messager say: N_ROOM NULL C_NONEEDTO)
+			)
 		)
 	)
 	
 	(method (cue)
-		(if (not (Btst fBeenIn70)) (Bset fBeenIn70) (messager say: N_ROOM 0 C_FIRSTENTRY))
+		(if (not (Btst fBeenIn70)) (Bset fBeenIn70)
+			(messager say: N_ROOM NULL C_FIRSTENTRY)
+		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(roomTimer dispose: delete:)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
@@ -257,12 +292,14 @@ code_042f:
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_MUSHROOMS V_LOOK 0))
+			(V_LOOK
+				(messager say: N_MUSHROOMS V_LOOK NULL)
+			)
 			(V_DO
-				(if (not local4)
-					(= local4 118)
-					(= local5 95)
-					(= local6 0)
+				(if (not pickEmX)
+					(= pickEmX 118)
+					(= pickEmY 95)
+					(= pickEmLoop 0)
 				)
 				(curRoom setScript: pickEm)
 			)
@@ -287,9 +324,9 @@ code_042f:
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_DO)
-			(= local6 0)
-			(= local4 55)
-			(= local5 104)
+			(= pickEmLoop 0)
+			(= pickEmX 55)
+			(= pickEmY 104)
 		)
 		(mush1 doVerb: theVerb &rest)
 	)
@@ -310,9 +347,9 @@ code_042f:
 	(method (doVerb theVerb)
 		(if (== theVerb V_DO)
 			(HandsOff)
-			(= local6 0)
-			(= local4 61)
-			(= local5 118)
+			(= pickEmLoop 0)
+			(= pickEmX 61)
+			(= pickEmY 118)
 		)
 		(mush1 doVerb: theVerb &rest)
 	)
@@ -333,9 +370,9 @@ code_042f:
 	(method (doVerb theVerb)
 		(if (== theVerb V_DO)
 			(HandsOff)
-			(= local4 140)
-			(= local5 123)
-			(= local6 1)
+			(= pickEmX 140)
+			(= pickEmY 123)
+			(= pickEmLoop 1)
 		)
 		(mush1 doVerb: theVerb &rest)
 	)
@@ -356,9 +393,9 @@ code_042f:
 	(method (doVerb theVerb)
 		(if (== theVerb V_DO)
 			(HandsOff)
-			(= local4 157)
-			(= local5 114)
-			(= local6 0)
+			(= pickEmX 157)
+			(= pickEmY 114)
+			(= pickEmLoop 0)
 		)
 		(mush1 doVerb: theVerb &rest)
 	)
@@ -379,9 +416,9 @@ code_042f:
 	(method (doVerb theVerb)
 		(if (== theVerb V_DO)
 			(HandsOff)
-			(= local4 157)
-			(= local5 114)
-			(= local6 0)
+			(= pickEmX 157)
+			(= pickEmY 114)
+			(= pickEmLoop 0)
 		)
 		(mush1 doVerb: theVerb &rest)
 	)
@@ -402,9 +439,9 @@ code_042f:
 	(method (doVerb theVerb)
 		(if (== theVerb V_DO)
 			(HandsOff)
-			(= local4 157)
-			(= local5 114)
-			(= local6 0)
+			(= pickEmX 157)
+			(= pickEmY 114)
+			(= pickEmLoop 0)
 		)
 		(mush1 doVerb: theVerb &rest)
 	)
@@ -422,7 +459,7 @@ code_042f:
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: N_MUSHROOMS V_LOOK 0)
+			(messager say: N_MUSHROOMS V_LOOK NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -430,47 +467,45 @@ code_042f:
 )
 
 (instance sExitEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo 350 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 71))
+			(1
+				(curRoom newRoom: 71)
+			)
 		)
 	)
 )
 
 (instance sExitWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo -25 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 69))
+			(1
+				(curRoom newRoom: 69)
+			)
 		)
 	)
 )
 
 (instance sExitSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo (ego x?) 245 self)
 			)
-			(1 (curRoom newRoom: 77))
+			(1
+				(curRoom newRoom: 77)
+			)
 		)
 	)
 )
 
 (instance sEnterFromEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -487,8 +522,6 @@ code_042f:
 )
 
 (instance sEnterFromWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -505,8 +538,6 @@ code_042f:
 )
 
 (instance pickEm of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -514,25 +545,30 @@ code_042f:
 				(ego
 					illegalBits: 0
 					ignoreActors: 1
-					setMotion: PolyPath local4 local5 self
+					setMotion: PolyPath pickEmX pickEmY self
 				)
 			)
 			(1
 				(ego
 					view: 510
-					setLoop: local6
+					setLoop: pickEmLoop
 					setCel: 0
 					setCycle: EndLoop self
 				)
-				(= local4 0)
-				(= local5 0)
-				(= local6 0)
+				(= pickEmX 0)
+				(= pickEmY 0)
+				(= pickEmLoop 0)
 			)
-			(2 (messager say: N_ROOM 0 0 0 self))
+			(2
+				(messager say: N_ROOM NULL NULL 0 self)
+			)
 			(3
 				(Bset fHaveFaeryShrooms)
-				(SolvePuzzle POINTS_PICKMUSHROOMS 3)
-				(ego get: iMushroom 3 setCycle: BegLoop self)
+				(SolvePuzzle f70GetMushrooms 3)
+				(ego
+					get: iMushroom 3
+					setCycle: BegLoop self
+				)
 			)
 			(4
 				(NormalEgo)
@@ -544,8 +580,6 @@ code_042f:
 )
 
 (instance sEnterFromNorth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -562,13 +596,16 @@ code_042f:
 )
 
 (instance sEnterFromSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego init: posn: 139 245 setMotion: MoveTo 139 180 self)
+				(ego
+					init:
+					posn: 139 245
+					setMotion: MoveTo 139 180
+					self
+				)
 			)
 			(1
 				(HandsOn)
@@ -579,6 +616,4 @@ code_042f:
 	)
 )
 
-(instance roomTimer of Timer
-	(properties)
-)
+(instance roomTimer of Timer)

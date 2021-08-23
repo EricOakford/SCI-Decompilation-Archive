@@ -2,7 +2,7 @@
 (script# 94)
 (include game.sh) (include "94.shm")
 (use Main)
-(use CastFlame)
+(use CastDart)
 (use CastOpen)
 (use CastDazzle)
 (use Door)
@@ -538,11 +538,11 @@ code_061f:
 			)
 			(V_DAZZLE
 				(if (not (rm94 notify: 0))
-					(if (CastDazzle)
+					(if (CastDazz)
 						(rm94 notify: 2)
 					)
 				else
-					(CastDazzle)
+					(CastDazz)
 					(rm94 notify: 0)
 					(messager say: N_ROOM V_CALM)
 					(= archersAreAsleep 0)
@@ -553,7 +553,7 @@ code_061f:
 					(ego setScript: didDart)
 				else
 					(rm94 notify: 0)
-					(CastFlame 0)
+					(CastDart 0)
 					(= archersAreAsleep FALSE)
 				)
 			)

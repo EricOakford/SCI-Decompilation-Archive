@@ -2,9 +2,9 @@
 (script# 77)
 (include game.sh) (include "77.shm")
 (use Main)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use Target)
 (use Procs)
 (use PolyPath)
@@ -20,10 +20,10 @@
 
 (local
 	[theSeconds 4]
-	local4
-	local5
-	local6
-	local7
+	distToStag
+	stagIsHere
+	stagState
+	saveSpeed
 )
 (instance rm77 of Room
 	(properties
@@ -36,24 +36,25 @@
 	(method (init)
 		(self setRegions: FOREST)
 		(Load RES_VIEW 700)
-		(if
-		(and (not Night) (!= prevRoomNum 76) (Btst fStagHere))
+		(if (and (not Night) (!= prevRoomNum 76) (Btst fStagHere))
 			(Load RES_VIEW 78)
 		)
 		(super init:)
 		(StatusLine enable:)
 		(NormalEgo)
 		(cond 
-			((and (not (Btst fMetDryad)) (not monsterNum)) (Bset fStagHere) (= monsterNum 0))
-			(
-			(and (Btst fAgreedToHelpDryad) (not monsterNum) (not (Btst fStagHere)))
-			(switch (Random 0 1)
-				(0 (Bclr fStagHere))
-				(1 (Bset fStagHere))
-			))
+			((and (not (Btst fMetDryad)) (not monsterNum))
+				(Bset fStagHere)
+				(= monsterNum 0)
+			)
+			((and (Btst fAgreedToHelpDryad) (not monsterNum) (not (Btst fStagHere)))
+				(switch (Random 0 1)
+					(0 (Bclr fStagHere))
+					(1 (Bset fStagHere))
+				)
+			)
 		)
-		(if
-		(and (not Night) (!= prevRoomNum 76) (Btst fStagHere))
+		(if (and (not Night) (!= prevRoomNum 76) (Btst fStagHere))
 			(= [theSeconds 0] (Random 74 165))
 			(= [theSeconds 1] (Random 120 160))
 			(= [theSeconds 2] (Random 0 1))
@@ -62,11 +63,10 @@
 		else
 			(Bclr fStagHere)
 		)
-		(= local6 0)
-		(= local5 (Btst fStagHere))
+		(= stagState 0)
+		(= stagIsHere (Btst fStagHere))
 		(southBush addToPic:)
-		(if
-		(and Night (== prevRoomNum 170) (Btst fFaeryAttention))
+		(if (and Night (== prevRoomNum 170) (Btst fFaeryAttention))
 			(HandsOff)
 			(ego setScript: fairyWalkIn)
 			(Load RES_SCRIPT 295)
@@ -105,11 +105,17 @@
 	)
 	
 	(method (doit)
-		(= local4 (ego distanceTo: self))
+		(= distToStag (ego distanceTo: self))
 		(if (!= script stagBolts)
 			(cond 
-				([theSeconds 2] (if (< local4 95) (self setScript: stagBolts)))
-				((< local4 75) (self setScript: stagBolts))
+				([theSeconds 2]
+					(if (< distToStag 95)
+						(self setScript: stagBolts)
+					)
+				)
+				((< distToStag 75)
+					(self setScript: stagBolts)
+				)
 			)
 		)
 		(super doit:)
@@ -117,41 +123,51 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (CastRock self))
+			(V_ROCK
+				(ThrowRock self)
+			)
 			(V_DAGGER
-				(CastDagger self)
+				(ThrowKnife self)
 			)
 			(V_FLAME
-				(CastFlame self)
+				(CastDart self)
 			)
-			(V_SWORD (self setScript: stagBolts))
+			(V_SWORD
+				(self setScript: stagBolts)
+			)
 			(else 
-				(switch local6
-					(0 (messager say: N_STAG V_LOOK C_STAGFORAGING))
-					(5 (messager say: N_STAG V_LOOK C_STAGLEAP))
-					(else  (messager say: N_STAG V_LOOK))
+				(switch stagState
+					(0
+						(messager say: N_STAG V_LOOK C_STAGFORAGING)
+					)
+					(5
+						(messager say: N_STAG V_LOOK C_STAGLEAP)
+					)
+					(else
+						(messager say: N_STAG V_LOOK)
+					)
 				)
 			)
 		)
 	)
 	
 	(method (getHurt)
-		(= missedDaggers (+ missedDaggers hitDaggers))
+		(+= missedDaggers hitDaggers)
 		(= hitDaggers 0)
 		(Bset fStagHurt)
-		(if
-		(and (!= script stagBolts) (!= script stagHurt))
+		(if (and (!= script stagBolts) (!= script stagHurt))
 			(self setScript: stagHurt)
 		)
 	)
 )
 
 (instance stagWalkIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 90))
+			(0
+				(HandsOff)
+				(= ticks 90)
+			)
 			(1
 				(HandsOff)
 				(switch prevRoomNum
@@ -185,15 +201,13 @@
 )
 
 (instance stagScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ChangeGait MOVE_WALK 0)
+				(ChangeGait MOVE_WALK FALSE)
 				(User canControl: FALSE)
 				(if [theSeconds 3]
-					(= local6 0)
+					(= stagState 0)
 					(if [theSeconds 2]
 						(stag loop: 6 cycleSpeed: 12 moveSpeed: 12 setCycle: Forward)
 					else
@@ -213,7 +227,7 @@
 			)
 			(2
 				(if [theSeconds 3]
-					(= local6 2)
+					(= stagState 2)
 					(if [theSeconds 2]
 						(stag
 							loop: 4
@@ -237,7 +251,7 @@
 			)
 			(3
 				(if [theSeconds 2]
-					(= local6 4)
+					(= stagState 4)
 					(stag
 						loop: 2
 						cel: 0
@@ -253,7 +267,7 @@
 			)
 			(4
 				(User canControl: TRUE)
-				(= local6 6)
+				(= stagState 6)
 				(stag
 					loop: 1
 					cel: 0
@@ -274,13 +288,11 @@
 )
 
 (instance stagHurt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_STAG V_FLAME 0 0 self)
+				(messager say: N_STAG V_FLAME NULL self)
 			)
 			(1
 				(client setScript: stagBolts)
@@ -290,8 +302,6 @@
 )
 
 (instance stagBolts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -299,26 +309,29 @@
 					(HandsOff)
 					(ego setCycle: 0 setMotion: 0)
 				)
-				(if (== local6 0)
-					(= local6 1)
+				(if (== stagState 0)
+					(= stagState 1)
 					(stag setCycle: EndLoop)
 				else
 					(self cue:)
 				)
-				(messager say: N_STAG V_LOOK 0 0 self)
+				(messager say: N_STAG V_LOOK NULL 0 self)
 			)
 			(1
 				(stag cycleSpeed: 4 moveSpeed: 4)
 				(cond 
-					((== local6 1)
-						(= local6 3)
+					((== stagState 1)
+						(= stagState 3)
 						(if [theSeconds 2]
 							(stag loop: 4 cel: 7 setCycle: BegLoop self)
 						else
 							(stag loop: 5 cel: 7 setCycle: BegLoop self)
 						)
 					)
-					((== local6 2) (= local6 3) (stag setCycle: BegLoop self))
+					((== stagState 2)
+						(= stagState 3)
+						(stag setCycle: BegLoop self)
+					)
 					(else (self cue:))
 				)
 			)
@@ -326,19 +339,27 @@
 				(cond 
 					([theSeconds 2]
 						(cond 
-							((== local6 3)
-								(= local6 5)
+							((== stagState 3)
+								(= stagState 5)
 								(stag loop: 2 cel: 0 xStep: 5 setCycle: EndLoop self)
 							)
-							((== local6 4) (= local6 5) (stag setCycle: EndLoop self))
-							(else (self cue:))
+							((== stagState 4)
+								(= stagState 5)
+								(stag setCycle: EndLoop self)
+							)
+							(else
+								(self cue:)
+							)
 						)
 					)
-					((== local6 3) (= local6 5) (self cue:))
+					((== stagState 3)
+						(= stagState 5)
+						(self cue:)
+					)
 				)
 			)
 			(3
-				(if (== local6 5)
+				(if (== stagState 5)
 					(stag
 						setLoop: 9
 						cel: 0
@@ -351,7 +372,7 @@
 			)
 			(4
 				(User canControl: TRUE)
-				(if (== local6 5)
+				(if (== stagState 5)
 					(stag
 						setStep: 12 9
 						setCycle: Forward
@@ -389,11 +410,12 @@
 )
 
 (instance fairyWalkIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 90))
+			(0
+				(HandsOff)
+				(= ticks 90)
+			)
 			(1
 				(HandsOff)
 				(ego setMotion: PolyPath 160 110 self)

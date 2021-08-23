@@ -1,16 +1,15 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# CASTDAGGER)
+(script# THROWROCK)
 (include game.sh) (include "558.shm")
 (use Main)
 (use Procs)
-(use LoadMany)
 (use Sound)
 (use Motion)
 (use Actor)
 (use System)
 
 (public
-	CastDagger 0
+	ThrowRock 0
 )
 
 (local
@@ -19,30 +18,26 @@
 	theGEgoY
 	oldEgoX
 	oldEgoY
-	oldCycleSpeed
+	local5
 	oldSignal
 	oldPriority
+	oldCycleSpeed
+	oldMoveSpeed
 	oldIllBits
-	knifeSound
+	rockSound
 	wasHandsOn
 	hurtEgo
 )
-(procedure (CastDagger obj theX theY &tmp temp0 temp1 knife evt)
-	(if gClient
-		(return TRUE)
-	)
+(procedure (ThrowRock obj theX theY &tmp temp0 temp1 rock evt [temp4 20])
+	(if gClient (return gClient))
 	(if (not isHandsOff)
 		(= wasHandsOn TRUE)
 	)
-	(if (!= curRoomNum daggerRoom)
-		(= daggerRoom curRoomNum)
-		(= missedDaggers 0)
-	)
 	(return
-		(if (not (ego has: iDagger))
-			(messager say: N_THROWDAGGER NULL NULL 1 0 SPELLS)
-			(DisposeScript CASTDAGGER)
-			(return 0)
+		(if (not (ego has: iRock))
+			(messager say: N_THROWROCK NULL NULL 1 0 SPELLS)
+			(DisposeScript THROWROCK)
+			(return FALSE)
 		else
 			(if (>= argc 2)
 				(= theGEgoX theX)
@@ -52,14 +47,14 @@
 				(= theGEgoY (+ (evt y?) 25))
 				(evt dispose:)
 			)
-			((inventory at: iDagger) dumpIt: TRUE)
-			(LoadMany SOUND (SoundFX 31) (SoundFX 29))
+			(ego use: iRock 1)
+			(Load SOUND (SoundFX 58))
 			(if obj
 				(Face ego obj)
 				(= oldEgoX (+ (obj x?) (obj targDeltaX?)))
 				(= oldEgoY (+ (obj y?) (obj targDeltaY?)))
-				(= temp0 (- oldEgoX (+ (ego x?) 15)))
-				(= temp1 (- oldEgoY (- (ego y?) 40)))
+				(= temp0 (- oldEgoX (ego x?)))
+				(= temp1 (- oldEgoY (- (ego y?) 34)))
 				(while
 					(and
 						(< 0 oldEgoX)
@@ -85,34 +80,29 @@
 				(= oldEgoX theGEgoX)
 				(= oldEgoY theGEgoY)
 			)
-			((= knifeSound (Sound new:))
-				number: (SoundFX 31)
-				priority: 15
-				init:
-			)
 			(= local0 obj)
-			((= knife (Actor new:))
-				view: 524
-				setLoop: 2
+			((= rock (Actor new:))
+				view: 510
+				setLoop: 4
 				setCel: 0
 				illegalBits: 0
 				ignoreActors:
 				ignoreHorizon:
 				z: 35
-				setStep: 30 20
+				setStep: 25 18
 				init:
 				hide:
-				setScript: knifeScript 0 obj
+				setScript: rockScript 0 obj
 			)
 			(return 1)
 		)
 	)
 )
 
-(instance knifeScript of Script
+(instance rockScript of Script
 	(properties)
 	
-	(method (doit &tmp temp0)
+	(method (doit)
 		(if (IsObject local0)
 			(= oldEgoX (+ (local0 x?) (local0 targDeltaX?)))
 			(= oldEgoY (+ (local0 y?) (local0 targDeltaY?)))
@@ -122,26 +112,29 @@
 	
 	(method (dispose)
 		(= gClient 0)
-		(knifeSound dispose:)
+		(if (IsObject rockSound)
+			(rockSound dispose:)
+		)
 		(if wasHandsOn
 			(HandsOn)
 		)
 		(NormalEgo)
 		(ego
-			loop: (if (not (ego loop?)) 0 else 1)
+			loop: (if (== (ego loop?) 2) 1 else 0)
 			priority: oldPriority
 			illegalBits: oldIllBits
 			signal: oldSignal
 			cycleSpeed: oldCycleSpeed
+			moveSpeed: oldMoveSpeed
 		)
 		(if (IsObject register)
-			(register getHurt: (+ 5 (/ [egoStats 0] 10)))
+			(register getHurt: 1)
 		)
 		(super dispose:)
-		(DisposeScript 101)
+		(DisposeScript THROWROCK)
 	)
 	
-	(method (changeState newState param2)
+	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
 				(= gClient client)
@@ -149,67 +142,70 @@
 				(= oldPriority (ego priority?))
 				(= oldIllBits (ego illegalBits?))
 				(= oldCycleSpeed (ego cycleSpeed?))
+				(= oldMoveSpeed (ego moveSpeed?))
 				(HandsOff)
 				(if (ego onMe: oldEgoX (- oldEgoY 35)) (= hurtEgo 1))
 				(ego
 					setMotion: 0
-					setHeading: (if (<= oldEgoX (ego x?)) 270 else 90)
+					setHeading: (if (<= oldEgoX (ego x?)) 270 else 90) self
 				)
-				(= ticks 30)
 			)
 			(1
 				(ego
-					view: 524
-					setLoop: (if (== (ego loop?) 0) 0 else 1)
+					view: 510
+					setLoop: (if (== (ego loop?) 0) 3 else 2)
 					cel: 0
 					cycleSpeed: 8
-					setCycle: CycleTo 7 1 self
+					setCycle: CycleTo 3 1 self
 				)
-				(++ missedDaggers)
+				((= rockSound (Sound new:))
+					number: (SoundFX 58)
+					priority: 15
+					init:
+				)
 			)
 			(2
 				(if hurtEgo (= oldEgoX (ego x?)) (= oldEgoY (ego y?)))
-				(knifeSound play:)
-				(= param2
+				(= temp0
 					(cond 
-						((< (= param2 (Abs (- oldEgoX (ego x?)))) 20) 15)
-						((< param2 30) 20)
-						((< param2 50) 25)
-						((< param2 80) 30)
-						(else 35)
+						((< (= temp0 (Abs (- oldEgoX (ego x?)))) 20) 10)
+						((< temp0 30) 15)
+						((< temp0 50) 20)
+						((< temp0 80) 25)
+						(else 30)
 					)
 				)
 				(client
 					posn:
-						(if (== (ego loop?) 1)
-							(- (ego x?) param2)
+						(if (== (ego loop?) 2)
+							(- (ego x?) temp0)
 						else
-							(+ (ego x?) param2)
+							(+ (ego x?) temp0)
 						)
 						(ego y?)
-					setLoop: (+ (ego loop?) 2)
 					setCycle: Forward
 					setMotion: MoveTo oldEgoX oldEgoY self
 				)
 				(ego setCycle: EndLoop)
 				(= ticks 6)
 			)
-			(3 (client show:))
+			(3
+				(client show:)
+			)
 			(4
 				(client hide:)
-				(if hurtEgo
-					(if (not hurtEgo) (-- missedDaggers) (++ hitDaggers))
-					(knifeSound stop: number: (SoundFX 29) play: self)
+				(if (or local5 hurtEgo)
+					(rockSound play: self)
 				else
 					(self cue:)
 				)
 			)
 			(5
 				(if hurtEgo
-					(if (not (TakeDamage 50))
+					(if (not (TakeDamage 1))
 						(EgoDead C_DIE_HURT_SELF)
 					else
-						(messager say: N_THROWDAGGER NULL NULL 2 0 SPELLS)
+						(messager say: N_THROWROCK NULL NULL 2 0 SPELLS)
 					)
 				)
 				(client dispose:)

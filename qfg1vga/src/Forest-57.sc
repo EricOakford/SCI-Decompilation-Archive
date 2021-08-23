@@ -96,7 +96,7 @@
 		view 702
 		loop 4
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 

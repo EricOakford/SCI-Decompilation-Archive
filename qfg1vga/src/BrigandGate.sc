@@ -2,9 +2,9 @@
 (script# 93)
 (include game.sh) (include "93.shm")
 (use Main)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use CastCalm)
 (use CastOpen)
 (use CastDazzle)
@@ -338,7 +338,7 @@
 						(messager say: N_ROOM V_DAGGER)
 					)
 					((Btst fMinotaurDead)
-						(CastDagger 0)
+						(ThrowKnife 0)
 					)
 					(else
 						(if (< (ego x?) 160)
@@ -346,7 +346,7 @@
 						else
 							(minotaur targDeltaX: 25)
 						)
-						(CastDagger minotaur)
+						(ThrowKnife minotaur)
 					)
 				)
 			)
@@ -378,7 +378,7 @@
 					((or (Btst fMinotaurDead) minotaurSleeping local13 minotaurBlinded)
 						(messager say: N_ROOM V_DAZZLE)
 					)
-					((CastDazzle ego minotaurDazzled)
+					((CastDazz ego minotaurDazzled)
 						(minotaur setScript: minotaurDazzled)
 					)
 				)
@@ -394,7 +394,7 @@
 						(messager say: N_ROOM V_FLAME)
 					)
 					((Btst fMinotaurDead)
-						(CastFlame 0)
+						(CastDart 0)
 					)
 					(else
 						(curRoom setScript: dartAtMinotaur)
@@ -878,7 +878,7 @@
 						(messager say: N_MINOTAUR V_FLAME)
 					)
 					((Btst fMinotaurDead)
-						(CastFlame 0)
+						(CastDart 0)
 					)
 					(else
 						(HandsOff)
@@ -935,7 +935,7 @@
 				)
 			)
 			(V_ROCK
-				(CastRock minotaur)
+				(ThrowRock minotaur)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -1389,7 +1389,7 @@
 						(minotaur targDeltaX: 25)
 					)
 				)
-				(CastFlame minotaur self)
+				(CastDart minotaur self)
 			)
 			(1
 				(HandsOff)

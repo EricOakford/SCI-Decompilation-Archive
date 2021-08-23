@@ -16,8 +16,6 @@
 	local1
 )
 (instance Street of Region
-	(properties)
-	
 	(method (init)
 		(if
 			(and
@@ -62,8 +60,7 @@
 					((== theControl cYELLOW)
 						(curRoom notify: 1)
 					)
-					(
-					(or (== theControl cLRED) (== theControl cLGREEN) (== theControl cLMAGENTA))
+					((or (== theControl cLRED) (== theControl cLGREEN) (== theControl cLMAGENTA))
 						(if (<= (Random 3 10) (++ timesPickedLock))
 							(EgoDead C_DIE_BUSTED_PICK_LOCK C_DIE_BUSTED_PICK_LOCK_TITLE 1 0 503)
 						else

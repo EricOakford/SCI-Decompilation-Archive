@@ -2,8 +2,8 @@
 (script# FOREST) ;804
 (include game.sh) (include "804.shm")
 (use Main)
-(use CastDagger)
-(use CastRock)
+(use ThrowKnife)
+(use ThrowRock)
 (use Procs)
 (use PolyPath)
 (use Polygon)
@@ -928,7 +928,7 @@
 					(return TRUE)
 				)
 				(V_DAGGER
-					(CastDagger 0)
+					(ThrowKnife 0)
 					(return TRUE)
 				)
 				(V_LOCKPICK
@@ -944,7 +944,7 @@
 					(return TRUE)
 				)
 				(V_ROCK
-					(CastRock 0)
+					(ThrowRock 0)
 					(return TRUE)
 				)
 				(V_FLASK
@@ -1157,11 +1157,11 @@
 					(super doVerb: theVerb &rest)
 				)
 				(V_DAGGER
-					(CastDagger 0)
+					(ThrowKnife 0)
 					(return TRUE)
 				)
 				(V_ROCK
-					(CastRock 0)
+					(ThrowRock 0)
 					(return TRUE)
 				)
 				(else 

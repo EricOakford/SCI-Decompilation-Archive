@@ -20,7 +20,7 @@
 			)
 		)
 	)
-	(= newTime (^ newTime 1))
+	(*= newTime 1)	;need even number
 	(if
 		(or
 			(and (< Clock 1050) (>= newTime 1050))

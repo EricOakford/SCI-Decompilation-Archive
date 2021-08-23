@@ -18,22 +18,43 @@
 )
 
 (local
-	[local0 8] = [0 6 7 8 5 3 4 999]
-	[local8 9]
-	[local17 2] = [0 999]
-	[local19 8] = [0 6 7 13 5 -11 4 999]
-	[local27 9]
-	[local36 4] = [0 999 1]
+	lGuardTellMainBranch = [
+		STARTTELL
+		C_CASTLE
+		C_DAUGHTER
+		C_NAME_FRED
+		C_BARRACKS
+		C_BALD_SPOT_LEFT
+		C_BARON
+		ENDTELL
+		]
+	[lGuardTellTree 9]
+	lGuardTellKeys = [
+		STARTTELL
+		ENDTELL
+		]
+	rGuardTellMainBranch = [
+		STARTTELL
+		C_CASTLE
+		C_DAUGHTER
+		13
+		C_BARRACKS
+		-11		;C_BALD_SPOT_RIGHT
+		C_BARON
+		ENDTELL
+		]
+	[rGuardTellTree 9]
+	rGuardTellKeys = [0 999 1]
 	local40
 	local41
 	local42
 	[local43 2]
 	local45
 	local46
-	local47
-	gEgoX
+	beenInside
+	enterX
 	local49
-	local50
+	stepControl
 	local51
 	mentionedBaldSpot
 	newSound
@@ -44,45 +65,53 @@
 		picture 41
 	)
 	
-	(method (init &tmp temp0)
-		(= [local8 0] @local0)
-		(= [local8 1] 999)
-		(= [local27 0] @local19)
-		(= [local8 1] 999)
+	(method (init &tmp soundNum)
+		(= [lGuardTellTree 0] @lGuardTellMainBranch)
+		(= [lGuardTellTree 1] ENDTELL)
+		(= [rGuardTellTree 0] @rGuardTellMainBranch)
+		(= [lGuardTellTree 1] ENDTELL)
 		(Load RES_VIEW 41)
-		(= temp0 (if Night 32 else 25))
+		(= soundNum (if Night 32 else 25))
 		(if
 			(or
 				(== (cSound prevSignal?) -1)
-				(!= (cSound number?) temp0)
+				(!= (cSound number?) soundNum)
 			)
-			(cSound stop: number: temp0 loop: -1 priority: 0 play:)
+			(cSound stop: number: soundNum loop: -1 priority: 0 play:)
 		)
 		(super init: &rest)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 0 0 319 0 319 146 284 159 223 160 165 131 106 136 88 189 0 189
+					type: PBarredAccess
+					init:
+						0 0
+						319 0
+						319 146
+						284 159
+						223 160
+						165 131
+						106 136
+						88 189
+						0 189
 					yourself:
 				)
 		)
 		(theGround init:)
 		(StatusLine enable:)
-		(= local47 (== prevRoomNum 141))
-		(if
-		(and (Btst fSavedBarnard) (not local47) (not (Btst OBTAINED_BARNARD_REWARD)))
+		(= beenInside (== prevRoomNum 141))
+		(if (and (Btst fSavedBarnard) (not beenInside) (not (Btst fBarnardReward)))
 			(self horizon: 130)
 		)
 		(if (not Night)
-			(rguardTeller init: rGuard @local19 @local27 @local36)
+			(rguardTeller init: rGuard @rGuardTellMainBranch @rGuardTellTree @rGuardTellKeys)
 			(rGuard init: actions: rguardTeller stopUpd:)
-			(guardTeller init: lGuard @local0 @local8 @local17)
+			(guardTeller init: lGuard @lGuardTellMainBranch @lGuardTellTree @lGuardTellKeys)
 			(lGuard init: actions: guardTeller stopUpd:)
 		)
 		(lDoor init: stopUpd:)
 		(rDoor init: stopUpd:)
-		(= gEgoX (ego x?))
+		(= enterX (ego x?))
 		(ego
 			actions: egoActions
 			posn: 163 260
@@ -91,20 +120,22 @@
 		)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp thisControl)
 		(cond 
 			(
 				(and
-					(= temp0 (ego onControl: 1))
-					(not (== temp0 1))
-					(& temp0 $007e)
+					(= thisControl (ego onControl: origin))
+					(not (== thisControl cBLACK))
+					(& thisControl $007e)
 					(not (ego script?))
 					(not (curRoom script?))
 				)
-				(= local50 temp0)
+				(= stepControl thisControl)
 				(curRoom setScript: doTheSteps)
 			)
-			((and (not (ego script?)) (ego edgeHit?)) (ego setScript: egoExits))
+			((and (not (ego script?)) (ego edgeHit?))
+				(ego setScript: egoExits)
+			)
 			(else 0)
 		)
 		(super doit:)
@@ -120,8 +151,12 @@
 			(V_OPEN
 				(curRoom setScript: doTheOpen)
 			)
-			(V_LOOK (messager say: N_ROOM V_LOOK 0))
-			(V_DO (messager say: N_ROOM V_DO 0))
+			(V_LOOK
+				(messager say: N_ROOM V_LOOK NULL)
+			)
+			(V_DO
+				(messager say: N_ROOM V_DO NULL)
+			)
 			(V_SLEEP
 				(curRoom setScript: sleepAround)
 			)
@@ -133,13 +168,18 @@
 )
 
 (instance egoActions of Actions
-	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(V_LOOK (messager say: N_EGO V_LOOK 0))
-				(V_DO (messager say: N_EGO V_DO 0))
-				(else  (return 0))
+				(V_LOOK
+					(messager say: N_EGO V_LOOK NULL)
+				)
+				(V_DO
+					(messager say: N_EGO V_DO NULL)
+				)
+				(else
+					(return FALSE)
+				)
 			)
 		)
 	)
@@ -155,7 +195,7 @@
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: N_GROUND V_LOOK 0)
+			(messager say: N_GROUND V_LOOK NULL)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -172,7 +212,7 @@
 	)
 	
 	(method (doit)
-		(if (or (not (Btst fSavedBarnard)) (Btst OBTAINED_BARNARD_REWARD))
+		(if (or (not (Btst fSavedBarnard)) (Btst fBarnardReward))
 			(if
 				(and
 					(not (== prevRoomNum 141))
@@ -199,15 +239,17 @@
 )
 
 (instance guardTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_GUARDS V_LOOK))
+			(V_LOOK
+				(messager say: N_GUARDS V_LOOK)
+			)
 			(V_TALK
 				(super doVerb: theVerb &rest)
 			)
-			(V_FLAME (messager say: N_BADIDEA 59))
+			(V_FLAME
+				(messager say: N_BADIDEA 59)
+			)
 			(V_ROCK (EgoDead 92 93 0 0 503))
 			;The death icon was originally the "Hero in Jail" duplicated from view 503, but the duplicate was removed from view 39 in the VGA remake,
 			;showing a "tiny guard" instead.
@@ -233,7 +275,7 @@
 	)
 	
 	(method (doit)
-		(if (or (not (Btst fSavedBarnard)) (Btst OBTAINED_BARNARD_REWARD))
+		(if (or (not (Btst fSavedBarnard)) (Btst fBarnardReward))
 			(if
 				(and
 					(not (== prevRoomNum 141))
@@ -243,15 +285,15 @@
 				)
 				(= local45 0)
 			)
-			(if local40 (-- local40))
+			(if local40
+				(-- local40)
+			)
 		)
 		(super doit:)
 	)
 )
 
 (instance rguardTeller of Teller
-	(properties)
-	
 	(method (doChild)
 		(if (== query -11)
 			(= mentionedBaldSpot TRUE)
@@ -262,10 +304,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_RGUARD V_LOOK 0))
+			(V_LOOK
+				(messager say: N_RGUARD V_LOOK NULL)
+			)
 			(V_TALK
 				(if (== mentionedBaldSpot TRUE)
-					(messager say: N_RGUARD V_TALK 14 1)
+					(messager say: N_RGUARD V_TALK C_WONT_TALK 1)
 				else
 					(super doVerb: theVerb &rest)
 				)
@@ -331,7 +375,9 @@
 					(messager say: N_DOOR V_LOOK C_DAY)
 				)
 			)
-			(V_DO (messager say: N_DOOR V_LOCKPICK C_NIGHT))
+			(V_DO
+				(messager say: N_DOOR V_LOCKPICK C_NIGHT)
+			)
 			(V_LOCKPICK
 				(if Night
 					(messager say: N_DOOR V_LOCKPICK C_NIGHT)
@@ -387,8 +433,6 @@
 )
 
 (instance leaveHall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -399,9 +443,12 @@
 					setMotion: MoveTo 144 139 self
 				)
 			)
-			(1 (NormalEgo) (= ticks 30))
+			(1
+				(NormalEgo)
+				(= ticks 30)
+			)
 			(2
-				(messager say: N_ROOM 0 C_EXIT_CASTLE 1 self)
+				(messager say: N_ROOM NULL C_EXIT_CASTLE 1 self)
 			)
 			(3
 				(lDoor setCycle: BegLoop self)
@@ -417,8 +464,8 @@
 				(light setCycle: 0 stopUpd: dispose:)
 				(lDoor ignoreActors: 0)
 				(rDoor ignoreActors: 0)
-				(Bset OBTAINED_BARNARD_REWARD)
-				(= local47 0)
+				(Bset fBarnardReward)
+				(= beenInside 0)
 				(client setScript: 0)
 			)
 		)
@@ -426,12 +473,10 @@
 )
 
 (instance sleepAround of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(messager say: N_ROOM V_SLEEP 0 1 self)
+				(messager say: N_ROOM V_SLEEP NULL 1 self)
 			)
 			(1
 				(if (and (< 750 Clock) (< Clock 2550))
@@ -444,44 +489,44 @@
 	)
 )
 
-(instance doorSnd of Sound
-	(properties)
-)
+(instance doorSnd of Sound)
 
 (instance doTheSteps of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
 			(1
-				(switch local50
-					(2
+				(switch stepControl
+					(cBLUE
 						(ego setMotion: PolyPath 250 162 self)
 					)
-					(4
+					(cGREEN
 						(ego setMotion: PolyPath 195 187 self)
 					)
-					(8
+					(cCYAN
 						(ego setLoop: 2 setMotion: PolyPath (ego x?) 187 self)
 					)
-					(16
+					(cRED
 						(ego setMotion: PolyPath 171 138 self)
 					)
-					(32
+					(cMAGENTA
 						(ego setMotion: PolyPath 149 137 self)
 					)
-					(64
+					(cBROWN
 						(ego
 							setLoop: 3
 							setMotion: PolyPath (+ (ego x?) 5) 147 self
 						)
 					)
-					(else  (self cue:))
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(2
-				(if (not (lGuard script?)) (HandsOn))
+				(if (not (lGuard script?))
+					(HandsOn)
+				)
 				(NormalEgo)
 				(self dispose:)
 			)
@@ -490,8 +535,6 @@
 )
 
 (instance egoEnters of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -505,15 +548,20 @@
 						(ego posn: 18 240 setMotion: MoveTo 200 187 self)
 					)
 					(39
-						(if
-						(and (not Night) (Btst fSavedBarnard) (not (Btst OBTAINED_BARNARD_REWARD)))
+						(if (and (not Night) (Btst fSavedBarnard) (not (Btst fBarnardReward)))
 							(ego posn: 160 240 setMotion: MoveTo 160 178 self)
 						else
-							(ego posn: gEgoX 240)
+							(ego posn: enterX 240)
 							(cond 
-								((< gEgoX 10) (ego setMotion: MoveTo (+ gEgoX 25 self) 185))
-								((> gEgoX 310) (ego setMotion: MoveTo (- gEgoX 25) 185 self))
-								(else (ego setMotion: MoveTo gEgoX 185 self))
+								((< enterX 10)
+									(ego setMotion: MoveTo (+ enterX 25 self) 185)
+								)
+								((> enterX 310)
+									(ego setMotion: MoveTo (- enterX 25) 185 self)
+								)
+								(else
+									(ego setMotion: MoveTo enterX 185 self)
+								)
 							)
 						)
 					)
@@ -534,7 +582,7 @@
 			(3
 				(if (not Night)
 					(if
-					(and (Btst fSavedBarnard) (not local47) (not (Btst OBTAINED_BARNARD_REWARD)))
+					(and (Btst fSavedBarnard) (not beenInside) (not (Btst fBarnardReward)))
 						(cSound prevSignal: 0)
 						(ego setScript: GuardsTrumpet self)
 					else
@@ -544,35 +592,39 @@
 					(self cue:)
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance egoExits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(switch (ego edgeHit?)
-					(2
+					(EAST
 						(ego setMotion: MoveTo 340 (+ (ego y?) 10) self)
 					)
-					(3
+					(SOUTH
 						(ego setMotion: MoveTo (ego x?) 240 self)
 					)
-					(4
+					(WEST
 						(ego setMotion: MoveTo -20 (ego y?) self)
 					)
 				)
 			)
 			(2
 				(switch (ego edgeHit?)
-					(2 (curRoom newRoom: 40))
-					(3 (curRoom newRoom: 39))
-					(4 (curRoom newRoom: 38))
+					(EAST (curRoom newRoom: 40))
+					(SOUTH (curRoom newRoom: 39))
+					(WEST (curRoom newRoom: 38))
 				)
 			)
 		)
@@ -580,8 +632,6 @@
 )
 
 (instance guardsGreet of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
 		(if
@@ -629,11 +679,12 @@
 )
 
 (instance GuardsTrumpet of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(theGame setCursor: waitCursor)
 				(self setScript: guardsGreet self)
@@ -642,7 +693,7 @@
 				(HandsOff)
 				(theGame setCursor: waitCursor)
 				(cSound pause: 0)
-				(messager say: N_ROOM 0 C_INVITED 1 self)
+				(messager say: N_ROOM NULL C_INVITED 1 self)
 			)
 			(3
 				(light setCycle: Forward)
@@ -672,11 +723,12 @@
 )
 
 (instance lGuardTalks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(user canInput: FALSE)
 				(user canControl: FALSE)
@@ -705,11 +757,11 @@
 					(switch register
 						(0
 							(HandsOff)
-							(messager say: N_ROOM 0 C_NO_ENTRY 1 self)
+							(messager say: N_ROOM NULL C_NO_ENTRY 1 self)
 						)
 						(1
 							(HandsOff)
-							(messager say: N_ROOM 0 C_NAMES 1 self)
+							(messager say: N_ROOM NULL C_NAMES 1 self)
 						)
 					)
 				else
@@ -730,8 +782,6 @@
 )
 
 (instance rGuardTalks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -745,10 +795,10 @@
 			(2
 				(switch register
 					(0
-						(messager say: N_ROOM 0 C_NO_ENTRY 1 self)
+						(messager say: N_ROOM NULL C_NO_ENTRY 1 self)
 					)
 					(1
-						(messager say: N_ROOM 0 C_NAMES 1 self)
+						(messager say: N_ROOM NULL C_NAMES 1 self)
 					)
 				)
 			)
@@ -764,8 +814,6 @@
 )
 
 (instance doTheOpen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -774,7 +822,7 @@
 			)
 			(2 (= seconds 1))
 			(3
-				(theGame setCursor: waitCursor 1)
+				(theGame setCursor: waitCursor TRUE)
 				(ego setMotion: 0 setHeading: 270 self)
 			)
 			(4

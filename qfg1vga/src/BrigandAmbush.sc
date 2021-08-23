@@ -279,7 +279,7 @@
 		(switch prevRoomNum
 			(93
 				(= local149 0)
-				(Bclr BRIGANDS_BEHIND_LOG)
+				(Bclr fBrigsBehindLog)
 				(ego
 					posn: 122 95
 					setPri: 7
@@ -340,7 +340,7 @@
 			)
 			(else 
 				(self setScript: egoEnters)
-				(Bset BRIGANDS_BEHIND_LOG)
+				(Bset fBrigsBehindLog)
 				(= brigandsBehindLog TRUE)
 				(= local149 1)
 				(spearman4 init: stopUpd:)

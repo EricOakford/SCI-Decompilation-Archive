@@ -4,9 +4,9 @@
 (include "999.shm") (include "814.shm")
 (include "120.shm")
 (use GameInit)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use GloryWindow)
 (use Procs)
 (use StartARoom)
@@ -285,8 +285,8 @@
 	missedDaggers			;EO: Daggers thrown on ground
 	hitDaggers				;EO: Daggers thrown in enemy
 	daggerRoom				;the last room the hero dropped daggers into. He can pick up all his daggers in this room.
-	sameColor =  42			;The colour of stats on the Character Screen
-	changeColor =  54		;The colour of stats that have changed since last viewing, on the Character Screen
+	sameColor =  SAME_COLOR	;The colour of stats on the Character Screen
+	changeColor =  CHANGE_COLOR	;The colour of stats that have changed since last viewing, on the Character Screen
 	shieldRoom				;the room hero dropped his shield in. He can pick it up later.
 	mandrakeDay =  -3		;the day hero last pulled the Mandrake Root
 	dftStatusCode			;default Status Bar refresh code. i.e. Quest for Glory I [%d of 500]
@@ -1703,7 +1703,7 @@
 						(messager say: N_CUE NULL NULL 7 0 SYSTEM)
 					)
 					(V_FLAME
-						(CastFlame 0 0
+						(CastDart 0 0
 							((= evt (Event new:)) x?)
 							(+ (evt y?) 24)
 						)
@@ -1713,11 +1713,11 @@
 						(if (= oldCurIcon (theIconBar curInvIcon?))
 							(switch (= index (inventory indexOf: oldCurIcon))
 								(iRock
-									(CastRock 0)
+									(ThrowRock 0)
 									(return TRUE)
 								)
 								(iDagger
-									(CastDagger 0)
+									(ThrowKnife 0)
 								)
 								(else 
 									(messager say: N_CUE NULL NULL 8 0 SYSTEM)

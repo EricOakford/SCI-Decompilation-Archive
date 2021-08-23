@@ -25,39 +25,73 @@
 )
 
 (local
-	theUseSortedFeatures
+	saveSortedFeatures
 	local1
 	local2
 	askedFight
 	canFightMaster
-	triedToSleep
-	[local6 6] = [0 -42 -34 -32 41 999]
-	[local12 6] = [0 40 39 16 35 999]
-	[local18 6] = [0 40 38 16 31 999]
-	[local24 6] = [0 29 28 33 36 999]
-	[local30 6]
-	[local36 5] = [0 -42 -34 -32 999]
+	sleepCued
+	masterTellMainBranch = [
+		STARTTELL
+		-42		;C_WEAPONMASTER
+		-34		;C_FIGHTING
+		-32		;C_CASTLE
+		C_TOWN2
+		ENDTELL
+		]
+	masterTell1 = [
+		STARTTELL
+		C_SWORD
+		C_SKILLS
+		C_PRACTICE
+		C_FRIENDSHIP
+		ENDTELL
+		]
+	masterTell2 = [
+		STARTTELL
+		C_SWORD
+		C_ARMOR
+		C_PRACTICE
+		C_BRIGANDS
+		ENDTELL
+		]
+	masterTell3 = [
+		STARTTELL
+		C_BARON
+		C_BARNARD
+		C_ELSA
+		C_GUARDS
+		ENDTELL
+		]
+	[masterTellTree 6]
+	masterTellKeys = [
+		STARTTELL
+		-42		;C_WEAPONMASTER
+		-34		;C_FIGHTING
+		-32		;C_CASTLE
+		ENDTELL
+		]
 )
 (procedure (DeclineTraining)
-	(messager say: N_ROOM 0 C_DECLINE)
+	(messager say: N_ROOM NULL C_DECLINE)
 )
 
 (procedure (StartLesson)
 	(if (not [egoStats PARRY])
-		(messager say: N_ROOM 0 14)
+		(messager say: N_ROOM NULL C_NO_PARRY)
 	else
-		(= askedFight NULL)
+		(= askedFight FALSE)
 		(if (GiveMoney 10)
 			(if (or (not (ego has: iSword)) (not (ego has: iShield)))
-				(messager say: N_ROOM 0 C_LOANER)
+				(messager say: N_ROOM NULL C_LOANER)
 			else
-				(messager say: N_ROOM 0 C_PAYUP)
+				(messager say: N_ROOM NULL C_PAYUP)
 			)
 			(= masterDay Day)
-			(SolvePuzzle POINTS_FIGHTWEAPONMASTER 3 FIGHTER)
+			(SolvePuzzle f39FightMaster 3 FIGHTER)
 			((ScriptID 39 0) setScript: (ScriptID 222 2))
 		else
-			(messager say: N_ROOM 0 C_NO_MONEY 1 theMaster)
+			(messager say: N_ROOM NULL C_NO_MONEY 1 theMaster)
 		)
 	)
 )
@@ -90,15 +124,13 @@
 		)
 	)
 	
-	(method (gotBeat param1)
+	(method (gotBeat theScript)
 		(self endFight: TRUE)
-		(self setScript: param1)
+		(self setScript: theScript)
 	)
 )
 
-(instance swordMusic of Sound
-	(properties)
-)
+(instance swordMusic of Sound)
 
 (instance rm39 of Room
 	(properties
@@ -108,11 +140,11 @@
 	)
 	
 	(method (init &tmp egoY temp1)
-		(= [local30 0] @local6)
-		(= [local30 1] @local12)
-		(= [local30 2] @local18)
-		(= [local30 3] @local24)
-		(= [local30 4] 999)
+		(= [masterTellTree 0] @masterTellMainBranch)
+		(= [masterTellTree 1] @masterTell1)
+		(= [masterTellTree 2] @masterTell2)
+		(= [masterTellTree 3] @masterTell3)
+		(= [masterTellTree 4] ENDTELL)
 		(Load RES_VIEW 39)
 		(if
 			(and
@@ -131,24 +163,42 @@
 			(else  (self style: WIPEDOWN))
 		)
 		(super init: &rest)
-		(= theUseSortedFeatures useSortedFeatures)
+		(= saveSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)
-		(SolvePuzzle POINTS_ENTERCASTLECOURTYARD 1)
+		(SolvePuzzle f39EnterCourtyard 1)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 0 108 94 98 91 113 74 118 76 135 40 141 28 122 0 119
+					type: PBarredAccess
+					init:
+						0 108
+						94 98
+						91 113
+						74 118
+						76 135
+						40 141
+						28 122
+						0 119
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 319 119 300 120 269 106 238 107 208 90 319 95
+					type: PBarredAccess
+					init:
+						319 119
+						300 120
+						269 106
+						238 107
+						208 90
+						319 95
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 62 189 64 172 104 171 137 189
+					type: PBarredAccess
+					init:
+						62 189
+						64 172
+						104 171
+						137 189
 					yourself:
 				)
 		)
@@ -167,8 +217,12 @@
 			(41
 				(NormalEgo)
 				(cond 
-					((< egoX 100) (= egoX 100))
-					((> egoX 215) (= egoX 215))
+					((< egoX 100)
+						(= egoX 100)
+					)
+					((> egoX 215)
+						(= egoX 215)
+					)
 				)
 				(ego posn: egoX 102 init: setMotion: MoveTo egoX 107)
 			)
@@ -210,14 +264,14 @@
 			(cond 
 				((Btst fFlag239)
 					(masterTeller
-						init: (ScriptID 39 2) @local6 @local30 @local36
+						init: (ScriptID 39 2) @masterTellMainBranch @masterTellTree @masterTellKeys
 					)
 					((ScriptID 39 2) actions: masterTeller init:)
 					(self setScript: (ScriptID 222 1))
 				)
 				((> (Random 0 100) 50)
 					(masterTeller
-						init: (ScriptID 39 2) @local6 @local30 @local36
+						init: (ScriptID 39 2) @masterTellMainBranch @masterTellTree @masterTellKeys
 					)
 					((ScriptID 39 2)
 						actions: masterTeller
@@ -228,7 +282,9 @@
 					(self setScript: (ScriptID 222 0))
 				)
 			)
-			(if [egoStats PARRY] (= canFightMaster TRUE))
+			(if [egoStats PARRY]
+				(= canFightMaster TRUE)
+			)
 		)
 	)
 	
@@ -247,7 +303,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(= useSortedFeatures theUseSortedFeatures)
+		(= useSortedFeatures saveSortedFeatures)
 		(if (>= Clock 3000)
 			(Bclr fFlag239)
 		)
@@ -262,7 +318,7 @@
 			(V_DAGGER (messager say: N_ROOM 59))
 			(V_SLEEP
 				(if Night
-					(= triedToSleep TRUE)
+					(= sleepCued TRUE)
 					(messager say: N_ROOM V_SLEEP C_NIGHT 0 curRoom)
 				else
 					(messager say: N_ROOM V_SLEEP C_DAY)
@@ -275,14 +331,14 @@
 	)
 	
 	(method (cue)
-		(if triedToSleep
-			(= triedToSleep NULL)
+		(if sleepCued
+			(= sleepCued FALSE)
 			(if (and (< 750 Clock) (< Clock 2550))
 				(FixTime 21)
 			)
 			(curRoom setScript: goTo37)
 		else
-			(SolvePuzzle POINTS_FIGHTWEAPONMASTER 3 FIGHTER)
+			(SolvePuzzle f39FightMaster 3 FIGHTER)
 			((ScriptID 39 0) setScript: (ScriptID 222 2))
 		)
 	)
@@ -457,7 +513,7 @@
 		noun N_LEFT_GUARD
 		view 39
 		priority 15
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
@@ -466,38 +522,37 @@
 )
 
 (instance egoEnters of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego posn: 175 240 setMotion: MoveTo 160 180 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance egoExits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(switch (ego edgeHit?)
-					(1
+					(NORTH
 						(HandsOn)
 						(curRoom newRoom: 41)
 					)
-					(3
+					(SOUTH
 						(ego setMotion: MoveTo (+ (ego x?) 15) 240 self)
 					)
-					(4
+					(WEST
 						(ego setMotion: PolyPath -20 (ego y?) self)
 					)
-					(2
+					(EAST
 						(ego setMotion: PolyPath 337 (ego y?) self)
 					)
 				)
@@ -505,15 +560,19 @@
 			(1
 				(HandsOn)
 				(switch (ego edgeHit?)
-					(3
+					(SOUTH
 						(if Night
 							(curRoom setScript: goTo37)
 						else
 							(curRoom newRoom: 37)
 						)
 					)
-					(4 (curRoom newRoom: 38))
-					(2 (curRoom newRoom: 40))
+					(WEST
+						(curRoom newRoom: 38)
+					)
+					(EAST
+						(curRoom newRoom: 40)
+					)
 				)
 			)
 		)
@@ -521,8 +580,6 @@
 )
 
 (instance comeBackLittleEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -538,8 +595,7 @@
 				)
 				(ego
 					ignoreActors:
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(if (< (ego x?) ((ScriptID 39 2) x?))
 							(- (theMaster x?) 40)
 						else
@@ -561,17 +617,15 @@
 )
 
 (instance goTo37 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if Night
 					(if (< [egoStats CLIMB] 10)
-						(messager say: N_ROOM 0 C_NO_CLIMB 1 self)
+						(messager say: N_ROOM NULL C_NO_CLIMB 1 self)
 					else
-						(messager say: N_ROOM 0 C_CLIMB_OVER 1 self)
+						(messager say: N_ROOM NULL C_CLIMB_OVER 1 self)
 					)
 				else
 					(self cue:)
@@ -594,17 +648,15 @@
 )
 
 (instance teacherTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
 				(if (not [egoStats PARRY])
-					(messager say: N_ROOM 0 C_NO_PARRY)
+					(messager say: N_ROOM NULL C_NO_PARRY)
 				else
 					(Bset fOfferedTraining)
-					(messager say: N_ROOM 0 C_PRACTICE)
+					(messager say: N_ROOM NULL C_PRACTICE)
 					(= yesNoTimer 130)
 					(= askedFight TRUE)
 				)
@@ -624,7 +676,7 @@
 	(method (init)
 		(= nightPalette 1639)
 		(PalVary PALVARYTARGET 1639)
-		(kernel_128 639)
+		(AssertPalette 639)
 		(super init:)
 	)
 	
@@ -633,10 +685,12 @@
 		(if (< (Abs (- gameTime name)) 1) (return))
 		(= name gameTime)
 		(cond 
-			((> yesNoTimer 1) (-- yesNoTimer))
+			((> yesNoTimer 1)
+				(-- yesNoTimer)
+			)
 			((and (== yesNoTimer 1) askedFight)
 				(= yesNoTimer 0)
-				(= askedFight NULL)
+				(= askedFight FALSE)
 				(DeclineTraining)
 			)
 		)
@@ -649,11 +703,8 @@
 )
 
 (instance masterTeller of Teller
-	(properties)
-	
 	(method (showDialog &tmp superShowDialog)
-		(if
-		(== (= superShowDialog (super showDialog:)) -34)
+		(if (== (= superShowDialog (super showDialog:)) -34)
 			(curRoom setScript: teacherTalk)
 		)
 		(return superShowDialog)
@@ -662,23 +713,28 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_TALK
-				(if
-				(not (< (ego distanceTo: (ScriptID 39 2)) 45))
+				(if (not (< (ego distanceTo: (ScriptID 39 2)) 45))
 					(rm39 setScript: comeBackLittleEgo)
 				else
-					(SolvePuzzle POINTS_TALKTOWEAPONMASTER 1)
+					(SolvePuzzle f39TalkToMaster 1)
 					(super doVerb: theVerb &rest)
 				)
 			)
-			(V_MONEY (StartLesson))
+			(V_MONEY
+				(StartLesson)
+			)
 			(V_DAGGER
 				(curRoom setScript: teacherTalk)
 			)
 			(V_SWORD
 				(curRoom setScript: teacherTalk)
 			)
-			(V_ROCK (messager say: N_ROOM 59))
-			(V_FLAME (messager say: N_ROOM 59))
+			(V_ROCK
+				(messager say: N_ROOM 59)
+			)
+			(V_FLAME
+				(messager say: N_ROOM 59)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -699,7 +755,7 @@
 	(method (init)
 		(= nightPalette 2039)
 		(PalVary PALVARYTARGET 2039)
-		(kernel_128 1039)
+		(AssertPalette 1039)
 		(= font userFont)
 		(super
 			init: masterBust masterEyes masterTalkerMouth &rest

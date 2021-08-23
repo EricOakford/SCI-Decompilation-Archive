@@ -2,8 +2,8 @@
 (script# 45)
 (include game.sh) (include "45.shm")
 (use Main)
-(use CastFlame)
-(use CastDagger)
+(use CastDart)
+(use ThrowKnife)
 (use Target)
 (use Procs)
 (use PAvoid)
@@ -23,17 +23,41 @@
 
 (local
 	local0
-	local1
+	approachingBush
 	local2
-	[local3 8]
-	[local11 50] = [164 22 164 34 117 34 117 23 0 32 0 0 0 32 83 114 101 140 59 221 69 248 59 300 67 173 71 251 81 239 85 300 99 256 141 300 151 203 153 292 165 64 136 157 143]
+	[movingBushPtsBlue 8]
+	movingBushPts = [
+		164 22
+		164 34
+		117 34
+		117 23
+		0 32
+		0 0
+		0 32
+		83 114
+		101 140
+		59 221
+		69 248
+		59 300
+		67 173
+		71 251
+		81 239
+		85 300
+		99 256
+		141 300
+		151 203
+		153 292
+		165 64
+		136 157
+		143
+		]
 	local61
 	local62
 	local63
 	local64
 	[goblinScript 10]
 	i
-	[local76 31] = [10 100 150 200 225 400 625 750 850 950 1050 2 2 2 2 2 2 2 2 2 2]
+	local76 = [10 100 150 200 225 400 625 750 850 950 1050 2 2 2 2 2 2 2 2 2 2]
 	lootedGoblin1
 	lootedGoblin2
 	lootedGoblin3
@@ -49,20 +73,20 @@
 	(= temp1 (- (movingBush x?) 25))
 	(= temp2 (- (movingBush y?) 9))
 	(= temp3 (+ (movingBush y?) 6))
-	(= [local3 0] temp0)
-	(= [local3 1] temp2)
-	(= [local3 2] temp0)
-	(= [local3 3] temp3)
-	(= [local3 4] temp1)
-	(= [local3 5] temp3)
-	(= [local3 6] temp1)
-	(= [local3 7] temp2)
+	(= [movingBushPtsBlue 0] temp0)
+	(= [movingBushPtsBlue 1] temp2)
+	(= [movingBushPtsBlue 2] temp0)
+	(= [movingBushPtsBlue 3] temp3)
+	(= [movingBushPtsBlue 4] temp1)
+	(= [movingBushPtsBlue 5] temp3)
+	(= [movingBushPtsBlue 6] temp1)
+	(= [movingBushPtsBlue 7] temp2)
 	(if (& (movingBush onControl: origin) cBLUE)
 		(movingBush ignoreActors: TRUE)
-		(movingBushPoly points: @local3 size: 4)
+		(movingBushPoly points: @movingBushPtsBlue size: 4)
 	else
-		(movingBush ignoreActors: 0)
-		(movingBushPoly points: @local11 size: 4)
+		(movingBush ignoreActors: FALSE)
+		(movingBushPoly points: @movingBushPts size: 4)
 	)
 )
 
@@ -208,45 +232,47 @@
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						202
-						63
-						201
-						13
-						101
-						13
-						88
-						13
-						88
-						67
-						0
-						78
-						0
-						0
-						319
-						0
-						319
-						69
-						319
-						115
-						294
-						115
+						202 63
+						201 13
+						101 13
+						88 13
+						88 67
+						0 78
+						0 0
+						319 0
+						319 69
+						319 115
+						294 115
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 0 189 0 186 91 186 91 189
+					type: PBarredAccess
+					init:
+						0 189
+						0 186
+						91 186
+						91 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 261 134 261 149 201 149 201 139 217 134
+					type: PBarredAccess
+					init:
+						261 134
+						261 149
+						201 149
+						201 139
+						217 134
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 244 189 244 174 319 174 319 189
+					type: PBarredAccess
+					init:
+						244 189
+						244 174
+						319 174
+						319 189
 					yourself:
 				)
 		)
@@ -271,7 +297,7 @@
 				)
 			)
 		)
-		(if (and (not (Btst ATTACKED_BUSH_GOBLIN)) (not numGoblins))
+		(if (and (not (Btst fAttackedBush)) (not numGoblins))
 			(if (OneOf prevRoomNum 33 51)
 				(movingBush posn: 140 157 init: setScript: bushAttacks)
 			else
@@ -281,9 +307,9 @@
 		(goblin1 init: hide:)
 		(goblin2 init: hide: setScript: goblin2Leaves)
 		(goblin5 init: hide:)
-		(if (> howFast 0)
+		(if (> howFast slow)
 			(goblin6 init:)
-			(if (> howFast 1)
+			(if (> howFast medium)
 				(goblin3 init: hide: setScript: goblin3Leaves)
 				(goblin4 init:)
 			)
@@ -304,7 +330,7 @@
 			)
 			(vGoblin
 				(if monsterHealth
-					(ChangeGait MOVE_RUN 0)
+					(ChangeGait MOVE_RUN FALSE)
 					(ego init: posn: 318 108 setMotion: MoveTo 255 108)
 				else
 					(Load RES_VIEW 519)
@@ -367,15 +393,24 @@
 		)
 		(Load RES_SCRIPT PCHASE)
 		(Load RES_SCRIPT PAVOID)
-		(= disabledActions (| disabledActions ACTION_REST))
+		(|= disabledActions ACTION_REST)
 	)
 	
 	(method (doit)
 		(cond 
 			(script)
-			((== (ego edgeHit?) 3) (HandsOff) (curRoom setScript: sExitSouth))
-			((== (ego edgeHit?) 2) (HandsOff) (curRoom setScript: sExitEast))
-			((== (ego edgeHit?) 4) (HandsOff) (curRoom setScript: sExitWest))
+			((== (ego edgeHit?) SOUTH)
+				(HandsOff)
+				(curRoom setScript: sExitSouth)
+			)
+			((== (ego edgeHit?) EAST)
+				(HandsOff)
+				(curRoom setScript: sExitEast)
+			)
+			((== (ego edgeHit?) WEST)
+				(HandsOff)
+				(curRoom setScript: sExitWest)
+			)
 		)
 		(super doit:)
 	)
@@ -410,7 +445,7 @@
 				(goblinMusic stop:)
 				(= monsterNum vGoblin)
 				(ego setMotion: 0)
-				(Bset ATTACKED_BUSH_GOBLIN)
+				(Bset fAttackedBush)
 				(messager say: N_ROOM NULL C_START_BATTLE 0 self)
 			)
 			((IsObject gClient)
@@ -435,7 +470,7 @@
 		view vGoblin
 		loop 2
 		priority 3
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		cycleSpeed 3
 		illegalBits $0000
 		xStep 2
@@ -445,7 +480,7 @@
 	(method (init)
 		(= nightPalette 1445)
 		(PalVary PALVARYTARGET 1445)
-		(kernel_128 445)
+		(AssertPalette 445)
 		(super init:)
 		(if local61
 			;EO: this did not decompile correctly
@@ -471,7 +506,7 @@
 		view vGoblin
 		loop 2
 		priority 3
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 3
 		illegalBits $0000
 		xStep 2
@@ -488,7 +523,7 @@
 		view vGoblin
 		loop 2
 		priority 3
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		cycleSpeed 3
 		illegalBits $0000
 		xStep 2
@@ -505,7 +540,7 @@
 		view vGoblin
 		loop 2
 		priority 3
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 3
 		illegalBits $0000
 		xStep 2
@@ -530,11 +565,11 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(CastDagger self curRoom)
+				(ThrowKnife self curRoom)
 				(= monsterHealth 55)
 			)
 			(V_FLAME
-				(CastFlame self curRoom)
+				(CastDart self curRoom)
 				(= monsterHealth 50)
 			)
 			(else 
@@ -552,7 +587,7 @@
 		view vGoblin
 		loop 3
 		priority 14
-		signal $6010
+		signal (| ignrAct ignrHrz fixPriOn)
 		cycleSpeed 3
 		illegalBits $0000
 		xStep 2
@@ -576,11 +611,11 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(CastDagger self curRoom)
+				(ThrowKnife self curRoom)
 				(= monsterHealth 50)
 			)
 			(V_FLAME
-				(CastFlame self curRoom)
+				(CastDart self curRoom)
 				(= monsterHealth 45)
 			)
 			(else 
@@ -637,12 +672,12 @@
 		(super doit:)
 		(if
 			(and
-				local1
+				approachingBush
 				(< (ego distanceTo: self) 30)
 				(not (curRoom script?))
 			)
-			(= local1 0)
-			(messager say: N_MOVING_BUSH 0 C_GOBLIN_STEPS_OUT 1 curRoom)
+			(= approachingBush FALSE)
+			(messager say: N_MOVING_BUSH NULL C_GOBLIN_STEPS_OUT 1 curRoom)
 		)
 	)
 	
@@ -651,23 +686,23 @@
 			(V_DO
 				(HandsOff)
 				(self setScript: 0 setMotion: 0 setCel: 0 setLoop: 4)
-				(= local1 1)
+				(= approachingBush TRUE)
 				(ego setMotion: PolyPath x y)
 			)
 			(V_SWORD
 				(goblinMusic stop:)
 				(ego setMotion: 0)
-				(messager say: N_MOVING_BUSH V_SWORD 0 0 self)
+				(messager say: N_MOVING_BUSH V_SWORD NULL 0 self)
 			)
 			(V_DAGGER
 				(goblinMusic stop:)
 				(ego setMotion: 0)
-				(messager say: N_MOVING_BUSH V_SWORD 0 0 self)
+				(messager say: N_MOVING_BUSH V_SWORD NULL 0 self)
 			)
 			(V_FLAME
 				(goblinMusic stop:)
 				(ego setMotion: 0)
-				(messager say: N_MOVING_BUSH V_SWORD 0 0 self)
+				(messager say: N_MOVING_BUSH V_SWORD NULL 0 self)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -690,7 +725,7 @@
 		view 446
 		cel 1
 		priority 6
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		whichGoblin 1
 	)
 )
@@ -704,7 +739,7 @@
 		view 446
 		cel 2
 		priority 10
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		whichGoblin 2
 	)
 	
@@ -712,32 +747,20 @@
 		(super init:)
 		(bushRockCombo dispose:)
 		(bushRockCombo
-			type: 2
+			type: PBarredAccess
 			init:
-				124
-				130
-				124
-				114
-				175
-				114
-				175
-				125
-				170
-				125
-				170
-				137
-				151
-				137
-				151
-				151
-				125
-				151
-				125
-				160
-				0
-				160
-				0
-				130
+				124 130
+				124 114
+				175 114
+				175 125
+				170 125
+				170 137
+				151 137
+				151 151
+				125 151
+				125 160
+				0 160
+				0 130
 			yourself:
 		)
 		(deadGoblin3 init: addToPic:)
@@ -753,7 +776,7 @@
 		view 446
 		cel 3
 		priority 8
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		whichGoblin 3
 	)
 )
@@ -768,7 +791,7 @@
 		loop 1
 		cel 3
 		priority 4
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		whichGoblin 4
 	)
 	
@@ -777,8 +800,13 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 179 75 179 98 136 98 125 90 125 75
+					type: PBarredAccess
+					init:
+						179 75
+						179 98
+						136 98
+						125 90
+						125 75
 					yourself:
 				)
 		)
@@ -794,7 +822,7 @@
 		view 446
 		loop 1
 		priority 4
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		whichGoblin 5
 	)
 	
@@ -803,34 +831,21 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						261
-						134
-						261
-						149
-						201
-						149
-						201
-						129
-						194
-						129
-						194
-						108
-						194
-						103
-						222
-						103
-						222
-						108
-						244
-						108
-						244
-						122
-						232
-						122
-						232
-						134
+						261 134
+						261 149
+						201 149
+						201 129
+						194 129
+						194 108
+						194 103
+						222 103
+						222 108
+						244 108
+						244 122
+						232 122
+						232 134
 					yourself:
 				)
 		)
@@ -847,7 +862,7 @@
 		loop 1
 		cel 1
 		priority 9
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		whichGoblin 6
 	)
 	
@@ -856,8 +871,16 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 0 117 41 117 41 127 74 127 74 140 46 140 46 147 0 147
+					type: PBarredAccess
+					init:
+						0 117
+						41 117
+						41 127
+						74 127
+						74 140
+						46 140
+						46 147
+						0 147
 					yourself:
 				)
 		)
@@ -874,7 +897,7 @@
 		loop 1
 		cel 2
 		priority 13
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		whichGoblin 7
 	)
 	
@@ -882,28 +905,18 @@
 		(super init:)
 		(twoRocks dispose:)
 		(twoRocks
-			type: 2
+			type: PBarredAccess
 			init:
-				234
-				179
-				216
-				179
-				216
-				186
-				166
-				186
-				166
-				160
-				189
-				160
-				189
-				153
-				215
-				153
-				215
-				164
-				234
-				164
+				234 179
+				216 179
+				216 186
+				166 186
+				166 160
+				189 160
+				189 153
+				215 153
+				215 164
+				234 164
 			yourself:
 		)
 	)
@@ -915,14 +928,12 @@
 		y 109
 		view 446
 		priority 7
-		signal $6810
+		signal (| ignrAct ignrHrz fixedLoop fixPriOn)
 		whichGoblin 8
 	)
 )
 
 (instance sVictorious of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -940,7 +951,9 @@
 				)
 			)
 			(2
-				(if (== numGoblins 1) (messager say: N_ROOM 0 0))
+				(if (== numGoblins 1)
+					(messager say: N_ROOM NULL NULL)
+				)
 				(NormalEgo)
 				(ego loop: 2 cycleSpeed: register)
 				(HandsOn)
@@ -951,8 +964,6 @@
 )
 
 (instance goblin1Leaves of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 5 40)))
@@ -981,8 +992,6 @@
 )
 
 (instance goblin2Leaves of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 5 40)))
@@ -1011,8 +1020,6 @@
 )
 
 (instance goblin3Leaves of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 5 40)))
@@ -1042,8 +1049,6 @@
 )
 
 (instance goblin4Leaves of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 5 40)))
@@ -1063,8 +1068,6 @@
 )
 
 (instance goblin5Leaves of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 5 40)))
@@ -1088,8 +1091,6 @@
 )
 
 (instance goblin6Leaves of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			((= seconds (Random 5 40)))
@@ -1112,35 +1113,34 @@
 )
 
 (instance sEnterFromSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego init: posn: 160 245 setMotion: MoveTo 160 183 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sExitSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo (ego x?) 245 self)
 			)
-			(1 (curRoom newRoom: 62))
+			(1
+				(curRoom newRoom: 62)
+			)
 		)
 	)
 )
 
 (instance goblinAttacks of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (and register (< (ego distanceTo: client) 35))
@@ -1157,7 +1157,7 @@
 					setAvoider: PAvoider
 					setLoop: -1
 					setCycle: Walk
-					ignoreActors: 0
+					ignoreActors: FALSE
 				)
 				(= ticks (Random 200 400))
 			)
@@ -1175,8 +1175,6 @@
 )
 
 (instance sEnterFromWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1192,47 +1190,51 @@
 					setMotion: MoveTo 20 register self
 				)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sExitWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo (- (ego x?) 20) (ego y?) self)
 			)
-			(1 (curRoom newRoom: 44))
+			(1
+				(curRoom newRoom: 44)
+			)
 		)
 	)
 )
 
 (instance sExitEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo (+ (ego x?) 20) (ego y?) self)
 			)
-			(1 (curRoom newRoom: 51))
+			(1
+				(curRoom newRoom: 51)
+			)
 		)
 	)
 )
 
 (instance sEnterFromEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego init: posn: 345 126 setMotion: MoveTo 300 126 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -1242,31 +1244,35 @@
 		flags $ffff
 		number 76
 		priority 3
-		loop -1
+		loop SND_DONE
 	)
 )
 
 (instance movingBushPoly of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )
 
 (instance topBush of Polygon
-	(properties)
+	(properties
+		type PTotalAccess
+	)
 )
 
 (instance twoRocks of Polygon
-	(properties)
+	(properties
+		type PTotalAccess
+	)
 )
 
 (instance bushRockCombo of Polygon
-	(properties)
+	(properties
+		type PTotalAccess
+	)
 )
 
 (instance bushAttacks of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -1299,7 +1305,7 @@
 						setAvoider: PAvoider
 						setMotion: PolyPath (ego x?) (ego y?) self
 					)
-					(movingBushPoly points: @local11 size: 4)
+					(movingBushPoly points: @movingBushPts size: 4)
 					(= register 1)
 				else
 					(-- state)
@@ -1317,13 +1323,9 @@
 	)
 )
 
-(instance roomTimer of Timer
-	(properties)
-)
+(instance roomTimer of Timer)
 
 (instance cueItScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 60))

@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# CASTFLAME)
+(script# CASTDART)
 (include game.sh) (include "558.shm")
 (use Main)
 (use Target)
@@ -11,7 +11,7 @@
 (use System)
 
 (public
-	CastFlame 0
+	CastDart 0
 	dartScript 1
 )
 
@@ -30,7 +30,7 @@
 	hurtEgo
 	local12
 )
-(procedure (CastFlame obj param2 theX theY &tmp temp0 temp1 dart evt)
+(procedure (CastDart obj param2 theX theY &tmp temp0 temp1 dart evt)
 	(if gClient
 		(return gClient)
 	)
@@ -130,7 +130,7 @@
 		)
 		(RestoreTheCursor)
 		(super dispose:)
-		(DisposeScript CASTFLAME)
+		(DisposeScript CASTDART)
 	)
 	
 	(method (changeState newState)

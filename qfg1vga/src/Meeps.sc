@@ -2,7 +2,7 @@
 (script# 60)
 (include game.sh) (include "60.shm")
 (use Main)
-(use CastRock)
+(use ThrowRock)
 (use Teller)
 (use Procs)
 (use PolyPath)
@@ -20,11 +20,35 @@
 )
 
 (local
-	local0 = [0 10 -11 -6 4 12 -3 -2 -9 999]
-	local10 = [0 7 999]
-	local13 = [0 8 999]
-	local16
-	local24 = [0 -11 -6 999]
+	meepTellMainBranch = [
+		STARTTELL
+		C_MEEPS
+		-11		;C_ROCKS
+		-6		;C_FUR
+		C_BRIGANDS
+		C_SCROLL
+		-3		;C_BABY
+		-2		;C_APPLES
+		-9		;C_MAGIC
+		ENDTELL
+		]
+	meepTell1 = [
+		STARTTELL
+		C_GREENFUR
+		ENDTELL
+		]
+	meepTell2 = [
+		STARTTELL
+		C_HOLES
+		ENDTELL
+		]
+	[meepTellTree 8]
+	meepTellKeys = [
+		STARTTELL
+		-11		;C_ROCKS
+		-6		;C_FUR
+		ENDTELL
+		]
 	newApple
 	local29
 	meepsScared
@@ -64,10 +88,10 @@
 	)
 	
 	(method (init)
-		(= [local16 0] @local0)
-		(= [local16 1] @local13)
-		(= [local16 2] @local10)
-		(= [local16 3] 999)
+		(= [meepTellTree 0] @meepTellMainBranch)
+		(= [meepTellTree 1] @meepTell2)
+		(= [meepTellTree 2] @meepTell1)
+		(= [meepTellTree 3] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -218,7 +242,7 @@
 		(bossEyes init: setLoop: 3 z: 1000)
 		(meepEyes2 init: setLoop: 3 z: 1000)
 		(meepEyes3 init: setLoop: 3 z: 1000)
-		(meepTeller init: bossMeep @local0 @local16 @local24)
+		(meepTeller init: bossMeep @meepTellMainBranch @meepTellTree @meepTellKeys)
 		(bossMeep
 			init:
 			actions: meepTeller
@@ -272,7 +296,7 @@
 		(super doit:)
 		(cond 
 			(script)
-			((== (ego edgeHit?) 2)
+			((== (ego edgeHit?) EAST)
 				(HandsOff)
 				(curRoom setScript: sExitEast)
 			)
@@ -301,7 +325,9 @@
 				(= meepsScared TRUE)
 			)
 			(V_TALK
-				(if meepsScared (messager say: N_ROOM V_TALK C_SCAREDMEEPS))
+				(if meepsScared
+					(messager say: N_ROOM V_TALK C_SCAREDMEEPS)
+				)
 			)
 			(V_LOOK
 				(cond 
@@ -318,7 +344,7 @@
 			)
 			(V_ROCK
 				(= meepsScared TRUE)
-				(CastRock 0)
+				(ThrowRock 0)
 			)
 			(V_DETECT
 				(messager say: N_ROOM V_DETECT)
@@ -332,10 +358,10 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(DisposeScript 160)
 		(Lock RES_VIEW 60 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
@@ -366,7 +392,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(messager say: N_ROOM 0 C_NONEEDTO)
+				(messager say: N_ROOM NULL C_NONEEDTO)
 				(= meepsScared TRUE)
 			)
 			(V_LOOK
@@ -440,8 +466,8 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(messager say: N_ROOM 0 C_NONEEDTO)
-				(= meepsScared 1)
+				(messager say: N_ROOM NULL C_NONEEDTO)
+				(= meepsScared TRUE)
 			)
 			(V_LOOK
 				(messager say: N_TREES V_LOOK)
@@ -500,8 +526,8 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAGGER
-				(messager say: N_ROOM 0 C_NONEEDTO)
-				(= meepsScared 1)
+				(messager say: N_ROOM NULL C_NONEEDTO)
+				(= meepsScared TRUE)
 			)
 			(V_TALK
 				(if meepsScared
@@ -894,7 +920,6 @@
 )
 
 (instance sStabRock of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -930,7 +955,6 @@
 )
 
 (instance sLiftRock of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -990,12 +1014,12 @@
 			)
 			(1
 				(self cue:)
-			;	(bossMeep setCycle:)
-				)
+			;	(bossMeep setCycle: EndLoop self)
+			)
 			;changed to allow for the Green Meep to give the Detect scroll.
 			;Now to fix the graphical glitch that was created...
 			(2
-				(bossMeep setPri: 5 setCycle: BegLoop self)
+				(bossMeep setPri: pMAGENTA setCycle: BegLoop self)
 			)
 			(3
 				(= ticks 25)
@@ -1155,7 +1179,6 @@
 )
 
 (instance babySqueak of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1170,7 +1193,6 @@
 )
 
 (instance sBaby of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1199,7 +1221,6 @@
 )
 
 (instance sExitEast of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1215,7 +1236,6 @@
 )
 
 (instance sPullFur of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1273,7 +1293,7 @@
 				(messager say: N_ROOM NULL C_GETFUR 1 self)
 			)
 			(4
-				(SolvePuzzle POINTS_GETGREENFUR 5)
+				(SolvePuzzle f60GetFur 5)
 				(ego get: iGreenFur)
 				(fur dispose:)
 				(self cue:)
@@ -1291,7 +1311,6 @@
 )
 
 (instance lookAtGrass of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1405,7 +1424,6 @@
 )
 
 (instance meepScript3 of MeepPeeps
-	
 	(method (dispose)
 		(= state 0)
 		(super dispose: &rest)
@@ -1554,23 +1572,17 @@
 )
 
 (instance meepTeller of Teller
-
 	(method (showDialog &tmp temp0)
 		(if
 			(==
 				(= temp0
 					(super
 						showDialog:
-							12
-							local35
-							-3
-							local40
-							-2
-							local34
-							-9
-							(if (not (Btst LEARNED_DETECT)) (not local35))
-							7
-							(not local37)
+							12 local35
+							-3 local40
+							-2 local34
+							-9 (if (not (Btst fLearnedDetect)) (not local35))
+							C_GREENFUR (not local37)
 					)
 				)
 				-3
@@ -1586,9 +1598,9 @@
 				(== temp0 7)
 				(not local37)
 				(not local38)
-				(not (Btst OBTAINED_GREEN_FUR))
+				(not (Btst fGotFur))
 			)
-			(Bset OBTAINED_GREEN_FUR)
+			(Bset fGotFur)
 			(bossMeep setScript: sPullFur)
 		)
 		(if (== temp0 -9)
@@ -1620,7 +1632,7 @@
 			)
 			(V_TALK
 				(if bossOnScreen
-					(SolvePuzzle POINTS_TALKTOMEEP 1)
+					(SolvePuzzle f60TalkToMeep 1)
 					(super doVerb: theVerb)
 				else
 					(bossMeep approachVerbs: NULL)
@@ -1707,7 +1719,6 @@
 )
 
 (instance sBossOut of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1819,7 +1830,6 @@
 )
 
 (instance meepScript2 of MeepPeeps
-	
 	(method (dispose)
 		(= state 0)
 		(super dispose: &rest)
@@ -1949,7 +1959,6 @@
 )
 
 (instance sGetScroll of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1979,8 +1988,8 @@
 			)
 			(4
 				(ego learn: DETMAGIC 10)
-				(SolvePuzzle POINTS_LEARNDETECTMAGIC 4)
-				(Bset LEARNED_DETECT)
+				(SolvePuzzle f60LearnDetect 4 MAGIC_USER)	;Now only magic users can get this
+				(Bset fLearnedDetect)
 				(HandsOn)
 				(NormalEgo)
 				(self dispose:)

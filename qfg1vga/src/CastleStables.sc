@@ -32,17 +32,46 @@
 	workBreak
 	local8
 	oldSortedFeatures
-	gEgoCycleSpeed
-	gEgoMoveSpeed
+	saveCycleSpeed
+	saveMoveSpeed
 	local12
-	local13
+	talkCount
 	wasRunning
-	[local15 8] = [0 -21 15 -13 19 14 -17 999]
-	[local23 3] = [0 18 999]
-	[local26 5] = [0 12 16 20 999]
-	[local31 3] = [0 11 999]
-	[local34 7]
-	[local41 5] = [0 -21 -13 -17 999]
+	stableTellMainBranch = [
+		STARTTELL
+		-21		;C_WORK
+		C_HORSE
+		-13		;C_BARON
+		C_STABLES
+		C_GUARDS
+		-17		;C_MONSTER
+		ENDTELL
+		]
+	stableTell1 = [
+		STARTTELL
+		C_PAY
+		ENDTELL
+		]
+	stableTell2 = [
+		STARTTELL
+		C_BARONET
+		C_MAGIC
+		C_VALLEY
+		ENDTELL
+		]
+	stableTell3 = [
+		STARTTELL
+		C_ANTWERP
+		ENDTELL
+		]
+	[stableTellTree 7]
+	stableTellKeys = [
+		STARTTELL
+		-21		;C_WORK
+		-13		;C_BARON
+		-17		;C_MONSTER
+		ENDTELL
+		]
 )
 (procedure (AlreadyClean)
 	(messager say: N_ROOM NULL NULL 1)
@@ -63,12 +92,12 @@
 		horizon 60
 	)
 	
-	(method (init &tmp theY temp1 soundNum)
-		(= [local34 0] @local15)
-		(= [local34 1] @local23)
-		(= [local34 2] @local26)
-		(= [local34 3] @local31)
-		(= [local34 4] 999)
+	(method (init &tmp theY manureCel soundNum)
+		(= [stableTellTree 0] @stableTellMainBranch)
+		(= [stableTellTree 1] @stableTell1)
+		(= [stableTellTree 2] @stableTell2)
+		(= [stableTellTree 3] @stableTell3)
+		(= [stableTellTree 4] ENDTELL)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -103,11 +132,11 @@
 			(cSound stop: number: soundNum loop: -1 priority: 0 play:)
 		)
 		(super init: &rest)
-		(= local13 0)
+		(= talkCount 0)
 		(= oldSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)
-		(= gEgoCycleSpeed (ego cycleSpeed?))
-		(= gEgoMoveSpeed (ego moveSpeed?))
+		(= saveCycleSpeed (ego cycleSpeed?))
+		(= saveMoveSpeed (ego moveSpeed?))
 		(self
 			setFeatures:
 				walls
@@ -131,7 +160,7 @@
 ;;;		(sky init:)
 ;;;		(fence init:)
 		
-		(stableTeller init: stableMan @local15 @local34 @local41)
+		(stableTeller init: stableMan @stableTellMainBranch @stableTellTree @stableTellKeys)
 		(stableMan
 			setLoop: 0
 			cel: 0
@@ -158,24 +187,24 @@
 			setPri: 6
 			init:
 		)
-		(= temp1 (if (Btst fStableClean) 2 else 0))
+		(= manureCel (if (Btst fStableClean) 2 else 0))
 		(manure1
 			setPri: 4
-			setCel: temp1
+			setCel: manureCel
 			ignoreActors:
 			init:
 			stopUpd:
 		)
 		(manure2
 			setPri: 4
-			setCel: temp1
+			setCel: manureCel
 			ignoreActors:
 			init:
 			stopUpd:
 		)
 		(manure3
 			setPri: 4
-			setCel: temp1
+			setCel: manureCel
 			ignoreActors:
 			init:
 			stopUpd:
@@ -240,7 +269,7 @@
 			(V_LOOK
 				(cond 
 					((== (ego onControl: origin) cBLUE)
-						(messager say: N_ROOM V_LOOK 8)
+						(messager say: N_ROOM V_LOOK C_INSIDE)
 					)
 					((Btst fStableClean)
 						(messager say: N_ROOM V_LOOK C_CLEAN)
@@ -253,16 +282,16 @@
 			(V_SLEEP
 				(cond 
 					((and (< 750 Clock) (< Clock 2550))
-						(messager say: N_ROOM V_SLEEP 9)
+						(messager say: N_ROOM V_SLEEP C_TOO_EARLY)
 					)
 					((not (== (ego onControl: origin) cBLUE))
-						(messager say: N_ROOM V_SLEEP 8)
+						(messager say: N_ROOM V_SLEEP C_INSIDE)
 					)
 					((not (Btst fStableClean))
 						(messager say: N_ROOM V_SLEEP C_CLEAN)
 					)
 					((ego script?)
-						(messager say: N_ROOM V_SLEEP 10)
+						(messager say: N_ROOM V_SLEEP C_WAIT)
 					)
 					(else
 						(ego setScript: sleeper)
@@ -288,13 +317,13 @@
 
 (instance walls of Feature
 	(properties
-		noun 13
+		noun N_WALLS
 		onMeCheck cCYAN
 	)
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: 13 1)
+			(messager say: N_WALLS V_LOOK)
 		else
 			(curRoom doVerb: theVerb &rest)
 		)
@@ -303,13 +332,13 @@
 
 (instance towers of Feature
 	(properties
-		noun 11
+		noun N_TOWERS
 		onMeCheck cRED
 	)
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: 11 V_LOOK)
+			(messager say: N_TOWERS V_LOOK)
 		else
 			(curRoom doVerb: theVerb &rest)
 		)
@@ -318,13 +347,13 @@
 
 (instance waggon of Feature
 	(properties
-		noun 12
+		noun N_WAGON
 		onMeCheck cMAGENTA
 	)
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: 12 V_LOOK)
+			(messager say: N_WAGON V_LOOK)
 		else
 			(curRoom doVerb: theVerb &rest)
 		)
@@ -333,13 +362,13 @@
 
 (instance grain of Feature
 	(properties
-		noun 2
+		noun N_GRAIN
 		onMeCheck cBROWN
 	)
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(messager say: 2 1)
+			(messager say: N_GRAIN V_LOOK)
 		else
 			(curRoom doVerb: theVerb &rest)
 		)
@@ -659,14 +688,12 @@
 	(method (init)
 		(= nightPalette 142)
 		(PalVary PALVARYTARGET 142)
-		(kernel_128 42)
+		(AssertPalette 42)
 		(super init:)
 	)
 )
 
 (instance stableTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
@@ -677,19 +704,21 @@
 				)
 			)
 			(V_TALK
-				(if (> local13 5)
+				(if (> talkCount 5)
 					(messager say: N_STABLEMAN V_ALTTALK C_BORED)
-					(= local13 0)
+					(= talkCount 0)
 				else
-					(++ local13)
+					(++ talkCount)
 					(super doVerb: theVerb &rest)
 				)
 			)
 			(V_FLAME (EgoDead 90 91 0 0 503))
-			;The death icon was originally the "Hero in Jail" duplicated from view 503, but the duplicate was removed from view 39 in the VGA remake,
-			;showing a "tiny guard" instead.
-			;Unfortunately, the correct icon is too large to fit with the message, causing the game to crash with an "Invalid Rectangle" error, 
-			;so the "Hero holding his belly in pain" icon (as used at the barracks) appears in its stead.
+			;The death icon was originally the "Hero in Jail" duplicated from view 503,
+			; but the duplicate was removed from view 39 in the VGA remake,
+			; showing a "tiny guard" instead.
+			; Unfortunately, the correct icon is too large to fit with the message,
+			; causing the game to crash with an "Invalid Rectangle" error, 
+			; so the "Hero holding his belly in pain" icon (as used at the barracks) appears in its stead.
 			(V_ROCK (EgoDead 90 91 0 0 503))
 			(V_DAGGER (EgoDead 90 91 0 0 503))
 			(V_SWORD (EgoDead 90 91 0 0 503))
@@ -700,8 +729,6 @@
 )
 
 (instance horseEats of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -747,8 +774,6 @@
 )
 
 (instance sandsOfTime of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -776,24 +801,24 @@
 )
 
 (instance goToWork of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
-				(if (== egoGait MOVE_RUN) (= wasRunning TRUE))
+				(= saveCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
+				(if (== egoGait MOVE_RUN)
+					(= wasRunning TRUE)
+				)
 				(ChangeGait MOVE_WALK 0)
-				(if (== (ego onControl: 1) 2)
+				(if (== (ego onControl: origin) cBLUE)
 					(self cue:)
 				else
 					(stableMan setCycle: BegLoop self)
 				)
 			)
 			(1
-				(if (== (ego onControl: 1) 2)
+				(if (== (ego onControl: origin) cBLUE)
 					(self cue:)
 				else
 					(stableMan
@@ -807,7 +832,7 @@
 			)
 			(2
 				(stableMan stopUpd:)
-				(if (== (ego onControl: 1) 2)
+				(if (== (ego onControl: origin) cBLUE)
 					(self cue:)
 				else
 					(ego setMotion: PolyPath 114 128 self)
@@ -815,7 +840,7 @@
 			)
 			(3 (self cue:))
 			(4
-				(SolvePuzzle POINTS_WORKINSTABLES 5)
+				(SolvePuzzle f40WorkInStable 5)
 				(client setScript: egoRakes)
 			)
 		)
@@ -823,8 +848,6 @@
 )
 
 (instance egoRakes of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(rakeMusic init: play:)
@@ -860,7 +883,9 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not workBreak) (rm40 setScript: sandsOfTime))
+				(if (not workBreak)
+					(rm40 setScript: sandsOfTime)
+				)
 				(theGame setCursor: waitCursor)
 				(ego
 					view: 140
@@ -888,11 +913,15 @@
 			)
 			(1
 				(ego setLoop: 2 cycleSpeed: 6 setCycle: Forward)
-				(if workBreak (= ticks 180) else (= ticks 60))
+				(if workBreak
+					(= ticks 180)
+				else
+					(= ticks 60)
+				)
 			)
 			(2
 				(if workBreak
-					(messager say: N_ROOM 0 C_WORK_BREAK 1)
+					(messager say: N_ROOM NULL C_WORK_BREAK 1)
 					(ego setLoop: 3 cycleSpeed: 6 setCycle: EndLoop self)
 				else
 					(self cue:)
@@ -923,7 +952,7 @@
 					(UseStamina 25)
 					(client setScript: endRake)
 				else
-					(= workBreak 1)
+					(= workBreak TRUE)
 					(manure1 setCel: 2)
 					(manure2 setCel: 2)
 					(self changeState: 0)
@@ -934,15 +963,14 @@
 )
 
 (instance endRake of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
+				;5 silvers for 3 hours of work!
 				(AdvanceTime 3)
 				(ego
-					cycleSpeed: gEgoCycleSpeed
-					moveSpeed: gEgoMoveSpeed
+					cycleSpeed: saveCycleSpeed
+					moveSpeed: saveMoveSpeed
 					setMotion: PolyPath 100 142 self
 				)
 			)
@@ -963,8 +991,6 @@
 )
 
 (instance getPaid of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -987,7 +1013,7 @@
 				)
 			)
 			(2
-				(messager say: N_ROOM 0 0 2)
+				(messager say: N_ROOM NULL NULL 2)
 				(theHourGlass dispose:)
 				(= ticks 56)
 			)
@@ -1004,7 +1030,7 @@
 			)
 			(6
 				(ego get: iSilver 5)
-				(messager say: N_ROOM 0 0 3)
+				(messager say: N_ROOM NULL NULL 3)
 				(self cue:)
 			)
 			(7
@@ -1014,8 +1040,10 @@
 			(8
 				(= stablemanAtWindow TRUE)
 				(Face ego stableMan)
-				(if wasRunning (ChangeGait MOVE_RUN 0))
-				(ego moveSpeed: gEgoMoveSpeed cycleSpeed: gEgoCycleSpeed)
+				(if wasRunning
+					(ChangeGait MOVE_RUN FALSE)
+				)
+				(ego moveSpeed: saveMoveSpeed cycleSpeed: saveCycleSpeed)
 				(HandsOn)
 				(theGame setCursor: 940)
 				(self dispose:)
@@ -1025,8 +1053,6 @@
 )
 
 (instance sleeper of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1034,13 +1060,18 @@
 				(horse setScript: 0)
 				(horseTail setCycle: 0)
 				(horseHead setCycle: 0)
-				(messager say: N_ROOM 0 0 4 self)
+				(messager say: N_ROOM NULL NULL 4 self)
 			)
-			(1 (ego hide:) (= cycles 5))
-			(2 (messager say: N_ROOM 0 C_SNOOZING 1 self))
+			(1
+				(ego hide:)
+				(= cycles 5)
+			)
+			(2
+				(messager say: N_ROOM NULL C_SNOOZING 1 self)
+			)
 			(3
 				(cast eachElementDo: #hide)
-				(curRoom drawPic: 400 8)
+				(curRoom drawPic: 400 DISSOLVE)
 				(= seconds 2)
 			)
 			(4
@@ -1049,7 +1080,7 @@
 			)
 			(5
 				(if Night
-					(curRoom drawPic: 40 8)
+					(curRoom drawPic: 40 DISSOLVE)
 					(self cue:)
 				else
 					(self cue:)
@@ -1089,8 +1120,6 @@
 )
 
 (instance sleepyIntro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1098,8 +1127,8 @@
 				(theGame setCursor: waitCursor)
 				(= seconds 1)
 			)
-			(1 (messager say: N_ROOM 0 0 6 self))
-			(2 (messager say: N_ROOM 0 C_AWAKEN_WORK 1 self))
+			(1 (messager say: N_ROOM NULL NULL 6 self))
+			(2 (messager say: N_ROOM NULL C_AWAKEN_WORK 1 self))
 			(3
 				(horse setScript: horseEats)
 				(client setScript: goToWork)
@@ -1109,8 +1138,6 @@
 )
 
 (instance aDustScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1136,8 +1163,6 @@
 )
 
 (instance intro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1157,7 +1182,7 @@
 				)
 			)
 			(1
-				(if (== (ego onControl: 1) 4)
+				(if (== (ego onControl: origin) cGREEN)
 					(stableMan
 						setLoop: 2
 						cel: 0
@@ -1179,41 +1204,43 @@
 							(self changeState: 5)
 						)
 					)
-					((Btst MET_STABLEMAN)
-						(messager say: N_ROOM 0 0 7)
+					((Btst fMetStableman)
+						(messager say: N_ROOM NULL NULL 7)
 						(HandsOff)
 						(theGame setCursor: ARROW_CURSOR TRUE)
 						(= ticks 60)
 					)
 					(else
-						(Bset MET_STABLEMAN)
+						(Bset fMetStableman)
 						(HandsOff)
-						(if (== (ego onControl: 1) 2)
-							(messager say: N_ROOM 0 0 8 curRoom)
+						(if (== (ego onControl: origin) cBLUE)
+							(messager say: N_ROOM NULL NULL 8 curRoom)
 							(= seconds 3)
 						else
-							(messager say: N_ROOM 0 0 9 self)
+							(messager say: N_ROOM NULL NULL 9 self)
 						)
 					)
 				)
 			)
-			(3 (= seconds 1))
+			(3
+				(= seconds 1)
+			)
 			(4
 				(theGame setCursor: ARROW_CURSOR TRUE)
 				(switch
 					(Print
-						addButton: 0 8 0 3 1 0 25 40
-						addButton: 1 8 0 6 1 0 5 40
+						addButton: 0 N_ROOM NULL C_SAY_NO 1 0 25 40
+						addButton: 1 N_ROOM NULL C_SAY_YES 1 0 5 40
 						init:
 					)
 					(0
-						(messager say: N_ROOM 0 0 12 self)
+						(messager say: N_ROOM NULL NULL 12 self)
 					)
 					(1
-						(if (== (ego onControl: 1) 2)
-							(messager say: N_ROOM 0 0 10)
+						(if (== (ego onControl: origin) cBLUE)
+							(messager say: N_ROOM NULL NULL 10)
 						else
-							(messager say: N_ROOM 0 0 11)
+							(messager say: N_ROOM NULL NULL 11)
 						)
 						(theGame setCursor: waitCursor TRUE)
 						(ego setScript: goToWork)
@@ -1223,14 +1250,14 @@
 			(5
 				(theGame setCursor: waitCursor TRUE)
 				(HandsOn)
-				(if (== (ego onControl: 1) 2)
+				(if (== (ego onControl: origin) cBLUE)
 					(self cue:)
 				else
 					(stableMan setCycle: BegLoop self)
 				)
 			)
 			(6
-				(if (== (ego onControl: 1) 2)
+				(if (== (ego onControl: origin) cBLUE)
 					(self cue:)
 				else
 					(stableMan
@@ -1244,7 +1271,9 @@
 			)
 			(7
 				(stableMan stopUpd:)
-				(if (not (ego script?)) (HandsOn))
+				(if (not (ego script?))
+					(HandsOn)
+				)
 				(= stablemanSpeaks NULL)
 				(client setScript: 0)
 			)
@@ -1253,8 +1282,6 @@
 )
 
 (instance headWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

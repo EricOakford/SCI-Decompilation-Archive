@@ -20,36 +20,117 @@
 )
 
 (local
-	[local0 7] = [0 24 -11 -29 -10 -26 999]
-	[local7 6] = [0 18 27 -8 15 999]
-	[local13 4] = [0 23 -14 999]
-	[local17 6] = [0 -21 7 -9 -13 999]
-	[local23 5] = [0 20 22 28 999]
-	[local28 5] = [0 20 22 16 999]
-	[local33 4] = [0 25 -6 999]
-	[local37 6] = [0 -13 -9 -6 12 999]
-	[local43 4] = [0 26 16 999]
-	[local47 6] = [0 17 7 30 -6 999]
-	[local53 4] = [0 12 17 999]
-	[local57 20]
-	[local77 12] = [0 -11 -29 -8 -10 -26 -14 -21 -9 -13 -6 999]
+	karlTellMainBranch = [
+		STARTTELL
+		C_NAME
+		-11		;C_CURSE
+		-29		;C_VALLEY
+		-10		;C_BRIGANDS
+		-26		;C_REWARD
+		ENDTELL
+		]
+	karlTell1 = [
+		STARTTELL
+		C_JOB
+		C_STABLE
+		-8		;C_BARON
+		C_GUARDS
+		ENDTELL
+		]
+	karlTell2 = [
+		STARTTELL
+		C_MONSTERS
+		-14		;C_GRAVEYARD
+		ENDTELL
+		]
+	karlTell3 = [
+		STARTTELL
+		-21		;C_LOSS
+		C_BARONESS
+		-9		;C_BARNARD
+		-13		;C_ELSA
+		ENDTELL
+		]
+	karlTell4 = [
+		STARTTELL
+		C_BRIGAND_LEADER
+		C_WARLOCK
+		C_TREASURE
+		ENDTELL
+		]
+	karlTell5 = [
+		STARTTELL
+		C_BRIGAND_LEADER
+		C_WARLOCK
+		C_HERO
+		ENDTELL
+		]
+	karlTell6 = [
+		STARTTELL
+		C_PROTECTION
+		-6		;C_BABA
+		ENDTELL
+		]
+	karlTell7 = [
+		STARTTELL
+		-13		;C_ELSA
+		-9		;C_BARNARD
+		-6		;C_BABA
+		C_CURSE
+		ENDTELL
+		]
+	karlTell8 = [
+		STARTTELL
+		C_REWARD
+		C_HERO
+		ENDTELL
+		]
+	karlTell9 = [
+		STARTTELL
+		C_HUT
+		C_BARONESS
+		C_YORICK
+		-6		;C_BABA
+		ENDTELL
+		]
+	karlTell10 = [
+		STARTTELL
+		C_CURSE
+		C_HUT
+		ENDTELL
+		]
+	[karlTellTree 20]
+	karlTellKeys = [
+		STARTTELL
+		-11		;C_CURSE
+		-29		;C_CASTLE
+		-8		;C_BARON
+		-10		;C_BRIGANDS
+		-26		;C_REWARD
+		-14		;C_GRAVEYARD
+		-21		;C_LOSS
+		-9		;C_BARNARD
+		-13		;C_ELSA
+		-6		;C_BABA
+		ENDTELL
+		]
 	gateOpen
 	local90
 	local91
-	local92
+	karlLoop
 	local93
 	local94
-	local95
+	saveKarlLoop
 	crushedByGate
 	local97
 	local98
 	climbFail
 	local100
 	invitedIntoCastle
-	theUseSortedFeatures
+	saveSortedFeatures
 	local103
-	gEgoMoveSpeed
-	gEgoCycleSpeed
+	saveMoveSpeed
+	saveCycleSpeed
 )
 (instance rm37 of Room
 	(properties
@@ -60,36 +141,52 @@
 	)
 	
 	(method (init)
-		(= [local57 0] @local0)
-		(= [local57 1] @local7)
-		(= [local57 2] @local13)
-		(= [local57 3] @local17)
-		(= [local57 4] @local23)
-		(= [local57 5] @local28)
-		(= [local57 6] @local33)
-		(= [local57 7] @local37)
-		(= [local57 8] @local43)
-		(= [local57 9] @local47)
-		(= [local57 10] @local53)
-		(= [local57 11] 999)
+		(= [karlTellTree 0] @karlTellMainBranch)
+		(= [karlTellTree 1] @karlTell1)
+		(= [karlTellTree 2] @karlTell2)
+		(= [karlTellTree 3] @karlTell3)
+		(= [karlTellTree 4] @karlTell4)
+		(= [karlTellTree 5] @karlTell5)
+		(= [karlTellTree 6] @karlTell6)
+		(= [karlTellTree 7] @karlTell7)
+		(= [karlTellTree 8] @karlTell8)
+		(= [karlTellTree 9] @karlTell9)
+		(= [karlTellTree 10] @karlTell10)
+		(= [karlTellTree 11] ENDTELL)
 		(super init:)
-		(= gEgoMoveSpeed (ego moveSpeed?))
-		(= gEgoCycleSpeed (ego cycleSpeed?))
-		(if Night (LoadMany RES_VIEW 503 517))
+		(= saveMoveSpeed (ego moveSpeed?))
+		(= saveCycleSpeed (ego cycleSpeed?))
+		(if Night
+			(LoadMany RES_VIEW 503 517)
+		)
 		(Load RES_VIEW 37)
 		(Load RES_SOUND 90)
-		(= theUseSortedFeatures useSortedFeatures)
+		(= saveSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 41 189 0 189 0 0 141 0 142 149 125 172 71 172
+					type: PBarredAccess
+					init:
+						41 189
+						0 189
+						0 0
+						141 0
+						142 149
+						125 172
+						71 172
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 274 189 246 168 190 168 178 148 176 0 319 0 319 189
+					type: PBarredAccess
+					init:
+						274 189
+						246 168
+						190 168
+						178 148
+						176 0
+						319 0
+						319 189
 					yourself:
 				)
 		)
@@ -103,7 +200,7 @@
 		)
 		(NormalEgo)
 		(HandsOn)
-		(karlTeller init: karl @local0 @local57 @local77)
+		(karlTeller init: karl @karlTellMainBranch @karlTellTree @karlTellKeys)
 		(switch prevRoomNum
 			(39
 				(if Night
@@ -120,7 +217,7 @@
 						stopUpd:
 					)
 					(= gateOpen TRUE)
-					(= local92 4)
+					(= karlLoop 4)
 					(karl
 						loop: 4
 						cel: 1
@@ -139,8 +236,7 @@
 					(castleGate init: stopUpd:)
 					0
 				else
-					(if
-					(or (and (Btst fSavedBarnard) (not (Btst fKarlAttention))) (Btst fSavedElsa))
+					(if (or (and (Btst fSavedBarnard) (not (Btst fKarlAttention))) (Btst fSavedElsa))
 						(= invitedIntoCastle TRUE)
 						(karl init: actions: karlTeller setScript: karlGreets)
 						(Bset fKarlAttention)
@@ -161,8 +257,12 @@
 	(method (doit)
 		(cond 
 			((ego script?))
-			((== (ego edgeHit?) 3) (ego setScript: egoExits))
-			((and (Btst fSavedElsa) gateOpen (< (ego y?) 140)) (curRoom newRoom: 600))
+			((== (ego edgeHit?) SOUTH)
+				(ego setScript: egoExits)
+			)
+			((and (Btst fSavedElsa) gateOpen (< (ego y?) 140))
+				(curRoom newRoom: 600)
+			)
 		)
 		(super doit:)
 	)
@@ -171,7 +271,7 @@
 		(= nightPalette 0)
 		(castleGate setCycle: 0)
 		(karl setCycle: 0)
-		(= useSortedFeatures theUseSortedFeatures)
+		(= useSortedFeatures saveSortedFeatures)
 		(super dispose:)
 	)
 	
@@ -197,8 +297,11 @@
 	(method (init)
 		(= nightPalette 137)
 		(PalVary PALVARYTARGET 137)
-		(kernel_128 37)
-		(self setStep: 2 2 signal: 24592)
+		(AssertPalette 37)
+		(self
+			setStep: 2 2
+			signal: (| ignrAct ignrHrz fixPriOn)
+		)
 		(super init:)
 	)
 	
@@ -212,14 +315,12 @@
 )
 
 (instance karlTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(if (== theVerb V_TALK)
-			(if (not (== (karl loop?) local92))
+			(if (not (== (karl loop?) karlLoop))
 				(karl setScript: karlStopToTalk)
 			)
-			(SolvePuzzle POINTS_TALKTOGATEKEEPER 5)
+			(SolvePuzzle f37TalkToKarl 5)
 		)
 		(super doVerb: theVerb &rest)
 		(return TRUE)
@@ -234,7 +335,7 @@
 		view 37
 		loop 7
 		priority 9
-		signal $2810
+		signal (| ignrHrz fixedLoop fixPriOn)
 		cycleSpeed 12
 	)
 	
@@ -242,16 +343,30 @@
 		(switch theVerb
 			(V_DO
 				(cond 
-					(gateOpen (messager say: N_KARL V_DO 31) (karl setScript: closeGate))
-					(local91 (messager say: N_KARL V_DO 32))
-					(else (messager say: N_KARL V_DO 32) (karl setScript: openGate))
+					(gateOpen
+						(messager say: N_KARL V_DO C_GATE_OPEN)
+						(karl setScript: closeGate)
+					)
+					(local91
+						(messager say: N_KARL V_DO C_RAISE_GATE)
+					)
+					(else
+						(messager say: N_KARL V_DO C_RAISE_GATE)
+						(karl setScript: openGate)
+					)
 				)
 			)
 			(V_LOOK
 				(cond 
-					(Night (messager say: N_CASTLE_GATE V_LOOK 34))
-					(gateOpen (messager say: N_CASTLE_GATE V_LOOK 31))
-					(else (messager say: N_CASTLE_GATE V_LOOK 33))
+					(Night
+						(messager say: N_CASTLE_GATE V_LOOK C_NIGHT)
+					)
+					(gateOpen
+						(messager say: N_CASTLE_GATE V_LOOK C_GATE_OPEN)
+					)
+					(else
+						(messager say: N_CASTLE_GATE V_LOOK C_DAY)
+					)
 				)
 			)
 			(else 
@@ -269,7 +384,7 @@
 		view 37
 		loop 7
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
@@ -288,12 +403,20 @@
 			)
 			(V_LOOK
 				(cond 
-					(Night (messager say: N_CASTLE_BARS V_LOOK 34))
-					(gateOpen (messager say: N_CASTLE_BARS V_LOOK 31))
-					(else (messager say: N_CASTLE_BARS V_LOOK 33))
+					(Night
+						(messager say: N_CASTLE_BARS V_LOOK C_NIGHT)
+					)
+					(gateOpen
+						(messager say: N_CASTLE_BARS V_LOOK C_GATE_OPEN)
+					)
+					(else
+						(messager say: N_CASTLE_BARS V_LOOK C_DAY)
+					)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -331,7 +454,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (wall doVerb: theVerb &rest))
+			(V_LOOK
+				(wall doVerb: theVerb &rest)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -348,8 +473,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_TOWER V_LOOK 45))
-			(V_DO (wall doVerb: theVerb &rest))
+			(V_LOOK
+				(messager say: N_TOWER V_LOOK C_TOWER)
+			)
+			(V_DO
+				(wall doVerb: theVerb &rest)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -374,17 +503,19 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_WALL V_LOOK 49))
+			(V_LOOK
+				(messager say: N_WALL V_LOOK C_GATEHOUSE)
+			)
 			(V_DO
 				(if Night
 					(if (< [egoStats CLIMB] 10)
-						(messager say: N_WALL V_DO 48)
+						(messager say: N_WALL V_DO C_NO_CLIMB)
 					else
 						(= local97 0)
 						(ego setScript: egoClimbsWall)
 					)
 				else
-					(messager say: N_WALL V_DO 46)
+					(messager say: N_WALL V_DO C_CANT_CLIMB_DAY)
 				)
 			)
 			(else 
@@ -403,8 +534,6 @@
 )
 
 (instance egoEnters of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -412,36 +541,35 @@
 				(ego posn: 170 245 init: setMotion: MoveTo 170 180 self)
 			)
 			(1
-				(if
-				(and (or (Btst fSavedBarnard) (Btst fSavedElsa)) (not Night))
+				(if (and (or (Btst fSavedBarnard) (Btst fSavedElsa)) (not Night))
 					(self cue:)
 				else
 					(HandsOn)
 					(self cue:)
 				)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance egoExits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo (ego x?) 245 self)
 			)
-			(1 (curRoom newRoom: 54))
+			(1
+				(curRoom newRoom: 54)
+			)
 		)
 	)
 )
 
 (instance karlPatrols of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -454,7 +582,7 @@
 					illegalBits: 0
 					setMotion: MoveTo 223 74 self
 				)
-				(= local92 4)
+				(= karlLoop 4)
 			)
 			(1 (= ticks 12))
 			(2
@@ -469,7 +597,7 @@
 					setCycle: Forward
 					setMotion: MoveTo 68 74 self
 				)
-				(= local92 5)
+				(= karlLoop 5)
 			)
 			(5 (= ticks 24))
 			(6
@@ -482,13 +610,11 @@
 )
 
 (instance karlGreets of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local92 4)
+				(= karlLoop 4)
 				(karl
 					loop: 0
 					cel: 0
@@ -505,14 +631,15 @@
 			)
 			(2
 				(karl
-					loop: local92
+					loop: karlLoop
 					cel: 0
 					cycleSpeed: 6
 					setCycle: EndLoop self
 				)
 				(= local90 1)
 			)
-			(3 (messager say: N_KARL 0 1 1 self))
+			(3
+				(messager say: N_KARL NULL C_INVITED 1 self))
 			(4
 				(portSound play:)
 				(castleBars
@@ -545,8 +672,6 @@
 )
 
 (instance karlStopToTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -555,7 +680,7 @@
 			)
 			(1
 				(karl
-					loop: local92
+					loop: karlLoop
 					cel: 0
 					cycleSpeed: 6
 					setCycle: EndLoop self
@@ -572,8 +697,6 @@
 )
 
 (instance timeout of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (and local91 (> (ego y?) 172))
@@ -595,7 +718,7 @@
 			)
 			(2
 				(if gateOpen
-					(messager say: N_KARL 0 2)
+					(messager say: N_KARL NULL C_IMPATIENT)
 					(= local94 1)
 					(= seconds 5)
 				else
@@ -618,8 +741,6 @@
 )
 
 (instance karlResumesPatrol of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -631,16 +752,16 @@
 				)
 			)
 			(1
-				(= local95 local92)
+				(= saveKarlLoop karlLoop)
 				(karl
-					loop: local95
+					loop: saveKarlLoop
 					cel: 1
 					cycleSpeed: 6
 					setCycle: BegLoop self
 				)
 			)
 			(2
-				(if (== local95 4)
+				(if (== saveKarlLoop 4)
 					(karl
 						loop: 0
 						cel: 0
@@ -649,7 +770,7 @@
 						illegalBits: 0
 						setMotion: MoveTo 277 74 self
 					)
-					(= local92 4)
+					(= karlLoop 4)
 				else
 					(karl
 						loop: 1
@@ -658,14 +779,14 @@
 						setCycle: Forward
 						setMotion: MoveTo 43 74 self
 					)
-					(= local92 5)
+					(= karlLoop 5)
 				)
 				(= local90 0)
 				(HandsOn)
 			)
 			(3 (= ticks 12))
 			(4
-				(if (== local95 4)
+				(if (== saveKarlLoop 4)
 					(karl loop: 2 cel: 0 cycleSpeed: 6 setCycle: EndLoop self)
 				else
 					(karl loop: 2 cel: 2 cycleSpeed: 6 setCycle: BegLoop self)
@@ -673,7 +794,7 @@
 			)
 			(5 (= ticks 6))
 			(6
-				(if (== local95 4)
+				(if (== saveKarlLoop 4)
 					(karl
 						loop: 1
 						cel: 0
@@ -681,7 +802,7 @@
 						setCycle: Forward
 						setMotion: MoveTo 43 74 self
 					)
-					(= local92 5)
+					(= karlLoop 5)
 				else
 					(client setScript: karlPatrols)
 				)
@@ -699,13 +820,13 @@
 )
 
 (instance openGate of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (timeout seconds?) (timeout seconds: 12))
+				(if (timeout seconds?)
+					(timeout seconds: 12)
+				)
 				(if (< (karl x?) 160)
 					(karl loop: 4 cel: 1 cycleSpeed: 6 setCycle: BegLoop self)
 				else
@@ -722,7 +843,7 @@
 						illegalBits: 0
 						setMotion: MoveTo 160 74 self
 					)
-					(= local92 4)
+					(= karlLoop 4)
 				else
 					(karl
 						loop: 1
@@ -731,12 +852,12 @@
 						setCycle: Forward
 						setMotion: MoveTo 160 74 self
 					)
-					(= local92 5)
+					(= karlLoop 5)
 				)
 			)
 			(2
 				(karl
-					loop: local92
+					loop: karlLoop
 					cel: 0
 					cycleSpeed: 6
 					setCycle: EndLoop self
@@ -746,7 +867,7 @@
 			(4
 				(portSound play:)
 				(castleBars
-					ignoreActors: 1
+					ignoreActors: TRUE
 					startUpd:
 					setLoop: 7
 					setMotion: MoveTo 162 98 self
@@ -755,7 +876,7 @@
 			(5
 				(portSound stop:)
 				(curRoom horizon: 120)
-				(= gateOpen 1)
+				(= gateOpen TRUE)
 				(castleBars setLoop: 7 stopUpd:)
 				(HandsOn)
 				(client setScript: timeout)
@@ -765,8 +886,6 @@
 )
 
 (instance closeGateSafe of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -778,7 +897,7 @@
 				(portSound play:)
 				(castleBars
 					setLoop: 7
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setMotion: MoveTo 162 150 self
 				)
 			)
@@ -795,12 +914,10 @@
 )
 
 (instance closeGate of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(castleGate ignoreActors: 1 cycleSpeed: 18 startUpd:)
+				(castleGate ignoreActors: TRUE cycleSpeed: 18 startUpd:)
 				(if
 					(and
 						(< 125 (ego x?))
@@ -833,9 +950,9 @@
 			(3
 				(= gateOpen FALSE)
 				(if crushedByGate
-					(messager say: N_ROOM 0 36 1 self)
+					(messager say: N_ROOM NULL C_KILLED 1 self)
 				else
-					(messager say: N_ROOM 0 38 1 self)
+					(messager say: N_ROOM NULL C_CRUSHED 1 self)
 				)
 			)
 			(4
@@ -860,12 +977,12 @@
 				)
 			)
 			(7
-				(messager say: N_ROOM 0 37 1 self)
+				(messager say: N_ROOM NULL C_SURVIVED 1 self)
 				(NormalEgo 2)
 				(HandsOn)
 			)
 			(8
-				(ego moveSpeed: gEgoMoveSpeed cycleSpeed: gEgoCycleSpeed)
+				(ego moveSpeed: saveMoveSpeed cycleSpeed: saveCycleSpeed)
 				(= seconds 3)
 			)
 			(9 (self dispose:))
@@ -874,16 +991,14 @@
 )
 
 (instance egoClimbsWall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= gEgoMoveSpeed (ego moveSpeed?))
-				(= gEgoCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
 				(HandsOff)
 				(ego
-					signal: 8192
+					signal: ignrHrz
 					setCycle: Walk
 					setMotion: MoveTo 85 171 self
 				)
@@ -926,8 +1041,8 @@
 						setLoop: 2
 						cel: 0
 						setPri: 13
-						moveSpeed: gEgoMoveSpeed
-						cycleSpeed: gEgoCycleSpeed
+						moveSpeed: saveMoveSpeed
+						cycleSpeed: saveCycleSpeed
 						illegalBits: 0
 						xStep: 8
 						yStep: 16
@@ -935,7 +1050,7 @@
 						setCycle: EndLoop self
 					)
 				else
-					(ego moveSpeed: gEgoMoveSpeed cycleSpeed: gEgoCycleSpeed)
+					(ego moveSpeed: saveMoveSpeed cycleSpeed: saveCycleSpeed)
 					(curRoom newRoom: 39)
 				)
 			)
@@ -949,8 +1064,8 @@
 			(6
 				(ego
 					cel: 0
-					moveSpeed: gEgoMoveSpeed
-					cycleSpeed: gEgoCycleSpeed
+					moveSpeed: saveMoveSpeed
+					cycleSpeed: saveCycleSpeed
 					setCycle: EndLoop self
 				)
 			)
@@ -965,27 +1080,27 @@
 						x: (+ (ego x?) 19)
 						y: (+ (ego y?) 18)
 						setPri: 13
-						illegalBits: -32768
+						illegalBits: cWHITE
 						setCycle: 0
 					)
 					(switch climbFail
 						(0
-							(messager say: N_ROOM 0 39 1 self)
+							(messager say: N_ROOM NULL C_FALL1 1 self)
 						)
 						(1
-							(messager say: N_ROOM 0 40 1 self)
+							(messager say: N_ROOM NULL C_FALL2 1 self)
 						)
 						(2
-							(messager say: N_ROOM 0 41 1 self)
+							(messager say: N_ROOM NULL C_FALL3 1 self)
 						)
 						(3
-							(messager say: N_ROOM 0 42 1 self)
+							(messager say: N_ROOM NULL C_FALL4 1 self)
 						)
 						(4
-							(messager say: N_ROOM 0 43 1 self)
+							(messager say: N_ROOM NULL C_FALL5 1 self)
 						)
 						(else 
-							(messager say: N_ROOM 0 44 1 self)
+							(messager say: N_ROOM NULL C_FALL6 1 self)
 						)
 					)
 					(++ climbFail)
@@ -993,8 +1108,8 @@
 			)
 			(8
 				(ego
-					moveSpeed: gEgoMoveSpeed
-					cycleSpeed: gEgoCycleSpeed
+					moveSpeed: saveMoveSpeed
+					cycleSpeed: saveCycleSpeed
 					setCycle: EndLoop self
 				)
 			)
@@ -1008,13 +1123,11 @@
 )
 
 (instance egoClimbsDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= gEgoMoveSpeed (ego moveSpeed?))
-				(= gEgoCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
 				(HandsOff)
 				(curRoom north: 0)
 				(ego
@@ -1024,7 +1137,7 @@
 					setPri: 14
 					posn: 85 56
 					cycleSpeed: 10
-					signal: (| (ego signal?) $2000)
+					signal: (| (ego signal?) ignrHrz)
 					init:
 					setCycle: EndLoop self
 				)
@@ -1036,7 +1149,7 @@
 					posn: 85 68
 					setPri: 14
 					illegalBits: 0
-					cycleSpeed: gEgoCycleSpeed
+					cycleSpeed: saveCycleSpeed
 					setCycle: Forward
 					setMotion: MoveTo 85 115 self
 				)
@@ -1056,7 +1169,7 @@
 					cel: 0
 					posn: 106 150
 					setStep: 6 12
-					cycleSpeed: gEgoCycleSpeed
+					cycleSpeed: saveCycleSpeed
 					setCycle: Forward
 					setMotion: MoveTo 114 177 self
 				)
@@ -1081,8 +1194,8 @@
 			)
 			(8 (= ticks 6))
 			(9
-				(ego moveSpeed: gEgoMoveSpeed cycleSpeed: gEgoCycleSpeed)
-				(messager say: N_ROOM 0 35 1 self)
+				(ego moveSpeed: saveMoveSpeed cycleSpeed: saveCycleSpeed)
+				(messager say: N_ROOM NULL C_CLIMBED_DOWN 1 self)
 			)
 			(10
 				(HandsOn)
@@ -1093,8 +1206,6 @@
 )
 
 (instance egoLeavesCastle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1116,8 +1227,6 @@
 )
 
 (instance goTo39 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1155,7 +1264,7 @@
 	(method (init)
 		(= nightPalette 2036)
 		(PalVary PALVARYTARGET 2036)
-		(kernel_128 1036)
+		(AssertPalette 1036)
 		(= font userFont)
 		(super init: karlBust karlEye karlMouth &rest)
 	)

@@ -2,9 +2,9 @@
 (script# 54)
 (include game.sh) (include "54.shm")
 (use Main)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use CastDazzle)
 (use Target)
 (use Procs)
@@ -30,31 +30,42 @@
 	local0
 	local1
 	local2
-	gEgoCycleSpeed
-	gEgoMoveSpeed
-	local5
+	saveCycleSpeed
+	saveMoveSpeed
+	doorCueState
 	local6
 	local7
 	local8
-	local9
+	nestCueState
 	local10
-	local11
+	cueWhat
 )
+
+(enum 1	;cueWhat
+	cueBanned
+	cueNestOnTree
+	cueGetRingOffTree
+	cueGetRingOnTree
+)
+
 (procedure (ThrowRock)
 	(cond 
-		((and (not local0) (Btst fClimbedTree)) (curRoom setScript: sFallOutOfTree))
-		((Btst fClimbedTree) (messager say: N_ROOM V_DO C_UPTREE))
-		(else (= local2 1) (CastRock 0))
+		((and (not local0) (Btst fClimbedTree))
+			(curRoom setScript: sFallOutOfTree)
+		)
+		((Btst fClimbedTree)
+			(messager say: N_ROOM V_DO C_UPTREE)
+		)
+		(else
+			(= local2 1)
+			(ThrowRock 0)
+		)
 	)
 )
 
-(instance roomTimer of Timer
-	(properties)
-)
+(instance roomTimer of Timer)
 
-(instance ringTimer of Timer
-	(properties)
-)
+(instance ringTimer of Timer)
 
 (instance rm54 of Room
 	(properties
@@ -68,52 +79,59 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 120 0 319 0 319 55 160 149 103 120 129 102 120 94
-					yourself:
-				)
-				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						135
-						30
-						135
-						95
-						148
-						116
-						167
-						116
-						172
-						92
-						172
-						92
-						184
-						56
-						184
-						50
-						176
-						38
-						176
-						22
-						189
-						0
-						189
+						120 0
+						319 0
+						319 55
+						160 149
+						103 120
+						129 102
+						120 94
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 0 0 91 0 91 112 0 112
+					type: PBarredAccess
+					init:
+						0 135
+						30 135
+						95 148
+						116 167
+						116 172
+						92 172
+						92 184
+						56 184
+						50 176
+						38 176
+						22 189
+						0 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 249 189 218 163 319 146 319 189
+					type: PBarredAccess
+					init:
+						0 0
+						91 0
+						91 112
+						0 112
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 319 140 190 154 180 151 319 71
+					type: PBarredAccess
+					init:
+						249 189
+						218 163
+						319 146
+						319 189
+					yourself:
+				)
+				((Polygon new:)
+					type: PBarredAccess
+					init:
+						319 140
+						190 154
+						180 151
+						319 71
 					yourself:
 				)
 		)
@@ -127,12 +145,14 @@
 			approachVerbs: V_DO
 			stopUpd:
 		)
-		(if (not (Btst OBTAINED_RING))
-			(theRing init: setCel: pBLACK setPri: pWHITE)
+		(if (not (Btst fGotRing))
+			(theRing init: setCel: 0 setPri: pWHITE)
 			(ringTimer setReal: theRing (Random 10 20))
 		)
-		(if (== nestState 0) (nest init: stopUpd:))
-		(if (not (Btst PTERESA_LEFT_NEST))
+		(if (== nestState nestInTree)
+			(nest init: stopUpd:)
+		)
+		(if (not (Btst fNestAbandoned))
 			(bird
 				ignoreActors:
 				init:
@@ -175,44 +195,58 @@
 		(cond 
 			((curRoom script?) 0)
 			((ego script?) 0)
-			((== (ego onControl: 1) 16) (self setScript: sEnter37))
+			((== (ego onControl: origin) cRED)
+				(self setScript: sEnter37)
+			)
 			((ego edgeHit?)
 				(switch (ego edgeHit?)
-					(4 (self setScript: sExitWest))
-					(2 (self setScript: sExitEast))
+					(WEST (self setScript: sExitWest))
+					(EAST (self setScript: sExitEast))
 				)
 			)
-			((> (ego y?) 185) (self setScript: sExitSouth))
+			((> (ego y?) 185)
+				(self setScript: sExitSouth)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
+			(V_ROCK
+				(ThrowRock)
+			)
 			(V_WALK
-				(if (Btst fClimbedTree) (curRoom setScript: sFallOutOfTree))
+				(if (Btst fClimbedTree)
+					(curRoom setScript: sFallOutOfTree)
+				)
 			)
 			(V_DAZZLE
 				(cond 
 					((Btst fClimbedTree)
-						(messager say: N_ROOM 78 11)
+						(messager say: N_ROOM V_DAZZLE 11)
 						(curRoom setScript: sFallOutOfTree)
 					)
-					((!= nestState 3)
-						(CastDazzle ego)
-						(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: 0 cue:))
+					((!= nestState nestGone)
+						(CastDazz ego)
+						(if (not (Btst fNestAbandoned))
+							(bird setScript: 0 cue:)
+						)
 					)
 				)
 			)
 			(V_FETCH
 				(cond 
 					((Btst fClimbedTree)
-						(messager say: N_ROOM 82 11)
+						(messager say: N_ROOM V_FETCH 11)
 						(curRoom setScript: sFallOutOfTree)
 					)
-					((and (== nestState 0) (not (Btst OBTAINED_RING))) (curRoom setScript: sThrowLasso))
-					(else (messager say: N_ROOM 82 12))
+					((and (== nestState nestInTree) (not (Btst fGotRing)))
+						(curRoom setScript: sThrowLasso)
+					)
+					(else
+						(messager say: N_ROOM V_FETCH 12)
+					)
 				)
 			)
 			(else 
@@ -224,26 +258,34 @@
 	(method (cue)
 		(if (not (Btst fBeenIn54))
 			(Bset fBeenIn54)
-			(messager say: N_ROOM NULL 19)
+			(messager say: N_ROOM NULL C_FIRST_TIME)
 		else
-			(switch local11
-				(1 (messager say: 3 4 2 2))
-				(2
-					(if (== nestState 0)
-						(messager say: 12 1 29)
+			(switch cueWhat
+				(cueBanned
+					(messager say: N_DOOR V_DO C_BANNED 2)
+				)
+				(cueNestOnTree
+					(if (== nestState nestInTree)
+						(messager say: N_TREE V_LOOK C_NEST_ON_TREE)
 					)
 				)
-				(3 (messager say: N_ROOM 0 15 2))
-				(4 (messager say: N_ROOM 0 0 6))
+				(cueGetRingOffTree
+					(messager say: N_ROOM NULL C_GET_RING 2)
+				)
+				(cueGetRingOnTree
+					(messager say: N_ROOM NULL NULL 6)
+				)
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(super newRoom: n)
 		(ego actions: 0)
 		(roomTimer dispose: delete:)
-		(if (== nestState 2) (= nestState 3))
+		(if (== nestState nestBurnt)
+			(= nestState nestGone)
+		)
 	)
 )
 
@@ -252,7 +294,7 @@
 		x 91
 		y 4
 		z 90
-		noun 12
+		noun N_TREE
 		nsTop -1
 		nsBottom 189
 		nsRight 183
@@ -264,10 +306,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
+			(V_ROCK
+				(ThrowRock)
+			)
 			(V_LOOK
-				(= local11 2)
-				(messager say: 12 1 0 1 curRoom)
+				(= cueWhat cueNestOnTree)
+				(messager say: N_TREE V_LOOK NULL 1 curRoom)
 			)
 			(V_DO
 				(if (Btst fClimbedTree)
@@ -298,12 +342,18 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
-			(V_DAGGER
-				(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: 0 cue:))
-				(CastDagger 0)
+			(V_ROCK
+				(ThrowRock)
 			)
-			(else  (super doVerb: theVerb))
+			(V_DAGGER
+				(if (not (Btst fNestAbandoned))
+					(bird setScript: 0 cue:)
+				)
+				(ThrowKnife 0)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -324,8 +374,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
-			(V_LOOK (messager say: N_HUT V_LOOK 5))
+			(V_ROCK
+				(ThrowRock)
+			)
+			(V_LOOK
+				(messager say: N_HUT V_LOOK C_LOOK_HUT)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -347,7 +401,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
+			(V_ROCK
+				(ThrowRock)
+			)
 			(V_LOOK
 				(if Night
 					(messager say: N_WINDOW V_DO C_NIGHT)
@@ -376,8 +432,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
-			(else  (super doVerb: theVerb))
+			(V_ROCK
+				(ThrowRock)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -397,13 +457,23 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
-			(V_LOOK (messager say: N_GROUND V_LOOK))
+			(V_ROCK
+				(ThrowRock)
+			)
+			(V_LOOK
+				(messager say: N_GROUND V_LOOK)
+			)
 			(V_DO
 				(cond 
-					((and (not local0) (Btst fClimbedTree)) (curRoom setScript: sFallOutOfTree))
-					((Btst fClimbedTree) (messager say: N_ROOM V_DO C_UPTREE))
-					(else (curRoom setScript: sGetRock))
+					((and (not local0) (Btst fClimbedTree))
+						(curRoom setScript: sFallOutOfTree)
+					)
+					((Btst fClimbedTree)
+						(messager say: N_ROOM V_DO C_UPTREE)
+					)
+					(else
+						(curRoom setScript: sGetRock)
+					)
 				)
 			)
 			(else 
@@ -428,8 +498,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
-			(else  (super doVerb: theVerb))
+			(V_ROCK
+				(ThrowRock)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -448,8 +522,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
-			(else  (super doVerb: theVerb))
+			(V_ROCK
+				(ThrowRock)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -463,16 +541,22 @@
 		approachY 131
 		view 55
 		loop 1
-		signal $6000
+		signal (| ignrAct ignrHrz)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (ThrowRock))
+			(V_ROCK
+				(ThrowRock)
+			)
 			(V_DO
 				(cond 
-					((and (not local0) (Btst fClimbedTree)) (curRoom setScript: sFallOutOfTree))
-					((Btst fClimbedTree) (messager say: N_ROOM V_DO C_UPTREE))
+					((and (not local0) (Btst fClimbedTree))
+						(curRoom setScript: sFallOutOfTree)
+					)
+					((Btst fClimbedTree)
+						(messager say: N_ROOM V_DO C_UPTREE)
+					)
 					(
 						(and
 							(not (ego mover?))
@@ -480,15 +564,17 @@
 							(!= (ego y?) approachY)
 						)
 						(HandsOff)
-						(= local5 98)
+						(= doorCueState 98)
 						(ego setMotion: PolyPath approachX approachY self)
 					)
 					(Night (messager say: N_DOOR V_DO C_NIGHT))
 					((and (Btst fStolePotions) (!= prevRoomNum 55))
-						(= local11 1)
+						(= cueWhat cueBanned)
 						(messager say: N_DOOR V_DO C_BANNED 1 curRoom)
 					)
-					(else (curRoom setScript: sKnockDoor self))
+					(else
+						(curRoom setScript: sKnockDoor self)
+					)
 				)
 			)
 			(V_LOCKPICK
@@ -505,7 +591,9 @@
 					(messager say: N_DOOR V_LOCKPICK C_NO_PICK)
 				)
 			)
-			(V_LOOK (messager say: N_DOOR V_LOOK))
+			(V_LOOK
+				(messager say: N_DOOR V_LOOK)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -514,22 +602,24 @@
 	
 	(method (cue)
 		(super cue:)
-		(switch (++ local5)
+		(switch (++ doorCueState)
 			(1
-				(messager say: N_DOOR 72 0 0 self)
+				(messager say: N_DOOR 72 NULL 0 self)
 			)
 			(2
 				(closingDoor init: play:)
-				(door ignoreActors: 1 setCycle: EndLoop self)
+				(door ignoreActors: TRUE setCycle: EndLoop self)
 			)
 			(3
 				(closingDoor stop:)
 				(ego illegalBits: 0 setMotion: MoveTo 257 105 self)
 			)
-			(4 (curRoom newRoom: 55))
+			(4
+				(curRoom newRoom: 55)
+			)
 			(99
-				(= local5 0)
-				(self doVerb: 4)
+				(= doorCueState 0)
+				(self doVerb: V_DO)
 			)
 		)
 	)
@@ -538,7 +628,7 @@
 (instance magicLasso of Actor
 	(properties
 		view 520
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		illegalBits $0000
 	)
 )
@@ -549,7 +639,7 @@
 		view 510
 		loop 4
 		priority 10
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		illegalBits $0000
 		xStep 4
 		moveSpeed 1
@@ -563,7 +653,7 @@
 		noun N_NEST
 		view 55
 		priority 12
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 1
 		targDeltaY 30
 	)
@@ -572,24 +662,38 @@
 		(switch theVerb
 			(V_ROCK
 				(cond 
-					((Btst fClimbedTree) (curRoom setScript: sFallOutOfTree))
-					((== nestState nestInTree) (curRoom setScript: sThrowRock))
-					(else (messager say: N_NEST 20 0))
+					((Btst fClimbedTree)
+						(curRoom setScript: sFallOutOfTree)
+					)
+					((== nestState nestInTree)
+						(curRoom setScript: sThrowRock)
+					)
+					(else
+						(messager say: N_NEST V_ROCK NULL)
+					)
 				)
 			)
 			(V_DO
 				(switch nestState
 					(nestInTree
 						(cond 
-							((and (Btst fClimbedTree) (not (Btst OBTAINED_RING))) (curRoom setScript: outOnALimb))
-							((Btst fClimbedTree) (messager say: N_NEST V_DO 11))
-							(else (messager say: N_NEST V_DO 12))
+							((and (Btst fClimbedTree) (not (Btst fGotRing)))
+								(curRoom setScript: outOnALimb)
+							)
+							((Btst fClimbedTree)
+								(messager say: N_NEST V_DO C_MAGIC_ON_TREE)
+							)
+							(else
+								(messager say: N_NEST V_DO C_AFTER_RING)
+							)
 						)
 					)
-					(nestOnGround (messager say: N_NEST V_DO 10))
+					(nestOnGround
+						(messager say: N_NEST V_DO C_NEST_ON_GROUND)
+					)
 					(nestBurnt
-						(if (not (Btst OBTAINED_RING))
-							(= local8 1)
+						(if (not (Btst fGotRing))
+							(= local8 TRUE)
 							(curRoom setScript: sPickItUp)
 						else
 							(switch (Random 1 2)
@@ -602,26 +706,39 @@
 			)
 			(V_LOOK
 				(cond 
-					((== nestState nestOnGround) (messager say: N_NEST V_LOOK 17))
-					((not (Btst PTERESA_LEFT_NEST)) (messager say: N_NEST V_LOOK 13))
-					((== nestState nestInTree) (messager say: N_NEST V_LOOK 18 0 self) (= local9 98))
-					((== nestState nestBurnt) (messager say: N_NEST V_LOOK 16))
+					((== nestState nestOnGround)
+						(messager say: N_NEST V_LOOK 17)
+					)
+					((not (Btst fNestAbandoned))
+						(messager say: N_NEST V_LOOK 13)
+					)
+					((== nestState nestInTree)
+						(messager say: N_NEST V_LOOK 18 0 self)
+						(= nestCueState 98)
+					)
+					((== nestState nestBurnt)
+						(messager say: N_NEST V_LOOK 16)
+					)
 				)
 			)
 			(V_DAGGER
 				(if (and (not (Btst fClimbedTree)) (== nestState nestInTree))
 					(= local1 1)
-					(CastDagger self)
+					(ThrowKnife self)
 				else
-					(messager say: N_NEST V_DAGGER 0)
+					(messager say: N_NEST V_DAGGER NULL)
 				)
 			)
 			(V_FLAME
 				(cond 
-					((Btst fClimbedTree) (curRoom setScript: sFallOutOfTree))
+					((Btst fClimbedTree)
+						(curRoom setScript: sFallOutOfTree)
+					)
 					((!= nestState 3)
-						(CastFlame self)
-						(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: 0 cue:))
+						(CastDart self)
+						(if (not (Btst fNestAbandoned))
+							(bird setScript: 0 cue:)
+						)
 					)
 				)
 			)
@@ -633,26 +750,26 @@
 	
 	(method (cue)
 		(super cue:)
-		(switch (++ local9)
+		(switch (++ nestCueState)
 			(1 (self setCycle: CycleTo 4 1 self))
 			(2 (roomTimer setCycle: self 2))
 			(3
 				(self setCycle: CycleTo 2 -1 self)
 			)
 			(4
-				(= local9 0)
+				(= nestCueState 0)
 				(roomTimer setCycle: self 2)
 			)
 			(99
 				(if (Btst fClimbedTree)
-					(if (not (Btst OBTAINED_RING))
+					(if (not (Btst fGotRing))
 						(messager say: N_NEST V_LOOK 14)
-						(Bset LOOKED_IN_PTERESA_NEST)
+						(Bset fLookedInNest)
 					else
 						(messager say: N_NEST V_LOOK 15)
 					)
 				)
-				(= local9 0)
+				(= nestCueState 0)
 			)
 		)
 	)
@@ -660,8 +777,12 @@
 	(method (getHurt)
 		(if (or local1 local2)
 			(cond 
-				((> (+ [egoStats LUCK] [egoStats THROW]) 50) (curRoom setScript: nestDown))
-				(local1 (messager say: N_NEST V_DAGGER 7))
+				((> (+ [egoStats LUCK] [egoStats THROW]) 50)
+					(curRoom setScript: nestDown)
+				)
+				(local1
+					(messager say: N_NEST V_DAGGER 7)
+				)
 			)
 		else
 			(curRoom setScript: burnUp)
@@ -673,8 +794,6 @@
 )
 
 (instance sEnterFromSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -700,8 +819,6 @@
 )
 
 (instance sEnterFromWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -727,8 +844,6 @@
 )
 
 (instance sEnterFrom37 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -750,14 +865,12 @@
 )
 
 (instance sGetRock of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 40])
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 				(= ticks 10)
 			)
 			(1
@@ -773,8 +886,9 @@
 				)
 			)
 			(3
-				(Message MsgGet 54 N_ROOM V_DO C_GETROCKS 1 @temp0)
-				(Print addText: @temp0 init:)
+				(messager say: N_ROOM V_DO C_GETROCKS)
+				;(Message MsgGet 54 N_ROOM V_DO C_GETROCKS 1 @temp0)
+				;(Print addText: @temp0 init:)
 				(ego setCycle: BegLoop self)
 			)
 			(4
@@ -788,8 +902,8 @@
 			(5
 				(HandsOn)
 				(ego
-					cycleSpeed: gEgoCycleSpeed
-					moveSpeed: gEgoMoveSpeed
+					cycleSpeed: saveCycleSpeed
+					moveSpeed: saveMoveSpeed
 					get: iRock 10
 				)
 				(self dispose:)
@@ -799,8 +913,6 @@
 )
 
 (instance sFlutter of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks (Random 120 300)))
@@ -818,8 +930,6 @@
 )
 
 (instance rockHitsIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -837,8 +947,6 @@
 )
 
 (instance sPickItUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -850,8 +958,8 @@
 				(ego view: 510 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(if (not (Btst OBTAINED_RING))
-					(messager say: N_ROOM 0 0 2)
+				(if (not (Btst fGotRing))
+					(messager say: N_ROOM NULL NULL 2)
 					(theRing dispose:)
 				)
 				(if (== (nest loop?) 7)
@@ -862,10 +970,10 @@
 				(ego setCycle: BegLoop self)
 			)
 			(4
-				(if (not (Btst OBTAINED_RING))
+				(if (not (Btst fGotRing))
 					(ego get: iRing)
-					(Bset OBTAINED_RING)
-					(SolvePuzzle POINTS_GETGOLDRING 3)
+					(Bset fGotRing)
+					(SolvePuzzle f54GetRing 3)
 				)
 				(NormalEgo)
 				(HandsOn)
@@ -876,8 +984,6 @@
 )
 
 (instance burnUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -886,7 +992,9 @@
 				(= ticks 10)
 			)
 			(1
-				(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: 0 cue:))
+				(if (not (Btst fNestAbandoned))
+					(bird setScript: 0 cue:)
+				)
 				(= ticks 30)
 			)
 			(2
@@ -901,7 +1009,7 @@
 				)
 			)
 			(3
-				(= local9 5)
+				(= nestCueState 5)
 				(nest setCel: 0 cycleSpeed: 6 setCycle: EndLoop self cue:)
 			)
 			(4
@@ -909,7 +1017,7 @@
 				(= cycles 2)
 			)
 			(5
-				(if (Btst OBTAINED_RING)
+				(if (Btst fGotRing)
 					(NormalEgo)
 					(HandsOn)
 					(self dispose:)
@@ -933,8 +1041,6 @@
 )
 
 (instance sEnter37 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -953,13 +1059,11 @@
 )
 
 (instance sFromInsideHouse of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
 			(1
-				(door ignoreActors: 1 setCel: 255)
+				(door ignoreActors: TRUE setCel: 255)
 				(= cycles 2)
 			)
 			(2
@@ -989,8 +1093,6 @@
 )
 
 (instance sClimbDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1026,8 +1128,6 @@
 )
 
 (instance sExitWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1040,8 +1140,6 @@
 )
 
 (instance sExitSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1054,8 +1152,6 @@
 )
 
 (instance sExitEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1068,8 +1164,6 @@
 )
 
 (instance sEnterFromEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1095,8 +1189,6 @@
 )
 
 (instance outOnALimb of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1140,16 +1232,16 @@
 				(= ticks 20)
 			)
 			(7
-				(messager say: N_ROOM 0 0 4)
+				(messager say: N_ROOM NULL NULL 4)
 				(ego setLoop: 9 setCel: 0 setCycle: EndLoop self)
 			)
 			(8 (= ticks 20))
 			(9
-				(= local11 4)
-				(messager say: N_ROOM 0 0 5 curRoom)
-				(Bset OBTAINED_RING)
+				(= cueWhat 4)
+				(messager say: N_ROOM NULL NULL 5 curRoom)
+				(Bset fGotRing)
 				(ego setCycle: BegLoop self)
-				(SolvePuzzle POINTS_GETGOLDRING 3)
+				(SolvePuzzle f54GetRing 3)
 			)
 			(10 (ego get: iRing) (= ticks 20))
 			(11
@@ -1160,7 +1252,7 @@
 				)
 			)
 			(12
-				(messager say: N_ROOM 0 0 7)
+				(messager say: N_ROOM NULL NULL 7)
 				(ego setCycle: 0)
 				(self dispose:)
 				(ego setScript: sClimbDown)
@@ -1200,12 +1292,12 @@
 )
 
 (instance egoActions of Actions
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
-				(V_ROCK (ThrowRock))
+				(V_ROCK
+					(ThrowRock)
+				)
 				(else 
 					(if (and (== theVerb V_WALK) (Btst fClimbedTree))
 						(curRoom setScript: sFallOutOfTree)
@@ -1238,8 +1330,6 @@
 )
 
 (instance sKnockDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1326,7 +1416,7 @@
 			(V_FLAME (bird setScript: 0 cue:))
 			(V_DAGGER
 				(bird setScript: 0 cue:)
-				(CastDagger 0)
+				(ThrowKnife 0)
 			)
 			(V_LOOK
 				(if (< mouseY 60)
@@ -1348,7 +1438,7 @@
 		y 57
 		view 55
 		loop 5
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -1360,7 +1450,7 @@
 		(if
 			(and
 				(== nestState nestInTree)
-				(not (Btst OBTAINED_RING))
+				(not (Btst fGotRing))
 				(not local7)
 			)
 			(= local7 1)
@@ -1374,16 +1464,14 @@
 )
 
 (instance sFallOutOfTree of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(Load RES_SOUND 9)
 				(Load RES_SOUND 10)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 				(= local0 1)
 				(= ticks 10)
 			)
@@ -1442,8 +1530,8 @@
 				(NormalEgo)
 				(HandsOn)
 				(ego
-					cycleSpeed: gEgoCycleSpeed
-					moveSpeed: gEgoMoveSpeed
+					cycleSpeed: saveCycleSpeed
+					moveSpeed: saveMoveSpeed
 					loop: 2
 				)
 				(self dispose:)
@@ -1461,7 +1549,7 @@
 		view 55
 		loop 6
 		priority 13
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		illegalBits $0000
 	)
 	
@@ -1474,7 +1562,7 @@
 				(self setScript: 0 cue:)
 				(Bset 281)
 				(= local1 1)
-				(CastDagger 0)
+				(ThrowKnife 0)
 			)
 			(V_LOOK (messager say: N_BIRD V_LOOK))
 			(V_DO (messager say: N_BIRD V_DO))
@@ -1504,7 +1592,7 @@
 			)
 			(3
 				(lizSound stop:)
-				(Bset PTERESA_LEFT_NEST)
+				(Bset fNestAbandoned)
 				(= local6 0)
 				(birdFeature dispose:)
 				(self dispose:)
@@ -1514,8 +1602,6 @@
 )
 
 (instance nestDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1536,7 +1622,7 @@
 				(= nestState 1)
 			)
 			(3
-				(if (Btst OBTAINED_RING)
+				(if (Btst fGotRing)
 					(messager say: N_ROOM 0 24)
 					(NormalEgo)
 					(HandsOn)
@@ -1559,8 +1645,6 @@
 )
 
 (instance sThrowRock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1577,7 +1661,7 @@
 			)
 			(2 (ego setHeading: 270 self))
 			(3
-				(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: 0 cue:))
+				(if (not (Btst fNestAbandoned)) (bird setScript: 0 cue:))
 				(ego view: 510 setLoop: 2 setCel: 0 setCycle: CycleTo 7 1 self)
 			)
 			(4
@@ -1617,8 +1701,6 @@
 )
 
 (instance sThrowLasso of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1636,7 +1718,7 @@
 			)
 			(4 (ego setCycle: EndLoop self))
 			(5
-				(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: 0 cue:))
+				(if (not (Btst fNestAbandoned)) (bird setScript: 0 cue:))
 				(theRing dispose:)
 				(magicLasso
 					init:
@@ -1663,14 +1745,14 @@
 				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(9
-				(if (Btst OBTAINED_RING)
+				(if (Btst fGotRing)
 					(messager say: N_ROOM 0 14)
 				else
-					(= local11 3)
+					(= cueWhat 3)
 					(messager say: N_ROOM 0 15 1 curRoom)
-					(Bset OBTAINED_RING)
+					(Bset fGotRing)
 					(theRing dispose:)
-					(SolvePuzzle POINTS_GETGOLDRING 3)
+					(SolvePuzzle f54GetRing 3)
 				)
 				(magicLasso dispose:)
 				(ego
@@ -1704,10 +1786,8 @@
 )
 
 (instance sClimbUpTree of Script
-	(properties)
-	
 	(method (dispose)
-		(ego cycleSpeed: gEgoCycleSpeed moveSpeed: gEgoMoveSpeed)
+		(ego cycleSpeed: saveCycleSpeed moveSpeed: saveMoveSpeed)
 		(super dispose:)
 	)
 	
@@ -1715,8 +1795,8 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 				(= ticks 10)
 			)
 			(1
@@ -1757,7 +1837,7 @@
 				(ego view: 4 setPri: pWHITE setLoop: 2)
 				(User canControl: FALSE)
 				(Bset fClimbedTree)
-				(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: 0 cue:))
+				(if (not (Btst fNestAbandoned)) (bird setScript: 0 cue:))
 				(egoInTree init:)
 				(= ticks 60)
 			)

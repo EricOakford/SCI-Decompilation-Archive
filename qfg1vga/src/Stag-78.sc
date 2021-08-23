@@ -2,9 +2,9 @@
 (script# 78)
 (include game.sh) (include "78.shm")
 (use Main)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use Target)
 (use Procs)
 (use PolyPath)
@@ -23,11 +23,11 @@
 
 (local
 	[theSeconds 4]
-	gEgoY
-	gEgoCycleSpeed
-	gEgoX
-	gEgoY_2
-	gEgoCycleSpeed_2
+	distToStag
+	stagState
+	antwerpX
+	antwerpY
+	saveSpeed
 )
 (instance rm78 of Room
 	(properties
@@ -42,14 +42,18 @@
 		(super init:)
 		(StatusLine enable:)
 		(NormalEgo)
-		(= gEgoCycleSpeed_2 (ego cycleSpeed?))
+		(= saveSpeed (ego cycleSpeed?))
 		(cond 
-			((and (not (Btst fMetDryad)) (not monsterNum)) (Bset fStagHere) (= monsterNum 0))
+			((and (not (Btst fMetDryad)) (not monsterNum))
+				(Bset fStagHere)
+				(= monsterNum 0)
+			)
 			((and (Btst fAgreedToHelpDryad) (not monsterNum))
-			(switch (Random 0 1)
-				(0 (Bclr fStagHere))
-				(1 (Bset fStagHere))
-			))
+				(switch (Random 0 1)
+					(0 (Bclr fStagHere))
+					(1 (Bset fStagHere))
+				)
+			)
 		)
 		(if (Btst fAntwerpInSky)
 			(Load RES_SCRIPT WANDER)
@@ -79,13 +83,15 @@
 		else
 			(Bclr fStagHere)
 		)
-		(= gEgoCycleSpeed 0)
+		(= stagState 0)
 	)
 	
 	(method (doit)
 		(cond 
 			(script)
-			((and (Btst fAntwerpInSky) (< (ego y?) 140)) (curRoom setScript: antwerped))
+			((and (Btst fAntwerpInSky) (< (ego y?) 140))
+				(curRoom setScript: antwerped)
+			)
 		)
 		(super doit:)
 	)
@@ -110,11 +116,17 @@
 	)
 	
 	(method (doit)
-		(= gEgoY (ego distanceTo: self))
+		(= distToStag (ego distanceTo: self))
 		(if (!= script stagBolts)
 			(cond 
-				([theSeconds 2] (if (< gEgoY 100) (self setScript: stagBolts)))
-				((< gEgoY 75) (self setScript: stagBolts))
+				([theSeconds 2]
+					(if (< distToStag 100)
+						(self setScript: stagBolts)
+					)
+				)
+				((< distToStag 75)
+					(self setScript: stagBolts)
+				)
 			)
 		)
 		(super doit:)
@@ -122,26 +134,36 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_ROCK (CastRock self))
+			(V_ROCK
+				(ThrowRock self)
+			)
 			(V_DAGGER
-				(CastDagger self)
+				(ThrowKnife self)
 			)
 			(V_FLAME
-				(CastFlame self)
+				(CastDart self)
 			)
-			(V_SWORD (self setScript: stagBolts))
+			(V_SWORD
+				(self setScript: stagBolts)
+			)
 			(else 
-				(switch gEgoCycleSpeed
-					(0 (messager say: N_STAG V_LOOK C_STAGFORAGING))
-					(5 (messager say: N_STAG V_LOOK C_STAGLEAP))
-					(else  (messager say: N_STAG V_LOOK))
+				(switch stagState
+					(0
+						(messager say: N_STAG V_LOOK C_STAGFORAGING)
+					)
+					(5
+						(messager say: N_STAG V_LOOK C_STAGLEAP)
+					)
+					(else
+						(messager say: N_STAG V_LOOK)
+					)
 				)
 			)
 		)
 	)
 	
 	(method (getHurt)
-		(= missedDaggers (+ missedDaggers hitDaggers))
+		(+= missedDaggers hitDaggers)
 		(= hitDaggers 0)
 		(Bset fStagHurt)
 		(if (and (!= script stagBolts) (!= script stagHurt))
@@ -151,13 +173,11 @@
 )
 
 (instance stagHurt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_STAG V_FLAME 0 0 self)
+				(messager say: N_STAG V_FLAME NULL 0 self)
 			)
 			(1
 				(client setScript: stagBolts)
@@ -167,11 +187,12 @@
 )
 
 (instance stagWalkIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 90))
+			(0
+				(HandsOff)
+				(= ticks 90)
+			)
 			(1
 				(HandsOff)
 				(switch prevRoomNum
@@ -209,15 +230,13 @@
 )
 
 (instance stagScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ChangeGait MOVE_WALK 0)
+				(ChangeGait MOVE_WALK FALSE)
 				(User canControl: FALSE)
 				(if [theSeconds 3]
-					(= gEgoCycleSpeed 0)
+					(= stagState 0)
 					(if [theSeconds 2]
 						(stag loop: 6 cycleSpeed: 12 moveSpeed: 12 setCycle: Forward)
 					else
@@ -237,7 +256,7 @@
 			)
 			(2
 				(if [theSeconds 3]
-					(= gEgoCycleSpeed 2)
+					(= stagState 2)
 					(if [theSeconds 2]
 						(stag
 							loop: 4
@@ -261,7 +280,7 @@
 			)
 			(3
 				(if [theSeconds 2]
-					(= gEgoCycleSpeed 4)
+					(= stagState 4)
 					(stag
 						loop: 2
 						cel: 0
@@ -277,7 +296,7 @@
 			)
 			(4
 				(User canControl: TRUE)
-				(= gEgoCycleSpeed 6)
+				(= stagState 6)
 				(stag
 					loop: 1
 					cel: 0
@@ -299,8 +318,6 @@
 )
 
 (instance stagBolts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -308,46 +325,59 @@
 					(HandsOff)
 					(ego setCycle: 0 setMotion: 0)
 				)
-				(if (== gEgoCycleSpeed 0)
-					(= gEgoCycleSpeed 1)
+				(if (== stagState 0)
+					(= stagState 1)
 					(stag setCycle: EndLoop)
 				else
 					(self cue:)
 				)
-				(messager say: N_STAG V_LOOK 0 0 self)
+				(messager say: N_STAG V_LOOK NULL 0 self)
 			)
 			(1
 				(stag cycleSpeed: 4 moveSpeed: 4)
 				(cond 
-					((== gEgoCycleSpeed 1)
-						(= gEgoCycleSpeed 3)
+					((== stagState 1)
+						(= stagState 3)
 						(if [theSeconds 2]
 							(stag loop: 4 cel: 7 setCycle: BegLoop self)
 						else
 							(stag loop: 5 cel: 7 setCycle: BegLoop self)
 						)
 					)
-					((== gEgoCycleSpeed 2) (= gEgoCycleSpeed 3) (stag setCycle: BegLoop self))
-					(else (self cue:))
+					((== stagState 2)
+						(= stagState 3)
+						(stag setCycle: BegLoop self)
+					)
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(2
 				(cond 
 					([theSeconds 2]
 						(cond 
-							((== gEgoCycleSpeed 3)
-								(= gEgoCycleSpeed 5)
+							((== stagState 3)
+								(= stagState 5)
 								(stag loop: 2 cel: 0 xStep: 5 setCycle: EndLoop self)
 							)
-							((== gEgoCycleSpeed 4) (= gEgoCycleSpeed 5) (stag setCycle: EndLoop self))
-							(else (self cue:))
+							((== stagState 4)
+								(= stagState 5)
+								(stag setCycle: EndLoop self)
+							)
+							(else
+								(self cue:)
+							)
 						)
 					)
-					((== gEgoCycleSpeed 3) (= gEgoCycleSpeed 5) (self cue:))
+					((== stagState 3)
+						(= stagState 5)
+						(self cue:)
+					)
 				)
 			)
 			(3
-				(if (== gEgoCycleSpeed 5)
+				(if (== stagState 5)
 					(stag
 						setLoop: 9
 						cel: 0
@@ -360,7 +390,7 @@
 			)
 			(4
 				(User canControl: TRUE)
-				(if (== gEgoCycleSpeed 5)
+				(if (== stagState 5)
 					(stag
 						setStep: 12 9
 						setCycle: Forward
@@ -398,8 +428,6 @@
 )
 
 (instance egoActions of Actions
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(if (or (== theVerb V_DAGGER) (== theVerb V_SWORD))
@@ -423,7 +451,7 @@
 	(method (init)
 		(= nightPalette 1590)
 		(PalVary PALVARYTARGET 1590)
-		(kernel_128 590)
+		(AssertPalette 590)
 		(super init:)
 	)
 	
@@ -453,13 +481,11 @@
 )
 
 (instance antwerped of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(antFalls play:)
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(ego
 					setMotion: 0
 					view: 85
@@ -473,7 +499,7 @@
 				(User canControl: FALSE)
 				(antwerp
 					init:
-					ignoreActors: 1
+					ignoreActors: TRUE
 					ignoreHorizon: 1
 					illegalBits: 0
 					setLoop: 2
@@ -502,7 +528,9 @@
 				(= seconds 3)
 ;				(= cycles 80)
 			)
-			(5 (EgoDead 5 6))
+			(5
+				(EgoDead C_DIE_ANTWERP C_DIE_ANTWERP_TITLE)
+			)
 		)
 	)
 )
@@ -534,7 +562,9 @@
 	)
 	
 	(method (doit)
-		(if (== (self cel?) 0) (babyBoing loop: 1 play:))
+		(if (== (self cel?) 0)
+			(babyBoing loop: 1 play:)
+		)
 		(super doit:)
 	)
 )
@@ -576,13 +606,11 @@
 )
 
 (instance splat of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(antFalls stop:)
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(ego
 					view: 85
 					setLoop: 0
@@ -593,8 +621,8 @@
 			)
 			(1
 				(antwerp
-					ignoreActors: 1
-					ignoreHorizon: 1
+					ignoreActors: TRUE
+					ignoreHorizon: TRUE
 					illegalBits: 0
 					setLoop: 2
 					cel: 0
@@ -606,61 +634,61 @@
 			(2
 				(antSplats play:)
 				(ego setCycle: BegLoop self)
-				(Bset 206)
+				(Bset fAntwerpSplit)
 				(antwerp setLoop: 5 setCycle: EndLoop)
 			)
 			(3
-				(= gEgoX (ego x?))
-				(= gEgoY_2 (ego y?))
+				(= antwerpX (ego x?))
+				(= antwerpY (ego y?))
 				(antwerp
 					setLoop: 5
 					cel: 0
 					setStep: 4 4
-					posn: gEgoX gEgoY_2
-					setMotion: MoveTo gEgoX (+ gEgoY_2 16)
+					posn: antwerpX antwerpY
+					setMotion: MoveTo antwerpX (+ antwerpY 16)
 					cycleSpeed: 1
 					setCycle: EndLoop
 				)
 				(a1
 					setLoop: 7
-					posn: gEgoX gEgoY_2
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (+ gEgoX 16) (+ gEgoY_2 22) self
+					setMotion: MoveTo (+ antwerpX 16) (+ antwerpY 22) self
 				)
 				(a2
 					setLoop: 8
-					posn: gEgoX gEgoY_2
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (- gEgoX 10) (- gEgoY_2 10)
+					setMotion: MoveTo (- antwerpX 10) (- antwerpY 10)
 				)
 				(a3
 					setLoop: 7
-					posn: gEgoX gEgoY_2
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (+ gEgoX 8) (+ gEgoY_2 15)
+					setMotion: MoveTo (+ antwerpX 8) (+ antwerpY 15)
 				)
-				(if (> howFast 0)
+				(if (> howFast slow)
 					(a4
 						setLoop: 7
-						posn: gEgoX gEgoY_2
+						posn: antwerpX antwerpY
 						ignoreActors:
 						init:
 						setCycle: Forward
-						setMotion: MoveTo (- gEgoX 14) (- gEgoY_2 5)
+						setMotion: MoveTo (- antwerpX 14) (- antwerpY 5)
 					)
 					(a5
 						setLoop: 8
-						posn: gEgoX gEgoY_2
+						posn: antwerpX antwerpY
 						ignoreActors:
 						init:
 						setCycle: Forward
-						setMotion: MoveTo (+ gEgoX 16) (- gEgoY_2 10)
+						setMotion: MoveTo (+ antwerpX 16) (- antwerpY 10)
 					)
 				)
 			)
@@ -668,14 +696,14 @@
 				(a1 ignoreActors: 0 illegalBits: -2 setMotion: Wander)
 				(a2 ignoreActors: 0 illegalBits: -2 setMotion: Wander)
 				(a3 ignoreActors: 0 illegalBits: -2 setMotion: Wander)
-				(if (> howFast 0)
+				(if (> howFast slow)
 					(a4 ignoreActors: 0 illegalBits: -2 setMotion: Wander)
 					(a5 ignoreActors: 0 illegalBits: -2 setMotion: Wander)
 				)
 				(NormalEgo)
-				(User canControl: 1 canInput: 1)
+				(User canControl: TRUE canInput: TRUE)
 				(Bclr fAntwerpInSky)
-				(ego cycleSpeed: gEgoCycleSpeed_2)
+				(ego cycleSpeed: saveSpeed)
 				(client setScript: 0)
 			)
 		)

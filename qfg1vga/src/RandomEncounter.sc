@@ -2,8 +2,8 @@
 (script# ENCOUNTER)
 (include game.sh) (include "210.shm")
 (use Main)
-(use CastDagger)
-(use CastRock)
+(use ThrowKnife)
+(use ThrowRock)
 (use CastCalm)
 (use CastDazzle)
 (use Target)
@@ -545,14 +545,14 @@
 					(if monsterDead
 						(AlreadyDone)
 					else
-						(CastRock smallMonster)
+						(ThrowRock smallMonster)
 					)
 				)
 				(V_DAGGER
 					(if monsterDead
 						(AlreadyDone)
 					else
-						(CastDagger smallMonster)
+						(ThrowKnife smallMonster)
 					)
 				)
 				(V_LOOK
@@ -1045,7 +1045,7 @@
 			)
 			(2
 				(= local70 1)
-				(if (not (CastDazzle self self))
+				(if (not (CastDazz self self))
 					(self changeState: 4)
 				)
 			)

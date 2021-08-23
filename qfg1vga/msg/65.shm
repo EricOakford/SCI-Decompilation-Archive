@@ -60,4 +60,11 @@
 (define C_LEAVETOWN 42)
 (define C_CLIMBFAIL 40)
 (define C_CLIMBSUCCESS 41)
+(define C_LOOKSIGN 44)
+(define C_RAND1 45)
+(define C_RAND2 46)
+(define C_RAND3 47)
+(define C_RAND4 48)
+(define C_RAND5 49)
+(define C_RAND6 50)
 

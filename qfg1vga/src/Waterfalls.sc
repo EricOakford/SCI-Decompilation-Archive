@@ -2,7 +2,7 @@
 (script# 82)
 (include game.sh) (include "82.shm")
 (use Main)
-(use CastFlame)
+(use CastDart)
 (use CastOpen)
 (use CastDazzle)
 (use Procs)
@@ -223,7 +223,7 @@
 			)
 			(V_TRIGGER
 				(if (CastSpell TRIGGER)
-					(Bset HENRY_LADDER_KNOWN)
+					(Bset fLadderKnown)
 					(ladder setCycle: EndLoop)
 				else
 					(messager say: N_ROOM 0 C_SPELLNOTWORKING)
@@ -313,7 +313,7 @@
 					((Btst fClimbedHenryCliff)
 						(ego setScript: climbDown)
 					)
-					((Btst HENRY_LADDER_KNOWN)
+					((Btst fLadderKnown)
 						(ego setScript: goodClimb)
 					)
 					((TrySkill CLIMB 30)
@@ -597,7 +597,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst HENRY_LADDER_KNOWN)
+				(if (Btst fLadderKnown)
 					(messager say: N_LADDER V_LOOK 0)
 				else
 					(messager say: N_LADDER V_LOOK C_DONTSEELADDER)
@@ -606,7 +606,7 @@
 			(V_DO
 				(cond 
 					((Btst fClimbedHenryCliff) (ego setScript: climbDown))
-					((Btst HENRY_LADDER_KNOWN) (ego setScript: goodClimb))
+					((Btst fLadderKnown) (ego setScript: goodClimb))
 					(else (messager say: N_LADDER V_DO 0))
 				)
 			)
@@ -834,7 +834,7 @@
 				(ego view: 0 posn: 129 155 setCycle: Walk loop: 3)
 				(Bclr fClimbedHenryCliff)
 				(= disabledActions 0)
-				(if (not (Btst HENRY_LADDER_KNOWN))
+				(if (not (Btst fLadderKnown))
 					(messager say: N_ROOM 0 C_JUSTASEASY 1 self)
 				else
 					(self cue:)
@@ -1212,7 +1212,7 @@
 					(messager say: N_ROOM 0 C_HELLOTHERE)
 					(= seenByHenry 1)
 					(ladder setCycle: EndLoop self)
-					(Bset HENRY_LADDER_KNOWN)
+					(Bset fLadderKnown)
 				)
 			)
 			(4
@@ -1400,7 +1400,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
-			(1 (CastDazzle ego self))
+			(1 (CastDazz ego self))
 			(2 (messager say: N_ROOM 0 0 5 self))
 			(3 (HandsOn) (self dispose:))
 		)
@@ -1413,7 +1413,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(CastFlame 0 self)
+				(CastDart 0 self)
 			)
 			(1 (messager say: N_ROOM 0 0 6 self))
 			(2 (self dispose:))
@@ -1428,8 +1428,8 @@
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
 			(1
-				(if (not (Btst HENRY_LADDER_KNOWN))
-					(Bset HENRY_LADDER_KNOWN)
+				(if (not (Btst fLadderKnown))
+					(Bset fLadderKnown)
 					(ladder setCycle: EndLoop self)
 				else
 					(HandsOn)
@@ -1462,7 +1462,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (Btst HENRY_LADDER_KNOWN)) (messager say: N_ROOM 0 C_LOOKTOCLIMB))
+				(if (not (Btst fLadderKnown)) (messager say: N_ROOM 0 C_LOOKTOCLIMB))
 				(NormalEgo)
 				(ego illegalBits: 0 ignoreActors:)
 				(theGame setCursor: waitCursor)
@@ -1512,7 +1512,7 @@
 				)
 			)
 			(4
-				(if (not (Btst HENRY_LADDER_KNOWN))
+				(if (not (Btst fLadderKnown))
 					(messager say: N_ROOM 0 C_THATWASEASY 1 self)
 				else
 					(self cue:)

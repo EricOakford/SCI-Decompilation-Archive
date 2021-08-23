@@ -26,16 +26,40 @@
 	local3
 	twisterX
 	twisterY
-	theTwisterX
-	theTwisterY
+	oldTwisterX
+	oldTwisterY
 	local8
 	local9
-	local10
+	twisterCel
 	cueGrave
 	local12
 	talkCount
 	cueGhostOil
-	[local15 45] = [5 0 180 27 5 1 196 47 5 2 190 67 5 3 153 80 5 4 132 91 5 5 152 116 5 6 189 114 5 7 198 96 5 8 179 75 5 9 169 57 5 10 174 35 -32768]
+	tumblerPath = [
+		5 0
+		180 27
+		5 1
+		196 47
+		5 2
+		190 67
+		5 3
+		153 80
+		5 4
+		132 91
+		5 5
+		152 116
+		5 6
+		189 114
+		5 7
+		198 96
+		5 8
+		179 75
+		5 9
+		169 57
+		5 10
+		174 35
+		PATHEND
+		]
 )
 (procedure (GhostsKillEgo)
 	(EgoDead 84 85 0 0 516)
@@ -160,7 +184,7 @@
 			actions: unusualDoVerb
 		)
 		(if (and Night (Btst fGhostOil))
-			(SolvePuzzle POINTS_USEUNDEADUNGUENT 2)
+			(SolvePuzzle f64UseGhostOil 2)
 		)
 		(switch prevRoomNum
 			(72
@@ -176,7 +200,9 @@
 				(ego posn: 1 172)
 				(self setScript: safeIntro)
 			)
-			(else  (ego posn: 44 177))
+			(else
+				(ego posn: 44 177)
+			)
 		)
 	)
 	
@@ -321,7 +347,6 @@
 					)
 				)
 			)
-			;these don't seem to trigger for some reason
 			(V_DETECT
 				(if Night
 					(messager say: N_ROOM V_DETECT C_NIGHT)
@@ -363,8 +388,6 @@
 )
 
 (instance unusualDoVerb of Actions
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb V_GHOSTOIL)
@@ -372,10 +395,10 @@
 				(Bclr fGhostsAttack)
 				(= ghostOilTimer 150)
 				(if Night
-					(SolvePuzzle POINTS_USEUNDEADUNGUENT 2)
+					(SolvePuzzle f64UseGhostOil 2)
 				)
-				(messager say: N_ROOM 83 0)
-				(= cueGhostOil 1)
+				(messager say: N_ROOM 83 NULL)
+				(= cueGhostOil TRUE)
 				(ego setScript: cueItScript)
 			else
 				(return FALSE)
@@ -584,7 +607,7 @@
 	
 	(method (init)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 	
@@ -643,7 +666,7 @@
 	(method (init)
 		(= nightPalette 164)
 		(PalVary PALVARYTARGET 164)
-		(kernel_128 64)
+		(AssertPalette 64)
 		(super init:)
 	)
 	
@@ -708,8 +731,6 @@
 )
 
 (instance upTheWall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -744,9 +765,7 @@
 	)
 )
 
-(instance notGoodEnough of Script
-	(properties)
-	
+(instance notGoodEnough of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -756,7 +775,7 @@
 				(ego setCycle: 0 setCel: 0 setMotion: MoveTo 313 120 self)
 			)
 			(2
-				(messager say: N_ROOM 0 0 1)
+				(messager say: N_ROOM NULL NULL 1)
 				(NormalEgo)
 				(ego view: 0 posn: 313 150)
 				(self cue:)
@@ -764,14 +783,15 @@
 			(3
 				(ego setMotion: MoveTo 200 167 self)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance gotHim of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -796,14 +816,14 @@
 			(1
 				(ego view: 516 setLoop: 0 setCycle: EndLoop self)
 			)
-			(2 (GhostsKillEgo))
+			(2
+				(GhostsKillEgo)
+			)
 		)
 	)
 )
 
 (instance safeIntro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -824,25 +844,40 @@
 						)
 						(= ticks 60)
 					)
-					((and (> timeODay TIME_NIGHT) (not (Btst fGhostOil))) (client setScript: gotHim))
+					((and (> timeODay TIME_NIGHT) (not (Btst fGhostOil)))
+						(client setScript: gotHim)
+					)
 					(else (= seconds 1))
 				)
 			)
 			(2
 				(cond 
-					((Btst fBeenIn64) (self cue:))
-					(Night (self cue:))
-					(else (messager say: N_ROOM 0 0 2 self))
+					((Btst fBeenIn64)
+						(self cue:)
+					)
+					(Night
+						(self cue:)
+					)
+					(else (messager say: N_ROOM NULL NULL 2 self))
 				)
 			)
 			(3
 				(cond 
-					(Night (messager say: N_ROOM 0 C_NIGHT 1 self))
-					((Btst fBeenIn64) (self cue:))
-					(else (messager say: N_ROOM 0 C_FIRST_TIME 1 self))
+					(Night
+						(messager say: N_ROOM NULL C_NIGHT 1 self)
+					)
+					((Btst fBeenIn64)
+						(self cue:)
+					)
+					(else
+						(messager say: N_ROOM NULL C_FIRST_TIME 1 self)
+					)
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -862,24 +897,33 @@
 				)
 			)
 			(1
-				(if (== timeODay TIME_MIDNIGHT) (ego get: iMandrake))
+				(if (== timeODay TIME_MIDNIGHT)
+					(ego get: iMandrake)
+				)
 				(ego setLoop: 3)
 				(mandrake dispose:)
 				(= cycles 2)
 			)
 			(2
 				(if (== timeODay TIME_MIDNIGHT)
-					(messager say: N_ROOM 0 C_MIDNIGHT)
-					(SolvePuzzle POINTS_GETMANDRAKEROOT 6)
+					(messager say: N_ROOM NULL C_MIDNIGHT)
+					(SolvePuzzle f64GetRoot 6)
 				else
 					(= cueGrave 6)
-					(messager say: N_ROOM 0 C_WRONGTIME 1 curRoom)
+					(messager say: N_ROOM NULL C_WRONGTIME 1 curRoom)
 					(= mandrakeDay Day)
 				)
 				(NormalEgo)
-				(ego setPri: pLMAGENTA setMotion: MoveTo 185 (mandrake y?) self)
+				(ego
+					setPri: pLMAGENTA
+					setMotion: MoveTo 185 (mandrake y?)
+					self
+				)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -890,10 +934,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local10 1)
+				(= twisterCel 1)
 				(twister
 					setLoop: 6
-					setCel: local10
+					setCel: twisterCel
 					setPri: 12
 					ignoreActors:
 					illegalBits: 0
@@ -907,12 +951,12 @@
 				(= twisterY (twister y?))
 			)
 			(2
-				(++ local10)
-				(= theTwisterX twisterX)
-				(= theTwisterY twisterY)
+				(++ twisterCel)
+				(= oldTwisterX twisterX)
+				(= oldTwisterY twisterY)
 				(= twisterX (Random 20 210))
 				(= twisterY (Random 54 130))
-				(twister setCycle: CycleTo local10 1 self)
+				(twister setCycle: CycleTo twisterCel 1 self)
 				(if local9
 					(twister setMotion: Follow ego 30)
 				else
@@ -920,7 +964,9 @@
 				)
 			)
 			(3
-				(if (> local10 8) (= local10 0))
+				(if (> twisterCel 8)
+					(= twisterCel 0)
+				)
 				(self cue:)
 			)
 			(4
@@ -933,8 +979,6 @@
 )
 
 (instance swimRight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -975,8 +1019,6 @@
 )
 
 (instance peekABoo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -996,8 +1038,6 @@
 )
 
 (instance upThisTime of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1030,8 +1070,6 @@
 )
 
 (instance upSecond of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1063,8 +1101,6 @@
 )
 
 (instance upThird of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1097,8 +1133,6 @@
 )
 
 (instance spinOnTree of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1120,7 +1154,7 @@
 					posn: 180 27
 					cycleSpeed: 12
 					setCel: 0
-					setCycle: MoveCycle @local15 tumbler
+					setCycle: MoveCycle @tumblerPath tumbler
 				)
 				(if (and (== (ego x?) 174) (== (ego y?) 35))
 					(self cue:)
@@ -1167,8 +1201,6 @@
 )
 
 (instance talkToGhosts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1179,27 +1211,29 @@
 			(1
 				(switch talkCount
 					(1
-						(messager say: N_GHOST V_ALTTALK 0 1 self)
+						(messager say: N_GHOST V_ALTTALK NULL 1 self)
 					)
 					(2
-						(messager say: N_GHOST V_ALTTALK 0 2 self)
+						(messager say: N_GHOST V_ALTTALK NULL 2 self)
 					)
 					(3
-						(messager say: N_GHOST V_ALTTALK 0 3 self)
+						(messager say: N_GHOST V_ALTTALK NULL 3 self)
 					)
 					(4
-						(messager say: N_GHOST V_ALTTALK 0 4 self)
+						(messager say: N_GHOST V_ALTTALK NULL 4 self)
 					)
 					(5
-						(messager say: N_GHOST V_ALTTALK 0 5 self)
+						(messager say: N_GHOST V_ALTTALK NULL 5 self)
 					)
 					(6
-						(messager say: N_GHOST V_ALTTALK 0 6 self)
+						(messager say: N_GHOST V_ALTTALK NULL 6 self)
 					)
 				)
 			)
 			(2
-				(if (== talkCount 6) (= talkCount 0))
+				(if (== talkCount 6)
+					(= talkCount 0)
+				)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -1208,8 +1242,6 @@
 )
 
 (instance walkOutTo72 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1222,8 +1254,6 @@
 )
 
 (instance walkTo63 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1236,14 +1266,15 @@
 )
 
 (instance cueItScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 60))
 			(1
 				(switch cueGhostOil
-					(1 (ego use: iGhostOil) (ego get: iFlask))
+					(1
+						(ego use: iGhostOil)
+						(ego get: iFlask)
+					)
 				)
 				(self cue:)
 			)

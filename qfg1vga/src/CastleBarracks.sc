@@ -16,7 +16,7 @@
 )
 
 (local
-	theUseSortedFeatures
+	saveSortedFeatures
 )
 (instance rm38 of Room
 	(properties
@@ -25,22 +25,22 @@
 		north 41
 	)
 	
-	(method (init &tmp egoY temp1)
+	(method (init &tmp egoY soundNum)
 		(if (== prevRoomNum 39)
 			(self style: SCROLLRIGHT)
 		else
 			(self style: PLAIN)
 		)
-		(= temp1 (if Night 32 else 25))
+		(= soundNum (if Night 32 else 25))
 		(if
 			(or
 				(== (cSound prevSignal?) -1)
-				(!= (cSound number?) temp1)
+				(!= (cSound number?) soundNum)
 			)
-			(cSound stop: number: temp1 loop: -1 priority: 0 play:)
+			(cSound stop: number: soundNum loop: -1 priority: 0 play:)
 		)
 		(super init: &rest)
-		(= theUseSortedFeatures useSortedFeatures)
+		(= saveSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)
 		(StatusLine enable:)
 		(curRoom
@@ -107,7 +107,9 @@
 ;;;		(pots init:)
 		
 		(doors approachVerbs: V_DO)
-		(if (not Night) (guard init:))
+		(if (not Night)
+			(guard init:)
+		)
 		(if (== prevRoomNum 39)
 			(= egoY (ego y?))
 			(NormalEgo)
@@ -124,15 +126,14 @@
 	)
 	
 	(method (doit &tmp temp0)
-		(if
-		(and (== (ego edgeHit?) 2) (not (ego script?)))
+		(if (and (== (ego edgeHit?) EAST) (not (ego script?)))
 			(ego setScript: headEast)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(= useSortedFeatures theUseSortedFeatures)
+		(= useSortedFeatures saveSortedFeatures)
 		(Bset fBeenIn38)
 		(super dispose:)
 	)
@@ -142,10 +143,10 @@
 			(V_FLAME (EgoDead 90 91 0 0 503))
 			;Uses wrong death icon, but trying to use the correct one (Hero in jail) causes the game to crash with
 			;"Invalid Rectangle" error, since the icon and message are too big to be on the screen at once.
-			(V_LOOK (messager say: N_ROOM 1 0))
-			(V_DO (messager say: N_ROOM 4 0))
+			(V_LOOK (messager say: N_ROOM V_LOOK NULL))
+			(V_DO (messager say: N_ROOM V_DO NULL))
 			(V_SLEEP (ego setScript: sleepyWhen))
-			(V_DAZZLE (messager say: N_ROOM 4))
+			(V_DAZZLE (messager say: N_ROOM V_DAZZLE))	;EO: now uses correct verb
 			(else  (super doVerb: theVerb))
 		)
 	)
@@ -430,8 +431,6 @@
 )
 
 (instance guardThreatens of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -463,8 +462,6 @@
 )
 
 (instance headEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -489,13 +486,11 @@
 )
 
 (instance sleepyWhen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM V_SLEEP 0 1 self)
+				(messager say: N_ROOM V_SLEEP NULL 1 self)
 			)
 			(1
 				(if (and (< 750 Clock) (< Clock 2550))

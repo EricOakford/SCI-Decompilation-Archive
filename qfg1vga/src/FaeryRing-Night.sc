@@ -3,8 +3,8 @@
 (include game.sh) (include "170.shm")
 (use Main)
 (use Meeps)
-(use CastFlame)
-(use CastDagger)
+(use CastDart)
+(use ThrowKnife)
 (use CastCalm)
 (use CastDazzle)
 (use Teller)
@@ -708,7 +708,7 @@
 								)
 							)
 							(else
-								(SolvePuzzle POINTS_TALKTOFAIRIES 1)
+								(SolvePuzzle f70TalkToFairies 1)
 								(super doVerb: theVerb &rest)
 							)
 						)
@@ -719,7 +719,7 @@
 						(saidNotSure
 							(messager say: N_FAIRIES V_FLASK)
 						)
-						((Btst POINTS_GETFAIRYDUST)
+						((Btst f70GetDust)
 							(messager say: N_FAIRIES V_FLASK C_GETDUST)
 						)
 						(couldntGetDust
@@ -745,7 +745,7 @@
 				)
 				(V_DAGGER
 					(if (ego has: iDagger)
-						(CastDagger 0)
+						(ThrowKnife 0)
 						(FaerysAlarmed)
 					else
 						(messager say: N_FAIRIES V_DAGGER)
@@ -816,7 +816,7 @@
 								self
 						)
 					)
-					((Btst DANCING_FOR_FAIRIES)
+					((Btst fDancing)
 						(client
 							setMotion: MoveTo
 								(- (Random (ego x?) (+ (ego x?) 20)) 10)
@@ -1019,7 +1019,7 @@
 				(V_TALK
 					(if (not askedForDust)
 						(= askedForDust TRUE)
-						(if (Btst DANCED_FOR_FAIRIES)
+						(if (Btst fDancedForFairies)
 							(= local94 16)
 						else
 							(= local94 1)
@@ -1029,14 +1029,14 @@
 					)
 				)
 				(V_DAZZLE
-					(CastDazzle)
+					(CastDazz)
 					(FaerysAlarmed)
 				)
 				(V_CALM
 					(CastCalm)
 				)
 				(V_FLAME
-					(CastFlame 0)
+					(CastDart 0)
 					(FaerysAlarmed)
 				)
 				(else 
@@ -1061,7 +1061,7 @@
 				else
 					(switch local94
 						(1
-							(Bset DANCED_FOR_FAIRIES)
+							(Bset fDancedForFairies)
 							(switch
 								(Print
 									addText: N_ROOM NULL C_ASKDANCE 1 0 0
@@ -1294,11 +1294,11 @@
 			(0
 				(HandsOff)
 				(theGame setCursor: waitCursor TRUE)
-				(Bset DANCING_FOR_FAIRIES)
+				(Bset fDancing)
 				(= oldCycleSpeed (ego cycleSpeed?))
 				(= oldMoveSpeed (ego moveSpeed?))
 				(= local0 1)
-				(SolvePuzzle POINTS_DANCEWITHFAIRIES 3)
+				(SolvePuzzle f70DanceWithFairies 3)
 				(FaerysDance)
 				(ego ignoreActors: TRUE illegalBits: 0)
 				(self setScript: gotoRing self)
@@ -1429,7 +1429,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset DANCING_FOR_FAIRIES)
+				(Bset fDancing)
 				(= local0 1)
 				(if (== egoDanceLoop 5)
 					(= egoDanceLoop 0)
@@ -1560,7 +1560,7 @@
 			(5
 				(if (not askedForDust)
 					(= askedForDust TRUE)
-					(if (Btst DANCED_FOR_FAIRIES)
+					(if (Btst fDancedForFairies)
 						(= local94 16)
 					else
 						(= local94 1)
@@ -1572,10 +1572,10 @@
 				)
 			)
 			(6
-				(if (Btst DANCED_FOR_FAIRIES)
+				(if (Btst fDancedForFairies)
 					(messager say: N_FAIRIES NULL C_HELLOAGAIN 0 self)
 				else
-					(Bset DANCED_FOR_FAIRIES)
+					(Bset fDancedForFairies)
 					(messager say: N_FAIRIES NULL C_FIRSTMEET 0 self)
 				)
 			)
@@ -1611,7 +1611,7 @@
 			(4
 				(cond 
 					((ego has: iFlask)
-						(SolvePuzzle POINTS_GETFAIRYDUST 8)
+						(SolvePuzzle f70GetDust 8)
 						(messager say: N_ROOM NULL C_PUTAWAYDUST 0 self)
 					)
 					(

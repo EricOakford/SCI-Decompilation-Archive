@@ -12,8 +12,6 @@
 )
 
 (instance SleepAllNight of Script
-	(properties)
-	
 	(method (dispose)
 		(NormalEgo)
 		(super dispose:)
@@ -22,7 +20,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setHeading: 180 self))
+			(0
+				(ego setHeading: 180 self)
+			)
 			(1
 				(theGame setCursor: waitCursor TRUE)
 				(ego
@@ -33,7 +33,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(2 (= ticks 12))
+			(2
+				(= ticks 12)
+			)
 			(3
 				(ego
 					setLoop: 1
@@ -44,15 +46,21 @@
 			)
 			(4
 				(PalVary PALVARYSTART (curRoom picture?) 2)
-				(if nightPalette (PalVary PALVARYTARGET nightPalette))
+				(if nightPalette
+					(PalVary PALVARYTARGET nightPalette)
+				)
 				(= seconds 5)
 			)
-			(5 (= seconds 2))
+			(5
+				(= seconds 2)
+			)
 			(6
 				(PalVary PALVARYREVERSE 4)
 				(= seconds 2)
 			)
-			(7 (= seconds 2))
+			(7
+				(= seconds 2)
+			)
 			(8
 				(EgoSleeps 5 0)
 				(ego setCycle: BegLoop self)

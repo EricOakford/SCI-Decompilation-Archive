@@ -2,7 +2,7 @@
 (script# 15)
 (include game.sh) (include "15.shm")
 (use Main)
-(use CastFlame)
+(use CastDart)
 (use Target)
 (use Procs)
 (use Print)
@@ -397,7 +397,7 @@
 					(= dartX ((= evt (Event new:)) x?))
 					(= temp1 (+ (evt y?) 25))
 					(evt dispose:)
-					(CastFlame 0 0 dartX temp1)
+					(CastDart 0 0 dartX temp1)
 					(Bset fFightingKobold)
 				)
 				(V_LOOK

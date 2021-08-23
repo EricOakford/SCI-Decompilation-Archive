@@ -20,13 +20,18 @@
 )
 
 (local
-	[local0 8] = [219 313 90 246 53 60 52 148]
-	local8
-	local9
+	eyeXY = [
+		219 313
+		90 246
+		53 60
+		52 148
+		]
+	eyeIndex
+	eyeIndex2
 	foxInRoom
 	openSpellSuccess
 	openSpellFail
-	local13
+	foxGone
 	talkedToFox
 	local15
 	local16
@@ -43,8 +48,7 @@
 		(LoadMany RES_VIEW 67 510)
 		(super init:)
 		(StatusLine enable:)
-		(if
-		(or (== enter67 6) (== enter67 9))
+		(if (or (== enter67 6) (== enter67 9))
 			(sinclair init:)
 		)
 		(if (== enter67 2)
@@ -54,12 +58,16 @@
 			(self
 				addObstacle:
 					((Polygon new:)
-						type: 2
-						init: 123 93 123 75 160 75 160 93
+						type: PBarredAccess
+						init:
+							123 93
+							123 75
+							160 75
+							160 93
 						yourself:
 					)
 			)
-			(messager say: N_ROOM 0 0 1)
+			(messager say: N_ROOM NULL NULL 1)
 		)
 		(if (not foxInRoom)
 			(eyes1
@@ -108,10 +116,10 @@
 			(V_OPEN
 				(if foxInRoom
 					(if (TrySkill OPEN 25)
-						(= openSpellSuccess 1)
-						(SolvePuzzle POINTS_FREEFOX 10)
+						(= openSpellSuccess TRUE)
+						(SolvePuzzle f67SaveFox 10)
 					else
-						(= openSpellFail 1)
+						(= openSpellFail TRUE)
 					)
 					(ego setScript: foxFreed)
 				else
@@ -120,26 +128,28 @@
 			)
 			(V_DETECT
 				(if foxInRoom
-					(messager say: N_ROOM V_DETECT 0)
+					(messager say: N_ROOM V_DETECT NULL)
 				else
 					(messager say: N_ROOM V_DETECT C_CUE)
 				)
 			)
 			(V_DAZZLE
 				(if foxInRoom
-					(messager say: N_ROOM V_DAZZLE 0)
+					(messager say: N_ROOM V_DAZZLE NULL)
 				else
 					(messager say: N_ROOM V_OPEN C_CUE)
 				)
 			)
 			(V_CALM
 				(if foxInRoom
-					(messager say: N_ROOM V_CALM 0)
+					(messager say: N_ROOM V_CALM NULL)
 				else
 					(messager say: N_ROOM V_OPEN C_CUE)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -171,18 +181,38 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 0 0 319 0 319 74 185 79 152 69 144 23 130 23 115 68 78 82 0 82
+					type: PBarredAccess
+					init:
+						0 0
+						319 0
+						319 74
+						185 79
+						152 69
+						144 23
+						130 23
+						115 68
+						78 82
+						0 82
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 0 120 89 161 177 161 319 117 319 189 0 189
+					type: PBarredAccess
+					init:
+						0 120
+						89 161
+						177 161
+						319 117
+						319 189
+						0 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 120 94 120 80 147 80 147 94
+					type: PBarredAccess
+					init:
+						120 94
+						120 80
+						147 80
+						147 94
 					yourself:
 				)
 		)
@@ -193,10 +223,10 @@
 		(switch theVerb
 			(V_TALK
 				(if (not talkedToFox)
-					(messager say: N_FOX V_ALTTALK 0)
+					(messager say: N_FOX V_ALTTALK NULL)
 					(= talkedToFox TRUE)
 				else
-					(messager say: N_FOX V_ALTTALK 1)
+					(messager say: N_FOX V_ALTTALK C_CUE)
 				)
 			)
 			(V_DO
@@ -207,9 +237,9 @@
 							(< 60 (ego x?))
 							(< (ego x?) 112)
 						)
-						(messager say: N_FOX V_DO 0)
+						(messager say: N_FOX V_DO NULL)
 					else
-						(SolvePuzzle POINTS_FREEFOX 10)
+						(SolvePuzzle f67SaveFox 10)
 						(ego setScript: foxFreed)
 					)
 				else
@@ -228,9 +258,15 @@
 					(messager say: N_ROOM 51 1)
 				)
 			)
-			(V_ROCK (self setScript: foxDies))
-			(V_DAGGER (self setScript: foxDies))
-			(V_SWORD (self setScript: foxDies))
+			(V_ROCK
+				(self setScript: foxDies)
+			)
+			(V_DAGGER
+				(self setScript: foxDies)
+			)
+			(V_SWORD
+				(self setScript: foxDies)
+			)
 			(V_LOCKPICK
 				(if foxInRoom
 					(if
@@ -239,10 +275,10 @@
 							(< 60 (ego x?))
 							(< (ego x?) 112)
 						)
-						(messager say: N_FOX V_DO 0)
+						(messager say: N_FOX V_DO NULL)
 					else
 						(TrySkill PICK 30)
-						(SolvePuzzle POINTS_FREEFOX 10)
+						(SolvePuzzle f67SaveFox 10)
 						(ego setScript: foxFreed)
 					)
 				else
@@ -257,10 +293,10 @@
 							(< 60 (ego x?))
 							(< (ego x?) 112)
 						)
-						(messager say: N_FOX V_DO 0)
+						(messager say: N_FOX V_DO NULL)
 					else
 						(TrySkill PICK 30)
-						(SolvePuzzle POINTS_FREEFOX 10)
+						(SolvePuzzle f67SaveFox 10)
 						(ego setScript: foxFreed)
 					)
 				else
@@ -275,17 +311,19 @@
 							(< 60 (ego x?))
 							(< (ego x?) 112)
 						)
-						(messager say: N_FOX V_DO 0)
+						(messager say: N_FOX V_DO NULL)
 					else
 						(TrySkill PICK 30)
-						(SolvePuzzle POINTS_FREEFOX 10)
+						(SolvePuzzle f67SaveFox 10)
 						(ego setScript: foxFreed)
 					)
 				else
-					(messager say: N_FOX V_DO 1)
+					(messager say: N_FOX V_DO C_CUE)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	
@@ -311,7 +349,7 @@
 		noun N_SINCLAIR
 		view 67
 		loop 8
-		signal $4800
+		signal (| ignrAct fixedLoop)
 		illegalBits $0000
 	)
 	
@@ -323,8 +361,13 @@
 	
 	(method (doit)
 		(cond 
-			((and (not local16) (== (sinclair cel?) 0)) (= local16 1) (ShakeScreen 1))
-			((and local16 (== (sinclair cel?) 1)) (= local16 0))
+			((and (not local16) (== (sinclair cel?) 0))
+				(= local16 1)
+				(ShakeScreen 1)
+			)
+			((and local16 (== (sinclair cel?) 1))
+				(= local16 0)
+			)
 		)
 		(super doit:)
 	)
@@ -333,9 +376,9 @@
 		(switch theVerb
 			(V_LOOK
 				(if (== enter67 6)
-					(messager say: N_SINCLAIR V_LOOK 0)
+					(messager say: N_SINCLAIR V_LOOK NULL)
 				else
-					(messager say: N_SINCLAIR V_LOOK 1)
+					(messager say: N_SINCLAIR V_LOOK C_CUE)
 				)
 			)
 			(else  (super doVerb: theVerb))
@@ -351,7 +394,7 @@
 		view 67
 		loop 1
 		cel 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -360,7 +403,7 @@
 		view 67
 		loop 6
 		priority pWHITE
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 3
 	)
 )
@@ -370,19 +413,19 @@
 		view 67
 		loop 7
 		priority pWHITE
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 3
 	)
 )
 
 (instance foxCallForHelp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (fox setCycle: EndLoop))
+			(0
+				(fox setCycle: EndLoop)
+			)
 			(1
-				(messager say: N_ROOM 0 C_FOXBEGS1 1 self)
+				(messager say: N_ROOM NULL C_FOXBEGS1 1 self)
 				(fox loop: 0 cel: 0 setCycle: Forward)
 			)
 			(2
@@ -391,10 +434,14 @@
 			)
 			(3
 				(fox loop: 0 cel: 0 setCycle: Forward)
-				(if modelessDialog (modelessDialog dispose:))
-				(messager say: N_ROOM 0 C_FOXBEGS2 1 self)
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
+				(messager say: N_ROOM NULL C_FOXBEGS2 1 self)
 			)
-			(4 (fox setCycle: EndLoop self))
+			(4
+				(fox setCycle: EndLoop self)
+			)
 			(5
 				(client setScript: thrashAndWait)
 			)
@@ -403,31 +450,33 @@
 )
 
 (instance foxWillNotFight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if modelessDialog (modelessDialog dispose:))
-				(messager say: N_ROOM 0 C_FOXBEGS3)
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
+				(messager say: N_ROOM NULL C_FOXBEGS3)
 			)
 			(1
 				(fox loop: 0 cel: 0 setCycle: EndLoop self)
 			)
-			(2 (messager say: N_ROOM 0 C_FOXWONTFIGHT))
+			(2
+				(messager say: N_ROOM NULL C_FOXWONTFIGHT)
+			)
 		)
 	)
 )
 
 (instance foxExplains of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if modelessDialog (modelessDialog dispose:))
-				(messager say: N_ROOM 0 C_FOXEXPLAINS 0 self)
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
+				(messager say: N_ROOM NULL C_FOXEXPLAINS 0 self)
 			)
 			(1
 				(fox loop: 0 cel: 0 setCycle: EndLoop self)
@@ -441,21 +490,19 @@
 )
 
 (instance distantFoxDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local13 1)
+				(= foxGone TRUE)
 				(= foxInRoom FALSE)
 				(fox loop: 2 cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(1
-				(SolvePuzzle POINTS_KILLFOX -10)
+				(SolvePuzzle f67KillFox -10)
 				(= hitDaggers 0)
 				(HandsOn)
-				(messager say: N_ROOM 0 C_KILLFOX)
+				(messager say: N_ROOM NULL C_KILLFOX)
 				(client dispose:)
 			)
 		)
@@ -463,13 +510,11 @@
 )
 
 (instance foxDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local13 1)
+				(= foxGone TRUE)
 				(= foxInRoom FALSE)
 				(if (ego inRect: 41 109 111 138)
 					(self cue:)
@@ -493,16 +538,18 @@
 			(3
 				(ego setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
-			(4 (ego setCycle: BegLoop self))
+			(4
+				(ego setCycle: BegLoop self)
+			)
 			(5
 				(NormalEgo)
 				(fox loop: 2 cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(6
-				(SolvePuzzle POINTS_KILLFOX -10)
+				(SolvePuzzle f67KillFox -10)
 				(HandsOn)
 				(= hitDaggers 0)
-				(messager say: N_ROOM 0 C_KILLFOX)
+				(messager say: N_ROOM NULL C_KILLFOX)
 				(client dispose:)
 			)
 		)
@@ -510,8 +557,6 @@
 )
 
 (instance foxFreed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -526,7 +571,9 @@
 				(if (not (== (fox script?) thrashAndWait))
 					(fox setScript: thrashAndWait)
 				)
-				(if (IsObject foxCallForHelp) (foxCallForHelp dispose:))
+				(if (IsObject foxCallForHelp)
+					(foxCallForHelp dispose:)
+				)
 				(ego ignoreActors: illegalBits: 0)
 				(if (ego inRect: 41 109 111 138)
 					(self cue:)
@@ -546,9 +593,15 @@
 			)
 			(5
 				(cond 
-					(openSpellFail (messager say: N_ROOM 0 C_FREEFOX 1 self))
-					(openSpellSuccess (messager say: N_ROOM 0 C_FREEFOX 2 self))
-					(else (messager say: N_ROOM 0 C_FREEFOX 3 self))
+					(openSpellFail
+						(messager say: N_ROOM NULL C_FREEFOX 1 self)
+					)
+					(openSpellSuccess
+						(messager say: N_ROOM NULL C_FREEFOX 2 self)
+					)
+					(else
+						(messager say: N_ROOM NULL C_FREEFOX 3 self)
+					)
 				)
 			)
 			(6
@@ -562,7 +615,7 @@
 					(fox setScript: foxExplains)
 					(client setScript: 0)
 				else
-					(= local13 1)
+					(= foxGone TRUE)
 					(= foxInRoom FALSE)
 					(= ticks 60)
 				)
@@ -584,11 +637,11 @@
 			)
 			(11
 				(fox setLoop: 3 setCel: 8)
-				(= foxInRoom 0)
-				(messager say: N_ROOM 0 C_FREEFOX 4 self)
+				(= foxInRoom FALSE)
+				(messager say: N_ROOM NULL C_FREEFOX 4 self)
 			)
 			(12
-				(messager say: N_ROOM 0 C_FREEFOX 5 self)
+				(messager say: N_ROOM NULL C_FREEFOX 5 self)
 			)
 			(13
 				(ego view: 68 loop: 0 cel: 0 setCycle: EndLoop)
@@ -613,13 +666,11 @@
 )
 
 (instance flameDartFox of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local13 1)
+				(= foxGone TRUE)
 				(= foxInRoom FALSE)
 				(fox setScript: 0)
 				(ego
@@ -635,7 +686,7 @@
 					setLoop: 2
 					setStep: 18 12
 					setPri: 12
-					ignoreActors: 1
+					ignoreActors: TRUE
 					posn: (ego x?) (ego y?)
 					show:
 					setCycle: Forward
@@ -652,7 +703,7 @@
 			(4
 				(HandsOn)
 				(NormalEgo)
-				(messager say: N_ROOM 0 C_KILLFOX)
+				(messager say: N_ROOM NULL C_KILLFOX)
 				(= ticks 120)
 			)
 		)
@@ -660,8 +711,6 @@
 )
 
 (instance getTrap of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -680,19 +729,24 @@
 				(ego view: 510 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(messager say: N_ROOM 0 C_CANTGETTRAP)
+				(messager say: N_ROOM NULL C_CANTGETTRAP)
 				(self cue:)
 			)
-			(4 (= cycles 8))
-			(5 (ego setCycle: BegLoop self))
-			(6 (NormalEgo) (HandsOn))
+			(4
+				(= cycles 8)
+			)
+			(5
+				(ego setCycle: BegLoop self)
+			)
+			(6
+				(NormalEgo)
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance thrashAndWait of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -703,8 +757,7 @@
 				(= ticks (Random 180 480))
 			)
 			(2
-				(if
-				(and foxInRoom (not (== (ego script?) foxFreed)))
+				(if (and foxInRoom (not (== (ego script?) foxFreed)))
 					(self changeState: 0)
 				else
 					(self cue:)
@@ -715,49 +768,53 @@
 )
 
 (instance peekABooScript1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local8 (Random 1 4))
+				(= eyeIndex (Random 1 4))
 				(client cel: 0)
 				(self cue:)
 			)
 			(1
 				(client
-					x: [local0 (- local8 1)]
-					y: [local0 (+ local8 3)]
+					x: [eyeXY (- eyeIndex 1)]
+					y: [eyeXY (+ eyeIndex 3)]
 					show:
 					setCycle: EndLoop self
 				)
 			)
-			(2 (= ticks (Random 300 600)))
-			(3 (self changeState: 0))
+			(2
+				(= ticks (Random 300 600))
+			)
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance peekABooScript2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local9 (Random 1 4))
+				(= eyeIndex2 (Random 1 4))
 				(client cel: 0)
 				(self cue:)
 			)
 			(1
 				(client
-					x: [local0 (- local9 1)]
-					y: [local0 (+ local9 3)]
+					x: [eyeXY (- eyeIndex2 1)]
+					y: [eyeXY (+ eyeIndex2 3)]
 					show:
 					setCycle: EndLoop self
 				)
 			)
-			(2 (= ticks (Random 300 600)))
-			(3 (self changeState: 0))
+			(2
+				(= ticks (Random 300 600))
+			)
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
@@ -767,7 +824,10 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 90))
+			(0
+				(HandsOff)
+				(= ticks 90)
+			)
 			(1
 				(HandsOff)
 				(ShakeScreen 1)
@@ -810,8 +870,6 @@
 )
 
 (instance foxWalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -820,7 +878,7 @@
 			)
 			(1
 				(HandsOn)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(= ticks 30)
 			)
 			(2
@@ -833,8 +891,6 @@
 )
 
 (instance foxNorth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -865,7 +921,7 @@
 	(method (init)
 		(= nightPalette 2068)
 		(PalVary PALVARYTARGET 2068)
-		(kernel_128 1068)
+		(AssertPalette 1068)
 		(= font userFont)
 		(super init: foxBust foxEye foxMouth &rest)
 	)

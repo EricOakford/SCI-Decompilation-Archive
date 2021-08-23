@@ -3,9 +3,9 @@
 (include game.sh) (include "13.shm")
 (use Main)
 (use Rest)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use CastCalm)
 (use CastOpen)
 (use CastDazzle)
@@ -292,9 +292,9 @@
 			)
 			(V_FLAME
 				(if (Btst fBeatOgre)
-					(CastFlame 0)
+					(CastDart 0)
 				else
-					(CastFlame ogre)
+					(CastDart ogre)
 				)
 			)
 			(V_CALM
@@ -573,10 +573,10 @@
 					)
 					((not (Btst fBeatOgre))
 						(Face ego ogre)
-						(CastDagger ogre)
+						(ThrowKnife ogre)
 					)
 					(else
-						(CastDagger 0)
+						(ThrowKnife 0)
 					)
 				)
 			)
@@ -636,9 +636,9 @@
 					)
 					((not (Btst fBeatOgre))
 						(if (TrySkill THROW 25)
-							(CastRock ogre)
+							(ThrowRock ogre)
 						else
-							(CastRock 0)
+							(ThrowRock 0)
 						)
 					)
 					(else
@@ -705,9 +705,9 @@
 			)
 			(V_FLAME
 				(if (Btst fBeatOgre)
-					(CastFlame 0)
+					(CastDart 0)
 				else
-					(CastFlame ogre)
+					(CastDart ogre)
 				)
 			)
 			(V_CALM
@@ -1122,7 +1122,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(CastDazzle)
+				(CastDazz)
 				(ogre setMotion: 0 cel: 2)
 				(= seconds 3)
 			)

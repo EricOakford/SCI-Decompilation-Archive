@@ -2,9 +2,9 @@
 (script# PRAGFAIL)
 (include game.sh) (include "121.shm")
 (use Main)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use User)
 (use System)
 
@@ -32,14 +32,14 @@
 			else
 				(switch theVerb
 					(V_FLAME
-						(CastFlame 0)
+						(CastDart 0)
 					)
 					(V_ROCK
-						(CastRock 0)
+						(ThrowRock 0)
 						(return 1)
 					)
 					(V_DAGGER
-						(CastDagger 0)
+						(ThrowKnife 0)
 						(return 1)
 					)
 					(V_HEALING

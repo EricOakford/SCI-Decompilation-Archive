@@ -68,7 +68,9 @@
 		(= deadCel cel)
 		(if (>= argc 4)
 			(= deadLoop loop)
-			(if (>= argc 5) (= deadView view))
+			(if (>= argc 5)
+				(= deadView view)
+			)
 		)
 	)
 	;disable control, wait a bit, play the death music
@@ -218,7 +220,7 @@
 			(else  0)
 		))
 	(= stopView (if (== egoGait MOVE_SNEAK) 8 else 4))
-	(ChangeGait -1 0)
+	(ChangeGait -1 FALSE)
 	(if (not (User controls?))
 		(theGame setCursor: waitCursor)
 	)
@@ -538,8 +540,7 @@
 
 (procedure (TakeDamage damage)
 	(if (> damage 0) (SkillUsed VIT (/ (+ damage 1) 2)))
-	(if
-	(< (= [egoStats HEALTH] (- [egoStats HEALTH] damage)) 0)
+	(if (< (= [egoStats HEALTH] (- [egoStats HEALTH] damage)) 0)
 		(= [egoStats HEALTH] 0)
 	)
 	(if (> [egoStats HEALTH] (MaxHealth))
@@ -566,7 +567,7 @@
 (procedure (MaxMana &tmp egoMagic)
 	(return
 		(if (= egoMagic [egoStats MAGIC])
-			(return (/ (+ [egoStats 1] egoMagic egoMagic) 3))
+			(return (/ (+ [egoStats INT] egoMagic egoMagic) 3))
 		else
 			(return FALSE)
 		)
@@ -578,8 +579,7 @@
 )
 
 (procedure (CastSpell spellNum &tmp retVal)
-	(if
-	(< [egoStats MANA] [spellCost (+ (- spellNum OPEN) 1)])
+	(if (< [egoStats MANA] [spellCost (+ (- spellNum OPEN) 1)])
 		(messager say: N_DIALOG NULL NULL 11 0 PROCS)
 		(Wait 30)
 		(= retVal FALSE)
@@ -596,13 +596,12 @@
 )
 
 (procedure (SolvePuzzle flagEnum points charType)
-	(if
-		(and (>= argc 3) (!= heroType charType))
+	(if (and (>= argc 3) (!= heroType charType))
 		(return)
 	)
 	(if (not (Btst flagEnum))
 		(Bset flagEnum)
-		(= score (+ score points))
+		(+= score points)
 		((ScriptID 0 9) doit: curRoomNum)
 		(SkillUsed INT points)
 	)
@@ -709,7 +708,7 @@
 				(messager say: N_DIALOG NULL NULL 16 0 PROCS)
 			)
 			(V_DAZZLE
-				(CastDazzle)
+				(CastDazz)
 			)
 			(V_CALM
 				(CastCalm)

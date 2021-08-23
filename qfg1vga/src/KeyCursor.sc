@@ -13,7 +13,6 @@
 )
 
 (class InputList of Set
-	
 	(method (handleEvent event &tmp
 			thisDistance currentObj inputObj bestAngle bestDistance t t2
 			targetAngle thisAngle workingAngle evX evY curX curY)

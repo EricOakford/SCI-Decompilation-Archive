@@ -2,12 +2,6 @@
 ;;; 37.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
-;;; CASES
-
-(define C_INVITED 1)
-(define C_IMPATIENT 2)
-(define C_WHOS_THERE 3)
-
 ;;; NOUNS
 
 (define N_ROOM 7)
@@ -21,4 +15,56 @@
 (define N_TOWER 9)
 (define N_WALL 10)
 (define N_WINDOW 11)
+
+;;; CASES
+
+(define C_INVITED 1)
+(define C_IMPATIENT 2)
+(define C_WHOS_THERE 3)
+(define C_ARE_YOU_SPEAKING 4)
+(define C_CANT_SEE_YOU 5)
+(define C_BABA 6)
+(define C_BARONESS 7)
+(define C_BARON 8)
+(define C_BARNARD 9)
+(define C_BRIGANDS 10)
+(define C_CASTLE 11)
+(define C_CURSE 12)
+(define C_ELSA 13)
+(define C_GRAVEYARD 14)
+(define C_GUARDS 15)
+(define C_HERO 16)
+(define C_HUT 17)
+(define C_JOB 18)
+(define C_OPEN_GATE 19)
+(define C_BRIGAND_LEADER 20)
+(define C_LOSS 21)
+(define C_WARLOCK 22)
+(define C_MONSTERS 23)
+(define C_NAME 24)
+(define C_PROTECTION 25)
+(define C_REWARD 26)
+(define C_STABLE 27)
+(define C_TREASURE 28)
+(define C_VALLEY 29)
+(define C_YORICK 30)
+(define C_GATE_OPEN 31)
+(define C_RAISE_GATE 32)
+(define C_DAY 33)
+(define C_NIGHT 34)
+(define C_CLIMBED_DOWN 35)
+(define C_KILLED 36)
+(define C_SURVIVED 37)
+(define C_CRUSHED 38)
+(define C_FALL1 39)
+(define C_FALL2 40)
+(define C_FALL3 41)
+(define C_FALL4 42)
+(define C_FALL5 43)
+(define C_FALL6 44)
+(define C_TOWER 45)
+(define C_CANT_CLIMB_DAY 46)
+(define C_BAD_PLACE 47)
+(define C_NO_CLIMB 48)
+(define C_GATEHOUSE 49)
 

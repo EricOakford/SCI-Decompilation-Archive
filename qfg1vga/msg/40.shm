@@ -2,18 +2,6 @@
 ;;; 40.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
-;;; CASES
-
-(define C_DIRTY 1)
-(define C_CLEAN 2)
-(define C_CANT_HEAR 22)
-(define C_BORED 23)
-(define C_SAY_NO 3)
-(define C_WORK_BREAK 4)
-(define C_AWAKEN_WORK 5)
-(define C_SAY_YES 6)
-(define C_SNOOZING 7)
-
 ;;; NOUNS
 
 (define N_HORSE 4)
@@ -27,4 +15,33 @@
 (define N_SKY 9)
 (define N_MANURE 6)
 (define N_STABLEMAN 10)
+(define N_WALLS 13)
+(define N_TOWERS 11)
+(define N_WAGON 12)
+
+;;; CASES
+
+(define C_DIRTY 1)
+(define C_CLEAN 2)
+(define C_CANT_HEAR 22)
+(define C_BORED 23)
+(define C_SAY_NO 3)
+(define C_WORK_BREAK 4)
+(define C_AWAKEN_WORK 5)
+(define C_SAY_YES 6)
+(define C_SNOOZING 7)
+(define C_ANTWERP 11)
+(define C_INSIDE 8)
+(define C_TOO_EARLY 9)
+(define C_WAIT 10)
+(define C_BARONET 12)
+(define C_BARON 13)
+(define C_GUARDS 14)
+(define C_HORSE 15)
+(define C_MAGIC 16)
+(define C_MONSTER 17)
+(define C_PAY 18)
+(define C_STABLES 19)
+(define C_VALLEY 20)
+(define C_WORK 21)
 

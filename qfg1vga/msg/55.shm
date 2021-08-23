@@ -2,6 +2,26 @@
 ;;; 55.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
+;;; NOUNS
+
+(define N_ROOM 13)
+(define N_DISPELRECIPE 5)
+(define N_BARREL 1)
+(define N_BED 2)
+(define N_CHEESECLOTH 3)
+(define N_HEALER 6)
+(define N_FIRE 4)
+(define N_LADDER 9)
+(define N_INGREDIENTS 7)
+(define N_KETTLE 8)
+(define N_LITTERBOX 10)
+(define N_POTS 11)
+(define N_BIRD 12)
+(define N_STONETABLE 14)
+(define N_WOODTABLE 15)
+(define N_HEALERWINDOW 17)
+(define N_THINGS 16)
+
 ;;; CASES
 
 (define C_LOOKBARREL1 1)
@@ -67,24 +87,5 @@
 (define C_GREEDY 68)
 (define C_REWARDLEAVE 64)
 (define C_NOFUNDS 52)
-
-;;; NOUNS
-
-(define N_ROOM 13)
-(define N_DISPELRECIPE 5)
-(define N_BARREL 1)
-(define N_BED 2)
-(define N_CHEESECLOTH 3)
-(define N_HEALER 6)
-(define N_FIRE 4)
-(define N_LADDER 9)
-(define N_INGREDIENTS 7)
-(define N_KETTLE 8)
-(define N_LITTERBOX 10)
-(define N_POTS 11)
-(define N_BIRD 12)
-(define N_STONETABLE 14)
-(define N_WOODTABLE 15)
-(define N_HEALERWINDOW 17)
-(define N_THINGS 16)
+(define C_BUY_POTION 56)
 

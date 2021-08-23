@@ -31,30 +31,62 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
-	local4
-	brunoWhines
+	paid1Silver
+	paid2Silvers
+	paid1Gold
+	paid10Gold
+	brunoReadyToKnife
+	whinerCount
 	gotBrunoAdvice
-	local7
-	local8
-	local9
+	brunoWantsMoney
+	wantMoneyMsg
+	brunoGotMoney
 	attackedBruno
 	showedThiefSign
 	lookedAtBruno
-	lookedAtRoad
+	roadLookCount
 	lookAround
-	climbMoveSpeed
-	climbCycleSpeed
-	[local17 9] = [0 21 9 10 -20 -19 18 -17 999]
-	[local26 9] = [0 13 23 14 24 22 15 -11 999]
-	[local35 6] = [0 8 16 25 -12 999]
-	[local41 11]
-	[local52 4] = [0 -20 -17 999]
+	saveMoveSpeed
+	saveCycleSpeed
+	brunoTellMainBranch = [
+		STARTTELL
+		C_NAME
+		C_BABAYAGA
+		C_BARON
+		-20		;C_MONSTERS
+		-19		;C_BABAHUT
+		C_HEALER
+		-17		;C_THIEVESGUILD
+		ENDTELL
+		]
+	brunoTell1 = [
+		STARTTELL
+		C_CEMETERY
+		C_PASSWORD
+		C_CHIEF
+		C_SHERIFF
+		C_OTTO
+		C_CRUSHER
+		-11		;C_DRAGONBREATH
+		ENDTELL
+		]
+	brunoTell2 = [
+		STARTTELL
+		C_ANTWERP
+		C_GOBLINS
+		C_WARLOCK
+		-12		;C_BRIGANDS
+		ENDTELL
+		]
+	[brunoTellTree 11]
+	brunoTellKeys = [
+		STARTTELL
+		-20		;C_MONSTERS
+		-17		;C_THIEVESGUILD
+		ENDTELL
+		]
 )
-(procedure (localproc_00ae)
+(procedure (SetNightPoly)
 	(if (curRoom obstacles?)
 		((curRoom obstacles?) dispose:)
 		(curRoom obstacles: 0)
@@ -62,41 +94,31 @@
 	(curRoom
 		addObstacle:
 			((Polygon new:)
-				type: 2
+				type: PBarredAccess
 				init:
-					102
-					157
-					102
-					189
-					0
-					189
-					0
-					0
-					319
-					0
-					319
-					108
-					234
-					104
-					262
-					41
-					239
-					41
-					189
-					86
-					123
-					83
-					97
-					96
-					83
-					95
-					27
-					125
+					102 157
+					102 189
+					0 189
+					0 0
+					319 0
+					319 108
+					234 104
+					262 41
+					239 41
+					189 86
+					123 83
+					97 96
+					83 95
+					27 125
 				yourself:
 			)
 			((Polygon new:)
-				type: 2
-				init: 173 189 203 144 319 134 319 189
+				type: PBarredAccess
+				init:
+					173 189
+					203 144
+					319 134
+					319 189
 				yourself:
 			)
 	)
@@ -110,48 +132,38 @@
 	)
 	
 	(method (init)
-		(= [local41 0] @local17)
-		(= [local41 1] @local35)
-		(= [local41 2] @local26)
-		(= [local41 3] 999)
+		(= [brunoTellTree 0] @brunoTellMainBranch)
+		(= [brunoTellTree 1] @brunoTell2)
+		(= [brunoTellTree 2] @brunoTell1)
+		(= [brunoTellTree 3] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						30
-						90
-						8
-						98
-						102
-						157
-						102
-						189
-						0
-						189
-						0
-						0
-						319
-						0
-						319
-						108
-						234
-						104
-						262
-						41
-						239
-						41
-						189
-						86
-						123
-						83
-						97
-						96
+						30 90
+						8 98
+						102 157
+						102 189
+						0 189
+						0 0
+						319 0
+						319 108
+						234 104
+						262 41
+						239 41
+						189 86
+						123 83
+						97 96
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 173 189 203 144 319 134 319 189
+					type: PBarredAccess
+					init:
+						173 189
+						203 144
+						319 134
+						319 189
 					yourself:
 				)
 		)
@@ -183,15 +195,15 @@
 ;;;		(onTheRoad init:)
 ;;;		(onTheWhat init:)
 		
-		(= brunoWhines 0)
+		(= whinerCount 0)
 		(if
 			(and
 				(Btst fLeftTown2)
 				(or (== timeODay TIME_MIDDAY) (== timeODay TIME_MIDAFTERNOON))
-				(or (not (Btst fBearGone)) (Btst SPIED_THIEVES))
+				(or (not (Btst fBearGone)) (Btst fSpiedOnThieves))
 			)
 			(Load RES_VIEW 516)
-			(brunoTeller init: bruno @local17 @local41 @local52)
+			(brunoTeller init: bruno @brunoTellMainBranch @brunoTellTree @brunoTellKeys)
 			(bruno
 				init:
 				actions: brunoTeller
@@ -200,7 +212,9 @@
 		)
 		(NormalEgo)
 		(ego init:)
-		(if (not (Btst fTownGateOpen)) (ego illegalBits: -32640))
+		(if (not (Btst fTownGateOpen))
+			(ego illegalBits: (| cWHITE cLGREY)) ;-32640
+		)
 		(switch prevRoomNum
 			(74
 				(ego posn: 160 188 setScript: comeFromSouth)
@@ -232,13 +246,24 @@
 	)
 	
 	(method (doit)
-		(if (> timeODay TIME_MIDAFTERNOON) (localproc_00ae))
+		(if (> timeODay TIME_MIDAFTERNOON)
+			(SetNightPoly)
+		)
 		(cond 
 			(script)
-			((and (< (ego y?) 47) (not (ego script?))) (curRoom setScript: goToHealer))
-			((and (> (ego y?) 187) (not (ego script?))) (curRoom setScript: goSouth))
-			((and (> (ego x?) 317) (not (ego script?))) (curRoom setScript: goEast))
-			((and (& (ego onControl: 1) $0004) (Btst fTownGateOpen)) (HandsOff) (curRoom setScript: goToTown))
+			((and (< (ego y?) 47) (not (ego script?)))
+				(curRoom setScript: goToHealer)
+			)
+			((and (> (ego y?) 187) (not (ego script?)))
+				(curRoom setScript: goSouth)
+			)
+			((and (> (ego x?) 317) (not (ego script?)))
+				(curRoom setScript: goEast)
+			)
+			((and (& (ego onControl: origin) cGREEN) (Btst fTownGateOpen))
+				(HandsOff)
+				(curRoom setScript: goToTown)
+			)
 		)
 		(super doit:)
 	)
@@ -252,7 +277,10 @@
 	
 	(method (doVerb theVerb)
 		(cond 
-			((== theVerb V_LOOK) (= lookAround TRUE) (messager say: N_ROOM V_LOOK 0 0 curRoom))
+			((== theVerb V_LOOK)
+				(= lookAround TRUE)
+				(messager say: N_ROOM V_LOOK NULL 0 curRoom)
+			)
 			((OneOf theVerb V_OPEN V_DETECT V_TRIGGER V_DAZZLE V_CALM V_FLAME V_FETCH V_ZAP)
 				(if (cast contains: bruno)
 					(= attackedBruno TRUE)
@@ -313,7 +341,9 @@
 					(messager say: N_TOWNGATE V_LOOK C_DAY)
 				)
 			)
-			(V_DO (messager say: N_TOWNGATE V_DO))
+			(V_DO
+				(messager say: N_TOWNGATE V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -348,7 +378,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_WALL V_LOOK))
+			(V_LOOK
+				(messager say: N_WALL V_LOOK)
+			)
 			(V_DO
 				(if (>= timeODay TIME_SUNSET)
 					(ego setScript: climbTheWall)
@@ -375,12 +407,12 @@
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
 			(switch (Random 1 6)
-				(1 (messager say: N_CART V_LOOK 47))
-				(2 (messager say: N_CART V_LOOK 50))
-				(3 (messager say: N_CART V_LOOK 49))
-				(4 (messager say: N_CART V_LOOK 46))
-				(5 (messager say: N_CART V_LOOK 45))
-				(6 (messager say: N_CART V_LOOK 48))
+				(1 (messager say: N_CART V_LOOK C_RAND3))
+				(2 (messager say: N_CART V_LOOK C_RAND6))
+				(3 (messager say: N_CART V_LOOK C_RAND5))
+				(4 (messager say: N_CART V_LOOK C_RAND2))
+				(5 (messager say: N_CART V_LOOK C_RAND1))
+				(6 (messager say: N_CART V_LOOK C_RAND4))
 			)
 		else
 			(super doVerb: theVerb &rest)
@@ -399,15 +431,17 @@
 	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
-			(switch (++ lookedAtRoad)
-				(1 (messager say: N_ROAD V_LOOK 47))
-				(2 (messager say: N_ROAD V_LOOK 50))
-				(3 (messager say: N_ROAD V_LOOK 49))
-				(4 (messager say: N_ROAD V_LOOK 46))
-				(5 (messager say: N_ROAD V_LOOK 45))
-				(6 (messager say: N_ROAD V_LOOK 48))
+			(switch (++ roadLookCount)
+				(1 (messager say: N_ROAD V_LOOK C_RAND3))
+				(2 (messager say: N_ROAD V_LOOK C_RAND6))
+				(3 (messager say: N_ROAD V_LOOK C_RAND5))
+				(4 (messager say: N_ROAD V_LOOK C_RAND2))
+				(5 (messager say: N_ROAD V_LOOK C_RAND1))
+				(6 (messager say: N_ROAD V_LOOK C_RAND4))
 			)
-			(if (== lookedAtRoad 7) (= lookedAtRoad 0))
+			(if (== roadLookCount 7)
+				(= roadLookCount 0)
+			)
 		else
 			(super doVerb: theVerb &rest)
 		)
@@ -431,7 +465,7 @@
 		view 165
 		loop 1
 		priority 4
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 )
 
@@ -464,7 +498,7 @@
 			((== script knifeEgo) 0)
 			(
 				(and
-					local4
+					brunoReadyToKnife
 					(or
 						(ego inRect: 212 53 256 68)
 						(ego inRect: 283 107 319 130)
@@ -482,13 +516,18 @@
 	(properties)
 	
 	(method (showDialog)
-		(super
-			showDialog: -17 local2 -19 local2 -12 local3 -11 local1
+		(super showDialog:
+			-17 paid1Gold
+			-19 paid1Gold
+			-12 paid10Gold
+			-11 paid2Silvers
 		)
 	)
 	
 	(method (doChild)
-		(if (== query -19) (Bset fLearnedRhyme))
+		(if (== query -19)
+			(Bset fLearnedRhyme)
+		)
 		(return
 			(if
 				(not
@@ -516,11 +555,19 @@
 			)
 			(V_TALK
 				(cond 
-					((not local9) (= local7 1) (messager say: N_BRUNO V_TALK C_WANTSMONEY))
-					(local7
-						(switch (= local8 (Random 1 2))
-							(1 (messager say: N_BRUNO V_TALK C_LOOSENLIP))
-							(2 (messager say: N_BRUNO V_TALK C_GIVEMEDOUGH)) ;was identical; now gives different message
+					((not brunoGotMoney)
+						(= brunoWantsMoney TRUE)
+						(messager say: N_BRUNO V_TALK C_WANTSMONEY)
+					)
+					(brunoWantsMoney
+						(switch (= wantMoneyMsg (Random 1 2))
+							(1
+								(messager say: N_BRUNO V_TALK C_LOOSENLIP)
+							)
+							(2
+								;was identical; now gives different message
+								(messager say: N_BRUNO V_TALK C_GIVEMEDOUGH)
+							)
 						)
 					)
 					(else (super doVerb: theVerb &rest))
@@ -528,7 +575,10 @@
 			)
 			(V_DO
 				(cond 
-					((== showedThiefSign FALSE) (messager say: N_BRUNO V_DO C_THIEFSIGN) (= showedThiefSign TRUE))
+					((== showedThiefSign FALSE)
+						(messager say: N_BRUNO V_DO C_THIEFSIGN)
+						(= showedThiefSign TRUE)
+					)
 					(
 						(or
 							(ego inRect: 212 53 256 68)
@@ -543,7 +593,7 @@
 						else
 							(messager say: N_BRUNO V_DO C_ALREADYGAVESIGN)
 						)
-						(= local4 1)
+						(= brunoReadyToKnife TRUE)
 					)
 				)
 			)
@@ -565,39 +615,39 @@
 					(give1Silver
 						(HandsOff)
 						(= gotBrunoAdvice TRUE)
-						(= local0 1)
-						(= local9 1)
-						(= local7 0)
+						(= paid1Silver TRUE)
+						(= brunoGotMoney TRUE)
+						(= brunoWantsMoney FALSE)
 						(messager say: N_BRUNO V_MONEY C_GIVESILVER)
 					)
 					(give2Silvers
 						(HandsOff)
-						(= local9 1)
-						(= local7 0)
+						(= brunoGotMoney TRUE)
+						(= brunoWantsMoney FALSE)
 						(= gotBrunoAdvice TRUE)
-						(= local0 1)
-						(= local1 1)
+						(= paid1Silver TRUE)
+						(= paid2Silvers TRUE)
 						(messager say: N_BRUNO V_MONEY C_BABAYAGA)
 					)
 					(give2Gold
 						(HandsOff)
-						(= local9 1)
-						(= local7 0)
+						(= brunoGotMoney TRUE)
+						(= brunoWantsMoney FALSE)
 						(= gotBrunoAdvice TRUE)
-						(= local0 1)
-						(= local1 1)
-						(= local2 1)
+						(= paid1Silver TRUE)
+						(= paid2Silvers TRUE)
+						(= paid1Gold TRUE)
 						(messager say: N_BRUNO V_MONEY C_BABAYAGA)
 					)
 					(give10Gold
 						(HandsOff)
-						(= local9 1)
-						(= local7 0)
+						(= brunoGotMoney TRUE)
+						(= brunoWantsMoney FALSE)
 						(= gotBrunoAdvice TRUE)
-						(= local0 1)
-						(= local1 1)
-						(= local2 1)
-						(= local3 1)
+						(= paid1Silver TRUE)
+						(= paid2Silvers TRUE)
+						(= paid1Gold TRUE)
+						(= paid10Gold TRUE)
 						(messager say: N_BRUNO V_MONEY C_BABAYAGA)
 					)
 				)
@@ -616,8 +666,6 @@
 )
 
 (instance brunoFlippingDagger of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -634,8 +682,6 @@
 )
 
 (instance knifeEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -700,13 +746,11 @@
 )
 
 (instance whiner of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(bruno setCycle: EndLoop)
-				(= brunoWhines (Random 1 7))
+				(= whinerCount (Random 1 7))
 				(self cue:)
 			)
 			(1
@@ -717,13 +761,13 @@
 				)
 			)
 			(2
-				(switch brunoWhines
-					(1 (messager say: N_BRUNO 0 C_WHINER3 1 self))
-					(2 (messager say: N_BRUNO 0 C_WHINER6 1 self))
-					(3 (messager say: N_BRUNO 0 C_WHINER5 1 self))
-					(4 (messager say: N_BRUNO 0 C_WHINER2 1 self))
-					(5 (messager say: N_BRUNO 0 C_WHINER1 1 self))
-					(6 (messager say: N_BRUNO 0 C_WHINER4 1 self))
+				(switch whinerCount
+					(1 (messager say: N_BRUNO NULL C_WHINER3 1 self))
+					(2 (messager say: N_BRUNO NULL C_WHINER6 1 self))
+					(3 (messager say: N_BRUNO NULL C_WHINER5 1 self))
+					(4 (messager say: N_BRUNO NULL C_WHINER2 1 self))
+					(5 (messager say: N_BRUNO NULL C_WHINER1 1 self))
+					(6 (messager say: N_BRUNO NULL C_WHINER4 1 self))
 					(7
 						(messager say: N_BRUNO V_DO C_OUTTAMYFACE 1 self)
 					)
@@ -735,8 +779,6 @@
 )
 
 (instance sExitFromTown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -752,7 +794,7 @@
 			(1 (HandsOn) (self dispose:))
 			(2
 				(cSound number: 22 loop: 1 priority: 0 play:)
-				(SolvePuzzle POINTS_LEAVETOWNFIRSTTIME 1)
+				(SolvePuzzle f65LeaveTown 1)
 				(ego setMotion: MoveTo 75 114 self)
 			)
 			(3
@@ -764,14 +806,12 @@
 )
 
 (instance climbTheWall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= climbMoveSpeed (ego moveSpeed?))
-				(= climbCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
 				(ego
 					moveSpeed: 6
 					cycleSpeed: 6
@@ -782,12 +822,12 @@
 				(if (TrySkill CLIMB 35 0)
 					(ego setScript: goForIt)
 				else
-					(messager say: N_ROOM 0 C_CLIMBFAIL)
+					(messager say: N_ROOM NULL C_CLIMBFAIL)
 				)
 				(self cue:)
 			)
 			(2
-				(ego moveSpeed: climbMoveSpeed cycleSpeed: climbCycleSpeed)
+				(ego moveSpeed: saveMoveSpeed cycleSpeed: saveCycleSpeed)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -796,8 +836,6 @@
 )
 
 (instance goForIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -807,16 +845,16 @@
 					loop: 0
 					cel: 0
 					posn: 83 62
-					signal: (| (ego signal?) $2000)
+					signal: (| (ego signal?) ignrHrz)
 				)
-				(messager say: N_ROOM 0 C_CLIMBSUCCESS 1 self)
+				(messager say: N_ROOM NULL C_CLIMBSUCCESS 1 self)
 			)
 			(1
 				(ego
 					setPri: 15
 					setLoop: 0
-					moveSpeed: climbMoveSpeed
-					cycleSpeed: climbCycleSpeed
+					moveSpeed: saveMoveSpeed
+					cycleSpeed: saveCycleSpeed
 					setCycle: Forward
 					setMotion: DPath 82 50 81 47 self
 				)
@@ -827,53 +865,51 @@
 )
 
 (instance goToTown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if gotBrunoAdvice
-					(SolvePuzzle POINTS_RECEIVEBADADVICEFROMBRUNO 2)
-					(messager say: N_BRUNO 0 C_BADADVICE 1 self)
+					(SolvePuzzle f65GotAdviceFromBruno 2)
+					(messager say: N_BRUNO NULL C_BADADVICE 1 self)
 				else
 					(self cue:)
 				)
 			)
-			(1 (curRoom newRoom: 300))
+			(1
+				(curRoom newRoom: 300)
+			)
 		)
 	)
 )
 
 (instance goToHealer of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if gotBrunoAdvice
-					(SolvePuzzle POINTS_RECEIVEBADADVICEFROMBRUNO 2)
-					(messager say: N_BRUNO 0 C_BADADVICE 1 self)
+					(SolvePuzzle f65GotAdviceFromBruno 2)
+					(messager say: N_BRUNO NULL C_BADADVICE 1 self)
 				else
 					(self cue:)
 				)
 			)
-			(1 (curRoom newRoom: 54))
+			(1
+				(curRoom newRoom: 54)
+			)
 		)
 	)
 )
 
 (instance goSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if gotBrunoAdvice
-					(SolvePuzzle POINTS_RECEIVEBADADVICEFROMBRUNO 2)
-					(messager say: N_BRUNO 0 C_BADADVICE 1 self)
+					(SolvePuzzle f65GotAdviceFromBruno 2)
+					(messager say: N_BRUNO NULL C_BADADVICE 1 self)
 				else
 					(self cue:)
 				)
@@ -881,21 +917,21 @@
 			(1
 				(ego setMotion: MoveTo (ego x?) 240 self)
 			)
-			(2 (curRoom newRoom: 74))
+			(2
+				(curRoom newRoom: 74)
+			)
 		)
 	)
 )
 
 (instance goEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if gotBrunoAdvice
-					(SolvePuzzle POINTS_RECEIVEBADADVICEFROMBRUNO 2)
-					(messager say: N_BRUNO 0 C_BADADVICE 1 self)
+					(SolvePuzzle f65GotAdviceFromBruno 2)
+					(messager say: N_BRUNO NULL C_BADADVICE 1 self)
 				else
 					(self cue:)
 				)
@@ -903,35 +939,39 @@
 			(1
 				(ego setMotion: MoveTo 340 (ego y?) self)
 			)
-			(2 (curRoom newRoom: 66))
+			(2
+				(curRoom newRoom: 66)
+			)
 		)
 	)
 )
 
 (instance comeFromEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 265 140 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance comeFromSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 160 170 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -949,7 +989,7 @@
 	(method (init)
 		(= nightPalette 2074)
 		(PalVary PALVARYTARGET 2074)
-		(kernel_128 1074)
+		(AssertPalette 1074)
 		(= font userFont)
 		(super init: brunoBust brunoEye brunoMouth &rest)
 	)

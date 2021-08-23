@@ -45,64 +45,154 @@
 	[local0 2]
 	healerFacingAway
 	local3
-	local4
+	kissCued
 	theCycles
 	local6
 	lookedAtBarrel
 	gaveCheetaurClaws
 	healerCue
-	[local10 7] = [0 -25 -34 -39 -13 -12 999]
-	[local17 4] = [0 -33 -37 999]
-	[local21 8] = [0 26 -43 28 -42 -16 -29 999]
-	[local29 7] = [0 -11 -21 -14 20 30 999]
-	[local36 5] = [0 10 38 15 999]
-	[local41 4] = [0 19 27 999]
-	[local45 3] = [0 35 999]
-	[local48 3] = [0 36 999]
-	[local51 3] = [0 41 999]
-	[local54 4] = [0 44 40 999]
-	[local58 7] = [0 17 22 9 24 31 999]
-	[local65 4] = [0 18 23 999]
-	[local69 3] = [0 32 999]
-	[local72 18]
-	[local90 14] = [0 -25 -34 -39 -13 -12 -33 -37 -43 -42 -16 -29 -21 999]
+	healerTellMainBranch = [
+		STARTTELL
+		-25		;C_HEALER
+		-34		;C_POTIONS
+		-39		;C_SPELLCOMPONENTS
+		-13		;C_CASTLE
+		-12		;C_BRIGANDS
+		ENDTELL
+		]
+	healerTell1 = [
+		STARTTELL
+		-33		;C_PET
+		-37		;C_RING
+		ENDTELL
+		]
+	healerTell2 = [
+		STARTTELL
+		C_HEALINGPOTION
+		-43		;C_VIGORPOTION
+		C_POWERPOTION
+		-42		;C_UNDEADUNGUENT
+		-16		;C_DISPELPOTION
+		-29		;C_MAGIC
+		ENDTELL
+		]
+	healerTell3 = [
+		STARTTELL
+		-11		;C_TROLLBEARD
+		-21		;C_FLOWERS
+		-14		;C_CHEETAURCLAWS
+		C_FLASKS
+		C_MANDRAKEROOT
+		ENDTELL
+		]
+	healerTell4 = [
+		STARTTELL
+		C_BARON
+		C_SON
+		C_DAUGHTER
+		ENDTELL
+		]
+	healerTell5 = [
+		STARTTELL
+		C_FARMER
+		C_LEADER
+		ENDTELL
+		]
+	healerTell6 = [
+		STARTTELL
+		C_PTEROSAUR
+		ENDTELL
+		]
+	healerTell7 = [
+		STARTTELL
+		C_REWARD
+		ENDTELL
+		]
+	healerTell8 = [
+		STARTTELL
+		C_STAMINA
+		ENDTELL
+		]
+	healerTell9 = [
+		STARTTELL
+		C_ZOMBIES
+		C_FLOATINGSPIRITS
+		ENDTELL
+		]
+	healerTell10 = [
+		STARTTELL
+		C_DRYAD
+		C_FLYINGWATER
+		C_MAGICACORN
+		C_GREENFUR
+		C_MUSHROOMS
+		ENDTELL
+		]
+	healerTell11 = [
+		STARTTELL
+		C_FAIRYDUST
+		C_FAIRYRING
+		ENDTELL
+		]
+	healerTell12 = [
+		STARTTELL
+		C_ERANASPEACE
+		ENDTELL
+		]
+	[healerTellTree 18]
+	healerTellKeys = [
+		STARTTELL
+		-25		;C_HEALER
+		-34		;C_POTIONS
+		-39		;C_SPELLCOMPONENTS
+		-13		;C_CASTLE
+		-12		;C_BRIGANDS
+		-33		;C_PET
+		-37		;C_RING
+		-43		;C_VIGORPOTION
+		-42		;C_UNDEADUNGUENT
+		-16		;C_DISPELPOTION
+		-29		;C_MAGIC
+		-21		;C_FLOWERS
+		ENDTELL
+		]
 )
-(procedure (DispelIngredients &tmp [temp0 40] [temp40 11] [temp51 11] [temp62 20] [temp82 11] [temp93 11] [temp104 200])
-	(if (and (not (Btst DISPEL_HEALER_MAKING_POTION)) (not (Btst OBTAINED_DISPEL_POTION)))
+(procedure (DispelIngredients &tmp [str 40] [dustBuf 11] [furBuf 11] [flowerBuf 20] [acornBuf 11] [waterBuf 11] [buffer 200])
+	(if (and (not (Btst fHealerMakingDispel)) (not (Btst fGotDispel)))
 		(cond 
 			(
 				(and
-					(Btst DISPEL_GAVE_DUST)
-					(Btst DISPEL_GAVE_FUR)
-					(Btst DISPEL_GAVE_FLOWERS)
-					(Btst DISPEL_GAVE_ACORN)
-					(Btst DISPEL_GAVE_WATER)
+					(Btst fGaveDust)
+					(Btst fGaveFur)
+					(Btst fGaveFlowers)
+					(Btst fGaveAcorn)
+					(Btst fGaveWater)
 				)
 				(curRoom setScript: waitForHealer)
-				(Bset DISPEL_HEALER_MAKING_POTION)
-				(Bclr OBTAINED_DISPEL_POTION)
-				(Bclr DISPEL_GAVE_DUST)
-				(Bclr DISPEL_GAVE_FUR)
-				(Bclr DISPEL_GAVE_FLOWERS)
-				(Bclr DISPEL_GAVE_ACORN)
-				(Bclr DISPEL_GAVE_WATER)
+				(Bset fHealerMakingDispel)
+				(Bclr fGotDispel)
+				(Bclr fGaveDust)
+				(Bclr fGaveFur)
+				(Bclr fGaveFlowers)
+				(Bclr fGaveAcorn)
+				(Bclr fGaveWater)
 			)
 			((Btst fHealerKnowsDispel)
-				(Message MsgGet 55 N_DISPELRECIPE 0 7 1 @temp0)
-				(Message MsgGet 55 N_DISPELRECIPE 0 4 1 @temp40)
-				(Message MsgGet 55 N_DISPELRECIPE 0 5 1 @temp51)
-				(Message MsgGet 55 N_DISPELRECIPE 0 6 1 @temp62)
-				(Message MsgGet 55 N_DISPELRECIPE 0 3 1 @temp82)
-				(Message MsgGet 55 N_DISPELRECIPE 0 8 1 @temp93)
+				(Message MsgGet 55 N_DISPELRECIPE NULL C_HEALERNEEDS 1 @str)
+				(Message MsgGet 55 N_DISPELRECIPE NULL C_NEED_FAIRYDUST 1 @dustBuf)
+				(Message MsgGet 55 N_DISPELRECIPE NULL C_NEED_GREENFUR 1 @furBuf)
+				(Message MsgGet 55 N_DISPELRECIPE NULL C_NEED_FLOWERS 1 @flowerBuf)
+				(Message MsgGet 55 N_DISPELRECIPE NULL C_NEED_ACORN 1 @acornBuf)
+				(Message MsgGet 55 N_DISPELRECIPE NULL C_NEED_FLYINGWATER 1 @waterBuf)
 				(Print
 					addTextF:
-						@temp104
-						@temp0
-						(if (Btst DISPEL_GAVE_DUST) {} else @temp40)
-						(if (Btst DISPEL_GAVE_FUR) {} else @temp51)
-						(if (Btst DISPEL_GAVE_FLOWERS) {} else @temp62)
-						(if (Btst DISPEL_GAVE_WATER) {} else @temp93)
-						(if (Btst DISPEL_GAVE_ACORN) {} else @temp82)
+						@buffer
+						@str
+						(if (Btst fGaveDust) {} else @dustBuf)
+						(if (Btst fGaveFur) {} else @furBuf)
+						(if (Btst fGaveFlowers) {} else @flowerBuf)
+						(if (Btst fGaveWater) {} else @waterBuf)
+						(if (Btst fGaveAcorn) {} else @acornBuf)
 					init:
 				)
 			)
@@ -118,20 +208,20 @@
 	)
 	
 	(method (init)
-		(= [local72 0] @local10)
-		(= [local72 1] @local17)
-		(= [local72 2] @local21)
-		(= [local72 3] @local29)
-		(= [local72 4] @local36)
-		(= [local72 5] @local41)
-		(= [local72 6] @local45)
-		(= [local72 7] @local48)
-		(= [local72 8] @local51)
-		(= [local72 9] @local54)
-		(= [local72 10] @local58)
-		(= [local72 11] @local65)
-		(= [local72 12] @local69)
-		(= [local72 13] 999)
+		(= [healerTellTree 0] @healerTellMainBranch)
+		(= [healerTellTree 1] @healerTell1)
+		(= [healerTellTree 2] @healerTell2)
+		(= [healerTellTree 3] @healerTell3)
+		(= [healerTellTree 4] @healerTell4)
+		(= [healerTellTree 5] @healerTell5)
+		(= [healerTellTree 6] @healerTell6)
+		(= [healerTellTree 7] @healerTell7)
+		(= [healerTellTree 8] @healerTell8)
+		(= [healerTellTree 9] @healerTell9)
+		(= [healerTellTree 10] @healerTell10)
+		(= [healerTellTree 11] @healerTell11)
+		(= [healerTellTree 12] @healerTell12)
+		(= [healerTellTree 13] ENDTELL)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -207,7 +297,7 @@
 		(NormalEgo)
 		(bird init: setScript: preening)
 		(ego init: posn: 137 243)
-		(healerTeller init: healer @local10 @local72 @local90)
+		(healerTeller init: healer @healerTellMainBranch @healerTellTree @healerTellKeys)
 		(cSound number: 122 loop: -1 init: play:)
 		(curRoom setScript: egoEnters)
 	)
@@ -256,8 +346,8 @@
 	)
 	
 	(method (open &tmp temp0)
-		(= top (+ top (= temp0 (- 188 bottom))))
-		(= bottom (+ bottom temp0))
+		(+= top (= temp0 (- 188 bottom)))
+		(+= bottom temp0)
 		(super open:)
 	)
 )
@@ -363,7 +453,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_STONETABLE V_LOOK))
+			(V_LOOK
+				(messager say: N_STONETABLE V_LOOK)
+			)
 			(V_DO
 				(cond 
 					((Btst fStolePotions)
@@ -538,8 +630,8 @@
 	)
 	
 	(method (doit)
-		(if (and local4 (!= script healerKisses))
-			(= local4 0)
+		(if (and kissCued (!= script healerKisses))
+			(= kissCued FALSE)
 			(healer setScript: healerKisses)
 		)
 		(super doit:)
@@ -547,19 +639,16 @@
 )
 
 (instance healerTeller of Teller
-	(properties)
-	
 	(method (showDialog)
 		(super
 			showDialog:
 				-37
 				(if
-					(or (Btst fBeenIn311) (Btst fBeenIn55)) (not (Btst RETURNED_RING))
+					(or (Btst fBeenIn311) (Btst fBeenIn55)) (not (Btst fReturnedRing))
 				else
 					0
 				)
-				-16
-				(ego has: iAcorn)
+				-16 (ego has: iAcorn)
 		)
 	)
 	
@@ -593,14 +682,14 @@
 				(messager say: N_HEALER V_DO NULL 1)
 			)
 			(V_DO
-				(if (Btst RETURNED_RING)
+				(if (Btst fReturnedRing)
 					(messager say: N_HEALER V_DO C_RING 2)
 				else
 					(messager say: N_HEALER V_DO C_RING 1)
 				)
 			)
 			(V_TALK
-				(SolvePuzzle POINTS_TALKTOHEALER 2)
+				(SolvePuzzle f55TalkToHealer 2)
 				(super doVerb: theVerb &rest)
 			)
 			(V_MONEY
@@ -616,37 +705,37 @@
 						(messager say: N_HEALER V_MONEY C_NOFUNDS)
 					)
 					(buyStamina
-						(messager say: N_HEALER V_MONEY 56)
+						(messager say: N_HEALER V_MONEY C_BUY_POTION)
 						(= healerCue cueStamina)
 						(ego setScript: cueItScript)
 					)
 					(buyHealing
-						(messager say: N_HEALER V_MONEY 56)
+						(messager say: N_HEALER V_MONEY C_BUY_POTION)
 						(= healerCue cueHealing)
 						(ego setScript: cueItScript)
 					)
 					(buyMana
-						(messager say: N_HEALER V_MONEY 56)
+						(messager say: N_HEALER V_MONEY C_BUY_POTION)
 						(= healerCue cueMana)
 						(ego setScript: cueItScript)
 					)
 					(buyGhostOil
-						(messager say: N_HEALER V_MONEY 56)
+						(messager say: N_HEALER V_MONEY C_BUY_POTION)
 						(= healerCue cueGhostOil)
 						(ego setScript: cueItScript)
 					)
 				)
 			)
 			(V_RING
-				(Bset RETURNED_RING)
-				(SolvePuzzle POINTS_RETURNRING 10)
+				(Bset fReturnedRing)
+				(SolvePuzzle f55ReturnRing 10)
 				(messager say: N_HEALER V_RING C_RING)
 				((inventory at: iGold)
 					amount: (+ ((inventory at: iGold) amount?) 6)
 				)
 				(= healerCue cueRing)
 				(ego setScript: cueItScript)
-				(= local4 1)
+				(= kissCued TRUE)
 				(if (<= (+ (* (ego y?) 3) (ego x?) -615) 0)
 					(= theCycles 20)
 					(healer setScript: healerPleased)
@@ -699,7 +788,9 @@
 					)
 				)
 			)
-			(V_ROCK (messager say: N_HEALER V_DAGGER))
+			(V_ROCK
+				(messager say: N_HEALER V_DAGGER)
+			)
 			(V_FLASK
 				(= theCycles 6)
 				(healer setScript: healerPleased)
@@ -707,7 +798,9 @@
 				(= healerCue cueSellFlask)
 				(ego setScript: cueItScript)
 			)
-			(V_DAGGER (messager say: N_HEALER V_DAGGER))
+			(V_DAGGER
+				(messager say: N_HEALER V_DAGGER)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -717,8 +810,6 @@
 )
 
 (instance egoEnters of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -729,64 +820,38 @@
 					init:
 					posn: 151 142
 					approachVerbs:
-						4
-						34
-						42
-						44
-						46
-						16
-						38
-						21
-						36
-						39
-						32
-						29
-						37
-						22
-						26
-						14
-						17
-						27
-						23
-						31
-						30
-						40
-						43
-						45
-						53
-						11
-						28
-						20
-						35
-						15
-						10
-						24
-						12
-						18
-						19
-						47
-						41
-						33
-						2
+						V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+						V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT V_GHOSTOIL
+						V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER V_LOCKPICK V_MAGICGEM
+						V_MANA V_MANDRAKE V_MAGICMIRROR V_MUSHROOM V_MUSICBOX V_PEARLS
+						V_PAPER V_RATIONS V_RING V_ROCK V_SEED V_SHIELD
+						V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+						V_VASE V_VEGETABLES V_TALK
 					setCycle: Forward
 				)
 			)
-			(1 (= cycles 2))
+			(1
+				(= cycles 2)
+			)
 			(2
 				(cond 
-					((not (Btst MET_HEALER)) (messager say: N_ROOM NULL C_FIRSTENTRY 1 self))
+					((not (Btst fMetHealer))
+						(messager say: N_ROOM NULL C_FIRSTENTRY 1 self)
+					)
 					(
 						(and
-							(not (Btst DISPEL_HEALER_MAKING_POTION))
+							(not (Btst fHealerMakingDispel))
 							(or (not (Btst fLearnedDispel)) (Btst fHealerKnowsDispel))
 						)
 						(messager say: N_ROOM NULL C_RETURNED 1 self)
 					)
-					(else (self cue:))
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(3
-				(if (not (Btst MET_HEALER))
+				(if (not (Btst fMetHealer))
 					(messager say: N_ROOM NULL C_FIRSTMEET 0 self)
 				else
 					(self cue:)
@@ -801,14 +866,14 @@
 			)
 			(5
 				(if (and (Btst fLearnedDispel) (ego has: iAcorn) (not (Btst fHealerKnowsDispel)))
-					(messager say: N_HEALER C_POTIONS NULL 1 self)
+					(messager say: N_HEALER V_ACORN NULL 1 self)
 					(Bset fHealerKnowsDispel)
 				else
 					(self cue:)
 				)
 			)
 			(6
-				(if (Btst DISPEL_HEALER_MAKING_POTION)
+				(if (Btst fHealerMakingDispel)
 					(curRoom setScript: giveDispel)
 				else
 					(self cue:)
@@ -835,7 +900,6 @@
 )
 
 (instance preening of Script
-	(properties)
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -860,8 +924,6 @@
 )
 
 (instance healerPuttering of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -910,8 +972,6 @@
 )
 
 (instance healerPleased of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -958,8 +1018,6 @@
 )
 
 (instance healerKisses of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1068,23 +1126,21 @@
 )
 
 (instance waitForHealer of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 5))
 			(1
-				(messager say: N_ROOM 0 C_COMEBACKLATER)
+				(messager say: N_ROOM NULL C_COMEBACKLATER)
 				(= seconds 3)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sExitSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1092,14 +1148,14 @@
 				(ego setMotion: MoveTo (ego x?) 243 self)
 			)
 			(1
-				(if (and (not (Btst MET_HEALER)) (not (Btst RETURNED_RING)))
+				(if (and (not (Btst fMetHealer)) (not (Btst fReturnedRing)))
 					(messager say: N_ROOM NULL C_TELLABOUTRING 1 self)
 				else
 					(self cue:)
 				)
 			)
 			(2
-				(Bset MET_HEALER)
+				(Bset fMetHealer)
 				(curRoom newRoom: 54)
 			)
 		)
@@ -1107,8 +1163,6 @@
 )
 
 (instance flowersScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1122,10 +1176,10 @@
 				;(self cue:)
 			)
 			(1
-				(Bset DISPEL_GAVE_FLOWERS)
+				(Bset fGaveFlowers)
 				(++ numFlowers)
 				(ego use: iFlowers 5)
-				(SolvePuzzle POINTS_SELLFLOWERS 1)
+				(SolvePuzzle f55SellFlowers 1)
 				(DispelIngredients)
 				(= seconds 2)
 			)
@@ -1139,16 +1193,14 @@
 )
 
 (instance giveGreenFur of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= theCycles 10)
 				(ego use: iGreenFur)
-				(Bset DISPEL_GAVE_FUR)
-				(SolvePuzzle POINTS_GIVEGREENFUR 2)
+				(Bset fGaveFur)
+				(SolvePuzzle f55GiveFur 2)
 				(healer setScript: healerPleased)
 				(= ticks 60)
 			)
@@ -1163,14 +1215,15 @@
 				(DispelIngredients)
 				(= seconds 2)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance giveAcorn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1181,8 +1234,8 @@
 				(messager say: N_HEALER V_ACORN NULL 1 self)
 			)
 			(1
-				(Bset DISPEL_GAVE_ACORN)
-				(SolvePuzzle POINTS_GIVEMAGICACORN 5)
+				(Bset fGaveAcorn)
+				(SolvePuzzle f55GiveAcorn 5)
 				(DispelIngredients)
 				(= seconds 2)
 			)
@@ -1196,8 +1249,6 @@
 )
 
 (instance giveMushroom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1234,7 +1285,7 @@
 			(2
 				(HandsOn)
 				(if (and (> numMushrooms 2) (not (Btst fHaveToadstools)))
-					(SolvePuzzle POINTS_SELLMUSHROOM 1)
+					(SolvePuzzle f55SellMushroom 1)
 				)
 				(self dispose:)
 			)
@@ -1244,8 +1295,6 @@
 
 
 (instance giveClaws of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1266,12 +1315,15 @@
 				(messager say: N_HEALER C_GIVECOMPONENTS 0 2 self)
 			)
 			(3
-				(SolvePuzzle POINTS_SELLCHEETAURCLAW 2)
+				(SolvePuzzle f55SellClaws 2)
 				(= ticks 30)
 			)
 			(4
 				(HandsOn)
-				(ego get: iSilver 5 use: iCheetaurClaw)
+				(ego
+					get: iSilver 5
+					use: iCheetaurClaw
+				)
 				(self dispose:)
 			)
 		)
@@ -1279,8 +1331,6 @@
 )
 
 (instance giveBeard of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1292,12 +1342,15 @@
 			(1
 				(messager say: N_HEALER V_TROLLBEARD 0 0 self)
 			)
-			(2 (ego use: iTrollBeard) (= ticks 60))
+			(2
+				(ego use: iTrollBeard)
+				(= ticks 60)
+			)
 			(3
 				(HandsOn)
 				(ego get: iHealingPotion)
 				(ego get: iHealingPotion)
-				(SolvePuzzle POINTS_SELLTROLLBEARD 2)
+				(SolvePuzzle f55SellBeard 2)
 				(self dispose:)
 			)
 		)
@@ -1305,8 +1358,6 @@
 )
 
 (instance giveDust of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1316,15 +1367,15 @@
 				(= ticks 30)
 			)
 			(1
-				(if (and (not (Btst DISPEL_HEALER_MAKING_POTION)) (Btst fHealerKnowsDispel))
+				(if (and (not (Btst fHealerMakingDispel)) (Btst fHealerKnowsDispel))
 					(messager say: N_HEALER V_FAIRYDUST C_DISPELPOTION 1 self)
 				else
 					(messager say: N_HEALER V_FAIRYDUST C_DISPELPOTION 2 self)
 				)
 			)
 			(2
-				(Bset DISPEL_GAVE_DUST)
-				(SolvePuzzle POINTS_GIVEFAIRYDUST 2)
+				(Bset fGaveDust)
+				(SolvePuzzle f55GiveDust 2)
 				(DispelIngredients)
 				(= seconds 2)
 			)
@@ -1338,8 +1389,6 @@
 )
 
 (instance giveWater of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1350,8 +1399,8 @@
 				(= theCycles 10)
 				(healer setScript: healerPleased)
 				(++ numWater)
-				(Bset DISPEL_GAVE_WATER)
-				(SolvePuzzle POINTS_GIVEFLYINGWATER 2)
+				(Bset fGaveWater)
+				(SolvePuzzle f55GiveWater 2)
 				(DispelIngredients)
 				(= ticks 60)
 			)
@@ -1365,8 +1414,6 @@
 )
 
 (instance giveDispel of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1375,9 +1422,9 @@
 			)
 			(1
 				(ego get: iDisenchant)
-				(Bclr DISPEL_HEALER_MAKING_POTION)
-				(Bset OBTAINED_DISPEL_POTION)
-				(SolvePuzzle POINTS_GETDISPELPOTION 7)
+				(Bclr fHealerMakingDispel)
+				(Bset fGotDispel)
+				(SolvePuzzle f55GetDispel 7)
 				(healer setLoop: 5 setCycle: EndLoop self)
 			)
 			(2
@@ -1401,8 +1448,6 @@
 )
 
 (instance cueItScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 60))
@@ -1457,7 +1502,7 @@
 	(method (init)
 		(= nightPalette 2055)
 		(PalVary PALVARYTARGET 2055)
-		(kernel_128 1055)
+		(AssertPalette 1055)
 		(= font userFont)
 		(super init: healerBust healerEye healerMouth &rest)
 	)

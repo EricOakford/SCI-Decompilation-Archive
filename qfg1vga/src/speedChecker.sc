@@ -37,8 +37,6 @@
 )
 
 (instance speedTest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 1))

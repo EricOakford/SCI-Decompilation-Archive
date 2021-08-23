@@ -10,8 +10,6 @@
 )
 
 (instance Town of Region
-	(properties)
-	
 	(method (init)
 		(if (not (OneOf curRoomNum 300 310 311 320 330 333 334))
 			(cSound stop:)

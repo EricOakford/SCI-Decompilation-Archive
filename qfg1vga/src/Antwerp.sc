@@ -2,7 +2,7 @@
 (script# 84)
 (include game.sh) (include "84.shm")
 (use Main)
-(use CastFlame)
+(use CastDart)
 (use CastCalm)
 (use CastDazzle)
 (use Target)
@@ -503,7 +503,7 @@
 				)
 			)
 			(V_TALK
-				(if (and (Btst SPIED_THIEVES) (not (Btst fHidenGoseke)) (not (Btst fBeatFred)))
+				(if (and (Btst fSpiedOnThieves) (not (Btst fHidenGoseke)) (not (Btst fBeatFred)))
 					(Bset fHidenGoseke)
 					(SolvePuzzle POINTS_GIVECAVEPASSWORD 5)
 					(messager say: N_ROCKDOOR V_ALTTALK)
@@ -621,7 +621,7 @@
 					(Face ego antwerp)
 					(RedrawCast)
 					(if (== (antwerp status?) 1)
-						(CastFlame antwerp)
+						(CastDart antwerp)
 					)
 					(return TRUE)
 				)
@@ -1656,7 +1656,7 @@ code_187b:
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(CastDazzle ego self)
+				(CastDazz ego self)
 			)
 			(1
 				(if (== (antwerp status?) 0)

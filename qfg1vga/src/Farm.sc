@@ -22,21 +22,56 @@
 (local
 	centaurWatchesEgo
 	centaurStandsStill
-	local2
-	local3
+	alerted
+	approached
 	[local4 2]
 	local6
 	[local7 3]
-	local10
-	local11
-	local12
-	[local13 7] = [0 -12 -4 -2 3 1 999]
-	[local20 4] = [0 9 -11 999]
-	[local24 5] = [0 13 6 5 999]
-	[local29 4] = [0 -10 8 999]
-	[local33 3] = [0 7 999]
-	[local36 10]
-	[local46 6] = [0 -12 -4 -2 -11 999]
+	angCentaurToEgo
+	toX
+	toY
+	centaurTellMainBranch = [
+		STARTTELL
+		-12		;C_NAME
+		-4		;C_FARM
+		-2		;C_BRIGANDS
+		C_CENTAURS
+		C_BARON
+		ENDTELL
+		]
+	centaurTell1 = [
+		STARTTELL
+		C_HILDE
+		-11		;C_MART
+		ENDTELL
+		]
+	centaurTell2 = [
+		STARTTELL
+		C_VEGETABLES
+		C_FRUIT
+		C_FIELD
+		ENDTELL
+		]
+	centaurTell3 = [
+		STARTTELL
+		-10		;LEADER
+		C_HEALER
+		ENDTELL
+		]
+	centaurTell4 = [
+		STARTTELL
+		C_HARVEST
+		ENDTELL
+		]
+	[centaurTellTree 10]
+	centaurTellKeys = [
+		STARTTELL
+		-12		;C_NAME
+		-4		;C_FARM
+		-2		;C_BRIGANDS
+		-11		;C_MART
+		ENDTELL
+		]
 )
 (instance rm53 of Room
 	(properties
@@ -47,12 +82,12 @@
 	)
 	
 	(method (init)
-		(= [local36 0] @local13)
-		(= [local36 1] @local20)
-		(= [local36 2] @local24)
-		(= [local36 3] @local29)
-		(= [local36 4] @local33)
-		(= [local36 5] 999)
+		(= [centaurTellTree 0] @centaurTellMainBranch)
+		(= [centaurTellTree 1] @centaurTell1)
+		(= [centaurTellTree 2] @centaurTell2)
+		(= [centaurTellTree 3] @centaurTell3)
+		(= [centaurTellTree 4] @centaurTell4)
+		(= [centaurTellTree 5] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -101,7 +136,7 @@
 				(52 WIPERIGHT)
 				(54 WIPELEFT)
 				(36 WIPEDOWN)
-				(else  -32764)
+				(else  (| BLACKOUT WIPEUP))
 			)
 		)
 		(super init:)
@@ -125,14 +160,18 @@
 			doit:
 		)
 		(wall approachVerbs: V_DO)
-		(if (Btst 323) (Bclr 323) else (Bset 323))
+		(if (Btst fFarmerIsEast)
+			(Bclr fFarmerIsEast)
+		else
+			(Bset fFarmerIsEast)
+		)
 		(if (not Night)
-			(if (Btst 323)
+			(if (Btst fFarmerIsEast)
 				(centaur posn: 250 111)
 			else
 				(centaur posn: 50 111)
 			)
-			(centaurTeller init: centaur @local13 @local36 @local46)
+			(centaurTeller init: centaur @centaurTellMainBranch @centaurTellTree @centaurTellKeys)
 			(centaur
 				illegalBits: 0
 				init:
@@ -147,23 +186,23 @@
 		(ego init:)
 		(switch prevRoomNum
 			(36
-				(= local11 140)
-				(= local12 110)
+				(= toX 140)
+				(= toY 110)
 				(ego posn: 140 106 setScript: hereHeComes)
 			)
 			(52
-				(= local11 15)
-				(= local12 124)
+				(= toX 15)
+				(= toY 124)
 				(ego posn: -10 124 setScript: hereHeComes)
 			)
 			(54
-				(= local11 300)
-				(= local12 124)
+				(= toX 300)
+				(= toY 124)
 				(ego posn: 340 124 setScript: hereHeComes)
 			)
 			(else 
-				(= local11 148)
-				(= local12 164)
+				(= toX 148)
+				(= toY 164)
 				(ego loop: 3 posn: 148 170 setScript: hereHeComes)
 			)
 		)
@@ -192,13 +231,13 @@
 			(or
 				(and
 					(> (centaur x?) 249)
-					(not (Btst 323))
+					(not (Btst fFarmerIsEast))
 					(not centaurWatchesEgo)
 					(not Night)
 				)
 				(and
 					(< (centaur x?) 201)
-					(Btst 323)
+					(Btst fFarmerIsEast)
 					(not centaurWatchesEgo)
 					(not Night)
 				)
@@ -226,14 +265,20 @@
 		(switch theVerb
 			(V_DO
 				(if Night
-					(messager say: N_ROOM V_DO 0 1)
+					(messager say: N_ROOM V_DO NULL 1)
 				else
 					(messager say: N_ROOM V_DO)
 				)
 			)
-			(V_LOOK (messager say: N_ROOM V_LOOK))
-			(V_ROCK (messager say: N_ROOM V_ROCK))
-			(V_FLAME (messager say: N_ROOM V_FLAME))
+			(V_LOOK
+				(messager say: N_ROOM V_LOOK)
+			)
+			(V_ROCK
+				(messager say: N_ROOM V_ROCK)
+			)
+			(V_FLAME
+				(messager say: N_ROOM V_FLAME)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -256,7 +301,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_WALL V_DO))
+			(V_LOOK
+				(messager say: N_WALL V_DO)
+			)
 			(V_DO
 				(if Night
 					(if (TrySkill CLIMB 35 0)
@@ -268,9 +315,15 @@
 					(messager say: N_WALL V_DO)
 				)
 			)
-			(V_ROCK (messager say: N_WALL V_ROCK))
-			(V_FLAME (messager say: N_ROOM V_FLAME))
-			(else  (super doVerb: theVerb))
+			(V_ROCK
+				(messager say: N_WALL V_ROCK)
+			)
+			(V_FLAME
+				(messager say: N_ROOM V_FLAME)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -551,12 +604,10 @@
 )
 
 (instance centaurTeller of Teller
-	(properties)
-	
 	(method (doChild)
 		(return
 			(if (== query -10)
-				(SolvePuzzle POINTS_TALKTOFARMERABOUTLEADER 3)
+				(SolvePuzzle f53AskAboutLeader 3)
 				(return TRUE)
 			else
 				(super doChild: query)
@@ -574,9 +625,16 @@
 					(messager say: N_CENTAUR V_MONEY)
 				)
 			)
-			(V_SWORD (messager say: N_CENTAUR V_SWORD))
-			(V_DAGGER (messager say: N_CENTAUR V_SWORD))
-			(V_ROCK (messager say: N_CENTAUR V_ROCK)) ;Changed to correct message
+			(V_SWORD
+				(messager say: N_CENTAUR V_SWORD)
+			)
+			(V_DAGGER
+				(messager say: N_CENTAUR V_SWORD)
+			)
+;;;			(V_ROCK
+;;;				 ;Changed to correct message
+;;;				(messager say: N_CENTAUR V_ROCK)
+;;;			)
 			(V_LOOK
 				(if centaurWatchesEgo
 					(messager say: N_CENTAUR V_LOOK C_WATCHING 1)
@@ -589,20 +647,22 @@
 					(= centaurStandsStill TRUE)
 					(centaur setScript: standStill)
 				else
-					(SolvePuzzle POINTS_TALKTOFARMER 1)
+					(SolvePuzzle f53TalkToHeinrich 1)
 					(super doVerb: theVerb &rest)
 				)
 			)
-			(V_FLAME (messager say: N_ROOM V_FLAME))
-			(else  (super doVerb: theVerb))
+			(V_FLAME
+				(messager say: N_ROOM V_FLAME)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 		(return TRUE)
 	)
 )
 
 (instance standStill of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -615,9 +675,9 @@
 			)
 			(1
 				(tail
-					setLoop: (if (Btst 323) 3 else 2)
+					setLoop: (if (Btst fFarmerIsEast) 3 else 2)
 					posn:
-						(if (Btst 323)
+						(if (Btst fFarmerIsEast)
 							(+ (centaur x?) 16)
 						else
 							(- (centaur x?) 16)
@@ -627,19 +687,19 @@
 				)
 				(head
 					posn:
-						(if (Btst 323)
+						(if (Btst fFarmerIsEast)
 							(- (centaur x?) 13)
 						else
 							(+ (centaur x?) 13)
 						)
 						(- (centaur y?) 27)
-					setLoop: (if (Btst 323) 0 else 1)
+					setLoop: (if (Btst fFarmerIsEast) 0 else 1)
 					show:
 				)
 				(centaur
 					view: 54
 					posn: (centaur x?) (centaur y?)
-					setLoop: (if (Btst 323) 5 else 4)
+					setLoop: (if (Btst fFarmerIsEast) 5 else 4)
 					show:
 					setMotion: 0
 				)
@@ -651,15 +711,18 @@
 			(3
 				(centaur setCycle: 0)
 				(if centaurStandsStill
-					(if (not local2)
-						(= local2 1)
-						(messager say: N_ROOM 0 C_ALERTED)
+					(if (not alerted)
+						(= alerted TRUE)
+						(messager say: N_ROOM NULL C_ALERTED)
 					else
 						(messager say: N_ROOM)
 					)
 					(self cue:)
 				else
-					(if (not local3) (= local3 1) (messager say: N_ROOM 0 C_APPROACHED))
+					(if (not approached)
+						(= approached TRUE)
+						(messager say: N_ROOM NULL C_APPROACHED)
+					)
 					(self cue:)
 				)
 			)
@@ -670,15 +733,25 @@
 			(5 (= ticks (Random 30 180)))
 			(6
 				(if (not (centaur cycler?))
-					(= local10
+					(= angCentaurToEgo
 						(GetAngle (centaur x?) 111 (ego x?) (ego y?))
 					)
 					(cond 
-						((< (ego x?) 10) (self changeState: 7))
-						((< (ego x?) 80) (self changeState: 8))
-						((and (< 80 (ego x?)) (< (ego x?) 160)) (self changeState: 9))
-						((< (ego x?) 240) (self changeState: 10))
-						(else (self changeState: 11))
+						((< (ego x?) 10)
+							(self changeState: 7)
+						)
+						((< (ego x?) 80)
+							(self changeState: 8)
+						)
+						((and (< 80 (ego x?)) (< (ego x?) 160))
+							(self changeState: 9)
+						)
+						((< (ego x?) 240)
+							(self changeState: 10)
+						)
+						(else
+							(self changeState: 11)
+						)
 					)
 				)
 			)
@@ -707,36 +780,34 @@
 )
 
 (instance sExitLeft of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo -40 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 52))
+			(1
+				(curRoom newRoom: 52)
+			)
 		)
 	)
 )
 
 (instance sExitRight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 340 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 54))
+			(1
+				(curRoom newRoom: 54)
+			)
 		)
 	)
 )
 
 (instance climbTheWall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -749,8 +820,6 @@
 )
 
 (instance hereHeComes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -765,7 +834,7 @@
 				(if (not Night)
 					(centaur setScript: standStill)
 				)
-				(ego setMotion: MoveTo local11 local12 self)
+				(ego setMotion: MoveTo toX toY self)
 			)
 			(2
 				(HandsOn)
@@ -776,28 +845,28 @@
 )
 
 (instance talkToYou of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if centaurStandsStill
-					(if (not local2)
-						(= local2 1)
+					(if (not alerted)
+						(= alerted TRUE)
 						(messager say: N_ROOM NULL C_ALERTED)
 					else
 						(messager say: N_ROOM)
 					)
 					(self cue:)
 				else
-					(if (and (not local3) (OneOf (ego loop?) 0 3 6))
-						(= local3 1)
-						(messager say: N_ROOM 0 C_APPROACHED)
+					(if (and (not approached) (OneOf (ego loop?) 0 3 6))
+						(= approached TRUE)
+						(messager say: N_ROOM NULL C_APPROACHED)
 					)
 					(self cue:)
 				)
 			)
-			(1 (self dispose:))
+			(1
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -815,7 +884,7 @@
 	(method (init)
 		(= nightPalette 2053)
 		(PalVary PALVARYTARGET 2053)
-		(kernel_128 1053)
+		(AssertPalette 1053)
 		(= font userFont)
 		(super init: centaurBust centaurEye centaurMouth &rest)
 	)

@@ -910,7 +910,7 @@ code_0453:
 		(theGame setCursor: 942 1)
 		(Bset 359)
 		(++ magesMazePlayCount)
-		(SolvePuzzle 616 5 1)
+		(SolvePuzzle f32PlayMaze 5 MAGIC_USER)
 		(= local14 1)
 		(mouseDownHandler add: cast features)
 		(candleFlame init: stopUpd:)
@@ -1104,16 +1104,20 @@ code_0453:
 				(= temp1 (if (== magesMazePlayCount 1) {} else {s}))
 				(Printf
 					@temp2
-					{"Well, you seem to have beginner's luck.__It only took you %d game%s to win.__Hmph.__It usually takes at least %d tries for anyone less than a full Wizard to defeat me."}
+					{"Well, you seem to have beginner's luck.__It only took you %d game%s to win.__Hmph.__
+					It usually takes at least %d tries for anyone less than a full Wizard to defeat me."}
 					magesMazePlayCount
 					temp1
 					temp0
 				)
-				(ego learn: 20 10)
-				(SolvePuzzle 617 12 1)
+				(ego learn: DAZZLE 10)
+				(SolvePuzzle f32WinMaze 12 MAGIC_USER)
 				(messager say: 4 0 2 0 self)
 			)
-			(else (= local11 1) (messager say: 4 0 3 0 self))
+			(else
+				(= local11 1)
+				(messager say: 4 0 3 0 self)
+			)
 		)
 	)
 )

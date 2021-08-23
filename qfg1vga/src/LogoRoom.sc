@@ -52,7 +52,9 @@
 				(== (event type?) keyDown)
 				(OneOf (event message?) ESC ENTER)
 			)
-			(if script (logoScript changeState: 8))
+			(if script
+				(logoScript changeState: 8)
+			)
 			(event claimed: TRUE)
 		)
 	)
@@ -84,8 +86,6 @@
 )
 
 (instance logoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 2))

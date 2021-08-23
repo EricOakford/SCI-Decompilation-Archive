@@ -151,7 +151,7 @@
 				(Bset fTookBarNote)
 			)
 			((Btst fBeatBrutus) (= barNote noteNosyRead) (Bset fTookBarNote))
-			((and (Btst SPIED_THIEVES) (== barNote noteArchery)) (= barNote noteArcheryRead))
+			((and (Btst fSpiedOnThieves) (== barNote noteArchery)) (= barNote noteArcheryRead))
 			((and (Btst fBearGone) (<= barNote noteSuspicious)) (= barNote noteSuspiciousRead))
 			((== barNote noteArchery) (Bset fTookBarNote))
 		)

@@ -2,12 +2,13 @@
 (script# EGOSEZ)
 (include game.sh) (include "120.shm")
 (use Main)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use Procs)
 (use Sound)
 (use User)
+(use Motion)
 (use System)
 
 (public
@@ -48,7 +49,7 @@
 				(= theX ((= evt (Event new:)) x?))
 				(= theY (+ (evt y?) 25))
 				(evt dispose:)
-				(CastFlame 0 0 theX theY)
+				(CastDart 0 0 theX theY)
 			)
 			(V_RATIONS
 				(= useCue useRations)
@@ -57,13 +58,13 @@
 				(ego setScript: cueIt)
 			)
 			(V_DAGGER
-				(CastDagger 0)
+				(ThrowKnife 0)
 			)
 			(V_LOCKPICK
 				(ego setScript: pickScript)
 			)
 			(V_ROCK
-				(CastRock 0)
+				(ThrowRock 0)
 			)
 			(V_HEALING
 				(messager say: N_EGO V_HEALING NULL 0 0 EGOSEZ)
@@ -236,8 +237,7 @@
 	)
 )
 
-(instance mushScript of Script
-	
+(instance mushScript of Script	
 	(method (doit)
 		(if monsterNum
 			(Bset fAteFaeryShrooms)
@@ -288,9 +288,9 @@
 						setLoop: 0
 						setCel: 255
 						posn: (ego x?) (+ (ego y?) 10)
-						;setCycle: EndLoop	;lets ego complete collapsing animation
+						setCycle: EndLoop	;lets ego complete collapsing animation
 					)
-					(= ticks 5)
+					;(= ticks 5)
 				else
 					(messager say: N_EGO V_MUSHROOM C_AFTERSHROOMS 3 0 EGOSEZ)
 					(Bset fAteFaeryShrooms)
@@ -307,7 +307,6 @@
 )
 
 (instance cueIt of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

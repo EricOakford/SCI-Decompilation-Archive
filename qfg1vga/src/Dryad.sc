@@ -2,9 +2,9 @@
 (script# 76)
 (include game.sh) (include "76.shm")
 (use Main)
-(use CastFlame)
-(use CastDagger)
-(use CastRock)
+(use CastDart)
+(use ThrowKnife)
+(use ThrowRock)
 (use CastDazzle)
 (use Target)
 (use Procs)
@@ -44,29 +44,29 @@
 	eatIt
 	dryadHostile
 	attackedStag
-	local5
+	spitCount
 	usedFlameDart
 )
 (procedure (PickUpAcorn)
 	(HandsOff)
 	(if (and magicAcornOnGround (< (ego distanceTo: acorn) 80))
-		(messager say: N_ROOM 0 C_GETMAGICACORN)
+		(messager say: N_ROOM NULL C_GETMAGICACORN)
 	else
-		(messager say: N_ROOM 0 C_GETREGULARACORN 1)
+		(messager say: N_ROOM NULL C_GETREGULARACORN 1)
 	)
 	(ego setScript: pickEmUp)
 )
 
 (procedure (EatAcorn)
-	(messager say: N_ROOM 0 C_EATACORN)
+	(messager say: N_ROOM NULL C_EATACORN)
 )
 
 (procedure (SayNoToDryad)
 	(HandsOff)
 	(if (Btst fAgreedToHelpDryad)
-		(messager say: N_ROOM 0 C_DONTGIVESEED)
+		(messager say: N_ROOM NULL C_DONTGIVESEED)
 	else
-		(messager say: N_ROOM 0 C_NOTFORESTFRIEND)
+		(messager say: N_ROOM NULL C_NOTFORESTFRIEND)
 	)
 	(dryad setScript: intoTree)
 )
@@ -173,7 +173,7 @@
 ;;;		(acorns init:)
 		
 		(NormalEgo)
-		(ChangeGait MOVE_WALK 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(= yesNoTimer 0)
 		(if (not Night)
 			(spitSound number: (SoundFX 18) init:)
@@ -212,8 +212,7 @@
 	
 	(method (doit)
 		(cond 
-			(
-			(and attackedStag (not (ego script?)) (< (stag x?) 50))
+			((and attackedStag (not (ego script?)) (< (stag x?) 50))
 				(= attackedStag 0)
 				(Bset fStagHurt)
 				(HandsOff)
@@ -236,7 +235,7 @@
 		(cond 
 			(
 				(and
-					(== (ego edgeHit?) 2)
+					(== (ego edgeHit?) EAST)
 					(>= dryadState dryadAvailable)
 					(not (== (ego script?) goTo77))
 				)
@@ -258,7 +257,9 @@
 						(Btst fKilledFlower3)
 					)
 				)
-				(if (ego script?) (ego setScript: 0))
+				(if (ego script?)
+					(ego setScript: 0)
+				)
 				(= dryadState dryadHere)
 				(dryad init: setScript: outOfTree)
 			)
@@ -273,10 +274,14 @@
 		(super dispose:)
 	)
 	
-	(method (doVerb theVerb &tmp temp0)
+	(method (doVerb theVerb &tmp targObj)
 		(switch theVerb
-			(V_LOOK (messager say: N_ROOM V_LOOK 0 0))
-			(V_DO (messager say: N_ROOM V_DO))
+			(V_LOOK
+				(messager say: N_ROOM V_LOOK NULL 0)
+			)
+			(V_DO
+				(messager say: N_ROOM V_DO)
+			)
 			(V_DETECT
 				(if (== dryadState dryadHere)
 					(messager say: N_ROOM V_DETECT C_DETECTDRYAD)
@@ -289,10 +294,14 @@
 					(Bset fStagHurt)
 					(= attackedStag TRUE)
 				)
-				(if (== dryadState dryadHere) (= dryadHostile TRUE))
-				(CastDazzle)
+				(if (== dryadState dryadHere)
+					(= dryadHostile TRUE)
+				)
+				(CastDazz)
 			)
-			(V_FLAME (ego setScript: castADart))
+			(V_FLAME
+				(ego setScript: castADart)
+			)
 			(V_SLEEP
 				(if (not Night)
 					(messager say: N_ROOM V_SLEEP C_DAY)
@@ -302,22 +311,33 @@
 				)
 			)
 			(V_DAGGER
-				(= temp0 (if (cast contains: stag) stag else 0))
-				(if (CastDagger temp0)
-					(if (== dryadState dryadHere) (= dryadHostile TRUE))
-					(if (Btst fStagHere) (= attackedStag TRUE) (Bset fStagHurt))
+				(= targObj (if (cast contains: stag) stag else 0))
+				(if (ThrowKnife targObj)
+					(if (== dryadState dryadHere)
+						(= dryadHostile TRUE)
+					)
+					(if (Btst fStagHere)
+						(= attackedStag TRUE)
+						(Bset fStagHurt)
+					)
 					(if (cast contains: stag)
 						(Face ego stag)
 						(RedrawCast)
 					)
 				)
 			)
-			(V_OPEN (messager say: N_ROOM V_OPEN))
+			(V_OPEN
+				(messager say: N_ROOM V_OPEN)
+			)
 			(V_ROCK
-				(= temp0 (if (cast contains: stag) stag else 0))
-				(if (CastRock temp0)
-					(if (== dryadState dryadHere) (= dryadHostile TRUE))
-					(if (Btst fStagHere) (= attackedStag TRUE) (Bset fStagHurt))
+				(= targObj (if (cast contains: stag) stag else 0))
+				(if (ThrowRock targObj)
+					(if (== dryadState dryadHere)
+						(= dryadHostile TRUE)
+					)
+					(if (Btst fStagHere) (= attackedStag TRUE)
+						(Bset fStagHurt)
+					)
 					(if (cast contains: stag)
 						(Face ego stag)
 						(RedrawCast)
@@ -356,9 +376,15 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_DRYADTREE V_LOOK))
-			(V_DO (messager say: N_DRYADTREE V_DO))
-			(V_TALK (messager say: N_DRYADTREE V_TALK))
+			(V_LOOK
+				(messager say: N_DRYADTREE V_LOOK)
+			)
+			(V_DO
+				(messager say: N_DRYADTREE V_DO)
+			)
+			(V_TALK
+				(messager say: N_DRYADTREE V_TALK)
+			)
 			(V_DAGGER
 				(if (== dryadState dryadHere)
 					(messager say: N_DRYADTREE V_DAGGER C_DRYADHERE)
@@ -381,7 +407,9 @@
 					(dryad setScript: egoToStag)
 				)
 			)
-			(V_ACORN (messager say: N_DRYADTREE V_ACORN))
+			(V_ACORN
+				(messager say: N_DRYADTREE V_ACORN)
+			)
 			(56
 				(if (== dryadState dryadHere)
 					(messager say: N_DRYADTREE V_CANDELABRA C_DRYADHERE)
@@ -458,7 +486,9 @@
 					(messager say: N_ACORN V_LOOK)
 				)
 			)
-			(V_DO (PickUpAcorn))
+			(V_DO
+				(PickUpAcorn)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -500,7 +530,7 @@
 	(method (init)
 		(= nightPalette 177)
 		(PalVary PALVARYTARGET 177)
-		(kernel_128 77)
+		(AssertPalette 77)
 		(super init:)
 	)
 	
@@ -521,15 +551,21 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_STAG V_LOOK))
-			(V_DO (messager say: N_STAG V_DO))
+			(V_LOOK
+				(messager say: N_STAG V_LOOK)
+			)
+			(V_DO
+				(messager say: N_STAG V_DO)
+			)
 			(V_DAZZLE
 				(if (and (Btst fStagHere) (< (stag x?) 50))
 					(Bset fStagHurt)
 					(= attackedStag TRUE)
 				)
-				(if (== dryadState dryadHere) (= dryadHostile TRUE))
-				(CastDazzle)
+				(if (== dryadState dryadHere)
+					(= dryadHostile TRUE)
+				)
+				(CastDazz)
 			)
 			(V_FLAME
 				(= attackedStag TRUE)
@@ -563,7 +599,7 @@
 	
 	(method (getHurt)
 		(HandsOff)
-		(= missedDaggers (+ missedDaggers hitDaggers))
+		(+= missedDaggers hitDaggers)
 		(= hitDaggers 0)
 		(messager say: N_STAG)
 	)
@@ -578,7 +614,7 @@
 	(method (init)
 		(= nightPalette 176)
 		(PalVary PALVARYTARGET 176)
-		(kernel_128 76)
+		(AssertPalette 76)
 		(super init:)
 	)
 )
@@ -595,7 +631,7 @@
 	(method (init)
 		(= nightPalette 176)
 		(PalVary PALVARYTARGET 176)
-		(kernel_128 76)
+		(AssertPalette 76)
 		(super init:)
 	)
 	
@@ -605,13 +641,15 @@
 				(if (== dryadState dryadHere)
 					(messager say: N_DRYAD V_LOOK C_DRYADHERE)
 				else
-					(messager say: N_DRYAD V_LOOK 0 0)
+					(messager say: N_DRYAD V_LOOK NULL 0)
 				)
 			)
 			(V_DO
 				(if (Btst fStagHere)
 					(messager say: N_DRYAD V_DO C_CANTREACHSTAG)
-					(if (== dryadState dryadHere) (messager say: N_DRYAD V_DO C_DRYADHERE))
+					(if (== dryadState dryadHere)
+						(messager say: N_DRYAD V_DO C_DRYADHERE)
+					)
 				else
 					(messager say: N_DRYAD V_DO C_GETREGULARACORN)
 				)
@@ -624,7 +662,9 @@
 					(messager say: N_DRYAD V_DAGGER C_GETREGULARACORN)
 				)
 			)
-			(V_SEED (dryad setScript: hasSeed))
+			(V_SEED
+				(dryad setScript: hasSeed)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -633,8 +673,6 @@
 )
 
 (instance stagEntrance of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -689,21 +727,24 @@
 			)
 			(8
 				(if (not (Btst fBeenIn76))
-					(messager say: N_ROOM 0 14 1 self)
+					(messager say: N_ROOM NULL C_FIRST_ENTER 1 self)
 				else
-					(messager say: N_ROOM 0 31 1 self)
+					(messager say: N_ROOM NULL C_ENTER_AGAIN 1 self)
 				)
 			)
 			(9
-				(if (not (Btst 66))
-					(messager say: N_ROOM 0 34 1)
+				(if (not (Btst fBeenIn76))
+					(messager say: N_ROOM NULL C_FIRST_STAG 1)
 				else
-					(messager say: N_ROOM 0 15 1)
+					(messager say: N_ROOM NULL C_STAG_AGAIN 1)
 				)
 				(stag setLoop: 3 setCycle: EndLoop self)
 				(= dryadState dryadAvailable)
 			)
-			(10 (HandsOn) (self cue:))
+			(10
+				(HandsOn)
+				(self cue:)
+			)
 			(11
 				(stag setLoop: 4 cel: 0 cycleSpeed: 12 setCycle: EndLoop self)
 			)
@@ -711,12 +752,18 @@
 				(stag loop: 6 setCycle: Forward)
 				(= cycles (Random 20 90))
 			)
-			(13 (stag setCycle: EndLoop self))
+			(13
+				(stag setCycle: EndLoop self)
+			)
 			(14
 				(stag loop: 4 cel: 7 setCycle: BegLoop self)
 			)
-			(15 (= cycles (Random 5 35)))
-			(16 (self changeState: 11))
+			(15
+				(= cycles (Random 5 35))
+			)
+			(16
+				(self changeState: 11)
+			)
 		)
 	)
 )
@@ -742,9 +789,9 @@
 					((Btst fAgreedToHelpDryad)
 						(switch
 							(Print
-								addText: 7 0 28 1 0 0 76
-								addButton: 1 7 0 23 1 0 30 76
-								addButton: 2 7 0 23 2 0 48 76
+								addText: N_ROOM NULL C_ASK_BROUGHT_SEED 1 0 0 76
+								addButton: 1 N_ROOM NULL C_YESORNO 1 0 30 76
+								addButton: 2 N_ROOM NULL C_YESORNO 2 0 48 76
 								init:
 							)
 							(1 (SayYesToDryad))
@@ -754,9 +801,9 @@
 					((Btst fMetDryad)
 						(switch
 							(Print
-								addText: 7 0 29 1 0 0 76
-								addButton: 1 7 0 23 1 0 34 76
-								addButton: 2 7 0 23 2 0 52 76
+								addText: N_ROOM NULL C_ASK_AGAIN 1 0 0 76
+								addButton: 1 N_ROOM NULL C_YESORNO 1 0 34 76
+								addButton: 2 N_ROOM NULL C_YESORNO 2 0 52 76
 								init:
 							)
 							(1 (SayYesToDryad))
@@ -766,9 +813,9 @@
 					(else
 						(switch
 							(Print
-								addText: 7 0 30 1 0 0 76
-								addButton: 1 7 0 23 1 0 36 76
-								addButton: 2 7 0 23 2 0 54 76
+								addText: N_ROOM NULL C_ASK_FIRST 1 0 0 76
+								addButton: 1 N_ROOM NULL C_YESORNO 1 0 36 76
+								addButton: 2 N_ROOM NULL C_YESORNO 2 0 54 76
 								init:
 							)
 							(1 (SayYesToDryad))
@@ -783,11 +830,12 @@
 )
 
 (instance intoTree of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (self cue:))
+			(0
+				(HandsOff)
+				(self cue:)
+			)
 			(1
 				(dryad
 					posn: (+ (dryad x?) 1) (+ (dryad y?) 1)
@@ -802,7 +850,7 @@
 					(acorn init: setCycle: EndLoop)
 					(theAcorn init:)
 					(= magicAcornOnGround TRUE)
-					(messager say: N_ROOM 0 C_ACORNFALL 1 self)
+					(messager say: N_ROOM NULL C_ACORNFALL 1 self)
 				else
 					(self cue:)
 				)
@@ -816,8 +864,6 @@
 )
 
 (instance hasSeed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -842,8 +888,8 @@
 			)
 			(4
 				(HandsOff)
-				(messager say: N_ROOM 0 C_GIVESEED)
-				(SolvePuzzle POINTS_GIVESEED 7)
+				(messager say: N_ROOM NULL C_GIVESEED)
+				(SolvePuzzle f76GiveSeed 7)
 				(ego setCycle: EndLoop self)
 			)
 			(5
@@ -863,48 +909,48 @@
 				(NormalEgo)
 				(theGame setCursor: waitCursor)
 				(if (or (Btst fKilledFlower1) (Btst fKilledFlower2) (Btst fKilledFlower3))
-					(messager say: N_ROOM 0 C_BLABBERMOUTH)
+					(messager say: N_ROOM NULL C_BLABBERMOUTH)
 					(dryad setScript: oMyGod)
 				else
 					(self cue:)
 				)
 			)
 			(8
-				(messager say: N_ROOM 0 C_SHEGOTIT 1 self)
+				(messager say: N_ROOM NULL C_SHEGOTIT 1 self)
 			)
 			(9
-				(dryadTalker keepWindow: 1)
+				(dryadTalker keepWindow: TRUE)
 				(= ticks 60)
 			)
 			(10
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 1 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 1 self)
 			)
 			(11
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 2 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 2 self)
 			)
 			(12
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 3 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 3 self)
 			)
 			(13
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 4 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 4 self)
 			)
 			(14
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 5 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 5 self)
 			)
 			(15
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 6 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 6 self)
 			)
 			(16
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 7 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 7 self)
 			)
 			(17
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 8 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 8 self)
 			)
 			(18
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 9 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 9 self)
 			)
 			(19
-				(messager say: N_ROOM 0 C_DRYADGIVESRECIPE 10 self)
+				(messager say: N_ROOM NULL C_DRYADGIVESRECIPE 10 self)
 				(Bset fLearnedDispel)
 				(Bclr fAgreedToHelpDryad)
 				(dryadTalker keepWindow: 0)
@@ -915,8 +961,6 @@
 )
 
 (instance pickEmUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -934,17 +978,23 @@
 				(cond 
 					((and magicAcornOnGround (< (ego distanceTo: acorn) 80))
 						(= magicAcornOnGround FALSE)
-						(SolvePuzzle POINTS_GETACORN 1)
+						(SolvePuzzle f76GetAcorn 1)
 						(acorn dispose:)
 						(theAcorn dispose:)
 					)
-					(eatIt (messager say: N_ROOM 0 25))
-					(else (messager say: N_ROOM 0 26))
+					(eatIt
+						(messager say: N_ROOM NULL C_EATACORN))
+					(else
+						(messager say: N_ROOM NULL C_PUT_REGULAR_ACORN)
+					)
 				)
 				(ego setCycle: BegLoop self)
 			)
 			(3
-				(if eatIt (= eatIt 0) (EatAcorn))
+				(if eatIt
+					(= eatIt 0)
+					(EatAcorn)
+				)
 				(NormalEgo)
 				(ego setScript: 0)
 				(HandsOn)
@@ -954,11 +1004,12 @@
 )
 
 (instance stagBolts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (self cue:))
+			(0
+				(HandsOff)
+				(self cue:)
+			)
 			(1
 				(stag setLoop: 4 cel: 7 setCycle: BegLoop self)
 			)
@@ -985,8 +1036,6 @@
 )
 
 (instance oMyGod of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1003,7 +1052,7 @@
 				)
 				(self cue:)
 			)
-			(2 (messager say: N_DRYAD 0 C_OHMYGOD 1 self))
+			(2 (messager say: N_DRYAD NULL C_OHMYGOD 1 self))
 			(3
 				(dryad setCycle: CycleTo 3 1)
 				(= seconds 3)
@@ -1019,14 +1068,12 @@
 )
 
 (instance egoToPlant of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(stag setScript: stagBolts)
-				(messager say: N_ROOM 0 C_KILLEDFLOWER 0 self)
+				(messager say: N_ROOM NULL C_KILLEDFLOWER 0 self)
 			)
 			(1
 				(dryad
@@ -1054,7 +1101,7 @@
 				(= seconds 2)
 			)
 			(5
-				(++ local5)
+				(++ spitCount)
 				(ego setLoop: 3 setCycle: EndLoop self)
 			)
 			(6
@@ -1086,7 +1133,7 @@
 				(ego setCycle: BegLoop self)
 			)
 			(10
-				(if (< local5 4)
+				(if (< spitCount 4)
 					(self changeState: 5)
 				else
 					(self cue:)
@@ -1098,8 +1145,6 @@
 )
 
 (instance egoToStag of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1115,9 +1160,15 @@
 			)
 			(1
 				(cond 
-					((Btst fStagHurt) (messager say: N_ROOM 0 C_HURTSTAG 0 self))
-					(usedFlameDart (messager say: N_ROOM 0 C_USEDFLAMEDART 0 self))
-					(else (messager say: N_ROOM 0 C_GETREGULARACORN 2 self))
+					((Btst fStagHurt)
+						(messager say: N_ROOM NULL C_HURTSTAG 0 self)
+					)
+					(usedFlameDart
+						(messager say: N_ROOM NULL C_USEDFLAMEDART 0 self)
+					)
+					(else
+						(messager say: N_ROOM NULL C_GETREGULARACORN 2 self)
+					)
 				)
 				(self cue:)
 			)
@@ -1145,8 +1196,6 @@
 )
 
 (instance goToSleep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1155,11 +1204,11 @@
 			)
 			(1
 				(= currentPalette 1)
-				(curRoom drawPic: 76 6)
+				(curRoom drawPic: 76 IRISIN)
 				(= seconds 3)
 			)
 			(2
-				(messager say: N_ROOM 0 C_GOTOSLEEP 1)
+				(messager say: N_ROOM NULL C_GOTOSLEEP 1)
 				(= seconds 4)
 			)
 			(3
@@ -1175,22 +1224,24 @@
 )
 
 (instance castADart of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if
-				(and (cast contains: stag) (not (ego script?)))
+				(if (and (cast contains: stag) (not (ego script?)))
 					(Face ego stag)
-					(CastFlame stag self)
+					(CastDart stag self)
 				else
-					(CastFlame 0 self)
+					(CastDart 0 self)
 				)
 			)
 			(1
-				(if (== dryadState dryadHere) (= dryadHostile TRUE))
-				(if (cast contains: stag) (= attackedStag TRUE) (Bset fStagHurt))
+				(if (== dryadState dryadHere)
+					(= dryadHostile TRUE)
+				)
+				(if (cast contains: stag)
+					(= attackedStag TRUE)
+					(Bset fStagHurt)
+				)
 				(= usedFlameDart TRUE)
 				(= ticks 6)
 			)
@@ -1200,22 +1251,20 @@
 )
 
 (instance aidMeScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(SolvePuzzle POINTS_AGREETOHELPDRYAD 1)
-				(messager say: N_ROOM 0 C_AIDME 0 self)
+				(SolvePuzzle f76AgreeToHelp 1)
+				(messager say: N_ROOM NULL C_AIDME 0 self)
 				(Bset fAgreedToHelpDryad)
 			)
 			(1
 				(if (ego has: iSeed)
 					(switch
 						(Print
-							addText: 7 0 27 1 0 0 76
-							addButton: sayYes 7 0 C_YESORNO 1 0 42 76
-							addButton: sayNo 7 0 C_YESORNO 2 0 60 76
+							addText: N_ROOM NULL C_ASK_FOR_SEED 1 0 0 76
+							addButton: sayYes N_ROOM NULL C_YESORNO 1 0 42 76
+							addButton: sayNo N_ROOM NULL C_YESORNO 2 0 60 76
 							init:
 						)
 						(sayYes (SayYesToDryad))
@@ -1230,13 +1279,14 @@
 )
 
 (instance priorTo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 30))
+			(0
+				(HandsOff)
+				(= ticks 30)
+			)
 			(1
-				(messager say: N_ROOM 0 C_STARTLEDSTAG 1 self)
+				(messager say: N_ROOM NULL C_STARTLEDSTAG 1 self)
 			)
 			(2
 				(stag setScript: stagBolts)
@@ -1247,15 +1297,15 @@
 )
 
 (instance goTo77 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo (+ (ego x?) 30) (ego y?) self)
 			)
-			(1 (curRoom newRoom: 77))
+			(1
+				(curRoom newRoom: 77)
+			)
 		)
 	)
 )
@@ -1295,7 +1345,7 @@
 	(method (init)
 		(= nightPalette 2076)
 		(PalVary PALVARYTARGET 2076)
-		(kernel_128 1076)
+		(AssertPalette 1076)
 		(= font userFont)
 		(super init: dryadBust dryadEye dryadMouth &rest)
 	)
@@ -1326,8 +1376,6 @@
 )
 
 (instance egoActions of Actions
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb V_ACORN)

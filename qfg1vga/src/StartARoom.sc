@@ -20,11 +20,9 @@
 	else
 		(theIconBar enable:)
 	)
-	(= spellMask
-		(& spellMask
-			(| SPELL_OPEN SPELL_DETECT SPELL_TRIGGER SPELL_DAZZLE
-				SPELL_ZAP SPELL_CALM SPELL_FLAMEDART SPELL_FETCH
-			)
+	(&= spellMask
+		(| SPELL_OPEN SPELL_DETECT SPELL_TRIGGER SPELL_DAZZLE
+			SPELL_ZAP SPELL_CALM SPELL_FLAMEDART SPELL_FETCH
 		)
 	)		 
 	(if modelessDialog
@@ -36,7 +34,7 @@
 	(if (== nr ENDGAME)
 		(Bclr fInMainGame)
 		(FixTime 12 0)
-		(= Night 0)
+		(= Night FALSE)
 		(= currentPalette 0)
 	)
 	(if (and
@@ -45,22 +43,19 @@
 		)
 		(= hitDaggers 0)
 	)
-	(= index 0)
-	(while (< index NUM_INVITEMS)
+	(for ((= index 0)) (< index NUM_INVITEMS) ((++ index))
 		((inventory at: index) amtDropped: 0)
-		(++ index)
 	)
 	((ScriptID GLORYINV 2) release: init:)
 	(LoadMany FALSE
 		EXTRA JUMP CHASE DOOR PRINTD TELLER WARE STATUSBAR
-		SLEEP REST TIME CASTCALM CASTOPEN CASTDAZZ CASTFLAME
+		SLEEP REST TIME CASTCALM CASTOPEN CASTDAZZ CASTDART
 		TALKOBJ TARGET REVERSE FOLLOW WANDER PRAGFAIL EGOSEZ
 	)
 	(DisposeScript STARTAROOM)
 )
 
 (instance dumpMeMaybe of Code
-	
 	(method (doit nr)
 		(if (nr respondsTo: #dumpIt)
 			((ScriptID GLORYINV 2) delete: nr)

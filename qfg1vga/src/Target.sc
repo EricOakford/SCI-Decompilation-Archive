@@ -24,12 +24,14 @@
 			)
 			(switch (gClient view?)
 				(522
-					(self getHurt: (+ 5 (/ [egoStats 23] 3)))
+					(self getHurt: (+ 5 (/ [egoStats FLAMEDART] 3)))
 				)
 				(524
-					(self getHurt: (+ 5 (/ [egoStats 0] 10)))
+					(self getHurt: (+ 5 (/ [egoStats STR] 10)))
 				)
-				(else  (self getHurt: 1))
+				(else
+					(self getHurt: 1)
+				)
 			)
 			(gClient setPri: 15)
 			((gClient script?) changeState: 3)

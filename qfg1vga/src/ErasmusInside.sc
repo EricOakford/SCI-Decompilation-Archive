@@ -1392,7 +1392,7 @@
 			(5
 				(Bset fErasmusWarpOut)
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 -32761)
+				(curRoom drawPic: 400 (| BLACKOUT IRISOUT))
 				(= ticks 18)
 			)
 			(6 (curRoom newRoom: 28))

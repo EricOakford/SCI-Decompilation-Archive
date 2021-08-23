@@ -184,6 +184,8 @@
 						(OneOf curRoomNum
 							10 13 15 16 29 30 31 41 65 67 73
 							76 82 83 84 91 93 94 96 97 141
+							;EO: additional rooms to restore messages
+							64
 						)
 						((= evt (Event new:)) type: mouseDown message: V_OPEN)
 						(if (not (mouseDownHandler handleEvent: evt))
@@ -224,6 +226,8 @@
 						(OneOf curRoomNum
 							10 13 14 15 22 29 30 31 55 58 65 67 73
 							76 77 78 82 83 84 91 93 94 96 97 141
+							;EO: additional rooms to restore messages
+							64
 						)
 						((= evt (Event new:)) type: mouseDown message: V_DETECT)
 						(if (not (mouseDownHandler handleEvent: evt))
@@ -264,6 +268,8 @@
 						(OneOf curRoomNum
 							13 58 15 29 30 31 65 73
 							82 83 91 96 97 141
+							;EO: additional rooms to restore messages
+							64
 						)
 						((= evt (Event new:)) type: mouseDown message: V_TRIGGER)
 						(if (not (mouseDownHandler handleEvent: evt))
@@ -308,6 +314,8 @@
 							27 33 34 35 36 42 43 44 51 52 56 57
 							61 62 63 69 71 72 74 75 79 80 81 85
 							86 92
+							;EO: additional rooms to restore messages
+							64
 						)
 						((= evt (Event new:)) type: mouseDown message: V_DAZZLE)
 						(if (not (mouseDownHandler handleEvent: evt))
@@ -386,6 +394,8 @@
 							93 94 96 97 141 11 12 17 18 19 23 24 25
 							26 27 33 34 35 36 42 43 44 51 52 56 57
 							61 62 63 69 71 72 74 75 79 80 81 85 86 92
+							;EO: additional rooms to restore messages
+							64
 						)
 						((= evt (Event new:)) type: mouseDown message: V_CALM)
 						(if (not (mouseDownHandler handleEvent: evt))
@@ -449,6 +459,8 @@
 					(
 						(OneOf curRoomNum
 							13 15 16 29 30 31 54 65 73 91 96 97 141
+							;EO: additional rooms to restore messages
+							64
 						)
 						((= evt (Event new:)) type: mouseDown message: V_FETCH)
 						(if (not (mouseDownHandler handleEvent: evt))

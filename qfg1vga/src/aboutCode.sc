@@ -13,8 +13,6 @@
 	sequenceNum =  1
 )
 (instance aboutCode of Code
-	(properties)
-	
 	(method (doit &tmp [buf1 50] [buf2 50])
 		(if (== sequenceNum 8)
 			(Message MsgGet ABOUT N_ABOUT NULL NULL 8 @buf1)
@@ -38,8 +36,6 @@
 )
 
 (instance dummyCue of Script
-	(properties)
-	
 	(method (cue)
 		(if (<= (++ sequenceNum) 8)
 			(aboutCode doit:)

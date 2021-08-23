@@ -33,13 +33,13 @@
 		
 		(PushOnScreen self)
 		
-		(= top (- top yOffset))
+		(-= top yOffset)
 		(= lsTop (- top 3))
 		(= lsLeft (- left 20))
 		(= lsRight (+ right 21))
 		(= lsBottom (+ bottom 4))
 		(= underBits
-			(Graph GSaveBits lsTop lsLeft lsBottom lsRight 1)
+			(Graph GSaveBits lsTop lsLeft lsBottom lsRight VMAP)
 		)
 		(if (!= priority -1)
 			(= pUnderBits
@@ -52,18 +52,18 @@
 			priority
 			wMap
 		)
-		(Graph GShowBits (- top 7) (- right 11) (+ top 13) (+ right 12) 1)
-		(Graph GShowBits (- top 7) (- left 11) (+ top 13) (+ left 11) 1)
+		(Graph GShowBits (- top 7) (- right 11) (+ top 13) (+ right 12) VMAP)
+		(Graph GShowBits (- top 7) (- left 11) (+ top 13) (+ left 11) VMAP)
 		(Graph GShowBits lsTop lsLeft lsBottom lsRight VMAP)
-		(= bottom (+ bottom 4))
-		(= right (+ right 4))
+		(+= bottom 4)
+		(+= right 4)
 		(= type $83)
 		(super open:)
 	)
 	
 	(method (dispose)
-		(= top (- top 3))
-		(= right (- right 3))
+		(-= top 3)
+		(-= right 3)
 		(SetPort 0)
 		(Graph GRestoreBits underBits)
 		(Graph GRestoreBits pUnderBits)
