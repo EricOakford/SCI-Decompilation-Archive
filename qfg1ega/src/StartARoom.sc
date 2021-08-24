@@ -12,21 +12,26 @@
 
 (procedure (StartARoom roomNum &tmp index obj event)
 	(theGame setCursor: waitCursor TRUE)
+	
+	;get rid of all events
 	(while ((= event (Event new:)) type?)
 		(event dispose:)
 	)
 	(event dispose:)
+	
+	;don't draw menu in these rooms
 	(if (OneOf roomNum NOTICE NOTICE2 INTRO CHARSEL CHARALLOC SPEED ENDGAME CHARSAVE)
 		(TheMenuBar hide: state: FALSE)
 	else
 		(TheMenuBar draw:)
 	)
-	(= index 1)
-	(while (<= index NUM_INVITEMS)
+	
+	;clean up dropped inventory
+	(for ((= index 1)) (<= index NUM_INVITEMS) ((++ index))
 		(= [invDropped index] 0)
-		(++ index)
 	)
 	(cls)
+	;dispose scripts that are only occasionally used
 	(LoadMany FALSE
 		DEMO EXTRA DCICON JUMP SMOOPER REVERSE CHASE FOLLOW WANDER RFEATURE WINDOW CAT FILE
 		DOORS STRING TALKOBJ KEYCURSOR DEBUG TARGET STATUSBAR
@@ -35,18 +40,22 @@
 		vGoblin vSaurus vDragon vMantray vCheetaur vTroll vBrigand GHOSTS CEMETERY MAZEBUG
 		232 221 222 223 224 220 216 217 218
 	)
+	
+	;release nodes to prevent fragmentation
 	(mouseDownHandler release:)
 	(keyDownHandler release:)
 	(directionHandler release:)
+	
+	;make sure it's the correct time
 	(FixTime)
+
 	(if (== roomNum ENDGAME)
 		(Bclr fInMainGame)
 		(FixTime 12 0)
 		(= Night FALSE)
 		(= currentPalette 0)
 	)
-	(if
-	(and (not monsterNum) (!= daggerRoom 73))
+	(if (and (not monsterNum) (!= daggerRoom 73))
 		(= hitDaggers 0)
 	)
 )

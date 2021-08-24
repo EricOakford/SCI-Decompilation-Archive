@@ -128,7 +128,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_TROLLCAVE2)
+		(Bset fBeenIn89)
 		(super dispose:)
 	)
 	
@@ -403,7 +403,7 @@
 			(1
 				(switch searchWhat
 					(searchTROLL
-						(if (Btst SHAVED_FRED)
+						(if (Btst fShavedFred)
 							(HighPrint 89 30)
 							;You find nothing on the Troll.
 						else
@@ -412,13 +412,13 @@
 						)
 					)
 					(searchBEARD
-						(if (Btst SHAVED_FRED)
+						(if (Btst fShavedFred)
 							(HighPrint 89 32)
 							;You find no more beard hair on the dead Troll.
 						else
 							(HighPrint 89 33)
 							;You cut off the Troll's beard and put it away.
-							(Bset SHAVED_FRED)
+							(Bset fShavedFred)
 							(ego get: iTrollBeard)
 						)
 					)
@@ -442,7 +442,7 @@
 				(ego posn: 293 59 setMotion: MoveTo 261 63 self)
 			)
 			(1
-				(if (not (Btst VISITED_TROLLCAVE2))
+				(if (not (Btst fBeenIn89))
 					(Print 89 2 #at -1 120 #width 300 #mode teJustCenter)
 					; As your eyes adjust to the darkness, you see by the light of the fungus that this passageway twists its way through the mountain.
 					;It is cold in here, and you can smell stagnant water and faint hints of decay.

@@ -17,12 +17,54 @@
 
 (local
 	local0
-	[upPts 29] = [159 90 154 86 158 85 162 83 174 82 184 84 193 86 206 88 219 90 233 85 248 81 264 78 283 74 295 68 -32768]
-	[waterPts 15] = [274 94 261 100 245 108 238 114 228 120 214 125 199 128 -32768]
-	[awayPts 28] = [128 145 149 139 175 131 199 123 223 115 247 107 271 99 295 91 319 83 -32768 140 145 122 122 137 127 129 139]
+	upPts = [
+		159 90
+		154 86
+		158 85
+		162 83
+		174 82
+		184 84
+		193 86
+		206 88
+		219 90
+		233 85
+		248 81
+		264 78
+		283 74
+		295 68
+		PATHEND
+		]
+	waterPts = [
+		274 94
+		261 100
+		245 108
+		238 114
+		228 120
+		214 125
+		199 128
+		PATHEND
+		]
+	awayPts = [
+		128 145
+		149 139
+		175 131
+		199 123
+		223 115
+		247 107
+		271 99
+		295 91
+		319 83
+		PATHEND
+		]
+	sparkleXY = [
+		140 145
+		122 122
+		137 127
+		129 139
+		]
 	heroScriptTimer
 	saveBits
-	[local75 10] = [66 66 3 3 3 2 160 120]
+	local75 = [66 66 3 3 3 2 160 120]
 )
 (procedure (NextScript)
 	(if modelessDialog
@@ -48,9 +90,7 @@
 	(curRoom newRoom: CHARSAVE)
 )
 
-(instance creditWindow of SysWindow
-	(properties)
-)
+(instance creditWindow of SysWindow)
 
 (instance hairL of Prop
 	(properties
@@ -121,37 +161,27 @@
 	)
 )
 
-(instance carpet of Actor
-	(properties)
-)
+(instance carpet of Actor)
 
 (instance upPath of Path
-	(properties)
-	
 	(method (at n)
 		(return [upPts n])
 	)
 )
 
 (instance waterTurn of Path
-	(properties)
-	
 	(method (at n)
 		(return [waterPts n])
 	)
 )
 
 (instance awayPath of Path
-	(properties)
-	
 	(method (at n)
 		(return [awayPts n])
 	)
 )
 
-(instance bigCarpet of Actor
-	(properties)
-)
+(instance bigCarpet of Actor)
 
 (instance claw1 of Prop
 	(properties
@@ -230,8 +260,6 @@
 )
 
 (instance awardScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (NextScript))
@@ -240,8 +268,6 @@
 )
 
 (instance post1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 1))
@@ -257,8 +283,6 @@
 )
 
 (instance post2 of Script
-	(properties)
-	
 	(method (dispose)
 		(if (and (>= state 1) modelessDialog)
 			(modelessDialog dispose:)
@@ -291,8 +315,6 @@
 )
 
 (instance heroScript of Script
-	(properties)
-	
 	(method (init)
 		(hairL setCycle: Forward cycleSpeed: 6)
 		(hairM setCycle: Forward cycleSpeed: 6)
@@ -324,21 +346,19 @@
 )
 
 (instance bigScript of Script
-	(properties)
-	
 	(method (init &tmp temp0 temp1)
 		(bck init:)
 		(mid init:)
 		(frt init:)
 		(= temp0
 			(switch howFast
-				(0 4)
-				(1 3)
+				(slow 4)
+				(medium 3)
 				(else  2)
 			))
 		(= temp1
 			(switch howFast
-				(0 2)
+				(slow 2)
 				(else  1)
 			))
 		(bck setStep: temp0 temp1)
@@ -372,8 +392,6 @@
 )
 
 (instance flyScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -484,8 +502,6 @@
 )
 
 (instance cornyCredits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

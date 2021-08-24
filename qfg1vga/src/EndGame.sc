@@ -82,7 +82,6 @@
 )
 
 (class lookView of View
-	
 	(method (doVerb theVerb)
 		(if (== theVerb V_LOOK)
 			(user canInput: FALSE)
@@ -105,13 +104,9 @@
 	)
 )
 
-(instance flashBack of Timer
-	(properties)
-)
+(instance flashBack of Timer)
 
 (instance nextRoomCue of Timer
-	(properties)
-	
 	(method (cue)
 		(nextRoomCue dispose: delete:)
 		(flashBack dispose: delete:)
@@ -932,8 +927,6 @@
 )
 
 (instance clickOnPeople of Script
-	(properties)
-	
 	(method (init)
 		(User canInput: FALSE)
 		(theGame setCursor: waitCursor TRUE)

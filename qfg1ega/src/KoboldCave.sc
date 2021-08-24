@@ -2,7 +2,7 @@
 (script# KOBOLD) ;15
 (include game.sh)
 (use Main)
-(use ThrowDagger1)
+(use ThrowKnife)
 (use ThrowRock)
 (use Intrface)
 (use Target)
@@ -29,8 +29,8 @@
 )
 
 (local
-	[local0 5] = [79 113 172 226 306]
-	[local5 5] = [204 189 193 191 203]
+	local0 = [79 113 172 226 306]
+	local5 = [204 189 193 191 203]
 	newView
 	local11
 	theCycles
@@ -40,13 +40,15 @@
 	local16
 	local17
 	newSound
-	[local19 11] = [17 44 17 251 101 183 283 316 102 244 169]
-	[local30 11] = [47 155 134 186 47 145 124 212 161 51 55]
-	[local41 5] = [-24 24 -17 17 -5]
-	[local46 5] = [6 6 10 10 13]
+	ballX = [17 44 17 251 101 183 283 316 102 244 169]
+	ballY = [47 155 134 186 47 145 124 212 161 51 55]
+	local41 = [-24 24 -17 17 -5]
+	local46 = [6 6 10 10 13]
 )
 (procedure (KoboldFight param1)
-	(if (and param1 (not (Btst FLAG_283))) (HandsOn))
+	(if (and param1 (not (Btst fFlag283)))
+		(HandsOn)
+	)
 	(if fightingKobold
 		(User canControl: FALSE)
 		(if (ego has: iSword)
@@ -65,8 +67,8 @@
 	(return
 		(if
 			(and
-				(not (Btst KOBOLD_AWAKE))
-				(not (Btst DEFEATED_KOBOLD))
+				(not (Btst fKoboldAwake))
+				(not (Btst fKoboldDead))
 				(!= (kobold script?) kobWakeUp)
 			)
 			(kobold setScript: kobWakeUp)
@@ -113,11 +115,11 @@
 )
 
 (procedure (localproc_0079 param1)
-	(Bset KOBOLD_CHEST_SEARCHED)
-	(SolvePuzzle POINTS_TAKEKOBOLDMONEY 5)
+	(Bset fKoboldChestSearched)
+	(SolvePuzzle f15GetTreasure 5)
 	(CenterPrint KOBOLD 0)
 	(if param1 (param1 dispose:))
-	(= koboldIllBits (& koboldIllBits (~ cLMAGENTA)))
+	(&= koboldIllBits (~ cLMAGENTA))
 	(ego illegalBits: koboldIllBits get: iGold 10 get: iSilver 60)
 )
 
@@ -149,7 +151,7 @@
 
 (procedure (localproc_01b5 param1 param2 param3)
 	(if (CastSpell param1)
-		(Bset FIGHTING_KOBOLD)
+		(Bset fFightingKobold)
 		(AwakenKobold)
 		(ego setScript: (ScriptID param2 param3))
 	)
@@ -157,28 +159,30 @@
 
 (procedure (SaidKoboldRoom param1 param2 param3)
 	(cond 
-		((Btst KOBOLD_AWAKE) (CenterPrint KOBOLD 1))
+		((Btst fKoboldAwake) (CenterPrint KOBOLD 1))
 		((CastSpell param1) (ego setScript: (ScriptID param2 param3)))
 	)
 )
 
 (class KScript of Script
-	(properties)
-	
 	(method (cue)
 		(if client (super cue:))
 	)
 )
 
 (class ballScript of KScript
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((Btst DEFEATED_KOBOLD) (client dispose:))
-			(
-			(and (< state 2) (not (client inRect: 10 30 310 200))) (= register 0) (self changeState: 2))
-			(else (super doit:))
+			((Btst fKoboldDead)
+				(client dispose:)
+			)
+			((and (< state 2) (not (client inRect: 10 30 310 200)))
+				(= register 0)
+				(self changeState: 2)
+			)
+			(else
+				(super doit:)
+			)
 		)
 	)
 	
@@ -199,8 +203,8 @@
 					(client
 						setMotion:
 							MoveTo
-							[local19 register]
-							[local30 (= register (Random 0 2))]
+							[ballX register]
+							[ballY (= register (Random 0 2))]
 							self
 					)
 				)
@@ -212,7 +216,7 @@
 					(>= (= register (+ register (Random 1 4))) 11) (= register 0) (self cue:))
 					(else
 						(client
-							setMotion: MoveTo [local19 register] [local30 (= state 0)] self
+							setMotion: MoveTo [ballX register] [ballY (= state 0)] self
 						)
 					)
 				)
@@ -248,7 +252,7 @@
 			(Load SOUND (SoundFX 33))
 			(LoadMany VIEW vEgoMagicFetch vEgoMagicDetect vEgoMagicFlameDart vExplosion)
 		)
-		(if (not (Btst DEFEATED_KOBOLD))
+		(if (not (Btst fKoboldDead))
 			(Load SCRIPT 111)
 			(Load SCRIPT 117)
 			(Load SOUND (SoundFX 45))
@@ -261,13 +265,13 @@
 				(Load VIEW vEgoThrowDagger)
 			)
 		)
-		(if (not (Btst KOBOLD_CHEST_UNLOCKED))
+		(if (not (Btst fKoboldChestUnlocked))
 			(Load SCRIPT 116)
 			(Load SOUND (SoundFX 36))
 			(Load SOUND (SoundFX 62))
 		)
 		(Load VIEW vEgoThrowing)
-		(SolvePuzzle POINTS_ENTERKOBOLDCAVE 2)
+		(SolvePuzzle f15EnterCave 2)
 		(StatusLine enable:)
 		(super init:)
 		(keyDownHandler add: self)
@@ -277,23 +281,27 @@
 		(ego posn: 1 63 init:)
 		(drip init: setScript: dripper)
 		(dripper cycles: (Random 5 25))
-		(if (not (Btst OBTAINED_TOADSTOOLS)) (toadstools init: setPri: 9))
-		(if (not (Btst KOBOLD_CHEST_UNLOCKED))
+		(if (not (Btst fTookToadstools)) (toadstools init: setPri: 9))
+		(if (not (Btst fKoboldChestUnlocked))
 			(chest init: stopUpd:)
-			(= koboldIllBits (| koboldIllBits cLMAGENTA))
+			(|= koboldIllBits cLMAGENTA)
 		)
-		(if (not (Btst OBTAINED_KOBOLD_KEY))
-			(if egoKoboldBattleLoop (kobKey posn: 52 84))
+		(if (not (Btst fGotKoboldKey))
+			(if egoKoboldBattleLoop
+				(kobKey posn: 52 84)
+			)
 			(kobKey
 				ignoreActors:
 				setPri: (if egoKoboldBattleLoop 5 else 1)
 				init:
 				stopUpd:
 			)
-			(if (not (Btst DEFEATED_KOBOLD)) (kobKey hide:))
+			(if (not (Btst fKoboldDead))
+				(kobKey hide:)
+			)
 		)
-		(if (not (Btst DEFEATED_KOBOLD))
-			(= koboldIllBits (| koboldIllBits cYELLOW))
+		(if (not (Btst fKoboldDead))
+			(|= koboldIllBits cYELLOW)
 			(kobold init:)
 			(= theKobold kobold)
 		)
@@ -302,8 +310,8 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_KOBOLD_CAVE)
-		(Bclr KOBOLD_CHEST_KNOWN)
+		(Bset fBeenIn15)
+		(Bclr fKoboldChestKnown)
 		(super dispose:)
 	)
 	
@@ -344,7 +352,7 @@
 					)
 					(
 						(and
-							(not (Btst DEFEATED_KOBOLD))
+							(not (Btst fKoboldDead))
 							(MouseClaimed kobold event shiftDown)
 						)
 						(SendKoboldSaidEvent event {look kobold})
@@ -352,32 +360,34 @@
 				)
 			)
 			((!= eventType saidEvent))
-			(
-			(and (not (Btst DEFEATED_KOBOLD)) (Said 'chat,ask,awaken')) (CenterPrint KOBOLD 2))
-			((Said 'nap,rest') (CenterPrint KOBOLD 3))
+			((and (not (Btst fKoboldDead)) (Said 'chat,ask,awaken'))
+				(CenterPrint KOBOLD 2)
+			)
+			((Said 'nap,rest')
+				(CenterPrint KOBOLD 3)
+			)
 			((Said 'search')
-				(if (Btst KOBOLD_AWAKE)
+				(if (Btst fKoboldAwake)
 					(CenterPrint KOBOLD 4)
 				else
 					(ego setScript: (ScriptID 112 0))
 				)
 			)
-			(
-			(Said 'get,grab,get/key[<kobold,brass,big,magic,glowing]')
+			((Said 'get,grab,get/key[<kobold,brass,big,magic,glowing]')
 				(cond 
 					((cast contains: kobKey)
 						(= temp1 0)
 						(cond 
 							((> (ego distanceTo: kobKey) 40) (CenterPrint KOBOLD 5))
-							((Btst DEFEATED_KOBOLD) (CenterPrint KOBOLD 6) (= temp1 1))
-							((Btst KOBOLD_AWAKE) (CenterPrint KOBOLD 7))
+							((Btst fKoboldDead) (CenterPrint KOBOLD 6) (= temp1 1))
+							((Btst fKoboldAwake) (CenterPrint KOBOLD 7))
 							((TrySkill STEALTH trySneakKobold 0) (CenterPrint KOBOLD 8) (= temp1 1))
 							(else (CenterPrint KOBOLD 9) (AwakenKobold))
 						)
 						(if temp1
 							(ego get: iBrassKey)
-							(Bset OBTAINED_KOBOLD_KEY)
-							(SolvePuzzle POINTS_TAKEKOBOLDKEY 7)
+							(Bset fGotKoboldKey)
+							(SolvePuzzle f15GetKey 7)
 							(kobKey dispose:)
 						)
 					)
@@ -388,7 +398,7 @@
 			)
 			(
 				(and
-					(Btst KOBOLD_CHEST_KNOWN)
+					(Btst fKoboldChestKnown)
 					(Said 'get,grab,get,move/chest,box,trunk')
 				)
 				(CenterPrint KOBOLD 13)
@@ -402,9 +412,9 @@
 						)
 						(localproc_0079 treasure)
 					)
-					((Btst KOBOLD_CHEST_SEARCHED) (CenterPrint KOBOLD 14))
+					((Btst fKoboldChestSearched) (CenterPrint KOBOLD 14))
 					((not (< (ego distanceTo: chest) 25)) (CenterPrint KOBOLD 15))
-					((not (Btst KOBOLD_CHEST_UNLOCKED)) (CenterPrint KOBOLD 16))
+					((not (Btst fKoboldChestUnlocked)) (CenterPrint KOBOLD 16))
 					(else (localproc_0079 0))
 				)
 			)
@@ -413,7 +423,7 @@
 					(Said 'use,turn,open,unlock/key,chest,box,trunk[/key]')
 					(Said 'put,fill<in/key/hasp')
 				)
-				(if (and (Btst KOBOLD_CHEST_KNOWN) (cast contains: chest))
+				(if (and (Btst fKoboldChestKnown) (cast contains: chest))
 					(CenterPrint KOBOLD 17)
 				else
 					(CenterPrint KOBOLD 18)
@@ -425,10 +435,10 @@
 					(Said 'use,fill/lockpick,(implement,kit<thief)')
 				)
 				(cond 
-					((or (not (Btst KOBOLD_CHEST_KNOWN)) (not (cast contains: chest)))
+					((or (not (Btst fKoboldChestKnown)) (not (cast contains: chest)))
 						(CenterPrint KOBOLD 18)
 					)
-					((Btst KOBOLD_CHEST_UNLOCKED) (CenterPrint KOBOLD 19))
+					((Btst fKoboldChestUnlocked) (CenterPrint KOBOLD 19))
 					((not (< (ego distanceTo: chest) 25)) (NotClose))
 					((not [egoStats PICK]) (CenterPrint KOBOLD 20))
 					(else (ego setScript: (ScriptID 116 0) 0 0))
@@ -436,10 +446,10 @@
 			)
 			((Said 'force,break,pry/chest,box,trunk,hasp,lid')
 				(cond 
-					((or (not (Btst KOBOLD_CHEST_KNOWN)) (not (cast contains: chest)))
+					((or (not (Btst fKoboldChestKnown)) (not (cast contains: chest)))
 						(CenterPrint KOBOLD 21)
 					)
-					((Btst KOBOLD_CHEST_UNLOCKED) (CenterPrint KOBOLD 19))
+					((Btst fKoboldChestUnlocked) (CenterPrint KOBOLD 19))
 					((not (< (ego distanceTo: chest) 25)) (NotClose))
 					(else (ego setScript: (ScriptID 116 0) 0 1))
 				)
@@ -453,7 +463,7 @@
 					(CenterPrint KOBOLD 22)
 				else
 					(CenterPrint KOBOLD 23)
-					(Bset OBTAINED_TOADSTOOLS)
+					(Bset fTookToadstools)
 					(Bset fHaveToadstools)
 					(ego get: iMushroom 6)
 					(toadstools dispose:)
@@ -475,7 +485,7 @@
 					)
 					((Said '[<at,around][/!*,cave,room,area,wall,fungus]')
 						(CenterPrint KOBOLD 27)
-						(if (not (Btst DEFEATED_KOBOLD)) (CenterPrint KOBOLD 28))
+						(if (not (Btst fKoboldDead)) (CenterPrint KOBOLD 28))
 					)
 					((and (cast contains: kobKey) (Said '/key')) (CenterPrint KOBOLD 29))
 					((Said '/table,mushroom,toadstool,food')
@@ -486,9 +496,9 @@
 						)
 					)
 					((Said '/kobold,creature,man,wizard')
-						(if (not (Btst DEFEATED_KOBOLD))
+						(if (not (Btst fKoboldDead))
 							(CenterPrint KOBOLD 32)
-							(if (not (Btst OBTAINED_KOBOLD_KEY)) (CenterPrint KOBOLD 33))
+							(if (not (Btst fGotKoboldKey)) (CenterPrint KOBOLD 33))
 						else
 							(CenterPrint KOBOLD 34)
 						)
@@ -501,16 +511,16 @@
 						(cond 
 							((cast contains: treasure) (CenterPrint KOBOLD 35))
 							((not (cast contains: chest)) (CenterPrint KOBOLD 36))
-							((not (Btst KOBOLD_CHEST_KNOWN)) (CenterPrint KOBOLD 37))
-							((Btst KOBOLD_CHEST_SEARCHED) (CenterPrint KOBOLD 38))
-							((Btst KOBOLD_CHEST_UNLOCKED) (CenterPrint KOBOLD 39))
+							((not (Btst fKoboldChestKnown)) (CenterPrint KOBOLD 37))
+							((Btst fKoboldChestSearched) (CenterPrint KOBOLD 38))
+							((Btst fKoboldChestUnlocked) (CenterPrint KOBOLD 39))
 							(else (CenterPrint KOBOLD 40))
 						)
 					)
 					((Said '/chest,box,trunk')
 						(cond 
 							((not (cast contains: chest)) (CenterPrint KOBOLD 41))
-							((Btst KOBOLD_CHEST_KNOWN) (CenterPrint KOBOLD 42))
+							((Btst fKoboldChestKnown) (CenterPrint KOBOLD 42))
 							(else (CenterPrint KOBOLD 43))
 						)
 					)
@@ -518,7 +528,7 @@
 			)
 			((Said 'run,escape')
 				(CenterPrint KOBOLD 44)
-				(if (not (Btst DEFEATED_KOBOLD)) (CenterPrint KOBOLD 45))
+				(if (not (Btst fKoboldDead)) (CenterPrint KOBOLD 45))
 				(if fightingKobold (self setScript: (ScriptID 117 1)))
 			)
 			(
@@ -527,7 +537,7 @@
 				)
 				(cond 
 					(fightingKobold (CenterPrint KOBOLD 46))
-					((Btst DEFEATED_KOBOLD) (CenterPrint KOBOLD 47))
+					((Btst fKoboldDead) (CenterPrint KOBOLD 47))
 					((not (if (ego has: iSword) else (ego has: iDagger))) (CenterPrint KOBOLD 48))
 					(else (self setScript: (ScriptID 117 0)))
 				)
@@ -535,9 +545,9 @@
 			((Said 'throw>')
 				(cond 
 					(fightingKobold (event claimed: 1) (CenterPrint KOBOLD 49))
-					((Btst DEFEATED_KOBOLD))
-					((Said '/dagger') (KnifeCast kobold))
-					((Said '/boulder') (RockCast kobold))
+					((Btst fKoboldDead))
+					((Said '/dagger') (ThrowKnife kobold))
+					((Said '/boulder') (ThrowRock kobold))
 				)
 			)
 			((Said 'cast>')
@@ -555,14 +565,14 @@
 					(-1)
 					(0 (event claimed: FALSE))
 					(DAZZLE
-						(if (not (Btst DEFEATED_KOBOLD))
+						(if (not (Btst fKoboldDead))
 							(localproc_01b5 20 113 0)
 						else
 							(event claimed: FALSE)
 						)
 					)
 					(FLAMEDART
-						(if (not (Btst DEFEATED_KOBOLD))
+						(if (not (Btst fKoboldDead))
 							(localproc_01b5 23 110 0)
 						else
 							(event claimed: FALSE)
@@ -576,7 +586,7 @@
 					(DETMAGIC (SaidKoboldRoom 18 113 1))
 					(OPEN
 						(if
-						(and (not (Btst KOBOLD_CHEST_UNLOCKED)) (cast contains: chest))
+						(and (not (Btst fKoboldChestUnlocked)) (cast contains: chest))
 							(SaidKoboldRoom 17 115 0)
 						else
 							(CenterPrint KOBOLD 51)
@@ -584,7 +594,7 @@
 					)
 					(TRIGGER
 						(if
-						(and (not (Btst KOBOLD_CHEST_UNLOCKED)) (cast contains: chest))
+						(and (not (Btst fKoboldChestUnlocked)) (cast contains: chest))
 							(SaidKoboldRoom 19 115 1)
 						else
 							(CenterPrint KOBOLD 52)
@@ -592,7 +602,7 @@
 					)
 					(FETCH
 						(if
-						(and (not (Btst DEFEATED_KOBOLD)) (cast contains: kobKey))
+						(and (not (Btst fKoboldDead)) (cast contains: kobKey))
 							(SaidKoboldRoom 24 114 1)
 						else
 							(CenterPrint KOBOLD 53)
@@ -625,9 +635,9 @@
 	)
 	
 	(method (doit)
-		(if (and (< (ego distanceTo: chest) 25) (not (Btst KOBOLD_CHEST_KNOWN)))
+		(if (and (< (ego distanceTo: chest) 25) (not (Btst fKoboldChestKnown)))
 			(CenterPrint KOBOLD 54)
-			(Bset KOBOLD_CHEST_KNOWN)
+			(Bset fKoboldChestKnown)
 		)
 		(super doit:)
 	)
@@ -653,7 +663,7 @@
 				)
 			)
 			(1
-				(Bset KOBOLD_CHEST_UNLOCKED)
+				(Bset fKoboldChestUnlocked)
 				((= newSound (Sound new:))
 					number: (SoundFX 62)
 					priority: 15
@@ -766,8 +776,8 @@
 	)
 	
 	(method (init)
-		(Bclr FLAG_280)
-		(Bclr FLAG_281)
+		(Bclr fFlag280)
+		(Bclr fFlag281)
 		(ballSound number: (SoundFX 34) init:)
 		(ballHits number: (SoundFX 45) init:)
 		(if (ego knows: FLAMEDART)
@@ -778,7 +788,7 @@
 		(if (< numColors 8) (kobWin color: vBLACK back: vWHITE))
 		(if
 			(or
-				(not (Btst VISITED_KOBOLD_CAVE))
+				(not (Btst fBeenIn15))
 				(and
 					(not Night)
 					(!= Day dayKoboldAwakened)
@@ -793,7 +803,7 @@
 	)
 	
 	(method (dispose)
-		(Bclr KOBOLD_AWAKE)
+		(Bclr fKoboldAwake)
 		(ballHits dispose:)
 		(ballSound dispose:)
 		(if newView (newView dispose:))
@@ -872,7 +882,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset KOBOLD_AWAKE)
+				(Bset fKoboldAwake)
 				(client setCycle: EndLoop)
 				(= cycles 12)
 			)
@@ -891,8 +901,8 @@
 	
 	(method (doit)
 		(localproc_0138)
-		(if (and (Btst FLAG_280) (== state 0))
-			(Bclr FLAG_280)
+		(if (and (Btst fFlag280) (== state 0))
+			(Bclr fFlag280)
 			(self changeState: 3)
 		)
 		(super doit:)
@@ -901,7 +911,7 @@
 	(method (changeState newState &tmp clientLoop)
 		(switch (= state newState)
 			(0
-				(Bset KOBOLD_AWAKE)
+				(Bset fKoboldAwake)
 				(= dayKoboldAwakened Day)
 				(client view: vKoboldSitting cel: 0 setCycle: 0)
 				(localproc_0138)
@@ -916,7 +926,7 @@
 						(= cycles (Random 25 50))
 						(= local11 0)
 					)
-					((and (Btst FIGHTING_KOBOLD) (not (Btst FLAG_281))) (= cycles (Random 5 15)))
+					((and (Btst fFightingKobold) (not (Btst fFlag281))) (= cycles (Random 5 15)))
 					(koboldCycles 
 						(= cycles koboldCycles)
 						(= koboldCycles 0)
@@ -928,7 +938,7 @@
 			(1
 				(client view: vKoboldSitting)
 				(cond 
-					((and (Btst FIGHTING_KOBOLD) (not (Btst FLAG_281))) (client setScript: castRev))
+					((and (Btst fFightingKobold) (not (Btst fFlag281))) (client setScript: castRev))
 					(theCycles (= theCycles 0) (client setScript: castTele))
 					(else (client view: vKoboldMagic cycleSpeed: 0 setCycle: EndLoop self))
 				)
@@ -1014,8 +1024,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Btst KOBOLD_CASTING_REVERSAL))
-					(Bset KOBOLD_CASTING_REVERSAL)
+				(if (not (Btst fKoboldCastingReversal))
+					(Bset fKoboldCastingReversal)
 					(localproc_003c 7 15 58)
 				)
 				(client
@@ -1028,7 +1038,7 @@
 				(= cycles 10)
 			)
 			(1
-				(Bset FLAG_281)
+				(Bset fFlag281)
 				(client setScript: kobAwake)
 			)
 		)
@@ -1089,7 +1099,7 @@
 			)
 			(1
 				(cond 
-					((Btst KOBOLD_CHEST_EXPLODED)
+					((Btst fKoboldChestExploded)
 						(EgoDead 15 59
 							#title {Your plan seems to have backfired}
 							#icon vKoboldCave 2 6
@@ -1119,7 +1129,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (Btst DEFEATED_KOBOLD)
+				(if (Btst fKoboldDead)
 					(self dispose:)
 				else
 					(if newView
@@ -1161,8 +1171,8 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset DEFEATED_KOBOLD)
-				(Bclr KOBOLD_AWAKE)
+				(Bset fKoboldDead)
+				(Bclr fKoboldAwake)
 				(ego setScript: 0)
 				(curRoom setScript: 0)
 				(= koboldIllBits (& koboldIllBits (~ cYELLOW)))
@@ -1173,7 +1183,7 @@
 					cycleSpeed: 1
 					setCycle: EndLoop self
 				)
-				(if (not (Btst OBTAINED_KOBOLD_KEY))
+				(if (not (Btst fGotKoboldKey))
 					(kobKey
 						show:
 						illegalBits: 0
@@ -1191,7 +1201,7 @@
 			(1
 				(= monsterNum (= monsterHealth 0))
 				(if (or (== heroType FIGHTER) (== heroType MAGIC_USER))
-					(SolvePuzzle POINTS_KILLKOBOLD 10)
+					(SolvePuzzle f15BeatKobold 10)
 				)
 				(cSound number: 20 loop: -1 play:)
 				(if fightingKobold
@@ -1213,7 +1223,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (Btst VISITED_KOBOLD_CAVE)) (localproc_003c 7 15 62))
+				(if (not (Btst fBeenIn15)) (localproc_003c 7 15 62))
 				(ego setMotion: MoveTo 65 63 self)
 			)
 			(1

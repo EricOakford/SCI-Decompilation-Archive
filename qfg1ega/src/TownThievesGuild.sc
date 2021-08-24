@@ -129,7 +129,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_THIEVES_GUILD)
+		(Bset fBeenIn332)
 		(super dispose:)
 	)
 	
@@ -539,7 +539,7 @@
 					posn: 77 143
 					init:
 				)
-				(if (not (Btst VISITED_THIEVES_GUILD)) (LookAround))
+				(if (not (Btst fBeenIn332)) (LookAround))
 				(ego cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(1
@@ -554,7 +554,7 @@
 				)
 			)
 			(2
-				(if (Btst VISITED_THIEVES_GUILD) (self changeState: 40))
+				(if (Btst fBeenIn332) (self changeState: 40))
 				(ego setMotion: MoveTo 220 130 self)
 			)
 			(3

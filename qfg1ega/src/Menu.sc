@@ -59,22 +59,20 @@
 (class TheMenuBar of MenuBar
 	
 	(method (init)
-		(AddMenu { \01_} {About Glory I `^g:Help`#1})
-		(AddMenu
-			{ File_}
+		(AddMenu { \01_}
+			{About Glory I `^g:Help`#1}
+		)
+		(AddMenu { File_}
 			{Save Game`#5:Restore Game`#7:--!:Restart Game`#9:Quit`^q}
 		)
-		(AddMenu
-			{ Game_}
+		(AddMenu { Game_}
 			{Faster Animation`+:Normal Animation`=:Slower Animation`-:--!:Sound Volume...`^v:Turn Off Sound`#2=1}
 			;:--!:High Speed Hero`#4=0
 		)
-		(AddMenu
-			{ Action_}
+		(AddMenu { Action_}
 			{Cast Spell`^c:Fight`^f:Escape`^e:--!:Pause Game`^p:Repeat`#3}
 		)
-		(AddMenu
-			{ Information_}
+		(AddMenu { Information_}
 			{Inventory`^I:Char Sheet`^S:--!:Time/Day`^T:Ask about`^a:Look at`^l}
 		)
 		(SetMenu saveI p_said 'save[/game]')

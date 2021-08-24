@@ -283,7 +283,7 @@
 	
 	(method (dispose)
 		(Bclr OTTO_BACK_TO_BED)
-		(Bset VISITED_SHERIFF_HOUSE)
+		(Bset fBeenIn321)
 		(= deathMusic (SoundFX 26))
 		(super dispose:)
 	)
@@ -306,7 +306,7 @@
 						(cond 
 							((Said '[<at,around][/!*,room,house]')
 								(cond 
-									((Btst VISITED_SHERIFF_HOUSE)
+									((Btst fBeenIn321)
 										(BreakInPrint 321 2)
 										;The room is dark and still.
 										)

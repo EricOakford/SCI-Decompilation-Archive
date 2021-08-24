@@ -133,7 +133,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (and (!= prevRoomNum 0) (not (Btst VISITED_SHERIFF_HOUSE)))
+				(if (and (!= prevRoomNum 0) (not (Btst fBeenIn321)))
 					(= cycles 8)
 				else
 					((ScriptID 321 0) setScript: 0)

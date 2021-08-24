@@ -63,7 +63,7 @@
 		(= local9 50)
 		(= local8 1)
 		;if we haven't been here before, then we're just starting the game
-		(if (not (Btst VISITED_TOWNOUTLOOK))
+		(if (not (Btst fBeenIn300))
 			(= Day 0)
 			(FixTime 11)
 			(Bset fInMainGame)
@@ -188,7 +188,7 @@
 					(> (ego x?) 318)
 					(and (> (ego x?) 250) (< (ego y?) 113))
 				)
-				(if (and (not (Btst VISITED_TOWNOUTLOOK)) (< timeODay TIME_SUNSET))
+				(if (and (not (Btst fBeenIn300)) (< timeODay TIME_SUNSET))
 					(HighPrint 300 2)
 					;The Sheriff calls out behind you:  "Just a friendly suggestion, but whatever you do, don't drink the Dragon's Breath.
 					;Not even Otto can drink Dragon's Breath!"
@@ -207,7 +207,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_TOWNOUTLOOK)
+		(Bset fBeenIn300)
 		(super dispose:)
 	)
 	

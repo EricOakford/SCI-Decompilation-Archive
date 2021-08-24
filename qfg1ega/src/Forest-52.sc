@@ -21,7 +21,9 @@
 	)
 	
 	(method (init)
-		(if Night (Load SCRIPT GHOSTS))
+		(if Night
+			(Load SCRIPT GHOSTS)
+		)
 		(super init: &rest)
 		(StatusLine enable:)
 		(self setLocales: FOREST)
@@ -64,7 +66,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_52)
+		(Bset fBeenIn52)
 		(super dispose:)
 	)
 )

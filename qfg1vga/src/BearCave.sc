@@ -29,7 +29,7 @@
 
 (local
 	bearCue
-	local1
+	bearState
 	local2
 	local3
 	bearKillsEgo
@@ -38,14 +38,14 @@
 	hurtBear
 	dazzledBear
 	calmedBear
-	local10
-	local11
-	local12
+	bearState0
+	bearState1
+	bearState2
 	dartX
 	dartY
-	local15
-	local16
-	local17 = [253 295 149 226 284 319 93 152 223 29 65]
+	bearState5
+	bearState6
+	bearState7 = [253 295 149 226 284 319 93 152 223 29 65]
 	local28 = [101 64 19 164 152 103 91 61 58 130 54]
 	dripX = [28 63 83 102 235 295 195 39 251]
 	dripY = [93 85 79 79 86 99 98 103 90 146 124 319 189]
@@ -147,10 +147,10 @@
 )
 
 (procedure (localproc_0cb2)
-	(= local11 (- (bear x?) (ego x?)))
-	(= local12 (- (bear y?) (ego y?)))
-	(= dartX (+ (ego x?) (* local11 30)))
-	(= dartY (+ (ego y?) (* local12 30)))
+	(= bearState1 (- (bear x?) (ego x?)))
+	(= bearState2 (- (bear y?) (ego y?)))
+	(= dartX (+ (ego x?) (* bearState1 30)))
+	(= dartY (+ (ego y?) (* bearState2 30)))
 )
 
 (instance rm14 of Room
@@ -339,24 +339,24 @@
 	(method (doit)
 		(= distFromBear (ego distanceTo: self))
 		(cond 
-			((or bearKillsEgo (OneOf local1 4 5)) 0)
+			((or bearKillsEgo (OneOf bearState 4 5)) 0)
 			(dazzledBear
-				(if (not (OneOf local1 1 3))
+				(if (not (OneOf bearState 1 3))
 					(self setScript: bearUp)
 					(bearTimer setReal: bearTimer 30)
 				)
 			)
 			((or (Btst fBearFriendly) calmedBear)
 				(localproc_049f)
-				(if (OneOf local1 3 1) (self setScript: bearDrop))
+				(if (OneOf bearState 3 1) (self setScript: bearDrop))
 			)
 			((> distFromBear local2)
-				(if (and (not hurtBear) (OneOf local1 1 3))
+				(if (and (not hurtBear) (OneOf bearState 1 3))
 					(self setScript: bearDrop)
 				)
 			)
 			((and (>= local2 distFromBear) (>= distFromBear local3))
-				(if (and (not hurtBear) (== local1 0))
+				(if (and (not hurtBear) (== bearState 0))
 					(self setScript: bearUp)
 				)
 			)
@@ -391,7 +391,7 @@
 					(burnedBear
 						(messager say: N_BEAR V_LOOK C_BEAR_SCORCHED)
 					)
-					((OneOf local1 0 2)
+					((OneOf bearState 0 2)
 						(messager say: N_BEAR V_LOOK C_BEAR_NEUTRAL)
 					)
 					(else
@@ -477,7 +477,7 @@
 				(Bset fBearDying)
 				(curRoom newRoom: 171)
 			)
-			((OneOf local1 0 2)
+			((OneOf bearState 0 2)
 				(self setScript: bearUp)
 			)
 			(else
@@ -562,7 +562,7 @@
 		(switch (= state newState)
 			(0
 				(ego setMotion: 0)
-				(= local1 1)
+				(= bearState 1)
 				(bear setCycle: CycleTo 4 1)
 				(= seconds 4)
 			)
@@ -579,7 +579,7 @@
 					(messager say: N_ROOM NULL C_BEAR_HOSTILE)
 					(Bset fMetBear)
 				)
-				(= local1 3)
+				(= bearState 3)
 			)
 		)
 	)
@@ -589,15 +589,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (== local1 1)
-					(= local1 2)
+				(if (== bearState 1)
+					(= bearState 2)
 					(bear setCycle: BegLoop self)
 				else
-					(= local1 2)
+					(= bearState 2)
 					(bear setLoop: 0 cel: 5 setCycle: BegLoop self)
 				)
 			)
-			(1 (= local1 0))
+			(1 (= bearState 0))
 		)
 	)
 )
@@ -620,11 +620,11 @@
 			(1
 				(egoShoots play:)
 				(ego setCycle: EndLoop)
-				(= local10 (Random 0 300))
+				(= bearState0 (Random 0 300))
 				(if
 					(or
-						(< local10 (= distFromBear (ego distanceTo: bear)))
-						(OneOf local1 1 2)
+						(< bearState0 (= distFromBear (ego distanceTo: bear)))
+						(OneOf bearState 1 2)
 					)
 					(dart setScript: bouncer)
 					(++ state)
@@ -668,8 +668,8 @@
 
 (instance bouncer of Script
 	(method (doit)
-		(if (and local15 (not (dart inRect: 10 35 310 205)))
-			(= local15 0)
+		(if (and bearState5 (not (dart inRect: 10 35 310 205)))
+			(= bearState5 0)
 			(self cue:)
 		)
 		(super doit:)
@@ -678,8 +678,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local16 (Random 3 5))
-				(= local15 1)
+				(= bearState6 (Random 3 5))
+				(= bearState5 1)
 				(localproc_0cb2)
 				(dart
 					posn: (ego x?) (ego y?)
@@ -701,13 +701,13 @@
 					posn: (dart x?) (dart y?)
 					setCycle: EndLoop
 				)
-				(+= local16 (Random 1 3))
+				(+= bearState6 (Random 1 3))
 				(dart
-					setMotion: MoveTo [local17 local16] [local28 local16] self
+					setMotion: MoveTo [bearState7 bearState6] [local28 bearState6] self
 				)
 			)
 			(2
-				(if (< local16 10)
+				(if (< bearState6 10)
 					(-= state 2))
 				(self cue:)
 			)
@@ -786,7 +786,7 @@
 			(0
 				(ego use: iBrassKey)
 				(HandsOff)
-				(= local1 5)
+				(= bearState 5)
 				(bear setCycle: EndLoop self)
 			)
 			(1
@@ -861,7 +861,7 @@
 
 (instance bearTimer of Timer
 	(method (cue)
-		(if (== local1 3)
+		(if (== bearState 3)
 			(bear setScript: 0)
 		)
 	)

@@ -42,13 +42,16 @@
 				)
 				((Said '/potion')
 					(= wPotion 0)
-					(= index iHealingPotion)
-					(while (<= index iGhostOil)
+					(for ((= index iHealingPotion)) (<= index iGhostOil) ((++ index))
 						(cond 
-							((and [invNum index] (not wPotion)) (= wPotion index))
-							((and wPotion [invNum index]) (= wPotion -1) (break))
+							((and [invNum index] (not wPotion))
+								(= wPotion index)
+							)
+							((and wPotion [invNum index])
+								(= wPotion -1)
+								(break)
+							)
 						)
-						(++ index)
 					)
 					(switch wPotion
 						(-1 
@@ -64,14 +67,14 @@
 						)
 					)
 				)
-				(else (event claimed: TRUE)
+				(else
+					(event claimed: TRUE)
 					(HighPrint DRINK 4)
 					;You don't see any here.
 				)
 			)
 		)
 		((or (< wPotion iHealingPotion) (> wPotion iGhostOil))
-				;(= wPotion iFlyingWater)) ;EO: water can be added to fix a script error
 			(event claimed: FALSE)
 			(if (Said 'drink')
 				(HighPrint DRINK 5)
@@ -119,7 +122,7 @@
 				;You feel a tingling sensation as you rub the unguent all over your body.
 				(Bset fGhostOil)
 				(Bclr fGhostsAttack)
-				(= ghostOilTimer 150)
+				(= ghostOilTimer GAMEHOUR)
 				(ego use: iGhostOil)
 				(ego get: iFlask)
 			else

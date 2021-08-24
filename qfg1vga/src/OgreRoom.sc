@@ -27,7 +27,7 @@
 	rm13 0
 )
 
-(enum ;ogre chest stats
+(enum ;ogre chest state
 	chestNotKnown
 	chestPicked
 	chestForced

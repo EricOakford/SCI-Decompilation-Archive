@@ -2,8 +2,8 @@
 (script# 73)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastDazz)
 (use TalkObj)
@@ -55,7 +55,7 @@
 		(param1
 			(HighPrint 73 1)
 			;There aren't any loose daggers here.
-			)
+		)
 	)
 	(= [invDropped iDagger]
 		(= daggersOnTarget
@@ -67,9 +67,7 @@
 	(return temp0)
 )
 
-(instance dags of Set
-	(properties)
-)
+(instance dags of Set)
 
 (instance knife1 of Actor
 	(properties
@@ -112,9 +110,9 @@
 		title {Bruno:}
 	)
 	
-	(method (open &tmp temp0)
-		(= top (- top (= temp0 (- top 12))))
-		(= bottom (- bottom temp0))
+	(method (open &tmp vDiff)
+		(-= top (= vDiff (- top 12)))
+		(-= bottom vDiff)
 		(super open:)
 	)
 )
@@ -125,9 +123,9 @@
 		title {Brutus:}
 	)
 	
-	(method (open &tmp temp0)
-		(= top (- top (= temp0 (- top 12))))
-		(= bottom (- bottom temp0))
+	(method (open &tmp vDiff)
+		(-= top (= vDiff (- top 12)))
+		(-= bottom vDiff)
 		(super open:)
 	)
 )
@@ -167,18 +165,19 @@
 					(Said 'look/brutus,man,thief,bandit,body')
 					(MouseClaimed self event shiftDown)
 				)
-				(if (Btst DEFEATED_BRUTUS)
+				(if (Btst fBeatBrutus)
 					(HighPrint 73 3)
 					;The dead brigand lies very still.
 					 else
 					 (HighPrint 73 4)
 					 ;You see a hard-looking character who appears to be a thief.  He must be one of the Brigands!
-					 )
+				 )
 			)
-			((Said 'get/shield') (if (Btst DEFEATED_BRUTUS)
+			((Said 'get/shield')
+				(if (Btst fBeatBrutus)
 					(HighPrint 73 5)
 					;The dead brigand's shield is not worth your while.
-					else
+				else
 					(HighPrint 73 6)
 					;You're kidding, right?
 					)
@@ -188,7 +187,7 @@
 					(Said 'get/key')
 					(Said 'search/bandit,man,thief,brutus,body')
 				)
-				(if (Btst DEFEATED_BRUTUS)
+				(if (Btst fBeatBrutus)
 					(if (ego inRect: 90 92 230 188)
 						(ego setScript: egoSearch)
 					else
@@ -200,19 +199,21 @@
 					;You're kidding, right?
 				)
 			)
-			(else (brutusTalk handleEvent: event))
+			(else
+				(brutusTalk handleEvent: event)
+			)
 		)
 	)
 	
-	(method (getHurt param1)
+	(method (getHurt damage)
 		(if
 			(and
-				(<= (= monsterHealth (- monsterHealth param1)) 0)
-				(not (Btst DEFEATED_BRUTUS))
+				(<= (-= monsterHealth damage) 0)
+				(not (Btst fBeatBrutus))
 			)
 			(= zapPower 0)
 			(= monsterNum 0)
-			(Bset DEFEATED_BRUTUS)
+			(Bset fBeatBrutus)
 			(self setScript: brutusDies)
 		)
 		(= brutusHealth monsterHealth)
@@ -243,7 +244,9 @@
 				(HighPrint 73 8)
 				;This man looks very tough.  From his clothing, you guess him to be a member of the Thieves' Guild.
 			)
-			(else (brunoTalk handleEvent: event))
+			(else
+				(brunoTalk handleEvent: event)
+			)
 		)
 	)
 )
@@ -269,7 +272,7 @@
 					;You are using the old archery target for dagger practice.
 					else (HighPrint 73 10)
 					;The old archery target looks as though it has not been used in quite some time.
-					)
+				)
 			)
 		)
 	)
@@ -278,7 +281,7 @@
 (instance rm73 of Room
 	(properties
 		picture 73
-		style $0007
+		style IRISOUT
 		east 74
 		south 80
 		west 72
@@ -294,22 +297,22 @@
 		(self setLocales: FOREST)
 		
 		(cond
-			((= brigandMeeting (and (Btst BEAR_GONE) (not (Btst SPIED_THIEVES)) (== timeODay TIME_MIDDAY) (or (== prevRoomNum 72) (== prevRoomNum 74))))
+			((= brigandMeeting (and (Btst fBearGone) (not (Btst fSpiedOnThieves)) (== timeODay TIME_MIDDAY) (or (== prevRoomNum 72) (== prevRoomNum 74))))
 				(= brutusHealth MAX_HP_BRUTUS)
 				(= monsterHealth brutusHealth)
 				(= monsterNum vBrigand)
 				(Load VIEW vBruno)
 				(Load VIEW vBrutus)
 			)
-			((= brutusDead (and brunoTimer (Btst DEFEATED_BRUTUS)))
+			((= brutusDead (and brunoTimer (Btst fBeatBrutus)))
 				(Load VIEW vBrutus)
 			)
-			((= brutusThrowingDaggersAtEgo (and brunoTimer (or (== prevRoomNum 72) (== prevRoomNum 74)) (not (Btst DEFEATED_BRUTUS))))
+			((= brutusThrowingDaggersAtEgo (and brunoTimer (or (== prevRoomNum 72) (== prevRoomNum 74)) (not (Btst fBeatBrutus))))
 				(Load VIEW vBrutus)
 				(= monsterHealth brutusHealth)
 				(= monsterNum vBrigand)
 			)
-			((= brutusPreCombat (and brunoTimer (== prevRoomNum 80) (not (Btst DEFEATED_BRUTUS))))
+			((= brutusPreCombat (and brunoTimer (== prevRoomNum 80) (not (Btst fBeatBrutus))))
 				(Load VIEW vBrutus)
 				(= monsterHealth brutusHealth)
 				(= monsterNum vBrigand)
@@ -317,7 +320,7 @@
 				(brutus posn: 134 120)
 			)
 			((= brutusPostCombat (== prevRoomNum vBrigand))
-				(Bset DEFEATED_BRUTUS)
+				(Bset fBeatBrutus)
 				(Load VIEW vBrigandDefeated)
 			)
 		)
@@ -335,10 +338,10 @@
 		(ego init:)
 		(= armorProtection 0)
 		(if (ego has: iChainmail)
-			(= armorProtection 5)
+			(= armorProtection CHAIN_VALUE)
 		)
 		(if (ego has: iLeather)
-			(= armorProtection 3)
+			(= armorProtection LEATHER_VALUE)
 		)
 		
 		(switch prevRoomNum
@@ -429,11 +432,11 @@
 ;;;			pushi    FOREST
 ;;;			self     6
 ;;;			pushi    1
-;;;			pushi    BEAR_GONE
+;;;			pushi    fBearGone
 ;;;			callb    Btst,  2
 ;;;			bnt      code_0698
 ;;;			pushi    1
-;;;			pushi    SPIED_THIEVES
+;;;			pushi    fSpiedOnThieves
 ;;;			callb    Btst,  2
 ;;;			not     
 ;;;			bnt      code_0698
@@ -469,7 +472,7 @@
 ;;;			lag      brunoTimer
 ;;;			bnt      code_06cd
 ;;;			pushi    1
-;;;			pushi    DEFEATED_BRUTUS
+;;;			pushi    fBeatBrutus
 ;;;			callb    Btst,  2
 ;;;code_06cd:
 ;;;			sal      brutusDead
@@ -492,7 +495,7 @@
 ;;;			bnt      code_06fc
 ;;;code_06f4:
 ;;;			pushi    1
-;;;			pushi    DEFEATED_BRUTUS
+;;;			pushi    fBeatBrutus
 ;;;			callb    Btst,  2
 ;;;			not     
 ;;;code_06fc:
@@ -515,7 +518,7 @@
 ;;;			eq?     
 ;;;			bnt      code_072f
 ;;;			pushi    1
-;;;			pushi    DEFEATED_BRUTUS
+;;;			pushi    fBeatBrutus
 ;;;			callb    Btst,  2
 ;;;			not     
 ;;;code_072f:
@@ -545,7 +548,7 @@
 ;;;			sal      brutusPostCombat
 ;;;			bnt      code_077b
 ;;;			pushi    1
-;;;			pushi    DEFEATED_BRUTUS
+;;;			pushi    fBeatBrutus
 ;;;			callb    Bset,  2
 ;;;			pushi    2
 ;;;			pushi    RES_VIEW
@@ -835,17 +838,20 @@
 					((Said 'look/dagger')
 						(if daggersOnTarget (HighPrint 73 11)
 							;The only daggers around here are the ones you've thrown at the target.
-							else (event claimed: 0)))
+						else
+							(event claimed: FALSE)
+						)
+					)
 					((Said 'get/spear')
 						(HighPrint 73 12)
 						;There are no useable spears near you.
-						)
+					)
 					((Said 'hop/bush')
 						(HighPrint 73 13)
 						;These bushes are full of thorns. You decide not to risk it.
-						)
+					)
 					((Said 'search,look/body,bandit,bruno,brutus')
-						(if (Btst DEFEATED_BRUTUS)
+						(if (Btst fBeatBrutus)
 							(HighPrint 73 14)
 							;Some marauding beast must have taken the brigand's body away.
 						else
@@ -855,7 +861,7 @@
 					)
 					((Said 'rest[/!*]')
 						(if (> brunoTimer 50)
-							(= brunoTimer (- brunoTimer 50))
+							(-= brunoTimer 50)
 						)
 						(event claimed: FALSE)
 					)
@@ -866,11 +872,11 @@
 								(DETMAGIC
 									(HighPrint 73 16)
 									;You detect no magic here.
-									)
+								)
 								(DAZZLE
 									(if (CastDazz)
 										(if
-										(or (Btst DEFEATED_BRUTUS) (== (self script?) nobodyHere))
+										(or (Btst fBeatBrutus) (== (self script?) nobodyHere))
 											(HighPrint 73 17)
 											;You waste a spell.
 										else
@@ -879,18 +885,16 @@
 									)
 								)
 								(FLAMEDART
-									(if
-									(or (Btst DEFEATED_BRUTUS) (== (self script?) nobodyHere))
-										(FlameCast 0)
+									(if (or (Btst fBeatBrutus) (== (self script?) nobodyHere))
+										(CastDart 0)
 									else
-										(FlameCast brutus)
+										(CastDart brutus)
 									)
 								)
 								(CALM
 									(HighPrint 73 18)
 									;You've wasted a spell.
-									(if
-									(and (cast contains: brutus) (not (Btst DEFEATED_BRUTUS)))
+									(if (and (cast contains: brutus) (not (Btst fBeatBrutus)))
 										(HighPrint 73 19)
 										;The brigand is too angry to calm.
 									)
@@ -912,8 +916,7 @@
 									)
 								)
 								(FETCH
-									(if
-									(or (Btst DEFEATED_BRUTUS) (== (self script?) nobodyHere))
+									(if (or (Btst fBeatBrutus) (== (self script?) nobodyHere))
 										(HighPrint 73 23)
 										;You waste a spell. Fetch is only good for fetching small, visible objects.
 									else
@@ -924,27 +927,25 @@
 								(else
 									(HighPrint 73 25)
 									;That spell is not useful here.
-									)
+								)
 							)
 						)
 					)
 					((Said 'throw/dagger,dagger')
 						(= theBrutus 0)
-						(if
-						(and (cast contains: brutus) (not (Btst DEFEATED_BRUTUS)))
+						(if (and (cast contains: brutus) (not (Btst fBeatBrutus)))
 							(Face ego brutus)
 							(= theBrutus brutus)
 						)
-						(KnifeCast theBrutus)
+						(ThrowKnife theBrutus)
 					)
 					((Said 'throw/boulder')
 						(= theBrutus 0)
-						(if
-						(and (cast contains: brutus) (not (Btst DEFEATED_BRUTUS)))
+						(if (and (cast contains: brutus) (not (Btst fBeatBrutus)))
 							(Face ego brutus)
 							(= theBrutus brutus)
 						)
-						(RockCast theBrutus)
+						(ThrowRock theBrutus)
 					)
 					((Said 'climb,climb[/wall]')
 						(if Night
@@ -970,10 +971,7 @@
 						(HighPrint 73 30)
 						;The forest is very overgrown near here.
 						)
-					(
-						(Said
-							'look[<at,around][/!*,range,clearing,area,hamlet,wall,north,building]'
-						)
+					((Said 'look[<at,around][/!*,range,clearing,area,hamlet,wall,north,building]')
 						(HighPrint 73 31)
 						;The wall and buildings of Spielburg can be seen over the heavy brush.  An old target leans against the town wall.
 					)
@@ -985,13 +983,11 @@
 )
 
 (instance brigsMeet of Script
-	(properties)
-	
 	(method (changeState newState)
 		(if client
 			(switch (= state newState)
 				(0
-					(Bset SPIED_THIEVES)
+					(Bset fSpiedOnThieves)
 					(brunoTalk caller: self)
 					(brutusTalk caller: self)
 					(bruno init:)
@@ -1103,7 +1099,7 @@
 				(24
 					(Say brutusTalk 73 61)
 					;"Hiden Goseke.  See ya."
-					(SolvePuzzle POINTS_OVERHEARBRUNO 12)
+					(SolvePuzzle f73OverhearBruno 12)
 				)
 				(25
 					(bruno
@@ -1130,7 +1126,8 @@
 			((super handleEvent: event))
 			((Said 'look/man,man,thief,bandit')
 				(HighPrint 73 32)
-				;You see a couple of hard-looking characters talking.  One looks like a thief; the other appears to be a fighter of some sort.
+				;You see a couple of hard-looking characters talking. 
+				; One looks like a thief; the other appears to be a fighter of some sort.
 				)
 			((Said 'ask,chat,throw,cast')
 				(brunoTalk caller: 0 endTalk:)
@@ -1143,8 +1140,6 @@
 )
 
 (instance egoLoses of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1212,13 +1207,11 @@
 )
 
 (instance brutusWaits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds brunoTimer))
 			(1
-				(if (not (Btst DEFEATED_BRUTUS))
+				(if (not (Btst fBeatBrutus))
 					(brutus
 						illegalBits: 0
 						ignoreActors:
@@ -1236,28 +1229,31 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((Said 'ask,chat') (brutus setMotion: 0) (client setScript: brutusThrows))
+			((Said 'ask,chat')
+				(brutus setMotion: 0)
+				(client setScript: brutusThrows)
+			)
 			(
 				(and
 					(!= (brutus script?) brutusThrows)
-					(not (Btst DEFEATED_BRUTUS))
+					(not (Btst fBeatBrutus))
 					(Said 'throw,cast')
 				)
 				(brutus setMotion: 0)
 				(brutus setScript: brutusThrows)
-				(event claimed: 0)
+				(event claimed: FALSE)
 			)
 		)
 	)
 )
 
 (instance brutusDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if daggerBeingThrown (knife1 dispose:))
+				(if daggerBeingThrown
+					(knife1 dispose:)
+				)
 				(NormalEgo)
 				(ego setScript: 0)
 				(HandsOff)
@@ -1286,8 +1282,6 @@
 )
 
 (instance brutusLives of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1308,8 +1302,6 @@
 )
 
 (instance brutusThrows of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1405,8 +1397,6 @@
 )
 
 (instance nobodyHere of Script
-	(properties)
-	
 	(method (changeState newState &tmp newProp temp1 temp2 temp3)
 		(switch (= state newState)
 			(1
@@ -1517,23 +1507,23 @@
 					(else
 						(HighPrint 73 67)
 						;You have no daggers to throw.
-						)
+					)
 				)
 			)
-			((and (Said 'get/dagger') (RetrieveDaggers TRUE)) (self changeState: 1))
+			((and (Said 'get/dagger') (RetrieveDaggers TRUE))
+				(self changeState: 1)
+			)
 		)
 	)
 )
 
 (instance egoSearch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setMotion: MoveTo 145 120 self
 				)
@@ -1548,13 +1538,13 @@
 			)
 			(2
 				(RetrieveDaggers 0)
-				(if (Btst OBTAINED_BRUTUS_KEY)
+				(if (Btst fGotBrutusKey)
 					(HighPrint 73 68)
 					;You find nothing else on the brigand's body.
 				else
 					(HighPrint 73 69)
 					;You find a single key on the brigand's body, and put it away.
-					(Bset OBTAINED_BRUTUS_KEY)
+					(Bset fGotBrutusKey)
 					(ego get: iBrassKey)
 				)
 				(NormalEgo)

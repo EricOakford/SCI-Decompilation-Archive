@@ -215,7 +215,7 @@
 			p_font 300
 			p_color vBLACK
 		)
-		(= selectedButton 1)
+		(= selectedButton BUTTON_INTRO)
 		((= buttonHighlight (View new:))
 			view: vGameSelect
 			setLoop: 2
@@ -228,7 +228,7 @@
 		)
 		(scorp
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 			init:
 			setLoop: 3
 			setCycle: Forward
@@ -246,7 +246,7 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp temp0 theButton)
+	(method (handleEvent event &tmp thisControl theButton)
 		(if
 			(or
 				(Said 'look/bug,scorpion')
@@ -258,7 +258,7 @@
 		(switch (event type?)
 			(mouseDown
 				(= theButton 0)
-				(switch (= temp0 (OnControl CMAP (event x?) (event y?)))
+				(switch (= thisControl (OnControl CMAP (event x?) (event y?)))
 					(cBLUE (= theButton BUTTON_INTRO))
 					(cGREEN (= theButton BUTTON_NEWGAME))
 					(cCYAN (= theButton BUTTON_RESTORE))

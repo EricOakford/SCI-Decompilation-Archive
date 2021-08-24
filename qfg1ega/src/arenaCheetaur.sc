@@ -24,14 +24,11 @@
 	[local13 3] = [1 2 2]
 )
 (procedure (SetFightScript &tmp i)
-	;EO: Tweaked to prevent memory fragmentation.
-	(= i 0)
-	(while (< i 3)
+	(for ((= i 0)) (< i 3) ((++ i))
 		(= [fightScript i] (Clone aFightScript))
 		([theCheetaur i]
 			setScript: [fightScript i] 0
 		)
-		(++ i)
 	)
 )
 
@@ -161,9 +158,9 @@
 		(cond 
 			((and local0 (== client cheetaur))
 				(= local0 (= cycles 0))
-			
+			)
 			((and monsterDazzle (== state 0) (not script))
-				(= cycles (+ cycles monsterDazzle))
+				(+= cycles monsterDazzle)
 				(= monsterDazzle 0)
 				(Bclr fMonsterDazzled)
 			)

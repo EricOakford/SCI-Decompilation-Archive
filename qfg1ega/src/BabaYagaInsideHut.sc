@@ -29,7 +29,7 @@
 )
 
 (local
-	local0
+	babaCued
 	babaSpeaks
 )
 
@@ -172,7 +172,7 @@
 (instance rm21 of Room
 	(properties
 		picture 21
-		style $0001
+		style VSHUTTER
 	)
 	
 	(method (init)
@@ -180,15 +180,17 @@
 		(LoadMany SOUND 51 (SoundFX 28))
 		(LoadMany SCRIPT DCICON 293 294)
 		(super init:)
-		(SolvePuzzle POINTS_ENTERBABAYAGAHUT 2)
-		(if (ego has: iMandrake) (Bclr fBabaCurse))
+		(SolvePuzzle f21EnterHut 2)
+		(if (ego has: iMandrake)
+			(Bclr fBabaCurse)
+		)
 		(cSound fade:)
 		(teleport number: (SoundFX 28) init:)
 		(keyDownHandler add: self)
 		(mouseDownHandler addToFront: self)
 		(directionHandler add: self)
 		(StatusLine enable:)
-		(Bclr BABAYAGA_HUT_OPEN)
+		(Bclr fHutOnGround)
 		(bubbleMusic init: play:)
 		(NormalEgo)
 		(= yesNoTimer 0)
@@ -212,7 +214,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_BABAYAGA_INTERIOR)
+		(Bset fBeenIn21)
 		(myIcon dispose:)
 		(super dispose:)
 	)
@@ -220,10 +222,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (Said 'look/bat') (MouseClaimed bat event shiftDown))
-			(HighPrint 21 2)
-			;There is a bat, all folded up within his wings, hanging on the wall.
+			((or (Said 'look/bat') (MouseClaimed bat event shiftDown))
+				(HighPrint 21 2)
+				;There is a bat, all folded up within his wings, hanging on the wall.
 			)
 			(
 				(or
@@ -233,10 +234,10 @@
 				(HighPrint 21 3)
 				;Is that a SMILE on that spider's face?
 			)
-			(
-			(or (Said 'look/web') (MouseClaimed web event shiftDown))
-			(HighPrint 21 4)
-			;You HATE houses with cobwebs in the corners, especially when there's an immense spider squatting cheerily in the middle of the cobweb.
+			((or (Said 'look/web') (MouseClaimed web event shiftDown))
+				(HighPrint 21 4)
+				;You HATE houses with cobwebs in the corners,
+				;especially when there's an immense spider squatting cheerily in the middle of the cobweb.
 			)
 			(
 				(or
@@ -298,13 +299,24 @@
 			)
 			((== (event type?) mouseDown)
 				(if (not (& (event modifiers?) shiftDown))
-					(if (not local0)
-						(= local0 1)
+					(if (not babaCued)
+						(= babaCued TRUE)
 						(cond 
-							((ego has: iMagicMirror) (= babaState babaFINALE) (self setScript: lastWitch))
-							((not (Btst VISITED_BABAYAGA_INTERIOR)) (self setScript: firstWitch))
-							((== babaState babaFETCH) (= babaState babaBRING) (self setScript: (ScriptID 294 0)))
-							((== babaState babaBRING) (= babaState babaFINALE) (self setScript: lastWitch))
+							((ego has: iMagicMirror)
+								(= babaState babaFINALE)
+								(self setScript: lastWitch)
+							)
+							((not (Btst fBeenIn21))
+								(self setScript: firstWitch)
+							)
+							((== babaState babaFETCH)
+								(= babaState babaBRING)
+								(self setScript: (ScriptID 294 0))
+							)
+							((== babaState babaBRING)
+								(= babaState babaFINALE)
+								(self setScript: lastWitch)
+							)
 						)
 					else
 						(event claimed: TRUE)
@@ -312,13 +324,24 @@
 				)
 			)
 			((== (event type?) direction)
-				(if (not local0)
-					(= local0 1)
+				(if (not babaCued)
+					(= babaCued TRUE)
 					(cond 
-						((ego has: iMagicMirror) (= babaState babaFINALE) (self setScript: lastWitch))
-						((not (Btst VISITED_BABAYAGA_INTERIOR)) (self setScript: firstWitch))
-						((== babaState babaFETCH) (= babaState babaBRING) (self setScript: (ScriptID 294 0)))
-						((== babaState babaBRING) (= babaState babaFINALE) (self setScript: lastWitch))
+						((ego has: iMagicMirror)
+							(= babaState babaFINALE)
+							(self setScript: lastWitch)
+						)
+						((not (Btst fBeenIn21))
+							(self setScript: firstWitch)
+						)
+						((== babaState babaFETCH)
+							(= babaState babaBRING)
+							(self setScript: (ScriptID 294 0))
+						)
+						((== babaState babaBRING)
+							(= babaState babaFINALE)
+							(self setScript: lastWitch)
+						)
 					)
 				else
 					(event claimed: TRUE)
@@ -342,30 +365,41 @@
 					((Said 'get')
 						(HighPrint 21 14)
 						;You don't seem to be able to move.
-						(if (not local0)
-							(= local0 1)
+						(if (not babaCued)
+							(= babaCued TRUE)
 							(cond 
-								((ego has: iMagicMirror) (= babaState babaFINALE) (self setScript: lastWitch))
-								((not (Btst VISITED_BABAYAGA_INTERIOR)) (self setScript: firstWitch))
-								((== babaState babaFETCH) (= babaState babaBRING) (self setScript: (ScriptID 294 0)))
-								((== babaState babaBRING) (= babaState babaFINALE) (self setScript: lastWitch))
+								((ego has: iMagicMirror)
+									(= babaState babaFINALE)
+									(self setScript: lastWitch)
+								)
+								((not (Btst fBeenIn21))
+									(self setScript: firstWitch)
+								)
+								((== babaState babaFETCH)
+									(= babaState babaBRING)
+									(self setScript: (ScriptID 294 0))
+								)
+								((== babaState babaBRING)
+									(= babaState babaFINALE)
+									(self setScript: lastWitch)
+								)
 							)
 						else
-							(event claimed: 1)
+							(event claimed: TRUE)
 						)
 					)
 					((Said 'chat/baba')
 						(HighPrint 21 15)
 						;You cannot see the witch anywhere.
-						)
+					)
 					((Said 'chat')
 						(HighPrint 21 16)
 						;You might as well be talking to yourself.
-						)
+					)
 					((Said 'cast')
 						(HighPrint 21 17)
 						;Your magic is useless here.
-						)
+					)
 					((Said 'look>')
 						(cond 
 							((Said '[<at,around][/hut,house,room]')
@@ -395,8 +429,6 @@
 )
 
 (instance babaTalk of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(keyDownHandler add: self)
@@ -431,12 +463,23 @@
 						(baba setScript: 0)
 						(= yesNoTimer 0)
 						(cond 
-							((<= babaState babaFETCH) (User canInput: FALSE) ((ScriptID 293 0) cue:))
-							((== babaState babaBRING) (User canInput: FALSE) ((ScriptID 294 0) cue:))
+							((<= babaState babaFETCH)
+								(User canInput: FALSE)
+								((ScriptID 293 0) cue:)
+							)
+							((== babaState babaBRING)
+								(User canInput: FALSE)
+								((ScriptID 294 0) cue:)
+							)
 						)
 					)
-					((Said 'n') (BabaYagaDeath))
-					(else (event claimed: TRUE) (BabaYagaDeath))
+					((Said 'n')
+						(BabaYagaDeath)
+					)
+					(else
+						(event claimed: TRUE)
+						(BabaYagaDeath)
+					)
 				)
 			)
 		)
@@ -444,8 +487,6 @@
 )
 
 (instance firstWitch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -619,8 +660,6 @@
 )
 
 (instance nameDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -659,8 +698,6 @@
 )
 
 (instance braveDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -694,8 +731,6 @@
 )
 
 (instance noFetchDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -729,8 +764,6 @@
 )
 
 (instance noBringDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -761,8 +794,6 @@
 )
 
 (instance lastWitch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -780,7 +811,7 @@
 				(= cycles 5)
 			)
 			(2
-				(if (Btst VISITED_BABAYAGA_INTERIOR)
+				(if (Btst fBeenIn21)
 					(TimePrint 4 21 43)
 					;"You again?"
 				else
@@ -797,13 +828,13 @@
 				(ego loop: 0)
 				(= babaSpeaks FALSE)
 				(babaHead setCycle: 0)
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= seconds 8)
 			)
 			(4
 				(bat setCycle: 0)
 				(spider setCycle: 0)
-				(User canInput: 0)
+				(User canInput: FALSE)
 				(= babaSpeaks TRUE)
 				(Print
 					21 45
@@ -859,7 +890,8 @@
 				(baba setLoop: 6 setCycle: 0)
 				(EgoDead 21 47
 					#title {Baba Yaga says you have good taste.}
-					#icon myIcon 0 0)
+					#icon myIcon 0 0
+				)
 					;Before you confront someone who is obviously more powerful than you are, give yourself a chance to reflect.
 			)
 		)
@@ -867,8 +899,6 @@
 )
 
 (instance endGame of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -904,7 +934,7 @@
 			)
 			(3
 				(baba setLoop: 1 cycleSpeed: 0 setCycle: Forward)
-				(SolvePuzzle POINTS_TURNBABAYAGAINTOFROG 50)
+				(SolvePuzzle f21BabaFrog 50)
 				(TimePrint 3 21 48)
 				;The witch is hopping mad.
 				(= seconds 3)
@@ -941,7 +971,7 @@
 			)
 			(8
 				((ScriptID 21 5) dispose:)
-				(Bset BABAYAGA_HUT_OPEN)
+				(Bset fHutOnGround)
 				(curRoom newRoom: 22)
 			)
 		)

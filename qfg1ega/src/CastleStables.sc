@@ -19,21 +19,19 @@
 (local
 	[dustCloud 10]
 	[dustScript 10]
-	local20
+	dustScriptIndex
 	local21
 	local22
 	stablemanAtWindow
 	stablemanSpeaks
-	local25
+	stableIntroCued
 	local26
-	local27
+	rakingInside
 	local28
 	local29
 )
 (procedure (AddDust &tmp i)
-	;EO: This procedure did not decompile correctly.
-	(= i 0)
-	(while (< i 10)
+	(for ((= i 0)) (< i 10) ((++ i))
 		(if (not [dustScript i])
 			(= [dustScript i] (Clone aDustScript))
 		)
@@ -51,13 +49,11 @@
 				init:
 			)
 		)
-		(++ i)
 	)
 )
 
 (procedure (DisposeDust &tmp i)
-	(= i 0)
-	(while (< i 10)
+	(for ((= i 0)) (< i 10) ((++ i))
 		(if [dustScript i]
 			([dustScript i] dispose:)
 			(= [dustScript i] 0)
@@ -66,7 +62,6 @@
 			([dustCloud i] dispose:)
 			(= [dustCloud i] 0)
 		)
-		(++ i)
 	)
 )
 
@@ -97,7 +92,7 @@
 		view vStables
 		loop 6
 		cycleSpeed 3
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 50
 		maxPause 110
 		minCycles 1
@@ -109,7 +104,7 @@
 	(properties
 		view vStables
 		loop 5
-		cycleSpeed 2
+		cycleSpeed ExtraEndAndBeginLoop
 		cycleType 1
 		minPause 60
 		maxPause 100
@@ -312,7 +307,7 @@
 						)
 					)
 				)
-				(= stablemanAtWindow 0)
+				(= stablemanAtWindow FALSE)
 			)
 		)
 		(if
@@ -323,9 +318,9 @@
 					(ego inRect: 95 145 319 189)
 					(== (ego onControl: origin) cYELLOW)
 				)
-				(not local25)
+				(not stableIntroCued)
 			)
-			(= local25 1)
+			(= stableIntroCued TRUE)
 			(stableMan setScript: intro)
 		)
 	)
@@ -342,99 +337,101 @@
 									((Btst fStableClean)
 										(HighPrint 40 1)
 										;The stable looks much better since you cleaned it.
-										)
+									)
 									((== (ego onControl: origin) cYELLOW)
 										(HighPrint 40 2)
 										;It doesn't look like the stableman spends much of his time cleaning.
-										)
+									)
 									(else
 										(HighPrint 40 3)
 										;The castle's stable looks like it holds about six horses.  It could use some cleaning up.
-										)
+									)
 								)
 							)
 							((Said '/horse,animal')
 								(HighPrint 40 4)
 								;The Baron was once known for his many fine and noble steeds.  Only a few aging animals remain in his stable.
-								)
-							(
-							(or (Said '<up') (Said '/sky,cloud,star,moon'))
-							(if Night
-								(HighPrint 40 5)
-								;The moon lights the Baron's courtyard.
+							)
+							((or (Said '<up') (Said '/sky,cloud,star,moon'))
+								(if Night
+									(HighPrint 40 5)
+									;The moon lights the Baron's courtyard.
 								else
-								(HighPrint 40 6)
-								;It is a beautiful day.
+									(HighPrint 40 6)
+									;It is a beautiful day.
 								)
 							)
-							(
-							(or (Said '<down') (Said '/ground,floor,hay,crap,crap')) (if (Btst fStableClean)
-								(HighPrint 40 7)
-								;You have raked the manure and covered the stable floor with new straw.
+							((or (Said '<down') (Said '/ground,floor,hay,crap,crap'))
+								(if (Btst fStableClean)
+									(HighPrint 40 7)
+									;You have raked the manure and covered the stable floor with new straw.
 								else
-								(HighPrint 40 8)
-								;In the stable, the manure is beginning to pile up.
+									(HighPrint 40 8)
+									;In the stable, the manure is beginning to pile up.
 								)
 							)
 							((Said '/north,castle')
 								(HighPrint 40 9) ;EO: The castle is to the northWEST, not northEAST.
 								;The castle is across the courtyard to the northeast.
-								)
+							)
 							((Said '/east')
 								(HighPrint 40 10)
 								;The stable marks the eastern boundary of the Baron's courtyard.
-								)
+							)
 							((Said '/south,pit')
 								(HighPrint 40 11)
 								;Along the wall to the southeast is the gatehouse.  A line of bushes partially obscure a defensive pit along the wall.
-								)
+							)
 							((Said '/west')
 								(HighPrint 40 12)
 								;Across the main courtyard to the west are the soldiers' barracks.
-								)
+							)
 							((Said '/fence,corral')
 								(HighPrint 40 13)
 								;There is a fenced corral next to the stable building.
-								)
+							)
 							((Said '/man,stablekeeper,keeper')
 								(if stablemanAtWindow
 									(HighPrint 40 14)
 									;A low-looking lout.  HE could use some cleaning up.
-									else
+								else
 									(HighPrint 40 15)
 									;He's not standing where you can see him.
 								)
 							)
 						)
 					)
-					((Said 'chat/man,stablekeeper') (if stablemanAtWindow
+					((Said 'chat/man,stablekeeper')
+						(if stablemanAtWindow
 							(HighPrint 40 16)
 							;"Don't tire me out with a bunch of questions.  Can't you see what a hard life I have?"
 							else
 							(HighPrint 40 17)
 							;The stableman can't hear you.
-							)
 						)
+					)
 					((or (Said 'nap') (Said 'go[<to]/nap'))
 						(cond 
 							((and (< 750 Clock) (< Clock 2550))
 								(HighPrint 40 18)
 								;It's too early in the day; come back later.
-								)
+							)
 							((not (== (ego onControl: origin) cYELLOW))
 								(HighPrint 40 19)
 								;It would be more comfortable to sleep on clean hay in the stable.
-								)
+							)
 							((not (Btst fStableClean))
 								(HighPrint 40 20)
 								;"Hey you!  It's bad enough you hang around here all day, but I sure ain't
 								;gonna let you sleep here before you've worked enough to earn it!"
-								)
+							)
 							((ego script?)
 								(HighPrint 40 21)
 								;Wait a minute!
-								)
-							(else (ego setScript: sleeper))
+							)
+							(else
+								(ego setScript: sleeper)
+							)
 						)
 					)
 					((Said 'ask>')
@@ -442,31 +439,32 @@
 							((not stablemanAtWindow)
 								(HighPrint 40 17)
 								;The stableman can't hear you.
-								(event claimed: TRUE))
+								(event claimed: TRUE)
+							)
 							((Said '//nap')
 								(HighPrint 40 22)
 								;"If you put in a day's work, and you wanna take a nap, it's OK with me."
-								)
+							)
 							((Said '//horse,animal')
 								(HighPrint 40 23)
 								;"These horses, they act just like animals or somethin'."
-								)
+							)
 							((Said '//baron,barnard,castle,hamlet,valley')
 								(HighPrint 40 24)
 								;"Just get out and wander around a little.  You'll find out."
-								)
+							)
 							((Said '//magic,baba,zara,erasmus,spell,potion')
 								(HighPrint 40 25)
 								;"Don't ask me about anything to do with magic.  I don't wanna know."
-								)
+							)
 							((Said '//monster,troll,cheetaur,saurus')
 								(HighPrint 40 26)
 								;"Those things scare me silly!"
-								)
+							)
 							((Said '//antwerp')
 								(HighPrint 40 27)
 								;"Ha-ha-ha-ha-ha!  Hee-hee-hee-ho-ho!"
-								)
+							)
 							((Said '//labor,hoe,crap')
 								(if (Btst fStableClean)
 									(AlreadyClean)
@@ -480,17 +478,17 @@
 								(HighPrint 40 29)
 								;"Don't tire me out with a bunch of questions.
 								;I don't need your comments, either.  Can't you see what a hard life I have?"
-								)
+							)
 						)
 					)
 					((Said 'buy,get/horse')
 						(HighPrint 40 30)
 						;"Sorry, the Baron's horses aren't for sale."
-						)
+					)
 					((Said '/horse')
 						(HighPrint 40 31)
 						;"Neigh!"  says the horse.
-						)
+					)
 				)
 			)
 		)
@@ -498,8 +496,6 @@
 )
 
 (instance horseEats of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -545,8 +541,6 @@
 )
 
 (instance sandsOfTime of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -581,8 +575,6 @@
 )
 
 (instance goToWork of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -598,7 +590,7 @@
 				(ego illegalBits: 0 setMotion: MoveTo 146 132 self)
 			)
 			(2
-				(SolvePuzzle POINTS_WORKINSTABLES 5)
+				(SolvePuzzle f40WorkInStable 5)
 				(client setScript: egoRakes)
 			)
 		)
@@ -606,9 +598,6 @@
 )
 
 (instance egoRakes of Script
-	;EO: This script causes the game to crash with a "Not an Object" error
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(rakeMusic init: play:)
@@ -626,16 +615,18 @@
 			)
 			((and local26 (== (ego cel?) 2))
 				(= local26 0)
-				([dustCloud (if (== (++ local20) 10) (= local20 0))]
+				(if (== (++ dustScriptIndex) 10)
+					(= dustScriptIndex 0)
+				)
+				([dustCloud dustScriptIndex]
 					posn:
-						(if local27
+						(if rakingInside
 							(- (ego x?) (Random 15 30))
 						else
 							(+ (ego x?) (Random 15 30))
 						)
 						(ego y?)
-					setScript: aDustScript
-					;setScript: [dustScript local20]
+					setScript: [dustScript dustScriptIndex]
 				)
 			)
 		)
@@ -645,7 +636,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not local28) (rm40 setScript: sandsOfTime))
+				(if (not local28)
+					(rm40 setScript: sandsOfTime)
+				)
 				(HandsOff)
 				(AddDust)
 				(ego
@@ -668,7 +661,7 @@
 			(2
 				(if local28
 					(ego setLoop: 3 setCycle: EndLoop)
-					(= local20 0)
+					(= dustScriptIndex 0)
 					(rakeMusic pause: 1)
 					(= cycles 15)
 				else
@@ -677,7 +670,7 @@
 			)
 			(3
 				(DisposeDust)
-				(= local20 0)
+				(= dustScriptIndex 0)
 				(if local28
 					(ego setLoop: 4 cycleSpeed: 2 setCycle: EndLoop)
 					(= cycles 10)
@@ -689,7 +682,7 @@
 				(if local28
 					(rakeMusic pause: 0)
 				)
-				(= local27 1)
+				(= rakingInside 1)
 				(AddDust)
 				(ego
 					posn: 85 132
@@ -702,11 +695,11 @@
 			)
 			(5
 				(DisposeDust)
-				(= local20 0)
+				(= dustScriptIndex 0)
 				(= cycles 3)
 			)
 			(6
-				(= local27 0)
+				(= rakingInside 0)
 				(if local28
 					(= local28 0)
 					(manure3 setCel: 1)
@@ -734,7 +727,7 @@
 			)
 			(event claimed: TRUE)
 			(= local28 1)
-			(= local20 0)
+			(= dustScriptIndex 0)
 			(NormalEgo)
 			(sandsOfTime changeState: 3)
 			(DisposeDust)
@@ -750,13 +743,13 @@
 )
 
 (instance endRake of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(AdvanceTime 3)
-				(if Night (curRoom drawPic: 40))
+				(if Night
+					(curRoom drawPic: 40)
+				)
 				(ego setMotion: MoveTo 110 132 self)
 			)
 			(1
@@ -781,8 +774,6 @@
 )
 
 (instance getPaid of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -830,8 +821,6 @@
 )
 
 (instance sleeper of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -883,7 +872,7 @@
 					(HandsOn)
 					(EgoSleeps 5 0)
 					(= currentPalette 0)
-					(curRoom drawPic: 40 7)
+					(curRoom drawPic: 40 IRISOUT)
 					(horse
 						loop: 1
 						cel: 1
@@ -905,8 +894,6 @@
 )
 
 (instance sleepyIntro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -919,21 +906,20 @@
 				;"WHAT DO YOU THINK THIS IS, A REST HOME???  GET TO WORK!  NOW!!!"
 				(= cycles 10)
 			)
-			(2 (client setScript: goToWork))
+			(2
+				(client setScript: goToWork)
+			)
 		)
 	)
 )
 
 (instance aDustScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(client
-					setMotion:
-						MoveTo
-						(if local27
+					setMotion: MoveTo
+						(if rakingInside
 							(+ (ego x?) (Random 70 130))
 						else
 							(- (ego x?) (Random 70 130))
@@ -950,11 +936,11 @@
 )
 
 (instance intro of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((> yesNoTimer 1) (-- yesNoTimer))
+			((> yesNoTimer 1)
+				(-- yesNoTimer)
+			)
 			((== yesNoTimer 1)
 				(= yesNoTimer 0)
 				(TimePrint 5 40 38)
@@ -983,15 +969,14 @@
 			(1
 				(cond 
 					((Btst fStableClean)
-						(if
-						(and (== timeODay TIME_SUNSET) (== (ego onControl: origin) cYELLOW))
+						(if (and (== timeODay TIME_SUNSET) (== (ego onControl: origin) cYELLOW))
 							(client setScript: 0)
 						else
 							(AlreadyClean)
 							(HandsOff)
 						)
 					)
-					((Btst MET_STABLEMAN)
+					((Btst fMetStableman)
 						(TimePrint 3 40 42)
 						;"I see you're back.  Need some work?"
 						(= yesNoTimer 120)
@@ -999,7 +984,7 @@
 						(User canInput: TRUE)
 					)
 					(else
-						(Bset MET_STABLEMAN)
+						(Bset fMetStableman)
 						(HandsOff)
 						(User canInput: TRUE)
 						(if (== (ego onControl: origin) cYELLOW)
@@ -1015,7 +1000,11 @@
 					)
 				)
 				(stableMan setLoop: 4 cel: 0 setCycle: Forward)
-				(if (Btst fStableClean) (= seconds 6) else (= seconds 3))
+				(if (Btst fStableClean)
+					(= seconds 6)
+				else
+					(= seconds 3)
+				)
 			)
 			(2
 				(if (Btst fStableClean)
@@ -1030,7 +1019,9 @@
 				(stableMan setCycle: Forward)
 				(= seconds 3)
 			)
-			(4 (stableMan setCycle: 0))
+			(4
+				(stableMan setCycle: 0)
+			)
 			(5
 				(if stablemanSpeaks
 					(stableMan
@@ -1043,7 +1034,9 @@
 				)
 			)
 			(6
-				(if (not (ego script?)) (HandsOn))
+				(if (not (ego script?))
+					(HandsOn)
+				)
 				(= stablemanSpeaks FALSE)
 				(client setScript: 0)
 			)
@@ -1074,8 +1067,11 @@
 				((Said 'ask//labor,hoe,crap')
 					(HighPrint 40 41)
 					;"That's what I'm asking YOU about, nimrod."
-					)
-				(else (event claimed: TRUE) (self changeState: 3))
+				)
+				(else
+					(event claimed: TRUE)
+					(self changeState: 3)
+				)
 			)
 		)
 	)

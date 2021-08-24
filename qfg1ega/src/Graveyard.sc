@@ -31,13 +31,9 @@
 		;you think unspeakable thoughts of torture and torment directed at programmers, game designers, and vicious artists named Kenn.
 )
 
-(instance riser of Actor
-	(properties)
-)
+(instance riser of Actor)
 
-(instance longOne of Actor
-	(properties)
-)
+(instance longOne of Actor)
 
 (instance mandrake of View
 	(properties
@@ -130,7 +126,7 @@
 		(= local1 (Random 0 7))
 		(NormalEgo)
 		(ego init:)
-		(if (and Night (Btst fGhostOil)) (SolvePuzzle POINTS_USEUNDEADUNGUENT 2))
+		(if (and Night (Btst fGhostOil)) (SolvePuzzle f64UseGhostOil 2))
 		(switch prevRoomNum
 			(72
 				(ego posn: 160 188 setMotion: MoveTo 160 180)
@@ -148,11 +144,10 @@
 	)
 	
 	(method (doit)
-		(if (and (== (ego edgeHit?) 3) (not fallingInHole))
+		(if (and (== (ego edgeHit?) SOUTH) (not fallingInHole))
 			(curRoom newRoom: 72)
 		)
-		(if
-		(and (not fallingInHole) (== (ego onControl: origin) cYELLOW))
+		(if (and (not fallingInHole) (== (ego onControl: origin) cYELLOW))
 			(= fallingInHole TRUE)
 			(self setScript: fallInHole)
 		)
@@ -264,9 +259,9 @@
 		(DisposeScript peekABoo)
 		(if Night
 			(= deathMusic (SoundFX 26))
-			(Bset VISITED_GRAVEYARD_NIGHTTIME)
+			(Bset fBeenInGraveyardNight)
 		else
-			(Bset VISITED_GRAVEYARD_DAYTIME)
+			(Bset fBeenIn64)
 		)
 		(super dispose:)
 	)
@@ -294,8 +289,7 @@
 							;You would have trouble convincing people you are a Hero if you climbed the wall into town during the day.
 						)
 					)
-					(
-					(Said 'look,read/brick,marker,gravestone,epitaph[<grave]')
+					((Said 'look,read/brick,marker,gravestone,epitaph[<grave]')
 						(cond 
 							((ego inRect: 130 113 168 140)
 								(HighPrint 64 4)
@@ -308,7 +302,7 @@
 								(if (cast contains: mandrake)
 									(HighPrint 64 7)
 									;Growing up out of the grave is an evil-looking plant with a slimy, poisonous sheen.
-									)
+								)
 							)
 							(
 								(and
@@ -325,7 +319,7 @@
 							(else
 								(HighPrint 64 11)
 								;The carving on the gravestones, for the most part, seems to have been intentionally defaced and worn with time.
-								)
+							)
 						)
 					)
 					((Said 'cast>')
@@ -345,18 +339,17 @@
 								(OPEN
 									(HighPrint 64 14)
 									;The only things that can be opened here are graves, and you don't want to open THOSE!
-									)
+								)
 								(else
 									(HighPrint 64 15)
 									;Your magical abilities are to no avail against the undead.
-									)
+								)
 							)
 						)
 					)
 					((Said 'look>')
 						(cond 
-							(
-							(or (Said '<down') (Said '/ground,chasm,grave,pit'))
+							((or (Said '<down') (Said '/ground,chasm,grave,pit'))
 								(if (ego inRect: 204 144 267 167)
 									(HighPrint 64 16)
 									;You can't see the bottom of the hole before you.
@@ -371,11 +364,11 @@
 										(0
 											(HighPrint 64 18)
 											;You see transparent, decaying, writhing, slimy, undead fragments of undulating ectoplasm!
-											)
+										)
 										(1
 											(HighPrint 64 19)
 											;I DO believe in spooks!  I DO believe in spooks!  I DO, I DO, I DO believe in spooks!!
-											)
+										)
 									)
 								else
 									(HighPrint 64 20)
@@ -385,43 +378,44 @@
 							((Said '/grave')
 								(HighPrint 64 21)
 								;The graves seemed to be placed haphazardly in the tiny graveyard.  All appear to be old and poorly maintained.
-								)
+							)
 							((Said '/wall')
 								(HighPrint 64 22)
 								;The town wall looks more massive from this side.
-								)
+							)
 							((Said '/tree')
 								(HighPrint 64 23)
 								;There is a very large and very dead tree which hovers over the graveyard.
 								(HighPrint 64 24)
 								;The forest surrounds the graveyard on three sides.
-								)
+							)
 							((Said '/fence')
 								(HighPrint 64 25)
 								;You see the rotted remains of a picket fence.
-								)
+							)
 							((Said '/ladder')
 								(HighPrint 64 26)
 								;What at first appears to be a ladder turns out to be the rotted remains of a picket fence.
-								)
+							)
 							((Said '/root,mandrake,plant')
 								(cond 
 									((ego has: iMandrake)
 										(HighPrint 64 27)
 										;Let's see...root..root...
 										;I know I put that root SOMEwhere!
-										)
+									)
 									((not (cast contains: mandrake))
 										(HighPrint 64 28)
 										;You don't see any particularly interesting roots.
-										)
+									)
 									((ego inRect: 130 113 168 140)
 										(HighPrint 64 7)
 										;Growing up out of the grave is an evil-looking plant with a slimy, poisonous sheen.
-										)
-									(else (HighPrint 64 29)
+									)
+									(else
+										(HighPrint 64 29)
 										;The red root growing out of one of the graves has a strange and evil appearance.
-										)
+									)
 								)
 							)
 							((Said '[<at,around][/!*,cemetery,cemetery]')
@@ -438,13 +432,13 @@
 					((Said 'kill')
 						(HighPrint 64 32)
 						;Everything here is already dead.
-						)
+					)
 					((Said 'get>')
 						(cond 
 							((Said '/ghost')
 								(HighPrint 64 33)
 								;You don't get ghosts.  Ghosts get YOU!
-								)
+							)
 							((Said '/mandrake,root,plant')
 								(cond 
 									((ego has: iMandrake)
@@ -453,9 +447,13 @@
 									((not (cast contains: mandrake))
 										(HighPrint 64 28)
 										;You don't see any particularly interesting roots.
-										)
-									((ego inRect: 130 113 168 140) (ego setScript: getRoot))
-									(else (NotClose))
+									)
+									((ego inRect: 130 113 168 140)
+										(ego setScript: getRoot)
+									)
+									(else
+										(NotClose)
+									)
 								)
 							)
 						)
@@ -467,8 +465,6 @@
 )
 
 (instance riseDownLeft of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -511,8 +507,6 @@
 )
 
 (instance riseUpLeft of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -555,8 +549,6 @@
 )
 
 (instance riseUpRight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -590,8 +582,6 @@
 )
 
 (instance peekABoo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -622,8 +612,6 @@
 )
 
 (instance getHimNorth of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -681,10 +669,10 @@
 				(= cycles 5)
 			)
 			(1
-				(if (not (Btst VISITED_GRAVEYARD_NIGHTTIME))
-						(HighPrint 64 34)
-						;It appears that you have company in the graveyard tonight.
-						)
+				(if (not (Btst fBeenInGraveyardNight))
+					(HighPrint 64 34)
+					;It appears that you have company in the graveyard tonight.
+				)
 			)
 			(2
 				(HandsOff)
@@ -701,14 +689,14 @@
 					setCycle: EndLoop self
 				)
 			)
-			(4 (LifeDrained))
+			(4
+				(LifeDrained)
+			)
 		)
 	)
 )
 
 (instance getHimSouth of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -753,12 +741,15 @@
 				(= cycles 5)
 			)
 			(1
-				(if (not (Btst VISITED_GRAVEYARD_NIGHTTIME))
+				(if (not (Btst fBeenInGraveyardNight))
 					(HighPrint 64 34)
 					;It appears that you have company in the graveyard tonight.
-					)
+				)
 			)
-			(2 (HandsOff) (= cycles 15))
+			(2
+				(HandsOff)
+				(= cycles 15)
+			)
 			(3
 				(ego
 					view: vEgoDefeatedMagic
@@ -767,14 +758,14 @@
 					setCycle: EndLoop self
 				)
 			)
-			(4 (LifeDrained))
+			(4
+				(LifeDrained)
+			)
 		)
 	)
 )
 
 (instance riserGetsUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -804,8 +795,6 @@
 )
 
 (instance gotHim of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -840,21 +829,21 @@
 					setCycle: EndLoop self
 				)
 			)
-			(2 (LifeDrained))
+			(2
+				(LifeDrained)
+			)
 		)
 	)
 )
 
 (instance safeIntro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if
 					(or
-						(and Night (Btst VISITED_GRAVEYARD_NIGHTTIME))
-						(and (not Night) (Btst VISITED_GRAVEYARD_DAYTIME))
+						(and Night (Btst fBeenInGraveyardNight))
+						(and (not Night) (Btst fBeenIn64))
 					)
 					(client setScript: 0)
 				else
@@ -878,8 +867,6 @@
 )
 
 (instance fallInHole of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -905,8 +892,6 @@
 )
 
 (instance getRoot of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -927,7 +912,7 @@
 					(HighPrint 64 37)
 					;You wrench the mandrake plant free from the tombstone on which it has grown.
 					;You hear a scream like that of a dying child as you yank the root from the ground.
-					(SolvePuzzle POINTS_GETMANDRAKEROOT 6)
+					(SolvePuzzle f64GetRoot 6)
 					(ego get: iMandrake)
 				else
 					(HighPrint 64 38)

@@ -58,8 +58,7 @@
 	)
 	
 	(method (open)
-		(if
-		(and (not locked) (!= doorState doorClosing) (!= doorState doorOpen))
+		(if (and (not locked) (!= doorState doorClosing) (!= doorState doorOpen))
 			(= doorState doorClosing)
 			(self setCycle: EndLoop self)
 			(if openSnd (openSnd doit:))

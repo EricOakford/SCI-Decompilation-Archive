@@ -18,21 +18,71 @@
 
 (local
 	local0
-	[local29 29] = [208 57 199 52 194 48 198 47 202 45 212 44 220 46 227 49 238 52 249 49 261 47 272 45 288 43 294 40 -32768]
-	[local44 15] = [270 48 256 53 239 60 226 65 216 70 201 74 184 76 -32768]
-	[local55 11] = [90 144 106 151 124 156 141 159 160 162 -32768]
-	[local74 19] = [193 162 214 156 240 148 263 140 282 131 297 119 309 109 318 100 332 90 -32768]
-	[local82 8] = [140 145 122 122 137 127 129 139]
+	upPts = [
+		208 57
+		199 52
+		194 48
+		198 47
+		202 45
+		212 44
+		220 46
+		227 49
+		238 52
+		249 49
+		261 47
+		272 45
+		288 43
+		294 40
+		PATHEND
+		]
+	wizPts = [
+		270 48
+		256 53
+		239 60
+		226 65
+		216 70
+		201 74
+		184 76
+		PATHEND
+		]
+	fortPts = [
+		90 144
+		106 151
+		124 156
+		141 159
+		160 162
+		PATHEND
+		]
+	awayPts = [
+		193 162
+		214 156
+		240 148
+		263 140
+		282 131
+		297 119
+		309 109
+		318 100
+		332 90
+		PATHEND
+		]
+	sparkleXY = [
+		140 145
+		122 122
+		137 127
+		129 139
+		]
 	local83
-	local84
-	local85
+	heroScriptTimer
+	saveBits
 	theCycles =  10
 	theCycles_2 =  10
-	[local88 7] = [3 3 3 2 160 120]
+	local88 = [3 3 3 2 160 120]
 )
-(procedure (localproc_000c)
-	(if modelessDialog (modelessDialog dispose:))
-	(cast eachElementDo: #dispose 84)
+(procedure (NextScript)
+	(if modelessDialog
+		(modelessDialog dispose:)
+	)
+	(cast eachElementDo: #dispose #delete)
 	(switch (curRoom script?)
 		(awardScript
 			(curRoom setScript: heroScript)
@@ -55,20 +105,20 @@
 	(curRoom newRoom: CHARSAVE)
 )
 
-(procedure (PrintEnd fg bg)
+(procedure (CreditPrint fg bg)
 	(if (>= numColors 8)
 		(creditWindow color: fg back: bg)
 	)
-	(Print &rest #mode teJustCenter #dispose #window creditWindow)
+	(Print &rest
+		#mode teJustCenter
+		#dispose
+		#window creditWindow
+	)
 )
 
-(instance creditWindow of SysWindow
-	(properties)
-)
+(instance creditWindow of SysWindow)
 
 (instance endStatus of Code
-	(properties)
-	
 	(method (doit strg)
 		(Format strg 600 0 score)
 	)
@@ -461,39 +511,29 @@
 	)
 )
 
-(instance carpet of Actor
-	(properties)
-)
+(instance carpet of Actor)
 
 (instance upPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local29 param1])
+	(method (at n)
+		(return [upPts n])
 	)
 )
 
 (instance wizTurn of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local44 param1])
+	(method (at n)
+		(return [wizPts n])
 	)
 )
 
 (instance fortPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local55 param1])
+	(method (at n)
+		(return [fortPts n])
 	)
 )
 
 (instance awayPath of Path
-	(properties)
-	
-	(method (at param1)
-		(return [local74 param1])
+	(method (at n)
+		(return [awayPts n])
 	)
 )
 
@@ -513,8 +553,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(self
-			loop:
+		(self loop:
 			(switch (carpet loop?)
 				(0 5)
 				(1 6)
@@ -533,9 +572,7 @@
 	)
 )
 
-(instance bigCarpet of Actor
-	(properties)
-)
+(instance bigCarpet of Actor)
 
 (instance ii of View
 	(properties
@@ -619,7 +656,7 @@
 (instance EndGame of Room
 	(properties
 		picture 39
-		style $0001
+		style VSHUTTER
 	)
 	
 	(method (init)
@@ -631,7 +668,7 @@
 		(Load SOUND (SoundFX 99))
 		(LoadMany PICTURE 148 906 101 750)
 		(LoadMany VIEW vEgoWithMedal vEgoFlyingCarpet vEgoLarge vTrialByFire vQFG2 vDragonHead vDragonFire)
-		(SolvePuzzle POINTS_WINGAME 25)
+		(SolvePuzzle f600EndGame 25)
 		(StatusLine code: endStatus enable:)
 		(super init: &rest)
 		(cSound stop:)
@@ -640,8 +677,8 @@
 		(keyDownHandler eachElementDo: #dispose #delete)
 		(keyDownHandler add: self)
 		(HandsOff)
-		(= [invNum iGold] (+ [invNum iGold] 110))
-		(= [invNum iGold] (+ [invNum iGold] 30))
+		(+= [invNum iGold] 110)
+		(+= [invNum iGold] 30)
 		(self setScript: awardScript)
 	)
 	
@@ -666,15 +703,16 @@
 )
 
 (instance awardScript of Script
-	(properties)
-	
 	(method (init)
 		(elsa init:)
 		(addToPics add: elsa)
-		(if (Btst SAVED_BARNARD) (jr init:) (addToPics add: jr))
+		(if (Btst fSavedBarnard)
+			(jr init:)
+			(addToPics add: jr)
+		)
 		(p1 priority: 6)
 		(p1Mirror priority: 6)
-		(p2 cel: (if (Btst DEFEATED_MINOTAUR) 0 else 1))
+		(p2 cel: (if (Btst fMinotaurDead) 0 else 1))
 		(addToPics
 			add:
 				Mark Lori Cori Cindy Bob Jeff Lar Kenn Jer Ger
@@ -701,9 +739,9 @@
 		)
 	)
 	
-	(method (changeState newState &tmp theDetailLevel)
-		(if (> (= theDetailLevel howFast) medium)
-			(-- theDetailLevel)
+	(method (changeState newState &tmp saveSpeed)
+		(if (> (= saveSpeed howFast) medium)
+			(-- saveSpeed)
 		)
 		(switch (= state newState)
 			(0
@@ -721,7 +759,7 @@
 			(2
 				(cSound number: (SoundFX 99) loop: 1 play:)
 				(if (!= howFast slow)
-					(bug1 cycleSpeed: theDetailLevel setCycle: EndLoop)
+					(bug1 cycleSpeed: saveSpeed setCycle: EndLoop)
 				else
 					(bug1 cel: 2)
 				)
@@ -730,7 +768,7 @@
 			(3
 				(bug1 stopUpd:)
 				(if (!= howFast slow)
-					(bug2 cycleSpeed: theDetailLevel setCycle: EndLoop self)
+					(bug2 cycleSpeed: saveSpeed setCycle: EndLoop self)
 				else
 					(bug2 cel: 2)
 					(= cycles 1)
@@ -743,8 +781,8 @@
 			(5
 				(yoric
 					init:
-					cycleSpeed: theDetailLevel
-					moveSpeed: theDetailLevel
+					cycleSpeed: saveSpeed
+					moveSpeed: saveSpeed
 					setCycle: Forward
 					setLoop: 7
 					setStep: 10 1
@@ -772,27 +810,27 @@
 				)
 				(= seconds 12)
 			)
-			(9 (localproc_000c))
+			(9
+				(NextScript)
+			)
 		)
 	)
 )
 
 (instance post1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 1))
 			(1
-				(if (and (Btst fBabaFrog) (Btst SAVED_BARNARD))
-					(PrintEnd vBLACK vLGREY 600 1 #at 2 30 #width 84 #time 14)
+				(if (and (Btst fBabaFrog) (Btst fSavedBarnard))
+					(CreditPrint vBLACK vLGREY 600 1 #at 2 30 #width 84 #time 14)
 					; Thus the hero from the East
 					; Freed the man from form of beast
 					; Saved beauty from the brigand's band
 					; And forced the Ogress to flee the land.
 					
 				else
-					(PrintEnd vBLACK vLGREY 600 2 #at 2 30 #width 84 #time 14)
+					(CreditPrint vBLACK vLGREY 600 2 #at 2 30 #width 84 #time 14)
 					; You have defeated the brigands
 					; And become a true Hero of Spielburg
 				)
@@ -802,10 +840,10 @@
 )
 
 (instance post2 of Script
-	(properties)
-	
 	(method (dispose)
-		(if (>= state 1) (local85 dispose:))
+		(if (>= state 1)
+			(saveBits dispose:)
+		)
 		(super dispose:)
 	)
 	
@@ -814,14 +852,14 @@
 			(0 (= seconds 2))
 			(1
 				(if (Btst fBabaFrog)
-					(= local85
-						(PrintEnd vYELLOW vLBLUE 600 3 #at 224 70 #width 80 #time 14)
+					(= saveBits
+						(CreditPrint vYELLOW vLBLUE 600 3 #at 224 70 #width 80 #time 14)
 						; The brigand band has been dispersed
 						; Their treasure has been reimbursed.
 					)
 				else
-					(= local85
-						(PrintEnd vYELLOW vLBLUE 600 4 #at 224 70 #width 80 #time 10)
+					(= saveBits
+						(CreditPrint vYELLOW vLBLUE 600 4 #at 224 70 #width 80 #time 10)
 						; So with the Kattas and the Merchant
 						; You board a magic carpet to the land of Shapeir.
 					)
@@ -831,11 +869,11 @@
 			)
 			(2
 				(if (Btst fBabaFrog)
-					(PrintEnd vYELLOW vLBLUE 600 5 #at 6 14 #width 80 #time 16)
+					(CreditPrint vYELLOW vLBLUE 600 5 #at 6 14 #width 80 #time 16)
 					; And so with Kattas and Abdulla Doo
 					; You bid the valley a fond adieu.
 				else
-					(PrintEnd vYELLOW vLBLUE 600 6 #at 6 14 #width 100 #time 23)
+					(CreditPrint vYELLOW vLBLUE 600 6 #at 6 14 #width 100 #time 23)
 					; Unfortunately, since the Baron is still
 					; cursed, and Baba Yaga remains to work her evil deeds, terror will continue to rule the land.
 				)
@@ -847,8 +885,6 @@
 )
 
 (instance heroScript of Script
-	(properties)
-	
 	(method (init)
 		(sparkle setCycle: Forward cycleSpeed: 3)
 		(lightning setCycle: Forward cycleSpeed: 0)
@@ -863,7 +899,7 @@
 		(hairR setPri: 5 init:)
 		(hairM setPri: 5 init:)
 		(cape setPri: 2 init:)
-		(= local84 55)
+		(= heroScriptTimer 55)
 		(super init: &rest)
 		(StatusLine disable:)
 		(curRoom style: 0 drawPic: 148)
@@ -871,19 +907,19 @@
 	)
 	
 	(method (doit)
-		(if (== (cSound prevSignal?) 30) (localproc_000c))
+		(if (== (cSound prevSignal?) 30) (NextScript))
 		(super doit:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp i)
 		(switch (= state newState)
 			(0
 				(= local0 0)
-				(= temp0 (* (Random 0 3) 2))
+				(= i (* (Random 0 3) 2))
 				(sparkle
 					setCycle: EndLoop self
-					x: [local82 temp0]
-					y: [local82 (+ temp0 1)]
+					x: [sparkleXY i]
+					y: [sparkleXY (+ i 1)]
 				)
 				(lightning
 					setCycle: EndLoop
@@ -895,11 +931,11 @@
 			(1
 				(lightning cel: 0 setCycle: 0)
 				(sparkle cel: 0 setCycle: 0)
-				(if local84
-					(-- local84)
+				(if heroScriptTimer
+					(-- heroScriptTimer)
 					(self changeState: 0)
 				else
-					(localproc_000c)
+					(NextScript)
 				)
 			)
 		)
@@ -907,8 +943,6 @@
 )
 
 (instance bigScript of Script
-	(properties)
-	
 	(method (init &tmp temp0 temp1)
 		(bck init:)
 		(mid init:)
@@ -933,7 +967,7 @@
 	)
 	
 	(method (doit &tmp temp0)
-		(if (== (cSound prevSignal?) 40) (localproc_000c))
+		(if (== (cSound prevSignal?) 40) (NextScript))
 		(if (= temp0 (Random 0 2))
 			(mid y: (- (+ (bck y?) temp0) 1))
 		)
@@ -967,8 +1001,6 @@
 )
 
 (instance flyScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(carpet
@@ -987,7 +1019,7 @@
 	
 	(method (doit)
 		(if (== (cSound prevSignal?) 50)
-			(localproc_000c)
+			(NextScript)
 		else
 			(super doit:)
 		)
@@ -1112,8 +1144,6 @@
 )
 
 (instance dragScript of Script
-	(properties)
-	
 	(method (doit)
 		(switch (cSound prevSignal?)
 			(60 (= local0 1))
@@ -1121,7 +1151,9 @@
 			(80 (= local0 7))
 			(90 (= local0 8))
 		)
-		(if (not (cSound loop?)) (= local0 13))
+		(if (not (cSound loop?))
+			(= local0 13)
+		)
 		(if (and (> local0 state) (or seconds cycles))
 			(= seconds (= cycles 0))
 			(self cue:)
@@ -1232,68 +1264,66 @@
 )
 
 (instance cornyCredits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 10))
 			(1
-				(PrintEnd vBLUE vYELLOW 600 7 #at 40 30 #width 120 #time 6)
+				(CreditPrint vBLUE vYELLOW 600 7 #at 40 30 #width 120 #time 6)
 				;Script and Whip: Lori Ann Cole
 				(= seconds 6)
 			)
 			(2
-				(PrintEnd vYELLOW vBROWN 600 8 #at 185 135 #width 120 #time 6)
+				(CreditPrint vYELLOW vBROWN 600 8 #at 185 135 #width 120 #time 6)
 				;Vicious Art: Kenn Nishiuye
 				(= seconds 6)
 			)
 			(3
-				(PrintEnd vLCYAN vCYAN 600 9 #at 50 70 #width 110 #time 3)
+				(CreditPrint vLCYAN vCYAN 600 9 #at 50 70 #width 110 #time 3)
 				;Silly Stuff: Jeff Crowe
 				(= seconds 3)
 			)
 			(4
-				(PrintEnd vLMAGENTA vBLUE 600 10 #at 178 132 #width 110 #time 5)
+				(CreditPrint vLMAGENTA vBLUE 600 10 #at 178 132 #width 110 #time 5)
 				;Next Generation Graphics: Jerry Moore
 				(= seconds 5)
 			)
 			(5
-				(PrintEnd vBLACK vLGREY 600 11 #at 80 130 #width 130 #time 6)
+				(CreditPrint vBLACK vLGREY 600 11 #at 80 130 #width 130 #time 6)
 				;Marathon Coding and Rude Puns: Bob Fischbach
 				(= seconds 7)
 			)
 			(6
-				(PrintEnd vLGREEN vGREEN 600 12 #at 30 100 #width 130 #time 5)
+				(CreditPrint vLGREEN vGREEN 600 12 #at 30 100 #width 130 #time 5)
 				;Algorithmic Gyrations: Larry Scott
 				(= seconds 5)
 			)
 			(7
-				(PrintEnd vLMAGENTA vBLUE 600 13 #at 160 22 #width 110 #time 5)
+				(CreditPrint vLMAGENTA vBLUE 600 13 #at 160 22 #width 110 #time 5)
 				;Cameo Coding: Jerry Shaw
 				(= seconds 6)
 			)
 			(8
-				(PrintEnd vBLUE vYELLOW 600 14 #at 40 30 #width 110 #time 5)
+				(CreditPrint vBLUE vYELLOW 600 14 #at 40 30 #width 110 #time 5)
 				;Insidious System Software: Corey Cole
 				(= seconds 6)
 			)
 			(9
-				(PrintEnd vLGREEN vGREEN 600 15 #at 80 50 #width 130 #time 6)
+				(CreditPrint vLGREEN vGREEN 600 15 #at 80 50 #width 130 #time 6)
 				;Magical Mystical Music: Mark Seibert
 				(= seconds 7)
 			)
 			(10
-				(PrintEnd vYELLOW vBROWN 600 16 #at 40 32 #width 120 #time 6)
+				(CreditPrint vYELLOW vBROWN 600 16 #at 40 32 #width 120 #time 6)
 				;Underground Art: Cindy Walker
 				(= seconds 7)
 			)
 			(11
-				(PrintEnd vLCYAN vCYAN 600 17 #at 130 30 #width 140 #time 6)
+				(CreditPrint vLCYAN vCYAN 600 17 #at 130 30 #width 140 #time 6)
 				;Yogic Sympathy and Support: Guruka Singh Khalsa
 				(= seconds 7)
 			)
 			(12
-				(PrintEnd vLCYAN vBLUE 600 18 #at -1 26 #width 260 #time 15)
+				(CreditPrint vLCYAN vBLUE 600 18 #at -1 26 #width 260 #time 15)
 				;Promotional Considerations:
 				;Erasmus' Rootin' Tootin' Root Beer
 				;Spielburg Chamber of Commerce

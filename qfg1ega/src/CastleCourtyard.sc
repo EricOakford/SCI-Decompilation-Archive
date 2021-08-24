@@ -59,13 +59,13 @@
 			(and
 				(< TIME_DAWN timeODay)
 				(< timeODay TIME_SUNSET)
-				(not (Btst DEFEATED_WEAPON_MASTER))
+				(not (Btst fBeatMaster))
 				(!= masterDay Day)
 			)
 			(LoadMany SCRIPT SKILLED 221 222 223 224 220 218 217 216)
 			(LoadMany VIEW vWeaponMasterTalk vWeaponMaster vEgoFightWithSword vEgoDefeated vEgoSwordDefeated)
 		)
-		(SolvePuzzle POINTS_ENTERCASTLECOURTYARD 1)
+		(SolvePuzzle f39EnterCourtyard 1)
 		(StatusLine enable:)
 		(super init: &rest)
 		(if (not Night)
@@ -96,17 +96,17 @@
 			(and
 				(< TIME_DAWN timeODay)
 				(< timeODay TIME_SUNSET)
-				(not (Btst DEFEATED_WEAPON_MASTER))
+				(not (Btst fBeatMaster))
 				(!= masterDay Day)
 			)
 			(cond 
-				((Btst FLAG_239)
+				((Btst fFlag239)
 					((ScriptID 221 0) init:)
 					(self setScript: (ScriptID 222 1))
 				)
 				((> (Random 0 100) 50)
 					((ScriptID 221 0) setCycle: Walk init:)
-					(Bset FLAG_239)
+					(Bset fFlag239)
 					(self setScript: (ScriptID 222 0))
 				)
 			)
@@ -126,7 +126,9 @@
 	)
 	
 	(method (dispose)
-		(if (>= Clock 3000) (Bclr FLAG_239))
+		(if (>= Clock 3000)
+			(Bclr fFlag239)
+		)
 		(super dispose:)
 	)
 	
@@ -137,47 +139,47 @@
 					((super handleEvent: event))
 					((Said 'look>')
 						(cond 
-							(
-							(Said '[<at,around][/!*,area,courtyard,street,field]')
-							(HighPrint 39 0)
-							;You are in the courtyard of Castle Spielburg.
+							((Said '[<at,around][/!*,area,courtyard,street,field]')
+								(HighPrint 39 0)
+								;You are in the courtyard of Castle Spielburg.
 							)
 							((Said '/ground,brick,flagstone')
 								(HighPrint 39 1)
 								;The courtyard is paved with granite paving stones, carefully placed by a skilled craftsman.
-								)
-							((Said '/man') (if Night
+							)
+							((Said '/man')
+								(if Night
 									(HighPrint 39 2)
 									;There is nobody else here.
-									else
+								else
 									(HighPrint 39 3)
 									;There are two guards near the castle door.
-									)
 								)
+							)
 							((Said '/master[<weapon]')
 								(HighPrint 39 4)
 								;He isn't here at the moment.
-								)
+							)
 							((Said '/east,stable')
 								(HighPrint 39 5)
 								;What you see, along with what you smell, gives the impression that the building on the east side of the courtyard contains the stables.
-								)
+							)
 							((Said '/west,barrack')
 								(HighPrint 39 6)
 								;On the west side of the courtyard is a building that looks like soldier's barracks.
 								(if (not Night)
 									(HighPrint 39 7)
 									;As a matter of fact, there's a soldier sleeping in front of it now.
-									)
+								)
 							)
 							((Said '/north,castle,door,guard')
 								(HighPrint 39 8)
 								;The door to the Baron's castle is well guarded.
-								)
+							)
 							((Said '/south,gate,gatehouse,pit')
 								(HighPrint 39 9)
 								;As you look back at the castle gate, you see a line of bushes along the south wall and the gatehouse and portcullis.
-								)
+							)
 						)
 					)
 					((or (Said 'nap') (Said 'go[<to]/nap'))

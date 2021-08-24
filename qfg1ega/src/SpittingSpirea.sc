@@ -43,7 +43,7 @@
 
 (procedure (SpireaPickUpSeed)
 	(cond 
-		((Btst SPIREA_INACTIVE) (HighPrint 16 2))
+		((Btst fFlowersInactive) (HighPrint 16 2))
 		((== spireaStatus 0) (ego setScript: (ScriptID 292 0)))
 		(else (HighPrint 16 3))
 	)
@@ -124,7 +124,7 @@
 		(spitSound number: (SoundFX 18) init:)
 		(gulpSound number: (SoundFX 27) init:)
 		(StatusLine enable:)
-		(if (or Night (Btst OBTAINED_SPIREA_SEED)) (Bset SPIREA_INACTIVE))
+		(if (or Night (Btst fGotSeed)) (Bset fFlowersInactive))
 		(= local7 2)
 		(NormalEgo)
 		(ego init:)
@@ -145,9 +145,9 @@
 				(ego posn: 170 188 setMotion: MoveTo 170 175)
 			)
 		)
-		(if (Btst SMASHED_FLOWER3) (flower0 setLoop: 3 cel: 4))
-		(if (Btst SMASHED_FLOWER1) (flower1 setLoop: 3 cel: 4))
-		(if (Btst SMASHED_FLOWER2) (flower3 setLoop: 3 cel: 4))
+		(if (Btst fKilledFlower3) (flower0 setLoop: 3 cel: 4))
+		(if (Btst fKilledFlower1) (flower1 setLoop: 3 cel: 4))
+		(if (Btst fKilledFlower2) (flower3 setLoop: 3 cel: 4))
 		((= [theFlower0 0] flower0) init: stopUpd:)
 		((= [theFlower0 1] flower1) init: stopUpd:)
 		((= [theFlower0 2] flower2) init: stopUpd:)
@@ -159,9 +159,9 @@
 		)
 		(if
 			(and
-				(not (Btst SMASHED_FLOWER1))
-				(not (Btst SMASHED_FLOWER2))
-				(not (Btst SMASHED_FLOWER3))
+				(not (Btst fKilledFlower1))
+				(not (Btst fKilledFlower2))
+				(not (Btst fKilledFlower3))
 			)
 			(flyingSeed
 				setLoop: 4
@@ -182,8 +182,8 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_SPITTING_SPIREA)
-		(Bclr SPIREA_INACTIVE)
+		(Bset fBeenIn16)
+		(Bclr fFlowersInactive)
 		(super dispose:)
 	)
 	
@@ -220,7 +220,7 @@
 							((Said '/south,east') (HighPrint 16 5))
 							((Said '[<at,around][/!*,forest]')
 								(HighPrint 16 6)
-								(if (not (Btst SPIREA_INACTIVE)) (HighPrint 16 7))
+								(if (not (Btst fFlowersInactive)) (HighPrint 16 7))
 							)
 							((Said '/cliff,boulder') (HighPrint 16 8))
 							((Said '[<down][/ground,needle,moss,grass]') (HighPrint 16 9))
@@ -235,7 +235,7 @@
 							((Said '/seed')
 								(cond 
 									((ego has: iSeed) (event claimed: 0))
-									((Btst SPIREA_INACTIVE) (HighPrint 16 13))
+									((Btst fFlowersInactive) (HighPrint 16 13))
 									(else (HighPrint 16 14))
 								)
 							)
@@ -269,7 +269,7 @@
 										)
 										(NotClose)
 									)
-									((ego has: iSword) (ego setScript: smashIt) (Bset SPIREA_INACTIVE))
+									((ego has: iSword) (ego setScript: smashIt) (Bset fFlowersInactive))
 									(else (HighPrint 16 17))
 								)
 							)
@@ -285,15 +285,15 @@
 					((Said 'climb[<up][/cliff,boulder]')
 						(cond 
 							((>= spireaStatus 1) (HighPrint 16 20))
-							((Btst OBTAINED_SPIREA_SEED) (AlreadyGotSeed))
+							((Btst fGotSeed) (AlreadyGotSeed))
 							((TrySkill CLIMB tryClimbSpittingSpirea 0) (ego setScript: (ScriptID 291 1)))
 							(else (ego setScript: (ScriptID 291 0)))
 						)
 					)
 					((Said 'capture[/seed]')
 						(cond 
-							((Btst SPIREA_INACTIVE) (HighPrint 16 21))
-							((Btst OBTAINED_SPIREA_SEED) (AlreadyGotSeed))
+							((Btst fFlowersInactive) (HighPrint 16 21))
+							((Btst fGotSeed) (AlreadyGotSeed))
 							((== spireaStatus 1) (= spireaStatus 2) (ego setScript: (ScriptID 291 3)))
 							((or (== spireaStatus 2) (== spireaStatus 3)) (HighPrint 16 22))
 							(else (HighPrint 16 23))
@@ -303,7 +303,7 @@
 						(cond 
 							((Said '/boulder,brick') (SpireaPickUpSeed))
 							((Said '/seed')
-								(if (Btst OBTAINED_SPIREA_SEED)
+								(if (Btst fGotSeed)
 									(AlreadyDone)
 								else
 									(HighPrint 16 24)
@@ -315,8 +315,8 @@
 						(cond 
 							((Said '/boulder,brick')
 								(cond 
-									((Btst OBTAINED_SPIREA_SEED) (AlreadyGotSeed))
-									((Btst SPIREA_INACTIVE) (HighPrint 16 25))
+									((Btst fGotSeed) (AlreadyGotSeed))
+									((Btst fFlowersInactive) (HighPrint 16 25))
 									((== spireaStatus 0)
 										(if (ego has: iRock)
 											(if (not local10) (HighPrint 16 26))
@@ -337,18 +337,18 @@
 							(OPEN
 								(cond 
 									((not (CastSpell spell)))
-									((Btst OBTAINED_SPIREA_SEED) (AlreadyGotSeed))
+									((Btst fGotSeed) (AlreadyGotSeed))
 									((!= (ego script?) 0) (HighPrint 16 3))
 									((!= spireaStatus 0) (HighPrint 16 30) (ego setScript: (ScriptID 291 2)))
 									((< [egoStats OPEN] 35) (HighPrint 16 31))
-									(else (Bset SPIREA_INACTIVE) (ego setScript: openUp))
+									(else (Bset fFlowersInactive) (ego setScript: openUp))
 								)
 							)
 							(FETCH
 								(cond 
 									((not (CastSpell spell)))
-									((Btst OBTAINED_SPIREA_SEED) (AlreadyGotSeed))
-									((Btst SPIREA_INACTIVE) (HighPrint 16 32))
+									((Btst fGotSeed) (AlreadyGotSeed))
+									((Btst fFlowersInactive) (HighPrint 16 32))
 									((== spireaStatus 0)
 										(if (not local11) (HighPrint 16 33))
 										(= local9 1)
@@ -358,7 +358,7 @@
 								)
 							)
 							(FLAMEDART
-								(if (not (Btst OBTAINED_SPIREA_SEED))
+								(if (not (Btst fGotSeed))
 									(HighPrint 16 34)
 								else
 									(HighPrint 16 35)
@@ -371,8 +371,8 @@
 						(cond 
 							((Said '/seed')
 								(cond 
-									((Btst OBTAINED_SPIREA_SEED) (AlreadyDone))
-									((Btst SPIREA_INACTIVE) (HighPrint 16 36))
+									((Btst fGotSeed) (AlreadyDone))
+									((Btst fFlowersInactive) (HighPrint 16 36))
 									(else (HighPrint 16 37))
 								)
 							)
@@ -397,7 +397,7 @@
 				(= seconds (Random 3 5))
 			)
 			(1
-				(if (Btst SPIREA_INACTIVE)
+				(if (Btst fFlowersInactive)
 					(self changeState: 8)
 				else
 					(= seedInPlant seedTarget)
@@ -509,7 +509,7 @@
 				([theFlower0 seedTarget] stopUpd:)
 				([theFlower0 seedInPlant] stopUpd:)
 				(flyingSeed setScript: 0)
-				(if (or (not (Btst SPIREA_INACTIVE)) (not local6)) (= local4 1))
+				(if (or (not (Btst fFlowersInactive)) (not local6)) (= local4 1))
 			)
 		)
 	)
@@ -521,10 +521,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(SolvePuzzle POINTS_SMASHSPIREA -10)
+				(SolvePuzzle f10KillFlower -10)
 				(cond 
 					((& (ego onControl: origin) cLRED)
-						(if (Btst SMASHED_FLOWER1)
+						(if (Btst fKilledFlower1)
 							(AlreadyKilledFlower)
 						else
 							(HandsOff)
@@ -533,7 +533,7 @@
 						)
 					)
 					((& (ego onControl: origin) cYELLOW)
-						(if (Btst SMASHED_FLOWER2)
+						(if (Btst fKilledFlower2)
 							(AlreadyKilledFlower)
 						else
 							(HandsOff)
@@ -542,7 +542,7 @@
 						)
 					)
 					((& (ego onControl: origin) cLMAGENTA)
-						(if (Btst SMASHED_FLOWER3)
+						(if (Btst fKilledFlower3)
 							(AlreadyKilledFlower)
 						else
 							(HandsOff)
@@ -579,7 +579,7 @@
 								cycleSpeed: 1
 								setCycle: EndLoop
 							)
-							(Bset SMASHED_FLOWER3)
+							(Bset fKilledFlower3)
 						)
 						(1
 							([theFlower0 1]
@@ -588,7 +588,7 @@
 								cycleSpeed: 1
 								setCycle: EndLoop
 							)
-							(Bset SMASHED_FLOWER1)
+							(Bset fKilledFlower1)
 						)
 						(3
 							([theFlower0 3]
@@ -597,7 +597,7 @@
 								cycleSpeed: 1
 								setCycle: EndLoop
 							)
-							(Bset SMASHED_FLOWER2)
+							(Bset fKilledFlower2)
 						)
 					)
 					(if (== local7 seedTarget) (flyingSeed show:))
@@ -624,7 +624,7 @@
 					(and
 						(== local7 seedTarget)
 						(not local12)
-						(not (Btst OBTAINED_SPIREA_SEED))
+						(not (Btst fGotSeed))
 					)
 					(= cycles 3)
 				else
@@ -651,9 +651,9 @@
 			)
 			(11
 				(HighPrint 16 40)
-				(SolvePuzzle POINTS_GETSEED 8)
+				(SolvePuzzle f16GetSeed 8)
 				(ego get: iSeed setScript: 0)
-				(Bset OBTAINED_SPIREA_SEED)
+				(Bset fGotSeed)
 				(HandsOn)
 			)
 		)
@@ -752,7 +752,7 @@
 				(rock setMotion: Chase flyingSeed 5 self)
 			)
 			(1
-				(Bset SPIREA_INACTIVE)
+				(Bset fFlowersInactive)
 				(= local4 0)
 				(flyingSeed setScript: 0 setMotion: 0)
 				(rock
@@ -819,9 +819,9 @@
 			)
 			(9
 				(NormalEgo)
-				(SolvePuzzle POINTS_GETSEED 8)
+				(SolvePuzzle f16GetSeed 8)
 				(ego get: iSeed setScript: 0)
-				(Bset OBTAINED_SPIREA_SEED)
+				(Bset fGotSeed)
 				(HandsOn)
 				(rock dispose:)
 			)
@@ -836,7 +836,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset SPIREA_INACTIVE)
+				(Bset fFlowersInactive)
 				(= temp0
 					(/ (- ([theFlower0 seedTarget] x?) (magicLasso x?)) 2)
 				)
@@ -857,7 +857,7 @@
 			(1 (= seconds 3))
 			(2
 				(magicLasso dispose:)
-				(Bclr SPIREA_INACTIVE)
+				(Bclr fFlowersInactive)
 				(= local4 1)
 				(NormalEgo)
 				(HandsOn)
@@ -874,7 +874,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset SPIREA_INACTIVE)
+				(Bset fFlowersInactive)
 				(magicLasso
 					setMotion:
 						MoveTo
@@ -884,7 +884,7 @@
 				)
 			)
 			(1
-				(Bclr SPIREA_INACTIVE)
+				(Bclr fFlowersInactive)
 				(= local4 1)
 				(= local13 1)
 			)
@@ -919,8 +919,8 @@
 			)
 			(6
 				(HighPrint 16 42)
-				(Bset OBTAINED_SPIREA_SEED)
-				(SolvePuzzle POINTS_GETSEED 8)
+				(Bset fGotSeed)
+				(SolvePuzzle f16GetSeed 8)
 				(ego get: iSeed loop: 1)
 				(NormalEgo)
 				(HandsOn)
@@ -997,9 +997,9 @@
 			)
 			(7
 				(NormalEgo)
-				(SolvePuzzle POINTS_GETSEED 8)
+				(SolvePuzzle f16GetSeed 8)
 				(ego get: iSeed setScript: 0)
-				(Bset OBTAINED_SPIREA_SEED)
+				(Bset fGotSeed)
 				(HandsOn)
 			)
 		)
@@ -1089,7 +1089,7 @@
 			)
 			(event claimed: TRUE)
 			(HighPrint 16 43)
-			(if (or (Btst SMASHED_FLOWER1) (Btst SMASHED_FLOWER2) (Btst SMASHED_FLOWER3))
+			(if (or (Btst fKilledFlower1) (Btst fKilledFlower2) (Btst fKilledFlower3))
 				(HighPrint 16 44)
 			)
 		)

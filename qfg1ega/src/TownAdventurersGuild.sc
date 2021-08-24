@@ -285,12 +285,12 @@
 			stopUpd:
 			addToPic:
 		)
-		(if (not (Btst VISITED_ADVENTURER_GUILD)) (LookAround))
+		(if (not (Btst fBeenIn311)) (LookAround))
 	)
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_ADVENTURER_GUILD)
+		(Bset fBeenIn311)
 		(super dispose:)
 	)
 	

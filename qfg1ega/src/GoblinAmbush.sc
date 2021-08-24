@@ -19,7 +19,17 @@
 
 (local
 	coordsIndex
-	[coords 36] = [32 0 0 0    32 83 114 101    140 59 221 69    248 59 300 67    173 71 251 81    239 85 300 99    256 141 300 151    203 153 292 165    64 136 157 143]
+	coords = [
+		32 0 0 0
+		32 83 114 101
+		140 59 221 69
+		248 59 300 67
+		173 71 251 81
+		239 85 300 99
+		256 141 300 151
+		203 153 292 165
+		64 136 157 143
+		]
 	;coords is coordinates: x1 y1, x2 y2
 	[bushPosition 2]
 	[egoPosition 3]
@@ -35,7 +45,7 @@
 	[gobAttackScript 10]
 	goblinIndex
 	local65 =  10
-	[local66 30] = [100 150 200 225 400 625 750 850 950 1050 2 2 2 2 2 2 2 2 2 2]
+	local66 = [100 150 200 225 400 625 750 850 950 1050 2 2 2 2 2 2 2 2 2 2]
 	lootedGoblin1
 	lootedGoblin2
 	lootedGoblin3
@@ -167,7 +177,7 @@
 				[coords (+ coordsIndex 3)]
 			)
 		)
-		(= coordsIndex (- coordsIndex 4))
+		(-= coordsIndex 4)
 	)
 	(return ret)
 )
@@ -446,7 +456,9 @@
 		(if (or (!= prevRoomNum vGoblin) monsterHealth)
 			(switch numGoblins
 				(0
-					(if (Btst DEFEATED_FIRST_GOBLIN) (= local51 1))
+					(if (Btst fFoundGoblinHideout)
+						(= local51 1)
+					)
 				)
 				(1 
 					(= local51 1)
@@ -473,13 +485,18 @@
 	)
 	
 	(method (doit)
-		(if (ego edgeHit?) (Bset DEFEATED_FIRST_GOBLIN) (goblinS stop:))
+		(if (ego edgeHit?)
+			(Bset fFoundGoblinHideout)
+			(goblinS stop:)
+		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(Bset VISITED_GOBLIN_AMBUSH)
-		(if (== prevRoomNum vGoblin) (= monsterNum FALSE))
+		(Bset fBeenIn45)
+		(if (== prevRoomNum vGoblin)
+			(= monsterNum FALSE)
+		)
 		(super dispose:)
 	)
 	
@@ -493,19 +510,19 @@
 							((Said '/bush')
 								(HighPrint 45 0)
 								;You seem to see movement, but you are not certain what is over there.
-								)
+							)
 							((Said '/boulder')
 								(HighPrint 45 1)
 								;The rocks look as if they were deliberately piled.
-								)
+							)
 							((Said '/north,south,east,west')
 								(HighPrint 45 2)
 								;You see forest.
-								)
+							)
 							((Said '/man,creature,monster,goblin')
 								(HighPrint 45 3)
 								;You see a Goblin, a small but dangerous humanoid.
-								)
+							)
 							((Said '/cave')
 								(if (ego inRect: 0 0 106 86)
 									(HighPrint 45 4)
@@ -519,62 +536,61 @@
 							((Said '[/!*]')
 								(HighPrint 45 6)
 								;Something about the bushes here gives you a very bad feeling.
-								)
+							)
 						)
 					)
 					((Said 'search/goblin,body,man,creature')
 						(HighPrint 45 7)
 						;You're not close to anything matching that description.
-						)
+					)
 					((Said 'search[/room]')
 						(cond 
 							((ego inRect: 0 0 106 86)
 								(HighPrint 45 8)
 								;You find a small cave concealed in the rocks, just big enough for the Goblins to come through.
-								)
+							)
 							((ego inRect: 106 0 187 86)
 								(HighPrint 45 9)
 								;Nothing here, but you're HOT!
-								)
+							)
 							((ego inRect: 187 0 320 86)
 								(HighPrint 45 10)
 								;Nothing here, but you're warm.
-								)
+							)
 							((ego inRect: 0 86 106 134)
 								(HighPrint 45 11)
 								;Nothing here, you're warm.
-								)
+							)
 							((ego inRect: 106 86 187 134)
 								(HighPrint 45 10)
 								;Nothing here, but you're warm.
-								)
+							)
 							((ego inRect: 187 86 320 134)
 								(HighPrint 45 12)
 								;Nothing here, you're cold.
-								)
+							)
 							(else
 								(HighPrint 45 13)
 								;Nothing here, you're frigid.
-								)
+							)
 						)
 					)
 					((Said 'climb,enter,go/cave,chasm,boulder')
 						(HighPrint 45 14)
 						;The cave opening is too small and the rocks are too hard for you to be able to enter.
-						)
+					)
 					((Said 'close,close,block/cave,chasm,boulder')
 						(HighPrint 45 15)
 						;The rocks are too large and heavy to move.
-						)
-					(
-					(Said 'enlarge,break,beat,enlarge/cave,cave,chasm')
-					(HighPrint 45 16)
-					;You can't do that.  Maybe in the next game.  We're getting behind schedule.
+					)
+					((Said 'enlarge,break,beat,enlarge/cave,cave,chasm')
+						(HighPrint 45 16)
+						;You can't do that.  Maybe in the next game.  We're getting behind schedule.
 					)
 					((Said 'fight[/goblin,creature,man]')
 						(HighPrint 45 17)
 						;Looks like no one has the stomach to fight you.
-						)
+					)
 					((Said 'move,force/boulder')
 						(HighPrint 45 18) ;EO - "rock" should be plural
 						;The rock are too large and heavy to move.
@@ -820,15 +836,16 @@
 		)
 		(if (Said 'search/enemy,goblin,body,man,creature')
 			(cond 
-				(
-				(and (not lootedGoblin1) (<= (ego distanceTo: self) 30))
-				(HighPrint 45 28)
-				;You find 5 silvers concealed in a pouch.  You take the silvers.
-				(= lootedGoblin1 TRUE) (GiveMoney -5))
+				((and (not lootedGoblin1) (<= (ego distanceTo: self) 30))
+					(HighPrint 45 28)
+					;You find 5 silvers concealed in a pouch.  You take the silvers.
+					(= lootedGoblin1 TRUE)
+					(GiveMoney -5)
+				)
 				((and lootedGoblin1 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
-					)
+				)
 				(else
 					(event claimed: FALSE)
 				)
@@ -837,7 +854,7 @@
 		(if (Said 'look/goblin')
 			(HighPrint 45 30)
 			;You've seen one dead Goblin, you've seen 'em all.
-			)
+		)
 	)
 )
 
@@ -860,11 +877,12 @@
 		)
 		(if (Said 'search/enemy,goblin,body,man,creature')
 			(cond 
-				(
-				(and (not lootedGoblin2) (<= (ego distanceTo: self) 30))
-				(HighPrint 45 32)
-				;You find 4 silvers tucked in his tunic.  He has no use for the silvers.  Into your pocket they go.
-				(= lootedGoblin2 TRUE) (GiveMoney -4))
+				((and (not lootedGoblin2) (<= (ego distanceTo: self) 30))
+					(HighPrint 45 32)
+					;You find 4 silvers tucked in his tunic.  He has no use for the silvers.  Into your pocket they go.
+					(= lootedGoblin2 TRUE)
+					(GiveMoney -4)
+				)
 				((and lootedGoblin2 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
@@ -877,7 +895,7 @@
 		(if (Said 'look/goblin')
 			(HighPrint 45 30)
 			;You've seen one dead Goblin, you've seen 'em all.
-			)
+		)
 	)
 )
 
@@ -899,11 +917,10 @@
 		)
 		(if (Said 'search/enemy,goblin,body,man,creature')
 			(cond 
-				(
-				(and (not lootedGoblin3) (<= (ego distanceTo: self) 30))
-				(HighPrint 45 34)
-				;The poor slob was the big loser at the poker game.  He didn't even have lunch money.
-				(= lootedGoblin3 TRUE)
+				((and (not lootedGoblin3) (<= (ego distanceTo: self) 30))
+					(HighPrint 45 34)
+					;The poor slob was the big loser at the poker game.  He didn't even have lunch money.
+					(= lootedGoblin3 TRUE)
 				)
 				((and lootedGoblin3 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 35)
@@ -917,7 +934,7 @@
 		(if (Said 'look/goblin')
 			(HighPrint 45 30)
 			;You've seen one dead Goblin, you've seen 'em all.
-			)
+		)
 	)
 )
 
@@ -941,16 +958,15 @@
 		)
 		(if (Said 'search/enemy,goblin,body,man,creature')
 			(cond 
-				(
-				(and (not lootedGoblin4) (<= (ego distanceTo: self) 30))
-				(HighPrint 45 37)
-				;It's your lucky day, this was the big winner at last night's poker game.  You take his 35 silvers.
-				(= lootedGoblin4 TRUE)
-				(GiveMoney -35))
+				((and (not lootedGoblin4) (<= (ego distanceTo: self) 30))
+					(HighPrint 45 37)
+					;It's your lucky day, this was the big winner at last night's poker game.  You take his 35 silvers.
+					(= lootedGoblin4 TRUE)
+					(GiveMoney -35))
 				((and lootedGoblin4 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
-					)
+				)
 				(else
 					(event claimed: FALSE)
 				)
@@ -959,7 +975,7 @@
 		(if (Said 'look/goblin')
 			(HighPrint 45 30)
 			;You've seen one dead Goblin, you've seen 'em all.
-			)
+		)
 	)
 )
 
@@ -982,15 +998,16 @@
 		)
 		(if (Said 'search/enemy,goblin,body,man,creature')
 			(cond 
-				(
-				(and (not lootedGoblin5) (<= (ego distanceTo: self) 30))
-				(HighPrint 45 39)
-				;In this Goblin's left shoe you find 8 silvers. You look around and slip the silvers into your pocket.
-				(= lootedGoblin5 TRUE) (GiveMoney -8))
+				((and (not lootedGoblin5) (<= (ego distanceTo: self) 30))
+					(HighPrint 45 39)
+					;In this Goblin's left shoe you find 8 silvers. You look around and slip the silvers into your pocket.
+					(= lootedGoblin5 TRUE)
+					(GiveMoney -8)
+				)
 				((and lootedGoblin5 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
-					)
+				)
 				(else
 					(event claimed: FALSE)
 				)
@@ -999,7 +1016,7 @@
 		(if (Said 'look/goblin')
 			(HighPrint 45 30)
 			;You've seen one dead Goblin, you've seen 'em all.
-			)
+		)
 	)
 )
 
@@ -1023,15 +1040,16 @@
 		)
 		(if (Said 'search/enemy,goblin,body,man,creature')
 			(cond 
-				(
-				(and (not lootedGoblin6) (<= (ego distanceTo: self) 30))
-				(HighPrint 45 41)
-				;Clutched in his hand are 4 silvers.  You take the money.
-				(= lootedGoblin6 TRUE) (GiveMoney -4))
+				((and (not lootedGoblin6) (<= (ego distanceTo: self) 30))
+					(HighPrint 45 41)
+					;Clutched in his hand are 4 silvers.  You take the money.
+					(= lootedGoblin6 TRUE)
+					(GiveMoney -4)
+				)
 				((and lootedGoblin6 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 29)
 					;You've already taken his money.
-					)
+				)
 				(else
 					(event claimed: FALSE)
 				)
@@ -1040,7 +1058,7 @@
 		(if (Said 'look/goblin')
 			(HighPrint 45 30)
 			;You've seen one dead Goblin, you've seen 'em all.
-			)
+		)
 	)
 )
 
@@ -1064,15 +1082,15 @@
 		)
 		(if (Said 'search/enemy,goblin,body,man,creature')
 			(cond 
-				(
-				(and (not lootedGoblin7) (<= (ego distanceTo: self) 30))
-				(HighPrint 45 43)
-				;This guy lost all his dough to a loan shark.
-				(= lootedGoblin7 TRUE))
+				((and (not lootedGoblin7) (<= (ego distanceTo: self) 30))
+					(HighPrint 45 43)
+					;This guy lost all his dough to a loan shark.
+					(= lootedGoblin7 TRUE)
+				)
 				((and lootedGoblin7 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 44) ;EO: "You've" should be "You"
 					;You've know he's broke.
-					)
+				)
 				(else
 					(event claimed: FALSE)
 				)
@@ -1081,7 +1099,7 @@
 		(if (Said 'look/goblin')
 			(HighPrint 45 30)
 			;You've seen one dead Goblin, you've seen 'em all.
-			)
+		)
 	)
 )
 
@@ -1104,15 +1122,14 @@
 		)
 		(if (Said 'search/enemy,goblin,body,man,creature')
 			(cond 
-				(
-				(and (not lootedGoblin8) (<= (ego distanceTo: self) 30))
-				(HighPrint 45 46)
-				;The Goblin government lost his paycheck.
-				(= lootedGoblin8 TRUE))
+				((and (not lootedGoblin8) (<= (ego distanceTo: self) 30))
+					(HighPrint 45 46)
+					;The Goblin government lost his paycheck.
+					(= lootedGoblin8 TRUE))
 				((and lootedGoblin8 (<= (ego distanceTo: self) 30))
 					(HighPrint 45 47)
 					;He never had any money.
-					)
+				)
 				(else
 					(event claimed: FALSE)
 				)
@@ -1121,13 +1138,11 @@
 		(if (Said 'look/goblin')
 			(HighPrint 45 30)
 			;You've seen one dead Goblin, you've seen 'em all.
-			)
+		)
 	)
 )
 
 (instance goblin1Leaves of Script
-	(properties)
-	
 	(method (doit)
 		(if (and (< state 6) (< (ego y?) 100))
 			(self changeState: 6)
@@ -1153,11 +1168,8 @@
 )
 
 (instance goblin2Leaves of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (< state 6) (< (ego y?) 155) (> (ego x?) 135))
+		(if (and (< state 6) (< (ego y?) 155) (> (ego x?) 135))
 			(self changeState: 6)
 		)
 		(super doit:)
@@ -1183,11 +1195,8 @@
 )
 
 (instance goblin3Leaves of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (< state 6) (< (ego y?) 155) (> (ego x?) 135))
+		(if (and (< state 6) (< (ego y?) 155) (> (ego x?) 135))
 			(self changeState: 6)
 		)
 		(super doit:)
@@ -1214,8 +1223,6 @@
 )
 
 (instance goblin4Leaves of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -1253,8 +1260,6 @@
 )
 
 (instance goblin5Leaves of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -1289,8 +1294,6 @@
 )
 
 (instance goblin6Leaves of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -1329,8 +1332,6 @@
 )
 
 (instance goblinAttacks of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -1398,8 +1399,6 @@
 )
 
 (instance bushAttacks of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -1456,8 +1455,6 @@
 )
 
 (instance egoVictorious of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1481,8 +1478,6 @@
 )
 
 (instance firstDeadGoblin of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

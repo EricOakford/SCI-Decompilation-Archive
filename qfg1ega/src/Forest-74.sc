@@ -32,7 +32,9 @@
 		(StatusLine enable:)
 		(self setLocales: FOREST)
 		(NormalEgo)
-		(if (not monsterNum) (ego init:))
+		(if (not monsterNum)
+			(ego init:)
+		)
 		(switch prevRoomNum
 			(65
 				(ego posn: 140 92 setMotion: MoveTo 140 190)
@@ -62,7 +64,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_74)
+		(Bset fBeenIn74)
 		(super dispose:)
 	)
 	
@@ -72,7 +74,7 @@
 				(if (Said 'look/eye')
 					(HighPrint 74 0)
 					;For a moment there, you thought you saw something.  But nothing is there now.
-					)
+				)
 			)
 		)
 		(super handleEvent: event)

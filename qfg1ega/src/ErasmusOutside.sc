@@ -23,7 +23,7 @@
 	passedTest
 	preTeleport
 	askThiefPassword
-	local7
+	gargoyleCued
 	questionAsked
 	askName
 	local10
@@ -38,13 +38,13 @@
 	notNice
 )
 
-(procedure (GargoyleSpeaks seconds param2 &tmp [str 400])
+(procedure (GargoyleSpeaks seconds theWidth &tmp [str 400])
 	(Format @str &rest)
 	(Print
 		@str
 		#at -1 12
 		#mode teJustCenter
-		#width param2
+		#width theWidth
 		#dispose
 		#time seconds
 	)
@@ -52,13 +52,13 @@
 
 (procedure (WrongAnswer)
 	(= preTeleport wrongAnswer)
-	(= local7 1)
-	(Bset WRONG_ANSWER)
+	(= gargoyleCued TRUE)
+	(Bset fWrongAnswer)
 )
 
 (procedure (ThatsNotNice)
 	(= preTeleport notNice)
-	(= local7 1)
+	(= gargoyleCued TRUE)
 )
 
 (instance Magic of Prop
@@ -140,22 +140,24 @@
 	
 	(method (doit)
 		(cond 
-			(local7
-				(= local7 0)
+			(gargoyleCued
+				(= gargoyleCued FALSE)
 				(gargoyle setScript: 0)
 				(self setScript: teleportOut)
 			)
-			((and local0 (== (ego edgeHit?) 3)) (curRoom newRoom: 28))
+			((and local0 (== (ego edgeHit?) SOUTH))
+				(curRoom newRoom: 28)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(Bset VISITED_ERASMUS_OUTSIDE)
+		(Bset fBeenIn29)
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp spell temp1 [temp2 10])
+	(method (handleEvent event &tmp spell i [str 10])
 		(if
 			(and
 				4
@@ -174,8 +176,8 @@
 			(if (User getInput: event)
 				(cond 
 					((StrFind (User inputLineAddr?) {look})
-						(event type: 128)
-						(event claimed: 0)
+						(event type: saidEvent)
+						(event claimed: FALSE)
 						(Parse (User inputLineAddr?) event)
 					)
 					(
@@ -184,8 +186,8 @@
 							(StrFind (User inputLineAddr?) {where})
 						)
 						(= preTeleport dontAskMeQuestions)
-						(= local7 1)
-						(Bset WRONG_ANSWER)
+						(= gargoyleCued TRUE)
+						(Bset fWrongAnswer)
 					)
 					(else
 						(switch askName
@@ -236,7 +238,7 @@
 								)
 							)
 							(3
-								(if (Btst ERASMUS_ATTACKED)
+								(if (Btst fAttackedErasmus)
 									(switch questionAsked
 										(1
 											(if
@@ -294,23 +296,21 @@
 											)
 										)
 										(3
-											(= temp1 0)
-											(while (<= temp1 6)
+											(for ((= i 0)) (<= i 6) ((++ i))
 												(if
 													(StrFind
 														(User inputLineAddr?)
-														(Format @temp2 257 temp1)
+														(Format @str 257 i)
 													)
 													(break)
 												)
-												(++ temp1)
 											)
-											(if (<= temp1 6)
+											(if (<= i 6)
 												(= preTeleport noThieves)
-												(= local7 1)
-												(Bset WRONG_ANSWER)
+												(= gargoyleCued TRUE)
+												(Bset fWrongAnswer)
 											else
-												(= askThiefPassword 1)
+												(= askThiefPassword TRUE)
 												(askQuestions changeState: 0)
 											)
 										)
@@ -330,51 +330,54 @@
 							((Said '[<at,around][/!*,house,mansion,north]')
 								(HighPrint 29 0)
 								;You see the purple home of someone who must enjoy its precarious perch upon the peak.
-								)
+							)
 							((Said '/gargoyle,creature')
 								(HighPrint 29 1)
 								;The stone creature looks like it's bored.  Wouldn't you be?
-								)
+							)
 							((Said '/cliff,boulder')
 								(HighPrint 29 2)
 								;The cliff walls are steep, and it's a long way to the snow fields below.
-								)
+							)
 							((Said '/hill,peak,east')
 								(HighPrint 29 3)
 								;You can see the mist flowing around the edges of the Wolf's Bane Peaks.
-								)
+							)
 							((Said '/ice')
 								(HighPrint 29 4)
 								;Below you, the snow glistens.
-								)
+							)
 							((or (Said '<up') (Said '/sky'))
 								(HighPrint 29 5)
 								;It is cloudless. It seems that you are above the clouds.
-								)
-							(
-							(or (Said '<down') (Said '/ground,path,south'))
-							(HighPrint 29 6)
-							;Looking down and to the south, you see the tortuous path you climbed to get here. You'd hate to have to do that again.
+							)
+							((or (Said '<down') (Said '/ground,path,south'))
+								(HighPrint 29 6)
+								;Looking down and to the south, you see the tortuous path you climbed to get here.
+								;You'd hate to have to do that again.
 							)
 							((Said '/castle,west,forest')
 								(HighPrint 29 7)
 								;Looking below you to the west, you can see the Baron's Castle surrounded by the forest.
-								)
+							)
 							((Said '/window')
 								(HighPrint 29 8)
 								;From outside, you can see that the interior of the house is curiously furnished.
-								)
-							((Said '/door') (if passedTest
+							)
+							((Said '/door')
+								(if passedTest
 									(HighPrint 29 9)
 									;It's about time the gargoyle opened the door for you.
-									else
+								else
 									(HighPrint 29 10)
 									;You'd like to look at it more closely, if only the gargoyle would let you.
 								)
 							)
 						)
 					)
-					((Said 'throw,attack,kill,beat') (ThatsNotNice))
+					((Said 'throw,attack,kill,beat')
+						(ThatsNotNice)
+					)
 					((Said 'cast>')
 						(switch (= spell (SaidSpell event))
 							(DETMAGIC
@@ -384,10 +387,14 @@
 								)
 							)
 							(DAZZLE
-								(if (CastSpell spell) (ThatsNotNice))
+								(if (CastSpell spell)
+									(ThatsNotNice)
+								)
 							)
 							(FLAMEDART
-								(if (CastSpell spell) (ThatsNotNice))
+								(if (CastSpell spell)
+									(ThatsNotNice)
+								)
 							)
 							(OPEN
 								(if (CastSpell spell)
@@ -395,12 +402,16 @@
 										(HighPrint 29 12)
 										;The door is already open.
 										else
-										(ThatsNotNice))
+										(ThatsNotNice)
+									)
 								)
 							)
 						)
 					)
-					((or (Said 'nap[/!*]') (Said 'go[<to]/nap')) (= preTeleport noSleeping) (= local7 1))
+					((or (Said 'nap[/!*]') (Said 'go[<to]/nap'))
+						(= preTeleport noSleeping)
+						(= gargoyleCued TRUE)
+					)
 				)
 			)
 		)
@@ -409,16 +420,18 @@
 )
 
 (instance walkIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(UseStamina 30)
 				(cond 
-					((< [egoStats STAMINA] 20) (= passedOut TRUE))
-					((< [egoStats STAMINA] 60) (= wornOut TRUE))
+					((< [egoStats STAMINA] 20)
+						(= passedOut TRUE)
+					)
+					((< [egoStats STAMINA] 60)
+						(= wornOut TRUE)
+					)
 				)
 				(= local10 1)
 				(cond 
@@ -442,13 +455,22 @@
 							setMotion: MoveTo 148 183 self
 						)
 					)
-					(else (ego posn: 135 213 setMotion: MoveTo 152 180 self))
+					(else
+						(ego posn: 135 213 setMotion: MoveTo 152 180 self)
+					)
 				)
 				(ego init:)
 			)
 			(1
 				(cond 
-					(passedOut (ego setLoop: 1 cel: 0 setCycle: EndLoop) (= cycles 30))
+					(passedOut
+						(ego
+							setLoop: 1
+							cel: 0
+							setCycle: EndLoop
+						)
+						(= cycles 30)
+					)
 					(wornOut
 						(ego
 							cycleSpeed: 2
@@ -459,14 +481,22 @@
 						)
 						(= cycles 20)
 					)
-					(else (self cue:))
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(2
 				(cond 
-					(passedOut (ego setCycle: BegLoop self))
-					(wornOut (ego setCycle: EndLoop self))
-					(else (self cue:))
+					(passedOut
+						(ego setCycle: BegLoop self)
+					)
+					(wornOut
+						(ego setCycle: EndLoop self)
+					)
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(3
@@ -480,7 +510,7 @@
 			(4
 				(= local0 1)
 				(cond 
-					((not (Btst VISITED_ERASMUS_OUTSIDE))
+					((not (Btst fBeenIn29))
 						(HighPrint 29 13)
 						;You feel as though you have just scaled the Matterhorn in full armor.  What a climb!
 						(HighPrint 29 14)
@@ -493,17 +523,17 @@
 						(HighPrint 29 16)
 						;Your body can't take too much more of this kind of mountaineering.  At this point, you envy the gargoyle his job.
 						(self cue:)
-						)
+					)
 					(wornOut
 						(HighPrint 29 17)
 						;No matter how strong you feel at the bottom of the mountain, you're always more exhausted than the last time you reached the top.
 						(self cue:)
-						)
+					)
 					(else
 						(HighPrint 29 18)
 						;The climb seems much longer this time, but you made it!
 						(self cue:)
-						)
+					)
 				)
 			)
 			(5
@@ -517,43 +547,46 @@
 					(Night
 						(GargoyleSpeaks 4 210 29 19)
 						;"DO NOT DISTURB THE WIZARD AT REST!"
-						)
+					)
 					(passedOut
 						(GargoyleSpeaks 4 160 29 20)
 						;"AND YOU WANT TO BE A HERO?!"
-						)
+					)
 					(wornOut
 						(GargoyleSpeaks 4 210 29 21)
 						;"YOU DON'T GIVE UP EASILY, DO YOU?"
-						)
-					((Btst VISITED_ERASMUS_OUTSIDE)
+					)
+					((Btst fBeenIn29)
 						(GargoyleSpeaks 4 140 29 22)
 						;"OH!  YOU AGAIN!"
-						)
+					)
 					(else
 						(GargoyleSpeaks 4 110 29 23)
 						;"STAND FAST!"
-						)
+					)
 				)
 				(= seconds 4)
 			)
 			(7
 				(cond 
-					(Night (= local7 1) (gargoyleHead stopUpd: hide:))
+					(Night
+						(= gargoyleCued TRUE)
+						(gargoyleHead stopUpd: hide:)
+					)
 					(passedOut
 						(GargoyleSpeaks 4 230 29 24)
 						;"CAN YOU HEAR ME?
 						;YOU HAVE THREE QUESTIONS."
-						)
-					((Btst MET_GARGOYLE)
+					)
+					((Btst fMetGargoyle)
 						(GargoyleSpeaks 4 230 29 25)
 						;"HERE COME YOUR QUESTIONS:"
-						)
-					(else (Bset MET_GARGOYLE)
+					)
+					(else (Bset fMetGargoyle)
 						(GargoyleSpeaks 4 280 29 26)
 						;"HE WHO WOULD THE WIZARD SEE
 						;FIRST MUST ANSWER QUESTIONS THREE."
-						)
+					)
 				)
 				(= seconds 4)
 			)
@@ -569,8 +602,6 @@
 )
 
 (instance teleportOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -582,24 +613,24 @@
 					(wrongAnswer
 						(GargoyleSpeaks 4 60 29 28)
 						;"WRONG!"
-						)
+					)
 					(dontAskMeQuestions
 						(GargoyleSpeaks 4 140 29 29)
 						;ASKING QUESTIONS
 						;IS *MY* JOB, BUB!
-						)
+					)
 					(noThieves
 						(GargoyleSpeaks 4 180 29 30)
 						;"NO THIEVES ALLOWED!"
-						)
+					)
 					(noSleeping
 						(GargoyleSpeaks 4 140 29 31)
 						;The Wizard is not running an inn.
-						)
+					)
 					(notNice
 						(GargoyleSpeaks 4 180 29 32)
 						;"THAT'S NOT NICE!"
-						)
+					)
 				)
 				(HandsOff)
 				(gargoyleHead show: startUpd:)
@@ -634,21 +665,23 @@
 				(Magic setCycle: EndLoop self)
 			)
 			(5
-				(Bset ERASMUS_WARPOUT)
+				(Bset fErasmusWarpOut)
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 16)
+				(curRoom drawPic: 400 (| BLACKOUT IRISOUT))
 				(self cue:)
 			)
-			(6 (curRoom newRoom: 28))
+			(6
+				(curRoom newRoom: 28)
+			)
 		)
 	)
 )
 
 (instance askQuestions of Script
-	(properties)
-	
 	(method (doit)
-		(if (and (== state 1) (< (ego y?) 175)) (= local7 1))
+		(if (and (== state 1) (< (ego y?) 175))
+			(= gargoyleCued TRUE)
+		)
 		(if local3
 			(= local3 0)
 			(rm29 setScript: letHimIn)
@@ -689,7 +722,7 @@
 						)
 					)
 					(3
-						(if (Btst ERASMUS_ATTACKED)
+						(if (Btst fAttackedErasmus)
 							(switch (Random 1 4)
 								(1
 									(= questionAsked 1)
@@ -748,8 +781,6 @@
 )
 
 (instance letHimIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

@@ -28,7 +28,9 @@
 		(StatusLine enable:)
 		(self setLocales: FOREST)
 		(NormalEgo)
-		(if (not monsterNum) (ego init:))
+		(if (not monsterNum)
+			(ego init:)
+		)
 		(switch prevRoomNum
 			(11
 				(ego posn: 188 91 setMotion: MoveTo 190 190)
@@ -57,7 +59,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_17)
+		(Bset fBeenIn17)
 		(super dispose:)
 	)
 )

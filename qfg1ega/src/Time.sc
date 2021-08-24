@@ -18,7 +18,7 @@
 			)
 		)
 	)
-	(= newTime (^ newTime $0001))
+	(^= newTime 1)
 	(if
 		(or
 			(and (< Clock 1100) (>= newTime 1100))
@@ -30,7 +30,7 @@
 		(EatMeal)
 	)
 	(while (>= newTime GAMEDAY)
-		(= newTime (- newTime GAMEDAY))
+		(-= newTime GAMEDAY)
 		(NextDay)
 	)
 	(FixTime

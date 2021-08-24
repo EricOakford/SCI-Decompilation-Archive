@@ -22,65 +22,62 @@
 	clawsSold
 	healerFacingAway
 	local3
-	healerKiss
-	theCycles
-	chatHealer
+	kissCued
+	pleasedCycles
+	talkRet
 )
 (procedure (AskAboutDispel)
 	(cond 
-		((Btst OBTAINED_DISPEL_POTION)
+		((Btst fGotDispel)
 			(HighPrint 55 0)
 			;"I cannot make you another Dispel Potion unless you can convince the Dryad to give you another magic acorn.
 			;I do not think that is likely.
-			)
-		((Btst DISPEL_HEALER_MAKING_POTION)
+		)
+		((Btst fHealerMakingDispel)
 			(HighPrint 55 1)
 			;Please leave me to make the potion and when you return I shall have it for you.
-			)
-		((Btst DISPEL_HEALER_KNOWS_RECIPE)
+		)
+		((Btst fHealerKnowsDispel)
 			(DispelIngredients)
-			)
+		)
 		(else
 			(HighPrint 55 2)
 			;"If you know the ingredients for a Dispel Potion and bring them here, I can make you such a potion."
-			)
+		)
 	)
 )
 
 (procedure (DispelIngredients &tmp [str 200])
-	(if (and (not (Btst DISPEL_HEALER_MAKING_POTION))
-			(not (Btst OBTAINED_DISPEL_POTION))
+	(if (and (not (Btst fHealerMakingDispel))
+			(not (Btst fGotDispel))
 				)
 		(cond 
 			(
 				(and
-					(Btst DISPEL_GAVE_DUST)
-					(Btst DISPEL_GAVE_FUR)
-					(Btst DISPEL_GAVE_FLOWERS)
-					(Btst DISPEL_GAVE_ACORN)
-					(Btst DISPEL_GAVE_WATER)
+					(Btst fGaveDust)
+					(Btst fGaveFur)
+					(Btst fGaveFlowers)
+					(Btst fGaveAcorn)
+					(Btst fGaveWater)
 				)
 				(rm55 setScript: waitForHealer)
-				(Bset DISPEL_HEALER_MAKING_POTION)
-				(Bclr OBTAINED_DISPEL_POTION)
-				(Bclr DISPEL_GAVE_DUST)
-				(Bclr DISPEL_GAVE_FUR)
-				(Bclr DISPEL_GAVE_FLOWERS)
-				(Bclr DISPEL_GAVE_ACORN)
-				(Bclr DISPEL_GAVE_WATER)
+				(Bset fHealerMakingDispel)
+				(Bclr fGotDispel)
+				(Bclr fGaveDust)
+				(Bclr fGaveFur)
+				(Bclr fGaveFlowers)
+				(Bclr fGaveAcorn)
+				(Bclr fGaveWater)
 			)
-			((Btst DISPEL_HEALER_KNOWS_RECIPE)
+			((Btst fHealerKnowsDispel)
 				(HighPrint
-					(Format
-						@str
-						55
-						3
+					(Format @str 55 3
 						;Let's see, to make the Dispel Potion I still need: %s %s %s %s %s
-						(if (Btst DISPEL_GAVE_DUST) {} else { \nFairy Dust})
-						(if (Btst DISPEL_GAVE_FUR) {} else { \nGreen Fur})
-						(if (Btst DISPEL_GAVE_FLOWERS) {} else { \nFlowers from Erana's Peace})
-						(if (Btst DISPEL_GAVE_ACORN) {} else { \nMagic Acorn})
-						(if (Btst DISPEL_GAVE_WATER) {} else { \nFlying Water})
+						(if (Btst fGaveDust) {} else { \nFairy Dust})
+						(if (Btst fGaveFur) {} else { \nGreen Fur})
+						(if (Btst fGaveFlowers) {} else { \nFlowers from Erana's Peace})
+						(if (Btst fGaveAcorn) {} else { \nMagic Acorn})
+						(if (Btst fGaveWater) {} else { \nFlying Water})
 					)
 				)
 			)
@@ -89,7 +86,11 @@
 )
 
 (procedure (HealerSays)
-	(Print &rest #width 305 #mode teJustLeft #window healerWin)
+	(Print &rest
+		#width 305
+		#mode teJustLeft
+		#window healerWin
+	)
 )
 
 (procedure (BuyPotion potion silvers)
@@ -111,12 +112,12 @@
 
 (instance healerWin of SysWindow
 	(properties
-		color 1
+		color vBLUE
 	)
 	
-	(method (open &tmp temp0)
-		(= top (+ top (= temp0 (- 188 bottom))))
-		(= bottom (+ bottom temp0))
+	(method (open &tmp vDiff)
+		(+= top (= vDiff (- 188 bottom)))
+		(+= bottom vDiff)
 		(super open:)
 	)
 )
@@ -154,17 +155,19 @@
 		)
 		(StatusLine enable:)
 		(NormalEgo)
-		(if (< numColors 8) (healerWin color: 0 back: 15))
+		(if (< numColors 8)
+			(healerWin color: vBLACK back: vWHITE)
+		)
 		(bird setScript: preening)
 		(self setScript: egoEnters)
 	)
 	
 	(method (doit)
 		(if (& (ego onControl: origin) cLBLUE)
-			(if (and (not (Btst MET_HEALER)) (not (Btst RETURNED_RING)))
+			(if (and (not (Btst fMetHealer)) (not (Btst fReturnedRing)))
 				(HighPrint 55 7)
 			)
-			(Bset MET_HEALER)
+			(Bset fMetHealer)
 			(curRoom newRoom: 54)
 		)
 		(super doit:)
@@ -172,7 +175,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_HEALERHUT_INSIDE)
+		(Bset fBeenIn55)
 		(super dispose:)
 	)
 	
@@ -180,7 +183,7 @@
 		(if (MouseClaimed ego event shiftDown)
 			(HighPrint 55 8)
 			;You can buy potions, get information, or sell ingredients here.
-			)
+		)
 		(switch (event type?)
 			(saidEvent
 				(cond 
@@ -194,49 +197,49 @@
 								(HighPrint 55 10)
 								;There is a small flying creature preening itself .  A ladder leads to the loft above.
 								;A pot over the fire simmers with herbs.  It is pleasantly warm in here.
-								)
+							)
 							((Said '/healer,woman')
 								(HighPrint 55 11)
 								;You see a middle-aged woman with rosy cheeks and smile lines around her eyes.
-								)
+							)
 							((Said '/creature,animal,bird,lizard')
 								(HighPrint 55 12)
 								;You see a winged lizard much like the one you saw outside.
-								)
+							)
 							((Said '/potion')
 								(HighPrint 55 13)
 								;You see bottles and flasks of a wide variety of different potions.
-								)
+							)
 							((Said '/pan,caldron,fire')
 								(HighPrint 55 14)
 								;Whatever is boiling there is either soup or some sort of potion.
-								)
+							)
 							((Said '/soup')
 								(HighPrint 55 15)
 								;Soup is good for you.  Mmmm Mmmm good.
-								)
+							)
 							((Said '/ladder')
 								(HighPrint 55 16)
 								;It looks like a ladder.
-								)
+							)
 						)
 					)
 					((Said 'eat,get/soup')
 						(HighPrint 55 17)
 						;It's not your soup.
-						)
+					)
 					((or (Said 'nap') (Said 'go[<to]/nap'))
 						(HighPrint 55 18)
 						;"Come back in the morning, please."
-						)
+					)
 					((Said 'climb/ladder')
 						(HighPrint 55 19)
 						;Don't be nosy.
-						)
+					)
 					((Said '/bin,icicle,cheesecloth')
 						(HighPrint 55 20)
 						;You can look but don't touch.
-						)
+					)
 				)
 			)
 		)
@@ -252,7 +255,7 @@
 	(method (doit)
 		(if
 			(and
-				healerKiss
+				kissCued
 				(!= script healerKisses)
 				(> (+ (* (ego y?) 3) (ego x?) -615) 0)
 			)
@@ -271,21 +274,21 @@
 						(HighPrint 55 21)
 						;A rather motherly-looking woman with a look of vagueness that belies her shrewdness.
 						;She wears an apron over her dress and a scarf wrapped around her head.
-						)
+					)
 				)
 			)
 			((== saidEvent (event type?))
 				(cond 
 					((super handleEvent: event))
 					((Said 'chat,ask>')
-						(= chatHealer TRUE)
+						(= talkRet TRUE)
 						(cond 
 							((Said '//ring<faerie,faerie')
 								(HighPrint 55 22)
 								;"Those fairies are cute, but they play rough!"
-								)
+							)
 							((Said '//ring')
-								(if (Btst RETURNED_RING)
+								(if (Btst fReturnedRing)
 									(HighPrint 55 23)
 									;"It is shaped in gold like a braid of the herb Althelas with entwined leaves."
 								else
@@ -296,7 +299,7 @@
 								)
 							)
 							((Said '//prize')
-								(if (Btst RETURNED_RING)
+								(if (Btst fReturnedRing)
 									(HighPrint 55 25)
 									;"You already have your reward."
 								else
@@ -308,31 +311,31 @@
 							((Said '//component,material')
 								(HighPrint 55 27)
 								;"I will pay you for Cheetaur claws, Troll beard, magic mushrooms, and flowers from Erana's Peace."
-								)
+							)
 							((Said '//herb')
 								(HighPrint 55 28)
 								;"I use them to make my potions."
-								)
+							)
 							((Said '//potion<heal,healing')
 								(HighPrint 55 29)
 								;"This potion is used to heal damage and keep wounds from getting worse.
 								;It has gotten pretty dangerous around here, and a Healing Potion can be quite useful in a serious situation."
-								)
+							)
 							((Said '//potion<vigor,stamina')
 								(HighPrint 55 30)
 								;"Vigor Potion is used to revitalize yourself after vigorous exercise.   It helps to restore stamina."
-								)
+							)
 							((Said '//potion<mana,magic,power')
 								(HighPrint 55 31)
 								;"Magic Potions restore the energy needed to cast spells."
-								)
+							)
 							((Said '//potion<disenchant')
 								(AskAboutDispel)
-								)
+							)
 							((Said '//potion<heal,healing');EO: Already listed above for some reason, but has a different message.
 								(HighPrint 55 32)
 								;"I make up potions that heal injuries.  I will be happy to sell you a Healing Potion if you like."
-								)
+							)
 							((Said '//potion')
 								(HighPrint 55 33)
 								;"I make and sell Healing Potions, Magic Potions, Vigor Potions and Undead Unguent."
@@ -342,35 +345,35 @@
 								;Magic Potion 60 silvers
 								;Vigor Potion 20 silvers
 								;Undead Unguent 100 silvers."
-								)
+							)
 							((Said '//grease,grease,ghoul')
 								(HighPrint 55 35)
 								;"Undead Unguent is used to drive off the minor undead such as zombies or floating spirits.
 								;It doesn't last long, so you should use it only when you are anticipating an encounter with such things."
-								)
+							)
 							((Said '//zombie')
 								(HighPrint 55 36)
 								;"There are not too many zombies in this land... too damp, I suppose.
 								;There are some floating spirits, I have heard."
-								)
+							)
 							((Said '//ghost')
 								(HighPrint 55 37)
 								;"Floating Spirits are the ghosts which usually hang around graveyards at night.
 								;They are dangerous, so don't go near them unless you use Undead Unguent first."
-								)
+							)
 							((Said '//stamina')
 								(HighPrint 55 38)
 								;"Stamina is a measure of the energy the body uses as you work or play."
-								)
+							)
 							((Said '//fur')
 								(HighPrint 55 39)
 								;"I've never heard of a monster around here with green fur.  Rare things are sometimes by their nature magical."
-								)
+							)
 							((Said '//faerie,dust')
 								(HighPrint 55 40)
 								;"Fairy Dust obviously comes from fairies.  They dance around mushroom rings when it is night.
 								;Fairies are magical beings, so be careful around them."
-								)
+							)
 							((Said '//flower')
 								(HighPrint 55 41)
 								;"I use flowers from Erana's Peace to the north in nearly all my potions.
@@ -378,7 +381,7 @@
 								(if (>= 1 numFlowers)
 									(HighPrint 55 42)
 									;"I will pay you five silvers for a flask full of flowers."
-									)
+								)
 							)
 							((Said '//mushroom')
 								(HighPrint 55 43)
@@ -386,117 +389,118 @@
 								(if (>= 2 numMushrooms)
 									(HighPrint 55 44)
 									;"I will pay you one gold for some."
-									)
+								)
 							)
 							((Said '//claw,cheetaur')
 								(HighPrint 55 45)
 								;"The Cheetaur looks like a cross between a panther and a man.  It is vicious and tough.
 								;Unless you are a very tough fighter, you had best try to get away from it.
 								;If you do manage to kill it, then I will pay you five silvers for each claw."
-								)
+							)
 							((Said '//beard,troll')
 								(HighPrint 55 46)
 								;"The Trolls around here are tough monsters that cannot stand the light of day and so are found at night or in caves.
 								;They are very difficult to kill, but I will pay two healing potions for the beard of a Troll."
-								)
+							)
 							((Said '//dryad')
 								(HighPrint 55 47)
 								;"I have heard that the Dryad of the woods knows a Dispel Potion to disenchant people with spells upon them."
-								)
+							)
 							((Said '//water<fly')
 								(HighPrint 55 48)
 								;"I'm not sure what kind of water that is."
-								)
+							)
 							((Said '//acorn[<magic,about]')
 								(HighPrint 55 49)
 								;"The only place you can get a magic acorn from is a Dryad's oak tree."
-								)
+							)
 							((Said '//bottle')
 								(HighPrint 55 50)
 								;"I will pay you one silver for each empty flask you bring me so I can use it for more potions.
 								;Waste not, want not, I always say."
-								)
+							)
 							((Said '//name,handle,woman,healer')
 								(HighPrint 55 51)
 								;"Well, my name is Amelia Appleberry, but mostly I am just known as the Healer around here."
-								)
+							)
 							((Said '//bird,creature,lizard')
 								(HighPrint 55 52)
 								;"Oh, that's my pet, Pterry, the pterosaur.  He has a girl friend, Pteresa, who has a nest in the oak outside my door.
 								;Pterry keeps me company and listens to my chatter as I work."
-								)
+							)
 							((Said '//lizard')
 								(HighPrint 55 53)
 								;"They are a species of flying lizard.  I understand they can grow quite large in the south."
-								)
+							)
 							((Said '//baron')
 								(HighPrint 55 54)
 								;"Poor man, he hasn't been the same since his son and daughter were taken from him."
-								)
+							)
 							((Said '//barnard,barnard')
 								(HighPrint 55 55)
 								;"He was just a young dashing man when he last rode off and never returned."
-								)
+							)
 							((Said '//elsa,daughter')
 								(HighPrint 55 56)
 								;"The dear child, I can still picture her with her beautiful blond hair done up in braids.
 								;She was so sweet.  It's hard to believe she's gone."
-								)
+							)
 							((Said '//bandit')
 								(HighPrint 55 57)
 								;"Those brutes!  I'm always having to heal someone they've beaten up and robbed.  I hate thieves and brigands."
-								)
+							)
 							((Said '//centaur,farmer,heinrich')
 								(HighPrint 55 58)
 								;"Would you believe the brigands almost killed him a while back?
 								;Fortunately their leader made them bring Heinrich here where I could heal him."
-								)
+							)
 							((Said '//(peace<erana),erana')
 								(HighPrint 55 59)
 								;"Almost due north of here is the meadow called Erana's Peace.  It is a very magical area and it is a place of safety.
 								;It is beautiful all year, for the flowers are always in bloom."
-								)
+							)
 							((Said '//mana,magic,power')
 								(HighPrint 55 60)
 								;"I have the skill to use my magic to create potions.
 								;I am a bit proud about it.  Not everyone can do that, you know."
-								)
+							)
 							((Said '//mandrake,root')
 								(HighPrint 55 61)
 								;"Mandrake root is used in a variety of spells, mostly for evil purposes.
 								;Mandrake must be pulled from a deadman's grave at midnight.  The root is particularly powerful."
-								)
-							(else (= chatHealer 0)
+							)
+							(else
+								(= talkRet FALSE)
 								(HighPrint 55 62)
 								;"I'm sorry, I just don't know much about that.  Perhaps you should ask someone else."
-								(event claimed: 1))
+								(event claimed: TRUE)
+							)
 						)
-						(if chatHealer
-							(SolvePuzzle POINTS_TALKTOHEALER 2)
+						(if talkRet
+							(SolvePuzzle f55TalkToHealer 2)
 						)
 					)
 					((Said 'gave,offer,sell,display,replace>')
 						(cond 
 							((Said '/ring')
 								(if (ego has: iRing)
-									(if
-									(> (+ (* (ego y?) 8) (* (ego x?) 3) -1822) 0)
+									(if (> (+ (* (ego y?) 8) (* (ego x?) 3) -1822) 0)
 										(NotClose)
 									else
-										(Bset RETURNED_RING)
+										(Bset fReturnedRing)
 										(ego use: iRing)
-										(SolvePuzzle POINTS_RETURNRING 10)
+										(SolvePuzzle f55ReturnRing 10)
 										(HighPrint 55 63)
 										;"Oh, thank you for finding my ring.  How I've missed this.
 										;Here are six golds and two Healing Potions for your reward!"
-										(= [invNum iGold] (+ [invNum iGold] 6))
+										(+= [invNum iGold] 6)
 										(ego get: iHealingPotion)
 										(ego get: iHealingPotion)
 										(if (<= (+ (* (ego y?) 3) (ego x?) -615) 0)
-											(= theCycles 20)
+											(= pleasedCycles 20)
 											(healer setScript: healerPleased)
 										)
-										(= healerKiss TRUE)
+										(= kissCued TRUE)
 									)
 								else
 									(DontHave)
@@ -508,17 +512,17 @@
 										(HighPrint 55 64)
 										;Thank you, but I have all the flowers I need.
 									else
-										(= theCycles 10)
+										(= pleasedCycles 10)
 										(healer setScript: healerPleased)
 										(HighPrint 55 65)
 										;"Thank you.  I often use flowers from Erana's Peace in potion making.  Here are your silvers."
 										;You put them away.
 										(GiveMoney -5)
-										(Bset DISPEL_GAVE_FLOWERS)
+										(Bset fGaveFlowers)
 										(DispelIngredients)
 										(++ numFlowers)
 										(ego use: iFlowers 5)
-										(SolvePuzzle POINTS_SELLFLOWERS 1)
+										(SolvePuzzle f55SellFlowers 1)
 									)
 								else
 									(HighPrint 55 66)
@@ -531,13 +535,13 @@
 										((< 2 numMushrooms)
 											(HighPrint 55 67)
 											;Thank you, but I have enough mushrooms.
-											)
+										)
 										((Btst fHaveToadstools)
 											(HighPrint 55 68)
 											;You have ruined the mushrooms with toadstools.  I can not buy your mushrooms.
-											)
+										)
 										(else
-											(= theCycles 10)
+											(= pleasedCycles 10)
 											(healer setScript: healerPleased)
 											(TimePrint 8 55 69)
 											;"These are very nice.  I'll dry them and grind them into a powder.
@@ -546,7 +550,7 @@
 											(GiveMoney -10)
 											(++ numMushrooms)
 											(ego use: iMushroom 3)
-											(SolvePuzzle POINTS_SELLMUSHROOM 1)
+											(SolvePuzzle f55SellMushroom 1)
 										)
 									)
 								else
@@ -556,22 +560,23 @@
 							)
 							((Said '/claw,cheetaur')
 								(if (= clawsSold (ego has: iCheetaurClaw))
-									(= theCycles 10)
+									(= pleasedCycles 10)
 									(healer setScript: healerPleased)
 									(TimePrint 8 55 70)
-									;"Do you mean to tell me that you actually managed to kill a Cheetaur?  You're quite a hero, aren't you?  Here is your money.
+									;"Do you mean to tell me that you actually managed to kill a Cheetaur? 
+									;You're quite a hero, aren't you?  Here is your money.
 									;You might think about purchasing a Healing Potion in case you have to fight such monsters again."
 									(ego get: iGold (mod (* clawsSold 5) 10))
 									(ego get: iSilver (/ (* clawsSold 5) 10))
 									(ego use: iCheetaurClaw clawsSold)
-									(SolvePuzzle POINTS_SELLCHEETAURCLAW 2)
+									(SolvePuzzle f55SellClaws 2)
 								else
 									(HighPrint 55 66)
 								)
 							)
 							((Said '/beard,troll')
 								(if (ego has: iTrollBeard)
-									(= theCycles 10)
+									(= pleasedCycles 10)
 									(healer setScript: healerPleased)
 									(TimePrint 8 55 71)
 									;"Don't tell me you actually killed a Troll?  Why, you are really amazing.
@@ -580,16 +585,16 @@
 									(ego use: iTrollBeard)
 									(ego get: iHealingPotion)
 									(ego get: iHealingPotion)
-									(SolvePuzzle POINTS_SELLTROLLBEARD 2)
+									(SolvePuzzle f55SellBeard 2)
 								else
 									(DontHave)
 								)
 							)
 							((Said '/dust[<faerie]')
 								(if (ego has: iFairyDust)
-									(= theCycles 10)
+									(= pleasedCycles 10)
 									(healer setScript: healerPleased)
-									(if (and (not (Btst DISPEL_HEALER_MAKING_POTION)) (Btst DISPEL_HEALER_KNOWS_RECIPE))
+									(if (and (not (Btst fHealerMakingDispel)) (Btst fHealerKnowsDispel))
 										(HighPrint 55 72)
 										;"So, you say this is one of the ingredients for the Dispel Potion.
 										;Well, I had better get started making it."
@@ -598,8 +603,8 @@
 										;"Thank you.  I'm sure that I'll find a good use for Fairy Dust."
 									)
 									(ego use: iFairyDust)
-									(Bset DISPEL_GAVE_DUST)
-									(SolvePuzzle POINTS_GIVEFAIRYDUST 2)
+									(Bset fGaveDust)
+									(SolvePuzzle f55GiveDust 2)
 									(DispelIngredients)
 								else
 									(DontHave)
@@ -613,18 +618,18 @@
 										;"I don't need any more Flying Water.
 										;Thank you anyway."
 										;
-										)
-									((not (Btst DISPEL_HEALER_KNOWS_RECIPE))
+									)
+									((not (Btst fHealerKnowsDispel))
 										(HighPrint 55 75)
 										;"Thank you for the offer, but I really don't need any water."
-										)
+									)
 									((not (Btst fHaveFlyingWater))
 										(HighPrint 55 76)
 										;The Healer makes some sort of arcane gesture over the flask of water, then looks surprised.
 										(HighPrint 55 77)
 										;"I'm sorry, but this water does not seem to have any magical potential at all.
 										;This can't be the `Flying Water' you described."
-										)
+									)
 									(else
 										(if (> [invNum iWater] 1)
 											(HighPrint 55 78)
@@ -633,23 +638,23 @@
 											(HighPrint 55 79)
 											;The Healer makes some sort of arcane gesture over the flask of water, then smiles.
 										)
-										(= theCycles 10)
+										(= pleasedCycles 10)
 										(healer setScript: healerPleased)
 										(HighPrint 55 80)
 										;"Flying Water.  How clever."
 										(++ numWater)
 										(ego use: iWater)
-										(Bset DISPEL_GAVE_WATER)
-										(SolvePuzzle POINTS_GIVEFLYINGWATER 2)
+										(Bset fGaveWater)
+										(SolvePuzzle f55GiveWater 2)
 										(DispelIngredients)
 									)
 								)
 							)
 							((Said '/fur')
 								(if (ego has: iGreenFur)
-									(= theCycles 10)
+									(= pleasedCycles 10)
 									(healer setScript: healerPleased)
-									(if (Btst DISPEL_HEALER_KNOWS_RECIPE)
+									(if (Btst fHealerKnowsDispel)
 										(HighPrint 55 81)
 										;"Those Meeps sound so interesting.  I'd like to meet them sometime.
 										;I'll get to work on that potion of yours."
@@ -658,8 +663,8 @@
 										;"Thank you.  I'll save this for a later use."
 									)
 									(ego use: iGreenFur)
-									(Bset DISPEL_GAVE_FUR)
-									(SolvePuzzle POINTS_GIVEGREENFUR 2)
+									(Bset fGaveFur)
+									(SolvePuzzle f55GiveFur 2)
 									(DispelIngredients)
 								else
 									(DontHave)
@@ -667,14 +672,14 @@
 							)
 							((Said '/acorn')
 								(if (ego has: iAcorn)
-									(= theCycles 10)
+									(= pleasedCycles 10)
 									(healer setScript: healerPleased)
 									(HighPrint 55 83)
 									;"So you helped the Dryad, that's nice.  She does keep the forest around here healthy. 
 									;So that's how to make a Dispel Potion, is it?  Thanks for letting me know."
 									(ego use: iAcorn)
-									(Bset DISPEL_GAVE_ACORN)
-									(SolvePuzzle POINTS_GIVEMAGICACORN 5)
+									(Bset fGaveAcorn)
+									(SolvePuzzle f55GiveAcorn 5)
 									(DispelIngredients)
 								else
 									(DontHave)
@@ -682,7 +687,7 @@
 							)
 							((Said '/bottle')
 								(if (ego has: iFlask)
-									(= theCycles 6)
+									(= pleasedCycles 6)
 									(healer setScript: healerPleased)
 									(TimePrint 8 55 84)
 									;"Thank you, I always need flasks."
@@ -695,7 +700,7 @@
 							((Said '/root,plant[<mandrake]')
 								(HighPrint 55 85)
 								;I don't have any use for that.
-								)
+							)
 						)
 					)
 					((Said 'buy,buy,get,get>')
@@ -703,53 +708,53 @@
 							((Said '/potion[<!*]')
 								(HighPrint 55 86)
 								;"You'll have to be more specific."
-								)
+							)
 							((Said '/potion<vigor,stamina')
 								(BuyPotion iStaminaPotion 20)
-								)
+							)
 							((Said '/potion<heal,healing')
 								(BuyPotion iHealingPotion 40)
-								)
+							)
 							((Said '/potion<mana,magic,power')
 								(BuyPotion iManaPotion 60)
-								)
+							)
 							((Said '/grease[<ghost,ghoul]')
 								(BuyPotion iGhostOil 100)
-								)
+							)
 							((Said '/potion<disenchant')
 								(AskAboutDispel)
-								)
+							)
 							((Said '/bottle')
 								(HighPrint 55 87)
 								;I need all my flasks for potions.  You'll have to get one somewhere else.
-								)
+							)
 							((Said '/root,plant[<mandrake]')
 								(HighPrint 55 88)
 								;I don't have any.
-								)
+							)
 						)
 					)
 					((Said 'grab/potion,herb')
 						(cond 
-							((Btst STOLE_HEALER_POTIONS)
+							((Btst fStolePotions)
 								(HighPrint 55 89)
 								;You're getting greedy.  She'll notice if you take any more.
-								)
+							)
 							(healerFacingAway
 								(HighPrint 55 90)
 								;You carefully grab a couple of Healing Potions and conceal them under your cape.
 								(ego get: iHealingPotion 2)
-								(Bset STOLE_HEALER_POTIONS))
+								(Bset fStolePotions)
+							)
 							(else 
 								(HighPrint 55 91)
 								;If you're going to steal, at least wait until the Healer is not looking.
-								)
+							)
 						)
 					)
-					(
-					(or (Said 'kill,fight') (Said 'cast/flame,dart,spell'))
-					(HighPrint 55 92)
-					;You don't really think that is the correct way to actually win this game, do you?
+					((or (Said 'kill,fight') (Said 'cast/flame,dart,spell'))
+						(HighPrint 55 92)
+						;You don't really think that is the correct way to actually win this game, do you?
 					)
 					((Said 'throw')
 						(HighPrint 55 93)
@@ -891,7 +896,7 @@
 			((MouseClaimed onKettle event shiftDown)
 				(HighPrint 55 14)
 				;Whatever is boiling there is either soup or some sort of potion.
-				)
+			)
 		)
 	)
 )
@@ -910,7 +915,7 @@
 			((MouseClaimed onBird event shiftDown)
 				(HighPrint 55 95)
 				;Small on a prehistoric scale, but still a pterosaur.
-				)
+			)
 		)
 	)
 )
@@ -929,7 +934,7 @@
 			((MouseClaimed onMaps event shiftDown)
 				(HighPrint 55 96)
 				;Cheesecloth.
-				)
+			)
 		)
 	)
 )
@@ -948,7 +953,7 @@
 			((MouseClaimed onLadder event shiftDown)
 				(HighPrint 55 97)
 				;Ladder up to the loft where the Healer has her personal quarters.  No, you can't go up the ladder.
-				)
+			)
 		)
 	)
 )
@@ -967,7 +972,7 @@
 			((MouseClaimed onTable event shiftDown)
 				(HighPrint 55 98)
 				;The makings of various potions.
-				)
+			)
 		)
 	)
 )
@@ -986,7 +991,7 @@
 			((MouseClaimed onLitterBox event shiftDown)
 				(HighPrint 55 99)
 				;The pterosaur's litter box.
-				)
+			)
 		)
 	)
 )
@@ -1005,7 +1010,7 @@
 			((MouseClaimed onLamp event shiftDown)
 				(HighPrint 55 100)
 				;Iron holder fit for a lit torch.
-				)
+			)
 		)
 	)
 )
@@ -1024,7 +1029,7 @@
 			((MouseClaimed onWindow event shiftDown)
 				(HighPrint 55 101)
 				;The view from the window has been obscured by soot from the fire.
-				)
+			)
 		)
 	)
 )
@@ -1043,7 +1048,7 @@
 			((MouseClaimed onThings event shiftDown)
 				(HighPrint 55 102)
 				;This and that.
-				)
+			)
 		)
 	)
 )
@@ -1062,7 +1067,7 @@
 			((MouseClaimed onStores event shiftDown)
 				(HighPrint 55 103)
 				;Ingredients.
-				)
+			)
 		)
 	)
 )
@@ -1081,14 +1086,12 @@
 			((MouseClaimed onBins event shiftDown)
 				(HighPrint 55 104)
 				;Petrified icicles and greens.
-				)
+			)
 		)
 	)
 )
 
 (instance egoEnters of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1103,24 +1106,24 @@
 				)
 			)
 			(1
-				(if (not (Btst MET_HEALER))
+				(if (not (Btst fMetHealer))
 					(HighPrint 55 105)
 					;The fragrance of the herbs mingle with some other rather pungent odors as you step into the Healer's house.
-					)
+				)
 				(healer setMotion: MoveTo 139 139 self)
 				(ego setMotion: MoveTo 155 160)
 			)
 			(2
 				(if
 					(and
-						(Btst MET_HEALER)
-						(not (Btst DISPEL_HEALER_MAKING_POTION))
-						(or (not (Btst DISPEL_LEARNED_RECIPE)) (Btst DISPEL_HEALER_KNOWS_RECIPE))
+						(Btst fMetHealer)
+						(not (Btst fHealerMakingDispel))
+						(or (not (Btst fLearnedDispel)) (Btst fHealerKnowsDispel))
 					)
 					(HighPrint 55 106)
 					;"Well, what can I do for you this time?"
 				)
-				(if (not (Btst MET_HEALER))
+				(if (not (Btst fMetHealer))
 					(HighPrint 55 107)
 					;"Lovely day, isn't it?  My, you look very healthy for an adventurer.  You must be new."
 					(HighPrint 55 108)
@@ -1129,20 +1132,20 @@
 					(HighPrint 55 109)
 					;"Don't mind me, I always have so much to do around here."
 				)
-				(if (and (Btst DISPEL_LEARNED_RECIPE) (not (Btst DISPEL_HEALER_KNOWS_RECIPE)))
+				(if (and (Btst fLearnedDispel) (not (Btst fHealerKnowsDispel)))
 					(HighPrint 55 110)
 					;You say to the Healer "I have been to visit the Dryad of the Woods.
 					;She gave me a Magic Acorn and told me the formula for a potion to dispel enchantments!"
-					(Bset DISPEL_HEALER_KNOWS_RECIPE)
+					(Bset fHealerKnowsDispel)
 				)
-				(if (Btst DISPEL_HEALER_MAKING_POTION)
+				(if (Btst fHealerMakingDispel)
 					(HighPrint 55 111)
 					;"Here is the Potion of Dispel!  Use it by splashing it on the victim of a magic spell.
 					;Mind you, this won't work if the spell is caused by a magic item rather than a cast spell."
 					(ego get: iDisenchant)
-					(Bclr DISPEL_HEALER_MAKING_POTION)
-					(Bset OBTAINED_DISPEL_POTION)
-					(SolvePuzzle POINTS_GETDISPELPOTION 7)
+					(Bclr fHealerMakingDispel)
+					(Bset fGotDispel)
+					(SolvePuzzle f55GetDispel 7)
 				)
 				(HandsOn)
 				(healer setLoop: 5 cycleSpeed: 1 setCycle: EndLoop self)
@@ -1156,8 +1159,6 @@
 )
 
 (instance preening of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1172,8 +1173,6 @@
 )
 
 (instance healerPuttering of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles (Random 90 200)))
@@ -1191,7 +1190,7 @@
 				)
 			)
 			(2
-				(= healerFacingAway 1)
+				(= healerFacingAway TRUE)
 				(switch (= local3 (Random 0 1))
 					(0
 						(healer
@@ -1217,7 +1216,7 @@
 				(= seconds 3)
 			)
 			(4
-				(= healerFacingAway 0)
+				(= healerFacingAway FALSE)
 				(switch local3
 					(0
 						(healer
@@ -1252,8 +1251,6 @@
 )
 
 (instance healerPleased of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1263,7 +1260,7 @@
 			(1
 				(healer setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
-			(2 (= cycles theCycles))
+			(2 (= cycles pleasedCycles))
 			(3
 				(switch local3
 					(0
@@ -1294,8 +1291,6 @@
 )
 
 (instance healerKisses of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1417,8 +1412,6 @@
 )
 
 (instance waitForHealer of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 10))

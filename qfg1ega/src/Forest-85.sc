@@ -88,7 +88,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_85)
+		(Bset fBeenIn85)
 		(DisposeScript WANDER)
 		(super dispose:)
 	)

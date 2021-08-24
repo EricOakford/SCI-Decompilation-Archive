@@ -26,14 +26,14 @@
 	gateOpen
 	crushedByHut
 )
-(procedure (EndPrint seconds &tmp [temp0 4] [temp4 400])
+(procedure (EndPrint seconds &tmp [printRect 4] [str 400])
 	(cls)
-	(Format @temp4 &rest)
-	(TextSize @[temp0 0] @temp4 userFont 0)
+	(Format @str &rest)
+	(TextSize @[printRect 0] @str userFont 0)
 	(Print
-		@temp4
+		@str
 		#at -1 130
-		#width (if (> [temp0 2] 24) 300 else 0)
+		#width (if (> [printRect 2] 24) 300 else 0)
 		#mode teJustCenter
 		#dispose
 		#time seconds
@@ -271,7 +271,7 @@
 (instance rm22 of Room
 	(properties
 		picture 22
-		style $0000
+		style HSHUTTER
 		south 33
 	)
 	
@@ -284,8 +284,8 @@
 		(NormalEgo)
 		(= yesNoTimer 0)
 		(cSound number: 23 loop: -1 play:)
-		(if (not (Btst BABAYAGA_FLY_AWAY))
-			(if (Btst BABAYAGA_HUT_OPEN)
+		(if (not (Btst fBabaFlyAway))
+			(if (Btst fHutOnGround)
 				(= hutX 167)
 				(= hutY 96)
 				(hut
@@ -373,7 +373,7 @@
 		(skull3 ignoreActors: setPri: 12 init:)
 		(skull4 ignoreActors: setPri: 12 init:)
 		(skull5 ignoreActors: setPri: 12 init:)
-		(if (Btst BABAYAGA_FLY_AWAY)
+		(if (Btst fBabaFlyAway)
 			(skull1 stopUpd:)
 			(skull2 stopUpd:)
 			(skull3 stopUpd:)
@@ -401,19 +401,19 @@
 		(if
 			(and
 				(ego inRect: 179 0 191 102)
-				(Btst BABAYAGA_HUT_OPEN)
+				(Btst fHutOnGround)
 				(not crushedByHut)
 				(< babaState babaFINALE)
 			)
-			(Bclr BABAYAGA_HUT_OPEN)
+			(Bclr fHutOnGround)
 			(curRoom newRoom: 21)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(Bclr MET_BONEHEAD)
-		(Bset VISITED_BABAYAGA_EXTERIOR)
+		(Bclr fMetSkull)
+		(Bset fBeenIn22)
 		(super dispose:)
 	)
 	
@@ -422,12 +422,12 @@
 			((super handleEvent: event))
 			((LookFor event {hut of brown})
 				(cond 
-					((or (not gateOpen) (Btst BABAYAGA_HUT_OPEN))
+					((or (not gateOpen) (Btst fHutOnGround))
 						(HighPrint 22 6)
 						;Nothing happens.
 					)
 					((StrFind (User inputLineAddr?) {now sit down})
-						(SolvePuzzle POINTS_HUTSIT 7)
+						(SolvePuzzle f22HutSit 7)
 						(if (not (hut script?))
 							(hut setScript: walkEm)
 						else
@@ -472,10 +472,10 @@
 								)
 							)
 							((Said '/goo')
-								(if (Btst VISITED_TAVERN_INSIDE)
+								(if (Btst fBeenIn331)
 									(HighPrint 22 13)
 									;It looks a lot like the slime that was eating away the barstool at the tavern.
-									else
+								else
 									(HighPrint 22 14)
 									;You've never seen anything like it.  It looks quite unhealthy.
 								)
@@ -498,7 +498,7 @@
 								;You can see nothing through the windows of the hut.
 							)
 							((Said '/door')
-								(if (Btst BABAYAGA_HUT_OPEN)
+								(if (Btst fHutOnGround)
 									(HighPrint 22 18)
 									;The door is open, but hardly inviting.
 								else
@@ -528,18 +528,18 @@
 							)
 							((Said '/hut,leg,chicken')
 								(cond 
-									((Btst BABAYAGA_HUT_OPEN)
+									((Btst fHutOnGround)
 										(HighPrint 22 23)
 										;What's to climb?
-										)
+									)
 									(gateOpen
 										(HighPrint 22 24)
 										;You have second thoughts, and you decide not to attempt such a potentially dangerous excursion.
-										)
+									)
 									(else
 										(HighPrint 22 25)
 										;You have to get there, first.
-										)
+									)
 								)
 							)
 							((Said '/boulder,cliff')
@@ -573,9 +573,8 @@
 	)
 	
 	(method (doit)
-		(if
-		(and (== (ego onControl: origin) cYELLOW) (not (Btst MET_BONEHEAD)))
-			(Bset MET_BONEHEAD)
+		(if (and (== (ego onControl: origin) cYELLOW) (not (Btst fMetSkull)))
+			(Bset fMetSkull)
 			(bonehead setScript: boneTalk)
 		)
 		(if (> yesNoTimer 1)
@@ -598,16 +597,16 @@
 								(hutINITIAL
 									(HighPrint 22 27)
 									;Huh?
-									)
+								)
 								(hutMETSKULL
 									(HighPrint 22 29)
 									;"The deal is made, then.  A glowing gem in exchange for an opportunity to see Baba Yaga herself."
-									(= hutState 3)
-									(SolvePuzzle POINTS_MAKEDEALWITHSKULL 2)
+									(= hutState hutDEALMADE)
+									(SolvePuzzle f22MakeTheDeal 2)
 								)
 								(hutDEALMADE (HighPrint 22 30)
 									;"Give me my gem!!"
-									)
+								)
 								(hutGAVEGEM
 									(HighPrint 22 31)
 									;"Hey, it's your life!"
@@ -620,7 +619,7 @@
 							(switch hutState
 								(hutINITIAL (HighPrint 22 27)
 									;Huh?
-									)
+								)
 								(hutMETSKULL
 									(HighPrint 22 32)
 									;"No gem, no entry.  That's the deal."
@@ -629,15 +628,15 @@
 								(hutNODEAL
 									(HighPrint 22 32)
 									;"No gem, no entry.  That's the deal."
-									)
+								)
 								(hutDEALMADE
 									(HighPrint 22 33)
 									;"What kind of hero are you?  Can't even find a little glowing gem for me to see with!"
-									)
+								)
 								(hutGAVEGEM
 									(HighPrint 22 31)
 									;"Hey, it's your life!"
-									)
+								)
 							)
 						)
 						(else
@@ -648,26 +647,28 @@
 								(hutINITIAL
 									(HighPrint 22 27)
 									;Huh?
-									)
+								)
 								(hutDEALMADE
 									(HighPrint 22 35)
 									;"Do you have my gem?"
-									)
+								)
 								(hutGAVEGEM
 									(HighPrint 22 36)
 									;"Do you want back in?"
-									)
+								)
 								(else
 									(HighPrint 22 37)
 									;"Is it a deal or not?"
-									)
+								)
 							)
 							(event claimed: TRUE)
 						)
 					)
 				)
 				(cond 
-					((Said 'chat') (bonehead setScript: boneTalk))
+					((Said 'chat')
+						(bonehead setScript: boneTalk)
+					)
 					((Said 'open[<gate]')
 						(if (== hutState hutGAVEGEM)
 							(HighPrint 22 38)
@@ -693,43 +694,54 @@
 										;"Wait a minute...I'll get around to that."
 										(bonehead setScript: boneTalk)
 									)
-									(hutMETSKULL (MakeDeal))
-									(hutNODEAL (RemindDeal))
-									(hutDEALMADE (RemindDeal))
+									(hutMETSKULL
+										(MakeDeal)
+									)
+									(hutNODEAL
+										(RemindDeal)
+									)
+									(hutDEALMADE
+										(RemindDeal)
+									)
 									(hutGAVEGEM
 										(HighPrint 22 42)
 										;"You kept your end of the deal, all right!"
 										)
 								)
 							)
-							((Said '//baba') (if (Btst VISITED_BABAYAGA_EXTERIOR)
+							((Said '//baba')
+								(if (Btst fBeenIn22)
 									(HighPrint 22 43)
 									;"What's to tell?  You've seen her for yourself." 
-									else
+								else
 									(HighPrint 22 44)
 									;"Baba Yaga is the most powerful Ogress around.
 									;If you have any brains (and it looks like you don't), you'll stay away from her."
-									)
 								)
+							)
 							((Said '//ogress')
 								(HighPrint 22 45)
 								;"Some hero YOU are!  Don't know what an Ogre is.  Just check out Baba Yaga!"
-								)
+							)
 							((Said '//gem')
 								(switch hutState
 									(hutINITIAL
 										(bonehead setScript: boneTalk)
 									)
-									(hutMETSKULL (MakeDeal))
-									(hutNODEAL (RemindDeal))
+									(hutMETSKULL
+										(MakeDeal)
+									)
+									(hutNODEAL
+										(RemindDeal)
+									)
 									(hutDEALMADE
 										(HighPrint 22 46)
 										;"All I ask for is a little gem or jewel that glows in the dark.   You're the big hero, so go find one."
-										)
+									)
 									(else
 										(HighPrint 22 47)
 										;"It's just the right color!"
-										)
+									)
 								)
 							)
 							((Said '//eye')
@@ -744,35 +756,36 @@
 							((Said '//skull')
 								(HighPrint 22 50)
 								;"The bone brains on top of the fence are Baba Yaga's spies.  That's why THEY have glowing eyes."
-								)
+							)
 							((Said '//gate')
 								(HighPrint 22 51)
 								;"It's not much, but I call it home."
-								)
+							)
 							((Said '//fence')
 								(HighPrint 22 52)
 								;"You've seen one, you've seen them all, I say."
 								(HighPrint 22 53)
 								;"Of course, most fences aren't poisoned on top!"
-								)
+							)
 							((Said '//hut,house')
 								(HighPrint 22 54)
 								;"Baba Yaga's hut will squat down if you say the rhyme."
-								)
+							)
 							((Said '//rhyme')
 								(HighPrint 22 55)
 								;"The rhyme is:  'Hut of brown, now sit down'."
-								)
-							(else (HighPrint 22 56)
+							)
+							(else
+								(HighPrint 22 56)
 								;"My time is important, and I'm very busy, as you can well see.  Ask me about something important."
 								(event claimed: TRUE)
-								)
+							)
 						)
 					)
 					((Said 'gave[/eye,gem,skull][/skull,gem,eye]')
 						(if (ego has: iMagicGem)
 							(if (== (ego onControl: origin) cYELLOW)
-								(SolvePuzzle POINTS_GIVEGEM 10)
+								(SolvePuzzle f22GiveGem 10)
 								(bonehead setScript: putEyes)
 							else
 								(NotClose)
@@ -788,8 +801,6 @@
 )
 
 (instance putEyes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -802,7 +813,9 @@
 				(= cycles 2)
 			)
 			(2
-				(HighPrint 22 57 25 4) ;EO: What are the two extra tuples for?
+				(HighPrint 22 57
+					#time 4
+				)
 				;You place the glowing gem inside the skull.
 				(ego use: iMagicGem)
 				(eyes startUpd: show:)
@@ -818,7 +831,7 @@
 				(= seconds 4)
 			)
 			(5
-				(Bset GAVE_GEM_BONEHEAD)
+				(Bset fGaveSkullGem)
 				(HighPrint 22 58)
 				;"I can see!  I have eyes again!!"
 				(HighPrint 22 59)
@@ -827,19 +840,19 @@
 				;"Oh well!  Have fun visiting Baba Yaga.  And good luck....you'll need it!"
 				(self cue:)
 			)
-			(6 (gate setScript: openGate))
+			(6
+				(gate setScript: openGate)
+			)
 		)
 	)
 )
 
 (instance opener of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 15))
 			(1
-				(if (or (not (Btst VISITED_BABAYAGA_EXTERIOR)) (!= prevRoomNum 0))
+				(if (or (not (Btst fBeenIn22)) (!= prevRoomNum 0))
 					(LookAround)
 				)
 				(client setScript: 0)
@@ -849,8 +862,6 @@
 )
 
 (instance boneTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -867,7 +878,7 @@
 					)
 					(hutMETSKULL (HighPrint 22 62)
 						;"Baba Yaga is one tough magic user.  If you're so stupid that you want to enter, perhaps we can make a deal."
-						)
+					)
 					(hutNODEAL
 						(HighPrint 22 63)
 						;"So you're back!  Changed your mind about making a little deal, hero?"
@@ -879,7 +890,7 @@
 						(= yesNoTimer 100)
 					)
 					(else 
-						(if (and (Btst VISITED_BABAYAGA_INTERIOR) (ego has: iMandrake))
+						(if (and (Btst fBeenIn21) (ego has: iMandrake))
 							(HighPrint 22 65)
 							;"So you made it back, did you?  She is expecting you."
 							(gate setScript: openGate)
@@ -892,11 +903,13 @@
 				)
 				(self cue:)
 			)
-			(2 (= cycles 10))
+			(2
+				(= cycles 10)
+			)
 			(3
 				(HandsOn)
 				(bonehead cel: 0 stopUpd: setScript: 0)
-				(if (and (ego has: iMandrake) (Btst GAVE_GEM_BONEHEAD))
+				(if (and (ego has: iMandrake) (Btst fGaveSkullGem))
 					(gate setScript: openGate)
 				)
 			)
@@ -905,8 +918,6 @@
 )
 
 (instance openGate of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -918,7 +929,7 @@
 				(= cycles 10)
 			)
 			(1
-				(if (not (Btst VISITED_BABAYAGA_INTERIOR))
+				(if (not (Btst fBeenIn21))
 					(HighPrint 22 67)
 					;"I hope you can remember the rhyme."
 				else
@@ -941,8 +952,6 @@
 )
 
 (instance walkEm of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1063,16 +1072,18 @@
 			(11
 				(= hutX (hut x?))
 				(= hutY (hut y?))
-				(hut stopUpd: ignoreActors: 0)
+				(hut stopUpd: ignoreActors: FALSE)
 				(frontLeg dispose:)
 				(backLeg dispose:)
 				(frontFoot stopUpd:)
 				(backFoot stopUpd:)
-				(if crushedByHut (ego dispose:))
+				(if crushedByHut
+					(ego dispose:)
+				)
 				(= cycles 1)
 			)
 			(12
-				(Bset BABAYAGA_HUT_OPEN)
+				(Bset fHutOnGround)
 				(tromp play:)
 				(ShakeScreen 6 shakeSDiagonal)
 				(= cycles 6)
@@ -1101,8 +1112,6 @@
 )
 
 (instance flyAway of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1112,10 +1121,18 @@
 				(skull3 stopUpd: addToPic:)
 				(skull4 stopUpd: addToPic:)
 				(skull5 stopUpd: addToPic:)
-				(if (cast contains: gate) (gate addToPic:))
-				(if (cast contains: dirt) (dirt addToPic:))
-				(if (cast contains: bonehead) (bonehead addToPic:))
-				(if (cast contains: eyes) (eyes addToPic:))
+				(if (cast contains: gate)
+					(gate addToPic:)
+				)
+				(if (cast contains: dirt)
+					(dirt addToPic:)
+				)
+				(if (cast contains: bonehead)
+					(bonehead addToPic:)
+				)
+				(if (cast contains: eyes)
+					(eyes addToPic:)
+				)
 				(TP
 					ignoreActors:
 					setPri: 15
@@ -1179,8 +1196,8 @@
 				(= seconds 8)
 			)
 			(5
-				(Bset BABAYAGA_FLY_AWAY)
-				(Bclr BABAYAGA_HUT_OPEN)
+				(Bset fBabaFlyAway)
+				(Bclr fHutOnGround)
 				(wing1 dispose:)
 				(wing2 dispose:)
 				(frontFoot dispose:)
@@ -1193,8 +1210,6 @@
 )
 
 (instance frogIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1247,7 +1262,7 @@
 					)
 					(babaBRING (HighPrint 22 75)
 						;"What an awful creature, to turn me into a FROG!", you say to yourself.  "Someday, I must return the favor."
-						)
+					)
 				)
 				(TP dispose:)
 			)

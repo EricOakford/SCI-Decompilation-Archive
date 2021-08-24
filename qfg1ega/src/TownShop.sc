@@ -368,7 +368,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_STORE)
+		(Bset fBeenIn322)
 		(super dispose:)
 	)
 	

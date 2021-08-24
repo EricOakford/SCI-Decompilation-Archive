@@ -6,8 +6,8 @@
 (use Eat)
 (use Sleep)
 (use Rest)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastCalm)
 (use CastOpen)
@@ -301,8 +301,8 @@
 	global210				;unused
 	numColors
 	numVoices
-	stamCounter =  20
-	healCounter =  15
+	stamCounter =  STAM_RATE
+	healCounter =  HEAL_RATE
 	global215				;unused
 	keyDownHandler			;-our EventHandlers, get called by game
 	mouseDownHandler		;-our EventHandlers, get called by game
@@ -342,16 +342,7 @@
 	monsterDazzle			;number of animation cycles until the monster attacks again, in the arena
 		
 	;array of 9 variables, corresponding to direction event messages
-	targetAngles 	=  180	;dirStop (degrees)
-		global253 	=  0	;dirN (degrees)
-		global254 	=  45	;dirNE (degrees)
-		global255 	=  90	;dirE (degrees)
-		global256 	=  135	;dirSE (degrees)
-		global257 	=  180	;dirS (degrees)
-		global258 	=  225	;dirSW (degrees)
-		global259 	=  270	;dirW (degrees)
-		global260 	=  315	;dirNW (degrees)
-
+	targetAngles 	=  [180 0 45 90 135 180 225 270 315]
 	numFlowers				;times sold flowers to the healer
 	numMushrooms			;times sold mushrooms to the healer
 	numWater				;has the hero given flying water to the healer?
@@ -538,7 +529,7 @@
 		global438
 		global439
 	endUserName
-	invNum		;inventory quantities (start of 42 variable array)
+	invNum		;inventory quantities (start of 50 variable array; 42 are used)
 		global442
 		global443
 		global444
@@ -579,16 +570,16 @@
 		global479
 		global480
 		global481
-		global482	;end of Inventory array
-	global483			;unused
-	global484			;unused
-	global485			;unused
-	global486			;unused
-	global487			;unused
-	global488			;unused
-	global489			;unused
-	global490			;unused
-	invDropped			;dropped inventory (start of 42 variable array)
+		global482			;end of used array
+		global483			;unused
+		global484			;unused
+		global485			;unused
+		global486			;unused
+		global487			;unused
+		global488			;unused
+		global489			;unused
+		global490			;end of Inventory array
+	invDropped			;dropped inventory (start of 50 variable array; 42 are used)
 		global492
 		global493
 		global494
@@ -630,56 +621,56 @@
 		global530
 		global531
 		global532
-		global533	;end of dropped inventory array
-	global534			;unused
-	global535			;unused
-	global536			;unused
-	global537			;unused
-	global538			;unused
-	global539			;unused
-	global540			;unused
-	invWeight	;inventory weight (start of 41 variable array)
-		global542 =  1
-		global543 =  1
-		global544 =  20
-		global545 =  30
-		global546 =  15
-		global547 =  420
-		global548 =  120
-		global549 =  1200
-		global550 =  720
-		global551 =  1
-		global552 =  15
-		global553 =  30
-		global554 =  6
-		global555 =  30
-		global556 =  180
-		global557 =  45
-		global558 =  60
-		global559 =  30
-		global560 =  10
-		global561 =  60
-		global562 =  30
-		global563 =  1
-		global564 =  5
-		global565 =  30
-		global566 =  2
-		global567 =  10
-		global568 =  3
-		global569 =  10
-		global570 =  40
-		global571 =  10
-		global572 =  20
-		global573 =  60
-		global574 =  2100
-		global575 =  40
-		global576 =  40
-		global577 =  40
-		global578 =  40
-		global579 =  40
-		global580 =  40
-		global581 =  30
-		global582 =  3
+		global533			;end of used array
+		global534			;unused
+		global535			;unused
+		global536			;unused
+		global537			;unused
+		global538			;unused
+		global539			;unused
+		global540			;unused
+	invWeight	;inventory weight in quarks (start of 41 variable array)
+		wisilver		=	1
+		wigold			= 	1
+		wifood			=	20
+		wimandrake		=	30
+		wikey			=	15
+		wisword			=	420
+		widagger		=	120
+		wileather		=	1200
+		wishield		=	720
+		wipaper			=	1
+		wifruit			=	15
+		wivegetables	=	30
+		wigem			=	6
+		wivase			=	30
+		wicandelabra	=	180
+		wimusicbox		=	45
+		wicandlesticks	=	60
+		wipearls		=	30
+		wiring			=	10
+		wiseed			=	60
+		wirock			=	30
+		wiflowers		=	1
+		wipick			=	5
+		wikit			=	30
+		wilicense		=	2
+		wiflask			=	10
+		wifur			=	3
+		widust			=	10
+		wiwater			=	40
+		wimushroom		=	10
+		wiclaw			=	20
+		wibeard			=	60
+		wichainmail		=	2100
+		wiheal			=	40
+		wimana			=	40
+		wivigor			=	40
+		wiheroism		=	40	;unused
+		widispel		=	40
+		wighostoil		=	40
+		wimirror		=	30
+		wiacorn			=	3
 	ogreX =  160
 	ogreY =  120
 	ogreHealth =  93				;ogre's current HP (CI: looks like his max used to 93, but was upped to 112 later on.)
@@ -913,13 +904,14 @@
 )
 
 (procedure (NormalEgo)
+	;Normalize ego animation
 	(ChangeGait -1 FALSE)
 	(ego
 		setPri: -1
 		setMotion: 0
 		illegalBits: cWHITE
 		ignoreHorizon:
-		ignoreActors: 0
+		ignoreActors: FALSE
 	)
 )
 
@@ -943,44 +935,44 @@
 	;You can't do that now.
 )
 
-(procedure (HighPrint &tmp [sizeRect 4] [str 400])
+(procedure (HighPrint &tmp [printRect 4] [str 400])
 	; Prints a message at the top of the screen (y: 12px)
 	;
 	
 	(cls)
 	(Format @str &rest)
-	(TextSize @[sizeRect 0] @str userFont 0)
+	(TextSize @[printRect 0] @str userFont 0)
 	(Print @str
 		#at	-1 12
-		#width (if (> [sizeRect 2] 24) 300 else 0)
+		#width (if (> [printRect 2] 24) 300 else 0)
 		#mode teJustCenter
 	)
 )
 
-(procedure (CenterPrint &tmp [sizeRect 4] [str 400])
+(procedure (CenterPrint &tmp [printRect 4] [str 400])
 	; Prints a message in the middle of the screen (y: 115px)
 	;
 	
 	(Format @str &rest)
-	(TextSize @[sizeRect 0] @str userFont 0)
+	(TextSize @[printRect 0] @str userFont 0)
 	(Print @str
 		#at -1 115
-		#width (if (> [sizeRect 2] 24) 300 else 0)
+		#width (if (> [printRect 2] 24) 300 else 0)
 		#mode teJustCenter
 	)
 )
 
-(procedure (TimePrint seconds &tmp [sizeRect 4] [str 400])
+(procedure (TimePrint seconds &tmp [printRect 4] [str 400])
 	; Clears any existing messages and Prints a new message at the top of the screen 
 	; that automatically dissapears after the specified number of seconds
 	; 
 	
 	(cls)
 	(Format @str &rest)
-	(TextSize @[sizeRect 0] @str userFont 0)
+	(TextSize @[printRect 0] @str userFont 0)
 	(Print @str
 		#at -1 12
-		#width (if (> [sizeRect 2] 24) 300 else 0)
+		#width (if (> [printRect 2] 24) 300 else 0)
 		#mode teJustCenter
 		#dispose
 		#time seconds
@@ -988,6 +980,7 @@
 )
 
 (procedure (ShowTime &tmp whatDay [str 30])
+	;what time and day is it?
 	(= whatDay Day)
 	(if (or (!= timeODay TIME_MIDNIGHT) (> Clock 500))
 		(++ whatDay)
@@ -1001,6 +994,7 @@
 )
 
 (procedure (CanPickLocks)
+	;does ego have the tools and skill to pick locks?
 	(if [egoStats PICK]
 		(if (ego has: iLockPick)
 			else (ego has: iThiefKit)
@@ -1040,10 +1034,10 @@
 	(if (< (+ oldSilver (* oldGold 10)) itemPrice)
 		(return FALSE)
 	)
-	(= oldSilver (- oldSilver itemPrice))
+	(-= oldSilver itemPrice)
 	(while (< oldSilver 0)
 		(-- oldGold)
-		(= oldSilver (+ oldSilver 10))
+		(+= oldSilver 10)
 	)
 	(= [invNum iSilver] oldSilver)
 	(= [invNum iGold] oldGold)
@@ -1052,14 +1046,15 @@
 
 
 (procedure (FixTime newTime newMinutes &tmp oldTime)
+	;set up the time of day
 	(if (>= argc 1)
 		(= Clock (* GAMEHOUR newTime))
 		(= oldSysTime (GetTime SYSTIME1))
 		(if (>= argc 2)
-			(= Clock (+ Clock (/ (* 150 newMinutes) 60)))
+			(+= Clock (/ (* GAMEHOUR newMinutes) 60))
 		)
 	)
-	(= Clock (^ Clock 1))
+	(^= Clock 1)	;need an even number
 	(= oldTime timeODay)
 	(cond 
 		((< Clock 300)
@@ -1125,7 +1120,7 @@
 	; 
 	
 	(if [egoStats MAGIC]
-		(if (< (= [egoStats MANA] (- [egoStats MANA] pointsUsed)) 0)
+		(if (< (-= [egoStats MANA] pointsUsed) 0)
 			(= [egoStats MANA] 0)
 		)
 		(if (> [egoStats MANA] (MaxMana))
@@ -1148,7 +1143,7 @@
 		(SkillUsed VIT (/ (+ pointsUsed 3) 4))
 	)
 	(cond 
-		((< (= foo (= [egoStats STAMINA] (- [egoStats STAMINA] pointsUsed))) 0)
+		((< (= foo (-= [egoStats STAMINA] pointsUsed)) 0)
 			;if you're out of SP, then we start reducing your HP.
 			(TakeDamage (/ (- -3 [egoStats STAMINA]) 4))
 			(= [egoStats STAMINA] 0)
@@ -1184,14 +1179,14 @@
 	; (success is determined either by the supplied threshold, or a random threshold from 1-100.
 	;
 	
-	;if hero has a 0 in that skill, we can't even tru anything.
+	;if hero has a 0 in that skill, we can't even try anything.
 	(if (not (= skillValue [egoStats skill]))
 		(return FALSE)
 	)
 	
 	;;if we've specified a bonus parameter, add it to our base skill level.
 	(if (== argc 3)
-		(= skillValue (+ skillValue bonus))
+		(+= skillValue bonus)
 	)
 	
 	;if there's no specified threshold, then we pick one randomly between 1 and 100.
@@ -1206,7 +1201,7 @@
 	
 	;if we get lucky, then we boost our skill value by 1-20 points.
 	(if (>= (StatCheck LUCK 1) (Random 1 200))
-		(= skillValue (+ skillValue (Random 1 20)))
+		(+= skillValue (Random 1 20))
 	)
 	;if the threshold is below (or equal) to the skillvalue + bonus, then we return a success.
 	;otherwise we'll be returning failure.
@@ -1283,17 +1278,17 @@
 		(= amount [egoStats skill])
 	)
 	;increase experience by amount/4
-	(= [egoStats EXPER] (+ [egoStats EXPER] (/ amount 4)))
+	(+= [egoStats EXPER] (/ amount 4))
 	
 	;increase skillTicks by amount
-	(= [skillTicks skill] (+ [skillTicks skill] amount))
+	(+= [skillTicks skill] amount)
 	
 	(if (>= [skillTicks skill] [egoStats skill] )
 		;reduce skillTicks by the current egoStats
 		;i.e. if skillTicks is 51 and egoStats is 50, then points becomes 1, and must climb up again to increase the stats
-		(= [skillTicks skill] (- [skillTicks skill] [egoStats skill]))
+		(-= [skillTicks skill] [egoStats skill])
 		;increase egoStats by a random amount from 1-3
-		(= [egoStats skill] (+ [egoStats skill] (Random 1 3)))
+		(+= [egoStats skill] (Random 1 3))
 		;if we're above 100, cap it at 100
 		(if (> [egoStats skill] 100)
 			(= [egoStats skill] 100) ;Stats max out at 100.
@@ -1337,7 +1332,7 @@
 		;losing HP works out your Vitality skill
 		(SkillUsed VIT (/ (+ damage 1) 2))
 	)
-	(if (< (= [egoStats HEALTH] (- [egoStats HEALTH] damage)) 0)
+	(if (< (-= [egoStats HEALTH] damage) 0)
 		(= [egoStats HEALTH] 0)
 	)
 	(if (> [egoStats HEALTH] (MaxHealth))
@@ -1385,7 +1380,8 @@
 	(return (+ 40 (/ [egoStats STR] 2)))
 )
 
-(procedure (CastSpell spellNum &tmp temp0)
+(procedure (CastSpell spellNum &tmp spellObj)
+	;Try to cast a spell
 	(cond 
 		((not [egoStats MAGIC])
 			(HighPrint 0 58))
@@ -1405,8 +1401,8 @@
 	(return FALSE)
 )
 
-(procedure (ChangeGait newGait keepMoving &tmp temp0)
-	(if keepMoving
+(procedure (ChangeGait newGait gaitMsg &tmp theView)
+	(if gaitMsg
 		(cond 
 			((not (User canControl:))
 				(HighPrint 0 49)
@@ -1440,15 +1436,17 @@
 	)
 	;regardless of the walking method, if you're carrying to much
 	; you walk the slowest increment possible.
-	(if (Btst fOverloaded) (ego setStep: 1 1))
+	(if (Btst fOverloaded)
+		(ego setStep: 1 1)
+	)
 )
 
 (procedure (EatMeal)
 	(cond 
-		(freeMeals
+		(freeMeals		;already eaten earlier
 			(-- freeMeals)
 		)
-		([invNum iRations]
+		([invNum iRations]	;we've got rations, so eat one
 			(if (not (-- [invNum iRations]))
 				(CenterPrint 0 61)
 				;You just ate your last ration; you'd better get some more food soon.
@@ -1461,7 +1459,7 @@
 			(TakeDamage 1)
 			;CI: TODO: this is a potential bug. If the hero has only 1 HP, and skips a meal, 
 			;he could die with no death message.
-			;EO: Actually, the hero doesn't die at all. Seems the developers forgot to program in a
+			;EO: Actually, the hero doesn't die at all. Seems the developers never put in a
 			;special death messsage.
 		)
 		(else (Bset fHungry)
@@ -1481,10 +1479,8 @@
 
 ;Procedure from HQ1 that was removed from QFG1
 ;(procedure (ResetDroppedInventory &tmp i temp1)
-;	(= i 1)
-;	(while (<= i NUM_INVITEMS)
+;	(for ((= i 1)) (<= i NUM_INVITEMS) ((++ i))
 ;		(= [invDropped i] 0)
-;		(++ i)
 ;	)
 ;)
 
@@ -1521,8 +1517,7 @@
 				(Bclr fOverloaded)
 				(ChangeGait -1 FALSE))
 		)
-		(if
-		(< (= num (+ num oldNum)) 0)
+		(if (< (+= num oldNum) 0)
 			(= num 0)
 		)
 		(= [invNum what] num)
@@ -1534,8 +1529,7 @@
 		(if (not (= num (self use: what num)))
 			(return 0)
 		)
-		(= [invDropped what]
-			(+ [invDropped what] num))
+		(+= [invDropped what] num)
 		(return
 			(if (not (ego has: iMushroom))
 				(Bclr fHaveFaeryShrooms)
@@ -1577,7 +1571,7 @@
 				(if (u< count num) count else num)
 			)
 			(self get: what some)
-			(= [invDropped what] (- [invDropped what] some))
+			(-= [invDropped what] some)
 		)
 		(return some)
 	)
@@ -1596,7 +1590,6 @@
 )
 
 (instance egoBase of Code
-	
 	(method (doit theActor &tmp theX theY)
 		(= theX (theActor x?))
 		(= theY (+ 1 (theActor y?)))
@@ -1632,7 +1625,6 @@
 )
 
 (instance statusCode of Code
-	
 	(method (doit str)
 		(Format str 0 1 score)
 		;   So You Want To Be A Hero  [score %d of 500]	 ;CI: HQ V1.000 - V1.105
@@ -1641,7 +1633,6 @@
 )
 
 (instance keyHandler of EventHandler
-	
 	(method (handleEvent event)
 		(if
 			(and
@@ -1685,9 +1676,13 @@
 			owner: self
 			init:
 		)
-		(music number: (SoundFX 26) owner: self init:)
+		(music
+			number: (SoundFX 26)
+			owner: self
+			init:
+		)
 		(= deathMusic (SoundFX 26))
-		(SetGameInit)
+		(GameStartRoom)
 	)
 	
 	(method (doit &tmp thisTime)
@@ -1738,7 +1733,7 @@
 				(EatMeal)
 			)
 			
-			;if ego has used the Undead Unguent, we should decrease it's timer.
+			;if ego has used the Undead Unguent, we should decrease its timer.
 			(if (Btst fGhostOil)
 				(switch (-- ghostOilTimer)
 					(24
@@ -1756,7 +1751,7 @@
 			
 			;every 20 game seconds, ego gets refreshed in Stamina.
 			(if (not (-- stamCounter))
-				(= stamCounter 20)
+				(= stamCounter STAM_RATE)
 				(cond 
 					;if the hero's starving, or has gone more than 1 day without sleep, reduce SP by 1
 					((or (Btst fStarving) (> lostSleep 1))
@@ -1773,12 +1768,12 @@
 				)
 				;mana gets refreshed once every 5 stamina refreshes
 				(if (not (-- manaCounter))
-					(= manaCounter 5)
+					(= manaCounter MANA_RATE)
 					(UseMana -1)
 				)
 				;health gets refreshed once every 15 stamina refreshes
 				(if (not (-- healCounter))
-					(= healCounter 15)
+					(= healCounter HEAL_RATE)
 					(TakeDamage -1)
 				)
 			)
@@ -1786,7 +1781,7 @@
 	)
 	
 	(method (replay)
-		(SetGraphicsSoundInit)
+		(InitGlobals)
 		(if (not (OneOf curRoomNum INTRO CHARSEL CHARALLOC SPEED ENDGAME))
 			(TheMenuBar draw:)
 			(StatusLine enable:)
@@ -1906,13 +1901,13 @@
 									(= gotOne 0)
 									(= daggerRoom 0)
 									(if (or missedDaggers [invDropped iDagger])
-										(= gotOne 1)
+										(= gotOne TRUE)
 										(ego get: iDagger (+ missedDaggers [invDropped iDagger]))
 										(HighPrint 0 12)
 										;You pick up the loose daggers.
 									)
 									(if hitDaggers
-										(= gotOne 1)
+										(= gotOne TRUE)
 										(ego get: iDagger hitDaggers)
 										(HighPrint 0 13)
 										;You retrieve your knives from the dead monster's body, and carefully wipe them clean for reuse.
@@ -1920,7 +1915,9 @@
 									(= [invDropped iDagger]
 										(= hitDaggers (= missedDaggers 0))
 									)
-									(if (not gotOne) (HighPrint 0 10))
+									(if (not gotOne)
+										(HighPrint 0 10)
+									)
 								)
 							)
 							((ego pickUp: i -1)
@@ -1934,10 +1931,10 @@
 						)
 					)
 					((Said 'throw/dagger') 
-						(KnifeCast 0)
+						(ThrowKnife 0)
 					)
 					((Said 'throw/boulder')
-						(RockCast 0)
+						(ThrowRock 0)
 					)
 					((Said 'cast>')
 						(cond 
@@ -1973,7 +1970,7 @@
 										(CastCalm)
 									)
 									(FLAMEDART
-										(FlameCast 0)
+										(CastDart 0)
 									)
 									(else
 										(HighPrint 0 16)
@@ -2006,10 +2003,14 @@
 								)
 								(HighPrint 0 23)
 								;Ok, you drop it.
-								(if (not (ego has: iMushroom)) (Bclr fHaveToadstools))
+								(if (not (ego has: iMushroom))
+									(Bclr fHaveToadstools)
+								)
 							)
-							(else (HighPrint 0 24))
-							;You can't drop something you don't have.
+							(else
+								(HighPrint 0 24)
+								;You can't drop something you don't have.
+							)
 						)
 					)
 					((Said 'walk') 
@@ -2065,8 +2066,7 @@
 					)
 					((Said '/ale<root<dazzle<razzle')
 						;toggle the debug mode
-						(if
-						(= debugging (^ debugging TRUE))
+						(if (^= debugging TRUE)
 							(curRoom setLocales: DEBUG)
 						)
 					)
@@ -2136,7 +2136,7 @@
 								;you see nothing special, etc.
 							)
 							(num
-								(HighPrint 3 (+ i i 1))
+								(HighPrint INVDESC (+ i i 1))
 								;inventory item descriptions
 							)
 							(else (HighPrint 0 44)

@@ -49,7 +49,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_19)
+		(Bset fBeenIn19)
 		(super dispose:)
 	)
 )

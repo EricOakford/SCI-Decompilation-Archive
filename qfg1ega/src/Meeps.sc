@@ -2,8 +2,8 @@
 (script# 60)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastDazz)
 (use Intrface)
@@ -36,13 +36,13 @@
 	local80_2
 	bossOnScreen
 	local100_2
-	chatBoss
+	talkRet
 	local56_3
 	newAct_2 =  -1
 	metBoss
 	local96_3
 	meepsScared
-	local300_3
+	roomSysTime
 	local56_3_2
 	newAct_3_2
 	local80_3_2
@@ -54,11 +54,11 @@
 	scrollOnGround
 	furOnGround
 	local100_2_2 =  25
-	[meepPri 8] = [11 8 10 6 9 7 11 6]
-	[meepPosn 16] = [41 167 65 135 104 157 130 114 180 146 212 125 243 167 269 114]
-	[theNewAct_2 8] = [3 0 2 4 6 7 5 1]
-	[local80_3_2_2 16] = [160 105 71 158 134 148 209 137 273 159 299 105 242 117 95 127]
-	[askedFor 4] = [{some fruit} {a baby meep} {some green fur} {a magic spell scroll}]
+	meepPri = [11 8 10 6 9 7 11 6]
+	meepPosn = [41 167 65 135 104 157 130 114 180 146 212 125 243 167 269 114]
+	theNewAct_2 = [3 0 2 4 6 7 5 1]
+	local80_3_2_2 = [160 105 71 158 134 148 209 137 273 159 299 105 242 117 95 127]
+	askedFor = [{some fruit} {a baby meep} {some green fur} {a magic spell scroll}]
 	[str 200]
 	local300_3_2_2
 	local301
@@ -76,11 +76,10 @@
 )
 
 (procedure (AddMeeps &tmp i)
-	;EO: this procedure did not decompile correctly. This has been fixed.
-	(= i 0)
-	(while (< i 8)
+	(for ((= i 0)) (< i 8) ((++ i))
 		(= [meep i] (Clone aMeep))
 		(= [eye i] (Clone anEye))
+		(= [meepScript i] (Clone aMeepScript))
 		([meep i]
 			setLoop: 5
 			cel: 0
@@ -90,7 +89,7 @@
 				(- [meepPosn (+ (* i 2) 1)] 4)
 			init:
 			stopUpd:
-			setScript: (= [meepScript i] (Clone aMeepScript))
+			setScript: [meepScript i]
 		)
 		([eye i]
 			setLoop: 3
@@ -104,7 +103,6 @@
 			stopUpd:
 			hide:
 		)
-		(++ i)
 	)
 )
 
@@ -136,19 +134,19 @@
 					((and (== loop 5) (== cel 0))
 						(HighPrint 60 0)
 						;This large rock covers a Meep hole.
-						)
+					)
 					((== loop 0)
 						(HighPrint 60 1)
 						;A furry blue Meep
-						)
+					)
 					((and (== loop 1) (== view vMeeps))
 						(HighPrint 60 2)
 						;A furry purple Meep
-						)
+					)
 					(else
 						(HighPrint 60 3)
 						;A furry green Meep
-						)
+					)
 				)
 			)
 		)
@@ -244,7 +242,7 @@
 
 (instance meepWin of SysWindow
 	(properties
-		color 2
+		color vGREEN
 	)
 )
 
@@ -292,16 +290,17 @@
 		(thudSound number: (SoundFX 58) init:)
 		(throwSound number: (SoundFX 31) init:)
 		(AddMeeps)
-		(if (< numColors 8) (meepWin color: vBLACK back: vWHITE))
+		(if (< numColors 8)
+			(meepWin color: vBLACK back: vWHITE)
+		)
 		(directionHandler addToFront: self)
 		(mouseDownHandler addToFront: self)
 	)
 	
-	(method (doit &tmp temp0)
-		(if (!= local300_3 (= temp0 (GetTime 1)))
-			(= local300_3 temp0)
-			(if
-			(and bossOnScreen (not local100_2) (not (-- local56_2)))
+	(method (doit &tmp thisTime)
+		(if (!= roomSysTime (= thisTime (GetTime SYSTIME1)))
+			(= roomSysTime thisTime)
+			(if (and bossOnScreen (not local100_2) (not (-- local56_2)))
 				([meep 3] setScript: bossMad 0 0)
 			)
 		)
@@ -309,7 +308,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_MEEPS)
+		(Bset fBeenIn60)
 		(super dispose:)
 	)
 	
@@ -321,16 +320,14 @@
 				(cond 
 					(
 						(or
-							(Said
-								'chop,beat,fight,kill,damage[/meep,creature,boulder]'
-							)
+							(Said 'chop,beat,fight,kill,damage[/meep,creature,boulder]')
 							(Said 'use,draw/blade')
 						)
 						(cond 
 							(meepsScared
 								(HighPrint 60 4)
 								;No way!  Those Meeps are too fast and the rocks too hard for you to want to try that again!
-								)
+							)
 							(
 								(or
 									(< (ego y?) 102)
@@ -359,49 +356,60 @@
 								(if (CastSpell spell)
 									(HighPrint 60 6)
 									;You detect no other magic here.
-									)
+								)
 							)
 							(DAZZLE
 								(if (CastSpell spell)
 									(= meepsScared TRUE)
 									(CastDazz)
-									(if bossOnScreen ([meep 3] setScript: bossMad))
+									(if bossOnScreen
+										([meep 3] setScript: bossMad)
+									)
 								)
 							)
 							(FLAMEDART
 								(if (CastSpell spell)
 									(= meepsScared TRUE)
-									(if bossOnScreen ([meep 3] setScript: bossMad))
-									(FlameCast 0)
+									(if bossOnScreen
+										([meep 3] setScript: bossMad)
+									)
+									(CastDart 0)
 								)
 							)
 							(OPEN
 								(if (CastSpell spell)
 									(HighPrint 60 7)
 									;The Open spell only works on locks and small closed things.
-									)
+								)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((Said 'throw/dagger,dagger')
-						(if (KnifeCast 0)
+						(if (ThrowKnife 0)
 							(= meepsScared TRUE)
-							(if bossOnScreen ([meep 3] setScript: bossMad))
+							(if bossOnScreen
+								([meep 3] setScript: bossMad)
+							)
 						)
 					)
 					((Said 'throw/boulder')
 						(if (ego has: iRock)
 							(= meepsScared TRUE)
-							(if bossOnScreen ([meep 3] setScript: bossMad))
-							(RockCast 0)
+							(if bossOnScreen
+								([meep 3] setScript: bossMad)
+							)
+							(ThrowRock 0)
 						else
 							(HighPrint 60 8)
 							;You don't have a rock
 						)
 					)
-					(
-					(Said 'lift,(lockpick<up),get,capture/boulder,meep') (ego setScript: liftRock))
+					((Said 'lift,(lockpick<up),get,capture/boulder,meep')
+						(ego setScript: liftRock)
+						)
 					((Said 'get>')
 						(cond 
 							((Said '/fur[<green]')
@@ -445,7 +453,7 @@
 							((Said '/apple,apple,core')
 								(HighPrint 60 14)
 								;You look at the apple cores, and quickly decide they are of no use to you.  Besides, they look disgusting.
-								)
+							)
 						)
 					)
 					((Said 'look>')
@@ -454,11 +462,11 @@
 							((Said '[<at,around][/!*,area,area,clearing]')
 								(HighPrint 60 15)
 								;You are in the Meeps' Peep.  The colorful, furry Meeps timidly pop out of their holes from time to time.
-								)
+							)
 							((Said '/baby,(meep<baby)')
 								(HighPrint 60 16)
 								;The baby Meep sure is cute.
-								)
+							)
 							((Said '/(meep,creature,animal)<green')
 								(if meepsScared
 									(HighPrint 60 17)
@@ -466,35 +474,35 @@
 									else
 									(HighPrint 60 18)
 									;You realize that you have never seen more than one green Meep at a time.  Perhaps there is only one.
-									)
 								)
+							)
 							((Said '/(meep,creature,animal)<(magenta,blue)')
 								(if meepsScared
 									(HighPrint 60 17)
 									;All of the Meeps are hiding deep within their holes.
 									;Your vicious attack has them terrified.
-									else
+								else
 									(HighPrint 60 19)
 									;There seems to be an abundant supply of blue and purple Meeps.
 									;If only they'd stay still for a moment, perhaps you could count them.
-									)
 								)
+							)
 							((Said '/meep,creature,animal')
 								(if meepsScared
 									(HighPrint 60 17)
 									;All of the Meeps are hiding deep within their holes.
 									;Your vicious attack has them terrified.
-									else
+								else
 									(HighPrint 60 20)
 									;You see blue Meeps, purple Meeps, and occasionally a green Meep.
 									;They seem to be very shy; whenever you approach one, it hides under its rock.
-									)
 								)
+							)
 							((Said '/boulder,boulder')
 								(HighPrint 60 21)
 								;Large, heavy-looking rocks cover the many holes.
 								;The Meeps must be stronger than they look to lift these rocks so easily.
-								)
+							)
 							((Said '/chasm')
 								(if meepsScared
 									(HighPrint 60 17)
@@ -503,20 +511,20 @@
 									else (HighPrint 60 22)
 									;You keep seeing differently-colored Meeps come out of each hole.
 									;They either lead to large underground caverns, or they are all connected under the earth.
-									)
 								)
+							)
 							((Said '/bush,tree')
 								(HighPrint 60 23)
 								;The trees and bushes look much like those you've seen elsewhere in the valley.
-								)
+							)
 							((Said '/hill,hill')
 								(HighPrint 60 24)
 								;The mountains are very steep here.
-								)
+							)
 							((Said '/ground,down,grass')
 								(HighPrint 60 25)
 								;The meadow is covered with a light carpet of grass, broken up by the Meep holes.
-								)
+							)
 							((Said '/fur')
 								(if furOnGround
 									(HighPrint 60 26)
@@ -524,7 +532,9 @@
 								else
 									(HighPrint 60 27)
 									;The Meeps have brightly-colored, soft-looking fur.
-									(if (ego has: iGreenFur) (event claimed: FALSE))
+									(if (ego has: iGreenFur)
+										(event claimed: FALSE)
+									)
 								)
 							)
 							((Said '/scroll,spell')
@@ -532,12 +542,14 @@
 									(scrollOnGround
 										(HighPrint 60 28)
 										;It looks like a Spell Scroll.
-										)
-									((Btst LEARNED_DETECT)
+									)
+									((Btst fLearnedDetect)
 										(HighPrint 60 29)
 										;The scroll is blank now, but once contained the Detect Magic spell.
-										)
-									(else (event claimed: FALSE))
+									)
+									(else
+										(event claimed: FALSE)
+									)
 								)
 							)
 						)
@@ -545,50 +557,66 @@
 					((Said 'chat>')
 						(= local56_2 30)
 						(cond 
-							(meepsScared (event claimed: TRUE)
+							(meepsScared
+								(event claimed: TRUE)
 								(HighPrint 60 30)
 								;You can't talk to any of the Meeps.
 								;They are all hiding deep within their holes, terrified after your vicious attack.
-								)
-							(bossOnScreen (event claimed: TRUE)
+							)
+							(bossOnScreen
+								(event claimed: TRUE)
 								(BossSays 5 60 31)
 								;"Hey, just ask me about anything you want to know."
-								)
+							)
 							((== meepsOnScreen 0) (event claimed: TRUE)
 								(HighPrint 60 32)
 								;You don't see any Meeps to talk to at the moment.
-								)
-							(metBoss (event claimed: TRUE) ([meep 3] setScript: bossRises))
-							(else (event claimed: TRUE) (self setScript: prepAsk))
+							)
+							(metBoss
+								(event claimed: TRUE)
+								([meep 3] setScript: bossRises)
+							)
+							(else
+								(event claimed: TRUE)
+								(self setScript: prepAsk)
+							)
 						)
 					)
 					((Said 'ask>')
-						(= chatBoss TRUE)
+						(= talkRet TRUE)
 						(= local56_2 30)
 						(cond 
-							(
-							(and newAct (not bossOnScreen) (Said '//meep<green')) (= chatBoss 0) ([meep 3] setScript: bossRises))
+							((and newAct (not bossOnScreen) (Said '//meep<green'))
+								(= talkRet FALSE)
+								([meep 3] setScript: bossRises)
+							)
 							((not bossOnScreen)
-								(= chatBoss 0)
+								(= talkRet FALSE)
 								(event claimed: TRUE)
 								(cond 
-									(metBoss ([meep 3] setScript: bossRises))
+									(metBoss
+										([meep 3] setScript: bossRises)
+									)
 									((== meepsOnScreen 0) (event claimed: TRUE)
 										(HighPrint 60 32)
 										;You don't see any Meeps to talk to at the moment.
-										)
-									(else (self setScript: prepAsk))
+									)
+									(else
+										(self setScript: prepAsk)
+									)
 								)
 							)
 							((Said '//boulder')
 								(BossSays 5 60 33)
 								;"We use rocks for doors.  They keep us dry and warm."
-								)
+							)
 							((Said '//meep,creature,animal')
 								(BossSays 5 60 34)
 								;"We are happy Meeps, living in our happy holes.  Don't worry.  Be happy!"
-								)
-							((Said '//apple,apple,stuff,junk') ([meep 3] setScript: throwThings 0 0))
+							)
+							((Said '//apple,apple,stuff,junk')
+								([meep 3] setScript: throwThings 0 0)
+							)
 							((Said '//fur<green')
 								(if furOnGround
 									(BossSays 5 60 35)
@@ -600,7 +628,7 @@
 							((Said '//fur')
 								(BossSays 7 60 36)
 								;"Hey, like fur is good stuff, keeps us warm.  Mine's the best -- it's like green, you know?"
-								)
+							)
 							((Said '//scroll,spell,magic,detect')
 								(if scrollOnGround
 									(BossSays 5 60 35)
@@ -610,24 +638,28 @@
 								)
 							)
 							(else
-								(= chatBoss 0)
+								(= talkRet FALSE)
 								(event claimed: TRUE)
 								(BossSays 5 60 37)
 								;"Gee, boss, I really don't know much about that at all.  Hey, sorry."
 							)
 						)
-						(if chatBoss (SolvePuzzle POINTS_TALKTOMEEP 1))
+						(if talkRet
+							(SolvePuzzle f60TalkToMeep 1)
+						)
 					)
 				)
 			)
-			(keyDown (= local80_2 temp0))
+			(keyDown
+				(= local80_2 temp0)
+			)
 			(mouseDown
 				(if (& (event modifiers?) shiftDown)
 					(= local80_2 temp0)
 					(if (MouseClaimed ego event shiftDown)
 						(HighPrint 60 38)
 						;Why, that's me!
-						)
+					)
 				)
 			)
 		)
@@ -636,8 +668,6 @@
 )
 
 (instance aMeepScript of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -655,11 +685,17 @@
 			(0 (= cycles (Random 20 150)))
 			(1
 				(cond 
-					((and bossOnScreen (== howFast 0) (self changeState: 0)))
-					((>= meepsOnScreen maxMeeps) (self changeState: 0))
-					(meepsScared (self changeState: 0))
-					(
-					(and local80_2 (<= (ego distanceTo: client) 80)) (self changeState: 0))
+					((and bossOnScreen (== howFast slow))
+						(self changeState: 0)
+					)
+					((>= meepsOnScreen maxMeeps)
+						(self changeState: 0)
+					)
+					(meepsScared
+						(self changeState: 0)
+					)
+					((and local80_2 (<= (ego distanceTo: client) 80))
+						(self changeState: 0))
 					(else
 						(++ meepsOnScreen)
 						(if (== register 3)
@@ -714,8 +750,6 @@
 )
 
 (instance killMeeps of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(self setScript: hackMeep)
@@ -723,9 +757,9 @@
 		(= local56_3 0)
 		(= local96_3
 			(switch howFast
-				(0 4)
-				(1 8)
-				(2 12)
+				(slow 4)
+				(medium 8)
+				(fast 12)
 				(else  16)
 			)
 		)
@@ -748,10 +782,9 @@
 			)
 			(3
 				(ego
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						[local80_3_2_2 local56_3]
 						[local80_3_2_2 (+ local56_3 1)]
 						self
@@ -759,7 +792,7 @@
 			)
 			(4 (script cue:))
 			(5
-				(if (>= (= local56_3 (+ local56_3 2)) local96_3)
+				(if (>= (+= local56_3 2) local96_3)
 					(self cue:)
 				else
 					(self changeState: 2)
@@ -784,8 +817,6 @@
 )
 
 (instance hackMeep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -806,8 +837,6 @@
 )
 
 (instance prepAsk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -836,8 +865,6 @@
 )
 
 (instance bossRises of Script
-	(properties)
-	
 	(method (init)
 		(= bossOnScreen TRUE)
 		(super init: &rest)
@@ -903,14 +930,14 @@
 					setCycle: Forward
 				)
 				(bossRock setMotion: MoveTo 145 114 self)
-				(if (or metBoss (Btst MET_GREEN_MEEP))
+				(if (or metBoss (Btst fMetMeepBoss))
 					(BossSays 4 60 41)
 					;Hiya, hiya.  Nice to seeya 'gain.
 					;
 				else
 					(BossSays 4 60 42)
 					;Hiya, hiya.  Pleased to meetcha.
-					(Bset MET_GREEN_MEEP)
+					(Bset fMetMeepBoss)
 					(= metBoss TRUE)
 				)
 			)
@@ -946,8 +973,6 @@
 )
 
 (instance bossHides of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -978,8 +1003,6 @@
 )
 
 (instance bossReturns of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1018,8 +1041,6 @@
 )
 
 (instance throwObj of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0 temp1 temp2 [temp3 2])
 		(switch (= state newState)
 			(0
@@ -1061,7 +1082,9 @@
 			(1
 				(newAct_3_2 setCycle: 0 stopUpd:)
 				(switch register
-					(askFRUIT (newAct_3_2 addToPic:))
+					(askFRUIT
+						(newAct_3_2 addToPic:)
+					)
 					(askBABY
 						(babyMeep setScript: bouncyBaby)
 					)
@@ -1074,8 +1097,6 @@
 )
 
 (instance throwThings of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
@@ -1108,10 +1129,10 @@
 				(if
 					(or
 						(> local300_3_2 20)
-						(and (== register askFUR) (or furOnGround (Btst OBTAINED_GREEN_FUR)))
+						(and (== register askFUR) (or furOnGround (Btst fGotFur)))
 						(and
 							(== register askSCROLL)
-							(or scrollOnGround (Btst LEARNED_DETECT) (not [egoStats MAGIC]))
+							(or scrollOnGround (Btst fLearnedDetect) (not [egoStats MAGIC]))
 						)
 					)
 					(BossSays 5 60 46)
@@ -1120,7 +1141,9 @@
 					(= seconds 5)
 				else
 					(= local100_4 (Random 2 4))
-					(if (== register 0) (= local100_4 0))
+					(if (== register 0)
+						(= local100_4 0)
+					)
 					(= cycles 10)
 				)
 			)
@@ -1135,7 +1158,7 @@
 							(== register 2)
 							(not scrollOnGround)
 							[egoStats 12]
-							(not (Btst LEARNED_DETECT))
+							(not (Btst fLearnedDetect))
 						)
 						(= temp0 3)
 					)
@@ -1273,8 +1296,6 @@
 )
 
 (instance getThing of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
@@ -1315,14 +1336,14 @@
 					(2
 						(greenFur dispose:)
 						(ego get: iGreenFur)
-						(= furOnGround 0)
-						(Bset OBTAINED_GREEN_FUR)
+						(= furOnGround FALSE)
+						(Bset fGotFur)
 					)
 					(3
 						(spellScroll dispose:)
-						(ego get: 10)
-						(= scrollOnGround 0)
-						(Bset LEARNED_DETECT)
+						(ego get: iPaper)
+						(= scrollOnGround FALSE)
+						(Bset fLearnedDetect)
 					)
 				)
 				(ego setCycle: BegLoop self)
@@ -1335,14 +1356,14 @@
 					(askFUR
 						(TimePrint 5 60 47)
 						;You pick up the pile of soft green fur and carefully place it in your pack.
-						(SolvePuzzle POINTS_GETGREENFUR 5)
+						(SolvePuzzle f60GetFur 5)
 					)
 					(askSCROLL
 						(if [egoStats MAGIC]
 							(TimePrint 8 60 48)
 							;You pick up the Spell Scroll.  As the magical runes fade, you find you now know how to cast the "Detect Magic" spell.
 							(ego learn: DETMAGIC 10)
-							(SolvePuzzle POINTS_LEARNDETECTMAGIC 4 MAGIC_USER)
+							(SolvePuzzle f60LearnDetect 4 MAGIC_USER)
 						else
 							(TimePrint 5 60 49)
 							;The magical runes fade from the paper before your eye can focus on them.
@@ -1359,14 +1380,12 @@
 )
 
 (instance liftRock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= local300_3_2_2 1)
 				(HandsOff)
-				(= meepsScared 1)
+				(= meepsScared TRUE)
 				(if bossOnScreen
 					([meep 3] setScript: bossMad self)
 				else
@@ -1375,7 +1394,7 @@
 			)
 			(1
 				(ego
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					ignoreBlocks: bossBlock
 					setMotion: MoveTo 130 106 self
@@ -1410,7 +1429,7 @@
 				(NormalEgo)
 				(Face ego [meep 3])
 				([meep 3] setLoop: -1 setCel: -1)
-				(= meepsScared 0)
+				(= meepsScared FALSE)
 				(ego observeBlocks: bossBlock)
 				(HandsOn)
 				(= local300_3_2_2 0)

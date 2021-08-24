@@ -46,7 +46,9 @@
 		(if (not monsterNum) (ego init:))
 		(switch prevRoomNum
 			(22
-				(if (Btst BABAYAGA_HUT_OPEN) (HandsOff))
+				(if (Btst fHutOnGround)
+					(HandsOff)
+				)
 				(ego posn: 130 91 setMotion: MoveTo 130 190)
 			)
 			(34
@@ -57,8 +59,8 @@
 			)
 		)
 		(westBush setPri: 7 ignoreActors: init: addToPic:)
-		(if (and (Btst BABAYAGA_HUT_OPEN) (not (Btst BABAYAGA_FLY_AWAY)))
-			(Bclr BABAYAGA_HUT_OPEN)
+		(if (and (Btst fHutOnGround) (not (Btst fBabaFlyAway)))
+			(Bclr fHutOnGround)
 			(self setScript: hutUp)
 		)
 		(if
@@ -76,7 +78,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_FOREST_33)
+		(Bset fBeenIn33)
 		(super dispose:)
 	)
 	
@@ -86,7 +88,7 @@
 			((MouseClaimed ego event shiftDown)
 				(HighPrint 33 0)
 				;My feet are killing me.
-				)
+			)
 		)
 	)
 )
@@ -100,8 +102,6 @@
 )
 
 (instance hutUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 6))
@@ -119,7 +119,7 @@
 			(4
 				(tromp play:)
 				(ShakeScreen 3)
-				(Bclr BABAYAGA_HUT_OPEN)
+				(Bclr fHutOnGround)
 				(HandsOn)
 				(rm33 setScript: 0)
 			)

@@ -697,9 +697,9 @@
 	fFlag271					;271 (tested in Yorrick's room)
 	fClimbedHenryCliff			;272
 	fSavedElsa 					;273
-	fFlag274					;274 used in hermitHits
+	fEgoFallOffCliff			;274 used in hermitHits
 	fKnockedOnHenryDoor 		;275
-	fFlag276					;276 used in hermitHits
+	fEgoSquashed					;276 used in hermitHits
 	fFlag277					;277 used in healerGetNest
 	fClimbedTree		;278
 	fHaveFaeryShrooms		;279
@@ -791,7 +791,7 @@
 ; Puzzle Point Event Flags (142 flags allocated; 6 flags unused: 609, 692, 710, 712, 714, 716)
 (enum 601
 	f420BeatBear	 	;601)             ; -25 points
-	f15BeatKbold 	;602)           ; 10 points (Fighter or Magic User only)
+	f15BeatKobold 	;602)           ; 10 points (Fighter or Magic User only)
 	f10KillFlower 	;603)          ; -10 points
 	f67KillFox 		;604)              ; -10 points
 	POINTS_GOTDRUNK 	;605)             ; -5 points
@@ -898,8 +898,8 @@
 	f76GiveSeed 					;694)             ; 7 points
 	f76GetAcorn 					;695)             ; 1 point
 	fEatAcorn 					;696)             ; -5 points
-	POINTS_KNOCKONHERMITDOOR 			;697)        ; 1 point
-	POINTS_GETFLYINGWATER 				;698)       ; 3 points
+	f82KnockOnDoor 			;697)        ; 1 point
+	f82GetWater 				;698)       ; 3 points
 	POINTS_MEETHERMIT 					;699)           ; 5 points
 	POINTS_TALKTOHERMIT 				;700)         ; 2 points
 	POINTS_FINDSECRETENTRANCE 			;701)       ; 10 points
@@ -947,4 +947,4 @@
 	f465BeatBrigand				;740)          ; 1 point (Fighter Only)
 	f430BeatSaurus 					;741)           ; 1 point (Figher only)
 	f445BeatGoblin 					;742)           ; 1 point (Fighter Only)
-)	
+)

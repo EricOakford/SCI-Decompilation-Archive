@@ -23,7 +23,7 @@
 			(0 (HandsOff) (= cycles 10))
 			(1
 				((ScriptID 83 1) caller: self)
-				(if (Btst VISITED_HENRYINSIDE)
+				(if (Btst fBeenIn83)
 					(= state 4)
 					(Say (ScriptID 83 1) 143 0)
 					;"Come in, come in.  Good to see you again.   Get's kind o' tiresome sitten here an' thinken by meself all the time."

@@ -18,7 +18,9 @@
 				)
 				((Btst fHaveToadstools)
 					(ego use: iMushroom 3)
-					(if (Btst fHaveFaeryShrooms) (HighPrint EAT 1))
+					(if (Btst fHaveFaeryShrooms)
+						(HighPrint EAT 1)
+					)
 					;The mushrooms from the Fairy Ring are pretty good, so you hear. 
 					;However, when they're mixed with Kobold toadstools...that's a horse of a different color.
 					(HighPrint EAT 2)
@@ -27,7 +29,8 @@
 					;Guess you're not a Kobold, huh?
 					(if (<= [egoStats HEALTH] 20)
 						(EgoDead
-							{Didn't anyone warn you about eating other people's food?__Death by Toadstools doesn't leave mushroom for improvement.}
+							{Didn't anyone warn you about eating other people's food?
+							__Death by Toadstools doesn't leave mushroom for improvement.}
 							#icon vDeathScenes 1 1
 						)
 					else
@@ -41,14 +44,18 @@
 				)
 				(else
 					(ego use: iMushroom 3)
-					(if (Btst fStarving) (Bclr fStarving) else (Bclr fHungry))
+					(if (Btst fStarving)
+						(Bclr fStarving)
+					else
+						(Bclr fHungry)
+					)
 					(HighPrint EAT 4)
 					;You ingest a few of the mushrooms from the Faery Ring.  They taste delicious.
 					(HighPrint EAT 5)
 					;Wow!  Look at all the nice paisley horses!
 					(HighPrint EAT 6)
 					;Not to mention the beautiful neon sky.
-					(if (Btst fAteShrooms)
+					(if (Btst fAteFaeryShrooms)
 						(EgoDead EAT 7
 							#title {Where did all the pretty horses go?}
 							#icon vDeathScenes 1 1
@@ -59,7 +66,7 @@
 						(HighPrint EAT 8)
 						;Hmm, that was interesting.  But it would probably not be a good idea to repeat the experience.
 					)
-					(Bset fAteShrooms)
+					(Bset fAteFaeryShrooms)
 				)
 			)
 		)

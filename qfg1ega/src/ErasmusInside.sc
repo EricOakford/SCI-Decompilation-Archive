@@ -18,14 +18,13 @@
 (local
 	goingUpstairs
 	warned
-	warpOut
+	warpCued
 	local3
 	roomForbidden
 	leaving
 )
-(procedure (localproc_000c param1)
-	(if
-	(and (!= local3 param1) (== (fenrus loop?) 1))
+(procedure (FenrusTurnsHead param1)
+	(if (and (!= local3 param1) (== (fenrus loop?) 1))
 		(= local3 param1)
 		(fenrus cel: param1 forceUpd:)
 	)
@@ -88,7 +87,7 @@
 		(LoadMany VIEW vTeleportPink vWizardLobby vFenrus)
 		(super init:)
 		(mouseDownHandler add: self)
-		(SolvePuzzle POINTS_ENTERERASMUSCASTLE 3)
+		(SolvePuzzle f30EnterTower 3)
 		(StatusLine enable:)
 		(NormalEgo)
 		(ego posn: 160 189 init: setScript: intro)
@@ -119,7 +118,10 @@
 	)
 	
 	(method (doit)
-		(if warpOut (= warpOut FALSE) (self setScript: teleportOut))
+		(if warpCued
+			(= warpCued FALSE)
+			(self setScript: teleportOut)
+		)
 		(cond 
 			(
 				(and
@@ -130,20 +132,25 @@
 				(= goingUpstairs TRUE)
 				(ego setScript: intoTheTower)
 			)
-			((and (== (ego edgeHit?) 3) (not leaving)) (= leaving TRUE) (= warpOut TRUE))
-			(
-			(and (== (ego onControl: origin) cLRED) (not roomForbidden)) (= roomForbidden TRUE) (= warpOut TRUE))
+			((and (== (ego edgeHit?) SOUTH) (not leaving))
+				(= leaving TRUE)
+				(= warpCued TRUE)
+			)
+			((and (== (ego onControl: origin) cLRED) (not roomForbidden))
+				(= roomForbidden TRUE)
+				(= warpCued TRUE)
+			)
 		)
 		(cond 
-			((<= (ego x?) 120) (localproc_000c 0))
-			((<= (ego x?) 180) (localproc_000c 1))
-			(else (localproc_000c 2))
+			((<= (ego x?) 120) (FenrusTurnsHead 0))
+			((<= (ego x?) 180) (FenrusTurnsHead 1))
+			(else (FenrusTurnsHead 2))
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(Bset VISITED_ERASMUS_INSIDE)
+		(Bset fBeenIn30)
 		(super dispose:)
 	)
 	
@@ -242,7 +249,7 @@
 					(Said 'look/painting,portrait,wizard,erasmus')
 					(MouseClaimed theFrame event shiftDown)
 				)
-				(if (Btst VISITED_ERASMUS_TOWER)
+				(if (Btst fBeenIn31)
 					(HighPrint 30 21)
 					;You wonder if the portrait of Erasmus is really a painting, or something completely different.
 				else
@@ -279,7 +286,9 @@
 				;You find titles like:  "Zen and the Art of Magical Maintenance",  "How to Be a Halfling",
 				; "The Sensuous Succubus",  and "Tobin's Spirit Guide, Volume II:  Asmodeus to Casper".
 			)
-			((MouseClaimed onWest event shiftDown) (LookWestRoom))
+			((MouseClaimed onWest event shiftDown)
+				(LookWestRoom)
+			)
 			(
 				(and
 					(MouseClaimed onEast event shiftDown)
@@ -298,59 +307,76 @@
 			((MouseClaimed fenrus event shiftDown)
 				(HighPrint 30 29)
 				;There is a strange figure on a shelf above the stairs.  It looks like an overgrown rat wearing a wizard's hat.
-				)
+			)
 			((MouseClaimed onTapestry event shiftDown)
 				(HighPrint 30 30) ;EO: "It's" is used where "Its" should be
 				;An adumbrated wall hanging.  It's design evokes thoughts of ancient times and battles past.
-				)
+			)
 			(128
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '[<around,at][/room,house,foyer,!*]') (LookRoom))
-							((or (Said '/east') (Said '/wall<east')) (LookEastWall))
-							((or (Said '/west') (Said '/wall<west')) (LookWestWall))
-							((or (Said '/north') (Said '/wall<north')) (LookNorthWall))
-							((or (Said '/south') (Said '/wall<south')) (LookSouthWall))
+							((Said '[<around,at][/room,house,foyer,!*]')
+								(LookRoom)
+							)
+							((or (Said '/east') (Said '/wall<east'))
+								(LookEastWall)
+							)
+							((or (Said '/west') (Said '/wall<west'))
+								(LookWestWall)
+							)
+							((or (Said '/north') (Said '/wall<north'))
+								(LookNorthWall)
+							)
+							((or (Said '/south') (Said '/wall<south'))
+								(LookSouthWall)
+							)
 							((Said '/wall')
 								(switch (ego loop?)
-									(loopE (LookEastWall))
-									(loopW (LookWestWall))
-									(loopS (LookSouthWall))
-									(loopN (LookNorthWall))
+									(loopE
+										(LookEastWall)
+									)
+									(loopW
+										(LookWestWall)
+									)
+									(loopS
+										(LookSouthWall)
+									)
+									(loopN
+										(LookNorthWall)
+									)
 								)
 							)
 							((Said '/chair')
 								(HighPrint 30 31)
 								;There are two finely crafted chairs, one larger than the other.
-								)
+							)
 							((Said '/trunk,box')
 								(HighPrint 30 32)
 								;Beneath the "Dunking Dragon" is an old steamer trunk.
-								)
+							)
 							((Said '/door')
 								(HighPrint 30 33)
 								;The only actual door visible is the door leading back outside.
 								(LookEastRoom)
 								(LookWestRoom)
-								)
+							)
 							((Said '/ladder,staircase')
 								(HighPrint 30 34)
 								;The staircase connects the upstairs to the downstairs.
-								)
+							)
 							((Said '/tapestry,hang')
 								(HighPrint 30 35)
 								;The pattern is obscured by age.
-								)
-							(
-							(or (Said '/ceiling,roof,sconce') (Said '<up'))
-							(HighPrint 30 36)
-							;The high ceiling has ornate sconcing and scrollwork.
+							)
+							((or (Said '/ceiling,roof,sconce') (Said '<up'))
+								(HighPrint 30 36)
+								;The high ceiling has ornate sconcing and scrollwork.
 							)
 							((or (Said '/floor') (Said '<down'))
 								(HighPrint 30 37)
 								;Purple planking?
-								)
+							)
 						)
 					)
 					((Said 'cast>')
@@ -359,18 +385,18 @@
 								(if (CastSpell spell)
 									(HighPrint 30 38)
 									;You detect a strange, magical aura in this place.
-									)
+								)
 							)
 							(DAZZLE
 								(if (CastSpell spell)
 									(HighPrint 30 39)
 									;There's nothing here to dazzle.
-									)
+								)
 							)
 							(FLAMEDART
 								(if (CastSpell spell)
 									(if warned
-										(= warpOut TRUE)
+										(= warpCued TRUE)
 									else
 										(dragon setScript: warning)
 									)
@@ -379,7 +405,7 @@
 							(OPEN
 								(if (CastSpell spell)
 									(if warned
-										(= warpOut TRUE)
+										(= warpCued TRUE)
 									else
 										(dragon setScript: warning)
 									)
@@ -393,7 +419,7 @@
 							(Said 'sat,get,throw,grab')
 						)
 						(if warned
-							(= warpOut TRUE)
+							(= warpCued TRUE)
 						else
 							(dragon setScript: warning)
 						)
@@ -401,7 +427,8 @@
 					((or (Said 'nap[/!*]') (Said 'go[<to]/nap'))
 						(HighPrint 30 40)
 						;The wizard does not run an inn.
-						(= warpOut TRUE))
+						(= warpCued TRUE)
+					)
 				)
 			)
 		)
@@ -409,8 +436,6 @@
 )
 
 (instance showFeathers of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (peacock setCycle: EndLoop self))
@@ -422,8 +447,6 @@
 )
 
 (instance dunker of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 5))
@@ -440,8 +463,6 @@
 )
 
 (instance lightBulb of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -458,15 +479,15 @@
 )
 
 (instance intro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego posn: 160 189 setMotion: MoveTo 160 184 self)
 			)
 			(1
-				(if (not (Btst VISITED_ERASMUS_INSIDE)) (LookRoom))
+				(if (not (Btst fBeenIn30))
+					(LookRoom)
+				)
 				(ego setScript: 0)
 			)
 		)
@@ -474,8 +495,6 @@
 )
 
 (instance intoTheTower of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -499,14 +518,14 @@
 				(theWiz setCycle: EndLoop)
 				(= seconds 3)
 			)
-			(6 (curRoom newRoom: 31))
+			(6
+				(curRoom newRoom: 31)
+			)
 		)
 	)
 )
 
 (instance warning of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -526,8 +545,6 @@
 )
 
 (instance teleportOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -572,12 +589,14 @@
 				(= seconds 4)
 			)
 			(4
-				(Bset ERASMUS_WARPOUT)
+				(Bset fErasmusWarpOut)
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 16)
+				(curRoom drawPic: 400 (| BLACKOUT IRISOUT))
 				(self cue:)
 			)
-			(5 (curRoom newRoom: 28))
+			(5
+				(curRoom newRoom: 28)
+			)
 		)
 	)
 )

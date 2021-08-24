@@ -2,7 +2,8 @@
 (script# 54)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastDazz)
 (use Door)
@@ -25,8 +26,8 @@
 )
 
 (local
-	local0
-	local1
+	introCued
+	ringCued
 	local2
 	local3
 	castingFetch
@@ -82,7 +83,7 @@
 ;;;			callk    Said,  2
 ;;;			bnt      code_01be
 ;;;			pushi    1
-;;;			pushi    OBTAINED_RING
+;;;			pushi    fGotRing
 ;;;			callb    Btst,  2
 ;;;			not     
 ;;;			bnt      code_01b3
@@ -91,7 +92,7 @@
 ;;;			eq?     
 ;;;			bnt      code_01a2
 ;;;			pushi    1
-;;;			pushi    CLIMBED_HEALER_TREE
+;;;			pushi    fClimbedTree
 ;;;			callb    Btst,  2
 ;;;			not     
 ;;;			bnt      code_01a2
@@ -123,7 +124,7 @@
 ;;;			callk    Said,  2
 ;;;			bnt      code_01e8
 ;;;			pushi    1
-;;;			pushi    LOOKED_IN_PTERESA_NEST
+;;;			pushi    fLookedInNest
 ;;;			callb    Btst,  2
 ;;;			bnt      code_01dd
 ;;;			pushi    2
@@ -157,7 +158,7 @@
 ;;;			jmp      code_0303
 ;;;code_020b:
 ;;;			pushi    1
-;;;			pushi    OBTAINED_RING
+;;;			pushi    fGotRing
 ;;;			callb    Btst,  2
 ;;;			bnt      code_021c
 ;;;			pushi    0
@@ -169,7 +170,7 @@
 ;;;			eq?     
 ;;;			bnt      code_024e
 ;;;			pushi    1
-;;;			pushi    CLIMBED_HEALER_TREE
+;;;			pushi    fClimbedTree
 ;;;			callb    Btst,  2
 ;;;			not     
 ;;;			bnt      code_023b
@@ -222,7 +223,7 @@
 ;;;			jmp      code_0303
 ;;;code_0285:
 ;;;			pushi    1
-;;;			pushi    LOOKED_IN_PTERESA_NEST
+;;;			pushi    fLookedInNest
 ;;;			callb    Btst,  2
 ;;;			not     
 ;;;			bnt      code_0303
@@ -238,7 +239,7 @@
 ;;;			callk    Said,  2
 ;;;			bnt      code_0303
 ;;;			pushi    1
-;;;			pushi    OBTAINED_RING
+;;;			pushi    fGotRing
 ;;;			callb    Btst,  2
 ;;;			bnt      code_02b7
 ;;;			pushi    0
@@ -294,19 +295,19 @@
 	(method (handleEvent event)
 		(cond 
 			((Said 'look/glimmer,reflection,chandelier')
-				(if (not (Btst OBTAINED_RING))
-					(if (and (== nestState nestInTree) (not (Btst CLIMBED_HEALER_TREE)))
+				(if (not (Btst fGotRing))
+					(if (and (== nestState nestInTree) (not (Btst fClimbedTree)))
 						(HighPrint 54 0)
 					else
 						(HighPrint 54 1)
-						(Bset LOOKED_IN_PTERESA_NEST)
+						(Bset fLookedInNest)
 					)
 				else
 					(event claimed: FALSE)
 				)
 			)
 			((Said 'look/ring')
-				(if (Btst LOOKED_IN_PTERESA_NEST)
+				(if (Btst fLookedInNest)
 					(HighPrint 54 2)
 				else
 					(event claimed: FALSE)
@@ -314,10 +315,14 @@
 			)
 			((Said 'get/ring')
 				(cond 
-					((ego pickUp: iRing) (HighPrint 54 3))
-					((Btst 210) (AlreadyDone))
+					((ego pickUp: iRing)
+						(HighPrint 54 3)
+					)
+					((Btst fGotRing)
+						(AlreadyDone)
+					)
 					((== nestState nestInTree)
-						(if (not (Btst CLIMBED_HEALER_TREE))
+						(if (not (Btst fClimbedTree))
 							(HighPrint 54 4)
 						else
 							(ego setScript: (ScriptID 237 0))
@@ -332,7 +337,7 @@
 							(== (ego onControl: origin) cLMAGENTA)
 							(== (ego onControl: origin) cYELLOW)
 						)
-						(if (not (Btst LOOKED_IN_PTERESA_NEST))
+						(if (not (Btst fLookedInNest))
 							(HighPrint 54 6)
 						)
 					)
@@ -340,15 +345,19 @@
 			)
 			((Said 'climb/branch')
 				(cond 
-					((Btst OBTAINED_RING) (AlreadyDone))
+					((Btst fGotRing)
+						(AlreadyDone)
+					)
 					((== nestState nestInTree)
-						(if (not (Btst CLIMBED_HEALER_TREE))
+						(if (not (Btst fClimbedTree))
 							(HighPrint 54 7)
 						else
 							(ego setScript: (ScriptID 237 0))
 						)
 					)
-					((or (== nestState nestBurnt) (== nestState nestOnGround)) (HighPrint 54 8))
+					((or (== nestState nestBurnt) (== nestState nestOnGround))
+						(HighPrint 54 8)
+					)
 				)
 			)
 		)
@@ -390,7 +399,9 @@
 				)
 				(HighPrint 54 9)
 			)
-			((Said 'eat,get,kill,fight,chop,beat/bird') (HighPrint 54 10))
+			((Said 'eat,get,kill,fight,chop,beat/bird')
+				(HighPrint 54 10)
+			)
 		)
 	)
 )
@@ -410,26 +421,33 @@
 					(MouseClaimed nest event shiftDown)
 				)
 				(cond 
-					((not (Btst PTERESA_LEFT_NEST)) (HighPrint 54 11) (HighPrint 54 12))
+					((not (Btst fNestAbandoned))
+						(HighPrint 54 11)
+						(HighPrint 54 12)
+					)
 					((== nestState nestInTree)
 						(HighPrint 54 13)
-						(if (Btst CLIMBED_HEALER_TREE)
-							(if (not (Btst OBTAINED_RING))
+						(if (Btst fClimbedTree)
+							(if (not (Btst fGotRing))
 								(HighPrint 54 14)
-								(Bset LOOKED_IN_PTERESA_NEST)
+								(Bset fLookedInNest)
 							else
 								(HighPrint 54 15)
 							)
 						)
 					)
-					((== nestState nestOnGround) (HighPrint 54 16))
-					((== nestState nestBurnt) (HighPrint 54 17))
+					((== nestState nestOnGround)
+						(HighPrint 54 16)
+					)
+					((== nestState nestBurnt)
+						(HighPrint 54 17)
+					)
 				)
 			)
 			((Said 'get/nest')
 				(switch nestState
 					(nestInTree
-						(if (Btst CLIMBED_HEALER_TREE)
+						(if (Btst fClimbedTree)
 							(HighPrint 54 18)
 						else
 							(HighPrint 54 19)
@@ -447,9 +465,7 @@
 	)
 )
 
-(instance whoosh of Sound
-	(properties)
-)
+(instance whoosh of Sound)
 
 (instance rm54 of Room
 	(properties
@@ -471,8 +487,10 @@
 		(HandsOn)
 		(addToPics add: healerSign eachElementDo: #init doit:)
 		(healerDoor setPri: 8 init: stopUpd:)
-		(if (not (Btst OBTAINED_RING)) (ring init: setPri: 15))
-		(if (not (Btst FLAG_211))
+		(if (not (Btst fGotRing))
+			(ring init: setPri: 15)
+		)
+		(if (not (Btst fFlag211))
 			(if (== nestState nestInTree)
 				(nest
 					illegalBits: 0
@@ -485,7 +503,7 @@
 			else
 				(nest init: hide: stopUpd:)
 			)
-			(if (not (Btst PTERESA_LEFT_NEST))
+			(if (not (Btst fNestAbandoned))
 				(bird
 					ignoreActors:
 					init:
@@ -498,8 +516,8 @@
 		(switch prevRoomNum
 			(37
 				(ego setLoop: 2 setPri: 4 posn: 130 100)
-				(= local0 1)
-				(Bset VISITED_HEALERHUT_OUTSIDE)
+				(= introCued TRUE)
+				(Bset fBeenIn54)
 			)
 			(53
 				(ego posn: 10 135 setMotion: MoveTo 72 135)
@@ -519,27 +537,35 @@
 	(method (doit)
 		(super doit:)
 		(cond 
-			(local0 (= local0 0) (ego setScript: (ScriptID 235 0)))
-			((not (Btst VISITED_HEALERHUT_OUTSIDE)) (Bset VISITED_HEALERHUT_OUTSIDE) (curRoom setScript: (ScriptID 235 1)))
+			(introCued
+				(= introCued FALSE)
+				(ego setScript: (ScriptID 235 0))
+			)
+			((not (Btst fBeenIn54))
+				(Bset fBeenIn54)
+				(curRoom setScript: (ScriptID 235 1))
+			)
 		)
 		(cond 
 			(
 				(and
-					(not local1)
+					(not ringCued)
 					(!= nestState nestOnGround)
-					(not (Btst OBTAINED_RING))
+					(not (Btst fGotRing))
 					(== (ego onControl: origin) cYELLOW)
 				)
-				(= local1 1)
+				(= ringCued TRUE)
 				(ring cel: 0 setCycle: EndLoop)
 			)
-			((and local1 (!= (ego onControl: origin) cYELLOW)) (= local1 0))
+			((and ringCued (!= (ego onControl: origin) cYELLOW))
+				(= ringCued FALSE)
+			)
 		)
 		(if
 			(and
 				(== nestState nestBurnt)
-				(not (Btst OBTAINED_RING))
-				(not (Btst FLAG_211))
+				(not (Btst fGotRing))
+				(not (Btst fFlag211))
 				(not local5)
 				(or
 					(== (ego onControl: origin) cLMAGENTA)
@@ -552,7 +578,7 @@
 		(if
 			(and
 				(<= (ego y?) 87)
-				(not (Btst FLAG_277))
+				(not (Btst fFlag277))
 				(not (ego script?))
 			)
 			(HandsOff)
@@ -724,7 +750,7 @@
 ;;;code_0a0d:
 ;;;			pushi    1
 ;;;			pushi    0
-;;;			calle    FlameCast,  2
+;;;			calle    CastDart,  2
 ;;;			jmp      code_0a83
 ;;;code_0a16:
 ;;;			dup     
@@ -1021,7 +1047,7 @@
 ;;;			callb    HighPrint,  4
 ;;;			pushi    1
 ;;;			pushi    0
-;;;			calle    RockCast,  2
+;;;			calle    ThrowRock,  2
 ;;;			jmp      code_0f9e
 ;;;;EO: code_0c43 would not decompile
 ;;;;code_0c43:
@@ -1469,7 +1495,10 @@
 			(saidEvent
 				(cond 
 					((super handleEvent: event))
-					((and (Btst CLIMBED_HEALER_TREE) (Said 'throw,run,walk,sneak')) (TimePrint 4 54 22) (ego setScript: treeFall))
+					((and (Btst fClimbedTree) (Said 'throw,run,walk,sneak'))
+						(TimePrint 4 54 22)
+						(ego setScript: treeFall)
+					)
 					(
 						(or
 							(Said 'wear/ring')
@@ -1483,7 +1512,7 @@
 						)
 					)
 					((Said 'cast>')
-						(if (Btst CLIMBED_HEALER_TREE)
+						(if (Btst fClimbedTree)
 							(HighPrint 54 24)
 							(ego setScript: treeFall)
 							(event claimed: TRUE)
@@ -1493,17 +1522,25 @@
 								(switch spell
 									(DAZZLE
 										(CastDazz ego)
-										(if (not (Btst 212)) (bird setScript: flyAway))
+										(if (not (Btst fNestAbandoned))
+											(bird setScript: flyAway)
+										)
 									)
 									(FLAMEDART
 										(cond 
-											((== nestState nestInTree) (ego setScript: nestBurn))
-											((ego inRect: 182 0 319 106) (HighPrint 54 25))
-											(else (FlameCast 0))
+											((== nestState nestInTree)
+												(ego setScript: nestBurn)
+											)
+											((ego inRect: 182 0 319 106)
+												(HighPrint 54 25)
+											)
+											(else
+												(CastDart 0)
+											)
 										)
 									)
 									(FETCH
-										(if (and (== nestState nestInTree) (not (Btst OBTAINED_RING)))
+										(if (and (== nestState nestInTree) (not (Btst fGotRing)))
 											(if
 												(or
 													(== (ego onControl: origin) cLMAGENTA)
@@ -1518,7 +1555,9 @@
 											(HighPrint 54 27)
 										)
 									)
-									(else  (event claimed: FALSE))
+									(else
+										(event claimed: FALSE)
+									)
 								)
 							)
 						)
@@ -1540,9 +1579,13 @@
 					)
 					((Said 'knock[/door]')
 						(cond 
-							((not (== (ego onControl: origin) cLRED)) (NotClose))
-							(Night (HighPrint 54 32))
-							((Btst STOLE_HEALER_POTIONS)
+							((not (== (ego onControl: origin) cLRED))
+								(NotClose)
+							)
+							(Night
+								(HighPrint 54 32)
+							)
+							((Btst fStolePotions)
 								(if (!= prevRoomNum 55)
 									(HighPrint 54 33)
 									(HighPrint 54 34)
@@ -1565,7 +1608,7 @@
 								(ego setPri: 9)
 								(healerDoor
 									facingLoop: (if (== (ego loop?) 3) 3 else 0)
-									locked: 0
+									locked: FALSE
 								)
 							)
 						)
@@ -1586,9 +1629,9 @@
 									)
 									(if (== nestState nestInTree)
 									 	(ego setScript: throwIt)
-									 	else
+									 else
 										(HighPrint 54 38)
-										(RockCast 0)
+										(ThrowRock 0)
 									 )
 								)
 								(else
@@ -1602,7 +1645,9 @@
 						(cond 
 							((or (Said '/tree,oak') (Said '<up'))
 								(cond 
-									((ego inRect: 0 103 78 147) (HighPrint 54 41))
+									((ego inRect: 0 103 78 147)
+										(HighPrint 54 41)
+									)
 									((ego inRect: 0 167 112 189)
 										(if (TrySkill CLIMB 30 0)
 											(ego setScript: (ScriptID 236 0))
@@ -1610,44 +1655,82 @@
 											(ego setScript: (ScriptID 236 1))
 										)
 									)
-									((Btst CLIMBED_HEALER_TREE) (HighPrint 54 42))
-									(else (NotClose))
+									((Btst fClimbedTree)
+										(HighPrint 54 42)
+									)
+									(else
+										(NotClose)
+									)
 								)
 							)
 							((Said '<down')
-								(if (Btst CLIMBED_HEALER_TREE)
+								(if (Btst fClimbedTree)
 									(ego setScript: (ScriptID 237 1))
 								else
 									(HighPrint 54 43)
 								)
 							)
-							((Said '/branch') (HighPrint 54 8))
-							((Said '[/!*]') (HighPrint 54 44))
-							(else (HighPrint 54 45) (event claimed: TRUE))
+							((Said '/branch')
+								(HighPrint 54 8)
+							)
+							((Said '[/!*]')
+								(HighPrint 54 44)
+							)
+							(else
+								(HighPrint 54 45)
+								(event claimed: TRUE)
+							)
 						)
 					)
-					((Said 'grab,get,lockpick/herb,flower,plant') (HighPrint 54 46))
+					((Said 'grab,get,lockpick/herb,flower,plant')
+						(HighPrint 54 46)
+					)
 					((Said 'get>')
 						(cond 
-							((Said '/boulder') (ego setScript: (ScriptID 103 0)))
-							((Said '/bird,lizard,creature') (HighPrint 54 47))
-							((Said '/nest') (HighPrint 54 47))
+							((Said '/boulder')
+								(ego setScript: (ScriptID 103 0))
+							)
+							((Said '/bird,lizard,creature')
+								(HighPrint 54 47)
+							)
+							((Said '/nest')
+								(HighPrint 54 47)
+							)
 						)
 					)
 					((Said 'look>')
 						(cond 
-							((Said '/bird,creature,lizard') (HighPrint 54 47))
-							((Said '/nest') (HighPrint 54 48))
-							((Said '[<at,around][/road]') (HighPrint 54 49) (HighPrint 54 50))
-							((Said '/house,hut') (HighPrint 54 51))
-							((Said '/sign') (HighPrint 54 52))
+							((Said '/bird,creature,lizard')
+								(HighPrint 54 47)
+							)
+							((Said '/nest')
+								(HighPrint 54 48)
+							)
+							((Said '[<at,around][/road]')
+								(HighPrint 54 49)
+								(HighPrint 54 50)
+							)
+							((Said '/house,hut')
+								(HighPrint 54 51)
+							)
+							((Said '/sign')
+								(HighPrint 54 52)
+							)
 							((Said '/tree,oak')
 								(HighPrint 54 53)
-								(if (== nestState nestInTree) (HighPrint 54 54))
+								(if (== nestState nestInTree)
+									(HighPrint 54 54)
+								)
 							)
-							((Said 'branch') (HighPrint 54 55))
-							((Said '/roof') (HighPrint 54 56))
-							((Said '/garden,flower,plant,herb') (HighPrint 54 57))
+							((Said 'branch')
+								(HighPrint 54 55)
+							)
+							((Said '/roof')
+								(HighPrint 54 56)
+							)
+							((Said '/garden,flower,plant,herb')
+								(HighPrint 54 57)
+							)
 							((Said '/window,bottle,pan,curtain')
 								(if
 									(or
@@ -1663,10 +1746,18 @@
 									(NotClose)
 								)
 							)
-							((Said '/east,forest') (HighPrint 54 60))
-							((Said '/west,field') (HighPrint 54 61))
-							((Said '/north,castle') (HighPrint 54 62))
-							((Said '/south,crossroad') (HighPrint 54 63))
+							((Said '/east,forest')
+								(HighPrint 54 60)
+							)
+							((Said '/west,field')
+								(HighPrint 54 61)
+							)
+							((Said '/north,castle')
+								(HighPrint 54 62)
+							)
+							((Said '/south,crossroad')
+								(HighPrint 54 63)
+							)
 						)
 					)
 				)
@@ -1676,8 +1767,6 @@
 )
 
 (instance overTheHill of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1695,8 +1784,6 @@
 )
 
 (instance flyAway of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1712,19 +1799,22 @@
 					setMotion: MoveTo 31 77 self
 				)
 			)
-			(3 (Bset PTERESA_LEFT_NEST) (bird dispose:))
+			(3
+				(Bset fNestAbandoned)
+				(bird dispose:)
+			)
 		)
 	)
 )
 
 (instance nestBurn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: flyAway))
+				(if (not (Btst fNestAbandoned))
+					(bird setScript: flyAway)
+				)
 				(ego
 					view: vEgoMagicFlameDart
 					setLoop: (if (< (ego x?) 73) 0 else 1)
@@ -1766,8 +1856,6 @@
 )
 
 (instance burnUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1797,7 +1885,7 @@
 			)
 			(4 (nest setCycle: EndLoop self))
 			(5
-				(if (Btst OBTAINED_RING)
+				(if (Btst fGotRing)
 					(HandsOn)
 					(nest hide: setScript: 0)
 					(ring hide:)
@@ -1822,8 +1910,6 @@
 )
 
 (instance throwIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1845,7 +1931,7 @@
 				else
 					(ego setCycle: CycleTo 4 1 self)
 				)
-				(if (not (Btst PTERESA_LEFT_NEST)) (bird setScript: flyAway))
+				(if (not (Btst fNestAbandoned)) (bird setScript: flyAway))
 			)
 			(3
 				(if castingFetch
@@ -1891,14 +1977,12 @@
 )
 
 (instance pickItUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(if local5
 					(HandsOff)
-					(if (not (Btst OBTAINED_RING))
+					(if (not (Btst fGotRing))
 						(HighPrint 54 64)
 						;You see the glinting object in the remains of the nest.
 					else
@@ -1928,10 +2012,11 @@
 				(= cycles 8)
 			)
 			(3
-				(if (not (Btst OBTAINED_RING))
+				(if (not (Btst fGotRing))
 					(HighPrint 54 66)
 					;You pick up a shiny gold ring.
-					(ring hide:))
+					(ring hide:)
+				)
 				(if (== (nest loop?) 7)
 					(nest setCel: 1)
 				else
@@ -1948,10 +2033,10 @@
 			)
 			(5
 				(ego illegalBits: cWHITE)
-				(if (not (Btst OBTAINED_RING))
+				(if (not (Btst fGotRing))
 					(ego get: iRing)
-					(Bset OBTAINED_RING)
-					(SolvePuzzle POINTS_GETGOLDRING 3)
+					(Bset fGotRing)
+					(SolvePuzzle f54GetRing 3)
 				)
 				(HandsOn)
 				(client setScript: 0)
@@ -1961,8 +2046,6 @@
 )
 
 (instance lassoNest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1987,7 +2070,7 @@
 				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(if (Btst OBTAINED_RING)
+				(if (Btst fGotRing)
 					(HighPrint 54 67)
 					;You place the nest on the ground. It is of no use to you.
 				else
@@ -1995,26 +2078,26 @@
 					;You take a lovely gold ring from the nest.
 					(HighPrint 54 69)
 					;You place the ring into your pack and the nest on the ground.
-					(Bset OBTAINED_RING)
+					(Bset fGotRing)
 					(ego get: iRing)
 					(ring hide:)
-					(SolvePuzzle POINTS_GETGOLDRING 3)
+					(SolvePuzzle f54GetRing 3)
 				)
 				(ego loop: 1)
-				(= nestState 1)
+				(= nestState nestOnGround)
 				(nest setLoop: 7 setCel: 0 posn: 242 163 setPri: -1 show:)
 				(NormalEgo)
 				(HandsOn)
 				(= cycles 2)
 			)
-			(5 (magicLasso dispose:))
+			(5
+				(magicLasso dispose:)
+			)
 		)
 	)
 )
 
 (instance nestDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -2045,7 +2128,7 @@
 				(= seconds 1)
 			)
 			(3
-				(if (Btst OBTAINED_RING)
+				(if (Btst fGotRing)
 					(self cue:)
 				else
 					(ring
@@ -2056,7 +2139,7 @@
 				)
 			)
 			(4
-				(if (not (Btst OBTAINED_RING))
+				(if (not (Btst fGotRing))
 					(HighPrint 54 64)
 					;You see the glinting object in the remains of the nest.
 					(ego setScript: pickItUp)
@@ -2073,8 +2156,6 @@
 )
 
 (instance treeFall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -2113,23 +2194,23 @@
 						(0
 							(HighPrint 54 72)
 							;Experience is the best teacher.
-							)
+						)
 						(1
 							(HighPrint 54 73)
 							;Practice makes perfect.
-							)
+						)
 						(2
 							(HighPrint 54 74)
 							;Try, try again etc...
-							)
+						)
 						(3
 							(HighPrint 54 75)
 							;Take a break.  It's Mueller time.
-							)
+						)
 						(else
 							(HighPrint 54 76)
 							;Remember what happened to Humpty Dumpty.
-							)
+						)
 					)
 					(++ fallOffTree)
 					(self cue:)
@@ -2139,11 +2220,12 @@
 				(ego cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(3
-				(if (not outOnALimb) (= outOnALimb TRUE)
+				(if (not outOnALimb)
+					(= outOnALimb TRUE)
 					(HighPrint 54 77)
 					;That's what happens sometimes when you go out on a limb.
-					)
-				(Bclr CLIMBED_HEALER_TREE)
+				)
+				(Bclr fClimbedTree)
 				(NormalEgo)
 				(HandsOn)
 				(client setScript: 0)
@@ -2153,8 +2235,6 @@
 )
 
 (instance flutter of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 5 25)))
@@ -2169,8 +2249,6 @@
 )
 
 (instance outOfHouse of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

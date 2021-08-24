@@ -13,18 +13,19 @@
 )
 
 (local
-	farmerStopped
-	gotFarmerAttention
-	facingFarmer
-	local3
+	centaurWatchesEgo
+	centaurStandsStill
+	alerted
+	approached
 	local4
 	local5
 	local6
-	chatWithFarmer
+	talkRet
 )
 (procedure (localproc_000c param1)
 	(if (!= local4 param1)
-		(= local4 param1)		(head cel: param1 forceUpd:)
+		(= local4 param1)
+		(head cel: param1 forceUpd:)
 	)
 )
 
@@ -32,7 +33,7 @@
 	(properties
 		view vFarmerTalking
 		loop 2
-		cycleType 1
+		cycleType ExtraEndLoop
 		minPause 40
 		maxPause 90
 		minCycles 1
@@ -64,10 +65,10 @@
 					((Said 'look>')
 						(cond 
 							((Said '/centaur,farmer')
-								(if farmerStopped
+								(if centaurWatchesEgo
 									(HighPrint 53 3)
 									;The majestic Centaur watches you carefully.
-									else
+								else
 									(HighPrint 53 4)
 									;The handsome Centaur has a look of pride and dignity as he rakes his field.
 								)
@@ -87,9 +88,9 @@
 						)
 					)
 					((Said 'buy,get/apple,carrot,produce')
-						(if (not farmerStopped)
+						(if (not centaurWatchesEgo)
 							(centaur setScript: standStill)
-							(= gotFarmerAttention TRUE)
+							(= centaurStandsStill TRUE)
 							(event claimed: TRUE)
 						else
 							(HighPrint 53 8)
@@ -97,9 +98,9 @@
 						)
 					)
 					((Said 'chat/man,horse,centaur')
-						(if (not farmerStopped)
+						(if (not centaurWatchesEgo)
 							(centaur setScript: standStill)
-							(= gotFarmerAttention TRUE)
+							(= centaurStandsStill TRUE)
 							(event claimed: TRUE)
 						else
 							(HighPrint 53 9)
@@ -107,21 +108,18 @@
 						)
 					)
 					((Said 'ask>')
-						(if (not farmerStopped)
+						(if (not centaurWatchesEgo)
 							(centaur setScript: standStill)
-							(= gotFarmerAttention TRUE)
+							(= centaurStandsStill TRUE)
 							(event claimed: TRUE)
 						else
-							(= chatWithFarmer TRUE)
+							(= talkRet TRUE)
 							(cond 
 								((Said '//farmer,name,heinrich')
 									(HighPrint 53 10)
 									;"I am Heinrich Pferdefedern.  I live in town with my daughter Hilde, who sells our produce on Market Street."
 								)
-								(
-									(Said
-										'//elsa,baron,barnard,(barnard,daughter[<baron,about])'
-									)
+								((Said '//elsa,baron,barnard,(barnard,daughter[<baron,about])')
 									(HighPrint 53 11)
 									;I'm sorry.  I know little about the Baron and his family.
 								)
@@ -160,7 +158,7 @@
 									;"If it had not been for the unlikely intervention of their leader, I would be dead."
 								)
 								((Said '//leader,intervention,death')
-									(SolvePuzzle POINTS_TALKTOFARMERABOUTLEADER 3)
+									(SolvePuzzle f53AskAboutLeader 3)
 									(HighPrint 53 20)
 									;"The leader came up while the brigands attacked me and forced them to stop, ordering them not to hurt people from the town."
 									(HighPrint 53 21)
@@ -192,13 +190,14 @@
 									;We grow fine fruit in our little orchard, and sell it at our stand in town.
 									;There you will find fresh cherries in the spring, peaches in summer, and apples in the fall."
 								)
-								(else (= chatWithFarmer 0) (event claimed: 1)
+								(else (= talkRet FALSE)
+									(event claimed: TRUE)
 									(HighPrint 53 28)
 									;"I'm afraid I can't tell you much about that."
 								)
 							)
-							(if (and chatWithFarmer (event claimed?))
-								(SolvePuzzle POINTS_TALKTOFARMER 1)
+							(if (and talkRet (event claimed?))
+								(SolvePuzzle f53TalkToHeinrich 1)
 							)
 						)
 					)
@@ -239,28 +238,28 @@
 		)
 		(= style
 			(switch prevRoomNum
-				(52 3)
-				(54 2)
-				(36 5)
-				(else  13)
+				(52 WIPERIGHT)
+				(54 WIPELEFT)
+				(36 WIPEDOWN)
+				(else  (| BLACKOUT WIPEUP))
 			)
 		)
 		(super init:)
 		(cSound fade:)
 		(StatusLine enable:)
-		(if (Btst FARMER_IS_EAST)
-			(Bclr FARMER_IS_EAST)
+		(if (Btst fFarmerIsEast)
+			(Bclr fFarmerIsEast)
 		else
-			(Bset FARMER_IS_EAST)
+			(Bset fFarmerIsEast)
 		)
 		(if (not Night)
-			(if (Btst FARMER_IS_EAST)
+			(if (Btst fFarmerIsEast)
 				(centaur posn: 250 135)
 			else
 				(centaur posn: 120 135)
 			)
 			(centaur illegalBits: 0 init: setStep: 1 2 setCycle: Walk)
-			(if (Btst FARMER_IS_EAST)
+			(if (Btst fFarmerIsEast)
 				(centaur setMotion: MoveTo 120 135)
 			else
 				(centaur setMotion: MoveTo 250 135)
@@ -288,28 +287,34 @@
 	
 	(method (doit)
 		(cond 
-			((and (not local6) (< (ego y?) 134)) (= local6 1) (ego setPri: 8))
-			((and local6 (>= (ego y?) 134)) (= local6 0) (ego setPri: -1))
+			((and (not local6) (< (ego y?) 134))
+				(= local6 1)
+				(ego setPri: 8)
+			)
+			((and local6 (>= (ego y?) 134))
+				(= local6 0)
+				(ego setPri: -1)
+			)
 		)
 		(if
 			(or
 				(and
 					(> (centaur x?) 249)
-					(not (Btst FARMER_IS_EAST))
-					(not farmerStopped)
+					(not (Btst fFarmerIsEast))
+					(not centaurWatchesEgo)
 					(not Night)
 				)
 				(and
 					(< (centaur x?) 121)
-					(Btst FARMER_IS_EAST)
-					(not farmerStopped)
+					(Btst fFarmerIsEast)
+					(not centaurWatchesEgo)
 					(not Night)
 				)
 				(and
 					(< (ego distanceTo: centaur) 50)
 					(< 130 (ego y?))
 					(< (ego y?) 150)
-					(not farmerStopped)
+					(not centaurWatchesEgo)
 					(not Night)
 				)
 			)
@@ -319,7 +324,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FARM)
+		(Bset fBeenIn53)
 		(super dispose:)
 	)
 	
@@ -363,52 +368,52 @@
 									(Said '[<down][/ground]')
 								)
 								(cond 
-									(farmerStopped
+									(centaurWatchesEgo
 										(HighPrint 53 34)
 										;The field is hoed and fertilized.
-										)
+									)
 									(Night
 										(HighPrint 53 35)
 										;The garden's dark dirt awaits a new day's sunshine.
-										)
+									)
 									(else
 										(HighPrint 53 36)
 										;You see a nicely manicured field.  A Centaur rakes the rows.
-										)
+									)
 								)
 							)
 							((Said '/boulder')
 								(HighPrint 53 1)
 								;The farmer has painstakingly removed all the rocks from his fields.
-								)
+							)
 							((Said '/tree,orchard,apple')
 								(HighPrint 53 37)
 								;The trees have tiny fruit forming.
-								)
+							)
 							((Said '/forest,birch')
 								(HighPrint 53 38)
 								;The forest surrounds the farmer's small fields and orchard.
-								)
+							)
 							((Said '/plant,grass')
 								(HighPrint 53 39)
 								;The crops have yet to be planted.  There are only a few weeds and some grasses at edge of the forest.
-								)
+							)
 							((Said '/wall,south')
 								(HighPrint 53 40)
 								;You can see the roofs of Spielburg beyond the town wall.
-								)
+							)
 							((Said '/east')
 								(HighPrint 53 41)
 								;You can see a small house.
-								)
+							)
 							((Said '/west')
 								(HighPrint 53 42)
 								;You see the forest.
-								)
+							)
 							((Said '/north')
 								(HighPrint 53 43)
 								;Beyond the farmer's orchard, you see the forest.
-								)
+							)
 						)
 					)
 				)
@@ -418,8 +423,6 @@
 )
 
 (instance standStill of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			((<= (ego x?) (- (centaur x?) 50)) (localproc_000c 0))
@@ -435,7 +438,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= farmerStopped TRUE)
+				(= centaurWatchesEgo TRUE)
 				(if (< (centaur cel?) 4)
 					(centaur setCycle: EndLoop self)
 				else
@@ -445,7 +448,7 @@
 			(1
 				(centaur
 					view: vFarmerTalking
-					setLoop: (if (Btst FARMER_IS_EAST) 1 else 0)
+					setLoop: (if (Btst fFarmerIsEast) 1 else 0)
 					cel: 0
 					setMotion: 0
 					setCycle: EndLoop self
@@ -454,13 +457,13 @@
 			(2
 				(centaur
 					setLoop: 4
-					setCel: (if (Btst FARMER_IS_EAST) 1 else 0)
+					setCel: (if (Btst fFarmerIsEast) 1 else 0)
 					stopUpd:
 				)
 				(tail
-					setLoop: (if (Btst FARMER_IS_EAST) 3 else 2)
+					setLoop: (if (Btst fFarmerIsEast) 3 else 2)
 					posn:
-						(if (Btst FARMER_IS_EAST)
+						(if (Btst fFarmerIsEast)
 							(+ (centaur x?) 14)
 						else
 							(- (centaur x?) 16)
@@ -470,7 +473,7 @@
 				)
 				(head
 					posn:
-						(if (Btst FARMER_IS_EAST)
+						(if (Btst fFarmerIsEast)
 							(- (centaur x?) 8)
 						else
 							(+ (centaur x?) 5)
@@ -482,9 +485,9 @@
 			)
 			(3
 				(cond 
-					(gotFarmerAttention
-						(if (not facingFarmer)
-							(= facingFarmer TRUE)
+					(centaurStandsStill
+						(if (not alerted)
+							(= alerted TRUE)
 							(HighPrint 53 44)
 							;Noticing that you are addressing him, the Centaur stops and gives you his attention.
 						else
@@ -492,10 +495,11 @@
 							;The Centaur turns toward you.
 						)
 					)
-					((not local3) (= local3 1)
+					((not approached)
+						(= approached TRUE)
 						;The Centaur stops raking as you approach.
 						(HighPrint 53 46)
-						)
+					)
 				)
 				(HandsOn)
 			)

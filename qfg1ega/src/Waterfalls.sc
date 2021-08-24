@@ -2,7 +2,7 @@
 (script# 82)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
+(use CastDart)
 (use CastOpen)
 (use CastDazz)
 (use Intrface)
@@ -34,15 +34,15 @@
 	[waterfallProps 8]
 	[waterfallScripts 8]
 	[rippleActors 4]
-	[xMidDetail 4] = [200 225 219 251]
-	[yMidDetail 4] = [-5 25 55 85]
-	[xLowDetail 2] = [211 232]
-	[yLowDetail 2] = [25 85]
-	[xHighDetail 8] = [200 219 225 251 225 251 200 219]
-	[yHighDetail 8] = [-5 25 55 85 -5 25 55 85]
+	xMidDetail = [200 225 219 251]
+	yMidDetail = [-5 25 55 85]
+	xLowDetail = [211 232]
+	yLowDetail = [25 85]
+	xHighDetail = [200 219 225 251 225 251 200 219]
+	yHighDetail = [-5 25 55 85 -5 25 55 85]
 )
 (procedure (TryGetWater bool)
-	(if (Btst CLIMBED_HENRY_CLIFF)
+	(if (Btst fClimbedHenryCliff)
 		(HighPrint 82 0)
 		;You'll have to climb down to do that.
 	else
@@ -76,43 +76,39 @@
 	)
 )
 
+;EO: These procedures have been cleaned up to work properly.
+;SCICompanion does not seem to properly decompile "for" loops.
 (procedure (SetWaterfallLowDetail &tmp i)
-	(= i 0)
-	(while (< i 2)
+	(for ((= i 0)) (< i 2) ((++ i))
+		(= [waterfallProps i] (Clone waterFalling))
+		(= [waterfallScripts i] (Clone aFallScript))
 		([waterfallProps i]
 			setLoop: 0
 			ignoreActors:
 			x: [xLowDetail i]
-			y: [yLowDetail (= [waterfallScripts i] (Clone aFallScript))]
+			y: [yLowDetail i]
 			init:
 			setPri: 1
 			cycleSpeed: 3
-			setScript:
-				[waterfallScripts (= [waterfallProps i] (Clone waterFalling))]
-				0
-				i
+			setScript: [waterfallScripts i] 0 i
 		)
-		(++ i)
 	)
 )
 
 (procedure (SetWaterfallMidDetail &tmp i)
-	(= i 0)
-	(while (< i 4)
+	(for ((= i 0)) (< i 4) ((++ i))
+		(= [waterfallProps i] (Clone waterFalling))
+		(= [waterfallScripts i] (Clone aFallScript))
 		([waterfallProps i]
 			setLoop: 0
 			ignoreActors:
 			x: [xMidDetail i]
-			y: [yMidDetail (= [waterfallScripts i] (Clone aFallScript))]
+			y: [yMidDetail i]
 			init:
 			setPri: 1
 			cycleSpeed: 3
-			setScript:
-				[waterfallScripts (= [waterfallProps i] (Clone waterFalling))]
-				0
-				i
+			setScript: [waterfallScripts i] 0 i
 		)
-		(++ i)
 	)
 )
 
@@ -124,9 +120,7 @@
 	;
 	;instead of calling the Cloning and assignment first. This caused this room to 
 	;crash immedaitely upon the room's init.
-
-	(= i 0)
-	(while (< i 8)
+	(for ((= i 0)) (< i 8) ((++ i))
 		(= [waterfallProps i] (Clone waterFalling))
 		(= [waterfallScripts i] (Clone aFallScript))
 
@@ -138,9 +132,8 @@
 			init:
 			setPri: 		1
 			cycleSpeed: 	3
-			setScript: 		[waterfallScripts i] NULL i
+			setScript: 		[waterfallScripts i] 0 i
 		)
-		(++ i)
 	)
 )
 
@@ -266,7 +259,9 @@
 		)
 		(LoadMany TEXT 137 138 139)
 		(Load SOUND 72)
-		(if (Btst HENRY_SAFE_TP) (Load VIEW vTeleportGreen))
+		(if (Btst fSafeTP)
+			(Load VIEW vTeleportGreen)
+		)
 		(super init: &rest)
 		(cSound stop:)
 		(splashSound number: 72 init: play:)
@@ -279,22 +274,22 @@
 			init:
 			cycleSpeed:
 			(switch howFast
-				(0 0)
-				(1 1)
+				(slow 0)
+				(medium 1)
 				(else  2)
 			)
 			stopUpd:
 		)
-		(if (> howFast 0)
+		(if (> howFast slow)
 			(spray init: setScript: sprayScript)
 		)
 		(switch howFast
-			(0
+			(slow
 				(SetWaterfallLowDetail)
 				(spray init: stopUpd: addToPic:)
 				(wave init: setCel: 2 stopUpd: addToPic:)
 			)
-			(1
+			(medium
 				(SetWaterfallMidDetail)
 				(wave init: setCel: 2 stopUpd: addToPic:)
 			)
@@ -308,7 +303,7 @@
 		(ego init:)
 		(if (== prevRoomNum 83)
 			(cond 
-				((Btst HENRY_DEADLY_TP)
+				((Btst fDeadlyTP)
 					(ego
 						view: vHenryDoor
 						illegalBits: 0
@@ -320,16 +315,19 @@
 					)
 					(hermitDoor setCel: 0 doorState: 0 stopUpd:)
 				)
-				((Btst HENRY_SAFE_TP)
+				((Btst fSafeTP)
 					(ego posn: 75 155 loop: 2 cel: 1 hide: setScript: safeTP)
 					(hermitDoor setCel: 0 doorState: 0 stopUpd:)
 				)
-				(else (ego posn: 88 50 setMotion: MoveTo 88 57) (Bset CLIMBED_HENRY_CLIFF))
+				(else
+					(ego posn: 88 50 setMotion: MoveTo 88 57)
+					(Bset fClimbedHenryCliff)
+				)
 			)
 		else
 			(ego posn: 0 140 setMotion: MoveTo 35 140)
 		)
-		(if (or (Btst HENRY_DEADLY_TP) (Btst HENRY_SAFE_TP))
+		(if (or (Btst fDeadlyTP) (Btst fSafeTP))
 			(Magic
 				posn: (ego x?) (ego y?)
 				setPri: (+ (ego priority?) 1)
@@ -337,7 +335,9 @@
 				init:
 			)
 		)
-		(if (not (Btst VISITED_FLYINGFALLS)) (self setScript: firstMsg))
+		(if (not (Btst fBeenIn82))
+			(self setScript: firstMsg)
+		)
 	)
 	
 	(method (doit)
@@ -359,20 +359,20 @@
 		)
 		(if
 			(and
-				(Btst CLIMBED_HENRY_CLIFF)
-				(not (Btst FLAG_274))
+				(Btst fClimbedHenryCliff)
+				(not (Btst fEgoFallOffCliff))
 				(== (ego onControl: origin) cLMAGENTA)
 			)
-			(Bclr CLIMBED_HENRY_CLIFF)
-			(Bclr FLAG_276)
+			(Bclr fClimbedHenryCliff)
+			(Bclr fEgoSquashed)
 			(ego setScript: (ScriptID 138 0))
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(Bclr HENRY_DOOR_OPEN)
-		(Bset VISITED_FLYINGFALLS)
+		(Bclr fHenryDoorOpen)
+		(Bset fBeenIn82)
 		(super dispose:)
 	)
 	
@@ -383,45 +383,45 @@
 					((super handleEvent: event))
 					((Said 'look>')
 						(cond 
-							(
-							(Said '[<at,around,up][/area,scenery,cliff,north]')
-							(HighPrint 82 1)
-							;A river plunges for more than a hundred feet down the face of a cliff.
-							;A doorway has been built into the side of the cliff.
+							((Said '[<at,around,up][/area,scenery,cliff,north]')
+								(HighPrint 82 1)
+								;A river plunges for more than a hundred feet down the face of a cliff.
+								;A doorway has been built into the side of the cliff.
 							)
 							((Said '/water,fall,cascade')
 								(HighPrint 82 2)
 								;The water seems to be trying to fly as it leaps from the mountain above.
-								)
+							)
 							((Said '/east')
 								(HighPrint 82 3)
 								;You see slick, vertical cliff walls.
-								)
+							)
 							((Said '/west,tree,forest')
 								(HighPrint 82 4)
 								;You see the forest.
-								)
+							)
 							((Said '/south,river,boulder')
 								(HighPrint 82 5)
 								;The water is white as it splashes against the rocks with great force
 								;and purpose and disappears into a narrow canyon to the south.
-								)
+							)
 							((or (Said '<down') (Said '/ground'))
 								(HighPrint 82 6)
 								;The grass is green with the freshness of new spring.
-								)
+							)
 							((Said '/ledge,shelf')
 								(HighPrint 82 7)
 								;There is a narrow ledge in front of the wide door.
-								)
-							((Said '/ladder') (if (Btst HENRY_LADDER_KNOWN)
+							)
+							((Said '/ladder')
+								(if (Btst fLadderKnown)
 									(HighPrint 82 8)
 									;You can't see it.
-									else
+								else
 									(HighPrint 82 9)
 									;You don't see a ladder here.
-									)
 								)
+							)
 							((Said '/door')
 								(HighPrint 82 10)
 								;The door is built into the face of the mountainside.
@@ -434,10 +434,13 @@
 							)
 						)
 					)
-					((Said 'lockpick[<up]/boulder,brick') (ego setScript: (ScriptID 103 0)))
-					((Said 'drink[/water]') (TryGetWater FALSE))
-					(
-					(or (Said 'put/water/bottle') (Said 'fill/bottle'))
+					((Said 'lockpick[<up]/boulder,brick')
+						(ego setScript: (ScriptID 103 0))
+					)
+					((Said 'drink[/water]')
+						(TryGetWater FALSE)
+					)
+					((or (Said 'put/water/bottle') (Said 'fill/bottle'))
 						(if (ego has: iFlask)
 							(TryGetWater TRUE)
 						else
@@ -454,7 +457,9 @@
 									(TryGetWater TRUE)
 								)
 							)
-							((Said '/boulder,brick') (ego setScript: (ScriptID 103 0)))
+							((Said '/boulder,brick')
+								(ego setScript: (ScriptID 103 0))
+							)
 						)
 					)
 					((Said 'throw/boulder,brick')
@@ -470,7 +475,7 @@
 						;The water comes from melting snow.  This early in the season, it's much too cold to swim.
 						)
 					((Said 'open/door')
-						(if (Btst CLIMBED_HENRY_CLIFF)
+						(if (Btst fClimbedHenryCliff)
 							(HighPrint 82 15)
 							;The door is securely locked.
 						else
@@ -478,7 +483,7 @@
 						)
 					)
 					((Said 'lockpick,unlock/hasp,door')
-						(if (Btst CLIMBED_HENRY_CLIFF)
+						(if (Btst fClimbedHenryCliff)
 							(HighPrint 82 16)
 							;The door is so securely locked that it defies your abilities to unlock it.
 						else
@@ -486,9 +491,9 @@
 						)
 					)
 					((Said 'knock')
-						(if (Btst CLIMBED_HENRY_CLIFF)
+						(if (Btst fClimbedHenryCliff)
 							(self setScript: knockScript)
-							(SolvePuzzle POINTS_KNOCKONHERMITDOOR 1)
+							(SolvePuzzle f82KnockOnDoor 1)
 						else
 							(HighPrint 82 17)
 							;It's a little hard to knock on the door from where you're standing.
@@ -498,29 +503,39 @@
 						(cond 
 							((Said '/ladder')
 								(cond 
-									((Btst CLIMBED_HENRY_CLIFF) (ego setScript: (ScriptID 137 2)))
-									((Btst HENRY_LADDER_KNOWN) (ego setScript: (ScriptID 137 0)))
+									((Btst fClimbedHenryCliff)
+										(ego setScript: (ScriptID 137 2))
+									)
+									((Btst fLadderKnown)
+										(ego setScript: (ScriptID 137 0))
+									)
 									(else
 										(HighPrint 82 9)
 										;You don't see a ladder here.
-										)
+									)
 								)
 							)
 							((Said '[<up][/boulder,cliff]')
 								(cond 
-									((Btst CLIMBED_HENRY_CLIFF)
+									((Btst fClimbedHenryCliff)
 										(Print 82 18 #mode teJustCenter)
 										; You're in front of the door already.  You don't need to climb any farther.
 									)
-									((Btst HENRY_LADDER_KNOWN) (ego setScript: (ScriptID 137 0)))
+									((Btst fLadderKnown)
+										(ego setScript: (ScriptID 137 0))
+									)
 									;CI: NOTE: if you know about the ladder, you no longer gain any climbing skill
 									; by climbing up. This is unfortunate, because there are so few places to improve your climbing skill.
-									((TrySkill CLIMB tryClimbWaterfall) (ego setScript: (ScriptID 137 0)))
-									(else (ego setScript: (ScriptID 137 1)))
+									((TrySkill CLIMB tryClimbWaterfall)
+										(ego setScript: (ScriptID 137 0))
+									)
+									(else
+										(ego setScript: (ScriptID 137 1))
+									)
 								)
 							)
 							((Said '[<down][/boulder,cliff]')
-								(if (Btst CLIMBED_HENRY_CLIFF)
+								(if (Btst fClimbedHenryCliff)
 									(ego setScript: (ScriptID 137 2))
 								else
 									(HighPrint 82 19)
@@ -530,7 +545,7 @@
 							(else (event claimed: 1)
 								(HighPrint 82 20)
 								;Climb what?
-								)
+							)
 						)
 					)
 					((Said 'cast>')
@@ -538,20 +553,20 @@
 						(if (CastSpell spell)
 							(switch spell
 								(DETMAGIC
-									(Bset HENRY_LADDER_KNOWN)
+									(Bset fLadderKnown)
 									(ladder setCycle: EndLoop)
 								)
 								(TRIGGER
-									(Bset HENRY_LADDER_KNOWN)
+									(Bset fLadderKnown)
 									(ladder setCycle: EndLoop)
 								)
 								(OPEN
 									(cond 
-										((Btst HENRY_DOOR_OPEN)
+										((Btst fHenryDoorOpen)
 											(HighPrint 82 21)
 											;The door is already open.
-											)
-										((and (Btst CLIMBED_HENRY_CLIFF) (> [egoStats OPEN] 5))
+										)
+										((and (Btst fClimbedHenryCliff) (> [egoStats OPEN] 5))
 											(CenterPrint 82 22)
 											;As you prepare your spell...
 											(ego setMotion: MoveTo (ego x?) 60)
@@ -564,11 +579,11 @@
 										(else
 											(HighPrint 82 23)
 											;The only thing you can open here is the door, and you're not skilled enough to do that.
-											)
+										)
 									)
 								)
 								(FLAMEDART
-									(FlameCast 0)
+									(CastDart 0)
 									(HighPrint 82 24)
 									;Wheeee!
 								)
@@ -577,7 +592,9 @@
 									(HighPrint 82 25)
 									;Wow!
 								)
-								(else  (event claimed: FALSE))
+								(else
+									(event claimed: FALSE)
+								)
 							)
 						)
 					)
@@ -588,10 +605,10 @@
 )
 
 (instance aFallScript of Script
-	(properties)
-	
 	(method (doit)
-		(if (>= (client y?) 115) (client y: -5))
+		(if (>= (client y?) 115)
+			(client y: -5)
+		)
 		(super doit:)
 	)
 	
@@ -600,11 +617,10 @@
 			(0
 				(client
 					x: (client x?)
-					y: (+
-						(client y?)
+					y: (+ (client y?)
 						(switch howFast
-							(0 30)
-							(1 20)
+							(slow 30)
+							(medium 20)
 							(else  15)
 						)
 					)
@@ -617,8 +633,6 @@
 )
 
 (instance sprayScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -633,8 +647,6 @@
 )
 
 (instance aRippleScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -649,8 +661,6 @@
 )
 
 (instance firstMsg of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 8))
@@ -664,8 +674,6 @@
 )
 
 (instance goOnIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -680,14 +688,14 @@
 				(ego hide:)
 				(hermitDoor setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
-			(3 (curRoom newRoom: 83))
+			(3
+				(curRoom newRoom: 83)
+			)
 		)
 	)
 )
 
 (instance throwIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -707,7 +715,9 @@
 				)
 				(= cycles 2)
 			)
-			(2 (ego setCycle: CycleTo 4 1 self))
+			(2
+				(ego setCycle: CycleTo 4 1 self)
+			)
 			(3
 				(rock
 					setLoop: 4
@@ -725,20 +735,18 @@
 						(- (ego y?) 34)
 					init:
 				)
-				(if (and (TrySkill THROW tryThrowHenry) (not (Btst HENRY_DOOR_OPEN)))
+				(if (and (TrySkill THROW tryThrowHenry) (not (Btst fHenryDoorOpen)))
 					(++ rockKnockCount)
 					(= rockHitDoor TRUE)
 					(rock
-						setMotion:
-							MoveTo
+						setMotion: MoveTo
 							(+ (hermitDoor x?) (Random 20 30))
 							(- (hermitDoor y?) (Random 20 30))
 							self
 					)
 				else
 					(rock
-						setMotion:
-							MoveTo
+						setMotion: MoveTo
 							(if (< (ego x?) 90)
 								(+ (hermitDoor x?) (Random 60 85))
 							else
@@ -762,8 +770,7 @@
 					)
 				)
 				(rock
-					setMotion:
-						JumpTo
+					setMotion: JumpTo
 						(cond 
 							((< (ego x?) 90) (if rockHitDoor 40 else 225))
 							(rockHitDoor 140)
@@ -796,7 +803,7 @@
 				(rock dispose:)
 				(NormalEgo)
 				(ego
-					use: 21 1
+					use: iRock 1
 					loop: (if (< (ego x?) 90) 0 else 1)
 					setScript: 0
 				)
@@ -806,8 +813,6 @@
 )
 
 (instance answerKnock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -842,7 +847,7 @@
 					(PrintAtTop 82 34)
 					;"Just climb the ladder."
 					(ladder setCycle: EndLoop self)
-					(Bset HENRY_LADDER_KNOWN)
+					(Bset fLadderKnown)
 				)
 			)
 			(3
@@ -862,8 +867,6 @@
 )
 
 (instance getWater of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -895,19 +898,21 @@
 						(else
 							(HighPrint 82 37)
 							;BOY!  You must have really been thirsty!
-							)
+						)
 					)
 					(++ drinkWaterCount)
 				else
 					(ego get: iWater use: iFlask 1)
 					(Bset fHaveFlyingWater)
-					(SolvePuzzle POINTS_GETFLYINGWATER 3)
+					(SolvePuzzle f82GetWater 3)
 					(HighPrint 82 38)
 					;You fill an empty flask with crystal-clear water from the waterfall.
 				)
 				(= cycles 5)
 			)
-			(4 (ego setCycle: BegLoop self))
+			(4
+				(ego setCycle: BegLoop self)
+			)
 			(5
 				(NormalEgo)
 				(ego illegalBits: 0 setMotion: MoveTo 150 150 self)
@@ -922,8 +927,6 @@
 )
 
 (instance squashed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -954,7 +957,7 @@
 				)
 			)
 			(3
-				(Bclr FLAG_276)
+				(Bclr fEgoSquashed)
 				(NormalEgo)
 				(HandsOn)
 				(client setScript: 0)
@@ -964,8 +967,6 @@
 )
 
 (instance safeTP of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -977,7 +978,7 @@
 				(Magic setCycle: EndLoop self)
 			)
 			(2
-				(Bclr HENRY_SAFE_TP)
+				(Bclr fSafeTP)
 				(client setScript: 0)
 				(HandsOn)
 			)
@@ -986,8 +987,6 @@
 )
 
 (instance deadlyTP of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1007,20 +1006,19 @@
 					#title {You're all wet}
 					#icon vEgoShock 0 2)
 					;That hermit seems to know his "Trigger" spells pretty well.
-					;He sure pulled the trigger on you (not to mention the plug) by teleporting you to the top of the falls without a barrel.
+					;He sure pulled the trigger on you (not to mention the plug)
+					;by teleporting you to the top of the falls without a barrel.
 			)
 		)
 	)
 )
 
 (instance knockScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset KNOCKED_HENRY_DOOR)
+				(Bset fKnockedOnHenryDoor)
 				(rm82Sound number: (SoundFX 78) loop: 1 play: self)
 			)
 			(1

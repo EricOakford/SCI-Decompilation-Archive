@@ -105,9 +105,7 @@
 	)
 )
 
-(instance cat of Actor
-	(properties)
-)
+(instance cat of Actor)
 
 (instance catTurn of SmoothLooper
 	(properties
@@ -131,6 +129,7 @@
 		(StatusLine enable:)
 		(NormalEgo)
 		(ego posn: 159 189 init: setMotion: MoveTo 159 170)
+		(onCouch init:)	;added
 		(= deathMusic (SoundFX 52))
 		(cat
 			view: vMagicCat
@@ -244,7 +243,10 @@
 	
 	(method (doit)
 		(cond 
-			((> (ego y?) 189) (= dayLOLBreakIn Day) (curRoom newRoom: 310))
+			((> (ego y?) 189)
+				(= dayLOLBreakIn Day)
+				(curRoom newRoom: 310)
+			)
 			(
 				(and
 					(& (ego onControl: origin) cLMAGENTA)
@@ -280,7 +282,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_LOL_HOUSE)
+		(Bset fBeenIn313)
 		(= deathMusic (SoundFX 26))
 		(super dispose:)
 	)
@@ -589,7 +591,7 @@
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
-				(if (or (not (Btst VISITED_LOL_HOUSE)) (!= prevRoomNum 0))
+				(if (or (not (Btst fBeenIn313)) (!= prevRoomNum 0))
 					(LookAround)
 				)
 				(client setScript: 0)

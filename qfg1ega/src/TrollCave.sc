@@ -120,7 +120,7 @@
 			)
 			(else 
 				(ego posn: 318 150 setMotion: MoveTo 255 150)
-				(if (not (Btst VISITED_TROLLCAVE))
+				(if (not (Btst fBeenIn88))
 					(HighPrint 88 0)
 					;There is a strong odor of decay and other nasty smells filling the air.
 					;A pile of something unpleasant lies near the center of this cave.
@@ -141,7 +141,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_TROLLCAVE)
+		(Bset fBeenIn88)
 		(super dispose:)
 	)
 	
@@ -434,7 +434,7 @@
 			(3 (= cycles 12))
 			(4
 				(EgoDead 88 34
-					#title {WHATA vTroll!}
+					#title {WHATA TROLL!}
 					#icon vDeathScenes 0 0
 					;The Troll's brute force was too much for your skull.
 				)
@@ -504,7 +504,7 @@
 			(1
 				(switch searchWhat
 					(searchTROLL
-						(if (Btst SHAVED_FRED)
+						(if (Btst fShavedFred)
 							(HighPrint 88 35)
 							;There is nothing of value on the Troll.
 						else
@@ -527,13 +527,13 @@
 						)
 					)
 					(searchBEARD
-						(if (Btst SHAVED_FRED)
+						(if (Btst fShavedFred)
 							(HighPrint 88 40)
 							;There is no beard hair left on the Troll.
 						else
 							(HighPrint 88 41)
 							;You cut some beard hair and put it away.
-							(Bset SHAVED_FRED)
+							(Bset fShavedFred)
 							(ego get: iTrollBeard)
 						)
 					)

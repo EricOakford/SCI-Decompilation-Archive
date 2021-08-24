@@ -189,7 +189,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_MAGICSHOP_INSIDE)
+		(Bset fBeenIn314)
 		(super dispose:)
 	)
 	
@@ -658,7 +658,7 @@
 				(= local9 1)
 				(zaraWarp stopUpd:)
 				(HandsOn)
-				(if (not (Btst VISITED_MAGICSHOP_INSIDE))
+				(if (not (Btst fBeenIn314))
 					(self cue:)
 				else
 					(HighPrint 314 73)

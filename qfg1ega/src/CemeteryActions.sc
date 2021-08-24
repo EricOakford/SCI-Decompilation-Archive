@@ -9,8 +9,6 @@
 )
 
 (instance Cemetery of Region
-	(properties)
-	
 	(method (handleEvent event &tmp [temp0 54])
 		(if (event claimed?) (return))
 		(switch (event type?)
@@ -19,7 +17,9 @@
 					((super handleEvent: event))
 					((Said 'look>')
 						(cond 
-							((Said '[<at,around][/!*,forest,greenery]') (HighPrint 806 0))
+							((Said '[<at,around][/!*,forest,greenery]')
+								(HighPrint 806 0)
+							)
 							((Said '/ghost')
 								(if
 									(or
@@ -33,7 +33,9 @@
 									(HighPrint 806 3)
 								)
 							)
-							((Said '[<down][/ground,needle,moss,grass]') (HighPrint 806 4))
+							((Said '[<down][/ground,needle,moss,grass]')
+								(HighPrint 806 4)
+							)
 							((Said '[<up][/sky,cloud,star,moon]')
 								(if Night
 									(HighPrint 806 5)
@@ -41,14 +43,26 @@
 									(HighPrint 806 6)
 								)
 							)
-							((Said '/birch,tree') (HighPrint 806 7))
-							((Said '/bush') (HighPrint 806 8))
-							((Said '/boulder') (HighPrint 806 9))
-							((Said '/hill,cliff,peak,pass') (HighPrint 806 10))
-							((Said '/cave') (HighPrint 806 11))
+							((Said '/birch,tree')
+								(HighPrint 806 7)
+							)
+							((Said '/bush')
+								(HighPrint 806 8)
+							)
+							((Said '/boulder')
+								(HighPrint 806 9)
+							)
+							((Said '/hill,cliff,peak,pass')
+								(HighPrint 806 10)
+							)
+							((Said '/cave')
+								(HighPrint 806 11)
+							)
 						)
 					)
-					((Said 'climb') (HighPrint 806 12))
+					((Said 'climb')
+						(HighPrint 806 12)
+					)
 					((Said 'get/ghost')
 						(if Night
 							(HighPrint 806 13)
@@ -64,8 +78,7 @@
 							(HighPrint 806 16)
 						)
 					)
-					(
-					(Said 'use,rub/grease,(potion,grease<ghost,ghoul)')
+					((Said 'use,rub/grease,(potion,grease<ghost,ghoul)')
 						(if (ego has: iGhostOil)
 							(HighPrint 806 17)
 							(Bset fGhostOil)
@@ -73,7 +86,7 @@
 							(= ghostOilTimer GAMEHOUR)
 							(ego use: iGhostOil)
 							(ego get: iFlask)
-							(if Night (SolvePuzzle POINTS_USEUNDEADUNGUENT 2))
+							(if Night (SolvePuzzle f64UseGhostOil 2))
 						else
 							(HighPrint 806 16)
 						)

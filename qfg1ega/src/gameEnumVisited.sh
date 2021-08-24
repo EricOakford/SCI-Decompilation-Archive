@@ -4,106 +4,114 @@
 ; flags are assigned for every room after ego leaves it.
 ; if these aren't set, then ego has never been in the room before.
 (enum
-	VISITED_ERANASPEACE 		;0
-	VISITED_FOREST_11 			;1
-	VISITED_FOREST_12 			;2
-	VISITED_OGRE_ROOM 			;3
-	VISITED_BEAR_CAVE 			;4
-	VISITED_KOBOLD_CAVE 		;5
-	VISITED_SPITTING_SPIREA 	;6
-	VISITED_FOREST_17 			;7
-	VISITED_FOREST_18 			;8
-	VISITED_FOREST_19 			;9
-	VISITED_ROOM_20 			;10 ;unused (Room 20 does not exist)
-	VISITED_BABAYAGA_INTERIOR 	;11
-	VISITED_BABAYAGA_EXTERIOR 	;12
-	VISITED_FOREST_23 			;13
-	VISITED_FOREST_24 			;14
-	VISITED_FOREST_25 			;15
-	VISITED_FOREST_26 			;16
-	VISITED_FOREST_27 			;17
-	VISITED_ERASMUS_OUTLOOK 	;18
-	VISITED_ERASMUS_OUTSIDE 	;19
-	VISITED_ERASMUS_INSIDE 		;20
-	VISITED_ERASMUS_TOWER 		;21
-	VISITED_WIZARDS_GAME 		;22 ;unused (Room 32 is the Wizard's Game)
-	VISITED_FOREST_33 			;23
-	VISITED_FOREST_34 			;24
-	VISITED_FOREST_35 			;25
-	VISITED_FOREST_36 			;26
-	VISITED_CASTLE_GATE 		;27
-	VISITED_CASTLE_BARRACKS 	;28
-	VISITED_CASTLE_COURTYARD 	;29 ;unused
-	VISITED_CASTLE_STABLES 		;30 ;unused
-	VISITED_CASTLE_GUARDS 		;31
-	VISITED_FOREST_42 			;32
-	VISITED_FOREST_43 			;33
-	VISITED_FOREST_44 			;34
-	VISITED_GOBLIN_AMBUSH 		;35
-	VISITED_ROOM_46 			;36 ;unused (deleted Goblin Cave scene)
-	VISITED_ROOM_47 			;37 ;unused (deleted Goblin Cave scene)
-	VISITED_ROOM_48 			;38 ;unused (deleted Goblin Cave scene)
-	VISITED_ROOM_49 			;39 ;unused (deleted Goblin Cave scene)
-	VISITED_ROOM_50 			;40 ;unused (deleted Goblin Cave scene)
-	VISITED_FOREST_51 			;41
-	VISITED_FOREST_52 			;42
-	VISITED_FARM 				;43
-	VISITED_HEALERHUT_OUTSIDE 	;44
-	VISITED_HEALERHUT_INSIDE 	;45
-	VISITED_FOREST_56 			;46
-	VISITED_FOREST_57 			;47
-	VISITED_FROST_CAVE 			;48
-	VISITED_ROOM_59 			;49 ;unused (Room 59 does not exist)
-	VISITED_MEEPS 				;50
-	VISITED_FOREST_61 			;51
-	VISITED_FOREST_62 			;52
-	VISITED_FOREST_63 			;53
-	VISITED_GRAVEYARD_DAYTIME 	;54
-	VISITED_TOWNOVERLOOK 		;55
-	VISITED_PATH_66 			;56
-	VISITED_PATH_67 			;57
-	VISITED_PATH_68 			;58
-	VISITED_FOREST_69 			;59
-	VISITED_FAERYRING 			;60 ;unused
-	VISITED_FOREST_71 			;61
-	VISITED_FOREST_72 			;62
-	VISITED_TARGETRANGE 		;63 ;unused
-	VISITED_FOREST_74 			;64
-	VISITED_FOREST_75 			;65
-	VISITED_DRYAD 				;66
-	VISITED_STAG_77 			;67
-	VISITED_STAG_78 			;68
-	VISITED_FOREST_79 			;69
-	VISITED_FOREST_80 			;70
-	VISITED_FOREST_81 			;71 ;log crossroads
-	VISITED_FLYINGFALLS 		;72
-	VISITED_HENRYINSIDE 		;73
-	VISITED_ANTWERP 			;74
-	VISITED_FOREST_85 			;75
-	VISITED_FOREST_86 			;76
-	VISITED_LAKE 				;77
-	VISITED_TROLLCAVE 			;78
-	VISITED_TROLLCAVE2 			;79
-	VISITED_ROOM_90 			;80 ;unused
-	VISITED_BRIGAND_AMBUSH 		;81
-	VISITED_FOREST_92 			;82
-	VISITED_BRIGAND_GATE 		;83
-	VISITED_BRIGAND_COURTYARD 	;84 ;wrong description... means something else.
-	VISITED_BRIGAND_DININGHALL 	;85 ;unused
-	VISITED_BRIGAND_JESTER 		;86
-	VISITED_BRIGAND_LEADER 		;87
-	VISITED_TOWNOUTLOOK 		;88
-	VISITED_INN 				;89
-	VISITED_OUTSIDE_MAGICSHOP 	;90
-	VISITED_ADVENTURER_GUILD 	;91
-	VISITED_LOL_HOUSE 			;92
-	VISITED_MAGICSHOP_INSIDE 	;93
-	VISITED_VEGGIE_STAND 		;94
-	VISITED_SHERIFF_HOUSE 		;95
-	VISITED_STORE 				;96
-	VISITED_TAVERN_OUTSIDE 		;97
-	VISITED_TAVERN_INSIDE 		;98
-	VISITED_THIEVES_GUILD 		;99
-	VISITED_ALLEY_DAY 			;100
-	VISITED_ALLEY_NIGHT 		;101
+	fBeenIn10 			;0
+	fBeenIn11 			;1
+	fBeenIn12 			;2
+	fBeenIn13 			;3
+	fBeenIn14 			;4
+	fBeenIn15			;5
+	fBeenIn16			;6
+	fBeenIn17			;7
+	fBeenIn18 			;8
+	fBeenIn19 			;9
+	fBeenIn20			;10 ;unused (Room 20 does not exist)
+	fBeenIn21			;11
+	fBeenIn22			;12
+	fBeenIn23			;13
+	fBeenIn24			;14
+	fBeenIn25			;15
+	fBeenIn26			;16
+	fBeenIn27			;17
+	fBeenIn28 	;18
+	fBeenIn29 	;19
+	fBeenIn30 		;20
+	fBeenIn31 		;21
+	fBeenIn32 		;22 ;unused (Room 32 is the Wizard's Game)
+	fBeenIn33 			;23
+	fBeenIn34 			;24
+	fBeenIn35 			;25
+	fBeenIn36 			;26
+	fBeenIn37 		;27
+	fBeenIn38 	;28
+	fBeenIn39 	;29 ;unused
+	fBeenIn40 		;30 ;unused
+	fBeenIn41 		;31
+	fBeenIn42 			;32
+	fBeenIn43 			;33
+	fBeenIn44 			;34
+	fBeenIn45 		;35
+	fBeenIn46 			;36 ;unused (deleted Goblin Cave scene)
+	fBeenIn47 			;37 ;unused (deleted Goblin Cave scene)
+	fBeenIn48 			;38 ;unused (deleted Goblin Cave scene)
+	fBeenIn49 			;39 ;unused (deleted Goblin Cave scene)
+	fBeenIn50 			;40 ;unused (deleted Goblin Cave scene)
+	fBeenIn51 			;41
+	fBeenIn52 			;42
+	fBeenIn53 				;43
+	fBeenIn54 	;44
+	fBeenIn55 	;45
+	fBeenIn56 			;46
+	fBeenIn57 			;47
+	fBeenIn58 			;48
+	fBeenIn59 			;49 ;unused (Room 59 does not exist)
+	fBeenIn60 				;50
+	fBeenIn61 			;51
+	fBeenIn62 			;52
+	fBeenIn63 			;53
+	fBeenIn64 	;54
+	fBeenIn65 		;55
+	fBeenIn66 			;56
+	fBeenIn67 			;57
+	fBeenIn68 			;58
+	fBeenIn69 			;59
+	fBeenIn70 			;60 ;unused
+	fBeenIn71 			;61
+	fBeenIn72 			;62
+	fBeenIn73 		;63 ;unused
+	fBeenIn74 			;64
+	fBeenIn75 			;65
+	fBeenIn76 				;66
+	fBeenIn77 			;67
+	fBeenIn78 			;68
+	fBeenIn79 			;69
+	fBeenIn80 			;70
+	fBeenIn81 			;71 ;log crossroads
+	fBeenIn82 		;72
+	fBeenIn83 		;73
+	fBeenIn84 			;74
+	fBeenIn85 			;75
+	fBeenIn86 			;76
+	fBeenIn87 				;77
+	fBeenIn88		 			;78
+	fBeenIn89		 			;79
+	fBeenIn90		 			;80 ;unused
+	fBeenIn91			 		;81
+	fBeenIn92 					;82
+	fBeenIn93			 		;83
+	fBeenIn94				 	;84
+	fBeenIn95 					;85 ;unused
+	fBeenIn96 					;86
+	fBeenIn97			 		;87
+	fBeenIn300			 		;88
+	fBeenIn301					;89
+	fBeenIn310				 	;90
+	fBeenIn311				 	;91
+	fBeenIn313		 			;92
+	fBeenIn314 	;93
+	fBeenIn320		;94
+	fBeenIn321 		;95
+	fBeenIn322 				;96
+	fBeenIn330 		;97
+	fBeenIn331 		;98
+	fBeenIn332 		;99
+	fBeenIn333		 			;100
+	fBeenIn334			 		;101
+	fNextMonster				;102	;for Brigands and Goblins, check if any are still alive
+	fUnused103					;103
+	fUnused104					;104
+	fUnused105					;105
+	fUnused106					;106
+	fUnused107					;107
+	fUnused108					;108
+	fUnused109					;109
 )

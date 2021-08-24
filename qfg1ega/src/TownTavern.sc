@@ -148,11 +148,11 @@
 				(ego posn: 120 150 loop: 0)
 			)
 			(else 
-				(Bset VISITED_TAVERN_INSIDE)
+				(Bset fBeenIn331)
 				(ego posn: 156 188 setMotion: MoveTo 156 175)
 			)
 		)
-		(if (not (Btst VISITED_TAVERN_INSIDE)) (self setScript: rm331Script))
+		(if (not (Btst fBeenIn331)) (self setScript: rm331Script))
 	)
 	
 	(method (doit)
@@ -169,7 +169,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_TAVERN_INSIDE)
+		(Bset fBeenIn331)
 		(super dispose:)
 		(LoadMany FALSE 335 336 337 338 339)
 	)

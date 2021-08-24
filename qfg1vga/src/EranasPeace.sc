@@ -90,7 +90,7 @@
 					yourself:
 				)
 		)
-		(ChangeGait 0 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(|= disabledActions ACTION_RUN)
 		(|= disabledActions ACTION_SNEAK)
 		(Load VIEW 10)

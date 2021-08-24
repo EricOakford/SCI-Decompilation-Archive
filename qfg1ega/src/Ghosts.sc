@@ -22,25 +22,17 @@
 (local
 	twisterX
 	twisterY
-	theTwisterX
-	theTwisterY
+	oldTwisterX
+	oldTwisterY
 	local4
 )
-(instance twister of Actor
-	(properties)
-)
+(instance twister of Actor)
 
-(instance tumbler of Actor
-	(properties)
-)
+(instance tumbler of Actor)
 
-(instance swimmer of Actor
-	(properties)
-)
+(instance swimmer of Actor)
 
 (instance twistIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -61,12 +53,12 @@
 				(= twisterY (twister y?))
 			)
 			(1
-				(= theTwisterX twisterX)
-				(= theTwisterY twisterY)
+				(= oldTwisterX twisterX)
+				(= oldTwisterY twisterY)
 				(= twisterX (Random 20 300))
 				(= twisterY (Random 10 130))
 				(twister
-					setCycle: (if (> twisterX theTwisterX) Forward else Reverse)
+					setCycle: (if (> twisterX oldTwisterX) Forward else Reverse)
 				)
 				(if (Btst fGhostsAttack)
 					(twister setMotion: Follow ego 30)
@@ -88,8 +80,7 @@
 			)
 			(3
 				(twister
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(cond 
 							((< ((ScriptID GHOSTS 5) y?) 20) (twister x?))
 							((< ((ScriptID GHOSTS 5) x?) 30) -20)
@@ -112,8 +103,6 @@
 )
 
 (instance spinAcross of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -144,8 +133,6 @@
 )
 
 (instance spinOnTree of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -188,8 +175,6 @@
 )
 
 (instance swimRight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -220,8 +205,6 @@
 )
 
 (instance swimLeft of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

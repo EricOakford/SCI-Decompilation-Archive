@@ -12,8 +12,6 @@
 	flagstoneMessage
 )
 (instance Castle of Locale
-	(properties)
-	
 	(method (handleEvent event &tmp [temp0 54])
 		(if (event claimed?) (return))
 		(switch (event type?)
@@ -22,12 +20,24 @@
 					((super handleEvent: event))
 					((Said 'look>')
 						(cond 
-							((Said '/castle') (HighPrint 807 0))
-							((Said '/tower') (HighPrint 807 1))
-							((Said '/gate,gatehouse') (HighPrint 807 2))
-							((Said '/portcullis') (HighPrint 807 3))
-							((Said '/wall,parapet,parapet,aisle') (HighPrint 807 4))
-							((Said '/courtyard') (HighPrint 807 5))
+							((Said '/castle')
+								(HighPrint 807 0)
+							)
+							((Said '/tower')
+								(HighPrint 807 1)
+							)
+							((Said '/gate,gatehouse')
+								(HighPrint 807 2)
+							)
+							((Said '/portcullis')
+								(HighPrint 807 3)
+							)
+							((Said '/wall,parapet,parapet,aisle')
+								(HighPrint 807 4)
+							)
+							((Said '/courtyard')
+								(HighPrint 807 5)
+							)
 							((Said '/flagstone')
 								(switch flagstoneMessage
 									(0

@@ -15,7 +15,7 @@
 (local
 	local0
 	local1
-	[local2 14] = [297 200 241 175 194 155 168 143 150 132 134 126 119 116]
+	local2 = [297 200 241 175 194 155 168 143 150 132 134 126 119 116]
 )
 (instance reflection of Actor
 	(properties
@@ -164,7 +164,7 @@
 	)
 	
 	(method (init)
-		(if (and (Btst VISITED_LAKE) (not (Btst LAKE_EASTER_EGG)))
+		(if (and (Btst fBeenIn87) (not (Btst LAKE_EASTER_EGG)))
 			(Load SOUND (SoundFX 66))
 		)
 		(Load VIEW vWater) ;CI: add vEgoWaterReflection
@@ -197,7 +197,7 @@
 			)
 		)
 		(cond 
-			((and (Btst VISITED_LAKE) (not (Btst LAKE_EASTER_EGG)))
+			((and (Btst fBeenIn87) (not (Btst LAKE_EASTER_EGG)))
 				(periscope setLoop: 7 init: setScript: periScript)
 				(Bset LAKE_EASTER_EGG)
 			)
@@ -206,7 +206,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_LAKE)
+		(Bset fBeenIn87)
 		(super dispose:)
 	)
 	

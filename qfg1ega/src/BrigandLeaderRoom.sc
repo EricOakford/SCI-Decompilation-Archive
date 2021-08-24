@@ -2,7 +2,7 @@
 (script# 97)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
+(use CastDart)
 (use CastCalm)
 (use CastOpen)
 (use CastDazz)
@@ -27,14 +27,14 @@
 	elsaInRoom
 	yorickInRoom
 )
-(procedure (OfficeSay name &tmp [sizeRect 4] [str 400])
+(procedure (OfficeSay name &tmp [printRect 4] [str 400])
 	(cls)
 	(Format @str &rest)
-	(TextSize @[sizeRect 0] @str userFont 0)
+	(TextSize @[printRect 0] @str userFont 0)
 	(Print
 		@str
 		#at -1 12
-		#width (if (> [sizeRect 2] 24) 300 else 0)
+		#width (if (> [printRect 2] 24) 300 else 0)
 		#mode teJustCenter
 		#title name
 	)
@@ -122,7 +122,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_BRIGAND_LEADER)
+		(Bset fBeenIn97)
 		(super dispose:)
 	)
 	
@@ -236,7 +236,7 @@
 								)
 								(DAZZLE (CastDazz))
 								(FLAMEDART
-									(FlameCast 0)
+									(CastDart 0)
 								)
 								(CALM (CastCalm))
 								(OPEN (CastOpen))

@@ -249,7 +249,7 @@
 				(== (ego edgeHit?) SOUTH)
 				(!= (self script?) sLeaving)
 			)
-			(if (not (Btst VISITED_HENRYINSIDE))
+			(if (not (Btst fBeenIn83))
 				(self setScript: sLeaving)
 			else
 				(curRoom newRoom: 82)
@@ -346,13 +346,13 @@
 								(Say hermitTalk 83 12)
 								;"Me guest bed is the straw in the corner over there.
 								;You're welcome to stay the night since you've shared your rations.  When you want to sleep, just say so."
-								(Bset GAVE_HERMIT_RATION)
-								)
+								(Bset fGaveHermitRation)
+							)
 							(else
 								(Say hermitTalk 83 13)
 								;"Me guest bed is the straw in the corner over there.
 								;You're welcome to come back and sleep tonight since you've shared your rations."
-								(Bset GAVE_HERMIT_RATION)
+								(Bset fGaveHermitRation)
 								)
 						)
 					)
@@ -371,11 +371,11 @@
 								(HighPrint 83 15)
 								;Get closer to the bed of straw.
 								)
-							((not (if (Btst GAVE_HERMIT_RATION) else (>= [invNum iRations] 1))) (self setScript: sNoSleep))
+							((not (if (Btst fGaveHermitRation) else (>= [invNum iRations] 1))) (self setScript: sNoSleep))
 							((not (NeedSleep)) (EgoSleeps 5))
 							(else
-								(if (not (Btst GAVE_HERMIT_RATION)) (ego use: iRations 1))
-								(Bclr GAVE_HERMIT_RATION)
+								(if (not (Btst fGaveHermitRation)) (ego use: iRations 1))
+								(Bclr fGaveHermitRation)
 								(self setScript: sGoSleep)
 							)
 						)
@@ -679,7 +679,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset VISITED_HENRYINSIDE)
+				(Bset fBeenIn83)
 				(hermitTalk caller: self)
 				(HandsOff)
 				(Say hermitTalk 83 42)
@@ -697,7 +697,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset VISITED_HENRYINSIDE)
+				(Bset fBeenIn83)
 				(HandsOff)
 				(pfSnd init: play:)
 				(poof
@@ -752,7 +752,7 @@
 				;Unfortunately, since the fungus on the walls shines at night so the room doesn't get dark,
 				;and the fact the hermit talks most of the night, you only get five hours rest.
 				(EgoSleeps 5)
-				(Bset VISITED_HENRYINSIDE)
+				(Bset fBeenIn83)
 				(curRoom newRoom: 82)
 			)
 		)

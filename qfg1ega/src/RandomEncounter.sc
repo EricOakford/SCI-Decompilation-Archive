@@ -2,8 +2,8 @@
 (script# ENCOUNTER) ;210
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastCalm)
 (use CastDazz)
@@ -473,7 +473,7 @@
 						;chance encounters are doubled at nightTime
 						(= curRoomEncChance (* curRoomEncChance 2))
 					)
-					(if (Btst VISITED_BRIGAND_LEADER)
+					(if (Btst fBeenIn97)
 						;chance encounters are doubled after you've transformed the brigand leader.
 						(= curRoomEncChance (* curRoomEncChance 2))
 					)
@@ -770,7 +770,7 @@
 											(Face ego theSmallMonster)
 											(= theTheSmallMonster theSmallMonster)
 										)
-										(FlameCast theTheSmallMonster)
+										(CastDart theTheSmallMonster)
 									)
 									(FETCH
 										(if local8
@@ -795,7 +795,7 @@
 							(Face ego theSmallMonster)
 							(= theTheSmallMonster theSmallMonster)
 						)
-						(KnifeCast theTheSmallMonster)
+						(ThrowKnife theTheSmallMonster)
 					)
 					((Said 'throw/boulder')
 						(= theTheSmallMonster 0)
@@ -803,7 +803,7 @@
 							(Face ego theSmallMonster)
 							(= theTheSmallMonster theSmallMonster)
 						)
-						(RockCast theTheSmallMonster)
+						(ThrowRock theTheSmallMonster)
 					)
 				)
 			)

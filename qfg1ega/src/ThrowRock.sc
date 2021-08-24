@@ -8,7 +8,7 @@
 (use System)
 
 (public
-	RockCast 0
+	ThrowRock 0
 )
 
 (local
@@ -23,7 +23,7 @@
 	egoIllegalBits
 	hitSound
 )
-(procedure (RockCast target &tmp temp0 temp1 newAct_2)
+(procedure (ThrowRock target &tmp temp0 temp1 newAct_2)
 	(return
 		(if (not (ego has: iRock))
 			(HighPrint 102 0)

@@ -79,7 +79,12 @@
 			)
 		)
 		(cond 
-			((== curRoomNum 11) (= northRoom 11) (= southRoom 17) (= eastRoom 12) (= westRoom 11))
+			((== curRoomNum 11)
+				(= northRoom 11)
+				(= southRoom 17)
+				(= eastRoom 12)
+				(= westRoom 11)
+			)
 			((== curRoomNum 12)
 				(= northRoom 10)
 				(= southRoom 12)
@@ -89,17 +94,37 @@
 					addObstacle:
 						((Polygon new:)
 							type: PBarredAccess
-							init: 0 0 319 0 319 103 204 103 162 80 165 26 145 25 126 82 0 80
+							init:
+								0 0
+								319 0
+								319 103
+								204 103
+								162 80
+								165 26
+								145 25
+								126 82
+								0 80
 							yourself:
 						)
 						((Polygon new:)
 							type: PBarredAccess
-							init: 0 118 123 169 210 168 319 135 319 189 0 189
+							init:
+								0 118
+								123 169
+								210 168
+								319 135
+								319 189
+								0 189
 							yourself:
 						)
 				)
 			)
-			((== curRoomNum 17) (= northRoom 11) (= southRoom 25) (= eastRoom 18) (= westRoom 16))
+			((== curRoomNum 17)
+				(= northRoom 11)
+				(= southRoom 25)
+				(= eastRoom 18)
+				(= westRoom 16)
+			)
 			((== curRoomNum 18)
 				(= northRoom 18)
 				(= southRoom 18)
@@ -108,20 +133,52 @@
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 2
-							init: 0 0 319 0 319 65 221 70 170 63 144 67 141 102 106 118 0 102
+							type: PBarredAccess
+							init:
+								0 0
+								319 0
+								319 65
+								221 70
+								170 63
+								144 67
+								141 102
+								106 118
+								0 102
 							yourself:
 						)
 						((Polygon new:)
-							type: 2
-							init: 0 144 126 176 204 176 210 132 254 119 319 119 319 189 0 189
+							type: PBarredAccess
+							init:
+								0 144
+								126 176
+								204 176
+								210 132
+								254 119
+								319 119
+								319 189
+								0 189
 							yourself:
 						)
 				)
 			)
-			((== curRoomNum 19) (= northRoom 19) (= southRoom 26) (= eastRoom 19) (= westRoom 18))
-			((== curRoomNum 23) (= northRoom 23) (= southRoom 34) (= eastRoom 24) (= westRoom 23))
-			((== curRoomNum 24) (= northRoom 16) (= southRoom 35) (= eastRoom 25) (= westRoom 23))
+			((== curRoomNum 19)
+				(= northRoom 19)
+				(= southRoom 26)
+				(= eastRoom 19)
+				(= westRoom 18)
+			)
+			((== curRoomNum 23)
+				(= northRoom 23)
+				(= southRoom 34)
+				(= eastRoom 24)
+				(= westRoom 23)
+			)
+			((== curRoomNum 24)
+				(= northRoom 16)
+				(= southRoom 35)
+				(= eastRoom 25)
+				(= westRoom 23)
+			)
 			((== curRoomNum 25)
 				(= northRoom 17)
 				(= southRoom 36)
@@ -132,13 +189,27 @@
 						((Polygon new:)
 							type: PBarredAccess
 							init:
-								0 0 319 0 319 189 203 189 208 128 234 83 166 66
-								153 39 128 39 149 89 121 117 0 109
+								0 0
+								319 0
+								319 189
+								203 189
+								208 128
+								234 83
+								166 66
+								153 39
+								128 39
+								149 89
+								121 117
+								0 109
 							yourself:
 						)
 						((Polygon new:)
 							type: PBarredAccess
-							init: 0 145 89 158 140 189 0 189
+							init:
+								0 145
+								89 158
+								140 189
+								0 189
 							yourself:
 						)
 				)
@@ -153,14 +224,28 @@
 						((Polygon new:)
 							type: PBarredAccess
 							init:
-								0 0 319 0 319 103 198 103 162 80 156 26
-								131 26 131 80 115 80 58 110 118 147
-								124 189 0 189
+								0 0
+								319 0
+								319 103
+								198 103
+								162 80
+								156 26
+								131 26
+								131 80
+								115 80
+								58 110
+								118 147
+								124 189
+								0 189
 							yourself:
 						)
 						((Polygon new:)
 							type: PBarredAccess
-							init: 216 189 248 152 319 136 319 189
+							init:
+								216 189
+								248 152
+								319 136
+								319 189
 							yourself:
 						)
 				)
@@ -174,12 +259,29 @@
 					addObstacle:
 						((Polygon new:)
 							type: PBarredAccess
-							init: 0 0 319 0 319 65 221 70 170 63 144 67 141 102 106 118 0 102
+							init:
+								0 0
+								319 0
+								319 65
+								221 70
+								170 63
+								144 67
+								141 102
+								106 118
+								0 102
 							yourself:
 						)
 						((Polygon new:)
 							type: PBarredAccess
-							init: 0 144 126 176 204 176 210 132 254 119 319 119 319 189 0 189
+							init:
+								0 144
+								126 176
+								204 176
+								210 132
+								254 119
+								319 119
+								319 189
+								0 189
 							yourself:
 						)
 				)
@@ -194,13 +296,28 @@
 						((Polygon new:)
 							type: PBarredAccess
 							init:
-								0 0 319 0 319 94 160 61 160 37 126 37 128 61
-								143 79 139 107 85 147 133 189 0 189
+								0 0
+								319 0
+								319 94
+								160 61
+								160 37
+								126 37
+								128 61
+								143 79
+								139 107
+								85 147
+								133 189
+								0 189
 							yourself:
 						)
 						((Polygon new:)
 							type: PBarredAccess
-							init: 218 189 206 143 228 124 319 136 319 189
+							init:
+								218 189
+								206 143
+								228 124
+								319 136
+								319 189
 							yourself:
 						)
 				)
@@ -1140,10 +1257,10 @@
 			(switch theVerb
 				(V_LOOK
 					(if atClearing
-						(messager say: 1 1 1 0 0 FOREST)
+						(messager say: N_FLOOR V_LOOK C_AT_CLEARING 0 0 FOREST)
 						(return TRUE)
 					else
-						(messager say: 1 1 0 0 0 FOREST)
+						(messager say: N_FLOOR V_LOOK NULL 0 0 FOREST)
 						(return TRUE)
 					)
 				)
@@ -1473,14 +1590,17 @@
 )
 
 (instance sExitAll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= local11 0)
-				(ego setMotion: PolyPath initEgoX initEgoY self)
+				(ego
+					setMotion: PolyPath initEgoX initEgoY
+					ignoreActors: TRUE	;UPGRADE: Ensures that ego is not stuck when a baby Antwerp
+										; crosses his path when he leaves
+					self
+				)
 			)
 			(1
 				(= initEgoX 0)

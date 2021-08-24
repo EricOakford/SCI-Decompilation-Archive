@@ -2,8 +2,8 @@
 (script# 78)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastDazz)
 (use Target)
@@ -23,11 +23,11 @@
 
 (local
 	antwerpSplit
-	[theCycles 4]
-	gEgoObjY
-	local6
-	gEgoObjX
-	gEgoObjY_2
+	[stagProperties 4]
+	distToStag
+	stagState
+	antwerpX
+	antwerpY
 )
 (instance rm78 of Room
 	(properties
@@ -46,15 +46,19 @@
 		(self setLocales: FOREST)
 		(NormalEgo)
 		(cond 
-			((and (not (Btst MET_DRYAD)) (not monsterNum)) (Bset STAG_PRESENT) (= monsterNum 0))
-			((and (Btst DRYAD_AGREED_HELP) (not monsterNum))
-			(switch (Random 0 1)
-				(0 (Bclr STAG_PRESENT))
-				(1 (Bset STAG_PRESENT))
-			))
+			((and (not (Btst fMetDryad)) (not monsterNum))
+				(Bset fStagHere)
+				(= monsterNum 0)
+			)
+			((and (Btst fAgreedToHelpDryad) (not monsterNum))
+				(switch (Random 0 1)
+					(0 (Bclr fStagHere))
+					(1 (Bset fStagHere))
+				)
+			)
 		)
 		(ego init:)
-		(if (Btst ANTWERP_SKY)
+		(if (Btst fAntwerpInSky)
 			(Load SCRIPT WANDER)
 			(LoadMany VIEW vAntwerp vEgoKillAntwerp)
 			(LoadMany SOUND
@@ -69,24 +73,24 @@
 		(if
 			(and
 				(not Night)
-				(not (Btst ANTWERP_SKY))
+				(not (Btst fAntwerpInSky))
 				(!= prevRoomNum 77)
-				(Btst STAG_PRESENT)
+				(Btst fStagHere)
 			)
 			(Load VIEW vStag)
-			(= [theCycles 0] (Random 90 116))
-			(= [theCycles 1] (Random 132 154))
-			(= [theCycles 2] (Random 0 1))
-			(= [theCycles 3] (Random 1 30))
+			(= [stagProperties 0] (Random 90 116))
+			(= [stagProperties 1] (Random 132 154))
+			(= [stagProperties 2] (Random 0 1))
+			(= [stagProperties 3] (Random 1 30))
 			(stag
 				view: vStag
-				x: [theCycles 0]
-				y: [theCycles 1]
+				x: [stagProperties 0]
+				y: [stagProperties 1]
 				setScript: stagScript
 				init:
 			)
 		else
-			(Bclr STAG_PRESENT)
+			(Bclr fStagHere)
 		)
 		(switch prevRoomNum
 			(71
@@ -102,24 +106,24 @@
 				(ego posn: 318 140 setMotion: MoveTo 234 140)
 			)
 		)
-		(= local6 0)
+		(= stagState 0)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (and (< (ego y?) 140) (Btst ANTWERP_SKY))
-			(Bclr ANTWERP_SKY)
+		(if (and (< (ego y?) 140) (Btst fAntwerpInSky))
+			(Bclr fAntwerpInSky)
 			(curRoom setScript: antwerped)
 		)
 	)
 	
 	(method (dispose)
-		(Bset VISITED_STAG_78)
+		(Bset fBeenIn78)
 		(DisposeScript WANDER)
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp spell temp1)
+	(method (handleEvent event &tmp spell targObj)
 		(switch (event type?)
 			(saidEvent
 				(cond 
@@ -128,63 +132,67 @@
 							(DETMAGIC
 								(if (CastSpell spell)
 									(HighPrint 78 0)
-									)
+								)
 							)
 							(DAZZLE
 								(if (CastSpell spell) (CastDazz)
 									(HighPrint 78 1)
-									)
+								)
 							)
 							(FLAMEDART
 								(cond 
-									((not (cast contains: stag)) (event claimed: FALSE))
+									((not (cast contains: stag))
+										(event claimed: FALSE)
+									)
 									((CastSpell spell)
-										(Bset STAG_HURT)
+										(Bset fStagHurt)
 										(Face ego stag)
 										(RedrawCast)
-										(FlameCast stag)
+										(CastDart stag)
 									)
 								)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((Said 'throw/dagger,dagger')
-						(= temp1 (if (cast contains: stag) stag else 0))
+						(= targObj (if (cast contains: stag) stag else 0))
 						(if
 							(and
-								(KnifeCast temp1)
+								(ThrowKnife targObj)
 								(cast contains: stag)
 							)
-							(Bset STAG_HURT)
+							(Bset fStagHurt)
 							(Face ego stag)
 							(RedrawCast)
 						)
 					)
 					((Said 'throw/boulder')
-						(= temp1 (if (cast contains: stag) stag else 0))
-						(if
-						(and (RockCast temp1) (cast contains: stag))
-							(Bset STAG_HURT)
+						(= targObj (if (cast contains: stag) stag else 0))
+						(if (and (ThrowRock targObj) (cast contains: stag))
+							(Bset fStagHurt)
 							(Face ego stag)
 							(RedrawCast)
 						)
 					)
-					((Said 'climb,ride/buck') (if (Btst STAG_PRESENT)
+					((Said 'climb,ride/buck')
+						(if (Btst fStagHere)
 							(HighPrint 78 2)
 							;He's beyond your reach.
 							else
 							(HighPrint 78 3)
 							;Huh?
-							)
+						)
 					)
 					((Said 'look/buck,buck')
 						(HighPrint 78 4)
 						;You don't see a stag here.
 					)
 					((Said 'fight,kill,beat,chop/buck')
-						(if (Btst STAG_PRESENT)
-							(Bset STAG_HURT)
+						(if (Btst fStagHere)
+							(Bset fStagHurt)
 							(HighPrint 78 5)
 							;The stag seems to be magically protected.
 						else
@@ -200,10 +208,7 @@
 							;You see no Antwerps here.
 						)
 					)
-					(
-						(Said
-							'play,capture,kill,beat,get,attack,fight/antwerp,baby'
-						)
+					((Said 'play,capture,kill,beat,get,attack,fight/antwerp,baby')
 						(if (> (cast size?) 2)
 							(HighPrint 78 8)
 							;The bouncing baby Antwerps are all so cute, you can't bring yourself to interfere with their playing.
@@ -220,36 +225,34 @@
 )
 
 (instance stagScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ChangeGait MOVE_WALK 0)
+				(ChangeGait MOVE_WALK FALSE)
 				(User canControl: FALSE)
-				(if [theCycles 3]
-					(= local6 0)
-					(if [theCycles 2]
+				(if [stagProperties 3]
+					(= stagState 0)
+					(if [stagProperties 2]
 						(stag loop: 6 cycleSpeed: 3 setCycle: Forward)
 					else
 						(stag loop: 7 cycleSpeed: 3 setCycle: Forward)
 					)
-					(= cycles [theCycles 3])
+					(= cycles [stagProperties 3])
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(if [theCycles 3]
+				(if [stagProperties 3]
 					(stag setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
 			)
 			(2
-				(if [theCycles 3]
-					(= local6 2)
-					(if [theCycles 2]
+				(if [stagProperties 3]
+					(= stagState 2)
+					(if [stagProperties 2]
 						(stag loop: 4 cel: 7 cycleSpeed: 1 setCycle: BegLoop self)
 					else
 						(stag loop: 5 cel: 7 cycleSpeed: 1 setCycle: BegLoop self)
@@ -259,8 +262,8 @@
 				)
 			)
 			(3
-				(if [theCycles 2]
-					(= local6 4)
+				(if [stagProperties 2]
+					(= stagState 4)
 					(stag
 						loop: 2
 						cel: 0
@@ -275,7 +278,7 @@
 			)
 			(4
 				(User canControl: TRUE)
-				(= local6 6)
+				(= stagState 6)
 				(stag
 					loop: 1
 					cel: 0
@@ -292,14 +295,12 @@
 )
 
 (instance stagBolts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(User canControl: FALSE)
-				(if (== local6 0)
-					(= local6 1)
+				(if (== stagState 0)
+					(= stagState 1)
 					(stag setCycle: EndLoop self)
 				else
 					(self cue:)
@@ -307,17 +308,17 @@
 			)
 			(1
 				(cond 
-					((== local6 1)
-						(= local6 3)
-						(if [theCycles 2]
+					((== stagState 1)
+						(= stagState 3)
+						(if [stagProperties 2]
 							(stag loop: 4 cel: 7 cycleSpeed: 1 setCycle: BegLoop self)
 						else
 							(stag loop: 5 cel: 7 cycleSpeed: 1 setCycle: BegLoop self)
 						)
 					)
-					((== local6 2)
-						(= local6 3)
-						(if [theCycles 2]
+					((== stagState 2)
+						(= stagState 3)
+						(if [stagProperties 2]
 							(stag setCycle: BegLoop self)
 						else
 							(stag setCycle: BegLoop self)
@@ -328,10 +329,10 @@
 			)
 			(2
 				(cond 
-					([theCycles 2]
+					([stagProperties 2]
 						(cond 
-							((== local6 3)
-								(= local6 5)
+							((== stagState 3)
+								(= stagState 5)
 								(stag
 									loop: 2
 									cel: 0
@@ -341,15 +342,21 @@
 									setCycle: EndLoop self
 								)
 							)
-							((== local6 4) (= local6 5) (stag setCycle: EndLoop self))
+							((== stagState 4)
+								(= stagState 5)
+								(stag setCycle: EndLoop self)
+							)
 							(else (self cue:))
 						)
 					)
-					((== local6 3) (= local6 5) (self cue:))
+					((== stagState 3)
+						(= stagState 5)
+						(self cue:)
+					)
 				)
 			)
 			(3
-				(if (== local6 5)
+				(if (== stagState 5)
 					(stag
 						view: vStagJump
 						setLoop: 1
@@ -364,7 +371,7 @@
 			)
 			(4
 				(User canControl: TRUE)
-				(if (== local6 5)
+				(if (== stagState 5)
 					(stag
 						setStep: 10 9
 						setCycle: Forward
@@ -375,9 +382,13 @@
 				)
 			)
 			(5
-				(if (< (stag x?) -30) (self cue:))
+				(if (< (stag x?) -30)
+					(self cue:)
+				)
 			)
-			(6 (stag dispose:))
+			(6
+				(stag dispose:)
+			)
 		)
 	)
 )
@@ -388,11 +399,17 @@
 	)
 	
 	(method (doit)
-		(= gEgoObjY (ego distanceTo: self))
+		(= distToStag (ego distanceTo: self))
 		(if (!= script stagBolts)
 			(cond 
-				([theCycles 2] (if (< gEgoObjY 175) (self setScript: stagBolts)))
-				((< gEgoObjY 120) (self setScript: stagBolts))
+				([stagProperties 2]
+					(if (< distToStag 175)
+						(self setScript: stagBolts)
+					)
+				)
+				((< distToStag 120)
+					(self setScript: stagBolts)
+				)
 			)
 		)
 		(super doit:)
@@ -405,7 +422,7 @@
 				(Said 'look/buck,buck')
 			)
 			(event claimed: TRUE)
-			(switch local6
+			(switch stagState
 				(0
 					(HighPrint 78 10)
 					;The beautiful white stag is foraging for food.
@@ -423,11 +440,13 @@
 	)
 	
 	(method (getHurt)
-		(= missedDaggers (+ missedDaggers hitDaggers))
+		(+= missedDaggers hitDaggers)
 		(= hitDaggers 0)
 		(HighPrint 78 9)
 		;The stag looks more surprised than hurt.
-		(if (!= script stagBolts) (self setScript: stagBolts))
+		(if (!= script stagBolts)
+			(self setScript: stagBolts)
+		)
 	)
 )
 
@@ -440,12 +459,10 @@
 )
 
 (instance antwerped of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bclr ANTWERP_SKY)
+				(Bclr fAntwerpInSky)
 				(antFalls play:)
 				(User canControl: FALSE)
 				(ego
@@ -460,8 +477,8 @@
 				(User canControl: FALSE)
 				(antwerp
 					init:
-					ignoreActors: 1
-					ignoreHorizon: 1
+					ignoreActors: TRUE
+					ignoreHorizon: TRUE
 					illegalBits: 0
 					setLoop: 2
 					cel: 0
@@ -502,8 +519,7 @@
 			(saidEvent
 				(cond 
 					((super handleEvent: event))
-					(
-					(Said '[<at,around][/!*,forest,greenery,clearing]')
+					((Said '[<at,around][/!*,forest,greenery,clearing]')
 						(if (> (cast size?) 2)
 							(HighPrint 78 6)
 							;You seem to have caused an Antwerp POPulation EXPLOSION!
@@ -514,7 +530,7 @@
 					((Said 'look,search/')
 						(CenterPrint 78 13)
 						;Looking up, you can see a small, blue dot in the sky, getting bigger... and bigger... and BIGGER!
-						)
+					)
 					((Said 'use,lift,draw/blade,dagger,weapon')
 						(if (self state?)
 							(CenterPrint 78 14)
@@ -527,11 +543,11 @@
 					((Said 'cast/')
 						(CenterPrint 78 15)
 						;There's no time for that!
-						)
+					)
 					((Said 'run,escape/')
 						(CenterPrint 78 16)
 						;Where to? There is no escaping the hurtling blue blob.
-						)
+					)
 				)
 			)
 		)
@@ -564,7 +580,9 @@
 	)
 	
 	(method (doit)
-		(if (== (self cel?) 0) (babyBoing loop: 1 play:))
+		(if (== (self cel?) 0)
+			(babyBoing loop: 1 play:)
+		)
 		(super doit:)
 	)
 )
@@ -602,8 +620,6 @@
 )
 
 (instance splat of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -613,8 +629,8 @@
 			(1
 				(antwerp
 					init:
-					ignoreActors: 1
-					ignoreHorizon: 1
+					ignoreActors: TRUE
+					ignoreHorizon: TRUE
 					illegalBits: 0
 					setLoop: 2
 					cel: 0
@@ -627,61 +643,61 @@
 			(2
 				(antSplats play:)
 				(ego setCycle: BegLoop self)
-				(Bset ANTWERP_SPLIT)
+				(Bset fAntwerpSplit)
 				(antwerp setLoop: 5 setCycle: EndLoop)
 			)
 			(3
-				(= gEgoObjX (ego x?))
-				(= gEgoObjY_2 (ego y?))
+				(= antwerpX (ego x?))
+				(= antwerpY (ego y?))
 				(antwerp
 					setLoop: 5
 					cel: 0
 					setStep: 4 4
-					posn: gEgoObjX gEgoObjY_2
-					setMotion: MoveTo gEgoObjX (+ gEgoObjY_2 16)
+					posn: antwerpX antwerpY
+					setMotion: MoveTo antwerpX (+ antwerpY 16)
 					cycleSpeed: 1
 					setCycle: EndLoop
 				)
 				(a1
 					setLoop: 6
-					posn: gEgoObjX gEgoObjY_2
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (+ gEgoObjX 16) (+ gEgoObjY_2 22) self
+					setMotion: MoveTo (+ antwerpX 16) (+ antwerpY 22) self
 				)
 				(a2
 					setLoop: 7
-					posn: gEgoObjX gEgoObjY_2
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (- gEgoObjX 10) (- gEgoObjY_2 10)
+					setMotion: MoveTo (- antwerpX 10) (- antwerpY 10)
 				)
 				(a3
 					setLoop: 6
-					posn: gEgoObjX gEgoObjY_2
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (+ gEgoObjX 8) (+ gEgoObjY_2 15)
+					setMotion: MoveTo (+ antwerpX 8) (+ antwerpY 15)
 				)
 				(if (> howFast slow)
 					(a4
 						setLoop: 7
-						posn: gEgoObjX gEgoObjY_2
+						posn: antwerpX antwerpY
 						ignoreActors:
 						init:
 						setCycle: Forward
-						setMotion: MoveTo (- gEgoObjX 14) (- gEgoObjY_2 5)
+						setMotion: MoveTo (- antwerpX 14) (- antwerpY 5)
 					)
 					(a5
 						setLoop: 6
-						posn: gEgoObjX gEgoObjY_2
+						posn: antwerpX antwerpY
 						ignoreActors:
 						init:
 						setCycle: Forward
-						setMotion: MoveTo (+ gEgoObjX 16) (- gEgoObjY_2 10)
+						setMotion: MoveTo (+ antwerpX 16) (- antwerpY 10)
 					)
 				)
 			)

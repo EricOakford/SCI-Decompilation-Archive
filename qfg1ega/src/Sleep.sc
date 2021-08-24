@@ -43,7 +43,7 @@
 			(= sleptHours
 				(/
 					(mod (- (+ Clock GAMEDAY) oldTime) GAMEDAY)
-					150
+					GAMEHOUR
 				)
 			)
 			(= [egoStats STAMINA] (MaxStamina))
@@ -54,7 +54,9 @@
 				(TakeDamage (- (* sleptHours 2)))
 				(UseMana (- (* sleptHours 2)))
 			)
-			(if (> oldTime Clock) (NextDay))
+			(if (> oldTime Clock)
+				(NextDay)
+			)
 			(if
 				(not
 					(if

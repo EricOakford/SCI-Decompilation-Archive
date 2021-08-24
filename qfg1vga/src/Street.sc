@@ -13,7 +13,7 @@
 
 (local
 	timesPickedLock
-	local1
+	timesClimbedWall
 )
 (instance Street of Region
 	(method (init)
@@ -30,7 +30,7 @@
 		(super init: &rest)
 	)
 	
-	(method (doVerb theVerb &tmp theControl)
+	(method (doVerb theVerb &tmp thisControl)
 		(cond 
 			((== theVerb V_SLEEP)
 				(cond 
@@ -49,7 +49,7 @@
 				)
 			)
 			((or (== theVerb V_LOCKPICK) (== theVerb V_THIEFKIT))
-				(= theControl (ego onControl: origin))
+				(= thisControl (ego onControl: origin))
 				(cond 
 					((not Night)
 						(messager say: N_STREET V_LOCKPICK C_DAY 1 0 STREET)
@@ -57,10 +57,10 @@
 					((not [egoStats PICK])
 						(messager say: N_STREET V_LOCKPICK C_NO_PICK 1 0 STREET)
 					)
-					((== theControl cYELLOW)
+					((== thisControl cYELLOW)
 						(curRoom notify: 1)
 					)
-					((or (== theControl cLRED) (== theControl cLGREEN) (== theControl cLMAGENTA))
+					((or (== thisControl cLRED) (== thisControl cLGREEN) (== thisControl cLMAGENTA))
 						(if (<= (Random 3 10) (++ timesPickedLock))
 							(EgoDead C_DIE_BUSTED_PICK_LOCK C_DIE_BUSTED_PICK_LOCK_TITLE 1 0 503)
 						else
@@ -81,8 +81,6 @@
 )
 
 (instance egoSleepsInStreet of Script
-	(properties)
-	
 	(method (changeState newState &tmp nextRoom)
 		(switch (= state newState)
 			(0

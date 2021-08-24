@@ -16,8 +16,8 @@
 )
 
 (local
-	local0
-	stoneMoved
+	incrMove
+	stoneOpened
 	sleepX
 	sleepY
 	timesReadStone
@@ -29,23 +29,25 @@
 
 (procedure (GetCalmScroll)
 	(cond 
-		((Btst LEARNED_CALM)
+		((Btst fLearnedCalm)
 			(HighPrint 10 1)
 			;The scroll is no longer here.
-			)
-		((not stoneMoved)
+		)
+		((not stoneOpened)
 			(HighPrint 10 2)
 			;You see no scroll here.
-			)
-		((not (ego inRect: 92 126 150 149)) (NotClose))
+		)
+		((not (ego inRect: 92 126 150 149))
+			(NotClose)
+		)
 		(else
 			(HighPrint 10 3)
 			;The scroll vanishes even as you read the magical runes upon it.
 			;You now have the knowledge to cast a "Calm" spell.
-			(Bset LEARNED_CALM)
+			(Bset fLearnedCalm)
 			(ego get: iPaper 1)
 			(ego learn: CALM 10)
-			(SolvePuzzle POINTS_LEARNCALM 4 1)
+			(SolvePuzzle f10LearnCalm 4 MAGIC_USER)
 		)
 	)
 )
@@ -119,7 +121,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_ERANASPEACE)
+		(Bset fBeenIn10)
 		(super dispose:)
 	)
 	
@@ -197,14 +199,14 @@
 									(Said '/boulder,brick')
 									(MouseClaimed magicStone event shiftDown)
 								)
-								(if stoneMoved
+								(if stoneOpened
 									(HighPrint 10 24)
 									;The stone has been moved.
-									else
+								else
 									(HighPrint 10 25)
 									;The large stone appears to be ancient and deliberately placed.
 									;Marks carved into the stone almost look like writing.
-									)
+								)
 							)
 							((Said '/mark,word,carving,mark')
 								(if (< (ego distanceTo: magicStone) 50)
@@ -220,19 +222,25 @@
 									(NotClose)
 								)
 							)
-							((Said '/scroll') (GetCalmScroll))
+							((Said '/scroll')
+								(GetCalmScroll)
+							)
 							((Said '/chasm')
 								(cond 
-									((not stoneMoved)
+									((not stoneOpened)
 										(HighPrint 10 26)
 										;You see no holes.
-										)
-									((not (Btst LEARNED_CALM)) (RevealCalmScroll))
+									)
+									((not (Btst fLearnedCalm))
+										(RevealCalmScroll)
+									)
 									((ego inRect: 80 115 160 160)
 										(HighPrint 10 27)
 										;The hole that was beneath the stone is empty.
-										)
-									(else (NotClose))
+									)
+									(else
+										(NotClose)
+									)
 								)
 							)
 						)
@@ -253,7 +261,9 @@
 									(NotClose)
 								)
 							)
-							((Said '/scroll') (GetCalmScroll))
+							((Said '/scroll')
+								(GetCalmScroll)
+							)
 						)
 					)
 					((Said 'open,force,move/brick,boulder')
@@ -261,18 +271,20 @@
 					)
 					((Said 'eat/apple')
 						(cond 
-							((> freeMeals 2) (DontNeedFruit))
+							((> freeMeals 2)
+								(DontNeedFruit)
+							)
 							((not (ego inRect: 109 88 223 106))
 								(HighPrint 10 28)
 								;Go over to the tree and pick some.
-								)
+							)
 							(else
 								(HighPrint 10 29)
 								;The sweet, juicy fruit of the tree is amazingly satisfying and refreshing.
 								(= freeMeals 4)
 								(Bclr fHungry)
 								(Bclr fStarving)
-								(SolvePuzzle POINTS_EATERANAFRUIT 2)
+								(SolvePuzzle f10EatMeadowFruit 2)
 							)
 						)
 					)
@@ -284,11 +296,15 @@
 							)
 							((Said '/apple')
 								(cond 
-									((not (ego inRect: 109 88 223 106)) (NotClose))
-									((> freeMeals 2) (DontNeedFruit))
+									((not (ego inRect: 109 88 223 106))
+										(NotClose)
+									)
+									((> freeMeals 2)
+										(DontNeedFruit)
+									)
 									(else (HighPrint 10 31)
 										;The fruit is very soft and juicy.   It would be impossible to keep in your pack.
-										)
+									)
 								)
 							)
 							((Said '/grass')
@@ -302,14 +318,14 @@
 								(GetCalmScroll)
 							)
 							((Said '/flower')
-								(if (Btst PICKED_ERANA_FLOWERS)
+								(if (Btst fPickedEranaFlowers)
 									(HighPrint 10 33)
 									;You take another handful of the lovely, fragrant flowers.
 								else
 									(HighPrint 10 34)
 									;As you pick a variety of the sweet-smelling flowers, they seem to glow in your hands.  You put them safely away.
 								)
-								(Bset PICKED_ERANA_FLOWERS)
+								(Bset fPickedEranaFlowers)
 								(ego get: iFlowers 5)
 							)
 						)
@@ -322,20 +338,24 @@
 						(switch (= spell (SaidSpell event))
 							(OPEN
 								(cond 
-									(stoneMoved
+									(stoneOpened
 										(HighPrint 10 36)
 										;There is no further purpose in casting the Open spell.
-										)
-									((CastSpell spell) (ego setScript: moveStoneAway))
+									)
+									((CastSpell spell)
+										(ego setScript: moveStoneAway)
+									)
 								)
 							)
 							(DETMAGIC
 								(if (CastSpell spell)
 									(HighPrint 10 37)
 									;There is an aura of magic throughout this meadow.  It seems to be benevolent and restorative.
-									)
+								)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((or (Said 'nap') (Said 'go[<to]/nap'))
@@ -344,14 +364,14 @@
 							;You just can't sleep during the daytime.
 							(DisposeScript 7)
 						else
-							(SolvePuzzle POINTS_SLEEPERANA 5 MAGIC_USER)
+							(SolvePuzzle f10SleepInMeadow 5 MAGIC_USER)
 							(ego setScript: goToSleep)
 						)
 					)
 					((Said 'climb')
 						(HighPrint 10 39)
 						;The rock faces are slippery with melted snow, and there is no need to climb the little tree.
-						)
+					)
 					((Said 'throw')
 						(HighPrint 10 40)
 						;The atmosphere here is peaceful and calm.   There is no need to throw anything.
@@ -363,7 +383,6 @@
 )
 
 (instance goToSleep of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -395,16 +414,21 @@
 )
 
 (instance moveStoneAway of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: vEgoMagicDetect loop: 0 cel: 0 cycleSpeed: 1 setCycle: EndLoop)
+				(ego
+					view: vEgoMagicDetect
+					loop: 0
+					cel: 0
+					cycleSpeed: 1
+					setCycle: EndLoop
+				)
 				(= cycles 15)
 			)
 			(1
-				(++ local0)
+				(++ incrMove)
 				(if (> (ego y?) 140)
 					(magicStone
 						posn: (+ (magicStone x?) 5) (- (magicStone y?) 2)
@@ -417,11 +441,13 @@
 				(= cycles 1)
 			)
 			(2
-				(if (== local0 6)
-					(= local0 0)
+				(if (== incrMove 6)
+					(= incrMove 0)
 					(HandsOn)
-					(= stoneMoved TRUE)
-					(if (not (Btst LEARNED_CALM)) (RevealCalmScroll))
+					(= stoneOpened TRUE)
+					(if (not (Btst fLearnedCalm))
+						(RevealCalmScroll)
+					)
 					(NormalEgo)
 					(ego loop: 2 setScript: 0)
 				else

@@ -851,7 +851,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_BRIGAND_JESTER)
+		(Bset fBeenIn96)
 		(= yesNoTimer 0)
 		(super dispose:)
 	)

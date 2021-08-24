@@ -24,15 +24,11 @@
 	local11 =  5
 )
 (procedure (AddFightScript &tmp i)
-	;EO: Tweaked to prevent memory fragmentation
-	; and to allow the bear to attack
-	(= i 0)
-	(while (< i 2)
+	(for ((= i 0)) (< i 2) ((++ i))
 		(= [fightScript i] (Clone aFightScript))
 		([bearArm i]
-			setScript: [fightScript i] 0 ;(= [fightScript i] (Clone aFightScript))
+			setScript: [fightScript i] 0 
 		)
-		(++ i)
 	)
 )
 

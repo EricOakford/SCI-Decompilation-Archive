@@ -32,7 +32,9 @@
 		(self setLocales: FOREST)
 		(NormalEgo)
 		(ego illegalBits: (| cWHITE cLRED))
-		(if (not monsterNum) (ego init:))
+		(if (not monsterNum)
+			(ego init:)
+		)
 		(switch prevRoomNum
 			(10
 				(ego posn: 140 91 setMotion: MoveTo 140 190)
@@ -59,7 +61,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_12)
+		(Bset fBeenIn12)
 		(super dispose:)
 	)
 )

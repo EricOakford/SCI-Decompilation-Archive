@@ -13,8 +13,6 @@
 	atClearing
 )
 (instance Forest of Locale
-	(properties)
-	
 	(method (init &tmp pic soundNum)
 		(super init: &rest)
 		(Load VIEW vEgoThrowing)
@@ -58,9 +56,20 @@
 					((super handleEvent: event))
 					((Said 'look>')
 						(cond 
-							(
-							(Said '[<at,around][/!*,forest,greenery,clearing]') (if atClearing (HighPrint 804 0) else (HighPrint 804 1)))
-							((Said '[<down][/ground,needle,moss,grass]') (if atClearing (HighPrint 804 2) else (HighPrint 804 3)))
+							((Said '[<at,around][/!*,forest,greenery,clearing]')
+								(if atClearing
+									(HighPrint 804 0)
+								else
+									(HighPrint 804 1)
+								)
+							)
+							((Said '[<down][/ground,needle,moss,grass]')
+								(if atClearing
+									(HighPrint 804 2)
+								else
+									(HighPrint 804 3)
+								)
+							)
 							((Said '[<up][/sky,cloud,star,moon]')
 								(if Night
 									(HighPrint 804 4)
@@ -68,14 +77,34 @@
 									(HighPrint 804 5)
 								)
 							)
-							((Said '/birch,tree') (HighPrint 804 6))
-							((Said '/bush') (HighPrint 804 7))
-							((Said '/boulder') (if atClearing (HighPrint 804 8) else (HighPrint 804 9)))
-							((Said '/hill,cliff,peak,pass') (if atClearing (HighPrint 804 8) else (HighPrint 804 10)))
-							((Said '/cave') (HighPrint 804 11))
+							((Said '/birch,tree')
+								(HighPrint 804 6)
+							)
+							((Said '/bush')
+								(HighPrint 804 7)
+							)
+							((Said '/boulder')
+								(if atClearing
+									(HighPrint 804 8)
+								else
+									(HighPrint 804 9)
+								)
+							)
+							((Said '/hill,cliff,peak,pass')
+								(if atClearing
+									(HighPrint 804 8)
+								else
+									(HighPrint 804 10)
+								)
+							)
+							((Said '/cave')
+								(HighPrint 804 11)
+							)
 						)
 					)
-					((Said 'climb') (HighPrint 804 12))
+					((Said 'climb')
+						(HighPrint 804 12)
+					)
 					(
 						(or
 							(Said 'get/boulder,brick')
@@ -83,7 +112,9 @@
 						)
 						(ego setScript: (ScriptID 103 0))
 					)
-					((Said 'kiss/tree') (HighPrint 804 13))
+					((Said 'kiss/tree')
+						(HighPrint 804 13)
+					)
 				)
 			)
 		)

@@ -121,7 +121,7 @@
 			stopUpd:
 		)
 		(coin ignoreActors: 1 setLoop: 6 setPri: 6 init:)
-		(if (not (Btst VISITED_ALLEY_NIGHT)) (RedrawCast) (LookAround))
+		(if (not (Btst fBeenIn334)) (RedrawCast) (LookAround))
 	)
 	
 	(method (doit)
@@ -134,7 +134,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_ALLEY_NIGHT)
+		(Bset fBeenIn334)
 		(super dispose:)
 	)
 	
@@ -242,7 +242,7 @@
 				thievesAmbush
 				(> (ego y?) 143)
 				(not thievesSatisfied)
-				(not (Btst VISITED_ALLEY_NIGHT))
+				(not (Btst fBeenIn334))
 			)
 			(= thievesAmbush 0)
 			(= register 0)

@@ -43,7 +43,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_PATH_66)
+		(Bset fBeenIn66)
 		(super dispose:)
 	)
 )

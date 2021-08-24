@@ -50,7 +50,11 @@
 		(cond 
 			((= ret (event claimed?)))
 			((not (if s1 else s2)))
-			((== (event type?) mouseDown) (event claimed: TRUE) (self cue:) (= ret TRUE))
+			((== (event type?) mouseDown)
+				(event claimed: TRUE)
+				(self cue:)
+				(= ret TRUE)
+			)
 			(
 				(and
 					(== (event type?) keyDown)

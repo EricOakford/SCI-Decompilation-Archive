@@ -2,8 +2,8 @@
 (script# 77)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastDazz)
 (use Target)
@@ -19,10 +19,10 @@
 )
 
 (local
-	[theCycles 4]
-	local4
-	local5
-	local6
+	[stagProperties 4]
+	distToStag
+	stagIsHere
+	stagState
 	spellCast
 )
 (instance rm77 of Room
@@ -38,8 +38,7 @@
 		(if (and Night (== prevRoomNum 70))
 			(Load SCRIPT 295)
 		)
-		(if
-		(and (not Night) (!= prevRoomNum 76) (Btst STAG_PRESENT))
+		(if (and (not Night) (!= prevRoomNum 76) (Btst fStagHere))
 			(Load VIEW vStag)
 		)
 		(super init:)
@@ -47,38 +46,39 @@
 		(self setLocales: FOREST)
 		(NormalEgo)
 		(cond 
-			((and (not (Btst MET_DRYAD)) (not monsterNum)) (Bset STAG_PRESENT) (= monsterNum FALSE))
-			(
-			(and (Btst DRYAD_AGREED_HELP) (not monsterNum) (not (Btst STAG_PRESENT)))
+			((and (not (Btst fMetDryad)) (not monsterNum))
+				(Bset fStagHere)
+				(= monsterNum FALSE)
+			)
+			((and (Btst fAgreedToHelpDryad) (not monsterNum) (not (Btst fStagHere)))
 			(switch (Random 0 1)
-				(0 (Bclr STAG_PRESENT))
-				(1 (Bset STAG_PRESENT))
+				(0 (Bclr fStagHere))
+				(1 (Bset fStagHere))
 			))
 		)
 		(ego init:)
-		(if
-		(and (not Night) (!= prevRoomNum 76) (Btst STAG_PRESENT))
-			(= [theCycles 0] (Random 90 116))
-			(= [theCycles 1] (Random 132 154))
-			(= [theCycles 2] (Random 0 1))
-			(= [theCycles 3] (Random 1 30))
+		(if (and (not Night) (!= prevRoomNum 76) (Btst fStagHere))
+			(= [stagProperties 0] (Random 90 116))
+			(= [stagProperties 1] (Random 132 154))
+			(= [stagProperties 2] (Random 0 1))
+			(= [stagProperties 3] (Random 1 30))
 			(stag
 				view: vStag
-				x: [theCycles 0]
-				y: [theCycles 1]
+				x: [stagProperties 0]
+				y: [stagProperties 1]
 				setScript: stagScript
 				init:
 			)
 		else
-			(Bclr STAG_PRESENT)
+			(Bclr fStagHere)
 		)
 		(switch prevRoomNum
 			(70
 				(ego posn: 180 92 setMotion: MoveTo 180 110)
-				(if (Btst GOT_FAIRIES_ATTENTION)
+				(if (Btst fFaeryAttention)
 					(User canControl: FALSE)
 					(User canInput: FALSE)
-					(Bclr GOT_FAIRIES_ATTENTION)
+					(Bclr fFaeryAttention)
 					(self setScript: (ScriptID 295 0))
 				)
 			)
@@ -89,19 +89,19 @@
 				(ego posn: 318 140 setMotion: MoveTo 253 140)
 			)
 		)
-		(= local6 0)
-		(= local5 (Btst STAG_PRESENT))
+		(= stagState 0)
+		(= stagIsHere (Btst fStagHere))
 		(addToPics add: southBush eachElementDo: #init doit:)
 	)
 	
 	(method (doit)
 		(switch (ego edgeHit?)
 			(EAST
-				(Bclr STAG_PRESENT)
+				(Bclr fStagHere)
 				(curRoom newRoom: 78)
 			)
 			(NORTH
-				(Bclr STAG_PRESENT)
+				(Bclr fStagHere)
 				(curRoom newRoom: 70)
 			)
 		)
@@ -109,7 +109,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_STAG_77)
+		(Bset fBeenIn77)
 		(super dispose:)
 	)
 	
@@ -123,7 +123,7 @@
 								(if (CastSpell spellCast)
 									(HighPrint 77 0)
 									;You detect a strange, magical aura in this place.
-									)
+								)
 							)
 							(DAZZLE
 								(if (CastSpell spellCast)
@@ -136,20 +136,24 @@
 								(cond 
 									((not (cast contains: stag)) (event claimed: FALSE))
 									((CastSpell spellCast)
-										(Bset STAG_HURT)
+										(Bset fStagHurt)
 										(Face ego stag)
 										(RedrawCast)
-										(FlameCast stag)
+										(CastDart stag)
 									)
 								)
 							)
-							(else  (event claimed: FALSE))
+							(else 
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((Said 'throw/dagger,dagger')
 						(= temp0 (if (cast contains: stag) stag else 0))
-						(if (KnifeCast temp0)
-							(if (Btst STAG_PRESENT) (Bset STAG_HURT))
+						(if (ThrowKnife temp0)
+							(if (Btst fStagHere)
+								(Bset fStagHurt)
+							)
 							(if (cast contains: stag)
 								(Face ego stag)
 								(RedrawCast)
@@ -158,21 +162,27 @@
 					)
 					((Said 'throw/boulder')
 						(= temp0 (if (cast contains: stag) stag else 0))
-						(if (RockCast temp0)
-							(if (Btst STAG_PRESENT) (Bset STAG_HURT))
+						(if (ThrowRock temp0)
+							(if (Btst fStagHere)
+								(Bset fStagHurt)
+							)
 							(if (cast contains: stag)
 								(Face ego stag)
 								(RedrawCast)
 							)
 						)
 					)
-					((Said 'climb,ride/buck,buck') (if (Btst STAG_PRESENT)
+					((Said 'climb,ride/buck,buck')
+						(if (Btst fStagHere)
 							(HighPrint 77 2)
 							;He's beyond your reach.
-							else (CantDo)))
+						else
+							(CantDo)
+						)
+					)
 					((Said 'fight,kill,beat,chop/buck,buck')
-						(if (Btst STAG_PRESENT)
-							(Bset STAG_HURT)
+						(if (Btst fStagHere)
+							(Bset fStagHurt)
 							(HighPrint 77 3)
 							;The stag seems to be magically protected.
 						else
@@ -191,36 +201,34 @@
 )
 
 (instance stagScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ChangeGait MOVE_WALK 0)
+				(ChangeGait MOVE_WALK FALSE)
 				(User canControl: FALSE)
-				(if [theCycles 3]
-					(= local6 0)
-					(if [theCycles 2]
+				(if [stagProperties 3]
+					(= stagState 0)
+					(if [stagProperties 2]
 						(stag loop: 6 cycleSpeed: 3 setCycle: Forward)
 					else
 						(stag loop: 7 cycleSpeed: 3 setCycle: Forward)
 					)
-					(= cycles [theCycles 3])
+					(= cycles [stagProperties 3])
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(if [theCycles 3]
+				(if [stagProperties 3]
 					(stag setCycle: EndLoop self)
 				else
 					(self cue:)
 				)
 			)
 			(2
-				(if [theCycles 3]
-					(= local6 2)
-					(if [theCycles 2]
+				(if [stagProperties 3]
+					(= stagState 2)
+					(if [stagProperties 2]
 						(stag loop: 4 cel: 7 cycleSpeed: 1 setCycle: BegLoop self)
 					else
 						(stag loop: 5 cel: 7 cycleSpeed: 1 setCycle: BegLoop self)
@@ -230,8 +238,8 @@
 				)
 			)
 			(3
-				(if [theCycles 2]
-					(= local6 4)
+				(if [stagProperties 2]
+					(= stagState 4)
 					(stag
 						loop: 2
 						cel: 0
@@ -246,7 +254,7 @@
 			)
 			(4
 				(User canControl: TRUE)
-				(= local6 6)
+				(= stagState 6)
 				(stag
 					loop: 1
 					cel: 0
@@ -256,7 +264,7 @@
 			)
 			(5
 				(User canControl: TRUE)
-				(= local5 0)
+				(= stagIsHere FALSE)
 				(stag dispose:)
 			)
 		)
@@ -264,14 +272,12 @@
 )
 
 (instance stagBolts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(User canControl: FALSE)
-				(if (== local6 0)
-					(= local6 1)
+				(if (== stagState 0)
+					(= stagState 1)
 					(stag setCycle: EndLoop self)
 				else
 					(self cue:)
@@ -279,17 +285,17 @@
 			)
 			(1
 				(cond 
-					((== local6 1)
-						(= local6 3)
-						(if [theCycles 2]
+					((== stagState 1)
+						(= stagState 3)
+						(if [stagProperties 2]
 							(stag loop: 4 cel: 7 cycleSpeed: 1 setCycle: BegLoop self)
 						else
 							(stag loop: 5 cel: 7 cycleSpeed: 1 setCycle: BegLoop self)
 						)
 					)
-					((== local6 2)
-						(= local6 3)
-						(if [theCycles 2]
+					((== stagState 2)
+						(= stagState 3)
+						(if [stagProperties 2]
 							(stag setCycle: BegLoop self)
 						else
 							(stag setCycle: BegLoop self)
@@ -300,10 +306,10 @@
 			)
 			(2
 				(cond 
-					([theCycles 2]
+					([stagProperties 2]
 						(cond 
-							((== local6 3)
-								(= local6 5)
+							((== stagState 3)
+								(= stagState 5)
 								(stag
 									loop: 2
 									cel: 0
@@ -313,15 +319,23 @@
 									setCycle: EndLoop self
 								)
 							)
-							((== local6 4) (= local6 5) (stag setCycle: EndLoop self))
-							(else (self cue:))
+							((== stagState 4)
+								(= stagState 5)
+								(stag setCycle: EndLoop self)
+							)
+							(else
+								(self cue:)
+							)
 						)
 					)
-					((== local6 3) (= local6 5) (self cue:))
+					((== stagState 3)
+						(= stagState 5)
+						(self cue:)
+					)
 				)
 			)
 			(3
-				(if (== local6 5)
+				(if (== stagState 5)
 					(stag
 						view: vStagJump
 						setLoop: 1
@@ -336,7 +350,7 @@
 			)
 			(4
 				(User canControl: TRUE)
-				(if (== local6 5)
+				(if (== stagState 5)
 					(stag
 						setStep: 10 9
 						setCycle: Forward
@@ -360,11 +374,17 @@
 	)
 	
 	(method (doit)
-		(= local4 (ego distanceTo: self))
+		(= distToStag (ego distanceTo: self))
 		(if (!= script stagBolts)
 			(cond 
-				([theCycles 2] (if (< local4 175) (self setScript: stagBolts)))
-				((< local4 120) (self setScript: stagBolts))
+				([stagProperties 2]
+					(if (< distToStag 175)
+						(self setScript: stagBolts)
+					)
+				)
+				((< distToStag 120)
+					(self setScript: stagBolts)
+				)
 			)
 		)
 		(super doit:)
@@ -377,25 +397,25 @@
 				(Said 'look/buck,buck')
 			)
 			(event claimed: TRUE)
-			(switch local6
+			(switch stagState
 				(0
 					(HighPrint 77 6)
 					;The beautiful white stag is foraging for food.
-					)
+				)
 				(5
 					(HighPrint 77 7)
 					;The white stag takes a mighty leap.
-					)
+				)
 				(else
 					(HighPrint 77 8)
 					;You seem to have startled the white stag.
-					)
+				)
 			)
 		)
 	)
 	
 	(method (getHurt)
-		(= missedDaggers (+ missedDaggers hitDaggers))
+		(+= missedDaggers hitDaggers)
 		(= hitDaggers 0)
 		(HighPrint 77 5)
 		;The stag looks more surprised than hurt.

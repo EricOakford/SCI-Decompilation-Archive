@@ -69,7 +69,9 @@
 		(StatusLine enable:)
 		(self setLocales: FOREST)
 		(NormalEgo)
-		(if (not monsterNum) (ego init:))
+		(if (not monsterNum)
+			(ego init:)
+		)
 		(switch prevRoomNum
 			(73
 				(ego posn: 180 92 setMotion: MoveTo 180 190)
@@ -104,7 +106,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_80)
+		(Bset fBeenIn80)
 		(super dispose:)
 	)
 )
@@ -121,7 +123,6 @@
 )
 
 (instance egoLoses of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

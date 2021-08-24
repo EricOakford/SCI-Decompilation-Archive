@@ -2,8 +2,8 @@
 (script# 94)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastOpen)
 (use CastDazz)
@@ -607,7 +607,7 @@
 		(archer4 init: stopUpd:)
 		(= archersAreAsleep 1)
 		(if (and (not (Btst BRIGANDS_UNAWARE)) (Btst DEFEATED_MINOTAUR))
-			(Bset VISITED_BRIGAND_COURTYARD)
+			(Bset fBeenIn94)
 			(= archersAreAsleep 0)
 			(ArchersAttack 1)
 		)
@@ -962,7 +962,7 @@
 									)
 								)
 								(FLAMEDART
-									(FlameCast 0)
+									(CastDart 0)
 									(ArchersAttack 0)
 								)
 								(CALM
@@ -994,8 +994,8 @@
 							)
 						)
 					)
-					((Said 'throw/boulder') (if (RockCast 0) (ArchersAttack 0)))
-					((Said 'throw/dagger') (if (KnifeCast 0) (ArchersAttack 0)))
+					((Said 'throw/boulder') (if (ThrowRock 0) (ArchersAttack 0)))
+					((Said 'throw/dagger') (if (ThrowKnife 0) (ArchersAttack 0)))
 					(
 					(Said 'step,hop,climb[/above,rope,string,string]')
 						(cond 

@@ -13,11 +13,11 @@
 (local
 	local0
 )
-(procedure (localproc_000c &tmp temp0)
-	(while (not ((= temp0 (Event new: 5)) type?))
-		(temp0 dispose:)
+(procedure (localproc_000c &tmp evt)
+	(while (not ((= evt (Event new: (| mouseDown keyDown))) type?))
+		(evt dispose:)
 	)
-	(temp0 dispose:)
+	(evt dispose:)
 )
 
 (instance rm302 of Room
@@ -51,7 +51,11 @@
 					{Asleep at the Hero's Tale Inn.\0AThe sleep heals and refreshes you.}
 				)
 				(= textColor (if (< numColors 16) vWHITE else vLMAGENTA))
-				(Display str 105 300 106 200 100 80 133 102 textColor)
+				(Display str
+					p_font 300
+					p_width 200
+					p_at 80 133
+					p_color textColor)
 				(localproc_000c)
 				(= cycles 2)
 			)

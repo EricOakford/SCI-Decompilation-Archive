@@ -35,7 +35,7 @@
 					else
 						(ego illegalBits: (| cWHITE cLRED))
 					)
-					(if (not (if (Btst VISITED_BRIGAND_GATE) else (Btst DEFEATED_MINOTAUR)))
+					(if (not (if (Btst fBeenIn93) else (Btst DEFEATED_MINOTAUR)))
 						(HighPrint 271 1)
 						;"Grumble Grumble Grumble.  Stupid guard duty, third time this week.  Why always me?  Grumble Grumble Grumble."
 					)

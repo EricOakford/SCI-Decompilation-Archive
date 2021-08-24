@@ -3,8 +3,8 @@
 (include game.sh)
 (use Main)
 (use Sleep)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastDazz)
 (use Target)
@@ -34,7 +34,7 @@
 	eatOffGround
 	dryadHostile
 	attackedStag
-	local5
+	spitCount
 	castFlame
 )
 (procedure (PickUpAcorn)
@@ -56,7 +56,7 @@
 
 (procedure (SayNo)
 	(HandsOff)
-	(if (Btst DRYAD_AGREED_HELP)
+	(if (Btst fAgreedToHelpDryad)
 		(HighPrint 76 3)
 		;"Until you have done so, you are only intruding on my concentration."
 	else
@@ -114,7 +114,7 @@
 	)
 	
 	(method (getHurt)
-		(= missedDaggers (+ missedDaggers hitDaggers))
+		(+= missedDaggers hitDaggers)
 		(= hitDaggers 0)
 		(HighPrint 76 6)
 		;The stag looks more surprised than hurt.
@@ -145,7 +145,7 @@
 	(method (init)
 		(if (not Night)
 			(LoadMany VIEW vDryad vEgoKilledByDryad)
-			(if (or (Btst SMASHED_FLOWER1) (Btst SMASHED_FLOWER2) (Btst SMASHED_FLOWER3))
+			(if (or (Btst fKilledFlower1) (Btst fKilledFlower2) (Btst fKilledFlower3))
 				(Load VIEW vEgoCatchSeed)
 				(LoadMany SOUND (SoundFX 18) (SoundFX 27))
 			)
@@ -155,12 +155,12 @@
 		)
 		(LoadMany VIEW vDryadRoom vEgoGetFaeryDust vEgoThrowing)
 		(LoadMany SOUND 97 98)
-		(if (Btst STAG_PRESENT) (Load VIEW vStag))
+		(if (Btst fStagHere) (Load VIEW vStag))
 		(super init:)
 		(bush ignoreActors: init: stopUpd: addToPic:)
 		(StatusLine enable:)
 		(NormalEgo)
-		(ChangeGait MOVE_WALK 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(= yesNoTimer 0)
 		(if (not Night)
 			(spitSound number: (SoundFX 18) init:)
@@ -175,7 +175,7 @@
 				hide:
 			)
 		)
-		(if (and (not Night) (Btst STAG_PRESENT))
+		(if (and (not Night) (Btst fStagHere))
 			(stag
 				view: vStag
 				x: 318
@@ -186,7 +186,7 @@
 			)
 		else
 			(ego posn: 318 130 init: setMotion: MoveTo 290 130)
-			(Bclr STAG_PRESENT)
+			(Bclr fStagHere)
 			(= dryadState dryadAvailable)
 		)
 		(miscSound init: play:)
@@ -194,8 +194,7 @@
 	
 	(method (doit)
 		(cond 
-			(
-			(and attackedStag (not (ego script?)) (< (stag x?) 50))
+			((and attackedStag (not (ego script?)) (< (stag x?) 50))
 				(= attackedStag 0)
 				(HighPrint 76 7)
 				;The stag is startled by your action.
@@ -214,11 +213,19 @@
 			)
 		)
 		(cond 
-			((> yesNoTimer 1) (-- yesNoTimer))
-			((== yesNoTimer 1) (= yesNoTimer 0) (SayNo))
+			((> yesNoTimer 1)
+				(-- yesNoTimer)
+			)
+			((== yesNoTimer 1)
+				(= yesNoTimer 0)
+				(SayNo)
+			)
 		)
 		(cond 
-			((and (== (ego edgeHit?) 2) (>= dryadState 1)) (Bclr STAG_PRESENT) (curRoom newRoom: 77))
+			((and (== (ego edgeHit?) EAST) (>= dryadState dryadAvailable))
+				(Bclr fStagHere)
+				(curRoom newRoom: 77)
+			)
 			(
 				(and
 					(< (ego x?) 200)
@@ -226,11 +233,11 @@
 					(not Night)
 					(or
 						castFlame
-						(not (Btst DISPEL_LEARNED_RECIPE))
-						(Btst STAG_HURT)
-						(Btst SMASHED_FLOWER1)
-						(Btst SMASHED_FLOWER2)
-						(Btst SMASHED_FLOWER3)
+						(not (Btst fLearnedDispel))
+						(Btst fStagHurt)
+						(Btst fKilledFlower1)
+						(Btst fKilledFlower2)
+						(Btst fKilledFlower3)
 					)
 				)
 				(= dryadState dryadHere)
@@ -241,7 +248,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_DRYAD)
+		(Bset fBeenIn76)
 		(super dispose:)
 	)
 	
@@ -253,7 +260,7 @@
 						((Said 'affirmative,please')
 							(= yesNoTimer 0)
 							(HandsOff)
-							(if (Btst DRYAD_AGREED_HELP)
+							(if (Btst fAgreedToHelpDryad)
 								(HighPrint 76 8)
 								;"Give the seed to me."
 								(dryad x: (+ (dryad x?) 6) setLoop: 4 setCycle: EndLoop)
@@ -267,7 +274,7 @@
 									(dryad setScript: intoTree)
 								)
 							else
-								(SolvePuzzle POINTS_AGREETOHELPDRYAD 1)
+								(SolvePuzzle f76AgreeToHelp 1)
 								(HighPrint 76 11)
 								;"Then you shall aid me, and I shall aid you in your quest."
 								(HighPrint 76 12)
@@ -275,7 +282,7 @@
 								;elsewhere in order to preserve these rare and magical plants."
 								(HighPrint 76 13)
 								;"Thus will you become a true friend of the forest."
-								(Bset DRYAD_AGREED_HELP)
+								(Bset fAgreedToHelpDryad)
 								(if (ego has: iSeed)
 									(HighPrint 76 14)
 									;"I detect that you have in your possession such a seed.  Are you willing to give me the seed?"
@@ -286,11 +293,15 @@
 								)
 							)
 						)
-						((Said 'n') (= yesNoTimer 0) (SayNo))
-						(else (event claimed: TRUE)
+						((Said 'n')
+							(= yesNoTimer 0)
+							(SayNo)
+						)
+						(else
+							(event claimed: TRUE)
 							(HighPrint 76 15)
 							;"Please.  Just answer my question."
-							)
+						)
 					)
 				)
 				(cond 
@@ -319,36 +330,50 @@
 							)
 							(DAZZLE
 								(if (CastSpell spell)
-									(if (and (Btst STAG_PRESENT) (< (stag x?) 50)) (= attackedStag TRUE))
-									(if (== dryadState dryadHere) (= dryadHostile TRUE))
+									(if (and (Btst fStagHere) (< (stag x?) 50))
+										(= attackedStag TRUE)
+									)
+									(if (== dryadState dryadHere)
+										(= dryadHostile TRUE)
+									)
 									(CastDazz)
 								)
 							)
 							(FLAMEDART
 								(if (CastSpell spell)
-									(if (== dryadState dryadHere) (= dryadHostile TRUE))
-									(if (Btst STAG_PRESENT) (= attackedStag TRUE))
+									(if (== dryadState dryadHere)
+										(= dryadHostile TRUE)
+									)
+									(if (Btst fStagHere)
+										(= attackedStag TRUE)
+									)
 									(if (cast contains: stag)
 										(Face ego stag)
 										(RedrawCast)
 									)
-									(if
-									(and (cast contains: stag) (not (ego script?)))
-										(FlameCast stag)
+									(if (and (cast contains: stag) (not (ego script?)))
+										(CastDart stag)
 									else
-										(FlameCast 0)
+										(CastDart 0)
 									)
 									(= castFlame TRUE)
 								)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((Said 'throw/dagger,dagger')
 						(= temp1 (if (cast contains: stag) stag else 0))
-						(if (KnifeCast temp1)
-							(if (== dryadState dryadHere) (= dryadHostile TRUE))
-							(if (Btst STAG_PRESENT) (= attackedStag TRUE) (Bset STAG_HURT))
+						(if (ThrowKnife temp1)
+							(if (== dryadState dryadHere)
+								(= dryadHostile TRUE)
+							)
+							(if (Btst fStagHere)
+								(= attackedStag TRUE)
+								(Bset fStagHurt)
+							)
 							(if (cast contains: stag)
 								(Face ego stag)
 								(RedrawCast)
@@ -357,9 +382,14 @@
 					)
 					((Said 'throw/boulder')
 						(= temp1 (if (cast contains: stag) stag else 0))
-						(if (RockCast temp1)
-							(if (== dryadState dryadHere) (= dryadHostile TRUE))
-							(if (Btst STAG_PRESENT) (= attackedStag TRUE) (Bset STAG_HURT))
+						(if (ThrowRock temp1)
+							(if (== dryadState dryadHere)
+								(= dryadHostile TRUE)
+							)
+							(if (Btst fStagHere)
+								(= attackedStag TRUE)
+								(Bset fStagHurt)
+							)
 							(if (cast contains: stag)
 								(Face ego stag)
 								(RedrawCast)
@@ -370,14 +400,14 @@
 						(if (ego has: iAcorn)
 							(EatAcorn)
 							(ego use: iAcorn)
-							(SolvePuzzle POINTS_EATACORN -5)
+							(SolvePuzzle fEatAcorn -5)
 						else
 							(= eatOffGround TRUE)
 							(PickUpAcorn)
 						)
 					)
 					((Said 'climb,ride/buck')
-						(if (Btst STAG_PRESENT)
+						(if (Btst fStagHere)
 							(HighPrint 76 19)
 							;He's beyond your reach.
 						else
@@ -390,17 +420,17 @@
 							((Said '/tree,oak')
 								(HighPrint 76 21)
 								;Something about the old oak tree makes you reluctant to climb upon it.
-								)
+							)
 							((Said '/boulder')
 								(HighPrint 76 22)
 								;The rocks to the north look too steep.
-								)
+							)
 						)
 					)
 					((Said 'ask//date')
 						(HighPrint 76 23)
 						;"Perhaps the farmer has dates in his field."
-						)
+					)
 					((Said 'chat/dryad')
 						(if 2
 							(HighPrint 76 24)
@@ -414,7 +444,9 @@
 							;Don't make an ash of yourself.
 						)
 					)
-					((Said 'lockpick<up/acorn,nut') (PickUpAcorn))
+					((Said 'lockpick<up/acorn,nut')
+						(PickUpAcorn)
+					)
 					((Said 'burn,torch/tree,oak')
 						(if (== dryadState dryadHere)
 							(HighPrint 76 28)
@@ -428,19 +460,19 @@
 					((Said 'fight,kill,beat,chop>')
 						(cond 
 							((Said '/buck')
-								(if (Btst STAG_PRESENT)
+								(if (Btst fStagHere)
 									(= attackedStag TRUE)
 									(if (== dryadState dryadHere)
 										(HighPrint 76 28)
 										;As you begin to form thoughts of violence...
 										(dryad setScript: egoToStag)
 									else
-										(Bset STAG_HURT)
+										(Bset fStagHurt)
 									)
 								else
 									(HighPrint 76 19)
 									;He's beyond your reach.
-									(Bset STAG_HURT)
+									(Bset fStagHurt)
 								)
 							)
 							((Said '/dryad,girl,female')
@@ -467,7 +499,9 @@
 					)
 					((Said 'get>')
 						(cond 
-							((Said '/acorn,nut') (PickUpAcorn))
+							((Said '/acorn,nut')
+								(PickUpAcorn)
+							)
 							((Said '/dryad,girl,female')
 								(if (== dryadState dryadHere)
 									(HighPrint 76 32)
@@ -477,7 +511,7 @@
 								)
 							)
 							((Said '/buck')
-								(if (Btst STAG_PRESENT)
+								(if (Btst fStagHere)
 									(HighPrint 76 33)
 									;The stag remains out of your reach.
 								else
@@ -488,12 +522,11 @@
 					)
 					((Said 'look>')
 						(cond 
-							(
-							(Said '[<at,around][/!*,forest,greenery,clearing]')
-							(HighPrint 76 34)
-							;You are in a strange and beautiful part of the forest.  There is something special about this place.
-							(HighPrint 76 35)
-							;The large, gnarled oak seems to draw your attention.
+							((Said '[<at,around][/!*,forest,greenery,clearing]')
+								(HighPrint 76 34)
+								;You are in a strange and beautiful part of the forest.  There is something special about this place.
+								(HighPrint 76 35)
+								;The large, gnarled oak seems to draw your attention.
 							)
 							((Said '/dryad,girl,female')
 								(if (== dryadState dryadHere)
@@ -507,13 +540,13 @@
 							((Said '/tree,oak')
 								(HighPrint 76 35)
 								;The large, gnarled oak seems to draw your attention.
-								)
+							)
 							((Said '/boulder')
 								(HighPrint 76 38)
 								;There is a rock wall northwest of the large oak tree.
-								)
+							)
 							((Said '/buck')
-								(if (Btst STAG_PRESENT)
+								(if (Btst fStagHere)
 									(HighPrint 76 39)
 									;The majestic white stag is an outstanding example of the beauty of the animal kingdom.
 								else
@@ -527,28 +560,28 @@
 									else
 									(HighPrint 76 42)
 									;There are acorns here and there on the ground.
-									)
 								)
+							)
 							((Said '/west')
 								(HighPrint 76 43)
 								;The forest becomes so lush and thick that it is difficult to see far.
-								)
+							)
 							((Said '/south')
 								(HighPrint 76 44)
 								;The brush and undergrowth has formed an impassable thicket.
-								)
+							)
 							((Said '/north')
 								(HighPrint 76 45)
 								;You see thick brush, rocks, and heavy woods to the north.  A large oak tree dominates the view.
-								)
+							)
 							((Said '/east')
 								(HighPrint 76 46)
 								;You see a clearing back the way you came.
-								)
+							)
 							((Said '/bush')
 								(HighPrint 76 47)
 								;Most of the bushes around here seem to be bramble and are very thorny.
-								)
+							)
 						)
 					)
 				)
@@ -558,8 +591,6 @@
 )
 
 (instance stagEntrance of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -598,7 +629,7 @@
 			)
 			(6 (= cycles 1))
 			(7
-				(if (not (Btst VISITED_DRYAD))
+				(if (not (Btst fBeenIn76))
 					(HighPrint 76 48)
 					;You follow the stag into this forest corner.  You feel as though the eyes of the forest are watching you.
 				else
@@ -624,7 +655,7 @@
 				)
 			)
 			(9
-				(if (not (Btst VISITED_DRYAD))
+				(if (not (Btst fBeenIn76))
 					(HighPrint 76 50)
 					;You watch the stag, fascinated with his grace and beauty.  There is something special about this place.
 				else
@@ -652,8 +683,6 @@
 )
 
 (instance outOfTree of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -675,15 +704,22 @@
 			)
 			(3
 				(cond 
-					((or castFlame (Btst STAG_HURT)) (dryad setLoop: 6 cel: 6 forceUpd: setScript: egoToStag))
-					((Btst DRYAD_AGREED_HELP)
+					((or castFlame (Btst fStagHurt)) (dryad setLoop: 6 cel: 6 forceUpd: setScript: egoToStag))
+					((Btst fAgreedToHelpDryad)
 						(HighPrint 76 52)
 						;"Have you brought the seed I requested?"
 						(= yesNoTimer 150)
 						(User canInput: TRUE)
 					)
-					((or (Btst SMASHED_FLOWER1) (Btst SMASHED_FLOWER2) (Btst SMASHED_FLOWER3)) (dryad setLoop: 6 cel: 6 forceUpd: setScript: egoToPlant))
-					((Btst MET_DRYAD)
+					((or (Btst fKilledFlower1) (Btst fKilledFlower2) (Btst fKilledFlower3))
+						(dryad
+							setLoop: 6
+							cel: 6
+							forceUpd:
+							setScript: egoToPlant
+						)
+					)
+					((Btst fMetDryad)
 						(HighPrint 76 53)
 						;"Well, Hero-to-be!  Are you yet a friend of the woods?"
 						(= yesNoTimer 150)
@@ -696,15 +732,13 @@
 						(User canInput: TRUE)
 					)
 				)
-				(Bset MET_DRYAD)
+				(Bset fMetDryad)
 			)
 		)
 	)
 )
 
 (instance intoTree of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -723,7 +757,7 @@
 				(dryad cycleSpeed: 1 setLoop: 0 cel: 5 setCycle: BegLoop self)
 			)
 			(3
-				(if (Btst DISPEL_LEARNED_RECIPE)
+				(if (Btst fLearnedDispel)
 					(acorn init: setCycle: EndLoop)
 					(= magicAcornOnGround TRUE)
 					(HighPrint 76 55)
@@ -738,8 +772,6 @@
 )
 
 (instance hasSeed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -761,11 +793,11 @@
 			(4
 				(HighPrint 76 56)
 				;You drop the seed into the Dryad's limbs.
-				(SolvePuzzle POINTS_GIVESEED 7)
+				(SolvePuzzle f76GiveSeed 7)
 				(ego use: 20 setCycle: EndLoop self)
 			)
 			(5
-				(if (or (Btst SMASHED_FLOWER1) (Btst SMASHED_FLOWER2) (Btst SMASHED_FLOWER3))
+				(if (or (Btst fKilledFlower1) (Btst fKilledFlower2) (Btst fKilledFlower3))
 					(HighPrint 76 57)
 					;You tell the Dryad:  "No amount of persuasion could convince the flowers to relinquish their seed easily,
 					;so I was forced to hack my way to the seed with my weapon."
@@ -803,8 +835,8 @@
 				;"and Flying Water."
 				(HighPrint 76 68)
 				;"Farewell, friend.  I must return to my concentration.  May the forest forever surround you."
-				(Bset DISPEL_LEARNED_RECIPE)
-				(Bclr DRYAD_AGREED_HELP)
+				(Bset fLearnedDispel)
+				(Bclr fAgreedToHelpDryad)
 				(dryad setScript: intoTree)
 			)
 		)
@@ -812,8 +844,6 @@
 )
 
 (instance pickEmUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -838,7 +868,7 @@
 					((and magicAcornOnGround (< (ego distanceTo: acorn) 80))
 						(= magicAcornOnGround FALSE)
 						(ego get: iAcorn)
-						(SolvePuzzle POINTS_GETACORN 1)
+						(SolvePuzzle f76GetAcorn 1)
 						(acorn dispose:)
 					)
 					(eatOffGround
@@ -853,7 +883,10 @@
 				(ego setCycle: BegLoop self)
 			)
 			(3
-				(if eatOffGround (= eatOffGround FALSE) (EatAcorn))
+				(if eatOffGround
+					(= eatOffGround FALSE)
+					(EatAcorn)
+				)
 				(NormalEgo)
 				(ego setScript: 0)
 				(HandsOn)
@@ -863,8 +896,6 @@
 )
 
 (instance stagBolts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -882,14 +913,12 @@
 					setMotion: MoveTo -20 140 self
 				)
 			)
-			(3 (Bclr STAG_PRESENT) (stag dispose:))
+			(3 (Bclr fStagHere) (stag dispose:))
 		)
 	)
 )
 
 (instance oMyGod of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -915,8 +944,6 @@
 )
 
 (instance egoToPlant of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -960,7 +987,7 @@
 				(= seconds 2)
 			)
 			(5
-				(++ local5)
+				(++ spitCount)
 				(ego setLoop: 1 setCycle: EndLoop self)
 			)
 			(6
@@ -992,7 +1019,7 @@
 				(ego setCycle: BegLoop self)
 			)
 			(10
-				(if (< local5 4)
+				(if (< spitCount 4)
 					(self changeState: 5)
 				else
 					(self cue:)
@@ -1018,22 +1045,22 @@
 				(HandsOff)
 				(stag setScript: stagBolts)
 				(cond 
-					((Btst STAG_HURT)
+					((Btst fStagHurt)
 						(HighPrint 76 75)
 						;"You have attempted to harm a free creature of the forest!"
 						(HighPrint 76 76)
 						;"You shall now become a part of the forest!"
-						)
+					)
 					(castFlame
 						(HighPrint 76 77)
 						;"You have misused your skills, oh Magician!  You have used the Flame Dart on my forest."
 						(HighPrint 76 78)
 						;"You must be made less dangerous."
-						)
+					)
 					(else
 						(HighPrint 76 79)
 						;"You dare to harm the Dryad of this forest!  You must be made less dangerous."
-						)
+					)
 				)
 				(self cue:)
 			)
@@ -1069,8 +1096,6 @@
 )
 
 (instance goToSleep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1079,7 +1104,7 @@
 			)
 			(1
 				(= currentPalette 1)
-				(curRoom drawPic: 76 6)
+				(curRoom drawPic: 76 IRISIN)
 				(bush ignoreActors: init: stopUpd: addToPic:)
 				(ego view: vEgoCatchSeed setLoop: 6 setCel: 0)
 				(= seconds 3)
@@ -1093,7 +1118,7 @@
 				(HandsOn)
 				(EgoSleeps 6 0)
 				(= currentPalette 0)
-				(curRoom drawPic: 76 7)
+				(curRoom drawPic: 76 IRISOUT)
 				(bush ignoreActors: init: stopUpd: addToPic:)
 				(ego posn: 201 132 setLoop: 2)
 				(NormalEgo)

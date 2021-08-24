@@ -11,7 +11,7 @@
 )
 
 (local
-	[invNames NUM_INVITEMS] =
+	invNames =
 		[
 			'/silver,alm,alm'
 			'/gold'
@@ -49,13 +49,13 @@
 			'/healing,(potion<healing)'
 			'/potion<mana,magic,power'
 			'/potion<vigor,stamina'
-			'/potion<hero,heroism'
+			'/potion<hero,heroism'		;unused item
 			'/potion<disenchant,disenchant'
 			'/grease,(potion,grease<ghost,ghoul)'
 			'/mirror[<magic,hand]'
 			'/acorn[<dryad,magic]'
 		]
-	[verbMagic NUM_SPELLS] =
+	verbMagic =
 		[
 			'/open,(spell<open)'
 			'/detect,(spell,magic<detect),(spell<magic<detect)'
@@ -71,32 +71,28 @@
 	;parses a saidEvent and returns the inventory number of the item being asked about.
 	;if there is no match, it returns NULL (or 0)
 	
-	(= index 0)
-	(while (< index NUM_INVITEMS)
-		(if (Said [invNames index]) (return (+ index 1)))
-		(++ index)
+	(for ((= index 0)) (< index NUM_INVITEMS) ((++ index))
+		(if (Said [invNames index])
+			(return (+ index 1))
+		)
 	)
 	(event claimed: TRUE)
 	(return NULL)
 )
 
 (procedure (WtCarried &tmp index obj)
-	(= obj 1)
 	(= index 0)
-	(while (<= obj NUM_INVITEMS)
-		(= index
-			(+ index (* [invNum obj] [invWeight obj]))
-		)
-		(++ obj)
+	(for ((= obj 1)) (<= obj NUM_INVITEMS) ((++ obj))
+		(+= index (* [invNum obj] [invWeight obj]))
 	)
 	(= index (/ (+ index 59) 60))
 )
 
 (procedure (SaidSpell event &tmp index obj)
-	(= index 0)
-	(while (< index 8)
-		(if (Said [verbMagic index]) (return (+ OPEN index)))
-		(++ index)
+	(for ((= index 0)) (< index 8) ((++ index))
+		(if (Said [verbMagic index])
+			(return (+ OPEN index))
+		)
 	)
 	(event claimed: TRUE)
 	(return FALSE)
@@ -107,7 +103,6 @@
 	;insufficient for the more complicated inventory management 
 	;used by Hero's Quest (and later games).
 	;So the Inventory object is not used in this game.
-	(properties)
 	
 	(method (init)
 		(return TRUE)

@@ -55,7 +55,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_CASTLE_BARRACKS)
+		(Bset fBeenIn38)
 		(super dispose:)
 	)
 	
@@ -69,38 +69,38 @@
 							((Said '[/!*]')
 								(HighPrint 38 0)
 								;This is the barracks area.
-								)
+							)
 							((Said '/castle')
 								(HighPrint 38 1)
 								;The castle is northeast of here
-								)
+							)
 							((Said '/barrack')
 								(HighPrint 38 2)
 								;The building's appearance is deceptive; it evidently extends well into the castle wall.
 								;From your present vantage point, the barracks looks like it could house some sixty guards.
-								)
+							)
 							((Said '/north')
 								(HighPrint 38 3)
 								;You see the castle and the guards.
-								)
+							)
 							((Said '/east')
 								(HighPrint 38 4)
 								;You see the main courtyard of the castle and the stables beyond.
-								)
+							)
 							((Said '/south')
 								(HighPrint 38 5)
 								;Along the wall to the southeast is the gatehouse.  A line of bushes partially obscure a defensive pit along the wall.
-								)
+							)
 							((Said '/west')
 								(HighPrint 38 6)
 								;You can see the barracks and a man sitting in front of them.
-								)
+							)
 						)
 					)
 					((Said 'climb')
 						(HighPrint 38 7)
 						;The guard would object.
-						)
+					)
 					((or (Said 'nap') (Said 'go[<to]/nap'))
 						(HighPrint 38 8)
 						;You barely get to sleep when the guard on night patrol kicks you out.
@@ -185,10 +185,12 @@
 					((Said 'kill/guard,man,gatekeeper')
 						(EgoDead 38 13
 							#title {OH NOOOOOOO!}
-							#icon vEgoJailDeath 3 0))
+							#icon vEgoJailDeath 3 0
 							;As you approach the guard with your weapon, he jumps up and opens the barracks door as he yells for help.
 							;Four guards playing cards inside the barracks quickly grab their weapons and overwhelm you.
 							;As you are dragged into the castle and down into the dungeon, you realize that was probably not quite the right thing to do.
+						)
+					)
 					((Said 'call/guard,man,gatekeeper')
 						(if (== script guardSleeps)
 							(HighPrint 38 10)
@@ -210,11 +212,11 @@
 					((Said 'look/guard')
 						(HighPrint 38 9)
 						;The guard looks like he is either very tired or very lazy.
-						)
+					)
 					((Said 'chat[<to]/guard,man')
 						(HighPrint 38 16)
 						;Go ahead.
-						)
+					)
 					((Said 'chat,ask')
 						(if (== script guardSleeps)
 							(HighPrint 38 10)
@@ -254,7 +256,7 @@
 				(HighPrint 38 2)
 				;The building's appearance is deceptive; it evidently extends well into the castle wall.
 				;From your present vantage point, the barracks looks like it could house some sixty guards.
-				)
+			)
 		)
 	)
 )
@@ -273,7 +275,7 @@
 			((MouseClaimed onFence event shiftDown)
 				(HighPrint 38 18)
 				;Just a fence.
-				)
+			)
 		)
 	)
 )
@@ -292,7 +294,7 @@
 			((MouseClaimed onMountains event shiftDown)
 				(HighPrint 38 19)
 				;These are the mountains that ring the valley of Spielburg.
-				)
+			)
 		)
 	)
 )
@@ -311,7 +313,7 @@
 			((MouseClaimed onTrees event shiftDown)
 				(HighPrint 38 20)
 				;This is the forest that surrounds the castle.
-				)
+			)
 		)
 	)
 )
@@ -357,8 +359,6 @@
 )
 
 (instance guardSleeps of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -375,15 +375,19 @@
 )
 
 (instance guardAwakes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((< (ego y?) 140) (guardHead setLoop: 2 cel: 2 setCycle: 0))
-					((< (ego x?) 204) (guardHead setLoop: 2 cel: 1 setCycle: 0))
-					(else (guardHead setLoop: 2 cel: 0 setCycle: 0))
+					((< (ego y?) 140)
+						(guardHead setLoop: 2 cel: 2 setCycle: 0)
+					)
+					((< (ego x?) 204)
+						(guardHead setLoop: 2 cel: 1 setCycle: 0)
+					)
+					(else
+						(guardHead setLoop: 2 cel: 0 setCycle: 0)
+					)
 				)
 				(= cycles 3)
 			)
@@ -393,8 +397,6 @@
 )
 
 (instance guardThreatens of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

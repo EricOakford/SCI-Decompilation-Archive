@@ -48,10 +48,10 @@
 	[rockObjs 8]
 	[bridgeObjs 17]
 	[ladderObjs 7]
-	[rockInfo 24] = [36 58 0 282 60 0 203 88 0 133 124 0 100 156 0 254 141 0 153 182 0 252 168]
-	[bridgeInfo 51] = [74 43 2 140 42 3 234 42 3 19 73 1 53 89 5 114 78 2 158 83 4 232 64 3 301 74 1 266 91 1 120 127 2 182 137 1 240 172 3 278 174 4 138 10 0 157 10 0 176 10]
-	[ladderInfo 21] = [84 75 1 43 117 1 181 120 1 285 116 1 199 163 1 118 10 0 196 10]
-	[local139 78] = [0 35 105 47 30 59 105 35 235 47 193 50 235 35 319 47 278 59 0 47 56 110 54 131 186 74 235 98 230 101 56 47 227 110 154 111 227 47 319 110 293 134 0 110 80 132 172 182 80 110 166 132 55 158 166 110 245 124 182 130 245 110 319 150 199 150 0 155 85 189 199 150 168 125 220 189 320 200]
+	rockInfo = [36 58 0 282 60 0 203 88 0 133 124 0 100 156 0 254 141 0 153 182 0 252 168]
+	bridgeInfo = [74 43 2 140 42 3 234 42 3 19 73 1 53 89 5 114 78 2 158 83 4 232 64 3 301 74 1 266 91 1 120 127 2 182 137 1 240 172 3 278 174 4 138 10 0 157 10 0 176 10]
+	ladderInfo = [84 75 1 43 117 1 181 120 1 285 116 1 199 163 1 118 10 0 196 10]
+	local139 = [0 35 105 47 30 59 105 35 235 47 193 50 235 35 319 47 278 59 0 47 56 110 54 131 186 74 235 98 230 101 56 47 227 110 154 111 227 47 319 110 293 134 0 110 80 132 172 182 80 110 166 132 55 158 166 110 245 124 182 130 245 110 319 150 199 150 0 155 85 189 199 150 168 125 220 189 320 200]
 )
 (procedure (WizGameTryCastSpell spell)
 	(return
@@ -688,7 +688,7 @@
 		(super init: &rest)
 		(theGame setCursor: normalCursor TRUE)
 		(++ magesMazePlayCount)
-		(SolvePuzzle POINTS_PLAYWIZARDGAME 5 MAGIC_USER)
+		(SolvePuzzle f32PlayMaze 5 MAGIC_USER)
 		(= temp0 0)
 		(while (< temp0 4)
 			(repeat
@@ -752,7 +752,7 @@
 			)
 			(++ temp0)
 		)
-		(Bclr GIVE_UP_MAZE_GAME)
+		(Bclr fStopMaze)
 		(fetchSign init: stopUpd:)
 		(openSign init: stopUpd:)
 		(trigSign init: stopUpd:)
@@ -851,7 +851,7 @@
 	
 	(method (cue &tmp temp0 temp1)
 		(cond 
-			((Btst GIVE_UP_MAZE_GAME)
+			((Btst fStopMaze)
 				(Print 32 0)
 				; "Too much for you?  I guess you should work on your magic.  Maybe next time you'll be more of a challenge."
 			)
@@ -871,7 +871,7 @@
 				(Printf 32 2 magesMazePlayCount temp1 temp0)
 				(Print 32 3)
 				(ego learn: DAZZLE 10)
-				(SolvePuzzle POINTS_WINWIZARDGAME 12 MAGIC_USER)
+				(SolvePuzzle f32WinMaze 12 MAGIC_USER)
 				; "As I promised, I shall now teach you the spell known as `Erasmus' Razzle Dazzle'."
 			)
 			(else

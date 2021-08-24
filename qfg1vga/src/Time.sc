@@ -32,7 +32,7 @@
 		(EatMeal)
 	)
 	(while (>= newTime GAMEDAY)
-		(= newTime (- newTime GAMEDAY))
+		(-= newTime GAMEDAY)
 		(NextDay)
 	)
 	(FixTime (/ newTime GAMEHOUR) (/ (* (mod newTime GAMEHOUR) 60) GAMEHOUR))

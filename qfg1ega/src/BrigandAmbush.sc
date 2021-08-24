@@ -340,7 +340,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_BRIGAND_AMBUSH)
+		(Bset fBeenIn91)
 		(brigandS stop:)
 		(super dispose:)
 	)
@@ -891,7 +891,7 @@
 		(switch (= state newState)
 			(0 (HandsOff))
 			(1
-				(if (not (Btst VISITED_BRIGAND_AMBUSH))
+				(if (not (Btst fBeenIn91))
 					(TimePrint 4 91 18)
 					;You have a bad feeling about this place.
 				)
@@ -941,7 +941,7 @@
 				)
 			)
 			(5
-				(if (not (Btst VISITED_BRIGAND_AMBUSH))
+				(if (not (Btst fBeenIn91))
 					(TimePrint 4 91 19)
 					;You have an even worse feeling about this place.
 				)

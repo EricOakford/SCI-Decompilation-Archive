@@ -116,7 +116,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_INN)
+		(Bset fBeenIn301)
 		(mouseDownHandler delete: self)
 		((ScriptID 166 0) dispose:)
 		(super dispose:)

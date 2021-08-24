@@ -24,6 +24,9 @@
 (define NUM_SPELLS		8)
 (define GAMEDAY		3600)	;number of ticks per game day
 (define GAMEHOUR	150) 	;number of ticks per game hour
+(define STAM_RATE	20)		;recovery rate for stamina
+(define HEAL_RATE	15)		;recovery rate for health
+(define MANA_RATE	5)		;recovery rate for mana
 
 ; Priority States
 (define LowPri 4) ;pRED
@@ -32,6 +35,7 @@
 ;Hero's Quest Framework scripts
 (define HQINIT			1)
 (define NOTICE			2)
+(define INVDESC			3)	;text only
 (define DRINK 			5)
 (define EAT 			6)
 (define SLEEP 			7)

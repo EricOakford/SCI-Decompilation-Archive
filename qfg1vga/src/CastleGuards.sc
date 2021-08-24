@@ -45,12 +45,12 @@
 		]
 	[rGuardTellTree 9]
 	rGuardTellKeys = [0 999 1]
-	local40
-	local41
-	local42
+	baldSpotTimer
+	frederickSays
+	pierreSays
 	[local43 2]
-	local45
-	local46
+	nearPierre
+	nearFrederick
 	beenInside
 	enterX
 	local49
@@ -216,13 +216,13 @@
 			(if
 				(and
 					(not (== prevRoomNum 141))
-					(not local46)
+					(not nearFrederick)
 					(< (ego y?) 142)
 					(< 99 (ego x?))
 					(< (ego x?) 209)
 				)
-				(= local46 1)
-				(= local41 12)
+				(= nearFrederick 1)
+				(= frederickSays 12)
 				(lGuard setScript: lGuardTalks 0 0)
 			)
 			(if
@@ -231,7 +231,7 @@
 					(< 228 (ego x?))
 					(> (ego y?) 155)
 				)
-				(= local46 0)
+				(= nearFrederick 0)
 			)
 		)
 		(super doit:)
@@ -255,12 +255,14 @@
 			;showing a "tiny guard" instead.
 			;Unfortunately, the correct icon is too large to fit with the message, causing the game to crash with an "Invalid Rectangle" error, 
 			;so the "Hero holding his belly in pain" icon (as used at the barracks) appears in its stead.
-			(V_DAGGER (EgoDead 92 93 0 0 503))
+			(V_DAGGER
+				(EgoDead 92 93 0 0 503)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 )
 
@@ -283,10 +285,10 @@
 					(< 208 (ego x?))
 					(> (ego y?) 141)
 				)
-				(= local45 0)
+				(= nearPierre 0)
 			)
-			(if local40
-				(-- local40)
+			(if baldSpotTimer
+				(-- baldSpotTimer)
 			)
 		)
 		(super doit:)
@@ -734,14 +736,14 @@
 				(user canControl: FALSE)
 				(if
 					(and
-						(not local45)
+						(not nearPierre)
 						(< (ego y?) 140)
 						(< 99 (ego x?))
 						(< (ego x?) 209)
 					)
 					(HandsOff)
-					(= local45 1)
-					(= local42 13)
+					(= nearPierre 1)
+					(= pierreSays 13)
 					(client setScript: rGuardTalks)
 				else
 					(if (not local51)

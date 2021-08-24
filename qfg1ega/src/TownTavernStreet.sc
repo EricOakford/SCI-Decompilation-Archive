@@ -202,7 +202,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_TAVERN_OUTSIDE)
+		(Bset fBeenIn330)
 		(cond 
 			((Btst TAVERN_THROWN_OUT) (DisposeScript JUMP) (Bclr TAVERN_THROWN_OUT))
 			((Btst TAVERN_DRUNK) (Bclr TAVERN_DRUNK))

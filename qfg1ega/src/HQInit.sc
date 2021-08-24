@@ -2,15 +2,16 @@
 (script# HQINIT) ;1
 (include game.sh)
 (use Main)
+(use Intrface)
 (use User)
 (use Menu)
 
 (public
-	SetGameInit 0
-	SetGraphicsSoundInit 1
+	GameStartRoom 0
+	InitGlobals 1
 )
 
-(procedure (SetGameInit &tmp [temp0 21])
+(procedure (GameStartRoom &tmp whichSkill [str 20])
 	(User alterEgo: ego)
 	(User prompt: {} blocks: 0 y: 160)
 	(= showStyle HSHUTTER)
@@ -21,10 +22,11 @@
 	(= userFont 300)
 	(= smallFont 999)
 	(= bigFont 300)
-	(= stamCounter 20)
-	(= healCounter 15)
-	(= manaCounter 5)
-	(SetGraphicsSoundInit)
+	(= stamCounter STAM_RATE)
+	(= healCounter HEAL_RATE)
+	(= manaCounter MANA_RATE)
+	
+	(InitGlobals)
 	(FixTime 11)
 	(DoSound ChangeVolume 15)
 	(HandsOn)
@@ -35,16 +37,56 @@
 	)
 	(Bset fSaveAllowed)
 	(Joystick JoyRepeat 0)
-	(if (GameIsRestarting)
+
+	;EO: added debug code
+	(if debugging
+		; Preset all ego skills
+		(for	((= whichSkill 0))
+				(< whichSkill NUMSTATS)
+				((++ whichSkill))
+			(= [egoStats whichSkill] 80)
+		)
+	
+		( = [egoStats EXPER] 1900)
+		( = [egoStats HEALTH]  (MaxHealth))
+		( = [egoStats STAMINA] (MaxStamina))
+		( = [egoStats MANA]    (MaxMana))
+		(Format @userName {Unknown Hero})
+		(= str 0)
+		(= startingRoom 
+			(Print
+				"Where to, Hero?"
+				#button: {Intro}	1
+				#button: {New Hero}	2
+				#button: {Continue}	3
+				#edit:	@str 5
+			)
+		)
+	
+		(= Day 0)
+	
+		(if str
+			(= startingRoom (ReadNumber @str))
+		else
+			(switch startingRoom
+				(1 (= startingRoom INTRO))
+				(2 (= startingRoom CHARSEL))			; Choose a Character
+				(3 (= startingRoom NOTICE) (theGame restore:))
+			)
+		)
+		;end debug code
+	else	
+		(if (GameIsRestarting)
 			(= startingRoom NOTICE2)	;if restarting, go to the Game Select Screen
-	else
-		(= startingRoom NOTICE)	;otherwise, go to the PIRACY notice screen
+		else
+			(= startingRoom NOTICE)	;otherwise, go to the PIRACY notice screen
+		)
 	)
 	
 	(theGame newRoom: SPEED)	;but first, we initialize in the speedCheck room.
 )
 
-(procedure (SetGraphicsSoundInit)
+(procedure (InitGlobals)
 	(= numVoices (DoSound NumVoices))
 	(if (< (= numColors (Graph GDetect)) 8)
 		;CGA

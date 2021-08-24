@@ -13,6 +13,7 @@
 (public
 	CharSave 0
 )
+
 ;; Bits in svMiscEquip
 (define  SWORD_BIT   1)
 (define  CHAIN_BIT   2)
@@ -99,8 +100,7 @@
 	)
 )
 
-(instance saveHero of Script
-	
+(instance saveHero of Script	
 	(method (changeState newState &tmp whichSkill oldGold)
 		(switch (= state newState)
 			(askSave
@@ -126,14 +126,9 @@
 			)
 			(getInfoFileName
 				(= cycles 2)
-				)
+			)
 			(getInfoFileName2
-				(if
-					(GetInput
-						@heroFileName
-						30
-						{Disk file in which to save your Hero.}
-					)
+				(if (GetInput @heroFileName 30 {Disk file in which to save your Hero.})
 					(heroinfo name: @heroFileName)
 					(= cycles 2)
 				else
@@ -156,10 +151,8 @@
 					(return)
 				)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-				(= whichSkill 0)
-				(while (< whichSkill NUMSTATS)
+				(for ((= whichSkill 0)) (< whichSkill NUMSTATS) ((++ whichSkill))
 					(= [codedStats whichSkill] [egoStats whichSkill])
-					(++ whichSkill)
 				)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 				(= oldGold (+ [invNum iGold] (/ [invNum iSilver] 10)))
@@ -168,57 +161,50 @@
 				(= svLowGold (mod oldGold 100))
 				(= svScore score)
 				(= svMiscEquip 0)
-				(if (ego has: iSword) 		(= svMiscEquip (| svMiscEquip SWORD_BIT)))
-				(if (ego has: iChainmail)	(= svMiscEquip (| svMiscEquip CHAIN_BIT)))
-				(if (ego has: iLockPick) 			(= svMiscEquip (| svMiscEquip PICK_BIT)))
-				(if (ego has: iThiefKit) 		(= svMiscEquip (| svMiscEquip TOOL_BIT)))
-				(if (ego has: iMagicMirror) 			(= svMiscEquip (| svMiscEquip MIRROR_BIT)))
-				(if (Btst fBabaFrog)		 	(= svMiscEquip (| svMiscEquip BABA_BIT)))
-				(if (< 255 score) 					(= svMiscEquip (| svMiscEquip SCORE_BIT)))
+				(if (ego has: iSword) 		(|= svMiscEquip SWORD_BIT))
+				(if (ego has: iChainmail)	(|= svMiscEquip CHAIN_BIT))
+				(if (ego has: iLockPick) 			(|= svMiscEquip PICK_BIT))
+				(if (ego has: iThiefKit) 		(|= svMiscEquip TOOL_BIT))
+				(if (ego has: iMagicMirror) 			(|= svMiscEquip MIRROR_BIT))
+				(if (Btst fBabaFrog)		 	(|= svMiscEquip BABA_BIT))
+				(if (< 255 score) 					(|= svMiscEquip SCORE_BIT))
 				(= svDaggers [invNum iDagger])
 				(= svHealing [invNum iHealingPotion])
 				(= svMana [invNum iManaPotion])
 				(= svStamina [invNum iStaminaPotion])
 				(= svGhostOil [invNum iGhostOil])
 				(= checkSum1 checkSumKey)
-				(= whichSkill 0)
-				(while (< whichSkill (+ NUMSTATS CHECK_DATA))
+
+				(for ((= whichSkill 0)) (< whichSkill (+ NUMSTATS CHECK_DATA)) ((+= whichSkill 2))
 					(= [statsKey (+ whichSkill 1)]
-						(& [statsKey (+ whichSkill 1)] $007f)
+						(& [statsKey (+ whichSkill 1)] 127)
 					)
-					(= checkSum1 (+ checkSum1 [statsKey (+ whichSkill 1)]))
-					(= whichSkill (+ whichSkill 2))
+					(+= checkSum1 [statsKey (+ whichSkill 1)])
 				)
 				(= checkSum2 0)
-				(= whichSkill 1)
-				(while (< whichSkill 35)
+
+				(for ((= whichSkill 1)) (< whichSkill 35) ((+= whichSkill 2))
 					(= [statsKey (+ whichSkill 1)]
-						(& [statsKey (+ whichSkill 1)] $007f)
+						(& [statsKey (+ whichSkill 1)] 127)
 					)
-					(= checkSum2 (+ checkSum2 [statsKey (+ whichSkill 1)]))
-					(= whichSkill (+ whichSkill 2))
+					(+= checkSum2 [statsKey (+ whichSkill 1)])
 				)
-				(= checkSum1 (& checkSum1 $007f))
-				(= checkSum2 (& checkSum2 $007f))
+				
+				(&= checkSum1 127)
+				(&= checkSum2 127)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-				(= whichSkill 0)
-				(while (< whichSkill (+ NUMSTATS EXTRA_DATA))
+				(for ((= whichSkill 0)) (< whichSkill (+ NUMSTATS EXTRA_DATA)) ((++ whichSkill))
 					(= [statsKey (+ whichSkill 1)]
 						(& [statsKey (+ whichSkill 1)] $007f)
 					)
-					(= [statsKey (+ whichSkill 1)]
-						(^ [statsKey (+ whichSkill 1)] [statsKey whichSkill])
-					)
-					(++ whichSkill)
+					(^= [statsKey (+ whichSkill 1)] [statsKey whichSkill])
 				)
 				(heroinfo write: @userName)
 				(heroinfo write: {\n})
-				(= whichSkill 1)
-				(while (< whichSkill (+ NUMSTATS EXTRA_DATA 1))
+				(for ((= whichSkill 1)) (< whichSkill (+ NUMSTATS EXTRA_DATA 1)) ((++ whichSkill))
 					(Format @bigStr 601 6 [statsKey whichSkill])
 					;%2x
 					(heroinfo write: @bigStr)
-					(++ whichSkill)
 				)
 				(heroinfo write: {\n})
 				(heroinfo close:)
@@ -240,12 +226,12 @@
 					(if (StrCmp @YNSTR {y})
 						(self changeState: saveDone)
 					else
-						(= bogus0 121)
-						(= bogus1 134)
-						(= bogus2 67)
-						(= bogus3 136)
-						(= bogus4 173)
-						(= bogus5 240)
+						(= bogus0 $79)
+						(= bogus1 $86)
+						(= bogus2 $43)	
+						(= bogus3 $88)	
+						(= bogus4 $ad)	
+						(= bogus5 $f0)
 						(self changeState: getInfoFileName)
 					)
 				else

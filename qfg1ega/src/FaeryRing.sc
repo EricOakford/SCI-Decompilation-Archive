@@ -2,8 +2,8 @@
 (script# 70)
 (include game.sh)
 (use Main)
-(use ThrowFlameDart)
-(use ThrowDagger1)
+(use CastDart)
+(use ThrowKnife)
 (use CastCalm)
 (use CastDazz)
 (use Intrface)
@@ -24,21 +24,21 @@
 (local
 	eatingShrooms
 	faeriesOnScreen
-	theNewAFaeryWindow
+	theWindow
 	local3
 	local4
 	[mush 8]
-	[mushX 8] = [62 119 91 145 134 104 75 40]
-	[mushY 8] = [109 108 108 107 101 98 97 101]
+	mushX = [62 119 91 145 134 104 75 40]
+	mushY = [109 108 108 107 101 98 97 101]
 	[faery 5]
-	[faeryX 5] = [74 143 52 90 110]
-	[faeryY 5] = [109 120 122 99 108]
-	[faeryTextColor 5] = [1 11 6 5 8]
-	[faeryBackColor 5] = [14 2 10 15 12]
+	faeryX = [74 143 52 90 110]
+	faeryY = [109 120 122 99 108]
+	faeryTextColor = [1 11 6 5 8]
+	faeryBackColor = [14 2 10 15 12]
 	[faeryWindow 5]
 	[faeryScript 5]
 	[chaseScript 5]
-	local69
+	faeryTimer
 	[local70 5] = [35 250 265 140 225]
 	[local75 5] = [30 35 125 50 45]
 	local80
@@ -70,13 +70,12 @@
 	local106 =  151
 	local107
 	local108
-	local109
+	talkRet
 	mushroomPalette
-	local111
+	ateShrooms
 )
 (procedure (AddFaeryWindow &tmp i)
-	(= i 0)
-	(while (< i 5)
+	(for ((= i 0)) (< i 5) ((++ i))
 		(= [faeryWindow i] (aFaeryWindow new:))
 		(if (< numColors 8)
 			([faeryWindow i] color: vBLACK back: vWHITE)
@@ -86,12 +85,11 @@
 				back: [faeryBackColor i]
 			)
 		)
-		(++ i)
 	)
 )
 
 (procedure (FairySays seconds &tmp theX theY)
-	(= theNewAFaeryWindow [faeryWindow (Random 0 4)])
+	(= theWindow [faeryWindow (Random 0 4)])
 	(= theX (Random 5 210))
 	(= theY
 		(if (< (ego y?) 140)
@@ -101,65 +99,57 @@
 		)
 	)
 	(cls)
-	(Print
-		&rest
+	(Print &rest
 		#at theX theY
 		#width 100
 		#mode teJustCenter
 		#dispose
 		#time seconds
-		#window theNewAFaeryWindow
+		#window theWindow
 	)
 )
 
 (procedure (AddChaseScript &tmp i)
-	(Bset GOT_FAIRIES_ATTENTION)
-	(= i 0)
-	(while (< i 5)
+	(Bset fFaeryAttention)
+	(for ((= i 0)) (< i 5) ((++ i))
 		(= [chaseScript i] (Clone aChaseScript))
 		([faery i]
 			setStep: 6 4
 			setScript: [chaseScript i] 0 ;(= [chaseScript i] (Clone aChaseScript))
 		)
-		(++ i)
 	)
 )
 
 (procedure (AddFaeryDanceScript &tmp i)
-	(Bclr GOT_FAIRIES_ATTENTION)
-	(= i 0)
-	(while (< i 5)
+	(Bclr fFaeryAttention)
+	(for ((= i 0)) (< i 5) ((++ i))
 		(= [faeryScript i] (aFaeryScript new:))
 		([faery i]
 			setStep: 3 2
 			setScript: [faeryScript i] 0
 				;(= [faeryScript i] (aFaeryScript new:))
 		)
-		(++ i)
 	)
 )
 
-(procedure (FaeriesHostile &tmp i temp1)
+(procedure (FaeriesHostile &tmp i j)
 	(if faeriesOnScreen
-		(Bclr GOT_FAIRIES_ATTENTION)
-		(= local69 80)
-		(= i 0)
-		(while (< i 5)
+		(Bclr fFaeryAttention)
+		(= faeryTimer 80)
+		(for ((= i 0)) (< i 5) ((++ i))
 			(= [faeryScript i] (aFaeryScript new:))
-			(= temp1 (Random 0 4))
-			([faery temp1]
-				posn: [local70 temp1] [local75 temp1]
-				setScript: [faeryScript i] 0 temp1
+			(= j (Random 0 4))
+			([faery j]
+				posn: [local70 j] [local75 j]
+				setScript: [faeryScript i] 0 j
 			)
-			(++ i)
 		)
 	)
 )
 
 (procedure (AddFaeries &tmp i)
 	;EO: These procedures did not decompile correctly. This has been fixed.
-	(= i 0)
-	(while (< i 5)
+	(for ((= i 0)) (< i 5) ((++ i))
 		(= [faeryScript i] (aFaeryScript new:))
 		(= [faery i] (aFaery new:))
 		([faery i]
@@ -172,13 +162,11 @@
 			setCycle: Forward
 			setScript: [faeryScript i] 0
 		)
-		(++ i)
 	)
 )
 
 (procedure (AddShrooms &tmp i)
-	(= i 0)
-	(while (< i 8)
+	(for ((= i 0)) (< i 8) ((++ i))
 		(= [mush i] (Clone aMush))
 		([mush i]
 			setLoop: 5
@@ -187,7 +175,6 @@
 			init:
 			stopUpd:
 		)
-		(++ i)
 	)
 )
 
@@ -287,18 +274,24 @@
 	
 	(method (doit)
 		(cond 
-			((== local69 70)
-				(-- local69)
+			((== faeryTimer 70)
+				(-- faeryTimer)
 				(= local107 1)
 				(= local82 (+ (= local80 local97) 8))
 				(= local81 8)
 				(rm70 setScript: faeryTalk)
 			)
-			((> local69 1) (-- local69))
-			((== local69 1) (= local69 0))
+			((> faeryTimer 1)
+				(-- faeryTimer)
+			)
+			((== faeryTimer 1)
+				(= faeryTimer 0)
+			)
 		)
 		(cond 
-			((> local4 1) (-- local4))
+			((> local4 1)
+				(-- local4)
+			)
 			((== local4 1)
 				(= local4 0)
 				(= local107 1)
@@ -334,16 +327,16 @@
 		(super doit:)
 	)
 	
-	(method (dispose &tmp temp0)
+	(method (dispose &tmp i)
 		(if faeriesOnScreen
 			(cls)
-			(= temp0 0)
-			(while (< temp0 5)
-				([faeryWindow temp0] dispose:)
-				(++ temp0)
+			(for ((= i 0)) (< i 5) ((++ i))
+				([faeryWindow i] dispose:)
 			)
 		)
-		(if local111 (HighPrint 70 0))
+		(if ateShrooms
+			(HighPrint 70 0)
+		)
 		(super dispose:)
 	)
 	
@@ -352,7 +345,7 @@
 		(and (== (event type?) direction) (not local3))
 			(event claimed: TRUE)
 			(= local3 1)
-			(if (Btst DANCED_FOR_FAIRIES)
+			(if (Btst fDancedForFairies)
 				(= local82 (+ (= local80 local106) 9))
 				(= local81 17)
 			else
@@ -362,11 +355,10 @@
 			(AddChaseScript)
 			(self setScript: faeryTalk)
 		)
-		(if
-		(and (== (event type?) mouseDown) (not local3))
+		(if (and (== (event type?) mouseDown) (not local3))
 			(event claimed: TRUE)
 			(= local3 1)
-			(if (Btst DANCED_FOR_FAIRIES)
+			(if (Btst fDancedForFairies)
 				(= local82 (+ (= local80 local106) 9))
 				(= local81 17)
 			else
@@ -411,7 +403,7 @@
 				(if (not local3)
 					(event claimed: TRUE)
 					(= local3 1)
-					(if (Btst DANCED_FOR_FAIRIES)
+					(if (Btst fDancedForFairies)
 						(= local82 (+ (= local80 local106) 9))
 						(= local81 17)
 					else
@@ -447,7 +439,7 @@
 					)
 					((Said 'chat')
 						(if (and faeriesOnScreen (== local4 0))
-							(if (Btst GOT_FAIRIES_ATTENTION)
+							(if (Btst fFaeryAttention)
 								(= local107 1)
 								(= local82 (+ (= local80 local104) 5))
 								(= local81 15)
@@ -463,7 +455,7 @@
 					)
 					((Said 'ask>')
 						(if (and faeriesOnScreen (== local4 0))
-							(= local109 1)
+							(= talkRet 1)
 							(cond 
 								((Said '//mushroom,toadstool,ring')
 									(AddChaseScript)
@@ -473,7 +465,7 @@
 									(self setScript: faeryTalk)
 								)
 								((Said '//dust[<faerie,about]')
-									(if (or askedForDust (Btst POINTS_GETFAIRYDUST))
+									(if (or askedForDust (Btst f70GetDust))
 										(HighPrint 70 6)
 										;You know all about it, now.
 									else
@@ -507,8 +499,8 @@
 								)
 								(else
 									(event claimed: TRUE)
-									(= local109 0)
-									(if (Btst GOT_FAIRIES_ATTENTION)
+									(= talkRet 0)
+									(if (Btst fFaeryAttention)
 										(= local107 1)
 										(= local82 (+ (= local80 local104) 5))
 										(= local81 15)
@@ -519,7 +511,9 @@
 									)
 								)
 							)
-							(if local109 (SolvePuzzle POINTS_TALKTOFAIRIES 1))
+							(if talkRet
+								(SolvePuzzle f70TalkToFairies 1)
+							)
 						else
 							(event claimed: FALSE)
 						)
@@ -545,7 +539,7 @@
 							)
 							(FLAMEDART
 								(if (CastSpell spell)
-									(FlameCast 0)
+									(CastDart 0)
 									(FaeriesHostile)
 								)
 							)
@@ -554,7 +548,7 @@
 					)
 					((Said 'throw/dagger,dagger')
 						(if (ego has: iDagger)
-							(KnifeCast 0)
+							(ThrowKnife 0)
 							(FaeriesHostile)
 						else
 							(HighPrint 70 9)
@@ -572,8 +566,8 @@
 					)
 					((Said 'eat/mushroom')
 						(cond 
-							((Btst fAteShrooms) (event claimed: FALSE))
-							((and (== local4 0) (== (ego script?) 0)) (Bset fAteShrooms) (ego setScript: eatShroom))
+							((Btst fAteFaeryShrooms) (event claimed: FALSE))
+							((and (== local4 0) (== (ego script?) 0)) (Bset fAteFaeryShrooms) (ego setScript: eatShroom))
 							(else
 								(HighPrint 70 1)
 								;Don't you want to dance?
@@ -594,22 +588,22 @@
 								)
 								((Said '/dust[<faerie]')
 									(cond 
-										((Btst POINTS_GETFAIRYDUST)
+										((Btst f70GetDust)
 											(HighPrint 70 12)
 											;Don't be greedy.  We already gave you some.
-											)
+										)
 										(askedForDust
 											(HighPrint 70 13)
 											;Perhaps you should be better prepared to get some fairy dust next time.
-											)
+										)
 										((not faeriesOnScreen)
 											(HighPrint 70 14)
 											;Where could you possibly get that?
-											)
+										)
 										((not local3)
 											(HighPrint 70 15)
 											;Maybe you should ask the Fairies for some.  That would be the polite thing to do.
-											)
+										)
 										(else
 											(= local107 1)
 											(= local82 (+ (= local80 local98) 22))
@@ -627,12 +621,11 @@
 					)
 					((Said 'look>')
 						(cond 
-							(
-							(Said '[<at,around][/!*,forest,greenery,clearing]')
-							(HighPrint 70 16)
-							;The trees look more vibrant than most of the forest.
-							(HighPrint 70 17)
-							;There is a ring of mushrooms on the northwest side of the clearing.
+							((Said '[<at,around][/!*,forest,greenery,clearing]')
+								(HighPrint 70 16)
+								;The trees look more vibrant than most of the forest.
+								(HighPrint 70 17)
+								;There is a ring of mushrooms on the northwest side of the clearing.
 							)
 							((Said '/ring,mushroom,toadstool')
 								(if faeriesOnScreen
@@ -655,15 +648,15 @@
 							((Said '/south')
 								(HighPrint 70 22)
 								;The trees seem more dense and lush than the rest of the woods.
-								)
+							)
 							((Said '/tree')
 								(HighPrint 70 16)
 								;The trees look more vibrant than most of the forest.
-								)
+							)
 							((Said '/east,north')
 								(HighPrint 70 23)
 								;You see trees and brush.
-								)
+							)
 							((Said '/west')
 								(HighPrint 70 24)
 								;The trees here look thicker and healthier than in other parts of the forest.
@@ -677,14 +670,12 @@
 )
 
 (instance aFaeryScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (> local69 0)
+				(if (> faeryTimer 0)
 					(client
-						setMotion:
-							MoveTo
+						setMotion: MoveTo
 							(Random
 								(- [local70 register] 25)
 								(+ [local70 register] 25)
@@ -732,7 +723,7 @@
 								self
 						)
 					)
-					((Btst DANCING_FOR_FAIRIES)
+					((Btst fDancing)
 						(client
 							setMotion:
 								MoveTo
@@ -785,7 +776,7 @@
 					(else
 						(switch local81
 							(1
-								(Bset DANCED_FOR_FAIRIES)
+								(Bset fDancedForFairies)
 								(= local4 100)
 								(HandsOn)
 							)
@@ -794,7 +785,7 @@
 							(5 (= local84 1))
 							(4 (= local84 1))
 							(8
-								(= local69 0)
+								(= faeryTimer 0)
 								(AddChaseScript)
 							)
 							(9 (ego setScript: getDust))
@@ -817,7 +808,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(SolvePuzzle POINTS_DANCEWITHFAIRIES 3)
+				(SolvePuzzle f70DanceWithFairies 3)
 				(AddFaeryDanceScript)
 				(ego
 					illegalBits: 0
@@ -857,7 +848,7 @@
 			(4
 				(cond 
 					((== local83 2) 
-						(Bset DANCING_FOR_FAIRIES) 
+						(Bset fDancing) 
 						(AddChaseScript) 
 						(self changeState: 3)
 					)
@@ -901,7 +892,7 @@
 				(= cycles 5)
 			)
 			(12
-				(Bclr DANCING_FOR_FAIRIES)
+				(Bclr fDancing)
 				(AddChaseScript)
 				(= local107 1)
 				(= local82 (+ (= local80 local95) 11))
@@ -1063,7 +1054,7 @@
 					;You pick a handful of the smaller mushrooms and carefully put them away in your backpack.
 					(ego get: iMushroom 3)
 					(Bset fHaveFaeryShrooms)
-					(SolvePuzzle POINTS_PICKMUSHROOMS 3)
+					(SolvePuzzle f70GetMushrooms 3)
 				)
 				(ego setCycle: BegLoop self)
 			)
@@ -1110,7 +1101,7 @@
 						;You place the dust carefully away in an empty flask.
 						(ego use: iFlask 1)
 						(ego get: iFairyDust)
-						(SolvePuzzle POINTS_GETFAIRYDUST 8)
+						(SolvePuzzle f70GetDust 8)
 					)
 					(
 						(or
@@ -1162,7 +1153,7 @@
 			(2
 				(HighPrint 70 33)
 				;Wow!  That was pretty wild!  It's probably not a good idea to eat too many more of these mushrooms, though.
-				(= local111 1)
+				(= ateShrooms 1)
 				(= currentPalette mushroomPalette)
 				(HandsOn)
 				(self dispose:)

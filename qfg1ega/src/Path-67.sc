@@ -2,7 +2,7 @@
 (script# 67)
 (include game.sh)
 (use Main)
-(use ThrowDagger1)
+(use ThrowKnife)
 (use ThrowRock)
 (use CastOpen)
 (use Target)
@@ -18,13 +18,19 @@
 )
 
 (local
-	[eyesPosn 10] = [205 180 243 73 103 67 74 72 54 25]
-	local10
-	local11
+	eyeXY = [
+		205 180
+		243 73
+		103 67
+		74 72
+		54 25
+		]
+	eyeIndex
+	eyeIndex2
 	foxOnScreen
 	openSpellSuccess
 	openSpellFail
-	trapSprung
+	foxGone
 	talkedToFox
 	flameDartAttempted
 	foxDistance
@@ -45,9 +51,9 @@
 		(self setLocales: FOREST)
 		(StatusLine enable:)
 		(southBush setPri: 15 init: addToPic:)
-		(if (and (Btst ENTERED_FOX_ROAD_1) (Btst ENTERED_FOX_ROAD_2) (not (Btst MET_FOX)))
+		(if (and (Btst fFirstTimeIn67) (Btst fSecondTimeIn67) (not (Btst fMetFox)))
 			(= foxOnScreen TRUE)
-			(Bset MET_FOX)
+			(Bset fMetFox)
 			(Load VIEW vFox)
 			(Load VIEW vEgoDrawWeapon)
 			(fox init: setScript: foxCallForHelp)
@@ -70,8 +76,10 @@
 				setScript: peekABooScript2
 			)
 		)
-		(if (Btst ENTERED_FOX_ROAD_1) (Bset ENTERED_FOX_ROAD_2))
-		(Bset ENTERED_FOX_ROAD_1)
+		(if (Btst fFirstTimeIn67)
+			(Bset fSecondTimeIn67)
+		)
+		(Bset fFirstTimeIn67)
 		(NormalEgo)
 		(ego init:)
 		(switch prevRoomNum
@@ -103,7 +111,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_PATH_67)
+		(Bset fBeenIn67)
 		(= egoY (ego y?))
 		(super dispose:)
 	)
@@ -119,11 +127,11 @@
 								(HighPrint 67 1)
 								;The forest deepens north and south of you.  To the east, the road twists it's way up the mountain.
 								;To the west, the road is hidden by trees.
-								)
+							)
 							((Said '/eye')
 								(HighPrint 67 2)
 								;For a moment there, you thought you saw something. You can't see anything now.
-								)
+							)
 							(
 								(or
 									(Said '/trap,hasp,chain')
@@ -134,7 +142,7 @@
 										(HighPrint 67 3)
 										;It seems to be a simple spring trap and you can easily open it.
 									)
-									(trapSprung
+									(foxGone
 										(HighPrint 67 4)
 										;The trap seems to be caught on something.
 									)
@@ -146,7 +154,13 @@
 									)
 								)
 							)
-							((Said '/fox') (if foxOnScreen (HighPrint 67 6) else (HighPrint 67 7)))
+							((Said '/fox')
+								(if foxOnScreen
+									(HighPrint 67 6)
+								else
+									(HighPrint 67 7)
+								)
+							)
 						)
 					)
 					((Said 'get>')
@@ -155,8 +169,8 @@
 								(foxOnScreen
 									(HighPrint 67 8)
 									;You must free the fox first.
-									)
-								(trapSprung
+								)
+								(foxGone
 									(if (ego inRect: 55 111 120 120)
 										(ego setScript: getTrap)
 									else
@@ -166,7 +180,7 @@
 								)
 								(else (HighPrint 67 10)
 									;You don't see the trap now.  It seems to have vanished.
-									)
+								)
 							)
 						)
 					)
@@ -177,10 +191,10 @@
 									(if foxOnScreen
 										(HighPrint 67 11)
 										;There is an aura of magic around the fox.
-										else
+									else
 										(HighPrint 67 12)
 										;There is no magic present.
-										)
+									)
 								)
 							)
 							(DAZZLE
@@ -190,7 +204,7 @@
 									else
 									(HighPrint 67 14)
 									;There is no point to that.
-									)
+								)
 							)
 							(FLAMEDART
 								(if (CastSpell spell)
@@ -212,17 +226,17 @@
 								(if foxOnScreen
 									(HighPrint 67 16)
 									;"You realize, of course, I really find it hard to relax with this thing on my leg."
-									else
+								else
 									(HighPrint 67 14)
 									;There is no point to that.
-									)
+								)
 							)
 							(OPEN
 								(if foxOnScreen
 									(if (CastSpell spell)
 										(if (TrySkill OPEN tryCastOpenFox)
 											(= openSpellSuccess TRUE)
-											(SolvePuzzle POINTS_FREEFOX 10)
+											(SolvePuzzle f67SaveFox 10)
 										else
 											(= openSpellFail TRUE)
 										)
@@ -233,7 +247,9 @@
 									;There is no point to that.
 								)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 				)
@@ -244,8 +260,6 @@
 )
 
 (instance foxCallForHelp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 3))
@@ -281,8 +295,6 @@
 )
 
 (instance foxWillNotFight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -298,14 +310,12 @@
 			)
 			(2 (HighPrint 67 20)
 				;The fox does not seem to want to fight.
-				)
+			)
 		)
 	)
 )
 
 (instance foxExplains of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -330,19 +340,17 @@
 )
 
 (instance distantFoxDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= trapSprung TRUE)
+				(= foxGone TRUE)
 				(= foxOnScreen FALSE)
 				(fox loop: 2 cel: 0 cycleSpeed: 2 setCycle: EndLoop)
 				(= seconds 7)
 			)
 			(1
-				(SolvePuzzle POINTS_KILLFOX -10)
+				(SolvePuzzle f67KillFox -10)
 				(= hitDaggers 0)
 				(HandsOn)
 				(HighPrint 67 22)
@@ -354,13 +362,11 @@
 )
 
 (instance foxDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= trapSprung TRUE)
+				(= foxGone TRUE)
 				(= foxOnScreen FALSE)
 				(if (ego inRect: 41 109 111 138)
 					(self cue:)
@@ -391,7 +397,7 @@
 				(= seconds 7)
 			)
 			(6
-				(SolvePuzzle POINTS_KILLFOX -10)
+				(SolvePuzzle f67KillFox -10)
 				(HandsOn)
 				(= hitDaggers 0)
 				(HighPrint 67 22)
@@ -403,8 +409,6 @@
 )
 
 (instance foxFreed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -446,7 +450,7 @@
 					(else
 						(HighPrint 67 25)
 						;You spring the trap.
-						)
+					)
 				)
 				(self cue:)
 			)
@@ -458,7 +462,7 @@
 					(HandsOn)
 					(fox setScript: foxExplains)
 				else
-					(= trapSprung TRUE)
+					(= foxGone TRUE)
 					(= foxOnScreen FALSE)
 					(= cycles 8)
 				)
@@ -519,13 +523,11 @@
 )
 
 (instance flameDartFox of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= trapSprung TRUE)
+				(= foxGone TRUE)
 				(= foxOnScreen FALSE)
 				(fox setScript: 0)
 				(ego
@@ -567,8 +569,6 @@
 )
 
 (instance getTrap of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -591,16 +591,21 @@
 				;The trap seems to be caught on something.  You can't pull it loose.
 				(self cue:)
 			)
-			(4 (= cycles 8))
-			(5 (ego setCycle: BegLoop self))
-			(6 (NormalEgo) (HandsOn))
+			(4
+				(= cycles 8)
+			)
+			(5
+				(ego setCycle: BegLoop self)
+			)
+			(6
+				(NormalEgo)
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance thrashAndWait of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -616,20 +621,18 @@
 )
 
 (instance peekABooScript1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 12 30)))
 			(1
-				(while (== (= local10 (Random 0 4)) local11)
+				(while (== (= eyeIndex (Random 0 4)) eyeIndex2)
 				)
 				(self cue:)
 			)
 			(2
 				(client
-					x: [eyesPosn local10]
-					y: [eyesPosn (+ local10 5)]
+					x: [eyeXY eyeIndex]
+					y: [eyeXY (+ eyeIndex 5)]
 					setCycle: EndLoop self
 				)
 			)
@@ -639,20 +642,18 @@
 )
 
 (instance peekABooScript2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds (Random 12 30)))
 			(1
-				(while (== (= local10 (Random 0 4)) local11)
+				(while (== (= eyeIndex (Random 0 4)) eyeIndex2)
 				)
 				(self cue:)
 			)
 			(2
 				(client
-					x: [eyesPosn local11]
-					y: [eyesPosn (+ local11 5)]
+					x: [eyeXY eyeIndex2]
+					y: [eyeXY (+ eyeIndex2 5)]
 					setCycle: EndLoop self
 				)
 			)
@@ -706,17 +707,20 @@
 					((Said 'chat')
 						(HighPrint 67 29)
 						;"I am in such pain and agony I cannot think.   Help me, good adventurer, please."
-						)
+					)
 					((Said 'pat/fox')
 						(HighPrint 67 30)
 						;That's not worth any game points, and will not make the fox feel any better.
-						)
-					((Said 'throw/dagger,dagger') (KnifeCast self))
-					((Said 'throw/boulder') (RockCast self))
-					(
-					(or (Said 'look/feet,feet') (Said 'ask//feet,feet'))
-					(HighPrint 67 31)
-					;"My foot is caught in this trap.  If I had hands like you, instead of paws, I could free myself."
+					)
+					((Said 'throw/dagger,dagger')
+						(ThrowKnife self)
+					)
+					((Said 'throw/boulder')
+						(ThrowRock self)
+					)
+					((or (Said 'look/feet,feet') (Said 'ask//feet,feet'))
+						(HighPrint 67 31)
+						;"My foot is caught in this trap.  If I had hands like you, instead of paws, I could free myself."
 					)
 					((Said 'ask>')
 						(if (Said '//help,trap')
@@ -749,7 +753,7 @@
 								(HighPrint 67 32)
 								;Walk around to the other side of the fox, where the trap is.
 							else
-								(SolvePuzzle POINTS_FREEFOX 10)
+								(SolvePuzzle f67SaveFox 10)
 								(ego setScript: foxFreed)
 							)
 						else

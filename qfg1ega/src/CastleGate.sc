@@ -19,26 +19,35 @@
 	karlCantSeeEgo
 	karlLoop
 	local4
-	karlResumedPatral
-	local6
+	karlWaiting
+	saveKarlLoop
 	crushedByGate
 	local8
 	local9
 	climbFail
-	karlPatrolling
+	talkRet
 	invitedIntoCastle
 )
-(procedure (KarlStopsToTalk &tmp temp0)
+(procedure (KarlStopsToTalk &tmp ret)
 	(cond 
-		((not local1) (guard setScript: guardStopToTalk) (= temp0 0))
-		(local4 (= temp0 1))
-		(1 (= local4 1) (= temp0 1))
+		((not local1)
+			(guard setScript: guardStopToTalk)
+			(= ret FALSE)
+		)
+		(local4
+			(= ret TRUE)
+		)
+		(1
+			(= local4 1)
+			(= ret TRUE)
+		)
 		(else
 			(HighPrint 37 0)
 			;"Please step where I can see you."
-			(= temp0 0))
+			(= ret FALSE)
+		)
 	)
-	(return temp0)
+	(return ret)
 )
 
 (instance rm37 of Room
@@ -49,7 +58,10 @@
 	
 	(method (init)
 		(super init:)
-		(if Night (Load VIEW vEgoDefeated) (Load VIEW vEgoClimbing))
+		(if Night
+			(Load VIEW vEgoDefeated)
+			(Load VIEW vEgoClimbing)
+		)
 		(Load VIEW vCastleGate)
 		(Load SOUND (SoundFX 90))
 		(lBush init: addToPic:)
@@ -80,15 +92,10 @@
 				(if Night
 					(castleGate init: stopUpd:)
 				else
-					(if
-					(or (and (Btst SAVED_BARNARD)
-							(not (Btst GOT_KARL_ATTENTION)
-								)
-							)
-								(Btst SAVED_ELSA))
+					(if (or (and (Btst fSavedBarnard) (not (Btst fKarlAttention))) (Btst fSavedElsa))
 						(= invitedIntoCastle TRUE)
 						(guard init: setScript: guardGreets)
-						(Bset GOT_KARL_ATTENTION)
+						(Bset fKarlAttention)
 					else
 						(guard init: setScript: guardPatrols)
 					)
@@ -100,11 +107,19 @@
 	)
 	
 	(method (doit)
-		(if (and (< (ego y?) 189) (not local9)) (= local9 1))
+		(if (and (< (ego y?) 189) (not local9))
+			(= local9 1)
+		)
 		(cond 
-			((and (Btst SAVED_ELSA) gateOpen (< (ego y?) 163)) (curRoom newRoom: ENDGAME))
-			((and gateOpen (< (ego y?) 163)) (curRoom newRoom: 39))
-			((and local9 (>= (ego y?) 189)) (curRoom newRoom: 54))
+			((and (Btst fSavedElsa) gateOpen (< (ego y?) 163))
+				(curRoom newRoom: ENDGAME)
+			)
+			((and gateOpen (< (ego y?) 163))
+				(curRoom newRoom: 39)
+			)
+			((and local9 (>= (ego y?) 189))
+				(curRoom newRoom: 54)
+			)
 		)
 		(super doit:)
 	)
@@ -121,14 +136,14 @@
 					((Said 'open,lift/gate,portcullis,door')
 						(HighPrint 37 1)
 						;There is nobody to open the portcullis.
-						)
+					)
 					((Said 'climb,climb[/gate,wall,gatehouse]')
 						(if Night
 							(cond 
 								((< [egoStats CLIMB] 10)
 									(HighPrint 37 2)
 									;Leave the climbing to those who know how.
-									)
+								)
 								((> [egoStats CLIMB] 35)
 									(if
 										(or
@@ -167,12 +182,12 @@
 											(<= (ego y?) 182)
 										)
 									)
-									(= local8 (+ local8 1))
+									(+= local8 1)
 									(self setScript: egoClimbsWall)
 								)
 								(else (HighPrint 37 3)
 									;You're not in a good place to climb.
-									)
+								)
 							)
 						else
 							(HighPrint 37 4)
@@ -184,31 +199,31 @@
 							((Said '[<at,around][/castle,building]')
 								(HighPrint 37 5)
 								;The castle looms over the gatehouse and looks rather impressive.
-								)
+							)
 							((Said '[<at,around]/gate,gatehouse,wall')
 								(HighPrint 37 6)
 								;The gatehouse is a massive structure with a portcullis closing off access to the castle.
-								)
+							)
 							((Said '[<at,around]/tower')
 								(HighPrint 37 7)
 								;The towers stand out above the castle walls.
-								)
+							)
 							((or (Said '<up') (Said '/sky'))
 								(HighPrint 37 8)
 								;The sky is clear except for a few clouds.
-								)
+							)
 							((or (Said '<down') (Said '/ground,grass'))
 								(HighPrint 37 9)
 								;The grass seems to grow well here.
-								)
+							)
 							((Said '/south')
 								(HighPrint 37 10)
 								;You see the road leading past the Healer's house.
-								)
+							)
 							((Said '/east,west')
 								(HighPrint 37 11)
 								;You see the forest.
-								)
+							)
 						)
 					)
 				)
@@ -218,8 +233,6 @@
 )
 
 (instance guardPatrols of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -260,8 +273,6 @@
 )
 
 (instance guardGreets of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -300,7 +311,7 @@
 				(= seconds 3)
 			)
 			(6
-				(if (Btst SAVED_ELSA)
+				(if (Btst fSavedElsa)
 					(curRoom newRoom: ENDGAME)
 				else
 					(HandsOn)
@@ -312,8 +323,6 @@
 )
 
 (instance guardStopToTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -350,8 +359,6 @@
 )
 
 (instance timeout of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (and karlCantSeeEgo (> (ego y?) 172))
@@ -375,7 +382,7 @@
 				(if gateOpen
 					(HighPrint 37 15)
 					;"Well?  Enter the castle grounds!"
-					(= karlResumedPatral TRUE)
+					(= karlWaiting TRUE)
 					(= seconds 5)
 				else
 					(client setScript: guardResumesPatrol)
@@ -386,7 +393,7 @@
 					(= local4 0)
 					(self changeState: 0)
 				else
-					(= karlResumedPatral TRUE)
+					(= karlWaiting TRUE)
 					(client setScript: guardResumesPatrol)
 				)
 			)
@@ -395,8 +402,6 @@
 )
 
 (instance guardResumesPatrol of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -408,16 +413,16 @@
 				)
 			)
 			(1
-				(= local6 karlLoop)
+				(= saveKarlLoop karlLoop)
 				(guard
-					loop: local6
+					loop: saveKarlLoop
 					cel: 1
 					cycleSpeed: 4
 					setCycle: BegLoop self
 				)
 			)
 			(2
-				(if (== local6 4)
+				(if (== saveKarlLoop 4)
 					(guard
 						loop: 0
 						cel: 0
@@ -442,7 +447,7 @@
 			)
 			(3 (= cycles 2))
 			(4
-				(if (== local6 4)
+				(if (== saveKarlLoop 4)
 					(guard loop: 2 cel: 0 cycleSpeed: 3 setCycle: EndLoop self)
 				else
 					(guard loop: 2 cel: 2 cycleSpeed: 3 setCycle: BegLoop self)
@@ -450,7 +455,7 @@
 			)
 			(5 (= cycles 1))
 			(6
-				(if (== local6 4)
+				(if (== saveKarlLoop 4)
 					(guard
 						loop: 1
 						cel: 0
@@ -476,17 +481,23 @@
 )
 
 (instance openGate of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (timeout seconds?) (timeout seconds: 12))
+				(if (timeout seconds?)
+					(timeout seconds: 12)
+				)
 				(cond 
-					((and (< 123 (guard x?)) (< (guard x?) 198)) (self changeState: 3))
-					((< (guard x?) 160) (guard loop: 4 cel: 1 cycleSpeed: 4 setCycle: BegLoop self))
-					(else (guard loop: 5 cel: 1 cycleSpeed: 4 setCycle: BegLoop self))
+					((and (< 123 (guard x?)) (< (guard x?) 198))
+						(self changeState: 3)
+					)
+					((< (guard x?) 160)
+						(guard loop: 4 cel: 1 cycleSpeed: 4 setCycle: BegLoop self)
+					)
+					(else
+						(guard loop: 5 cel: 1 cycleSpeed: 4 setCycle: BegLoop self)
+					)
 				)
 			)
 			(1
@@ -541,8 +552,6 @@
 )
 
 (instance closeGateSafe of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 8))
@@ -568,8 +577,6 @@
 )
 
 (instance closeGate of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -622,7 +629,7 @@
 					else
 					(HighPrint 37 17)
 					;The guard, sensing something is awry, raises the portcullis.
-					)
+				)
 				(self cue:)
 			)
 			(4
@@ -674,8 +681,6 @@
 )
 
 (instance egoClimbsWall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -756,27 +761,27 @@
 						(0
 							(HighPrint 37 21)
 							;Experience is the best teacher.
-							)
+						)
 						(1
 							(HighPrint 37 22)
 							;Practice makes perfect.
-							)
+						)
 						(2
 							(HighPrint 37 23)
 							;Try, try again etc...
-							)
+						)
 						(3
 							(HighPrint 37 24)
 							;Take a break.  It's Mueller time.
-							)
+						)
 						(4
 							(HighPrint 37 25)
 							;The gatehouse is more difficult to climb than it first appeared.
-							)
+						)
 						(else
 							(HighPrint 37 26)
 							;Remember what happened to Humpty Dumpty.
-							)
+						)
 					)
 					(++ climbFail)
 					(self cue:)
@@ -785,14 +790,15 @@
 			(6
 				(ego moveSpeed: 1 setCycle: EndLoop self)
 			)
-			(7 (HandsOn) (NormalEgo))
+			(7
+				(HandsOn)
+				(NormalEgo)
+			)
 		)
 	)
 )
 
 (instance egoClimbsDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -837,8 +843,6 @@
 )
 
 (instance egoLeavesCastle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -883,15 +887,16 @@
 								(gateOpen
 									(HighPrint 37 29)
 									;"As you can see, the gate is open."
-									)
+								)
 								(karlCantSeeEgo
 									(HighPrint 37 30)
 									;"I will not open for a faceless voice. Come out where I can see you."
-									)
+								)
 								(else
 									(HighPrint 37 31)
 									;"Very well."
-									(castleBars setScript: openGate))
+									(castleBars setScript: openGate)
+								)
 							)
 						)
 					)
@@ -910,34 +915,34 @@
 					(invitedIntoCastle
 						(HighPrint 37 34)
 						;Don't keep everybody waiting with idle talk.
-						(event claimed: 1))
+						(event claimed: TRUE)
+					)
 					((Said '/hey')
 						(if (KarlStopsToTalk)
 							(HighPrint 37 35)
 							;"Hay is for horses."
 							)
 						)
-					(
-					(or (Said '/hello') (Said 'call/guard,man,gatekeeper'))
-					(if (KarlStopsToTalk)
-						(HighPrint 37 36)
-						;"I'm here!  What do you want?"
+					((or (Said '/hello') (Said 'call/guard,man,gatekeeper'))
+						(if (KarlStopsToTalk)
+							(HighPrint 37 36)
+							;"I'm here!  What do you want?"
 						)
 					)
 					((Said 'say') (if (KarlStopsToTalk)
 							(HighPrint 37 37)
 							;"What?"
 							)
-						)
+					)
 					((Said 'affirmative,please')
 						(if (KarlStopsToTalk)
-							(if karlResumedPatral
+							(if karlWaiting
 								(HighPrint 37 38)
 								;"Then go, before I close the portcullis."
 									else
 									(HighPrint 37 39)
 									;"Sorry.  I wasn't listening.  Could you repeat youself?"
-									)
+							)
 						)
 					)
 					((Said 'n')
@@ -950,22 +955,24 @@
 					((Said 'look/guard,man')
 						(HighPrint 37 28)
 						;You can't see much of the gatekeeper over the battlements.
-						)
+					)
 					((Said 'chat[<to]/guard,man')
 						(HighPrint 37 41)
 						;Go ahead.
-						)
+					)
 					((Said 'chat,ask>')
-						(= karlPatrolling (KarlStopsToTalk))
+						(= talkRet (KarlStopsToTalk))
 						(cond 
-							((Said '//name,handle') (if (KarlStopsToTalk) (= karlPatrolling FALSE)
+							((Said '//name,handle')
+								(if (KarlStopsToTalk)
+									(= talkRet FALSE)
 									(HighPrint 37 42)
 									;"My name is Karl."
-									)
 								)
+							)
 							((Said '//karl')
 								(if (KarlStopsToTalk)
-									(= karlPatrolling FALSE)
+									(= talkRet FALSE)
 								else
 									(HighPrint 37 43)
 									;"That's me. I guard the portcullis day after day."
@@ -977,7 +984,7 @@
 									(Said '//portcullis,gate,door<open,lift')
 								)
 								(if (KarlStopsToTalk)
-									(= karlPatrolling FALSE)
+									(= talkRet FALSE)
 									(if gateOpen
 										(HighPrint 37 29)
 										;"As you can see, the gate is open."
@@ -988,19 +995,22 @@
 									)
 								)
 							)
-							((Said '//gate,portcullis') (if (KarlStopsToTalk) (= karlPatrolling FALSE)
+							((Said '//gate,portcullis')
+								(if (KarlStopsToTalk)
+									(= talkRet FALSE)
 									(HighPrint 37 44)
 									;"The portcullis is the metal grate that bars the entrance to the castle yard.
-									)
 								)
-							((Said '//castle,building') (if (KarlStopsToTalk)
+							)
+							((Said '//castle,building')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 45)
 									;"This is the Castle of the Baron Stefan von Spielburg, Lord of this Valley."
-									)
 								)
+							)
 							((Said '//lord,baron,hamlet')
 								(if (KarlStopsToTalk)
-									(if (Btst SAVED_BARNARD)
+									(if (Btst fSavedBarnard)
 										(HighPrint 37 46)
 										;"My Lord is busy organizing his troops."
 									else
@@ -1020,7 +1030,7 @@
 							)
 							((Said '//barnard,barnard')
 								(if (KarlStopsToTalk)
-									(if (Btst SAVED_BARNARD)
+									(if (Btst fSavedBarnard)
 										(HighPrint 37 50)
 										;"The Baronet is busy hibernating."
 									else
@@ -1047,18 +1057,20 @@
 									;"Elsa von Spielburg would be about eighteen now."
 								)
 							)
-							((Said '//job,labor,labor') (if (KarlStopsToTalk)
+							((Said '//job,labor,labor')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 57)
 									;"The stablekeeper could use a strong young person to help clean out the stable.
 									;It does not pay much, but it is good, honest work.
 									;If you would like to take the job, just ask me to open the portcullis."
-									)
 								)
-							((Said '//stable') (if (KarlStopsToTalk)
+							)
+							((Said '//stable')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 58)
 									;"Cleaning up after the horses is a good way to build up your muscles."
-									)
 								)
+							)
 							((Said '//misfortune,curse')
 								(if (KarlStopsToTalk)
 									(HighPrint 37 59)
@@ -1072,18 +1084,20 @@
 									;The captain then dissolved into a pool of sticky blackness."
 								)
 							)
-							((Said '//jester,yorick') (if (KarlStopsToTalk)
+							((Said '//jester,yorick')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 61)
 									;"He was a very jolly fool who loved to laugh.
 									;He was devoted to Elsa and swore he would not return until Elsa was safe."
-									)
 								)
-							((Said '//baba,baba,ogress') (if (KarlStopsToTalk)
+							)
+							((Said '//baba,baba,ogress')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 62)
 									;"The powerful Ogress Baba Yaga is the cause of all the Baron's misfortune.
 									;She is a vile creature who knows much magic."
-									)
 								)
+							)
 							((Said '//prize')
 								(if (KarlStopsToTalk)
 									(HighPrint 37 63)
@@ -1093,97 +1107,116 @@
 									;and the title of 'Hero of the Realm of Spielburg'."
 								)
 							)
-							((Said '//warlock[<bandit,about]') (if (KarlStopsToTalk)
+							((Said '//warlock[<bandit,about]')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 65)
 									;"The brigands are protected by a magic user.
 									;Not much is known about him, but he seems to use more magic potions and powders than spells."
-									)
 								)
-							((Said '//leader[<bandit,about]') (if (KarlStopsToTalk)
+							)
+							((Said '//leader[<bandit,about]')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 66)
 									;"The leader of the brigands must be a good strategist.
 									;He has organized and led many raids which result in much treasure and little loss on the part of the brigands.
 									;Without their leader, the brigands would soon flee."
-									)
 								)
-							((Said '//bandit') (if (KarlStopsToTalk)
+							)
+							((Said '//bandit')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 67)
 									;"There are now too few guards to take out the brigands, who still rob our people and drive away the traders.
 									;They hide somewhere near the edge of this valley."
-									)
 								)
-							((Said '//loot,robbery,stealing') (if (KarlStopsToTalk)
+							)
+							((Said '//loot,robbery,stealing')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 68)
 									;"This was once a very wealthy valley.  Many merchants have been robbed by the brigands.
 									;There is a merchant in town who could tell you about his recent loss."
-									)
 								)
-							((Said '//cemetery,cemetery') (if (KarlStopsToTalk)
+							)
+							((Said '//cemetery,cemetery')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 69)
 									;"Baba Yaga cursed the graveyard such that the dead can not rest at night.
 									;One cannot go near the graveyard at dark without risking one's own death unless one uses protection."
-									)
 								)
-							((Said '//protection') (if (KarlStopsToTalk)
+							)
+							((Said '//protection')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 70)
 									;"There is an unguent you can purchase from the Healer which protects against the dead that walk at night."
-									)
 								)
-							((Said '//hero') (if (KarlStopsToTalk)
+							)
+							((Said '//hero')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 71)
 									;"'Hero of the Realm of Spielburg' is a title of respect and honor.
 									;A true hero can release this land from its curse by using intelligence and courage."
-									)
 								)
-							((Said '//monster,creature,animal') (if (KarlStopsToTalk)
+							)
+							((Said '//monster,creature,animal')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 72)
 									;"There are many foul creatures stalking the forest.
 									;The Baron has too few guards to protect this valley from them."
-									)
 								)
-							((Said '//valley') (if (KarlStopsToTalk)
+							)
+							((Said '//valley')
+								(if (KarlStopsToTalk)
 									(HighPrint 37 73)
 									;"Spielburg Valley was once a prosperous and peaceful place before the Baron lost his family.
 									;Now the Baron will not leave his castle and has no idea of the ruin this land has come to."
-									)
-								)
-							((Said '//hut') (if (KarlStopsToTalk)
-									(HighPrint 37 74)
-									;"Baba Yaga has her hut to the northwest.  It is a very dangerous place and many Baronial Guards were lost there."
-									)
-								)
-							((Said '//baroness') (if (KarlStopsToTalk) (= karlPatrolling FALSE)
-									(HighPrint 37 75)
-									;"The Baroness died soon after the birth of her daughter.  The Baron still mourns for her."
-									)
-								)
-							((Said '//guard') (if (KarlStopsToTalk) (= karlPatrolling FALSE)
-									(HighPrint 37 76)
-									;"The Baron von Spielburg lost most of his guards trying to defeat Baba Yaga."
-									)
-								)
-							((Said '//gatehouse') (if (KarlStopsToTalk) (= karlPatrolling FALSE)
-									(HighPrint 37 77)
-									;"The gatehouse is a shelter and resting place for the guards."
-									)
-								)
-							((Said '//weather') (if (KarlStopsToTalk) (= karlPatrolling FALSE)
-									(HighPrint 37 78)
-									;"Everybody talks about the weather, but nobody does anything about it."
-									)
-								)
-							((Said '//(master[<weapon,about]),fight,practice') (if (KarlStopsToTalk)
-								(HighPrint 37 79)
-								;"The Weapons Master often practices in the castle courtyard.  He gives lessons in the art of swordplay.
-								;The lessons are expensive, but well worth the price."
 								)
 							)
-							((and (Said '//*') (KarlStopsToTalk)) (= karlPatrolling FALSE)
+							((Said '//hut')
+								(if (KarlStopsToTalk)
+									(HighPrint 37 74)
+									;"Baba Yaga has her hut to the northwest.  It is a very dangerous place and many Baronial Guards were lost there."
+								)
+							)
+							((Said '//baroness')
+								(if (KarlStopsToTalk) (= talkRet FALSE)
+									(HighPrint 37 75)
+									;"The Baroness died soon after the birth of her daughter.  The Baron still mourns for her."
+								)
+							)
+							((Said '//guard')
+								(if (KarlStopsToTalk) (= talkRet FALSE)
+									(HighPrint 37 76)
+									;"The Baron von Spielburg lost most of his guards trying to defeat Baba Yaga."
+								)
+							)
+							((Said '//gatehouse')
+								(if (KarlStopsToTalk) (= talkRet FALSE)
+									(HighPrint 37 77)
+									;"The gatehouse is a shelter and resting place for the guards."
+								)
+							)
+							((Said '//weather')
+								(if (KarlStopsToTalk)
+									(= talkRet FALSE)
+									(HighPrint 37 78)
+									;"Everybody talks about the weather, but nobody does anything about it."
+								)
+							)
+							((Said '//(master[<weapon,about]),fight,practice')
+								(if (KarlStopsToTalk)
+									(HighPrint 37 79)
+									;"The Weapons Master often practices in the castle courtyard.  He gives lessons in the art of swordplay.
+									;The lessons are expensive, but well worth the price."
+								)
+							)
+							((and (Said '//*') (KarlStopsToTalk))
+								(= talkRet FALSE)
 								(HighPrint 37 80)
 								;"I wouldn't know about that, I don't get around much these days."
-								)
+							)
 						)
-						(if karlPatrolling (SolvePuzzle POINTS_TALKTOGATEKEEPER 5))
+						(if talkRet
+							(SolvePuzzle f37TalkToKarl 5)
+						)
 					)
 				)
 			)
@@ -1243,15 +1276,15 @@
 					(Night
 						(HighPrint 37 81)
 						;The castle is securely locked for the night.
-						)
+					)
 					(gateOpen
 						(HighPrint 37 82)
 						;The portcullis has been drawn, and the way to the castle is clear.
-						)
+					)
 					(else
 						(HighPrint 37 83)
 						;The portcullis presents a severe obstacle for entry to the castle.
-						)
+					)
 				)
 			)
 		)
@@ -1272,7 +1305,7 @@
 			((MouseClaimed onCastle event shiftDown)
 				(HighPrint 37 84)
 				;The castle of the Baron Stefan von Spielburg, Lord of the valley.
-				)
+			)
 		)
 	)
 )
@@ -1296,15 +1329,15 @@
 					(Night
 						(HighPrint 37 85)
 						;The gatehouse is a massive structure which houses the guards.
-						)
+					)
 					(gateOpen
 						(HighPrint 37 86)
 						;The gatehouse is a massive structure.
-						)
+					)
 					(else
 						(HighPrint 37 6)
 						;The gatehouse is a massive structure with a portcullis closing off access to the castle.
-						)
+					)
 				)
 			)
 		)
@@ -1380,15 +1413,16 @@
 )
 
 (instance normalEntry of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo 161 187)
 				(= cycles 30)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )

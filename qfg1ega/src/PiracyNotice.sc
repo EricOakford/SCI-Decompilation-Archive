@@ -26,18 +26,20 @@
 (instance rightsWin of SysWindow
 	(properties
 		back vLCYAN
+		color vBLACK
 	)
 )
 
 (instance sayRights of Script
-
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
 				(= cycles 2)
 			)
 			(1
-				(if (< numColors 8) (rightsWin color: vBLACK back: vWHITE))
+				(if (< numColors 8)
+					(rightsWin color: vBLACK back: vWHITE)
+				)
 				
 				(Print 2 0
 					#mode teJustCenter

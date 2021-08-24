@@ -199,7 +199,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_OUTSIDE_MAGICSHOP)
+		(Bset fBeenIn310)
 		(super dispose:)
 	)
 	
@@ -349,11 +349,10 @@
 				(HighPrint 310 1)
 				;Picking locks looked a lot easier in the instruction book.
 				)
-			(
-			(and (Btst VISITED_LOL_HOUSE) (< dayLOLBreakIn Day))
-			(HighPrint 310 2)
-			;The owners seem to have been made nervous by the recent rash of house burglaries.
-			;The door is barred from the inside.  But you do get some valuable lock-picking practice.
+			((and (Btst fBeenIn313) (< dayLOLBreakIn Day))
+				(HighPrint 310 2)
+				;The owners seem to have been made nervous by the recent rash of house burglaries.
+				;The door is barred from the inside.  But you do get some valuable lock-picking practice.
 			)
 			(else
 				(lockSound number: (SoundFX 35) init: play:)

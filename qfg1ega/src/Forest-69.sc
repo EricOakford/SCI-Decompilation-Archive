@@ -34,14 +34,16 @@
 		(self setLocales: FOREST)
 		(StatusLine enable:)
 		(NormalEgo)
-		(if (not monsterNum) (ego illegalBits: (| cWHITE cLMAGENTA) init:))
+		(if (not monsterNum)
+			(ego illegalBits: (| cWHITE cLMAGENTA) init:)
+		)
 		(switch prevRoomNum
 			(70
 				(ego posn: 318 140 setMotion: MoveTo 265 140)
-				(if (Btst GOT_FAIRIES_ATTENTION)
+				(if (Btst fFaeryAttention)
 					(User canControl: FALSE)
 					(User canInput: FALSE)
-					(Bclr GOT_FAIRIES_ATTENTION)
+					(Bclr fFaeryAttention)
 					(self setScript: (ScriptID 295 0))
 				)
 			)
@@ -66,7 +68,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_69)
+		(Bset fBeenIn69)
 		(super dispose:)
 	)
 )

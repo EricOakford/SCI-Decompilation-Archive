@@ -110,8 +110,6 @@
 )
 
 (instance saveHero of Script
-	(properties)
-	
 	(method (changeState newState &tmp whichSkill oldGold temp2 printRet)
 		(switch (= state newState)
 			(askSave 0
@@ -174,42 +172,36 @@
 				(= svStamina ((inventory at: iStaminaPotion) amount?))
 				(= svGhostOil ((inventory at: iGhostOil) amount?))
 				(= checkSum1 checkSumKey)
-				(= whichSkill 0)
-				(while (< whichSkill (+ NUM_ATTRIBS CHECK_DATA))
+
+				(for ((= whichSkill 0)) (< whichSkill (+ NUM_ATTRIBS CHECK_DATA)) ((+= whichSkill 2))
 					(= [statsKey (+ whichSkill 1)]
 						(& [statsKey (+ whichSkill 1)] 127)
 					)
-					(= checkSum1 (+ checkSum1 [statsKey (+ whichSkill 1)]))
-					(= whichSkill (+ whichSkill 2))
+					(+= checkSum1 [statsKey (+ whichSkill 1)])
 				)
 				(= checkSum2 0)
-				(= whichSkill 1)
-				(while (< whichSkill (+ NUM_ATTRIBS CHECK_DATA))
+
+				(for ((= whichSkill 1)) (< whichSkill (+ NUM_ATTRIBS CHECK_DATA)) ((+= whichSkill 2))
 					(= [statsKey (+ whichSkill 1)]
 						(& [statsKey (+ whichSkill 1)] 127)
 					)
-					(= checkSum2 (+ checkSum2 [statsKey (+ whichSkill 1)]))
-					(= whichSkill (+ whichSkill 2))
+					(+= checkSum2 [statsKey (+ whichSkill 1)])
 				)
 				(&= checkSum1 127)
 				(&= checkSum2 127)
-				(= whichSkill 0)
-				(while (< whichSkill (+ NUM_ATTRIBS EXTRA_DATA))
+
+				(for ((= whichSkill 0)) (< whichSkill (+ NUM_ATTRIBS EXTRA_DATA)) ((++ whichSkill))
 					(= [statsKey (+ whichSkill 1)]
 						(& [statsKey (+ whichSkill 1)] 127)
 					)
-					(= [statsKey (+ whichSkill 1)]
-						(^ [statsKey (+ whichSkill 1)] [statsKey whichSkill])
-					)
-					(++ whichSkill)
+					(^= [statsKey (+ whichSkill 1)] [statsKey whichSkill])
 				)
 				(heroInfo writeString: @userName)
 				(heroInfo writeString: {\n})
-				(= whichSkill 1)
-				(while (< whichSkill (+ NUM_ATTRIBS EXTRA_DATA 1))
+
+				(for ((= whichSkill 1)) (< whichSkill (+ NUM_ATTRIBS EXTRA_DATA 1)) ((++ whichSkill))
 					(Format @bigStr 601 1 [statsKey whichSkill])
 					(heroInfo writeString: @bigStr)
-					(++ whichSkill)
 				)
 				(heroInfo writeString: {\n})
 				(heroInfo close:)

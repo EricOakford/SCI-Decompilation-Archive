@@ -23,7 +23,7 @@
 )
 
 (local
-	theGName
+	oldGameTime
 	drinkWaterCount
 	rockHitDoor
 	rockHitDoorAgain
@@ -31,15 +31,61 @@
 	rockKnockCount
 	lookedAtDoor
 	local7
-	gEgoSignal
-	gEgoPriority
-	gEgoIllegalBits
-	local11
+	savSignal
+	savPriority
+	savIllegalBits
+	egoClimbIndex
 	waterfallCue
-	gEgoCycleSpeed
-	gEgoMoveSpeed
-	[local15 44] = [0 0 130 126 0 1 130 123 0 2 130 119 0 3 130 116 0 4 131 112 0 5 130 109 0 6 130 106 0 7 131 103 0 1 129 100 0 2 129 98 99 99 99 99]
-	[local59 44] = [0 2 129 98 0 1 129 100 0 7 131 103 0 6 130 106 0 5 130 109 0 4 131 112 0 3 130 116 0 2 130 119 0 1 130 123 0 0 130 126 99 99 99 99]
+	saveCycleSpeed
+	saveMoveSpeed
+	egoClimbPath = [
+		0 0
+		130 126
+		0 1
+		130 123
+		0 2
+		130 119
+		0 3
+		130 116
+		0 4
+		131 112
+		0 5
+		130 109
+		0 6
+		130 106
+		0 7
+		131 103
+		0 1
+		129 100
+		0 2
+		129 98
+		99 99
+		99 99
+		]
+	local59 = [
+		0 2
+		129 98
+		0 1
+		129 100
+		0 7
+		131 103
+		0 6
+		130 106
+		0 5
+		130 109
+		0 4
+		131 112
+		0 3
+		130 116
+		0 2
+		130 119
+		0 1
+		130 123
+		0 0
+		130 126
+		99 99
+		99 99
+		]
 )
 (procedure (GetFlyingWater bool)
 	(if (Btst fClimbedHenryCliff)
@@ -181,10 +227,10 @@
 	(method (doit)
 		(if
 			(and
-				(not (Btst 360))
-				(> (Abs (- gameTime theGName)) 2)
+				(not (Btst fCharSheetActive))
+				(> (Abs (- gameTime oldGameTime)) 2)
 			)
-			(= theGName gameTime)
+			(= oldGameTime gameTime)
 			(Palette PALCycle 232 239 -1 240 247 -1 248 254 -1)
 		)
 		(cond 
@@ -193,14 +239,16 @@
 			(
 				(and
 					(Btst fClimbedHenryCliff)
-					(& (ego onControl:) $0002)
+					(& (ego onControl:) cBLUE)
 					(not (ego script?))
 					(not (== (ego script?) goodClimb))
-					(not (Btst 276))
+					(not (Btst fEgoSquashed))
 				)
 				(curRoom setScript: sFallDown)
 			)
-			((== (ego edgeHit?) 4) (curRoom setScript: walkOut))
+			((== (ego edgeHit?) WEST)
+				(curRoom setScript: walkOut)
+			)
 		)
 		(super doit:)
 	)
@@ -218,7 +266,7 @@
 				(if (CastSpell DETMAGIC)
 					(self setScript: detectLadder)
 				else
-					(messager say: N_ROOM 0 C_SPELLNOTWORKING)
+					(messager say: N_ROOM NULL C_SPELLNOTWORKING)
 				)
 			)
 			(V_TRIGGER
@@ -226,19 +274,21 @@
 					(Bset fLadderKnown)
 					(ladder setCycle: EndLoop)
 				else
-					(messager say: N_ROOM 0 C_SPELLNOTWORKING)
+					(messager say: N_ROOM NULL C_SPELLNOTWORKING)
 				)
 			)
 			(V_DAZZLE
 				(if (CastSpell DAZZLE)
 					(curRoom setScript: dazzleIt)
 				else
-					(messager say: N_ROOM 0 C_SPELLNOTWORKING)
+					(messager say: N_ROOM NULL C_SPELLNOTWORKING)
 				)
 			)
 			(V_OPEN
 				(cond 
-					((Btst fHenryDoorOpen) (messager say: N_ROOM V_OPEN C_ALREADYOPEN))
+					((Btst fHenryDoorOpen)
+						(messager say: N_ROOM V_OPEN C_ALREADYOPEN)
+					)
 					((CastSpell OPEN)
 						(cond 
 							((and (Btst fClimbedHenryCliff) (> [egoStats OPEN] 5))
@@ -246,10 +296,14 @@
 								(ego setMotion: MoveTo (ego x?) 60)
 								(hermitDoor setScript: openFromBelow)
 							)
-							((TrySkill MAGIC 45) (hermitDoor setScript: openFromBelow))
+							((TrySkill MAGIC 45)
+								(hermitDoor setScript: openFromBelow)
+							)
 						)
 					)
-					(else (messager say: N_ROOM V_OPEN C_OPENFAIL))
+					(else
+						(messager say: N_ROOM V_OPEN C_OPENFAIL)
+					)
 				)
 			)
 			(else 
@@ -261,7 +315,10 @@
 	(method (cue)
 		(switch waterfallCue
 			(1
-				(if (not lookedAtDoor) (= lookedAtDoor TRUE) (messager say: N_HERMITDOOR V_LOOK C_LOOKDOORAGAIN))
+				(if (not lookedAtDoor)
+					(= lookedAtDoor TRUE)
+					(messager say: N_HERMITDOOR V_LOOK C_LOOKDOORAGAIN)
+				)
 			)
 		)
 	)
@@ -277,7 +334,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_WATERFALL V_LOOK))
+			(V_LOOK
+				(messager say: N_WATERFALL V_LOOK)
+			)
 			(else 
 				(onWater doVerb: theVerb &rest)
 			)
@@ -362,7 +421,7 @@
 						V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
 						V_VASE V_VEGETABLES
 					)
-					(messager say: N_WATER 0 C_DONTHAVEFLASK)
+					(messager say: N_WATER NULL C_DONTHAVEFLASK)
 				else
 					(super doVerb: theVerb &rest)
 				)
@@ -439,7 +498,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_BOTTOMSPLASH V_LOOK))
+			(V_LOOK
+				(messager say: N_BOTTOMSPLASH V_LOOK)
+			)
 			(else 
 				(onWater doVerb: theVerb &rest)
 			)
@@ -460,7 +521,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_SMLSPLASH1 V_LOOK))
+			(V_LOOK
+				(messager say: N_SMLSPLASH1 V_LOOK)
+			)
 			(else 
 				(onWater doVerb: theVerb &rest)
 			)
@@ -482,7 +545,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_SMLSPLASH2 V_LOOK))
+			(V_LOOK
+				(messager say: N_SMLSPLASH2 V_LOOK)
+			)
 			(else 
 				(onWater doVerb: theVerb &rest)
 			)
@@ -504,7 +569,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_SMLSPLASH3 V_LOOK))
+			(V_LOOK
+				(messager say: N_SMLSPLASH3 V_LOOK)
+			)
 			(else 
 				(onWater doVerb: theVerb &rest)
 			)
@@ -526,7 +593,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_SMLSPLASH4 V_LOOK))
+			(V_LOOK
+				(messager say: N_SMLSPLASH4 V_LOOK)
+			)
 			(else 
 				(onWater doVerb: theVerb &rest)
 			)
@@ -548,7 +617,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_SMLSPLASH5 V_LOOK))
+			(V_LOOK
+				(messager say: N_SMLSPLASH5 V_LOOK)
+			)
 			(else 
 				(onWater doVerb: theVerb &rest)
 			)
@@ -570,7 +641,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_SMLSPLASH6 V_LOOK))
+			(V_LOOK
+				(messager say: N_SMLSPLASH6 V_LOOK)
+			)
 			(else 
 				(onWater doVerb: theVerb &rest)
 			)
@@ -581,7 +654,7 @@
 (instance funkyEgo of Prop
 	(properties
 		priority pYELLOW
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -598,16 +671,21 @@
 		(switch theVerb
 			(V_LOOK
 				(if (Btst fLadderKnown)
-					(messager say: N_LADDER V_LOOK 0)
+					(messager say: N_LADDER V_LOOK NULL)
 				else
 					(messager say: N_LADDER V_LOOK C_DONTSEELADDER)
 				)
 			)
 			(V_DO
 				(cond 
-					((Btst fClimbedHenryCliff) (ego setScript: climbDown))
-					((Btst fLadderKnown) (ego setScript: goodClimb))
-					(else (messager say: N_LADDER V_DO 0))
+					((Btst fClimbedHenryCliff)
+						(ego setScript: climbDown)
+					)
+					((Btst fLadderKnown)
+						(ego setScript: goodClimb)
+					)
+					(else (messager say: N_LADDER V_DO NULL)
+					)
 				)
 			)
 			(else 
@@ -630,13 +708,13 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(messager say: N_HERMITDOOR V_LOOK 0 1 curRoom)
+				(messager say: N_HERMITDOOR V_LOOK NULL 1 curRoom)
 				(= waterfallCue 1)
 			)
 			(V_DO
 				(if (Btst fClimbedHenryCliff)
 					(hermitDoor setScript: knockScript)
-					(SolvePuzzle POINTS_KNOCKONHERMITDOOR 1)
+					(SolvePuzzle f82KnockOnDoor 1)
 				else
 					(messager say: N_HERMITDOOR V_DO 0)
 				)
@@ -650,19 +728,21 @@
 			)
 			(V_LOCKPICK
 				(if (Btst fClimbedHenryCliff)
-					(messager say: N_HERMITDOOR V_LOCKPICK 0)
+					(messager say: N_HERMITDOOR V_LOCKPICK NULL)
 				else
 					(messager say: N_HERMITDOOR V_LOCKPICK C_CANTREACHDOOR)
 				)
 			)
 			(V_THIEFKIT
 				(if (Btst fClimbedHenryCliff)
-					(messager say: N_HERMITDOOR V_THIEFKIT 0)
+					(messager say: N_HERMITDOOR V_THIEFKIT NULL)
 				else
 					(messager say: N_HERMITDOOR V_THIEFKIT C_CANTREACHDOOR)
 				)
 			)
-			(V_FLAME (curRoom setScript: dartIt))
+			(V_FLAME
+				(curRoom setScript: dartIt)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -695,11 +775,12 @@
 )
 
 (instance getWater of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(if (< (ego x?) 90)
 					(ego setMotion: PolyPath 95 150 self)
@@ -717,24 +798,31 @@
 				(if (not (ego has: iFlask))
 					(switch drinkWaterCount
 						(0
-							(messager say: N_ROOM 0 C_DRINKWATER1 1 self)
+							(messager say: N_ROOM NULL C_DRINKWATER1 1 self)
 						)
 						(1
-							(messager say: N_ROOM 0 C_DRINKWATER2 1 self)
+							(messager say: N_ROOM NULL C_DRINKWATER2 1 self)
 						)
 						(else 
-							(messager say: N_ROOM 0 C_DRINKWATER3 1 self)
+							(messager say: N_ROOM NULL C_DRINKWATER3 1 self)
 						)
 					)
 					(++ drinkWaterCount)
 				else
 					(Bset fHaveFlyingWater)
-					(SolvePuzzle POINTS_GETFLYINGWATER 3)
+					(SolvePuzzle f82GetWater 3)
 					(messager say: N_ROOM 0 C_FILLFLASK 1 self)
 				)
 			)
 			(5
-				(if (not (ego has: iFlask)) 0 else (ego get: iFlyingWater use: iFlask 1))
+				(if (not (ego has: iFlask))
+					0
+				else
+					(ego
+						get: iFlyingWater
+						use: iFlask 1
+					)
+				)
 				(ego setCycle: BegLoop self)
 			)
 			(6
@@ -747,22 +835,23 @@
 )
 
 (instance walkOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(ego setMotion: MoveTo -20 (ego y?) self)
 			)
-			(2 (curRoom newRoom: 81))
+			(2
+				(curRoom newRoom: 81)
+			)
 		)
 	)
 )
 
 (instance badClimb of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -783,18 +872,19 @@
 				(ego setCel: 0 setCycle: 0 setMotion: MoveTo 129 121 self)
 			)
 			(4
-				(messager say: N_ROOM 0 0 1 self)
+				(messager say: N_ROOM NULL NULL 1 self)
 				(ego setLoop: 3 view: 0 posn: 131 152)
 				(NormalEgo)
 			)
-			(5 (HandsOn) (self dispose:))
+			(5
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance climbDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -814,18 +904,18 @@
 					cel: (ego lastCel:)
 					setCycle: BegLoop self
 				)
-				(= local11 0)
+				(= egoClimbIndex 0)
 			)
 			(3
-				(if (== [local59 local11] 99)
+				(if (== [local59 egoClimbIndex] 99)
 					(self changeState: 5)
 				else
 					(ego
-						setLoop: [local59 local11]
-						cel: [local59 (++ local11)]
-						posn: [local59 (++ local11)] [local59 (++ local11)]
+						setLoop: [local59 egoClimbIndex]
+						cel: [local59 (++ egoClimbIndex)]
+						posn: [local59 (++ egoClimbIndex)] [local59 (++ egoClimbIndex)]
 					)
-					(++ local11)
+					(++ egoClimbIndex)
 					(= cycles 3)
 				)
 			)
@@ -871,8 +961,6 @@
 )
 
 (instance knockScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -890,11 +978,14 @@
 				(= cycles 5)
 			)
 			(4
-				(messager say: N_ROOM 0 C_KNOCKKNOCK 0 self)
+				(messager say: N_ROOM NULL C_KNOCKKNOCK 0 self)
 			)
 			(5
 				(HandsOn)
-				(ego observeControl: 16 2 -32768 illegalBits: -32768)
+				(ego
+					observeControl: cRED cBLUE cWHITE
+					illegalBits: cWHITE
+				)
 				(= seconds 3)
 			)
 			(6 (= seconds 3))
@@ -906,8 +997,6 @@
 )
 
 (instance hermitHits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -933,12 +1022,18 @@
 				(cond 
 					((ego inRect: 100 62 145 84)
 						(rm82Sound number: 104 loop: 1 play:)
-						(Bset 274)
+						(Bset fEgoFallOffCliff)
 						(ego setScript: sFallDown)
 						(= seconds 4)
 					)
-					((ego inRect: 62 62 100 88) (Bset 276) (ego setPri: 0) (= ticks 60))
-					(else (= ticks 60))
+					((ego inRect: 62 62 100 88)
+						(Bset fEgoSquashed)
+						(ego setPri: 0)
+						(= ticks 60)
+					)
+					(else
+						(= ticks 60)
+					)
 				)
 			)
 			(5
@@ -946,7 +1041,7 @@
 				(client setCycle: EndLoop self)
 			)
 			(6
-				(if (Btst 276)
+				(if (Btst fEgoSquashed)
 					(rm82Sound number: 104 loop: 1 play:)
 					(hermitDoor setPri: (+ (ego priority?) 1))
 					(ego view: 82 setLoop: 6 setCel: 0 posn: 86 81)
@@ -955,13 +1050,12 @@
 			)
 			(7 (= cycles 10))
 			(8
-				(if
-				(and (Btst fClimbedHenryCliff) (not (Btst 274)) (not (Btst 276)))
-					(messager say: N_ROOM 0 C_COMEONIN 1 self)
+				(if (and (Btst fClimbedHenryCliff) (not (Btst fEgoFallOffCliff)) (not (Btst fEgoSquashed)))
+					(messager say: N_ROOM NULL C_COMEONIN 1 self)
 					(ego setScript: goOnIn)
 					(self dispose:)
 				else
-					(messager say: N_ROOM 0 C_DONTSEEANYBODY 1 self)
+					(messager say: N_ROOM NULL C_DONTSEEANYBODY 1 self)
 				)
 			)
 			(9
@@ -969,7 +1063,7 @@
 				(= ticks 15)
 			)
 			(10
-				(if (Btst 276)
+				(if (Btst fEgoSquashed)
 					(ego
 						view: 82
 						setLoop: 6
@@ -981,7 +1075,9 @@
 			)
 			(11
 				(Bclr fHenryDoorOpen)
-				(if (Btst 276) (ego setScript: squashed))
+				(if (Btst fEgoSquashed)
+					(ego setScript: squashed)
+				)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -990,8 +1086,6 @@
 )
 
 (instance goOnIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
@@ -1023,14 +1117,21 @@
 )
 
 (instance squashed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
-			(1 (ego setCycle: EndLoop self))
-			(2 (self cue:))
-			(3 (messager say: N_ROOM 0 0 2 self))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
+			(1
+				(ego setCycle: EndLoop self)
+			)
+			(2
+				(self cue:)
+			)
+			(3
+				(messager say: N_ROOM NULL NULL 2 self)
+			)
 			(4
 				(if (TakeDamage 10)
 					(= cycles 5)
@@ -1039,7 +1140,7 @@
 				)
 			)
 			(5
-				(Bclr 276)
+				(Bclr fEgoSquashed)
 				(ego
 					setLoop: 8
 					setCel: 3
@@ -1053,17 +1154,20 @@
 				(HandsOn)
 				(= ticks 30)
 			)
-			(7 (self dispose:))
+			(7
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance throwIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(if (< (ego x?) 90)
 					(ego illegalBits: 0 setMotion: MoveTo 60 183 self)
@@ -1079,7 +1183,9 @@
 				)
 				(= cycles 2)
 			)
-			(3 (ego setCycle: CycleTo 3 1 self))
+			(3
+				(ego setCycle: CycleTo 3 1 self)
+			)
 			(4
 				(rock
 					setLoop: 4
@@ -1104,16 +1210,14 @@
 					(++ rockKnockCount)
 					(= rockHitDoor TRUE)
 					(rock
-						setMotion:
-							MoveTo
+						setMotion: MoveTo
 							(+ (hermitDoor x?) (Random 20 30))
 							(+ (hermitDoor y?) (Random 20 30))
 							self
 					)
 				else
 					(rock
-						setMotion:
-							MoveTo
+						setMotion: MoveTo
 							(if (< (ego x?) 90)
 								(+ (hermitDoor x?) (Random 60 85))
 							else
@@ -1132,8 +1236,7 @@
 			(7
 				(rm82Sound number: 78 loop: 1 play:)
 				(rock
-					setMotion:
-						JumpTo
+					setMotion: JumpTo
 						(cond 
 							((< (ego x?) 90) (if rockHitDoor 40 else 225))
 							(rockHitDoor 140)
@@ -1150,10 +1253,10 @@
 			(9
 				(if rockHitDoor
 					(if rockHitDoorAgain
-						(messager say: N_ROOM 0 C_KNOCKROCK2 1 self)
+						(messager say: N_ROOM NULL C_KNOCKROCK2 1 self)
 					else
 						(= rockHitDoorAgain TRUE)
-						(messager say: N_ROOM 0 C_KNOCKROCK1 1 self)
+						(messager say: N_ROOM NULL C_KNOCKROCK1 1 self)
 					)
 				else
 					(self cue:)
@@ -1161,7 +1264,7 @@
 			)
 			(10
 				(if (not rockHitDoor)
-					(messager say: N_ROOM 0 C_ROCKMISSED 1 self)
+					(messager say: N_ROOM NULL C_ROCKMISSED 1 self)
 				else
 					(= rockHitDoor FALSE)
 					(self cue:)
@@ -1171,9 +1274,9 @@
 				(if (== rockKnockCount 3)
 					(= rockKnockCount 0)
 					(if seenByHenry
-						(messager say: N_ROOM 0 C_ANNOYED)
+						(messager say: N_ROOM NULL C_ANNOYED)
 					else
-						(messager say: N_ROOM 0 C_SOMEONETHERE)
+						(messager say: N_ROOM NULL C_SOMEONETHERE)
 					)
 					(hermitDoor setScript: answerKnock)
 				else
@@ -1186,11 +1289,12 @@
 )
 
 (instance answerKnock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(hermitDoor view: 82 loop: 2 cel: 0 setCycle: CycleTo 2 1 self)
 			)
@@ -1207,10 +1311,10 @@
 			)
 			(3
 				(if seenByHenry
-					(messager say: N_ROOM 0 C_YOUAGAIN 1 self)
+					(messager say: N_ROOM NULL C_YOUAGAIN 1 self)
 				else
-					(messager say: N_ROOM 0 C_HELLOTHERE)
-					(= seenByHenry 1)
+					(messager say: N_ROOM NULL C_HELLOTHERE)
+					(= seenByHenry TRUE)
 					(ladder setCycle: EndLoop self)
 					(Bset fLadderKnown)
 				)
@@ -1236,15 +1340,13 @@
 )
 
 (instance getRock of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 40])
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 10))
 			(1
-				(= gEgoSignal (ego signal?))
-				(= gEgoPriority (ego priority?))
-				(= gEgoIllegalBits (ego illegalBits?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
 				(ego
 					view: 510
 					setLoop: (if (== (ego loop?) 0) 0 else 1)
@@ -1262,9 +1364,9 @@
 				(NormalEgo)
 				(HandsOn)
 				(ego
-					priority: gEgoPriority
-					illegalBits: gEgoIllegalBits
-					signal: gEgoSignal
+					priority: savPriority
+					illegalBits: savIllegalBits
+					signal: savSignal
 				)
 				(client setScript: 0)
 			)
@@ -1273,11 +1375,12 @@
 )
 
 (instance deadlyTP of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(ego
 					init:
@@ -1317,17 +1420,20 @@
 					setMotion: MoveTo 270 156 self
 				)
 			)
-			(6 (EgoDead 164 165 2 0 537)) ;Reversed loop and cel to show correct death icon (alarmed Hero).
+			(6
+				(EgoDead 164 165 2 0 537)
+			) ;Reversed loop and cel to show correct death icon (alarmed Hero).
 		)
 	)
 )
 
 (instance fromHermit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(ego
 					illegalBits: 0
@@ -1341,7 +1447,7 @@
 			(3
 				(rm82Sound number: 84 loop: 1 play:)
 				(Bset fClimbedHenryCliff)
-				(ego illegalBits: -32768)
+				(ego illegalBits: cWHITE)
 				(= ticks 3)
 			)
 			(4
@@ -1354,8 +1460,6 @@
 )
 
 (instance openFromBelow of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1375,16 +1479,26 @@
 				(cond 
 					((ego inRect: 100 62 145 84)
 						(rm82Sound number: 104 loop: 1 play:)
-						(Bset 274)
+						(Bset fEgoFallOffCliff)
 						(ego setScript: sFallDown)
 						(= seconds 4)
 					)
-					((ego inRect: 62 62 100 88) (Bset 276) (ego setPri: 0) (= ticks 60))
-					(else (self cue:))
+					((ego inRect: 62 62 100 88)
+						(Bset fEgoSquashed)
+						(ego setPri: 0)
+						(= ticks 60)
+					)
+					(else
+						(self cue:)
+					)
 				)
 			)
-			(4 (messager say: N_ROOM 0 0 4 self))
-			(5 (client setCycle: BegLoop self))
+			(4
+				(messager say: N_ROOM NULL NULL 4 self)
+			)
+			(5
+				(client setCycle: BegLoop self)
+			)
 			(6
 				(Bclr fHenryDoorOpen)
 				(HandsOn)
@@ -1395,38 +1509,49 @@
 )
 
 (instance dazzleIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
-			(1 (CastDazz ego self))
-			(2 (messager say: N_ROOM 0 0 5 self))
-			(3 (HandsOn) (self dispose:))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
+			(1
+				(CastDazz ego self)
+			)
+			(2
+				(messager say: N_ROOM NULL NULL 5 self)
+			)
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance dartIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(CastDart 0 self)
 			)
-			(1 (messager say: N_ROOM 0 0 6 self))
-			(2 (self dispose:))
+			(1
+				(messager say: N_ROOM NULL NULL 6 self)
+			)
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance detectLadder of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(if (not (Btst fLadderKnown))
 					(Bset fLadderKnown)
@@ -1436,8 +1561,13 @@
 					(self dispose:)
 				)
 			)
-			(2 (ladder setCycle: BegLoop self))
-			(3 (HandsOn) (self dispose:))
+			(2
+				(ladder setCycle: BegLoop self)
+			)
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -1456,31 +1586,31 @@
 )
 
 (instance goodClimb of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (Btst fLadderKnown)) (messager say: N_ROOM 0 C_LOOKTOCLIMB))
+				(if (not (Btst fLadderKnown))
+					(messager say: N_ROOM NULL C_LOOKTOCLIMB)
+				)
 				(NormalEgo)
 				(ego illegalBits: 0 ignoreActors:)
 				(theGame setCursor: waitCursor)
 				(ego view: 0 setMotion: PolyPath 129 155 self)
-				(= local11 0)
+				(= egoClimbIndex 0)
 			)
 			(1
-				(if (== [local15 local11] 99)
+				(if (== [egoClimbPath egoClimbIndex] 99)
 					(self changeState: 3)
 				else
 					(ego
 						view: 517
-						setLoop: [local15 local11]
-						cel: [local15 (++ local11)]
-						posn: [local15 (++ local11)] [local15 (++ local11)]
+						setLoop: [egoClimbPath egoClimbIndex]
+						cel: [egoClimbPath (++ egoClimbIndex)]
+						posn: [egoClimbPath (++ egoClimbIndex)] [egoClimbPath (++ egoClimbIndex)]
 						setCycle: 0
 					)
-					(++ local11)
+					(++ egoClimbIndex)
 					(= ticks 10)
 				)
 			)
@@ -1513,16 +1643,17 @@
 			)
 			(4
 				(if (not (Btst fLadderKnown))
-					(messager say: N_ROOM 0 C_THATWASEASY 1 self)
+					(messager say: N_ROOM NULL C_THATWASEASY 1 self)
 				else
 					(self cue:)
 				)
 			)
 			(5
-				(= disabledActions
-					(| (= disabledActions (| disabledActions ACTION_RUN)) ACTION_SNEAK)
+				(|= disabledActions ACTION_RUN)
+				(|= disabledActions ACTION_SNEAK)
+				(if (not (== (ego view?) 0))
+					(ChangeGait MOVE_WALK FALSE)
 				)
-				(if (not (== (ego view?) 0)) (ChangeGait MOVE_WALK 0))
 				(= ticks 60)
 			)
 			(6
@@ -1550,38 +1681,46 @@
 )
 
 (instance sEnterFromWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(ego init: posn: -15 170 setMotion: MoveTo 40 175 self)
 			)
-			(2 (NormalEgo) (= cycles 2))
+			(2
+				(NormalEgo)
+				(= cycles 2)
+			)
 			(3
 				(if (not (Btst fBeenIn82))
-					(messager say: N_ROOM 0 C_FIRSTENTRY 1 self)
+					(messager say: N_ROOM NULL C_FIRSTENTRY 1 self)
 				else
 					(= cycles 2)
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sFallDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(topPoly dispose:)
 				((curRoom obstacles?) delete: topPoly)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 				(ego setLoop: 2 setMotion: 0 setCycle: 0)
 				(= ticks 10)
 			)
@@ -1664,13 +1803,19 @@
 			)
 			(11
 				(= disabledActions 0)
-				(if (Btst 274) (Bclr 274) else (messager say: N_ROOM 0 16))
+				(if (Btst fEgoFallOffCliff)
+					(Bclr fEgoFallOffCliff)
+				else
+					(messager say: N_ROOM NULL 16)
+				)
 				(= cycles 2)
 			)
 			(12
-				(if (not (hermitDoor script?)) (HandsOn))
+				(if (not (hermitDoor script?))
+					(HandsOn)
+				)
 				(Bclr fClimbedHenryCliff)
-				(Bclr 276)
+				(Bclr fEgoSquashed)
 				(self dispose:)
 			)
 		)
@@ -1678,11 +1823,12 @@
 )
 
 (instance safeTP of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 10))
+			(0
+				(HandsOff)
+				(= ticks 10)
+			)
 			(1
 				(funkyEgo
 					view: 81
@@ -1702,7 +1848,7 @@
 			(3
 				(funkyEgo dispose:)
 				(Bclr fClimbedHenryCliff)
-				(Bclr 241)
+				(Bclr fSafeTP)
 				(self dispose:)
 				(HandsOn)
 			)

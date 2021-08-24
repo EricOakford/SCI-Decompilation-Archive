@@ -59,7 +59,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FOREST_81)
+		(Bset fBeenIn81)
 		(super dispose:)
 	)
 	
@@ -70,7 +70,7 @@
 					((Said 'look[<around,at][/forest,area]')
 						(HighPrint 81 0)
 						;There is a roaring sound off to the east.
-						)
+					)
 					(
 						(or
 							(MouseClaimed hollowLog event shiftDown)

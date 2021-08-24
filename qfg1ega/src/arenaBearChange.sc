@@ -18,18 +18,16 @@
 	i
 	[aStar 20]
 	[starScript 20]
-	[starCel 20] = [2 4 3 3 2 4 2 2 3 4 1 1 3 4 4 4 4 1 3 1]
-	[starPosn 40] = [156 6 119 25 99 50 79 74 100 102 119 94 107 145 140 173 140 153 170 162 193 175 189 133 211 105 213 59 198 37 181 19 144 35 170 35 140 85 176 125]
-	[local101 40]
-	[local141 5] = [144 249 283 88 165]
-	[local146 5] = [184 221 219 201 168]
+	starCel = [2 4 3 3 2 4 2 2 3 4 1 1 3 4 4 4 4 1 3 1]
+	starPosn = [156 6 119 25 99 50 79 74 100 102 119 94 107 145 140 173 140 153 170 162 193 175 189 133 211 105 213 59 198 37 181 19 144 35 170 35 140 85 176 125]
+	[nameBuf 40]
+	local141 = [144 249 283 88 165]
+	local146 = [184 221 219 201 168]
 	local151
 )
 
 (procedure (AddStars)
-	;EO: Fixed to prevent "Not an Object" errors.
-	(= i 0)
-	(while (< i 20)
+	(for ((= i 0)) (< i 20) ((++ i))
 		(= [aStar i] (Clone star))
 		(= [starScript i] (Clone starScriptOn))
 		([starScript i]
@@ -42,13 +40,11 @@
 			posn: [starPosn (* i 2)] [starPosn (+ (* i 2) 1)]
 			setScript: [starScript i]
 		)
-		(++ i)
 	)
 )
 
 (procedure (TurnOffStarScripts)
-	(= i 0)
-	(while (< i 20)
+	(for ((= i 0)) (< i 20) ((++ i))
 		(= [aStar i] (Clone star))
 		(= [starScript i] (Clone starScriptOff))
 		([starScript i]
@@ -58,20 +54,17 @@
 			cel: (- [starCel i] 1)
 			init:
 			setPri: 15
-			posn: [starScript (* i 2)] [starScript (+ (* i 2) 1)]
+			posn: [starPosn (* i 2)] [starPosn (+ (* i 2) 1)]
 			setScript: [starScript i]
 		)
-		(++ i)
 	)
 
 )
 
 (procedure (DisposeStars)
-	(= i 19)
-	(while (>= i 0)
+	(for ((= i 19)) (>= i 0) ((-- i))
 		([starScript i] dispose:)
 		([aStar i] dispose:)
-		(-- i)
 	)
 )
 
@@ -167,7 +160,9 @@
 	)
 	
 	(method (dispose)
-		(= monsterHealth (= monsterNum FALSE))
+		(= monsterHealth
+			(= monsterNum FALSE)
+		)
 		(super dispose:)
 	)
 	
@@ -224,7 +219,7 @@
 							)
 							((Said '/man,barnard')
 								(if (Btst DEFEATED_BEAR)
-									(HighPrint (Format @local101 171 12 userName)
+									(HighPrint (Format @nameBuf 171 12 userName)
 										;He's dead, %s.
 										)
 								else
@@ -255,7 +250,9 @@
 									;There is no magic in the cavern.
 									)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 				)
@@ -266,7 +263,6 @@
 )
 
 (instance bearDying of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -334,7 +330,6 @@
 )
 
 (instance bearFreed of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -420,7 +415,7 @@
 				(baronetSmall dispose:)
 				(HighPrint 171 20)
 				;The arrogance of the Baronet astonishes you.  Perchance the kobold Magic User had a reason for changing him into a bear.
-				(SetCursor theCursor 1)
+				(SetCursor theCursor TRUE)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -429,7 +424,6 @@
 )
 
 (instance starScriptOn of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -443,7 +437,6 @@
 )
 
 (instance starScriptOff of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

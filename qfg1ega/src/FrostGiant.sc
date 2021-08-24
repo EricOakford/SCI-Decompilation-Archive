@@ -19,10 +19,14 @@
 (local
 	giantBored
 	throwProjectile
-	giantLeft
+	giantGone
 )
 (procedure (GiantSays)
-	(Print &rest #width 305 #mode teJustLeft #window giantWin)
+	(Print &rest
+		#width 305
+		#mode teJustLeft
+		#window giantWin
+	)
 )
 
 (procedure (GiantIntro)
@@ -48,9 +52,9 @@
 		color vBLUE
 	)
 	
-	(method (open &tmp temp0)
-		(= top (+ top (= temp0 (- 188 bottom))))
-		(= bottom (+ bottom temp0))
+	(method (open &tmp vDiff)
+		(+= top (= vDiff (- 188 bottom)))
+		(+= bottom vDiff)
 		(super open:)
 	)
 )
@@ -91,7 +95,7 @@
 	(method (handleEvent event &tmp spell offering)
 		(cond 
 			((super handleEvent: event))
-			(giantLeft TRUE)
+			(giantGone TRUE)
 			(
 				(or
 					(MouseClaimed self event shiftDown)
@@ -102,7 +106,9 @@
 			)
 			((== (event type?) saidEvent)
 				(cond 
-					((Said 'chop,beat,fight,kill,damage') (self setScript: giantFights))
+					((Said 'chop,beat,fight,kill,damage')
+						(self setScript: giantFights)
+					)
 					((Said 'cast>')
 						(switch (= spell (SaidSpell event))
 							(DETMAGIC
@@ -110,7 +116,7 @@
 									(CenterPrint 58 4)
 									;The Giant (who does not seem pleased at your casting a spell in his presence) radiates a magical aura.
 									;The strongest magic centers on the glowing gem at his belt.
-									)
+								)
 							)
 							(TRIGGER
 								(giant setScript: giantMagic)
@@ -127,7 +133,9 @@
 							(FLAMEDART
 								(giant setScript: giantMagic)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE
+								))
 						)
 					)
 					((Said 'gave,bargain>')
@@ -136,34 +144,45 @@
 							((not (= offering (SaidInv event)))
 								(HighPrint 58 5)
 								;You can't offer what you don't have.
-								)
+							)
 							((== offering iFruit) (ego setScript: giveFruit))
 							(else (event claimed: TRUE)
 								(CenterPrint 58 6)
 								;The Giant looks at you in disgust. Apparently, you did not offer what he desires.
-								)
+							)
 						)
 					)
-					((Said 'made/bargain,deal') (GiantWantsFruit))
-					((Said 'bargain,deal') (GiantWantsFruit))
-					((Said 'chat') (GiantIntro))
-					((Said 'throw[/boulder,dagger]') (= throwProjectile TRUE) (giant setScript: giantMagic))
+					((Said 'made/bargain,deal')
+						(GiantWantsFruit)
+					)
+					((Said 'bargain,deal')
+						(GiantWantsFruit)
+					)
+					((Said 'chat')
+						(GiantIntro)
+					)
+					((Said 'throw[/boulder,dagger]')
+						(= throwProjectile TRUE)
+						(giant setScript: giantMagic)
+					)
 					((Said 'ask>')
 						(cond 
-							((Said '//man,fighter,giant,brauggi,ya') (GiantIntro))
-							(
-								(Said
-									'//home,north,jotunheim,(field[<frost,about]),jotunheim'
-								)
+							((Said '//man,fighter,giant,brauggi,ya')
+								(GiantIntro)
+							)
+							((Said '//home,north,jotunheim,(field[<frost,about]),jotunheim')
 								(GiantSays 58 7)
 								;"Near now is North, for the winter has wandered,
 								;Bringing this brave one to barter so bold.
 								;I journey from Jotunheim, home of the giants,
 								;Source of all snowstorms, the sender of sleet."
 							)
-							((Said '//bargain,deal') (GiantWantsFruit))
-							(
-							(Said '//fight,ax,weapon,blade,(attack[<blade,about])') (self setScript: Challenge))
+							((Said '//bargain,deal')
+								(GiantWantsFruit)
+							)
+							((Said '//fight,ax,weapon,blade,(attack[<blade,about])')
+								(self setScript: Challenge)
+							)
 							((Said '//hunger')
 								(GiantSays 58 8)
 								;"Hollow my food house,
@@ -174,28 +193,28 @@
 								(GiantSays 58 9)
 								;"Highpoint of harvest, the finest of flavor,
 								;Apples or oranges, peaches or pears."
-								)
+							)
 							((Said '//mead,horn')
 								(GiantSays 58 10)
 								;"Mead is the mother's milk, mighty yet mellow,
 								;That brings joy to Giants and madness to men."
-								)
+							)
 							((Said '//gem,(flame[<frost,about])')
 								(GiantSays 58 11)
 								;"Glow of the frost flame that fills up the night field,
 								;A jewel that is flawless, the finest of gems."
-								)
+							)
 							(else
 								(event claimed: TRUE)
 								(switch (++ giantBored)
 									(1 (GiantSays 58 12)
 										;"Bored I become when the banter so blindly
 										;Speaks of the subjects I care not about."
-										)
+									)
 									(2
 										(GiantSays 58 13)
 										;"Annoy me not over matters so minor."
-										)
+									)
 									(3
 										(GiantSays 58 14)
 										;"Waste not my wits, for I weary of words;
@@ -224,7 +243,7 @@
 		(Load TEXT 58)
 		(LoadMany SOUND 47 (SoundFX 9))
 		(LoadMany VIEW vEgoRunning vEgoClimbing vEgoDefeated)
-		(if (not (= giantLeft (Btst OBTAINED_GEM)))
+		(if (not (= giantGone (Btst fGotGem)))
 			(LoadMany VIEW vFrostGiant vEgoBeginFight vEgoDaggerDefeated vEgoTired)
 			(LoadMany SOUND 48
 				(SoundFX 59)
@@ -237,7 +256,7 @@
 		(StatusLine enable:)
 		(NormalEgo)
 		(ChangeGait MOVE_WALK FALSE)
-		(if giantLeft
+		(if giantGone
 			(cSound number: 47)
 			(ego posn: 1 140 init: setMotion: MoveTo 35 140)
 		else
@@ -257,7 +276,7 @@
 	)
 	
 	(method (dispose)
-		(Bset VISITED_FROST_CAVE)
+		(Bset fBeenIn58)
 		(super dispose:)
 	)
 	
@@ -266,7 +285,9 @@
 			((super handleEvent: event))
 			((== (event type?) saidEvent)
 				(cond 
-					((Said 'run') (ego setScript: egoRuns))
+					((Said 'run')
+						(ego setScript: egoRuns)
+					)
 					((Said 'look>')
 						(cond 
 							(
@@ -279,9 +300,9 @@
 							((Said '/west,forest')
 								(HighPrint 58 16)
 								;The snow has melted in most of the forest, but here it is still heavy.
-								)
+							)
 							((Said '/gem')
-								(if (or (not giantLeft) (ego has: iMagicGem))
+								(if (or (not giantGone) (ego has: iMagicGem))
 									(HighPrint 58 17)
 									;The gem glows like an aurora in the night sky.
 								else
@@ -290,7 +311,7 @@
 								)
 							)
 							((Said '/giant,brauggi,man')
-								(if (Btst OBTAINED_GEM)
+								(if (Btst fGotGem)
 									(HighPrint 58 19)
 									;Brauggi has departed on the long journey to his homeland.
 								else
@@ -312,8 +333,6 @@
 )
 
 (instance egoInit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -329,8 +348,6 @@
 )
 
 (instance giantInit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -339,7 +356,9 @@
 			(1
 				(client setPri: -1 setMotion: MoveTo 125 93 self)
 			)
-			(2 (client setCycle: EndLoop self))
+			(2
+				(client setCycle: EndLoop self)
+			)
 			(3
 				(frostSound number: (SoundFX 59) play:)
 				(client
@@ -359,13 +378,13 @@
 			)
 			(5
 				(HandsOn)
-				(if (not (Btst VISITED_FROST_CAVE))
+				(if (not (Btst fBeenIn58))
 					(GiantSays 58 21)
 					;"Far from the frost field, fares forth this fighter,
 					;Hunger has hurled me hither from home.
 					;My name it is known in the Northlands as Brauggi,
 					;Barter with blade's clash, or bargain with me."
-					)
+				)
 				(client setScript: giantBlocks)
 			)
 		)
@@ -373,8 +392,6 @@
 )
 
 (instance giantExits of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -395,7 +412,7 @@
 			)
 			(2
 				(cSound number: 47 play:)
-				(= giantLeft TRUE)
+				(= giantGone TRUE)
 				(HandsOn)
 				(giant dispose:)
 			)
@@ -404,8 +421,6 @@
 )
 
 (instance doneDeal of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -416,11 +431,11 @@
 				;Thus filled the bargain, my gem you have bought.
 				;Brauggi has bartered, and all has been answered;
 				;The mead it may mellow, and now I head home.
-				(SolvePuzzle POINTS_GETGLOWINGGEM 8)
+				(SolvePuzzle f58GetGem 8)
 				(= seconds 2)
 			)
 			(1
-				(Bset OBTAINED_GEM)
+				(Bset fGotGem)
 				(giant setScript: giantExits)
 			)
 		)
@@ -428,8 +443,6 @@
 )
 
 (instance ShowOff of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -452,8 +465,6 @@
 )
 
 (instance Challenge of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -472,13 +483,11 @@
 )
 
 (instance WalkToGiant of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego ignoreActors: 1 illegalBits: 0)
+				(ego ignoreActors: TRUE illegalBits: 0)
 				(if (< (ego y?) (+ (giant y?) 10))
 					(ego setMotion: MoveTo (ego x?) (+ (giant y?) 10) self)
 				else
@@ -500,8 +509,6 @@
 )
 
 (instance giantFights of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0 egoX_2 egoX egoY temp4 temp5 temp6 temp7)
 		(switch (= state newState)
 			(0
@@ -509,7 +516,7 @@
 			)
 			(1
 				(HandsOff)
-				(= temp0 (if (ego has: 9) 0 else 2))
+				(= temp0 (if (ego has: iShield) 0 else 2))
 				(ego
 					illegalBits: 0
 					ignoreActors:
@@ -558,14 +565,14 @@
 			(4 (giant setCycle: BegLoop self))
 			(5
 				(frostSound stop:)
-				(if (or (Btst WHACKED_BY_GIANT) (not (TakeDamage 20)))
+				(if (or (Btst fHitByGiant) (not (TakeDamage 20)))
 					(EgoDead 58 24
 						#title {The bigger they come, the harder they hit}
 						#icon vFrostGiant 3 3
 						;Next time, pick on someone your own size.
 					)
 				else
-					(Bset WHACKED_BY_GIANT)
+					(Bset fHitByGiant)
 					(self cue:)
 				)
 			)
@@ -607,8 +614,6 @@
 )
 
 (instance giantBlocks of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(client setLoop: 1 setCel: 0)
@@ -652,8 +657,6 @@
 )
 
 (instance giveFruit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -664,7 +667,7 @@
 					(cond 
 						(
 							(>=
-								(= numApples (+ numApples (ego use: 11 50)))
+								(+= numApples (ego use: iFruit 50))
 								50
 							)
 							(giant setScript: doneDeal)
@@ -672,16 +675,16 @@
 						((>= numApples 40)
 							(CenterPrint 58 26)
 							;Your fruit definitely makes a generous pile in the Giant's cupped hands, but they're not full yet.
-							)
+						)
 						((== numApples 0)
 							(HighPrint 58 27)
 							;"Oops!"  you say.  "I guess I don't have any fruit for you.  Sorry!"
-							)
+						)
 						(else
 							(CenterPrint 58 28)
 							;Your meagre selection of fruit makes a paltry pile at the bottom of the Giant's cupped hands.
 							;You'll need to get quite a few more apples to fill THOSE hands!
-							)
+						)
 					)
 				else
 					(HighPrint 58 27)
@@ -694,8 +697,6 @@
 )
 
 (instance giantMagic of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -731,7 +732,7 @@
 			)
 			(4
 				(frostKill
-					ignoreActors: 1
+					ignoreActors: TRUE
 					posn: (ego x?) (- (ego y?) 25)
 					setPri: (ego priority?)
 					z: 2
@@ -772,8 +773,6 @@
 )
 
 (instance egoRuns of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

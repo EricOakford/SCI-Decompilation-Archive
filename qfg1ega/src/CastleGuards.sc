@@ -14,16 +14,16 @@
 )
 
 (local
-	local0 =  1
+	doorsAreClosed =  TRUE
 	stoneLookCount
-	local2
+	baldSpotTimer
 	frederickSays
 	pierreSays
 	local5
 	local6
-	local7
-	local8
-	enteringCastle
+	nearPierre
+	nearFrederick
+	beenInside
 )
 (instance rm41 of Room
 	(properties
@@ -36,9 +36,8 @@
 		(cSound fade:)
 		(super init: &rest)
 		(StatusLine enable:)
-		(= enteringCastle (== prevRoomNum 141))
-		(if
-		(and (Btst SAVED_BARNARD) (not enteringCastle) (not (Btst OBTAINED_BARNARD_REWARD)))
+		(= beenInside (== prevRoomNum 141))
+		(if (and (Btst fSavedBarnard) (not beenInside) (not (Btst fBarnardReward)))
 			(self horizon: 130)
 		)
 		(mouseDownHandler add: self)
@@ -50,8 +49,7 @@
 		(if (not Night)
 			(rGuard init: stopUpd:)
 			(lGuard init: stopUpd:)
-			(if
-			(and (Btst SAVED_BARNARD) (not enteringCastle) (not (Btst OBTAINED_BARNARD_REWARD)))
+			(if (and (Btst fSavedBarnard) (not beenInside) (not (Btst fBarnardReward)))
 				(HandsOff)
 				(cSound prevSignal: 0)
 				(lGuard setScript: lGuardTrumpets)
@@ -62,7 +60,7 @@
 		(door2 init: stopUpd:)
 		(switch prevRoomNum
 			(38
-				(if (and (Btst SAVED_BARNARD) (not (Btst OBTAINED_BARNARD_REWARD)))
+				(if (and (Btst fSavedBarnard) (not (Btst fBarnardReward)))
 					(ego posn: 43 168 setMotion: MoveTo 160 168)
 				else
 					(if (< oldEgoY 110) (= oldEgoY 110))
@@ -70,7 +68,7 @@
 				)
 			)
 			(39
-				(if (and (Btst SAVED_BARNARD) (not (Btst OBTAINED_BARNARD_REWARD)))
+				(if (and (Btst fSavedBarnard) (not (Btst fBarnardReward)))
 					(ego posn: 160 186 setMotion: MoveTo 160 168)
 				else
 					(ego posn: oldEgoX 189)
@@ -82,7 +80,7 @@
 				)
 			)
 			(40
-				(if (and (Btst SAVED_BARNARD) (not (Btst OBTAINED_BARNARD_REWARD)))
+				(if (and (Btst fSavedBarnard) (not (Btst fBarnardReward)))
 					(ego posn: 283 168 setMotion: MoveTo 160 168)
 				else
 					(if (< oldEgoY 110) (= oldEgoY 110))
@@ -117,7 +115,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_CASTLE_GUARDS)
+		(Bset fBeenIn41)
 		(super dispose:)
 	)
 	
@@ -127,7 +125,7 @@
 				(if (MouseClaimed ego event shiftDown)
 					(HighPrint 41 0)
 					;So you says to yourself, "Self", you says...
-					)
+				)
 			)
 			(saidEvent
 				(cond 
@@ -137,56 +135,56 @@
 							((Said '[/!*]')
 								(HighPrint 41 1)
 								;You face the main doors of the Baron's keep.
-								)
+							)
 							((Said '/castle')
 								(HighPrint 41 2)
 								;The castle grounds look like no one has taken care of them.
 								;The castle is still impressive close up, but it looks rather dirty
-								)
+							)
 							((Said '/north')
 								(HighPrint 41 3)
 								;You see the castle and the guards
-								)
+							)
 							((Said '/east')
 								(HighPrint 41 4)
 								;Along the wall to the southeast, you can see the stables.
-								)
+							)
 							((Said '/south')
 								(HighPrint 41 5)
 								;You see the main courtyard of the castle.
-								)
+							)
 							((Said '/west')
 								(HighPrint 41 6)
 								;Along the wall to the southwest, you can see the barracks.
-								)
+							)
 							((Said '/door')
 								(if Night
 									(HighPrint 41 7)
 									;The doors are securely locked for the night.
-									else
+								else
 									(HighPrint 41 8)
 									;The doors are guarded by Frederick and Pierre.
-									)
 								)
+							)
 						)
 					)
 					((Said 'climb[/castle,wall]')
 						(HighPrint 41 9)
 						;The castle walls are very high.  You judge that you would not be able to climb them.
-						)
+					)
 					((Said 'knock,knock,force/door')
 						(HighPrint 41 10)
 						;There is no response.
-						)
+					)
 					((Said 'open,lockpick/door,hasp')
 						(if Night
 							(HighPrint 41 11)
 							;The doors are securely locked and barred from the inside.
-							else
+						else
 							(HighPrint 41 8)
 							;The doors are guarded by Frederick and Pierre.
-							)
 						)
+					)
 					((or (Said 'nap') (Said 'go[<to]/nap'))
 						(HighPrint 41 12)
 						;You barely get to sleep when the guard on night patrol kicks you out.
@@ -210,15 +208,15 @@
 	)
 	
 	(method (doit)
-		(if (or (not (Btst SAVED_BARNARD)) (Btst OBTAINED_BARNARD_REWARD))
+		(if (or (not (Btst fSavedBarnard)) (Btst fBarnardReward))
 			(if
 				(and
-					(not local8)
+					(not nearFrederick)
 					(< (ego y?) 142)
 					(< 99 (ego x?))
 					(< (ego x?) 209)
 				)
-				(= local8 1)
+				(= nearFrederick 1)
 				(= frederickSays 12)
 				(lGuard setScript: lGuardTalks)
 			)
@@ -228,7 +226,7 @@
 					(< 228 (ego x?))
 					(> (ego y?) 155)
 				)
-				(= local8 0)
+				(= nearFrederick 0)
 			)
 		)
 		(super doit:)
@@ -248,7 +246,7 @@
 					((Said 'climb[/castle,wall]')
 						(HighPrint 41 14)
 						;You don't think the guards would allow you to do so.
-						)
+					)
 					((Said 'fight,kill/guard,man,gatekeeper')
 						(EgoDead 41 15
 							#title {Getting into the castle the hard way.}
@@ -262,24 +260,27 @@
 					((Said 'look/horn')
 						(HighPrint 41 16)
 						;The horns are tarnished and starting to corrode.
-						)
+					)
 					((Said 'look/guard')
 						(HighPrint 41 17)
 						;The guards look to be middle-aged, but in good physical condition.
 						;Their clothing is faded and patched.  Even the horns look dull.
-						)
+					)
 					((Said 'chat[<to]/guard,man,gatekeeper')
 						(HighPrint 41 18)
 						;Go ahead.
-						)
+					)
 					((Said 'chat,ask//moustache')
 						(= pierreSays 11)
 						(self setScript: rGuardTalks)
-						(= local2 0)
+						(= baldSpotTimer 0)
 						(= local6 0)
 					)
-					((Said 'open/door') (= frederickSays 12) (self setScript: lGuardTalks))
-					(local2
+					((Said 'open/door')
+						(= frederickSays 12)
+						(self setScript: lGuardTalks)
+					)
+					(baldSpotTimer
 						(cond 
 							(local6
 								(event claimed: TRUE)
@@ -290,11 +291,16 @@
 							((Said 'chat,ask>') (event claimed: TRUE)
 								(HighPrint 41 19)
 								;The guards are ignoring you.
-								)
-							(else (event claimed: FALSE))
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
-					((Said '/hey') (= frederickSays 2) (self setScript: lGuardTalks))
+					((Said '/hey')
+						(= frederickSays 2)
+						(self setScript: lGuardTalks)
+					)
 					((Said 'call/guard,man,gatekeeper')
 						(if local5
 							(= frederickSays 3)
@@ -304,27 +310,60 @@
 							(self setScript: rGuardTalks)
 						)
 					)
-					((Said 'say') (= frederickSays 4) (self setScript: lGuardTalks))
+					((Said 'say')
+						(= frederickSays 4)
+						(self setScript: lGuardTalks)
+					)
 					((Said 'chat,ask>')
 						(cond 
-							((Said '//consent') (= pierreSays 3) (self setScript: rGuardTalks))
-							((Said '//baron,baron,hamlet') (= pierreSays 4) (self setScript: rGuardTalks))
-							((Said '//castle') (= frederickSays 5) (self setScript: lGuardTalks))
-							((Said '//barnard,barnard,barnard') (= pierreSays 5) (self setScript: rGuardTalks))
-							((Said '//daughter,elsa') (= frederickSays 6) (self setScript: lGuardTalks))
-							((Said '//stable') (= pierreSays 6) (self setScript: rGuardTalks))
-							((or (Said '//guard') (Said '//name,handle')) (= frederickSays 7) (self setScript: lGuardTalks))
-							((Said '//barrack') (= frederickSays 8) (self setScript: lGuardTalks))
+							((Said '//consent')
+								(= pierreSays 3)
+								(self setScript: rGuardTalks)
+							)
+							((Said '//baron,baron,hamlet')
+								(= pierreSays 4)
+								(self setScript: rGuardTalks)
+							)
+							((Said '//castle')
+								(= frederickSays 5)
+								(self setScript: lGuardTalks)
+							)
+							((Said '//barnard,barnard,barnard')
+								(= pierreSays 5)
+								(self setScript: rGuardTalks)
+							)
+							((Said '//daughter,elsa')
+								(= frederickSays 6)
+								(self setScript: lGuardTalks)
+							)
+							((Said '//stable')
+								(= pierreSays 6)
+								(self setScript: rGuardTalks)
+							)
+							((or (Said '//guard') (Said '//name,handle'))
+								(= frederickSays 7)
+								(self setScript: lGuardTalks)
+							)
+							((Said '//barrack')
+								(= frederickSays 8)
+								(self setScript: lGuardTalks)
+							)
 							((Said '//place[<bald]')
 								(= frederickSays 9)
 								(self setScript: lGuardTalks)
-								(= local2 300)
+								(= baldSpotTimer 300)
 								(= local6 1)
 							)
-							((Said '//place') (= pierreSays 9) (self setScript: rGuardTalks))
-							((Said '//karl') (= frederickSays 13) (self setScript: lGuardTalks))
+							((Said '//place')
+								(= pierreSays 9)
+								(self setScript: rGuardTalks)
+							)
+							((Said '//karl')
+								(= frederickSays 13)
+								(self setScript: lGuardTalks)
+							)
 							(else
-								(event claimed: 1)
+								(event claimed: TRUE)
 								(if local5
 									(= frederickSays 10)
 									(self setScript: lGuardTalks)
@@ -349,15 +388,15 @@
 	)
 	
 	(method (doit)
-		(if (or (not (Btst SAVED_BARNARD)) (Btst OBTAINED_BARNARD_REWARD))
+		(if (or (not (Btst fSavedBarnard)) (Btst fBarnardReward))
 			(if
 				(and
-					(not local7)
+					(not nearPierre)
 					(< (ego y?) 126)
 					(< 99 (ego x?))
 					(< (ego x?) 209)
 				)
-				(= local7 1)
+				(= nearPierre 1)
 				(= pierreSays 13)
 				(rGuard setScript: rGuardTalks)
 			)
@@ -367,9 +406,11 @@
 					(< 228 (ego x?))
 					(> (ego y?) 140)
 				)
-				(= local7 0)
+				(= nearPierre 0)
 			)
-			(if local2 (-- local2))
+			(if baldSpotTimer
+				(-- baldSpotTimer)
+			)
 		)
 		(super doit:)
 	)
@@ -419,8 +460,8 @@
 			(mouseDown
 				(if
 					(or
-						(and local0 (MouseClaimed door1 event shiftDown))
-						(and local0 (MouseClaimed door2 event shiftDown))
+						(and doorsAreClosed (MouseClaimed door1 event shiftDown))
+						(and doorsAreClosed (MouseClaimed door2 event shiftDown))
 						(and
 							(MouseClaimed door1 event shiftDown)
 							(not (MouseClaimed torch event shiftDown))
@@ -459,8 +500,7 @@
 	(method (handleEvent event)
 		(switch (event type?)
 			(mouseDown
-				(if
-				(and (not local0) (MouseClaimed torch event shiftDown))
+				(if (and (not doorsAreClosed) (MouseClaimed torch event shiftDown))
 					(HighPrint 41 22)
 					;The torch lights the way to the Baron's Hall.
 				)
@@ -574,7 +614,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			((MouseClaimed onCastle event shiftDown) (HighPrint 41 25))
+			((MouseClaimed onCastle event shiftDown)
+				(HighPrint 41 25)
+			)
 		)
 	)
 )
@@ -605,22 +647,22 @@
 					((== stoneLookCount 0)
 						(HighPrint 41 26)
 						;These flagstones are from a rock quarry in eastern Germany.
-						(= stoneLookCount (+ stoneLookCount 1))
+						(+= stoneLookCount 1)
 					)
 					((== stoneLookCount 1)
 						(HighPrint 41 27)
 						;Well...maybe the flagstones are from western Germany.
-						(= stoneLookCount (+ stoneLookCount 1))
+						(+= stoneLookCount 1)
 					)
 					((== stoneLookCount 2)
 						(HighPrint 41 28)
 						;Flagstones from Europe?
-						(= stoneLookCount (+ stoneLookCount 1))
+						(+= stoneLookCount 1)y
 					)
 					((== stoneLookCount 3)
 						(HighPrint 41 29)
 						;Granite from our very own mountains?
-						(= stoneLookCount (+ stoneLookCount 1))
+						(+= stoneLookCount 1)
 					)
 					(else
 						(HighPrint 41 30)
@@ -761,10 +803,10 @@
 )
 
 (instance lGuardTrumpets of Script
-	(properties)
-	
 	(method (doit)
-		(if (== (cSound prevSignal?) 10) (self cue:))
+		(if (== (cSound prevSignal?) 10)
+			(self cue:)
+		)
 		(super doit:)
 	)
 	
@@ -783,10 +825,10 @@
 )
 
 (instance rGuardTrumpets of Script
-	(properties)
-	
 	(method (doit)
-		(if (== (cSound prevSignal?) 20) (self changeState: 7))
+		(if (== (cSound prevSignal?) 20)
+			(self changeState: 7)
+		)
 		(super doit:)
 	)
 	
@@ -821,14 +863,14 @@
 			(6
 				(ego illegalBits: 0 setMotion: MoveTo 158 100)
 			)
-			(7 (curRoom newRoom: 141))
+			(7
+				(curRoom newRoom: 141)
+			)
 		)
 	)
 )
 
 (instance lGuardTalks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -843,27 +885,27 @@
 					(1
 						(HighPrint 41 32)
 						;"No one enters the castle without the Baron's permission."
-						)
+					)
 					(2
 						(HighPrint 41 33)
 						;"Hay is for horses."
-						)
+					)
 					(3
 						(HighPrint 41 34)
 						;"I'm here!  What do you want?"
-						)
+					)
 					(4
 						(HighPrint 41 35)
 						;"Says you."
-						)
+					)
 					(5
 						(HighPrint 41 36)
 						;"This is the castle of the Baron Stefan von Spielburg."
-						)
+					)
 					(6
 						(HighPrint 41 37)
 						;"The Baron's daughter has been gone for years."
-						)
+					)
 					(7
 						(HighPrint 41 38)
 						;"I'm Frederick."
@@ -873,11 +915,11 @@
 					(8
 						(HighPrint 41 39)
 						;"The barracks are off to my right, but you have no business going there."
-						)
+					)
 					(9
 						(HighPrint 41 40)
 						;I told you not to mention it.  Now you've hurt his feelings, and he won't talk until he gets over it.
-						)
+					)
 					(10
 						(HighPrint 41 41)
 						;"I can't help you on that."
@@ -893,11 +935,11 @@
 					(12
 						(HighPrint 41 32)
 						;"No one enters the castle without the Baron's permission."
-						)
+					)
 					(13
 						(HighPrint 41 43)
 						;"Karl is the gatekeeper.  He is a good one to answer questions."
-						)
+					)
 				)
 				(lGuardHead dispose:)
 			)
@@ -906,8 +948,6 @@
 )
 
 (instance rGuardTalks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -922,17 +962,17 @@
 					(1
 						(HighPrint 41 44)
 						;"The Baron sees no one."
-						)
+					)
 					(2
 						(HighPrint 41 45)
 						;"We cannot leave our post."
-						)
+					)
 					(3
 						(HighPrint 41 46)
 						;"You will have to see the Baron to get his permission."
-						)
+					)
 					(4
-						(if (Btst SAVED_BARNARD)
+						(if (Btst fSavedBarnard)
 							(HighPrint 41 47)
 							;The Baron is busy and will see no one.
 						else
@@ -941,7 +981,7 @@
 						)
 					)
 					(5
-						(if (Btst SAVED_BARNARD)
+						(if (Btst fSavedBarnard)
 							(HighPrint 41 48)
 							;The Baronet is in the castle recovering from his ordeal and will see no one.
 						else
@@ -952,7 +992,7 @@
 					(6
 						(HighPrint 41 50)
 						;"The stable is off to my left."
-						)
+					)
 					(7
 						(HighPrint 41 51)
 						;"My name is Pierre.  I'm one of the Baron's personal guards."
@@ -961,11 +1001,11 @@
 					(8
 						(HighPrint 41 52)
 						;"It is not our place to answer questions."
-						)
+					)
 					(9
 						(HighPrint 41 53)
 						;"Spot?  What spot?"
-						)
+					)
 					(10
 						(HighPrint 41 54)
 						;"Why don't you ask Karl?"
@@ -974,7 +1014,7 @@
 					(11
 						(HighPrint 41 55)
 						;"Why thank you.  Your manners have improved."
-						)
+					)
 					(12
 						(HighPrint 41 56)
 						;"Don't get me mad."
@@ -983,7 +1023,7 @@
 					(13
 						(HighPrint 41 44)
 						;"The Baron sees no one."
-						)
+					)
 				)
 				(rGuardHead dispose:)
 			)
@@ -992,8 +1032,6 @@
 )
 
 (instance leaveHall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1015,8 +1053,8 @@
 				;After a wonderful meal with the Baron and his son, a peaceful night's sleep in a featherdown bed,
 				;and a filling breakfast in bed, you are ready to go adventuring once more.
 				(HandsOn)
-				(Bset OBTAINED_BARNARD_REWARD)
-				(= enteringCastle FALSE)
+				(Bset fBarnardReward)
+				(= beenInside FALSE)
 				(client setScript: 0)
 			)
 		)

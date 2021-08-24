@@ -17,7 +17,7 @@
 		(switch (= state newState)
 			(0 (HandsOff) (= cycles 10))
 			(1
-				(if (and (!= prevRoomNum 0) (not (Btst VISITED_INN)))
+				(if (and (!= prevRoomNum 0) (not (Btst fBeenIn301)))
 					((ScriptID 301 1) cycleSpeed: 1 setCycle: EndLoop self)
 				else
 					(HandsOn)

@@ -62,12 +62,12 @@
 				(ego posn: 1 160 setMotion: MoveTo 15 160)
 			)
 			(else 
-				(if (not (Btst ERASMUS_WARPOUT))
+				(if (not (Btst fErasmusWarpOut))
 					(ego posn: 254 123 setMotion: MoveTo 254 130)
 				)
 			)
 		)
-		(if (Btst ERASMUS_WARPOUT)
+		(if (Btst fErasmusWarpOut)
 			(Magic
 				posn: 98 160
 				setPri: (+ (ego priority?) 1)
@@ -100,7 +100,9 @@
 				(= sawRedSign TRUE)
 				(redSign setScript: showRedSign)
 			)
-			((and (== (ego onControl: origin) cYELLOW) sawRedSign) (= sawRedSign FALSE))
+			((and (== (ego onControl: origin) cYELLOW) sawRedSign)
+				(= sawRedSign FALSE)
+			)
 			(
 				(and
 					sawGreenSign
@@ -111,13 +113,15 @@
 				)
 				(showGreenSign cue:)
 			)
-			((and (== (ego onControl: origin) cBLACK) sawGreenSign) (= sawGreenSign FALSE))
+			((and (== (ego onControl: origin) cBLACK) sawGreenSign)
+				(= sawGreenSign FALSE)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(Bset VISITED_ERASMUS_OUTLOOK)
+		(Bset fBeenIn28)
 		(super dispose:)
 	)
 	
@@ -125,74 +129,75 @@
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					((Said 'spit') (Bset ERASMUS_WARPOUT)
+					((Said 'spit')
+						(Bset fErasmusWarpOut)
 						;EO - Nothing obvious happens at first, but when you exit and return, it acts like you were warped out by Erasmus.
-						)
+					)
 					((Said 'look>')
 						(cond 
 							((Said '[<at,around][/!*]')
 								(HighPrint 28 0)
 								;The air is crisp here and you can see your breath as you walk.
 								;There is a path leading up to a dark mountain, atop which is precariously perched a purple house.
-								)
+							)
 							((Said '/path,road')
 								(HighPrint 28 1)
 								;The path seems to be carved out of the rock.  It forms a steep trail up to the house on the mountain.
-								)
+							)
 							((Said '/hill,peak')
 								(HighPrint 28 2)
 								;All of the mountains you can see are covered with snow except for the one to which the path leads.
-								)
+							)
 							((Said '/ice')
 								(HighPrint 28 3)
 								;The drifts of snow look several feet high in some places.
-								)
+							)
 							((Said '/north,mansion,house')
 								(HighPrint 28 4)
 								;Looking north, you see the strange house nestled on its craggy peak.  It is hard to see much at this distance.
 								;All you can tell is that the house is very large, very purple, and very strange.
-								)
+							)
 							((Said '/forest,west')
 								(HighPrint 28 5) ;EO - Text mistakenly says "east" when it should say "west".
 								;To the east is the forest.
-								)
+							)
 							((Said '/east,south')
 								(HighPrint 28 6)
 								;You see the surrounding mountains.
-								)
+							)
 							((or (Said '<up') (Said '/cloud,sky'))
 								(HighPrint 28 7)
 								;The clouds skirt the mountain edges.
-								)
+							)
 							((or (Said '<down') (Said '/ground'))
 								(HighPrint 28 8)
 								;There is a rocky path through the snow.
-								)
+							)
 						)
 					)
 					((Said 'throw/')
 						(HighPrint 28 9)
 						;There is nothing here to throw it at.
-						)
+					)
 					((Said 'cast>')
 						(switch (= spell (SaidSpell event))
 							(DETMAGIC
 								(if (CastSpell spell)
 									(HighPrint 28 10)
 									;You detect a strange, magical aura in this place.
-									)
+								)
 							)
 							(DAZZLE
 								(if (CastSpell spell)
 									(HighPrint 28 11)
 									;There's nothing here to dazzle.
-									)
+								)
 							)
 							(FLAMEDART
 								(if (CastSpell spell)
 									(HighPrint 28 12)
 									;The magical aura around this place prevents you from casting a flame dart.
-									)
+								)
 							)
 							(else  (event claimed: FALSE))
 						)
@@ -205,15 +210,13 @@
 )
 
 (instance showGreenSign of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(greenSign ignoreActors: 0 setCycle: EndLoop self)
+				(greenSign ignoreActors: FALSE setCycle: EndLoop self)
 			)
 			(1
-				(if (not (Btst SAW_GREEN_SIGN))
+				(if (not (Btst fSawGreenSign))
 					(HighPrint 28 13)
 					;A sign appears.  It reads:
 					)
@@ -231,7 +234,7 @@
 						;"Bienvenu a Mont Magie!
 						)
 				)
-				(Bset SAW_GREEN_SIGN)
+				(Bset fSawGreenSign)
 			)
 			(2
 				(greenSign ignoreActors: setCycle: BegLoop setScript: 0)
@@ -241,16 +244,14 @@
 )
 
 (instance showRedSign of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(redSign ignoreActors: 0 setCycle: EndLoop self)
+				(redSign ignoreActors: FALSE setCycle: EndLoop self)
 			)
 			(1
 				(ego setMotion: FALSE)
-				(if (not (Btst SAW_RED_SIGN))
+				(if (not (Btst fSawRedSign))
 					(HighPrint 28 17)
 					;Another sign appears.  It reads:
 					)
@@ -258,17 +259,17 @@
 					(1
 						(HighPrint 28 18)
 						;"Trespassers will be toad!"
-						)
+					)
 					(2
 						(HighPrint 28 19)
 						;"Now go home!"
-						)
+					)
 					(3
 						(HighPrint 28 20)
 						;"Proceed at your own risk!"
-						)
+					)
 				)
-				(Bset SAW_RED_SIGN)
+				(Bset fSawRedSign)
 				(redSign ignoreActors: setCycle: BegLoop setScript: 0)
 			)
 		)
@@ -276,8 +277,6 @@
 )
 
 (instance teleport of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -290,7 +289,7 @@
 				(Magic setCycle: EndLoop self)
 			)
 			(2
-				(Bclr ERASMUS_WARPOUT)
+				(Bclr fErasmusWarpOut)
 				(ego setScript: 0)
 				(HandsOn)
 			)

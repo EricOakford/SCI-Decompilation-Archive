@@ -93,7 +93,7 @@
 	
 	(method (doit)
 		(if (> (ego y?) 187)
-			(if (and gaveMoney (not (Btst VISITED_ALLEY_DAY)))
+			(if (and gaveMoney (not (Btst fBeenIn333)))
 				(cls)
 				(HighPrint 333 0)
 				;"A word of warning to you -- don't drink the Dragon's Breath!"
@@ -116,7 +116,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_ALLEY_DAY)
+		(Bset fBeenIn333)
 		(super dispose:)
 	)
 	

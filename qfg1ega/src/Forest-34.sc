@@ -29,7 +29,9 @@
 		(StatusLine enable:)
 		(self setLocales: FOREST)
 		(NormalEgo)
-		(if (not monsterNum) (ego init:))
+		(if (not monsterNum)
+			(ego init:)
+		)
 		(switch prevRoomNum
 			(23
 				(ego posn: 140 92 setMotion: MoveTo 140 190)
@@ -59,7 +61,7 @@
 	
 	(method (dispose)
 		(mouseDownHandler delete: self)
-		(Bset VISITED_FOREST_34)
+		(Bset fBeenIn34)
 		(super dispose:)
 	)
 	
@@ -69,7 +71,7 @@
 			((MouseClaimed ego event shiftDown)
 				(HighPrint 34 0)
 				;Our hero looks really lost.
-				)
+			)
 		)
 	)
 )
