@@ -6,7 +6,7 @@
 	f15BeatKobold 	;602)           ; 10 points (Fighter or Magic User only)
 	f10KillFlower 	;603)          ; -10 points
 	f67KillFox 		;604)              ; -10 points
-	POINTS_GOTDRUNK 	;605)             ; -5 points
+	f331Drunk 	;605)             ; -5 points
 ; events 606 to 644 are character specific points, listed at bottom.
 
 	f334Robbed 	;606)            ; -10 points (Thief only)
@@ -16,7 +16,7 @@
 	f39BeatMaster ;608)       ; 10 points (Fighter only)
 ; no event 609
 	fUnused609
-	POINTS_BUYCHAINMAIL ;610)         ; 3 points (Fighter only)
+	f322BuyChainmail ;610)         ; 3 points (Fighter only)
 	f450BeatTroll 	;611)            ; 4 points (Fighter only)
 	f440BeatCheetaur	;612)         ; 4 points (Fighter Only)
 	f460BeatDragon	;613)        ; 4 points (Fighter Only)
@@ -29,17 +29,17 @@
 	f32WinMaze ;617)        ; 12 points (Mage only)
 	f60LearnDetect ;618)         ; 4 points (Mage only)
 	POINTS_LEARNTRIGGER ;619)         ; 4 points (Mage only)
-	POINTS_LEARNFETCH ;620)           ; 2 points (Mage only)
-	POINTS_LEARNOPEN ;621)            ; 2 points (Mage only)
-	POINTS_LEARNFLAMEDART ;622)       ; 2 points (Mage only)
+	f314LearnFetch ;620)           ; 2 points (Mage only)
+	f314LearnOpen ;621)            ; 2 points (Mage only)
+	f314LearnFlameDart ;622)       ; 2 points (Mage only)
 	; THIEF ONLY POINTS
-	POINTS_ENTERLOLHOUSE ;623)        ; 5 points (Thief Only)
-	POINTS_SEARCHLOLDESK ;624)        ; 1 point (Thief Only)
-	POINTS_SEARCHLOLCOUCH ;625)       ; 1 point (Thief Only)
-	POINTS_SEARCHLOLPURSE ;626)       ; 1 point (Thief Only)
-	POINTS_SEARCHLOLBASKET ;627)      ; 1 point (Thief Only)
-	POINTS_TAKECANDLESTICKS ;628)         ; 1 point (Thief Only)
-	POINTS_PETLOLCAT ;629)            ; 3 points (Thief Only)
+	f313EnterLOLHouse ;623)        ; 5 points (Thief Only)
+	f313SearchDesk ;624)        ; 1 point (Thief Only)
+	f313SearchCouch ;625)       ; 1 point (Thief Only)
+	f313SearchPurse ;626)       ; 1 point (Thief Only)
+	f313SearchBasket ;627)      ; 1 point (Thief Only)
+	f313StealCandles ;628)         ; 1 point (Thief Only)
+	f313PetCat ;629)            ; 3 points (Thief Only)
 	POINTS_ENTERSHERIFFHOUSE ;630)        ; 5 points (Thief only)
 	POINTS_SEARCHSHERIFFDRAWER ;631)      ; 1 point (Thief only)
 	POINTS_MOVEPAINTING ;632)         ; 1 point (Thief only)
@@ -48,11 +48,11 @@
 	POINTS_TAKEVASE ;635)             ; 1 point (Thief only)
 	POINTS_TAKECANDELABRA ;636)       ; 1 point (Thief only)
 	POINTS_TAKEMUSICBOX ;637)         ; 1 point (Thief only]
-	POINTS_ENTERTHIEVESGUILD ;638)        ; 5 points (Thief Only)
-	POINTS_BUYTHIEFLICENSE ;639)      ; 3 points (Thief Only)
-	POINTS_BUYTHIEFTOOLKIT ;640)      ; 3 points (Thief Only)
-	POINTS_FENCEGOODS ;641)           ; 3 points (Thief only)
-	POINTS_SHOWTHIEFSIGN ;642)        ; 3 points (Thief only)
+	f332EnterGuild ;638)        ; 5 points (Thief Only)
+	f332BuyLicense ;639)      ; 3 points (Thief Only)
+	f332BuyToolkit ;640)      ; 3 points (Thief Only)
+	f332FenceGoods ;641)           ; 3 points (Thief only)
+	f334GiveSign ;642)        ; 3 points (Thief only)
 	f340PlayDagNabIt ;643)         ; 3 points (Thief Only)
 	f340WinBigBet ;644)         ; 5 points (Thief Only)
 	
@@ -141,11 +141,11 @@
 	f311SignBook 				;724)          ; 1 point
 	f311TalkToWolfgang 			;725)        ; 1 point
 	f311ReadBoard		 			;726)      ; 6 points
-	POINTS_TALKTOZARA 					;727)           ; 1 point
-	POINTS_BUYAPPLES 					;728)            ; 3 points
-	POINTS_TALKTOCENTAURGIRL 			;729)        ; 1 point
-	POINTS_TALKTOSHOPKEEPER 			;730)         ; 1 point
-	POINTS_PICKUPNOTE 					;731)           ; 2 points
+	f314TalkToZara 					;727)           ; 1 point
+	f320BuyApples 					;728)            ; 3 points
+	f320TalkToHilde 			;729)        ; 1 point
+	f322TalkToKaspar 			;730)         ; 1 point
+	f331GetNote 					;731)           ; 2 points
 	f333TalkToBeggar				;732)         ; 1 point
 	f333GiveAlms					;733)             ; 1 point
 	f600EndGame 						;734)              ; 25 points

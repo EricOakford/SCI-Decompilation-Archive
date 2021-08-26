@@ -109,7 +109,7 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLGOBLIN 1 FIGHTER)
+		(SolvePuzzle f445BeatGoblin 1 FIGHTER)
 		(super die:)
 	)
 )
@@ -139,7 +139,7 @@
 					init:
 					stopUpd:
 				)
-				(if (== howFast 0)
+				(if (== howFast slow)
 					(gob3Arm setCycle: EndLoop)
 				else
 					(gob3Arm setCycle: Forward)
@@ -152,7 +152,7 @@
 				init:
 				stopUpd:
 			)
-			(if (== howFast 0)
+			(if (== howFast slow)
 				(gob2Arm setCycle: EndLoop)
 			else
 				(gob2Arm setCycle: Forward)
@@ -196,11 +196,9 @@
 )
 
 (instance fightScript of Script
-	(properties)
-	
 	(method (doit)
 		(if (and monsterDazzle (== state 0))
-			(= cycles (+ cycles monsterDazzle))
+			(+= cycles monsterDazzle)
 			(= monsterDazzle 0)
 			(Bclr fMonsterDazzled)
 		)
@@ -228,8 +226,6 @@
 )
 
 (instance goblinHurt of Script
-	(properties)
-	
 	(method (dispose)
 		(goblinHead dispose:)
 		(goblin setCel: -1 startUpd:)
@@ -257,15 +253,15 @@
 )
 
 (instance killGoblin of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				((ScriptID 213 0) canFight: FALSE)
 				(if (> goblinsInArena 1)
-					(if (> goblinsInArena 2) (gob3Arm setCycle: 0 stopUpd:))
+					(if (> goblinsInArena 2)
+						(gob3Arm setCycle: 0 stopUpd:)
+					)
 					(gob2Arm setCycle: 0 stopUpd:)
 				)
 				(goblin setCel: 1 stopUpd:)
@@ -285,7 +281,9 @@
 					;You killed a goblin.
 					(goblinBody hide:)
 					(goblin hide:)
-					(if (cast contains: goblinHead) (goblinHead hide:))
+					(if (cast contains: goblinHead)
+						(goblinHead hide:)
+					)
 					(= cycles 10)
 				else
 					(self cue:)
@@ -295,7 +293,9 @@
 				(= local2 (not local2))
 				(switch (-- goblinsInArena)
 					(0
-						(if (== prevRoomNum 45) (++ numGoblins))
+						(if (== prevRoomNum 45)
+							(++ numGoblins)
+						)
 						(= monsterHealth 0)
 						(goblin dispose:)
 						((ScriptID 213 0) dispose:)
@@ -372,7 +372,7 @@
 						setMonsterHP: (goblin health?)
 						setScript: fightScript
 					)
-					((ScriptID 213 0) canFight: 1)
+					((ScriptID 213 0) canFight: TRUE)
 					(HandsOn)
 				)
 				(goblinArena inTransit: 0)

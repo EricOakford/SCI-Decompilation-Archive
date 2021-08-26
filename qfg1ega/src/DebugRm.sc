@@ -13,8 +13,6 @@
 )
 
 (instance debugRm of Locale
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(mouseDownHandler add: self)
@@ -28,8 +26,7 @@
 	)
 	
 	(method (handleEvent event &tmp evt obj nX nY i whichSkill [str 40])
-		(if
-		(or (not debugging) (event claimed?))
+		(if (or (not debugging) (event claimed?))
 			(return)
 		)
 		(switch (event type?)
@@ -114,10 +111,18 @@
 					(`@t
 						(curRoom newRoom: (GetNumber {Which room number?}))
 					)
-					(`@v (Show VMAP))
-					(`@p (Show PMAP))
-					(`@c (Show CMAP))
-					(`@m (theGame showMem:))
+					(`@v
+						(Show VMAP)
+					)
+					(`@p
+						(Show PMAP)
+					)
+					(`@c
+						(Show CMAP)
+					)
+					(`@m
+						(theGame showMem:)
+					)
 					(`@b
 						(Print (Format @str 298 4 [invNum iSilver]))
 						;Our Hero has %d silvers.
@@ -130,10 +135,8 @@
 						)
 					)
 					(`@x
-						(= whichSkill 0)
-						(while (< whichSkill 25)
+						(for ((= whichSkill 0)) (< whichSkill 25) ((++ whichSkill))
 							(= [egoStats whichSkill] 80)
-							(++ whichSkill)
 						)
 						(= [egoStats EXPER] 1900)
 						(= [egoStats HEALTH] (MaxHealth))
@@ -151,7 +154,9 @@
 					;			)]
 					;			))
 					;)
-					(else  (event claimed: FALSE))
+					(else
+						(event claimed: FALSE)
+					)
 				)
 			)
 		)

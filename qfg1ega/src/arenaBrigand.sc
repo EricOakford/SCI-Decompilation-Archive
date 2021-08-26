@@ -35,8 +35,7 @@
 	)
 	
 	(method (doit)
-		(if
-		(and (Btst fMonsterDazzled) (== (brigandScript state?) 0))
+		(if (and (Btst fMonsterDazzled) (== (brigandScript state?) 0))
 			(brigandScript setScript: brigandHurt)
 		)
 		(if
@@ -102,14 +101,12 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLBRIGAND 1 FIGHTER)
+		(SolvePuzzle f465BeatBrigand 1 FIGHTER)
 		(self canFight: 0)
 	)
 )
 
 (instance brigandScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(= monsterNum vBrigand)
@@ -126,7 +123,7 @@
 	(method (doit)
 		(cond 
 			((and monsterDazzle (== state 0) (not script))
-				(= cycles (+ cycles monsterDazzle))
+				(+= cycles monsterDazzle)
 				(= monsterDazzle 0)
 				(= local1 1)
 				(= local0 0)
@@ -201,8 +198,6 @@
 )
 
 (instance brigandHurt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -226,8 +221,6 @@
 )
 
 (instance brigandBlock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

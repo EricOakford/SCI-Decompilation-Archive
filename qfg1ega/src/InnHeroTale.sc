@@ -23,12 +23,12 @@
 )
 
 (local
-	invalidTopic
-	shameenLicksPaw
+	dontKnowCount
+	lickCount
 	roomPrice
 	drinkPrice
 	mealPrice
-	chatShameen
+	talkRet
 )
 (procedure (NotEnoughMoney)
 	(HighPrint 301 0)
@@ -52,7 +52,7 @@
 		(LoadMany VIEW vInn vSheema vSheemaFood vInnCast)
 		(LoadMany SCRIPT 165 166 167 168 169 170)
 		(LoadMany SOUND 21 50)
-		(rm301 style: (if (== prevRoomNum 302) 16 else WIPELEFT))
+		(rm301 style: (if (== prevRoomNum 302) (| BLACKOUT IRISOUT) else WIPELEFT))
 		(super init:)
 		(mouseDownHandler add: self)
 		(self
@@ -69,13 +69,13 @@
 		(= roomPrice 5)
 		(= drinkPrice 1)
 		(= mealPrice 3)
-		(Bclr HERO_SITTING)
-		(Bclr FLAG_303)
-		(Bclr SHEMA_BRINGS_ORDER)
-		(Bclr EATEN_AT_INN)
-		(Bclr SHAMEEN_SIGNALING)
-		(Bclr SHEMA_ASKS_ORDER)
-		(Bclr SHEMA_MAKING_ORDER)
+		(Bclr fEgoSitting)
+		(Bclr fSittingAtInn)
+		(Bclr fShemaBringsOrder)
+		(Bclr fEatenAtInn)
+		(Bclr fShameenStands)
+		(Bclr fShemaAsks)
+		(Bclr fHaveOrdered)
 		(= yesNoTimer 0)
 		(NormalEgo)
 		(ego init:)
@@ -95,9 +95,9 @@
 		(if
 			(and
 				(or (== timeODay TIME_SUNSET) (== timeODay TIME_NIGHT))
-				(or (not (Btst ABDULLA_IS_AT_INN)) (== (Random 0 1) 0))
+				(or (not (Btst fMerchantAtInn)) (== (Random 0 1) 0))
 			)
-			(Bset ABDULLA_IS_AT_INN)
+			(Bset fMerchantAtInn)
 			((ScriptID 166 0) init:)
 			(cast delete: (ScriptID 166 0))
 			(cast addToFront: (ScriptID 166 0))
@@ -145,15 +145,12 @@
 								;This looks like an alpine inn, complete with dishes on the wall and heavy beams on the ceiling.
 								;It is pleasantly warm, and the aroma of strange spices fills the air.
 								)
-							(
-								(Said
-									'/shameen,cat,katta,creature,owner,innkeeper,keeper'
-								)
+							((Said '/shameen,cat,katta,creature,owner,innkeeper,keeper')
 								(HighPrint 301 6)
 								;You see a small, cat-like creature known as a Katta.  You've heard that Kattas are common in the southern deserts.
 							)
 							((Said '/shema,hostess,girl,female')
-								(if (Btst SHEMA_ASKS_ORDER)
+								(if (Btst fShemaAsks)
 									(HighPrint 301 7)
 									;You see a rather attractive female Katta wearing her native costume.
 								else
@@ -175,66 +172,66 @@
 								;The tables look like they have been rough-cut from some of the local pines.
 								(HighPrint 301 12)
 								;One of the tables must have been made for some tall folks, perhaps Goons, Ogres, or Centaurs.
-								)
+							)
 							((Said '/chair')
 								(HighPrint 301 13)
 								;The chair is finely made, in contrast to the rough-hewn tables.
-								)
+							)
 							((Said '/door')
 								(HighPrint 301 14)
 								;The door with the window in it must be the door to the kitchen.  The other door goes elsewhere in the Inn.
-								)
+							)
 							((Said '/wall')
 								(HighPrint 301 15)
 								;The walls have an ancient, solid look, well-worn and comfortable.
-								)
+							)
 							((or (Said '<up') (Said '/ceiling,beam'))
 								(HighPrint 301 16)
 								;The heavy timbers look substantial.
-								)
+							)
 							((or (Said '<down') (Said '/floor,carpet'))
 								(HighPrint 301 17)
 								;The oak planking is well-worn, and the carpet is clean, but becoming threadbare.
-								)
+							)
 							((Said '/mantle')
 								(HighPrint 301 18)
 								;The mantle above the hearth is a solid slab of wood.  There is nothing on it.
-								)
+							)
 							((Said '/andiron,implement')
 								(HighPrint 301 19)
 								;The fireplace tools are placed neatly by the hearth, along with the proprietor.
-								)
+							)
 							((Said '/cup,mug,drink,beverage,tea,coffee')
 								(switch teaOrdered
 									(mealATTABLE
 										(HighPrint 301 20)
 										;The beverage is more fragrant than most.
-										)
+									)
 									(mealFINISHED
 										(HighPrint 301 21)
 										;You practically licked the inside of the cup.  That was delicious.
-										)
+									)
 									(else
 										(HighPrint 301 22)
 										;You have no cup.
-										)
+									)
 								)
 							)
-							(
-							(Said '/plate,bowl,food,breakfast,lamb,chicken,soup')
+							((Said '/plate,bowl,food,breakfast,lamb,chicken,soup')
 								(switch foodOrdered
 									(mealATTABLE
 										(HighPrint 301 23)
 										;The food looks unusual, but smells delicious.
-										)
+									)
 									(mealFINISHED
 										(HighPrint 301 24)
 										;You practically licked the plate clean.  That was delicious.
-										)
+									)
 									(else
 										(HighPrint 301 25)
-										;The plates on the wall are strictly for decoration.  Dishes with food on them are much more useful, if you're hungry.
-										)
+										;The plates on the wall are strictly for decoration.
+										;Dishes with food on them are much more useful, if you're hungry.
+									)
 								)
 							)
 						)
@@ -244,11 +241,11 @@
 							((== (ego onControl: origin) cYELLOW)
 								(HighPrint 301 26)
 								;For all that this door appears to be free to swing back and forth, it doesn't budge when you try to open it.
-								)
+							)
 							((== (ego onControl: origin) cLMAGENTA)
 								(HighPrint 301 27)
 								;The door appears to be stuck fast.
-								)
+							)
 							(else
 								(event claimed: FALSE)
 							)
@@ -260,13 +257,13 @@
 					((Said 'pay[/man,shameen,abdulla,shema]')
 						(HighPrint 301 28)
 						;For what?
-						)
+					)
 					((Said 'odor/food,lamb,chicken,soup,spice,aroma')
 						(HighPrint 301 29)
 						;The aromas are enticing.
-						)
+					)
 					((Said 'stand')
-						(if (Btst HERO_SITTING)
+						(if (Btst fEgoSitting)
 							(HighPrint 301 30)
 							;You're already standing.
 						else
@@ -274,14 +271,14 @@
 						)
 					)
 					((or (Said 'sat<down') (Said 'sat[/chair]'))
-						(if (not (Btst HERO_SITTING))
+						(if (not (Btst fEgoSitting))
 							(if (ego inRect: 100 135 175 180)
 								(ego setScript: (ScriptID 170 0))
 								(shameen setScript: (ScriptID 165 1))
 							else
 								(HighPrint 301 31)
 								;Move closer to the chair.
-							)
+						)
 						else
 							(HighPrint 301 32)
 							;You're already sitting down.
@@ -290,7 +287,7 @@
 					((Said 'eat')
 						(switch foodOrdered
 							(mealNOTHING
-								(if (Btst HERO_SITTING)
+								(if (Btst fEgoSitting)
 									(HighPrint 301 33)
 									;If you're hungry, order a meal.
 								else
@@ -301,26 +298,34 @@
 							(mealORDERED
 								(HighPrint 301 35)
 								;You haven't been served yet.
-								)
+							)
 							(mealATTABLE
 								(cond 
-									((Btst fStarving) (Bclr fStarving) (Bclr fHungry))
-									((Btst fHungry) (Bclr fHungry) (= freeMeals 1))
-									(else (= freeMeals 2))
+									((Btst fStarving)
+										(Bclr fStarving)
+										(Bclr fHungry)
+									)
+									((Btst fHungry)
+										(Bclr fHungry)
+										(= freeMeals 1)
+									)
+									(else
+										(= freeMeals 2)
+									)
 								)
-								(SolvePuzzle POINTS_EATKATTAFOOD 1)
+								(SolvePuzzle f301OrderMeal 1)
 								(ego setScript: eatIt)
 							)
 							(mealFINISHED
 								(HighPrint 301 36)
 								;Both meal and drink have been consumed.
-								)
+							)
 						)
 					)
 					((Said 'drink')
 						(switch teaOrdered
 							(mealNOTHING
-								(if (Btst HERO_SITTING)
+								(if (Btst fEgoSitting)
 									(HighPrint 301 37)
 									;If you're thirsty, order a drink.
 								else
@@ -331,31 +336,32 @@
 							(mealORDERED
 								(HighPrint 301 35)
 								;You haven't been served yet.
-								)
-							(mealATTABLE (ego setScript: eatIt))
+							)
+							(mealATTABLE
+								(ego setScript: eatIt)
+							)
 							(mealFINISHED
 								(HighPrint 301 39)
 								;The drink you ordered is all gone.
-								)
+							)
 						)
 					)
 					(
 					(or (Said '/hostess') (Said 'order,get/food,drink'))
-						(if (Btst HERO_SITTING)
+						(if (Btst fEgoSitting)
 							(cond 
-								(
-								(or (Btst SHEMA_BRINGS_ORDER) (== foodOrdered mealORDERED) (== foodOrdered mealATTABLE))
+								((or (Btst fShemaBringsOrder) (== foodOrdered mealORDERED) (== foodOrdered mealATTABLE))
 								(HighPrint 301 40)
 								;You have already ordered.
 								)
 								((> freeMeals 1)
 									(HighPrint 301 41)
 									;You're not hungry.
-									)
+								)
 								(freeMeals
 									(HighPrint 301 42)
 									;There's no need.  You're not hungry.
-									)
+								)
 								((not (cast contains: (ScriptID 301 2)))
 									(= foodOrdered mealNOTHING)
 									(= teaOrdered mealNOTHING)
@@ -371,7 +377,7 @@
 								(else
 									(HighPrint 301 43)
 									;Shema will be back soon.
-									)
+								)
 							)
 						else
 							(HighPrint 301 34)
@@ -409,7 +415,7 @@
 					((Said 'chat/man,cat,katta,shameen')
 						(HighPrint 301 44)
 						;"Very good food, very good drink, finest in town.  Sit, rest, you will be served by my Shema."
-						)
+					)
 					(
 						(or
 							(Said 'nap,rent,get,pay,buy[/room]')
@@ -419,17 +425,17 @@
 							((and (< 750 Clock) (< Clock 2550))
 								(HighPrint 301 45)
 								;It's too early to go to bed; you don't feel tired enough to sleep.
-								)
+							)
 							((Btst fStarving)
 								(HighPrint 301 46)
 								;You are sure that you would not be able to sleep, because you are so hungry.
-								)
+							)
 							((not (ego inRect: 200 120 319 160))
 								(HighPrint 301 4)
 								;You must pay the innkeeper for a room.
 								)
 							((GiveMoney roomPrice)
-								(Bset RENTED_ROOMATINN)
+								(Bset fRentedRoom)
 								(shameen setScript: (ScriptID 167 0))
 							)
 							(else
@@ -439,7 +445,7 @@
 						)
 					)
 					((Said 'ask>')
-						(= chatShameen 1)
+						(= talkRet TRUE)
 						(cond 
 							((Said '//tavern,bar')
 								(HighPrint 301 48)
@@ -463,10 +469,7 @@
 								(HighPrint 301 53)
 								;"Very nice room.  Very soft beds, finest in town.  Only five silvers a night."
 							)
-							(
-								(Said
-									'//food,lamb,chicken,soup,drink,breakfast,coffee,tea'
-							)
+							((Said '//food,lamb,chicken,soup,drink,breakfast,coffee,tea')
 								(HighPrint 301 44)
 								;"Very good food, very good drink, finest in town.  Sit, rest, you will be served by my Shema."
 							)
@@ -543,8 +546,8 @@
 								;"We of the Katta know only low and simple spells."
 							)
 							((Said '//*')
-								(= chatShameen 0)
-								(switch invalidTopic
+								(= talkRet 0)
+								(switch dontKnowCount
 									(0
 										(HighPrint 301 71)
 										;"Alas, this humble innkeeper is ignorant of that about which you ask."
@@ -558,15 +561,15 @@
 										;"Forgive me, that I am unable to speak with knowledge on that subject."
 									)
 								)
-								(if (== invalidTopic 2)
-									(= invalidTopic 0)
+								(if (== dontKnowCount 2)
+									(= dontKnowCount 0)
 								else
-									(++ invalidTopic)
+									(++ dontKnowCount)
 								)
 							)
 						)
-						(if chatShameen
-							(SolvePuzzle POINTS_TALKTOSHAMEEN 1)
+						(if talkRet
+							(SolvePuzzle f301TalkToShameen 1)
 						)
 					)
 				)
@@ -576,12 +579,10 @@
 )
 
 (instance lickIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(++ shameenLicksPaw)
+				(++ lickCount)
 				(shameen
 					setLoop: 2
 					cel: 0
@@ -590,10 +591,10 @@
 				)
 			)
 			(1
-				(if (< shameenLicksPaw (Random 2 5))
+				(if (< lickCount (Random 2 5))
 					(self changeState: 0)
 				else
-					(= shameenLicksPaw 0)
+					(= lickCount 0)
 					(shameen setLoop: 4 cel: 0 cycleSpeed: 0 stopUpd:)
 					(= seconds (Random 5 15))
 				)
@@ -636,7 +637,7 @@
 			(saidEvent
 				(if
 					(and
-						(Btst SHEMA_ASKS_ORDER)
+						(Btst fShemaAsks)
 						(< ((ScriptID 301 2) distanceTo: ego) 30)
 					)
 					(cond 
@@ -670,38 +671,38 @@
 								((Said '//food,breakfast,lamb,chicken,soup')
 									(HighPrint 301 79)
 									;"We have very good stew of newborn lamb along with honey chicken for a mere 3 silvers."
-									)
+								)
 								((Said '//drink,coffee,tea')
 									(HighPrint 301 80)
 									;"We have rich black coffee, freshly ground and brewed as only my people do.
 									;Such coffee will bring you to your full alertness."
 									(HighPrint 301 81)
 									;"We also have a tea of the rarest herbs, which will quench the thirst of the desert.  Each is only one silver."
-									)
+								)
 								((Said '//ale,wine,sweat,breath')
 									(HighPrint 301 82)
 									;"For that sort of beverage you must go to the tavern."
-									)
+								)
 								((Said '//spice')
 									(HighPrint 301 62)
 									;"Hot spice.  Hot!  I hope you like!"
-									)
+								)
 								((Said '//name,shema')
 									(HighPrint 301 83)
 									;"I am called Shema, mate of Shameen, your humble servant."
-									)
+								)
 								((Said '//shameen')
 									(HighPrint 301 84)
 									;"Shameen is of the oldest and finest ancestry of the Katta people."
-									)
+								)
 								((Said '//desert,home,sand,sun,south')
 									(HighPrint 301 85)
 									;"Shapeir is a land of desert sands, flowers, fruit, and beauty.  How I wish to return."
-									)
+								)
 								((Said '//*')
 									(HighPrint 301 86)
 									;She merely blushes, as if embarrassed.  She appears to be very shy.
-									)
+								)
 							)
 						)
 						((Said 'pay[/food,drink,shema]')
@@ -718,13 +719,13 @@
 								((or (== foodOrdered mealORDERED) (== foodOrdered mealATTABLE))
 									(HighPrint 301 40)
 									;You have already ordered.
-									)
-								(
-								(Said '/food,breakfast,lamb,chicken,soup,plate,bowl')
+								)
+								((Said '/food,breakfast,lamb,chicken,soup,plate,bowl')
 									(cond 
-										((not (GiveMoney mealPrice)) (NotEnoughMoney))
-										(
-										(and (== teaOrdered foodOrdered) (== foodOrdered mealNOTHING))
+										((not (GiveMoney mealPrice))
+											(NotEnoughMoney)
+										)
+										((and (== teaOrdered foodOrdered) (== foodOrdered mealNOTHING))
 											(HighPrint 301 89)
 											;"With great pleasure will I serve you a fine meal."
 											(= serveFoodCountdown 100)
@@ -735,14 +736,15 @@
 										(else
 											(HighPrint 301 43)
 											;Shema will be back soon.
-											)
+										)
 									)
 								)
 								((Said '/drink,coffee,tea,cup,cup')
 									(cond 
-										((not (GiveMoney drinkPrice)) (NotEnoughMoney))
-										(
-										(and (== teaOrdered foodOrdered) (== foodOrdered mealNOTHING))
+										((not (GiveMoney drinkPrice))
+											(NotEnoughMoney)
+										)
+										((and (== teaOrdered foodOrdered) (== foodOrdered mealNOTHING))
 											(HighPrint 301 90)
 											;"I will fetch that which will satisfy your thirst."
 											(= serveFoodCountdown 100)
@@ -759,7 +761,7 @@
 								((Said '*')
 									(HighPrint 301 92)
 									;"I am sorry that our inn has not what you desire."
-									)
+								)
 							)
 						)
 					)
@@ -786,11 +788,11 @@
 					(mealATTABLE
 						(HighPrint 301 23)
 						;The food looks unusual, but smells delicious.
-						)
+					)
 					(mealFINISHED
 						(HighPrint 301 24)
 						;You practically licked the plate clean.  That was delicious.
-						)
+					)
 				)
 			)
 		)
@@ -798,12 +800,12 @@
 )
 
 (instance eatIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (cast contains: food) (food setCel: 5))
+				(if (cast contains: food)
+					(food setCel: 5)
+				)
 				(= cycles 2)
 			)
 			(1
@@ -820,7 +822,7 @@
 					;The beverage goes down smoothly and well.
 					(= teaOrdered mealFINISHED)
 				)
-				(Bset EATEN_AT_INN)
+				(Bset fEatenAtInn)
 				(ego setScript: (ScriptID 170 0))
 			)
 		)
@@ -906,7 +908,7 @@
 			((MouseClaimed onTable event shiftDown)
 				(HighPrint 301 11)
 				;The tables look like they have been rough-cut from some of the local pines.
-				)
+			)
 		)
 	)
 )
@@ -925,7 +927,7 @@
 			((MouseClaimed onKitchenDoor event shiftDown)
 				(HighPrint 301 95)
 				;The odor of cooking food wafts through the kitchen door.
-				)
+			)
 		)
 	)
 )
@@ -991,7 +993,7 @@
 			((MouseClaimed onLargeTable event shiftDown)
 				(HighPrint 301 98)
 				;This table must have been made for some tall folks, perhaps Goons, Ogres, or Centaurs.
-				)
+			)
 		)
 	)
 )
@@ -1010,7 +1012,7 @@
 			((MouseClaimed onSleepDoor event shiftDown)
 				(HighPrint 301 99)
 				;A door to some other room.  Perhaps the proprietor can tell you what's in there.
-				)
+			)
 		)
 	)
 )

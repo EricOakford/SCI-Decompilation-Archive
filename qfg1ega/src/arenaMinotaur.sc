@@ -92,14 +92,12 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLMINOTAUR 5 FIGHTER)
+		(SolvePuzzle f425BeatMinotaur 5 FIGHTER)
 		(self canFight: FALSE)
 	)
 )
 
 (instance minotaurScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(= monsterNum vMinotaur)
@@ -110,10 +108,10 @@
 			setPri: 4
 			cycleSpeed:
 			(switch howFast
-				(0 0)
-				(1 1)
-				(2 1)
-				(3 2)
+				(slow 0)
+				(medium 1)
+				(fast 1)
+				(fastest 2)
 			)
 			setCycle: Forward
 		)
@@ -122,7 +120,7 @@
 	(method (doit)
 		(cond 
 			((and monsterDazzle (== state 0) (not script))
-				(= cycles (+ cycles monsterDazzle))
+				(+= cycles monsterDazzle)
 				(= monsterDazzle 0)
 				(Bclr fMonsterDazzled)
 			)
@@ -227,8 +225,6 @@
 )
 
 (instance minotaurHurt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -256,8 +252,6 @@
 )
 
 (instance minotaurBlock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 5))

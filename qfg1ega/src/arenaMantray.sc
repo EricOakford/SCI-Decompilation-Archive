@@ -31,7 +31,7 @@
 )
 
 (procedure (localproc_01fb)
-	(if (== howFast 0) (return))
+	(if (== howFast slow) (return))
 	(= mantrayPartX (Random 2 4))
 	(= mantrayPartY (Random 1 2))
 	(if local205 (= mantrayPartX (- mantrayPartX)))
@@ -46,7 +46,7 @@
 )
 
 (procedure (localproc_0269)
-	(if (== howFast 0) (return))
+	(if (== howFast slow) (return))
 	(DrawMantrayPart body)
 	(DrawMantrayPart mouth)
 	(DrawMantrayPart leftEye)
@@ -115,16 +115,20 @@
 	
 	(method (doit)
 		(cond 
-			(
-			(and local205 (< (mantray x?) (- local201 20))) (= local205 0))
-			(
-			(and (not local205) (> (mantray x?) (+ local201 20))) (= local205 1))
+			((and local205 (< (mantray x?) (- local201 20)))
+				(= local205 0)
+			)
+			((and (not local205) (> (mantray x?) (+ local201 20)))
+				(= local205 1)
+			)
 		)
 		(cond 
-			(
-			(and local206 (< (mantray y?) (- local202 8))) (= local206 0))
-			(
-			(and (not local206) (> (mantray y?) (+ local202 8))) (= local206 1))
+			((and local206 (< (mantray y?) (- local202 8)))
+				(= local206 0)
+			)
+			((and (not local206) (> (mantray y?) (+ local202 8)))
+				(= local206 1)
+			)
 		)
 		(if (>= local200 3)
 			(= local200 0)
@@ -132,8 +136,7 @@
 		else
 			(++ local200)
 		)
-		(if
-		(and (Btst fMonsterDazzled) (== (mantrayScript state?) 0))
+		(if (and (Btst fMonsterDazzled) (== (mantrayScript state?) 0))
 			(mantrayScript setScript: mantrayHurt)
 		)
 		(super doit:)
@@ -177,7 +180,7 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLMANTRAY 2 FIGHTER)
+		(SolvePuzzle f435BeatMantray 2 FIGHTER)
 		(self canFight: FALSE)
 	)
 )
@@ -249,7 +252,7 @@
 	
 	(method (doit)
 		(if (and monsterDazzle (== state 0) (not script))
-			(= cycles (+ cycles monsterDazzle))
+			(+= cycles monsterDazzle)
 			(= monsterDazzle 0)
 			(Bclr fMonsterDazzled)
 		)
@@ -281,8 +284,6 @@
 )
 
 (instance mantrayHurt of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)

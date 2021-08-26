@@ -11,11 +11,9 @@
 )
 
 (local
-	endTime
+	doneTime
 )
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance speedChecker of Room
 	(properties
@@ -46,18 +44,27 @@
 	(method (doit &tmp [temp0 200])
 		(super doit:)
 		(if (== (++ machineSpeed) 1)
-			(= endTime (+ 60 (GetTime)))
+			(= doneTime (+ 60 (GetTime)))
 		)
-		(if (u< endTime (GetTime))
+		(if (u< doneTime (GetTime))
 			(cond 
-				((<= machineSpeed 25) (= howFast slow))
-				((<= machineSpeed 40) (= howFast medium))
-				((<= machineSpeed 60) (= howFast fast))
-				(else (= howFast fastest)) ;EO: Added in by 1.200
+				((<= machineSpeed 25)
+					(= howFast slow)
+				)
+				((<= machineSpeed 40)
+					(= howFast medium)
+				)
+				((<= machineSpeed 60)
+					(= howFast fast)
+				)
+				 ;EO: Added in by 1.200
+				(else
+					(= howFast fastest)
+				)
 			)
 			(theGame setSpeed: 5)
 			(RedrawCast)
-			(curRoom newRoom: startingRoom)
+			(curRoom newRoom: transferRoom)
 		)
 	)
 )

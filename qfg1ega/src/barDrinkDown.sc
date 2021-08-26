@@ -13,8 +13,6 @@
 )
 
 (instance drinkDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -28,7 +26,8 @@
 						(switch numberOfAlesDrunk
 							(1
 								(HighPrint 336 0)
-								;This tastes as sour as it smells, and it burns your throat as you swallow it. Still, it isn't the worst beer you've ever drunk.
+								;This tastes as sour as it smells, and it burns your throat as you swallow it.
+								; Still, it isn't the worst beer you've ever drunk.
 								(= cycles 5)
 							)
 							(2
@@ -56,7 +55,9 @@
 					)
 				)
 			)
-			(2 (ego setCycle: BegLoop self))
+			(2
+				(ego setCycle: BegLoop self)
+			)
 			(3
 				(= drinkInHand drinkNothing)
 				(User canInput: TRUE)
@@ -68,8 +69,6 @@
 )
 
 (instance tooDrunk of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 336)
@@ -93,11 +92,11 @@
 					(drinkAle
 						(HighPrint 336 5)
 						;Too much beer.
-						)
+					)
 					(drinkSweat
 						(HighPrint 336 6)
 						;...and one Troll's Sweat is too many.
-						)
+					)
 				)
 				(= cycles 2)
 			)
@@ -115,8 +114,8 @@
 				(self cue:)
 			)
 			(6
-				(SolvePuzzle POINTS_GOTDRUNK -5)
-				(Bset TAVERN_DRUNK)
+				(SolvePuzzle f331Drunk -5)
+				(Bset fBarDrunk)
 				(curRoom newRoom: 330)
 			)
 		)
@@ -124,8 +123,6 @@
 )
 
 (instance breathDeath of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 336)

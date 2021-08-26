@@ -96,7 +96,7 @@
 		(super init:)
 		(mouseDownHandler add: self)
 		(StatusLine enable:)
-		(self setLocales: 811 801)
+		(self setLocales: STREET TOWN)
 		(NormalEgo)
 		(switch prevRoomNum
 			(53
@@ -111,17 +111,20 @@
 			eachElementDo: #init
 			doit:
 		)
-		(slink ignoreActors: 1 setPri: 7 init: stopUpd:)
-		(sneak ignoreActors: 1 setPri: 10 init: stopUpd:)
+		(slink ignoreActors: TRUE setPri: 7 init: stopUpd:)
+		(sneak ignoreActors: TRUE setPri: 10 init: stopUpd:)
 		(knife
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setLoop: 5
 			setPri: 10
 			init:
 			stopUpd:
 		)
-		(coin ignoreActors: 1 setLoop: 6 setPri: 6 init:)
-		(if (not (Btst fBeenIn334)) (RedrawCast) (LookAround))
+		(coin ignoreActors: TRUE setLoop: 6 setPri: 6 init:)
+		(if (not (Btst fBeenIn334))
+			(RedrawCast)
+			(LookAround)
+		)
 	)
 	
 	(method (doit)
@@ -150,20 +153,21 @@
 					;You can't make them out from here.
 				)
 			)
-			((Said 'look[<at,around][/!*,street,alley]') (LookAround))
-			(
-			(and (== thievesAmbush TRUE) (Said 'look/thief,thief,man,man'))
-			(HighPrint 334 3)
-			;These two men may be smiling at you, but they don't seem very friendly.
+			((Said 'look[<at,around][/!*,street,alley]')
+				(LookAround)
+			)
+			((and (== thievesAmbush TRUE) (Said 'look/thief,thief,man,man'))
+				(HighPrint 334 3)
+				;These two men may be smiling at you, but they don't seem very friendly.
 			)
 			((Said 'look/wall')
 				(HighPrint 334 4)
 				;The walls seem pretty normal, but there are some curious marks at the north ends of the buildings.
-				)
+			)
 			((Said 'look/barrel')
 				(HighPrint 334 5)
 				;The barrels are empty, and smell of sour beer.
-				)
+			)
 			(
 				(and
 					(== thievesAmbush TRUE)
@@ -188,33 +192,32 @@
 					;You just see a glint from here.
 				)
 			)
-			(
-			(and (== thievesAmbush TRUE) (MouseClaimed sneak event shiftDown))
-			(HighPrint 334 9)
-			;He may be short, but the dagger makes him look 7 feet tall.
+			((and (== thievesAmbush TRUE) (MouseClaimed sneak event shiftDown))
+				(HighPrint 334 9)
+				;He may be short, but the dagger makes him look 7 feet tall.
 			)
 			(
 			(and (== thievesAmbush TRUE) (MouseClaimed slink event shiftDown))
-			(HighPrint 334 10)
-			;The florid face tells you that this thief is a regular at the "Aces and Eights" tavern.
+				(HighPrint 334 10)
+				;The florid face tells you that this thief is a regular at the "Aces and Eights" tavern.
 			)
 			((MouseClaimed onBricks event shiftDown)
 				(HighPrint 334 11)
 				;The whole place is in need of repair.
-				)
+			)
 			((MouseClaimed onFirstBarrel event shiftDown)
 				(HighPrint 334 12)
 				;Looks like this barrel once contained Dragon's Breath.  The bottom's eaten out.
-				)
+			)
 			((MouseClaimed onSecondBarrel event shiftDown)
 				(HighPrint 334 13)
 				;A whiff of Troll's Sweat indicates that this barrel is from the "Aces and Eights" tavern.
-				)
+			)
 			((Said 'get,move,lockpick<up,grab>') (if (Said '/barrel')
 					(HighPrint 334 14)
 					;The barrels are too heavy to move.
-					)
 				)
+			)
 			(
 				(and
 					(not (if (not thievesAmbush) (<= (ego y?) 132)))
@@ -228,8 +231,6 @@
 )
 
 (instance ambushScript of Script
-	(properties)
-	
 	(method (doit)
 		(if (not (-- register))
 			(HighPrint 334 16)
@@ -284,29 +285,33 @@
 			)
 			(5
 				(cond 
-					((not (Btst ALLEY_ROBBED)) (Bset ALLEY_ROBBED)
+					((not (Btst fAmbushedAlley))
+						(Bset fAmbushedAlley)
 						(HighPrint 334 32)
 						;Slink says, "That coin light spell gets them every time.  See that dagger?  The next one is centered on your back.
 						;Give Sneak there your cash and you walk out of here.  It's a simple trade, your life for your money."
 						(HandsOn))
-					((not (Btst LEARNED_THIEF_PASSWORD))
+					((not (Btst fLearnedThiefPassword))
 						(HighPrint 334 33)
 						;Slink:  "Why, how nice to see you again.  I do hope (for your sake) you brought us some nice shiny new silver."
-						(HandsOn))
+						(HandsOn)
+					)
 					((not (ego has: iThiefLicense))
 						(HighPrint 334 34)
-						;Slink:  "Hey, Sneak, this guy's hard of hearing or something.  I told him to get a license last time he was here, and he didn't listen."
+						;Slink:  "Hey, Sneak, this guy's hard of hearing or something. 
+						; I told him to get a license last time he was here, and he didn't listen."
 						(HighPrint 334 35)
 						;"Let's teach him a little lesson about listening to his betters."
 						(self changeState: 7)
 					)
-					((Btst SLINK_WARNING)
+					((Btst fSlinkWarned)
 						(HighPrint 334 36)
 						;As Slink reaches for his dagger, you draw your Thieves' Guild license. . .
 						(HighPrint 334 37)
 						;You *almost* make it.
 						(HighPrint 334 38)
-						;Slink:  "Hey, Sneak, this guy's hard of hearing or something.  I told him to stay out of our alley, and he didn't listen."
+						;Slink:  "Hey, Sneak, this guy's hard of hearing or something. 
+						; I told him to stay out of our alley, and he didn't listen."
 						(HighPrint 334 35)
 						;"Let's teach him a little lesson about listening to his betters."
 						(self changeState: 7)
@@ -320,7 +325,7 @@
 						;Slink:  "All right, so you got your license.  How nice.  Guess we don't get to kill you right now."
 						(HighPrint 334 41)
 						;"But stay out of our alley, 'cause we got real short memories, like."
-						(Bset SLINK_WARNING)
+						(Bset fSlinkWarned)
 						(= thievesSatisfied TRUE)
 						(= register 200)
 						(HandsOn)
@@ -369,11 +374,12 @@
 							(thievesSatisfied
 								(HighPrint 334 19)
 								;The thieves seem to be ignoring you.
-								)
-							((Btst LEARNED_THIEF_PASSWORD)
+							)
+							((Btst fLearnedThiefPassword)
 								(= register 0)
 								(HighPrint 334 20)
-								;"Yeah, yeah, we know, you're in the Guild too.  How's a poor independent businessman supposed to make a living around here with all this competition?"
+								;"Yeah, yeah, we know, you're in the Guild too. 
+								; How's a poor independent businessman supposed to make a living around here with all this competition?"
 								(HighPrint 334 21)
 								;"Now go before I forget you made the sign and I make you pay anyway."
 								(= thievesSatisfied TRUE)
@@ -382,13 +388,13 @@
 							((not (if [egoStats STEALTH] else [egoStats PICK]))
 								(HighPrint 334 22)
 								;"What's that supposed to be?  You trying to pretend you're a thief or something?  Har, har."
-								)
+							)
 							(else
 								(= register 0)
 								(HighPrint 334 23)
 								;"You mean to say that the first customer we've had in months is a fellow thief?
 								;And here I thought we were going to make some money."
-								(SolvePuzzle POINTS_SHOWTHIEFSIGN 3 THIEF)
+								(SolvePuzzle f334GiveSign 3 THIEF)
 								(if (not (ego has: iThiefLicense))
 									(HighPrint 334 24)
 									;"You had better check in at the Thieves' Guild before you get in trouble for practicing without a license.
@@ -398,7 +404,7 @@
 										;"The password is '%s'."
 									)
 								)
-								(Bset LEARNED_THIEF_PASSWORD)
+								(Bset fLearnedThiefPassword)
 								(HighPrint 334 21)
 								;"Now go before I forget you made the sign and I make you pay anyway."
 								(= thievesSatisfied TRUE)
@@ -419,7 +425,8 @@
 							)
 							((not (GiveMoney 5))
 								(HighPrint 334 27)
-								;"Hey!  You don't have enough money to be worth our while.  How do you expect us poor independent businessmen to make a living?"
+								;"Hey!  You don't have enough money to be worth our while. 
+								; How do you expect us poor independent businessmen to make a living?"
 								(HandsOff) (self changeState: 7))
 							(else
 								(= [invNum iSilver] 0)
@@ -427,7 +434,7 @@
 								(HighPrint 334 28)
 								;Slink: "Thanks, it's been a pleasure doing business with you.  You can find your way out, I'm sure.
 								;But better hurry before my dagger starts to slip."
-								(SolvePuzzle POINTS_GETROBBED -10 THIEF)
+								(SolvePuzzle f334Robbed -10 THIEF)
 								(= thievesSatisfied TRUE)
 								(= register 200)
 							)
@@ -436,7 +443,7 @@
 					((Said 'chat,ask')
 						(HighPrint 334 29)
 						;Slink:  "My finger is starting to get a bit twitchy, so forget about questions, just pay the man and get out alive."
-						)
+					)
 					(
 						(or
 							(Said 'fight,kill,attack,capture,chop,beat')
@@ -450,7 +457,9 @@
 					((Said 'cast')
 						(HighPrint 334 31)
 						;Before you can begin to use any magic, the thieves decide that you're up to no good.
-						(HandsOff) (self changeState: 7))
+						(HandsOff)
+						(self changeState: 7)
+					)
 				)
 			)
 		)

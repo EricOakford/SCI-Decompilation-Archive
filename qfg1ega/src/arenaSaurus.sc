@@ -75,19 +75,17 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLSAURUS 1 FIGHTER)
+		(SolvePuzzle f430BeatSaurus 1 FIGHTER)
 		(= local1 1)
 	)
 )
 
 (instance saurusScript of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			(local1 (= local1 (= cycles 0)))
 			((and monsterDazzle (== state 1))
-				(= cycles (+ cycles monsterDazzle))
+				(+= cycles monsterDazzle)
 				(= monsterDazzle 0)
 				(Bclr fMonsterDazzled)
 			)

@@ -19,7 +19,7 @@
 	putDownBook
 	itemPurchased
 	itemPrice
-	chatProprietor
+	talkRet
 )
 (procedure (BuySomething item price &tmp qty)
 	(if (and (== item iChainmail) (ego has: iLeather))
@@ -30,12 +30,13 @@
 		(if (== item iChainmail)
 			(if (ego has: iLeather)
 				(HighPrint 322 0)
-				;"You won't be needing your old leather armor anymore.  I shall give you a 50 silver trade-in discount."
+				;"You won't be needing your old leather armor anymore. 
+				; I shall give you a 50 silver trade-in discount."
 				(ego use: iLeather))
-			(SolvePuzzle POINTS_BUYCHAINMAIL 3 FIGHTER)
+			(SolvePuzzle f322BuyChainmail 3 FIGHTER)
 		)
 		(ego get: item qty)
-		(Bset PURCHASED_FROM_DRYGOODS)
+		(Bset fPurchasedFromShop)
 		(HighPrint 322 1)
 		;"Here you are; thank you for your patronage."
 	else
@@ -353,10 +354,14 @@
 	
 	(method (doit)
 		(cond 
-			((and (< (ego y?) 140) (not nearCounter)) (= nearCounter 1))
+			((and (< (ego y?) 140) (not nearCounter))
+				(= nearCounter TRUE)
+			)
 			((and (> (ego y?) 140) nearCounter)
-				(= nearCounter 0)
-				(if proprietorAsks (= proprietorAsks 0))
+				(= nearCounter FALSE)
+				(if proprietorAsks
+					(= proprietorAsks 0)
+				)
 				(if (and proprietorAttention putDownBook)
 					(proprietor setCycle: BegLoop)
 					(= putDownBook 0)
@@ -379,7 +384,7 @@
 					((Said 'deposit/*')
 						(HighPrint 322 3)
 						;It would not be a good idea to drop anything here.
-						)
+					)
 					((Said 'look>')
 						(cond 
 							((Said '[<at,around][/!*,room,building,shop]')
@@ -387,52 +392,53 @@
 								;This looks like a dry goods store, but it smells like a musty library.  The stove feels nice on such a crisp day.
 								;Behind the counter and on the shelves, there are many and various items for sale.
 								;The shopkeeper appears to ignore you while he reads a book.
-								)
+							)
 							((Said '/stove,coal')
 								(HighPrint 322 5)
 								;The stove is burning merrily away, making the shop seem almost too warm.
-								)
+							)
 							((Said '/man,shopkeeper,keeper,owner,kaspar')
 								(HighPrint 322 6)
 								;The shopkeeper is a small, balding man who wears glasses.  He looks as if he can barely lift the book he is reading.
 								;Judging from his clothes, he is fairly well-to-do.
-								)
+							)
 							((Said '/barrel')
 								(HighPrint 322 7)
 								;The barrels appear to be filled with something and look rather heavy.
-								)
+							)
 							((Said '/can,(drygoods<canned)')
 								(HighPrint 322 8)
 								;The jars of beets and sauerkraut look like they were canned locally.
-								)
+							)
 							((Said '<behind/counter')
 								(if nearCounter
 									(HighPrint 322 9)
 									;Behind the counter are weapons, armor, and such equipment as you would more often find in an "Adventurer's Shop".
-									else
+								else
 									(HighPrint 322 10)
 									;You're not close enough to the counter to see behind it.
-									)
 								)
+							)
 							((Said '/counter,shelf,item,drygoods')
 								(HighPrint 322 11)
 								;On the counter and on the shelves are assortments of canned goods, honey jars, sewing items, and odds and ends
 								;that people in a small town would need.
-								)
-							(
-							(Said '/armor,leather,chain,chainmail,chainmail')
-							(HighPrint 322 12)
-							;The leather armor is more like barding, designed to be used under clothing.  The chain mail is much heavier, and looks very strong.
+							)
+							((Said '/armor,leather,chain,chainmail,chainmail')
+								(HighPrint 322 12)
+								;The leather armor is more like barding, designed to be used under clothing. 
+								; The chain mail is much heavier, and looks very strong.
 							)
 							((Said '/odds,ends,stuff,item')
 								(HighPrint 322 13)
 								;There are barrels of flour and salt next to the counter.
-								;There seem to be jars of pickled pigs' feet, linen cloth, and other things in which you have very little interest.
+								;There seem to be jars of pickled pigs' feet, linen cloth,
+								; and other things in which you have very little interest.
 									)
 							((Said '/equipment')
 								(HighPrint 322 14)
 								;There are a variety of items of the sort an adventurer might need.
-								)
+							)
 						)
 					)
 				)
@@ -468,7 +474,7 @@
 					(HighPrint 322 6)
 					;The shopkeeper is a small, balding man who wears glasses.
 					;He looks as if he can barely lift the book he is reading.  Judging from his clothes, he is fairly well-to-do.
-					)
+				)
 			)
 			(saidEvent
 				(cond 
@@ -506,13 +512,16 @@
 					)
 					((or (Said 'chat>') (Said 'ask>'))
 						(cond 
-							((and (not proprietorAttention) nearCounter) (proprietorScript cue:) (event claimed: TRUE))
+							((and (not proprietorAttention) nearCounter)
+								(proprietorScript cue:)
+								(event claimed: TRUE)
+							)
 							((not nearCounter)
 								(HighPrint 322 16)
 								;Either the shopkeeper can't hear you or he's ignoring you.  Try striding right up to the counter.
 								(event claimed: TRUE))
 							(else
-								(= chatProprietor TRUE)
+								(= talkRet TRUE)
 								(cond 
 									((Said '//weapon,equipment')
 										(HighPrint 322 18)
@@ -520,68 +529,73 @@
 										;"I carry daggers and chain armor.  Maybe someday I'll be able to carry magic ones, though."
 										(HighPrint 322 19)
 										;"I can also sell you food or empty flasks for carrying liquids or powders."
-										)
+									)
 									((Said '//armor,chain,chainmail,chainmail')
 										(HighPrint 322 20)
 										;"You can get really good protection from my chain mail armor.
 										;It's very heavy though, and I would have to charge you 500 silvers for it."
-										)
+									)
 									((Said '//dagger,dagger')
 										(HighPrint 322 21)
 										;"Ah!  The use of the dagger is a most skillful art.
-										;Actually, this particular weapon is longer than most, but still easily concealable.  A bargain at 20 silvers."
-										)
+										;Actually, this particular weapon is longer than most, but still easily concealable.
+										; A bargain at 20 silvers."
+									)
 									((Said '//food,ration,breakfast')
 										(HighPrint 322 22)
-										;"Adventuring rations aren't the tastiest food in the world, but they will keep you healthy and alert as you go along.
+										;"Adventuring rations aren't the tastiest food in the world, 
+										;but they will keep you healthy and alert as you go along.
 										;A pack of 5 rations will cost you just 5 silvers."
-										)
+									)
 									((Said '//ale,ale,wine')
 										(HighPrint 322 23)
 										;"Oh, no, I don't carry that sort of thing here.  If you want to get drunk, try the tavern."
-										)
+									)
 									((Said '//bottle')
 										(HighPrint 322 24)
-										;"It's a very good idea to carry an empty flask or two, in case you want to pick up a liquid or something else that
+										;"It's a very good idea to carry an empty flask or two, 
+										;in case you want to pick up a liquid or something else that
 										;needs a container.  Our flasks are a great bargain at 2 silvers each."
-										)
+									)
 									((Said '//book')
 										(HighPrint 322 25)
-										;"Oh, this book?  It's about an adventurer who is trying to become a Hero.  The title is 'Quest for Glory:  A Hero's Death'."
-										)
-									(
-										(Said
-											'//pig,feet,broom,hoe,handle,pan,teapot,egg,cheesecloth,flour,bag,tea,salt,pepper,honey,honey,beet,sauerkraut,saurus,drygoods'
-										)
-										(= chatProprietor 0)
+										;"Oh, this book?  It's about an adventurer who is trying to become a Hero. 
+										; The title is 'Quest for Glory:  A Hero's Death'."
+									)
+									((Said
+										'//pig,feet,broom,hoe,handle,pan,teapot,egg,cheesecloth,flour,bag,tea,
+										salt,pepper,honey,honey,beet,sauerkraut,saurus,drygoods')
+										(= talkRet FALSE)
 										(HighPrint 322 26)
-										;"Oh, you don't want those.  They're for the people who live here in town.  Adventurers just need adventuring equipment."
+										;"Oh, you don't want those.  They're for the people who live here in town. 
+										; Adventurers just need adventuring equipment."
 									)
 									((Said '//meisterson,otto,goon')
 										(HighPrint 322 27)
 										;"The Sheriff and Otto protect this town.  The Sheriff used to be a real adventurer, you know!"
-										)
+									)
 									((Said '//man,shopkeeper,kaspar')
+										;EO: Milchtoast is a synonym for Kaspar. Probably his last name,
+										; since it's a reference to a similarly-named comic strip character.
 										(HighPrint 322 28)
 										;"Why, that's me!  Kaspar!"
-										)
+									)
 									((Said '//filly')
 										(HighPrint 322 29)
 										;"Hilde sells fine produce for a reasonable price."
-										)
-									(
-										(Said
-											'//bandit,baron,barnard,female,zara,ermit,baba,barnard,elsa,hamlet,erasmus,erana,monster,brauggi,giant,meep,healer,bouncer,master,ermit'
-										)
+									)
+									((Said
+										'//bandit,baron,barnard,female,zara,ermit,baba,barnard,elsa,hamlet,
+										erasmus,erana,monster,brauggi,giant,meep,healer,bouncer,master,ermit')
 										(HighPrint 322 30)
 										;"I don't like to talk about other people behind their backs."
 									)
 									((Said '//food,drygoods')
 										(HighPrint 322 31)
 										;I have pigs feet, brooms, rakes, handles, pots, teapots, eggs, linen, flour, etc.."
-										)
+									)
 									(else
-										(= chatProprietor FALSE)
+										(= talkRet FALSE)
 										(event claimed: TRUE)
 										(HighPrint 322 32)
 										;"I'm sorry, I don't have any of those for sale."
@@ -589,25 +603,49 @@
 										;"I carry weapons, armor, daggers, rations, ale flasks, and various food stuffs."
 									)
 								)
-								(if chatProprietor (SolvePuzzle POINTS_TALKTOSHOPKEEPER 1))
+								(if talkRet
+									(SolvePuzzle f322TalkToKaspar 1)
+								)
 							)
 						)
 					)
 					((Said 'buy,get>')
 						(cond 
-							((Said '/bottle') (= itemPurchased iFlask) (= itemPrice 2))
-							((Said '/food,ration,breakfast') (= itemPurchased iRations) (= itemPrice 5))
-							((Said '/dagger') (= itemPurchased iDagger) (= itemPrice 20))
-							((Said '/armor,chain,chainmail,chainmail') (= itemPurchased iChainmail) (= itemPrice 500))
-							(else (event claimed: TRUE) (= itemPurchased (= itemPrice 0)))
+							((Said '/bottle')
+								(= itemPurchased iFlask)
+								(= itemPrice 2)
+							)
+							((Said '/food,ration,breakfast')
+								(= itemPurchased iRations)
+								(= itemPrice 5)
+							)
+							((Said '/dagger')
+								(= itemPurchased iDagger)
+								(= itemPrice 20)
+							)
+							((Said '/armor,chain,chainmail,chainmail')
+								(= itemPurchased iChainmail)
+								(= itemPrice 500)
+							)
+							(else
+								(event claimed: TRUE)
+								(= itemPurchased
+									(= itemPrice 0)
+								)
+							)
 						)
 						(cond 
-							((not proprietorAttention) (event claimed: TRUE) (proprietorScript cue:))
-							(itemPurchased (BuySomething itemPurchased itemPrice))
+							((not proprietorAttention)
+								(event claimed: TRUE)
+								(proprietorScript cue:)
+							)
+							(itemPurchased
+								(BuySomething itemPurchased itemPrice)
+							)
 							(else (event claimed: TRUE)
 								(HighPrint 322 34)
 								;"Aw, you wouldn't want to buy that."
-								)
+							)
 						)
 					)
 				)
@@ -617,8 +655,6 @@
 )
 
 (instance proprietorScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -634,40 +670,47 @@
 				(HighPrint 322 35)
 				;"Oh, I'm sorry!" the shopkeeper blurts out.  "I didn't notice you coming in."
 				(cond 
-					(itemPurchased (Bset MET_SHOPKEEPER) (self cue:))
-					((Btst PURCHASED_FROM_DRYGOODS)
+					(itemPurchased
+						(Bset fMetShopkeeper)
+						(self cue:)
+					)
+					((Btst fPurchasedFromShop)
 						(HighPrint 322 36)
 						;"Well, my adventurer friend!  Would you like to make another purchase?"
-						)
-					((Btst MET_SHOPKEEPER)
+					)
+					((Btst fMetShopkeeper)
 						(HighPrint 322 37)
 						;"Well, my adventurer friend!  Would you like to make a purchase this time?"
-						)
-					(else (Bset MET_SHOPKEEPER)
+					)
+					(else
+						(Bset fMetShopkeeper)
 						(HighPrint 322 38)
 						;"My, you look like an adventurer!  We don't see too many around here.
 						;The brigands tend to get rid of most adventurers before they make it to town."
 						(HighPrint 322 39)
-						;"You may be in luck.  I carry a modest amount of adventurer's equipment behind the counter.  Would you like to make a purchase?"
-						)
+						;"You may be in luck.  I carry a modest amount of adventurer's equipment behind the counter. 
+						; Would you like to make a purchase?"
+					)
 				)
 			)
 			(3
 				(= proprietorAsks FALSE)
 				(cond 
 					(itemPurchased (BuySomething itemPurchased itemPrice))
-					((not (Btst PURCHASED_FROM_DRYGOODS))
+					((not (Btst fPurchasedFromShop))
 						(HighPrint 322 40)
-						;"Oh, good! I do try to stock some things adventurers can use.  I actually would rather be an adventurer than a shopkeeper, you see."
+						;"Oh, good! I do try to stock some things adventurers can use. 
+						; I actually would rather be an adventurer than a shopkeeper, you see."
 						(HighPrint 322 41)
-						;"My items are pretty ordinary, though.  You probably already have most of them if you've done any adventuring at all."
+						;"My items are pretty ordinary, though. 
+						; You probably already have most of them if you've done any adventuring at all."
 						(HighPrint 322 42)
 						;"Now what was that you wanted again?"
-						)
+					)
 					(else
 						(HighPrint 322 42)
 						;"Now what was that you wanted again?"
-						)
+					)
 				)
 			)
 			(4
@@ -693,7 +736,7 @@
 			((MouseClaimed onKeg1 event shiftDown)
 				(HighPrint 322 44)
 				;You see broom and rake handles in this barrel.
-				)
+			)
 		)
 	)
 )
@@ -712,7 +755,7 @@
 			((MouseClaimed onKeg2 event shiftDown)
 				(HighPrint 322 7)
 				;The barrels appear to be filled with something and look rather heavy.
-				)
+			)
 		)
 	)
 )
@@ -731,7 +774,7 @@
 			((MouseClaimed onKeg3 event shiftDown)
 				(HighPrint 322 7)
 				;The barrels appear to be filled with something and look rather heavy.
-				)
+			)
 		)
 	)
 )
@@ -750,7 +793,7 @@
 			((MouseClaimed onKeg4 event shiftDown)
 				(HighPrint 322 7)
 				;The barrels appear to be filled with something and look rather heavy.
-				)
+			)
 		)
 	)
 )
@@ -769,7 +812,7 @@
 			((MouseClaimed onStove event shiftDown)
 				(HighPrint 322 5)
 				;The stove is burning merrily away, making the shop seem almost too warm.
-				)
+			)
 		)
 	)
 )
@@ -788,7 +831,7 @@
 			((MouseClaimed onFlask event shiftDown)
 				(HighPrint 322 45)
 				;Flasks, very useful for storing liquids.
-				)
+			)
 		)
 	)
 )
@@ -807,7 +850,7 @@
 			((MouseClaimed onShield event shiftDown)
 				(HighPrint 322 46)
 				;An unornamented but exceptionally sturdy shield.
-				)
+			)
 		)
 	)
 )
@@ -826,7 +869,7 @@
 			((MouseClaimed onTeaPot event shiftDown)
 				(HighPrint 322 47)
 				;The proprietor's teapot.
-				)
+			)
 		)
 	)
 )
@@ -845,7 +888,7 @@
 			((MouseClaimed onEggs event shiftDown)
 				(HighPrint 322 48)
 				;Pickled Saurus eggs.
-				)
+			)
 		)
 	)
 )
@@ -864,7 +907,7 @@
 			((MouseClaimed onLinen event shiftDown)
 				(HighPrint 322 49)
 				;Linen coarsely woven from the fibers of spore spitting Spirea plants.
-				)
+			)
 		)
 	)
 )
@@ -883,7 +926,7 @@
 			((MouseClaimed onFlour event shiftDown)
 				(HighPrint 322 50)
 				;Bags of flour.
-				)
+			)
 		)
 	)
 )
@@ -902,7 +945,7 @@
 			((MouseClaimed onPigsFeet event shiftDown)
 				(HighPrint 322 51)
 				;Pickled pigs feet.
-				)
+			)
 		)
 	)
 )
@@ -921,7 +964,7 @@
 			((MouseClaimed onBeets event shiftDown)
 				(HighPrint 322 52)
 				;Jars of beets and sauerkraut.
-				)
+			)
 		)
 	)
 )
@@ -940,7 +983,7 @@
 			((MouseClaimed onTea2 event shiftDown)
 				(HighPrint 322 53)
 				;Tea imported all the way from Shapeir.
-				)
+			)
 		)
 	)
 )
@@ -959,7 +1002,7 @@
 			((MouseClaimed onSalt event shiftDown)
 				(HighPrint 322 54)
 				;Salt from the desert east of the mountains.
-				)
+			)
 		)
 	)
 )
@@ -978,7 +1021,7 @@
 			((MouseClaimed onSugar event shiftDown)
 				(HighPrint 322 55)
 				;Sugar from dried figs.
-				)
+			)
 		)
 	)
 )
@@ -997,7 +1040,7 @@
 			((MouseClaimed onSaltPork event shiftDown)
 				(HighPrint 322 56)
 				;Salted, dried Saurus.
-				)
+			)
 		)
 	)
 )
@@ -1016,7 +1059,7 @@
 			((MouseClaimed onPepper event shiftDown)
 				(HighPrint 322 57)
 				;Locally grown pepper.
-				)
+			)
 		)
 	)
 )
@@ -1035,7 +1078,7 @@
 			((MouseClaimed onHoney event shiftDown)
 				(HighPrint 322 58)
 				;Wild honey from the forest.
-				)
+			)
 		)
 	)
 )

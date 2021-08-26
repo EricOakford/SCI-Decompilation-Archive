@@ -20,8 +20,8 @@
 	local3
 	[theCheetaur 3]
 	[fightScript 3]
-	[local10 3] = [2]
-	[local13 3] = [1 2 2]
+	local10 = [2]
+	local13 = [1 2 2]
 )
 (procedure (SetFightScript &tmp i)
 	(for ((= i 0)) (< i 3) ((++ i))
@@ -98,7 +98,7 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLCHEETAUR 4 FIGHTER)
+		(SolvePuzzle f440BeatCheetaur 4 FIGHTER)
 		(= local0 1)
 	)
 )
@@ -218,8 +218,6 @@
 )
 
 (instance cheetaurHurt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

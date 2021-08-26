@@ -143,7 +143,7 @@
 		(Load SOUND (SoundFX 31))
 		(Load SOUND (SoundFX 29))
 		(Load SOUND (SoundFX 30))
-		(SolvePuzzle POINTS_PLAYDAGNABIT 3 THIEF)
+		(SolvePuzzle f340PlayDagNabIt 3 THIEF)
 		(StatusLine code: dagStatus enable:)
 		((View new:)
 			view: vDartBoard
@@ -221,8 +221,6 @@
 )
 
 (instance dagnabitScript of Script
-	(properties)
-	
 	(method (init)
 		(= bet 5)
 		((= newView_3 (View new:))
@@ -407,21 +405,21 @@
 						;"You got me that time.  Say, you're pretty tough!"
 						
 						(if (>= bet 25) 
-							(SolvePuzzle POINTS_WINDAGNABITSMALL 5 THIEF)
+							(SolvePuzzle f340WinBigBet 5 THIEF)
 						)
-						(= totalDagNabItBet (+ totalDagNabItBet bet))
+						(+= totalDagNabItBet bet)
 					)
 					((< egoScore chiefScore)
 						(HighPrint 340 7)
 						;"Looks like I won that one.  Must have gotten lucky."
-						(= totalDagNabItBet (- totalDagNabItBet bet))
+						(+= totalDagNabItBet bet)
 					)
 					(else
 						(ego get: iSilver bet)
 						(if (<= bet 25)
 							(HighPrint 340 8)
 							;"It's a tie.  Let's double the wager."
-							(= bet (+ bet bet))
+							(+= bet bet)
 						else
 							(HighPrint 340 9)
 							;"Hey, nice game.  It's a tie."

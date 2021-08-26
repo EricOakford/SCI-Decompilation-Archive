@@ -225,7 +225,7 @@
 	oldSysTime
 	heroType				;The Character Class. 0 = Fighter, 1 = Magic User or 2 = Thief
 	howFast					;detail level (0 = slow, 1 = medium, 2 = fast, 3 = fastest)
-	startingRoom
+	transferRoom			;room to be transferred to after the speed test
 	egoStats				;hero's skills (25 variable array)
 		gIntell
 		gAgil

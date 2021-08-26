@@ -12,8 +12,6 @@
 )
 
 (instance sitDown of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 338)
@@ -22,7 +20,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset HERO_SITTING)
+				(Bset fEgoSitting)
 				(HandsOff)
 				(ego illegalBits: 0)
 				(if (> (ego x?) 149)
@@ -47,7 +45,9 @@
 				)
 				(self cue:)
 			)
-			(3 (ego setCycle: EndLoop self))
+			(3
+				(ego setCycle: EndLoop self)
+			)
 			(4
 				(ego loop: 2 cel: 0 stopUpd:)
 				((ScriptID 331 5) show: setPri: 8)
@@ -61,8 +61,6 @@
 )
 
 (instance getDown of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 338)
@@ -78,13 +76,13 @@
 			(1
 				(NormalEgo)
 				(ego
-					loop: 2
+					loop: loopS
 					cel: 5
 					illegalBits: cWHITE
 					setCycle: Walk
 					posn: 162 114
 				)
-				(Bclr HERO_SITTING)
+				(Bclr fEgoSitting)
 				((ScriptID 331 8) changeState: 0)
 				(HandsOn)
 				(self dispose:)

@@ -16,7 +16,7 @@
 )
 
 (local
-	local0
+	nearExit
 	innDoor
 	townGate
 	egoLookAround
@@ -24,15 +24,16 @@
 	sheriffView
 	sheriffSmoke
 	blownSmoke
-	local8
+	yoYoSpins
 	local9
-	chatSheriff
+	talkRet
 )
 (procedure (TownDescription)
 	(if (< timeODay TIME_SUNSET)
 		(HighPrint 300 0)
 		;This seems like a quiet little town.  On the porch ahead of you are two people.
-		;The standing one is large, rather ugly, and playing with a yo-yo.  The seated person smoking a pipe looks like he might be the Sheriff.
+		;The standing one is large, rather ugly, and playing with a yo-yo.
+		;The seated person smoking a pipe looks like he might be the Sheriff.
 	else
 		(HighPrint 300 1)
 		;Otto and the Sheriff have retired for the evening.
@@ -46,13 +47,12 @@
 	
 	(method (init)
 		(LoadMany VIEW vTownOutlook vEgoTired vOttoYoyo)
-		(rm300
-			style:
+		(rm300 style:
 			(switch prevRoomNum
-				(301 3)
-				(310 3)
-				(320 2)
-				(else  8)
+				(301 WIPERIGHT)
+				(310 WIPERIGHT)
+				(320 WIPELEFT)
+				(else DISSOLVE)
 			)
 		)
 		(super init:)
@@ -61,7 +61,7 @@
 		(self setLocales: STREET TOWN)
 		(= perspective 70)
 		(= local9 50)
-		(= local8 1)
+		(= yoYoSpins 1)
 		;if we haven't been here before, then we're just starting the game
 		(if (not (Btst fBeenIn300))
 			(= Day 0)
@@ -87,14 +87,16 @@
 			stopUpd:
 			ignoreActors:
 		)
-		(if (< timeODay TIME_SUNSET) (sheriff init:))
+		(if (< timeODay TIME_SUNSET)
+			(sheriff init:)
+		)
 		((= innDoor (Door new:))
 			view: vTownOutlook
 			loop: 0
 			posn: 71 122
 			doorControl: cLGREEN
 			locked: (if (>= timeODay TIME_MIDNIGHT) TRUE else FALSE)
-			facingLoop: 3
+			facingLoop: loopN
 			entranceTo: 301
 			init:
 		)
@@ -177,12 +179,13 @@
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (not local0) (> (ego x?) 0) (< (ego y?) 189))
-			(= local0 1)
+		(if (and (not nearExit) (> (ego x?) 0) (< (ego y?) 189))
+			(= nearExit 1)
 		)
 		(cond 
-			((and (< (ego x?) 1) local0) (curRoom newRoom: 310))
+			((and (< (ego x?) 1) nearExit)
+				(curRoom newRoom: 310)
+			)
 			(
 				(or
 					(> (ego x?) 318)
@@ -190,12 +193,13 @@
 				)
 				(if (and (not (Btst fBeenIn300)) (< timeODay TIME_SUNSET))
 					(HighPrint 300 2)
-					;The Sheriff calls out behind you:  "Just a friendly suggestion, but whatever you do, don't drink the Dragon's Breath.
+					;The Sheriff calls out behind you:
+					;"Just a friendly suggestion, but whatever you do, don't drink the Dragon's Breath.
 					;Not even Otto can drink Dragon's Breath!"
 				)
 				(curRoom newRoom: 320)
 			)
-			((and (> (ego y?) 188) local0)
+			((and (> (ego y?) 188) nearExit)
 				(if Night
 					(ego y: 186 setMotion: 0)
 				else
@@ -217,11 +221,11 @@
 			((Said 'look/deputy,otto,goon,assistant')
 				(HighPrint 300 3)
 				;There's no hint of the Ogre.
-				)
+			)
 			((Said 'look/meisterson,man')
 				(HighPrint 300 4)
 				;You see no sign of the Sheriff.
-				)
+			)
 			(
 				(or
 					(Said 'look/jail')
@@ -303,22 +307,22 @@
 						(if (> timeODay TIME_SUNSET)
 							(HighPrint 300 15)
 							;The barber must keep odd lunch hours.
-							)
+						)
 					)
 					((== (event type?) mouseDown)
 						(HighPrint 300 16)
 						;There appears to be a note on the door of the barber shop.
-						)
+					)
 					(else
 						(HighPrint 300 17)
 						;There are signs over each of the buildings informing you of their purpose.
-						)
+					)
 				)
 			)
 			((Said 'search/man,meisterson,goon,otto')
 				(HighPrint 300 18)
 				;Searching a law enforcer is a bad idea.
-				)
+			)
 			(else
 				(switch (event type?)
 					(saidEvent
@@ -328,10 +332,12 @@
 									((& (ego onControl: origin) cLMAGENTA)
 										(if (< timeODay TIME_SUNSET)
 											(HighPrint 300 19)
-											;The door appears to be locked, and breaking into the Sheriff's office might evoke the wrath of Otto Von Goon.
+											;The door appears to be locked, and breaking into the Sheriff's office
+											;might evoke the wrath of Otto Von Goon.
 										else
 											(HighPrint 300 20)
-											;You'd better not. The Goon would probably try to strangle you with his yo-yo if he thought you were going into
+											;You'd better not. The Goon would probably try to strangle you with 
+											;his yo-yo if he thought you were going into
 											;the Sheriff's office without permission.
 										)
 									)
@@ -342,7 +348,7 @@
 										(if (> timeODay TIME_SUNSET)
 											(HighPrint 300 15)
 											;The barber must keep odd lunch hours.
-											)
+										)
 									)
 									((& (ego onControl: origin) cLGREEN)
 										(if (>= timeODay TIME_MIDNIGHT)
@@ -353,7 +359,9 @@
 											;Turn around.
 										)
 									)
-									(else (event claimed: FALSE))
+									(else
+										(event claimed: FALSE)
+									)
 								)
 							)
 							((Said 'close,hasp,bar/gate')
@@ -385,8 +393,7 @@
 							)
 							((Said 'look>')
 								(cond 
-									(
-									(Said '[<at,around][/!*,street,hamlet,building]')
+									((Said '[<at,around][/!*,street,hamlet,building]')
 										(if Night
 											(HighPrint 300 29)
 											;Spielburg remains colorful, even at night.
@@ -414,13 +421,11 @@
 )
 
 (instance entranceScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 100])
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(SolvePuzzle POINTS_BEGINGAME 1)
+				(SolvePuzzle f300EnterTown 1)
 				(ego setMotion: MoveTo 187 187 self)
 			)
 			(1
@@ -451,7 +456,8 @@
 				;"Welcome to our town. You are lucky to have made it down from the mountains before the snow blocked the pass again.
 				;It's gotten pretty dangerous outside of town, I understand."
 				(HighPrint 300 33)
-				;"Many monsters have been trapped around here with the late snow. Between them and the brigands, we certainly could use a Hero around here."
+				;"Many monsters have been trapped around here with the late snow. 
+				;Between them and the brigands, we certainly could use a Hero around here."
 				(HighPrint 300 34)
 				;"I am Sheriff Schultz Meistersson. This is Otto Von Goon, my assistant. What do you call yourself? "
 				(HandsOn)
@@ -462,7 +468,7 @@
 				)
 				(HighPrint (Format @temp0 300 36 @userName)
 					;Good luck in your quest, %s.
-					)
+				)
 			)
 		)
 	)
@@ -525,7 +531,7 @@
 			init:
 			addToPic:
 		)
-		(if (== howFast 0)
+		(if (== howFast slow)
 			(sheriffView addToPic:)
 			(ottoYoyo addToPic:)
 			(sheriffSmoke addToPic:)
@@ -595,101 +601,108 @@
 									(NotClose)
 								)
 							)
-							(
-							(and (Said 'ask>') (ego inRect: 100 100 242 171))
-								(= chatSheriff TRUE)
+							((and (Said 'ask>') (ego inRect: 100 100 242 171))
+								(= talkRet TRUE)
 								(cond 
-									((Said '//hamlet') (= chatSheriff FALSE)
+									((Said '//hamlet')
+										(= talkRet FALSE)
 										(HighPrint 300 43)
 										;"Just walk around and find out for yourself."
-										)
+									)
 									((Said '//hero,adventure,adventuring')
 										(HighPrint 300 44)
-										;"You'll need to talk to the Baron about that. Or go ask Wolfgang down at the Guild Hall, which is just down the street."
+										;"You'll need to talk to the Baron about that. 
+										;Or go ask Wolfgang down at the Guild Hall, which is just down the street."
 										(HighPrint 300 45)
-										;"So maybe you're going to be a hero? Well, we could surely use one around here, what with all the brigands."
-										)
+										;"So maybe you're going to be a hero? 
+										;Well, we could surely use one around here, what with all the brigands."
+									)
 									((Said '//bandit,robbery')
 										(HighPrint 300 46)
 										;"There's a whole band of brigands hiding out somewhere in the mountains around us.
 										;They robbed a merchant just last week. Got a fair amount of treasure, I hear."
-										)
+									)
 									((Said '//name')
 										(HighPrint 300 47)
 										;"I am Sheriff Schultz Meistersson, and this is Otto Von Goon, my assistant."
-										)
+									)
 									((Said '//meisterson')
 										(HighPrint 300 48)
 										;The Sheriff replies, "Why, that's me!"
-										)
+									)
 									((Said '//abdulla')
 										(HighPrint 300 49)
 										;"The one who was robbed? He's staying at the Inn, I believe."
-										)
+									)
 									((Said '//hotel')
 										(HighPrint 300 50)
 										;"Go talk to the Innkeeper. He will help you there."
-										)
+									)
 									((Said '//hill')
 										(HighPrint 300 51)
 										;"You should know. You came down from there."
-										)
+									)
 									((Said '//danger')
 										(HighPrint 300 52)
 										;"My friend," the Sheriff says, "this world's filled with dangers.
-										;Sometimes I think it might be better to choose your danger,rather than sitting around, waiting for it, as I seem to do."
+										;Sometimes I think it might be better to choose your danger,
+										;rather than sitting around, waiting for it, as I seem to do."
 										(HighPrint 300 53)
 										;"But enough of this philosophical rambling. I am content enough to be Sheriff of Spielburg."
-										)
+									)
 									((Said '//prisoner')
 										(HighPrint 300 54)
 										;"It's simple. When somone breaks the law, and we catch them, we hold them prisoner."
-										)
+									)
 									((Said '//loot')
 										(HighPrint 300 55)
-										;"Obtaining treasure involves putting yourself in danger. If you're brave, foolish, or lucky, you might get some treasure."
-										)
+										;"Obtaining treasure involves putting yourself in danger.
+										; If you're brave, foolish, or lucky, you might get some treasure."
+									)
 									((Said '//monster')
 										(HighPrint 300 56)
 										;"The monsters come down from the mountains every winter, but they're usually gone by now.
 										;The Baron just doesn't have enough men to handle them."
 										(HighPrint 300 57)
 										;"Wolfgang is the one to talk to about monsters. He's had a lot of experience with them."
-										)
+									)
 									((Said '//baron,castle')
 										(HighPrint 300 58)
-										;"Baron Stefan keeps mostly to himself at his castle north of here. We haven't seen him here in town for years."
-										)
+										;"Baron Stefan keeps mostly to himself at his castle north of here.
+										; We haven't seen him here in town for years."
+									)
 									((Said '//abenteuer,master')
 										(HighPrint 300 59)
-										;"Wolfgang, down at the Guild hall, is the one to talk to about monsters. He's had a lot of experience with them."
-										)
+										;"Wolfgang, down at the Guild hall, is the one to talk to about monsters.
+										; He's had a lot of experience with them."
+									)
 									((Said '//goon,otto,deputy,assistant,help')
 										(HighPrint 300 60)
-										;"Otto is a big help to me," the Sheriff tells you. "He's very smart for a Goon. His prisoners only suffer a few
+										;"Otto is a big help to me," the Sheriff tells you. 
+										;"He's very smart for a Goon. His prisoners only suffer a few
 										;broken bones when he grabs them."
 										(HighPrint 300 61)
 										;"It took a bit of doing to teach him to bring prisoners back alive, but he hardly ever forgets, now."
-										)
+									)
 									((Said '//labor,(hall[<club,about])')
 										(HighPrint 300 62)
 										;"The Guild Hall is at the Southwest corner of town. If you're looking for work, that's a good place to go."
-										)
-									(
-										(Said
-											'//magic,zara,spell,potion,scroll,wand,(shop<magic)'
-										)
+									)
+									((Said '//magic,zara,spell,potion,scroll,wand,(shop<magic)')
 										(HighPrint 300 63)
-										;"Just next to the Inn is a small Magic Shop. The owner, Zara, will let you in if you have some abilities in that area.
+										;"Just next to the Inn is a small Magic Shop. 
+										;The owner, Zara, will let you in if you have some abilities in that area.
 										;She's a strange one, all right!"
 									)
-									((Said '//*') (= chatSheriff FALSE)
+									((Said '//*') (= talkRet FALSE)
 										(HighPrint 300 64)
 										;The Sheriff says, "You think I'm going to tell you everything I know about everything? Go look around and find
 										;things out for yourself."
 										)
 								)
-								(if chatSheriff (SolvePuzzle POINTS_TALKTOSHERIFF 1))
+								(if talkRet
+									(SolvePuzzle f300TalkToSheriff 1)
+								)
 							)
 						)
 					)
@@ -700,8 +713,6 @@
 )
 
 (instance sheriffScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -724,16 +735,18 @@
 )
 
 (instance YoYoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(cond 
-					((== (mod local8 5) 0) (self changeState: 2))
-					((== (mod local8 8) 0) (self changeState: 4))
+					((== (mod yoYoSpins 5) 0)
+						(self changeState: 2)
+					)
+					((== (mod yoYoSpins 8) 0)
+						(self changeState: 4)
+					)
 					(else
-						(++ local8)
+						(++ yoYoSpins)
 						(ottoYoyo loop: 1 cel: 0 setCycle: EndLoop)
 						(= cycles 20)
 					)
@@ -741,13 +754,13 @@
 			)
 			(1 (self changeState: 0))
 			(2
-				(++ local8)
+				(++ yoYoSpins)
 				(ottoYoyo loop: 2 cel: 0 setCycle: EndLoop)
 				(= cycles 30)
 			)
 			(3 (self changeState: 0))
 			(4
-				(= local8 1)
+				(= yoYoSpins 1)
 				(ottoYoyo loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(5 (= cycles 30))
@@ -838,8 +851,6 @@
 )
 
 (instance egoWakes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -849,7 +860,8 @@
 			(1
 				(NormalEgo)
 				(HighPrint 300 65)
-				;However, this was not a good place to sleep.  You're stiff and sore all over and your wallet feels very light.
+				;However, this was not a good place to sleep.
+				; You're stiff and sore all over and your wallet feels very light.
 				(= [invNum iSilver] 0)
 				(= [invNum iGold] 0)
 				(HandsOn)
@@ -857,8 +869,9 @@
 			)
 			(2
 				(HighPrint 300 66)
-				;"As safe as our streets are, you still should not sleep on them.  It is a good way to get robbed."
-				)
+				;"As safe as our streets are, you still should not sleep on them.
+				; It is a good way to get robbed."
+			)
 		)
 	)
 )

@@ -87,14 +87,12 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLTROLL 4 FIGHTER)
+		(SolvePuzzle f450BeatTroll 4 FIGHTER)
 		(self canFight: FALSE)
 	)
 )
 
 (instance trollScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(= theCycles 1)
@@ -109,7 +107,7 @@
 	
 	(method (doit)
 		(if (and monsterDazzle (== state 0))
-			(= cycles (+ cycles monsterDazzle))
+			(+= cycles monsterDazzle)
 			(= monsterDazzle 0)
 			(Bclr fMonsterDazzled)
 		)
@@ -206,8 +204,7 @@
 			)
 			(4
 				(client setCel: [local2 3])
-				(if
-				(and (not local7) (== [local2 2] 2) (client ateEgo?))
+				(if (and (not local7) (== [local2 2] 2) (client ateEgo?))
 					(client doDamage: (client opponent?) ateEgo: 0)
 				)
 				(= cycles theCycles)

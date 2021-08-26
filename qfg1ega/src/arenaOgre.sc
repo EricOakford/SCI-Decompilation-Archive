@@ -75,14 +75,12 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLOGRE 2 FIGHTER)
+		(SolvePuzzle f455BeatOgre 2 FIGHTER)
 		(self canFight: FALSE)
 	)
 )
 
 (instance ogreScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(= local1 1)
@@ -100,7 +98,7 @@
 			(Bclr fMonsterDazzled)
 		)
 		(if (and monsterDazzle (== state 0))
-			(= cycles (+ cycles monsterDazzle))
+			(+= cycles monsterDazzle)
 			(= monsterDazzle 0)
 			(Bclr fMonsterDazzled)
 		)

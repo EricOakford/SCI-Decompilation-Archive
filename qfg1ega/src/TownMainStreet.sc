@@ -17,18 +17,18 @@
 (local
 	oldLadyDoor
 	magicDoor
-	local2
+	nearMagicDoor
 	guildDoor
 	magicSign
 	eyeX
 	eyeY
 	local7
 )
-(procedure (EyeMoves param1 param2)
-	(if (or (!= eyeX param1) (!= eyeY param2))
-		(= eyeX param1)
-		(= eyeY param2)
-		(magicSign posn: param1 param2)
+(procedure (EyeMoves theX theY)
+	(if (or (!= eyeX theX) (!= eyeY theY))
+		(= eyeX theX)
+		(= eyeY theY)
+		(magicSign posn: theX theY)
 	)
 )
 
@@ -112,7 +112,7 @@
 			doorControl: cYELLOW
 			entranceTo: 313
 			locked: TRUE
-			facingLoop: 3
+			facingLoop: loopN
 			setPri: 5
 			init:
 		)
@@ -122,7 +122,7 @@
 			posn: 6 148
 			doorControl: cLRED
 			entranceTo: 311
-			facingLoop: 1
+			facingLoop: loopW
 			setPri: 9
 			illegalBits: 0
 			locked: (if Night TRUE else FALSE)
@@ -166,14 +166,17 @@
 	(method (doit &tmp egoX egoY temp2 temp3)
 		(super doit:)
 		(cond 
-			((> (ego x?) 318) (= exploringTown FALSE) (curRoom newRoom: 300))
+			((> (ego x?) 318)
+				(= exploringTown FALSE)
+				(curRoom newRoom: 300)
+			)
 			(
 				(and
 					(== (ego onControl: origin) cLMAGENTA)
-					(not local2)
+					(not nearMagicDoor)
 					(== (ego loop?) 3)
 				)
-				(= local2 1)
+				(= nearMagicDoor TRUE)
 				(magicDoor setScript: magicDoorScript)
 			)
 		)
@@ -208,18 +211,20 @@
 			((Said 'look/lol,female')
 				(HighPrint 310 4)
 				;She seems to have retired...or maybe she's at the tavern.
-				)
+			)
 			((Said 'look/hasp')
 				(cond 
 					((== (ego onControl: origin) cLMAGENTA)
 						(HighPrint 310 5)
 						;This (door?) doesn't have a visible lock.
-						)
+					)
 					((== (ego onControl: origin) cYELLOW)
 						(HighPrint 310 6)
 						;Not the sturdiest you've ever seen.
-						)
-					(else (NotClose))
+					)
+					(else
+						(NotClose)
+					)
 				)
 			)
 			((Said 'knock,open/door')
@@ -227,7 +232,7 @@
 					(
 						(and
 							(== (ego onControl: origin) cLMAGENTA)
-							(not local2)
+							(not nearMagicDoor)
 							(!= (ego loop?) 3)
 						)
 						(HighPrint 310 7)
@@ -236,7 +241,8 @@
 					((== (ego onControl: origin) cYELLOW)
 						(if (< timeODay TIME_SUNSET)
 							(HighPrint 310 8)
-							;The door appears to be locked.  It also appears that the occupant is taking her nap at the bottom of the stairs right now.
+							;The door appears to be locked. 
+							; It also appears that the occupant is taking her nap at the bottom of the stairs right now.
 						else
 							(HighPrint 310 9)
 							;No one seems to be home, and the door is securely locked.
@@ -259,7 +265,9 @@
 			(
 			(Said 'look[<at,around][/!*,hamlet,street,building]')
 			(HighPrint 310 11)
-			;You have come to the end of the main street. The town wall is to the south. You have an eerie feeling that someone is watching you.
+			;You have come to the end of the main street.
+			; The town wall is to the south.
+			; You have an eerie feeling that someone is watching you.
 			)
 			(
 				(or
@@ -293,7 +301,7 @@
 			((Said 'look/fence')
 				(HighPrint 310 16)
 				;The fence around the Little Old Lady's house looks like it's made of wrought iron.
-				)
+			)
 			(
 				(or
 					(MouseClaimed onEye event shiftDown)
@@ -305,11 +313,11 @@
 			((MouseClaimed onMagicSign event shiftDown)
 				(HighPrint 310 18)
 				;It would seem that the strangely decorated building is involved in the magic trade.
-				)
+			)
 			((MouseClaimed onGuildSign event shiftDown)
 				(HighPrint 310 19)
 				;Judging from what the sign says, the building at the end of the street is the Guild Hall.
-				)
+			)
 			((Said 'look/sign')
 				(if (> (ego x?) 200)
 					(HighPrint 310 18)
@@ -365,8 +373,6 @@
 )
 
 (instance magicDoorScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -377,7 +383,9 @@
 			(1
 				(ego illegalBits: 0 setMotion: MoveTo 254 108 self)
 			)
-			(2 (curRoom newRoom: 314))
+			(2
+				(curRoom newRoom: 314)
+			)
 		)
 	)
 )
@@ -398,8 +406,6 @@
 )
 
 (instance flameScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -469,8 +475,6 @@
 )
 
 (instance egoWakes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -509,11 +513,11 @@
 			((Said 'look/rocker,chair')
 				(HighPrint 310 24)
 				;In it sits the Little Old Lady, asleep.
-				)
+			)
 			((Said 'awaken/lol,female')
 				(HighPrint 310 25)
 				;She's really sleeping soundly and doesn't notice your presence.
-				)
+			)
 			((Said 'ask,chat')
 				(HighPrint 310 26)
 				;"ZZZZZZZZZZZZZZZZZZZZ"!
@@ -521,7 +525,7 @@
 				;"Grmpf..snrt..hmphspft"!
 				(HighPrint 310 26)
 				;"ZZZZZZZZZZZZZZZZZZZZ"!
-				)
+			)
 			(
 				(or
 					(MouseClaimed oldLadyDoor event shiftDown)

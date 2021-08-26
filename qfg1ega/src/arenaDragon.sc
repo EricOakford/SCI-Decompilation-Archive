@@ -76,14 +76,12 @@
 	)
 	
 	(method (die)
-		(SolvePuzzle POINTS_KILLSAURUSREX 4 FIGHTER)
+		(SolvePuzzle f460BeatDragon 4 FIGHTER)
 		(self canFight: FALSE)
 	)
 )
 
 (instance dragonScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(client view: vDragonFight setLoop: 0 setPri: 10 cel: 8)
@@ -93,11 +91,14 @@
 		(if (== state 0)
 			(cond 
 				((and monsterDazzle (not script))
-					(= cycles (+ cycles monsterDazzle))
+					(+= cycles monsterDazzle)
 					(= monsterDazzle 0)
 					(Bclr fMonsterDazzled)
 				)
-				((Btst fMonsterDazzled) (= cycles 0) (self setScript: dragonHurt))
+				((Btst fMonsterDazzled)
+					(= cycles 0)
+					(self setScript: dragonHurt)
+				)
 			)
 		)
 		(super doit:)
@@ -155,8 +156,6 @@
 )
 
 (instance drTailScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (client setCycle: EndLoop self))
@@ -169,8 +168,6 @@
 )
 
 (instance dragonHurt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

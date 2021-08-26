@@ -78,8 +78,8 @@
 	
 	(method (die)
 		(= local0 1)
-		(Bset DEFEATED_BEAR)
-		(SolvePuzzle POINTS_KILLBEAR -25)
+		(Bset fBearDying)
+		(SolvePuzzle f420BeatBear -25)
 		(curRoom newRoom: 171)
 	)
 )
@@ -113,7 +113,9 @@
 	)
 	
 	(method (doit)
-		(if (Btst fMonsterDazzled) (bear setScript: bearHurt))
+		(if (Btst fMonsterDazzled)
+			(bear setScript: bearHurt)
+		)
 		(super doit:)
 	)
 	
@@ -125,13 +127,11 @@
 )
 
 (instance aFightScript of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			(local0 (= local0 (= cycles 0)))
 			((and monsterDazzle (== state 0))
-				(= cycles (+ cycles monsterDazzle))
+				(+= cycles monsterDazzle)
 				(= monsterDazzle 0)
 				(Bclr fMonsterDazzled)
 			)
@@ -173,8 +173,6 @@
 )
 
 (instance bearHurt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -201,8 +199,6 @@
 )
 
 (instance bearCycle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

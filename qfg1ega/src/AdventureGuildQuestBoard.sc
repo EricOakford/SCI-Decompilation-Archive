@@ -25,6 +25,7 @@
 	posterView
 	highlightedPoster
 )
+
 (enum 1		;posters on the board
    healerRing
    elsa
@@ -35,7 +36,11 @@
    exit
 )
 (procedure (PosterPrint theWidth theString)
-	(Print theString #at -1 12 #mode teJustCenter #width theWidth)
+	(Print theString
+		#at -1 12
+		#mode teJustCenter
+		#width theWidth
+	)
 )
 
 (procedure (HighlightPoster)
@@ -64,7 +69,7 @@
 	)
 )
 
-(procedure (ReadPoster &tmp [temp0 4] [str 400])
+(procedure (ReadPoster &tmp [rectPoints 4] [str 400])
 	(switch highlightedPoster
 		(healerRing
 			(Format @str 318 0)
@@ -95,13 +100,15 @@
 			(PosterPrint 200 @str)
 		)
 		(barnard
-			(Bset READ_BARNARD_BULLETIN)
+			(Bset fReadBarnardBulletin)
 			(Format @str 318 5)
 			;This poster seems to have been here a while. It has a picture of a handsome, but arrogant young man.
 			;"Reward of 50 gold coins for information leading to the return of Baronet Barnard von Spielburg. Inquire at Spielburg Castle gates."
 			(PosterPrint 280 @str)
 		)
-		(exit (curRoom newRoom: 311))
+		(exit
+			(curRoom newRoom: 311)
+		)
 	)
 )
 
@@ -239,17 +246,17 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp temp0 clickedPoster)
+	(method (handleEvent event &tmp thisControl whichPoster)
 		(switch (event type?)
 			(mouseDown
-				(= clickedPoster 0)
-				(switch (= temp0 (OnControl CMAP (event x?) (event y?)))
-					(cBLUE (= clickedPoster 1))
-					(cGREEN (= clickedPoster 2))
-					(cCYAN (= clickedPoster 3))
-					(cRED (= clickedPoster 4))
-					(cMAGENTA (= clickedPoster 5))
-					(cBROWN (= clickedPoster 6))
+				(= whichPoster 0)
+				(switch (= thisControl (OnControl CMAP (event x?) (event y?)))
+					(cBLUE (= whichPoster 1))
+					(cGREEN (= whichPoster 2))
+					(cCYAN (= whichPoster 3))
+					(cRED (= whichPoster 4))
+					(cMAGENTA (= whichPoster 5))
+					(cBROWN (= whichPoster 6))
 					(cYELLOW
 						(= highlightedPoster 7)
 						(HighlightPoster)
@@ -260,8 +267,8 @@
 				)
 				(event claimed: TRUE)
 				(HighlightPoster)
-				(if clickedPoster
-					(= highlightedPoster clickedPoster)
+				(if whichPoster
+					(= highlightedPoster whichPoster)
 					(HighlightPoster)
 					(RedrawCast)
 					(ReadPoster)
@@ -269,27 +276,37 @@
 			)
 			(saidEvent
 				(cond 
-					((Said 'cease,done,done,done') (event claimed: TRUE) (curRoom newRoom: 311))
-					((Said 'look') (event claimed: TRUE) (ReadPoster))
+					((Said 'cease,done,done,done')
+						(event claimed: TRUE)
+						(curRoom newRoom: 311)
+					)
+					((Said 'look')
+						(event claimed: TRUE)
+						(ReadPoster)
+					)
 				)
 			)
 			(direction
 				(switch (event message?)
 					(dirN
-						(if (< (= highlightedPoster (- highlightedPoster 3)) 1)
-							(= highlightedPoster (+ highlightedPoster 7))
+						(if (< (-= highlightedPoster 3) 1)
+							(+= highlightedPoster 7)
 						)
 					)
 					(dirE
-						(if (> (++ highlightedPoster) 7) (= highlightedPoster 1))
+						(if (> (++ highlightedPoster) 7)
+							(= highlightedPoster 1)
+						)
 					)
 					(dirS
-						(if (> (= highlightedPoster (+ highlightedPoster 3)) 7)
-							(= highlightedPoster (- highlightedPoster 7))
+						(if (> (+= highlightedPoster 3) 7)
+							(-= highlightedPoster 7)
 						)
 					)
 					(dirW
-						(if (< (-- highlightedPoster) 1) (= highlightedPoster 7))
+						(if (< (-- highlightedPoster) 1)
+							(= highlightedPoster 7)
+						)
 					)
 				)
 				(event claimed: TRUE)
@@ -299,7 +316,9 @@
 				(if (== (event message?) ENTER)
 					(event claimed: TRUE)
 					(ReadPoster)
-					(if (> (++ highlightedPoster) 7) (= highlightedPoster 1))
+					(if (> (++ highlightedPoster) 7)
+						(= highlightedPoster 1)
+					)
 					(HighlightPoster)
 				)
 			)

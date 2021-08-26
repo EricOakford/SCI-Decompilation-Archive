@@ -10,8 +10,6 @@
 )
 
 (instance breathScript of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 335)
@@ -71,7 +69,7 @@
 			)
 			(9
 				((ScriptID 331 2) view: vBartender setLoop: 1 cel: 0 stopUpd:)
-				(if (Btst HERO_SITTING)
+				(if (Btst fEgoSitting)
 					(ego loop: 3 cel: 0)
 					((ScriptID 331 5) hide:)
 				)

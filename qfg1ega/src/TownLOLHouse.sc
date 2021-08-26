@@ -31,8 +31,8 @@
 	local10
 	catNeedy
 	local12
-	local13
-	goingUpstairs
+	catAttackCued
+	wentUpstairs
 	pettingCat
 	feedCat
 	cageUncovered
@@ -46,62 +46,85 @@
 )
 
 (procedure (PetCat)
-	(SolvePuzzle POINTS_PETLOLCAT 3 THIEF)
+	(SolvePuzzle f313PetCat 3 THIEF)
 	(cond 
-		(
-		(or (== (catWalk state?) 6) (== (catWalk state?) 7)) (= local12 0) (catWalk changeState: 8))
+		((or (== (catWalk state?) 6) (== (catWalk state?) 7))
+			(= local12 0)
+			(catWalk changeState: 8)
+		)
 		((& (ego onControl: origin) cYELLOW)
 			(HighPrint 313 2)
 			;Just wait. He'll catch up to you
-			)
-		(else (NotClose))
+		)
+		(else
+			(NotClose)
+		)
 	)
 )
 
 (procedure (SearchPurse)
 	(cond 
-		((Btst SEARCHED_LOL_PURSE) (AlreadyDone))
+		((Btst fSearchedPurse)
+			(AlreadyDone)
+		)
 		((< (ego distanceTo: purse) 15)
 			(HighPrint 313 3)
 			;In the purse, you find 20 silvers and some soiled hankies. You take the silver.
 			(ego get: iSilver 20)
-			(Bset SEARCHED_LOL_PURSE)
-			(SolvePuzzle POINTS_SEARCHLOLPURSE 1 THIEF)
+			(Bset fSearchedPurse)
+			(SolvePuzzle f313SearchPurse 1 THIEF)
 		)
-		(else (NotClose))
+		(else
+			(NotClose)
+		)
 	)
 )
 
 (procedure (SearchBasket)
 	(cond 
-		((Btst SEARCHED_LOL_BASKET) (AlreadyDone))
+		((Btst fSearchedBasket)
+			(AlreadyDone)
+		)
 		((< (ego distanceTo: basket) 15)
 			(HighPrint 313 4)
 			;A string of pearls seems to have fallen into the bag among the knitting. You take the pearls, of course.
 			(ego get: iPearls)
-			(Bset SEARCHED_LOL_BASKET)
-			(SolvePuzzle POINTS_SEARCHLOLBASKET 1 THIEF)
+			(Bset fSearchedBasket)
+			(SolvePuzzle f313SearchBasket 1 THIEF)
 		)
-		(else (NotClose))
+		(else
+			(NotClose)
+		)
 	)
 )
 
 (procedure (SearchDesk)
 	(cond 
-		((Btst SEARCHED_LOL_DESK)
+		((Btst fSearchedDesk)
 			(HighPrint 313 5)
 			;You find nothing else of value in the desk.
 			)
-		((ego inRect: 22 131 53 152) (SolvePuzzle POINTS_SEARCHLOLDESK 1 THIEF) (ego setScript: deskOpen))
-		(else (NotClose))
+		((ego inRect: 22 131 53 152)
+			(SolvePuzzle f313SearchDesk 1 THIEF)
+			(ego setScript: deskOpen)
+		)
+		(else
+			(NotClose)
+		)
 	)
 )
 
 (procedure (UncoverBirdcage)
 	(cond 
-		((Btst UNCOVERED_BIRDCAGE) (AlreadyDone))
-		((< (ego distanceTo: birdcage) 25) (ego setScript: birdieSings))
-		(else (NotClose))
+		((Btst fUncoveredCage)
+			(AlreadyDone)
+		)
+		((< (ego distanceTo: birdcage) 25)
+			(ego setScript: birdieSings)
+		)
+		(else
+			(NotClose)
+		)
 	)
 )
 
@@ -124,12 +147,12 @@
 		(Load SOUND 8)
 		(Load SOUND (SoundFX 52))
 		(super init:)
-		(SolvePuzzle POINTS_ENTERLOLHOUSE 5 THIEF)
+		(SolvePuzzle f313EnterLOLHouse 5 THIEF)
 		(mouseDownHandler add: self)
 		(StatusLine enable:)
 		(NormalEgo)
 		(ego posn: 159 189 init: setMotion: MoveTo 159 170)
-		(onCouch init:)	;added
+		(onCouch init:)	;EO: added so it gets used
 		(= deathMusic (SoundFX 52))
 		(cat
 			view: vMagicCat
@@ -214,7 +237,7 @@
 			stopUpd:
 			addToPic:
 		)
-		(if (not (Btst STOLE_CANDLESTICKS))
+		(if (not (Btst fStoleCandles))
 			((= leftCandle (View new:))
 				view: vLOLInside
 				loop: 2
@@ -274,8 +297,12 @@
 				(= climbUpState 3)
 				(ego setScript: climbUp3)
 			)
-			((and (< (ego y?) 103) (== (ego loop?) 0)) (ego setScript: climbDown))
-			((== (ego onControl: origin) cLGREEN) (= climbUpState 0))
+			((and (< (ego y?) 103) (== (ego loop?) 0))
+				(ego setScript: climbDown)
+			)
+			((== (ego onControl: origin) cLGREEN)
+				(= climbUpState 0)
+			)
 		)
 		(super doit:)
 	)
@@ -292,12 +319,18 @@
 			((super handleEvent: event))
 			((Said 'search,(look<in)>')
 				(cond 
-					((Said '/purse') (SearchPurse))
-					((Said '/bag,basket') (SearchBasket))
-					((Said '/birdcage,birdcage') (UncoverBirdcage))
+					((Said '/purse')
+						(SearchPurse)
+					)
+					((Said '/bag,basket')
+						(SearchBasket)
+					)
+					((Said '/birdcage,birdcage')
+						(UncoverBirdcage)
+					)
 					((Said '/couch')
 						(cond 
-							((Btst SEARCHED_LOL_COUCH)
+							((Btst fSearchedCouch)
 								(HighPrint 313 6)
 								;You find nothing else by searching the couch.
 								)
@@ -305,13 +338,17 @@
 								(HighPrint 313 7)
 								;You find 3 silvers that have fallen down into the cushions.
 								(ego get: iSilver 3)
-								(Bset SEARCHED_LOL_COUCH)
-								(SolvePuzzle POINTS_SEARCHLOLCOUCH 1 THIEF)
+								(Bset fSearchedCouch)
+								(SolvePuzzle f313SearchCouch 1 THIEF)
 							)
-							(else (NotClose))
+							(else
+								(NotClose)
+							)
 						)
 					)
-					((Said '/desk,drawer') (SearchDesk))
+					((Said '/desk,drawer')
+						(SearchDesk)
+					)
 					((Said '/plant')
 						(if
 							(or
@@ -324,40 +361,58 @@
 							(NotClose)
 						)
 					)
-					(else (event claimed: FALSE))
+					(else
+						(event claimed: FALSE)
+					)
 				)
 			)
 			((Said 'open>')
 				(cond 
-					((Said '/desk,drawer') (SearchDesk))
-					((Said '/purse') (SearchPurse))
-					((Said '/bag,basket') (SearchBasket))
-					((Said '/birdcage,birdcage') (UncoverBirdcage))
+					((Said '/desk,drawer')
+						(SearchDesk)
+					)
+					((Said '/purse')
+						(SearchPurse)
+					)
+					((Said '/bag,basket')
+						(SearchBasket)
+					)
+					((Said '/birdcage,birdcage')
+						(UncoverBirdcage)
+					)
 				)
 			)
 			((Said 'get>')
 				(cond 
 					((Said '/candlestick,stick,holder,candle')
 						(cond 
-							((Btst STOLE_CANDLESTICKS) (AlreadyDone))
+							((Btst fStoleCandles)
+								(AlreadyDone)
+							)
 							((ego inRect: 62 145 166 165)
 								(HighPrint 313 9)
 								;You take the silver candlesticks and stow them in your pack.
 								(ego get: iCandlesticks 2)
 								(leftCandle dispose:)
 								(rightCandle dispose:)
-								(Bset STOLE_CANDLESTICKS)
-								(SolvePuzzle POINTS_TAKECANDLESTICKS 1 THIEF)
+								(Bset fStoleCandles)
+								(SolvePuzzle f313StealCandles 1 THIEF)
 							)
-							(else (NotClose))
+							(else
+								(NotClose)
+							)
 						)
 					)
-					((Said '/purse') (SearchPurse))
-					((Said '/bag,basket') (SearchBasket))
+					((Said '/purse')
+						(SearchPurse)
+					)
+					((Said '/bag,basket')
+						(SearchBasket)
+					)
 					((Said '/couch')
 						(HighPrint 313 10)
 						;Call Mayflower!
-						)
+					)
 				)
 			)
 			(
@@ -367,19 +422,21 @@
 				)
 				(UncoverBirdcage)
 			)
-			((Said 'look[<at,around][/!*,room,building]') (LookAround))
+			((Said 'look[<at,around][/!*,room,building]')
+				(LookAround)
+			)
 			((or (Said 'look<up') (Said 'look/ceiling'))
 				(HighPrint 313 11)
 				;Nothing up there.
-				)
+			)
 			((or (Said 'look<down') (Said 'look/floor'))
 				(HighPrint 313 12)
 				;The rug is blue, and the floor has recently been painted red.
-				)
+			)
 			((Said 'look/dust')
 				(HighPrint 313 13)
 				;The house is tidy, but there is a layer of dust over everything.
-				)
+			)
 			(
 				(or
 					(MouseClaimed onRug event shiftDown)
@@ -391,15 +448,15 @@
 			((Said 'look/ladder,door')
 				(HighPrint 313 15)
 				;The stairs lead to the door to an upstairs room.
-				)
+			)
 			((MouseClaimed onDoor event shiftDown)
 				(HighPrint 313 16)
 				;The door to the upstairs room.
-				)
+			)
 			((Said 'look/wall')
 				(HighPrint 313 17)
 				;The walls are a deep shade of blue.
-				)
+			)
 			(
 				(or
 					(MouseClaimed onFireplace event shiftDown)
@@ -441,7 +498,7 @@
 				(if (not (ego has: iCandlesticks))
 					(HighPrint 313 21)
 					;The candlesticks are heavy, ornate and made of sterling silver.
-					)
+				)
 			)
 			((Said 'look/table')
 				(if (ego has: iCandlesticks)
@@ -468,18 +525,18 @@
 				(HighPrint 313 25)
 				;The birdcage is on a tall brass stand. There is a cover draped over it to keep the bird warm and quiet.
 			)
-			((Said 'look/bird') (if cageUncovered
+			((Said 'look/bird')
+				(if cageUncovered
 					(HighPrint 313 26)
 					;Cute but NOISY!.
-					else
+				else
 					(HighPrint 313 27)
 					;The cage is covered, and you can't see the bird.
-					)
 				)
-			(
-			(or (MouseClaimed cat event shiftDown) (Said 'look/cat'))
-			(HighPrint 313 28)
-			;The little house cat seems harmless, but strangely restless.
+			)
+			((or (MouseClaimed cat event shiftDown) (Said 'look/cat'))
+				(HighPrint 313 28)
+				;The little house cat seems harmless, but strangely restless.
 			)
 			(
 				(or
@@ -492,23 +549,23 @@
 			((MouseClaimed onRubberPlant event shiftDown)
 				(HighPrint 313 30)
 				;It's a rubber plant.
-				)
+			)
 			((MouseClaimed onColeusPlant event shiftDown)
 				(HighPrint 313 31)
 				;The Coleus plant has brightly colored leaves.
-				)
+			)
 			((Said 'look/plant')
 				(HighPrint 313 32)
 				;On the desk there is a plant which looks like some kind of violet. In the corner is a taller, leafy house plant.
-				)
+			)
 			((Said 'look/pan')
 				(HighPrint 313 33)
 				;There are no drugs here.
-				)
+			)
 			((Said 'look/railing')
 				(HighPrint 313 34)
 				;It's part of the stairs.
-				)
+			)
 			(
 				(or
 					(MouseClaimed onBag event shiftDown)
@@ -520,18 +577,16 @@
 			((Said 'look/collar')
 				(HighPrint 313 36)
 				;The little cat is wearing a cheap rhinestone collar.
-				)
+			)
 		)
 	)
 )
 
 (instance birdieSings of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset UNCOVERED_BIRDCAGE)
+				(Bset fUncoveredCage)
 				(= cageUncovered TRUE)
 				(birdcage setLoop: 3 setCycle: Forward startUpd:)
 				(= seconds 6)
@@ -560,8 +615,6 @@
 )
 
 (instance deskOpen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -572,7 +625,7 @@
 				(HighPrint 313 41)
 				;You find 1 silver in the desk drawer. You find nothing else of any value to you.
 				(ego get: iSilver 1)
-				(Bset SEARCHED_LOL_DESK)
+				(Bset fSearchedDesk)
 				(self cue:)
 			)
 			(2
@@ -585,11 +638,11 @@
 )
 
 (instance first313Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(if (or (not (Btst fBeenIn313)) (!= prevRoomNum 0))
 					(LookAround)
@@ -601,11 +654,12 @@
 )
 
 (instance catWalk of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			(local13 (= local13 0) (cat setScript: getReady))
+			(catAttackCued
+				(= catAttackCued FALSE)
+				(cat setScript: getReady)
+			)
 			(
 				(and
 					(& (ego onControl: origin) cYELLOW)
@@ -631,10 +685,14 @@
 		(switch (= state newState)
 			(0
 				(cat setLoop: 4 setMotion: 0 cycleSpeed: 4)
-				(if (and (not local10) (not goingUpstairs)) (= seconds 4))
+				(if (and (not local10) (not wentUpstairs))
+					(= seconds 4)
+				)
 			)
 			(1
-				(if (not (cat looper?)) (cat setLoop: catTurn))
+				(if (not (cat looper?))
+					(cat setLoop: catTurn)
+				)
 				(cat
 					setLoop: -1
 					loop: 0
@@ -673,7 +731,10 @@
 				(= local10 0)
 				(++ local12)
 				(cat loop: 4 setMotion: 0 cycleSpeed: 4)
-				(if (== local12 2) (= cycles 2) else (HandsOn))
+				(if (== local12 2) (= cycles 2)
+				else
+					(HandsOn)
+				)
 			)
 			(7
 				(= local12 0)
@@ -683,11 +744,11 @@
 					(1
 						(HighPrint 313 43)
 						;The cat seems to want something.
-						)
+					)
 					(2
 						(HighPrint 313 44)
 						;The cat seems more insistent than before.
-						)
+					)
 					(3
 						(HandsOff)
 						(TimePrint 6 313 42)
@@ -707,15 +768,15 @@
 						(0
 							(HighPrint 313 45)
 							;You pet the nice kitty.
-							)
+						)
 						(1
 							(HighPrint 313 46)
 							;The cat really likes being petted.
-							)
+						)
 						(2
 							(HighPrint 313 47)
 							;This is a very insistent cat.
-							)
+						)
 					)
 				)
 				(if feedCat
@@ -723,11 +784,11 @@
 						(0
 							(HighPrint 313 48)
 							;You feed the nice kitty a crumb.
-							)
+						)
 						(1
 							(HighPrint 313 49)
 							;The cat really likes being fed. You give it a leftover morsel.
-							)
+						)
 						(2
 							(if (ego has: iRations)
 								(ego use: iRations 1)
@@ -745,9 +806,13 @@
 				(if (< catNeedy 3)
 					(HighPrint 313 52)
 					;Purrrrrrrr!
-					)
+				)
 				(if (> catNeedy 0)
-					(if feedCat (= catNeedy 0) else (-- catNeedy))
+					(if feedCat
+						(= catNeedy 0)
+					else
+						(-- catNeedy)
+					)
 				)
 				(HandsOn)
 				(= state 7)
@@ -759,11 +824,16 @@
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					((Said 'pat[/cat]') (= pettingCat TRUE) (PetCat))
-					((Said 'feed/cat') (= feedCat TRUE) (PetCat))
+					((Said 'pat[/cat]')
+						(= pettingCat TRUE)
+						(PetCat)
+					)
+					((Said 'feed/cat')
+						(= feedCat TRUE)
+						(PetCat)
+					)
 					((Said 'beat,kill/cat')
-						(if
-						(or (== (catWalk state?) 6) (== (catWalk state?) 7))
+						(if (or (== (catWalk state?) 6) (== (catWalk state?) 7))
 							(HandsOff)
 							(TimePrint 6 313 42)
 							;You have a bad feeling about the very deep, low growl emanating from the cat.
@@ -780,8 +850,6 @@
 )
 
 (instance gonnaGetYou of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			(
@@ -795,8 +863,7 @@
 				(ego setScript: catAttack)
 			)
 			((and (== (ego x?) 194) (== (ego y?) 144))
-				(if
-				(not (if (== (cat x?) 260) (== (cat y?) 142)))
+				(if (not (if (== (cat x?) 260) (== (cat y?) 142)))
 					(ego view: vEgoBigGrin loop: 0 cel: 0)
 				)
 			)
@@ -827,8 +894,6 @@
 )
 
 (instance getReady of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -848,19 +913,19 @@
 )
 
 (instance catAttack of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if goingUpstairs
+				(if wentUpstairs
 					(ego setMotion: MoveTo 194 144 self)
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(if goingUpstairs (ego view: vEgoBigGrin setLoop: 0 cel: 0))
+				(if wentUpstairs
+					(ego view: vEgoBigGrin setLoop: 0 cel: 0)
+				)
 				(cat
 					illegalBits: 0
 					ignoreActors:
@@ -923,7 +988,7 @@
 				(= cycles 40)
 			)
 			(11
-				(if goingUpstairs
+				(if wentUpstairs
 					(EgoDead 313 53
 						#title { Better stay downstairs next time._}
 						#icon vCat 1 0)
@@ -942,13 +1007,11 @@
 )
 
 (instance climbUp1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local13 1)
+				(= catAttackCued TRUE)
 				(ego
 					setLoop: 1
 					illegalBits: 0
@@ -967,8 +1030,6 @@
 )
 
 (instance climbUp2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -991,8 +1052,6 @@
 )
 
 (instance climbUp3 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1011,7 +1070,7 @@
 				(HighPrint 313 58)
 				;The owner of the house awakens...
 				(Print 313 59 #at -1 20 #mode teJustCenter #title {Little Old Lady})
-				(= goingUpstairs TRUE)
+				(= wentUpstairs TRUE)
 				(ego setScript: climbDown)
 				; Help! Burglars! Sheriff! Help!
 ; Kitty! Kitty!
@@ -1021,8 +1080,6 @@
 )
 
 (instance climbDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1035,7 +1092,7 @@
 				)
 			)
 			(1
-				(if goingUpstairs
+				(if wentUpstairs
 					(Print 313 60 #at -1 15 #title {L.O.L.})
 					(ego setLoop: -1 setScript: catAttack)
 					(cat setScript: 0)

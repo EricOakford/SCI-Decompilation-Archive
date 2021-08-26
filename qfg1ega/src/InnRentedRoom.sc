@@ -13,7 +13,7 @@
 (local
 	local0
 )
-(procedure (localproc_000c &tmp evt)
+(procedure (ClearEvents &tmp evt)
 	(while (not ((= evt (Event new: (| mouseDown keyDown))) type?))
 		(evt dispose:)
 	)
@@ -40,11 +40,11 @@
 )
 
 (instance rm302Script of Script
-	(properties)
-	
 	(method (changeState newState &tmp str textColor)
 		(switch (= state newState)
-			(0 (= cycles 2))
+			(0
+				(= cycles 2)
+			)
 			(1
 				(EgoSleeps 6 0)
 				(= str
@@ -56,7 +56,7 @@
 					p_width 200
 					p_at 80 133
 					p_color textColor)
-				(localproc_000c)
+				(ClearEvents)
 				(= cycles 2)
 			)
 			(2

@@ -13,14 +13,21 @@
 )
 
 (instance flyRight of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((and (<= monsterHealth 0) (not (Btst FLAG_351))) (= monsterHealth 1) (client setScript: killMantray))
-			((<= (client distanceTo: ego) 52) ((ScriptID 210 0) cue:))
-			((and (< (client y?) 15) (Btst MANTRAY_LEFT)) (Bclr MANTRAY_LEFT))
-			((and (> (client y?) 80) (not (Btst MANTRAY_LEFT))) (Bset MANTRAY_LEFT))
+			((and (<= monsterHealth 0) (not (Btst fFlag351)))
+				(= monsterHealth 1)
+				(client setScript: killMantray)
+			)
+			((<= (client distanceTo: ego) 52)
+				((ScriptID 210 0) cue:)
+			)
+			((and (< (client y?) 15) (Btst fMantrayLeft))
+				(Bclr fMantrayLeft)
+			)
+			((and (> (client y?) 80) (not (Btst fMantrayLeft)))
+				(Bset fMantrayLeft)
+			)
 			(
 				(and
 					(!= (self state?) 1)
@@ -37,10 +44,10 @@
 			)
 			(
 				(and
-					(not (Btst MANTRAY_RIGHT))
+					(not (Btst fMantrayRight))
 					(not (client inRect: 40 0 280 100))
 				)
-				(Bset MANTRAY_RIGHT)
+				(Bset fMantrayRight)
 				(self changeState: 2)
 			)
 		)
@@ -58,7 +65,7 @@
 					setMotion:
 						MoveTo
 						320
-						(if (Btst MANTRAY_LEFT)
+						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
 						else
 							(+ (client y?) 5)
@@ -72,7 +79,7 @@
 					setMotion:
 						MoveTo
 						(+ (client x?) 80)
-						(if (Btst MANTRAY_LEFT)
+						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
 						else
 							(+ (client y?) 5)
@@ -87,7 +94,7 @@
 					setMotion:
 						MoveTo
 						(- (client x?) 2)
-						(if (Btst MANTRAY_LEFT)
+						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
 						else
 							(+ (client y?) 5)
@@ -102,14 +109,20 @@
 )
 
 (instance flyLeft of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((<= monsterHealth 0) (client setScript: killMantray))
-			((<= (client distanceTo: ego) 52) ((ScriptID 210 0) cue:))
-			((and (< (client y?) 15) (Btst MANTRAY_LEFT)) (Bclr MANTRAY_LEFT))
-			((and (> (client y?) 80) (not (Btst MANTRAY_LEFT))) (Bset MANTRAY_LEFT))
+			((<= monsterHealth 0)
+				(client setScript: killMantray)
+			)
+			((<= (client distanceTo: ego) 52)
+				((ScriptID 210 0) cue:)
+			)
+			((and (< (client y?) 15) (Btst fMantrayLeft))
+				(Bclr fMantrayLeft)
+			)
+			((and (> (client y?) 80) (not (Btst fMantrayLeft)))
+				(Bset fMantrayLeft)
+			)
 			(
 				(and
 					(!= (self state?) 1)
@@ -124,8 +137,10 @@
 				)
 				(self changeState: 0)
 			)
-			(
-			(and (Btst MANTRAY_RIGHT) (not (client inRect: 40 0 280 100))) (Bclr MANTRAY_RIGHT) (self changeState: 2))
+			((and (Btst fMantrayRight) (not (client inRect: 40 0 280 100)))
+				(Bclr fMantrayRight)
+				(self changeState: 2)
+			)
 		)
 		(super doit:)
 	)
@@ -141,7 +156,7 @@
 					setMotion:
 						MoveTo
 						0
-						(if (Btst MANTRAY_LEFT)
+						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
 						else
 							(+ (client y?) 5)
@@ -155,7 +170,7 @@
 					setMotion:
 						MoveTo
 						(- (client x?) 80)
-						(if (Btst MANTRAY_LEFT)
+						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
 						else
 							(+ (client y?) 5)
@@ -170,7 +185,7 @@
 					setMotion:
 						MoveTo
 						(+ (client x?) 2)
-						(if (Btst MANTRAY_LEFT)
+						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
 						else
 							(+ (client y?) 5)
@@ -185,8 +200,6 @@
 )
 
 (instance startup of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -247,8 +260,8 @@
 			)
 			(8 (= cycles 2))
 			(9
-				(Bset MANTRAY_LEFT)
-				(Bset MANTRAY_RIGHT)
+				(Bset fMantrayLeft)
+				(Bset fMantrayRight)
 				(client setPri: 9 setScript: flyLeft)
 			)
 		)
@@ -256,8 +269,6 @@
 )
 
 (instance killMantray of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 436)
@@ -288,7 +299,7 @@
 				)
 			)
 			(1
-				(Bset FLAG_351)
+				(Bset fFlag351)
 				(= monsterHealth 0)
 				(client setPri: -1)
 				(HandsOn)

@@ -19,41 +19,47 @@
 			
 		)
 		((Said '/barrel,barrel')
-			(if (Btst HERO_SITTING) ((ScriptID 331 5) setCel: 2))
-			(HighPrint 339 0 83)
-			;From the size of the ancient oak kegs, you surmise that the drinking of large quantities of beverages is the main pastime in this establishment.
+			(if (Btst fEgoSitting)
+				((ScriptID 331 5) setCel: 2)
+			)
+			(HighPrint 339 0 #draw)
+			;From the size of the ancient oak kegs, 
+			;you surmise that the drinking of large quantities 
+			;of beverages is the main pastime in this establishment.
 		)
 		((Said '/dirt')
 			(HighPrint 339 1)
 			;As dirt goes, it's pretty dirty.
-			)
+		)
 		((Said '/ale,sweat,breath,drink,beverage')
 			(switch drinkInHand
 				(drinkNothing
 					(HighPrint 339 2)
 					;It's in the kegs.
-					)
+				)
 				(drinkAle
 					(HighPrint 339 3)
 					;Mighty frothy. Looks OK.
-					)
+				)
 				(drinkSweat
 					(HighPrint 339 4)
 					;Looks lean, mean, and green.
-					)
+				)
 				(drinkBreath
 					(HighPrint 339 5)
 					;The fumes hurt your eyes.
-					)
+				)
 			)
 		)
 		((Said '/bar,spill,cup')
-			(if (Btst HERO_SITTING) ((ScriptID 331 5) setCel: 1))
+			(if (Btst fEgoSitting)
+				((ScriptID 331 5) setCel: 1)
+			)
 			(HighPrint 339 6)
 			;It doesn't look like the bartender ever wipes up spills, and the glasses are truly filthy.
 		)
 		((Said '/bartender,boot,chop,crewcut,tattoo')
-			(if (Btst HERO_SITTING)
+			(if (Btst fEgoSitting)
 				(if (> ((ScriptID 331 2) x?) (ego x?))
 					((ScriptID 331 5) setCel: 2)
 				else
@@ -61,16 +67,20 @@
 				)
 			)
 			(HighPrint 339 7)
-			;The bartender looks tough from his crewcut to his boots. The only thing soft about him is his tattoo, which says "MAMA".
+			;The bartender looks tough from his crewcut to his boots.
+			; The only thing soft about him is his tattoo, which says "MAMA".
 		)
-		(
-		(or (Said '/bum,barber') (Said '/man/barstool'))
-			(if (Btst HERO_SITTING) ((ScriptID 331 5) setCel: 1))
+		((or (Said '/bum,barber') (Said '/man/barstool'))
+			(if (Btst fEgoSitting)
+				((ScriptID 331 5) setCel: 1)
+			)
 			(HighPrint 339 8)
 			;So this is where the barber goes to lunch! The guy's had so much liquid diet, he looks embalmed.
 		)
 		((Said '/gambler,table,player,butcher,baker')
-			(if (Btst HERO_SITTING) ((ScriptID 331 5) setCel: 2))
+			(if (Btst fEgoSitting)
+				((ScriptID 331 5) setCel: 2)
+			)
 			(HighPrint 339 9)
 			;The man on the west side of the table is wearing a blood-stained apron, like a butcher.
 			;The man on the east has on a baker's hat. They seem to be deeply involved in their game.
@@ -87,20 +97,22 @@
 		((Said '/man')
 			(HighPrint 339 12)
 			;There are several.
-			)
+		)
 		((Said '/bouncer,goon')
-			(if (Btst HERO_SITTING) ((ScriptID 331 5) setCel: 1))
+			(if (Btst fEgoSitting)
+				((ScriptID 331 5) setCel: 1)
+			)
 			(HighPrint 339 13)
 			;This goon looks really tough and mean. He's not someone to pick a fight with.
 		)
 		((Said '/smoke,dragon')
 			(HighPrint 339 14)
 			;That's a mighty unusual keg, there.
-			)
+		)
 		((Said '<below/barstool')
 			(cond 
 				((ego inRect: 128 106 171 130)
-					(if (Btst OBTAINED_BAR_NOTE)
+					(if (Btst fTookBarNote)
 						(HighPrint 339 15)
 						;Nothing but a dirty floor.
 					else
@@ -111,11 +123,11 @@
 				((ego inRect: 192 109 237 130)
 					(HighPrint 339 17)
 					;That looks mighty nasty!
-					)
+				)
 				(else
 					(HighPrint 339 15)
 					;Nothing but a dirty floor.
-					)
+				)
 			)
 		)
 		((Said '/barstool')
@@ -134,14 +146,12 @@
 				(NotClose)
 			)
 		)
-		(
-		(or (Said '<up') (Said '/wall,ceiling,beam,forest'))
-		(HighPrint 339 20)
-		;It looks like something you'd expect to see in a tavern, but a lot dirtier.
+		((or (Said '<up') (Said '/wall,ceiling,beam,forest'))
+			(HighPrint 339 20)
+			;It looks like something you'd expect to see in a tavern, but a lot dirtier.
 		)
 		((or (Said '<down') (Said '/floor'))
-			(if
-			(and (ego inRect: 128 106 171 130) (not (Btst OBTAINED_BAR_NOTE)))
+			(if (and (ego inRect: 128 106 171 130) (not (Btst fTookBarNote)))
 				(HighPrint 339 16)
 				;You see a crumpled piece of paper under the stool.
 			else
@@ -152,7 +162,7 @@
 		((Said '/chasm,door,trap')
 			(HighPrint 339 21)
 			;There appears to be a trapdoor beneath the goon, but he's blocking it very effectively.
-			)
+		)
 	)
 	(DisposeScript 339)
 )
@@ -167,11 +177,14 @@
 		(HighPrint 339 24)
 		;The bartender glares at you as you enter, and so does the ugly goon on the left. You get the impression that you are not welcome.
 		)
-	(if param2 (DisposeScript 339))
+	(if param2
+		(DisposeScript 339)
+	)
 )
 
 (procedure (TavernLookAtStool param1)
 	(HighPrint 339 25)
-	;There seems to be something slimy spilled on top of the stool, and it is eating into the wood.  You think perhaps you should sit on the next stool over.
+	;There seems to be something slimy spilled on top of the stool, and it is eating into the wood. 
+	; You think perhaps you should sit on the next stool over.
 	(if param1 (DisposeScript 339))
 )

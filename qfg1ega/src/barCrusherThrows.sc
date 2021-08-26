@@ -49,8 +49,6 @@
 )
 
 (instance crusherThrows of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (localproc_000e self))
@@ -75,7 +73,7 @@
 			(4
 				(cast eachElementDo: #dispose)
 				(curRoom drawPic: 400 15)
-				(Bset TAVERN_THROWN_OUT)
+				(Bset fBarThrownOut)
 				(AdvanceTime 3)
 				(curRoom newRoom: 330)
 			)
@@ -84,8 +82,6 @@
 )
 
 (instance crusherEscorts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (localproc_000e self))
@@ -111,7 +107,7 @@
 			)
 			(3
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 15)
+				(curRoom drawPic: 400 (| BLACKOUT IRISIN))
 				(curRoom newRoom: 332)
 			)
 		)

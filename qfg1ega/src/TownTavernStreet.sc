@@ -36,15 +36,20 @@
 	
 	(method (init)
 		(LoadMany VIEW vTownOutlook vTownBarOutside vEgoTired)
-		(if (Btst TAVERN_DRUNK) (Load VIEW vEgoDefeated))
-		(if (Btst TAVERN_THROWN_OUT) (Load VIEW vEgoDefeated) (Load VIEW vCrusher))
+		(if (Btst fBarDrunk)
+			(Load VIEW vEgoDefeated)
+		)
+		(if (Btst fBarThrownOut)
+			(Load VIEW vEgoDefeated)
+			(Load VIEW vCrusher)
+		)
 		(rm330
 			style:
 				(switch prevRoomNum
 					(0 WIPELEFT)
 					(320 WIPELEFT)
-					(331 16)
-					(332 16)
+					(331 (| BLACKOUT IRISOUT))
+					(332 (| BLACKOUT IRISOUT))
 					(else  HSHUTTER)
 				)
 		)
@@ -62,13 +67,13 @@
 		)
 		(StatusLine enable:)
 		(self setLocales: STREET TOWN)
-		(if (and (not (Btst TAVERN_THROWN_OUT)) (not (Btst TAVERN_DRUNK)))
+		(if (and (not (Btst fBarThrownOut)) (not (Btst fBarDrunk)))
 			(NormalEgo)
 			(ego init:)
 		else
 			(ego view: vEgoDefeated init: hide:)
 		)
-		(if (not (Btst TAVERN_THROWN_OUT))
+		(if (not (Btst fBarThrownOut))
 			((= tavernDoor (Door new:))
 				view: vTownBarOutside
 				loop: 0
@@ -77,7 +82,7 @@
 				doorControl: cYELLOW
 				locked: (if (> timeODay TIME_MIDNIGHT) TRUE else FALSE)
 				entranceTo: 331
-				facingLoop: 3
+				facingLoop: loopN
 				init:
 				setPri: 9
 				stopUpd:
@@ -114,19 +119,30 @@
 			addToPic:
 		)
 		(cond 
-			((== prevRoomNum 0) (ego posn: 318 174 setMotion: MoveTo 300 174))
-			((== prevRoomNum 64) (ego posn: 63 168 setMotion: MoveTo 123 168))
-			((== prevRoomNum 320) (ego posn: 318 174 setMotion: MoveTo 300 174))
+			((== prevRoomNum 0)
+				(ego posn: 318 174 setMotion: MoveTo 300 174)
+			)
+			((== prevRoomNum 64)
+				(ego posn: 63 168 setMotion: MoveTo 123 168)
+			)
+			((== prevRoomNum 320)
+				(ego posn: 318 174 setMotion: MoveTo 300 174)
+			)
 			((or (== prevRoomNum 331) (== prevRoomNum 332))
 				(cond 
-					((Btst TAVERN_THROWN_OUT) (self setScript: kickOutScript))
-					((Btst TAVERN_DRUNK)
+					((Btst fBarThrownOut)
+						(self setScript: kickOutScript)
+					)
+					((Btst fBarDrunk)
 						(= [invNum iSilver] 0)
 						(= [invNum iGold] 0)
 						(tavernDoor cel: 0 doorState: 0)
 						(self setScript: gotDrunkScript)
 					)
-					(else (ego loop: 2 posn: 112 133) (tavernDoor close:))
+					(else
+						(ego loop: 2 posn: 112 133)
+						(tavernDoor close:)
+					)
 				)
 			)
 			((== prevRoomNum 999)
@@ -138,7 +154,9 @@
 					setScript: egoWakes
 				)
 			)
-			(else (ego loop: 2 posn: 148 135 setMotion: MoveTo 148 144))
+			(else
+				(ego loop: 2 posn: 148 135 setMotion: MoveTo 148 144)
+			)
 		)
 		(if (not Night)
 			((View new:)
@@ -204,8 +222,13 @@
 		(mouseDownHandler delete: self)
 		(Bset fBeenIn330)
 		(cond 
-			((Btst TAVERN_THROWN_OUT) (DisposeScript JUMP) (Bclr TAVERN_THROWN_OUT))
-			((Btst TAVERN_DRUNK) (Bclr TAVERN_DRUNK))
+			((Btst fBarThrownOut)
+				(DisposeScript JUMP)
+				(Bclr fBarThrownOut)
+			)
+			((Btst fBarDrunk)
+				(Bclr fBarDrunk)
+			)
 		)
 		(super dispose:)
 	)
@@ -237,7 +260,7 @@
 							((== (ego onControl: origin) cLGREEN)
 								(HighPrint 330 4)
 								;The door appears to be locked.
-								)
+							)
 							(else (event claimed: FALSE))
 						)
 					)
@@ -265,7 +288,7 @@
 								(HighPrint 330 8)
 								;The Tavern in the corner looks rather rundown, and the alley beside it is dark.
 								;On the other side of the tavern is a rather practical-looking building, like a workshop.
-								)
+							)
 							((Said '/bakery,shop[<baker]')
 								(HighPrint 330 9)
 								;The bakery seems to be closed, although there are some dried-up-looking cupcakes in the window.
@@ -275,15 +298,15 @@
 							((Said '/butcher,(shop[<butcher])')
 								(HighPrint 330 10)
 								;The Butcher's shop seems to be closed.
-								)
+							)
 							((Said '/shop')
 								(HighPrint 330 11)
 								;Which shop do you mean?
-								)
+							)
 							((Said '/tavern,bar')
 								(HighPrint 330 12)
 								;The building looks old, dark, and a little seedy.
-								)
+							)
 							((Said '/shed,shed')
 								(if Night
 									(HighPrint 330 13)
@@ -303,21 +326,21 @@
 										(if (not Night)
 											(GoneFishing)
 										else
-											(event claimed: 0)
+											(event claimed: FALSE)
 										)
 									)
 									((and (< 64 (ego x?)) (< (ego x?) 148))
 										(HighPrint 330 15)
 										;Looks like the door to a Tavern.
-										)
+									)
 									((and (< 0 (ego x?)) (< (ego x?) 64))
 										(HighPrint 330 16)
 										;Looks like this door has been closed for a long time.
-										)
+									)
 									(else
 										(HighPrint 330 17)
 										;There are signs affixed to the door knobs.
-										)
+									)
 								)
 							)
 							((Said '/alley')
@@ -334,18 +357,22 @@
 									((> (ego x?) 230)
 										(HighPrint 330 20)
 										;Other than the sorry-looking goods in the window, it is too dark to make out much of anything.
-										(if (not Night) (GoneFishing))
+										(if (not Night)
+											(GoneFishing)
+										)
 									)
 									((and (> (ego x?) 148) (< (ego x?) 230))
 										(HighPrint 330 21)
 										;The Butcher's shop seems to be closed.
 										;Through the window, you see what appears to be a layer of dust over most of the interior.
-										(if (not Night) (GoneFishing))
+										(if (not Night)
+											(GoneFishing)
+										)
 									)
 									(else
 										(HighPrint 330 22)
 										;You can't see into any windows from where you're standing.
-										)
+									)
 								)
 							)
 						)
@@ -362,25 +389,24 @@
 			((not (tavernDoor locked?))
 				(HighPrint 330 1)
 				;The door isn't locked.  Just turn around.
-				)
+			)
 			;CI: NOTE: is there a time when the Tavern door is locked?
 			;EO: Yes; when "It is not yet dawn". Despite this, the lock can be picked easily,
 			;and when you enter, nothing is different.
 			((not (TrySkill PICK tryPickTavern lockPickBonus))
 				(HighPrint 330 2)
 				;You haven't been practicing very much.
-				)
-			(else (tavernDoor locked: FALSE)
+			)
+			(else
+				(tavernDoor locked: FALSE)
 				(HighPrint 330 3)
 				;That was the easiest lock you've ever encountered.  It's now unlocked.
-				)
+			)
 		)
 	)
 )
 
 (instance kickOutScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -458,7 +484,9 @@
 			)
 			(6
 				;EO: Seems intentionally coded to prevent the Hero from dying here.
-				(if (not (TakeDamage 5)) (TakeDamage -5))
+				(if (not (TakeDamage 5))
+					(TakeDamage -5)
+				)
 				(HandsOn)
 				(NormalEgo)
 				(ego cycleSpeed: 0 loop: 2 cel: 2)
@@ -468,8 +496,6 @@
 )
 
 (instance gotDrunkScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -494,7 +520,8 @@
 				(HighPrint 330 25)
 				;Unfortunately, you discover that while you were "out", someone managed to relieve you of all of your money.
 				(HighPrint 330 26)
-				;Now you'll have to find a way to get some money. The street is not the most comfortable place to sleep, and you have to eat, sooner or later.
+				;Now you'll have to find a way to get some money.
+				; The street is not the most comfortable place to sleep, and you have to eat, sooner or later.
 				(HandsOn)
 				(NormalEgo)
 				(ego cycleSpeed: 0 loop: 2 cel: 2)
@@ -590,17 +617,19 @@
 						)
 						(GoneFishing)
 					)
-					((not Night) (NotClose))
+					((not Night)
+						(NotClose)
+					)
 					(else
 						(HighPrint 330 10)
 						;The Butcher's shop seems to be closed.
-						)
+					)
 				)
 			)
 			((MouseClaimed onButcherShop event shiftDown)
 				(HighPrint 330 10)
 				;The Butcher's shop seems to be closed.
-				)
+			)
 		)
 	)
 )
@@ -618,12 +647,16 @@
 			((super handleEvent: event))
 			((MouseClaimed onBakeryNote event shiftDown)
 				(cond 
-					((and (> (ego x?) 230) (not Night)) (GoneFishing))
-					((not Night) (NotClose))
+					((and (> (ego x?) 230) (not Night))
+						(GoneFishing)
+					)
+					((not Night)
+						(NotClose)
+					)
 					(else
 						(HighPrint 330 9)
 						;The bakery seems to be closed, although there are some dried-up-looking cupcakes in the window.
-						)
+					)
 				)
 			)
 			((MouseClaimed onBakery event shiftDown)
@@ -653,8 +686,6 @@
 )
 
 (instance egoWakes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

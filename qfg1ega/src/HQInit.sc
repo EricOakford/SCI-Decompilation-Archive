@@ -53,7 +53,7 @@
 		( = [egoStats MANA]    (MaxMana))
 		(Format @userName {Unknown Hero})
 		(= str 0)
-		(= startingRoom 
+		(= transferRoom 
 			(Print
 				"Where to, Hero?"
 				#button: {Intro}	1
@@ -66,20 +66,20 @@
 		(= Day 0)
 	
 		(if str
-			(= startingRoom (ReadNumber @str))
+			(= transferRoom (ReadNumber @str))
 		else
-			(switch startingRoom
-				(1 (= startingRoom INTRO))
-				(2 (= startingRoom CHARSEL))			; Choose a Character
-				(3 (= startingRoom NOTICE) (theGame restore:))
+			(switch transferRoom
+				(1 (= transferRoom INTRO))
+				(2 (= transferRoom CHARSEL))			; Choose a Character
+				(3 (= transferRoom NOTICE) (theGame restore:))
 			)
 		)
 		;end debug code
 	else	
 		(if (GameIsRestarting)
-			(= startingRoom NOTICE2)	;if restarting, go to the Game Select Screen
+			(= transferRoom NOTICE2)	;if restarting, go to the Game Select Screen
 		else
-			(= startingRoom NOTICE)	;otherwise, go to the PIRACY notice screen
+			(= transferRoom NOTICE)	;otherwise, go to the PIRACY notice screen
 		)
 	)
 	
