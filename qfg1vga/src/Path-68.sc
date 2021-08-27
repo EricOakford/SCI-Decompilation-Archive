@@ -21,6 +21,9 @@
 		(super init:)
 		(StatusLine enable:)
 		(features add: avalanche eachElementDo: #init doit:)
+		;UPGRADE
+;;;		(avalanche init:)
+		
 		(NormalEgo)
 	)
 	

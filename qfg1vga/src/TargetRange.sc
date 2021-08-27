@@ -293,6 +293,13 @@ code_02ef:
 			(phonyDagger init: stopUpd:)
 		)
 		(features add: target wall buildings trees appleTree)
+		;uPGRADE
+;;;		(target init:)
+;;;		(wall init:)
+;;;		(buildings init:)
+;;;		(trees init:)
+;;;		(appleTree init:)
+		
 		(= armorValue 0)
 		(cond 
 			((ego has: iChainmail)

@@ -29,9 +29,7 @@
 	
 	(method (doit &tmp i)
 		(super doit:)
-		(= i 0)
-		(while (< i 500)
-			(++ i)
+		(for ((= i 0))(< i 500) ((++ i))
 		)
 	)
 )
@@ -53,17 +51,23 @@
 )
 
 (instance startGame of Code
-	(properties)
-	
 	(method (doit &tmp [str 100])
 		(cond 
-			((> machineSpeed 60) (= howFast slow))
-			((> machineSpeed 45) (= howFast medium))
-			((> machineSpeed 30) (= howFast fast))
-			(else (= howFast fastest))
+			((> machineSpeed 60)
+				(= howFast slow)
+			)
+			((> machineSpeed 45)
+				(= howFast medium)
+			)
+			((> machineSpeed 30)
+				(= howFast fast)
+			)
+			(else
+				(= howFast fastest)
+			)
 		)
-		(theGame
-			detailLevel: (cond 
+		(theGame detailLevel:
+			(cond 
 				((== howFast slow) 1)
 				((== howFast medium) 2)
 				(else 3)

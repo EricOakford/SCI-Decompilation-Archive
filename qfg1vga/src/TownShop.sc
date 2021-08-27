@@ -19,18 +19,44 @@
 )
 
 (local
-	nearProprietor
-	local1
-	local2
-	local3
-	[local4 2]
-	local6
+	nearCounter
+	proprietorAttention
+	proprietorAsks
+	putDownBook
+	itemPurchased
+	itemPrice
+	talkRet
 	storeCue
-	[local8 8] = [0 14 -6 -10 8 15 13 999]
-	[local16 3] = [0 7 999]
-	[local19 6] = [0 9 5 12 11 999]
-	[local25 10]
-	[local35 4] = [0 -6 -10 999]
+	shopTellMainBranch = [
+		STARTTELL
+		C_NAME
+		-6		;C_ADVENTURER
+		-10		;C_EQUIPMENT
+		C_BRIGAND
+		C_SHERIFF
+		C_HILDE
+		ENDTELL
+		]
+	shopTell1 = [
+		STARTTELL
+		C_BOOK
+		ENDTELL
+		]
+	shopTell2 = [
+		STARTTELL
+		C_DAGGER
+		C_CHAINARMOR
+		C_FOOD
+		C_FLASK
+		ENDTELL
+		]
+	[shopTellTree 10]
+	shopTellKeys = [
+		STARTTELL
+		-6		;C_ADVENTURER
+		-10		;C_EQUIPMENT
+		ENDTELL
+		]
 )
 
 (enum -1
@@ -50,10 +76,10 @@
 	)
 	
 	(method (init)
-		(= [local25 0] @local8)
-		(= [local25 1] @local16)
-		(= [local25 2] @local19)
-		(= [local25 3] 999)
+		(= [shopTellTree 0] @shopTellMainBranch)
+		(= [shopTellTree 1] @shopTell1)
+		(= [shopTellTree 2] @shopTell2)
+		(= [shopTellTree 3] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -123,7 +149,7 @@
 		)
 		(self setRegions: TOWN)
 		(cSound priority: 0 number: 93 loop: -1 play:)
-		(shopTeller init: proprietor @local8 @local25 @local35)
+		(shopTeller init: proprietor @shopTellMainBranch @shopTellTree @shopTellKeys)
 		(proprietor actions: shopTeller init:)
 		(stove init: setCycle: Forward)
 		(ego loop: 3 posn: 163 188 init: setScript: enterTheShop)
@@ -131,16 +157,21 @@
 	
 	(method (doit)
 		(cond 
-			((and (<= (ego y?) 155) (not nearProprietor)) (= nearProprietor 1))
-			((and (> (ego y?) 155) nearProprietor)
-				(= nearProprietor FALSE)
-				(if local2 (= local2 0))
-				(if (and local1 local3)
+			((and (<= (ego y?) 155) (not nearCounter))
+				(= nearCounter TRUE))
+			((and (> (ego y?) 155) nearCounter)
+				(= nearCounter FALSE)
+				(if proprietorAsks
+					(= proprietorAsks 0)
+				)
+				(if (and proprietorAttention putDownBook)
 					(proprietor setCycle: BegLoop)
-					(= local3 0)
+					(= putDownBook 0)
 				)
 			)
-			((and (> (ego y?) 187) (not (ego script?))) (ego setScript: outTo320))
+			((and (> (ego y?) 187) (not (ego script?)))
+				(ego setScript: outTo320)
+			)
 		)
 		(super doit:)
 	)
@@ -602,17 +633,15 @@
 	)
 	
 	(method (doit)
-		(if (and nearProprietor local1 (not local3))
+		(if (and nearCounter proprietorAttention (not putDownBook))
 			(self setCycle: EndLoop)
-			(= local3 1)
+			(= putDownBook 1)
 		)
 		(super doit:)
 	)
 )
 
 (instance shopTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
@@ -621,11 +650,12 @@
 					(return TRUE)
 				)
 				(V_TALK
-					(if (not nearProprietor)
-						(messager say: N_SHOPKEEPER V_TALK C_CANTHEARYOU) ;Originally mapped to LOOK verb by mistake. Changed to TALK Verb.
+					(if (not nearCounter)
+						(messager say: N_SHOPKEEPER V_TALK C_CANTHEARYOU)
+						;Originally mapped to LOOK verb by mistake. Changed to TALK Verb.
 					else
-						(= local6 1)
-						(SolvePuzzle POINTS_TALKTOSHOPKEEPER 1)
+						(= talkRet 1)
+						(SolvePuzzle f322TalkToKaspar 1)
 						(super doVerb: theVerb &rest)
 					)
 					(return TRUE)
@@ -639,7 +669,9 @@
 							((Clone Ware) name: {Armor} price: {500})
 					)
 					(switch ((ScriptID 551 0) doit:)
-						(noFunds (messager say: N_SHOPKEEPER V_MONEY C_NOFUNDS))
+						(noFunds
+							(messager say: N_SHOPKEEPER V_MONEY C_NOFUNDS)
+						)
 						(buyAFlask
 							(Bset fPurchasedFromShop)
 							(ego setScript: buyFlask)
@@ -653,7 +685,7 @@
 							(ego setScript: buyDagger)
 						)
 						(buyChainmail
-							(SolvePuzzle POINTS_BUYCHAINMAIL 3 FIGHTER)
+							(SolvePuzzle f322BuyChainmail 3 FIGHTER)
 							(Bset fPurchasedFromShop)
 							(ego setScript: buyArmor)
 						)
@@ -669,8 +701,6 @@
 )
 
 (instance buyFlask of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -682,14 +712,15 @@
 				(ego get: iFlask 1)
 				(self cue:)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance buyFood of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -701,14 +732,15 @@
 				(ego get: iRations 10)
 				(self cue:)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance buyDagger of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -720,14 +752,15 @@
 				(ego get: iDagger 1)
 				(self cue:)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance buyArmor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -755,14 +788,14 @@
 				(ego get: iChainmail 1)
 				(self cue:)
 			)
-			(4 (self dispose:))
+			(4
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance proprietorScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -771,27 +804,33 @@
 			)
 			(1
 				(proprietor setCycle: EndLoop self)
-				(= local3 1)
+				(= putDownBook TRUE)
 			)
 			(2
-				(= local1 1)
-				(= local2 1)
-				(messager say: N_SHOPKEEPER 0 C_HITHERE 1 self)
+				(= proprietorAttention TRUE)
+				(= proprietorAsks TRUE)
+				(messager say: N_SHOPKEEPER NULL C_HITHERE 1 self)
 			)
-			(3 (Bset fMetShopkeeper) (= ticks 10))
+			(3
+				(Bset fMetShopkeeper)
+				(= ticks 10)
+			)
 			(4
-				(messager say: N_SHOPKEEPER 0 C_FIRSTMEET)
+				(messager say: N_SHOPKEEPER NULL C_FIRSTMEET)
 				(self cue:)
 			)
-			(5 (self cue:))
-			(6 (self dispose:) (HandsOn))
+			(5
+				(self cue:)
+			)
+			(6
+				(self dispose:)
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance secondEntrance of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -800,33 +839,37 @@
 			)
 			(1
 				(proprietor setCycle: EndLoop self)
-				(= local3 1)
+				(= putDownBook TRUE)
 			)
 			(2
-				(= local1 1)
-				(= local2 1)
-				(messager say: N_SHOPKEEPER 0 C_HITHERE 1 self)
+				(= proprietorAttention TRUE)
+				(= proprietorAsks TRUE)
+				(messager say: N_SHOPKEEPER NULL C_HITHERE 1 self)
 			)
-			(3 (self dispose:) (HandsOn))
+			(3
+				(self dispose:)
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance enterTheShop of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 163 155 self)
 			)
-			(1 (NormalEgo) (= cycles 6))
+			(1
+				(NormalEgo)
+				(= cycles 6)
+			)
 			(2
 				(if (Btst fBeenIn322)
 					(self cue:)
 				else
-					(messager say: N_ROOM 0 C_FIRSTENTRY 1 self)
+					(messager say: N_ROOM NULL C_FIRSTENTRY 1 self)
 				)
 			)
 			(3
@@ -841,15 +884,15 @@
 )
 
 (instance outTo320 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo (ego x?) 240 self)
 			)
-			(1 (curRoom newRoom: 320))
+			(1
+				(curRoom newRoom: 320)
+			)
 		)
 	)
 )
@@ -867,7 +910,7 @@
 	(method (init)
 		(= nightPalette 2322)
 		(PalVary PALVARYTARGET 2322)
-		(kernel_128 1322)
+		(AssertPalette 1322)
 		(= font userFont)
 		(super init: shopBust shopEye shopMouth &rest)
 	)

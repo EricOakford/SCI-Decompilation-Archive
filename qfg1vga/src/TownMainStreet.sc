@@ -163,7 +163,7 @@
 					(!= (curRoom script?) enterFrom300)
 					(!= (curRoom script?) enter300)
 				)
-				(= exploringTown 0)
+				(= exploringTown FALSE)
 				(curRoom setScript: enter300)
 			)
 			((and (== theControl cLGREEN) (not (curRoom script?)))
@@ -223,7 +223,7 @@
 	(method (init)
 		(= nightPalette 1310)
 		(PalVary PALVARYTARGET 1310)
-		(kernel_128 310)
+		(AssertPalette 310)
 		(super init:)
 	)
 	
@@ -439,8 +439,6 @@
 )
 
 (instance enterToGuildHall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -459,8 +457,6 @@
 )
 
 (instance enterMagicShop of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -479,8 +475,6 @@
 )
 
 (instance exitTheMagicShop of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -506,8 +500,6 @@
 )
 
 (instance egoWakes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -526,8 +518,6 @@
 )
 
 (instance enterLOLLand of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -543,8 +533,6 @@
 )
 
 (instance climbUpStairs of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -563,8 +551,6 @@
 )
 
 (instance climbDownStairs of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -583,8 +569,6 @@
 )
 
 (instance enter300 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -600,8 +584,6 @@
 )
 
 (instance enterFrom300 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

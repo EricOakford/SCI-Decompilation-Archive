@@ -20,10 +20,10 @@
 
 (local
 	[local0 2]
-	gEgoMoveSpeed
-	gEgoCycleSpeed
+	saveMoveSpeed
+	saveCycleSpeed
 	glintInAlley
-	local5
+	roomHandsOff
 )
 (instance rm330 of Room
 	(properties
@@ -34,42 +34,25 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						30
-						147
-						0
-						159
-						318
-						188
-						319
-						189
-						0
-						189
-						0
-						0
-						319
-						0
-						319
-						147
-						308
-						154
-						249
-						149
-						249
-						144
-						242
-						144
-						233
-						149
-						145
-						143
-						169
-						123
-						156
-						125
-						131
-						143
+						30 147
+						0 159
+						318 188
+						319 189
+						0 189
+						0 0
+						319 0
+						319 147
+						308 154
+						249 149
+						249 144
+						242 144
+						233 149
+						145 143
+						169 123
+						156 125
+						131 143
 					yourself:
 				)
 		)
@@ -85,12 +68,14 @@
 				(switch prevRoomNum
 					(0 WIPELEFT)
 					(320 SCROLLRIGHT)
-					(331 -32761)
-					(332 -32761)
+					(331 (| BLACKOUT IRISOUT))
+					(332 (| BLACKOUT IRISOUT))
 					(else  HSHUTTER)
 				)
 		)
-		(if (Btst fBarDrunk) (Load RES_VIEW 503))
+		(if (Btst fBarDrunk)
+			(Load RES_VIEW 503)
+		)
 		(features
 			add:
 				onPots
@@ -159,21 +144,38 @@
 			)
 		)
 		(cond 
-			((== prevRoomNum 320) (NormalEgo) (ego posn: 289 174))
-			((Btst fBarThrownOut) (ego view: 503 posn: 94 114))
-			((Btst fBarDrunk) (ego view: 503 posn: 62 146 setLoop: 2))
-			(else (NormalEgo) (ego posn: 269 170))
+			((== prevRoomNum 320)
+				(NormalEgo)
+				(ego posn: 289 174)
+			)
+			((Btst fBarThrownOut)
+				(ego view: 503 posn: 94 114)
+			)
+			((Btst fBarDrunk)
+				(ego view: 503 posn: 62 146 setLoop: 2)
+			)
+			(else
+				(NormalEgo)
+				(ego posn: 269 170)
+			)
 		)
 		(cond 
-			((== prevRoomNum 0) (NormalEgo) (ego posn: 269 170 setMotion: MoveTo 300 174))
-			((== prevRoomNum 64) (ego posn: 63 168 setMotion: MoveTo 123 168))
+			((== prevRoomNum 0)
+				(NormalEgo)
+				(ego posn: 269 170 setMotion: MoveTo 300 174)
+			)
+			((== prevRoomNum 64)
+				(ego posn: 63 168 setMotion: MoveTo 123 168)
+			)
 			(
 				(and
 					(or (== prevRoomNum 331) (== prevRoomNum 332))
-					(= local5 1)
+					(= roomHandsOff TRUE)
 				)
 				(cond 
-					((Btst fBarThrownOut) (ego setScript: kickOutScript))
+					((Btst fBarThrownOut)
+						(ego setScript: kickOutScript)
+					)
 					((Btst fBarDrunk)
 						(tDoor cel: 0 doorState: doorClosed)
 						((inventory at: iGold) amount: 0)
@@ -181,7 +183,9 @@
 						(ego use: iSilver 1)
 						(ego setScript: gotDrunkScript)
 					)
-					(else (ego loop: 2 posn: 88 133 setScript: outOfTavernScript))
+					(else
+						(ego loop: 2 posn: 88 133 setScript: outOfTavernScript)
+					)
 				)
 			)
 			((== prevRoomNum 320)
@@ -202,7 +206,9 @@
 				)
 				(curRoom setScript: egoWakes)
 			)
-			(else (ego loop: 2 posn: 145 137 setMotion: MoveTo 148 144))
+			(else
+				(ego loop: 2 posn: 145 137 setMotion: MoveTo 148 144)
+			)
 		)
 	)
 	
@@ -210,22 +216,31 @@
 		(cond 
 			((and Night (not glintInAlley))
 				(= glintInAlley TRUE)
-				(glint ignoreActors: 1 cycleSpeed: 12 setCycle: Forward init:)
+				(glint ignoreActors: TRUE cycleSpeed: 12 setCycle: Forward init:)
 			)
-			((not (>= timeODay TIME_SUNSET)) (glint dispose:))
+			((not (>= timeODay TIME_SUNSET))
+				(glint dispose:)
+			)
 		)
 		(cond 
 			(
 				(or
-					(== local5 1)
+					(== roomHandsOff TRUE)
 					(== (ego script?) kickOutScript)
 					(== (ego script?) gotDrunkScript)
 					(== (ego script?) outOfTavernScript)
 				)
 				0
 			)
-			((< (ego y?) 132) (= local5 1) (ego setScript: toTheAlley))
-			((> (ego x?) 310) (= local5 1) (= style 12) (ego setScript: to320))
+			((< (ego y?) 132)
+				(= roomHandsOff TRUE)
+				(ego setScript: toTheAlley)
+			)
+			((> (ego x?) 310)
+				(= roomHandsOff TRUE)
+				(= style SCROLLLEFT)
+				(ego setScript: to320)
+			)
 		)
 		(super doit:)
 	)
@@ -233,15 +248,21 @@
 	(method (dispose)
 		(Bset fBeenIn330)
 		(cond 
-			((Btst fBarThrownOut) (Bclr fBarThrownOut))
-			((Btst fBarDrunk) (Bclr fBarDrunk))
+			((Btst fBarThrownOut)
+				(Bclr fBarThrownOut)
+			)
+			((Btst fBarDrunk)
+				(Bclr fBarDrunk)
+			)
 		)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: 12 1 0 0))
+			(V_LOOK
+				(messager say: N_ROOM V_LOOK NULL 0)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -251,8 +272,12 @@
 	(method (notify param1)
 		(cond 
 			((!= param1 1))
-			((not (TrySkill PICK 10 lockPickBonus)) (messager say: 12 0 4))
-			(else (messager say: 12 0 3) (ego setScript: enterToTavern))
+			((not (TrySkill PICK 10 lockPickBonus))
+				(messager say: N_ROOM NULL C_PICK_FAIL)
+			)
+			(else (messager say: N_ROOM NULL C_PICK_SUCCESS)
+				(ego setScript: enterToTavern)
+			)
 		)
 	)
 )
@@ -273,7 +298,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_WORKDOOR V_LOOK))
+			(V_LOOK
+				(messager say: N_WORKDOOR V_LOOK)
+			)
 			(V_DO
 				(if Night
 					(messager say: N_WORKDOOR V_DO C_NIGHT)
@@ -287,8 +314,12 @@
 			(V_THIEFKIT
 				((ScriptID STREET 0) doVerb: theVerb)
 			)
-			(V_DAGGER (messager say: N_WORKDOOR V_DAGGER))
-			(V_BRASSKEY (messager say: N_WORKDOOR V_BRASSKEY 0 1))
+			(V_DAGGER
+				(messager say: N_WORKDOOR V_DAGGER)
+			)
+			(V_BRASSKEY
+				(messager say: N_WORKDOOR V_BRASSKEY NULL 1)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -305,7 +336,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_POTS V_LOOK))
+			(V_LOOK
+				(messager say: N_POTS V_LOOK)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -330,7 +363,7 @@
 				(if Night
 					(messager say: N_WORKSHOP V_LOOK C_NIGHT)
 				else
-					(messager say: N_WORKSHOP V_LOOK 0 1)
+					(messager say: N_WORKSHOP V_LOOK NULL 1)
 				)
 			)
 			(else 
@@ -371,7 +404,7 @@
 				(if Night
 					(messager say: N_ALLEY V_LOOK C_NIGHT)
 				else
-					(messager say: N_ALLEY V_LOOK 0)
+					(messager say: N_ALLEY V_LOOK NULL)
 				)
 			)
 			(else 
@@ -412,16 +445,24 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_BUTCHERDOOR V_LOOK))
-			(V_DO (messager say: N_BUTCHERDOOR V_DO))
+			(V_LOOK
+				(messager say: N_BUTCHERDOOR V_LOOK)
+			)
+			(V_DO
+				(messager say: N_BUTCHERDOOR V_DO)
+			)
 			(V_LOCKPICK
 				((ScriptID STREET 0) doVerb: theVerb)
 			)
 			(V_THIEFKIT
 				((ScriptID STREET 0) doVerb: theVerb)
 			)
-			(V_DAGGER (messager say: N_BUTCHERDOOR V_DAGGER))
-			(V_BRASSKEY (messager say: N_BUTCHERDOOR V_BRASSKEY))
+			(V_DAGGER
+				(messager say: N_BUTCHERDOOR V_DAGGER)
+			)
+			(V_BRASSKEY
+				(messager say: N_BUTCHERDOOR V_BRASSKEY)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -456,16 +497,24 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_BAKERYDOOR V_LOOK))
-			(V_DO (messager say: N_BAKERYDOOR V_DO))
+			(V_LOOK
+				(messager say: N_BAKERYDOOR V_LOOK)
+			)
+			(V_DO
+				(messager say: N_BAKERYDOOR V_DO)
+			)
 			(V_LOCKPICK
 				((ScriptID STREET 0) doVerb: theVerb)
 			)
 			(V_THIEFKIT
 				((ScriptID STREET 0) doVerb: theVerb)
 			)
-			(V_DAGGER (messager say: N_BAKERYDOOR V_DAGGER))
-			(V_BRASSKEY (messager say: N_BAKERYDOOR V_BRASSKEY))
+			(V_DAGGER
+				(messager say: N_BAKERYDOOR V_DAGGER)
+			)
+			(V_BRASSKEY
+				(messager say: N_BAKERYDOOR V_BRASSKEY)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -524,7 +573,9 @@
 					(messager say: N_BREADWINDOW V_LOOK C_NIGHT)
 				)
 			)
-			(V_DO (messager say: N_BREADWINDOW V_DO C_NIGHT))
+			(V_DO
+				(messager say: N_BREADWINDOW V_DO C_NIGHT)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -542,7 +593,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_BUTCHERSIGN V_LOOK))
+			(V_LOOK
+				(messager say: N_BUTCHERSIGN V_LOOK)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -619,8 +672,12 @@
 			(V_THIEFKIT
 				((ScriptID STREET 0) doVerb: theVerb)
 			)
-			(V_DAGGER (messager say: N_TAVERNDOOR V_DAGGER C_NIGHT))
-			(V_BRASSKEY (messager say: N_TAVERNDOOR V_BRASSKEY C_NIGHT))
+			(V_DAGGER
+				(messager say: N_TAVERNDOOR V_DAGGER C_NIGHT)
+			)
+			(V_BRASSKEY
+				(messager say: N_TAVERNDOOR V_BRASSKEY C_NIGHT)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -629,8 +686,6 @@
 )
 
 (instance kickOutScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -648,8 +703,8 @@
 			)
 			(1
 				(fallSound play:)
-				(= gEgoMoveSpeed (ego moveSpeed?))
-				(= gEgoCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
 				(= ticks 60)
 			)
 			(2
@@ -675,14 +730,17 @@
 				(ego setLoop: 4 setCel: 0 setCycle: EndLoop self)
 			)
 			(7
-				(if (not (TakeDamage 5)) (TakeDamage -5))	;This stops the Hero from dying
-				(= local5 0)
+				(if (not (TakeDamage 5))
+					;This stops the Hero from dying
+					(TakeDamage -5)
+				)	
+				(= roomHandsOff 0)
 				(HandsOn)
 				(NormalEgo)
 				(ChangeGait MOVE_WALK)
 				(ego
-					moveSpeed: gEgoMoveSpeed
-					cycleSpeed: gEgoCycleSpeed
+					moveSpeed: saveMoveSpeed
+					cycleSpeed: saveCycleSpeed
 					loop: 2
 					cel: 2
 				)
@@ -693,13 +751,11 @@
 )
 
 (instance gotDrunkScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
 				(ego setCel: 3 illegalBits: 0 setPri: 8 show:)
 				(= seconds 7)
 			)
@@ -707,7 +763,7 @@
 				(messager say: N_TAVERNDOOR V_BRASSKEY C_NIGHT 2 self)
 			)
 			(2
-				(messager say: N_ROOM 0 0 0 self)
+				(messager say: N_ROOM NULL NULL 0 self)
 			)
 			(3
 				(ego
@@ -718,9 +774,9 @@
 				)
 			)
 			(4
-				(= local5 0)
+				(= roomHandsOff FALSE)
 				(ChangeGait MOVE_WALK)
-				(ego cycleSpeed: gEgoCycleSpeed)
+				(ego cycleSpeed: saveCycleSpeed)
 				(NormalEgo)
 				(HandsOn)
 				(self dispose:)
@@ -730,8 +786,6 @@
 )
 
 (instance egoWakes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -740,30 +794,31 @@
 			)
 			(1
 				(NormalEgo)
-				(messager say: N_ROOM 0 0 4 self)
+				(messager say: N_ROOM NULL NULL 4 self)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance to320 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 340 175 self)
 			)
-			(1 (curRoom newRoom: 320))
+			(1
+				(curRoom newRoom: 320)
+			)
 		)
 	)
 )
 
 (instance enterToTavern of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -781,17 +836,18 @@
 )
 
 (instance outOfTavernScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 30))
+			(0
+				(HandsOff)
+				(= ticks 30)
+			)
 			(1
 				(ego setMotion: MoveTo 85 151 self)
 			)
 			(2
 				(tDoor close:)
-				(= local5 0)
+				(= roomHandsOff FALSE)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -800,11 +856,12 @@
 )
 
 (instance toTheAlley of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 1))
+			(0
+				(HandsOff)
+				(= seconds 1)
+			)
 			(1
 				(if Night
 					(curRoom newRoom: 334)

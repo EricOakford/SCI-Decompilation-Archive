@@ -142,6 +142,21 @@
 				eastStair
 			eachElementDo: #init
 		)
+		;UPGRADE
+;;;		(rug init:)
+;;;		(armor init:)
+;;;		(ceiling init:)
+;;;		(stool init:)
+;;;		(foreGround init:)
+;;;		(vase init:)
+;;;		(bookShelf init:)
+;;;		(table init:)
+;;;		(theCasket init:)
+;;;		(westWall init:)
+;;;		(eastWall init:)
+;;;		(westStair init:)
+;;;		(eastStair init:)
+		
 		(SolvePuzzle f30EnterTower 3)
 		(StatusLine enable:)
 		(NormalEgo)

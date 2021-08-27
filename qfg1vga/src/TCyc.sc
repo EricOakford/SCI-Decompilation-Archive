@@ -37,8 +37,7 @@
 	)
 	
 	(method (doit)
-		(if
-		(>= (Abs (- gameTime cycleCnt)) (client cycleSpeed?))
+		(if (>= (Abs (- gameTime cycleCnt)) (client cycleSpeed?))
 			(= cycleCnt gameTime)
 			(self nextCel:)
 		)
@@ -49,7 +48,7 @@
 			loop: (WordAt points value)
 			cel: (WordAt points (+ value 1))
 		)
-		(= value (+ value (* cycleDir 2)))
+		(+= value (* cycleDir 2))
 		(if
 			(or
 				(and (== cycleDir 1) (>= value size))
@@ -62,6 +61,10 @@
 	(method (cycleDone)
 		(= completed TRUE)
 		(= value 0)
-		(if caller (= doMotionCue 1) else (self motionCue:))
+		(if caller
+			(= doMotionCue TRUE)
+		else
+			(self motionCue:)
+		)
 	)
 )

@@ -22,33 +22,152 @@
 )
 
 (local
-	[local0 7] = [0 -33 -45 -26 -53 -51 999]
-	[local7 6] = [0 15 -42 -20 -58 999]
-	[local13 3] = [0 40 999]
-	[local16 7] = [0 19 52 -27 -17 21 999]
-	[local23 6] = [0 44 29 61 -56 999]
-	[local29 3] = [0 -47 999]
-	[local32 9] = [0 57 59 46 31 41 38 49 999]
-	[local41 8] = [0 37 30 -54 18 22 -39 999]
-	[local49 5] = [0 48 35 23 999]
-	[local54 3] = [0 62 999]
-	[local57 3] = [0 36 999]
-	[local60 8] = [0 28 -16 43 60 25 -50 999]
-	[local68 3] = [0 55 999]
-	[local71 3] = [0 34 999]
-	[local74 3] = [0 24 999]
-	[local77 3] = [0 32 999]
-	[local80 3] = [0 32 999]
-	[local83 19]
-	[local102 520] = [0 -33 -45 -26 -53 -51 -42 -56 -20 -27 -17 -58 -16 -50 -39 -54 -47 999]
-	local622
-	local623
-	metMaster
-	local625
+	masterTellMainBranch = [
+		STARTTELL
+		-33		;C_GUILDHALL
+		-45		;C_NAME
+		-26		;C_CURSE
+		-53		;C_SPIELBURG
+		-51		;C_SCHULTZ
+		ENDTELL
+		]
+	masterTell1 = [
+		STARTTELL
+		C_ADVENTURERS
+		-42		;C_MONSTERS
+		-20		;C_BULLETINBOARD
+		-58		;C_TROPHIES
+		ENDTELL
+		]
+	masterTell2 = [
+		STARTTELL
+		C_GUILDMASTER
+		ENDTELL
+		]
+	masterTell3 = [
+		STARTTELL
+		C_BARON
+		C_BARON_SON
+		-27		;C_BARON_DAUGHTER
+		-17		;C_BABAYAGA
+		C_BRIGANDS
+		ENDTELL
+		]
+	masterTell4 = [
+		STARTTELL
+		C_MOUNTAINS
+		C_FORESTS
+		C_WATERFALLS
+		-56		;C_TOWN
+		ENDTELL
+		]
+	masterTell5 = [
+		STARTTELL
+		-47		;C_OTTO
+		ENDTELL
+		]
+	masterTell6 = [
+		STARTTELL
+		C_TROLL
+		C_SAURUS
+		C_OGRES
+		C_GOBLINS
+		C_CHEETAUR
+		C_MANTRAYS
+		C_SAURUSREX
+		ENDTELL
+		]
+	masterTell7 = [
+		STARTTELL
+		C_MAGICSHOP
+		C_DRYGOODS
+		-54		;C_TAVERN
+		C_BAKERY
+		C_BUTCHER
+		-39		;C_FARMERS_MART
+		ENDTELL
+		]
+	masterTell8 = [
+		STARTTELL
+		C_REWARD
+		C_HEALER
+		C_CASTLE
+		ENDTELL
+		]
+	masterTell9 = [
+		STARTTELL
+		C_YORICK
+		ENDTELL
+		]
+	masterTell10 = [
+		STARTTELL
+		C_HERO
+		ENDTELL
+		]
+	masterTell11 = [
+		STARTTELL
+		C_DRAGON
+		-16		;C_ANTWERP
+		C_MOOSE
+		C_TROLL_TROPHY
+		C_CHEETAUR_TROPHY
+		-50		;C_SAURUS_TROPHY
+		ENDTELL
+		]
+	masterTell12 = [
+		STARTTELL
+		C_TOURISTS
+		ENDTELL
+		]
+	masterTell13 = [
+		STARTTELL
+		C_HALFWITTEN
+		ENDTELL
+		]
+	masterTell14 = [
+		STARTTELL
+		C_CENTAUR
+		ENDTELL
+		]
+	masterTell15 = [
+		STARTTELL
+		C_GOON
+		ENDTELL
+		]
+	masterTell16 = [
+		STARTTELL
+		C_GOON
+		ENDTELL
+		]
+	[masterTellTree 19]
+	masterTellKeys = [
+		STARTTELL
+		-33		;C_GUILDHALL
+		-45		;C_NAME
+		-26		;C_CURSE
+		-53		;C_SPIELBURG
+		-51		;C_SCHULTZ
+		-42		;C_MONSTERS
+		-56		;C_TOWN
+		-20		;C_BULLETINBOARD
+		-27		;C_BARON_DAUGHTER
+		-17		;C_BABAYAGA
+		-58		;C_TROPHIES
+		-16		;C_ANTWERP
+		-50		;C_SAURUS_TROPHY
+		-39		;C_FARMERS_MART
+		-54		;C_TAVERN
+		-47		;C_OTTO
+		ENDTELL
+		]
+	snoreCount
+	armTimer
+	saidHello
+	wokenUp
 	local626
-	masterAlerted
+	dozingOff
 	logbookPage
-	local629
+	readUnsigned
 	local630
 )
 (procedure (LookRoom)
@@ -64,24 +183,24 @@
 	)
 	
 	(method (init)
-		(= [local83 0] @local0)
-		(= [local83 1] @local7)
-		(= [local83 2] @local13)
-		(= [local83 3] @local16)
-		(= [local83 4] @local23)
-		(= [local83 5] @local29)
-		(= [local83 6] @local32)
-		(= [local83 7] @local41)
-		(= [local83 8] @local49)
-		(= [local83 9] @local54)
-		(= [local83 10] @local57)
-		(= [local83 11] @local60)
-		(= [local83 12] @local68)
-		(= [local83 13] @local71)
-		(= [local83 14] @local74)
-		(= [local83 15] @local77)
-		(= [local83 16] @local80)
-		(= [local83 17] 999)
+		(= [masterTellTree 0] @masterTellMainBranch)
+		(= [masterTellTree 1] @masterTell1)
+		(= [masterTellTree 2] @masterTell2)
+		(= [masterTellTree 3] @masterTell3)
+		(= [masterTellTree 4] @masterTell4)
+		(= [masterTellTree 5] @masterTell5)
+		(= [masterTellTree 6] @masterTell6)
+		(= [masterTellTree 7] @masterTell7)
+		(= [masterTellTree 8] @masterTell8)
+		(= [masterTellTree 9] @masterTell9)
+		(= [masterTellTree 10] @masterTell10)
+		(= [masterTellTree 11] @masterTell11)
+		(= [masterTellTree 12] @masterTell12)
+		(= [masterTellTree 13] @masterTell13)
+		(= [masterTellTree 14] @masterTell14)
+		(= [masterTellTree 15] @masterTell15)
+		(= [masterTellTree 16] @masterTell16)
+		(= [masterTellTree 17] ENDTELL)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -135,11 +254,24 @@
 				wallOfStuff
 			eachElementDo: #init
 		)
+		;UPGRADE
+;;;		(gryphon init:)
+;;;		(wood init:)
+;;;		(armor init:)
+;;;		(saurusHead init:)
+;;;		(mooseHead init:)
+;;;		(antwerpHead init:)
+;;;		(cheetaurHead init:)
+;;;		(trollHead init:)
+;;;		(dragonHead init:)
+;;;		(painting init:)
+;;;		(wallOfStuff init:)
+		
 		(super init: &rest)
 		(self setRegions: TOWN)
 		(theCandles init: setCycle: Forward)
 		(chair init: setPri: 5)
-		(masterTeller init: master @local0 @local83 @local102)
+		(masterTeller init: master @masterTellMainBranch @masterTellTree @masterTellKeys)
 		(master
 			init:
 			actions: masterTeller
@@ -166,7 +298,7 @@
 			(
 				(and
 					(ego inRect: 64 120 126 162)
-					(== local625 0)
+					(== wokenUp FALSE)
 					(== (master script?) sMaster)
 				)
 				(master setScript: upAndAtIm)
@@ -174,7 +306,7 @@
 			(
 				(and
 					(not (ego inRect: 64 120 126 162))
-					(== local625 1)
+					(== wokenUp TRUE)
 				)
 				(masterHead ignoreActors: posn: 101 104 show:)
 				(master setScript: sMaster)
@@ -235,10 +367,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(messager say: 9 1)
+				(messager say: N_GRYPHON V_LOOK)
 			)
 			(V_DO
-				(messager say: N_ROOM V_DO C_DONTTAKETROPHIES)
+				(messager say: N_ROOM V_DO C_DONT_TAKE_TROPHIES)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -375,7 +507,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DO
-				(messager say: N_ROOM V_DO C_DONTTAKETROPHIES)
+				(messager say: N_ROOM V_DO C_DONT_TAKE_TROPHIES)
 			)
 			(V_LOOK
 				(messager say: N_ANTWERPHEAD V_LOOK)
@@ -419,10 +551,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(messager say: 13 1)
+				(messager say: N_SAURUSHEAD V_LOOK)
 			)
 			(V_DO
-				(messager say: N_ROOM V_DO C_DONTTAKETROPHIES)
+				(messager say: N_ROOM V_DO C_DONT_TAKE_TROPHIES)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -447,7 +579,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DO
-				(messager say: N_ROOM V_DO C_DONTTAKETROPHIES)
+				(messager say: N_ROOM V_DO C_DONT_TAKE_TROPHIES)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -475,7 +607,7 @@
 				(messager say: N_TROLLHEAD V_LOOK)
 			)
 			(V_DO
-				(messager say: N_ROOM V_DO C_DONTTAKETROPHIES)
+				(messager say: N_ROOM V_DO C_DONT_TAKE_TROPHIES)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -503,7 +635,7 @@
 				(messager say: N_DRAGONHEAD V_LOOK)
 			)
 			(V_DO
-				(messager say: N_ROOM V_DO C_DONTTAKETROPHIES)
+				(messager say: N_ROOM V_DO C_DONT_TAKE_TROPHIES)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -531,7 +663,7 @@
 				(messager say: N_CHEETAURHEAD V_LOOK)
 			)
 			(V_DO
-				(messager say: N_ROOM V_DO C_DONTTAKETROPHIES)
+				(messager say: N_ROOM V_DO C_DONT_TAKE_TROPHIES)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -639,7 +771,7 @@
 	(method (init &tmp temp0)
 		(= nightPalette 1311)
 		(PalVary PALVARYTARGET 1311)
-		(kernel_128 311)
+		(AssertPalette 311)
 		(super init:)
 		(self posn: 76 137 ignoreActors: startUpd:)
 		(masterHead init:)
@@ -647,8 +779,6 @@
 )
 
 (instance masterTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
@@ -662,7 +792,7 @@
 				(if (not (ego inRect: 64 120 126 162))
 					(messager say: N_MASTER V_TALK C_GETCLOSER)
 				else
-					(if (not masterAlerted)
+					(if (not dozingOff)
 						(switch (Random 0 4)
 							(0
 								(messager say: N_MASTER V_TALK C_FIRSTMEET)
@@ -684,7 +814,7 @@
 						(SolvePuzzle f311TalkToWolfgang 1)
 						(super doVerb: theVerb)
 					)
-					(= masterAlerted TRUE)
+					(= dozingOff TRUE)
 				)
 			)
 			(else 
@@ -696,12 +826,11 @@
 )
 
 (instance sMaster of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local622 5)
-				(= local625 0)
+				(= snoreCount 5)
+				(= wokenUp FALSE)
 				(masterHead setLoop: 5 setCel: 0 ignoreActors:)
 				(master setLoop: 1 setCel: 0)
 				(= ticks (Random 30 90))
@@ -729,11 +858,11 @@
 			)
 			(5
 				(masterHead cel: 0)
-				(-- local622)
+				(-- snoreCount)
 				(= ticks 6)
 			)
 			(6
-				(if (> local622 0)
+				(if (> snoreCount 0)
 					(self changeState: 4)
 				else
 					(self changeState: 0)
@@ -744,7 +873,6 @@
 )
 
 (instance upAndAtIm of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -782,7 +910,7 @@
 			)
 			(6
 				(HandsOn)
-				(if metMaster
+				(if saidHello
 					(switch (Random 21 25)
 						(21
 							(messager say: N_MASTER NULL C_WELCOMEBACK 1 self)
@@ -801,28 +929,28 @@
 						)
 					)
 				else
-					(= metMaster TRUE)
+					(= saidHello TRUE)
 					(messager say: N_MASTER NULL C_WAKEUP 1 self)
 				)
-				(= local625 1)
-				(= local623 (Random 2 6))
+				(= wokenUp 1)
+				(= armTimer (Random 2 6))
 			)
 			(7 (master setCycle: EndLoop self))
 			(8 (master setCycle: BegLoop self))
 			(9
-				(if (> local623 0)
-					(-- local623)
+				(if (> armTimer 0)
+					(-- armTimer)
 					(self changeState: 7)
 				else
 					(= ticks (Random 30 60))
 				)
 			)
 			(10
-				(= local623 (Random 2 6))
+				(= armTimer (Random 2 6))
 				(self changeState: 7)
 			)
 			(11
-				(= local625 0)
+				(= wokenUp 0)
 				(master
 					setLoop: 2
 					cel: 6
@@ -841,8 +969,6 @@
 )
 
 (instance signTheBook of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -875,14 +1001,12 @@
 )
 
 (instance youGotPoints of Script
-	(properties)
-	
 	(method (changeState newState &tmp [str 300] [buf 350])
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (and (not (Btst fSignedLogbook)) (not local629))
-					(= local629 1)
+				(if (and (not (Btst fSignedLogbook)) (not readUnsigned))
+					(= readUnsigned TRUE)
 					(= logbookPage 1)
 				)
 				(SolvePuzzle f311ReadBook 4)
@@ -931,8 +1055,6 @@
 )
 
 (instance goToBoard of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -955,8 +1077,6 @@
 )
 
 (instance goToMaster of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -994,7 +1114,7 @@
 	(method (init)
 		(= nightPalette 2311)
 		(PalVary PALVARYTARGET 2311)
-		(kernel_128 1311)
+		(AssertPalette 1311)
 		(= font userFont)
 		(super init: wolfgangBust wolfgangEye wolfgangMouth &rest)
 	)

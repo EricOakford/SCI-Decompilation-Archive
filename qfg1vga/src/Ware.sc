@@ -23,8 +23,6 @@
 )
 
 (instance buy of Dialog
-	(properties)
-	
 	(method (init &tmp temp0 temp1 temp2 temp3 newDText gNewListFirst temp6)
 		(= oldCur theCursor)
 		(theGame setCursor: ARROW_CURSOR)

@@ -23,33 +23,137 @@
 
 (local
 	potionCue
-	timesLookedAtRoom
+	lookCount
 	local2
 	local3
-	local4
+	zaraHere
 	familiarAwake
 	local6
 	local7
 	local8
 	local9
-	[local10 7] = [0 -46 -16 29 -27 -40 999]
-	[local17 4] = [0 21 34 999]
-	[local21 3] = [0 22 999]
-	[local24 6] = [0 -44 35 28 25 999]
-	[local30 5] = [0 -41 -42 -38 999]
-	[local35 3] = [0 20 999]
-	[local38 3] = [0 -12 999]
-	[local41 4] = [0 20 -13 999]
-	[local45 5] = [0 32 -39 -33 999]
-	[local50 3] = [0 19 999]
-	[local53 5] = [0 -26 -15 14 999]
-	[local58 8] = [0 17 23 30 45 37 -31 999]
-	[local66 5] = [0 35 24 43 999]
-	[local71 3] = [0 36 999]
-	[local74 3] = [0 18 999]
-	[local77 3] = [0 19 999]
-	[local80 21]
-	[local101 17] = [0 -46 -16 -27 -40 -44 -41 -42 -38 -12 -13 -39 -33 -26 -15 -31 999]
+	zaraTellMainBranch = [
+		STARTTELL
+		-46		;C_ZARA
+		-16		;C_DAMIANO
+		C_MAGIC
+		-27		;C_INITIATION
+		-40		;C_SPIELBURG
+		ENDTELL
+		]
+	zaraTell1 = [
+		STARTTELL
+		C_FAERYFOLK
+		C_POWER
+		ENDTELL
+		]
+	zaraTell2 = [
+		STARTTELL
+		C_FAMILIAR
+		ENDTELL
+		]
+	zaraTell3 = [
+		STARTTELL
+		-44		;C_WIZARD
+		C_POWERPOTION
+		C_JOURNEY
+		C_HERO
+		ENDTELL
+		]
+	zaraTell4 = [
+		STARTTELL
+		-41		;C_TOWN
+		-42		;C_VALLEY
+		-38		;C_MAGICSHOP
+		ENDTELL
+		]
+	zaraTell5 = [
+		STARTTELL
+		C_ERASMUS
+		ENDTELL
+		]
+	zaraTell6 = [
+		STARTTELL
+		-12		;C_AURA
+		ENDTELL
+		]
+	zaraTell7 = [
+		STARTTELL
+		C_ERASMUS
+		-13		;C_BABAYAGA
+		ENDTELL
+		]
+	zaraTell8 = [
+		STARTTELL
+		C_POTENTIAL
+		-39		;C_SPELLS
+		-33		;C_POTIONS
+		ENDTELL
+		]
+	zaraTell9 = [
+		STARTTELL
+		C_ERANA
+		ENDTELL
+		]
+	zaraTell10 = [
+		STARTTELL
+		-26		;C_HUT
+		-15		;C_CURSE
+		C_BARON
+		ENDTELL
+		]
+	zaraTell11 = [
+		STARTTELL
+		C_FIREDART
+		C_FETCH
+		C_OPEN
+		C_ZAP
+		C_SCROLLS
+		-31		;C_ERANAPEACE
+		ENDTELL
+		]
+	zaraTell12 = [
+		STARTTELL
+		C_POWERPOTION
+		C_HEALING
+		C_VIGOR
+		ENDTELL
+		]
+	zaraTell13 = [
+		STARTTELL
+		C_RHYME
+		ENDTELL
+		]
+	zaraTell14 = [
+		STARTTELL
+		C_CURSE_EFFECT
+		ENDTELL
+		]
+	zaraTell15 = [
+		STARTTELL
+		C_ERANA
+		ENDTELL
+		]
+	[zaraTellTree 21]
+	zaraTellKeys = [
+		STARTTELL
+		-46		;C_ZARA
+		-16		;C_DAMIANO
+		-27		;C_INITIATION
+		-40		;C_SPIELBURG
+		-44		;C_WIZARD
+		-41		;C_TOWN
+		-42		;C_VALLEY
+		-38		;C_MAGICSHOP
+		-12		;C_AURA
+		-13		;C_BABAYAGA
+		-39		;C_SPELLS
+		-33		;C_POTIONS
+		-26		;C_HUT
+		-15		;C_CURSE
+		-31		;C_ERANAPEACE
+		ENDTELL
+		]
 )
 
 (enum -1
@@ -71,24 +175,40 @@
 
 (procedure (CantBuySpell spell)
 	(switch spell
-		(FETCH (ego get: iSilver 40))
-		(FLAMEDART (ego get: iSilver 60))
-		(OPEN (ego get: iSilver 30))
+		(FETCH
+			(ego get: iSilver 40)
+		)
+		(FLAMEDART
+			(ego get: iSilver 60)
+		)
+		(OPEN
+			(ego get: iSilver 30)
+		)
 	)
 )
 
 (procedure (LearnSpell spell)
 	(return
 		(cond 
-			((and spell (not [egoStats MAGIC])) (CantBuySpell spell) (messager say: N_ZARA V_MONEY))
-			((and spell (ego knows: spell)) (CantBuySpell spell) (messager say: N_ROOM V_MONEY C_ALREADYKNOW))
+			((and spell (not [egoStats MAGIC])) (CantBuySpell spell)
+				(messager say: N_ZARA V_MONEY)
+			)
+			((and spell (ego knows: spell)) (CantBuySpell spell)
+				(messager say: N_ROOM V_MONEY C_ALREADYKNOW)
+			)
 			(else
 				(if spell
 					(messager say: N_ROOM V_MONEY C_LEARNSPELL)
 					(switch spell
-						(FETCH (ego learn: FETCH 5))
-						(FLAMEDART (ego learn: FLAMEDART 5))
-						(OPEN (ego learn: OPEN 5))
+						(FETCH
+							(ego learn: FETCH 5)
+						)
+						(FLAMEDART
+							(ego learn: FLAMEDART 5)
+						)
+						(OPEN
+							(ego learn: OPEN 5)
+						)
 					)
 				)
 				(return TRUE)
@@ -106,23 +226,23 @@
 	)
 	
 	(method (init)
-		(= [local80 0] @local10)
-		(= [local80 1] @local17)
-		(= [local80 2] @local21)
-		(= [local80 3] @local24)
-		(= [local80 4] @local30)
-		(= [local80 5] @local35)
-		(= [local80 6] @local38)
-		(= [local80 7] @local41)
-		(= [local80 8] @local45)
-		(= [local80 9] @local50)
-		(= [local80 10] @local53)
-		(= [local80 11] @local58)
-		(= [local80 12] @local66)
-		(= [local80 13] @local71)
-		(= [local80 14] @local74)
-		(= [local80 15] @local77)
-		(= [local80 16] 999)
+		(= [zaraTellTree 0] @zaraTellMainBranch)
+		(= [zaraTellTree 1] @zaraTell1)
+		(= [zaraTellTree 2] @zaraTell2)
+		(= [zaraTellTree 3] @zaraTell3)
+		(= [zaraTellTree 4] @zaraTell4)
+		(= [zaraTellTree 5] @zaraTell5)
+		(= [zaraTellTree 6] @zaraTell6)
+		(= [zaraTellTree 7] @zaraTell7)
+		(= [zaraTellTree 8] @zaraTell8)
+		(= [zaraTellTree 9] @zaraTell9)
+		(= [zaraTellTree 10] @zaraTell10)
+		(= [zaraTellTree 11] @zaraTell11)
+		(= [zaraTellTree 12] @zaraTell12)
+		(= [zaraTellTree 13] @zaraTell13)
+		(= [zaraTellTree 14] @zaraTell14)
+		(= [zaraTellTree 15] @zaraTell15)
+		(= [zaraTellTree 16] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -194,7 +314,7 @@
 ;;;		(onCeiling init:)
 ;;;		(onMortar init:)
 		
-		(zaraTeller init: zara @local10 @local80 @local101)
+		(zaraTeller init: zara @zaraTellMainBranch @zaraTellTree @zaraTellKeys)
 		(onFloor init:)
 	)
 	
@@ -202,14 +322,17 @@
 		(super doit:)
 		(cond 
 			((curRoom script?) 0)
-			((and (> (ego x?) 160) (not familiarAwake)) (= familiarAwake TRUE) (familiar setScript: familiarScript))
+			((and (> (ego x?) 160) (not familiarAwake))
+				(= familiarAwake TRUE)
+				(familiar setScript: familiarScript)
+			)
 			(
 				(and
 					(not (ego script?))
-					local4
+					zaraHere
 					(or (< (ego x?) 10) (> (ego y?) 185))
 				)
-				(= local4 0)
+				(= zaraHere 0)
 				(ego setScript: exitScript)
 			)
 			(
@@ -222,8 +345,16 @@
 		)
 		(if local6
 			(cond 
-				((> (ego x?) 170) (if local7 (= local7 0) (familiarScript changeState: 2)))
-				((not local7) (= local7 1) (familiarScript changeState: 5))
+				((> (ego x?) 170)
+					(if local7
+						(= local7 0)
+						(familiarScript changeState: 2)
+					)
+				)
+				((not local7)
+					(= local7 1)
+					(familiarScript changeState: 5)
+				)
 			)
 		)
 	)
@@ -239,7 +370,9 @@
 			(V_LOOK
 				(curRoom setScript: lookAtRoom)
 			)
-			(V_DO (messager say: N_ROOM V_DO))
+			(V_DO
+				(messager say: N_ROOM V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -571,7 +704,7 @@
 		view 314
 		loop 8
 		priority 9
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -586,7 +719,7 @@
 		noun N_FAMILIAR
 		view 314
 		loop 6
-		signal $4000
+		signal ignrAct
 		cycleSpeed 12
 	)
 	
@@ -599,8 +732,12 @@
 					(messager say: N_FAMILIAR V_LOOK C_FAMILIARAWAKE)
 				)
 			)
-			(V_TALK (messager say: N_FAMILIAR V_TALK))
-			(V_DO (messager say: N_FAMILIAR V_DO))
+			(V_TALK
+				(messager say: N_FAMILIAR V_TALK)
+			)
+			(V_DO
+				(messager say: N_FAMILIAR V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -638,7 +775,7 @@
 		view 314
 		loop 2
 		priority 6
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -649,7 +786,7 @@
 		view 314
 		loop 5
 		priority 15
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 8
 	)
 )
@@ -670,13 +807,11 @@
 )
 
 (instance zaraTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
 				(V_TALK
-					(SolvePuzzle POINTS_TALKTOZARA 1)
+					(SolvePuzzle f314TalkToZara 1)
 					(super doVerb: theVerb &rest)
 				)
 				(V_MONEY
@@ -689,19 +824,21 @@
 							((Clone Ware) name: {Power Potion} price: {75})
 							((Clone Ware) name: {Vigor Potion} price: {25})
 					)
-					(switch ((ScriptID 551 0) doit:)
-						(noFunds (messager say: N_ZARA V_MONEY C_NOFUNDS))
+					(switch ((ScriptID WARE 0) doit:)
+						(noFunds
+							(messager say: N_ZARA V_MONEY C_CUEIT)
+						)
 						(buyFetch
-							(SolvePuzzle POINTS_LEARNFETCH 2 MAGIC_USER)
+							(SolvePuzzle f314LearnFetch 2 MAGIC_USER)
 							(LearnSpell FETCH)
 						)
 						(buyFlame
-							(SolvePuzzle POINTS_LEARNFLAMEDART 2 MAGIC_USER)
+							(SolvePuzzle f314LearnFlameDart 2 MAGIC_USER)
 							(LearnSpell FLAMEDART)
 						)
 						(buyOpen
 							(LearnSpell OPEN)
-							(SolvePuzzle POINTS_LEARNOPEN 2 MAGIC_USER)
+							(SolvePuzzle f314LearnOpen 2 MAGIC_USER)
 						)
 						(buyHealing
 							(= potionCue cueHealingPotion)
@@ -730,8 +867,6 @@
 )
 
 (instance firstScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -755,8 +890,6 @@
 )
 
 (instance exitScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -788,8 +921,6 @@
 )
 
 (instance egoExitScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -804,9 +935,7 @@
 	)
 )
 
-(instance familiarScript of Script
-	(properties)
-	
+(instance familiarScript of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -828,14 +957,14 @@
 			)
 			(3
 				(familiar stopUpd:)
-				(if (not local4)
+				(if (not zaraHere)
 					(magicFlash init: setCycle: CycleTo 7 1 self)
 				else
 					(self cue:)
 				)
 			)
 			(4
-				(if (not local4)
+				(if (not zaraHere)
 					(theThunder number: (SoundFX 45) init: play:)
 					(magicFlash init: setCycle: EndLoop self)
 				else
@@ -845,7 +974,7 @@
 			(5
 				(magicFlash dispose:)
 				(zara loop: 0 init: setCycle: EndLoop self)
-				(= local4 1)
+				(= zaraHere 1)
 			)
 			(6
 				(familiar loop: 7 setCycle: BegLoop self)
@@ -856,83 +985,95 @@
 					(self cue:)
 				else
 					(= local2 1)
-					(messager say: N_ZARA 0 C_WELCOMEBACK 1 self)
+					(messager say: N_ZARA NULL C_WELCOMEBACK 1 self)
 				)
 			)
 			(8
 				(if (== local2 0)
-					(messager say: N_ZARA 0 C_FIRSTMEET 1 self)
+					(messager say: N_ZARA NULL C_FIRSTMEET 1 self)
 				else
 					(self cue:)
 				)
 				(= local2 1)
 			)
-			(9 (HandsOn) (self dispose:))
+			(9
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance lookAtRoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 30))
 			(1
-				(messager say: N_ROOM V_LOOK 7 1 self)
+				(messager say: N_ROOM V_LOOK C_CUEIT 1 self)
 			)
 			(2
-				(switch (++ timesLookedAtRoom)
+				(switch (++ lookCount)
 					(1
-						(messager say: N_ROOM V_LOOK 7 2 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 2 self)
 					)
 					(2
-						(messager say: N_ROOM V_LOOK 7 3 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 3 self)
 					)
 					(3
-						(messager say: N_ROOM V_LOOK 7 4 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 4 self)
 					)
 					(4
-						(messager say: N_ROOM V_LOOK 7 5 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 5 self)
 					)
 					(5
-						(messager say: N_ROOM V_LOOK 7 6 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 6 self)
 					)
 					(6
-						(messager say: N_ROOM V_LOOK 7 7 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 7 self)
 					)
 					(7
-						(messager say: N_ROOM V_LOOK 7 8 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 8 self)
 					)
 					(8
-						(messager say: N_ROOM V_LOOK 7 9 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 9 self)
 					)
 					(9
-						(messager say: N_ROOM V_LOOK 7 10 self)
+						(messager say: N_ROOM V_LOOK C_CUEIT 10 self)
 					)
 				)
-				(if (== timesLookedAtRoom 9) (= timesLookedAtRoom 0))
+				(if (== lookCount 9)
+					(= lookCount 0)
+				)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance cuedIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 60))
 			(1
 				(switch potionCue
-					(cueHealingPotion (ego get: iHealingPotion))
-					(cueManaPotion (ego get: iManaPotion))
-					(cueStaminaPotion (ego get: iStaminaPotion))
+					(cueHealingPotion
+						(ego get: iHealingPotion)
+					)
+					(cueManaPotion
+						(ego get: iManaPotion)
+					)
+					(cueStaminaPotion
+						(ego get: iStaminaPotion)
+					)
 				)
 				(self cue:)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )

@@ -31,19 +31,62 @@
 )
 
 (local
-	newProp
-	local1
+	tail
+	centaurCued
 	local2
-	nearStand
+	sleepNearStall
 	[local4 2]
-	[local6 6] = [0 -16 -11 -22 -8 999]
-	[local12 7] = [0 12 14 13 15 10 999]
-	[local19 6] = [0 12 14 13 15 999]
-	[local25 7] = [0 7 9 19 17 21 999]
-	[local32 4] = [0 18 20 999]
-	[local36 8]
-	[local44 6] = [0 -16 -11 -22 -8 999]
+	hildeTellMainBranch = [
+		STARTTELL
+		-16		;C_NAME
+		-11		;C_MARKET
+		-22		;C_VEGETABLES
+		-8		;C_BRIGANDS
+		ENDTELL
+		]
+	hildeTell1 = [
+		STARTTELL
+		C_FARMER
+		C_FATHER
+		C_FARM
+		C_MOTHER
+		C_DATE
+		ENDTELL
+		]
+	hildeTell2 = [
+		STARTTELL
+		C_FARMER
+		C_FATHER
+		C_FARM
+		C_MOTHER
+		ENDTELL
+		]
+	hildeTell3 = [
+		STARTTELL
+		C_APPLES
+		C_CARROTS
+		C_RUTABAGAS
+		C_PARSNIPS
+		C_TURNIPS
+		ENDTELL
+		]
+	hildeTell4 = [
+		STARTTELL
+		C_ROBBERY
+		C_SHERIFF
+		ENDTELL
+		]
+	[hildeTellTree 8]
+	hildeTellKeys = [
+		STARTTELL
+		-16		;C_NAME
+		-11		;C_MARKET
+		-22		;C_VEGETABLES
+		-8		;C_BRIGANDS
+		ENDTELL
+		]
 )
+
 (instance rm320 of Room
 	(properties
 		noun N_ROOM
@@ -52,16 +95,20 @@
 	
 	(method (init)
 		(self setRegions: STREET TOWN)
-		(= [local36 0] @local6)
-		(= [local36 1] @local12)
-		(= [local36 2] @local19)
-		(= [local36 3] @local25)
-		(= [local36 4] @local32)
-		(= [local36 5] 999)
-		(if (== prevRoomNum 330) (= style 12) else (= style 0))
+		(= [hildeTellTree 0] @hildeTellMainBranch)
+		(= [hildeTellTree 1] @hildeTell1)
+		(= [hildeTellTree 2] @hildeTell2)
+		(= [hildeTellTree 3] @hildeTell3)
+		(= [hildeTellTree 4] @hildeTell4)
+		(= [hildeTellTree 5] ENDTELL)
+		(if (== prevRoomNum 330)
+			(= style SCROLLLEFT)
+		else
+			(= style HSHUTTER)
+		)
 		(super init:)
 		(ego init: setScript: 0)
-		(hildeTeller init: centaur @local6 @local36 @local44)
+		(hildeTeller init: centaur @hildeTellMainBranch @hildeTellTree @hildeTellKeys)
 		(if (not Night)
 			(centaur
 				setPri: 6
@@ -81,7 +128,7 @@
 			)
 			(theApples setPri: 4 init: stopUpd: addToPic:)
 			(scales setPri: 11 init: stopUpd: addToPic:)
-			((= newProp (Prop new:))
+			((= tail (Prop new:))
 				view: 325
 				loop: 1
 				cel: 0
@@ -125,47 +172,34 @@
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						298
-						189
-						159
-						174
-						160
-						154
-						124
-						151
-						102
-						164
-						48
-						158
-						59
-						141
-						80
-						140
-						80
-						136
-						43
-						136
-						42
-						140
-						55
-						141
-						43
-						157
-						0
-						157
+						0 0
+						319 0
+						319 189
+						298 189
+						159 174
+						160 154
+						124 151
+						102 164
+						48 158
+						59 141
+						80 140
+						80 136
+						43 136
+						42 140
+						55 141
+						43 157
+						0 157
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 109 187 109 189 0 189 0 187
+					type: PBarredAccess
+					init:
+						109 187
+						109 189
+						0 189
+						0 187
 					yourself:
 				)
 		)
@@ -189,6 +223,20 @@
 				onGoodsStore
 			eachElementDo: #init
 		)
+		;UPGRADE
+;;;		(onBarrels init:)
+;;;		(sky init:)
+;;;		(leftFence init:)
+;;;		(rightFence init:)
+;;;		(roundStones init:)
+;;;		(squareStones init:)
+;;;		(aWindow init:)
+;;;		(rtWindow init:)
+;;;		(onSheriffHouse init:)
+;;;		(onStand init:)
+;;;		(onStable init:)
+;;;		(onGoodsStore init:)
+		
 		(storeDoor
 			init:
 			approachVerbs:
@@ -213,7 +261,9 @@
 				V_VASE V_VEGETABLES
 			locked: TRUE
 		)
-		(if (not (ego script?)) (HandsOn))
+		(if (not (ego script?))
+			(HandsOn)
+		)
 	)
 	
 	(method (doit)
@@ -239,8 +289,9 @@
 				(ego setScript: backToTown)
 			)
 			((ego script?) 0)
-			(
-			(and (not (ego inRect: 210 130 319 185)) local1) (= local1 0))
+			((and (not (ego inRect: 210 130 319 185)) centaurCued)
+				(= centaurCued FALSE)
+			)
 		)
 		(super doit:)
 	)
@@ -253,7 +304,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_ROOM 0 0 1))
+			(V_LOOK
+				(messager say: N_ROOM NULL NULL 1)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -274,7 +327,7 @@
 			)
 			(else
 				(lockSound number: (SoundFX 35) init: play:)
-				(messager say: N_ROOM 0 0 5)
+				(messager say: N_ROOM NULL NULL 5)
 				(sheriffDoor locked: FALSE)
 				(self setScript: inToSheriff)
 			)
@@ -337,7 +390,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_STONES 0 0 1))
+			(V_LOOK
+				(messager say: N_STONES NULL NULL 1)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -359,7 +414,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_STONES 0 0 2))
+			(V_LOOK
+				(messager say: N_STONES NULL NULL 2)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -460,9 +517,9 @@
 		(switch theVerb
 			(V_LOOK
 				(if (>= timeODay TIME_SUNSET)
-					(messager say: N_STAND 0 C_NIGHT)
+					(messager say: N_STAND NULL C_NIGHT)
 				else
-					(messager say: N_STAND 0 0 1)
+					(messager say: N_STAND NULL NULL 1)
 				)
 			)
 			(else 
@@ -482,21 +539,21 @@
 		view 320
 		priority 9
 		entranceTo 322
-		facingLoop 3
+		facingLoop loopN
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
 				(if Night
-					(messager say: N_DOOR 0 0 3)
+					(messager say: N_DOOR NULL NULL 3)
 				else
-					(messager say: N_DOOR 0 0 2)
+					(messager say: N_DOOR NULL NULL 2)
 				)
 			)
 			(V_DO
 				(if Night
-					(messager say: N_DOOR 0 1 1)	;Changed to the right message.
+					(messager say: N_DOOR NULL C_NIGHT 1)	;Changed to the right message.
 				else
 					(curRoom setScript: enterToStore)
 				)
@@ -507,8 +564,12 @@
 			(V_THIEFKIT
 				((ScriptID STREET 0) doVerb: theVerb)
 			)
-			(V_DAGGER (messager say: N_DOOR V_DAGGER 0 1))
-			(V_BRASSKEY (messager say: N_DOOR V_BRASSKEY 0 1))
+			(V_DAGGER
+				(messager say: N_DOOR V_DAGGER NULL 1)
+			)
+			(V_BRASSKEY
+				(messager say: N_DOOR V_BRASSKEY NULL 1)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -527,23 +588,23 @@
 		loop 1
 		priority 9
 		entranceTo 321
-		facingLoop 3
+		facingLoop loopN
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
 				(if (< timeODay TIME_SUNSET)
-					(messager say: N_DOOR 0 C_NIGHT 4)
+					(messager say: N_DOOR NULL C_NIGHT 4)
 				else
-					(messager say: N_DOOR 0 C_NIGHT 3)
+					(messager say: N_DOOR NULL C_NIGHT 3)
 				)
 			)
 			(V_DO
 				(if (< timeODay TIME_SUNSET)
-					(messager say: N_DOOR 0 C_NIGHT 2)
+					(messager say: N_DOOR NULL C_NIGHT 2)
 				else
-					(messager say: N_DOOR 0 0 1)
+					(messager say: N_DOOR NULL NULL 1)
 				)
 			)
 			(V_LOCKPICK
@@ -552,8 +613,12 @@
 			(V_THIEFKIT
 				((ScriptID STREET 0) doVerb: theVerb)
 			)
-			(V_DAGGER (messager say: N_DOOR V_DAGGER 0 1))
-			(V_BRASSKEY (messager say: N_DOOR V_BRASSKEY 0 1))
+			(V_DAGGER
+				(messager say: N_DOOR V_DAGGER NULL 1)
+			)
+			(V_BRASSKEY
+				(messager say: N_DOOR V_BRASSKEY NULL 1)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -601,14 +666,14 @@
 )
 
 (instance hildeTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_CENTAUR 0 0 2))
+			(V_LOOK
+				(messager say: N_CENTAUR NULL NULL 2)
+			)
 			(V_DO (messager say: N_CENTAUR V_DO))
 			(V_TALK
-				(SolvePuzzle POINTS_TALKTOCENTAURGIRL 1)
+				(SolvePuzzle f320TalkToHilde 1)
 				(super doVerb: theVerb &rest)
 			)
 			(V_MONEY
@@ -617,20 +682,27 @@
 						((Clone Ware) name: {Apples} price: {1})
 						((Clone Ware) name: {Vegetables} price: {1})
 				)
-				(switch ((ScriptID 551 0) doit:)
-					(noFunds (messager say: N_ROOM 0 C_NOFUNDS))
-					(buyNothing (messager say: N_CENTAUR 0 C_BUYNOTHING)) ;Added in an unused message
+				(switch ((ScriptID WARE 0) doit:)
+					(noFunds
+						(messager say: N_ROOM NULL C_NOFUNDS)
+					)
+					(buyNothing
+						;Added in an unused message
+						(messager say: N_CENTAUR NULL C_BUYNOTHING)
+					)
 					(buyApples
-						(SolvePuzzle POINTS_BUYAPPLES 3)
+						(SolvePuzzle f320BuyApples 3)
 						(ego setScript: buyFruit)
 					)
 					(buyVegetables
-						(SolvePuzzle POINTS_BUYAPPLES 3)
+						(SolvePuzzle f320BuyApples 3)
 						(ego setScript: buyVeg)
 					)
 				)
 			)
-			(V_FLOWERS (messager say: N_CENTAUR V_FLOWERS))
+			(V_FLOWERS
+				(messager say: N_CENTAUR V_FLOWERS)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -663,13 +735,13 @@
 )
 
 (instance tailScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (Random 40 100)))
+			(0
+				(= cycles (Random 40 100))
+			)
 			(1
-				(newProp setCycle: EndLoop)
+				(tail setCycle: EndLoop)
 				(= state -1)
 			)
 		)
@@ -677,30 +749,33 @@
 )
 
 (instance centaurScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 3))
+			(0
+				(HandsOff)
+				(= seconds 3)
+			)
 			(1
 				(if (not (Btst fBeenIn320))
 					(User canControl: FALSE)
-					(messager say: N_ROOM 0 C_FIRSTENTRY 0 self)
+					(messager say: N_ROOM NULL C_FIRSTENTRY 0 self)
 				else
 					(= cycles 2)
 				)
 			)
 			(2
 				(if (not (Btst fBeenIn320))
-					(messager say: N_CENTAUR 0 0 3 self)
+					(messager say: N_CENTAUR NULL NULL 3 self)
 					(User canControl: TRUE)
-					(= local1 1)
+					(= centaurCued 1)
 				else
 					(= ticks 30)
 				)
 			)
 			(3
-				(if (not (ego script?)) (HandsOn))
+				(if (not (ego script?))
+					(HandsOn)
+				)
 				(self dispose:)
 			)
 		)
@@ -708,22 +783,22 @@
 )
 
 (instance egoWakes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 7))
+			(0
+				(= seconds 7)
+			)
 			(1
 				(HandsOff)
 				(ego setCycle: BegLoop self)
 			)
 			(2
 				(NormalEgo)
-				(messager say: N_ROOM 0 0 11 self)
+				(messager say: N_ROOM NULL NULL 11 self)
 			)
 			(3
-				(if nearStand
-					(messager say: N_ROOM 0 C_OUTOFSTALL 17 self)
+				(if sleepNearStall
+					(messager say: N_ROOM NULL C_OUTOFSTALL 17 self)
 				else
 					(self cue:)
 				)
@@ -735,49 +810,51 @@
 				(ego use: iSilver 1)
 				(= ticks 30)
 			)
-			(5 (self dispose:))
+			(5
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance to330 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo -20 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 330))
+			(1
+				(curRoom newRoom: 330)
+			)
 		)
 	)
 )
 
 (instance backToTown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo (ego x?) 275 self)
 			)
-			(1 (curRoom newRoom: 300))
+			(1
+				(curRoom newRoom: 300)
+			)
 		)
 	)
 )
 
 (instance comeIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 45 174 self)
 			)
-			(1 (= seconds 1))
+			(1
+				(= seconds 1)
+			)
 			(2
 				(NormalEgo)
 				(HandsOn)
@@ -788,8 +865,6 @@
 )
 
 (instance enterToStore of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -799,14 +874,14 @@
 			(1
 				(ego setMotion: PolyPath 167 140 self)
 			)
-			(2 (curRoom newRoom: 322))
+			(2
+				(curRoom newRoom: 322)
+			)
 		)
 	)
 )
 
 (instance inToSheriff of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -816,14 +891,14 @@
 			(1
 				(ego setMotion: MoveTo 89 120 self)
 			)
-			(2 (curRoom newRoom: 321))
+			(2
+				(curRoom newRoom: 321)
+			)
 		)
 	)
 )
 
 (instance outOfStore of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -834,60 +909,66 @@
 				(storeDoor close:)
 				(= ticks 30)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance comeFromTown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 250 184 self)
 			)
-			(1 (= seconds 1))
-			(2 (HandsOn) (self dispose:))
+			(1
+				(= seconds 1)
+			)
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance buyFruit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 C_BUYFRUIT 1 self)
+				(messager say: N_ROOM NULL C_BUYFRUIT 1 self)
 			)
 			(1
 				(HandsOn)
 				(ego get: iFruit 10)
 				(= ticks 30)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance buyVeg of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 C_BUYVEGETABLES 1 self)
+				(messager say: N_ROOM NULL C_BUYVEGETABLES 1 self)
 			)
 			(1
 				(HandsOn)
 				(ego get: iVegetables 5)
 				(= ticks 30)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -905,7 +986,7 @@
 	(method (init)
 		(= nightPalette 2320)
 		(PalVary PALVARYTARGET 2320)
-		(kernel_128 1320)
+		(AssertPalette 1320)
 		(= font userFont)
 		(super init: hildeBust hildeEye hildeMouth &rest)
 	)

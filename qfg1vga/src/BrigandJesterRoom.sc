@@ -182,6 +182,17 @@
 			eachElementDo: #init
 			doit:
 		)
+		;UPGRADE
+;;;		((ScriptID 98 1) init:)
+;;;		((ScriptID 98 2) init:)
+;;;		((ScriptID 98 3) init:)
+;;;		((ScriptID 98 5) init:)
+;;;		((ScriptID 98 31) init:)
+;;;		(littleSign init:)
+;;;		((ScriptID 98 33) init:)
+;;;		((ScriptID 98 34) init:)
+;;;		((ScriptID 98 35) init:)
+		
 		(if (< howFast 3)
 			((ScriptID 98 25) init: setPri: 14 addToPic:)
 		else

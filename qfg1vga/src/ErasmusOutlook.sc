@@ -68,6 +68,12 @@
 			add: rocks postPile road longShot
 			eachElementDo: #init
 		)
+		;UPGRADE
+;;;		(rocks init:)
+;;;		(postPile init:)
+;;;		(road init:)
+;;;		(longShot init:)
+		
 		(cSound fade:)
 		(StatusLine enable:)
 		(= theEyeIcon (theIconBar at: ICON_LOOK))
@@ -542,6 +548,11 @@
 					add: magicMount farPavilions castle
 					eachElementDo: #init
 				)
+				;UPGRADE
+;;;				(magicMount init:)
+;;;				(farPavilions init:)
+;;;				(castle init:)
+				
 				(= climbingMountain TRUE)
 				(= ticks 260)
 			)

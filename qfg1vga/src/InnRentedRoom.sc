@@ -15,7 +15,7 @@
 (local
 	local0
 )
-(procedure (localproc_0026 &tmp evt)
+(procedure (ClearEvents &tmp evt)
 	(while (not ((= evt (Event new: (| mouseDown keyDown))) type?))
 		(evt dispose:)
 	)
@@ -106,15 +106,15 @@
 )
 
 (instance rm302Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 2))
+			(0
+				(= cycles 2)
+			)
 			(1
 				(EgoSleeps 5 0)
 				(messager say: N_ROOM)
-				(localproc_0026)
+				(ClearEvents)
 				(= cycles 2)
 			)
 			(2

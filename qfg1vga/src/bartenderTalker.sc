@@ -22,7 +22,7 @@
 	(method (init)
 		(= nightPalette 2331)
 		(PalVary PALVARYTARGET 2331)
-		(kernel_128 1331)
+		(AssertPalette 1331)
 		(= font userFont)
 		(super
 			init: bartenderBust bartenderEye bartenderMouth &rest

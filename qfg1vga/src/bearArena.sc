@@ -19,10 +19,23 @@
 
 (local
 	local0
-	[local1 11] = [0 0 0 0 0 0 0 0 0 0 5]
-	[bearCycle1 11] = [0 0 0 1 0 2 0 1 0 0 -32768]
-	[bearCycle2 7] = [1 0 1 1 1 0 -32768]
+	local1 = [0 0 0 0 0 0 0 0 0 0 5]
+	bearCycle1 = [
+		0 0
+		0 1
+		0 2
+		0 1
+		0 0
+		PATHEND
+		]
+	bearCycle2 = [
+		1 0
+		1 1
+		1 0
+		PATHEND
+		]
 )
+
 (instance bearLegs of Prop
 	(properties
 		x 149
@@ -62,7 +75,7 @@
 	(method (init)
 		(= nightPalette 1422)
 		(PalVary PALVARYTARGET 1422)
-		(kernel_128 422)
+		(AssertPalette 422)
 		(super init:)
 	)
 	
@@ -116,11 +129,13 @@
 )
 
 (instance aFightScript of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			(local0 (= local0 (= cycles 0)))
+			(local0
+				(= local0
+					(= cycles 0)
+				)
+			)
 			((and monsterDazzle (== state 0))
 				(Bclr fMonsterDazzled)
 				(self changeState: 7)
@@ -142,7 +157,10 @@
 					stopUpd:
 					action: 0
 				)
-				(if (Btst fFlag285) (Bclr fFlag285) (self cue:))
+				(if (Btst fFlag285)
+					(Bclr fFlag285)
+					(self cue:)
+				)
 				(if (not (Random 0 2)) (= state -1))
 				(switch (Random 0 1)
 					(0

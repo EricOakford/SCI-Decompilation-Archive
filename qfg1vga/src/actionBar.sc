@@ -13,8 +13,6 @@
 )
 
 (instance actionBar of GameControls
-	(properties)
-	
 	(method (init)
 		(self
 			window: actWin
@@ -61,8 +59,7 @@
 	)
 	
 	(method (hide)
-		((theIconBar at: ICON_WALK)
-			cursor:
+		((theIconBar at: ICON_WALK) cursor:
 			(switch egoGait
 				(MOVE_WALK 940)
 				(MOVE_RUN 937)
@@ -313,8 +310,6 @@
 )
 
 (instance actWin of GloryWindow
-	(properties)
-	
 	(method (open)
 		(self top: 30 left: 37 bottom: 60 right: 280 priority: -1)
 		(super open:)

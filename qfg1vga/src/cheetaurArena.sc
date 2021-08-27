@@ -19,9 +19,38 @@
 
 (local
 	local0
-	[local1 37] = [0 0 0 0 0 0 0 0 0 2 0 0 1 2 2 0 0 0 1 0 2 3 0 0 0 -32768 0 0 2 0 0 0 3 0 0 0 -32768]
-	[monsterCycle 11] = [0 0 0 1 0 2 0 1 0 0 -32768]
+	local1 = [
+		0 0
+		0 0
+		0 0
+		0 0
+		0 2
+		0 0
+		1 2
+		2 0
+		0 0
+		1 0
+		2 3
+		0 0
+		0
+		PATHEND
+		0 0
+		2 0
+		0 0
+		3 0
+		0 0
+		PATHEND
+		]
+	monsterCycle = [
+		0 0
+		0 1
+		0 2
+		0 1
+		0 0
+		PATHEND
+		]
 )
+
 (instance cheetMusic of Sound
 	(properties
 		number 2
@@ -72,7 +101,7 @@
 	(method (init)
 		(= nightPalette 1442)
 		(PalVary PALVARYTARGET 1442)
-		(kernel_128 442)
+		(AssertPalette 442)
 		(super init:)
 	)
 	
@@ -117,11 +146,13 @@
 )
 
 (instance aFightScript of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			(local0 (= local0 (= cycles 0)))
+			(local0
+				(= local0
+					(= cycles 0)
+				)
+			)
 			((and monsterDazzle (== state 0) (not script))
 				(self changeState: 7)
 				(Bclr fMonsterDazzled)
@@ -144,7 +175,10 @@
 					setPri: -1
 				)
 				(legs setPri: 5 stopUpd:)
-				(if (Btst fFlag285) (Bclr fFlag285) (self cue:))
+				(if (Btst fFlag285)
+					(Bclr fFlag285)
+					(self cue:)
+				)
 				(switch (Random 0 1)
 					(0
 						(client setCycle: TimedCycle @monsterCycle self)
@@ -161,7 +195,7 @@
 				(= ticks 25)
 			)
 			(2
-				(Bclr 284)
+				(Bclr fFlag284)
 				(if (cheetaur tryAttack: (cheetaur opponent?))
 					(cheetaur ateEgo: 1 setPri: 14)
 				)

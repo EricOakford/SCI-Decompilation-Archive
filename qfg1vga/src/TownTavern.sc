@@ -53,32 +53,88 @@
 	drinkOrdered
 	drinkConsumed
 	numberOfAlesDrunk
-	local7
+	nearBarstool
 	bartenderAttention
 	tookNote
-	local10
+	nearCards
 	crusherAnnoyed
 	local12
 	local13
-	gEgoCycleSpeed
-	gEgoMoveSpeed
-	[local16 8] = [0 6 -23 27 25 22 -26 999]
-	[local24 5] = [0 20 24 21 999]
-	[local29 5]
-	[local34 4] = [0 -23 999 3]
-	[local38 6] = [0 3 4 6 5 999]
-	[local44 8]
-	[drinkConsumed2 2] = [0 999]
-	[drinkConsumed4 6] = [0 34 4 6 5 999]
-	[numberOfAlesDrunk0 8]
-	[numberOfAlesDrunk8 2] = [0 999]
-	[local70 12] = [0 22 40 41 25 46 47 44 42 43 45 999]
-	[bartenderAttention2 4]
-	[bartenderAttention6 2] = [0 999]
+	saveCycleSpeed
+	saveMoveSpeed
+	barKeepTellMainBranch = [
+		STARTTELL
+		C_NAME
+		-23		;C_DRINKS
+		C_TOWN
+		C_TAVERN
+		C_CRUSHER
+		-26		;C_THIEVESGUILD
+		ENDTELL
+		]
+	barKeepTell1 = [
+		STARTTELL
+		C_ALE
+		C_TROLLSWEAT
+		C_DRAGONBREATH
+		ENDTELL
+		]
+	[barKeepTellTree 5]
+	barKeepTellKeys = [
+		STARTTELL
+		-23		;C_DRINKS
+		ENDTELL
+		3
+		]
+	bakerTellMainBranch = [
+		STARTTELL
+		C_BAKERY
+		C_CARDS
+		C_NAME
+		C_FISH
+		ENDTELL
+		]
+	[bakerTellTree 8]
+	bakerTellKeys = [
+		STARTTELL
+		ENDTELL
+		]
+	butcherTellMainBranch = [
+		STARTTELL
+		C_BUTCHERSHOP
+		C_CARDS
+		C_NAME
+		C_FISH
+		ENDTELL
+		]
+	[butcherTellTree 8]
+	butcherTellKeys = [
+		STARTTELL
+		ENDTELL
+		]
+	crusherTellMainBranch = [
+		STARTTELL
+		C_CRUSHER
+		C_ANNOYED2
+		C_BARETEETH2
+		C_TAVERN
+		C_ANNOYED4
+		C_BARETEETH4
+		C_CRUSHERIGNORES2
+		C_ANNOYED3
+		C_BARETEETH3
+		C_WHATSTHEPASSWORD
+		ENDTELL
+		]
+	[crusherTellTree 4]
+	crusherTellKeys = [
+		STARTTELL
+		ENDTELL
+		]
 )
 (instance rm331 of Room
 	(properties
-		noun 20
+		noun N_ROOM
 		picture 331
 		style WIPELEFT
 	)
@@ -86,44 +142,32 @@
 	(method (init)
 		(self setRegions: TOWN)
 		(walkHandler add: self)
-		(= [local29 0] @local16)
-		(= [local29 1] @local24)
-		(= [local29 2] 999)
-		(= [local44 0] @local38)
-		(= [local44 1] 999)
-		(= [numberOfAlesDrunk0 0] @drinkConsumed4)
-		(= [numberOfAlesDrunk0 1] 999)
-		(= [bartenderAttention2 0] @local70)
-		(= [bartenderAttention2 1] 999)
+		(= [barKeepTellTree 0] @barKeepTellMainBranch)
+		(= [barKeepTellTree 1] @barKeepTell1)
+		(= [barKeepTellTree 2] ENDTELL)
+		(= [bakerTellTree 0] @bakerTellMainBranch)
+		(= [bakerTellTree 1] ENDTELL)
+		(= [butcherTellTree 0] @butcherTellMainBranch)
+		(= [butcherTellTree 1] ENDTELL)
+		(= [crusherTellTree 0] @crusherTellMainBranch)
+		(= [crusherTellTree 1] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						306
-						189
-						306
-						162
-						197
-						162
-						181
-						146
-						143
-						146
-						137
-						152
-						88
-						152
-						51
-						189
-						0
-						189
+						0 0
+						319 0
+						319 189
+						306 189
+						306 162
+						197 162
+						181 146
+						143 146
+						137 152
+						88 152
+						51 189
+						0 189
 					yourself:
 				)
 		)
@@ -132,14 +176,16 @@
 		(super init:)
 		(= crusherAnnoyed 0)
 		(= drinkConsumed 0)
-		(if (>= timeODay TIME_SUNSET) (windowShudder init:))
-		(barKeepTeller init: bartender @local16 @local29 @local34)
+		(if (>= timeODay TIME_SUNSET)
+			(windowShudder init:)
+		)
+		(barKeepTeller init: bartender @barKeepTellMainBranch @barKeepTellTree @barKeepTellKeys)
 		(bartender
 			init:
 			actions: barKeepTeller
 			setScript: bartenderScript
 		)
-		(crusherTeller init: crusher @local70 @bartenderAttention2 @bartenderAttention6)
+		(crusherTeller init: crusher @crusherTellMainBranch @crusherTellTree @crusherTellKeys)
 		(crusher init: posn: 31 164 stopUpd:)
 		(Bclr fTookBarNote)
 		(cond 
@@ -150,10 +196,19 @@
 				)
 				(Bset fTookBarNote)
 			)
-			((Btst fBeatBrutus) (= barNote noteNosyRead) (Bset fTookBarNote))
-			((and (Btst fSpiedOnThieves) (== barNote noteArchery)) (= barNote noteArcheryRead))
-			((and (Btst fBearGone) (<= barNote noteSuspicious)) (= barNote noteSuspiciousRead))
-			((== barNote noteArchery) (Bset fTookBarNote))
+			((Btst fBeatBrutus)
+				(= barNote noteNosyRead)
+				(Bset fTookBarNote)
+			)
+			((and (Btst fSpiedOnThieves) (== barNote noteArchery))
+				(= barNote noteArcheryRead)
+			)
+			((and (Btst fBearGone) (<= barNote noteSuspicious))
+				(= barNote noteSuspiciousRead)
+			)
+			((== barNote noteArchery)
+				(Bset fTookBarNote)
+			)
 		)
 		(curRoom
 			setFeatures:
@@ -183,6 +238,7 @@
 ;;;		(onFloor init:)
 ;;;		(onWholeKeg init:)
 ;;;		(onBar init:)
+		(deck init:)
 		
 		(Bset fOrderedDrink)
 		(Bclr fEgoSitting)
@@ -208,9 +264,9 @@
 				V_VASE V_VEGETABLES
 			ignoreActors:
 		)
-		(player1Teller init: player1 @drinkConsumed4 @numberOfAlesDrunk0 @numberOfAlesDrunk8)
+		(player1Teller init: player1 @butcherTellMainBranch @butcherTellTree @butcherTellKeys)
 		(player1 init: actions: player1Teller setCycle: Forward)
-		(player2Teller init: player2 @local38 @local44 @drinkConsumed2)
+		(player2Teller init: player2 @bakerTellMainBranch @bakerTellTree @bakerTellKeys)
 		(player2 init: actions: player2Teller setCycle: Forward)
 		(smoke init: setPri: 4 setCycle: Forward startUpd:)
 		(trap init: setPri: 5)
@@ -230,13 +286,19 @@
 		(cond 
 			(script)
 			((ego script?) 0)
-			((== (ego edgeHit?) 3) (curRoom setScript: sExit))
+			((== (ego edgeHit?) SOUTH)
+				(curRoom setScript: sExit)
+			)
 		)
 		(cond 
-			(
-			(and (ego inRect: 190 140 310 166) (not local10)) (= local10 1) (ego setScript: cardScript))
-			(
-			(and (not (ego inRect: 190 140 310 166)) local10) (= local10 0) (ego setScript: 0))
+			((and (ego inRect: 190 140 310 166) (not nearCards))
+				(= nearCards TRUE)
+				(ego setScript: cardScript)
+			)
+			((and (not (ego inRect: 190 140 310 166)) nearCards)
+				(= nearCards FALSE)
+				(ego setScript: 0)
+			)
 		)
 		(super doit:)
 	)
@@ -273,17 +335,24 @@
 				(Bset fTookBarNote)
 				(= tookNote TRUE)
 				(++ barNote)
-				(SolvePuzzle POINTS_PICKUPNOTE 2)
-				(messager say: N_PAPER V_DO 0 1 self)
+				(SolvePuzzle f331GetNote 2)
+				(messager say: N_PAPER V_DO NULL 1 self)
 			)
 			(2
-				(messager say: N_ROOM 0 C_READPAPER 1 self)
+				(messager say: N_ROOM NULL C_READPAPER 1 self)
 			)
 			(3
 				(cond 
-					((== barNote noteSuspicious) (messager say: N_ROOM 0 76))
-					((== barNote noteArchery) (messager say: N_ROOM 0 66))
-					(else (messager say: N_ROOM 0 68) (= barNote noteNosyRead))
+					((== barNote noteSuspicious)
+						(messager say: N_ROOM NULL C_SUSPICIOUS)
+					)
+					((== barNote noteArchery)
+						(messager say: N_ROOM NULL C_ARCHERY)
+					)
+					(else
+						(messager say: N_ROOM NULL C_NOSY)
+						(= barNote noteNosyRead)
+					)
 				)
 				(= noteState NULL)
 			)
@@ -375,7 +444,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst fEgoSitting) (head setCel: 1 stopUpd:))
+				(if (Btst fEgoSitting)
+					(head setCel: 1 stopUpd:)
+				)
 				(messager say: N_BAR V_LOOK C_SITTINGDOWN)
 			)
 			(else 
@@ -435,16 +506,25 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_KEG1 V_LOOK))
+			(V_LOOK
+				(messager say: N_KEG1 V_LOOK)
+			)
 			(V_DO
 				(if bartenderAttention
 					(cond 
-						((not (Btst fEgoSitting)) (messager say: N_BARTENDER 0 16))
-						((> drinkConsumed 0) (messager say: N_KEG3 0 C_BARINTERACTIONS))
-						(else (messager say: N_BARTENDER 0 8 2) (= drinkOrdered 0))
+						((not (Btst fEgoSitting))
+							(messager say: N_BARTENDER NULL C_SITDOWNFIRST)
+						)
+						((> drinkConsumed drinkNOTHING)
+							(messager say: N_KEG3 NULL C_BARINTERACTIONS)
+						)
+						(else
+							(messager say: N_BARTENDER NULL C_CANTBUYDRINK 2)
+							(= drinkOrdered drinkNOTHING)
+						)
 					)
 				else
-					(messager say: N_KEG1 0 C_BARINTERACTIONS)
+					(messager say: N_KEG1 NULL C_BARINTERACTIONS)
 				)
 			)
 			(else 
@@ -467,16 +547,25 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_KEG2 V_LOOK))
+			(V_LOOK
+				(messager say: N_KEG2 V_LOOK)
+			)
 			(V_DO
 				(if bartenderAttention
 					(cond 
-						((not (Btst fEgoSitting)) (messager say: N_BARTENDER 0 16))
-						((> drinkConsumed 0) (messager say: N_KEG3 0 C_BARINTERACTIONS))
-						(else (messager say: N_BARTENDER 0 8 2) (= drinkOrdered 0))
+						((not (Btst fEgoSitting))
+							(messager say: N_BARTENDER NULL C_SITDOWNFIRST)
+						)
+						((> drinkConsumed drinkNOTHING)
+							(messager say: N_KEG3 NULL C_BARINTERACTIONS)
+						)
+						(else
+							(messager say: N_BARTENDER NULL C_CANTBUYDRINK 2)
+							(= drinkOrdered drinkNOTHING)
+						)
 					)
 				else
-					(messager say: N_KEG2 0 9)
+					(messager say: N_KEG2 NULL C_BARINTERACTIONS)
 				)
 			)
 			(else 
@@ -499,16 +588,25 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_KEG3 V_LOOK))
+			(V_LOOK
+				(messager say: N_KEG3 V_LOOK)
+			)
 			(V_DO
 				(if bartenderAttention
 					(cond 
-						((not (Btst fEgoSitting)) (messager say: N_BARTENDER 0 16))
-						((> drinkConsumed 0) (messager say: N_KEG3 0 C_BARINTERACTIONS))
-						(else (messager say: N_BARTENDER 0 8 2) (= drinkOrdered 0))
+						((not (Btst fEgoSitting))
+							(messager say: N_BARTENDER NULL C_SITDOWNFIRST)
+						)
+						((> drinkConsumed drinkNOTHING)
+							(messager say: N_KEG3 NULL C_BARINTERACTIONS)
+						)
+						(else
+							(messager say: N_BARTENDER NULL C_CANTBUYDRINK 2)
+							(= drinkOrdered drinkNOTHING)
+						)
 					)
 				else
-					(messager say: N_KEG3 0 C_BARINTERACTIONS)
+					(messager say: N_KEG3 NULL C_BARINTERACTIONS)
 				)
 			)
 			(else 
@@ -544,7 +642,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst fEgoSitting) (head setCel: 2 stopUpd:))
+				(if (Btst fEgoSitting)
+					(head setCel: 2 stopUpd:)
+				)
 				(messager say: N_KEGS V_LOOK)
 			)
 			(else 
@@ -565,8 +665,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if
-				(and (ego inRect: 137 138 180 155) (not (Btst fTookBarNote)))
+				(if (and (ego inRect: 137 138 180 155) (not (Btst fTookBarNote)))
 					(messager say: N_FLOOR V_LOOK C_SEEPAPER)
 				else
 					(messager say: N_FLOOR V_LOOK C_BARINTERACTIONS)
@@ -601,18 +700,7 @@
 		view 331
 		cel 1
 		priority 14
-		signal $4010
-	)
-	;Added interactivity with the drink mug
-	(method (doVerb theVerb)
-		(switch theVerb
-			(V_LOOK
-				(messager say: N_MUG V_LOOK)
-			)
-			(V_DO
-				(messager say: N_MUG V_DO)
-			)
-		)
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -625,7 +713,7 @@
 		approachY 155
 		view 331
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
@@ -658,7 +746,7 @@
 		noun N_RIGHTSTOOL
 		view 331
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -671,7 +759,7 @@
 		loop 3
 		cel 3
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -685,7 +773,7 @@
 		loop 3
 		cel 2
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -696,7 +784,7 @@
 		view 331
 		loop 8
 		priority 12
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 )
 
@@ -707,7 +795,7 @@
 		noun N_WINDOW
 		view 331
 		loop 9
-		signal $0001
+		signal stopUpdOn
 	)
 )
 
@@ -720,16 +808,20 @@
 		view 331
 		loop 3
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst fEgoSitting) (head setCel: 1 stopUpd:))
+				(if (Btst fEgoSitting)
+					(head setCel: 1 stopUpd:)
+				)
 				(messager say: N_BARBER V_LOOK)
 			)
-			(V_TALK (messager say: N_BARBER V_TALK))
+			(V_TALK
+				(messager say: N_BARBER V_TALK)
+			)
 			(else 
 				(curRoom doVerb: theVerb &rest)
 			)
@@ -746,21 +838,30 @@
 		approachY 150
 		view 331
 		priority 11
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_PAPER V_LOOK C_SEEPAPER))
+			(V_LOOK
+				(messager say: N_PAPER V_LOOK C_SEEPAPER)
+			)
 			(V_DO
 				(if (not (Btst fEgoSitting))
 					(ego get: iPaper)
 					(= tookNote TRUE)
 					(if local1
 						(cond 
-							((== barNote noteSuspicious) (messager say: N_ROOM 0 76))
-							((== barNote noteArchery) (messager say: N_ROOM 0 66))
-							(else (messager say: N_ROOM 0 68) (= barNote noteNosyRead))
+							((== barNote noteSuspicious)
+								(messager say: N_ROOM NULL C_SUSPICIOUS)
+							)
+							((== barNote noteArchery)
+								(messager say: N_ROOM NULL C_ARCHERY)
+							)
+							(else
+								(messager say: N_ROOM NULL C_NOSY)
+								(= barNote noteNosyRead)
+							)
 						)
 					else
 						(curRoom cue:)
@@ -783,7 +884,7 @@
 		view 331
 		loop 8
 		priority 12
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -795,7 +896,7 @@
 		loop 2
 		cel 3
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 1
 	)
 )
@@ -806,7 +907,7 @@
 		y 163
 		view 338
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -818,7 +919,7 @@
 		noun N_SMOKE
 		view 331
 		loop 1
-		signal $4000
+		signal ignrAct
 		cycleSpeed 12
 		detailLevel 2
 	)
@@ -831,7 +932,7 @@
 		view 331
 		loop 4
 		priority 11
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		detailLevel 2
 	)
 )
@@ -851,7 +952,7 @@
 		view 337
 		loop 2
 		priority 3
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 12
 		detailLevel 2
 	)
@@ -861,12 +962,19 @@
 			(V_DO
 				(if bartenderAttention
 					(cond 
-						((not (Btst fEgoSitting)) (messager say: N_BARTENDER 0 16))
-						((> drinkConsumed 0) (messager say: N_KEG3 0 C_BARINTERACTIONS))
-						(else (messager say: N_BARTENDER 0 8 2) (= drinkOrdered 0))
+						((not (Btst fEgoSitting))
+							(messager say: N_BARTENDER NULL C_SITDOWNFIRST)
+						)
+						((> drinkConsumed drinkNOTHING)
+							(messager say: N_KEG3 NULL C_BARINTERACTIONS)
+						)
+						(else
+							(messager say: N_BARTENDER NULL C_CANTBUYDRINK 2)
+							(= drinkOrdered drinkNOTHING)
+						)
 					)
 				else
-					(messager say: N_KEG2 0 C_BARINTERACTIONS)
+					(messager say: N_KEG2 NULL C_BARINTERACTIONS)
 				)
 			)
 			(else 
@@ -884,24 +992,24 @@
 		view 331
 		loop 5
 		priority 12
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 40
 		detailLevel 2
 	)
 	
 	(method (cue)
 		(super cue:)
-		(self doVerb: 2)
+		(self doVerb: V_TALK)
 	)
 )
 
 (instance player1Teller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst fEgoSitting) (head setCel: 2 stopUpd:))
+				(if (Btst fEgoSitting)
+					(head setCel: 2 stopUpd:)
+				)
 				(messager say: N_BUTCHER V_LOOK)
 				(return TRUE)
 			)
@@ -931,7 +1039,7 @@
 		loop 7
 		cel 12
 		priority 12
-		signal $0010
+		signal stopUpdOn
 		cycleSpeed 48
 		detailLevel 2
 	)
@@ -943,12 +1051,12 @@
 )
 
 (instance player2Teller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst fEgoSitting) (head setCel: 2 stopUpd:))
+				(if (Btst fEgoSitting)
+					(head setCel: 2 stopUpd:)
+				)
 				(messager say: N_BAKER V_LOOK)
 				(return TRUE)
 			)
@@ -970,8 +1078,6 @@
 )
 
 (instance barKeepTeller of Teller
-	(properties)
-	
 	(method (showDialog &tmp temp0)
 		(if
 			(==
@@ -1023,7 +1129,9 @@
 							((Clone Ware) name: {Breath} price: {25})
 					)
 					(switch ((ScriptID 551 0) doit:)
-						(noFunds (messager say: N_BARTENDER V_MONEY 30))
+						(noFunds
+							(messager say: N_BARTENDER V_MONEY C_NOFUNDS)
+						)
 						(buyAle
 							(messager say: N_BARTENDER V_MONEY C_ORDERALE)
 							(= drinkOrdered drinkAle)
@@ -1060,16 +1168,25 @@
 		view 336
 		loop 2
 		priority 5
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doit)
 		(cond 
-			(
-			(and (< (ego y?) 113) (not (Btst fEgoSitting)) (not local7)) (= local7 1) (bartender setScript: askEgo))
-			((and (> (ego y?) 113) local7) (= local7 0) (bartender setScript: bartenderScript))
-			((or local7 (Btst fEgoSitting)) (= bartenderAttention 1))
-			((and (not local7) (not (Btst fEgoSitting))) (= bartenderAttention 0))
+			((and (< (ego y?) 113) (not (Btst fEgoSitting)) (not nearBarstool))
+				(= nearBarstool TRUE)
+				(bartender setScript: askEgo)
+			)
+			((and (> (ego y?) 113) nearBarstool)
+				(= nearBarstool 0)
+				(bartender setScript: bartenderScript)
+			)
+			((or nearBarstool (Btst fEgoSitting))
+				(= bartenderAttention TRUE)
+			)
+			((and (not nearBarstool) (not (Btst fEgoSitting)))
+				(= bartenderAttention FALSE)
+			)
 		)
 		(super doit: &rest)
 	)
@@ -1119,8 +1236,6 @@
 )
 
 (instance crusherTeller of Teller
-	(properties)
-	
 	(method (showDialog &tmp topic)
 		(if
 			(==
@@ -1129,46 +1244,43 @@
 						showDialog:
 							C_CRUSHER (== crusherAnnoyed 1)
 							C_ANNOYED1 (== crusherAnnoyed 2)
-							41
-							(== crusherAnnoyed 3)
-							25
-							(== crusherAnnoyed 1)
-							46
-							(== crusherAnnoyed 2)
-							47
-							(== crusherAnnoyed 3)
-							44
-							(== crusherAnnoyed 1)
-							42
-							(== crusherAnnoyed 2)
-							43
-							(== crusherAnnoyed 3)
+							C_BARETEETH2 (== crusherAnnoyed 3)
+							C_TAVERN (== crusherAnnoyed 1)
+							C_ANNOYED4 (== crusherAnnoyed 2)
+							C_BARETEETH4 (== crusherAnnoyed 3)
+							C_CRUSHERIGNORES2 (== crusherAnnoyed 1)
+							C_ANNOYED3 (== crusherAnnoyed 2)
+							C_BARETEETH3 (== crusherAnnoyed 3)
 					)
 				)
-				41
+				C_BARETEETH2
 			)
 			(ego setScript: 0)
 			(HandsOff)
 			(crusher setScript: crusherThrows)
 		)
-		(if (== topic 47)
+		(if (== topic C_ANNOYED4)
 			(ego setScript: 0)
 			(HandsOff)
 			(crusher setScript: crusherThrows)
 		)
-		(if (== topic 43)
+		(if (== topic C_BARETEETH3)
 			(ego setScript: 0)
 			(HandsOff)
 			(crusher setScript: crusherThrows)
 		)
-		(if (== topic C_WHATSTHEPASSWORD) (curRoom setScript: talkToHeroScript))
+		(if (== topic C_WHATSTHEPASSWORD)
+			(curRoom setScript: talkToHeroScript)
+		)
 		(return topic)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(if (Btst fEgoSitting) (head setCel: 1 stopUpd:))
+				(if (Btst fEgoSitting)
+					(head setCel: 1 stopUpd:)
+				)
 				(messager say: N_CRUSHER V_LOOK)
 			)
 			(V_DO
@@ -1182,7 +1294,9 @@
 				(if (Btst fEgoSitting)
 					(messager say: N_CRUSHER V_DO C_SITTINGDOWN)
 				else
-					(if (< crusherAnnoyed 3) (++ crusherAnnoyed))
+					(if (< crusherAnnoyed 3)
+						(++ crusherAnnoyed)
+					)
 					(super doVerb: theVerb &rest)
 				)
 			)
@@ -1195,8 +1309,6 @@
 )
 
 (instance oozeDrip of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1207,14 +1319,14 @@
 				(ooze cycleSpeed: (* howFast 2) setCycle: EndLoop)
 				(= cycles (Random 30 50))
 			)
-			(2 (self init:))
+			(2
+				(self init:)
+			)
 		)
 	)
 )
 
 (instance sitDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1231,35 +1343,35 @@
 				(ctrStool
 					x: 151
 					y: 143
-					signal: (| (ctrStool signal?) $4000)
+					signal: (| (ctrStool signal?) ignrAct)
 				)
 				(ego
 					view: 504
 					loop: 0
 					setCel: 0
-					signal: (| (ego signal?) $4000)
+					signal: (| (ego signal?) ignrAct)
 					setPri: 14
 				)
 				(self cue:)
 			)
 			(3
-				(ego signal: (| (ego signal?) $4000) setCycle: EndLoop self)
+				(ego signal: (| (ego signal?) ignrAct) setCycle: EndLoop self)
 			)
 			(4
 				(ego loop: 2 posn: 150 140 cel: 0 stopUpd:)
 				(head init: setScript: headMove)
 				(bartender setScript: askEgo)
-				(= bartenderAttention 1)
+				(= bartenderAttention TRUE)
 				(= ticks 30)
 			)
-			(5 (self dispose:))
+			(5
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance standUpScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1275,7 +1387,7 @@
 			)
 			(2
 				(Bclr fEgoSitting)
-				(= bartenderAttention 0)
+				(= bartenderAttention FALSE)
 				(HandsOn)
 				(bartender setScript: bartenderScript)
 				(= ticks 6)
@@ -1286,8 +1398,6 @@
 )
 
 (instance bartenderScript of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			((> local12 1)
@@ -1301,7 +1411,11 @@
 			((== local12 1)
 				(= local12 0)
 				(self cue:)
-				(if local13 (= local13 0) else (= local13 1))
+				(if local13
+					(= local13 0)
+				else
+					(= local13 1)
+				)
 			)
 		)
 		(super doit:)
@@ -1343,8 +1457,6 @@
 )
 
 (instance askEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1355,8 +1467,7 @@
 						setCycle: Walk
 						loop: (if (< (ego x?) (bartender x?)) 1 else 0)
 						cel: -1
-						setMotion:
-							MoveTo
+						setMotion: MoveTo
 							(if (Btst fEgoSitting) (+ (ego x?) 15) else (ego x?))
 							102
 							self
@@ -1367,11 +1478,13 @@
 			)
 			(1
 				(bartender loop: 2 cel: 2 stopUpd:)
-				(if (Btst fEgoSitting) (head setCel: 2))
+				(if (Btst fEgoSitting)
+					(head setCel: 2)
+				)
 				(= cycles 2)
 			)
 			(2
-				(messager say: N_BARTENDER 0 C_WHATYAWANT)
+				(messager say: N_BARTENDER NULL C_WHATYAWANT)
 				(HandsOn)
 				(User canControl: FALSE)
 				(self dispose:)
@@ -1381,8 +1494,6 @@
 )
 
 (instance getAMug of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1423,8 +1534,12 @@
 			(2
 				(Bclr fOrderedDrink)
 				(switch drinkOrdered
-					(drinkAle (self cue:))
-					(drinkSweat (self cue:))
+					(drinkAle
+						(self cue:)
+					)
+					(drinkSweat
+						(self cue:)
+					)
 					(drinkBreath
 						(User canInput: TRUE)
 						(dB setScript: breathScript)
@@ -1455,7 +1570,7 @@
 			)
 			(7
 				(bartender setLoop: (if (== drinkOrdered drinkSweat) 0 else 1) cel: 0)
-				(messager say: N_BARTENDER 0 13)
+				(messager say: N_BARTENDER NULL C_THEREYOUGO)
 				(User canInput: TRUE)
 				(= drinkConsumed drinkOrdered)
 				(= drinkOrdered 0)
@@ -1474,8 +1589,6 @@
 )
 
 (instance breathScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1529,7 +1642,7 @@
 			)
 			(9
 				(bartender setCycle: EndLoop self)
-				(messager say: N_BARTENDER 0 C_THEREYOUGO)
+				(messager say: N_BARTENDER NULL C_THEREYOUGO)
 			)
 			(10
 				(if (Btst fEgoSitting)
@@ -1546,8 +1659,6 @@
 )
 
 (instance drinkDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1559,23 +1670,23 @@
 					(drinkAle
 						(switch numberOfAlesDrunk
 							(1
-								(messager say: N_ROOM 0 C_ALE1 1 self)
+								(messager say: N_ROOM NULL C_ALE1 1 self)
 							)
 							(2
-								(messager say: N_ROOM 0 C_ALE2 1 self)
+								(messager say: N_ROOM NULL C_ALE2 1 self)
 							)
 							(3
-								(messager say: N_ROOM 0 C_ALE3 1)
+								(messager say: N_ROOM NULL C_ALE3 1)
 								(client setScript: tooDrunk)
 							)
 						)
 					)
 					(drinkSweat
-						(messager say: N_ROOM 0 C_DRINKSWEAT)
+						(messager say: N_ROOM NULL C_DRINKSWEAT)
 						(client setScript: tooDrunk)
 					)
 					(drinkBreath
-						(messager say: N_ROOM 0 C_DRINKBREATH 1 self)
+						(messager say: N_ROOM NULL C_DRINKBREATH 1 self)
 					)
 				)
 			)
@@ -1590,7 +1701,9 @@
 				(= drinkConsumed 0)
 				(User canInput: TRUE)
 				(deadMug init: show:)
-				(if 1 (head show:) (ego loop: 2 cel: 0))
+				(if 1 (head show:)
+					(ego loop: 2 cel: 0)
+				)
 				(HandsOn)
 				(User canControl: FALSE)
 				(client setScript: 0)
@@ -1600,8 +1713,6 @@
 )
 
 (instance tooDrunk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1615,8 +1726,12 @@
 			)
 			(2
 				(switch drinkConsumed
-					(drinkAle (messager say: N_ROOM 0 C_TOOMUCHALE))
-					(drinkSweat (messager say: N_ROOM 0 C_SWEATPASSOUT))
+					(drinkAle
+						(messager say: N_ROOM NULL C_TOOMUCHALE)
+					)
+					(drinkSweat
+						(messager say: N_ROOM NULL C_SWEATPASSOUT)
+					)
 				)
 				(= ticks 18)
 			)
@@ -1630,7 +1745,7 @@
 				(self cue:)
 			)
 			(5
-				(SolvePuzzle POINTS_GOTDRUNK -5)
+				(SolvePuzzle f331Drunk -5)
 				(Bset fBarDrunk)
 				(curRoom newRoom: 330)
 			)
@@ -1639,8 +1754,6 @@
 )
 
 (instance breathDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1650,22 +1763,24 @@
 			)
 			(1
 				(deadMug show:)
-				(messager say: N_ROOM 0 C_BREATHDEATH 1 self)
+				(messager say: N_ROOM NULL C_BREATHDEATH 1 self)
 				(ego loop: 5 cel: 0 posn: 151 136)
 			)
 			(2
 				(barSound number: 44 play:)
 				(ego cycleSpeed: (* howFast 3) setCycle: EndLoop self)
 			)
-			(3 (= seconds 2))
-			(4 (EgoDead 140 141 2 3 337))
+			(3
+				(= seconds 2)
+			)
+			(4
+				(EgoDead 140 141 2 3 337)
+			)
 		)
 	)
 )
 
 (instance crusherThrows of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1704,8 +1819,6 @@
 )
 
 (instance crusherEscorts of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1735,14 +1848,12 @@
 )
 
 (instance moveToCrusher of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 				(ego cycleSpeed: 6 moveSpeed: 6)
 				(= ticks 30)
 			)
@@ -1750,10 +1861,10 @@
 				(ego setMotion: MoveTo 79 165 self)
 			)
 			(2
-				(messager say: N_ROOM 0 C_MOVETOCRUSHER 1 self)
+				(messager say: N_ROOM NULL C_MOVETOCRUSHER 1 self)
 			)
 			(3
-				(ego cycleSpeed: gEgoCycleSpeed moveSpeed: gEgoMoveSpeed)
+				(ego cycleSpeed: saveCycleSpeed moveSpeed: saveMoveSpeed)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -1762,8 +1873,6 @@
 )
 
 (instance talkToHeroScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1777,13 +1886,13 @@
 				(if (Btst fLearnedThiefPassword)
 					(switch
 						(Print
-							addText: 19 0 50 1 0 0 331
-							addButton: 1 19 0 49 1 0 14 331
-							addButton: 2 19 0 49 2 0 30 331
-							addButton: 3 19 0 49 3 0 46 331
-							addButton: 4 19 0 49 4 0 62 331
-							addButton: 5 19 0 49 5 0 78 331
-							addButton: 6 19 0 49 6 0 94 331
+							addText: N_PASSWORD NULL C_PICKTHEPASSWORD 1 0 0 331
+							addButton: 1 N_PASSWORD NULL C_PASSWORD 1 0 14 331
+							addButton: 2 N_PASSWORD NULL C_PASSWORD 2 0 30 331
+							addButton: 3 N_PASSWORD NULL C_PASSWORD 3 0 46 331
+							addButton: 4 N_PASSWORD NULL C_PASSWORD 4 0 62 331
+							addButton: 5 N_PASSWORD NULL C_PASSWORD 5 0 78 331
+							addButton: 6 N_PASSWORD NULL C_PASSWORD 6 0 94 331
 							init:
 						)
 						(1 (self cue:))
@@ -1792,7 +1901,7 @@
 						(4 (self cue:))
 						(5
 							(if (and (not [egoStats STEALTH]) (not [egoStats PICK]))
-								(messager say: N_ROOM 0 C_NOTATHIEF)
+								(messager say: N_ROOM NULL C_NOTATHIEF)
 								(self setScript: crusherThrows)
 							else
 								(self setScript: crusherEscorts)
@@ -1802,13 +1911,13 @@
 					)
 				else
 					(Print
-						addText: 19 0 50 1 0 0 331
-						addButton: 1 19 0 49 1 0 14 331
-						addButton: 2 19 0 49 2 0 30 331
-						addButton: 3 19 0 49 3 0 46 331
-						addButton: 4 19 0 49 4 0 62 331
-						addButton: 5 19 0 49 7 0 78 331
-						addButton: 6 19 0 49 6 0 94 331
+						addText: N_PASSWORD NULL C_PICKTHEPASSWORD 1 0 0 331
+						addButton: 1 N_PASSWORD NULL C_PASSWORD 1 0 14 331
+						addButton: 2 N_PASSWORD NULL C_PASSWORD 2 0 30 331
+						addButton: 3 N_PASSWORD NULL C_PASSWORD 3 0 46 331
+						addButton: 4 N_PASSWORD NULL C_PASSWORD 4 0 62 331
+						addButton: 5 N_PASSWORD NULL C_PASSWORD 7 0 78 331
+						addButton: 6 N_PASSWORD NULL C_PASSWORD 6 0 94 331
 						init:
 					)
 					(self cue:)
@@ -1817,13 +1926,13 @@
 			(2
 				(switch crusherAnnoyed
 					(1
-						(messager say: N_CRUSHER 0 C_CRUSHERIGNORES 1 self)
+						(messager say: N_CRUSHER NULL C_CRUSHERIGNORES 1 self)
 					)
 					(2
-						(messager say: N_CRUSHER 0 C_EYESDARKEN 1 self)
+						(messager say: N_CRUSHER NULL C_EYESDARKEN 1 self)
 					)
 					(3
-						(messager say: N_CRUSHER 0 C_CRUSHERUPSET 1)
+						(messager say: N_CRUSHER NULL C_CRUSHERUPSET 1)
 						(ego setScript: 0)
 						(HandsOff)
 						(self setScript: crusherThrows)
@@ -1832,7 +1941,7 @@
 			)
 			(3
 				(User canControl: TRUE canInput: TRUE)
-				(theGame setCursor: 943 1 140 80)
+				(theGame setCursor: 943 TRUE 140 80)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -1841,8 +1950,6 @@
 )
 
 (instance headMove of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1855,8 +1962,6 @@
 )
 
 (instance describeTavern of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1876,8 +1981,6 @@
 )
 
 (instance putItBack of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1890,16 +1993,17 @@
 				(paper show:)
 				(= tookNote FALSE)
 				(Bclr fTookBarNote)
-				(messager say: N_ROOM 0 C_PUTITBACK 1 self)
+				(messager say: N_ROOM NULL C_PUTITBACK 1 self)
 			)
-			(3 (self dispose:) (HandsOn))
+			(3
+				(self dispose:)
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance sEnter of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1907,7 +2011,10 @@
 				(NormalEgo)
 				(ego init: posn: 162 240 setMotion: MoveTo 156 175 self)
 			)
-			(1 (NormalEgo) (= cycles 2))
+			(1
+				(NormalEgo)
+				(= cycles 2)
+			)
 			(2
 				(if (not (Btst fBeenIn331))
 					(crusher setScript: describeTavern)
@@ -1921,8 +2028,6 @@
 )
 
 (instance sExit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1930,28 +2035,27 @@
 				(barTune fade:)
 				(ego setMotion: MoveTo (ego x?) 240 self)
 			)
-			(1 (curRoom newRoom: 330))
+			(1
+				(curRoom newRoom: 330)
+			)
 		)
 	)
 )
 
 (instance cardScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp [temp0 30] temp30)
+	(method (changeState newState &tmp [str 30] cardNum)
 		(switch (= state newState)
 			(0 (= ticks (Random 250 400)))
 			(1
-				(Printf
-					@temp0
-					(Format @temp0 331 0 (= temp30 (Random 1 1000)))
+				(Printf @str
+					(Format @str 331 0 (= cardNum (Random 1 1000)))
 				)
 				(= ticks (Random 250 350))
 			)
 			(2
 				(switch (Random 1 2)
-					(1 (messager say: N_BAKER 0 C_GOFISH))
-					(2 (messager say: N_BUTCHER 0 C_GOFISH))
+					(1 (messager say: N_BAKER NULL C_GOFISH))
+					(2 (messager say: N_BUTCHER NULL C_GOFISH))
 				)
 				(self init:)
 			)

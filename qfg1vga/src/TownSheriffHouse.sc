@@ -27,20 +27,20 @@
 )
 
 (local
-	gEgoPriority
+	savePri
 	safeCrackSuccess
 	local2
-	local3
+	egoUpstairs
 	vaseOutOfWay
 	safeRevealed
 	safeOpen
-	local7
-	local8
-	local9
+	toX
+	toY
+	hearTheDoor
 	sheriffCue
-	gEgoMoveSpeed
-	gEgoCycleSpeed
-	local13
+	saveMoveSpeed
+	saveCycleSpeed
+	safeCrackTries
 )
 (instance rm321 of Room
 	(properties
@@ -53,71 +53,53 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						189
-						302
-						189
-						226
-						155
-						227
-						143
-						202
-						142
-						191
-						137
-						136
-						142
-						129
-						151
-						81
-						155
-						76
-						169
-						50
-						170
-						25
-						102
-						102
-						52
-						190
-						52
-						190
-						50
-						101
-						50
-						20
-						102
-						44
-						170
-						3
-						173
-						3
-						189
-						0
-						189
+						0 0
+						319 0
+						319 189
+						302 189
+						226 155
+						227 143
+						202 142
+						191 137
+						136 142
+						129 151
+						81 155
+						76 169
+						50 170
+						25 102
+						102 52
+						190 52
+						190 50
+						101 50
+						20 102
+						44 170
+						3 173
+						3 189
+						0 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 221 175 169 185 147 177 151 160 195 151 220 158
+					type: PBarredAccess
+					init:
+						221 175
+						169 185
+						147 177
+						151 160
+						195 151
+						220 158
 					yourself:
 				)
 		)
 		(LoadMany RES_SCRIPT REVERSE DPATH)
 		(LoadMany RES_VIEW 321 602 601 525 507 503)
-		(LoadMany
-			RES_SOUND 8 13 83
+		(LoadMany RES_SOUND 8 13 83
 			(SoundFX 52)
 			(SoundFX 35)
 		)
 		(super init:)
-		(SolvePuzzle POINTS_ENTERSHERIFFHOUSE 5 2)
+		(SolvePuzzle f321EnterSheriffHouse 5 THIEF)
 		(self
 			setFeatures:
 				onDesk
@@ -142,9 +124,15 @@
 		(tumbleMusic init:)
 		(miscMusic init:)
 		(= deathMusic (SoundFX 52))
-		(if (Btst fCrackedSafe) (= safeOpen TRUE))
-		(if (Btst fUncoveredSafe) (= safeRevealed TRUE))
-		(if (Btst fStoleVase) (= vaseOutOfWay TRUE))
+		(if (Btst fCrackedSafe)
+			(= safeOpen TRUE)
+		)
+		(if (Btst fUncoveredSafe)
+			(= safeRevealed TRUE)
+		)
+		(if (Btst fStoleVase)
+			(= vaseOutOfWay TRUE)
+		)
 		(NormalEgo)
 		(ego
 			posn: 163 188
@@ -179,39 +167,42 @@
 		(if (not (Btst fStoleCandelabra))
 			(candelabra setPri: 9 init: stopUpd:)
 		)
-		(if (not (Btst fStoleMusicBox)) (musicBox init: stopUpd:))
+		(if (not (Btst fStoleMusicBox))
+			(musicBox init: stopUpd:)
+		)
 		(sneakMusic play:)
 	)
 	
 	(method (doit)
 		(cond 
 			((ego script?) 0)
-			((and (== (ego edgeHit?) 3) (not (Btst fOttoBackToBed)))
+			((and (== (ego edgeHit?) SOUTH) (not (Btst fOttoBackToBed)))
 				(if Night
 					(= daySheriffBreakIn Day)
 					(curRoom newRoom: 320)
 				else
-					(EgoDead 20 21 0 4 602) ;reversed the loop and cel to allow the death icon (Otto squishing the Hero) to appear.
+				;reversed the loop and cel to allow the death icon (Otto squishing the Hero) to appear.
+					(EgoDead 20 21 0 4 602)
 				)
 			)
 			(
 				(and
 					(ego inRect: 26 165 69 168)
-					(not local3)
-					(not (Btst 196))
+					(not egoUpstairs)
+					(not (Btst fWokeUpSheriff))
 					(or (== (ego loop?) 7) (== (ego loop?) 3))
 				)
-				(= local3 1)
+				(= egoUpstairs TRUE)
 				(ego setScript: upScript)
 			)
 			(
 				(and
-					local3
+					egoUpstairs
 					(ego inRect: 92 48 121 55)
 					(not (Btst fWokeUpSheriff))
 					(or (== (ego loop?) 5) (== (ego loop?) 1))
 				)
-				(= local3 0)
+				(= egoUpstairs FALSE)
 				(ego setScript: downScript)
 			)
 		)
@@ -237,9 +228,15 @@
 	
 	(method (cue)
 		(switch sheriffCue
-			(cueComeOnIn (messager say: N_ROOM 0 0 2))
-			(cueFaceTheMusic (messager say: N_ROOM 0 0 5))
-			(cueRight (messager say: N_ROOM 0 0 15))
+			(cueComeOnIn
+				(messager say: N_ROOM NULL NULL 2)
+			)
+			(cueFaceTheMusic
+				(messager say: N_ROOM NULL NULL 5)
+			)
+			(cueRight
+				(messager say: N_ROOM NULL NULL 15)
+			)
 		)
 	)
 )
@@ -260,12 +257,20 @@
 		(switch theVerb
 			(V_LOOK
 				(cond 
-					((not safeOpen) (messager say: N_SAFE V_LOOK C_LOOTSAFE))
-					((Btst fSearchedSafe) (messager say: N_SAFE V_LOOK C_SAFEEMPTY))
-					(else (messager say: N_SAFE V_LOOK C_MYMISTAKE))
+					((not safeOpen)
+						(messager say: N_SAFE V_LOOK C_LOOTSAFE)
+					)
+					((Btst fSearchedSafe)
+						(messager say: N_SAFE V_LOOK C_SAFEEMPTY)
+					)
+					(else
+						(messager say: N_SAFE V_LOOK C_MYMISTAKE)
+					)
 				)
 			)
-			(V_DO (ego setScript: toTheSafe))
+			(V_DO
+				(ego setScript: toTheSafe)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -291,12 +296,14 @@
 		(switch theVerb
 			(V_LOOK
 				(if (Btst fSearchedDrawer)
-					(messager say: 10 1 2)
+					(messager say: N_DESK V_LOOK C_DRAWERLOOTED)
 				else
-					(messager say: 10 1 1)
+					(messager say: N_DESK V_LOOK C_DRAWERNOTLOOTED)
 				)
 			)
-			(V_DO (ego setScript: toTheDesk))
+			(V_DO
+				(ego setScript: toTheDesk)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -322,12 +329,20 @@
 		(switch theVerb
 			(V_LOOK
 				(cond 
-					((not safeOpen) (messager say: 12 1 4))
-					((Btst fSearchedSafe) (messager say: 12 1 5))
-					(else (messager say: 12 1 3))
+					((not safeOpen)
+						(messager say: N_SAFE V_LOOK C_LOOTSAFE)
+					)
+					((Btst fSearchedSafe)
+						(messager say: N_SAFE V_LOOK C_SAFEEMPTY)
+					)
+					(else
+						(messager say: N_SAFE V_LOOK C_MYMISTAKE)
+					)
 				)
 			)
-			(V_DO (ego setScript: toTheSafe))
+			(V_DO
+				(ego setScript: toTheSafe)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -479,12 +494,14 @@
 		loop 4
 		cel 2
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (ego setScript: toTheBox))
+			(V_DO
+				(ego setScript: toTheBox)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -498,19 +515,27 @@
 		y 88
 		noun N_SAFEDOOR
 		view 321
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
 				(cond 
-					((not safeOpen) (messager say: N_SAFEDOOR V_LOOK C_LOOTSAFE))
-					((Btst fSearchedSafe) (messager say: N_SAFEDOOR V_LOOK C_SAFEEMPTY))
-					(else (messager say: N_SAFEDOOR V_LOOK C_LOOKINSAFE))
+					((not safeOpen)
+						(messager say: N_SAFEDOOR V_LOOK C_LOOTSAFE)
+					)
+					((Btst fSearchedSafe)
+						(messager say: N_SAFEDOOR V_LOOK C_SAFEEMPTY)
+					)
+					(else
+						(messager say: N_SAFEDOOR V_LOOK C_LOOKINSAFE)
+					)
 				)
 			)
-			(V_DO (ego setScript: toTheSafe))
+			(V_DO
+				(ego setScript: toTheSafe)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -525,7 +550,7 @@
 		noun N_FIREBURNS
 		view 321
 		loop 8
-		signal $4000
+		signal ignrAct
 		detailLevel 2
 	)
 )
@@ -538,7 +563,7 @@
 		view 321
 		loop 10
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		detailLevel 2
 	)
 )
@@ -551,14 +576,12 @@
 		view 321
 		loop 9
 		priority 1
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		detailLevel 2
 	)
 )
 
-(instance egoHead of Prop
-	(properties)
-)
+(instance egoHead of Prop)
 
 (instance chestDrawer of Prop
 	(properties
@@ -580,7 +603,9 @@
 					(messager say: N_DRAWER V_LOOK C_DRAWERNOTLOOTED)
 				)
 			)
-			(V_DO (ego setScript: toTheDesk))
+			(V_DO
+				(ego setScript: toTheDesk)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -599,7 +624,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(= local9 1)
+				(= hearTheDoor TRUE)
 				(ego setScript: toTheLeftDoor)
 			)
 			(V_DO
@@ -625,7 +650,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(= local9 1)
+				(= hearTheDoor TRUE)
 				(ego setScript: toTheRightDoor)
 			)
 			(V_DO
@@ -651,9 +676,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(= local9 1)
-				(messager say: N_ROOM 0 0 23 self)
-				(= local9 0)
+				(= hearTheDoor TRUE)
+				(messager say: N_ROOM NULL NULL 23 self)
+				(= hearTheDoor FALSE)
 			)
 			(V_DO
 				(ego setScript: toTheBottomDoor)
@@ -665,21 +690,13 @@
 	)
 )
 
-(instance stars of Prop
-	(properties)
-)
+(instance stars of Prop)
 
-(instance pillow of Prop
-	(properties)
-)
+(instance pillow of Prop)
 
-(instance otto of Actor
-	(properties)
-)
+(instance otto of Actor)
 
-(instance sheriff of Actor
-	(properties)
-)
+(instance sheriff of Actor)
 
 (instance theVase of Actor
 	(properties
@@ -693,7 +710,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (ego setScript: toTheVase))
+			(V_DO
+				(ego setScript: toTheVase)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -701,13 +720,9 @@
 	)
 )
 
-(instance gerta of Actor ;Gerta is the Sheriff's wife
-	(properties)
-)
+(instance gerta of Actor) ;Gerta is the Sheriff's wife
 
 (instance comeOnInScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -725,7 +740,7 @@
 			)
 			(2
 				(= sheriffCue cueComeOnIn)
-				(messager say: N_ROOM 0 0 1 curRoom)
+				(messager say: N_ROOM NULL NULL 1 curRoom)
 				(= seconds 3)
 			)
 			(3
@@ -738,14 +753,12 @@
 )
 
 (instance faceTheMusicScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(Bset fOttoBackToBed)
-				(messager say: N_ROOM 0 0 3 self)
+				(messager say: N_ROOM NULL NULL 3 self)
 			)
 			(1
 				(musicBox setCel: 3)
@@ -759,8 +772,8 @@
 					setCycle: Walk
 					stopUpd:
 				)
-				(= sheriffCue 2)
-				(messager say: N_ROOM 0 0 4 curRoom)
+				(= sheriffCue cueFaceTheMusic)
+				(messager say: N_ROOM NULL NULL 4 curRoom)
 				(= seconds 3)
 			)
 			(2
@@ -782,14 +795,18 @@
 			)
 			(6
 				(cond 
-					((ego has: iMusicBox) (messager say: N_ROOM 0 C_TOOKMUSICBOX))
+					((ego has: iMusicBox)
+						(messager say: N_ROOM NULL C_TOOKMUSICBOX)
+					)
 					((Btst fOpenMusicBox)
 						(miscMusic stop:)
-						(messager say: N_ROOM 0 C_MUSICBOXOPEN)
+						(messager say: N_ROOM NULL C_MUSICBOXOPEN)
 						(musicBox setCel: 2 forceUpd:)
 						(Bclr fOpenMusicBox)
 					)
-					(else (messager say: N_ROOM 0 C_MUSICBOXCLOSED))
+					(else
+						(messager say: N_ROOM NULL C_MUSICBOXCLOSED)
+					)
 				)
 				(otto
 					setLoop: 2
@@ -819,13 +836,11 @@
 )
 
 (instance vaseDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 0 7 self)
+				(messager say: N_ROOM NULL NULL 7 self)
 			)
 			(1
 				(Bset fMovedVase)
@@ -839,14 +854,12 @@
 )
 
 (instance vaseScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(LoadMany RES_SOUND 14)
-				(messager say: N_ROOM 0 0 8)
+				(messager say: N_ROOM NULL NULL 8)
 				(theVase startUpd: setCycle: EndLoop self)
 			)
 			(1 (self cue:))
@@ -869,7 +882,7 @@
 				(= cycles 2)
 			)
 			(5
-				(messager say: N_ROOM 0 0 9 self)
+				(messager say: N_ROOM NULL NULL 9 self)
 			)
 			(6
 				(ego setScript: bustedScript)
@@ -879,8 +892,6 @@
 )
 
 (instance bustedScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -927,7 +938,9 @@
 			)
 			(3
 				(cond 
-					((> local13 2) (EgoDead 19 22 0 4 602))
+					((> safeCrackTries 2)
+						(EgoDead 19 22 0 4 602)
+					)
 					((== safeCrackSuccess 2)
 						(sneakMusic stop:)
 						(EgoDead 145 146 1 0 503)
@@ -936,7 +949,7 @@
 					;However, it doesn't match the palette correctly.
 					(else
 						(sneakMusic stop:)
-						(messager say: N_ROOM 0 0 10 self)
+						(messager say: N_ROOM NULL NULL 10 self)
 					)
 				)
 			)
@@ -951,12 +964,12 @@
 )
 
 (instance openSafeDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Btst fSearchedSafe)) (ego get: iSilver 50))
+				(if (not (Btst fSearchedSafe))
+					(ego get: iSilver 50)
+				)
 				(HandsOff)
 				(miscMusic number: (SoundFX 35) loop: 1 play:)
 				(if (not (Btst fCrackedSafe))
@@ -966,19 +979,21 @@
 				)
 			)
 			(1
-				(SolvePuzzle POINTS_CRACKSAFE 1 2)
+				(SolvePuzzle f321CrackSafe 1 THIEF)
 				(if (not (Btst fCrackedSafe))
 					(++ safeCrackSuccess)
 					(onOpenSafe init:)
-					(messager say: N_ROOM 0 0 24 self)
+					(messager say: N_ROOM NULL NULL 24 self)
 				)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(if (Btst fSearchedSafe)
-					(messager say: N_ROOM 0 C_SAFEEMPTY 1 self)
+					(messager say: N_ROOM NULL C_SAFEEMPTY 1 self)
 				else
-					(messager say: N_ROOM 0 C_FINDCOINBAG 1 self)
+					(messager say: N_ROOM NULL C_FINDCOINBAG 1 self)
 				)
 			)
 			(4
@@ -989,15 +1004,15 @@
 			(5
 				(if (not (Btst fSearchedSafe))
 					(Bset fSearchedSafe)
-					(SolvePuzzle POINTS_TAKESAFEMONEY 1 THIEF)
-					(messager say: N_ROOM 0 C_LOOTSAFE 1 self)
+					(SolvePuzzle f321LootSafe 1 THIEF)
+					(messager say: N_ROOM NULL C_LOOTSAFE 1 self)
 				else
 					(self cue:)
 				)
 			)
 			(6
 				(HandsOn)
-				(ego cycleSpeed: gEgoCycleSpeed moveSpeed: gEgoMoveSpeed)
+				(ego cycleSpeed: saveCycleSpeed moveSpeed: saveMoveSpeed)
 				(self dispose:)
 			)
 		)
@@ -1005,8 +1020,6 @@
 )
 
 (instance raisePainting of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1017,16 +1030,17 @@
 				(= cycles 2)
 			)
 			(1
-				(messager say: N_ROOM 0 0 11 self)
+				(messager say: N_ROOM NULL NULL 11 self)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance robDesk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1036,20 +1050,21 @@
 			)
 			(1
 				(Bset fSearchedDrawer)
-				(messager say: N_ROOM 0 0 12 self)
+				(messager say: N_ROOM NULL NULL 12 self)
 			)
 			(2
-				(SolvePuzzle POINTS_SEARCHSHERIFFDRAWER 1 THIEF)
+				(SolvePuzzle f321SearchDrawer 1 THIEF)
 				(chestDrawer setCycle: BegLoop self)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance lowerPainting of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1059,7 +1074,7 @@
 				(= cycles 2)
 			)
 			(1
-				(messager say: N_ROOM 0 0 13 self)
+				(messager say: N_ROOM NULL NULL 13 self)
 			)
 			(2
 				(HandsOn)
@@ -1071,8 +1086,6 @@
 )
 
 (instance bottomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1107,7 +1120,9 @@
 			(4
 				(otto setMotion: MoveTo fStoleCandelabra 134 self)
 			)
-			(5 (= ticks 60))
+			(5
+				(= ticks 60)
+			)
 			(6
 				(sneakMusic stop:)
 				(EgoDead 98 99 0 4 602)
@@ -1117,8 +1132,6 @@
 )
 
 (instance leftScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1197,7 +1210,7 @@
 					setCel: 0
 					setCycle: 0
 					setMotion: 0
-					posn: 52 fUncoveredSafe
+					posn: 52 183
 				)
 				(egoHead
 					view: 507
@@ -1225,8 +1238,6 @@
 )
 
 (instance rightScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1247,7 +1258,7 @@
 			)
 			(3
 				(= sheriffCue cueRight)
-				(messager say: N_ROOM 0 0 14 curRoom)
+				(messager say: N_ROOM NULL NULL 14 curRoom)
 				(pillow
 					view: 602
 					loop: 6
@@ -1382,29 +1393,27 @@
 )
 
 (instance upScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoPriority (ego priority?))
+				(= savePri (ego priority?))
 				(ego setPri: 2 setLoop: 3 setMotion: PolyPath 26 110 self)
 			)
 			(1
 				(ego setLoop: 0 setMotion: PolyPath 155 53 self)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(ego setMotion: MoveTo 155 53 self)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
+				(= toX 0)
+				(= toY 0)
 				(NormalEgo)
 				(HandsOn)
 				(self dispose:)
@@ -1414,8 +1423,6 @@
 )
 
 (instance downScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1426,17 +1433,17 @@
 				(ego setMotion: PolyPath 46 166 self)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(ego setMotion: MoveTo 46 175 self)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
-				(ego setPri: gEgoPriority)
+				(= toX 0)
+				(= toY 0)
+				(ego setPri: savePri)
 				(NormalEgo)
 				(HandsOn)
 				(self dispose:)
@@ -1446,14 +1453,12 @@
 )
 
 (instance toTheDesk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local7 89)
-				(= local8 157)
+				(= toX 89)
+				(= toY 157)
 				(if (< (ego y?) 55)
 					(ego setMotion: PolyPath 118 51 self)
 				else
@@ -1468,36 +1473,37 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
+				(= toX 0)
+				(= toY 0)
 				(if (Btst fSearchedDrawer)
-					(messager say: N_ROOM 0 0 16 self)
+					(messager say: N_ROOM NULL NULL 16 self)
 				else
 					(ego setScript: robDesk)
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance toThePortrait of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local7 219)
-				(= local8 145)
+				(= toX 219)
+				(= toY 145)
 				(if (< (ego y?) 55)
 					(ego setMotion: PolyPath 118 51 self)
 				else
@@ -1512,45 +1518,54 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
+				(= toX 0)
+				(= toY 0)
 				(cond 
-					((not vaseOutOfWay) (ego setScript: vaseScript))
+					((not vaseOutOfWay)
+						(ego setScript: vaseScript)
+					)
 					((not (Btst fUncoveredSafe))
 						(Bset fUncoveredSafe)
 						(= safeRevealed TRUE)
-						(SolvePuzzle POINTS_MOVEPAINTING 1 THIEF)
+						(SolvePuzzle f321MovePainting 1 THIEF)
 						(ego setScript: raisePainting)
 					)
-					(safeOpen (messager say: N_ROOM 0 0 17 self))
-					(else (ego setScript: lowerPainting))
+					(safeOpen
+						(messager say: N_ROOM NULL NULL 17 self)
+					)
+					(else
+						(ego setScript: lowerPainting)
+					)
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance toTheSafe of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (and safeOpen (not (Btst fSearchedSafe))) (ego get: iSilver 50))
+				(if (and safeOpen (not (Btst fSearchedSafe)))
+					(ego get: iSilver 50)
+				)
 				(HandsOff)
-				(= local7 219)
-				(= local8 145)
-				(= gEgoMoveSpeed (ego moveSpeed?))
-				(= gEgoCycleSpeed (ego cycleSpeed?))
+				(= toX 219)
+				(= toY 145)
+				(= saveMoveSpeed (ego moveSpeed?))
+				(= saveCycleSpeed (ego cycleSpeed?))
 				(if (< (ego y?) 55)
 					(ego setMotion: PolyPath 118 51 self)
 				else
@@ -1565,9 +1580,9 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
@@ -1577,10 +1592,12 @@
 				(= ticks 30)
 			)
 			(4
-				(= local7 0)
-				(= local8 0)
+				(= toX 0)
+				(= toY 0)
 				(cond 
-					((== safeCrackSuccess 2) (ego setScript: bustedScript))
+					((== safeCrackSuccess 2)
+						(ego setScript: bustedScript)
+					)
 					(
 						(and
 							(TrySkill PICK 0 (- lockPickBonus 20))
@@ -1593,35 +1610,40 @@
 						(Bclr fCrackedSafe)
 						(= safeOpen FALSE)
 						(onOpenSafe dispose:)
-						(messager say: N_ROOM 0 C_SAFEEMPTY 2 self)
+						(messager say: N_ROOM NULL C_SAFEEMPTY 2 self)
 					)
 					(safeOpen
 						(Bset fSearchedSafe)
-						(SolvePuzzle POINTS_TAKESAFEMONEY 1 THIEF)
-						(messager say: N_ROOM 0 C_LOOTSAFE 1 self)
+						(SolvePuzzle f321LootSafe 1 THIEF)
+						(messager say: N_ROOM NULL C_LOOTSAFE 1 self)
 					)
-					((> (++ local13) 2) (curRoom setScript: bustedScript))
-					(else (messager say: N_ROOM 0 C_CRACKFAIL 1 self))
+					((> (++ safeCrackTries) 2)
+						(curRoom setScript: bustedScript)
+					)
+					(else
+						(messager say: N_ROOM NULL C_CRACKFAIL 1 self)
+					)
 				)
 			)
 			(5
-				(ego cycleSpeed: gEgoCycleSpeed moveSpeed: gEgoMoveSpeed)
+				(ego cycleSpeed: saveCycleSpeed moveSpeed: saveMoveSpeed)
 				(= seconds 2)
 			)
-			(6 (HandsOn) (self dispose:))
+			(6
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance toTheVase of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local7 219)
-				(= local8 145)
+				(= toX 219)
+				(= toY 145)
 				(if (< (ego y?) 55)
 					(ego setMotion: PolyPath 118 51 self)
 				else
@@ -1636,21 +1658,21 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
+				(= toX 0)
+				(= toY 0)
 				(if (Btst fMovedVase)
 					(Bset fStoleVase)
 					(= vaseOutOfWay TRUE)
 					(messager say: N_ROOM NULL NULL 18 self)
-					(SolvePuzzle POINTS_TAKEVASE 1 THIEF)
+					(SolvePuzzle f321StealVase 1 THIEF)
 					(theVase dispose:)
 				else
 					(ego setScript: vaseDown)
@@ -1668,14 +1690,12 @@
 )
 
 (instance toTheCandelabra of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local7 81)
-				(= local8 130)
+				(= toX 81)
+				(= toY 130)
 				(if (< (ego y?) 55)
 					(ego setMotion: PolyPath 118 51 self)
 				else
@@ -1690,20 +1710,20 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
+				(= toX 0)
+				(= toY 0)
 				(Bset fStoleCandelabra)
 				(candelabra dispose:)
-				(messager say: N_ROOM 0 0 19 self)
-				(SolvePuzzle POINTS_TAKECANDELABRA 1 THIEF)
+				(messager say: N_ROOM NULL NULL 19 self)
+				(SolvePuzzle f321StealCandelabra 1 THIEF)
 			)
 			(4
 				(HandsOn)
@@ -1715,14 +1735,12 @@
 )
 
 (instance toTheBox of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local7 207)
-				(= local8 174)
+				(= toX 207)
+				(= toY 174)
 				(if (< (ego y?) 55)
 					(ego setMotion: PolyPath 118 51 self)
 				else
@@ -1737,23 +1755,23 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(ego illegalBits: 0 ignoreActors: 1)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
+				(= toX 0)
+				(= toY 0)
 				(if (Btst fStoleMusicBox)
 					(musicBox dispose:)
 					(miscMusic stop:)
-					(messager say: N_ROOM 0 0 20 self)
+					(messager say: N_ROOM NULL NULL 20 self)
 					(onTable init:)
-					(SolvePuzzle POINTS_TAKEMUSICBOX 1 THIEF)
+					(SolvePuzzle f321StealMusicBox 1 THIEF)
 				else
 					(Bset fStoleMusicBox)
 					(ego setScript: faceTheMusicScript)
@@ -1761,7 +1779,9 @@
 			)
 			(4
 				(HandsOn)
-				(if (Btst fStoleMusicBox) (ego get: iMusicBox))
+				(if (Btst fStoleMusicBox)
+					(ego get: iMusicBox)
+				)
 				(self dispose:)
 			)
 		)
@@ -1769,14 +1789,12 @@
 )
 
 (instance toTheLeftDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local7 125)
-				(= local8 47)
+				(= toX 125)
+				(= toY 47)
 				(if (< (ego y?) 55)
 					(self cue:)
 				else
@@ -1791,19 +1809,19 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
-				(if (== local9 1)
-					(messager say: N_ROOM 0 0 21 self)
-					(= local9 0)
+				(= toX 0)
+				(= toY 0)
+				(if (== hearTheDoor TRUE)
+					(messager say: N_ROOM NULL NULL 21 self)
+					(= hearTheDoor FALSE)
 				else
 					(ego setScript: leftScript)
 				)
@@ -1814,14 +1832,12 @@
 )
 
 (instance toTheRightDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local7 154)
-				(= local8 47)
+				(= toX 154)
+				(= toY 47)
 				(if (< (ego y?) 55)
 					(self cue:)
 				else
@@ -1836,37 +1852,38 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
-				(if (== local9 1)
-					(messager say: N_ROOM 0 0 22 self)
-					(= local9 0)
+				(= toX 0)
+				(= toY 0)
+				(if (== hearTheDoor TRUE)
+					(messager say: N_ROOM NULL NULL 22 self)
+					(= hearTheDoor FALSE)
 				else
 					(ego setScript: rightScript)
 				)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance toTheBottomDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local7 148)
-				(= local8 140)
+				(= toX 148)
+				(= toY 140)
 				(if (< (ego y?) 55)
 					(ego setMotion: PolyPath 118 51 self)
 				else
@@ -1881,19 +1898,19 @@
 				)
 			)
 			(2
-				(if (> local7 0)
+				(if (> toX 0)
 					(NormalEgo)
-					(ego setMotion: PolyPath local7 local8 self)
+					(ego setMotion: PolyPath toX toY self)
 				else
 					(self cue:)
 				)
 			)
 			(3
-				(= local7 0)
-				(= local8 0)
-				(if (== local9 1)
-					(messager say: N_ROOM 0 0 23 self)
-					(= local9 0)
+				(= toX 0)
+				(= toY 0)
+				(if (== hearTheDoor TRUE)
+					(messager say: N_ROOM NULL NULL 23 self)
+					(= hearTheDoor FALSE)
 				else
 					(ego setScript: bottomScript)
 				)

@@ -18,7 +18,7 @@
 )
 
 (local
-	[local0 5] = [0 150 123]
+	local0 = [0 150 123]
 	local5
 	local6
 )
@@ -105,7 +105,7 @@
 	(method (init)
 		(= nightPalette 1437)
 		(PalVary PALVARYTARGET 1437)
-		(kernel_128 437)
+		(AssertPalette 437)
 		(super init:)
 	)
 	
@@ -116,8 +116,6 @@
 )
 
 (instance mantrayScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(client view: 437 setPri: 5 ignoreActors:)
@@ -125,7 +123,7 @@
 	
 	(method (doit)
 		(if (and monsterDazzle (== state 0) (not script))
-			(= cycles (+ cycles monsterDazzle))
+			(+= cycles monsterDazzle)
 			(= monsterDazzle 0)
 			(Bclr fMonsterDazzled)
 		)
@@ -164,7 +162,9 @@
 				(client setMotion: MoveTo 169 64 self)
 			)
 			(2
-				(if (== (client x?) 169) (client action: 1))
+				(if (== (client x?) 169)
+					(client action: 1)
+				)
 				(if (not (tail script?))
 					(= register 1)
 					(tail setScript: attackScript)
@@ -187,8 +187,6 @@
 )
 
 (instance recoilScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -200,8 +198,7 @@
 					setCycle: Forward
 					setMotion: MoveTo 194 48 self
 				)
-				(if
-				(and (not (Random 0 3)) (not (tail script?)))
+				(if (and (not (Random 0 3)) (not (tail script?)))
 					(tail setScript: attackScript)
 				)
 			)
@@ -213,8 +210,6 @@
 )
 
 (instance attackScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

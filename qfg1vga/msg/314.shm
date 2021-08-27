@@ -4,7 +4,7 @@
 
 ;;; CASES
 
-(define C_NOFUNDS 7)
+(define C_CUEIT 7)
 (define C_ALREADYKNOW 8)
 (define C_LEARNSPELL 9)
 (define C_FAMILIARAWAKE 1)
@@ -22,7 +22,7 @@
 (define C_CURSE 15)
 (define C_DAMIANO 16)
 (define C_FIREDART 17)
-(define C_CURSE1 18)
+(define C_CURSE_EFFECT 18)
 (define C_ERANA 19)
 (define C_ERASMUS 20)
 (define C_FAERYFOLK 21)

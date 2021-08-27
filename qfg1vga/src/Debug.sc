@@ -18,8 +18,10 @@
 	debugRoom 0
 )
 
+;NOTE: This script was removed from the game.
+; Here is a recreation based loosely on QFG4's script.
+
 (instance debugRoom of Feature
-	
 	(method (init)
 		(super init:)
 		(mouseDownHandler add: self)
@@ -121,8 +123,7 @@
 						(= i (cast first:))
 						(while i
 							(= obj (NodeValue i))
-							(Format
-								@str
+							(Format @str
 								{class: %s\nview: %d\nloop: %d\ncel: %d\nposn: %d %d %d\nheading: %d\npri: %d\nsignal: $%x\nillBits: $%x\n}
 								((obj -super-?) name?)
 								(obj view?)
@@ -181,7 +182,16 @@
 					)
 					(`@r
 						(Format @str
-							{name: %s\nnumber: %d\ncurrent pic: %d\nstyle: %d\nhorizon: %d\nnorth: %d\nsouth: %d\neast: %d\nwest: %d\nscript: %s_}
+							{name: %s\n
+							number: %d\n
+							current pic: %d\n
+							style: %d\n
+							horizon: %d\n
+							north: %d\n
+							south: %d\n
+							east: %d\n
+							west: %d\n
+							script: %s_}
 							(curRoom name?)
 							curRoomNum
 							(curRoom curPic?)
@@ -220,7 +230,6 @@
 					)
 					(`@x
 						(= nr (GetNumber {Set stats to what?}))
-						(= n 0)
 						;Everything before the spells
 						(for ((= n 0)) (< n OPEN) ((++ n))
 							(= [egoStats n] nr)

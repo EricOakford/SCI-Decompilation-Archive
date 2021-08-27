@@ -34,28 +34,156 @@
 )
 
 (local
-	[local0 9] = [0 35 29 -9 -11 -38 31 -15 999]
-	[local9 9] = [0 35 29 -33 -11 -38 31 -15 999]
-	[local18 7] = [0 12 2 16 14 28 999]
-	[local25 6] = [0 30 32 14 -27 999]
-	[local31 5] = [0 37 36 34 999]
-	[local36 9] = [0 35 29 23 47 -11 -9 -13 999]
-	[local45 4] = [0 27 12 999]
-	[local49 6] = [0 30 14 32 46 999]
-	[local55 7] = [0 -12 11 -5 9 -3 999]
-	[local62 4] = [0 -2 -16 999]
-	[local66 5] = [0 15 13 14 999]
-	[local71 7] = [0 8 10 7 17 6 999]
-	[local78 3] = [0 -3 999]
-	[local81 3] = [0 4 999]
-	[local84 8]
-	[local92 7]
-	[local99 10]
-	[local109 7] = [0 -9 -11 -27 -38 -15 999]
-	[local116 7] = [0 -33 -11 -27 -38 -15 999]
-	[local123 5] = [0 -11 -9 -13 999]
-	[local128 8] = [0 -12 -2 -5 -16 -3 999]
-	shameenLicksPaw
+	shameenTellMainBranch = [
+		STARTTELL
+		C_ROOM
+		C_FOOD
+		-9		;C_MERCHANT
+		-11		;C_NAME
+		-38		;C_TOWN
+		C_INN
+		-15		;C_SHEMA
+		ENDTELL
+		]
+	shameenTellMainBranchMerchant = [
+		STARTTELL
+		C_ROOM
+		C_FOOD
+		-33		;C_MERCHANT_HERE
+		-11		;C_NAME
+		-38		;C_TOWN
+		C_INN
+		-15		;C_SHEMA
+		ENDTELL
+		]
+	shameenTell1 = [
+		STARTTELL
+		C_ROBBERY
+		C_BRIGANDS
+		C_WEALTH
+		C_SHAPEIR
+		C_CARAVAN
+		ENDTELL
+		]
+	shameenTell2 = [
+		STARTTELL
+		C_HOMELAND
+		C_KATTA
+		C_SHAPEIR
+		-27		;C_ABDULLA
+		ENDTELL
+		]
+	shameenTell3 = [
+		STARTTELL
+		C_SPIELBURG
+		C_SHERIFF
+		C_OTTO
+		ENDTELL
+		]
+	shemaTellMainBranch = [
+		STARTTELL
+		C_ROOM
+		C_FOOD
+		C_DRINK
+		C_QUESTIONS
+		-11		;C_NAME
+		-9		;C_MERCHANT
+		-13		;C_SHAMEEN
+		ENDTELL
+		]
+	shemaTell1 = [
+		STARTTELL
+		C_ABDULLA
+		C_ROBBERY
+		ENDTELL
+		]
+	shemaTell2 = [
+		STARTTELL
+		C_HOMELAND
+		C_SHAPEIR
+		C_KATTA
+		C_DANCE
+		ENDTELL
+		]
+	merchantTellMainBranch = [
+		STARTTELL
+		-12		;C_ROBBERY
+		C_NAME
+		-5		;C_FRIENDS
+		C_MERCHANT
+		-3		;C_CARPET
+		ENDTELL
+		]
+	merchantTell1 = [
+		STARTTELL
+		-2		;C_BRIGANDS
+		-16		;C_WEALTH
+		ENDTELL
+		]
+	merchantTell2 = [
+		STARTTELL
+		C_SHEMA
+		C_SHAMEEN
+		C_SHAPEIR
+		ENDTELL
+		]
+	merchantTell3 = [
+		STARTTELL
+		C_MAGIC
+		C_MINOTAUR
+		C_LEADER
+		C_WIZARD
+		C_GUARDS
+		ENDTELL
+		]
+	merchantTell4 = [
+		STARTTELL
+		-3		;C_CARPET
+		ENDTELL
+		]
+	merchantTell5 = [
+		STARTTELL
+		C_COMMANDS
+		ENDTELL
+		]
+	[shameenTellTree 8]
+	[shemaTellTree 7]
+	[merchantTellTree 10]
+	shameenTellKeys = [
+		STARTTELL
+		-9		;C_MERCHANT
+		-11		;C_NAME
+		-27		;C_ABDULLA
+		-38		;C_TOWN
+		-15		;C_SHEMA
+		ENDTELL
+		]
+	shameenTellKeysMerchant = [
+		STARTTELL
+		-33		;C_MERCHANT_HERE
+		-11		;C_NAME
+		-27		;C_ABDULLA
+		-38		;C_TOWN
+		-15		;C_SHEMA
+		ENDTELL
+		]
+	shemaTellKeys = [
+		STARTTELL
+		-11		;C_NAME
+		-9		;C_MERCHANT
+		-13		;C_SHAMEEN
+		ENDTELL
+		]
+	merchantTellKeys = [
+		STARTTELL
+		-12		;C_ROBBERY
+		-2		;C_BRIGANDS
+		-5		;C_FRIENDS
+		-16		;C_WEALTH
+		-3		;C_CARPET
+		ENDTELL
+		]
+	lickCount
 	talkedToShameen
 	sittingDown
 	local139
@@ -64,7 +192,7 @@
 	drinkOrdered
 	local143
 	merchantState
-	gEgoCycleSpeed
+	saveSpeed
 )
 (procedure (Innteractions theNoun theVerb)
 	(return
@@ -84,7 +212,7 @@
 						(return TRUE)
 					)
 					((== drinkOrdered mealATTABLE)
-						(messager say: N_ROOM V_STAND C_FINISHDRINKFIRST)
+						(messager say: N_ROOM V_STAND C_DRINK)
 						(return TRUE)
 					)
 					(else
@@ -101,7 +229,7 @@
 			)
 			(else 
 				(if (!= theVerb V_WALK)
-					(messager say: N_ROOM NULL 18)
+					(messager say: N_ROOM NULL C_CUEIT)
 				)
 				(return TRUE)
 			)
@@ -119,36 +247,36 @@
 	(method (init)
 		(walkHandler add: self)
 		(if (or (== timeODay TIME_SUNSET) (== timeODay TIME_NIGHT))
-			(if (not (Btst fMerchantAtInn))
+			(if (not (Btst fSawMerchantAtInn))
 				(= merchantState TRUE)
 			else
 				(= merchantState (Random 0 1))
 			)
 		)
 		(if merchantState
-			(Bset fFlag176)
-			(= [local84 0] @local9)
+			(Bset fMerchantIsAtInn)
+			(= [shameenTellTree 0] @shameenTellMainBranchMerchant)
 		else
-			(= [local84 0] @local0)
+			(= [shameenTellTree 0] @shameenTellMainBranch)
 		)
-		(= [local84 1] @local18)
-		(= [local84 2] @local25)
-		(= [local84 3] @local18)
-		(= [local84 4] @local31)
-		(= [local84 5] @local25)
-		(= [local84 6] 999)
-		(= [local92 0] @local36)
-		(= [local92 1] @local49)
-		(= [local92 2] @local45)
-		(= [local92 3] @local49)
-		(= [local92 4] 999)
-		(= [local99 0] @local55)
-		(= [local99 1] @local62)
-		(= [local99 2] @local71)
-		(= [local99 3] @local66)
-		(= [local99 4] @local78)
-		(= [local99 5] @local81)
-		(= [local99 6] 999)
+		(= [shameenTellTree 1] @shameenTell1)
+		(= [shameenTellTree 2] @shameenTell2)
+		(= [shameenTellTree 3] @shameenTell1)
+		(= [shameenTellTree 4] @shameenTell3)
+		(= [shameenTellTree 5] @shameenTell2)
+		(= [shameenTellTree 6] ENDTELL)
+		(= [shemaTellTree 0] @shemaTellMainBranch)
+		(= [shemaTellTree 1] @shemaTell2)
+		(= [shemaTellTree 2] @shemaTell1)
+		(= [shemaTellTree 3] @shemaTell2)
+		(= [shemaTellTree 4] ENDTELL)
+		(= [merchantTellTree 0] @merchantTellMainBranch)
+		(= [merchantTellTree 1] @merchantTell1)
+		(= [merchantTellTree 2] @merchantTell3)
+		(= [merchantTellTree 3] @merchantTell2)
+		(= [merchantTellTree 4] @merchantTell4)
+		(= [merchantTellTree 5] @merchantTell5)
+		(= [merchantTellTree 6] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -196,9 +324,9 @@
 		)
 		(LoadMany VIEW 1301 302 301 303 304)
 		(LoadMany SOUND 21 50)
-		(rm301 style: (if (== prevRoomNum 302) -32761 else 2))
+		(rm301 style: (if (== prevRoomNum 302) (| BLACKOUT IRISOUT) else WIPELEFT))
 		(super init:)
-		(= disabledActions (| disabledActions (| ACTION_RUN ACTION_SNEAK)))
+		(|= disabledActions (| ACTION_RUN ACTION_SNEAK))
 		(self
 			setFeatures:
 				onSleepDoor
@@ -252,18 +380,18 @@
 			stopUpd:
 		)
 		(SwDoor init: stopUpd:)
-		(if (Btst fFlag176)
-			(Bset fMerchantAtInn)
+		(if (Btst fMerchantIsAtInn)
+			(Bset fSawMerchantAtInn)
 			(merchantTeller
-				init: merchant @local55 @local99 @local128
+				init: merchant @merchantTellMainBranch @merchantTellTree @merchantTellKeys
 			)
 			(merchant actions: merchantTeller init:)
-			(shameenTeller init: shameen @local9 @local84 @local116)
+			(shameenTeller init: shameen @shameenTellMainBranchMerchant @shameenTellTree @shameenTellKeysMerchant)
 		else
-			(shameenTeller init: shameen @local0 @local84 @local109)
+			(shameenTeller init: shameen @shameenTellMainBranch @shameenTellTree @shameenTellKeys)
 		)
 		(shameen actions: shameenTeller init:)
-		(shemaTeller init: shema @local36 @local92 @local123)
+		(shemaTeller init: shema @shemaTellMainBranch @shemaTellTree @shemaTellKeys)
 		(shema init: actions: shemaTeller)
 		(switch prevRoomNum
 			(302
@@ -282,7 +410,7 @@
 		(if (cast contains: merchant)
 			(merchant dispose:)
 		)
-		(Bclr fFlag176)
+		(Bclr fMerchantIsAtInn)
 		(walkHandler delete: self)
 		(= disabledActions NULL)
 		(super dispose:)
@@ -305,7 +433,7 @@
 						(messager say: N_ROOM V_STAND C_EATMEALFIRST)
 					)
 					((== drinkOrdered mealATTABLE)
-						(messager say: N_ROOM V_STAND C_FINISHDRINKFIRST)
+						(messager say: N_ROOM V_STAND C_DRINK)
 					)
 					(else
 						(ego setScript: egoStands)
@@ -333,7 +461,12 @@
 	)
 	
 	(method (init &tmp temp0)
-		(self setPri: 14 ignoreActors: signal: 16 stopUpd:)
+		(self
+			setPri: 14
+			ignoreActors:
+			signal: fixPriOn
+			stopUpd:
+		)
 		(mLegs addToPic:)
 		(mMug addToPic:)
 		(super init:)
@@ -347,8 +480,6 @@
 )
 
 (instance merchantTeller of Teller
-	(properties)
-	
 	(method (showDialog &tmp temp0)
 		(return
 			(if
@@ -387,7 +518,7 @@
 								((Clone Ware) name: {Abdulla a meal} price: {4})
 								((Clone Ware) name: {Abdulla a drink} price: {2})
 						)
-						(switch ((ScriptID 551 0) doit:)
+						(switch ((ScriptID WARE 0) doit:)
 							(noFunds
 								(messager say: N_MERCHANT V_MONEY NULL 3)
 							)
@@ -436,8 +567,6 @@
 )
 
 (instance shemaTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
@@ -447,7 +576,7 @@
 							((Clone Ware) name: {yourself a meal} price: {3})
 							((Clone Ware) name: {yourself a drink} price: {1})
 					)
-					(switch ((ScriptID 551 0) doit:)
+					(switch ((ScriptID WARE 0) doit:)
 						(noFunds
 							(messager say: N_SHEMA V_MONEY C_NOFUNDS)
 						)
@@ -476,7 +605,7 @@
 									)
 								)
 								(freeMeals
-									(messager say: N_SHEMA V_MONEY C_STOPTHAT)
+									(messager say: N_SHEMA V_MONEY C_CUEIT)
 								)
 								(else
 									(= freeMeals 2)
@@ -520,7 +649,7 @@
 	(method (init &tmp temp0)
 		(= nightPalette 1302)
 		(PalVary PALVARYTARGET 1302)
-		(kernel_128 302)
+		(AssertPalette 302)
 		(self x: 232 y: 132 ignoreActors:)
 		(self setScript: shameensIntro)
 		(super init:)
@@ -528,11 +657,12 @@
 )
 
 (instance shameenTeller of Teller
-	(properties)
-	
 	(method (showDialog)
 		(super
-			showDialog: -9 (not (Btst fMerchantAtInn)) -33 (Btst fFlag176) -27 (Btst fMerchantAtInn)
+			showDialog:
+				-9 (not (Btst fSawMerchantAtInn))
+				-33 (Btst fMerchantIsAtInn)
+				-27 (Btst fSawMerchantAtInn)
 		)
 	)
 	
@@ -556,7 +686,7 @@
 						((= wareList (List new:))
 							add: ((Clone Ware) name: {A night's rest} price: {5})
 						)
-						(switch ((ScriptID 551 0) doit:)
+						(switch ((ScriptID WARE 0) doit:)
 							(noFunds
 								(messager say: N_SHAMEEN V_MONEY C_NOFUNDS)
 							)
@@ -653,10 +783,10 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(ego setScript: eatIt)
 			)
-			(1
+			(V_LOOK
 				(if (or (== drinkOrdered mealATTABLE) (== foodOrdered mealATTABLE))
 					(messager say: N_DRINK V_LOOK C_ORDERATTABLE)
 					(= hadDrink TRUE)
@@ -867,11 +997,11 @@
 			(switch theVerb
 				(V_DAGGER
 					(messager say: N_ROOM V_DAGGER)
-					(return 1)
+					(return TRUE)
 				)
 				(V_ROCK
 					(messager say: N_ROOM V_DAGGER)
-					(return 1)
+					(return TRUE)
 				)
 				(V_SWORD
 					(messager say: N_ROOM V_DAGGER)
@@ -889,7 +1019,7 @@
 					(if (or (== foodOrdered mealATTABLE) (== drinkOrdered mealATTABLE))
 						(ego setScript: eatIt)
 					else
-						(messager say: N_TABLE V_DO C_STOPTHAT)
+						(messager say: N_TABLE V_DO C_CUEIT)
 						(return TRUE)
 					)
 				)
@@ -916,7 +1046,7 @@
 					)
 				)
 				(else 
-					(messager say: N_ROOM NULL C_STOPTHAT)
+					(messager say: N_ROOM NULL C_CUEIT)
 					(return TRUE)
 				)
 			)
@@ -953,7 +1083,7 @@
 	(method (init)
 		(= nightPalette 2301)
 		(PalVary PALVARYTARGET 2301)
-		(kernel_128 1301)
+		(AssertPalette 1301)
 		(= font userFont)
 		(super init: shameenBust shameenEye shameenMouth &rest)
 		(brows init: setCycle: Blink)
@@ -978,7 +1108,7 @@
 	(method (init)
 		(= nightPalette 2302)
 		(PalVary PALVARYTARGET 2302)
-		(kernel_128 1302)
+		(AssertPalette 1302)
 		(= font userFont)
 		(super init: shemaBust shemaEye shemaMouth &rest)
 	)
@@ -997,7 +1127,7 @@
 	(method (init)
 		(= nightPalette 2303)
 		(PalVary PALVARYTARGET 2303)
-		(kernel_128 1303)
+		(AssertPalette 1303)
 		(= font userFont)
 		(super init: abdullaBust abdullaEye abdullaMouth &rest)
 	)
@@ -1213,7 +1343,6 @@
 )
 
 (instance egoActions of Actions
-	
 	(method (doVerb theVerb)
 		(return
 			(if (or (== theVerb V_DAGGER) (== theVerb V_SWORD))
@@ -1227,8 +1356,6 @@
 )
 
 (instance eatIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1260,14 +1387,12 @@
 )
 
 (instance feedMerchant of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(messager say: N_MERCHANT V_RATIONS NULL 1 self)
-				(SolvePuzzle 736 2)
+				(SolvePuzzle f301GaveMerchantFood 2)
 			)
 			(1
 				(ego use: iRations 1)
@@ -1279,12 +1404,10 @@
 )
 
 (instance LickIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(++ shameenLicksPaw)
+				(++ lickCount)
 				(shameen
 					setLoop: 2
 					cel: 0
@@ -1293,10 +1416,10 @@
 				)
 			)
 			(1
-				(if (< shameenLicksPaw (Random 2 5))
+				(if (< lickCount (Random 2 5))
 					(self changeState: 0)
 				else
-					(= shameenLicksPaw 0)
+					(= lickCount 0)
 					(shameen setLoop: 4 cel: 0 cycleSpeed: 6 stopUpd:)
 					(= seconds (Random 5 15))
 				)
@@ -1309,8 +1432,6 @@
 )
 
 (instance shameensIntro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1361,19 +1482,17 @@
 )
 
 (instance shameenClaps of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (and (Btst fMerchantAtInn) (not (Btst fMetMerchant)))
+				(if (and (Btst fSawMerchantAtInn) (not (Btst fMetMerchant)))
 					(= seconds 2)
 				else
 					(= ticks 1)
 				)
 			)
 			(1
-				(if (and (Btst fMerchantAtInn) (not (Btst fMetMerchant)))
+				(if (and (Btst fSawMerchantAtInn) (not (Btst fMetMerchant)))
 					(self changeState: 0)
 				else
 					(= ticks 1)
@@ -1458,8 +1577,6 @@
 )
 
 (instance emotionalMerchant of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
@@ -1485,10 +1602,10 @@
 			)
 			(6
 				(if (not (Btst fMetMerchant))
-					(messager say: N_MERCHANT NULL C_EMOTIONALMERCHANT 4 self)
+					(messager say: N_MERCHANT NULL C_EMOTIONAL 4 self)
 					(Bset fMetMerchant)
 				else
-					(messager say: N_MERCHANT NULL C_EMOTIONALMERCHANT 5 self)
+					(messager say: N_MERCHANT NULL C_EMOTIONAL 5 self)
 				)
 			)
 			(7
@@ -1500,8 +1617,6 @@
 )
 
 (instance rentARoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1540,7 +1655,7 @@
 			)
 			(2
 				(HandsOff)
-				(messager say: N_SHAMEEN NULL 26)
+				(messager say: N_SHAMEEN NULL C_RENTROOM)
 				(shameen setCycle: BegLoop self)
 			)
 			(3
@@ -1559,7 +1674,7 @@
 			(5
 				(Bset fSleptAtInn)
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 -32761)
+				(curRoom drawPic: 400 (| BLACKOUT IRISOUT))
 				(self cue:)
 			)
 			(6
@@ -1571,8 +1686,6 @@
 )
 
 (instance comingOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1677,7 +1790,6 @@
 )
 
 (instance comingToClear of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 180))
@@ -1738,7 +1850,6 @@
 )
 
 (instance goingIn of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1751,7 +1862,7 @@
 					(= foodOrdered mealNOTHING)
 				)
 				(if (== drinkOrdered mealCLEARED)
-					(= drinkOrdered 0)
+					(= drinkOrdered mealNOTHING)
 				)
 				(shema
 					loop: 1
@@ -1807,12 +1918,10 @@
 )
 
 (instance sitScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= gEgoCycleSpeed (ego cycleSpeed?))
+				(= saveSpeed (ego cycleSpeed?))
 				(HandsOff)
 				(messager say: N_ROOM NULL C_SITDOWN 1 self)
 			)
@@ -1832,9 +1941,9 @@
 			)
 			(3
 				(ego setCycle: EndLoop self)
-				(Bset 303)
+				(Bset fSittingAtInn)
 				(User canControl: FALSE)
-				(if (and (Btst fFlag176) (not sittingDown))
+				(if (and (Btst fMerchantIsAtInn) (not sittingDown))
 					(= sittingDown TRUE)
 					(merchant setScript: emotionalMerchant)
 				else
@@ -1851,8 +1960,6 @@
 )
 
 (instance egoStands of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1871,8 +1978,8 @@
 			)
 			(3
 				(ego
-					cycleSpeed: gEgoCycleSpeed
-					moveSpeed: gEgoCycleSpeed
+					cycleSpeed: saveSpeed
+					moveSpeed: saveSpeed
 					setMotion: PolyPath 235 175 self
 				)
 			)
@@ -1895,9 +2002,7 @@
 	)
 )
 
-(instance giveThanks of Script
-	(properties)
-	
+(instance giveThanks of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1915,13 +2020,13 @@
 				)
 			)
 			(2
-				(messager say: N_MERCHANT NULL C_EMOTIONALMERCHANT 1 self)
+				(messager say: N_MERCHANT NULL C_EMOTIONAL 1 self)
 			)
 			(3
-				(messager say: N_MERCHANT NULL C_EMOTIONALMERCHANT 2 self)
+				(messager say: N_MERCHANT NULL C_EMOTIONAL 2 self)
 			)
 			(4
-				(messager say: N_MERCHANT NULL C_EMOTIONALMERCHANT 3 self)
+				(messager say: N_MERCHANT NULL C_EMOTIONAL 3 self)
 			)
 			(5
 				(client setScript: 0)

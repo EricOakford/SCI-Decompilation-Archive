@@ -61,24 +61,116 @@
 	local11
 	borisCue
 	guildCue
-	[deathMessage 11] = [{Mighty careless of you to walk right in front of that knife!__Or did the Chief Thief hit you on purpose?__Or did you just discover an obscure bug in the program???__Maybe you'll never really know._} {You can't believe the Chief Thief's reflexes as he instantly reacts to your intention to pull a fast one.__A dagger flies like lightning and...._} {Trouble with sharp, pointy objects} {These guys are MEAN!} 250 40 75 30 25 100 35]
-	[local25 7] = [0 -42 -34 35 -45 -44 999]
-	[local32 4] = [0 41 -29 999]
-	[local36 7] = [0 43 38 30 -32 37 999]
-	[local43 4] = [0 39 36 999]
-	[local47 3] = [0 -31 999]
-	[local50 3] = [0 40 999]
-	[local53 3] = [0 -28 999]
-	[local56 3] = [0 -33 999]
-	[local59 4] = [0 26 27 999]
-	[local63 3] = [0 25 999]
-	[local66 15]
-	[local81 11] = [0 -42 -34 -45 -44 -29 -32 -31 -28 -33 999]
-	[local92 5] = [0 -2 -6 1 999]
-	[local97 3] = [0 4 999]
-	[local100 4] = [0 5 3 999]
-	[local104 5]
-	[local109 4] = [0 -2 -6 999]
+	deathMessage = [
+		{Mighty careless of you to walk right in front of that knife!__
+		Or did the Chief Thief hit you on purpose?__
+		Or did you just discover an obscure bug in the program???__
+		Maybe you'll never really know._}
+		{You can't believe the Chief Thief's reflexes as he instantly reacts to your intention to pull a fast one.__
+		A dagger flies like lightning and...._}
+		{Trouble with sharp, pointy objects}
+		{These guys are MEAN!}
+		250 40 75 30 25 100 35]
+	chiefTellMainBranch = [
+		STARTTELL
+		-42		;C_THIEVES
+		-34		;C_GUILD
+		C_NAME
+		-45		;C_TOWN
+		-44		;C_TOOLS_CHIEF
+		ENDTELL
+		]
+	chiefTell1 = [
+		STARTTELL
+		C_STEALING
+		-29		;C_BRIGANDS
+		ENDTELL
+		]
+	chiefTell2 = [
+		STARTTELL
+		C_TIPS
+		C_SECRETS
+		C_CRUSHER
+		-32		;C_FENCE
+		C_SCABS
+		ENDTELL
+		]
+	chiefTell3 = [
+		STARTTELL
+		C_SHERIFF
+		C_OTTO
+		ENDTELL
+		]
+	chiefTell4 = [
+		STARTTELL
+		-31		;C_DAGGERS
+		ENDTELL
+		]
+	chiefTell5 = [
+		STARTTELL
+		C_SPY
+		ENDTELL
+		]
+	chiefTell6 = [
+		STARTTELL
+		-28		;C_BORIS
+		ENDTELL
+		]
+	chiefTell7 = [
+		STARTTELL
+		-33		;C_GAME
+		ENDTELL
+		]
+	chiefTell8 = [
+		STARTTELL
+		C_BET
+		C_BOARD
+		ENDTELL
+		]
+	chiefTell9 = [
+		STARTTELL
+		C_ACCOUNTANT
+		ENDTELL
+		]
+	[chiefTellTree 15]
+	chiefTellKeys = [
+		STARTTELL
+		-42		;C_THIEVES
+		-34		;C_GUILD
+		-45		;C_TOWN
+		-44		;C_TOOLS_CHIEF
+		-29		;C_BRIGANDS
+		-32		;C_FENCE
+		-31		;C_DAGGERS
+		-28		;C_BORIS
+		-33		;C_GAME
+		ENDTELL
+		]
+	borisTellMainBranch = [
+		STARTTELL
+		-2		;C_LICENSE
+		-6		;C_TOOLS
+		C_FENCING
+		ENDTELL
+		]
+	borisTell1 = [
+		STARTTELL
+		C_SERVICES
+		ENDTELL
+		]
+	borisTell2 = [
+		STARTTELL
+		C_TOOLKIT
+		C_LOCKPICK
+		ENDTELL
+		]
+	[borisTellTree 5]
+	borisTellKeys = [
+		STARTTELL
+		-2		;C_LICENSE
+		-6		;C_TOOLS
+		ENDTELL
+		]
 )
 (procedure (Dummy332_2)
 	;"WARNING: Invalid function offset: f000" when attempting to decompile this procedure. Fortunately, it doesn't seem to be used at all.
@@ -113,59 +205,43 @@
 	)
 	
 	(method (init)
-		(= [local66 0] @local25)
-		(= [local66 1] @local32)
-		(= [local66 2] @local36)
-		(= [local66 3] @local43)
-		(= [local66 4] @local47)
-		(= [local66 5] @local50)
-		(= [local66 6] @local53)
-		(= [local66 7] @local56)
-		(= [local66 8] @local63)
-		(= [local66 9] @local59)
-		(= [local66 10] 999)
-		(= [local104 0] @local92)
-		(= [local104 1] @local97)
-		(= [local104 2] @local100)
-		(= [local104 3] 999)
+		(= [chiefTellTree 0] @chiefTellMainBranch)
+		(= [chiefTellTree 1] @chiefTell1)
+		(= [chiefTellTree 2] @chiefTell2)
+		(= [chiefTellTree 3] @chiefTell3)
+		(= [chiefTellTree 4] @chiefTell4)
+		(= [chiefTellTree 5] @chiefTell5)
+		(= [chiefTellTree 6] @chiefTell6)
+		(= [chiefTellTree 7] @chiefTell7)
+		(= [chiefTellTree 8] @chiefTell9)
+		(= [chiefTellTree 9] @chiefTell8)
+		(= [chiefTellTree 10] ENDTELL)
+		(= [borisTellTree 0] @borisTellMainBranch)
+		(= [borisTellTree 1] @borisTell1)
+		(= [borisTellTree 2] @borisTell2)
+		(= [borisTellTree 3] ENDTELL)
 		(= local0 0)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 3
+					type: PContainedAccess
 					init:
-						80
-						123
-						84
-						130
-						142
-						130
-						147
-						174
-						61
-						174
-						63
-						152
-						56
-						148
-						51
-						116
-						14
-						155
-						0
-						179
-						192
-						180
-						179
-						158
-						284
-						158
-						189
-						111
-						146
-						111
-						133
-						123
+						80 123
+						84 130
+						142 130
+						147 174
+						61 174
+						63 152
+						56 148
+						51 116
+						14 155
+						0 179
+						192 180
+						179 158
+						284 158
+						189 111
+						146 111
+						133 123
 					yourself:
 				)
 		)
@@ -176,7 +252,7 @@
 			(SoundFX 30)
 		)
 		(super init:)
-		(SolvePuzzle POINTS_ENTERTHIEVESGUILD 5 THIEF)
+		(SolvePuzzle f332EnterGuild 5 THIEF)
 		(dagMusic number: (SoundFX 31) init:)
 		(StatusLine enable:)
 		(= local5 100)
@@ -197,6 +273,7 @@
 				onTable
 			eachElementDo: #init
 		)
+		(onWindow init:)	;added
 		(onDoor init: approachVerbs: V_DO V_LOOK V_MONEY)
 		(onTrunk init:)
 		(onBarrels init:)
@@ -212,19 +289,19 @@
 		(fire1 init: setCycle: Forward)
 		(fire2 init: setCycle: Forward)
 		(borisTeller
-			init: borisThief @local92 @local104 @local109
+			init: borisThief @borisTellMainBranch @borisTellTree @borisTellKeys
 		)
-		(chiefTeller init: chiefThief @local25 @local66 @local81)
+		(chiefTeller init: chiefThief @chiefTellMainBranch @chiefTellTree @chiefTellKeys)
 		(chiefThief
 			approachVerbs: V_DO V_MONEY
 			actions: chiefTeller
 			init:
 		)
-		(crusher init: ignoreActors: 1 stopUpd:)
-		(crusherHead init: ignoreActors: 1 setCycle: Forward)
+		(crusher init: ignoreActors: TRUE stopUpd:)
+		(crusherHead init: ignoreActors: TRUE setCycle: Forward)
 		(crusherFoot
 			init:
-			ignoreActors: 1
+			ignoreActors: TRUE
 			setCycle: Forward
 			cycleSpeed: 18
 		)
@@ -284,8 +361,11 @@
 					(ego setScript: deathScript)
 				)
 			)
-			(
-			(and attackedGuild (not local3) (== (knifeScript state?) 0)) (= local3 1) (localproc_018d))
+			((and attackedGuild (not local3)
+					(== (knifeScript state?) 0))
+					(= local3 1)
+					(localproc_018d)
+				)
 		)
 		(cond 
 			(
@@ -318,8 +398,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_ROOM V_LOOK 0))
-			(V_DO (messager say: N_ROOM V_DO 0))
+			(V_LOOK
+				(messager say: N_ROOM V_LOOK NULL)
+			)
+			(V_DO
+				(messager say: N_ROOM V_DO NULL)
+			)
 			(V_DAGGER
 				(HandsOff)
 				(= attackedGuild TRUE)
@@ -348,8 +432,12 @@
 	
 	(method (cue)
 		(switch borisCue
-			(1 (messager say: N_BORIS V_LOOK C_UNLICENSED))
-			(2 (messager say: N_BORIS V_LOOK C_FENCEIT))
+			(1
+				(messager say: N_BORIS V_LOOK C_UNLICENSED)
+			)
+			(2
+				(messager say: N_BORIS V_LOOK C_FENCEIT)
+			)
 		)
 	)
 )
@@ -369,8 +457,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(messager say: N_BOARD V_LOOK 0 1)
-				(if (> daggersOnBoard 5) (messager say: N_BOARD V_LOOK 0 2))
+				(messager say: N_BOARD V_LOOK NULL 1)
+				(if (> daggersOnBoard 5)
+					(messager say: N_BOARD V_LOOK NULL 2)
+				)
 			)
 			(V_DO
 				(messager say: N_BOARD V_DO)
@@ -405,12 +495,18 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_DOOR V_LOOK))
+			(V_LOOK
+				(messager say: N_DOOR V_LOOK)
+			)
 			(V_DO
 				(ego setScript: toTheDoorScript)
 			)
-			(V_LOCKPICK (messager say: N_DOOR V_LOCKPICK))
-			(V_THIEFKIT (messager say: N_DOOR V_LOCKPICK))
+			(V_LOCKPICK
+				(messager say: N_DOOR V_LOCKPICK)
+			)
+			(V_THIEFKIT
+				(messager say: N_DOOR V_LOCKPICK)
+			)
 			(V_DAGGER
 				(HandsOff)
 				(= attackedGuild TRUE)
@@ -437,7 +533,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_LADDER V_LOOK))
+			(V_LOOK
+				(messager say: N_LADDER V_LOOK)
+			)
 			(V_DO
 				(ego setScript: leaveRoomScript)
 			)
@@ -609,8 +707,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_DAGGERS V_LOOK))
-			(V_DO (messager say: N_DAGGERS V_DO))
+			(V_LOOK
+				(messager say: N_DAGGERS V_LOOK)
+			)
+			(V_DO
+				(messager say: N_DAGGERS V_DO)
+			)
 			(else 
 				(curRoom doVerb: theVerb &rest)
 			)
@@ -674,8 +776,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_KNIFEONTABLE V_LOOK))
-			(V_DO (messager say: N_KNIFEONTABLE V_DO))
+			(V_LOOK
+				(messager say: N_KNIFEONTABLE V_LOOK)
+			)
+			(V_DO
+				(messager say: N_KNIFEONTABLE V_DO)
+			)
 			(else 
 				(curRoom doVerb: theVerb &rest)
 			)
@@ -750,7 +856,7 @@
 		view 332
 		loop 3
 		priority 5
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
@@ -767,15 +873,24 @@
 		loop 3
 		cel 2
 		priority 7
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_CRUSHER V_LOOK))
-			(V_DO (messager say: N_CRUSHER V_DO))
-			(V_TALK (messager say: N_CRUSHER V_TALK))
-			(V_DAGGER (messager say: N_CRUSHER V_DAGGER)) ;added in an unused message
+			(V_LOOK
+				(messager say: N_CRUSHER V_LOOK)
+			)
+			(V_DO
+				(messager say: N_CRUSHER V_DO)
+			)
+			(V_TALK
+				(messager say: N_CRUSHER V_TALK)
+			)
+			 ;added in an unused message
+			(V_DAGGER
+				(messager say: N_CRUSHER V_DAGGER)
+			)
 			(else 
 				(curRoom doVerb: theVerb &rest)
 			)
@@ -821,7 +936,7 @@
 		view 332
 		loop 4
 		priority 8
-		signal $0010
+		signal fixPriOn
 		cycleSpeed 36
 	)
 	
@@ -838,7 +953,7 @@
 		view 332
 		loop 13
 		cel 1
-		signal $4000
+		signal ignrAct
 		cycleSpeed 2
 	)
 	
@@ -877,14 +992,14 @@
 		view 332
 		loop 5
 		priority 10
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		illegalBits $0000
 	)
 	
 	(method (init)
 		(= nightPalette 1332)
 		(PalVary PALVARYTARGET 1332)
-		(kernel_128 332)
+		(AssertPalette 332)
 		(super init:)
 	)
 )
@@ -902,11 +1017,11 @@
 )
 
 (instance chiefTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_CHIEF V_LOOK))
+			(V_LOOK
+				(messager say: N_CHIEF V_LOOK)
+			)
 			(V_TALK
 				(if (not (ego has: iThiefLicense))
 					(ego setScript: getTheLicense)
@@ -951,12 +1066,10 @@
 )
 
 (instance borisTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
-				(messager say: N_BORIS V_LOOK 0 1 curRoom)
+				(messager say: N_BORIS V_LOOK NULL 1 curRoom)
 				(if (not (ego has: iThiefLicense))
 					(= borisCue cueUnlicensed)
 				else
@@ -965,7 +1078,9 @@
 			)
 			(V_DO
 				(cond 
-					((not (ego has: iThiefLicense)) (messager say: N_BORIS V_DO 8))
+					((not (ego has: iThiefLicense))
+						(messager say: N_BORIS V_DO C_UNLICENSED)
+					)
 					(
 						(or
 							(Btst fSearchedBasket)
@@ -976,7 +1091,9 @@
 						)
 						(messager say: N_BORIS V_DO C_CANTFENCETHAT)
 					)
-					(else (messager say: N_BORIS V_DO C_FENCEIT))
+					(else
+						(messager say: N_BORIS V_DO C_FENCEIT)
+					)
 				)
 			)
 			(V_TALK
@@ -993,7 +1110,7 @@
 						((Clone Ware) name: {Lock Pick} price: {15})
 						((Clone Ware) name: {Tool Kit} price: {100})
 				)
-				(switch ((ScriptID 551 0) doit:)
+				(switch ((ScriptID WARE 0) doit:)
 					(noFunds (messager say: N_BORIS V_MONEY C_NOFUNDS))
 					(buyLicense
 						(if (ego has: iThiefLicense)
@@ -1002,13 +1119,15 @@
 							(ego setScript: cueItScript)
 						else
 							(messager say: N_BORIS V_MONEY C_GETLICENSE)
-							(SolvePuzzle POINTS_BUYTHIEFLICENSE 3 THIEF)
+							(SolvePuzzle f332BuyLicense 3 THIEF)
 							(= guildCue getLicense)
 							(ego setScript: cueItScript)
 						)
 					)
 					(buyLockpick
-						(if (not (ego has: iLockPick)) (= lockPickBonus 10))
+						(if (not (ego has: iLockPick))
+							(= lockPickBonus 10)
+						)
 						(messager say: N_BORIS V_MONEY C_BUYSOMETHING)
 						(= guildCue getLockpick)
 						(ego setScript: cueItScript)
@@ -1016,7 +1135,7 @@
 					(buyToolkit
 						(if (not (ego has: iThiefKit))
 							(= lockPickBonus 35)
-							(SolvePuzzle POINTS_BUYTHIEFTOOLKIT 3 THIEF)
+							(SolvePuzzle f332BuyToolkit 3 THIEF)
 						)
 						(messager say: N_BORIS V_MONEY C_BUYSOMETHING)
 						(= guildCue getToolkit)
@@ -1030,7 +1149,7 @@
 					(messager say: N_BORIS V_PEARLS C_UNLICENSED)
 				else
 					(messager say: N_BORIS V_PEARLS C_FENCEIT)
-					(SolvePuzzle POINTS_FENCEGOODS 3 THIEF)
+					(SolvePuzzle f332FenceGoods 3 THIEF)
 					(= guildCue fencePearls)
 					(ego setScript: cueItScript)
 				)
@@ -1045,7 +1164,7 @@
 					(messager say: N_BORIS V_VASE C_UNLICENSED)
 				else
 					(messager say: N_BORIS V_VASE C_FENCEIT)
-					(SolvePuzzle POINTS_FENCEGOODS 3 THIEF)
+					(SolvePuzzle f332FenceGoods 3 THIEF)
 					(= guildCue fenceVase)
 					(ego setScript: cueItScript)
 				)
@@ -1055,7 +1174,7 @@
 					(messager say: N_BORIS V_MUSICBOX C_UNLICENSED)
 				else
 					(messager say: N_BORIS V_MUSICBOX C_FENCEIT)
-					(SolvePuzzle POINTS_FENCEGOODS 3 THIEF)
+					(SolvePuzzle f332FenceGoods 3 THIEF)
 					(= guildCue fenceMusicBox)
 					(ego setScript: cueItScript)
 				)
@@ -1065,7 +1184,7 @@
 					(messager say: N_BORIS V_CANDLESTICKS C_UNLICENSED)
 				else
 					(messager say: N_BORIS V_CANDLESTICKS C_FENCEIT)
-					(SolvePuzzle POINTS_FENCEGOODS 3 THIEF)
+					(SolvePuzzle f332FenceGoods 3 THIEF)
 					(= guildCue fenceCandlesticks)
 					(ego setScript: cueItScript)
 				)
@@ -1075,12 +1194,14 @@
 					(messager say: N_BORIS V_CANDELABRA C_UNLICENSED)
 				else
 					(messager say: N_BORIS V_CANDELABRA C_FENCEIT)
-					(SolvePuzzle POINTS_FENCEGOODS 3 THIEF)
+					(SolvePuzzle f332FenceGoods 3 THIEF)
 					(= guildCue fenceCandelabra)
 					(ego setScript: cueItScript)
 				)
 			)
-			(V_RING (messager say: N_ROOM V_RING))
+			(V_RING
+				(messager say: N_ROOM V_RING)
+			)
 			(V_SWORD
 				(HandsOff)
 				(= attackedGuild TRUE)
@@ -1100,16 +1221,17 @@
 )
 
 (instance rm332EntranceScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 120))
+			(0
+				(HandsOff)
+				(= ticks 120)
+			)
 			(1
 				(if (not (Btst fBeenIn332))
 					(crusherFoot setCycle: 0)
 					(crusherHead setCycle: 0)
-					(messager say: N_ROOM 0 C_FIRSTENTRY 0 self)
+					(messager say: N_ROOM NULL C_FIRSTENTRY 0 self)
 				else
 					(= ticks 120)
 				)
@@ -1140,7 +1262,7 @@
 			)
 			(5
 				(knife hide:)
-				(messager say: N_CHIEF 0 C_MEETCHIEF1)
+				(messager say: N_CHIEF NULL C_MEETCHIEF1)
 				(ego view: 4 setLoop: 3)
 				(chiefThief setLoop: 2 setCycle: EndLoop self)
 			)
@@ -1154,7 +1276,7 @@
 			)
 			(7
 				(chiefThief setLoop: 1 setMotion: MoveTo 180 136 self)
-				(messager say: N_CHIEF 0 C_MEETCHIEF2)
+				(messager say: N_CHIEF NULL C_MEETCHIEF2)
 			)
 			(8
 				(chiefThief setLoop: 1 setMotion: MoveTo 150 136 self)
@@ -1181,7 +1303,7 @@
 				(= seconds 3)
 			)
 			(14
-				(messager say: N_CHIEF 0 C_MEETCHIEF3)
+				(messager say: N_CHIEF NULL C_MEETCHIEF3)
 				(Bset fBeenIn332)
 				(self cue:)
 			)
@@ -1201,8 +1323,6 @@
 )
 
 (instance leaveRoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1211,7 +1331,7 @@
 			)
 			(1
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 -32762)
+				(curRoom drawPic: 400 (| BLACKOUT IRISIN))
 				(self cue:)
 			)
 			(2 (curRoom newRoom: 331))
@@ -1220,12 +1340,10 @@
 )
 
 (instance throwEgoOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(NormalEgo 3 0 4)
+				(NormalEgo loopN 0 4)
 				(HandsOff)
 				(ego
 					setMotion: PolyPath (crusher x?) (+ (crusher y?) 30) self
@@ -1242,7 +1360,7 @@
 			(3 (crusher setCycle: EndLoop self))
 			(4
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 -32761)
+				(curRoom drawPic: 400 (| BLACKOUT IRISOUT))
 				(self cue:)
 			)
 			(5
@@ -1254,11 +1372,11 @@
 )
 
 (instance chiefBored of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 5 12)))
+			(0
+				(= seconds (Random 5 12))
+			)
 			(1
 				(localproc_018d)
 				(self changeState: 0)
@@ -1268,8 +1386,6 @@
 )
 
 (instance knifeScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1345,8 +1461,6 @@
 )
 
 (instance toTheDoorScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1354,7 +1468,7 @@
 				(ego setMotion: PolyPath 157 116 self)
 			)
 			(1
-				(messager say: N_ROOM 0 C_DOORLOCKED)
+				(messager say: N_ROOM NULL C_DOORLOCKED)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -1363,8 +1477,6 @@
 )
 
 (instance deathScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1385,9 +1497,7 @@
 	)
 )
 
-(instance uhOh of Script
-	(properties)
-	
+(instance uhOh of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1401,8 +1511,6 @@
 )
 
 (instance heComes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1424,8 +1532,6 @@
 )
 
 (instance heGoes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1440,8 +1546,6 @@
 )
 
 (instance getTheLicense of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1459,8 +1563,6 @@
 )
 
 (instance goToDagnabit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= ticks 60))
@@ -1473,17 +1575,23 @@
 )
 
 (instance cueItScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 60))
 			(1
 				(switch guildCue
-					(alreadyHaveLicense (ego get: iSilver 25))
-					(getLicense (ego get: iThiefLicense))
-					(getLockpick (ego get: iLockPick))
-					(getToolkit (ego get: iThiefKit))
+					(alreadyHaveLicense
+						(ego get: iSilver 25)
+					)
+					(getLicense
+						(ego get: iThiefLicense)
+					)
+					(getLockpick
+						(ego get: iLockPick)
+					)
+					(getToolkit
+						(ego get: iThiefKit)
+					)
 					(fencePearls
 						(ego get: iGold 50)
 						(ego use: iPearls)
@@ -1507,7 +1615,9 @@
 				)
 				(self cue:)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -1531,7 +1641,7 @@
 	(method (init)
 		(= nightPalette 2332)
 		(PalVary PALVARYTARGET 2332)
-		(kernel_128 1332)
+		(AssertPalette 1332)
 		(= font userFont)
 		(super
 			init: chiefThiefBust chiefThiefEye chiefThiefMouth &rest

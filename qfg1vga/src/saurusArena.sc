@@ -21,11 +21,33 @@
 (local
 	local0
 	saurusDead
-	[monsterCycle1 11] = [0 0 0 1 0 2 0 3 0 1 -32768]
-	[monsterCycle2 11] = [0 0 0 1 0 2 0 1 0 0 -32768]
-	[monsterCycle3 11] = [0 0 0 7 0 6 0 7 0 6 -32768]
-	[monsterCel 3] = [0 1 7]
+	monsterCycle1 = [
+		0 0
+		0 1
+		0 2
+		0 3
+		0 1
+		PATHEND
+		]
+	monsterCycle2 = [
+		0 0
+		0 1
+		0 2
+		0 1
+		0 0
+		PATHEND
+		]
+	monsterCycle3 = [
+		0 0
+		0 7
+		0 6
+		0 7
+		0 6
+		PATHEND
+		]
+	monsterCel = [0 1 7]
 )
+
 (instance saurusArena of Arena
 	(properties
 		picture 430
@@ -85,7 +107,7 @@
 	(method (init)
 		(= nightPalette 1432)
 		(PalVary PALVARYTARGET 1432)
-		(kernel_128 432)
+		(AssertPalette 432)
 		(super init:)
 	)
 	
@@ -96,8 +118,6 @@
 )
 
 (instance saurusScript of Script
-	(properties)
-	
 	(method (init)
 		(= register 0)
 		(super init: &rest)
@@ -105,8 +125,15 @@
 	
 	(method (doit)
 		(cond 
-			(saurusDead (= saurusDead (= ticks 0)))
-			((and monsterDazzle (== state 0)) (self changeState: 6) (Bclr fMonsterDazzled))
+			(saurusDead
+				(= saurusDead
+					(= ticks 0)
+				)
+			)
+			((and monsterDazzle (== state 0))
+				(self changeState: 6)
+				(Bclr fMonsterDazzled)
+			)
 		)
 		(if (== state -1)
 			(client cycleSpeed: (Random 15 20))

@@ -142,6 +142,11 @@
 		(cSound fade:)
 		(super init:)
 		(features add: cave rocks trees)
+		;UPGRADE
+;;;		(cave init:)
+;;;		(rocks init:)
+;;;		(trees init:)
+		
 		(Bclr fBearFriendly)
 		(NormalEgo)
 		(ego init:)

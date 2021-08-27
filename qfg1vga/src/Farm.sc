@@ -159,6 +159,21 @@
 			eachElementDo: #init
 			doit:
 		)
+		;UPGRADE
+;;;		(vase init:)
+;;;		(pots init:)
+;;;		(pineTree init:)
+;;;		(bush init:)
+;;;		(unplantedTree init:)
+;;;		(rake init:)
+;;;		(shovel init:)
+;;;		(frontTree init:)
+;;;		(aTree init:)
+;;;		(bush2 init:)
+;;;		(wall init:)
+;;;		(trees1 init:
+;;;		(trees2 init:)
+
 		(wall approachVerbs: V_DO)
 		(if (Btst fFarmerIsEast)
 			(Bclr fFarmerIsEast)

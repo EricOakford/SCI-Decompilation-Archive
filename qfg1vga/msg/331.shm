@@ -68,6 +68,9 @@
 (define C_FIRSTENTRY 85)
 (define C_DESCRIBETAVERN 86)
 (define C_PUTITBACK 78)
+(define C_SUSPICIOUS 76)
+(define C_ARCHERY 66)
+(define C_NOSY 68)
 
 ;;; NOUNS
 

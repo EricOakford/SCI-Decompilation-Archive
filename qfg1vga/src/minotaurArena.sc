@@ -23,9 +23,24 @@
 	local0
 	local1
 	local2
-	[monsterCycle1 11] = [0 0 0 1 0 2 0 1 0 0 -32768]
-	[monsterCycle2 11] = [0 0 0 2 0 0 0 2 0 0 -32768]
+	monsterCycle1 = [
+		0 0
+		0 1
+		0 2
+		0 1
+		0 0
+		PATHEND
+		]
+	monsterCycle2 = [
+		0 0
+		0 2
+		0 0
+		0 2
+		0 0
+		PATHEND
+		]
 )
+
 (instance minotaurArena of Arena
 	(properties
 		picture 430
@@ -38,7 +53,9 @@
 		(= monster minotaur)
 		(monster ignoreActors: ignoreControl: cWHITE drawStatus:)
 		(super init: &rest)
-		(if Night (Animate (cast elements?) FALSE))
+		(if Night
+			(Animate (cast elements?) FALSE)
+		)
 		(ball init:)
 		(addToPics add: legs doit:)
 		(minoMusic number: (SoundFX 2) loop: -1 play:)
@@ -79,7 +96,7 @@
 	(method (init)
 		(= nightPalette 1427)
 		(PalVary PALVARYTARGET 1427)
-		(kernel_128 427)
+		(AssertPalette 427)
 		(super init:)
 	)
 	
@@ -90,8 +107,6 @@
 )
 
 (instance minotaurScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(= monsterNum vMinotaur)
@@ -106,8 +121,15 @@
 	
 	(method (doit)
 		(cond 
-			((and monsterDazzle (== state 0) (not script)) (self changeState: 7) (Bclr fMonsterDazzled))
-			(local0 (= local1 (= cycles 0)))
+			((and monsterDazzle (== state 0) (not script))
+				(self changeState: 7)
+				(Bclr fMonsterDazzled)
+			)
+			(local0
+				(= local1
+					(= cycles 0)
+				)
+			)
 		)
 		(super doit:)
 	)
@@ -125,12 +147,22 @@
 					ateEgo: 0
 				)
 				(cond 
-					((Btst fFlag285) (Bclr fFlag285) (= state 2) (self cue:))
-					((Random 0 1) (client setCycle: TimedCycle @monsterCycle1 self))
-					(else (client setCycle: TimedCycle @monsterCycle2 self))
+					((Btst fFlag285)
+						(Bclr fFlag285)
+						(= state 2)
+						(self cue:)
+					)
+					((Random 0 1)
+						(client setCycle: TimedCycle @monsterCycle1 self)
+					)
+					(else
+						(client setCycle: TimedCycle @monsterCycle2 self)
+					)
 				)
 			)
-			(1 (= ticks 10))
+			(1
+				(= ticks 10)
+			)
 			(2
 				(client action: 3 setLoop: 4 setCel: 0)
 				(if (< (= temp0 (Random 1 3)) 2) (= state -1))

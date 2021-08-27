@@ -21,27 +21,89 @@
 )
 
 (local
-	local0
+	nearExit
 	local1
-	local2
+	yoyoSpins
 	timesClimbedGate
 	local4
 	oldSortedFeatures
 	tookAPuff
 	[local7 2]
 	sheriffOnScreen
-	[local10 8] = [0 16 -22 -15 -8 -6 -17 999]
-	[local18 6] = [0 7 13 12 11 999]
-	[local24 3] = [0 -24 999]
-	[local27 3] = [0 11 999]
-	[local30 4] = [0 -14 -23 999]
-	[local34 3] = [0 12 999]
-	[local37 3] = [0 10 999]
-	[local40 4] = [0 7 -24 999]
-	[local44 3] = [0 -18 999]
-	[local47 3] = [0 19 999]
-	[local50 13]
-	[local63 12] = [0 -22 -15 -24 -8 -14 -23 -6 -24 -17 -18 999]
+	sheriffTellMainBranch = [
+		STARTTELL
+		C_MOUNTAIN
+		-22		;C_TOWN
+		-15		;C_MONSTERS
+		-8		;C_BRIGANDS
+		-6		;C_ADVENTURE
+		-17		;C_NAME
+		ENDTELL
+		]
+	sheriffTell1 = [
+		STARTTELL
+		C_BARON
+		C_MAGIC
+		C_INN
+		C_GUILDHALL
+		ENDTELL]
+	sheriffTell2 = [
+		STARTTELL
+		-24		;C_WOLFGANG
+		ENDTELL
+		]
+	sheriffTell3 = [
+		STARTTELL
+		C_GUILDHALL
+		ENDTELL
+		]
+	sheriffTell5 = [
+		STARTTELL
+		-14		;C_MERCHANT
+		-23		;C_TREASURE
+		ENDTELL
+		]
+	sheriffTell4 = [
+		STARTTELL
+		C_INN
+		ENDTELL
+		]
+	sheriffTell6 = [
+		STARTTELL
+		C_DANGER
+		ENDTELL
+		]
+	sheriffTell7 = [
+		STARTTELL
+		C_BARON
+		-24		;C_WOLFGANG
+		ENDTELL
+		]
+	sheriffTell8 = [
+		STARTTELL
+		-18		;C_OTTO
+		ENDTELL
+		]
+	sheriffTell9 = [
+		STARTTELL
+		C_PRISONERS
+		ENDTELL
+		]
+	[sheriffTellTree 13]
+	sheriffTellKeys = [
+		STARTTELL
+		-22		;C_TOWN
+		-15		;C_MONSTERS
+		-24		;C_WOLFGANG
+		-8		;C_BRIGANDS
+		-14		;C_MERCHANT
+		-23		;C_TREASURE
+		-6		;C_ADVENTURE
+		-24		;C_WOLFGANG
+		-17		;C_NAME
+		-18		;C_OTTO
+		ENDTELL
+		]
 )
 (procedure (LookAtTown)
 	(if (< timeODay TIME_SUNSET)
@@ -59,18 +121,18 @@
 	)
 	
 	(method (init)
-		(= [local50 0] @local10)
-		(= [local50 1] @local18)
-		(= [local50 2] @local24)
-		(= [local50 3] @local27)
-		(= [local50 4] @local30)
-		(= [local50 5] @local34)
-		(= [local50 6] @local37)
-		(= [local50 7] @local40)
-		(= [local50 8] @local27)
-		(= [local50 9] @local44)
-		(= [local50 10] @local47)
-		(= [local50 11] 999)
+		(= [sheriffTellTree 0] @sheriffTellMainBranch)
+		(= [sheriffTellTree 1] @sheriffTell1)
+		(= [sheriffTellTree 2] @sheriffTell2)
+		(= [sheriffTellTree 3] @sheriffTell3)
+		(= [sheriffTellTree 4] @sheriffTell4)
+		(= [sheriffTellTree 5] @sheriffTell5)
+		(= [sheriffTellTree 6] @sheriffTell6)
+		(= [sheriffTellTree 7] @sheriffTell7)
+		(= [sheriffTellTree 8] @sheriffTell3)
+		(= [sheriffTellTree 9] @sheriffTell8)
+		(= [sheriffTellTree 10] @sheriffTell9)
+		(= [sheriffTellTree 11] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -153,7 +215,7 @@
 			(closedGate init: stopUpd:)
 		)
 		(= perspective 70)
-		(= local2 1)
+		(= yoyoSpins 1)
 		(if (not (Btst fBeenIn300))
 			(= Day 0)
 			(FixTime 11)
@@ -162,7 +224,7 @@
 		(theIconBar enable:)
 		(NormalEgo)
 		(if (< timeODay TIME_SUNSET)
-			(sheriffTeller init: sheriff @local10 @local50 @local63)
+			(sheriffTeller init: sheriff @sheriffTellMainBranch @sheriffTellTree @sheriffTellKeys)
 			(sheriff init: actions: sheriffTeller)
 			(yoyo init:)
 			(otto init:)
@@ -210,21 +272,21 @@
 		(super doit:)
 		(if
 			(and
-				(not local0)
+				(not nearExit)
 				(> (ego x?) 0)
 				(< (ego y?) 189)
 				(> (ego y?) 124)
 			)
-			(= local0 1)
+			(= nearExit TRUE)
 		)
 		(cond 
 			(script)
-			((and (< (ego x?) 7) local0)
-				(self style: 11)
+			((and (< (ego x?) 7) nearExit)
+				(self style: SCROLLRIGHT)
 				(curRoom setScript: enter310)
 			)
-			((and local0 (== (ego onControl: origin) cLGREY))
-				(= local0 0)
+			((and nearExit (== (ego onControl: origin) cLGREY))
+				(= nearExit FALSE)
 				(curRoom setScript: enter320)
 			)
 			((== (ego edgeHit?) SOUTH)
@@ -337,8 +399,6 @@
 )
 
 (instance sheriffTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
@@ -401,8 +461,12 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DO
-				(messager say: N_SHERIFF V_DO)
-				;(messager say: N_YOYO V_DO) ;Macintosh change
+				;(messager say: N_SHERIFF V_DO)
+				(messager say: N_YOYO V_DO) ;Macintosh change
+			)
+			(V_TALK
+				;restored message
+				(messager say: N_OTTO V_ALTTALK)
 			)
 			(else
 				(super doVerb: theVerb)
@@ -577,7 +641,9 @@
 					(messager say: N_BARBERNOTE V_LOOK C_NIGHT)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -715,8 +781,6 @@
 )
 
 (instance egoWakes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -738,8 +802,6 @@
 )
 
 (instance sEnter of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -793,8 +855,6 @@
 )
 
 (instance sExitTown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -809,9 +869,7 @@
 	)
 )
 
-(instance closeInnDoor of Script
-	(properties)
-	
+(instance closeInnDoor of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -836,8 +894,6 @@
 )
 
 (instance enter301 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -860,8 +916,6 @@
 )
 
 (instance sheriffScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -898,8 +952,6 @@
 )
 
 (instance yoyoLow of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -907,7 +959,7 @@
 				(self cue:)
 			)
 			(1
-				(++ local2)
+				(++ yoyoSpins)
 				(otto setLoop: 0 cycleSpeed: 12 setCycle: Forward)
 				(yoyo
 					setLoop: 4
@@ -921,7 +973,7 @@
 				(otto setCycle: BegLoop self)
 			)
 			(3
-				(if (== (mod local2 5) 0)
+				(if (== (mod yoyoSpins 5) 0)
 					(client setScript: yoyoMiddle)
 				else
 					(self changeState: 1)
@@ -932,13 +984,11 @@
 )
 
 (instance yoyoMiddle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= register (/ local2 5))
-				(++ local2)
+				(= register (/ yoyoSpins 5))
+				(++ yoyoSpins)
 				(otto loop: 1 cel: 0 cycleSpeed: 8 setCycle: Forward)
 				(yoyo setLoop: 4 posn: 191 82 setStep: 1 1 cycleSpeed: 4)
 				(= ticks 90)
@@ -953,14 +1003,14 @@
 				)
 			)
 			(3
-				(yoyoSound pause: 1)
+				(yoyoSound pause: TRUE)
 				(yoyo setLoop: 3 setMotion: MoveTo 191 70 self)
 			)
 			(4
 				(yoyo setMotion: MoveTo 191 82 self)
 			)
 			(5
-				(yoyoSound pause: 0)
+				(yoyoSound pause: FALSE)
 				(if (<= register 0)
 					(self cue:)
 				else
@@ -975,7 +1025,7 @@
 			(7
 				(if
 					(or
-						(< local2 16)
+						(< yoyoSpins 16)
 						(== (curRoom script?) sExitTown)
 						(== (curRoom script?) enter310)
 						(== (curRoom script?) enter301)
@@ -991,12 +1041,10 @@
 )
 
 (instance yoyoHigh of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local2 1)
+				(= yoyoSpins 1)
 				(yoyo
 					posn: 191 82
 					setLoop: 4
@@ -1095,8 +1143,6 @@
 )
 
 (instance climbOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1156,8 +1202,6 @@
 )
 
 (instance climbIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1176,7 +1220,10 @@
 			(2
 				(ego setLoop: 8 cel: 8 priority: 15 setCycle: BegLoop self)
 			)
-			(3 (ego hide:) (self cue:))
+			(3
+				(ego hide:)
+				(self cue:)
+			)
 			(4
 				(ego
 					view: 0
@@ -1199,36 +1246,35 @@
 )
 
 (instance enter310 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo -30 142 self)
 			)
-			(1 (curRoom newRoom: 310))
+			(1
+				(curRoom newRoom: 310)
+			)
 		)
 	)
 )
 
 (instance enterFrom310 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego posn: -30 142 setMotion: MoveTo 32 148 self)
 			)
-			(1 (HandsOn) (self dispose:))
+			(1
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance enter320 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1259,7 +1305,7 @@
 	(method (init)
 		(= nightPalette 2300)
 		(PalVary PALVARYTARGET 2300)
-		(kernel_128 1300)
+		(AssertPalette 1300)
 		(= font userFont)
 		(super init: sheriffBust sheriffEyes sheriffMouth &rest)
 	)

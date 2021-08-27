@@ -18,22 +18,69 @@
 )
 
 (local
-	local0
-	gaveToBeggar
-	local2
+	nearBeggar
+	gaveMoney
+	willTalk
 	talkCount
-	local4
+	talkRet
 	climbCount
 	beggarCue
-	[local7 7] = [0 -3 -10 -16 4 -11 999]
-	[local14 4] = [0 5 18 999]
-	[local18 3] = [0 12 999]
-	[local21 6] = [0 17 -15 9 4 999]
-	[local27 5] = [0 8 -13 14 999]
-	[local32 3] = [0 6 999]
-	[local35 3] = [0 7 999]
-	[local38 12]
-	[local50 8] = [0 -3 -10 -16 -11 -15 -13 999]
+	beggarTellMainBranch = [
+		STARTTELL
+		-3		;C_BEGGING
+		-10		;C_NAME
+		-16		;C_SPIELBURG
+		C_BRIGANDS
+		-11		;C_NIGHT
+		ENDTELL
+		]
+	beggarTell1 = [
+		STARTTELL
+		C_CASH
+		C_WORK
+		ENDTELL
+		]
+	beggarTell2 = [
+		STARTTELL
+		C_SOUTH
+		ENDTELL
+		]
+	beggarTell3 = [
+		STARTTELL
+		C_TRADERS
+		-15		;C_TOURISTS
+		C_LUCK
+		C_BRIGANDS
+		ENDTELL
+		]
+	beggarTell4 = [
+		STARTTELL
+		C_GAUNTS
+		-13		;C_SPELL
+		C_THIEVES
+		ENDTELL
+		]
+	beggarTell5 = [
+		STARTTELL
+		C_CIDER
+		ENDTELL
+		]
+	beggarTell6 = [
+		STARTTELL
+		C_CRUSHER
+		ENDTELL
+		]
+	[beggarTellTree 12]
+	beggarTellKeys = [
+		STARTTELL
+		-3		;C_BEGGING
+		-10		;C_NAME
+		-16		;C_SPIELBURG
+		-11		;C_NIGHT
+		-15		;C_TOURISTS
+		-13		;C_SPELL
+		ENDTELL
+		]
 )
 
 (enum 1	;what is given to beggar
@@ -50,14 +97,14 @@
 	)
 	
 	(method (init)
-		(= [local38 0] @local7)
-		(= [local38 1] @local14)
-		(= [local38 2] @local18)
-		(= [local38 3] @local21)
-		(= [local38 4] @local27)
-		(= [local38 5] @local32)
-		(= [local38 6] @local35)
-		(= [local38 7] 999)
+		(= [beggarTellTree 0] @beggarTellMainBranch)
+		(= [beggarTellTree 1] @beggarTell1)
+		(= [beggarTellTree 2] @beggarTell2)
+		(= [beggarTellTree 3] @beggarTell3)
+		(= [beggarTellTree 4] @beggarTell4)
+		(= [beggarTellTree 5] @beggarTell5)
+		(= [beggarTellTree 6] @beggarTell6)
+		(= [beggarTellTree 7] ENDTELL)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -94,10 +141,12 @@
 		(Load VIEW 333)
 		(super init:)
 		(StatusLine enable:)
-		(self setRegions: 811)
+		;don't make this part of the Town region,
+		; since Erana's aura doesn't cover it.
+		(self setRegions: STREET) ;TOWN)
 		(NormalEgo)
 		(ego posn: 120 187 init: setMotion: MoveTo 120 180)
-		(beggarTeller init: beggar @local7 @local38 @local50)
+		(beggarTeller init: beggar @beggarTellMainBranch @beggarTellTree @beggarTellKeys)
 		(beggar actions: beggarTeller init:)
 		(features
 			add:
@@ -110,8 +159,11 @@
 				marksOnWall
 			eachElementDo: #init
 		)
-		(= local0 0)
-		(messager say: N_ROOM NULL C_LOOKROOM)
+		(= nearBeggar FALSE)
+		;now only shows the message on first entry
+		(if (not (Btst fBeenIn333))
+			(messager say: N_ROOM NULL C_LOOKROOM)
+		)
 	)
 	
 	(method (doit)
@@ -119,14 +171,14 @@
 			(ego setScript: goBackToStreet)
 		)
 		(cond 
-			((and (not local0) (ego inRect: 100 135 215 185))
+			((and (not nearBeggar) (ego inRect: 100 135 215 185))
 				(beggar setCycle: EndLoop)
 				(messager say: N_BEGGAR NULL C_ALMSFORTHEPOOR)
-				(= local0 1)
+				(= nearBeggar TRUE)
 			)
-			((and local0 (not (ego inRect: 100 135 215 185)))
+			((and nearBeggar (not (ego inRect: 100 135 215 185)))
 				(beggar setCycle: BegLoop)
-				(= local0 0)
+				(= nearBeggar FALSE)
 			)
 		)
 		(super doit:)
@@ -321,18 +373,16 @@
 		y 171
 		noun N_BEGGAR
 		view 333
-		signal $4000
+		signal ignrAct
 	)
 )
 
 (instance beggarTeller of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
 				(V_LOOK
-					(if gaveToBeggar
+					(if gaveMoney
 						(messager say: N_BEGGAR V_LOOK C_BOWLHASMONEY)
 					else
 						(messager say: N_BEGGAR V_LOOK C_BOWLEMPTY)
@@ -341,19 +391,19 @@
 				)
 				(V_TALK
 					(cond 
-						((not gaveToBeggar)
+						((not gaveMoney)
 							(messager say: N_BEGGAR V_TALK C_BOWLHASMONEY)
-							(return 1)
+							(return TRUE)
 						)
 						((> talkCount 5)
-							(= local4 0)
+							(= talkRet FALSE)
 							(messager say: N_BEGGAR V_TALK C_BACKTOWORK)
 							(return TRUE)
 						)
 						(else
 							(++ talkCount)
 							(SolvePuzzle f333TalkToBeggar 1)
-							(= local4 1)
+							(= talkRet TRUE)
 							(super doVerb: theVerb &rest)
 						)
 					)
@@ -372,13 +422,13 @@
 						(= beggarCue giveMoney)
 						(ego setScript: cueItScript)
 						(messager say: N_BEGGAR V_MONEY)
-						(= gaveToBeggar TRUE)
-						(= local2 1)
+						(= gaveMoney TRUE)
+						(= willTalk TRUE)
 						(= talkCount 0)
 					else
 						(messager say: N_BEGGAR V_MONEY C_NOFUNDS)
 					)
-					(return 1)
+					(return TRUE)
 				)
 				(V_FRUIT
 					(messager say: N_BEGGAR V_FRUIT)
@@ -408,8 +458,6 @@
 )
 
 (instance toTheCentaur of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -442,29 +490,32 @@
 )
 
 (instance goBackToStreet of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= seconds 1))
+			(0
+				(HandsOff)
+				(= seconds 1)
+			)
 			(1
-				(if (and gaveToBeggar (not (Btst fBeenIn333)))
+				(if (and gaveMoney (not (Btst fBeenIn333)))
 					(messager say: N_BEGGAR NULL C_DONTDRINKBREATH 1 self)
 				else
 					(self cue:)
 				)
 			)
-			(2 (curRoom newRoom: 330))
+			(2
+				(curRoom newRoom: 330)
+			)
 		)
 	)
 )
 
 (instance cueItScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= ticks 60))
+			(0
+				(= ticks 60)
+			)
 			(1
 				(switch beggarCue
 					(giveMoney
@@ -499,7 +550,7 @@
 	(method (init)
 		(= nightPalette 2334)
 		(PalVary PALVARYTARGET 2334)
-		(kernel_128 1334)
+		(AssertPalette 1334)
 		(= font userFont)
 		(super init: beggarBust beggarEye beggarMouth &rest)
 	)

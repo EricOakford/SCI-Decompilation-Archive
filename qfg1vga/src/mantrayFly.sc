@@ -20,13 +20,17 @@
 	oldMoveSpeed
 )
 (instance flyRight of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((<= (client distanceTo: ego) 52) ((ScriptID 210 0) cue:))
-			((and (< (client y?) 30) (Btst fMantrayLeft)) (Bclr fMantrayLeft))
-			((and (> (client y?) 80) (not (Btst fMantrayLeft))) (Bset fMantrayLeft))
+			((<= (client distanceTo: ego) 52)
+				((ScriptID 210 0) cue:)
+			)
+			((and (< (client y?) 30) (Btst fMantrayLeft))
+				(Bclr fMantrayLeft)
+			)
+			((and (> (client y?) 80) (not (Btst fMantrayLeft)))
+				(Bset fMantrayLeft)
+			)
 		)
 		(super doit:)
 	)
@@ -85,13 +89,17 @@
 )
 
 (instance flyLeft of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((<= (client distanceTo: ego) 35) ((ScriptID 210 0) cue:))
-			((and (< (client y?) 30) (Btst fMantrayLeft)) (Bclr fMantrayLeft))
-			((and (> (client y?) 80) (not (Btst fMantrayLeft))) (Bset fMantrayLeft))
+			((<= (client distanceTo: ego) 35)
+				((ScriptID 210 0) cue:)
+			)
+			((and (< (client y?) 30) (Btst fMantrayLeft))
+				(Bclr fMantrayLeft)
+			)
+			((and (> (client y?) 80) (not (Btst fMantrayLeft)))
+				(Bset fMantrayLeft)
+			)
 		)
 		(super doit:)
 	)
@@ -113,9 +121,7 @@
 					targDeltaX: 40
 					setStep: 5 2
 					setCycle: EndLoop
-					setMotion:
-						MoveTo
-						20
+					setMotion: MoveTo 20
 						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
 						else
@@ -132,8 +138,7 @@
 					cycleSpeed: 6
 					cel: 0
 					setStep: 4 1
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(+ (client x?) 2)
 						(if (Btst fMantrayLeft)
 							(- (client y?) 5)
@@ -143,15 +148,17 @@
 					setCycle: EndLoop self
 				)
 			)
-			(3 (= cycles 2))
-			(4 (client setScript: flyRight))
+			(3
+				(= cycles 2)
+			)
+			(4
+				(client setScript: flyRight)
+			)
 		)
 	)
 )
 
 (instance startup of Script
-	(properties)
-	
 	(method (doit)
 		(if (<= (client distanceTo: ego) 10)
 			((ScriptID ENCOUNTER 0) cue:)
@@ -226,8 +233,6 @@
 )
 
 (instance killMantray of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)

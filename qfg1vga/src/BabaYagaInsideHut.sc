@@ -107,6 +107,21 @@
 				brokenGate
 				hutWindow
 		)
+		
+		;UPGRADE
+;;;		(skull init:)
+;;;		(cauldron init:)
+;;;		(broom init:)
+;;;		(note init:)
+;;;		(bucket init:)
+;;;		(table init:)
+;;;		(web init:)
+;;;		(firePlace init:)
+;;;		(telephone init:)
+;;;		(murial init:)
+;;;		(brokenGate init:)
+;;;		(hutWindow init:)
+		
 		(if (== prevRoomNum 299)
 			(ego init: posn: 166 187)
 		else

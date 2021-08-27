@@ -21,9 +21,9 @@
 
 (local
 	local0
-	local1
+	climbUpState
 	local2
-	timesPettedCat
+	catNeedy
 	local4
 	local5
 	wentUpstairs
@@ -43,7 +43,7 @@
 )
 
 (procedure (PetCat)
-	(SolvePuzzle POINTS_PETLOLCAT 3 THIEF)
+	(SolvePuzzle f313PetCat 3 THIEF)
 	(ego setScript: catPetOrFeed1)
 )
 
@@ -54,7 +54,7 @@
 		(messager say: N_ROOM NULL C_SEARCHPURSE)
 		(= lootCue cuePurse)
 		(Bset fSearchedPurse)
-		(SolvePuzzle POINTS_SEARCHLOLPURSE 1 THIEF)
+		(SolvePuzzle f313SearchPurse 1 THIEF)
 		(ego setScript: cuedIt)
 	)
 )
@@ -66,7 +66,7 @@
 		(messager say: N_ROOM NULL C_SEARCHBASKET)
 		(= lootCue cueBasket)
 		(Bset fSearchedBasket)
-		(SolvePuzzle POINTS_SEARCHLOLBASKET 1 THIEF)
+		(SolvePuzzle f313SearchBasket 1 THIEF)
 		(ego setScript: cuedIt)
 	)
 )
@@ -146,12 +146,12 @@
 				)
 		)
 		(LoadMany RES_VIEW 313 635 636 525)
-		(Load RES_SCRIPT 927)
+		(Load RES_SCRIPT PAVOID)
 		(Load RES_SOUND 8)
 		(Load RES_SOUND (SoundFX 52))
 		(super init:)
-		(SolvePuzzle POINTS_ENTERLOLHOUSE 5 2)
-		(= timesPettedCat 0)
+		(SolvePuzzle f313EnterLOLHouse 5 THIEF)
+		(= catNeedy 0)
 		(self setFeatures: onPlant onTable onDoor onStorageBox)
 		;UPGRADE
 ;;;		(onPlant init:)
@@ -248,7 +248,7 @@
 			((ego script?) 0)
 			(
 				(and
-					(& (ego onControl: origin) $4000)
+					(& (ego onControl: origin) cYELLOW)
 					(< (ego distanceTo: cat) 25)
 					(not local2)
 					(not local9)
@@ -268,59 +268,61 @@
 			)
 			(
 				(and
-					(& (ego onControl: origin) $2000)
+					(& (ego onControl: origin) cLMAGENTA)
 					(or
 						(== (ego loop?) 3)
 						(== (ego loop?) 6)
 						(== (ego loop?) 7)
 					)
-					(!= local1 1)
+					(!= climbUpState 1)
 				)
-				(= local1 1)
+				(= climbUpState 1)
 				(ego setMotion: 0 setScript: climbUp1)
 			)
 			(
 				(and
-					(& (ego onControl: origin) $1000)
+					(& (ego onControl: origin) cLRED)
 					(or
 						(== (ego loop?) 3)
 						(== (ego loop?) 6)
 						(== (ego loop?) 7)
 					)
-					(!= local1 2)
+					(!= climbUpState 2)
 				)
-				(= local1 2)
+				(= climbUpState 2)
 				(ego setMotion: 0 setScript: climbUp2)
 			)
 			(
 				(and
-					(& (ego onControl: origin) $0800)
+					(& (ego onControl: origin) cLCYAN)
 					(or
 						(== (ego loop?) 3)
 						(== (ego loop?) 6)
 						(== (ego loop?) 7)
 					)
-					(!= local1 3)
+					(!= climbUpState 3)
 				)
-				(= local1 3)
+				(= climbUpState 3)
 				(ego setMotion: 0 setScript: climbUp3)
 			)
-			((== (ego onControl: origin) 1024) (= local1 0))
+			((== (ego onControl: origin) cLGREEN)
+				(= climbUpState 0)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(ego observeControl: -32768)
+		(ego observeControl: cWHITE)
 		(DisposeScript PAVOID)
 		(DisposeScript SMOOPER)
 		(super dispose:)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(Bset fBeenIn313)
 		(= deathMusic (SoundFX 26))
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
@@ -337,8 +339,12 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_STORAGEBOX V_LOOK))
-			(V_DO (messager say: N_CHEST V_DO))
+			(V_LOOK
+				(messager say: N_STORAGEBOX V_LOOK)
+			)
+			(V_DO
+				(messager say: N_CHEST V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -387,7 +393,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (ego setScript: SearchDesk))
+			(V_DO
+				(ego setScript: SearchDesk)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -459,7 +467,7 @@
 					(messager say: N_COUCH V_DO C_SEARCHCOUCH)
 					(= lootCue cueCouch)
 					(Bset fSearchedCouch)
-					(SolvePuzzle POINTS_SEARCHLOLCOUCH 1 THIEF)
+					(SolvePuzzle f313SearchCouch 1 THIEF)
 					(ego setScript: cuedIt)
 				)
 			)
@@ -494,7 +502,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (birdcage doVerb: V_DO))
+			(V_DO
+				(birdcage doVerb: V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -512,7 +522,7 @@
 		view 313
 		loop 2
 		priority 10
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
@@ -541,12 +551,14 @@
 		view 313
 		loop 2
 		priority 10
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (candle1 doVerb: V_DO))
+			(V_DO
+				(candle1 doVerb: V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -565,12 +577,14 @@
 		loop 2
 		cel 2
 		priority 12
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (SearchPurse))
+			(V_DO
+				(SearchPurse)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -589,12 +603,14 @@
 		loop 2
 		cel 1
 		priority 10
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (SearchBasket))
+			(V_DO
+				(SearchBasket)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -612,12 +628,14 @@
 		view 313
 		loop 5
 		priority 6
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (ego setScript: removeCover))
+			(V_DO
+				(ego setScript: removeCover)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -633,7 +651,7 @@
 		view 313
 		loop 8
 		priority 7
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 )
 
@@ -645,7 +663,7 @@
 		view 313
 		loop 6
 		priority 6
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 )
 
@@ -657,7 +675,7 @@
 		view 313
 		loop 7
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 
@@ -671,12 +689,14 @@
 		view 313
 		loop 1
 		priority 5
-		signal $0011
+		signal (| fixPriOn stopUpdOn)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_DO (ego setScript: SearchDesk))
+			(V_DO
+				(ego setScript: SearchDesk)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -727,8 +747,6 @@
 )
 
 (instance birdieSings of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 450])
 		(switch (= state newState)
 			(0
@@ -741,10 +759,17 @@
 				(birdcage loop: 4 setCel: 0 setCycle: EndLoop)
 				(= cycles 2)
 			)
-			(2 (messager say: N_BIRDIESINGS 0 C_CHIRP 1 self))
-			(3 (messager say: N_BIRDIESINGS 0 C_DONTBOTHERBIRD 1 self))
-			(4 (messager say: N_BIRDIESINGS 0 C_NOISYBIRD 1 self))
-			(5 (messager say: N_BIRDIESINGS 0 C_COVERCAGE 1 self))
+			(2
+				(messager say: N_BIRDIESINGS NULL C_CHIRP 1 self)
+			)
+			(3
+				(messager say: N_BIRDIESINGS NULL C_DONTBOTHERBIRD 1 self))
+			(4
+				(messager say: N_BIRDIESINGS NULL C_NOISYBIRD 1 self)
+			)
+			(5
+				(messager say: N_BIRDIESINGS NULL C_COVERCAGE 1 self)
+			)
 			(6
 				(birdcage loop: 5 setCel: 3 setCycle: BegLoop self)
 			)
@@ -752,7 +777,7 @@
 				(birdcage stopUpd:)
 				(= birdcageUncovered FALSE)
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(self dispose:)
 			)
 		)
@@ -760,17 +785,17 @@
 )
 
 (instance deskOpen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(drawer setCycle: EndLoop self)
 			)
-			(1 (= ticks 60))
+			(1
+				(= ticks 60)
+			)
 			(2
-				(messager say: N_OPENDRAWER 0 C_FIND1SILVER 1 self)
+				(messager say: N_OPENDRAWER NULL C_FIND1SILVER 1 self)
 			)
 			(3
 				(ego get: iSilver 1)
@@ -779,7 +804,7 @@
 			)
 			(4
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(self dispose:)
 			)
 		)
@@ -787,21 +812,21 @@
 )
 
 (instance first313Script of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 400])
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(if (or (not (Btst fBeenIn313)) (!= prevRoomNum 0))
-					(messager say: N_ROOM 0 C_FIRSTENTRY 1 self)
+					(messager say: N_ROOM NULL C_FIRSTENTRY 1 self)
 				else
 					(client setScript: 0)
 				)
 			)
 			(2
 				(if (or (not (Btst fBeenIn313)) (!= prevRoomNum 0))
-					(messager say: N_ROOM 0 C_FIRSTENTRY2 1 self)
+					(messager say: N_ROOM NULL C_FIRSTENTRY2 1 self)
 				)
 				(client setScript: 0)
 			)
@@ -810,8 +835,6 @@
 )
 
 (instance catWalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -842,8 +865,6 @@
 )
 
 (instance catPetOrFeed1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -861,46 +882,48 @@
 			(3
 				(= local9 1)
 				(if pettedCat
-					(switch timesPettedCat
+					(switch catNeedy
 						(0
-							(messager say: N_CATNEEDY 0 C_PETCAT1 1 self)
-							(= timesPettedCat 1)
+							(messager say: N_CATNEEDY NULL C_PETCAT1 1 self)
+							(= catNeedy 1)
 						)
 						(1
-							(messager say: N_CATNEEDY 0 C_PETCAT2 1 self)
-							(= timesPettedCat 2)
+							(messager say: N_CATNEEDY NULL C_PETCAT2 1 self)
+							(= catNeedy 2)
 						)
 						(2
-							(messager say: N_CATNEEDY 0 C_PETCAT3 1 self)
+							(messager say: N_CATNEEDY NULL C_PETCAT3 1 self)
 						)
 					)
 				)
 				(if fedCat
-					(switch timesPettedCat
+					(switch catNeedy
 						(0
-							(messager say: N_CATNEEDY 0 C_FEEDCAT2 1 self)
-							(= timesPettedCat 1)
+							(messager say: N_CATNEEDY NULL C_FEEDCAT2 1 self)
+							(= catNeedy 1)
 						)
 						(1
-							(messager say: N_CATNEEDY 0 C_FEEDCAT3 1 self)
-							(= timesPettedCat 2)
+							(messager say: N_CATNEEDY NULL C_FEEDCAT3 1 self)
+							(= catNeedy 2)
 						)
 						(2
 							(if (ego has: iRations)
-								(messager say: N_CATNEEDY 0 C_FEEDCAT1 1 self)
+								(messager say: N_CATNEEDY NULL C_FEEDCAT1 1 self)
 							else
-								(messager say: N_CATNEEDY 0 C_NORATIONS 1 self)
+								(messager say: N_CATNEEDY NULL C_NORATIONS 1 self)
 							)
 						)
 					)
 				)
 			)
 			(4
-				(if (and (== timesPettedCat 2) (ego has: iRations)) (ego use: iRations 1))
+				(if (and (== catNeedy 2) (ego has: iRations))
+					(ego use: iRations 1)
+				)
 				(= fedCat 0)
 				(= pettedCat 0)
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(= seconds 5)
 			)
 			(5
@@ -913,8 +936,6 @@
 )
 
 (instance catChasesEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -929,26 +950,30 @@
 				(cat setCycle: EndLoop setMotion: 0)
 				(= cycles 2)
 			)
-			(2 (messager say: N_CATATTACKS 0 C_CATGROWLS 1 self))
-			(3 (ego setScript: catAttack))
+			(2
+				(messager say: N_CATATTACKS NULL C_CATGROWLS 1 self)
+			)
+			(3
+				(ego setScript: catAttack)
+			)
 		)
 	)
 )
 
 (instance gonnaGetYou of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (cat looper?)) (cat setLoop: catTurn))
+				(if (not (cat looper?))
+					(cat setLoop: catTurn)
+				)
 				(cat setMotion: 0)
 				(if Night
 					(if (== attackedCat TRUE)
-						(messager say: N_CATTURNS 0 C_ATTACKEDCAT 1 self)
+						(messager say: N_CATTURNS NULL C_ATTACKEDCAT 1 self)
 					else
-						(messager say: N_CATTURNS 0 C_PROVOKEDCAT 1 self)
+						(messager say: N_CATTURNS NULL C_PROVOKEDCAT 1 self)
 					)
 				else
 					(self cue:)
@@ -979,8 +1004,6 @@
 )
 
 (instance catAttack of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1037,8 +1060,6 @@
 )
 
 (instance getReady of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1059,8 +1080,6 @@
 )
 
 (instance climbUp1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1070,13 +1089,13 @@
 				(self cue:)
 			)
 			(1
-				(ego setLoop: -1 illegalBits: -32768)
-				(messager say: 14 0 18 1 self)
+				(ego setLoop: -1 illegalBits: cWHITE)
+				(messager say: 14 NULL 18 1 self)
 			)
 			(2
 				(= local12 1)
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(self dispose:)
 			)
 		)
@@ -1084,8 +1103,6 @@
 )
 
 (instance climbUp2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1094,12 +1111,12 @@
 				(self cue:)
 			)
 			(1
-				(ego setLoop: -1 illegalBits: -32768)
+				(ego setLoop: -1 illegalBits: cWHITE)
 				(messager say: 15 0 19 1 self)
 			)
 			(2
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(self dispose:)
 			)
 		)
@@ -1107,8 +1124,6 @@
 )
 
 (instance climbUp3 of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 450])
 		(switch (= state newState)
 			(0
@@ -1120,8 +1135,8 @@
 				(HandsOn)
 				(ego
 					setLoop: -1
-					ignoreControl: -32768
-					illegalBits: -32768
+					ignoreControl: cWHITE
+					illegalBits: cWHITE
 				)
 				(messager say: 16 0 23 1 self)
 			)
@@ -1138,14 +1153,12 @@
 )
 
 (instance climbDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(cat setScript: getReady)
-				(= local1 0)
+				(= climbUpState 0)
 				(ego
 					illegalBits: 0
 					setLoop: 2
@@ -1159,23 +1172,23 @@
 					(HandsOn)
 					(ego
 						setLoop: -1
-						ignoreControl: -32768
-						illegalBits: -32768
+						ignoreControl: cWHITE
+						illegalBits: cWHITE
 					)
 					(ego setScript: 0)
 					(cat setScript: catWalk)
 				)
 			)
 			(2
-				(if wentUpstairs (ego setLoop: -1))
+				(if wentUpstairs
+					(ego setLoop: -1)
+				)
 			)
 		)
 	)
 )
 
 (instance enterRoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1184,7 +1197,7 @@
 			)
 			(1
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(self dispose:)
 			)
 		)
@@ -1192,8 +1205,6 @@
 )
 
 (instance SearchDesk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1202,7 +1213,7 @@
 					(self cue:)
 				else
 					(ego
-						ignoreControl: -32768
+						ignoreControl: cWHITE
 						setMotion: PolyPath 46 179 self
 					)
 				)
@@ -1211,17 +1222,17 @@
 				(ego setMotion: PolyPath 76 130 self)
 			)
 			(2
-				(if (Btst 134)
-					(messager say: N_ROOM 0 32 1 self)
+				(if (Btst fSearchedDesk)
+					(messager say: N_ROOM NULL 32 1 self)
 				else
-					(SolvePuzzle 624 1 2)
+					(SolvePuzzle f313SearchDesk 1 THIEF)
 					(ego setScript: deskOpen)
 				)
 			)
 			(3
-				(ego observeControl: -32768)
+				(ego observeControl: cWHITE)
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(self dispose:)
 			)
 		)
@@ -1229,8 +1240,6 @@
 )
 
 (instance removeCover of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1244,7 +1253,7 @@
 			)
 			(2
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(= local2 1)
 				(self dispose:)
 			)
@@ -1253,8 +1262,6 @@
 )
 
 (instance toTheCandles of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1264,7 +1271,7 @@
 					(self cue:)
 				else
 					(ego
-						ignoreControl: -32768
+						ignoreControl: cWHITE
 						setMotion: PolyPath 46 179 self
 					)
 				)
@@ -1272,17 +1279,18 @@
 			(1
 				(ego setMotion: PolyPath 76 130 self)
 			)
-			(2 (messager say: 5 4 7 1 self))
+			(2
+				(messager say: N_CANDLE1 V_DO C_TAKECANDLES 1 self))
 			(3
 				(candle1 dispose:)
 				(candle2 dispose:)
 				(Bset fStoleCandles)
-				(SolvePuzzle POINTS_TAKECANDLESTICKS 1 THIEF)
+				(SolvePuzzle f313StealCandles 1 THIEF)
 				(= ticks 60)
 			)
 			(4
 				(HandsOn)
-				(ego ignoreControl: -32768)
+				(ego ignoreControl: cWHITE)
 				(self dispose:)
 			)
 		)
@@ -1290,8 +1298,6 @@
 )
 
 (instance cuedIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 60))

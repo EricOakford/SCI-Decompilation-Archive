@@ -118,6 +118,17 @@
 				theGrass
 				theMortuary
 		)
+		
+		;UPGRADE
+;;;		(crossStone init:)
+;;;		(graveStone init:)
+;;;		(grate init:)
+;;;		(theWall init:)
+;;;		(theSky init:)
+;;;		(theTrees init:)
+;;;		(theGrass init:)
+;;;		(theMortuary init:)
+		
 		(cSound fade:)
 		(if
 			(and

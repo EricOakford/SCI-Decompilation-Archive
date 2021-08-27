@@ -22,12 +22,12 @@
 )
 
 (local
-	thievesOnScreen
+	thievesAmbush
 	thievesSatisfied
 	local2
-	climbAttempts
+	climbCount
 	thiefClicked
-	local5
+	movedEgoIn
 )
 (instance rm334 of Room
 	(properties
@@ -87,9 +87,8 @@
 				(self setScript: sEnter)
 			)
 		)
-		(self setRegions: STREET TOWN)
-		;(self setRegions: STREET) ;UPGRADE: Don't make this area part of the Town region, since Erana's aura doesn't cover it.
-
+		;UPGRADE: Don't make this area part of the Town region, since Erana's aura doesn't cover it.
+		(self setRegions: STREET) ;TOWN)
 	)
 	
 	(method (doit)
@@ -97,8 +96,8 @@
 			(script)
 			(
 				(and
-					(not thievesOnScreen)
-					(not thievesOnScreen)
+					(not thievesAmbush)
+					(not thievesAmbush)
 					(< 140 (ego y?))
 					(< (ego y?) 143)
 				)
@@ -106,13 +105,15 @@
 			)
 			(
 				(and
-					thievesOnScreen
+					thievesAmbush
 					(not thievesSatisfied)
 					(or (> (ego y?) 143) (< (ego y?) 140))
 				)
 				(curRoom setScript: stabTheBum)
 			)
-			((== (ego edgeHit?) SOUTH) (self setScript: sExitRoom))
+			((== (ego edgeHit?) SOUTH)
+				(self setScript: sExitRoom)
+			)
 		)
 		(super doit:)
 	)
@@ -251,7 +252,7 @@
 				(cond 
 					(
 						(and
-							thievesOnScreen
+							thievesAmbush
 							(not thievesSatisfied)
 							(or (> (ego y?) 143) (< (ego y?) 140))
 						)
@@ -264,11 +265,11 @@
 					)
 					((not [egoStats CLIMB])
 						(messager say: N_BRICKS V_DO C_NOCLIMB)
-						(++ climbAttempts)
+						(++ climbCount)
 					)
-					((and (< 3 climbAttempts) (< climbAttempts 10))
+					((and (< 3 climbCount) (< climbCount 10))
 						(messager say: N_BRICKS V_DO C_NOMORECLIMBING)
-						(= climbAttempts 10)
+						(= climbCount 10)
 					)
 					(else
 						(messager say: N_BRICKS V_DO C_CLIMBFAIL)
@@ -348,14 +349,14 @@
 			(V_DO
 				(cond 
 					(thievesSatisfied
-						(messager say: 7 V_DO C_THIEVESIGNORE)
+						(messager say: N_ROOM V_DO C_THIEVESIGNORE)
 					)
 					((Btst fLearnedThiefPassword)
-						(messager say: 7 V_DO C_THIEVESALREADYKNOW)
+						(messager say: N_ROOM V_DO C_THIEVESALREADYKNOW)
 						(= thievesSatisfied TRUE)
 					)
 					((not (if [egoStats STEALTH] else [egoStats PICK]))
-						(messager say: 7 V_DO C_NOTATHIEF)
+						(messager say: N_ROOM V_DO C_NOTATHIEF)
 					)
 					(else
 						(ego setScript: messageTwo)
@@ -442,7 +443,7 @@
 				(curRoom setScript: killTheBum)
 			)
 			(V_SWORD
-				(messager say: 8 16)
+				(messager say: N_SLINK V_DAGGER)
 				(HandsOff)
 				(curRoom setScript: killTheBum)
 			)
@@ -458,7 +459,7 @@
 				(super doVerb: theVerb &rest)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 )
 
@@ -547,8 +548,6 @@
 )
 
 (instance stabTheBum of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -569,8 +568,6 @@
 )
 
 (instance killTheBum of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -596,7 +593,7 @@
 			(2
 				(knifeSound number: 29 play:)
 				(knife2 setCycle: 0)
-				(slink ignoreActors: 0 stopUpd:)
+				(slink ignoreActors: FALSE stopUpd:)
 				(= cycles 3)
 			)
 			(3
@@ -617,13 +614,11 @@
 )
 
 (instance moveEgoIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= local5 1)
+				(= movedEgoIn TRUE)
 				(ego setMotion: MoveTo 148 142 self)
 			)
 			(1
@@ -635,14 +630,12 @@
 )
 
 (instance toTheCentaur of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					signal: (| (ego signal?) $4000)
+					signal: (| (ego signal?) ignrAct)
 					illegalBits: 0
 					setCycle: Walk
 					setMotion: PolyPath 144 113 self
@@ -674,26 +667,24 @@
 )
 
 (instance messageTwo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(messager say: N_ROOM V_DO C_LEARNPASSWORD 1 self)
-				(SolvePuzzle 642 3 2)
-				(Bset 123)
+				(SolvePuzzle f334GiveSign 3 THIEF)
+				(Bset fLearnedThiefPassword)
 				(= thievesSatisfied 1)
 			)
 			(1
-				(if (not (ego has: 9))
+				(if (not (ego has: iThiefLicense))
 					(messager say: N_ROOM V_DO C_LEARNPASSWORD 2 self)
 				else
 					(self cue:)
 				)
 			)
 			(2
-				(if (not (ego has: 9))
+				(if (not (ego has: iThiefLicense))
 					(messager say: N_ROOM V_DO C_LEARNPASSWORD 3 self)
 				else
 					(self cue:)
@@ -721,7 +712,7 @@
 	(method (init)
 		(= nightPalette 2333)
 		(PalVary PALVARYTARGET 2333)
-		(kernel_128 1333)
+		(AssertPalette 1333)
 		(= font userFont)
 		(super init: slinkBust slinkEye slinkMouth &rest)
 	)
@@ -763,8 +754,6 @@
 )
 
 (instance sEnter of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -796,8 +785,6 @@
 )
 
 (instance sExitRoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -812,8 +799,6 @@
 )
 
 (instance ambushScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -821,14 +806,14 @@
 				(leMusic play:)
 				(Load SOUND 30)
 				(Load SOUND 31)
-				(= thievesOnScreen TRUE)
+				(= thievesAmbush TRUE)
 				(ego setMotion: PolyPath 148 142)
 				(slink ignoreActors: 1 setPri: 7 init: setCycle: EndLoop self)
 			)
 			(1
 				(Face ego slink)
 				(sneak
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setPri: 10
 					init:
 					setCycle: CycleTo 3 1 self
@@ -837,7 +822,7 @@
 			(2
 				(sneak setCycle: CycleTo 8 1)
 				(knife
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setLoop: 5
 					setPri: 10
 					init:
@@ -851,11 +836,11 @@
 			(3
 				(knifeSound number: 30 play:)
 				(knife setCel: 2 addToPic:)
-				(slink ignoreActors: 0 stopUpd:)
+				(slink ignoreActors: FALSE stopUpd:)
 				(= cycles 3)
 			)
 			(4
-				(sneak setCel: 3 ignoreActors: 0 stopUpd:)
+				(sneak setCel: 3 ignoreActors: FALSE stopUpd:)
 				(= cycles 5)
 			)
 			(5
@@ -909,8 +894,6 @@
 )
 
 (instance giveMoney of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

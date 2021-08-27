@@ -14,27 +14,27 @@
 )
 
 (local
-	newView
-	local1
-	local2
-	local3
+	highlitPoster
+	posterLoop
+	posterX
+	posterY
 )
-(procedure (localproc_0060 param1 param2)
+(procedure (PosterPrint theWidth theString)
 	(Print
 		mode: teJustCenter
-		width: param1
-		addText: param2
+		width: theWidth
+		addText: theString
 		x: -1
 		y: 12
 		init:
 	)
 )
 
-(procedure (localproc_007f)
-	(newView
-		loop: local1
+(procedure (ChangeHighlight)
+	(highlitPoster
+		loop: posterLoop
 		cel: 0
-		posn: local2 local3
+		posn: posterX posterY
 		setPri: 1
 	)
 )
@@ -55,9 +55,17 @@
 			add: poster1 poster2 poster3 poster4 poster5 poster6
 			eachElementDo: #init
 		)
+		;UPGRADE
+;;;		(poster1 init:)
+;;;		(poster2 init:)
+;;;		(poster3 init:)
+;;;		(poster4 init:)
+;;;		(poster5 init:)
+;;;		(poster6 init:)
+		
 		(StatusLine enable:)
 		(User canControl: FALSE)
-		((= newView (View new:))
+		((= highlitPoster (View new:))
 			view: 318
 			loop: 0
 			cel: 0
@@ -100,7 +108,9 @@
 			(V_LOOK
 				(curRoom setScript: poster1Script)
 			)
-			(V_DO (messager say: N_POSTER V_DO))
+			(V_DO
+				(messager say: N_POSTER V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -119,12 +129,14 @@
 		sightAngle 40
 	)
 	
-	(method (doVerb theVerb &tmp [temp0 400])
+	(method (doVerb theVerb &tmp [str 400])
 		(switch theVerb
 			(V_LOOK
 				(curRoom setScript: poster2Script)
 			)
-			(V_DO (messager say: N_POSTER V_DO))
+			(V_DO
+				(messager say: N_POSTER V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -143,12 +155,14 @@
 		sightAngle 40
 	)
 	
-	(method (doVerb theVerb &tmp [temp0 400])
+	(method (doVerb theVerb &tmp [str 400])
 		(switch theVerb
 			(V_LOOK
 				(curRoom setScript: poster3Script)
 			)
-			(V_DO (messager say: N_POSTER V_DO))
+			(V_DO
+				(messager say: N_POSTER V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -167,12 +181,14 @@
 		sightAngle 40
 	)
 	
-	(method (doVerb theVerb &tmp [temp0 400])
+	(method (doVerb theVerb &tmp [str 400])
 		(switch theVerb
 			(V_LOOK
 				(curRoom setScript: poster4Script)
 			)
-			(V_DO (messager say: N_POSTER V_DO))
+			(V_DO
+				(messager say: N_POSTER V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -191,12 +207,14 @@
 		sightAngle 40
 	)
 	
-	(method (doVerb theVerb &tmp [temp0 400])
+	(method (doVerb theVerb &tmp [str 400])
 		(switch theVerb
 			(V_LOOK
 				(curRoom setScript: poster5Script)
 			)
-			(V_DO (messager say: N_POSTER V_DO))
+			(V_DO
+				(messager say: N_POSTER V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -215,12 +233,14 @@
 		sightAngle 40
 	)
 	
-	(method (doVerb theVerb &tmp [temp0 400])
+	(method (doVerb theVerb &tmp [str 400])
 		(switch theVerb
 			(V_LOOK
 				(curRoom setScript: poster6Script)
 			)
-			(V_DO (messager say: N_POSTER V_DO))
+			(V_DO
+				(messager say: N_POSTER V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -229,121 +249,109 @@
 )
 
 (instance poster1Script of Script
-	(properties)
-	
-	(method (changeState newState &tmp [temp0 400])
+	(method (changeState newState &tmp [str 400])
 		(switch (= state newState)
 			(0
-				(= local1 0)
-				(= local2 73)
-				(= local3 38)
-				(localproc_007f)
+				(= posterLoop 0)
+				(= posterX 73)
+				(= posterY 38)
+				(ChangeHighlight)
 				(= cycles 2)
 			)
 			(1
-				(Message MsgGet 318 N_POSTER 0 0 1 @temp0)
-				(localproc_0060 240 @temp0)
+				(Message MsgGet 318 N_POSTER NULL NULL 1 @str)
+				(PosterPrint 240 @str)
 			)
 		)
 	)
 )
 
 (instance poster2Script of Script
-	(properties)
-	
-	(method (changeState newState &tmp [temp0 400])
+	(method (changeState newState &tmp [str 400])
 		(switch (= state newState)
 			(0
-				(= local1 4)
-				(= local2 69)
-				(= local3 112)
-				(localproc_007f)
+				(= posterLoop 4)
+				(= posterX 69)
+				(= posterY 112)
+				(ChangeHighlight)
 				(= cycles 2)
 			)
 			(1
-				(Message MsgGet 318 N_POSTER 0 0 2 @temp0)
-				(localproc_0060 265 @temp0)
+				(Message MsgGet 318 N_POSTER NULL NULL 2 @str)
+				(PosterPrint 265 @str)
 			)
 		)
 	)
 )
 
 (instance poster3Script of Script
-	(properties)
-	
-	(method (changeState newState &tmp [temp0 400])
+	(method (changeState newState &tmp [str 400])
 		(switch (= state newState)
 			(0
-				(= local1 2)
-				(= local2 126)
-				(= local3 66)
-				(localproc_007f)
+				(= posterLoop 2)
+				(= posterX 126)
+				(= posterY 66)
+				(ChangeHighlight)
 				(= cycles 2)
 			)
 			(1
-				(Message MsgGet 318 N_POSTER 0 0 3 @temp0)
-				(localproc_0060 265 @temp0)
+				(Message MsgGet 318 N_POSTER NULL NULL 3 @str)
+				(PosterPrint 265 @str)
 			)
 		)
 	)
 )
 
 (instance poster4Script of Script
-	(properties)
-	
-	(method (changeState newState &tmp [temp0 400])
+	(method (changeState newState &tmp [str 400])
 		(switch (= state newState)
 			(0
-				(= local1 1)
-				(= local2 191)
-				(= local3 37)
-				(localproc_007f)
+				(= posterLoop 1)
+				(= posterX 191)
+				(= posterY 37)
+				(ChangeHighlight)
 				(= cycles 2)
 			)
 			(1
-				(Message MsgGet 318 N_POSTER 0 0 4 @temp0)
-				(localproc_0060 265 @temp0)
+				(Message MsgGet 318 N_POSTER NULL NULL 4 @str)
+				(PosterPrint 265 @str)
 			)
 		)
 	)
 )
 
 (instance poster5Script of Script
-	(properties)
-	
-	(method (changeState newState &tmp [temp0 400])
+	(method (changeState newState &tmp [str 400])
 		(switch (= state newState)
 			(0
-				(= local1 5)
-				(= local2 185)
-				(= local3 99)
-				(localproc_007f)
+				(= posterLoop 5)
+				(= posterX 185)
+				(= posterY 99)
+				(ChangeHighlight)
 				(= cycles 2)
 			)
 			(1
-				(Message MsgGet 318 N_POSTER 0 0 5 @temp0)
-				(localproc_0060 200 @temp0)
+				(Message MsgGet 318 N_POSTER NULL NULL 5 @str)
+				(PosterPrint 200 @str)
 			)
 		)
 	)
 )
 
 (instance poster6Script of Script
-	(properties)
-	
-	(method (changeState newState &tmp [temp0 400])
+	(method (changeState newState &tmp [str 400])
 		(switch (= state newState)
 			(0
-				(= local1 3)
-				(= local2 253)
-				(= local3 51)
-				(localproc_007f)
+				(= posterLoop 3)
+				(= posterX 253)
+				(= posterY 51)
+				(ChangeHighlight)
 				(= cycles 2)
 			)
 			(1
-				(Message MsgGet 318 N_POSTER 0 0 6 @temp0)
+				(Message MsgGet 318 N_POSTER NULL NULL 6 @str)
 				(Bset fReadBarnardBulletin)
-				(localproc_0060 265 @temp0)
+				(PosterPrint 265 @str)
 			)
 		)
 	)
