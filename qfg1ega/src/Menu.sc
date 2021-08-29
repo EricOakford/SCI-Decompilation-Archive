@@ -139,7 +139,7 @@
 					(Print MENU 3
 						#button {Restart} TRUE
 						#button {Continue} FALSE
-						#icon vDeathScenes 1 3
+						#icon vIcons 1 3
 					)
 					; You can change your mind
 					;   if you have one.
@@ -195,7 +195,7 @@
 				(Print
 					MENU 4
 					#title {Game Paused}
-					#icon vDeathScenes 0 0
+					#icon vIcons 0 0
 					#button {Let's be a hero} TRUE
 				)
 				(Sound pause: oldPause)

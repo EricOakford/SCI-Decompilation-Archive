@@ -21,7 +21,7 @@
 	zaraWarp
 	zaraLowerTorso
 	talkRet
-	local9
+	zaraHere
 	familiarAwake
 	local11
 	local12
@@ -659,7 +659,7 @@
 			)
 			(7 (zara setCycle: EndLoop self))
 			(8
-				(= local9 1)
+				(= zaraHere 1)
 				(zaraWarp stopUpd:)
 				(HandsOn)
 				(if (not (Btst fBeenIn314))
@@ -735,7 +735,7 @@
 			)
 			(5
 				(familiar stopUpd:)
-				(if (not local9)
+				(if (not zaraHere)
 					(zara init:)
 				)
 			)

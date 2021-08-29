@@ -1,14 +1,13 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 
 ; Ego-Related View
-(define vEgo 		000)
-(define vEgoFalling 003)
-(define vEgoStanding 004)
-(define vEgoRunning	005)
-(define vEgoSneaking 006)
-(define vEgoRunFast 007)
-(define vEgoSleep 010)
-(define vEgoCatchSeed 016)
+(define vEgo 		0)
+(define vEgoFalling 3)
+(define vEgoStanding 4)
+(define vEgoRunning	5)
+(define vEgoSneaking 6)
+(define vEgoFleeing	7)
+
 (define vEgoFrogTransform 019)
 (define vEgoJailDeath	039)
 (define vEgoWalkTree	055)
@@ -66,20 +65,15 @@
 
 
 
-
-
-
-
-
-
-(define vEranasPeace 010)
-(define vKoboldCave 015)
-(define vSpittingSpirea 016)
+;Actual rooms
+(define rEranasPeace 010)
+(define rKoboldCave 015)
+(define rSpittingSpirea 016)
 (define vFrogTransform 019)
 (define vBabaYaga1	020)
 (define vBabaYaga2	021)
 (define vBabaHut	022)
-(define vBonehead	023)
+(define vBabaSkulls			23)
 (define vWizardWarning 028)
 (define vWizardDoor	029)
 (define vWizardLobby	030)
@@ -100,8 +94,8 @@
 (define vFrostGiant 	059)
 (define vMeeps 			060)
 (define vGreenMeep		061)
-(define vMandrake 		063)
-(define vGhosts 		064)
+(define vGraveyardStuff	63)
+(define rGraveyard 		064)
 (define vBruno 		 	065)
 (define vFox 			067)
 (define vFaery 			070)
@@ -147,6 +141,8 @@
 (define vYorick 297)
 (define vYorickLeave 298)
 (define vEgoGrab 	298)
+
+;Town
 (define vTownOutlook 300)
 (define vInn 	301)
 (define vEgoEatingSleeping 301)
@@ -228,10 +224,12 @@
 (define vEgoTalkWeaponMaster 639)
 (define vBushes 700)
 (define vSnow 702)
+
+(define pBlueSkyForCarpet 750)
+
 (define vBlack 777)
-(define vDeathScenes 800)
+(define vIcons 800)
 (define vCharSheet 802)
-(define vEgoCharSheet 802)
 (define vStatusBar 803)
 (define vMonoStatusBar 804)
 (define vCreditsDragon 901)

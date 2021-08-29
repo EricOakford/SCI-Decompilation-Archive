@@ -435,7 +435,7 @@
 			(4
 				(EgoDead 88 34
 					#title {WHATA TROLL!}
-					#icon vDeathScenes 0 0
+					#icon vIcons 0 0
 					;The Troll's brute force was too much for your skull.
 				)
 			)

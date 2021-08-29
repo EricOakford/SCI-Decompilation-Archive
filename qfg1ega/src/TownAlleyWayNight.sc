@@ -352,7 +352,7 @@
 			(9
 				(EgoDead 334 42
 					#title { Erana missed this spot._}
-					#icon vDeathScenes 0 0)
+					#icon vIcons 0 0)
 					;Perhaps you shouldn't explore dark alleys at night unless you are looking for trouble.
 					;Or perhaps you should look in your manual to learn how to deal with thieves.
 			)

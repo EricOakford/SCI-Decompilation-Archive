@@ -104,7 +104,7 @@
 			(5 (= seconds 2))
 			(6
 				(newAct dispose:)
-				((ScriptID KOBOLD 3) dispose:)
+				((ScriptID rKoboldCave 3) dispose:)
 				(ego get: iBrassKey setLoop: 3 cel: 0 setCycle: EndLoop self)
 				(Bset OBTAINED_KOBOLD_KEY)
 				(SolvePuzzle POINTS_TAKEKOBOLDKEY 7)

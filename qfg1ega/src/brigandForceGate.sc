@@ -10,8 +10,6 @@
 )
 
 (instance forceGate of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 278)
@@ -112,7 +110,10 @@
 					(self cue:)
 				)
 			)
-			(19 (HandsOff) (= seconds 3))
+			(19
+				(HandsOff)
+				(= seconds 3)
+			)
 			(20
 				(ego posn: (+ (ego x?) 9) (ego y?) loop: 2)
 				(= seconds 1)
@@ -120,7 +121,7 @@
 			(21
 				(NormalEgo)
 				(ego posn: (- (ego x?) 9) (+ (ego y?) 2))
-				(if (Btst BRIGAND_GATE_OPEN)
+				(if (Btst fBrigGateOpen)
 					(ego illegalBits: cWHITE)
 				else
 					(ego illegalBits: (| cWHITE cLRED))

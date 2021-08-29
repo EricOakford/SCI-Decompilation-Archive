@@ -37,7 +37,7 @@
 		(switch (= state newState)
 			(0
 				(twister
-					view: vGhosts
+					view: rGraveyard
 					setLoop: 0
 					setPri: 12
 					ignoreActors:
@@ -107,7 +107,7 @@
 		(switch (= state newState)
 			(0
 				(tumbler
-					view: vGhosts
+					view: rGraveyard
 					setLoop: 8
 					setPri: 7
 					setStep: 5 3
@@ -137,7 +137,7 @@
 		(switch (= state newState)
 			(0
 				(tumbler
-					view: vGhosts
+					view: rGraveyard
 					setLoop: 8
 					setStep: 5 3
 					ignoreActors:
@@ -179,7 +179,7 @@
 		(switch (= state newState)
 			(0
 				(swimmer
-					view: vGhosts
+					view: rGraveyard
 					setStep: 6 4
 					ignoreActors:
 					ignoreHorizon:
@@ -209,7 +209,7 @@
 		(switch (= state newState)
 			(0
 				(swimmer
-					view: vGhosts
+					view: rGraveyard
 					setStep: 6 4
 					ignoreActors:
 					ignoreHorizon:

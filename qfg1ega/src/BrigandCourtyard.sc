@@ -942,7 +942,7 @@
 					((Said 'rest,nap')
 						(EgoDead 94 1
 							#title {Z-Z-Z-Z-Z-Z-Z-Z-Z-Z}
-							#icon vDeathScenes 0 0)
+							#icon vIcons 0 0)
 							;The Brigands oblige you by making your pleasant rest permanent!
 							)
 					((Said 'cast>')

@@ -29,7 +29,9 @@
 		(StatusLine enable:)
 		(self setLocales: FOREST)
 		(NormalEgo)
-		(if (not monsterNum) (ego init:))
+		(if (not monsterNum)
+			(ego init:)
+		)
 		(switch prevRoomNum
 			(92
 				(ego posn: 120 188 setMotion: MoveTo 120 0)

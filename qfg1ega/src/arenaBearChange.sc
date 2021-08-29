@@ -573,6 +573,6 @@
 	(properties
 		y 204
 		x 79
-		view vKoboldCave
+		view rKoboldCave
 	)
 )

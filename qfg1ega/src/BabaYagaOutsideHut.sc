@@ -147,7 +147,7 @@
 	(properties
 		y 158
 		x 191
-		view vBonehead
+		view vBabaSkulls
 		illegalBits $0000
 	)
 )
@@ -156,7 +156,7 @@
 	(properties
 		y 156
 		x 191
-		view vBonehead
+		view vBabaSkulls
 		loop 1
 		illegalBits $0000
 	)
@@ -167,7 +167,7 @@
 		y 130
 		x 189
 		z 2
-		view vBonehead
+		view vBabaSkulls
 		loop 3
 		cycleSpeed 1
 		illegalBits $0000
@@ -178,7 +178,7 @@
 	(properties
 		y 88
 		x 117
-		view vBonehead
+		view vBabaSkulls
 		loop 4
 		cycleType 1
 		minPause 40
@@ -192,7 +192,7 @@
 	(properties
 		y 89
 		x 251
-		view vBonehead
+		view vBabaSkulls
 		loop 4
 		cycleType 1
 		minPause 40
@@ -206,7 +206,7 @@
 	(properties
 		y 88
 		x 72
-		view vBonehead
+		view vBabaSkulls
 		loop 6
 		cycleType 1
 		minPause 40
@@ -220,7 +220,7 @@
 	(properties
 		y 85
 		x 14
-		view vBonehead
+		view vBabaSkulls
 		loop 5
 		cycleType 1
 		minPause 40
@@ -234,7 +234,7 @@
 	(properties
 		y 82
 		x 295
-		view vBonehead
+		view vBabaSkulls
 		loop 5
 		cycleType 1
 		minPause 40
@@ -276,7 +276,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vBabaHut vBonehead vFrogTransform vTeleportGreen vEgoDefeatedMagic)
+		(LoadMany VIEW vBabaHut vBabaSkulls vFrogTransform vTeleportGreen vEgoDefeatedMagic)
 		(LoadMany SOUND 23 (SoundFX 28) (SoundFX 66))
 		(super init:)
 		(keyDownHandler add: self)
@@ -567,7 +567,7 @@
 		y 137
 		x 190
 		z 1
-		view vBonehead
+		view vBabaSkulls
 		loop 2
 		illegalBits $0000
 	)

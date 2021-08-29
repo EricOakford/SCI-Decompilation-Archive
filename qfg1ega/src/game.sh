@@ -1,11 +1,9 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (include system.sh)
 (include sci2.sh)
-(include gameEnumVisited.sh)
 (include gameEnumFlags.sh)
 (include gameEnumPuzzlePoints.sh)
-(include gameViews.sh)
-(include gamePics.sh)
+(include gameNums.sh)
 (include menu.sh)
 
 (define MAZEBUG 238)
@@ -54,14 +52,13 @@
 (define	ENDGAME			600)
 (define CHARSAVE 		601)
 
-(define STARTAROOM		896)
-(define TIME			813)
-(define TARGET			812)
-(define KEYCURSOR		810)
+(define DOORS			800)
+(define STRING			802)
 (define TALKOBJ		 	803)
-(define STRING	 		802)
-(define DOORS 			800)
-
+(define KEYCURSOR		810)
+(define TARGET			812)
+(define TIME			813)
+(define STARTAROOM		896)
 
 ; Locales and Regions
 (define DEBUG		298)	;Locale
@@ -240,10 +237,10 @@
 (define tryPickTavern 10)
 
 ;Random Encounter Entrances
-(define reNORTH 1)
-(define reEAST	2)
-(define reSOUTH 4)
-(define reWEST	8)
+(define reNORTH $0001)
+(define reEAST	$0002)
+(define reSOUTH $0004)
+(define reWEST	$0008)
 
 ;note, the other creatures have their maxHP in a array in RandomEncounters.sc
 (define MAX_HP_OGRE 112)
@@ -330,20 +327,28 @@
 	koboldDEAD
 )
 
+
 ;Arena Actions (for the 'Skilled' class)
 (enum
-	aaNOTHING
-	aaTHRUST
-	aaSLASH
-	aaPARRYUP
-	aaPARRYDOWN
-	aaDODGELEFT
-	aaDODGERIGHT
-	aaDUCK
-	aaLEAP
-	aaACTION_9
-	aaDIE
-	aaMAGIC
+	ActNone
+	ActThrust
+	ActSlash
+	ActParryUp
+	ActParryDown
+	ActDodgeLeft
+	ActDodgeRight
+	ActDuck
+	ActLeap
+	Act9	;never used
+	ActDie
+	ActCast
+)
+
+;Attack angles (for close combat)
+(enum
+	AttLeft
+	AttRight
+	AttStraight
 )
 
 ;Armor values
@@ -353,6 +358,7 @@
 ;Weapon values
 (define DAGGER_VALUE 5)
 (define SWORD_VALUE 8)
+
 
 ; unique deaths
 (define DIE_RESTART -2) ;show Restore, Restart, Quit instead of Retry, Restore, Quit)
@@ -370,6 +376,3 @@
 	DIE_ARENA_UNARMED
 	DIE_BEAR_CLOSE
 )
-
-; Monster Arenas
-(define KOBOLD 15)

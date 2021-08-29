@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 10)
+(script# rEranasPeace) ;10
 (include game.sh)
 (use Main)
 (use Sleep)
@@ -94,7 +94,7 @@
 	)
 	
 	(method (init)
-		(Load VIEW vEranasPeace)
+		(Load VIEW rEranasPeace)
 		(Load SOUND (SoundFX 24))
 		(super init:)
 		(StatusLine enable:)
@@ -391,7 +391,7 @@
 				(= sleepY (ego y?))
 				(= currentPalette 1)
 				(curRoom drawPic: 10 IRISIN)
-				(ego view: vEgoSleep setLoop: 4 setCel: 0)
+				(ego view: rEranasPeace setLoop: 4 setCel: 0)
 				(= seconds 3)
 			)
 			(1
@@ -462,7 +462,7 @@
 	(properties
 		y 43
 		x 166
-		view vEranasPeace
+		view rEranasPeace
 		loop 3
 		cycleType ExtraEndLoop
 		minPause 50
@@ -476,7 +476,7 @@
 	(properties
 		y 60
 		x 139
-		view vEranasPeace
+		view rEranasPeace
 		loop 1
 		cycleType ExtraEndLoop
 		minPause 60
@@ -490,7 +490,7 @@
 	(properties
 		y 49
 		x 154
-		view vEranasPeace
+		view rEranasPeace
 		loop 2
 		cycleType ExtraEndLoop
 		minPause 70
@@ -504,7 +504,7 @@
 	(properties
 		y 50
 		x 175
-		view vEranasPeace
+		view rEranasPeace
 		loop 3
 		cycleType ExtraEndLoop
 		minPause 80
@@ -518,7 +518,7 @@
 	(properties
 		y 43
 		x 184
-		view vEranasPeace
+		view rEranasPeace
 		loop 1
 		cycleType ExtraEndLoop
 		minPause 90
@@ -532,7 +532,7 @@
 	(properties
 		y 60
 		x 191
-		view vEranasPeace
+		view rEranasPeace
 		loop 2
 		cycleType ExtraEndLoop
 		minPause 100
@@ -546,7 +546,7 @@
 	(properties
 		y 66
 		x 208
-		view vEranasPeace
+		view rEranasPeace
 		loop 1
 		cycleType ExtraEndLoop
 		minPause 40
@@ -560,7 +560,7 @@
 	(properties
 		y 48
 		x 136
-		view vEranasPeace
+		view rEranasPeace
 		loop 3
 		cycleType ExtraEndLoop
 		minPause 30
@@ -574,7 +574,7 @@
 	(properties
 		y 71
 		x 163
-		view vEranasPeace
+		view rEranasPeace
 		loop 3
 		cycleType ExtraEndLoop
 		minPause 20
@@ -588,7 +588,7 @@
 	(properties
 		y 49
 		x 208
-		view vEranasPeace
+		view rEranasPeace
 		loop 2
 		cycleType ExtraEndLoop
 		maxPause 60
@@ -601,7 +601,7 @@
 	(properties
 		y 80
 		x 190
-		view vEranasPeace
+		view rEranasPeace
 		loop 3
 		cycleType ExtraEndLoop
 		minPause 20
@@ -615,7 +615,7 @@
 	(properties
 		y 43
 		x 148
-		view vEranasPeace
+		view rEranasPeace
 		loop 1
 		cycleType ExtraEndLoop
 		minPause 30
@@ -629,7 +629,7 @@
 	(properties
 		y 70
 		x 128
-		view vEranasPeace
+		view rEranasPeace
 		loop 2
 		cycleType ExtraEndLoop
 		minPause 40
@@ -643,7 +643,7 @@
 	(properties
 		y 79
 		x 145
-		view vEranasPeace
+		view rEranasPeace
 		loop 1
 		cycleType ExtraEndLoop
 		minPause 50
@@ -655,7 +655,7 @@
 
 (instance magicStone of View
 	(properties
-		view vEranasPeace
+		view rEranasPeace
 	)
 )
 

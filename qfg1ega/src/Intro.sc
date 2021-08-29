@@ -72,7 +72,7 @@
 		(LoadMany PICTURE 460 400 906)
 		(LoadMany VIEW
 			vDragonHead vDragonFire vSierraPresents vQFGshadow vQFG
-			vSubtitle vEgoRunning vEgoRunFast vSaurus vDragon vDragonFight
+			vSubtitle vEgoRunning vEgoFleeing vSaurus vDragon vDragonFight
 		)
 		(super init:)
 		(HandsOff)
@@ -446,7 +446,7 @@
 					show:
 				)
 				(aHero
-					view: vEgoRunFast
+					view: vEgoFleeing
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 0

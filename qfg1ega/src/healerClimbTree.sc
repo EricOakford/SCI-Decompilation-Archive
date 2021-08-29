@@ -12,11 +12,10 @@
 )
 
 (local
-	local0
+	stepCount
 )
+
 (instance climbTree of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 236)
@@ -34,7 +33,7 @@
 			)
 			(2 (= cycles 4))
 			(3
-				(++ local0)
+				(++ stepCount)
 				(ego
 					setCel: (if (== (ego cel?) 3) 0 else (+ (ego cel?) 1))
 					posn:
@@ -48,10 +47,10 @@
 				(self cue:)
 			)
 			(4
-				(if (< local0 6)
+				(if (< stepCount 6)
 					(self changeState: 2)
 				else
-					(= local0 0)
+					(= stepCount 0)
 					(= cycles 4)
 				)
 			)
@@ -68,7 +67,7 @@
 				)
 			)
 			(6
-				(Bset CLIMBED_HEALER_TREE)
+				(Bset fClimbedTree)
 				(User canInput: TRUE)
 				((ScriptID 54 3) setScript: (ScriptID 54 5))
 				(client setScript: 0)
@@ -78,8 +77,6 @@
 )
 
 (instance cantClimbTree of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 236)
@@ -104,7 +101,7 @@
 				;It takes a lot of skill and practice to climb this tree.
 				(HandsOn)
 				(NormalEgo)
-				(ego loop: 2 posn: 40 180)
+				(ego loop: loopS posn: 40 180)
 				(client setScript: 0)
 			)
 		)

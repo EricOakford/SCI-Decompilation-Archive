@@ -23,7 +23,7 @@
 
 (local
 	sittingOnChair
-	chatHermit
+	talkRet
 )
 (instance pfSnd of Sound
 	(properties
@@ -52,9 +52,9 @@
 		title {Hermit:}
 	)
 	
-	(method (open &tmp temp0)
-		(= top (- top (= temp0 (- top 12))))
-		(= bottom (- bottom temp0))
+	(method (open &tmp vDiff)
+		(-= top (= vDiff (- top 12)))
+		(-= bottom vDiff)
 		(super open:)
 	)
 )
@@ -146,12 +146,11 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (MouseClaimed self event shiftDown)
+			((or (MouseClaimed self event shiftDown)
 				(Said 'look/cot')) 
 				(HighPrint 83 3)
 				;You see a cot.
-				)
+			)
 		)
 	)
 )
@@ -203,7 +202,9 @@
 				(HighPrint 83 5)
 				;You see the shaggiest little man (you think it's a man, anyway) you've ever seen.
 			)
-			(else (hermitTalk handleEvent: event))
+			(else
+				(hermitTalk handleEvent: event)
+			)
 		)
 	)
 )
@@ -220,7 +221,7 @@
 		(NormalEgo)
 		(Load SOUND 41)
 		(LoadMany SCRIPT 143 144 145)
-		(SolvePuzzle POINTS_MEETHERMIT 5)
+		(SolvePuzzle f83MeetHermit 5)
 		(ego loop: 0 posn: 143 185 init:)
 		(bed priority: 0)
 		(addToPics
@@ -241,8 +242,14 @@
 	(method (doit)
 		(super doit:)
 		(cond 
-			((or sittingOnChair isHandsOff) (if (User canControl:) (User canControl: FALSE)))
-			((not (User canControl:)) (User canControl: TRUE))
+			((or sittingOnChair isHandsOff)
+				(if (User canControl:)
+					(User canControl: FALSE)
+				)
+			)
+			((not (User canControl:))
+				(User canControl: TRUE)
+			)
 		)
 		(if
 			(and
@@ -265,17 +272,17 @@
 					((Said 'look[<around,at][/room]')
 						(HighPrint 83 6)
 						;The cave is cold and clammy and it smells like mildew and wet dog hair in here!
-						)
+					)
 					((Said 'look>')
 						(cond 
 							((Said '/cave,wall')
 								(HighPrint 83 7)
 								;The walls are covered with phosphorescent fungus.
-								)
+							)
 							((Said '/fungus')
 								(HighPrint 83 8)
 								;The phosphorescent fungus glows eerily in the cave's dim light.
-								)
+							)
 							((Said '/scroll,spell')
 								(if (cast contains: scroll)
 									(HighPrint 83 9)
@@ -297,27 +304,58 @@
 						)
 					)
 					((Said 'ask>')
-						(= chatHermit TRUE)
+						(= talkRet TRUE)
 						(cond 
-							((Said '//fall,water') (self setScript: (ScriptID 145 8)))
-							((Said '//magic,ladder') (self setScript: (ScriptID 145 7)))
-							(
-							(or (Said '//trigger') (Said '//spell<trigger')) (self setScript: (ScriptID 145 5)))
-							((Said '//spell') (self setScript: (ScriptID 145 6)))
-							((Said '//wizard,erasmus') (self setScript: (ScriptID 144 0)))
-							((Said '//familiar,fenrus') (self setScript: (ScriptID 144 1)))
-							((Said '//game') (self setScript: (ScriptID 144 2)))
-							((Said '//bandit') (self setScript: (ScriptID 144 3)))
-							((Said '//warlock') (self setScript: (ScriptID 144 4)))
-							((Said '//mirror') (self setScript: (ScriptID 144 5)))
-							((Said '//cave,home') (self setScript: (ScriptID 145 0)))
-							((Said '//ermit') (self setScript: (ScriptID 145 1)))
-							((Said '//family,hortense,arry,mama,dad,farther') (self setScript: (ScriptID 145 2)))
-							((Said '//enry,name') (self setScript: (ScriptID 145 3)))
-							((Said '//cribbage') (self setScript: (ScriptID 145 4)))
-							((Said '//nap,bed,hay') (self setScript: sSleep))
+							((Said '//fall,water')
+								(self setScript: (ScriptID 145 8))
+							)
+							((Said '//magic,ladder')
+								(self setScript: (ScriptID 145 7))
+							)
+							((or (Said '//trigger') (Said '//spell<trigger'))
+								(self setScript: (ScriptID 145 5))
+							)
+							((Said '//spell')
+								(self setScript: (ScriptID 145 6))
+							)
+							((Said '//wizard,erasmus')
+								(self setScript: (ScriptID 144 0))
+							)
+							((Said '//familiar,fenrus')
+								(self setScript: (ScriptID 144 1))
+							)
+							((Said '//game')
+								(self setScript: (ScriptID 144 2))
+							)
+							((Said '//bandit')
+								(self setScript: (ScriptID 144 3))
+							)
+							((Said '//warlock')
+								(self setScript: (ScriptID 144 4))
+							)
+							((Said '//mirror')
+								(self setScript: (ScriptID 144 5))
+							)
+							((Said '//cave,home')
+								(self setScript: (ScriptID 145 0))
+							)
+							((Said '//ermit')
+								(self setScript: (ScriptID 145 1))
+							)
+							((Said '//family,hortense,arry,mama,dad,farther')
+								(self setScript: (ScriptID 145 2))
+							)
+							((Said '//enry,name')
+								(self setScript: (ScriptID 145 3))
+							)
+							((Said '//cribbage')
+								(self setScript: (ScriptID 145 4))
+							)
+							((Said '//nap,bed,hay')
+								(self setScript: sSleep)
+							)
 							((Said '//scroll')
-								(if (Btst ASKED_TRIGGER_SCROLL)
+								(if (Btst fAskedForTrigger)
 									(if (cast contains: scroll)
 										(HighPrint 83 9)
 										;It's on the table.
@@ -328,32 +366,43 @@
 									(self setScript: sAskScroll)
 								)
 							)
-							(
-							(Said '//candle,table,chair,cot,flame,door,hay,food') (self setScript: sMisc))
-							(else (= chatHermit FALSE) (event claimed: 1) (self setScript: sElse))
+							((Said '//candle,table,chair,cot,flame,door,hay,food')
+								(self setScript: sMisc)
+							)
+							(else
+								(= talkRet FALSE)
+								(event claimed: TRUE)
+								(self setScript: sElse)
+							)
 						)
-						(if chatHermit (SolvePuzzle POINTS_TALKTOHERMIT 2))
+						(if talkRet
+							(SolvePuzzle f83TalkToHermit 2)
+						)
 					)
-					((Said 'buy/') (self setScript: sMisc))
-					((Said 'chat/') (self setScript: (ScriptID 145 3)))
+					((Said 'buy/')
+						(self setScript: sMisc)
+					)
+					((Said 'chat/')
+						(self setScript: (ScriptID 145 3))
+					)
 					((Said 'gave,gave/ration')
 						(cond 
 							((not (ego use: iRations 1))
 								(HighPrint 83 11)
 								;You can't share what you don't have.
-								)
+							)
 							(Night
 								(Say hermitTalk 83 12)
 								;"Me guest bed is the straw in the corner over there.
 								;You're welcome to stay the night since you've shared your rations.  When you want to sleep, just say so."
-								(Bset fGaveHermitRation)
+								(Bset fFedHenry)
 							)
 							(else
 								(Say hermitTalk 83 13)
 								;"Me guest bed is the straw in the corner over there.
 								;You're welcome to come back and sleep tonight since you've shared your rations."
-								(Bset fGaveHermitRation)
-								)
+								(Bset fFedHenry)
+							)
 						)
 					)
 					(
@@ -366,16 +415,22 @@
 							(sittingOnChair
 								(HighPrint 83 14)
 								;You can't sleep in this old rickety chair.  Get up and sleep on the bed of straw.
-								)
+							)
 							((> (ego x?) 165)
 								(HighPrint 83 15)
 								;Get closer to the bed of straw.
-								)
-							((not (if (Btst fGaveHermitRation) else (>= [invNum iRations] 1))) (self setScript: sNoSleep))
-							((not (NeedSleep)) (EgoSleeps 5))
+							)
+							((not (if (Btst fFedHenry) else (>= [invNum iRations] 1)))
+								(self setScript: sNoSleep)
+							)
+							((not (NeedSleep))
+								(EgoSleeps 5)
+							)
 							(else
-								(if (not (Btst fGaveHermitRation)) (ego use: iRations 1))
-								(Bclr fGaveHermitRation)
+								(if (not (Btst fFedHenry))
+									(ego use: iRations 1)
+								)
+								(Bclr fFedHenry)
 								(self setScript: sGoSleep)
 							)
 						)
@@ -386,7 +441,7 @@
 								(ego
 									view: vEgoSittingHenry
 									setLoop: 8
-									ignoreActors: 1
+									ignoreActors: TRUE
 									illegalBits: 0
 									posn: 159 167
 									stopUpd:
@@ -414,17 +469,17 @@
 					((Said 'put,extinguish/candle,flame')
 						(HighPrint 83 19)
 						;The 'ermit wouldn't like that.
-						)
+					)
 					((Said 'search/')
 						(HighPrint 83 20)
 						;You should wait until the hermit is asleep to check his place out.
-						)
+					)
 					((Said 'play/cribbage,card,game,cardgame')
 						(cond 
 							((== Day dayLastPlayedCribbage)
 								(HighPrint 83 21)
 								;Despite your intentions, you can't bring yourself to spend any more time playing with the talkative 'Enry.
-								)
+							)
 							(sittingOnChair
 								(= dayLastPlayedCribbage Day)
 								(EgoRests 60 0)
@@ -434,7 +489,7 @@
 							(else
 								(HighPrint 83 23)
 								;You should sit down first.
-								)
+							)
 						)
 					)
 					((Said 'get/scroll')
@@ -444,25 +499,24 @@
 							(HighPrint 83 24)
 							;The scroll vanishes even as you read the magical runes upon it.
 							;You now have the knowledge to cast a "Trigger" spell.
-							(Bset LEARNED_TRIGGER)
+							(Bset fLearnedTrigger)
 							(ego learn: TRIGGER 10)
-							(SolvePuzzle POINTS_LEARNTRIGGER 4 MAGIC_USER)
+							(SolvePuzzle f83LearnTrigger 4 MAGIC_USER)
 						else
 							(HighPrint 83 25)
 							;You see no scroll.
 						)
 					)
-					(
-					(or (Said 'cast/detect') (Said 'cast/spell<detect'))
-					(if (CastSpell DETMAGIC)
-						(HighPrint 83 26)
-						;You can detect a faint aura of magic here.
+					((or (Said 'cast/detect') (Said 'cast/spell<detect'))
+						(if (CastSpell DETMAGIC)
+							(HighPrint 83 26)
+							;You can detect a faint aura of magic here.
 						)
 					)
-					(
-					(or (Said 'cast/open') (Said 'cast/spell<open')) (if (CastSpell OPEN)
-						(HighPrint 83 27)
-						;There is no need to use magic to open anything here.
+					((or (Said 'cast/open') (Said 'cast/spell<open'))
+						(if (CastSpell OPEN)
+							(HighPrint 83 27)
+							;There is no need to use magic to open anything here.
 						)
 					)
 					((Said 'get,grab/candle,cot,hay,bed,table,chair')
@@ -470,13 +524,15 @@
 						;It's not polite to steal from your 'airy little 'ost.
 						(HighPrint 83 29)
 						;You seem to have made the 'ermit un'appy.
-						(Bset HENRY_DEADLY_TP)
+						(Bset fDeadlyTP)
 						(self setScript: TPego)
 					)
 					((Said 'kill,attack,throw,beat,cast,fight/')
 						(HighPrint 83 29)
 						;You seem to have made the 'ermit un'appy.
-						(Bset HENRY_DEADLY_TP) (self setScript: TPego))
+						(Bset fDeadlyTP)
+						(self setScript: TPego)
+					)
 				)
 			)
 		)
@@ -485,29 +541,28 @@
 )
 
 (instance sSleep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(hermitTalk caller: self)
 				(HandsOff)
 				(Say hermitTalk 83 30)
-				;"Me guest bed is the straw in the corner over there. You're welcome to stay if you share some rations and play some cribbage."
+				;"Me guest bed is the straw in the corner over there.
+				; You're welcome to stay if you share some rations and play some cribbage."
 			)
-			(1 (HandsOn))
+			(1
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance sAskScroll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(if client
 			(switch (= state newState)
 				(0
-					(Bset ASKED_TRIGGER_SCROLL)
+					(Bset fAskedForTrigger)
 					(hermitTalk caller: self)
 					(HandsOff)
 					(if [egoStats MAGIC]
@@ -551,8 +606,6 @@
 )
 
 (instance sNoScroll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -561,25 +614,26 @@
 				(Say hermitTalk 83 34)
 				;"Oh well, maybe sumone else can use it sumtime."
 			)
-			(1 (HandsOn))
+			(1
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance sNixScroll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(hermitTalk caller: self)
 				(HandsOff)
-				(if (Btst LEARNED_TRIGGER)
+				(if (Btst fLearnedTrigger)
 					(Say hermitTalk 83 35)
 					;"You already 'ave me only scroll."
 				else
 					(Say hermitTalk 83 36)
-					;"Yes, I still have me magic scroll, but you didn't seem to want it. 'Ave you changed your mind?"
+					;"Yes, I still have me magic scroll, but you didn't seem to want it.
+					; 'Ave you changed your mind?"
 				)
 			)
 			(1
@@ -607,8 +661,6 @@
 )
 
 (instance sGetScroll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -636,14 +688,14 @@
 				(Say hermitTalk 83 39)
 				;"There you 'as it."
 			)
-			(4 (HandsOn))
+			(4
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance sMisc of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -652,14 +704,14 @@
 				(Say hermitTalk 83 40)
 				;"I don't 'ave much, but wot I 'ave, I 'ave, an' t'isn't for sale."
 			)
-			(1 (HandsOn))
+			(1
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance sElse of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -668,14 +720,14 @@
 				(Say hermitTalk 83 41)
 				;"Well, see'en as I don't get out much, I don't know much."
 			)
-			(1 (HandsOn))
+			(1
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance sLeaving of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -686,14 +738,14 @@
 				;"If you be ever needen a place to stay the night and you're in the area,
 				;I could be willen to put you up for the night for sum rations and a couple o' games o' cribbage."
 			)
-			(1 (curRoom newRoom: 82))
+			(1
+				(curRoom newRoom: 82)
+			)
 		)
 	)
 )
 
 (instance TPego of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -721,8 +773,6 @@
 )
 
 (instance sGoSleep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -760,8 +810,6 @@
 )
 
 (instance sNoSleep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -771,13 +819,11 @@
 				;"You can't sleep here, you got's no rations to give me."
 			)
 			(1
-				(Bset HENRY_SAFE_TP)
+				(Bset fSafeTP)
 				(client setScript: TPego)
 			)
 		)
 	)
 )
 
-(instance dummy of Script
-	(properties)
-)
+(instance dummy of Script)

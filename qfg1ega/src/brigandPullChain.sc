@@ -11,8 +11,6 @@
 )
 
 (instance pullChain of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 231)
@@ -44,8 +42,8 @@
 				(NormalEgo)
 				(ego setPri: 7 loop: 0)
 				((ScriptID 96 14) setCel: 6)
-				(if (not (Btst PULLED_CHAIN))
-					(Bset PULLED_CHAIN)
+				(if (not (Btst fPulledChain))
+					(Bset fPulledChain)
 					((ScriptID 96 6) dispose:)
 					((ScriptID 96 5) setLoop: 5)
 				)
@@ -55,14 +53,15 @@
 					(= cycles 1)
 				)
 			)
-			(5 (HandsOn) (self dispose:))
+			(5
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance takeADive of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 231)
@@ -75,11 +74,13 @@
 				(client setCycle: EndLoop self)
 			)
 			(1
-				(if (not (Btst PULLED_CHAIN)) ((ScriptID 96 6) dispose:))
-				(if (Btst BEFRIENDED_JESTER)
+				(if (not (Btst fPulledChain))
+					((ScriptID 96 6) dispose:)
+				)
+				(if (Btst fBefriendedYorick)
 					(HighPrint 231 0)
 					;"Elsa is right next door.  I'll go set up the secret exit for your escape."
-					)
+				)
 				((ScriptID 96 5) view: vYorickLeave setLoop: 1 setCel: 0)
 				(= cycles 2)
 			)

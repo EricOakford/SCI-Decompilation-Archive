@@ -31,46 +31,8 @@
 
 (class MazeBug of Actor
 	(properties
-		y 			0
-		x 			0
-		z 			0
-		heading 	0
 		yStep 		2	;set explicitly for mazeBug
-		view 		NULL
-		loop 		NULL
-		cel 		NULL
-		priority 	0
-		underBits 	0
-		signal 		$0000
-		nsTop 		0
-		nsLeft 		0
-		nsBottom 	0
-		nsRight 	0
-		lsTop 		0
-		lsLeft 		0
-		lsBottom 	0
-		lsRight 	0
-		brTop 		0
-		brLeft 		0
-		brBottom 	0
-		brRight 	0
-		cycleSpeed 	0
-		script 		0
-		cycler 		0
-		timer 		0
-		illegalBits cWHITE
-		xLast 		0
-		yLast 		0
 		xStep 		2	;set explicitly for mazeBug
-		moveSpeed 	0
-		blocks 		0
-		baseSetter 	0
-		mover 		0
-		looper 		0
-		viewer 		0
-		avoider 	0
-		
-		;new properties for MazeBug
 		startX 		0			; Where to come back after dying
 		startY 		0
 		deadTime 	0			; How long before we resurrect
@@ -155,12 +117,12 @@
 		(switch form
 			(smallBug
 				; Too small for ladders
-				(= illegalBits (| illegalBits cGREEN))
+				(|= illegalBits cGREEN)
 				(= moveSpeed (= cycleSpeed 0))
 			)
 			(mediumBug
 				; Too big to enter tunnels
-				(= illegalBits (| illegalBits cLMAGENTA))
+				(|= illegalBits cLMAGENTA)
 				(= moveSpeed (= cycleSpeed 1))
 			)
 			(largeBug

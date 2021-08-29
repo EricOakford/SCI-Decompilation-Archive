@@ -11,7 +11,6 @@
 
 (class Fighter of Skilled
 	(properties
-		
 		canFight 0
 		fighterView vEgoFightWithSword
 		endFight 0
@@ -35,27 +34,35 @@
 		(super init: &rest)
 	)
 	
-	(method (tryAttack param1 &tmp temp0)
+	(method (tryAttack monster &tmp toHit)
 		(cond 
 			(
 				(>
-					(= temp0
-						(+ (- (self attackLevel:) (param1 defenseLevel:)) 50)
+					(= toHit
+						(+ (- (self attackLevel:) (monster defenseLevel:)) 50)
 					)
 					95
 				)
-				(= temp0 95)
+				(= toHit 95)
 			)
-			((< temp0 5) (= temp0 5))
+			((< toHit 5)
+				(= toHit 5)
+			)
 		)
-		(return (if (>= temp0 (Rand100)) (return TRUE) else (return FALSE)))
+		(return
+			(if (>= toHit (Rand100))
+				(return TRUE)
+			else
+				(return FALSE)
+			)
+		)
 	)
 	
-	(method (getTired param1 param2)
-		(if (<= (= stamina (- stamina param1)) 0)
+	(method (getTired amount whoCares)
+		(if (<= (-= stamina amount) 0)
 			(= stamina 0)
 			(self endFight: TRUE)
-			(self setScript: param2)
+			(self setScript: whoCares)
 		)
 		(= [egoStats STAMINA] stamina)
 	)
@@ -63,7 +70,9 @@
 	(method (drawWeapons)
 		(= baseX (opponent warriorX?))
 		(= baseY (opponent warriorY?))
-		(if (ego has: iShield) (= shieldValue 10))
+		(if (ego has: iShield)
+			(= shieldValue 10)
+		)
 		(= armorEnc (/ (WtCarried) 2))
 		(= armorValue 0)
 		(cond 
@@ -74,9 +83,9 @@
 				(= armorValue LEATHER_VALUE)
 			)
 		)
-		(self weapValue: 8)
+		(self weapValue: SWORD_VALUE)
 		(self
-			ignoreActors: 1
+			ignoreActors: TRUE
 			view: fighterView
 			posn: baseX baseY
 			stopUpd:
@@ -93,12 +102,10 @@
 		)
 	)
 	
-	(method (gotBeat param1)
+	(method (gotBeat whoCares)
 		(self endFight: TRUE)
-		(self setScript: param1)
+		(self setScript: whoCares)
 	)
 )
 
-(instance fighter of Fighter
-	(properties)
-)
+(instance fighter of Fighter)

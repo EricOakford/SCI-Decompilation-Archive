@@ -10,8 +10,6 @@
 )
 
 (instance egoEntersNorth of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 272)
@@ -25,7 +23,7 @@
 			(1
 				((ScriptID 93 0) notify: 0)
 				(ego illegalBits: cWHITE)
-				(if (not (if (Btst fBeenIn93) else (Btst DEFEATED_MINOTAUR)))
+				(if (not (if (Btst fBeenIn93) else (Btst fMinotaurDead)))
 					(HighPrint 272 0)
 					;"Grumble Grumble Grumble.  Stupid guard duty, third time this week.  Why always me?  Grumble Grumble Grumble."
 				)

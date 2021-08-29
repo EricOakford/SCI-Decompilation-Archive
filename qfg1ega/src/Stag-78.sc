@@ -508,7 +508,7 @@
 			(4
 				(EgoDead 78 17
 					#title {Trounced by a bounce!}
-					#icon vDeathScenes 0 0)
+					#icon vIcons 0 0)
 					;You're obviously in no shape to continue the game.
 			)
 		)

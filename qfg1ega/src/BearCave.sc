@@ -94,7 +94,7 @@
 	
 	(method (init)
 		(if (not (Btst fBearGone))
-			(LoadMany VIEW vBear vEgoDefeatedMagic vKoboldCave vEgoThrowing)
+			(LoadMany VIEW vBear vEgoDefeatedMagic rKoboldCave vEgoThrowing)
 			(= monsterHealth MAX_HP_BEAR)
 			(= monsterNum vBear)
 		)
@@ -534,7 +534,7 @@
 	(properties
 		y 204
 		x 79
-		view vKoboldCave
+		view rKoboldCave
 	)
 )
 
@@ -751,7 +751,7 @@
 			(4
 				(EgoDead 14 41
 					#title {OH NOOOOOOO!}
-					#icon vDeathScenes 0 0)
+					#icon vIcons 0 0)
 					;Boy, that smarts!  Your last thoughts, although trivial, gently nudge you toward infinity.
 					;"I wonder if the bear's paws were clean.........."
 			)
@@ -783,7 +783,7 @@
 			(4
 				(EgoDead 14 42
 					#title {OH NOOOOOOO!}
-					#icon vDeathScenes 0 0)
+					#icon vIcons 0 0)
 					;Boy, that smarts!  Your last thoughts, although trivial, gently loft you toward infinity.
 					;"I wonder if the bear's paws were clean.........."
 			)

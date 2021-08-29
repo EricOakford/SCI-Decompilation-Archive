@@ -10,11 +10,9 @@
 )
 
 (local
-	local0
+	climbCued
 )
 (instance climbWestCliff of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 277)
@@ -25,7 +23,7 @@
 			(0
 				((ScriptID 93 0) notify: 2)
 				(HandsOff)
-				(= local0 1)
+				(= climbCued TRUE)
 				(ego
 					illegalBits: 0
 					setPri: 6
@@ -52,8 +50,8 @@
 				(ego setMotion: MoveTo 76 99 self)
 			)
 			(7
-				(if local0
-					(= local0 0)
+				(if climbCued
+					(= climbCued FALSE)
 					(self changeState: 2)
 				else
 					(self changeState: 8)
@@ -67,7 +65,7 @@
 			(9
 				(NormalEgo)
 				(ego loop: 2)
-				(if (Btst BRIGAND_GATE_OPEN)
+				(if (Btst fBrigGateOpen)
 					(ego illegalBits: cWHITE)
 				else
 					(ego illegalBits: (| cWHITE cLRED))

@@ -13,11 +13,9 @@
 )
 
 (local
-	local0
+	babaSpeaks
 )
 (instance nextWitch of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 294)
@@ -45,7 +43,7 @@
 				;"Back so soon?"
 				((ScriptID 21 3) setCycle: EndLoop)
 				((ScriptID 21 4) startUpd:)
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(= seconds 3)
 			)
 			(3
@@ -71,7 +69,7 @@
 ; To the shape of a Frog."
 			)
 			(5
-				(= local0 0)
+				(= babaSpeaks FALSE)
 				((ScriptID 21 1) setCycle: EndLoop)
 				(= seconds 2)
 			)
@@ -100,19 +98,19 @@
 				(= cycles 2)
 			)
 			(9
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(TimePrint 7 294 2)
 				;"This I vow: Stay there now!"
 				(= seconds 4)
 			)
 			(10
-				(= local0 0)
+				(= babaSpeaks FALSE)
 				((ScriptID 21 2) setCycle: 0)
 				((ScriptID 21 1) setLoop: 6 cel: 0 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(11
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(TimePrint 8 294 3)
 				;Once again you're a frog, and once again you can't move.  You find it very exasperating!
 				(= seconds 8)
@@ -138,7 +136,7 @@
 				(= seconds 5)
 			)
 			(15
-				(= local0 (= seconds 0))
+				(= babaSpeaks (= seconds 0))
 				(= babaState 3)
 				((ScriptID 21 2) setCycle: 0)
 				((ScriptID 21 1) setScript: (ScriptID 21 7))
@@ -146,7 +144,7 @@
 				(User canInput: TRUE)
 			)
 			(16
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(Print
 					294 6
 					#at -1 130
@@ -207,7 +205,7 @@
 ; To this rather dumb Frog."
 			)
 			(24
-				(= local0 0)
+				(= babaSpeaks FALSE)
 				((ScriptID 21 2) setCycle: 0)
 				((ScriptID 21 1) setCycle: EndLoop)
 				(= seconds 3)
@@ -220,13 +218,13 @@
 				(NormalEgo)
 				(ego loop: 0)
 				((ScriptID 21 2) setCycle: Forward)
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(TimePrint 6 294 11)
 				;"Now, did you put it in your backpack?"
 				(= seconds 5)
 			)
 			(27
-				(= local0 0)
+				(= babaSpeaks FALSE)
 				((ScriptID 21 2) hide:)
 				((ScriptID 21 1) setMotion: Chase ego 10)
 				(= cycles 5)
@@ -240,8 +238,8 @@
 						setCycle: Forward
 						show:
 					)
-					(= local0 1)
-					(SolvePuzzle POINTS_GIVEMANDRAKEROOT 3)
+					(= babaSpeaks TRUE)
+					(SolvePuzzle f21GiveRoot 3)
 					(TimePrint 5 294 12)
 					;"Ah!  Here it is."
 					(ego use: iMandrake)
@@ -260,7 +258,7 @@
 				(= seconds 4)
 			)
 			(30
-				(= local0 0)
+				(= babaSpeaks FALSE)
 				((ScriptID 21 2) setCycle: 0)
 				(= seconds 2)
 			)
@@ -270,8 +268,7 @@
 				((ScriptID 21 2) hide:)
 				((ScriptID 21 1)
 					setPri: -1
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(+ ((ScriptID 21 1) x?) 10)
 						(- ((ScriptID 21 1) y?) 5)
 						self
@@ -285,7 +282,7 @@
 					setCycle: Forward
 					show:
 				)
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(TimePrint 10 294 14)
 				;"That's it!  The final ingredient.  Now we can make our greatest creation..."
 				(= seconds 10)
@@ -319,7 +316,7 @@
 				(= seconds 2)
 			)
 			(38
-				(= local0 0)
+				(= babaSpeaks FALSE)
 				((ScriptID 21 1) setLoop: 6 cel: 0 setCycle: EndLoop self)
 				((ScriptID 21 2)
 					setLoop: 4

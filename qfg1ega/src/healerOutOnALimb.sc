@@ -11,11 +11,9 @@
 )
 
 (local
-	local0
+	stepCount
 )
 (instance outOnALimb of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -30,7 +28,7 @@
 				(= cycles 3)
 			)
 			(1
-				(++ local0)
+				(++ stepCount)
 				(ego setCel: 1)
 				(= cycles 3)
 			)
@@ -49,17 +47,22 @@
 			(5
 				(ego setCel: 0)
 				(cond 
-					((== local0 3)
+					((== stepCount 3)
 						(if (TrySkill AGIL tryWalkTreeLimb)
 							(self changeState: 1)
 						else
-							(= local0 0)
+							(= stepCount 0)
 							(ego setScript: (ScriptID 54 6))
 							(DisposeScript 237)
 						)
 					)
-					((< local0 5) (self changeState: 1))
-					(else (= local0 0) (self cue:))
+					((< stepCount 5)
+						(self changeState: 1)
+					)
+					(else
+						(= stepCount 0)
+						(self cue:)
+					)
 				)
 			)
 			(6
@@ -72,13 +75,13 @@
 				;In the nest, you find a gold ring.
 				(HighPrint 237 2)
 				;You take the ring and move carefully back along the limb.
-				(Bset OBTAINED_RING)
+				(Bset fGotRing)
 				(ego get: iRing setCycle: BegLoop self)
-				(SolvePuzzle POINTS_GETGOLDRING 3)
+				(SolvePuzzle f54GetRing 3)
 			)
 			(8
 				(ego setLoop: 8 setCel: 0)
-				(++ local0)
+				(++ stepCount)
 				(= cycles 3)
 			)
 			(9
@@ -98,10 +101,10 @@
 				(= cycles 3)
 			)
 			(13
-				(if (< local0 5)
+				(if (< stepCount 5)
 					(self changeState: 8)
 				else
-					(= local0 0)
+					(= stepCount 0)
 					(self cue:)
 				)
 			)
@@ -115,8 +118,6 @@
 )
 
 (instance climbDown of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 237)
@@ -148,7 +149,7 @@
 			)
 			(2 (= cycles 4))
 			(3
-				(++ local0)
+				(++ stepCount)
 				(ego
 					setCel: (if (== (ego cel?) 0) 3 else (- (ego cel?) 1))
 					posn:
@@ -162,17 +163,17 @@
 				(self cue:)
 			)
 			(4
-				(if (< local0 6)
+				(if (< stepCount 6)
 					(self changeState: 2)
 				else
-					(= local0 0)
+					(= stepCount 0)
 					(= cycles 4)
 				)
 			)
 			(5
 				(NormalEgo)
 				(HandsOn)
-				(Bclr CLIMBED_HEALER_TREE)
+				(Bclr fClimbedTree)
 				(client setScript: 0)
 			)
 		)

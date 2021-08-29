@@ -14,8 +14,6 @@
 )
 
 (instance Dodge of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -25,7 +23,7 @@
 					setCel: 1
 					setMotion: 0
 					setCycle: 0
-					action: (Random 5 6)
+					action: (Random ActDodgeLeft ActDodgeRight)
 				)
 				(= cycles 9)
 			)
@@ -38,14 +36,12 @@
 )
 
 (instance Duck of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= cycles 0)
 				(register
-					action: 7
+					action: ActDuck
 					setLoop: (if (register fightLeft?) 1 else 0)
 					setCel: 2
 					setMotion: 0
@@ -62,14 +58,12 @@
 )
 
 (instance Thrust of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= cycles 0)
 				(register
-					action: 1
+					action: ActThrust
 					setLoop: (if (register fightLeft?) 3 else 2)
 					setCel: 0
 					setMotion: 0
@@ -98,14 +92,12 @@
 )
 
 (instance Slash of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= cycles 0)
 				(register
-					action: 2
+					action: ActSlash
 					setLoop: (if (register fightLeft?) 5 else 4)
 					setCel: 0
 					setMotion: 0
@@ -134,14 +126,12 @@
 )
 
 (instance ParryUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= cycles 0)
 				(register
-					action: 3
+					action: ActParryUp
 					setLoop: (if (register fightLeft?) 9 else 8)
 					setCel: 0
 					setMotion: 0
@@ -153,7 +143,7 @@
 				(register
 					setLoop: (if (register fightLeft?) 1 else 0)
 					setCel: 0
-					action: 0
+					action: ActNone
 				)
 				(self dispose:)
 			)
@@ -162,14 +152,12 @@
 )
 
 (instance ParryDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= cycles 0)
 				(register
-					action: 4
+					action: ActParryDown
 					setLoop: (if (register fightLeft?) 9 else 8)
 					setCel: 1
 					setMotion: 0
@@ -181,7 +169,7 @@
 				(register
 					setLoop: (if (register fightLeft?) 1 else 0)
 					setCel: 0
-					action: 0
+					action: ActNone
 				)
 				(self dispose:)
 			)
@@ -190,14 +178,12 @@
 )
 
 (instance Leap of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= cycles 0)
 				(register
-					action: 8
+					action: ActLeap
 					setLoop: (if (register fightLeft?) 7 else 6)
 					posn:
 						(if (register fightLeft?)
@@ -244,9 +230,16 @@
 			)
 			(6
 				(if (register fightLeft?)
-					(register fightLeft: 0 action: 0 canFight: 1)
+					(register
+						fightLeft: FALSE
+						action: ActNone
+						canFight: TRUE
+					)
 				else
-					(register fightLeft: 1 action: 0)
+					(register
+						fightLeft: TRUE
+						action: ActNone
+					)
 				)
 				(self dispose:)
 			)

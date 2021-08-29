@@ -15,23 +15,16 @@
 )
 
 (local
-	local0
-)
-(instance stars of Prop
-	(properties)
+	egoCycles
 )
 
-(instance pillow of Prop
-	(properties)
-)
+(instance stars of Prop)
 
-(instance gerta of Actor
-	(properties)
-)
+(instance pillow of Prop)
+
+(instance gerta of Actor)	;Gerta is the Sheriff's wife
 
 (instance bottomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -73,11 +66,11 @@
 				(ego setMotion: MoveTo 130 146 self)
 			)
 			(5
-				(++ local0)
+				(++ egoCycles)
 				(ego setMotion: MoveTo 130 150 self)
 			)
 			(6
-				(if (> local0 4)
+				(if (> egoCycles 4)
 					(self cue:)
 				else
 					(self changeState: 4)
@@ -97,8 +90,6 @@
 )
 
 (instance leftScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -120,7 +111,7 @@
 				)
 			)
 			(3
-				(Bset SHERIFF_AWAKENED)
+				(Bset fWokeUpSheriff)
 				(ego
 					view: vEgoBigGrin
 					posn: 117 59
@@ -197,7 +188,7 @@
 			)
 			(10
 				(ego setCel: 2)
-				(++ local0)
+				(++ egoCycles)
 				(= cycles 2)
 			)
 			(11
@@ -205,7 +196,7 @@
 				(= cycles 2)
 			)
 			(12
-				(if (< local0 4)
+				(if (< egoCycles 4)
 					(self changeState: 10)
 				else
 					(stars dispose:)
@@ -227,8 +218,6 @@
 )
 
 (instance rightScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -391,7 +380,8 @@
 					#title { Criminal carelessness._}
 					#icon vEgoDeadBrigands 6 0)
 					;You never dreamed a feather pillow could be so HARD!  Or was it the floor?
-					;You also didn't realize how hard it is for a thief to be a Hero.  The Thief of Baghdad should have this kind of luck!
+					;You also didn't realize how hard it is for a thief to be a Hero. 
+					; The Thief of Baghdad should have this kind of luck!
 			)
 		)
 	)

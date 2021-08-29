@@ -15,7 +15,7 @@
 (instance flyRight of Script
 	(method (doit)
 		(cond 
-			((and (<= monsterHealth 0) (not (Btst fFlag351)))
+			((and (<= monsterHealth 0) (not (Btst fMantrayDies)))
 				(= monsterHealth 1)
 				(client setScript: killMantray)
 			)
@@ -299,7 +299,7 @@
 				)
 			)
 			(1
-				(Bset fFlag351)
+				(Bset fMantrayDies)
 				(= monsterHealth 0)
 				(client setPri: -1)
 				(HandsOn)

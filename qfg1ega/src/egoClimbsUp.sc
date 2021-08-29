@@ -10,8 +10,6 @@
 )
 
 (instance egoClimbsUp of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 276)
@@ -53,7 +51,9 @@
 				(ego setCel: 3 posn: 294 65)
 				(= cycles 4)
 			)
-			(7 (= cycles 1))
+			(7
+				(= cycles 1)
+			)
 			(8
 				(ego setCel: 0 posn: 293 66)
 				(= cycles 4)

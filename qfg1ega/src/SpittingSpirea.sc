@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 16)
+(script# rSpittingSpirea) ;16
 (include game.sh)
 (use Main)
 (use LoadMany)
@@ -73,7 +73,7 @@
 
 (instance flyingSeed of Actor
 	(properties
-		view vEgoCatchSeed
+		view rSpittingSpirea
 		illegalBits $0000
 	)
 )
@@ -115,7 +115,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vSpittingSpirea vEgoSwordSpirea vEgoClimbing vEgoThrowing)
+		(LoadMany VIEW rSpittingSpirea vEgoSwordSpirea vEgoClimbing vEgoThrowing)
 		(if (ego knows: FETCH) (Load VIEW vEgoMagicFetch))
 		(LoadMany SCRIPT 291 292)
 		(LoadMany SOUND (SoundFX 18) (SoundFX 27))
@@ -1010,7 +1010,7 @@
 	(properties
 		y 93
 		x 142
-		view vEgoCatchSeed
+		view rSpittingSpirea
 	)
 )
 
@@ -1018,7 +1018,7 @@
 	(properties
 		y 118
 		x 35
-		view vEgoCatchSeed
+		view rSpittingSpirea
 	)
 )
 
@@ -1026,7 +1026,7 @@
 	(properties
 		y 58
 		x 67
-		view vEgoCatchSeed
+		view rSpittingSpirea
 		cel 1
 	)
 )
@@ -1035,7 +1035,7 @@
 	(properties
 		y 103
 		x 230
-		view vEgoCatchSeed
+		view rSpittingSpirea
 	)
 )
 
@@ -1043,7 +1043,7 @@
 	(properties
 		y 89
 		x 142
-		view vEgoCatchSeed
+		view rSpittingSpirea
 		loop 1
 		cycleSpeed 1
 	)
@@ -1053,7 +1053,7 @@
 	(properties
 		y 114
 		x 35
-		view vEgoCatchSeed
+		view rSpittingSpirea
 		loop 1
 		cycleSpeed 1
 	)
@@ -1063,7 +1063,7 @@
 	(properties
 		y 48
 		x 66
-		view vEgoCatchSeed
+		view rSpittingSpirea
 		loop 1
 		cycleSpeed 1
 	)
@@ -1073,7 +1073,7 @@
 	(properties
 		y 99
 		x 228
-		view vEgoCatchSeed
+		view rSpittingSpirea
 		loop 1
 		cycleSpeed 1
 	)

@@ -22,8 +22,6 @@
 )
 
 (instance happyFace of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 227)
@@ -77,7 +75,7 @@
 					setCycle: CycleTo 3 1 self
 				)
 				(ball setMotion: JumpTo 195 189)
-				(if (not (Btst PULLED_CHAIN))
+				(if (not (Btst fPulledChain))
 					((ScriptID 96 6) setCel: 3)
 					((ScriptID 96 5)
 						setLoop: 4
@@ -92,13 +90,13 @@
 				(ego setCycle: EndLoop self)
 			)
 			(7
-				(Bset FLAG_258)
+				(Bset fFallingOffLedge)
 				(ball dispose:)
 				(= cycles 2)
 			)
 			(8
 				((ScriptID 96 11) stopUpd:)
-				(Bset FLAG_269)
+				(Bset fBallConks)
 				(client setScript: 0)
 			)
 		)

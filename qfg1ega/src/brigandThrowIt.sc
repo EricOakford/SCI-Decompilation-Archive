@@ -14,13 +14,13 @@
 )
 
 (local
-	local0
-	[local1 3] = [-9 -2 3]
-	[local4 3] = [-17 -16 -16]
-	[local7 3] = [8 9 9]
-	[local10 5] = [-18 -16 -3 1 6]
-	[local15 5] = [-31 -29 -28 -27 -29]
-	[local20 5] = [-1 1 2 3 1]
+	throwCued
+	yorickX = [-9 -2 3]
+	yorickY = [-17 -16 -16]
+	thingY = [8 9 9]
+	yorickX2 = [-18 -16 -3 1 6]
+	yorickY2 = [-31 -29 -28 -27 -29]
+	thingY2 = [-1 1 2 3 1]
 )
 (instance poof of Prop
 	(properties
@@ -39,19 +39,17 @@
 )
 
 (instance throwIt of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
-				(not local0)
+				(not throwCued)
 				(or
-					(Btst OPENING_LEADER_DOOR)
+					(Btst fOpeningDoor)
 					(== (ego onControl: origin) cYELLOW)
 					((ScriptID 96 9) script?)
 				)
 			)
-			(= local0 1)
+			(= throwCued TRUE)
 			(= cycles 0)
 			(self changeState: 7)
 		)
@@ -69,43 +67,43 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset FLAG_271)
+				(Bset fYorickThrows)
 				(User canInput: FALSE)
-				(if (Btst PULLED_CHAIN)
+				(if (Btst fPulledChain)
 					(switch ((ScriptID 96 5) cel?)
 						(0
 							(poof
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 0])
-									(+ ((ScriptID 96 5) y?) [local15 0])
+									(+ ((ScriptID 96 5) x?) [yorickX2 0])
+									(+ ((ScriptID 96 5) y?) [yorickY2 0])
 							)
 						)
 						(1
 							(poof
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 1])
-									(+ ((ScriptID 96 5) y?) [local15 1])
+									(+ ((ScriptID 96 5) x?) [yorickX2 1])
+									(+ ((ScriptID 96 5) y?) [yorickY2 1])
 							)
 						)
 						(2
 							(poof
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 2])
-									(+ ((ScriptID 96 5) y?) [local15 2])
+									(+ ((ScriptID 96 5) x?) [yorickX2 2])
+									(+ ((ScriptID 96 5) y?) [yorickY2 2])
 							)
 						)
 						(3
 							(poof
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 3])
-									(+ ((ScriptID 96 5) y?) [local15 3])
+									(+ ((ScriptID 96 5) x?) [yorickX2 3])
+									(+ ((ScriptID 96 5) y?) [yorickY2 3])
 							)
 						)
 						(4
 							(poof
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 4])
-									(+ ((ScriptID 96 5) y?) [local15 4])
+									(+ ((ScriptID 96 5) x?) [yorickX2 4])
+									(+ ((ScriptID 96 5) y?) [yorickY2 4])
 							)
 						)
 					)
@@ -120,22 +118,22 @@
 						(0
 							(poof
 								posn:
-									(+ ((ScriptID 96 5) x?) [local1 0])
-									(+ ((ScriptID 96 5) y?) [local4 0])
+									(+ ((ScriptID 96 5) x?) [yorickX 0])
+									(+ ((ScriptID 96 5) y?) [yorickY 0])
 							)
 						)
 						(1
 							(poof
 								posn:
-									(+ ((ScriptID 96 5) x?) [local1 1])
-									(+ ((ScriptID 96 5) y?) [local4 1])
+									(+ ((ScriptID 96 5) x?) [yorickX 1])
+									(+ ((ScriptID 96 5) y?) [yorickY 1])
 							)
 						)
 						(2
 							(poof
 								posn:
-									(+ ((ScriptID 96 5) x?) [local1 2])
-									(+ ((ScriptID 96 5) y?) [local4 2])
+									(+ ((ScriptID 96 5) x?) [yorickX 2])
+									(+ ((ScriptID 96 5) y?) [yorickY 2])
 							)
 						)
 					)
@@ -148,41 +146,41 @@
 				)
 			)
 			(1
-				(if (Btst PULLED_CHAIN)
+				(if (Btst fPulledChain)
 					(switch ((ScriptID 96 5) cel?)
 						(0
 							(thingThrown
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 0])
-									(+ ((ScriptID 96 5) y?) [local20 0])
+									(+ ((ScriptID 96 5) x?) [yorickX2 0])
+									(+ ((ScriptID 96 5) y?) [thingY2 0])
 							)
 						)
 						(1
 							(thingThrown
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 1])
-									(+ ((ScriptID 96 5) y?) [local20 1])
+									(+ ((ScriptID 96 5) x?) [yorickX2 1])
+									(+ ((ScriptID 96 5) y?) [thingY2 1])
 							)
 						)
 						(2
 							(thingThrown
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 2])
-									(+ ((ScriptID 96 5) y?) [local20 2])
+									(+ ((ScriptID 96 5) x?) [yorickX2 2])
+									(+ ((ScriptID 96 5) y?) [thingY2 2])
 							)
 						)
 						(3
 							(thingThrown
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 3])
-									(+ ((ScriptID 96 5) y?) [local20 3])
+									(+ ((ScriptID 96 5) x?) [yorickX2 3])
+									(+ ((ScriptID 96 5) y?) [thingY2 3])
 							)
 						)
 						(4
 							(thingThrown
 								posn:
-									(+ ((ScriptID 96 5) x?) [local10 4])
-									(+ ((ScriptID 96 5) y?) [local20 4])
+									(+ ((ScriptID 96 5) x?) [yorickX2 4])
+									(+ ((ScriptID 96 5) y?) [thingY2 4])
 							)
 						)
 					)
@@ -191,22 +189,22 @@
 						(0
 							(thingThrown
 								posn:
-									(+ ((ScriptID 96 5) x?) [local1 0])
-									(+ ((ScriptID 96 5) y?) [local7 0])
+									(+ ((ScriptID 96 5) x?) [yorickX 0])
+									(+ ((ScriptID 96 5) y?) [thingY 0])
 							)
 						)
 						(1
 							(thingThrown
 								posn:
-									(+ ((ScriptID 96 5) x?) [local1 1])
-									(+ ((ScriptID 96 5) y?) [local7 1])
+									(+ ((ScriptID 96 5) x?) [yorickX 1])
+									(+ ((ScriptID 96 5) y?) [thingY 1])
 							)
 						)
 						(2
 							(thingThrown
 								posn:
-									(+ ((ScriptID 96 5) x?) [local1 2])
-									(+ ((ScriptID 96 5) y?) [local7 2])
+									(+ ((ScriptID 96 5) x?) [yorickX 2])
+									(+ ((ScriptID 96 5) y?) [thingY 2])
 							)
 						)
 					)
@@ -230,7 +228,7 @@
 				)
 			)
 			(3
-				(Bset FLAG_260)
+				(Bset fRollingOut)
 				(ego
 					view: vEgoJesterRoom
 					loop: (if (or (== (ego loop?) 1) (== (ego loop?) 3))
@@ -255,7 +253,7 @@
 					)
 					((and (> (ego x?) 6) (< (ego y?) 186)) (ego posn: (- (ego x?) 6) (+ (ego y?) 3)))
 				)
-				(if (not (Btst PULLED_CHAIN))
+				(if (not (Btst fPulledChain))
 					((ScriptID 96 6) setCel: 1)
 					((ScriptID 96 5) setLoop: 0 setCel: 0 stopUpd:)
 				)
@@ -281,19 +279,19 @@
 			(5
 				(thingThrown dispose:)
 				(HandsOn)
-				(Bclr FLAG_260)
+				(Bclr fRollingOut)
 				(NormalEgo)
 				(Face ego (ScriptID 96 5))
-				(User canInput: 1)
+				(User canInput: TRUE)
 				(= cycles 2)
 			)
 			(6
 				(HandsOn)
-				(Bclr FLAG_271)
+				(Bclr fYorickThrows)
 				(client setScript: 0)
 			)
 			(7
-				(if (and (not (Btst PULLED_CHAIN)) (Btst OPENING_LEADER_DOOR))
+				(if (and (not (Btst fPulledChain)) (Btst fOpeningDoor))
 					((ScriptID 96 6) setCel: 3)
 					((ScriptID 96 5)
 						setLoop: 4
@@ -309,7 +307,7 @@
 			)
 			(8
 				(HandsOn)
-				(Bclr FLAG_271)
+				(Bclr fYorickThrows)
 				(client setScript: 0)
 			)
 		)

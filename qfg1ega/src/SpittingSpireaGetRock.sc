@@ -14,8 +14,6 @@
 )
 
 (instance getRock of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 292)
@@ -63,8 +61,6 @@
 )
 
 (instance youMissed of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 292)
@@ -92,8 +88,6 @@
 )
 
 (instance climbDown of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 292)
@@ -110,7 +104,9 @@
 				)
 			)
 			(1
-				(if (== spireaStatus 4) ((ScriptID 16 1) dispose:))
+				(if (== spireaStatus 4)
+					((ScriptID 16 1) dispose:)
+				)
 				(ego
 					view: vEgo
 					setCycle: Walk
@@ -143,8 +139,6 @@
 )
 
 (instance heCaughtIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -170,12 +164,12 @@
 				(= seconds 4)
 			)
 			(4
-				(SolvePuzzle POINTS_GETSEED 8)
+				(SolvePuzzle f16GetSeed 8)
 				(ego get: iSeed)
 				(= spireaStatus 4)
-				(Bset OBTAINED_SPIREA_SEED)
+				(Bset fGotSeed)
 				(ego setScript: climbDown)
-				(Bset SPIREA_INACTIVE)
+				(Bset fFlowersInactive)
 			)
 		)
 	)

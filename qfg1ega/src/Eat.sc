@@ -31,7 +31,7 @@
 						(EgoDead
 							{Didn't anyone warn you about eating other people's food?
 							__Death by Toadstools doesn't leave mushroom for improvement.}
-							#icon vDeathScenes 1 1
+							#icon vIcons 1 1
 						)
 					else
 						(TakeDamage 20)
@@ -58,7 +58,7 @@
 					(if (Btst fAteFaeryShrooms)
 						(EgoDead EAT 7
 							#title {Where did all the pretty horses go?}
-							#icon vDeathScenes 1 1
+							#icon vIcons 1 1
 							;That's funny.  I could have sworn I warned you about eating too many Magic Mushrooms.
 							;Your mind permanently warped, you die a garishly polka-dotted death.
 						)

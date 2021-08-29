@@ -75,7 +75,7 @@
 			)
 		else
 			(EgoDead SLEEP 2
-				#icon vDeathScenes 1 0
+				#icon vIcons 1 0
 				#title {Night Gaunt Got ya.}
 				;While you were asleep, something decided to make a meal of you.
 				;You're not sure what it was, but you don't really care at this point.

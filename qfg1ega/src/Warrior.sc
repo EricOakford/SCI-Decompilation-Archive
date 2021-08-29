@@ -45,8 +45,11 @@
 	)
 	
 	(method (dispose)
-		(Bclr HERO_KILLED_IN_BATTLE)
-		(if egoMP (egoMP dispose:) (= egoMP 0))
+		(Bclr fDiedInBattle)
+		(if egoMP
+			(egoMP dispose:)
+			(= egoMP 0)
+		)
 		(if heroTitle
 			(egoSP dispose:)
 			(egoHP dispose:)
@@ -62,7 +65,7 @@
 		(super getHurt: damage)
 		(self setEgoHP: health)
 		(cond 
-			((or (Btst HERO_KILLED_IN_BATTLE) (<= health 0))
+			((or (Btst fDiedInBattle) (<= health 0))
 				(Animate (cast elements?) FALSE)
 				(EgoDead 213 2
 					#title {What a monster!}
@@ -70,7 +73,9 @@
 					;It was a tough battle, and you lost. Never fear!
 					;All you have to do is restore your game, and...\nWhat do you mean, "Restore WHAT game?"
 			)
-			((not (script script?)) (script setScript: (ScriptID 155 0)))
+			((not (script script?))
+				(script setScript: (ScriptID 155 0))
+			)
 		)
 	)
 	
@@ -81,17 +86,16 @@
 	)
 	
 	(method (die)
-		(Bset HERO_KILLED_IN_BATTLE)
+		(Bset fDiedInBattle)
 	)
 	
-	(method (startCombat param1)
-		(self setScript: (ScriptID param1 0))
+	(method (startCombat monster)
+		(self setScript: (ScriptID monster 0))
 	)
 	
 	(method (drawStatus)
 		(= heroTitle
-			(Display
-				213 1
+			(Display 213 1
 				p_width 80
 				p_at 13 13
 				p_mode teJustLeft
@@ -214,32 +218,30 @@
 	
 	(method (setEgoHP newValue)
 		(= [egoStats HEALTH] newValue)
-		(if egoHP (egoHP value: newValue draw:))
+		(if egoHP
+			(egoHP value: newValue draw:)
+		)
 	)
 	
 	(method (setEgoMP newValue)
 		(= mana newValue)
-		(if egoMP (egoMP value: newValue draw:))
+		(if egoMP
+			(egoMP value: newValue draw:)
+		)
 	)
 	
 	(method (setEgoSP newValue)
 		(= [egoStats STAMINA] newValue)
-		(if egoSP (egoSP value: newValue draw:))
+		(if egoSP
+			(egoSP value: newValue draw:)
+		)
 	)
 )
 
-(instance warrior of Warrior
-	(properties)
-)
+(instance warrior of Warrior)
 
-(instance aShield of View
-	(properties)
-)
+(instance aShield of View)
 
-(instance aHand of Prop
-	(properties)
-)
+(instance aHand of Prop)
 
-(instance closeupEgo of View
-	(properties)
-)
+(instance closeupEgo of View)

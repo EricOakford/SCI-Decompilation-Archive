@@ -15,10 +15,10 @@
 )
 
 (local
-	onSecondFloor
+	egoUpstairs
 )
 (procedure (BreakInPrint)
-	(if onSecondFloor
+	(if egoUpstairs
 		(CenterPrint &rest)
 	else
 		(HighPrint &rest)
@@ -26,8 +26,6 @@
 )
 
 (instance vaseScript of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 288)
@@ -77,8 +75,6 @@
 )
 
 (instance upScript of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 288)
@@ -100,8 +96,6 @@
 )
 
 (instance downScript of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 288)
@@ -123,8 +117,6 @@
 )
 
 (instance rm321Script of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 288)
@@ -152,8 +144,6 @@
 )
 
 (instance raisePainting of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 288)
@@ -163,7 +153,7 @@
 		(switch (= state newState)
 			(0
 				((ScriptID 321 4) posn: 277 109)
-				(Bset UNCOVERED_SHERIFF_SAFE)
+				(Bset fUncoveredSafe)
 				(= cycles 2)
 			)
 			(1
@@ -176,8 +166,6 @@
 )
 
 (instance lowerPainting of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 288)
@@ -187,7 +175,7 @@
 		(switch (= state newState)
 			(0
 				((ScriptID 321 4) posn: 277 121)
-				(Bclr UNCOVERED_SHERIFF_SAFE)
+				(Bclr fUncoveredSafe)
 				(= cycles 2)
 			)
 			(1

@@ -11,7 +11,7 @@
 )
 
 (local
-	[local0 4] = [48 122 198 274]
+	local0 = [48 122 198 274]
 )
 (procedure (localproc_000c param1 param2 param3 param4 param5 param6)
 	(return
@@ -40,8 +40,6 @@
 )
 
 (instance chooseSpell of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 32 1) empty:)
 		(super dispose:)
@@ -126,7 +124,7 @@
 			(
 			(or (Said 'resign,quit,done,cease') (Said '/bye[<bye]'))
 				(= magesMazeCommand mmazeNOTHING)
-				(Bset GIVE_UP_MAZE_GAME)
+				(Bset fStopMaze)
 				((ScriptID 32 0) cue:)
 				(self dispose:)
 			)
@@ -134,9 +132,12 @@
 				(Print 239 0)
 				; Your bug doesn't have any hands.  This makes throwing anything out of the question.
 			)
-			((Said 'run,sneak') (Print 239 1) ; Looks like all you can do is wriggle.
+			((Said 'run,sneak')
+				(Print 239 1) ; Looks like all you can do is wriggle.
 			)
-			((Said 'drink') (event claimed: FALSE))
+			((Said 'drink')
+				(event claimed: FALSE)
+			)
 			(else
 				(Print 239 2)
 				(event claimed: TRUE)

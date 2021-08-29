@@ -10,8 +10,6 @@
 )
 
 (instance leaveRoom of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 224)
@@ -20,7 +18,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset STOP_FIGHTING_WEAPONMASTER)
+				(Bset fStopFightingMaster)
 				((ScriptID 221 0)
 					view: vWeaponMasterTalk
 					setLoop: (if ((ScriptID 221 0) fightLeft?) 5 else 4)
@@ -78,8 +76,8 @@
 						((ScriptID 221 0) y?)
 						self
 				)
-				(Bclr FLAG_239)
-				(Bclr STOP_FIGHTING_WEAPONMASTER)
+				(Bclr fMasterIsHere)
+				(Bclr fStopFightingMaster)
 			)
 			(2
 				(HandsOn)

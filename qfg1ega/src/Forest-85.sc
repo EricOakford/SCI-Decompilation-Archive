@@ -18,8 +18,8 @@
 
 (local
 	antwerpSplit
-	gEgoObjX
-	gEgoObjY
+	antwerpX
+	antwerpY
 )
 (instance rm85 of EncRoom
 	(properties
@@ -36,7 +36,7 @@
 	(method (init)
 		(super init:)
 		(Load VIEW vBushes)
-		(if (Btst ANTWERP_SKY)
+		(if (Btst fAntwerpInSky)
 			(Load SCRIPT WANDER)
 			(curRoom encChance: 0)
 			(LoadMany VIEW vAntwerp vEgoKillAntwerp)
@@ -52,7 +52,9 @@
 		(StatusLine enable:)
 		(self setLocales: FOREST)
 		(NormalEgo)
-		(if (not monsterNum) (ego init:))
+		(if (not monsterNum)
+			(ego init:)
+		)
 		(switch prevRoomNum
 			(84
 				(ego posn: 1 140 setMotion: MoveTo 32 140)
@@ -81,8 +83,8 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (and (> (ego x?) 140) (Btst ANTWERP_SKY))
-			(Bclr ANTWERP_SKY)
+		(if (and (> (ego x?) 140) (Btst fAntwerpInSky))
+			(Bclr fAntwerpInSky)
 			(curRoom setScript: antwerped)
 		)
 	)
@@ -115,10 +117,7 @@
 							;You see no Antwerps here.
 						)
 					)
-					(
-						(Said
-							'capture,kill,beat,get,attack,fight,play/antwerp,baby'
-						)
+					((Said 'capture,kill,beat,get,attack,fight,play/antwerp,baby')
 						(if (> (cast size?) 2)
 							(HighPrint 85 2)
 							;The bouncing baby Antwerps are all so cute, you can't bring yourself to interfere with their playing.
@@ -162,11 +161,10 @@
 )
 
 (instance antwerped of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bclr ANTWERP_SKY)
+				(Bclr fAntwerpInSky)
 				(antFalls play:)
 				(User canControl: FALSE)
 				(ego
@@ -181,8 +179,8 @@
 				(User canControl: FALSE)
 				(antwerp
 					init:
-					ignoreActors: 1
-					ignoreHorizon: 1
+					ignoreActors: TRUE
+					ignoreHorizon: TRUE
 					illegalBits: 0
 					setLoop: 2
 					cel: 0
@@ -212,7 +210,7 @@
 			(4
 				(EgoDead 85 7
 					#title {Trounced by a bounce!}
-					#icon vDeathScenes 0 0
+					#icon vIcons 0 0
 					;You're obviously in no shape to continue the game.
 				)
 			)
@@ -277,7 +275,9 @@
 	)
 	
 	(method (doit)
-		(if (== (self cel?) 0) (babyBoing loop: 1 play:))
+		(if (== (self cel?) 0)
+			(babyBoing loop: 1 play:)
+		)
 		(super doit:)
 	)
 )
@@ -325,8 +325,8 @@
 			(1
 				(antwerp
 					init:
-					ignoreActors: 1
-					ignoreHorizon: 1
+					ignoreActors: TRUE
+					ignoreHorizon: TRUE
 					illegalBits: 0
 					setLoop: 2
 					cel: 0
@@ -339,66 +339,66 @@
 			(2
 				(antSplats play:)
 				(ego setCycle: BegLoop self)
-				(Bset ANTWERP_SPLIT)
+				(Bset fAntwerpSplit)
 				(antwerp setLoop: 5 setCycle: EndLoop)
 			)
 			(3
-				(= gEgoObjX (ego x?))
-				(= gEgoObjY (ego y?))
+				(= antwerpX (ego x?))
+				(= antwerpY (ego y?))
 				(antwerp
 					setLoop: 5
 					cel: 0
 					setStep: 4 4
-					posn: gEgoObjX gEgoObjY
-					setMotion: MoveTo gEgoObjX (+ gEgoObjY 16)
+					posn: antwerpX antwerpY
+					setMotion: MoveTo antwerpX (+ antwerpY 16)
 					cycleSpeed: 1
 					setCycle: EndLoop
 				)
 				(a1
 					setLoop: 6
-					posn: gEgoObjX gEgoObjY
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
 					illegalBits: 0
-					setMotion: MoveTo (+ gEgoObjX 16) (+ gEgoObjY 22) self
+					setMotion: MoveTo (+ antwerpX 16) (+ antwerpY 22) self
 				)
 				(a2
 					setLoop: 7
-					posn: gEgoObjX gEgoObjY
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
 					illegalBits: 0
-					setMotion: MoveTo (- gEgoObjX 10) (- gEgoObjY 10)
+					setMotion: MoveTo (- antwerpX 10) (- antwerpY 10)
 				)
 				(a3
 					setLoop: 6
-					posn: gEgoObjX gEgoObjY
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
 					illegalBits: 0
-					setMotion: MoveTo (+ gEgoObjX 8) (+ gEgoObjY 15)
+					setMotion: MoveTo (+ antwerpX 8) (+ antwerpY 15)
 				)
 				(if (> howFast slow)
 					(a4
 						setLoop: 7
-						posn: gEgoObjX gEgoObjY
+						posn: antwerpX antwerpY
 						ignoreActors:
 						init:
 						setCycle: Forward
 						illegalBits: 0
-						setMotion: MoveTo (- gEgoObjX 14) (- gEgoObjY 5)
+						setMotion: MoveTo (- antwerpX 14) (- antwerpY 5)
 					)
 					(a5
 						setLoop: 6
-						posn: gEgoObjX gEgoObjY
+						posn: antwerpX antwerpY
 						ignoreActors:
 						init:
 						setCycle: Forward
 						illegalBits: 0
-						setMotion: MoveTo (+ gEgoObjX 16) (- gEgoObjY 10)
+						setMotion: MoveTo (+ antwerpX 16) (- antwerpY 10)
 					)
 				)
 			)

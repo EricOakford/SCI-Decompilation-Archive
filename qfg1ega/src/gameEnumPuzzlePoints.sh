@@ -28,7 +28,7 @@
 	f32PlayMaze ;616)       ; 5 points (Mage only)
 	f32WinMaze ;617)        ; 12 points (Mage only)
 	f60LearnDetect ;618)         ; 4 points (Mage only)
-	POINTS_LEARNTRIGGER ;619)         ; 4 points (Mage only)
+	f83LearnTrigger ;619)         ; 4 points (Mage only)
 	f314LearnFetch ;620)           ; 2 points (Mage only)
 	f314LearnOpen ;621)            ; 2 points (Mage only)
 	f314LearnFlameDart ;622)       ; 2 points (Mage only)
@@ -40,14 +40,14 @@
 	f313SearchBasket ;627)      ; 1 point (Thief Only)
 	f313StealCandles ;628)         ; 1 point (Thief Only)
 	f313PetCat ;629)            ; 3 points (Thief Only)
-	POINTS_ENTERSHERIFFHOUSE ;630)        ; 5 points (Thief only)
-	POINTS_SEARCHSHERIFFDRAWER ;631)      ; 1 point (Thief only)
-	POINTS_MOVEPAINTING ;632)         ; 1 point (Thief only)
-	POINTS_CRACKSAFE ;633)            ; 1 point (Thief only)
-	POINTS_TAKESAFEMONEY ;634)       ; 1 point (Thier only)
-	POINTS_TAKEVASE ;635)             ; 1 point (Thief only)
-	POINTS_TAKECANDELABRA ;636)       ; 1 point (Thief only)
-	POINTS_TAKEMUSICBOX ;637)         ; 1 point (Thief only]
+	f321EnterSheriffHouse ;630)        ; 5 points (Thief only)
+	f321SearchDrawer ;631)      ; 1 point (Thief only)
+	f321MovePainting ;632)         ; 1 point (Thief only)
+	f321CrackSafe ;633)            ; 1 point (Thief only)
+	f321LootSafe ;634)       ; 1 point (Thier only)
+	f321StealVase ;635)             ; 1 point (Thief only)
+	f321StealCandelabra ;636)       ; 1 point (Thief only)
+	f321StealMusicBox ;637)         ; 1 point (Thief only]
 	f332EnterGuild ;638)        ; 5 points (Thief Only)
 	f332BuyLicense ;639)      ; 3 points (Thief Only)
 	f332BuyToolkit ;640)      ; 3 points (Thief Only)
@@ -112,11 +112,11 @@
 	fEatAcorn 					;696)             ; -5 points
 	f82KnockOnDoor 			;697)        ; 1 point
 	f82GetWater 				;698)       ; 3 points
-	POINTS_MEETHERMIT 					;699)           ; 5 points
-	POINTS_TALKTOHERMIT 				;700)         ; 2 points
-	POINTS_FINDSECRETENTRANCE 			;701)       ; 10 points
-	POINTS_GIVECAVEPASSWORD 			;702)         ; 5 points
-	POINTS_VISITLAKE 					;703)            ; 1 point
+	f83MeetHermit 					;699)           ; 5 points
+	f83TalkToHermit 				;700)         ; 2 points
+	f84FindTrollCave 			;701)       ; 10 points
+	f84HidenGoseke 			;702)         ; 5 points
+	f87VisitLake 					;703)            ; 1 point
 	POINTS_ENTERSECRETENTRANCE 		;704)      ; 2 points
 	f94EnterFortress 		;705)     ; 8 points
 	f95EnterDiningRoom 		;706)       ; 8 points

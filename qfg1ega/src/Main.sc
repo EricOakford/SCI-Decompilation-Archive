@@ -1109,7 +1109,7 @@
 			#title {Giving up, huh?}
 			#button {Quit} TRUE
 			#button {Don't Quit} FALSE
-			#icon vDeathScenes 1 4
+			#icon vIcons 1 4
 		)
 	)
 	; How about a slice of quiche?
@@ -1155,7 +1155,7 @@
 			(if (<= [egoStats HEALTH] 0)
 				(EgoDead 0 57 
 					#title {Death from Overwork}
-					#icon vDeathScenes 1 4
+					#icon vIcons 1 4
 				)
 				;That was a little too much for you.  You collapse from exhaustion and die.
 				
@@ -1718,7 +1718,7 @@
 				;"Wheeeeeere's myyyyyy
 				;Maaaandraaaaake Rooooooooooooot????"
 				(EgoDead 0 3
-					#icon vDeathScenes 1 2 
+					#icon vIcons 1 2 
 					#title {Curses!}
 				)
 				;Because you failed to meet Baba Yaga's DEADline, her curse turns you into a frog on the spot, and you are forced to live
@@ -2040,7 +2040,7 @@
 							(if (not (TrySkill PICK tryPickNose))
 								(EgoDead 0 28
 									#title {The surgeon general warns . . ._}
-									#icon vDeathScenes 0 0
+									#icon vIcons 0 0
 								)
 								;Unfortunately, you push it in too far, causing yourself a cerebral hemorrhage.
 								;Guess you should have practiced some more on less difficult locks.

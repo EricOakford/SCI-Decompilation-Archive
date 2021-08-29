@@ -12,12 +12,10 @@
 )
 
 (local
-	[local0 9] = [0 0 10 10 10 0 -10 -10 -10]
-	[local9 9] = [6 -6 -6 0 6 6 6 0 -6]
+	local0 = [0 0 10 10 10 0 -10 -10 -10]
+	local9 = [6 -6 -6 0 6 6 6 0 -6]
 )
 (instance doASpell of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 32 1) empty:)
 		(super dispose:)

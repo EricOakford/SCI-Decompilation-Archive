@@ -11,8 +11,6 @@
 )
 
 (instance talksAlot of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 230)
@@ -24,7 +22,10 @@
 				(HandsOff)
 				(ego illegalBits: 0 setMotion: MoveTo 43 188 self)
 			)
-			(1 (ego loop: 2) (= cycles 2))
+			(1
+				(ego loop: 2)
+				(= cycles 2)
+			)
 			(2
 				(HighPrint 230 0)
 				;You bar the door behind you.
@@ -48,14 +49,15 @@
 				;"State your case before I case your estate!"
 				(self cue:)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance knockout of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 230)
@@ -85,7 +87,7 @@
 				)
 				(ego setCel: 1)
 				(= cycles 2)
-				(if (not (Btst PULLED_CHAIN))
+				(if (not (Btst fPulledChain))
 					((ScriptID 96 6) setCel: 3)
 					((ScriptID 96 5)
 						setLoop: 4
@@ -130,7 +132,8 @@
 				(if (not (TakeDamage 5))
 					(EgoDead 230 8
 						#title {You're the Fall Guy again}
-						#icon vEgoClimbing 2 5)
+						#icon vEgoClimbing 2 5
+					)
 						;You're mad as heck, and you just won't take it anymore.  As a matter of fact, you CAN'T take it anymore.
 						;Keep up your strength and health and try again.
 				else
@@ -138,9 +141,9 @@
 				)
 			)
 			(10
-				(Bclr FLAG_258)
-				(Bclr OPENING_LEADER_DOOR)
-				(Bset FLAG_260)
+				(Bclr fFallingOffLedge)
+				(Bclr fOpeningDoor)
+				(Bset fRollingOut)
 				(ego setScript: (ScriptID 226 0))
 				(client setScript: 0)
 			)

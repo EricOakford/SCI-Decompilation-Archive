@@ -38,8 +38,6 @@
 )
 
 (instance byebye of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 295)
@@ -75,7 +73,9 @@
 				)
 			)
 			(1
-				(if (< numColors 8) (aFaeryWindow color: vBLACK back: vWHITE))
+				(if (< numColors 8)
+					(aFaeryWindow color: vBLACK back: vWHITE)
+				)
 				(switch (Random 0 3)
 					(0
 						(FairySays 4 295 0)
@@ -101,8 +101,7 @@
 			)
 			(2
 				(faery
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(switch curRoomNum
 							(62 (Random 120 200))
 							(69 330)
@@ -123,7 +122,10 @@
 				(faery dispose:)
 				(= cycles 2)
 			)
-			(4 (HandsOn) (self dispose:))
+			(4
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )

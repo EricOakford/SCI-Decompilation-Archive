@@ -13,11 +13,11 @@
 )
 
 (local
-	onSecondFloor
-	local1
+	egoUpstairs
+	safeCrackSuccess	;NOTE: this should be a global variable
 )
 (procedure (BustedPrint)
-	(if onSecondFloor
+	(if egoUpstairs
 		(CenterPrint &rest)
 	else
 		(HighPrint &rest)
@@ -25,8 +25,6 @@
 )
 
 (instance bustedScript of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 289)
@@ -81,11 +79,13 @@
 				((ScriptID 321 5) setMotion: MoveTo 122 60 self)
 			)
 			(3
-				(if (== local1 2)
+				(if (== safeCrackSuccess 2)
+					;as this uses a local variable, not a global, this death message is never triggered
 					((ScriptID 321 3) stop:)
 					(EgoDead 289 0
 						#title { Try to stay "in character" next time_}
-						#icon vEgoDefeated 1 0)
+						#icon vEgoDefeated 1 0
+					)
 						;Naughty, naughty.  The Sheriff and Otto arrive on the scene and arrest you for "blatant power-gaming".
 						;You have to *work* at it to become a *real* hero!
 				else
@@ -101,13 +101,16 @@
 	)
 )
 
-(instance faceTheMusicScript of Script
-	(properties)
-	
+(instance faceTheMusicScript of Script	
 	(method (doit)
 		(cond 
-			((< (ego distanceTo: (ScriptID 321 6)) 20) (self changeState: 9))
-			((> (ego y?) 187) (User canControl: FALSE) (User canInput: FALSE))
+			((< (ego distanceTo: (ScriptID 321 6)) 20)
+				(self changeState: 9)
+			)
+			((> (ego y?) 187)
+				(User canControl: FALSE)
+				(User canInput: FALSE)
+			)
 		)
 		(super doit:)
 	)
@@ -120,7 +123,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset OTTO_BACK_TO_BED)
+				(Bset fOttoAwakened)
 				(BustedPrint 289 3)
 				;Gently and stealthily, you lift the lid on the little box.
 				(self cue:)
@@ -128,8 +131,8 @@
 			(1
 				(HandsOff)
 				((ScriptID 321 10) setCel: 4)
-				(Bset OPEN_MUSIC_BOX)
-				(Bset OTTO_CLOSES_MUSIC_BOX)
+				(Bset fOpenMusicBox)
+				(Bset fOttoClosedMusicBox)
 				((ScriptID 321 2) loop: 1 number: 13 play:)
 				(= seconds 3)
 			)
@@ -168,18 +171,18 @@
 					((ego has: iMusicBox)
 						(BustedPrint 289 6)
 						;Otto can't find the music box, but he's too dim and sleepy to figure it out, so he heads on back to bed
-						)
-					((Btst OPEN_MUSIC_BOX)
+					)
+					((Btst fOpenMusicBox)
 						((ScriptID 321 10) setCel: 3 forceUpd:)
 						((ScriptID 321 2) stop:)
 						(BustedPrint 289 7 #draw)
 						;Otto, even in his sleepy state, winds the music box and closes the lid before he heads back to bed.
-						(Bclr OPEN_MUSIC_BOX)
+						(Bclr fOpenMusicBox)
 					)
 					(else
 						(BustedPrint 289 8)
 						;Otto stares sleepily at the closed music box for a moment and heads back to bed.
-						)
+					)
 				)
 				((ScriptID 321 6)
 					setLoop: 2
@@ -194,7 +197,7 @@
 			(8
 				(BustedPrint 289 9)
 				;That was close! The goon must've been so dumb or sleepy or both that he didn't even see you standing there.
-				(Bclr OTTO_BACK_TO_BED)
+				(Bclr fOttoAwakened)
 				(HandsOn)
 				(ego setScript: 0)
 			)
@@ -202,7 +205,8 @@
 				((ScriptID 321 3) stop:)
 				(EgoDead 289 10
 					#title { Criminal carelessness._}
-					#icon vEgoDefeated 1 0)
+					#icon vEgoDefeated 1 0
+				)
 					;Obviously, getting in the goon's way was not one of your brighter ideas. You've had it now!
 			)
 		)

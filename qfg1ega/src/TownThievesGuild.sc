@@ -851,7 +851,7 @@
 			(2
 				(EgoDead [deathMessage attackedGuild]
 					#title [deathTitle attackedGuild]
-					#icon vDeathScenes 0 0
+					#icon vIcons 0 0
 				)
 			)
 		)

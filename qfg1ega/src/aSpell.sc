@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# CLOSECOMBAT) ;215
-(include system.sh) (include sci2.sh) (include game.sh)
+(include game.sh)
 (use Main)
 (use LoadMany)
 (use Invent)
@@ -12,21 +12,18 @@
 	aSpell 1
 )
 
+
 (local
 	spellCast
 	haveWeapon
-	local2
+	handView
 	haveShield
-	local4
-	local5 =  2
+	backView
+	attackAngle =  AttStraight
 )
-(instance aSpell of Prop
-	(properties)
-)
+(instance aSpell of Prop)
 
 (instance closeCombat of Script
-	(properties)
-	
 	(method (init)
 		(LoadMany SCRIPT ARENA_THRUST ARENA_BLOCK ARENA_PARRY ARENA_DODGE ARENA_PAIN)
 		(if (ego has: iShield)
@@ -45,12 +42,12 @@
 			(0
 				(client drawWeapons:)
 				(= haveShield ((= haveWeapon (ScriptID WARRIOR 0)) egoShield?))
-				(= local2 (haveWeapon egoHand?))
-				(= local4 (haveWeapon egosBack?))
+				(= handView (haveWeapon egoHand?))
+				(= backView (haveWeapon egosBack?))
 				(directionHandler addToFront: client)
 				(mouseDownHandler addToFront: client)
 				(if (and (haveWeapon noWeapon?) (not haveShield))
-					(local2 setLoop: 1 setCel: 2)
+					(handView setLoop: 1 setCel: 2)
 				)
 				(= cycles 1)
 			)
@@ -59,8 +56,8 @@
 					(self changeState: 3)
 				else
 					(client
-						canFight: 1
-						action: 0
+						canFight: TRUE
+						action: ActNone
 						cycleSpeed: 0
 						moveSpeed: 0
 						view: (haveWeapon weaponView?)
@@ -85,15 +82,14 @@
 		)
 	)
 	
-	(method (handleEvent event &tmp theX theY temp2 temp3)
-		(if
-		(or (not (client canFight?)) (not egoCanFight))
-			(event claimed: 1)
-			(while ((= temp3 (Event new: 71)) type?)
-				(temp3 dispose:)
+	(method (handleEvent event &tmp mouseX mouseY temp2 evt)
+		(if (or (not (client canFight?)) (not egoCanFight))
+			(event claimed: TRUE)
+			(while ((= evt (Event new: 71)) type?)
+				(evt dispose:)
 			)
-			(temp3 dispose:)
-			(return 1)
+			(evt dispose:)
+			(return TRUE)
 		)
 		(if script
 			(if
@@ -115,7 +111,7 @@
 						((Said 'look')
 							(HighPrint 215 0)
 							;Quit sightseeing and watch what you're doing!
-							)
+						)
 						((Said 'escape,escape,run')
 							(if
 								(or
@@ -138,11 +134,11 @@
 								((not (= spellCast (SaidSpell event)))
 									(HighPrint 215 2)
 									;That isn't a known spell.
-									)
+								)
 								(haveShield
 									(HighPrint 215 3)
 									;You cannot make the arcane gestures to cast spells while carrying your shield.
-									)
+								)
 								(
 									(and
 										(!= spellCast FLAMEDART)
@@ -171,41 +167,46 @@
 						((Said 'throw')
 							(HighPrint 215 6)
 							;You're too close.
-							)
+						)
 						(else
 							(HighPrint 215 7)
 							;You don't have time for that.
-							(event claimed: TRUE))
+							(event claimed: TRUE)
+						)
 					)
 				)
 				(mouseDown
-					(= theX (event x?))
-					(= theY (event y?))
+					(= mouseX (event x?))
+					(= mouseY (event y?))
 					(event claimed: TRUE)
 				)
 				(direction
 					(HandsOff)
 					(switch (event message?)
 						(dirN
-							(= local5 2)
-							(self setScript: (ScriptID 151 0) self local5)
+							(= attackAngle AttStraight)
+							(self setScript: (ScriptID ARENA_THRUST 0) self attackAngle)
 						)
 						(dirW
-							(= local5 0)
-							(self setScript: (ScriptID 154 0) self local5)
+							(= attackAngle AttLeft)
+							(self setScript: (ScriptID ARENA_DODGE 0) self attackAngle)
 						)
 						(dirE
-							(= local5 1)
-							(self setScript: (ScriptID 154 0) self local5)
+							(= attackAngle AttRight)
+							(self setScript: (ScriptID ARENA_DODGE 0) self attackAngle)
 						)
 						(dirS
-							(= local5 2)
+							(= attackAngle AttStraight)
 							(cond 
-								(haveShield (self setScript: (ScriptID 152 0) self local5))
-								((not (ego has: 6)) (self setScript: (ScriptID 153 0) self local5))
+								(haveShield
+									(self setScript: (ScriptID ARENA_BLOCK 0) self attackAngle)
+								)
+								((not (ego has: iSword))
+									(self setScript: (ScriptID ARENA_PARRY 0) self attackAngle)
+								)
 								(else
-									(= local5 (Random 0 1))
-									(self setScript: (ScriptID 154 0) self local5)
+									(= attackAngle (Random 0 1))
+									(self setScript: (ScriptID ARENA_DODGE 0) self attackAngle)
 								)
 							)
 						)

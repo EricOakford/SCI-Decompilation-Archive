@@ -12,11 +12,9 @@
 )
 
 (local
-	local0
+	babaSpeaks
 )
 (instance firstTalk of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 293)
@@ -47,7 +45,7 @@
 				(= seconds 3)
 			)
 			(2
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(TimePrint 4 293 0)
 				;"BE STILL!"
 				((ScriptID 21 1) setCel: 1)
@@ -83,7 +81,7 @@
 				(= seconds 5)
 			)
 			(7
-				(= local0 (= seconds 0))
+				(= babaSpeaks (= seconds 0))
 				((ScriptID 21 2) setCycle: 0)
 				((ScriptID 21 1) setScript: (ScriptID 21 7))
 				(= yesNoTimer 100)
@@ -91,7 +89,7 @@
 			)
 			(8
 				(ego setCycle: Forward)
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(Print
 					293 3
 					#at -1 130
@@ -105,7 +103,7 @@
 			(9
 				(ego setCycle: 0)
 				((ScriptID 21 2) setCycle: Forward)
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(TimePrint 9 293 4)
 				;"So you're the one who's trying to be a hero around here.  The only good hero's a dead hero, I always say!"
 				(= seconds 7)
@@ -122,7 +120,7 @@
 				(= seconds 4)
 			)
 			(12
-				(= local0 (= seconds 0))
+				(= babaSpeaks (= seconds 0))
 				((ScriptID 21 2) setCycle: 0)
 				((ScriptID 21 1) setScript: (ScriptID 21 7))
 				(= yesNoTimer 100)
@@ -130,7 +128,7 @@
 			)
 			(13
 				(ego setCycle: Forward)
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(Print
 					293 6
 					#at -1 130
@@ -165,7 +163,7 @@
 				(= seconds 8)
 			)
 			(18
-				(= local0 (= seconds 0))
+				(= babaSpeaks (= seconds 0))
 				(= babaState babaFETCH)
 				((ScriptID 21 2) setCycle: 0)
 				((ScriptID 21 1) setScript: (ScriptID 21 7))
@@ -174,7 +172,7 @@
 			)
 			(19
 				(ego setCycle: Forward)
-				(= local0 1)
+				(= babaSpeaks TRUE)
 				(Print
 					293 10
 					#at -1 130
@@ -246,7 +244,7 @@
 				; Or else you will die!!"
 			)
 			(25
-				(= local0 0)
+				(= babaSpeaks FALSE)
 				((ScriptID 21 2) hide:)
 				(ego hide:)
 				((ScriptID 21 1)

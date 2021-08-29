@@ -39,7 +39,7 @@
 	(properties
 		y 122
 		x 130
-		view vMandrake
+		view vGraveyardStuff
 		loop 3
 	)
 )
@@ -48,7 +48,7 @@
 	(properties
 		y 133
 		x 227
-		view vMandrake
+		view vGraveyardStuff
 	)
 )
 
@@ -56,7 +56,7 @@
 	(properties
 		y 119
 		x 124
-		view vMandrake
+		view vGraveyardStuff
 		loop 2
 		priority 6
 	)
@@ -73,7 +73,7 @@
 	
 	(method (init)
 		(LoadMany SCRIPT GHOSTS CEMETERY)
-		(LoadMany VIEW vGhosts vMandrake vEgoDefeatedMagic)
+		(LoadMany VIEW rGraveyard vGraveyardStuff vEgoDefeatedMagic)
 		(super init:)
 		(StatusLine enable:)
 		(cSound fade:)
@@ -93,7 +93,7 @@
 		(if Night
 			(= deathMusic 37)
 			(riser
-				view: vGhosts
+				view: rGraveyard
 				setLoop: 3
 				ignoreActors:
 				ignoreHorizon:
@@ -104,7 +104,7 @@
 				stopUpd:
 			)
 			(longOne
-				view: vGhosts
+				view: rGraveyard
 				setLoop: 7
 				setPri: 6
 				ignoreActors:
@@ -640,7 +640,7 @@
 					setMotion: Follow ego 20
 				)
 				((ScriptID GHOSTS 5)
-					view: vGhosts
+					view: rGraveyard
 					setLoop: 0
 					setPri: 14
 					ignoreActors:
@@ -654,7 +654,7 @@
 					setMotion: Follow ego 20
 				)
 				((ScriptID GHOSTS 6)
-					view: vGhosts
+					view: rGraveyard
 					setLoop: 8
 					setPri: 7
 					ignoreActors:
@@ -725,7 +725,7 @@
 					setMotion: Follow ego 5
 				)
 				((ScriptID GHOSTS 7)
-					view: vGhosts
+					view: rGraveyard
 					setPri: 14
 					setLoop: 1
 					ignoreActors:
@@ -882,7 +882,7 @@
 			)
 			(1
 				(EgoDead 64 36
-					#icon vDeathScenes 1 5
+					#icon vIcons 1 5
 					#title { Watch your step!_})
 					;You stepped into a hole whose depth is unfathomable.
 					;As you fall ever downward, you feel icy fingers clutching at you, and you think: "How could I be so careless?"

@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# KOBOLD) ;15
+(script# rKoboldCave) ;15
 (include game.sh)
 (use Main)
 (use ThrowKnife)
@@ -117,7 +117,7 @@
 (procedure (localproc_0079 param1)
 	(Bset fKoboldChestSearched)
 	(SolvePuzzle f15GetTreasure 5)
-	(CenterPrint KOBOLD 0)
+	(CenterPrint rKoboldCave 0)
 	(if param1 (param1 dispose:))
 	(&= koboldIllBits (~ cLMAGENTA))
 	(ego illegalBits: koboldIllBits get: iGold 10 get: iSilver 60)
@@ -159,7 +159,7 @@
 
 (procedure (SaidKoboldRoom param1 param2 param3)
 	(cond 
-		((Btst fKoboldAwake) (CenterPrint KOBOLD 1))
+		((Btst fKoboldAwake) (CenterPrint rKoboldCave 1))
 		((CastSpell param1) (ego setScript: (ScriptID param2 param3)))
 	)
 )
@@ -361,14 +361,14 @@
 			)
 			((!= eventType saidEvent))
 			((and (not (Btst fKoboldDead)) (Said 'chat,ask,awaken'))
-				(CenterPrint KOBOLD 2)
+				(CenterPrint rKoboldCave 2)
 			)
 			((Said 'nap,rest')
-				(CenterPrint KOBOLD 3)
+				(CenterPrint rKoboldCave 3)
 			)
 			((Said 'search')
 				(if (Btst fKoboldAwake)
-					(CenterPrint KOBOLD 4)
+					(CenterPrint rKoboldCave 4)
 				else
 					(ego setScript: (ScriptID 112 0))
 				)
@@ -378,11 +378,11 @@
 					((cast contains: kobKey)
 						(= temp1 0)
 						(cond 
-							((> (ego distanceTo: kobKey) 40) (CenterPrint KOBOLD 5))
-							((Btst fKoboldDead) (CenterPrint KOBOLD 6) (= temp1 1))
-							((Btst fKoboldAwake) (CenterPrint KOBOLD 7))
-							((TrySkill STEALTH trySneakKobold 0) (CenterPrint KOBOLD 8) (= temp1 1))
-							(else (CenterPrint KOBOLD 9) (AwakenKobold))
+							((> (ego distanceTo: kobKey) 40) (CenterPrint rKoboldCave 5))
+							((Btst fKoboldDead) (CenterPrint rKoboldCave 6) (= temp1 1))
+							((Btst fKoboldAwake) (CenterPrint rKoboldCave 7))
+							((TrySkill STEALTH trySneakKobold 0) (CenterPrint rKoboldCave 8) (= temp1 1))
+							(else (CenterPrint rKoboldCave 9) (AwakenKobold))
 						)
 						(if temp1
 							(ego get: iBrassKey)
@@ -391,9 +391,9 @@
 							(kobKey dispose:)
 						)
 					)
-					((ego has: iBrassKey) (CenterPrint KOBOLD 10))
-					((ego pickUp: iBrassKey 1) (CenterPrint KOBOLD 11))
-					(else (CenterPrint KOBOLD 12))
+					((ego has: iBrassKey) (CenterPrint rKoboldCave 10))
+					((ego pickUp: iBrassKey 1) (CenterPrint rKoboldCave 11))
+					(else (CenterPrint rKoboldCave 12))
 				)
 			)
 			(
@@ -401,7 +401,7 @@
 					(Btst fKoboldChestKnown)
 					(Said 'get,grab,get,move/chest,box,trunk')
 				)
-				(CenterPrint KOBOLD 13)
+				(CenterPrint rKoboldCave 13)
 			)
 			((Said 'get/loot,alm,gold,silver')
 				(cond 
@@ -412,9 +412,9 @@
 						)
 						(localproc_0079 treasure)
 					)
-					((Btst fKoboldChestSearched) (CenterPrint KOBOLD 14))
-					((not (< (ego distanceTo: chest) 25)) (CenterPrint KOBOLD 15))
-					((not (Btst fKoboldChestUnlocked)) (CenterPrint KOBOLD 16))
+					((Btst fKoboldChestSearched) (CenterPrint rKoboldCave 14))
+					((not (< (ego distanceTo: chest) 25)) (CenterPrint rKoboldCave 15))
+					((not (Btst fKoboldChestUnlocked)) (CenterPrint rKoboldCave 16))
 					(else (localproc_0079 0))
 				)
 			)
@@ -424,9 +424,9 @@
 					(Said 'put,fill<in/key/hasp')
 				)
 				(if (and (Btst fKoboldChestKnown) (cast contains: chest))
-					(CenterPrint KOBOLD 17)
+					(CenterPrint rKoboldCave 17)
 				else
-					(CenterPrint KOBOLD 18)
+					(CenterPrint rKoboldCave 18)
 				)
 			)
 			(
@@ -436,20 +436,20 @@
 				)
 				(cond 
 					((or (not (Btst fKoboldChestKnown)) (not (cast contains: chest)))
-						(CenterPrint KOBOLD 18)
+						(CenterPrint rKoboldCave 18)
 					)
-					((Btst fKoboldChestUnlocked) (CenterPrint KOBOLD 19))
+					((Btst fKoboldChestUnlocked) (CenterPrint rKoboldCave 19))
 					((not (< (ego distanceTo: chest) 25)) (NotClose))
-					((not [egoStats PICK]) (CenterPrint KOBOLD 20))
+					((not [egoStats PICK]) (CenterPrint rKoboldCave 20))
 					(else (ego setScript: (ScriptID 116 0) 0 0))
 				)
 			)
 			((Said 'force,break,pry/chest,box,trunk,hasp,lid')
 				(cond 
 					((or (not (Btst fKoboldChestKnown)) (not (cast contains: chest)))
-						(CenterPrint KOBOLD 21)
+						(CenterPrint rKoboldCave 21)
 					)
-					((Btst fKoboldChestUnlocked) (CenterPrint KOBOLD 19))
+					((Btst fKoboldChestUnlocked) (CenterPrint rKoboldCave 19))
 					((not (< (ego distanceTo: chest) 25)) (NotClose))
 					(else (ego setScript: (ScriptID 116 0) 0 1))
 				)
@@ -460,20 +460,20 @@
 					(Said 'get/toadstool,mushroom,food')
 				)
 				(if fightingKobold
-					(CenterPrint KOBOLD 22)
+					(CenterPrint rKoboldCave 22)
 				else
-					(CenterPrint KOBOLD 23)
+					(CenterPrint rKoboldCave 23)
 					(Bset fTookToadstools)
 					(Bset fHaveToadstools)
 					(ego get: iMushroom 6)
 					(toadstools dispose:)
 				)
 			)
-			((Said 'get/fungus') (CenterPrint KOBOLD 24))
+			((Said 'get/fungus') (CenterPrint rKoboldCave 24))
 			((Said 'feel/chest,box,trunk') (SendKoboldSaidEvent event {look chest}))
 			((Said 'look>')
 				(cond 
-					((Said '/west,open,entrance') (CenterPrint KOBOLD 25))
+					((Said '/west,open,entrance') (CenterPrint rKoboldCave 25))
 					(
 						(or
 							(Said
@@ -481,26 +481,26 @@
 							)
 							(Said '<up,down')
 						)
-						(CenterPrint KOBOLD 26)
+						(CenterPrint rKoboldCave 26)
 					)
 					((Said '[<at,around][/!*,cave,room,area,wall,fungus]')
-						(CenterPrint KOBOLD 27)
-						(if (not (Btst fKoboldDead)) (CenterPrint KOBOLD 28))
+						(CenterPrint rKoboldCave 27)
+						(if (not (Btst fKoboldDead)) (CenterPrint rKoboldCave 28))
 					)
-					((and (cast contains: kobKey) (Said '/key')) (CenterPrint KOBOLD 29))
+					((and (cast contains: kobKey) (Said '/key')) (CenterPrint rKoboldCave 29))
 					((Said '/table,mushroom,toadstool,food')
 						(if (cast contains: toadstools)
 							(HighPrint 15 30)
 						else
-							(CenterPrint KOBOLD 31)
+							(CenterPrint rKoboldCave 31)
 						)
 					)
 					((Said '/kobold,creature,man,wizard')
 						(if (not (Btst fKoboldDead))
-							(CenterPrint KOBOLD 32)
-							(if (not (Btst fGotKoboldKey)) (CenterPrint KOBOLD 33))
+							(CenterPrint rKoboldCave 32)
+							(if (not (Btst fGotKoboldKey)) (CenterPrint rKoboldCave 33))
 						else
-							(CenterPrint KOBOLD 34)
+							(CenterPrint rKoboldCave 34)
 						)
 					)
 					(
@@ -509,26 +509,26 @@
 							(Said '/loot,alm,gold,silver')
 						)
 						(cond 
-							((cast contains: treasure) (CenterPrint KOBOLD 35))
-							((not (cast contains: chest)) (CenterPrint KOBOLD 36))
-							((not (Btst fKoboldChestKnown)) (CenterPrint KOBOLD 37))
-							((Btst fKoboldChestSearched) (CenterPrint KOBOLD 38))
-							((Btst fKoboldChestUnlocked) (CenterPrint KOBOLD 39))
-							(else (CenterPrint KOBOLD 40))
+							((cast contains: treasure) (CenterPrint rKoboldCave 35))
+							((not (cast contains: chest)) (CenterPrint rKoboldCave 36))
+							((not (Btst fKoboldChestKnown)) (CenterPrint rKoboldCave 37))
+							((Btst fKoboldChestSearched) (CenterPrint rKoboldCave 38))
+							((Btst fKoboldChestUnlocked) (CenterPrint rKoboldCave 39))
+							(else (CenterPrint rKoboldCave 40))
 						)
 					)
 					((Said '/chest,box,trunk')
 						(cond 
-							((not (cast contains: chest)) (CenterPrint KOBOLD 41))
-							((Btst fKoboldChestKnown) (CenterPrint KOBOLD 42))
-							(else (CenterPrint KOBOLD 43))
+							((not (cast contains: chest)) (CenterPrint rKoboldCave 41))
+							((Btst fKoboldChestKnown) (CenterPrint rKoboldCave 42))
+							(else (CenterPrint rKoboldCave 43))
 						)
 					)
 				)
 			)
 			((Said 'run,escape')
-				(CenterPrint KOBOLD 44)
-				(if (not (Btst fKoboldDead)) (CenterPrint KOBOLD 45))
+				(CenterPrint rKoboldCave 44)
+				(if (not (Btst fKoboldDead)) (CenterPrint rKoboldCave 45))
 				(if fightingKobold (self setScript: (ScriptID 117 1)))
 			)
 			(
@@ -536,15 +536,15 @@
 					'fight,attack,kill,beat[/kobold,creature,man,wizard]'
 				)
 				(cond 
-					(fightingKobold (CenterPrint KOBOLD 46))
-					((Btst fKoboldDead) (CenterPrint KOBOLD 47))
-					((not (if (ego has: iSword) else (ego has: iDagger))) (CenterPrint KOBOLD 48))
+					(fightingKobold (CenterPrint rKoboldCave 46))
+					((Btst fKoboldDead) (CenterPrint rKoboldCave 47))
+					((not (if (ego has: iSword) else (ego has: iDagger))) (CenterPrint rKoboldCave 48))
 					(else (self setScript: (ScriptID 117 0)))
 				)
 			)
 			((Said 'throw>')
 				(cond 
-					(fightingKobold (event claimed: 1) (CenterPrint KOBOLD 49))
+					(fightingKobold (event claimed: 1) (CenterPrint rKoboldCave 49))
 					((Btst fKoboldDead))
 					((Said '/dagger') (ThrowKnife kobold))
 					((Said '/boulder') (ThrowRock kobold))
@@ -557,7 +557,7 @@
 						fightingKobold
 						(ego has: iShield)
 					)
-					(CenterPrint KOBOLD 50)
+					(CenterPrint rKoboldCave 50)
 					(event claimed: TRUE)
 					(= spell -1)
 				)
@@ -581,7 +581,7 @@
 					(CALM (localproc_01b5 22 114 0))
 					(ZAP (event claimed: FALSE))
 					(fightingKobold
-						(CenterPrint KOBOLD 1)
+						(CenterPrint rKoboldCave 1)
 					)
 					(DETMAGIC (SaidKoboldRoom 18 113 1))
 					(OPEN
@@ -589,7 +589,7 @@
 						(and (not (Btst fKoboldChestUnlocked)) (cast contains: chest))
 							(SaidKoboldRoom 17 115 0)
 						else
-							(CenterPrint KOBOLD 51)
+							(CenterPrint rKoboldCave 51)
 						)
 					)
 					(TRIGGER
@@ -597,7 +597,7 @@
 						(and (not (Btst fKoboldChestUnlocked)) (cast contains: chest))
 							(SaidKoboldRoom 19 115 1)
 						else
-							(CenterPrint KOBOLD 52)
+							(CenterPrint rKoboldCave 52)
 						)
 					)
 					(FETCH
@@ -605,7 +605,7 @@
 						(and (not (Btst fKoboldDead)) (cast contains: kobKey))
 							(SaidKoboldRoom 24 114 1)
 						else
-							(CenterPrint KOBOLD 53)
+							(CenterPrint rKoboldCave 53)
 						)
 					)
 					(else  (event claimed: FALSE))
@@ -630,13 +630,13 @@
 	(properties
 		y 173
 		x 132
-		view vKoboldCave
+		view rKoboldCave
 		loop 1
 	)
 	
 	(method (doit)
 		(if (and (< (ego distanceTo: chest) 25) (not (Btst fKoboldChestKnown)))
-			(CenterPrint KOBOLD 54)
+			(CenterPrint rKoboldCave 54)
 			(Bset fKoboldChestKnown)
 		)
 		(super doit:)
@@ -681,7 +681,7 @@
 			(2
 				(= cycles 1)
 				(if (< (ego distanceTo: chest) 25)
-					(CenterPrint KOBOLD 55)
+					(CenterPrint rKoboldCave 55)
 					(= cycles 5)
 				)
 			)
@@ -699,7 +699,7 @@
 	(properties
 		y 173
 		x 132
-		view vKoboldCave
+		view rKoboldCave
 		loop 2
 		cel 8
 	)
@@ -709,7 +709,7 @@
 	(properties
 		y 117
 		x 213
-		view vKoboldCave
+		view rKoboldCave
 		loop 3
 	)
 )
@@ -718,7 +718,7 @@
 	(properties
 		y 204
 		x 79
-		view vKoboldCave
+		view rKoboldCave
 	)
 )
 
@@ -798,7 +798,7 @@
 		else
 			(self setScript: kobAwake)
 		)
-		(= monsterNum KOBOLD)
+		(= monsterNum rKoboldCave)
 		(= monsterHealth koboldHealth)
 	)
 	
@@ -1102,13 +1102,13 @@
 					((Btst fKoboldChestExploded)
 						(EgoDead 15 59
 							#title {Your plan seems to have backfired}
-							#icon vKoboldCave 2 6
+							#icon rKoboldCave 2 6
 						)
 					)
 					(local17 
 						(EgoDead 15 60 
 							#title {Blast!} 
-							#icon vKoboldCave 2 6
+							#icon rKoboldCave 2 6
 						)
 					)
 					(else 

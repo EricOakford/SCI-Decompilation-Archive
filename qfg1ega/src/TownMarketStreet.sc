@@ -19,7 +19,7 @@
 (local
 	storeDoor
 	sheriffDoor
-	hildeTail
+	tail
 	centaurCued
 	local4
 	sleepNearStall
@@ -329,7 +329,7 @@
 				(= cycles (Random 40 100))
 			)
 			(1
-				(hildeTail setCycle: EndLoop)
+				(tail setCycle: EndLoop)
 				(self changeState: 0)
 			)
 		)
@@ -353,7 +353,7 @@
 			stopUpd:
 			addToPic:
 		)
-		((= hildeTail (Prop new:))
+		((= tail (Prop new:))
 			view: vCentaurGirl
 			loop: 1
 			cel: 0

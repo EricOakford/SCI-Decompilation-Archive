@@ -7,6 +7,7 @@
 
 (class Skilled of Actor
 	(properties
+		;stats
 		strength 0
 		intell 0
 		agil 0
@@ -16,20 +17,25 @@
 		parry 0
 		dodge 0
 		magic 0
+		
+		;derived stats
 		stamina 0
 		health 0
 		mana 0
+		
+		;other values
 		armorValue 0
 		armorEnc 0
 		shieldValue 0
 		weapValue 0
 		canFight 0
-		action 0
+		action ActNone
 		opponent 0
 		fightLeft 0
 	)
 	
 	(method (init)
+		;get ready to fight
 		(= canFight (= action 0))
 		(super init: &rest)
 	)
@@ -41,12 +47,19 @@
 				16
 			)
 		)
+		;"When Stamina points are low, the character is weak. He will
+		; fight less effectively, and may be injured more easily." -Manual
 		(if (<= stamina 30)
-			(= theLevel (- theLevel 10))
-			(if (<= stamina 10) (= theLevel (- theLevel 20)))
+			(-= theLevel 10)
+			(if (<= stamina 10)
+				(-= theLevel 20)
+			)
 		)
-		(= theLevel (- theLevel (* lostSleep 10)))
-		(if (== action 1) (= theLevel (+ theLevel 10)))
+		;if ego hasn't slept for a while, increase penalty
+		(-= theLevel (* lostSleep 10))
+		(if (== action ActThrust)
+			(+= theLevel 10)
+		)
 		(return theLevel)
 	)
 	
@@ -55,19 +68,35 @@
 			(- (/ (+ (* agil 5) intell intell luck) 8) armorEnc)
 		)
 		(if (<= stamina 30)
-			(= theLevel (- theLevel 5))
-			(if (<= stamina 10) (= theLevel (- theLevel 10)))
+			(-= theLevel 5)
+			(if (<= stamina 10)
+				(-= theLevel 10)
+			)
 		)
-		(= theLevel (- theLevel (* lostSleep 10)))
+		(-= theLevel (* lostSleep 10))
 		(= parryBonus (= dodgeBonus 0))
-		(if parry (= parryBonus (+ parry shieldValue (/ agil 10))))
-		(if dodge (= dodgeBonus (+ dodge (/ agil 5))))
+		(if parry
+			(= parryBonus (+ parry shieldValue (/ agil 10)))
+		)
+		(if dodge
+			(= dodgeBonus (+ dodge (/ agil 5)))
+		)
 		(switch action
-			(1 (= theLevel (- theLevel 5)))
-			(3 (= theLevel (+ theLevel parryBonus)))
-			(4 (= theLevel (+ theLevel parryBonus)))
-			(5 (= theLevel (+ theLevel dodgeBonus)))
-			(6 (= theLevel (+ theLevel dodgeBonus)))
+			(ActThrust
+				(-= theLevel 5)
+			)
+			(ActParryUp
+				(+= theLevel parryBonus)
+			)
+			(ActParryDown
+				(+= theLevel parryBonus)
+			)
+			(ActDodgeLeft
+				(+= theLevel dodgeBonus)
+			)
+			(ActDodgeRight
+				(+= theLevel dodgeBonus)
+			)
 		)
 		(return theLevel)
 	)
@@ -83,7 +112,9 @@
 				)
 				(= toHit 95)
 			)
-			((< toHit 5) (= toHit 5))
+			((< toHit 5)
+				(= toHit 5)
+			)
 		)
 		(return
 			(if (>= toHit (Rand100))
@@ -101,7 +132,9 @@
 				(Random 1 6)
 			)
 		)
-		(if (>= argc 2) (= damage (+ damage addIt)))
+		(if (>= argc 2)
+			(+= damage addIt)
+		)
 		(if (< damage 0)
 			(= damage 0)
 		else
@@ -111,7 +144,7 @@
 	)
 	
 	(method (getHurt damage)
-		(if (< (= health (- health damage)) 0)
+		(if (< (-= health damage) 0)
 			(= health 0)
 		)
 		(if (> health (self calcHealth:))
@@ -125,7 +158,7 @@
 	)
 	
 	(method (getTired amount)
-		(if (< (= stamina (- stamina amount)) 0)
+		(if (< (-= stamina amount) 0)
 			(self getHurt: (/ (- 0 stamina) 2))
 			(= stamina 0)
 		)
@@ -135,7 +168,7 @@
 		(opponent canFight: FALSE)
 		(self setScript: 0)
 		(= canFight FALSE)
-		(= action 10)
+		(= action ActDie)
 	)
 	
 	(method (calcHealth &tmp tmpHealth)

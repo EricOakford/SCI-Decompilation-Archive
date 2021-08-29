@@ -48,21 +48,27 @@
 		(cSound fade:)
 		(self setLocales: FOREST)
 		(if (or (== prevRoomNum 97) (== prevRoomNum 89))
-			(Bset TROLL_DOOR_OPEN)
+			(Bset fTrollDoorOpen)
 		)
-		(if (Bset fBeenIn94)
-			(Bset BRIGANDS_UNAWARE)
+		(if (not (Btst fBeenIn94))	;fixed a script error. This fix appeared in QFG1VGA.
+			(Bset fBrigsUnaware)
 		)
 		(NormalEgo)
 		(ego init:)
-		(if (not (Btst TROLL_DOOR_OPEN))
+		(if (not (Btst fTrollDoorOpen))
 			(ego illegalBits: (| cWHITE cBROWN))
 			(rock init: stopUpd:)
 		)
-		(if
-		(= antwerpOnScreen (not (if (Btst ANTWERP_SPLIT) else (Btst ANTWERP_SKY))))
+		(if (= antwerpOnScreen (not (if (Btst fAntwerpSplit) else (Btst fAntwerpInSky))))
 			(antwerp init: loop: 3 setScript: bounceAndLook)
-			(LoadMany VIEW vAntwerp vEgoDaggerDefeated vEgoBeginFight vEgoDefeated vEgoThrowing vSecretEntranceRock)
+			(LoadMany VIEW
+				vAntwerp
+				vEgoDaggerDefeated
+				vEgoBeginFight
+				vEgoDefeated
+				vEgoThrowing
+				vSecretEntranceRock
+			)
 			(LoadMany SOUND
 				(SoundFX 4)
 				(SoundFX 5)
@@ -74,8 +80,12 @@
 			(antSound number: (SoundFX 4) init:)
 			(antHits init:)
 			(cond 
-				((= fightWithSword (ego has: iSword)) (Load VIEW vEgoFightWithSword))
-				((ego has: iDagger) (Load VIEW vEgoFightDaggerNoCape))
+				((= fightWithSword (ego has: iSword))
+					(Load VIEW vEgoFightWithSword)
+				)
+				((ego has: iDagger)
+					(Load VIEW vEgoFightDaggerNoCape)
+				)
 			)
 		)
 		(switch prevRoomNum
@@ -96,9 +106,12 @@
 	
 	(method (doit)
 		(cond 
-			(
-			(and (== (ego onControl: origin) cLRED) (== (ego loop?) 3)) (curRoom newRoom: 78))
-			((<= (ego x?) 25) (curRoom newRoom: 89))
+			((and (== (ego onControl: origin) cLRED) (== (ego loop?) 3))
+				(curRoom newRoom: 78)
+			)
+			((<= (ego x?) 25)
+				(curRoom newRoom: 89)
+			)
 		)
 		(super doit:)
 	)
@@ -107,16 +120,16 @@
 		(mouseDownHandler delete: self)
 		(Bset fBeenIn84)
 		(if (!= newRoomNum 89)
-			(Bclr SAID_HIDEN_GOSEKE)
-			(if (not (if (Btst DEFEATED_FRED) else (Btst DEFEATED_FRED_89)))
-				(Bclr TROLL_DOOR_OPEN)
-				(Bclr TROLL_DOOR_UNLOCKED)
+			(Bclr fHidenGoseke)
+			(if (not (if (Btst fBeatFred) else (Btst fBeatFred89)))
+				(Bclr fTrollDoorOpen)
+				(Bclr fTrollDoorUnlocked)
 			)
 		)
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp [str 30] spell projectile)
+	(method (handleEvent event &tmp [str 30] spell targObj)
 		(switch (event type?)
 			(mouseDown
 				(cond 
@@ -135,37 +148,34 @@
 						(cond 
 							((Said '[<at,around][/place,area]')
 								(cond 
-									((Btst ANTWERP_SPLIT)
+									((Btst fAntwerpSplit)
 										(HighPrint 84 1)
 										;Now that the big Antwerp has split, this corner of the forest seems strangely quiet.
-										)
-									((Btst ANTWERP_SKY)
+									)
+									((Btst fAntwerpInSky)
 										(HighPrint 84 2)
 										;You look around and see rocks and grass, but no Antwerp.
-										)
+									)
 									(else
 										(HighPrint 84 3)
 										;You see rocks, grass and an Antwerp.
-										)
+									)
 								)
 							)
-							(
-								(Said
-									'[<at,around][/antwerp,monster,creature,beast,animal,bouncer]'
-								)
+							((Said '[<at,around][/antwerp,monster,creature,beast,animal,bouncer]')
 								(cond 
-									((Btst ANTWERP_SPLIT)
+									((Btst fAntwerpSplit)
 										(HighPrint 84 4)
 										;The only Antwerp known in these parts has split... into parts.
-										)
-									((Btst ANTWERP_SKY)
+									)
+									((Btst fAntwerpInSky)
 										(HighPrint 84 5)
 										;The Antwerp seems to have flown the coop.
-										)
+									)
 									(else
 										(HighPrint 84 6)
 										;Antwerps are on the endangered species list.  They are rarely seen.
-										)
+									)
 								)
 							)
 							((Said '[<at][/boulder,boulder]')
@@ -173,19 +183,19 @@
 									((not (ego inRect: 0 72 66 102))
 										(HighPrint 84 7)
 										;The rocks were left here by some receding glacier.
-										)
-									((Btst TROLL_DOOR_OPEN)
+									)
+									((Btst fTrollDoorOpen)
 										(HighPrint 84 8)
 										;There is a narrow cave entrance among the rocks.
-										)
+									)
 									(else
 										(HighPrint 84 9)
 										;You find a keyhole concealed in a crack in the rock.
-										)
+									)
 								)
 							)
 							((or (Said '/cave,entrance') (Said '<in'))
-								(if (Btst TROLL_DOOR_OPEN)
+								(if (Btst fTrollDoorOpen)
 									(HighPrint 84 10)
 									;There is a narrow cave entrance among the rocks.  Inside, you see a dark passage through the hillside.
 								else
@@ -205,20 +215,19 @@
 							((or (Said '<up') (Said '/sky'))
 								(HighPrint 84 13)
 								;The sky is clear.
-								)
+							)
 							((or (Said '<down') (Said '/ground,grass'))
 								(HighPrint 84 14)
 								;The grass is luscious, just the thing for hungry herbivores.
-								)
+							)
 							((Said '/south,west')
 								(HighPrint 84 15)
 								;The way is impassable.  Sheer rock cliffs rise to serious heights.
-								)
-							((Said '/east,north')
-								
+							)
+							((Said '/east,north')	
 								(HighPrint 84 16)
 								;The forest extends to the east and north.
-								)
+							)
 						)
 					)
 					((Said 'cast>')
@@ -227,7 +236,7 @@
 								(if (CastSpell spell)
 									(HighPrint 84 17)
 									;You detect no magic here.
-									)
+								)
 							)
 							(DAZZLE
 								(if (CastSpell spell)
@@ -235,7 +244,7 @@
 									(if antwerpOnScreen
 										(HighPrint 84 18)
 										;Antwerps aren't dazzled easily.
-										)
+									)
 								)
 							)
 							(FLAMEDART
@@ -259,7 +268,7 @@
 										;You aren't close enough to a lock.
 									)
 									((CastSpell spell)
-										(if (Btst TROLL_DOOR_UNLOCKED)
+										(if (Btst fTrollDoorUnlocked)
 											(HighPrint 84 20)
 											;It's already unlocked.
 										else
@@ -268,45 +277,50 @@
 									)
 								)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((Said 'throw/dagger,dagger')
-						(= projectile (if (cast contains: antwerp) antwerp else 0))
-						(if (ThrowKnife projectile)
+						(= targObj (if (cast contains: antwerp) antwerp else 0))
+						(if (ThrowKnife targObj)
 							(if (cast contains: antwerp)
-								(= missedDaggers (+ missedDaggers hitDaggers))
+								(+= missedDaggers hitDaggers)
 								(= hitDaggers 0)
 								(Face ego antwerp)
 								(RedrawCast)
 							)
-							(if antwerpOnScreen (antwerp setScript: antwerpAway))
+							(if antwerpOnScreen
+								(antwerp setScript: antwerpAway)
+							)
 						)
 					)
 					((Said 'throw/boulder')
-						(= projectile (if (cast contains: antwerp) antwerp else 0))
-						(if (ThrowRock projectile)
+						(= targObj (if (cast contains: antwerp) antwerp else 0))
+						(if (ThrowRock targObj)
 							(if (cast contains: antwerp)
 								(Face ego antwerp)
 								(RedrawCast)
 							)
-							(if antwerpOnScreen (antwerp setScript: antwerpAway))
+							(if antwerpOnScreen
+								(antwerp setScript: antwerpAway)
+							)
 						)
 					)
-					(
-						(Said
-							'fight,kill[/bouncer,antwerp,animal,beast,monster,creature]'
-						)
+					((Said 'fight,kill[/bouncer,antwerp,animal,beast,monster,creature]')
 						(cond 
-							((Btst ANTWERP_SPLIT)
+							((Btst fAntwerpSplit)
 								(HighPrint 84 4)
 								;The only Antwerp known in these parts has split... into parts.
 								)
-							((Btst ANTWERP_SKY)
+							((Btst fAntwerpInSky)
 								(HighPrint 84 5)
 								;The Antwerp seems to have flown the coop.
 								)
-							((or fightWithSword (ego has: iDagger)) (antwerp setScript: fightAntwerp))
+							((or fightWithSword (ego has: iDagger))
+								(antwerp setScript: fightAntwerp)
+							)
 							(else
 								(HighPrint 84 21)
 								;You have no weapon with which to fight the Antwerp.
@@ -316,22 +330,20 @@
 							)
 						)
 					)
-					(
-						(Said
-							'feed[/antwerp,creature,monster,bouncer,animal,beast]'
-						)
+					((Said 'feed[/antwerp,creature,monster,bouncer,animal,beast]')
 						(cond 
-							((Btst ANTWERP_SPLIT)
+							((Btst fAntwerpSplit)
 								(HighPrint 84 23)
 								;The only Antwerp known to these parts, split ...into parts.
-								)
-							((Btst ANTWERP_SKY)
+							)
+							((Btst fAntwerpInSky)
 								(HighPrint 84 5)
 								;The Antwerp seems to have flown the coop.
-								)
-							(else (HighPrint 84 24)
+							)
+							(else
+								(HighPrint 84 24)
 								;He's on a diet.
-								)
+							)
 						)
 					)
 					(
@@ -345,37 +357,38 @@
 							((not (ego inRect: 0 72 66 102))
 								(HighPrint 84 25)
 								;You don't see any locks nearby.
-								)
-							((Btst TROLL_DOOR_UNLOCKED)
+							)
+							((Btst fTrollDoorUnlocked)
 								(HighPrint 84 20)
 								;It's already unlocked.
-								)
-							((and (ego has: iBrassKey) (Btst OBTAINED_BRUTUS_KEY))
+							)
+							((and (ego has: iBrassKey) (Btst fGotBrutusKey))
 								(HighPrint 84 26)
 								;The lock in the rock clicks open.
-								(Bset TROLL_DOOR_UNLOCKED))
+								(Bset fTrollDoorUnlocked)
+							)
 							((not (CanPickLocks))
 								(HighPrint 84 27)
 								;You'd have a much easier time of this if you had the key.
-								)
+							)
 							((TrySkill PICK tryPickSecretEntrance lockPickBonus)
 								(HighPrint 84 28)
 								;Ah, got it!  The lock in the rock clicks open.
-								(Bset TROLL_DOOR_UNLOCKED)
-								)
+								(Bset fTrollDoorUnlocked)
+							)
 							(else
 								(HighPrint 84 29)
 								;The lock is beyond your present skill.  It might help if you had the key.
 								(if (not (ego has: iThiefKit))
 									(HighPrint 84 30)
 									;... Or at least a better set of tools.
-									)
+								)
 							)
 						)
 					)
 					((Said 'shove,move,force,get,open/boulder,door')
-						(if (not (Btst TROLL_DOOR_OPEN))
-							(if (Btst TROLL_DOOR_UNLOCKED)
+						(if (not (Btst fTrollDoorOpen))
+							(if (Btst fTrollDoorUnlocked)
 								(if (TrySkill STR tryForceSecretEntrance 0)
 									(rock setScript: sMoveRock)
 								else
@@ -398,14 +411,14 @@
 						)
 						(if
 							(and
-								(Btst SPIED_THIEVES)
+								(Btst fSpiedOnThieves)
 								(ego inRect: 0 72 66 102)
-								(Btst TROLL_DOOR_OPEN)
-								(not (Btst SAID_HIDEN_GOSEKE))
-								(not (Btst DEFEATED_FRED))
+								(Btst fTrollDoorOpen)
+								(not (Btst fHidenGoseke))
+								(not (Btst fBeatFred))
 							)
-							(Bset SAID_HIDEN_GOSEKE)
-							(SolvePuzzle POINTS_GIVECAVEPASSWORD 5)
+							(Bset fHidenGoseke)
+							(SolvePuzzle f84HidenGoseke 5)
 							(HighPrint 84 34)
 							;You hear the sound of someone...or something...moving deeper into the cave to let you pass.
 						else
@@ -416,7 +429,7 @@
 					((Said 'enter/cave,entrance')
 						(HighPrint 84 36)
 						;Go ahead. If you dare.
-						)
+					)
 				)
 			)
 		)
@@ -459,10 +472,7 @@
 			(saidEvent
 				(cond 
 					((super handleEvent: event))
-					(
-						(Said
-							'play/[antwerp,monster,creature,bouncer,animal,beast]'
-						)
+					((Said 'play/[antwerp,monster,creature,bouncer,animal,beast]')
 						(HighPrint 84 39)
 						;The Antwerp plays rough.
 					)
@@ -478,8 +488,6 @@
 )
 
 (instance bounceAndLook of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			(
@@ -529,15 +537,16 @@
 					)
 				)
 			)
-			(1 (self changeState: 0))
+			(1
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance antwerpFollow of Script
-	(properties)
-
 	;CI: This is a manual decompilation of the doit method.
+	;EO: It doesn't seem to work properly.
 	(method (doit)
 		(= antPushX (- (ego x?) (antwerp x?)))
 		(= antPushY (- (ego y?) (antwerp y?)))
@@ -943,8 +952,6 @@
 )
 
 (instance antwerpPushes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -998,7 +1005,9 @@
 					(self changeState: 5)
 				else
 					(NormalEgo)
-					(if (not (Btst TROLL_DOOR_OPEN)) (ego illegalBits: (| cWHITE cBROWN)))
+					(if (not (Btst fTrollDoorOpen))
+						(ego illegalBits: (| cWHITE cBROWN))
+					)
 					(= antPushX 45)
 					(if (< (ego x?) (antwerp x?))
 						(if (> 226 (+ (antwerp x?) antPushX))
@@ -1026,7 +1035,9 @@
 					(HandsOn)
 				)
 			)
-			(3 (= seconds 3))
+			(3
+				(= seconds 3)
+			)
 			(4
 				(antwerp cycleSpeed: 0 moveSpeed: 0)
 				(client setScript: antwerpFollow)
@@ -1068,7 +1079,8 @@
 				(EgoDead 84 40
 					#icon vEgoClimbing 2 5
 					#title {Your figure remains still and silent.}
-					;The old ticker just couldn't keep going.  Maybe you shouldn't have missed the annual visit with your local Healer.
+					;The old ticker just couldn't keep going. 
+					; Maybe you shouldn't have missed the annual visit with your local Healer.
 				)
 			)
 		)
@@ -1076,8 +1088,6 @@
 )
 
 (instance fightAntwerp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1262,8 +1272,10 @@
 			)
 			(23
 				(NormalEgo)
-				(if (not (Btst TROLL_DOOR_OPEN)) (ego illegalBits: (| cWHITE cBROWN)))
-				(Bset ANTWERP_SKY)
+				(if (not (Btst fTrollDoorOpen))
+					(ego illegalBits: (| cWHITE cBROWN))
+				)
+				(Bset fAntwerpInSky)
 				(HandsOn)
 				(TimePrint 3 84 43)
 				;"Holy Mackerel!"
@@ -1296,8 +1308,6 @@
 )
 
 (instance sMoveRock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1324,8 +1334,8 @@
 				(ChangeGait MOVE_WALK 0)
 				(ego illegalBits: cWHITE)
 				(HandsOn)
-				(SolvePuzzle POINTS_FINDSECRETENTRANCE 10)
-				(Bset TROLL_DOOR_OPEN)
+				(SolvePuzzle f84FindTrollCave 10)
+				(Bset fTrollDoorOpen)
 				(rock dispose:)
 			)
 		)
@@ -1333,8 +1343,6 @@
 )
 
 (instance sMagicRock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1348,11 +1356,12 @@
 				)
 			)
 			(1
-				(Bset TROLL_DOOR_UNLOCKED)
-				(ChangeGait MOVE_WALK 0)
+				(Bset fTrollDoorUnlocked)
+				(ChangeGait MOVE_WALK FALSE)
 				(if (< [egoStats OPEN] 50)
 					(HighPrint 84 44)
-					;Your spell has unlocked the lock on the rock, but it is not yet powerful enough to open the rock door.
+					;Your spell has unlocked the lock on the rock,
+					; but it is not yet powerful enough to open the rock door.
 					(HandsOn)
 					(NormalEgo)
 					(ego illegalBits: (| cWHITE cBROWN))
@@ -1367,8 +1376,8 @@
 				)
 			)
 			(2
-				(SolvePuzzle POINTS_FINDSECRETENTRANCE 10)
-				(Bset TROLL_DOOR_OPEN)
+				(SolvePuzzle f84FindTrollCave 10)
+				(Bset fTrollDoorOpen)
 				(rock dispose:)
 				(NormalEgo)
 				(HandsOn)
@@ -1378,8 +1387,6 @@
 )
 
 (instance bareHandAttack of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1391,13 +1398,11 @@
 )
 
 (instance antwerpAway of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= antwerpOnScreen FALSE)
-				(Bset ANTWERP_SKY)
+				(Bset fAntwerpInSky)
 				(antwerp setCycle: EndLoop self)
 			)
 			(1
@@ -1415,7 +1420,7 @@
 			(2
 				(HighPrint 84 45)
 				;You seem to have scared the Antwerp with your behavior.
-				)
+			)
 		)
 	)
 )

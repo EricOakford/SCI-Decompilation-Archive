@@ -42,13 +42,11 @@
 		(7
 			(HighPrint 228 6)
 			;A person COULD get used to this.
-			)
+		)
 	)
 )
 
 (instance goTo2 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 228)
@@ -75,7 +73,7 @@
 			(3
 				(HandsOn)
 				(ego illegalBits: cWHITE)
-				(Bclr FLAG_263)
+				(Bclr fGoThruDoorway)
 				(client setScript: 0)
 			)
 		)
@@ -83,8 +81,6 @@
 )
 
 (instance goTo6 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 228)
@@ -114,8 +110,8 @@
 			)
 			(4
 				(HandsOn)
-				(User canInput: 1)
-				(Bclr FLAG_263)
+				(User canInput: TRUE)
+				(Bclr fGoThruDoorway)
 				(client setScript: 0)
 			)
 		)
@@ -123,8 +119,6 @@
 )
 
 (instance goTo12 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 228)
@@ -165,8 +159,8 @@
 			)
 			(5
 				(HandsOn)
-				(Bset JESTER_NO_MORE_TALKING)
-				(Bclr FLAG_263)
+				(Bset fNoMoreTalking)
+				(Bclr fGoThruDoorway)
 				(client setScript: 0)
 			)
 		)
@@ -174,8 +168,6 @@
 )
 
 (instance goTo15 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 228)
@@ -195,10 +187,12 @@
 				(ego posn: 325 129 setMotion: MoveTo 281 129 self)
 			)
 			(2
-				(if (Btst PULLED_CHAIN) (Bset JESTER_NO_MORE_TALKING))
+				(if (Btst fPulledChain)
+					(Bset fNoMoreTalking)
+				)
 				(NormalEgo)
 				(HandsOn)
-				(Bclr FLAG_263)
+				(Bclr fGoThruDoorway)
 				(client setScript: 0)
 			)
 		)

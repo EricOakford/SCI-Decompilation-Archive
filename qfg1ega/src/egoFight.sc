@@ -9,8 +9,6 @@
 )
 
 (instance egoFight of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(or
@@ -38,8 +36,8 @@
 			)
 			(1
 				(client
-					canFight: 1
-					action: 0
+					canFight: TRUE
+					action: ActNone
 					cycleSpeed: 0
 					moveSpeed: 0
 					stopUpd:
@@ -92,7 +90,7 @@
 					((Said 'kill,chop')
 						(HighPrint 216 5)
 						;You're not fighting, you're PRACTICING!
-						)
+					)
 					(else
 						(HighPrint 216 6)
 						;Why would you want to do that?

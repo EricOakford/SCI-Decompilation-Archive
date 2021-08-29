@@ -30,7 +30,9 @@
 	
 	(method (getHurt damage)
 		(super getHurt: damage)
-		(if (> damage 0) (Bset fMonsterDazzled))
+		(if (> damage 0)
+			(Bset fMonsterDazzled)
+		)
 		(self setMonsterHP: health)
 	)
 	
@@ -42,8 +44,7 @@
 		(= stamina (self calcStamina:))
 		(= mana (self calcMana:))
 		(= monsterTitle
-			(Display
-				214 1
+			(Display 214 1
 				p_width 120
 				p_at 228 13
 				p_mode teJustLeft

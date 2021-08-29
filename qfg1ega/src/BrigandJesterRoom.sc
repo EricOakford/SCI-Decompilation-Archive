@@ -1037,7 +1037,7 @@
 						)
 					((Said 'nap')
 						(EgoDead 96 79
-							#icon vDeathScenes 0 0
+							#icon vIcons 0 0
 							#title {He who hesitates...}
 						)
 							;You curl up for a nice little nap. The brigands break down the door. You wake up dead.

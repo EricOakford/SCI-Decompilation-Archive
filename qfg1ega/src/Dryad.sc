@@ -123,7 +123,7 @@
 
 (instance seed of Actor
 	(properties
-		view vSpittingSpirea
+		view rSpittingSpirea
 	)
 )
 
@@ -146,12 +146,12 @@
 		(if (not Night)
 			(LoadMany VIEW vDryad vEgoKilledByDryad)
 			(if (or (Btst fKilledFlower1) (Btst fKilledFlower2) (Btst fKilledFlower3))
-				(Load VIEW vEgoCatchSeed)
+				(Load VIEW rSpittingSpirea)
 				(LoadMany SOUND (SoundFX 18) (SoundFX 27))
 			)
 		else
 			(Load SCRIPT 7)
-			(Load VIEW vEgoCatchSeed)
+			(Load VIEW rSpittingSpirea)
 		)
 		(LoadMany VIEW vDryadRoom vEgoGetFaeryDust vEgoThrowing)
 		(LoadMany SOUND 97 98)
@@ -978,7 +978,7 @@
 			)
 			(4
 				(ego
-					view: vEgoCatchSeed
+					view: rSpittingSpirea
 					setLoop: 1
 					cel: 0
 					posn: (+ (ego x?) 6) (+ (ego y?) 5)
@@ -1106,7 +1106,7 @@
 				(= currentPalette 1)
 				(curRoom drawPic: 76 IRISIN)
 				(bush ignoreActors: init: stopUpd: addToPic:)
-				(ego view: vEgoCatchSeed setLoop: 6 setCel: 0)
+				(ego view: rSpittingSpirea setLoop: 6 setCel: 0)
 				(= seconds 3)
 			)
 			(2

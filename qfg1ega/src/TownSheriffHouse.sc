@@ -25,69 +25,51 @@
 
 (local
 	local0
-	timesCrackedSafe
+	safeCrackSuccess	;this should be a global variable
 	local2
 	egoUpstairs
 	vaseOutOfWay
-	uncoveredSafe
-	crackedSafe
+	safeRevealed
+	safeOpen
 	local7
 )
 (procedure (BreakInPrint)
-	(if egoUpstairs (CenterPrint &rest) else (HighPrint &rest))
+	(if egoUpstairs
+		(CenterPrint &rest)
+	else
+		(HighPrint &rest)
+	)
 )
 
 (procedure (SearchDrawer)
-	(Bset SEARCHED_SHERIFF_DRAWER)
+	(Bset fSearchedDrawer)
 	(ego get: iSilver 3)
 	(BreakInPrint 321 0)
 	;In the desk drawers, you find an assortment of mostly worthless objects, but you find three silvers, which you take.
-	(SolvePuzzle POINTS_SEARCHSHERIFFDRAWER 1 THIEF)
+	(SolvePuzzle f321SearchDrawer 1 THIEF)
 )
 
-(instance otto of Actor
-	(properties)
-)
+(instance otto of Actor)
 
-(instance sheriff of Actor
-	(properties)
-)
+(instance sheriff of Actor)
 
-(instance vase of Actor
-	(properties)
-)
+(instance vase of Actor)
 
-(instance leftDoor of Prop
-	(properties)
-)
+(instance leftDoor of Prop)
 
-(instance rightDoor of Prop
-	(properties)
-)
+(instance rightDoor of Prop)
 
-(instance bottomDoor of Prop
-	(properties)
-)
+(instance bottomDoor of Prop)
 
-(instance safeDoor of View
-	(properties)
-)
+(instance safeDoor of View)
 
-(instance portrait of View
-	(properties)
-)
+(instance portrait of View)
 
-(instance candelabra of View
-	(properties)
-)
+(instance candelabra of View)
 
-(instance chair of View
-	(properties)
-)
+(instance chair of View)
 
-(instance musicBox of View
-	(properties)
-)
+(instance musicBox of View)
 
 (instance rm321 of Room
 	(properties
@@ -106,7 +88,7 @@
 			(SoundFX 35)
 		)
 		(super init:)
-		(SolvePuzzle POINTS_ENTERSHERIFFHOUSE 5 THIEF)
+		(SolvePuzzle f321EnterSheriffHouse 5 THIEF)
 		(mouseDownHandler add: self)
 		(self
 			setFeatures:
@@ -132,9 +114,15 @@
 		(sneakMusic init:)
 		(miscMusic init:)
 		(= deathMusic (SoundFX 52))
-		(if (Btst CRACKED_SHERIFF_SAFE) (= crackedSafe TRUE))
-		(if (Btst UNCOVERED_SHERIFF_SAFE) (= uncoveredSafe TRUE))
-		(if (Btst STOLE_SHERIFF_VASE) (= vaseOutOfWay TRUE))
+		(if (Btst fCrackedSafe)
+			(= safeOpen TRUE)
+		)
+		(if (Btst fUncoveredSafe)
+			(= safeRevealed TRUE)
+		)
+		(if (Btst fStoleVase)
+			(= vaseOutOfWay TRUE)
+		)
 		(NormalEgo)
 		(ego
 			posn: 163 188
@@ -188,19 +176,19 @@
 		(safeDoor
 			view: vSheriffHouse
 			loop: 0
-			cel: (if (Btst CRACKED_SHERIFF_SAFE) 1 else 0)
+			cel: (if (Btst fCrackedSafe) 1 else 0)
 			posn: 271 106
 			init:
 			stopUpd:
 		)
-		(if (not (Btst STOLE_SHERIFF_VASE))
+		(if (not (Btst fStoleVase))
 			(vase
 				view: vSheriffHouse
 				loop: 5
 				cel: 0
 				illegalBits: 0
 				ignoreActors:
-				posn: (if (Btst MOVED_SHERIFF_VASE) 247 else 262) (if (Btst MOVED_SHERIFF_VASE) 136 else 119)
+				posn: (if (Btst fMovedVase) 247 else 262) (if (Btst fMovedVase) 136 else 119)
 				setPri: 10
 				init:
 				stopUpd:
@@ -210,11 +198,11 @@
 			view: vSheriffHouse
 			loop: 4
 			cel: 0
-			posn: 277 (if (not (Btst UNCOVERED_SHERIFF_SAFE)) 121 else 109)
+			posn: 277 (if (not (Btst fUncoveredSafe)) 121 else 109)
 			init:
 			stopUpd:
 		)
-		(if (not (Btst STOLE_SHERIFF_CANDELABRA))
+		(if (not (Btst fStoleCandelabra))
 			(candelabra
 				view: vSheriffHouse
 				loop: 4
@@ -234,7 +222,7 @@
 			stopUpd:
 			addToPic:
 		)
-		(if (not (Btst STOLE_OTTO_MUSIC_BOX))
+		(if (not (Btst fStoleMusicBox))
 			(musicBox
 				view: vSheriffHouse
 				loop: 4
@@ -250,7 +238,7 @@
 	)
 	
 	(method (doit)
-		(if (and (== (ego edgeHit?) SOUTH) (not (Btst OTTO_BACK_TO_BED)))
+		(if (and (== (ego edgeHit?) SOUTH) (not (Btst fOttoAwakened)))
 			(= daySheriffBreakIn Day)
 			(curRoom newRoom: 320)
 		)
@@ -261,9 +249,9 @@
 					(< (ego y?) 92)
 					(== (ego loop?) 0)
 					(not egoUpstairs)
-					(not (Btst SHERIFF_AWAKENED))
+					(not (Btst fWokeUpSheriff))
 				)
-				(= egoUpstairs 1)
+				(= egoUpstairs TRUE)
 				(ego setScript: (ScriptID 288 1))
 			)
 			(
@@ -272,9 +260,9 @@
 					(< (ego x?) 87)
 					(< (ego y?) 62)
 					(== (ego loop?) 1)
-					(not (Btst SHERIFF_AWAKENED))
+					(not (Btst fWokeUpSheriff))
 				)
-				(= egoUpstairs 0)
+				(= egoUpstairs FALSE)
 				(ego setScript: (ScriptID 288 2))
 			)
 		)
@@ -282,7 +270,7 @@
 	)
 	
 	(method (dispose)
-		(Bclr OTTO_BACK_TO_BED)
+		(Bclr fOttoAwakened)
 		(Bset fBeenIn321)
 		(= deathMusic (SoundFX 26))
 		(super dispose:)
@@ -294,12 +282,16 @@
 				(cond 
 					((Said 'search,open,(look<in)/desk,drawer')
 						(cond 
-							((Btst SEARCHED_SHERIFF_DRAWER)
+							((Btst fSearchedDrawer)
 								(BreakInPrint 321 1)
 								;You've looked in there already.
-								)
-							((ego inRect: 167 127 196 132) (SearchDrawer))
-							(else (NotClose))
+							)
+							((ego inRect: 167 127 196 132)
+								(SearchDrawer)
+							)
+							(else
+								(NotClose)
+							)
 						)
 					)
 					((Said 'look,search>')
@@ -309,64 +301,64 @@
 									((Btst fBeenIn321)
 										(BreakInPrint 321 2)
 										;The room is dark and still.
-										)
+									)
 									(
 										(or
-											(not (Btst STOLE_SHERIFF_CANDELABRA))
-											(not (Btst STOLE_SHERIFF_VASE))
-											(not (Btst STOLE_OTTO_MUSIC_BOX))
+											(not (Btst fStoleCandelabra))
+											(not (Btst fStoleVase))
+											(not (Btst fStoleMusicBox))
 										)
 										(BreakInPrint 321 3)
 										;You see items which may be interesting and probably valuable.
-										(if (not (Btst STOLE_SHERIFF_CANDELABRA))
+										(if (not (Btst fStoleCandelabra))
 											(BreakInPrint 321 4)
 											;The candelabra looks like it is made of gold.
-											)
-										(if (not (Btst STOLE_SHERIFF_VASE))
+										)
+										(if (not (Btst fStoleVase))
 											(BreakInPrint 321 5)
 											;The vase on the mantle might be worth taking.
-											)
-										(if (not (Btst STOLE_OTTO_MUSIC_BOX))
+										)
+										(if (not (Btst fStoleMusicBox))
 											(BreakInPrint 321 6)
 											;There is also an odd little box on the table.
-											)
+										)
 									)
 									(else
 										(BreakInPrint 321 2)
 										;The room is dark and still.
-										)
+									)
 								)
 							)
 							((Said '[<up][/ceiling]')
-							(BreakInPrint 321 7)
-							;How anyone manages to dust a CEILING is beyond you.
+								(BreakInPrint 321 7)
+								;How anyone manages to dust a CEILING is beyond you.
 							)
 							((Said '[<down][/floor,carpet]')
 								(BreakInPrint 321 8)
 								;The floor is covered with expensive wall-to-wall carpeting not common in this time period.
-								)
+							)
 							((Said '/wall')
 								(BreakInPrint 321 9)
 								;The walls look like they've been recently painted.
-									)
+							)
 							((Said '/desk')
 								(BreakInPrint 321 10)
 								;Looks like solid oak.
-								)
+							)
 							((Said '/plant')
 								(HighPrint 321 11)
 								;Somebody has a green thumb.
-								)
+							)
 							((Said '/dust')
 								(BreakInPrint 321 12)
 								;There isn't any.
-								)
+							)
 							((Said '/fire,chimney,ember,chandelier')
 								(BreakInPrint 321 13)
 								;The glowing embers from the fire cast a dim light in the room.
-								)
+							)
 							((Said '/table')
-								(if (Btst STOLE_OTTO_MUSIC_BOX)
+								(if (Btst fStoleMusicBox)
 									(BreakInPrint 321 14)
 									;There once was a music box on the table, but you took it.
 								else
@@ -380,10 +372,10 @@
 								(if (not vaseOutOfWay)
 									(BreakInPrint 321 17)
 									;A vase sits on the mantle.
-									)
+								)
 							)
 							((Said '/painting,portrait')
-								(if uncoveredSafe
+								(if safeRevealed
 									(BreakInPrint 321 18)
 									;Over the safe is a charming portrait of the Sheriff and his wife.
 								else
@@ -393,49 +385,54 @@
 							)
 							((Said '/vase,bottle')
 								(cond 
-									((ego has: iVase) (event claimed: FALSE))
-									((Btst STOLE_SHERIFF_VASE)
+									((ego has: iVase)
+										(event claimed: FALSE)
+									)
+									((Btst fStoleVase)
 										(HighPrint 321 20)
 										;You took it.  Remember?
-										)
+									)
 									((< (ego distanceTo: vase) 50)
 										(BreakInPrint 321 21)
-										;The vase is carved from alabaster and could be worth some money, although it would take up a lot of space in your pack.
-										)
+										;The vase is carved from alabaster and could be worth some money,
+										; although it would take up a lot of space in your pack.
+									)
 									(else
 										(BreakInPrint 321 22)
 										;Get closer for a good look.
-										)
+									)
 								)
 							)
 							((Said '/box')
 								(cond 
 									((ego has: iMusicBox) (event claimed: FALSE))
-									((Btst STOLE_OTTO_MUSIC_BOX)
+									((Btst fStoleMusicBox)
 										(HighPrint 321 20)
 										;You took it.  Remember?
-										)
+									)
 									((< (ego distanceTo: musicBox) 50)
 										(BreakInPrint 321 23)
 										;It is a small, beautifully decorated metal box with a hinged lid.
-										)
+									)
 									(else
 										(BreakInPrint 321 22)
 										;Get closer for a good look.
-										)
+									)
 								)
 							)
 							((Said '/candle,candelabra,(stick<candle)')
 								(cond 
-									((ego has: iCandelabra) (event claimed: FALSE))
-									((Btst STOLE_SHERIFF_CANDELABRA)
+									((ego has: iCandelabra)
+										(event claimed: FALSE)
+									)
+									((Btst fStoleCandelabra)
 										(HighPrint 321 20)
 										;You took it.  Remember?
-										)
+									)
 									((< (ego distanceTo: candelabra) 70)
 										(BreakInPrint 321 24)
 										;The candelabra looks like it is made of solid gold.
-										)
+									)
 									(else
 										(BreakInPrint 321 22)
 										;Get closer for a good look.
@@ -445,61 +442,70 @@
 							((Said '/alm,silver')
 								(BreakInPrint 321 25)
 								;Most silvers look alike, and they are all the same weight.
-								)
+							)
 							((Said '/safe')
 								(cond 
-									((not uncoveredSafe)
+									((not safeRevealed)
 										(BreakInPrint 321 26)
 										;Safe? You don't see a safe.
-										)
-									((not crackedSafe)
+									)
+									((not safeOpen)
 										(BreakInPrint 321 27)
 										;It looks very sturdy, indeed.
-										)
+									)
 									((> (ego distanceTo: safeDoor) 50)
 										(BreakInPrint 321 28)
 										;Get closer if you want to look into the safe.
-										)
-									((Btst SEARCHED_SHERIFF_SAFE)
+									)
+									((Btst fSearchedSafe)
 										(BreakInPrint 321 29)
 										;There is an empty coin bag in the safe.
 										)
 									(else
 										(BreakInPrint 321 30)
 										;You see a bag of coins.
-										)
+									)
 								)
 							)
 						)
 					)
 					((Said 'move,lift,straighten/painting,portrait')
 						(cond 
-							(uncoveredSafe
+							(safeRevealed
 								(BreakInPrint 321 31)
 								;You have already done that.
-								)
-							((> (ego distanceTo: portrait) 45) (NotClose))
-							((not vaseOutOfWay) (vase setScript: (ScriptID 288 0)))
+							)
+							((> (ego distanceTo: portrait) 45)
+								(NotClose)
+							)
+							((not vaseOutOfWay)
+								(vase setScript: (ScriptID 288 0))
+							)
 							(else
-								(Bset UNCOVERED_SHERIFF_SAFE)
-								(= uncoveredSafe TRUE)
-								(SolvePuzzle POINTS_MOVEPAINTING 1 THIEF)
+								(Bset fUncoveredSafe)
+								(= safeRevealed TRUE)
+								(SolvePuzzle f321MovePainting 1 THIEF)
 								(self setScript: (ScriptID 288 4))
 							)
 						)
 					)
 					((Said 'lower,replace/painting,portrait')
 						(cond 
-							(crackedSafe
+							(safeOpen
 								(BreakInPrint 321 32)
 								;You'd better shut the safe, first.
-								)
-							((not uncoveredSafe)
+							)
+							((not safeRevealed)
 								(BreakInPrint 321 33)
 								;There is no need to do that.
-								)
-							((> (ego distanceTo: portrait) 50) (NotClose))
-							(else (= uncoveredSafe FALSE) (self setScript: (ScriptID 288 5)))
+							)
+							((> (ego distanceTo: portrait) 50)
+								(NotClose)
+							)
+							(else
+								(= safeRevealed FALSE)
+								(self setScript: (ScriptID 288 5))
+							)
 						)
 					)
 					(
@@ -512,16 +518,20 @@
 							((ego has: iVase)
 								(BreakInPrint 321 34)
 								;It's already in your pack.
-								)
-							((Btst STOLE_SHERIFF_VASE)
+							)
+							((Btst fStoleVase)
 								(HighPrint 321 20)
 								;You took it.  Remember?
-								)
-							((> (ego distanceTo: vase) 40) (NotClose))
-							(vaseOutOfWay (AlreadyDone))
+							)
+							((> (ego distanceTo: vase) 40)
+								(NotClose)
+							)
+							(vaseOutOfWay
+								(AlreadyDone)
+							)
 							(else
 								(vase posn: 247 136)
-								(Bset MOVED_SHERIFF_VASE)
+								(Bset fMovedVase)
 								(= vaseOutOfWay TRUE)
 								(BreakInPrint 321 35)
 								;You take the vase carefully from the mantle and place it gently on the floor.
@@ -537,20 +547,22 @@
 							((ego has: iVase)
 								(BreakInPrint 321 34)
 								;It's already in your pack.
-								)
-							((Btst STOLE_SHERIFF_VASE)
+							)
+							((Btst fStoleVase)
 								(HighPrint 321 20)
 								;You took it.  Remember?
-								)
-							((> (ego distanceTo: vase) 40) (NotClose))
+							)
+							((> (ego distanceTo: vase) 40)
+								(NotClose)
+							)
 							((not vaseOutOfWay)
 								(BreakInPrint 321 36)
 								;The vase is on the mantle.
-								)
+							)
 							(else
 								(vase posn: 262 119)
 								(= vaseOutOfWay FALSE)
-								(Bclr MOVED_SHERIFF_VASE)
+								(Bclr fMovedVase)
 								(BreakInPrint 321 37)
 								;You place the vase back on the mantle.
 							)
@@ -560,51 +572,61 @@
 						(cond 
 							((Said '/vase,bottle')
 								(cond 
-									((Btst STOLE_SHERIFF_VASE) (AlreadyDone))
-									((> (ego distanceTo: vase) 35) (NotClose))
+									((Btst fStoleVase)
+										(AlreadyDone)
+									)
+									((> (ego distanceTo: vase) 35)
+										(NotClose)
+									)
 									(else
-										(Bset STOLE_SHERIFF_VASE)
+										(Bset fStoleVase)
 										(ego get: iVase)
 										(= vaseOutOfWay TRUE)
 										(vase posn: 0 1000 stopUpd:)
 										(BreakInPrint 321 38)
 										;You place the vase carefully in your pack beneath your cape.
-										(SolvePuzzle POINTS_TAKEVASE 1 THIEF)
+										(SolvePuzzle f321StealVase 1 THIEF)
 									)
 								)
 							)
 							((Said '/candle,candelabra,(stick<candle)')
 								(cond 
-									((Btst STOLE_SHERIFF_CANDELABRA) (AlreadyDone))
-									((> (ego distanceTo: candelabra) 55) (NotClose))
+									((Btst fStoleCandelabra)
+										(AlreadyDone)
+									)
+									((> (ego distanceTo: candelabra) 55)
+										(NotClose)
+									)
 									(else
-										(Bset STOLE_SHERIFF_CANDELABRA)
+										(Bset fStoleCandelabra)
 										(ego get: iCandelabra)
 										(candelabra posn: 0 1000 stopUpd:)
 										(BreakInPrint 321 39)
 										;You place the candelabra carefully in your pack beneath your cape.
-										(SolvePuzzle POINTS_TAKECANDELABRA 1 THIEF)
+										(SolvePuzzle f321StealCandelabra 1 THIEF)
 									)
 								)
 							)
 							((Said '/box')
 								(cond 
-									((Btst STOLE_OTTO_MUSIC_BOX) (AlreadyDone))
+									((Btst fStoleMusicBox)
+										(AlreadyDone)
+									)
 									((> (ego distanceTo: musicBox) 35) (NotClose))
 									(else
-										(Bset STOLE_OTTO_MUSIC_BOX)
+										(Bset fStoleMusicBox)
 										(ego get: iMusicBox)
 										(musicBox posn: 0 1000 stopUpd:)
-										(if (Btst OPEN_MUSIC_BOX)
+										(if (Btst fOpenMusicBox)
 											(miscMusic stop:)
 											(BreakInPrint 321 40)
 											;You quickly close the box and toss it into your pack.
-											(Bclr OPEN_MUSIC_BOX)
+											(Bclr fOpenMusicBox)
 										else
 											(BreakInPrint 321 41)
 											;You quickly toss the box into your pack.
 										)
-										(SolvePuzzle POINTS_TAKEMUSICBOX 1 THIEF)
+										(SolvePuzzle f321StealMusicBox 1 THIEF)
 									)
 								)
 							)
@@ -619,28 +641,32 @@
 							((Said '/alm,silver,loot,bag')
 								(cond 
 									((ego inRect: 167 127 196 132)
-										(if (Btst SEARCHED_SHERIFF_DRAWER)
+										(if (Btst fSearchedDrawer)
 											(AlreadyDone)
 										else
 											(SearchDrawer)
 										)
 									)
-									((Btst SEARCHED_SHERIFF_SAFE) (AlreadyDone))
-									((not uncoveredSafe)
+									((Btst fSearchedSafe)
+										(AlreadyDone)
+									)
+									((not safeRevealed)
 										(BreakInPrint 321 43)
 										;Nothing like that is visible to you.
-										)
-									((not crackedSafe)
+									)
+									((not safeOpen)
 										(BreakInPrint 321 44)
 										;There might be something like that inside the wall safe.
-										)
-									((> (ego distanceTo: safeDoor) 50) (NotClose))
+									)
+									((> (ego distanceTo: safeDoor) 50)
+										(NotClose)
+									)
 									(else
-										(Bset SEARCHED_SHERIFF_SAFE)
+										(Bset fSearchedSafe)
 										(ego get: iSilver 50)
 										(BreakInPrint 321 45)
 										;You take the fifty silvers, and put the empty bag back in the safe.
-										(SolvePuzzle POINTS_TAKESAFEMONEY 1 THIEF)
+										(SolvePuzzle f321LootSafe 1 THIEF)
 									)
 								)
 							)
@@ -648,69 +674,87 @@
 					)
 					((Said 'open/safe')
 						(cond 
-							(crackedSafe
+							(safeOpen
 								(BreakInPrint 321 46)
 								;The safe is already open.
-								)
-							((not uncoveredSafe)
+							)
+							((not safeRevealed)
 								(BreakInPrint 321 26)
 								;Safe? You don't see a safe.
-								)
-							((> (ego distanceTo: safeDoor) 50) (NotClose))
+							)
+							((> (ego distanceTo: safeDoor) 50)
+								(NotClose)
+							)
 							(else
 								(BreakInPrint 321 47)
 								;The safe is securely locked.
-								)
+							)
 						)
 					)
 					((Said 'unlock,lockpick,crack/safe,hasp')
 						(cond 
-							((not uncoveredSafe)
+							((not safeRevealed)
 								(BreakInPrint 321 48)
 								;Where?
-								)
-							((> (ego distanceTo: safeDoor) 50) (NotClose))
-							(crackedSafe
+							)
+							((> (ego distanceTo: safeDoor) 50)
+								(NotClose)
+							)
+							(safeOpen
 								(BreakInPrint 321 49)
 								;What for? It's open!
-								)
-							((== timesCrackedSafe 2) (ego setScript: (ScriptID 289 0)))
+							)
+							((== safeCrackSuccess 2)
+								(ego setScript: (ScriptID 289 0)))
 							((TrySkill PICK 0 (- lockPickBonus 20))
 								(miscMusic number: (SoundFX 35) loop: 1 play:)
 								(HighPrint 321 50)
 								;Ah, got it!
-								(++ timesCrackedSafe)
+								(++ safeCrackSuccess)
 								(safeDoor setCel: 1)
-								(Bset CRACKED_SHERIFF_SAFE)
-								(= crackedSafe TRUE)
-								(SolvePuzzle POINTS_CRACKSAFE 1 THIEF)
+								(Bset fCrackedSafe)
+								(= safeOpen TRUE)
+								(SolvePuzzle f321CrackSafe 1 THIEF)
 							)
 							(else
 								(HighPrint 321 51)
 								;Cracking safes looked a lot easier in the instruction book.
-								)
+							)
 						)
 					)
 					((Said 'close/safe')
 						(cond 
-							((not uncoveredSafe)
+							((not safeRevealed)
 								(BreakInPrint 321 26)
 								;Safe? You don't see a safe.
-								)
-							((not crackedSafe)
+							)
+							((not safeOpen)
 								(BreakInPrint 321 52)
 								;It's not open.
-								)
-							((> (ego distanceTo: safeDoor) 50) (NotClose))
-							(else (Bclr CRACKED_SHERIFF_SAFE) (= crackedSafe FALSE) (safeDoor setCel: 0))
+							)
+							((> (ego distanceTo: safeDoor) 50)
+								(NotClose)
+							)
+							(else (Bclr fCrackedSafe)
+								(= safeOpen FALSE)
+								(safeDoor setCel: 0)
+							)
 						)
 					)
 					((Said 'open/door')
 						(cond 
-							((== (ego onControl: origin) cYELLOW) (leftDoor setScript: (ScriptID 290 1)))
-							((== (ego onControl: origin) cLMAGENTA) (rightDoor setScript: (ScriptID 290 2)))
-							((== (ego onControl: origin) cLRED) (bottomDoor setScript: (ScriptID 290 0)))
-							(else (NotClose))
+							((== (ego onControl: origin) cYELLOW)
+								(leftDoor setScript: (ScriptID 290 1))
+							)
+							((== (ego onControl: origin) cLMAGENTA)
+								(rightDoor setScript: (ScriptID 290 2))
+							)
+							((== (ego onControl: origin) cLRED)
+								(bottomDoor setScript: (ScriptID 290 0))
+							)
+							(else
+								(NotClose)
+							)
 						)
 					)
 					((Said 'lift,open/box,lid')
@@ -718,17 +762,21 @@
 							((ego has: iMusicBox)
 								(BreakInPrint 321 53)
 								;The little box is safely tucked away in your pack. You can open it up later.
-								)
-							((Btst STOLE_OTTO_MUSIC_BOX)
+							)
+							((Btst fStoleMusicBox)
 								(HighPrint 321 20)
 								;You took it.  Remember?
 								)
-							((> (ego distanceTo: musicBox) 35) (NotClose))
-							((Btst OTTO_CLOSES_MUSIC_BOX)
+							((> (ego distanceTo: musicBox) 35)
+								(NotClose)
+							)
+							((Btst fOttoClosedMusicBox)
 								(BreakInPrint 321 54)
 								;Oh, no! You won't do THAT again!
-								)
-							(else (ego setScript: (ScriptID 289 1)))
+							)
+							(else
+								(ego setScript: (ScriptID 289 1))
+							)
 						)
 					)
 					((Said 'close,lower/box,lid')
@@ -736,23 +784,25 @@
 							((ego has: iMusicBox)
 								(BreakInPrint 321 55)
 								;The little box is safely tucked away in your pack. It is already closed.
-								)
-							((Btst STOLE_OTTO_MUSIC_BOX)
+							)
+							((Btst fStoleMusicBox)
 								(HighPrint 321 20)
 								;You took it.  Remember?
 								)
-							((> (ego distanceTo: musicBox) 35) (NotClose))
-							((Btst OPEN_MUSIC_BOX)
+							((> (ego distanceTo: musicBox) 35)
+								(NotClose)
+							)
+							((Btst fOpenMusicBox)
 								(miscMusic stop:)
 								(BreakInPrint 321 56)
 								;You quickly shut the lid on the music box!
-								(Bclr OPEN_MUSIC_BOX)
+								(Bclr fOpenMusicBox)
 								(musicBox setCel: 3)
 							)
 							(else
 								(BreakInPrint 321 57)
 								;It's already closed.
-								)
+							)
 						)
 					)
 					((Said 'listen[/!*,door,snore]')
@@ -760,19 +810,19 @@
 							((== (ego onControl: origin) cYELLOW)
 								(BreakInPrint 321 58)
 								;There is some fairly loud snoring going on in this room. You hear: "Brckawwwww...zup-zup-zup-zup-zzzzz."
-								)
+							)
 							((== (ego onControl: origin) cLMAGENTA)
 								(BreakInPrint 321 59)
 								;Very faintly, you hear snoring: "Prrrrrt...prrrrrt...prrrrrt."
-								)
+							)
 							((== (ego onControl: origin) cLRED)
 								(BreakInPrint 321 60)
 								;Someone (or someTHING) is snoring up a storm. You hear: "Nkaawww..rspft...honk... buh-buh-buh-buh-buh-buh-phweep.
-								)
+							)
 							(else
 								(BreakInPrint 321 61)
 								;Faintly, you hear: "Nkaawww...prrrrrt... honk...zup-zup-zup-buh-buh-buh-phweep.
-								)
+							)
 						)
 					)
 					((Said 'odor>')
@@ -780,15 +830,15 @@
 							((Said '/sauerkraut,bratwurst,food')
 								(BreakInPrint 321 62)
 								;If you were a person who liked that sort of food, you'd love this smell!
-								)
+							)
 							((Said '/smoke,birch,fire')
 								(BreakInPrint 321 63)
 								;It would be more pleasant if it wasn't mixed with the odor of sauerkraut.
-								)
+							)
 							((Said '/odor')
 								(BreakInPrint 321 64)
 								;What a mixture!
-								)
+							)
 						)
 					)
 				)
@@ -825,7 +875,7 @@
 			((MouseClaimed onDesk event shiftDown)
 				(BreakInPrint 321 10)
 				;Looks like solid oak.
-				)
+			)
 		)
 	)
 )
@@ -843,16 +893,20 @@
 			((super handleEvent: event))
 			((MouseClaimed onCandles event shiftDown)
 				(cond 
-					((ego has: iCandelabra) (event claimed: FALSE))
-					((Btst STOLE_SHERIFF_CANDELABRA) (event claimed: FALSE))
+					((ego has: iCandelabra)
+						(event claimed: FALSE)
+					)
+					((Btst fStoleCandelabra)
+						(event claimed: FALSE)
+					)
 					((< (ego distanceTo: candelabra) 70)
 						(BreakInPrint 321 24)
 						;The candelabra looks like it is made of solid gold.
-						)
+					)
 					(else
 						(BreakInPrint 321 22)
 						;Get closer for a good look.
-						)
+					)
 				)
 			)
 		)
@@ -872,16 +926,21 @@
 			((super handleEvent: event))
 			((MouseClaimed onVase event shiftDown)
 				(cond 
-					((ego has: iVase) (event claimed: FALSE))
-					((Btst STOLE_SHERIFF_VASE) (event claimed: FALSE))
+					((ego has: iVase)
+						(event claimed: FALSE)
+					)
+					((Btst fStoleVase)
+						(event claimed: FALSE)
+					)
 					((< (ego distanceTo: vase) 50)
 						(BreakInPrint 321 21)
-						;The vase is carved from alabaster and could be worth some money, although it would take up a lot of space in your pack.
-						)
+						;The vase is carved from alabaster and could be worth some money,
+						; although it would take up a lot of space in your pack.
+					)
 					(else
 						(BreakInPrint 321 22)
 						;Get closer for a good look.
-						)
+					)
 				)
 			)
 		)
@@ -901,16 +960,20 @@
 			((super handleEvent: event))
 			((MouseClaimed onMusicBox event shiftDown)
 				(cond 
-					((ego has: iMusicBox) (event claimed: FALSE))
-					((Btst STOLE_OTTO_MUSIC_BOX) (event claimed: FALSE))
+					((ego has: iMusicBox)
+						(event claimed: FALSE)
+					)
+					((Btst fStoleMusicBox)
+						(event claimed: FALSE)
+					)
 					((< (ego distanceTo: musicBox) 50)
 						(BreakInPrint 321 23)
 						;It is a small, beautifully decorated metal box with a hinged lid.
-						)
+					)
 					(else
 						(BreakInPrint 321 22)
 						;Get closer for a good look.
-						)
+					)
 				)
 			)
 		)
@@ -931,7 +994,7 @@
 			((MouseClaimed onFireplace event shiftDown)
 				(BreakInPrint 321 13)
 				;The glowing embers from the fire cast a dim light in the room.
-				)
+			)
 		)
 	)
 )
@@ -948,7 +1011,7 @@
 		(cond 
 			((super handleEvent: event))
 			((MouseClaimed onPaintingDown event shiftDown)
-				(if uncoveredSafe
+				(if safeRevealed
 					(event claimed: FALSE)
 				else
 					(BreakInPrint 321 19)
@@ -971,7 +1034,7 @@
 		(cond 
 			((super handleEvent: event))
 			((MouseClaimed onPaintingUp event shiftDown)
-				(if uncoveredSafe
+				(if safeRevealed
 					(BreakInPrint 321 18)
 					;Over the safe is a charming portrait of the Sheriff and his wife.
 				else
@@ -995,23 +1058,25 @@
 			((super handleEvent: event))
 			((MouseClaimed onSafe event shiftDown)
 				(cond 
-					((not uncoveredSafe) (event claimed: FALSE))
-					((not crackedSafe)
+					((not safeRevealed)
+						(event claimed: FALSE)
+					)
+					((not safeOpen)
 						(BreakInPrint 321 27)
 						;It looks very sturdy, indeed.
-						)
+					)
 					((> (ego distanceTo: safeDoor) 50)
 						(BreakInPrint 321 28)
 						;Get closer if you want to look into the safe.
-						)
-					((Btst SEARCHED_SHERIFF_SAFE)
+					)
+					((Btst fSearchedSafe)
 						(BreakInPrint 321 29)
 						;There is an empty coin bag in the safe.
-						)
+					)
 					(else
 						(BreakInPrint 321 30)
 						;You see a bag of coins.
-						)
+					)
 				)
 			)
 		)
@@ -1031,7 +1096,7 @@
 			((MouseClaimed onPlant event shiftDown)
 				(HighPrint 321 65)
 				;It's a potted plant.
-				)
+			)
 		)
 	)
 )
@@ -1050,7 +1115,7 @@
 			((MouseClaimed onLeftDoor event shiftDown)
 				(BreakInPrint 321 58)
 				;There is some fairly loud snoring going on in this room. You hear: "Brckawwwww...zup-zup-zup-zup-zzzzz."
-				)
+			)
 		)
 	)
 )
@@ -1069,7 +1134,7 @@
 			((MouseClaimed onRightDoor event shiftDown)
 				(BreakInPrint 321 59)
 				;Very faintly, you hear snoring: "Prrrrrt...prrrrrt...prrrrrt."
-				)
+			)
 		)
 	)
 )
@@ -1088,7 +1153,7 @@
 			((MouseClaimed onBottomDoor event shiftDown)
 				(BreakInPrint 321 61)
 				;Faintly, you hear: "Nkaawww...prrrrrt... honk...zup-zup-zup-buh-buh-buh-phweep.
-				)
+			)
 		)
 	)
 )
@@ -1107,7 +1172,7 @@
 			((MouseClaimed onChair event shiftDown)
 				(HighPrint 321 66)
 				;An uncomfortable looking chair.
-				)
+			)
 		)
 	)
 )
@@ -1126,7 +1191,7 @@
 			((MouseClaimed onCouch event shiftDown)
 				(HighPrint 321 67)
 				;An overstuffed couch.
-				)
+			)
 		)
 	)
 )
@@ -1147,18 +1212,20 @@
 					((ego has: iMusicBox)
 						(HighPrint 321 68)
 						;A solid looking table.
-						)
-					((Btst STOLE_OTTO_MUSIC_BOX)
+					)
+					((Btst fStoleMusicBox)
 						(HighPrint 321 68)
 						;A solid looking table.
-						)
-					(else (event claimed: FALSE))
+					)
+					(else
+						(event claimed: FALSE)
+					)
 				)
 			)
 			((MouseClaimed onTable event shiftDown)
 				(HighPrint 321 68)
 				;A solid looking table.
-				)
+			)
 		)
 	)
 )
@@ -1177,7 +1244,7 @@
 			((MouseClaimed onStuffedChair event shiftDown)
 				(HighPrint 321 69)
 				;An overstuffed chair.
-				)
+			)
 		)
 	)
 )

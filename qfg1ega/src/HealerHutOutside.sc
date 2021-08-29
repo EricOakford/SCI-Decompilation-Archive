@@ -26,7 +26,7 @@
 )
 
 (local
-	introCued
+	fromCastleCued
 	ringCued
 	local2
 	local3
@@ -516,7 +516,7 @@
 		(switch prevRoomNum
 			(37
 				(ego setLoop: 2 setPri: 4 posn: 130 100)
-				(= introCued TRUE)
+				(= fromCastleCued TRUE)
 				(Bset fBeenIn54)
 			)
 			(53
@@ -537,8 +537,8 @@
 	(method (doit)
 		(super doit:)
 		(cond 
-			(introCued
-				(= introCued FALSE)
+			(fromCastleCued
+				(= fromCastleCued FALSE)
 				(ego setScript: (ScriptID 235 0))
 			)
 			((not (Btst fBeenIn54))
@@ -578,7 +578,7 @@
 		(if
 			(and
 				(<= (ego y?) 87)
-				(not (Btst fFlag277))
+				(not (Btst fLeavingCastle))
 				(not (ego script?))
 			)
 			(HandsOff)

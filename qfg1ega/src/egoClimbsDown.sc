@@ -10,8 +10,6 @@
 )
 
 (instance egoClimbsDown of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 275)

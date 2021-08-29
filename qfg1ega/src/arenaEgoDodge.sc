@@ -15,8 +15,6 @@
 	local3
 )
 (instance egoDodge of Script
-	(properties)
-	
 	(method (init)
 		(= local1 ((= local0 (ScriptID WARRIOR 0)) egoShield?))
 		(= local2 (local0 egoHand?))
@@ -81,9 +79,10 @@
 				(self cue:)
 			)
 			(2
-				(= egoCanFight FALSE)
+				(= egoCanFight TRUE)
 				(self dispose:)
 			)
 		)
 	)
 )
+

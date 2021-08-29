@@ -21,7 +21,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset STOP_FIGHTING_WEAPONMASTER)
+				(Bset fStopFightingMaster)
 				((ScriptID 39 1) stop:)
 				(= cycles 2)
 			)
@@ -37,10 +37,13 @@
 			)
 			(2
 				(SkillUsed LUCK tryStatWeaponMaster)
-				(if (== heroType FIGHTER) (SolvePuzzle POINTS_DEFEATWEAPONMASTER 10 FIGHTER))
+				(if (== heroType FIGHTER)
+					(SolvePuzzle f39BeatMaster 10 FIGHTER)
+				)
 				(HighPrint 223 1)
 				;"I can see now that my career must end.
-				;Anytime that I, the Weapon Master, can be beaten by a mindless, nasty little twerp such as you, it is time to take an interminable vacation."
+				;Anytime that I, the Weapon Master, can be beaten by a mindless,
+				; nasty little twerp such as you, it is time to take an interminable vacation."
 				(HighPrint 223 2)
 				;"By your leave, I hope your sword rusts and your cape fragments in the most awful manner!"
 				((ScriptID 221 0)
@@ -48,17 +51,16 @@
 					cycleSpeed: 0
 					moveSpeed: 0
 					setCycle: Walk
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(if ((ScriptID 221 0) fightLeft?) 340 else -20)
 						((ScriptID 221 0) y?)
 						self
 				)
-				(Bclr FLAG_239)
-				(Bset DEFEATED_WEAPON_MASTER)
+				(Bclr fMasterIsHere)
+				(Bset fBeatMaster)
 			)
 			(3
-				(Bclr STOP_FIGHTING_WEAPONMASTER)
+				(Bclr fStopFightingMaster)
 				(NormalEgo)
 				(ego
 					posn: ((client opponent?) x?) ((client opponent?) y?)
@@ -75,8 +77,6 @@
 )
 
 (instance tooTired of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 223)
@@ -86,7 +86,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset STOP_FIGHTING_WEAPONMASTER)
+				(Bset fStopFightingMaster)
 				((ScriptID 39 1) stop:)
 				(= cycles 2)
 			)
@@ -128,7 +128,7 @@
 					show:
 				)
 				(NormalEgo)
-				(Bclr STOP_FIGHTING_WEAPONMASTER)
+				(Bclr fStopFightingMaster)
 				(client dispose:)
 			)
 		)

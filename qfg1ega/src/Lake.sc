@@ -13,9 +13,17 @@
 )
 
 (local
-	local0
-	local1
-	local2 = [297 200 241 175 194 155 168 143 150 132 134 126 119 116]
+	ripplesCued
+	periCel
+	periXY = [
+		297 200
+		241 175
+		194 155
+		168 143
+		150 132
+		134 126
+		119 116
+		]
 )
 (instance reflection of Actor
 	(properties
@@ -64,10 +72,9 @@
 	(method (handleEvent event)
 		(cond 
 			((super handleEvent: event))
-			(
-			(or (Said '/cascade') (MouseClaimed self event shiftDown))
-			(HighPrint 87 1)
-			;You see a lovely waterfall in the distance, feeding the lake with ice cold mountain water.
+			((or (Said '/cascade') (MouseClaimed self event shiftDown))
+				(HighPrint 87 1)
+				;You see a lovely waterfall in the distance, feeding the lake with ice cold mountain water.
 			)
 		)
 	)
@@ -143,7 +150,7 @@
 				(HighPrint 87 4)
 				;It must be your imagination.  What would a submarine be doing in a fantasy adventure?
 				;Perhaps you'd rather be playing `Code Name: Iceman' -- it has a submarine.
-				)
+			)
 		)
 	)
 )
@@ -164,25 +171,25 @@
 	)
 	
 	(method (init)
-		(if (and (Btst fBeenIn87) (not (Btst LAKE_EASTER_EGG)))
+		(if (and (Btst fBeenIn87) (not (Btst fLakeEasterEgg)))
 			(Load SOUND (SoundFX 66))
 		)
 		(Load VIEW vWater) ;CI: add vEgoWaterReflection
 		(super init:)
-		(SolvePuzzle POINTS_VISITLAKE 1)
+		(SolvePuzzle f87VisitLake 1)
 		(StatusLine enable:)
 		(self setLocales: FOREST)
-		(ChangeGait MOVE_WALK 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(ego posn: 105 65 init: setMotion: MoveTo 105 75)
 		(reflection
-			ignoreActors: 1
-			ignoreHorizon: 1
+			ignoreActors: TRUE
+			ignoreHorizon: TRUE
 			setPri: 1
 			posn: (ego x?) (ego y?)
 			init:
 		)
 		(waterfall setLoop: 4 init: setCycle: Forward)
-		(if (!= howFast 0)
+		(if (!= howFast slow)
 			(ripple1
 				setLoop: 5
 				ignoreActors: TRUE
@@ -197,11 +204,13 @@
 			)
 		)
 		(cond 
-			((and (Btst fBeenIn87) (not (Btst LAKE_EASTER_EGG)))
+			((and (Btst fBeenIn87) (not (Btst fLakeEasterEgg)))
 				(periscope setLoop: 7 init: setScript: periScript)
-				(Bset LAKE_EASTER_EGG)
+				(Bset fLakeEasterEgg)
 			)
-			((!= howFast slow) (geese setLoop: 6 init: setScript: flockScript))
+			((!= howFast slow)
+				(geese setLoop: 6 init: setScript: flockScript)
+			)
 		)
 	)
 	
@@ -218,20 +227,19 @@
 					((or (Said '[use]/stealth') (Said 'run,sneak'))
 						(HighPrint 87 5)
 						;You don't want to do that.  A walking pace is more appropriate for enjoying the majestic beauty of this scene.
-						)
-					(
-					(or (Said 'swim') (Said 'enter,go/water,lake'))
-					(HighPrint 87 6)
-					;Swimming in the Spiegelsee is a bad idea.  The lake is fed from mountain run-off, and the water is ice cold.
+					)
+					((or (Said 'swim') (Said 'enter,go/water,lake'))
+						(HighPrint 87 6)
+						;Swimming in the Spiegelsee is a bad idea.  The lake is fed from mountain run-off, and the water is ice cold.
 					)
 					((Said 'drink[/water]')
 						(HighPrint 87 7)
 						;The lake water tastes pretty good, if a bit flat.
-						(if (Btst DISPEL_LEARNED_RECIPE)
+						(if (Btst fLearnedDispel)
 							(HighPrint 87 8)
 							;... but this is not the water you want.
-							)
 						)
+					)
 					(
 						(or
 							(Said 'use/bottle')
@@ -239,7 +247,10 @@
 							(Said 'get/bottle/water')
 						)
 						(if (ego has: iFlask)
-							(ego get: iWater use: iFlask 1)
+							(ego
+								get: iWater
+								use: iFlask 1
+							)
 							(Bset fHaveLakeWater)
 							(HighPrint 87 9)
 							;You fill a flask with the clear lake water.
@@ -254,11 +265,11 @@
 								(HighPrint 87 4)
 								;It must be your imagination.  What would a submarine be doing in a fantasy adventure?
 								;Perhaps you'd rather be playing `Code Name: Iceman' -- it has a submarine.
-								)
+							)
 							((or (Said '/lake,water') (Said '/[!*]'))
 								(HighPrint 87 11)
 								;It's the beautiful Spiegelsee (Mirror Lake).  You pause for some peaceful reflection.
-								)
+							)
 						)
 					)
 				)
@@ -268,18 +279,15 @@
 )
 
 (instance periScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (< local1 7)
+				(if (< periCel 7)
 					(client
-						setCel: local1
-						setMotion:
-							MoveTo
-							[local2 (+ local1 local1)]
-							[local2 (+ local1 local1 1)]
+						setCel: periCel
+						setMotion: MoveTo
+							[periXY (+ periCel periCel)]
+							[periXY (+ periCel periCel 1)]
 							self
 					)
 				else
@@ -287,11 +295,11 @@
 				)
 			)
 			(1
-				(++ local1)
+				(++ periCel)
 				(self changeState: 0)
 			)
 			(2
-				(client setCel: local1)
+				(client setCel: periCel)
 				(tromp number: (SoundFX 66) init: play:)
 				(ShakeScreen 8)
 				(= seconds 2)
@@ -312,27 +320,30 @@
 )
 
 (instance flockScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 5 15)))
+			(0
+				(= seconds (Random 5 15))
+			)
 			(1
 				(client setCycle: Forward setMotion: MoveTo 167 221 self)
 			)
-			(2 (client dispose:))
+			(2
+				(client dispose:)
+			)
 		)
 	)
 )
 
 (instance rip1Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(client posn: 300 300 setCycle: 0 stopUpd:)
-				(if (not local0) (= local0 1) (self cue:))
+				(if (not ripplesCued)
+					(= ripplesCued TRUE)
+					(self cue:)
+				)
 			)
 			(1
 				(client
@@ -347,14 +358,14 @@
 					setMotion: MoveTo (+ 200 (Random 0 24)) 189 self
 				)
 			)
-			(3 (self changeState: 0))
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance rip2Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -373,7 +384,9 @@
 					setMotion: MoveTo (+ 200 (Random 0 24)) 189 self
 				)
 			)
-			(3 (self changeState: 0))
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )

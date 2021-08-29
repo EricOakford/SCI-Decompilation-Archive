@@ -72,7 +72,7 @@
 			)
 			(1
 				(Bset KOBOLD_CHEST_KNOWN)
-				((ScriptID KOBOLD 2) setScript: (ScriptID KOBOLD 5))
+				((ScriptID rKoboldCave 2) setScript: (ScriptID rKoboldCave 5))
 				(self dispose:)
 			)
 		)

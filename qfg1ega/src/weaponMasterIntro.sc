@@ -14,9 +14,8 @@
 (local
 	local0
 )
+
 (instance intro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -57,7 +56,9 @@
 				)
 			)
 			(1
-				(if (not (Btst FLAG_243)) (Bset FLAG_243))
+				(if (not (Btst fMasterShowedOff))
+					(Bset fMasterShowedOff)
+				)
 				(self cue:)
 			)
 			(2
@@ -94,8 +95,6 @@
 )
 
 (instance intro2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -152,8 +151,6 @@
 )
 
 (instance startFight of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 222)

@@ -10,8 +10,6 @@
 )
 
 (instance egoEntersWest of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 271)
@@ -23,19 +21,20 @@
 				(ego setMotion: MoveTo 6 123 self)
 			)
 			(1
-				(if (Btst SAVED_ELSA)
+				(if (Btst fSavedElsa)
 					(EgoDead 271 0
 						#icon vEgoDefeatedMagic 0 9
 						#title {Greedy Greedy Greedy .})
-						;The brigands were waiting for you to come back.  They expected you to make another try for some of their treasure.
+						;The brigands were waiting for you to come back. 
+						; They expected you to make another try for some of their treasure.
 				else
 					((ScriptID 93 0) notify: 0)
-					(if (Btst BRIGAND_GATE_OPEN)
+					(if (Btst fBrigGateOpen)
 						(ego illegalBits: cWHITE)
 					else
 						(ego illegalBits: (| cWHITE cLRED))
 					)
-					(if (not (if (Btst fBeenIn93) else (Btst DEFEATED_MINOTAUR)))
+					(if (not (if (Btst fBeenIn93) else (Btst fMinotaurDead)))
 						(HighPrint 271 1)
 						;"Grumble Grumble Grumble.  Stupid guard duty, third time this week.  Why always me?  Grumble Grumble Grumble."
 					)

@@ -13,8 +13,6 @@
 )
 
 (instance climbIn of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 235)
@@ -24,7 +22,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset FLAG_277)
+				(Bset fLeavingCastle)
 				(ego
 					setLoop: 2
 					setPri: 4
@@ -41,7 +39,7 @@
 			)
 			(2
 				(HandsOn)
-				(Bclr FLAG_277)
+				(Bclr fLeavingCastle)
 				(NormalEgo)
 				(client setScript: 0)
 			)
@@ -50,8 +48,6 @@
 )
 
 (instance intro54 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 235)
@@ -59,7 +55,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(HighPrint 235 0)
 				;The bright smell of fresh herbs mingles with the aroma of wood smoke as you near a hut by the side of the road.
@@ -70,8 +68,6 @@
 )
 
 (instance rockHitsIt of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 235)
@@ -90,14 +86,14 @@
 				)
 				((ScriptID 54 2) setScript: (ScriptID 54 4))
 			)
-			(2 ((ScriptID 54 1) dispose:))
+			(2
+				((ScriptID 54 1) dispose:)
+			)
 		)
 	)
 )
 
 (instance youMissed of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 235)

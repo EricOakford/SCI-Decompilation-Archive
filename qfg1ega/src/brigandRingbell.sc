@@ -10,8 +10,6 @@
 )
 
 (instance ringBell of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 279)

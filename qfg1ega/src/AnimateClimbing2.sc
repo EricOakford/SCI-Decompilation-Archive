@@ -15,8 +15,6 @@
 )
 
 (instance badClimb of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 291)
@@ -26,18 +24,19 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (Btst CLIMBED_SPIREA_LEDGE))
+				(if (not (Btst fClimbedSpireaLedge))
 					(HighPrint 291 0)
 					;It looks difficult. You look around for a good place to climb.
-					)
+				)
 				(ego setMotion: MoveTo (ego x?) 50)
 				(= cycles 20)
 			)
 			(1
-				(if (not (Btst CLIMBED_SPIREA_LEDGE)) (Bset CLIMBED_SPIREA_LEDGE)
+				(if (not (Btst fClimbedSpireaLedge))
+					(Bset fClimbedSpireaLedge)
 					(HighPrint 291 1)
 					;This looks like a good place to you.
-					)
+				)
 				(ego
 					view: vEgoClimbing
 					setMotion: 0
@@ -53,7 +52,12 @@
 				(self cue:)
 			)
 			(3
-				(Print 291 2 #at -1 140 #width 300 #dispose #time 6)
+				(Print 291 2
+					#at -1 140
+					#width 300
+					#dispose
+					#time 6
+				)
 				(= seconds 6)
 				; You valiantly scrabble against the cliff wall, but it looks like your climbing skill could stand some improvement.
 			)
@@ -81,8 +85,6 @@
 )
 
 (instance goodClimb of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 291)
@@ -93,10 +95,10 @@
 			(0
 				(HandsOff)
 				(ego illegalBits: 0 setMotion: MoveTo (ego x?) 150 self)
-				(if (not (Btst CLIMBED_SPIREA_LEDGE))
+				(if (not (Btst fClimbedSpireaLedge))
 					(HighPrint 291 4)
 					;You look for an appropriate place to climb.
-					(Bset CLIMBED_SPIREA_LEDGE)
+					(Bset fClimbedSpireaLedge)
 					)
 			)
 			(1
@@ -132,8 +134,6 @@
 )
 
 (instance fallDown of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 291)
@@ -161,7 +161,8 @@
 					(EgoDead 291 5
 						#icon vEgoClimbing 2 5
 						#title {Your figure remains still and silent.})
-						;Had you been healthier, you probably could have survived that fall. In your weakened condition, however, you succumbed to your injuries.
+						;Had you been healthier, you probably could have survived that fall.
+						; In your weakened condition, however, you succumbed to your injuries.
 				else
 					(TimePrint 3 291 6)
 					;Ohhhhhhh!
@@ -175,15 +176,14 @@
 				(ego loop: 2 posn: 164 136)
 				(HandsOn)
 				(ego setScript: 0)
-				; You remain unconscious on the ground for an indeterminate amount of time. As you finally revive, you realize that you've caused yourself a fair amount of damage.
+				; You remain unconscious on the ground for an indeterminate amount of time.
+				; As you finally revive, you realize that you've caused yourself a fair amount of damage.
 			)
 		)
 	)
 )
 
 (instance catchIt of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 291)
@@ -206,11 +206,13 @@
 				(ego setLoop: 1 setPri: 4 setMotion: MoveTo 149 88 self)
 			)
 			(2
-				(if (== seedTarget 0) (= seedTarget (Random 1 3)))
+				(if (== seedTarget 0)
+					(= seedTarget (Random 1 3))
+				)
 				(= spireaStatus 3)
 				(User canInput: TRUE)
 				(ego
-					view: vEgoCatchSeed
+					view: rSpittingSpirea
 					setLoop: 5
 					setCel: 0
 					posn: 145 88

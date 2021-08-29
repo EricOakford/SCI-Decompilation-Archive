@@ -10,8 +10,6 @@
 )
 
 (instance egoEntersFromCombat of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 274)
@@ -28,7 +26,10 @@
 					setCycle: EndLoop
 				)
 			)
-			(1 (ego loop: 2) (= cycles 2))
+			(1
+				(ego loop: loopS)
+				(= cycles 2)
+			)
 			(2
 				(ego
 					view: vEgoDanceBow
@@ -45,7 +46,7 @@
 				(NormalEgo)
 				(HandsOn)
 				(ego loop: 2 posn: (+ (ego x?) 3) (- (ego y?) 8))
-				(if (Btst BRIGAND_GATE_OPEN)
+				(if (Btst fBrigGateOpen)
 					(ego illegalBits: (| cWHITE cYELLOW))
 				else
 					(ego illegalBits: (| cWHITE cYELLOW cLMAGENTA))

@@ -35,7 +35,9 @@
 	
 	(method (doit)
 		(cond 
-			(inTransit (super doit:))
+			(inTransit
+				(super doit:)
+			)
 			(escaped
 				(= monsterHealth (monster health?))
 				(= inTransit TRUE)
@@ -52,7 +54,9 @@
 				((ScriptID WARRIOR 0) dispose:)
 				(curRoom newRoom: prevRoomNum)
 			)
-			(else (super doit:))
+			(else
+				(super doit:)
+			)
 		)
 	)
 	

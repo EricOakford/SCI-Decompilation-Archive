@@ -652,7 +652,7 @@
 				(if crushedByGate
 					(EgoDead 37 18
 						#title {OH NOOOOOOO!}
-						#icon vDeathScenes 0 0) ;EO - "known" should be "know".
+						#icon vIcons 0 0) ;EO - "known" should be "know".
 						;You're not a quick learner.  Now you known why the grass grows so well around the portcullis.
 				else
 					(ego

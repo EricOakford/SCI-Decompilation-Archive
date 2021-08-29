@@ -11,10 +11,8 @@
 )
 
 (instance fallSideways of Script
-	(properties)
-	
 	(method (dispose)
-		(Bset JESTER_NO_MORE_TALKING)
+		(Bset fNoMoreTalking)
 		(super dispose:)
 		(DisposeScript 234)
 	)
@@ -23,7 +21,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (Btst PULLED_CHAIN))
+				(if (not (Btst fPulledChain))
 					((ScriptID 96 6) setCel: 3)
 					((ScriptID 96 5)
 						setLoop: 4
@@ -34,8 +32,8 @@
 				)
 				(ego
 					view: vEgoClimbing
-					setLoop: (if (Btst FLAG_258) 3 else 2)
-					x: (if (Btst FLAG_258) (- (ego x?) 10) else (+ (ego x?) 10))
+					setLoop: (if (Btst fFallingOffLedge) 3 else 2)
+					x: (if (Btst fFallingOffLedge) (- (ego x?) 10) else (+ (ego x?) 10))
 					cel: 0
 					cycleSpeed: 1
 					setCycle: CycleTo 2 1 self
@@ -64,14 +62,15 @@
 					(EgoDead 234 0
 						#title {You're the Fall Guy again}
 						#icon vEgoClimbing 2 5)
-					;You're mad as heck, and you just won't take it anymore.  As a matter of fact, you CAN'T take it anymore.
+					;You're mad as heck, and you just won't take it anymore. 
+					; As a matter of fact, you CAN'T take it anymore.
 					;Keep up your strength and health and try again.
 				else
-					(Bclr FLAG_258)
-					(Bclr OPENING_LEADER_DOOR)
-					(Bset FLAG_260)
-					(if (Btst FLAG_256)
-						(Bclr FLAG_256)
+					(Bclr fFallingOffLedge)
+					(Bclr fOpeningDoor)
+					(Bset fRollingOut)
+					(if (Btst fFallTrapdoor)
+						(Bclr fFallTrapdoor)
 						(ego setScript: (ScriptID 226 0))
 						(client setCel: 0 setScript: 0)
 					else
@@ -84,8 +83,6 @@
 )
 
 (instance trapFall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -98,7 +95,7 @@
 			)
 			(1
 				(if (== client (ScriptID 96 4))
-					(Bset FLAG_270)
+					(Bset fFallTrap4)
 					(self dispose:)
 				else
 					(client setScript: fallSideways)

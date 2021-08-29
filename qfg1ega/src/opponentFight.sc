@@ -9,8 +9,6 @@
 )
 
 (instance opponentFight of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		((ScriptID 218 0)
@@ -50,41 +48,43 @@
 			)
 			(
 				(and
-					(== (client action?) FALSE)
+					(== (client action?) ActNone)
 					(== (client canFight?) TRUE)
 				)
 				(switch ((client opponent?) action?)
-					(0 (self changeState: 2))
-					(1
+					(ActNone
+						(self changeState: 2)
+					)
+					(ActThrust
 						(switch (Random 0 1)
 							(0
-								(client action: 5 canFight: FALSE)
+								(client action: ActDodgeLeft canFight: FALSE)
 								(self setScript: (Clone (ScriptID 217 0)) self client)
 							)
 							(1
-								(client action: 3 canFight: FALSE)
+								(client action: ActParryUp canFight: FALSE)
 								(self setScript: (Clone (ScriptID 217 4)) self client)
 							)
 						)
 					)
-					(2
+					(ActSlash
 						(switch (Random 0 1)
 							(0
-								(client action: 7 canFight: FALSE)
+								(client action: ActDuck canFight: FALSE)
 								(self setScript: (Clone (ScriptID 217 1)) self client)
 							)
 							(1
-								(client action: 4 canFight: 0)
+								(client action: ActParryDown canFight: FALSE)
 								(self setScript: (Clone (ScriptID 217 5)) self client)
 							)
 						)
 					)
-					(3
-						(client action: 3 canFight: 0)
+					(ActParryUp
+						(client action: ActParryUp canFight: FALSE)
 						(self setScript: (Clone (ScriptID 217 4)) self client)
 					)
-					(4
-						(client action: 4 canFight: 0)
+					(ActParryDown
+						(client action: ActParryDown canFight: FALSE)
 						(self setScript: (Clone (ScriptID 217 5)) self client)
 					)
 				)
@@ -101,7 +101,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client action: 0)
+				(client action: ActNone)
 				(= cycles (Random 5 10))
 			)
 			(1
@@ -120,11 +120,11 @@
 			(2
 				(switch (Random 0 1)
 					(0
-						(client action: 1 canFight: FALSE)
+						(client action: ActThrust canFight: FALSE)
 						(self setScript: (Clone (ScriptID 217 2)) self client)
 					)
 					(1
-						(client action: 2 canFight: 0)
+						(client action: ActSlash canFight: FALSE)
 						(self setScript: (Clone (ScriptID 217 3)) self client)
 					)
 				)
@@ -133,7 +133,9 @@
 				)
 				(= cycles 8)
 			)
-			(3 (self changeState: 0))
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
