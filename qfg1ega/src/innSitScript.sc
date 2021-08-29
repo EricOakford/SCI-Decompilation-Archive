@@ -11,12 +11,12 @@
 )
 
 (instance sitScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((> serveFoodCountdown 1) (-- serveFoodCountdown))
+			((> serveFoodCountdown 1)
+				(-- serveFoodCountdown)
+			)
 			((== serveFoodCountdown 1)
 				(= serveFoodCountdown 0)
 				(if (not ((ScriptID 301 2) script?))
@@ -34,7 +34,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (Btst EATEN_AT_INN) (Bclr EATEN_AT_INN) else (self cue:))
+				(if (Btst fEatenAtInn)
+					(Bclr fEatenAtInn)
+				else
+					(self cue:)
+				)
 			)
 			(1
 				(HandsOff)
@@ -74,7 +78,7 @@
 			)
 			(6
 				((ScriptID 301 8) setCycle: EndLoop)
-				(Bset HERO_SITTING)
+				(Bset fEgoSitting)
 				(= cycles 15)
 			)
 			(7
@@ -86,7 +90,7 @@
 					)
 					(
 						(and
-							(not (Btst SHEMA_ASKS_ORDER))
+							(not (Btst fShemaAsks))
 							(not ((ScriptID 301 2) script?))
 						)
 						((ScriptID 301 2) setScript: (ScriptID 168 0))
@@ -113,7 +117,7 @@
 			)
 			(12
 				((ScriptID 301 8) setPri: -1)
-				(Bclr HERO_SITTING)
+				(Bclr fEgoSitting)
 				(= foodOrdered mealNOTHING)
 				(= teaOrdered mealNOTHING)
 				(HandsOn)
@@ -129,7 +133,7 @@
 					(cond 
 						(
 							(and
-								(Btst SHEMA_ASKS_ORDER)
+								(Btst fShemaAsks)
 								(< ((ScriptID 301 2) distanceTo: ego) 30)
 							)
 							(self changeState: 8)
@@ -138,16 +142,18 @@
 						((or (== foodOrdered mealORDERED) (== teaOrdered mealORDERED))
 							(HighPrint 170 0)
 							;You should wait for Shema to bring you what you ordered.
-							)
+						)
 						((== foodOrdered mealATTABLE)
 							(HighPrint 170 1)
 							;Eat your meal first.
-							)
+						)
 						((== teaOrdered mealATTABLE)
 							(HighPrint 170 2)
-							;Eat your meal first.
-							)
-						(else (self changeState: 9))
+							;Finish your drink.
+						)
+						(else
+							(self changeState: 9)
+						)
 					)
 				)
 			)

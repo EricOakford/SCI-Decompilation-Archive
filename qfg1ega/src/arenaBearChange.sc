@@ -19,11 +19,32 @@
 	[aStar 20]
 	[starScript 20]
 	starCel = [2 4 3 3 2 4 2 2 3 4 1 1 3 4 4 4 4 1 3 1]
-	starPosn = [156 6 119 25 99 50 79 74 100 102 119 94 107 145 140 173 140 153 170 162 193 175 189 133 211 105 213 59 198 37 181 19 144 35 170 35 140 85 176 125]
+	starXY = [
+		156 6
+		119 25
+		99 50
+		79 74
+		100 102
+		119 94
+		107 145
+		140 173
+		140 153
+		170 162
+		193 175
+		189 133
+		211 105
+		213 59
+		198 37
+		181 19
+		144 35
+		170 35
+		140 85
+		176 125
+		]
 	[nameBuf 40]
-	local141 = [144 249 283 88 165]
-	local146 = [184 221 219 201 168]
-	local151
+	dripX = [144 249 283 88 165]
+	dripY = [184 221 219 201 168]
+	dripIndex
 )
 
 (procedure (AddStars)
@@ -37,7 +58,7 @@
 			cel: 0
 			init:
 			setPri: 15
-			posn: [starPosn (* i 2)] [starPosn (+ (* i 2) 1)]
+			posn: [starXY (* i 2)] [starXY (+ (* i 2) 1)]
 			setScript: [starScript i]
 		)
 	)
@@ -54,7 +75,7 @@
 			cel: (- [starCel i] 1)
 			init:
 			setPri: 15
-			posn: [starPosn (* i 2)] [starPosn (+ (* i 2) 1)]
+			posn: [starXY (* i 2)] [starXY (+ (* i 2) 1)]
 			setScript: [starScript i]
 		)
 	)
@@ -68,14 +89,14 @@
 	)
 )
 
-(procedure (BarnardDies)
+(procedure (StartDying)
 	(curRoom drawPic: 420)
 	(bearRightPaw init: setPri: 6 stopUpd:)
 	(bearLeftPaw init: setPri: 5 stopUpd:)
 	(bearHead init: setPri: 4 setLoop: 0 cel: 0 stopUpd:)
 )
 
-(procedure (BarnardFree)
+(procedure (StartFreedom)
 	(curRoom drawPic: 420)
 	(bearRightPaw init: setPri: 6 stopUpd:)
 	(bearLeftPaw init: setPri: 5 stopUpd:)
@@ -90,14 +111,14 @@
 	(curRoom drawPic: 400 DISSOLVE)
 )
 
-(procedure (localproc_01bb)
+(procedure (BaronetDies)
 	(baronet init: setPri: 4 stopUpd:)
 	(baronHead init: setPri: 5 setLoop: 0 cel: 0 stopUpd:)
 	(baronRightArm init: setPri: 7 setLoop: 6 cel: 0 stopUpd:)
 	(baronLeftArm init: setPri: 6 setLoop: 5 cel: 0 stopUpd:)
 )
 
-(procedure (localproc_021d)
+(procedure (BaronetIsFree)
 	(baronet init: setPri: 4 stopUpd:)
 	(baronHead init: setPri: 5 setLoop: 1 cel: 0 stopUpd:)
 	(baronRightArm init: setPri: 7 setLoop: 6 cel: 0 stopUpd:)
@@ -109,13 +130,13 @@
 	(baronHead dispose:)
 	(baronRightArm dispose:)
 	(baronLeftArm dispose:)
-	(curRoom drawPic: 14 3)
+	(curRoom drawPic: 14 WIPERIGHT)
 	(NormalEgo)
 	(ego init: posn: 141 140)
 	(drip init: setScript: dripScript)
-	(= local151 (Random 0 4))
-	(Bset BEAR_GONE)
-	(if (Btst DEFEATED_BEAR)
+	(= dripIndex (Random 0 4))
+	(Bset fBearGone)
+	(if (Btst fBearDying)
 		(baronetSmall init: x: 239 y: 135 loop: 0)
 	else
 		(baronetSmall init: x: 239 y: 135 loop: 1)
@@ -142,19 +163,23 @@
 		(super init:)
 		(HandsOff)
 		(= monsterNum 0)
-		(if (Btst DEFEATED_BEAR)
-			(BarnardDies)
+		(if (Btst fBearDying)
+			(StartDying)
 			(self setScript: bearDying)
 		else
-			(BarnardFree)
+			(StartFreedom)
 			(self setScript: bearFreed)
 		)
 	)
 	
 	(method (doit)
 		(cond 
-			((== (ego edgeHit?) 2) (curRoom newRoom: 15))
-			((== (ego edgeHit?) 3) (curRoom newRoom: 13))
+			((== (ego edgeHit?) EAST)
+				(curRoom newRoom: 15)
+			)
+			((== (ego edgeHit?) SOUTH)
+				(curRoom newRoom: 13)
+			)
 		)
 		(super doit:)
 	)
@@ -175,41 +200,41 @@
 							((Said '/stalactite')
 								(HighPrint 171 0)
 								;They're like stalagmites, but they go the other way.
-								)
+							)
 							((Said '/stalagmite')
 								(HighPrint 171 1)
 								;They're like stalactites, but they go the other way.
-								)
+							)
 							((Said '[<at,around][/!*,cave,room]')
 								(HighPrint 171 2)
 								;The cavern contains some impressive formations and is rather beautiful, as caves go.
-								)
+							)
 							((Said '/wall,fungus,north,west,formation')
 								(HighPrint 171 3)
 								;The stalactites, stalagmites, and cave walls glow from a phosphorescent fungus growing there.
-								)
+							)
 							((or (Said '<up') (Said '/ceiling'))
 								(HighPrint 171 4)
 								;The stalactites grow slowly.
 								(HighPrint 171 5)
 								;...or are they stalagmites?
-								)
+							)
 							((or (Said '<down') (Said '/floor'))
 								(HighPrint 171 6)
 								;The stalagmites grow slowly.
 								(HighPrint 171 7)
 								;...or are they stalactites?
-								)
+							)
 							((Said '/south,entrance,open')
 								(HighPrint 171 8)
 								;The light from outside illuminates the cave opening.
-								)
+							)
 							((Said '/east')
 								(HighPrint 171 9)
 								;Beyond the bear, the cave seems to continue.
-								)
+							)
 							((Said '/bear,animal,creature,monster')
-								(if (Btst DEFEATED_BEAR)
+								(if (Btst fBearDying)
 									(HighPrint 171 10)
 									;The bear is gone.  All that is left is the body of a dead man.
 								else
@@ -218,14 +243,13 @@
 								)
 							)
 							((Said '/man,barnard')
-								(if (Btst DEFEATED_BEAR)
+								(if (Btst fBearDying)
 									(HighPrint (Format @nameBuf 171 12 userName)
 										;He's dead, %s.
-										)
+								)
 								else
 									(HighPrint 171 13)
 									;The man is gone.
-									
 								)
 							)
 						)
@@ -235,11 +259,11 @@
 							((Said '/fungus')
 								(HighPrint 171 14)
 								;The fungus is slimy and stuck tight to the cave walls.
-								)
+							)
 							((Said '/bear,stalactite,stalagmite')
 								(HighPrint 171 15)
 								;You're kidding, right?
-								)
+							)
 						)
 					)
 					((Said 'cast>')
@@ -248,7 +272,7 @@
 								(if (CastSpell spell)
 									(HighPrint 171 16)
 									;There is no magic in the cavern.
-									)
+								)
 							)
 							(else
 								(event claimed: FALSE)
@@ -263,7 +287,6 @@
 )
 
 (instance bearDying of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -286,7 +309,7 @@
 				(self cue:)
 			)
 			(4
-				(localproc_01bb)
+				(BaronetDies)
 				(= cycles 4)
 			)
 			(5
@@ -304,7 +327,7 @@
 				(baronetSmall cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(8
-				(if (Btst READ_BARNARD_BULLETIN)
+				(if (Btst fReadBarnardBulletin)
 					(HighPrint 171 17)
 					;The body lying there looks a lot like the picture of the Baronet von Spielburg on the poster at the guild hall.
 					;You have a funny feeling that you may have made a slight tactical error.
@@ -320,7 +343,7 @@
 				)
 			)
 			(9
-				(Bclr DEFEATED_BEAR)
+				(Bclr fBearDying)
 				(baronetSmall dispose:)
 				(SetCursor theCursor TRUE)
 				(HandsOn)
@@ -330,7 +353,6 @@
 )
 
 (instance bearFreed of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -348,7 +370,7 @@
 				(self cue:)
 			)
 			(3
-				(localproc_021d)
+				(BaronetIsFree)
 				(= cycles 4)
 			)
 			(4
@@ -424,11 +446,14 @@
 )
 
 (instance starScriptOn of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (* register 3)))
-			(1 (client setCycle: EndLoop self))
+			(0
+				(= cycles (* register 3))
+			)
+			(1
+				(client setCycle: EndLoop self)
+			)
 			(2
 				(client loop: 1 cel: 0 setCycle: Forward)
 			)
@@ -437,7 +462,6 @@
 )
 
 (instance starScriptOff of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -452,19 +476,17 @@
 )
 
 (instance dripScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(drip
-					posn: [local141 local151] [local146 local151]
+					posn: [dripX dripIndex] [dripY dripIndex]
 					setCycle: EndLoop
 				)
 				(= cycles (Random 20 40))
 			)
 			(1
-				(= local151 (Random 0 4))
+				(= dripIndex (Random 0 4))
 				(self changeState: 0)
 			)
 		)

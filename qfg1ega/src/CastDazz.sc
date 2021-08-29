@@ -11,22 +11,26 @@
 )
 
 (local
-	egoSignal
-	egoPriority
-	egoIllegalBits
-	newSound
+	savSignal
+	savPriority
+	savIllegalBits
+	soundObj
 )
-(procedure (CastDazz param1 param2)
+(procedure (CastDazz onWhat whoCares)
 	(cond 
-		((< 1 argc) (param1 setScript: clientCastDazz param2))
-		(argc (param1 setScript: clientCastDazz))
-		(else (ego setScript: clientCastDazz))
+		((< 1 argc)
+			(onWhat setScript: clientCastDazz whoCares)
+		)
+		(argc
+			(onWhat setScript: clientCastDazz)
+		)
+		(else
+			(ego setScript: clientCastDazz)
+		)
 	)
 )
 
 (instance clientCastDazz of Script
-	(properties)
-	
 	(method (dispose)
 		(HandsOn)
 		(super dispose:)
@@ -36,9 +40,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoSignal (ego signal?))
-				(= egoPriority (ego priority?))
-				(= egoIllegalBits (ego illegalBits?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
 				(HandsOff)
 				(ego
 					view: vEgoMagicDetect
@@ -48,7 +52,7 @@
 						3
 					)
 				)
-				((= newSound (Sound new:))
+				((= soundObj (Sound new:))
 					number: (SoundFX 17)
 					priority: 6
 					init:
@@ -56,15 +60,17 @@
 				)
 				(ego cel: 0 cycleSpeed: 2 setCycle: EndLoop self)
 			)
-			(1 (= cycles 2))
+			(1
+				(= cycles 2)
+			)
 			(2
-				(newSound stop: dispose:)
+				(soundObj stop: dispose:)
 				(NormalEgo)
 				(ego
 					loop: 2
-					priority: egoPriority
-					illegalBits: egoIllegalBits
-					signal: egoSignal
+					priority: savPriority
+					illegalBits: savIllegalBits
+					signal: savSignal
 				)
 				(self dispose:)
 			)

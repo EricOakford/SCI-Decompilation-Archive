@@ -18,8 +18,6 @@
 )
 
 (instance sCave of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -44,8 +42,6 @@
 )
 
 (instance sErmit of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -72,8 +68,6 @@
 )
 
 (instance sFamily of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -97,8 +91,6 @@
 )
 
 (instance sEnry of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -124,8 +116,6 @@
 )
 
 (instance sCrib of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -149,8 +139,6 @@
 )
 
 (instance sTrig of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -186,8 +174,6 @@
 )
 
 (instance sSpell of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -215,8 +201,6 @@
 )
 
 (instance sLadder of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -233,7 +217,8 @@
 			)
 			(1
 				(Say (ScriptID 83 1) 145 12)
-				;"He's wot put the spell on me ladder sos the brigands don't get up.  Them wot climbs th' rocks gets a door opening in their nose."
+				;"He's wot put the spell on me ladder sos the brigands don't get up. 
+				; Them wot climbs th' rocks gets a door opening in their nose."
 			)
 			(2
 				(client setScript: (ScriptID 83 2))
@@ -244,8 +229,6 @@
 )
 
 (instance sFalls of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)

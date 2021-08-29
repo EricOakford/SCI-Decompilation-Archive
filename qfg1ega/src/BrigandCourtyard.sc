@@ -305,7 +305,9 @@
 	)
 	
 	(method (doit)
-		(if archerStop (-- archerStop))
+		(if archerStop
+			(-- archerStop)
+		)
 		(cond 
 			(
 				(and
@@ -593,7 +595,7 @@
 				onLumber1
 				onLitter1
 		)
-		(SolvePuzzle POINTS_ENTERBRIGANDFORTRESS 8)
+		(SolvePuzzle f94EnterFortress 8)
 		(StatusLine enable:)
 		(NormalEgo)
 		(rug ignoreActors: 1 setPri: 11 init: stopUpd:)
@@ -606,10 +608,10 @@
 		(archer3 init: stopUpd:)
 		(archer4 init: stopUpd:)
 		(= archersAreAsleep 1)
-		(if (and (not (Btst BRIGANDS_UNAWARE)) (Btst DEFEATED_MINOTAUR))
+		(if (and (not (Btst fBrigsUnaware)) (Btst fMinotaurDead))
 			(Bset fBeenIn94)
-			(= archersAreAsleep 0)
-			(ArchersAttack 1)
+			(= archersAreAsleep FALSE)
+			(ArchersAttack TRUE)
 		)
 		(switch prevRoomNum
 			(95
@@ -933,7 +935,7 @@
 					((MouseClaimed ego event shiftDown)
 						(HighPrint 94 0)
 						;You get the feeling that you're not alone.
-						)
+					)
 				)
 			)
 			(saidEvent
@@ -942,9 +944,10 @@
 					((Said 'rest,nap')
 						(EgoDead 94 1
 							#title {Z-Z-Z-Z-Z-Z-Z-Z-Z-Z}
-							#icon vIcons 0 0)
+							#icon vIcons 0 0
+						)
 							;The Brigands oblige you by making your pleasant rest permanent!
-							)
+					)
 					((Said 'cast>')
 						(= spellCast (SaidSpell event))
 						(if (CastSpell spellCast)
@@ -952,7 +955,7 @@
 								(DETMAGIC
 									(HighPrint 94 2)
 									;No spells are active here.
-									)
+								)
 								(DAZZLE
 									(if (not (rm94 notify: 0))
 										(if (CastDazz) (rm94 notify: 2))
@@ -990,18 +993,32 @@
 								(else
 									(HighPrint 94 5)
 									;That was a useless spell.
-									)
+								)
 							)
 						)
 					)
-					((Said 'throw/boulder') (if (ThrowRock 0) (ArchersAttack 0)))
-					((Said 'throw/dagger') (if (ThrowKnife 0) (ArchersAttack 0)))
+					((Said 'throw/boulder')
+						(if (ThrowRock 0)
+							(ArchersAttack 0)
+						)
+					)
+					((Said 'throw/dagger')
+						(if (ThrowKnife 0)
+							(ArchersAttack 0)
+						)
+					)
 					(
 					(Said 'step,hop,climb[/above,rope,string,string]')
 						(cond 
-							((ego inRect: 145 72 175 100) (ego setScript: (ScriptID 195 0)))
-							((ego inRect: 275 152 298 170) (ego setScript: (ScriptID 195 1)))
-							(else (HighPrint 94 6))
+							((ego inRect: 145 72 175 100)
+								(ego setScript: (ScriptID 195 0))
+							)
+							((ego inRect: 275 152 298 170)
+								(ego setScript: (ScriptID 195 1))
+							)
+							(else
+								(HighPrint 94 6)
+							)
 						)
 					)
 					((Said 'open[/gate,door]')
@@ -1009,23 +1026,28 @@
 							(gateIsOpen
 								(HighPrint 94 7)
 								;The door is open.
-								)
-							((ego inRect: 193 0 320 74) (door setScript: (ScriptID 194 0)))
+							)
+							((ego inRect: 193 0 320 74)
+								(door setScript: (ScriptID 194 0))
+							)
 							(else
 								(HighPrint 94 8)
 								;You must get closer.
-								)
+							)
 						)
 					)
 					((Said 'say,ask')
 						(HighPrint 94 9)
 						;This is no time for casual conversation.
-						)
-					(archersAreAsleep (SaidEndGameCourtyard event))
-					(else (event claimed: TRUE)
+					)
+					(archersAreAsleep
+						(SaidEndGameCourtyard event)
+					)
+					(else
+						(event claimed: TRUE)
 						(HighPrint 94 10)
 						;You're too busy trying not to become a human pincushion.
-						)
+					)
 				)
 			)
 		)
@@ -1171,7 +1193,7 @@
 						(+ (ego y?) [arrows arrowIndex])
 				)
 			)
-			(= arrowIndex (+ arrowIndex 4))
+			(+= arrowIndex 4)
 		)
 		(super doit:)
 	)
@@ -1182,7 +1204,7 @@
 			((MouseClaimed archer1 event shiftDown)
 				(HighPrint 94 11)
 				;His aim in life is to make shish kebab.  I hope you're not skewered.
-				)
+			)
 		)
 	)
 )
@@ -1201,7 +1223,7 @@
 			((MouseClaimed archer1 event shiftDown)
 				(HighPrint 94 12)
 				;Life as an archer is not dull or pointless.
-				)
+			)
 		)
 	)
 )
@@ -1220,7 +1242,7 @@
 			((MouseClaimed archer1 event shiftDown)
 				(HighPrint 94 13)
 				;He has an arrow with your name on it.
-				)
+			)
 		)
 	)
 )
@@ -1239,7 +1261,7 @@
 			((MouseClaimed archer1 event shiftDown)
 				(HighPrint 94 14)
 				;He has an IQ so low he can't spell IQ.
-				)
+			)
 		)
 	)
 )
@@ -1266,7 +1288,7 @@
 			((MouseClaimed onSacks event shiftDown)
 				(HighPrint 94 15)
 				;Sacks of grain.  Stored for the winter.
-				)
+			)
 		)
 	)
 )
@@ -1285,7 +1307,7 @@
 			((MouseClaimed onKegs event shiftDown)
 				(HighPrint 94 16)
 				;Empty wine barrels.  The winters here are very cold.
-				)
+			)
 		)
 	)
 )
@@ -1304,7 +1326,7 @@
 			((MouseClaimed onRug event shiftDown)
 				(HighPrint 94 17)
 				;Rug with message "Step Here".
-				)
+			)
 		)
 	)
 )
@@ -1323,7 +1345,7 @@
 			((MouseClaimed onRugs event shiftDown)
 				(HighPrint 94 18)
 				;These rolled-up rugs are spares for use when the rug at the left is lost.
-				)
+			)
 		)
 	)
 )
@@ -1374,7 +1396,7 @@
 			((MouseClaimed onUnSafeBridge event shiftDown)
 				(HighPrint 94 20)
 				;Sturdy looking bridge with one support pole across the chasm.
-				)
+			)
 		)
 	)
 )
@@ -1392,8 +1414,9 @@
 			((super handleEvent: event))
 			((MouseClaimed onSafeBridge event shiftDown)
 				(HighPrint 94 21)
-				;Sturdy looking bridge with two support poles across the chasm.  A message reading "Cross Here" is on this bridge.
-				)
+				;Sturdy looking bridge with two support poles across the chasm. 
+				; A message reading "Cross Here" is on this bridge.
+			)
 		)
 	)
 )
@@ -1416,7 +1439,8 @@
 					(MouseClaimed onChasm event shiftDown)
 				)
 				(HighPrint 94 22)
-				;Chasm across the room.  The only safe passage is across the bridges.
+				;Chasm across the room. 
+				; The only safe passage is across the bridges.
 			)
 		)
 	)
@@ -1436,7 +1460,7 @@
 			((MouseClaimed onDoor event shiftDown)
 				(HighPrint 94 23)
 				;Door to some other room.
-				)
+			)
 		)
 	)
 )
@@ -1455,7 +1479,7 @@
 			((MouseClaimed onWindow event shiftDown)
 				(HighPrint 94 24)
 				;Window showing vague outlines and shapes.
-				)
+			)
 		)
 	)
 )
@@ -1474,7 +1498,7 @@
 			((MouseClaimed onRCabinet event shiftDown)
 				(HighPrint 94 25)
 				;Some kind of cabinet showing a flip top secured by a hasp.
-				)
+			)
 		)
 	)
 )
@@ -1492,7 +1516,7 @@
 			((MouseClaimed onLCabinet event shiftDown)
 				(HighPrint 94 26)
 				;Some kind of cabinet.
-				)
+			)
 		)
 	)
 )
@@ -1734,17 +1758,21 @@
 	)
 )
 
-(instance egoHit of Script
-	(properties)
-	
+(instance egoHit of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(register show:)
 				(cond 
-					((ego has: iChainmail) (TakeDamage 15))
-					((ego has: iLeather) (TakeDamage 30))
-					(else (TakeDamage 45))
+					((ego has: iChainmail)
+						(TakeDamage 15)
+					)
+					((ego has: iLeather)
+						(TakeDamage 30)
+					)
+					(else
+						(TakeDamage 45)
+					)
 				)
 				(cond 
 					((== [arrows 0] 0)
@@ -1789,7 +1817,9 @@
 						(= [arrows 26] arrowDirection)
 						(= [arrows 27] register)
 					)
-					(else (register dispose:))
+					(else
+						(register dispose:)
+					)
 				)
 				(if (<= [egoStats HEALTH] 0)
 					(= cycles 3)
@@ -1800,7 +1830,8 @@
 			(1
 				(EgoDead 94 29
 					#icon vEgoDefeatedMagic 0 9
-					#title {You knew this job was dangerous....})
+					#title {You knew this job was dangerous....}
+				)
 					;This was not the ending you had in mind when you read the manual on "How to be a Hero".
 					;Either you just aren't ready to take on this situation, or there's got to be a better way to accomplish your mission.
 			)
@@ -1809,8 +1840,6 @@
 )
 
 (instance openMess of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1

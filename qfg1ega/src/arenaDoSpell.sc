@@ -10,19 +10,18 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
+	theWarrior
+	theHand
+	theBack
+	theShield
 )
+
 (instance doSpell of Script
-	(properties)
-	
 	(method (init)
-		(= local0 (ScriptID WARRIOR 0))
-		(= local1 ((ScriptID WARRIOR 0) egoHand?))
-		(= local2 ((ScriptID WARRIOR 0) egosBack?))
-		(= local3 ((ScriptID WARRIOR 0) egoShield?))
+		(= theWarrior (ScriptID WARRIOR 0))
+		(= theHand ((ScriptID WARRIOR 0) egoHand?))
+		(= theBack ((ScriptID WARRIOR 0) egosBack?))
+		(= theShield ((ScriptID WARRIOR 0) egoShield?))
 		(super init: &rest)
 	)
 	
@@ -35,30 +34,30 @@
 		(switch (= state newState)
 			(0
 				(= egoCanFight FALSE)
-				(local1 setCycle: EndLoop self)
+				(theHand setCycle: EndLoop self)
 			)
 			(1
 				(switch register
 					(FLAMEDART
-						(self setScript: (ScriptID 147 0) self)
+						(self setScript: (ScriptID ARENA_FLAME 0) self)
 					)
 					(ZAP
-						(self setScript: (ScriptID 148 0) self)
+						(self setScript: (ScriptID ARENA_ZAP 0) self)
 					)
 					(DAZZLE
-						(self setScript: (ScriptID 149 0) self)
+						(self setScript: (ScriptID ARENA_DAZZLE 0) self)
 					)
 					(CALM
-						(self setScript: (ScriptID 150 0) self)
+						(self setScript: (ScriptID ARENA_CALM 0) self)
 					)
 				)
 			)
 			(2
 				(= register 0)
-				(local1 setCycle: BegLoop self)
+				(theHand setCycle: BegLoop self)
 			)
 			(3
-				(local1 stopUpd:)
+				(theHand stopUpd:)
 				(= egoCanFight TRUE)
 				(self dispose:)
 			)

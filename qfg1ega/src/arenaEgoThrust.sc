@@ -10,14 +10,12 @@
 )
 
 (local
-	local0
-	local1
+	theWarrior
+	hitOpponent
 )
 (instance egoThrust of Script
-	(properties)
-	
 	(method (init)
-		(= local0 (ScriptID WARRIOR 0))
+		(= theWarrior (ScriptID WARRIOR 0))
 		(super init: &rest)
 	)
 	
@@ -31,15 +29,15 @@
 			(0
 				(= egoCanFight FALSE)
 				(TrySkill WEAPON 0 0)
-				(= local1 (local0 tryAttack: (local0 opponent?)))
+				(= hitOpponent (theWarrior tryAttack: (theWarrior opponent?)))
 				(if
 					(and
 						(or (== monsterNum vMinotaur) (== monsterNum vBrigand))
-						(== ((local0 opponent?) action?) 3)
+						(== ((theWarrior opponent?) action?) ActParryUp)
 					)
-					(= local1 0)
+					(= hitOpponent FALSE)
 				)
-				(if local1
+				(if hitOpponent
 					(if
 						(or
 							(== monsterNum vCheetaur)
@@ -50,24 +48,24 @@
 						)
 						(= register 3)
 					)
-					(local0
+					(theWarrior
 						getTired: 4
-						canFight: 0
-						action: 1
+						canFight: FALSE
+						action: ActThrust
 						setLoop: register
-						setPri: (if (== monsterNum 435) 1 else 9)
+						setPri: (if (== monsterNum vMantray) 1 else 9)
 						setCel: 1
 					)
 				)
 				(= cycles 8)
 			)
 			(1
-				(if local1
-					(= local1 0)
-					(local0 doDamage: (local0 opponent?) zapPower)
+				(if hitOpponent
+					(= hitOpponent FALSE)
+					(theWarrior doDamage: (theWarrior opponent?) zapPower)
 					(= zapPower 0)
 				)
-				(local0
+				(theWarrior
 					setPri: 11
 					setLoop: register
 					setCycle: CycleTo 0 1 self

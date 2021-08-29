@@ -339,7 +339,7 @@
 	ActDodgeRight
 	ActDuck
 	ActLeap
-	Act9	;never used
+	ActPain	;never used, just a guess
 	ActDie
 	ActCast
 )

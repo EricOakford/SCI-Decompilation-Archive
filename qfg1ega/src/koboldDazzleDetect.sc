@@ -12,8 +12,6 @@
 )
 
 (instance castDazzle of KScript
-	(properties)
-	
 	(method (dispose)
 		(KoboldFight TRUE)
 		(Face ego theKobold)
@@ -49,8 +47,6 @@
 )
 
 (instance castDet of KScript
-	(properties)
-	
 	(method (dispose)
 		(HandsOn)
 		(super dispose:)
@@ -72,7 +68,7 @@
 					(CenterPrint 113 0)
 					;A strong magical aura radiates from the Kobold's key.
 					(= register 1)
-					(if (and (not (Btst DEFEATED_KOBOLD)) (not (Btst OBTAINED_KOBOLD_KEY)))
+					(if (and (not (Btst fKoboldDead)) (not (Btst fGotKoboldKey)))
 						(= cycles 0)
 						((ScriptID 15 3)
 							show:
@@ -88,8 +84,8 @@
 				)
 			)
 			(1
-				(if (not (Btst OBTAINED_KOBOLD_KEY))
-					(if (not (Btst DEFEATED_KOBOLD)) ((ScriptID 15 3) hide:))
+				(if (not (Btst fGotKoboldKey))
+					(if (not (Btst fKoboldDead)) ((ScriptID 15 3) hide:))
 					((ScriptID 15 3)
 						view: vKoboldDead
 						setLoop: 6
@@ -107,17 +103,18 @@
 						(= cycles 0)
 						((ScriptID 15 2) cel: 0 cycleSpeed: 1 setCycle: EndLoop self)
 					)
-					((not (Btst KOBOLD_CHEST_SEARCHED))
+					((not (Btst fKoboldChestSearched))
 						(CenterPrint 113 2)
 						;You can detect a faint glimmering of magic from the shattered remains of the chest.
-						(= register TRUE))
+						(= register TRUE)
+					)
 				)
 			)
 			(2
 				(if (not register)
 					(CenterPrint 113 3)
 					;There no longer seem to be any magical effects or spells active in this part of the cavern.
-					)
+				)
 				(self dispose:)
 			)
 		)

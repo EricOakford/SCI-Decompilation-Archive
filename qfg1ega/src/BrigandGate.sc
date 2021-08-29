@@ -34,36 +34,36 @@
 	enteredViaCave
 	local1
 	local2
-	local3
+	minotaurDir
 	local4
 	spellCast
 	local6
 	local7
-	local8 =  5
+	seeDist =  5
 	minotaurStunned
 	local10
 	minotaurMutter
 )
 (procedure (localproc_001c &tmp temp0)
 	(= temp0 1)
-	(switch local3
+	(switch minotaurDir
 		(0
-			(if (< (+ (minotaur x?) local8) (ego x?))
+			(if (< (+ (minotaur x?) seeDist) (ego x?))
 				(= temp0 0)
 			)
 		)
 		(1
-			(if (< (ego x?) (- (minotaur x?) local8))
+			(if (< (ego x?) (- (minotaur x?) seeDist))
 				(= temp0 0)
 			)
 		)
 		(2
-			(if (< (+ (minotaur y?) local8) (ego y?))
+			(if (< (+ (minotaur y?) seeDist) (ego y?))
 				(= temp0 0)
 			)
 		)
 		(else 
-			(if (< (ego y?) (- (minotaur y?) local8))
+			(if (< (ego y?) (- (minotaur y?) seeDist))
 				(= temp0 0)
 			)
 		)
@@ -90,7 +90,7 @@
 					(== (minotaur script?) minotaurLooks)
 				)
 			else
-				(Btst DEFEATED_MINOTAUR)
+				(Btst fMinotaurDead)
 			)
 		)
 	)
@@ -103,7 +103,10 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vBrigandEntrance vEgoBreathHeavy vEgoRunning vEgoFall vEgoThrowing vEgoFallDown vMinotaurDefeated vEgoDefeated vEgoThrowDagger)
+		(LoadMany VIEW
+			vBrigandEntrance vEgoBreathHeavy vEgoRunning vEgoFall
+			vEgoThrowing vEgoFallDown vMinotaurDefeated vEgoDefeated vEgoThrowingDagger
+		)
 		(Load SOUND 23)
 		(cSound priority: 1 number: 23 loop: -1 play:)
 		(super init:)
@@ -117,33 +120,33 @@
 		(gateSign setPri: 6 init: addToPic:)
 		(bell setPri: 6 init: stopUpd:)
 		(bush init: stopUpd:)
-		(if (Btst BRIGAND_GATE_OPEN)
+		(if (Btst fBrigGateOpen)
 			(gate setCel: 3 setPri: 6 ignoreActors: init: stopUpd:)
 			(ego illegalBits: cWHITE)
 		else
 			(gate setCel: 0 setPri: 6 init: stopUpd:)
 			(ego illegalBits: (| cWHITE cLRED))
 		)
-		(if (not (Btst DEFEATED_MINOTAUR))
+		(if (not (Btst fMinotaurDead))
 			(= monsterNum vMinotaur)
 			(= monsterHealth 186)
 		)
 		(switch prevRoomNum
 			(89
 				(= enteredViaCave TRUE)
-				(if (not (Btst DEFEATED_MINOTAUR))
+				(if (not (Btst fMinotaurDead))
 					(Load VIEW vMinotaur)
 					(= local4 1)
-					(= local3 0)
+					(= minotaurDir 0)
 					(minotaur illegalBits: 0 init: setScript: patrol)
 				)
 				(ego posn: 2 123 init: setScript: (ScriptID 271 0))
 			)
 			(94
-				(if (not (Btst DEFEATED_MINOTAUR))
+				(if (not (Btst fMinotaurDead))
 					(Load VIEW vMinotaur)
 					(= local4 0)
-					(= local3 1)
+					(= minotaurDir 1)
 					(minotaur
 						setLoop: 1
 						posn: 145 162
@@ -152,7 +155,7 @@
 						setScript: patrol
 					)
 				)
-				(if (Btst BRIGAND_GATE_OPEN)
+				(if (Btst fBrigGateOpen)
 					(ego posn: 174 98 init: setScript: (ScriptID 272 0))
 				else
 					(ego posn: 143 108 init: setScript: (ScriptID 275 0))
@@ -161,7 +164,7 @@
 			(vMinotaur
 				(Load VIEW vEgoDanceBow)
 				(Load VIEW vMinotaurDefeated)
-				(Bset DEFEATED_MINOTAUR)
+				(Bset fMinotaurDead)
 				(minotaur
 					view: vMinotaurDefeated
 					setLoop: 0
@@ -172,10 +175,10 @@
 				(ego posn: 235 158 init: setScript: (ScriptID 274 0))
 			)
 			(else 
-				(if (not (Btst DEFEATED_MINOTAUR))
+				(if (not (Btst fMinotaurDead))
 					(Load VIEW vMinotaur)
 					(= local4 0)
-					(= local3 1)
+					(= minotaurDir 1)
 					(minotaur illegalBits: 0 init: setScript: patrol)
 				)
 				(ego posn: 235 188 init: setScript: (ScriptID 273 0))
@@ -218,7 +221,7 @@
 					((MouseClaimed ego event shiftDown)
 						(HighPrint 93 0)
 						;To the Minotaur, you look like a nice meal.
-						)
+					)
 				)
 			)
 			(saidEvent
@@ -229,38 +232,38 @@
 							#title {Z-Z-Z-Z-Z-Z-Z-Z-Z-Z}
 							#icon vIcons 0 0)
 							;The Brigands oblige you by making your pleasant rest permanent!
-							)
+						)
 					((Said 'look>')
 						(cond 
 							((Said '[<at,around][/place,area]')
 								(HighPrint 93 2)
 								;Sheer cliff walls form a narrow box canyon where the brigands have built a fortress.
-								)
+							)
 							((Said '[<at]/boulder')
 								(HighPrint 93 3)
 								;The rocks look to be good hiding places.
-								)
+							)
 							((Said '[<at]/cliff')
 								(HighPrint 93 4)
 								;The rock walls look steep.
-								)
+							)
 							((Said '[<at]/log,gate')
 								(HighPrint 93 5)
 								;The gate appears to be fastened somehow on the inside.
-								)
+							)
 							((or (Said '<up') (Said '/sky'))
 								(HighPrint 93 6)
 								;The cliff seems very hard to climb.
-								)
+							)
 							((or (Said '<down') (Said '/ground,grass'))
 								(HighPrint 93 7)
 								;You can see marks in the ground, leading towards the bush.
-								)
+							)
 							((Said '/bush')
 								(if enteredViaCave
 									(HighPrint 93 8)
 									;You see a bush that conceals the secret entrance.
-									else
+								else
 									(HighPrint 93 9)
 									;The bush sits next to the cliff.  There are marks on the ground near the bush.
 									)
@@ -270,27 +273,27 @@
 									(HighPrint 93 10)
 									;You see that where the steep cliff walls meet the fortress, there is a pile of gravel.
 									;Once away from the secret passage exit, the fortress is entirely obscured by rocks and brush.
-									else
+								else
 									(HighPrint 93 11)
 									;The cliff to the west looks too sheer to climb.  There is a bush growing close to the cliff.
-									)
 								)
+							)
 							((Said '/north')
 								(HighPrint 93 12)
 								;You see what must be the log walls and gate of the brigand fortress.
-								)
+							)
 							((Said '/east')
 								(HighPrint 93 13)
 								;You see where the sheer cliff walls meet the fortress wall with a pile of rocks.
-								)
+							)
 							((Said '/south')
 								(HighPrint 93 14)
 								;The walls of the canyon turn to the west.  You can see a large Minotaur patrolling the canyon.
-								)
+							)
 							((Said '/bell')
 								(HighPrint 93 15)
 								;A warning bell to alert all the brigands in the fortress.
-								)
+							)
 							((Said '/sign')
 								(if (ego inRect: 150 92 250 140)
 									(HighPrint 93 16)
@@ -309,14 +312,16 @@
 								(DETMAGIC
 									(HighPrint 93 18)
 									;There is no magical aura present.
-									)
+								)
 								(DAZZLE
 									(cond 
-										((or (Btst DEFEATED_MINOTAUR) local6 minotaurStunned local7)
+										((or (Btst fMinotaurDead) local6 minotaurStunned local7)
 											(HighPrint 93 19)
 											;You waste a spell.
-											)
-										((CastDazz ego minotaurDazzled) (minotaur setScript: minotaurDazzled))
+										)
+										((CastDazz ego minotaurDazzled)
+											(minotaur setScript: minotaurDazzled)
+										)
 									)
 								)
 								(FLAMEDART
@@ -330,7 +335,9 @@
 											(HighPrint 93 20)
 											;You'll have to give yourself room.
 										)
-										((Btst DEFEATED_MINOTAUR) (CastDart 0))
+										((Btst fMinotaurDead)
+											(CastDart 0)
+										)
 										(else
 											(if (< (ego x?) 160)
 												(minotaur targDeltaX: -25)
@@ -338,13 +345,15 @@
 												(minotaur targDeltaX: 25)
 											)
 											(CastDart minotaur)
-											(if (or local6 local7) (minotaur setScript: patrol))
+											(if (or local6 local7)
+												(minotaur setScript: patrol)
+											)
 										)
 									)
 								)
 								(CALM
 									(cond 
-										((or (Btst DEFEATED_MINOTAUR) local6)
+										((or (Btst fMinotaurDead) local6)
 											(HighPrint 93 19)
 											;You waste a spell.
 											)
@@ -352,7 +361,7 @@
 									)
 								)
 								(OPEN
-									(if (or local2 (Btst BRIGAND_GATE_OPEN))
+									(if (or local2 (Btst fBrigGateOpen))
 										(HighPrint 93 19)
 										;You waste a spell.
 									else
@@ -378,7 +387,7 @@
 								(HighPrint 93 20)
 								;You'll have to give yourself room.
 							)
-							((Btst DEFEATED_MINOTAUR) (ThrowKnife 0))
+							((Btst fMinotaurDead) (ThrowKnife 0))
 							(else
 								(if (< (ego x?) 160)
 									(minotaur targDeltaX: -25)
@@ -428,7 +437,7 @@
 					)
 					((Said 'open[/gate,door]')
 						(cond 
-							((Btst BRIGAND_GATE_OPEN)
+							((Btst fBrigGateOpen)
 								(HighPrint 93 26)
 								;The gate is open.
 								)
@@ -445,8 +454,8 @@
 					)
 					((Said 'close,close[/gate,door]')
 						(cond 
-							((and (ego inRect: 128 95 186 106) (Btst BRIGAND_GATE_OPEN)) (ego setScript: closeGate))
-							((Btst BRIGAND_GATE_OPEN)
+							((and (ego inRect: 128 95 186 106) (Btst fBrigGateOpen)) (ego setScript: closeGate))
+							((Btst fBrigGateOpen)
 								(HighPrint 93 27)
 								;You must get closer.
 								)
@@ -458,7 +467,7 @@
 					)
 					((Said 'break,force,beat/gate,door')
 						(cond 
-							((Btst BRIGAND_GATE_OPEN)
+							((Btst fBrigGateOpen)
 								(HighPrint 93 30)
 								;What for?
 								)
@@ -746,7 +755,7 @@
 				(cond 
 					((super handleEvent: event))
 					((not (MouseClaimed self event shiftDown)))
-					((Btst DEFEATED_MINOTAUR)
+					((Btst fMinotaurDead)
 						(HighPrint 93 39)
 						;The Minotaur is out for the count.
 						)
@@ -761,7 +770,7 @@
 					((Said 'search[/bull,body,flail]')
 						(cond 
 							(local6 (HighPrint 93 41) (curRoom newRoom: vMinotaur))
-							((Btst DEFEATED_MINOTAUR)
+							((Btst fMinotaurDead)
 								(if local10
 									(HighPrint 93 42)
 									;As you attempt the search, the sleeping Minotaur awakes, and...
@@ -803,7 +812,7 @@
 						)
 					)
 					((Said 'look/bull,monster,creature')
-						(if (Btst DEFEATED_MINOTAUR)
+						(if (Btst fMinotaurDead)
 							(HighPrint 93 50)
 							;If you've seen one, you've seen them all.
 						else
@@ -812,7 +821,7 @@
 						)
 					)
 					((Said 'kill,chop,beat/bull,monster,creature')
-						(if (Btst DEFEATED_MINOTAUR)
+						(if (Btst fMinotaurDead)
 							(HighPrint 93 52)
 							;Why bother?  He's out for the count.
 						else
@@ -829,7 +838,7 @@
 	(method (getHurt damage)
 		(cond 
 			(
-			(<= (= monsterHealth (- monsterHealth damage)) 0) (self setScript: minotaurDies) (Bset DEFEATED_MINOTAUR))
+			(<= (= monsterHealth (- monsterHealth damage)) 0) (self setScript: minotaurDies) (Bset fMinotaurDead))
 			((not local6) (rm93 setScript: delayLook))
 		)
 	)
@@ -865,7 +874,7 @@
 				)
 			)
 			(1
-				(= local3 2)
+				(= minotaurDir 2)
 				(if (localproc_001c)
 					(minotaur setLoop: 3 setCel: 1)
 					(= cycles 1)
@@ -875,7 +884,7 @@
 			)
 			(2
 				(minotaur setCel: 2)
-				(= local3 3)
+				(= minotaurDir 3)
 				(= cycles 1)
 			)
 			(3
@@ -885,32 +894,36 @@
 						(ego inRect: 238 0 330 106)
 						(ego inRect: 61 153 82 154)
 					)
-					(if (< 5 minotaurMutter) (= minotaurMutter 0) else (++ minotaurMutter))
+					(if (< 5 minotaurMutter)
+						(= minotaurMutter 0)
+					else
+						(++ minotaurMutter)
+					)
 					(switch minotaurMutter
 						(0
 							(HighPrint 93 54)
 							;"I've been out here too long.  My imagination is taking over."
-							)
+						)
 						(1
 							(HighPrint 93 55)
 							;"What was that noise?"
-							)
+						)
 						(2
 							(HighPrint 93 56)
 							;"Must be those Brigands playing games."
-							)
+						)
 						(3
 							(HighPrint 93 57)
 							;"I guess I'm just getting jumpy."
-							)
+						)
 						(4
 							(HighPrint 93 58)
 							;"Is anyone there?"
-							)
+						)
 						(5
 							(HighPrint 93 59)
 							;"This place is spooky."
-							)
+						)
 					)
 					(client setScript: patrol)
 				else
@@ -960,7 +973,7 @@
 				)
 			)
 			(1
-				(Bset BRIGAND_GATE_OPEN)
+				(Bset fBrigGateOpen)
 				(ego illegalBits: cWHITE)
 				(HandsOn)
 				(self dispose:)
@@ -984,7 +997,7 @@
 				)
 			)
 			(1
-				(Bclr BRIGAND_GATE_OPEN)
+				(Bclr fBrigGateOpen)
 				(ego illegalBits: (| cWHITE cLRED))
 				(HandsOn)
 				(self dispose:)
@@ -1019,8 +1032,6 @@
 )
 
 (instance patrol of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1029,7 +1040,7 @@
 					(self changeState: 5)
 				else
 					(= minotaurStunned 0)
-					(switch local3
+					(switch minotaurDir
 						(0 (self changeState: 10))
 						(1 (self changeState: 14))
 						(2
@@ -1051,14 +1062,14 @@
 			)
 			(1
 				(= local4 0)
-				(= local3 1)
+				(= minotaurDir 1)
 				(minotaur view: vMinotaur setLoop: 3 setCel: 0)
 				(= cycles 1)
 			)
 			(2 (self changeState: 14))
 			(3
 				(= local4 1)
-				(= local3 0)
+				(= minotaurDir 0)
 				(minotaur view: vMinotaur setLoop: 3 setCel: 1)
 				(= cycles 1)
 			)
@@ -1068,12 +1079,12 @@
 			)
 			(6
 				(= local6 0)
-				(= local3 2)
+				(= minotaurDir 2)
 				(self changeState: 0)
 			)
 			(10
 				(= local4 1)
-				(= local3 0)
+				(= minotaurDir 0)
 				(minotaur
 					view: vMinotaur
 					setLoop: 0
@@ -1092,13 +1103,13 @@
 				(= cycles 1)
 			)
 			(13
-				(= local3 1)
+				(= minotaurDir 1)
 				(minotaur view: vMinotaur setLoop: 2 setCel: 1)
 				(= cycles 1)
 			)
 			(14
 				(= local4 0)
-				(= local3 1)
+				(= minotaurDir 1)
 				(minotaur
 					view: vMinotaur
 					setLoop: 1
@@ -1117,7 +1128,7 @@
 				(= cycles 1)
 			)
 			(17
-				(= local3 0)
+				(= minotaurDir 0)
 				(minotaur view: vMinotaur setLoop: 2 setCel: 3)
 				(= cycles 1)
 			)
@@ -1127,8 +1138,6 @@
 )
 
 (instance minotaurCalmed of Script
-	(properties)
-	
 	(method (doit)
 		(if (and (not (ego script?)) (not isHandsOff))
 			(HandsOff)
@@ -1144,7 +1153,7 @@
 				(minotaur setCycle: 0 setMotion: 0)
 			)
 			(1
-				(switch local3
+				(switch minotaurDir
 					(0 (self changeState: 3))
 					(1 (self changeState: 8))
 					(2 (self changeState: 10))
@@ -1189,8 +1198,6 @@
 )
 
 (instance minotaurDazzled of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1266,7 +1273,7 @@
 				)
 			)
 			(2
-				(= minotaurStunned 0)
+				(= minotaurStunned FALSE)
 				(minotaur stopUpd:)
 				(HandsOn)
 				(self dispose:)
@@ -1276,8 +1283,6 @@
 )
 
 (instance minotaurDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

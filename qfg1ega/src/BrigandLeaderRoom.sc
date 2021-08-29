@@ -21,7 +21,7 @@
 )
 
 (local
-	local0
+	getSomething
 	tookPotions
 	leaderInRoom
 	elsaInRoom
@@ -51,9 +51,9 @@
 		(LoadMany SOUND 88 66)
 		(cSound fade:)
 		(super init:)
-		(SolvePuzzle POINTS_ENTERBRIGANDLEADERROOM 12)
+		(SolvePuzzle f97EnterLeaderRoom 12)
 		(StatusLine enable:)
-		(ChangeGait MOVE_WALK 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(NormalEgo)
 		(dragon init: setPri: 0 addToPic:)
 		(mula init: ignoreActors: setPri: 11 addToPic:)
@@ -71,7 +71,7 @@
 		(switch prevRoomNum
 			(172
 				(HandsOff)
-				(if (Btst SAVED_ELSA)
+				(if (Btst fSavedElsa)
 					(= elsaInRoom TRUE)
 					(leader
 						init:
@@ -203,13 +203,11 @@
 					)
 					(
 						(or
-							(Said
-								'cast,use,throw,splash/disenchant,potion[<disenchant]'
-							)
+							(Said 'cast,use,throw,splash/disenchant,potion[<disenchant]')
 							(Said 'disenchant')
 						)
 						(if (ego has: iDisenchant)
-							(Bset SAVED_ELSA)
+							(Bset fSavedElsa)
 							(ego use: iDisenchant)
 							(HighPrint 97 13)
 							;You throw the Dispel Potion on the brigand leader.
@@ -261,7 +259,7 @@
 							(and (ego inRect: 100 108 233 135) (not (ego has: iMagicMirror)))
 								(HighPrint 97 21)
 								;You pick up the mirror and store it away.
-								(SolvePuzzle POINTS_TAKEMAGICMIRROR 10)
+								(SolvePuzzle f97GetMirror 10)
 								(ego get: iMagicMirror)
 								(mirror dispose:)
 							)
@@ -312,14 +310,14 @@
 								(else
 									(HighPrint 97 29)
 									;A quick but thorough search of the desk discloses two Healing Potions and a mirror.
-									)
+								)
 							)
 						else
 							(NotClose)
 						)
 					)
 					((Said 'get')
-						(= local0 1)
+						(= getSomething TRUE)
 						(if (and (ego has: iHealingPotion) (ego has: iMagicMirror))
 							(HighPrint 97 30)
 							;You don't have time to take anything else.
@@ -607,7 +605,7 @@
 	(properties)
 	
 	(method (doit)
-		(if (and (<= 8 state) (<= state 9) local0)
+		(if (and (<= 8 state) (<= state 9) getSomething)
 			(self changeState: 10)
 		)
 		(super doit:)

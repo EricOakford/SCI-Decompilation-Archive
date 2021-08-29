@@ -11,8 +11,6 @@
 )
 
 (instance openGate of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 194)
@@ -34,8 +32,6 @@
 )
 
 (instance closeGate of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 194)

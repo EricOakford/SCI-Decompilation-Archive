@@ -10,8 +10,6 @@
 )
 
 (instance waHooHooHooey of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 138)
@@ -49,7 +47,8 @@
 						#icon vEgoClimbing 2 5
 						#title {Your figure remains still and silent.}
 					)
-					;Had you been healthier, you probably could have survived that fall.  In your weakened condition, however, you succumbed to your injuries.
+					;Had you been healthier, you probably could have survived that fall. 
+					; In your weakened condition, however, you succumbed to your injuries.
 				else
 					(ego
 						view: vEgoDefeated
@@ -65,11 +64,13 @@
 				(ego cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(3
-				(Bclr CLIMBED_HENRY_CLIFF)
-				(if (Btst FLAG_274) (Bclr FLAG_274) else
+				(Bclr fClimbedHenryCliff)
+				(if (Btst fEgoKnockedOffCliff)
+					(Bclr fEgoKnockedOffCliff)
+				else
 					(HighPrint 138 1)
 					;Man, that's a narrow ledge up there!
-					)
+				)
 				(HandsOn)
 				(ego setLoop: 2)
 				(NormalEgo)

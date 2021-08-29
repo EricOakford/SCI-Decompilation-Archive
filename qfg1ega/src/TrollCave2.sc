@@ -13,6 +13,7 @@
 (public
 	rm89 0
 )
+
 (enum
 	trollABSENT
 	trollVISIBLE
@@ -56,7 +57,7 @@
 	(method (init)
 		(cSound number: 23 loop: -1 play:)
 		(super init:)
-		(SolvePuzzle POINTS_ENTERSECRETENTRANCE 2)
+		(SolvePuzzle f89EnterCave 2)
 		(StatusLine enable:)
 		(NormalEgo)
 		(ego init:)
@@ -68,7 +69,7 @@
 							(= monsterNum 0)
 							trollDYING
 						)
-						((Btst DEFEATED_FRED_89)
+						((Btst fBeatFred89)
 							(troll
 								view: vTrollDefeated
 								posn: 65 105
@@ -79,7 +80,7 @@
 							)
 							trollDEAD
 						)
-						((or (Btst SAID_HIDEN_GOSEKE) (Btst DEFEATED_FRED))
+						((or (Btst fHidenGoseke) (Btst fBeatFred))
 							trollABSENT
 						)
 						(else
@@ -147,7 +148,11 @@
 								;You can watch the water drop down from the stalactites and ooze down the sides of the stalagmites.
 							)
 							((Said '[<at,around][/!*,cave,room]')
-								(Print 89 2 #at -1 120 #width 300 #mode teJustCenter)
+								(Print 89 2
+									#at -1 120
+									#width 300
+									#mode teJustCenter
+								)
 								;As your eyes adjust to the darkness, you see by the light of the fungus that this passageway twists
 								;its way through the mountain.  It is cold in here, and you can smell stagnant water and faint hints of decay.
 							)
@@ -207,7 +212,10 @@
 								(HighPrint 89 14)
 								;You can't do that.
 							)
-							((ego inRect: 54 78 100 125) (= searchWhat 0) (self setScript: egoSearch))
+							((ego inRect: 54 78 100 125)
+								(= searchWhat searchTROLL)
+								(self setScript: egoSearch)
+							)
 							(else
 								(HighPrint 89 15)
 								;You need to get closer to the dead Troll.
@@ -307,7 +315,7 @@
 						)
 					)
 					((Said 'fight')
-						(if (Btst DEFEATED_FRED)
+						(if (Btst fBeatFred)
 							(HighPrint 89 28)
 							;The cave troll is dead.
 						else
@@ -333,8 +341,6 @@
 )
 
 (instance trollAttacks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -357,13 +363,11 @@
 )
 
 (instance trollDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset DEFEATED_FRED_89)
-				(Bset DEFEATED_FRED)
+				(Bset fBeatFred89)
+				(Bset fBeatFred)
 				(HandsOff)
 				(troll
 					view: vTrollDefeated
@@ -387,8 +391,6 @@
 )
 
 (instance egoSearch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -434,8 +436,6 @@
 )
 
 (instance fromAntwerp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -444,7 +444,8 @@
 			(1
 				(if (not (Btst fBeenIn89))
 					(Print 89 2 #at -1 120 #width 300 #mode teJustCenter)
-					; As your eyes adjust to the darkness, you see by the light of the fungus that this passageway twists its way through the mountain.
+					; As your eyes adjust to the darkness, you see by the light
+					; of the fungus that this passageway twists its way through the mountain.
 					;It is cold in here, and you can smell stagnant water and faint hints of decay.
 				)
 			)

@@ -10,8 +10,6 @@
 )
 
 (instance egoTripsNorth of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 188)
@@ -71,7 +69,8 @@
 			(4
 				(EgoDead 188 0
 					#icon vEgoFall2 0 6
-					#title {This is a ridiculous way to die})
+					#title {This is a ridiculous way to die}
+				)
 					;How embarrassing, to get this far and then fail to see the trip rope.  How did they get that Antwerp up there?
 				(self dispose:)
 			)

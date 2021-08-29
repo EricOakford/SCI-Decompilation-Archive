@@ -9,8 +9,6 @@
 )
 
 (instance fallRugs of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 191)
@@ -79,7 +77,8 @@
 			(10
 				(EgoDead 191 0
 					#icon vEgoFall2 0 2
-					#title {A travelling man.})
+					#title {A travelling man.}
+				)
 					;You seem to be having a rugged time of it.  You've had a terrible ca-tapestry.
 				(self dispose:)
 			)

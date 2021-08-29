@@ -12,21 +12,19 @@
 )
 
 (local
-	newSound
+	soundObj
 	local1
 	hitKobold
 	koboldX
 	koboldY
-	[theGKoboldX 6] = [195 225 262 17 17 44]
-	[theGKoboldY 6] = [47 43 92 47 134 155]
+	toX = [195 225 262 17 17 44]
+	toY = [47 43 92 47 134 155]
 )
 (instance flScript of KScript
-	(properties)
-	
 	(method (dispose)
-		(newSound dispose:)
-		(Bclr FLAG_283)
-		(KoboldFight (not (Btst DEFEATED_KOBOLD)))
+		(soundObj dispose:)
+		(Bclr fDartOnKobold)
+		(KoboldFight (not (Btst fKoboldDead)))
 		(DisposeScript 110)
 	)
 	
@@ -39,9 +37,9 @@
 				)
 			)
 			(1
-				(if (and hitKobold (Btst FLAG_281))
+				(if (and hitKobold (Btst fKoboldProtected))
 					(= hitKobold FALSE)
-					(Bset FLAG_280)
+					(Bset fDartReversed)
 					(client
 						y: (+ (client y?) 15)
 						z: 15
@@ -67,27 +65,27 @@
 					cycleSpeed: 1
 					setCycle: EndLoop self
 				)
-				(newSound number: (SoundFX 45) play:)
+				(soundObj number: (SoundFX 45) play:)
 			)
-			(3 (client dispose:))
+			(3
+				(client dispose:)
+			)
 		)
 	)
 )
 
 (instance castFlame of KScript
-	(properties)
-	
-	(method (changeState newState &tmp temp0 egoLoop)
+	(method (changeState newState &tmp i egoLoop)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(Face ego theKobold)
-				(Bset FLAG_283)
+				(Bset fDartOnKobold)
 				(= egoLoop (ego loop?))
 				(if
 					(or
 						(and fightingKobold egoLoop)
-						(and (not fightingKobold) (& egoLoop $0001))
+						(and (not fightingKobold) (& egoLoop 1))
 					)
 					(= egoLoop loopW)
 				else
@@ -101,19 +99,18 @@
 				)
 			)
 			(1
-				(if
-				(TrySkill MAGIC 0 (- 50 (/ (ego distanceTo: theKobold) 5)))
+				(if (TrySkill MAGIC 0 (- 50 (/ (ego distanceTo: theKobold) 5)))
 					(= hitKobold TRUE)
 					(= koboldX (theKobold x?))
 					(= koboldY (theKobold y?))
 				else
-					(= temp0 (+ (Random 0 2) (* egoKoboldBattleLoop 3)))
+					(= i (+ (Random 0 2) (* egoKoboldBattleLoop 3)))
 					(= hitKobold FALSE)
-					(= koboldX [theGKoboldX temp0])
-					(= koboldY [theGKoboldY temp0])
+					(= koboldX [toX i])
+					(= koboldY [toY i])
 				)
 				(ego setCycle: EndLoop)
-				((= newSound (Sound new:))
+				((= soundObj (Sound new:))
 					number: (SoundFX 33)
 					priority: 3
 					init:

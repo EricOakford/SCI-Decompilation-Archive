@@ -12,7 +12,7 @@
 )
 
 (local
-	local0
+	hermitHeadMove
 )
 (procedure (HenrySays &tmp [str 200])
 	(Format @str &rest)
@@ -20,8 +20,6 @@
 )
 
 (instance hermitHits of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 139)
@@ -30,8 +28,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (Btst KNOCKED_HENRY_DOOR)
-					(Bclr KNOCKED_HENRY_DOOR)
+				(if (Btst fKnockedOnHenryDoor)
+					(Bclr fKnockedOnHenryDoor)
 					(HenrySays 139 0)
 					;"Please move away\nfrom the door."
 					(User canControl: TRUE)
@@ -41,8 +39,10 @@
 				)
 			)
 			(1
-				(if (not (ego script?)) (HandsOff))
-				(Bset HENRY_DOOR_OPEN)
+				(if (not (ego script?))
+					(HandsOff)
+				)
+				(Bset fHenryDoorOpen)
 				(client
 					view: vHenryDoor
 					loop: 2
@@ -59,15 +59,18 @@
 							loop: 1
 							play:
 						)
-						(Bset FLAG_274)
+						(Bset fEgoKnockedOffCliff)
 						(ego setScript: (ScriptID 138 0))
 					)
-					((== (ego onControl: origin) cYELLOW) (Bset FLAG_276) (ego setPri: 0))
+					((== (ego onControl: origin) cYELLOW)
+						(Bset fEgoSquashed)
+						(ego setPri: 0)
+					)
 				)
 				(client setCycle: EndLoop self)
 			)
 			(3
-				(if (Btst FLAG_276)
+				(if (Btst fEgoSquashed)
 					((ScriptID 82 4)
 						number: (SoundFX 84)
 						loop: 1
@@ -88,9 +91,8 @@
 				(= cycles 5)
 			)
 			(5
-				(if
-				(and (Btst CLIMBED_HENRY_CLIFF) (not (Btst 274)) (not (Btst 276)))
-					(Bclr CLIMBED_HENRY_CLIFF)
+				(if (and (Btst fClimbedHenryCliff) (not (Btst fEgoKnockedOffCliff)) (not (Btst fEgoSquashed)))
+					(Bclr fClimbedHenryCliff)
 					(HenrySays 139 1)
 					;"Oh.  'ello!    Go on in."
 					(ego setScript: (ScriptID 82 2))
@@ -102,7 +104,7 @@
 				)
 			)
 			(6
-				(++ local0)
+				(++ hermitHeadMove)
 				((ScriptID 82 1) setCel: 0)
 				(= cycles 3)
 			)
@@ -111,14 +113,14 @@
 				(= cycles 3)
 			)
 			(8
-				(if (< local0 4)
+				(if (< hermitHeadMove 4)
 					(self changeState: 6)
 				else
 					(self cue:)
 				)
 			)
 			(9
-				(if (Btst FLAG_276)
+				(if (Btst fEgoSquashed)
 					(ego
 						view: vEgoFallDown
 						setLoop: 0
@@ -133,8 +135,10 @@
 				(client setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(10
-				(Bclr HENRY_DOOR_OPEN)
-				(if (Btst FLAG_276) (ego setScript: (ScriptID 82 3)))
+				(Bclr fHenryDoorOpen)
+				(if (Btst fEgoSquashed)
+					(ego setScript: (ScriptID 82 3))
+				)
 				(client setScript: 0)
 			)
 		)

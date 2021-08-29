@@ -46,7 +46,7 @@
 	local46 = [6 6 10 10 13]
 )
 (procedure (KoboldFight param1)
-	(if (and param1 (not (Btst fFlag283)))
+	(if (and param1 (not (Btst fDartOnKobold)))
 		(HandsOn)
 	)
 	(if fightingKobold
@@ -262,7 +262,7 @@
 				(Load VIEW vEgoFightWithSword)
 			else
 				(Load VIEW vEgoFightDaggerNoCape)
-				(Load VIEW vEgoThrowDagger)
+				(Load VIEW vEgoThrowingDagger)
 			)
 		)
 		(if (not (Btst fKoboldChestUnlocked))
@@ -776,8 +776,8 @@
 	)
 	
 	(method (init)
-		(Bclr fFlag280)
-		(Bclr fFlag281)
+		(Bclr fDartReversed)
+		(Bclr fKoboldProtected)
 		(ballSound number: (SoundFX 34) init:)
 		(ballHits number: (SoundFX 45) init:)
 		(if (ego knows: FLAMEDART)
@@ -817,8 +817,6 @@
 )
 
 (instance kobDazzle of KScript
-	(properties)
-	
 	(method (dispose)
 		(= local11 (* register 5))
 		(super dispose:)
@@ -856,7 +854,9 @@
 				(kobold setCel: 5)
 				(= cycles 20)
 			)
-			(6 (client setScript: kobAwake))
+			(6
+				(client setScript: kobAwake)
+			)
 		)
 	)
 )
@@ -901,8 +901,8 @@
 	
 	(method (doit)
 		(localproc_0138)
-		(if (and (Btst fFlag280) (== state 0))
-			(Bclr fFlag280)
+		(if (and (Btst fDartReversed) (== state 0))
+			(Bclr fDartReversed)
 			(self changeState: 3)
 		)
 		(super doit:)
@@ -926,7 +926,7 @@
 						(= cycles (Random 25 50))
 						(= local11 0)
 					)
-					((and (Btst fFightingKobold) (not (Btst fFlag281))) (= cycles (Random 5 15)))
+					((and (Btst fFightingKobold) (not (Btst fKoboldProtected))) (= cycles (Random 5 15)))
 					(koboldCycles 
 						(= cycles koboldCycles)
 						(= koboldCycles 0)
@@ -938,7 +938,7 @@
 			(1
 				(client view: vKoboldSitting)
 				(cond 
-					((and (Btst fFightingKobold) (not (Btst fFlag281))) (client setScript: castRev))
+					((and (Btst fFightingKobold) (not (Btst fKoboldProtected))) (client setScript: castRev))
 					(theCycles (= theCycles 0) (client setScript: castTele))
 					(else (client view: vKoboldMagic cycleSpeed: 0 setCycle: EndLoop self))
 				)
@@ -1038,7 +1038,7 @@
 				(= cycles 10)
 			)
 			(1
-				(Bset fFlag281)
+				(Bset fKoboldProtected)
 				(client setScript: kobAwake)
 			)
 		)

@@ -34,7 +34,7 @@
 
 (local
 	local0
-	local1
+	angYorickToEgo
 	local2
 	local3
 	local4
@@ -42,25 +42,23 @@
 	local6
 	local7
 	local8
-	chatJester
-	[fly 6]
-	[flyX 6] = [160 164 160 167 151 155]
-	[flyY 6] = [14 21 9 12 13 21]
+	talkRet
+	fly
+	flyX = [160 164 160 167 151 155]
+	flyY = [14 21 9 12 13 21]
 )
 (procedure (NoTalking)
-	(if (Btst PULLED_CHAIN)
+	(if (Btst fPulledChain)
 		(HighPrint 96 0)
 		;It looks like the talking is over.
-		else
+	else
 		(HighPrint 96 1)
 		;"No more talking, my friend.  Let's have fun!"
-		)
+	)
 )
 
 (procedure (AddFlies &tmp i)
-	(= i 0)
-	(while (< i 6)
-		;EO: This didn't decompile correctly.
+	(for ((= i 0)) (< i 6) ((++ i))
 		(= [fly i] (Clone aFly))
 		([fly i]
 			ignoreActors:
@@ -69,12 +67,11 @@
 			setLoop: 9
 			setPri: 15
 		)
-		(if (< howFast 2)
+		(if (< howFast fast)
 			([fly i] stopUpd: addToPic:)
 		else
 			([fly i] setCycle: Forward setMotion: Wander)
 		)
-		(++ i)
 	)
 )
 
@@ -94,10 +91,10 @@
 )
 
 (instance isScript of Code
-	(properties)
-	
-	(method (doit param1)
-		(if (param1 respondsTo: #script) (param1 script?))
+	(method (doit obj)
+		(if (obj respondsTo: #script)
+			(obj script?)
+		)
 	)
 )
 
@@ -185,45 +182,47 @@
 	
 	(method (doit)
 		(cond 
-			((> local4 1) (-- local4))
+			((> local4 1)
+				(-- local4)
+			)
 			((== local4 1)
 				(= local4 local3)
 				(if
 					(and
-						(Btst JESTER_NO_MORE_TALKING)
+						(Btst fNoMoreTalking)
 						(not (cast firstTrue: #perform isScript))
-						(not (Btst FLAG_263))
+						(not (Btst fGoThruDoorway))
 						(not isHandsOff)
 						(< (ego x?) 295)
 						(!= (ego onControl: origin) cYELLOW)
 						(!= (ego onControl: origin) cLMAGENTA)
 						(not local2)
 					)
-					(Bset FLAG_265)
+					(Bset fYorickThrewSomething)
 					(self setScript: (ScriptID 229 0))
 				)
 			)
 		)
-		(if (Btst PULLED_CHAIN)
+		(if (Btst fPulledChain)
 			(cond 
 				(
 					(<
-						(= local1
+						(= angYorickToEgo
 							(GetAngle (yorick x?) (yorick y?) (ego x?) (ego y?))
 						)
 						112
 					)
 					(if (!= (yorick cel?) 4) (yorick setCel: 4))
 				)
-				((< local1 145) (if (!= (yorick cel?) 3) (yorick setCel: 3)))
-				((< local1 220) (if (!= (yorick cel?) 2) (yorick setCel: 2)))
-				((< local1 253) (if (!= (yorick cel?) 1) (yorick setCel: 1)))
+				((< angYorickToEgo 145) (if (!= (yorick cel?) 3) (yorick setCel: 3)))
+				((< angYorickToEgo 220) (if (!= (yorick cel?) 2) (yorick setCel: 2)))
+				((< angYorickToEgo 253) (if (!= (yorick cel?) 1) (yorick setCel: 1)))
 				((!= (yorick cel?) 0) (yorick setCel: 0))
 			)
 		)
 		(cond 
-			((and (Btst BEFRIENDED_JESTER) (not local7) (not local8))
-				(SolvePuzzle POINTS_TALKTOJESTERABOUTELSA 8)
+			((and (Btst fBefriendedYorick) (not local7) (not local8))
+				(SolvePuzzle f96AskAboutElsa 8)
 				(= local7 1)
 				(head dispose:)
 				(self view: vYorickLeave setLoop: 0 setCel: 0)
@@ -273,11 +272,11 @@
 			)
 			((Said 'chat>')
 				(cond 
-					((Btst JESTER_NO_MORE_TALKING) (NoTalking) (event claimed: TRUE))
+					((Btst fNoMoreTalking) (NoTalking) (event claimed: TRUE))
 					((Said '/yorick')
-						(if (not (Btst BEFRIENDED_JESTER))
-							(SolvePuzzle POINTS_TALKTOJESTER 2)
-							(Bset BEFRIENDED_JESTER)
+						(if (not (Btst fBefriendedYorick))
+							(SolvePuzzle f96TalkToJester 2)
+							(Bset fBefriendedYorick)
 							(HighPrint 96 7)
 							;"You know me?  Then perhaps you have come to help.  Perhaps you are able to take the child from the band."
 						else
@@ -292,15 +291,15 @@
 				)
 			)
 			((Said 'ask>')
-				(if (Btst JESTER_NO_MORE_TALKING)
+				(if (Btst fNoMoreTalking)
 					(NoTalking)
 					(event claimed: TRUE)
 				else
-					(= chatJester TRUE)
+					(= talkRet TRUE)
 					(cond 
 						((Said '//elsa')
-							(if (not (Btst BEFRIENDED_JESTER))
-								(Bset BEFRIENDED_JESTER)
+							(if (not (Btst fBefriendedYorick))
+								(Bset fBefriendedYorick)
 								(HighPrint 96 10)
 								;"You know Elsa?  Then perhaps you have come to help.  Perhaps you are able to take the child from the band."
 								(HighPrint 96 11)
@@ -314,12 +313,13 @@
 							;"She plans to move the entire band away from the valley as soon as the snow clears.
 							;If that happens, I know she will never be disenchanted."
 						)
-						(
-						(Said '//enchantment,disenchantment,spell,curse')
-							(if (not (Btst BEFRIENDED_JESTER)) (Bset BEFRIENDED_JESTER)
+						((Said '//enchantment,disenchantment,spell,curse')
+							(if (not (Btst fBefriendedYorick))
+								(Bset fBefriendedYorick)
 								(HighPrint 96 15)
-								;"You know about the enchantment?  Then perhaps you have come to help.  Perhaps you are able to take the child from the band."
-								)
+								;"You know about the enchantment?  Then perhaps you have come to help. 
+								; Perhaps you are able to take the child from the band."
+							)
 							(HighPrint 96 16)
 							;"Elsa doesn't know who she really is.  That's part of the enchantment."
 							(HighPrint 96 17)
@@ -330,10 +330,11 @@
 							;"If you're going to be the big Hero, I hope you brought a Dispel Potion or something."
 						)
 						((Said '//yorick')
-							(if (not (Btst BEFRIENDED_JESTER)) (Bset BEFRIENDED_JESTER)
+							(if (not (Btst fBefriendedYorick)) (Bset fBefriendedYorick)
 								(HighPrint 96 7)
-								;"You know me?  Then perhaps you have come to help.  Perhaps you are able to take the child from the band."
-								)
+								;"You know me?  Then perhaps you have come to help. 
+								; Perhaps you are able to take the child from the band."
+							)
 							(HighPrint 96 20)
 							;"Alas, poor Yorick!  I know me well."
 							(HighPrint 96 21)
@@ -346,41 +347,46 @@
 						)
 						((Said '//i')
 							(HighPrint 96 24)
-							;"Can't you see that I am he?  I try to inspire (before they expire) a sense of awe and majesty in those that enter here."
+							;"Can't you see that I am he?  I try to inspire (before they expire)
+							; a sense of awe and majesty in those that enter here."
 							(HighPrint 96 25)
-							;"After all, I am the Brigand Warlock.  One has to keep up one's appearances, or appear to keep up with one's peers."
-							)
+							;"After all, I am the Brigand Warlock. 
+							; One has to keep up one's appearances, or appear to keep up with one's peers."
+						)
 						((Said '//warlock,caravan')
 							(HighPrint 96 26)
 							;"Everybody needs to know a few magic tricks to get by these days.
 							;You'd be surprised how effective Sleeping Powder is for taking out the guards of a caravan."
-							)
+						)
 						((Said '//powder,banana,trick')
 							(HighPrint 96 27)
 							;"You snooze, you lose.  And my banana trick has appeal of its own."
-							)
+						)
 						((Said '//jester')
 							(HighPrint 96 28)
 							;"For thirty years I was the Court Jester.  Now I jest enjoy watching other people take the pratfalls."
-							)
+						)
 						((Said '//leader[<bandit,your,about]')
 							(HighPrint 96 29)
 							;"I'll protect the Brigand Leader with everything I've got.  That's no laughing matter as I get madder."
-							)
+						)
 						((Said '//potion<disenchant')
-							(if (not (Btst BEFRIENDED_JESTER)) (Bset BEFRIENDED_JESTER)
+							(if (not (Btst fBefriendedYorick))
+								(Bset fBefriendedYorick)
 								(HighPrint 96 15)
-								;"You know about the enchantment?  Then perhaps you have come to help.  Perhaps you are able to take the child from the band."
-								)
+								;"You know about the enchantment?  Then perhaps you have come to help. 
+								; Perhaps you are able to take the child from the band."
+							)
 							(HighPrint 96 30)
 							;"The true Dispel Potion will break an enchantment.
 							;You must splash the potion on Elsa as soon as you can, or she'll skewer you for sure.
 							;She's more than a match for old "Swordy Lordy" now!"
 						)
-						((Said '//potion') (= chatJester FALSE)
+						((Said '//potion')
+							(= talkRet FALSE)
 							(HighPrint 96 31)
 							;"Of which potion do you speak?"
-							)
+						)
 						((Said '//swordy,lordy')
 							(HighPrint 96 32)
 							;"You must know the "Blade Braggart".  He used to show off in the castle courtyard all the time."
@@ -397,38 +403,40 @@
 							;"There are plenty of doors.  You wouldn't want me to spoil your fun, now!"
 							(HighPrint 96 37)
 							;"Either you'll figure it out in the end, or you'll end it before you're out."
-							)
+						)
 						((Said '//room,maze,path,aisle')
 							(HighPrint 96 38)
 							;"This room is my way of keeping the brigands from bothering the Leader about raises, since it tends to raze the brigands."
 							(HighPrint 96 39)
 							;"I designed it myself!  This place has people rolling in the aisles."
-							)
+						)
 						((Said '//leer,(mirror[<magic,leer,about])')
 							(HighPrint 96 40)
-							;"Ah yes, the "Mirror with the Leer", as Erasmus calls it (or was it Fenrus?).  It reflects a spell back on the caster of the spell."
+							;"Ah yes, the "Mirror with the Leer", as Erasmus calls it (or was it Fenrus?). 
+							; It reflects a spell back on the caster of the spell."
 							(HighPrint 96 41)
 							;The Warlock ruminates:
 							;"Now where did I put that mirror...
 							;was it on the desk in Elsa's office?"
-							)
+						)
 						((Said '//bull,toro,bull')
 							(HighPrint 96 42)
-							;"Toro is the minotaur that guards this fortress.  Elsa found him when he was just a calf, and he's kowtowed to her ever since."
+							;"Toro is the minotaur that guards this fortress. 
+							; Elsa found him when he was just a calf, and he's kowtowed to her ever since."
 							(HighPrint 96 43)
 							;He guarantees that the brigands won't give Elsa any bull."
-							)
+						)
 						((Said '//castle')
 							(HighPrint 96 44)
 							;"This fort is the brigand's palace.  It has been well-constructed."
-							)
+						)
 						((Said '//baron,(dad[<leader,elsa,about])')
 							(HighPrint 96 45)
 							;"Would he be surprised to see his little girl now!"
-							)
+						)
 						((Said '//*')
-							(= chatJester 0)
-							(if (Btst BEFRIENDED_JESTER)
+							(= talkRet FALSE)
+							(if (Btst fBefriendedYorick)
 								(HighPrint 96 46)
 								;"If you have business to do, then get busy doing your business."
 							else
@@ -436,24 +444,26 @@
 									(0
 										(HighPrint 96 47)
 										;"Can't you see that's nothing to me?  You'd better flee."
-										)
+									)
 									(1
 										(HighPrint 96 48)
 										;"The brigands will come to spoil your fun.  You'll be undone."
-										)
+									)
 									(2
 										(HighPrint 96 49)
 										;"The brigands tend to hold a grudge, and they won't begrudge to tend to you."
-										)
+									)
 									(3
 										(HighPrint 96 50)
 										;"If you have any famous last statements, you'd better say the secret word, or you'll lament your last state."
-										)
+									)
 								)
 							)
 						)
 					)
-					(if chatJester (SolvePuzzle POINTS_TALKTOJESTER 2))
+					(if talkRet
+						(SolvePuzzle f96TalkToJester 2)
+					)
 				)
 			)
 		)
@@ -470,13 +480,13 @@
 	)
 	
 	(method (doit)
-		(= local1
+		(= angYorickToEgo
 			(GetAngle (yorick x?) (yorick y?) (ego x?) (ego y?))
 		)
 		(if (and (== (head loop?) 6) (!= (head cel?) 3))
 			(cond 
-				((< local1 135) (if (!= (head cel?) 2) (head setCel: 2)))
-				((< local1 225) (if (!= (head cel?) 1) (head setCel: 1)))
+				((< angYorickToEgo 135) (if (!= (head cel?) 2) (head setCel: 2)))
+				((< angYorickToEgo 225) (if (!= (head cel?) 1) (head setCel: 1)))
 				((!= (head cel?) 0) (head setCel: 0))
 			)
 		)
@@ -532,7 +542,11 @@
 					(-- local5)
 				)
 			)
-			((== local5 1) (= local5 0) (= local6 0) (self setCycle: BegLoop))
+			((== local5 1)
+				(= local5 0)
+				(= local6 0)
+				(self setCycle: BegLoop)
+			)
 		)
 		(super doit:)
 	)
@@ -583,9 +597,9 @@
 	)
 	
 	(method (doit)
-		(if (and (Btst FLAG_269) (not script))
-			(Bclr FLAG_269)
-			(Bset OPENING_LEADER_DOOR)
+		(if (and (Btst fBallConks) (not script))
+			(Bclr fBallConks)
+			(Bset fOpeningDoor)
 			(ego
 				setPri: (+ (ego priority?) 1)
 				setScript: (ScriptID 234 0)
@@ -659,8 +673,8 @@
 	)
 	
 	(method (doit)
-		(if (and (Btst FLAG_270) (not script))
-			(Bclr FLAG_270)
+		(if (and (Btst fFallTrap4) (not script))
+			(Bclr fFallTrap4)
 			(self setScript: (ScriptID 225 0))
 		)
 		(super doit:)
@@ -681,7 +695,9 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vYorick vEgoGrab vJesterRoom vJesterTrapDoor vEgoFall2 vEgoShock vEgoClimbing vEgoFallDown vEgoDefeatedMagic) ;CI: Also add vYorickLeave when they get split up
+		(LoadMany VIEW vYorick vEgoGrab vJesterRoom vJesterTrapDoor vEgoFall2 vEgoShock
+			 vEgoClimbing vEgoFallDown vEgoDefeatedMagic
+		) ;CI: Also add vYorickLeave when they get split up
 		(LoadMany SCRIPT REVERSE JUMP CHASE WANDER 225 226 227 228 229 230 231 232 233 234)
 		(LoadMany SOUND 82
 			(SoundFX 86)
@@ -693,7 +709,7 @@
 		(cSound stop:)
 		(super init: &rest)
 		(mouseDownHandler add: self)
-		(SolvePuzzle POINTS_ENTERBRIGANDJESTERROOM 8)
+		(SolvePuzzle f96EnterJesterRoom 8)
 		(StatusLine enable:)
 		(addToPics
 			add: doorSign MESign secretSign exitSign
@@ -754,7 +770,7 @@
 			init:
 			stopUpd:
 		)
-		(if (< howFast 2)
+		(if (< howFast fast)
 			(globe init: stopUpd: addToPic:)
 		else
 			(globe init: cycleSpeed: 2 setCycle: Forward)
@@ -768,35 +784,35 @@
 		(if
 			(and
 				(!= (ego onControl: origin) cBLACK)
-				(not (Btst OPENING_LEADER_DOOR))
-				(not (Btst FLAG_260))
-				(not (Btst FLAG_271))
+				(not (Btst fOpeningDoor))
+				(not (Btst fRollingOut))
+				(not (Btst fYorickThrows))
 			)
-			(Bset OPENING_LEADER_DOOR)
+			(Bset fOpeningDoor)
 			(switch (ego onControl: origin)
 				(cMAGENTA
-					(Bset FLAG_256)
+					(Bset fFallTrapdoor)
 					(if local6 (= local5 1))
 					(trap1 setScript: (ScriptID 234 1))
 				)
 				(cLBLUE
-					(Bset FLAG_256)
+					(Bset fFallTrapdoor)
 					(if local6 (= local5 1))
 					(trap2 setScript: (ScriptID 234 1))
 				)
 				(cBROWN
-					(Bset FLAG_256)
+					(Bset fFallTrapdoor)
 					(if local6 (= local5 1))
 					(ego setPri: (+ (ego priority?) 1))
 					(trap3 setScript: (ScriptID 234 1))
 				)
 				(cLGREY
-					(Bset FLAG_256)
+					(Bset fFallTrapdoor)
 					(if local6 (= local5 1))
 					(trap3 setScript: (ScriptID 234 1))
 				)
 				(cLCYAN
-					(Bset FLAG_256)
+					(Bset fFallTrapdoor)
 					(if local6 (= local5 1))
 					(trap4 setScript: (ScriptID 234 1))
 				)
@@ -809,7 +825,7 @@
 					(ego setScript: (ScriptID 225 1))
 				)
 				(cRED
-					(Bset FLAG_258)
+					(Bset fFallingOffLedge)
 					(if local6 (= local5 1))
 					(if (> (ego y?) 107)
 						(ego setScript: (ScriptID 234 0))
@@ -825,19 +841,21 @@
 						(ego setScript: (ScriptID 225 1))
 					)
 				)
-				(else  (Bclr OPENING_LEADER_DOOR))
+				(else
+					(Bclr fOpeningDoor)
+				)
 			)
 		)
-		(if (and (not (Btst FLAG_263)) (not (Btst OPENING_LEADER_DOOR)))
+		(if (and (not (Btst fGoThruDoorway)) (not (Btst fOpeningDoor)))
 			(cond 
 				((== (ego edgeHit?) EAST)
-					(if (not (Btst FLAG_260))
-						(Bset FLAG_263)
+					(if (not (Btst fRollingOut))
+						(Bset fGoThruDoorway)
 						(ego setScript: (ScriptID 228 0))
 					)
 				)
 				((and (== (ego edgeHit?) WEST) (< (ego y?) 150))
-					(Bset FLAG_263)
+					(Bset fGoThruDoorway)
 					(if (< (ego y?) 100)
 						(ego setPri: -1 setScript: (ScriptID 228 3))
 					else
@@ -1044,7 +1062,7 @@
 					)
 					((Said 'force/button,door,box')
 						(if (ego inRect: 31 107 86 125)
-							(Bset OPENING_LEADER_DOOR)
+							(Bset fOpeningDoor)
 							(door3 setScript: (ScriptID 230 1))
 						else
 							(HighPrint 96 80)
@@ -1068,18 +1086,20 @@
 								;You dare not unbar the door.  You hear hordes of brigands massing beyond it.
 							)
 							((== (ego onControl: origin) cLRED)
-								(if (Btst FLAG_264)
+								(if (Btst fFakeDoorDown)
 									(ego setScript: (ScriptID 232 1))
 								else
 									(User canInput: FALSE)
 									(door7 setScript: (ScriptID 232 0))
 								)
 							)
-							((== (ego onControl: origin) cLGREEN) (door11 setScript: (ScriptID 233 0)))
+							((== (ego onControl: origin) cLGREEN)
+								(door11 setScript: (ScriptID 233 0))
+							)
 							(else
 								(HighPrint 96 83)
 								;You can't do it.
-								)
+							)
 						)
 					)
 					((Said 'unlock')

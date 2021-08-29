@@ -10,8 +10,6 @@
 )
 
 (instance introToHenry of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -20,7 +18,10 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 10))
+			(0
+				(HandsOff)
+				(= cycles 10)
+			)
 			(1
 				((ScriptID 83 1) caller: self)
 				(if (Btst fBeenIn83)
@@ -44,7 +45,9 @@
 				(Say (ScriptID 83 1) 143 4)
 				;"Good to 'ear anurther's speaking besides meself.  Sos wot can I do for you?"
 			)
-			(5 (HandsOn))
+			(5
+				(HandsOn)
+			)
 		)
 	)
 )

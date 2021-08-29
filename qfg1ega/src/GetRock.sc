@@ -10,13 +10,11 @@
 )
 
 (local
-	egoSignal
-	egoPriority
-	egoIllegalBits
+	savSignal
+	savPriority
+	savIllegalBits
 )
 (instance getRock of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 103)
@@ -25,9 +23,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoSignal (ego signal?))
-				(= egoPriority (ego priority?))
-				(= egoIllegalBits (ego illegalBits?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
 				(HandsOff)
 				(ego
 					view: vEgoThrowing
@@ -40,15 +38,18 @@
 			(1
 				(TimePrint 4 103 0)
 				;You pick up a few small rocks.
-				(ego get: iRock 10 setCycle: BegLoop self)
+				(ego
+					get: iRock 10
+					setCycle: BegLoop self
+				)
 			)
 			(2
 				(NormalEgo)
 				(HandsOn)
 				(ego
-					priority: egoPriority
-					illegalBits: egoIllegalBits
-					signal: egoSignal
+					priority: savPriority
+					illegalBits: savIllegalBits
+					signal: savSignal
 				)
 				(client setScript: 0)
 			)

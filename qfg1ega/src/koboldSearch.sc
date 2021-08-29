@@ -11,10 +11,12 @@
 )
 
 (instance searchCave of KScript
-	(properties)
-	
 	(method (doit)
-		(if (Btst KOBOLD_AWAKE) (self dispose:) else (super doit:))
+		(if (Btst fKoboldAwake)
+			(self dispose:)
+		else
+			(super doit:)
+		)
 	)
 	
 	(method (dispose)
@@ -32,14 +34,16 @@
 				(HandsOff)
 				(ego setAvoider: Avoider)
 				(if (< (ego x?) 160)
-					(= register 0)
+					(= register FALSE)
 					(ego setMotion: MoveTo 37 128 self)
 				else
-					(= register 1)
+					(= register TRUE)
 					(ego setMotion: MoveTo 302 158 self)
 				)
 			)
-			(1 (= seconds 3))
+			(1
+				(= seconds 3)
+			)
 			(2
 				(if register
 					(ego setMotion: MoveTo 37 128 self)
@@ -47,7 +51,9 @@
 					(ego setMotion: MoveTo 302 158 self)
 				)
 			)
-			(3 (= seconds 2))
+			(3
+				(= seconds 2)
+			)
 			(4
 				(ego setMotion: MoveTo 132 163 self)
 			)

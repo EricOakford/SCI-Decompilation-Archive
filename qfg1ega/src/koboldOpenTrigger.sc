@@ -11,8 +11,6 @@
 )
 
 (instance castOpen of KScript
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 115)
@@ -30,7 +28,7 @@
 				)
 			)
 			(1
-				(Bset KOBOLD_CHEST_KNOWN)
+				(Bset fKoboldChestKnown)
 				(if (TrySkill OPEN tryCastOpenKoboldChest 0)
 					(self cue:)
 				else
@@ -39,7 +37,7 @@
 				)
 			)
 			(2
-				(Bset KOBOLD_CHEST_UNLOCKED)
+				(Bset fKoboldChestUnlocked)
 				(CenterPrint 115 0)
 				;The invisible lid of the invisible chest lifts.
 				;A ripple of magical heat in the air informs you of a trap narrowly avoided by your skillful use of the Open spell.
@@ -52,8 +50,6 @@
 )
 
 (instance castTrig of KScript
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 115)
@@ -71,7 +67,7 @@
 				)
 			)
 			(1
-				(Bset KOBOLD_CHEST_KNOWN)
+				(Bset fKoboldChestKnown)
 				((ScriptID rKoboldCave 2) setScript: (ScriptID rKoboldCave 5))
 				(self dispose:)
 			)

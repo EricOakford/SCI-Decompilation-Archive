@@ -13,19 +13,17 @@
 (define NOSAVE	1)		; Don't save underbits
 
 (local
-	currentPool
-	maxPool
+	pointsAvail
+	origAvail
 	[str 80]
 )
-(procedure (ResetLastViewedStats &tmp i)
-	(= i 0)
-	(while (< i 25)
+(procedure (SaveStats &tmp i)
+	(for ((= i 0)) (< i NUMSTATS) ((++ i))
 		(= [oldStats i] [egoStats i])
-		(++ i)
 	)
 )
 
-(procedure (DisplayStatBar x y color)
+(procedure (ShowValue x y color)
 	(Display &rest
 		100 x y ;CI: NOTE: SCICompanion will not compile if a #define is immediately after a &rest modifier
 		p_mode teJustLeft
@@ -35,16 +33,14 @@
 	)
 )
 
-(procedure (DisplayPointsPool)
-	(DisplayStatBar
-		40
-		127
+(procedure (UpdatePoints)
+	(ShowValue 40 127
 		sameColor
-		(Format @str 203 0 currentPool maxPool)
+		(Format @str 203 0 pointsAvail origAvail)
 		p_width 52
 	)
 	;%d / %d
-	(poolBar max: maxPool value: currentPool draw:)
+	(poolBar max: origAvail value: pointsAvail draw:)
 	(RedrawCast)
 )
 
@@ -71,23 +67,26 @@
 					(dirN (event message: UPARROW))
 				)
 			)
-			(if
-			(and (& state dSelected) (== keyDown (event type?)))
+			(if (and (& state dSelected) (== keyDown (event type?)))
 				(switch (event message?)
 					(DOWNARROW
-						(event message: 9)
+						(event message: TAB)
 					)
-					(UPARROW (event message: 3840))
+					(UPARROW
+						(event message: SHIFTTAB)
+					)
 				)
 			)
 		)
-		(return (super handleEvent: event))
+		(return
+			(super handleEvent: event)
+		)
 	)
 )
 
 (class BoxSelector of DItem
 	(properties
-		type $000a
+		type 10	;is custom to QFG
 		state dActive
 	)
 	
@@ -157,21 +156,23 @@
 	)
 	
 	(method (incr amt)
-		(if (not currentPool) (return))
-		(if (< currentPool amt) (= amt currentPool))
+		(if (not pointsAvail) (return))
+		(if (< pointsAvail amt)
+			(= amt pointsAvail)
+		)
 		(if (== [egoStats value] 0)
-			(if (< currentPool 15) (return))
+			(if (< pointsAvail 15) (return))
 			(= [egoStats value] 5)
-			(= currentPool (- currentPool 15))
+			(-= pointsAvail 15)
 		else
-			(= [egoStats value] (+ [egoStats value] amt))
-			(= currentPool (- currentPool amt))
+			(+= [egoStats value] amt)
+			(-= pointsAvail amt)
 		)
 		(self select: 0)
 		(= [egoStats HEALTH] (MaxHealth))
 		(= [egoStats STAMINA] (MaxStamina))
 		(= [egoStats MANA] (MaxMana))
-		(DisplayPointsPool)
+		(UpdatePoints)
 		((ScriptID 204 0) update:)
 		(self select: 1)
 	)
@@ -188,19 +189,21 @@
 		;you can remove 5 and skip the 15-point pool allocation
 		(if (== [egoStats value] 5)
 			(= [egoStats value] 0)
-			(= currentPool (+ currentPool 15))
+			(+= pointsAvail 15)
 		else
-			(if (< delta amt) (= amt delta))
-			(= [egoStats value] (- [egoStats value] amt))
-			(= currentPool (+ currentPool amt))
+			(if (< delta amt)
+				(= amt delta)
+			)
+			(-= [egoStats value] amt)
+			(+= pointsAvail amt)
 		)
-		(self select: 0)
+		(self select: FALSE)
 		(= [egoStats HEALTH] (MaxHealth))
 		(= [egoStats STAMINA] (MaxStamina))
 		(= [egoStats MANA] (MaxMana))
-		(DisplayPointsPool)
+		(UpdatePoints)
 		((ScriptID 204 0) update:)
-		(self select: 1)
+		(self select: TRUE)
 	)
 )
 
@@ -335,20 +338,6 @@
 )
 
 (class CSDButton of DButton
-	(properties
-		type dButton
-		state (| dActive dExit)
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		key 0
-		said 0
-		value 0
-		text 0
-		font 0
-	)
-	
 	(method (handleEvent event &tmp ret)
 		(if (event claimed?) (return FALSE))
 
@@ -364,8 +353,7 @@
 					)
 				)
 			)
-			(if
-			(and (& state dSelected) (== keyDown (event type?)))
+			(if (and (& state dSelected) (== keyDown (event type?)))
 				(switch (event message?)
 					(DOWNARROW
 						(event message: TAB)
@@ -376,7 +364,9 @@
 				)
 			)
 		)
-		(return (super handleEvent: event))
+		(return
+			(super handleEvent: event)
+		)
 	)
 )
 
@@ -414,30 +404,41 @@
 (instance chAlloc of Room
 	(properties
 		picture 401
-		style $0064
+		style PLAIN
 	)
 	
 	(method (init &tmp answer looping nextRoom)
 		(Load SCRIPT 204)
 		(Load SCRIPT 205)
-		(Load VIEW vEgoCharSheet)
+		(Load VIEW vCharSheet)
 		(Load VIEW statusBarView)
 		(super init:)
 		(cSound stop:)
+		
 		;set up initial experience and money
 		(= [egoStats EXPER] 0)
 		(= [invNum iSilver] 10)
 		(= [invNum iGold] 4)
+		
 		;clear items if somebody's restarting
-		(ego use: iSword use: iShield use: iDagger use: iLockPick use: iLeather use: iRations 5)
-		(= userName NULL)
-		(= currentPool 50)
+		(ego
+			use: iSword
+			use: iShield
+			use: iDagger
+			use: iLockPick
+			use: iLeather
+			use: iRations 5
+		)
+		(= userName 0)
+		(= pointsAvail 50)
+		
 		;set the base stats for everyone
 		(= [egoStats OPEN] 0)
 		(= [egoStats DETMAGIC] 0)
 		(= [egoStats ZAP] 0)
 		(= [egoStats FLAMEDART] 0)
 		(= [egoStats FETCH] 0)
+		
 		;set up specific hero type's stats
 		(switch heroType
 			(FIGHTER
@@ -456,7 +457,10 @@
 				(= [egoStats CLIMB]    0)
 				(= [egoStats MAGIC]    0)
 
-				(ego get: iSword get: iShield)
+				(ego
+					get: iSword
+					get: iShield
+				)
 			)
 			(MAGIC_USER
 				(= [egoStats STR]     10)
@@ -493,17 +497,20 @@
 				(= [egoStats CLIMB]    5)
 				(= [egoStats MAGIC]    0)
 
-				(ego get: iDagger get: iLockPick)
+				(ego
+					get: iDagger
+					get: iLockPick
+				)
 				(= lockPickBonus 10)
 			)
 		)
 		
-		(= maxPool currentPool)
+		(= origAvail pointsAvail)
 		(= [egoStats HEALTH] (MaxHealth))
 		(= [egoStats STAMINA] (MaxStamina))
 		(= [egoStats MANA] (MaxMana))
 		(ego get: iLeather get: iRations 5)
-		(ResetLastViewedStats)
+		(SaveStats)
 		
 		;not sure if this is correct or not, based on ASM
 		;EO: I've made corrections
@@ -527,7 +534,7 @@
 			p_color changeColor
 		)
 		;Points Available
-		(poolBar max: maxPool value: currentPool init:)
+		(poolBar max: origAvail value: pointsAvail init:)
 		(Display 203 2
 			p_at 165 127
 			p_width 150
@@ -537,7 +544,7 @@
 		)
 		;TAB to move around,\nArrows to adjust values.
 		
-		(DisplayPointsPool)
+		(UpdatePoints)
 		(RedrawCast)
 		
 		(theGame setCursor: normalCursor TRUE)
@@ -554,7 +561,7 @@
 						(= looping FALSE)
 					)
 				)
-				((> currentPool 0)
+				((> pointsAvail 0)
 					;You still have points to allocate.
 					(if (== (Print 203 4 #button {Start the Game} 1 #button {Use More Points} 2) 1)
 						(= looping FALSE)
@@ -570,7 +577,7 @@
 		(= [egoStats HEALTH] (MaxHealth))
 		(= [egoStats STAMINA] (MaxStamina))
 		(= [egoStats MANA] (MaxMana))
-		(ResetLastViewedStats)
+		(SaveStats)
 		(poolBar dispose:)
 		((ScriptID CHARSHEET 0) dispose:)
 		(statDial dispose:)
@@ -638,7 +645,7 @@
 ;;; 			ldi      0
 ;;; 			sag      userName			;(= userName NULL)
 ;;; 			ldi      50
-;;; 			sal      currentPool		;(= currentPool 50)
+;;; 			sal      pointsAvail		;(= pointsAvail 50)
 ;;; 			pushi    0
 ;;; 			ldi      OPEN
 ;;; 			sagi     egoStats			;(= [egoStats OPEN] 0)
@@ -817,8 +824,8 @@
 ;;; 									;	)
 ;;; code_09bb:
 ;;; 			toss    				;)
-;;; 			lal      currentPool
-;;; 			sal      maxPool			;(= maxPool currentPool)
+;;; 			lal      pointsAvail
+;;; 			sal      origAvail			;(= origAvail pointsAvail)
 ;;; 			pushi    0
 ;;; 			callb    MaxHealth,  0
 ;;; 			push    
@@ -845,7 +852,7 @@
 ;;; 			send     14
 ;;;
 ;;; 			pushi    0
-;;; 			call     ResetLastViewedStats,  0	;(ResetLastViewedStats)
+;;; 			call     SaveStats,  0	;(SaveStats)
 ;;;
 ;;; 			pushi    #text
 ;;; 			pushi    1
@@ -945,13 +952,13 @@
 ;;; 										;Points Available
 ;;; 			pushi    #max
 ;;; 			pushi    1
-;;; 			lsl      maxPool
+;;; 			lsl      origAvail
 ;;; 			pushi    #value
 ;;; 			pushi    1
-;;; 			lsl      currentPool
+;;; 			lsl      pointsAvail
 ;;; 			pushi    #init
 ;;; 			pushi    0
-;;; 			lofsa    poolBar		;(poolBar max: maxPool value: currentPool init:)
+;;; 			lofsa    poolBar		;(poolBar max: origAvail value: pointsAvail init:)
 ;;; 			send     16
 ;;;
 ;;; 			pushi    13
@@ -972,7 +979,7 @@
 ;;; 										;TAB to move around,\nArrows to adjust values.
 ;;;
 ;;; 			pushi    0
-;;; 			call     DisplayPointsPool,  0	;(DisplayPointsPool)
+;;; 			call     UpdatePoints,  0	;(UpdatePoints)
 ;;;
 ;;; 			pushi    0
 ;;; 			callb    RedrawCast,  0			;(RedrawCast)
@@ -1039,7 +1046,7 @@
 ;;;
 ;;; ;use more points yes/no
 ;;; code_0b43:
-;;; 			lsl      currentPool
+;;; 			lsl      pointsAvail
 ;;; 			ldi      0
 ;;; 			gt?     
 ;;; 			bnt      code_0b74
@@ -1098,7 +1105,7 @@
 ;;; 			sagi     egoStats					;(= [egoStats MANA] (MaxMana))
 ;;;
 ;;; 			pushi    0
-;;; 			call     ResetLastViewedStats,  0	;(ResetLastViewedStats)
+;;; 			call     SaveStats,  0	;(SaveStats)
 ;;;
 ;;; 			pushi    #dispose
 ;;; 			pushi    0

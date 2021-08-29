@@ -12,8 +12,6 @@
 )
 
 (instance comingOut of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 168)
@@ -35,7 +33,7 @@
 			)
 			(2
 				((ScriptID 301 2) setMotion: MoveTo 192 122 self)
-				(Bset SHEMA_ASKS_ORDER)
+				(Bset fShemaAsks)
 			)
 			(3
 				((ScriptID 301 5) setCycle: BegLoop self)
@@ -76,8 +74,13 @@
 					(HighPrint 168 1)
 					;"I bring you that which you ordered.  May it please and satisfy you."
 					(cond 
-						((== foodOrdered mealORDERED) (= foodOrdered mealATTABLE) (= teaOrdered mealATTABLE))
-						((== teaOrdered mealORDERED) (= teaOrdered mealATTABLE))
+						((== foodOrdered mealORDERED)
+							(= foodOrdered mealATTABLE)
+							(= teaOrdered mealATTABLE)
+						)
+						((== teaOrdered mealORDERED)
+							(= teaOrdered mealATTABLE)
+						)
 					)
 					(self cue:)
 				)
@@ -104,7 +107,7 @@
 				)
 				(HighPrint 168 2)
 				;You thank Shema and pay her.
-				(Bset SHEMA_BRINGS_ORDER)
+				(Bset fShemaBringsOrder)
 				(= cycles 5)
 			)
 			(12

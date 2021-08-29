@@ -10,20 +10,18 @@
 )
 
 (instance rentARoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (Btst SLEPT_AT_INN)
+				(if (Btst fSleptAtInn)
 					(self changeState: 4)
 				else
-					(SolvePuzzle POINTS_RENTROOM 1)
-					(if (Btst SHAMEEN_SIGNALING)
+					(SolvePuzzle f301RentRoom 1)
+					(if (Btst fShameenStands)
 						(self cue:)
 					else
 						((ScriptID 301 1) setCycle: CycleTo 2 1 self)
-						(Bset SHAMEEN_SIGNALING)
+						(Bset fShameenStands)
 					)
 				)
 			)
@@ -37,7 +35,7 @@
 				((ScriptID 301 4) setCycle: EndLoop self)
 			)
 			(2
-				(Bclr SHAMEEN_SIGNALING)
+				(Bclr fShameenStands)
 				(ego ignoreActors: illegalBits: 0)
 				(if (ego inRect: 239 125 319 133)
 					(ego setMotion: MoveTo (ego x?) 130 self)
@@ -49,13 +47,13 @@
 				(ego setMotion: MoveTo 10 130 self)
 			)
 			(4
-				(Bset RENTED_ROOMATINN)
+				(Bset fRentedRoom)
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 400 16)
+				(curRoom drawPic: 400 (| BLACKOUT IRISOUT))
 				(self cue:)
 			)
 			(5
-				(Bclr RENTED_ROOMATINN)
+				(Bclr fRentedRoom)
 				(curRoom newRoom: 302)
 			)
 		)

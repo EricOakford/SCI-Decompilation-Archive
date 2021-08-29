@@ -11,8 +11,6 @@
 )
 
 (instance brigandsWest of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 156)
@@ -20,13 +18,15 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 10))
+			(0
+				(= cycles 10)
+			)
 			(1
 				((ScriptID 95 2) setCel: 1)
 				((ScriptID 95 15)
 					setPri: 3
 					posn: 31 90
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setCycle: Walk
 					setMotion: MoveTo 211 90
@@ -42,7 +42,10 @@
 					setCycle: Walk
 					setMotion: MoveTo 175 90
 				)
-				((ScriptID 95 18) ignoreActors: 1 setLoop: 6)
+				((ScriptID 95 18)
+					ignoreActors: TRUE
+					setLoop: 6
+				)
 				(= cycles 3)
 			)
 			(3
@@ -54,7 +57,10 @@
 					setCycle: Walk
 					setMotion: MoveTo 160 90
 				)
-				((ScriptID 95 20) ignoreActors: 1 setLoop: 5)
+				((ScriptID 95 20)
+					ignoreActors: TRUE
+					setLoop: 5
+				)
 				(= cycles 5)
 			)
 			(4
@@ -68,7 +74,9 @@
 					(EgoDead 156 0
 						#icon vEgoDefeatedMagic 0 9
 						#title {Those guys look familiar.})
-						;You're hopelessly surrounded.  You should have stopped those brigands somehow.  Maybe you'll see the light.
+						;You're hopelessly surrounded. 
+						; You should have stopped those brigands somehow. 
+						; Maybe you'll see the light.
 				)
 			)
 		)
@@ -76,8 +84,6 @@
 )
 
 (instance chandFall of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 156)
@@ -85,7 +91,10 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOn) (= cycles 18))
+			(0
+				(HandsOn)
+				(= cycles 18)
+			)
 			(1
 				((ScriptID 95 8) dispose:)
 				((ScriptID 95 6) show: posn: 154 32)
@@ -111,11 +120,11 @@
 			(4
 				((ScriptID 95 4) dispose:)
 				((ScriptID 95 6) dispose:)
-				((ScriptID 95 19) ignoreActors: 0 setCel: 1)
+				((ScriptID 95 19) ignoreActors: FALSE setCel: 1)
 				((ScriptID 95 22)
 					init:
 					setPri: 10
-					ignoreActors: 1
+					ignoreActors: TRUE
 					posn: 147 100
 					setCycle: Forward
 				)

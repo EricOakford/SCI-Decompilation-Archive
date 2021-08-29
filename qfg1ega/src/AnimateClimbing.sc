@@ -13,8 +13,6 @@
 )
 
 (instance goodClimb of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 137)
@@ -70,7 +68,7 @@
 				)
 			)
 			(9
-				(if (not (Btst HENRY_LADDER_KNOWN))
+				(if (not (Btst fLadderKnown))
 					(Print 137 1 #mode teJustCenter)
 					; That was almost too easy...almost like climbing a ladder.
 				)
@@ -80,7 +78,7 @@
 				(ego posn: 86 55 setLoop: 3)
 				(NormalEgo)
 				(HandsOn)
-				(Bset CLIMBED_HENRY_CLIFF)
+				(Bset fClimbedHenryCliff)
 				(client setScript: 0)
 			)
 		)
@@ -88,8 +86,6 @@
 )
 
 (instance badClimb of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 137)
@@ -136,8 +132,6 @@
 )
 
 (instance climbDown of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 137)
@@ -180,7 +174,7 @@
 				(ego loop: 2)
 				(NormalEgo)
 				(HandsOn)
-				(Bclr CLIMBED_HENRY_CLIFF)
+				(Bclr fClimbedHenryCliff)
 				(client setScript: 0)
 			)
 		)

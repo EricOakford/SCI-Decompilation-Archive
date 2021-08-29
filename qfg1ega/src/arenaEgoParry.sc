@@ -9,13 +9,13 @@
 )
 
 (local
-	theCycles
+	theWarrior
 )
 (instance egoParry of Script
 	(properties)
 	
 	(method (init)
-		(= theCycles (ScriptID WARRIOR 0))
+		(= theWarrior (ScriptID WARRIOR 0))
 		(super init: &rest)
 	)
 	
@@ -29,10 +29,10 @@
 			(0
 				(= egoCanFight FALSE)
 				(TrySkill PARRY 0 20)
-				(theCycles
+				(theWarrior
 					getTired: 1
-					canFight: 0
-					action: 3
+					canFight: FALSE
+					action: ActParryUp
 					setLoop: 4
 					setCel: 0
 					stopUpd:
@@ -40,16 +40,16 @@
 				(= cycles 1)
 			)
 			(1
-				(theCycles setCel: 1)
+				(theWarrior setCel: 1)
 				(= cycles 7)
 			)
 			(2
-				(theCycles setCel: 0)
+				(theWarrior setCel: 0)
 				(= cycles 1)
 			)
 			(3
-				(theCycles
-					posn: (theCycles baseX?) (theCycles baseY?)
+				(theWarrior
+					posn: (theWarrior baseX?) (theWarrior baseY?)
 					setLoop: 2
 					cel: 0
 				)

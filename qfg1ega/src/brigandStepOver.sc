@@ -11,8 +11,6 @@
 )
 
 (instance stepOverN of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 195)
@@ -53,8 +51,6 @@
 )
 
 (instance stepOverS of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 195)

@@ -11,15 +11,11 @@
 )
 
 (instance brigBlocked of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (== state 3) ((ScriptID 95 0) notify: 12))
+		(if (and (== state 3) ((ScriptID 95 0) notify: 12))
 			(self cue:)
 		)
-		(if
-		(and (== state 4) ((ScriptID 95 0) notify: 18))
+		(if (and (== state 4) ((ScriptID 95 0) notify: 18))
 			(self cue:)
 		)
 		(if (and (< (ego x?) 90) (< state 3))
@@ -41,7 +37,8 @@
 				(if ((ScriptID 95 0) notify: 16)
 					(EgoDead 158 1
 						#icon vEgoDefeatedMagic 0 9
-						#title {Nyuk Nyuk Nyuk -- Mee Mee Mee Mee Mee...})
+						#title {Nyuk Nyuk Nyuk -- Mee Mee Mee Mee Mee...}
+					)
 						;Die drei Knochelkopfen grab you off the table.  You should have waited until they were out of reach.
 				else
 					((ScriptID 95 15) setMotion: MoveTo 76 106 self)
@@ -59,7 +56,8 @@
 				else
 					(EgoDead 158 2
 						#icon vEgoDefeatedMagic 0 9
-						#title {Woo Woo Woo -- Ruff Ruff Ruff.})
+						#title {Woo Woo Woo -- Ruff Ruff Ruff.}
+					)
 						;You're hopelessly surrounded.  You should have taken quicker action against these Knochelkopfs.
 						;Elevate your thoughts to a higher plane.
 				)
@@ -85,11 +83,8 @@
 )
 
 (instance curlyFollow of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (== state 4) ((ScriptID 95 0) notify: 20))
+		(if (and (== state 4) ((ScriptID 95 0) notify: 20))
 			(self cue:)
 		)
 		(super doit:)
@@ -97,7 +92,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 23))
+			(0
+				(= cycles 23)
+			)
 			(1
 				((ScriptID 95 17) setMotion: MoveTo 89 88 self)
 			)
@@ -113,7 +110,9 @@
 			(4
 				((ScriptID 95 17) setMotion: MoveTo 162 124)
 			)
-			(5 (= cycles 4))
+			(5
+				(= cycles 4)
+			)
 			(6
 				((ScriptID 95 17)
 					view: vBrigandCurly
@@ -126,17 +125,16 @@
 				((ScriptID 95 0) notify: 23)
 				(= cycles 1)
 			)
-			(7 (self dispose:))
+			(7
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance larryFollow of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and ((ScriptID 95 0) notify: 22) (== state 4))
+		(if (and ((ScriptID 95 0) notify: 22) (== state 4))
 			(self cue:)
 		)
 		(super doit:)
@@ -149,7 +147,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 32))
+			(0
+				(= cycles 32)
+			)
 			(1
 				((ScriptID 95 19) setMotion: MoveTo 89 88 self)
 			)
@@ -165,7 +165,9 @@
 			(4
 				((ScriptID 95 19) setMotion: MoveTo 150 124)
 			)
-			(5 (= cycles 4))
+			(5
+				(= cycles 4)
+			)
 			(6
 				((ScriptID 95 19)
 					view: vBrigandLarry
@@ -209,11 +211,8 @@
 )
 
 (instance climb of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and ((ScriptID 95 0) notify: 14) (== state 6))
+		(if (and ((ScriptID 95 0) notify: 14) (== state 6))
 			(self cue:)
 		)
 		(super doit:)

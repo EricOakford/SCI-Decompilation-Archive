@@ -17,7 +17,28 @@
 	[aStar 20]
 	[starScript 20]
 	starCel = [2 4 3 3 2 4 2 2 3 4 1 1 3 4 4 4 4 1 3 1]
-	starPosn = [156 6 119 25 99 50 79 74 100 102 119 94 107 145 140 173 140 153 170 162 193 175 189 133 211 105 213 59 198 37 181 19 144 35 170 35 140 85 176 125]
+	starXY = [
+		156 6
+		119 25
+		99 50
+		79 74
+		100 102
+		119 94
+		107 145
+		140 173
+		140 153
+		170 162
+		193 175
+		189 133
+		211 105
+		213 59
+		198 37
+		181 19
+		144 35
+		170 35
+		140 85
+		176 125
+		]
 )
 (procedure (AddStars)
 	(for ((= i 0)) (< i 20) ((++ i))
@@ -30,7 +51,7 @@
 			cel: 0
 			init:
 			setPri: 15
-			posn: [starPosn (* i 2)] [starPosn (+ (* i 2) 1)]
+			posn: [starXY (* i 2)] [starXY (+ (* i 2) 1)]
 			setScript: [starScript i]
 		)
 		(++ i)
@@ -48,7 +69,7 @@
 			cel: (- [starCel i] 1)
 			init:
 			setPri: 15
-			posn: [starPosn (* i 2)] [starPosn (+ (* i 2) 1)]
+			posn: [starXY (* i 2)] [starXY (+ (* i 2) 1)]
 			setScript: [starScript i]
 		)
 	)
@@ -73,7 +94,7 @@
 		(Load VIEW vArenaDazzle)
 		(Load SOUND 70)
 		(super init:)
-		(if (Btst SAVED_ELSA)
+		(if (Btst fSavedElsa)
 			(leader init: setScript: leaderToElsa)
 		else
 			(leader init: setScript: leaderWait)
@@ -90,7 +111,7 @@
 							(Said 'disenchant')
 						)
 						(if (ego has: iDisenchant)
-							(Bset SAVED_ELSA)
+							(Bset fSavedElsa)
 							(ego use: iDisenchant)
 							(leader setScript: leaderToElsa)
 							(CenterPrint 172 0)
@@ -136,7 +157,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(SolvePuzzle POINTS_DISPELBRIGANDLEADER 35)
+				(SolvePuzzle f172DispelLeader 35)
 				(SetCursor theCursor FALSE)
 				(elsaChange init: play:)
 				(AddStars)
@@ -163,7 +184,6 @@
 )
 
 (instance leaderWait of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 1))
@@ -184,11 +204,14 @@
 )
 
 (instance starScriptOn of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (* register 3)))
-			(1 (client setCycle: EndLoop self))
+			(0
+				(= cycles (* register 3))
+			)
+			(1
+				(client setCycle: EndLoop self)
+			)
 			(2
 				(client loop: 1 cel: 0 setCycle: Forward)
 			)
@@ -197,7 +220,6 @@
 )
 
 (instance starScriptOff of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

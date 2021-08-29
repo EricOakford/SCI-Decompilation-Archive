@@ -14,63 +14,63 @@
 )
 
 (local
-	whoTarget
-	distX
-	distY
-	targetX
-	targetY
-	isHitTarget
-	egoSignal
-	egoPriority
-	egoIllegalBits
-	hitSound
+	dartTarg
+	thisX
+	thisY
+	dartTargX
+	dartTargY
+	gotHit
+	savSignal
+	savPriority
+	savIllegalBits
+	projSound
 )
-(procedure (CastDart target &tmp temp0 temp1 newAct_2)
+(procedure (CastDart atWhat &tmp pushX pushY projectile)
 	(LoadMany SOUND (SoundFX 33) (SoundFX 45))
 	(Load VIEW vEgoMagicFlameDart)
-	(if target
-		(Face ego target)
-		(= targetX (+ (target x?) (target targDeltaX?)))
-		(= targetY (+ (target y?) (target targDeltaY?)))
-		(= temp0 (- targetX (ego x?)))
-		(= temp1 (- targetY (- (ego y?) 20)))
+	(if atWhat
+		(Face ego atWhat)
+		(= dartTargX (+ (atWhat x?) (atWhat targDeltaX?)))
+		(= dartTargY (+ (atWhat y?) (atWhat targDeltaY?)))
+		(= pushX (- dartTargX (ego x?)))
+		(= pushY (- dartTargY (- (ego y?) 20)))
 		(while
 			(and
-				(< westEdge targetX)
-				(< targetX eastEdge)
-				(< 0 targetY)
-				(< targetY southEdge)
+				(< westEdge dartTargX)
+				(< dartTargX eastEdge)
+				(< 0 dartTargY)
+				(< dartTargY southEdge)
 			)
-			(= targetX (+ targetX temp0))
-			(= targetY (+ targetY temp1))
+			(+= dartTargX pushX)
+			(+= dartTargY pushY)
 		)
 		(if
 			(and
-				(target isKindOf: TargActor)
+				(atWhat isKindOf: TargActor)
 				(not
-					(TrySkill MAGIC 0 (- 50 (/ (ego distanceTo: target) 5)))
+					(TrySkill MAGIC 0 (- 50 (/ (ego distanceTo: atWhat) 5)))
 				)
 			)
-			(if (< targetY 0)
-				(= targetY (+ targetY (Random 30 100)))
+			(if (< dartTargY 0)
+				(+= dartTargY (Random 30 100))
 			else
-				(= targetY (- targetY (Random 30 100)))
+				(+= dartTargY (Random 30 100))
 			)
 		)
 	else
 		;CI: NOTE: This is probably a bug. Much of this code was copy/pasted from the ThrowRocks script, and this was likely missed.
 		; it doesn't make sense to increase your throwing skill by casting Flame Dart.
 		(SkillUsed THROW (/ [egoStats AGIL] tryStatThrowing))
-		(= targetX (if (== (ego loop?) 1) -10 else 330))
-		(= targetY (Random 20 80))
+		(= dartTargX (if (== (ego loop?) 1) -10 else 330))
+		(= dartTargY (Random 20 80))
 	)
-	((= hitSound (Sound new:))
+	((= projSound (Sound new:))
 		number: (SoundFX 33)
 		priority: 15
 		init:
 	)
-	(= whoTarget target)
-	((= newAct_2 (Actor new:))
+	(= dartTarg atWhat)
+	((= projectile (Actor new:))
 		view: vEgoMagicFlameDart
 		setLoop: 2
 		setCel: 0
@@ -82,103 +82,88 @@
 		setStep: 12 8
 		init:
 		hide:
-		setScript: dartScript 0 target
+		setScript: dartScript 0 atWhat
 	)
 	(return TRUE)
 )
 
 (instance dartScript of Script
-	(properties)
-
 	;CI: This is a manual decompilation of the asm, which could not be auto-decompiled by the version of SCICompanion I used.
-	(method (doit &tmp tmpHitTarget)
-		(if (IsObject whoTarget)
-			(= targetX (+ (whoTarget x?) (whoTarget targDeltaX?)))
-			(= targetY (+ (whoTarget y?) (whoTarget targDeltaY?)))
+	;EO: I made corrections.
+	(method (doit &tmp hitFlag)
+		(if (IsObject dartTarg)
+			(= dartTargX (+ (dartTarg x?) (dartTarg targDeltaX?)))
+			(= dartTargY (+ (dartTarg y?) (dartTarg targDeltaY?)))
 		)
-		(= distX (- targetX (client x?)))
-		(= distY (- targetY (client y?)))
+		(= thisX (- dartTargX (client x?)))
+		(= thisY (- dartTargY (client y?)))
 
-		(cond
-			(	(and (== state 1) 
-					 (or (= tmpHitTarget ;if we're within 15 pixels of the target, consider it a hit.
-							(and (< -25 distX) (< distX 25)
-								 (< -25 distY) (< distY 25)
-							)
-						 )	;And if it's a hit, we advance the script to the next state.
-						(not (client mover?))	; or if the projectile has stopped moving.
-						;(not (and (< 0 (client x?)) (< (client x?) 319)))	;or the projectile is offscreen left or right
-						;(not (and (< 0 (client y?)) (< (client y?) 189)))	;or the projectile is offscreen top or bottom.
-						(> 25
-							(+  (GetDistance (client x?) (client y?) targetX targetY)
-								(GetDistance (ego x?) (ego y?) targetX targetY)
-							)
-						)
-					 )
+		(if (and
+				(== state 1)
+				(or
+					(= hitFlag (and (< -15 thisX 15)  (< -15 thisY 15)))
+					(not (client mover?))
+					;(or (not (< 0 (client x?) 319)) (not (< 0 (client y?) 189)))
 				)
-				(if (not register) ;register is the target object. if there is noobject, then set the HitFlag to FALSE.
-					(= tmpHitTarget FALSE)
-				)
-				(= isHitTarget tmpHitTarget)
-				(self cue:)
 			)
-			(else
-				(super doit:)
-			)
+			(= gotHit (and register	hitFlag))
+			(self cue:)
+		else
+			(super doit:)
 		)
 	)
 		
 ;;; 	(method (doit &tmp temp0)
 ;;; 		(asm
 ;;; 			pushi    1
-;;; 			lsl      whoTarget
+;;; 			lsl      dartTarg
 ;;; 			callk    IsObject,  2
 ;;; 			bnt      code_021d
 ;;; 			pushi    #x
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      dartTarg
 ;;; 			send     4
 ;;; 			push    
 ;;; 			pushi    #targDeltaX
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      dartTarg
 ;;; 			send     4
 ;;; 			add     
-;;; 			sal      targetX
+;;; 			sal      dartTargX
 ;;; 			pushi    #y
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      dartTarg
 ;;; 			send     4
 ;;; 			push    
 ;;; 			pushi    #targDeltaY
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      dartTarg
 ;;; 			send     4
 ;;; 			add     
-;;; 			sal      targetY
+;;; 			sal      dartTargY
 ;;; code_021d:
 ;;; 			pushi    #x
 ;;; 			pushi    0
 ;;; 			pToa     client
 ;;; 			send     4
 ;;; 			push    
-;;; 			lal      targetX
+;;; 			lal      dartTargX
 ;;; 			sub     
-;;; 			sal      distX
+;;; 			sal      thisX
 ;;; 			pushi    #y
 ;;; 			pushi    0
 ;;; 			pToa     client
 ;;; 			send     4
 ;;; 			push    
-;;; 			lal      targetY
+;;; 			lal      dartTargY
 ;;; 			sub     
-;;; 			sal      distY
+;;; 			sal      thisY
 ;;; 			pTos     state
 ;;; 			ldi      1
 ;;; 			eq?     
 ;;; 			bnt      code_02b3
 ;;; 			pushi    65511
-;;; 			lal      distX
+;;; 			lal      thisX
 ;;; 			lt?     
 ;;; 			bnt      code_025a
 ;;; 			pprev   
@@ -186,7 +171,7 @@
 ;;; 			lt?     
 ;;; 			bnt      code_025a
 ;;; 			pushi    65511
-;;; 			lal      distY
+;;; 			lal      thisY
 ;;; 			lt?     
 ;;; 			bnt      code_025a
 ;;; 			pprev   
@@ -212,8 +197,8 @@
 ;;; 			pToa     client
 ;;; 			send     4
 ;;; 			push    
-;;; 			lsl      targetX
-;;; 			lsl      targetY
+;;; 			lsl      dartTargX
+;;; 			lsl      dartTargY
 ;;; 			callk    GetDistance,  8
 ;;; 			push    
 ;;; 			pushi    25
@@ -228,8 +213,8 @@
 ;;; 			lag      ego
 ;;; 			send     4
 ;;; 			push    
-;;; 			lsl      targetX
-;;; 			lsl      targetY
+;;; 			lsl      dartTargX
+;;; 			lsl      dartTargY
 ;;; 			callk    GetDistance,  8
 ;;; 			add     
 ;;; 			gt?     
@@ -239,7 +224,7 @@
 ;;; 			bnt      code_02a9
 ;;; 			lat      temp0
 ;;; code_02a9:
-;;; 			sal      isHitTarget
+;;; 			sal      gotHit
 ;;; 			pushi    #cue
 ;;; 			pushi    0
 ;;; 			self     4
@@ -254,9 +239,9 @@
 ;;; 	)
 	
 	(method (dispose)
-		(hitSound dispose:)
+		(projSound dispose:)
 		(HandsOn)
-		(if (and isHitTarget (IsObject register))
+		(if (and gotHit (IsObject register))
 			(register getHurt: (+ 5 (/ [egoStats FLAMEDART] 3)))
 		)
 		(super dispose:)
@@ -266,9 +251,9 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(= egoSignal (ego signal?))
-				(= egoPriority (ego priority?))
-				(= egoIllegalBits (ego illegalBits?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
 				(HandsOff)
 				(ego
 					view: vEgoMagicFlameDart
@@ -283,7 +268,7 @@
 			)
 			(1
 				(ego setCycle: EndLoop)
-				(hitSound play:)
+				(projSound play:)
 				(client
 					x: (if (== (ego loop?) 1)
 						(- (ego x?) 19)
@@ -292,12 +277,12 @@
 					)
 					show:
 					setCycle: Forward
-					setMotion: MoveTo targetX targetY
+					setMotion: MoveTo dartTargX dartTargY
 				)
 			)
 			(2
-				(if isHitTarget
-					(hitSound stop: number: (SoundFX 45) play:)
+				(if gotHit
+					(projSound stop: number: (SoundFX 45) play:)
 					(client setLoop: 3 cel: 0 setMotion: 0 setCycle: EndLoop self)
 				else
 					(client hide:)
@@ -307,9 +292,9 @@
 			(3
 				(NormalEgo)
 				(ego
-					priority: egoPriority
-					illegalBits: egoIllegalBits
-					signal: egoSignal
+					priority: savPriority
+					illegalBits: savIllegalBits
+					signal: savSignal
 				)
 				(client dispose:)
 			)

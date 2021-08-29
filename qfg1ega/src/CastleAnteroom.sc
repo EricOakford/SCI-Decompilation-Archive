@@ -15,9 +15,9 @@
 )
 
 (local
-	invalidTopic
+	dontKnowCount
 	gettingLate
-	chatBaron
+	talkRet
 )
 (instance baronWin of SysWindow
 	(properties
@@ -25,9 +25,9 @@
 		title {Baron von Spielburg says:}
 	)
 	
-	(method (open &tmp temp0)
-		(= top (+ top (= temp0 (- 188 bottom))))
-		(= bottom (+ bottom temp0))
+	(method (open &tmp vDiff)
+		(+= top (= vDiff (- 188 bottom)))
+		(+= bottom vDiff)
 		(super open: &rest)
 	)
 )
@@ -38,9 +38,9 @@
 		title {The Baronet says:}
 	)
 	
-	(method (open &tmp temp0)
-		(= top (+ top (= temp0 (- 188 bottom))))
-		(= bottom (+ bottom temp0))
+	(method (open &tmp vDiff)
+		(+= top (= vDiff (- 188 bottom)))
+		(+= bottom vDiff)
 		(super open: &rest)
 	)
 )
@@ -49,7 +49,7 @@
 	(properties
 		tLoop 3
 		cSpeed 2
-		isHead 1
+		isHead TRUE
 	)
 )
 
@@ -57,7 +57,7 @@
 	(properties
 		tLoop 5
 		cSpeed 2
-		isHead 1
+		isHead TRUE
 	)
 )
 
@@ -385,7 +385,7 @@
 	(method (init)
 		(Load VIEW vBaronett)
 		(super init:)
-		(SolvePuzzle POINTS_MEETBARON 10)
+		(SolvePuzzle f141MeetBaron 10)
 		(StatusLine enable:)
 		(mouseDownHandler add: self baronHead sonHead)
 		(keyDownHandler add: baronHead sonHead)
@@ -413,11 +413,13 @@
 			stopUpd:
 			hide:
 		)
-		(ChangeGait MOVE_WALK 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(egoHead hide:)
 		(baronTalk tWindow: baronWin actor: baronHead init:)
 		(sonTalk tWindow: sonWin actor: sonHead init:)
-		(if (< numColors 16) (sonWin color: vRED))
+		(if (< numColors 16)
+			(sonWin color: vRED)
+		)
 		(= freeMeals 1)
 		(self setScript: egoEnters)
 	)
@@ -431,20 +433,21 @@
 					((or (Said '[use]/stealth') (Said 'run,sneak'))
 						(CenterPrint 141 8)
 						;That would be inappropriate behavior here.
-						)
+					)
 					((Said 'kill,fight,chop,beat,damage,cast')
 						(CenterPrint 141 9)
 						;You realize, of course, that such actions will not only have you grabbed by guards,
-						;dragged to the dungeon, and brutally tortured, but that you probably won't be able to win this game if you perform them.
-						)
+						;dragged to the dungeon, and brutally tortured,
+						; but that you probably won't be able to win this game if you perform them.
+					)
 					((Said 'look/floor')
 						(CenterPrint 141 10)
 						;The floor has not been cleaned in some time.
-						)
-					(
-					(Said 'look[<at,around][/!*,room,building,hall]')
-					(CenterPrint 141 11)
-					;The Great Hall of Spielburg Castle is not very impressive.  The room is plain, with scuffed floors and grimy plastered walls.
+					)
+					((Said 'look[<at,around][/!*,room,building,hall]')
+						(CenterPrint 141 11)
+						;The Great Hall of Spielburg Castle is not very impressive. 
+						; The room is plain, with scuffed floors and grimy plastered walls.
 					)
 				)
 			)
@@ -454,16 +457,15 @@
 					(MouseClaimed ego event shiftDown)
 				)
 				(CenterPrint 141 12)
-				;You are less than awed by Baron von Spielburg's Great Hall.  You'd think a Baron could keep his home a little cleaner.
-				;You try to hide your disappointment.
+				;You are less than awed by Baron von Spielburg's Great Hall. 
+				; You'd think a Baron could keep his home a little cleaner.
+				; You try to hide your disappointment.
 			)
 		)
 	)
 )
 
 (instance egoEnters of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -499,8 +501,6 @@
 )
 
 (instance openingSpeech of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -515,7 +515,9 @@
 				;"My son, Baronet Barnard von Spielburg, also desires to acknowledge his indebtedness."
 
 			)
-			(1 (= seconds 2))
+			(1
+				(= seconds 2)
+			)
 			(2
 				(egoHead hide:)
 				(baron setCel: 0)
@@ -529,17 +531,21 @@
 				;"We, er, that is, I, am appreciative of your efforts upon my behalf."
 			)
 			(4
-				(if (Btst DEFEATED_KOBOLD)
+				(if (Btst fKoboldDead)
 					(egoHead hide:)
 					(baron setCel: 2)
 					(Say baronTalk 141 18 141 19)
-					;"Furthermore, I understand you have rid our valley of a dangerous Kobold Magic User in order to free the Baronet von Spielburg."
-					;"You risked your life to singlehandedly defeat the foul Spellcaster.  You are a true hero, and I thank you."
+					;"Furthermore, I understand you have rid our valley of a dangerous Kobold Magic User
+					; in order to free the Baronet von Spielburg."
+					;"You risked your life to singlehandedly defeat the foul Spellcaster. 
+					; You are a true hero, and I thank you."
 				else
 					(client setScript: becomeHero)
 				)
 			)
-			(5 (= seconds 2))
+			(5
+				(= seconds 2)
+			)
 			(6
 				(egoHead hide:)
 				(baron setCel: 0)
@@ -560,8 +566,6 @@
 )
 
 (instance becomeHero of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -570,10 +574,14 @@
 				(egoHead hide:)
 				(baron setCel: 2)
 				(Say baronTalk 141 21 141 22)
-				;"I sincerely hope you will continue on your valiant adventures in our land.  If anyone can rid the land of the brigands, it will be you."
-				;"Someday in the near future, I can envision holding a ceremony in your honor and bestowing upon you the title, 'Hero of the Land of Spielburg'."
+				;"I sincerely hope you will continue on your valiant adventures in our land. 
+				; If anyone can rid the land of the brigands, it will be you."
+				;"Someday in the near future, I can envision holding a ceremony in your
+				; honor and bestowing upon you the title, 'Hero of the Land of Spielburg'."
 			)
-			(1 (= seconds 2))
+			(1
+				(= seconds 2)
+			)
 			(2
 				(egoHead hide:)
 				(baron setCel: 0)
@@ -590,7 +598,8 @@
 				(egoHead hide:)
 				(baron setCel: 1)
 				(Say baronTalk 141 24 141 25)
-				;"As you leave the castle tomorrow, you will receive the reward money I long ago posted for the safe return of my son, as a token of my thanks."
+				;"As you leave the castle tomorrow, you will receive the reward money I long ago posted
+				; for the safe return of my son, as a token of my thanks."
 				;"You will, of course, be expected to dine with us and be our guest in the castle tonight."
 			)
 			(5
@@ -602,14 +611,14 @@
 				(Say baronTalk 141 26)
 				;"Do you have any questions?"
 			)
-			(7 (client setScript: answerQs))
+			(7
+				(client setScript: answerQs)
+			)
 		)
 	)
 )
 
 (instance answerQs of Script
-	(properties)
-	
 	(method (init)
 		(baronTalk caller: self)
 		(sonTalk caller: self)
@@ -642,20 +651,23 @@
 	(method (handleEvent event)
 		(cls)
 		(cond 
-			(gettingLate (baronTalk endTalk:) (client setScript: leaveRoom))
+			(gettingLate
+				(baronTalk endTalk:)
+				(client setScript: leaveRoom)
+			)
 			((super handleEvent: event))
 			((Said 'chat,affirmative,please')
 				(Say baronTalk 141 27)
 				;"Just ask about anything you wish to know."
-				)
+			)
 			((Said 'n,nap,rest,done')
 				(HandsOff)
 				(Say baronTalk 141 28)
 				;"I see that it is getting late."
-				(= gettingLate 1)
+				(= gettingLate TRUE)
 			)
 			((Said 'ask>')
-				(= chatBaron 1)
+				(= talkRet TRUE)
 				(cond 
 					((Said '//curse')
 						(Say baronTalk 141 29 141 30 141 31)
@@ -663,7 +675,7 @@
 						;should lose everything I held dear."
 						;"When I lost my daughter and my son, I lost all interest in living.  My lands have suffered because I suffered."
 						;"Now, though, with the return of my son, I trust the prophecy may yet come true, thanks to you."
-						)
+					)
 					((Said '//prediction,countercurse')
 						(Say baronTalk 141 32 141 33)
 						;"The prophecy stated,
@@ -673,31 +685,33 @@
 						;Drive the curser from the land."
 						;"You entered here from the East, and you released my son from the form of a bear.
 						;I am certain you can fulfill the rest of it, and remove this dreadful curse."
-						)
+					)
 					((Said '//ogress,baba,baba,baba')
 						(Say baronTalk 141 34)
 						;"I have attempted everything in my power to get her to go away.
 						;I fear it will take some sort of magic to be able to counteract her evil magic."
-						)
+					)
 					((Said '//magic,wizard,zara,erasmus,erana')
 						(Say baronTalk 141 35)
-						;"I know very little of magic, much to my sorrow.  Perhaps you should talk to the wizards -- Zara in the town, or Erasmus on Zauberberg."
-						)
+						;"I know very little of magic, much to my sorrow. 
+						; Perhaps you should talk to the wizards -- Zara in the town, or Erasmus on Zauberberg."
+					)
 					((Said '//hill,zauberberg')
 						(Say baronTalk 141 36)
-						;"Zauberberg, the 'magic mountain', is the home of Erasmus, a kindly, but rather eccentric, wizard.  Zauberberg is directly east of here."
-						)
+						;"Zauberberg, the 'magic mountain', is the home of Erasmus, a kindly, but rather eccentric, wizard. 
+						; Zauberberg is directly east of here."
+					)
 					((Said '//elsa,girl,daughter')
 						(Say baronTalk 141 37 141 38 141 39)
 						;"My beautiful little daughter was stolen away ten years ago by Baba Yaga's magic."
 						;"She has never been found, despite all the searching that has been done for her."
 						;"I thought she was lost forever, but you have renewed my hope that I will again have her beside me."
-						)
+					)
 					((Said '//baroness,wife')
 						(Say baronTalk 141 40 141 41)
 						;"My wife has been gone for many years."
 						;"She died giving birth to Elsa, my daughter."
-						)
+					)
 					((Said '//bandit')
 						(Say baronTalk 141 42 141 43 141 44 141 45)
 						;"If I had more guards, I would wipe the brigands out myself, now that I have my son at my side."
@@ -706,33 +720,33 @@
 						;"I know they have some sort of fortress at the far south of the valley.  I have heard rumors they have set up an ambush
 						;for all that approach."
 						;"It is also rumored that there is another way into their fortress, but I have no further knowledge about it."
-						)
+					)
 					((Said '//yorick,jester')
 						(Say baronTalk 141 46)
-						;"Yorick was my court jester, a man of infinite jest.  He went off to find my daughter, but alas, poor Yorick never returned."
-						)
+						;"Yorick was my court jester, a man of infinite jest. 
+						; He went off to find my daughter, but alas, poor Yorick never returned."
+					)
 					((Said '//prize')
 						(Say baronTalk 141 47)
 						;"I have offered substantial rewards for the return of my son and my daughter, as well as for capturing or killing
 						;the leader and warlock of the brigands."
-						)
+					)
 					((Said '//leader')
 						(Say baronTalk 141 48 141 49)
 						;"There have always been brigands around, but until their new leader and the warlock showed up a few years ago,
 						;they were not much of a problem."
 						;"The leader seems to be a brilliant strategist who manages each raid with little loss.
 						;Once their leader is gone, I am sure the brigands can be easily defeated."
-						)
+					)
 					((Said '//warlock')
 						(Say baronTalk 141 50)
 						;"As if this valley hasn't been plagued with enough evil magic users!
 						;From what I have heard, his magic isn't powerful, but he uses it effectively."
-						;
-						)
+					)
 					((Said '//castle')
 						(Say baronTalk 141 51)
 						;"This castle has been in the family for two centuries now.  It was a gift from King Siegfried the Third."
-						)
+					)
 					((Said '//kobold,cave')
 						(son setCel: 1)
 						(Say sonTalk 141 52 141 53 141 54 141 55)
@@ -742,22 +756,23 @@
 						;"I informed it that I was Baronet Barnard von Spielburg, and heir to the lands and all within.  I ordered it to bow before me."
 						;"Then it cast a spell upon me, and I remember very little after that."
 					)
-					((Said '//bear') (son setCel: 0)
+					((Said '//bear')
+						(son setCel: 0)
 						(Say sonTalk 141 56)
 						;"I would prefer not to talk about that."
-						)
+					)
 					((Said '//barnard,barnard,barnard')
 						(Say baronTalk 141 57)
 						;As you can plainly see, Barnard is back to his old self, thanks to you.
-						)
+					)
 					(else
-						(= chatBaron FALSE)
+						(= talkRet FALSE)
 						(event claimed: TRUE)
-						(switch (++ invalidTopic)
+						(switch (++ dontKnowCount)
 							(1
 								(Say baronTalk 141 58)
-								;"Now that my son is back, I have much to do.  Kindly restrict your questions to matters of import."
-								;
+								;"Now that my son is back, I have much to do. 
+								; Kindly restrict your questions to matters of import."
 							)
 							(2
 								(Say baronTalk 141 59)
@@ -772,15 +787,15 @@
 						)
 					)
 				)
-				(if (and chatBaron (event claimed?)) (SolvePuzzle POINTS_TALKTOBARON 3))
+				(if (and talkRet (event claimed?))
+					(SolvePuzzle f141TalkToBaron 3)
+				)
 			)
 		)
 	)
 )
 
 (instance leaveRoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

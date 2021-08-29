@@ -10,8 +10,6 @@
 )
 
 (instance fallRug of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 190)
@@ -82,7 +80,8 @@
 			(10
 				(EgoDead 190 0
 					#icon vEgoFall2 0 2
-					#title {The old "rug over the pit" trick.})
+					#title {The old "rug over the pit" trick.}
+				)
 					;There is a small sign which reads "Booby Trap".
 					;You are now in a pitiful situation as you hear the brigands approach to see the booby they've caught.
 					;You think to yourself, "If it looks like a trap, and it feels like a trap, then maybe it IS a trap".

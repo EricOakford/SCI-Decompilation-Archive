@@ -20,8 +20,8 @@
 	local2
 	local3
 	local4
-	[local5 5] = [1 2 4 8 16]
-	[spellAsked 4] = [{Open} {Fetch} {Flame Dart} {Trigger}]
+	spellMask = [1 2 4 8 16]
+	spellAsked = [{Open} {Fetch} {Flame Dart} {Trigger}]
 )
 (instance cheese of View
 	(properties
@@ -33,8 +33,6 @@
 )
 
 (instance intoTheTower of Script
-	(properties)
-	
 	(method (init)
 		(cheese init: setPri: 7 ignoreActors: stopUpd:)
 		(super init: &rest)
@@ -52,7 +50,7 @@
 		(DisposeScript 131)
 	)
 	
-	(method (changeState newState &tmp temp0 [temp1 40])
+	(method (changeState newState &tmp temp0 [str 40])
 		(switch (= state newState)
 			(0
 				(ego
@@ -74,8 +72,7 @@
 					#mode teJustCenter
 					#title { Erasmus_}
 					#dispose
-					#time
-					3
+					#time 3
 				)
 				(ego setMotion: MoveTo 155 163 self)
 				; Come in and sit down.
@@ -197,8 +194,8 @@
 				(= local4 1)
 				(= enableErasmusTeaCountdown 0)
 				(= local1 0)
-				(if (not (Btst ERASMUS_KNOWS_HERO_HAS_MAGIC))
-					(Bset ERASMUS_KNOWS_HERO_HAS_MAGIC)
+				(if (not (Btst fWizKnowsEgoHasMagic))
+					(Bset fWizKnowsEgoHasMagic)
 					(ErasmusPrint 8 131 5)
 					;Since you are a practitioner of the magical arts, you might be interested in a little game I have.
 				else
@@ -206,33 +203,34 @@
 				)
 			)
 			(19
-				(while (& wizAskedSpells2 [local5 register])
+				(while (& wizAskedSpells2 [spellMask register])
 					(++ register)
 				)
 				(cond 
-					(local3 (Bset ERASMUS_ASKED_MAZE_GAME)
+					(local3
+						(Bset fErasmusAskedMaze)
 						(ErasmusPrint 9 131 6)
 						;I'll teach you the Dazzle spell if you win.  You do want to play, don't you?
 						)
-					((& wizAskedSpells [local5 register])
-						(ErasmusPrint 5 (Format @temp1 131 7 [spellAsked register])
+					((& wizAskedSpells [spellMask register])
+						(ErasmusPrint 5 (Format @str 131 7 [spellAsked register])
 							;Have you learned the %s spell yet?
-							)
 						)
+					)
 					((< register 4)
-						(= wizAskedSpells (| wizAskedSpells [local5 register]))
-						(ErasmusPrint 7 (Format @temp1 131 8 [spellAsked register])
+						(|= wizAskedSpells [spellMask register])
+						(ErasmusPrint 7 (Format @str 131 8 [spellAsked register])
 							;Do you know how to cast the %s spell?
 						)
 					)
-					((Btst ERASMUS_ASKED_MAZE_GAME)
+					((Btst fErasmusAskedMaze)
 						(ErasmusPrint 7 131 9)
 						;Nice to see you back.  Shall we play a game of Mage's Maze?
-						)
+					)
 					(else (= local3 1) (-- state)
 						(ErasmusPrint 7 131 10)
 						;Wonderful!  Then you can play a game of Mage's Maze with me.
-						)
+					)
 				)
 			)
 			(20
@@ -257,16 +255,16 @@
 							(3
 								(ErasmusPrint 8 131 12)
 								;I believe I gave a learning scroll to the Hermit.  You should talk to him about it.
-								)
+							)
 							(else
 								(ErasmusPrint 8 131 13)
 								;Too bad.  You really can't play the game without it.  You can buy a learning scroll at Zara's magic shop in town.
-								)
+							)
 						)
 					)
 					((>= register 4) (client setScript: (ScriptID 132 5)))
 					(else
-						(= wizAskedSpells2 (| wizAskedSpells2 [local5 register]))
+						(|= wizAskedSpells2 [spellMask register])
 						(++ register)
 						(self changeState: 19)
 					)
@@ -287,12 +285,18 @@
 			((and (== (event type?) saidEvent) local2)
 				(= seconds 0)
 				(cond 
-					((Said 'affirmative,please') (= local1 0) (self cue:))
-					((Said 'n') (self cue:))
-					(else (event claimed: TRUE)
+					((Said 'affirmative,please')
+						(= local1 0)
+						(self cue:)
+					)
+					((Said 'n')
+						(self cue:)
+					)
+					(else
+						(event claimed: TRUE)
 						(ErasmusPrint 4 131 0)
 						;A simple yes or no will suffice.
-						)
+					)
 				)
 			)
 		)
@@ -300,8 +304,6 @@
 )
 
 (instance gameOver of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 131)

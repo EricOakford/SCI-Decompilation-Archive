@@ -19,51 +19,51 @@
 )
 
 (local
-	newProp
-	newProp_3
-	newProp_2
-	newProp_4
-	newView_2
-	newView_3
-	newView_4
-	newView_5
-	newView_6
-	newView_7
-	newView_8
+	theFighter
+	theMage
+	magicSwirl
+	theThief
+	chooseText
+	yourText
+	characterText
+	fighterText
+	mageText
+	thiefText
+	userText
 	whichChar
-	local12
-	charPlaque
-	local14
+	charCycles
+	thePlaque
+	highlightCued
 	local15
-	local16
-	local17 =  1
+	selCued
+	firstTime =  TRUE
 )
 (procedure (ToCharAlloc)
 	(HandsOff)
 	(curRoom newRoom: CHARALLOC)
 )
 
-(procedure (localproc_001c)
+(procedure (HighlightCharacter)
 	(switch whichChar
 		(selectFighter
-			(charPlaque setCel: 0 posn: 64 127 stopUpd:)
+			(thePlaque setCel: 0 posn: 64 127 stopUpd:)
 			(mageScript changeState: 0)
 			(thiefScript changeState: 0)
 			(fighterScript changeState: 1)
 		)
 		(selectMage
-			(charPlaque setCel: 0 posn: 158 127 stopUpd:)
+			(thePlaque setCel: 0 posn: 158 127 stopUpd:)
 			(fighterScript changeState: 0)
 			(thiefScript changeState: 0)
-			(if local16
-				(newProp_3 setLoop: 1 setCel: 3)
-				(newProp_2 show:)
+			(if selCued
+				(theMage setLoop: 1 setCel: 3)
+				(magicSwirl show:)
 			else
 				(mageScript changeState: 1)
 			)
 		)
 		(selectThief
-			(charPlaque setCel: 0 posn: 252 127 stopUpd:)
+			(thePlaque setCel: 0 posn: 252 127 stopUpd:)
 			(fighterScript changeState: 0)
 			(mageScript changeState: 0)
 			(thiefScript changeState: 1)
@@ -97,7 +97,7 @@
 	(method (init)
 		(Load SOUND (SoundFX 73))
 		(User canInput: FALSE)
-		((= charPlaque (View new:))
+		((= thePlaque (View new:))
 			view: vCharSelect
 			setLoop: 0
 			setCel: 0
@@ -107,7 +107,7 @@
 			ignoreActors:
 			stopUpd:
 		)
-		((= newProp (Prop new:))
+		((= theFighter (Prop new:))
 			view: vEgoCharSelect
 			setPri: 5
 			init:
@@ -115,7 +115,7 @@
 			stopUpd:
 			setScript: fighterScript
 		)
-		((= newProp_2 (Prop new:))
+		((= magicSwirl (Prop new:))
 			view: vEgoCharSelect
 			setLoop: 3
 			setCel: 0
@@ -124,7 +124,7 @@
 			init:
 			ignoreActors:
 		)
-		((= newProp_3 (Prop new:))
+		((= theMage (Prop new:))
 			view: vEgoCharSelect
 			setPri: 5
 			init:
@@ -132,7 +132,7 @@
 			stopUpd:
 			setScript: mageScript
 		)
-		((= newProp_4 (Prop new:))
+		((= theThief (Prop new:))
 			view: vEgoCharSelect
 			setPri: 5
 			init:
@@ -140,7 +140,7 @@
 			stopUpd:
 			setScript: thiefScript
 		)
-		((= newView_2 (View new:))
+		((= chooseText (View new:))
 			view: vCharSelect
 			setLoop: 1
 			setCel: 0
@@ -149,7 +149,7 @@
 			ignoreActors:
 			stopUpd:
 		)
-		((= newView_3 (View new:))
+		((= yourText (View new:))
 			view: vCharSelect
 			setLoop: 1
 			setCel: 1
@@ -158,7 +158,7 @@
 			ignoreActors:
 			stopUpd:
 		)
-		((= newView_4 (View new:))
+		((= characterText (View new:))
 			view: vCharSelect
 			setLoop: 1
 			setCel: 2
@@ -167,7 +167,7 @@
 			ignoreActors:
 			stopUpd:
 		)
-		((= newView_5 (View new:))
+		((= fighterText (View new:))
 			view: vCharSelect
 			setLoop: 1
 			setCel: 3
@@ -176,7 +176,7 @@
 			ignoreActors:
 			stopUpd:
 		)
-		((= newView_6 (View new:))
+		((= mageText (View new:))
 			view: vCharSelect
 			setLoop: 1
 			setCel: 4
@@ -185,7 +185,7 @@
 			ignoreActors:
 			stopUpd:
 		)
-		((= newView_7 (View new:))
+		((= thiefText (View new:))
 			view: vCharSelect
 			setLoop: 1
 			setCel: 6
@@ -194,7 +194,7 @@
 			ignoreActors:
 			stopUpd:
 		)
-		((= newView_8 (View new:))
+		((= userText (View new:))
 			view: vCharSelect
 			setLoop: 1
 			setCel: 5
@@ -216,41 +216,48 @@
 			(cSound number: (SoundFX 73) loop: -1 play:)
 		)
 		(cSound prevSignal: 0)
-		(Joystick 12 30)
+		(Joystick JoyRepeat 30)
 	)
 	
 	(method (doit)
 		(cond 
 			(
 				(and
-					local17
+					firstTime
 					(or
 						(== (cSound signal?) 2)
 						(== (cSound prevSignal?) 2)
 					)
 				)
-				(= local17 0)
+				(= firstTime FALSE)
 				(cSound stop:)
 				(cSound number: (SoundFX 73) loop: -1 play:)
 			)
 			((and local15 (== (cSound prevSignal?) 3))
 				(cSound prevSignal: 0)
-				(if (== whichChar 3) (= whichChar 1) else (++ whichChar))
-				(= local14 0)
-				(localproc_001c)
+				(if (== whichChar selectThief)
+					(= whichChar selectFighter)
+				else
+					(++ whichChar)
+				)
+				(= highlightCued FALSE)
+				(HighlightCharacter)
 			)
-			(local16 (= local16 0) (SelectCharacter))
+			(selCued
+				(= selCued FALSE)
+				(SelectCharacter)
+			)
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(Joystick 12 0)
+		(Joystick JoyRepeat 0)
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp temp0 temp1 temp2 [temp3 60])
-		(if local14
+	(method (handleEvent event &tmp thisControl evtX evtY [str 60])
+		(if highlightCued
 			(if (== (event type?) keyDown)
 				(= local15 0)
 				(switch (event message?)
@@ -264,40 +271,59 @@
 					)
 					(ENTER
 						(event claimed: TRUE)
-						(= local16 1)
+						(= selCued TRUE)
 					)
 				)
 			)
 			(switch (event type?)
 				(mouseDown
-					(= temp1 (event x?))
-					(= temp2 (event y?))
-					(= temp0 (OnControl CMAP temp1 temp2))
+					(= evtX (event x?))
+					(= evtY (event y?))
+					(= thisControl (OnControl CMAP evtX evtY))
 					(= local15 0)
-					(event claimed: 1)
+					(event claimed: TRUE)
 					(cond 
-						((& temp0 cYELLOW) (= whichChar 1) (= local16 1))
-						((& temp0 cLMAGENTA) (= whichChar 2) (= local16 1))
-						((& temp0 cLRED) (= whichChar 3) (= local16 1))
-						(else (event claimed: 0))
+						((& thisControl cYELLOW)
+							(= whichChar selectFighter)
+							(= selCued TRUE)
+						)
+						((& thisControl cLMAGENTA)
+							(= whichChar selectMage)
+							(= selCued TRUE)
+						)
+						((& thisControl cLRED)
+							(= whichChar selectThief)
+							(= selCued TRUE)
+						)
+						(else
+							(event claimed: FALSE)
+						)
 					)
 					(event claimed: TRUE)
-					(= local14 0)
-					(localproc_001c)
+					(= highlightCued FALSE)
+					(HighlightCharacter)
 				)
 				(direction
 					(switch (event message?)
 						(dirW
-							(if (== whichChar 1) (= whichChar 3) else (-- whichChar))
+							(if (== whichChar selectFighter)
+								(= whichChar selectThief)
+							else
+								(-- whichChar)
+							)
 						)
 						(dirE
-							(if (== whichChar 3) (= whichChar 1) else (++ whichChar))
+							(if (== whichChar selectThief)
+								(= whichChar selectFighter)
+							else
+								(++ whichChar)
+							)
 						)
 					)
 					(event claimed: TRUE)
 					(= local15 0)
-					(= local14 0)
-					(localproc_001c)
+					(= highlightCued FALSE)
+					(HighlightCharacter)
 				)
 			)
 		)
@@ -306,23 +332,21 @@
 )
 
 (instance fighterScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= seconds (= cycles 0))
-				(newProp setLoop: 4 setCel: 0 posn: 64 117)
+				(theFighter setLoop: 4 setCel: 0 posn: 64 117)
 			)
 			(1
 				(= seconds (= cycles 0))
 				(= whichChar selectFighter)
-				(newProp setLoop: 0 setCel: 1)
-				(= local14 1)
+				(theFighter setLoop: 0 setCel: 1)
+				(= highlightCued TRUE)
 				(= cycles 5)
 			)
 			(2
-				(newProp setCel: 0)
+				(theFighter setCel: 0)
 				(= cycles 5)
 			)
 			(3
@@ -333,65 +357,63 @@
 )
 
 (instance mageScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= seconds (= cycles 0))
-				(newProp_3 setLoop: 4 setCel: 1 posn: 158 117)
-				(newProp_2 stopUpd: hide:)
+				(theMage setLoop: 4 setCel: 1 posn: 158 117)
+				(magicSwirl stopUpd: hide:)
 			)
 			(1
 				(= seconds (= cycles 0))
 				(= whichChar selectMage)
-				(newProp_3 setLoop: 1 setCel: 0)
-				(= local14 1)
+				(theMage setLoop: 1 setCel: 0)
+				(= highlightCued TRUE)
 				(= cycles 3)
 			)
 			(2
-				(newProp_3 setCel: -1 setCycle: EndLoop self)
+				(theMage setCel: -1 setCycle: EndLoop self)
 			)
 			(3
-				(newProp_2 show: setCycle: Forward startUpd:)
+				(magicSwirl show: setCycle: Forward startUpd:)
 				(= seconds 3)
 			)
-			(4 (self changeState: 3))
+			(4
+				(self changeState: 3)
+			)
 		)
 	)
 )
 
 (instance thiefScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= seconds (= cycles 0))
-				(newProp_4 setLoop: 4 setCel: 2 posn: 252 117)
+				(theThief setLoop: 4 setCel: 2 posn: 252 117)
 			)
 			(1
 				(= seconds (= cycles 0))
 				(= whichChar selectThief)
-				(newProp_4 setLoop: 2 setCel: 0)
-				(= local14 1)
+				(theThief setLoop: 2 setCel: 0)
+				(= highlightCued TRUE)
 				(= seconds 2)
 			)
 			(2
-				(newProp_4 setCel: -1 setCycle: EndLoop)
+				(theThief setCel: -1 setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(3
-				(newProp_4 setCycle: BegLoop self)
+				(theThief setCycle: BegLoop self)
 			)
-			(4 (thiefScript changeState: 1))
+			(4
+				(thiefScript changeState: 1)
+			)
 		)
 	)
 )
 
 (instance selScript of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -400,7 +422,7 @@
 				(== (cSound prevSignal?) 3)
 			)
 			(cSound prevSignal: 0)
-			(= local14 1)
+			(= highlightCued TRUE)
 			(= local15 1)
 			(fighterScript changeState: 1)
 			(self dispose:)
@@ -413,21 +435,23 @@
 		(switch (= state newState)
 			(0 (= cycles 5))
 			(1
-				(++ local12)
-				(newView_2 hide:)
-				(newView_3 hide:)
-				(newView_4 hide:)
+				(++ charCycles)
+				(chooseText hide:)
+				(yourText hide:)
+				(characterText hide:)
 				(= cycles 3)
 			)
 			(2
-				(newView_2 show:)
-				(newView_3 show:)
-				(newView_4 show:)
+				(chooseText show:)
+				(yourText show:)
+				(characterText show:)
 				(= cycles 3)
 			)
 			(3
 				(cSound prevSignal: 0)
-				(if (< local12 2) (self changeState: 1))
+				(if (< charCycles 2)
+					(self changeState: 1)
+				)
 			)
 		)
 	)

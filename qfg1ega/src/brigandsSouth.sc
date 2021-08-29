@@ -10,8 +10,6 @@
 )
 
 (instance brigandsSouth of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 157)
@@ -25,7 +23,7 @@
 					posn: 122 222
 					setPri: 15
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCycle: Walk
 					setMotion: MoveTo 195 194 self
 				)
@@ -37,7 +35,7 @@
 					posn: 286 224
 					setPri: 15
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCycle: Walk
 					setMotion: MoveTo 286 190
 				)
@@ -52,7 +50,7 @@
 						posn: 340 194
 						setPri: 15
 						illegalBits: 0
-						ignoreActors: 1
+						ignoreActors: TRUE
 						setCycle: Walk
 						setMotion: MoveTo 304 194 self
 					)
@@ -108,11 +106,11 @@
 			(8
 				((ScriptID 95 9)
 					setPri: 13
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setMotion: MoveTo 280 165
 				)
 				((ScriptID 95 10)
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setMotion: MoveTo 310 150
 				)
 				(= cycles 20)

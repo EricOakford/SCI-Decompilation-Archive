@@ -20,7 +20,7 @@
 	ErasmusPrint 5
 	FenrusPrint 6
 	HeroPrint 7
-	ErasmusCastTeleport 8
+	ErasmusClearScript 8
 	door1 9
 	door2 10
 )
@@ -72,7 +72,7 @@
 	(ego setScript: egoPrint)
 )
 
-(procedure (ErasmusCastTeleport)
+(procedure (ErasmusClearScript)
 	(= enableErasmusTeaCountdown TRUE)
 	(ego setCel: 2)
 	(rm31 setScript: 0)
@@ -322,7 +322,7 @@
 						(cond 
 							((Said 'affirmative,please')
 								(if (== (++ yesCount) 4)
-									(ErasmusCastTeleport)
+									(ErasmusClearScript)
 									(= reasonForLeaving knowAllPunchlines)
 									(= teleportCued TRUE)
 								else

@@ -273,7 +273,7 @@
 		(self setScript: egoEnters)
 		(switch prevRoomNum
 			(93
-				(Bclr BRIGANDS_BEHIND_LOG)
+				(Bclr fBrigsBehindLog)
 				(ego
 					posn: 143 108
 					illegalBits: (| cWHITE cLBLUE)
@@ -292,7 +292,7 @@
 				)
 			)
 			(else 
-				(Bset BRIGANDS_BEHIND_LOG)
+				(Bset fBrigsBehindLog)
 				(= brigandsBehindLog TRUE)
 				(spearman1 setPri: 3 init: stopUpd:)
 				(spearman2 setPri: 3 init: stopUpd:)
@@ -353,8 +353,8 @@
 					((MouseClaimed ego event shiftDown)
 						(HighPrint (Format @str 91 0 @userName)
 							;%s, you're in big trouble!
-							)
 						)
+					)
 				)
 			)
 			(saidEvent
@@ -623,17 +623,6 @@
 
 (class Shooter of Script
 	(properties
-		client 0
-		state $ffff
-		start 0
-		timer 0
-		cycles 0
-		seconds 0
-		lastSeconds 0
-		register 0
-		script 0
-		caller 0
-		next 0
 		arrowPt 0
 		arrowID 0
 		arrowLoop 0
@@ -842,9 +831,15 @@
 			(0
 				(theArrowID dispose:)
 				(cond 
-					((ego has: iChainmail) (TakeDamage 10))
-					((ego has: iLeather) (TakeDamage 20))
-					(else (TakeDamage 35))
+					((ego has: iChainmail)
+						(TakeDamage 10)
+					)
+					((ego has: iLeather)
+						(TakeDamage 20)
+					)
+					(else
+						(TakeDamage 35)
+					)
 				)
 				(= temp0 0)
 				(while (<= temp0 24)
@@ -885,11 +880,12 @@
 	)
 )
 
-(instance egoEnters of Script
-	
+(instance egoEnters of Script	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff))
+			(0
+				(HandsOff)
+			)
 			(1
 				(if (not (Btst fBeenIn91))
 					(TimePrint 4 91 18)
@@ -958,8 +954,6 @@
 )
 
 (instance climbOverLogs of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

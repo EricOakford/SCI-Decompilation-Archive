@@ -13,11 +13,9 @@
 )
 
 (local
-	newAct
+	lasso
 )
 (instance castCalm of KScript
-	(properties)
-	
 	(method (dispose)
 		(= register FALSE)
 		(super dispose:)
@@ -32,19 +30,19 @@
 			)
 			(1
 				(KoboldFight FALSE)
-				(if (not (Btst DEFEATED_KOBOLD))
+				(if (not (Btst fKoboldDead))
 					(CenterPrint 114 0)
 					;The Kobold doesn't look very calm.  In fact, it looks totally unaffected by your spell.
 					)
-				(if register (self dispose:))
+				(if register
+					(self dispose:)
+				)
 			)
 		)
 	)
 )
 
 (instance castFetch of KScript
-	(properties)
-	
 	(method (dispose)
 		(NormalEgo)
 		(Face ego theKobold)
@@ -61,9 +59,11 @@
 				(ego view: vEgoMagicFetch setLoop: 1 cel: 0 setCycle: 0)
 				(= cycles 5)
 			)
-			(1 (ego setCycle: EndLoop self))
+			(1
+				(ego setCycle: EndLoop self)
+			)
 			(2
-				((= newAct (Actor new:))
+				((= lasso (Actor new:))
 					view: vEgoMagicFetch
 					illegalBits: 0
 					ignoreActors:
@@ -76,22 +76,24 @@
 					setMotion: MoveTo (theKobold x?) (+ (theKobold y?) 7) self
 				)
 			)
-			(3 (= seconds 2))
+			(3
+				(= seconds 2)
+			)
 			(4
 				(if (not (TrySkill FETCH tryFetchKoboldKey 0))
-					(newAct dispose:)
+					(lasso dispose:)
 					(if (AwakenKobold)
 						(CenterPrint 114 1)
 						;Uh oh, you've woken the Kobold.
-						)
+					)
 					(self dispose:)
 				else
-					(newAct
+					(lasso
 						setPri: 11
 						setMotion: MoveTo (+ (ego x?) 2) (- (ego y?) 36) self
 					)
 					((ScriptID 15 3)
-						posn: (newAct x?) (newAct y?)
+						posn: (lasso x?) (lasso y?)
 						show:
 						setLoop: 7
 						setCel: 0
@@ -101,13 +103,20 @@
 					)
 				)
 			)
-			(5 (= seconds 2))
+			(5
+				(= seconds 2)
+			)
 			(6
-				(newAct dispose:)
+				(lasso dispose:)
 				((ScriptID rKoboldCave 3) dispose:)
-				(ego get: iBrassKey setLoop: 3 cel: 0 setCycle: EndLoop self)
-				(Bset OBTAINED_KOBOLD_KEY)
-				(SolvePuzzle POINTS_TAKEKOBOLDKEY 7)
+				(ego
+					get: iBrassKey
+					setLoop: 3
+					cel: 0
+					setCycle: EndLoop self
+				)
+				(Bset fGotKoboldKey)
+				(SolvePuzzle f15GetKey 7)
 			)
 			(7
 				(CenterPrint 114 2)

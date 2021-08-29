@@ -12,8 +12,6 @@
 )
 
 (instance pushChair of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 159)
@@ -65,8 +63,6 @@
 )
 
 (instance pushCan of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 159)
@@ -145,8 +141,6 @@
 )
 
 (instance brigandsEast of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 159)
@@ -161,7 +155,7 @@
 					show:
 					setPri: 5
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCycle: Walk
 					posn: 300 90
 					setMotion: MoveTo 295 90 self
@@ -173,7 +167,7 @@
 					init:
 					setPri: 5
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCycle: Walk
 					posn: 310 90
 					setMotion: MoveTo 294 90 self
@@ -189,7 +183,7 @@
 						init:
 						setPri: 5
 						illegalBits: 0
-						ignoreActors: 1
+						ignoreActors: TRUE
 						setCycle: Walk
 						posn: 310 90
 						setMotion: MoveTo 294 90
@@ -209,16 +203,16 @@
 					setMotion: MoveTo 50 110
 				)
 				((ScriptID 95 12)
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setMotion: MoveTo 204 113
 				)
 				((ScriptID 95 13)
 					setPri: -1
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setMotion: MoveTo 268 111
 				)
 				((ScriptID 95 14)
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setMotion: MoveTo 287 102 self
 				)
 			)
@@ -232,7 +226,8 @@
 				(EgoDead 159 1
 					#icon vEgoDefeatedMagic 0 9
 					#title {You're half right but completely dead.})
-					;There are still too many brigands for you to fight in here.  You need to find some way to block one of the doors.
+					;There are still too many brigands for you to fight in here. 
+					; You need to find some way to block one of the doors.
 			)
 		)
 	)

@@ -11,24 +11,24 @@
 )
 
 (local
-	egoSignal
-	egoPriority
-	egoIllegalBits
-	newSound
+	savSignal
+	savPriority
+	savIllegalBits
+	soundObj
 )
-(procedure (CastOpen theTheEgo param2 &tmp theEgo temp1)
-	(= theEgo ego)
-	(= temp1 0)
+(procedure (CastOpen onWhat whoCares &tmp obj prScript)
+	(= obj ego)
+	(= prScript 0)
 	(if argc
-		(if (> argc 1) (= temp1 param2))
-		(= theEgo theTheEgo)
+		(if (> argc 1)
+			(= prScript whoCares)
+		)
+		(= obj onWhat)
 	)
-	(theEgo setScript: clientCastOpen temp1)
+	(obj setScript: clientCastOpen prScript)
 )
 
 (instance clientCastOpen of Script
-	(properties)
-	
 	(method (dispose)
 		(HandsOn)
 		(super dispose:)
@@ -38,9 +38,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoSignal (ego signal?))
-				(= egoPriority (ego priority?))
-				(= egoIllegalBits (ego illegalBits?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
 				(HandsOff)
 				(NormalEgo)
 				(ego setLoop: loopS)
@@ -57,7 +57,7 @@
 				)
 			)
 			(2
-				((= newSound (Sound new:))
+				((= soundObj (Sound new:))
 					number: (SoundFX 35)
 					priority: 6
 					init:
@@ -66,13 +66,13 @@
 				(= cycles 3)
 			)
 			(3
-				(newSound stop: dispose:)
+				(soundObj stop: dispose:)
 				(NormalEgo)
 				(ego
 					loop: loopS
-					priority: egoPriority
-					illegalBits: egoIllegalBits
-					signal: egoSignal
+					priority: savPriority
+					illegalBits: savIllegalBits
+					signal: savSignal
 				)
 				(self dispose:)
 			)

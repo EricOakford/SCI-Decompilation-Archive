@@ -10,17 +10,15 @@
 )
 
 (local
-	local0
-	local1
-	local2
+	theWarrior
+	theHand
+	theSpell
 )
 (instance egoDazzle of Script
-	(properties)
-	
 	(method (init)
-		(= local0 (ScriptID WARRIOR 0))
-		(= local2 (ScriptID CLOSECOMBAT 1))
-		(= local1 (local0 egoHand?))
+		(= theWarrior (ScriptID WARRIOR 0))
+		(= theSpell (ScriptID CLOSECOMBAT 1))
+		(= theHand (theWarrior egoHand?))
 		(super init: &rest)
 	)
 	
@@ -32,26 +30,29 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(local0 canFight: FALSE action: 11)
+				(theWarrior
+					canFight: FALSE
+					action: ActCast
+				)
 				(self cue:)
 			)
 			(1
-				(local2
+				(theSpell
 					setLoop: 5
 					cel: 0
-					setPri: (- (local1 priority?) 1)
+					setPri: (- (theHand priority?) 1)
 					cycleSpeed: 1
 					ignoreActors:
-					posn: (- (local0 x?) 78) (- (local0 y?) 81)
+					posn: (- (theWarrior x?) 78) (- (theWarrior y?) 81)
 					init:
 					setCycle: EndLoop self
 				)
 			)
 			(2
-				(local2 dispose:)
+				(theSpell dispose:)
 				(Bset fMonsterDazzled)
 				(= monsterDazzle [egoStats DAZZLE])
-				(local0 canFight: FALSE action: 0)
+				(theWarrior canFight: FALSE action: 0)
 				(self dispose:)
 			)
 		)

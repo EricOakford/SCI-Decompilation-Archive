@@ -12,18 +12,18 @@
 )
 
 (local
-	whoTarget
-	distX
-	distY
-	targetX
-	targetY
-	isHitTarget
-	egoSignal
-	egoPriority
-	egoIllegalBits
-	newSound
+	knTarg
+	thisX
+	thisY
+	knTargX
+	knTargY
+	gotHit
+	savSignal
+	savPriority
+	savIllegalBits
+	projSound
 )
-(procedure (ThrowKnife target &tmp temp0 temp1 newAct_2)
+(procedure (ThrowKnife atWhat &tmp pushX pushY projectile)
 	(if (!= curRoomNum daggerRoom)
 		(= daggerRoom curRoomNum)
 		(= missedDaggers 0)
@@ -38,46 +38,46 @@
 			(ego use: iDagger 1)
 			(Load SOUND (SoundFX 31))
 			(Load SOUND (SoundFX 29))
-			(if target
-				(Face ego target)
-				(= targetX (+ (target x?) (target targDeltaX?)))
-				(= targetY (+ (target y?) (target targDeltaY?)))
-				(= temp0 (- targetX (+ (ego x?) 15)))
-				(= temp1 (- targetY (- (ego y?) 40)))
+			(if atWhat
+				(Face ego atWhat)
+				(= knTargX (+ (atWhat x?) (atWhat targDeltaX?)))
+				(= knTargY (+ (atWhat y?) (atWhat targDeltaY?)))
+				(= pushX (- knTargX (+ (ego x?) 15)))
+				(= pushY (- knTargY (- (ego y?) 40)))
 				(while
 					(and
-						(< westEdge targetX)
-						(< targetX eastEdge)
-						(< 0 targetY)
-						(< targetY southEdge)
+						(< westEdge knTargX)
+						(< knTargX eastEdge)
+						(< 0 knTargY)
+						(< knTargY southEdge)
 					)
-					(= targetX (+ targetX temp0))
-					(= targetY (+ targetY temp1))
+					(+= knTargX pushX)
+					(+= knTargY pushY)
 				)
 				(if
 					(not
-						(TrySkill THROW 0 (- 50 (/ (ego distanceTo: target) 5)))
+						(TrySkill THROW 0 (- 50 (/ (ego distanceTo: atWhat) 5)))
 					)
-					(if (< targetY 0)
-						(= targetY (+ targetY (Random 30 100)))
+					(if (< knTargY 0)
+						(+= knTargY (Random 30 100))
 					else
-						(= targetY (- targetY (Random 30 100)))
+						(-= knTargY (Random 30 100))
 					)
 				)
 			)
-			(if (not target)
+			(if (not atWhat)
 				(SkillUsed THROW (/ [egoStats AGIL] tryStatThrowing))
-				(= targetX (if (& (ego loop?) $0001) -10 else 330))
-				(= targetY (Random 20 80))
+				(= knTargX (if (& (ego loop?) 1) -10 else 330))
+				(= knTargY (Random 20 80))
 			)
-			((= newSound (Sound new:))
+			((= projSound (Sound new:))
 				number: (SoundFX 31)
 				priority: 15
 				init:
 			)
-			(= whoTarget target)
-			((= newAct_2 (Actor new:))
-				view: vEgoThrowDagger
+			(= knTarg atWhat)
+			((= projectile (Actor new:))
+				view: vEgoThrowingDagger
 				setLoop: 2
 				setCel: 0
 				illegalBits: 0
@@ -88,7 +88,7 @@
 				setStep: 12 8
 				init:
 				hide:
-				setScript: knifeScript 0 target
+				setScript: knifeScript 0 atWhat
 			)
 			(return TRUE)
 		)
@@ -96,92 +96,82 @@
 )
 
 (instance knifeScript of Script
-	(properties)
-
 	;CI: This is a manual decompilation of the asm, which could not be auto-decompiled by the version of SCICompanion I used.
-	(method (doit &tmp tmpHitTarget)
-		(if (IsObject whoTarget)
-			(= targetX (+ (whoTarget x?) (whoTarget targDeltaX?)))
-			(= targetY (+ (whoTarget y?) (whoTarget targDeltaY?)))
+	;EO: I made corrections.
+	(method (doit &tmp hitFlag)
+		(if (IsObject knTarg)
+			(= knTargX (+ (knTarg x?) (knTarg targDeltaX?)))
+			(= knTargY (+ (knTarg y?) (knTarg targDeltaY?)))
 		)
-		(= distX (- targetX (client x?)))
-		(= distY (- targetY (client y?)))
+		(= thisX (- knTargX (client x?)))
+		(= thisY (- knTargY (client y?)))
 
-		(cond
-			(	(and (== state 1) 
-					 (or (= tmpHitTarget ;if we're within 15 pixels of the target, consider it a hit.
-							(and (< -15 distX) (< distX 15)
-								 (< -15 distY) (< distY 15)
-							)
-						 )	;And if it's a hit, we advance the script to the next state.
-						(not (client mover?))	; or if the projectile has stopped moving.
-						(not (and (< 0 (client x?)) (< (client x?) 319)))	;or the projectile is offscreen left or right
-						(not (and (< 0 (client y?)) (< (client y?) 189)))	;or the projectile is offscreen top or bottom.
-					 )
+		(if (and
+				(== state 1)
+				(or
+					(= hitFlag (and (< -15 thisX 15)  (< -15 thisY 15)))
+					(not (client mover?))
+					(or (not (< 0 (client x?) 319)) (not (< 0 (client y?) 189)))
 				)
-				(if (not register) ;register is the target object. if there is noobject, then set the HitFlag to FALSE.
-					(= tmpHitTarget FALSE)
-				)
-				(= isHitTarget tmpHitTarget)
-				(self cue:)
 			)
-			(else
-				(super doit:)
-			)
+			(= gotHit (and register	hitFlag))
+			(self cue:)
+		else
+			(super doit:)
 		)
 	)
 		
 ;;; 	(method (doit &tmp temp0)
 ;;; 		(asm
 ;;; 			pushi    1
-;;; 			lsl      whoTarget
+;;; 			lsl      knTarg
 ;;; 			callk    IsObject,  2
 ;;; 			bnt      code_0250
 ;;; 			pushi    #x
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      knTarg
 ;;; 			send     4
 ;;; 			push    
 ;;; 			pushi    #targDeltaX
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      knTarg
 ;;; 			send     4
 ;;; 			add     
-;;; 			sal      targetX
+;;; 			sal      knTargX
 ;;; 			pushi    #y
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      knTarg
 ;;; 			send     4
 ;;; 			push    
 ;;; 			pushi    #targDeltaY
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      knTarg
 ;;; 			send     4
 ;;; 			add     
-;;; 			sal      targetY
+;;; 			sal      knTargY
 ;;; code_0250:
 ;;; 			pushi    #x
 ;;; 			pushi    0
 ;;; 			pToa     client
 ;;; 			send     4
 ;;; 			push    
-;;; 			lal      targetX
+;;; 			lal      knTargX
 ;;; 			sub     
-;;; 			sal      distX
+;;; 			sal      thisX
 ;;; 			pushi    #y
 ;;; 			pushi    0
 ;;; 			pToa     client
 ;;; 			send     4
 ;;; 			push    
-;;; 			lal      targetY
+;;; 			lal      knTargY
 ;;; 			sub     
-;;; 			sal      distY
+;;; 			sal      thisY
 ;;; 			pTos     state
 ;;; 			ldi      1
 ;;; 			eq?     
 ;;; 			bnt      code_02d8
 ;;; 			pushi    65521
-;;; 			lal      distX
+;;; 			lal      thisX
 ;;; 			lt?     
 ;;; 			bnt      code_028d
 ;;; 			pprev   
@@ -189,7 +179,7 @@
 ;;; 			lt?     
 ;;; 			bnt      code_028d
 ;;; 			pushi    65521
-;;; 			lal      distY
+;;; 			lal      thisY
 ;;; 			lt?     
 ;;; 			bnt      code_028d
 ;;; 			pprev   
@@ -235,7 +225,7 @@
 ;;; 			bnt      code_02ce
 ;;; 			lat      temp0
 ;;; code_02ce:
-;;; 			sal      isHitTarget
+;;; 			sal      gotHit
 ;;; 			pushi    #cue
 ;;; 			pushi    0
 ;;; 			self     4
@@ -250,9 +240,9 @@
 ;;; 	)
 	
 	(method (dispose)
-		(newSound dispose:)
+		(projSound dispose:)
 		(HandsOn)
-		(if (and isHitTarget (IsObject register))
+		(if (and gotHit (IsObject register))
 			(register getHurt: (+ 5 (/ [egoStats STR] 10)))
 		)
 		(super dispose:)
@@ -262,12 +252,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoSignal (ego signal?))
-				(= egoPriority (ego priority?))
-				(= egoIllegalBits (ego illegalBits?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
 				(HandsOff)
 				(ego
-					view: vEgoThrowDagger
+					view: vEgoThrowingDagger
 					setLoop: (if (& (ego loop?) $0001) 1 else 0)
 					cel: 0
 					setCycle: CycleTo 9 1 self
@@ -276,7 +266,7 @@
 			)
 			(1
 				(ego setCycle: EndLoop)
-				(newSound play:)
+				(projSound play:)
 				(client
 					x: (if (== (ego loop?) 1)
 						(- (ego x?) 15)
@@ -285,15 +275,15 @@
 					)
 					show:
 					setLoop: (+ (ego loop?) 2)
-					setMotion: MoveTo targetX targetY
+					setMotion: MoveTo knTargX knTargY
 				)
 			)
 			(2
 				(client hide:)
-				(if isHitTarget
+				(if gotHit
 					(-- missedDaggers)
 					(++ hitDaggers)
-					(newSound stop: number: (SoundFX 29) play: self)
+					(projSound stop: number: (SoundFX 29) play: self)
 				else
 					(= cycles 1)
 				)
@@ -301,9 +291,9 @@
 			(3
 				(NormalEgo)
 				(ego
-					priority: egoPriority
-					illegalBits: egoIllegalBits
-					signal: egoSignal
+					priority: savPriority
+					illegalBits: savIllegalBits
+					signal: savSignal
 				)
 				(client dispose:)
 			)

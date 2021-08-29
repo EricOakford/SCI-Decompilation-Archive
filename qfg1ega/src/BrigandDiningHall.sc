@@ -43,7 +43,7 @@
 )
 
 (local
-	local0
+	enteredFromSouth
 	local1
 	local2
 	frontDoorClosed
@@ -83,7 +83,7 @@
 			setFeatures: onDrunk onSign onRope onCandelabra onChandelier
 		)
 		(mouseDownHandler add: self)
-		(SolvePuzzle POINTS_ENTERBRIGANDDININGROOM 8)
+		(SolvePuzzle f95EnterDiningRoom 8)
 		(StatusLine enable:)
 		(NormalEgo)
 		(ChangeGait MOVE_WALK FALSE)
@@ -113,7 +113,7 @@
 	)
 	
 	(method (doit)
-		(if (and local0 (& (ego onControl: origin) cLRED))
+		(if (and enteredFromSouth (& (ego onControl: origin) cLRED))
 			(curRoom newRoom: 94)
 		)
 		(if
@@ -153,14 +153,15 @@
 					((MouseClaimed ego event shiftDown)
 						(HighPrint 95 0)
 						;The flying Wallendas have nothing on you.
-						)
+					)
 				)
 			)
 			(saidEvent
 				(if (Said 'rest,nap')
 					(EgoDead 95 1
 						#title {Z-Z-Z-Z-Z-Z-Z-Z-Z-Z}
-						#icon vIcons 0 0)
+						#icon vIcons 0 0
+					)
 						;The Brigands oblige you by making your pleasant rest permanent!
 				)
 				(cond 
@@ -174,19 +175,24 @@
 							(stoogesTrapped
 								(HighPrint 95 2)
 								;No time for that again (although it WAS fun).  Just get the heck outta here.
-								)
-							((ego inRect: 100 108 217 120) (ego setScript: (ScriptID 158 1)))
+							)
+							((ego inRect: 100 108 217 120)
+								(ego setScript: (ScriptID 158 1))
+							)
 							(else
 								(HighPrint 95 3)
 								;You're not in a good spot.
-								)
+							)
 						)
 					)
 					((and local4 (not stoogesTrapped))
 						(HighPrint 95 4)
 						;It's too late for that.
-						(event claimed: TRUE))
-					((not (super handleEvent: event)) (SaidEndGameBrigands event))
+						(event claimed: TRUE)
+					)
+					((not (super handleEvent: event))
+						(SaidEndGameBrigands event)
+					)
 				)
 			)
 		)
@@ -195,13 +201,25 @@
 	(method (notify param1)
 		(return
 			(switch param1
-				(0 (= local0 1))
-				(1
-					(if local4 (return 1) else (return 0))
+				(0
+					(= enteredFromSouth 1)
 				)
-				(2 (= local4 1))
+				(1
+					(if local4
+						(return TRUE)
+					else
+						(return FALSE)
+					)
+				)
+				(2
+					(= local4 1)
+				)
 				(3
-					(if frontDoorClosed (return 1) else (return 0))
+					(if frontDoorClosed
+						(return TRUE)
+					else
+						(return FALSE)
+					)
 				)
 				(4
 					(if local2 (return 1) else (return 0))
@@ -210,8 +228,12 @@
 				(6
 					(if local5 (return 1) else (return 0))
 				)
-				(7 (= local5 0))
-				(8 (= local5 1))
+				(7
+					(= local5 0)
+				)
+				(8
+					(= local5 1)
+				)
 				(9
 					(if local6 (return 1) else (return 0))
 				)
@@ -574,9 +596,7 @@
 	)
 )
 
-(instance egoEntersSouth of Script
-	(properties)
-	
+(instance egoEntersSouth of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -665,8 +685,6 @@
 )
 
 (instance closeFDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -693,8 +711,6 @@
 )
 
 (instance finalEntry of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 80))
@@ -745,8 +761,6 @@
 )
 
 (instance sBrigBlocked of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 2))
@@ -758,8 +772,6 @@
 )
 
 (instance sChandFall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 2))

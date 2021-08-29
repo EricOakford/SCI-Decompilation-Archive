@@ -267,7 +267,7 @@
 	fLearnedTrigger			;262
 	fGoThruDoorway					;263 (used in Yorrick's room)
 	fFakeDoorDown				;264 (used in brigandDoorFall)
-	fFlag265					;265 (used in Yorrick's room) 
+	fYorickThrewSomething					;265 (used in Yorrick's room) 
 	fErasmusAskedMaze 	;266
 	fNoMoreTalking 		;267
 	fBefriendedYorick 			;268
@@ -276,16 +276,16 @@
 	fYorickThrows					;271 (tested in Yorrick's room)
 	fClimbedHenryCliff			;272
 	fSavedElsa 					;273
-	fEgoFallOffCliff			;274 used in hermitHits
+	fEgoKnockedOffCliff			;274 used in hermitHits
 	fKnockedOnHenryDoor 		;275
 	fEgoSquashed				;276 used in hermitHits
 	fLeavingCastle					;277 used in healerGetNest
 	fClimbedTree		;278
 	fHaveFaeryShrooms		;279
-	fFlag280					;280 (set in Kobold Flame Dart)
-	fFlag281				;281 (set in Kobold Flame Dart)
+	fDartReversed					;280 (set in Kobold Flame Dart)
+	fKoboldProtected				;281 (set in Kobold Flame Dart)
 	fKoboldChestExploded 		;282
-	fFlag283					;283 (cleared in Kobold Flame Dart)
+	fDartOnKobold					;283 (cleared in Kobold Flame Dart)
 	fUnused284		;----------- 
 	fUnused285		;----------- 
 	fUnused286		;----------- 
@@ -324,7 +324,7 @@
 	fUnused319
 	fUnused320
 	fOfferedTraining 			;321
-	fFlag322
+	fUnused322
 	fFarmerIsEast 				;323
 	fBrutusWaits				;324
 	fBabaFrog 					;325

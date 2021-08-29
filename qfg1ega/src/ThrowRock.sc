@@ -12,18 +12,18 @@
 )
 
 (local
-	whoTarget
-	distX
-	distY
-	targetX
-	targetY
-	isHitTarget
-	egoSignal
-	egoPriority
-	egoIllegalBits
+	rockTarg
+	thisX
+	thisY
+	rockTargX
+	rockTargY
+	gotHit
+	savSignal
+	savPriority
+	savIllegalBits
 	hitSound
 )
-(procedure (ThrowRock target &tmp temp0 temp1 newAct_2)
+(procedure (ThrowRock atWhat &tmp pushX pushY projectile)
 	(return
 		(if (not (ego has: iRock))
 			(HighPrint 102 0)
@@ -33,41 +33,41 @@
 		else
 			(ego use: iRock 1)
 			(Load SOUND (SoundFX 58))
-			(if target
-				(Face ego target)
-				(= targetX (+ (target x?) (target targDeltaX?)))
-				(= targetY (+ (target y?) (target targDeltaY?)))
-				(= temp0 (- targetX (ego x?)))
-				(= temp1 (- targetY (- (ego y?) 34)))
+			(if atWhat
+				(Face ego atWhat)
+				(= rockTargX (+ (atWhat x?) (atWhat targDeltaX?)))
+				(= rockTargY (+ (atWhat y?) (atWhat targDeltaY?)))
+				(= pushX (- rockTargX (ego x?)))
+				(= pushY (- rockTargY (- (ego y?) 34)))
 				(while
 					(and
-						(< westEdge targetX)
-						(< targetX eastEdge)
-						(< 0 targetY)
-						(< targetY southEdge)
+						(< westEdge rockTargX)
+						(< rockTargX eastEdge)
+						(< 0 rockTargY)
+						(< rockTargY southEdge)
 					)
-					(= targetX (+ targetX temp0))
-					(= targetY (+ targetY temp1))
+					(+= rockTargX pushX)
+					(+= rockTargY pushY)
 				)
 				(if
 					(not
-						(TrySkill THROW 0 (- 50 (/ (ego distanceTo: target) 5)))
+						(TrySkill THROW 0 (- 50 (/ (ego distanceTo: atWhat) 5)))
 					)
-					(if (< targetY 0)
-						(= targetY (+ targetY (Random 30 100)))
+					(if (< rockTargY 0)
+						(+= rockTargY (Random 30 100))
 					else
-						(= targetY (- targetY (Random 30 100)))
+						(-= rockTargY (Random 30 100))
 					)
 				)
 			)
-			(if (not target)
+			(if (not atWhat)
 				;CI: why call SkillUsed directly, instead of TrySkill
 				(SkillUsed THROW (/ [egoStats AGIL] tryStatThrowing))
-				(= targetX (if (& (ego loop?) $0001) -10 else 330))
-				(= targetY (Random 20 80))
+				(= rockTargX (if (& (ego loop?) 1) -10 else 330))
+				(= rockTargY (Random 20 80))
 			)
-			(= whoTarget target)
-			((= newAct_2 (Actor new:))
+			(= rockTarg atWhat)
+			((= projectile (Actor new:))
 				view: vEgoThrowing
 				setLoop: 4
 				setCel: 0
@@ -80,7 +80,7 @@
 				init:
 				hide:
 				setPri: 15
-				setScript: rockScript 0 target
+				setScript: rockScript 0 atWhat
 			)
 			(return TRUE)
 		)
@@ -88,92 +88,82 @@
 )
 
 (instance rockScript of Script
-	(properties)
-	
 	;CI: This is a manual decompilation of the asm, which could not be auto-decompiled by the version of SCICompanion I used.
-	(method (doit &tmp tmpHitTarget)
-		(if (IsObject whoTarget)
-			(= targetX (+ (whoTarget x?) (whoTarget targDeltaX?)))
-			(= targetY (+ (whoTarget y?) (whoTarget targDeltaY?)))
+	;EO: I made corrections
+	(method (doit &tmp hitFlag)
+		(if (IsObject rockTarg)
+			(= rockTargX (+ (rockTarg x?) (rockTarg targDeltaX?)))
+			(= rockTargY (+ (rockTarg y?) (rockTarg targDeltaY?)))
 		)
-		(= distX (- targetX (client x?)))
-		(= distY (- targetY (client y?)))
+		(= thisX (- rockTargX (client x?)))
+		(= thisY (- rockTargY (client y?)))
 
-		(cond
-			(	(and (== state 1) 
-					 (or (= tmpHitTarget ;if we're within 15 pixels of the target, consider it a hit.
-							(and (< -15 distX) (< distX 15)
-								 (< -15 distY) (< distY 15)
-							)
-						 )	;And if it's a hit, we advance the script to the next state.
-						(not (client mover?))	; or if the projectile has stopped moving.
-						(not (and (< 0 (client x?)) (< (client x?) 319)))	;or the projectile is offscreen left or right
-						(not (and (< 0 (client y?)) (< (client y?) 189)))	;or the projectile is offscreen top or bottom.
-					 )
+		(if (and
+				(== state 1)
+				(or
+					(= hitFlag (and (< -15 thisX 15)  (< -15 thisY 15)))
+					(not (client mover?))
+					(or (not (< 0 (client x?) 319)) (not (< 0 (client y?) 189)))
 				)
-				(if (not register) ;register is the target object. if there is noobject, then set the HitFlag to FALSE.
-					(= tmpHitTarget FALSE)
-				)
-				(= isHitTarget tmpHitTarget)
-				(self cue:)
 			)
-			(else
-				(super doit:)
-			)
+			(= gotHit (and register	hitFlag))
+			(self cue:)
+		else
+			(super doit:)
 		)
 	)
 	
 ;;; 	(method (doit &tmp temp0)
 ;;; 		(asm
 ;;; 			pushi    1
-;;; 			lsl      whoTarget
+;;; 			lsl      rockTarg
 ;;; 			callk    IsObject,  2
 ;;; 			bnt      code_020e
 ;;; 			pushi    #x
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      rockTarg
 ;;; 			send     4
 ;;; 			push    
 ;;; 			pushi    #targDeltaX
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      rockTarg
 ;;; 			send     4
 ;;; 			add     
-;;; 			sal      targetX
+;;; 			sal      rockTargX
 ;;; 			pushi    #y
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      rockTarg
 ;;; 			send     4
 ;;; 			push    
 ;;; 			pushi    #targDeltaY
 ;;; 			pushi    0
-;;; 			lal      whoTarget
+;;; 			lal      rockTarg
 ;;; 			send     4
 ;;; 			add     
-;;; 			sal      targetY
+;;; 			sal      rockTargY
 ;;; code_020e:
 ;;; 			pushi    #x
 ;;; 			pushi    0
 ;;; 			pToa     client
 ;;; 			send     4
 ;;; 			push    
-;;; 			lal      targetX
+;;; 			lal      rockTargX
 ;;; 			sub     
-;;; 			sal      distX
+;;; 			sal      thisX
 ;;; 			pushi    #y
 ;;; 			pushi    0
 ;;; 			pToa     client
 ;;; 			send     4
 ;;; 			push    
-;;; 			lal      targetY
+;;; 			lal      rockTargY
 ;;; 			sub     
-;;; 			sal      distY
+;;; 			sal      thisY
 ;;; 			pTos     state
 ;;; 			ldi      1
 ;;; 			eq?     
 ;;; 			bnt      code_0296
 ;;; 			pushi    65521
-;;; 			lal      distX
+;;; 			lal      thisX
 ;;; 			lt?     
 ;;; 			bnt      code_024b
 ;;; 			pprev   
@@ -181,7 +171,7 @@
 ;;; 			lt?     
 ;;; 			bnt      code_024b
 ;;; 			pushi    65521
-;;; 			lal      distY
+;;; 			lal      thisY
 ;;; 			lt?     
 ;;; 			bnt      code_024b
 ;;; 			pprev   
@@ -227,7 +217,7 @@
 ;;; 			bnt      code_028c
 ;;; 			lat      temp0
 ;;; code_028c:
-;;; 			sal      isHitTarget
+;;; 			sal      gotHit
 ;;; 			pushi    #cue
 ;;; 			pushi    0
 ;;; 			self     4
@@ -244,7 +234,7 @@
 	(method (dispose)
 		(hitSound dispose:)
 		(HandsOn)
-		(if (and isHitTarget (IsObject register))
+		(if (and gotHit (IsObject register))
 			(register getHurt: TRUE)
 		)
 		(super dispose:)
@@ -254,14 +244,14 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoSignal (ego signal?))
-				(= egoPriority (ego priority?))
-				(= egoIllegalBits (ego illegalBits?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
 				(HandsOff)
 				(ego
 					view: vEgoThrowing
 					cycleSpeed: 1
-					setLoop: (if (& (ego loop?) $0001) 2 else 3)
+					setLoop: (if (& (ego loop?) 1) 2 else 3)
 					cel: 0
 					setCycle: CycleTo 3 1 self
 				)
@@ -281,12 +271,12 @@
 					)
 					show:
 					setCycle: Forward
-					setMotion: MoveTo targetX targetY
+					setMotion: MoveTo rockTargX rockTargY
 				)
 			)
 			(2
 				(client hide:)
-				(if isHitTarget
+				(if gotHit
 					(hitSound play: self)
 				else
 					(= cycles 1)
@@ -295,9 +285,9 @@
 			(3
 				(NormalEgo)
 				(ego
-					priority: egoPriority
-					illegalBits: egoIllegalBits
-					signal: egoSignal
+					priority: savPriority
+					illegalBits: savIllegalBits
+					signal: savSignal
 				)
 				(client dispose:)
 			)

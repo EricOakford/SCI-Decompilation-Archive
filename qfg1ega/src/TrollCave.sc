@@ -12,6 +12,7 @@
 (public
 	rm88 0
 )
+
 (enum
 	trollABSENT
 	trollHIDING
@@ -81,10 +82,10 @@
 			(==
 				(= trollState
 					(cond 
-						((Btst DEFEATED_FRED_89)
+						((Btst fBeatFred89)
 							trollABSENT
 						)
-						((Btst DEFEATED_FRED)
+						((Btst fBeatFred)
 							(troll
 								view: vTrollDefeated
 								posn: 80 158
@@ -346,7 +347,7 @@
 						)
 					)
 					((Said 'fight')
-						(if (Btst DEFEATED_FRED)
+						(if (Btst fBeatFred)
 							(HighPrint 88 32)
 							;The cave troll is dead.
 						else
@@ -389,8 +390,6 @@
 )
 
 (instance trollOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -411,9 +410,9 @@
 		)
 	)
 )
+
 ;EO: Was this Troll battle originally going to be a side-view battle?
 (instance trollKills of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (HandsOff) (= cycles 3))
@@ -431,7 +430,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(3 (= cycles 12))
+			(3
+				(= cycles 12)
+			)
 			(4
 				(EgoDead 88 34
 					#title {WHATA TROLL!}
@@ -444,12 +445,11 @@
 )
 
 (instance trollDies of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= trollState trollDYING)
-				(Bset DEFEATED_FRED)
+				(Bset fBeatFred)
 				(troll
 					view: vTrollDefeated
 					loop: 0
@@ -470,7 +470,6 @@
 )
 
 (instance dripScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -489,7 +488,6 @@
 )
 
 (instance egoSearch of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -515,11 +513,11 @@
 					(searchJUNK
 						(HighPrint 88 37)
 						;You dig around in the pile until the odor almost makes you sick.
-						(if (Btst SEARCHED_FRED_TREASURE)
+						(if (Btst fSearchedFredTreasure)
 							(HighPrint 88 38)
 							;You find nothing more of value.
 						else
-							(Bset SEARCHED_FRED_TREASURE)
+							(Bset fSearchedFredTreasure)
 							(HighPrint 88 39)
 							;You find 30 silvers and 5 gold.
 							(ego get: iGold 5)

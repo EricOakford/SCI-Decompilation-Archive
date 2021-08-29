@@ -16,8 +16,6 @@
 )
 
 (instance openFromBelow of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 140)
@@ -26,7 +24,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset HENRY_DOOR_OPEN)
+				(Bset fHenryDoorOpen)
 				(client
 					view: vHenryOutside
 					loop: 2
@@ -41,9 +39,11 @@
 				;"'ello?"
 				(self cue:)
 			)
-			(2 (client setCycle: BegLoop self))
+			(2
+				(client setCycle: BegLoop self)
+			)
 			(3
-				(Bclr HENRY_DOOR_OPEN)
+				(Bclr fHenryDoorOpen)
 				(client stopUpd: setScript: 0)
 			)
 		)

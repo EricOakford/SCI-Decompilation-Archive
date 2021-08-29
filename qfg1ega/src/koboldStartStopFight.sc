@@ -11,21 +11,19 @@
 )
 
 (instance startFight of KScript
-	(properties)
-	
 	(method (dispose)
 		(= fightingKoboldStart FALSE)
 		(super dispose:)
 		(DisposeScript 117)
 	)
 	
-	(method (changeState newState &tmp theEgoKoboldBattleLoop)
+	(method (changeState newState &tmp theLoop)
 		(switch (= state newState)
 			(0
 				(= fightingKoboldStart TRUE)
 				(= fightingKobold 0)
 				(HandsOff)
-				(ChangeGait MOVE_WALK 0)
+				(ChangeGait MOVE_WALK FALSE)
 				(ego illegalBits: 0)
 				(if
 					;chance of hitting kobold is minimum 5, maximum 80 (assuming all skills are maxed at 100)
@@ -51,7 +49,9 @@
 					(= koboldEvade 5)
 				)
 				(= damageToKobold (+ 9 (/ [egoStats STR] 10)))
-				(if (ego has: iSword) (= damageToKobold (+ damageToKobold 3)))
+				(if (ego has: iSword)
+					(+= damageToKobold 3)
+				)
 				(if (< (ego y?) 105)
 					(self cue:)
 				else
@@ -66,13 +66,13 @@
 				)
 			)
 			(2
-				(= theEgoKoboldBattleLoop egoKoboldBattleLoop)
+				(= theLoop egoKoboldBattleLoop)
 				(if (not (ego has: iSword))
-					(= theEgoKoboldBattleLoop (+ theEgoKoboldBattleLoop 2))
+					(+= theLoop 2)
 				)
 				(ego
 					view: vEgoBeginFight
-					setLoop: theEgoKoboldBattleLoop
+					setLoop: theLoop
 					cycleSpeed: 1
 					setCycle: EndLoop self
 				)
@@ -85,25 +85,23 @@
 )
 
 (instance stopFight of KScript
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 117)
 	)
 	
-	(method (changeState newState &tmp theEgoKoboldBattleLoop)
+	(method (changeState newState &tmp theLoop)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= fightingKobold FALSE)
-				(= theEgoKoboldBattleLoop egoKoboldBattleLoop)
+				(= theLoop egoKoboldBattleLoop)
 				(if (not (ego has: iSword))
-					(= theEgoKoboldBattleLoop (+ theEgoKoboldBattleLoop 2))
+					(+= theLoop 2)
 				)
 				(ego
 					view: vEgoBeginFight
-					setLoop: theEgoKoboldBattleLoop
+					setLoop: theLoop
 					cel: (ego lastCel:)
 					setCycle: BegLoop self
 				)
@@ -111,7 +109,9 @@
 			(1
 				(NormalEgo)
 				(ego loop: egoKoboldBattleLoop)
-				(if (not (Btst DEFEATED_KOBOLD)) (ego illegalBits: koboldIllBits))
+				(if (not (Btst fKoboldDead))
+					(ego illegalBits: koboldIllBits)
+				)
 				(HandsOn)
 				(self dispose:)
 			)

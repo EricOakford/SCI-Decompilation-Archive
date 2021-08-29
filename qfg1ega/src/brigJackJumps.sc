@@ -10,8 +10,6 @@
 )
 
 (instance jackJumps of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 192)
@@ -19,7 +17,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 15))
+			(0
+				(= cycles 15)
+			)
 			(1
 				((ScriptID 94 14) init: setPri: 13)
 				((ScriptID 94 0) notify: 1)

@@ -23,8 +23,6 @@
 	local0
 )
 (instance rexJoke of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 135)
@@ -34,7 +32,7 @@
 		(switch (= state newState)
 			(0
 				(= erasmusTellingJoke TRUE)
-				(= enableErasmusTeaCountdown 0)
+				(= enableErasmusTeaCountdown FALSE)
 				(ErasmusPrint 11 135 0)
 				;Do you know what you get when a Tyranno-\nsaurus running eastward meets a Tyranno-\nsaurus running westward?
 			)
@@ -43,11 +41,11 @@
 					(ErasmusPrint 6 135 1)
 					;That's a smashing good joke, I think.
 					(= erasmusTellingJoke FALSE)
-					(ErasmusCastTeleport)
+					(ErasmusClearScript)
 				else
 					(self cue:)
 				)
-				(= saidYesToErasmus 0)
+				(= saidYesToErasmus FALSE)
 			)
 			(2
 				(ErasmusPrint 5 135 2)
@@ -65,7 +63,7 @@
 				(= cycles 20)
 			)
 			(4
-				(ErasmusCastTeleport)
+				(ErasmusClearScript)
 				(= erasmusTellingJoke 0)
 				((ScriptID 31 4)
 					cycleSpeed: 1
@@ -79,8 +77,6 @@
 )
 
 (instance torchJoke of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 135)
@@ -89,8 +85,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= erasmusTellingJoke 1)
-				(= enableErasmusTeaCountdown 0)
+				(= erasmusTellingJoke TRUE)
+				(= enableErasmusTeaCountdown FALSE)
 				(ErasmusPrint 8 135 3)
 				;Is it true that a monster can't hurt you if you carry a torch?
 			)
@@ -110,8 +106,8 @@
 				(= cycles 20)
 			)
 			(3
-				(ErasmusCastTeleport)
-				(= erasmusTellingJoke 0)
+				(ErasmusClearScript)
+				(= erasmusTellingJoke FALSE)
 				((ScriptID 31 4)
 					cycleSpeed: 1
 					setLoop: 5
@@ -124,8 +120,6 @@
 )
 
 (instance ottoJoke of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 135)
@@ -134,8 +128,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= erasmusTellingJoke 1)
-				(= enableErasmusTeaCountdown 0)
+				(= erasmusTellingJoke TRUE)
+				(= enableErasmusTeaCountdown FALSE)
 				(ErasmusPrint 8 135 5)
 				;Do you know what time it is when Otto walks through your door?
 			)
@@ -143,12 +137,12 @@
 				(if saidYesToErasmus
 					(ErasmusPrint 6 135 6)
 					;So you've met Otto already.
-					(= erasmusTellingJoke 0)
-					(ErasmusCastTeleport)
+					(= erasmusTellingJoke FALSE)
+					(ErasmusClearScript)
 				else
 					(self cue:)
 				)
-				(= saidYesToErasmus 0)
+				(= saidYesToErasmus FALSE)
 			)
 			(2
 				(ErasmusPrint 5 135 7)
@@ -166,8 +160,8 @@
 				(= cycles 20)
 			)
 			(4
-				(ErasmusCastTeleport)
-				(= erasmusTellingJoke 0)
+				(ErasmusClearScript)
+				(= erasmusTellingJoke FALSE)
 				((ScriptID 31 4)
 					cycleSpeed: 1
 					setLoop: 5
@@ -180,8 +174,6 @@
 )
 
 (instance commaJoke of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 135)
@@ -190,8 +182,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= erasmusTellingJoke 1)
-				(= enableErasmusTeaCountdown 0)
+				(= erasmusTellingJoke TRUE)
+				(= enableErasmusTeaCountdown FALSE)
 				(ErasmusPrint 6 135 8)
 				;Do you know the difference between a Cheetaur and a comma?
 			)
@@ -199,12 +191,12 @@
 				(if saidYesToErasmus
 					(ErasmusPrint 3 135 9)
 					;Spoilsport!
-					(= erasmusTellingJoke 0)
-					(ErasmusCastTeleport)
+					(= erasmusTellingJoke FALSE)
+					(ErasmusClearScript)
 				else
 					(self cue:)
 				)
-				(= saidYesToErasmus 0)
+				(= saidYesToErasmus FALSE)
 			)
 			(2
 				(ErasmusPrint 5 135 10)
@@ -222,8 +214,8 @@
 				(= cycles 20)
 			)
 			(4
-				(ErasmusCastTeleport)
-				(= erasmusTellingJoke 0)
+				(ErasmusClearScript)
+				(= erasmusTellingJoke FALSE)
 				((ScriptID 31 4)
 					cycleSpeed: 1
 					setLoop: 5
@@ -236,11 +228,8 @@
 )
 
 (instance dingeJoke of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (not erasmusTalking) (not fenrusTalking) (not local0))
+		(if (and (not erasmusTalking) (not fenrusTalking) (not local0))
 			(self cue:)
 		)
 		(super doit:)
@@ -254,8 +243,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= erasmusTellingJoke 1)
-				(= enableErasmusTeaCountdown 0)
+				(= erasmusTellingJoke TRUE)
+				(= enableErasmusTeaCountdown FALSE)
 				(= local0 1)
 				(ErasmusPrint 6 135 11)
 				;Do you know what's big, purple, and eats ungefaehr-liche dinge?
@@ -265,10 +254,10 @@
 				(if saidYesToErasmus
 					(ErasmusPrint 4 135 12)
 					;Well...let me figure out something tougher.
-					(= erasmusTellingJoke 0)
-					(ErasmusCastTeleport)
+					(= erasmusTellingJoke FALSE)
+					(ErasmusClearScript)
 				)
-				(= saidYesToErasmus 0)
+				(= saidYesToErasmus FALSE)
 			)
 			(2
 				(User canInput: FALSE)
@@ -278,7 +267,7 @@
 			(3
 				(FenrusPrint 6 135 14)
 				;Large purple ungefaehr-liche dinge eaters are all too common in the forest these days.
-				)
+			)
 			(4
 				(ego setCel: 3)
 				((ScriptID 31 4)
@@ -291,8 +280,8 @@
 			)
 			(5
 				(User canInput: TRUE)
-				(ErasmusCastTeleport)
-				(= erasmusTellingJoke 0)
+				(ErasmusClearScript)
+				(= erasmusTellingJoke FALSE)
 				((ScriptID 31 4)
 					cycleSpeed: 1
 					setLoop: 5
@@ -305,8 +294,6 @@
 )
 
 (instance noJoke of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 135)
@@ -315,8 +302,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= erasmusTellingJoke 1)
-				(= enableErasmusTeaCountdown 0)
+				(= erasmusTellingJoke TRUE)
+				(= enableErasmusTeaCountdown FALSE)
 				(ErasmusPrint 6 135 15)
 				;Do you know which has more legs, one cow or no cow?
 			)
@@ -324,29 +311,26 @@
 				(if saidYesToErasmus
 					(ErasmusPrint 8 135 16)
 					;Too easy, huh?  Well, I'll just have to think of a better one.
-					(= erasmusTellingJoke 0)
-					(ErasmusCastTeleport)
+					(= erasmusTellingJoke FALSE)
+					(ErasmusClearScript)
 				else
 					(self cue:)
 				)
-				(= saidYesToErasmus 0)
+				(= saidYesToErasmus FALSE)
 			)
 			(2
 				(ErasmusPrint 4 135 17)
 				;You're right!  NO cow has more than four legs.  These are too easy.
-				(= erasmusTellingJoke 0)
-				(ErasmusCastTeleport)
+				(= erasmusTellingJoke FALSE)
+				(ErasmusClearScript)
 			)
 		)
 	)
 )
 
 (instance flyJoke of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (not erasmusTalking) (not fenrusTalking) (not local0))
+		(if (and (not erasmusTalking) (not fenrusTalking) (not local0))
 			(self cue:)
 		)
 		(super doit:)
@@ -360,8 +344,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= erasmusTellingJoke 1)
-				(= enableErasmusTeaCountdown 0)
+				(= erasmusTellingJoke TRUE)
+				(= enableErasmusTeaCountdown FALSE)
 				(= local0 1)
 				(ErasmusPrint 8 135 18)
 				;Do you know the difference between a wounded Triceratops and a magic user casting the "Fly" spell?
@@ -371,8 +355,8 @@
 				(if saidYesToErasmus
 					(ErasmusPrint 4 135 19)
 					;Darn.  I thought I made that one up myself!
-					(= erasmusTellingJoke 0)
-					(ErasmusCastTeleport)
+					(= erasmusTellingJoke FALSE)
+					(ErasmusClearScript)
 				)
 				(= saidYesToErasmus FALSE)
 			)
@@ -384,7 +368,7 @@
 			(3
 				(FenrusPrint 4 135 21)
 				;I figured one was a dying lizard and the other was a flying wizard.
-				)
+			)
 			(4
 				((ScriptID 31 4)
 					cycleSpeed: 0
@@ -404,19 +388,16 @@
 					setCel: 0
 					setCycle: 0
 				)
-				(ErasmusCastTeleport)
-				(= erasmusTellingJoke 0)
+				(ErasmusClearScript)
+				(= erasmusTellingJoke FALSE)
 			)
 		)
 	)
 )
 
 (instance broomJoke of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (not erasmusTalking) (not fenrusTalking) (not local0))
+		(if (and (not erasmusTalking) (not fenrusTalking) (not local0))
 			(self cue:)
 		)
 		(super doit:)
@@ -430,8 +411,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= erasmusTellingJoke 1)
-				(= enableErasmusTeaCountdown 0)
+				(= erasmusTellingJoke TRUE)
+				(= enableErasmusTeaCountdown FALSE)
 				(= local0 1)
 				(ErasmusPrint 4 135 23)
 				;Did you hear the joke about the witches broom?
@@ -441,10 +422,10 @@
 				(if saidYesToErasmus
 					(ErasmusPrint 4 135 24)
 					;Oh.  That's a pity!
-					(= erasmusTellingJoke 0)
-					(ErasmusCastTeleport)
+					(= erasmusTellingJoke FALSE)
+					(ErasmusClearScript)
 				)
-				(= saidYesToErasmus 0)
+				(= saidYesToErasmus FALSE)
 			)
 			(2
 				(User canInput: FALSE)
@@ -454,16 +435,16 @@
 			(3
 				(FenrusPrint 4 135 26)
 				;That one usually floors me, but I'm going to brush it aside before I'm swept away with laughter.
-				)
+			)
 			(4
 				(ego setCel: 3)
 				(= cycles 5)
 			)
 			(5
 				(Print 135 27 #at 164 85)
-				(= erasmusTellingJoke 0)
-				(User canInput: 1)
-				(ErasmusCastTeleport)
+				(= erasmusTellingJoke FALSE)
+				(User canInput: TRUE)
+				(ErasmusClearScript)
 				; (Gag!)
 			)
 		)

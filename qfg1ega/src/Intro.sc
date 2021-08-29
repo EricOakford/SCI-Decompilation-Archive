@@ -16,13 +16,13 @@
 
 (local
 	local0 =  2
-	theSeconds =  2
-	[local2 2] = [2 10]
-	theCycles =  10
-	[local5 4] = [3 3 3 2]
+	preTextTime =  2
+	local2 = [2 10]
+	cyclesBeforeShake2 =  10
+	local5 = [3 3 3 2]
 	titleX =  160
 	titleY =  120
-	local11
+	targState
 	writtenText
 	local13
 	directedText
@@ -126,16 +126,14 @@
 )
 
 (instance page1Script of Script
-	(properties)
-	
 	(method (doit)
 		(switch (introMusic prevSignal?)
-			(20 (= local11 4))
-			(30 (= local11 6))
-			(40 (= local11 9))
-			(50 (= local11 13))
+			(20 (= targState 4))
+			(30 (= targState 6))
+			(40 (= targState 9))
+			(50 (= targState 13))
 		)
-		(if (and (> local11 state) (or seconds cycles))
+		(if (and (> targState state) (or seconds cycles))
 			(= seconds (= cycles 0))
 			(self cue:)
 		else
@@ -145,7 +143,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= local11 0) (= cycles 2))
+			(0 (= targState 0) (= cycles 2))
 			(1
 				(SetCursor theCursor FALSE)
 				(introMusic init: play:)
@@ -156,7 +154,7 @@
 				(if (== howFast slow)
 					(self cue:)
 				else
-					(= seconds theSeconds)
+					(= seconds preTextTime)
 				)
 			)
 			(3
@@ -174,7 +172,7 @@
 			(6
 				(claw1 stopUpd:)
 				(claw2 cel: 0 init: cycleSpeed: 2 setCycle: EndLoop)
-				(= cycles theCycles)
+				(= cycles cyclesBeforeShake2)
 			)
 			(7
 				(claw2 stopUpd:)
@@ -241,11 +239,9 @@
 )
 
 (instance page2Script of Script
-	(properties)
-	
 	(method (doit)
-		(if (== -1 (introMusic prevSignal?)) (= local11 15))
-		(if (and (> local11 state) (or seconds cycles))
+		(if (== -1 (introMusic prevSignal?)) (= targState 15))
+		(if (and (> targState state) (or seconds cycles))
 			(= seconds (= cycles 0))
 			(self cue:)
 		else
@@ -256,20 +252,20 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local11 0)
+				(= targState 0)
 				(curRoom drawPic: 400)
 				(switch howFast
-					(0
+					(slow
 						(questText posn: 117 70 cycleSpeed: 0 cel: 2)
 						(forText posn: 162 70 cycleSpeed: 0 cel: 2)
 						(gloryText posn: 208 70 cycleSpeed: 0 cel: 2)
 					)
-					(1
+					(medium
 						(questText posn: 133 115 cycleSpeed: 1 cel: 0)
 						(forText posn: 161 115 cycleSpeed: 1 cel: 0)
 						(gloryText posn: 189 115 cycleSpeed: 1 cel: 0)
 					)
-					(2
+					(fast
 						(questText posn: 150 160 cycleSpeed: 2 cel: 0)
 						(forText posn: 160 160 cycleSpeed: 2 cel: 0)
 						(gloryText posn: 170 160 cycleSpeed: 2 cel: 0)
@@ -454,11 +450,11 @@
 					show:
 				)
 				(switch howFast
-					(0
+					(slow
 						(aHero posn: 330 137 setMotion: MoveTo 230 137 self)
 						(saurus posn: 390 137 setMotion: MoveTo 250 137)
 					)
-					(3
+					(fastest
 						(aHero posn: 400 137 setMotion: MoveTo 100 137 self)
 						(saurus posn: 500 137 setMotion: MoveTo 120 137)
 					)
@@ -488,13 +484,17 @@
 				)
 			)
 			(10
-				(if (== howFast slow) (self changeState: 14))
+				(if (== howFast slow)
+					(self changeState: 14)
+				)
 				(= cycles 8)
 			)
 			(11
 				(dragonHead cycleSpeed: 2 setCycle: CycleTo 1 1 self)
 			)
-			(12 (= cycles 8))
+			(12
+				(= cycles 8)
+			)
 			(13
 				(dragonHead setCycle: CycleTo 5 1 self)
 			)
@@ -509,7 +509,11 @@
 			(15
 				(dragonHead stopUpd:)
 				(dragonTail setCycle: 0 setScript: 0 stopUpd:)
-				(if (== howFast slow) (= cycles 1) else (= seconds 2))
+				(if (== howFast slow)
+					(= cycles 1)
+				else
+					(= seconds 2)
+				)
 			)
 			(16
 				(cast eachElementDo: #dispose eachElementDo: #delete)
@@ -520,19 +524,17 @@
 )
 
 (instance creditScript of Script
-	(properties)
-	
 	(method (doit)
 		(switch (cSound prevSignal?)
-			(10 (= local11 3))
-			(20 (= local11 6))
-			(30 (= local11 9))
-			(40 (= local11 12))
-			(50 (= local11 15))
-			(60 (= local11 18))
-			(70 (= local11 21))
+			(10 (= targState 3))
+			(20 (= targState 6))
+			(30 (= targState 9))
+			(40 (= targState 12))
+			(50 (= targState 15))
+			(60 (= targState 18))
+			(70 (= targState 21))
 		)
-		(if (and (> local11 state) (or seconds cycles))
+		(if (and (> targState state) (or seconds cycles))
 			(= seconds (= cycles 0))
 			(self cue:)
 		else
@@ -543,13 +545,13 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local11 0)
+				(= targState 0)
 				(Load PICTURE 903)
 				(Load VIEW vCreditsDragon)
 				(Load VIEW vCredits)
 				(Load SOUND (SoundFX 61))
 				(Load SOUND (SoundFX 73))
-				(curRoom drawPic: 903 0)
+				(curRoom drawPic: 903 HSHUTTER)
 				(leftDrag
 					view: vCreditsDragon
 					loop: 0
@@ -751,7 +753,11 @@
 					stopUpd:
 				)
 				(byBy loop: 0 cel: 1 posn: 156 36 show:)
-				(if (== howFast slow) (= cycles 1) else (= seconds 1))
+				(if (== howFast slow)
+					(= cycles 1)
+				else
+					(= seconds 1)
+				)
 			)
 			(11
 				((= markSeibert (View new:))
@@ -795,7 +801,11 @@
 					init:
 					stopUpd:
 				)
-				(if (== howFast slow) (= cycles 1) else (= seconds 1))
+				(if (== howFast slow)
+					(= cycles 1)
+				else
+					(= seconds 1)
+				)
 			)
 			(14
 				((= jeffStephenson (View new:))
@@ -852,7 +862,11 @@
 					stopUpd:
 				)
 				(byBy loop: 0 cel: 1 posn: 156 40 show:)
-				(if (== howFast slow) (= cycles 1) else (= seconds 1))
+				(if (== howFast slow)
+					(= cycles 1)
+				else
+					(= seconds 1)
+				)
 			)
 			(17
 				((= gurukaSinghKhalsa1 (View new:))
@@ -906,7 +920,11 @@
 					init:
 					stopUpd:
 				)
-				(if (== howFast slow) (= cycles 1) else (= seconds 1))
+				(if (== howFast slow)
+					(= cycles 1)
+				else
+					(= seconds 1)
+				)
 			)
 			(20
 				((= kenWilliams (View new:))
@@ -1136,8 +1154,6 @@
 )
 
 (instance drTailScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (client setCycle: EndLoop self))

@@ -9,8 +9,6 @@
 )
 
 (instance egoCalm of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript ARENA_CALM)

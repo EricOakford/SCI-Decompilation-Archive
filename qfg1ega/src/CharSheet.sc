@@ -8,15 +8,13 @@
 	theCharSheet 0
 )
 
-(procedure (ResetLastViewedStats &tmp i)
-	(= i 0)
-	(while (< i 25)
+(procedure (SaveStats &tmp i)
+	(for ((= i 0)) (< i NUMSTATS) ((++ i))
 		(= [oldStats i] [egoStats i])
-		(++ i)
 	)
 )
 
-(procedure (DisplayStatHeading x y &tmp fgColor)
+(procedure (ShowTitle x y &tmp fgColor)
 	;Used for displaying the headings: Strength, Experience
 	(= fgColor (if (< numColors 16) vBLACK else vBLUE))
 	
@@ -28,7 +26,7 @@
 	)
 )
 
-(procedure (DisplayStatBar x y fgColor)
+(procedure (ShowValue x y fgColor)
 	; Used for displaying Puzzle Points, Experience, and current HP, SP, and MP.
 
 	(Display &rest
@@ -40,11 +38,11 @@
 	)
 )
 
-(procedure (GetStatColor skill)
+(procedure (SkillColor statNum)
 	; If the stat has changed since last viewing, return the appropriate colour.
 	
 	(return
-		(if (== [egoStats skill] [oldStats skill])
+		(if (== [egoStats statNum] [oldStats statNum])
 			sameColor
 		else
 			changeColor
@@ -52,13 +50,13 @@
 	)
 )
 
-(procedure (DisplayStat x y skill highlightNew &tmp fg [str 6])
-	; Used for displaying the currently skill level
+(procedure (ShowSkill x y statNum varColor &tmp fg [str 6])
+	; Used for displaying the current skill level
 	
-	(= fg (if highlightNew (GetStatColor skill) else sameColor))
-	(DisplayStatBar
+	(= fg (if varColor (SkillColor statNum) else sameColor))
+	(ShowValue
 		x y fg
-		(Format @str 204 0 [egoStats skill])
+		(Format @str 204 0 [egoStats statNum])
 		p_width 22
 	)
 )
@@ -86,7 +84,7 @@
 		(if (!= heroType FIGHTER)
 			;the fighter has a sword, so is a wider cell
 			;so the other characters have to be offset accordingly to match.
-			(= x (+ x 3))
+			(+= x 3)
 		)
 		;draw the character frame
 		(DrawCel 802 2 0 10 23 -1)
@@ -97,56 +95,58 @@
 			(DrawCel 802 1 0 40 52 -1)
 		)
 		;display all the headings
-		(DisplayStatHeading 10 8 204 1)
+		(ShowTitle 10 8 204 1)
 		;Name :
-		(DisplayStatHeading 83 35 204 2)
+		(ShowTitle 83 35 204 2)
 		;Strength
-		(DisplayStatHeading 83 47 204 3)
-		(DisplayStatHeading 83 59 204 4)
-		(DisplayStatHeading 83 71 204 5)
-		(DisplayStatHeading 83 83 204 6)
+		(ShowTitle 83 47 204 3)
+		(ShowTitle 83 59 204 4)
+		(ShowTitle 83 71 204 5)
+		(ShowTitle 83 83 204 6)
 		(if showBars
-			(DisplayStatHeading 10 112 204 7)
+			(ShowTitle 10 112 204 7)
 			;Puzzle Points
-			(DisplayStatHeading 10 124 204 8)
+			(ShowTitle 10 124 204 8)
 			;Experience
 		)
-		(DisplayStatHeading 10 148 204 9)
+		(ShowTitle 10 148 204 9)
 		;Health Points
-		(DisplayStatHeading 10 160 204 10)
+		(ShowTitle 10 160 204 10)
 		;Stamina Points
-		(DisplayStatHeading 10 172 204 11)
+		(ShowTitle 10 172 204 11)
 		;Magic Points
-		(DisplayStatHeading 207 28 204 12)
+		(ShowTitle 207 28 204 12)
 		;Weapon Use
-		(DisplayStatHeading 207 40 204 13)
-		(DisplayStatHeading 207 52 204 14)
-		(DisplayStatHeading 207 64 204 15)
-		(DisplayStatHeading 207 76 204 16)
-		(DisplayStatHeading 207 88 204 17)
-		(DisplayStatHeading 207 100 204 18)
-		(DisplayStatHeading 207 112 204 19)
+		(ShowTitle 207 40 204 13)
+		(ShowTitle 207 52 204 14)
+		(ShowTitle 207 64 204 15)
+		(ShowTitle 207 76 204 16)
+		(ShowTitle 207 88 204 17)
+		(ShowTitle 207 100 204 18)
+		(ShowTitle 207 112 204 19)
 		(self update:)
 	)
 	
-	(method (doit &tmp newEvent newEventType)
-		(= newEventType 0)
-		(while (not newEventType)
-			(GlobalToLocal (= newEvent (Event new:)))
-			(= newEventType (newEvent type?))
-			(newEvent dispose:)
+	(method (doit &tmp event ret)
+		(= ret 0)
+		(while (not ret)
+			(GlobalToLocal (= event (Event new:)))
+			(= ret (event type?))
+			(event dispose:)
 		)
 		(self dispose:)
 	)
 	
 	(method (dispose)
-		(ResetLastViewedStats)
-		(if theWindow (DisposeWindow theWindow))
+		(SaveStats)
+		(if theWindow
+			(DisposeWindow theWindow)
+		)
 		(super dispose:)
 		(DisposeScript 204)
 	)
 	
-	(method (update &tmp fgColor [temp1 20])
+	(method (update &tmp fgColor [str 20])
 		(if showBars
 			(Display
 				@userName 106 260
@@ -156,11 +156,11 @@
 				p_color sameColor
 			)
 		)
-		(DisplayStat 170 35 STR showBars)
-		(DisplayStat 170 47 INT showBars)
-		(DisplayStat 170 59 AGIL showBars)
-		(DisplayStat 170 71 VIT showBars)
-		(DisplayStat 170 83 LUCK showBars)
+		(ShowSkill 170 35 STR showBars)
+		(ShowSkill 170 47 INT showBars)
+		(ShowSkill 170 59 AGIL showBars)
+		(ShowSkill 170 71 VIT showBars)
+		(ShowSkill 170 83 LUCK showBars)
 		(if showBars
 			(= fgColor
 				(if (== score oldScore)
@@ -170,32 +170,32 @@
 				)
 			)
 			(= oldScore score)
-			(DisplayStatBar
+			(ShowValue
 				103 112 fgColor
-				(Format @temp1 204 0 score)
+				(Format @str 204 0 score)
 				p_width 50
 			)
-			(DisplayStatBar
-				103 124 (GetStatColor EXPER)
-				(Format @temp1 204 0 [egoStats EXPER])
+			(ShowValue
+				103 124 (SkillColor EXPER)
+				(Format @str 204 0 [egoStats EXPER])
 				p_width 50
 			)
 		)
 		
-		(= fgColor (if showBars (GetStatColor HEALTH) else sameColor))
-		(DisplayStatBar
+		(= fgColor (if showBars (SkillColor HEALTH) else sameColor))
+		(ShowValue
 			103 148 fgColor
-			(Format @temp1 204 20
+			(Format @str 204 20
 				(/ (+ [egoStats HEALTH] 1) 2)
 				(/ (+ (MaxHealth) 1) 2)
 			)
 			p_width 60
 		)
 
-		(= fgColor (if showBars (GetStatColor STAMINA) else sameColor))
-		(DisplayStatBar
+		(= fgColor (if showBars (SkillColor STAMINA) else sameColor))
+		(ShowValue
 			103 160 fgColor
-			(Format @temp1 204 20
+			(Format @str 204 20
 				(/ (+ [egoStats STAMINA] 3) 4)
 				(/ (+ (MaxStamina) 3) 4)
 			)
@@ -203,10 +203,10 @@
 		)
 		;%d / %d
 
-		(= fgColor (if showBars (GetStatColor MANA) else sameColor))
-		(DisplayStatBar
+		(= fgColor (if showBars (SkillColor MANA) else sameColor))
+		(ShowValue
 			103 172 fgColor
-			(Format @temp1 204 20 
+			(Format @str 204 20 
 				[egoStats MANA] 
 				(MaxMana)
 			)
@@ -214,17 +214,15 @@
 		)
 		;%d / %d
 		
-		(DisplayStat 288 28 WEAPON showBars)
-		(DisplayStat 288 40 PARRY showBars)
-		(DisplayStat 288 52 DODGE showBars)
-		(DisplayStat 288 64 STEALTH showBars)
-		(DisplayStat 288 76 PICK showBars)
-		(DisplayStat 288 88 THROW showBars)
-		(DisplayStat 288 100 CLIMB showBars)
-		(DisplayStat 288 112 MAGIC showBars)
+		(ShowSkill 288 28 WEAPON showBars)
+		(ShowSkill 288 40 PARRY showBars)
+		(ShowSkill 288 52 DODGE showBars)
+		(ShowSkill 288 64 STEALTH showBars)
+		(ShowSkill 288 76 PICK showBars)
+		(ShowSkill 288 88 THROW showBars)
+		(ShowSkill 288 100 CLIMB showBars)
+		(ShowSkill 288 112 MAGIC showBars)
 	)
 )
 
-(instance theCharSheet of CharSheet
-	(properties)
-)
+(instance theCharSheet of CharSheet)

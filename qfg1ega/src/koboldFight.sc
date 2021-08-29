@@ -14,11 +14,10 @@
 )
 
 (local
-	theEgoKoboldBattleLoop
+	stabLoop
 )
-(instance swBlow of KScript
-	(properties)
-	
+
+(instance swBlow of KScript	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 111)
@@ -27,7 +26,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= theEgoKoboldBattleLoop egoKoboldBattleLoop)
+				(= stabLoop egoKoboldBattleLoop)
 				(if (Random 0 1)
 					(ego setLoop: (+ egoKoboldBattleLoop 4))
 					(= register 5)
@@ -42,7 +41,7 @@
 				(ego setCel: 1)
 				(if
 					(and
-						(== egoKoboldBattleLoop theEgoKoboldBattleLoop)
+						(== egoKoboldBattleLoop stabLoop)
 						(>= koboldEvade (Rand100))
 					)
 					(theKobold getHurt: damageToKobold)
@@ -62,8 +61,6 @@
 )
 
 (instance swDodge of KScript
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 111)
@@ -84,8 +81,6 @@
 )
 
 (instance swParry of KScript
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 111)
@@ -106,8 +101,6 @@
 )
 
 (instance knStab of KScript
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 111)
@@ -116,14 +109,14 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= theEgoKoboldBattleLoop egoKoboldBattleLoop)
+				(= stabLoop egoKoboldBattleLoop)
 				(ego setLoop: (if egoKoboldBattleLoop 5 else 0))
 				(ego setCel: -1 cel: 0 setCycle: CycleTo 4 1 self)
 			)
 			(1
 				(if
 					(and
-						(== egoKoboldBattleLoop theEgoKoboldBattleLoop)
+						(== egoKoboldBattleLoop stabLoop)
 						(>= koboldEvade (Rand100))
 					)
 					(theKobold getHurt: damageToKobold)
@@ -143,8 +136,6 @@
 )
 
 (instance knDodge of KScript
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 111)

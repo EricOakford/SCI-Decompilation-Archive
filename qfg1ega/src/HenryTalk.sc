@@ -15,8 +15,6 @@
 )
 
 (instance sErasmus of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -52,8 +50,6 @@
 )
 
 (instance sFenrus of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -77,8 +73,6 @@
 )
 
 (instance sGame of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -102,8 +96,6 @@
 )
 
 (instance sBrigs of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -127,8 +119,6 @@
 )
 
 (instance sWarlock of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)
@@ -156,8 +146,6 @@
 )
 
 (instance sMirror of Script
-	(properties)
-	
 	(method (dispose)
 		((ScriptID 83 1) caller: 0)
 		(super dispose:)

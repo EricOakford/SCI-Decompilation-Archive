@@ -16,10 +16,10 @@
 )
 
 (instance openTalk of Script
-	(properties)
-	
 	(method (doit)
-		(if (and (not erasmusTalking) (not fenrusTalking)) (self cue:))
+		(if (and (not erasmusTalking) (not fenrusTalking))
+			(self cue:)
+		)
 		(super doit:)
 	)
 	
@@ -38,19 +38,19 @@
 			(1
 				(ErasmusPrint 7 132 1)
 				;If you're really good at it, you can open locks.  It's useful when you lose your keys.
-				)
+			)
 			(2
 				(FenrusPrint 5 132 2)
 				;Your keys are in the study under the skull.
-				)
+			)
 			(3
 				(ErasmusPrint 4 132 3)
 				;Why would they be there?
-				)
+			)
 			(4
 				(FenrusPrint 4 132 4)
 				;They're skeleton keys, aren't they?
-				)
+			)
 			(5
 				(= fenrusTalking TRUE)
 				(ego setCel: 3)
@@ -63,7 +63,7 @@
 				(= cycles 8)
 			)
 			(6
-				(ErasmusCastTeleport)
+				(ErasmusClearScript)
 				(= fenrusTalking FALSE)
 				((ScriptID 31 4)
 					cycleSpeed: 1
@@ -77,10 +77,10 @@
 )
 
 (instance fetchTalk of Script
-	(properties)
-	
 	(method (doit)
-		(if (and (not erasmusTalking) (not fenrusTalking)) (self cue:))
+		(if (and (not erasmusTalking) (not fenrusTalking))
+			(self cue:)
+		)
 		(super doit:)
 	)
 	
@@ -92,34 +92,34 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= enableErasmusTeaCountdown 0)
+				(= enableErasmusTeaCountdown FALSE)
 				(ErasmusPrint 7 132 5)
 				;"Fetch" is a useful spell for catching and retrieving small objects at a distance.
 			)
 			(1
 				(ErasmusPrint 5 132 6)
 				;It's good for putting things in their place.
-				)
+			)
 			(2
 				(FenrusPrint 4 132 7)
 				;Like uppity familiars?
-				)
+			)
 			(3
 				(ErasmusPrint 6 132 8)
 				;I'd put you in your place, but I'm above such things.
-				)
+			)
 			(4
 				(FenrusPrint 5 132 9)
 				;Besides, my place is above your reach.
-				)
-			(5 (ErasmusCastTeleport))
+			)
+			(5
+				(ErasmusClearScript)
+			)
 		)
 	)
 )
 
 (instance triggerTalk of Script
-	(properties)
-	
 	(method (doit)
 		(if (and (not erasmusTalking) (not fenrusTalking)) (self cue:))
 		(super doit:)
@@ -140,29 +140,31 @@
 			(1
 				(ErasmusPrint 9 132 11)
 				;For example, if a chest has a magical trap on it, you can set off the trap by casting a "Trigger" spell.
-				)
+			)
 			(2
 				(ErasmusPrint 6 132 12)
 				;Just make sure you're out of range of the trap.
-				)
+			)
 			(3
 				(ErasmusPrint 7 132 13)
 				;I can set up other spells and let someone else "Trigger" them.
-				)
+			)
 			(4
 				(ErasmusPrint 7 132 14)
 				;I fixed Henry the Hermit's cave for him so that he can do alot of magic with only one spell.
-				)
-			(5 (ErasmusCastTeleport))
+			)
+			(5
+				(ErasmusClearScript)
+			)
 		)
 	)
 )
 
 (instance dazzleTalk of Script
-	(properties)
-	
 	(method (doit)
-		(if (and (not erasmusTalking) (not fenrusTalking)) (self cue:))
+		(if (and (not erasmusTalking) (not fenrusTalking))
+			(self cue:)
+		)
 		(super doit:)
 	)
 	
@@ -174,28 +176,30 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= enableErasmusTeaCountdown 0)
+				(= enableErasmusTeaCountdown FALSE)
 				(ErasmusPrint 5 132 15)
 				;Now that's a spell with charm!
 			)
 			(1
 				(ErasmusPrint 6 132 16)
 				;It's true name is Erasmus' Razzle Dazzle, by the way.
-				)
+			)
 			(2
 				(ErasmusPrint 10 132 17)
 				;You cast the spell and anyone looking directly at its corruscating light is blinded for awhile and can't do anything.
-				)
-			(3 (ErasmusCastTeleport))
+			)
+			(3
+				(ErasmusClearScript)
+			)
 		)
 	)
 )
 
 (instance trapTalk of Script
-	(properties)
-	
 	(method (doit)
-		(if (and (not erasmusTalking) (not fenrusTalking)) (self cue:))
+		(if (and (not erasmusTalking) (not fenrusTalking))
+			(self cue:)
+		)
 		(super doit:)
 	)
 	
@@ -207,7 +211,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= enableErasmusTeaCountdown 0)
+				(= enableErasmusTeaCountdown FALSE)
 				(ErasmusPrint 8 132 18)
 				;Magical traps are a good way to keep thieves out of your chests and other places.
 			)
@@ -242,14 +246,14 @@
 				(ErasmusPrint 5 132 21)
 				;I only got singed the last time.  Nothing major.
 			)
-			(5 (ErasmusCastTeleport))
+			(5
+				(ErasmusClearScript)
+			)
 		)
 	)
 )
 
 (instance goGame of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 132)
@@ -282,7 +286,9 @@
 					startUpd:
 				)
 			)
-			(2 (curRoom newRoom: 32))
+			(2
+				(curRoom newRoom: 32)
+			)
 		)
 	)
 )

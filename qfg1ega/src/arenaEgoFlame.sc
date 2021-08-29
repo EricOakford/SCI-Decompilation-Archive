@@ -10,17 +10,15 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
+	theSpell
+	theWarrior
+	theX
+	theY
 )
 (instance egoFlame of Script
-	(properties)
-	
 	(method (init)
-		(= local1 (ScriptID WARRIOR 0))
-		(= local0 (ScriptID CLOSECOMBAT 1))
+		(= theWarrior (ScriptID WARRIOR 0))
+		(= theSpell (ScriptID CLOSECOMBAT 1))
 		(super init: &rest)
 	)
 	
@@ -34,55 +32,58 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(local1 canFight: 0 action: 11)
+				(theWarrior
+					canFight: FALSE
+					action: ActCast
+				)
 				(self cue:)
 			)
 			(1
-				(local0
+				(theSpell
 					setLoop: 6
 					setCel: 0
 					cycleSpeed: 1
 					ignoreActors:
-					posn: (- (local1 x?) 77) (- (local1 y?) 87)
+					posn: (- (theWarrior x?) 77) (- (theWarrior y?) 87)
 					init:
 					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
-				(= local2
-					(/ (- ((local1 opponent?) flameX?) (local0 x?)) 3)
+				(= theX
+					(/ (- ((theWarrior opponent?) flameX?) (theSpell x?)) 3)
 				)
-				(= local3
-					(/ (- (local0 y?) ((local1 opponent?) flameY?)) 3)
+				(= theY
+					(/ (- (theSpell y?) ((theWarrior opponent?) flameY?)) 3)
 				)
-				(local0
+				(theSpell
 					setPri: 15
 					setCel: 3
-					posn: (+ (local0 x?) local2) (- (local0 y?) local3)
+					posn: (+ (theSpell x?) theX) (- (theSpell y?) theY)
 				)
 				(= cycles 2)
 			)
 			(3
-				(local0
+				(theSpell
 					setCel: 4
-					posn: (+ (local0 x?) local2) (- (local0 y?) local3)
+					posn: (+ (theSpell x?) theX) (- (theSpell y?) theY)
 				)
 				(= cycles 2)
 			)
 			(4
-				(local0
+				(theSpell
 					setCel: 5
-					posn: (+ (local0 x?) local2) (+ (local0 y?) local3)
+					posn: (+ (theSpell x?) theX) (+ (theSpell y?) theY)
 				)
 				(= cycles 2)
 			)
 			(5
-				(local0 setCel: -1 setCycle: EndLoop self)
+				(theSpell setCel: -1 setCycle: EndLoop self)
 			)
 			(6
-				(local0 dispose:)
-				((local1 opponent?) getHurt: (+ 5 (/ [egoStats FLAMEDART] 3)))
-				(local1 canFight: TRUE show:)
+				(theSpell dispose:)
+				((theWarrior opponent?) getHurt: (+ 5 (/ [egoStats FLAMEDART] 3)))
+				(theWarrior canFight: TRUE show:)
 				(self dispose:)
 			)
 		)

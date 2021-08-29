@@ -9,16 +9,16 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
+	theWarrior
+	theShield
+	theHand
+	theBack
 )
 (instance egoDodge of Script
 	(method (init)
-		(= local1 ((= local0 (ScriptID WARRIOR 0)) egoShield?))
-		(= local2 (local0 egoHand?))
-		(= local3 (local0 egosBack?))
+		(= theShield ((= theWarrior (ScriptID WARRIOR 0)) egoShield?))
+		(= theHand (theWarrior egoHand?))
+		(= theBack (theWarrior egosBack?))
 		(super init: &rest)
 	)
 	
@@ -32,50 +32,50 @@
 			(0
 				(= egoCanFight FALSE)
 				(TrySkill DODGE 0 20)
-				(local0
+				(theWarrior
 					getTired: 2
 					canFight: 0
-					action: (if (== register 0) 5 else 6)
+					action: (if (== register 0) ActDodgeLeft else ActDodgeRight)
 				)
-				(if local1
+				(if theShield
 					(switch register
 						(0
-							(local1 posn: (- (local1 x?) 25) (- (local1 y?) 5))
+							(theShield posn: (- (theShield x?) 25) (- (theShield y?) 5))
 						)
 						(1
-							(local1 posn: (+ (local1 x?) 40) (- (local1 y?) 5))
+							(theShield posn: (+ (theShield x?) 40) (- (theShield y?) 5))
 						)
 					)
 				else
 					(switch register
 						(0
-							(local2 posn: (- (local2 x?) 38) (+ (local2 y?) 5))
+							(theHand posn: (- (theHand x?) 38) (+ (theHand y?) 5))
 						)
 						(1
-							(local2 posn: (+ (local2 x?) 46) (+ (local2 y?) 5))
+							(theHand posn: (+ (theHand x?) 46) (+ (theHand y?) 5))
 						)
 					)
 				)
 				(switch register
 					(0
-						(local0 posn: (- (local0 x?) 41) (+ (local0 y?) 5))
-						(local3 posn: (- (local3 x?) 40) (+ (local3 y?) 5))
+						(theWarrior posn: (- (theWarrior x?) 41) (+ (theWarrior y?) 5))
+						(theBack posn: (- (theBack x?) 40) (+ (theBack y?) 5))
 					)
 					(1
-						(local0 posn: (+ (local0 x?) 42) (+ (local0 y?) 5))
-						(local3 posn: (+ (local3 x?) 40) (+ (local3 y?) 5))
+						(theWarrior posn: (+ (theWarrior x?) 42) (+ (theWarrior y?) 5))
+						(theBack posn: (+ (theBack x?) 40) (+ (theBack y?) 5))
 					)
 				)
 				(= cycles 7)
 			)
 			(1
-				(local0 posn: (local0 baseX?) (local0 baseY?))
-				(if local1
-					(local1 posn: (- (local0 baseX?) 74) (local0 baseY?))
+				(theWarrior posn: (theWarrior baseX?) (theWarrior baseY?))
+				(if theShield
+					(theShield posn: (- (theWarrior baseX?) 74) (theWarrior baseY?))
 				else
-					(local2 posn: (- (local0 baseX?) 74) (local0 baseY?))
+					(theHand posn: (- (theWarrior baseX?) 74) (theWarrior baseY?))
 				)
-				(local3 posn: (- (local0 baseX?) 41) (local0 baseY?))
+				(theBack posn: (- (theWarrior baseX?) 41) (theWarrior baseY?))
 				(self cue:)
 			)
 			(2

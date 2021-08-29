@@ -9,8 +9,6 @@
 )
 
 (instance fallBridge of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 186)
@@ -77,7 +75,8 @@
 			(10
 				(EgoDead 186 0
 					#icon vEgoFall2 0 2
-					#title {I wasn't ready.})
+					#title {I wasn't ready.}
+				)
 					;I score that about a 3.  Those diving lessons were a complete waste.  Maybe you should have taken up bowling.
 				(self dispose:)
 			)

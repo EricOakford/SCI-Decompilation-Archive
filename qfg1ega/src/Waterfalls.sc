@@ -360,7 +360,7 @@
 		(if
 			(and
 				(Btst fClimbedHenryCliff)
-				(not (Btst fEgoFallOffCliff))
+				(not (Btst fEgoKnockedOffCliff))
 				(== (ego onControl: origin) cLMAGENTA)
 			)
 			(Bclr fClimbedHenryCliff)

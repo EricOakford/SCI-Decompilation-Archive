@@ -117,7 +117,7 @@
 	f84FindTrollCave 			;701)       ; 10 points
 	f84HidenGoseke 			;702)         ; 5 points
 	f87VisitLake 					;703)            ; 1 point
-	POINTS_ENTERSECRETENTRANCE 		;704)      ; 2 points
+	f89EnterCave 		;704)      ; 2 points
 	f94EnterFortress 		;705)     ; 8 points
 	f95EnterDiningRoom 		;706)       ; 8 points
 	f96EnterJesterRoom 		;707)       ; 8 points
@@ -129,7 +129,7 @@
 	fUnused712					; no event 712
 	f172DispelLeader 		;713)          ; 35 points
 	fUnused714					; no event 714
-	POINTS_TAKEMAGICMIRROR 			;715)      ; 10 points
+	f97GetMirror 			;715)      ; 10 points
 	fUnused716						;716
 	f300EnterTown 						;717)            ; 1 point
 	f300TalkToSheriff 					;718)        ; 1 point

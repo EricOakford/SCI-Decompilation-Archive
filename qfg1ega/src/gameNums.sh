@@ -51,7 +51,7 @@
 (define vEgoMagicDetect 521)
 (define vEgoMagicFlameDart 522)
 (define vEgoFall 523)
-(define vEgoThrowDagger 524)
+(define vEgoThrowingDagger 524)
 (define vEgoBigGrin 	525)
 
 (define vEgoFightArmDagger 	535)

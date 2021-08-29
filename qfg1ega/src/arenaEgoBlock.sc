@@ -9,14 +9,12 @@
 )
 
 (local
-	theCycles
-	local1
+	theWarrior
+	theShield
 )
 (instance egoBlock of Script
-	(properties)
-	
 	(method (init)
-		(= local1 ((= theCycles (ScriptID WARRIOR 0)) egoShield?))
+		(= theShield ((= theWarrior (ScriptID WARRIOR 0)) egoShield?))
 		(super init: &rest)
 	)
 	
@@ -30,30 +28,32 @@
 			(0
 				(= egoCanFight FALSE)
 				(TrySkill PARRY 0 20)
-				(theCycles
+				(theWarrior
 					getTired: 1
-					canFight: 0
-					action: 3
-					posn: (theCycles baseX?) (+ (theCycles baseY?) 5)
+					canFight: FALSE
+					action: ActParryUp
+					posn: (theWarrior baseX?) (+ (theWarrior baseY?) 5)
 					stopUpd:
 				)
-				(local1
+				(theShield
 					setCel: 2
-					posn: (+ (local1 x?) 22) (- (local1 y?) 10)
+					posn: (+ (theShield x?) 22) (- (theShield y?) 10)
 				)
 				(= cycles 2)
 			)
-			(1 (= cycles 6))
+			(1
+				(= cycles 6)
+			)
 			(2
-				(local1
+				(theShield
 					setCel: 0
-					posn: (- (theCycles baseX?) 74) (theCycles baseY?)
+					posn: (- (theWarrior baseX?) 74) (theWarrior baseY?)
 				)
 				(= cycles 4)
 			)
 			(3
-				(local1 stopUpd:)
-				(theCycles posn: (theCycles baseX?) (theCycles baseY?))
+				(theShield stopUpd:)
+				(theWarrior posn: (theWarrior baseX?) (theWarrior baseY?))
 				(= egoCanFight TRUE)
 				(self dispose:)
 			)

@@ -10,8 +10,6 @@
 )
 
 (instance fallChasm of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript 187)
@@ -56,7 +54,8 @@
 			(5
 				(EgoDead 187 0
 					#icon vEgoFall2 0 2
-					#title {The thought sends quills up your spine.})
+					#title {The thought sends quills up your spine.}
+				)
 					;You see a sign that reads, "Beware of Porcupine".  That's odd, you don't see a ...
 					;You do, however, see many archers leaning over the chasm edge with arrows pointed toward you.
 					;You now have a funny feeling you know who the porcupine is going to be in a few minutes.

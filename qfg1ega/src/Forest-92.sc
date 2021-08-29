@@ -25,10 +25,13 @@
 		(StatusLine enable:)
 		(self setLocales: FOREST)
 		(NormalEgo)
-		(if (Bset fBeenIn94)
-			(Bset BRIGANDS_UNAWARE)
+		;EO: fixed flag testing
+		(if (Btst fBeenIn94)
+			(Bset fBrigsUnaware)
 		)
-		(if (not monsterNum) (ego init:))
+		(if (not monsterNum)
+			(ego init:)
+		)
 		(switch prevRoomNum
 			(86
 				(ego posn: 160 30 setMotion: MoveTo 160 190)
@@ -51,8 +54,7 @@
 	)
 	
 	(method (doit)
-		(if
-		(and (== (ego onControl: origin) cLRED) (== (ego loop?) 3))
+		(if (and (== (ego onControl: origin) cLRED) (== (ego loop?) 3))
 			(curRoom newRoom: 86)
 		)
 		(super doit:)
