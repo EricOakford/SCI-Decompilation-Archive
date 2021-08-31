@@ -784,10 +784,10 @@
 			)
 			(4
 				(cond 
-					((IsObject gClient)
+					((IsObject projObj)
 						(-- state)
 						(= ticks 5)
-						(gClient dispose:)
+						(projObj dispose:)
 					)
 					((not (Btst fBeatOgre))
 						(= ogreX (ogre x?))

@@ -20,14 +20,12 @@
 
 (local
 	lasso
-	oldCycleSpeed
-	oldMoveSpeed
+	savCycleSpeed
+	savMoveSpeed
 )
 (instance castDazzle of KScript
-	(properties)
-	
 	(method (dispose)
-		(KoboldFight 1)
+		(KoboldFight TRUE)
 		(Face ego theKobold)
 		(super dispose:)
 	)
@@ -64,8 +62,6 @@
 )
 
 (instance castDet of KScript
-	(properties)
-	
 	(method (dispose)
 		(HandsOn)
 		(super dispose:)
@@ -117,7 +113,6 @@
 )
 
 (instance castOpen of KScript
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -138,7 +133,7 @@
 			)
 			(2
 				(Bset fKoboldChestKnown)
-				(if (TrySkill OPEN tryCastOpenKoboldChest 0)
+				(if (TrySkill OPEN 50 0)
 					((ScriptID 15 2) setCel: 1)
 					(= ticks 60)
 				else
@@ -147,7 +142,10 @@
 				)
 			)
 			(3
-				(ego get: iGold 10 get: iSilver 60)
+				(ego
+					get: iGold 10
+					get: iSilver 60
+				)
 				(= cycles 1)
 			)
 			(4
@@ -164,7 +162,6 @@
 )
 
 (instance castTrig of KScript
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -189,7 +186,6 @@
 )
 
 (instance castCalm of KScript
-	
 	(method (dispose)
 		(= register FALSE)
 		(super dispose:)
@@ -216,8 +212,7 @@
 	)
 )
 
-(instance castFetch of KScript
-	
+(instance castFetch of KScript	
 	(method (dispose)
 		(NormalEgo)
 		(Face ego theKobold)
@@ -233,8 +228,8 @@
 				(= ticks 10)
 			)
 			(1
-				(= oldCycleSpeed (ego cycleSpeed?))
-				(= oldMoveSpeed (ego moveSpeed?))
+				(= savCycleSpeed (ego cycleSpeed?))
+				(= savMoveSpeed (ego moveSpeed?))
 				(theGame setCursor: waitCursor TRUE)
 				(ego
 					view: 520
@@ -264,7 +259,7 @@
 				(= ticks 100)
 			)
 			(4
-				(if (not (TrySkill FETCH tryFetchKoboldKey 0))
+				(if (not (TrySkill FETCH 35 0))
 					(lasso dispose:)
 					(if (AwakenKobold)
 						(messager say: N_CASTFETCH NULL NULL 1)
@@ -292,13 +287,18 @@
 			(5
 				(lasso dispose:)
 				((ScriptID 15 3) dispose:)
-				(ego get: iBrassKey loop: 3 cel: 0 setCycle: EndLoop self)
+				(ego
+					get: iBrassKey
+					loop: loopN
+					cel: 0
+					setCycle: EndLoop self
+				)
 				(Bset fGotKoboldKey)
 				(SolvePuzzle f15GetKey 7)
 			)
 			(6
 				(messager say: N_CASTFETCH NULL NULL 2)
-				(ego cycleSpeed: oldCycleSpeed moveSpeed: oldMoveSpeed)
+				(ego cycleSpeed: savCycleSpeed moveSpeed: savMoveSpeed)
 				(self dispose:)
 			)
 		)

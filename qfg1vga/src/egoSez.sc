@@ -28,9 +28,10 @@
 )
 
 (local
-	trippySound
+	soundObj
 	useCue
 )
+
 (procedure (HaveEaten)
 	(if (Btst fHungry)
 		(Bclr fHungry)
@@ -41,8 +42,6 @@
 )
 
 (instance egoSez of Code
-	(properties)
-	
 	(method (doit theVerb &tmp theX theY evt)
 		(switch theVerb
 			(V_FLAME
@@ -153,7 +152,6 @@
 )
 
 (instance pickScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -161,7 +159,7 @@
 				(messager say: N_EGO V_LOCKPICK NULL 0 self EGOSEZ)
 			)
 			(1
-				(if (not (TrySkill PICK tryPickNose))
+				(if (not (TrySkill PICK 40))
 					(EgoDead C_DIE_PICK_NOSE C_DIE_PICK_NOSE_TITLE)
 				else
 					(messager say: N_EGO V_LOCKPICK C_PICKSUCCESS 0 self EGOSEZ)
@@ -177,7 +175,6 @@
 )
 
 (instance toadScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -216,7 +213,6 @@
 )
 
 (instance acornScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -256,7 +252,7 @@
 				(messager say: N_EGO V_MUSHROOM C_TRIPPY 1 self EGOSEZ)
 			)
 			(1
-				((= trippySound (Sound new:))
+				((= soundObj (Sound new:))
 					number: 126
 					loop: -1
 					flags: -1
@@ -267,16 +263,18 @@
 			(2
 				(messager say: N_EGO V_MUSHROOM C_TRIPPY 2 self EGOSEZ)
 			)
-			(3 (= cycles 90))
+			(3
+				(= cycles 90)
+			)
 			(4
 				(messager say: N_EGO V_MUSHROOM C_TRIPPY 3 self EGOSEZ)
 			)
 			(5
-				(trippySound fade:)
+				(soundObj fade:)
 				(= cycles 90)
 			)
 			(6
-				(trippySound dispose:)
+				(soundObj dispose:)
 				(Bclr fShroomTrip)
 				(DrawPic (curRoom picture?) DISSOLVE)
 				(if addToPics
@@ -288,7 +286,7 @@
 						setLoop: 0
 						setCel: 255
 						posn: (ego x?) (+ (ego y?) 10)
-						setCycle: EndLoop	;lets ego complete collapsing animation
+						setCycle: EndLoop self	;lets ego complete collapsing animation
 					)
 					;(= ticks 5)
 				else

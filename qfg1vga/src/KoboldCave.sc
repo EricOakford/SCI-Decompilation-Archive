@@ -383,7 +383,7 @@
 	(method (dispose)
 		(= nightPalette 0)
 		(Bset fBeenIn15)
-		(Bclr fFlag281)
+		(Bclr fKoboldProtected)
 		(Bclr fKoboldChestKnown)
 		(= disabledActions 0)
 		(DisposeScript 111)
@@ -890,8 +890,8 @@
 	)
 	
 	(method (init)
-		(Bclr fFlag280)
-		(Bclr fFlag281)
+		(Bclr fDartReversed)
+		(Bclr fKoboldProtected)
 		(ballSound init:)
 		(= nightPalette 1175)
 		(if (Btst fGotKoboldKey)
@@ -1135,7 +1135,7 @@
 						(= cycles (Random 25 50))
 						(= local7 0)
 					)
-					((and (Btst fFightingKobold) (not (Btst fFlag281)))
+					((and (Btst fFightingKobold) (not (Btst fKoboldProtected)))
 						(= cycles (Random 5 15))
 					)
 					(koboldCycles
@@ -1153,7 +1153,7 @@
 			(1
 				(client view: 175)
 				(cond 
-					((and (Btst fFightingKobold) (not (Btst fFlag281)))
+					((and (Btst fFightingKobold) (not (Btst fKoboldProtected)))
 						(client setScript: castRev)
 					)
 					(theCycles (= theCycles 0)
@@ -1217,7 +1217,7 @@
 					(Bset fKoboldCastingReversal)
 					(messager say: N_ROOM NULL C_KOBOLD_REVERSAL)
 				)
-				(Bset fFlag281)
+				(Bset fKoboldProtected)
 				(client setScript: kobAwake)
 			)
 		)
@@ -1336,7 +1336,7 @@
 				(pointBox dispose:)
 				(Bset fKoboldDead)
 				(Bclr fKoboldAwake)
-				(Bclr fFlag281)
+				(Bclr fKoboldProtected)
 				(ego setScript: 0)
 				(curRoom setScript: 0)
 				(&= koboldIllBits $bfff)
@@ -1366,7 +1366,7 @@
 			(1
 				(= monsterNum (= monsterHealth 0))
 				(if (or (== heroType FIGHTER) (== heroType MAGIC_USER))
-					(SolvePuzzle f15BeatKbold 10)
+					(SolvePuzzle f15BeatKobold 10)
 				)
 				(cSound number: 20 loop: -1 play:)
 				(if fightingKobold

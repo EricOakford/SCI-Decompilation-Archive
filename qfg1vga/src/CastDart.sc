@@ -16,79 +16,79 @@
 )
 
 (local
-	local0
-	theGEgoX
-	theGEgoY
-	oldEgoX
-	oldEgoY
-	oldCycleSpeed
-	oldSignal
-	oldPriority
-	oldIllBits
-	newSound
+	dartTarg
+	thisX
+	thisY
+	dartTargX
+	dartTargY
+	savSpeed
+	savSignal
+	savPriority
+	savIllegalBits
+	projSound
 	wasHandsOn
 	hurtEgo
-	local12
+	dartReflected
 )
-(procedure (CastDart obj param2 theX theY &tmp temp0 temp1 dart evt)
-	(if gClient
-		(return gClient)
+(procedure (CastDart atWhat whoCares onX onY &tmp pushX pushY projectile evt)
+	(if projObj
+		(return projObj)
 	)
 	(= global194 100)
 	(if (>= argc 3)
-		(= theGEgoX theX)
-		(= theGEgoY theY)
+		(= thisX onX)
+		(= thisY onY)
 	else
-		(= theGEgoX ((= evt (Event new:)) x?))
-		(= theGEgoY (+ (evt y?) 24))
+		(= thisX ((= evt (Event new:)) x?))
+		(= thisY (+ (evt y?) 24))
 		(evt dispose:)
 	)
 	(if (not isHandsOff)
-		(= wasHandsOn 1)
+		(= wasHandsOn TRUE)
 	)
 	(LoadMany SOUND (SoundFX 33) (SoundFX 45))
 	(Load VIEW 522)
-	(if obj
-		(Face ego obj)
-		(= oldEgoX (+ (obj x?) (obj targDeltaX?)))
-		(= oldEgoY (+ (obj y?) (obj targDeltaY?)))
-		(= temp0 (- oldEgoX (ego x?)))
-		(= temp1 (- oldEgoY (- (ego y?) 25)))
+	(if atWhat
+		(Face ego atWhat)
+		(= dartTargX (+ (atWhat x?) (atWhat targDeltaX?)))
+		(= dartTargY (+ (atWhat y?) (atWhat targDeltaY?)))
+		(= pushX (- dartTargX (ego x?)))
+		(= pushY (- dartTargY (- (ego y?) 25)))
 		(while
 			(and
-				(< 0 oldEgoX)
-				(< oldEgoX 319)
-				(< 0 oldEgoY)
-				(< oldEgoY 189)
+				(< westEdge dartTargX)
+				(< dartTargX eastEdge)
+				(< westEdge dartTargY)
+				(< dartTargY southEdge)
 			)
-			(= oldEgoX (+ oldEgoX temp0))
-			(= oldEgoY (+ oldEgoY temp1))
+			(+= dartTargX pushX)
+			(+= dartTargY pushY)
 		)
 		(if
 			(and
-				(obj isKindOf: TargActor)
+				(atWhat isKindOf: TargActor)
 				(not
-					(TrySkill MAGIC 0 (- 50 (/ (ego distanceTo: obj) 5)))
+					(TrySkill MAGIC 0 (- 50 (/ (ego distanceTo: atWhat) 5)))
 				)
 			)
-			(if (< oldEgoY 0)
-				(= oldEgoY (+ oldEgoY (Random 30 100)))
+			(if (< dartTargY 0)
+				(+= dartTargY (Random 30 100))
 			else
-				(= oldEgoY (- oldEgoY (Random 30 100)))
+				(+= dartTargY (Random 30 100))
 			)
 		)
 	else
-		(SkillUsed 10 (/ [egoStats AGIL] 10))
-		(= oldEgoX theGEgoX)
-		(= oldEgoY theGEgoY)
+		(SkillUsed THROW (/ [egoStats AGIL] 10))
+		(= dartTargX thisX)
+		(= dartTargY thisY)
 	)
-	((= newSound (Sound new:))
+	((= projSound (Sound new:))
 		number: (SoundFX 33)
 		priority: 15
 		init:
 	)
-	(= local0 obj)
-	((= dart (Actor new:))
+	(= dartTarg atWhat)
+	((= projectile (Actor new:))
 		view: 522
 		setLoop: 2
 		setCel: 0
@@ -99,34 +99,33 @@
 		setStep: 12 8
 		init:
 		hide:
-		setScript: dartScript (if (>= argc 2) param2 else 0) obj
+		setScript: dartScript (if (>= argc 2) whoCares else 0) atWhat
 	)
 	(return TRUE)
 )
 
 (instance dartScript of Script
-	
 	(method (doit &tmp temp0)
-		(if (IsObject local0)
-			(= oldEgoX (+ (local0 x?) (local0 targDeltaX?)))
-			(= oldEgoY (+ (local0 y?) (local0 targDeltaY?)))
+		(if (IsObject dartTarg)
+			(= dartTargX (+ (dartTarg x?) (dartTarg targDeltaX?)))
+			(= dartTargY (+ (dartTarg y?) (dartTarg targDeltaY?)))
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(newSound dispose:)
-		(= gClient 0)
+		(projSound dispose:)
+		(= projObj 0)
 		(if wasHandsOn
 			(HandsOn)
 		)
 		(NormalEgo)
 		(ego
-			loop: (if (ego loop?) 5 else 4)
-			priority: oldPriority
-			illegalBits: oldIllBits
-			signal: oldSignal
-			cycleSpeed: oldCycleSpeed
+			loop: (if (ego loop?) loopSW else loopSE)
+			priority: savPriority
+			illegalBits: savIllegalBits
+			signal: savSignal
+			cycleSpeed: savSpeed
 		)
 		(RestoreTheCursor)
 		(super dispose:)
@@ -136,17 +135,19 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= gClient client)
-				(= local12 0)
-				(= oldSignal (ego signal?))
-				(= oldPriority (ego priority?))
-				(= oldIllBits (ego illegalBits?))
-				(= oldCycleSpeed (ego cycleSpeed?))
+				(= projObj client)
+				(= dartReflected FALSE)
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
+				(= savSpeed (ego cycleSpeed?))
 				(HandsOff)
-				(if (ego onMe: oldEgoX (- oldEgoY 34)) (= hurtEgo 1))
+				(if (ego onMe: dartTargX (- dartTargY 34))
+					(= hurtEgo TRUE)
+				)
 				(ego
 					setMotion: 0
-					setHeading: (if (<= oldEgoX (ego x?)) 225 else 135) self
+					setHeading: (if (<= dartTargX (ego x?)) 225 else 135) self
 				)
 			)
 			(1
@@ -161,24 +162,27 @@
 			)
 			(2
 				(ego setCycle: EndLoop)
-				(if hurtEgo (= oldEgoX (ego x?)) (= oldEgoY (ego y?)))
-				(newSound play:)
+				(if hurtEgo
+					(= dartTargX (ego x?))
+					(= dartTargY (ego y?))
+				)
+				(projSound play:)
 				(client
 					posn:
 						(if (ego loop?) (- (ego x?) 25) else (+ (ego x?) 25))
 						(ego y?)
 					show:
 					setCycle: Forward
-					setMotion: MoveTo oldEgoX oldEgoY self
+					setMotion: MoveTo dartTargX dartTargY self
 				)
 			)
 			(3
-				(if (and (Btst fFlag281) (not local12))
-					(= state (- state 1))
-					(= local12 1)
+				(if (and (Btst fKoboldProtected) (not dartReflected))
+					(-= state 1)
+					(= dartReflected TRUE)
 					(client setMotion: MoveTo (ego x?) (ego y?) self)
 				else
-					(newSound stop: number: (SoundFX 45) play:)
+					(projSound stop: number: (SoundFX 45) play:)
 					(client setLoop: 3 cel: 0 setMotion: 0 setCycle: EndLoop self)
 				)
 			)
@@ -197,7 +201,7 @@
 					((IsObject register)
 						(register getHurt: (+ 5 (/ [egoStats FLAMEDART] 3)))
 					)
-					((and local12 (> [egoStats HEALTH] 0))
+					((and dartReflected (> [egoStats HEALTH] 0))
 						(TakeDamage 100)
 					)
 				)

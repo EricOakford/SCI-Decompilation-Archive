@@ -18,55 +18,56 @@
 
 (local
 	local0
-	local1
+	theWarrior
 	[local2 3]
-	local5 =  2
-	local6
+	attackAngle =  2
+	theSpell
 	[local7 2]
-	local9
-	local10
+	hitOpponent
+	magicIcons
 	[local11 3]
 	local14
 	local15
-	local16
+	egoDefends
 	local17
-	local18
+	haveSword
 	local19
 )
 (instance aSpell of Actor)
 
 (instance monHurt of Sound
 	(properties
-		flags $ffff
+		flags -1
 		number 102
 		priority 1
 	)
 )
 
 (instance closeCombat of Script
-	
 	(method (init)
 		(monHurt init:)
-		(Bset fFlag284)
+		(Bset fBattleStarted)
 		(Bclr fNextMonster)
 		(user canInput: FALSE)
 		(pointBox init: setLoop: 2 stopUpd:)
-		(= local10 0)
+		(= magicIcons FALSE)
 		(if (ego has: iSword)
 			(Load VIEW 109)
-			(= local18 1)
-			(= local10 0)
+			(= haveSword TRUE)
+			(= magicIcons FALSE)
 			(blood view: 535)
 		else
-			(= local18 0)
+			(= haveSword FALSE)
 			(dodgeLIcon init: setPri: 15 hide: stopUpd:)
 			(dodgeRIcon init: setPri: 15 hide: stopUpd:)
-			(if (!= heroType THIEF) (switchLoop doit:))
+			(if (!= heroType THIEF)
+				(switchLoop doit:)
+			)
 			(Load VIEW 102)
 			(blood view: 535)
 			(aSpell view: 535)
 		)
-		(= egoCanFight 1)
+		(= egoCanFight TRUE)
 		(super init: &rest)
 	)
 	
@@ -84,14 +85,14 @@
 		(switch (= state newState)
 			(0
 				(client drawWeapons:)
-				(= local1 (ScriptID 213 0))
+				(= theWarrior (ScriptID WARRIOR 0))
 				(directionHandler addToFront: client)
 				(mouseDownHandler addToFront: client)
 				(= ticks 1)
 			)
 			(1
 				(cond 
-					((local1 noWeapon?)
+					((theWarrior noWeapon?)
 						(= state 2)
 						(client
 							view: 117
@@ -102,15 +103,21 @@
 							setCycle: EndLoop self
 						)
 					)
-					((<= (local1 stamina?) 0)
-						(client canFight: 0 action: 10)
+					;This code kills ego when stamina runs out.
+					; It can be commented out for consistency with the other games.
+					((<= (theWarrior stamina?) 0)
+						(client canFight: FALSE action: ActDie)
 						(EgoDead C_DIE_EXHAUSTION C_DIE_EXHAUSTION_TITLE)
 					)
-					(((local1 opponent?) ateEgo?))
+					(((theWarrior opponent?) ateEgo?))
 					(else
-						(if local18 (client view: 109) else (client view: 102))
+						(if haveSword
+							(client view: 109)
+						else
+							(client view: 102)
+						)
 						(client
-							canFight: 1
+							canFight: TRUE
 							action: 0
 							cycleSpeed: 8
 							setLoop: 0
@@ -133,7 +140,7 @@
 		)
 	)
 	
-	(method (handleEvent event &tmp eX eY temp2 temp3)
+	(method (handleEvent event &tmp eX eY temp2 evt)
 		(if (== (event type?) mouseUp)
 			(event claimed: TRUE)
 			(return TRUE)
@@ -145,10 +152,10 @@
 				(Btst fNextMonster)
 			)
 			(event claimed: TRUE)
-			(while ((= temp3 (Event new: 71)) type?)
-				(temp3 dispose:)
+			(while ((= evt (Event new: 71)) type?)
+				(evt dispose:)
 			)
-			(temp3 dispose:)
+			(evt dispose:)
 			(return TRUE)
 		)
 		(if script
@@ -174,10 +181,10 @@
 						((< (= eY (event y?)) 144)
 							(cond 
 								((> eX 285)
-									(= local5 2)
+									(= attackAngle AttStraight)
 									(cond 
-										((not local10)
-											(self setScript: egoThrust self local5)
+										((not magicIcons)
+											(self setScript: egoThrust self attackAngle)
 										)
 										((ego has: iSword)
 											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
@@ -195,10 +202,10 @@
 									)
 								)
 								((< eX 265)
-									(= local5 1)
+									(= attackAngle AttRight)
 									(cond 
-										((not local10)
-											(self setScript: egoThrust self local5)
+										((not magicIcons)
+											(self setScript: egoThrust self attackAngle)
 										)
 										((ego has: iSword)
 											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
@@ -220,9 +227,11 @@
 						((> eY 159)
 							(cond 
 								((> eX 285)
-									(= local5 0)
+									(= attackAngle AttLeft)
 									(cond 
-										((not local10) (self setScript: egoDodge self local5))
+										((not magicIcons)
+											(self setScript: egoDodge self attackAngle)
+										)
 										((ego has: iSword)
 											(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
 										)
@@ -239,9 +248,11 @@
 									)
 								)
 								((< eX 265)
-									(= local5 2)
+									(= attackAngle AttStraight)
 									(cond 
-										((== (pointBox loop?) 2) (self setScript: egoBlock self local5))
+										((== (pointBox loop?) 2)
+											(self setScript: egoBlock self attackAngle)
+										)
 										(
 											(or
 												(== prevRoomNum 14)
@@ -293,9 +304,11 @@
 					(switch (event message?)
 						(dirNE
 							(theGame setCursor: normalCursor TRUE 293 135)
-							(= local5 2)
+							(= attackAngle AttStraight)
 							(cond 
-								((not local10) (self setScript: egoThrust self local5))
+								((not magicIcons)
+									(self setScript: egoThrust self attackAngle)
+								)
 								((ego has: iSword)
 									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
 								)
@@ -306,15 +319,17 @@
 										(self setScript: egoFlame self)
 									)
 								)
-								(else (messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 215))
+								(else
+									(messager say: N_ROOM NULL C_DONTKNOWSPELL 0 0 215)
+								)
 							)
 						)
 						(dirSE
 							(theGame setCursor: normalCursor TRUE 293 170)
-							(= local5 0)
+							(= attackAngle AttLeft)
 							(cond 
-								((not local10)
-									(self setScript: egoDodge self local5)
+								((not magicIcons)
+									(self setScript: egoDodge self attackAngle)
 								)
 								((ego has: iSword)
 									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
@@ -333,10 +348,10 @@
 						)
 						(dirNW
 							(theGame setCursor: normalCursor TRUE 255 135)
-							(= local5 1)
+							(= attackAngle AttRight)
 							(cond 
-								((not local10)
-									(self setScript: egoThrust self local5)
+								((not magicIcons)
+									(self setScript: egoThrust self attackAngle)
 								)
 								((ego has: iSword)
 									(messager say: N_ROOM NULL C_CANTWITHSHIELD 0 0 215)
@@ -355,10 +370,10 @@
 						)
 						(dirSW
 							(theGame setCursor: normalCursor TRUE 255 170)
-							(= local5 2)
+							(= attackAngle AttStraight)
 							(cond 
-								((not local10)
-									(self setScript: egoBlock self local5)
+								((not magicIcons)
+									(self setScript: egoBlock self attackAngle)
 								)
 								(
 									(or
@@ -378,7 +393,7 @@
 							)
 						)
 						(dirS
-							(if (== (event type?) 68)
+							(if (== (event type?) (| keyDown direction))
 								(theGame setCursor: normalCursor TRUE 275 152)
 								(if (ego has: iSword)
 									(if
@@ -409,11 +424,9 @@
 )
 
 (instance egoFlame of Script
-	(properties)
-	
 	(method (init)
-		(= local1 (ScriptID 213 0))
-		((= local6 (ScriptID 215 1))
+		(= theWarrior (ScriptID 213 0))
+		((= theSpell (ScriptID 215 1))
 			init:
 			posn: 500 500
 			stopUpd:
@@ -423,7 +436,9 @@
 	
 	(method (dispose)
 		(HandsOn)
-		(if local6 (local6 dispose:))
+		(if theSpell
+			(theSpell dispose:)
+		)
 		(user canInput: FALSE)
 		(theGame setCursor: normalCursor TRUE)
 		(super dispose:)
@@ -433,18 +448,18 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(local1
+				(theWarrior
 					canFight: FALSE
 					action: 11
 					view: 107
 					setCel: 0
 					setPri: 15
 				)
-				(local1 setCycle: CycleTo 4 1 self)
-				((ScriptID monsterNum 0) inTransit: 1)
+				(theWarrior setCycle: CycleTo 4 1 self)
+				((ScriptID monsterNum 0) inTransit: TRUE)
 			)
 			(1
-				(local6
+				(theSpell
 					view: 535
 					setLoop: 6
 					setCel: 1
@@ -453,68 +468,66 @@
 					xStep: 50
 					yStep: 30
 					ignoreActors:
-					setPri: (+ ((local1 opponent?) priority?) 1)
-					posn: (+ (local1 x?) 43) (- (local1 y?) 56)
+					setPri: (+ ((theWarrior opponent?) priority?) 1)
+					posn: (+ (theWarrior x?) 43) (- (theWarrior y?) 56)
 				)
-				(local1 setCycle: EndLoop self)
+				(theWarrior setCycle: EndLoop self)
 			)
 			(2 (= ticks 1))
 			(3
-				(local1 setLoop: 0 setCel: 0 setPri: -1)
-				(local6 setPri: (+ ((local1 opponent?) priority?) 1))
+				(theWarrior setLoop: 0 setCel: 0 setPri: -1)
+				(theSpell setPri: (+ ((theWarrior opponent?) priority?) 1))
 				(cond 
 					(
 						(or
-							(== monsterNum 425)
-							(== monsterNum 430)
-							(== monsterNum 440)
-							(== monsterNum 450)
-							(== monsterNum 460)
+							(== monsterNum vMinotaur)
+							(== monsterNum vSaurus)
+							(== monsterNum vCheetaur)
+							(== monsterNum vTroll)
+							(== monsterNum vDragon)
 						)
 						(= ticks 1)
 					)
-					((!= monsterNum 435)
-						(local6
-							setMotion:
-								MoveTo
-								((local1 opponent?) flameX?)
-								((local1 opponent?) flameY?)
+					((!= monsterNum vMantray)
+						(theSpell
+							setMotion: MoveTo
+								((theWarrior opponent?) flameX?)
+								((theWarrior opponent?) flameY?)
 								self
 						)
 					)
 					(else
-						(local6
-							setMotion:
-								MoveTo
-								(- ((local1 opponent?) x?) 37)
-								(+ ((local1 opponent?) y?) 30)
+						(theSpell
+							setMotion: MoveTo
+								(- ((theWarrior opponent?) x?) 37)
+								(+ ((theWarrior opponent?) y?) 30)
 								self
 						)
 					)
 				)
 			)
 			(4
-				(local6
-					setPri: (+ ((local1 opponent?) priority?) 1)
+				(theSpell
+					setPri: (+ ((theWarrior opponent?) priority?) 1)
 					setCycle: EndLoop self
 				)
 			)
 			(5
-				(local6 priority: (+ ((local1 opponent?) priority?) 1))
-				((local1 opponent?) setCycle: 0 setScript: 0)
-				(if (== monsterNum 455)
-					((local1 opponent?)
+				(theSpell priority: (+ ((theWarrior opponent?) priority?) 1))
+				((theWarrior opponent?) setCycle: 0 setScript: 0)
+				(if (== monsterNum vOgre)
+					((theWarrior opponent?)
 						x: 123
 						y: 25
 						loop: 3
 						setCel: 0
 						stopUpd:
 					)
-					((ScriptID 455 3) hide: forceUpd:)
+					((ScriptID vOgre 3) hide: forceUpd:)
 				)
-				(if (== monsterNum 450)
-					((ScriptID 450 3) cel: 0 x: 182 y: 91 show: forceUpd:)
-					((local1 opponent?)
+				(if (== monsterNum vTroll)
+					((ScriptID vTroll 3) cel: 0 x: 182 y: 91 show: forceUpd:)
+					((theWarrior opponent?)
 						x: 182
 						y: 91
 						setLoop: 1
@@ -525,11 +538,11 @@
 				(= ticks 1)
 			)
 			(6
-				(local6 dispose:)
-				((ScriptID 425 3) x: 500 y: 500 setCycle: 0 forceUpd:)
-				(Bset fFlag285)
-				(if (== monsterNum 455)
-					((ScriptID 455 3)
+				(theSpell dispose:)
+				((ScriptID vMinotaur 3) x: 500 y: 500 setCycle: 0 forceUpd:)
+				(Bset fMonsterRecoils)
+				(if (== monsterNum vOgre)
+					((ScriptID vOgre 3)
 						loop: 2
 						cel: 0
 						x: 166
@@ -537,7 +550,7 @@
 						show:
 						forceUpd:
 					)
-					((local1 opponent?)
+					((theWarrior opponent?)
 						loop: 1
 						x: 165
 						y: 80
@@ -545,38 +558,38 @@
 						stopUpd:
 					)
 				)
-				(if (or (== monsterNum 445) (== monsterNum 465))
-					((local1 opponent?) cycleSpeed: 6)
+				(if (or (== monsterNum vGoblin) (== monsterNum vBrigand))
+					((theWarrior opponent?) cycleSpeed: 6)
 				else
-					((local1 opponent?) cycleSpeed: 23)
+					((theWarrior opponent?) cycleSpeed: 23)
 				)
 				(monHurt play:)
-				((local1 opponent?)
+				((theWarrior opponent?)
 					setLoop: 1
 					setCel: 0
 					setCycle: EndLoop self
 				)
 			)
 			(7
-				((local1 opponent?) getHurt: (+ 5 (/ [egoStats FLAMEDART] 3)))
-				((local1 opponent?)
-					setMonsterHP: ((local1 opponent?) health?)
+				((theWarrior opponent?) getHurt: (+ 5 (/ [egoStats FLAMEDART] 3)))
+				((theWarrior opponent?)
+					setMonsterHP: ((theWarrior opponent?) health?)
 				)
-				(Animate (cast elements?) 0)
-				(if (<= ((local1 opponent?) health?) 0)
-					((local1 opponent?) die:)
+				(Animate (cast elements?) FALSE)
+				(if (<= ((theWarrior opponent?) health?) 0)
+					((theWarrior opponent?) die:)
 				)
 				(if
 					(and
-						(or (== monsterNum 445) (== monsterNum 465))
-						(<= ((local1 opponent?) health?) 0)
+						(or (== monsterNum vGoblin) (== monsterNum vBrigand))
+						(<= ((theWarrior opponent?) health?) 0)
 					)
-					((local1 opponent?) setScript: (ScriptID monsterNum 3))
+					((theWarrior opponent?) setScript: (ScriptID monsterNum 3))
 				else
-					((ScriptID monsterNum 0) inTransit: 0)
-					((local1 opponent?) setScript: (ScriptID monsterNum 2))
+					((ScriptID monsterNum 0) inTransit: FALSE)
+					((theWarrior opponent?) setScript: (ScriptID monsterNum 2))
 				)
-				(local1 canFight: TRUE view: 102 setCel: 0 setLoop: 0)
+				(theWarrior canFight: TRUE view: 102 setCel: 0 setLoop: 0)
 				(self dispose:)
 			)
 		)
@@ -584,11 +597,9 @@
 )
 
 (instance egoZap of Script
-	(properties)
-	
 	(method (init)
-		(= local1 (ScriptID 213 0))
-		(= local6 (ScriptID 215 1))
+		(= theWarrior (ScriptID 213 0))
+		(= theSpell (ScriptID 215 1))
 		(super init: &rest)
 	)
 	
@@ -596,20 +607,22 @@
 		(switch (= state newState)
 			(0
 				(= zapPower (+ 5 (/ [egoStats ZAP] 10)))
-				(local1
+				(theWarrior
 					canFight: FALSE
-					action: 11
+					action: ActCast
 					view: 108
 					loop: 0
 					cel: 0
 					forceUpd:
 					setPri: 15
 				)
-				(local1 setCycle: EndLoop self)
+				(theWarrior setCycle: EndLoop self)
 			)
-			(1 (= ticks 1))
+			(1
+				(= ticks 1)
+			)
 			(2
-				(local1 canFight: TRUE view: 102 cel: 0 forceUpd: setPri: -1)
+				(theWarrior canFight: TRUE view: 102 cel: 0 forceUpd: setPri: -1)
 				(self dispose:)
 			)
 		)
@@ -617,46 +630,46 @@
 )
 
 (instance egoDazzle of Script
-	(properties)
-	
 	(method (init)
-		(= local1 (ScriptID 213 0))
-		(= local6 (ScriptID 215 1))
+		(= theWarrior (ScriptID 213 0))
+		(= theSpell (ScriptID 215 1))
 		(super init: &rest)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(local1
-					canFight: 0
-					action: 11
+				(theWarrior
+					canFight: FALSE
+					action: ActCast
 					view: 107
 					setCel: 0
 					setPri: 15
 				)
-				(local1 setCycle: EndLoop self)
+				(theWarrior setCycle: EndLoop self)
 			)
-			(1 (= ticks 15))
+			(1
+				(= ticks 15)
+			)
 			(2
-				(local1 setLoop: 0 setCel: 0 setPri: -1)
-				(local6
+				(theWarrior setLoop: 0 setCel: 0 setPri: -1)
+				(theSpell
 					view: 535
 					setLoop: 5
 					cel: 0
 					setPri: 15
 					cycleSpeed: 6
 					ignoreActors:
-					posn: (+ (local1 x?) 35) (- (local1 y?) 60)
+					posn: (+ (theWarrior x?) 35) (- (theWarrior y?) 60)
 					init:
 					setCycle: EndLoop self
 				)
 			)
 			(3
-				(local6 dispose:)
-				(Bset 233)
-				(= monsterDazzle [egoStats 20])
-				(local1 canFight: 1 action: 0)
+				(theSpell dispose:)
+				(Bset fMonsterDazzled)
+				(= monsterDazzle [egoStats DAZZLE])
+				(theWarrior canFight: TRUE action: ActNone)
 				(self dispose:)
 			)
 		)
@@ -664,80 +677,83 @@
 )
 
 (instance egoThrust of Script
-	(properties)
-	
 	(method (init)
-		(= local1 (ScriptID 213 0))
+		(= theWarrior (ScriptID 213 0))
 		(super init: &rest)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(local1 getTired: 4 setCel: 0 canFight: 0 action: 1)
+				(theWarrior
+					getTired: 4
+					setCel: 0
+					canFight: FALSE
+					action: ActThrust
+				)
 				(if
 					(and
-						local18
-						(or (== monsterNum 450) (== monsterNum 435))
-						(== local5 2)
+						haveSword
+						(or (== monsterNum vTroll) (== monsterNum vMantray))
+						(== attackAngle AttStraight)
 					)
-					(local1 view: 114)
+					(theWarrior view: 114)
 				else
 					(if (ego has: iSword)
-						(local1 view: (if (== local5 2) 110 else 109))
+						(theWarrior view: (if (== attackAngle AttStraight) 110 else 109))
 					else
-						(local1 view: (if (== local5 2) 103 else 102))
+						(theWarrior view: (if (== attackAngle AttStraight) 103 else 102))
 					)
-					(if (!= local5 2) (local1 setCel: 1))
+					(if (!= attackAngle AttStraight) (theWarrior setCel: 1))
 				)
 				(= register 0)
-				((ScriptID monsterNum 0) inTransit: 1)
-				(= egoCanFight 0)
-				(TrySkill 5 0 0)
-				(= local9 (local1 tryAttack: (local1 opponent?)))
+				((ScriptID monsterNum 0) inTransit: TRUE)
+				(= egoCanFight FALSE)
+				(TrySkill WEAPON 0 0)
+				(= hitOpponent (theWarrior tryAttack: (theWarrior opponent?)))
 				(if
 					(and
 						(or
-							(== monsterNum 425)
-							(== monsterNum 465)
-							(== monsterNum 435)
-							(== monsterNum 445)
-							(== monsterNum 450)
-							(== monsterNum 440)
-							(== monsterNum 455)
-							(== monsterNum 420)
+							(== monsterNum vMinotaur)
+							(== monsterNum vBrigand)
+							(== monsterNum vMantray)
+							(== monsterNum vGoblin)
+							(== monsterNum vTroll)
+							(== monsterNum vCheetaur)
+							(== monsterNum vOgre)
+							(== monsterNum vBear)
 						)
-						(== ((local1 opponent?) action?) 3)
+						(== ((theWarrior opponent?) action?) ActParryUp)
 					)
-					(= local9 0)
+					(= hitOpponent FALSE)
 				)
-				(if local9
+				(if hitOpponent
 					(blood init: posn: 500 500 stopUpd:)
 					(zapCrap init: posn: 500 500 stopUpd:)
-					((local1 opponent?) setCycle: 0 setScript: 0 stopUpd:)
-					(local1 doDamage: (local1 opponent?) zapPower)
+					((theWarrior opponent?) setCycle: 0 setScript: 0 stopUpd:)
+					(theWarrior doDamage: (theWarrior opponent?) zapPower)
 					(switch monsterNum
-						(440
-							((local1 opponent?)
+						(vCheetaur
+							((theWarrior opponent?)
 								view: 442
 								setLoop: 1
 								setCel: 0
 								stopUpd:
 							)
 						)
-						(430
+						(vSaurus
 							(if (Random 0 1)
-								((local1 opponent?) setLoop: 0 setCel: 1 stopUpd:)
+								((theWarrior opponent?) setLoop: 0 setCel: 1 stopUpd:)
 							else
-								((local1 opponent?) setLoop: 0 setCel: 7 stopUpd:)
+								((theWarrior opponent?) setLoop: 0 setCel: 7 stopUpd:)
 							)
 						)
-						(445
-							((local1 opponent?) setLoop: 1 setCel: 0 stopUpd:)
+						(vGoblin
+							((theWarrior opponent?) setLoop: 1 setCel: 0 stopUpd:)
 						)
-						(450
-							((ScriptID 450 3) x: 182 y: 91 show: setCel: 0 stopUpd:)
-							((local1 opponent?)
+						(vTroll
+							((ScriptID vTroll 3) x: 182 y: 91 show: setCel: 0 stopUpd:)
+							((theWarrior opponent?)
 								x: 182
 								y: 91
 								setLoop: 1
@@ -745,133 +761,153 @@
 								stopUpd:
 							)
 						)
-						(460
+						(vDragon
 							(if (Random 0 1)
-								((local1 opponent?) setLoop: 0 setCel: 2 stopUpd:)
+								((theWarrior opponent?) setLoop: 0 setCel: 2 stopUpd:)
 							else
-								((local1 opponent?) setLoop: 0 setCel: 7 stopUpd:)
+								((theWarrior opponent?) setLoop: 0 setCel: 7 stopUpd:)
 							)
 						)
-						(420
+						(vBear
 							(cond 
-								((== local5 1)
-									(if local18
-										((local1 opponent?) setLoop: 0 setCel: 2 stopUpd:)
+								((== attackAngle AttRight)
+									(if haveSword
+										((theWarrior opponent?) setLoop: 0 setCel: 2 stopUpd:)
 									else
-										((local1 opponent?) setLoop: 0 setCel: 3 stopUpd:)
+										((theWarrior opponent?) setLoop: 0 setCel: 3 stopUpd:)
 									)
 								)
-								((not local18) ((local1 opponent?) setLoop: 0 setCel: 2 stopUpd:))
+								((not haveSword)
+									((theWarrior opponent?) setLoop: 0 setCel: 2 stopUpd:)
+								)
 							)
 						)
 					)
 				else
-					(if (and (!= monsterNum 435) (Btst 284))
+					(if (and (!= monsterNum vMantray) (Btst fBattleStarted))
 						(= local17 1)
-						((local1 opponent?) setCycle: 0 setScript: 0 stopUpd:)
+						((theWarrior opponent?) setCycle: 0 setScript: 0 stopUpd:)
 					)
 					(if local17
 						(switch monsterNum
-							(425
-								((ScriptID 425 3) x: 500 y: 500 setCycle: 0 forceUpd:)
-								((local1 opponent?) setLoop: 0 setCel: 4 stopUpd:)
+							(vMinotaur
+								((ScriptID vMinotaur 3) x: 500 y: 500 setCycle: 0 forceUpd:)
+								((theWarrior opponent?) setLoop: 0 setCel: 4 stopUpd:)
 							)
-							(440
-								((local1 opponent?)
+							(vCheetaur
+								((theWarrior opponent?)
 									view: 444
 									setLoop: 0
 									setCel: 1
 									stopUpd:
 								)
 							)
-							(430
+							(vSaurus
 								(if local17
-									((local1 opponent?) setLoop: 0 setCel: 0 stopUpd:)
+									((theWarrior opponent?) setLoop: 0 setCel: 0 stopUpd:)
 								)
 							)
-							(445
-								((local1 opponent?) setLoop: 2 setCel: 4 stopUpd:)
+							(vGoblin
+								((theWarrior opponent?) setLoop: 2 setCel: 4 stopUpd:)
 							)
-							(465
-								((local1 opponent?) setLoop: 3 setCel: 2 stopUpd:)
+							(vBrigand
+								((theWarrior opponent?) setLoop: 3 setCel: 2 stopUpd:)
 							)
-							(420
+							(vBear
 								(if local17
 									(cond 
-										((and (== local5 2) local18) ((local1 opponent?) setLoop: 0 setCel: 2 stopUpd:))
-										((Random 0 1) ((local1 opponent?) setLoop: 0 setCel: 0 stopUpd:))
-										(else ((local1 opponent?) setLoop: 0 setCel: 1 stopUpd:))
+										((and (== attackAngle AttStraight) haveSword)
+											((theWarrior opponent?) setLoop: 0 setCel: 2 stopUpd:)
+										)
+										((Random 0 1)
+											((theWarrior opponent?) setLoop: 0 setCel: 0 stopUpd:)
+										)
+										(else
+											((theWarrior opponent?) setLoop: 0 setCel: 1 stopUpd:)
+										)
 									)
 								)
 							)
 						)
 					)
-					(Bset 357)
+					(Bset fThrustHit)
 				)
-				((ScriptID 425 3) x: 500 y: 500 setCycle: 0 forceUpd:)
+				((ScriptID vMinotaur 3) x: 500 y: 500 setCycle: 0 forceUpd:)
 				(if
 					(and
-						(== monsterNum 455)
-						(== ((local1 opponent?) loop?) 0)
-						(== local5 2)
-						local18
+						(== monsterNum vOgre)
+						(== ((theWarrior opponent?) loop?) 0)
+						(== attackAngle AttStraight)
+						haveSword
 					)
 					(= register 1)
-					(local1 setPri: 1 setCycle: CycleTo 1 1 self)
-					((local1 opponent?) setCycle: 0 setScript: 0 setCel: 0)
+					(theWarrior setPri: 1 setCycle: CycleTo 1 1 self)
+					((theWarrior opponent?) setCycle: 0 setScript: 0 setCel: 0)
 				else
-					(if local9
-						(local1 setPri: 15)
+					(if hitOpponent
+						(theWarrior setPri: 15)
 					else
-						(if (== monsterNum 450) (local1 setPri: 1))
-						(if (== monsterNum 440) (local1 setPri: 15))
+						(if (== monsterNum vTroll)
+							(theWarrior setPri: 1)
+						)
+						(if (== monsterNum vCheetaur)
+							(theWarrior setPri: 15)
+						)
 					)
-					(if (and (== local5 2) (ego has: iSword))
-						(local1 setCycle: CycleTo 2 1 self)
+					(if (and (== attackAngle AttStraight) (ego has: iSword))
+						(theWarrior setCycle: CycleTo 2 1 self)
 					else
-						(local1 setCycle: CycleTo 3 1 self)
+						(theWarrior setCycle: CycleTo 3 1 self)
 					)
 				)
 			)
 			(1
 				(cond 
-					(register (= ticks 1))
-					(local9
+					(register
+						(= ticks 1)
+					)
+					(hitOpponent
 						(cond 
-							((== monsterNum 455) (= ticks 45))
-							((== monsterNum 420) (= ticks 25))
-							(else (= ticks 1))
+							((== monsterNum vOgre)
+								(= ticks 45)
+							)
+							((== monsterNum vBear)
+								(= ticks 25)
+							)
+							(else
+								(= ticks 1)
+							)
 						)
 						(blood setPri: 15 ignoreActors: setCel: 0)
 						(zapCrap setPri: 15 ignoreActors: setCel: 0)
 						(monHurt play:)
-						(if (== local5 2)
-							(if local18
-								(if (or (== monsterNum 450) (== monsterNum 435))
-									(blood x: (+ (local1 x?) 53) y: (- (local1 y?) 81))
+						(if (== attackAngle AttStraight)
+							(if haveSword
+								(if (or (== monsterNum vTroll) (== monsterNum vMantray))
+									(blood x: (+ (theWarrior x?) 53) y: (- (theWarrior y?) 81))
 								else
-									(blood x: (+ (local1 x?) 64) y: (- (local1 y?) 64))
+									(blood x: (+ (theWarrior x?) 64) y: (- (theWarrior y?) 64))
 								)
 							else
-								(blood x: (+ (local1 x?) 43) y: (- (local1 y?) 70))
+								(blood x: (+ (theWarrior x?) 43) y: (- (theWarrior y?) 70))
 								(if zapPower
 									(zapCrap
-										x: (+ (local1 x?) 43)
-										y: (- (local1 y?) 70)
+										x: (+ (theWarrior x?) 43)
+										y: (- (theWarrior y?) 70)
 										setCycle: EndLoop
 									)
 								)
 							)
 							(blood setLoop: 2 setCycle: EndLoop)
 						else
-							(if local18
-								(blood x: (+ (local1 x?) 42) y: (- (local1 y?) 65))
+							(if haveSword
+								(blood x: (+ (theWarrior x?) 42) y: (- (theWarrior y?) 65))
 							else
-								(blood x: (+ (local1 x?) 32) y: (- (local1 y?) 56))
+								(blood x: (+ (theWarrior x?) 32) y: (- (theWarrior y?) 56))
 								(if zapPower
 									(zapCrap
-										x: (+ (local1 x?) 32)
-										y: (- (local1 y?) 56)
+										x: (+ (theWarrior x?) 32)
+										y: (- (theWarrior y?) 56)
 										setCycle: EndLoop
 									)
 								)
@@ -880,15 +916,17 @@
 						)
 						(= zapPower 0)
 					)
-					(else (= ticks 8))
+					(else
+						(= ticks 8)
+					)
 				)
 			)
 			(2
-				(local1 setCycle: EndLoop self)
-				(if local9
-					(Bset 285)
-					(if (== monsterNum 455)
-						((ScriptID 455 3)
+				(theWarrior setCycle: EndLoop self)
+				(if hitOpponent
+					(Bset fMonsterRecoils)
+					(if (== monsterNum vOgre)
+						((ScriptID vOgre 3)
 							loop: 2
 							cel: 0
 							x: 166
@@ -896,7 +934,7 @@
 							show:
 							forceUpd:
 						)
-						((local1 opponent?)
+						((theWarrior opponent?)
 							loop: 1
 							cel: 0
 							x: 165
@@ -904,40 +942,40 @@
 							forceUpd:
 						)
 					)
-					(if (or (== monsterNum 445) (== monsterNum 465))
-						((local1 opponent?) cycleSpeed: 6)
+					(if (or (== monsterNum vGoblin) (== monsterNum vBrigand))
+						((theWarrior opponent?) cycleSpeed: 6)
 					else
-						((local1 opponent?) cycleSpeed: 23)
+						((theWarrior opponent?) cycleSpeed: 23)
 					)
-					((local1 opponent?) loop: 1 cel: 0 setCycle: EndLoop self)
+					((theWarrior opponent?) loop: 1 cel: 0 setCycle: EndLoop self)
 				else
 					(if local17
 						(switch monsterNum
-							(425
-								((local1 opponent?) setLoop: 0 setCel: 3 stopUpd:)
+							(vMinotaur
+								((theWarrior opponent?) setLoop: 0 setCel: 3 stopUpd:)
 							)
-							(440
-								((local1 opponent?)
+							(vCheetaur
+								((theWarrior opponent?)
 									view: 444
 									setLoop: 0
 									setCel: 2
 									stopUpd:
 								)
 							)
-							(430
+							(vSaurus
 								(if local17
-									((local1 opponent?) setLoop: 0 setCel: 1 stopUpd:)
+									((theWarrior opponent?) setLoop: 0 setCel: 1 stopUpd:)
 								)
 							)
-							(445
-								((local1 opponent?) setLoop: 2 setCel: 5 stopUpd:)
+							(vGoblin
+								((theWarrior opponent?) setLoop: 2 setCel: 5 stopUpd:)
 							)
-							(465
-								((local1 opponent?) setLoop: 3 setCel: 3 stopUpd:)
+							(vBrigand
+								((theWarrior opponent?) setLoop: 3 setCel: 3 stopUpd:)
 							)
-							(460
+							(vDragon
 								(if local17
-									((local1 opponent?) setLoop: 0 setCel: 0 stopUpd:)
+									((theWarrior opponent?) setLoop: 0 setCel: 0 stopUpd:)
 								)
 							)
 						)
@@ -946,63 +984,67 @@
 				)
 			)
 			(3
-				(if (not (local1 cycler?))
-					(if local18
-						(local1 view: 109 setCel: 0 stopUpd:)
+				(if (not (theWarrior cycler?))
+					(if haveSword
+						(theWarrior view: 109 setCel: 0 stopUpd:)
 					else
-						(local1 view: 102 setCel: 0 stopUpd:)
+						(theWarrior view: 102 setCel: 0 stopUpd:)
 					)
 				)
 			)
 			(4
-				(if local18
-					(local1 view: 109 setCel: 0 stopUpd:)
+				(if haveSword
+					(theWarrior view: 109 setCel: 0 stopUpd:)
 				else
-					(local1 view: 102 setCel: 0 stopUpd:)
+					(theWarrior view: 102 setCel: 0 stopUpd:)
 				)
 				(= ticks 15)
 			)
 			(5
 				(zapCrap dispose:)
 				(blood dispose:)
-				(if local9
-					((local1 opponent?)
-						setMonsterHP: ((local1 opponent?) health?)
+				(if hitOpponent
+					((theWarrior opponent?)
+						setMonsterHP: ((theWarrior opponent?) health?)
 					)
-					(if (<= ((local1 opponent?) health?) 0)
-						((local1 opponent?) die:)
+					(if (<= ((theWarrior opponent?) health?) 0)
+						((theWarrior opponent?) die:)
 					)
 				)
-				(if local18 (local1 view: 109))
+				(if haveSword
+					(theWarrior view: 109)
+				)
 				(cond 
-					((or (== monsterNum 450) (== monsterNum 455))
-						(if (or local17 local9)
-							((local1 opponent?) setScript: (ScriptID monsterNum 2))
+					((or (== monsterNum vTroll) (== monsterNum vOgre))
+						(if (or local17 hitOpponent)
+							((theWarrior opponent?) setScript: (ScriptID monsterNum 2))
 							(= local17 0)
 						)
 						((ScriptID monsterNum 0) inTransit: 0)
 					)
 					(
 						(and
-							(or (== monsterNum 445) (== monsterNum 465))
-							(<= ((local1 opponent?) health?) 0)
+							(or (== monsterNum vGoblin) (== monsterNum vBrigand))
+							(<= ((theWarrior opponent?) health?) 0)
 						)
-						((local1 opponent?) setScript: (ScriptID monsterNum 3))
+						((theWarrior opponent?) setScript: (ScriptID monsterNum 3))
 					)
-					((and (== monsterNum 435) (not local9)) ((ScriptID monsterNum 0) inTransit: 0))
+					((and (== monsterNum vMantray) (not hitOpponent))
+						((ScriptID monsterNum 0) inTransit: FALSE)
+					)
 					(else
-						(if (not ((local1 opponent?) script?))
+						(if (not ((theWarrior opponent?) script?))
 							(= local17 0)
-							((local1 opponent?) setScript: (ScriptID monsterNum 2))
+							((theWarrior opponent?) setScript: (ScriptID monsterNum 2))
 						)
-						((ScriptID monsterNum 0) inTransit: 0)
+						((ScriptID monsterNum 0) inTransit: FALSE)
 					)
 				)
-				(= local9 0)
-				(Bclr 233)
-				(Bclr 357)
-				(local1 canFight: 1)
-				(= egoCanFight 1)
+				(= hitOpponent FALSE)
+				(Bclr fMonsterDazzled)
+				(Bclr fThrustHit)
+				(theWarrior canFight: TRUE)
+				(= egoCanFight TRUE)
 				(self dispose:)
 			)
 		)
@@ -1010,44 +1052,57 @@
 )
 
 (instance egoBlock of Script
-	(properties)
-	
 	(method (init)
-		(= local16 1)
-		(= local1 (ScriptID 213 0))
+		(= egoDefends TRUE)
+		(= theWarrior (ScriptID 213 0))
 		(super init: &rest)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoCanFight 0)
-				(if local18 (local1 view: 111) else (local1 view: 104))
-				(local1 getTired: 1 canFight: 0 action: 3 setCel: 0)
-				(TrySkill 6 0 20)
-				(if ((local1 opponent?) ateEgo?) (self dispose:))
+				(= egoCanFight FALSE)
+				(if haveSword
+					(theWarrior view: 111)
+				else
+					(theWarrior view: 104)
+				)
+				(theWarrior
+					getTired: 1
+					canFight: FALSE
+					action: ActParryUp
+					setCel: 0
+				)
+				(TrySkill PARRY 0 20)
+				(if ((theWarrior opponent?) ateEgo?)
+					(self dispose:)
+				)
 				(if
 					(and
-						(or (== monsterNum 455) (== monsterNum 450))
-						local18
+						(or (== monsterNum vOgre) (== monsterNum vTroll))
+						haveSword
 					)
-					(local1 view: 115 loop: 0 forceUpd: setCycle: CycleTo 2 1)
+					(theWarrior view: 115 loop: 0 forceUpd: setCycle: CycleTo 2 1)
 					(= ticks 80)
 				else
 					(= ticks 1)
 				)
 			)
-			(1 (local1 setCycle: EndLoop self))
-			(2 (= ticks 12))
+			(1
+				(theWarrior setCycle: EndLoop self)
+			)
+			(2
+				(= ticks 12)
+			)
 			(3
 				(if
 					(and
-						(or (== monsterNum 455) (== monsterNum 450))
-						local18
+						(or (== monsterNum vOgre) (== monsterNum vTroll))
+						haveSword
 					)
-					(local1 view: 109 forceUpd:)
+					(theWarrior view: 109 forceUpd:)
 				)
-				(local1 setCel: 0 stopUpd:)
+				(theWarrior setCel: 0 stopUpd:)
 				(= egoCanFight 1)
 				(self dispose:)
 			)
@@ -1056,23 +1111,21 @@
 )
 
 (instance egoParry of Script
-	(properties)
-	
 	(method (init)
-		(= local16 1)
-		(= local1 (ScriptID 213 0))
+		(= egoDefends TRUE)
+		(= theWarrior (ScriptID 213 0))
 		(super init: &rest)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoCanFight 0)
-				(TrySkill 6 0 20)
-				(local1
+				(= egoCanFight FALSE)
+				(TrySkill PARRY 0 20)
+				(theWarrior
 					getTired: 1
-					canFight: 0
-					action: 3
+					canFight: FALSE
+					action: ActParryUp
 					setLoop: 4
 					setCel: 0
 					stopUpd:
@@ -1080,15 +1133,15 @@
 				(= cycles 1)
 			)
 			(1
-				(local1 setCel: 1)
+				(theWarrior setCel: 1)
 				(= cycles 7)
 			)
 			(2
-				(local1 setCel: 0)
+				(theWarrior setCel: 0)
 				(= cycles 1)
 			)
 			(3
-				(local1 cel: 0 setLoop: 2 stopUpd:)
+				(theWarrior cel: 0 setLoop: 2 stopUpd:)
 				(= egoCanFight 1)
 				(self dispose:)
 			)
@@ -1097,17 +1150,15 @@
 )
 
 (instance egoDodge of Script
-	(properties)
-	
 	(method (init)
-		(= local16 1)
-		(= local1 (ScriptID 213 0))
+		(= egoDefends TRUE)
+		(= theWarrior (ScriptID 213 0))
 		(super init: &rest)
 	)
 	
 	(method (doit)
-		(if ((local1 opponent?) ateEgo?)
-			(local1 setCycle: 0 setCycle: CycleTo 0 -1)
+		(if ((theWarrior opponent?) ateEgo?)
+			(theWarrior setCycle: 0 setCycle: CycleTo 0 -1)
 			(self dispose:)
 		)
 		(super doit: &rest)
@@ -1116,33 +1167,39 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoCanFight 0)
-				(TrySkill 7 0 20)
+				(= egoCanFight FALSE)
+				(TrySkill DODGE 0 20)
 				(cond 
 					(
 						(and
-							local18
-							(or (== monsterNum 450) (== monsterNum 455))
+							haveSword
+							(or (== monsterNum vTroll) (== monsterNum vOgre))
 						)
-						(local1 view: 116 setLoop: 0)
+						(theWarrior view: 116 setLoop: 0)
 					)
-					(local18 (local1 view: 112 setLoop: 0))
-					(else (local1 view: 105))
+					(haveSword (theWarrior view: 112 setLoop: 0))
+					(else (theWarrior view: 105))
 				)
-				(if local18 (local1 setCel: 1))
-				(local1
+				(if haveSword
+					(theWarrior setCel: 1)
+				)
+				(theWarrior
 					getTired: 2
-					canFight: 0
-					action: (if (== register 0) 5 else 6)
+					canFight: FALSE
+					action: (if (== register 0) ActDodgeLeft else ActDodgeRight)
 					setCel: 0
 				)
-				(local1 setCycle: EndLoop self)
+				(theWarrior setCycle: EndLoop self)
 			)
-			(1 (= ticks 12))
+			(1
+				(= ticks 12)
+			)
 			(2
-				(if (== (local1 view?) 110) (local1 view: 109))
-				(local1 setCel: 0 stopUpd:)
-				(= egoCanFight 1)
+				(if (== (theWarrior view?) 110)
+					(theWarrior view: 109)
+				)
+				(theWarrior setCel: 0 stopUpd:)
+				(= egoCanFight TRUE)
 				(self dispose:)
 			)
 		)
@@ -1150,10 +1207,8 @@
 )
 
 (instance painReaction of Script
-	(properties)
-	
 	(method (init)
-		(= local1 (ScriptID 213 0))
+		(= theWarrior (ScriptID 213 0))
 		(super init: &rest)
 	)
 	
@@ -1164,14 +1219,18 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= egoCanFight 0)
+				(= egoCanFight FALSE)
 				(= ticks 1)
 			)
 			(1
-				(if (Btst 248) (= ticks 1))
-				(= egoCanFight 1)
+				(if (Btst fDiedInBattle)
+					(= ticks 1)
+				)
+				(= egoCanFight TRUE)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -1201,7 +1260,7 @@
 		oldY 0
 		relX 280
 		relY 155
-		first 1
+		first TRUE
 		leftBor 260
 		rightBor 303
 		topBor 130
@@ -1211,23 +1270,23 @@
 	
 	(method (init)
 		(theIconBar disable:)
-		(theGame setCursor: normalCursor 1 280 155)
+		(theGame setCursor: normalCursor TRUE 280 155)
 		(self setPri: 14 ignoreActors:)
 		(super init: &rest)
 	)
 	
-	(method (doit &tmp newEvent theRelX theRelY theOldX theOldY temp5 temp6 temp7)
-		(= theOldX ((= newEvent (Event new:)) x?))
-		(= theOldY (- (newEvent y?) 10))
+	(method (doit &tmp event theRelX theRelY evtX evtY temp5 temp6 temp7)
+		(= evtX ((= event (Event new:)) x?))
+		(= evtY (- (event y?) 10))
 		(if first
-			(= oldX theOldX)
-			(= oldY theOldY)
+			(= oldX evtX)
+			(= oldY evtY)
 			(= first 0)
 		)
-		(if (or (!= theOldX oldX) (!= theOldY oldY))
-			(if (!= theOldX oldX)
-				(= temp5 (- theOldX oldX))
-				(= oldX theOldX)
+		(if (or (!= evtX oldX) (!= evtY oldY))
+			(if (!= evtX oldX)
+				(= temp5 (- evtX oldX))
+				(= oldX evtX)
 				(cond 
 					((< (= theRelX (+ relX temp5)) leftBor) (= theRelX (= oldX leftBor)))
 					((> theRelX rightBor) (= theRelX (= oldX rightBor)))
@@ -1235,9 +1294,9 @@
 			else
 				(= theRelX relX)
 			)
-			(if (!= theOldY oldY)
-				(= temp6 (- theOldY relY))
-				(= oldY theOldY)
+			(if (!= evtY oldY)
+				(= temp6 (- evtY relY))
+				(= oldY evtY)
 				(cond 
 					((< (= theRelY (+ relY temp6)) topBor) (= theRelY (= oldY topBor)))
 					((> theRelY botBor) (= theRelY (= oldY botBor)))
@@ -1247,15 +1306,15 @@
 			)
 			(= relY theRelY)
 			(theGame
-				setCursor: normalCursor 1 (= relX theRelX) theRelY
+				setCursor: normalCursor TRUE (= relX theRelX) theRelY
 			)
 		)
-		(newEvent dispose:)
+		(event dispose:)
 		(super doit: &rest)
 	)
 	
 	(method (dispose)
-		(theGame setCursor: normalCursor 1)
+		(theGame setCursor: normalCursor TRUE)
 		(super dispose:)
 	)
 	
@@ -1305,13 +1364,11 @@
 )
 
 (instance findPenalty of Code
-	(properties)
-	
-	(method (doit &tmp temp0 temp1)
-		(= temp0 (GetTime))
+	(method (doit &tmp thisTime temp1)
+		(= thisTime (GetTime))
 		(= local15
 			(cond 
-				((< (= temp1 (Abs (- temp0 local14))) 180) 50)
+				((< (= temp1 (Abs (- thisTime local14))) 180) 50)
 				((< temp1 240) 40)
 				((< temp1 300) 30)
 				((< temp1 360) 20)
@@ -1319,32 +1376,30 @@
 				(else 0)
 			)
 		)
-		(if local16
+		(if egoDefends
 			(= local15 0)
 		)
-		(= local16 0)
-		(= local14 temp0)
+		(= egoDefends 0)
+		(= local14 thisTime)
 	)
 )
 
 (instance switchLoop of Code
-	(properties)
-	
 	(method (doit)
-		(if local10
+		(if magicIcons
 			(pointBox setLoop: 2)
 			(if (not (ego has: iSword))
 				(dodgeRIcon show: forceUpd: stopUpd:)
 				(dodgeLIcon show: forceUpd: stopUpd:)
 			)
-			(= local10 0)
+			(= magicIcons FALSE)
 		else
 			(pointBox setLoop: 3)
 			(if (not (ego has: iSword))
 				(dodgeRIcon hide: forceUpd: stopUpd:)
 				(dodgeLIcon hide: forceUpd: stopUpd:)
 			)
-			(= local10 1)
+			(= magicIcons TRUE)
 		)
 	)
 )

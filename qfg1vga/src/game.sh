@@ -24,9 +24,11 @@
 (define	NUM_DERIVS	4)
 (define NUM_SPELLS	8)
 (define NUM_ATTRIBS 25)	;(+ NUM_STATS NUM_SKILLS NUM_DERIVS NUM_SPELLS))
+(define NUM_INVITEMS 40)
+
 (define GAMEDAY 3600)	;number of ticks per game day
 (define GAMEHOUR 150) 	;number of ticks per game hour
-(define NUM_INVITEMS 40)
+
 (define STAM_RATE	20)		;recovery rate for stamina
 (define HEAL_RATE	15)		;recovery rate for health
 (define MANA_RATE	5)		;recovery rate for mana
@@ -37,13 +39,15 @@
 
 ;Hero's Quest Framework scripts
 (define MAIN			0)
-(define GLORY_INIT		1)
+(define HQINIT			1)
 (define NOTICE			2)
-(define NOTICE2			9)
+(define INVDESC			3)	;text only
 (define DRINK 			5)
 (define EAT 			6)
 (define SLEEP 			7)
 (define REST			8)
+(define NOTICE2			9)
+
 (define SLEEPALLNIGHT	88)		;EO: This has number 88, which was previously a room removed from this version.
 (define CASTDART		100)
 (define THROWKNIFE		101)
@@ -98,9 +102,6 @@
 	doorOpen
 	doorOpening
 )
-
-; Picture defines
-(define pBlueSkyForCarpet 750)
 
 ;core arena regions, classes and scripts
 (define ENCOUNTER 	210) ;Region
@@ -223,40 +224,6 @@
 	TIME_NOTYETDAWN
 )
 
-;TrySkill and SkillUsed amounts
-;Skill Used amounts
-(define tryStatThrowing 10) ;full define should be (/ [egoStats AGIL] 10) but SCICompanion doesn't support those types of defines
-(define tryStatWeaponMaster 50)
-(define tryStatKoboldDazzle 5)
-(define tryStatStableStr 25)
-(define tryStatStableVit 40)
-(define tryStatRandomEncounter 12) ;full define should be (/ [monsterHP (GetMonsterIndex monsterInRoom)] 12) but SCICompanion doesn't support those types of defines
-
-;TrySkill thresholds
-(define tryPickSecretEntrance 85)
-(define tryForceSecretEntrance 40) ;strength
-(define tryBreakDownBrigandGate 60) ;strength
-(define tryClimbBrigandGate 65)
-(define tryClimbIntoTown 35)
-(define tryFetchKoboldKey 35)
-(define tryForceOpenKoboldChest 40) ;strength
-(define tryPickKoboldChest 70)
-(define tryCastOpenKoboldChest 50) ;open spell
-(define trySneak 5)
-(define trySneakKobold 35)
-(define tryPickNose 40)
-(define tryCastOpenFox 25) ;open spell
-(define tryClimbSpittingSpirea 35)
-(define tryClimbWaterfall 30)
-(define tryCastOpenHenry 45) ;magic, specifically.
-(define tryThrowHenry 25)
-(define tryFaeryDance 25) ;agility
-(define tryThrowNest 25)
-(define tryPickLOL 30)
-(define tryPickSheriff 50)
-(define tryWalkTreeLimb 30) ;agility (the tree outside the healer's)
-(define tryPickTavern 10)
-
 ;Random Encounter Entrances
 (define reNORTH 1)
 (define reEAST	2)
@@ -355,18 +322,25 @@
 
 ;Arena Actions (for the 'Skilled' class)
 (enum
-	aaNOTHING
-	aaTHRUST
-	aaSLASH
-	aaPARRYUP
-	aaPARRYDOWN
-	aaDODGELEFT
-	aaDODGERIGHT
-	aaDUCK
-	aaLEAP
-	aaACTION_9
-	aaDIE
-	aaMAGIC
+	ActNone
+	ActThrust
+	ActSlash
+	ActParryUp
+	ActParryDown
+	ActDodgeLeft
+	ActDodgeRight
+	ActDuck
+	ActLeap
+	ActPain	;never used, just a guess
+	ActDie
+	ActCast
+)
+
+;Attack angles (for close combat)
+(enum
+	AttLeft
+	AttRight
+	AttStraight
 )
 
 ;Armor values
@@ -399,10 +373,7 @@
 (define ACTION_SNEAK	$0004)
 (define ACTION_REST		$0008)
 
-; Monster Arenas
-(define KOBOLD 15)
-
-;Views
+;Views and pictures
 (define vBear 420)
 (define vMinotaur 425)
 (define vSaurus 430)
@@ -414,6 +385,7 @@
 (define vDragon 460)	;actually Saurus Rex, but it is called a dragon internally
 (define vBrigand 465)
 (define vBrigandLeader 470) ;unused
+(define pBlueSkyForCarpet 750)
 (define vStatusBar 803)
 (define vMonoStatusBar 804)	;unused in VGA
 
@@ -524,13 +496,9 @@
 	fBeenIn333		 			;100
 	fBeenIn334			 		;101
 	fNextMonster				;102	;for Brigands and Goblins, check if any are still alive
-	fUnused103					;103
-	fUnused104					;104
-	fUnused105					;105
-	fUnused106					;106
-	fUnused107					;107
-	fUnused108					;108
-	fUnused109					;109
+)
+
+(enum 110
 	fWornOut		 			;110
 	fHaveOrdered	 			;111
 	fShemaBringsOrder 			;112
@@ -598,7 +566,7 @@
 	fKoboldCastingReversal		;174	; originally used for checking if player has Kobold Toadstools
 	fKoboldChestSearched		;175
 	fMerchantIsAtInn					;176
-	fFlag177			;177
+	fUnused177			;177
 	fUnused178		;----------- event 178 is unused
 	fStoleVase 			;179
 	fMovedVase 			;180
@@ -614,7 +582,7 @@
 	fClimbedSpireaLedge			;190
 	fLeftTown				;191
 	fFlowersInactive			;192
-	fOttoBackToBed 			;193
+	fOttoAwakened 			;193
 	fOpenMusicBox 				;194
 	fOttoClosedMusicBox 		;195
 	fWokeUpSheriff 			;196
@@ -660,14 +628,14 @@
 	fLadderKnown 			;236
 	fMinotaurDead	 			;237	; He's not actually dead, just unconscious
 	fBrigGateOpen	 			;238
-	fFlag239 					;EVENT_FIGHTINGWEAPONMASTER?? Unsure
+	fMasterIsHere 				;239
 	fDeadlyTP 			;240	; teleported dangerously away by henry.
 	fSafeTP 				;241	; teleported away safely by Henry
 	fAskedForTrigger 		;242
-	fFlag243 					; Event 243 is related to the Weapons Master
+	fMasterShowedOff 		;243
 	fBrigsBehindLog 		;244
 	fGotBrutusKey 		;245
-	fSawNessie 			;246
+	fLakeEasterEgg 			;246
 	fHidenGoseke 			;247
 	fDiedInBattle		 		;248
 	fBeatMaster 		;249
@@ -678,40 +646,41 @@
 	fEgoSitting	 				;254
 	fOrderedDrink				;255
 ; Events 256-260 are related to Yorick's maze
-	fFlag256
-	fOpeningLeaderDoor		;257
-	fFlag258
+	fFallTrapdoor			;256
+	fOpeningDoor		;257
+	fFallingOffLedge		;258
 	fPulledChain				;259
-	fFlag260
-
+	fRollingOut				;260
+	
 	fBeatBrutus			;261
 	fLearnedTrigger			;262
-	fFlag263					;263 (used in Yorrick's room)
-	fFlag264					;264 (used in brigandDoorFall)
-	fFlag265					;265 (used in Yorrick's room) 
+	fGoThruDoorway					;263 (used in Yorrick's room)
+	fFakeDoorDown				;264 (used in brigandDoorFall)
+
+	fYorickThrewSomething					;265 (used in Yorrick's room) 
 	fErasmusAskedMaze 	;266
 	fNoMoreTalking 		;267
 	fBefriendedYorick 			;268
-	fFlag269					; set in brigandHappyFace
-	fFlag270					; set in brigandFallSideways
-	fFlag271					;271 (tested in Yorrick's room)
+	fBallConks					;269 ; set in brigandHappyFace
+	fFallTrap4					;270 ; set in brigandFallSideways
+	fYorickThrows					;271 (tested in Yorrick's room)
 	fClimbedHenryCliff			;272
 	fSavedElsa 					;273
-	fEgoFallOffCliff			;274 used in hermitHits
+	fEgoKnockedOffCliff			;274 used in hermitHits
 	fKnockedOnHenryDoor 		;275
-	fEgoSquashed					;276 used in hermitHits
-	fFlag277					;277 used in healerGetNest
+	fEgoSquashed				;276 used in hermitHits
+	fLeavingCastle					;277 used in healerGetNest
 	fClimbedTree		;278
 	fHaveFaeryShrooms		;279
-	fFlag280					;280 (set in Kobold Flame Dart)
-	fFlag281				;281 (set in Kobold Flame Dart)
+	fDartReversed					;280 (set in Kobold Flame Dart)
+	fKoboldProtected				;281 (set in Kobold Flame Dart)
 	fKoboldChestExploded 		;282
-	fFlag283					;283 (cleared in Kobold Flame Dart)
-	fFlag284		;----------- 
-	fFlag285		;----------- 
+	fDartOnKobold					;283 (cleared in Kobold Flame Dart)
+	fBattleStarted		;----------- 
+	fMonsterRecoils		;----------- 
 	fShroomTrip					;286
 	fBabaHutOpen			;287	; Replaces flag 172, which now is set when Baba Yaga's hut is on the ground but not yet accessible.
-	fSawDelphineus			;288
+	fLakeEasterEgg2			;288
 	fUnused289
 	fSkullOfferedDeal		;290
 	fMadeDealWithSkull		;291
@@ -745,7 +714,7 @@
 	fUnused319
 	fUnused320
 	fOfferedTraining 			;321
-	fFlag322
+	fUnused322
 	fFarmerIsEast 				;323
 	fBrutusWaits				;324
 	fBabaFrog 					;325
@@ -774,20 +743,22 @@
 	fBrigsUnaware			;348
 	fUnused349		;----------- 
 	fClawsKnown					;350
-	fFlag351					;351 set in arenaMantrayFight after killing the mantaray
+	fMantrayDies					;351 set in arenaMantrayFight after killing the mantaray
 	fHenryDoorOpen 			;352
 	fWizKnowsEgoHasMagic ;353
 	fMetGargoyle				;354
 	fReadBarnardBulletin 		;355
 	fLearnedRhyme				;356
-	fFlag357					;set in egoThrust
+	fThrustHit					;set in egoThrust
 	fUnused358					;358
 	fHideCursor					;359
 	fCharSheetActive			;360
-	fFlag361					;related to picking up dropped items
+	fPickItUp					;related to picking up dropped items
 	fDaggerInBrutus				;362	; if you killed Brutus by throwing a dagger at him, you can pick it up from his body later.
 )
 									 
+;;; Sierra Script 1.0 - (do not remove this comment)
+
 ; Puzzle Point Event Flags (142 flags allocated; 6 flags unused: 609, 692, 710, 712, 714, 716)
 (enum 601
 	f420BeatBear	 	;601)             ; -25 points
@@ -816,7 +787,7 @@
 	f32PlayMaze ;616)       ; 5 points (Mage only)
 	f32WinMaze ;617)        ; 12 points (Mage only)
 	f60LearnDetect ;618)         ; 4 points (Mage only)
-	POINTS_LEARNTRIGGER ;619)         ; 4 points (Mage only)
+	f83LearnTrigger ;619)         ; 4 points (Mage only)
 	f314LearnFetch ;620)           ; 2 points (Mage only)
 	f314LearnOpen ;621)            ; 2 points (Mage only)
 	f314LearnFlameDart ;622)       ; 2 points (Mage only)
@@ -900,12 +871,12 @@
 	fEatAcorn 					;696)             ; -5 points
 	f82KnockOnDoor 			;697)        ; 1 point
 	f82GetWater 				;698)       ; 3 points
-	POINTS_MEETHERMIT 					;699)           ; 5 points
-	POINTS_TALKTOHERMIT 				;700)         ; 2 points
-	POINTS_FINDSECRETENTRANCE 			;701)       ; 10 points
-	POINTS_GIVECAVEPASSWORD 			;702)         ; 5 points
-	POINTS_VISITLAKE 					;703)            ; 1 point
-	POINTS_ENTERSECRETENTRANCE 		;704)      ; 2 points
+	f83MeetHermit 					;699)           ; 5 points
+	f83TalkToHermit 				;700)         ; 2 points
+	f84FindTrollCave 			;701)       ; 10 points
+	f84HidenGoseke 			;702)         ; 5 points
+	f87VisitLake 					;703)            ; 1 point
+	f89EnterCave 		;704)      ; 2 points
 	f94EnterFortress 		;705)     ; 8 points
 	f95EnterDiningRoom 		;706)       ; 8 points
 	f96EnterJesterRoom 		;707)       ; 8 points
@@ -917,7 +888,7 @@
 	fUnused712					; no event 712
 	f172DispelLeader 		;713)          ; 35 points
 	fUnused714					; no event 714
-	POINTS_TAKEMAGICMIRROR 			;715)      ; 10 points
+	f97GetMirror 			;715)      ; 10 points
 	fUnused716						;716
 	f300EnterTown 						;717)            ; 1 point
 	f300TalkToSheriff 					;718)        ; 1 point

@@ -19,7 +19,6 @@
 )
 
 (instance pragFail of Code
-	
 	(method (doit &tmp theVerb [temp1 52])
 		(= theVerb ((user curEvent?) message?))
 		(if (User input?)
@@ -36,11 +35,11 @@
 					)
 					(V_ROCK
 						(ThrowRock 0)
-						(return 1)
+						(return TRUE)
 					)
 					(V_DAGGER
 						(ThrowKnife 0)
-						(return 1)
+						(return TRUE)
 					)
 					(V_HEALING
 						(DumpPotion iHealingPotion)

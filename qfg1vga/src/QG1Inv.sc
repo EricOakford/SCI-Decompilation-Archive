@@ -16,15 +16,15 @@
 )
 
 (local
-	local0
-	local1
+	pageNum
+	pickUpMode
 )
 (class QG1InvItem of InvItem
 	(properties
 		view 950
 		loop 0
 		cel 0
-		weight 0
+		weight 0	;measured in quarks
 		amount 0
 		amtDropped 0
 	)
@@ -35,32 +35,32 @@
 		)
 	)
 	
-	(method (doVerb theVerb &tmp i temp1 temp2 [temp3 50] [str 30] [temp83 10] [temp93 20])
+	(method (doVerb theVerb &tmp i pounds decimal [buffer 50] [str 30] [dropBuf 10] [itemBuf 20])
 		(if (== theVerb V_HELP)
 			(return TRUE)
 		)
 		(Print font: userFont mode: teJustCenter)
-		(Message MsgGet GLORYINV N_ITEM (self message?) NULL 1 @temp93)
+		(Message MsgGet GLORYINV N_ITEM (self message?) NULL 1 @itemBuf)
 		(return
 			(switch theVerb
 				(V_LOOK
-					(if local1
+					(if pickUpMode
 						(if (== amtDropped 1)
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 22 @str)
-							(Print addTextF: @temp3 @str @temp93 init:)
+							(Print addTextF: @buffer @str @itemBuf init:)
 						else
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 23 @str)
-							(Print addTextF: @temp3 @str amtDropped @temp93 init:)
+							(Print addTextF: @buffer @str amtDropped @itemBuf init:)
 						)
 					else
-						(= temp1 (= temp2 0))
-						(= temp1 (/ weight 60))
+						(= pounds (= decimal 0))
+						(= pounds (/ weight 60))
 						(if
 							(and
-								(not (= temp2 (/ (mod weight 60) 6)))
-								(not temp1)
+								(not (= decimal (/ (mod weight 60) 6)))
+								(not pounds)
 							)
-							(= temp2 1)
+							(= decimal 1)
 						)
 						(if (> (self amount?) 1)
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 1 @str)
@@ -68,7 +68,7 @@
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 2 @str)
 						)
 						(Print
-							addTextF: @temp3 @str amount @temp93 temp1 temp2
+							addTextF: @buffer @str amount @itemBuf pounds decimal
 							init:
 						)
 					)
@@ -95,7 +95,7 @@
 								greenFur
 							)
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 5 @str)
-							(Print addTextF: @temp3 @str @temp93 init:)
+							(Print addTextF: @buffer @str @itemBuf init:)
 						)
 						((== curRoomNum 322)
 							(Print addText: N_ITEM NULL NULL 6 0 0 GLORYINV init:)
@@ -103,27 +103,25 @@
 						((> amount 1)
 							(self dumpIt: 1)
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 7 @str)
-							(Print addTextF: @temp3 @str @temp93 init:)
+							(Print addTextF: @buffer @str @itemBuf init:)
 						)
 						(else
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 8 @str)
-							(Print addTextF: @temp3 @str @temp93 init:)
+							(Print addTextF: @buffer @str @itemBuf init:)
 							(self dumpIt: 1)
 							(if (== (theIconBar curInvIcon?) self)
 								(theIconBar curInvIcon: 0)
 							)
-							(= i 0)
-							(while (< i NUM_INVITEMS)
+							(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
 								(if (== ((inventory at: i) owner?) ego)
 									(= i (+ NUM_INVITEMS 1))
 								)
-								(++ i)
 							)
 							(inventory hide:)
 							(if (> i NUM_INVITEMS)
 								(inventory curIcon: invDrop show:)
 							else
-								(= local0 1)
+								(= pageNum 1)
 								(invPageUp select:)
 							)
 						)
@@ -138,46 +136,43 @@
 						else
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 24 @str)
 						)
-						(Print addTextF: @temp3 @str @temp93 init:)
+						(Print addTextF: @buffer @str @itemBuf init:)
 						(self pickItUp: 1)
 					)
 				)
 				(9 0)
 				(else 
 					(Message MsgGet GLORYINV N_ITEM NULL NULL 3 @str)
-					(Message MsgGet GLORYINV 3 theVerb 0 1 @temp83)
-					(Print addTextF: @temp3 @str @temp83 @temp93 init:)
+					(Message MsgGet GLORYINV N_ITEM theVerb NULL 1 @dropBuf)
+					(Print addTextF: @buffer @str @dropBuf @itemBuf init:)
 				)
 			)
 		)
 	)
 	
-	(method (dumpIt param1 &tmp i)
+	(method (dumpIt howMany &tmp i)
 		(= amtDropped
 			(+
 				amtDropped
-				(= i (if (> param1 amount) amount else param1))
+				(= i (if (> howMany amount) amount else howMany))
 			)
 		)
 		(ego use: (gloryInv indexOf: self) i)
-		(if (not amount) (= owner 0))
+		(if (not amount)
+			(= owner 0)
+		)
 		(dropInv addToFront: self)
 	)
 	
-	(method (pickItUp param1 &tmp i [temp1 2])
-		(= amtDropped
-			(-
-				amtDropped
-				(= i
-					(if (> param1 amtDropped) amtDropped else param1)
-				)
-			)
+	(method (pickItUp howMany &tmp i [temp1 2])
+		(-= amtDropped
+			(= i (if (> howMany amtDropped) amtDropped else howMany))
 		)
 		(ego get: (gloryInv indexOf: self) i)
 		(if (not amtDropped)
 			(dropInv hide: delete: self)
 			(if (> (dropInv size?) MARGIN)
-				(= local1 1)
+				(= pickUpMode 1)
 				((= inventory dropInv) showSelf:)
 			else
 				((= inventory gloryInv) showSelf:)
@@ -253,7 +248,14 @@
 			eachElementDo: #init
 			state: NOCLICKHELP
 		)
-		(ego get: iLeather get: iRations 5 get: iGold 4 get: iSilver 10)
+		;generic initial inventory.
+		;class-specific items are given at character allocation.
+		(ego
+			get: iLeather
+			get: iRations 5
+			get: iGold 4
+			get: iSilver 10
+		)
 		(dropInv init:)
 	)
 	
@@ -289,10 +291,8 @@
 	)
 	
 	(method (showSelf &tmp i)
-		(= i 0)
-		(while (< i (- size MARGIN))
+		(for ((= i 0)) (< i (- size MARGIN)) ((++ i))
 			((self at: i) owner: ego)
-			(++ i)
 		)
 		(super showSelf: &rest)
 	)
@@ -304,13 +304,11 @@
 	
 	(method (hide &tmp i)
 		(if (== inventory self) (= inventory gloryInv))
-		(= local1 0)
-		(= i 0)
-		(while (< i (- size MARGIN))
+		(= pickUpMode 0)
+		(for ((= i 0)) (< i (- size MARGIN)) ((++ i))
 			(if ((self at: i) amount?)
 				((self at: i) owner: ego)
 			)
-			(++ i)
 		)
 		(super hide: &rest)
 		(theGame setCursor: ((theIconBar curIcon?) cursor?) TRUE)
@@ -332,12 +330,10 @@
 (instance pageCode of Code
 	
 	(method (init &tmp i temp1)
-		(if (Btst fFlag361)
-			(Bclr fFlag361)
-			(= i 0)
-			(while (< i (- (dropInv size?) MARGIN))
+		(if (Btst fPickItUp)
+			(Bclr fPickItUp)
+			(for ((= i 0)) (< i (- (dropInv size?) MARGIN)) ((++ i))
 				((dropInv at: i) owner: ego)
-				(++ i)
 			)
 			((= inventory dropInv) okButton: ok showSelf:)
 		else
@@ -355,8 +351,7 @@
 			(= global423 0)
 			(invPageUp owner: 0)
 			(invPageDown owner: 0)
-			(= i 0)
-			(while (< i NUM_INVITEMS)
+			(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
 				((inventory at: i) owner: 0)
 				(if
 					(and
@@ -369,7 +364,6 @@
 					)
 					((inventory at: i) owner: ego)
 				)
-				(++ i)
 			)
 			(if (> global423 23)
 				(invPageDown highlightColor: -1 owner: ego)
@@ -392,10 +386,7 @@
 	
 	(method (show)
 		(super show:)
-		(DrawCel
-			991
-			7
-			0
+		(DrawCel 991 7 0
 			(+ nsLeft (CelWide view loop cel))
 			nsTop
 			-1
@@ -405,8 +396,7 @@
 	(method (select &tmp i)
 		(return
 			(if (super select: &rest)
-				(= i 0)
-				(while (< i NUM_INVITEMS)
+				(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
 					(if
 						(and
 							(!= i iGold)
@@ -421,7 +411,6 @@
 							((inventory at: i) owner: ego)
 						)
 					)
-					(++ i)
 				)
 				(invPageUp owner: ego highlightColor: -1)
 				(= owner 0)
@@ -447,10 +436,7 @@
 	
 	(method (show)
 		(super show:)
-		(DrawCel
-			991
-			7
-			0
+		(DrawCel 991 7 0
 			(+ nsLeft (CelWide view loop cel))
 			nsTop
 			-1
@@ -460,8 +446,7 @@
 	(method (select &tmp i)
 		(return
 			(if (super select: &rest)
-				(= i 0)
-				(while (< i NUM_INVITEMS)
+				(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
 					(if
 						(and
 							(!= i iGold)
@@ -476,15 +461,14 @@
 							((inventory at: i) owner: 0)
 						)
 					)
-					(++ i)
 				)
 				(inventory hide:)
 				(= owner 0)
-				(if (not local0)
+				(if (not pageNum)
 					(invPageDown owner: ego highlightColor: -1)
 					(= owner 0)
 				)
-				(= local0 0)
+				(= pageNum 0)
 				(inventory showSelf:)
 				(return 0)
 			else
@@ -533,24 +517,24 @@
 		helpVerb V_HELP
 	)
 	
-	(method (select &tmp temp0 i)
+	(method (select &tmp droppedSomething i)
 		(return
 			(if (super select: &rest)
-				(= temp0 0)
-				(= i 0)
-				(while (< i 40)
-					(if ((gloryInv at: i) amtDropped?) (= temp0 1))
-					(++ i)
+				(= droppedSomething FALSE)
+				(for ((= i 0)) (< i 40) ((++ i))
+					(if ((gloryInv at: i) amtDropped?)
+						(= droppedSomething TRUE)
+					)
 				)
-				(if (= local1 temp0)
+				(if (= pickUpMode droppedSomething)
 					(if (== inventory gloryInv)
-						(Bset 361)
+						(Bset fPickItUp)
 						(inventory hide:)
 					)
-					(return 1)
+					(return TRUE)
 				else
 					(Print addText: N_ITEM NULL NULL 20 0 0 GLORYINV init:)
-					(return 0)
+					(return FALSE)
 				)
 			else
 				0
@@ -585,20 +569,20 @@
 		helpVerb V_HELP
 	)
 	
-	(method (select &tmp weight [temp1 60] [temp61 60])
+	(method (select &tmp weight [str 60] [buffer 60])
 		(return
 			(if (super select: &rest)
 				(= weight (WtCarried))
-				(Message MsgGet GLORYINV 9 0 0 1 @temp1)
+				(Message MsgGet GLORYINV N_STATUS NULL NULL 1 @str)
 				(Print
 					font: userFont
-					mode: 1
-					addTextF: @temp61 @temp1 weight (if (== weight 1) {} else {s})
+					mode: teJustCenter
+					addTextF: @buffer @str weight (if (== weight 1) {} else {s})
 					init: youOnlyLoveMeForMyCueMethod
 				)
-				(return 0)
+				(return FALSE)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -618,10 +602,7 @@
 	
 	(method (show)
 		(super show:)
-		(DrawCel
-			991
-			7
-			0
+		(DrawCel 991 7 0
 			(+ nsLeft (CelWide view loop cel))
 			nsTop
 			-1
@@ -649,70 +630,65 @@
 		weight 1
 	)
 	
-	(method (doVerb theVerb &tmp [temp0 40] [temp40 50] temp90 temp91)
-		(if (== theVerb 9) (return 1))
-		(Print font: userFont mode: 1)
+	(method (doVerb theVerb &tmp [buffer 40] [str 50] pounds decimal)
+		(if (== theVerb V_HELP) (return TRUE))
+		(Print font: userFont mode: teJustCenter)
 		(return
 			(switch theVerb
 				(V_LOOK
-					(if local1
-						(Message MsgGet GLORYINV N_ITEM NULL NULL 21 @temp40)
+					(if pickUpMode
+						(Message MsgGet GLORYINV N_ITEM NULL NULL 21 @str)
 						(Print
-							addTextF: @temp0 @temp40 amtDropped (if (> amtDropped 1) {s} else {})
+							addTextF: @buffer @str amtDropped (if (> amtDropped 1) {s} else {})
 							init:
 						)
 					else
-						(= temp90 (= temp91 0))
-						(= temp90
-							(/ (= temp91 (/ (+ (gold amount?) amount) 6)) 10)
+						(= pounds (= decimal 0))
+						(= pounds
+							(/ (= decimal (/ (+ (gold amount?) amount) 6)) 10)
 						)
-						(if
-						(and (not (= temp91 (mod temp91 10))) (not temp90))
-							(= temp91 1)
+						(if (and (not (= decimal (mod decimal 10))) (not pounds))
+							(= decimal 1)
 						)
 						(cond 
 							((and amount (gold amount?))
-								(Message MsgGet GLORYINV N_ITEM NULL NULL 9 @temp40)
+								(Message MsgGet GLORYINV N_ITEM NULL NULL 9 @str)
 								(Print
-									addTextF:
-										@temp0
-										@temp40
+									addTextF: @buffer @str
 										(gold amount?)
 										(if (> (gold amount?) 1) {s} else {})
 										amount
 										(if (> amount 1) {s} else {})
-										temp90
-										temp91
+										pounds
+										decimal
 									init:
 								)
 							)
 							(amount
-								(Message MsgGet GLORYINV N_ITEM NULL NULL 10 @temp40)
+								(Message MsgGet GLORYINV N_ITEM NULL NULL 10 @str)
 								(Print
 									addTextF:
-										@temp0
-										@temp40
+										@buffer
+										@str
 										amount
 										(if (> amount 1) {s} else {})
-										temp90
-										temp91
+										pounds
+										decimal
 									init:
 								)
 							)
 							((gold amount?)
-								(Message MsgGet GLORYINV N_ITEM NULL NULL 11 @temp40)
+								(Message MsgGet GLORYINV N_ITEM NULL NULL 11 @str)
 								(Print
-									addTextF:
-										@temp0
-										@temp40
+									addTextF: @buffer @str
 										(gold amount?)
 										(if (> (gold amount?) 1) {s} else {})
-										temp90
-										temp91
+										pounds
+										decimal
 									init:
 								)
 							)
-							(else
+							(else ;pouch is empty
 								(switch (Random 0 5)
 									(0
 										(Print addText: N_ITEM NULL NULL 12 0 0 GLORYINV init:)
@@ -730,13 +706,21 @@
 				)
 				(V_DROP
 					(cond 
-						((== curRoomNum 322) (Print addText: N_ITEM NULL NULL 6 0 0 GLORYINV init:))
-						((> amount 10) (Print addText: N_ITEM NULL NULL 15 0 0 GLORYINV init:) (self dumpIt: 10))
+						((== curRoomNum 322)
+							(Print addText: N_ITEM NULL NULL 6 0 0 GLORYINV init:)
+						)
+						((> amount 10)
+							(Print addText: N_ITEM NULL NULL 15 0 0 GLORYINV init:)
+							(self dumpIt: 10)
+						)
 						((> amount 1)
 							(Print addText: N_ITEM NULL NULL 16 0 0 GLORYINV init:)
-							(self dumpIt: (- amount 1))
+							(self dumpIt: (- amount 1)
+							)
 						)
-						(else (Print addText: N_ITEM NULL NULL 17 0 0 GLORYINV init:))
+						(else
+							(Print addText: N_ITEM NULL NULL 17 0 0 GLORYINV init:)
+						)
 					)
 				)
 				(V_TRIGGER
@@ -745,14 +729,16 @@
 							(Print addText: N_ITEM NULL NULL 18 0 0 GLORYINV init:)
 							(self pickItUp: 10)
 						)
-						((not amtDropped) (Print addText: N_ITEM NULL NULL 20 0 0 GLORYINV init:))
+						((not amtDropped)
+							(Print addText: N_ITEM NULL NULL 20 0 0 GLORYINV init:)
+						)
 						(else
 							(Print addText: N_ITEM NULL NULL 19 0 0 GLORYINV init:)
 							(self pickItUp: amtDropped)
 						)
 					)
 				)
-				(9 0)
+				(V_HELP 0)
 				(else  (super doVerb: theVerb))
 			)
 		)
@@ -1099,15 +1085,13 @@
 )
 
 (instance youOnlyLoveMeForMyCueMethod of Script
-	(properties)
-	
-	(method (cue &tmp temp0 [temp1 60] [temp61 60])
-		(= temp0 (MaxLoad))
-		(Message MsgGet GLORYINV 9 0 0 2 @temp1)
+	(method (cue &tmp maxWt [str 60] [buffer 60])
+		(= maxWt (MaxLoad))
+		(Message MsgGet GLORYINV 9 0 0 2 @str)
 		(Print
 			font: userFont
 			mode: teJustCenter
-			addTextF: @temp61 @temp1 temp0 (if (== temp0 1) {} else {s})
+			addTextF: @buffer @str maxWt (if (== maxWt 1) {} else {s})
 			init:
 		)
 	)

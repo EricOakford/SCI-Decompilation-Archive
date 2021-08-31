@@ -49,13 +49,12 @@
 )
 
 (instance leaderToElsa of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= ticks 60)
-				(theGame setCursor: theCursor 0)
+				(theGame setCursor: theCursor FALSE)
 			)
 			(1
 				(SolvePuzzle f172DispelLeader 35)

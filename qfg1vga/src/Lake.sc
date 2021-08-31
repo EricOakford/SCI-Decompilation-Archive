@@ -17,9 +17,9 @@
 )
 
 (local
-	theGName
+	oldGameTime
 	local1
-	timesUsedWater
+	useWaterCount
 )
 (instance rm87 of Room
 	(properties
@@ -31,11 +31,11 @@
 	)
 	
 	(method (init)
-		(if (and (Btst fBeenIn87) (not (Btst fSawNessie)))
+		(if (and (Btst fBeenIn87) (not (Btst fLakeEasterEgg)))
 			(Load RES_SOUND (SoundFX 66))
 		)
 		(Load RES_VIEW 87)
-		(= timesUsedWater 0)
+		(= useWaterCount 0)
 		(self
 			addObstacle:
 				((Polygon new:)
@@ -71,7 +71,7 @@
 ;;;		(formation init:)
 ;;;		(falls init:)
 		
-		(SolvePuzzle POINTS_VISITLAKE 1)
+		(SolvePuzzle f87VisitLake 1)
 		(ego init: setPri: 4 posn: 77 59 setScript: comeOnIn)
 		(if (== egoGait MOVE_SNEAK)
 			(messager say: N_ROOM NULL C_WALKONLY)
@@ -79,22 +79,22 @@
 		(if (Btst fBeenIn87)
 			(switch (Random 1 2)
 				(1
-					(if (not (Btst fSawNessie))
+					(if (not (Btst fLakeEasterEgg))
 						(periscope setLoop: 7 init: setScript: nessieScript)
-						(Bset fSawNessie)
+						(Bset fLakeEasterEgg)
 					)
 				)
 				(2
-					(if (not (Btst fSawDelphineus))
+					(if (not (Btst fLakeEasterEgg2))
 						(flipper init: setScript: flippinOut)
 					)
-					(Bset fSawDelphineus)
+					(Bset fLakeEasterEgg2)
 				)
 			)
 		)
 		(reflection
-			ignoreActors: 1
-			ignoreHorizon: 1
+			ignoreActors: TRUE
+			ignoreHorizon: TRUE
 			setPri: 1
 			posn: (ego x?) (ego y?)
 			init:
@@ -102,8 +102,8 @@
 	)
 	
 	(method (doit)
-		(if (> (Abs (- gameTime theGName)) 2)
-			(= theGName gameTime)
+		(if (> (Abs (- gameTime oldGameTime)) 2)
+			(= oldGameTime gameTime)
 			(Palette PALCycle 237 244 -1 245 252 -1)
 		)
 		(if
@@ -112,7 +112,7 @@
 				(< (ego y?) 70)
 				(not (ego script?))
 			)
-			(ego edgeHit: 1)
+			(ego edgeHit: NORTH)
 			(curRoom newRoom: 81)
 		)
 		(super doit:)
@@ -172,13 +172,21 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DO
-				(switch (++ timesUsedWater)
-					(1 (ego setScript: drinkWater))
-					(2 (messager say: N_WATER V_DO 0))
+				(switch (++ useWaterCount)
+					(1
+						(ego setScript: drinkWater)
+					)
+					(2
+						(messager say: N_WATER V_DO NULL)
+					)
 				)
-				(if (== timesUsedWater 2) (= timesUsedWater 0))
+				(if (== useWaterCount 2)
+					(= useWaterCount 0)
+				)
 			)
-			(V_FLASK (ego setScript: fillFlask))
+			(V_FLASK
+				(ego setScript: fillFlask)
+			)
 			(else 
 				(if
 					(OneOf theVerb
@@ -272,8 +280,6 @@
 )
 
 (instance comeOnIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -293,8 +299,6 @@
 )
 
 (instance drinkWater of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -309,12 +313,16 @@
 				(ego view: 510 setCel: 0 setLoop: 0 setCycle: EndLoop self)
 			)
 			(2
-				(messager say: N_ROOM 0 0 1)
+				(messager say: N_ROOM NULL NULL 1)
+				 ;messages now display properly
 				(if (Btst fLearnedDispel)
-					(messager say: N_ROOM 0 0 2)) ;messages now display properly
+					(messager say: N_ROOM NULL NULL 2)
+				)
 				(self cue:)
 			)
-			(3 (ego setCycle: BegLoop self))
+			(3
+				(ego setCycle: BegLoop self)
+			)
 			(4
 				(ego view: 0)
 				(NormalEgo)
@@ -326,8 +334,6 @@
 )
 
 (instance fillFlask of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -349,7 +355,10 @@
 			(4
 				(ego view: 0)
 				(NormalEgo)
-				(ego get: iFlyingWater use: iFlask 1)
+				(ego
+					get: iFlyingWater
+					use: iFlask 1
+				)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -358,8 +367,6 @@
 )
 
 (instance nessieScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 5))
@@ -389,8 +396,6 @@
 )
 
 (instance flippinOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 5))

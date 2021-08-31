@@ -147,7 +147,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset fFlag284)
+				(Bset fBattleStarted)
 				(bear
 					setLoop: 0
 					setCel: 0
@@ -157,8 +157,8 @@
 					stopUpd:
 					action: 0
 				)
-				(if (Btst fFlag285)
-					(Bclr fFlag285)
+				(if (Btst fMonsterRecoils)
+					(Bclr fMonsterRecoils)
 					(self cue:)
 				)
 				(if (not (Random 0 2)) (= state -1))
@@ -179,7 +179,7 @@
 				)
 			)
 			(2
-				(Bclr fFlag284)
+				(Bclr fBattleStarted)
 				(if (bear ateEgo?)
 					(bear setPri: 14 action: 3)
 				else

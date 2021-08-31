@@ -826,7 +826,7 @@
 	(method (init)
 		(= nightPalette 1425)
 		(PalVary PALVARYTARGET 1425)
-		(kernel_128 vMinotaur)
+		(AssertPalette vMinotaur)
 		(super init:)
 	)
 	
@@ -1449,10 +1449,10 @@
 				(= ticks 120)
 			)
 			(4
-				(if (IsObject gClient)
+				(if (IsObject projObj)
 					(-- state)
 					(= ticks 5)
-					(gClient dispose:)
+					(projObj dispose:)
 				else
 					(curRoom newRoom: vMinotaur)
 				)
@@ -1487,10 +1487,10 @@
 				(= ticks 120)
 			)
 			(2
-				(if (IsObject gClient)
+				(if (IsObject projObj)
 					(-- state)
 					(= ticks 5)
-					(gClient dispose:)
+					(projObj dispose:)
 				else
 					(curRoom newRoom: vMinotaur)
 				)

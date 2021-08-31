@@ -15,15 +15,24 @@
 )
 
 (local
-	[local0 14] = [999 0 1 2 3 4 12 5 6 7 8 9 10 11]
-	[local14 14] = [28 40 52 64 76 88 100 40 52 64 76 88 100 112]
-	[local28 14] = [100 100 100 100 100 100 100 204 204 204 204 204 204 204]
-	[local42 14] = [0 1 2 3 4 5 6 7 9 10 1 9 11 12]
-	[theTheEgoStats 49] = [0 25 10 15 15 10 0 20 15 10 0 0 10 0 0 10 25 15 15 10 25 10 0 15 0 0 0 0 0 10 15 25 10 10 0 10 0 5 10 10 5 5 67 78 68 20 23 27 1]
-	local105
+	statMap  = [
+		999
+		STR INT AGIL VIT LUCK MAGIC WEAPON PARRY
+		DODGE STEALTH PICK THROW CLIMB
+		]
+	iconTop = [28 40 52 64 76 88 100 40 52 64 76 88 100 112]
+	iconLeft = [100 100 100 100 100 100 100 204 204 204 204 204 204 204]
+	iconCel = [0 1 2 3 4 5 6 7 9 10 1 9 11 12]
+	baseStats = [
+		0 25 10 15 15 10 0 20 15 10 0 0 10 0	;fighter
+		0 10 25 15 15 10 25 10 0 15 0 0 0 0		;magic user
+		0 10 15 25 10 10 0 10 0 5 10 10 5 5		;thief
+		67 78 68 20 23 27 1
+		]
+	nameLen
 	pointsAvailable =  50
-	[theEgoStats 14]
-	[theTheTheEgoStats 14]
+	[selStat 14]
+	[initStats 14]
 	nextRoom
 )
 (procedure (ShowValue y)
@@ -46,9 +55,8 @@
 )
 
 (procedure (UpdatePoints &tmp [str 4] i)
-	(= i 1)
-	(while (< i 14)
-		(= [egoStats [local0 i]] [theEgoStats i])
+	(for ((= i 14)) (< i 14) ((++ i))
+		(= [egoStats [statMap i]] [selStat i])
 		(++ i)
 	)
 	(DrawCel 802 8 1 215 142 15)
@@ -72,26 +80,19 @@
 		(ShowValue 141 @str)
 	)
 	(DrawCel 802 8 1 215 154 15)
-	(ShowValue
-		153
-		(Format
-			@str
-			{%d}
+	(ShowValue 153
+		(Format @str {%d}
 			(= [egoStats HEALTH] (/ (+ (MaxHealth) 1) 2))
 		)
 	)
 	(DrawCel 802 8 1 215 166 15)
-	(ShowValue
-		165
-		(Format
-			@str
-			{%d}
+	(ShowValue 165
+		(Format @str {%d}
 			(= [egoStats STAMINA] (/ (+ (MaxStamina) 3) 4))
 		)
 	)
 	(DrawCel 802 8 1 215 178 15)
-	(ShowValue
-		177
+	(ShowValue 177
 		(Format @str {%d} (= [egoStats MANA] (MaxMana)))
 	)
 )
@@ -113,10 +114,8 @@
 		(= [egoStats HEALTH] (MaxHealth))
 		(= [egoStats STAMINA] (MaxStamina))
 		(= [egoStats MANA] (MaxMana))
-		(= statNum 0)
-		(while (< statNum NUM_ATTRIBS)
+		(for ((= statNum 0)) (< statNum NUM_ATTRIBS) ((++ statNum))
 			(= [oldStats statNum] [egoStats statNum])
-			(++ statNum)
 		)
 		(= oldScore score)
 		(super dispose:)
@@ -124,8 +123,6 @@
 )
 
 (instance selectChar of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -151,41 +148,45 @@
 )
 
 (instance startControls of GameControls
-	(properties)
-	
 	(method (init &tmp statNum)
 		(self add: namePlate)
-		(= statNum 1)
-		(while (< statNum 14)
+		(for ((= statNum 1)) (< statNum 14) ((++ statNum))
 			(self
 				add:
 					((selectionIcon new:)
-						nsLeft: [local28 statNum]
-						nsTop: [local14 statNum]
-						cel: [local42 statNum]
-						maskCel: [local42 statNum]
+						nsLeft: [iconLeft statNum]
+						nsTop: [iconTop statNum]
+						cel: [iconCel statNum]
+						maskCel: [iconCel statNum]
 						state: statNum
 						yourself:
 					)
 			)
-			(= [theTheTheEgoStats statNum]
-				[theTheEgoStats (+ statNum (* heroType 14))]
+			(= [initStats statNum]
+				[baseStats (+ statNum (* heroType 14))]
 			)
-			(= [theEgoStats statNum]
-				[theTheEgoStats (+ statNum (* heroType 14))]
+			(= [selStat statNum]
+				[baseStats (+ statNum (* heroType 14))]
 			)
-			(++ statNum)
 		)
 		(self
 			add:
-				(startIcon theObj: startCode selector: 57 yourself:)
-				(cancelIcon theObj: cancelCode selector: 57 yourself:)
+				(startIcon
+					theObj: startCode
+					selector: #doit
+					yourself:
+				)
+				(cancelIcon
+					theObj: cancelCode
+					selector: #doit
+					yourself:
+				)
 		)
 		(super init: &rest)
 	)
 	
 	(method (show)
-		(= state (| state IB_ACTIVE))
+		(|= state IB_ACTIVE)
 		(self eachElementDo: #show)
 		((= curIcon (= highlightedIcon (self at: 0)))
 			highlight: TRUE
@@ -203,7 +204,7 @@
 		(if nextRoom
 			(curRoom newRoom: nextRoom)
 			(event dispose:)
-			(return 1)
+			(return TRUE)
 		)
 		(= evtX (event x?))
 		(= evtY (event y?))
@@ -262,7 +263,10 @@
 							(= highlightedIcon 0)
 						)
 					)
-					((and obj (!= obj highlightedIcon)) (= oldMouseY 0) (self highlight: obj))
+					((and obj (!= obj highlightedIcon))
+						(= oldMouseY 0)
+						(self highlight: obj)
+					)
 				)
 			)
 			((not (IsObject highlightedIcon)) 0)
@@ -271,9 +275,15 @@
 					((== highlightedIcon namePlate) 0)
 					((not (obj state?))
 						(cond 
-							((== obj startIcon) (startCode doit:))
-							((== obj cancelIcon) (cancelCode doit:))
-							(else (self select: obj 1))
+							((== obj startIcon)
+								(startCode doit:)
+							)
+							((== obj cancelIcon)
+								(cancelCode doit:)
+							)
+							(else
+								(self select: obj 1)
+							)
 						)
 					)
 					((== evtMod shiftDown)
@@ -335,7 +345,7 @@
 							((== evtMsg SPACEBAR)
 								(self select: namePlate evtMsg)
 							)
-							((and (== evtMsg keyUp) local105)
+							((and (== evtMsg keyUp) nameLen)
 								(self select: namePlate evtMsg)
 							)
 						)
@@ -371,73 +381,71 @@
 						(cond 
 							((not pointsAvailable) 0)
 							((< pointsAvailable 5)
-								(= [theEgoStats state] (+ [theEgoStats state] pointsAvailable))
+								(+= [selStat state] pointsAvailable)
 								(= pointsAvailable 0)
 							)
-							((not [theEgoStats state])
+							((not [selStat state])
 								(if (>= pointsAvailable 15)
-									(= [theEgoStats state] (+ [theEgoStats state] 5))
-									(= pointsAvailable (- pointsAvailable 15))
+									(+= [selStat state] 5)
+									(-= pointsAvailable 15)
 								)
 							)
 							(else
-								(= [theEgoStats state] (+ [theEgoStats state] 5))
-								(= pointsAvailable (- pointsAvailable 5))
+								(+= [selStat state] 5)
+								(-= pointsAvailable 5)
 							)
 						)
 					)
 					(0
 						(cond 
-							(
-							(== [theEgoStats state] [theTheTheEgoStats state]) 0)
+							((== [selStat state] [initStats state]) 0)
 							(
 								(and
-									(== [theEgoStats state] 5)
-									(not [theTheTheEgoStats state])
+									(== [selStat state] 5)
+									(not [initStats state])
 								)
-								(= [theEgoStats state] 0)
-								(= pointsAvailable (+ pointsAvailable 15))
+								(= [selStat state] 0)
+								(+= pointsAvailable 15)
 							)
 							(else
-								(= [theEgoStats state] (- [theEgoStats state] 5))
-								(= pointsAvailable (+ pointsAvailable 5))
+								(-= [selStat state] 5)
+								(+= pointsAvailable 5)
 							)
 						)
 					)
 					(3
 						(cond 
 							((not pointsAvailable) 0)
-							((not [theEgoStats state]) 0)
+							((not [selStat state]) 0)
 							(else
-								(= [theEgoStats state] (+ [theEgoStats state] 1))
-								(= pointsAvailable (- pointsAvailable 1))
+								(+= [selStat state] 1)
+								(-= pointsAvailable 1)
 							)
 						)
 					)
 					(2
 						(cond 
-							(
-							(== [theEgoStats state] [theTheTheEgoStats state]) 0)
+							((== [selStat state] [initStats state]) 0)
 							(
 								(and
-									(== [theEgoStats state] 5)
-									(not [theTheTheEgoStats state])
+									(== [selStat state] 5)
+									(not [initStats state])
 								)
-								(= [theEgoStats state] 0)
-								(= pointsAvailable (+ pointsAvailable 15))
+								(= [selStat state] 0)
+								(+= pointsAvailable 15)
 							)
 							(else
-								(= [theEgoStats state] (- [theEgoStats state] 1))
-								(= pointsAvailable (+ pointsAvailable 1))
+								(-= [selStat state] 1)
+								(+= pointsAvailable 1)
 							)
 						)
 					)
 				)
 				(self highlight: 1)
 				(UpdatePoints)
-				(return 1)
+				(return TRUE)
 			else
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
@@ -464,7 +472,7 @@
 			(= fgColor 215)
 		)
 		(Display
-			(Format @str {%d} [theEgoStats state])
+			(Format @str {%d} [selStat state])
 			p_at (+ x 1) nsTop
 			p_color fgColor
 			p_width 25
@@ -472,7 +480,7 @@
 			p_font 123
 		)
 		(Display
-			(Format @str {%d} [theEgoStats state])
+			(Format @str {%d} [selStat state])
 			p_at x nsTop
 			p_color bgColor
 			p_width 25
@@ -534,13 +542,13 @@
 	(method (show)
 	)
 	
-	(method (select param1 &tmp [temp0 4])
+	(method (select param1 &tmp [len 4])
 		(return
 			(if (super select: &rest)
-				(TextSize @[temp0 0] @userName 123 0)
+				(TextSize @[len 0] @userName 123 0)
 				(cond 
-					((and (== param1 8) local105)
-						(StrAt @userName (-- local105) 0)
+					((and (== param1 8) nameLen)
+						(StrAt @userName (-- nameLen) 0)
 						(DrawCel
 							maskView
 							maskLoop
@@ -551,9 +559,9 @@
 						)
 						(self highlight: 1)
 					)
-					((<= [temp0 3] 150)
-						(StrAt @userName local105 param1)
-						(StrAt @userName (++ local105) 0)
+					((<= [len 3] 150)
+						(StrAt @userName nameLen param1)
+						(StrAt @userName (++ nameLen) 0)
 						(self highlight: 1)
 					)
 					(else (return 1))
@@ -634,15 +642,15 @@
 			(= startControlsCurIcon (startControls curIcon?))
 			(= statNum 1)
 			(while (< statNum 14)
-				(= [theTheTheEgoStats statNum]
-					[theTheEgoStats (+ statNum (* heroType 14))]
+				(= [initStats statNum]
+					[baseStats (+ statNum (* heroType 14))]
 				)
-				(= [theEgoStats statNum]
-					[theTheEgoStats (+ statNum (* heroType 14))]
+				(= [selStat statNum]
+					[baseStats (+ statNum (* heroType 14))]
 				)
 				(++ statNum)
 			)
-			(= local105 (= userName 0))
+			(= nameLen (= userName 0))
 			(DrawCel 802 9 0 146 22 15)
 			(= pointsAvailable 50)
 			(UpdatePoints)
@@ -658,8 +666,6 @@
 )
 
 (instance startCode of Code
-	(properties)
-	
 	(method (doit &tmp answer)
 		(= answer 1)
 		(if pointsAvailable
@@ -667,9 +673,9 @@
 				(Print
 					font: userFont
 					mode: teJustCenter
-					addText: 1 0 2 1 0 0 203
-					addButton: 0 1 0 2 2 37 20 203
-					addButton: 1 1 0 2 3 45 40 203
+					addText: N_ROOM NULL C_START 1 0 0 203
+					addButton: 0 N_ROOM NULL C_START 2 37 20 203
+					addButton: 1 N_ROOM NULL C_START 3 45 40 203
 					init:
 				)
 			)
@@ -677,6 +683,7 @@
 		(if answer
 			(= nextRoom 300)
 			(switch heroType
+				;class-specific initial inventory
 				(FIGHTER
 					(ego get: iSword get: iShield)
 				)

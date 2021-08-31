@@ -25,19 +25,72 @@
 (local
 	sittingDown
 	local1
-	theGName
+	lastTicks
 	local3
 	local4
-	[local5 9] = [0 12 -9 5 -10 -1 -3 -16 999]
-	[local14 4] = [0 2 6 999]
-	[local18 4] = [0 -4 -17 999]
-	[local22 3] = [0 -19 999]
-	[local25 4] = [0 7 8 999]
-	[local29 3] = [0 -18 999]
-	[local32 3] = [0 11 999]
-	[local35 5] = [0 -15 -13 -14 999]
-	[local40 10]
-	[local50 9] = [0 -9 -10 -1 -4 -17 -19 -18 999]
+	hermitTellMainBranch = [
+		STARTTELL
+		C_NAME
+		-9		;C_HERMIT
+		C_FALLS
+		-10		;C_LADDER
+		-1		;C_BRIGANDS
+		-3		;C_CRIBBAGE
+		-16		;C_SLEEP
+		ENDTELL
+		]
+	local14 = [
+		STARTTELL
+		C_CAVE
+		C_FAMILY
+		ENDTELL
+		]
+	local18 = [
+		STARTTELL
+		-4		;C_ERASMUS
+		-17		;C_SPELLS
+		ENDTELL
+		]
+	local22 = [
+		STARTTELL
+		-19		;C_WARLOCK
+		ENDTELL
+		]
+	local25 = [
+		STARTTELL
+		C_FENRUS
+		C_GAMES
+		ENDTELL
+		]
+	local29 = [
+		STARTTELL
+		-18		;C_TRIGGER
+		ENDTELL
+		]
+	local32 = [
+		STARTTELL
+		C_MIRROR
+		ENDTELL
+		]
+	local35 = [
+		STARTTELL
+		-15		;C_SCROLL3
+		-13		;C_SCROLL1
+		-14		;C_SCROLL2
+		ENDTELL
+		]
+	[hermitTellTree 10]
+	hermitTellKeys = [
+		STARTTELL
+		-9		;C_HERMIT
+		-10		;C_LADDER
+		-1		;C_BRIGANDS
+		-4		;C_ERASMUS
+		-17		;C_SPELLS
+		-19		;C_WARLOCK
+		-18		;C_TRIGGER
+		ENDTELL
+		]
 )
 (instance rm83 of Room
 	(properties
@@ -49,15 +102,15 @@
 	
 	(method (init)
 		(walkHandler add: self)
-		(= [local40 0] @local5)
-		(= [local40 1] @local14)
-		(= [local40 2] @local18)
-		(= [local40 3] @local22)
-		(= [local40 4] @local25)
-		(= [local40 5] @local29)
-		(= [local40 6] @local32)
-		(= [local40 7] @local35)
-		(= [local40 8] 999)
+		(= [hermitTellTree 0] @hermitTellMainBranch)
+		(= [hermitTellTree 1] @local14)
+		(= [hermitTellTree 2] @local18)
+		(= [hermitTellTree 3] @local22)
+		(= [hermitTellTree 4] @local25)
+		(= [hermitTellTree 5] @local29)
+		(= [hermitTellTree 6] @local32)
+		(= [hermitTellTree 7] @local35)
+		(= [hermitTellTree 8] ENDTELL)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -90,8 +143,8 @@
 		(super init:)
 		(NormalEgo)
 		(Load RES_SOUND 41)
-		(SolvePuzzle POINTS_MEETHERMIT 5)
-		(ego loop: 2 posn: 116 94 init:)
+		(SolvePuzzle f83MeetHermit 5)
+		(ego loop: loopS posn: 116 94 init:)
 		(onSeat init: approachVerbs: V_DO)
 		(features
 			add:
@@ -115,7 +168,7 @@
 		(waterFallSplash init: cycleSpeed: 6 setCycle: Forward)
 		(caveDoor init:)
 		(candle init: setPri: 14 cycleSpeed: 8 setCycle: Forward)
-		(hermitTeller init: hermit @local5 @local40 @local50)
+		(hermitTeller init: hermit @hermitTellMainBranch @hermitTellTree @hermitTellKeys)
 		(hermit init: actions: hermitTeller setPri: 10)
 		(cSound number: 71 loop: -1 play: 90)
 		(hermitSound init: play:)
@@ -126,16 +179,22 @@
 	(method (doit)
 		(if
 			(and
-				(not (Btst 360))
-				(> (Abs (- gameTime theGName)) 2)
+				(not (Btst fCharSheetActive))
+				(> (Abs (- gameTime lastTicks)) 2)
 			)
-			(= theGName gameTime)
+			(= lastTicks gameTime)
 			(Palette PALCycle 232 238 -1 239 244 -1 245 251 -1)
 		)
 		(super doit:)
 		(cond 
-			((or sittingDown isHandsOff) (if (User canControl:) (User canControl: FALSE)))
-			((not (User canControl:)) (User canControl: TRUE))
+			((or sittingDown isHandsOff)
+				(if (User canControl:)
+					(User canControl: FALSE)
+				)
+			)
+			((not (User canControl:))
+				(User canControl: TRUE)
+			)
 		)
 		(return
 			(if
@@ -171,7 +230,9 @@
 					(super doVerb: theVerb &rest)
 				)
 			)
-			(V_LOOK (messager say: N_ROOM V_LOOK))
+			(V_LOOK
+				(messager say: N_ROOM V_LOOK)
+			)
 			(V_DO
 				(if sittingDown
 					(ego setScript: standUp)
@@ -179,11 +240,17 @@
 					(messager say: N_ROOM V_DO)
 				)
 			)
-			(V_OPEN (messager say: N_ROOM V_OPEN))
-			(V_DETECT (messager say: N_ROOM V_DETECT))
+			(V_OPEN
+				(messager say: N_ROOM V_OPEN)
+			)
+			(V_DETECT
+				(messager say: N_ROOM V_DETECT)
+			)
 			(V_SLEEP
 				(cond 
-					(sittingDown (messager say: N_ROOM V_SLEEP))
+					(sittingDown
+						(messager say: N_ROOM V_SLEEP)
+					)
 					(
 						(not
 							(if (Btst fFedHenry)
@@ -375,13 +442,17 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(81
+			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(4 (messager say: N_SKULL V_DO))
-			(else  (super doVerb: theVerb))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -424,7 +495,9 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -464,7 +537,9 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -487,7 +562,9 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -510,7 +587,9 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -533,7 +612,9 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -556,7 +637,9 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -579,7 +662,9 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -602,7 +687,9 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -625,8 +712,12 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (messager say: N_SKULL V_DO))
-			(else  (super doVerb: theVerb))
+			(V_DO
+				(messager say: N_SKULL V_DO)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -670,16 +761,22 @@
 		noun N_CAVEDOOR
 		view 83
 		loop 8
-		signal $0001
+		signal stopUpdOn
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DO
 				(cond 
-					(sittingDown (messager say: N_CAVEDOOR V_DO))
-					((not (Btst fBeenIn83)) (curRoom setScript: sLeaving))
-					(else (curRoom setScript: doorScript))
+					(sittingDown
+						(messager say: N_CAVEDOOR V_DO)
+					)
+					((not (Btst fBeenIn83))
+						(curRoom setScript: sLeaving)
+					)
+					(else
+						(curRoom setScript: doorScript)
+					)
 				)
 			)
 			(V_FLAME
@@ -714,12 +811,14 @@
 		loop 7
 		cel 9
 		priority 10
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_SCROLL V_LOOK))
+			(V_LOOK
+				(messager say: N_SCROLL V_LOOK)
+			)
 			(V_FLAME
 				(messager say: N_HERMIT V_DAGGER)
 				(Bset fDeadlyTP)
@@ -731,7 +830,7 @@
 					(messager say: N_SCROLL V_DO C_LEARNTRIGGER)
 					(Bset fLearnedTrigger)
 					(ego learn: TRIGGER 10)
-					(SolvePuzzle POINTS_LEARNTRIGGER 4 MAGIC_USER)
+					(SolvePuzzle f83LearnTrigger 4 MAGIC_USER)
 				else
 					(curRoom setScript: sAskScroll)
 				)
@@ -751,7 +850,7 @@
 		view 83
 		loop 4
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
@@ -780,52 +879,55 @@
 		noun N_HERMIT
 		view 83
 		loop 3
-		signal $4011
+		signal (| ignrAct fixPriOn stopUpdOn)
 	)
 )
 
 (instance hermitTeller of Teller
-	(properties)
-	
 	(method (showDialog &tmp temp0)
 		(if
 			(==
 				(= temp0
 					(super
 						showDialog:
-							-3
-							(Btst fBeenIn83)
-							-16
-							(Btst fBeenIn83)
-							-15
-							(if (not (Btst fLearnedTrigger)) (not (Btst fAskedForTrigger)) else 0)
-							-13
-							(if (Btst fAskedForTrigger) (not (Btst fLearnedTrigger)))
-							-14
-							(Btst fLearnedTrigger)
+							-3 (Btst fBeenIn83)
+							-16 (Btst fBeenIn83)
+							-15 (if (not (Btst fLearnedTrigger)) (not (Btst fAskedForTrigger)) else 0)
+							-13 (if (Btst fAskedForTrigger) (not (Btst fLearnedTrigger)))
+							-14 (Btst fLearnedTrigger)
 					)
 				)
 				-16
 			)
 			(= temp0 (Abs temp0))
 		)
-		(if (== temp0 -3) (= temp0 (Abs temp0)))
-		(if (== temp0 -14) (= temp0 (Abs temp0)))
+		(if (== temp0 -3)
+			(= temp0 (Abs temp0))
+		)
+		(if (== temp0 -14)
+			(= temp0 (Abs temp0))
+		)
 		(return temp0)
 	)
 	
 	(method (doChild)
 		(return
 			(switch query
-				(-3 (return TRUE))
-				(-16 (return TRUE))
+				(-3
+					(return TRUE)
+				)
+				(-16
+					(return TRUE)
+				)
 				(-15
 					(curRoom setScript: sAskScroll)
 				)
 				(-13
 					(curRoom setScript: sAskScroll)
 				)
-				(else  (super doChild: query))
+				(else
+					(super doChild: query)
+				)
 			)
 		)
 	)
@@ -833,7 +935,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_TALK
-				(SolvePuzzle POINTS_TALKTOHERMIT 2)
+				(SolvePuzzle f83TalkToHermit 2)
 				(super doVerb: theVerb &rest)
 			)
 			(V_FLAME
@@ -841,75 +943,64 @@
 				(Bset fDeadlyTP)
 				(curRoom setScript: TPego)
 			)
-			(V_DO (hermit setScript: sMisc))
+			(V_DO
+				(hermit setScript: sMisc)
+			)
 			(V_RATIONS
 				(cond 
-					(sittingDown (messager say: N_ROOM V_SLEEP 23))
-					((and (Btst fFedHenry) Night) (ego setScript: sGoSleep))
-					((not (ego has: iRations 1)) (messager say: N_HERMIT V_RATIONS 22))
-					(Night (messager say: N_HERMIT V_RATIONS 21) (Bset fFedHenry))
-					(else (messager say: N_HERMIT V_RATIONS 20))
+					(sittingDown
+						(messager say: N_ROOM V_SLEEP C_STAND_UP_FIRST)
+					)
+					((and (Btst fFedHenry) Night)
+						(ego setScript: sGoSleep)
+					)
+					((not (ego has: iRations 1))
+						(messager say: N_HERMIT V_RATIONS C_NO_RATIONS)
+					)
+					(Night
+						(messager say: N_HERMIT V_RATIONS C_GAVE_RATION)
+						(Bset fFedHenry)
+					)
+					(else
+						(messager say: N_HERMIT V_RATIONS C_DAY)
+					)
 				)
 			)
 			(V_DAGGER
-				(if sittingDown (ego hide:))
+				(if sittingDown
+					(ego hide:)
+				)
 				(messager say: N_HERMIT V_DAGGER)
 				(Bset fDeadlyTP)
 				(hermit setScript: TPego)
 			)
 			(V_ROCK
-				(if sittingDown (ego hide:))
+				(if sittingDown
+					(ego hide:)
+				)
 				(messager say: N_HERMIT V_DAGGER)
 				(Bset fDeadlyTP)
 				(hermit setScript: TPego)
 			)
 			(V_SWORD
-				(if sittingDown (ego hide:))
+				(if sittingDown
+					(ego hide:)
+				)
 				(messager say: N_HERMIT V_DAGGER)
 				(Bset fDeadlyTP)
 				(hermit setScript: TPego)
 			)
 			(else 
 				(if
-					(OneOf
-						theVerb
-						34
-						42
-						44
-						46
-						16
-						38
-						21
-						36
-						39
-						32
-						29
-						37
-						22
-						26
-						14
-						17
-						27
-						23
-						31
-						30
-						40
-						43
-						45
-						53
-						11
-						28
-						20
-						35
-						15
-						10
-						24
-						12
-						18
-						19
-						47
-						41
-						33
+					(OneOf theVerb
+						V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
+						V_FAIRYDUST V_FLASK V_FLOWERS V_WATER V_FRUIT
+						V_GHOSTOIL V_GREENFUR V_HEALING V_BRASSKEY V_LEATHER
+						V_LOCKPICK V_MAGICGEM V_MANA V_MANDRAKE V_MAGICMIRROR
+						V_MUSHROOM V_MUSICBOX V_PEARLS V_PAPER V_RATIONS
+						V_RING V_ROCK V_SEED V_SHIELD V_MONEY
+						V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
+						V_VASE V_VEGETABLES
 					)
 					(messager say: N_HERMIT V_ACORN)
 				else
@@ -928,7 +1019,7 @@
 		noun N_GLOWCOALS
 		view 83
 		priority 12
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
@@ -950,7 +1041,7 @@
 		view 83
 		loop 1
 		priority 7
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
@@ -964,13 +1055,9 @@
 	)
 )
 
-(instance dummy of Script
-	(properties)
-)
+(instance dummy of Script)
 
 (instance introToHenry of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -981,28 +1068,29 @@
 			(1
 				(if (Btst fBeenIn83)
 					(= state 4)
-					(messager say: N_ROOM 0 C_HELLOAGAIN 1 self)
+					(messager say: N_ROOM NULL C_HELLOAGAIN 1 self)
 				else
-					(messager say: N_ROOM 0 C_FIRSTMEET 1 self)
+					(messager say: N_ROOM NULL C_FIRSTMEET 1 self)
 				)
 			)
 			(2
-				(messager say: N_ROOM 0 C_HERMITINTRO1 1 self)
+				(messager say: N_ROOM NULL C_HERMITINTRO1 1 self)
 			)
 			(3
-				(messager say: N_ROOM 0 C_HERMITINTRO2 1 self)
+				(messager say: N_ROOM NULL C_HERMITINTRO2 1 self)
 			)
 			(4
-				(messager say: N_ROOM 0 C_HERMITINTRO3 1 self)
+				(messager say: N_ROOM NULL C_HERMITINTRO3 1 self)
 			)
-			(5 (self dispose:) (HandsOn))
+			(5
+				(self dispose:)
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance sitDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1015,11 +1103,11 @@
 					view: 504
 					setLoop: 0
 					setCel: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setCycle: EndLoop self
 				)
-				(= sittingDown 1)
+				(= sittingDown TRUE)
 			)
 			(2
 				(HandsOn)
@@ -1031,8 +1119,6 @@
 )
 
 (instance standUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1046,7 +1132,7 @@
 					setLoop: 0
 					setCel: 5
 					startUpd:
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setCycle: BegLoop self
 				)
@@ -1066,8 +1152,6 @@
 )
 
 (instance TPego of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1086,7 +1170,9 @@
 				(pfSnd init: play:)
 				(poof setCycle: EndLoop self)
 			)
-			(2 (= cycles 10))
+			(2
+				(= cycles 10)
+			)
 			(3
 				(poof dispose:)
 				(curRoom newRoom: 82)
@@ -1096,8 +1182,6 @@
 )
 
 (instance doorScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1113,21 +1197,24 @@
 				)
 			)
 			(1
-				(caveDoor ignoreActors: 1 setCycle: EndLoop self)
+				(caveDoor
+					ignoreActors: TRUE
+					setCycle: EndLoop self
+				)
 			)
 			(2
 				(ego
 					setMotion: MoveTo (+ (ego x?) 30) (- (ego y?) 10) self
 				)
 			)
-			(3 (curRoom newRoom: 82))
+			(3
+				(curRoom newRoom: 82)
+			)
 		)
 	)
 )
 
 (instance sLeaving of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1136,21 +1223,21 @@
 				(ego setMotion: PolyPath 109 89 self)
 			)
 			(1
-				(messager say: N_ROOM 0 C_LEAVING 1 self)
+				(messager say: N_ROOM NULL C_LEAVING 1 self)
 			)
-			(2 (self dispose:))
+			(2
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sGoSleep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 C_GOSLEEP 1 self)
+				(messager say: N_ROOM NULL C_GOSLEEP 1 self)
 			)
 			(1
 				(ego use: iRations 1)
@@ -1172,7 +1259,7 @@
 				(= seconds 6)
 			)
 			(4
-				(messager say: N_ROOM 0 C_WAKEUP 1 self)
+				(messager say: N_ROOM NULL C_WAKEUP 1 self)
 				(Bset fBeenIn83)
 			)
 			(5
@@ -1193,19 +1280,20 @@
 				(hermit setCycle: 0)
 				(Bclr fFedHenry)
 			)
-			(8 (HandsOn) (self dispose:))
+			(8
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sNoSleep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 C_NORATIONS 1 self)
+				(messager say: N_ROOM NULL C_NO_SLEEP 1 self)
 			)
 			(1
 				(Bset fSafeTP)
@@ -1216,18 +1304,25 @@
 )
 
 (instance sAskScroll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(if client
 			(switch (= state newState)
-				(0 (HandsOff) (= seconds 3))
+				(0
+					(HandsOff)
+					(= seconds 3)
+				)
 				(1
 					(cond 
-						((Btst fAskedForTrigger) (client setScript: sNixScroll))
-						([egoStats MAGIC] (Bset fAskedForTrigger) (= local3 1) (= ticks 60))
+						((Btst fAskedForTrigger)
+							(client setScript: sNixScroll)
+						)
+						([egoStats MAGIC]
+							(Bset fAskedForTrigger)
+							(= local3 1)
+							(= ticks 60)
+						)
 						(else
-							(messager say: N_ROOM 0 C_NOMAGIC)
+							(messager say: N_ROOM NULL C_NOMAGIC)
 							(HandsOn)
 							(client setScript: 0)
 						)
@@ -1236,9 +1331,9 @@
 				(2
 					(switch
 						(Print
-							addText: 17 0 C_DOYOUWANTIT 1 0 0 83
-							addButton: 1 17 0 C_ANSWERHIM 1 0 30 83
-							addButton: 2 17 0 C_ANSWERHIM 2 0 48 83
+							addText: N_ROOM NULL C_DOYOUWANTIT 1 0 0 83
+							addButton: 1 N_ROOM NULL C_ANSWERHIM 1 0 30 83
+							addButton: 2 N_ROOM NULL C_ANSWERHIM 2 0 48 83
 							init:
 						)
 						(1
@@ -1249,35 +1344,36 @@
 						)
 					)
 				)
-				(3 (HandsOn) (self dispose:))
+				(3
+					(HandsOn)
+					(self dispose:)
+				)
 			)
 		)
 	)
 )
 
 (instance sNoScroll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 C_DECLINESCROLL 1 self)
+				(messager say: N_ROOM NULL C_DECLINESCROLL 1 self)
 			)
-			(1 (HandsOn))
+			(1
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance sNixScroll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if (Btst fLearnedTrigger)
-					(messager say: N_ROOM 0 C_ALREADYGOTSCROLL 1 self)
+					(messager say: N_ROOM NULL C_ALREADYGOTSCROLL 1 self)
 				else
 					(self cue:)
 				)
@@ -1289,9 +1385,9 @@
 				else
 					(switch
 						(Print
-							addText: 17 0 C_DOYOUWANTIT 1 0 0 83
-							addButton: 1 17 0 C_ANSWERHIM 1 0 30 83
-							addButton: 2 17 0 C_ANSWERHIM 2 0 48 83
+							addText: N_ROOM NULL C_DOYOUWANTIT 1 0 0 83
+							addButton: 1 N_ROOM NULL C_ANSWERHIM 1 0 30 83
+							addButton: 2 N_ROOM NULL C_ANSWERHIM 2 0 48 83
 							init:
 						)
 						(1
@@ -1303,14 +1399,15 @@
 					)
 				)
 			)
-			(3 (HandsOn) (self dispose:))
+			(3
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance sGetScroll of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1319,11 +1416,11 @@
 					(self changeState: 4)
 				else
 					(= local4 1)
-					(messager say: N_ROOM 0 C_ACCEPTSCROLL 1 self)
+					(messager say: N_ROOM NULL C_ACCEPTSCROLL 1 self)
 				)
 			)
 			(1
-				(messager say: N_ROOM 0 C_SUMMONSCROLL 1 self)
+				(messager say: N_ROOM NULL C_SUMMONSCROLL 1 self)
 			)
 			(2
 				(scroll
@@ -1337,7 +1434,7 @@
 			)
 			(3
 				(scroll setLoop: 2 setCel: 1)
-				(messager say: N_ROOM 0 C_THEREYOUGO 1 self)
+				(messager say: N_ROOM NULL C_THEREYOUGO 1 self)
 			)
 			(4
 				(HandsOn)
@@ -1349,28 +1446,28 @@
 )
 
 (instance sMisc of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_TABLE V_DO 0 1 self)
+				(messager say: N_TABLE V_DO NULL 1 self)
 			)
-			(1 (HandsOn))
+			(1
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance getUpSleep of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(self setScript: standUp self)
 			)
-			(1 (self setScript: sGoSleep))
+			(1
+				(self setScript: sGoSleep)
+			)
 		)
 	)
 )

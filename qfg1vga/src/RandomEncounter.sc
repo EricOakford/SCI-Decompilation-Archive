@@ -72,7 +72,7 @@
 )
 
 (procedure (localproc_0117 param1)
-	(Bclr fFlag351)
+	(Bclr fMantrayDies)
 	(= monsterDead TRUE)
 	(= local8 1)
 	(if
@@ -724,7 +724,7 @@
 				((= theSmallMonster smallMonster) posn: 0 1000 init:)
 				(localproc_0e23 monsterNum theSmallMonster)
 			)
-			((and (== monsterNum vMantray) (Btst fFlag351))
+			((and (== monsterNum vMantray) (Btst fMantrayDies))
 				(localproc_0117 0)
 			)
 			(
@@ -733,7 +733,7 @@
 					monsterNum
 					(not local8)
 					(<= monsterHealth 0)
-					(not (Btst fFlag351))
+					(not (Btst fMantrayDies))
 				)
 				(localproc_0117 0)
 			)
@@ -845,7 +845,7 @@
 			(= monsterNum (= monsterHealth 0))
 			(= brigandHead 0)
 		)
-		(Bclr fFlag351)
+		(Bclr fMantrayDies)
 		(super newRoom: n &rest)
 	)
 )
@@ -876,9 +876,9 @@
 			)
 			(2
 				(cond 
-					((IsObject gClient)
+					((IsObject projObj)
 						(-- state)
-						(gClient dispose:)
+						(projObj dispose:)
 						(= cycles 2)
 					)
 					((and monsterNum (> monsterHealth 0))

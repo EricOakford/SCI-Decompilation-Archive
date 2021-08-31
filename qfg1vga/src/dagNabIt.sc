@@ -788,7 +788,7 @@
 	(method (init)
 		(= nightPalette 1340)
 		(PalVary PALVARYTARGET 1340)
-		(kernel_128 340)
+		(AssertPalette 340)
 		(super init:)
 	)
 	

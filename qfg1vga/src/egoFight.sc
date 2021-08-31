@@ -12,7 +12,6 @@
 )
 
 (instance egoFight of Script
-	
 	(method (init)
 		(mouseDownHandler add: self)
 		(pointBox init: setLoop: 2 stopUpd:)
@@ -36,7 +35,7 @@
 				(((ScriptID 220 0) script?) dispose:)
 			)
 			(if script (script dispose:))
-			(client endFight: 1 canFight: 0)
+			(client endFight: TRUE canFight: FALSE)
 			(client gotBeat: (ScriptID 223 1))
 		else
 			(super doit:)
@@ -60,8 +59,8 @@
 			)
 			(1
 				(client
-					canFight: 1
-					action: 0
+					canFight: TRUE
+					action: ActNone
 					cycleSpeed: 18
 					moveSpeed: 12
 					stopUpd:
@@ -95,7 +94,7 @@
 						(cond 
 							((> evtX 285)
 								(if (client canFight?)
-									(client canFight: 0)
+									(client canFight: FALSE)
 									(if script (script dispose:))
 									(self setScript: (Clone (ScriptID 217 2)) self client)
 									(TrySkill WEAPON 0 20)
@@ -108,7 +107,7 @@
 							)
 							((< evtX 265)
 								(if (client canFight?)
-									(client canFight: 0)
+									(client canFight: FALSE)
 									(if script (script dispose:))
 									(self setScript: (Clone (ScriptID 217 3)) self client)
 									(TrySkill WEAPON 0 20)
@@ -126,7 +125,7 @@
 							((> evtX 285)
 								(if (client canFight?)
 									(TrySkill DODGE 0 20)
-									(client canFight: 0)
+									(client canFight: FALSE)
 									(if script (script dispose:))
 									(if (Random 0 1)
 										(self setScript: (Clone (ScriptID 217 0)) self client)
@@ -139,7 +138,7 @@
 							)
 							((< evtX 265)
 								(if (client canFight?)
-									(client canFight: 0)
+									(client canFight: FALSE)
 									(TrySkill PARRY 0 20)
 									(if script (script dispose:))
 									(if (== ((client opponent?) action?) 2)
@@ -164,10 +163,10 @@
 				(switch (event message?)
 					(dirNE
 						(if (client canFight?)
-							(client canFight: 0)
+							(client canFight: FALSE)
 							(if script (script dispose:))
 							(self setScript: (Clone (ScriptID 217 2)) self client)
-							(TrySkill 5 0 20)
+							(TrySkill WEAPON 0 20)
 							(if (client tryAttack: (client opponent?))
 								((client opponent?) getHit:)
 							)
@@ -178,7 +177,7 @@
 					(dirNW
 						(if (client canFight?)
 							(TrySkill DODGE 0 20)
-							(client canFight: 0)
+							(client canFight: FALSE)
 							(if script (script dispose:))
 							(self setScript: (Clone (ScriptID 217 3)) self client)
 						else
@@ -188,7 +187,7 @@
 					(dirSE
 						(if (client canFight?)
 							(TrySkill DODGE 0 20)
-							(client canFight: 0)
+							(client canFight: FALSE)
 							(if script (script dispose:))
 							(if (Random 0 1)
 								(self setScript: (Clone (ScriptID 217 0)) self client)
@@ -201,7 +200,7 @@
 					)
 					(dirSW
 						(if (client canFight?)
-							(client canFight: 0)
+							(client canFight: FALSE)
 							(TrySkill PARRY 0 20)
 							(if script (script dispose:))
 							(if (== ((client opponent?) action?) 2)
@@ -238,7 +237,7 @@
 	(method (init)
 		(theIconBar disable:)
 		(theGame setCursor: normalCursor TRUE 280 155)
-		(Bset 359)
+		(Bset fHideCursor)
 		(self setPri: 14 ignoreActors:)
 		(super init: &rest)
 	)
@@ -282,8 +281,8 @@
 	)
 	
 	(method (dispose)
-		(Bclr 359)
-		(theGame setCursor: normalCursor 1)
+		(Bclr fHideCursor)
+		(theGame setCursor: normalCursor TRUE)
 		(super dispose:)
 	)
 	;This didn't decompile properly, and has been commented out.

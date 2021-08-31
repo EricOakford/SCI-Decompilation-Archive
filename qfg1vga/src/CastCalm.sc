@@ -12,14 +12,14 @@
 )
 
 (local
-	oldSignal
-	oldPriority
-	oldIllBits
-	oldCycleSpeed
-	calmSound
+	savSignal
+	savPriority
+	savIllegalBits
+	savSpeed
+	soundObj
 	wasHandsOn
 )
-(procedure (CastCalm param1 param2)
+(procedure (CastCalm onWhat whoCares)
 	(if (not isHandsOff)
 		(= wasHandsOn TRUE)
 	)
@@ -28,27 +28,25 @@
 			(ego setScript: castCalm)
 		)
 		(1
-			(param1 setScript: castCalm)
+			(onWhat setScript: castCalm)
 		)
 		(else 
-			(param1 setScript: castCalm param2)
+			(onWhat setScript: castCalm whoCares)
 		)
 	)
 )
 
 (instance castCalm of Script
-	(properties)
-	
 	(method (dispose)
-		(calmSound stop: dispose:)
+		(soundObj stop: dispose:)
 		(NormalEgo)
 		(if wasHandsOn (HandsOn))
 		(ego
-			loop: (if (== (ego loop?) 2) 5 else 4)
-			priority: oldPriority
-			illegalBits: oldIllBits
-			cycleSpeed: oldCycleSpeed
-			signal: oldSignal
+			loop: (if (== (ego loop?) loopS) loopSW else loopSE)
+			priority: savPriority
+			illegalBits: savIllegalBits
+			cycleSpeed: savSpeed
+			signal: savSignal
 		)
 		(super dispose:)
 		(DisposeScript CASTCALM)
@@ -58,34 +56,34 @@
 		(switch (= state newState)
 			(0 (= ticks 10))
 			(1
-				((= calmSound (Sound new:))
+				((= soundObj (Sound new:))
 					number: (SoundFX 39)
 					priority: 6
 					init:
 				)
-				(= oldSignal (ego signal?))
-				(= oldPriority (ego priority?))
-				(= oldIllBits (ego illegalBits?))
-				(= oldCycleSpeed (ego cycleSpeed?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
+				(= savSpeed (ego cycleSpeed?))
 				(HandsOff)
 				(NormalEgo)
 				(theGame setCursor: waitCursor TRUE)
 				(ego
 					setMotion: 0
-					setHeading: (if (OneOf (ego loop?) 2 4 0 6) 135 else 225) self
+					setHeading: (if (OneOf (ego loop?) loopS loopSE loopE loopNE) 135 else 225) self
 				)
 			)
 			(2
 				(theGame setCursor: waitCursor TRUE)
 				(ego
 					view: 521
-					setLoop: (if (== (ego loop?) 5) 2 else 3)
+					setLoop: (if (== (ego loop?) loopSW) loopS else loopN)
 					setCel: 0
 					setPri: (ego priority?)
 					cycleSpeed: 12
 					setCycle: EndLoop self
 				)
-				(calmSound play:)
+				(soundObj play:)
 			)
 			(3
 				(messager say: N_CASTCALM NULL NULL 0 0 SPELLS)

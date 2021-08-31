@@ -23,17 +23,17 @@
 
 (local
 	local0
-	local1
-	gEgoLooper
+	antwerpState
+	saveLooper
 	local3
 	antwerpY
 	antwerpX
 	local6
 	local7
-	local8 =  85
-	local9 =  79
-	gEgoMoveSpeed
-	gEgoCycleSpeed
+	nearRockX =  85
+	nearRockY =  79
+	saveMoveSpeed
+	saveSpeed
 )
 (procedure (ScareAntwerp)
 	(if (== (antwerp status?) 1)
@@ -55,35 +55,32 @@
 			(self
 				addObstacle:
 					(rockPoly
-						type: 2
+						type: PBarredAccess
 						init:
-							71
-							85
-							102
-							89
-							102
-							107
-							191
-							155
-							256
-							168
-							319
-							168
-							319
-							189
-							0
-							189
-							0
-							0
-							184
-							0
-							184
-							13
+							71 85
+							102 89
+							102 107
+							191 155
+							256 168
+							319 168
+							319 189
+							0 189
+							0 0
+							184 0
+							184 13
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
-						init: 270 59 233 46 194 46 194 25 210 12 210 0 319 0 319 63
+						type: PBarredAccess
+						init:
+							270 59
+							233 46
+							194 46
+							194 25
+							210 12
+							210 0
+							319 0
+							319 63
 						yourself:
 					)
 			)
@@ -92,50 +89,48 @@
 			(self
 				addObstacle:
 					((Polygon new:)
-						type: 2
-						init: 123 64 0 64 0 0 185 -1 185 12 123 47
-						yourself:
-					)
-					((Polygon new:)
-						type: 2
+						type: PBarredAccess
 						init:
-							0
-							67
-							73
-							67
-							73
-							82
-							83
-							87
-							102
-							87
-							102
-							106
-							92
-							106
-							92
-							114
-							125
-							114
-							125
-							132
-							166
-							132
-							166
-							138
-							198
-							155
-							319
-							155
-							319
-							189
-							0
-							189
+							123 64
+							0 64
+							0 0
+							185 -1
+							185 12
+							123 47
 						yourself:
 					)
 					((Polygon new:)
-						type: 2
-						init: 270 59 233 46 194 46 194 25 210 12 210 0 319 0 319 63
+						type: PBarredAccess
+						init:
+							0 67
+							73 67
+							73 82
+							83 87
+							102 87
+							102 106
+							92 106
+							92 114
+							125 114
+							125 132
+							166 132
+							166 138
+							198 155
+							319 155
+							319 189
+							0 189
+						yourself:
+					)
+					((Polygon new:)
+						type: PBarredAccess
+						init:
+							270 59
+							233 46
+							194 46
+							194 25
+							210 12
+							210 0
+							319 0
+							319 63
 						yourself:
 					)
 			)
@@ -172,7 +167,7 @@
 		)
 		(Load RES_SCRIPT JUMP)
 		(if (not (if (Btst fAntwerpSplit) else (Btst fAntwerpInSky)))
-			(= local1 1)
+			(= antwerpState TRUE)
 			(antwerp
 				init:
 				setLoop: 0
@@ -195,10 +190,18 @@
 			((and (Btst fTrollDoorOpen) (< (ego x?) 71))
 				(self setScript: sExitThruDoor)
 			)
-			((< (ego y?) 28) (self setScript: sExitNorth))
-			((== (ego edgeHit?) 2) (curRoom setScript: sExitEast))
-			((< (ego y?) 43) (ego setPri: 4))
-			(else (ego setPri: -1))
+			((< (ego y?) 28)
+				(self setScript: sExitNorth)
+			)
+			((== (ego edgeHit?) EAST)
+				(curRoom setScript: sExitEast)
+			)
+			((< (ego y?) 43)
+				(ego setPri: 4)
+			)
+			(else
+				(ego setPri: -1)
+			)
 		)
 	)
 	
@@ -224,12 +227,20 @@
 		(switch theVerb
 			(V_LOOK
 				(cond 
-					((Btst fAntwerpSplit) (messager say: N_ROOM V_LOOK C_ANTWERPSPLIT))
-					((Btst fAntwerpInSky) (messager say: N_ROOM V_LOOK C_ANTWERPSKY))
-					(else (messager say: N_ROOM V_LOOK C_SEEGRASS))
+					((Btst fAntwerpSplit)
+						(messager say: N_ROOM V_LOOK C_ANTWERPSPLIT)
+					)
+					((Btst fAntwerpInSky)
+						(messager say: N_ROOM V_LOOK C_ANTWERPSKY)
+					)
+					(else
+						(messager say: N_ROOM V_LOOK C_SEEGRASS)
+					)
 				)
 			)
-			(V_DETECT (messager say: N_ROOM V_DETECT))
+			(V_DETECT
+				(messager say: N_ROOM V_DETECT)
+			)
 			(V_DAZZLE
 				(self setScript: sDazzleAnAntwerp)
 			)
@@ -243,15 +254,17 @@
 					(self setScript: sMagicRock)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(= nightPalette 0)
 		(DisposeScript JUMP)
 		(antwerp setCycle: 0 setMotion: 0 setScript: 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
@@ -272,14 +285,26 @@
 		(switch theVerb
 			(V_LOOK
 				(cond 
-					((Btst fTrollDoorOpen) (messager say: 5 1 6))
-					((ego inRect: 30 52 115 94) (messager say: 5 1 5))
-					(else (messager say: 5 1))
+					((Btst fTrollDoorOpen)
+						(messager say: N_ENTRANCE V_LOOK C_ROCK_OPEN)
+					)
+					((ego inRect: 30 52 115 94)
+						(messager say: N_ENTRANCE V_LOOK C_ROCK_CLOSED)
+					)
+					(else
+						(messager say: N_ENTRANCE V_LOOK)
+					)
 				)
 			)
-			(V_DO (theRock doVerb: V_DO))
-			(V_DAGGER (ScareAntwerp))
-			(else  (super doVerb: theVerb))
+			(V_DO
+				(theRock doVerb: V_DO)
+			)
+			(V_DAGGER
+				(ScareAntwerp)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -297,9 +322,15 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(V_LOOK (messager say: N_MOUNTAINROCKS V_LOOK))
-			(V_DAGGER (ScareAntwerp))
-			(else  (super doVerb: theVerb))
+			(V_LOOK
+				(messager say: N_MOUNTAINROCKS V_LOOK)
+			)
+			(V_DAGGER
+				(ScareAntwerp)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -423,8 +454,12 @@
 					(messager say: N_GROUND V_LOOK C_SEEGRASS)
 				)
 			)
-			(V_DAGGER (ScareAntwerp))
-			(else  (super doVerb: theVerb))
+			(V_DAGGER
+				(ScareAntwerp)
+			)
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -437,7 +472,7 @@
 		noun N_ROCKDOOR
 		view 84
 		priority 3
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 		cycleSpeed 8
 		illegalBits $0000
 	)
@@ -447,71 +482,120 @@
 			(V_DO
 				(HandsOff)
 				(cond 
-					(
-					(or (!= (ego x?) local8) (!= (ego y?) local9)) (ego setMotion: PolyPath local8 local9))
-					((!= (ego loop?) 7) (ego setHeading: 315))
+					((or (!= (ego x?) nearRockX) (!= (ego y?) nearRockY))
+						(ego setMotion: PolyPath nearRockX nearRockY)
+					)
+					((!= (ego loop?) 7)
+						(ego setHeading: 315)
+					)
 					(
 						(and
 							(not (Btst fAntwerpInSky))
 							(not (Btst fAntwerpSplit))
 							(== (antwerp x?) 110)
-							(== local1 1)
+							(== antwerpState TRUE)
 						)
-						(antwerp
-							setMotion: MoveTo (+ (antwerp x?) 20) (antwerp y?)
-						)
+						(antwerp setMotion: MoveTo (+ (antwerp x?) 20) (antwerp y?))
 					)
-					((not (Btst fTrollDoorUnlocked)) (messager say: N_ROCKDOOR V_DO C_LOCKED))
-					((not (TrySkill STR 40 0)) (messager say: N_ROCKDOOR V_DO C_TOOWEAK))
-					((not cel) (ego setScript: openRock))
-					(else (messager say: N_ROCKDOOR V_DO C_ALREADYOPENED))
+					((not (Btst fTrollDoorUnlocked))
+						(messager say: N_ROCKDOOR V_DO C_LOCKED)
+					)
+					((not (TrySkill STR 40 0))
+						(messager say: N_ROCKDOOR V_DO C_TOOWEAK)
+					)
+					((not cel)
+						(ego setScript: openRock)
+					)
+					(else
+						(messager say: N_ROCKDOOR V_DO C_ALREADYOPENED)
+					)
 				)
 				(HandsOn)
 			)
 			(V_LOOK
 				(cond 
-					((not (ego inRect: 30 52 115 94)) (messager say: N_ROCKDOOR V_LOOK C_SEENOLOCKS))
-					((Btst fTrollDoorOpen) (messager say: N_ROCKDOOR V_LOOK 6))
-					(else (messager say: N_ROCKDOOR V_LOOK C_SEETHELOCK))
+					((not (ego inRect: 30 52 115 94))
+						(messager say: N_ROCKDOOR V_LOOK C_SEENOLOCKS)
+					)
+					((Btst fTrollDoorOpen)
+						(messager say: N_ROCKDOOR V_LOOK C_ROCK_OPEN))
+					(else
+						(messager say: N_ROCKDOOR V_LOOK C_SEETHELOCK)
+					)
 				)
 			)
 			(V_LOCKPICK
 				(cond 
-					((not (ego inRect: 30 52 115 94)) (messager say: N_ROCKDOOR V_LOCKPICK C_SEENOLOCKS))
-					((Btst fTrollDoorUnlocked) (messager say: N_ROCKDOOR V_LOCKPICK C_UNLOCKED))
-					((not (CanPickLocks)) (messager say: N_ROCKDOOR V_LOCKPICK C_NOPICK))
-					((TrySkill PICK 85 lockPickBonus) (messager say: N_ROCKDOOR V_LOCKPICK C_LOCKPICKSUCCESS) (Bset fTrollDoorUnlocked))
-					((ego has: iThiefKit) (messager say: N_ROCKDOOR V_LOCKPICK C_TOOLFAIL))
-					(else (messager say: N_ROCKDOOR V_LOCKPICK C_PICKFAIL))
+					((not (ego inRect: 30 52 115 94))
+						(messager say: N_ROCKDOOR V_LOCKPICK C_SEENOLOCKS)
+					)
+					((Btst fTrollDoorUnlocked)
+						(messager say: N_ROCKDOOR V_LOCKPICK C_UNLOCKED)
+					)
+					((not (CanPickLocks))
+						(messager say: N_ROCKDOOR V_LOCKPICK C_NOPICK)
+					)
+					((TrySkill PICK 85 lockPickBonus)
+						(messager say: N_ROCKDOOR V_LOCKPICK C_LOCKPICKSUCCESS)
+						(Bset fTrollDoorUnlocked)
+					)
+					((ego has: iThiefKit)
+						(messager say: N_ROCKDOOR V_LOCKPICK C_TOOLFAIL)
+					)
+					(else
+						(messager say: N_ROCKDOOR V_LOCKPICK C_PICKFAIL)
+					)
 				)
 			)
 			(V_THIEFKIT
 				(cond 
-					((not (ego inRect: 30 52 115 94)) (messager say: N_ROCKDOOR V_LOCKPICK C_SEENOLOCKS))
-					((Btst fTrollDoorUnlocked) (messager say: N_ROCKDOOR V_LOCKPICK C_UNLOCKED))
-					((not (CanPickLocks)) (messager say: N_ROCKDOOR V_LOCKPICK C_NOPICK))
-					((TrySkill PICK 85 lockPickBonus) (messager say: N_ROCKDOOR V_LOCKPICK C_LOCKPICKSUCCESS) (Bset fTrollDoorUnlocked))
-					(else (messager say: N_ROCKDOOR V_LOCKPICK C_TOOLFAIL))
+					((not (ego inRect: 30 52 115 94))
+						(messager say: N_ROCKDOOR V_LOCKPICK C_SEENOLOCKS)
+					)
+					((Btst fTrollDoorUnlocked)
+						(messager say: N_ROCKDOOR V_LOCKPICK C_UNLOCKED)
+					)
+					((not (CanPickLocks))
+						(messager say: N_ROCKDOOR V_LOCKPICK C_NOPICK)
+					)
+					((TrySkill PICK 85 lockPickBonus)
+						(messager say: N_ROCKDOOR V_LOCKPICK C_LOCKPICKSUCCESS)
+						(Bset fTrollDoorUnlocked)
+					)
+					(else
+						(messager say: N_ROCKDOOR V_LOCKPICK C_TOOLFAIL)
+					)
 				)
 			)
 			(V_BRASSKEY
 				(cond 
-					((not (ego inRect: 30 52 115 94)) (messager say: N_ROCKDOOR V_LOCKPICK C_SEENOLOCKS))
-					((Btst fTrollDoorUnlocked) (messager say: N_ROCKDOOR V_LOCKPICK C_UNLOCKED))
-					((Btst fGotBrutusKey) (messager say: N_ROCKDOOR V_BRASSKEY C_LOCKED) (Bset fTrollDoorUnlocked))
-					(else (messager say: N_ROCKDOOR V_BRASSKEY C_WRONGKEY))
+					((not (ego inRect: 30 52 115 94))
+						(messager say: N_ROCKDOOR V_LOCKPICK C_SEENOLOCKS)
+					)
+					((Btst fTrollDoorUnlocked)
+						(messager say: N_ROCKDOOR V_LOCKPICK C_UNLOCKED)
+					)
+					((Btst fGotBrutusKey)
+						(messager say: N_ROCKDOOR V_BRASSKEY C_LOCKED)
+						(Bset fTrollDoorUnlocked)
+					)
+					(else
+						(messager say: N_ROCKDOOR V_BRASSKEY C_WRONGKEY)
+					)
 				)
 			)
 			(V_TALK
 				(if (and (Btst fSpiedOnThieves) (not (Btst fHidenGoseke)) (not (Btst fBeatFred)))
 					(Bset fHidenGoseke)
-					(SolvePuzzle POINTS_GIVECAVEPASSWORD 5)
+					(SolvePuzzle f84HidenGoseke 5)
 					(messager say: N_ROCKDOOR V_ALTTALK)
 				else
 					(messager say: N_ROCKDOOR V_ALTTALK C_NOANSWER)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -523,7 +607,7 @@
 		yStep 4
 		view 590
 		loop 2
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		cycleSpeed 4
 		illegalBits $0000
 		xStep 4
@@ -579,7 +663,7 @@
 					(self status: 3 setScript: sPushEgoRight)
 				)
 				(else
-					(= gEgoCycleSpeed (ego cycleSpeed?))
+					(= saveSpeed (ego cycleSpeed?))
 					(self
 						status: 2
 						cycleSpeed: 6
@@ -597,9 +681,15 @@
 			(switch theVerb
 				(V_LOOK
 					(cond 
-						((Btst fAntwerpSplit) (messager say: N_ANTWERP V_LOOK C_BAREHANDED))
-						((Btst fAntwerpInSky) (messager say: N_ANTWERP V_LOOK C_FLOWNCOOP))
-						(else (messager say: N_ANTWERP 1 4))
+						((Btst fAntwerpSplit)
+							(messager say: N_ANTWERP V_LOOK C_BAREHANDED)
+						)
+						((Btst fAntwerpInSky)
+							(messager say: N_ANTWERP V_LOOK C_FLOWNCOOP)
+						)
+						(else
+							(messager say: N_ANTWERP V_LOOK C_ITSHERE)
+						)
 					)
 				)
 				(V_DO
@@ -625,7 +715,9 @@
 					)
 					(return TRUE)
 				)
-				(else  (super doVerb: theVerb))
+				(else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -636,8 +728,6 @@
 )
 
 (instance sRandBounce of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -663,18 +753,16 @@
 )
 
 (instance sMagicRock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(theGame setCursor: waitCursor 1)
+				(= saveSpeed (ego cycleSpeed?))
+				(theGame setCursor: waitCursor TRUE)
 				(ego setMotion: PolyPath 140 86 self)
 			)
 			(1
-				(theGame setCursor: waitCursor 1)
+				(theGame setCursor: waitCursor TRUE)
 				(cond 
 					(
 						(and
@@ -682,28 +770,32 @@
 							(== (antwerp script?) sAvoidEgo)
 						)
 					)
-					((and (== (ego x?) 140) (== (ego y?) 86)) (= ticks 1))
-					(else (ego setMotion: PolyPath 140 86 self))
+					((and (== (ego x?) 140) (== (ego y?) 86))
+						(= ticks 1)
+					)
+					(else
+						(ego setMotion: PolyPath 140 86 self)
+					)
 				)
 			)
 			(2
-				(theGame setCursor: waitCursor 1)
+				(theGame setCursor: waitCursor TRUE)
 				(ego setMotion: PolyPath 109 86 self)
 			)
 			(3
-				(theGame setCursor: waitCursor 1)
+				(theGame setCursor: waitCursor TRUE)
 				(ego setHeading: 270)
 				(= ticks 180)
 			)
 			(4
-				(theGame setCursor: waitCursor 1)
+				(theGame setCursor: waitCursor TRUE)
 				(ego view: 521 loop: 0 cycleSpeed: 6 setCycle: EndLoop self)
 			)
 			(5
 				(Bset fTrollDoorUnlocked)
-				(ego cycleSpeed: gEgoCycleSpeed moveSpeed: gEgoCycleSpeed)
+				(ego cycleSpeed: saveSpeed moveSpeed: saveSpeed)
 				(if (< [egoStats OPEN] 50)
-					(messager say: N_ROOM 0 C_UNLOCKED 0 sMagicRock)
+					(messager say: N_ROOM NULL C_UNLOCKED 0 sMagicRock)
 				else
 					(theRock
 						setCycle: 0
@@ -716,55 +808,45 @@
 					(curRoom
 						addObstacle:
 							((Polygon new:)
-								type: 2
-								init: 123 64 0 64 0 0 185 -1 185 12 123 47
+								type: PBarredAccess
+								init:
+									123 64
+									0 64
+									0 0
+									185 -1
+									185 12
+									123 47
 								yourself:
 							)
 							((Polygon new:)
-								type: 2
+								type: PBarredAccess
 								init:
-									0
-									67
-									73
-									67
-									73
-									82
-									83
-									87
-									102
-									87
-									102
-									106
-									92
-									106
-									92
-									114
-									125
-									114
-									125
-									132
-									166
-									132
-									166
-									138
-									198
-									155
-									319
-									155
-									319
-									189
-									0
-									189
+									0 67
+									73 67
+									73 82
+									83 87
+									102 87
+									102 106
+									92 106
+									92 114
+									125 114
+									125 132
+									166 132
+									166 138
+									198 155
+									319 155
+									319 189
+									0 189
 								yourself:
 							)
 					)
-					(SolvePuzzle POINTS_FINDSECRETENTRANCE 10)
+					(SolvePuzzle f84FindTrollCave 10)
 					(Bset fTrollDoorOpen)
 				)
 			)
 			(6
 				(theRock stopUpd:)
-				(NormalEgo 1)
+				(NormalEgo loopW)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -773,8 +855,6 @@
 )
 
 (instance openRock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -785,54 +865,44 @@
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 2
-							init: 123 64 0 64 0 0 185 -1 185 12 123 47
+							type: PBarredAccess
+							init:
+								123 64
+								0 64
+								0 0
+								185 -1
+								185 12
+								123 47
 							yourself:
 						)
 						((Polygon new:)
-							type: 2
+							type: PBarredAccess
 							init:
-								0
-								67
-								73
-								67
-								73
-								82
-								83
-								87
-								102
-								87
-								102
-								106
-								92
-								106
-								92
-								114
-								125
-								114
-								125
-								132
-								166
-								132
-								166
-								138
-								198
-								155
-								319
-								155
-								319
-								189
-								0
-								189
+								0 67
+								73 67
+								73 82
+								83 87
+								102 87
+								102 106
+								92 106
+								92 114
+								125 114
+								125 132
+								166 132
+								166 138
+								198 155
+								319 155
+								319 189
+								0 189
 							yourself:
 						)
 				)
-				(SolvePuzzle POINTS_FINDSECRETENTRANCE 10)
+				(SolvePuzzle f84FindTrollCave 10)
 				(Bset fTrollDoorOpen)
 			)
 			(1
 				(theRock stopUpd:)
-				(NormalEgo 1)
+				(NormalEgo loopW)
 				(HandsOn)
 			)
 		)
@@ -840,25 +910,26 @@
 )
 
 (instance sExitNorth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 204 -2 self)
 			)
-			(1 (curRoom newRoom: 78))
+			(1
+				(curRoom newRoom: 78)
+			)
 		)
 	)
 )
 
 (instance sEnterFromNorth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= cycles 2))
+			(0
+				(HandsOff)
+				(= cycles 2)
+			)
 			(1
 				(ego setPri: 4 setMotion: MoveTo 169 52 self)
 			)
@@ -872,8 +943,6 @@
 )
 
 (instance sEnterFromCave of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -890,36 +959,34 @@
 )
 
 (instance sExitThruDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setPri: 1 setMotion: MoveTo 30 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 89))
+			(1
+				(curRoom newRoom: 89)
+			)
 		)
 	)
 )
 
 (instance sExitEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego setMotion: MoveTo 345 (ego y?) self)
 			)
-			(1 (curRoom newRoom: 85))
+			(1
+				(curRoom newRoom: 85)
+			)
 		)
 	)
 )
 
 (instance sEnterFromEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -939,19 +1006,17 @@
 )
 
 (instance sPushEgoRight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(antwerp setLoop: 0 setCycle: BegLoop self)
 				(ego setMotion: 0 setHeading: 270 self)
-				(= gEgoLooper (ego looper?))
+				(= saveLooper (ego looper?))
 				(= antwerpX (antwerp x?))
 				(= antwerpY (antwerp y?))
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 			)
 			(1)
 			(2
@@ -1011,32 +1076,32 @@
 					(NormalEgo)
 					(ego
 						loop: 1
-						cycleSpeed: gEgoCycleSpeed
-						moveSpeed: gEgoMoveSpeed
-						looper: gEgoLooper
+						cycleSpeed: saveSpeed
+						moveSpeed: saveMoveSpeed
+						looper: saveLooper
 					)
 					(client status: 1 setScript: sRandBounce)
 				)
 			)
-			(8 (EgoDead 136 137))
+			(8
+				(EgoDead 136 137)
+			)
 		)
 	)
 )
 
 (instance sPushEgoLeft of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(antwerp setLoop: 1 setCycle: BegLoop self)
 				(ego setMotion: 0 setHeading: 90 self)
-				(= gEgoLooper (ego looper?))
+				(= saveLooper (ego looper?))
 				(= antwerpX (antwerp x?))
 				(= antwerpY (antwerp y?))
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 			)
 			(1)
 			(2
@@ -1095,22 +1160,22 @@
 					(HandsOn)
 					(ego
 						loop: 0
-						cycleSpeed: gEgoCycleSpeed
-						moveSpeed: gEgoMoveSpeed
-						looper: gEgoLooper
+						cycleSpeed: saveSpeed
+						moveSpeed: saveMoveSpeed
+						looper: saveLooper
 					)
 					(NormalEgo)
 					(client status: 1 setScript: sRandBounce)
 				)
 			)
-			(8 (EgoDead 136 137))
+			(8
+				(EgoDead 136 137)
+			)
 		)
 	)
 )
 
 (instance sAvoidEgo of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (not (-- register))
@@ -1143,7 +1208,7 @@
 			send     6
 			ldi      1
 			aTop     register
-			lsl      local1
+			lsl      antwerpState
 			dup     
 			eq?     
 			bnt      code_1742
@@ -1165,7 +1230,7 @@
 			lofsa    antwerp
 			send     12
 			ldi      4
-			sal      local1
+			sal      antwerpState
 			jmp      code_1820
 code_1728:
 			pushi    #setMotion
@@ -1178,7 +1243,7 @@ code_1728:
 			lofsa    antwerp
 			send     12
 			ldi      2
-			sal      local1
+			sal      antwerpState
 			jmp      code_1820
 code_1742:
 			dup     
@@ -1206,7 +1271,7 @@ code_1742:
 			lofsa    antwerp
 			send     12
 			ldi      3
-			sal      local1
+			sal      antwerpState
 			jmp      code_1820
 code_1775:
 			pushi    #setMotion
@@ -1219,7 +1284,7 @@ code_1775:
 			lofsa    antwerp
 			send     12
 			ldi      1
-			sal      local1
+			sal      antwerpState
 			jmp      code_1820
 code_178e:
 			dup     
@@ -1244,7 +1309,7 @@ code_178e:
 			lofsa    antwerp
 			send     12
 			ldi      4
-			sal      local1
+			sal      antwerpState
 			jmp      code_1820
 code_17bd:
 			pushi    #setMotion
@@ -1257,7 +1322,7 @@ code_17bd:
 			lofsa    antwerp
 			send     12
 			ldi      2
-			sal      local1
+			sal      antwerpState
 			jmp      code_1820
 code_17d7:
 			dup     
@@ -1285,7 +1350,7 @@ code_17d7:
 			lofsa    antwerp
 			send     12
 			ldi      3
-			sal      local1
+			sal      antwerpState
 			jmp      code_1820
 code_180a:
 			pushi    #setMotion
@@ -1298,7 +1363,7 @@ code_180a:
 			lofsa    antwerp
 			send     12
 			ldi      1
-			sal      local1
+			sal      antwerpState
 code_1820:
 			toss    
 			jmp      code_187b
@@ -1318,7 +1383,7 @@ code_1824:
 			pushi    1
 			pushi    244
 			pushi    1
-			lsl      gEgoCycleSpeed
+			lsl      saveSpeed
 			pushi    146
 			pushi    1
 			lofsa    sRandBounce
@@ -1357,13 +1422,11 @@ code_187b:
 )
 
 (instance sFlyOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ANTWERP 0 C_BOUNCEDOFF 1 self)
+				(messager say: N_ANTWERP NULL C_BOUNCEDOFF 1 self)
 			)
 			(1
 				(Bset fAntwerpInSky)
@@ -1392,7 +1455,7 @@ code_187b:
 			)
 			(5 (= seconds 3))
 			(6
-				(messager say: N_ROOM 0 C_ANTWERPSCARED)
+				(messager say: N_ROOM NULL C_ANTWERPSCARED)
 				(HandsOn)
 				(self dispose:)
 			)
@@ -1401,24 +1464,22 @@ code_187b:
 )
 
 (instance sFightSword of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 				(Load RES_VIEW 501)
 				(Load RES_VIEW 502)
 				(if (< (ego y?) (antwerp y?))
 					(antwerp setCycle: Forward setMotion: PolyPath 169 128)
 					(ego setMotion: PolyPath 230 75 self)
-					(= local1 4)
+					(= antwerpState 4)
 				else
 					(antwerp setCycle: Forward setMotion: PolyPath 170 56)
 					(ego setMotion: PolyPath 166 120 self)
-					(= local1 2)
+					(= antwerpState 2)
 				)
 			)
 			(1 (ego setHeading: 270 self))
@@ -1456,17 +1517,21 @@ code_187b:
 				(ego setCycle: BegLoop self)
 			)
 			(6
-				(messager say: N_ROOM 0 C_APPROACH)
-				(if (== (ego x?) 230) (NormalEgo 1) else (NormalEgo 5))
+				(messager say: N_ROOM NULL C_APPROACH)
+				(if (== (ego x?) 230)
+					(NormalEgo 1)
+				else
+					(NormalEgo 5)
+				)
 				(Face ego antwerp)
 				(ego
-					cycleSpeed: gEgoCycleSpeed
-					moveSpeed: gEgoMoveSpeed
+					cycleSpeed: saveSpeed
+					moveSpeed: saveMoveSpeed
 					setCycle: Walk
 					setMotion: PolyPath 181 88 self
 				)
 				(antwerp setMotion: PolyPath 110 81 self)
-				(= local1 1)
+				(= antwerpState 1)
 			)
 			(7)
 			(8
@@ -1500,7 +1565,7 @@ code_187b:
 				(if (-- register)
 					(antwerp setMotion: MoveTo antwerpX antwerpY self)
 				else
-					(messager say: N_ROOM 0 C_HOLYMACKAREL 1 self)
+					(messager say: N_ROOM NULL C_HOLYMACKAREL 1 self)
 					(Bset fAntwerpInSky)
 					(antwerp status: 0)
 					(= state 17)
@@ -1517,7 +1582,7 @@ code_187b:
 			(18
 				(HandsOn)
 				(NormalEgo)
-				(ego cycleSpeed: gEgoCycleSpeed moveSpeed: gEgoMoveSpeed)
+				(ego cycleSpeed: saveSpeed moveSpeed: saveMoveSpeed)
 				(self dispose:)
 			)
 		)
@@ -1532,18 +1597,18 @@ code_187b:
 			(0
 				(theIconBar advanceCurIcon:)
 				(HandsOff)
-				(= gEgoCycleSpeed (ego cycleSpeed?))
-				(= gEgoMoveSpeed (ego moveSpeed?))
+				(= saveSpeed (ego cycleSpeed?))
+				(= saveMoveSpeed (ego moveSpeed?))
 				(Load RES_VIEW 502)
 				(Load RES_VIEW 512)
 				(if (< (ego y?) (antwerp y?))
 					(antwerp setCycle: Forward setMotion: PolyPath 169 128)
 					(ego setMotion: PolyPath 230 75 self)
-					(= local1 4)
+					(= antwerpState 4)
 				else
 					(antwerp setCycle: Forward setMotion: PolyPath 170 56)
 					(ego setMotion: PolyPath 171 118 self)
-					(= local1 2)
+					(= antwerpState 2)
 				)
 			)
 			(1 (ego setHeading: 270 self))
@@ -1585,13 +1650,13 @@ code_187b:
 				(if (== (ego x?) 230) (NormalEgo 1) else (NormalEgo 5))
 				(Face ego antwerp)
 				(ego
-					cycleSpeed: gEgoCycleSpeed
-					moveSpeed: gEgoMoveSpeed
+					cycleSpeed: saveSpeed
+					moveSpeed: saveMoveSpeed
 					setCycle: Walk
 					setMotion: PolyPath 181 88 self
 				)
 				(antwerp setMotion: PolyPath 110 81 self)
-				(= local1 1)
+				(= antwerpState 1)
 			)
 			(7)
 			(8
@@ -1623,14 +1688,18 @@ code_187b:
 			(14 (ego setCycle: BegLoop self))
 			(15
 				(cond 
-					((-- register) (antwerp setMotion: MoveTo antwerpX antwerpY self))
-					((not (TakeDamage 10)) (EgoDead 136 137))
+					((-- register)
+						(antwerp setMotion: MoveTo antwerpX antwerpY self)
+					)
+					((not (TakeDamage 10))
+						(EgoDead 136 137)
+					)
 					(else
 						(NormalEgo)
 						(ego
 							loop: 1
-							cycleSpeed: gEgoCycleSpeed
-							moveSpeed: gEgoMoveSpeed
+							cycleSpeed: saveSpeed
+							moveSpeed: saveMoveSpeed
 						)
 						(messager say: N_ROOM 0 C_HOLYMACKAREL 1 self)
 						(Bset fAntwerpInSky)
@@ -1650,8 +1719,6 @@ code_187b:
 )
 
 (instance sDazzleAnAntwerp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1717,6 +1784,6 @@ code_187b:
 
 (instance rockPoly of Polygon
 	(properties
-		type $0002
+		type PBarredAccess
 	)
 )

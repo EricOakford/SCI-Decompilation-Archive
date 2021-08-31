@@ -84,7 +84,7 @@
 	(method (init)
 		(= nightPalette 1462)
 		(PalVary PALVARYTARGET 1462)
-		(kernel_128 462)
+		(AssertPalette 462)
 		(self ignoreActors:)
 		(super init: &rest)
 	)
@@ -114,7 +114,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset fFlag284)
+				(Bset fBattleStarted)
 				(client
 					action: 0
 					ateEgo: 0
@@ -123,7 +123,10 @@
 					stopUpd:
 				)
 				(= ticks (Random 12 15))
-				(if (Btst fFlag285) (Bclr fFlag285) (= state 1))
+				(if (Btst fMonsterRecoils)
+					(Bclr fMonsterRecoils)
+					(= state 1)
+				)
 			)
 			(1
 				(if (Random 0 3)
@@ -136,7 +139,7 @@
 				)
 			)
 			(2
-				(Bclr fFlag284)
+				(Bclr fBattleStarted)
 				(= local1 0)
 				(client action: 1 setCel: 0 setCycle: CycleTo 4 1 self)
 				(if (client tryAttack: (client opponent?))
@@ -159,7 +162,7 @@
 			)
 			(5
 				(client stopUpd:)
-				(Bset fFlag284)
+				(Bset fBattleStarted)
 				(= ticks 20)
 			)
 			(6 (self changeState: 0))

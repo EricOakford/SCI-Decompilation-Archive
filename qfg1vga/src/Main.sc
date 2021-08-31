@@ -462,7 +462,7 @@
 	global423
 	oldScore
 	disabledActions					;which action icons are disabled
-	gClient
+	projObj						;object ID for projectile
 	targetDaggers					;how many daggers are in the target
 	userName						;(40 variable array) - name of the user, as supplied by the user when starting a new game.
 		global429
@@ -881,7 +881,7 @@
 		StopWalk
 		PolyPath
 		Polygon
-		(ScriptID GLORY_INIT)
+		(ScriptID HQINIT)
 		(ScriptID SIGHT)
 		(= systemWindow hSW)
 		(= ego HQEgo)
@@ -1814,7 +1814,7 @@
 		else
 			(super handleEvent: event &rest)
 		)
-		(if (Btst fFlag361)
+		(if (Btst fPickItUp)
 			((ScriptID GLORYINV 1) init:)
 		)
 	)

@@ -27,7 +27,9 @@
 	
 	(method (getHurt damage)
 		(super getHurt: damage)
-		(if (> damage 0) (Bset 233))
+		(if (> damage 0)
+			(Bset fMonsterDazzled)
+		)
 	)
 	
 	(method (drawStatus)
@@ -48,8 +50,8 @@
 		)
 	)
 	
-	(method (setMonsterHP param1)
-		(monsterHP value: param1 draw:)
-		(return 1)
+	(method (setMonsterHP newValue)
+		(monsterHP value: newValue draw:)
+		(return TRUE)
 	)
 )

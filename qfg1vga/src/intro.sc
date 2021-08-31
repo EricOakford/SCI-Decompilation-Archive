@@ -75,8 +75,6 @@
 )
 
 (instance playMusic of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
 		(if (and (== state 0) (== (cSound prevSignal?) -1))
@@ -100,7 +98,6 @@
 )
 
 (instance roomScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

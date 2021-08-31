@@ -176,7 +176,7 @@
 	(method (doit)
 		(cond 
 			((ego script?) 0)
-			((and (== (ego edgeHit?) SOUTH) (not (Btst fOttoBackToBed)))
+			((and (== (ego edgeHit?) SOUTH) (not (Btst fOttoAwakened)))
 				(if Night
 					(= daySheriffBreakIn Day)
 					(curRoom newRoom: 320)
@@ -210,7 +210,7 @@
 	)
 	
 	(method (dispose)
-		(Bclr fOttoBackToBed)
+		(Bclr fOttoAwakened)
 		(Bset fBeenIn321)
 		(DisposeScript DPATH)
 		(DisposeScript MOVECYC)
@@ -757,7 +757,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset fOttoBackToBed)
+				(Bset fOttoAwakened)
 				(messager say: N_ROOM NULL NULL 3 self)
 			)
 			(1
@@ -821,7 +821,7 @@
 			)
 			(8
 				(messager say: N_ROOM 0 0 6)
-				(Bclr fOttoBackToBed)
+				(Bclr fOttoAwakened)
 				(bottomDoor stopUpd:)
 				(NormalEgo)
 				(HandsOn)

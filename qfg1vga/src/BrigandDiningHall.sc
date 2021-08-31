@@ -21,9 +21,9 @@
 	blockedDoor
 	frontDoorBarred
 	candelabraPushed
-	local3
-	local4
-	local5
+	brigsSawBlockedChair
+	chairWasntBlocked
+	stoogesEntered
 	local6
 	egoOnTable
 	local8
@@ -108,7 +108,7 @@
 		(ChangeGait MOVE_WALK 0)
 		(chairs init: setPri: 6 addToPic:)
 		(rDoor init: stopUpd:)
-		(lDoor init: ignoreActors: 1 stopUpd:)
+		(lDoor init: ignoreActors: TRUE stopUpd:)
 		(theCandelabra init: stopUpd:)
 		(drunk
 			init:
@@ -147,7 +147,7 @@
 	(method (init)
 		(= nightPalette 195)
 		(PalVary PALVARYTARGET 195)
-		(kernel_128 95)
+		(AssertPalette 95)
 		(super init:)
 	)
 )
@@ -1131,7 +1131,7 @@
 					(brig1 setMotion: MoveTo 260 250)
 					(brig2 setMotion: MoveTo 304 250)
 					(brig3 setMotion: MoveTo 240 250 self)
-					(= local3 1)
+					(= brigsSawBlockedChair TRUE)
 				else
 					(brig1 setMotion: MoveTo 340 204)
 					(brig2 setMotion: MoveTo 340 204)
@@ -1143,10 +1143,10 @@
 				(brig1 stopUpd: hide:)
 				(brig2 stopUpd: dispose:)
 				(brig3 stopUpd: dispose:)
-				(if local3
+				(if brigsSawBlockedChair
 					(client setScript: chairTooSoon)
 				else
-					(= local3 1)
+					(= brigsSawBlockedChair 1)
 					(client setScript: 0)
 				)
 				(self dispose:)
@@ -1692,13 +1692,13 @@
 					((or local13 local12 local11)
 						(self changeState: 0)
 					)
-					(local5
+					(stoogesEntered
 						(self changeState: 5)
 					)
-					(local4
+					(chairWasntBlocked
 						(self changeState: 4)
 					)
-					(local3
+					(brigsSawBlockedChair
 						(self changeState: 3)
 					)
 					(else
@@ -1751,7 +1751,7 @@
 						)
 					)
 					(brig1 setScript: brigandsEast)
-					(= local4 1)
+					(= chairWasntBlocked 1)
 				)
 				(if
 					(and
@@ -1759,7 +1759,7 @@
 						(!= (brig1 script?) brigandsSouth)
 						(!= (brig1 script?) brigandsEast)
 					)
-					(= local4 (= register 1))
+					(= chairWasntBlocked (= register 1))
 				)
 				(self changeState: 0)
 			)
@@ -1776,7 +1776,7 @@
 							)
 						)
 						(moe setScript: brigandsWest)
-						(= local5 1)
+						(= stoogesEntered 1)
 					)
 				)
 				(self changeState: 0)

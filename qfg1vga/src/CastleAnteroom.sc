@@ -20,20 +20,64 @@
 )
 
 (local
-	[local0 6] = [0 10 -11 8 -9 999]
-	[local6 5] = [0 7 -12 15 999]
-	[local11 3] = [0 -16 999]
-	[local14 4] = [0 18 14 999]
-	[local18 4] = [0 13 17 999]
-	[local22 6] = [0 22 20 21 19 999]
-	[local28 7]
-	[local35 4]
-	[local39 2] = [0 999]
-	[local41 7] = [0 -11 -9 -12 -16 999]
-	local48
-	local49
-	oldCycleSpeed
-	oldSortedFeatures
+	baronTellMainBranch = [
+		STARTTELL
+		C_BARON_CASTLE
+		-11		;C_BARON_CURSE
+		C_BARON_SELF
+		-9		;C_BARON_BRIGANDS
+		ENDTELL
+		]
+	baronTell1 = [
+		STARTTELL
+		C_BARON_BABAYAGA
+		-12		;C_BARON_DAUGHTER
+		C_BARON_PROPHECY
+		ENDTELL
+		]
+	baronTell2 = [
+		STARTTELL
+		-16		;C_BARON_REWARD
+		ENDTELL
+		]
+	baronTell3 = [
+		STARTTELL
+		C_BARON_YORICK
+		C_BARON_MAGIC
+		ENDTELL
+		]
+	baronTell4 = [
+		STARTTELL
+		C_BARON_BRIGANDS
+		C_BARON_WARLOCK
+		ENDTELL
+		]
+	barnardTellMainBranch = [
+		STARTTELL
+		C_BARNARD_KOBOLD
+		C_BARNARD_BEAR
+		C_BARNARD_BRIGANDS
+		C_BARNARD_BARONET
+		ENDTELL
+		]
+	[baronTellTree 7]
+	[barnardTellTree 4]
+	barnardTellKeys = [
+		STARTTELL
+		ENDTELL
+		]
+	baronTellKeys = [
+		STARTTELL
+		-11		;C_BARON_CURSE
+		-9		;C_BARON_BRIGANDS
+		-12		;C_BARON_DAUGHTER
+		-16		;C_BARON_REWARD
+		ENDTELL
+		]
+	gettingLate
+	talkRet
+	savCycleSpeed
+	savSortedFeatures
 )
 (instance rm141 of Room
 	(properties
@@ -43,13 +87,13 @@
 	)
 	
 	(method (init)
-		(= [local28 0] @local0)
-		(= [local28 1] @local6)
-		(= [local28 2] @local11)
-		(= [local28 3] @local14)
-		(= [local28 4] @local18)
-		(= [local28 5] 999)
-		(= [local35 0] @local22)
+		(= [baronTellTree 0] @baronTellMainBranch)
+		(= [baronTellTree 1] @baronTell1)
+		(= [baronTellTree 2] @baronTell2)
+		(= [baronTellTree 3] @baronTell3)
+		(= [baronTellTree 4] @baronTell4)
+		(= [baronTellTree 5] ENDTELL)
+		(= [barnardTellTree 0] @barnardTellMainBranch)
 		(Load VIEW 141)
 		(curRoom
 			addObstacle:
@@ -83,9 +127,9 @@
 				)
 		)
 		(super init:)
-		(= oldSortedFeatures useSortedFeatures)
+		(= savSortedFeatures useSortedFeatures)
 		(= useSortedFeatures FALSE)
-		(= disabledActions (| disabledActions (| ACTION_RUN ACTION_SNEAK)))
+		(|= disabledActions (| ACTION_RUN ACTION_SNEAK))
 		(ego actions: egoActions init:)
 		(SolvePuzzle f141MeetBaron 10)
 		(StatusLine enable:)
@@ -121,9 +165,9 @@
 ;;;		(throne init:)
 		
 		(guard3 init: setPri: 4 stopUpd:)
-		(baronTeller init: baron @local0 @local28 @local41)
+		(baronTeller init: baron @baronTellMainBranch @baronTellTree @baronTellKeys)
 		(baron setPri: 5 actions: baronTeller init:)
-		(bernardTeller init: son @local22 @local35 @local39)
+		(bernardTeller init: son @barnardTellMainBranch @barnardTellTree @barnardTellKeys)
 		(son setPri: 4 actions: bernardTeller init: stopUpd:)
 		(if (or (== egoGait MOVE_SNEAK) (== egoGait MOVE_RUN))
 			(ChangeGait MOVE_WALK TRUE)
@@ -142,7 +186,7 @@
 	
 	(method (dispose)
 		(= nightPalette 0)
-		(= useSortedFeatures oldSortedFeatures)
+		(= useSortedFeatures savSortedFeatures)
 		(= disabledActions FALSE)
 		(super dispose:)
 	)
@@ -193,7 +237,6 @@
 )
 
 (instance egoActions of Actions
-	
 	(method (doVerb theVerb)
 		(return
 			(switch theVerb
@@ -234,14 +277,13 @@
 )
 
 (instance baronTeller of Teller
-	
 	(method (doVerb theVerb)
 		(switch theVerb
 			((OneOf theVerb V_FLAME V_TRIGGER V_DAZZLE)
 				(messager say: N_ROOM V_FLAME)
 			)
 			(V_TALK
-				(if local48
+				(if gettingLate
 					(curRoom setScript: leaveRoom)
 				else
 					(SolvePuzzle f141TalkToBaron 3)
@@ -255,7 +297,7 @@
 				(curRoom doVerb: theVerb &rest)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 )
 
@@ -279,17 +321,16 @@
 )
 
 (instance bernardTeller of Teller
-	
 	(method (doVerb theVerb)
 		(switch theVerb
-			((OneOf theVerb V_FLAME 77 78)
+			((OneOf theVerb V_FLAME V_TRIGGER V_DAZZLE)
 				(messager say: N_ROOM V_FLAME)
 			)
 			(V_TALK
 				(super doVerb: theVerb &rest)
 			)
 			(V_LOOK
-				(messager say: 3 1)
+				(messager say: N_BARNARD V_LOOK)
 			)
 			(else 
 				(curRoom doVerb: theVerb &rest)
@@ -616,7 +657,6 @@
 )
 
 (instance egoEnters of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -628,7 +668,7 @@
 			)
 			(2
 				(Face ego baron)
-				(= oldCycleSpeed (ego cycleSpeed?))
+				(= savCycleSpeed (ego cycleSpeed?))
 				(= seconds 2)
 			)
 			(3
@@ -644,7 +684,7 @@
 			(4
 				(NormalEgo 7 4)
 				(theGame setCursor: waitCursor)
-				(ego cycleSpeed: oldCycleSpeed)
+				(ego cycleSpeed: savCycleSpeed)
 				(= seconds 2)
 			)
 			(5
@@ -655,7 +695,6 @@
 )
 
 (instance openingSpeech of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -719,8 +758,6 @@
 )
 
 (instance becomeHero of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -765,7 +802,6 @@
 )
 
 (instance answerQs of Script
-	
 	(method (init)
 		(HandsOn)
 		(super init: &rest)
@@ -784,7 +820,7 @@
 				(= ticks 6)
 			)
 			(1
-				(if (not local48)
+				(if (not gettingLate)
 					(self changeState: 0)
 				else
 					(client setScript: leaveRoom)
@@ -795,7 +831,6 @@
 )
 
 (instance leaveRoom of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -805,7 +840,7 @@
 				(= ticks 24)
 			)
 			(1
-				(NormalEgo 1 4)
+				(NormalEgo loopW 4)
 				(= ticks 12)
 			)
 			(2
@@ -849,8 +884,6 @@
 )
 
 (instance guardBlocks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -894,7 +927,7 @@
 	(method (init)
 		(= nightPalette 2141)
 		(PalVary PALVARYTARGET 2141)
-		(kernel_128 1141)
+		(AssertPalette 1141)
 		(= font userFont)
 		(super init: baronBust baronEye baronMouth &rest)
 	)
@@ -937,7 +970,7 @@
 	(method (init)
 		(= nightPalette 2014)
 		(PalVary PALVARYTARGET 2014)
-		(kernel_128 1014)
+		(AssertPalette 1014)
 		(= font userFont)
 		(super init: bernieBust bernieEye bernieMouth &rest)
 	)

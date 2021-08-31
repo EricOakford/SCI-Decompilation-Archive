@@ -29,6 +29,8 @@
 (define C_HOLYMACKAREL 14)
 (define C_CANTDAZZLE 10)
 (define C_CANTCALM 9)
+(define C_ROCK_CLOSED 5)
+(define C_ROCK_OPEN 6)
 
 ;;; NOUNS
 

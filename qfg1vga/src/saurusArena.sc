@@ -145,10 +145,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset fFlag284)
+				(Bset fBattleStarted)
 				(client action: 0 ateEgo: 0 setLoop: 0)
-				(if (Btst fFlag285)
-					(Bclr fFlag285)
+				(if (Btst fMonsterRecoils)
+					(Bclr fMonsterRecoils)
 					(= state 2)
 					(self cue:)
 				else
@@ -191,7 +191,7 @@
 				(= ticks 30)
 			)
 			(3
-				(Bclr fFlag284)
+				(Bclr fBattleStarted)
 				(if (client tryAttack: (client opponent?))
 					(client ateEgo: TRUE)
 				)

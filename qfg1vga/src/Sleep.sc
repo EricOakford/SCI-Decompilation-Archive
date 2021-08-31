@@ -100,7 +100,7 @@
 							10 13 29 30 31 38 39 40 41 76 83
 							93 94 141 300 301 310 311 320 21 330 332
 							;rooms added for unique messages
-							15 22 55
+							15 22 55 96
 						)
 						((= evt (Event new:)) type: mouseDown message: V_SLEEP)
 						(if (not (mouseDownHandler handleEvent: evt))

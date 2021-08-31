@@ -17,8 +17,8 @@
 	local1
 	local2
 	local3
-	[local4 6] = [18 202 201 18 212 201]
-	[local10 6] = [146 156 146 153 160 153]
+	titleX = [18 202 201 18 212 201]
+	titleY = [146 156 146 153 160 153]
 )
 (procedure (SelectedCharacter charType &tmp evt)
 	(if (fightChar cel?)
@@ -39,9 +39,9 @@
 	(theTitle
 		setLoop: 1
 		cel: charType
-		x: [local4 charType]
+		x: [titleX charType]
 		y:
-			[local10 (if (thiefChar cel?)
+			[titleY (if (thiefChar cel?)
 				(if (< howFast fast)
 					(thiefChar setCel: 0 cue:)
 				else
@@ -57,8 +57,8 @@
 		(Bclr fHideCursor)
 		(theGame setCursor: ARROW_CURSOR TRUE
 			(switch charType
-				(0 50)
-				(1 140)
+				(FIGHTER 50)
+				(MAGIC_USER 140)
 				(else  235)
 			) 150
 		)
@@ -125,8 +125,7 @@
 			(switch (event message?)
 				(dirW
 					(event claimed: TRUE)
-					(script
-						state:
+					(script state:
 						(switch (- (theTitle cel?) 1)
 							(0 1)
 							(1 3)
@@ -379,18 +378,16 @@
 		(roundRobin state: 9 cue:)
 		(self
 			setLoop: 2
-			x: [local4 (+ cel 3)]
-			y: [local10 (+ cel 3)]
+			x: [titleX (+ cel 3)]
+			y: [titleY (+ cel 3)]
 		)
 	)
 )
 
 (instance roundRobin of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((< howFast 2) 0)
+			((< howFast fast) 0)
 			((and local0 (== (fightChar cel?) 2))
 				(spareSound number: 993 setVol: 127 loop: 1 play:)
 				(= local0 0)

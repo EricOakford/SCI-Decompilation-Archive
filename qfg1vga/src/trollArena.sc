@@ -91,7 +91,7 @@
 	(method (init)
 		(= nightPalette 1452)
 		(PalVary PALVARYTARGET 1452)
-		(kernel_128 452)
+		(AssertPalette 452)
 		(self ignoreActors: ignoreControl: cWHITE)
 		(if (or (== prevRoomNum 88) (== prevRoomNum 89))
 			(= strength
@@ -131,7 +131,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bclr fFlag284)
+				(Bclr fBattleStarted)
 				(client
 					action: 0
 					cel: 0
@@ -142,8 +142,8 @@
 					setPri: -1
 				)
 				(trollLegs cel: 0 x: 182 y: 91 show: forceUpd:)
-				(if (Btst fFlag285)
-					(Bclr fFlag285)
+				(if (Btst fMonsterRecoils)
+					(Bclr fMonsterRecoils)
 					(self cue:)
 				else
 					(switch (Random 0 2)
@@ -164,7 +164,7 @@
 				(= ticks 18)
 			)
 			(2
-				(Bclr fFlag284)
+				(Bclr fBattleStarted)
 				(client action: 3 loop: 3 cel: 0 x: 180 y: 93 forceUpd:)
 				(trollLegs hide: forceUpd:)
 				(= ticks (Random 12 18))

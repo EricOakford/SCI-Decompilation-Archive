@@ -434,7 +434,7 @@
 						((Btst fGotSeed)
 							(AlreadyGotSeed)
 						)
-						((TrySkill CLIMB tryClimbSpittingSpirea 0)
+						((TrySkill CLIMB 35 0)
 							(ego setScript: goodClimb)
 						)
 						(else

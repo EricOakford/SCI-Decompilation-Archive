@@ -1022,7 +1022,7 @@
 				(cond 
 					((ego inRect: 100 62 145 84)
 						(rm82Sound number: 104 loop: 1 play:)
-						(Bset fEgoFallOffCliff)
+						(Bset fEgoKnockedOffCliff)
 						(ego setScript: sFallDown)
 						(= seconds 4)
 					)
@@ -1050,7 +1050,7 @@
 			)
 			(7 (= cycles 10))
 			(8
-				(if (and (Btst fClimbedHenryCliff) (not (Btst fEgoFallOffCliff)) (not (Btst fEgoSquashed)))
+				(if (and (Btst fClimbedHenryCliff) (not (Btst fEgoKnockedOffCliff)) (not (Btst fEgoSquashed)))
 					(messager say: N_ROOM NULL C_COMEONIN 1 self)
 					(ego setScript: goOnIn)
 					(self dispose:)
@@ -1479,7 +1479,7 @@
 				(cond 
 					((ego inRect: 100 62 145 84)
 						(rm82Sound number: 104 loop: 1 play:)
-						(Bset fEgoFallOffCliff)
+						(Bset fEgoKnockedOffCliff)
 						(ego setScript: sFallDown)
 						(= seconds 4)
 					)
@@ -1803,8 +1803,8 @@
 			)
 			(11
 				(= disabledActions 0)
-				(if (Btst fEgoFallOffCliff)
-					(Bclr fEgoFallOffCliff)
+				(if (Btst fEgoKnockedOffCliff)
+					(Bclr fEgoKnockedOffCliff)
 				else
 					(messager say: N_ROOM NULL 16)
 				)

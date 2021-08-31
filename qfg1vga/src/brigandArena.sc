@@ -89,7 +89,7 @@
 	(method (init)
 		(= nightPalette 1467)
 		(PalVary PALVARYTARGET 1467)
-		(kernel_128 467)
+		(AssertPalette 467)
 		(self ignoreActors:)
 		(if (or (== prevRoomNum 91) (== prevRoomNum 73))
 			(= strength
@@ -137,8 +137,8 @@
 					cycleSpeed: 22
 					setCel: 0
 				)
-				(if (Btst fFlag285)
-					(Bclr fFlag285)
+				(if (Btst fMonsterRecoils)
+					(Bclr fMonsterRecoils)
 					(self changeState: 2)
 				else
 					(switch (Random 0 5)

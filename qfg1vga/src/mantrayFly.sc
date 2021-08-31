@@ -240,7 +240,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bclr fFlag351)
+				(Bclr fMantrayDies)
 				(HandsOff)
 				(= oldMoveSpeed (ego moveSpeed?))
 				(= oldCycleSpeed (ego cycleSpeed?))

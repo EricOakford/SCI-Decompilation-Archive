@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 223)
-(include game.sh)
+(include game.sh) (include "39.shm")
 (use Main)
 (use Procs)
 (use Motion)
@@ -13,8 +13,6 @@
 )
 
 (instance tooGood of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -22,12 +20,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset 304)
+				(Bset fStopFightingMaster)
 				((ScriptID 39 1) stop:)
 				(= cycles 2)
 			)
 			(1
-				(messager say: 8 0 3)
+				(messager say: N_ROOM NULL C_ENOUGH)
 				((ScriptID 39 2)
 					view: 639
 					setLoop: (if (client fightLeft?) 5 else 4)
@@ -36,25 +34,26 @@
 				(= cycles 6)
 			)
 			(2
-				(SkillUsed 4 50)
-				(if (== heroType 0) (SolvePuzzle 608 10 0))
-				(messager say: 8 0 10)
+				(SkillUsed LUCK 50)
+				(if (== heroType FIGHTER)
+					(SolvePuzzle f39BeatMaster 10 FIGHTER)
+				)
+				(messager say: N_ROOM NULL C_BEATHIM)
 				((ScriptID 39 2)
 					setLoop: (if (== ((ScriptID 39 2) loop?) 5) 1 else 0)
 					cycleSpeed: 0
 					moveSpeed: 0
 					setCycle: Walk
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(if ((ScriptID 39 2) fightLeft?) 340 else -20)
 						((ScriptID 39 2) y?)
 						self
 				)
-				(Bclr 239)
-				(Bset 249)
+				(Bclr fMasterIsHere)
+				(Bset fBeatMaster)
 			)
 			(3
-				(Bclr 304)
+				(Bclr fStopFightingMaster)
 				((client opponent?) dispose:)
 				(ego
 					posn: ((client opponent?) x?) ((client opponent?) y?)
@@ -72,8 +71,6 @@
 )
 
 (instance tooTired of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -82,12 +79,12 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset 304)
+				(Bset fStopFightingMaster)
 				((ScriptID 39 1) stop:)
 				(= cycles 2)
 			)
 			(1
-				(theGame setCursor: waitCursor 1)
+				(theGame setCursor: waitCursor TRUE)
 				(client
 					view: 514
 					setLoop: 0
@@ -97,16 +94,18 @@
 				)
 			)
 			(2
-				(if (< [egoStats 15] 2)
-					(messager say: 8 0 9 1 self)
+				(if (< [egoStats STAMINA] 2)
+					(messager say: N_ROOM NULL C_TIREDOUT 1 self)
 				else
-					(messager say: 8 0 13 1 self)
+					(messager say: N_ROOM NULL C_OUTOFBOUNDS 1 self)
 				)
 			)
 			(3
 				(client setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
-			(4 (= ticks 120))
+			(4
+				(= ticks 120)
+			)
 			(5
 				(client setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
@@ -129,10 +128,12 @@
 						setScript: (ScriptID 224 0)
 					)
 				)
-				(Bclr 304)
+				(Bclr fStopFightingMaster)
 				(= ticks 14)
 			)
-			(9 (client dispose:))
+			(9
+				(client dispose:)
+			)
 		)
 	)
 )

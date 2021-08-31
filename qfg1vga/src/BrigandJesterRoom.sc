@@ -34,76 +34,127 @@
 
 (local
 	local0
-	local1
+	angYorickToEgo
 	local2
-	local3
-	local4
-	local5
-	local6
-	local7
-	local8
+	initThrowTimer
+	throwTimer
+	chainDoorTimer
+	chainDoorIsOpen
+	yorickLeaveCued
+	yorickGone
 	local9
 	[fly 7]
-	[local17 7] = [160 164 160 156 155 155 157]
-	[local24 7] = [14 15 9 12 13 10 8]
-	local31
-	[local32 3] = [-13 -7 11]
-	[local35 3] = [-1 -10 -11]
-	[local38 3] = [8 9 9]
-	[local41 5] = [-11 -8 -3 4 7]
-	[local46 5] = [-26 -26 -26 -26 -26]
-	[local51 5] = [-1 1 2 3 1]
-	[local56 21] = [1 0 161 69 1 1 161 66 1 2 160 62 1 3 159 59 1 4 159 59 -32768]
-	local77
+	flyX = [160 164 160 156 155 155 157]
+	flyY = [14 15 9 12 13 10 8]
+	throwCued
+	yorickX = [-13 -7 11]
+	yorickY = [-1 -10 -11]
+	thingY = [8 9 9]
+	yorickX2 = [-11 -8 -3 4 7]
+	yorickY2 = [-26 -26 -26 -26 -26]
+	thingY2 = [-1 1 2 3 1]
+	yorickLeavePath = [
+		1 0
+		161 69
+		1 1
+		161 66
+		1 2
+		160 62
+		1 3
+		159 59
+		1 4
+		159 59
+		PATHEND
+		]
+	shakeCount
 	local78
-	theGNewSpeed
-	[local80 14] = [0 -11 -27 -24 -30 999 0 34 20 32 26 29 37 999]
-	[local94 3] = [0 -23 999]
-	[local97 3] = [0 28 999]
-	[local100 3] = [0 25 999]
-	[local103 7] = [0 21 22 33 31 19 999]
-	[local110 11]
-	[local121 7] = [0 -11 -27 -24 -30 -23 999]
+	saveSpeed
+	yorickTellMainBranch = [
+		STARTTELL
+		-11		;C_YORICK
+		-27		;C_LEADER
+		-24		;C_EXIT
+		-30		;C_MINOTAUR
+		ENDTELL
+		STARTTELL
+		C_WARLOCK
+		C_CARAVAN
+		C_POWDER
+		C_JESTER
+		C_ME
+		C_POTION
+		ENDTELL
+		]
+	yorickTell1 = [
+		STARTTELL
+		-23		;C_ELSA
+		ENDTELL
+		]
+	yorickTell2 = [
+		STARTTELL
+		C_MAZE
+		ENDTELL
+		]
+	yorickTell3 = [
+		STARTTELL
+		C_FORTRESS
+		ENDTELL
+		]
+	yorickTell4 = [
+		STARTTELL
+		C_DISENCHANTMENT
+		C_DISPEL
+		C_SWORDY_LORDY
+		C_MIRROR
+		C_BARON
+		ENDTELL
+		]
+	[yorickTellTree 11]
+	[yorickTellKeys 7] = [
+		STARTTELL
+		-11		;C_YORICK
+		-27		;C_LEADER
+		-24		;C_EXIT
+		-30		;C_MINOTAUR
+		-23		;C_ELSA
+		ENDTELL
+		]
 )
 (procedure (Disoriented)
 	(switch (++ yesNoTimer)
 		(1 (messager say: N_ROOM NULL C_DISORIENTED 1))
-		(2 (messager say: N_ROOM 0 C_DISORIENTED 2))
-		(3 (messager say: N_ROOM 0 C_DISORIENTED 3))
-		(4 (messager say: N_ROOM 0 C_DISORIENTED 4))
-		(5 (messager say: N_ROOM 0 C_DISORIENTED 5))
-		(6 (messager say: N_ROOM 0 C_DISORIENTED 6))
-		(7 (messager say: N_ROOM 0 C_DISORIENTED 7))
+		(2 (messager say: N_ROOM NULL C_DISORIENTED 2))
+		(3 (messager say: N_ROOM NULL C_DISORIENTED 3))
+		(4 (messager say: N_ROOM NULL C_DISORIENTED 4))
+		(5 (messager say: N_ROOM NULL C_DISORIENTED 5))
+		(6 (messager say: N_ROOM NULL C_DISORIENTED 6))
+		(7 (messager say: N_ROOM NULL C_DISORIENTED 7))
 	)
 )
 
-(procedure (localproc_021a &tmp i)
-	(= i 0)
-	(while (< i 6)
+(procedure (InitFlies &tmp i)
+	(for ((= i 0)) (< i 6) ((++ i))
 		(= [fly i] (Clone (ScriptID 98 28)))
 		([fly i]
 			ignoreActors:
-			posn:
-				[local17 i]
-				[local24 i]
+			posn: [flyX i] [flyY i]
 			init:
 			setLoop: 9
 			setPri: 15
 		)
-		(if (< howFast 3)
+		(if (< howFast fastest)
 			([fly i] addToPic:)
 		else
 			([fly i] setCycle: Forward setMotion: Wander)
 		)
-		(++ i)
 	)
 )
 
 (instance isScript of Code
-	(properties)
-	
-	(method (doit param1)
-		(if (param1 respondsTo: #script) (param1 script?))
+	(method (doit obj)
+		(if (obj respondsTo: #script)
+			(obj script?)
+		)
 	)
 )
 
@@ -115,17 +166,15 @@
 	)
 	
 	(method (init)
-		(= disabledActions
-			(| (= disabledActions (| disabledActions ACTION_SNEAK)) ACTION_RUN)
-		)
+		(|= disabledActions (| ACTION_RUN ACTION_SNEAK))
 		(narrator y: 21)
-		(= [local110 0] @local80)
-		(= [local110 1] @local94)
-		(= [local110 2] @local97)
-		(= [local110 3] @local100)
-		(= [local110 4] @local103)
-		(= [local110 5] @local80)
-		(= [local110 6] 999)
+		(= [yorickTellTree 0] @yorickTellMainBranch)
+		(= [yorickTellTree 1] @yorickTell1)
+		(= [yorickTellTree 2] @yorickTell2)
+		(= [yorickTellTree 3] @yorickTell3)
+		(= [yorickTellTree 4] @yorickTell4)
+		(= [yorickTellTree 5] @yorickTellMainBranch)
+		(= [yorickTellTree 6] ENDTELL)
 		(LoadMany RES_SCRIPT REVERSE JUMP CHASE WANDER)
 		MoveCycle
 		DPath
@@ -133,28 +182,50 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
-					init: 275 122 283 114 298 116 303 129 268 129
+					type: PBarredAccess
+					init:
+						275 122
+						283 114
+						298 116
+						303 129
+						268 129
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 18 124 23 116 45 115 41 124
+					type: PBarredAccess
+					init:
+						18 124
+						23 116
+						45 115
+						41 124
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 4 113 4 146 0 146 0 113
+					type: PBarredAccess
+					init:
+						4 113
+						4 146
+						0 146
+						0 113
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 319 113 315 113 315 108 319 108
+					type: PBarredAccess
+					init:
+						319 113
+						315 113
+						315 108
+						319 108
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 0 82 0 64 19 64 20 83 0 83
+					type: PBarredAccess
+					init:
+						0 82
+						0 64
+						19 64
+						20 83
+						0 83
 					yourself:
 				)
 		)
@@ -162,11 +233,11 @@
 		(SolvePuzzle f96EnterJesterRoom 8)
 		(mouseDownHandler add: self)
 		(keyDownHandler add: self)
-		(= local4 (= local3 300))
+		(= throwTimer (= initThrowTimer 300))
 		(roomMusic init: play:)
-		(localproc_021a)
+		(InitFlies)
 		(= yesNoTimer 0)
-		(yorickTeller init: yorick @local80 @local110 @local121)
+		(yorickTeller init: yorick @yorickTellMainBranch @yorickTellTree @yorickTellKeys)
 		(yorick init: setPri: 3 actions: yorickTeller stopUpd:)
 		(features
 			add:
@@ -193,7 +264,7 @@
 ;;;		((ScriptID 98 34) init:)
 ;;;		((ScriptID 98 35) init:)
 		
-		(if (< howFast 3)
+		(if (< howFast fastest)
 			((ScriptID 98 25) init: setPri: 14 addToPic:)
 		else
 			((ScriptID 98 25)
@@ -233,7 +304,7 @@
 			setLoop: 8
 			stopUpd:
 		)
-		(ChangeGait MOVE_WALK 0)
+		(ChangeGait MOVE_WALK FALSE)
 		(NormalEgo)
 		(ego posn: 89 186 init: setScript: talksAlot)
 	)
@@ -245,102 +316,138 @@
 		(cond 
 			(
 				(and
-					(!= (ego onControl: 1) 1)
-					(not (Btst fOpeningLeaderDoor))
-					(not (Btst 260))
-					(not (Btst 271))
+					(!= (ego onControl: origin) cBLACK)
+					(not (Btst fOpeningDoor))
+					(not (Btst fRollingOut))
+					(not (Btst fYorickThrows))
 				)
-				(Bset fOpeningLeaderDoor)
+				(Bset fOpeningDoor)
 				(switch (ego onControl: origin)
-					(512
-						(Bset 256)
-						(if local6 (= local5 1))
+					(cLBLUE
+						(Bset fFallTrapdoor)
+						(if chainDoorIsOpen
+							(= chainDoorTimer 1)
+						)
 						(ego setPri: 15)
 						((ScriptID 98 14) setScript: trapFall)
 					)
-					(64
-						(Bset 256)
-						(if local6 (= local5 1))
+					(cBROWN
+						(Bset fFallTrapdoor)
+						(if chainDoorIsOpen
+							(= chainDoorTimer 1)
+						)
 						(ego setPri: (+ (ego priority?) 1))
 						((ScriptID 98 15) setScript: trapFall)
 					)
-					(128
-						(Bset 256)
-						(if local6 (= local5 1))
+					(cLGREY
+						(Bset fFallTrapdoor)
+						(if chainDoorIsOpen
+							(= chainDoorTimer 1)
+						)
 						((ScriptID 98 15) setScript: trapFall)
 					)
-					(2048
-						(Bset 256)
-						(if local6 (= local5 1))
+					(cLCYAN
+						(Bset fFallTrapdoor)
+						(if chainDoorIsOpen
+							(= chainDoorTimer 1)
+						)
 						(trap4 setScript: trapFall)
 					)
-					(4
-						(if local6 (= local5 1))
+					(cGREEN
+						(if chainDoorIsOpen
+							(= chainDoorTimer 1)
+						)
 						(if (ego inRect: 15 97 61 106)
-							(Bset 256)
+							(Bset fFallTrapdoor)
 							((ScriptID 98 13) setScript: trapFall 0 0)
 						else
 							(ego setScript: fallDownscreen)
 						)
 					)
-					(2
-						(if local6 (= local5 1))
+					(cBLUE
+						(if chainDoorIsOpen
+							(= chainDoorTimer 1)
+						)
 						(if (ego inRect: 42 91 90 105)
-							(Bset 256)
+							(Bset fFallTrapdoor)
 							((ScriptID 98 13) setScript: trapFall 0 1)
 						else
 							(ego setScript: fallUpscreen)
 						)
 					)
-					(16
-						(Bset 258)
-						(if local6 (= local5 1))
+					(cRED
+						(Bset fFallingOffLedge)
+						(if chainDoorIsOpen
+							(= chainDoorTimer 1)
+						)
 						(if (ego inRect: 66 95 84 105)
-							(Bset 256)
+							(Bset fFallTrapdoor)
 							((ScriptID 98 13) setScript: trapFall 0 3)
 						else
 							(ego setScript: fallSideways)
 						)
 					)
-					(8
-						(if local6 (= local5 1))
+					(cCYAN
+						(if chainDoorIsOpen
+							(= chainDoorTimer 1)
+						)
 						(cond 
-							((and (not (Btst 264)) (< (ego y?) 86)) (ego setScript: fallDownscreen))
-							((> (ego y?) 135) (ego setScript: fallSideways 0 1))
-							((> (ego y?) 107) (ego setScript: fallSideways))
-							((> (ego y?) 86) (ego setScript: fallDownscreen))
-							(else (Bclr fOpeningLeaderDoor))
+							((and (not (Btst fFakeDoorDown)) (< (ego y?) 86))
+								(ego setScript: fallDownscreen)
+							)
+							((> (ego y?) 135)
+								(ego setScript: fallSideways 0 1)
+							)
+							((> (ego y?) 107)
+								(ego setScript: fallSideways)
+							)
+							((> (ego y?) 86)
+								(ego setScript: fallDownscreen)
+							)
+							(else
+								(Bclr fOpeningDoor)
+							)
 						)
 					)
-					(32
-						(if (not (Btst 264))
-							(Bset 256)
-							(if local6 (= local5 1))
+					(cMAGENTA
+						(if (not (Btst fFakeDoorDown))
+							(Bset fFallTrapdoor)
+							(if chainDoorIsOpen
+								(= chainDoorTimer 1)
+							)
 							((ScriptID 98 13) setScript: trapFall 0 2)
 						else
-							(Bclr fOpeningLeaderDoor)
+							(Bclr fOpeningDoor)
 						)
 					)
-					(else  (Bclr fOpeningLeaderDoor))
+					(else
+						(Bclr fOpeningDoor)
+					)
 				)
 			)
-			((ego inRect: 269 130 302 146) (ego priority: 15))
+			((ego inRect: 269 130 302 146)
+				(ego priority: 15)
+			)
 		)
-		(if (and (not (Btst 263)) (not (Btst fOpeningLeaderDoor)))
+		(if (and (not (Btst fGoThruDoorway)) (not (Btst fOpeningDoor)))
 			(cond 
 				((ego inRect: 309 100 319 112)
-					(if (not (Btst 260))
-						(Bset 263)
+					(if (not (Btst fRollingOut))
+						(Bset fGoThruDoorway)
 						(ego setScript: goTo2)
 					)
 				)
-				((and (== (ego edgeHit?) 4) (< (ego y?) 150))
-					(Bset 263)
-					(if local6 (= local5 1))
+				((and (== (ego edgeHit?) WEST) (< (ego y?) 150))
+					(Bset fGoThruDoorway)
+					(if chainDoorIsOpen
+						(= chainDoorTimer 1)
+					)
 					(ego setScript: goTo12)
 				)
-				(
-				(and (ego inRect: 11 45 33 56) (not (ego script?))) (Bset 263) (ego setScript: goTo15))
+				((and (ego inRect: 11 45 33 56) (not (ego script?)))
+					(Bset fGoThruDoorway)
+					(ego setScript: goTo15)
+				)
 			)
 		)
 		(super doit: &rest)
@@ -372,8 +479,8 @@
 	(method (doVerb theVerb)
 		(return
 			(if (OneOf theVerb V_OPEN V_DETECT V_TRIGGER V_DAZZLE V_CALM V_FLAME V_FETCH V_ZAP)
-				(if (and (IsObject yorick) (not local8))
-					(messager say: N_ROOM V_FLAME C_YORICKFLEES 1 self)
+				(if (and (IsObject yorick) (not yorickGone))
+					(messager say: N_ROOM V_FLAME C_YORICK 1 self)
 					(return TRUE)
 				else
 					(messager say: N_ROOM V_FLAME C_TOOFARAWAY)
@@ -386,7 +493,7 @@
 	)
 	
 	(method (cue)
-		(= local8 1)
+		(= yorickGone 1)
 		((ScriptID 98 21) setScript: takeADive)
 	)
 )
@@ -407,10 +514,11 @@
 		)
 		(return
 			(switch theVerb
-				(V_LOOK (messager say: N_LITTLESIGN V_LOOK))
+				(V_LOOK
+					(messager say: N_LITTLESIGN V_LOOK)
+				)
 				(V_DO
-					(if
-					(and (== (ego onControl: 1) 256) (> (ego x?) 100))
+					(if (and (== (ego onControl: origin) cGREY) (> (ego x?) 100))
 						(door13 setScript: happyFace)
 					else
 						(messager say: N_LITTLESIGN V_DO C_TOOFARAWAY)
@@ -441,12 +549,12 @@
 		(return
 			(switch theVerb
 				(V_DO
-					(if (== (ego onControl: 1) 8192)
-						(= local6 1)
-						(= local5 1000)
+					(if (== (ego onControl: origin) cLMAGENTA)
+						(= chainDoorIsOpen TRUE)
+						(= chainDoorTimer 1000)
 						(door11 setScript: (ScriptID 98 36))
 					else
-						(messager say: 1 4)
+						(messager say: N_CHAIN V_DO)
 					)
 				)
 				(else 
@@ -470,8 +578,8 @@
 		;added to fix speed bug
 		(if (< (Abs (- gameTime name)) 2) (return))
 		(= name gameTime)
-		(if (and (Btst 270) (not script))
-			(Bclr 270)
+		(if (and (Btst fFallTrap4) (not script))
+			(Bclr fFallTrap4)
 			(self setScript: fallDownscreen)
 		)
 		(super doit:)
@@ -502,16 +610,20 @@
 		(if (< (Abs (- gameTime name)) 2) (return))
 		(= name gameTime)
 		(cond 
-			((> local5 1)
-				(if (== (ego onControl: 1) 1024)
-					(= local5 0)
-					(= local6 0)
+			((> chainDoorTimer 1)
+				(if (== (ego onControl: origin) cLGREEN)
+					(= chainDoorTimer 0)
+					(= chainDoorIsOpen 0)
 					(self setScript: goTo6)
 				else
-					(-- local5)
+					(-- chainDoorTimer)
 				)
 			)
-			((== local5 1) (= local5 0) (= local6 0) (self setCycle: BegLoop))
+			((== chainDoorTimer 1)
+				(= chainDoorTimer 0)
+				(= chainDoorIsOpen 0)
+				(self setCycle: BegLoop)
+			)
 		)
 		(super doit:)
 	)
@@ -524,7 +636,7 @@
 		(return
 			(switch theVerb
 				(V_DO
-					(if (== (ego onControl: 1) 1024)
+					(if (== (ego onControl: origin) cLGREEN)
 						(door11 setScript: brickWall)
 					else
 						(messager say: N_DOOR11 V_DO C_TOOFARAWAY)
@@ -556,7 +668,7 @@
 			(switch theVerb
 				(V_DO
 					(if (ego inRect: 49 86 83 91)
-						(Bset fOpeningLeaderDoor)
+						(Bset fOpeningDoor)
 						(door3 setScript: knockOut)
 					else
 						(messager say: N_DOOR3 V_DO C_TOOFARAWAY)
@@ -583,9 +695,9 @@
 		;added to fix speed bug
 		(if (< (Abs (- gameTime name)) 2) (return))
 		(= name gameTime)
-		(if (Btst 269)
-			(Bclr 269)
-			(Bset fOpeningLeaderDoor)
+		(if (Btst fBallConks)
+			(Bclr fBallConks)
+			(Bset fOpeningDoor)
 			(ego
 				setPri: (+ (ego priority?) 1)
 				setScript: fallSideways
@@ -607,7 +719,7 @@
 	(method (init)
 		(= nightPalette 196)
 		(PalVary PALVARYTARGET 196)
-		(kernel_128 96)
+		(AssertPalette 96)
 		(super init:)
 	)
 	
@@ -616,22 +728,24 @@
 		(if (< (Abs (- gameTime name)) 2) (return))
 		(= name gameTime)
 		(cond 
-			((> local4 1) (-- local4))
-			((== local4 1)
-				(= local4 local3)
+			((> throwTimer 1)
+				(-- throwTimer)
+			)
+			((== throwTimer 1)
+				(= throwTimer initThrowTimer)
 				(if
 					(and
-						(Btst 267)
+						(Btst fNoMoreTalking)
 						(not (cast firstTrue: #perform isScript))
-						(not (Btst 263))
+						(not (Btst fGoThruDoorway))
 						(not isHandsOff)
 						(< (ego x?) 295)
-						(!= (ego onControl: 1) 16384)
-						(!= (ego onControl: 1) 8192)
+						(!= (ego onControl: origin) cYELLOW)
+						(!= (ego onControl: origin) cLMAGENTA)
 						(not local2)
 						(> (ego y?) 83)
 					)
-					(Bset 265)
+					(Bset fYorickThrewSomething)
 					(self setScript: throwIt)
 				)
 			)
@@ -640,27 +754,35 @@
 			(cond 
 				(
 					(<
-						(= local1
+						(= angYorickToEgo
 							(GetAngle (yorick x?) (yorick y?) (ego x?) (ego y?))
 						)
 						145
 					)
-					(if (!= (yorick cel?) 2) (yorick setCel: 2))
+					(if (!= (yorick cel?) 2)
+						(yorick setCel: 2)
+					)
 				)
-				((< local1 215) (if (!= (yorick cel?) 1) (yorick setCel: 1)))
-				((!= (yorick cel?) 0) (yorick setCel: 0))
+				((< angYorickToEgo 215)
+					(if (!= (yorick cel?) 1)
+						(yorick setCel: 1)
+					)
+				)
+				((!= (yorick cel?) 0)
+					(yorick setCel: 0)
+				)
 			)
 		)
 		(cond 
-			((and (Btst fBefriendedYorick) (not local7) (not local8))
-				(= local7 1)
+			((and (Btst fBefriendedYorick) (not yorickLeaveCued) (not yorickGone))
+				(= yorickLeaveCued TRUE)
 				((ScriptID 98 32) dispose:)
 				(self view: 298 setLoop: 0 setCel: 0)
 			)
-			((and local7 (ego mover?))
+			((and yorickLeaveCued (ego mover?))
 				(NormalEgo)
-				(= local7 0)
-				(= local8 1)
+				(= yorickLeaveCued 0)
+				(= yorickGone TRUE)
 				((ScriptID 98 21) setScript: takeADive)
 			)
 		)
@@ -669,14 +791,11 @@
 )
 
 (instance yorickTeller of Teller
-	(properties)
-	
 	(method (showDialog &tmp superShowDialog)
 		(if (== (= superShowDialog (super showDialog:)) -23)
 			(SolvePuzzle f96AskAboutElsa 8)
-			;UPGRADE: Allow Yorick to leave
+			;UPGRADE: Flag now set to allow Yorick to leave
 			(Bset fBefriendedYorick)
-			((ScriptID 98 21) setScript: takeADive)
 		)
 		(return superShowDialog)
 	)
@@ -704,9 +823,7 @@
 	)
 )
 
-(instance fallUpscreen of Script
-	(properties)
-	
+(instance fallUpscreen of Script	
 	(method (dispose)
 		(Bset fNoMoreTalking)
 		(super dispose:)
@@ -747,14 +864,13 @@
 				(if (not (TakeDamage 5))
 					(EgoDead 114 115 2 5 517)
 				else
-					(Bclr 258)
-					(Bclr fOpeningLeaderDoor)
-					(Bset 260)
-					(if (Btst 256)
-						(Bclr 256)
+					(Bclr fFallingOffLedge)
+					(Bclr fOpeningDoor)
+					(Bset fRollingOut)
+					(if (Btst fFallTrapdoor)
+						(Bclr fFallTrapdoor)
 						(ego setScript: rollOut)
-						(if
-						(or (== client trap4) (== client (ScriptID 98 13)))
+						(if (or (== client trap4) (== client (ScriptID 98 13)))
 							(client setPri: (+ (client priority?) 1))
 						)
 						(client setCel: 0 setScript: 0)
@@ -768,8 +884,6 @@
 )
 
 (instance fallDownscreen of Script
-	(properties)
-	
 	(method (dispose)
 		(Bset fNoMoreTalking)
 		(super dispose:)
@@ -779,7 +893,9 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (Btst 264)) ((ScriptID 98 20) setPri: 1))
+				(if (not (Btst fFakeDoorDown))
+					((ScriptID 98 20) setPri: 1)
+				)
 				(if (and (< (ego y?) 110) (!= client trap4))
 					(trap4 setPri: 6)
 					(ego setPri: (- (ego priority?) 1))
@@ -817,11 +933,11 @@
 				(if (not (TakeDamage 5))
 					(EgoDead 114 115 2 5 517)
 				else
-					(Bclr 258)
-					(Bclr fOpeningLeaderDoor)
-					(Bset 260)
-					(if (Btst 256)
-						(Bclr 256)
+					(Bclr fFallingOffLedge)
+					(Bclr fOpeningDoor)
+					(Bset fRollingOut)
+					(if (Btst fFallTrapdoor)
+						(Bclr fFallTrapdoor)
 						(ego setScript: rollOut)
 						(client
 							setCel: 0
@@ -840,8 +956,6 @@
 )
 
 (instance rollOut of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -850,15 +964,19 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(theGame setCursor: 942 1)
+				(theGame setCursor: 942 TRUE)
 				(User canInput: TRUE)
-				(= theGNewSpeed speed)
-				(if (Btst 264)
-					(Bclr 264)
+				(= saveSpeed speed)
+				(if (Btst fFakeDoorDown)
+					(Bclr fFakeDoorDown)
 					((ScriptID 98 20) setCycle: BegLoop)
 				)
-				(if (not (Btst fPulledChain)) (yorick setLoop: 3 setCycle: Forward))
-				(if (trap4 cel?) (trap4 setCycle: BegLoop))
+				(if (not (Btst fPulledChain))
+					(yorick setLoop: 3 setCycle: Forward)
+				)
+				(if (trap4 cel?)
+					(trap4 setCycle: BegLoop)
+				)
 				(door11 setCycle: EndLoop self)
 			)
 			(1
@@ -877,8 +995,13 @@
 				)
 			)
 			(2
-				(if (Btst 264) (Bclr 264) ((ScriptID 98 19) dispose:))
-				(if (not (Btst fPulledChain)) (yorick setLoop: 3))
+				(if (Btst fFakeDoorDown)
+					(Bclr fFakeDoorDown)
+					((ScriptID 98 19) dispose:)
+				)
+				(if (not (Btst fPulledChain))
+					(yorick setLoop: 3)
+				)
 				(ego setPri: 7 setMotion: MoveTo 312 109 self)
 			)
 			(3
@@ -890,7 +1013,9 @@
 			)
 			(4
 				(Palette PALIntensity 71 255 0)
-				(if (not (Btst fPulledChain)) (yorick setLoop: 3))
+				(if (not (Btst fPulledChain))
+					(yorick setLoop: 3)
+				)
 				((ScriptID 98 14) setCel: 2)
 				((ScriptID 98 16) setCel: 2)
 				(ego
@@ -937,10 +1062,10 @@
 			(9
 				(ego x: (- (ego x?) 4))
 				(HandsOn)
-				(ego setLoop: 1 illegalBits: -32768)
+				(ego setLoop: 1 illegalBits: cWHITE)
 				(NormalEgo)
-				(Bclr 260)
-				(theGame setSpeed: theGNewSpeed)
+				(Bclr fRollingOut)
+				(theGame setSpeed: saveSpeed)
 				(trap4 setPri: 5)
 				(self dispose:)
 			)
@@ -949,8 +1074,6 @@
 )
 
 (instance happyFace of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -981,7 +1104,10 @@
 				((ScriptID 98 30) setMotion: JumpTo 220 200 self)
 				(door13 setCycle: BegLoop)
 			)
-			(4 (Bset 269) (Bset 258))
+			(4
+				(Bset fBallConks)
+				(Bset fFallingOffLedge)
+			)
 			(5
 				((ScriptID 98 30) posn: 500 500 stopUpd:)
 				(= ticks 30)
@@ -998,8 +1124,6 @@
 )
 
 (instance goTo2 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -1024,8 +1148,8 @@
 			)
 			(3
 				(HandsOn)
-				(ego illegalBits: -32768)
-				(Bclr 263)
+				(ego illegalBits: cWHITE)
+				(Bclr fGoThruDoorway)
 				(client setScript: 0)
 			)
 		)
@@ -1033,8 +1157,6 @@
 )
 
 (instance goTo6 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -1060,8 +1182,8 @@
 			)
 			(4
 				(HandsOn)
-				(User canInput: 1)
-				(Bclr 263)
+				(User canInput: TRUE)
+				(Bclr fGoThruDoorway)
 				(client setScript: 0)
 			)
 		)
@@ -1069,8 +1191,6 @@
 )
 
 (instance goTo12 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -1079,7 +1199,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= theGNewSpeed speed)
+				(= saveSpeed speed)
 				(ego
 					illegalBits: 0
 					setMotion: MoveTo (- (ego x?) 25) (ego y?) self
@@ -1111,9 +1231,9 @@
 			)
 			(5
 				(HandsOn)
-				(Bset 267)
-				(Bclr 263)
-				(theGame setSpeed: theGNewSpeed)
+				(Bset fNoMoreTalking)
+				(Bclr fGoThruDoorway)
+				(theGame setSpeed: saveSpeed)
 				(client setScript: 0)
 			)
 		)
@@ -1121,8 +1241,6 @@
 )
 
 (instance goTo15 of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -1145,10 +1263,12 @@
 				)
 			)
 			(2
-				(if (Btst fPulledChain) (Bset 267))
+				(if (Btst fPulledChain)
+					(Bset fNoMoreTalking)
+				)
 				(NormalEgo)
 				(HandsOn)
-				(Bclr 263)
+				(Bclr fGoThruDoorway)
 				(client setScript: 0)
 			)
 		)
@@ -1172,22 +1292,20 @@
 )
 
 (instance throwIt of Script
-	(properties)
-	
 	(method (doit)
 		;added to fix speed bug
 		(if (< (Abs (- gameTime name)) 2) (return))
 		(= name gameTime)
 		(if
 			(and
-				(not local31)
+				(not throwCued)
 				(or
-					(Btst fOpeningLeaderDoor)
-					(== (ego onControl: 1) 16384)
+					(Btst fOpeningDoor)
+					(== (ego onControl: origin) cYELLOW)
 					(door11 script?)
 				)
 			)
-			(= local31 1)
+			(= throwCued TRUE)
 			(= cycles 0)
 			(self changeState: 7)
 		)
@@ -1203,33 +1321,33 @@
 			(0
 				(HandsOff)
 				(ego setCycle: 0 setMotion: 0)
-				(Bset 271)
+				(Bset fYorickThrows)
 				(User canInput: FALSE)
 				(if (Btst fPulledChain)
 					(switch (yorick cel?)
 						(0
 							(poof
-								posn: (+ (yorick x?) [local41 0]) (+ (yorick y?) [local46 0])
+								posn: (+ (yorick x?) [yorickX2 0]) (+ (yorick y?) [yorickY2 0])
 							)
 						)
 						(1
 							(poof
-								posn: (+ (yorick x?) [local41 1]) (+ (yorick y?) [local46 1])
+								posn: (+ (yorick x?) [yorickX2 1]) (+ (yorick y?) [yorickY2 1])
 							)
 						)
 						(2
 							(poof
-								posn: (+ (yorick x?) [local41 2]) (+ (yorick y?) [local46 2])
+								posn: (+ (yorick x?) [yorickX2 2]) (+ (yorick y?) [yorickY2 2])
 							)
 						)
 						(3
 							(poof
-								posn: (+ (yorick x?) [local41 3]) (+ (yorick y?) [local46 3])
+								posn: (+ (yorick x?) [yorickX2 3]) (+ (yorick y?) [yorickY2 3])
 							)
 						)
 						(4
 							(poof
-								posn: (+ (yorick x?) [local41 4]) (+ (yorick y?) [local46 4])
+								posn: (+ (yorick x?) [yorickX2 4]) (+ (yorick y?) [yorickY2 4])
 							)
 						)
 					)
@@ -1243,17 +1361,17 @@
 					(switch (yorick cel?)
 						(0
 							(poof
-								posn: (+ (yorick x?) [local32 0]) (+ (yorick y?) [local35 0])
+								posn: (+ (yorick x?) [yorickX 0]) (+ (yorick y?) [yorickY 0])
 							)
 						)
 						(1
 							(poof
-								posn: (+ (yorick x?) [local32 1]) (+ (yorick y?) [local35 1])
+								posn: (+ (yorick x?) [yorickX 1]) (+ (yorick y?) [yorickY 1])
 							)
 						)
 						(2
 							(poof
-								posn: (+ (yorick x?) [local32 2]) (+ (yorick y?) [local35 2])
+								posn: (+ (yorick x?) [yorickX 2]) (+ (yorick y?) [yorickY 2])
 							)
 						)
 					)
@@ -1270,27 +1388,27 @@
 					(switch (yorick cel?)
 						(0
 							(thingThrown
-								posn: (+ (yorick x?) [local41 0]) (+ (yorick y?) [local51 0])
+								posn: (+ (yorick x?) [yorickX2 0]) (+ (yorick y?) [thingY2 0])
 							)
 						)
 						(1
 							(thingThrown
-								posn: (+ (yorick x?) [local41 1]) (+ (yorick y?) [local51 1])
+								posn: (+ (yorick x?) [yorickX2 1]) (+ (yorick y?) [thingY2 1])
 							)
 						)
 						(2
 							(thingThrown
-								posn: (+ (yorick x?) [local41 2]) (+ (yorick y?) [local51 2])
+								posn: (+ (yorick x?) [yorickX2 2]) (+ (yorick y?) [thingY2 2])
 							)
 						)
 						(3
 							(thingThrown
-								posn: (+ (yorick x?) [local41 3]) (+ (yorick y?) [local51 3])
+								posn: (+ (yorick x?) [yorickX2 3]) (+ (yorick y?) [thingY2 3])
 							)
 						)
 						(4
 							(thingThrown
-								posn: (+ (yorick x?) [local41 4]) (+ (yorick y?) [local51 4])
+								posn: (+ (yorick x?) [yorickX2 4]) (+ (yorick y?) [thingY2 4])
 							)
 						)
 					)
@@ -1298,17 +1416,17 @@
 					(switch (yorick cel?)
 						(0
 							(thingThrown
-								posn: (+ (yorick x?) [local32 0]) (+ (yorick y?) [local38 0])
+								posn: (+ (yorick x?) [yorickX 0]) (+ (yorick y?) [thingY 0])
 							)
 						)
 						(1
 							(thingThrown
-								posn: (+ (yorick x?) [local32 1]) (+ (yorick y?) [local38 1])
+								posn: (+ (yorick x?) [yorickX 1]) (+ (yorick y?) [thingY 1])
 							)
 						)
 						(2
 							(thingThrown
-								posn: (+ (yorick x?) [local32 2]) (+ (yorick y?) [local38 2])
+								posn: (+ (yorick x?) [yorickX 2]) (+ (yorick y?) [thingY 2])
 							)
 						)
 					)
@@ -1392,7 +1510,7 @@
 				(= cycles 2)
 			)
 			(6
-				(if (and (not (Btst fPulledChain)) (Btst fOpeningLeaderDoor))
+				(if (and (not (Btst fPulledChain)) (Btst fOpeningDoor))
 					((ScriptID 98 32) setCel: 3)
 					(yorick setLoop: 3 cel: 0 cycleSpeed: 8 setCycle: Forward)
 				)
@@ -1503,7 +1621,7 @@
 			)
 			(8
 				(Bclr 258)
-				(Bclr fOpeningLeaderDoor)
+				(Bclr fOpeningDoor)
 				(Bset 260)
 				(ego setScript: rollOut)
 				(client setScript: 0)
@@ -1541,7 +1659,7 @@
 				(if (Btst fBefriendedYorick)
 					(messager say: N_ROOM NULL C_YORICKFRIEND)
 				)
-				(yorick setLoop: 1 setCel: 0 setCycle: MoveCycle @local56 self)
+				(yorick setLoop: 1 setCel: 0 setCycle: MoveCycle @yorickLeavePath self)
 			)
 			(3
 				(yorick dispose:)
@@ -1557,8 +1675,6 @@
 )
 
 (instance doorFall of Script
-	(properties)
-	
 	(method (dispose)
 		(ego illegalBits: (& (ego illegalBits?) $ffff))
 		(super dispose:)
@@ -1568,8 +1684,8 @@
 		(switch (= state newState)
 			(0
 				(= register 0)
-				(ego illegalBits: (| (ego illegalBits?) $0028))
-				(++ local77)
+				(ego illegalBits: (| (ego illegalBits?) (| cCYAN cMAGENTA)))
+				(++ shakeCount)
 				((ScriptID 98 20)
 					posn: (- ((ScriptID 98 20) x?) 1) ((ScriptID 98 20) y?)
 				)
@@ -1582,11 +1698,11 @@
 				(= ticks 20)
 			)
 			(2
-				(if (< local77 7)
+				(if (< shakeCount 7)
 					(= state -1)
 					(= ticks 1)
 				else
-					(= local77 0)
+					(= shakeCount 0)
 					(= ticks 1)
 				)
 			)
@@ -1595,7 +1711,7 @@
 				(HandsOff)
 				(cond 
 					(
-					(and (== (ego onControl: 1) 4096) (not (ego script?)))
+					(and (== (ego onControl: origin) cLRED) (not (ego script?)))
 						(ego setPri: 15)
 						(= register 1)
 						((ScriptID 98 20) view: 291 loop: 10 setCel: 0)
@@ -1639,7 +1755,7 @@
 			(8 (ego setCycle: EndLoop self))
 			(9
 				((ScriptID 98 19) dispose:)
-				(messager say: N_ROOM 0 C_DOORFALL)
+				(messager say: N_ROOM NULL C_DOORFALL)
 				(= ticks 1)
 			)
 			(10
@@ -1664,20 +1780,18 @@
 )
 
 (instance finalExit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Bset fOpeningLeaderDoor)
+				(Bset fOpeningDoor)
 				((ScriptID 98 19) setPri: 1 setCycle: EndLoop self)
 			)
 			(1
 				(ego illegalBits: 0 setMotion: MoveTo 123 62 self)
 			)
 			(2
-				(Bclr fOpeningLeaderDoor)
+				(Bclr fOpeningDoor)
 				(curRoom newRoom: 97)
 			)
 		)
@@ -1685,25 +1799,28 @@
 )
 
 (instance brickWall of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 1))
+			(0
+				(HandsOff)
+				(= ticks 1)
+			)
 			(1
 				(NormalEgo)
 				((ScriptID 98 8) init:)
 				(door11 setCycle: EndLoop self)
 			)
 			(2
-				(messager say: N_ROOM 0 C_BRICKWALL)
+				(messager say: N_ROOM NULL C_BRICKWALL)
 				(= cycles 4)
 			)
-			(3 (door11 setCycle: BegLoop self))
+			(3
+				(door11 setCycle: BegLoop self)
+			)
 			(4
 				((ScriptID 98 8) dispose:)
 				(HandsOn)
@@ -1714,10 +1831,8 @@
 )
 
 (instance fallSideways of Script
-	(properties)
-	
 	(method (dispose)
-		(Bset 267)
+		(Bset fNoMoreTalking)
 		(super dispose:)
 	)
 	
@@ -1741,13 +1856,20 @@
 						)
 				)
 				(cond 
-					(local78 (= local78 0) (ego x: (- (ego x?) 24)))
-					((Btst 258) (ego x: (+ (ego x?) 2)))
-					(else (ego x: (- (ego x?) 5)))
+					(local78
+						(= local78 0)
+						(ego x: (- (ego x?) 24))
+					)
+					((Btst fFallingOffLedge)
+						(ego x: (+ (ego x?) 2))
+					)
+					(else
+						(ego x: (- (ego x?) 5))
+					)
 				)
 				(ego
 					view: 517
-					setLoop: (if (Btst 258) 3 else 2)
+					setLoop: (if (Btst fFallingOffLedge) 3 else 2)
 					cel: 0
 					cycleSpeed: 8
 					setCycle: CycleTo 2 1 self
@@ -1770,11 +1892,11 @@
 				(if (not (TakeDamage 5))
 					(EgoDead 114 115 2 5 517)
 				else
-					(Bclr 258)
-					(Bclr fOpeningLeaderDoor)
-					(Bset 260)
-					(if (Btst 256)
-						(Bclr 256)
+					(Bclr fFallingOffLedge)
+					(Bclr fOpeningDoor)
+					(Bset fRollingOut)
+					(if (Btst fFallTrapdoor)
+						(Bclr fFallTrapdoor)
 						(ego setScript: rollOut)
 						(if (== client (ScriptID 98 14))
 							(client setPri: (+ (client priority?) 2))
@@ -1794,13 +1916,13 @@
 )
 
 (instance trapFall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (== client trap4) (ego setPri: 15))
+				(if (== client trap4)
+					(ego setPri: 15)
+				)
 				(if (!= client (ScriptID 98 15))
 					(client setPri: (- (client priority?) 1))
 				)
@@ -1812,8 +1934,12 @@
 						)
 						(= ticks 12)
 					)
-					((and (== register 2) (!= client trap4)) (= ticks 12))
-					(else (client setCycle: EndLoop self))
+					((and (== register 2) (!= client trap4))
+						(= ticks 12)
+					)
+					(else
+						(client setCycle: EndLoop self)
+					)
 				)
 			)
 			(1
@@ -1826,20 +1952,29 @@
 			)
 			(2
 				(cond 
-					((== client trap4) (Bset 270) (= register 0) (self dispose:))
+					((== client trap4)
+						(Bset fFallTrap4)
+						(= register 0)
+						(self dispose:)
+					)
 					((== client (ScriptID 98 13))
 						(cond 
 							((== register 1) (client setScript: fallUpscreen 0 1))
-							((== register 2) (client setScript: fallDownscreen))
-							((== register 3) (client setScript: fallSideways))
-							(else (client setScript: fallDownscreen))
+							((== register 2)
+								(client setScript: fallDownscreen)
+							)
+							((== register 3)
+								(client setScript: fallSideways)
+							)
+							(else
+								(client setScript: fallDownscreen)
+							)
 						)
 						(= register 0)
 					)
 					(else
 						(= register 0)
-						(if
-						(and (< (ego x?) 295) (== client (ScriptID 98 14)))
+						(if (and (< (ego x?) 295) (== client (ScriptID 98 14)))
 							(ego x: (+ (ego x?) 25))
 						)
 						(client setScript: fallSideways)
@@ -1871,7 +2006,7 @@
 	(method (init)
 		(= nightPalette 2096)
 		(PalVary PALVARYTARGET 2096)
-		(kernel_128 1096)
+		(AssertPalette 1096)
 		(= font userFont)
 		(super init: yorickBust yorickEye yorickMouth &rest)
 	)

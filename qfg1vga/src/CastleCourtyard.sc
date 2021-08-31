@@ -262,7 +262,7 @@
 				(!= masterDay Day)
 			)
 			(cond 
-				((Btst fFlag239)
+				((Btst fMasterIsHere)
 					(masterTeller
 						init: (ScriptID 39 2) @masterTellMainBranch @masterTellTree @masterTellKeys
 					)
@@ -278,7 +278,7 @@
 						setCycle: Walk
 						init:
 					)
-					(Bset fFlag239)
+					(Bset fMasterIsHere)
 					(self setScript: (ScriptID 222 0))
 				)
 			)
@@ -305,7 +305,7 @@
 		(= nightPalette 0)
 		(= useSortedFeatures saveSortedFeatures)
 		(if (>= Clock 3000)
-			(Bclr fFlag239)
+			(Bclr fMasterIsHere)
 		)
 		(LoadMany FALSE 130 212 222 223 224 220 218 216 217)
 		(super dispose:)

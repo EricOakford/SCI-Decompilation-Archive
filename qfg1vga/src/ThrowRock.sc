@@ -13,23 +13,23 @@
 )
 
 (local
-	local0
-	theGEgoX
-	theGEgoY
-	oldEgoX
-	oldEgoY
-	local5
-	oldSignal
-	oldPriority
-	oldCycleSpeed
-	oldMoveSpeed
-	oldIllBits
-	rockSound
+	rockTarg
+	thisX
+	thisY
+	rockTargX
+	rockTargY
+	gotHit
+	savSignal
+	savPriority
+	savCycleSpeed
+	savMoveSpeed
+	savIllegalBits
+	projSound
 	wasHandsOn
 	hurtEgo
 )
-(procedure (ThrowRock obj theX theY &tmp temp0 temp1 rock evt [temp4 20])
-	(if gClient (return gClient))
+(procedure (ThrowRock atWhat onX onY &tmp pushX pushY projectile evt [temp4 20])
+	(if projObj (return projObj))
 	(if (not isHandsOff)
 		(= wasHandsOn TRUE)
 	)
@@ -40,48 +40,48 @@
 			(return FALSE)
 		else
 			(if (>= argc 2)
-				(= theGEgoX theX)
-				(= theGEgoY theY)
+				(= thisX onX)
+				(= thisY onY)
 			else
-				(= theGEgoX ((= evt (Event new:)) x?))
-				(= theGEgoY (+ (evt y?) 25))
+				(= thisX ((= evt (Event new:)) x?))
+				(= thisY (+ (evt y?) 25))
 				(evt dispose:)
 			)
 			(ego use: iRock 1)
 			(Load SOUND (SoundFX 58))
-			(if obj
-				(Face ego obj)
-				(= oldEgoX (+ (obj x?) (obj targDeltaX?)))
-				(= oldEgoY (+ (obj y?) (obj targDeltaY?)))
-				(= temp0 (- oldEgoX (ego x?)))
-				(= temp1 (- oldEgoY (- (ego y?) 34)))
+			(if atWhat
+				(Face ego atWhat)
+				(= rockTargX (+ (atWhat x?) (atWhat targDeltaX?)))
+				(= rockTargY (+ (atWhat y?) (atWhat targDeltaY?)))
+				(= pushX (- rockTargX (ego x?)))
+				(= pushY (- rockTargY (- (ego y?) 34)))
 				(while
 					(and
-						(< 0 oldEgoX)
-						(< oldEgoX 319)
-						(< 0 oldEgoY)
-						(< oldEgoY 189)
+						(< westEdge rockTargX)
+						(< rockTargX eastEdge)
+						(< westEdge rockTargY)
+						(< rockTargY southEdge)
 					)
-					(= oldEgoX (+ oldEgoX temp0))
-					(= oldEgoY (+ oldEgoY temp1))
+					(+= rockTargX pushX)
+					(+= rockTargY pushY)
 				)
 				(if
 					(not
-						(TrySkill THROW 0 (- 50 (/ (ego distanceTo: obj) 5)))
+						(TrySkill THROW 0 (- 50 (/ (ego distanceTo: atWhat) 5)))
 					)
-					(if (< oldEgoY 0)
-						(= oldEgoY (+ oldEgoY (Random 30 100)))
+					(if (< rockTargY 0)
+						(+= rockTargY (Random 30 100))
 					else
-						(= oldEgoY (- oldEgoY (Random 30 100)))
+						(-= rockTargY (Random 30 100))
 					)
 				)
 			else
 				(SkillUsed THROW (/ [egoStats AGIL] 10))
-				(= oldEgoX theGEgoX)
-				(= oldEgoY theGEgoY)
+				(= rockTargX thisX)
+				(= rockTargY thisY)
 			)
-			(= local0 obj)
-			((= rock (Actor new:))
+			(= rockTarg atWhat)
+			((= projectile (Actor new:))
 				view: 510
 				setLoop: 4
 				setCel: 0
@@ -92,40 +92,38 @@
 				setStep: 25 18
 				init:
 				hide:
-				setScript: rockScript 0 obj
+				setScript: rockScript 0 atWhat
 			)
-			(return 1)
+			(return TRUE)
 		)
 	)
 )
 
 (instance rockScript of Script
-	(properties)
-	
 	(method (doit)
-		(if (IsObject local0)
-			(= oldEgoX (+ (local0 x?) (local0 targDeltaX?)))
-			(= oldEgoY (+ (local0 y?) (local0 targDeltaY?)))
+		(if (IsObject rockTarg)
+			(= rockTargX (+ (rockTarg x?) (rockTarg targDeltaX?)))
+			(= rockTargY (+ (rockTarg y?) (rockTarg targDeltaY?)))
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(= gClient 0)
-		(if (IsObject rockSound)
-			(rockSound dispose:)
+		(= projObj 0)
+		(if (IsObject projSound)
+			(projSound dispose:)
 		)
 		(if wasHandsOn
 			(HandsOn)
 		)
 		(NormalEgo)
 		(ego
-			loop: (if (== (ego loop?) 2) 1 else 0)
-			priority: oldPriority
-			illegalBits: oldIllBits
-			signal: oldSignal
-			cycleSpeed: oldCycleSpeed
-			moveSpeed: oldMoveSpeed
+			loop: (if (== (ego loop?) loopS) loopW else loopE)
+			priority: savPriority
+			illegalBits: savIllegalBits
+			signal: savSignal
+			cycleSpeed: savCycleSpeed
+			moveSpeed: savMoveSpeed
 		)
 		(if (IsObject register)
 			(register getHurt: 1)
@@ -137,17 +135,19 @@
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
-				(= gClient client)
-				(= oldSignal (ego signal?))
-				(= oldPriority (ego priority?))
-				(= oldIllBits (ego illegalBits?))
-				(= oldCycleSpeed (ego cycleSpeed?))
-				(= oldMoveSpeed (ego moveSpeed?))
+				(= projObj client)
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
+				(= savCycleSpeed (ego cycleSpeed?))
+				(= savMoveSpeed (ego moveSpeed?))
 				(HandsOff)
-				(if (ego onMe: oldEgoX (- oldEgoY 35)) (= hurtEgo 1))
+				(if (ego onMe: rockTargX (- rockTargY 35))
+					(= hurtEgo TRUE)
+				)
 				(ego
 					setMotion: 0
-					setHeading: (if (<= oldEgoX (ego x?)) 270 else 90) self
+					setHeading: (if (<= rockTargX (ego x?)) 270 else 90) self
 				)
 			)
 			(1
@@ -158,17 +158,19 @@
 					cycleSpeed: 8
 					setCycle: CycleTo 3 1 self
 				)
-				((= rockSound (Sound new:))
+				((= projSound (Sound new:))
 					number: (SoundFX 58)
 					priority: 15
 					init:
 				)
 			)
 			(2
-				(if hurtEgo (= oldEgoX (ego x?)) (= oldEgoY (ego y?)))
+				(if hurtEgo
+					(= rockTargX (ego x?)) (= rockTargY (ego y?))
+				)
 				(= temp0
 					(cond 
-						((< (= temp0 (Abs (- oldEgoX (ego x?)))) 20) 10)
+						((< (= temp0 (Abs (- rockTargX (ego x?)))) 20) 10)
 						((< temp0 30) 15)
 						((< temp0 50) 20)
 						((< temp0 80) 25)
@@ -184,7 +186,7 @@
 						)
 						(ego y?)
 					setCycle: Forward
-					setMotion: MoveTo oldEgoX oldEgoY self
+					setMotion: MoveTo rockTargX rockTargY self
 				)
 				(ego setCycle: EndLoop)
 				(= ticks 6)
@@ -194,8 +196,8 @@
 			)
 			(4
 				(client hide:)
-				(if (or local5 hurtEgo)
-					(rockSound play: self)
+				(if (or gotHit hurtEgo)
+					(projSound play: self)
 				else
 					(self cue:)
 				)

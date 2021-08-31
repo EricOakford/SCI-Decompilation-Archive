@@ -351,48 +351,30 @@
 					init:
 					setMotion: PolyPath 264 146 egoEnters
 				)
-				(= disabledActions (| disabledActions ACTION_REST))
+				(|= disabledActions ACTION_REST)
 				(curRoom
 					addObstacle:
 						((Polygon new:)
-							type: 2
+							type: PBarredAccess
 							init:
-								0
-								0
-								319
-								0
-								319
-								132
-								271
-								133
-								261
-								129
-								239
-								131
-								183
-								125
-								170
-								121
-								155
-								124
-								123
-								124
-								108
-								130
-								97
-								127
-								89
-								132
-								94
-								137
-								241
-								155
-								319
-								155
-								319
-								189
-								0
-								189
+								0 0
+								319 0
+								319 132
+								271 133
+								261 129
+								239 131
+								183 125
+								170 121
+								155 124
+								123 124
+								108 130
+								97 127
+								89 132
+								94 137
+								241 155
+								319 155
+								319 189
+								0 189
 							yourself:
 						)
 				)
@@ -468,14 +450,16 @@
 		(super dispose:)
 	)
 	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(if (OneOf theVerb V_DETECT V_OPEN V_TRIGGER V_DAZZLE V_ZAP V_CALM V_FLAME V_FETCH)
 			(ego setScript: startSpell)
 		else
 			(switch theVerb
-				(V_LOOK (messager say: N_ROOM V_LOOK))
+				(V_LOOK
+					(messager say: N_ROOM V_LOOK)
+				)
 				(else 
-					(super doVerb: theVerb param2 &rest)
+					(super doVerb: theVerb theItem &rest)
 				)
 			)
 		)
@@ -490,7 +474,7 @@
 
 (instance brigandS of Sound
 	(properties
-		flags $ffff
+		flags -1
 		number 73
 		priority 3
 		loop -1
@@ -503,7 +487,7 @@
 		y 126
 		noun N_ARCHER1
 		view 91
-		signal $2000
+		signal ignrHrz
 	)
 )
 
@@ -514,7 +498,7 @@
 		noun N_ARCHER2
 		view 91
 		loop 1
-		signal $2000
+		signal ignrHrz
 	)
 )
 
@@ -525,7 +509,7 @@
 		noun N_ARCHER3
 		view 91
 		loop 2
-		signal $2000
+		signal ignrHrz
 	)
 )
 
@@ -537,7 +521,7 @@
 		view 91
 		loop 3
 		priority 5
-		signal $2010
+		signal (| ignrHrz fixPriOn)
 	)
 )
 
@@ -548,7 +532,7 @@
 		noun N_ARCHER5
 		view 91
 		loop 4
-		signal $2000
+		signal ignrHrz
 	)
 )
 
@@ -558,7 +542,7 @@
 		y 101
 		noun N_SPEARMAN4
 		view 92
-		signal $2000
+		signal ignrHrz
 	)
 )
 
@@ -570,7 +554,7 @@
 		view 92
 		loop 1
 		priority 6
-		signal $2010
+		signal (| ignrHrz fixPriOn)
 	)
 )
 
@@ -583,12 +567,12 @@
 		loop 6
 	)
 	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(V_DO (EgoDead 143 144))
 			(V_LOOK (messager say: N_STIFF V_LOOK))
 			(else 
-				(super doVerb: theVerb param2 &rest)
+				(super doVerb: theVerb theItem &rest)
 			)
 		)
 	)
@@ -636,7 +620,7 @@
 		sightAngle 40
 	)
 	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(V_DO
 				(if (< (ego distanceTo: self) 70)
@@ -646,7 +630,7 @@
 				)
 			)
 			(else 
-				(super doVerb: theVerb param2 &rest)
+				(super doVerb: theVerb theItem &rest)
 			)
 		)
 	)
@@ -856,8 +840,7 @@
 				(++ local111)
 				(arrowID dispose:)
 				(if (or local151 (not local149)) (++ local151))
-				(if
-				(or (> local151 local112) (> local111 (* 2 local112)))
+				(if (or (> local151 local112) (> local111 (* 2 local112)))
 					(EgoDead 7 8)
 				)
 				(self changeState: 0)
@@ -883,9 +866,15 @@
 			(0
 				(theArrowID dispose:)
 				(cond 
-					((ego has: iChainmail) (TakeDamage 10))
-					((ego has: iLeather) (TakeDamage 20))
-					(else (TakeDamage 35))
+					((ego has: iChainmail)
+						(TakeDamage 10)
+					)
+					((ego has: iLeather)
+						(TakeDamage 20)
+					)
+					(else
+						(TakeDamage 35)
+					)
 				)
 				(= temp0 0)
 				(while (<= temp0 24)
@@ -903,7 +892,7 @@
 						)
 						(break)
 					)
-					(= temp0 (+ temp0 4))
+					(+= temp0 4)
 				)
 				(if (or (<= [egoStats HEALTH] 0) egoKilled)
 					(= ticks 12)
@@ -918,29 +907,33 @@
 					(self cue:)
 				)
 			)
-			(2 (EgoDead 41 42))
+			(2
+				(EgoDead 41 42)
+			)
 		)
 	)
 )
 
 (instance egoDies of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
-			(0 (EgoDead 41 42))
+			(0
+				(EgoDead 41 42)
+			)
 		)
 	)
 )
 
 (instance egoEnters of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff))
+			(0
+				(HandsOff)
+			)
 			(1
-				(if (not (Btst fBeenIn91)) (messager say: N_ROOM 0 C_BADFEELING))
+				(if (not (Btst fBeenIn91))
+					(messager say: N_ROOM NULL C_BADFEELING)
+				)
 				(= ticks 1)
 			)
 			(2
@@ -960,7 +953,9 @@
 				(archer5 stopUpd:)
 				(archer1 stopUpd:)
 				(archer3 stopUpd:)
-				(if (not (Btst fBeenIn91)) (messager say: N_ROOM 0 C_WORSEFEELING))
+				(if (not (Btst fBeenIn91))
+					(messager say: N_ROOM NULL C_WORSEFEELING)
+				)
 				(archer5 setCycle: CycleTo 8 1 self)
 			)
 			(6
@@ -974,8 +969,6 @@
 )
 
 (instance climbOverLogs of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1017,34 +1010,21 @@
 					(curRoom
 						addObstacle:
 							((Polygon new:)
-								type: 2
+								type: PBarredAccess
 								init:
-									319
-									189
-									0
-									189
-									0
-									0
-									123
-									72
-									84
-									87
-									88
-									121
-									106
-									126
-									121
-									122
-									139
-									116
-									139
-									105
-									132
-									69
-									131
-									0
-									319
-									0
+									319 189
+									0 189
+									0 0
+									123 72
+									84 87
+									88 121
+									106 126
+									121 122
+									139 116
+									139 105
+									132 69
+									131 0
+									319 0
 								yourself:
 							)
 					)
@@ -1059,44 +1039,26 @@
 					(curRoom
 						addObstacle:
 							((Polygon new:)
-								type: 2
+								type: PBarredAccess
 								init:
-									0
-									0
-									319
-									0
-									319
-									132
-									271
-									133
-									261
-									129
-									239
-									131
-									183
-									125
-									170
-									121
-									155
-									124
-									123
-									124
-									108
-									130
-									97
-									127
-									89
-									132
-									94
-									137
-									241
-									155
-									319
-									155
-									319
-									189
-									0
-									189
+									0 0
+									319 0
+									319 132
+									271 133
+									261 129
+									239 131
+									183 125
+									170 121
+									155 124
+									123 124
+									108 130
+									97 127
+									89 132
+									94 137
+									241 155
+									319 155
+									319 189
+									0 189
 								yourself:
 							)
 					)
@@ -1112,21 +1074,23 @@
 					(archer3 setScript: shoot3 0 3)
 					(archer5 setScript: shoot5 0 5)
 				)
-				(if (== prevRoomNum vBrigand) (ego ignoreActors:))
-				(if (> (++ logJumps) 2) (EgoDead 108 109))
+				(if (== prevRoomNum vBrigand)
+					(ego ignoreActors:)
+				)
+				(if (> (++ logJumps) 2)
+					(EgoDead 108 109)
+				)
 			)
 		)
 	)
 )
 
 (instance runAway of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ROOM 0 C_ARROWHITS)
+				(messager say: N_ROOM NULL C_ARROWHITS)
 				(ego setMotion: PolyPath 335 (ego y?) self)
 			)
 			(1
@@ -1138,8 +1102,6 @@
 )
 
 (instance startSpell of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1161,7 +1123,9 @@
 					(= ticks 480)
 				)
 			)
-			(1 (EgoDead 155 156))
+			(1
+				(EgoDead 155 156)
+			)
 		)
 	)
 )

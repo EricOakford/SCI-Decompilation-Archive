@@ -1,6 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 97)
-(include system.sh) (include sci2.sh)
 (include game.sh) (include "97.shm")
 (use Main)
 (use Procs)
@@ -72,14 +71,14 @@
 		)
 		(super init:)
 		(= oldSortedFeatures useSortedFeatures)
-		(= useSortedFeatures 0)
+		(= useSortedFeatures FALSE)
 		(self setFeatures: desk rug)
 		;UPGRADE
 ;;;		(desk init:)
 ;;;		(rug init:)
 
 		(SolvePuzzle f97EnterLeaderRoom 12)
-		(door init: ignoreActors: 1 stopUpd:)
+		(door init: ignoreActors: TRUE stopUpd:)
 		(goldChest addToPic:)
 		(torchL setCycle: Forward init:)
 		(theEyes
@@ -88,8 +87,8 @@
 			setPri: 1
 			setScript: blinkScript
 		)
-		(liteOffOrnament setCycle: Forward init: ignoreActors: 1)
-		(liteOffDragon setCycle: Forward init: ignoreActors: 1)
+		(liteOffOrnament setCycle: Forward init: ignoreActors: TRUE)
+		(liteOffDragon setCycle: Forward init: ignoreActors: TRUE)
 		(yorick init:)
 		(potion1 init: stopUpd:)
 		(potion2 init: stopUpd:)
@@ -98,7 +97,7 @@
 			(172
 				(HandsOff)
 				(door setCel: 0)
-				(ego init: loop: 1 posn: 204 154)
+				(ego init: loop: loopW posn: 204 154)
 				(potion1
 					approachVerbs:
 						V_DO V_ACORN V_CANDELABRA V_CANDLESTICKS V_CHEETAURCLAW V_DAGGER
@@ -129,7 +128,7 @@
 						V_MONEY V_VIGOR V_SWORD V_THIEFKIT V_THIEFLICENSE V_TROLLBEARD
 						V_VASE V_VEGETABLES
 				)
-				(ChangeGait MOVE_WALK 0)
+				(ChangeGait MOVE_WALK FALSE)
 				(NormalEgo)
 				(= elsaOnScreen TRUE)
 				(leader
@@ -143,9 +142,9 @@
 			)
 			(else 
 				(= leaderOnScreen TRUE)
-				(liteOffBird setCycle: Forward init: ignoreActors: 1)
-				(liteOffShield setCycle: Forward init: ignoreActors: 1)
-				(liteOffChest setCycle: Forward init: ignoreActors: 1)
+				(liteOffBird setCycle: Forward init: ignoreActors: TRUE)
+				(liteOffShield setCycle: Forward init: ignoreActors: TRUE)
+				(liteOffChest setCycle: Forward init: ignoreActors: TRUE)
 				(gemChest1 setCycle: Forward init:)
 				(gemChest2 setCycle: Forward init:)
 				(ego init: hide: actions: egoActions setScript: egoEnters)
@@ -188,25 +187,53 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_DAZZLE
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_ZAP
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_DETECT
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_TRIGGER
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_CALM
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_OPEN
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_FETCH
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_DISENCHANT
 				(if leaderOnScreen
@@ -218,7 +245,9 @@
 					(super doVerb: theVerb)
 				)
 			)
-			(else  (super doVerb: theVerb))
+			(else
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
@@ -240,11 +269,11 @@
 	(method (init)
 		(= nightPalette 197)
 		(PalVary PALVARYTARGET 197)
-		(kernel_128 97)
+		(AssertPalette 97)
 		(super init:)
 	)
 	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(V_DO
 				(if leaderOnScreen
@@ -253,7 +282,9 @@
 					(ego setScript: getPotions)
 				)
 			)
-			(V_LOOK (messager say: N_POTION V_LOOK))
+			(V_LOOK
+				(messager say: N_POTION V_LOOK)
+			)
 			(V_DISENCHANT
 				(Bset fSavedElsa)
 				(ego use: iDisenchant)
@@ -261,16 +292,28 @@
 				(leader setScript: leaderChanges)
 			)
 			(V_DAGGER
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_ROCK
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_SWORD
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(else 
-				(super doVerb: theVerb param2 &rest)
+				(super doVerb: theVerb theItem &rest)
 			)
 		)
 	)
@@ -308,7 +351,7 @@
 		signal (| ignrAct fixPriOn)
 	)
 	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(V_DISENCHANT
 				(if leaderOnScreen
@@ -321,10 +364,14 @@
 				)
 			)
 			(V_DO
-				(if leaderOnScreen (= wrongMove TRUE) else (ego setScript: getMirror))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(ego setScript: getMirror)
+				)
 			)
 			(else 
-				(super doVerb: theVerb param2 &rest)
+				(super doVerb: theVerb theItem &rest)
 			)
 		)
 	)
@@ -392,7 +439,7 @@
 		loop 1
 		cel 2
 		priority 7
-		signal $0010
+		signal fixPriOn
 		detailLevel 3
 	)
 	
@@ -602,7 +649,7 @@
 		loop 10
 		cel 2
 		priority 15
-		signal $0010
+		signal fixPriOn
 		detailLevel 4
 	)
 	
@@ -630,16 +677,22 @@
 		view 97
 		loop 4
 		priority 9
-		signal $0010
+		signal fixPriOn
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK
 				(cond 
-					(leaderOnScreen (messager say: N_ELSA V_LOOK))
-					(elsaOnScreen (messager say: N_ELSA V_LOOK C_LOOKELSA 0))
-					(else (messager say: N_ELSA V_LOOK C_NOTIMETOTALK))
+					(leaderOnScreen
+						(messager say: N_ELSA V_LOOK)
+					)
+					(elsaOnScreen
+						(messager say: N_ELSA V_LOOK C_LOOKELSA 0)
+					)
+					(else
+						(messager say: N_ELSA V_LOOK C_NOTIMETOTALK)
+					)
 				)
 			)
 			(V_DISENCHANT
@@ -649,37 +702,81 @@
 				(self setScript: leaderChanges)
 			)
 			(V_FLAME
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_FETCH
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_DAZZLE
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_ZAP
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_DETECT
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_TRIGGER
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_CALM
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_OPEN
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_DAGGER
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_ROCK
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_SWORD
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 			(V_TALK
 				(if leaderOnScreen
@@ -689,7 +786,11 @@
 				)
 			)
 			(else 
-				(if leaderOnScreen (= wrongMove TRUE) else (super doVerb: theVerb))
+				(if leaderOnScreen
+					(= wrongMove TRUE)
+				else
+					(super doVerb: theVerb)
+				)
 			)
 		)
 	)
@@ -735,15 +836,23 @@
 		nsRight 209
 	)
 	
-	(method (doVerb theVerb param2)
+	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(V_DO
 				(if (ego inRect: 100 108 233 145)
 					(cond 
-						((and (ego has: iMagicMirror) tookPotions) (messager say: N_DESK V_DO C_NOTHINGONDESK))
-						(tookPotions (messager say: N_DESK V_DO C_MIRRORONDESK))
-						((ego has: iMagicMirror) (messager say: N_DESK V_DO C_POTIONSONDESK))
-						(else (messager say: N_DESK V_DO))
+						((and (ego has: iMagicMirror) tookPotions)
+							(messager say: N_DESK V_DO C_NOTHINGONDESK)
+						)
+						(tookPotions
+							(messager say: N_DESK V_DO C_MIRRORONDESK)
+						)
+						((ego has: iMagicMirror)
+							(messager say: N_DESK V_DO C_POTIONSONDESK)
+						)
+						(else
+							(messager say: N_DESK V_DO)
+						)
 					)
 				else
 					(messager say: N_DESK V_DO C_NOTCLOSEENOUGH)
@@ -760,7 +869,7 @@
 				)
 			)
 			(else 
-				(super doVerb: theVerb param2 &rest)
+				(super doVerb: theVerb theItem &rest)
 			)
 		)
 	)
@@ -807,7 +916,6 @@
 )
 
 (instance egoActions of Actions
-	
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb V_DISENCHANT)
@@ -826,13 +934,11 @@
 )
 
 (instance egoEnters of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ChangeGait MOVE_WALK 0)
+				(ChangeGait MOVE_WALK FALSE)
 				(NormalEgo)
 				(door setCycle: EndLoop self)
 			)
@@ -843,7 +949,7 @@
 					illegalBits: 0
 					setMotion: MoveTo 261 176 self
 				)
-				(messager say: N_ROOM 0 C_CONFRONTLEADER 1)
+				(messager say: N_ROOM NULL C_CONFRONTLEADER 1)
 			)
 			(2
 				(ego setMotion: MoveTo 227 160 self)
@@ -853,14 +959,15 @@
 				(ego setMotion: MoveTo 198 143 self)
 				(door setCycle: BegLoop)
 			)
-			(4 (NormalEgo 1) (self dispose:))
+			(4
+				(NormalEgo loopW)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance getPotions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -875,16 +982,17 @@
 				(self cue:)
 			)
 			(1
-				(messager say: N_POTION V_DO 0 0 self)
+				(messager say: N_POTION V_DO NULL 0 self)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance getMirror of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -895,30 +1003,31 @@
 				(self cue:)
 			)
 			(1
-				(messager say: N_MIRROR V_DO 0 0 self)
-				(SolvePuzzle POINTS_TAKEMAGICMIRROR 10)
+				(messager say: N_MIRROR V_DO NULL 0 self)
+				(SolvePuzzle f97GetMirror 10)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance spilledIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(if (or (!= (ego x?) 198) (!= (ego y?) 143))
 					(ego setMotion: PolyPath 198 143 self)
-					(messager say: N_ROOM V_DISENCHANT 0 1)
+					(messager say: N_ROOM V_DISENCHANT NULL 1)
 				else
-					(messager say: N_ROOM V_DISENCHANT 0 1 self)
+					(messager say: N_ROOM V_DISENCHANT NULL 1 self)
 				)
 			)
 			(1
-				(ego setLoop: 1)
+				(ego setLoop: loopW)
 				(if (== (leader cel?) 7)
 					(self changeState: 5)
 				else
@@ -948,7 +1057,7 @@
 			)
 			(5
 				(ego setMotion: 0 setCycle: 0)
-				(messager say: N_ROOM V_DISENCHANT 0 2 self)
+				(messager say: N_ROOM V_DISENCHANT NULL 2 self)
 			)
 			(6
 				(client setScript: elsaKillsEgo)
@@ -958,25 +1067,25 @@
 )
 
 (instance leaderChanges of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(messager say: N_ELSA V_DISENCHANT 0 1 self)
+				(messager say: N_ELSA V_DISENCHANT NULL 1 self)
 			)
-			(1 (curRoom newRoom: 172))
+			(1
+				(curRoom newRoom: 172)
+			)
 		)
 	)
 )
 
 (instance leaderVaults of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (leader setLoop: 4 cel: 0))
+			(0
+				(leader setLoop: 4 cel: 0)
+			)
 			(1
 				(elsaSong play:)
 				(= ticks 90)
@@ -985,7 +1094,7 @@
 				(leader setCycle: EndLoop self)
 				(if (!= (ego script?) spilledIt)
 					(HandsOn)
-					(theIconBar disable: 1)
+					(theIconBar disable: ICON_WALK)
 				)
 			)
 			(3
@@ -1032,8 +1141,6 @@
 )
 
 (instance elsaKillsEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1045,7 +1152,9 @@
 				)
 				(ego setMotion: 0 setCycle: 0)
 			)
-			(1 (= ticks 36))
+			(1
+				(= ticks 36)
+			)
 			(2
 				(leader cycleSpeed: 1 setCycle: BegLoop self)
 			)
@@ -1053,7 +1162,9 @@
 				(ego view: 503 setLoop: 0 setCel: 0 cycleSpeed: 4 y: 141)
 				(= ticks 60)
 			)
-			(4 (ego setCycle: EndLoop self))
+			(4
+				(ego setCycle: EndLoop self)
+			)
 			(5
 				(yorick
 					setLoop: 6
@@ -1065,32 +1176,36 @@
 				)
 			)
 			(6
-				(messager say: N_ROOM 0 C_KILLED 0 self)
+				(messager say: N_ROOM NULL C_KILLED 0 self)
 			)
-			(7 (EgoDead 62 63))
+			(7
+				(EgoDead 62 63)
+			)
 		)
 	)
 )
 
 (instance blinkScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= ticks (Random 100 300)))
+			(0
+				(= ticks (Random 100 300))
+			)
 			(1
 				(theEyes setCycle: Forward)
 				(= ticks (Random 12 72))
 			)
-			(2 (theEyes setCycle: BegLoop self))
-			(3 (self changeState: 0))
+			(2
+				(theEyes setCycle: BegLoop self)
+			)
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance elsaIsBack of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1098,19 +1213,19 @@
 				(= ticks 120)
 			)
 			(1
-				(messager say: N_ROOM 0 C_ELSAISBACK 1 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 1 self)
 			)
 			(2
-				(messager say: N_ROOM 0 C_ELSAISBACK 2 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 2 self)
 			)
 			(3
-				(messager say: N_ROOM 0 C_ELSAISBACK 3 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 3 self)
 			)
 			(4
-				(messager say: N_ROOM 0 C_ELSAISBACK 4 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 4 self)
 			)
 			(5
-				(messager say: N_ROOM 0 C_ELSAISBACK 5 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 5 self)
 			)
 			(6
 				(yorick
@@ -1124,36 +1239,36 @@
 				(= yorickOnScreen TRUE)
 			)
 			(7
-				(messager say: N_ROOM 0 C_ELSAISBACK 6 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 6 self)
 			)
 			(8
-				(messager say: N_ROOM 0 C_ELSAISBACK 7 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 7 self)
 			)
 			(9
-				(messager say: N_ROOM 0 C_ELSAISBACK 8 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 8 self)
 			)
 			(10
-				(messager say: N_ROOM 0 C_ELSAISBACK 9 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 9 self)
 			)
 			(11
-				(messager say: N_ROOM 0 C_ELSAISBACK 10 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 10 self)
 			)
 			(12
-				(messager say: N_ROOM 0 C_ELSAISBACK 11 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 11 self)
 			)
 			(13
-				(messager say: N_ROOM 0 C_ELSAISBACK 12 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 12 self)
 			)
 			(14
 				(tromp number: (SoundFX 66) init: loop: 4 play:)
-				(messager say: N_ROOM 0 C_ELSAISBACK 13 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 13 self)
 			)
 			(15
 				(leader setLoop: 5 cel: 0 setCycle: EndLoop self)
 				(= elsaOnScreen FALSE)
-				(liteOffBird setCycle: Forward init: ignoreActors: 1)
-				(liteOffShield setCycle: Forward init: ignoreActors: 1)
-				(liteOffChest setCycle: Forward init: ignoreActors: 1)
+				(liteOffBird setCycle: Forward init: ignoreActors: TRUE)
+				(liteOffShield setCycle: Forward init: ignoreActors: TRUE)
+				(liteOffChest setCycle: Forward init: ignoreActors: TRUE)
 				(gemChest1 setCycle: Forward init:)
 				(gemChest2 setCycle: Forward init:)
 			)
@@ -1165,11 +1280,11 @@
 				(= yorickOnScreen FALSE)
 			)
 			(17
-				(messager say: N_ROOM 0 C_ELSAISBACK 14 self)
+				(messager say: N_ROOM NULL C_ELSAISBACK 14 self)
 			)
 			(18
 				(yorick dispose:)
-				(ego ignoreActors: 1)
+				(ego ignoreActors: TRUE)
 				(tromp loop: 6 play:)
 				(= ticks (* 800 (- 5 howFast)))
 			)
@@ -1206,7 +1321,9 @@
 					setMotion: MoveTo 259 214 self
 				)
 			)
-			(22 (EgoDead 60 61))
+			(22
+				(EgoDead 60 61)
+			)
 		)
 	)
 )
@@ -1224,9 +1341,9 @@
 	(method (init)
 		(= nightPalette 2097)
 		(PalVary PALVARYTARGET 2097)
-		(kernel_128 1097)
+		(AssertPalette 1097)
 		(= font userFont)
-		(self modeless: 0)
+		(self modeless: FALSE)
 		(super init: elsaBust elsaEye elsaMouth &rest)
 	)
 )
@@ -1269,8 +1386,8 @@
 		(= font userFont)
 		(= nightPalette 2096)
 		(PalVary PALVARYTARGET 2096)
-		(kernel_128 1096)
-		(self modeless: 0)
+		(AssertPalette 1096)
+		(self modeless: FALSE)
 		(super init: yorickBust yorickEye yorickMouth &rest)
 	)
 )

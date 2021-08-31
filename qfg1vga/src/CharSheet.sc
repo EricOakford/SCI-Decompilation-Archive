@@ -21,6 +21,7 @@
 	userInput
 	userControls
 )
+
 (procedure (ShowSkill xPlace yPlace statNum varColor &tmp bgColor fgColor theWidth [str 6])
 	(if (!= [egoStats statNum] [oldStats statNum])
 		(= bgColor 54)
@@ -176,10 +177,8 @@
 	(method (dispose &tmp i)
 		(HideSheet)
 		(= useSortedFeatures oldSortedFeatures)
-		(= i 0)
-		(while (< i NUM_ATTRIBS)
+		(for ((= i 0)) (< i NUM_ATTRIBS) ((++ i))
 			(= [oldStats i] [egoStats i])
-			(++ i)
 		)
 		(= oldScore score)
 		(HandsOn)
@@ -198,7 +197,7 @@
 	)
 	
 	(method (handleEvent event)
-		(event claimed: 1)
+		(event claimed: TRUE)
 		(if
 			(or
 				(and

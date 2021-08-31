@@ -17,8 +17,6 @@
 	[local1 3]
 )
 (instance painReaction of Script
-	(properties)
-	
 	(method (init)
 		(sEgoHurt init:)
 		(thatsIt init:)
@@ -122,7 +120,7 @@
 
 (instance sEgoHurt of Sound
 	(properties
-		flags $ffff
+		flags -1
 		number 104
 		priority 1
 	)
@@ -130,7 +128,7 @@
 
 (instance thatsIt of Sound
 	(properties
-		flags $ffff
+		flags -1
 		number 105
 		priority 1
 	)

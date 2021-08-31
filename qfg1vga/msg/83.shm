@@ -40,7 +40,7 @@
 (define C_LEAVING 31)
 (define C_GOSLEEP 29)
 (define C_WAKEUP 28)
-(define C_NORATIONS 33)
+(define C_NO_SLEEP 33)
 (define C_ANSWERHIM 35)
 (define C_DECLINESCROLL 32)
 (define C_ALREADYGOTSCROLL 30)
@@ -67,4 +67,8 @@
 (define C_SPELLS 17)
 (define C_TRIGGER 18)
 (define C_WARLOCK 19)
+(define C_STAND_UP_FIRST 23)
+(define C_NO_RATIONS 22)
+(define C_GAVE_RATION 21)
+(define C_DAY 20)
 

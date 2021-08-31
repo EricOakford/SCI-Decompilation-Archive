@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 222)
-(include game.sh)
+(include game.sh) (include "39.shm")
 (use Main)
 (use Procs)
 (use Motion)
@@ -16,8 +16,6 @@
 	local0
 )
 (instance intro of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -26,7 +24,7 @@
 					(38
 						((ScriptID 39 2)
 							posn: 318 138
-							fightLeft: 1
+							fightLeft: TRUE
 							setLoop: 0
 							setMotion: MoveTo 200 138 self
 						)
@@ -49,7 +47,7 @@
 							((ScriptID 39 2)
 								posn: 318 138
 								setLoop: 0
-								fightLeft: 1
+								fightLeft: TRUE
 								setMotion: MoveTo 200 138 self
 							)
 						)
@@ -64,8 +62,8 @@
 				)
 			)
 			(1
-				(if (not (Btst 243))
-					(Bset 243)
+				(if (not (Btst fMasterShowedOff))
+					(Bset fMasterShowedOff)
 				)
 				(self cue:)
 			)
@@ -105,15 +103,13 @@
 )
 
 (instance intro2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(switch prevRoomNum
 					(38
-						((ScriptID 39 2) posn: 200 140 fightLeft: 1)
+						((ScriptID 39 2) posn: 200 140 fightLeft: TRUE)
 					)
 					(40
 						((ScriptID 39 2) posn: 100 140)
@@ -122,7 +118,7 @@
 						(if (> egoX 160)
 							((ScriptID 39 2) posn: 100 170)
 						else
-							((ScriptID 39 2) posn: 200 170 fightLeft: 1)
+							((ScriptID 39 2) posn: 200 170 fightLeft: TRUE)
 						)
 					)
 					(else 
@@ -169,7 +165,6 @@
 )
 
 (instance startFight of Script
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -185,7 +180,7 @@
 						view: 639
 						setLoop: (if (> ((ScriptID 39 2) x?) 187) 0 else 1)
 						setCycle: Walk
-						fightLeft: 1
+						fightLeft: TRUE
 						warriorX: 157
 						warriorY: 135
 						setMotion: MoveTo 207 135
@@ -243,7 +238,9 @@
 					)
 				)
 			)
-			(2 (self changeState: 1))
+			(2
+				(self changeState: 1)
+			)
 			(3
 				(Face ego (ScriptID 39 2))
 				(if ((ScriptID 39 2) fightLeft?)
@@ -254,11 +251,11 @@
 				(= ticks 20)
 			)
 			(4
-				(messager say: 8 0 24)
+				(messager say: N_ROOM NULL C_SALUTEYOU)
 				((ScriptID 39 2) cycleSpeed: 12 setCycle: EndLoop self)
 			)
 			(5
-				(messager say: 8 0 2)
+				(messager say: N_ROOM NULL C_ENGARDE)
 				(ego
 					view: 502
 					setLoop: (if ((ScriptID 39 2) fightLeft?) 0 else 1)
@@ -266,7 +263,7 @@
 				)
 			)
 			(6
-				(messager say: 8 0 1)
+				(messager say: N_ROOM NULL C_LESSONBEGINS)
 				((ScriptID 39 2) setCel: 0)
 				(HandsOn)
 				((ScriptID 39 2) setScript: (ScriptID 220 0))

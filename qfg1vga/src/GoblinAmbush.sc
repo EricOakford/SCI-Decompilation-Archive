@@ -427,8 +427,8 @@
 	)
 	
 	(method (cue)
-		(if (IsObject gClient)
-			(gClient dispose:)
+		(if (IsObject projObj)
+			(projObj dispose:)
 			(roomTimer setCycle: self 2)
 		else
 			(curRoom newRoom: vGoblin)
@@ -448,9 +448,9 @@
 				(Bset fAttackedBush)
 				(messager say: N_ROOM NULL C_START_BATTLE 0 self)
 			)
-			((IsObject gClient)
+			((IsObject projObj)
 				(roomTimer setCycle: self 2)
-				(gClient dispose:)
+				(projObj dispose:)
 			)
 			(else
 				(roomTimer dispose: delete:)

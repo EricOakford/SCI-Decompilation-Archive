@@ -17,14 +17,15 @@
 	rm89 0
 )
 
-(enum 1
+(enum
+	trollAbsent
 	trollVisible
 	trollDying
 	trollDead
 )
 
 (local
-	timesSearchedTroll
+	searchCount
 	caveCue
 	[local2 2]
 	trollState
@@ -32,9 +33,7 @@
 	searchCue
 	trollInRoom
 )
-(instance leTimer of Timer
-	(properties)
-)
+(instance leTimer of Timer)
 
 (instance rm89 of Room
 	(properties
@@ -47,37 +46,34 @@
 		(curRoom
 			addObstacle:
 				((Polygon new:)
-					type: 2
+					type: PBarredAccess
 					init:
-						0
-						0
-						319
-						0
-						319
-						90
-						139
-						89
-						124
-						70
-						98
-						70
-						56
-						80
-						31
-						97
-						31
-						174
-						319
-						174
-						319
-						189
-						0
-						189
+						0 0
+						319 0
+						319 90
+						139 89
+						124 70
+						98 70
+						56 80
+						31 97
+						31 174
+						319 174
+						319 189
+						0 189
 					yourself:
 				)
 				((Polygon new:)
-					type: 2
-					init: 319 105 319 150 215 149 176 159 71 156 47 152 48 140 56 133 61 105
+					type: PBarredAccess
+					init:
+						319 105
+						319 150
+						215 149
+						176 159
+						71 156
+						47 152
+						48 140
+						56 133
+						61 105
 					yourself:
 				)
 		)
@@ -86,11 +82,14 @@
 		(rocks init:)
 		(ceiling init:)
 		(cave init:)
-		(SolvePuzzle POINTS_ENTERSECRETENTRANCE 2)
+		(SolvePuzzle f89EnterCave 2)
 		(= trollState
 			(cond 
-				((or (Btst fHidenGoseke) (Btst fBeatFred)) 0)
-				((== prevRoomNum vTroll) (= monsterNum 0) 2)
+				((or (Btst fHidenGoseke) (Btst fBeatFred)) trollAbsent)
+				((== prevRoomNum vTroll)
+					(= monsterNum 0)
+					trollDying
+				)
 				((Btst fBeatFred89)
 					(troll
 						view: 451
@@ -100,9 +99,9 @@
 						init:
 						addToPic:
 					)
-					3
+					trollDead
 				)
-				(else 1)
+				(else trollVisible)
 			)
 		)
 		(switch prevRoomNum
@@ -111,7 +110,7 @@
 				(self setScript: trollDies)
 			)
 			(84
-				(if (!= trollState 0)
+				(if (!= trollState trollAbsent)
 					(= trollInRoom TRUE)
 					(if (== trollState trollVisible)
 						(troll init: posn: 167 95 setLoop: 0)
@@ -138,8 +137,7 @@
 	)
 	
 	(method (doit)
-		(if
-		(and (not (curRoom script?)) (> (ego x?) 300))
+		(if (and (not (curRoom script?)) (> (ego x?) 300))
 			(HandsOff)
 			(curRoom setScript: sExitEast)
 		)
@@ -177,7 +175,9 @@
 					(messager say: N_ROOM V_DAZZLE C_NOBODYHERE)
 				)
 			)
-			(else  (messager say: N_ROOM 0 C_SPELLUSELESS))
+			(else
+				(messager say: N_ROOM NULL C_SPELLUSELESS)
+			)
 		)
 	)
 	
@@ -189,12 +189,14 @@
 				)
 				(leTimer setReal: self 12)
 			)
-			(2 (messager say: N_ROOM 0 C_DRIP))
+			(2
+				(messager say: N_ROOM NULL C_DRIP)
+			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(super newRoom: n)
 		(leTimer dispose: delete:)
 	)
 )
@@ -295,7 +297,7 @@
 (instance water of Prop
 	(properties
 		view 89
-		signal $4810
+		signal (| ignrAct fixedLoop fixPriOn)
 	)
 )
 
@@ -303,21 +305,20 @@
 	(properties
 		noun N_TROLL
 		view vTroll
-		signal $6000
+		signal (| ignrAct ignrHrz)
 		illegalBits $0000
 	)
 	
 	(method (init)
 		(= nightPalette 1450)
 		(PalVary PALVARYTARGET 1450)
-		(kernel_128 450)
+		(AssertPalette 450)
 		(super init:)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (not (Btst fBeatFred)) (< (ego distanceTo: troll) 25))
+		(if (and (not (Btst fBeatFred)) (< (ego distanceTo: troll) 25))
 			(HandsOff)
 			(sEnterFromEast cue:)
 		)
@@ -327,10 +328,18 @@
 		(switch theVerb
 			(V_LOOK
 				(switch trollState
-					(trollVisible (messager say: N_TROLL V_LOOK C_TROLLVISIBLE))
-					(trollDying (messager say: N_TROLL V_LOOK C_TROLLDYING))
-					(trollDead (messager say: N_TROLL V_LOOK C_TROLLDEAD))
-					(else  (messager say: N_TROLL V_LOOK C_NOTHINGMORE))
+					(trollVisible
+						(messager say: N_TROLL V_LOOK C_TROLLVISIBLE)
+					)
+					(trollDying
+						(messager say: N_TROLL V_LOOK C_TROLLDYING)
+					)
+					(trollDead
+						(messager say: N_TROLL V_LOOK C_TROLLDEAD)
+					)
+					(else
+						(messager say: N_TROLL V_LOOK C_NOTHINGMORE)
+					)
 				)
 			)
 			(V_DO
@@ -339,8 +348,10 @@
 					(HandsOff)
 					(ego setMotion: PolyPath x y self)
 				else
-					(switch (++ timesSearchedTroll)
-						(1 (messager say: N_TROLL V_DO C_CANTGETCLUB))
+					(switch (++ searchCount)
+						(1
+							(messager say: N_TROLL V_DO C_CANTGETCLUB)
+						)
 						(2
 							(= searchCue 0)
 							(self setScript: egoSearch)
@@ -350,7 +361,7 @@
 							(self setScript: egoSearch)
 						)
 						(4
-							(= timesSearchedTroll 3)
+							(= searchCount 3)
 							(messager say: N_TROLL V_DO C_NOTHINGMORE)
 						)
 					)
@@ -364,8 +375,6 @@
 )
 
 (instance trollDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -397,8 +406,6 @@
 )
 
 (instance egoSearch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -450,8 +457,6 @@
 )
 
 (instance sExitEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -470,8 +475,6 @@
 )
 
 (instance sWater of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -509,17 +512,20 @@
 				(drip play:)
 				(= seconds (Random 2 5))
 			)
-			(2 (self init:))
+			(2
+				(self init:)
+			)
 		)
 	)
 )
 
 (instance sEnterFromEast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (HandsOff) (= ticks 18))
+			(0
+				(HandsOff)
+				(= ticks 18)
+			)
 			(1
 				(ego setMotion: MoveTo 295 (ego y?) self)
 			)
@@ -528,7 +534,7 @@
 				(NormalEgo)
 				(if (== trollState trollVisible)
 					(troll setMotion: 0)
-					(messager say: N_TROLL 0 C_TROLLATTACKS 0 self)
+					(messager say: N_TROLL NULL C_TROLLATTACKS 0 self)
 				else
 					(self cue:)
 				)

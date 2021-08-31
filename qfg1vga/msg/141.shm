@@ -2,34 +2,6 @@
 ;;; 141.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
-;;; CASES
-
-(define C_KILLEDKOBOLD 6)
-(define C_GUARDBLOCKS 23)
-(define C_BABACURSE 24)
-(define C_LEAVEROOM 5)
-(define C_EGOACTION 25)
-(define C_MEETBARON 3)
-(define C_KEEPITUP 1)
-(define C_EARNREWARD 2)
-(define C_ANYQUESTIONS 4)
-(define C_BARON_BABAYAGA 7)
-(define C_BARON_BARON 8)
-(define C_BARON_BRIGANDS 9)
-(define C_BARON_CASTLE 10)
-(define C_BARON_CURSE 11)
-(define C_BARON_DAUGHTER 12)
-(define C_BARON_BRIGANDLEADER 13)
-(define C_BARON_MAGIC 14)
-(define C_BARON_PROPHECY 15)
-(define C_BARON_REWARD 16)
-(define C_BARON_WARLOCK 17)
-(define C_BARON_YORICK 18)
-(define C_BARNARD_BARONET 19)
-(define C_BARNARD_BEAR 20)
-(define C_BARNARD_BRIGANDS 21)
-(define C_BARNARD_KOBOLD 22)
-
 ;;; NOUNS
 
 (define N_ROOM 10)
@@ -48,4 +20,32 @@
 (define N_GUARD 7)
 (define N_THRONE 14)
 (define N_TAPESTRY 13)
+
+;;; CASES
+
+(define C_KILLEDKOBOLD 6)
+(define C_GUARDBLOCKS 23)
+(define C_BABACURSE 24)
+(define C_LEAVEROOM 5)
+(define C_EGOACTION 25)
+(define C_MEETBARON 3)
+(define C_KEEPITUP 1)
+(define C_EARNREWARD 2)
+(define C_ANYQUESTIONS 4)
+(define C_BARON_BABAYAGA 7)
+(define C_BARON_SELF 8)
+(define C_BARON_BRIGANDS 9)
+(define C_BARON_CASTLE 10)
+(define C_BARON_CURSE 11)
+(define C_BARON_DAUGHTER 12)
+(define C_BARON_BRIGANDLEADER 13)
+(define C_BARON_MAGIC 14)
+(define C_BARON_PROPHECY 15)
+(define C_BARON_REWARD 16)
+(define C_BARON_WARLOCK 17)
+(define C_BARON_YORICK 18)
+(define C_BARNARD_BARONET 19)
+(define C_BARNARD_BEAR 20)
+(define C_BARNARD_BRIGANDS 21)
+(define C_BARNARD_KOBOLD 22)
 

@@ -14,53 +14,53 @@
 )
 
 (local
-	oldSignal
-	oldPriority
-	oldIllBits
-	oldCycleSpeed
-	local4
-	local5
-	openSound
+	savSignal
+	savPriority
+	savIllegalBits
+	savSpeed
+	thisX
+	thisY
+	soundObj
 	wasHandsOn
 )
-(procedure (CastOpen theEgo theObj param3 param4 &tmp oldEgo temp1)
+(procedure (CastOpen onWhat whoCares onX onY &tmp obj prScript)
+	;EO: Seems like this was going to become a projectile spell
 	(if (not isHandsOff)
 		(= wasHandsOn TRUE)
 	)
 	(LoadMany SOUND 28 35)
-	(= local4 0)
-	(= local5 0)
-	(= oldEgo ego)
-	(= temp1 0)
+	(= thisX 0)
+	(= thisY 0)
+	(= obj ego)
+	(= prScript 0)
 	(if argc
 		(if (> argc 1)
-			(= temp1 theObj)
+			(= prScript whoCares)
 		)
 		(if (> argc 2)
-			(= local4 param3)
-			(= local5 param4)
+			(= thisX onX)
+			(= thisY onY)
 		)
-		(= oldEgo theEgo)
+		(= obj onWhat)
 	)
-	(oldEgo setScript: clientCastOpen temp1)
+	(obj setScript: clientCastOpen prScript)
 )
 
 (instance clientCastOpen of Script
-	
 	(method (dispose)
 		(if wasHandsOn
 			(HandsOn)
 		)
-		(if (IsObject openSound)
-			(openSound stop: dispose:)
+		(if (IsObject soundObj)
+			(soundObj stop: dispose:)
 		)
 		(NormalEgo)
 		(ego
-			loop: (if (not (ego loop?)) 5 else 4)
-			priority: oldPriority
-			illegalBits: oldIllBits
-			signal: oldSignal
-			cycleSpeed: oldCycleSpeed
+			loop: (if (not (ego loop?)) loopSW else loopSE)
+			priority: savPriority
+			illegalBits: savIllegalBits
+			signal: savSignal
+			cycleSpeed: savSpeed
 		)
 		(super dispose:)
 		(DisposeScript CASTOPEN)
@@ -73,14 +73,14 @@
 			)
 			(1
 				(HandsOff)
-				(= oldSignal (ego signal?))
-				(= oldPriority (ego priority?))
-				(= oldIllBits (ego illegalBits?))
-				(= oldCycleSpeed (ego cycleSpeed?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
+				(= savSpeed (ego cycleSpeed?))
 				(NormalEgo)
 				(theGame setCursor: waitCursor TRUE)
-				(if local4
-					(ego setMotion: PolyPath local4 local5 self)
+				(if thisX
+					(ego setMotion: PolyPath thisX thisY self)
 				else
 					(self cue:)
 				)
@@ -89,13 +89,13 @@
 				(theGame setCursor: waitCursor TRUE)
 				(ego
 					setMotion: 0
-					setHeading: (if (OneOf (ego loop?) 2 4 0 6) 135 else 225) self
+					setHeading: (if (OneOf (ego loop?) loopS loopSE loopE loopNE) 135 else 225) self
 				)
 			)
 			(3
 				(ego
 					view: 521
-					setLoop: (if (== (ego loop?) 5) 0 else 1)
+					setLoop: (if (== (ego loop?) loopSW) 0 else 1)
 					setCel: 0
 					setPri: (ego priority?)
 					cycleSpeed: 12
@@ -103,7 +103,7 @@
 				)
 			)
 			(4
-				((= openSound (Sound new:))
+				((= soundObj (Sound new:))
 					number: 28
 					priority: 6
 					init:
@@ -125,7 +125,7 @@
 					)
 					(messager say: N_NOEFFECT NULL NULL 1 self SPELLS)
 				else
-					(openSound number: 35 play:)
+					(soundObj number: 35 play:)
 					(= ticks 30)
 				)
 			)

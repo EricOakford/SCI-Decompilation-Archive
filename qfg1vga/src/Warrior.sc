@@ -44,7 +44,7 @@
 	(method (dispose)
 		(Bclr fDiedInBattle)
 		(theGame setCursor: normalCursor TRUE)
-		(Bclr fFlag284)
+		(Bclr fBattleStarted)
 		(if egoMP
 			(egoMP dispose:) 
 			(= egoMP 0)
@@ -59,10 +59,12 @@
 		(TakeDamage damage)
 		(super getHurt: damage)
 		(if (> stamina 0)
-			(if (script script?) ((script script?) dispose:))
-			((ScriptID 215 1) dispose:)
-			((ScriptID 215 3) dispose:)
-			((ScriptID 215 4) dispose:)
+			(if (script script?)
+				((script script?) dispose:)
+			)
+			((ScriptID CLOSECOMBAT 1) dispose:)
+			((ScriptID CLOSECOMBAT 3) dispose:)
+			((ScriptID CLOSECOMBAT 4) dispose:)
 			(script setScript: (ScriptID 155 0))
 		else
 			(self setEgoHP: health)
@@ -79,8 +81,8 @@
 		(Bset fDiedInBattle)
 	)
 	
-	(method (startCombat param1)
-		(self setScript: (ScriptID param1 0))
+	(method (startCombat monster)
+		(self setScript: (ScriptID monster 0))
 	)
 	
 	(method (drawStatus)
@@ -115,7 +117,7 @@
 		)
 	)
 	
-	(method (drawWeapons &tmp theArmorEnc)
+	(method (drawWeapons &tmp warLoad)
 		(= baseX (opponent warriorX?))
 		(= baseY (opponent warriorY?))
 		(if (ego has: iShield)
@@ -123,9 +125,9 @@
 		else
 			(= shieldValue 0)
 		)
-		(= armorEnc (/ (= theArmorEnc (WtCarried)) 2))
-		(if (> theArmorEnc (MaxLoad))
-			(= armorEnc theArmorEnc)
+		(= armorEnc (/ (= warLoad (WtCarried)) 2))
+		(if (> warLoad (MaxLoad))
+			(= armorEnc warLoad)
 		)
 		(= armorValue 0)
 		(cond 
@@ -149,37 +151,37 @@
 						1
 					)
 					(vBear
-						(= baseY (+ baseY 8))
+						(+= baseY 8)
 					)
 					(vSaurus
-						(= baseX (+ baseX 8))
-						(= baseY (+ baseY 5))
+						(+= baseX 8)
+						(+= baseY 5)
 					)
 					(vTroll
-						(= baseX (+ baseX 12))
+						(+= baseX 12)
 					)
 					(vOgre
-						(= baseY (+ baseY 4))
-						(= baseX (+ baseX 8))
+						(+= baseY 4)
+						(+= baseX 8)
 					)
 					(vMinotaur
-						(= baseX (+ baseX 7))
+						(+= baseX 7)
 					)
 					(vGoblin
-						(= baseX (+ baseX 6))
-						(= baseY (- baseY 7))
+						(+= baseX 6)
+						(-= baseY 7)
 					)
 					(vBrigand
-						(= baseX (+ baseX 12))
-						(= baseY (+ baseY 2))
+						(+= baseX 12)
+						(+= baseY 2)
 					)
 					(vDragon
-						(= baseX (+ baseX 8))
-						(= baseY (+ baseY 10))
+						(+= baseX 8)
+						(+= baseY 10)
 					)
 					(else 
-						(= baseX (+ baseX 20))
-						(= baseY (+ baseY 10))
+						(+= baseX 20)
+						(+= baseY 10)
 					)
 				)
 				(self view: 102 weapValue: DAGGER_VALUE)

@@ -82,7 +82,7 @@
 	(method (init)
 		(= nightPalette 1457)
 		(PalVary PALVARYTARGET 1457)
-		(kernel_128 457)
+		(AssertPalette 457)
 		(super init:)
 	)
 	
@@ -106,7 +106,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset fFlag284)
+				(Bset fBattleStarted)
 				(client
 					loop: 0
 					cel: 0
@@ -119,14 +119,14 @@
 				)
 				(ogreLegs cel: 0 x: 166 y: 88 show: forceUpd:)
 				(cond 
-					((Btst fFlag285) (Bclr fFlag285) (self cue:))
+					((Btst fMonsterRecoils) (Bclr fMonsterRecoils) (self cue:))
 					((Random 0 1) (client setCycle: EndLoop self))
 					(else (client cel: 3 setCycle: BegLoop self))
 				)
 			)
 			(1 (= ticks 20))
 			(2
-				(Bclr fFlag284)
+				(Bclr fBattleStarted)
 				(client action: 1 loop: 3 cel: 0 x: 123 y: 25 forceUpd:)
 				(ogreLegs hide: forceUpd:)
 				(= ticks (Random 12 18))

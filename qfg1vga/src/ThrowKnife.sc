@@ -14,21 +14,21 @@
 )
 
 (local
-	local0
-	theGEgoX
-	theGEgoY
-	oldEgoX
-	oldEgoY
-	oldCycleSpeed
-	oldSignal
-	oldPriority
-	oldIllBits
-	knifeSound
+	knTarg
+	thisX
+	thisY
+	knTargX
+	knTargY
+	savSpeed
+	savSignal
+	savPriority
+	savIllegalBits
+	projSound
 	wasHandsOn
 	hurtEgo
 )
-(procedure (ThrowKnife obj theX theY &tmp temp0 temp1 knife evt)
-	(if gClient
+(procedure (ThrowKnife atWhat onX onY &tmp pushX pushY projectile evt)
+	(if projObj
 		(return TRUE)
 	)
 	(if (not isHandsOff)
@@ -42,56 +42,56 @@
 		(if (not (ego has: iDagger))
 			(messager say: N_THROWDAGGER NULL NULL 1 0 SPELLS)
 			(DisposeScript THROWKNIFE)
-			(return 0)
+			(return FALSE)
 		else
 			(if (>= argc 2)
-				(= theGEgoX theX)
-				(= theGEgoY theY)
+				(= thisX onX)
+				(= thisY onY)
 			else
-				(= theGEgoX ((= evt (Event new:)) x?))
-				(= theGEgoY (+ (evt y?) 25))
+				(= thisX ((= evt (Event new:)) x?))
+				(= thisY (+ (evt y?) 25))
 				(evt dispose:)
 			)
-			((inventory at: iDagger) dumpIt: TRUE)
+			((inventory at: iDagger) dumpIt: TRUE)	;so ego can pick it back up
 			(LoadMany SOUND (SoundFX 31) (SoundFX 29))
-			(if obj
-				(Face ego obj)
-				(= oldEgoX (+ (obj x?) (obj targDeltaX?)))
-				(= oldEgoY (+ (obj y?) (obj targDeltaY?)))
-				(= temp0 (- oldEgoX (+ (ego x?) 15)))
-				(= temp1 (- oldEgoY (- (ego y?) 40)))
+			(if atWhat
+				(Face ego atWhat)
+				(= knTargX (+ (atWhat x?) (atWhat targDeltaX?)))
+				(= knTargY (+ (atWhat y?) (atWhat targDeltaY?)))
+				(= pushX (- knTargX (+ (ego x?) 15)))
+				(= pushY (- knTargY (- (ego y?) 40)))
 				(while
 					(and
-						(< 0 oldEgoX)
-						(< oldEgoX 319)
-						(< 0 oldEgoY)
-						(< oldEgoY 189)
+						(< westEdge knTargX)
+						(< knTargX eastEdge)
+						(< westEdge knTargY)
+						(< knTargY southEdge)
 					)
-					(= oldEgoX (+ oldEgoX temp0))
-					(= oldEgoY (+ oldEgoY temp1))
+					(+= knTargX pushX)
+					(+= knTargY pushY)
 				)
 				(if
 					(not
-						(TrySkill THROW 0 (- 50 (/ (ego distanceTo: obj) 5)))
+						(TrySkill THROW 0 (- 50 (/ (ego distanceTo: atWhat) 5)))
 					)
-					(if (< oldEgoY 0)
-						(= oldEgoY (+ oldEgoY (Random 30 100)))
+					(if (< knTargY 0)
+						(+= knTargY (Random 30 100))
 					else
-						(= oldEgoY (- oldEgoY (Random 30 100)))
+						(-= knTargY (Random 30 100))
 					)
 				)
 			else
 				(SkillUsed THROW (/ [egoStats AGIL] 10))
-				(= oldEgoX theGEgoX)
-				(= oldEgoY theGEgoY)
+				(= knTargX thisX)
+				(= knTargY thisY)
 			)
-			((= knifeSound (Sound new:))
+			((= projSound (Sound new:))
 				number: (SoundFX 31)
 				priority: 15
 				init:
 			)
-			(= local0 obj)
-			((= knife (Actor new:))
+			(= knTarg atWhat)
+			((= projectile (Actor new:))
 				view: 524
 				setLoop: 2
 				setCel: 0
@@ -102,40 +102,38 @@
 				setStep: 30 20
 				init:
 				hide:
-				setScript: knifeScript 0 obj
+				setScript: knifeScript 0 atWhat
 			)
-			(return 1)
+			(return TRUE)
 		)
 	)
 )
 
 (instance knifeScript of Script
-	(properties)
-	
 	(method (doit &tmp temp0)
-		(if (IsObject local0)
-			(= oldEgoX (+ (local0 x?) (local0 targDeltaX?)))
-			(= oldEgoY (+ (local0 y?) (local0 targDeltaY?)))
+		(if (IsObject knTarg)
+			(= knTargX (+ (knTarg x?) (knTarg targDeltaX?)))
+			(= knTargY (+ (knTarg y?) (knTarg targDeltaY?)))
 		)
 		(super doit:)
 	)
 	
 	(method (dispose)
-		(= gClient 0)
-		(knifeSound dispose:)
+		(= projObj 0)
+		(projSound dispose:)
 		(if wasHandsOn
 			(HandsOn)
 		)
 		(NormalEgo)
 		(ego
 			loop: (if (not (ego loop?)) 0 else 1)
-			priority: oldPriority
-			illegalBits: oldIllBits
-			signal: oldSignal
-			cycleSpeed: oldCycleSpeed
+			priority: savPriority
+			illegalBits: savIllegalBits
+			signal: savSignal
+			cycleSpeed: savSpeed
 		)
 		(if (IsObject register)
-			(register getHurt: (+ 5 (/ [egoStats 0] 10)))
+			(register getHurt: (+ 5 (/ [egoStats STR] 10)))
 		)
 		(super dispose:)
 		(DisposeScript 101)
@@ -144,16 +142,18 @@
 	(method (changeState newState param2)
 		(switch (= state newState)
 			(0
-				(= gClient client)
-				(= oldSignal (ego signal?))
-				(= oldPriority (ego priority?))
-				(= oldIllBits (ego illegalBits?))
-				(= oldCycleSpeed (ego cycleSpeed?))
+				(= projObj client)
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
+				(= savSpeed (ego cycleSpeed?))
 				(HandsOff)
-				(if (ego onMe: oldEgoX (- oldEgoY 35)) (= hurtEgo 1))
+				(if (ego onMe: knTargX (- knTargY 35))
+					(= hurtEgo TRUE)
+				)
 				(ego
 					setMotion: 0
-					setHeading: (if (<= oldEgoX (ego x?)) 270 else 90)
+					setHeading: (if (<= knTargX (ego x?)) 270 else 90)
 				)
 				(= ticks 30)
 			)
@@ -168,11 +168,13 @@
 				(++ missedDaggers)
 			)
 			(2
-				(if hurtEgo (= oldEgoX (ego x?)) (= oldEgoY (ego y?)))
-				(knifeSound play:)
+				(if hurtEgo
+					(= knTargX (ego x?)) (= knTargY (ego y?))
+				)
+				(projSound play:)
 				(= param2
 					(cond 
-						((< (= param2 (Abs (- oldEgoX (ego x?)))) 20) 15)
+						((< (= param2 (Abs (- knTargX (ego x?)))) 20) 15)
 						((< param2 30) 20)
 						((< param2 50) 25)
 						((< param2 80) 30)
@@ -189,17 +191,22 @@
 						(ego y?)
 					setLoop: (+ (ego loop?) 2)
 					setCycle: Forward
-					setMotion: MoveTo oldEgoX oldEgoY self
+					setMotion: MoveTo knTargX knTargY self
 				)
 				(ego setCycle: EndLoop)
 				(= ticks 6)
 			)
-			(3 (client show:))
+			(3
+				(client show:)
+			)
 			(4
 				(client hide:)
 				(if hurtEgo
-					(if (not hurtEgo) (-- missedDaggers) (++ hitDaggers))
-					(knifeSound stop: number: (SoundFX 29) play: self)
+					(if (not hurtEgo)
+						(-- missedDaggers)
+						(++ hitDaggers)
+					)
+					(projSound stop: number: (SoundFX 29) play: self)
 				else
 					(self cue:)
 				)

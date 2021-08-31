@@ -12,23 +12,23 @@
 )
 
 (local
-	oldSignal
-	oldPriority
-	oldIllBits
-	oldCycleSpeed
-	dazzSound
+	savSignal
+	savPriority
+	savIllegalBits
+	savSpeed
+	soundObj
 	wasHandsOn
 )
-(procedure (CastDazz theClient param2)
+(procedure (CastDazz onWhat whoCares)
 	(if (not isHandsOff)
 		(= wasHandsOn TRUE)
 	)
 	(cond 
 		((< 1 argc)
-			(theClient setScript: clientCastDazz param2)
+			(onWhat setScript: clientCastDazz whoCares)
 		)
 		(argc
-			(theClient setScript: clientCastDazz)
+			(onWhat setScript: clientCastDazz)
 		)
 		(else
 			(ego setScript: clientCastDazz)
@@ -37,17 +37,16 @@
 )
 
 (instance clientCastDazz of Script
-	
 	(method (dispose)
-		(dazzSound stop: dispose:)
+		(soundObj stop: dispose:)
 		(NormalEgo)
 		(if wasHandsOn (HandsOn))
 		(ego
-			loop: (if (== (ego loop?) 4) 5 else 4)
-			priority: oldPriority
-			illegalBits: oldIllBits
-			signal: oldSignal
-			cycleSpeed: oldCycleSpeed
+			loop: (if (== (ego loop?) loopSE) loopSW else loopSE)
+			priority: savPriority
+			illegalBits: savIllegalBits
+			signal: savSignal
+			cycleSpeed: savSpeed
 		)
 		(super dispose:)
 		(DisposeScript CASTDAZZ)
@@ -59,26 +58,26 @@
 				(= ticks 10)
 			)
 			(1
-				(= oldSignal (ego signal?))
-				(= oldPriority (ego priority?))
-				(= oldIllBits (ego illegalBits?))
-				(= oldCycleSpeed (ego cycleSpeed?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
+				(= savSpeed (ego cycleSpeed?))
 				(HandsOff)
 				(ego
 					setMotion: 0
-					setHeading: (if (OneOf (ego loop?) 2 4 0 6) 135 else 225) self
+					setHeading: (if (OneOf (ego loop?) loopS loopSE loopE loopNE) 135 else 225) self
 				)
 			)
 			(2
 				(theGame setCursor: waitCursor TRUE)
 				(ego
 					view: 521
-					setLoop: (if (== (ego loop?) 5) 4 else 5)
+					setLoop: (if (== (ego loop?) loopSW) loopSE else loopSW)
 					cel: 0
 					cycleSpeed: 4
 					setCycle: EndLoop self
 				)
-				((= dazzSound (Sound new:))
+				((= soundObj (Sound new:))
 					number: (SoundFX 17)
 					priority: 6
 					init:

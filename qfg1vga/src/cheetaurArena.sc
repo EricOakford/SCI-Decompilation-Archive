@@ -164,7 +164,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Bset fFlag284)
+				(Bset fBattleStarted)
 				(cheetaur
 					view: 442
 					action: 0
@@ -175,8 +175,8 @@
 					setPri: -1
 				)
 				(legs setPri: 5 stopUpd:)
-				(if (Btst fFlag285)
-					(Bclr fFlag285)
+				(if (Btst fMonsterRecoils)
+					(Bclr fMonsterRecoils)
 					(self cue:)
 				)
 				(switch (Random 0 1)
@@ -195,7 +195,7 @@
 				(= ticks 25)
 			)
 			(2
-				(Bclr fFlag284)
+				(Bclr fBattleStarted)
 				(if (cheetaur tryAttack: (cheetaur opponent?))
 					(cheetaur ateEgo: 1 setPri: 14)
 				)

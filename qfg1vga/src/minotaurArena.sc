@@ -137,7 +137,7 @@
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
-				(Bset fFlag284)
+				(Bset fBattleStarted)
 				(ball posn: 500 500 forceUpd: show:)
 				(client
 					action: 0
@@ -147,8 +147,8 @@
 					ateEgo: 0
 				)
 				(cond 
-					((Btst fFlag285)
-						(Bclr fFlag285)
+					((Btst fMonsterRecoils)
+						(Bclr fMonsterRecoils)
 						(= state 2)
 						(self cue:)
 					)
@@ -173,7 +173,7 @@
 				)
 			)
 			(3
-				(Bclr fFlag284)
+				(Bclr fBattleStarted)
 				(ball posn: 500 500)
 				(client action: 1)
 				(client setCel: 0 setLoop: 0 setCycle: CycleTo 3 1 self)

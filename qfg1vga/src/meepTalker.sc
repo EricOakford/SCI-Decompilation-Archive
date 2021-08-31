@@ -22,7 +22,7 @@
 	(method (init)
 		(= nightPalette 2060)
 		(PalVary PALVARYTARGET 2060)
-		(kernel_128 1060)
+		(AssertPalette 1060)
 		(= font userFont)
 		(super init: meepBust meepEye meepMouth &rest)
 		(meepLeg setCycle: Blink 100)
@@ -66,7 +66,7 @@
 		view 1060
 		loop 3
 		priority 14
-		signal $0010
+		signal fixPriOn
 	)
 )
 

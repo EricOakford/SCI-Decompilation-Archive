@@ -62,7 +62,7 @@
 	(method (init)
 		(= nightPalette 1447)
 		(PalVary PALVARYTARGET 1447)
-		(kernel_128 447)
+		(AssertPalette 447)
 		(super init:)
 	)
 	
@@ -140,8 +140,8 @@
 					setCycle: 0
 					cycleSpeed: (Random 15 18)
 				)
-				(if (Btst fFlag285)
-					(Bclr fFlag285)
+				(if (Btst fMonsterRecoils)
+					(Bclr fMonsterRecoils)
 					(self cue:)
 				else
 					(switch (Random 0 3)

@@ -308,11 +308,13 @@
 		)
 		(return
 			(switch theVerb
-				(4
-					(if (== (ego onControl: 1) 4096)
-						(if (Btst 264) (ego setScript: (ScriptID 96 1)))
+				(V_DO
+					(if (== (ego onControl: origin) cLRED)
+						(if (Btst fFakeDoorDown)
+							(ego setScript: (ScriptID 96 1))
+						)
 					else
-						(messager say: N_BEHINDDOOR7 V_DO 0 0 0 98)
+						(messager say: N_BEHINDDOOR7 V_DO NULL 0 0 98)
 					)
 				)
 				(else 
@@ -340,15 +342,15 @@
 		)
 		(return
 			(switch theVerb
-				(4
-					(if (== (ego onControl: 1) 4096)
-						(if (Btst 264)
+				(V_DO
+					(if (== (ego onControl: origin) cLRED)
+						(if (Btst fFakeDoorDown)
 							(ego setScript: (ScriptID 96 1))
 						else
 							(dor7 setScript: (ScriptID 96 2))
 						)
 					else
-						(messager say: N_BEHINDDOOR7 V_DO 0 0 0 98)
+						(messager say: N_BEHINDDOOR7 V_DO NULL 0 0 98)
 					)
 				)
 				(else 
@@ -473,8 +475,8 @@
 		cel 1
 	)
 	
-	(method (doit &tmp temp0)
-		(= temp0
+	(method (doit &tmp angYorickToEgo)
+		(= angYorickToEgo
 			(GetAngle
 				((ScriptID 96 5) x?)
 				((ScriptID 96 5) y?)
@@ -482,12 +484,21 @@
 				(ego y?)
 			)
 		)
-		(if
-		(and (== (theHead loop?) 6) (!= (theHead cel?) 3))
+		(if (and (== (theHead loop?) 6) (!= (theHead cel?) 3))
 			(cond 
-				((< temp0 135) (if (!= (theHead cel?) 2) (theHead setCel: 2)))
-				((< temp0 225) (if (!= (theHead cel?) 1) (theHead setCel: 1)))
-				((!= (theHead cel?) 0) (theHead setCel: 0))
+				((< angYorickToEgo 135)
+					(if (!= (theHead cel?) 2)
+						(theHead setCel: 2)
+					)
+				)
+				((< angYorickToEgo 225)
+					(if (!= (theHead cel?) 1)
+						(theHead setCel: 1)
+					)
+				)
+				((!= (theHead cel?) 0)
+					(theHead setCel: 0)
+				)
 			)
 		)
 		(super doit:)
@@ -495,8 +506,6 @@
 )
 
 (instance PullChain of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -508,8 +517,12 @@
 				(ego view: 298 posn: 57 47 setLoop: 2 setCel: 0)
 				(= ticks 30)
 			)
-			(1 (ego setCycle: CycleTo 2 1 self))
-			(2 (= ticks 12))
+			(1
+				(ego setCycle: CycleTo 2 1 self)
+			)
+			(2
+				(= ticks 12)
+			)
 			(3
 				(ego setCel: 3)
 				((ScriptID 96 6) setCel: 1)
@@ -523,8 +536,8 @@
 			(5
 				(NormalEgo)
 				(ego loop: 0)
-				(if (not (Btst 259))
-					(Bset 259)
+				(if (not (Btst fPulledChain))
+					(Bset fPulledChain)
 					(theHead dispose:)
 					((ScriptID 96 5) setLoop: 5)
 				)
@@ -534,7 +547,10 @@
 					(= cycles 1)
 				)
 			)
-			(6 (HandsOn) (self dispose:))
+			(6
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )

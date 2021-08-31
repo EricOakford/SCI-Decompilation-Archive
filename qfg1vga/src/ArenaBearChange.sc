@@ -19,8 +19,8 @@
 
 (local
 	local0
-	[dripX 9] = [28 63 83 102 235 295 195 39 251]
-	[dripY 9] = [93 85 79 79 86 99 98 103 90]
+	dripX = [28 63 83 102 235 295 195 39 251]
+	dripY = [93 85 79 79 86 99 98 103 90]
 )
 (instance rmBear of Room
 	(properties
@@ -135,7 +135,6 @@
 )
 
 (instance turnBearBack of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -161,8 +160,6 @@
 )
 
 (instance bearDying of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -217,7 +214,6 @@
 )
 
 (instance bearFreed of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -263,8 +259,7 @@
 	)
 )
 
-(instance dripScript of Script
-	
+(instance dripScript of Script	
 	(method (changeState newState &tmp i)
 		(switch (= state newState)
 			(0

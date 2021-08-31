@@ -12,15 +12,14 @@
 )
 
 (local
-	oldCycleSpeed
-	oldSignal
-	oldPriority
-	oldIllBits
+	savSpeed
+	savSignal
+	savPriority
+	savIllegalBits
 	wasHandsOn
 	[str 40]
 )
 (instance getRock of Script
-	
 	(method (dispose)
 		(super dispose:)
 		(DisposeScript GETROCK)
@@ -29,15 +28,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= oldCycleSpeed (ego cycleSpeed?))
-				(= oldSignal (ego signal?))
-				(= oldPriority (ego priority?))
-				(= oldIllBits (ego illegalBits?))
+				(= savSpeed (ego cycleSpeed?))
+				(= savSignal (ego signal?))
+				(= savPriority (ego priority?))
+				(= savIllegalBits (ego illegalBits?))
 				(= wasHandsOn (not isHandsOff))
 				(HandsOff)
 				(ego
 					view: 510
-					setLoop: (if (OneOf (ego loop?) 2 4 0 6) 0 else 1)
+					setLoop: (if (OneOf (ego loop?) loopS loopSE loopE loopNE) loopE else loopW)
 					cel: 0
 					cycleSpeed: 12
 					setCycle: EndLoop self
@@ -67,6 +66,7 @@
 				(= ticks 30)
 			)
 			(7
+				;(messager say: N_GETROCK NULL NULL 1 0 GETROCK)
 				(Message MsgGet GETROCK N_GETROCK NULL NULL 1 @str)
 				(Print addText: @str init:)
 				(ego setCycle: BegLoop self)
@@ -78,10 +78,10 @@
 				)
 				(ego
 					get: 10 10
-					cycleSpeed: oldCycleSpeed
-					priority: oldPriority
-					illegalBits: oldIllBits
-					signal: oldSignal
+					cycleSpeed: savSpeed
+					priority: savPriority
+					illegalBits: savIllegalBits
+					signal: savSignal
 				)
 				(client setScript: 0)
 			)

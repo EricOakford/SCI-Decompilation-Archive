@@ -18,14 +18,14 @@
 
 (local
 	antwerpSplit
-	oldEgoX
-	oldEgoY
-	oldCycleSpeed
+	antwerpX
+	antwerpY
+	saveSpeed
 )
 (instance rm85 of EncRoom
 	(properties
 		picture 701
-		style $0008
+		style DISSOLVE
 		encChance 30
 		entrances (| reEAST reWEST)
 		illBits -28672
@@ -45,7 +45,7 @@
 			(babyBoing number: (SoundFX 11) loop: 1 init:)
 		)
 		(NormalEgo)
-		(= oldCycleSpeed (ego cycleSpeed?))
+		(= saveSpeed (ego cycleSpeed?))
 		(northBush addToPic:)
 		(northBush2 addToPic:)
 		(southBush addToPic:)
@@ -118,7 +118,7 @@
 	(method (init)
 		(= nightPalette 1590)
 		(PalVary PALVARYTARGET 1590)
-		(kernel_128 590)
+		(AssertPalette 590)
 		(super init:)
 	)
 	
@@ -158,7 +158,9 @@
 	)
 	
 	(method (doit)
-		(if (== (self cel?) 0) (babyBoing loop: 1 play:))
+		(if (== (self cel?) 0)
+			(babyBoing loop: 1 play:)
+		)
 		(super doit:)
 	)
 )
@@ -217,8 +219,7 @@
 	)
 )
 
-(instance egoActions of Actions
-	
+(instance egoActions of Actions	
 	(method (doVerb theVerb)
 		(return
 			(if (or (== theVerb V_DAGGER) (== theVerb V_SWORD))
@@ -232,7 +233,6 @@
 )
 
 (instance antwerped of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -279,14 +279,14 @@
 				(antwerp setCycle: BegLoop setMotion: MoveTo 270 0)
 				(= cycles 80)
 			)
-			(5 (EgoDead 5 6))
+			(5
+				(EgoDead 5 6)
+			)
 		)
 	)
 )
 
 (instance splat of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -319,57 +319,57 @@
 				(antwerp setLoop: 5 setCycle: EndLoop)
 			)
 			(3
-				(= oldEgoX (ego x?))
-				(= oldEgoY (ego y?))
+				(= antwerpX (ego x?))
+				(= antwerpY (ego y?))
 				(antwerp
 					setLoop: 5
 					cel: 0
 					setStep: 4 4
-					posn: oldEgoX oldEgoY
-					setMotion: MoveTo oldEgoX (+ oldEgoY 16)
+					posn: antwerpX antwerpY
+					setMotion: MoveTo antwerpX (+ antwerpY 16)
 					cycleSpeed: 1
 					setCycle: EndLoop
 				)
 				(a1
 					setLoop: 7
-					posn: oldEgoX oldEgoY
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (+ oldEgoX 16) (+ oldEgoY 22) self
+					setMotion: MoveTo (+ antwerpX 16) (+ antwerpY 22) self
 				)
 				(a2
 					setLoop: 8
-					posn: oldEgoX oldEgoY
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (- oldEgoX 10) (- oldEgoY 10)
+					setMotion: MoveTo (- antwerpX 10) (- antwerpY 10)
 				)
 				(a3
 					setLoop: 7
-					posn: oldEgoX oldEgoY
+					posn: antwerpX antwerpY
 					ignoreActors:
 					init:
 					setCycle: Forward
-					setMotion: MoveTo (+ oldEgoX 8) (+ oldEgoY 15)
+					setMotion: MoveTo (+ antwerpX 8) (+ antwerpY 15)
 				)
-				(if (> howFast 0)
+				(if (> howFast slow)
 					(a4
 						setLoop: 7
-						posn: oldEgoX oldEgoY
+						posn: antwerpX antwerpY
 						ignoreActors:
 						init:
 						setCycle: Forward
-						setMotion: MoveTo (- oldEgoX 14) (- oldEgoY 5)
+						setMotion: MoveTo (- antwerpX 14) (- antwerpY 5)
 					)
 					(a5
 						setLoop: 8
-						posn: oldEgoX oldEgoY
+						posn: antwerpX antwerpY
 						ignoreActors:
 						init:
 						setCycle: Forward
-						setMotion: MoveTo (+ oldEgoX 16) (- oldEgoY 10)
+						setMotion: MoveTo (+ antwerpX 16) (- antwerpY 10)
 					)
 				)
 			)
@@ -383,7 +383,7 @@
 				)
 				(NormalEgo)
 				(User canControl: TRUE canInput: TRUE)
-				(ego cycleSpeed: oldCycleSpeed)
+				(ego cycleSpeed: saveSpeed)
 				(client setScript: 0)
 			)
 		)

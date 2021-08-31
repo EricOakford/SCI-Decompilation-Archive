@@ -75,8 +75,7 @@
 			(2
 				(HandsOff)
 				(faery
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(switch curRoomNum
 							(62 (Random 120 200))
 							(69 330)
@@ -92,12 +91,18 @@
 						self
 				)
 			)
-			(3 (faery hide:) (= ticks 18))
+			(3
+				(faery hide:)
+				(= ticks 18)
+			)
 			(4
 				(faery dispose: delete:)
 				(= ticks 18)
 			)
-			(5 (HandsOn) (self dispose:))
+			(5
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )

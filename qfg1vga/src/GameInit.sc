@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# GLORY_INIT)
+(script# HQINIT)
 (include game.sh) (include "1.shm") (include "999.shm")
 (use Main)
 (use Procs)
@@ -51,13 +51,13 @@
 	(if (or debugging (FileIO fileExists @debugNum))
 		(= nr
 			(Print
-				addText: N_ROOM NULL C_WHERETO 1 0 0 GLORY_INIT
+				addText: N_ROOM NULL C_WHERETO 1 0 0 HQINIT
 				addEdit: @str 5 115 0
-				addButton: 200 N_ROOM NULL NULL 1 0 12 GLORY_INIT
-				addButton: 202 N_ROOM NULL NULL 2 100 12 GLORY_INIT
-				addButton: -100 N_ROOM NULL NULL 3 0 26 GLORY_INIT
-				addButton: 300 N_ROOM NULL NULL 4 100 26 GLORY_INIT
-				addButton: NOTICE N_ROOM NULL NULL 5 0 40 GLORY_INIT
+				addButton: 200 N_ROOM NULL NULL 1 0 12 HQINIT
+				addButton: 202 N_ROOM NULL NULL 2 100 12 HQINIT
+				addButton: -100 N_ROOM NULL NULL 3 0 26 HQINIT
+				addButton: 300 N_ROOM NULL NULL 4 100 26 HQINIT
+				addButton: NOTICE N_ROOM NULL NULL 5 0 40 HQINIT
 				init:
 			)
 		)

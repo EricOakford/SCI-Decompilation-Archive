@@ -10,8 +10,6 @@
 )
 
 (instance leaveRoom of Script
-	(properties)
-	
 	(method (dispose)
 		(super dispose:)
 	)
@@ -69,7 +67,7 @@
 						(+ ((ScriptID 39 2) y?) 20)
 						self
 				)
-				(Bclr fFlag239)
+				(Bclr fMasterIsHere)
 				(Bclr fStopFightingMaster)
 			)
 			(6 (HandsOn) (client dispose:))
