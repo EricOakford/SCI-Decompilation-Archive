@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 300)
+(script# rTownOutlook)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -46,7 +46,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vTownOutlook vEgoTired vOttoYoyo)
+		(LoadMany VIEW rTownOutlook vEgoTired vOttoYoyo)
 		(rm300 style:
 			(switch prevRoomNum
 				(301 WIPERIGHT)
@@ -80,7 +80,7 @@
 			((= townGate (View new:)) posn: 114 173 cel: 1)
 		)
 		(townGate
-			view: vTownOutlook
+			view: rTownOutlook
 			loop: 1
 			setPri: 15
 			init:
@@ -91,7 +91,7 @@
 			(sheriff init:)
 		)
 		((= innDoor (Door new:))
-			view: vTownOutlook
+			view: rTownOutlook
 			loop: 0
 			posn: 71 122
 			doorControl: cLGREEN
@@ -101,7 +101,7 @@
 			init:
 		)
 		((View new:)
-			view: vTownOutlook
+			view: rTownOutlook
 			posn: 58 69
 			loop: 2
 			cel: 0
@@ -111,7 +111,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: vTownOutlook
+			view: rTownOutlook
 			posn: 259 58
 			loop: 2
 			cel: 1
@@ -121,7 +121,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: vTownOutlook
+			view: rTownOutlook
 			posn: 173 72
 			loop: 2
 			cel: 2
@@ -131,7 +131,7 @@
 			addToPic:
 		)
 		((View new:)
-			view: vTownOutlook
+			view: rTownOutlook
 			posn: 271 104
 			loop: 2
 			cel: 3
@@ -430,7 +430,7 @@
 			)
 			(1
 				((= egoLookAround (View new:))
-					view: vTownOutlook
+					view: rTownOutlook
 					loop: 8
 					cel: 0
 					posn: 187 154
@@ -478,14 +478,14 @@
 	(properties
 		y 128
 		x 152
-		view vTownOutlook
+		view rTownOutlook
 		loop 3
 		illegalBits $0000
 	)
 	
 	(method (init)
 		((= sheriffSmoke (Prop new:))
-			view: vTownOutlook
+			view: rTownOutlook
 			loop: 5
 			cel: 0
 			posn: 159 102
@@ -497,7 +497,7 @@
 			stopUpd:
 		)
 		((= blownSmoke (Prop new:))
-			view: vTownOutlook
+			view: rTownOutlook
 			loop: 7
 			cel: 0
 			posn: 156 99
@@ -508,7 +508,7 @@
 			stopUpd:
 		)
 		((= sheriffView (View new:))
-			view: vTownOutlook
+			view: rTownOutlook
 			loop: 6
 			cel: 0
 			posn: 152 128

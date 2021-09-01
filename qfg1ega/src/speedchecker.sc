@@ -28,7 +28,7 @@
 		(while (u> (GetTime) $FC00)
 		)
 		(fred
-			view: vBlack
+			view: vSpeed
 			setLoop: 0
 			illegalBits: 0
 			posn: 20 99

@@ -88,7 +88,7 @@
 			(11
 				((ScriptID 301 2) view: vSheema)
 				((View new:)
-					view: vInn
+					view: rHeroTaleInn
 					loop: 5
 					cel: 2
 					posn: 130 131

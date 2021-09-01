@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 21)
+(script# rBabaInside)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -53,7 +53,7 @@
 
 (instance myIcon of DCIcon
 	(properties
-		view vBabaYaga1
+		view vBabaYaga
 		loop 9
 		cycleSpeed 8
 	)
@@ -83,7 +83,7 @@
 
 (instance babaHead of Prop
 	(properties
-		view vBabaYaga1
+		view vBabaYaga
 		loop 4
 		cycleSpeed 1
 	)
@@ -93,7 +93,7 @@
 	(properties
 		y 89
 		x 245
-		view vBabaYaga2
+		view rBabaInside
 		cycleSpeed 1
 	)
 )
@@ -102,7 +102,7 @@
 	(properties
 		y 51
 		x 205
-		view vBabaYaga2
+		view rBabaInside
 		loop 1
 		cycleSpeed 1
 	)
@@ -119,7 +119,7 @@
 	(properties
 		y 130
 		x 86
-		view vBabaYaga2
+		view rBabaInside
 		loop 2
 	)
 )
@@ -128,7 +128,7 @@
 	(properties
 		y 133
 		x 86
-		view vBabaYaga2
+		view rBabaInside
 		loop 3
 	)
 )
@@ -137,7 +137,7 @@
 	(properties
 		y 151
 		x 212
-		view vBabaYaga2
+		view rBabaInside
 		loop 4
 	)
 )
@@ -145,7 +145,7 @@
 (instance baba of Actor
 	(properties
 		yStep 1
-		view vBabaYaga1
+		view vBabaYaga
 		cycleSpeed 2
 		xStep 2
 	)
@@ -176,7 +176,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vBabaYaga1 vBabaYaga2 vFrogTransform vTeleportGreen vEgoHoldingMirror)
+		(LoadMany VIEW vBabaYaga rBabaInside vFrogTransform vTeleportGreen vEgoHoldingMirror)
 		(LoadMany SOUND 51 (SoundFX 28))
 		(LoadMany SCRIPT DCICON 293 294)
 		(super init:)
@@ -619,7 +619,7 @@
 				(= cycles 12)
 			)
 			(16
-				(ego view: vEgoFrogTransform loop: 3 cel: 0 setCycle: EndLoop)
+				(ego view: vFrogTransform loop: 3 cel: 0 setCycle: EndLoop)
 				(teleport play:)
 				(= cycles 10)
 			)
@@ -627,7 +627,7 @@
 				(baba setLoop: 8 setMotion: MoveTo 160 148 self)
 			)
 			(18
-				(baba view: vBabaYaga1 setLoop: 7 setCycle: CycleTo 3 1 self)
+				(baba view: vBabaYaga setLoop: 7 setCycle: CycleTo 3 1 self)
 			)
 			(19
 				(ego ignoreActors: hide:)
@@ -862,7 +862,7 @@
 				)
 			)
 			(6
-				(ego view: vEgoFrogTransform loop: 3 cel: 0 setCycle: EndLoop)
+				(ego view: vFrogTransform loop: 3 cel: 0 setCycle: EndLoop)
 				(babaHead setCycle: 0 hide:)
 				(= cycles 15)
 			)
@@ -905,7 +905,7 @@
 				(= babaState babaFINALE)
 				(babaHead hide:)
 				(baba
-					view: vBabaYaga1
+					view: vBabaYaga
 					setLoop: 6
 					cycleSpeed: 1
 					setCycle: CycleTo 3 1 self

@@ -371,7 +371,7 @@
 								(HighPrint 84 27)
 								;You'd have a much easier time of this if you had the key.
 							)
-							((TrySkill PICK tryPickSecretEntrance lockPickBonus)
+							((TrySkill PICK 85 lockPickBonus)
 								(HighPrint 84 28)
 								;Ah, got it!  The lock in the rock clicks open.
 								(Bset fTrollDoorUnlocked)
@@ -389,7 +389,7 @@
 					((Said 'shove,move,force,get,open/boulder,door')
 						(if (not (Btst fTrollDoorOpen))
 							(if (Btst fTrollDoorUnlocked)
-								(if (TrySkill STR tryForceSecretEntrance 0)
+								(if (TrySkill STR 40 0)
 									(rock setScript: sMoveRock)
 								else
 									(HighPrint 84 31)

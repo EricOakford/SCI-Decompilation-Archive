@@ -74,7 +74,7 @@
 				(= seconds 2)
 			)
 			(6
-				(ego view: vEgoFrogTransform loop: 3 cel: 0 setCycle: EndLoop)
+				(ego view: vFrogTransform loop: 3 cel: 0 setCycle: EndLoop)
 				((ScriptID 21 8) play:)
 				((ScriptID 21 2) setCycle: 0 hide:)
 				(= cycles 15)

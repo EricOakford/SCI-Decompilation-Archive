@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 318)
+(script# rNoticeBoard)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -119,7 +119,7 @@
 	)
 	
 	(method (init)
-		(Load VIEW vNoticeBoard)
+		(Load VIEW rNoticeBoard)
 		(super init:)
 		(mouseDownHandler add: self)
 		(keyDownHandler add: self)
@@ -127,7 +127,7 @@
 		(StatusLine enable:)
 		(User canControl: FALSE)
 		((= rewardHeading1 (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 0
 			cel: 1
 			posn: 60 76
@@ -138,7 +138,7 @@
 			addToPic:
 		)
 		((= rewardHeading2 (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 0
 			cel: 1
 			posn: 120 70
@@ -149,7 +149,7 @@
 			addToPic:
 		)
 		((= rewardHeading3 (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 0
 			cel: 1
 			posn: 197 74
@@ -160,7 +160,7 @@
 			addToPic:
 		)
 		((= wantedHeading (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 0
 			cel: 0
 			posn: 100 124
@@ -171,7 +171,7 @@
 			addToPic:
 		)
 		((= noticeHeading (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 0
 			cel: 2
 			posn: 175 123
@@ -182,7 +182,7 @@
 			addToPic:
 		)
 		((= rewardHeading4 (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 0
 			cel: 1
 			posn: 263 104
@@ -193,7 +193,7 @@
 			addToPic:
 		)
 		((= elsaPicture (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 1
 			cel: 0
 			posn: 119 84
@@ -204,7 +204,7 @@
 			addToPic:
 		)
 		((= barnardPicture (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 1
 			cel: 1
 			posn: 262 120
@@ -215,7 +215,7 @@
 			addToPic:
 		)
 		((= wantedHeading2 (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 0
 			cel: 0
 			posn: 100 124
@@ -227,7 +227,7 @@
 		)
 		(= highlightedPoster 1)
 		((= posterView (View new:))
-			view: vNoticeBoard
+			view: rNoticeBoard
 			loop: 2
 			cel: 0
 			posn: 60 108

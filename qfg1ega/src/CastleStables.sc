@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 40)
+(script# rCastleStables)
 (include game.sh)
 (use Main)
 (use Sleep)
@@ -81,7 +81,7 @@
 
 (instance horse of Prop
 	(properties
-		view vStables
+		view rCastleStables
 		loop 1
 		cel 1
 	)
@@ -89,7 +89,7 @@
 
 (instance horseHead of Extra
 	(properties
-		view vStables
+		view rCastleStables
 		loop 6
 		cycleSpeed 3
 		cycleType ExtraEndLoop
@@ -102,7 +102,7 @@
 
 (instance horseTail of Extra
 	(properties
-		view vStables
+		view rCastleStables
 		loop 5
 		cycleSpeed ExtraEndAndBeginLoop
 		cycleType 1
@@ -117,7 +117,7 @@
 	(properties
 		y 63
 		x 27
-		view vStables
+		view rCastleStables
 		loop 1
 	)
 )
@@ -153,7 +153,7 @@
 	(properties
 		y 54
 		x 27
-		view vStables
+		view rCastleStables
 	)
 )
 
@@ -161,14 +161,14 @@
 	(properties
 		y 46
 		x 27
-		view vStables
+		view rCastleStables
 		loop 2
 	)
 )
 
 (instance aDustCloud of Actor
 	(properties
-		view vStables
+		view rCastleStables
 	)
 )
 
@@ -176,13 +176,13 @@
 	(properties
 		y 130
 		x 150
-		view vStables
+		view rCastleStables
 	)
 )
 
 (instance stableMan of Actor
 	(properties
-		view vStables
+		view rCastleStables
 	)
 )
 
@@ -765,8 +765,8 @@
 				(Bset fStableClean)
 				(NormalEgo)
 				(ego x: (- (ego x?) 2) loop: 2)
-				(SkillUsed STR tryStatStableStr)
-				(SkillUsed VIT tryStatStableVit)
+				(SkillUsed STR 25)
+				(SkillUsed VIT 40)
 				(client setScript: getPaid)
 			)
 		)

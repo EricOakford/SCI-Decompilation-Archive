@@ -66,7 +66,7 @@
 				)
 			)
 			(if (not atWhat)
-				(SkillUsed THROW (/ [egoStats AGIL] tryStatThrowing))
+				(SkillUsed THROW (/ [egoStats AGIL] 10))
 				(= knTargX (if (& (ego loop?) 1) -10 else 330))
 				(= knTargY (Random 20 80))
 			)

@@ -27,7 +27,7 @@
 	(properties
 		y 122
 		x 161
-		view vWizardTable
+		view rErasmusTower
 		cel 4
 	)
 )
@@ -88,7 +88,7 @@
 			(5
 				((ScriptID 31 2) setCel: 7)
 				(ego
-					view: vWizardTable
+					view: rErasmusTower
 					setLoop: 4
 					setCel: 2
 					illegalBits: 0
@@ -314,7 +314,7 @@
 			(0
 				((ScriptID 31 2) setCel: 7)
 				(ego
-					view: vWizardTable
+					view: rErasmusTower
 					setLoop: 4
 					setCel: 0
 					illegalBits: 0

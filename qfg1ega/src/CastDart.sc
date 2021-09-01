@@ -60,7 +60,7 @@
 	else
 		;CI: NOTE: This is probably a bug. Much of this code was copy/pasted from the ThrowRocks script, and this was likely missed.
 		; it doesn't make sense to increase your throwing skill by casting Flame Dart.
-		(SkillUsed THROW (/ [egoStats AGIL] tryStatThrowing))
+		(SkillUsed THROW (/ [egoStats AGIL] 10))
 		(= dartTargX (if (== (ego loop?) 1) -10 else 330))
 		(= dartTargY (Random 20 80))
 	)

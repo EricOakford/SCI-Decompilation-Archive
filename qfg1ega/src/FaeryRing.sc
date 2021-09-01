@@ -39,15 +39,15 @@
 	[faeryScript 5]
 	[chaseScript 5]
 	faeryTimer
-	[local70 5] = [35 250 265 140 225]
-	[local75 5] = [30 35 125 50 45]
+	local70 = [35 250 265 140 225]
+	local75 = [30 35 125 50 45]
 	local80
 	local81
 	local82
 	local83
 	local84
-	local85 =  137
-	local86 =  137
+	danceToX =  137
+	danceToY =  137
 	local87
 	askedForDust
 	local89 =  -1
@@ -802,8 +802,6 @@
 )
 
 (instance cuteDance of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -813,11 +811,11 @@
 				(ego
 					illegalBits: 0
 					ignoreActors:
-					setMotion: MoveTo local85 local86 self
+					setMotion: MoveTo danceToX danceToY self
 				)
 			)
 			(1
-				(if (TrySkill AGIL tryFaeryDance)
+				(if (TrySkill AGIL 25)
 					(self cue:)
 				else
 					(ego setScript: klutzDance)
@@ -838,10 +836,9 @@
 			(3
 				(++ local83)
 				(ego
-					setMotion:
-						MoveTo
-						(Random (- local85 20) (+ local85 20))
-						(Random (- local86 10) (+ local86 10))
+					setMotion: MoveTo
+						(Random (- danceToX 20) (+ danceToX 20))
+						(Random (- danceToY 10) (+ danceToY 10))
 						self
 				)
 			)

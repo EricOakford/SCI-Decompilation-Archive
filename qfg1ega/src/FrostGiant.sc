@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 58)
+(script# rSnowField)
 (include game.sh)
 (use Main)
 (use Intrface)

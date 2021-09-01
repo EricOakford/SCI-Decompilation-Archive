@@ -62,7 +62,7 @@
 			(Load VIEW vEgoDefeated)
 			(Load VIEW vEgoClimbing)
 		)
-		(Load VIEW vCastleGate)
+		(Load VIEW rCastleGate)
 		(Load SOUND (SoundFX 90))
 		(lBush init: addToPic:)
 		(rBush init: addToPic:)
@@ -861,7 +861,7 @@
 	(properties
 		y 77
 		x 43
-		view vCastleGate
+		view rCastleGate
 		cycleSpeed 1
 		xStep 2
 	)
@@ -1228,7 +1228,7 @@
 	(properties
 		y 155
 		x 160
-		view vCastleGate
+		view rCastleGate
 		loop 7
 	)
 )
@@ -1237,7 +1237,7 @@
 	(properties
 		y 167
 		x 160
-		view vCastleGate
+		view rCastleGate
 		loop 6
 	)
 )
@@ -1246,7 +1246,7 @@
 	(properties
 		y 189
 		x 10
-		view vCastleGate
+		view rCastleGate
 		loop 8
 	)
 )
@@ -1255,7 +1255,7 @@
 	(properties
 		y 189
 		x 310
-		view vCastleGate
+		view rCastleGate
 		loop 9
 	)
 )

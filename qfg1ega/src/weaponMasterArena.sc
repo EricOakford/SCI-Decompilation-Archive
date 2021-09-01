@@ -36,7 +36,7 @@
 				(= cycles 6)
 			)
 			(2
-				(SkillUsed LUCK tryStatWeaponMaster)
+				(SkillUsed LUCK 50)
 				(if (== heroType FIGHTER)
 					(SolvePuzzle f39BeatMaster 10 FIGHTER)
 				)

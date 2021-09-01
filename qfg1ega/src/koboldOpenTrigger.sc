@@ -29,7 +29,7 @@
 			)
 			(1
 				(Bset fKoboldChestKnown)
-				(if (TrySkill OPEN tryCastOpenKoboldChest 0)
+				(if (TrySkill OPEN 50 0)
 					(self cue:)
 				else
 					((ScriptID 15 2) setScript: (ScriptID 15 5))

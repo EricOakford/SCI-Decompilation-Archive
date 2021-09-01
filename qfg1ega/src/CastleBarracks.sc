@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 38)
+(script# rCastleBarracks)
 (include game.sh)
 (use Main)
 (use RFeature)
@@ -119,7 +119,7 @@
 	(properties
 		y 113
 		x 197
-		view vBarracksMan
+		view rCastleBarracks
 		loop 1
 		cycleSpeed 6
 	)
@@ -185,7 +185,7 @@
 					((Said 'kill/guard,man,gatekeeper')
 						(EgoDead 38 13
 							#title {OH NOOOOOOO!}
-							#icon vEgoJailDeath 3 0
+							#icon rCastleCourtyard 3 0
 							;As you approach the guard with your weapon, he jumps up and opens the barracks door as he yells for help.
 							;Four guards playing cards inside the barracks quickly grab their weapons and overwhelm you.
 							;As you are dragged into the castle and down into the dungeon, you realize that was probably not quite the right thing to do.
@@ -237,7 +237,7 @@
 	(properties
 		y 135
 		x 202
-		view vBarracksMan
+		view rCastleBarracks
 	)
 )
 

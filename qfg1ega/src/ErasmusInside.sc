@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 30)
+(script# rErasmusInside)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -84,7 +84,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vTeleportPink vWizardLobby vFenrus)
+		(LoadMany VIEW vTeleportPink rErasmusInside vFenrus)
 		(super init:)
 		(mouseDownHandler add: self)
 		(SolvePuzzle f30EnterTower 3)
@@ -233,7 +233,7 @@
 				;Dredging up your ancient Egyptian, you translate the hieroglyphs: "She of the golden hair."
 				(HighPrint 30 18)
 				;This is an excerpt from the Rosella Stone!  There is a picture next to the message.
-				(Print 30 19 #title {The Picture.} #icon vWizardLobby 6 4)
+				(Print 30 19 #title {The Picture.} #icon rErasmusInside 6 4)
 				;(Picture of Rosella from KQ4 doing an Egyptian pose.)
 			)
 			(
@@ -603,7 +603,7 @@
 
 (instance theDunker of Prop
 	(properties
-		view vWizardLobby
+		view rErasmusInside
 		loop 4
 		cycleSpeed 2
 	)
@@ -611,7 +611,7 @@
 
 (instance peacock of Prop
 	(properties
-		view vWizardLobby
+		view rErasmusInside
 		loop 7
 		cycleSpeed 1
 	)
@@ -619,7 +619,7 @@
 
 (instance dragon of Prop
 	(properties
-		view vWizardLobby
+		view rErasmusInside
 		loop 2
 		cycleSpeed 2
 	)
@@ -627,7 +627,7 @@
 
 (instance theLight of Prop
 	(properties
-		view vWizardLobby
+		view rErasmusInside
 		loop 1
 		cycleSpeed 1
 	)
@@ -635,7 +635,7 @@
 
 (instance theWiz of Prop
 	(properties
-		view vWizardLobby
+		view rErasmusInside
 		loop 8
 		cycleSpeed 2
 	)
@@ -652,7 +652,7 @@
 	(properties
 		y 151
 		x 210
-		view vWizardLobby
+		view rErasmusInside
 		loop 3
 	)
 )
@@ -661,7 +661,7 @@
 	(properties
 		y 182
 		x 248
-		view vWizardLobby
+		view rErasmusInside
 		loop 3
 		cel 1
 	)
@@ -671,7 +671,7 @@
 	(properties
 		y 48
 		x 115
-		view vWizardLobby
+		view rErasmusInside
 		loop 3
 		cel 2
 	)
@@ -681,7 +681,7 @@
 	(properties
 		y 48
 		x 176
-		view vWizardLobby
+		view rErasmusInside
 		loop 3
 		cel 3
 		priority 4
@@ -692,7 +692,7 @@
 	(properties
 		y 75
 		x 146
-		view vWizardLobby
+		view rErasmusInside
 	)
 )
 
@@ -700,7 +700,7 @@
 	(properties
 		y 109
 		x 222
-		view vWizardLobby
+		view rErasmusInside
 		loop 6
 	)
 )
@@ -709,7 +709,7 @@
 	(properties
 		y 183
 		x 102
-		view vWizardLobby
+		view rErasmusInside
 		loop 6
 		cel 1
 		priority 14
@@ -720,7 +720,7 @@
 	(properties
 		y 110
 		x 83
-		view vWizardLobby
+		view rErasmusInside
 		loop 6
 		cel 2
 	)
@@ -730,7 +730,7 @@
 	(properties
 		y 166
 		x 20
-		view vWizardLobby
+		view rErasmusInside
 		loop 6
 		cel 3
 	)
@@ -740,7 +740,7 @@
 	(properties
 		y 54
 		x 81
-		view vWizardLobby
+		view rErasmusInside
 		loop 3
 		cel 4
 	)

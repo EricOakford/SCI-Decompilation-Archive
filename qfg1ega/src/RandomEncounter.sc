@@ -126,7 +126,7 @@
 	)
 	(= bodyView (+ monsterNum 1))
 	;luckPoints are increased by 1/12th of the monster's maximum HP.
-	(SkillUsed LUCK (/ [monsterHP (GetMonsterIndex monsterNum)] tryStatRandomEncounter))
+	(SkillUsed LUCK (/ [monsterHP (GetMonsterIndex monsterNum)] 12))
 	(HandsOn)
 	(NormalEgo)
 	(if afterBattle

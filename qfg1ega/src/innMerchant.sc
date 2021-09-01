@@ -355,7 +355,7 @@
 	(properties
 		y 131
 		x 96
-		view vInn
+		view rHeroTaleInn
 		loop 5
 		cel 3
 		priority 12

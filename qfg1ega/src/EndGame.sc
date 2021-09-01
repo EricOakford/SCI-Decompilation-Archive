@@ -622,7 +622,7 @@
 	(properties
 		y 92
 		x 51
-		view vDragonHead
+		view vHalfDragon
 		priority 3
 	)
 )
@@ -631,7 +631,7 @@
 	(properties
 		y 87
 		x 127
-		view vDragonHead
+		view vHalfDragon
 		loop 1
 		cel 1
 		priority 3
@@ -642,14 +642,14 @@
 	(properties
 		y 49
 		x 87
-		view vDragonHead
+		view vHalfDragon
 		loop 2
 	)
 )
 
 (instance flame of Actor
 	(properties
-		view vDragonFire
+		view vHalfFlame
 	)
 )
 
@@ -667,7 +667,7 @@
 		(DisposeScript 204)
 		(Load SOUND (SoundFX 99))
 		(LoadMany PICTURE 148 906 101 750)
-		(LoadMany VIEW vEgoWithMedal vEgoFlyingCarpet vEgoLarge vTrialByFire vQFG2 vDragonHead vDragonFire)
+		(LoadMany VIEW vEgoWithMedal vEgoFlyingCarpet vEgoLarge vTrialByFire vQFG2 vHalfDragon vHalfFlame)
 		(SolvePuzzle f600EndGame 25)
 		(StatusLine code: endStatus enable:)
 		(super init: &rest)

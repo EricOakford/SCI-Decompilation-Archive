@@ -62,7 +62,7 @@
 			)
 			(if (not atWhat)
 				;CI: why call SkillUsed directly, instead of TrySkill
-				(SkillUsed THROW (/ [egoStats AGIL] tryStatThrowing))
+				(SkillUsed THROW (/ [egoStats AGIL] 10))
 				(= rockTargX (if (& (ego loop?) 1) -10 else 330))
 				(= rockTargY (Random 20 80))
 			)

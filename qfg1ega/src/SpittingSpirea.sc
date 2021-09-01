@@ -19,17 +19,17 @@
 )
 
 (local
-	[theFlower0 4]
-	local4
-	local5
+	[theFlower 4]
+	spitCued
+	waitingToThrow
 	local6
 	local7
-	local8
-	local9
-	local10
-	local11
-	local12
-	local13
+	slashCount
+	castingFetch
+	threwARock
+	triedFetch
+	rockHit
+	lassoWaiting
 	local14
 	local15
 )
@@ -50,25 +50,25 @@
 )
 
 (procedure (localproc_0059)
-	(if (!= ([theFlower0 0] loop?) 3)
-		([theFlower0 0] setLoop: 2 setCycle: EndLoop)
+	(if (!= ([theFlower 0] loop?) 3)
+		([theFlower 0] setLoop: 2 setCycle: EndLoop)
 	)
-	(if (!= ([theFlower0 1] loop?) 3)
-		([theFlower0 1] setLoop: 2 setCycle: EndLoop)
+	(if (!= ([theFlower 1] loop?) 3)
+		([theFlower 1] setLoop: 2 setCycle: EndLoop)
 	)
-	(if (!= ([theFlower0 2] loop?) 3)
-		([theFlower0 2] setLoop: 2 setCycle: EndLoop)
+	(if (!= ([theFlower 2] loop?) 3)
+		([theFlower 2] setLoop: 2 setCycle: EndLoop)
 	)
-	(if (!= ([theFlower0 3] loop?) 3)
-		([theFlower0 3] setLoop: 2 setCycle: EndLoop)
+	(if (!= ([theFlower 3] loop?) 3)
+		([theFlower 3] setLoop: 2 setCycle: EndLoop)
 	)
 )
 
 (procedure (localproc_00de)
-	([theFlower0 0] stopUpd:)
-	([theFlower0 1] stopUpd:)
-	([theFlower0 2] stopUpd:)
-	([theFlower0 3] stopUpd:)
+	([theFlower 0] stopUpd:)
+	([theFlower 1] stopUpd:)
+	([theFlower 2] stopUpd:)
+	([theFlower 3] stopUpd:)
 )
 
 (instance flyingSeed of Actor
@@ -116,7 +116,9 @@
 	
 	(method (init)
 		(LoadMany VIEW rSpittingSpirea vEgoSwordSpirea vEgoClimbing vEgoThrowing)
-		(if (ego knows: FETCH) (Load VIEW vEgoMagicFetch))
+		(if (ego knows: FETCH)
+			(Load VIEW vEgoMagicFetch)
+		)
 		(LoadMany SCRIPT 291 292)
 		(LoadMany SOUND (SoundFX 18) (SoundFX 27))
 		(super init:)
@@ -124,7 +126,9 @@
 		(spitSound number: (SoundFX 18) init:)
 		(gulpSound number: (SoundFX 27) init:)
 		(StatusLine enable:)
-		(if (or Night (Btst fGotSeed)) (Bset fFlowersInactive))
+		(if (or Night (Btst fGotSeed))
+			(Bset fFlowersInactive)
+		)
 		(= local7 2)
 		(NormalEgo)
 		(ego init:)
@@ -145,13 +149,19 @@
 				(ego posn: 170 188 setMotion: MoveTo 170 175)
 			)
 		)
-		(if (Btst fKilledFlower3) (flower0 setLoop: 3 cel: 4))
-		(if (Btst fKilledFlower1) (flower1 setLoop: 3 cel: 4))
-		(if (Btst fKilledFlower2) (flower3 setLoop: 3 cel: 4))
-		((= [theFlower0 0] flower0) init: stopUpd:)
-		((= [theFlower0 1] flower1) init: stopUpd:)
-		((= [theFlower0 2] flower2) init: stopUpd:)
-		((= [theFlower0 3] flower3) init: stopUpd:)
+		(if (Btst fKilledFlower3)
+			(flower0 setLoop: 3 cel: 4)
+		)
+		(if (Btst fKilledFlower1)
+			(flower1 setLoop: 3 cel: 4)
+		)
+		(if (Btst fKilledFlower2)
+			(flower3 setLoop: 3 cel: 4)
+		)
+		((= [theFlower 0] flower0) init: stopUpd:)
+		((= [theFlower 1] flower1) init: stopUpd:)
+		((= [theFlower 2] flower2) init: stopUpd:)
+		((= [theFlower 3] flower3) init: stopUpd:)
 		(addToPics
 			add: leaf0 leaf1 leaf2 leaf3
 			eachElementDo: #init
@@ -177,7 +187,9 @@
 	)
 	
 	(method (doit)
-		(if local4 (flyingSeed setScript: spitIt))
+		(if spitCued
+			(flyingSeed setScript: spitIt)
+		)
 		(super doit:)
 	)
 	
@@ -213,17 +225,29 @@
 			)
 			(saidEvent
 				(cond 
-					((Said 'look<for/boulder,brick') (SpireaPickUpSeed))
+					((Said 'look<for/boulder,brick')
+						(SpireaPickUpSeed)
+					)
 					((Said 'look>')
 						(cond 
-							((Said '/north,west') (HighPrint 16 4))
-							((Said '/south,east') (HighPrint 16 5))
+							((Said '/north,west')
+								(HighPrint 16 4)
+							)
+							((Said '/south,east')
+								(HighPrint 16 5)
+							)
 							((Said '[<at,around][/!*,forest]')
 								(HighPrint 16 6)
-								(if (not (Btst fFlowersInactive)) (HighPrint 16 7))
+								(if (not (Btst fFlowersInactive))
+									(HighPrint 16 7)
+								)
 							)
-							((Said '/cliff,boulder') (HighPrint 16 8))
-							((Said '[<down][/ground,needle,moss,grass]') (HighPrint 16 9))
+							((Said '/cliff,boulder')
+								(HighPrint 16 8)
+							)
+							((Said '[<down][/ground,needle,moss,grass]')
+								(HighPrint 16 9)
+							)
 							((Said '[<up][/sky,cloud,star]')
 								(if Night
 									(HighPrint 16 10)
@@ -231,15 +255,25 @@
 									(HighPrint 16 11)
 								)
 							)
-							((Said '/birch,tree') (HighPrint 16 12))
+							((Said '/birch,tree')
+								(HighPrint 16 12)
+							)
 							((Said '/seed')
 								(cond 
-									((ego has: iSeed) (event claimed: 0))
-									((Btst fFlowersInactive) (HighPrint 16 13))
-									(else (HighPrint 16 14))
+									((ego has: iSeed)
+										(event claimed: FALSE)
+									)
+									((Btst fFlowersInactive)
+										(HighPrint 16 13)
+									)
+									(else
+										(HighPrint 16 14)
+									)
 								)
 							)
-							((Said '/leaf') (HighPrint 16 15))
+							((Said '/leaf')
+								(HighPrint 16 15)
+							)
 						)
 					)
 					(
@@ -252,8 +286,12 @@
 								(HighPrint 16 16)
 								(ego setScript: (ScriptID 291 2))
 							)
-							(3 (HighPrint 16 3))
-							(4 (HighPrint 16 3))
+							(3
+								(HighPrint 16 3)
+							)
+							(4
+								(HighPrint 16 3)
+							)
 							(0
 								(cond 
 									(
@@ -269,39 +307,71 @@
 										)
 										(NotClose)
 									)
-									((ego has: iSword) (ego setScript: smashIt) (Bset fFlowersInactive))
-									(else (HighPrint 16 17))
+									((ego has: iSword)
+										(ego setScript: smashIt)
+										(Bset fFlowersInactive)
+									)
+									(else
+										(HighPrint 16 17)
+									)
 								)
 							)
 						)
 					)
 					((Said 'climb,get<down')
 						(cond 
-							((and (> spireaStatus 1) (== seedTarget 0)) (HighPrint 16 18))
-							((>= spireaStatus 1) (ego setScript: (ScriptID 292 3)))
-							(else (HighPrint 16 19))
+							((and (> spireaStatus 1) (== seedTarget 0))
+								(HighPrint 16 18)
+							)
+							((>= spireaStatus 1)
+								(ego setScript: (ScriptID 292 3))
+							)
+							(else
+								(HighPrint 16 19)
+							)
 						)
 					)
 					((Said 'climb[<up][/cliff,boulder]')
 						(cond 
-							((>= spireaStatus 1) (HighPrint 16 20))
-							((Btst fGotSeed) (AlreadyGotSeed))
-							((TrySkill CLIMB tryClimbSpittingSpirea 0) (ego setScript: (ScriptID 291 1)))
-							(else (ego setScript: (ScriptID 291 0)))
+							((>= spireaStatus 1)
+								(HighPrint 16 20)
+							)
+							((Btst fGotSeed)
+								(AlreadyGotSeed)
+							)
+							((TrySkill CLIMB 35 0)
+								(ego setScript: (ScriptID 291 1))
+							)
+							(else
+								(ego setScript: (ScriptID 291 0))
+							)
 						)
 					)
 					((Said 'capture[/seed]')
 						(cond 
-							((Btst fFlowersInactive) (HighPrint 16 21))
-							((Btst fGotSeed) (AlreadyGotSeed))
-							((== spireaStatus 1) (= spireaStatus 2) (ego setScript: (ScriptID 291 3)))
-							((or (== spireaStatus 2) (== spireaStatus 3)) (HighPrint 16 22))
-							(else (HighPrint 16 23))
+							((Btst fFlowersInactive)
+								(HighPrint 16 21)
+							)
+							((Btst fGotSeed)
+								(AlreadyGotSeed)
+							)
+							((== spireaStatus 1)
+								(= spireaStatus 2)
+								(ego setScript: (ScriptID 291 3))
+							)
+							((or (== spireaStatus 2) (== spireaStatus 3))
+								(HighPrint 16 22)
+							)
+							(else
+								(HighPrint 16 23)
+							)
 						)
 					)
 					((Said '(lockpick<up),find,search>')
 						(cond 
-							((Said '/boulder,brick') (SpireaPickUpSeed))
+							((Said '/boulder,brick')
+								(SpireaPickUpSeed)
+							)
 							((Said '/seed')
 								(if (Btst fGotSeed)
 									(AlreadyDone)
@@ -315,11 +385,17 @@
 						(cond 
 							((Said '/boulder,brick')
 								(cond 
-									((Btst fGotSeed) (AlreadyGotSeed))
-									((Btst fFlowersInactive) (HighPrint 16 25))
+									((Btst fGotSeed)
+										(AlreadyGotSeed)
+									)
+									((Btst fFlowersInactive)
+										(HighPrint 16 25)
+									)
 									((== spireaStatus 0)
 										(if (ego has: iRock)
-											(if (not local10) (HighPrint 16 26))
+											(if (not threwARock)
+												(HighPrint 16 26)
+											)
 											(ego setScript: throwIt)
 										else
 											(HighPrint 16 27)
@@ -337,24 +413,45 @@
 							(OPEN
 								(cond 
 									((not (CastSpell spell)))
-									((Btst fGotSeed) (AlreadyGotSeed))
-									((!= (ego script?) 0) (HighPrint 16 3))
-									((!= spireaStatus 0) (HighPrint 16 30) (ego setScript: (ScriptID 291 2)))
-									((< [egoStats OPEN] 35) (HighPrint 16 31))
-									(else (Bset fFlowersInactive) (ego setScript: openUp))
+									((Btst fGotSeed)
+										(AlreadyGotSeed)
+									)
+									((!= (ego script?) 0)
+										(HighPrint 16 3)
+									)
+									((!= spireaStatus 0)
+										(HighPrint 16 30)
+										(ego setScript: (ScriptID 291 2))
+									)
+									((< [egoStats OPEN] 35)
+										(HighPrint 16 31)
+									)
+									(else
+										(Bset fFlowersInactive) 
+										(ego setScript: openUp)
+									)
 								)
 							)
 							(FETCH
 								(cond 
 									((not (CastSpell spell)))
-									((Btst fGotSeed) (AlreadyGotSeed))
-									((Btst fFlowersInactive) (HighPrint 16 32))
+									((Btst fGotSeed)
+										(AlreadyGotSeed)
+									)
+									((Btst fFlowersInactive)
+										(HighPrint 16 32)
+									)
 									((== spireaStatus 0)
-										(if (not local11) (HighPrint 16 33))
-										(= local9 1)
+										(if (not triedFetch)
+											(HighPrint 16 33)
+										)
+										(= castingFetch TRUE)
 										(ego setScript: throwIt)
 									)
-									(else (HighPrint 16 30) (ego setScript: (ScriptID 291 2)))
+									(else
+										(HighPrint 16 30)
+										(ego setScript: (ScriptID 291 2))
+									)
 								)
 							)
 							(FLAMEDART
@@ -388,12 +485,10 @@
 )
 
 (instance spitIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local4 0)
+				(= spitCued FALSE)
 				(= seconds (Random 3 5))
 			)
 			(1
@@ -403,7 +498,10 @@
 					(= seedInPlant seedTarget)
 					(if (== local14 (= seedTarget (Random 0 3)))
 						(while (== local14 seedTarget)
-							(if (<= (++ local15) 3) (= local15 0) (break))
+							(if (<= (++ local15) 3)
+								(= local15 0)
+								(break)
+							)
 							(if (== seedTarget 1)
 								(= seedTarget 2)
 							else
@@ -414,13 +512,12 @@
 						(= local15 0)
 					)
 					(= local14 seedTarget)
-					([theFlower0 seedInPlant]
+					([theFlower seedInPlant]
 						setLoop: 1
 						startUpd:
 						setCycle: EndLoop self
 					)
-					(if
-					(and (!= seedTarget 3) (!= seedInPlant seedTarget) local5)
+					(if (and (!= seedTarget 3) (!= seedInPlant seedTarget) waitingToThrow)
 						(throwIt cue:)
 					)
 				)
@@ -443,18 +540,20 @@
 							(3 70)
 						)
 				)
-				(if local13 (lassoSeed cue:) else (self cue:))
+				(if lassoWaiting
+					(lassoSeed cue:)
+				else
+					(self cue:)
+				)
 			)
 			(3
 				(spitSound play:)
 				(flyingSeed
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(flyingSeed x?)
 						(-
 							(flyingSeed y?)
-							(if
-							(and (== seedInPlant seedTarget) (!= seedInPlant 2))
+							(if (and (== seedInPlant seedTarget) (!= seedInPlant 2))
 								30
 							else
 								5
@@ -462,13 +561,12 @@
 						)
 						self
 				)
-				([theFlower0 seedInPlant] setCycle: BegLoop)
+				([theFlower seedInPlant] setCycle: BegLoop)
 			)
 			(4
 				(flyingSeed
 					yStep: 2
-					setMotion:
-						JumpTo
+					setMotion: JumpTo
 						(switch seedTarget
 							(0 142)
 							(1 35)
@@ -494,7 +592,7 @@
 				)
 			)
 			(6
-				([theFlower0 seedTarget] setLoop: 2 setCycle: EndLoop)
+				([theFlower seedTarget] setLoop: 2 setCycle: EndLoop)
 				(flyingSeed
 					yStep: 6
 					setMotion: MoveTo (flyingSeed x?) (+ (flyingSeed y?) 17) self
@@ -503,21 +601,21 @@
 			(7
 				(gulpSound play:)
 				(flyingSeed hide:)
-				([theFlower0 seedTarget] setCycle: BegLoop self)
+				([theFlower seedTarget] setCycle: BegLoop self)
 			)
 			(8
-				([theFlower0 seedTarget] stopUpd:)
-				([theFlower0 seedInPlant] stopUpd:)
+				([theFlower seedTarget] stopUpd:)
+				([theFlower seedInPlant] stopUpd:)
 				(flyingSeed setScript: 0)
-				(if (or (not (Btst fFlowersInactive)) (not local6)) (= local4 1))
+				(if (or (not (Btst fFlowersInactive)) (not local6))
+					(= spitCued TRUE)
+				)
 			)
 		)
 	)
 )
 
 (instance smashIt of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -558,22 +656,22 @@
 					setLoop: (if (== local7 1) 2 else 0)
 					cel: 0
 				)
-				([theFlower0 1] setPri: (if (== local7 1) 15 else -1))
+				([theFlower 1] setPri: (if (== local7 1) 15 else -1))
 				(self cue:)
 			)
 			(2 (ego setCycle: EndLoop self))
 			(3
-				(++ local8)
+				(++ slashCount)
 				(ego
 					setLoop: (if (== local7 1) 3 else 1)
 					setCycle: EndLoop self
 				)
 			)
 			(4
-				(if (== local8 2)
+				(if (== slashCount 2)
 					(switch local7
 						(0
-							([theFlower0 0]
+							([theFlower 0]
 								setLoop: 3
 								cel: 0
 								cycleSpeed: 1
@@ -582,7 +680,7 @@
 							(Bset fKilledFlower3)
 						)
 						(1
-							([theFlower0 1]
+							([theFlower 1]
 								setLoop: 3
 								cel: 0
 								cycleSpeed: 1
@@ -591,7 +689,7 @@
 							(Bset fKilledFlower1)
 						)
 						(3
-							([theFlower0 3]
+							([theFlower 3]
 								setLoop: 3
 								cel: 0
 								cycleSpeed: 1
@@ -602,8 +700,8 @@
 					)
 					(if (== local7 seedTarget) (flyingSeed show:))
 				)
-				(if (> local8 3)
-					(= local8 0)
+				(if (> slashCount 3)
+					(= slashCount 0)
 					(= cycles 4)
 				else
 					(self changeState: 3)
@@ -623,7 +721,7 @@
 				(if
 					(and
 						(== local7 seedTarget)
-						(not local12)
+						(not rockHit)
 						(not (Btst fGotSeed))
 					)
 					(= cycles 3)
@@ -635,8 +733,8 @@
 			)
 			(8
 				(HighPrint 16 39)
-				(if (== ([theFlower0 1] priority?) 15)
-					([theFlower0 1] setPri: 1)
+				(if (== ([theFlower 1] priority?) 15)
+					([theFlower 1] setPri: 1)
 				)
 				(= cycles 2)
 			)
@@ -661,10 +759,8 @@
 )
 
 (instance throwIt of Script
-	(properties)
-	
 	(method (dispose)
-		(= local9 0)
+		(= castingFetch 0)
 		(super dispose:)
 	)
 	
@@ -679,23 +775,23 @@
 			)
 			(1
 				(ego
-					view: (if local9 vEgoMagicFetch else vEgoThrowing)
+					view: (if castingFetch vEgoMagicFetch else vEgoThrowing)
 					cycleSpeed: 1
-					setLoop: (if local9 0 else 2)
+					setLoop: (if castingFetch 0 else 2)
 					cel: 0
 				)
-				(= local5 1)
+				(= waitingToThrow TRUE)
 			)
 			(2
-				(= local5 0)
-				(if local9
+				(= waitingToThrow FALSE)
+				(if castingFetch
 					(ego setCycle: EndLoop self)
 				else
 					(ego setCycle: CycleTo 4 1 self)
 				)
 			)
 			(3
-				(if local9
+				(if castingFetch
 					(magicLasso
 						ignoreActors:
 						posn: (+ (ego x?) 2) (- (ego y?) 36)
@@ -710,11 +806,11 @@
 						(magicLasso setScript: lassoFailed)
 					)
 					(ego setScript: 0)
-					(= local11 1)
+					(= triedFetch 1)
 				else
 					(rock posn: (- (ego x?) 13) (- (ego y?) 34) show:)
 					(ego setCycle: EndLoop self)
-					(= local10 1)
+					(= threwARock TRUE)
 					(if (TrySkill THROW 0 -10)
 						(rock setScript: rockHitsIt)
 					else
@@ -731,16 +827,14 @@
 )
 
 (instance rockHitsIt of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
-				(not local12)
+				(not rockHit)
 				(== (flyingSeed y?) 150)
 				(== (rock y?) 160)
 			)
-			(= local12 1)
+			(= rockHit TRUE)
 			(self cue:)
 		)
 		(super doit:)
@@ -753,13 +847,13 @@
 			)
 			(1
 				(Bset fFlowersInactive)
-				(= local4 0)
+				(= spitCued FALSE)
 				(flyingSeed setScript: 0 setMotion: 0)
 				(rock
 					setMotion: MoveTo (+ (flyingSeed x?) 3) (flyingSeed y?) self
 				)
-				(if (!= ([theFlower0 seedTarget] cel?) 0)
-					([theFlower0 seedTarget] setCycle: BegLoop)
+				(if (!= ([theFlower seedTarget] cel?) 0)
+					([theFlower seedTarget] setCycle: BegLoop)
 				)
 			)
 			(2
@@ -838,11 +932,11 @@
 				(HandsOff)
 				(Bset fFlowersInactive)
 				(= temp0
-					(/ (- ([theFlower0 seedTarget] x?) (magicLasso x?)) 2)
+					(/ (- ([theFlower seedTarget] x?) (magicLasso x?)) 2)
 				)
 				(= temp1
 					(/
-						(- (- ([theFlower0 seedTarget] y?) (magicLasso y?)) 30)
+						(- (- ([theFlower seedTarget] y?) (magicLasso y?)) 30)
 						2
 					)
 				)
@@ -858,7 +952,7 @@
 			(2
 				(magicLasso dispose:)
 				(Bclr fFlowersInactive)
-				(= local4 1)
+				(= spitCued TRUE)
 				(NormalEgo)
 				(HandsOn)
 				(HighPrint 16 41)
@@ -869,24 +963,21 @@
 )
 
 (instance lassoSeed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(Bset fFlowersInactive)
 				(magicLasso
-					setMotion:
-						MoveTo
-						([theFlower0 seedTarget] x?)
-						(- ([theFlower0 seedTarget] y?) 30)
+					setMotion: MoveTo
+						([theFlower seedTarget] x?)
+						(- ([theFlower seedTarget] y?) 30)
 						self
 				)
 			)
 			(1
 				(Bclr fFlowersInactive)
-				(= local4 1)
-				(= local13 1)
+				(= spitCued TRUE)
+				(= lassoWaiting TRUE)
 			)
 			(2
 				(flyingSeed
@@ -895,7 +986,7 @@
 					setMotion: MoveTo (flyingSeed x?) (- (magicLasso y?) 2) self
 				)
 				(spitSound play:)
-				([theFlower0 seedInPlant] setCycle: BegLoop)
+				([theFlower seedInPlant] setCycle: BegLoop)
 			)
 			(3
 				(magicLasso
@@ -954,8 +1045,8 @@
 			(2
 				(localproc_0059)
 				(flyingSeed
-					setPri: (+ ([theFlower0 seedTarget] priority?) 1)
-					posn: ([theFlower0 seedTarget] x?) (- ([theFlower0 seedTarget] y?) 15)
+					setPri: (+ ([theFlower seedTarget] priority?) 1)
+					posn: ([theFlower seedTarget] x?) (- ([theFlower seedTarget] y?) 15)
 					show:
 				)
 				(= cycles 10)

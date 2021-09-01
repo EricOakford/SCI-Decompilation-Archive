@@ -234,7 +234,7 @@
 							(OPEN
 								(if foxOnScreen
 									(if (CastSpell spell)
-										(if (TrySkill OPEN tryCastOpenFox)
+										(if (TrySkill OPEN 25)
 											(= openSpellSuccess TRUE)
 											(SolvePuzzle f67SaveFox 10)
 										else

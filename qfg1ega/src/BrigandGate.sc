@@ -410,15 +410,18 @@
 						(cond 
 							((ego inRect: 92 95 214 107)
 								(HighPrint 93 21)
-								;The logs of the wall are too slick, and there is no place to get a good hold on them.  You'll have to try somewhere else.
-								)
+								;The logs of the wall are too slick, and there is no place to get a good hold on them. 
+								; You'll have to try somewhere else.
+							)
 							((ego inRect: 269 120 303 151)
 								(HighPrint 93 22)
 								;There is no good climbing place on the rock cliff to the east.
-								)
-							((and (< (ego x?) 97) (< (ego y?) 108)) (ego setScript: (ScriptID 277 0)))
+							)
+							((and (< (ego x?) 97) (< (ego y?) 108))
+								(ego setScript: (ScriptID 277 0))
+							)
 							((ego inRect: 238 0 330 106)
-								(if (TrySkill CLIMB tryClimbBrigandGate)
+								(if (TrySkill CLIMB 65)
 									(ego setScript: (ScriptID 276 0))
 								else
 									(HighPrint 93 23)

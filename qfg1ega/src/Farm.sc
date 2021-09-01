@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 53)
+(script# rFarmField)
 (include game.sh)
 (use Main)
 (use Extra)
@@ -31,7 +31,7 @@
 
 (instance tail of Extra
 	(properties
-		view vFarmerTalking
+		view vHeinrich
 		loop 2
 		cycleType ExtraEndLoop
 		minPause 40
@@ -209,14 +209,14 @@
 
 (instance head of View
 	(properties
-		view vFarmerTalking
+		view vHeinrich
 		loop 5
 	)
 )
 
 (instance centaur of Actor
 	(properties
-		view vFarmerRaking
+		view rFarmField
 		cycleSpeed 2
 		moveSpeed 2
 	)
@@ -224,7 +224,7 @@
 
 (instance rm53 of Room
 	(properties
-		picture vFarmerRaking
+		picture rFarmField
 		horizon 105
 		north 36
 		east 54
@@ -233,8 +233,8 @@
 	
 	(method (init)
 		(if (not Night)
-			(Load VIEW vFarmerRaking)
-			(Load VIEW vFarmerTalking)
+			(Load VIEW rFarmField)
+			(Load VIEW vHeinrich)
 		)
 		(= style
 			(switch prevRoomNum
@@ -336,7 +336,7 @@
 					((Said 'climb,climb[/wall]')
 						(if Night
 							(if (> (ego y?) 150)
-								(if (TrySkill CLIMB tryClimbIntoTown 0)
+								(if (TrySkill CLIMB 35 0)
 									(curRoom newRoom: 334)
 								else
 									(HighPrint 53 29)
@@ -447,7 +447,7 @@
 			)
 			(1
 				(centaur
-					view: vFarmerTalking
+					view: vHeinrich
 					setLoop: (if (Btst fFarmerIsEast) 1 else 0)
 					cel: 0
 					setMotion: 0

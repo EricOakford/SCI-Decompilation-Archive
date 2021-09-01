@@ -2,7 +2,7 @@
 ; MazeBug class to handle behavior of bugs in wizard's game (Mages' Mazes)
 
 (script# MAZEBUG) ;MAZEBUG = 238
-(include game.sh)
+(include game.sh) (include maze.sh)
 (use Motion)
 (use Actor)
 

@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 28)
+(script# rMountainBase)
 (include game.sh)
 (use Main)
 (use Motion)
@@ -18,13 +18,13 @@
 )
 (instance redSign of Prop
 	(properties
-		view vWizardWarning
+		view rMountainBase
 	)
 )
 
 (instance greenSign of Prop
 	(properties
-		view vWizardWarning
+		view rMountainBase
 		loop 1
 	)
 )
@@ -45,7 +45,7 @@
 	)
 	
 	(method (init)
-		(Load VIEW vWizardWarning)
+		(Load VIEW rMountainBase)
 		(Load VIEW vTeleportPink)
 		(rm28 style:
 		(switch prevRoomNum

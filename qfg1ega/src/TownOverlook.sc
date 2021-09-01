@@ -37,7 +37,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vBruno vTownGate)
+		(LoadMany VIEW rTownOverlook vTownGate)
 		(super init:)
 		(mouseDownHandler add: self)
 		(if Night
@@ -120,7 +120,7 @@
 					((Said 'climb,climb[/gate,wall]')
 						(if Night
 							(if (and (< (ego x?) 114) (< (ego y?) 120))
-								(if (TrySkill CLIMB tryClimbIntoTown 0)
+								(if (TrySkill CLIMB 35 0)
 									(HighPrint 65 5)
 									;After making sure nobody is watching, you climb over the town's wall.
 									(curRoom newRoom: 300)
@@ -202,7 +202,7 @@
 	(properties
 		y 109
 		x 37
-		view vBruno
+		view rTownOverlook
 		cycleSpeed 2
 	)
 	
@@ -623,14 +623,14 @@
 
 (instance knife1 of Actor
 	(properties
-		view vBruno
+		view rTownOverlook
 		loop 7
 	)
 )
 
 (instance knife2 of Actor
 	(properties
-		view vBruno
+		view rTownOverlook
 		loop 8
 	)
 )

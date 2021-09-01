@@ -2021,7 +2021,7 @@
 					)
 					((or (Said '[use]/stealth') (Said 'sneak'))
 						(if (!= egoGait MOVE_SNEAK)
-							(if (TrySkill STEALTH trySneak 0)
+							(if (TrySkill STEALTH 5 0)
 								(ChangeGait MOVE_SNEAK TRUE)
 							else
 								(HighPrint 0 25)
@@ -2037,7 +2037,7 @@
 						(if (CanPickLocks)
 							(HighPrint 0 27)
 							;You delicately insert the lockpick into your left nostril.
-							(if (not (TrySkill PICK tryPickNose))
+							(if (not (TrySkill PICK 40))
 								(EgoDead 0 28
 									#title {The surgeon general warns . . ._}
 									#icon vIcons 0 0

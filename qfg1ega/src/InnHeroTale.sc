@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 301)
+(script# rHeroTaleInn)
 (include game.sh)
 (use Main)
 (use LoadMany)
@@ -49,7 +49,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vInn vSheema vSheemaFood vInnCast)
+		(LoadMany VIEW rHeroTaleInn vSheema vSheemaFood vInnCast)
 		(LoadMany SCRIPT 165 166 167 168 169 170)
 		(LoadMany SOUND 21 50)
 		(rm301 style: (if (== prevRoomNum 302) (| BLACKOUT IRISOUT) else WIPELEFT))
@@ -775,7 +775,7 @@
 	(properties
 		y 136
 		x 127
-		view vInn
+		view rHeroTaleInn
 		loop 5
 		cel 1
 	)
@@ -833,7 +833,7 @@
 	(properties
 		y 107
 		x 168
-		view vInn
+		view rHeroTaleInn
 		loop 1
 		cycleSpeed 1
 	)
@@ -843,7 +843,7 @@
 	(properties
 		y 140
 		x 30
-		view vInn
+		view rHeroTaleInn
 		loop 4
 	)
 )
@@ -852,7 +852,7 @@
 	(properties
 		y 137
 		x 285
-		view vInn
+		view rHeroTaleInn
 		loop 3
 		cycleSpeed 1
 	)
@@ -862,7 +862,7 @@
 	(properties
 		y 154
 		x 141
-		view vInn
+		view rHeroTaleInn
 		loop 5
 		cel 4
 	)
@@ -872,7 +872,7 @@
 	(properties
 		y 154
 		x 287
-		view vInn
+		view rHeroTaleInn
 		loop 5
 	)
 )

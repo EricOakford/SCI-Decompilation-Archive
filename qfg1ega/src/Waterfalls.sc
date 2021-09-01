@@ -526,7 +526,7 @@
 									)
 									;CI: NOTE: if you know about the ladder, you no longer gain any climbing skill
 									; by climbing up. This is unfortunate, because there are so few places to improve your climbing skill.
-									((TrySkill CLIMB tryClimbWaterfall)
+									((TrySkill CLIMB 30)
 										(ego setScript: (ScriptID 137 0))
 									)
 									(else
@@ -572,7 +572,7 @@
 											(ego setMotion: MoveTo (ego x?) 60)
 											(hermitDoor setScript: (ScriptID 140 0))
 										)
-										((TrySkill MAGIC tryCastOpenHenry)
+										((TrySkill MAGIC 45)
 											(CastOpen ego)
 											(hermitDoor setScript: (ScriptID 140 0))
 										)
@@ -735,7 +735,7 @@
 						(- (ego y?) 34)
 					init:
 				)
-				(if (and (TrySkill THROW tryThrowHenry) (not (Btst fHenryDoorOpen)))
+				(if (and (TrySkill THROW 25) (not (Btst fHenryDoorOpen)))
 					(++ rockKnockCount)
 					(= rockHitDoor TRUE)
 					(rock

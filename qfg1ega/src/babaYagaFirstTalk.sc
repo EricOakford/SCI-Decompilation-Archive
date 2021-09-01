@@ -32,7 +32,7 @@
 			(1
 				((ScriptID 21 1) setLoop: 1 setCycle: 0 cel: 0)
 				(ego
-					view: vBabaYaga1
+					view: vBabaYaga
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 1
@@ -262,7 +262,7 @@
 			)
 			(27
 				(ego
-					view: vEgoFrogTransform
+					view: vFrogTransform
 					setLoop: 3
 					cel: 7
 					posn: (- ((ScriptID 21 1) x?) 17) (+ ((ScriptID 21 1) y?) 4)

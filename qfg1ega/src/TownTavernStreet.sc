@@ -35,7 +35,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vTownOutlook vTownBarOutside vEgoTired)
+		(LoadMany VIEW rTownOutlook vTownBarOutside vEgoTired)
 		(if (Btst fBarDrunk)
 			(Load VIEW vEgoDefeated)
 		)
@@ -160,7 +160,7 @@
 		)
 		(if (not Night)
 			((View new:)
-				view: vTownOutlook
+				view: rTownOutlook
 				posn: 205 120
 				loop: 2
 				cel: 3
@@ -169,7 +169,7 @@
 				addToPic:
 			)
 			((View new:)
-				view: vTownOutlook
+				view: rTownOutlook
 				posn: 304 117
 				loop: 2
 				cel: 3
@@ -393,7 +393,7 @@
 			;CI: NOTE: is there a time when the Tavern door is locked?
 			;EO: Yes; when "It is not yet dawn". Despite this, the lock can be picked easily,
 			;and when you enter, nothing is different.
-			((not (TrySkill PICK tryPickTavern lockPickBonus))
+			((not (TrySkill PICK 10 lockPickBonus))
 				(HighPrint 330 2)
 				;You haven't been practicing very much.
 			)

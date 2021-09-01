@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 54)
+(script# rHealerOutside)
 (include game.sh)
 (use Main)
 (use CastDart)
@@ -61,7 +61,7 @@
 	(properties
 		y 72
 		x 212
-		view vHealerOutside
+		view vHealerOutsideStuff
 		loop 2
 		priority 10
 	)
@@ -71,7 +71,7 @@
 	(properties
 		y 64
 		x 79
-		view vHealerOutside
+		view vHealerOutsideStuff
 		loop 6
 	)
 	
@@ -368,7 +368,7 @@
 	(properties
 		y 127
 		x 209
-		view vHealerOutside
+		view vHealerOutsideStuff
 		loop 1
 		entranceTo 55
 		locked TRUE
@@ -380,7 +380,7 @@
 	(properties
 		y 66
 		x 71
-		view vHealerOutside
+		view vHealerOutsideStuff
 		loop 5
 		illegalBits $0000
 	)
@@ -410,7 +410,7 @@
 	(properties
 		y 69
 		x 73
-		view vHealerOutside
+		view vHealerOutsideStuff
 	)
 	
 	(method (handleEvent event)
@@ -469,15 +469,15 @@
 
 (instance rm54 of Room
 	(properties
-		picture 54
+		picture rHealerOutside
 		style DISSOLVE
 		east 56
 		south 65
-		west 53
+		west rFarmField
 	)
 	
 	(method (init)
-		(LoadMany VIEW vEgoWalkTree vEgoThrowing)
+		(LoadMany VIEW vHealerOutsideStuff vEgoThrowing)
 		(LoadMany SCRIPT 103 235 236 237)
 		(super init:)
 		(cSound fade:)
@@ -1959,7 +1959,7 @@
 						forceUpd:
 					)
 					(ego setCycle: EndLoop self)
-					(if (TrySkill THROW tryThrowNest 0)
+					(if (TrySkill THROW 25 0)
 						(rock setScript: (ScriptID 235 2))
 					else
 						(HandsOn)

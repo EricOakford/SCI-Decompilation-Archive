@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 240)
-(include game.sh)
+(include game.sh) (include maze.sh)
 (use Main)
 (use WizardGame)
 (use Motion)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 32)
-(include game.sh)
+(script# rWizardGame)
+(include game.sh) (include maze.sh)
 (use Main)
 (use StatusBar)
 (use wizGameMazeBug)
@@ -257,7 +257,7 @@
 	(properties
 		y 300
 		x 400
-		view vWizGameUI
+		view rWizardGame
 		loop 8
 		illegalBits $0000
 		doCast 1
@@ -615,7 +615,7 @@
 	(properties
 		y 500
 		x 500
-		view vWizGameUI
+		view rWizardGame
 		loop 6
 	)
 )
@@ -624,7 +624,7 @@
 	(properties
 		y 28
 		x 48
-		view vWizGameUI
+		view rWizardGame
 		priority 5
 	)
 )
@@ -633,7 +633,7 @@
 	(properties
 		y 28
 		x 122
-		view vWizGameUI
+		view rWizardGame
 		loop 1
 		priority 5
 	)
@@ -643,7 +643,7 @@
 	(properties
 		y 28
 		x 198
-		view vWizGameUI
+		view rWizardGame
 		loop 2
 		priority 5
 	)
@@ -653,7 +653,7 @@
 	(properties
 		y 28
 		x 274
-		view vWizGameUI
+		view rWizardGame
 		loop 7
 		priority 5
 	)
@@ -684,7 +684,7 @@
 	
 	(method (init &tmp temp0 temp1 temp2 theRockInfo theRockInfo_2)
 		(LoadMany SCRIPT MAZEBUG 205 KEYCURSOR 239 240 241 242)
-		(LoadMany VIEW vWizGameUI vWizGameMonster statusBarView)
+		(LoadMany VIEW rWizardGame vWizGameMonster statusBarView)
 		(super init: &rest)
 		(theGame setCursor: normalCursor TRUE)
 		(++ magesMazePlayCount)
@@ -700,7 +700,7 @@
 			(= theRockInfo_2 [rockInfo (+ temp1 1)])
 			((= [rockObjs temp2] (Rock new:))
 				listIndex: temp2
-				view: vWizGameUI
+				view: rWizardGame
 				setLoop: 3
 				setCel: 0
 				setPri: 4
@@ -721,7 +721,7 @@
 			((= [bridgeObjs temp2] (Fetchable new:))
 				listIndex: (+ temp2 8)
 				fetchType: 2
-				view: vWizGameUI
+				view: rWizardGame
 				setLoop: 4
 				setCel: [bridgeInfo (+ temp1 2)]
 				setPri: 1
@@ -741,7 +741,7 @@
 			((= [ladderObjs temp2] (Fetchable new:))
 				listIndex: (+ temp2 25)
 				fetchType: 1
-				view: vWizGameUI
+				view: rWizardGame
 				setLoop: 5
 				setCel: [ladderInfo (+ temp1 2)]
 				setPri: 1

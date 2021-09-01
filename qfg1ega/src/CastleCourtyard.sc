@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 39)
+(script# rCastleCourtyard)
 (include game.sh)
 (use Main)
 (use LoadMany)
@@ -13,15 +13,13 @@
 	swordMusic 1
 )
 
-(instance swordMusic of Sound
-	(properties)
-)
+(instance swordMusic of Sound)
 
 (instance rightGuard of Prop
 	(properties
 		y 90
 		x 179
-		view vCastleGuards
+		view rCastleCourtyard
 	)
 )
 
@@ -29,7 +27,7 @@
 	(properties
 		y 90
 		x 140
-		view vCastleGuards
+		view rCastleCourtyard
 		loop 1
 	)
 )
@@ -38,7 +36,7 @@
 	(properties
 		y 88
 		x 159
-		view vCastleGuards
+		view rCastleCourtyard
 		loop 2
 	)
 )
@@ -54,7 +52,7 @@
 	)
 	
 	(method (init &tmp theY)
-		(Load VIEW vCastleGuards)
+		(Load VIEW rCastleCourtyard)
 		(if
 			(and
 				(< TIME_DAWN timeODay)

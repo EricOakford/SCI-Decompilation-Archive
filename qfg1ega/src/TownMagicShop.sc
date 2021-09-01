@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 314)
+(script# rMagicShop)
 (include game.sh)
 (use Main)
 (use LoadMany)
@@ -92,7 +92,7 @@
 	)
 	
 	(method (init)
-		(Load VIEW vMagicShop)
+		(Load VIEW rMagicShop)
 		(Load VIEW vZara)
 		(LoadMany SOUND 67 (SoundFX 45) (SoundFX 28))
 		(super init:)
@@ -120,7 +120,7 @@
 		(NormalEgo)
 		(ego loop: 3 posn: 159 188 init:)
 		((= [smokeCloud 0] (Prop new:))
-			view: vMagicShop
+			view: rMagicShop
 			posn: 159 13
 			loop: 0
 			cel: 0
@@ -128,7 +128,7 @@
 			stopUpd:
 		)
 		((= [smokeCloud 1] (Prop new:))
-			view: vMagicShop
+			view: rMagicShop
 			posn: 149 27
 			loop: 1
 			cel: 0
@@ -136,7 +136,7 @@
 			stopUpd:
 		)
 		((= [smokeCloud 2] (Prop new:))
-			view: vMagicShop
+			view: rMagicShop
 			posn: 161 38
 			loop: 2
 			cel: 0
@@ -144,7 +144,7 @@
 			stopUpd:
 		)
 		((= [smokeCloud 3] (Prop new:))
-			view: vMagicShop
+			view: rMagicShop
 			posn: 160 53
 			loop: 3
 			cel: 0
@@ -152,7 +152,7 @@
 			stopUpd:
 		)
 		((= familiar (Prop new:))
-			view: vMagicShop
+			view: rMagicShop
 			posn: 110 55
 			loop: 6
 			cel: 0
@@ -161,7 +161,7 @@
 			stopUpd:
 		)
 		((View new:)
-			view: vMagicShop
+			view: rMagicShop
 			posn: 111 66
 			loop: 8
 			cel: 0
@@ -623,7 +623,7 @@
 			)
 			(4
 				((= lightning (Prop new:))
-					view: vMagicShop
+					view: rMagicShop
 					posn: 159 90
 					loop: 4
 					cel: 0
@@ -634,7 +634,7 @@
 			(5
 				(lightning stopUpd:)
 				((= zaraWarp (Prop new:))
-					view: vMagicShop
+					view: rMagicShop
 					posn: 161 90
 					loop: 5
 					cel: 0

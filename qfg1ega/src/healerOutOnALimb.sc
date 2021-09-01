@@ -19,7 +19,7 @@
 			(0
 				(HandsOff)
 				(ego
-					view: vEgoWalkTree
+					view: vHealerOutsideStuff
 					posn: (ego x?) (- (ego y?) 10)
 					setLoop: 8
 					setCel: 0
@@ -48,7 +48,7 @@
 				(ego setCel: 0)
 				(cond 
 					((== stepCount 3)
-						(if (TrySkill AGIL tryWalkTreeLimb)
+						(if (TrySkill AGIL 30)
 							(self changeState: 1)
 						else
 							(= stepCount 0)

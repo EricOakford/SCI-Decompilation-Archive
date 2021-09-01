@@ -80,7 +80,7 @@
 				(= seconds 2)
 			)
 			(4
-				(if (not (TrySkill FETCH tryFetchKoboldKey 0))
+				(if (not (TrySkill FETCH 35 0))
 					(lasso dispose:)
 					(if (AwakenKobold)
 						(CenterPrint 114 1)

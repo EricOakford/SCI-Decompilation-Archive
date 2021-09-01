@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 31)
+(script# rErasmusTower)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -158,7 +158,7 @@
 		(keyDownHandler add: self)
 		(LoadMany SCRIPT 131 132 133 134 135)
 		(LoadMany TEXT 131 132 133 134 135)
-		(LoadMany VIEW vWizardTable vFenrus vTeleportPink)
+		(LoadMany VIEW rErasmusTower vFenrus vTeleportPink)
 		(StatusLine enable:)
 		(super init:)
 		(NormalEgo)
@@ -194,7 +194,7 @@
 		)
 		(if (== prevRoomNum 32)
 			(ego
-				view: vWizardTable
+				view: rErasmusTower
 				setLoop: 4
 				setCel: 0
 				illegalBits: 0
@@ -784,7 +784,7 @@
 	(properties
 		y 149
 		x 152
-		view vWizardTable
+		view rErasmusTower
 		cel 1
 		priority 6
 	)
@@ -794,7 +794,7 @@
 	(properties
 		y 123
 		x 201
-		view vWizardTable
+		view rErasmusTower
 		cel 8
 		priority 7
 	)
@@ -804,7 +804,7 @@
 	(properties
 		y 119
 		x 153
-		view vWizardTable
+		view rErasmusTower
 		illegalBits $0000
 		xStep 1
 	)
@@ -814,7 +814,7 @@
 	(properties
 		y 119
 		x 168
-		view vWizardTable
+		view rErasmusTower
 		illegalBits $0000
 		xStep 1
 	)
@@ -824,7 +824,7 @@
 	(properties
 		y 151
 		x 183
-		view vWizardTable
+		view rErasmusTower
 		cel 3
 	)
 )
@@ -833,7 +833,7 @@
 	(properties
 		y 123
 		x 147
-		view vWizardTable
+		view rErasmusTower
 		cel 5
 	)
 )
@@ -842,7 +842,7 @@
 	(properties
 		y 148
 		x 131
-		view vWizardTable
+		view rErasmusTower
 		cel 6
 	)
 )
@@ -851,7 +851,7 @@
 	(properties
 		y 122
 		x 129
-		view vWizardTable
+		view rErasmusTower
 		loop 2
 		cycleSpeed 1
 	)
@@ -861,7 +861,7 @@
 	(properties
 		y 128
 		x 136
-		view vWizardTable
+		view rErasmusTower
 		loop 1
 		cycleSpeed 1
 	)

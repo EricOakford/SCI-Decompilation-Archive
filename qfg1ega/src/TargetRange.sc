@@ -950,7 +950,7 @@
 					((Said 'climb,climb[/wall]')
 						(if Night
 							(if (< (ego y?) 135)
-								(if (TrySkill CLIMB tryClimbIntoTown 0)
+								(if (TrySkill CLIMB 35 0)
 									(HighPrint 73 26)
 									;After making sure nobody is watching, you climb over the town's wall.
 									(curRoom newRoom: 300)

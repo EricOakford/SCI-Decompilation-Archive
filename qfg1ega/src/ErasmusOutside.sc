@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 29)
+(script# rErasmusOutside)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -70,27 +70,27 @@
 
 (instance leftDoor of Prop
 	(properties
-		view vWizardDoor
+		view rErasmusOutside
 	)
 )
 
 (instance rightDoor of Prop
 	(properties
-		view vWizardDoor
+		view rErasmusOutside
 		loop 1
 	)
 )
 
 (instance gargoyle of Prop
 	(properties
-		view vWizardDoor
+		view rErasmusOutside
 		loop 2
 	)
 )
 
 (instance gargoyleHead of Prop
 	(properties
-		view vWizardDoor
+		view rErasmusOutside
 		loop 5
 		cel 1
 		cycleSpeed 1
@@ -106,7 +106,7 @@
 	)
 	
 	(method (init)
-		(Load VIEW vWizardDoor)
+		(Load VIEW rErasmusOutside)
 		(Load VIEW vTeleportPink)
 		(Load TEXT 257)
 		(super init:)

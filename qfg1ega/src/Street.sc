@@ -106,7 +106,7 @@
 						(HighPrint STREET 13)
 						(= timesClimbedWall 10)
 					)
-					((TrySkill CLIMB tryClimbIntoTown 0)
+					((TrySkill CLIMB 35 0)
 						(switch curRoomNum
 							(300
 								(= n (if (> (ego x?) 130) 65 else 73))

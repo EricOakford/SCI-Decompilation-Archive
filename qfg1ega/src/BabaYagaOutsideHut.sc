@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 22)
+(script# rBabaOutside)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -66,7 +66,7 @@
 (instance wing1 of Actor
 	(properties
 		yStep 4
-		view vBabaHut
+		view rBabaOutside
 		loop 8
 		illegalBits $0000
 		xStep 6
@@ -76,7 +76,7 @@
 (instance wing2 of Actor
 	(properties
 		yStep 4
-		view vBabaHut
+		view rBabaOutside
 		loop 9
 		illegalBits $0000
 		xStep 6
@@ -86,7 +86,7 @@
 (instance hut of Actor
 	(properties
 		yStep 4
-		view vBabaHut
+		view rBabaOutside
 		loop 4
 		illegalBits $0000
 		xStep 6
@@ -95,7 +95,7 @@
 
 (instance hutDoor of Actor
 	(properties
-		view vBabaHut
+		view rBabaOutside
 		loop 5
 		cycleSpeed 1
 		illegalBits $0000
@@ -105,7 +105,7 @@
 (instance frontLeg of Actor
 	(properties
 		yStep 4
-		view vBabaHut
+		view rBabaOutside
 		illegalBits $0000
 		xStep 6
 	)
@@ -114,7 +114,7 @@
 (instance frontFoot of Actor
 	(properties
 		yStep 4
-		view vBabaHut
+		view rBabaOutside
 		loop 1
 		cel 1
 		illegalBits $0000
@@ -125,7 +125,7 @@
 (instance backLeg of Actor
 	(properties
 		yStep 4
-		view vBabaHut
+		view rBabaOutside
 		loop 2
 		illegalBits $0000
 		xStep 6
@@ -135,7 +135,7 @@
 (instance backFoot of Actor
 	(properties
 		yStep 4
-		view vBabaHut
+		view rBabaOutside
 		loop 3
 		cel 1
 		illegalBits $0000
@@ -276,7 +276,7 @@
 	)
 	
 	(method (init)
-		(LoadMany VIEW vBabaHut vBabaSkulls vFrogTransform vTeleportGreen vEgoDefeatedMagic)
+		(LoadMany VIEW rBabaOutside vBabaSkulls vFrogTransform vTeleportGreen vEgoDefeatedMagic)
 		(LoadMany SOUND 23 (SoundFX 28) (SoundFX 66))
 		(super init:)
 		(keyDownHandler add: self)
@@ -383,7 +383,7 @@
 		(if (== prevRoomNum 21)
 			(cond 
 				((< babaState babaBRING)
-					(ego view: vEgoFrogTransform loop: 2 cel: 7 posn: 152 160 ignoreActors:)
+					(ego view: vFrogTransform loop: 2 cel: 7 posn: 152 160 ignoreActors:)
 					(TP ignoreActors: setPri: 15 init: setScript: frogIn)
 				)
 				((== babaState babaFINALE) (hut setScript: flyAway))

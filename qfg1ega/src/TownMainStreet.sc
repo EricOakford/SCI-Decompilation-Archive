@@ -353,7 +353,7 @@
 				(HighPrint 310 0)
 				;The door isn't locked.  Just turn around.
 				)
-			((not (TrySkill PICK tryPickLOL lockPickBonus))
+			((not (TrySkill PICK 30 lockPickBonus))
 				(HighPrint 310 1)
 				;Picking locks looked a lot easier in the instruction book.
 				)

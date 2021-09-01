@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 55)
+(script# rHealerInside)
 (include game.sh)
 (use Main)
 (use Intrface)
@@ -124,12 +124,12 @@
 
 (instance rm55 of Room
 	(properties
-		picture 55
+		picture rHealerInside
 		style DISSOLVE
 	)
 	
 	(method (init)
-		(LoadMany VIEW vHealer vHealerInside vEgoFall vEgoBigGrin)
+		(LoadMany VIEW vHealer vHealerInsideStuff vEgoFall vEgoBigGrin)
 		(Load SOUND 42)
 		(super init:)
 		(mouseDownHandler add: self)
@@ -781,7 +781,7 @@
 	(properties
 		y 114
 		x 209
-		view vHealerInside
+		view vHealerInsideStuff
 		cycleSpeed 1
 	)
 )
@@ -800,7 +800,7 @@
 	(properties
 		y 108
 		x 244
-		view vHealerInside
+		view vHealerInsideStuff
 		loop 1
 		signal ignrAct
 	)
@@ -810,7 +810,7 @@
 	(properties
 		y 121
 		x 242
-		view vHealerInside
+		view vHealerInsideStuff
 		loop 1
 		cel 1
 		signal ignrAct
@@ -821,7 +821,7 @@
 	(properties
 		y 138
 		x 242
-		view vHealerInside
+		view vHealerInsideStuff
 		loop 1
 		cel 2
 		priority 10
@@ -833,7 +833,7 @@
 	(properties
 		y 154
 		x 209
-		view vHealerInside
+		view vHealerInsideStuff
 		loop 2
 		priority 14
 		signal ignrAct
@@ -844,7 +844,7 @@
 	(properties
 		y 118
 		x 150
-		view vHealerInside
+		view vHealerInsideStuff
 		loop 3
 		signal ignrAct
 	)
@@ -854,7 +854,7 @@
 	(properties
 		y 135
 		x 85
-		view vHealerInside
+		view vHealerInsideStuff
 		loop 4
 		signal ignrAct
 	)
@@ -865,7 +865,7 @@
 		y 136
 		x 152
 		z 1
-		view vHealerInside
+		view vHealerInsideStuff
 		loop 5
 		priority 11
 		signal ignrAct
@@ -876,7 +876,7 @@
 	(properties
 		y 92
 		x 222
-		view vHealerInside
+		view vHealerInsideStuff
 		loop 6
 		signal ignrAct
 	)

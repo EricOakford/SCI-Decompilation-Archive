@@ -34,7 +34,7 @@
 					(= temp1 1)
 				)
 				(cond 
-					((and register (TrySkill STR tryForceOpenKoboldChest 0))
+					((and register (TrySkill STR 40 0))
 						(Bset fKoboldChestExploded)
 						(CenterPrint 116 0)
 						;You pry at the sealed lid of the chest, and...
@@ -44,7 +44,7 @@
 						;You hack and pry at the chest, but you are not strong enough to force its lid.
 						(= temp1 0)
 					)
-					((TrySkill PICK tryPickKoboldChest lockPickBonus)
+					((TrySkill PICK 70 lockPickBonus)
 						(CenterPrint 116 2)
 						;You hear a very satisfying "Snick" as your pick catches the lock just right.
 						;Then you sense powerful magics dissipating around the lock, and your hands shake as

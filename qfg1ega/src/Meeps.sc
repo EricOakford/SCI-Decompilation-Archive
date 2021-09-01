@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 60)
+(script# rMeepsPeep)
 (include game.sh)
 (use Main)
 (use CastDart)
@@ -117,7 +117,7 @@
 
 (instance aMeep of Actor
 	(properties
-		view vMeeps
+		view rMeepsPeep
 		loop 5
 		illegalBits $0000
 	)
@@ -139,7 +139,7 @@
 						(HighPrint 60 1)
 						;A furry blue Meep
 					)
-					((and (== loop 1) (== view vMeeps))
+					((and (== loop 1) (== view rMeepsPeep))
 						(HighPrint 60 2)
 						;A furry purple Meep
 					)
@@ -155,7 +155,7 @@
 
 (instance anEye of Prop
 	(properties
-		view vMeeps
+		view rMeepsPeep
 		loop 3
 		cycleSpeed 1
 	)
@@ -171,7 +171,7 @@
 (instance bossRock of Actor
 	(properties
 		yStep 5
-		view vMeeps
+		view rMeepsPeep
 		loop 5
 		illegalBits $0000
 		xStep 5
@@ -253,7 +253,7 @@
 		east 61
 	)
 	(method (init)
-		(LoadMany VIEW vMeeps vGreenMeep vEgoSwordSpirea vEgoThrowing vEgoPickupMeep)
+		(LoadMany VIEW rMeepsPeep vGreenMeep vEgoSwordSpirea vEgoThrowing vEgoPickupMeep)
 		(LoadMany SOUND
 			(SoundFX 55)
 			(SoundFX 56)
@@ -1230,7 +1230,7 @@
 				(thudSound play:)
 				(bossRock dispose:)
 				(= local80_3_2 0)
-				(client view: vMeeps setLoop: 2 cel: 2 setCycle: BegLoop self)
+				(client view: rMeepsPeep setLoop: 2 cel: 2 setCycle: BegLoop self)
 				([eye 3]
 					setLoop: (+ 3 (Random 0 1))
 					show:
@@ -1423,7 +1423,7 @@
 				(thudSound play:)
 				(ego setLoop: 1 cel: 0 cycleSpeed: 3 setCycle: EndLoop self)
 				(ego posn: 130 103)
-				([meep 3] show: view: vMeeps setLoop: 5 setCel: 0)
+				([meep 3] show: view: rMeepsPeep setLoop: 5 setCel: 0)
 			)
 			(7
 				(NormalEgo)

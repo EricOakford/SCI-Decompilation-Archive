@@ -104,7 +104,7 @@
 				((ScriptID 93 0) notify: 0)
 				(HighPrint 278 1)
 				;"Boy that feels good."
-				(if (TrySkill STR tryBreakDownBrigandGate)
+				(if (TrySkill STR 60)
 					((ScriptID 93 2) setScript: (ScriptID 93 3) self)
 				else
 					(self cue:)

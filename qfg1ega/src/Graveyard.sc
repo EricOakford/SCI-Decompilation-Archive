@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 64)
+(script# rGraveyard)
 (include game.sh)
 (use Main)
 (use LoadMany)
@@ -64,7 +64,7 @@
 
 (instance rm64 of Room
 	(properties
-		picture 64
+		picture rGraveyard
 		style DISSOLVE
 		horizon 116
 		north 52
@@ -274,7 +274,7 @@
 					((Said 'climb,climb[/wall]')
 						(if Night
 							(if (> (ego x?) 256)
-								(if (TrySkill CLIMB tryClimbIntoTown 0)
+								(if (TrySkill CLIMB 35 0)
 									(curRoom newRoom: 330)
 								else
 									(HighPrint 64 1)

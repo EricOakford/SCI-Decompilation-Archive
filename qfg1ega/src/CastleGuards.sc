@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 41)
+(script# rCastleKeep)
 (include game.sh)
 (use Main)
 (use Sleep)
@@ -32,7 +32,7 @@
 	)
 	
 	(method (init &tmp oldEgoX oldEgoY)
-		(Load VIEW vCastleGuards2)
+		(Load VIEW rCastleKeep)
 		(cSound fade:)
 		(super init: &rest)
 		(StatusLine enable:)
@@ -203,7 +203,7 @@
 	(properties
 		y 119
 		x 120
-		view vCastleGuards2
+		view rCastleKeep
 		loop 1
 	)
 	
@@ -250,7 +250,7 @@
 					((Said 'fight,kill/guard,man,gatekeeper')
 						(EgoDead 41 15
 							#title {Getting into the castle the hard way.}
-							#icon vEgoJailDeath 3 0
+							#icon rCastleCourtyard 3 0
 							;No sooner do you draw your weapon then the guards have their weapons out and quickly disarm you.
 							;It seems that they practice with the Baron's Weapons Master.
 							;They promptly drag you into the castle and down into the dungeon,
@@ -384,7 +384,7 @@
 	(properties
 		y 119
 		x 197
-		view vCastleGuards2
+		view rCastleKeep
 	)
 	
 	(method (doit)
@@ -431,7 +431,7 @@
 	(properties
 		y 86
 		x 204
-		view vCastleGuards2
+		view rCastleKeep
 		loop 2
 		cycleSpeed 2
 	)
@@ -441,7 +441,7 @@
 	(properties
 		y 85
 		x 112
-		view vCastleGuards2
+		view rCastleKeep
 		loop 5
 		cycleSpeed 2
 	)
@@ -451,7 +451,7 @@
 	(properties
 		y 117
 		x 138
-		view vCastleGuards2
+		view rCastleKeep
 		loop 3
 	)
 	
@@ -483,7 +483,7 @@
 	(properties
 		y 117
 		x 178
-		view vCastleGuards2
+		view rCastleKeep
 		loop 4
 	)
 )
@@ -492,7 +492,7 @@
 	(properties
 		y 82
 		x 158
-		view vCastleGuards2
+		view rCastleKeep
 		loop 6
 		cycleSpeed 3
 	)

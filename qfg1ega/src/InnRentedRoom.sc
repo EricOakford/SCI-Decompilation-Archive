@@ -30,7 +30,13 @@
 		(HandsOff)
 		(super init:)
 		(StatusLine enable:)
-		(ego view: vInn loop: 5 cel: 6 posn: 160 75 init:)
+		(ego
+			view: rHeroTaleInn
+			loop: 5
+			cel: 6
+			posn: 160 75
+			init:
+		)
 		(self setScript: rm302Script)
 	)
 	

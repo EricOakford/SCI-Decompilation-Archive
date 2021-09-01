@@ -71,8 +71,8 @@
 	(method (init)
 		(LoadMany PICTURE 460 400 906)
 		(LoadMany VIEW
-			vDragonHead vDragonFire vSierraPresents vQFGshadow vQFG
-			vSubtitle vEgoRunning vEgoFleeing vSaurus vDragon vDragonFight
+			vHalfDragon vHalfFlame vSierraPresents vQFGshadow vQFG
+			vTitleSpell vEgoRunning vEgoFleeing vSaurus vDragon vDragonFight
 		)
 		(super init:)
 		(HandsOff)
@@ -948,7 +948,7 @@
 	(properties
 		y 92
 		x 51
-		view vDragonHead
+		view vHalfDragon
 		priority 3
 	)
 )
@@ -957,7 +957,7 @@
 	(properties
 		y 87
 		x 127
-		view vDragonHead
+		view vHalfDragon
 		loop 1
 		cel 1
 		priority 3
@@ -968,14 +968,14 @@
 	(properties
 		y 49
 		x 87
-		view vDragonHead
+		view vHalfDragon
 		loop 2
 	)
 )
 
 (instance flame of Actor
 	(properties
-		view vDragonFire
+		view vHalfFlame
 	)
 )
 
@@ -1056,13 +1056,13 @@
 
 (instance titleSpell of Actor
 	(properties
-		view vSubtitle
+		view vTitleSpell
 	)
 )
 
 (instance titleSpell2 of Actor
 	(properties
-		view vSubtitle
+		view vTitleSpell
 	)
 )
 
@@ -1070,7 +1070,7 @@
 	(properties
 		y 160
 		x 50
-		view vSubtitle
+		view vTitleSpell
 		loop 1
 		priority 7
 	)
@@ -1080,7 +1080,7 @@
 	(properties
 		y 160
 		x 127
-		view vSubtitle
+		view vTitleSpell
 		loop 1
 		cel 1
 		priority 7
@@ -1091,7 +1091,7 @@
 	(properties
 		y 160
 		x 209
-		view vSubtitle
+		view vTitleSpell
 		loop 1
 		cel 2
 		priority 7
@@ -1102,7 +1102,7 @@
 	(properties
 		y 160
 		x 286
-		view vSubtitle
+		view vTitleSpell
 		loop 1
 		cel 3
 		priority 7
