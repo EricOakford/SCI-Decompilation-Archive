@@ -1025,7 +1025,7 @@
 						(Message MsgGet 311 N_BOOK V_LOOK C_SIGNEDIN 1 @str)
 						(Print
 							font: userFont
-							mode: 1
+							mode: teJustCenter
 							width: 260
 							addTextF: @buf @str @userName
 							init:

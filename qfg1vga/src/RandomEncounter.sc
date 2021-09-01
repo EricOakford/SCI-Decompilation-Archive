@@ -25,24 +25,50 @@
 (local
 	searchedMonster
 	egoDirection
-	local2
+	egoEscaped
 	local3
-	theSmallMonster
-	viewDeadMonster
+	monster
+	bodyView
 	local6
-	monsterDead
+	haveBody
 	local8
 	local9
-	SearchMonsterX
-	SearchMonsterY
+	searchX
+	searchY
 	local12
 	gotBeard
 	[monsterPts 30]
-	[local44 12] = [500 40 40 40 60 50 30 35 40 50 30 40]
-	[monsterHP 12] = [10000 133 186 53 86 113 60 140 93 186 60 100]
-	local68
+	monsterDist = [
+		500
+		40
+		40
+		40
+		40
+		50
+		30
+		35
+		40
+		50
+		30
+		40
+		]
+	monsterHP = [
+		10000			;aardvark
+		133				;bear
+		186				;minotaur
+		53				;saurus
+		86				;mantray
+		113				;cheetaur
+		60				;goblin
+		140				;troll
+		93				;ogre
+		186				;saurus rex
+		60				;brigand
+		100				;brigand leader
+		]
+	monsterChasesEgo
 	monsterHurt
-	local70
+	monsterStopped
 )
 (procedure (GetMonsterIndex monster &tmp temp0)
 	(return
@@ -71,58 +97,58 @@
 	)
 )
 
-(procedure (localproc_0117 param1)
+(procedure (MonsterDies afterBattle)
 	(Bclr fMantrayDies)
-	(= monsterDead TRUE)
+	(= haveBody TRUE)
 	(= local8 1)
 	(if
 		(or
-			(not theSmallMonster)
-			(not (cast contains: theSmallMonster))
+			(not monster)
+			(not (cast contains: monster))
 		)
-		((= theSmallMonster smallMonster) init:)
+		((= monster smallMonster) init:)
 	)
-	(= viewDeadMonster (+ monsterNum 1))
+	(= bodyView (+ monsterNum 1))
 	(SkillUsed LUCK (/ [monsterHP (GetMonsterIndex monsterNum)] 12))
-	(if param1
-		(theSmallMonster setLoop: 1)
+	(if afterBattle
+		(monster setLoop: 1)
 		(cond 
 			((OneOf curRoomNum 19 43 75 92)
 				(ego posn: 164 108)
 				(if (!= monsterNum vMantray)
-					(theSmallMonster posn: 88 112)
+					(monster posn: 88 112)
 				else
-					(theSmallMonster posn: 150 100)
+					(monster posn: 150 100)
 				)
 			)
 			((== curRoomNum 79)
 				(ego posn: 120 120)
-				(theSmallMonster posn: 220 120)
+				(monster posn: 220 120)
 			)
 			((and (OneOf curRoomNum 19 43 86) (== monsterNum vBrigand))
 				(ego posn: 140 120)
-				(theSmallMonster posn: 60 120)
+				(monster posn: 60 120)
 			)
 			((== monsterNum vMantray)
 				(ego posn: 150 120)
-				(theSmallMonster posn: 150 100)
+				(monster posn: 150 100)
 			)
 			((== monsterNum vDragon)
 				(ego posn: 120 120)
-				(theSmallMonster posn: 293 128)
+				(monster posn: 293 128)
 			)
 			((== monsterNum vCheetaur)
 				(ego posn: 150 120)
-				(theSmallMonster posn: 235 134)
+				(monster posn: 235 134)
 			)
 			(else
 				(ego posn: 150 122)
-				(theSmallMonster posn: 220 137)
+				(monster posn: 220 137)
 			)
 		)
 	)
 	(ego
-		loop: 1
+		loop: loopW
 		illegalBits: (curRoom illBits?)
 		ignoreControl: cWHITE
 		ignoreActors:
@@ -130,43 +156,45 @@
 	)
 	(NormalEgo)
 	(ChangeGait MOVE_WALK FALSE)
-	(theSmallMonster setScript: killTheMonster)
+	(monster setScript: killTheMonster)
 )
 
-(procedure (SetMonsterChase param1)
-	(param1
+(procedure (SetMonsterChase obj)
+	(obj
 		illegalBits: 0
-		setMotion: PChase ego [local44 (GetMonsterIndex monsterNum)] Encounter
+		setMotion: PChase ego [monsterDist (GetMonsterIndex monsterNum)] Encounter
 	)
-	(= local68 1)
-	(param1 setScript: 0)
+	(= monsterChasesEgo 1)
+	(obj setScript: 0)
 )
 
-(procedure (SetMonsterStats defaultMonster &tmp temp0 retMonster)
+(procedure (SetMonsterStats defaultMonster &tmp tmpMonsterNum retMonster)
 	(if (and argc defaultMonster)
 		(= retMonster defaultMonster)
 	else
 		(cond 
-			((< [egoStats EXPER] 1000) (= temp0 (Random 0 3)))
-			((< [egoStats EXPER] 2000) (= temp0 (Random 0 6)))
-			(else (= temp0 (Random 2 6)))
+			((< [egoStats EXPER] 1000) (= tmpMonsterNum (Random 0 3)))
+			((< [egoStats EXPER] 2000) (= tmpMonsterNum (Random 0 6)))
+			(else (= tmpMonsterNum (Random 2 6)))
 		)
-		(if Night (= temp0 (+ temp0 2)))
+		(if Night
+			(+= tmpMonsterNum 2)
+		)
 		(= retMonster
-			(switch temp0
-				(0 445)
-				(1 430)
-				(2 445)
-				(3 465)
-				(4 435)
-				(5 440)
-				(6 460)
-				(else  450)
+			(switch tmpMonsterNum
+				(0 vGoblin)
+				(1 vSaurus)
+				(2 vGoblin)
+				(3 vBrigand)
+				(4 vMantray)
+				(5 vCheetaur)
+				(6 vDragon)
+				(else  vTroll)
 			)
 		)
 	)
 	(if (OneOf curRoomNum 85 86 92)
-		(if (or (<= temp0 4) (not Night))
+		(if (or (<= tmpMonsterNum 4) (not Night))
 			(= retMonster 465)
 		else
 			(= retMonster 450)
@@ -174,281 +202,295 @@
 	)
 	(= bucks 0)
 	(cond 
-		((== retMonster 445) (= bucks (Random 1 10)))
-		((== retMonster 465) (= bucks (Random 5 25)))
-		((== retMonster 450) (= bucks (Random 20 50)))
-		((== retMonster 425) (= bucks 50))
+		((== retMonster vGoblin)
+			(= bucks (Random 1 10))
+		)
+		((== retMonster vBrigand)
+			(= bucks (Random 5 25))
+		)
+		((== retMonster vTroll)
+			(= bucks (Random 20 50))
+		)
+		((== retMonster vMinotaur)
+			(= bucks 50)
+		)
 	)
-	(= disabledActions (| disabledActions $0008))
+	(|= disabledActions ACTION_REST)
 	(return retMonster)
 )
 
-(procedure (localproc_0e23 param1 param2 &tmp curRoomAmbushX curRoomAmbushY temp2 temp3 temp4 [temp5 40])
+(procedure (localproc_0e23 vMonster actMonster &tmp curRoomAmbushX curRoomAmbushY temp2 temp3 temp4 [temp5 40])
 	(= temp2 (& (curRoom entrances?) $000a))
 	(= temp4 (& (curRoom entrances?) $0008))
 	(= temp3 (& (curRoom entrances?) $0002))
-	(param2 view: param1)
-	(if (!= param1 435)
-		(param2 xStep: 6 yStep: 4 cel: 0)
-		(switch param1
+	(actMonster view: vMonster)
+	(if (!= vMonster 435)
+		(actMonster xStep: 6 yStep: 4 cel: 0)
+		(switch vMonster
 			(430
-				(param2 xStep: 5 yStep: 3 setCycle: Forward)
+				(actMonster xStep: 5 yStep: 3 setCycle: Forward)
 			)
 			(450
-				(param2 xStep: 5 yStep: 3 setCycle: Walk)
+				(actMonster xStep: 5 yStep: 3 setCycle: Walk)
 			)
 			(440
-				(param2 xStep: 6 yStep: 3 setCycle: Forward)
+				(actMonster xStep: 6 yStep: 3 setCycle: Forward)
 			)
 			(445
-				(param2 xStep: 4 yStep: 2 setCycle: Walk)
+				(actMonster xStep: 4 yStep: 2 setCycle: Walk)
 			)
 			(465
-				(param2 xStep: 3 yStep: 2 setCycle: Walk)
+				(actMonster xStep: 3 yStep: 2 setCycle: Walk)
 			)
 			(460
-				(param2 xStep: 8 yStep: 5 setCycle: Forward)
+				(actMonster xStep: 8 yStep: 5 setCycle: Forward)
 			)
 		)
 		(if fastEgo
-			(param2
-				xStep: (* (param2 xStep?) 2)
-				yStep: (* (param2 yStep?) 2)
+			(actMonster
+				xStep: (* (actMonster xStep?) 2)
+				yStep: (* (actMonster yStep?) 2)
 			)
 		)
 	)
 	(cond 
-		(local2
+		(egoEscaped
 			(ChangeTheCursor 1)
-			(if (== param1 435)
-				(theSmallMonster
+			(if (== vMonster 435)
+				(monster
 					setCycle: Walk
 					z: 25
 					xStep: (Random 4 8)
 					yStep: (Random 3 5)
 				)
 			)
-			(= local68 1)
+			(= monsterChasesEgo 1)
 			(switch egoDirection
 				(1
 					(if
 						(or
-							(== param1 445)
-							(== param1 450)
-							(== param1 465)
-							(== param1 455)
+							(== vMonster 445)
+							(== vMonster 450)
+							(== vMonster 465)
+							(== vMonster 455)
 						)
 						(ego setMotion: MoveTo egoX (- egoY 2))
-						(theSmallMonster
+						(monster
 							posn:
 								(+ (ego x?) (Random 20 40))
 								(+
 									(ego y?)
-									[local44 (GetMonsterIndex param1)]
+									[monsterDist (GetMonsterIndex vMonster)]
 									(Random 20 30)
 								)
 							setCel: -1
 							setLoop: 3
 						)
-						(theSmallMonster setScript: runDelay)
+						(monster setScript: runDelay)
 					else
 						(ego setMotion: MoveTo 320 egoY)
-						(theSmallMonster
+						(monster
 							posn:
 								(-
 									(ego x?)
-									(+ [local44 (GetMonsterIndex param1)] (Random 25 40))
+									(+ [monsterDist (GetMonsterIndex vMonster)] (Random 25 40))
 								)
 								(ego y?)
 							setLoop: 0
 							setCel: -1
 						)
-						(theSmallMonster setScript: runDelay)
+						(monster setScript: runDelay)
 					)
 				)
 				(3
 					(if
 						(or
-							(== param1 445)
-							(== param1 450)
-							(== param1 465)
-							(== param1 455)
+							(== vMonster 445)
+							(== vMonster 450)
+							(== vMonster 465)
+							(== vMonster 455)
 						)
 						(ego setMotion: MoveTo egoX (+ egoY 2))
 						(switch (curRoom picture?)
 							(704
-								(theSmallMonster posn: 209 87 setLoop: 2)
+								(monster posn: 209 87 setLoop: 2)
 							)
 							(705
-								(theSmallMonster posn: 61 78 setLoop: 2)
+								(monster posn: 61 78 setLoop: 2)
 							)
 							(else 
-								(theSmallMonster
+								(monster
 									setLoop: 2
 									posn:
 										(- (ego x?) 10)
 										(-
 											(ego y?)
-											(+ [local44 (GetMonsterIndex param1)] (Random 20 30))
+											(+ [monsterDist (GetMonsterIndex vMonster)] (Random 20 30))
 										)
 								)
 							)
 						)
-						(theSmallMonster setCel: -1)
-						(theSmallMonster setScript: runDelay)
+						(monster setCel: -1)
+						(monster setScript: runDelay)
 					else
 						(ego setMotion: MoveTo 0 egoY)
-						(theSmallMonster
+						(monster
 							posn:
 								(+
 									(ego x?)
-									[local44 (GetMonsterIndex param1)]
+									[monsterDist (GetMonsterIndex vMonster)]
 									(Random 25 40)
 								)
 								(ego y?)
 							setLoop: 1
 							setCel: -1
 						)
-						(theSmallMonster setScript: runDelay)
+						(monster setScript: runDelay)
 					)
 				)
 				(2
 					(ego setMotion: MoveTo 320 egoY)
-					(theSmallMonster
+					(monster
 						posn:
 							(-
 								(ego x?)
-								(+ [local44 (GetMonsterIndex param1)] (Random 25 40))
+								(+ [monsterDist (GetMonsterIndex vMonster)] (Random 25 40))
 							)
 							(ego y?)
 						setLoop: 0
 						setCel: -1
 					)
-					(theSmallMonster setScript: runDelay)
+					(monster setScript: runDelay)
 				)
 				(4
 					(ego setMotion: MoveTo 0 egoY)
-					(theSmallMonster
+					(monster
 						posn:
 							(+
 								(ego x?)
-								[local44 (GetMonsterIndex param1)]
+								[monsterDist (GetMonsterIndex vMonster)]
 								(Random 25 40)
 							)
 							(ego y?)
 						setLoop: 1
 						setCel: -1
 					)
-					(theSmallMonster setScript: runDelay)
+					(monster setScript: runDelay)
 				)
 			)
 			(User canControl: 1)
 		)
 		(local3
-			(if (== param1 435)
-				(theSmallMonster
+			(if (== vMonster 435)
+				(monster
 					setCycle: Walk
 					z: 25
 					xStep: (Random 4 8)
 					yStep: (Random 3 5)
 				)
 			)
-			(= local68 1)
+			(= monsterChasesEgo 1)
 			(switch egoDirection
 				(1
-					(= local68 0)
+					(= monsterChasesEgo 0)
 					(ego setMotion: MoveTo egoX 190)
 					(if
 						(or
-							(== param1 445)
-							(== param1 450)
-							(== param1 465)
-							(== param1 455)
+							(== vMonster 445)
+							(== vMonster 450)
+							(== vMonster 465)
+							(== vMonster 455)
 						)
-						(theSmallMonster setScript: northDelay)
+						(monster setScript: northDelay)
 					else
-						(= param1 (= monsterHealth 0))
-						(theSmallMonster dispose:)
+						(= vMonster (= monsterHealth 0))
+						(monster dispose:)
 						(= monsterNum 0)
-						(= local68 0)
+						(= monsterChasesEgo 0)
 					)
 				)
 				(3
 					(ego setMotion: MoveTo egoX 0)
 					(if
 						(or
-							(== param1 445)
-							(== param1 450)
-							(== param1 465)
-							(== param1 455)
+							(== vMonster 445)
+							(== vMonster 450)
+							(== vMonster 465)
+							(== vMonster 455)
 						)
-						(theSmallMonster setScript: southDelay)
+						(monster setScript: southDelay)
 					else
 						(= monsterNum (= monsterHealth 0))
-						(theSmallMonster dispose:)
+						(monster dispose:)
 						(= monsterNum 0)
-						(= local68 0)
+						(= monsterChasesEgo 0)
 					)
 				)
 				(2
 					(ego setMotion: MoveTo 0 egoY)
-					(theSmallMonster
+					(monster
 						posn: (- egoX monsterDistX) (+ egoY monsterDistY)
 						loop: 1
 						setCel: -1
 						setLoop: -1
-						setMotion: PChase ego [local44 (GetMonsterIndex param1)] Encounter
+						setMotion: PChase ego [monsterDist (GetMonsterIndex vMonster)] Encounter
 					)
 				)
 				(4
 					(ego setMotion: MoveTo 320 egoY)
-					(theSmallMonster
+					(monster
 						posn: (- egoX monsterDistX) (+ egoY monsterDistY)
 						loop: 0
 						setCel: -1
 						setLoop: -1
-						setMotion: PChase ego [local44 (GetMonsterIndex param1)] Encounter
+						setMotion: PChase ego [monsterDist (GetMonsterIndex vMonster)] Encounter
 					)
 				)
 			)
 		)
-		((== param1 435) (theSmallMonster setScript: (ScriptID 436 2)))
+		((== vMonster 435) (monster setScript: (ScriptID 436 2)))
 		((== temp2 10)
 			(switch (= temp2 (if (< (Random 0 1000) 500) 8 else 2))
-				(2 (param2 setScript: inEast))
-				(8 (param2 setScript: inWest))
+				(2 (actMonster setScript: inEast))
+				(8 (actMonster setScript: inWest))
 			)
 		)
-		(temp3 (param2 setScript: inEast))
-		(temp4 (param2 setScript: inWest))
+		(temp3 (actMonster setScript: inEast))
+		(temp4 (actMonster setScript: inWest))
 		(else
 			(= curRoomAmbushX (curRoom ambushX?))
 			(= curRoomAmbushY (curRoom ambushY?))
-			(param2
+			(actMonster
 				posn: curRoomAmbushX curRoomAmbushY
-				setMotion: PChase ego [local44 (GetMonsterIndex param1)] Encounter
+				setMotion: PChase ego [monsterDist (GetMonsterIndex vMonster)] Encounter
 			)
 		)
 	)
 )
 
-(procedure (SearchMonster &tmp [temp0 120] [str 70])
+(procedure (SearchMonster &tmp [buffer 120] [str 70])
 	(switch bucks
 		(0
-			(messager say: 2 0 13 0 0 210)
+			(messager say: N_MONSTER NULL C_GETNOTHING 0 0 210)
 		)
 		(1
-			(Prints
-				{You find a single silver coin, carefully polish it, and place it in your pouch.__What a way to make a living!}
-			)
+			(messager say: N_MONSTER NULL C_GET1COIN 0 0 210)
+			;now uses the actual message
+;;;			(Prints
+;;;				{You find a single silver coin, carefully polish it, and place it in your pouch.__What a way to make a living!}
+;;;			)
 			(ego get: iSilver 1)
 		)
-		(else 
-			(Printf
-				@str
-				{You find %d silver coins, and carefully place them in your pouch.}
-				bucks
+		(else
+			;now uses the message resource
+			(Message MsgGet ENCOUNTER N_MONSTER NULL C_GETCOINS 1 @str)
+			(Print
+				font: userFont
+				mode: teJustCenter
+				addTextF: @buffer @str bucks
+				init:
 			)
+			;(Printf @str {You find %d silver coins, and carefully place them in your pouch.} bucks)
 			(ego get: iSilver bucks)
 		)
 	)
@@ -535,28 +577,28 @@
 		(return
 			(switch theVerb
 				(V_SWORD
-					(if monsterDead
+					(if haveBody
 						(AlreadyDone)
 					else
 						(curRoom newRoom: monsterNum)
 					)
 				)
 				(V_ROCK
-					(if monsterDead
+					(if haveBody
 						(AlreadyDone)
 					else
 						(ThrowRock smallMonster)
 					)
 				)
 				(V_DAGGER
-					(if monsterDead
+					(if haveBody
 						(AlreadyDone)
 					else
 						(ThrowKnife smallMonster)
 					)
 				)
 				(V_LOOK
-					(if monsterDead
+					(if haveBody
 						(messager say: N_LOOKIT V_LOOK C_DEAD 0 0 ENCOUNTER)
 					else
 						(switch monsterNum
@@ -595,11 +637,11 @@
 					(messager say: N_ROOM V_SMELL NULL 0 0 ENCOUNTER)
 				)
 				(V_DO
-					(if monsterDead
+					(if haveBody
 						(if searchedMonster
 							(AlreadyDone)
 						else
-							(ego setScript: searchIt 0 theSmallMonster)
+							(ego setScript: searchIt 0 monster)
 						)
 					else
 						(curRoom newRoom: monsterNum)
@@ -622,8 +664,8 @@
 	
 	(method (getHurt damage)
 		(= monsterHurt TRUE)
-		(= local70 0)
-		(= monsterHealth (- monsterHealth damage))
+		(= monsterStopped 0)
+		(-= monsterHealth damage)
 	)
 )
 
@@ -641,8 +683,8 @@
 		(ScriptID PCHASE)
 		(Load SCRIPT GLORY_OBSTACLES)
 		(super init: &rest)
-		(= local3 (= local2 (= monsterHurt 0)))
-		(= theSmallMonster 0)
+		(= local3 (= egoEscaped (= monsterHurt 0)))
+		(= monster 0)
 		(cond 
 			(
 				(not
@@ -660,7 +702,7 @@
 					else
 						(= local3 1)
 						(ego illegalBits: (curRoom illBits?) init:)
-						(= local6 (= monsterDead 0))
+						(= local6 (= haveBody 0))
 						(SetMonsterStats monsterNum)
 					)
 				else
@@ -690,19 +732,19 @@
 							(= monsterHealth
 								[monsterHP (GetMonsterIndex monsterNum)]
 							)
-							(= local6 (= monsterDead 0))
+							(= local6 (= haveBody 0))
 						)
 					)
 					(ego illegalBits: (curRoom illBits?))
 				)
 			)
 			((<= monsterHealth 0)
-				(localproc_0117 1)
+				(MonsterDies 1)
 			)
 			(else
-				(= local6 (= monsterDead 0))
+				(= local6 (= haveBody 0))
 				(ChangeGait MOVE_RUN FALSE)
-				(= local2 1)
+				(= egoEscaped 1)
 				(NormalEgo)
 				(ego illegalBits: (curRoom illBits?) posn: 160 140 init:)
 				(SetMonsterStats monsterNum)
@@ -716,16 +758,16 @@
 			(
 				(and
 					(not local6)
-					(not monsterDead)
+					(not haveBody)
 					monsterNum
 					(or local3 (ego inRect: 40 40 260 160))
 				)
 				(= local6 1)
-				((= theSmallMonster smallMonster) posn: 0 1000 init:)
-				(localproc_0e23 monsterNum theSmallMonster)
+				((= monster smallMonster) posn: 0 1000 init:)
+				(localproc_0e23 monsterNum monster)
 			)
 			((and (== monsterNum vMantray) (Btst fMantrayDies))
-				(localproc_0117 0)
+				(MonsterDies 0)
 			)
 			(
 				(and
@@ -735,7 +777,7 @@
 					(<= monsterHealth 0)
 					(not (Btst fMantrayDies))
 				)
-				(localproc_0117 0)
+				(MonsterDies 0)
 			)
 		)
 		(super doit: &rest)
@@ -755,8 +797,8 @@
 		(return
 			(switch theVerb
 				(V_CALM
-					(if (or local68 (== monsterNum vMantray))
-						(theSmallMonster setScript: spellDelay 0 22)
+					(if (or monsterChasesEgo (== monsterNum vMantray))
+						(monster setScript: spellDelay 0 22)
 						(return TRUE)
 					else
 						(messager say: N_ROOM V_MAGIC NULL 1 0 ENCOUNTER)
@@ -772,8 +814,8 @@
 					(return TRUE)
 				)
 				(V_DAZZLE
-					(if (or local68 (== monsterNum vMantray))
-						(theSmallMonster setScript: spellDelay 0 20)
+					(if (or monsterChasesEgo (== monsterNum vMantray))
+						(monster setScript: spellDelay 0 20)
 					else
 						(messager say: N_ROOM V_MAGIC NULL 4 0 ENCOUNTER)
 					)
@@ -807,7 +849,7 @@
 		(if (and local12 monsterNum (> monsterHealth 0))
 			(= local12 0)
 			(ChangeGait MOVE_WALK FALSE)
-			(if (and local12 (or local2 local3))
+			(if (and local12 (or egoEscaped local3))
 				(self setScript: checkProject 0 0)
 			else
 				(self setScript: checkProject 0 1)
@@ -818,12 +860,12 @@
 	(method (newRoom n)
 		(HandsOff)
 		(if local6
-			(= monsterDistX (- (ego x?) (theSmallMonster x?)))
-			(= monsterDistY (- (ego y?) (theSmallMonster y?)))
+			(= monsterDistX (- (ego x?) (monster x?)))
+			(= monsterDistY (- (ego y?) (monster y?)))
 		)
 		(if
 			(or
-				monsterDead
+				haveBody
 				(> monsterDistX 250)
 				(> monsterDistY 180)
 				(and
@@ -942,7 +984,7 @@
 		(switch (= state newState)
 			(0 (= ticks 90))
 			(1
-				(theSmallMonster
+				(monster
 					posn:
 						egoX
 						(cond 
@@ -952,9 +994,9 @@
 						)
 					setCel: -1
 					setLoop: -1
-					setMotion: PChase ego [local44 (GetMonsterIndex monsterNum)] Encounter
+					setMotion: PChase ego [monsterDist (GetMonsterIndex monsterNum)] Encounter
 				)
-				(= local68 1)
+				(= monsterChasesEgo 1)
 				(client setScript: 0)
 			)
 		)
@@ -968,13 +1010,13 @@
 		(switch (= state newState)
 			(0 (= ticks 90))
 			(1
-				(theSmallMonster
+				(monster
 					posn: egoX (if (== monsterNum 435) 235 else (- egoY monsterDistY))
 					setCel: -1
 					setLoop: -1
-					setMotion: PChase ego [local44 (GetMonsterIndex monsterNum)] Encounter
+					setMotion: PChase ego [monsterDist (GetMonsterIndex monsterNum)] Encounter
 				)
-				(= local68 1)
+				(= monsterChasesEgo 1)
 				(client setScript: 0)
 			)
 		)
@@ -993,7 +1035,7 @@
 			(1
 				(client
 					setCycle: Forward
-					setMotion: PChase ego [local44 (GetMonsterIndex monsterNum)] Encounter
+					setMotion: PChase ego [monsterDist (GetMonsterIndex monsterNum)] Encounter
 				)
 				(client setScript: 0)
 			)
@@ -1005,7 +1047,7 @@
 	(properties)
 	
 	(method (doit)
-		(if (and seconds monsterHurt (not local70))
+		(if (and seconds monsterHurt (not monsterStopped))
 			(= seconds 0)
 			(= cycles 1)
 		)
@@ -1015,8 +1057,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local68 0)
-				(theSmallMonster setCycle: 0 setMotion: 0 ignoreActors: 0)
+				(= monsterChasesEgo 0)
+				(monster setCycle: 0 setMotion: 0 ignoreActors: 0)
 				(if (== register CALM)
 					(if (not (CastCalm self self))
 						(self changeState: 4)
@@ -1029,34 +1071,36 @@
 				(= state 3)
 				(cond 
 					((== monsterNum vMantray)
-						(Prints
-							{Unfortunately, the Mantray appears not to have been affected by your spell.}
-						)
-						(= ticks 1)
+						;these now use the actual messages
+						(messager say: N_MONSTER NULL C_MANTRAYIMMUNE 1 self ENCOUNTER)
+						;(Prints {Unfortunately, the Mantray appears not to have been affected by your spell.})
+						;(= ticks 1)
 					)
 					(monsterHurt
-						(Prints
-							{The monster doesn't seem very calm.__Maybe it didn't like you hurting it.}
-						)
-						(= ticks 1)
+						(messager say: N_MONSTER NULL C_CANTCALM 1 self ENCOUNTER)
+						;(Prints {The monster doesn't seem very calm.__Maybe it didn't like you hurting it.})
+						;(= ticks 1)
 					)
-					(else (= seconds (+ 5 (/ [egoStats CALM] 10))))
+					(else
+						(= seconds (+ 5 (/ [egoStats CALM] 10)))
+					)
 				)
 			)
 			(2
-				(= local70 1)
+				(= monsterStopped TRUE)
 				(if (not (CastDazz self self))
 					(self changeState: 4)
 				)
 			)
 			(3
 				(if (== monsterNum vMantray)
-					(Prints
-						{Unfortunately, the Mantray appears not to have been affected by your spell.}
-					)
-					(= ticks 1)
+					;this now uses the actual message
+					(messager say: N_MONSTER NULL C_MANTRAYIMMUNE 1 self ENCOUNTER)
+					;(Prints {Unfortunately, the Mantray appears not to have been affected by your spell.})
+					;(= ticks 1)
 				else
-					(= seconds (+ 3 (/ [egoStats CALM] 10)))
+					;this used CALM by mistake
+					(= seconds (+ 3 (/ [egoStats DAZZLE] 10)))
 				)
 			)
 			(4
@@ -1068,21 +1112,21 @@
 							(== monsterNum vBrigand)
 							(== monsterNum vOgre)
 							(and
-								(< -15 (- (ego x?) (theSmallMonster x?)))
-								(< (- (ego x?) (theSmallMonster x?)) 15)
+								(< -15 (- (ego x?) (monster x?)))
+								(< (- (ego x?) (monster x?)) 15)
 							)
 						)
-						(theSmallMonster setLoop: -1 setCycle: Walk)
+						(monster setLoop: -1 setCycle: Walk)
 					else
-						(theSmallMonster setCycle: Forward)
+						(monster setCycle: Forward)
 					)
-					(theSmallMonster
+					(monster
 						ignoreActors:
-						setMotion: PChase ego [local44 (GetMonsterIndex monsterNum)] Encounter
+						setMotion: PChase ego [monsterDist (GetMonsterIndex monsterNum)] Encounter
 					)
-					(= local68 1)
+					(= monsterChasesEgo TRUE)
 				)
-				(= local70 0)
+				(= monsterStopped FALSE)
 				(self dispose:)
 			)
 		)
@@ -1090,12 +1134,11 @@
 )
 
 (instance searchIt of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((= theSmallMonster register) ignoreActors:)
-				(= SearchMonsterX
+				((= monster register) ignoreActors:)
+				(= searchX
 					(switch monsterNum
 						(vSaurus -1)
 						(vCheetaur 1)
@@ -1109,7 +1152,7 @@
 						(else  13)
 					)
 				)
-				(= SearchMonsterY
+				(= searchY
 					(switch monsterNum
 						(vSaurus -7)
 						(vCheetaur -17)
@@ -1123,16 +1166,16 @@
 						(else  -14)
 					)
 				)
-				(if (and (== monsterNum vDragon) (theSmallMonster loop?))
-					(= SearchMonsterX -58)
+				(if (and (== monsterNum vDragon) (monster loop?))
+					(= searchX -58)
 				)
 				(HandsOff)
 				(ego
 					ignoreActors:
 					setMotion:
 						PolyPath
-						(+ (theSmallMonster x?) SearchMonsterX)
-						(+ (theSmallMonster y?) SearchMonsterY)
+						(+ (monster x?) searchX)
+						(+ (monster y?) searchY)
 						self
 				)
 			)
@@ -1150,7 +1193,7 @@
 			)
 			(2 (ego setCycle: BegLoop self))
 			(3
-				(messager say: N_SEARCHIT NULL NULL 1 self ENCOUNTER)
+				(messager say: N_MONSTER NULL NULL 1 self ENCOUNTER)
 			)
 			(4
 				(cond 
@@ -1158,7 +1201,7 @@
 						(if (Btst fBeardKnown)
 							(ego get: iTrollBeard)
 							(= gotBeard TRUE)
-							(messager say: N_SEARCHIT NULL C_GETBEARD 2 smallMonster ENCOUNTER)
+							(messager say: N_MONSTER NULL C_GETBEARD 2 smallMonster ENCOUNTER)
 						else
 							(SearchMonster)
 						)
@@ -1166,7 +1209,7 @@
 					((== monsterNum vCheetaur)
 						(if (Btst fClawsKnown)
 							(ego get: iCheetaurClaw (Random 4 10))
-							(messager say: N_SEARCHIT 60 C_GETCLAWS2 1 0 ENCOUNTER)
+							(messager say: N_MONSTER 60 C_GETCLAWS2 1 0 ENCOUNTER)
 						else
 							(SearchMonster)
 						)
@@ -1182,13 +1225,13 @@
 					setMotion:
 						PolyPath
 						185
-						(if (< (ego x?) (theSmallMonster x?)) 140 else 160)
+						(if (< (ego x?) (monster x?)) 140 else 160)
 						self
 				)
 			)
 			(5
 				(if (and (== monsterNum vTroll) (not (Btst fBeardKnown)))
-					(messager say: N_SEARCHIT 60 C_TROLL 1 0 ENCOUNTER)
+					(messager say: N_MONSTER 60 C_TROLL 1 0 ENCOUNTER)
 				)
 				(= searchedMonster TRUE)
 				(NormalEgo 2 4)
@@ -1208,40 +1251,40 @@
 				(HandsOff)
 				(= disabledActions 0)
 				(if (!= monsterNum vMantray)
-					(theSmallMonster
-						view: viewDeadMonster
+					(monster
+						view: bodyView
 						setLoop:
-							(if (> (theSmallMonster loop?) 1)
+							(if (> (monster loop?) 1)
 								0
 							else
-								(theSmallMonster loop?)
+								(monster loop?)
 							)
 						cel: 0
 						ignoreActors:
 						setMotion: 0
 						cycleSpeed: 8
 					)
-					(if (== theSmallMonster vTroll)
-						(theSmallMonster setLoop: 0)
+					(if (== monster vTroll)
+						(monster setLoop: 0)
 					)
 					(if (!= monsterNum vGoblin)
-						(theSmallMonster setCycle: EndLoop self)
+						(monster setCycle: EndLoop self)
 					else
 						(= ticks 1)
 					)
 				else
-					(self setScript: (ScriptID 436 3) self theSmallMonster)
+					(self setScript: (ScriptID 436 3) self monster)
 				)
 			)
 			(1
-				(= theX (theSmallMonster x?))
-				(= theY (theSmallMonster y?))
-				(theSmallMonster stopUpd:)
+				(= theX (monster x?))
+				(= theY (monster y?))
+				(monster stopUpd:)
 				(ego ignoreActors:)
 				(HandsOn)
 				(switch monsterNum
 					(vGoblin
-						(if (not (theSmallMonster loop?))
+						(if (not (monster loop?))
 							(= [monsterPts 0] (+ theX 31))
 							(= [monsterPts 1] (- theY 17))
 							(= [monsterPts 2] (+ theX 11))
@@ -1274,7 +1317,7 @@
 						)
 					)
 					(vMantray
-						(if (== (theSmallMonster loop?) 6)
+						(if (== (monster loop?) 6)
 							(= [monsterPts 0] (- theX 8))
 							(= [monsterPts 1] (- theY 8))
 							(= [monsterPts 2] (- theX 16))
@@ -1305,7 +1348,7 @@
 						)
 					)
 					(vSaurus
-						(if (not (theSmallMonster loop?))
+						(if (not (monster loop?))
 							(= [monsterPts 0] (- theX 28))
 							(= [monsterPts 1] (- theY 11))
 							(= [monsterPts 2] (+ theX 24))
@@ -1364,7 +1407,7 @@
 						)
 					)
 					(vCheetaur
-						(if (not (theSmallMonster loop?))
+						(if (not (monster loop?))
 							(= [monsterPts 0] (+ theX 32))
 							(= [monsterPts 1] (- theY 17))
 							(= [monsterPts 2] (+ theX 48))
@@ -1405,7 +1448,7 @@
 						)
 					)
 					(vBrigand
-						(if (not (theSmallMonster loop?))
+						(if (not (monster loop?))
 							(= [monsterPts 0] (- theX 22))
 							(= [monsterPts 1] (- theY 18))
 							(= [monsterPts 2] (- theX 7))
@@ -1448,7 +1491,7 @@
 						)
 					)
 					(vDragon
-						(if (not (theSmallMonster loop?))
+						(if (not (monster loop?))
 							(= [monsterPts 0] (- theX 7))
 							(= [monsterPts 1] (- theY 13))
 							(= [monsterPts 2] (+ theX 25))
@@ -1533,7 +1576,6 @@
 )
 
 (instance aLooper2 of Code
-
 	(method (doit param1 param2)
 		(param1
 			setLoop: (if (and (<= 0 param2) (<= param2 180)) 0 else 1)

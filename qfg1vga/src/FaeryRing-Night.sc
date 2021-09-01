@@ -67,10 +67,26 @@
 	local117
 	local118
 	[local119 2]
-	local121 = [0 -18 15 17 19 3 999]
-	local128 = [0 16 999]
-	[local131 7]
-	local138 = [0 -18 999]
+	fairyTellMainBranch = [
+		STARTTELL
+		-18		;C_FOREST
+		C_BRIGANDS
+		C_FAIRY
+		C_MUSHROOMS
+		C_DUST
+		ENDTELL
+		]
+	local128 = [
+		STARTTELL
+		C_DRYAD
+		ENDTELL
+		]
+	[fairyTellTree 7]
+	fairyTellKeys = [
+		STARTTELL
+		-18		;C_FOREST
+		ENDTELL
+		]
 )
 
 ;EO: These procedures were really messy when decompiled!
@@ -155,9 +171,9 @@
 	)
 	
 	(method (init &tmp temp0)
-		(= [local131 0] @local121)
-		(= [local131 1] @local128)
-		(= [local131 2] 999)
+		(= [fairyTellTree 0] @fairyTellMainBranch)
+		(= [fairyTellTree 1] @local128)
+		(= [fairyTellTree 2] 999)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -246,7 +262,7 @@
 		(LoadMany SOUND 40 64)
 		(LoadMany VIEW 510 72)
 		(= local2 1)
-		(fairyTeller init: aFaery @local121 @local131 @local138)
+		(fairyTeller init: aFaery @fairyTellMainBranch @fairyTellTree @fairyTellKeys)
 		(aFaery init:)
 		(AddFaerys)
 		(cSound stop:)
@@ -672,7 +688,7 @@
 (instance fairyTeller of Teller
 	
 	(method (showDialog &tmp ret [temp1 20])
-		(if (== (= ret (super showDialog: 3 local0)) 3)
+		(if (== (= ret (super showDialog: C_DUST local0)) 3)
 			(curRoom setScript: getDust)
 		)
 		(return ret)
@@ -720,7 +736,7 @@
 							(messager say: N_FAIRIES V_FLASK)
 						)
 						((Btst f70GetDust)
-							(messager say: N_FAIRIES V_FLASK C_GETDUST)
+							(messager say: N_FAIRIES V_FLASK C_DUST)
 						)
 						(couldntGetDust
 							(messager say: N_FAIRIES V_FLASK C_COULDNTGETDUST)
@@ -1587,7 +1603,6 @@
 )
 
 (instance getDust of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1602,7 +1617,7 @@
 			)
 			(2
 				(= local117 1)
-				(messager say: N_FAIRIES NULL C_GETDUST 0 self)
+				(messager say: N_FAIRIES NULL C_DUST 0 self)
 			)
 			(3
 				(= cycles 10)

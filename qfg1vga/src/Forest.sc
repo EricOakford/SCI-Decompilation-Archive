@@ -2191,8 +2191,6 @@
 				(= walkingIn 0)
 				(ego
 					setMotion: PolyPath initEgoX initEgoY
-					ignoreActors: TRUE	;UPGRADE: Ensures that ego is not stuck when a baby Antwerp
-										; crosses his path when he leaves
 					self
 				)
 			)

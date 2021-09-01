@@ -5,7 +5,7 @@
 ;;; NOUNS
 
 (define N_ROOM 1)
-(define N_SEARCHIT 2)
+(define N_MONSTER 2)
 (define N_LOOKIT 3)
 
 ;;; CASES

@@ -17,7 +17,7 @@
 (define C_FLAMEFAIRIES 12)
 (define C_NIGHT 23)
 (define C_FAIRIESIGNORE 34)
-(define C_GETDUST 3)
+(define C_DUST 3)
 (define C_COULDNTGETDUST 20)
 (define C_DIDNTASKFORDUST 22)
 (define C_ENTEREDCIRCLE 8)

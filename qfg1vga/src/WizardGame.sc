@@ -1086,29 +1086,35 @@ code_0453:
 		(super dispose:)
 	)
 	
-	(method (cue &tmp temp0 temp1 [temp2 150])
+	(method (cue &tmp usualTries plural [str 150])
 		(cond 
 			(local11 (curRoom newRoom: 31))
 			(local14 (= local14 0) (messager say: 4 0 6 1))
-			((Btst 337) (= local11 1) (messager say: 4 0 4 1 self))
-			(((wizBug mover?) completed?) (= local11 1) (messager say: 4 0 5 0 self))
-			((not (ego knows: 20))
+			((Btst fStopMaze)
+				(= local11 1)
+				(messager say: 4 0 4 1 self)
+			)
+			(((wizBug mover?) completed?)
+				(= local11 1)
+				(messager say: 4 0 5 0 self)
+			)
+			((not (ego knows: DAZZLE))
 				(= local11 1)
 				(if
 					(<
-						(= temp0 (+ magesMazePlayCount magesMazePlayCount))
+						(= usualTries (+ magesMazePlayCount magesMazePlayCount))
 						500
 					)
-					(= temp0 500)
+					(= usualTries 500)
 				)
-				(= temp1 (if (== magesMazePlayCount 1) {} else {s}))
-				(Printf
-					@temp2
+				(= plural (if (== magesMazePlayCount 1) {} else {s}))
+				;this message isn't in the MSG file
+				(Printf @str
 					{"Well, you seem to have beginner's luck.__It only took you %d game%s to win.__Hmph.__
 					It usually takes at least %d tries for anyone less than a full Wizard to defeat me."}
 					magesMazePlayCount
-					temp1
-					temp0
+					plural
+					usualTries
 				)
 				(ego learn: DAZZLE 10)
 				(SolvePuzzle f32WinMaze 12 MAGIC_USER)
