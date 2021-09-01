@@ -89,7 +89,7 @@
 				(- [meepPosn (+ (* i 2) 1)] 4)
 			init:
 			stopUpd:
-			setScript: [meepScript i]
+			setScript: [meepScript i] 0 i
 		)
 		([eye i]
 			setLoop: 3
