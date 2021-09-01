@@ -38,7 +38,7 @@
 			(and
 				(< westEdge dartTargX)
 				(< dartTargX eastEdge)
-				(< 0 dartTargY)
+				(< westEdge dartTargY)
 				(< dartTargY southEdge)
 			)
 			(+= dartTargX pushX)

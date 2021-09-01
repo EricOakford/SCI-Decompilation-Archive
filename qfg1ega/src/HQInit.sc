@@ -40,18 +40,7 @@
 
 	;EO: added debug code
 	(if debugging
-		; Preset all ego skills
-		(for	((= whichSkill 0))
-				(< whichSkill NUMSTATS)
-				((++ whichSkill))
-			(= [egoStats whichSkill] 80)
-		)
-	
-		( = [egoStats EXPER] 1900)
-		( = [egoStats HEALTH]  (MaxHealth))
-		( = [egoStats STAMINA] (MaxStamina))
-		( = [egoStats MANA]    (MaxMana))
-		(Format @userName {Unknown Hero})
+		;if we want to preset stats, just press Alt-X
 		(= str 0)
 		(= transferRoom 
 			(Print
