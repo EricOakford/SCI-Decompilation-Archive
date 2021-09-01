@@ -18,16 +18,17 @@
 	local0
 	[local1 2]
 	local3
-	[theCheetaur 3]
+	[cheetPart 3]
 	[fightScript 3]
-	local10 = [2]
+	[partCel 3] = [2]
 	local13 = [1 2 2]
 )
+
 (procedure (SetFightScript &tmp i)
 	(for ((= i 0)) (< i 3) ((++ i))
 		(= [fightScript i] (Clone aFightScript))
-		([theCheetaur i]
-			setScript: [fightScript i] 0
+		([cheetPart i]
+			setScript: [fightScript i] 0 i
 		)
 	)
 )
@@ -126,9 +127,9 @@
 			setPri: 10
 			stopUpd:
 		)
-		(= [theCheetaur 0] cheetaur)
-		(= [theCheetaur 1] leftArm)
-		(= [theCheetaur 2] rightArm)
+		(= [cheetPart 0] cheetaur)
+		(= [cheetPart 1] leftArm)
+		(= [cheetPart 2] rightArm)
 		(cheetMusic number: (SoundFX 2) init: play:)
 		(SetFightScript)
 	)
@@ -153,7 +154,6 @@
 )
 
 (instance aFightScript of Script
-	
 	(method (doit)
 		(cond 
 			((and local0 (== client cheetaur))
@@ -171,8 +171,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				([theCheetaur register]
-					cel: [local10 register]
+				([cheetPart register]
+					cel: [partCel register]
 					setCycle: 0
 					stopUpd:
 				)
@@ -180,7 +180,9 @@
 					(cheetaur y: 42 setLoop: 5 cycleSpeed: 3 setCycle: Forward)
 				)
 				(cheetaur action: 0)
-				(if (< cycles 15) (= cycles (Random 12 20)))
+				(if (< cycles 15)
+					(= cycles (Random 12 20))
+				)
 			)
 			(1
 				(= local3 (Random 0 1))
@@ -189,7 +191,7 @@
 					(cheetaur y: (+ (cheetaur y?) 6) setLoop: 0)
 					(self cue:)
 				else
-					([theCheetaur register]
+					([cheetPart register]
 						setCycle: CycleTo [local13 register] 1 self
 					)
 				)
@@ -203,13 +205,17 @@
 					(cheetaur ateEgo: FALSE)
 				)
 				(cond 
-					((== client cheetaur) (cheetaur cycleSpeed: 1 setCycle: EndLoop self))
+					((== client cheetaur)
+						(cheetaur cycleSpeed: 1 setCycle: EndLoop self)
+					)
 					(local3
-						([theCheetaur register]
-							setCycle: CycleTo ([theCheetaur register] cel?) 1 self
+						([cheetPart register]
+							setCycle: CycleTo ([cheetPart register] cel?) 1 self
 						)
 					)
-					(else (client setCycle: EndLoop self))
+					(else
+						(client setCycle: EndLoop self)
+					)
 				)
 			)
 			(3 (self changeState: 0))

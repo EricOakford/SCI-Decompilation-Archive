@@ -33,8 +33,7 @@
 )
 
 ; Ego Moving Modes
-(enum -1
-	MOVE_NOCHANGE
+(enum
 	MOVE_WALK
 	MOVE_RUN
 	MOVE_SNEAK

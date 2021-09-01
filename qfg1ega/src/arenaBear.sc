@@ -20,14 +20,14 @@
 	local3
 	[bearArm 3]
 	[fightScript 3]
-	local10
+	partCel
 	local11 =  5
 )
 (procedure (AddFightScript &tmp i)
 	(for ((= i 0)) (< i 2) ((++ i))
 		(= [fightScript i] (Clone aFightScript))
 		([bearArm i]
-			setScript: [fightScript i] 0 
+			setScript: [fightScript i] 0 i
 		)
 	)
 )
@@ -142,7 +142,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				([bearArm register] cel: local10 setCycle: 0 stopUpd:)
+				([bearArm register] cel: partCel setCycle: 0 stopUpd:)
 				(bear action: 0)
 				(= cycles (Random 5 10))
 			)
@@ -151,13 +151,13 @@
 				(bear action: 1)
 				([bearArm register] setCycle: CycleTo local11 1 self)
 				(if (bear tryAttack: (bear opponent?))
-					(bear ateEgo: 1)
+					(bear ateEgo: TRUE)
 				)
 			)
 			(2
 				(if (bear ateEgo?)
 					(bear doDamage: (bear opponent?))
-					(bear ateEgo: 0)
+					(bear ateEgo: FALSE)
 				)
 				(if local3
 					([bearArm register]
