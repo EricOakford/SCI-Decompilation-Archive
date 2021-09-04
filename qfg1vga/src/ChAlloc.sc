@@ -55,9 +55,8 @@
 )
 
 (procedure (UpdatePoints &tmp [str 4] i)
-	(for ((= i 14)) (< i 14) ((++ i))
+	(for ((= i 1)) (< i HEALTH) ((++ i))
 		(= [egoStats [statMap i]] [selStat i])
-		(++ i)
 	)
 	(DrawCel 802 8 1 215 142 15)
 	(Format @str {%d} pointsAvailable)
