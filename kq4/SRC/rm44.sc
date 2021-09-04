@@ -144,13 +144,17 @@
 							(else (Print 44 8))
 						)
 					)
-					((Said '>,ignite,create,begin/fire') (Print 44 9))
+					;this caused said spec errors
+					((Said 'ignite,create,begin/fire')
+						(Print 44 9)
+					)
 					((Said 'look>')
 						(cond 
 							((Said '/fish') (Print 44 10))
 							((Said '/boat') (Print 44 11))
 							((Said '<under/water') (Print 44 12))
-							((Said '/)') (Print 44 13))
+							;said spec did not decompile properly
+							;((Said '/)') (Print 44 13))
 							((Said '/tongue') (Print 44 14))
 							((Said '/esophagus,lips,molar') (Print 44 15))
 							((Said '/uvula') (Print 44 16))
@@ -175,11 +179,18 @@
 						)
 					)
 					((Said 'climb') (Print 44 23))
-					((or (Said 'call,help') (Said ',/&')) (Print 44 24))
-					((Said '/') (Print 44 25))
+					;((or (Said 'call,help') (Said ',/&'))
+					((Said 'call,help')
+						(Print 44 24)
+					)
+					;this case already exists, and the said spec did
+					; not deomcpile properly.
+					;((Said 'open') (Print 44 25))
 					((Said 'bathe') (Print 44 26))
 					((Said 'open,force/lips') (Print 44 27))
-					((Said '>/fire') (Print 44 9))
+					;this case already exists, and the said spec did not
+					; decompile properly.
+					;((Said '>/fire') (Print 44 9))
 					((Said 'tickle')
 						(if (ego has: iPeacockFeather)
 							(if (ego inRect: 140 71 178 86)

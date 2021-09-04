@@ -37,7 +37,7 @@
 	)
 	
 	(method (init)
-		(self setRegions: DWARF_HOUSE)
+		(self setRegions: DWARF_MINE)
 		(Load VIEW 516)
 		(Load VIEW 283)
 		(Load VIEW 286)

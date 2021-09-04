@@ -272,10 +272,12 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(ego ignoreActors: FALSE)
-		(if (== newRoomNumber 28) ((ScriptID DWARF_HOUSE) keep: 0))
-		(super newRoom: newRoomNumber)
+		(if (== n 28)
+			((ScriptID DWARF_MINE) keep: FALSE)
+		)
+		(super newRoom: n)
 	)
 )
 
