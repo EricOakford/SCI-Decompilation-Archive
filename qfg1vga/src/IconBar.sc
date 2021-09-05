@@ -353,7 +353,7 @@
 			(= node nextNode)
 		)
 		(if curInvIcon
-			(if (ego has: (inventory indexOf: curInvIcon))
+			;(if (ego has: (inventory indexOf: curInvIcon))
 				(= theX
 					(+
 						(/
@@ -398,9 +398,13 @@
 				(if (& (useIconItem signal?) DISABLED)
 					(useIconItem mask:)
 				)
-			else
-				(= curInvIcon 0)
-			)
+			;EO: Unfortunately, we can't make this NULL
+			; for this particular game, as it causes problems
+			; with the money pouch if ego has no silvers.
+			;)
+			;else
+			;	(= curInvIcon 0)
+			;)
 		)
 		(PicNotValid pnv)
 		(Graph GShowBits y 0 (+ y height) SCRNWIDE VMAP)
