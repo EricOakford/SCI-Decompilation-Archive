@@ -2451,7 +2451,7 @@ code_12ac:
 			callk    Said,  2
 			bnt      code_1347
 			pushi    1
-			lofsa    '>,ignite,(turn<on)'
+			lofsa    'ignite,(turn<on)'
 			push    
 			callk    Said,  2
 			bnt      code_130c
