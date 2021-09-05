@@ -1,0 +1,12 @@
+;;; Sierra Script
+;;; 440.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+(define N_RAKEESH 1)
+(define N_ROOM 8)
+
+;;; CASES
+
+

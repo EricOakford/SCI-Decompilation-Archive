@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 549)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Game)
 (use Actor)
@@ -10,7 +10,7 @@
 	rm549 0
 )
 
-(instance rm549 of Rm
+(instance rm549 of Room
 	(properties
 		picture 550
 	)
@@ -22,8 +22,6 @@
 )
 
 (instance sStart of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= ticks 60))

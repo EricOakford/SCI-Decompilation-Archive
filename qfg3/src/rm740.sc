@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 740)
-(include sci.sh)
+(include game.sh) (include "740.shm")
 (use Main)
 (use TellerIcon)
 (use EgoDead)
@@ -23,7 +23,7 @@
 )
 
 (local
-	[local0 21] = [4 0 151 41 4 1 150 41 4 2 150 56 4 3 150 66 4 4 150 79 -32768]
+	local0 = [4 0 151 41 4 1 150 41 4 2 150 56 4 3 150 66 4 4 150 79 -32768]
 	[newJumpScript 10]
 	[newMonkey 10]
 	local41
@@ -35,14 +35,14 @@
 	local47
 	local48
 	local49
-	[local50 9] = [0 1 -4 -10 -7 -6 -2 8 999]
+	local50 = [0 1 -4 -10 -7 -6 -2 8 999]
 	[local59 2]
-	[local61 5] = [0 15 2 16 999]
+	local61 = [0 15 2 16 999]
 	[local66 2]
 )
-(instance rm740 of Rm
+(instance rm740 of Room
 	(properties
-		noun 13
+		noun N_ROOM
 		picture 740
 	)
 	
@@ -119,7 +119,7 @@
 		(rightVines init:)
 		(lowPath init:)
 		(upperPath init:)
-		(mist setCycle: Fwd init:)
+		(mist setCycle: Forward init:)
 		(vine init: stopUpd:)
 		(vine2 init: stopUpd:)
 		(egoTell init: ego @local50 @local59)
@@ -149,8 +149,8 @@
 	(method (doit)
 		(CyclePalette 227 234 -1)
 		(if (and (GameIsRestarting) (== local47 1))
-			(Graph grDRAW_LINE 36 124 36 283 0 -1 -1)
-			(Graph grUPDATE_BOX 35 123 37 284 1)
+			(Graph GDrawLine 36 124 36 283 0 -1 -1)
+			(Graph GShowBits 35 123 37 284 1)
 		)
 		(if
 			(and
@@ -195,8 +195,8 @@
 	
 	(method (notify param1)
 		(if (and (== param1 -15) local47)
-			(Graph grDRAW_LINE 36 124 36 283 0 -1 -1)
-			(Graph grUPDATE_BOX 35 123 37 284 1)
+			(Graph GDrawLine 36 124 36 283 0 -1 -1)
+			(Graph GShowBits 35 123 37 284 1)
 		)
 	)
 )
@@ -213,7 +213,7 @@
 			(2
 				(ego
 					view: 12
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 0
 					cycleSpeed: 6
 					moveSpeed: 6
@@ -263,7 +263,7 @@
 			)
 			(3
 				(egoVine ignoreActors: 1 setLoop: 1 setPri: 1 init:)
-				((ScriptID 41 1) view: 741 loop: 4 setCycle: End self)
+				((ScriptID 41 1) view: 741 loop: 4 setCycle: EndLoop self)
 				(= local49 1)
 				(messager say: 2 6 28)
 				(ego drop: 24 -1)
@@ -274,12 +274,12 @@
 				(ego
 					view: 17
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo 164 (ego y?)
 				)
 			)
 			(6
-				((ScriptID 41 1) setCycle: Fwd)
+				((ScriptID 41 1) setCycle: Forward)
 				(ego
 					xStep: 3
 					moveSpeed: 3
@@ -296,7 +296,7 @@
 				(walkHandler delete: target)
 				(target dispose:)
 				(egoVine dispose:)
-				(ego setCycle: Beg setMotion: MoveTo 240 77 self)
+				(ego setCycle: BegLoop setMotion: MoveTo 240 77 self)
 			)
 			(8
 				(globalSound number: 742 setLoop: -1 play: 60)
@@ -350,13 +350,13 @@
 				(ego
 					view: 17
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo 164 70
 				)
 				(egoVine setMotion: MoveTo 164 70)
 			)
 			(1
-				((ScriptID 41 1) setLoop: 4 setCycle: Fwd)
+				((ScriptID 41 1) setLoop: 4 setCycle: Forward)
 				(ego xStep: 3 moveSpeed: 3 setMotion: MoveTo 240 70 self)
 				(egoVine xStep: 3 moveSpeed: 3 setMotion: MoveTo 240 70)
 			)
@@ -368,7 +368,7 @@
 					loop: 1
 				)
 				(egoVine dispose:)
-				(ego setCycle: Beg self setMotion: MoveTo 240 77)
+				(ego setCycle: BegLoop self setMotion: MoveTo 240 77)
 			)
 			(3
 				(globalSound number: 742 setLoop: -1 play: 60)
@@ -416,7 +416,7 @@
 					view: 741
 					loop: 0
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: JumpTo 256 82 self
 				)
 			)
@@ -433,21 +433,21 @@
 					view: 741
 					loop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
-				((ScriptID 41 1) loop: 2 cel: 0 setCycle: End self)
+				((ScriptID 41 1) loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				((ScriptID 41 1) loop: 5 cel: 0 setCycle: End self)
+				((ScriptID 41 1) loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				((ScriptID 41 1) setCycle: Beg self)
+				((ScriptID 41 1) setCycle: BegLoop self)
 			)
 			(8
-				(Graph grDRAW_LINE 36 124 36 283 0 -1 -1)
-				(Graph grUPDATE_BOX 35 123 37 284 1)
+				(Graph GDrawLine 36 124 36 283 0 -1 -1)
+				(Graph GShowBits 35 123 37 284 1)
 				(ego drop: 41)
 				(theIconBar advanceCurIcon:)
 				(bridge approachVerbs: 4 init:)
@@ -477,7 +477,7 @@
 					view: 741
 					loop: 0
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: JumpTo 256 82 self
 				)
 			)
@@ -494,21 +494,21 @@
 					view: 741
 					loop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
-				((ScriptID 41 1) loop: 2 cel: 0 setCycle: End self)
+				((ScriptID 41 1) loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				((ScriptID 41 1) loop: 5 cel: 0 setCycle: End self)
+				((ScriptID 41 1) loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				((ScriptID 41 1) setCycle: Beg self)
+				((ScriptID 41 1) setCycle: BegLoop self)
 			)
 			(8
-				(Graph grDRAW_LINE 36 124 36 283 0 -1 -1)
-				(Graph grUPDATE_BOX 35 123 37 284 1)
+				(Graph GDrawLine 36 124 36 283 0 -1 -1)
+				(Graph GShowBits 35 123 37 284 1)
 				(ego drop: 24 2)
 				(bridge approachVerbs: 4 init:)
 				(ego solvePuzzle: 324 3 9)
@@ -542,7 +542,7 @@
 					view: 741
 					loop: 0
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: JumpX 256 (Random 15 25) self
 				)
 			)
@@ -628,15 +628,15 @@
 				(ego setMotion: PolyPath 163 75 self)
 			)
 			(1
-				(ego view: 8 loop: 0 cel: 0 setCycle: CT 6 1 self)
+				(ego view: 8 loop: 0 cel: 0 setCycle: CycleTo 6 1 self)
 			)
 			(2
-				(ego setCycle: End)
-				(rope init: setCycle: End self)
+				(ego setCycle: EndLoop)
+				(rope init: setCycle: EndLoop self)
 				(sFx number: 721 play:)
 			)
 			(3
-				(ego view: 4 setCycle: End self)
+				(ego view: 4 setCycle: EndLoop self)
 				(ego drop: 6)
 			)
 			(4
@@ -680,7 +680,7 @@
 			(2
 				(ego
 					view: 12
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 0
 					cycleSpeed: 6
 					moveSpeed: 6
@@ -688,9 +688,9 @@
 				)
 			)
 			(3
-				(ego view: 6 setLoop: 4 setCycle: MCyc @local0 self)
+				(ego view: 6 setLoop: 4 setCycle: MoveCycle @local0 self)
 			)
-			(4 (ego setCycle: End self))
+			(4 (ego setCycle: EndLoop self))
 			(5
 				(switch local42
 					(0 (messager say: 2 6 20))
@@ -700,7 +700,7 @@
 				(= cycles 1)
 			)
 			(6
-				(ego setLoop: 10 cel: 0 setCycle: End self)
+				(ego setLoop: 10 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(ego
@@ -729,7 +729,7 @@
 			(2
 				(ego
 					view: 12
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 0
 					cycleSpeed: 6
 					moveSpeed: 6
@@ -748,7 +748,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 6 setLoop: 4 setCel: 0 setCycle: End self)
+				(ego view: 6 setLoop: 4 setCel: 0 setCycle: EndLoop self)
 			)
 			(1 (= seconds 2))
 			(2
@@ -762,7 +762,7 @@
 				)
 			)
 			(3
-				(EgoDead 22 0 744 Fwd)
+				(EgoDead 22 0 744 Forward)
 				(self dispose:)
 			)
 		)
@@ -783,7 +783,7 @@
 					view: 11
 					y: 79
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 264 79 self
 				)
 			)
@@ -811,7 +811,7 @@
 				(ego setMotion: PolyPath 44 70 self)
 			)
 			(1
-				(ego view: 31 cel: 0 setCycle: CT 3 1 self)
+				(ego view: 31 cel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(2
 				(if (== ((inventory at: 24) state?) 0)
@@ -834,7 +834,7 @@
 					(self cue:)
 				)
 			)
-			(4 (ego setCycle: End self))
+			(4 (ego setCycle: EndLoop self))
 			(5
 				(ego view: 0 normalize:)
 				(HandsOn)
@@ -857,7 +857,7 @@
 				(ego
 					view: 39
 					y: 35
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 265 35 self
 				)
 			)
@@ -921,7 +921,7 @@
 				)
 			)
 			(3
-				(EgoDead 17 0 744 Fwd)
+				(EgoDead 17 0 744 Forward)
 				(self dispose:)
 			)
 		)
@@ -1241,7 +1241,7 @@
 			(-7
 				(= local49 0)
 				(theIconBar enable: 6)
-				((ScriptID 41 1) setCycle: Beg)
+				((ScriptID 41 1) setCycle: BegLoop)
 			)
 		)
 		(return 1)

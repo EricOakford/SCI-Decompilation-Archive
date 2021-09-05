@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 755)
-(include sci.sh)
+(include game.sh) (include "755.shm")
 (use Main)
 (use Polygon)
 (use Motion)
@@ -11,9 +11,9 @@
 	rm755 0
 )
 
-(instance rm755 of Rm
+(instance rm755 of Room
 	(properties
-		noun 1
+		noun N_ROOM
 		picture 755
 		vanishingY -60
 	)

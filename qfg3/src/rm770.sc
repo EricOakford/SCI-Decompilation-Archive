@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 770)
-(include sci.sh)
+(include game.sh) (include "770.shm")
 (use Main)
 (use TellerIcon)
 (use EgoDead)
@@ -27,9 +27,9 @@
 	local1
 	local2
 	[newGem1 5]
-	[local8 8] = [0 5 6 7 -9 -8 -10 999]
+	local8 = [0 5 6 7 -9 -8 -10 999]
 	[local16 2]
-	[local18 11] = [0 -21 -18 -32 -22 -27 -28 -26 -19 -20 999]
+	local18 = [0 -21 -18 -32 -22 -27 -28 -26 -19 -20 999]
 	[local29 2]
 )
 (procedure (localproc_0d9d)
@@ -51,9 +51,9 @@
 	)
 )
 
-(instance rm770 of Rm
+(instance rm770 of Room
 	(properties
-		noun 10
+		noun N_ROOM
 		picture 770
 		vanishingY -25
 	)
@@ -188,30 +188,30 @@
 				(ego setMotion: PolyPath 179 148 self)
 			)
 			(1
-				(ego view: 35 loop: 0 cel: 0 x: 198 setCycle: End self)
+				(ego view: 35 loop: 0 cel: 0 x: 198 setCycle: EndLoop self)
 			)
 			(2
-				(if (= temp0 (PalVary pvGET_CURRENT_STEP))
+				(if (= temp0 (PalVary PALVARYINFO))
 					(if (< temp0 64)
-						(PalVary pvCHANGE_TICKS 3)
+						(PalVary PALVARYNEWTIME 3)
 						(= seconds 5)
 					else
 						(self cue:)
 					)
 				else
-					(PalVary pvINIT 310 3)
+					(PalVary PALVARYSTART 310 3)
 					(Btst 81)
 					(= seconds 15)
 				)
 			)
 			(3
-				(PalVary pvREVERSE 3)
+				(PalVary PALVARYREVERSE 3)
 				(Bclr 81)
 				(= seconds 4)
 			)
 			(4
 				((ScriptID 7 7) init: 5 40)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
 				(ego
@@ -271,7 +271,7 @@
 					y: 143
 					init:
 				)
-				(DrawPic (curRoom picture?) dpOPEN_PIXELATION)
+				(DrawPic (curRoom picture?) PIXELDISSOLVE)
 				(= cycles 2)
 			)
 			(3
@@ -325,12 +325,12 @@
 			)
 			(1
 				(if (not (== global394 3))
-					(ego view: 4 loop: 1 cel: 0 setCycle: End self)
+					(ego view: 4 loop: 1 cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(2
 				(gem1 dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego normalize:)
@@ -424,11 +424,11 @@
 				(ego view: 5 cel: 0)
 			)
 			(1
-				(ego view: 6 loop: 3 setCycle: End)
+				(ego view: 6 loop: 3 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(2
-				(ego loop: 9 cel: 0 setCycle: End self)
+				(ego loop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(3 (DontMove) (self dispose:))
 		)
@@ -441,7 +441,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(guardian setCycle: Fwd setMotion: Wander 75)
+				(guardian setCycle: Forward setMotion: Wander 75)
 				(= seconds 10)
 			)
 			(1
@@ -460,7 +460,7 @@
 				(egoTell dispose:)
 				(guardTell init: ego @local8 @local16)
 				(= local0 1)
-				(ego view: 772 loop: 1 noun: 1 setCycle: End)
+				(ego view: 772 loop: 1 noun: 1 setCycle: EndLoop)
 				(guardian hide:)
 				(messager say: 3 6 2 0 self)
 			)
@@ -497,10 +497,10 @@
 			)
 			(1
 				(guardTell init: ego @local8 @local16)
-				(ego view: 772 loop: 1 setCycle: Fwd noun: 1)
+				(ego view: 772 loop: 1 setCycle: Forward noun: 1)
 				(= seconds 3)
 			)
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3 (self init:))
 		)
 	)

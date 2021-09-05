@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 650)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use EgoDead)
 (use JumpX)
@@ -57,8 +57,8 @@
 )
 
 (procedure (localproc_104a)
-	(DrawPic (curRoom picture?) dpOPEN_PIXELATION)
-	(Animate (cast elements?) 0)
+	(DrawPic (curRoom picture?) PIXELDISSOLVE)
+	(Animate (cast elements?) FALSE)
 )
 
 (class Fcycler of Cycle
@@ -163,7 +163,7 @@
 			x: (ego x?)
 			y: (- (ego y?) 40)
 			setLoop: param1
-			setCycle: Fwd
+			setCycle: Forward
 			setMotion: MoveTo local15 local16 self
 		)
 		(if (== param1 4)
@@ -189,7 +189,7 @@
 			(if (== loop 4) (= loop 10) else (= loop 9))
 			(= tim 1)
 			(globalSound number: 930 play: setLoop: 1)
-			(self setCycle: End self)
+			(self setCycle: EndLoop self)
 		)
 	)
 )
@@ -265,7 +265,7 @@
 			rx: (ego x?)
 			ry: (- (ego y?) 30)
 			setLoop: 7
-			setCycle: Fwd
+			setCycle: Forward
 			setMotion: JumpX local15 local16 15 self
 		)
 		(globalSound number: 900 play: setLoop: 1)
@@ -286,7 +286,7 @@
 	)
 )
 
-(instance rm650 of Rm
+(instance rm650 of Room
 	(properties
 		noun 7
 		picture 650
@@ -351,14 +351,14 @@
 	
 	(method (doit)
 		(super doit: &rest)
-		(Palette palANIMATE 217 219 5)
+		(Palette PALCycle 217 219 5)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 36 43 44 57)
-		(UnLoad 128 653)
-		(UnLoad 128 654)
-		(UnLoad 128 14)
+		(LoadMany FALSE 36 43 44 57)
+		(UnLoad RES_VIEW 653)
+		(UnLoad RES_VIEW 654)
+		(UnLoad RES_VIEW 14)
 		(timers
 			eachElementDo: #dispose
 			eachElementDo: #delete
@@ -701,15 +701,15 @@
 						view: 18
 						setLoop: local17
 						cel: 0
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
 				else
-					(ego view: 14 loop: local17 setCycle: Beg self)
+					(ego view: 14 loop: local17 setCycle: BegLoop self)
 				)
 				(globalSound number: 900 setLoop: 1 play:)
 			)
 			(1
-				(Palette palSET_INTENSITY 0 255 800)
+				(Palette PALIntensity 0 255 800)
 				(globalSound number: 930 play: setLoop: 1)
 				(= cycles 5)
 			)
@@ -768,8 +768,8 @@
 		(switch (= state newState)
 			(0 (HandsOff))
 			(1
-				(fire setLoop: 0 setCycle: CT 0 -1 self)
-				(cage setLoop: 2 setCycle: CT 0 -1 self)
+				(fire setLoop: 0 setCycle: CycleTo 0 -1 self)
+				(cage setLoop: 2 setCycle: CycleTo 0 -1 self)
 			)
 			(2 0)
 			(3
@@ -796,7 +796,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego view: 14 setLoop: 3 setCycle: End self)
+				(ego view: 14 setLoop: 3 setCycle: EndLoop self)
 				(cage
 					view: 651
 					x: (ego x?)
@@ -805,7 +805,7 @@
 					origStep: 6671
 					moveSpeed: 0
 					cycleSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 15 10
 				)
 				(globalSound number: 13 play: setLoop: 1)
@@ -816,7 +816,7 @@
 			(2
 				(ego cel: 0)
 				(cage setCycle: 0 hide:)
-				(burst x: local15 y: local16 show: setCycle: End self)
+				(burst x: local15 y: local16 show: setCycle: EndLoop self)
 			)
 			(3
 				(globalSound number: 930 play: setLoop: 1)
@@ -861,10 +861,10 @@
 						view: 19
 						setLoop: local17
 						cel: 0
-						setCycle: CT 2 1 self
+						setCycle: CycleTo 2 1 self
 					)
 				else
-					(ego view: 15 loop: local17 setCycle: CT 4 1 self)
+					(ego view: 15 loop: local17 setCycle: CycleTo 4 1 self)
 				)
 			)
 			(1
@@ -877,7 +877,7 @@
 					priority: (+ (ego priority?) 1)
 					signal: 16
 					show:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 2)
 			)
@@ -934,10 +934,10 @@
 						view: 18
 						setLoop: local17
 						cel: 0
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
 				else
-					(ego view: 14 loop: local17 setCycle: Beg self)
+					(ego view: 14 loop: local17 setCycle: BegLoop self)
 				)
 			)
 			(1
@@ -987,7 +987,7 @@
 				(if (IsObject ((curRoom script?) timer?))
 					(((curRoom script?) timer?) dispose:)
 				)
-				(ego view: 19 setLoop: local17 setCycle: CT 2 1 self)
+				(ego view: 19 setLoop: local17 setCycle: CycleTo 2 1 self)
 			)
 			(1
 				((= newActor (Actor new:))
@@ -999,7 +999,7 @@
 					priority: (ego priority?)
 					signal: 16400
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles 3)
 			)
@@ -1064,7 +1064,7 @@
 					cel: 0
 					cycleSpeed: 10
 					setStep: 5 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -1077,7 +1077,7 @@
 					priority: (ego priority?)
 					signal: 16400
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles 3)
 			)
@@ -1099,7 +1099,7 @@
 			)
 			(4
 				(if (IsObject newActor) (newActor dispose:))
-				(ego setCycle: CT 0 -1 self)
+				(ego setCycle: CycleTo 0 -1 self)
 			)
 			(5
 				(if (judge script?) (judge cue:))
@@ -1132,10 +1132,10 @@
 				(if (IsObject ((curRoom script?) timer?))
 					(((curRoom script?) timer?) dispose:)
 				)
-				(ego view: 20 x: 123 setLoop: 4 setCycle: End self)
+				(ego view: 20 x: 123 setLoop: 4 setCycle: EndLoop self)
 			)
 			(1
-				(ego x: 116 setLoop: 6 setCycle: End self)
+				(ego x: 116 setLoop: 6 setCycle: EndLoop self)
 			)
 			(2
 				(if (and (sHaman script?) local8)
@@ -1169,7 +1169,7 @@
 				(if (IsObject ((curRoom script?) timer?))
 					(((curRoom script?) timer?) dispose:)
 				)
-				(ego view: 19 loop: 2 setCycle: Beg self)
+				(ego view: 19 loop: 2 setCycle: BegLoop self)
 			)
 			(1
 				(if (and (sHaman script?) local8)
@@ -1221,13 +1221,13 @@
 					show:
 					setLoop: 0
 					setPri: (- (ego priority?) 1)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(if register
 					(ego show:)
 					(sHaman show:)
 					(judge show: stopUpd:)
-					(PalVary pvREVERSE 4)
+					(PalVary PALVARYREVERSE 4)
 					(= seconds 5)
 				else
 					(self cue:)
@@ -1235,13 +1235,13 @@
 			)
 			(1
 				(if register
-					(ego setCycle: CT 0 -1 self)
+					(ego setCycle: CycleTo 0 -1 self)
 				else
 					(self cue:)
 				)
 			)
 			(2
-				(if register (PalVary pvINIT 650 1) (waitLight cue:))
+				(if register (PalVary PALVARYSTART 650 1) (waitLight cue:))
 				(juggleLight hide:)
 				(HandsOn 5 1 3 8 7)
 				(self dispose:)
@@ -1292,9 +1292,9 @@
 			)
 			(1 (HandsOff) (= cycles 5))
 			(2
-				(Palette palSET_INTENSITY 0 255 1000)
-				(Palette palSET_INTENSITY 0 255 100)
-				(sHaman view: 654 loop: local18 setCycle: End self)
+				(Palette PALIntensity 0 255 1000)
+				(Palette PALIntensity 0 255 100)
+				(sHaman view: 654 loop: local18 setCycle: EndLoop self)
 				(if (== local1 512) (juggleLight dispose:))
 			)
 			(3
@@ -1373,7 +1373,7 @@
 					view: 653
 					cycleSpeed: 10
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(globalSound number: 944 play: setLoop: 1)
 				(= local13 1)
@@ -1401,14 +1401,14 @@
 						show:
 						setLoop: 0
 						moveSpeed: 0
-						setCycle: Fwd
+						setCycle: Forward
 					)
 				)
 				(sHaman setLoop: 2 cel: 0)
 				(= cycles 30)
 			)
 			(1
-				(sHaman setCycle: End)
+				(sHaman setCycle: EndLoop)
 				(globalSound number: 913 setLoop: 1 play:)
 				(fire
 					view: 650
@@ -1417,7 +1417,7 @@
 					noun: 9
 					setLoop: 0
 					setPri: 14
-					setCycle: End self
+					setCycle: EndLoop self
 					show:
 				)
 				(cage
@@ -1428,13 +1428,13 @@
 					setLoop: 2
 					setPri: (- (ego priority?) 1)
 					show:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 0)
 			(3
-				(fire setLoop: 1 setCycle: Fwd)
-				(cage setLoop: 3 setCycle: Fwd)
+				(fire setLoop: 1 setCycle: Forward)
+				(cage setLoop: 3 setCycle: Forward)
 				(= cycles 5)
 			)
 			(4
@@ -1452,7 +1452,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(sHaman view: 653 setLoop: 1 setCycle: CT 2 1 self)
+				(sHaman view: 653 setLoop: 1 setCycle: CycleTo 2 1 self)
 				(fire
 					view: 651
 					setLoop: 0
@@ -1466,17 +1466,17 @@
 			(1
 				(globalSound number: 13 play: setLoop: 1)
 				(fire
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (+ (fire x?) 5) (fire y?)
 				)
-				(sHaman view: 653 setLoop: 1 setCycle: CT 5 1 self)
+				(sHaman view: 653 setLoop: 1 setCycle: CycleTo 5 1 self)
 			)
 			(2
 				(fire setMotion: MoveTo (ego x?) 101 self)
 			)
 			(3
 				(fire hide:)
-				(burst x: 118 y: 101 setCycle: End self show:)
+				(burst x: 118 y: 101 setCycle: EndLoop self show:)
 			)
 			(4
 				(globalSound number: 11 play: setLoop: 1)
@@ -1490,7 +1490,7 @@
 				)
 			)
 			(5
-				(fire view: 340 setLoop: 0 setCycle: Fwd)
+				(fire view: 340 setLoop: 0 setCycle: Forward)
 				(if register (sHaman setLoop: 2 cel: 0))
 				(= cycles 2)
 			)
@@ -1510,7 +1510,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(sHaman view: 653 setLoop: 2 setCycle: Beg self)
+				(sHaman view: 653 setLoop: 2 setCycle: BegLoop self)
 			)
 			(1
 				(globalSound number: 7 play: setLoop: 1)
@@ -1522,7 +1522,7 @@
 					y: 78
 					noun: 10
 					setPri: 13
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((= newActor (Prop new:))
 					view: 651
@@ -1534,7 +1534,7 @@
 					noun: 10
 					signal: 16384
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 0)
@@ -1553,12 +1553,14 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(sHaman view: 654 setLoop: 2 setCycle: Beg self)
-				(if (PalVary pvGET_CURRENT_STEP) (PalVary pvREVERSE 0))
+				(sHaman view: 654 setLoop: 2 setCycle: BegLoop self)
+				(if (PalVary PALVARYINFO)
+					(PalVary PALVARYREVERSE 0)
+				)
 			)
 			(1 (= seconds 1))
 			(2
-				(PalVary pvINIT 651 2)
+				(PalVary PALVARYSTART 651 2)
 				(= seconds 3)
 			)
 			(3
@@ -1591,7 +1593,7 @@
 		(switch (= state newState)
 			(0 (HandsOff) (= seconds 2))
 			(1
-				(judge setLoop: 1 setCycle: CT 2 1 self)
+				(judge setLoop: 1 setCycle: CycleTo 2 1 self)
 			)
 			(2
 				(messager say: 3 6 17 0 self)
@@ -1601,7 +1603,7 @@
 			(3
 				(HandsOff)
 				(= local1 512)
-				(sHaman view: 654 setLoop: 4 setCycle: End self)
+				(sHaman view: 654 setLoop: 4 setCycle: EndLoop self)
 			)
 			(4
 				(HandsOn 5 1 3 8 7)
@@ -1620,7 +1622,7 @@
 				(localproc_0ff0 self 1)
 			)
 			(5
-				(juggleLight setCycle: CT 10 1 self)
+				(juggleLight setCycle: CycleTo 10 1 self)
 			)
 			(6
 				(juggleLight
@@ -1659,7 +1661,7 @@
 				else
 					(sHaman view: 653 setLoop: 2)
 				)
-				(sHaman setCycle: Beg self)
+				(sHaman setCycle: BegLoop self)
 			)
 			(1
 				(if (< (ego x?) 140)
@@ -1731,8 +1733,8 @@
 				(messager say: 2 6 22 0 self)
 			)
 			(1
-				(sHaman view: 656 cel: 0 setLoop: 0 setCycle: End self)
-				(judge setLoop: 2 setCycle: Fwd)
+				(sHaman view: 656 cel: 0 setLoop: 0 setCycle: EndLoop self)
+				(judge setLoop: 2 setCycle: Forward)
 				(burst cue:)
 			)
 			(2 (= cycles 35))
@@ -1790,7 +1792,7 @@
 			)
 			(7
 				(= cycles 0)
-				(ego view: 43 setLoop: 2 setCel: 0 setCycle: End self)
+				(ego view: 43 setLoop: 2 setCel: 0 setCycle: EndLoop self)
 				(juggleLight dispose:)
 			)
 			(8 (messager say: 3 6 7 0 self))
@@ -1939,7 +1941,7 @@
 					setStep: 12 10
 					setPri: 15
 					show:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (judge x?) (- (judge y?) 20)
 				)
 				(= cycles 20)
@@ -1955,7 +1957,7 @@
 					setLoop: 0
 					setPri: 15
 					setStep: 12 10
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (- (ego x?) 10) (- (ego y?) 30) self
 					show:
 				)
@@ -1964,7 +1966,7 @@
 					setMotion: 0
 					view: 21
 					setLoop: 9
-					setCycle: End juggleLight
+					setCycle: EndLoop juggleLight
 				)
 			)
 			(2
@@ -1974,7 +1976,7 @@
 						x: (- (ego x?) 5)
 						y: (- (ego y?) 20)
 						show:
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(burst dispose:)
@@ -2003,7 +2005,7 @@
 					view: 653
 					cel: 0
 					setLoop: (if local12 3 else 0)
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(juggleLight
 					view: (if (== register 20) 46 else 21)
@@ -2021,7 +2023,7 @@
 					setStep: 12 10
 					setPri: 15
 					show:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (sHaman x?) (- (sHaman y?) 30)
 				)
 				(= cycles 20)
@@ -2037,7 +2039,7 @@
 					setLoop: 0
 					setPri: 14
 					setStep: 12 10
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (- (ego x?) 10) (- (ego y?) 30) self
 					show:
 				)
@@ -2046,7 +2048,7 @@
 					setMotion: 0
 					view: 21
 					setLoop: 9
-					setCycle: End juggleLight
+					setCycle: EndLoop juggleLight
 				)
 			)
 			(2
@@ -2056,7 +2058,7 @@
 						x: (- (ego x?) 5)
 						y: (- (ego y?) 20)
 						show:
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(burst dispose:)
@@ -2078,7 +2080,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego view: 43 setLoop: 2 setCycle: End self)
+				(ego view: 43 setLoop: 2 setCycle: EndLoop self)
 			)
 			(1
 				(switch local14
@@ -2100,7 +2102,7 @@
 				(cSound number: 159 setLoop: 1 play: self)
 			)
 			(1
-				(sHaman setCycle: CT 0 -1 self)
+				(sHaman setCycle: CycleTo 0 -1 self)
 			)
 			(2
 				(sHaman
@@ -2108,7 +2110,7 @@
 					loop: 0
 					scaleX: 110
 					scaleY: 110
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -2124,7 +2126,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: End self))
+			(0 (ego setCycle: EndLoop self))
 			(1 (EgoDead 28))
 		)
 	)
@@ -2143,7 +2145,7 @@
 				(= cycles 5)
 			)
 			(1
-				(sHaman cycleSpeed: 12 setCycle: CT 0 -1 self)
+				(sHaman cycleSpeed: 12 setCycle: CycleTo 0 -1 self)
 			)
 			(2 (= cycles 10))
 			(3
@@ -2432,6 +2434,6 @@
 	
 	(method (cue)
 		(globalSound number: 930 setLoop: 1 play:)
-		(self view: 21 loop: 9 cel: 0 show: setCycle: End burst)
+		(self view: 21 loop: 9 cel: 0 show: setCycle: EndLoop burst)
 	)
 )

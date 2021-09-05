@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 585)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Combat)
 (use Motion)
@@ -79,13 +79,13 @@
 		(switch (= state newState)
 			(0
 				(if (not (Random 0 2))
-					(crocodilemanMonster setCycle: End torso)
-					(torso setLoop: 3 setCycle: End)
+					(crocodilemanMonster setCycle: EndLoop torso)
+					(torso setLoop: 3 setCycle: EndLoop)
 				)
 				(= ticks (/ (Random 90 180) arcadeDifficulty))
 			)
 			(1
-				(torso setLoop: (Random 2 3) setCycle: End self)
+				(torso setLoop: (Random 2 3) setCycle: EndLoop self)
 			)
 			(2
 				(gWarriorObj autoDodge:)
@@ -122,7 +122,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(torso setLoop: 1 setCel: 0 setCycle: End self)
+				(torso setLoop: 1 setCel: 0 setCycle: EndLoop self)
 				(= ticks 60)
 			)
 			(1

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 470)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TellerIcon)
 (use bridgeIcon)
@@ -31,12 +31,12 @@
 	local6
 	theArcadeDifficulty
 	local8
-	[local9 20] = [0 0 0 0 0 0 4 1 14 1 7 8 0 11 0 19 5 25]
-	[local29 8] = [0 9 20 -2 -3 -1 42 999]
+	local9 = [0 0 0 0 0 0 4 1 14 1 7 8 0 11 0 19 5 25]
+	local29 = [0 9 20 -2 -3 -1 42 999]
 	[local37 3]
-	[local40 8] = [0 5 6 7 8 56 55 999]
-	[local48 5] = [0 21 54 53 999]
-	[local53 8] = [0 18 24 17 15 51 52 999]
+	local40 = [0 5 6 7 8 56 55 999]
+	local48 = [0 21 54 53 999]
+	local53 = [0 18 24 17 15 51 52 999]
 	[local61 2]
 )
 (procedure (proc470_1)
@@ -46,7 +46,7 @@
 	(walkHandler delete: curRoom)
 )
 
-(instance rm470 of Rm
+(instance rm470 of Room
 	(properties
 		noun 3
 		picture 470
@@ -56,12 +56,12 @@
 	
 	(method (init)
 		(HandsOff)
-		(Load rsMESSAGE 470)
+		(Load RES_MESSAGE 470)
 		(LoadMany 128 470 39 7 12)
 		(cond 
-			((== origHeroType 2) (Load rsVIEW 30))
-			((== prevRoomNum 460) (LoadMany 128 475 472 473))
-			(else (LoadMany 128 475 972 971 471 474))
+			((== origHeroType THIEF) (Load RES_VIEW 30))
+			((== prevRoomNum 460) (LoadMany RES_VIEW 475 472 473))
+			(else (LoadMany RES_VIEW 475 972 971 471 474))
 		)
 		(curRoom
 			addObstacle:
@@ -284,7 +284,7 @@
 					setLoop: 0
 					cel: 0
 					setPri: 10
-					setCycle: Fwd
+					setCycle: Forward
 					setScale:
 					scaleX: 109
 					scaleY: 109
@@ -298,7 +298,7 @@
 					cel: 0
 					x: 287
 					y: 105
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -307,7 +307,7 @@
 					cel: 0
 					x: 292
 					y: 76
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -676,7 +676,7 @@
 					setLoop: 4
 					setPri: 10
 					setCel: (ego lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(4
@@ -685,14 +685,14 @@
 					x: (- (ego x?) 5)
 					setLoop: 1
 					setCel: (ego lastCel:)
-					setCycle: CT 0 -1 self
+					setCycle: CycleTo 0 -1 self
 				)
 			)
 			(5
 				(ego
 					y: (+ (ego y?) 14)
 					cel: (ego lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(6
@@ -701,7 +701,7 @@
 					y: (- (ego y?) 3)
 					setLoop: 0
 					setCel: (ego lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(7
@@ -744,7 +744,7 @@
 				(if (<= temp0 20) (= temp0 (Random 10 30)))
 				(ego
 					view: 39
-					setCycle: Fwd
+					setCycle: Forward
 					y: 79
 					setScale:
 					scaleX: 111
@@ -790,25 +790,25 @@
 					setScale:
 					scaleX: 109
 					scaleY: 109
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(globalSound number: 928 setLoop: 1 play: 127)
-				(ego setLoop: 1 y: 155 cel: 0 setCycle: End self)
+				(ego setLoop: 1 y: 155 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(ego cel: 0 y: (- (ego y?) 14) setCycle: End self)
+				(ego cel: 0 y: (- (ego y?) 14) setCycle: EndLoop self)
 			)
 			(4
-				(ego cel: 0 y: (- (ego y?) 14) setCycle: CT 5 1 self)
+				(ego cel: 0 y: (- (ego y?) 14) setCycle: CycleTo 5 1 self)
 			)
 			(5
 				(ego
 					y: (- (ego y?) 48)
 					setLoop: 5
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -1059,12 +1059,12 @@ code_14e0:
 					setScale:
 					scaleX: 109
 					scaleY: 109
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ScriptID 39 1) setHeading: 0)
 			)
 			(3
-				(ego setLoop: 1 y: 155 cel: 0 setCycle: End self)
+				(ego setLoop: 1 y: 155 cel: 0 setCycle: EndLoop self)
 				((ScriptID 39 1)
 					view: 472
 					setLoop: 3
@@ -1073,24 +1073,24 @@ code_14e0:
 					scaleX: 109
 					scaleY: 109
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4)
 			(5
-				(ego cel: 0 y: (- (ego y?) 14) setCycle: End self)
+				(ego cel: 0 y: (- (ego y?) 14) setCycle: EndLoop self)
 				((ScriptID 39 1)
 					setLoop: 0
 					cel: 0
 					x: 281
 					y: 143
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 3 3
 					setMotion: MoveTo 289 119 self
 				)
 			)
 			(6
-				(ego cel: 0 y: (- (ego y?) 14) setCycle: CT 4 1 self)
+				(ego cel: 0 y: (- (ego y?) 14) setCycle: CycleTo 4 1 self)
 			)
 			(7)
 			(8
@@ -1099,7 +1099,7 @@ code_14e0:
 					x: (- (ego x?) 6)
 					setLoop: 5
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ScriptID 39 1)
 					setLoop: 2
@@ -1108,7 +1108,7 @@ code_14e0:
 					y: 79
 					setPri: 10
 					setStep: 4 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9)

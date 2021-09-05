@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 620)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TellerIcon)
 (use Feature)
@@ -26,15 +26,15 @@
 	local6
 	newView
 	local8
-	[local9 12] = [0 -8 -4 -9 -2 -3 -1 -10 -11 -12 -14 999]
+	local9 = [0 -8 -4 -9 -2 -3 -1 -10 -11 -12 -14 999]
 	[local21 3]
-	[local24 8] = [0 -4 -3 -6 -7 -5 -13 999]
+	local24 = [0 -4 -3 -6 -7 -5 -13 999]
 	[local32 2]
-	[local34 8] = [0 -1 -2 -3 -4 -5 -13 999]
+	local34 = [0 -1 -2 -3 -4 -5 -13 999]
 	[local42 2]
-	[local44 9] = [0 -10 -4 -3 -6 7 -13 -5 999]
+	local44 = [0 -10 -4 -3 -6 7 -13 -5 999]
 	[local53 5]
-	[local58 3] = [0 -5 999]
+	local58 = [0 -5 999]
 	[local61 2]
 )
 (procedure (localproc_1b51)
@@ -48,7 +48,7 @@
 		cel: 0
 		x: 43
 		y: 111
-		signal: 16384
+		signal: ignrAct
 		noun: 4
 		actions: leopManTell
 		init:
@@ -60,7 +60,7 @@
 		cel: 0
 		x: 108
 		y: 128
-		signal: 16384
+		signal: ignrAct
 		noun: 4
 		actions: leopManTell
 		init:
@@ -71,7 +71,7 @@
 		cel: 1
 		x: 205
 		y: 127
-		signal: 16384
+		signal: ignrAct
 		noun: 4
 		actions: leopManTell
 		init:
@@ -82,7 +82,7 @@
 		cel: 3
 		x: 255
 		y: 115
-		signal: 16384
+		signal: ignrAct
 		noun: 4
 		actions: leopManTell
 		init:
@@ -93,12 +93,12 @@
 		cel: 3
 		x: 210
 		y: 103
-		signal: 16384
+		signal: ignrAct
 		noun: 4
 		actions: leopManTell
 		init:
 	)
-	(fire init: setCycle: Fwd)
+	(fire init: setCycle: Forward)
 	((ScriptID 36 1)
 		view: 620
 		loop: 4
@@ -107,7 +107,7 @@
 		cel: 1
 		init:
 		noun: 2
-		signal: 16384
+		signal: ignrAct
 	)
 	(ego
 		x: 188
@@ -124,12 +124,12 @@
 )
 
 (procedure (localproc_1d42)
-	(dancer1 setCel: 0 setCycle: End)
-	(dancer2 setCel: 0 setCycle: End)
-	(dancer3 setCel: 0 setCycle: End)
-	(dancer4 setCel: 0 setCycle: End)
-	(dancer7 setCel: 0 setCycle: End)
-	(dancer8 setCel: 0 setCycle: End)
+	(dancer1 setCel: 0 setCycle: EndLoop)
+	(dancer2 setCel: 0 setCycle: EndLoop)
+	(dancer3 setCel: 0 setCycle: EndLoop)
+	(dancer4 setCel: 0 setCycle: EndLoop)
+	(dancer7 setCel: 0 setCycle: EndLoop)
+	(dancer8 setCel: 0 setCycle: EndLoop)
 )
 
 (procedure (localproc_1da9)
@@ -137,12 +137,12 @@
 	(drummer1 init:)
 	(drummer2 init:)
 	(drummer3 init:)
-	(dancer1 setCycle: Fwd init:)
-	(dancer2 setCycle: Fwd init:)
-	(dancer3 setCycle: Fwd init:)
-	(dancer4 setCycle: Fwd init:)
-	(dancer7 setCycle: Fwd init:)
-	(dancer8 setCycle: Fwd init:)
+	(dancer1 setCycle: Forward init:)
+	(dancer2 setCycle: Forward init:)
+	(dancer3 setCycle: Forward init:)
+	(dancer4 setCycle: Forward init:)
+	(dancer7 setCycle: Forward init:)
+	(dancer8 setCycle: Forward init:)
 )
 
 (class Wcycler of Cycle
@@ -188,7 +188,7 @@
 	)
 )
 
-(instance rm620 of Rm
+(instance rm620 of Room
 	(properties
 		noun 11
 		picture 620
@@ -247,7 +247,7 @@
 			)
 			(4
 				(LoadMany 128 605 606 625 626)
-				(leader init: x: 83 y: 94 signal: 16384 noun: 1)
+				(leader init: x: 83 y: 94 signal: ignrAct noun: 1)
 				(localproc_1b51)
 				(cSound number: 480 setLoop: 1 play:)
 				(super init: &rest)
@@ -271,17 +271,17 @@
 	(method (cue)
 		(switch (cSound prevSignal?)
 			(20
-				(drummer1 setCycle: End)
-				(drummer2 setCycle: End)
-				(drummer3 setCycle: End)
+				(drummer1 setCycle: EndLoop)
+				(drummer2 setCycle: EndLoop)
+				(drummer3 setCycle: EndLoop)
 				(= local8 1)
 				(localproc_1d42)
 			)
 			(30
 				(= local8 0)
-				(drummer1 setCycle: Fwd)
-				(drummer2 setCycle: Fwd)
-				(drummer3 setCycle: Fwd)
+				(drummer1 setCycle: Forward)
+				(drummer2 setCycle: Forward)
+				(drummer3 setCycle: Forward)
 			)
 			(-1
 				(changeDance cue:)
@@ -314,31 +314,31 @@
 			(4 (= cycles 20))
 			(5
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 1
 					setMotion: MoveTo 138 107 self
 				)
 			)
 			(6
-				(leader x: 99 y: 99 cel: 0 setLoop: 0 setCycle: End self)
+				(leader x: 99 y: 99 cel: 0 setLoop: 0 setCycle: EndLoop self)
 				(ego setCycle: Walk setLoop: -1 normalize:)
 			)
 			(7
-				(leader cel: 0 setLoop: 1 setCycle: End self)
+				(leader cel: 0 setLoop: 1 setCycle: EndLoop self)
 			)
 			(8
-				(leader loop: 2 cel: 0 setCycle: CT 2 1 self)
+				(leader loop: 2 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(9 (messager say: 1 6 4 0 self))
 			(10 (= seconds 2))
 			(11
-				(leader cycleSpeed: 12 setCycle: CT 7 1 self)
+				(leader cycleSpeed: 12 setCycle: CycleTo 7 1 self)
 			)
 			(12
-				(leader setCycle: CT 11 1 self)
+				(leader setCycle: CycleTo 11 1 self)
 			)
 			(13
-				(leader setLoop: 3 setCycle: End self)
+				(leader setLoop: 3 setCycle: EndLoop self)
 			)
 			(14
 				(messager say: 1 5 2 0 self)
@@ -351,7 +351,7 @@
 			)
 			(16
 				(cast eachElementDo: #hide)
-				(DrawPic 0 dpOPEN_PIXELATION)
+				(DrawPic 0 PIXELDISSOLVE)
 				(= seconds 1)
 			)
 			(17 (= seconds 1))
@@ -402,7 +402,7 @@
 					view: 32
 					setLoop: 1
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -442,12 +442,12 @@
 			)
 			(1 (messager say: 2 2 10 0))
 			(2
-				(dancer1 loop: 1 cel: 0 setCycle: CT 3 1)
-				(dancer4 loop: 3 cel: 0 setCycle: CT 2 1)
-				(dancer7 loop: 1 cel: 0 setCycle: CT 3 1)
-				(dancer8 loop: 1 cel: 0 setCycle: CT 3 1 self)
-				(dancer2 loop: 3 cel: 0 setCycle: CT 2 1 self)
-				(dancer3 loop: 3 cel: 0 setCycle: CT 2 1 self)
+				(dancer1 loop: 1 cel: 0 setCycle: CycleTo 3 1)
+				(dancer4 loop: 3 cel: 0 setCycle: CycleTo 2 1)
+				(dancer7 loop: 1 cel: 0 setCycle: CycleTo 3 1)
+				(dancer8 loop: 1 cel: 0 setCycle: CycleTo 3 1 self)
+				(dancer2 loop: 3 cel: 0 setCycle: CycleTo 2 1 self)
+				(dancer3 loop: 3 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(3
 				(dancer1 setCycle: Wcycler 3 4)
@@ -459,14 +459,14 @@
 				(= seconds 4)
 			)
 			(4
-				(Palette palSET_INTENSITY 0 255 1000)
-				(Palette palSET_INTENSITY 0 255 100)
-				(dancer1 show: setCycle: End)
-				(dancer4 show: setCycle: End)
-				(dancer7 show: setCycle: End)
-				(dancer8 show: setCycle: End)
-				(dancer2 show: setCycle: End)
-				(dancer3 show: setCycle: End)
+				(Palette PALIntensity 0 255 1000)
+				(Palette PALIntensity 0 255 100)
+				(dancer1 show: setCycle: EndLoop)
+				(dancer4 show: setCycle: EndLoop)
+				(dancer7 show: setCycle: EndLoop)
+				(dancer8 show: setCycle: EndLoop)
+				(dancer2 show: setCycle: EndLoop)
+				(dancer3 show: setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(5
@@ -536,11 +536,11 @@
 					init:
 				)
 				(shamanTell init: shaman @local44 @local53)
-				(effect setCycle: End self)
+				(effect setCycle: EndLoop self)
 			)
 			(4
 				(effect dispose:)
-				(shaman setCycle: End self)
+				(shaman setCycle: EndLoop self)
 			)
 			(5
 				(shaman
@@ -548,14 +548,14 @@
 					y: 101
 					cel: 0
 					setLoop: 1
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(6
 				(messager say: 3 6 32 0 self)
 			)
 			(7
-				(shaman setCycle: CT 9 1 self)
+				(shaman setCycle: CycleTo 9 1 self)
 			)
 			(8
 				(messager say: 2 2 33 0 self)
@@ -605,7 +605,7 @@
 				)
 			)
 			(2
-				(leader loop: 4 setCycle: Fwd)
+				(leader loop: 4 setCycle: Forward)
 				(globalSound number: 12 setLoop: 1 play: 127 self)
 			)
 			(3
@@ -625,7 +625,7 @@
 					view: 31
 					cycleSpeed: 12
 					setLoop: 1
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(6
@@ -634,7 +634,7 @@
 				(= cycles 2)
 			)
 			(7
-				(leader setLoop: 1 setCycle: CT 0 -1 self)
+				(leader setLoop: 1 setCycle: CycleTo 0 -1 self)
 			)
 			(8
 				(ego
@@ -642,7 +642,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9 (= seconds 5))
@@ -653,9 +653,9 @@
 			)
 			(11
 				(messager say: 7 2 17 0 self)
-				(if (PalVary pvGET_CURRENT_STEP)
+				(if (PalVary PALVARYINFO)
 					(Bclr 81)
-					(PalVary pvREVERSE 1)
+					(PalVary PALVARYREVERSE 1)
 				)
 			)
 			(12
@@ -674,7 +674,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(leader x: 99 y: 99 loop: 1 setCycle: End self)
+				(leader x: 99 y: 99 loop: 1 setCycle: EndLoop self)
 			)
 			(1 (= cycles 10))
 			(2 (self dispose:))
@@ -704,14 +704,14 @@
 					cel: 2
 					setLoop: 4
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(messager say: 2 2 20 0 self)
 			)
 			(5
-				((ScriptID 36 1) setCycle: CT 0 -1 self)
+				((ScriptID 36 1) setCycle: CycleTo 0 -1 self)
 			)
 			(6
 				(HandsOn 5 1 3 6)
@@ -738,31 +738,31 @@
 			(2 (= cycles 20))
 			(3
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 1
 					setMotion: MoveTo 138 107 self
 				)
 			)
 			(4
-				(leader x: 99 y: 99 cel: 0 setLoop: 0 setCycle: End self)
+				(leader x: 99 y: 99 cel: 0 setLoop: 0 setCycle: EndLoop self)
 				(ego setCycle: Walk setLoop: -1 normalize:)
 			)
 			(5
-				(leader cel: 0 setLoop: 1 setCycle: End self)
+				(leader cel: 0 setLoop: 1 setCycle: EndLoop self)
 			)
 			(6
-				(leader loop: 2 cel: 0 setCycle: CT 2 1 self)
+				(leader loop: 2 cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(7 (messager say: 1 6 4 0 self))
 			(8 (= seconds 2))
 			(9
-				(leader cycleSpeed: 12 setCycle: CT 7 1 self)
+				(leader cycleSpeed: 12 setCycle: CycleTo 7 1 self)
 			)
 			(10
-				(leader setCycle: CT 11 1 self)
+				(leader setCycle: CycleTo 11 1 self)
 			)
 			(11
-				(leader setLoop: 3 setCycle: End self)
+				(leader setLoop: 3 setCycle: EndLoop self)
 			)
 			(12
 				(= local6 1)
@@ -811,7 +811,7 @@
 				(messager say: 5 6 11 0 self)
 			)
 			(1
-				(leader x: 98 y: 98 cel: 0 setLoop: 1 setCycle: End self)
+				(leader x: 98 y: 98 cel: 0 setLoop: 1 setCycle: EndLoop self)
 			)
 			(2
 				(messager say: 1 6 13 0 self)

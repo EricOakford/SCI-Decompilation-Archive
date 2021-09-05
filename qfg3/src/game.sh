@@ -324,6 +324,7 @@
 (define fDayCongratsMsg	72)
 (define fNightCongratsMsg	73)
 (define fStoleDrum 74)
+(define fRakeeshLeftSimbani	75)
 (define fEnteredMirrorRoom	77)
 (define fKnockedOverFruit	80)
 (define fEgoIsAsleep 81)
@@ -345,7 +346,9 @@
 (define fSawImpala			98)
 (define fFoundHoneyBird		99)
 (define fCharSheetActive 101)
-(define fEnteredLeopardmanVillage 102)
+(define fJohariWatchingEgo 102)
+(define fIgnoredJohari	103)
+(define fMetJohariInJungle	105)
 (define fMetWeaponSeller	106)
 (define fMetSanfordAndSon	107)
 (define fGaveKattaNote		108)
@@ -475,6 +478,9 @@
 (define fBeatAnt		293)
 (define fBeatDinosaur	294)
 
+(define fLearnLightning	318)
+(define fGreetJohari	319)
+(define fTellAboutDrum	320)
 (enum 329
 	fGetAnubisEyes			;329
 	fOpenLostCityDoor		;330

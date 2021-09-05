@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 480)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TellerIcon)
 (use OccasionalCycle)
@@ -23,33 +23,33 @@
 	local0
 	local1
 	local2
-	[local3 7] = [0 -30 -72 68 -41 28 999]
+	local3 = [0 -30 -72 68 -41 28 999]
 	[local10 2]
-	[local12 6] = [0 2 -3 -4 9 999]
-	[local18 5] = [0 5 6 -7 999]
-	[local23 3] = [0 8 999]
-	[local26 4] = [0 -4 -7 999]
-	[local30 6] = [0 -75 -11 14 15 999]
-	[local36 3] = [0 12 999]
-	[local39 3] = [0 -11 999]
-	[local42 6] = [0 -75 19 18 17 999]
-	[local48 6] = [0 23 24 22 21 999]
-	[local54 5] = [0 26 -27 29 999]
-	[local59 3] = [0 28 999]
-	[local62 3] = [0 -27 999]
+	local12 = [0 2 -3 -4 9 999]
+	local18 = [0 5 6 -7 999]
+	local23 = [0 8 999]
+	local26 = [0 -4 -7 999]
+	local30 = [0 -75 -11 14 15 999]
+	local36 = [0 12 999]
+	local39 = [0 -11 999]
+	local42 = [0 -75 19 18 17 999]
+	local48 = [0 23 24 22 21 999]
+	local54 = [0 26 -27 29 999]
+	local59 = [0 28 999]
+	local62 = [0 -27 999]
 	[local65 4]
-	[local69 7] = [0 -31 -33 -35 39 40 999]
-	[local76 3] = [0 32 999]
-	[local79 3] = [0 34 999]
-	[local82 3] = [0 -73 999]
-	[local85 5] = [0 -31 -33 -35 999]
+	local69 = [0 -31 -33 -35 39 40 999]
+	local76 = [0 32 999]
+	local79 = [0 34 999]
+	local82 = [0 -73 999]
+	local85 = [0 -31 -33 -35 999]
 	[local90 5]
-	[local95 5] = [0 -40 -76 -77 999]
+	local95 = [0 -40 -76 -77 999]
 	[local100 2]
-	[local102 5] = [0 -23 -24 -78 999]
+	local102 = [0 -23 -24 -78 999]
 	[local107 2]
-	[local109 6] = [0 45 46 47 28 999]
-	[local115 6] = [0 57 58 -59 60 999]
+	local109 = [0 45 46 47 28 999]
+	local115 = [0 57 58 -59 60 999]
 	[local121 2]
 )
 (procedure (localproc_1cd0)
@@ -109,7 +109,7 @@
 	(HandsOn)
 )
 
-(instance rm480 of Rm
+(instance rm480 of Room
 	(properties
 		noun 1
 		picture 480
@@ -805,11 +805,11 @@
 			(1)
 			(2 (HandsOff))
 			(3
-				(yesufuArm setCycle: End self)
+				(yesufuArm setCycle: EndLoop self)
 			)
 			(4 (messager say: 6 6 1 0 self))
 			(5
-				(yesufuArm setCycle: Beg self)
+				(yesufuArm setCycle: BegLoop self)
 			)
 			(6
 				(yesufuArm stopUpd:)
@@ -845,17 +845,17 @@
 			(0
 				(HandsOff)
 				(Bset 65)
-				(ego view: 31 loop: 1 cel: 0 setCycle: End self)
+				(ego view: 31 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(ego
 					normalize:
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 3
 					setMotion: PolyPath (+ (ego x?) 10) (+ (ego y?) 10) self
 				)
 				(globalSound number: 481 setLoop: 1 play: 127)
-				(cageDoor setCycle: End)
+				(cageDoor setCycle: EndLoop)
 			)
 			(2
 				(cSound setLoop: 1 changeTo: 485 curRoom)
@@ -864,7 +864,7 @@
 					view: 484
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -872,7 +872,7 @@
 					setLoop: 1
 					cel: 0
 					x: 47
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -881,7 +881,7 @@
 					cel: 0
 					x: 62
 					y: 124
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 8
 					origStep: 808
 					setMotion: MoveTo 112 96 self
@@ -897,7 +897,7 @@
 					x: 134
 					y: 57
 					setPri: -1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7

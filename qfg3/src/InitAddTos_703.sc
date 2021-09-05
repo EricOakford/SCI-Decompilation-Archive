@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 703)
-(include sci.sh)
+(include game.sh)
 (use Actor)
 (use System)
 
@@ -9,7 +9,6 @@
 )
 
 (instance InitAddTos of Code
-	(properties)
 	
 	(method (init param1 param2 param3 param4 param5 param6 &tmp newView)
 		((= newView (View new:)) view: 700 signal: -12255)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 580)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Combat)
 (use Motion)
@@ -47,7 +47,7 @@
 				)
 			)
 			(gWarriorObj getHurt: (gMonster secDamage?))
-			(spit setCycle: End spit)
+			(spit setCycle: EndLoop spit)
 			(Bset 115)
 		else
 			(spit setMotion: MoveTo -58 119 spit)
@@ -95,18 +95,18 @@
 				(gMonster
 					setCel: 0
 					setLoop: (if (Random 0 1) 1 else 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(if (== (gMonster loop?) 1)
-					(gMonster setCycle: Beg self)
+					(gMonster setCycle: BegLoop self)
 				else
 					(= ticks (/ 180 arcadeDifficulty))
 				)
 			)
 			(3
-				(gMonster setLoop: 3 setCel: 0 setCycle: CT 1 1 self)
+				(gMonster setLoop: 3 setCel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(4
 				(if (Random 0 1)
@@ -134,7 +134,7 @@
 						(gWarriorObj getHurt: (gMonster primDamage?))
 					)
 				)
-				(gMonster setCycle: End self)
+				(gMonster setCycle: EndLoop self)
 			)
 			(5
 				(gMonster x: 185 y: 125)
@@ -150,7 +150,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setLoop: 0 setCel: 0 setCycle: End self)
+				(gMonster setLoop: 0 setCel: 0 setCycle: EndLoop self)
 				(= ticks 60)
 			)
 			(1

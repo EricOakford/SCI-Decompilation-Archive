@@ -247,8 +247,8 @@
 				(if (Btst fLeopardmanCaptured) (not (Btst fDispelledLeopardman)) else 0) -33
 				(if (Btst fDispelledLeopardman) (not (Btst fJohariReleased)) else 0) -34
 				(if (== brideState 4) (not (Btst fJohariReleased)) else 0) -35
-				(if (not (Btst fEnteredLeopardmanVillage)) (Btst fJohariReleased) else 0) -36
-				(if (and (Btst fEnteredLeopardmanVillage) (Btst fJohariReleased))
+				(if (not (Btst fJohariWatchingEgo)) (Btst fJohariReleased) else 0) -36
+				(if (and (Btst fJohariWatchingEgo) (Btst fJohariReleased))
 					(not (Btst fSawLeopardmanRitual))
 				else
 					0

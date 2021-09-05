@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 550)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use GloryControls)
 (use Print)
@@ -61,7 +61,7 @@
 	)
 )
 
-(class CombatIcon of IconI
+(class CombatIcon of IconItem
 	(properties
 		view -1
 		loop -1
@@ -152,7 +152,7 @@
 				)
 				(egoNoise number: 938 play:)
 				(gMonster getHurt:)
-				(splotch show: setCycle: End self)
+				(splotch show: setCycle: EndLoop self)
 			)
 			(= ducking 0)
 			(gWarriorObj normalize:)
@@ -165,7 +165,7 @@
 			((ego castSpell: param1)
 				(= temp0 param2)
 				(egoMPStat update:)
-				(gWarriorObj cel: 0 setCycle: End temp0)
+				(gWarriorObj cel: 0 setCycle: EndLoop temp0)
 			)
 		)
 	)
@@ -200,12 +200,12 @@
 			(= theCombatIcon CombatIcon)
 		)
 		(if (> temp2 (= calledBy 0))
-			(gWarriorObj setCycle: End theCombatIcon)
+			(gWarriorObj setCycle: EndLoop theCombatIcon)
 		else
 			(if (< (= temp3 (- (gWarriorObj lastCel:) 1)) 1)
 				(= temp3 1)
 			)
-			(gWarriorObj setCycle: CT temp3 1 theCombatIcon)
+			(gWarriorObj setCycle: CycleTo temp3 1 theCombatIcon)
 		)
 	)
 	
@@ -249,7 +249,7 @@
 			(= theCombatIcon CombatIcon)
 		)
 		(= calledBy 0)
-		(gWarriorObj cel: 0 setCycle: CT 3 1 theCombatIcon)
+		(gWarriorObj cel: 0 setCycle: CycleTo 3 1 theCombatIcon)
 	)
 )
 
@@ -311,7 +311,7 @@
 					view: global421
 					loop: 1
 					cel: 0
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 				(egoNoise number: 901 play:)
 			)
@@ -339,7 +339,7 @@
 	(method (normalize)
 		(gWarriorObj view: global420 loop: 0 cel: 0 stopUpd:)
 		(if (cast contains: flames)
-			(flames show: setCycle: Fwd)
+			(flames show: setCycle: Forward)
 		)
 	)
 	
@@ -548,8 +548,8 @@
 				(gMonster getHurt: 0 0 temp0)
 			)
 			(22
-				(Palette palSET_INTENSITY 0 255 500)
-				(Palette palSET_INTENSITY 0 255 100)
+				(Palette PALIntensity 0 255 500)
+				(Palette PALIntensity 0 255 100)
 				(self setCycle: 0 setScript: 0)
 				(spellTimer setReal: combatRm (/ [egoStats 22] 10))
 			)
@@ -642,9 +642,7 @@
 	)
 )
 
-(instance combatRm of Rm
-	(properties)
-	
+(instance combatRm of Room
 	(method (init)
 		(if (== prevRoomNum 100) (= prevRoomNum 400))
 		(= local0 (Btst 6))
@@ -691,7 +689,7 @@
 		else
 			((ScriptID monsterNum) init:)
 		)
-		(Load rsVIEW 553)
+		(Load RES_VIEW 553)
 		(cond 
 			((and (ego has: 1) ((inventory at: 1) state?))
 				(gWarriorObj weapValue: 35)
@@ -699,7 +697,7 @@
 				(= global420 25)
 				(= global421 555)
 				(LoadMany 128 25 554 555)
-				(flames init: setCycle: Fwd)
+				(flames init: setCycle: Forward)
 			)
 			((ego has: 1)
 				(gWarriorObj weapValue: 20)
@@ -897,7 +895,7 @@
 					y: 87
 					setLoop: 2
 					show:
-					setCycle: Fwd
+					setCycle: Forward
 					approachDist: 32
 					setStep: 6 6
 					setMotion:
@@ -960,7 +958,7 @@
 					setLoop: 3
 					approachDist: 22
 					setStep: 6 6
-					setCycle: End combatSpell
+					setCycle: EndLoop combatSpell
 				)
 			)
 			(else  (super cue:))
@@ -1014,7 +1012,7 @@
 				y: 87
 				setLoop: 0
 				show:
-				setCycle: Fwd
+				setCycle: Forward
 				approachDist: 25
 				setStep: 6 6
 				setMotion:
@@ -1075,7 +1073,7 @@
 				y: 87
 				setLoop: 1
 				show:
-				setCycle: Fwd
+				setCycle: Forward
 				approachDist: 27
 				setStep: 6 6
 				setMotion:
@@ -1215,7 +1213,7 @@
 	
 	(method (cue)
 		(if (< loop 3)
-			(self loop: (+ loop 3) setCel: 0 setCycle: End self)
+			(self loop: (+ loop 3) setCel: 0 setCycle: EndLoop self)
 			(egoNoise number: 930 play:)
 			(gMonster spellHurt: approachDist)
 		else

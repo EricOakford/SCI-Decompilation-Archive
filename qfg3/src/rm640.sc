@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 640)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use EgoDead)
 (use OccasionalCycle)
@@ -34,7 +34,7 @@
 	local9
 	local10
 )
-(instance rm640 of Rm
+(instance rm640 of Room
 	(properties
 		noun 6
 		picture 640
@@ -143,7 +143,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(chief setCycle: Beg self)
+				(chief setCycle: BegLoop self)
 				(ego setMotion: 0)
 			)
 			(1 (messager say: 1 2 8 0 self))
@@ -167,7 +167,7 @@
 			)
 			(1 (Face ego chest self))
 			(2
-				(ego view: 14 setLoop: 1 cel: 0 setCycle: End self)
+				(ego view: 14 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(spell
@@ -235,7 +235,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(chief startUpd: setCycle: End self)
+				(chief startUpd: setCycle: EndLoop self)
 			)
 			(1 (= seconds 1))
 			(2
@@ -245,20 +245,20 @@
 					cel: 0
 					setLoop: 1
 					cycleSpeed: 10
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(3
-				(Palette palSET_INTENSITY 0 255 1000)
+				(Palette PALIntensity 0 255 1000)
 				(= cycles 2)
 			)
 			(4
-				(Palette palSET_INTENSITY 0 255 100)
+				(Palette PALIntensity 0 255 100)
 				(= cycles 1)
 			)
 			(5
 				(spell dispose:)
-				(ego view: 43 setLoop: 2 setCycle: End self)
+				(ego view: 43 setLoop: 2 setCycle: EndLoop self)
 			)
 			(6
 				(switch local8
@@ -336,7 +336,7 @@
 			(1
 				(monkey
 					setLoop: 1
-					setCycle: End
+					setCycle: EndLoop
 					cycleSpeed: 4
 					moveSpeed: 2
 					setMotion: JumpX (+ (monkey x?) 25) 12 self
@@ -350,7 +350,7 @@
 					setPri: 15
 					cycleSpeed: 2
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (- (ego x?) 10) 91 self
 				)
 			)
@@ -379,12 +379,12 @@
 			)
 			(1 (Face ego monkey self))
 			(2
-				(ego view: 15 setLoop: 3 setCycle: End self)
+				(ego view: 15 setLoop: 3 setCycle: EndLoop self)
 			)
 			(3
 				(monkey
 					setLoop: 1
-					setCycle: End
+					setCycle: EndLoop
 					cycleSpeed: 4
 					moveSpeed: 2
 					setMotion: JumpX (+ (monkey x?) 25) 12 self
@@ -398,7 +398,7 @@
 					setPri: 15
 					cycleSpeed: 2
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (monkey x?) 91 self
 				)
 			)
@@ -421,10 +421,10 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (chief setCycle: End self))
+			(0 (chief setCycle: EndLoop self))
 			(1 (= seconds 2))
 			(2
-				(chief setCycle: CT 0 -1 self)
+				(chief setCycle: CycleTo 0 -1 self)
 			)
 			(3 (self dispose:))
 		)
@@ -442,7 +442,7 @@
 			)
 			(1 (Face ego chest self))
 			(2
-				(ego view: 15 setLoop: 1 setCycle: End self)
+				(ego view: 15 setLoop: 1 setCycle: EndLoop self)
 			)
 			(3
 				(ego changeGait: 2 0 normalize:)
@@ -473,7 +473,7 @@
 		(switch (= state newState)
 			(0
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 1
 					setMotion: PolyPath (+ (ego x?) 15) (ego y?) self
 				)
@@ -496,10 +496,10 @@
 				(ego setMotion: PolyPath 181 135 self)
 			)
 			(1
-				(ego view: 31 loop: 0 setCycle: CT 2 1 self)
+				(ego view: 31 loop: 0 setCycle: CycleTo 2 1 self)
 			)
 			(2
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 				(spear dispose:)
 			)
 			(3
@@ -525,7 +525,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 31 loop: 0 setCycle: End self)
+				(ego view: 31 loop: 0 setCycle: EndLoop self)
 				(soundFx number: 641 setLoop: 1 play:)
 				(curRoom setScript: egoWalk)
 			)
@@ -535,7 +535,7 @@
 			)
 			(2
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					setLoop: 0
 					setMotion: MoveTo (- (ego x?) 25) (+ (ego y?) 5) self
 				)
@@ -576,7 +576,7 @@
 					view: 4
 					loop: 1
 					cel: 0
-					setCycle: CT (if local10 1 else 3) 1 self
+					setCycle: CycleTo (if local10 1 else 3) 1 self
 				)
 				(if (not local7) (chest cel: 1))
 			)
@@ -588,7 +588,7 @@
 					(self cue:)
 				)
 			)
-			(3 (ego setCycle: CT 0 -1 self))
+			(3 (ego setCycle: CycleTo 0 -1 self))
 			(4
 				(ego normalize: changeGait: 2 0)
 				(if local10
@@ -651,9 +651,9 @@
 				(ego setMotion: PolyPath 78 152 self)
 			)
 			(1
-				(ego view: 4 loop: 1 cel: 0 setCycle: CT 3 1 self)
+				(ego view: 4 loop: 1 cel: 0 setCycle: CycleTo 3 1 self)
 			)
-			(2 (ego setCycle: CT 0 -1 self))
+			(2 (ego setCycle: CycleTo 0 -1 self))
 			(3
 				(ego changeGait: 2 0 normalize:)
 				(messager say: 3 6 6 0 self)

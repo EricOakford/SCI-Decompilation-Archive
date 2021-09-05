@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 520)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use PAvoid)
 (use PolyPath)
@@ -21,7 +21,7 @@
 (local
 	local0
 )
-(instance rm520 of Rm
+(instance rm520 of Room
 	(properties
 		noun 6
 		picture 520
@@ -211,14 +211,14 @@
 				(ego setMotion: MoveTo 209 128 self)
 			)
 			(1
-				(ego view: 4 setLoop: 0 cel: 0 setCycle: End self)
+				(ego view: 4 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(ring dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
-				(ego view: 13 setLoop: 0 setCycle: End self)
+				(ego view: 13 setLoop: 0 setCycle: EndLoop self)
 			)
 			(4 (messager say: 1 6 5 0 self))
 			(5
@@ -276,11 +276,11 @@
 				)
 			)
 			(3
-				(ego view: 4 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 4 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(ring dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5 (messager say: 1 6 5 0 self))
 			(6
@@ -378,14 +378,14 @@
 				(ego setMotion: MoveTo 209 128 self)
 			)
 			(2
-				(ego view: 4 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 4 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(ring dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(4
-				(ego view: 13 loop: 0 setCycle: End self)
+				(ego view: 13 loop: 0 setCycle: EndLoop self)
 			)
 			(5 (messager say: 1 6 5 0 self))
 			(6
@@ -407,11 +407,11 @@
 				(ego setMotion: PolyPath 225 160 self)
 			)
 			(1
-				(ego view: 4 loop: 0 cel: 0 setCycle: End self)
+				(ego view: 4 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(fire setCycle: Fwd init:)
-				(ego setCycle: Beg self)
+				(fire setCycle: Forward init:)
+				(ego setCycle: BegLoop self)
 			)
 			(3 (= seconds 5))
 			(4
@@ -441,12 +441,12 @@
 					scaleY: 128
 					cel: 0
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(spear2 dispose:)
 			)
 			(1
-				(ego loop: 1 setCycle: Fwd)
+				(ego loop: 1 setCycle: Forward)
 				(= cycles 1)
 			)
 			(2 (HandsOn) (self dispose:))
@@ -462,7 +462,7 @@
 			(0 (= seconds 60))
 			(1
 				(HandsOff)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				((ScriptID 39 1)
 					view: 983
 					setCycle: StopWalk -1
@@ -480,12 +480,12 @@
 					scaleX: 128
 					scaleY: 128
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
 				(ring dispose:)
-				((ScriptID 39 1) setCycle: End self)
+				((ScriptID 39 1) setCycle: EndLoop self)
 			)
 			(4
 				((ScriptID 39 1)
@@ -546,7 +546,7 @@
 					setScale:
 					scaleX: 128
 					scaleY: 128
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(spear1 dispose:)
 			)
@@ -554,7 +554,7 @@
 				((ScriptID 39 1)
 					setLoop: 1
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					ignoreActors: 1
 					setScript: yesufuGetRing
 				)
@@ -570,9 +570,7 @@
 	)
 )
 
-(instance yesufuStopGroop of Grooper
-	(properties)
-	
+(instance yesufuStopGroop of GradualLooper
 	(method (doit)
 		(if
 			(and

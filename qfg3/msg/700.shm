@@ -2,10 +2,24 @@
 ;;; 700.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
-;;; NOUNS
-
-
 ;;; CASES
 
 (define C_DEATH_ABANDON 8)
+(define C_CAST_LIGHTNING 88)
+(define C_HEAR_SOMETHING 60)
+(define C_IGNORED_JOHARI 46)
+(define C_GREETED_JOHARI 47)
+(define C_SOMEONE_WATCHING 63)
+(define C_FIRST_SPEECH 21)
+(define C_SECOND_SPEECH 38)
+(define C_JOHARI 39)
+(define C_TALK_TOO_MUCH 35)
+(define C_JOHARI_LEAVES 45)
+
+;;; NOUNS
+
+(define N_MONKey 1)
+(define N_EGO_TELL 2)
+(define N_JOHARI 3)
+(define N_CUE 4)
 

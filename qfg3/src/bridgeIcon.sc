@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 471)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use GloryControls)
 (use rm470)
@@ -32,7 +32,7 @@
 	local5
 	local6
 	local7
-	[local8 10] = [0 0 2 3 1 0 0 2 2 4]
+	local8 = [0 0 2 3 1 0 0 2 2 4]
 	local18
 	local19
 	local20
@@ -49,7 +49,7 @@
 	local31
 	local32
 	local33
-	[local34 20] = [0 0 0 0 0 0 4 1 14 1 7 8 0 11 0 19 5 25]
+	local34 = [0 0 0 0 0 0 4 1 14 1 7 8 0 11 0 19 5 25]
 )
 (procedure (proc471_6 param1 param2)
 	(= local2 param1)
@@ -325,7 +325,7 @@
 					cel: 0
 					loop: 4
 					cycleSpeed: 10
-					setCycle: CT 2 1
+					setCycle: CycleTo 2 1
 					setPri: 11
 					moveSpeed: 1
 					origStep: 522
@@ -334,10 +334,10 @@
 			)
 			(2
 				(globalSound number: 920 setLoop: 1 play: 127)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3
-				(ego cel: 0 loop: 6 setCycle: End self)
+				(ego cel: 0 loop: 6 setCycle: EndLoop self)
 			)
 			(4
 				(cond 
@@ -388,7 +388,7 @@
 					setLoop: 0
 					cel: 0
 					setPri: 10
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 287 132 self
 				)
 			)
@@ -402,7 +402,7 @@
 					scaleY: 109
 					x: 287
 					y: 105
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -411,7 +411,7 @@
 					cel: 0
 					x: 292
 					y: 76
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -478,7 +478,7 @@
 					view: local33
 					loop: [local8 local4]
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13
@@ -871,7 +871,7 @@
 						setScale:
 						scaleX: 109
 						scaleY: 109
-						setCycle: Fwd
+						setCycle: Forward
 						setMotion: MoveTo 287 132 self
 					)
 				)
@@ -882,11 +882,11 @@
 				else
 					(local1 posn: 293 79)
 				)
-				(local1 setLoop: 2 cel: 0 setCycle: End self)
+				(local1 setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(7
 				(if (== local2 0)
-					(local1 setLoop: 3 cel: 0 x: 292 y: 76 setCycle: End self)
+					(local1 setLoop: 3 cel: 0 x: 292 y: 76 setCycle: EndLoop self)
 				else
 					(= ticks 1)
 				)
@@ -1017,7 +1017,7 @@
 					view: local33
 					loop: [local8 register]
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= ticks 15))
@@ -1047,11 +1047,11 @@
 					view: 475
 					loop: (- register 1)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1 (= ticks 18))
-			(2 (ego setCycle: Beg self))
+			(2 (ego setCycle: BegLoop self))
 			(3 (localproc_043a self))
 			(4 (self dispose:))
 		)
@@ -1065,7 +1065,7 @@
 		(switch (= state newState)
 			(0
 				(globalSound number: 940 setLoop: 1 play: 127)
-				(ego view: 30 loop: 2 cel: 0 y: 75 setCycle: End self)
+				(ego view: 30 loop: 2 cel: 0 y: 75 setCycle: EndLoop self)
 			)
 			(1 (= ticks 6))
 			(2
@@ -1093,7 +1093,7 @@
 						loop: 0
 						cel: 0
 						setMotion: MoveTo (+ (ego x?) (* (ego xStep?) 6)) (ego y?)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -1128,7 +1128,7 @@
 						loop: 0
 						cel: (ego lastCel:)
 						setMotion: MoveTo (- (ego x?) (* (ego xStep?) 6)) (ego y?)
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
 				)
 			)
@@ -1239,7 +1239,7 @@
 	)
 )
 
-(class bridgeIcon of IconI
+(class bridgeIcon of IconItem
 	(properties
 		view -1
 		loop -1
@@ -1363,21 +1363,21 @@
 			(= gameTime (+ tickOffset (GetTime)))
 		)
 		(return
-			(if (& (= eventType (event type?)) $0040)
+			(if (& (= eventType (event type?)) direction)
 				(= eventType (& eventType $ffbf))
 				(switch (event message?)
-					(JOY_UP (return 0))
-					(JOY_DOWN (return 0))
+					(dirN (return 0))
+					(dirS (return 0))
 					(else 
 						(super dispatchEvent: event)
 					)
 				)
 			else
 				(= eventMessage (event message?))
-				(if (== eventType evKEYBOARD)
+				(if (== eventType keyDown)
 					(cond 
-						((== eventMessage KEY_8) (return 0))
-						((== eventMessage KEY_2) (return 0))
+						((== eventMessage `8) (return 0))
+						((== eventMessage `2) (return 0))
 						(else (super dispatchEvent: event))
 					)
 				else
@@ -1584,7 +1584,7 @@
 	)
 )
 
-(instance iconDummy of IconI
+(instance iconDummy of IconItem
 	(properties
 		nsLeft 20
 		nsTop 20

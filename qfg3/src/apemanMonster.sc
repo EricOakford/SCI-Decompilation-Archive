@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 575)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Combat)
 (use Motion)
@@ -26,7 +26,7 @@
 	
 	(method (init)
 		(if (or (== prevRoomNum 800) (== prevRoomNum 810))
-			(= mustFight 1)
+			(= mustFight TRUE)
 		)
 		(curRoom picture: 555)
 		(super init: &rest)
@@ -60,7 +60,7 @@
 				(apemanMonster
 					setCel: 0
 					setLoop: (Random 0 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -99,7 +99,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setCel: 0 setLoop: 2 setCycle: End self)
+				(gMonster setCel: 0 setLoop: 2 setCycle: EndLoop self)
 				(= ticks 60)
 			)
 			(1

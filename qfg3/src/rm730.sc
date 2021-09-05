@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 730)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TellerIcon)
 (use OccasionalCycle)
@@ -21,25 +21,25 @@
 
 (local
 	local0
-	[local1 33] = [2 0 106 133 2 1 119 130 2 2 130 127 2 3 139 129 2 4 140 142 2 5 141 148 2 6 144 143 2 7 142 143 -32768]
-	[local34 33] = [2 0 142 143 2 1 144 143 2 2 141 148 2 3 140 142 2 4 139 129 2 5 130 127 2 6 119 130 2 7 106 133 -32768]
-	[local67 33] = [2 0 142 143 2 1 142 143 2 2 156 137 2 3 164 134 2 4 176 150 2 5 184 160 2 6 193 161 2 7 192 161 -32768]
-	[local100 33] = [2 0 192 161 2 1 193 161 2 2 184 160 2 3 176 150 2 4 164 134 2 5 156 137 2 6 142 143 2 7 142 143 -32768]
-	[local133 25] = [2 0 223 126 2 0 224 126 2 0 223 126 2 0 224 126 2 0 223 126 2 0 192 161 -32768]
-	[local158 8] = [0 18 -11 -20 -21 -22 -23 999]
+	local1 = [2 0 106 133 2 1 119 130 2 2 130 127 2 3 139 129 2 4 140 142 2 5 141 148 2 6 144 143 2 7 142 143 -32768]
+	local34 = [2 0 142 143 2 1 144 143 2 2 141 148 2 3 140 142 2 4 139 129 2 5 130 127 2 6 119 130 2 7 106 133 -32768]
+	local67 = [2 0 142 143 2 1 142 143 2 2 156 137 2 3 164 134 2 4 176 150 2 5 184 160 2 6 193 161 2 7 192 161 -32768]
+	local100 = [2 0 192 161 2 1 193 161 2 2 184 160 2 3 176 150 2 4 164 134 2 5 156 137 2 6 142 143 2 7 142 143 -32768]
+	local133 = [2 0 223 126 2 0 224 126 2 0 223 126 2 0 224 126 2 0 223 126 2 0 192 161 -32768]
+	local158 = [0 18 -11 -20 -21 -22 -23 999]
 	[local166 2]
-	[local168 7] = [0 7 -8 -11 -10 12 999]
+	local168 = [0 7 -8 -11 -10 12 999]
 	[local175 6]
-	[local181 6] = [0 -8 -10 -13 -28 999]
-	[local187 3] = [0 9 999]
-	[local190 3] = [0 -13 999]
-	[local193 3] = [0 -28 999]
-	[local196 4] = [0 -15 16 999]
+	local181 = [0 -8 -10 -13 -28 999]
+	local187 = [0 9 999]
+	local190 = [0 -13 999]
+	local193 = [0 -28 999]
+	local196 = [0 -15 16 999]
 	local200
 	local201
 )
 (procedure (localproc_06fa)
-	(if (and (== heroType 0) (not (ego has: 41)))
+	(if (and (== heroType FIGHTER) (not (ego has: iBridge)))
 		(rBridge init: stopUpd:)
 	)
 	(ego
@@ -60,7 +60,7 @@
 		y: 169
 		noun: 2
 		setScale: 0
-		setCycle: OccasionalCycle 0 Fwd 5 70
+		setCycle: OccasionalCycle 0 Forward 5 70
 		setScript: monkeyControls
 		init:
 	)
@@ -71,11 +71,11 @@
 	(theIconBar disable: 6)
 )
 
-(instance rm730 of Rm
+(instance rm730 of Room
 	(properties
 		noun 11
 		picture 730
-		style $000a
+		style FADEOUT
 	)
 	
 	(method (init)
@@ -122,22 +122,22 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(babyMonkey setCycle: End self)
+				(babyMonkey setCycle: EndLoop self)
 			)
 			(1
-				(ego loop: 0 setCycle: End self)
+				(ego loop: 0 setCycle: EndLoop self)
 			)
 			(2
-				(babyMonkey setCycle: Beg self)
+				(babyMonkey setCycle: BegLoop self)
 			)
 			(3
-				(babyMonkey setCycle: MCyc @local133 self)
+				(babyMonkey setCycle: MoveCycle @local133 self)
 				(sFx number: 929 play:)
 			)
 			(4
 				(sFx number: 929 play:)
-				(babyMonkey setCycle: MCyc @local100)
-				(ego setCycle: Beg)
+				(babyMonkey setCycle: MoveCycle @local100)
+				(ego setCycle: BegLoop)
 				(self dispose:)
 			)
 		)
@@ -202,7 +202,7 @@
 					x: 70
 					y: 46
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 73 99 self
 				)
 			)
@@ -212,7 +212,7 @@
 			)
 			(2
 				(sFx number: 929 play: 64)
-				(monkey1 setCycle: Fwd setMotion: MoveTo 70 46 self)
+				(monkey1 setCycle: Forward setMotion: MoveTo 70 46 self)
 			)
 			(3
 				(monkey1 dispose:)
@@ -260,7 +260,7 @@
 	)
 	
 	(method (init)
-		(self setCycle: MCyc @local1 setPri: 1)
+		(self setCycle: MoveCycle @local1 setPri: 1)
 		(super init:)
 	)
 	
@@ -268,26 +268,26 @@
 		(if
 		(and (== (Random 0 13) 7) (== (self cycler?) 0))
 			(switch (Random 0 4)
-				(0 (self loop: 0 setCycle: End))
-				(1 (self loop: 1 setCycle: End))
+				(0 (self loop: 0 setCycle: EndLoop))
+				(1 (self loop: 1 setCycle: EndLoop))
 				(2
 					(if (or (== (self x?) 106) (== (self x?) 142))
 						(self
-							setCycle: MCyc (if (== (self x?) 106) @local1 else @local34)
+							setCycle: MoveCycle (if (== (self x?) 106) @local1 else @local34)
 						)
 					)
 				)
 				(3
 					(if (== (self x?) 142)
 						(self
-							setCycle: MCyc (if (Random 0 1) @local34 else @local67)
+							setCycle: MoveCycle (if (Random 0 1) @local34 else @local67)
 						)
 					)
 				)
 				(4
 					(switch (Random 0 1)
 						(0
-							(if (== (self x?) 192) (self setCycle: MCyc @local100))
+							(if (== (self x?) 192) (self setCycle: MoveCycle @local100))
 						)
 						(1
 							(if (== (self x?) 192) (self setScript: jumpOnArm))

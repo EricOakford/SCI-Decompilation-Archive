@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 760)
-(include sci.sh)
+(include game.sh) (include "760.shm")
 (use Main)
 (use Scaler)
 (use PolyPath)
@@ -15,9 +15,9 @@
 	rm760 0
 )
 
-(instance rm760 of Rm
+(instance rm760 of Room
 	(properties
-		noun 1
+		noun N_ROOM
 		picture 760
 		vanishingY -200
 	)
@@ -170,7 +170,7 @@
 		(lowerCave init:)
 		(upperCave init:)
 		(theExit init:)
-		(waterFall init: cycleSpeed: 7 setCycle: Fwd)
+		(waterFall init: cycleSpeed: 7 setCycle: Forward)
 	)
 )
 

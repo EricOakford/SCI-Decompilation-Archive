@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 450)
-(include sci.sh)
+(include game.sh) (include "450.shm")
 (use Main)
 (use TellerIcon)
 (use EgoDead)
@@ -47,9 +47,9 @@
 	[local73 4] = [0 58 59 999]
 	[local77 2]
 )
-(instance rm450 of Rm
+(instance rm450 of Room
 	(properties
-		noun 10
+		noun N_ROOM
 		picture 450
 	)
 	
@@ -60,7 +60,7 @@
 		(= [local66 0] @local62)
 		(= [local71 0] @local68)
 		(= [local77 0] @local73)
-		(Load rsMESSAGE 450)
+		(Load RES_MESSAGE 450)
 		(LoadMany 128 450 451 423)
 		(HandsOn)
 		(super init:)
@@ -151,7 +151,7 @@
 			(drum init: stopUpd:)
 		)
 		(if (not (Btst 49)) (= local11 0))
-		(fire setCycle: Fwd init:)
+		(fire setCycle: Forward init:)
 		(trunkLid init: stopUpd:)
 		(crack init:)
 		(leopardhide init:)
@@ -623,7 +623,7 @@
 		(switch (= state newState)
 			(0
 				(ego addHonor: 5)
-				(ego view: 32 loop: 1 setCycle: End self)
+				(ego view: 32 loop: 1 setCycle: EndLoop self)
 			)
 			(1
 				(ego normalize: 7)
@@ -666,13 +666,13 @@
 			)
 			(1
 				(laibonArm hide:)
-				((ScriptID 42 1) cel: 0 loop: 2 setCycle: End self)
+				((ScriptID 42 1) cel: 0 loop: 2 setCycle: EndLoop self)
 			)
 			(2
 				(messager say: 4 6 29 0 self)
 			)
 			(3
-				((ScriptID 42 1) setCycle: Beg self)
+				((ScriptID 42 1) setCycle: BegLoop self)
 			)
 			(4
 				(laibonArm show:)
@@ -820,16 +820,16 @@
 			)
 			(2
 				2
-				((ScriptID 35 1) cycleSpeed: 10 setCycle: Beg self)
+				((ScriptID 35 1) cycleSpeed: 10 setCycle: BegLoop self)
 			)
 			(3
 				3
-				((ScriptID 35 1) setCycle: End self)
+				((ScriptID 35 1) setCycle: EndLoop self)
 			)
 			(4
 				4
 				((ScriptID 35 1) stopUpd:)
-				(laibonArm cycleSpeed: 8 setCycle: End self)
+				(laibonArm cycleSpeed: 8 setCycle: EndLoop self)
 			)
 			(5 (messager say:))
 			(6
@@ -852,12 +852,12 @@
 				10
 				(ego cycleSpeed: 6)
 				(HandsOff)
-				(laibonArm setCycle: End self)
+				(laibonArm setCycle: EndLoop self)
 			)
 			(11
 				11
 				(messager say: 2 6 4)
-				(laibonArm setCycle: Beg self)
+				(laibonArm setCycle: BegLoop self)
 			)
 			(12
 				12
@@ -888,7 +888,7 @@
 					view: 451
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -923,7 +923,7 @@
 					view: 453
 					loop: 1
 					cycleSpeed: 10
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(2
@@ -936,7 +936,7 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 3
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(4
@@ -949,9 +949,9 @@
 			)
 			(6
 				(globalSound number: 912 play:)
-				(ego view: 43 loop: 1 setCycle: End self)
+				(ego view: 43 loop: 1 setCycle: EndLoop self)
 			)
-			(7 (EgoDead register 0 455 End))
+			(7 (EgoDead register 0 455 EndLoop))
 		)
 	)
 )
@@ -1077,11 +1077,11 @@
 			)
 			(1
 				(laibonArm hide:)
-				((ScriptID 42 1) loop: 2 setCycle: End)
+				((ScriptID 42 1) loop: 2 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(2
-				((ScriptID 42 1) setCycle: Beg self)
+				((ScriptID 42 1) setCycle: BegLoop self)
 			)
 			(3
 				(ego drop: 22 1)

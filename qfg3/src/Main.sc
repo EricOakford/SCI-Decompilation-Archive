@@ -188,15 +188,7 @@
 	timeToEat
 	zapPower
 	global143
-	targetAngles =  180
-	global145
-	global146 =  45
-	global147 =  90
-	global148 =  135
-	global149 =  180
-	global150 =  225
-	global151 =  270
-	global152 =  315
+	targetAngles =  [180 0 45 90 135 180 225 270 315]
 	global153
 	global154
 	battleResult
@@ -412,24 +404,24 @@
 	monsterNum
 	simbaniState
 	spellCost =  2
-		global368 =  2
-		global369 =  3
-		global370 =  3
-		global371 =  3
-		global372 =  4
-		global373 =  5
-		global374 =  5
-		global375 =  6
-		global376 =  7
-		global377 =  8
-		global378 =  8
-		global379 =  5
-		global380 =  10
-		global381 =  3
-		global382 =  3
-		global383 =  3
-		global384 =  3
-		global385 =  3
+		spCostDetect =  2
+		spCostTrigger =  3
+		spCostDazzle =  3
+		spCostZap =  3
+		spCostCalm =  4
+		spCostFlame =  5
+		spCostFetch =  5
+		spCostForce =  6
+		spCostLevitate =  7
+		spCostReversal =  8
+		spCostJuggle =  8
+		spCostStaff =  5
+		spCostLightning =  10
+		spCostDummy1 =  3
+		spCostDummy2 =  3
+		spCostDummy3 =  3
+		spCostDummy4 =  3
+		spCostDummy5 =  3
 	projX
 	projY
 	global388
@@ -500,7 +492,7 @@
 	global453
 	global454
 	restTime
-	gCurrentDay_6
+	rakeeshSimbaniDay
 	soundFx
 	gNewCollect
 	global459
@@ -508,7 +500,7 @@
 	global461
 	global462
 	global463
-	gCurrentDay_7
+	simbaniFoodDay
 	totalEncumbrance
 	survivorTalkCount
 	gGloryWindow_2
@@ -917,12 +909,12 @@
 )
 
 (procedure (DisableIcons &tmp i n)
-	(= n -32768)
+	(= n $8000)
 	(for ((= i 0)) (<= i 10) ((++ i))
 		(if (& disabledIcons n)
 			(theIconBar disable: i)
 		)
-		(= n (>> n $0001))
+		(>>= n $0001)
 	)
 )
 

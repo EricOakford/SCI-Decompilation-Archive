@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 560)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Combat)
 (use Motion)
@@ -104,7 +104,7 @@
 			else
 				(globalSound number: 940 play:)
 			)
-			(self setCycle: Beg self)
+			(self setCycle: BegLoop self)
 		else
 			(self setPri: 0)
 			(super cue:)
@@ -113,8 +113,7 @@
 )
 
 (instance sFight of Script
-	(properties)
-	
+
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -122,10 +121,10 @@
 				(gMonster x: 152 y: 44)
 			)
 			(1
-				(gMonster setCel: 0 setCycle: CT 2 1 self)
+				(gMonster setCel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(2
-				(gMonster setCycle: End gMonster)
+				(gMonster setCycle: EndLoop gMonster)
 				(gWarriorObj autoDodge:)
 				(if
 					(not
@@ -143,12 +142,12 @@
 				(= ticks (/ (Random 180 270) arcadeDifficulty))
 			)
 			(3
-				(armLeft setCycle: CT 3 1 self)
-				(armRight setCycle: CT 3 1 self)
+				(armLeft setCycle: CycleTo 3 1 self)
+				(armRight setCycle: CycleTo 3 1 self)
 			)
 			(4
-				(armLeft setCycle: End armLeft)
-				(armRight setCycle: End armRight)
+				(armLeft setCycle: EndLoop armLeft)
+				(armRight setCycle: EndLoop armRight)
 				(gWarriorObj autoDodge:)
 				(if
 					(not
@@ -168,20 +167,20 @@
 				(= ticks (/ (Random 270 360) arcadeDifficulty))
 			)
 			(5
-				(theTail setPri: 6 setCycle: End theTail)
-				(gMonster setCycle: End self)
+				(theTail setPri: 6 setCycle: EndLoop theTail)
+				(gMonster setCycle: EndLoop self)
 			)
 			(6
 				(gMonster cue:)
 				(= ticks (/ (Random 180 270) arcadeDifficulty))
 			)
 			(7
-				(armRight setCycle: CT 3 1 self)
-				(armLeft setCycle: CT 3 1 self)
+				(armRight setCycle: CycleTo 3 1 self)
+				(armLeft setCycle: CycleTo 3 1 self)
 			)
 			(8
-				(armLeft setCycle: End self)
-				(armRight setCycle: End self)
+				(armLeft setCycle: EndLoop self)
+				(armRight setCycle: EndLoop self)
 				(gWarriorObj autoDodge:)
 				(if
 					(not
@@ -210,7 +209,6 @@
 )
 
 (instance sReact of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)

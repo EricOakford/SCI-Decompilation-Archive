@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 600)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TellerIcon)
 (use PChase)
@@ -18,8 +18,8 @@
 )
 
 (local
-	[local0 6] = [0 7 -6 -14 -9 999]
-	[local6 7] = [0 2 11 12 16 17 999]
+	local0 = [0 7 -6 -14 -9 999]
+	local6 = [0 2 11 12 16 17 999]
 	[local13 6]
 	[local19 5]
 	local24
@@ -40,7 +40,7 @@
 	)
 )
 
-(instance rm600 of Rm
+(instance rm600 of Room
 	(properties
 		noun 4
 		picture 600
@@ -232,16 +232,16 @@
 				(kissView dispose:)
 				(johariPic dispose:)
 				(egoPic dispose:)
-				(PalVary pvINIT 600 0)
+				(PalVary PALVARYSTART 600 0)
 				(= seconds 2)
 			)
 			(1
-				(DrawPic 600 dpOPEN_FADEPALETTE)
+				(DrawPic 600 FADEOUT)
 				(gate show:)
 				(= seconds 2)
 			)
 			(2
-				(if (!= (PalVary pvGET_CURRENT_STEP) 64)
+				(if (!= (PalVary PALVARYINFO) 64)
 					(Bset 31)
 					(Bset 81)
 					(= Clock 3200)
@@ -385,7 +385,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(kissView setLoop: 0 setCycle: End self)
+				(kissView setLoop: 0 setCycle: EndLoop self)
 			)
 			(1 (= seconds 3))
 			(2
@@ -393,7 +393,7 @@
 					cel: 0
 					setLoop: 1
 					cycleSpeed: 10
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -402,7 +402,7 @@
 			)
 			(4
 				(ego solvePuzzle: 297 3)
-				(DrawPic 0 dpOPEN_FADEPALETTE)
+				(DrawPic 0 FADEOUT)
 				(cast eachElementDo: #hide)
 				(= seconds 1)
 			)
@@ -628,7 +628,7 @@
 	)
 )
 
-(instance joHariStop of Fwd
+(instance joHariStop of Forward
 	(properties)
 	
 	(method (init theClient param2)

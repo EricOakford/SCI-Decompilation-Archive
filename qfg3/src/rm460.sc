@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 460)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TellerIcon)
 (use PolyPath)
@@ -477,7 +477,7 @@
 	)
 )
 
-(instance rm460 of Rm
+(instance rm460 of Room
 	(properties
 		noun 5
 		picture 460
@@ -781,15 +781,15 @@
 					setScale:
 					scaleX: 128
 					scaleY: 128
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				((ScriptID 39 1) loop: 3 cel: 0 setCycle: CT 3 1 self)
+				((ScriptID 39 1) loop: 3 cel: 0 setCycle: CycleTo 3 1 self)
 				(= local97_2_2_2_2 0)
 			)
 			(3
-				((ScriptID 39 1) setCycle: End self)
+				((ScriptID 39 1) setCycle: EndLoop self)
 				(= local95_2_2_2_2
 					(+
 						local95_2_2_2_2
@@ -804,7 +804,7 @@
 					setScale:
 					scaleX: 128
 					scaleY: 128
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 					setPri: (if (< targetX (+ (target nsLeft?) 2)) 3 else 5)
 					init:
 					setMotion: JumpTo targetX targetY self
@@ -931,7 +931,7 @@
 			)
 			(15
 				(if (< local96_2_2_2_2 local95_2_2_2_2)
-					(ego view: 32 loop: 0 cel: 0 setCycle: End self)
+					(ego view: 32 loop: 0 cel: 0 setCycle: EndLoop self)
 					(cSound setLoop: 1 number: 462 play:)
 					(ego solvePuzzle: 278 5 9)
 				else
@@ -1102,14 +1102,14 @@
 					view: 973
 					setCel: 0
 					loop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				((ScriptID 34 1) loop: 2 cel: 0 setCycle: CT 3 1 self)
+				((ScriptID 34 1) loop: 2 cel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(2
-				((ScriptID 34 1) setCycle: End self)
+				((ScriptID 34 1) setCycle: EndLoop self)
 				(= targetX_2 (target x?))
 				(= targetY_2 (target y?))
 				(= targetX_2 (+ targetX_2 (- 9 (Random 0 18))))
@@ -1128,7 +1128,7 @@
 					setScale:
 					scaleX: 128
 					scaleY: 128
-					setCycle: CT 4 1
+					setCycle: CycleTo 4 1
 					setPri: (if (< targetX_2 (+ (target nsLeft?) 2)) 3 else 5)
 					setMotion: JumpTo targetX_2 targetY_2 self
 					init:
@@ -1265,7 +1265,7 @@
 	(method (changeState newState &tmp temp0 temp1 temp2)
 		(switch (= state newState)
 			(0
-				(Load rsVIEW 10)
+				(Load RES_VIEW 10)
 				(= local97_2_3 1)
 				(= local97_3_2_2 0)
 				(if (!= local1 3)
@@ -1281,11 +1281,11 @@
 					(self dispose:)
 				else
 					([newRackSpear local0] dispose:)
-					(ego view: 10 loop: 0 cel: 0 setCycle: CT 4 1 self)
+					(ego view: 10 loop: 0 cel: 0 setCycle: CycleTo 4 1 self)
 				)
 			)
 			(1
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(switch theArcadeDifficulty
 					(1 (= temp0 150))
 					(2 (= temp0 175))
@@ -1298,7 +1298,7 @@
 					illegalBits: 0
 					setLoop: 5
 					setPri: (if (< targetX (+ (target nsLeft?) 2)) 3 else 5)
-					setCycle: CT 2 1
+					setCycle: CycleTo 2 1
 					cycleSpeed: 6
 					setScale:
 					scaleX: 128
@@ -1328,7 +1328,7 @@
 				else
 					(= register 1)
 				)
-				([newSpear local0] setCycle: End self)
+				([newSpear local0] setCycle: EndLoop self)
 			)
 			(3
 				(= local96_2_2_2_2
@@ -1468,7 +1468,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Load rsVIEW 9)
+				(Load RES_VIEW 9)
 				(= theArcadeDifficulty arcadeDifficulty)
 				(if (== [egoStats 10] 0)
 					(messager say: 26 61 57)
@@ -1479,13 +1479,13 @@
 				)
 			)
 			(1
-				(ego view: 9 loop: 2 cel: 0 setCycle: CT 3 1 self)
+				(ego view: 9 loop: 2 cel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(2
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 				(localproc_1c78)
 				((= [newDagger local15] (dagger new:))
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 2
 					moveSpeed: 2
 					setScale: 115
@@ -1816,7 +1816,7 @@
 				)
 				(self
 					loop: (if (> local96_3_2_2 0) 1 else 2)
-					setCycle: Fwd
+					setCycle: Forward
 				)
 			)
 			(if (< (= temp0 (Random 0 3600)) 10)

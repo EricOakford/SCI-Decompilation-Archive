@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 750)
-(include sci.sh)
+(include game.sh) (include "750.shm")
 (use Main)
 (use PolyPath)
 (use Polygon)
@@ -17,9 +17,9 @@
 (local
 	local0
 )
-(instance rm750 of Rm
+(instance rm750 of Room
 	(properties
-		noun 3
+		noun N_ROOM
 		picture 750
 		vanishingY -60
 	)
@@ -133,10 +133,10 @@
 			(cSound number: 750 setLoop: -1 play: 127)
 			(globalSound number: 391 setLoop: -1 play: 90)
 		)
-		(splash setCycle: Fwd init:)
-		(splash1 setCycle: Fwd init:)
-		(splash2 setCycle: Fwd init:)
-		(splash3 setCycle: Fwd init:)
+		(splash setCycle: Forward init:)
+		(splash1 setCycle: Forward init:)
+		(splash2 setCycle: Forward init:)
+		(splash3 setCycle: Forward init:)
 		(lilRok init:)
 		(mainPath init:)
 		(stream init:)
@@ -187,7 +187,7 @@
 					view: 47
 					setPri: 14
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -226,7 +226,7 @@
 					view: 47
 					setPri: 14
 					setScale: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2

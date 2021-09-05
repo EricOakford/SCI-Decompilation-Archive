@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 705)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use GloryWindow)
 (use IconBar)
@@ -12,13 +12,12 @@
 )
 
 (local
-	newGameControls
+	fireControls
 )
 (instance askFire of Code
-	(properties)
 	
-	(method (init param1 param2 param3 &tmp temp0)
-		((= newGameControls (GameControls new:))
+	(method (init n v c &tmp obj)
+		((= fireControls (GameControls new:))
 			window:
 				((GloryWindow new:)
 					top: 40
@@ -29,61 +28,53 @@
 					yourself:
 				)
 		)
-		((= temp0 (fireIcon new: param1 param2 param3 1))
+		((= obj (fireIcon new: n v c 1))
 			view: 935
 			loop: 1
 			cel: 0
 			nsTop: 2
 			nsLeft: 2
-			modifiers: 1
+			modifiers: teJustCenter
 		)
-		(newGameControls add: temp0)
-		((= temp0 (fireIcon new: param1 param2 param3 2))
+		(fireControls add: obj)
+		((= obj (fireIcon new: n v c 2))
 			nsTop: 25
 			nsLeft: 5
 			cursor: 1
 		)
-		(newGameControls add: temp0)
-		((= temp0 (fireIcon new: param1 param2 param3 3))
+		(fireControls add: obj)
+		((= obj (fireIcon new: n v c 3))
 			nsTop: 25
 			nsLeft: 95
 			cursor: 2
 		)
-		(newGameControls add: temp0)
-		(newGameControls init: show: dispose:)
-		(= newGameControls 0)
+		(fireControls add: obj)
+		(fireControls init: show: dispose:)
+		(= fireControls 0)
 	)
 )
 
-(instance fireIcon of IconI
+(instance fireIcon of IconItem
 	(properties
 		view 935
 		loop 2
 		cel 0
 	)
 	
-	(method (new param1 param2 param3 param4 &tmp temp0 temp1 temp2)
-		(= temp0 (Clone self))
+	(method (new theNoun theVerb theCase theSeq &tmp obj s temp2)
+		(= obj (Clone self))
 		(if argc
-			(= temp1
-				(Message msgSIZE curRoomNum param1 param2 param3 param4)
+			(= s
+				(Message MsgSize curRoomNum theNoun theVerb theCase theSeq)
 			)
-			(temp0 message: (Memory memALLOC_NONCRIT temp1))
-			(Message
-				msgGET
-				curRoomNum
-				param1
-				param2
-				param3
-				param4
-				(temp0 message?)
-			)
+			(obj message: (Memory MNewPtr s))
+			(Message MsgGet curRoomNum theNoun theVerb theCase theSeq (obj message?))
 		)
-		(return temp0)
+		(return obj)
 	)
 	
 	(method (dispose)
-		(Memory memFREE message)
+		(Memory MDisposePtr message)
 		(super dispose:)
 	)
 	
@@ -91,19 +82,12 @@
 		(= nsRight (+ nsLeft (if (== loop 1) 0 else 90)))
 		(= nsBottom (if (== loop 1) nsTop else (+ nsTop 15)))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display
-			message
-			dsCOORD
-			(if (== loop 1) nsLeft else (+ nsLeft 20))
-			(+ nsTop 2)
-			dsFONT
-			(if (== loop 1) 123 else 0)
-			dsCOLOR
-			17
-			dsALIGN
-			modifiers
-			dsWIDTH
-			(if (== loop 1) 189 else 70)
+		(Display message
+			p_at (if (== loop 1) nsLeft else (+ nsLeft 20)) (+ nsTop 2)
+			p_font (if (== loop 1) 123 else 0)
+			p_color 17
+			p_mode modifiers
+			p_width (if (== loop 1) 189 else 70)
 		)
 	)
 	
@@ -111,37 +95,30 @@
 		(return
 			(if (!= loop 1)
 				(= controlRet cursor)
-				(newGameControls
-					state: (& (newGameControls state?) $ffdf)
+				(fireControls
+					state: (& (fireControls state?) $ffdf)
 				)
 			else
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
 	
-	(method (highlight param1 &tmp temp0)
+	(method (highlight tOrF &tmp sColor)
 		(if (!= loop 1)
-			(if param1
+			(if tOrF
 				(DrawCel view loop 1 nsLeft nsTop -1)
-				(= temp0 46)
+				(= sColor 46)
 			else
 				(DrawCel view loop 0 nsLeft nsTop -1)
-				(= temp0 17)
+				(= sColor 17)
 			)
-			(Display
-				message
-				dsCOORD
-				(if (== loop 1) nsLeft else (+ nsLeft 20))
-				(+ nsTop 2)
-				dsFONT
-				(if (== loop 1) 123 else 0)
-				dsCOLOR
-				temp0
-				dsALIGN
-				modifiers
-				dsWIDTH
-				(if (== loop 1) 189 else 70)
+			(Display message
+				p_at (if (== loop 1) nsLeft else (+ nsLeft 20)) (+ nsTop 2)
+				p_font (if (== loop 1) 123 else 0)
+				p_color sColor
+				p_mode modifiers
+				p_width (if (== loop 1) 189 else 70)
 			)
 		)
 	)

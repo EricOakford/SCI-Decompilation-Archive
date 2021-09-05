@@ -16,15 +16,15 @@
 )
 
 (local
-	local0 = [0 -2 -3 999]
-	local4 = [0 4 5 6 7 999]
-	local10 = [0 -8 -9 -10 999]
+	infoTellMainBranch = [0 -2 -3 999]
+	infoTell1 = [0 4 5 6 7 999]
+	infoTell2 = [0 -8 -9 -10 999]
 	local15 = [0 11 12 13 14 999]
 	local21 = [0 15 16 17 18 999]
 	local27 = [0 19 20 -21 999]
 	local32 = [0 25 26 28 23 24 999]
-	local39 = [0 -2 -3 -8 -9 -10 -21 999]
-	[local47 8]
+	infoTellKeys = [0 -2 -3 -8 -9 -10 -21 999]
+	[infoTellTree 8]
 )
 (instance rm102 of Room
 	(properties
@@ -35,15 +35,15 @@
 		(User canInput: TRUE)
 		(theGame setCursor: ARROW_CURSOR)
 		(super init: &rest)
-		(= [local47 0] @local0)
-		(= [local47 1] @local4)
-		(= [local47 2] @local10)
-		(= [local47 3] @local15)
-		(= [local47 4] @local21)
-		(= [local47 5] @local27)
-		(= [local47 6] @local32)
+		(= [infoTellTree 0] @infoTellMainBranch)
+		(= [infoTellTree 1] @infoTell1)
+		(= [infoTellTree 2] @infoTell2)
+		(= [infoTellTree 3] @local15)
+		(= [infoTellTree 4] @local21)
+		(= [infoTellTree 5] @local27)
+		(= [infoTellTree 6] @local32)
 		(Narrator talkWidth: 250)
-		(infoTeller init: info @local0 @local47 @local39)
+		(infoTeller init: info @infoTellMainBranch @infoTellTree @infoTellKeys)
 		(info init:)
 		(Animate (cast elements?) 0)
 		(infoTeller doVerb: 2)
@@ -91,7 +91,7 @@
 					yourself:
 				)
 		)
-		(if (OneOf curArray @local0 @local10)
+		(if (OneOf curArray @infoTellMainBranch @infoTell2)
 			(+= temp5 15)
 		)
 		(= temp2 1)
@@ -246,14 +246,14 @@
 	(method (show &tmp [str 15])
 		(if notEgo
 			(cond 
-				((== (infoTeller curArray?) @local0)
+				((== (infoTeller curArray?) @infoTellMainBranch)
 					(Message MsgGet 102 1 2 1 1 @str)
 					(Display @str
 						p_at 15 5
 						p_color 17
 					)
 				)
-				((== (infoTeller curArray?) @local10)
+				((== (infoTeller curArray?) @infoTell2)
 					(Message MsgGet 102 1 2 22 1 @str)
 					(Display @str
 						p_at 15 5

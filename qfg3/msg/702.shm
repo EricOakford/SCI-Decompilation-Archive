@@ -1,0 +1,16 @@
+;;; Sierra Script
+;;; 702.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_HELLO 1)
+(define C_GOODBYE 2)
+(define C_DEATH_DEMON 10)
+
+;;; NOUNS
+
+(define N_MONKEY 1)
+(define N_EGO_TELL 2)
+(define N_DEWORM 3)
+

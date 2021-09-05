@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 440)
-(include sci.sh)
+(include game.sh) (include "440.shm")
 (use Main)
 (use TellerIcon)
 (use PolyPath)
@@ -22,58 +22,58 @@
 	local1 =  130
 	local2
 	local3
-	local4
+	talkCount
 	local5
 	local6
 	local7
-	[local8 12] = [0 -16 17 97 -43 96 50 94 78 93 81 999]
+	local8 = [0 -16 17 97 -43 96 50 94 78 93 81 999]
 	[local20 2]
-	[local22 6] = [0 1 -2 4 -5 999]
-	[local28 3] = [0 3 999]
-	[local31 4] = [0 -6 98 999]
-	[local35 5] = [0 -7 8 3 999]
-	[local40 3] = [0 9 999]
-	[local43 6] = [0 -2 -5 -6 -7 999]
+	local22 = [0 1 -2 4 -5 999]
+	local28 = [0 3 999]
+	local31 = [0 -6 98 999]
+	local35 = [0 -7 8 3 999]
+	local40 = [0 9 999]
+	local43 = [0 -2 -5 -6 -7 999]
 	[local49 7]
-	[local82 6] = [0 11 18 19 20 999]
+	local82 = [0 11 18 19 20 999]
 	[local86 2]
-	[local89 7] = [0 1 10 -4 11 12 999]
-	[local92 8] = [0 -26 -28 -31 33 34 -24 999]
-	[local98 3] = [0 27 999]
-	[local106 4] = [0 29 30 999]
-	[local110 3] = [0 32 999]
-	[local113 3] = [0 25 999]
-	[local119 6] = [0 -26 -28 -31 -24 999]
-	[local124 8] = [0 -35 99 37 38 39 40 999]
-	[local127 4] = [0 42 41 999]
-	[local135 3] = [0 -35 999]
-	[local139 6] = [0 100 49 3 -45 999]
-	[local143 5] = [0 46 48 47 999]
-	[local147 3] = [0 -45 999]
-	[local152 8] = [0 -50 58 57 59 60 61 999]
-	[local155 4] = [0 56 -53 999]
-	[local159 4] = [0 54 55 999]
-	[local163 4] = [0 -50 -53 999]
-	[local169 5] = [0 -63 -65 68 999]
-	[local173 3] = [0 64 999]
-	[local178 4] = [0 66 67 999]
-	[local182 4] = [0 -63 -65 999]
-	[local188 6] = [0 76 -72 70 71 999]
-	[local193 4] = [0 73 -74 999]
-	[local199 5] = [0 -75 2 79 999]
-	[local178_2 4] = [0 -72 -74 999]
-	[local182_2 6] = [0 80 81 82 83 999]
-	[local188_2 5] = [0 85 86 87 999]
-	[local193_2 6] = [0 89 92 91 90 999]
+	local89 = [0 1 10 -4 11 12 999]
+	local92 = [0 -26 -28 -31 33 34 -24 999]
+	local98 = [0 27 999]
+	local106 = [0 29 30 999]
+	local110 = [0 32 999]
+	local113 = [0 25 999]
+	local119 = [0 -26 -28 -31 -24 999]
+	local124 = [0 -35 99 37 38 39 40 999]
+	local127 = [0 42 41 999]
+	local135 = [0 -35 999]
+	local139 = [0 100 49 3 -45 999]
+	local143 = [0 46 48 47 999]
+	local147 = [0 -45 999]
+	local152 = [0 -50 58 57 59 60 61 999]
+	local155 = [0 56 -53 999]
+	local159 = [0 54 55 999]
+	local163 = [0 -50 -53 999]
+	local169 = [0 -63 -65 68 999]
+	local173 = [0 64 999]
+	local178 = [0 66 67 999]
+	local182 = [0 -63 -65 999]
+	local188 = [0 76 -72 70 71 999]
+	local193 = [0 73 -74 999]
+	local199 = [0 -75 2 79 999]
+	local178_2 = [0 -72 -74 999]
+	local182_2 = [0 80 81 82 83 999]
+	local188_2 = [0 85 86 87 999]
+	local193_2 = [0 89 92 91 90 999]
 	[local199_2 6]
 )
 (procedure (localproc_15d0 param1)
 	(return (* 2 (/ (+ (* param1 800) (- local7 1)) local7)))
 )
 
-(instance rm440 of Rm
+(instance rm440 of Room
 	(properties
-		noun 8
+		noun N_ROOM
 		picture 440
 	)
 	
@@ -84,36 +84,22 @@
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 3
+						type: PContainedAccess
 						init:
-							37
-							189
-							129
-							188
-							128
-							129
-							196
-							129
-							227
-							146
-							246
-							155
-							279
-							155
-							279
-							111
-							231
-							119
-							215
-							118
-							195
-							106
-							152
-							106
-							110
-							123
-							37
-							123
+							37 189
+							129 188
+							128 129
+							196 129
+							227 146
+							246 155
+							279 155
+							279 111
+							231 119
+							215 118
+							195 106
+							152 106
+							110 123
+							37 123
 						yourself:
 					)
 			)
@@ -121,49 +107,34 @@
 			(curRoom
 				addObstacle:
 					((Polygon new:)
-						type: 3
+						type: PContainedAccess
 						init:
-							37
-							189
-							126
-							189
-							126
-							128
-							191
-							128
-							219
-							140
-							227
-							156
-							279
-							156
-							279
-							112
-							244
-							119
-							227
-							121
-							186
-							109
-							159
-							105
-							131
-							105
-							113
-							87
-							37
-							102
+							37 189
+							126 189
+							126 128
+							191 128
+							219 140
+							227 156
+							279 156
+							279 112
+							244 119
+							227 121
+							186 109
+							159 105
+							131 105
+							113 87
+							37 102
 						yourself:
 					)
 			)
 		)
-		(fire setCycle: Fwd init:)
+		(fire setCycle: Forward init:)
 		(firePlace init:)
 		(shield init:)
 		(pot init:)
 		(rightBench init:)
 		(wallSkin init:)
-		(mat approachVerbs: 4 init:)
+		(mat approachVerbs: V_DO init:)
 		(cSound setLoop: -1 changeTo: 440)
 		(soundFx number: 913 setLoop: -1 play: 127)
 		(super init:)
@@ -178,16 +149,33 @@
 				)
 				(curRoom setScript: eventTen)
 			)
-			(
-			(and (Btst 65) (or (< global402 9) (== global402 10))) (curRoom setScript: eventNine))
-			((and (Btst 16) (< global402 8)) (curRoom setScript: eventEight))
-			((and (Btst 38) (< global402 7)) (curRoom setScript: eventSeven))
-			((== global402 5) (curRoom setScript: eventSix))
-			((and (Btst 29) (< global402 5)) (curRoom setScript: eventFive))
-			((== prevRoomNum 450) (curRoom setScript: eventOne))
-			((== global402 1) (curRoom setScript: eventTwo))
-			((== global402 2) (curRoom setScript: eventThree))
-			((== global402 3) (curRoom setScript: eventFour))
+			((and (Btst 65) (or (< global402 9) (== global402 10)))
+				(curRoom setScript: eventNine)
+			)
+			((and (Btst 16) (< global402 8))
+				(curRoom setScript: eventEight)
+			)
+			((and (Btst 38) (< global402 7))
+				(curRoom setScript: eventSeven)
+			)
+			((== global402 5)
+				(curRoom setScript: eventSix)
+			)
+			((and (Btst 29) (< global402 5))
+				(curRoom setScript: eventFive)
+			)
+			((== prevRoomNum 450)
+				(curRoom setScript: eventOne)
+			)
+			((== global402 1)
+				(curRoom setScript: eventTwo)
+			)
+			((== global402 2)
+				(curRoom setScript: eventThree)
+			)
+			((== global402 3)
+				(curRoom setScript: eventFour)
+			)
 			(else
 				(ego
 					normalize:
@@ -239,7 +227,9 @@
 	
 	(method (doit)
 		(cond 
-			((and (GameIsRestarting) (== (ego view?) 40)) (= local2 1))
+			((and (GameIsRestarting) (== (ego view?) 40))
+				(= local2 1)
+			)
 			((self script?) 0)
 			((and (ego mover?) (== (ego view?) 40))
 				(if (IsObject (ego looper?)) ((ego looper?) dispose:))
@@ -255,12 +245,11 @@
 		)
 		(cond 
 			((uhuraHead cycler?) 0)
-			(
-			(and (== (Random 1 200) 50) (cast contains: uhuraHead))
+			((and (== (Random 1 200) 50) (cast contains: uhuraHead))
 				(if (== (uhuraHead cel?) 0)
-					(uhuraHead setCycle: End)
+					(uhuraHead setCycle: EndLoop)
 				else
-					(uhuraHead setCycle: Beg)
+					(uhuraHead setCycle: BegLoop)
 				)
 			)
 		)
@@ -271,33 +260,39 @@
 		(walkHandler delete: curRoom)
 		(if (uhuraHead cycler?) ((uhuraHead cycler?) dispose:))
 		(soundFx stop:)
-		(UnLoad 128 425)
-		(UnLoad 128 433)
-		(LoadMany 0 34 35 949)
+		(UnLoad RES_VIEW 425)
+		(UnLoad RES_VIEW 433)
+		(LoadMany FALSE 34 35 949)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(74 (self setScript: goToBed))
-			(3 (egoActions doVerb: 3))
-			(4 (egoActions doVerb: 4))
-			(else  (super doVerb: theVerb))
+			(V_SLEEP
+				(self setScript: goToBed)
+			)
+			(V_WALK
+				(egoActions doVerb: V_WALK)
+			)
+			(V_DO
+				(egoActions doVerb: V_DO)
+			)
+			(else 
+				(super doVerb: theVerb)
+			)
 		)
 	)
 )
 
 (instance rakeeshTell of Teller
-	(properties)
-	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
+			(V_TALK
 				(= local3 1)
-				(++ local4)
+				(++ talkCount)
 				(super doVerb: theVerb &rest)
 			)
-			(1
+			(V_LOOK
 				(= local3 1)
 				(super doVerb: theVerb &rest)
 			)
@@ -309,17 +304,12 @@
 )
 
 (instance uhuraTell of Teller
-	(properties)
-	
 	(method (showDialog)
 		(super
 			showDialog:
-				-72
-				(< global453 3)
-				75
-				(< global453 3)
-				79
-				(== origHeroType 0)
+				-72 (< global453 3)
+				75 (< global453 3)
+				79 (== origHeroType FIGHTER)
 		)
 	)
 	
@@ -327,24 +317,34 @@
 		(if (or (== query -74) (== query -101))
 			(ego solvePuzzle: 268 2)
 		)
-		(if (== query -75) (ego solvePuzzle: 268 2))
-		(if (== query -4) (ego solvePuzzle: 267 2) (return 1))
+		(if (== query -75)
+			(ego solvePuzzle: 268 2)
+		)
+		(if (== query -4)
+			(ego solvePuzzle: 267 2)
+			(return TRUE)
+		)
 		(return
 			(cond 
-				((and (== query -74) (== heroType 0)) (super doChild: query) (= query -101))
-				((< query 0) (super doChild: query))
+				((and (== query -74) (== heroType FIGHTER))
+					(super doChild: query)
+					(= query -101)
+				)
+				((< query 0)
+					(super doChild: query)
+				)
 			)
 		)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(2
+			(V_TALK
 				(= local3 1)
-				(++ local4)
+				(++ talkCount)
 				(super doVerb: theVerb &rest)
 			)
-			(1
+			(V_LOOK
 				(= local3 1)
 				(super doVerb: theVerb &rest)
 			)
@@ -356,35 +356,23 @@
 )
 
 (instance egoActions of Teller
-	(properties)
-	
 	(method (showDialog)
 		(super
 			showDialog:
-				-16
-				(== global402 1)
-				17
-				(== global402 1)
-				97
-				(!= global402 1)
-				-43
-				(!= global402 1)
+				-16 (== global402 1)
+				17 (== global402 1)
+				97 (!= global402 1)
+				-43 (!= global402 1)
 				96
-				(if
-				(or (== global402 2) (== global402 3) (== global402 4))
+				(if (or (== global402 2) (== global402 3) (== global402 4))
 				else
 					(== global402 6)
 				)
-				50
-				(== global402 5)
-				94
-				(== global402 7)
-				78
-				(== global402 8)
-				93
-				(== global402 9)
-				81
-				(== global402 10)
+				50 (== global402 5)
+				94 (== global402 7)
+				78 (== global402 8)
+				93 (== global402 9)
+				81 (== global402 10)
 		)
 	)
 	
@@ -406,7 +394,7 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(3
+			(V_WALK
 				(cond 
 					((curRoom script?) 0)
 					((== (ego view?) 40)
@@ -417,11 +405,13 @@
 					)
 				)
 			)
-			(2
-				(if (== prevRoomNum 450) (= local3 1))
-				(super doVerb: 2)
+			(V_TALK
+				(if (== prevRoomNum 450)
+					(= local3 1)
+				)
+				(super doVerb: V_TALK)
 			)
-			(4
+			(V_DO
 				(cond 
 					((== prevRoomNum 450) 0)
 					((curRoom script?) 0)
@@ -434,13 +424,9 @@
 	)
 )
 
-(instance simbaTeller of Teller
-	(properties)
-)
+(instance simbaTeller of Teller)
 
 (instance goodNightEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -463,8 +449,6 @@
 )
 
 (instance goToBed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -476,8 +460,6 @@
 )
 
 (instance eventTen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -507,8 +489,6 @@
 )
 
 (instance eventNine of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -530,8 +510,6 @@
 )
 
 (instance eventEight of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -555,14 +533,15 @@
 			(1
 				(messager say: 2 6 77 0 self)
 			)
-			(2 (HandsOn) (self dispose:))
+			(2
+				(HandsOn)
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance eventSeven of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -596,8 +575,6 @@
 )
 
 (instance eventSix of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -631,8 +608,6 @@
 )
 
 (instance eventFive of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -658,8 +633,6 @@
 )
 
 (instance eventFour of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -691,8 +664,6 @@
 )
 
 (instance eventThree of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -717,8 +688,6 @@
 )
 
 (instance eventTwo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -754,8 +723,6 @@
 )
 
 (instance exitRoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -768,8 +735,6 @@
 )
 
 (instance egoLeaves of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -794,8 +759,6 @@
 )
 
 (instance uhuraSpeaks of Script
-	(properties)
-	
 	(method (doit)
 		(if (and (== state 1) (not (IsObject fastCast)))
 			(= cycles 1)
@@ -829,8 +792,6 @@
 )
 
 (instance enterRoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -866,8 +827,6 @@
 )
 
 (instance eventOne of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -962,8 +921,6 @@
 )
 
 (instance checkTime of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
@@ -981,8 +938,6 @@
 )
 
 (instance sitDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -994,7 +949,7 @@
 				(ego
 					view: 40
 					setLoop: (if (>= (ego x?) ((ScriptID 34 1) x?)) 1 else 0)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= local3 (= local2 1))
 			)
@@ -1004,14 +959,12 @@
 )
 
 (instance egoGetUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= local3 1)
-				(ego setCel: (ego lastCel:) setCycle: Beg self)
+				(ego setCel: (ego lastCel:) setCycle: BegLoop self)
 			)
 			(1
 				(= local2 0)
@@ -1025,11 +978,9 @@
 )
 
 (instance timeEgo of Script
-	(properties)
-	
 	(method (doit)
 		(if (or (ego mover?) local3)
-			(if (>= local4 10)
+			(if (>= talkCount 10)
 				(= local3 0)
 				(= cycles 1)
 			else
@@ -1135,12 +1086,12 @@
 		y 95
 		noun 12
 		sightAngle 40
-		onMeCheck $0004
+		onMeCheck cGREEN
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(4
+			(V_DO
 				(cond 
 					((ego script?) 0)
 					((== global402 1) 0)
@@ -1159,7 +1110,7 @@
 		y 64
 		noun 2
 		view 433
-		signal $4000
+		signal ignrAct
 		detailLevel 3
 	)
 )
@@ -1171,7 +1122,7 @@
 		noun 3
 		view 423
 		priority 15
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1183,7 +1134,7 @@
 		view 425
 		loop 4
 		cel 3
-		signal $2000
+		signal ignrHrz
 		detailLevel 3
 	)
 )

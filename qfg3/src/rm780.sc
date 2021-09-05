@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 780)
-(include sci.sh)
+(include game.sh) (include "780.shm")
 (use Main)
 (use TellerIcon)
 (use PolyPath)
@@ -19,9 +19,9 @@
 	local0
 	local1
 )
-(instance rm780 of Rm
+(instance rm780 of Room
 	(properties
-		noun 10
+		noun N_ROOM
 		picture 780
 	)
 	
@@ -94,8 +94,8 @@
 		(fungi init:)
 		(flower init:)
 		(if (> (theGame detailLevel:) 2)
-			(water1 setCycle: Fwd init:)
-			(water2 setCycle: Fwd init:)
+			(water1 setCycle: Forward init:)
+			(water2 setCycle: Forward init:)
 		)
 		(walkHandler addToFront: platform)
 		(curRoom setScript: egoEnters)
@@ -142,30 +142,30 @@
 				(ego setMotion: PolyPath 147 148 self)
 			)
 			(1
-				(ego view: 35 loop: 0 cel: 0 x: 166 setCycle: End self)
+				(ego view: 35 loop: 0 cel: 0 x: 166 setCycle: EndLoop self)
 			)
 			(2
-				(if (= temp0 (PalVary pvGET_CURRENT_STEP))
+				(if (= temp0 (PalVary PALVARYINFO))
 					(if (< temp0 64)
-						(PalVary pvCHANGE_TICKS 3)
+						(PalVary PALVARYNEWTIME 3)
 						(= seconds 5)
 					else
 						(self cue:)
 					)
 				else
-					(PalVary pvINIT 310 3)
+					(PalVary PALVARYSTART 310 3)
 					(Btst 81)
 					(= seconds 15)
 				)
 			)
 			(3
-				(PalVary pvREVERSE 3)
+				(PalVary PALVARYREVERSE 3)
 				(Bclr 81)
 				(= seconds 4)
 			)
 			(4
 				((ScriptID 7 7) init: 5 40)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(5
 				(ego
@@ -300,11 +300,11 @@
 			)
 			(1
 				(HandsOff)
-				(ego view: 4 loop: 0 setCycle: End self)
+				(ego view: 4 loop: 0 setCycle: EndLoop self)
 			)
 			(2
 				(if (not local1) (messager say: 1 6 8))
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 				(cSound number: 783 setLoop: 1 play: 127 self)
 			)
 			(3)
@@ -316,7 +316,7 @@
 					(messager say: 1 6 7 0 self)
 				else
 					(ego normalize: setPri: 12 setHeading: 270)
-					(thatOldStaff init: cycleSpeed: 7 setCycle: End self)
+					(thatOldStaff init: cycleSpeed: 7 setCycle: EndLoop self)
 				)
 			)
 			(5)
@@ -325,15 +325,15 @@
 				(ego normalize: setPri: 12 setMotion: MoveTo 178 122 self)
 			)
 			(7
-				(ego view: 31 loop: 1 cel: 0 setCycle: End self)
+				(ego view: 31 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(8
 				(if local1
 					(thatOldFruit dispose:)
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				else
 					(thatOldStaff dispose:)
-					(ego setCycle: Beg self)
+					(ego setCycle: BegLoop self)
 				)
 			)
 			(9

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 530)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TellerIcon)
 (use OccasionalCycle)
@@ -19,12 +19,12 @@
 )
 
 (local
-	[local0 4] = [0 5 -6 999]
+	local0 = [0 5 -6 999]
 	[local4 2]
-	[local6 5] = [0 3 4 2 999]
+	local6 = [0 3 4 2 999]
 	[local11 2]
 )
-(instance rm530 of Rm
+(instance rm530 of Room
 	(properties
 		picture 400
 		vanishingY -200
@@ -158,11 +158,11 @@
 				)
 			)
 			(2
-				(ego view: 4 setLoop: 3 cel: 0 setCycle: End self)
+				(ego view: 4 setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				((ScriptID 39 1) setLoop: 1 cel: 0 setCycle: End self)
-				(ego setCycle: Beg self)
+				((ScriptID 39 1) setLoop: 1 cel: 0 setCycle: EndLoop self)
+				(ego setCycle: BegLoop self)
 			)
 			(4)
 			(5 (messager say: 1 6 1 0 self))
@@ -355,9 +355,7 @@
 	)
 )
 
-(instance yesufuStopGroop of Grooper
-	(properties)
-	
+(instance yesufuStopGroop of GradualLooper
 	(method (doit)
 		(if
 			(and

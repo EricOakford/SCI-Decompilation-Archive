@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 490)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use GloryWindow)
 (use TellerIcon)
@@ -18,16 +18,16 @@
 )
 
 (local
-	[local0 8] = [0 16 17 -18 24 25 26 999]
-	[local8 6] = [0 -19 21 22 23 999]
-	[local14 3] = [0 20 999]
-	[local17 9] = [0 16 27 28 29 30 31 32 999]
-	[local26 9] = [0 16 33 40 34 35 39 42 999]
+	local0 = [0 16 17 -18 24 25 26 999]
+	local8 = [0 -19 21 22 23 999]
+	local14 = [0 20 999]
+	local17 = [0 16 27 28 29 30 31 32 999]
+	local26 = [0 16 33 40 34 35 39 42 999]
 	[local35 5]
-	[local78_4 4] = [0 -18 -19 999]
-	[local76_3 4] = [0 44 45 999]
-	[theHeading 5] = [0 44 46 34 999]
-	[local78_2 4] = [0 44 -47 999]
+	local78_4 = [0 -18 -19 999]
+	local76_3 = [0 44 45 999]
+	theHeading = [0 44 46 34 999]
+	local78_2 = [0 44 -47 999]
 	[local76_2 4]
 	theHeading_2
 	[local78_3 14]
@@ -38,9 +38,9 @@
 	local80
 	theGNewSpeed
 	local82
-	[local83 14] = [209 181 154 130 104 77 56 86 113 141 167 194 221 238]
-	[local97 14] = [62 69 75 82 89 95 115 121 115 108 100 93 87 68]
-	[local111 90] = [3 3 3 3 3 3 0 3 3 3 3 3 3 0 143 129 103 94 68 57 36 65 77 101 115 141 156 178 13 15 20 17 24 26 45 50 49 42 47 38 37 20 220 209 190 168 159 132 110 142 166 173 195 211 222 238 152 162 163 171 173 179 197 205 199 196 193 183 177 157 5 22 34 36 55 55 48 49 -27 -15 -3 -5 20 47 57 59 58 61 51 42]
+	local83 = [209 181 154 130 104 77 56 86 113 141 167 194 221 238]
+	local97 = [62 69 75 82 89 95 115 121 115 108 100 93 87 68]
+	local111 = [3 3 3 3 3 3 0 3 3 3 3 3 3 0 143 129 103 94 68 57 36 65 77 101 115 141 156 178 13 15 20 17 24 26 45 50 49 42 47 38 37 20 220 209 190 168 159 132 110 142 166 173 195 211 222 238 152 162 163 171 173 179 197 205 199 196 193 183 177 157 5 22 34 36 55 55 48 49 -27 -15 -3 -5 20 47 57 59 58 61 51 42]
 	[local201 14]
 	local215
 	local216
@@ -215,10 +215,10 @@
 	(tray setScript: moveScript)
 )
 
-(instance rm490 of Rm
+(instance rm490 of Room
 	(properties
 		picture 490
-		style $0009
+		style PIXELDISSOLVE
 	)
 	
 	(method (init)
@@ -292,7 +292,7 @@
 		(cond 
 			((== theVerb 2) ((ego actions?) doVerb: theVerb))
 			((== theVerb 1)
-				(Message msgGET 490 4 1 52 1 @temp0)
+				(Message MsgGet 490 4 1 52 1 @temp0)
 				(Print addTextF: @temp0 [local78_3 heading] init:)
 			)
 			((== theVerb 3) (curRoom doVerb: 3))
@@ -671,7 +671,7 @@
 						cursor: 0
 					)
 					(qg3Controls add: newIconI)
-					(= newIconI (IconI new:))
+					(= newIconI (IconItem new:))
 					(newIconI
 						nsTop: 25
 						nsLeft: 29
@@ -684,7 +684,7 @@
 						signal: 132
 					)
 					(qg3Controls add: newIconI)
-					(= newIconI (IconI new:))
+					(= newIconI (IconItem new:))
 					(newIconI
 						nsTop: 25
 						nsLeft: 129
@@ -763,7 +763,7 @@
 	)
 )
 
-(instance textI of IconI
+(instance textI of IconItem
 	(properties
 		view 935
 		loop 2
@@ -774,35 +774,28 @@
 		(= temp0 (Clone self))
 		(if argc
 			(= temp1
-				(Message msgSIZE param5 param1 param2 param3 param4)
+				(Message MsgSize param5 param1 param2 param3 param4)
 			)
-			(temp0 message: (Memory memALLOC_NONCRIT temp1))
-			(Message msgGET param5 param1 param2 param3 param4 @temp3)
+			(temp0 message: (Memory MNewPtr temp1))
+			(Message MsgGet param5 param1 param2 param3 param4 @temp3)
 			(Format (temp0 message?) @temp3 param6)
 		)
 		(return temp0)
 	)
 	
 	(method (dispose)
-		(Memory memFREE message)
+		(Memory MDisposePtr message)
 		(super dispose:)
 	)
 	
 	(method (show)
 		(= nsRight nsLeft)
-		(Display
-			message
-			dsCOORD
-			nsLeft
-			(= nsBottom nsTop)
-			dsFONT
-			0
-			dsCOLOR
-			17
-			dsALIGN
-			modifiers
-			dsWIDTH
-			189
+		(Display message
+			p_at nsLeft (= nsBottom nsTop)
+			p_font 0
+			p_color 17
+			p_mode modifiers
+			p_width 189
 		)
 	)
 	
@@ -828,8 +821,8 @@
 	)
 	
 	(method (init)
-		(Graph grFILL_BOX 10 10 98 126 1 12 -1)
-		(Graph grUPDATE_BOX 10 10 98 126 1)
+		(Graph GFillRect 10 10 98 126 1 12 -1)
+		(Graph GShowBits 10 10 98 126 1)
 		(super init:)
 		(DrawCel 934 2 0 10 10 2)
 	)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 701)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Target)
 (use TellerIcon)
@@ -28,18 +28,16 @@
 	local11
 	local12
 	local13
-	[local14 10] = [100 130 160 190 220 115 145 175 215 245]
-	[local52_2_2 10] = [155 147 173 135 170 162 119 133 140 167]
-	[local52_2 6] = [0 26 68 69 67 999]
-	[local49_2 5] = [0 66 -36 31 999]
-	[local52_3 4] = [0 100 999 999]
-	[local49_2_2 3] = [0 76 999]
+	local14 = [100 130 160 190 220 115 145 175 215 245]
+	local52_2_2 = [155 147 173 135 170 162 119 133 140 167]
+	local52_2 = [0 26 68 69 67 999]
+	local49_2 = [0 66 -36 31 999]
+	local52_3 = [0 100 999 999]
+	local49_2_2 = [0 76 999]
 	[local52_2_2_2 6]
-	[local58 6]
+	local58
 )
 (instance monkeysWith of Script
-	(properties)
-	
 	(method (doit)
 		(if (not (Random 0 30)) (ShakeScreen 1))
 		(super doit:)
@@ -196,8 +194,8 @@
 					init:
 					approachX: 154
 					approachY: 153
-					approachVerbs: 4 20 12
-					signal: 16384
+					approachVerbs: V_DO 20 12
+					signal: ignrAct
 				)
 				(curRoom
 					addObstacle:
@@ -207,7 +205,7 @@
 							yourself:
 						)
 				)
-				(manu700 init: cycleSpeed: 18 setCycle: Fwd)
+				(manu700 init: cycleSpeed: 18 setCycle: Forward)
 				(self dispose:)
 			)
 		)
@@ -231,10 +229,10 @@
 				(cage approachVerbs:)
 			)
 			(1
-				(ego view: 4 loop: 1 cel: 0 setCycle: CT 3 1 self)
+				(ego view: 4 loop: 1 cel: 0 setCycle: CycleTo 3 1 self)
 			)
 			(2 (= cycles 20))
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego normalize: setHeading: 100)
 				(cage cel: 1)

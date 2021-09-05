@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 590)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Combat)
 (use Motion)
@@ -69,7 +69,7 @@
 		else
 			(globalSound number: 940 play:)
 		)
-		(self setCycle: Beg)
+		(self setCycle: BegLoop)
 	)
 )
 
@@ -99,7 +99,7 @@
 			else
 				(globalSound number: 940 play:)
 			)
-			(self setCycle: CT (Random 0 2) -1 self)
+			(self setCycle: CycleTo (Random 0 2) -1 self)
 		else
 			(self hide:)
 		)
@@ -115,7 +115,7 @@
 				(= ticks (/ (Random 45 180) arcadeDifficulty))
 			)
 			(1
-				(gMonster setCel: 0 x: 166 y: 128 setCycle: End self)
+				(gMonster setCel: 0 x: 166 y: 128 setCycle: EndLoop self)
 			)
 			(2
 				(gWarriorObj autoDodge:)
@@ -132,15 +132,15 @@
 					)
 					(gWarriorObj getHurt: (gMonster primDamage?))
 				)
-				(dewormMonster setCycle: CT (Random 0 3) -1 self)
+				(dewormMonster setCycle: CycleTo (Random 0 3) -1 self)
 			)
 			(3
 				(if (Random 0 1)
-					(armFront setCycle: End armFront)
+					(armFront setCycle: EndLoop armFront)
 					(= ticks (/ 180 arcadeDifficulty))
 				)
 				(if (Random 0 1)
-					(armBack show: setCycle: End armBack)
+					(armBack show: setCycle: EndLoop armBack)
 					(= ticks (/ 180 arcadeDifficulty))
 				)
 				(if (not ticks) (= ticks (/ 18 arcadeDifficulty)))
@@ -156,7 +156,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setCel: 0 setCycle: CT 2 1)
+				(gMonster setCel: 0 setCycle: CycleTo 2 1)
 				(= ticks 60)
 			)
 			(1

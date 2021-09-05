@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 510)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use MoveCyc)
 (use PolyPath)
@@ -21,17 +21,17 @@
 )
 
 (local
-	local0
+	saveBits
 	local1
 	[newSpear 5]
-	[local7 10] = [120 137 126 137 132 138 139 137 146 138]
-	[local17 5] = [214 81 360 100 -32768]
-	[local22 5] = [214 86 360 100 -32768]
-	[local27 5] = [216 86 214 180 -32768]
-	[local32 5] = [216 81 214 180 -32768]
-	[local37 45] = [3 0 201 62 3 1 201 62 3 2 201 62 3 3 201 62 3 4 197 64 3 5 180 66 3 6 167 79 3 7 165 93 3 8 162 117 3 9 169 148 3 10 169 148 -32768]
-	[local82 25] = [4 0 220 58 4 1 219 65 4 2 220 89 4 4 224 112 4 3 227 140 4 3 227 180 -32768]
-	[local107 29] = [0 0 188 134 0 1 188 134 0 2 188 134 0 3 207 121 0 4 228 130 0 5 237 147 0 5 237 180 -32768]
+	local7 = [120 137 126 137 132 138 139 137 146 138]
+	local17 = [214 81 360 100 -32768]
+	local22 = [214 86 360 100 -32768]
+	local27 = [216 86 214 180 -32768]
+	local32 = [216 81 214 180 -32768]
+	local37 = [3 0 201 62 3 1 201 62 3 2 201 62 3 3 201 62 3 4 197 64 3 5 180 66 3 6 167 79 3 7 165 93 3 8 162 117 3 9 169 148 3 10 169 148 -32768]
+	local82 = [4 0 220 58 4 1 219 65 4 2 220 89 4 4 224 112 4 3 227 140 4 3 227 180 -32768]
+	local107 = [0 0 188 134 0 1 188 134 0 2 188 134 0 3 207 121 0 4 228 130 0 5 237 147 0 5 237 180 -32768]
 	local136
 	local137
 	local138
@@ -42,7 +42,7 @@
 	local143
 	local144
 )
-(instance rm510 of Rm
+(instance rm510 of Room
 	(properties
 		noun 7
 		picture 510
@@ -141,7 +141,7 @@
 			init:
 		)
 		(hole init:)
-		(string init:)
+		(aString init:)
 		(ring init:)
 		(vine approachVerbs: 4 init:)
 		(tree approachVerbs: 4 init:)
@@ -276,7 +276,7 @@
 		(switch (= state newState)
 			(0)
 			(1
-				(string dispose:)
+				(aString dispose:)
 				(ring setMotion: MoveTo (ring x?) 180 self)
 			)
 			(2
@@ -300,11 +300,11 @@
 				(messager say: 2 6 10 0 self)
 			)
 			(1
-				(ego view: 511 setLoop: 1 cel: 0 setCycle: End self)
+				(ego view: 511 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(= local136 2)
-				(ego view: 10 setLoop: 0 cel: 0 setCycle: CT 4 1 self)
+				(ego view: 10 setLoop: 0 cel: 0 setCycle: CycleTo 4 1 self)
 				([newSpear local136] dispose:)
 			)
 			(3
@@ -320,22 +320,22 @@
 					init:
 					setMotion: spear3Path self spinRing
 				)
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 			)
 			(4
 				(messager say: 2 6 11 0 self)
 			)
 			(5
-				(= local0 (Graph grSAVE_BOX 112 143 131 192 1))
-				(Graph grDRAW_LINE 113 144 130 191 87 -1 -1)
-				(Graph grUPDATE_BOX 113 144 130 191 1)
-				(ego view: 511 setLoop: 0 cel: 0 setCycle: End self)
+				(= saveBits (Graph GSaveBits 112 143 131 192 1))
+				(Graph GDrawLine 113 144 130 191 87 -1 -1)
+				(Graph GShowBits 113 144 130 191 1)
+				(ego view: 511 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				(Graph grRESTORE_BOX local0)
-				(Graph grUPDATE_BOX 113 144 130 191 1)
+				(Graph GRestoreBits saveBits)
+				(Graph GShowBits 113 144 130 191 1)
 				(++ local136)
-				(ego view: 10 setLoop: 0 cel: 0 setCycle: CT 4 1 self)
+				(ego view: 10 setLoop: 0 cel: 0 setCycle: CycleTo 4 1 self)
 				([newSpear local136] dispose:)
 			)
 			(7
@@ -351,17 +351,17 @@
 					init:
 					setMotion: spear4Path self spinRing
 				)
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 			)
 			(8
-				(= local0 (Graph grSAVE_BOX 113 144 130 191 1))
-				(Graph grDRAW_LINE 113 144 130 191 87 -1 -1)
-				(Graph grUPDATE_BOX 113 144 130 191 1)
-				(ego view: 511 setLoop: 0 cel: 0 setCycle: End self)
+				(= saveBits (Graph GSaveBits 113 144 130 191 1))
+				(Graph GDrawLine 113 144 130 191 87 -1 -1)
+				(Graph GShowBits 113 144 130 191 1)
+				(ego view: 511 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(9
-				(Graph grRESTORE_BOX local0)
-				(Graph grUPDATE_BOX 113 144 130 191 1)
+				(Graph GRestoreBits saveBits)
+				(Graph GShowBits 113 144 130 191 1)
 				(ego normalize:)
 				(client setScript: awardPrize)
 			)
@@ -375,7 +375,7 @@
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(ego view: 31 setLoop: 0 cel: 0 setCycle: End self)
+				(ego view: 31 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(vine dispose:)
@@ -400,7 +400,7 @@
 	
 	(method (doit)
 		(cond 
-			((and (== state 1) (== (ego cel?) 3)) (ring setCycle: Fwd))
+			((and (== state 1) (== (ego cel?) 3)) (ring setCycle: Forward))
 			((== state 3) (ring setCycle: 0 cel: 0))
 		)
 		(super doit: &rest)
@@ -420,12 +420,12 @@
 					setLoop: 0
 					cel: 0
 					setPri: 0
-					setCycle: MCyc @local107 self
+					setCycle: MoveCycle @local107 self
 				)
 			)
 			(2 (= ticks 240))
 			(3
-				(ego setLoop: 1 x: 191 y: 132 setCycle: End self)
+				(ego setLoop: 1 x: 191 y: 132 setCycle: EndLoop self)
 			)
 			(4
 				(ego
@@ -434,7 +434,7 @@
 					setPri: -1
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -460,7 +460,7 @@
 				(= cycles 1)
 			)
 			(1
-				(ego setLoop: 0 cel: 0 setCycle: CT 4 1 self)
+				(ego setLoop: 0 cel: 0 setCycle: CycleTo 4 1 self)
 				([newSpear local136] dispose:)
 			)
 			(2
@@ -476,7 +476,7 @@
 					init:
 					setMotion: spearPath self
 				)
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 			)
 			(3
 				(if (== (++ local136) 4)
@@ -490,7 +490,7 @@
 				)
 			)
 			(4
-				(ego setLoop: 0 cel: 0 setCycle: CT 4 1 self)
+				(ego setLoop: 0 cel: 0 setCycle: CycleTo 4 1 self)
 				(ring setScript: dropRing)
 				([newSpear local136] dispose:)
 			)
@@ -507,7 +507,7 @@
 					init:
 					setMotion: spear2Path self dropRing
 				)
-				(ego setCycle: End)
+				(ego setCycle: EndLoop)
 			)
 			(6
 				(ego
@@ -522,12 +522,12 @@
 					setLoop: 0
 					cel: 0
 					setPri: 0
-					setCycle: MCyc @local107 self
+					setCycle: MoveCycle @local107 self
 				)
 			)
 			(8 (= ticks 240))
 			(9
-				(ego setLoop: 1 x: 191 y: 132 setCycle: End self)
+				(ego setLoop: 1 x: 191 y: 132 setCycle: EndLoop self)
 			)
 			(10
 				(ego
@@ -536,7 +536,7 @@
 					setPri: -1
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -557,10 +557,10 @@
 				(walkHandler delete: curRoom)
 				(User canControl: 1)
 				(HandsOff)
-				(ego view: 6 setPri: 0 setCycle: MCyc @local82 self)
+				(ego view: 6 setPri: 0 setCycle: MoveCycle @local82 self)
 			)
 			(1
-				(ego view: 516 loop: 1 x: 191 y: 132 setCycle: End self)
+				(ego view: 516 loop: 1 x: 191 y: 132 setCycle: EndLoop self)
 			)
 			(2
 				(ego
@@ -569,7 +569,7 @@
 					setPri: -1
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -590,19 +590,19 @@
 				(= local141 1)
 				(walkHandler delete: curRoom)
 				(HandsOff)
-				(ego view: 4 x: 191 y: 58 cel: 0 setCycle: End self)
+				(ego view: 4 x: 191 y: 58 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(string setMotion: MoveTo 210 63 self)
+				(aString setMotion: MoveTo 210 63 self)
 				(ring setMotion: MoveTo 210 68)
 			)
 			(2
-				(string dispose:)
+				(aString dispose:)
 				(ring dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
-				(ego view: 30 setCycle: MCyc @local37 self)
+				(ego view: 30 setCycle: MoveCycle @local37 self)
 			)
 			(4
 				(ego normalize:)
@@ -629,12 +629,12 @@
 					view: 7
 					setLoop: 3
 					setScale:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 124 96 self
 				)
 			)
 			(2
-				(ego setLoop: 5 cel: 0 x: 120 y: 64 setCycle: End self)
+				(ego setLoop: 5 cel: 0 x: 120 y: 64 setCycle: EndLoop self)
 			)
 			(3
 				(ego
@@ -672,7 +672,7 @@
 					view: 7
 					setLoop: 3
 					setScale:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 130 102 self
 				)
 			)
@@ -698,7 +698,7 @@
 			(0
 				(= local140 1)
 				(HandsOff)
-				(ego view: 7 setLoop: 3 cycleSpeed: 2 setCycle: Fwd)
+				(ego view: 7 setLoop: 3 cycleSpeed: 2 setCycle: Forward)
 				(= ticks 240)
 			)
 			(1
@@ -717,9 +717,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0)
-			(1 (ring setCycle: Fwd))
+			(1 (ring setCycle: Forward))
 			(2
-				(string dispose:)
+				(aString dispose:)
 				(ring setMotion: MoveTo (ring x?) 180 self)
 			)
 			(3
@@ -790,11 +790,11 @@
 					view: 984
 					loop: 0
 					cel: 0
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(9
-				((ScriptID 39 1) setCycle: End self)
+				((ScriptID 39 1) setCycle: EndLoop self)
 				([newSpear local136] dispose:)
 			)
 			(10
@@ -803,7 +803,7 @@
 					y: 140
 					loop: 1
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(11
@@ -819,7 +819,7 @@
 					init:
 					setMotion: spearPath self spinRing
 				)
-				((ScriptID 39 1) setCycle: End)
+				((ScriptID 39 1) setCycle: EndLoop)
 			)
 			(12
 				([newSpear local136] dispose:)
@@ -849,7 +849,7 @@
 					cel: 0
 					x: 191
 					y: 140
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(15
@@ -871,7 +871,7 @@
 					origStep: 2053
 					cel: 0
 					moveSpeed: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(18 (= ticks 120))
@@ -886,8 +886,8 @@
 			)
 			(20
 				((ScriptID 39 1) setHeading: 90)
-				((ScriptID 58 1) setCycle: End self)
-				(string y: 65 setMotion: MoveTo 210 73 init:)
+				((ScriptID 58 1) setCycle: EndLoop self)
+				(aString y: 65 setMotion: MoveTo 210 73 init:)
 				(ring y: 70 cel: 0 setMotion: MoveTo 210 78 init:)
 			)
 			(21 (HandsOn) (self dispose:))
@@ -1051,7 +1051,7 @@
 	)
 )
 
-(instance string of Actor
+(instance aString of Actor
 	(properties
 		x 210
 		y 73
@@ -1095,9 +1095,7 @@
 	)
 )
 
-(instance yesufuStopGroop of Grooper
-	(properties)
-	
+(instance yesufuStopGroop of GradualLooper
 	(method (doit)
 		(if
 			(and

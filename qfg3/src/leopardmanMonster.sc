@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 595)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Combat)
 (use Motion)
@@ -83,7 +83,7 @@
 				(self
 					setCel: 0
 					setLoop: (if (mod loop 2) 4 else 3)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			else
 				(globalSound number: 940 play:)
@@ -107,7 +107,7 @@
 				(gMonster
 					setLoop: (Random 0 2)
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -134,7 +134,7 @@
 			(3
 				(= start 0)
 				(if (> (= global432 (- global432 5)) 4)
-					(gMonster setLoop: 3 setCycle: End self)
+					(gMonster setLoop: 3 setCycle: EndLoop self)
 				else
 					(self start: 0 init:)
 				)
@@ -146,7 +146,7 @@
 					loop: (Random 0 2)
 					x: 160
 					y: 90
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 105 90 leopSpell
 				)
 				(self start: 0 init:)
@@ -166,7 +166,7 @@
 					y: 145
 					setCel: 0
 					setLoop: 1
-					setCycle: CT 2 1
+					setCycle: CycleTo 2 1
 				)
 				(= ticks 60)
 			)

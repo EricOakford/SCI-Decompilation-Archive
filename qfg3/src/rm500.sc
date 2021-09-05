@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 500)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use PolyPath)
 (use Polygon)
@@ -12,7 +12,7 @@
 	rm500 0
 )
 
-(instance rm500 of Rm
+(instance rm500 of Room
 	(properties
 		picture 500
 		vanishingY -20
@@ -128,12 +128,12 @@
 					setLoop: 0
 					x: 142
 					y: 161
-					setCycle: Fwd
+					setCycle: Forward
 				)
 			)
 			(1
 				(ego setMotion: PolyPath 9 54)
-				((ScriptID 39 1) setLoop: 1 setCycle: End self)
+				((ScriptID 39 1) setLoop: 1 setCycle: EndLoop self)
 			)
 			(2
 				((ScriptID 39 1)

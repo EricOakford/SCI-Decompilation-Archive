@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 704)
-(include sci.sh)
+(include game.sh)
 (use Target)
 (use OccasionalCycle)
 (use Motion)
@@ -11,7 +11,6 @@
 )
 
 (instance flee of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -44,7 +43,6 @@
 )
 
 (instance startUp of Script
-	(properties)
 	
 	(method (changeState newState)
 		(switch (= state newState)
@@ -83,7 +81,9 @@
 				)
 				(= cycles 5)
 			)
-			(1 (self dispose:))
+			(1
+				(self dispose:)
+			)
 		)
 	)
 )
@@ -92,11 +92,15 @@
 	(properties
 		noun 1
 		view 987
-		signal $6010
+		signal (| ignrAct ignrHrz fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (OneOf theVerb 20 78 12 13 81 83 16 88 56 33 11)
+		(if (OneOf theVerb
+				V_DAGGER V_DAZZLE V_FINE_DAGGER V_FINE_SPEAR
+				V_FLAME V_FORCEBOLT V_GRAPNEL V_LIGHTNING
+				V_MAGIC_SPEAR V_ROCK V_SWORD
+			)
 			(self setScript: flee)
 		)
 		(super doVerb: theVerb &rest)
@@ -107,11 +111,15 @@
 	(properties
 		noun 1
 		view 987
-		signal $6010
+		signal (| ignrAct ignrHrz fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (OneOf theVerb 20 78 12 13 81 83 16 88 56 33 11)
+		(if (OneOf theVerb
+				V_DAGGER V_DAZZLE V_FINE_DAGGER V_FINE_SPEAR
+				V_FLAME V_FORCEBOLT V_GRAPNEL V_LIGHTNING
+				V_MAGIC_SPEAR V_ROCK V_SWORD
+			)
 			(self setScript: flee)
 		)
 		(super doVerb: theVerb &rest)
@@ -122,11 +130,15 @@
 	(properties
 		noun 1
 		view 987
-		signal $6010
+		signal (| ignrAct ignrHrz fixPriOn)
 	)
 	
 	(method (doVerb theVerb)
-		(if (OneOf theVerb 20 78 12 13 81 83 16 88 56 33 11)
+		(if (OneOf theVerb
+				V_DAGGER V_DAZZLE V_FINE_DAGGER V_FINE_SPEAR
+				V_FLAME V_FORCEBOLT V_GRAPNEL V_LIGHTNING
+				V_MAGIC_SPEAR V_ROCK V_SWORD
+			)
 			(self setScript: flee)
 		)
 		(super doVerb: theVerb &rest)

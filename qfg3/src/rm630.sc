@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 630)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use GloryWindow)
 (use TellerIcon)
@@ -47,12 +47,12 @@
 	local26 =  10
 	local27 =  12
 	local28
-	[local29 5] = [0 20 21 24 999]
+	local29 = [0 20 21 24 999]
 	[local34 3]
-	[local37 6] = [0 -2 15 1 16 999]
-	[local43 4] = [0 17 6 999]
-	[local47 6]
-	[local53 3] = [0 -2 999]
+	local37 = [0 -2 15 1 16 999]
+	local43 = [0 17 6 999]
+	local47
+	local53 = [0 -2 999]
 )
 (procedure (localproc_07dd)
 	(bridgeControls disable: iconJump iconDrop iconL iconR)
@@ -87,8 +87,8 @@
 
 (procedure (localproc_2563 &tmp theTheCursor)
 	(= theTheCursor theCursor)
-	(Message msgGET 630 2 6 3 2 @local1)
-	(Message msgGET 630 2 6 3 3 @local6)
+	(Message MsgGet 630 2 6 3 2 @local1)
+	(Message MsgGet 630 2 6 3 3 @local6)
 	(quest init: show: dispose:)
 	(theGame setCursor: theTheCursor)
 	(return local0)
@@ -96,21 +96,6 @@
 
 (class JumpOver of JumpX
 	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		xLast 0
-		yLast 0
 		desX 0
 		desY 0
 		xInc 0
@@ -129,34 +114,6 @@
 )
 
 (class Attack of JumpOver
-	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		xLast 0
-		yLast 0
-		desX 0
-		desY 0
-		xInc 0
-		yInc 0
-		zStep 0
-		level 0
-		velocity 0
-		gravity 10
-		height 0
-		peak 0
-	)
-	
 	(method (chkTarget &tmp temp0)
 		(= temp0 0)
 		(super chkTarget:)
@@ -181,23 +138,6 @@
 
 (class DDCPath of DPath
 	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		xLast 0
-		yLast 0
-		points 0
-		value 0
 		cDir 1
 		nPoints 0
 		comp 0
@@ -244,11 +184,8 @@
 	)
 )
 
-(class Backward of Rev
+(class Backward of Reverse
 	(properties
-		client 0
-		caller 0
-		cycleDir -1
 		cycleCnt 0
 		completed 0
 	)
@@ -259,29 +196,6 @@
 )
 
 (class xDPath of DDCPath
-	(properties
-		client 0
-		caller 0
-		x 0
-		y 0
-		dx 0
-		dy 0
-		b-moveCnt 0
-		b-i1 0
-		b-i2 0
-		b-di 0
-		b-xAxis 0
-		b-incr 0
-		completed 0
-		xLast 0
-		yLast 0
-		points 0
-		value 0
-		cDir 1
-		nPoints 0
-		comp 0
-	)
-	
 	(method (setTarget &tmp theX theY [temp2 30])
 		(= theX x)
 		(= theY y)
@@ -304,7 +218,7 @@
 	)
 )
 
-(instance rm630 of Rm
+(instance rm630 of Room
 	(properties
 		noun 4
 		picture 630
@@ -455,7 +369,7 @@
 					view: 9
 					y: (- (ego y?) 3)
 					setLoop: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -503,12 +417,12 @@
 					drop: 6
 					setLoop: 1
 					setCel: 0
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
 			(1
-				(ego setCycle: CT 6 1)
-				(rope init: cycleSpeed: 3 setCycle: End self)
+				(ego setCycle: CycleTo 6 1)
+				(rope init: cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(2
 				(rope stopUpd:)
@@ -526,7 +440,7 @@
 					cycleSpeed: 6
 					setLoop: 1
 					setPri: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -703,11 +617,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(leopard view: 632 setLoop: 1 setCycle: CT 3 1 self)
+				(leopard view: 632 setLoop: 1 setCycle: CycleTo 3 1 self)
 			)
 			(1 0)
 			(2
-				(leopard setCycle: CT 5 1 self)
+				(leopard setCycle: CycleTo 5 1 self)
 			)
 			(3
 				(leopard
@@ -735,7 +649,7 @@
 					cel: 0
 					y: (+ (leopard y?) 6)
 					setLoop: 6
-					setCycle: CT 1 1 self
+					setCycle: CycleTo 1 1 self
 				)
 			)
 			(1
@@ -770,7 +684,7 @@
 				(ego
 					view: 11
 					setLoop: 3
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo (- (ego x?) 3) (- (ego y?) 2)
 				)
 			)
@@ -806,7 +720,7 @@
 				)
 			)
 			(1
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 				(sFx number: 920 play: 127)
 				(ShakeScreen 1)
 			)
@@ -816,10 +730,10 @@
 			)
 			(3
 				(switch local21
-					(0 (EgoDead 9 630 633 End))
-					(1 (EgoDead 10 630 633 End))
-					(2 (EgoDead 11 630 633 End))
-					(else  (EgoDead 6 630 633 End))
+					(0 (EgoDead 9 630 633 EndLoop))
+					(1 (EgoDead 10 630 633 EndLoop))
+					(2 (EgoDead 11 630 633 EndLoop))
+					(else  (EgoDead 6 630 633 EndLoop))
 				)
 			)
 		)
@@ -846,7 +760,7 @@
 				(messager say: 1 6 2 0 self)
 			)
 			(4
-				(ego setPri: -1 setCycle: Beg self)
+				(ego setPri: -1 setCycle: BegLoop self)
 			)
 			(5 (HandsOn) (self dispose:))
 		)
@@ -912,10 +826,10 @@
 				(= cycles 5)
 			)
 			(1
-				(ego cycleSpeed: 10 setCycle: End self)
+				(ego cycleSpeed: 10 setCycle: EndLoop self)
 			)
 			(2
-				(rope setCycle: CT 0 -1 self)
+				(rope setCycle: CycleTo 0 -1 self)
 			)
 			(3
 				(rope dispose:)
@@ -1060,7 +974,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(leopard view: 632 setLoop: 1 setCycle: End self)
+				(leopard view: 632 setLoop: 1 setCycle: EndLoop self)
 				(sFx number: 909 play:)
 			)
 			(1
@@ -1098,7 +1012,7 @@
 					cel: 0
 					setPri: -1
 					setLoop: 6
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -1124,11 +1038,11 @@
 					(= local20 (+ local20 5))
 					(= local13 0)
 				)
-				(ego view: 29 cel: 0 loop: local22 setCycle: CT 3 1 self)
+				(ego view: 29 cel: 0 loop: local22 setCycle: CycleTo 3 1 self)
 			)
 			(1 0)
 			(2
-				(ego cycleSpeed: 12 setCycle: CT 9 1 self)
+				(ego cycleSpeed: 12 setCycle: CycleTo 9 1 self)
 			)
 			(3
 				(ego
@@ -1150,7 +1064,7 @@
 		(switch (= state newState)
 			(0
 				(localproc_07dd)
-				(ego view: 29 cel: 0 loop: local22 setCycle: End self)
+				(ego view: 29 cel: 0 loop: local22 setCycle: EndLoop self)
 			)
 			(1
 				(ego
@@ -1181,11 +1095,11 @@
 					(= local20 (+ local20 5))
 					(= local13 0)
 				)
-				(ego view: 29 cel: 0 loop: local22 setCycle: CT 3 1 self)
+				(ego view: 29 cel: 0 loop: local22 setCycle: CycleTo 3 1 self)
 			)
 			(1 0)
 			(2
-				(ego cycleSpeed: 12 setCycle: CT 9 1 self)
+				(ego cycleSpeed: 12 setCycle: CycleTo 9 1 self)
 			)
 			(3
 				(ego
@@ -1526,22 +1440,28 @@
 			(cast eachElementDo: #motionCue)
 		)
 		(return
-			(if (& (= eventType (event type?)) $0040)
-				(= eventType (& eventType $ffbf))
+			(if (& (= eventType (event type?)) direction)
+				(&= eventType $ffbf)
 				(switch (event message?)
-					(JOY_UP (return 0))
-					(JOY_DOWN (return 0))
+					(dirN (return 0))
+					(dirS (return 0))
 					(else 
 						(super dispatchEvent: event)
 					)
 				)
 			else
 				(= eventMessage (event message?))
-				(if (== eventType evKEYBOARD)
+				(if (== eventType keyDown)
 					(cond 
-						((== eventMessage KEY_8) (return 0))
-						((== eventMessage KEY_2) (return 0))
-						(else (super dispatchEvent: event))
+						((== eventMessage `8)
+							(return FALSE)
+						)
+						((== eventMessage `2)
+							(return FALSE)
+						)
+						(else
+							(super dispatchEvent: event)
+						)
 					)
 				else
 					(super dispatchEvent: event)
@@ -1551,7 +1471,7 @@
 	)
 )
 
-(instance iconJump of IconI
+(instance iconJump of IconItem
 	(properties
 		view 470
 		loop 1
@@ -1609,7 +1529,7 @@
 	)
 )
 
-(instance iconR of IconI
+(instance iconR of IconItem
 	(properties
 		view 470
 		loop 9
@@ -1672,7 +1592,7 @@
 	)
 )
 
-(instance iconL of IconI
+(instance iconL of IconItem
 	(properties
 		view 470
 		loop 8
@@ -1736,7 +1656,7 @@
 	)
 )
 
-(instance iconPush of IconI
+(instance iconPush of IconItem
 	(properties
 		view 470
 		loop 10
@@ -1772,7 +1692,7 @@
 	)
 )
 
-(instance iconPull of IconI
+(instance iconPull of IconItem
 	(properties
 		view 470
 		loop 10
@@ -1808,7 +1728,7 @@
 	)
 )
 
-(instance iconDrop of IconI
+(instance iconDrop of IconItem
 	(properties
 		view 470
 		loop 2
@@ -1872,7 +1792,7 @@
 	)
 )
 
-(instance iconQuit of IconI
+(instance iconQuit of IconItem
 	(properties
 		view 470
 		loop 7
@@ -1908,7 +1828,7 @@
 	)
 )
 
-(instance iconDummy of IconI
+(instance iconDummy of IconItem
 	(properties)
 	
 	(method (show)
@@ -2029,7 +1949,7 @@
 	)
 )
 
-(instance titleIcon of IconI
+(instance titleIcon of IconItem
 	(properties
 		view 935
 		loop 2
@@ -2041,12 +1961,12 @@
 	)
 	
 	(method (show &tmp [temp0 50])
-		(Message msgGET 630 2 6 3 1 @temp0)
-		(Display @temp0 dsWIDTH 155 dsCOORD 5 3 dsCOLOR 17)
+		(Message MsgGet 630 2 6 3 1 @temp0)
+		(Display @temp0 p_width 155 p_at 5 3 p_color 17)
 	)
 )
 
-(instance yesIcon of IconI
+(instance yesIcon of IconItem
 	(properties
 		view 935
 		loop 2
@@ -2061,7 +1981,7 @@
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display @local1 dsCOORD 20 (+ nsTop 3) dsCOLOR 17)
+		(Display @local1 p_at 20 (+ nsTop 3) p_color 17)
 		(if (& signal $0004) (self mask:))
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
@@ -2081,11 +2001,11 @@
 			(DrawCel view loop 0 nsLeft nsTop -1)
 			(= temp0 17)
 		)
-		(Display @local1 dsCOORD 20 (+ nsTop 3) dsCOLOR temp0)
+		(Display @local1 p_at 20 (+ nsTop 3) p_color temp0)
 	)
 )
 
-(instance noIcon of IconI
+(instance noIcon of IconItem
 	(properties
 		view 935
 		loop 2
@@ -2100,7 +2020,7 @@
 		(= nsRight 80)
 		(= nsBottom (+ nsTop 15))
 		(DrawCel view loop cel nsLeft nsTop -1)
-		(Display @local6 dsCOORD 20 (+ nsTop 3) dsCOLOR 17)
+		(Display @local6 p_at 20 (+ nsTop 3) p_color 17)
 		(if (& signal $0004) (self mask:))
 		(if (and pMouse (pMouse respondsTo: #stop))
 			(pMouse stop:)
@@ -2120,6 +2040,6 @@
 			(DrawCel view loop 0 nsLeft nsTop -1)
 			(= temp0 17)
 		)
-		(Display @local6 dsCOORD 20 (+ nsTop 3) dsCOLOR temp0)
+		(Display @local6 p_at 20 (+ nsTop 3) p_color temp0)
 	)
 )

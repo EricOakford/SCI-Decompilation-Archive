@@ -286,13 +286,13 @@
 	(return (-- temp0))
 )
 
-(instance controls of Controls
-	(properties)
+(instance roomControls of Controls
+	(properties
+		name "controls"
+	)
 )
 
-(instance sFx of Sound
-	(properties)
-)
+(instance sFx of Sound)
 
 (instance leopardProject of Actor
 	(properties
@@ -335,7 +335,7 @@
 			ignoreHorizon: 1
 			illegalBits: 0
 			setScale: -1 it
-			setCycle: Fwd
+			setCycle: Forward
 			setMotion:
 				MoveTo
 				(/ (+ (ego nsLeft?) (ego nsRight?)) 2)
@@ -344,13 +344,13 @@
 		)
 		(switch temp0
 			(0
-				(= global432 (- global432 global373))
+				(= global432 (- global432 spCostFlame))
 			)
 			(1
-				(= global432 (- global432 global375))
+				(= global432 (- global432 spCostForce))
 			)
 			(2
-				(= global432 (- global432 global380))
+				(= global432 (- global432 spCostLightning))
 			)
 		)
 		(super init:)
@@ -476,9 +476,9 @@
 		(switch (= state newState)
 			(0
 				(cond 
-					((== (client loop?) 2) (client loop: 9 cel: 0 setCycle: End self))
-					((== (client loop?) 4) (client loop: 10 cel: 0 setCycle: End self))
-					(else (client loop: 14 cel: 0 setCycle: End self))
+					((== (client loop?) 2) (client loop: 9 cel: 0 setCycle: EndLoop self))
+					((== (client loop?) 4) (client loop: 10 cel: 0 setCycle: EndLoop self))
+					(else (client loop: 14 cel: 0 setCycle: EndLoop self))
 				)
 				(globalSound number: 930 setLoop: 1 play:)
 			)
@@ -487,7 +487,7 @@
 	)
 )
 
-(instance rm700 of Rm
+(instance rm700 of Room
 	(properties
 		noun 79
 		picture 700
@@ -497,7 +497,7 @@
 	
 	(method (init &tmp temp0)
 		(= number curRoomNum)
-		(= controls controls)
+		(= controls roomControls)
 		(= perspective picAngle)
 		(= curPic picture)
 		(= overlays -1)
@@ -1099,13 +1099,13 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego setLoop: 3 cel: 0 setCycle: End self)
+				(ego setLoop: 3 cel: 0 setCycle: EndLoop self)
 				(= register (Narrator y?))
 			)
 			(1
 				(Narrator y: 20)
 				(messager say: 4 6 96)
-				(ego setLoop: 5 cel: 3 setCycle: End self)
+				(ego setLoop: 5 cel: 3 setCycle: EndLoop self)
 			)
 			(2
 				(Narrator y: register)
@@ -1151,7 +1151,7 @@
 					setMotion: 0
 					view: 4
 					loop: (mod (ego loop?) 2)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= register (Narrator y?))
 			)
@@ -1162,7 +1162,7 @@
 			)
 			(2
 				(Narrator y: register)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego normalize:)
@@ -1289,7 +1289,7 @@
 					)
 					((== noun 6) (messager say: 6 4 79))
 					((== cel 0)
-						(self setCycle: End self)
+						(self setCycle: EndLoop self)
 						(= local4 1)
 						(globalSound number: 401 setLoop: 1 play:)
 						(ego addHonor: 10)
@@ -1351,32 +1351,32 @@
 					cel: 0
 					cycleSpeed: 10
 					setMotion: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(switch monsterNum
 					(595
-						(EgoDead 1 700 633 End 158)
+						(EgoDead 1 700 633 EndLoop 158)
 					)
 					(590
 						(if (Btst 96)
-							(EgoDead 2 700 707 End 158)
+							(EgoDead 2 700 707 EndLoop 158)
 						else
-							(EgoDead 84 700 707 End 158)
+							(EgoDead 84 700 707 EndLoop 158)
 						)
 					)
 					(565
-						(EgoDead 3 700 707 End 152)
+						(EgoDead 3 700 707 EndLoop 152)
 					)
 					(580
-						(EgoDead 5 700 937 End 152)
+						(EgoDead 5 700 937 EndLoop 152)
 					)
 					(585
-						(EgoDead 6 700 455 End 155)
+						(EgoDead 6 700 455 EndLoop 155)
 					)
 					(575
-						(EgoDead 4 700 937 End 152)
+						(EgoDead 4 700 937 EndLoop 152)
 					)
 				)
 				(self dispose:)
@@ -1419,10 +1419,10 @@
 						cel: 0
 						setMotion: 0
 						init:
-						setCycle: End
+						setCycle: EndLoop
 					)
 				else
-					(it setCycle: Beg)
+					(it setCycle: BegLoop)
 				)
 				(globalSound setLoop: 1 number: 931 play:)
 				(switch monsterNum
@@ -1523,7 +1523,7 @@
 				(if register (ego get: 0 register))
 			)
 			(1
-				(ego view: 4 cel: 0 setCycle: End self)
+				(ego view: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(2 (= cycles 10))
 			(3
@@ -1535,7 +1535,7 @@
 					(messager say: 4 6 19 0 self)
 				)
 			)
-			(4 (ego setCycle: Beg self))
+			(4 (ego setCycle: BegLoop self))
 			(5
 				(ego normalize:)
 				(HandsOn)
@@ -1564,7 +1564,7 @@
 					view: 35
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(cSound setLoop: -1 fade: 127 1 30 0 changeTo: 927)
 			)
@@ -1617,7 +1617,7 @@
 				(cond 
 					((== monsterNum 74) (PalVary pvREVERSE 3) (= seconds 4))
 					(local0 (= seconds 3))
-					(else (ego setCycle: Beg self))
+					(else (ego setCycle: BegLoop self))
 				)
 			)
 			(7
@@ -1640,7 +1640,7 @@
 				((ScriptID 7 7) init: 5 40)
 				(= cycles 10)
 			)
-			(9 (ego setCycle: Beg self))
+			(9 (ego setCycle: BegLoop self))
 			(10
 				(ego x: 165 y: 135 normalize:)
 				(= cycles 10)
@@ -1677,7 +1677,7 @@
 					priority: 13
 					setScript: loopSound
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(self dispose:)
 			)
@@ -1700,7 +1700,7 @@
 					view: 35
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2 (self dispose:))
@@ -1743,7 +1743,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ego view: 4 loop: 1 cel: 0 setCycle: End self)
+				(ego view: 4 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(if local15 (self cue:) else (= seconds 5))
@@ -1766,10 +1766,10 @@
 						signal: 20496
 						setScript: loopSound
 						init:
-						setCycle: Fwd
+						setCycle: Forward
 					)
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego normalize:)
@@ -1789,9 +1789,9 @@
 				(cond 
 					(
 						(and
-							(< global432 global373)
-							(< global432 global380)
-							(< global432 global375)
+							(< global432 spCostFlame)
+							(< global432 spCostLightning)
+							(< global432 spCostForce)
 						)
 						(= local27 1)
 						(= local63 15)
@@ -1817,14 +1817,14 @@
 							((< (ego y?) (it y?)) 2)
 							(else 0)
 						)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				((leopardProject new:) init:)
 				(= cycles 5)
 			)
-			(3 (it setCycle: Beg self))
+			(3 (it setCycle: BegLoop self))
 			(4
 				(it view: 590 loop: register setCycle: Walk)
 				(= temp0
@@ -1926,7 +1926,7 @@
 						setScale: -1 ego
 						moveSpeed: (+ (ego moveSpeed?) 3)
 						cycleSpeed: (+ (ego cycleSpeed?) 5)
-						setCycle: Fwd
+						setCycle: Forward
 						setCel: 0
 						setLoop: 2
 						noun: 84
@@ -2117,12 +2117,12 @@
 							(cond 
 								(
 								(<= (GetDistance x y (ego x?) (ego y?)) local63)
-									(self setCycle: End self)
-									(if (IsObject newProp_2) (newProp_2 setCycle: End))
+									(self setCycle: EndLoop self)
+									(if (IsObject newProp_2) (newProp_2 setCycle: EndLoop))
 								)
 								((!= cel 0)
-									(self setCycle: Beg self)
-									(if (IsObject newProp_2) (newProp_2 setCycle: Beg))
+									(self setCycle: BegLoop self)
+									(if (IsObject newProp_2) (newProp_2 setCycle: BegLoop))
 								)
 							)
 						)
@@ -2282,7 +2282,7 @@
 					(self
 						setCel:
 						setLoop: (if (> x (ego x?)) 0 else 1)
-						setCycle: End self
+						setCycle: EndLoop self
 						setMotion: 0
 					)
 					((= newProp_2 (Prop new:))
@@ -2295,7 +2295,7 @@
 						signal: 16400
 						priority: priority
 						cycleSpeed: cycleSpeed
-						setCycle: End
+						setCycle: EndLoop
 						init:
 					)
 				)
@@ -2304,7 +2304,7 @@
 					(self
 						setCel: 0
 						setLoop: 2
-						setCycle: Fwd
+						setCycle: Forward
 						setMotion: MChase ego local63 self
 					)
 					(if (IsObject newProp_2)
@@ -2318,8 +2318,8 @@
 						(> (GetDistance x y (ego x?) (ego y?)) local63)
 						(not local12)
 					)
-					(self setCycle: Beg self)
-					(if (IsObject newProp_2) (newProp_2 setCycle: Beg))
+					(self setCycle: BegLoop self)
+					(if (IsObject newProp_2) (newProp_2 setCycle: BegLoop))
 				)
 				((<= (ego z?) local63)
 					(= local38 0)

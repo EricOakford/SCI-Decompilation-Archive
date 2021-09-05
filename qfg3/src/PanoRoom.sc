@@ -34,9 +34,9 @@
 	(switch where
 		(areaJUNGLE
 			(cond 
-				;bring up Johari if she's been released, and you haven't been to
-				; the Leopardman village
-				((and (Btst fJohariReleased) (not (Btst fEnteredLeopardmanVillage)))
+				;bring up Johari if she's been released, and you haven't gotten
+				; the message that she's watching you in the jungle
+				((and (Btst fJohariReleased) (not (Btst fJohariWatchingEgo)))
 					(= monsterNum 6)
 				)
 				;if you haven't relased Manu from his cage, bring him up
@@ -57,7 +57,7 @@
 						)
 					)
 				)
-				((Btst fEnteredLeopardmanVillage)
+				((Btst fJohariWatchingEgo)
 					;randomly bring up Johari or a monster
 					(if (Random 0 1)
 						(= monsterNum 6)

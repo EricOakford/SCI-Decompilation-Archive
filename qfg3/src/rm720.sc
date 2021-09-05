@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 720)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use TellerIcon)
 (use PolyPath)
@@ -29,7 +29,7 @@
 	[local25 5] = [0 -5 -6 -7 999]
 	[local30 5]
 )
-(instance rm720 of Rm
+(instance rm720 of Room
 	(properties
 		picture 720
 	)
@@ -168,7 +168,7 @@
 				(ego
 					view: 731
 					setPri: 10
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 160 0 self
 				)
 			)
@@ -213,7 +213,7 @@
 					loop: 3
 					cel: 0
 					yStep: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 95 49 self
 				)
 			)
@@ -244,7 +244,7 @@
 			)
 			(2
 				(sFx number: 928 play:)
-				(ego loop: 3 cel: 0 setCycle: Fwd cycleSpeed: 3)
+				(ego loop: 3 cel: 0 setCycle: Forward cycleSpeed: 3)
 				(= ticks 120)
 			)
 			(3
@@ -263,7 +263,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(ladder init: setCycle: End self)
+				(ladder init: setCycle: EndLoop self)
 			)
 			(1
 				(sFx number: 920 play:)
@@ -291,11 +291,11 @@
 				(ego setMotion: PolyPath 215 155 self ignoreActors: 1)
 			)
 			(1
-				(ego view: 8 loop: 1 cel: 0 setCycle: CT 6 1 self)
+				(ego view: 8 loop: 1 cel: 0 setCycle: CycleTo 6 1 self)
 			)
 			(2
-				(ego setCycle: End)
-				(rope setPri: 0 setCycle: End self init:)
+				(ego setCycle: EndLoop)
+				(rope setPri: 0 setCycle: EndLoop self init:)
 				(sFx number: 721 play:)
 			)
 			(3
@@ -306,7 +306,7 @@
 				)
 			)
 			(4
-				(ego view: 7 setLoop: 1 cel: 0 setCycle: End self)
+				(ego view: 7 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(sFx number: 928 play:)
@@ -315,7 +315,7 @@
 					setPri: 2
 					y: 100
 					yStep: 3
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 193 0 self
 				)
 			)
@@ -361,7 +361,7 @@
 	(method (doit)
 		(if
 		(and (not (self cycler?)) (== (Random 1 120) 5))
-			(self loop: (Random 0 3) cel: 0 setCycle: End)
+			(self loop: (Random 0 3) cel: 0 setCycle: EndLoop)
 			(sFx number: 929 play:)
 		)
 		(super doit:)

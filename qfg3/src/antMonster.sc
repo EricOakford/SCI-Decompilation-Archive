@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 565)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Combat)
 (use Motion)
@@ -59,7 +59,7 @@
 	)
 	
 	(method (cue)
-		(self setCycle: Beg)
+		(self setCycle: BegLoop)
 		(splat
 			x: 188
 			y: 95
@@ -110,7 +110,7 @@
 					)
 				)
 				(gWarriorObj getHurt: (gMonster secDamage?))
-				(self setCycle: End self)
+				(self setCycle: EndLoop self)
 			else
 				(self setMotion: MoveTo (- x 160) y)
 			)
@@ -129,7 +129,7 @@
 				(= ticks (/ 90 arcadeDifficulty))
 			)
 			(1
-				(theHead x: 152 y: 126 setCycle: CT 2 1 self)
+				(theHead x: 152 y: 126 setCycle: CycleTo 2 1 self)
 			)
 			(2
 				(gWarriorObj autoDodge:)
@@ -152,7 +152,7 @@
 				(= ticks 60)
 			)
 			(3
-				(theHead y: 120 setCycle: CT 2 1 self)
+				(theHead y: 120 setCycle: CycleTo 2 1 self)
 			)
 			(4
 				(gWarriorObj autoDodge:)
@@ -175,7 +175,7 @@
 				(= ticks 60)
 			)
 			(5
-				(theHead y: 126 setCycle: CT 2 1 self)
+				(theHead y: 126 setCycle: CycleTo 2 1 self)
 			)
 			(6
 				(gWarriorObj autoDodge:)
@@ -198,7 +198,7 @@
 				(= ticks (/ 180 arcadeDifficulty))
 			)
 			(7
-				(abdomen setCycle: End abdomen)
+				(abdomen setCycle: EndLoop abdomen)
 				(= ticks (/ 90 arcadeDifficulty))
 			)
 			(8 (self init:))
@@ -212,7 +212,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(theHead x: 174 y: 110 setCycle: CT 0 1)
+				(theHead x: 174 y: 110 setCycle: CycleTo 0 1)
 				(= ticks 60)
 			)
 			(1
