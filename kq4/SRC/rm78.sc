@@ -33,13 +33,9 @@
 	ripple2
 	newProp_4
 )
-(instance gotFruit of Sound
-	(properties)
-)
+(instance gotFruit of Sound)
 
-(instance theme of Sound
-	(properties)
-)
+(instance theme of Sound)
 
 (instance charm of Sound
 	(properties
@@ -912,20 +908,18 @@ code_08e2:
 				(cond 
 					((== (ego loop?) 0)
 						(ego
-							setMotion:
-								JumpTo
-								[jumpArea local1]
-								[jumpArea (+ (ego setLoop: 2 cel: 255 setCycle: EndLoop) 1)]
-								self
+							setMotion: JumpTo [jumpArea local1] [jumpArea (+ local1 1)]
+							setLoop: 2
+							cel: 255
+							setCycle: EndLoop self
 						)
 					)
 					((== (ego loop?) 1)
 						(ego
-							setMotion:
-								JumpTo
-								[jumpArea local1]
-								[jumpArea (+ (ego setLoop: 3 cel: 255 setCycle: EndLoop) 1)]
-								self
+							setMotion: JumpTo [jumpArea local1] [jumpArea (+ local1 1)]
+							setLoop: 3
+							cel: 255
+							setCycle: EndLoop self
 						)
 					)
 					((== (ego loop?) 2)

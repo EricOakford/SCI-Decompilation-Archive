@@ -58,8 +58,6 @@
 )
 
 (instance door of Prop
-	(properties)
-	
 	(method (cue)
 		(if (!= (door cel?) (door lastCel:))
 			(self setCycle: EndLoop self)
@@ -70,21 +68,13 @@
 	)
 )
 
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance wave3 of Prop
-	(properties)
-)
+(instance wave3 of Prop)
 
 (instance Room7 of Room
 	(properties
@@ -100,7 +90,9 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 107))
+		(if isNightTime
+			(curRoom overlay: 107)
+		)
 		(self setRegions: BEACH GULL)
 		(Load VIEW 2)
 		(Load VIEW 5)
@@ -705,8 +697,6 @@
 )
 
 (instance fishWalkHouse of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -728,7 +718,10 @@
 				(= fishermanState 3)
 				(aFisher dispose:)
 			)
-			(5 (door stopUpd:))
+			(5
+				(door startUpd:) ;so the door doesn't disappear
+				;(door stopUpd:)
+			)
 		)
 	)
 )

@@ -25,16 +25,12 @@
 	ripple
 	edgarFace
 	edgarHands
-	wave1
-	wave2
+	wave3
+	wave4
 )
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
 (instance fairyCage of Cage
 	(properties
@@ -139,8 +135,6 @@
 )
 
 (instance egoActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -342,9 +336,9 @@
 					ignoreActors:
 					init:
 				)
-				(= wave1 (Prop new:))
-				(= wave2 (Prop new:))
-				(wave1
+				(= wave3 (Prop new:))
+				(= wave4 (Prop new:))
+				(wave3
 					view: 787
 					loop: 4
 					cel: 1
@@ -354,7 +348,7 @@
 					setCycle: Forward
 					init:
 				)
-				(wave2
+				(wave4
 					view: 787
 					loop: 5
 					cel: 3
@@ -436,8 +430,8 @@
 			)
 			(42
 				(if modelessDialog (modelessDialog dispose:))
-				(wave1 dispose:)
-				(wave2 dispose:)
+				(wave3 dispose:)
+				(wave4 dispose:)
 				(Timer setCycle: self 2)
 			)
 			(43

@@ -41,13 +41,9 @@
 	ripple
 	aCupid
 )
-(instance fallSound of Sound
-	(properties)
-)
+(instance fallSound of Sound)
 
-(instance cupidCage of Cage
-	(properties)
-)
+(instance cupidCage of Cage)
 
 (instance theme of Sound
 	(properties
@@ -71,7 +67,9 @@
 		(super init:)
 		(ego view: 2 init:)
 		(ego edgeHit: 0 setScript: fall)
-		(if isNightTime (curRoom overlay: 103))
+		(if isNightTime
+			(curRoom overlay: 103)
+		)
 		(curRoom setScript: egoActions)
 		(Load VIEW 7)
 		(Load VIEW 5)
@@ -150,15 +148,27 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'look<under,in/water') (Print 3 0))
-					((or (Said 'look/pool') (Said 'look/water')) (if (== (ego view?) 2) (Print 3 1) else (Print 3 2)))
+					((Said 'look<under,in/water')
+						(Print 3 0)
+					)
+					((or (Said 'look/pool') (Said 'look/water'))
+						(if (== (ego view?) 2)
+							(Print 3 1)
+						else
+							(Print 3 2)
+						)
+					)
 					(
 						(or
 							(Said 'look/room')
 							(Said 'look/around')
 							(Said 'look[<around][/!*]')
 						)
-						(if (== (ego view?) 2) (Print 3 3) else (Print 3 4))
+						(if (== (ego view?) 2)
+							(Print 3 3)
+						else
+							(Print 3 4)
+						)
 					)
 					(
 						(or
@@ -168,25 +178,45 @@
 						)
 						(Print 3 5)
 					)
-					((Said 'look/column') (Print 3 6))
-					((Said 'get/water') (Print 3 7))
+					((Said 'look/column')
+						(Print 3 6)
+					)
+					((Said 'get/water')
+						(Print 3 7)
+					)
 					(
 						(or
 							(Said 'enter/bathe')
 							(Said 'bathe,dive')
 							(Said 'enter/bathe')
 						)
-						(if (== (ego view?) 2) (Print 3 8) else (Print 3 9))
+						(if (== (ego view?) 2)
+							(Print 3 8)
+						else
+							(Print 3 9)
+						)
 					)
-					((Said 'look/stair') (Print 3 10))
-					((Said 'exit,(climb,get<out)') (if (!= (ego view?) 2) (Print 3 10) else (Print 3 11)))
+					((Said 'look/stair')
+						(Print 3 10)
+					)
+					((Said 'exit,(climb,get<out)')
+						(if (!= (ego view?) 2)
+							(Print 3 10)
+						else
+							(Print 3 11)))
 					((Said 'hop,dive/pool,water') (Print 3 12))
 					((or (Said 'drink') (Said 'get/drink'))
 						(cond 
-							((!= (ego view?) 2) (Print 3 13))
-							(
-							(& (= local0 (IsObjectOnControl ego 20)) $0008) (= local4 1) (egoActions changeState: 10))
-							(else (Print 800 1))
+							((!= (ego view?) 2)
+								(Print 3 13)
+							)
+							((& (= local0 (IsObjectOnControl ego 20)) cCYAN)
+								(= local4 1)
+								(egoActions changeState: 10)
+							)
+							(else
+								(Print 800 1)
+							)
 						)
 					)
 					((Said 'get/arrow,arrow')
@@ -208,7 +238,9 @@
 									(Print 800 1)
 								)
 							)
-							((ego has: iCupidBow) (Print 3 14))
+							((ego has: iCupidBow)
+								(Print 3 14)
+							)
 							(
 								(and
 									(not (cast contains: aCupid))
@@ -216,12 +248,20 @@
 								)
 								(Print 3 15)
 							)
-							((!= cupidState cupidScared) (Print 3 16))
-							((ego has: iCupidBow) (Print 3 17))
-							(else (Print 3 18))
+							((!= cupidState cupidScared)
+								(Print 3 16)
+							)
+							((ego has: iCupidBow)
+								(Print 3 17)
+							)
+							(else
+								(Print 3 18)
+							)
 						)
 					)
-					((Said 'rob/arrow') (Print 3 19))
+					((Said 'rob/arrow')
+						(Print 3 19)
+					)
 					((Said 'look/dirt')
 						(if ((Inventory at: iCupidBow) ownedBy: 3)
 							(Print 3 20)
@@ -231,42 +271,52 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if ((Inventory at: iCupidBow) ownedBy: 3)
 			((Inventory at: iCupidBow) moveTo: 202)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance fall of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
 			((and (== local3 0) (== local4 0))
 				(cond 
-					(
-					(and (& (ego onControl: 0) cGREEN) (== (ego view?) 2)) (= local3 1) (fall changeState: 1))
-					(
-					(and (== (ego onControl: origin) cBLACK) (!= (ego view?) 21)) (ego view: 2))
-					((& (ego onControl: origin) cLCYAN) (ego view: 5))
-					((& cLBLUE (ego onControl: origin)) (ego view: 6))
-					((& cCYAN (ego onControl: origin)) (ego view: 7))
-					((& cRED (ego onControl: 0)) (ego view: 2))
+					((and (& (ego onControl: 0) cGREEN) (== (ego view?) 2)) 
+						(= local3 1)
+						(fall changeState: 1)
+					)
+					((and (== (ego onControl: origin) cBLACK) (!= (ego view?) 21))
+						(ego view: 2)
+					)
+					((& (ego onControl: origin) cLCYAN)
+						(ego view: 5)
+					)
+					((& cLBLUE (ego onControl: origin))
+						(ego view: 6)
+					)
+					((& cCYAN (ego onControl: origin))
+						(ego view: 7)
+					)
+					((& cRED (ego onControl: 0))
+						(ego view: 2)
+					)
 				)
 			)
-			(
-			(and (== (ego onControl: origin) cLRED) (< (fall state?) 2))
+			((and (== (ego onControl: origin) cLRED) (< (fall state?) 2))
 				(ego setMotion: 0)
 				(self changeState: 2)
-				(if (timers contains: local5) (local5 dispose: delete:))
+				(if (timers contains: local5)
+					(local5 dispose: delete:)
+				)
 			)
 		)
 	)
@@ -279,7 +329,7 @@
 				(HandsOff)
 				(ego
 					view: 17
-					loop: (+ (& (ego loop?) $0001) 2)
+					loop: (+ (& (ego loop?) 1) 2)
 					illegalBits: 0
 					setCycle: Forward
 				)
@@ -290,7 +340,7 @@
 				(ego
 					view: 19
 					setMotion: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 255
 					setCycle: EndLoop self
 				)
@@ -312,8 +362,6 @@
 )
 
 (instance doCupid of Script
-	(properties)
-	
 	(method (init param1)
 		(Load VIEW 160)
 		(Load VIEW 161)

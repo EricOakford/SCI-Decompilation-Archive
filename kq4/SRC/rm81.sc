@@ -15,7 +15,7 @@
 )
 
 (local
-	roomDialog
+	saveBits
 	h1
 	h2
 	door
@@ -391,8 +391,6 @@
 )
 
 (instance lockUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -421,7 +419,8 @@
 			)
 			(4
 				(User canControl: TRUE canInput: TRUE)
-				(door stopUpd:)
+				(door startUpd:)	;so that the door doesn't disappear
+				;(door stopUpd:)
 				(h1 dispose:)
 				(h2 dispose:)
 				((ScriptID 0 4) setReal: self 2)
@@ -443,7 +442,7 @@
 				)
 			)
 			(7
-				(= roomDialog (Print 81 36 #at -1 25 #dispose))
+				(= saveBits (Print 81 36 #at -1 25 #dispose))
 				(edgar
 					cycleSpeed: 7
 					setLoop: 0

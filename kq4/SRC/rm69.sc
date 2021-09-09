@@ -241,7 +241,7 @@
 								)
 							)
 						)
-						((Said 'climb[/(hemp,ladder)]>')
+						((Said 'climb[/(hemp,ladder)>')
 							(cond 
 								((not ropeLadderLowered) (event claimed: TRUE) (Print 800 3))
 								((or (Said '<down') (not climbedDown))
@@ -536,8 +536,6 @@
 )
 
 (instance DropRope of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -550,8 +548,9 @@
 				(ropeLadder cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(3
-				(ropeLadder stopUpd:)
-				(= ropeLadderLowered 1)
+				(ropeLadder startUpd:)	;so that the ladder doesn't disappear
+				;(ropeLadder stopUpd:)
+				(= ropeLadderLowered TRUE)
 				(ego view: 41 loop: 0 cel: 255 setCycle: EndLoop self)
 			)
 			(4

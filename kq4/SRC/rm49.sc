@@ -519,7 +519,7 @@
 							)
 							(Print 49 37)
 						)
-						((Said 'throw,deliver,feed/[')
+						((Said 'throw,deliver,feed/bone')
 							(if (ego has: iBone)
 								(if (> (ego distanceTo: dog) 40)
 									(HandsOff)

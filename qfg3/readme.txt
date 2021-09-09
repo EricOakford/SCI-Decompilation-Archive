@@ -3,4 +3,4 @@
   
   Interpreter version 1.001.050
 
-Currently being worked on.
+The character allocation's stats do not display properly.

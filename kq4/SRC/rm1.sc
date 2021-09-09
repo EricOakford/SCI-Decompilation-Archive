@@ -16,23 +16,15 @@
 	aDolphin
 	wave
 	i
-	gEgoViewer
+	saveViewer
 )
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance wave3 of Prop
-	(properties)
-)
+(instance wave3 of Prop)
 
 (instance Room1 of Room
 	(properties
@@ -50,8 +42,10 @@
 		(super init:)
 		(if isNightTime (curRoom overlay: 101))
 		(self setRegions: BEACH WATER GULL MEADOW)
-		(= gEgoViewer (ego viewer?))
-		(if (== prevRoomNum 2) (= currentStatus egoNormal))
+		(= saveViewer (ego viewer?))
+		(if (== prevRoomNum 2)
+			(= currentStatus egoNormal)
+		)
 		(= wave (Prop new:))
 		(wave1
 			isExtra: TRUE
@@ -183,12 +177,17 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (Said 'look>'))
+			(if (and (== (event type?) saidEvent) (Said 'look>'))
 				(cond 
-					((Said '/grass') (Print 1 0))
-					((Said '/brook') (Print 1 1))
-					((Said '[<around][/room]') (Print 1 2))
+					((Said '/grass')
+						(Print 1 0)
+					)
+					((Said '/brook')
+						(Print 1 1)
+					)
+					((Said '[<around][/room]')
+						(Print 1 2)
+					)
 				)
 			else
 				FALSE
@@ -198,8 +197,6 @@
 )
 
 (instance rideDolphin of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -209,7 +206,7 @@
 			(2
 				(= aDolphin (Actor new:))
 				(= currentStatus egoSwimming)
-				(ego viewer: gEgoViewer)
+				(ego viewer: saveViewer)
 				(ego setStep: 3 2)
 				(aDolphin
 					view: 311
@@ -244,13 +241,10 @@
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -263,7 +257,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(self changeState: 1)

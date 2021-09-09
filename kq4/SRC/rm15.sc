@@ -462,8 +462,6 @@
 )
 
 (instance frogActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -567,7 +565,11 @@
 			)
 			(11
 				(aFrog dispose:)
-				((Inventory at: iGoldBall) moveTo: ego)
+				;EO: The ball shouldn't be placed back into the inventory.
+				; This seems to be an original script error.
+;;;				((Inventory at: iGoldBall)
+;;;					moveTo: ego
+;;;				)
 				(ego view: 27 ignoreActors: 0 setCycle: EndLoop self)
 			)
 			(12

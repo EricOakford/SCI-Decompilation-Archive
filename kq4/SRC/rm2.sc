@@ -32,8 +32,7 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (Said 'look>'))
+			(if (and (== (event type?) saidEvent) (Said 'look>'))
 				(cond 
 					(
 						(or
@@ -53,11 +52,11 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (cast contains: pan)
 			(= hourLastMetPan gameHours)
 			(= minutesLastMetPan gameMinutes)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
