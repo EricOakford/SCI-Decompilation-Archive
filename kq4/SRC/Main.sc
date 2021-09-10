@@ -638,7 +638,6 @@
 )
 
 (instance KQ4 of Game
-
 	(method (init)
 		(= systemWindow SysWindow)
 		(super init:)
@@ -709,7 +708,7 @@
 			(self newRoom: 99)
 			(= userFont bigFont)
 		else
-		(self newRoom: 700) ;Set to 700 to skip the CP -- Kawa
+			(self newRoom: 700) ;Set to 700 to skip the CP -- Kawa
 		;(self newRoom: 701)
 		)
 	)
@@ -4069,7 +4068,6 @@ code_1bc6:
 )
 
 (instance smallBase of Code
-
 	(method (doit theActor)
 		(theActor brTop: (- (theActor y?) (theActor yStep?)))
 		(theActor brLeft: (- (theActor x?) (/ (theActor xStep?) 2)))

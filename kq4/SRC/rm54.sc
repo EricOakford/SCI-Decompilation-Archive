@@ -40,6 +40,9 @@
 	diamondPouch
 	busy
 )
+;EO: Using the Avoider in this room crashes the game with an "Out of Heap Space" error!
+;In fact, this room uses so much heap that saving, restoring, and inventory are disabled.
+
 (instance Room54 of Room
 	(properties
 		picture 54
@@ -451,8 +454,6 @@
 )
 
 (instance startClean of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -822,9 +823,6 @@
 )
 
 (instance bounceBitchScript of Script
-	(properties)
-	;EO: This script crashes the game with an "Out of Heap Space" error!
-	;In fact, this room uses so much heap that saving, restoring, and inventory are disabled.
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 60))

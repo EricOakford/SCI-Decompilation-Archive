@@ -7,13 +7,11 @@
 
 (public
 	readBook 0
-	readBook 1
-	readNote 2
+	;readBook 1	;decompiler goof?
+	readNote 1	;was 2
 )
 
 (instance readBook of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -212,8 +210,6 @@
 )
 
 (instance readNote of Script
-	(properties)
-	
 	(method (cue)
 		(switch (Random 1 9)
 			(1 (Print 306 30))
