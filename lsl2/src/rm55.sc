@@ -349,7 +349,7 @@
 				(else (self changeState: 15))
 			)
 		)
-		(if (Said 'eat/!') (Print 55 28))
+		(if (Said 'eat/noword') (Print 55 28))
 		(if
 		(Said 'explore,explore,get/gravy,special,bobbypin')
 			(cond 

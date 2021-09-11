@@ -99,8 +99,6 @@
 )
 
 (instance rm102Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -110,10 +108,18 @@
 			)
 			(self cue:)
 		)
-		(if (== doorControl cLMAGENTA) (ego ignoreControl: cLMAGENTA))
-		(if (== doorControl cYELLOW) (ego ignoreControl: cYELLOW))
-		(if (& (ego onControl:) cGREEN) (curRoom newRoom: 103))
-		(if (& (ego onControl:) cMAGENTA) (curRoom newRoom: 104))
+		(if (== doorControl cLMAGENTA)
+			(ego ignoreControl: cLMAGENTA)
+		)
+		(if (== doorControl cYELLOW)
+			(ego ignoreControl: cYELLOW)
+		)
+		(if (& (ego onControl:) cGREEN)
+			(curRoom newRoom: 103)
+		)
+		(if (& (ego onControl:) cMAGENTA)
+			(curRoom newRoom: 104)
+		)
 	)
 	
 	(method (changeState newState)
@@ -122,7 +128,9 @@
 				(HandsOn)
 				(ego observeControl: cYELLOW cLMAGENTA)
 			)
-			(2 (= seconds (Random 10 30)))
+			(2
+				(= seconds (Random 10 30))
+			)
 			(3
 				(if (!= currentStatus egoSITTING)
 					(-- state)
@@ -138,7 +146,7 @@
 					view: 206
 					loop: 0
 					illegalBits: 0
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setCycle: Walk
 					posn: 60 119
 					init:
@@ -170,16 +178,20 @@
 			)
 			(10
 				(User canInput: TRUE)
-				(if (!= currentStatus egoSITTING) (User canControl: 1))
+				(if (!= currentStatus egoSITTING)
+					(User canControl: TRUE)
+				)
 				(aProducer
 					setLoop: 1
 					setCycle: Walk
 					cycleSpeed: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 60 120
 				)
 			)
-			(11 (aProducer dispose:))
+			(11
+				(aProducer dispose:)
+			)
 			(12
 				(HandsOff)
 				(ego illegalBits: 0 setMotion: MoveTo 120 123 self)
@@ -241,7 +253,9 @@
 				(aDoorWest stopUpd:)
 				(= currentStatus egoNORMAL)
 			)
-			(21 (= seconds (Random 11 33)))
+			(21
+				(= seconds (Random 11 33))
+			)
 			(22
 				(if (!= currentStatus egoSITTING)
 					(-- state)
@@ -271,7 +285,9 @@
 			)
 			(26
 				(User canInput: TRUE)
-				(if (== currentStatus egoNORMAL) (User canControl: TRUE))
+				(if (== currentStatus egoNORMAL)
+					(User canControl: TRUE)
+				)
 				(aProducer dispose:)
 				(Print 102 18 #at -1 152)
 			)
@@ -279,8 +295,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'open/door')
@@ -292,7 +307,9 @@
 			)
 		)
 		(if (Said 'look>')
-			(if (Said '/art,brick') (Print 102 2))
+			(if (Said '/art,brick')
+				(Print 102 2)
+			)
 			(if (Said '/door')
 				(if doorControl
 					(Print 102 3)
@@ -302,17 +319,27 @@
 					(Print 102 6 #at -1 152)
 				)
 			)
-			(if (Said '/krod,bimbo,computer') (Print 102 7))
-			(if (Said '/barstool') (Print 102 8))
+			(if (Said '/krod,bimbo,computer')
+				(Print 102 7)
+			)
+			(if (Said '/barstool')
+				(Print 102 8)
+			)
 			(if (Said '[/airport,krod,lobby,building]')
 				(Print 102 9)
 			)
 		)
 		(if (Said 'bath')
 			(cond 
-				((== currentStatus egoSITTING) (YouAre))
-				((not (ego inRect: 101 90 255 99)) (NotClose))
-				((!= currentStatus egoNORMAL) (NotNow))
+				((== currentStatus egoSITTING)
+					(YouAre)
+				)
+				((not (ego inRect: 101 90 255 99))
+					(NotClose)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
 				(else
 					(if (not satInGreenRoom)
 						(= satInGreenRoom TRUE)
@@ -330,8 +357,12 @@
 				(Said 'disembark[/barstool]')
 			)
 			(cond 
-				((== currentStatus egoNORMAL) (YouAre))
-				((!= currentStatus egoSITTING) (NotNow))
+				((== currentStatus egoNORMAL)
+					(YouAre)
+				)
+				((!= currentStatus egoSITTING)
+					(NotNow)
+				)
 				(else
 					(Ok)
 					(ego setScript: sittingScript)
@@ -343,17 +374,21 @@
 )
 
 (instance sittingScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= seconds (= cycles 0))
 				(cond 
-					((< (ego x?) 123) (ego setMotion: MoveTo 123 (ego y?) self))
-					((> (ego x?) 200) (ego setMotion: MoveTo 200 (ego y?) self))
-					(else (self cue:))
+					((< (ego x?) 123)
+						(ego setMotion: MoveTo 123 (ego y?) self)
+					)
+					((> (ego x?) 200)
+						(ego setMotion: MoveTo 200 (ego y?) self)
+					)
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(1
@@ -395,7 +430,7 @@
 				)
 			)
 			(6
-				(NormalEgo 2)
+				(NormalEgo loopS)
 				(ego observeControl: cYELLOW cLMAGENTA)
 			)
 		)

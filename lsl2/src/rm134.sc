@@ -92,8 +92,8 @@
 			view: 136
 			setLoop: 0
 			cel: 0
-			illegalBits: -32768
-			observeControl: 512
+			illegalBits: cWHITE
+			observeControl: cLBLUE
 			posn: 88 6
 			setPri: 11
 			setMotion: 0
@@ -101,16 +101,16 @@
 		)
 		(User canControl: TRUE canInput: TRUE)
 		(= currentStatus egoDIVING)
-		(self setRegions: 300 setScript: rm134Script)
+		(self setRegions: SHIP setScript: rm134Script)
 	)
 )
 
 (instance rm134Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== (++ drownTimer) 200) (Print 134 0))
+		(if (== (++ drownTimer) 200)
+			(Print 134 0)
+		)
 		(if (and (== drownTimer 400) (!= currentStatus egoDYING))
 			(= currentStatus egoDYING)
 			(ego hide:)
@@ -140,12 +140,10 @@
 				)
 			)
 			(2
-				(if
-				(and (> (ego heading?) 90) (< (ego heading?) 270))
+				(if (and (> (ego heading?) 90) (< (ego heading?) 270))
 					(ego setLoop: 0)
 				)
-				(if
-				(or (< (ego heading?) 90) (> (ego heading?) 270))
+				(if (or (< (ego heading?) 90) (> (ego heading?) 270))
 					(ego setLoop: 1)
 				)
 				(self changeState: 0)
@@ -154,8 +152,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
@@ -173,10 +170,16 @@
 				)
 			)
 		)
-		(if (Said 'get/inner,man') (Print 134 5))
-		(if (Said '/drain') (Print 134 6))
-		(if (Said 'bathing,dive,(climb<off)') (Print 134 7))
-		(if (Said 'get/(bikini,job,(<bikini))')
+		(if (Said 'get/inner,man')
+			(Print 134 5)
+		)
+		(if (Said '/drain')
+			(Print 134 6)
+		)
+		(if (Said 'bathing,dive,(climb<off)')
+			(Print 134 7)
+		)
+		(if (Said 'get/(top,bikini,job,<bikini)')	;EO: fixed spec error
 			(cond 
 				((not ((inventory at: iBikiniTop) ownedBy: curRoomNum))
 					(Print 134 8)
@@ -196,11 +199,11 @@
 )
 
 (instance fartScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 22 44)))
+			(0
+				(= seconds (Random 22 44))
+			)
 			(1
 				(aFart
 					posn: (+ (aMan x?) 8) (- (aMan y?) 4)

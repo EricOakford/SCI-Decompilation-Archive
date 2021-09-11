@@ -14,7 +14,7 @@
 
 (local
 	currentDay
-	egoInBoat
+	aBigEgo
 	aShip
 	aCalendar
 	aPage
@@ -36,7 +36,7 @@
 		(Load VIEW 123)
 		(Load VIEW 124)
 		(super init:)
-		((= egoInBoat (Prop new:))
+		((= aBigEgo (Prop new:))
 			view: 120
 			setLoop: 0
 			setPri: 3
@@ -127,8 +127,6 @@
 )
 
 (instance rm138Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -166,13 +164,14 @@
 					(calendarScript changeState: 1)
 				)
 			)
-			(5 (= seconds 3))
+			(5
+				(= seconds 3)
+			)
 			(6
 				(cond 
 					((== currentDay 3)
 						(Print 138 3 #at -1 20)
-						(if
-						(or (== sunscreenState sunscreenAPPLIED) (== sunscreenState sunscreenINLIFEBOAT))
+						(if (or (== sunscreenState sunscreenAPPLIED) (== sunscreenState sunscreenINLIFEBOAT))
 							(Print 138 4 #at 15 -1 #width 280)
 							(theGame changeScore: 5)
 							(= seconds 1)
@@ -221,25 +220,36 @@
 								(theGame changeScore: 5)
 								(= seconds 1)
 							)
-							(else (self changeState: 21))
+							(else
+								(self changeState: 21)
+							)
 						)
 					)
-					(else (= seconds 1))
+					(else
+						(= seconds 1)
+					)
 				)
 			)
-			(7 (= state 3) (= seconds 1))
+			(7
+				(= state 3)
+				(= seconds 1)
+			)
 			(8
-				(egoInBoat
+				(aBigEgo
 					view: 123
 					cel: 0
 					cycleSpeed: 5
 					setCycle: EndLoop self
 				)
 			)
-			(9 (= seconds 3))
+			(9
+				(= seconds 3)
+			)
 			(10
 				(Print 138 14 #at -1 20)
-				(if (== sunscreenState sunscreenAFTERSWIM) (Print 138 15 #at -1 152))
+				(if (== sunscreenState sunscreenAFTERSWIM)
+					(Print 138 15 #at -1 152)
+				)
 				(= state 24)
 				(= seconds 3)
 			)
@@ -248,56 +258,64 @@
 				(= seconds 5)
 			)
 			(12
-				(egoInBoat
+				(aBigEgo
 					view: 123
 					cel: 0
 					cycleSpeed: 5
 					setCycle: EndLoop self
 				)
 			)
-			(13 (= seconds 3))
+			(13
+				(= seconds 3)
+			)
 			(14
 				(Print 138 16 #at -1 20)
 				(= state 24)
 				(= seconds 3)
 			)
 			(15
-				(egoInBoat
+				(aBigEgo
 					view: 121
 					cel: 0
 					cycleSpeed: 5
 					setCycle: EndLoop self
 				)
 			)
-			(16 (= seconds 3))
+			(16
+				(= seconds 3)
+			)
 			(17
 				(Print 138 17 #at -1 20)
 				(= state 24)
 				(= seconds 3)
 			)
 			(18
-				(egoInBoat
+				(aBigEgo
 					view: 122
 					cel: 0
 					cycleSpeed: 5
 					setCycle: EndLoop self
 				)
 			)
-			(19 (= seconds 3))
+			(19
+				(= seconds 3)
+			)
 			(20
 				(Print 138 18 #at -1 20)
 				(= state 24)
 				(= seconds 3)
 			)
 			(21
-				(egoInBoat
+				(aBigEgo
 					view: 124
 					cel: 0
 					cycleSpeed: 5
 					setCycle: EndLoop self
 				)
 			)
-			(22 (= seconds 3))
+			(22
+				(= seconds 3)
+			)
 			(23
 				(Print 138 19 #at -1 20)
 				(= state 24)
@@ -317,8 +335,6 @@
 )
 
 (instance calendarScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1

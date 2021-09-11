@@ -37,16 +37,16 @@
 	(method (init)
 		
 		;EO: Added Disney+ style disclaimer
-		(Print 
-			"This game includes negative depictions and/or mistreatment of people or cultures.
-			These stereotypes were wrong then and are wrong now.
-			Rather than remove this content, we want to acknowledge its harmful impact, learn from it, and
-			spark conversation to create a more inclusive feature together."
-			#title {Content Advisory}
-			#mode teJustCenter
-			#width 300
-			#font 4
-		)
+;;;		(Print 
+;;;			"This game includes negative depictions and/or mistreatment of people or cultures.
+;;;			These stereotypes were wrong then and are wrong now.
+;;;			Rather than remove this content, we want to acknowledge its harmful impact, learn from it, and
+;;;			spark conversation to create a more inclusive feature together."
+;;;			#title {Content Advisory}
+;;;			#mode teJustCenter
+;;;			#width 300
+;;;			#font 4
+;;;		)
 		;end disclaimer
 		
 		(Load VIEW 800)

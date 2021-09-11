@@ -87,8 +87,6 @@
 )
 
 (instance rm178Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)

@@ -40,16 +40,18 @@
 )
 
 (instance rm152Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== state 0) (ShakeScreen 1 (Random 1 3)))
+		(if (== state 0)
+			(ShakeScreen 1 (Random 1 3))
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
+			(0
+				(= seconds 5)
+			)
 			(1
 				(cond 
 					((== currentStatus egoNOWICK)

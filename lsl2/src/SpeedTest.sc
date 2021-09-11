@@ -37,7 +37,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== (++ machineSpeed) 1) (= doneTime (+ 60 (GetTime))))
+		(if (== (++ machineSpeed) 1)
+			(= doneTime (+ 60 (GetTime)))
+		)
 		(if (< doneTime (GetTime))
 			(if speedTestQA
 				(Print (Format @str 99 0 machineSpeed))

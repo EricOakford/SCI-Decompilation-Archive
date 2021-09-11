@@ -15,7 +15,7 @@
 
 (local
 	aWaterfall
-	triedToTurnBack
+	turnBackMsg
 	egoX
 	egoY
 )
@@ -79,8 +79,6 @@
 )
 
 (instance rm181Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -88,9 +86,12 @@
 				(== currentStatus egoNORMAL)
 				(or (== (ego edgeHit?) SOUTH) (== (ego edgeHit?) EAST))
 			)
-			(if (== triedToTurnBack FALSE) (= triedToTurnBack TRUE) (Print 181 0))
+			(if (== turnBackMsg FALSE)
+				(= turnBackMsg TRUE)
+				(Print 181 0)
+			)
 		else
-			(= triedToTurnBack FALSE)
+			(= turnBackMsg FALSE)
 		)
 		(if (== currentStatus egoNORMAL)
 			(if (< (ego y?) 50)
@@ -100,13 +101,21 @@
 			)
 		)
 		(cond 
-			(
-			(and (== (ego edgeHit?) WEST) (== currentStatus egoNORMAL)) (curRoom newRoom: 82))
-			(
-			(and (& (ego onControl:) cBLUE) (== currentStatus egoNORMAL)) (ego setPri: 8) (self changeState: 1))
-			(
-			(and (& (ego onControl:) $0004) (== currentStatus egoNORMAL)) (ego setPri: 0) (self changeState: 1))
-			((== currentStatus 0) (= egoX (ego x?)) (= egoY (ego y?)))
+			((and (== (ego edgeHit?) WEST) (== currentStatus egoNORMAL))
+				(curRoom newRoom: 82)
+			)
+			((and (& (ego onControl:) cBLUE) (== currentStatus egoNORMAL))
+				(ego setPri: 8)
+				(self changeState: 1)
+			)
+			((and (& (ego onControl:) cGREEN) (== currentStatus egoNORMAL))
+				(ego setPri: 0)
+				(self changeState: 1)
+			)
+			((== currentStatus egoNORMAL)
+				(= egoX (ego x?))
+				(= egoY (ego y?))
+			)
 		)
 	)
 	
@@ -147,8 +156,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')

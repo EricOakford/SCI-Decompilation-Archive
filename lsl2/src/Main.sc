@@ -915,7 +915,7 @@
 				)
 				(Print 0 15)
 			)
-			((and (ego has: iPassport) (Said 'look/passport/*'))
+			((and (ego has: iPassport) (Said 'look/passport/anyword'))
 				(Print 0 16)
 			)
 			((and (ego has: iGrotesqueGulp) (Said 'drink,apply/coke,coke'))
@@ -938,7 +938,7 @@
 			((and (ego has: iOnklunk) (Said 'conceal//(onklunk<in)>'))
 				(= i (inventory saidMe:))
 				(cond 
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 22)
 					)
 					((not i)
@@ -972,7 +972,7 @@
 			)
 			((and (ego has: iHairRejuvenator) (Said 'put,(put<on),pour,use,hide,rub,wear/rejuvenator>'))
 				(cond 
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 27)
 					)
 					((Said '/i,head,hair')
@@ -1010,7 +1010,7 @@
 			((Said 'open,(look<in)>')
 				(= i (inventory saidMe:))
 				(cond 
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 32)
 					)
 					((not i)
@@ -1131,7 +1131,7 @@
 			)
 			((Said '(conceal<on),wear>')
 				(cond 
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 64)
 					)
 					((= i (inventory saidMe:))
@@ -1149,7 +1149,7 @@
 			)
 			((Said 'conceal>')
 				(cond 
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 67)
 					)
 					((= i (inventory saidMe:))
@@ -1167,7 +1167,7 @@
 			)
 			((Said 'throw>')
 				(cond 
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 70)
 					)
 					((= i (inventory saidMe:))
@@ -1223,7 +1223,7 @@
 			((or (Said '/screw/you') (Said 'screw/you'))
 				(Print 0 84)
 			)
-			((Said 'screw/*')
+			((Said 'screw/anyword')
 				(Print 0 85)
 			)
 			((Said 'jack')
@@ -1252,7 +1252,7 @@
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/*/man,bimbo,children>')
+					((Said '/anyword/man,bimbo,children>')
 						(cond 
 							((not (= i (inventory saidMe:)))
 								(event claimed: TRUE)
@@ -1375,7 +1375,7 @@
 							(Print 0 110)
 						)
 					)
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 111)
 					)
 					((not i)
@@ -1395,10 +1395,10 @@
 				(= i (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
-					((Said '/*[/!]')
+					((Said '/anyword[/noword]')
 						(Print 0 113)
 					)
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 114)
 					)
 					((not i)
@@ -1416,7 +1416,7 @@
 			)
 			((Said 'get>')
 				(cond 
-					((Said '[/!]')
+					((Said '[/noword]')
 						(Print 0 116)
 					)
 					((and (= i (inventory saidMe:)) (i ownedBy: ego))
@@ -1440,7 +1440,7 @@
 				)
 			)
 			((Said 'call>')
-				(if (Said '[/!]')
+				(if (Said '[/noword]')
 					(Print 0 113)
 				else
 					(Print 0 122)

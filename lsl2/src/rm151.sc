@@ -42,7 +42,7 @@
 			loop: 2
 			posn: 144 152
 			setCycle: Walk
-			illegalBits: -32768
+			illegalBits: cWHITE
 			init:
 		)
 		(aBigFace
@@ -52,18 +52,18 @@
 			setPri: 15
 			init:
 		)
-		(NormalEgo 3)
+		(NormalEgo loopN)
 		(ego posn: 160 159 init:)
 		(self setRegions: BARBER AIRPORT setScript: rm151Script)
 	)
 )
 
 (instance rm151Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 51))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 51)
+		)
 	)
 	
 	(method (changeState newState)
@@ -149,8 +149,14 @@
 				(aChair setCycle: BegLoop self)
 			)
 			(12
-				(= currentEgoView 100)
-				(ego view: 100 setLoop: -1 loop: 3 ignoreActors: 0 show:)
+				(= currentEgoView vEgo)
+				(ego
+					view: vEgo
+					setLoop: -1
+					loop: loopN
+					ignoreActors: FALSE
+					show:
+				)
 				(aChair view: 232 loop: 1 cel: 0)
 				(= seconds 2)
 			)
@@ -162,14 +168,16 @@
 				(Print (Format @str 151 13 tritePhrase))
 				(NormalEgo)
 				(theGame changeScore: 3)
-				(ego get: 21 setMotion: MoveTo 157 222 self)
+				(ego
+					get: iHairRejuvenator
+					setMotion: MoveTo 157 222 self
+				)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if
@@ -180,10 +188,19 @@
 			)
 			(= talkedToBarber TRUE)
 			(cond 
-				((not (ego inRect: 148 117 180 127)) (Print 151 0))
-				((!= currentEgoView 149) (Print 151 1))
-				((== currentStatus 1009) (YouAre))
-				(else (= hairDyedBlonde FALSE) (self changeState: 2))
+				((not (ego inRect: 148 117 180 127))
+					(Print 151 0)
+				)
+				((!= currentEgoView 149)
+					(Print 151 1)
+				)
+				((== currentStatus egoSITTING)
+					(YouAre)
+				)
+				(else
+					(= hairDyedBlonde FALSE)
+					(self changeState: 2)
+				)
 			)
 		)
 		(if (Said 'look/man,bimbo,children')
@@ -197,7 +214,7 @@
 		)
 		(if (Said 'call/man,children,bimbo')
 			(= talkedToBarber TRUE)
-			(if (== currentEgoView 100)
+			(if (== currentEgoView vEgo)
 				(Print 151 2)
 			else
 				(Print 151 3)
@@ -207,8 +224,6 @@
 )
 
 (instance aBigFace of Prop
-	(properties)
-	
 	(method (cue)
 		(Print 151 14)
 		(Print 151 15 #at 55 155 #width 210)

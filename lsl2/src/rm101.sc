@@ -14,7 +14,7 @@
 )
 
 (local
-	receptionist
+	aReceptionist
 	aGuy
 	aDoll
 	aDoorWest
@@ -44,7 +44,9 @@
 		(Load VIEW 203)
 		(Load VIEW 204)
 		(Load VIEW 205)
-		(if (ego has: iLotteryTicket) (Load VIEW 2))
+		(if (ego has: iLotteryTicket)
+			(Load VIEW 2)
+		)
 		(super init:)
 		((View new:)
 			view: 201
@@ -105,7 +107,7 @@
 			init:
 			setScript: dollScript
 		)
-		((= receptionist (Prop new:))
+		((= aReceptionist (Prop new:))
 			view: 203
 			setLoop: 0
 			posn: 158 118
@@ -153,12 +155,12 @@
 )
 
 (instance rm101Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((& (ego onControl:) $0008) (curRoom newRoom: 11))
+			((& (ego onControl:) cCYAN)
+				(curRoom newRoom: 11)
+			)
 			(
 				(and
 					(ego inRect: 214 80 229 87)
@@ -193,8 +195,8 @@
 				(= winningNum6 (Random 100 999))
 				(Print
 					(Format @str 101 16
-						winningNum1 winningNum2 winningNum3 winningNum4 winningNum5
-						winningNum6
+						winningNum1 winningNum2 winningNum3
+						winningNum4 winningNum5 winningNum6
 					)
 				)
 				(= str 0)
@@ -260,7 +262,9 @@
 			(8
 				(ego illegalBits: 0 setMotion: MoveTo 162 77 self)
 			)
-			(9 (curRoom newRoom: 102))
+			(9
+				(curRoom newRoom: 102)
+			)
 			(10
 				(= seconds (= cycles 0))
 				(Print 101 21)
@@ -272,29 +276,45 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'give,finger,look/ticket')
 			(cond 
-				((ego has: iCruiseTicket) (event claimed: FALSE) (return))
-				((not (ego has: iLotteryTicket)) (DontHave))
-				((not (ego inRect: 134 144 185 152)) (NotClose))
-				(else (self changeState: 1))
+				((ego has: iCruiseTicket)
+					(event claimed: FALSE)
+					(return)
+				)
+				((not (ego has: iLotteryTicket))
+					(DontHave)
+				)
+				((not (ego inRect: 134 144 185 152))
+					(NotClose)
+				)
+				(else
+					(self changeState: 1)
+				)
 			)
 		)
 		(if (Said 'look>')
-			(if (Said '/door') (Print 101 0))
-			(if (Said '/burn') (Print 101 1))
+			(if (Said '/door')
+				(Print 101 0)
+			)
+			(if (Said '/burn')
+				(Print 101 1)
+			)
 			(if (Said '/brick,sign')
 				(Print 101 2)
 				(Print 101 3)
 				(Print 101 4)
 				(Print 101 5)
 			)
-			(if (Said '/art') (Print 101 6))
-			(if (Said '/cup') (Print 101 7))
+			(if (Said '/art')
+				(Print 101 6)
+			)
+			(if (Said '/cup')
+				(Print 101 7)
+			)
 			(if (Said '/bimbo,skylight,buffet')
 				(aBigClerk posn: 223 41 stopUpd:)
 				(aBigMouth posn: 223 41)
@@ -307,8 +327,12 @@
 				(Print 101 8)
 			)
 		)
-		(if (Said 'open/door') (Print 101 9))
-		(if (Said '/reporter') (Print 101 10))
+		(if (Said 'open/door')
+			(Print 101 9)
+		)
+		(if (Said '/reporter')
+			(Print 101 10)
+		)
 		(if (Said 'call,ask/bimbo')
 			(Print (Format @str 101 11 introductoryPhrase))
 			(Print 101 12)
@@ -321,8 +345,6 @@
 )
 
 (instance receptionistScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -330,20 +352,20 @@
 				(= seconds (Random 3 7))
 			)
 			(1
-				(receptionist setLoop: 4 cel: 0 setCycle: EndLoop self)
+				(aReceptionist setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(2
-				(receptionist setLoop: 5 cel: 0 setCycle: EndLoop self)
+				(aReceptionist setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(receptionist cel: 0 setCycle: EndLoop self)
+				(aReceptionist cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(receptionist setLoop: 4 setCel: 255 setCycle: BegLoop self)
+				(aReceptionist setLoop: 4 setCel: 255 setCycle: BegLoop self)
 			)
 			(5
 				(= seconds (= cycles 0))
-				(receptionist setLoop: 0)
+				(aReceptionist setLoop: 0)
 				(if (> (Random 1 3) 1)
 					(self changeState: 0)
 				else
@@ -351,45 +373,47 @@
 				)
 			)
 			(6
-				(receptionist setLoop: 2 cel: 0 setCycle: EndLoop self)
+				(aReceptionist setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(7
-				(receptionist setLoop: 3 setCycle: Forward)
+				(aReceptionist setLoop: 3 setCycle: Forward)
 				(= seconds (Random 2 4))
 			)
 			(8
-				(receptionist setCel: 0)
+				(aReceptionist setCel: 0)
 				(= seconds (Random 3 7))
 			)
 			(9
-				(receptionist setLoop: 3 setCycle: Forward)
+				(aReceptionist setLoop: 3 setCycle: Forward)
 				(= seconds (Random 2 4))
 			)
 			(10
-				(receptionist setCel: 0)
+				(aReceptionist setCel: 0)
 				(= seconds (Random 3 7))
 			)
 			(11
-				(receptionist setLoop: 3 setCycle: Forward)
+				(aReceptionist setLoop: 3 setCycle: Forward)
 				(= seconds (Random 1 3))
 			)
 			(12
-				(receptionist setLoop: 2 setCel: 255 setCycle: BegLoop self)
+				(aReceptionist setLoop: 2 setCel: 255 setCycle: BegLoop self)
 			)
-			(13 (self changeState: 0))
+			(13
+				(self changeState: 0)
+			)
 			(14
 				(= cycles 0)
-				(receptionist setLoop: 1 setCycle: Forward)
+				(aReceptionist setLoop: 1 setCycle: Forward)
 				(= seconds (Random 2 4))
 			)
-			(15 (receptionist setLoop: 0))
+			(15
+				(aReceptionist setLoop: 0)
+			)
 		)
 	)
 )
 
 (instance guyScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -402,7 +426,9 @@
 				(aGuy setMotion: MoveTo 132 182 self)
 				(aDoorWest setCycle: BegLoop self)
 			)
-			(4 (aDoorWest stopUpd:))
+			(4
+				(aDoorWest stopUpd:)
+			)
 			(5
 				(aGuy setMotion: MoveTo 132 232 self)
 			)
@@ -415,8 +441,6 @@
 )
 
 (instance dollScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -429,7 +453,9 @@
 				(aDoll setMotion: MoveTo 162 182 self)
 				(aDoorEast setCycle: BegLoop self)
 			)
-			(4 (aDoorEast stopUpd:))
+			(4
+				(aDoorEast stopUpd:)
+			)
 			(5
 				(aDoll setMotion: MoveTo 162 232)
 			)
@@ -442,8 +468,6 @@
 )
 
 (instance aBigClerk of Prop
-	(properties)
-	
 	(method (cue)
 		(Print 101 24)
 		(Print 101 25 #at 55 155 #width 210)
@@ -452,8 +476,6 @@
 )
 
 (instance aBigMouth of Prop
-	(properties)
-	
 	(method (cue)
 		(self posn: 223 1042)
 		(HandsOn)
