@@ -708,7 +708,7 @@
 		(User echo: SPACEBAR blocks: 0)
 		(= bigFont SYSFONT)
 		(= possibleScore 500)
-		(= currentEgoView 100)
+		(= currentEgoView vEgo)
 		(= filthLevel 4)
 		(= ranking {Novice})
 		(= introductoryPhrase {"My name is Larry; Larry Laffer."})
@@ -860,7 +860,6 @@
 	
 	(method (handleEvent event &tmp temp0 i [temp2 3])
 		(super handleEvent: event) ;rooms, regions, and locales
-		;EO: Any Said command with "/!" in it does not parse correctly, giving a "Bad Said Spec" error.
 		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
@@ -884,8 +883,7 @@
 			((and (ego has: iWadODough) (Said 'count/buck'))
 				(Print 0 8)
 			)
-			(
-			(or (Said 'give/bill,wad,million,buck') (Said 'bribe'))
+			((or (Said 'give/bill,wad,million,buck') (Said 'bribe'))
 				(cond 
 					((ego has: iWadODough)
 						(Print 0 9)
@@ -1099,7 +1097,7 @@
 				(Print 0 25)
 			)
 			((or (Said 'board/bathroom') (Said 'leak') (Said 'get/leak'))
-				(if (== 100 (ego view?))
+				(if (== vEgo (ego view?))
 					(Print 0 55)
 				else
 					(NotNow)
@@ -1137,8 +1135,7 @@
 						(Print 0 64)
 					)
 					((= i (inventory saidMe:))
-						(if
-						(not (ego has: (inventory indexOf: i)))
+						(if (not (ego has: (inventory indexOf: i)))
 							(DontHave)
 						else
 							(Print 0 65)
@@ -1271,17 +1268,14 @@
 						)
 					)
 					((Said '/bra,i')
-						(if (== 100 (ego view?))
+						(if (== vEgo (ego view?))
 							(Print 0 96)
 							(Print 0 97 #at -1 152)
 						)
 						(Print 0 81)
 						(inventory showSelf: ego)
 					)
-					(
-						(Said
-							'/billfold,(spray[<breath]),(lint[<bra]),(watch[<wrist])'
-						)
+					((Said '/billfold,(spray[<breath]),(lint[<bra]),(watch[<wrist])')
 						(Print 0 98)
 					)
 					((Said '/bush,palm')
@@ -1325,7 +1319,9 @@
 							((ego has: iWadODough)
 								(Wad_O__Dough showSelf:)
 							)
-							(else (DontHave))
+							(else
+								(DontHave)
+							)
 						)
 					)
 					((Said '/ticket')
@@ -1455,9 +1451,7 @@
 			(
 				(or
 					(Said '/clit,crap,leak,copulate,asshole,boob,ass,asshole')
-					(Said
-						'//clit,crap,leak,copulate,asshole,boob,ass,asshole'
-					)
+					(Said '//clit,crap,leak,copulate,asshole,boob,ass,asshole')
 				)
 				(Print 0 124)
 			)
@@ -1624,6 +1618,7 @@
 (instance Bikini_Top of Iitem
 	(properties
 		said '/top[<bikini]'	;EO: Fixed Said Spec error
+		;said '/([<bikini]'
 		owner 134
 		view iBikiniTop
 		name "Bikini Top"
@@ -1750,7 +1745,8 @@
 
 (instance Ashes of Iitem
 	(properties
-		said '/ash' ;EO: fixed decompiler goof
+		said '/ash' ;EO: fixed decompiler goof		
+		;said '/>'
 		owner 77
 		view iAshes
 	)

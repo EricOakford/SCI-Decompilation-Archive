@@ -5,7 +5,7 @@
 (include colors.sh) (include loop.sh)
 
 ; Views
-(define vEgo			0)
+(define vEgo			100)
 (define vBigEgo			110)
 (define vBEChagrin		111)
 (define vBEDismay		112)
@@ -70,7 +70,8 @@
 )
 
 ; Inventory
-(enum 1
+(enum
+	iNoInv				;0	;Dummy
 	iDollarBill			;1
 	iLotteryTicket		;2
 	iCruiseTicket		;3

@@ -92,7 +92,7 @@
 		(self stopUpd:)
 		(if notify
 			(notify cue:)
-			(= notify 0)
+			(= notify FALSE)
 		)
 	)
 	
@@ -110,7 +110,9 @@
 			(else
 				(= doorState doorOpening)
 				(self setCycle: EndLoop self)
-				(if openSnd (openSnd doit:))
+				(if openSnd
+					(openSnd doit:)
+				)
 			)
 		)
 	)
@@ -123,7 +125,7 @@
 			(locked
 				(Print msgLocked)
 			)
-			((or (== doorState 3) (== doorState 0))
+			((or (== doorState doorClosing) (== doorState doorClosed))
 				(ItIs)
 			)
 			((& (ego onControl:) doorBlock)
@@ -136,14 +138,15 @@
 			(else
 				(= doorState doorClosing)
 				(self setCycle: BegLoop self)
-				(if closeSnd (closeSnd doit:))
+				(if closeSnd
+					(closeSnd doit:)
+				)
 			)
 		)
 	)
 )
 
 (class AutoDoor of Door
-	
 	(method (init)
 		(super init:)
 	)
@@ -197,7 +200,7 @@
 	)
 	
 	(method (open)
-		(if (and (not locked) (!= doorState doorOpening) (!= doorState 2))
+		(if (and (not locked) (!= doorState doorOpening) (!= doorState doorOpen))
 			(= doorState doorOpening)
 			(self setCycle: EndLoop self)
 			(if openSnd

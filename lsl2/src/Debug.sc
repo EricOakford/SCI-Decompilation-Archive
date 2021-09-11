@@ -13,8 +13,6 @@
 )
 
 (instance rm5 of Locale
-	(properties)
-	
 	(method (handleEvent event &tmp temp0 i obj evt temp4 [str2 50])
 		(if
 			(and
@@ -36,7 +34,7 @@
 				)
 				(`@f
 					(Print 5 1)
-					(= debugOn (^ debugOn TRUE))
+					(^= debugOn TRUE)
 				)
 				(`@m
 					(theGame showMem:)
@@ -62,7 +60,7 @@
 				((& (event modifiers?) ctrlDown)
 					(event claimed: TRUE)
 					(User canControl: TRUE)
-					(while (!= 2 ((= evt (Event new:)) type?))
+					(while (!= mouseUp ((= evt (Event new:)) type?))
 						(GlobalToLocal evt)
 						(ego posn: (evt x?) (evt y?) setMotion: 0)
 						(RedrawCast)
@@ -80,17 +78,18 @@
 							#dispose
 						)
 					)
-					(while (!= 2 ((= evt (Event new:)) type?))
+					(while (!= mouseUp ((= evt (Event new:)) type?))
 						(evt dispose:)
 					)
 					(obj dispose:)
 					(evt dispose:)
 				)
 			)
-			(if (event claimed?) (return TRUE))
+			(if (event claimed?)
+				(return TRUE)
+			)
 		)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return (event claimed?))
 		)
 		(if
@@ -119,15 +118,19 @@
 				(i moveTo: ego)
 			)
 		)
-		(if (Said 'aid') (Print 5 7 #font 999))
+		(if (Said 'aid')
+			(Print 5 7 #font 999)
+		)
 		(if (Said 'tp')
 			(NormalEgo)
 			(curRoom newRoom: (GetNumber {Teleport to:}))
 		)
-		(if (Said 'look/memory') (theGame showMem:))
+		(if (Said 'look/memory')
+			(theGame showMem:)
+		)
 		(if (Said 'look/frag')
 			(Print 5 1)
-			(= debugOn (^ debugOn TRUE))
+			(^= debugOn TRUE)
 		)
 		(if (Said 'airport/number')
 			(Print (Format @str 5 2 curRoomNum))
@@ -155,21 +158,24 @@
 				)
 			)
 		)
-		(if (Said 'look/priority') (Show PMAP))
+		(if (Said 'look/priority')
+			(Show PMAP)
+		)
 		(if (Said 'look/control')
 			(Show CMAP)
 			(Animate (cast elements?))
-			(while (== 0 ((= event (Event new: allEvents)) type?))
+			(while (== nullEvt ((= event (Event new: allEvents)) type?))
 				(event dispose:)
 			)
 			(event dispose:)
 			(Show VMAP)
 		)
-		(if (Said 'look/normal') (Show VMAP))
+		(if (Said 'look/normal')
+			(Show VMAP)
+		)
 		(if (Said 'look/ego')
 			(Print
-				(Format
-					@str
+				(Format @str
 					{view: %d loop: %d cel: %d posn: %d %d pri: %d OnControl: $%x Origin on: $%x}
 					(ego view?)
 					(ego loop?)
@@ -180,17 +186,14 @@
 					(ego onControl:)
 					(ego onControl: origin)
 				)
-				#icon
-				(ego view?)
-				(ego loop?)
-				(ego cel?)
+				#icon (ego view?) (ego loop?) (ego cel?)
 			)
 		)
 		(return
 			(if (and (Said 'look/grid') (Load PICTURE 999))
 				(DrawPic 999 VSHUTTER TRUE)
 			else
-				0
+				FALSE
 			)
 		)
 	)

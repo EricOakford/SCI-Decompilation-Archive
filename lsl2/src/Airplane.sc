@@ -10,8 +10,6 @@
 )
 
 (instance rm600 of Region
-	(properties)
-	
 	(method (init)
 		(super init:)
 	)
@@ -38,8 +36,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if
@@ -49,12 +46,10 @@
 			)
 			(Print AIRPLANE 3)
 		)
-		(if
-		(and (ego has: iBobbyPin) (Said 'wear,conceal,apply/bobbypin'))
+		(if (and (ego has: iBobbyPin) (Said 'wear,conceal,apply/bobbypin'))
 			(Print AIRPLANE 4)
 		)
-		(if
-		(and (ego has: iPamphlet) (Said '(look<in),look/pamphlet'))
+		(if (and (ego has: iPamphlet) (Said '(look<in),look/pamphlet'))
 			(Print AIRPLANE 5)
 			(Print AIRPLANE 6)
 		)
@@ -69,8 +64,12 @@
 			(theGame changeScore: -2)
 		)
 		(if (Said 'look>')
-			(if (Said '/up,overhead,ceiling') (Print AIRPLANE 8))
-			(if (Said '/bimbo') (Print AIRPLANE 9))
+			(if (Said '/up,overhead,ceiling')
+				(Print AIRPLANE 8)
+			)
+			(if (Said '/bimbo')
+				(Print AIRPLANE 9)
+			)
 			(if (Said '/barstool')
 				(if (== currentStatus egoSITTING)
 					(Print AIRPLANE 10)
@@ -78,10 +77,16 @@
 					(Print AIRPLANE 11)
 				)
 			)
-			(if (Said '[/airport]') (Print AIRPLANE 12))
+			(if (Said '[/airport]')
+				(Print AIRPLANE 12)
+			)
 		)
-		(if (Said 'call,call/bimbo') (Print AIRPLANE 13))
-		(if (Said 'carry,caress,caress/bimbo') (Print AIRPLANE 14))
+		(if (Said 'call,call/bimbo')
+			(Print AIRPLANE 13)
+		)
+		(if (Said 'carry,caress,caress/bimbo')
+			(Print AIRPLANE 14)
+		)
 		(if (Said 'call/children,man')
 			(if (Random 0 1)
 				(Print (Format @str AIRPLANE 15 introductoryPhrase))

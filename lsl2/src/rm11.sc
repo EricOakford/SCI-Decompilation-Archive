@@ -61,9 +61,15 @@
 			init:
 		)
 		(cond 
-			((== prevRoomNum 101) (ego posn: 161 60))
-			((== prevRoomNum 12) (ego posn: 316 168))
-			(else (ego posn: 21 187))
+			((== prevRoomNum 101)
+				(ego posn: 161 60)
+			)
+			((== prevRoomNum 12)
+				(ego posn: 316 168)
+			)
+			(else
+				(ego posn: 21 187)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -81,15 +87,15 @@
 )
 
 (instance rm11Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 3 13)))
+			(0
+				(= seconds (Random 3 13))
+			)
 			(1
 				(= showBizVisible TRUE)
 				(aShowBizType
@@ -110,23 +116,31 @@
 					setMotion: MoveTo -20 133 self
 				)
 			)
-			(4 (self changeState: 0))
+			(4
+				(self changeState: 0)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/sign') (Print 11 0))
-			(if (Said '/antenna,bowl') (Print 11 1))
-			(if (Said '/man,bimbo,children')
-				(if showBizVisible (Print 11 2) else (Print 11 3))
+			(if (Said '/sign')
+				(Print 11 0)
 			)
-			(if
-			(Said '[/krod,building,krod,krod,(krod<krod),airport]')
+			(if (Said '/antenna,bowl')
+				(Print 11 1)
+			)
+			(if (Said '/man,bimbo,children')
+				(if showBizVisible
+					(Print 11 2)
+				else
+					(Print 11 3)
+				)
+			)
+			(if (Said '[/krod,building,krod,krod,(krod<krod),airport]')
 				(Print 11 4)
 			)
 		)

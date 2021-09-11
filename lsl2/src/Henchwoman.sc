@@ -14,8 +14,6 @@
 	local0
 )
 (instance rm8 of Region
-	(properties)
-	
 	(method (init)
 		(Load SOUND 105)
 		(theSound init:)

@@ -33,7 +33,7 @@
 		style DISSOLVE
 	)
 	
-	(method (init &tmp temp0)
+	(method (init &tmp num)
 		(HandsOff)
 		(if debugging
 			(if (<= (= startingRoom (GetNumber {Starting Room})) 0)
@@ -295,12 +295,12 @@
 		(RedrawCast)
 		(Display 10 0
 			p_at 60 176
-			p_color 1
-			p_back 3
-			)
+			p_color vBLUE
+			p_back vCYAN
+		)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp num)
 		(if (and debugging (!= startingRoom 10))
 			(self newRoom: startingRoom)
 			(return)
@@ -313,11 +313,23 @@
 			#edit @str 11
 		)
 		(cls)
-		(= temp0 (ReadNumber @str))
+		(= num (ReadNumber @str))
 		(cond 
-			((not (StrCmp @str {555-0724})) (= debugging TRUE) (curRoom newRoom: 23))
-			((not (StrCmp @str phoneNumber)) (curRoom newRoom: 90))
-			(else (Print 10 3) (if local8 (Print 10 4) else (= quit 1)))
+			((not (StrCmp @str {555-0724}))
+				(= debugging TRUE)
+				(curRoom newRoom: 23)
+			)
+			((not (StrCmp @str phoneNumber))
+				(curRoom newRoom: 90)
+			)
+			(else
+				(Print 10 3)
+				(if local8
+					(Print 10 4)
+				else
+					(= quit TRUE)
+				)
+			)
 		)
 	)
 )

@@ -11,8 +11,6 @@
 )
 
 (instance rm7 of Region
-	(properties)
-	
 	(method (init)
 		(super init:)
 		((View new:)
@@ -92,8 +90,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')

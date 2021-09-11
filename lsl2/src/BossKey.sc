@@ -39,18 +39,12 @@
 )
 
 (instance rm9Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (handleEvent event)
-		(if
-			(or
-				(== (event type?) mouseUp)
-				(event claimed?)
-			)
+		(if (or (== (event type?) mouseUp) (event claimed?))
 			(return)
 		)
 		(Print 9 11)
