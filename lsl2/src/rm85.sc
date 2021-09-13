@@ -92,8 +92,6 @@
 )
 
 (instance rm85Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)

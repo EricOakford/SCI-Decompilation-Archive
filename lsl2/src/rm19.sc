@@ -79,10 +79,18 @@
 			setScript: monoScript
 		)
 		(cond 
-			((== prevRoomNum 0) (ego posn: 318 160))
-			((== prevRoomNum 15) (ego posn: 306 108))
-			((== prevRoomNum 20) (ego posn: 318 160))
-			((== prevRoomNum 23) (ego posn: 5 187))
+			((== prevRoomNum 0)
+				(ego posn: 318 160)
+			)
+			((== prevRoomNum 15)
+				(ego posn: 306 108)
+			)
+			((== prevRoomNum 20)
+				(ego posn: 318 160)
+			)
+			((== prevRoomNum 23)
+				(ego posn: 5 187)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -91,11 +99,9 @@
 )
 
 (instance rm19Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== 2 (ego edgeHit?))
+		(if (== EAST (ego edgeHit?))
 			(if (< (ego y?) 159)
 				(curRoom newRoom: 15)
 			else
@@ -105,22 +111,28 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if (Said 'look<over,below/brick,fence') (Print 19 0))
-		(if (Said '/brick,fence') (Print 19 1))
-		(if (Said 'look[/airport]') (Print 19 2) (Print 19 3))
+		(if (Said 'look<over,below/brick,fence')
+			(Print 19 0)
+		)
+		(if (Said '/brick,fence')
+			(Print 19 1)
+		)
+		(if (Said 'look[/airport]')
+			(Print 19 2)
+			(Print 19 3)
+		)
 	)
 )
 
 (instance monoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 21)))
+			(0
+				(= seconds (Random 2 21))
+			)
 			(1
 				(aMonorail posn: -59 52 setMotion: MoveTo 380 53 self)
 			)
@@ -133,11 +145,11 @@
 )
 
 (instance coasterScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 10)))
+			(0
+				(= seconds (Random 2 10))
+			)
 			(1
 				(aRollerCoaster cel: 0 show: setCycle: EndLoop self)
 			)

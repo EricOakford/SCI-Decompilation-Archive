@@ -112,7 +112,9 @@
 	
 	(method (changeState newState &tmp lightX lightY creditX creditY)
 		(switch (= state newState)
-			(0 (= cycles 20))
+			(0
+				(= cycles 20)
+			)
 			(1
 				((View new:)
 					view: 800
@@ -138,19 +140,58 @@
 			)
 			(3
 				(switch (Random 0 16)
-					(0 (= lightX 149) (= lightY 39))
-					(1 (= lightX 64) (= lightY 47))
-					(2 (= lightX 161) (= lightY 77))
-					(3 (= lightX 234) (= lightY 88))
-					(4 (= lightX 114) (= lightY 116))
-					(5 (= lightX 91) (= lightY 97))
-					(6 (= lightX 179) (= lightY 29))
-					(7 (= lightX 61) (= lightY 97))
-					(8 (= lightX 255) (= lightY 64))
-					(9 (= lightX 130) (= lightY 86))
-					(10 (= lightX 143) (= lightY 80))
-					(11 (= lightX 212) (= lightY 85))
-					(12 (= lightX 48) (= lightY 107))
+					(0
+						(= lightX 149)
+						(= lightY 39)
+					)
+					(1
+						(= lightX 64)
+						(= lightY 47)
+					)
+					(2
+						(= lightX 161)
+						(= lightY 77)
+					)
+					(3
+						(= lightX 234)
+						(= lightY 88)
+					)
+					(4
+						(= lightX 114)
+						(= lightY 116)
+					)
+					(5
+						(= lightX 91)
+						(= lightY 97)
+					)
+					(6
+						(= lightX 179)
+						(= lightY 29)
+					)
+					(7
+						(= lightX 61)
+						(= lightY 97)
+					)
+					(8
+						(= lightX 255)
+						(= lightY 64)
+					)
+					(9
+						(= lightX 130)
+						(= lightY 86)
+					)
+					(10
+						(= lightX 143)
+						(= lightY 80)
+					)
+					(11
+						(= lightX 212)
+						(= lightY 85)
+					)
+					(12
+						(= lightX 48)
+						(= lightY 107)
+					)
 					(13
 						(= lightX 205)
 						(= lightY 125)
@@ -159,7 +200,10 @@
 						(= lightX 275)
 						(= lightY 121)
 					)
-					(15 (= lightX 92) (= lightY 129))
+					(15
+						(= lightX 92)
+						(= lightY 129)
+					)
 					(16
 						(= lightX 182)
 						(= lightY 132)
@@ -187,8 +231,12 @@
 					setCycle: EndLoop self
 				)
 			)
-			(6 (ego setCycle: BegLoop self))
-			(7 (ego hide:))
+			(6
+				(ego setCycle: BegLoop self)
+			)
+			(7
+				(ego hide:)
+			)
 			(8
 				(aGirl setMotion: MoveTo 220 100 self)
 				(ego
@@ -199,8 +247,12 @@
 					setCycle: EndLoop self
 				)
 			)
-			(9 (ego setCycle: BegLoop self))
-			(10 (ego hide:))
+			(9
+				(ego setCycle: BegLoop self)
+			)
+			(10
+				(ego hide:)
+			)
 			(11
 				(aGirl setMotion: MoveTo 268 100 self)
 				(ego loop: 2 cel: 0 posn: 199 57 show: setCycle: EndLoop self)
@@ -390,6 +442,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (not (event claimed?)) (theGame restart:))
+		(if (not (event claimed?))
+			(theGame restart:)
+		)
 	)
 )

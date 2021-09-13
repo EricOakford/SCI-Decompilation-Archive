@@ -38,7 +38,7 @@
 		(Load VIEW 223)
 		(super init:)
 		(NormalEgo)
-		(self setRegions: 200 setScript: rm15Script)
+		(self setRegions: CITY setScript: rm15Script)
 		((View new:)
 			view: 220
 			loop: 2
@@ -47,17 +47,20 @@
 			setPri: 8
 			addToPic:
 		)
-		(if (and (== gotOnklunk FALSE) (ego has: iOnklunk)) (= afterOnklunk TRUE))
-		(if (and gotHaircutInCity (not (ego has: iOnklunk))) (= storeIsOpen TRUE))
+		(if (and (== gotOnklunk FALSE) (ego has: iOnklunk))
+			(= afterOnklunk TRUE)
+		)
+		(if (and gotHaircutInCity (not (ego has: iOnklunk)))
+			(= storeIsOpen TRUE)
+		)
 		(if (or afterOnklunk storeIsOpen)
 			((= aDoorWest (AutoDoor new:))
 				view: 220
 				setLoop: 0
 				posn: 43 114
 				entranceTo: (if (!= prevRoomNum 115) 115 else 0)
-				msgLook:
-					{A sign in the window says, "Now OPEN for business. Please come in!"}
-				msgCloser: {The entrance aDoorWest is to the left. Just walk near it.}
+				msgLook: {A sign in the window says, "Now OPEN for business. Please come in!"}
+				msgCloser: {The entrance door is to the left. Just walk near it.}
 				init:
 			)
 		else
@@ -132,10 +135,18 @@
 				setScript: trafficSignalScript
 			)
 			(cond 
-				((== prevRoomNum 0) (ego posn: 302 80))
-				((== prevRoomNum 11) (ego posn: 302 80))
-				((== prevRoomNum 19) (ego posn: 8 187))
-				((== prevRoomNum 115) (ego posn: 253 88))
+				((== prevRoomNum 0)
+					(ego posn: 302 80)
+				)
+				((== prevRoomNum 11)
+					(ego posn: 302 80)
+				)
+				((== prevRoomNum 19)
+					(ego posn: 8 187)
+				)
+				((== prevRoomNum 115)
+					(ego posn: 253 88)
+				)
 			)
 			(ego init:)
 		)
@@ -143,20 +154,27 @@
 )
 
 (instance rm15Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 30))
-			(1
-				(if (and storeIsOpen (!= prevRoomNum 115)) (Print 15 8))
-				(if (== prevRoomNum 115) (aDoorWest entranceTo: 115))
+			(0
+				(= cycles 30)
 			)
-			(2 (= cycles 0) (= seconds 3))
+			(1
+				(if (and storeIsOpen (!= prevRoomNum 115))
+					(Print 15 8)
+				)
+				(if (== prevRoomNum 115)
+					(aDoorWest entranceTo: 115)
+				)
+			)
+			(2
+				(= cycles 0)
+				(= seconds 3)
+			)
 			(3
 				(ego setMotion: MoveTo 262 140 self)
 			)
@@ -208,18 +226,28 @@
 		(if (event claimed?) (return))
 		(if (and saveBits (== state 4))
 			(event claimed: TRUE)
-			(= saveBits NULL)
+			(= saveBits 0)
 			(cls)
 			(self cue:)
 		)
 		(if (!= (event type?) saidEvent) (return))
 		(if (Said '/door,sign')
 			(cond 
-				(storeIsOpen (Print 15 0))
-				((ego has: iOnklunk) (Print 15 1))
-				(else (Print 15 2))
+				(storeIsOpen
+					(Print 15 0)
+				)
+				((ego has: iOnklunk)
+					(Print 15 1)
+				)
+				(else
+					(Print 15 2)
+				)
 			)
-			(if (< (ego x?) 155) (Print 15 3) else (Print 15 4))
+			(if (< (ego x?) 155)
+				(Print 15 3)
+			else
+				(Print 15 4)
+			)
 		)
 		(if (Said '/pole,burn,(burn<done),(sign<done)')
 			(Print 15 5)
@@ -227,23 +255,23 @@
 		(if
 			(and
 				(Said 'look>')
-				(Said
-					'[/building,(building<music),building,sign,airport]'
-				)
+				(Said '[/building,(building<music),building,sign,airport]')
 			)
 			(Print 15 6)
 			(Print 15 7)
-			(if storeIsOpen (Print 15 0))
+			(if storeIsOpen
+				(Print 15 0)
+			)
 		)
 	)
 )
 
 (instance trafficSignalScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 6))
+			(0
+				(= seconds 6)
+			)
 			(1
 				(aSignal setCel: 1)
 				(= seconds 4)

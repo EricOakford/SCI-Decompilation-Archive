@@ -179,7 +179,7 @@
 			init:
 		)
 		(ego
-			view: 100
+			view: vEgo
 			setLoop: -1
 			posn: 33 91
 			setCycle: Walk
@@ -193,15 +193,15 @@
 )
 
 (instance rm104Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(Print 104 0)
 				(Print 104 1)

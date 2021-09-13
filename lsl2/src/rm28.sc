@@ -70,8 +70,6 @@
 )
 
 (instance rm28Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -89,7 +87,9 @@
 				(Print 28 2 #at -1 152)
 				(= seconds 60)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(aBird posn: 222 18 setMotion: MoveTo -23 19 self)
 				(= seconds 60)
@@ -103,22 +103,49 @@
 )
 
 (instance sparkleScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp theX theY)
 		(switch (= state newState)
-			(0 (= cycles (Random 3 10)))
+			(0
+				(= cycles (Random 3 10))
+			)
 			(1
 				(switch (Random 1 10)
-					(1 (= theX 212) (= theY 47))
-					(2 (= theX 269) (= theY 46))
-					(3 (= theX 193) (= theY 13))
-					(4 (= theX 239) (= theY 99))
-					(5 (= theX 238) (= theY 104))
-					(6 (= theX 198) (= theY 116))
-					(7 (= theX 318) (= theY 112))
-					(8 (= theX 43) (= theY 120))
-					(9 (= theX 163) (= theY 155))
+					(1
+						(= theX 212)
+						(= theY 47)
+					)
+					(2
+						(= theX 269)
+						(= theY 46)
+					)
+					(3
+						(= theX 193)
+						(= theY 13)
+					)
+					(4
+						(= theX 239)
+						(= theY 99)
+					)
+					(5
+						(= theX 238)
+						(= theY 104)
+					)
+					(6
+						(= theX 198)
+						(= theY 116)
+					)
+					(7
+						(= theX 318)
+						(= theY 112)
+					)
+					(8
+						(= theX 43)
+						(= theY 120)
+					)
+					(9
+						(= theX 163)
+						(= theY 155)
+					)
 					(else 
 						(= theX 169)
 						(= theY 8)

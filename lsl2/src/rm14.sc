@@ -83,43 +83,51 @@
 			setPri: 12
 			setCycle: Forward
 			cycleSpeed: 10
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(cond 
-			((== prevRoomNum 0) (ego posn: 312 187))
-			((== prevRoomNum 18) (ego posn: 312 187))
-			((== prevRoomNum 114) (ego posn: 36 152))
+			((== prevRoomNum 0)
+				(ego posn: 312 187)
+			)
+			((== prevRoomNum 18)
+				(ego posn: 312 187)
+			)
+			((== prevRoomNum 114)
+				(ego posn: 36 152)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
-		(self setRegions: 200 setScript: rm14Script)
+		(self setRegions: CITY setScript: rm14Script)
 	)
 )
 
 (instance rm14Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: origin) $0002)
+		(if (& (ego onControl: origin) cBLUE)
 			(curRoom newRoom: 114)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/carpet') (Print 14 0))
-			(if (Said '/cup,sign') (Print 14 1))
-			(if
-			(Said '[/building,convenience,building,airport]')
+			(if (Said '/carpet')
+				(Print 14 0)
+			)
+			(if (Said '/cup,sign')
+				(Print 14 1)
+			)
+			(if (Said '[/building,convenience,building,airport]')
 				(Print 14 2)
 			)
 		)
-		(if (Said 'open/door') (Print 14 3))
+		(if (Said 'open/door')
+			(Print 14 3)
+		)
 	)
 )

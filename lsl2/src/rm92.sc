@@ -108,15 +108,15 @@
 )
 
 (instance rm92Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= cycles 30))
+			(1
+				(= cycles 30)
+			)
 			(2
 				(Print 92 0 #at -1 15 #width 280 #time 12)
 				(islandScript changeState: 1)
@@ -152,13 +152,19 @@
 			(12
 				(islandScript changeState: 11)
 			)
-			(13 (= cycles 20))
+			(13
+				(= cycles 20)
+			)
 			(14
 				(Print 92 4 #at -1 15 #width 280 #time 8 #draw)
 				(= seconds 3)
 			)
-			(15 (curRoom newRoom: 93))
-			(16 (= cycles 30))
+			(15
+				(curRoom newRoom: 93)
+			)
+			(16
+				(= cycles 30)
+			)
 			(17
 				(aFog show: setScript: fogScript)
 				(aCopter setMotion: MoveTo 98 93 self)
@@ -175,7 +181,9 @@
 			(21
 				(aCopter setMotion: MoveTo 223 93 self)
 			)
-			(22 (curRoom newRoom: 85))
+			(22
+				(curRoom newRoom: 85)
+			)
 			(23
 				(aCopter setMotion: MoveTo 149 93)
 				(= cycles 20)
@@ -185,8 +193,14 @@
 				(Print (Format @str 92 6 introductoryPhrase))
 				(= cycles 20)
 			)
-			(25 (Print 92 7) (= cycles 10))
-			(26 (Print 92 8) (= cycles 20))
+			(25
+				(Print 92 7)
+				(= cycles 10)
+			)
+			(26
+				(Print 92 8)
+				(= cycles 20)
+			)
 			(27
 				(aCopter setMotion: MoveTo 246 120 self)
 			)
@@ -198,16 +212,13 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(and (== endGameState 0) (not (event claimed?)))
+		(if (and (== endGameState 0) (not (event claimed?)))
 			(theGame restart:)
 		)
 	)
 )
 
 (instance islandScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -233,7 +244,9 @@
 			(7
 				(aDoor setCycle: BegLoop self)
 			)
-			(8 (rm92Script cue:))
+			(8
+				(rm92Script cue:)
+			)
 			(9
 				(aWaterfall show: setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
@@ -253,8 +266,6 @@
 )
 
 (instance fogScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0

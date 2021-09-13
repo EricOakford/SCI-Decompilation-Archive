@@ -42,16 +42,18 @@
 )
 
 (instance rm83Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
+			(0
+				(= seconds 5)
+			)
 			(1
 				(Print 83 0 #at -1 152 #time 5 #dispose)
 				(= seconds 5)
 			)
-			(2 (curRoom newRoom: 84))
+			(2
+				(curRoom newRoom: 84)
+			)
 		)
 	)
 )

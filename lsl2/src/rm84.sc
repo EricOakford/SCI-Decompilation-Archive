@@ -14,9 +14,6 @@
 	rm84 0
 )
 
-(local
-	[local0 480] = [0 0 0 6 0 0 0 0 0 0 0 0 0 0 0 0 0 7 0 0 999 997 1 4 0 0 1 12 {rm84} 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 10 0 0 0 0 0 1]
-)
 (instance rm84 of Room
 	(properties
 		picture 84
@@ -79,16 +76,59 @@
 			posn: 60 109
 			addToPic:
 		)
-		(aFlames ignoreActors: setPri: 11 init: stopUpd:)
-		(aComputerWest ignoreActors: init: stopUpd:)
-		(aComputerEast ignoreActors: init: stopUpd:)
-		(aLaser ignoreActors: setPri: 2 init: stopUpd:)
-		(aLaserFire ignoreActors: setPri: 3 init:)
-		(aTrapdoor ignoreActors: setPri: 15 init: stopUpd:)
-		(aHench0 ignoreActors: init: stopUpd:)
-		(aHench1 ignoreActors: init: stopUpd:)
-		(aHench2 ignoreActors: init: stopUpd:)
-		(aHench3 ignoreActors: init: stopUpd:)
+		(aFlames
+			ignoreActors:
+			setPri: 11
+			init:
+			stopUpd:
+		)
+		(aComputerWest
+			ignoreActors:
+			init:
+			stopUpd:
+		)
+		(aComputerEast
+			ignoreActors:
+			init:
+			stopUpd:
+		)
+		(aLaser
+			ignoreActors:
+			setPri: 2
+			init:
+			stopUpd:
+		)
+		(aLaserFire
+			ignoreActors:
+			setPri: 3
+			init:
+		)
+		(aTrapdoor
+			ignoreActors:
+			setPri: 15
+			init:
+			stopUpd:
+		)
+		(aHench0
+			ignoreActors:
+			init:
+			stopUpd:
+		)
+		(aHench1
+			ignoreActors:
+			init:
+			stopUpd:
+		)
+		(aHench2
+			ignoreActors:
+			init:
+			stopUpd:
+		)
+		(aHench3
+			ignoreActors:
+			init:
+			stopUpd:
+		)
 		(aPatty
 			ignoreActors:
 			setCycle: Forward
@@ -96,8 +136,19 @@
 			cycleSpeed: 2
 			init:
 		)
-		(aPiano setLoop: 8 ignoreActors: setPri: 9 init: stopUpd:)
-		(aColumn setLoop: 7 ignoreActors: init: stopUpd:)
+		(aPiano
+			setLoop: 8
+			ignoreActors:
+			setPri: 9
+			init:
+			stopUpd:
+		)
+		(aColumn
+			setLoop: 7
+			ignoreActors:
+			init:
+			stopUpd:
+		)
 		(aChandelier
 			setLoop: 0
 			ignoreActors:
@@ -105,8 +156,17 @@
 			init:
 			stopUpd:
 		)
-		(aBullet ignoreActors: setLoop: 6 setPri: 15 init:)
-		(aNo ignoreActors: init: stopUpd:)
+		(aBullet
+			ignoreActors:
+			setLoop: 6
+			setPri: 15
+			init:
+		)
+		(aNo
+			ignoreActors:
+			init:
+			stopUpd:
+		)
 		(= currentStatus egoWONGAME)
 		(HandsOff)
 		(ego
@@ -270,15 +330,15 @@
 )
 
 (instance rm84Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(Print 84 0 #at -1 15 #width 280)
 				(theMusic play: self)
@@ -359,7 +419,12 @@
 				)
 			)
 			(12
-				(ego posn: 198 83 setLoop: 6 setCel: 0 setCycle: EndLoop self)
+				(ego
+					posn: 198 83
+					setLoop: 6
+					setCel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(13
 				(Print 84 4 #at -1 15 #width 280 #draw)

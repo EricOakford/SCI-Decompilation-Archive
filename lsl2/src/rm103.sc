@@ -227,7 +227,7 @@
 			init:
 		)
 		(ego
-			view: 100
+			view: vEgo
 			loop: 1
 			posn: 291 92
 			setCycle: Walk
@@ -242,8 +242,6 @@
 )
 
 (instance rm103Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -260,7 +258,9 @@
 				(ego setMotion: MoveTo 205 92 self)
 				(minicamScript changeState: 7)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(ego hide:)
 				(aStoolLarry posn: 205 65 setCel: 2 forceUpd:)
@@ -601,38 +601,50 @@
 			(if (< (StrLen @str2) 7)
 				(Format @str2 {Uh, I dunno.})
 			)
-			(if (== state 15) (self changeState: 17))
-			(if (== state 26) (self changeState: 28))
+			(if (== state 15)
+				(self changeState: 17)
+			)
+			(if (== state 26)
+				(self changeState: 28)
+			)
 			(return)
 		)
 	)
 )
 
 (instance minicamScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(aCameraman loop: 2 setCycle: EndLoop self)
 			)
-			(2 (aCameraman stopUpd:))
-			(3 (aCameraman setCycle: BegLoop self))
+			(2
+				(aCameraman stopUpd:)
+			)
+			(3
+				(aCameraman setCycle: BegLoop self)
+			)
 			(4
 				(aCameraman setCycle: Walk setMotion: MoveTo 86 143 self)
 				(= state 0)
 			)
-			(5 (aCameraman setCycle: BegLoop self))
+			(5
+				(aCameraman setCycle: BegLoop self)
+			)
 			(6
 				(aCameraman setCycle: Walk setMotion: MoveTo 170 143 self)
 				(= state 0)
 			)
-			(7 (aCameraman setCycle: BegLoop self))
+			(7
+				(aCameraman setCycle: BegLoop self)
+			)
 			(8
 				(aCameraman setCycle: Walk setMotion: MoveTo 205 143 self)
 				(= state 0)
 			)
-			(9 (aCameraman setCycle: BegLoop self))
+			(9
+				(aCameraman setCycle: BegLoop self)
+			)
 			(10
 				(aCameraman setCycle: Walk setMotion: MoveTo 238 143 self)
 				(= state 0)

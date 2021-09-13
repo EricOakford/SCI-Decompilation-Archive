@@ -90,27 +90,29 @@
 			loop: 2
 			posn: 113 153
 			setCycle: Walk
-			illegalBits: -32768
+			illegalBits: cWHITE
 			init:
 		)
-		(NormalEgo 3)
+		(NormalEgo loopN)
 		(ego posn: 160 159 init:)
-		(self setRegions: 7 200 setScript: rm125Script)
+		(self setRegions: BARBER CITY setScript: rm125Script)
 	)
 )
 
 (instance rm125Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 25))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 25)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not gotHaircutInCity) (= seconds 10))
+				(if (not gotHaircutInCity)
+					(= seconds 10)
+				)
 			)
 			(1
 				(if (not talkedToBarber)
@@ -376,7 +378,7 @@
 					posn: 182 114
 					loop: 2
 					setCycle: Walk
-					illegalBits: -32768
+					illegalBits: cWHITE
 				)
 				(ego
 					view: 232
@@ -388,8 +390,8 @@
 				)
 			)
 			(40
-				(NormalEgo 2)
-				(ego ignoreActors: 0)
+				(NormalEgo loopS)
+				(ego ignoreActors: FALSE)
 				(aChair show:)
 				(theGame changeScore: 3)
 				(= seconds 2)
@@ -403,8 +405,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if
@@ -415,12 +416,27 @@
 			)
 			(= talkedToBarber TRUE)
 			(cond 
-				((not (ego inRect: 148 117 180 127)) (Print 125 0))
-				((ego has: iMillionDollarBill) (Print 125 1) (Print 125 2))
-				((not (ego has: iWadODough)) (Print 125 3))
-				(gotHaircutInCity (Print 125 4) (Print 125 5))
-				((== currentStatus egoSITTING) (YouAre))
-				(else (= gotHaircutInCity TRUE) (self changeState: 2))
+				((not (ego inRect: 148 117 180 127))
+					(Print 125 0)
+				)
+				((ego has: iMillionDollarBill)
+					(Print 125 1)
+					(Print 125 2)
+				)
+				((not (ego has: iWadODough))
+					(Print 125 3)
+				)
+				(gotHaircutInCity
+					(Print 125 4)
+					(Print 125 5)
+				)
+				((== currentStatus egoSITTING)
+					(YouAre)
+				)
+				(else
+					(= gotHaircutInCity TRUE)
+					(self changeState: 2)
+				)
 			)
 		)
 		(if (Said 'call/man')

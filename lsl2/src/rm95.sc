@@ -19,8 +19,8 @@
 	aChainEast
 	aChainWest
 	aDoor
-	laserGun
-	laserBeam
+	aLaser
+	aBeam
 	aAcid
 	aBed
 	aBigEgo
@@ -140,7 +140,7 @@
 			setStep: 1 3
 			init:
 		)
-		((= laserGun (Actor new:))
+		((= aLaser (Actor new:))
 			view: 829
 			ignoreActors:
 			ignoreHorizon:
@@ -152,7 +152,7 @@
 			setStep: 1 1
 			init:
 		)
-		((= laserBeam (Actor new:))
+		((= aBeam (Actor new:))
 			view: 829
 			ignoreActors:
 			ignoreHorizon:
@@ -166,7 +166,9 @@
 			init:
 			hide:
 		)
-		(if (== henchView 0) (= henchView 205))
+		(if (== henchView 0)
+			(= henchView 205)
+		)
 		((= aHench (Actor new:))
 			view: henchView
 			ignoreActors:
@@ -178,23 +180,23 @@
 			setScript: henchScript
 		)
 		(self setScript: rm95Script)
-		(= currentEgoView 100)
+		(= currentEgoView vEgo)
 		(NormalEgo)
-		(ego loop: 2 posn: 32 150 init:)
+		(ego loop: loopS posn: 32 150 init:)
 		(HandsOff)
 	)
 )
 
 (instance rm95Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(Print 95 0)
 				(aDoor setMotion: MoveTo 9 138 self)
@@ -258,7 +260,9 @@
 				(aChainWest setMotion: MoveTo 218 90 self)
 				(aChainEast setMotion: MoveTo 250 90)
 			)
-			(15 (= seconds 3))
+			(15
+				(= seconds 3)
+			)
 			(16
 				(aBed hide:)
 				(ego
@@ -290,17 +294,17 @@
 				(= seconds 3)
 			)
 			(21
-				(laserGun setMotion: MoveTo 234 29 self)
+				(aLaser setMotion: MoveTo 234 29 self)
 			)
 			(22
 				(aBigEgo posn: 172 38 stopUpd:)
 				(aBigEgoFace posn: 172 38 setCycle: EndLoop)
-				(laserGun
+				(aLaser
 					setStep: 1 1
 					moveSpeed: 1
 					setMotion: MoveTo 234 -2
 				)
-				(laserBeam
+				(aBeam
 					posn: 234 27
 					setStep: 1 1
 					cycleSpeed: 0
@@ -311,7 +315,7 @@
 			)
 			(23
 				(Print 95 6 #at -1 152)
-				(laserBeam setMotion: MoveTo 234 0 self)
+				(aBeam setMotion: MoveTo 234 0 self)
 				(aBed view: 191 loop: 0 posn: 214 88 show:)
 				(ego
 					setLoop: 5
@@ -327,8 +331,8 @@
 				(aBigEgo dispose:)
 			)
 			(25
-				(laserGun dispose:)
-				(laserBeam dispose:)
+				(aLaser dispose:)
+				(aBeam dispose:)
 				(ego
 					setLoop: 6
 					setCel: 0
@@ -340,15 +344,17 @@
 			(26
 				(ego setMotion: 0 cycleSpeed: 0 setCycle: EndLoop self)
 			)
-			(27 (= seconds 3))
-			(28 (= currentStatus egoDYING))
+			(27
+				(= seconds 3)
+			)
+			(28
+				(= currentStatus egoDYING)
+			)
 		)
 	)
 )
 
 (instance henchScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1

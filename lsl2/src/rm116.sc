@@ -14,7 +14,7 @@
 
 (local
 	canBuySwimsuit
-	triedToShoplift
+	stealMsg
 	moneyOwed
 	aClerk
 	aBigHand
@@ -182,19 +182,22 @@
 		)
 		(NormalEgo)
 		(ego posn: 161 161 init:)
-		(self setRegions: 200 setScript: rm116Script)
+		(self setRegions: CITY setScript: rm116Script)
 	)
 )
 
 (instance rm116Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 16))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 16)
+		)
 		(cond 
-			((not (& (ego onControl:) $0004)) (= triedToShoplift 0))
-			((and moneyOwed (not triedToShoplift)) (= triedToShoplift TRUE)
+			((not (& (ego onControl:) cGREEN))
+				(= stealMsg FALSE)
+			)
+			((and moneyOwed (not stealMsg))
+				(= stealMsg TRUE)
 				(Print 116 0)
 			)
 		)
@@ -202,7 +205,9 @@
 	
 	(method (changeState newState &tmp egoX)
 		(switch (= state newState)
-			(0 (= seconds (Random 5 10)))
+			(0
+				(= seconds (Random 5 10))
+			)
 			(1
 				(aClerk
 					setLoop: 1
@@ -307,8 +312,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
@@ -317,41 +321,66 @@
 			)
 			(if (Said '/rack,bikini,(bra<bathing),job')
 				(cond 
-					((not (ego inRect: 137 88 182 96)) (Print 116 2))
-					((ego has: iSwimsuit) (Print 116 3))
-					((!= canBuySwimsuit TRUE) (Print 116 4))
-					(else (Print 116 5))
+					((not (ego inRect: 137 88 182 96))
+						(Print 116 2)
+					)
+					((ego has: iSwimsuit)
+						(Print 116 3)
+					)
+					((!= canBuySwimsuit TRUE)
+						(Print 116 4)
+					)
+					(else
+						(Print 116 5)
+					)
 				)
 			)
-			(if (Said '/bra') (Print 116 6) (Print 116 7))
+			(if (Said '/bra')
+				(Print 116 6)
+				(Print 116 7)
+			)
 			(if (Said '/art,ceiling')
 				(Print 116 8)
 				(Print 116 9 #at -1 152)
 			)
-			(if (Said '/finger') (Print 116 10))
-			(if (Said '/brick') (Print 116 11) (Print 116 12))
-			(if (Said '/art') (Print 116 13))
+			(if (Said '/finger')
+				(Print 116 10)
+			)
+			(if (Said '/brick')
+				(Print 116 11)
+				(Print 116 12)
+			)
+			(if (Said '/art')
+				(Print 116 13)
+			)
 			(if (Said '/buffet,finger,bimbo,agent')
 				(aBigClerk posn: 159 58 stopUpd:)
 				(Print 116 14 #draw)
 				(Timer setReal: aBigClerk 5)
 				(HandsOff)
 			)
-			(if
-			(Said '[/airport,building,building,look,ceiling,carpet]')
+			(if (Said '[/airport,building,building,look,ceiling,carpet]')
 				(if (ego has: iSwimsuit)
 					(Print 116 15)
 				else
 					(Print 116 16)
-					(if (== canBuySwimsuit TRUE) (Print 116 17))
+					(if (== canBuySwimsuit TRUE)
+						(Print 116 17)
+					)
 				)
 			)
 		)
 		(if (Said 'get/bikini,(bra<bathing),job')
 			(cond 
-				((not (ego inRect: 137 88 182 96)) (Print 116 18))
-				((ego has: 5) (Print 116 19))
-				((!= canBuySwimsuit TRUE) (Print 116 20))
+				((not (ego inRect: 137 88 182 96))
+					(Print 116 18)
+				)
+				((ego has: iSwimsuit)
+					(Print 116 19)
+				)
+				((!= canBuySwimsuit TRUE)
+					(Print 116 20)
+				)
 				(else
 					(Print 116 21)
 					(= moneyOwed TRUE)
@@ -368,12 +397,20 @@
 				(Said 'buy')
 			)
 			(cond 
-				((not moneyOwed) (Print 116 22))
-				((not (ego inRect: 120 130 192 140)) (Print 116 23))
-				(else (self changeState: 7))
+				((not moneyOwed)
+					(Print 116 22)
+				)
+				((not (ego inRect: 120 130 192 140))
+					(Print 116 23)
+				)
+				(else
+					(self changeState: 7)
+				)
 			)
 		)
-		(if (Said 'get/bra') (Print 116 24))
+		(if (Said 'get/bra')
+			(Print 116 24)
+		)
 		(if (Said 'call/bimbo,children,agent')
 			(if (or (ego has: iMillionDollarBill) (ego has: iWadODough))
 				(Print 116 25)
@@ -389,8 +426,6 @@
 )
 
 (instance aBigClerk of Prop
-	(properties)
-	
 	(method (cue)
 		(Print 116 44)
 		(Print 116 45 #at 55 155 #width 210)

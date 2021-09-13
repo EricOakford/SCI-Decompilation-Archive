@@ -40,25 +40,26 @@
 			setScript: detailScript
 		)
 		(cond 
-			((== prevRoomNum 0) (ego posn: 155 179))
-			((== prevRoomNum 20) (ego posn: 99 110))
+			((== prevRoomNum 0)
+				(ego posn: 155 179)
+			)
+			((== prevRoomNum 20)
+				(ego posn: 99 110)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
-		(self setRegions: 200 setScript: rm24Script)
+		(self setRegions: CITY setScript: rm24Script)
 	)
 )
 
 (instance rm24Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said '/film')
@@ -69,17 +70,19 @@
 			(if (Said '[/building,unreversal,krod,airport]')
 				(Print 24 2)
 			)
-			(if (Said '/children,man,bimbo') (Print 24 3))
+			(if (Said '/children,man,bimbo')
+				(Print 24 3)
+			)
 		)
 	)
 )
 
 (instance detailScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 12))
+			(0
+				(= cycles 12)
+			)
 			(1
 				(aPeople
 					setPri: -1

@@ -82,10 +82,18 @@
 			init:
 		)
 		(cond 
-			((== prevRoomNum 24) (ego posn: 2 168))
-			((== prevRoomNum 26) (ego posn: 318 134))
-			((== prevRoomNum 125) (ego posn: 186 124))
-			(else (ego posn: 245 120))
+			((== prevRoomNum 24)
+				(ego posn: 2 168)
+			)
+			((== prevRoomNum 26)
+				(ego posn: 318 134)
+			)
+			((== prevRoomNum 125)
+				(ego posn: 186 124)
+			)
+			(else
+				(ego posn: 245 120)
+			)
 		)
 		(ego init:)
 		(self setRegions: CITY setScript: rm25Script)
@@ -93,11 +101,11 @@
 )
 
 (instance rm25Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0008) (curRoom newRoom: 21))
+		(if (& (ego onControl:) cCYAN)
+			(curRoom newRoom: 21)
+		)
 	)
 	
 	(method (changeState newState)
@@ -105,20 +113,24 @@
 			(0
 				(aWave cel: 0 setCycle: EndLoop self)
 			)
-			(1 (= cycles (Random 6 10)))
-			(2 (self changeState: 0))
+			(1
+				(= cycles (Random 6 10))
+			)
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/lagoon,beach,fluid,lagoon') (Print 25 0))
-			(if
-			(Said '[/building,(building<man),building,airport]')
+			(if (Said '/lagoon,beach,fluid,lagoon')
+				(Print 25 0)
+			)
+			(if (Said '[/building,(building<man),building,airport]')
 				(Print 25 1)
 				(Print 25 2)
 				(Print 25 3)

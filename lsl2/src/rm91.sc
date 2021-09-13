@@ -139,8 +139,6 @@
 )
 
 (instance rm91Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -194,14 +192,24 @@
 				(= seconds 2)
 			)
 			(8
-				(Print 91 4 #time 5)
+				(Print 91 4
+					#time 5
+				)
 				(aMouth posn: 3 1152)
 				(= seconds 3)
 			)
 			(9
-				(Print 91 5 #at -1 15 #width 280 #time 10)
-				(Print 91 6 #time 9)
-				(Print 91 7 #time 4)
+				(Print 91 5
+					#at -1 15
+					#width 280
+					#time 10
+				)
+				(Print 91 6
+					#time 9
+				)
+				(Print 91 7
+					#time 4
+				)
 				(aDog show:)
 				(= seconds 3)
 			)
@@ -220,12 +228,18 @@
 					setCycle: Walk
 					setMotion: MoveTo 193 161 self
 				)
-				(Print 91 8 #at -1 15 #width 280 #time 7)
+				(Print 91 8
+					#at -1 15
+					#width 280
+					#time 7
+				)
 				(aMouth posn: 3 152)
 				(= cycles 22)
 			)
 			(13
-				(Print 91 9 #time 8)
+				(Print 91 9
+					#time 8
+				)
 				(aMouth dispose:)
 				(aCar setMotion: MoveTo -99 288)
 			)
@@ -234,7 +248,10 @@
 				(= cycles 30)
 			)
 			(15
-				(Print 91 10 #at -1 152 #time 3)
+				(Print 91 10
+					#at -1 152
+					#time 3
+				)
 				(= cycles 30)
 			)
 			(16
@@ -245,19 +262,31 @@
 				)
 			)
 			(17
-				(Print 91 11 #at -1 15 #width 280 #time 13)
-				(Print 91 12 #at -1 15 #width 280 #time 4)
+				(Print 91 11
+					#at -1 15
+					#width 280
+					#time 13
+				)
+				(Print 91 12
+					#at -1 15
+					#width 280
+					#time 4
+				)
 				(aDog setMotion: MoveTo -22 151)
 				(= seconds 3)
 			)
 			(18
-				(Print 91 13 #time 3)
+				(Print 91 13
+					#time 3
+				)
 				(curRoom newRoom: 92 IRISOUT)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if (not (event claimed?)) (theGame restart:))
+		(if (not (event claimed?))
+			(theGame restart:)
+		)
 	)
 )

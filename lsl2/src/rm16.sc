@@ -65,10 +65,18 @@
 			addToPic:
 		)
 		(cond 
-			((== prevRoomNum 0) (ego posn: 248 133))
-			((== prevRoomNum 12) (ego posn: 252 135))
-			((== prevRoomNum 20) (ego posn: 73 187))
-			((== prevRoomNum 116) (ego posn: 150 130))
+			((== prevRoomNum 0)
+				(ego posn: 248 133)
+			)
+			((== prevRoomNum 12)
+				(ego posn: 252 135)
+			)
+			((== prevRoomNum 20)
+				(ego posn: 73 187)
+			)
+			((== prevRoomNum 116)
+				(ego posn: 150 130)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -78,8 +86,8 @@
 			posn: 136 134
 			setPri: 9
 			entranceTo: 116
-			msgLook:
-				{Through the door you see an exclusive mens clothing store. (And, a beautiful female clerk!) A sign says they accept any form of U. S. currency.}
+			msgLook: {Through the door you see an exclusive mens clothing store.
+			(And, a beautiful female clerk!) A sign says they accept any form of U. S. currency.}
 			msgFunny: {Everytime you try to knock, it opens itself!}
 			init:
 		)
@@ -88,30 +96,39 @@
 )
 
 (instance rm16Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0008) (curRoom newRoom: 12))
+		(if (& (ego onControl:) cCYAN)
+			(curRoom newRoom: 12)
+		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/pole,(sign<freeway)') (Print 16 0))
-			(if (Said '/cup,sign') (Print 16 1))
-			(if (Said '/flower') (Print 16 2))
+			(if (Said '/pole,(sign<freeway)')
+				(Print 16 0)
+			)
+			(if (Said '/cup,sign')
+				(Print 16 1)
+			)
+			(if (Said '/flower')
+				(Print 16 2)
+			)
 			(if (Said '/carpet,(carpet<door)')
 				(Print 16 3)
 				(Print 16 4 #at -1 152)
 			)
 			(if (Said '[/building,building,airport]')
 				(Print 16 5)
-				(if (ego has: iMillionDollarBill) (Print 16 6))
-				(if (not (ego has: iWadODough)) (Print 16 7))
+				(if (ego has: iMillionDollarBill)
+					(Print 16 6)
+				)
+				(if (not (ego has: iWadODough))
+					(Print 16 7)
+				)
 			)
 		)
 	)

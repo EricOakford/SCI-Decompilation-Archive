@@ -63,8 +63,12 @@
 			)
 		)
 		(cond 
-			((== prevRoomNum 0) (ego posn: 198 187))
-			((== prevRoomNum 17) (ego posn: 198 187))
+			((== prevRoomNum 0)
+				(ego posn: 198 187)
+			)
+			((== prevRoomNum 17)
+				(ego posn: 198 187)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -72,8 +76,6 @@
 )
 
 (instance rm13Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -89,7 +91,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds (Random 10 20)))
+			(1
+				(= seconds (Random 10 20))
+			)
 			(2
 				(aHead posn: 198 73 setCycle: EndLoop self)
 			)
@@ -102,8 +106,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said '(look<in),open,increase/(barrel,barrel)') ;EO: Fixed decompiler goof in Said Spec
@@ -111,7 +114,9 @@
 				(NotClose)
 			else
 				(Print 13 0)
-				(Print 13 1 #at -1 152)
+				(Print 13 1
+					#at -1 152
+				)
 			)
 		)
 		(if (Said 'look/barrel,barrel')
@@ -123,8 +128,7 @@
 				#at -1 152
 			)
 		)
-		(if
-		(or (Said 'look<in,through/fence') (Said 'look/hole'))
+		(if (or (Said 'look<in,through/fence') (Said 'look/hole'))
 			(if (not (ego inRect: 192 96 203 108))
 				(NotClose)
 			else
@@ -135,13 +139,16 @@
 				)
 			)
 		)
-		(if
-		(or (Said '//hole,fence') (Said '/hole,fence'))
+		(if (or (Said '//hole,fence') (Said '/hole,fence'))
 			(Print 13 6)
 		)
 		(if (Said 'look>')
-			(if (Said '/graffiti') (Print 13 7))
-			(if (Said '/sign') (Print 13 8))
+			(if (Said '/graffiti')
+				(Print 13 7)
+			)
+			(if (Said '/sign')
+				(Print 13 8)
+			)
 			(if (Said '[/barrel,alley,barrel,building,airport]')
 				(Print 13 9)
 				(Print 13 10)
@@ -151,8 +158,6 @@
 )
 
 (instance pissScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

@@ -33,8 +33,6 @@
 )
 
 (instance rm96Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)

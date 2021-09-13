@@ -70,7 +70,12 @@
 			ignoreActors:
 			addToPic:
 		)
-		((View new:) view: 235 posn: 63 148 setPri: 11 addToPic:)
+		((View new:)
+			view: 235
+			posn: 63 148
+			setPri: 11
+			addToPic:
+		)
 		((View new:)
 			view: 235
 			loop: 1
@@ -138,7 +143,7 @@
 			((= aHench (Actor new:))
 				view: 234
 				posn: -11 174
-				illegalBits: -32768
+				illegalBits: cWHITE
 				setCycle: Walk
 				init:
 				hide:
@@ -154,9 +159,15 @@
 			)
 		)
 		(cond 
-			((== prevRoomNum 0) (ego posn: 302 187))
-			((== prevRoomNum 18) (ego posn: 258 128))
-			((== prevRoomNum 26) (ego posn: 302 187))
+			((== prevRoomNum 0)
+				(ego posn: 302 187)
+			)
+			((== prevRoomNum 18)
+				(ego posn: 258 128)
+			)
+			((== prevRoomNum 26)
+				(ego posn: 302 187)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -164,15 +175,15 @@
 )
 
 (instance rm22Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds (Random 3 5)))
+			(1
+				(= seconds (Random 3 5))
+			)
 			(2
 				(aHench show: setMotion: MoveTo 127 175 self)
 				(theSound play:)
@@ -218,10 +229,19 @@
 					setCycle: EndLoop self
 				)
 			)
-			(7 (= seconds 3))
-			(8 (Print 22 19) (= seconds 3))
-			(9 (ego setCycle: CycleTo 3 -1 self))
-			(10 (ego setCycle: EndLoop self))
+			(7
+				(= seconds 3)
+			)
+			(8
+				(Print 22 19)
+				(= seconds 3)
+			)
+			(9
+				(ego setCycle: CycleTo 3 -1 self)
+			)
+			(10
+				(ego setCycle: EndLoop self)
+			)
 			(11
 				(Print 22 20)
 				(= seconds 3)
@@ -257,8 +277,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (== state 3)
@@ -274,46 +293,76 @@
 				(Print 22 1)
 			)
 			(if (Said 'call/man')
-				(if (Random 0 1) (Print 22 2) else (Print 22 3))
+				(if (Random 0 1)
+					(Print 22 2)
+				else
+					(Print 22 3)
+				)
 				(Print 22 4)
 			)
 		)
-		(if (Said 'bang,open/door') (Print 22 5))
+		(if (Said 'bang,open/door')
+			(Print 22 5)
+		)
 		(if (Said 'look>')
 			(if (Said '/man')
-				(if (not henchmanIsHere) (Print 22 6) else (Print 22 7))
+				(if (not henchmanIsHere)
+					(Print 22 6)
+				else
+					(Print 22 7)
+				)
 			)
-			(if (Said '/door') (Print 22 8))
-			(if (Said '/barrel,carpet,freeway') (Print 22 9))
-			(if (Said '/cup') (Print 22 10))
-			(if (Said '/lagoon,beach,fluid,lagoon') (Print 22 11))
-			(if (Said '/craft,boat') (Print 22 12))
-			(if (Said '/sign') (Print 22 13))
+			(if (Said '/door')
+				(Print 22 8)
+			)
+			(if (Said '/barrel,carpet,freeway')
+				(Print 22 9)
+			)
+			(if (Said '/cup')
+				(Print 22 10)
+			)
+			(if (Said '/lagoon,beach,fluid,lagoon')
+				(Print 22 11)
+			)
+			(if (Said '/craft,boat')
+				(Print 22 12)
+			)
+			(if (Said '/sign')
+				(Print 22 13)
+			)
 			(if (Said '[/building,building,airport]')
 				(Print 22 14)
 				(Print 22 15)
 			)
 		)
-		(if (Said '/door,bar') (Print 22 8))
+		(if (Said '/door,bar')
+			(Print 22 8)
+		)
 		(if (Said '/man>')
 			(cond 
-				((Said 'call/') (Print 22 16))
-				((Said '(stair<over),jerk,awaken/') (Print 22 17))
+				((Said 'call/')
+					(Print 22 16)
+				)
+				((Said '(stair<over),jerk,awaken/')
+					(Print 22 17)
+				)
 			)
 		)
 	)
 )
 
 (instance boatScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 3 15)))
+			(0
+				(= seconds (Random 3 15))
+			)
 			(1
 				(aBoat setMotion: MoveTo 333 107 self)
 			)
-			(2 (aBoat hide:))
+			(2
+				(aBoat hide:)
+			)
 		)
 	)
 )

@@ -113,13 +113,11 @@
 		)
 		(NormalEgo)
 		(ego posn: 1 150 init:)
-		(self setRegions: 200 setScript: rm26Script)
+		(self setRegions: CITY setScript: rm26Script)
 	)
 )
 
 (instance rm26Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -145,7 +143,7 @@
 			(4
 				(Print 26 17)
 				(aPurser setCel: 0 stopUpd:)
-				(User canControl: 1 canInput: 1)
+				(User canControl: TRUE canInput: TRUE)
 			)
 			(5
 				(HandsOff)
@@ -163,7 +161,7 @@
 				(theGame changeScore: 9)
 				(aPurser setCel: 0 stopUpd:)
 				(ego
-					put: 3 -1
+					put: iCruiseTicket -1
 					illegalBits: 0
 					setMotion: MoveTo 181 150 self
 				)
@@ -185,13 +183,14 @@
 			(11
 				(ego setMotion: MoveTo 318 94 self)
 			)
-			(12 (curRoom newRoom: 27))
+			(12
+				(curRoom newRoom: 27)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if shipIsHere
@@ -203,17 +202,36 @@
 						(Said 'look,finger,give/passport,ticket/man,agent')
 					)
 					(cond 
-						((not (ego inRect: 175 144 211 158)) (NotClose))
-						((ego has: iPassport) (self changeState: 5))
-						(else (self changeState: 1))
+						((not (ego inRect: 175 144 211 158))
+							(NotClose)
+						)
+						((ego has: iPassport)
+							(self changeState: 5)
+						)
+						(else
+							(self changeState: 1)
+						)
 					)
 				)
-				((Said '/craft,boat') (Print 26 0))
-				((Said '/carpet') (Print 26 1) (Print 26 2 #at -1 152))
-				((Said '/chain') (Print 26 3))
-				((Said 'look/door') (Print 26 4))
-				((Said 'look/man') (Print 26 5))
-				((Said 'call/man') (Print 26 6))
+				((Said '/craft,boat')
+					(Print 26 0)
+				)
+				((Said '/carpet')
+					(Print 26 1)
+					(Print 26 2 #at -1 152)
+				)
+				((Said '/chain')
+					(Print 26 3)
+				)
+				((Said 'look/door')
+					(Print 26 4)
+				)
+				((Said 'look/man')
+					(Print 26 5)
+				)
+				((Said 'call/man')
+					(Print 26 6)
+				)
 			)
 		)
 		(if (or (Said '//door') (Said '/door'))
@@ -221,24 +239,34 @@
 			(Print 26 8 #at -1 152)
 		)
 		(if (Said 'look>')
-			(if (Said '/bird') (Print 26 9))
-			(if (Said '/lagoon,beach,fluid,lagoon') (Print 26 10))
-			(if (Said '/door') (Print 26 11))
+			(if (Said '/bird')
+				(Print 26 9)
+			)
+			(if (Said '/lagoon,beach,fluid,lagoon')
+				(Print 26 10)
+			)
+			(if (Said '/door')
+				(Print 26 11)
+			)
 			(if (Said '[/airport]')
 				(Print 26 12)
-				(if shipIsHere (Print 26 13))
+				(if shipIsHere
+					(Print 26 13)
+				)
 			)
 		)
 	)
 )
 
 (instance birdScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 3)))
-			(1 (aBird setCycle: EndLoop self))
+			(0
+				(= seconds (Random 2 3))
+			)
+			(1
+				(aBird setCycle: EndLoop self)
+			)
 			(2
 				(aBird
 					setLoop: 3
@@ -246,7 +274,9 @@
 					setMotion: MoveTo -12 49 self
 				)
 			)
-			(3 (= seconds (Random 4 8)))
+			(3
+				(= seconds (Random 4 8))
+			)
 			(4
 				(if (not (ego inRect: 103 151 226 167))
 					(= seconds 3)
@@ -275,7 +305,9 @@
 			(7
 				(aBird setMotion: MoveTo -12 66 self)
 			)
-			(8 (= seconds 3))
+			(8
+				(= seconds 3)
+			)
 			(9
 				(if (not (ego inRect: 103 151 226 167))
 					(= seconds 3)
@@ -297,8 +329,12 @@
 					setMotion: MoveTo (+ 14 (aBird x?)) (+ (ego y?) 3) self
 				)
 			)
-			(11 (aPoop2 setCycle: EndLoop))
-			(12 (aBird dispose:))
+			(11
+				(aPoop2 setCycle: EndLoop)
+			)
+			(12
+				(aBird dispose:)
+			)
 		)
 	)
 )

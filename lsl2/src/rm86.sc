@@ -155,20 +155,21 @@
 )
 
 (instance rm86Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (> state 3) (< state 7) (> 50 (Random 0 75)))
+		(if (and (> state 3) (< state 7) (> 50 (Random 0 75)))
 			(ShakeScreen 1 (Random 1 3))
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 10))
-			(1 (ego setCycle: EndLoop self))
+			(0
+				(= cycles 10)
+			)
+			(1
+				(ego setCycle: EndLoop self)
+			)
 			(2
 				(aKalalau show: setMotion: MoveTo 210 161 self)
 				(ego

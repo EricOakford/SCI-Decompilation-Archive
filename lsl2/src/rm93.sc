@@ -209,15 +209,13 @@
 			stopUpd:
 			init:
 		)
-		(NormalEgo 2)
+		(NormalEgo loopS)
 		(ego view: 818 posn: 84 82 init:)
 		(self setScript: rm93Script)
 	)
 )
 
 (instance rm93Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -228,7 +226,9 @@
 				(ego setMotion: MoveTo 86 127 self)
 				(= cycles 10)
 			)
-			(1 (aDoor setCycle: BegLoop))
+			(1
+				(aDoor setCycle: BegLoop)
+			)
 			(2
 				(aDoor stopUpd:)
 				(ego setMotion: MoveTo 66 160 self)
@@ -326,7 +326,9 @@
 				(ego setCycle: BegLoop)
 				(aGrapeEast setCycle: BegLoop self)
 			)
-			(21 (= cycles 10))
+			(21
+				(= cycles 10)
+			)
 			(22
 				(aGrapeWest setCycle: CycleTo 4 1 self)
 			)
@@ -338,7 +340,9 @@
 				(ego setCycle: BegLoop)
 				(aGrapeWest setCycle: BegLoop self)
 			)
-			(25 (= cycles 30))
+			(25
+				(= cycles 30)
+			)
 			(26
 				(Print 93 12 #at -1 15 #width 280 #time 6)
 				(curRoom newRoom: 90)
@@ -347,6 +351,8 @@
 	)
 	
 	(method (handleEvent event)
-		(if (not (event claimed?)) (theGame restart:))
+		(if (not (event claimed?))
+			(theGame restart:)
+		)
 	)
 )

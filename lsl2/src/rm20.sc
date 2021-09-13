@@ -55,21 +55,23 @@
 		)
 		(NormalEgo)
 		(ego init:)
-		(self setRegions: 200 setScript: rm20Script)
+		(self setRegions: CITY setScript: rm20Script)
 	)
 )
 
 (instance rm20Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: origin) $0002) (curRoom newRoom: 16))
+		(if (& (ego onControl: origin) cBLUE)
+			(curRoom newRoom: 16)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 14)))
+			(0
+				(= seconds (Random 2 14))
+			)
 			(1
 				(aPlane posn: 287 7 show: setMotion: MoveTo -30 8 self)
 			)
@@ -78,7 +80,11 @@
 				(= seconds (Random 2 9))
 			)
 			(3
-				(aJogger posn: 61 120 show: setMotion: MoveTo 112 116 self)
+				(aJogger
+					posn: 61 120
+					show:
+					setMotion: MoveTo 112 116 self
+				)
 			)
 			(4
 				(aJogger setMotion: MoveTo 150 125 self)
@@ -91,12 +97,13 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/airline') (Print 20 0))
+			(if (Said '/airline')
+				(Print 20 0)
+			)
 			(if (Said '/children,man,bimbo')
 				(if (or (== state 3) (== state 4))
 					(if (not lookedAtJogger)
@@ -109,8 +116,12 @@
 					(Print 20 3)
 				)
 			)
-			(if (Said '/hotel,building') (Print 20 4))
-			(if (Said '[/angeles,airport]') (Print 20 5))
+			(if (Said '/hotel,building')
+				(Print 20 4)
+			)
+			(if (Said '[/angeles,airport]')
+				(Print 20 5)
+			)
 		)
 	)
 )

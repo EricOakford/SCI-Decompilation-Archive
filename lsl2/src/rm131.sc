@@ -116,16 +116,19 @@
 )
 
 (instance rm131Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
-			(1 (Print 131 6) (= seconds 5))
+			(0
+				(= seconds 2)
+			)
+			(1
+				(Print 131 6)
+				(= seconds 5)
+			)
 			(2
 				(Print 131 7)
 				(theGame changeScore: 5)
@@ -154,17 +157,17 @@
 				(aEgoBoat setMotion: MoveTo -12 201 self)
 				(User canInput: TRUE)
 			)
-			(6 (curRoom newRoom: 138))
+			(6
+				(curRoom newRoom: 138)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if
-		(and (ego has: iWig) (Said '(conceal<on),apply,wear/wig'))
+		(if (and (ego has: iWig) (Said '(conceal<on),apply,wear/wig'))
 			(Print 131 0)
 			(if (not woreWigAtSea)
 				(theGame changeScore: 5)
@@ -186,8 +189,12 @@
 			(ego put: iSpinachDip -1)
 		)
 		(if (Said 'look>')
-			(if (Said '/craft') (Print 131 4))
-			(if (Said '[/boat,airport]') (Print 131 5))
+			(if (Said '/craft')
+				(Print 131 4)
+			)
+			(if (Said '[/boat,airport]')
+				(Print 131 5)
+			)
 		)
 	)
 )

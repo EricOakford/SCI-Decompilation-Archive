@@ -68,8 +68,12 @@
 			init:
 		)
 		(cond 
-			((== prevRoomNum 16) (ego posn: 230 187))
-			((== prevRoomNum 0) (ego posn: 230 187))
+			((== prevRoomNum 16)
+				(ego posn: 230 187)
+			)
+			((== prevRoomNum 0)
+				(ego posn: 230 187)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -78,21 +82,24 @@
 )
 
 (instance rm12Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '//') (Print 12 0))
-			(if (Said '/freeway,auto') (Print 12 1))
-			(if (Said '/building') (Print 12 2))
+			(if (Said '/hill')	;EO: fixed said spec
+				(Print 12 0)
+			)
+			(if (Said '/freeway,auto')
+				(Print 12 1)
+			)
+			(if (Said '/building')
+				(Print 12 2)
+			)
 			(if (Said '[/angeles,sign,brick,fence,airport]')
 				(Print 12 3)
 			)

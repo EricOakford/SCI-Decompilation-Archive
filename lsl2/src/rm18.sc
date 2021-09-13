@@ -84,9 +84,15 @@
 			addToPic:
 		)
 		(cond 
-			((== prevRoomNum 0) (ego posn: 253 119))
-			((== prevRoomNum 14) (ego posn: 253 119))
-			((== prevRoomNum 118) (ego posn: 172 146))
+			((== prevRoomNum 0)
+				(ego posn: 253 119)
+			)
+			((== prevRoomNum 14)
+				(ego posn: 253 119)
+			)
+			((== prevRoomNum 118)
+				(ego posn: 172 146)
+			)
 		)
 		(NormalEgo)
 		((= aDoor (AutoDoor new:))
@@ -100,25 +106,26 @@
 			init:
 		)
 		(ego init:)
-		(self setRegions: 200 setScript: rm18Script)
+		(self setRegions: CITY setScript: rm18Script)
 	)
 )
 
 (instance rm18Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/sign,cup') (Print 18 0))
-			(if (Said '[/building,building,airport]') (Print 18 1))
+			(if (Said '/sign,cup')
+				(Print 18 0)
+			)
+			(if (Said '[/building,building,airport]')
+				(Print 18 1)
+			)
 		)
 	)
 )
