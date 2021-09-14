@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 40)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Reverse)
@@ -30,7 +30,7 @@
 	)
 )
 
-(instance rm40 of Rm
+(instance rm40 of Room
 	(properties
 		picture 40
 		horizon 5
@@ -38,49 +38,78 @@
 	
 	(method (init)
 		(cond 
-			((== currentEgoView 149) (= littleEgoView 146))
-			((== currentEgoView 150) (= littleEgoView 147))
-			((== currentEgoView 151) (= littleEgoView 157))
-			(else (= littleEgoView 145))
+			((== currentEgoView 149)
+				(= littleEgoView 146)
+			)
+			((== currentEgoView 150)
+				(= littleEgoView 147)
+			)
+			((== currentEgoView 151)
+				(= littleEgoView 157)
+			)
+			(else
+				(= littleEgoView 145)
+			)
 		)
-		(Load rsVIEW littleEgoView)
-		(Load rsVIEW 415)
-		(Load rsVIEW 700)
-		(Load rsVIEW 414)
-		(Load rsVIEW 412)
-		(Load rsSOUND 113)
-		(Load rsSOUND 106)
-		(Load rsSOUND 8)
+		(Load VIEW littleEgoView)
+		(Load VIEW 415)
+		(Load VIEW 700)
+		(Load VIEW 414)
+		(Load VIEW 412)
+		(Load SOUND 113)
+		(Load SOUND 106)
+		(Load SOUND 8)
 		(super init:)
 		(theSound play:)
 		(++ resortMazeVisits)
-		(if global111 (= resortMazeVisits 257))
+		(if global111
+			(= resortMazeVisits 257)
+		)
 		(= flowerInRoom
-			((inventory at: 20) ownedBy: curRoomNum)
+			((inventory at: iFlower) ownedBy: curRoomNum)
 		)
-		(aFlower setLoop: 1 stopUpd: setCel: flowerInRoom init:)
-		(aPottedPlant setStep: 1 1 setPri: 12 init:)
-		(aBird1 setLoop: 0 setPri: 15 init:)
-		(aBird2 setLoop: 1 setPri: 15 init:)
+		(aFlower
+			setLoop: 1
+			stopUpd:
+			setCel: flowerInRoom
+			init:
+		)
+		(aPottedPlant
+			setStep: 1 1
+			setPri: 12
+			init:
+		)
+		(aBird1
+			setLoop: 0
+			setPri: 15
+			init:
+		)
+		(aBird2
+			setLoop: 1
+			setPri: 15
+			init:
+		)
 		(if (== littleEgoView 145)
-			(aHench illegalBits: 0 setCycle: Walk init:)
+			(aHench
+				illegalBits: 0
+				setCycle: Walk
+				init:
+			)
 		)
-		(NormalEgo 0)
+		(NormalEgo loopE)
 		(ego ignoreActors: illegalBits: 0 posn: 44 188 init:)
-		(User canControl: 0)
-		(= currentStatus 5)
-		(self setRegions: 400 setScript: rm40Script)
+		(User canControl: FALSE)
+		(= currentStatus egoINRESORTMAZE)
+		(self setRegions: RESORT setScript: rm40Script)
 	)
 	
 	(method (dispose)
-		(DisposeScript 969)
+		(DisposeScript REVERSE)
 		(super dispose:)
 	)
 )
 
 (instance rm40Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -91,7 +120,9 @@
 				(ego posn: 16 170 setMotion: MoveTo 91 171 self)
 			)
 			(1
-				(if (== resortMazeVisits 257) (= state 62))
+				(if (== resortMazeVisits 257)
+					(= state 62)
+				)
 				(= cycles 15)
 			)
 			(2
@@ -111,12 +142,16 @@
 			)
 			(6
 				(= cycles 30)
-				(if searchingForShortcut (= state 62))
+				(if searchingForShortcut
+					(= state 62)
+				)
 			)
 			(7
 				(ego posn: 249 159 setMotion: MoveTo 157 160 self)
 			)
-			(8 (= cycles 15))
+			(8
+				(= cycles 15)
+			)
 			(9
 				(ego setLoop: 3)
 				(= cycles 15)
@@ -134,8 +169,7 @@
 			)
 			(13
 				(= cycles 30)
-				(if
-				(or searchingForShortcut (> resortMazeVisits 8))
+				(if (or searchingForShortcut (> resortMazeVisits 8))
 					(= state 62)
 				)
 			)
@@ -149,7 +183,9 @@
 					setMotion: MoveTo 180 136 self
 				)
 			)
-			(15 (= cycles 15))
+			(15
+				(= cycles 15)
+			)
 			(16
 				(ego setLoop: 3)
 				(= cycles 15)
@@ -165,18 +201,15 @@
 			(19
 				(ego setLoop: -1 setMotion: MoveTo 318 136 self)
 			)
-			(20 (= cycles 30))
+			(20
+				(= cycles 30)
+			)
 			(21
 				(ego posn: 119 142 setMotion: MoveTo 2 143 self)
 			)
 			(22
 				(= cycles 30)
-				(if
-					(or
-						(!= littleEgoView 145)
-						searchingForShortcut
-						(> resortMazeVisits 7)
-					)
+				(if (or (!= littleEgoView 145) searchingForShortcut (> resortMazeVisits 7))
 					(= state 62)
 				)
 			)
@@ -186,7 +219,7 @@
 					setPri: 12
 					posn: 117 25
 					setCel: 255
-					setCycle: Rev
+					setCycle: Reverse
 					setMotion: MoveTo 117 63 self
 				)
 			)
@@ -195,12 +228,11 @@
 				(= cycles 30)
 			)
 			(25
-				(ego setCycle: Fwd setMotion: MoveTo 117 26 self)
+				(ego setCycle: Forward setMotion: MoveTo 117 26 self)
 			)
 			(26
 				(= cycles 50)
-				(if
-				(or searchingForShortcut (> resortMazeVisits 6))
+				(if (or searchingForShortcut (> resortMazeVisits 6))
 					(= state 62)
 				)
 			)
@@ -210,16 +242,19 @@
 					cel: 0
 					posn: 243 140
 					setPri: 15
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(28 (= cycles 30))
-			(29 (ego setCycle: Beg self))
+			(28
+				(= cycles 30)
+			)
+			(29
+				(ego setCycle: BegLoop self)
+			)
 			(30
 				(ego hide:)
 				(= cycles 30)
-				(if
-				(or searchingForShortcut (> resortMazeVisits 5))
+				(if (or searchingForShortcut (> resortMazeVisits 5))
 					(= state 62)
 				)
 			)
@@ -232,20 +267,23 @@
 					setPri: 14
 					show:
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(32 (= cycles 30))
-			(33 (ego setCycle: CT 5 1 self))
+			(32
+				(= cycles 30)
+			)
+			(33
+				(ego setCycle: CycleTo 5 1 self)
+			)
 			(34
 				(aPottedPlant setMotion: MoveTo 103 161)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(35
 				(ego hide:)
 				(= cycles 30)
-				(if
-				(or searchingForShortcut (> resortMazeVisits 4))
+				(if (or searchingForShortcut (> resortMazeVisits 4))
 					(= state 62)
 				)
 			)
@@ -256,18 +294,21 @@
 					posn: 218 88
 					setPri: 10
 					show:
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 			)
-			(37 (= cycles 7))
-			(38 (ego setCycle: End self))
+			(37
+				(= cycles 7)
+			)
+			(38
+				(ego setCycle: EndLoop self)
+			)
 			(39
 				(ego setCel: setStep: 1 6 setMotion: MoveTo 218 143 self)
 			)
 			(40
 				(= cycles 30)
-				(if
-				(or searchingForShortcut (> resortMazeVisits 3))
+				(if (or searchingForShortcut (> resortMazeVisits 3))
 					(= state 62)
 				)
 			)
@@ -285,9 +326,11 @@
 				(aHench setMotion: MoveTo 162 155 self)
 			)
 			(43
-				(aHench setLoop: 0 cel: 0 setCycle: End self)
+				(aHench setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
-			(44 (= cycles 30))
+			(44
+				(= cycles 30)
+			)
 			(45
 				(ego
 					loop: 2
@@ -297,7 +340,7 @@
 					setStep: 2 1
 					posn: 163 151
 				)
-				(aHench setCycle: Beg self)
+				(aHench setCycle: BegLoop self)
 			)
 			(46
 				(aHench
@@ -315,8 +358,7 @@
 			)
 			(49
 				(= cycles 30)
-				(if
-				(or searchingForShortcut (> resortMazeVisits 2))
+				(if (or searchingForShortcut (> resortMazeVisits 2))
 					(= state 62)
 				)
 			)
@@ -365,8 +407,7 @@
 			)
 			(57
 				(aHench setMotion: MoveTo 333 153 self)
-				(if
-				(or searchingForShortcut (> resortMazeVisits 1))
+				(if (or searchingForShortcut (> resortMazeVisits 1))
 					(= state 62)
 				)
 			)
@@ -380,11 +421,15 @@
 					posn: 264 16
 					setPri: 15
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(59 (= cycles 30))
-			(60 (ego setCycle: Beg self))
+			(59
+				(= cycles 30)
+			)
+			(60
+				(ego setCycle: BegLoop self)
+			)
 			(61
 				(ego cycleSpeed: 1 hide:)
 				(= cycles 30)
@@ -395,8 +440,12 @@
 			)
 			(63
 				(cond 
-					((== resortMazeNextRoom 0) (= resortMazeNextRoom 43))
-					((> (++ resortMazeNextRoom) 45) (= resortMazeNextRoom 42))
+					((== resortMazeNextRoom 0)
+						(= resortMazeNextRoom 43)
+					)
+					((> (++ resortMazeNextRoom) 45)
+						(= resortMazeNextRoom 42)
+					)
 				)
 				(if (!= littleEgoView 145)
 					(Print 40 15)
@@ -404,10 +453,18 @@
 					(Print 40 16)
 					(Print 40 17 #at -1 130)
 					(switch resortMazeNextRoom
-						(42 (Print 40 18))
-						(43 (Print 40 19))
-						(44 (Print 40 20))
-						(45 (Print 40 21))
+						(42
+							(Print 40 18)
+						)
+						(43
+							(Print 40 19)
+						)
+						(44
+							(Print 40 20)
+						)
+						(45
+							(Print 40 21)
+						)
 					)
 				)
 				(curRoom newRoom: resortMazeNextRoom)
@@ -416,16 +473,25 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/carpet') (Print 40 0))
-			(if (and flowerInRoom (Said '/flower')) (Print 40 1))
-			(if (Said '<below/bush') (Print 40 2))
-			(if (Said '/feather') (Print 40 3))
-			(if (Said '/bird') (Print 40 4))
+			(if (Said '/carpet')
+				(Print 40 0)
+			)
+			(if (and flowerInRoom (Said '/flower'))
+				(Print 40 1)
+			)
+			(if (Said '<below/bush')
+				(Print 40 2)
+			)
+			(if (Said '/feather')
+				(Print 40 3)
+			)
+			(if (Said '/bird')
+				(Print 40 4)
+			)
 			(if (Said '/agent')
 				(if (and (>= state 50) (<= state 57))
 					(Print 40 5)
@@ -433,14 +499,19 @@
 					(Print 40 6)
 				)
 			)
-			(if (Said '[/airport,palm]') (Print 40 7))
+			(if (Said '[/airport,palm]')
+				(Print 40 7)
+			)
 		)
-		(if
-		(and (>= state 50) (<= state 57) (Said 'call/man'))
+		(if (and (>= state 50) (<= state 57) (Said 'call/man'))
 			(Print 40 8)
 		)
-		(if (Said 'climb/palm') (Print 40 9))
-		(if (Said 'get/coconuts') (Print 40 10))
+		(if (Said 'climb/palm')
+			(Print 40 9)
+		)
+		(if (Said 'get/coconuts')
+			(Print 40 10)
+		)
 		(if (Said 'get/feather,agent,feather,bird')
 			(Print 40 11)
 		)
@@ -452,19 +523,25 @@
 			)
 			(if (> resortMazeVisits 1)
 				(Print 40 12)
-				(= searchingForShortcut 1)
+				(= searchingForShortcut TRUE)
 			else
 				(Print 40 13)
 			)
 		)
 		(if (Said 'get,cut,get/flower')
 			(cond 
-				((!= currentStatus 5) (NotNow))
-				((not flowerInRoom) (AlreadyTook))
-				((not (ego inRect: 128 150 160 167)) (NotClose))
+				((!= currentStatus egoINRESORTMAZE)
+					(NotNow)
+				)
+				((not flowerInRoom)
+					(AlreadyTook)
+				)
+				((not (ego inRect: 128 150 160 167))
+					(NotClose)
+				)
 				(else
-					(ego get: 20)
-					(= flowerInRoom 0)
+					(ego get: iFlower)
+					(= flowerInRoom FALSE)
 					(theGame changeScore: 3)
 					(aFlower setCel: flowerInRoom stopUpd:)
 					(Print 40 14 #at -1 20 #draw)
@@ -474,12 +551,12 @@
 	)
 )
 
-(instance aPottedPlant of Act
+(instance aPottedPlant of Actor
 	(properties
 		y 160
 		x 103
 		view 415
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -488,7 +565,7 @@
 		y 58
 		x 279
 		view 700
-		signal $4000
+		signal ignrAct
 		minPause 22
 		maxPause 44
 		minCycles 11
@@ -501,7 +578,7 @@
 		y 49
 		x 140
 		view 700
-		signal $4000
+		signal ignrAct
 		minPause 22
 		maxPause 55
 		minCycles 11
@@ -514,16 +591,16 @@
 		y 156
 		x 139
 		view 415
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aHench of Act
+(instance aHench of Actor
 	(properties
 		y 1221
 		x 222
 		view 412
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )

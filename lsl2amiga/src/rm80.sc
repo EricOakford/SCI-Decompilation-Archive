@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 80)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -13,20 +13,24 @@
 )
 
 (local
-	triedToTurnBack
+	noGoMsg
 )
-(instance rm80 of Rm
+(instance rm80 of Room
 	(properties
 		picture 80
 		horizon 5
 	)
 	
 	(method (init)
-		(Load rsVIEW 728)
+		(Load VIEW 728)
 		(super init:)
 		(addToPics add: aPlant1 aPlant2 doit:)
-		(aWaterfall setCycle: Fwd cycleSpeed: 2 init:)
-		(self setRegions: 700 setScript: rm80Script)
+		(aWaterfall
+			setCycle: Forward
+			cycleSpeed: 2
+			init:
+		)
+		(self setRegions: ISLAND setScript: rm80Script)
 		(NormalEgo)
 		(if (== prevRoomNum 81)
 			(ego posn: 114 124 loop: 1)
@@ -38,35 +42,40 @@
 )
 
 (instance rm80Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((& (ego onControl:) $0004)
-				(if (== triedToTurnBack 0)
-					(= triedToTurnBack 1)
+			((& (ego onControl:) cGREEN)
+				(if (== noGoMsg FALSE)
+					(= noGoMsg TRUE)
 					(Print 80 0)
 				)
 			)
-			((& (ego onControl:) $0002) (curRoom newRoom: 81))
-			(else (= triedToTurnBack 0))
+			((& (ego onControl:) cBLUE)
+				(curRoom newRoom: 81)
+			)
+			(else
+				(= noGoMsg FALSE)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/fern,leaf,bush') (Print 80 1))
-			(if (Said '[/airport,island,/]') (Print 80 2))
+			(if (Said '/fern,leaf,bush')
+				(Print 80 1)
+			)
+			(if (Said '[/airport,island,mountain]')	;EO: fixed said spec
+				(Print 80 2)
+			)
 		)
 	)
 )
 
-(instance aPlant1 of PV
+(instance aPlant1 of PicView
 	(properties
 		y 153
 		x 175
@@ -76,7 +85,7 @@
 	)
 )
 
-(instance aPlant2 of PV
+(instance aPlant2 of PicView
 	(properties
 		y 138
 		x 154
@@ -92,6 +101,6 @@
 		y 76
 		x 127
 		view 728
-		signal $4000
+		signal ignrAct
 	)
 )

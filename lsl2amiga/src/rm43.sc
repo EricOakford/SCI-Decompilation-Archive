@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 43)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use DPath)
@@ -20,7 +20,7 @@
 	waitingForMaitreD
 	maitreDIsReady
 )
-(instance rm43 of Rm
+(instance rm43 of Room
 	(properties
 		picture 43
 		horizon 5
@@ -28,54 +28,80 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 433)
+		(Load VIEW 433)
 		(super init:)
-		(if ((inventory at: 17) ownedBy: curRoomNum)
-			(= knifeInRoom 1)
+		(if ((inventory at: iKnife) ownedBy: curRoomNum)
+			(= knifeInRoom TRUE)
 		)
 		(addToPics
 			add: aCheese aSalad aFood aT1 aT2 aT3 aT4 aT5 aLchair aWpicture aEpicture
 			doit:
 		)
-		(aChair setPri: 7 init: hide:)
-		(aTable setPri: 8 init: hide:)
-		(Load rsVIEW 101)
-		(Load rsVIEW 434)
-		(Load rsVIEW 435)
-		(Load rsVIEW 438)
-		(Load rsVIEW 432)
-		(aRope setPri: 12 ignoreActors: init:)
-		(aMaitreD setCycle: Walk ignoreActors: stopUpd: init:)
-		(aMan setCycle: Walk ignoreActors: init:)
-		(aWoman setCycle: Walk ignoreActors: init:)
-		(= maitreDIsReady 1)
-		(NormalEgo 3)
-		(ego posn: 195 178 observeControl: 16384 init:)
+		(aChair
+			setPri: 7
+			init:
+			hide:
+		)
+		(aTable
+			setPri: 8
+			init:
+			hide:
+		)
+		(Load VIEW 101)
+		(Load VIEW 434)
+		(Load VIEW 435)
+		(Load VIEW 438)
+		(Load VIEW 432)
+		(aRope
+			setPri: 12
+			ignoreActors:
+			init:
+		)
+		(aMaitreD
+			setCycle: Walk
+			ignoreActors:
+			stopUpd:
+			init:
+		)
+		(aMan
+			setCycle: Walk
+			ignoreActors:
+			init:
+		)
+		(aWoman
+			setCycle: Walk
+			ignoreActors:
+			init:
+		)
+		(= maitreDIsReady TRUE)
+		(NormalEgo loopN)
+		(ego posn: 195 178 observeControl: cYELLOW init:)
 		(self setScript: rm43Script)
 	)
 	
 	(method (dispose)
-		(DisposeScript 964)
+		(DisposeScript DPATH)
 		(super dispose:)
 	)
 )
 
 (instance rm43Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== currentStatus 1009) (== 0 (mod state 20)))
+		(if (and (== currentStatus egoSITTING) (== 0 (mod state 20)))
 			(self cue:)
 		)
 		(if waitingForMaitreD
-			(User canInput: 0)
+			(User canInput: FALSE)
 		else
-			(User canInput: 1)
+			(User canInput: TRUE)
 		)
-		(if (< state 101) (ego observeControl: 16384))
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 40))
+		(if (< state 101)
+			(ego observeControl: cYELLOW)
+		)
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 40)
+		)
 	)
 	
 	(method (changeState newState)
@@ -84,13 +110,15 @@
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(2 (Print 43 43))
+			(2
+				(Print 43 43)
+			)
 			(3
 				(Print 43 44)
 				(aMaitreD
 					setMotion: DPath 209 139 209 102 140 101 122 89 116 86 self
 				)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(= cycles 15)
 				(= state 8)
 			)
@@ -134,13 +162,19 @@
 			(17
 				(aMaitreD setMotion: MoveTo 140 101 self)
 			)
-			(18 (MDscript changeState: 8))
-			(19 (= seconds (Random 2 4)))
+			(18
+				(MDscript changeState: 8)
+			)
+			(19
+				(= seconds (Random 2 4))
+			)
 			(21
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(22 (Print 43 46))
+			(22
+				(Print 43 46)
+			)
 			(23
 				(Print 43 47)
 				(aMaitreD
@@ -189,7 +223,9 @@
 			(36
 				(aMaitreD setMotion: MoveTo 140 101 self)
 			)
-			(37 (MDscript changeState: 8))
+			(37
+				(MDscript changeState: 8)
+			)
 			(38
 				(= state 39)
 				(= seconds (Random 2 4))
@@ -198,11 +234,13 @@
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(42 (Print 43 48))
+			(42
+				(Print 43 48)
+			)
 			(43
 				(Print 43 49)
 				(aMaitreD setMotion: DPath 209 139 209 102 200 102 self)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(= cycles 15)
 				(= state 47)
 			)
@@ -236,7 +274,9 @@
 				(Print 43 45 #draw)
 				(= seconds 3)
 			)
-			(55 (MDscript changeState: 8))
+			(55
+				(MDscript changeState: 8)
+			)
 			(56
 				(= state 59)
 				(= seconds (Random 2 4))
@@ -245,12 +285,14 @@
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(62 (Print 43 50))
+			(62
+				(Print 43 50)
+			)
 			(63
 				(Print 43 51)
 				(aMaitreD setMotion: DPath 209 139 209 102 208 102 self)
 				(= cycles 15)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(= state 67)
 			)
 			(68
@@ -283,7 +325,9 @@
 				(Print 43 45 #draw)
 				(= seconds 3)
 			)
-			(75 (MDscript changeState: 8))
+			(75
+				(MDscript changeState: 8)
+			)
 			(76
 				(= state 79)
 				(= seconds (Random 2 4))
@@ -292,11 +336,13 @@
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(82 (Print 43 52))
+			(82
+				(Print 43 52)
+			)
 			(83
 				(Print 43 53)
 				(aMaitreD setMotion: MoveTo 190 142 self)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(= state 87)
 			)
 			(88
@@ -332,13 +378,13 @@
 			)
 			(96
 				(aMaitreD loop: 0)
-				(= maitreDIsReady 1)
+				(= maitreDIsReady TRUE)
 				(= state 99)
 				(= seconds 3)
 			)
 			(101
-				(= waitingForMaitreD 1)
-				(User canControl: 0)
+				(= waitingForMaitreD TRUE)
+				(User canControl: FALSE)
 				(= seconds 0)
 				(Print 43 54)
 				(Print 43 55 #at -1 130)
@@ -347,7 +393,7 @@
 					setScript: 0
 					setLoop: 0
 					setCel: 255
-					setCycle: Beg self
+					setCycle: BegLoop self
 					setMotion: 0
 				)
 			)
@@ -367,7 +413,9 @@
 			(103
 				(ego setMotion: MoveTo 193 150 self)
 			)
-			(104 (= seconds 2))
+			(104
+				(= seconds 2)
+			)
 			(105
 				(Print 43 56)
 				(Print 43 57)
@@ -405,12 +453,14 @@
 			)
 			(112
 				(aChair show:)
-				(aTable show: setCycle: End self)
+				(aTable show: setCycle: EndLoop self)
 			)
 			(113
-				(aChair setCycle: End self)
+				(aChair setCycle: EndLoop self)
 			)
-			(114 (= cycles 5))
+			(114
+				(= cycles 5)
+			)
 			(115
 				(Print 43 59 #at -1 20 #draw)
 				(theGame changeScore: 1)
@@ -426,12 +476,12 @@
 				(addToPics add: aOldDoor doit:)
 				(Print 43 61 #at -1 130 #draw)
 				(NormalEgo)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 			)
 			(121
-				(= waitingForMaitreD 1)
-				(User canControl: 0)
-				(= currentStatus 1000)
+				(= waitingForMaitreD TRUE)
+				(User canControl: FALSE)
+				(= currentStatus egoSTOPPED)
 				(ego setMotion: 0)
 				(Print 43 62)
 				(Print 43 63)
@@ -444,14 +494,13 @@
 			)
 			(123
 				(Print 43 66)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look<below/buffet')
@@ -461,25 +510,54 @@
 		(if (Said 'look>')
 			(if (Said '/appetizer,pate,buffet')
 				(cond 
-					((ego inRect: 30 130 80 176) (if knifeInRoom (Print 43 2) else (Print 43 3)))
-					((== currentStatus 1010) (Print 43 4))
-					((ego inRect: 266 111 296 124) (Print 43 5))
-					((< state 3) (Print 43 6))
-					(else (Print 43 7))
+					((ego inRect: 30 130 80 176)
+						(if knifeInRoom
+							(Print 43 2)
+						else
+							(Print 43 3)
+						)
+					)
+					((== currentStatus egoATTABLE)
+						(Print 43 4)
+					)
+					((ego inRect: 266 111 296 124)
+						(Print 43 5)
+					)
+					((< state 3)
+						(Print 43 6)
+					)
+					(else
+						(Print 43 7)
+					)
 				)
 			)
-			(if (Said '/barstool') (Print 43 8))
+			(if (Said '/barstool')
+				(Print 43 8)
+			)
 			(if (Said '/man,agent,bimbo,children')
 				(cond 
-					((not state) (Print 43 9))
-					((< state 15) (Print 43 10))
-					(else (Print 43 11) (Print 43 12))
+					((not state)
+						(Print 43 9)
+					)
+					((< state 15)
+						(Print 43 10)
+					)
+					(else
+						(Print 43 11)
+						(Print 43 12)
+					)
 				)
 			)
-			(if (Said '/crackers,crystal,bowl') (Print 43 13))
-			(if (Said '[/airport,cafe]') (Print 43 14))
+			(if (Said '/crackers,crystal,bowl')
+				(Print 43 13)
+			)
+			(if (Said '[/airport,cafe]')
+				(Print 43 14)
+			)
 		)
-		(if (Said '/bathing') (Print 43 15))
+		(if (Said '/bathing')
+			(Print 43 15)
+		)
 		(if
 			(or
 				(Said 'call,ask/man')
@@ -489,17 +567,25 @@
 				(Said 'call,ask')
 			)
 			(cond 
-				((> state 100) (Print 43 16))
-				((!= currentEgoView 100) (Print 43 17))
-				((== knifeInRoom 0) (Print 43 18))
-				((== maitreDIsReady 0) (Print 43 19))
+				((> state 100)
+					(Print 43 16)
+				)
+				((!= currentEgoView vEgo)
+					(Print 43 17)
+				)
+				((== knifeInRoom FALSE)
+					(Print 43 18)
+				)
+				((== maitreDIsReady FALSE)
+					(Print 43 19)
+				)
 				(else
 					(Print 43 20)
 					(Print 43 21)
-					(if (!= currentEgoView 100)
+					(if (!= currentEgoView vEgo)
 						(Print 43 22)
 					else
-						(= talkedToMaitreD 1)
+						(= talkedToMaitreD TRUE)
 						(Print 43 23)
 						(Print introductoryPhrase)
 						(Print 43 24)
@@ -518,36 +604,55 @@
 						(Print 43 28)
 					)
 				)
-				((== currentStatus 1010) (self changeState: 121))
-				((ego inRect: 266 111 296 124) (Print 43 29))
-				((< state 3) (Print 43 30))
-				(else (Print 43 31))
+				((== currentStatus egoATTABLE)
+					(self changeState: 121)
+				)
+				((ego inRect: 266 111 296 124)
+					(Print 43 29)
+				)
+				((< state 3)
+					(Print 43 30)
+				)
+				(else
+					(Print 43 31)
+				)
 			)
 		)
 		(if (Said '(get<up),get/crackers,crystal,bowl')
 			(Print 43 32)
 		)
-		(if (Said '(get<up),get/gun')
+		(if (Said '(get<up),get/knife')
 			(cond 
-				((== knifeInRoom 0) (AlreadyTook))
-				((not (ego inRect: 32 142 55 161)) (NotClose))
+				((== knifeInRoom FALSE)
+					(AlreadyTook)
+				)
+				((not (ego inRect: 32 142 55 161))
+					(NotClose)
+				)
 				(else
 					(Print 43 33)
 					(Print 43 34)
-					(ego get: 17)
-					(= knifeInRoom 0)
-					(= gotKnife 1)
+					(ego get: iKnife)
+					(= knifeInRoom FALSE)
+					(= gotKnife TRUE)
 					(theGame changeScore: 3)
 				)
 			)
 		)
-		(if (Said 'bath')
+		(if (Said 'sit')
 			(cond 
-				(
-				(or (== currentStatus 1009) (== currentStatus 1010)) (Print 43 35))
-				((!= currentEgoView 100) (Print 43 36))
-				((and (== knifeInRoom 0) (== gotKnife 0)) (Print 43 18))
-				((!= currentStatus 0) (NotNow))
+				((or (== currentStatus egoSITTING) (== currentStatus egoATTABLE))
+					(Print 43 35)
+				)
+				((!= currentEgoView vEgo)
+					(Print 43 36)
+				)
+				((and (== knifeInRoom FALSE) (== gotKnife FALSE))
+					(Print 43 18)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
 				((ego inRect: 266 111 296 124)
 					(if (not (ego inRect: 268 111 290 116))
 						(Print 43 37)
@@ -557,12 +662,16 @@
 						(TSscript changeState: 0)
 					)
 				)
-				((not (ego inRect: 175 160 241 189)) (NotClose))
-				((not talkedToMaitreD) (Print 43 38))
+				((not (ego inRect: 175 160 241 189))
+					(NotClose)
+				)
+				((not talkedToMaitreD)
+					(Print 43 38)
+				)
 				(else
 					(Ok)
 					(if (not servedAtResortRestaurant)
-						(= servedAtResortRestaurant 1)
+						(= servedAtResortRestaurant TRUE)
 						(theGame changeScore: 1)
 					)
 					(ego setScript: SITscript)
@@ -572,39 +681,49 @@
 		)
 		(if (Said 'new,(new<up),(get<up)')
 			(cond 
-				((== currentStatus 0) (YouAre))
-				((== currentStatus 1009)
+				((== currentStatus egoNORMAL)
+					(YouAre)
+				)
+				((== currentStatus egoSITTING)
 					(Ok)
 					(ego setScript: SITscript)
 					(SITscript changeState: 5)
 				)
-				((== currentStatus 1010) (Ok) (ego setScript: TSscript) (TSscript changeState: 3))
-				(else (Print 43 39))
+				((== currentStatus egoATTABLE)
+					(Ok)
+					(ego setScript: TSscript)
+					(TSscript changeState: 3)
+				)
+				(else
+					(Print 43 39)
+				)
 			)
 		)
 		(if
 			(and
 				(< state 101)
 				(ego inRect: 170 155 194 179)
-				(== maitreDIsReady 1)
+				(== maitreDIsReady TRUE)
 				(or (Said 'give/man/buck') (Said 'tip,bribe/agent,man'))
 			)
 			(Print 43 40)
 			(Print 43 41)
 		)
-		(if (Said 'drink') (Print 43 42))
+		(if (Said 'drink')
+			(Print 43 42)
+		)
 	)
 )
 
 (instance SITscript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(if seconds (= seconds 0))
-				(= waitingForMaitreD 1)
-				(User canControl: 0)
+				(if seconds
+					(= seconds 0)
+				)
+				(= waitingForMaitreD TRUE)
+				(User canControl: FALSE)
 				(if (< (ego y?) 170)
 					(ego setMotion: MoveTo 200 170 self)
 					(-- state)
@@ -619,51 +738,53 @@
 					setCel: 0
 					cycleSpeed: 2
 					setMotion: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(= currentStatus 1009)
-				(= waitingForMaitreD 0)
+				(= currentStatus egoSITTING)
+				(= waitingForMaitreD FALSE)
 				(= seconds (Random 2 6))
 			)
 			(4
 				(ego setLoop: (Random 1 2))
 				(if (== (ego cel?) 0)
-					(ego setCycle: End)
+					(ego setCycle: EndLoop)
 				else
-					(ego setCycle: Beg)
+					(ego setCycle: BegLoop)
 				)
 				(-- state)
 				(= seconds (Random 2 6))
 			)
 			(5
-				(if seconds (= seconds 0))
+				(if seconds
+					(= seconds 0)
+				)
 				(ego
 					setLoop: 0
 					setCel: 255
-					setCycle: Beg self
+					setCycle: BegLoop self
 					setMotion: 0
 				)
-				(= waitingForMaitreD 1)
+				(= waitingForMaitreD TRUE)
 			)
 			(6
-				(NormalEgo 2)
-				(= waitingForMaitreD 0)
+				(NormalEgo loopS)
+				(= waitingForMaitreD FALSE)
 			)
 		)
 	)
 )
 
 (instance TSscript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if seconds (= seconds 0))
-				(= waitingForMaitreD 1)
-				(User canControl: 0)
+				(if seconds
+					(= seconds 0)
+				)
+				(= waitingForMaitreD TRUE)
+				(User canControl: FALSE)
 				(ego
 					illegalBits: 0
 					ignoreActors:
@@ -677,37 +798,35 @@
 					setCel: 0
 					cycleSpeed: 2
 					setMotion: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(= currentStatus 1010)
-				(= waitingForMaitreD 0)
+				(= currentStatus egoATTABLE)
+				(= waitingForMaitreD FALSE)
 			)
 			(3
 				(ego
 					setLoop: 0
 					setCel: 255
-					setCycle: Beg self
+					setCycle: BegLoop self
 					setMotion: 0
 				)
-				(= waitingForMaitreD 1)
+				(= waitingForMaitreD TRUE)
 			)
 			(4
-				(NormalEgo 2)
-				(= waitingForMaitreD 0)
+				(NormalEgo loopS)
+				(= waitingForMaitreD FALSE)
 			)
 		)
 	)
 )
 
 (instance MDscript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(= maitreDIsReady 0)
+				(= maitreDIsReady FALSE)
 				(aMaitreD
 					setLoop: -1
 					setCycle: Walk
@@ -719,9 +838,11 @@
 			)
 			(3
 				(aMaitreD cel: 0 setMotion: MoveTo 210 155 self)
-				(aRope setCycle: End)
+				(aRope setCycle: EndLoop)
 			)
-			(4 (rm43Script cue:))
+			(4
+				(rm43Script cue:)
+			)
 			(8
 				(aMaitreD setMotion: MoveTo 209 102 self)
 			)
@@ -736,7 +857,7 @@
 			)
 			(12
 				(aMaitreD setLoop: 2)
-				(= maitreDIsReady 1)
+				(= maitreDIsReady TRUE)
 				(rm43Script cue:)
 			)
 		)
@@ -744,15 +865,15 @@
 )
 
 (instance groupScript of Script
-	(properties)
-	
 	(method (init)
 		(= state 0)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(3 (rm43Script cue:))
+			(3
+				(rm43Script cue:)
+			)
 		)
 	)
 )
@@ -786,7 +907,7 @@
 	)
 )
 
-(instance aMaitreD of Act
+(instance aMaitreD of Actor
 	(properties
 		y 166
 		x 154
@@ -795,7 +916,7 @@
 	)
 )
 
-(instance aMan of Act
+(instance aMan of Actor
 	(properties
 		y 234
 		x 188
@@ -805,7 +926,7 @@
 	)
 )
 
-(instance aWoman of Act
+(instance aWoman of Actor
 	(properties
 		y 234
 		x 204
@@ -816,18 +937,16 @@
 )
 
 (instance enterScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 102])
 		(switch (= state newState)
 			(1
-				(if (!= currentStatus 1009)
+				(if (!= currentStatus egoSITTING)
 					(-- state)
 					(= seconds (Random 2 4))
 				else
 					(= seconds 0)
-					(= waitingForMaitreD 1)
-					(User canControl: 0)
+					(= waitingForMaitreD TRUE)
+					(User canControl: FALSE)
 					(aMan
 						posn: 188 234
 						setCycle: Walk
@@ -843,7 +962,7 @@
 				)
 			)
 			(2
-				(= maitreDIsReady 0)
+				(= maitreDIsReady FALSE)
 				(aMaitreD
 					setLoop: -1
 					setCycle: Walk
@@ -855,7 +974,7 @@
 			)
 			(4
 				(aMaitreD cel: 0 setMotion: MoveTo 210 155 self)
-				(aRope setCycle: End)
+				(aRope setCycle: EndLoop)
 			)
 			(5
 				(rm43Script cue:)
@@ -873,53 +992,53 @@
 			)
 			(9
 				(aMaitreD setMotion: MoveTo 185 155 self)
-				(aRope setCycle: Beg)
+				(aRope setCycle: BegLoop)
 			)
 			(10
 				(aMaitreD setMotion: MoveTo 210 155 self)
 			)
 			(11
 				(Print 43 56)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(rm43Script cue:)
 			)
 		)
 	)
 )
 
-(instance aCheese of PV
+(instance aCheese of PicView
 	(properties
 		y 134
 		x 22
 		view 433
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aSalad of PV
+(instance aSalad of PicView
 	(properties
 		y 121
 		x 63
 		view 433
 		cel 1
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aFood of PV
+(instance aFood of PicView
 	(properties
 		y 163
 		x 37
 		view 433
 		cel 2
 		priority 13
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aT1 of PV
+(instance aT1 of PicView
 	(properties
 		y 81
 		x 116
@@ -927,22 +1046,22 @@
 		loop 3
 		cel 1
 		priority 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aT2 of PV
+(instance aT2 of PicView
 	(properties
 		y 119
 		x 65
 		view 433
 		loop 3
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aT3 of PV
+(instance aT3 of PicView
 	(properties
 		y 100
 		x 178
@@ -950,11 +1069,11 @@
 		loop 3
 		cel 1
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aT4 of PV
+(instance aT4 of PicView
 	(properties
 		y 100
 		x 242
@@ -962,22 +1081,22 @@
 		loop 3
 		cel 1
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aT5 of PV
+(instance aT5 of PicView
 	(properties
 		y 143
 		x 168
 		view 433
 		loop 3
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aLchair of PV
+(instance aLchair of PicView
 	(properties
 		y 171
 		x 230
@@ -985,11 +1104,11 @@
 		loop 3
 		cel 2
 		priority 13
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aWpicture of PV
+(instance aWpicture of PicView
 	(properties
 		y 77
 		x 53
@@ -997,137 +1116,137 @@
 		loop 2
 		cel 1
 		priority 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aEpicture of PV
+(instance aEpicture of PicView
 	(properties
 		y 55
 		x 178
 		view 433
 		loop 2
 		priority 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMan1 of PV
+(instance aMan1 of PicView
 	(properties
 		y 73
 		x 135
 		view 435
 		loop 4
 		priority 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aWoman1 of PV
+(instance aWoman1 of PicView
 	(properties
 		y 73
 		x 99
 		view 438
 		loop 4
 		priority 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMan2 of PV
+(instance aMan2 of PicView
 	(properties
 		y 109
 		x 87
 		view 435
 		loop 4
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aWoman2 of PV
+(instance aWoman2 of PicView
 	(properties
 		y 110
 		x 44
 		view 438
 		loop 4
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMan3 of PV
+(instance aMan3 of PicView
 	(properties
 		y 92
 		x 197
 		view 435
 		loop 4
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aWoman3 of PV
+(instance aWoman3 of PicView
 	(properties
 		y 92
 		x 161
 		view 438
 		loop 4
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMan4 of PV
+(instance aMan4 of PicView
 	(properties
 		y 92
 		x 261
 		view 435
 		loop 4
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aWoman4 of PV
+(instance aWoman4 of PicView
 	(properties
 		y 92
 		x 225
 		view 438
 		loop 4
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMan5 of PV
+(instance aMan5 of PicView
 	(properties
 		y 133
 		x 190
 		view 435
 		loop 4
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aWoman5 of PV
+(instance aWoman5 of PicView
 	(properties
 		y 134
 		x 151
 		view 438
 		loop 4
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aOldDoor of PV
+(instance aOldDoor of PicView
 	(properties
 		y 63
 		x 287
 		view 433
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )

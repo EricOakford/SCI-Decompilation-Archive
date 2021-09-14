@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 38)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -17,25 +17,30 @@
 	lifeboatIsReady
 	numClouds
 )
-(instance rm38 of Rm
+(instance rm38 of Room
 	(properties
 		picture 38
 		east 31
 	)
 	
-	(method (init &tmp temp0 temp1)
-		(Load rsVIEW currentEgoView)
-		(Load rsVIEW 141)
-		(Load rsVIEW 620)
+	(method (init &tmp i temp1)
+		(Load VIEW currentEgoView)
+		(Load VIEW 141)
+		(Load VIEW 620)
 		(super init:)
 		(cond 
-			((> machineSpeed 60) (= numClouds 3))
-			((> machineSpeed 40) (= numClouds 2))
-			((> machineSpeed 20) (= numClouds 1))
+			((> machineSpeed 60)
+				(= numClouds 3)
+			)
+			((> machineSpeed 40)
+				(= numClouds 2)
+			)
+			((> machineSpeed 20)
+				(= numClouds 1)
+			)
 		)
 		(if (not lifeboatLeverPulled)
-			(= temp0 0)
-			(while (< temp0 numClouds)
+			(for ((= i 0)) (< i numClouds) ((++ i))
 				(aClouds
 					setPri: 1
 					setStep: 1 1
@@ -44,28 +49,20 @@
 					illegalBits: 0
 					setScript: (cloudScript new:)
 				)
-				(++ temp0)
 			)
 		)
 		(NormalEgo)
 		(ego posn: 318 107 init:)
-		(self setRegions: 300 setScript: rm38Script)
+		(self setRegions: SHIP setScript: rm38Script)
 	)
 )
 
 (instance rm38Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-			(and
-				lifeboatLeverPulled
-				(< (ego x?) 300)
-				(not lifeboatIsReady)
-			)
-			(= lifeboatIsReady 1)
-			(ego observeControl: 16384)
+		(if (and lifeboatLeverPulled (< (ego x?) 300) (not lifeboatIsReady))
+			(= lifeboatIsReady TRUE)
+			(ego observeControl: cYELLOW)
 			(Print 38 0)
 			(Print 38 1)
 		)
@@ -78,25 +75,25 @@
 				(ego illegalBits: 0 setMotion: MoveTo 165 111 self)
 			)
 			(3
-				(ego view: 141 setLoop: 0 cel: 0 setCycle: Fwd)
+				(ego view: 141 setLoop: 0 cel: 0 setCycle: Forward)
 				(= cycles (* 3 (NumCels ego)))
 			)
 			(4
-				(ego setLoop: 1 setCycle: Fwd)
+				(ego setLoop: 1 setCycle: Forward)
 				(= cycles (* 3 (NumCels ego)))
 			)
 			(5
-				(ego setLoop: 2 cel: 0 posn: 157 79 setCycle: CT 3 1 self)
+				(ego setLoop: 2 cel: 0 posn: 157 79 setCycle: CycleTo 3 1 self)
 			)
 			(6
-				(ego setPri: 0 setCycle: End self)
+				(ego setPri: 0 setCycle: EndLoop self)
 			)
 			(7
 				(if lifeboatLeverPulled
 					(curRoom newRoom: 131)
 				else
-					(User canInput: 1)
-					(= currentStatus 1009)
+					(User canInput: TRUE)
+					(= currentStatus egoSITTING)
 					(= seconds 7)
 				)
 			)
@@ -104,14 +101,16 @@
 				(Print 38 19 #at -1 130)
 				(= seconds 7)
 			)
-			(9 (Print 38 20 #at -1 130))
+			(9
+				(Print 38 20 #at -1 130)
+			)
 			(10
-				(User canInput: 0)
+				(User canInput: FALSE)
 				(= cycles (= seconds 0))
-				(ego setCel: 255 setCycle: CT 3 969 self)
+				(ego setCel: 255 setCycle: CycleTo 3 969 self)
 			)
 			(11
-				(ego setPri: -1 setCycle: Beg self)
+				(ego setPri: -1 setCycle: BegLoop self)
 			)
 			(12
 				(ego posn: 165 111)
@@ -121,15 +120,20 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'explore,(look<in)/boat')
 			(cond 
-				((== currentStatus 1009) (Print 38 2))
-				((!= currentStatus 0) (NotNow))
-				(else (Print 38 3))
+				((== currentStatus egoSITTING)
+					(Print 38 2)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				(else
+					(Print 38 3)
+				)
 			)
 		)
 		(if
@@ -146,9 +150,15 @@
 				(Print 38 6)
 				(Print 38 7 #at -1 130)
 			)
-			(if (Said '/chain') (Print 38 8))
-			(if (Said '/boat,apparatus') (Print 38 9))
-			(if (Said '[/airport]') (Print 38 10))
+			(if (Said '/chain')
+				(Print 38 8)
+			)
+			(if (Said '/boat,apparatus')
+				(Print 38 9)
+			)
+			(if (Said '[/airport]')
+				(Print 38 10)
+			)
 		)
 		(if (Said 'get,jerk,(get<off),drain/door,chain')
 			(Print 38 11)
@@ -158,18 +168,18 @@
 			(ego hide:)
 			(Print 38 13 #draw)
 			(Print 38 14 #at -1 130)
-			(= currentStatus 1001)
+			(= currentStatus egoDYING)
 		)
 		(if (Said '(hop<off),dive,hop/overboard,craft')
 			(Print 38 12)
 			(ego hide:)
 			(Print 38 15 #draw)
 			(Print 38 14 #at -1 130)
-			(= currentStatus 1001)
+			(= currentStatus egoDYING)
 		)
 		(if
 			(and
-				(== currentStatus 1009)
+				(== currentStatus egoSITTING)
 				(or
 					(Said 'hop,new,new[/down,boat,barstool]')
 					(Said 'disembark,board')
@@ -187,13 +197,21 @@
 				(Said 'board/boat')
 			)
 			(cond 
-				((!= currentEgoView 100) (Print 38 16))
-				((== currentStatus 1009) (Print 38 17))
-				((!= currentStatus 0) (NotNow))
-				((not (ego inRect: 128 99 217 122)) (NotClose))
+				((!= currentEgoView vEgo)
+					(Print 38 16)
+				)
+				((== currentStatus egoSITTING)
+					(Print 38 17)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 128 99 217 122))
+					(NotClose)
+				)
 				(else
 					(if (not boardedLifeboat)
-						(= boardedLifeboat 1)
+						(= boardedLifeboat TRUE)
 						(theGame changeScore: 2)
 					)
 					(Ok)
@@ -201,29 +219,29 @@
 				)
 			)
 		)
-		(if (Said 'get/boat') (Print 38 18))
+		(if (Said 'get/boat')
+			(Print 38 18)
+		)
 	)
 )
 
 (instance cloudScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp theY theCel)
 		(switch (= state newState)
 			(0
 				(client posn: (Random 0 270) (Random 3 35) init:)
 				(self changeState: 2)
 			)
 			(1
-				(= temp0 (Random 3 35))
-				(= temp1 (Random 0 10))
-				(client setCel: temp1 posn: 321 temp0)
+				(= theY (Random 3 35))
+				(= theCel (Random 0 10))
+				(client setCel: theCel posn: 321 theY)
 				(self changeState: 2)
 			)
 			(2
 				(client
 					moveSpeed: (Random 0 3)
-					setMotion: MoveTo (- 1 (CelWide 620 0 temp1)) (client y?) self
+					setMotion: MoveTo (- 1 (CelWide 620 0 theCel)) (client y?) self
 				)
 				(= state 0)
 			)
@@ -231,9 +249,9 @@
 	)
 )
 
-(instance aClouds of Act
+(instance aClouds of Actor
 	(properties
 		view 620
-		signal $4000
+		signal ignrAct
 	)
 )

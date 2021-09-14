@@ -17,7 +17,7 @@
 	knifeInRoom
 	gotKnife
 	waitingForMaitreD
-	canSitAtTable
+	maitreDIsReady
 )
 (instance rm43 of Room
 	(properties
@@ -124,36 +124,67 @@
 			ignoreActors:
 			addToPic:
 		)
-		(aChair setPri: 7 init: hide:)
-		(aTable setPri: 8 init: hide:)
+		(aChair
+			setPri: 7
+			init:
+			hide:
+		)
+		(aTable
+			setPri: 8
+			init:
+			hide:
+		)
 		(Load VIEW 101)
 		(Load VIEW 434)
 		(Load VIEW 435)
 		(Load VIEW 438)
 		(Load VIEW 432)
-		(aRope setPri: 12 ignoreActors: stopUpd: init:)
-		(aMaitreD setCycle: Walk ignoreActors: stopUpd: init:)
-		(aMan setCycle: Walk ignoreActors: init:)
-		(aWoman setCycle: Walk ignoreActors: init:)
-		(= canSitAtTable 1)
-		(NormalEgo 3)
+		(aRope
+			setPri: 12
+			ignoreActors:
+			stopUpd:
+			init:
+		)
+		(aMaitreD
+			setCycle: Walk
+			ignoreActors:
+			stopUpd:
+			init:
+		)
+		(aMan
+			setCycle: Walk
+			ignoreActors:
+			init:
+		)
+		(aWoman
+			setCycle: Walk
+			ignoreActors:
+			init:
+		)
+		(= maitreDIsReady TRUE)
+		(NormalEgo loopN)
 		(ego posn: 195 178 observeControl: cYELLOW init:)
 		(self setScript: rm43Script)
 	)
 )
 
 (instance rm43Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== currentStatus egoSITTING) (== 0 (mod state 20)))
+		(if (and (== currentStatus egoSITTING) (== 0 (mod state 20)))
 			(self cue:)
 		)
-		(if waitingForMaitreD (User canInput: FALSE) else (User canInput: TRUE))
-		(if (< state 101) (ego observeControl: cYELLOW))
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 40))
+		(if waitingForMaitreD
+			(User canInput: FALSE)
+		else
+			(User canInput: TRUE)
+		)
+		(if (< state 101)
+			(ego observeControl: cYELLOW)
+		)
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 40)
+		)
 	)
 	
 	(method (changeState newState)
@@ -162,11 +193,13 @@
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(2 (Print 43 43))
+			(2
+				(Print 43 43)
+			)
 			(3
 				(Print 43 44)
 				(aMaitreD setScript: (to1Script new:))
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(= cycles 15)
 				(= state 8)
 			)
@@ -221,13 +254,19 @@
 			(17
 				(aMaitreD setMotion: MoveTo 140 101 self)
 			)
-			(18 (MDscript changeState: 8))
-			(19 (= seconds (Random 2 4)))
+			(18
+				(MDscript changeState: 8)
+			)
+			(19
+				(= seconds (Random 2 4))
+			)
 			(21
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(22 (Print 43 46))
+			(22
+				(Print 43 46)
+			)
 			(23
 				(Print 43 47)
 				(aMaitreD setScript: (to2Script new:))
@@ -285,7 +324,9 @@
 			(36
 				(aMaitreD setMotion: MoveTo 140 101 self)
 			)
-			(37 (MDscript changeState: 8))
+			(37
+				(MDscript changeState: 8)
+			)
 			(38
 				(= state 39)
 				(= seconds (Random 2 4))
@@ -294,11 +335,13 @@
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(42 (Print 43 48))
+			(42
+				(Print 43 48)
+			)
 			(43
 				(Print 43 49)
 				(aMaitreD setScript: (to3Script new:))
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(= cycles 15)
 				(= state 47)
 			)
@@ -347,7 +390,9 @@
 				(Print 43 45 #draw)
 				(= seconds 3)
 			)
-			(55 (MDscript changeState: 8))
+			(55
+				(MDscript changeState: 8)
+			)
 			(56
 				(= state 59)
 				(= seconds (Random 2 4))
@@ -356,12 +401,14 @@
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(62 (Print 43 50))
+			(62
+				(Print 43 50)
+			)
 			(63
 				(Print 43 51)
 				(aMaitreD setScript: (to4Script new:))
 				(= cycles 15)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(= state 67)
 			)
 			(68
@@ -409,7 +456,9 @@
 				(Print 43 45 #draw)
 				(= seconds 3)
 			)
-			(75 (MDscript changeState: 8))
+			(75
+				(MDscript changeState: 8)
+			)
 			(76
 				(= state 79)
 				(= seconds (Random 2 4))
@@ -418,11 +467,13 @@
 				(aMan setScript: enterScript)
 				(enterScript changeState: 1)
 			)
-			(82 (Print 43 52))
+			(82
+				(Print 43 52)
+			)
 			(83
 				(Print 43 53)
 				(aMaitreD setMotion: MoveTo 190 142 self)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 				(= state 87)
 			)
 			(88
@@ -473,7 +524,7 @@
 			)
 			(96
 				(aMaitreD loop: 0)
-				(= canSitAtTable TRUE)
+				(= maitreDIsReady TRUE)
 				(= state 99)
 				(= seconds 3)
 			)
@@ -508,7 +559,9 @@
 			(103
 				(ego setMotion: MoveTo 193 150 self)
 			)
-			(104 (= seconds 2))
+			(104
+				(= seconds 2)
+			)
 			(105
 				(Print 43 56)
 				(Print 43 57)
@@ -551,7 +604,9 @@
 			(113
 				(aChair setCycle: EndLoop self)
 			)
-			(114 (= cycles 5))
+			(114
+				(= cycles 5)
+			)
 			(115
 				(Print 43 59 #at -1 20 #draw)
 				(theGame changeScore: 1)
@@ -574,10 +629,10 @@
 				)
 				(Print 43 61 #at -1 152 #draw)
 				(NormalEgo)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 			)
 			(121
-				(= waitingForMaitreD 1)
+				(= waitingForMaitreD TRUE)
 				(User canControl: FALSE)
 				(= currentStatus egoSTOPPED)
 				(ego setMotion: 0)
@@ -598,8 +653,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look<below/buffet')
@@ -609,25 +663,54 @@
 		(if (Said 'look>')
 			(if (Said '/appetizer,pate,buffet')
 				(cond 
-					((ego inRect: 30 130 80 176) (if knifeInRoom (Print 43 2) else (Print 43 3)))
-					((== currentStatus egoATTABLE) (Print 43 4))
-					((ego inRect: 266 111 296 124) (Print 43 5))
-					((< state 3) (Print 43 6))
-					(else (Print 43 7))
+					((ego inRect: 30 130 80 176)
+						(if knifeInRoom
+							(Print 43 2)
+						else
+							(Print 43 3)
+						)
+					)
+					((== currentStatus egoATTABLE)
+						(Print 43 4)
+					)
+					((ego inRect: 266 111 296 124)
+						(Print 43 5)
+					)
+					((< state 3)
+						(Print 43 6)
+					)
+					(else
+						(Print 43 7)
+					)
 				)
 			)
-			(if (Said '/barstool') (Print 43 8))
+			(if (Said '/barstool')
+				(Print 43 8)
+			)
 			(if (Said '/man,agent,bimbo,children')
 				(cond 
-					((not state) (Print 43 9))
-					((< state 15) (Print 43 10))
-					(else (Print 43 11) (Print 43 12))
+					((not state)
+						(Print 43 9)
+					)
+					((< state 15)
+						(Print 43 10)
+					)
+					(else
+						(Print 43 11)
+						(Print 43 12)
+					)
 				)
 			)
-			(if (Said '/crackers,crystal,bowl') (Print 43 13))
-			(if (Said '[/airport,cafe]') (Print 43 14))
+			(if (Said '/crackers,crystal,bowl')
+				(Print 43 13)
+			)
+			(if (Said '[/airport,cafe]')
+				(Print 43 14)
+			)
 		)
-		(if (Said '/bathing') (Print 43 15))
+		(if (Said '/bathing')
+			(Print 43 15)
+		)
 		(if
 			(or
 				(Said 'call,ask/man')
@@ -637,14 +720,22 @@
 				(Said 'call,ask')
 			)
 			(cond 
-				((> state 100) (Print 43 16))
-				((!= currentEgoView 100) (Print 43 17))
-				((== knifeInRoom FALSE) (Print 43 18))
-				((== canSitAtTable 0) (Print 43 19))
+				((> state 100)
+					(Print 43 16)
+				)
+				((!= currentEgoView vEgo)
+					(Print 43 17)
+				)
+				((== knifeInRoom FALSE)
+					(Print 43 18)
+				)
+				((== maitreDIsReady FALSE)
+					(Print 43 19)
+				)
 				(else
 					(Print 43 20)
 					(Print 43 21)
-					(if (!= currentEgoView 100)
+					(if (!= currentEgoView vEgo)
 						(Print 43 22)
 					else
 						(= talkedToMaitreD TRUE)
@@ -666,36 +757,55 @@
 						(Print 43 28)
 					)
 				)
-				((== currentStatus egoATTABLE) (self changeState: 121))
-				((ego inRect: 266 111 296 124) (Print 43 29))
-				((< state 3) (Print 43 30))
-				(else (Print 43 31))
+				((== currentStatus egoATTABLE)
+					(self changeState: 121)
+				)
+				((ego inRect: 266 111 296 124)
+					(Print 43 29)
+				)
+				((< state 3)
+					(Print 43 30)
+				)
+				(else
+					(Print 43 31)
+				)
 			)
 		)
 		(if (Said '(get<up),get/crackers,crystal,bowl')
 			(Print 43 32)
 		)
-		(if (Said '(get<up),get/gun')
+		(if (Said '(get<up),get/knife')
 			(cond 
-				((== knifeInRoom FALSE) (AlreadyTook))
-				((not (ego inRect: 32 142 55 161)) (NotClose))
+				((== knifeInRoom FALSE)
+					(AlreadyTook)
+				)
+				((not (ego inRect: 32 142 55 161))
+					(NotClose)
+				)
 				(else
 					(Print 43 33)
 					(Print 43 34)
-					(ego get: 17)
+					(ego get: iKnife)
 					(= knifeInRoom FALSE)
-					(= gotKnife 1)
+					(= gotKnife TRUE)
 					(theGame changeScore: 3)
 				)
 			)
 		)
-		(if (Said 'bath')
+		(if (Said 'sit')
 			(cond 
-				(
-				(or (== currentStatus egoSITTING) (== currentStatus egoATTABLE)) (Print 43 35))
-				((!= currentEgoView 100) (Print 43 36))
-				((and (== knifeInRoom FALSE) (== gotKnife 0)) (Print 43 18))
-				((!= currentStatus egoNORMAL) (NotNow))
+				((or (== currentStatus egoSITTING) (== currentStatus egoATTABLE))
+					(Print 43 35)
+				)
+				((!= currentEgoView vEgo)
+					(Print 43 36)
+				)
+				((and (== knifeInRoom FALSE) (== gotKnife FALSE))
+					(Print 43 18)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
 				((ego inRect: 266 111 296 124)
 					(if (not (ego inRect: 268 111 290 116))
 						(Print 43 37)
@@ -705,8 +815,12 @@
 						(TSscript changeState: 0)
 					)
 				)
-				((not (ego inRect: 175 160 241 189)) (NotClose))
-				((not talkedToMaitreD) (Print 43 38))
+				((not (ego inRect: 175 160 241 189))
+					(NotClose)
+				)
+				((not talkedToMaitreD)
+					(Print 43 38)
+				)
 				(else
 					(Ok)
 					(if (not servedAtResortRestaurant)
@@ -720,7 +834,9 @@
 		)
 		(if (Said 'new,(new<up),(get<up)')
 			(cond 
-				((== currentStatus egoNORMAL) (YouAre))
+				((== currentStatus egoNORMAL)
+					(YouAre)
+				)
 				((== currentStatus egoSITTING)
 					(Ok)
 					(ego setScript: SITscript)
@@ -731,32 +847,36 @@
 					(ego setScript: TSscript)
 					(TSscript changeState: 3)
 				)
-				(else (Print 43 39))
+				(else
+					(Print 43 39)
+				)
 			)
 		)
 		(if
 			(and
 				(< state 101)
 				(ego inRect: 170 155 194 179)
-				(== canSitAtTable 1)
+				(== maitreDIsReady TRUE)
 				(or (Said 'give/man/buck') (Said 'tip,bribe/agent,man'))
 			)
 			(Print 43 40)
 			(Print 43 41)
 		)
-		(if (Said 'drink') (Print 43 42))
+		(if (Said 'drink')
+			(Print 43 42)
+		)
 	)
 )
 
 (instance SITscript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(if seconds (= seconds 0))
-				(= waitingForMaitreD 1)
-				(User canControl: 0)
+				(if seconds
+					(= seconds 0)
+				)
+				(= waitingForMaitreD TRUE)
+				(User canControl: FALSE)
 				(if (< (ego y?) 170)
 					(ego setMotion: MoveTo 200 170 self)
 					(-- state)
@@ -790,29 +910,34 @@
 				(= seconds (Random 2 6))
 			)
 			(5
-				(if seconds (= seconds 0))
+				(if seconds
+					(= seconds 0)
+				)
 				(ego
 					setLoop: 0
 					setCel: 255
 					setCycle: BegLoop self
 					setMotion: 0
 				)
-				(= waitingForMaitreD 1)
+				(= waitingForMaitreD TRUE)
 			)
-			(6 (NormalEgo 2) (= waitingForMaitreD 0))
+			(6
+				(NormalEgo loopS)
+				(= waitingForMaitreD FALSE)
+			)
 		)
 	)
 )
 
 (instance TSscript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if seconds (= seconds 0))
-				(= waitingForMaitreD 1)
-				(User canControl: 0)
+				(if seconds
+					(= seconds 0)
+				)
+				(= waitingForMaitreD TRUE)
+				(User canControl: FALSE)
 				(ego
 					illegalBits: 0
 					ignoreActors:
@@ -831,7 +956,7 @@
 			)
 			(2
 				(= currentStatus egoATTABLE)
-				(= waitingForMaitreD 0)
+				(= waitingForMaitreD FALSE)
 			)
 			(3
 				(ego
@@ -840,20 +965,21 @@
 					setCycle: BegLoop self
 					setMotion: 0
 				)
-				(= waitingForMaitreD 1)
+				(= waitingForMaitreD TRUE)
 			)
-			(4 (NormalEgo 2) (= waitingForMaitreD 0))
+			(4
+				(NormalEgo loopS)
+				(= waitingForMaitreD FALSE)
+			)
 		)
 	)
 )
 
 (instance MDscript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(= canSitAtTable 0)
+				(= maitreDIsReady FALSE)
 				(aMaitreD
 					setLoop: -1
 					setCycle: Walk
@@ -867,7 +993,9 @@
 				(aMaitreD cel: 0 setMotion: MoveTo 210 155 self)
 				(aRope setCycle: EndLoop)
 			)
-			(4 (rm43Script cue:))
+			(4
+				(rm43Script cue:)
+			)
 			(8
 				(aMaitreD setMotion: MoveTo 209 102 self)
 			)
@@ -882,7 +1010,7 @@
 			)
 			(12
 				(aMaitreD setLoop: 2)
-				(= canSitAtTable 1)
+				(= maitreDIsReady TRUE)
 				(rm43Script cue:)
 			)
 		)
@@ -890,8 +1018,6 @@
 )
 
 (instance to1Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -918,8 +1044,6 @@
 )
 
 (instance to2Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -946,8 +1070,6 @@
 )
 
 (instance to3Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -968,8 +1090,6 @@
 )
 
 (instance to4Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -990,8 +1110,6 @@
 )
 
 (instance toLarryScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1009,15 +1127,15 @@
 )
 
 (instance groupScript of Script
-	(properties)
-	
 	(method (init)
 		(= state 0)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(3 (rm43Script cue:))
+			(3
+				(rm43Script cue:)
+			)
 		)
 	)
 )
@@ -1081,8 +1199,6 @@
 )
 
 (instance enterScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 102])
 		(switch (= state newState)
 			(1
@@ -1092,7 +1208,7 @@
 				else
 					(= seconds 0)
 					(= waitingForMaitreD TRUE)
-					(User canControl: 0)
+					(User canControl: FALSE)
 					(aMan
 						posn: 188 234
 						setCycle: Walk
@@ -1108,7 +1224,7 @@
 				)
 			)
 			(2
-				(= canSitAtTable 0)
+				(= maitreDIsReady FALSE)
 				(aMaitreD
 					setLoop: -1
 					setCycle: Walk

@@ -258,21 +258,25 @@
 			init:
 			hide:
 		)
-		(NormalEgo 3)
+		(NormalEgo loopN)
 		(ego posn: 164 151 init:)
-		(self setRegions: 300 setScript: rm36Script)
+		(self setRegions: SHIP setScript: rm36Script)
 	)
 )
 
 (instance rm36Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((& (ego onControl:) $0002) (curRoom newRoom: 31))
-			((and (< state 1) (< (ego y?) 111)) (self changeState: 1))
-			((and (< state 9) (< (ego x?) 155)) (self changeState: 9))
+			((& (ego onControl:) cBLUE)
+				(curRoom newRoom: 31)
+			)
+			((and (< state 1) (< (ego y?) 111))
+				(self changeState: 1)
+			)
+			((and (< state 9) (< (ego x?) 155))
+				(self changeState: 9)
+			)
 		)
 	)
 	
@@ -356,7 +360,7 @@
 				(ShakeScreen 8 (Random 1 3))
 				(Print 36 13)
 				(Print 36 14)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 			(9
 				(= seconds (= cycles 0))
@@ -375,8 +379,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
@@ -386,18 +389,28 @@
 			(if (Said '/control,computer,amp,burn,krod')
 				(Print 36 1)
 			)
-			(if (Said '/cord,cord') (Print 36 2))
-			(if (Said '/man') (Print 36 3))
+			(if (Said '/cord,cord')
+				(Print 36 2)
+			)
+			(if (Said '/man')
+				(Print 36 3)
+			)
 			(if (Said '[/airport,cabin]')
 				(Print 36 4)
 				(Print 36 5)
 			)
 		)
-		(if (Said '/man,man') (Print 36 6))
+		(if (Said '/man,man')
+			(Print 36 6)
+		)
 		(if (Said 'throw,cord,jerk/cord')
 			(cond 
-				(lifeboatLeverPulled (Print 36 7))
-				((not (ego inRect: 175 110 202 128)) (NotClose))
+				(lifeboatLeverPulled
+					(Print 36 7)
+				)
+				((not (ego inRect: 175 110 202 128))
+					(NotClose)
+				)
 				(else
 					(= lifeboatLeverPulled TRUE)
 					(theGame changeScore: 8)
@@ -411,15 +424,15 @@
 )
 
 (instance captainScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp theSpeed temp1)
 		(switch (= state newState)
-			(0 (= cycles (Random 5 10)))
+			(0
+				(= cycles (Random 5 10))
+			)
 			(1
-				(= temp0 (Random 0 3))
-				(aCaptain cycleSpeed: temp0 setCycle: EndLoop)
-				(aWheel cycleSpeed: temp0 setCycle: EndLoop)
+				(= theSpeed (Random 0 3))
+				(aCaptain cycleSpeed: theSpeed setCycle: EndLoop)
+				(aWheel cycleSpeed: theSpeed setCycle: EndLoop)
 				(= cycles (Random 5 10))
 			)
 			(2
@@ -428,9 +441,9 @@
 				(= cycles (Random 5 10))
 			)
 			(3
-				(= temp0 (Random 0 3))
-				(aCaptain cycleSpeed: temp0 setCycle: BegLoop)
-				(aWheel cycleSpeed: temp0 setCycle: BegLoop)
+				(= theSpeed (Random 0 3))
+				(aCaptain cycleSpeed: theSpeed setCycle: BegLoop)
+				(aWheel cycleSpeed: theSpeed setCycle: BegLoop)
 				(= cycles (Random 5 10))
 			)
 			(4

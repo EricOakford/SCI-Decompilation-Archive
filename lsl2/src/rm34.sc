@@ -172,14 +172,14 @@
 		)
 		(self setRegions: SHIP setScript: rm34Script)
 		(if (== currentEgoView 132)
-			(self setRegions: 8)
+			(self setRegions: HENCHWOMAN)
 			(= henchView 311)
 			(Load VIEW henchView)
 			((= aHench (Actor new:))
 				view: henchView
 				posn: 155 233
-				illegalBits: -32768
-				observeControl: 256
+				illegalBits: cWHITE
+				observeControl: cGREY
 				setCycle: Walk
 				init:
 				setScript: henchScript
@@ -206,7 +206,7 @@
 				setMotion: 0
 				setStep: 3 2
 				illegalBits: -1
-				ignoreControl: 512 256
+				ignoreControl: cLBLUE cGREY
 				posn: 157 83
 				cycleSpeed: 1
 				moveSpeed: 1
@@ -214,7 +214,7 @@
 				init:
 			)
 		else
-			(NormalEgo 3)
+			(NormalEgo loopN)
 			(ego posn: 157 183 init:)
 		)
 		(User canControl: TRUE canInput: TRUE)
@@ -222,25 +222,20 @@
 )
 
 (instance rm34Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (& (ego onControl:) $0400) (== currentStatus egoNORMAL))
+		(if (and (& (ego onControl:) cLGREEN) (== currentStatus egoNORMAL))
 			(ego posn: 55 88)
 			(self changeState: 1)
 		)
-		(if
-		(and (& (ego onControl:) $1000) (== currentStatus egoNORMAL))
+		(if (and (& (ego onControl:) cLRED) (== currentStatus egoNORMAL))
 			(ego posn: 255 88)
 			(self changeState: 1)
 		)
-		(if
-		(and (& (ego onControl:) $0100) (== currentStatus egoNORMAL))
+		(if (and (& (ego onControl:) cGREY) (== currentStatus egoNORMAL))
 			(self changeState: 1)
 		)
-		(if (== 3 (ego edgeHit?))
+		(if (== SOUTH (ego edgeHit?))
 			(if (== local8 0)
 				(curRoom newRoom: 31)
 			else
@@ -250,8 +245,7 @@
 				(curRoom newRoom: 95)
 			)
 		)
-		(if
-		(and henchwomanIsHere canFollowHenchwoman (> (ego y?) 181))
+		(if (and henchwomanIsHere canFollowHenchwoman (> (ego y?) 181))
 			(= canFollowHenchwoman FALSE)
 			(= local8 1)
 			(curRoom south: 95)
@@ -267,7 +261,7 @@
 				(User canControl: FALSE)
 				(= currentEgoView (ego view?))
 				(= currentStatus egoDROWNING)
-				(if (== currentEgoView 100)
+				(if (== currentEgoView vEgo)
 					(= drowningInLeisureSuit TRUE)
 					(= drowningView 137)
 					(User canInput: FALSE)
@@ -277,7 +271,7 @@
 				(ego
 					view: drowningView
 					illegalBits: -1
-					ignoreControl: 256 512
+					ignoreControl: cGREY cLBLUE
 					cycleSpeed: 1
 					moveSpeed: 1
 					setStep: 2 2
@@ -334,7 +328,9 @@
 			)
 			(7
 				(= seconds (= cycles 0))
-				(if (== sunscreenState sunscreenAPPLIED) (= sunscreenState sunscreenAFTERSWIM))
+				(if (== sunscreenState sunscreenAPPLIED)
+					(= sunscreenState sunscreenAFTERSWIM)
+				)
 				(ego
 					view: currentEgoView
 					setLoop: -1
@@ -344,13 +340,16 @@
 					cycleSpeed: 0
 					moveSpeed: 0
 					ignoreActors: 0
-					illegalBits: 256
-					observeControl: 512
+					illegalBits: cGREY
+					observeControl: cLBLUE
 					baseSetter: 0
 				)
 				(= cycles 12)
 			)
-			(8 (Print 34 30) (NormalEgo))
+			(8
+				(Print 34 30)
+				(NormalEgo)
+			)
 			(9
 				(HandsOff)
 				(if (not tookSwimInShipPool)
@@ -392,7 +391,9 @@
 				(if (== sunscreenState sunscreenAPPLIED)
 					(User canInput: TRUE)
 					(Print 34 32)
-					(if (not henchwomanAppeared) (henchScript changeState: 1))
+					(if (not henchwomanAppeared)
+						(henchScript changeState: 1)
+					)
 				else
 					(= currentStatus egoSTOPPED)
 					(ego
@@ -423,12 +424,13 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/man,children') (Print 34 3))
+			(if (Said '/man,children')
+				(Print 34 3)
+			)
 			(if (Said '/airport,barstool')
 				(if (!= currentStatus egoSITTING)
 					(Print 34 4)
@@ -439,14 +441,27 @@
 			(if (Said '<below/airport,barstool')
 				(SeeNothing)
 			)
-			(if (Said '/inner') (Print 34 6))
-			(if (Said '/flower,palm') (Print 34 7))
+			(if (Said '/inner')
+				(Print 34 6)
+			)
+			(if (Said '/flower,palm')
+				(Print 34 7)
+			)
 			(if (Said '[/fluid,craft,airport]')
 				(cond 
-					((== currentStatus egoSWIMMING) (Print 34 8))
-					((== currentStatus egoDROWNING) (Print 34 9))
-					((== currentStatus egoSITTING) (Print 34 10))
-					(else (Print 34 11) (Print 34 12))
+					((== currentStatus egoSWIMMING)
+						(Print 34 8)
+					)
+					((== currentStatus egoDROWNING)
+						(Print 34 9)
+					)
+					((== currentStatus egoSITTING)
+						(Print 34 10)
+					)
+					(else
+						(Print 34 11)
+						(Print 34 12)
+					)
 				)
 			)
 		)
@@ -456,9 +471,17 @@
 				(Said 'bathing')
 			)
 			(cond 
-				((== currentStatus egoSWIMMING) (Print 34 13))
-				((!= currentStatus egoDROWNING) (Print 34 14) (Print 34 15))
-				(else (Ok) (self changeState: 4))
+				((== currentStatus egoSWIMMING)
+					(Print 34 13)
+				)
+				((!= currentStatus egoDROWNING)
+					(Print 34 14)
+					(Print 34 15)
+				)
+				(else
+					(Ok)
+					(self changeState: 4)
+				)
 			)
 		)
 		(if
@@ -468,18 +491,33 @@
 				(Said 'apply,climb/ladder')
 			)
 			(cond 
-				((!= currentStatus egoSWIMMING) (NotNow))
-				((not (& (ego onControl:) $0100)) (NotClose))
-				(else (Ok) (self changeState: 7))
+				((!= currentStatus egoSWIMMING)
+					(NotNow)
+				)
+				((not (& (ego onControl:) cGREY))
+					(NotClose)
+				)
+				(else
+					(Ok)
+					(self changeState: 7)
+				)
 			)
 		)
-		(if
-		(or (Said 'board,bathing/underwater') (Said 'dive'))
+		(if (or (Said 'board,bathing/underwater') (Said 'dive'))
 			(cond 
-				((== currentStatus egoDROWNING) (Print 34 16))
-				((!= currentStatus egoSWIMMING) (Print 34 17))
-				((& (ego onControl:) $0100) (Print 34 18))
-				(else (Ok) (self changeState: 5))
+				((== currentStatus egoDROWNING)
+					(Print 34 16)
+				)
+				((!= currentStatus egoSWIMMING)
+					(Print 34 17)
+				)
+				((& (ego onControl:) cGREY)
+					(Print 34 18)
+				)
+				(else
+					(Ok)
+					(self changeState: 5)
+				)
 			)
 		)
 		(if
@@ -488,11 +526,21 @@
 				(Said 'bath[/down,airport,barstool]')
 			)
 			(cond 
-				((== currentStatus egoSITTING) (Print 34 19))
-				((not (ego inRect: 139 102 199 134)) (NotClose))
-				((!= currentEgoView 132) (Print 34 20))
-				((!= currentStatus egoNORMAL) (NotNow))
-				(else (self changeState: 9))
+				((== currentStatus egoSITTING)
+					(Print 34 19)
+				)
+				((not (ego inRect: 139 102 199 134))
+					(NotClose)
+				)
+				((!= currentEgoView 132)
+					(Print 34 20)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				(else
+					(self changeState: 9)
+				)
 			)
 		)
 		(if
@@ -501,7 +549,9 @@
 				(Said 'disembark[/barstool]')
 			)
 			(cond 
-				((== currentStatus egoNORMAL) (Print 34 13))
+				((== currentStatus egoNORMAL)
+					(Print 34 13)
+				)
 				(
 					(and
 						(<= (henchScript state?) 4)
@@ -509,8 +559,12 @@
 					)
 					(Print 34 21)
 				)
-				((!= currentStatus egoSITTING) (NotNow))
-				(else (self changeState: 15))
+				((!= currentStatus egoSITTING)
+					(NotNow)
+				)
+				(else
+					(self changeState: 15)
+				)
 			)
 		)
 		(if (or (Said 'breathe') (Said 'get/breath'))
@@ -532,15 +586,19 @@
 						(Print 34 24)
 					)
 				)
-				((Said 'look/') (if henchwomanIsHere (Print 34 25) else (Print 34 26)))
+				((Said 'look/')
+					(if henchwomanIsHere
+						(Print 34 25)
+					else
+						(Print 34 26)
+					)
+				)
 			)
 		)
 	)
 )
 
 (instance henchScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -572,7 +630,9 @@
 			(6
 				(aHench setMotion: MoveTo 155 234 self)
 			)
-			(7 (= seconds 10))
+			(7
+				(= seconds 10)
+			)
 			(8
 				(aHench dispose:)
 				(= henchView 0)
@@ -584,8 +644,6 @@
 )
 
 (instance BSetter of Code
-	(properties)
-	
 	(method (doit theActor)
 		(theActor brBottom: (+ (theActor y?) 5))
 		(theActor brTop: (- (theActor y?) 3))

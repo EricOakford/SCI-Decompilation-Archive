@@ -275,11 +275,5 @@
 		x 15
 		view 515
 		loop 2
-		msgLook 0
-		msgLookLock 18
-		msgLocked 38
-		msgExcept 59
-		msgFunny 82
-		msgCloser 102
 	)
 )

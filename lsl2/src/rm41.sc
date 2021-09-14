@@ -130,7 +130,7 @@
 					init:
 				)
 			)
-			((== currentEgoView 100)
+			((== currentEgoView vEgo)
 				(self setRegions: HENCHWOMAN)
 				(= henchwomanIsHere TRUE)
 				(= henchView 402)
@@ -152,12 +152,10 @@
 )
 
 (instance rm41Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== 2 (ego edgeHit?))
-			(if (== henchwomanApproaches 0)
+		(if (== EAST (ego edgeHit?))
+			(if (== henchwomanApproaches FALSE)
 				(curRoom newRoom: 42)
 			else
 				(Print 41 0 #at 15 -1 #width 280)
@@ -166,19 +164,20 @@
 			)
 		)
 		(if (and henchwomanIsHere canFollowHenchwoman (> (ego x?) 300))
-			(= canFollowHenchwoman 0)
-			(= henchwomanApproaches 1)
+			(= canFollowHenchwoman FALSE)
+			(= henchwomanApproaches TRUE)
 			(curRoom east: 95)
 			(Print 41 1)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if (Said 'climb[<over]/boulder') (Print 41 2))
+		(if (Said 'climb[<over]/boulder')
+			(Print 41 2)
+		)
 		(if (Said 'look>')
 			(if (and henchwomanIsHere (Said '/bimbo'))
 				(Print 41 3)
@@ -188,19 +187,27 @@
 			)
 			(if (Said '/palm')
 				(Print 41 5)
-				(if (> filthLevel 13) (Print 41 6 #at -1 152))
+				(if (> filthLevel 13)
+					(Print 41 6 #at -1 152)
+				)
 			)
 			(if (Said '/boulder')
 				(Print 41 7)
-				(if bikiniInRoom (Print 41 8))
+				(if bikiniInRoom
+					(Print 41 8)
+				)
 			)
 			(if (Said '[/airport,boulder,beach]')
 				(Print 41 9)
-				(if bikiniInRoom (Print 41 8))
+				(if bikiniInRoom
+					(Print 41 8)
+				)
 			)
 		)
 		(if henchwomanIsHere
-			(if (Said 'get/towel') (Print 41 10))
+			(if (Said 'get/towel')
+				(Print 41 10)
+			)
 			(if (Said 'call/bimbo')
 				(if (not (ego inRect: 75 150 160 189))
 					(NotClose)
@@ -216,7 +223,7 @@
 			(or
 				(Said 'wear,(alter<in),(conceal<on)/job,(bra<bathing),bikini')
 				(Said 'alter,(get<off),drain/bra,bra')
-				(Said 'wear,(conceal<on)/job,bottom,(bra<bathing),bikini')
+				(Said 'wear,(conceal<on)/job,panties,bottom,(bra<bathing),bikini')	;EO: fixed said spec
 				(Said 'get<naked')
 				(Said 'naked')
 				(Said 'alter,(get<off),drain/bra,bra')
@@ -226,8 +233,12 @@
 		)
 		(if (Said 'get/bottom,bikini,(bottom<bikini)')
 			(cond 
-				((not bikiniInRoom) (Print 41 14))
-				((not (ego inRect: 76 179 106 189)) (NotClose))
+				((not bikiniInRoom)
+					(Print 41 14)
+				)
+				((not (ego inRect: 76 179 106 189))
+					(NotClose)
+				)
 				(else
 					(Print 41 15)
 					(= bikiniInRoom FALSE)
@@ -241,11 +252,11 @@
 )
 
 (instance henchScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (Random 30 50)))
+			(0
+				(= cycles (Random 30 50))
+			)
 			(1
 				(aHench setCycle: Forward)
 				(= cycles (Random 5 22))
@@ -292,7 +303,9 @@
 				)
 				(= canFollowHenchwoman TRUE)
 			)
-			(7 (= seconds 10))
+			(7
+				(= seconds 10)
+			)
 			(8
 				(aHench dispose:)
 				(= henchView 0)

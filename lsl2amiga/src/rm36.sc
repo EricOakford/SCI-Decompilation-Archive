@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 36)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -15,18 +15,18 @@
 (local
 	local0
 )
-(instance rm36 of Rm
+(instance rm36 of Room
 	(properties
 		picture 36
 		south 31
 	)
 	
 	(method (init)
-		(Load rsVIEW currentEgoView)
-		(Load rsVIEW 322)
-		(Load rsVIEW 323)
-		(Load rsVIEW 324)
-		(Load rsVIEW 321)
+		(Load VIEW currentEgoView)
+		(Load VIEW 322)
+		(Load VIEW 323)
+		(Load VIEW 324)
+		(Load VIEW 321)
 		(super init:)
 		(addToPics
 			add:
@@ -45,58 +45,58 @@
 		(aDials1
 			loop: 1
 			setPri: 6
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 1
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(aDials2
 			setPri: 6
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(aDials3
 			setPri: 8
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(aDials4
 			setPri: 6
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 5
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(aDials5
 			setPri: 6
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 5
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(aDials6
 			setPri: 8
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 6
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(aHorizonEast
 			setPri: 3
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(aHorizonWest
 			setPri: 3
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		(aLever
@@ -105,8 +105,15 @@
 			stopUpd:
 			init:
 		)
-		(aWheel setPri: 6 init:)
-		(aCaptain setPri: 8 init: setScript: captainScript)
+		(aWheel
+			setPri: 6
+			init:
+		)
+		(aCaptain
+			setPri: 8
+			init:
+			setScript: captainScript
+		)
 		(aHench
 			setLoop: 1
 			setPri: 5
@@ -115,21 +122,25 @@
 			init:
 			hide:
 		)
-		(NormalEgo 3)
+		(NormalEgo loopN)
 		(ego posn: 164 151 init:)
-		(self setRegions: 300 setScript: rm36Script)
+		(self setRegions: SHIP setScript: rm36Script)
 	)
 )
 
 (instance rm36Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((& (ego onControl:) $0002) (curRoom newRoom: 31))
-			((and (< state 1) (< (ego y?) 111)) (self changeState: 1))
-			((and (< state 9) (< (ego x?) 155)) (self changeState: 9))
+			((& (ego onControl:) cBLUE)
+				(curRoom newRoom: 31)
+			)
+			((and (< state 1) (< (ego y?) 111))
+				(self changeState: 1)
+			)
+			((and (< state 9) (< (ego x?) 155))
+				(self changeState: 9)
+			)
 		)
 	)
 	
@@ -138,7 +149,7 @@
 			(1
 				(= seconds (= cycles 0))
 				(HandsOff)
-				(= currentStatus 1000)
+				(= currentStatus egoSTOPPED)
 				(aHench show: setMotion: MoveTo 167 92 self)
 				(captainScript dispose:)
 				(ego stopUpd:)
@@ -148,11 +159,11 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(aHench cycleSpeed: 0 setCycle: Beg)
+				(aHench cycleSpeed: 0 setCycle: BegLoop)
 				(aDart
 					setLoop: 3
 					illegalBits: 0
@@ -170,7 +181,7 @@
 					cycleSpeed: 0
 					setMotion: MoveTo 192 92
 				)
-				(aWheel setCycle: End)
+				(aWheel setCycle: EndLoop)
 				(aCaptain
 					view: 324
 					setLoop: 0
@@ -180,12 +191,12 @@
 					ignoreActors:
 					illegalBits: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(addToPics add: aDying doit:)
-				(aCaptain view: 324 setLoop: 1 cel: 0 setCycle: End self)
+				(aCaptain view: 324 setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(6
 				(Print 36 10)
@@ -203,11 +214,11 @@
 				(ShakeScreen 8 (Random 1 3))
 				(Print 36 13)
 				(Print 36 14)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 			(9
 				(= seconds (= cycles 0))
-				(= currentStatus 1000)
+				(= currentStatus egoSTOPPED)
 				(HandsOff)
 				(ego stopUpd:)
 				(Print 36 15 #draw)
@@ -216,14 +227,13 @@
 			(10
 				(ego hide:)
 				(Print 36 16 #draw)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
@@ -233,24 +243,34 @@
 			(if (Said '/control,computer,amp,burn,krod')
 				(Print 36 1)
 			)
-			(if (Said '/cord,cord') (Print 36 2))
-			(if (Said '/man') (Print 36 3))
+			(if (Said '/cord,cord')
+				(Print 36 2)
+			)
+			(if (Said '/man')
+				(Print 36 3)
+			)
 			(if (Said '[/airport,cabin]')
 				(Print 36 4)
 				(Print 36 5)
 			)
 		)
-		(if (Said '/man,man') (Print 36 6))
+		(if (Said '/man,man')
+			(Print 36 6)
+		)
 		(if (Said 'throw,cord,jerk/cord')
 			(cond 
-				(lifeboatLeverPulled (Print 36 7))
-				((not (ego inRect: 175 110 202 128)) (NotClose))
+				(lifeboatLeverPulled
+					(Print 36 7)
+				)
+				((not (ego inRect: 175 110 202 128))
+					(NotClose)
+				)
 				(else
-					(= lifeboatLeverPulled 1)
+					(= lifeboatLeverPulled TRUE)
 					(theGame changeScore: 8)
-					(aLever setCycle: End)
+					(aLever setCycle: EndLoop)
 					(Print 36 8 #draw #at -1 15 #width 280)
-					(SetRegionTimer 3 2 10)
+					(SetRegionTimer rgLIFEBOATS 2 10)
 				)
 			)
 		)
@@ -258,15 +278,15 @@
 )
 
 (instance captainScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp theSpeed temp1)
 		(switch (= state newState)
-			(0 (= cycles (Random 5 10)))
+			(0
+				(= cycles (Random 5 10))
+			)
 			(1
-				(= temp0 (Random 0 3))
-				(aCaptain cycleSpeed: temp0 setCycle: End)
-				(aWheel cycleSpeed: temp0 setCycle: End)
+				(= theSpeed (Random 0 3))
+				(aCaptain cycleSpeed: theSpeed setCycle: EndLoop)
+				(aWheel cycleSpeed: theSpeed setCycle: EndLoop)
 				(= cycles (Random 5 10))
 			)
 			(2
@@ -275,9 +295,9 @@
 				(= cycles (Random 5 10))
 			)
 			(3
-				(= temp0 (Random 0 3))
-				(aCaptain cycleSpeed: temp0 setCycle: Beg)
-				(aWheel cycleSpeed: temp0 setCycle: Beg)
+				(= theSpeed (Random 0 3))
+				(aCaptain cycleSpeed: theSpeed setCycle: BegLoop)
+				(aWheel cycleSpeed: theSpeed setCycle: BegLoop)
 				(= cycles (Random 5 10))
 			)
 			(4
@@ -289,105 +309,105 @@
 	)
 )
 
-(instance aView1 of PV
+(instance aView1 of PicView
 	(properties
 		y 111
 		x 80
 		view 322
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView2 of PV
+(instance aView2 of PicView
 	(properties
 		y 106
 		x 94
 		view 322
 		cel 1
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView3 of PV
+(instance aView3 of PicView
 	(properties
 		y 111
 		x 82
 		view 322
 		cel 1
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView4 of PV
+(instance aView4 of PicView
 	(properties
 		y 116
 		x 71
 		view 322
 		cel 1
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView5 of PV
+(instance aView5 of PicView
 	(properties
 		y 84
 		x 144
 		view 322
 		cel 2
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView6 of PV
+(instance aView6 of PicView
 	(properties
 		y 84
 		x 152
 		view 322
 		cel 2
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView7 of PV
+(instance aView7 of PicView
 	(properties
 		y 93
 		x 117
 		view 322
 		cel 2
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView8 of PV
+(instance aView8 of PicView
 	(properties
 		y 100
 		x 98
 		view 322
 		cel 2
 		priority 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView9 of PV
+(instance aView9 of PicView
 	(properties
 		y 150
 		x 99
 		view 322
 		loop 9
 		priority 15
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView10 of PV
+(instance aView10 of PicView
 	(properties
 		y 150
 		x 229
@@ -395,18 +415,18 @@
 		loop 9
 		cel 1
 		priority 15
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aDying of PV
+(instance aDying of PicView
 	(properties
 		y 115
 		x 140
 		view 324
 		loop 2
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -416,7 +436,7 @@
 		x 201
 		view 322
 		cel 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -426,7 +446,7 @@
 		x 199
 		view 322
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -436,7 +456,7 @@
 		x 107
 		view 322
 		loop 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -455,7 +475,7 @@
 		x 128
 		view 322
 		loop 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -465,7 +485,7 @@
 		x 217
 		view 322
 		loop 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -505,7 +525,7 @@
 	)
 )
 
-(instance aCaptain of Act
+(instance aCaptain of Actor
 	(properties
 		y 115
 		x 140
@@ -513,20 +533,20 @@
 	)
 )
 
-(instance aHench of Act
+(instance aHench of Actor
 	(properties
 		y 91
 		x 192
 		view 321
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aDart of Act
+(instance aDart of Actor
 	(properties
 		y 76
 		x 169
 		view 321
-		signal $4000
+		signal ignrAct
 	)
 )

@@ -408,15 +408,7 @@
 		y 156
 		x 293
 		view 513
-		msgLook 0
-		msgLookLock 18
-		msgLocked 38
-		msgExcept 59
-		msgFunny 82
-		msgCloser 102
 	)
 )
 
-(instance aPlane of Airplane
-	(properties)
-)
+(instance aPlane of Airplane)

@@ -505,11 +505,5 @@
 		x 160
 		view 500
 		loop 1
-		msgLook 0
-		msgLookLock 18
-		msgLocked 38
-		msgExcept 59
-		msgFunny 82
-		msgCloser 102
 	)
 )

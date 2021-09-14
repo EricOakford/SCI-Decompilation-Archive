@@ -167,10 +167,5 @@
 		x 172
 		view 227
 		msgLook {Through this door, you see a store.}
-		msgLookLock 1116
-		msgLocked 1136
-		msgExcept {aView2}
-		msgFunny 1180
-		msgCloser 1200
 	)
 )

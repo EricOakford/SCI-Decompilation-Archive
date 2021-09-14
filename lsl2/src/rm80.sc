@@ -14,7 +14,7 @@
 
 (local
 	aWaterfall
-	triedToTurnBack
+	noGoMsg
 )
 (instance rm80 of Room
 	(properties
@@ -50,7 +50,7 @@
 			cycleSpeed: 2
 			init:
 		)
-		(self setRegions: 700 setScript: rm80Script)
+		(self setRegions: ISLAND setScript: rm80Script)
 		(NormalEgo)
 		(if (== prevRoomNum 81)
 			(ego posn: 114 124 loop: 1)
@@ -62,25 +62,35 @@
 )
 
 (instance rm80Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((& (ego onControl:) $0004) (if (== triedToTurnBack FALSE) (= triedToTurnBack TRUE) (Print 80 0)))
-			((& (ego onControl:) $0002) (curRoom newRoom: 81))
-			(else (= triedToTurnBack FALSE))
+			((& (ego onControl:) cGREEN)
+				(if (== noGoMsg FALSE)
+					(= noGoMsg TRUE)
+					(Print 80 0)
+				)
+			)
+			((& (ego onControl:) cBLUE)
+				(curRoom newRoom: 81)
+			)
+			(else
+				(= noGoMsg FALSE)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/fern,leaf,bush') (Print 80 1))
-			(if (Said '[/airport,island,/]') (Print 80 2))
+			(if (Said '/fern,leaf,bush')
+				(Print 80 1)
+			)
+			(if (Said '[/airport,island,mountain]')	;EO: fixed said spec
+				(Print 80 2)
+			)
 		)
 	)
 )

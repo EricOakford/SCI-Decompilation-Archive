@@ -20,7 +20,7 @@
 	aWakeRear
 	aHorizonBow
 	aHorizonStern
-	numClouds
+	aCloud
 	noEntry
 )
 (instance rm31 of Room
@@ -151,12 +151,17 @@
 			init:
 		)
 		(cond 
-			((> machineSpeed 60) (= numClouds 3))
-			((> machineSpeed 40) (= numClouds 2))
-			((> machineSpeed 20) (= numClouds 1))
+			((> machineSpeed 60)
+				(= aCloud 3)
+			)
+			((> machineSpeed 40)
+				(= aCloud 2)
+			)
+			((> machineSpeed 20)
+				(= aCloud 1)
+			)
 		)
-		(= i 0)
-		(while (< i numClouds)
+		(for ((= i 0)) (< i aCloud) ((++ i))
 			((Actor new:)
 				view: 620
 				ignoreHorizon:
@@ -164,7 +169,6 @@
 				illegalBits: 0
 				setScript: (cloudScript new:)
 			)
-			(++ i)
 		)
 		(if (== (= currentEgoView (ego view?)) 132)
 			(ego view: 129)
@@ -176,52 +180,80 @@
 			setPri: 14
 			setCycle: Walk
 			setStep: 1 1
-			illegalBits: -32768
+			illegalBits: cWHITE
 		)
 		(cond 
-			((== prevRoomNum 38) (ego posn: 179 74))
-			((== prevRoomNum 37) (ego posn: 97 85))
-			((== prevRoomNum 36) (ego posn: 112 62))
-			((== prevRoomNum 35) (ego posn: 215 50))
-			((== prevRoomNum 34) (ego posn: 299 85))
-			(else (ego posn: 280 113))
+			((== prevRoomNum 38)
+				(ego posn: 179 74)
+			)
+			((== prevRoomNum 37)
+				(ego posn: 97 85)
+			)
+			((== prevRoomNum 36)
+				(ego posn: 112 62)
+			)
+			((== prevRoomNum 35)
+				(ego posn: 215 50)
+			)
+			((== prevRoomNum 34)
+				(ego posn: 299 85)
+			)
+			(else
+				(ego posn: 280 113)
+			)
 		)
 		(ego init:)
 		(User canControl: TRUE canInput: TRUE)
-		(= currentStatus FALSE)
+		(= currentStatus egoNORMAL)
 		(self setRegions: SHIP setScript: rm31Script)
 	)
 )
 
 (instance rm31Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
 			(
 				(and
 					(== currentEgoView 132)
-					(& (ego onControl:) $00e0)
+					(& (ego onControl:) (| cMAGENTA cBROWN cLGREY))
 				)
-				(if (== noEntry FALSE) (Print 31 0) (= noEntry TRUE))
+				(if (== noEntry FALSE)
+					(Print 31 0)
+					(= noEntry TRUE)
+				)
 			)
-			((& (ego onControl:) $0100) (curRoom newRoom: 38))
-			((& (ego onControl:) $0080) (curRoom newRoom: 37))
-			((& (ego onControl:) $0040) (curRoom newRoom: 36))
-			((& (ego onControl:) $0020) (curRoom newRoom: 35))
-			((& (ego onControl:) $0010) (curRoom newRoom: 34))
-			((& (ego onControl:) $0002) (curRoom newRoom: 32))
-			(else (= noEntry FALSE))
+			((& (ego onControl:) cGREY)
+				(curRoom newRoom: 38)
+			)
+			((& (ego onControl:) cLGREY)
+				(curRoom newRoom: 37)
+			)
+			((& (ego onControl:) cBROWN)
+				(curRoom newRoom: 36)
+			)
+			((& (ego onControl:) cMAGENTA)
+				(curRoom newRoom: 35)
+			)
+			((& (ego onControl:) cRED)
+				(curRoom newRoom: 34)
+			)
+			((& (ego onControl:) cBLUE)
+				(curRoom newRoom: 32)
+			)
+			(else
+				(= noEntry FALSE)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if (Said 'climb/stair') (Print 31 1))
+		(if (Said 'climb/stair')
+			(Print 31 1)
+		)
 		(if
 			(or
 				(Said 'open/door')
@@ -230,17 +262,23 @@
 			(Print 31 2)
 		)
 		(if (Said 'look>')
-			(if (Said '/corridor') (Print 31 3))
-			(if (Said '/stair') (Print 31 4))
-			(if (Said '/flag') (Print 31 5))
-			(if (Said '[/craft,boat,cloud,airport]') (Print 31 6))
+			(if (Said '/corridor')
+				(Print 31 3)
+			)
+			(if (Said '/stair')
+				(Print 31 4)
+			)
+			(if (Said '/flag')
+				(Print 31 5)
+			)
+			(if (Said '[/craft,boat,cloud,airport]')
+				(Print 31 6)
+			)
 		)
 	)
 )
 
 (instance cloudScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp theY theCel)
 		(switch (= state newState)
 			(0

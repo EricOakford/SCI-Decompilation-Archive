@@ -50,22 +50,24 @@
 		)
 		(NormalEgo)
 		(ego posn: 160 159 init:)
-		(self setRegions: 7 400 setScript: rm45Script)
+		(self setRegions: BARBER RESORT setScript: rm45Script)
 	)
 )
 
 (instance rm45Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 40))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 40)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (!= currentEgoView 151) (= seconds 10))
+				(if (!= currentEgoView 151)
+					(= seconds 10)
+				)
 			)
 			(1
 				(if (not talkedToBarber)
@@ -142,7 +144,9 @@
 				(Print 45 15 #at -1 20)
 				(= seconds 3)
 			)
-			(10 (aBarber setCycle: EndLoop self))
+			(10
+				(aBarber setCycle: EndLoop self)
+			)
 			(11
 				(Print 45 16 #at -1 20 #draw)
 				(Print 45 17 #at -1 20)
@@ -153,7 +157,9 @@
 			(12
 				(aBarber setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
-			(13 (= seconds 3))
+			(13
+				(= seconds 3)
+			)
 			(14
 				(Print 45 20 #at -1 20)
 				(Print 45 21 #at -1 20)
@@ -173,7 +179,7 @@
 				(theGame changeScore: 3)
 				(aChair view: 232 setLoop: 1 setCel: 0)
 				(= currentEgoView 149)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(ego posn: 157 119 show:)
 				(Print 45 22 #draw)
 				(= cycles 5)
@@ -185,7 +191,7 @@
 			)
 			(18
 				(= seconds (= cycles 0))
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(Print 45 24)
 				(Print 45 25)
 				(Print 45 26)
@@ -237,7 +243,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(24 (= seconds 3))
+			(24
+				(= seconds 3)
+			)
 			(25
 				(aBarber
 					setLoop: 3
@@ -247,9 +255,15 @@
 				)
 				(aChair view: 431 setLoop: 7 cel: 0 posn: 167 115 show:)
 			)
-			(26 (= seconds 3))
-			(27 (aBarber setCycle: EndLoop self))
-			(28 (= seconds 3))
+			(26
+				(= seconds 3)
+			)
+			(27
+				(aBarber setCycle: EndLoop self)
+			)
+			(28
+				(= seconds 3)
+			)
 			(29
 				(Print 45 33 #at -1 20)
 				(Print 45 34 #at -1 20)
@@ -272,7 +286,9 @@
 					show:
 				)
 			)
-			(32 (= seconds 4))
+			(32
+				(= seconds 4)
+			)
 			(33
 				(ego setCel: 0)
 				(= seconds 3)
@@ -291,7 +307,9 @@
 				(Print 45 37 #at -1 20)
 				(= seconds 3)
 			)
-			(37 (aBarber setCycle: BegLoop self))
+			(37
+				(aBarber setCycle: BegLoop self)
+			)
 			(38
 				(aBarber
 					view: 430
@@ -309,10 +327,10 @@
 				)
 			)
 			(39
-				(= gotHaircutAtResort 1)
+				(= gotHaircutAtResort TRUE)
 				(theGame changeScore: 3)
 				(aChair view: 232 setLoop: 1 setCel: 0)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(ego posn: 157 119 show:)
 				(Print 45 38 #draw)
 				(= seconds 2)
@@ -324,8 +342,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if
@@ -337,19 +354,32 @@
 			)
 			(= talkedToBarber TRUE)
 			(cond 
-				((not (ego inRect: 148 117 180 127)) (Print 45 0))
-				((== currentStatus 1009) (YouAre))
-				((and hairDyedBlonde gotHaircutAtResort) (Print 45 1))
-				((not hairDyedBlonde) (self changeState: 2))
-				(
-				(and (!= currentEgoView 150) (!= currentEgoView 151)) (Print 45 2))
-				(else (self changeState: 18))
+				((not (ego inRect: 148 117 180 127))
+					(Print 45 0)
+				)
+				((== currentStatus egoSITTING)
+					(YouAre)
+				)
+				((and hairDyedBlonde gotHaircutAtResort)
+					(Print 45 1)
+				)
+				((not hairDyedBlonde)
+					(self changeState: 2)
+				)
+				((and (!= currentEgoView 150) (!= currentEgoView 151))
+					(Print 45 2)
+				)
+				(else
+					(self changeState: 18)
+				)
 			)
 		)
-		(if (Said 'look/man') (Print 45 3))
+		(if (Said 'look/man')
+			(Print 45 3)
+		)
 		(if (Said 'call/man')
 			(= talkedToBarber TRUE)
-			(if (!= currentEgoView 100)
+			(if (!= currentEgoView vEgo)
 				(Print 45 4)
 			else
 				(Print 45 5)

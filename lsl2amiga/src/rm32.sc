@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 32)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Door)
 (use Intrface)
@@ -20,48 +20,54 @@
 	egoY
 	local2
 )
-(instance theSound of Sound
-	(properties)
-)
+(instance theSound of Sound)
 
-(instance rm32 of Rm
+(instance rm32 of Room
 	(properties
 		picture 32
 	)
 	
 	(method (init)
-		(Load rsVIEW 304)
-		(Load rsVIEW 131)
-		(if (ego has: 5) (Load rsVIEW 132))
+		(Load VIEW 304)
+		(Load VIEW 131)
+		(if (ego has: iSwimsuit)
+			(Load VIEW 132)
+		)
 		(super init:)
 		(NormalEgo)
-		(self setRegions: 300 setScript: rm32Script)
-		(if ((inventory at: 11) ownedBy: curRoomNum)
-			(aFruit init:)
+		(self setRegions: SHIP setScript: rm32Script)
+		(if ((inventory at: iFruit) ownedBy: curRoomNum)
+			(aFruit
+				init:
+			)
 		)
-		(aPorthole setCycle: Fwd cycleSpeed: 5 isExtra: 1 init:)
+		(aPorthole
+			setCycle: Forward
+			cycleSpeed: 5
+			isExtra: TRUE
+			init:
+		)
 		(if metMama
-			(Load rsVIEW 309)
-			(Load rsSOUND 6)
+			(Load VIEW 309)
+			(Load SOUND 6)
 			(theSound number: 6 init:)
 			(aMama
 				illegalBits: 0
 				ignoreActors:
 				setStep: 3 2
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
-			(if (and (not rgSeconds) (== gameState 2))
-				(= currentStatus 1000)
+			(if (and (not rgSeconds) (== gameState rgSHIP))
+				(= currentStatus egoSTOPPED)
 				(rm32Script changeState: 1)
 			)
 		)
 		(aDoor
 			entranceTo: 33
-			doorCtrl: 4
-			roomCtrl: 8
-			msgLook:
-				{This door should be locked, as it leads to someone else's cabin. (But, it's not!)}
+			doorCtrl: cGREEN
+			roomCtrl: cCYAN
+			msgLook: {This door should be locked, as it leads to someone else's cabin. (But, it's not!)}
 			msgFunny: {You may have heard a soft, "Come in." (But you're not sure.)}
 			msgCloser: {Just walk near it.}
 			init:
@@ -76,18 +82,20 @@
 )
 
 (instance rm32Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== state 20) (ShakeScreen 1 (Random 1 3)))
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 31))
+		(if (== state 20)
+			(ShakeScreen 1 (Random 1 3))
+		)
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 31)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(= currentStatus 1000)
+				(= currentStatus egoSTOPPED)
 				(= local2 2)
 				(HandsOff)
 				(= cycles 5)
@@ -100,12 +108,12 @@
 				(ego setMotion: MoveTo 155 103 self)
 			)
 			(4
-				(= currentStatus 1005)
+				(= currentStatus egoSLEEPING)
 				(ego
 					view: 131
-					setLoop: (if (== currentEgoView 100) 0 else 2)
+					setLoop: (if (== currentEgoView vEgo) 0 else 2)
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 2
 					setPri: 9
 					illegalBits: 0
@@ -115,19 +123,22 @@
 				(= seconds 5)
 			)
 			(5
-				(= currentStatus 1000)
+				(= currentStatus egoSTOPPED)
 				(HandsOff)
 				(= seconds 5)
 			)
 			(6
-				(if (!= (aDoor doorState?) 0)
+				(if (!= (aDoor doorState?) doorClosed)
 					(self changeState: 7)
 				else
 					(Print 32 31)
 					(aDoor locked: 0 notify: self force: 1 open:)
 				)
 			)
-			(7 (Print 32 32) (= seconds 2))
+			(7
+				(Print 32 32)
+				(= seconds 2)
+			)
 			(8
 				(aMama show: setMotion: MoveTo 181 111 self)
 			)
@@ -181,11 +192,11 @@
 				(aMama
 					setLoop: 3
 					setMotion: 0
-					setCycle: Fwd
+					setCycle: Forward
 					posn: 129 106
 				)
 				(ego
-					setLoop: (if (== currentEgoView 100) 1 else 3)
+					setLoop: (if (== currentEgoView vEgo) 1 else 3)
 					posn: 125 93
 				)
 				(= seconds 4)
@@ -197,7 +208,7 @@
 				(= seconds 1)
 			)
 			(22
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 				(if (== local2 2)
 					(Print 32 36)
 				else
@@ -208,8 +219,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'open,look/cabinet')
@@ -223,27 +233,40 @@
 			(Print 32 1)
 			(Print 32 2 #at -1 130)
 		)
-		(if (Said 'look<below/bed') (Print 32 3) (Print 32 4))
+		(if (Said 'look<below/bed')
+			(Print 32 3)
+			(Print 32 4)
+		)
 		(if (Said 'look>')
 			(if (Said '/bed')
 				(Print 32 5)
-				(if (> filthLevel 10) (Print 32 6 #at -1 130))
+				(if (> filthLevel 10)
+					(Print 32 6 #at -1 130)
+				)
 			)
 			(if (Said '/new,bureau,buffet')
 				(cond 
-					((not (ego inRect: 150 96 168 110)) (NotClose))
-					((not ((inventory at: 11) ownedBy: curRoomNum)) (Print 32 7))
+					((not (ego inRect: 150 96 168 110))
+						(NotClose)
+					)
+					((not ((inventory at: iFruit) ownedBy: curRoomNum))
+						(Print 32 7)
+					)
 					(else
 						(Print 32 8)
 						(Print 32 9)
 						(Print 32 10)
-						(if metMama (Print 32 11) else (Print 32 12))
+						(if metMama
+							(Print 32 11)
+						else
+							(Print 32 12)
+						)
 					)
 				)
 			)
 			(if
 				(and
-					((inventory at: 11) ownedBy: curRoomNum)
+					((inventory at: iFruit) ownedBy: curRoomNum)
 					(Said '/basket,basket')
 				)
 				(if (not (ego inRect: 150 96 168 110))
@@ -252,7 +275,11 @@
 					(Print 32 8)
 					(Print 32 9)
 					(Print 32 10)
-					(if metMama (Print 32 11) else (Print 32 12))
+					(if metMama
+						(Print 32 11)
+					else
+						(Print 32 12)
+					)
 				)
 			)
 			(if (Said '[/cabin,airport]')
@@ -264,30 +291,46 @@
 			(Print 32 15)
 			(Print 32 16 #at -1 130)
 		)
-		(if (Said 'get/dirt') (Print 32 17))
+		(if (Said 'get/dirt')
+			(Print 32 17)
+		)
 		(if
 			(or
 				(Said 'get/dress')
 				(Said 'get<dress')
-				(Said
-					'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini'
-				)
+				(Said 'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini')
 			)
 			(cond 
 				((== currentEgoView 132)
 					(if (not (ego inRect: 170 90 176 110))
 						(Print 32 18)
 					else
-						(= currentEgoView 100)
+						(= currentEgoView vEgo)
 						(Ok)
-						(ego view: 100)
+						(ego view: vEgo)
 					)
 				)
-				((not (ego has: 5)) (if (ego has: 15) (Print 32 19) else (DontHave)))
-				((!= currentStatus 0) (NotNow))
-				((not metMama) (Print 32 20))
-				((not (ego inRect: 170 90 176 110)) (Print 32 18))
-				(else (= currentEgoView 132) (Print 32 21) (ego view: 132))
+				((not (ego has: iSwimsuit))
+					(if (ego has: iBikiniTop)
+						(Print 32 19)
+					else
+						(DontHave)
+					)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not metMama)
+					(Print 32 20)
+				)
+				((not (ego inRect: 170 90 176 110))
+					(Print 32 18)
+				)
+				(else
+					(= currentEgoView 132)
+					(Print 32 21)
+					(ego view: 132)
+				)
 			)
 		)
 		(if (Said 'open/bureau,new,new')
@@ -299,51 +342,63 @@
 		)
 		(if
 			(and
-				(not (ego has: 11))
-				((inventory at: 11) ownedBy: curRoomNum)
+				(not (ego has: iFruit))
+				((inventory at: iFruit) ownedBy: curRoomNum)
 				(Said 'eat,apply/basket')
 			)
 			(Print 32 27)
-			((inventory at: 11) moveTo: -1)
+			((inventory at: iFruit) moveTo: -1)
 			(theGame changeScore: -2)
 		)
 		(if (Said 'get/basket,basket')
 			(cond 
-				((not ((inventory at: 11) ownedBy: curRoomNum)) (AlreadyTook))
-				((not (ego inRect: 150 96 168 110)) (NotClose))
+				((not ((inventory at: iFruit) ownedBy: curRoomNum))
+					(AlreadyTook)
+				)
+				((not (ego inRect: 150 96 168 110))
+					(NotClose)
+				)
 				(else
 					(Ok)
 					(aFruit dispose:)
-					(ego get: 11)
+					(ego get: iFruit)
 					(theGame changeScore: 3)
 				)
 			)
 		)
 		(if (Said 'lie,board,bath[/bed,nap,barstool]')
 			(cond 
-				((== (ego view?) 131) (YouAre))
-				((!= currentStatus 0) (NotNow))
-				((not (ego inRect: 150 96 168 110)) (NotClose))
+				((== (ego view?) 131)
+					(YouAre)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 150 96 168 110))
+					(NotClose)
+				)
 				(else
-					(= currentStatus 1005)
+					(= currentStatus egoSLEEPING)
 					(Print 32 28)
-					(User canControl: 0 canInput: 1)
+					(User canControl: FALSE canInput: TRUE)
 					(= egoX (ego x?))
 					(= egoY (ego y?))
 					(= currentEgoView (ego view?))
 					(= local2 1)
 					(ego
 						view: 131
-						setLoop: (if (== currentEgoView 100) 0 else 2)
+						setLoop: (if (== currentEgoView vEgo) 0 else 2)
 						cel: 0
-						setCycle: Fwd
+						setCycle: Forward
 						cycleSpeed: 2
 						setPri: 9
 						illegalBits: 0
 						posn: 124 98
 						setMotion: 0
 					)
-					(if metMama (self changeState: 5))
+					(if metMama
+						(self changeState: 5)
+					)
 				)
 			)
 		)
@@ -354,14 +409,18 @@
 				(Said 'new,get<up')
 			)
 			(cond 
-				((!= (ego view?) 131) (Print 32 29))
-				((!= currentStatus 1005) (NotNow))
+				((!= (ego view?) 131)
+					(Print 32 29)
+				)
+				((!= currentStatus egoSLEEPING)
+					(NotNow)
+				)
 				(else
 					(Ok)
 					(ego posn: egoX egoY)
 					(NormalEgo 0)
-					(if (== (aDoor doorState?) 0)
-						(ego observeControl: 16384)
+					(if (== (aDoor doorState?) doorClosed)
+						(ego observeControl: cYELLOW)
 					)
 				)
 			)
@@ -389,7 +448,7 @@
 	)
 )
 
-(instance aMama of Act
+(instance aMama of Actor
 	(properties
 		y 110
 		x 217
@@ -405,11 +464,5 @@
 		x 207
 		view 304
 		priority 7
-		msgLook {theSound}
-		msgLookLock 3456
-		msgLocked 3476
-		msgExcept 3497
-		msgFunny 3520
-		msgCloser 3540
 	)
 )

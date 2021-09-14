@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 48)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use BassSetter)
 (use Intrface)
@@ -15,17 +15,17 @@
 )
 
 (local
-	local0
+	redFallCycles
 	egoX
 	egoY
 	oldScore
-	newBassSetter
+	oldEgoBase
 )
-(procedure (localproc_000c)
+(procedure (NearFallPoint)
 	(theSound stop:)
 	(cls)
-	(= score (+ score 1))
-	(SL doit:)
+	(+= score 1)
+	(StatusLine doit:)
 	(Print 48 0 #at -1 20 #time 5 #draw)
 )
 
@@ -35,21 +35,21 @@
 	)
 )
 
-(instance rm48 of Rm
+(instance rm48 of Room
 	(properties
 		picture 48
 		horizon 1
 	)
 	
 	(method (init)
-		(Load rsVIEW 156)
-		(Load rsVIEW 157)
-		(Load rsVIEW 158)
-		(Load rsVIEW 159)
-		(Load rsVIEW 151)
-		(Load rsSOUND 13)
-		(Load rsSOUND 14)
-		(Load rsSOUND 15)
+		(Load VIEW 156)
+		(Load VIEW 157)
+		(Load VIEW 158)
+		(Load VIEW 159)
+		(Load VIEW 151)
+		(Load SOUND 13)
+		(Load SOUND 14)
+		(Load SOUND 15)
 		(super init:)
 		(theSound init:)
 		(self setScript: rm48Script)
@@ -62,29 +62,41 @@
 			setStep: 3 1
 			loop: 1
 			init:
-			baseSetter: (= newBassSetter (BassSetter new:))
+			baseSetter: (= oldEgoBase (BassSetter new:))
 		)
-		(newBassSetter radii: 6)
+		(oldEgoBase radii: 6)
 		(HandsOff)
 	)
 )
 
 (instance rm48Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			(
-			(and (& (ego onControl:) $1000) (== state 11)) (self changeState: 12))
-			((and (& (ego onControl:) $0800) (== state 8)) (self changeState: 9))
-			((and (& (ego onControl:) $0400) (== state 5)) (self changeState: 6))
-			((and (& (ego onControl:) $0200) (== state 1)) (self changeState: 2))
-			(
-			(and (& (ego onControl:) $0010) (== state 11)) (self changeState: 25))
-			((and (& (ego onControl:) $0008) (== state 8)) (self changeState: 21))
-			((and (& (ego onControl:) $0004) (== state 5)) (self changeState: 18))
-			((and (& (ego onControl:) $0002) (== state 1)) (self changeState: 15))
+			((and (& (ego onControl:) cLRED) (== state 11))
+				(self changeState: 12)
+			)
+			((and (& (ego onControl:) cLCYAN) (== state 8))
+				(self changeState: 9)
+			)
+			((and (& (ego onControl:) cLGREEN) (== state 5))
+				(self changeState: 6)
+			)
+			((and (& (ego onControl:) cLBLUE) (== state 1))
+				(self changeState: 2)
+			)
+			((and (& (ego onControl:) cRED) (== state 11))
+				(self changeState: 25)
+			)
+			((and (& (ego onControl:) cCYAN) (== state 8))
+				(self changeState: 21)
+			)
+			((and (& (ego onControl:) cGREEN) (== state 5))
+				(self changeState: 18)
+			)
+			((and (& (ego onControl:) cBLUE) (== state 1))
+				(self changeState: 15)
+			)
 			(
 				(or
 					(== state 1)
@@ -100,9 +112,11 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
-				(User canControl: 1 canInput: 1)
+				(User canControl: TRUE canInput: TRUE)
 				(Print 48 9)
 			)
 			(2
@@ -125,11 +139,11 @@
 					setStep: 2 1
 					setMotion: MoveTo 203 106 self
 				)
-				(newBassSetter radii: 5)
+				(oldEgoBase radii: 5)
 			)
 			(5
-				(User canControl: 1 canInput: 1)
-				(ego illegalBits: -32768)
+				(User canControl: TRUE canInput: TRUE)
+				(ego illegalBits: cWHITE)
 			)
 			(6
 				(HandsOff)
@@ -149,11 +163,11 @@
 					posn: (ego x?) 99
 					setMotion: MoveTo 132 99 self
 				)
-				(newBassSetter radii: 4)
+				(oldEgoBase radii: 4)
 			)
 			(8
-				(User canControl: 1 canInput: 1)
-				(ego illegalBits: -32768)
+				(User canControl: TRUE canInput: TRUE)
+				(ego illegalBits: cWHITE)
 			)
 			(9
 				(HandsOff)
@@ -172,11 +186,11 @@
 					posn: 99 123
 					setMotion: MoveTo 65 123 self
 				)
-				(newBassSetter radii: 3)
+				(oldEgoBase radii: 3)
 			)
 			(11
-				(User canControl: 1 canInput: 1)
-				(ego illegalBits: -32768)
+				(User canControl: TRUE canInput: TRUE)
+				(ego illegalBits: cWHITE)
 			)
 			(12
 				(HandsOff)
@@ -187,10 +201,12 @@
 				)
 			)
 			(13
-				(User canControl: 0 canInput: 1)
+				(User canControl: FALSE canInput: TRUE)
 				(= currentEgoView 151)
 				(ego hide: view: currentEgoView baseSetter: 0)
-				(if newBassSetter (newBassSetter dispose:))
+				(if oldEgoBase
+					(oldEgoBase dispose:)
+				)
 				(Print 48 10)
 				(Print 48 11)
 				(= cycles 50)
@@ -200,7 +216,7 @@
 				(Print 48 12)
 				(if (!= score oldScore)
 					(= score oldScore)
-					(SL doit:)
+					(StatusLine doit:)
 					(Print 48 13 #at -1 130)
 				)
 				(curRoom newRoom: 50)
@@ -213,90 +229,97 @@
 					illegalBits: 0
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(Print 48 14 #at -1 20 #dispose #draw)
 			)
-			(16 (ego setCycle: Beg self))
+			(16
+				(ego setCycle: BegLoop self)
+			)
 			(17
-				(NormalEgo 1)
+				(NormalEgo loopW)
 				(ego posn: egoX egoY setPri: 11 setStep: 3 1)
 				(= state 1)
-				(localproc_000c)
+				(NearFallPoint)
 			)
 			(18
 				(HandsOff)
 				(theSound number: 13 play:)
-				(ego illegalBits: 0 setLoop: 4 cel: 0 setCycle: End self)
+				(ego illegalBits: 0 setLoop: 4 cel: 0 setCycle: EndLoop self)
 				(Print 48 14 #at -1 20 #dispose #draw)
 			)
 			(19
-				(ego setLoop: 5 cel: 0 setCycle: End self)
+				(ego setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(20
-				(NormalEgo 1)
+				(NormalEgo loopW)
 				(ego posn: egoX egoY setPri: 9 setStep: 2 1)
 				(= state 5)
-				(localproc_000c)
+				(NearFallPoint)
 			)
 			(21
 				(HandsOff)
-				(ego illegalBits: 0 setLoop: 4 cel: 0 setCycle: End self)
+				(ego illegalBits: 0 setLoop: 4 cel: 0 setCycle: EndLoop self)
 				(theSound number: 14 play:)
 				(Print 48 14 #at -1 20 #dispose #draw)
 			)
 			(22
-				(ego setLoop: 5 cel: 0 setCycle: Fwd)
+				(ego setLoop: 5 cel: 0 setCycle: Forward)
 				(= cycles 22)
 			)
 			(23
-				(ego setLoop: 6 cel: 0 setCycle: End self)
+				(ego setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(24
-				(NormalEgo 1)
+				(NormalEgo loopW)
 				(ego posn: egoX egoY setPri: 7 setStep: 1 1)
 				(= state 8)
-				(localproc_000c)
+				(NearFallPoint)
 			)
 			(25
 				(HandsOff)
-				(ego illegalBits: 0 setLoop: 4 cel: 0 setCycle: End self)
+				(ego illegalBits: 0 setLoop: 4 cel: 0 setCycle: EndLoop self)
 				(theSound number: 15 play:)
-				(= local0 0)
+				(= redFallCycles 0)
 				(Print 48 14 #at -1 20 #dispose #draw)
 			)
 			(26
-				(ego setLoop: 5 cel: 0 setCycle: End self)
-				(if (> 3 (++ local0)) (-- state))
+				(ego setLoop: 5 cel: 0 setCycle: EndLoop self)
+				(if (> 3 (++ redFallCycles))
+					(-- state)
+				)
 			)
 			(27
-				(ego setLoop: 4 setCel: 255 setCycle: Beg self)
+				(ego setLoop: 4 setCel: 255 setCycle: BegLoop self)
 			)
 			(28
 				(if (ego inRect: 34 118 39 123)
 					(= egoX 38)
 					(= egoY 120)
 				)
-				(NormalEgo 1)
+				(NormalEgo loopW)
 				(ego posn: egoX egoY setPri: 5 setStep: 1 1)
 				(= state 11)
-				(localproc_000c)
+				(NearFallPoint)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/i') (Print 48 1))
+			(if (Said '/i')
+				(Print 48 1)
+			)
 			(if (Said 'dive,hop')
 				(Print 48 2)
 				(Print 48 3 #at -1 130)
 			)
-			(if (Said '[/airport,/,cliff]') (Print 48 4))
+			(if (Said '[/airport,mountain,cliff]')	;EO: Fixed said spec
+				(Print 48 4)
+			)
 		)
 		(if
 			(or
@@ -308,19 +331,19 @@
 				(Print 48 5)
 			else
 				(theGame changeScore: 6)
-				(= oldScore (+ oldScore 6))
-				(if (== stuffedBra 6)
+				(+= oldScore 6)
+				(if (== stuffedBra iWadODough)
 					(Print 48 6)
 				else
-					((inventory at: 18) moveTo: -1)
+					((inventory at: iSoap) moveTo: -1)
 					(Print 48 7)
 				)
 				(Print 48 8 #at -1 130)
 				(= currentEgoView 149)
-				(= stuffedBra 0)
+				(= stuffedBra FALSE)
 				(ego view: currentEgoView)
-				((inventory at: 15) moveTo: -1)
-				((inventory at: 16) moveTo: -1)
+				((inventory at: iBikiniTop) moveTo: -1)
+				((inventory at: iBikiniBottom) moveTo: -1)
 				(self changeState: 14)
 			)
 		)

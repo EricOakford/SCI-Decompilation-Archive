@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 47)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Chase)
@@ -15,10 +15,10 @@
 )
 
 (local
-	local0
+	henchState
 	local1
 )
-(instance rm47 of Rm
+(instance rm47 of Room
 	(properties
 		picture 47
 		horizon 5
@@ -27,60 +27,76 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 410)
-		(Load rsVIEW 411)
-		(Load rsVIEW 413)
-		(Load rsVIEW 511)
-		(Load rsVIEW 406)
+		(Load VIEW 410)
+		(Load VIEW 411)
+		(Load VIEW 413)
+		(Load VIEW 511)
+		(Load VIEW 406)
 		(super init:)
 		(addToPics add: aLumbrella aRumbrella aFeet doit:)
-		(aWave setCycle: Fwd cycleSpeed: 6 isExtra: 1 init:)
-		(aPlane setPri: 3 illegalBits: 0 setStep: 1 1 init: hide:)
+		(aWave
+			setCycle: Forward
+			cycleSpeed: 6
+			isExtra: TRUE
+			init:
+		)
+		(aPlane
+			setPri: 3
+			illegalBits: 0
+			setStep: 1 1
+			init:
+			hide:
+		)
 		(aHench1
 			setCycle: Walk
 			setStep: 4 3
-			ignoreControl: 16384
+			ignoreControl: cYELLOW
 			init:
-			setAvoider: (Avoid new:)
+			setAvoider: (Avoider new:)
 		)
 		(aHench2
 			setCycle: Walk
 			setStep: 4 3
 			init:
-			setAvoider: (Avoid new:)
+			setAvoider: (Avoider new:)
 		)
 		(cond 
-			((> 99 (ego y?)) (ego y: 98))
-			((< 134 (ego y?)) (ego y: 133))
+			((> 99 (ego y?))
+				(ego y: 98)
+			)
+			((< 134 (ego y?))
+				(ego y: 133)
+			)
 		)
 		(NormalEgo)
-		(ego x: 3 observeControl: 16384 init:)
-		(if
-		(and gotHaircutAtResort (== currentEgoView 151))
-			(= local0 8)
+		(ego x: 3 observeControl: cYELLOW init:)
+		(if (and gotHaircutAtResort (== currentEgoView 151))
+			(= henchState 8)
 		)
-		(self setRegions: 401 setScript: rm47Script)
+		(self setRegions: BEACH setScript: rm47Script)
 	)
 	
 	(method (dispose)
-		(DisposeScript 985)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 )
 
 (instance rm47Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((and (== local0 0) (ego inRect: 86 2 333 140))
-				(= local0 1)
+			((and (== henchState 0) (ego inRect: 86 2 333 140))
+				(= henchState 1)
 				(aHench1 setScript: hench1Script)
 				(aHench2 setScript: hench2Script)
 			)
-			((and (== local0 8) (ego inRect: 86 2 333 140)) (= local0 9) (Print 47 0) (Print 47 1 #at -1 130))
-			((== 2 (ego edgeHit?))
+			((and (== henchState 8) (ego inRect: 86 2 333 140))
+				(= henchState 9)
+				(Print 47 0)
+				(Print 47 1 #at -1 130)
+			)
+			((== EAST (ego edgeHit?))
 				(HandsOff)
 				(theGame changeScore: 12)
 				(Print 47 2)
@@ -90,21 +106,24 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if (Said 'call/agent,man') (Print 47 4))
+		(if (Said 'call/agent,man')
+			(Print 47 4)
+		)
 		(if (Said 'look>')
-			(if (Said '/man,agent') (Print 47 5))
-			(if (Said '[/airport,bush]') (Print 47 6))
+			(if (Said '/man,agent')
+				(Print 47 5)
+			)
+			(if (Said '[/airport,bush]')
+				(Print 47 6)
+			)
 		)
 	)
 )
 
 (instance hench1Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -118,8 +137,6 @@
 )
 
 (instance hench2Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -133,49 +150,63 @@
 )
 
 (instance henchScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp theX theY)
 		(switch (= state newState)
 			(0
 				(client setLoop: -1 setMotion: Chase ego 11 self)
 			)
 			(1
-				(if (== local0 1)
-					(= currentStatus 1000)
-					(= local0 2)
+				(if (== henchState 1)
+					(= currentStatus egoSTOPPED)
+					(= henchState 2)
 					(Print 47 7)
 					(HandsOff)
 					(ego stopUpd:)
 					(aPlane show: setMotion: MoveTo 116 13)
-					(= temp1 (- (ego y?) 1))
+					(= theY (- (ego y?) 1))
 					(if (< (ego x?) (client x?))
-						(= temp0 (+ (ego x?) 11))
+						(= theX (+ (ego x?) 11))
 						(client setLoop: 1)
 					else
-						(= temp0 (- (ego x?) 11))
+						(= theX (- (ego x?) 11))
 						(client setLoop: 0)
 					)
 					(client
 						view: 413
 						ignoreActors:
 						illegalBits: 0
-						posn: temp0 temp1
+						posn: theX theY
 						setMotion: 0
 						setPri: (+ (ego priority?) 1)
 						cel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
 			(2
 				(= seconds 3)
 				(cond 
-					((== currentEgoView 151) (Print 47 8) (Print 47 9) (Print 47 10))
-					((== currentEgoView 150) (Print 47 11) (Print 47 9) (Print 47 12))
-					((== currentEgoView 149) (Print 47 13) (Print 47 9) (Print 47 14))
-					((== currentEgoView 100) (Print 47 15))
-					(else (Print 47 16))
+					((== currentEgoView 151)
+						(Print 47 8)
+						(Print 47 9)
+						(Print 47 10)
+					)
+					((== currentEgoView 150)
+						(Print 47 11)
+						(Print 47 9)
+						(Print 47 12)
+					)
+					((== currentEgoView 149)
+						(Print 47 13)
+						(Print 47 9)
+						(Print 47 14)
+					)
+					((== currentEgoView vEgo)
+						(Print 47 15)
+					)
+					(else
+						(Print 47 16)
+					)
 				)
 			)
 			(3
@@ -185,14 +216,14 @@
 			)
 			(4
 				(Print 47 19)
-				(= currentStatus 23)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 96)
 			)
 		)
 	)
 )
 
-(instance aLumbrella of PV
+(instance aLumbrella of PicView
 	(properties
 		y 143
 		x 181
@@ -202,7 +233,7 @@
 	)
 )
 
-(instance aRumbrella of PV
+(instance aRumbrella of PicView
 	(properties
 		y 124
 		x 282
@@ -212,7 +243,7 @@
 	)
 )
 
-(instance aFeet of PV
+(instance aFeet of PicView
 	(properties
 		y 125
 		x 200
@@ -231,17 +262,17 @@
 	)
 )
 
-(instance aPlane of Act
+(instance aPlane of Actor
 	(properties
 		y 24
 		x 322
 		view 511
 		loop 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aHench1 of Act
+(instance aHench1 of Actor
 	(properties
 		y 133
 		x 159
@@ -250,7 +281,7 @@
 	)
 )
 
-(instance aHench2 of Act
+(instance aHench2 of Actor
 	(properties
 		y 151
 		x 54

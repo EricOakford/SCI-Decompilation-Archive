@@ -18,7 +18,7 @@
 	local0
 	aSpinachDip
 	spinachDipInRoom
-	canFollowHenchwoman
+	henchwomanAppeared
 	aBartender
 	aTV
 	aGirl1drinking
@@ -28,7 +28,7 @@
 	aManDrinking
 	aShip
 	aHench
-	local13
+	canFollowHenchwoman
 )
 (instance rm35 of Room
 	(properties
@@ -260,12 +260,10 @@
 )
 
 (instance rm35Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (& (ego onControl:) cBLUE)
-			(if (== canFollowHenchwoman FALSE)
+			(if (== henchwomanAppeared FALSE)
 				(curRoom newRoom: 31)
 			else
 				(Print 35 0)
@@ -274,11 +272,10 @@
 				(curRoom newRoom: 95)
 			)
 		)
-		(if
-		(and henchwomanIsHere local13 (> (ego y?) 146))
-			(= local13 0)
+		(if (and henchwomanIsHere canFollowHenchwoman (> (ego y?) 146))
+			(= canFollowHenchwoman FALSE)
 			(= currentStatus egoCAPTURED)
-			(= canFollowHenchwoman TRUE)
+			(= henchwomanAppeared TRUE)
 			(curRoom south: 95)
 			(Print 35 2)
 		)
@@ -307,8 +304,7 @@
 			)
 			(3
 				(= currentStatus egoSITTING)
-				(if
-				(and (== spinachDipInRoom FALSE) (not (henchScript state?)))
+				(if (and (== spinachDipInRoom FALSE) (not (henchScript state?)))
 					(henchScript changeState: 1)
 				)
 				(User canInput: TRUE)
@@ -326,7 +322,7 @@
 			)
 			(5
 				(ego posn: 164 106)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 			)
 			(6
 				(= currentStatus egoSTOPPED)
@@ -350,7 +346,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(9 (= seconds 2))
+			(9
+				(= seconds 2)
+			)
 			(10
 				(aBartender
 					setLoop: 2
@@ -386,8 +384,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if
@@ -397,9 +394,16 @@
 				(Said '/bimbo>')
 			)
 			(cond 
-				((Said 'call/') (Print (Format @str 35 3 introductoryPhrase)))
-				((Said 'look/') (Print 35 4))
-				(else (Print 35 5) (Print 35 6 #at -1 152))
+				((Said 'call/')
+					(Print (Format @str 35 3 introductoryPhrase))
+				)
+				((Said 'look/')
+					(Print 35 4)
+				)
+				(else
+					(Print 35 5)
+					(Print 35 6 #at -1 152)
+				)
 			)
 		)
 		(if (Said 'look>')
@@ -410,32 +414,51 @@
 					(Print 35 8)
 				)
 			)
-			(if (Said '/agent') (Print 35 9))
+			(if (Said '/agent')
+				(Print 35 9)
+			)
 			(if (Said '/buffet,ship,bimbo,children')
 				(Print 35 10)
 				(Print 35 11 #at -1 152)
 			)
-			(if (Said '/cup,craft') (Print 35 12) (Print 35 13))
-			(if (Said '/burn') (Print 35 14))
-			(if (Said '/computer,krod') (Print 35 15))
+			(if (Said '/cup,craft')
+				(Print 35 12)
+				(Print 35 13)
+			)
+			(if (Said '/burn')
+				(Print 35 14)
+			)
+			(if (Said '/computer,krod')
+				(Print 35 15)
+			)
 			(if (Said '/bottle,bar')
 				(if (== currentStatus egoSITTING)
 					(Print 35 16)
 				else
 					(Print 35 17)
 				)
-				(if spinachDipInRoom (Print 35 18))
+				(if spinachDipInRoom
+					(Print 35 18)
+				)
 			)
-			(if (and spinachDipInRoom (Said '/bowl,bread')) (Print 35 19))
+			(if (and spinachDipInRoom (Said '/bowl,bread'))
+				(Print 35 19)
+			)
 			(if (Said '[/airport]')
 				(Print 35 20)
-				(if spinachDipInRoom (Print 35 18))
+				(if spinachDipInRoom
+					(Print 35 18)
+				)
 			)
 		)
 		(if (Said 'bath[/down,barstool]')
 			(cond 
-				((== currentStatus egoSITTING) (YouAre))
-				((!= currentStatus egoNORMAL) (NotNow))
+				((== currentStatus egoSITTING)
+					(YouAre)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
 				(
 					(and
 						(not (ego inRect: 148 103 222 109))
@@ -443,7 +466,9 @@
 					)
 					(Print 35 21)
 				)
-				(else (self changeState: 1))
+				(else
+					(self changeState: 1)
+				)
 			)
 		)
 		(if
@@ -452,15 +477,25 @@
 				(Said 'disembark[/barstool]')
 			)
 			(cond 
-				((== currentStatus egoNORMAL) (Print 35 22))
-				((!= currentStatus egoSITTING) (NotNow))
-				(else (self changeState: 4))
+				((== currentStatus egoNORMAL)
+					(Print 35 22)
+				)
+				((!= currentStatus egoSITTING)
+					(NotNow)
+				)
+				(else
+					(self changeState: 4)
+				)
 			)
 		)
 		(if (Said 'call/agent')
 			(cond 
-				((== currentStatus egoNORMAL) (Print 35 22))
-				((!= currentStatus egoSITTING) (NotNow))
+				((== currentStatus egoNORMAL)
+					(Print 35 22)
+				)
+				((!= currentStatus egoSITTING)
+					(NotNow)
+				)
 				(else
 					(Print (Format @str 35 23 introductoryPhrase))
 					(Print 35 24)
@@ -470,34 +505,58 @@
 		)
 		(if (Said 'call/bimbo')
 			(cond 
-				((== currentStatus egoNORMAL) (Print 35 22))
-				((!= currentStatus egoSITTING) (NotNow))
+				((== currentStatus egoNORMAL)
+					(Print 35 22)
+				)
+				((!= currentStatus egoSITTING)
+					(NotNow)
+				)
 				(else
 					(Print (Format @str 35 26 introductoryPhrase))
 					(Print 35 27)
-					(if (> filthLevel 10) (Print 35 28))
+					(if (> filthLevel 10)
+						(Print 35 28)
+					)
 				)
 			)
 		)
-		(if (Said 'call') (Print 35 29))
+		(if (Said 'call')
+			(Print 35 29)
+		)
 		(if (or (Said 'give/i/beer') (Said 'buy/beer'))
 			(cond 
-				((== currentStatus egoNORMAL) (Print 35 22))
-				((!= currentStatus egoSITTING) (NotNow))
-				(else (Print 35 30))
+				((== currentStatus egoNORMAL)
+					(Print 35 22)
+				)
+				((!= currentStatus egoSITTING)
+					(NotNow)
+				)
+				(else
+					(Print 35 30)
+				)
 			)
 		)
 		(if (or (Said 'give/i/drink') (Said 'buy/drink'))
 			(cond 
-				((== currentStatus egoNORMAL) (Print 35 22))
-				((!= currentStatus egoSITTING) (NotNow))
-				(else (self changeState: 6))
+				((== currentStatus egoNORMAL)
+					(Print 35 22)
+				)
+				((!= currentStatus egoSITTING)
+					(NotNow)
+				)
+				(else
+					(self changeState: 6)
+				)
 			)
 		)
 		(if (and spinachDipInRoom (Said 'eat/bread'))
 			(cond 
-				((!= currentStatus 0) (NotNow))
-				((not (ego inRect: 73 100 106 104)) (NotClose))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 73 100 106 104))
+					(NotClose)
+				)
 				(else
 					((inventory at: iSpinachDip) moveTo: -1)
 					(aSpinachDip dispose:)
@@ -509,9 +568,15 @@
 		)
 		(if (Said 'get/bread')
 			(cond 
-				((== spinachDipInRoom FALSE) (AlreadyTook))
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not (ego inRect: 73 100 106 104)) (NotClose))
+				((== spinachDipInRoom FALSE)
+					(AlreadyTook)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 73 100 106 104))
+					(NotClose)
+				)
 				(else
 					(Print 35 32)
 					(ego get: iSpinachDip)
@@ -525,8 +590,6 @@
 )
 
 (instance shipScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -545,19 +608,19 @@
 )
 
 (instance henchScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(if (== currentStatus egoSTOPPED) (return))
 		(switch (= state newState)
-			(1 (= cycles (Random 50 100)))
+			(1
+				(= cycles (Random 50 100))
+			)
 			(2
-				(if (!= currentStatus 1009)
+				(if (!= currentStatus egoSITTING)
 					(-- state)
 					(= cycles (Random 50 100))
 				else
 					(aHench setMotion: MoveTo 157 107 self)
-					(NotifyScript 8 1)
+					(NotifyScript HENCHWOMAN 1)
 					(= henchwomanIsHere TRUE)
 				)
 			)
@@ -570,14 +633,16 @@
 			(4
 				(Print 35 42)
 				(aHench setMotion: MoveTo 155 234 self)
-				(= local13 1)
+				(= canFollowHenchwoman TRUE)
 			)
-			(5 (= seconds 10))
+			(5
+				(= seconds 10)
+			)
 			(6
 				(aHench dispose:)
 				(= henchView 0)
 				(= henchwomanIsHere FALSE)
-				(= local13 0)
+				(= canFollowHenchwoman FALSE)
 			)
 		)
 	)

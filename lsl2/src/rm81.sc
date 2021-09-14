@@ -16,7 +16,7 @@
 (local
 	local0
 	throwingAtIce
-	local2
+	pissedOnIce
 	aCoil
 	aYellowName
 	newBassSetter
@@ -59,20 +59,18 @@
 		)
 		(NormalEgo)
 		(ego posn: 155 185 init:)
-		(self setRegions: 700 setScript: rm81Script)
+		(self setRegions: ISLAND setScript: rm81Script)
 	)
 )
 
 (instance rm81Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
 			(
 				(and
-					(& (ego onControl: origin) $0002)
-					(== throwingAtIce 0)
+					(& (ego onControl: origin) cBLUE)
+					(== throwingAtIce FALSE)
 					(== currentStatus egoNORMAL)
 				)
 				(= currentStatus 1017)
@@ -80,8 +78,8 @@
 			)
 			(
 				(and
-					(& (ego onControl: origin) $0004)
-					(== throwingAtIce 0)
+					(& (ego onControl: origin) cGREEN)
+					(== throwingAtIce FALSE)
 					(== currentStatus 1017)
 				)
 				(= currentStatus 1018)
@@ -89,8 +87,8 @@
 			)
 			(
 				(and
-					(& (ego onControl: origin) $0010)
-					(== throwingAtIce 0)
+					(& (ego onControl: origin) cRED)
+					(== throwingAtIce FALSE)
 					(== currentStatus 1017)
 				)
 				(= currentStatus 1018)
@@ -98,11 +96,11 @@
 			)
 			(
 				(and
-					(== local2 0)
+					(== pissedOnIce FALSE)
 					(== 0 (ego loop?))
 					(ego inRect: 34 161 37 165)
 				)
-				(= local2 1)
+				(= pissedOnIce TRUE)
 				(self changeState: 20)
 			)
 		)
@@ -142,13 +140,15 @@
 				(ego setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(6
-				(NormalEgo 0)
+				(NormalEgo loopE)
 				(self changeState: 7)
 			)
 			(7
 				(ego baseSetter: 0)
 				(NormalEgo)
-				(if newBassSetter (newBassSetter dispose:))
+				(if newBassSetter
+					(newBassSetter dispose:)
+				)
 			)
 			(8
 				(= currentStatus 1019)
@@ -177,7 +177,9 @@
 				(Print 81 14 #at -1 15 #width 280 #draw)
 				(Print 81 15 #at -1 20)
 				(Print 81 16 #at -1 20)
-				(if (> filthLevel 10) (Print 81 17 #at -1 152))
+				(if (> filthLevel 10)
+					(Print 81 17 #at -1 152)
+				)
 				(aCoil hide:)
 				((View new:)
 					view: 726
@@ -242,7 +244,7 @@
 				(Print 81 19 #at -1 152)
 				(Print 81 20)
 				(ego
-					view: 100
+					view: vEgo
 					setLoop: 3
 					setCycle: Walk
 					setMotion: MoveTo 156 2 self
@@ -253,7 +255,7 @@
 				(curRoom newRoom: 181)
 			)
 			(20
-				(= local2 1)
+				(= pissedOnIce TRUE)
 				(ego setMotion: 0)
 				(HandsOff)
 				(aYellowName show: setCycle: EndLoop self)
@@ -266,14 +268,17 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/glacier,glacier') (Print 81 0))
-			(if (Said '/carpet,carpet') (Print 81 1))
-			(if (Said '[/airport,island/glacier,glacier]')
+			(if (Said '/glacier,glacier')
+				(Print 81 0)
+			)
+			(if (Said '/carpet,carpet')
+				(Print 81 1)
+			)
+			(if (Said '[/airport,island,mountain,glacier,glacier]')	;EO: fixed said spec
 				(Print 81 2)
 				(Print 81 3)
 				(Print 81 4)
@@ -289,12 +294,20 @@
 			(ego put: iHairRejuvenator -1)
 			(theGame changeScore: -5)
 		)
-		(if (Said 'run,climb') (Print 81 7))
-		(if (Said 'throw,apply/ash')
+		(if (Said 'run,climb')
+			(Print 81 7)
+		)
+		(if (Said 'throw,apply/ash')	;EO: fixed said spec
 			(cond 
-				((not (ego has: iAshes)) (DontHave))
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not (ego inRect: 127 130 202 154)) (Print 81 8))
+				((not (ego has: iAshes))
+					(DontHave)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 127 130 202 154))
+					(Print 81 8)
+				)
 				(else
 					(theGame changeScore: 10)
 					(Ok)
@@ -305,9 +318,15 @@
 		)
 		(if (Said 'throw,apply/beach')
 			(cond 
-				((not (ego has: iSand)) (DontHave))
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not (ego inRect: 127 130 202 154)) (Print 81 8))
+				((not (ego has: iSand))
+					(DontHave)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 127 130 202 154))
+					(Print 81 8)
+				)
 				(else
 					(theGame changeScore: 10)
 					(Ok)

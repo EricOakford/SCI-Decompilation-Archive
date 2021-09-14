@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 41)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -27,16 +27,16 @@
 	)
 )
 
-(instance rm41 of Rm
+(instance rm41 of Room
 	(properties
 		picture 41
 		horizon 5
 	)
 	
 	(method (init)
-		(Load rsVIEW 401)
-		(Load rsVIEW 403)
-		(Load rsSOUND 30)
+		(Load VIEW 401)
+		(Load VIEW 403)
+		(Load SOUND 30)
 		(super init:)
 		(mWhistle init:)
 		(addToPics
@@ -56,22 +56,25 @@
 		(if (< (ego y?) 164) (ego y: 164))
 		(NormalEgo)
 		(ego init:)
-		(self setRegions: 401 setScript: rm41Script)
+		(self setRegions: BEACH setScript: rm41Script)
 		(cond 
 			(
 				(and
-					((inventory at: 16) ownedBy: curRoomNum)
+					((inventory at: iBikiniBottom) ownedBy: curRoomNum)
 					(== currentEgoView 149)
 				)
-				(= bikiniInRoom 1)
-				(Load rsVIEW 400)
-				(aBikini stopUpd: init:)
+				(= bikiniInRoom TRUE)
+				(Load VIEW 400)
+				(aBikini
+					stopUpd:
+					init:
+				)
 			)
-			((== currentEgoView 100)
-				(self setRegions: 8)
-				(= henchwomanIsHere 1)
+			((== currentEgoView vEgo)
+				(self setRegions: HENCHWOMAN)
+				(= henchwomanIsHere TRUE)
 				(= henchView 402)
-				(Load rsVIEW henchView)
+				(Load VIEW henchView)
 				(aHench
 					view: henchView
 					setPri: 12
@@ -80,45 +83,39 @@
 					init:
 					setScript: henchScript
 				)
-				(NotifyScript 8 1)
+				(NotifyScript HENCHWOMAN 1)
 			)
 		)
 	)
 )
 
 (instance rm41Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== 2 (ego edgeHit?))
-			(if (== henchwomanApproaches 0)
+		(if (== EAST (ego edgeHit?))
+			(if (== henchwomanApproaches FALSE)
 				(curRoom newRoom: 42)
 			else
 				(Print 41 0 #at 15 -1 #width 280)
-				(= currentStatus 23)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 95)
 			)
 		)
-		(if
-			(and
-				henchwomanIsHere
-				canFollowHenchwoman
-				(> (ego x?) 300)
-			)
-			(= canFollowHenchwoman 0)
-			(= henchwomanApproaches 1)
+		(if (and henchwomanIsHere canFollowHenchwoman (> (ego x?) 300))
+			(= canFollowHenchwoman FALSE)
+			(= henchwomanApproaches TRUE)
 			(curRoom east: 95)
 			(Print 41 1)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if (Said 'climb[<over]/boulder') (Print 41 2))
+		(if (Said 'climb[<over]/boulder')
+			(Print 41 2)
+		)
 		(if (Said 'look>')
 			(if (and henchwomanIsHere (Said '/bimbo'))
 				(Print 41 3)
@@ -128,19 +125,27 @@
 			)
 			(if (Said '/palm')
 				(Print 41 5)
-				(if (> filthLevel 13) (Print 41 6 #at -1 130))
+				(if (> filthLevel 13)
+					(Print 41 6 #at -1 130)
+				)
 			)
 			(if (Said '/boulder')
 				(Print 41 7)
-				(if bikiniInRoom (Print 41 8))
+				(if bikiniInRoom
+					(Print 41 8)
+				)
 			)
 			(if (Said '[/airport,boulder,beach]')
 				(Print 41 9)
-				(if bikiniInRoom (Print 41 8))
+				(if bikiniInRoom
+					(Print 41 8)
+				)
 			)
 		)
 		(if henchwomanIsHere
-			(if (Said 'get/towel') (Print 41 10))
+			(if (Said 'get/towel')
+				(Print 41 10)
+			)
 			(if (Said 'call/bimbo')
 				(if (not (ego inRect: 75 150 160 189))
 					(NotClose)
@@ -154,13 +159,9 @@
 		)
 		(if
 			(or
-				(Said
-					'wear,(alter<in),(conceal<on)/job,(bra<bathing),bikini'
-				)
+				(Said 'wear,(alter<in),(conceal<on)/job,(bra<bathing),bikini')
 				(Said 'alter,(get<off),drain/bra,bra')
-				(Said
-					'wear,(conceal<on)/job,(,bottom,(bra<bathing),bikini'
-				)
+				(Said 'wear,(conceal<on)/job,panties,bottom,(bra<bathing),bikini')	;EO: fixed said spec
 				(Said 'get<naked')
 				(Said 'naked')
 				(Said 'alter,(get<off),drain/bra,bra')
@@ -170,12 +171,16 @@
 		)
 		(if (Said 'get/bottom,bikini,(bottom<bikini)')
 			(cond 
-				((not bikiniInRoom) (Print 41 14))
-				((not (ego inRect: 76 179 106 189)) (NotClose))
+				((not bikiniInRoom)
+					(Print 41 14)
+				)
+				((not (ego inRect: 76 179 106 189))
+					(NotClose)
+				)
 				(else
 					(Print 41 15)
-					(= bikiniInRoom 0)
-					(ego get: 16)
+					(= bikiniInRoom FALSE)
+					(ego get: iBikiniBottom)
 					(aBikini dispose:)
 					(theGame changeScore: 4)
 				)
@@ -185,13 +190,13 @@
 )
 
 (instance henchScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (Random 30 50)))
+			(0
+				(= cycles (Random 30 50))
+			)
 			(1
-				(aHench setCycle: Fwd)
+				(aHench setCycle: Forward)
 				(= cycles (Random 5 22))
 			)
 			(2
@@ -216,7 +221,7 @@
 			)
 			(5
 				(aHench
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setStep: 3 2
 					setLoop: -1
 					setPri: -1
@@ -224,7 +229,7 @@
 					loop: 0
 					posn: 105 182
 					setCycle: Walk
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setMotion: MoveTo 333 183 self
 				)
 				(= cycles 20)
@@ -235,20 +240,22 @@
 				else
 					(Print 41 22)
 				)
-				(= canFollowHenchwoman 1)
+				(= canFollowHenchwoman TRUE)
 			)
-			(7 (= seconds 10))
+			(7
+				(= seconds 10)
+			)
 			(8
 				(aHench dispose:)
 				(= henchView 0)
-				(= henchwomanIsHere 0)
-				(= canFollowHenchwoman 0)
+				(= henchwomanIsHere FALSE)
+				(= canFollowHenchwoman FALSE)
 			)
 		)
 	)
 )
 
-(instance aNude1 of PV
+(instance aNude1 of PicView
 	(properties
 		y 110
 		x 34
@@ -257,7 +264,7 @@
 	)
 )
 
-(instance aNude2 of PV
+(instance aNude2 of PicView
 	(properties
 		y 147
 		x 77
@@ -267,7 +274,7 @@
 	)
 )
 
-(instance aNude3 of PV
+(instance aNude3 of PicView
 	(properties
 		y 103
 		x 119
@@ -277,7 +284,7 @@
 	)
 )
 
-(instance aNude4 of PV
+(instance aNude4 of PicView
 	(properties
 		y 81
 		x 88
@@ -288,7 +295,7 @@
 	)
 )
 
-(instance aNude5 of PV
+(instance aNude5 of PicView
 	(properties
 		y 79
 		x 10
@@ -299,7 +306,7 @@
 	)
 )
 
-(instance aNude6 of PV
+(instance aNude6 of PicView
 	(properties
 		y 108
 		x 41
@@ -309,7 +316,7 @@
 	)
 )
 
-(instance aNude7 of PV
+(instance aNude7 of PicView
 	(properties
 		y 135
 		x 86
@@ -318,7 +325,7 @@
 	)
 )
 
-(instance aNude8 of PV
+(instance aNude8 of PicView
 	(properties
 		y 69
 		x 58
@@ -328,7 +335,7 @@
 	)
 )
 
-(instance aNude9 of PV
+(instance aNude9 of PicView
 	(properties
 		y 108
 		x 22
@@ -338,7 +345,7 @@
 	)
 )
 
-(instance aNude10 of PV
+(instance aNude10 of PicView
 	(properties
 		y 98
 		x 94
@@ -353,11 +360,11 @@
 		y 158
 		x 88
 		view 400
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aHench of Act
+(instance aHench of Actor
 	(properties
 		y 155
 		x 106

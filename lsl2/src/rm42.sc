@@ -71,11 +71,12 @@
 				posn: -8 54
 				setCycle: Forward
 				init:
-				put: 5 -1
-				put: 9 -1
-				put: 14 -1
-				put: 12 -1
-				put: 11 -1
+				;lose any no-longer-useful items
+				put: iSwimsuit -1
+				put: iSunscreen -1
+				put: iWig -1
+				put: iSewingKit -1
+				put: iFruit -1
 			)
 			((= aCreep (Actor new:))
 				view: 408
@@ -111,8 +112,6 @@
 )
 
 (instance rm42Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -152,12 +151,16 @@
 					setCycle: EndLoop self
 				)
 			)
-			(7 (= seconds 5))
+			(7
+				(= seconds 5)
+			)
 			(8
 				(aCreep setMotion: MoveTo 84 150 self)
 				(= cycles 15)
 			)
-			(9 (Print 42 4))
+			(9
+				(Print 42 4)
+			)
 			(10
 				(aCreep view: 409 cel: 0 setCycle: Forward)
 				(= cycles 18)
@@ -171,7 +174,9 @@
 				(= cycles 25)
 			)
 			(12
-				(if (> filthLevel 10) (Print 42 5 #at -1 152))
+				(if (> filthLevel 10)
+					(Print 42 5 #at -1 152)
+				)
 			)
 			(13
 				(aCreep dispose:)
@@ -192,7 +197,9 @@
 			(15
 				(ego setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
-			(16 (= seconds 3))
+			(16
+				(= seconds 3)
+			)
 			(17
 				(Print 42 9 #at -1 152)
 				(= seconds 3)
@@ -200,31 +207,34 @@
 			(18
 				(Print 42 10)
 				(Print 42 11)
-				(NormalEgo 2)
+				(NormalEgo loopS)
 				(rm42 west: 41)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/umbrella') (Print 42 0))
-			(if (Said '[/airport,palm,bush]') (Print 42 1))
+			(if (Said '/umbrella')
+				(Print 42 0)
+			)
+			(if (Said '[/airport,palm,bush]')
+				(Print 42 1)
+			)
 		)
 	)
 )
 
 (instance sportsScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
-				(if (!= prevRoomNum 138) (= seconds (Random 3 5)))
+				(if (!= prevRoomNum 138)
+					(= seconds (Random 3 5))
+				)
 			)
 			(1
 				(aSport

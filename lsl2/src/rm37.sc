@@ -53,18 +53,18 @@
 		)
 		(NormalEgo)
 		(ego posn: 160 159 init:)
-		(self setRegions: 7 300 setScript: rm37Script)
+		(self setRegions: BARBER SHIP setScript: rm37Script)
 	)
 )
 
 (instance rm37Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002)
+		(if (& (ego onControl:) cBLUE)
 			(if (== currentEgoView 133)
-				(if (< state 18) (self changeState: 18))
+				(if (< state 18)
+					(self changeState: 18)
+				)
 			else
 				(curRoom newRoom: 31)
 			)
@@ -121,7 +121,9 @@
 			(5
 				(aBarber setLoop: 3 setCycle: EndLoop self)
 			)
-			(6 (= seconds 3))
+			(6
+				(= seconds 3)
+			)
 			(7
 				(aBarber
 					setLoop: 4
@@ -173,7 +175,7 @@
 			(16
 				(ego posn: 159 119)
 				(= currentEgoView 133)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(aChair show:)
 				(HandsOff)
 				(= seconds 3)
@@ -198,22 +200,29 @@
 				)
 			)
 			(20
-				(= currentEgoView 100)
-				(NormalEgo 2)
+				(= currentEgoView vEgo)
+				(NormalEgo loopS)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/cup,cup,lagoon,fluid') (Print 37 0))
-			(if (Said '/up,overhead') (Print 37 1))
-			(if (Said '[/craft,cloud]') (Print 37 2))
-			(if (Said '/man') (Print 37 3))
+			(if (Said '/cup,cup,lagoon,fluid')
+				(Print 37 0)
+			)
+			(if (Said '/up,overhead')
+				(Print 37 1)
+			)
+			(if (Said '[/craft,cloud]')
+				(Print 37 2)
+			)
+			(if (Said '/man')
+				(Print 37 3)
+			)
 		)
 		(if
 			(or
@@ -223,10 +232,19 @@
 			)
 			(= talkedToBarber TRUE)
 			(cond 
-				((not (ego inRect: 148 117 180 127)) (Print 37 4))
-				((not ((inventory at: iWig) ownedBy: curRoomNum)) (Print 37 5) (Print 37 6))
-				((== currentStatus egoSITTING) (YouAre))
-				(else (self changeState: 2))
+				((not (ego inRect: 148 117 180 127))
+					(Print 37 4)
+				)
+				((not ((inventory at: iWig) ownedBy: curRoomNum))
+					(Print 37 5)
+					(Print 37 6)
+				)
+				((== currentStatus egoSITTING)
+					(YouAre)
+				)
+				(else
+					(self changeState: 2)
+				)
 			)
 		)
 		(if (Said 'call/man')

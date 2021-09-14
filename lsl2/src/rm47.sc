@@ -15,7 +15,7 @@
 (local
 	aPlane
 	aWave
-	local2
+	henchState
 	aHench1
 	aHench2
 	local5
@@ -101,31 +101,37 @@
 			setAvoider: (Avoider new:)
 		)
 		(cond 
-			((> 99 (ego y?)) (ego y: 98))
-			((< 134 (ego y?)) (ego y: 133))
+			((> 99 (ego y?))
+				(ego y: 98)
+			)
+			((< 134 (ego y?))
+				(ego y: 133)
+			)
 		)
 		(NormalEgo)
 		(ego x: 3 observeControl: cYELLOW init:)
 		(if (and gotHaircutAtResort (== currentEgoView 151))
-			(= local2 8)
+			(= henchState 0)
 		)
 		(self setRegions: BEACH setScript: rm47Script)
 	)
 )
 
 (instance rm47Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((and (== local2 0) (ego inRect: 86 2 333 140))
-				(= local2 1)
+			((and (== henchState 0) (ego inRect: 86 2 333 140))
+				(= henchState 1)
 				(aHench1 setScript: hench1Script)
 				(aHench2 setScript: hench2Script)
 			)
-			((and (== local2 8) (ego inRect: 86 2 333 140)) (= local2 9) (Print 47 0) (Print 47 1 #at -1 152))
-			((== 2 (ego edgeHit?))
+			((and (== henchState 8) (ego inRect: 86 2 333 140))
+				(= henchState 9)
+				(Print 47 0)
+				(Print 47 1 #at -1 152)
+			)
+			((== EAST (ego edgeHit?))
 				(HandsOff)
 				(theGame changeScore: 12)
 				(Print 47 2)
@@ -135,21 +141,24 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if (Said 'call/agent,man') (Print 47 4))
+		(if (Said 'call/agent,man')
+			(Print 47 4)
+		)
 		(if (Said 'look>')
-			(if (Said '/man,agent') (Print 47 5))
-			(if (Said '[/airport,bush]') (Print 47 6))
+			(if (Said '/man,agent')
+				(Print 47 5)
+			)
+			(if (Said '[/airport,bush]')
+				(Print 47 6)
+			)
 		)
 	)
 )
 
 (instance hench1Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -163,8 +172,6 @@
 )
 
 (instance hench2Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -178,17 +185,15 @@
 )
 
 (instance henchScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp theX theY)
 		(switch (= state newState)
 			(0
 				(client setLoop: -1 setMotion: Chase ego 11 self)
 			)
 			(1
-				(if (== local2 1)
+				(if (== henchState 1)
 					(= currentStatus egoSTOPPED)
-					(= local2 2)
+					(= henchState 2)
 					(Print 47 7)
 					(HandsOff)
 					(ego stopUpd:)
@@ -216,11 +221,27 @@
 			(2
 				(= seconds 3)
 				(cond 
-					((== currentEgoView 151) (Print 47 8) (Print 47 9) (Print 47 10))
-					((== currentEgoView 150) (Print 47 11) (Print 47 9) (Print 47 12))
-					((== currentEgoView 149) (Print 47 13) (Print 47 9) (Print 47 14))
-					((== currentEgoView 100) (Print 47 15))
-					(else (Print 47 16))
+					((== currentEgoView 151)
+						(Print 47 8)
+						(Print 47 9)
+						(Print 47 10)
+					)
+					((== currentEgoView 150)
+						(Print 47 11)
+						(Print 47 9)
+						(Print 47 12)
+					)
+					((== currentEgoView 149)
+						(Print 47 13)
+						(Print 47 9)
+						(Print 47 14)
+					)
+					((== currentEgoView vEgo)
+						(Print 47 15)
+					)
+					(else
+						(Print 47 16)
+					)
 				)
 			)
 			(3

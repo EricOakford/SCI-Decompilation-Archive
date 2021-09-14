@@ -162,10 +162,5 @@
 		x 185
 		view 231
 		msgLook {A small, discreetly lettered sign on the door says: "No hair loss too great."}
-		msgLookLock 1110
-		msgLocked 1130
-		msgExcept 1151
-		msgFunny 1174
-		msgCloser 1194
 	)
 )

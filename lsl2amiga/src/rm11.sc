@@ -155,10 +155,5 @@
 		x 161
 		view 200
 		msgLook {Inside, a woman sits behind a desk.}
-		msgLookLock 1100
-		msgLocked 1120
-		msgExcept {aView2}
-		msgFunny 1164
-		msgCloser 1184
 	)
 )

@@ -304,11 +304,6 @@
 		x 43
 		view 220
 		msgLook {A sign in the window says, "Now OPEN for business. Please come in!"}
-		msgLookLock 2294
-		msgLocked 2314
-		msgExcept 2335
-		msgFunny 2358
-		msgCloser 2378
 	)
 )
 
