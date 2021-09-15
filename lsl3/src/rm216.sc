@@ -16,7 +16,7 @@
 )
 
 (local
-	timesTalkedToKalalau
+	talkCount
 	mailboxOpen
 	[str 222]
 )
@@ -25,7 +25,7 @@
 		#at 10 15
 		#title {Kalalau says...}
 		#width 160
-		#time (= seconds (SetPrintTime @str))
+		#time (= seconds (PrintDelay @str))
 		#dispose
 	)
 	(return (+ 3 seconds))
@@ -36,7 +36,7 @@
 		#at 10 123
 		#title {You say...}
 		#width 160
-		#time (= seconds (SetPrintTime @str))
+		#time (= seconds (PrintDelay @str))
 		#dispose
 	)
 	(return (+ 3 seconds))
@@ -49,14 +49,16 @@
 	)
 	
 	(method (init)
-		(if (not (Btst fBrokeUp)) (aKandBB init:))
+		(if (not (Btst fBrokeUp))
+			(aKandBB init:)
+		)
 		(Load VIEW 217)
 		(Load SOUND 217)
 		(Load SOUND 218)
 		(super init:)
 		(aMailBox init: stopUpd:)
 		(self setScript: RoomScript)
-		(if (and (Btst fBrokeUp) (not (Btst fGotCreditCard)))
+		(if (and (Btst fBrokeUp) (not (Btst fCredits216)))
 			(Load VIEW 219)
 			(aCredit1 init:)
 			(aCredit2 init:)
@@ -75,8 +77,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -84,7 +84,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Btst fBrokeUp)) (= cycles 40))
+				(if (not (Btst fBrokeUp))
+					(= cycles 40)
+				)
 			)
 			(1
 				(HandsOff)
@@ -132,8 +134,7 @@
 						(if (>= filthLevel 3) { lesbian} else {})
 					)
 					#dispose
-					#time
-					28
+					#time 28
 				)
 				(= seconds 31)
 			)
@@ -172,8 +173,8 @@
 				(ego setCycle: BegLoop self)
 			)
 			(16
-				(NormalEgo 3)
-				(= mailboxOpen 1)
+				(NormalEgo loopN)
+				(= mailboxOpen TRUE)
 				(if (cast contains: aKandBB)
 					(soundFX number: 216 loop: -1 play:)
 				)
@@ -205,7 +206,7 @@
 				(soundFX number: 218 loop: 1 play:)
 			)
 			(22
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(= mailboxOpen FALSE)
 				(if (cast contains: aKandBB)
 					(soundFX number: 216 loop: -1 play:)
@@ -236,7 +237,9 @@
 				(aMailBox setCel: 2 stopUpd:)
 				(ego setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
-			(27 (= seconds 2))
+			(27
+				(= seconds 2)
+			)
 			(28
 				(Print 216 42 #at 10 5 #width 290)
 				(= cycles 22)
@@ -244,7 +247,9 @@
 			(29
 				(ego view: 217 setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
-			(30 (= cycles 20))
+			(30
+				(= cycles 20)
+			)
 			(31
 				(Print 216 43 #at 10 5 #width 290)
 				(ego setCycle: BegLoop self)
@@ -258,7 +263,9 @@
 				(Print 216 44 #icon 217 3 0 #at -1 10)
 				(= seconds 3)
 			)
-			(34 (NormalEgo 3))
+			(34
+				(NormalEgo loopN)
+			)
 		)
 	)
 	
@@ -275,60 +282,139 @@
 			(cls)
 			(self cue:)
 		)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'climb,jump/wall') (if playingAsPatti (Print 216 0) else (Print 216 1)))
-			((Said '/club,club') (if playingAsPatti (Print 216 2) else (Print 216 3)))
-			((Said 'get/box') (Print 216 4))
-			((Said 'open/door') (Print 216 5))
-			((Said 'pick,break/bolt,door,fence') (Print 216 6))
-			((Said 'climb/door') (if playingAsPatti (Print 216 7) else (Print 216 8)))
-			((Said 'unbolt/door') (Print 216 9))
+			((Said 'climb,jump/wall')
+				(if playingAsPatti
+					(Print 216 0)
+				else
+					(Print 216 1)
+				)
+			)
+			((Said '/club,club')
+				(if playingAsPatti
+					(Print 216 2)
+				else
+					(Print 216 3)
+				)
+			)
+			((Said 'get/box')
+				(Print 216 4)
+			)
+			((Said 'open/door')
+				(Print 216 5)
+			)
+			((Said 'pick,break/bolt,door,fence')
+				(Print 216 6)
+			)
+			((Said 'climb/door')
+				(if playingAsPatti
+					(Print 216 7)
+				else
+					(Print 216 8)
+				)
+			)
+			((Said 'unbolt/door')
+				(Print 216 9)
+			)
 			((Said 'look<in/box')
 				(cond 
-					(playingAsPatti (Print 216 10))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cBLUE)) (NotClose))
-					((not mailboxOpen) (Print 216 11))
-					((InRoom iCreditCard) (Print 216 12))
-					(else (Print 216 13) (Print 216 14))
+					(playingAsPatti
+						(Print 216 10)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cBLUE))
+						(NotClose)
+					)
+					((not mailboxOpen)
+						(Print 216 11)
+					)
+					((InRoom iCreditCard)
+						(Print 216 12)
+					)
+					(else
+						(Print 216 13)
+						(Print 216 14)
+					)
 				)
 			)
 			((Said 'open/box')
 				(cond 
-					(playingAsPatti (Print 216 10))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cBLUE)) (NotClose))
-					(mailboxOpen (ItIs))
-					(else (self changeState: 12))
+					(playingAsPatti
+						(Print 216 10)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cBLUE))
+						(NotClose)
+					)
+					(mailboxOpen
+						(ItIs)
+					)
+					(else
+						(self changeState: 12)
+					)
 				)
 			)
 			((Said 'close/box')
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cBLUE)) (NotClose))
-					((not mailboxOpen) (ItIs))
-					(else (self changeState: 18))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cBLUE))
+						(NotClose)
+					)
+					((not mailboxOpen)
+						(ItIs)
+					)
+					(else
+						(self changeState: 18)
+					)
 				)
 			)
 			((Said 'get/card,letter,letter,envelope')
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (InRoom iCreditCard)) (Print 216 15))
-					((not (& (ego onControl:) cBLUE)) (NotClose))
-					((not mailboxOpen) (Print 216 16))
-					(else (self changeState: 23))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (InRoom iCreditCard))
+						(Print 216 15)
+					)
+					((not (& (ego onControl:) cBLUE))
+						(NotClose)
+					)
+					((not mailboxOpen)
+						(Print 216 16)
+					)
+					(else
+						(self changeState: 23)
+					)
 				)
 			)
-			((Said 'tickle/finial') (Print 216 17))
+			((Said 'tickle/finial')
+				(Print 216 17)
+			)
 			((Said '/wall,fence>')
 				(cond 
-					((Said 'climb/') (Print 216 18))
-					((Said 'look/') (if playingAsPatti (Print 216 19) else (Print 216 20)))
-					(else (event claimed: TRUE) (Print 216 21))
+					((Said 'climb/')
+						(Print 216 18)
+					)
+					((Said 'look/')
+						(if playingAsPatti
+							(Print 216 19)
+						else
+							(Print 216 20)
+						)
+					)
+					(else
+						(event claimed: TRUE)
+						(Print 216 21)
+					)
 				)
 			)
 			((Said 'look>')
@@ -347,9 +433,20 @@
 							(Print 216 24)
 						)
 					)
-					((Said '/door') (Print 216 25))
-					((Said '/finial') (Print 216 26) (Print 216 27 #at -1 144))
-					((Said '/building') (if playingAsPatti (Print 216 28) else (Print 216 29)))
+					((Said '/door')
+						(Print 216 25)
+					)
+					((Said '/finial')
+						(Print 216 26)
+						(Print 216 27 #at -1 144)
+					)
+					((Said '/building')
+						(if playingAsPatti
+							(Print 216 28)
+						else
+							(Print 216 29)
+						)
+					)
 					((Said '[/area]')
 						(if playingAsPatti
 							(Print 216 28)
@@ -376,11 +473,11 @@
 )
 
 (instance KandBBScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(aKandBB loop: 0 setCycle: Forward)
 				(= cycles (Random 20 40))
@@ -413,12 +510,11 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'address/babe,babe,exwife')
-			(switch (++ timesTalkedToKalalau)
+			(switch (++ talkCount)
 				(1
 					(Print 216 45)
 					(Print 216 46)
@@ -439,7 +535,9 @@
 				)
 			)
 		)
-		(if (Said '/club,club') (Print 216 54))
+		(if (Said '/club,club')
+			(Print 216 54)
+		)
 		(if (Said 'look/babe,babe,exwife')
 			(if (> filthLevel 3)
 				(Print 216 55)
@@ -496,11 +594,11 @@
 )
 
 (instance CreditsScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 4))
+			(0
+				(= seconds 4)
+			)
 			(1
 				(aCredit1 setCycle: EndLoop)
 				(= cycles 16)
@@ -517,7 +615,7 @@
 				(= cycles 22)
 			)
 			(5
-				(Bset fGotCreditCard)
+				(Bset fCredits216)
 				(aCredit1 setCycle: BegLoop)
 				(aCredit2 setCycle: BegLoop self)
 			)
@@ -534,6 +632,6 @@
 		y 107
 		x 134
 		view 216
-		signal $0001
+		signal stopUpdOn
 	)
 )

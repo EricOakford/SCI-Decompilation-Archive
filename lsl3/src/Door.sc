@@ -33,7 +33,7 @@
 			(ego observeControl: doorBlock)
 		else
 			(= cel (- (NumCels self) 1))
-			(= locked 0)
+			(= locked FALSE)
 			(ego ignoreControl: doorBlock)
 		)
 		(super init:)

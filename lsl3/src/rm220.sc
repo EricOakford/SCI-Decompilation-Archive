@@ -14,16 +14,16 @@
 
 (local
 	local0
-	[str 222]
+	[plotString 222]
 )
-(procedure (TImedPrint &tmp seconds)
-	(Print @str
+(procedure (PrintPlot &tmp t)
+	(Print @plotString
 		#at 10 5
 		#width 290
-		#time (= seconds (SetPrintTime @str))
+		#time (= t (PrintDelay @plotString))
 		#dispose
 	)
-	(return (+ 3 seconds))
+	(return (+ 3 t))
 )
 
 (instance rm220 of Room
@@ -45,11 +45,21 @@
 			(aCredit2 init:)
 		)
 		(cond 
-			((== prevRoomNum 300) (ego posn: 6 175))
-			((== prevRoomNum 210) (ego posn: 2 151))
-			((== prevRoomNum 310) (ego posn: 316 70))
-			((== prevRoomNum 230) (ego posn: 316 142))
-			(else (ego posn: 316 182))
+			((== prevRoomNum 300)
+				(ego posn: 6 175)
+			)
+			((== prevRoomNum 210)
+				(ego posn: 2 151)
+			)
+			((== prevRoomNum 310)
+				(ego posn: 316 70)
+			)
+			((== prevRoomNum 230)
+				(ego posn: 316 142)
+			)
+			(else
+				(ego posn: 316 182)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -57,24 +67,34 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (ego edgeHit?)
 			(cond 
-				((& (ego onControl:) cBLUE) (curRoom newRoom: 300))
-				((& (ego onControl:) cGREEN) (curRoom newRoom: 210))
-				((& (ego onControl:) cCYAN) (curRoom newRoom: 310))
-				((& (ego onControl:) cRED) (curRoom newRoom: 230))
-				((& (ego onControl:) cMAGENTA) (curRoom newRoom: 250))
+				((& (ego onControl:) cBLUE)
+					(curRoom newRoom: 300)
+				)
+				((& (ego onControl:) cGREEN)
+					(curRoom newRoom: 210)
+				)
+				((& (ego onControl:) cCYAN)
+					(curRoom newRoom: 310)
+				)
+				((& (ego onControl:) cRED)
+					(curRoom newRoom: 230)
+				)
+				((& (ego onControl:) cMAGENTA)
+					(curRoom newRoom: 250)
+				)
 			)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 5))
+			(0
+				(= cycles 5)
+			)
 			(1
 				(cond 
 					((not (Btst fBrokeUp))
@@ -91,49 +111,51 @@
 				)
 			)
 			(2
-				(Format @str 220 3)
+				(Format @plotString 220 3)
 				(ego setMotion: MoveTo 8 153 self)
-				(= seconds (TImedPrint))
+				(= seconds (PrintPlot))
 			)
 			(3)
 			(4
-				(Format @str 220 4)
-				(= seconds (TImedPrint))
+				(Format @plotString 220 4)
+				(= seconds (PrintPlot))
 			)
 			(5
-				(Format @str 220 5)
-				(= seconds (TImedPrint))
+				(Format @plotString 220 5)
+				(= seconds (PrintPlot))
 			)
 			(6
-				(Format @str 220 6)
-				(= seconds (TImedPrint))
+				(Format @plotString 220 6)
+				(= seconds (PrintPlot))
 			)
 			(7
-				(Format @str 220 7)
-				(= seconds (TImedPrint))
+				(Format @plotString 220 7)
+				(= seconds (PrintPlot))
 			)
 			(8
-				(Format @str 220 8)
-				(= seconds (TImedPrint))
+				(Format @plotString 220 8)
+				(= seconds (PrintPlot))
 			)
 			(9
-				(Format @str 220 9)
+				(Format @plotString 220 9)
 				(ego setMotion: MoveTo 85 153 self)
-				(= seconds (TImedPrint))
+				(= seconds (PrintPlot))
 			)
 			(10)
 			(11
-				(Format @str 220 10)
+				(Format @plotString 220 10)
 				(music fade:)
-				(= seconds (TImedPrint))
+				(= seconds (PrintPlot))
 			)
 			(12
-				(Format @str 220 11)
-				(= seconds (TImedPrint))
+				(Format @plotString 220 11)
+				(= seconds (PrintPlot))
 			)
 			(13
 				(aBooth init: setMotion: MoveTo 111 153 self)
-				(if (> machineSpeed 39) (music number: 110 loop: 1 play:))
+				(if (> machineSpeed 39)
+					(music number: 110 loop: 1 play:)
+				)
 			)
 			(14
 				(ego loop: 2)
@@ -158,7 +180,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(19 (= cycles 22))
+			(19
+				(= cycles 22)
+			)
 			(20
 				(ego view: 221 loop: 3 cel: 0 setCycle: EndLoop self)
 			)
@@ -169,7 +193,7 @@
 			)
 			(22
 				(= currentEgoView 700)
-				(NormalEgo 1)
+				(NormalEgo loopW)
 				(HandsOff)
 				(ego
 					posn: (ego x?) (+ (ego y?) 16)
@@ -177,7 +201,9 @@
 					setMotion: MoveTo 85 153 self
 				)
 			)
-			(23 (= cycles 22))
+			(23
+				(= cycles 22)
+			)
 			(24
 				(aBooth setMotion: MoveTo 111 211 self)
 				(= cycles 33)
@@ -185,13 +211,17 @@
 			(25
 				(Bset fBackInLeisureSuit)
 				(ego setMotion: MoveTo 107 153 self)
-				(Format @str 220 13)
-				(= seconds (TImedPrint))
+				(Format @plotString 220 13)
+				(= seconds (PrintPlot))
 			)
-			(26 (= cycles 33))
-			(27 (aBooth stopUpd:))
+			(26
+				(= cycles 33)
+			)
+			(27
+				(aBooth stopUpd:)
+			)
 			(28
-				(NormalEgo 0)
+				(NormalEgo loopE)
 				(PutInRoom iWood 210)
 				(PutInRoom iCreditCard 216)
 				(= currentStatus egoNORMAL)
@@ -213,13 +243,16 @@
 			(cls)
 			(self cue:)
 		)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/building,office,club') (Print 220 0))
-			(if (Said '[/area]') (Print 220 1))
+			(if (Said '/building,office,club')
+				(Print 220 0)
+			)
+			(if (Said '[/area]')
+				(Print 220 1)
+			)
 		)
 	)
 )
@@ -254,11 +287,11 @@
 )
 
 (instance CreditsScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 4))
+			(0
+				(= seconds 4)
+			)
 			(1
 				(aCredit1 setCycle: EndLoop)
 				(= cycles 16)
@@ -275,7 +308,7 @@
 				(= cycles 22)
 			)
 			(5
-				(Bset 28)
+				(Bset fCredits220)
 				(aCredit1 setCycle: BegLoop)
 				(aCredit2 setCycle: BegLoop self)
 			)

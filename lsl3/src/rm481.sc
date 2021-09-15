@@ -20,7 +20,7 @@
 	(Print @str
 		#at 0 70
 		#width 125
-		#time (= seconds (SetPrintTime @str))
+		#time (= seconds (PrintDelay @str))
 		#dispose
 	)
 	(return (+ 3 seconds))

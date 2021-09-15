@@ -36,7 +36,7 @@
 	(method (init &tmp temp0)
 		(super init:)
 		(self setScript: RoomScript)
-		(if (and (Btst fFlag23) (== tawniState 0))
+		(if (and (Btst fRolledOut) (== tawniState 0))
 			(= tawniState 1)
 			(= vendorView 267)
 		)
@@ -393,7 +393,7 @@
 			(38
 				(Print 260 45)
 				(Print 260 46)
-				(ego get: iGinsuKnife)
+				(ego get: iKnife)
 				(= newspaperState NSpComing)
 				(= showroomState SRshowIsOn)
 				(theGame changeScore: 40)
@@ -518,7 +518,7 @@
 					((== tawniState 1) (Print 260 4))
 					((== tawniState 4) (Print 260 5) (Print 260 6))
 					((== tawniState 6) (Ok) (= local0 1) (self changeState: 9))
-					((not (ego has: iBeachTowel)) (DontHave))
+					((not (ego has: iTowel)) (DontHave))
 					(else (Ok) (self changeState: 13))
 				)
 			)
@@ -536,7 +536,7 @@
 			)
 			((Said '/towel>')
 				(cond 
-					((ego has: iBeachTowel) (event claimed: FALSE))
+					((ego has: iTowel) (event claimed: FALSE))
 					(
 						(or
 							(& (aTowel signal?) $0080)

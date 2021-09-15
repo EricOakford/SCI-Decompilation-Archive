@@ -66,7 +66,7 @@
 		(Load VIEW 501)
 		(Load VIEW 502)
 		(Load VIEW 503)
-		(if (ego has: iBottleOfWine) (Load VIEW ((Inventory at: iBottleOfWine) view?)))
+		(if (ego has: iWineBottle) (Load VIEW ((Inventory at: iWineBottle) view?)))
 		(Load SOUND 501)
 		(Load SOUND 502)
 		(Load SOUND 503)
@@ -271,8 +271,8 @@
 					)
 					(cond 
 						((!= currentStatus 0) (GoodIdea))
-						((not (ego has: iBottleOfWine)) (DontHave))
-						((== ((Inventory at: iBottleOfWine) view?) 28) (Print 500 6 #icon 28 0 0))
+						((not (ego has: iWineBottle)) (DontHave))
+						((== ((Inventory at: iWineBottle) view?) 28) (Print 500 6 #icon 28 0 0))
 						(else
 							(Ok)
 							(theGame changeScore: 20)
@@ -280,7 +280,7 @@
 							(music number: 500 loop: musicLoop play:)
 							(Print 500 7 #icon 29 0 0)
 							(Print 500 8)
-							(PutInRoom iBottleOfWine)
+							(PutInRoom iWineBottle)
 							(NormalEgo)
 							(ego baseSetter: SteadyBase setCycle: SlowWalk)
 							(self changeState: 0)

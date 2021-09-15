@@ -42,7 +42,7 @@
 				(theGame changeScore: 50)
 				(if (== currentStatus egoNORMAL)
 					(HandsOn)
-					(NormalEgo 0)
+					(NormalEgo loopE)
 					(ego illegalBits: oldIllBits)
 					(theGame setSpeed: saveSpeed)
 				)

@@ -68,10 +68,10 @@
 			(and
 				(== newRoomNumber 375)
 				(== currentStatus egoTOWEL)
-				(ego has: iBeachTowel)
+				(ego has: iTowel)
 			)
 			(Print 370 0 #at 10 -1 #width 290)
-			(PutInRoom iBeachTowel 375)
+			(PutInRoom iTowel 375)
 		)
 		(super newRoom: newRoomNumber)
 	)

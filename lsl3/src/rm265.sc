@@ -184,7 +184,7 @@
 				(= item (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
-					((Said '[/!*]') (Print 265 49))
+					((Said '[/noword]') (Print 265 49))
 					(
 						(or
 							(not item)
@@ -204,7 +204,7 @@
 				(= item (inventory saidMe:))
 				(event claimed: 0)
 				(cond 
-					((Said '[/!*]') (Print 265 55))
+					((Said '[/noword]') (Print 265 55))
 					((not item) (Print 265 56))
 					((not (item ownedBy: ego)) (DontHave))
 					((== item (inventory at: iWood)) (PersonSays 265 57) (AnimateFace 4))

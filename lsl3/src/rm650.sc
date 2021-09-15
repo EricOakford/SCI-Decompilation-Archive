@@ -16,17 +16,19 @@
 (local
 	local0
 	local1
-	[str 222]
+	[plotString 222]
 )
-(procedure (TimedPrint theWidth &tmp seconds)
-	(if (< argc 1) (= theWidth 200))
-	(Print @str
+(procedure (PrintPlot theWidth &tmp t)
+	(if (< argc 1)
+		(= theWidth 200)
+	)
+	(Print @plotString
 		#at -1 10
 		#width theWidth
-		#time (= seconds (SetPrintTime @str))
+		#time (= t (PrintDelay @plotString))
 		#dispose
 	)
-	(return (+ 2 seconds))
+	(return (+ 2 t))
 )
 
 (instance rm650 of Room
@@ -73,29 +75,29 @@
 		(switch (= state newState)
 			(0 (= seconds 3))
 			(1
-				(Format @str 650 0)
-				(= seconds (TimedPrint))
+				(Format @plotString 650 0)
+				(= seconds (PrintPlot))
 			)
 			(2
-				(Format @str 650 1)
-				(= seconds (TimedPrint))
+				(Format @plotString 650 1)
+				(= seconds (PrintPlot))
 			)
 			(3
-				(Format @str 650 2)
-				(= seconds (TimedPrint 122))
+				(Format @plotString 650 2)
+				(= seconds (PrintPlot 122))
 			)
 			(4
-				(Format @str 650 3)
-				(= seconds (TimedPrint 111))
+				(Format @plotString 650 3)
+				(= seconds (PrintPlot 111))
 			)
 			(5
-				(Format @str 650 4)
-				(= seconds (TimedPrint))
+				(Format @plotString 650 4)
+				(= seconds (PrintPlot))
 			)
 			(6
-				(Format @str 650 5)
+				(Format @plotString 650 5)
 				(aMonitor hide:)
-				(= seconds (TimedPrint))
+				(= seconds (PrintPlot))
 			)
 			(7
 				(aMonitor show: setLoop: 5 setCycle: Forward)
@@ -137,12 +139,12 @@
 			)
 			(17
 				(= local1 1)
-				(Format @str 650 6)
-				(= seconds (TimedPrint))
+				(Format @plotString 650 6)
+				(= seconds (PrintPlot))
 			)
 			(18
-				(Format @str 650 7)
-				(= seconds (TimedPrint))
+				(Format @plotString 650 7)
+				(= seconds (PrintPlot))
 			)
 			(19
 				(if
@@ -155,32 +157,32 @@
 						(not (Btst fFoundGymKeyAccidentally))
 						(Btst fScrewedSuzi)
 					)
-					(Format @str 650 8)	;congratulations!
+					(Format @plotString 650 8)	;congratulations!
 				else
-					(Format @str 650 9)	;something you didn't do
+					(Format @plotString 650 9)	;something you didn't do
 				)
-				(= seconds (TimedPrint))
+				(= seconds (PrintPlot))
 			)
 			(20
 				(if (not (Btst fSkippedRafting))
 					(self cue:)
 				else
-					(Format @str 650 10)
-					(= seconds (TimedPrint))
+					(Format @plotString 650 10)
+					(= seconds (PrintPlot))
 				)
 			)
 			(21
 				(if (Btst fListenedToComedian)
 					(self cue:)
 				else
-					(Format @str 650 11)
-					(= seconds (TimedPrint))
+					(Format @plotString 650 11)
+					(= seconds (PrintPlot))
 				)
 			)
 			(22
 				(if (Btst fFoundGymKeyAccidentally)
-					(Format @str 650 12)
-					(= seconds (TimedPrint))
+					(Format @plotString 650 12)
+					(= seconds (PrintPlot))
 				else
 					(self cue:)
 				)
@@ -189,14 +191,14 @@
 				(if (Btst fGotSuntan)
 					(self cue:)
 				else
-					(Format @str 650 13)
-					(= seconds (TimedPrint))
+					(Format @plotString 650 13)
+					(= seconds (PrintPlot))
 				)
 			)
 			(24
 				(if (not (Btst fMetDale))
-					(Format @str 650 14)
-					(= seconds (TimedPrint))
+					(Format @plotString 650 14)
+					(= seconds (PrintPlot))
 				else
 					(self cue:)
 				)
@@ -205,16 +207,16 @@
 				(if (Btst fScrewedBambi)
 					(self cue:)
 				else
-					(Format @str 650 15)
-					(= seconds (TimedPrint))
+					(Format @plotString 650 15)
+					(= seconds (PrintPlot))
 				)
 			)
 			(26
 				(if (Btst fScrewedSuzi)
 					(self cue:)
 				else
-					(Format @str 650 16)
-					(= seconds (TimedPrint))
+					(Format @plotString 650 16)
+					(= seconds (PrintPlot))
 				)
 			)
 			(27 (= state 6))

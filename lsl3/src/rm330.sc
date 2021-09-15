@@ -238,7 +238,7 @@
 				((Said 'give,throw/panties>')
 					(cond 
 						((not (ego has: 14)) (DontHave))
-						((Said '/[/!*]') (Print 330 3))
+						((Said '/[/noword]') (Print 330 3))
 						((not (Said '//backstage,man')) (Print 330 4))
 						((!= local2 2) (Print 330 5))
 						(else (self changeState: 12))

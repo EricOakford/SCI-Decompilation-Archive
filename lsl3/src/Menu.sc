@@ -27,20 +27,21 @@
 (class TheMenuBar of MenuBar
 	
 	(method (init)
-		(AddMenu { \01_} {About LSL3`^a:Help`#1})
-		(AddMenu
-			{ File_}
+		(AddMenu { \01_}
+			{About LSL3`^a:Help`#1}
+		)
+		(AddMenu { File_}
 			{Save Game`#5:Restore Game`#7:Auto Save`#4:--! :Restart Game`#9:Quit`^q}
 		)
-		(AddMenu
-			{ Action_}
+		(AddMenu { Action_}
 			{Pause Game`^p:Inventory`^I:Retype`#3:--! :Colors`^c:--! :Boss Key`^b :Expletive`^x}
 		)
-		(AddMenu
-			{ Speed_}
+		(AddMenu { Speed_}
 			{Change...`^s:--!:Faster`+:Normal`=:Slower`-}
 		)
-		(AddMenu { Sound_} {Volume...`^v:Turn Off`#2=1})
+		(AddMenu { Sound_}
+			{Volume...`^v:Turn Off`#2=1}
+		)
 		(SetMenu
 			soundI p_text (if (DoSound SoundOn) {Turn Off} else {Turn On})
 		)
@@ -89,34 +90,25 @@
 						(gameHours
 							(Format @str MENU 3
 								@filthStr
-								gameHours
-								(if (== gameHours 1) {} else {s})
-								gameMinutes
-								(if (== gameMinutes 1) {} else {s})
-								gameSeconds
-								(if (== gameSeconds 1) {} else {s})
-								score
-								(if (== score 1) {} else {s})
+								gameHours (if (== gameHours 1) {} else {s})
+								gameMinutes (if (== gameMinutes 1) {} else {s})
+								gameSeconds (if (== gameSeconds 1) {} else {s})
+								score (if (== score 1) {} else {s})
 							)
 						)
 						(score
 							(Format @str MENU 4
 								@filthStr
-								gameMinutes
-								(if (== gameMinutes 1) {} else {s})
-								gameSeconds
-								(if (== gameSeconds 1) {} else {s})
-								score
-								(if (== score 1) {} else {s})
+								gameMinutes (if (== gameMinutes 1) {} else {s})
+								gameSeconds (if (== gameSeconds 1) {} else {s})
+								score (if (== score 1) {} else {s})
 							)
 						)
 						(else
 							(Format @str MENU 5
 								@filthStr
-								gameMinutes
-								(if (== gameMinutes 1) {} else {s})
-								gameSeconds
-								(if (== gameSeconds 1) {} else {s})
+								gameMinutes (if (== gameMinutes 1) {} else {s})
+								gameSeconds (if (== gameSeconds 1) {} else {s})
 							)
 						)
 					)
@@ -126,19 +118,29 @@
 				)
 			)
 			(helpI
-				(Print MENU 6 #font smallFont #at 10 -1 #width 290)
-				(Print MENU 7 #font smallFont)
+				(Print MENU 6
+					#font smallFont
+					#at 10 -1
+					#width 290
+				)
+				(Print MENU 7
+					#font smallFont
+				)
 			)
 			(saveI
 				(if (Btst fSaveDisabled)
-					(Print MENU 8 #title {Not now, I have a headache!})
+					(Print MENU 8
+						#title {Not now, I have a headache!}
+					)
 				else
 					(theGame save:)
 					(= autoSaveTimer 0)
 					(= secondsBetweenReminders 0)
 				)
 			)
-			(restoreI (theGame restore:))
+			(restoreI
+				(theGame restore:)
+			)
 			(autoSaveI
 				(if
 					(>
@@ -187,7 +189,9 @@
 				(Sound pause: oldPause)
 			)
 			(invI
-				(if (HaveMem InvSize) (inventory showSelf: ego))
+				(if (HaveMem InvSize)
+					(inventory showSelf: ego)
+				)
 			)
 			(repeatI
 				(event claimed: FALSE type: keyDown message: (User echo?))

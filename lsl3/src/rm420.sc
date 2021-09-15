@@ -605,10 +605,10 @@
 				(event claimed: FALSE)
 				(cond 
 					((not (& (ego onControl:) cRED)) (Print 420 55))
-					((Said '[/!*]') (Print 420 56))
+					((Said '[/noword]') (Print 420 56))
 					((not item) (Print 420 57))
 					((not (item ownedBy: ego)) (DontHave))
-					((== item (inventory at: iGinsuKnife)) (Print 420 58))
+					((== item (inventory at: iKnife)) (Print 420 58))
 					((== item (inventory at: iGrass)) (Print 420 59))
 					((== item (inventory at: iWood)) (Print 420 60))
 					((== item (inventory at: iOrchids)) (Print 420 61))

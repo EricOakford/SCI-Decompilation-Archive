@@ -2,6 +2,7 @@
 (script# 120)
 (include game.sh)
 (use Main)
+(use Intrface)
 (use Motion)
 (use Game)
 (use Menu)
@@ -36,6 +37,19 @@
 	)
 	
 	(method (init)
+;;;		;EO: Added Disney+ style disclaimer
+;;;		(Print 
+;;;			"This game includes negative depictions and/or mistreatment of people or cultures.
+;;;			These stereotypes were wrong then and are wrong now.
+;;;			Rather than remove this content, we want to acknowledge its harmful impact, learn from it, and
+;;;			spark conversation to create a more inclusive feature together."
+;;;			#title {Content Advisory}
+;;;			#mode teJustCenter
+;;;			#width 300
+;;;			#font 4
+;;;		)
+;;;		;end disclaimer
+		
 		(HandsOff)
 		(theGame setSpeed: 6)
 		(StatusLine disable:)
@@ -62,12 +76,9 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== -1 (music prevSignal?)) (== state 7))
+		(if (and (== -1 (music prevSignal?)) (== state 7))
 			(self cue:)
 		)
 	)

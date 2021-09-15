@@ -10,11 +10,8 @@
 )
 
 (instance rm80 of Locale
-	(properties)
-	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 

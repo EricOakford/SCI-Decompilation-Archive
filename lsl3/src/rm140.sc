@@ -44,16 +44,16 @@
 	)
 )
 
-(procedure (ButtonPressed event param2 param3 param4 param5 &tmp x y)
+(procedure (ButtonPressed event t l b r &tmp x y)
 	(= x (event x?))
 	(= y (event y?))
 	(return
 		(if
 			(and
-				(> x param2)
-				(> y param3)
-				(< x param4)
-				(< y param5)
+				(> x t)
+				(> y l)
+				(< x b)
+				(< y r)
 			)
 			1
 		else
@@ -70,8 +70,7 @@
 
 (procedure (localproc_0819 param1)
 	(return
-		(if
-		(& [local9 (/ param1 16)] (>> $8000 (mod param1 16)))
+		(if (& [local9 (/ param1 16)] (>> $8000 (mod param1 16)))
 			1
 		else
 			0
@@ -146,8 +145,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0 temp1 temp2 [temp3 200])
 		(asm
 			lap      newState
@@ -659,10 +656,22 @@ code_06a0:
 		(switch (event type?)
 			(mouseDown
 				(cond 
-					((ButtonPressed event 141 71 300 91) (= printRet 1) (self cue:))
-					((ButtonPressed event 141 101 300 121) (= printRet 2) (self cue:))
-					((ButtonPressed event 141 132 300 152) (= printRet 3) (self cue:))
-					((ButtonPressed event 141 161 300 186) (= printRet 4) (self cue:))
+					((ButtonPressed event 141 71 300 91)
+						(= printRet 1)
+						(self cue:)
+					)
+					((ButtonPressed event 141 101 300 121)
+						(= printRet 2)
+						(self cue:)
+					)
+					((ButtonPressed event 141 132 300 152)
+						(= printRet 3)
+						(self cue:)
+					)
+					((ButtonPressed event 141 161 300 186)
+						(= printRet 4)
+						(self cue:)
+					)
 				)
 			)
 			(keyDown

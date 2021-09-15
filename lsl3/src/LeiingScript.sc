@@ -51,7 +51,7 @@
 				else
 					(Print 42 3 #at -1 144)
 				)
-				(NormalEgo 0)
+				(NormalEgo loopE)
 				(ego illegalBits: oldIllBits)
 				(theGame setScript: 0 setSpeed: saveSpeed)
 				(DisposeScript LEIING)

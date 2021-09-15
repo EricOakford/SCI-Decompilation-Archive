@@ -13,16 +13,16 @@
 )
 
 (local
-	[str 200]
+	[plotString 200]
 )
-(procedure (TimedPrint &tmp seconds)
-	(Print @str
+(procedure (PrintPlot &tmp t)
+	(Print @plotString
 		#at 10 5
 		#width 290
-		#time (= seconds (SetPrintTime @str))
+		#time (= t (PrintDelay @plotString))
 		#dispose
 	)
-	(return (+ 3 seconds))
+	(return (+ 3 t))
 )
 
 (instance rm210 of Room
@@ -35,16 +35,35 @@
 		(super init:)
 		(self setScript: RoomScript)
 		(cond 
-			((not (Btst fCredits210)) (Load VIEW 53))
-			((not (Btst fBrokeUp)) (Load VIEW 53))
-			((not (Btst fCredits210)) (Load VIEW 212) (aCredit1 init:) (aCredit2 init:))
+			((not (Btst fCredits210))
+				(Load VIEW 53)
+			)
+			((not (Btst fBrokeUp))
+				(Load VIEW 53)
+			)
+			((not (Btst fCredits210))
+				(Load VIEW 212)
+				(aCredit1 init:)
+				(aCredit2 init:)
+			)
 		)
-		(if (InRoom iWood) (Load VIEW 709) (aWood init:))
+		(if (InRoom iWood)
+			(Load VIEW 709)
+			(aWood init:)
+		)
 		(cond 
-			((== prevRoomNum 200) (ego posn: 317 126 loop: 1))
-			((== prevRoomNum 216) (ego posn: 2 163))
-			((== prevRoomNum 213) (ego posn: 2 175))
-			(else (ego posn: 317 175))
+			((== prevRoomNum 200)
+				(ego posn: 317 126 loop: 1)
+			)
+			((== prevRoomNum 216)
+				(ego posn: 2 163)
+			)
+			((== prevRoomNum 213)
+				(ego posn: 2 175)
+			)
+			(else
+				(ego posn: 317 175)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -52,16 +71,22 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (ego edgeHit?)
 			(cond 
-				((& (ego onControl:) cCYAN) (curRoom newRoom: 200))
-				((& (ego onControl:) cGREEN) (curRoom newRoom: 216))
-				((& (ego onControl:) cRED) (curRoom newRoom: 220))
-				((& (ego onControl:) cBLUE) (curRoom newRoom: 213))
+				((& (ego onControl:) cCYAN)
+					(curRoom newRoom: 200)
+				)
+				((& (ego onControl:) cGREEN)
+					(curRoom newRoom: 216)
+				)
+				((& (ego onControl:) cRED)
+					(curRoom newRoom: 220)
+				)
+				((& (ego onControl:) cBLUE)
+					(curRoom newRoom: 213)
+				)
 			)
 		)
 	)
@@ -70,13 +95,18 @@
 		(switch (= state newState)
 			(0
 				(cond 
-					((not (Btst fCredits210)) (= cycles 30))
-					((not (Btst fBrokeUp)) (= cycles 20) (++ state))
+					((not (Btst fCredits210))
+						(= cycles 30)
+					)
+					((not (Btst fBrokeUp))
+						(= cycles 20)
+						(++ state)
+					)
 				)
 			)
 			(1
-				(Format @str 210 5)
-				(= seconds (TimedPrint))
+				(Format @plotString 210 5)
+				(= seconds (PrintPlot))
 			)
 			(2
 				(Bset fCredits210)
@@ -90,8 +120,8 @@
 						init:
 						setPri: 12
 					)
-					(Format @str 210 6)
-					(= seconds (TimedPrint))
+					(Format @plotString 210 6)
+					(= seconds (PrintPlot))
 				)
 			)
 			(3
@@ -125,7 +155,7 @@
 			)
 			(6
 				(aWood hide:)
-				(ego get: 3 setCycle: BegLoop self)
+				(ego get: iWood setCycle: BegLoop self)
 			)
 			(7
 				(NormalEgo)
@@ -148,8 +178,7 @@
 			(cls)
 			(self cue:)
 		)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
@@ -162,18 +191,27 @@
 					)
 				)
 			)
-			(if
-			(and (InRoom iWood) (Said '/backdrop,granadilla'))
+			(if (and (InRoom iWood) (Said '/backdrop,granadilla'))
 				(Print 210 1)
 			)
-			(if (Said '[/area]') (Print 210 2))
+			(if (Said '[/area]')
+				(Print 210 2)
+			)
 		)
 		(if (Said 'get/granadilla')
 			(cond 
-				((!= currentStatus egoNORMAL) (GoodIdea))
-				((not (InRoom iWood)) (Print 210 3))
-				((not (& (ego onControl:) cBROWN)) (Print 210 4))
-				(else (self changeState: 4))
+				((!= currentStatus egoNORMAL)
+					(GoodIdea)
+				)
+				((not (InRoom iWood))
+					(Print 210 3)
+				)
+				((not (& (ego onControl:) cBROWN))
+					(Print 210 4)
+				)
+				(else
+					(self changeState: 4)
+				)
 			)
 		)
 	)
@@ -217,11 +255,11 @@
 )
 
 (instance CreditsScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 4))
+			(0
+				(= seconds 4)
+			)
 			(1
 				(aCredit1 setCycle: EndLoop)
 				(= cycles 16)

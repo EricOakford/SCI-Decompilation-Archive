@@ -65,12 +65,12 @@
 			(
 				(or
 					(Said '(go<out),date/babe')
-					(Said 'get/*/building')
-					(Said 'ask/*/date')
+					(Said 'get/anyword/building')
+					(Said 'ask/anyword/date')
 					(Said 'ask,get/date')
 					(Said 'make/enjoy,date')
 					(Said 'let<make/enjoy,date')
-					(Said '*/make/enjoy')
+					(Said 'anyword/make/enjoy')
 					(Said
 						'go/area,penthouse,backdrop,comedian,club,date,exit,bar,show,dance'
 					)
@@ -136,7 +136,7 @@
 				(= item (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
-					((Said '[/!*]') (Print 455 41))
+					((Said '[/noword]') (Print 455 41))
 					((not item) (Print 455 42))
 					((not (item ownedBy: ego)) (DontHave))
 					((Btst fNotShower) (PersonSays 455 5) (AnimateFace 4))
@@ -159,7 +159,7 @@
 						(AnimateFace 4)
 					)
 					((== item (inventory at: iLandDeed)) (EgoSays 455 53) (PersonSays 455 54) (AnimateFace 4))
-					((== item (inventory at: iBeachTowel)) (EgoSays 455 55) (PersonSays 455 56) (AnimateFace 4))
+					((== item (inventory at: iTowel)) (EgoSays 455 55) (PersonSays 455 56) (AnimateFace 4))
 					((== item (inventory at: iSpaKeycard)) (EgoSays 455 57) (PersonSays 455 58) (AnimateFace 2))
 					((== item (inventory at: iDivorceDecree))
 						(EgoSays 455 59)

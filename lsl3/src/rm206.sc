@@ -41,15 +41,16 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= girlStage 1) (= seconds 3))
+			(0
+				(= girlStage 1)
+				(= seconds 3)
+			)
 			(1
 				(aGirl setMotion: MoveTo 10 109 self)
 				(= cycles 11)
@@ -211,7 +212,10 @@
 					cycleSpeed: 0
 				)
 			)
-			(25 (= girlStage 6) (= seconds 3))
+			(25
+				(= girlStage 6)
+				(= seconds 3)
+			)
 			(26
 				(Bset fLookedInBinoculars)
 				(theGame changeScore: 2 setSpeed: saveSpeed)
@@ -223,8 +227,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -241,12 +244,26 @@
 				(= currentStatus oldStatus)
 				(curRoom newRoom: 200)
 			)
-			((Said 'hear/babe') (Print 206 0))
-			((Said 'address/babe') (Print 206 1))
-			((Said '/panties,panties') (Print 206 2))
-			((Said 'drag/binocular') (Print 206 3) (Print 206 4 #at -1 144))
-			((Said 'look<in/binocular') (Print 206 5))
-			((Said 'look/area') (Print 206 6) (Print 206 7 #at -1 144))
+			((Said 'hear/babe')
+				(Print 206 0)
+			)
+			((Said 'address/babe')
+				(Print 206 1)
+			)
+			((Said '/panties,panties')
+				(Print 206 2)
+			)
+			((Said 'drag/binocular')
+				(Print 206 3)
+				(Print 206 4 #at -1 144)
+			)
+			((Said 'look<in/binocular')
+				(Print 206 5)
+			)
+			((Said 'look/area')
+				(Print 206 6)
+				(Print 206 7 #at -1 144)
+			)
 			((Said 'look[/babe]')
 				(switch girlStage
 					(1 (Printf 206 8 currentEgo))

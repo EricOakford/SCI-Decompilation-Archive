@@ -16,19 +16,19 @@
 (local
 	nearSteps
 	cantGoThere
-	local2
-	local3
-	local4
-	[str 200]
+	nearCasino
+	nearOffice
+	sharpenCycles
+	[plot 200]
 )
-(procedure (TImedPrint &tmp seconds)
-	(Print @str
+(procedure (PrintPlot &tmp t)
+	(Print @plot
 		#at 10 5
 		#width 290
-		#time (= seconds (SetPrintTime @str))
+		#time (= t (PrintDelay @plot))
 		#dispose
 	)
-	(return (+ 3 seconds))
+	(return (+ 3 t))
 )
 
 (instance rm250 of Room
@@ -38,14 +38,15 @@
 	)
 	
 	(method (init)
-		(if
-		(and (ego has: iGinsuKnife) (== ((Inventory at: iGinsuKnife) view?) 2))
+		(if (and (ego has: iKnife) (== ((Inventory at: iKnife) view?) 2))
 			(Load VIEW 251)
 			(Load VIEW 709)
 			(Load VIEW 2)
 			(Load SOUND 250)
 		)
-		(if (== currentStatus 4) (self style: IRISOUT))
+		(if (== currentStatus egoROLLOUT)
+			(self style: IRISOUT)
+		)
 		(super init:)
 		(self setScript: RoomScript)
 		(if (not (Btst fFired))
@@ -56,13 +57,27 @@
 			(aCredit1 init:)
 			(aCredit2 init:)
 		)
-		(if (> machineSpeed 16) (aFountain init:))
+		(if (> machineSpeed 16)
+			(aFountain init:)
+		)
 		(cond 
-			((== prevRoomNum 305) (ego posn: 2 186) (= local3 1))
-			((== prevRoomNum 220) (ego posn: 2 122))
-			((== prevRoomNum 253) (ego posn: 317 125))
-			((== prevRoomNum 260) (ego posn: 154 187 loop: 3))
-			(else (= nearSteps 1) (ego posn: 317 118 loop: 1))
+			((== prevRoomNum 305)
+				(ego posn: 2 186)
+				(= nearOffice TRUE)
+			)
+			((== prevRoomNum 220)
+				(ego posn: 2 122)
+			)
+			((== prevRoomNum 253)
+				(ego posn: 317 125)
+			)
+			((== prevRoomNum 260)
+				(ego posn: 154 187 loop: 3)
+			)
+			(else
+				(= nearSteps TRUE)
+				(ego posn: 317 118 loop: 1)
+			)
 		)
 		(NormalEgo)
 		(if nearSteps
@@ -74,14 +89,16 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (ego edgeHit?)
 			(cond 
-				((& (ego onControl:) cBLUE) (curRoom newRoom: 305))
-				((& (ego onControl:) cCYAN) (curRoom newRoom: 220))
+				((& (ego onControl:) cBLUE)
+					(curRoom newRoom: 305)
+				)
+				((& (ego onControl:) cCYAN)
+					(curRoom newRoom: 220)
+				)
 				((& (ego onControl:) cRED)
 					(if nearSteps
 						(curRoom newRoom: 400)
@@ -94,16 +111,16 @@
 		(cond 
 			((== nearSteps -1))
 			((& (ego onControl:) cLRED)
-				(= nearSteps 1)
+				(= nearSteps TRUE)
 			)
 			((& (ego onControl:) cLCYAN)
-				(= nearSteps 0)
+				(= nearSteps FALSE)
 			)
 		)
-		(if (== nearSteps 1)
+		(if (== nearSteps TRUE)
 			(ego setPri: 11 observeControl: cYELLOW ignoreControl: cLMAGENTA)
 		)
-		(if (== nearSteps 0)
+		(if (== nearSteps FALSE)
 			(ego
 				setPri: -1
 				ignoreControl: cYELLOW cRED
@@ -115,18 +132,22 @@
 				(& (ego onControl:) cBLUE)
 				(or playingAsPatti (!= currentStatus egoNORMAL))
 			)
-			(if (not local3)
-				(= local3 1)
+			(if (not nearOffice)
+				(= nearOffice TRUE)
 				(ego
 					posn: (ego xLast?) (ego yLast?)
 					setMotion: 0
 					observeControl: cBLUE
 				)
-				(if playingAsPatti (Print 250 0) else (Print 250 1))
+				(if playingAsPatti
+					(Print 250 0)
+				else
+					(Print 250 1)
+				)
 				(Animate (cast elements?) FALSE)
 			)
 		else
-			(= local3 0)
+			(= nearOffice FALSE)
 		)
 		(if
 			(and
@@ -135,8 +156,8 @@
 				(!= currentStatus egoSHOWGIRL)
 				(!= currentStatus egoNORMAL)
 			)
-			(if (not local2)
-				(= local2 1)
+			(if (not nearCasino)
+				(= nearCasino TRUE)
 				(ego
 					posn: (ego xLast?) (ego yLast?)
 					setMotion: 0
@@ -146,7 +167,7 @@
 				(Animate (cast elements?) FALSE)
 			)
 		else
-			(= local2 0)
+			(= nearCasino FALSE)
 		)
 		(if (& (ego onControl:) cGREEN)
 			(if (not cantGoThere)
@@ -163,26 +184,28 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Btst fFired)) (= cycles 25))
+				(if (not (Btst fFired))
+					(= cycles 25)
+				)
 			)
 			(1
-				(Format @str 250 15)
-				(= seconds (TImedPrint))
+				(Format @plot 250 15)
+				(= seconds (PrintPlot))
 				(aCredit1 view: 53 posn: 0 156 setCycle: Forward init:)
 				(= seconds 13)
 			)
 			(2
-				(Format @str 250 16)
-				(= seconds (TImedPrint))
+				(Format @plot 250 16)
+				(= seconds (PrintPlot))
 			)
 			(3
-				(Format @str 250 17)
-				(= seconds (TImedPrint))
+				(Format @plot 250 17)
+				(= seconds (PrintPlot))
 			)
 			(4
 				(Bset fFired)
-				(Format @str 250 18)
-				(= seconds (TImedPrint))
+				(Format @plot 250 18)
+				(= seconds (PrintPlot))
 			)
 			(5
 				(aCredit1 dispose:)
@@ -205,7 +228,7 @@
 			)
 			(8
 				(Print 250 19 #icon 2 0 0)
-				(= local4 0)
+				(= sharpenCycles 0)
 				(= seconds 2)
 				(= saveSpeed (theGame setSpeed: 6))
 			)
@@ -213,11 +236,13 @@
 				(soundFX number: 250 loop: 1 play:)
 				(ego view: 251 cel: 0 setCycle: EndLoop)
 				(= cycles 7)
-				(if (< (++ local4) 11) (-- state))
+				(if (< (++ sharpenCycles) 11)
+					(-- state)
+				)
 			)
 			(10
-				((Inventory at: iGinsuKnife) view: 21)
-				(Format ((Inventory at: iGinsuKnife) name?) 250 20)
+				((Inventory at: iKnife) view: 21)
+				(Format ((Inventory at: iKnife) name?) 250 20)
 				(soundFX stop:)
 				(theGame setSpeed: saveSpeed changeScore: 50)
 				(ego view: 709 loop: 0 setCel: 255 setCycle: BegLoop self)
@@ -244,26 +269,43 @@
 			(cls)
 			(self cue:)
 		)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'caress,sharpen/ginsu>')
 			(cond 
-				((not (ego has: iGinsuKnife)) (DontHave))
-				((== ((Inventory at: iGinsuKnife) view?) 21) (ItIs))
-				((Said '/[/!*]') (Print 250 5))
-				((Said '//fountain,barstool,barstool') (Print 250 6))
-				((not (Said '//stair,carpet')) (Print 250 7))
-				((not nearSteps) (Print 250 8))
-				((!= currentStatus egoNORMAL) (GoodIdea))
-				(else (self changeState: 6))
+				((not (ego has: iKnife))
+					(DontHave)
+				)
+				((== ((Inventory at: iKnife) view?) 21)
+					(ItIs)
+				)
+				((Said '/[/noword]')
+					(Print 250 5)
+				)
+				((Said '//fountain,barstool,barstool')
+					(Print 250 6)
+				)
+				((not (Said '//stair,carpet'))
+					(Print 250 7)
+				)
+				((not nearSteps)
+					(Print 250 8)
+				)
+				((!= currentStatus egoNORMAL)
+					(GoodIdea)
+				)
+				(else
+					(self changeState: 6)
+				)
 			)
 			(event claimed: TRUE)
 		)
 		(if (Said 'look>')
 			(cond 
-				((Said '/palm,bush,carpet') (Print 250 9))
+				((Said '/palm,bush,carpet')
+					(Print 250 9)
+				)
 				((Said '/cannibal,office')
 					(if playingAsPatti
 						(Print 250 10 currentEgo)
@@ -271,9 +313,15 @@
 						(Print 250 11)
 					)
 				)
-				((Said '/water,cascade,fountain') (Print 250 12))
-				((Said '/stair,exit,carpet') (Print 250 13))
-				((Said '[/area]') (Print 250 14))
+				((Said '/water,cascade,fountain')
+					(Print 250 12)
+				)
+				((Said '/stair,exit,carpet')
+					(Print 250 13)
+				)
+				((Said '[/area]')
+					(Print 250 14)
+				)
 			)
 		)
 	)
@@ -321,11 +369,11 @@
 )
 
 (instance CreditsScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(aCredit1 setCycle: EndLoop)
 				(= cycles 13)

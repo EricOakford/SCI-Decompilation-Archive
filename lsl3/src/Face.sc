@@ -31,7 +31,9 @@
 	else
 		(= theCycles 22)
 	)
-	(if (> argc 2) (Print @param3))
+	(if (> argc 2)
+		(Print @param3)
+	)
 	(if (== (RegionScript state?) 0)
 		(RegionScript changeState: 1)
 	)
@@ -102,8 +104,7 @@
 		(HandsOff)
 		(User canInput: TRUE)
 		(= str 0)
-		(Format
-			@personSaysBuf
+		(Format @personSaysBuf
 			(switch curRoomNum
 				(455 {Patti says...})
 				(265 {Tawni says...})
@@ -114,8 +115,7 @@
 				(else  {Carlos says...})
 			)
 		)
-		(Format
-			@nameBuf
+		(Format @nameBuf
 			(switch curRoomNum
 				(455 {Patti})
 				(265 {Tawni})
@@ -194,9 +194,15 @@
 			(return)
 		)
 		(cond 
-			((Said 'embrace') (Print 71 0))
-			((Said 'eat') (Printf 71 1 currentEgo))
-			((Said 'drain/cloth,skirt,dress') (Print 71 2))
+			((Said 'embrace')
+				(Print 71 0)
+			)
+			((Said 'eat')
+				(Printf 71 1 currentEgo)
+			)
+			((Said 'drain/cloth,skirt,dress')
+				(Print 71 2)
+			)
 			(
 				(or
 					(Said 'eat,bang/i')
@@ -204,11 +210,20 @@
 				)
 				(Printf 71 3 currentEgo)
 			)
-			((Said '/casino') (EgoSays 71 4) (PersonSays 71 5))
-			(
-			(Said '/entertainer,maller,bambi,attorney,dale,cheri') (Printf 71 6 @nameBuf))
-			((Said 'address') (Printf 71 7 currentEgo))
-			((Said '/name') (EgoSays 71 8) (PersonSays 71 9))
+			((Said '/casino')
+				(EgoSays 71 4)
+				(PersonSays 71 5)
+			)
+			((Said '/entertainer,maller,bambi,attorney,dale,cheri')
+				(Printf 71 6 @nameBuf)
+			)
+			((Said 'address')
+				(Printf 71 7 currentEgo)
+			)
+			((Said '/name')
+				(EgoSays 71 8)
+				(PersonSays 71 9)
+			)
 		)
 	)
 )

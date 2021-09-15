@@ -22,7 +22,7 @@
 		#width 290
 		#mode teJustCenter
 		#time
-		(= seconds (SetPrintTime @str))
+		(= seconds (PrintDelay @str))
 		#dispose
 	)
 	(return (+ 3 seconds))

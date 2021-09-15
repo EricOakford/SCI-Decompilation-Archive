@@ -12,7 +12,7 @@
 )
 
 (local
-	local0
+	noEntryMsg
 )
 (instance rm240 of Room
 	(properties
@@ -31,9 +31,15 @@
 			init:
 		)
 		(cond 
-			((== prevRoomNum 230) (ego x: 1))
-			((== prevRoomNum 340) (ego posn: 53 77 loop: 2))
-			(else (ego posn: 292 73))
+			((== prevRoomNum 230)
+				(ego x: 1)
+			)
+			((== prevRoomNum 340)
+				(ego posn: 53 77 loop: 2)
+			)
+			(else
+				(ego posn: 292 73)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -41,8 +47,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -50,33 +54,48 @@
 				(& (ego onControl:) cBLUE)
 				(or playingAsPatti (!= currentStatus egoNORMAL))
 			)
-			(if (not local0)
-				(= local0 1)
+			(if (not noEntryMsg)
+				(= noEntryMsg TRUE)
 				(ego
 					posn: (ego xLast?) (ego yLast?)
 					setMotion: 0
 					observeControl: cBLUE
 				)
-				(if playingAsPatti (Print 240 0) else (Print 240 1))
+				(if playingAsPatti
+					(Print 240 0)
+				else
+					(Print 240 1)
+			)
 				(Animate (cast elements?) FALSE)
 			)
 		else
-			(= local0 0)
+			(= noEntryMsg FALSE)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
 			(cond 
-				((Said '/club,comedy,building') (Print 240 2))
-				((Said '/door') (if playingAsPatti (Print 240 3) else (Print 240 4)))
+				((Said '/club,comedy,building')
+					(Print 240 2)
+				)
+				((Said '/door')
+					(if playingAsPatti
+						(Print 240 3)
+					else
+						(Print 240 4)
+					)
+				)
 				((Said '[/area]')
 					(Print 240 5)
-					(if playingAsPatti (Print 240 6) else (Print 240 7))
+					(if playingAsPatti
+						(Print 240 6)
+					else
+						(Print 240 7)
+					)
 				)
 			)
 		)

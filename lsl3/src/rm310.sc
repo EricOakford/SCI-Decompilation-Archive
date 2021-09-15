@@ -53,8 +53,8 @@
 			((Said 'look<down') (Print 310 0))
 			(
 				(and
-					(ego has: iGinsuKnife)
-					(!= ((inventory at: iGinsuKnife) view?) 21)
+					(ego has: iKnife)
+					(!= ((inventory at: iKnife) view?) 21)
 					(Said 'sharpen/ginsu')
 				)
 				(Print 310 1)

@@ -25,7 +25,7 @@
 		#title {Patti says...}
 		#width 140
 		#mode teJustCenter
-		#time (= seconds (SetPrintTime @str))
+		#time (= seconds (PrintDelay @str))
 		#dispose
 	)
 	(return (+ 3 seconds))
@@ -37,7 +37,7 @@
 		#title {You say...}
 		#width 140
 		#mode teJustCenter
-		#time (= seconds (SetPrintTime @str))
+		#time (= seconds (PrintDelay @str))
 		#dispose
 	)
 	(return (+ 3 seconds))
@@ -155,7 +155,7 @@
 	(method (init)
 		(music fade:)
 		(Load SCRIPT REVERSE)
-		(if (ego has: iBottleOfWine)
+		(if (ego has: iWineBottle)
 			(Load PICTURE 99)
 			(Load VIEW 481)
 			(Load SOUND 480)
@@ -177,7 +177,7 @@
 		(NormalEgo)
 		(HandsOff)
 		(ego posn: 159 188 loop: 3 observeControl: cYELLOW init:)
-		(if (ego has: iBottleOfWine)
+		(if (ego has: iWineBottle)
 			(RoomScript changeState: 1)
 		else
 			(RoomScript changeState: 43)
@@ -251,9 +251,9 @@
 				(ego setMotion: MoveTo egoX egoY self)
 			)
 			(6
-				(PutInRoom iBottleOfWine 484)
-				((Inventory at: iBottleOfWine) view: 28)
-				(Format ((Inventory at: iBottleOfWine) name?) 480 20)
+				(PutInRoom iWineBottle 484)
+				((Inventory at: iWineBottle) view: 28)
+				(Format ((Inventory at: iWineBottle) name?) 480 20)
 				(ego loop: 3)
 				(aWine setCel: 4 stopUpd:)
 				(= cycles 11)
@@ -424,10 +424,10 @@
 			)
 			(41
 				(Format @str 480 41)
-				(Print @str #time (SetPrintTime @str))
+				(Print @str #time (PrintDelay @str))
 				(Format @str 480 42)
-				(Print @str #time (SetPrintTime @str))
-				(= seconds (+ 3 (SetPrintTime @str)))
+				(Print @str #time (PrintDelay @str))
+				(= seconds (+ 3 (PrintDelay @str)))
 			)
 			(42 (curRoom newRoom: 481))
 			(43

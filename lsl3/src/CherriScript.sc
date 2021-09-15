@@ -145,7 +145,7 @@
 			(return)
 		)
 		(cond 
-			((or (Said 'give/babe') (Said 'give/*/babe')) (Print 422 0))
+			((or (Said 'give/babe') (Said 'give/anyword/babe')) (Print 422 0))
 			((Said 'look/babe')
 				(cond 
 					((!= showroomState SRcherriOnPhone) (Print 422 1))

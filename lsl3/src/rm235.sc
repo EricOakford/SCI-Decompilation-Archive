@@ -33,12 +33,9 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (& (ego onControl:) cBLUE) (== currentStatus egoNORMAL))
-			(NotifyScript 41 2 300)
+		(if (and (& (ego onControl:) cBLUE) (== currentStatus egoNORMAL))
+			(NotifyScript FALLING 2 300)
 		)
 		(super doit:)
 	)
@@ -50,7 +47,7 @@
 				(HandsOff)
 				(ego
 					illegalBits: 0
-					setMotion: MoveTo (if (& (ego onControl:) $0008) 99 else 235) 96 self
+					setMotion: MoveTo (if (& (ego onControl:) cCYAN) 99 else 235) 96 self
 				)
 			)
 			(2
@@ -86,28 +83,51 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'look<up') (Print 235 0))
-			((Said 'look<down') (Print 235 1) (Print 235 2 #at -1 144))
+			((Said 'look<up')
+				(Print 235 0)
+			)
+			((Said 'look<down')
+				(Print 235 1)
+				(Print 235 2 #at -1 144)
+			)
 			((Said 'look>')
 				(cond 
-					((Said '[/area]') (Print 235 3))
-					((Said '/carpet,carpet') (Print 235 4))
-					((Said '/ceiling,air') (Print 235 0))
-					((Said '/camp,beach,bay,water') (Print 235 5) (Print 235 2 #at -1 144))
-					((Said '/bush') (Print 235 6))
-					((Said '/flower,boulder,wall') (Print 235 7))
+					((Said '[/area]')
+						(Print 235 3)
+					)
+					((Said '/carpet,carpet')
+						(Print 235 4)
+					)
+					((Said '/ceiling,air')
+						(Print 235 0)
+					)
+					((Said '/camp,beach,bay,water')
+						(Print 235 5)
+						(Print 235 2 #at -1 144)
+					)
+					((Said '/bush')
+						(Print 235 6)
+					)
+					((Said '/flower,boulder,wall')
+						(Print 235 7)
+					)
 				)
 			)
-			((Said 'get/bush') (Print 235 8))
+			((Said 'get/bush')
+				(Print 235 8)
+			)
 			((Said 'get,pick/flower')
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					(playingAsPatti (Print 235 9))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					(playingAsPatti
+						(Print 235 9)
+					)
 					(
 						(and
 							(not (& (ego onControl:) cGREEN))
@@ -115,9 +135,15 @@
 						)
 						(Print 235 10)
 					)
-					((and (== orchidMinutes 1) (== orchidSeconds 0)) (self changeState: 1))
-					((not (InRoom iOrchids)) (Print 235 11))
-					(else (self changeState: 1))
+					((and (== orchidMinutes 1) (== orchidSeconds 0))
+						(self changeState: 1)
+					)
+					((not (InRoom iOrchids))
+						(Print 235 11)
+					)
+					(else
+						(self changeState: 1)
+					)
 				)
 			)
 		)

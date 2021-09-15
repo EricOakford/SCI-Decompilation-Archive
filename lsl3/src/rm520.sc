@@ -108,7 +108,7 @@
 				(ego setMotion: MoveTo 105 83 self)
 			)
 			(4
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(soundFX stop:)
 				(music number: 4 loop: 1 play:)
 				(ego setPri: 2 setLoop: 2 setCel: 0 setCycle: EndLoop self)
@@ -299,7 +299,7 @@
 				(cond 
 					((not (ego has: iPantyhose)) (Print 520 7))
 					((not (Btst fRemovedPantyhose)) (Print 520 8))
-					((Said '//!*') (Print 520 9))
+					((Said '//noword') (Print 520 9))
 					((not (Said '//boulder')) (Print 520 10))
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					((not (& (ego onControl:) cRED)) (Print 520 11))

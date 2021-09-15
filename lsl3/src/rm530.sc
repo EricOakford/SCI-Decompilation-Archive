@@ -230,7 +230,7 @@
 			)
 			(12
 				(HandsOff)
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(Print 530 68)
 				(ego loop: 2)
 				(music fade:)

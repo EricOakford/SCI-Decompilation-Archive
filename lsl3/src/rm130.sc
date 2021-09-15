@@ -17,7 +17,29 @@
 	local0
 	local1
 	local2
-	[housePosn 42] = [158 73 172 73 185 73 197 73 205 65 192 65 178 65 166 65 151 66 140 59 150 59 160 59 171 59 184 59 196 59 189 51 180 51 171 51 162 51 153 51 999 999]
+	housePosn = [
+		158 73
+		172 73
+		185 73
+		197 73
+		205 65
+		192 65
+		178 65
+		166 65
+		151 66
+		140 59
+		150 59
+		160 59
+		171 59
+		184 59
+		196 59
+		189 51
+		180 51
+		171 51
+		162 51
+		153 51
+		999 999
+		]
 )
 (procedure (localproc_08b2)
 	(aHouse
@@ -76,15 +98,15 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(Print 130 0 #at 10 5 #width 290 #time 12)
 				(= seconds 3)
@@ -114,7 +136,9 @@
 			)
 			(6
 				(localproc_096b)
-				(if (-- local1) (-- state))
+				(if (-- local1)
+					(-- state)
+				)
 			)
 			(7
 				(localproc_08e2)
@@ -135,8 +159,12 @@
 			)
 			(9
 				(localproc_096b)
-				(if (-- local1) (-- state))
-				(if (== local1 3) (localproc_08b2))
+				(if (-- local1)
+					(-- state)
+				)
+				(if (== local1 3)
+					(localproc_08b2)
+				)
 			)
 			(10
 				(localproc_08b2)
@@ -157,8 +185,12 @@
 			)
 			(12
 				(localproc_096b)
-				(if (-- local1) (-- state))
-				(if (== local1 3) (localproc_08b2))
+				(if (-- local1)
+					(-- state)
+				)
+				(if (== local1 3)
+					(localproc_08b2)
+				)
 			)
 			(13
 				(localproc_08b2)
@@ -179,8 +211,12 @@
 			)
 			(15
 				(localproc_096b)
-				(if (-- local1) (-- state))
-				(if (== local1 3) (localproc_08b2))
+				(if (-- local1)
+					(-- state)
+				)
+				(if (== local1 3)
+					(localproc_08b2)
+				)
 			)
 			(16
 				(localproc_08b2)
@@ -201,8 +237,12 @@
 			)
 			(18
 				(localproc_096b)
-				(if (-- local1) (-- state))
-				(if (== local1 3) (localproc_08b2))
+				(if (-- local1)
+					(-- state)
+				)
+				(if (== local1 3)
+					(localproc_08b2)
+				)
 			)
 			(19
 				(localproc_08b2)

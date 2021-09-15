@@ -66,7 +66,7 @@
 				(HandsOn)
 				(theGame setScript: 0)
 				(DisposeScript LOCKER)
-				(DisposeScript INVDESC)
+				(DisposeScript PAGENUMS)
 			)
 		)
 	)

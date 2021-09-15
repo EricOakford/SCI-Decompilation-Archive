@@ -281,8 +281,8 @@
 			)
 			((Said 'throw>')
 				(cond 
-					((Said '[/!*]') (Print 540 19))
-					((Said '/*[/!*]') (Print 540 20))
+					((Said '[/noword]') (Print 540 19))
+					((Said '/anyword[/noword]') (Print 540 20))
 				)
 			)
 			((Said 'climb,crawl') (Print 540 21))
@@ -380,7 +380,7 @@
 				(= state -1)
 			)
 			(4
-				(= currentStatus egoDEAD)
+				(= currentStatus egoDYING)
 				(HandsOff)
 				(Print 540 35 #at -1 10)
 				(soundFX stop:)
@@ -469,7 +469,7 @@
 			((Said '//animal>')
 				(cond 
 					((> (aPig x?) 275) (Print 540 42) (event claimed: TRUE))
-					((Said 'throw/*>')
+					((Said 'throw/anyword>')
 						(if (Said '/bra')
 							(event claimed: FALSE)
 						else

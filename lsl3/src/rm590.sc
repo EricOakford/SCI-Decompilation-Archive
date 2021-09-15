@@ -326,13 +326,13 @@
 		(cond 
 			(
 			(or (Said 'draw,make/door') (Said 'draw,use/marker'))
-				(if (not (ego has: iMagicMarker))
+				(if (not (ego has: iMarker))
 					(Print 590 0)
 				else
 					(self changeState: 23)
 				)
 			)
-			((Said 'throw,make,use/magic,spell') (if (ego has: iMagicMarker) (Print 590 1) else (Print 590 2)))
+			((Said 'throw,make,use/magic,spell') (if (ego has: iMarker) (Print 590 1) else (Print 590 2)))
 			((Said 'unfasten,grab,carve/hemp,bamboo') (Print 590 3))
 			((Said 'throw') (Print 590 4))
 			((Said 'use') (Print 590 5))

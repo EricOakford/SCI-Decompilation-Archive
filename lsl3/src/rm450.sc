@@ -45,7 +45,7 @@
 			add: atpChair4
 			add: atpChair5
 			add:
-				(if (and playingAsPatti (InRoom iMagicMarker))
+				(if (and playingAsPatti (InRoom iMarker))
 					atpBlackboard2
 				else
 					atpBlackboard1
@@ -53,7 +53,7 @@
 			doit:
 		)
 		(self setScript: RoomScript)
-		(if (and playingAsPatti (InRoom iMagicMarker))
+		(if (and playingAsPatti (InRoom iMarker))
 			(aMarker init:)
 		)
 		(NormalEgo)
@@ -95,7 +95,7 @@
 			(aPatti init:)
 			(PattiScript changeState: 1)
 			(blockPatti init:)
-			(Bset 67)
+			(Bset fGotTipJar)
 			(ego observeBlocks: blockPatti observeControl: cYELLOW)
 		)
 		(if (Btst 67) (aTips init:))
@@ -241,11 +241,11 @@
 				(cond 
 					((!= currentStatus egoNORMAL) (GoodIdea))
 					((not playingAsPatti) (Print 450 6))
-					((not (InRoom iMagicMarker)) (AlreadyTook))
+					((not (InRoom iMarker)) (AlreadyTook))
 					((not (ego inRect: 10 152 55 160)) (NotClose))
 					(else
 						(Ok)
-						(ego get: iMagicMarker)
+						(ego get: iMarker)
 						(theGame changeScore: 50)
 						(aMarker dispose:)
 						(Print 450 7)
@@ -302,7 +302,7 @@
 					(
 						(or
 							(Said '/blackboard')
-							(and (InRoom iMagicMarker) (Said '/marker'))
+							(and (InRoom iMarker) (Said '/marker'))
 						)
 						(cond 
 							((not playingAsPatti) (Print 450 25))
@@ -626,7 +626,7 @@
 				(Print 450 62)
 				(Print 450 63)
 				(ego get: iPenthouseKey)
-				(PutInRoom iBottleOfWine 340)
+				(PutInRoom iWineBottle 340)
 				(theGame changeScore: 25)
 				(aPatti setLoop: -1 setMotion: MoveTo 168 112 self)
 			)

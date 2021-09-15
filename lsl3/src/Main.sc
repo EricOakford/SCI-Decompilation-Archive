@@ -40,7 +40,7 @@
 	Btst 22
 	InRoom 23
 	PutInRoom 24
-	SetPrintTime 25
+	PrintDelay 25
 )
 
 (local
@@ -487,13 +487,12 @@
 	)
 )
 
-(procedure (SetPrintTime seconds)
+(procedure (PrintDelay seconds)
 	;sets the time a message is displayed, based on its length.
 	(return (+ 3 (/ (StrLen seconds) printTime)))
 )
 
 (instance LSL3 of Game
-	
 	(method (init &tmp startingRoom)
 		;set up the game's objects and globals
 		((= systemWindow theWindow)
@@ -790,7 +789,7 @@
 			)
 			((or (Said 'caress/ginsu') (Said 'sharpen/ginsu'))
 				(cond 
-					((not (ego has: iGinsuKnife))
+					((not (ego has: iKnife))
 						(DontHave)
 					)
 					((== (Ginsu_Knife view?) 21)
@@ -801,12 +800,12 @@
 					)
 				)
 			)
-			((or (Said 'backdrop/*/bottle') (Said 'fill/bottle'))
+			((or (Said 'backdrop/anyword/bottle') (Said 'fill/bottle'))
 				(Print 0 17)
 			)
 			((Said '(drain<out),drain/beer,bottle')
 				(cond 
-					((not (ego has: iBottleOfWine))
+					((not (ego has: iWineBottle))
 						(DontHave)
 					)
 					((not playingAsPatti)
@@ -824,13 +823,13 @@
 			)
 			((Said 'carve,carve>')
 				(cond 
-					((not (ego has: iGinsuKnife))
+					((not (ego has: iKnife))
 						(Print 0 22)
 					)
 					((== (Ginsu_Knife view?) 2)
 						(Print 0 23)
 					)
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 24)
 					)
 					((Said '/blade')
@@ -956,7 +955,7 @@
 			((Said 'count>')
 				(= i (inventory saidMe:))
 				(cond 
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 43)
 					)
 					((not i)
@@ -1008,7 +1007,7 @@
 			((and (ego has: iBra) (Said 'backdrop//(bra)>'))
 				(= i (inventory saidMe:))
 				(cond 
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 56)
 					)
 					((not i)
@@ -1024,13 +1023,13 @@
 					)
 				)
 			)
-			((and (ego has: iGinsuKnife) (or (Said 'use/ginsu') (Said 'attack')))
+			((and (ego has: iKnife) (or (Said 'use/ginsu') (Said 'attack')))
 				(Print 0 60)
 			)
 			((Said 'open,(look<in)>')
 				(= i (inventory saidMe:))
 				(cond 
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 61)
 					)
 					((not i)
@@ -1045,10 +1044,14 @@
 							(iOrchids
 								(Print 0 63 #icon 11 0 0)
 							)
-							(iBottleOfWine
+							(iWineBottle
 								(switch (Bottle_of_Wine_ view?)
-									(28 (Print 0 64 #icon 28 0 0))
-									(29 (Print 0 65 #icon 29 0 0))
+									(28
+										(Print 0 64 #icon 28 0 0)
+									)
+									(29
+										(Print 0 65 #icon 29 0 0)
+									)
 									(else 
 										(Print 0 66 #icon 13 0 0)
 									)
@@ -1159,7 +1162,7 @@
 			)
 			((Said '(backdrop<on),wear>')
 				(cond 
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 94)
 					)
 					((= i (inventory saidMe:))
@@ -1183,7 +1186,9 @@
 			)
 			((Said 'backdrop>')
 				(cond 
-					((Said '[/!*]') (Print 0 97))
+					((Said '[/noword]')
+						(Print 0 97)
+					)
 					((= i (inventory saidMe:))
 						(if
 						(not (ego has: (inventory indexOf: i)))
@@ -1200,7 +1205,7 @@
 			)
 			((Said 'throw>')
 				(cond 
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 100)
 					)
 					((= i (inventory saidMe:))
@@ -1267,7 +1272,7 @@
 			((or (Said '/bang/ya') (Said 'bang/ya'))
 				(Print 0 118)
 			)
-			((Said 'bang/*')
+			((Said 'bang/anyword')
 				(Print 0 119)
 			)
 			((or (Said 'caress/i,larry,self') (Said 'jack'))
@@ -1389,7 +1394,7 @@
 				(= i (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 150)
 					)
 					((not i)
@@ -1409,10 +1414,10 @@
 				(= i (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
-					((Said '/*[/!*]')
+					((Said '/anyword[/noword]')
 						(Print 0 152)
 					)
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 153)
 					)
 					((not i)
@@ -1436,7 +1441,7 @@
 			)
 			((Said 'get>')
 				(cond 
-					((Said '[/!*]')
+					((Said '[/noword]')
 						(Print 0 158)
 					)
 					((and (= i (inventory saidMe:)) (i ownedBy: ego))
@@ -1464,7 +1469,7 @@
 				)
 			)
 			((Said 'address>')
-				(if (Said '[/!*]')
+				(if (Said '[/noword]')
 					(Print 0 152)
 				else
 					(Print 0 165)
@@ -1529,7 +1534,7 @@
 	;this subclass allows item descriptions to be called
 	;from TEXT.030 (item descriptions)
 	(method (showSelf)
-		(Print 30 view
+		(Print INVDESC view
 			#title name
 			#icon view 0 0
 		)

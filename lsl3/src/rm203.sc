@@ -58,16 +58,15 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== (GameIsRestarting) 2) (PlaqueDisplay))
+		(if (== (GameIsRestarting) 2)
+			(PlaqueDisplay)
+		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 

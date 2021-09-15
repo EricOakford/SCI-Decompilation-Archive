@@ -14,16 +14,16 @@
 
 (local
 	local0
-	[str 222]
+	[plotString 222]
 )
-(procedure (TimedPrint &tmp seconds)
-	(Print @str
+(procedure (PrintPlot &tmp t)
+	(Print @plotString
 		#at 10 5
 		#width 290
-		#time (= seconds (SetPrintTime @str))
+		#time (= t (PrintDelay @plotString))
 		#dispose
 	)
-	(return (+ 3 seconds))
+	(return (+ 3 t))
 )
 
 (instance rm200 of Room
@@ -37,14 +37,13 @@
 		(Load VIEW 200)
 		(super init:)
 		(self setScript: RoomScript)
-		(if (and (Btst 17) (not (Btst 24)))
+		(if (and (Btst fOpening200) (not (Btst fCredits200)))
 			(Load VIEW 201)
 			(aCredit1 init:)
 			(aCredit2 init:)
 		)
 		(addToPics add: atpBinocular1 add: atpBinocular2 doit:)
-		(if
-		(and (!= prevRoomNum 203) (!= prevRoomNum 206))
+		(if (and (!= prevRoomNum 203) (!= prevRoomNum 206))
 			(ego posn: 315 167 loop: 1)
 		)
 		(NormalEgo)
@@ -53,8 +52,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -62,17 +59,19 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Btst fCredits200)) (= seconds 5))
+				(if (not (Btst fCredits200))
+					(= seconds 5)
+				)
 			)
 			(1
-				(Format @str 200 18)
-				(= seconds (TimedPrint))
+				(Format @plotString 200 18)
+				(= seconds (PrintPlot))
 			)
 			(2
 				(Bset fCredits200)
 				(if (not (Btst fBrokeUp))
-					(Format @str 200 19)
-					(= seconds (TimedPrint))
+					(Format @plotString 200 19)
+					(= seconds (PrintPlot))
 				)
 			)
 			(3
@@ -96,10 +95,14 @@
 		(cond 
 			((Said '/binocular,binocular>')
 				(cond 
-					((Said 'get') (Print 200 0))
+					((Said 'get')
+						(Print 200 0)
+					)
 					((Said 'use,(look<through,in)')
 						(cond 
-							(playingAsPatti (Print 200 1))
+							(playingAsPatti
+								(Print 200 1)
+							)
 							(
 								(and
 									(not (& (ego onControl:) cGREEN))
@@ -132,14 +135,33 @@
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/air,up') (Print 200 7))
-					((Said '/cliff,land,cliff') (Print 200 8))
-					((Said '/fence,rail') (Print 200 9))
-					((Said '/cliff,edge') (Print 200 10))
-					((Said '/bay,beach,point,bay,bay') (Print 200 11))
-					((Said '/camp,down,building,casino,hotel,trap') (Print 200 12) (if (<= filthLevel 1) (Print 200 13)))
-					((Said '/blade,carpet,carpet') (Print 200 14))
-					((Said '/bird') (Print 200 15))
+					((Said '/air,up')
+						(Print 200 7)
+					)
+					((Said '/cliff,land,cliff')
+						(Print 200 8)
+					)
+					((Said '/fence,rail')
+						(Print 200 9)
+					)
+					((Said '/cliff,edge')
+						(Print 200 10)
+					)
+					((Said '/bay,beach,point,bay,bay')
+						(Print 200 11)
+					)
+					((Said '/camp,down,building,casino,hotel,trap')
+						(Print 200 12)
+						(if (<= filthLevel 1)
+							(Print 200 13)
+						)
+					)
+					((Said '/blade,carpet,carpet')
+						(Print 200 14)
+					)
+					((Said '/bird')
+						(Print 200 15)
+					)
 					((Said '/awning')
 						(if (& (ego onControl:) cBLUE)
 							(if (not (Btst fLookedAtPlaque))
@@ -211,11 +233,11 @@
 )
 
 (instance CreditsScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 4))
+			(0
+				(= seconds 4)
+			)
 			(1
 				(aCredit1 setCycle: EndLoop)
 				(= cycles 16)
