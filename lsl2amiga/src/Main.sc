@@ -956,14 +956,12 @@
 					(or
 						(Said 'get/dress')
 						(Said 'get<dress')
-						(Said
-							'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini'
-						)
+						(Said 'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini')
 					)
 				)
 				(Print 0 15)
 			)
-			((and (ego has: iPassport) (Said 'look/passport//anyword'))
+			((and (ego has: iPassport) (Said 'look/passport/anyword'))
 				(Print 0 16)
 			)
 			((and (ego has: iGrotesqueGulp) (Said 'drink,apply/coke,coke'))
@@ -1275,7 +1273,7 @@
 			((or (Said '/screw/you') (Said 'screw/you'))
 				(Print 0 84)
 			)
-			((Said 'screw//anyword')
+			((Said 'screw/anyword')
 				(Print 0 85)
 			)
 			((Said 'jack')

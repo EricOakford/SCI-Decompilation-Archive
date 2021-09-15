@@ -908,9 +908,7 @@
 					(or
 						(Said 'get/dress')
 						(Said 'get<dress')
-						(Said
-							'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini'
-						)
+						(Said 'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini')
 					)
 				)
 				(Print 0 15)
