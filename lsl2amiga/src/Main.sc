@@ -1308,7 +1308,7 @@
 			)
 			((Said 'look>')
 				(cond 
-					((Said '//anyword/man,bimbo,children>')
+					((Said '/anyword/man,bimbo,children>')
 						(cond 
 							((not (= i (inventory saidMe:)))
 								(event claimed: TRUE)
@@ -1451,7 +1451,7 @@
 				(= i (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
-					((Said '//anyword[/noword]')
+					((Said '/anyword[/noword]')
 						(Print 0 113)
 					)
 					((Said '[/noword]')
