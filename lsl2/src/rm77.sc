@@ -35,7 +35,9 @@
 		(NormalEgo)
 		(self setScript: rm77Script)
 		(Load VIEW 708)
-		(if global111 (= endGameState 105))
+		(if global111
+			(= endGameState 105)
+		)
 		(cond 
 			((== endGameState 104)
 				(= endGameState 105)
@@ -90,7 +92,7 @@
 					cycleSpeed: 5
 					minPause: 2
 					maxPause: 10
-					isExtra: 1
+					isExtra: TRUE
 					init:
 				)
 				((= aWeaver (Extra new:))
@@ -131,29 +133,37 @@
 			)
 		)
 		(cond 
-			((== prevRoomNum 76) (ego posn: 3 143))
-			((== prevRoomNum 78) (ego posn: 318 134))
-			(else (ego loop: 3 posn: 165 187))
+			((== prevRoomNum 76)
+				(ego posn: 3 143)
+			)
+			((== prevRoomNum 78)
+				(ego posn: 318 134)
+			)
+			(else
+				(ego loop: loopN posn: 165 187)
+			)
 		)
 		(ego init:)
 	)
 )
 
 (instance rm77Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= cycles 3))
+			(1
+				(= cycles 3)
+			)
 			(2
 				(aBearer setMotion: MoveTo 123 145 self)
 				(= cycles 15)
 			)
-			(3 (Print 77 8))
+			(3
+				(Print 77 8)
+			)
 			(4
 				(aBearer setLoop: 4 cel: 0 setCycle: CycleTo 7 1 self)
 			)
@@ -175,16 +185,26 @@
 				)
 				(Print 77 9 #draw)
 			)
-			(7 (Print 77 10) (= seconds 3))
-			(8 (Print 77 11) (= seconds 3))
+			(7
+				(Print 77 10)
+				(= seconds 3)
+			)
+			(8
+				(Print 77 11)
+				(= seconds 3)
+			)
 			(9
 				(Print 77 12)
 				(Print 77 13)
 				(aKalalau setMotion: MoveTo 4 148 self)
 				(ego setMotion: MoveTo 4 138)
 			)
-			(10 (curRoom newRoom: 76))
-			(11 (= seconds 3))
+			(10
+				(curRoom newRoom: 76)
+			)
+			(11
+				(= seconds 3)
+			)
 			(12
 				(Print 77 14)
 				(Print 77 15)
@@ -206,20 +226,23 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/campfire,expectorate') (Print 77 0))
-			(if (Said '/>')
+			(if (Said '/campfire,expectorate')
+				(Print 77 0)
+			)
+			(if (Said '/ash')	;EO: fixed said spec
 				(if ((inventory at: iAshes) ownedBy: curRoomNum)
 					(Print 77 1)
 				else
 					(Print 77 2)
 				)
 			)
-			(if (Said '/door') (Print 77 3))
+			(if (Said '/door')
+				(Print 77 3)
+			)
 			(if (Said '[/airport,stair,angeles,hut]')
 				(if ((inventory at: iAshes) ownedBy: curRoomNum)
 					(Print 77 4)
@@ -236,12 +259,22 @@
 			)
 			(Print 77 6)
 		)
-		(if (Said 'get/ash')
+		(if (Said 'get/ash')	;EO: fixed said spec
 			(cond 
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not ((inventory at: iAshes) ownedBy: curRoomNum)) (AlreadyTook))
-				((not (ego inRect: 144 126 186 148)) (NotClose))
-				(else (ego get: iAshes) (theGame changeScore: 6) (Print 77 7))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not ((inventory at: iAshes) ownedBy: curRoomNum))
+					(AlreadyTook)
+				)
+				((not (ego inRect: 144 126 186 148))
+					(NotClose)
+				)
+				(else
+					(ego get: iAshes)
+					(theGame changeScore: 6)
+					(Print 77 7)
+				)
 			)
 		)
 	)

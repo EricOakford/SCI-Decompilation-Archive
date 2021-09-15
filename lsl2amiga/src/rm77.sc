@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 77)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Extra)
@@ -16,7 +16,7 @@
 (local
 	local0
 )
-(instance rm77 of Rm
+(instance rm77 of Room
 	(properties
 		picture 77
 		horizon 50
@@ -30,24 +30,35 @@
 		(super init:)
 		(NormalEgo)
 		(self setScript: rm77Script)
-		(Load rsVIEW 708)
-		(if global111 (= endGameState 105))
+		(Load VIEW 708)
+		(if global111
+			(= endGameState 105)
+		)
 		(cond 
 			((== endGameState 104)
 				(= endGameState 105)
-				(= currentStatus 22)
+				(= currentStatus egoWONGAME)
 				(rm77Script changeState: 11)
-				(Load rsVIEW 704)
+				(Load VIEW 704)
 				(addToPics add: aAsh doit:)
-				(aKalalau illegalBits: 0 setCycle: Walk init:)
+				(aKalalau
+					illegalBits: 0
+					setCycle: Walk
+					init:
+				)
 				(HandsOff)
 			)
-			((== endGameState 1)
-				(= endGameState 2)
-				(= currentStatus 11)
+			((== endGameState endMEETKALALAU)
+				(= endGameState endMEETTRIBE)
+				(= currentStatus egoMEETTRIBE)
 				(rm77Script changeState: 1)
-				(Load rsVIEW 709)
-				(aCampfire setLoop: 0 setPri: 10 setCycle: Fwd init:)
+				(Load VIEW 709)
+				(aCampfire
+					setLoop: 0
+					setPri: 10
+					setCycle: Forward
+					init:
+				)
 				(addToPics add: aWoman aSpit doit:)
 				(aArm
 					setLoop: 1
@@ -55,46 +66,70 @@
 					cycleSpeed: 5
 					minPause: 2
 					maxPause: 10
-					isExtra: 1
+					isExtra: TRUE
 					init:
 				)
-				(aWeaver setLoop: 7 cycleSpeed: 1 init:)
-				(aBearer setLoop: 3 illegalBits: 0 setCycle: Walk init:)
-				(aKalalau illegalBits: 0 setCycle: Walk init:)
+				(aWeaver
+					setLoop: 7
+					cycleSpeed: 1
+					init:
+				)
+				(aBearer
+					setLoop: 3
+					illegalBits: 0
+					setCycle: Walk
+					init:
+				)
+				(aKalalau
+					illegalBits: 0
+					setCycle: Walk
+					init:
+				)
 				(HandsOff)
 			)
-			(else (addToPics add: aAsh2 doit:) (self setRegions: 700))
+			(else
+				(addToPics add: aAsh2 doit:)
+				(self setRegions: ISLAND)
+			)
 		)
 		(cond 
-			((== prevRoomNum 76) (ego posn: 3 143))
-			((== prevRoomNum 78) (ego posn: 318 134))
-			(else (ego loop: 3 posn: 165 187))
+			((== prevRoomNum 76)
+				(ego posn: 3 143)
+			)
+			((== prevRoomNum 78)
+				(ego posn: 318 134)
+			)
+			(else
+				(ego loop: loopN posn: 165 187)
+			)
 		)
 		(ego init:)
 	)
 )
 
 (instance rm77Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= cycles 3))
+			(1
+				(= cycles 3)
+			)
 			(2
 				(aBearer setMotion: MoveTo 123 145 self)
 				(= cycles 15)
 			)
-			(3 (Print 77 8))
+			(3
+				(Print 77 8)
+			)
 			(4
-				(aBearer setLoop: 4 cel: 0 setCycle: CT 7 1 self)
+				(aBearer setLoop: 4 cel: 0 setCycle: CycleTo 7 1 self)
 			)
 			(5
 				(addToPics add: aBasket doit:)
-				(aBearer setCycle: End self)
+				(aBearer setCycle: EndLoop self)
 			)
 			(6
 				(aBearer
@@ -104,16 +139,26 @@
 				)
 				(Print 77 9 #draw)
 			)
-			(7 (Print 77 10) (= seconds 3))
-			(8 (Print 77 11) (= seconds 3))
+			(7
+				(Print 77 10)
+				(= seconds 3)
+			)
+			(8
+				(Print 77 11)
+				(= seconds 3)
+			)
 			(9
 				(Print 77 12)
 				(Print 77 13)
 				(aKalalau setMotion: MoveTo 4 148 self)
 				(ego setMotion: MoveTo 4 138)
 			)
-			(10 (curRoom newRoom: 76))
-			(11 (= seconds 3))
+			(10
+				(curRoom newRoom: 76)
+			)
+			(11
+				(= seconds 3)
+			)
 			(12
 				(Print 77 14)
 				(Print 77 15)
@@ -135,22 +180,25 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/campfire,expectorate') (Print 77 0))
-			(if (Said '/>')
-				(if ((inventory at: 30) ownedBy: curRoomNum)
+			(if (Said '/campfire,expectorate')
+				(Print 77 0)
+			)
+			(if (Said '/ash')	;EO: fixed said spec
+				(if ((inventory at: iAshes) ownedBy: curRoomNum)
 					(Print 77 1)
 				else
 					(Print 77 2)
 				)
 			)
-			(if (Said '/door') (Print 77 3))
+			(if (Said '/door')
+				(Print 77 3)
+			)
 			(if (Said '[/airport,stair,angeles,hut]')
-				(if ((inventory at: 30) ownedBy: curRoomNum)
+				(if ((inventory at: iAshes) ownedBy: curRoomNum)
 					(Print 77 4)
 				else
 					(Print 77 5)
@@ -165,18 +213,28 @@
 			)
 			(Print 77 6)
 		)
-		(if (Said 'get/>')
+		(if (Said 'get/ash')	;EO: fixed said spec
 			(cond 
-				((!= currentStatus 0) (NotNow))
-				((not ((inventory at: 30) ownedBy: curRoomNum)) (AlreadyTook))
-				((not (ego inRect: 144 126 186 148)) (NotClose))
-				(else (ego get: 30) (theGame changeScore: 6) (Print 77 7))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not ((inventory at: iAshes) ownedBy: curRoomNum))
+					(AlreadyTook)
+				)
+				((not (ego inRect: 144 126 186 148))
+					(NotClose)
+				)
+				(else
+					(ego get: iAshes)
+					(theGame changeScore: 6)
+					(Print 77 7)
+				)
 			)
 		)
 	)
 )
 
-(instance aAsh of PV
+(instance aAsh of PicView
 	(properties
 		y 142
 		x 165
@@ -185,7 +243,7 @@
 	)
 )
 
-(instance aWoman of PV
+(instance aWoman of PicView
 	(properties
 		y 137
 		x 124
@@ -193,17 +251,17 @@
 	)
 )
 
-(instance aSpit of PV
+(instance aSpit of PicView
 	(properties
 		y 135
 		x 160
 		view 709
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aAsh2 of PV
+(instance aAsh2 of PicView
 	(properties
 		y 142
 		x 165
@@ -212,23 +270,23 @@
 	)
 )
 
-(instance aBasket of PV
+(instance aBasket of PicView
 	(properties
 		y 144
 		x 137
 		view 709
 		loop 6
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aKalalau of Act
+(instance aKalalau of Actor
 	(properties
 		y 183
 		x 145
 		view 704
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -245,7 +303,7 @@
 		y 123
 		x 118
 		view 709
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -257,11 +315,11 @@
 	)
 )
 
-(instance aBearer of Act
+(instance aBearer of Actor
 	(properties
 		y 144
 		x 68
 		view 709
-		signal $4000
+		signal ignrAct
 	)
 )

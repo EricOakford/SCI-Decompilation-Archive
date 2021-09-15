@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 58)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use AirplaneActor)
 (use Intrface)
@@ -14,9 +14,9 @@
 
 (local
 	local0
-	triedToLeave
+	leaveMsg
 )
-(instance blockWest of Blk
+(instance blockWest of Block
 	(properties
 		top 129
 		left -20
@@ -25,52 +25,59 @@
 	)
 )
 
-(instance rm58 of Rm
+(instance rm58 of Room
 	(properties
 		picture 58
 		horizon 1
 	)
 	
 	(method (init)
-		(Load rsVIEW 511)
-		(Load rsVIEW 600)
+		(Load VIEW 511)
+		(Load VIEW 600)
 		(super init:)
 		(addToPics add: aStewardess doit:)
-		(aPlane startY: 7 endY: 0 delayMin: 2 delayMax: 3 init:)
-		(self setRegions: 500 setScript: rm58Script)
+		(aPlane
+			startY: 7
+			endY: 0
+			delayMin: 2
+			delayMax: 3
+			init:
+		)
+		(self setRegions: AIRPORT setScript: rm58Script)
 		(blockWest init:)
-		(NormalEgo 0)
+		(NormalEgo loopE)
 		(ego posn: 10 132 observeBlocks: blockWest init:)
 	)
 )
 
 (instance rm58Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 61))
-		(if (& (ego onControl:) $0004)
-			(if (not triedToLeave) (= triedToLeave 1) (Print 58 0))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 61)
+		)
+		(if (& (ego onControl:) cGREEN)
+			(if (not leaveMsg)
+				(= leaveMsg TRUE)
+				(Print 58 0)
+			)
 		else
-			(= triedToLeave 0)
+			(= leaveMsg FALSE)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if
-		(and (Said 'look>') (Said '[/airport,airline]'))
+		(if (and (Said 'look>') (Said '[/airport,airline]'))
 			(Print 58 1)
 			(Print 58 2 #at -1 130)
 		)
 	)
 )
 
-(instance aStewardess of PV
+(instance aStewardess of PicView
 	(properties
 		y 132
 		x 311
@@ -80,6 +87,4 @@
 	)
 )
 
-(instance aPlane of Airplane
-	(properties)
-)
+(instance aPlane of Airplane)

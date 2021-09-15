@@ -21,17 +21,18 @@
 	aPlane
 	aDoor
 	aParachute
-	aMachine
+	aPlate
 	aSidewalkNorth
 	aSidewalkSouth
 	bluePateState
-	triedToEnterWrongSidewalk
+	wrongWayMsg
 )
 
-(enum 1 ;Blue Pate states
-	bluePateORDERED
-	bluePateSERVED
-	bluePatePINREMOVED
+(enum ;Blue Pate states
+	readyToOrder
+	orderedIt
+	gotServed
+	removedPin
 )
 
 (instance rm55 of Room
@@ -73,7 +74,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		((= aMachine (View new:))
+		((= aPlate (View new:))
 			view: 519
 			loop: 0
 			cel: 3
@@ -153,7 +154,7 @@
 			(= currentStatus egoINTERMINAL)
 			(HandsOff)
 			(ego
-				illegalBits: -32768
+				illegalBits: cWHITE
 				setPri: -1
 				setLoop: 2
 				setCycle: 0
@@ -165,28 +166,31 @@
 			(rm55Script changeState: 1)
 		else
 			(NormalEgo)
-			(ego observeControl: 4 posn: 33 145 init:)
+			(ego observeControl: cGREEN posn: 33 145 init:)
 		)
 	)
 )
 
 (instance rm55Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			(
-			(and (& (ego onControl:) $0002) (== currentStatus egoNORMAL)) (curRoom newRoom: 54))
-			(
-			(and (& (ego onControl:) $0010) (== currentStatus egoNORMAL)) (= currentStatus egoINTERMINAL) (self changeState: 3))
-			((& (ego onControl:) $0008)
-				(if (and (== currentStatus egoNORMAL) (not triedToEnterWrongSidewalk))
-					(= triedToEnterWrongSidewalk TRUE)
+			((and (& (ego onControl:) cBLUE) (== currentStatus egoNORMAL))
+				(curRoom newRoom: 54)
+			)
+			((and (& (ego onControl:) cRED) (== currentStatus egoNORMAL))
+				(= currentStatus egoINTERMINAL)
+				(self changeState: 3)
+			)
+			((& (ego onControl:) cCYAN)
+				(if (and (== currentStatus egoNORMAL) (not wrongWayMsg))
+					(= wrongWayMsg TRUE)
 					(Print 55 0)
 				)
 			)
-			(else (= triedToEnterWrongSidewalk FALSE))
+			(else
+				(= wrongWayMsg FALSE)
+			)
 		)
 	)
 	
@@ -200,8 +204,8 @@
 				)
 			)
 			(2
-				(NormalEgo 2)
-				(ego observeControl: 4)
+				(NormalEgo loopS)
+				(ego observeControl: cGREEN)
 			)
 			(3
 				(HandsOff)
@@ -213,27 +217,35 @@
 					setMotion: MoveTo 174 88 self
 				)
 			)
-			(4 (curRoom newRoom: 56))
+			(4
+				(curRoom newRoom: 56)
+			)
 			(5
 				(HandsOff)
 				(Print 55 34)
 				(= seconds 3)
 			)
-			(6 (aDoor setCycle: EndLoop self))
+			(6
+				(aDoor setCycle: EndLoop self)
+			)
 			(7
 				(aParachute posn: 264 146 setCycle: EndLoop self)
 			)
-			(8 (aDoor setCycle: BegLoop self))
-			(9 (= seconds 3))
+			(8
+				(aDoor setCycle: BegLoop self)
+			)
+			(9
+				(= seconds 3)
+			)
 			(10
 				(aParachute dispose:)
-				(ego get: 24)
+				(ego get: iParachute)
 				(theGame changeScore: 3)
 				(Print 55 35 #draw)
-				(User canControl: 1 canInput: 1)
+				(User canControl: TRUE canInput: TRUE)
 			)
 			(11
-				(= bluePateState bluePateORDERED)
+				(= bluePateState orderedIt)
 				(HandsOff)
 				(Print 55 36)
 				(= seconds 3)
@@ -250,8 +262,8 @@
 				(User canControl: TRUE canInput: TRUE)
 				(Print 55 39)
 				(Print 55 40)
-				(aMachine posn: (ego x?) 176)
-				(= bluePateState bluePateSERVED)
+				(aPlate posn: (ego x?) 176)
+				(= bluePateState gotServed)
 			)
 			(15
 				(= currentStatus egoSTOPPED)
@@ -272,32 +284,46 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if
-		(Said 'explore,(look<in)/appetizer,pate,gravy,special')
+		(if (Said 'explore,(look<in)/appetizer,pate,gravy,special')
 			(cond 
-				((!= bluePateState bluePateSERVED) (DontHave))
-				((not (ego inRect: 35 181 151 189)) (NotClose))
-				(else (Print 55 1))
+				((!= bluePateState gotServed)
+					(DontHave)
+				)
+				((not (ego inRect: 35 181 151 189))
+					(NotClose)
+				)
+				(else
+					(Print 55 1)
+				)
 			)
 		)
 		(if (Said 'look>')
 			(if (Said '/appetizer,gravy,special')
 				(cond 
-					((!= bluePateState bluePateSERVED) (DontHave))
-					((not (ego inRect: 35 181 151 189)) (NotClose))
-					(else (Print 55 2))
+					((!= bluePateState gotServed)
+						(DontHave)
+					)
+					((not (ego inRect: 35 181 151 189))
+						(NotClose)
+					)
+					(else
+						(Print 55 2)
+					)
 				)
 			)
-			(if (Said '/carpet') (Print 55 3))
+			(if (Said '/carpet')
+				(Print 55 3)
+			)
 			(if (Said '/dispenser')
 				(Print 55 4)
 				(Print 55 5 #at -1 152)
 			)
-			(if (Said '/buffet,buffet,bar') (Print 55 6))
+			(if (Said '/buffet,buffet,bar')
+				(Print 55 6)
+			)
 			(if (Said '/bimbo,agent')
 				(Print 55 7)
 				(Print 55 8 #at -1 152)
@@ -306,15 +332,32 @@
 				(Print 55 9 #mode teJustCenter)
 				(Print 55 10)
 			)
-			(if (Said '[/airport,brick]') (Print 55 11))
+			(if (Said '[/airport,brick]')
+				(Print 55 11)
+			)
 		)
-		(if (Said 'ask,buy/menu') (Print 55 12) (Print 55 13))
+		(if (Said 'ask,buy/menu')
+			(Print 55 12)
+			(Print 55 13)
+		)
 		(if (Said 'call/bimbo,agent')
 			(cond 
-				((ego has: iBobbyPin) (Print 55 14) (Print 55 15))
-				((== bluePateState bluePateSERVED) (Print 55 16) (Print 55 17 #at -1 152))
-				((and bluePateState (< bluePateState bluePateSERVED)) (Print 55 18) (Print 55 19 #at -1 152))
-				(else (Print 55 20) (Print 55 21))
+				((ego has: iBobbyPin)
+					(Print 55 14)
+					(Print 55 15)
+				)
+				((== bluePateState gotServed)
+					(Print 55 16)
+					(Print 55 17 #at -1 152)
+				)
+				((and bluePateState (< bluePateState gotServed))
+					(Print 55 18)
+					(Print 55 19 #at -1 152)
+				)
+				(else
+					(Print 55 20)
+					(Print 55 21)
+				)
 			)
 		)
 		(if (Said 'buy,buy/special,appetizer')
@@ -327,40 +370,73 @@
 					(Print 55 22)
 					(Print 55 23 #at -1 152)
 				)
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not (ego inRect: 35 181 151 189)) (NotClose))
-				(else (self changeState: 11))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 35 181 151 189))
+					(NotClose)
+				)
+				(else
+					(self changeState: 11)
+				)
 			)
 		)
 		(if (Said 'get/special,appetizer')
 			(cond 
-				((!= currentStatus egoNORMAL) (NotNow))
-				((< bluePateState bluePateSERVED) (Print 55 24))
-				((not (ego inRect: 35 181 151 189)) (NotClose))
-				(else (Print 55 25))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((< bluePateState gotServed)
+					(Print 55 24)
+				)
+				((not (ego inRect: 35 181 151 189))
+					(NotClose)
+				)
+				(else
+					(Print 55 25)
+				)
 			)
 		)
 		(if (Said 'eat/special,appetizer')
 			(cond 
-				((!= currentStatus egoNORMAL) (NotNow))
-				((== bluePateState bluePatePINREMOVED) (Print 55 26))
-				((!= bluePateState bluePateSERVED) (Print 55 27))
-				((not (ego inRect: 35 181 151 189)) (NotClose))
-				(else (self changeState: 15))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((== bluePateState removedPin)
+					(Print 55 26)
+				)
+				((!= bluePateState gotServed)
+					(Print 55 27)
+				)
+				((not (ego inRect: 35 181 151 189))
+					(NotClose)
+				)
+				(else
+					(self changeState: 15)
+				)
 			)
 		)
-		(if (Said 'eat/noword') (Print 55 28))
-		(if
-		(Said 'explore,explore,get/gravy,special,bobbypin')
+		(if (Said 'eat/noword')
+			(Print 55 28)
+		)
+		(if (Said 'explore,explore,get/gravy,special,bobbypin')
 			(cond 
-				((not ((inventory at: iBobbyPin) ownedBy: curRoomNum)) (AlreadyTook))
-				((!= bluePateState bluePateSERVED) (Print 55 29))
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not (ego inRect: 35 181 151 189)) (NotClose))
+				((not ((inventory at: iBobbyPin) ownedBy: curRoomNum))
+					(AlreadyTook)
+				)
+				((!= bluePateState gotServed)
+					(Print 55 29)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 35 181 151 189))
+					(NotClose)
+				)
 				(else
 					(ego get: iBobbyPin)
-					(= bluePateState bluePatePINREMOVED)
-					(aMachine posn: 999 999)
+					(= bluePateState removedPin)
+					(aPlate posn: 999 999)
 					(theGame changeScore: 7)
 					(Print 55 30 #draw)
 				)
@@ -368,27 +444,38 @@
 		)
 		(if
 			(or
-				(Said 'buy,get/sidewalk')
+				(Said 'buy,get/insurance,parachute')	;EO: fixed said spec
 				(Said 'apply/dispenser')
 				(Said 'conceal/buck/dispenser')
 			)
 			(cond 
-				((!= currentStatus egoNORMAL) (NotNow))
-				((ego inRect: 272 178 287 186) (Print 55 31))
-				((not (ego inRect: 248 150 275 172)) (NotClose))
-				((not ((inventory at: iParachute) ownedBy: curRoomNum)) (Print 55 32) (Print 55 33 #at -1 152))
-				(else (self changeState: 5))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((ego inRect: 272 178 287 186)
+					(Print 55 31)
+				)
+				((not (ego inRect: 248 150 275 172))
+					(NotClose)
+				)
+				((not ((inventory at: iParachute) ownedBy: curRoomNum))
+					(Print 55 32)
+					(Print 55 33 #at -1 152)
+				)
+				(else
+					(self changeState: 5)
+				)
 			)
 		)
 	)
 )
 
 (instance waitressScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 1 3)))
+			(0
+				(= seconds (Random 1 3))
+			)
 			(1
 				(= waitressX (Random 5 150))
 				(aWaitress
@@ -411,7 +498,9 @@
 					setCycle: BegLoop self
 				)
 			)
-			(4 (= seconds (Random 2 5)))
+			(4
+				(= seconds (Random 2 5))
+			)
 			(5
 				(switch (Random 1 7)
 					(1
@@ -430,11 +519,16 @@
 							setCycle: EndLoop self
 						)
 					)
-					(else  (self changeState: 8))
+					(else
+						(self changeState: 8)
+					)
 				)
 			)
 			(6
-				(aWaitress setLoop: (+ (aWaitress loop?) 1) setCycle: Forward)
+				(aWaitress
+					setLoop: (+ (aWaitress loop?) 1)
+					setCycle: Forward
+				)
 				(= cycles (Random 30 50))
 			)
 			(7
@@ -453,7 +547,9 @@
 				)
 				(= seconds (Random 1 3))
 			)
-			(9 (self changeState: 0))
+			(9
+				(self changeState: 0)
+			)
 			(10
 				(= seconds (= cycles 0))
 				(aWaitress
@@ -474,8 +570,6 @@
 )
 
 (instance sidewalkNorthScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -490,8 +584,6 @@
 )
 
 (instance sidewalkSouthScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

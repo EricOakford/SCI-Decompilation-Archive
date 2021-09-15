@@ -19,10 +19,10 @@
 (local
 	drowningView
 	henchwomanAppeared
-	local2
+	henchwomanWaiting
 	oldEgoBase
 	drowningInLeisureSuit
-	canFollowHenchwoman
+	henchwomanBeckons
 )
 (instance mDiving of Sound
 	(properties
@@ -94,7 +94,7 @@
 		)
 		(self setRegions: SHIP setScript: rm34Script)
 		(if (== currentEgoView 132)
-			(self setRegions: 8)
+			(self setRegions: HENCHWOMAN)
 			(= henchView 311)
 			(Load VIEW henchView)
 			(aHench
@@ -160,7 +160,7 @@
 			(self changeState: 1)
 		)
 		(if (== SOUTH (ego edgeHit?))
-			(if (== local2 0)
+			(if (== henchwomanWaiting 0)
 				(curRoom newRoom: 31)
 			else
 				(Print 34 0)
@@ -169,9 +169,9 @@
 				(curRoom newRoom: 95)
 			)
 		)
-		(if (and henchwomanIsHere canFollowHenchwoman (> (ego y?) 181))
-			(= canFollowHenchwoman FALSE)
-			(= local2 1)
+		(if (and henchwomanIsHere henchwomanBeckons (> (ego y?) 181))
+			(= henchwomanBeckons FALSE)
+			(= henchwomanWaiting 1)
 			(curRoom south: 95)
 			(Print 34 2)
 			(HandsOff)
@@ -538,7 +538,7 @@
 				else
 					(aHench setMotion: MoveTo 155 129 self)
 					(= henchwomanIsHere TRUE)
-					(NotifyScript 8 1)
+					(NotifyScript HENCHWOMAN 1)
 				)
 			)
 			(3
@@ -552,7 +552,7 @@
 			(5
 				(Print 34 36)
 				(aHench setMotion: MoveTo 155 129 self)
-				(= canFollowHenchwoman TRUE)
+				(= henchwomanBeckons TRUE)
 			)
 			(6
 				(aHench setMotion: MoveTo 155 234 self)
@@ -564,7 +564,7 @@
 				(aHench dispose:)
 				(= henchView 0)
 				(= henchwomanIsHere FALSE)
-				(= canFollowHenchwoman FALSE)
+				(= henchwomanBeckons FALSE)
 			)
 		)
 	)

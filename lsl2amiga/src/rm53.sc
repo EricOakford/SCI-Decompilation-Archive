@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 53)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Door)
 (use AirplaneActor)
@@ -26,7 +26,7 @@
 	)
 )
 
-(instance rm53 of Rm
+(instance rm53 of Room
 	(properties
 		picture 53
 		horizon 5
@@ -35,98 +35,115 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 513)
-		(Load rsVIEW 514)
-		(Load rsVIEW 511)
+		(Load VIEW 513)
+		(Load VIEW 514)
+		(Load VIEW 511)
 		(super init:)
 		(addToPics add: aAd aPlant aPainting doit:)
 		(aConveyor4
 			cycleSpeed: 1
 			setPri: 3
-			setCycle: Fwd
-			isExtra: 1
+			setCycle: Forward
+			isExtra: TRUE
 			init:
 		)
 		(aConveyor3
 			cycleSpeed: 1
 			setPri: 4
-			setCycle: Fwd
-			isExtra: 1
+			setCycle: Forward
+			isExtra: TRUE
 			init:
 		)
 		(aConveyor2
 			cycleSpeed: 1
 			setPri: 4
-			setCycle: Fwd
-			isExtra: 1
+			setCycle: Forward
+			isExtra: TRUE
 			init:
 		)
 		(aConveyor1
 			cycleSpeed: 1
-			setCycle: Fwd
+			setCycle: Forward
 			setPri: 10
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
-		(aAgentNear setPri: 10 stopUpd: init:)
-		(aAgentFar setPri: 1 stopUpd: init:)
+		(aAgentNear
+			setPri: 10
+			stopUpd:
+			init:
+		)
+		(aAgentFar
+			setPri: 1
+			stopUpd:
+			init:
+		)
 		(aTraveler
 			setStep: 1 1
 			setPri: 2
 			illegalBits: 0
 			init:
+			;setScript: travelerScript
 			hide:
 		)
-		(aPlane startX: 208 startY: 23 endX: 1 endY: 23 init:)
-		(cond 
-			((== prevRoomNum 54) (ego posn: 316 153))
-			((== prevRoomNum 52) (ego posn: 51 119))
-			(else (ego posn: 51 119))
+		(aPlane
+			startX: 208
+			startY: 23
+			endX: 1
+			endY: 23
+			init:
 		)
-		(self setRegions: 500 setScript: rm53Script)
-		(if (!= suitcaseBombState 1)
+		(cond 
+			((== prevRoomNum 54)
+				(ego posn: 316 153)
+			)
+			((== prevRoomNum 52)
+				(ego posn: 51 119)
+			)
+			(else
+				(ego posn: 51 119)
+			)
+		)
+		(self setRegions: AIRPORT setScript: rm53Script)
+		(if (!= suitcaseBombState bombHOLDING)
 			(NormalEgo)
 		else
-			(Load rsSOUND 5)
+			(Load SOUND 5)
 			(theSound play:)
 			(HandsOff)
-			(= currentStatus 7)
+			(= currentStatus egoSUITCASEBOMB)
 			(rm53Script changeState: 9)
 		)
 		(ego init:)
 		(aDoor
 			setPri: 11
 			roomCtrl: 0
-			locked: (if (== prevRoomNum 54) 0 else 1)
-			msgLook:
-				{There is a barely perceptible, blue gate in the east wall under that painting.}
-			msgLookLock:
-				{The gate is controlled by the Customs Official standing behind the counter.}
-			msgLocked:
-				{The gate is locked. Try talking to the friendly looking gentleman behind the counter.}
+			locked: (if (== prevRoomNum 54) FALSE else TRUE)
+			msgLook: {There is a barely perceptible, blue gate in the east wall under that painting.}
+			msgLookLock: {The gate is controlled by the Customs Official standing behind the counter.}
+			msgLocked: {The gate is locked. Try talking to the friendly looking gentleman behind the counter.}
 			msgExcept: {...except it's locked!}
 			msgFunny: {Most people never knock on a gate!}
-			msgCloser:
-				{When the man releases the gate, it opens just by walking near it.}
+			msgCloser: {When the man releases the gate, it opens just by walking near it.}
 			init:
 		)
 	)
 	
 	(method (dispose)
-		(DisposeScript 992)
+		;(DisposeScript MOTION)	;??? Motion shouldn't be disposed!
 		(super dispose:)
 	)
 )
 
 (instance rm53Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 1) $0004) (curRoom newRoom: 52))
+		(if (& (ego onControl: origin) cGREEN)
+			(curRoom newRoom: 52)
+		)
 	)
 	
-	(method (changeState newState &tmp inventoryFirst temp1)
+	(method (changeState newState &tmp node obj)
 		(switch (= state newState)
 			(1
 				(HandsOff)
@@ -135,7 +152,7 @@
 				(= seconds 3)
 			)
 			(2
-				(aAgentNear setCycle: Fwd)
+				(aAgentNear setCycle: Forward)
 				(= seconds 3)
 			)
 			(3
@@ -144,7 +161,7 @@
 				(= seconds 3)
 			)
 			(4
-				(aAgentNear setCycle: Fwd)
+				(aAgentNear setCycle: Forward)
 				(= seconds 3)
 			)
 			(5
@@ -154,30 +171,30 @@
 			)
 			(6
 				(Print 53 21)
-				(= inventoryFirst (inventory first:))
-				(while inventoryFirst
-					(if
-					((= temp1 (NodeValue inventoryFirst)) ownedBy: ego)
-						(temp1 showSelf:)
+				(for ((= node (inventory first:))) node ((= node (inventory next: node)))
+					(if ((= obj (NodeValue node)) ownedBy: ego)
+						(obj showSelf:)
 					)
-					(= inventoryFirst (inventory next: inventoryFirst))
 				)
 				(Print 53 22)
 				(= seconds 3)
 			)
 			(7
-				(aAgentNear setCycle: Fwd)
+				(aAgentNear setCycle: Forward)
 				(= seconds 3)
 			)
 			(8
-				(User canControl: 1 canInput: 1)
+				(User canControl: TRUE canInput: TRUE)
 				(aAgentNear setCel: 0 stopUpd:)
 				(ego setLoop: -1)
-				(if (ego has: 17) (Print 53 23) (Print 53 24))
+				(if (ego has: iKnife)
+					(Print 53 23)
+					(Print 53 24)
+				)
 				(Print 53 25 #draw)
 				(Print 53 26)
 				(Print (Format @str 53 27 tritePhrase))
-				(aDoor locked: 0)
+				(aDoor locked: FALSE)
 			)
 			(9
 				(ego
@@ -197,45 +214,59 @@
 		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+	(method (handleEvent event &tmp i)
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'give,look,throw,conceal,conceal>')
 			(cond 
 				(
 					(or
-						(not (= inventorySaidMe (inventory saidMe:)))
-						(not (ego has: (inventory indexOf: inventorySaidMe)))
+						(not (= i (inventory saidMe:)))
+						(not (ego has: (inventory indexOf: i)))
 					)
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
-				((not (ego inRect: 171 143 198 149)) (NotClose))
-				((== (inventory indexOf: inventorySaidMe) 17) (Print 53 0))
-				((!= (inventory indexOf: inventorySaidMe) 7) (Print 53 1))
-				((== currentEgoView 149) (Print 53 2) (Print 53 3))
+				((not (ego inRect: 171 143 198 149))
+					(NotClose)
+				)
+				((== (inventory indexOf: i) iKnife)
+					(Print 53 0)
+				)
+				((!= (inventory indexOf: i) iPassport)
+					(Print 53 1)
+				)
+				((== currentEgoView 149)
+					(Print 53 2)
+					(Print 53 3)
+				)
 				((not passedCustoms)
-					(= passedCustoms 1)
+					(= passedCustoms TRUE)
 					(theGame changeScore: 5)
 					(self changeState: 1)
 				)
 				(else
-					(if (ego has: 17)
+					(if (ego has: iKnife)
 						(Print 53 4)
 						(Print 53 5)
 						(Print (Format @str 53 6 tritePhrase))
 					else
 						(Print (Format @str 53 7 tritePhrase))
 					)
-					(aDoor locked: 0)
+					(aDoor locked: FALSE)
 				)
 			)
 		)
 		(if (Said 'look>')
-			(if (Said '/man,agent') (Print 53 8))
-			(if (Said '/art') (Print 53 9))
-			(if (Said '/belt,open,hole') (Print 53 10))
+			(if (Said '/man,agent')
+				(Print 53 8)
+			)
+			(if (Said '/art')
+				(Print 53 9)
+			)
+			(if (Said '/belt,open,hole')
+				(Print 53 10)
+			)
 			(if (Said '[/airport,building,belt]')
 				(Print 53 11)
 				(Print 53 12)
@@ -248,8 +279,12 @@
 			)
 			(Print 53 13)
 		)
-		(if (Said '/bathing') (Print 53 14))
-		(if (Said 'open/door,door') (Print 53 15))
+		(if (Said '/bathing')
+			(Print 53 14)
+		)
+		(if (Said 'open/door,door')
+			(Print 53 15)
+		)
 		(if (Said 'call/man,agent')
 			(Print (Format @str 53 16 introductoryPhrase))
 			(Print 53 17)
@@ -258,11 +293,11 @@
 )
 
 (instance travelerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(aTraveler
 					posn: 128 36
@@ -275,22 +310,22 @@
 				(aTraveler
 					setLoop: (+ (aTraveler loop?) 1)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(aAgentFar setCycle: End self)
+				(aAgentFar setCycle: EndLoop self)
 			)
 			(4
-				(aAgentFar setLoop: 2 setCycle: Fwd)
+				(aAgentFar setLoop: 2 setCycle: Forward)
 				(= seconds 10)
 			)
 			(5
-				(aAgentFar setLoop: 1 setCel: 255 setCycle: Beg self)
+				(aAgentFar setLoop: 1 setCel: 255 setCycle: BegLoop self)
 			)
 			(6
 				(aAgentFar stopUpd:)
-				(aTraveler setCycle: Beg self)
+				(aTraveler setCycle: BegLoop self)
 			)
 			(7
 				(aTraveler
@@ -300,16 +335,14 @@
 				)
 			)
 			(8
-				(aTraveler
-					setLoop: (if (== (aTraveler loop?) 3) 5 else 3)
-				)
+				(aTraveler setLoop: (if (== (aTraveler loop?) 3) 5 else 3))
 				(self changeState: 0)
 			)
 		)
 	)
 )
 
-(instance aAd of PV
+(instance aAd of PicView
 	(properties
 		y 157
 		x 25
@@ -319,7 +352,7 @@
 	)
 )
 
-(instance aPlant of PV
+(instance aPlant of PicView
 	(properties
 		y 57
 		x 73
@@ -330,7 +363,7 @@
 	)
 )
 
-(instance aPainting of PV
+(instance aPainting of PicView
 	(properties
 		y 117
 		x 301
@@ -393,13 +426,13 @@
 	)
 )
 
-(instance aTraveler of Act
+(instance aTraveler of Actor
 	(properties
 		y 36
 		x 128
 		view 514
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 

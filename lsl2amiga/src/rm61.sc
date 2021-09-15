@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 61)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Extra)
@@ -13,15 +13,15 @@
 	rm61 0
 )
 
-(instance rm61 of Rm
+(instance rm61 of Room
 	(properties
 		picture 61
 	)
 	
 	(method (init)
-		(Load rsVIEW 100)
-		(Load rsVIEW 661)
-		(Load rsVIEW 603)
+		(Load VIEW vEgo)
+		(Load VIEW 661)
+		(Load VIEW 603)
 		(super init:)
 		(NormalEgo)
 		(addToPics
@@ -70,17 +70,24 @@
 			maxCycles: 31
 			init:
 		)
-		(self setRegions: 600 setScript: rm61Script)
-		(aCockDoor setPri: 5 stopUpd: init:)
+		(self setRegions: AIRPLANE setScript: rm61Script)
+		(aCockDoor
+			setPri: 5
+			stopUpd:
+			init:
+		)
 		(if (== prevRoomNum 62)
-			(ego observeControl: 16384 loop: 1 posn: 300 101)
+			(ego observeControl: cYELLOW loop: 1 posn: 300 101)
 			(addToPics add: aMainDoor doit:)
 		else
-			(Load rsVIEW 23)
-			(aStewardess stopUpd: init:)
+			(Load VIEW 23)
+			(aStewardess
+				stopUpd:
+				init:
+			)
 			(ego loop: 3 posn: 42 143)
 			(HandsOff)
-			(= currentStatus 9)
+			(= currentStatus egoBOARDPLANE)
 			(rm61Script changeState: 1)
 		)
 		(ego init:)
@@ -88,22 +95,26 @@
 )
 
 (instance rm61Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== state 17) (ShakeScreen 1 (Random 1 3)))
-		(if (& (ego onControl:) $0004) (curRoom newRoom: 62))
+		(if (== state 17)
+			(ShakeScreen 1 (Random 1 3))
+		)
+		(if (& (ego onControl:) cGREEN)
+			(curRoom newRoom: 62)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds 2))
+			(1
+				(= seconds 2)
+			)
 			(2
 				(ego setMotion: MoveTo 53 117 self)
 			)
 			(3
-				(aStewardess setCycle: Fwd)
+				(aStewardess setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
@@ -113,19 +124,19 @@
 				(= seconds 3)
 			)
 			(5
-				(aStewardess setCycle: Fwd)
+				(aStewardess setCycle: Forward)
 				(= seconds 3)
 			)
 			(6
 				(aStewardess setCel: 0)
 				(Print 61 9 #draw)
-				(ego put: 23 -1)
+				(ego put: iAirlineTicket -1)
 				(Print 61 10)
 				(Print 61 11)
 				(= seconds 3)
 			)
 			(7
-				(aStewardess setCycle: Fwd)
+				(aStewardess setCycle: Forward)
 				(= seconds 3)
 			)
 			(8
@@ -139,22 +150,24 @@
 			(9
 				(ego setMotion: MoveTo 103 102 self)
 			)
-			(10 (= seconds 3))
+			(10
+				(= seconds 3)
+			)
 			(11
 				(Print 61 16)
 				(ego setMotion: MoveTo 326 102)
 			)
 			(12
 				(HandsOff)
-				(= currentStatus 1000)
+				(= currentStatus egoSTOPPED)
 				(Ok)
-				(aCockDoor setCycle: End self)
+				(aCockDoor setCycle: EndLoop self)
 			)
 			(13
 				(ego illegalBits: 0 setMotion: MoveTo 0 102 self)
 			)
 			(14
-				(aCockDoor setCycle: Beg self)
+				(aCockDoor setCycle: BegLoop self)
 			)
 			(15
 				(Print 61 17)
@@ -165,17 +178,18 @@
 				(Print 61 19)
 				(= seconds 3)
 			)
-			(17 (= seconds 3))
+			(17
+				(= seconds 3)
+			)
 			(18
 				(Print 61 20)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
@@ -186,7 +200,9 @@
 					(NotClose)
 				)
 			)
-			(if (Said '/door') (Print 61 1))
+			(if (Said '/door')
+				(Print 61 1)
+			)
 			(if (Said '[/children,man,bimbo,airline,airport]')
 				(Print 61 2)
 				(Print 61 3)
@@ -198,81 +214,89 @@
 		)
 		(if (Said 'open/door')
 			(cond 
-				((!= currentStatus 0) (NotNow))
-				((& (ego onControl:) $0010) (Print 61 6))
-				((not (& (ego onControl:) $0008)) (NotClose))
-				(else (self changeState: 12))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((& (ego onControl:) cRED)
+					(Print 61 6)
+				)
+				((not (& (ego onControl:) cCYAN))
+					(NotClose)
+				)
+				(else
+					(self changeState: 12)
+				)
 			)
 		)
 	)
 )
 
-(instance aView1 of PV
+(instance aView1 of PicView
 	(properties
 		y 75
 		x 254
 		view 661
 		cel 2
 		priority 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView2 of PV
+(instance aView2 of PicView
 	(properties
 		y 75
 		x 205
 		view 661
 		cel 3
 		priority 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView3 of PV
+(instance aView3 of PicView
 	(properties
 		y 76
 		x 151
 		view 661
 		cel 4
 		priority 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView4 of PV
+(instance aView4 of PicView
 	(properties
 		y 90
 		x 206
 		view 661
 		cel 1
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView5 of PV
+(instance aView5 of PicView
 	(properties
 		y 91
 		x 261
 		view 661
 		cel 4
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView6 of PV
+(instance aView6 of PicView
 	(properties
 		y 91
 		x 150
 		view 661
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView7 of PV
+(instance aView7 of PicView
 	(properties
 		y 119
 		x 157
@@ -280,11 +304,11 @@
 		loop 1
 		cel 4
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView8 of PV
+(instance aView8 of PicView
 	(properties
 		y 119
 		x 286
@@ -292,11 +316,11 @@
 		loop 1
 		cel 5
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView9 of PV
+(instance aView9 of PicView
 	(properties
 		y 120
 		x 223
@@ -304,22 +328,22 @@
 		loop 1
 		cel 3
 		priority 8
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView10 of PV
+(instance aView10 of PicView
 	(properties
 		y 137
 		x 152
 		view 661
 		loop 1
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView11 of PV
+(instance aView11 of PicView
 	(properties
 		y 137
 		x 288
@@ -327,11 +351,11 @@
 		loop 1
 		cel 2
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView12 of PV
+(instance aView12 of PicView
 	(properties
 		y 138
 		x 226
@@ -339,11 +363,11 @@
 		loop 1
 		cel 1
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView13 of PV
+(instance aView13 of PicView
 	(properties
 		y 77
 		x 189
@@ -351,11 +375,11 @@
 		loop 2
 		cel 1
 		priority 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView14 of PV
+(instance aView14 of PicView
 	(properties
 		y 93
 		x 239
@@ -363,22 +387,22 @@
 		loop 2
 		cel 2
 		priority 5
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView15 of PV
+(instance aView15 of PicView
 	(properties
 		y 110
 		x 188
 		view 661
 		loop 2
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView16 of PV
+(instance aView16 of PicView
 	(properties
 		y 110
 		x 255
@@ -386,11 +410,11 @@
 		loop 2
 		cel 1
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aView17 of PV
+(instance aView17 of PicView
 	(properties
 		y 129
 		x 279
@@ -398,18 +422,18 @@
 		loop 2
 		cel 2
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMainDoor of PV
+(instance aMainDoor of PicView
 	(properties
 		y 156
 		x 38
 		view 603
 		loop 1
 		priority 15
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -445,7 +469,7 @@
 		y 103
 		x 41
 		view 603
-		signal $4000
+		signal ignrAct
 	)
 )
 

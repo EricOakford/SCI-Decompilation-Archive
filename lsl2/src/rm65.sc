@@ -37,8 +37,7 @@
 			addToPic:
 		)
 		(= numClouds (Random 2 6))
-		(= i 0)
-		(while (< i numClouds)
+		(for ((= i 0)) (< i numClouds) ((++ i))
 			((View new:)
 				view: 620
 				cel: (Random 0 10)
@@ -46,7 +45,6 @@
 				posn: (Random -10 330) (Random 5 120)
 				addToPic:
 			)
-			(++ i)
 		)
 		(self setScript: rm65Script)
 		(ego ignoreHorizon: posn: 144 -21)
@@ -63,8 +61,6 @@
 )
 
 (instance rm65Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -83,7 +79,10 @@
 					setCycle: EndLoop self
 				)
 			)
-			(2 (ego hide:) (= seconds 3))
+			(2
+				(ego hide:)
+				(= seconds 3)
+			)
 			(3
 				(Print 65 12)
 				(if (Random 0 1)
@@ -121,26 +120,34 @@
 					setPri: 2
 				)
 			)
-			(7 (ego hide:) (= seconds 3))
-			(8 (curRoom newRoom: 70))
+			(7
+				(ego hide:)
+				(= seconds 3)
+			)
+			(8
+				(curRoom newRoom: 70)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/island')
+			(if (Said '/island,mountain')	;EO: fixed said spec
 				(if (== currentStatus egoFALLING)
 					(Print 65 0)
 				else
 					(Print 65 1)
 				)
 			)
-			(if (Said '/fluid,lagoon,lagoon') (Print 65 2))
-			(if (Said '/cloud') (Print 65 3))
+			(if (Said '/fluid,lagoon,lagoon')
+				(Print 65 2)
+			)
+			(if (Said '/cloud')
+				(Print 65 3)
+			)
 			(if (Said '[/airport,around,cloud]')
 				(if (== currentStatus egoFALLING)
 					(Print 65 4)
@@ -161,12 +168,17 @@
 				)
 			)
 		)
-		(if
-		(Said '(conceal<on),wear,afix,buckle,afix/parachute')
+		(if (Said '(conceal<on),wear,afix,buckle,afix/parachute')
 			(cond 
-				((== wearingParachute TRUE) (Print 65 9))
-				((ego has: iParachute) (Print 65 10))
-				(else (Print 65 11))
+				((== wearingParachute TRUE)
+					(Print 65 9)
+				)
+				((ego has: iParachute)
+					(Print 65 10)
+				)
+				(else
+					(Print 65 11)
+				)
 			)
 		)
 	)

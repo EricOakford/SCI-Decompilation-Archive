@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 56)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Wander)
@@ -14,35 +14,41 @@
 )
 
 (local
-	local0
-	local1
-	local2
-	local3
-	local4
+	lineIndex
+	numLines
+	lineY
+	lineXEast
+	lineXWest
 )
-(instance rm56 of Rm
+(instance rm56 of Room
 	(properties
 		picture 56
 		horizon 1
 	)
 	
 	(method (init)
-		(Load rsVIEW 522)
+		(Load VIEW 522)
 		(super init:)
-		(= local2 166)
-		(= local3 109)
-		(= local4 136)
+		(= lineY 166)
+		(= lineXEast 109)
+		(= lineXWest 136)
 		(cond 
-			((> machineSpeed 60) (= local1 4))
-			((> machineSpeed 40) (= local1 3))
-			((> machineSpeed 20) (= local1 2))
-			(else (= local1 1))
+			((> machineSpeed 60)
+				(= numLines 4)
+			)
+			((> machineSpeed 40)
+				(= numLines 3)
+			)
+			((> machineSpeed 20)
+				(= numLines 2)
+			)
+			(else
+				(= numLines 1)
+			)
 		)
-		(= local0 1)
-		(while (<= local0 local1)
-			((Act new:) setScript: (eastLineScript new:))
-			((Act new:) setScript: (westLineScript new:))
-			(++ local0)
+		(for ((= lineIndex 1)) (<= lineIndex numLines) ((++ lineIndex))
+			((Actor new:) setScript: (eastLineScript new:))
+			((Actor new:) setScript: (westLineScript new:))
 		)
 		(aMind
 			setLoop: 1
@@ -52,35 +58,41 @@
 			init:
 		)
 		(HandsOff)
-		(= currentStatus 8)
-		(self setRegions: 500 setScript: rm56Script)
+		(= currentStatus egoINTERMINAL)
+		(self setRegions: AIRPORT setScript: rm56Script)
 	)
 	
 	(method (dispose)
-		(DisposeScript 970)
+		(DisposeScript WANDER)
 		(super dispose:)
 	)
 )
 
 (instance rm56Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 10))
-			(1 (Print 56 0) (= seconds 10))
-			(2 (Print 56 1) (= seconds 3))
+			(0
+				(= seconds 10)
+			)
+			(1
+				(Print 56 0)
+				(= seconds 10)
+			)
+			(2
+				(Print 56 1)
+				(= seconds 3)
+			)
 			(3
 				(aMind posn: 175 41 setMotion: Wander 99)
 				(= seconds 10)
 			)
 			(4
 				(aMind
-					ignoreControl: 16
+					ignoreControl: cRED
 					setMotion: MoveTo (aMind x?) -20
 				)
 				(Print 56 2 #draw)
@@ -95,8 +107,6 @@
 )
 
 (instance eastLineScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -110,8 +120,8 @@
 					ignoreHorizon:
 					ignoreActors:
 					posn:
-						(- 204 (* local0 (/ local3 local1)))
-						(+ 2 (* local0 (/ local2 local1)))
+						(- 204 (* lineIndex (/ lineXEast numLines)))
+						(+ 2 (* lineIndex (/ lineY numLines)))
 					init:
 				)
 				(self changeState: 1)
@@ -128,8 +138,6 @@
 )
 
 (instance westLineScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -143,8 +151,8 @@
 					ignoreHorizon:
 					ignoreActors:
 					posn:
-						(+ -58 (* local0 (/ local4 local1)))
-						(+ 2 (* local0 (/ local2 local1)))
+						(+ -58 (* lineIndex (/ lineXWest numLines)))
+						(+ 2 (* lineIndex (/ lineY numLines)))
 					init:
 				)
 				(self changeState: 1)
@@ -160,11 +168,11 @@
 	)
 )
 
-(instance aMind of Act
+(instance aMind of Actor
 	(properties
 		y 1041
 		x 175
 		view 522
-		signal $4000
+		signal ignrAct
 	)
 )

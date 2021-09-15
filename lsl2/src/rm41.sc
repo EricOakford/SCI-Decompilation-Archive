@@ -15,8 +15,8 @@
 (local
 	local0
 	bikiniInRoom
-	canFollowHenchwoman
-	henchwomanApproaches
+	henchwomanBeckons
+	joinedHenchwoman
 	aBikini
 	aHench
 )
@@ -155,7 +155,7 @@
 	(method (doit)
 		(super doit:)
 		(if (== EAST (ego edgeHit?))
-			(if (== henchwomanApproaches FALSE)
+			(if (== joinedHenchwoman FALSE)
 				(curRoom newRoom: 42)
 			else
 				(Print 41 0 #at 15 -1 #width 280)
@@ -163,9 +163,9 @@
 				(curRoom newRoom: 95)
 			)
 		)
-		(if (and henchwomanIsHere canFollowHenchwoman (> (ego x?) 300))
-			(= canFollowHenchwoman FALSE)
-			(= henchwomanApproaches TRUE)
+		(if (and henchwomanIsHere henchwomanBeckons (> (ego x?) 300))
+			(= henchwomanBeckons FALSE)
+			(= joinedHenchwoman TRUE)
 			(curRoom east: 95)
 			(Print 41 1)
 		)
@@ -301,7 +301,7 @@
 				else
 					(Print 41 22)
 				)
-				(= canFollowHenchwoman TRUE)
+				(= henchwomanBeckons TRUE)
 			)
 			(7
 				(= seconds 10)
@@ -310,7 +310,7 @@
 				(aHench dispose:)
 				(= henchView 0)
 				(= henchwomanIsHere FALSE)
-				(= canFollowHenchwoman FALSE)
+				(= henchwomanBeckons FALSE)
 			)
 		)
 	)

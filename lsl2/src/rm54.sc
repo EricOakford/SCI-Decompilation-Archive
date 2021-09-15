@@ -107,9 +107,15 @@
 			hide:
 		)
 		(cond 
-			((== prevRoomNum 53) (ego posn: 1 154))
-			((== prevRoomNum 55) (ego posn: 316 154))
-			(else (ego posn: 316 154))
+			((== prevRoomNum 53)
+				(ego posn: 1 154)
+			)
+			((== prevRoomNum 55)
+				(ego posn: 316 154)
+			)
+			(else
+				(ego posn: 316 154)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -118,7 +124,7 @@
 			setLoop: 2
 			posn: 15 156
 			setPri: 11
-			doorCtrl: 2
+			doorCtrl: cBLUE
 			doorBlock: cYELLOW
 			roomCtrl: 0
 			msgLook: {The low blue gate leads back to the Customs Inspection area.}
@@ -130,8 +136,6 @@
 )
 
 (instance rm54Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -166,12 +170,10 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if
-		(and (not (ego has: iSuitcase)) (Said 'look/bag,baggage'))
+		(if (and (not (ego has: iSuitcase)) (Said 'look/bag,baggage'))
 			(if ((inventory at: iSuitcase) ownedBy: curRoomNum)
 				(Print 54 0)
 			else
@@ -179,13 +181,21 @@
 			)
 		)
 		(if (Said 'look>')
-			(if (Said '/belt,baggage,bag,belt') (Print 54 2))
-			(if (Said '/man,cop') (Print 54 3))
+			(if (Said '/belt,baggage,bag,belt')
+				(Print 54 2)
+			)
+			(if (Said '/man,cop')
+				(Print 54 3)
+			)
 			(if (Said '/art')
 				(Print 54 4)
-				(if (> filthLevel 10) (Print 54 5 #at -1 152))
+				(if (> filthLevel 10)
+					(Print 54 5 #at -1 152)
+				)
 			)
-			(if (Said '[/airport]') (Print 54 6))
+			(if (Said '[/airport]')
+				(Print 54 6)
+			)
 		)
 		(if
 			(or
@@ -196,23 +206,47 @@
 		)
 		(if (Said 'carry,(get<up),get/bag,baggage')
 			(cond 
-				((not ((inventory at: iSuitcase) ownedBy: curRoomNum)) (Print 54 8))
-				((not (& (ego onControl:) $0008)) (NotClose))
-				((> (ego distanceTo: aBag) 23) (Print 54 9))
+				((not ((inventory at: iSuitcase) ownedBy: curRoomNum))
+					(Print 54 8)
+				)
+				((not (& (ego onControl:) cCYAN))
+					(NotClose)
+				)
+				((> (ego distanceTo: aBag) 23)
+					(Print 54 9)
+				)
 				(else
 					(aBag hide:)
-					(if (and (!= theBag 0) (!= theBag 8))
+					(if (and (!= theBag subliminalMessage) (!= theBag john3_16))
 						(Print 54 10 #at -1 20 #draw)
 					)
 					(switch theBag
-						(subliminalMessage (Print 54 11))
-						(huntingRifle (Print 54 12))
-						(dirtyUnderwear (Print 54 13))
-						(deadCat (Print 54 14) (Print 54 15))
-						(pairOfMaces (Print 54 16))
-						(tommyGun (Print 54 17))
-						(nothingOfInterest (Print 54 18))
-						(computer (Print 54 19) (Print 54 20))
+						(subliminalMessage
+							(Print 54 11)
+						)
+						(huntingRifle
+							(Print 54 12)
+						)
+						(dirtyUnderwear
+							(Print 54 13)
+						)
+						(deadCat
+							(Print 54 14)
+							(Print 54 15)
+						)
+						(pairOfMaces
+							(Print 54 16)
+						)
+						(tommyGun
+							(Print 54 17)
+						)
+						(nothingOfInterest
+							(Print 54 18)
+						)
+						(computer
+							(Print 54 19)
+							(Print 54 20)
+						)
 						(john3_16
 							(Print 54 21)
 						)
@@ -239,11 +273,11 @@
 )
 
 (instance travelerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(aTraveler
 					posn: 230 36
@@ -262,8 +296,6 @@
 )
 
 (instance bagScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -279,7 +311,9 @@
 				(aBag setLoop: 1 setMotion: MoveTo 303 123 self)
 			)
 			(2
-				(if (> (++ theBag) 12) (= theBag 0))
+				(if (> (++ theBag) theBomb)
+					(= theBag subliminalMessage)
+				)
 				(aBag hide:)
 				(self changeState: 0)
 			)

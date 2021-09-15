@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 73)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -15,7 +15,7 @@
 (local
 	local0
 )
-(instance rm73 of Rm
+(instance rm73 of Room
 	(properties
 		picture 73
 		horizon 50
@@ -25,36 +25,38 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 175)
+		(Load VIEW 175)
 		(super init:)
 		(if (== prevRoomNum 74)
 			(ego posn: 318 187)
 		else
 			(ego posn: 2 152)
-			(aMonkey illegalBits: 0 init:)
+			(aMonkey
+				illegalBits: 0
+				init:
+			)
 		)
 		(NormalEgo)
 		(ego view: 175 setStep: 2 1 init:)
-		(self setRegions: 700 setScript: rm73Script)
+		(self setRegions: ISLAND setScript: rm73Script)
 	)
 )
 
 (instance rm73Script of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			(
 				(and
-					(== passedQuicksand 0)
-					(or (== (ego edgeHit?) 2) (== (ego edgeHit?) 3))
+					(== passedQuicksand FALSE)
+					(or (== (ego edgeHit?) EAST) (== (ego edgeHit?) SOUTH))
 				)
-				(= passedQuicksand 1)
+				(= passedQuicksand TRUE)
 				(theGame changeScore: 5)
 				(Print 73 0)
 			)
-			(
-			(and (== currentStatus 0) (& (ego onControl:) $0040)) (self changeState: 3))
+			((and (== currentStatus egoNORMAL) (& (ego onControl:) cBROWN))
+				(self changeState: 3)
+			)
 		)
 		(super doit:)
 	)
@@ -66,7 +68,7 @@
 					(aMonkey
 						setStep: 1 1
 						setMotion: MoveTo 223 181
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -84,7 +86,7 @@
 				(Print 73 10 #at -1 130)
 			)
 			(3
-				(= currentStatus 1000)
+				(= currentStatus egoSTOPPED)
 				(HandsOff)
 				(ego
 					setLoop:
@@ -96,46 +98,56 @@
 						)
 					cycleSpeed: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(Print 73 11 #draw)
 			)
 			(4
-				(ego setLoop: 6 setCycle: Fwd cycleSpeed: 1)
+				(ego setLoop: 6 setCycle: Forward cycleSpeed: 1)
 				(= seconds 5)
 			)
 			(5
 				(Print 73 12)
 				(Print 73 13)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if (Said '/landscape') (Print 73 1))
-		(if (Said 'crawl,hop') (Print 73 2))
+		(if (Said '/landscape')
+			(Print 73 1)
+		)
+		(if (Said 'crawl,hop')
+			(Print 73 2)
+		)
 		(if (Said 'new,stair,disembark,climb,apply/boulder')
 			(Print 73 3)
 		)
-		(if
-		(and (cast contains: aMonkey) (Said '/chimpanzee'))
+		(if (and (cast contains: aMonkey) (Said '/chimpanzee'))
 			(Print 73 4)
 		)
-		(if (Said '/palm') (Print 73 5))
+		(if (Said '/palm')
+			(Print 73 5)
+		)
 		(if (Said 'look>')
-			(if (Said '/pattern') (Print 73 6))
-			(if (Said '/quicksand') (Print 73 7))
-			(if (Said '[/forest,carpet,airport]') (Print 73 8))
+			(if (Said '/pattern')
+				(Print 73 6)
+			)
+			(if (Said '/quicksand')
+				(Print 73 7)
+			)
+			(if (Said '[/forest,carpet,airport]')
+				(Print 73 8)
+			)
 		)
 	)
 )
 
-(instance aMonkey of Act
+(instance aMonkey of Actor
 	(properties
 		y 168
 		x 221

@@ -23,7 +23,7 @@
 	aGreenLine
 	aCyanLine
 	aCustomer
-	local8
+	ticketNum
 	linesCleared
 )
 (instance theSound of Sound
@@ -183,13 +183,19 @@
 			addToPic:
 		)
 		(cond 
-			((== prevRoomNum 53) (ego posn: 273 127))
-			((== prevRoomNum 50) (ego posn: 133 184))
-			((== prevRoomNum 0) (ego posn: 133 184))
+			((== prevRoomNum 53)
+				(ego posn: 273 127)
+			)
+			((== prevRoomNum 50)
+				(ego posn: 133 184)
+			)
+			((== prevRoomNum 0)
+				(ego posn: 133 184)
+			)
 		)
 		(self setRegions: AIRPORT setScript: rm52Script)
 		(if ((inventory at: iAirlineTicket) ownedBy: curRoomNum)
-			(= linesCleared 1)
+			(= linesCleared TRUE)
 		)
 		(if (< suitcaseBombState bombEXPLODING)
 			(Load VIEW 510)
@@ -293,11 +299,11 @@
 )
 
 (instance rm52Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (ego inRect: 279 100 333 137) (curRoom newRoom: 53))
+		(if (ego inRect: 279 100 333 137)
+			(curRoom newRoom: 53)
+		)
 	)
 	
 	(method (changeState newState)
@@ -324,7 +330,9 @@
 				(ego put: iSuitcase -1)
 				(curRoom newRoom: 152)
 			)
-			(6 (= seconds 5))
+			(6
+				(= seconds 5)
+			)
 			(7
 				(theGame changeScore: 15)
 				(Print 52 26)
@@ -333,11 +341,11 @@
 			)
 			(8
 				(Print 52 28 #draw)
-				(NormalEgo 2)
+				(NormalEgo loopS)
 			)
 			(9
 				(HandsOff)
-				(ego loop: 3)
+				(ego loop: loopN)
 				(Print 52 29 #draw)
 				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
@@ -413,7 +421,11 @@
 				(Print 52 69 #at -1 20 #time 4)
 				(Print 52 70 #at -1 20 #time 3)
 				(Print 52 71 #at -1 20 #time 2 #dispose)
-				(if (> filthLevel 4) (Print 52 72) else (Print 52 73))
+				(if (> filthLevel 4)
+					(Print 52 72)
+				else
+					(Print 52 73)
+				)
 				(aGreenAgent setCel: 0)
 				(= seconds 3)
 			)
@@ -428,26 +440,33 @@
 				(aGreenAgent setCel: 0 stopUpd:)
 				(ego get: iAirlineTicket)
 				(theGame changeScore: 5)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(SetRegionTimer rgAIRPORT 5 10)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
 			(if (Said '/man,children')
 				(cond 
-					(aBlueLine (Print 52 0))
-					(linesCleared (Print 52 1))
-					(else (Print 52 2))
+					(aBlueLine
+						(Print 52 0)
+					)
+					(linesCleared
+						(Print 52 1)
+					)
+					(else
+						(Print 52 2)
+					)
 				)
 			)
-			(if (and linesCleared (Said '/bimbo,agent')) (Print 52 3))
+			(if (and linesCleared (Said '/bimbo,agent'))
+				(Print 52 3)
+			)
 			(if (Said '/computer,schedule')
 				(Print 52 4)
 				(Print 52 5 #at -1 152)
@@ -462,34 +481,57 @@
 			)
 			(if (Said '[/airport,buffet]')
 				(cond 
-					(aBlueLine (Print 52 9))
-					(linesCleared (Print 52 10))
-					(else (Print 52 2))
+					(aBlueLine
+						(Print 52 9)
+					)
+					(linesCleared
+						(Print 52 10)
+					)
+					(else
+						(Print 52 2)
+					)
 				)
 			)
 		)
-		(if
-		(or (Said 'call/bimbo,agent') (Said 'get,buy/ticket'))
+		(if (or (Said 'call/bimbo,agent') (Said 'get,buy/ticket'))
 			(cond 
-				((not linesCleared) (Print 52 11))
-				((!= suitcaseBombState bombAFTEREXPLOSION) (Print 52 12))
-				((not ((inventory at: iAirlineTicket) ownedBy: curRoomNum)) (Print 52 13))
-				((not (ego inRect: 154 118 181 129)) (NotClose))
-				(else (self changeState: 9))
+				((not linesCleared)
+					(Print 52 11)
+				)
+				((!= suitcaseBombState bombAFTEREXPLOSION)
+					(Print 52 12)
+				)
+				((not ((inventory at: iAirlineTicket) ownedBy: curRoomNum))
+					(Print 52 13)
+				)
+				((not (ego inRect: 154 118 181 129))
+					(NotClose)
+				)
+				(else
+					(self changeState: 9)
+				)
 			)
 		)
 		(if (Said 'call/man,children')
 			(cond 
-				((not linesCleared) (Print 52 11))
+				((not linesCleared)
+					(Print 52 11)
+				)
 				((!= suitcaseBombState bombAFTEREXPLOSION)
 					(Print (Format @str 52 14 introductoryPhrase))
-					(if (> filthLevel 10) (Print 52 15) else (Print 52 16))
+					(if (> filthLevel 10)
+						(Print 52 15)
+					else
+						(Print 52 16)
+					)
 				)
 				((ego inRect: 154 118 181 129)
 					(Print (Format @str 52 17 introductoryPhrase))
 					(Print 52 18)
 				)
-				(else (NotClose))
+				(else
+					(NotClose)
+				)
 			)
 		)
 		(if (and (!= suitcaseBombState bombAFTEREXPLOSION) (Said '/line'))
@@ -499,11 +541,11 @@
 )
 
 (instance ticketScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp cmonIn)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 5)))
+			(0
+				(= seconds (Random 2 5))
+			)
 			(1
 				(aCustomer
 					posn: 161 227
@@ -512,28 +554,30 @@
 				)
 			)
 			(2
-				(= temp0 0)
-				(while (not temp0)
-					(switch (++ local8)
+				(= cmonIn FALSE)
+				(while (not cmonIn)
+					(switch (++ ticketNum)
 						(1
-							(if (not (& (ego onControl:) $0002))
+							(if (not (& (ego onControl:) cBLUE))
 								(self changeState: 9)
-								(= temp0 1)
+								(= cmonIn TRUE)
 							)
 						)
 						(2
-							(if (not (& (ego onControl:) $0004))
+							(if (not (& (ego onControl:) cGREEN))
 								(self changeState: 3)
-								(= temp0 1)
+								(= cmonIn TRUE)
 							)
 						)
 						(3
-							(if (not (& (ego onControl:) $0008))
+							(if (not (& (ego onControl:) cCYAN))
 								(self changeState: 15)
-								(= temp0 1)
+								(= cmonIn TRUE)
 							)
 						)
-						(else  (= local8 0))
+						(else
+							(= ticketNum 0)
+						)
 					)
 				)
 			)
@@ -545,7 +589,7 @@
 				(= seconds 3)
 			)
 			(5
-				(if (& (ego onControl:) $0004)
+				(if (& (ego onControl:) cGREEN)
 					(-- state)
 					(= cycles 10)
 				else
@@ -572,7 +616,7 @@
 				(= seconds 3)
 			)
 			(11
-				(if (& (ego onControl:) $0002)
+				(if (& (ego onControl:) cBLUE)
 					(-- state)
 					(= cycles 10)
 				else
@@ -599,7 +643,7 @@
 				(= seconds 3)
 			)
 			(17
-				(if (& (ego onControl:) $0008)
+				(if (& (ego onControl:) cCYAN)
 					(-- state)
 					(= cycles 10)
 				else

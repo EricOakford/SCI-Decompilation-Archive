@@ -24,10 +24,10 @@
 )
 
 (enum ;emergency exit door states
-	exitLOCKED
-	exitPICKED
-	exitHANDLETURNED
-	exitDOOROPEN
+	itsLocked
+	pickedIt
+	turnedIt
+	openedIt
 )
 
 (instance rm63 of Room
@@ -139,19 +139,16 @@
 			stopUpd:
 			init:
 		)
-		(NormalEgo 0)
+		(NormalEgo loopE)
 		(ego posn: 37 104 init: observeControl: cYELLOW)
-		(self setRegions: 600 setScript: rm63Script)
+		(self setRegions: AIRPLANE setScript: rm63Script)
 	)
 )
 
 (instance rm63Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== currentStatus egoNORMAL) (& (ego onControl:) $0002))
+		(if (and (== currentStatus egoNORMAL) (& (ego onControl:) cBLUE))
 			(curRoom newRoom: 62)
 		)
 	)
@@ -167,7 +164,9 @@
 				(aEmergencyExit cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(2
-				(aEmergencyExit setMotion: MoveTo 324 (aEmergencyExit y?) self)
+				(aEmergencyExit
+					setMotion: MoveTo 324 (aEmergencyExit y?) self
+				)
 				(Print 63 37 #draw)
 			)
 			(3
@@ -188,23 +187,27 @@
 			(4
 				(ego setCel: setStep: 5 5 setMotion: MoveTo 333 135 self)
 			)
-			(5 (curRoom newRoom: 64))
+			(5
+				(curRoom newRoom: 64)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if
-			(Said
-				'look,board,apply,open/(airport<bath),(airport<bath),bathroom'
-			)
+		(if (Said 'look,board,apply,open/(airport<bath),(airport<bath),bathroom')
 			(cond 
-				((ego inRect: 206 0 236 92) (Print 63 0))
-				((ego inRect: 242 90 254 102) (Print 63 1))
-				(else (Print 63 2))
+				((ego inRect: 206 0 236 92)
+					(Print 63 0)
+				)
+				((ego inRect: 242 90 254 102)
+					(Print 63 1)
+				)
+				(else
+					(Print 63 2)
+				)
 			)
 		)
 		(if (Said 'bang/door')
@@ -219,17 +222,29 @@
 			(Print 63 9)
 			(Print 63 10)
 		)
-		(if (Said '(blow<up),blow/cord') (Print 63 11))
+		(if (Said '(blow<up),blow/cord')
+			(Print 63 11)
+		)
 		(if (Said 'look>')
 			(if (Said '/door')
 				(cond 
-					((== emergencyExitState exitHANDLETURNED) (Print 63 12))
-					((== emergencyExitState exitPICKED) (Print 63 13))
-					(else (Print 63 14))
+					((== emergencyExitState turnedIt)
+						(Print 63 12)
+					)
+					((== emergencyExitState pickedIt)
+						(Print 63 13)
+					)
+					(else
+						(Print 63 14)
+					)
 				)
 			)
-			(if (Said '/carpet,ceiling') (Print 63 15))
-			(if (Said '/burn') (Print 63 16))
+			(if (Said '/carpet,ceiling')
+				(Print 63 15)
+			)
+			(if (Said '/burn')
+				(Print 63 16)
+			)
 			(if (Said '[/children,man,bimbo,airline,airport]')
 				(Print 63 17)
 				(Print 63 18)
@@ -241,14 +256,17 @@
 			(Print 63 20)
 			(Print 63 21)
 		)
-		(if
-			(Said
-				'(conceal<on),wear,afix,buckle,afix,apply/parachute'
-			)
+		(if (Said '(conceal<on),wear,afix,buckle,afix,apply/parachute')
 			(cond 
-				(wearingParachute (ItIs))
-				((not (ego has: iParachute)) (DontHave))
-				((!= currentStatus egoNORMAL) (NotNow))
+				(wearingParachute
+					(ItIs)
+				)
+				((not (ego has: iParachute))
+					(DontHave)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
 				(else
 					(Ok)
 					(Print 63 22)
@@ -260,29 +278,42 @@
 				)
 			)
 		)
-		(if
-			(and
-				wearingParachute
-				(Said 'alter,(get<off),drain/parachute')
-			)
+		(if (and wearingParachute (Said 'alter,(get<off),drain/parachute'))
 			(Ok)
 			(= wearingParachute FALSE)
 		)
-		(if
-		(Said 'drain,apply,conceal/rejuvenator/bolt,door,cord')
+		(if (Said 'drain,apply,conceal/rejuvenator/bolt,door,cord')
 			(cond 
-				((not (ego has: iHairRejuvenator)) (DontHave))
-				((not (ego inRect: 0 127 320 190)) (NotClose))
-				((!= currentStatus egoNORMAL) (NotNow))
-				(else (Print 63 23) (ego put: iHairRejuvenator -1) (theGame changeScore: -5))
+				((not (ego has: iHairRejuvenator))
+					(DontHave)
+				)
+				((not (ego inRect: 0 127 320 190))
+					(NotClose)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				(else
+					(Print 63 23)
+					(ego put: iHairRejuvenator -1)
+					(theGame changeScore: -5)
+				)
 			)
 		)
-		(if (Said '/gun/bolt,door,cord')
+		(if (Said '/knife/bolt,door,cord')
 			(cond 
-				((not (ego has: iKnife)) (DontHave))
-				((not (ego inRect: 0 127 320 190)) (NotClose))
-				((!= currentStatus egoNORMAL) (NotNow))
-				(else (Print 63 24))
+				((not (ego has: iKnife))
+					(DontHave)
+				)
+				((not (ego inRect: 0 127 320 190))
+					(NotClose)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				(else
+					(Print 63 24)
+				)
 			)
 		)
 		(if
@@ -292,36 +323,63 @@
 				(Said 'get/bolt')
 			)
 			(cond 
-				((not (ego inRect: 0 127 320 190)) (NotClose))
-				((not (ego has: iBobbyPin)) (Print 63 25) (Print 63 26 #at -1 152))
+				((not (ego inRect: 0 127 320 190))
+					(NotClose)
+				)
+				((not (ego has: iBobbyPin))
+					(Print 63 25)
+					(Print 63 26 #at -1 152)
+				)
 				(else
 					(theGame changeScore: 5)
 					(Print 63 27)
 					(Print 63 28)
-					(= emergencyExitState exitPICKED)
+					(= emergencyExitState pickedIt)
 					(ego put: iBobbyPin -1)
 				)
 			)
 		)
 		(if (Said 'jerk,apply,jerk,jerk/cord,cord,button')
 			(cond 
-				((not (ego inRect: 0 127 320 190)) (NotClose))
-				((== emergencyExitState exitPICKED) (Print 63 29) (= emergencyExitState exitHANDLETURNED))
-				((< emergencyExitState exitPICKED) (Print 63 30))
-				(else (Print 63 31))
+				((not (ego inRect: 0 127 320 190))
+					(NotClose)
+				)
+				((== emergencyExitState pickedIt)
+					(Print 63 29)
+					(= emergencyExitState turnedIt)
+				)
+				((< emergencyExitState pickedIt)
+					(Print 63 30)
+				)
+				(else
+					(Print 63 31)
+				)
 			)
 		)
 		(if (Said 'jerk,open/door')
 			(cond 
-				((ego inRect: 206 0 236 92) (Print 63 0))
-				((ego inRect: 242 90 254 102) (Print 63 32))
-				((not (ego inRect: 0 127 320 190)) (NotClose))
-				((== emergencyExitState exitHANDLETURNED) (= emergencyExitState exitDOOROPEN) (self changeState: 1))
-				((< emergencyExitState exitHANDLETURNED) (Print 63 33))
-				(else (Print 63 31))
+				((ego inRect: 206 0 236 92)
+					(Print 63 0)
+				)
+				((ego inRect: 242 90 254 102)
+					(Print 63 32)
+				)
+				((not (ego inRect: 0 127 320 190))
+					(NotClose)
+				)
+				((== emergencyExitState turnedIt)
+					(= emergencyExitState openedIt)
+					(self changeState: 1)
+				)
+				((< emergencyExitState turnedIt)
+					(Print 63 33)
+				)
+				(else
+					(Print 63 31)
+				)
 			)
 		)
-		(if (Said 'man,(ask<for)/cigarette')
+		(if (Said 'man,(ask<for)/cigarette')	;EO: fixed said spec
 			(Print 63 34)
 			(Print 63 35 #at -1 152)
 		)
@@ -329,11 +387,11 @@
 )
 
 (instance smokerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 1 5)))
+			(0
+				(= seconds (Random 1 5))
+			)
 			(1
 				(aSmoker1 startUpd: setCel: 0 setCycle: EndLoop self)
 			)
@@ -361,11 +419,9 @@
 )
 
 (instance johnScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (and (& (ego onControl:) $1000) (== state 0))
+		(if (and (& (ego onControl:) cLRED) (== state 0))
 			(johnScript changeState: 1)
 		)
 	)
@@ -412,7 +468,9 @@
 				(aJohnLight setCel: 1 forceUpd:)
 				(= seconds (Random 11 33))
 			)
-			(6 (= state 0))
+			(6
+				(= state 0)
+			)
 		)
 	)
 )

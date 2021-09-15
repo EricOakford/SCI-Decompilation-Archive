@@ -18,7 +18,7 @@
 	local0
 	spinachDipInRoom
 	henchwomanAppeared
-	canFollowHenchwoman
+	henchwomanBeckons
 )
 (instance rm35 of Room
 	(properties
@@ -139,8 +139,8 @@
 				(curRoom newRoom: 95)
 			)
 		)
-		(if (and henchwomanIsHere canFollowHenchwoman (> (ego y?) 146))
-			(= canFollowHenchwoman FALSE)
+		(if (and henchwomanIsHere henchwomanBeckons (> (ego y?) 146))
+			(= henchwomanBeckons FALSE)
 			(= currentStatus egoCAPTURED)
 			(= henchwomanAppeared TRUE)
 			(curRoom south: 95)
@@ -500,7 +500,7 @@
 			(4
 				(Print 35 42)
 				(aHench setMotion: MoveTo 155 234 self)
-				(= canFollowHenchwoman TRUE)
+				(= henchwomanBeckons TRUE)
 			)
 			(5
 				(= seconds 10)
@@ -509,7 +509,7 @@
 				(aHench dispose:)
 				(= henchView 0)
 				(= henchwomanIsHere FALSE)
-				(= canFollowHenchwoman FALSE)
+				(= henchwomanBeckons FALSE)
 			)
 		)
 	)

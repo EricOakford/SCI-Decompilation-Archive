@@ -16,7 +16,7 @@
 )
 
 (local
-	triedToEnterWrongSidewalk
+	wrongWayMsg
 	aSidewalkNorth
 	aSidewalkSouth
 	aPlane
@@ -91,10 +91,12 @@
 			locked: 1
 			doorState: 0
 			msgLook:
-				{This door is controlled by the gentleman behind the counter. He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
+				{This door is controlled by the gentleman behind the counter.
+				He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
 			msgLookLock: {Right now, it's locked up tight!}
 			msgLocked:
-				{This door is controlled by the gentleman behind the counter. He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
+				{This door is controlled by the gentleman behind the counter.
+				He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
 			msgExcept: {Have the man at the desk open it for you!}
 		)
 		((= aKid1 (Extra new:))
@@ -171,19 +173,21 @@
 )
 
 (instance rm57Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((& (ego onControl:) $0010) (self changeState: 2))
-			((& (ego onControl:) $0008)
-				(if (and (== currentStatus egoNORMAL) (== triedToEnterWrongSidewalk FALSE))
-					(= triedToEnterWrongSidewalk TRUE)
+			((& (ego onControl:) cRED)
+				(self changeState: 2)
+			)
+			((& (ego onControl:) cCYAN)
+				(if (and (== currentStatus egoNORMAL) (== wrongWayMsg FALSE))
+					(= wrongWayMsg TRUE)
 					(Print 57 0)
 				)
 			)
-			(else (= triedToEnterWrongSidewalk FALSE))
+			(else
+				(= wrongWayMsg FALSE)
+			)
 		)
 	)
 	
@@ -193,7 +197,7 @@
 				(ego setCel: 0 setMotion: MoveTo 186 175 self)
 			)
 			(1
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(ego observeControl: cGREEN cYELLOW)
 			)
 			(2
@@ -207,7 +211,9 @@
 					setMotion: MoveTo 129 234 self
 				)
 			)
-			(3 (curRoom newRoom: 55))
+			(3
+				(curRoom newRoom: 55)
+			)
 			(4
 				(HandsOff)
 				(theGame changeScore: 3)
@@ -228,13 +234,14 @@
 					setMotion: MoveTo 199 133 self
 				)
 			)
-			(7 (curRoom newRoom: 58))
+			(7
+				(curRoom newRoom: 58)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if
@@ -244,9 +251,15 @@
 				(Said 'give,finger,look,apply/ticket')
 			)
 			(cond 
-				((not (ego has: iAirlineTicket)) (DontHave))
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not (ego inRect: 185 140 244 152)) (NotClose))
+				((not (ego has: iAirlineTicket))
+					(DontHave)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 185 140 244 152))
+					(NotClose)
+				)
 				(else
 					(Print 57 1)
 					(if (== missedFlight TRUE)
@@ -273,14 +286,27 @@
 		)
 		(if (Said 'get/pamphlet')
 			(cond 
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not ((inventory at: iPamphlet) ownedBy: curRoomNum)) (Print 57 8))
-				((not (ego inRect: 159 140 195 152)) (NotClose))
-				(else (ego get: iPamphlet) (theGame changeScore: 11) (Print 57 9))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not ((inventory at: iPamphlet) ownedBy: curRoomNum))
+					(Print 57 8)
+				)
+				((not (ego inRect: 159 140 195 152))
+					(NotClose)
+				)
+				(else
+					(ego get: iPamphlet)
+					(theGame changeScore: 11)
+					(Print 57 9)
+				)
 			)
 		)
 		(if (Said 'look>')
-			(if (Said '/man,agent') (Print 57 10) (Print 57 11))
+			(if (Said '/man,agent')
+				(Print 57 10)
+				(Print 57 11)
+			)
 			(if (Said '/buffet')
 				(if ((inventory at: iPamphlet) ownedBy: curRoomNum)
 					(Print 57 12)
@@ -288,22 +314,28 @@
 					(Print 57 13)
 				)
 			)
-			(if (Said '/pamphlet') (Print 57 14))
+			(if (Said '/pamphlet')
+				(Print 57 14)
+			)
 			(if (Said '/children,bimbo')
-				(if (> filthLevel 4) (Print 57 15) else (Print 57 16))
+				(if (> filthLevel 4)
+					(Print 57 15)
+				else
+					(Print 57 16)
+				)
 			)
 			(if (Said '/computer')
 				(Print 57 17)
 				(Print 57 18 #at -1 152)
 			)
-			(if (Said '[/airport]') (Print 57 19))
+			(if (Said '[/airport]')
+				(Print 57 19)
+			)
 		)
 	)
 )
 
 (instance sidewalkNorthScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -318,8 +350,6 @@
 )
 
 (instance sidewalkSouthScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -334,8 +364,6 @@
 )
 
 (instance tumbleScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 2])
 		(switch (= state newState)
 			(0
@@ -352,7 +380,9 @@
 			(3
 				(aKid3 cycleSpeed: (Random 0 2) setCycle: EndLoop self)
 			)
-			(4 (self changeState: 0))
+			(4
+				(self changeState: 0)
+			)
 		)
 	)
 )

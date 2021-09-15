@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 50)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Door)
 (use Intrface)
@@ -20,7 +20,7 @@
 
 (local
 	menInRoom
-	triedToLeave
+	leaveMsg
 	roomState
 )
 (instance theSound of Sound
@@ -30,28 +30,36 @@
 	)
 )
 
-(instance rm50 of Rm
+(enum	;who's here
+	nobodyHere
+	copsHere
+	krishnasHere
+)
+
+(instance rm50 of Room
 	(properties
 		picture 50
 		horizon 1
 	)
 	
 	(method (init)
-		(Load rsVIEW 500)
-		(Load rsVIEW 501)
-		(Load rsVIEW 502)
-		(Load rsSCRIPT 985)
+		(Load VIEW 500)
+		(Load VIEW 501)
+		(Load VIEW 502)
+		(Load SCRIPT AVOIDER)
 		(super init:)
 		(addToPics add: aSign aEatSign aShitSign doit:)
 		(aRadar
 			setPri: 0
 			cycleSpeed: 1
-			setCycle: Fwd
-			isExtra: 1
+			setCycle: Forward
+			isExtra: TRUE
 			init:
 		)
-		(= menInRoom 0)
-		(if (== global111 1) (= currentEgoView 151))
+		(= menInRoom nobodyHere)
+		(if (== global111 1)
+			(= currentEgoView 151)
+		)
 		(NormalEgo)
 		(if (== prevRoomNum 52)
 			(ego posn: 159 121)
@@ -62,22 +70,22 @@
 		(aDoor
 			setPri: 8
 			entranceTo: 52
-			doorCtrl: 2
-			doorBlock: 16384
-			roomCtrl: 4
+			doorCtrl: cBLUE
+			doorBlock: cYELLOW
+			roomCtrl: cGREEN
 			msgLook: {Inside you see lines of businessmen waiting to buy tickets.}
 			init:
 		)
-		(self setRegions: 500 setScript: rm50Script)
+		(self setRegions: AIRPORT setScript: rm50Script)
 		(if (== currentEgoView 151)
-			(= currentStatus 1000)
+			(= currentStatus egoSTOPPED)
 			(= roomState 0)
-			(= menInRoom 1)
+			(= menInRoom copsHere)
 			(aHench1
 				view: 501
 				loop: 2
 				posn: 22 164
-				illegalBits: -32768
+				illegalBits: cWHITE
 				setStep: 4 3
 				init:
 			)
@@ -85,35 +93,35 @@
 				view: 502
 				loop: 2
 				posn: 298 164
-				illegalBits: -32768
+				illegalBits: cWHITE
 				setStep: 4 3
 				stopUpd:
 				init:
 			)
 		else
 			(addToPics add: aCop1 aCop2 doit:)
-			(if (!= gaveFlowerToKrishna 1)
+			(if (!= gaveFlowerToKrishna TRUE)
 				(= roomState 0)
-				(= menInRoom 2)
-				(Load rsVIEW 503)
-				(Load rsVIEW 504)
-				(Load rsVIEW 20)
-				(Load rsSOUND 117)
+				(= menInRoom krishnasHere)
+				(Load VIEW 503)
+				(Load VIEW 504)
+				(Load VIEW 20)
+				(Load SOUND 117)
 				(theSound play:)
 				(aHench1
 					view: 503
 					setLoop: 2
 					posn: 141 125
-					illegalBits: -32768
-					setCycle: Fwd
+					illegalBits: cWHITE
+					setCycle: Forward
 					init:
 				)
 				(aHench2
 					view: 504
 					setLoop: 2
 					posn: 181 125
-					illegalBits: -32768
-					setCycle: Fwd
+					illegalBits: cWHITE
+					setCycle: Forward
 					init:
 				)
 				(aBigFace
@@ -121,55 +129,47 @@
 					setLoop: 6
 					posn: 160 1054
 					setPri: 15
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 			)
 		)
-		(if menInRoom (aDoor locked: 1))
+		(if menInRoom
+			(aDoor locked: TRUE)
+		)
 	)
 	
 	(method (dispose)
-		(DisposeScript 972)
-		(DisposeScript 985)
+		(DisposeScript CHASE)
+		(DisposeScript AVOIDER)
 		(super dispose:)
 	)
 )
 
 (instance rm50Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			(
-				(and
-					(== roomState 0)
-					(== menInRoom 1)
-					(> 180 (ego y?))
-				)
+			((and (== roomState 0) (== menInRoom copsHere) (> 180 (ego y?)))
 				(Print 50 0 #at -1 20)
 				(= roomState 1)
 				(aHench1 setScript: (copScript new:))
 				(aHench2 setScript: (copScript new:))
 			)
-			(
-				(and
-					(== roomState 0)
-					(== menInRoom 2)
-					(& (ego onControl:) $0002)
-				)
+			((and (== roomState 0) (== menInRoom krishnasHere) (& (ego onControl:) cBLUE))
 				(= roomState 1)
 				(aHench1 setScript: (krishnaScript new:))
 				(aHench2 setScript: (krishnaScript new:))
 			)
-			((& (ego onControl:) $0008)
-				(if (== triedToLeave 0)
-					(= triedToLeave 1)
+			((& (ego onControl:) cCYAN)
+				(if (== leaveMsg FALSE)
+					(= leaveMsg TRUE)
 					(Print 50 1)
 				)
 			)
-			(else (= triedToLeave 0))
+			(else
+				(= leaveMsg FALSE)
+			)
 		)
 	)
 	
@@ -192,15 +192,15 @@
 				)
 			)
 			(2
-				(= menInRoom 0)
+				(= menInRoom nobodyHere)
 				(= roomState 4)
-				(= gaveFlowerToKrishna 1)
+				(= gaveFlowerToKrishna TRUE)
 				(theSound stop:)
 				(aHench1 setCel: 0)
 				(aHench2 setCel: 0)
 				(HandsOff)
 				(Print 50 24 #at -1 20 #draw #icon 20 0 0)
-				(ego put: 20 -1)
+				(ego put: iFlower -1)
 				(= seconds 3)
 			)
 			(3
@@ -218,21 +218,20 @@
 				)
 				(Print 50 25 #icon 504 2 0 #at -1 20 #draw #dispose)
 				(theGame changeScore: 7)
-				(aDoor locked: 0)
+				(aDoor locked: FALSE)
 			)
 			(4
 				(cls)
 				(Print 50 26 #at -1 130 #draw)
 				(aHench1 dispose:)
 				(aHench2 dispose:)
-				(User canControl: 1 canInput: 1)
+				(User canControl: TRUE canInput: TRUE)
 			)
 		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+	(method (handleEvent event &tmp i)
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -240,13 +239,19 @@
 				(cond 
 					((Said '/man')
 						(cond 
-							((== menInRoom 2) (Print 50 2))
-							((== menInRoom 1) (Print 50 3))
-							(else (Print 50 4))
+							((== menInRoom krishnasHere)
+								(Print 50 2)
+							)
+							((== menInRoom copsHere)
+								(Print 50 3)
+							)
+							(else
+								(Print 50 4)
+							)
 						)
 					)
-					((Said '/cult,,')
-						(if (== menInRoom 2)
+					((Said '/cult,other')	;EO: fixed said spec
+						(if (== menInRoom krishnasHere)
 							(aBigFace posn: 160 54)
 							(Timer setReal: aBigFace 5)
 							(HandsOff)
@@ -254,11 +259,19 @@
 							(Print 50 5)
 						)
 					)
-					((Said '/cop') (if (== menInRoom 1) (Print 50 3) else (Print 50 4)))
+					((Said '/cop')
+						(if (== menInRoom copsHere)
+							(Print 50 3)
+						else
+							(Print 50 4)
+						)
+					)
 					((Said '[/airport,building]')
 						(Print 50 6)
 						(Print 50 7)
-						(if (!= gaveFlowerToKrishna 1) (Print 50 8))
+						(if (!= gaveFlowerToKrishna TRUE)
+							(Print 50 8)
+						)
 					)
 				)
 			)
@@ -266,13 +279,19 @@
 				(cond 
 					((Said '/man')
 						(cond 
-							((== menInRoom 2) (Print 50 2))
-							((== menInRoom 1) (Print 50 3))
-							(else (Print 50 4))
+							((== menInRoom krishnasHere)
+								(Print 50 2)
+							)
+							((== menInRoom copsHere)
+								(Print 50 3)
+							)
+							(else
+								(Print 50 4)
+							)
 						)
 					)
-					((Said '/cult,,')
-						(if (== menInRoom 2)
+					((Said '/cult,other')	;EO: fixed said spec
+						(if (== menInRoom krishnasHere)
 							(Print 50 9)
 							(Print 50 10)
 						else
@@ -281,7 +300,9 @@
 					)
 					((Said '/cop')
 						(cond 
-							((== menInRoom 1) (Print 50 11))
+							((== menInRoom copsHere)
+								(Print 50 11)
+							)
 							(
 								(or
 									(ego inRect: 9 156 46 183)
@@ -290,41 +311,51 @@
 								(Print 50 12)
 								(Print 50 13)
 							)
-							(else (NotClose))
+							(else
+								(NotClose)
+							)
 						)
 					)
 				)
 			)
-			(
-				(Said
-					'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini'
-				)
+			((Said 'wear,alter,(get<off),drain,(conceal<on)/job,bra,bra,bikini')
 				(Print 50 14)
 			)
-			((Said 'play/music,onklunk') (Print 50 15) (Print 50 16))
-			(
-			(Said 'give,throw,bribe,finger,conceal,buy,buy,conceal>')
-				(= inventorySaidMe (inventory saidMe:))
+			((Said 'play/music,onklunk')
+				(Print 50 15)
+				(Print 50 16)
+			)
+			((Said 'give,throw,bribe,finger,conceal,buy,buy,conceal>')
+				(= i (inventory saidMe:))
 				(cond 
-					((!= currentStatus 0) (NotNow))
+					((!= currentStatus egoNORMAL)
+						(NotNow)
+					)
 					(
 						(or
-							(not inventorySaidMe)
-							(not (ego has: (inventory indexOf: inventorySaidMe)))
+							(not i)
+							(not (ego has: (inventory indexOf: i)))
 						)
-						(event claimed: 0)
+						(event claimed: FALSE)
 					)
 					(
 						(and
-							(!= gaveFlowerToKrishna 1)
+							(!= gaveFlowerToKrishna TRUE)
 							(< 25 (ego distanceTo: aHench1))
 							(< 25 (ego distanceTo: aHench2))
 						)
 						(NotClose)
 					)
-					((== (inventory indexOf: inventorySaidMe) 6) (Print 50 17))
-					((!= (inventory indexOf: inventorySaidMe) 20) (Print 50 18))
-					(else (Ok) (self changeState: 2))
+					((== (inventory indexOf: i) iWadODough)
+						(Print 50 17)
+					)
+					((!= (inventory indexOf: i) iFlower)
+						(Print 50 18)
+					)
+					(else
+						(Ok)
+						(self changeState: 2)
+					)
 				)
 			)
 		)
@@ -332,14 +363,12 @@
 )
 
 (instance copScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp theX theY)
 		(switch (= state newState)
 			(0
 				(client
 					setLoop: -1
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: Chase ego 11 self
 					setCycle: Walk
 				)
@@ -348,18 +377,18 @@
 			(1
 				(if (== roomState 1)
 					(Print 50 27 #at -1 20)
-					(= currentStatus 1000)
+					(= currentStatus egoSTOPPED)
 					(= roomState 2)
-					(= temp1 (- (ego y?) 1))
+					(= theY (- (ego y?) 1))
 					(if (< (ego x?) (client x?))
-						(= temp0 (+ (ego x?) 19))
+						(= theX (+ (ego x?) 19))
 					else
-						(= temp0 (- (ego x?) 19))
+						(= theX (- (ego x?) 19))
 					)
-					(client ignoreActors: posn: temp0 temp1)
+					(client ignoreActors: posn: theX theY)
 					(ego
 						setMotion: 0
-						setLoop: (if (> temp0 (ego x?)) 0 else 1)
+						setLoop: (if (> theX (ego x?)) 0 else 1)
 						ignoreActors:
 						stopUpd:
 					)
@@ -368,20 +397,18 @@
 			)
 			(2
 				(Print 50 28)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 		)
 	)
 )
 
 (instance krishnaScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1)
+	(method (changeState newState &tmp theX theY)
 		(switch (= state newState)
 			(0
 				(client
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setLoop: -1
 					setMotion: Chase ego 11 self
 					setCycle: Walk
@@ -390,25 +417,25 @@
 			)
 			(1
 				(if (== roomState 1)
-					(= currentStatus 1000)
+					(= currentStatus egoSTOPPED)
 					(= roomState 2)
 					(HandsOff)
-					(= temp1 (- (ego y?) 2))
+					(= theY (- (ego y?) 2))
 					(if (< (ego x?) (client x?))
-						(= temp0 (+ (ego x?) 9))
+						(= theX (+ (ego x?) 9))
 					else
-						(= temp0 (- (ego x?) 9))
+						(= theX (- (ego x?) 9))
 					)
 					(client
 						loop: (+ 3 (client loop?))
 						cel: 0
 						ignoreActors:
-						posn: temp0 temp1
-						setCycle: End self
+						posn: theX theY
+						setCycle: EndLoop self
 						setStep: 4 3
 					)
 					(ego
-						setLoop: (if (> temp0 (ego x?)) 0 else 1)
+						setLoop: (if (> theX (ego x?)) 0 else 1)
 						stopUpd:
 					)
 					(Print 50 29 #at -1 20 #draw)
@@ -417,7 +444,7 @@
 			(2
 				(Print 50 30 #draw)
 				(Print 50 31 #at -1 20 #draw)
-				(= currentStatus 23)
+				(= currentStatus egoCAPTURED)
 				(curRoom newRoom: 96)
 			)
 		)
@@ -435,15 +462,11 @@
 	)
 )
 
-(instance aHench1 of Act
-	(properties)
-)
+(instance aHench1 of Actor)
 
-(instance aHench2 of Act
-	(properties)
-)
+(instance aHench2 of Actor)
 
-(instance aSign of PV
+(instance aSign of PicView
 	(properties
 		y 62
 		x 155
@@ -452,7 +475,7 @@
 	)
 )
 
-(instance aEatSign of PV
+(instance aEatSign of PicView
 	(properties
 		y 63
 		x 11
@@ -462,7 +485,7 @@
 	)
 )
 
-(instance aShitSign of PV
+(instance aShitSign of PicView
 	(properties
 		y 62
 		x 308
@@ -472,7 +495,7 @@
 	)
 )
 
-(instance aCop1 of PV
+(instance aCop1 of PicView
 	(properties
 		y 164
 		x 22
@@ -481,7 +504,7 @@
 	)
 )
 
-(instance aCop2 of PV
+(instance aCop2 of PicView
 	(properties
 		y 164
 		x 298

@@ -19,7 +19,8 @@
 	aBurp
 )
 
-(enum 1
+(enum
+	snakeNOTYET
 	snakeHERE
 	snakeSTICKINMOUTH
 	snakeGONE
@@ -35,7 +36,7 @@
 	
 	(method (init)
 		(super init:)
-		(if (== snakeState 0)
+		(if (== snakeState snakeNOTYET)
 			(Load VIEW 701)
 			(Load VIEW 174)
 			(Load VIEW 172)
@@ -70,19 +71,17 @@
 		)
 		(NormalEgo)
 		(ego init:)
-		(self setRegions: 700 setScript: rm72Script)
+		(self setRegions: ISLAND setScript: rm72Script)
 	)
 )
 
 (instance rm72Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
 			(and
-				(& (ego onControl:) $0002)
-				(== snakeState 0)
+				(& (ego onControl:) cBLUE)
+				(== snakeState snakeNOTYET)
 				(== currentStatus egoNORMAL)
 			)
 			(self changeState: 1)
@@ -100,7 +99,9 @@
 				(aSnake setCycle: EndLoop self)
 			)
 			(2
-				(if (!= putStickInSnake 1) (Print 72 14 #at -1 20 #draw))
+				(if (!= putStickInSnake TRUE)
+					(Print 72 14 #at -1 20 #draw)
+				)
 				(aSnake
 					posn: 130 144
 					setLoop: 1
@@ -146,11 +147,16 @@
 				(aSnake cycleSpeed: 2 setLoop: 3 setCycle: Forward)
 				(= seconds 3)
 			)
-			(7 (Print 72 15) (= seconds 3))
+			(7
+				(Print 72 15)
+				(= seconds 3)
+			)
 			(8
 				(aBurp show: setCycle: EndLoop self)
 			)
-			(9 (= cycles 10))
+			(9
+				(= cycles 10)
+			)
 			(10
 				(aBurp setCycle: BegLoop self)
 			)
@@ -171,7 +177,9 @@
 				)
 				(Print 72 17 #at -1 20 #draw #icon 28 0 0)
 			)
-			(13 (= seconds 3))
+			(13
+				(= seconds 3)
+			)
 			(14
 				(aSnake
 					view: 174
@@ -202,8 +210,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if
@@ -213,31 +220,63 @@
 				(Said '(get<off),apply,stick,carry,insert,conceal/stick')
 			)
 			(cond 
-				((not (ego has: iStoutStick)) (DontHave))
-				((!= currentStatus egoSTOPPED) (NotClose))
-				(else (Ok) (Print 72 0 #at -1 20) (= putStickInSnake TRUE))
+				((not (ego has: iStoutStick))
+					(DontHave)
+				)
+				((!= currentStatus egoSTOPPED)
+					(NotClose)
+				)
+				(else
+					(Ok)
+					(Print 72 0 #at -1 20)
+					(= putStickInSnake TRUE)
+				)
 			)
 		)
-		(if (Said 'apply,swing,get/landscape') (Print 72 1))
+		(if (Said 'apply,swing,get/landscape')
+			(Print 72 1)
+		)
 		(if (not snakeState)
 			(if (Said 'attack/anaconda/stick')
-				(if (ego has: 28) (Print 72 2) else (DontHave))
+				(if (ego has: iStoutStick)
+					(Print 72 2)
+				else
+					(DontHave)
+				)
 			)
-			(if (Said 'attack/anaconda') (Print 72 3))
-			(if (Said 'crawl') (Print 72 4))
+			(if (Said 'attack/anaconda')
+				(Print 72 3)
+			)
+			(if (Said 'crawl')
+				(Print 72 4)
+			)
 		)
 		(if (Said 'look>')
 			(if (Said '/bush,palm,leaf')
-				(if (== snakeState 3) (Print 72 5) else (Print 72 6))
+				(if (== snakeState snakeGONE)
+					(Print 72 5)
+				else
+					(Print 72 6)
+				)
 			)
-			(if (Said '/carpet,dirt,carpet') (Print 72 7))
-			(if (Said '/ear,art,lip') (Print 72 8))
+			(if (Said '/carpet,dirt,carpet')
+				(Print 72 7)
+			)
+			(if (Said '/ear,art,lip')
+				(Print 72 8)
+			)
 			(if (Said '/anaconda')
-				(if (== snakeState snakeGONE) (Print 72 9) else (Print 72 10))
+				(if (== snakeState snakeGONE)
+					(Print 72 9)
+				else
+					(Print 72 10)
+				)
 			)
 			(if (Said '[/airport,forest]')
 				(Print 72 11)
-				(if (== snakeState snakeHERE) (Print 72 12))
+				(if (== snakeState snakeHERE)
+					(Print 72 12)
+				)
 			)
 		)
 	)

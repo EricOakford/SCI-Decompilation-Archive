@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 71)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -16,11 +16,9 @@
 (local
 	stickOnGround
 )
-(instance theSound of Sound
-	(properties)
-)
+(instance theSound of Sound)
 
-(instance rm71 of Rm
+(instance rm71 of Room
 	(properties
 		picture 71
 		horizon 5
@@ -28,42 +26,58 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 105)
-		(Load rsVIEW 173)
-		(Load rsVIEW 702)
+		(Load VIEW 105)
+		(Load VIEW 173)
+		(Load VIEW 702)
 		(super init:)
-		(aSwarm setPri: 14 setCycle: Walk illegalBits: 0 init:)
-		(self setRegions: 700 setScript: rm71Script)
-		(if ((inventory at: 28) ownedBy: curRoomNum)
-			(= stickOnGround 1)
-			(Load rsVIEW 721)
-			(aStick init: stopUpd:)
+		(aSwarm
+			setPri: 14
+			setCycle: Walk
+			illegalBits: 0
+			init:
+		)
+		(self setRegions: ISLAND setScript: rm71Script)
+		(if ((inventory at: iStoutStick) ownedBy: curRoomNum)
+			(= stickOnGround TRUE)
+			(Load VIEW 721)
+			(aStick
+				init:
+				stopUpd:
+			)
 		)
 		(if (== prevRoomNum 72)
 			(theSound number: 3 init:)
 			(NormalEgo)
 			(ego posn: 142 185 init:)
 		else
-			(Load rsVIEW 171)
-			(Load rsVIEW 110)
-			(Load rsVIEW 114)
-			(Load rsSOUND 1)
-			(Load rsSOUND 2)
+			(Load VIEW 171)
+			(Load VIEW 110)
+			(Load VIEW 114)
+			(Load SOUND 1)
+			(Load SOUND 2)
 			(theSound number: 1 loop: 1 play:)
-			(aBigEgo setPri: 14 init:)
-			(aBigEgoFace setPri: 15 setCycle: Fwd init:)
-			((inventory at: 18) moveTo: -1)
+			(aBigEgo
+				setPri: 14
+				init:
+			)
+			(aBigEgoFace
+				setPri: 15
+				setCycle: Forward
+				init:
+			)
+			((inventory at: iSoap) moveTo: -1)
 			(ego
-				put: 10 -1
-				put: 17 -1
-				put: 7 -1
-				put: 24 -1
-				put: 6 -1
+				;lose any no-longer-useful items
+				put: iOnklunk -1
+				put: iKnife -1
+				put: iPassport -1
+				put: iParachute -1
+				put: iWadODough -1
 				ignoreHorizon:
 				illegalBits: 0
 				view: 171
 				setLoop: 0
-				setCycle: Fwd
+				setCycle: Forward
 				setStep: 1 12
 				setPri: 10
 				posn: 193 -129
@@ -71,19 +85,18 @@
 			)
 			(HandsOff)
 			(rm71Script changeState: 1)
-			(= currentStatus 12)
+			(= currentStatus egoFALLING)
 		)
 	)
 )
 
 (instance rm71Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== state 2) (ShakeScreen 1 (Random 1 3)))
-		(if
-		(and (& (ego onControl:) $4000) (== currentStatus 0))
+		(if (== state 2)
+			(ShakeScreen 1 (Random 1 3))
+		)
+		(if (and (& (ego onControl:) cYELLOW) (== currentStatus egoNORMAL))
 			(self changeState: 7)
 		)
 	)
@@ -99,7 +112,7 @@
 					setStep: 3 2
 					setLoop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -117,19 +130,19 @@
 				(aBigEgoFace dispose:)
 				(aBigEgo dispose:)
 				(theSound dispose:)
-				(ego setLoop: 2 cel: 0 setCycle: End self cycleSpeed: 2)
+				(ego setLoop: 2 cel: 0 setCycle: EndLoop self cycleSpeed: 2)
 			)
 			(6
 				(Print 71 19 #draw)
-				(NormalEgo 2)
+				(NormalEgo loopS)
 				(theSound number: 3 loop: -1)
 			)
 			(7
-				(= currentStatus 1000)
+				(= currentStatus egoSTOPPED)
 				(HandsOff)
 				(ego illegalBits: 0)
 				(Print 71 20)
-				(aSwarm show: setCycle: End self)
+				(aSwarm show: setCycle: EndLoop self)
 				(theSound play:)
 			)
 			(8
@@ -137,26 +150,26 @@
 					setLoop: 1
 					cel: 0
 					posn: 106 106
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(9
-				(aSwarm setCycle: End self)
+				(aSwarm setCycle: EndLoop self)
 				(ego
 					view: 173
 					setLoop: 0
 					cel: 0
 					posn: 98 120
 					setPri: 11
-					setCycle: Fwd
+					setCycle: Forward
 				)
 			)
 			(10
 				(aSwarm dispose:)
-				(ego setLoop: 1 cel: 0 setCycle: End self)
+				(ego setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(11
-				(ego setLoop: 2 setCycle: Fwd)
+				(ego setLoop: 2 setCycle: Forward)
 				(= seconds 3)
 			)
 			(12
@@ -173,11 +186,11 @@
 			(15
 				(Print 71 23)
 				(theSound dispose:)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 			(16
 				(Print 71 24)
-				(= currentStatus 1012)
+				(= currentStatus egoCROUCHING)
 				(HandsOff)
 				(ego
 					illegalBits: 0
@@ -185,7 +198,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(17
@@ -198,10 +211,10 @@
 				)
 			)
 			(18
-				(ego setLoop: 2 setCel: 255 setCycle: Beg self)
+				(ego setLoop: 2 setCel: 255 setCycle: BegLoop self)
 			)
 			(19
-				(NormalEgo 2)
+				(NormalEgo loopS)
 				(if (> (++ avoidedBees) 1)
 					(Print 71 25 #draw)
 				else
@@ -211,7 +224,7 @@
 			)
 			(20
 				(Print 71 27 #draw)
-				(= currentStatus 1012)
+				(= currentStatus egoCROUCHING)
 				(HandsOff)
 				(ego
 					illegalBits: 0
@@ -219,7 +232,7 @@
 					setLoop: 3
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(21
@@ -232,10 +245,10 @@
 				)
 			)
 			(22
-				(ego setLoop: 3 setCel: 255 setCycle: Beg self)
+				(ego setLoop: 3 setCel: 255 setCycle: BegLoop self)
 			)
 			(23
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(Print 71 28 #draw)
 				(Print 71 29)
 				(Print 71 30)
@@ -244,24 +257,37 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look<down')
 			(Print 71 0)
-			(if stickOnGround (Print 71 1))
+			(if stickOnGround
+				(Print 71 1)
+			)
 		)
 		(if (Said 'look>')
 			(if (Said '/carpet,dirt')
 				(Print 71 0)
-				(if stickOnGround (Print 71 1))
+				(if stickOnGround
+					(Print 71 1)
+				)
 			)
-			(if (Said '/path') (Print 71 2))
-			(if (and stickOnGround (Said '/stick')) (Print 71 1))
-			(if (Said '/ear,art,lip') (Print 71 3))
-			(if (Said '/bush') (Print 71 4))
-			(if (Said '/bee') (Print 71 5))
+			(if (Said '/path')
+				(Print 71 2)
+			)
+			(if (and stickOnGround (Said '/stick'))
+				(Print 71 1)
+			)
+			(if (Said '/ear,art,lip')
+				(Print 71 3)
+			)
+			(if (Said '/bush')
+				(Print 71 4)
+			)
+			(if (Said '/bee')
+				(Print 71 5)
+			)
 			(if (Said '[/forest,palm,landscape,airport]')
 				(Print 71 6)
 				(Print 71 7)
@@ -270,13 +296,19 @@
 		)
 		(if (Said '(get<up),get/stick')
 			(cond 
-				((!= currentStatus 0) (NotNow))
-				((not stickOnGround) (AlreadyTook))
-				((not (ego inRect: 205 6 226 82)) (NotClose))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not stickOnGround)
+					(AlreadyTook)
+				)
+				((not (ego inRect: 205 6 226 82))
+					(NotClose)
+				)
 				(else
 					(Ok)
-					(= stickOnGround 0)
-					(ego get: 28)
+					(= stickOnGround FALSE)
+					(ego get: iStoutStick)
 					(aStick hide:)
 					(theGame changeScore: 4)
 					(Print 71 9 #draw)
@@ -298,26 +330,46 @@
 			)
 			(Print 71 11)
 		)
-		(if (Said 'hop,(stair<over)') (Print 71 12))
+		(if (Said 'hop,(stair<over)')
+			(Print 71 12)
+		)
+		;Amiga addiion. Why the redundant code? The 'climb' spec
+		; could have just been added to the existing code.
 		(if (Said 'climb,(board<below)')
 			(Print 71 13)
 			(cond 
-				((& (ego onControl:) $0002) (self changeState: 16))
-				((& (ego onControl:) $0004) (self changeState: 20))
-				(else (Print 71 14))
+				((& (ego onControl:) cBLUE)
+					(self changeState: 16)
+				)
+				((& (ego onControl:) cGREEN)
+					(self changeState: 20)
+				)
+				(else
+					(Print 71 14)
+				)
 			)
 		)
 		(if (Said 'crawl,(board<below)')
 			(Print 71 13)
 			(cond 
-				((& (ego onControl:) $0002) (self changeState: 16))
-				((& (ego onControl:) $0004) (self changeState: 20))
+				((& (ego onControl:) cBLUE)
+					(self changeState: 16)
+				)
+				((& (ego onControl:) cGREEN)
+					(self changeState: 20)
+				)
 				(else (Print 71 14))
 			)
 		)
-		(if (Said '/branch') (Print 71 15))
-		(if (Said 'climb/palm') (Print 71 16))
-		(if (Said 'climb') (Print 71 17))
+		(if (Said '/branch')
+			(Print 71 15)
+		)
+		(if (Said 'climb/palm')
+			(Print 71 16)
+		)
+		(if (Said 'climb')
+			(Print 71 17)
+		)
 	)
 )
 
@@ -326,7 +378,7 @@
 		y 71
 		x 216
 		view 721
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -335,16 +387,16 @@
 		y 1080
 		x 243
 		view 110
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aSwarm of Act
+(instance aSwarm of Actor
 	(properties
 		y 109
 		x 148
 		view 702
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -353,6 +405,6 @@
 		y 1080
 		x 243
 		view 114
-		signal $4000
+		signal ignrAct
 	)
 )

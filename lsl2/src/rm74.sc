@@ -15,16 +15,16 @@
 
 (local
 	vineInRoom
-	triedToGoWest
-	triedToClimbOut
+	westMsg
+	climbMsg
 	swingingOnVine
-	egoBigHead
-	egoBigFace
+	aBigEgo
+	aBigEgoFace
 	aRapids
 	aVine1
 	aVine2
 	aVine3
-	aTHEVine
+	aTHEvine
 )
 (instance rm74 of Room
 	(properties
@@ -40,7 +40,7 @@
 		(super init:)
 		(if ((inventory at: iVine) ownedBy: curRoomNum)
 			(= vineInRoom TRUE)
-			((= aTHEVine (View new:))
+			((= aTHEvine (View new:))
 				view: 178
 				loop: 5
 				posn: 184 37
@@ -158,14 +158,14 @@
 			(Load VIEW 177)
 			(Load VIEW 176)
 			(Load VIEW 110)
-			((= egoBigHead (View new:))
+			((= aBigEgo (View new:))
 				view: 110
 				ignoreActors:
 				setPri: 14
 				posn: 243 1098
 				init:
 			)
-			((= egoBigFace (Prop new:))
+			((= aBigEgoFace (Prop new:))
 				view: 177
 				setLoop: 4
 				ignoreActors:
@@ -182,42 +182,51 @@
 			(ego posn: 2 76)
 		)
 		(ego init:)
-		(self setRegions: 700 setScript: rm74Script)
+		(self setRegions: ISLAND setScript: rm74Script)
 	)
 )
 
 (instance rm74Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			(
-			(and (ego inRect: 261 72 321 77) (== currentStatus egoNORMAL)) (curRoom newRoom: 75))
+			((and (ego inRect: 261 72 321 77) (== currentStatus egoNORMAL))
+				(curRoom newRoom: 75)
+			)
 			(
 				(and
 					(== currentStatus egoEATENBYPIRANHA)
-					(& (ego onControl:) $0010)
+					(& (ego onControl:) cRED)
 				)
 				(self changeState: 3)
 			)
 			(
 				(and
 					(== currentStatus egoEATENBYPIRANHA)
-					(& (ego onControl:) $0400)
+					(& (ego onControl:) cLGREEN)
 				)
-				(if (== triedToClimbOut FALSE) (= triedToClimbOut TRUE) (Print 74 0))
+				(if (== climbMsg FALSE)
+					(= climbMsg TRUE)
+					(Print 74 0)
+				)
 			)
 			(
 				(and
 					(== currentStatus egoEATENBYPIRANHA)
-					(& (ego onControl:) $2000)
+					(& (ego onControl:) cLMAGENTA)
 				)
-				(if (== triedToGoWest FALSE) (= triedToGoWest TRUE) (Print 74 1))
+				(if (== westMsg FALSE)
+					(= westMsg TRUE)
+					(Print 74 1)
+				)
 			)
-			(
-			(and (== currentStatus egoNORMAL) (== (ego onControl:) 2)) (self changeState: 1))
-			(else (= triedToGoWest FALSE) (= triedToClimbOut FALSE))
+			((and (== currentStatus egoNORMAL) (== (ego onControl:) cBLUE))
+				(self changeState: 1)
+			)
+			(else
+				(= westMsg FALSE)
+				(= climbMsg FALSE)
+			)
 		)
 	)
 	
@@ -236,7 +245,9 @@
 				)
 				(= cycles 8)
 			)
-			(2 (Print 74 17 #draw))
+			(2
+				(Print 74 17 #draw)
+			)
 			(3
 				(Print 74 18)
 				(ego
@@ -254,21 +265,23 @@
 			(4
 				(User canControl: FALSE)
 				(ego setMotion: 0 setLoop: 2)
-				(egoBigHead posn: (ego x?) 87 stopUpd:)
-				(egoBigFace posn: (ego x?) 87 cel: 0 setCycle: EndLoop self)
+				(aBigEgo posn: (ego x?) 87 stopUpd:)
+				(aBigEgoFace posn: (ego x?) 87 cel: 0 setCycle: EndLoop self)
 			)
-			(5 (= cycles 7))
+			(5
+				(= cycles 7)
+			)
 			(6
-				(egoBigFace setCycle: BegLoop self)
+				(aBigEgoFace setCycle: BegLoop self)
 			)
 			(7
-				(egoBigFace loop: 5 setCycle: EndLoop)
+				(aBigEgoFace loop: 5 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(8
 				(Print 74 19 #at -1 20)
-				(egoBigFace dispose:)
-				(egoBigHead dispose:)
+				(aBigEgoFace dispose:)
+				(aBigEgo dispose:)
 				(= seconds 3)
 			)
 			(9
@@ -416,13 +429,16 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/lagoon,beach') (Print 74 2))
-			(if (Said '/brook,fluid') (Print 74 3))
+			(if (Said '/lagoon,beach')
+				(Print 74 2)
+			)
+			(if (Said '/brook,fluid')
+				(Print 74 3)
+			)
 			(if (Said '/fish')
 				(if (!= currentStatus egoEATENBYPIRANHA)
 					(Print 74 4)
@@ -432,28 +448,44 @@
 			)
 			(if (Said '/palm,landscape,bush')
 				(Print 74 6)
-				(if (== vineInRoom TRUE) (Print 74 7))
+				(if (== vineInRoom TRUE)
+					(Print 74 7)
+				)
 			)
-			(if (Said '/boulder,cascade') (Print 74 8))
-			(if (Said '[/airport,forest]') (Print 74 9))
+			(if (Said '/boulder,cascade')
+				(Print 74 8)
+			)
+			(if (Said '[/airport,forest]')
+				(Print 74 9)
+			)
 		)
 		(if (Said 'jerk,get/landscape')
 			(cond 
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not vineInRoom) (Print 74 10))
-				((ego inRect: 59 91 78 98) (Print 74 11))
-				((not (ego inRect: 149 100 195 129)) (NotClose))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not vineInRoom)
+					(Print 74 10)
+				)
+				((ego inRect: 59 91 78 98)
+					(Print 74 11)
+				)
+				((not (ego inRect: 149 100 195 129))
+					(NotClose)
+				)
 				(else
 					(= vineInRoom FALSE)
 					(ego get: iVine)
 					(theGame changeScore: 4)
-					(aTHEVine dispose:)
+					(aTHEvine dispose:)
 					(Print 74 12 #draw)
 					(Print 74 13)
 				)
 			)
 		)
-		(if (Said 'bathing') (Print 74 14))
+		(if (Said 'bathing')
+			(Print 74 14)
+		)
 		(if (Said '*/boulder')
 			(if (== currentStatus egoEATENBYPIRANHA)
 				(Print 74 15)
@@ -469,11 +501,18 @@
 				(Said 'swing<on/landscape')
 			)
 			(cond 
-				(
-				(and (>= currentStatus egoONVINE1) (<= currentStatus egoONVINE3)) (= swingingOnVine TRUE))
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not (ego inRect: 59 91 78 98)) (NotClose))
-				(else (self changeState: 10))
+				((and (>= currentStatus egoONVINE1) (<= currentStatus egoONVINE3))
+					(= swingingOnVine TRUE)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 59 91 78 98))
+					(NotClose)
+				)
+				(else
+					(self changeState: 10)
+				)
 			)
 		)
 	)

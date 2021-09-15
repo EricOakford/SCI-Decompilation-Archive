@@ -35,7 +35,9 @@
 		(super init:)
 		(NormalEgo)
 		(self setScript: rm76Script)
-		(if global111 (= endGameState endMEETTRIBE))
+		(if global111
+			(= endGameState endMEETTRIBE)
+		)
 		(if (!= endGameState endMEETTRIBE)
 			(self setRegions: ISLAND)
 		else
@@ -181,31 +183,39 @@
 			)
 		)
 		(cond 
-			((== prevRoomNum 79) (ego posn: 197 40))
-			((== prevRoomNum 77) (ego posn: 306 125))
-			(else (ego posn: 306 125))
+			((== prevRoomNum 79)
+				(ego posn: 197 40)
+			)
+			((== prevRoomNum 77)
+				(ego posn: 306 125)
+			)
+			(else
+				(ego posn: 306 125)
+			)
 		)
 		(ego init:)
 	)
 )
 
 (instance rm76Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= cycles 3))
+			(1
+				(= cycles 3)
+			)
 			(2
 				(HandsOff)
 				(ego setMotion: MoveTo 145 126 self)
 				(aKalalau setMotion: MoveTo 138 132)
 				(= cycles 10)
 			)
-			(3 (Print 76 4 #draw))
+			(3
+				(Print 76 4 #draw)
+			)
 			(4
 				(Print 76 5)
 				(aKalalau setCel: 255 stopUpd:)
@@ -237,15 +247,25 @@
 				(= seconds 3)
 			)
 			(9
-				(aComputerCarrier setLoop: 4 setMotion: MoveTo 444 96 self)
+				(aComputerCarrier
+					setLoop: 4
+					setMotion: MoveTo 444 96 self
+				)
 				(aDrummer setCycle: Forward)
 				(theSound play:)
 			)
 			(10
-				(aComputerCarrier setLoop: 1 setMotion: MoveTo 221 96 self)
+				(aComputerCarrier
+					setLoop: 1
+					setMotion: MoveTo 221 96 self
+				)
 			)
 			(11
-				(aComputerCarrier setLoop: 3 cel: 0 setCycle: CycleTo 7 1 self)
+				(aComputerCarrier
+					setLoop: 3
+					cel: 0
+					setCycle: CycleTo 7 1 self
+				)
 			)
 			(12
 				((View new:)
@@ -259,7 +279,10 @@
 				(aComputerCarrier setCycle: EndLoop self)
 			)
 			(13
-				(aComputerCarrier setLoop: 4 setMotion: MoveTo 233 96 self)
+				(aComputerCarrier
+					setLoop: 4
+					setMotion: MoveTo 233 96 self
+				)
 			)
 			(14
 				(aComputerCarrier setLoop: 5 forceUpd: stopUpd:)
@@ -289,7 +312,9 @@
 				(aKalalau setLoop: 3)
 				(= cycles 10)
 			)
-			(19 (Print 76 17))
+			(19
+				(Print 76 17)
+			)
 			(20
 				(ego
 					view: 194
@@ -345,7 +370,10 @@
 				(Print 76 23 #at -1 140 #dispose)
 				(= cycles (Random 20 30))
 			)
-			(30 (cls) (= seconds 3))
+			(30
+				(cls)
+				(= seconds 3)
+			)
 			(31
 				(aComputerCode dispose:)
 				(aEgoProgramming dispose:)
@@ -404,17 +432,20 @@
 				(aChief setMotion: MoveTo 251 95 self)
 				(ego setMotion: MoveTo 240 100)
 			)
-			(41 (curRoom newRoom: 79))
+			(41
+				(curRoom newRoom: 79)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/door') (Print 76 0))
+			(if (Said '/door')
+				(Print 76 0)
+			)
 			(if (Said '[/airport,angeles,hut]')
 				(Print 76 1)
 				(Print 76 2)

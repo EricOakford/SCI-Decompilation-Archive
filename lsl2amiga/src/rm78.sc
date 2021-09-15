@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 78)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -14,13 +14,13 @@
 )
 
 (local
-	local0
+	woodCycles
 	thePedaler
 	theChief
 	theDrummer
 	theMouth
 )
-(instance rm78 of Rm
+(instance rm78 of Room
 	(properties
 		picture 78
 		horizon 5
@@ -28,38 +28,54 @@
 	)
 	
 	(method (init)
-		(if (== endGameState 105) (self style: 8))
+		(if (== endGameState 105)
+			(self style: DISSOLVE)
+		)
 		(super init:)
 		(NormalEgo)
 		(ego posn: 9 133 init:)
 		(self setScript: rm78Script)
-		(if global111 (= endGameState 105))
+		(if global111
+			(= endGameState 105)
+		)
 		(if (!= endGameState 105)
-			(self setRegions: 700)
-			(Load rsVIEW 716)
-			(aWoodchopper cycleSpeed: 1 init: setScript: woodScript)
+			(self setRegions: ISLAND)
+			(Load VIEW 716)
+			(aWoodchopper
+				cycleSpeed: 1
+				init:
+				setScript: woodScript
+			)
 		else
 			(HandsOff)
 			(rm78Script changeState: 1)
-			(Load rsVIEW 833)
-			(Load rsVIEW 212)
-			(Load rsVIEW 711)
-			(Load rsVIEW 710)
-			(Load rsVIEW 714)
-			(Load rsVIEW 713)
-			(Load rsVIEW 707)
-			(Load rsVIEW 704)
-			(Load rsVIEW 706)
-			(Load rsVIEW 822)
-			(Load rsVIEW 823)
-			(Load rsSOUND 111)
+			(Load VIEW 833)
+			(Load VIEW 212)
+			(Load VIEW 711)
+			(Load VIEW 710)
+			(Load VIEW 714)
+			(Load VIEW 713)
+			(Load VIEW 707)
+			(Load VIEW 704)
+			(Load VIEW 706)
+			(Load VIEW 822)
+			(Load VIEW 823)
+			(Load SOUND 111)
 			(theSound init:)
 			(addToPics
 				add: aBitch1 aBitch2 aBitch3 aBitch4 aMother1 aMother2 aFamily
 				doit:
 			)
-			(aDrummer setLoop: 1 stopUpd: init:)
-			(aPedaler setLoop: 7 stopUpd: init:)
+			(aDrummer
+				setLoop: 1
+				stopUpd:
+				init:
+			)
+			(aPedaler
+				setLoop: 7
+				stopUpd:
+				init:
+			)
 			(aDoctor
 				setLoop: 3
 				setPri: 14
@@ -100,7 +116,11 @@
 				moveSpeed: 1
 				init:
 			)
-			(aMouth setPri: 10 setCycle: Fwd init:)
+			(aMouth
+				setPri: 10
+				setCycle: Forward
+				init:
+			)
 			(aCameraman
 				setLoop: 0
 				illegalBits: 0
@@ -126,8 +146,6 @@
 )
 
 (instance rm78Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -136,7 +154,7 @@
 				(== (ego loop?) 3)
 				(== 6 (aWoodchopper cel?))
 				(ego inRect: 34 100 43 107)
-				(== currentStatus 0)
+				(== currentStatus egoNORMAL)
 			)
 			(self changeState: 47)
 		)
@@ -144,12 +162,17 @@
 	
 	(method (changeState newState &tmp egoCycleSpeed)
 		(switch (= state newState)
-			(1 (= cycles 2))
-			(2 (Print 78 10) (= cycles 20))
+			(1
+				(= cycles 2)
+			)
+			(2
+				(Print 78 10)
+				(= cycles 20)
+			)
 			(3
 				(theSound play:)
 				(Print 78 11)
-				(aDrummer setCycle: Fwd)
+				(aDrummer setCycle: Forward)
 				(aHulaHooper setMotion: MoveTo 222 123 self)
 				(aDancer setMotion: MoveTo 46 111 self)
 			)
@@ -163,11 +186,14 @@
 				(ego setLoop: 2 stopUpd:)
 				(= seconds 3)
 			)
-			(7 (Print 78 13) (= seconds 3))
+			(7
+				(Print 78 13)
+				(= seconds 3)
+			)
 			(8
 				(aKalalau setMotion: MoveTo 182 152 self)
 				(aChief setMotion: MoveTo 100 138 self)
-				(aPedaler setCycle: Fwd)
+				(aPedaler setCycle: Forward)
 				(minicamScript changeState: 5)
 			)
 			(10
@@ -210,10 +236,10 @@
 				(= seconds 3)
 			)
 			(16
-				(ego cycleSpeed: 2 setCycle: End self)
+				(ego cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(17
-				(ego cycleSpeed: 6 setLoop: 1 setCel: 0 setCycle: Fwd)
+				(ego cycleSpeed: 6 setLoop: 1 setCel: 0 setCycle: Forward)
 				(= cycles 12)
 			)
 			(18
@@ -224,7 +250,9 @@
 				)
 				(= cycles 8)
 			)
-			(19 (= seconds 6))
+			(19
+				(= seconds 6)
+			)
 			(20
 				(if (< (= egoCycleSpeed (ego cycleSpeed?)) 8)
 					(++ egoCycleSpeed)
@@ -239,9 +267,11 @@
 				(= cycles 10)
 			)
 			(22
-				(ego cycleSpeed: 2 setLoop: 6 setCycle: End self)
+				(ego cycleSpeed: 2 setLoop: 6 setCycle: EndLoop self)
 			)
-			(23 (= cycles 20))
+			(23
+				(= cycles 20)
+			)
 			(24
 				(Print 78 21)
 				(= cycles 22)
@@ -284,13 +314,15 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(30 (= seconds 5))
+			(30
+				(= seconds 5)
+			)
 			(31
 				(Print 78 24 #at -1 130)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(32
 				(ego view: 822 setLoop: 2 cycleSpeed: 0 setCycle: Walk)
@@ -303,10 +335,10 @@
 				(aPhotographer setMotion: MoveTo 132 160 self)
 			)
 			(34
-				(aPhotographer setLoop: 3 cel: 0 setCycle: End self)
+				(aPhotographer setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(35
-				(aDoctor view: 713 setLoop: 1 setCycle: Fwd)
+				(aDoctor view: 713 setLoop: 1 setCycle: Forward)
 				(= cycles 50)
 			)
 			(36
@@ -317,7 +349,7 @@
 					cel: 0
 					cycleSpeed: 2
 					setPri: 13
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(37
@@ -326,13 +358,13 @@
 					view: 822
 					setLoop: 4
 					posn: 154 105
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(theChief
 					view: 822
 					setLoop: 5
 					posn: 186 105
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles 30)
 			)
@@ -344,16 +376,18 @@
 					cel: 0
 					posn: (+ (aPhotographer x?) 5) (- (aPhotographer y?) 35)
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(39
 				(theMouth dispose:)
-				(aPhotographer setCycle: Beg self)
+				(aPhotographer setCycle: BegLoop self)
 			)
-			(40 (= cycles 10))
+			(40
+				(= cycles 10)
+			)
 			(41
-				(theDrummer setCycle: Beg self)
+				(theDrummer setCycle: BegLoop self)
 				(thePedaler dispose:)
 				(theChief dispose:)
 			)
@@ -382,30 +416,35 @@
 				(Print 78 28)
 				(ego setMotion: MoveTo 171 120)
 			)
-			(46 (curRoom newRoom: 178))
+			(46
+				(curRoom newRoom: 178)
+			)
 			(47
 				(HandsOff)
-				(= currentStatus 1000)
+				(= currentStatus egoSTOPPED)
 				(aWoodchopper setScript: 0 setCel: 255 stopUpd:)
 				(Print 78 29 #draw)
 				(Print 78 30)
 				(= seconds 3)
 			)
 			(48
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 				(Print 78 31)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/man,children') (Print 78 0))
-			(if (Said '/door') (Print 78 1))
+			(if (Said '/man,children')
+				(Print 78 0)
+			)
+			(if (Said '/door')
+				(Print 78 1)
+			)
 			(if (Said '[/airport,angeles,hut]')
 				(Print 78 2)
 				(Print 78 3)
@@ -427,23 +466,29 @@
 				(NotClose)
 			)
 		)
-		(if (Said '/man,children') (Print 78 7))
-		(if (Said '/axe') (Print 78 8))
-		(if (Said '/[') (Print 78 9))
+		(if (Said '/man,children')
+			(Print 78 7)
+		)
+		(if (Said '/axe')
+			(Print 78 8)
+		)
+		(if (Said '/wood')	;EO: fixed said spec
+			(Print 78 9)
+		)
 	)
 )
 
 (instance woodScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 8))
+			(0
+				(= cycles 8)
+			)
 			(1
-				(aWoodchopper setCycle: End self)
+				(aWoodchopper setCycle: EndLoop self)
 			)
 			(2
-				(= cycles (++ local0))
+				(= cycles (++ woodCycles))
 				(= state 0)
 			)
 		)
@@ -451,23 +496,23 @@
 )
 
 (instance minicamScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(aCameraman loop: 2 setCycle: End self)
+				(aCameraman loop: 2 setCycle: EndLoop self)
 			)
-			(2 (aCameraman stopUpd:))
+			(2
+				(aCameraman stopUpd:)
+			)
 			(3
-				(aCameraman setCycle: Beg self)
+				(aCameraman setCycle: BegLoop self)
 			)
 			(4
 				(aCameraman setCycle: Walk setMotion: MoveTo 180 179 self)
 				(= state 0)
 			)
 			(5
-				(aCameraman setCycle: Beg self)
+				(aCameraman setCycle: BegLoop self)
 			)
 			(6
 				(aCameraman setCycle: Walk setMotion: MoveTo 120 179 self)
@@ -484,78 +529,78 @@
 	)
 )
 
-(instance aBitch1 of PV
+(instance aBitch1 of PicView
 	(properties
 		y 122
 		x 90
 		view 833
 		cel 255
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aBitch2 of PV
+(instance aBitch2 of PicView
 	(properties
 		y 119
 		x 105
 		view 833
 		loop 1
 		cel 255
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aBitch3 of PV
+(instance aBitch3 of PicView
 	(properties
 		y 116
 		x 120
 		view 833
 		loop 2
 		cel 255
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aBitch4 of PV
+(instance aBitch4 of PicView
 	(properties
 		y 113
 		x 135
 		view 833
 		loop 3
 		cel 255
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMother1 of PV
+(instance aMother1 of PicView
 	(properties
 		y 105
 		x 67
 		view 714
 		loop 3
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMother2 of PV
+(instance aMother2 of PicView
 	(properties
 		y 116
 		x 206
 		view 714
 		loop 2
 		cel 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aFamily of PV
+(instance aFamily of PicView
 	(properties
 		y 108
 		x 16
 		view 714
 		loop 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -572,7 +617,7 @@
 		y 145
 		x 233
 		view 714
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -581,11 +626,11 @@
 		y 163
 		x 212
 		view 707
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aDoctor of Act
+(instance aDoctor of Actor
 	(properties
 		y 171
 		x 159
@@ -593,40 +638,40 @@
 	)
 )
 
-(instance aHulaHooper of Act
+(instance aHulaHooper of Actor
 	(properties
 		y 128
 		x 146
 		view 823
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aDancer of Act
+(instance aDancer of Actor
 	(properties
 		y 144
 		x 118
 		view 823
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aKalalau of Act
+(instance aKalalau of Actor
 	(properties
 		y 141
 		x -28
 		view 704
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aChief of Act
+(instance aChief of Actor
 	(properties
 		y 137
 		x -22
 		view 710
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -636,23 +681,23 @@
 		x 999
 		view 710
 		loop 4
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aCameraman of Act
+(instance aCameraman of Actor
 	(properties
 		view 212
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aPhotographer of Act
+(instance aPhotographer of Actor
 	(properties
 		y 169
 		x 56
 		view 823
 		cel 5
-		signal $4000
+		signal ignrAct
 	)
 )

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 76)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -23,7 +23,7 @@
 	aChief
 	aChiefHead
 )
-(instance rm76 of Rm
+(instance rm76 of Room
 	(properties
 		picture 76
 		horizon 37
@@ -35,19 +35,21 @@
 		(super init:)
 		(NormalEgo)
 		(self setScript: rm76Script)
-		(if global111 (= endGameState 2))
-		(if (!= endGameState 2)
-			(self setRegions: 700)
+		(if global111
+			(= endGameState endMEETTRIBE)
+		)
+		(if (!= endGameState endMEETTRIBE)
+			(self setRegions: ISLAND)
 		else
-			(= currentStatus 11)
+			(= currentStatus egoMEETTRIBE)
 			(rm76Script changeState: 1)
-			(Load rsVIEW 194)
-			(Load rsVIEW 195)
-			(Load rsVIEW 704)
-			(Load rsVIEW 707)
-			(Load rsVIEW 710)
-			(Load rsVIEW 714)
-			(Load rsSOUND 114)
+			(Load VIEW 194)
+			(Load VIEW 195)
+			(Load VIEW 704)
+			(Load VIEW 707)
+			(Load VIEW 710)
+			(Load VIEW 714)
+			(Load SOUND 114)
 			(theSound init:)
 			((View new:)
 				view: 707
@@ -112,7 +114,7 @@
 				setLoop: 0
 				setPri: 15
 				posn: 275 1040
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			((= aComputerCode (Prop new:))
@@ -121,7 +123,7 @@
 				setLoop: 1
 				setPri: 15
 				posn: 275 1040
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
 			((= aDrummer (Prop new:))
@@ -140,7 +142,7 @@
 				stopUpd:
 				init:
 			)
-			((= aChief (Act new:))
+			((= aChief (Actor new:))
 				view: 710
 				ignoreActors:
 				illegalBits: 0
@@ -157,10 +159,10 @@
 				setLoop: 4
 				setPri: 10
 				posn: 999 999
-				setCycle: Fwd
+				setCycle: Forward
 				init:
 			)
-			((= aComputerCarrier (Act new:))
+			((= aComputerCarrier (Actor new:))
 				view: 707
 				ignoreActors:
 				illegalBits: 0
@@ -170,7 +172,7 @@
 				stopUpd:
 				init:
 			)
-			((= aKalalau (Act new:))
+			((= aKalalau (Actor new:))
 				view: 704
 				loop: 1
 				ignoreActors:
@@ -181,31 +183,39 @@
 			)
 		)
 		(cond 
-			((== prevRoomNum 79) (ego posn: 197 40))
-			((== prevRoomNum 77) (ego posn: 306 125))
-			(else (ego posn: 306 125))
+			((== prevRoomNum 79)
+				(ego posn: 197 40)
+			)
+			((== prevRoomNum 77)
+				(ego posn: 306 125)
+			)
+			(else
+				(ego posn: 306 125)
+			)
 		)
 		(ego init:)
 	)
 )
 
 (instance rm76Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= cycles 3))
+			(1
+				(= cycles 3)
+			)
 			(2
 				(HandsOff)
 				(ego setMotion: MoveTo 145 126 self)
 				(aKalalau setMotion: MoveTo 138 132)
 				(= cycles 10)
 			)
-			(3 (Print 76 4 #draw))
+			(3
+				(Print 76 4 #draw)
+			)
 			(4
 				(Print 76 5)
 				(aKalalau setCel: 255 stopUpd:)
@@ -241,7 +251,7 @@
 					setLoop: 4
 					setMotion: MoveTo 444 96 self
 				)
-				(aDrummer setCycle: Fwd)
+				(aDrummer setCycle: Forward)
 				(theSound play:)
 			)
 			(10
@@ -251,7 +261,11 @@
 				)
 			)
 			(11
-				(aComputerCarrier setLoop: 3 cel: 0 setCycle: CT 7 1 self)
+				(aComputerCarrier
+					setLoop: 3
+					cel: 0
+					setCycle: CycleTo 7 1 self
+				)
 			)
 			(12
 				((View new:)
@@ -262,7 +276,7 @@
 					setPri: 5
 					addToPic:
 				)
-				(aComputerCarrier setCycle: End self)
+				(aComputerCarrier setCycle: EndLoop self)
 			)
 			(13
 				(aComputerCarrier
@@ -298,28 +312,30 @@
 				(aKalalau setLoop: 3)
 				(= cycles 10)
 			)
-			(19 (Print 76 17))
+			(19
+				(Print 76 17)
+			)
 			(20
 				(ego
 					view: 194
 					posn: 206 99
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(21
 				(ego stopUpd:)
-				(aComputer setCycle: Fwd)
+				(aComputer setCycle: Forward)
 				(= seconds 3)
 			)
 			(22
 				(aEgoProgramming posn: 275 39)
-				(aComputerCode posn: 275 39 cel: 0 setCycle: End self)
+				(aComputerCode posn: 275 39 cel: 0 setCycle: EndLoop self)
 				(= cycles 10)
 			)
 			(23
-				(aComputerCode setLoop: 2 setCycle: Fwd)
+				(aComputerCode setLoop: 2 setCycle: Forward)
 				(cls)
 				(Print 76 18 #at -1 130 #dispose)
 				(= cycles (Random 20 30))
@@ -354,12 +370,15 @@
 				(Print 76 23 #at -1 100 #dispose)
 				(= cycles (Random 20 30))
 			)
-			(30 (cls) (= seconds 3))
+			(30
+				(cls)
+				(= seconds 3)
+			)
 			(31
 				(aComputerCode dispose:)
 				(aEgoProgramming dispose:)
 				(aComputer stopUpd:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(32
 				(ego
@@ -413,17 +432,20 @@
 				(aChief setMotion: MoveTo 251 95 self)
 				(ego setMotion: MoveTo 240 100)
 			)
-			(41 (curRoom newRoom: 79))
+			(41
+				(curRoom newRoom: 79)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/door') (Print 76 0))
+			(if (Said '/door')
+				(Print 76 0)
+			)
 			(if (Said '[/airport,angeles,hut]')
 				(Print 76 1)
 				(Print 76 2)

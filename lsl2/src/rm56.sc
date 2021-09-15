@@ -14,11 +14,11 @@
 
 (local
 	aMind
-	local1
-	local2
-	local3
-	local4
-	local5
+	lineIndex
+	numLines
+	lineY
+	lineXEast
+	lineXWest
 )
 (instance rm56 of Room
 	(properties
@@ -27,58 +27,70 @@
 	)
 	
 	(method (init)
-		(Load VIEW 522)`
+		(Load VIEW 522)
 		(super init:)
-		(= local3 166)
-		(= local4 109)
-		(= local5 136)
+		(= lineY 166)
+		(= lineXEast 109)
+		(= lineXWest 136)
 		(cond 
-			((> machineSpeed 60) (= local2 4))
-			((> machineSpeed 40) (= local2 3))
-			((> machineSpeed 20) (= local2 2))
-			(else (= local2 1))
+			((> machineSpeed 60)
+				(= numLines 4)
+			)
+			((> machineSpeed 40)
+				(= numLines 3)
+			)
+			((> machineSpeed 20)
+				(= numLines 2)
+			)
+			(else
+				(= numLines 1)
+			)
 		)
-		(= local1 1)
-		(while (<= local1 local2)
+		(for ((= lineIndex 1)) (<= lineIndex numLines) ((++ lineIndex))
 			((Actor new:) setScript: (eastLineScript new:))
 			((Actor new:) setScript: (westLineScript new:))
-			(++ local1)
 		)
 		((= aMind (Actor new:))
 			view: 522
 			setLoop: 1
 			setPri: 14
 			setStep: 4 4
-			illegalBits: 16
+			illegalBits: cRED
 			posn: 175 1041
 			ignoreActors:
 			init:
 		)
 		(HandsOff)
-		(= currentStatus egoNORMAL)
+		(= currentStatus egoINTERMINAL)
 		(self setRegions: AIRPORT setScript: rm56Script)
 	)
 )
 
 (instance rm56Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 10))
-			(1 (Print 56 0) (= seconds 10))
-			(2 (Print 56 1) (= seconds 3))
+			(0
+				(= seconds 10)
+			)
+			(1
+				(Print 56 0)
+				(= seconds 10)
+			)
+			(2
+				(Print 56 1)
+				(= seconds 3)
+			)
 			(3
 				(aMind posn: 175 41 setMotion: Wander 99)
 				(= seconds 10)
 			)
 			(4
 				(aMind
-					ignoreControl: 16
+					ignoreControl: cRED
 					setMotion: MoveTo (aMind x?) -20
 				)
 				(Print 56 2 #draw)
@@ -93,8 +105,6 @@
 )
 
 (instance eastLineScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -108,8 +118,8 @@
 					ignoreHorizon:
 					ignoreActors:
 					posn:
-						(- 204 (* local1 (/ local4 local2)))
-						(+ 2 (* local1 (/ local3 local2)))
+						(- 204 (* lineIndex (/ lineXEast numLines)))
+						(+ 2 (* lineIndex (/ lineY numLines)))
 					init:
 				)
 				(self changeState: 1)
@@ -126,8 +136,6 @@
 )
 
 (instance westLineScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -141,8 +149,8 @@
 					ignoreHorizon:
 					ignoreActors:
 					posn:
-						(+ -58 (* local1 (/ local5 local2)))
-						(+ 2 (* local1 (/ local3 local2)))
+						(+ -58 (* lineIndex (/ lineXWest numLines)))
+						(+ 2 (* lineIndex (/ lineY numLines)))
 					init:
 				)
 				(self changeState: 1)

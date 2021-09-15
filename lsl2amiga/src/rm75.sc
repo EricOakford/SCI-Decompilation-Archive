@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 75)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -14,7 +14,7 @@
 )
 
 (local
-	triedToEnterWater
+	waterMsg
 	aKalalau
 )
 (instance theSound of Sound
@@ -23,7 +23,7 @@
 	)
 )
 
-(instance rm75 of Rm
+(instance rm75 of Room
 	(properties
 		picture 75
 		horizon 5
@@ -35,21 +35,23 @@
 		(super init:)
 		(NormalEgo)
 		(self setScript: rm75Script)
-		(if global111 (= endGameState 105))
+		(if global111
+			(= endGameState 105)
+		)
 		(cond 
 			((== endGameState 0)
-				(= endGameState 1)
-				(= currentStatus 11)
+				(= endGameState endMEETKALALAU)
+				(= currentStatus egoMEETTRIBE)
 				(rm75Script changeState: 1)
-				(Load rsVIEW 703)
-				(Load rsVIEW 704)
-				(Load rsVIEW 705)
-				(Load rsVIEW 706)
-				(Load rsFONT 7)
-				(Load rsPIC 99)
-				(Load rsSOUND 116)
+				(Load VIEW 703)
+				(Load VIEW 704)
+				(Load VIEW 705)
+				(Load VIEW 706)
+				(Load FONT 7)
+				(Load PICTURE 99)
+				(Load SOUND 116)
 				(theSound number: 116 init:)
-				((= aKalalau (Act new:))
+				((= aKalalau (Actor new:))
 					view: 705
 					loop: 0
 					ignoreActors:
@@ -57,22 +59,33 @@
 					posn: 190 124
 					init:
 				)
-				(aCupidEast setCycle: Fwd init: hide:)
-				(aCupidWest setCycle: Fwd init: hide:)
+				(aCupidEast
+					setCycle: Forward
+					init:
+					hide:
+				)
+				(aCupidWest
+					setCycle: Forward
+					init:
+					hide:
+				)
 				(HandsOff)
 				(ego posn: 115 185)
 			)
 			((== endGameState 103)
 				(= endGameState 104)
-				(= currentStatus 22)
+				(= currentStatus egoWONGAME)
 				(rm75Script changeState: 36)
-				(Load rsVIEW 704)
-				(Load rsVIEW 706)
-				(Load rsVIEW 807)
-				(Load rsSOUND 17)
+				(Load VIEW 704)
+				(Load VIEW 706)
+				(Load VIEW 807)
+				(Load SOUND 17)
 				(theSound number: 17 play:)
-				(aCopter setCycle: Fwd init:)
-				((= aKalalau (Act new:))
+				(aCopter
+					setCycle: Forward
+					init:
+				)
+				((= aKalalau (Actor new:))
 					view: 704
 					loop: 2
 					ignoreActors:
@@ -85,7 +98,7 @@
 				(ego posn: 327 186)
 			)
 			(else
-				(self setRegions: 700)
+				(self setRegions: ISLAND)
 				(if (== prevRoomNum 77)
 					(ego posn: 2 135)
 				else
@@ -98,28 +111,28 @@
 )
 
 (instance rm75Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0100)
-			(if (== triedToEnterWater 0)
-				(= triedToEnterWater 1)
+		(if (& (ego onControl:) cLCYAN)
+			(if (== waterMsg FALSE)
+				(= waterMsg TRUE)
 				(Print 75 0)
 			)
 		else
-			(= triedToEnterWater 0)
+			(= waterMsg FALSE)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds 3))
+			(1
+				(= seconds 3)
+			)
 			(2
-				(aKalalau cycleSpeed: 1 setCycle: End self)
+				(aKalalau cycleSpeed: 1 setCycle: EndLoop self)
 			)
 			(3
-				(aKalalau setLoop: 1 setCycle: Fwd)
+				(aKalalau setLoop: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(4
@@ -130,7 +143,7 @@
 			)
 			(5
 				(Print 75 12)
-				(aKalalau setLoop: 0 setCel: 255 setCycle: Beg self)
+				(aKalalau setLoop: 0 setCel: 255 setCycle: BegLoop self)
 			)
 			(6
 				(aKalalau
@@ -138,7 +151,7 @@
 					setLoop: 2
 					cel: 0
 					setMotion: MoveTo 190 145
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7
@@ -162,7 +175,7 @@
 			(10
 				(ego posn: 1115 163)
 				(aKalalau posn: 1190 163)
-				(DrawPic 99 dpOPEN_CHECKBOARD)
+				(DrawPic 99 DISSOLVE)
 				(= seconds 6)
 			)
 			(11
@@ -170,27 +183,27 @@
 				(= seconds 5)
 			)
 			(12
-				(DrawPic 75 dpOPEN_CHECKBOARD)
+				(DrawPic 75 DISSOLVE)
 				(ego posn: 115 163)
 				(aKalalau posn: 190 163)
 				(= seconds 3)
 			)
 			(13
-				(ego view: 703 loop: 4 cel: 0 setCycle: End)
-				(aKalalau view: 703 loop: 6 cel: 0 setCycle: End self)
+				(ego view: 703 loop: 4 cel: 0 setCycle: EndLoop)
+				(aKalalau view: 703 loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(14
-				(ego loop: 5 setCycle: Fwd)
-				(aKalalau loop: 7 setCycle: Fwd)
+				(ego loop: 5 setCycle: Forward)
+				(aKalalau loop: 7 setCycle: Forward)
 				(= seconds 3)
 			)
 			(15
-				(ego loop: 4 setCel: 255 setCycle: Beg)
-				(aKalalau loop: 6 setCel: 255 setCycle: Beg self)
+				(ego loop: 4 setCel: 255 setCycle: BegLoop)
+				(aKalalau loop: 6 setCel: 255 setCycle: BegLoop self)
 			)
 			(16
-				(aCupidWest show: setCycle: Fwd)
-				(aCupidEast show: setCycle: Fwd)
+				(aCupidWest show: setCycle: Forward)
+				(aCupidEast show: setCycle: Forward)
 				(ego view: 100 loop: 0 setLoop: -1 setCycle: Walk)
 				(aKalalau view: 704 loop: 1 setLoop: -1 setCycle: Walk)
 				(= seconds 4)
@@ -204,26 +217,26 @@
 				(aCupidWest
 					loop: 2
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					posn: 84 127
 					show:
 				)
 				(aCupidEast
 					loop: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					posn: 217 127
 					show:
 				)
 			)
 			(19
-				(aCupidWest loop: 3 cel: 0 setCycle: Fwd)
-				(aCupidEast loop: 3 cel: 1 setCycle: Fwd)
+				(aCupidWest loop: 3 cel: 0 setCycle: Forward)
+				(aCupidEast loop: 3 cel: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(20
-				(aCupidWest loop: 2 setCel: 255 setCycle: Beg)
-				(aCupidEast loop: 2 setCel: 255 setCycle: Beg self)
+				(aCupidWest loop: 2 setCel: 255 setCycle: BegLoop)
+				(aCupidEast loop: 2 setCel: 255 setCycle: BegLoop self)
 			)
 			(21
 				(aCupidEast hide:)
@@ -234,7 +247,7 @@
 				(aCupidWest
 					loop: 9
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					posn: 116 51
 					show:
 				)
@@ -244,7 +257,7 @@
 				(aCupidEast
 					loop: 8
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					posn: 236 51
 					show:
 				)
@@ -270,15 +283,19 @@
 					setLoop: 0
 					cel: 0
 					posn: 151 163
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(28 (= seconds 5))
-			(29 (ego setCycle: Beg self))
+			(28
+				(= seconds 5)
+			)
+			(29
+				(ego setCycle: BegLoop self)
+			)
 			(30
 				(Print 75 17 #draw)
 				(Print 75 18 #at -1 130)
-				(aKalalau show: ignoreActors: 0)
+				(aKalalau show: ignoreActors: FALSE)
 				(ego
 					view: currentEgoView
 					setLoop: -1
@@ -298,7 +315,11 @@
 				(Print 75 24 #at 15 -1 #width 280)
 				(Print 75 25)
 				(Print 75 26 #at 15 -1 #width 280)
-				(if (> filthLevel 4) (Print 75 27) else (Print 75 28))
+				(if (> filthLevel 4)
+					(Print 75 27)
+				else
+					(Print 75 28)
+				)
 				(Print 75 29 #at -1 130)
 				(= seconds 3)
 			)
@@ -323,7 +344,9 @@
 			(35
 				(ego setMotion: MoveTo 0 143 self)
 			)
-			(36 (= seconds 3))
+			(36
+				(= seconds 3)
+			)
 			(37
 				(Print 75 34)
 				(Print 75 35)
@@ -342,13 +365,17 @@
 					setLoop: 1
 					cel: 0
 					posn: 83 156
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(40 (= seconds 5))
-			(41 (ego setCycle: Beg self))
+			(40
+				(= seconds 5)
+			)
+			(41
+				(ego setCycle: BegLoop self)
+			)
 			(42
-				(aKalalau show: ignoreActors: 0)
+				(aKalalau show: ignoreActors: FALSE)
 				(ego
 					view: currentEgoView
 					setLoop: -1
@@ -367,32 +394,46 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/fluid,lagoon') (Print 75 1) (Print 75 2))
-			(if (Said '[/airport,/]')
+			(if (Said '/fluid,lagoon')
+				(Print 75 1)
+				(Print 75 2)
+			)
+			(if (Said '[/airport,mountain]')	;EO: fixed said spec
 				(Print 75 3)
 				(Print 75 4)
 				(Print 75 5 #at -1 130)
 			)
 		)
-		(if (and (not (ego has: 31)) (Said 'look/beach'))
+		(if (and (not (ego has: iSand))
+				(Said 'look/beach')
+			)
 			(Print 75 6)
 		)
-		(if (Said 'play,dig/beach') (Print 75 7))
+		(if (Said 'play,dig/beach')
+			(Print 75 7)
+		)
 		(if (Said 'get/beach')
 			(cond 
-				((!= currentStatus 0) (NotNow))
-				((not ((inventory at: 31) ownedBy: curRoomNum)) (AlreadyTook))
-				((not (& (ego onControl: 1) $4000)) (NotClose))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not ((inventory at: iSand) ownedBy: curRoomNum))
+					(AlreadyTook)
+				)
+				((not (& (ego onControl: origin) cYELLOW))
+					(NotClose)
+				)
 				(else
-					(ego get: 31)
+					(ego get: iSand)
 					(theGame changeScore: 3)
 					(Print 75 8)
-					(if (> filthLevel 10) (Print 75 9 #at -1 130))
+					(if (> filthLevel 10)
+						(Print 75 9 #at -1 130)
+					)
 				)
 			)
 		)
@@ -405,7 +446,7 @@
 		x 217
 		view 703
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -415,7 +456,7 @@
 		x 84
 		view 703
 		cel 3
-		signal $4000
+		signal ignrAct
 	)
 )
 

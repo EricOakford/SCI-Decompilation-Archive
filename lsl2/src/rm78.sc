@@ -14,8 +14,8 @@
 )
 
 (local
-	aWoodChopper
-	local1
+	aWoodchopper
+	woodCycles
 	aHulaHooper
 	aDancer
 	aPhotographer
@@ -46,11 +46,13 @@
 		(NormalEgo)
 		(ego posn: 9 133 init:)
 		(self setScript: rm78Script)
-		(if global111 (= endGameState 105))
+		(if global111
+			(= endGameState 105)
+		)
 		(if (!= endGameState 105)
 			(self setRegions: ISLAND)
 			(Load VIEW 716)
-			((= aWoodChopper (Prop new:))
+			((= aWoodchopper (Prop new:))
 				view: 716
 				posn: 55 102
 				cycleSpeed: 1
@@ -240,15 +242,13 @@
 )
 
 (instance rm78Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
 			(and
 				(!= endGameState 105)
 				(== (ego loop?) 3)
-				(== 6 (aWoodChopper cel?))
+				(== 6 (aWoodchopper cel?))
 				(ego inRect: 34 100 43 107)
 				(== currentStatus egoNORMAL)
 			)
@@ -258,8 +258,13 @@
 	
 	(method (changeState newState &tmp egoCycleSpeed)
 		(switch (= state newState)
-			(1 (= cycles 2))
-			(2 (Print 78 10) (= cycles 20))
+			(1
+				(= cycles 2)
+			)
+			(2
+				(Print 78 10)
+				(= cycles 20)
+			)
 			(3
 				(theSound play:)
 				(Print 78 11)
@@ -277,7 +282,10 @@
 				(ego setLoop: 2 stopUpd:)
 				(= seconds 3)
 			)
-			(7 (Print 78 13) (= seconds 3))
+			(7
+				(Print 78 13)
+				(= seconds 3)
+			)
 			(8
 				(aKalalau setMotion: MoveTo 182 152 self)
 				(aChief setMotion: MoveTo 100 138 self)
@@ -293,9 +301,7 @@
 				(ego view: 822 setLoop: 0 cel: 0 posn: 172 151)
 				(Print 78 14 #draw)
 				(aChief stopUpd:)
-				(aMouth
-					posn: (+ (aChief x?) -1) (+ (aChief y?) -25)
-				)
+				(aMouth posn: (+ (aChief x?) -1) (+ (aChief y?) -25))
 				(= seconds 3)
 			)
 			(12
@@ -340,7 +346,9 @@
 				)
 				(= cycles 8)
 			)
-			(19 (= seconds 6))
+			(19
+				(= seconds 6)
+			)
 			(20
 				(if (< (= egoCycleSpeed (ego cycleSpeed?)) 8)
 					(++ egoCycleSpeed)
@@ -357,7 +365,9 @@
 			(22
 				(ego cycleSpeed: 2 setLoop: 6 setCycle: EndLoop self)
 			)
-			(23 (= cycles 20))
+			(23
+				(= cycles 20)
+			)
 			(24
 				(Print 78 21)
 				(= cycles 22)
@@ -403,7 +413,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(30 (= seconds 5))
+			(30
+				(= seconds 5)
+			)
 			(31
 				(Print 78 24 #at -1 152)
 				(ego setCycle: BegLoop self)
@@ -467,7 +479,9 @@
 				(theMouth dispose:)
 				(aPhotographer setCycle: BegLoop self)
 			)
-			(40 (= cycles 10))
+			(40
+				(= cycles 10)
+			)
 			(41
 				(theDrummer setCycle: BegLoop self)
 				(thePedaler dispose:)
@@ -498,11 +512,13 @@
 				(Print 78 28)
 				(ego setMotion: MoveTo 171 120)
 			)
-			(46 (curRoom newRoom: 178))
+			(46
+				(curRoom newRoom: 178)
+			)
 			(47
 				(HandsOff)
 				(= currentStatus egoSTOPPED)
-				(aWoodChopper setScript: 0 setCel: 255 stopUpd:)
+				(aWoodchopper setScript: 0 setCel: 255 stopUpd:)
 				(Print 78 29 #draw)
 				(Print 78 30)
 				(= seconds 3)
@@ -515,13 +531,16 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/man,children') (Print 78 0))
-			(if (Said '/door') (Print 78 1))
+			(if (Said '/man,children')
+				(Print 78 0)
+			)
+			(if (Said '/door')
+				(Print 78 1)
+			)
 			(if (Said '[/airport,angeles,hut]')
 				(Print 78 2)
 				(Print 78 3)
@@ -543,21 +562,29 @@
 				(NotClose)
 			)
 		)
-		(if (Said '/man,children') (Print 78 7))
-		(if (Said '/axe') (Print 78 8))
-		(if (Said '/[') (Print 78 9))
+		(if (Said '/man,children')
+			(Print 78 7)
+		)
+		(if (Said '/axe')
+			(Print 78 8)
+		)
+		(if (Said '/wood')	;EO: fixed said spec
+			(Print 78 9)
+		)
 	)
 )
 
 (instance woodScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 8))
-			(1 (aWoodChopper setCycle: EndLoop self))
+			(0
+				(= cycles 8)
+			)
+			(1
+				(aWoodchopper setCycle: EndLoop self)
+			)
 			(2
-				(= cycles (++ local1))
+				(= cycles (++ woodCycles))
 				(= state 0)
 			)
 		)
@@ -565,14 +592,14 @@
 )
 
 (instance minicamScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(aCameraman loop: 2 setCycle: EndLoop self)
 			)
-			(2 (aCameraman stopUpd:))
+			(2
+				(aCameraman stopUpd:)
+			)
 			(3
 				(aCameraman setCycle: BegLoop self)
 			)

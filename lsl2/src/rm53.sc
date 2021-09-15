@@ -19,7 +19,7 @@
 (local
 	local0
 	aPlane
-	gate
+	aDoor
 	aConveyor1
 	aConveyor2
 	aConveyor3
@@ -139,6 +139,7 @@
 			illegalBits: 0
 			ignoreActors:
 			init:
+			;setScript: travelerScript
 			hide:
 		)
 		((= aPlane (Airplane new:))
@@ -151,11 +152,17 @@
 			init:
 		)
 		(cond 
-			((== prevRoomNum 54) (ego posn: 316 153))
-			((== prevRoomNum 52) (ego posn: 51 119))
-			(else (ego posn: 51 119))
+			((== prevRoomNum 54)
+				(ego posn: 316 153)
+			)
+			((== prevRoomNum 52)
+				(ego posn: 51 119)
+			)
+			(else
+				(ego posn: 51 119)
+			)
 		)
-		(self setRegions: 500 setScript: rm53Script)
+		(self setRegions: AIRPORT setScript: rm53Script)
 		(if (!= suitcaseBombState bombHOLDING)
 			(NormalEgo)
 		else
@@ -166,37 +173,33 @@
 			(rm53Script changeState: 9)
 		)
 		(ego init:)
-		((= gate (AutoDoor new:))
+		((= aDoor (AutoDoor new:))
 			view: 513
 			setLoop: 0
 			posn: 293 156
 			setPri: 11
 			roomCtrl: 0
-			locked: (if (== prevRoomNum 54) 0 else 1)
-			msgLook:
-				{There is a barely perceptible, blue gate in the east wall under that painting.}
-			msgLookLock:
-				{The gate is controlled by the Customs Official standing behind the counter.}
-			msgLocked:
-				{The gate is locked. Try talking to the friendly looking gentleman behind the counter.}
+			locked: (if (== prevRoomNum 54) FALSE else TRUE)
+			msgLook: {There is a barely perceptible, blue gate in the east wall under that painting.}
+			msgLookLock: {The gate is controlled by the Customs Official standing behind the counter.}
+			msgLocked: {The gate is locked. Try talking to the friendly looking gentleman behind the counter.}
 			msgExcept: {...except it's locked!}
 			msgFunny: {Most people never knock on a gate!}
-			msgCloser:
-				{When the man releases the gate, it opens just by walking near it.}
+			msgCloser: {When the man releases the gate, it opens just by walking near it.}
 			init:
 		)
 	)
 )
 
 (instance rm53Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 1) $0004) (curRoom newRoom: 52))
+		(if (& (ego onControl: origin) cGREEN)
+			(curRoom newRoom: 52)
+		)
 	)
 	
-	(method (changeState newState &tmp inventoryFirst temp1)
+	(method (changeState newState &tmp node obj)
 		(switch (= state newState)
 			(1
 				(HandsOff)
@@ -224,13 +227,10 @@
 			)
 			(6
 				(Print 53 21)
-				(= inventoryFirst (inventory first:))
-				(while inventoryFirst
-					(if
-					((= temp1 (NodeValue inventoryFirst)) ownedBy: ego)
-						(temp1 showSelf:)
+				(for ((= node (inventory first:))) node ((= node (inventory next: node)))
+					(if ((= obj (NodeValue node)) ownedBy: ego)
+						(obj showSelf:)
 					)
-					(= inventoryFirst (inventory next: inventoryFirst))
 				)
 				(Print 53 22)
 				(= seconds 3)
@@ -240,14 +240,17 @@
 				(= seconds 3)
 			)
 			(8
-				(User canControl: 1 canInput: 1)
+				(User canControl: TRUE canInput: TRUE)
 				(aAgentNear setCel: 0 stopUpd:)
 				(ego setLoop: -1)
-				(if (ego has: 17) (Print 53 23) (Print 53 24))
+				(if (ego has: iKnife)
+					(Print 53 23)
+					(Print 53 24)
+				)
 				(Print 53 25 #draw)
 				(Print 53 26)
 				(Print (Format @str 53 27 tritePhrase))
-				(gate locked: 0)
+				(aDoor locked: FALSE)
 			)
 			(9
 				(ego
@@ -267,45 +270,59 @@
 		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+	(method (handleEvent event &tmp i)
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'give,look,throw,conceal,conceal>')
 			(cond 
 				(
 					(or
-						(not (= inventorySaidMe (inventory saidMe:)))
-						(not (ego has: (inventory indexOf: inventorySaidMe)))
+						(not (= i (inventory saidMe:)))
+						(not (ego has: (inventory indexOf: i)))
 					)
-					(event claimed: 0)
+					(event claimed: FALSE)
 				)
-				((not (ego inRect: 171 143 198 149)) (NotClose))
-				((== (inventory indexOf: inventorySaidMe) 17) (Print 53 0))
-				((!= (inventory indexOf: inventorySaidMe) 7) (Print 53 1))
-				((== currentEgoView 149) (Print 53 2) (Print 53 3))
+				((not (ego inRect: 171 143 198 149))
+					(NotClose)
+				)
+				((== (inventory indexOf: i) iKnife)
+					(Print 53 0)
+				)
+				((!= (inventory indexOf: i) iPassport)
+					(Print 53 1)
+				)
+				((== currentEgoView 149)
+					(Print 53 2)
+					(Print 53 3)
+				)
 				((not passedCustoms)
 					(= passedCustoms TRUE)
 					(theGame changeScore: 5)
 					(self changeState: 1)
 				)
 				(else
-					(if (ego has: 17)
+					(if (ego has: iKnife)
 						(Print 53 4)
 						(Print 53 5)
 						(Print (Format @str 53 6 tritePhrase))
 					else
 						(Print (Format @str 53 7 tritePhrase))
 					)
-					(gate locked: 0)
+					(aDoor locked: FALSE)
 				)
 			)
 		)
 		(if (Said 'look>')
-			(if (Said '/man,agent') (Print 53 8))
-			(if (Said '/art') (Print 53 9))
-			(if (Said '/belt,open,hole') (Print 53 10))
+			(if (Said '/man,agent')
+				(Print 53 8)
+			)
+			(if (Said '/art')
+				(Print 53 9)
+			)
+			(if (Said '/belt,open,hole')
+				(Print 53 10)
+			)
 			(if (Said '[/airport,building,belt]')
 				(Print 53 11)
 				(Print 53 12)
@@ -318,8 +335,12 @@
 			)
 			(Print 53 13)
 		)
-		(if (Said '/bathing') (Print 53 14))
-		(if (Said 'open/door,door') (Print 53 15))
+		(if (Said '/bathing')
+			(Print 53 14)
+		)
+		(if (Said 'open/door,door')
+			(Print 53 15)
+		)
 		(if (Said 'call/man,agent')
 			(Print (Format @str 53 16 introductoryPhrase))
 			(Print 53 17)
@@ -328,11 +349,11 @@
 )
 
 (instance travelerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(aTraveler
 					posn: 128 36

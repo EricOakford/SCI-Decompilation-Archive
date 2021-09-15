@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 57)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Door)
 (use AirplaneActor)
@@ -16,17 +16,17 @@
 )
 
 (local
-	triedToEnterWrongSidewalk
+	wrongWayMsg
 )
-(instance rm57 of Rm
+(instance rm57 of Room
 	(properties
 		picture 57
 		horizon 1
 	)
 	
 	(method (init)
-		(Load rsVIEW 525)
-		(Load rsVIEW 511)
+		(Load VIEW 525)
+		(Load VIEW 511)
 		(super init:)
 		(addToPics add: aMom aSkater aPerson aMonitor doit:)
 		(aPlane
@@ -47,10 +47,12 @@
 			locked: 1
 			doorState: 0
 			msgLook:
-				{This door is controlled by the gentleman behind the counter. He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
+				{This door is controlled by the gentleman behind the counter.
+				He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
 			msgLookLock: {Right now, it's locked up tight!}
 			msgLocked:
-				{This door is controlled by the gentleman behind the counter. He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
+				{This door is controlled by the gentleman behind the counter.
+				He'll unlock it for you if you'll show him a confirmed ticket for the next flight.}
 			msgExcept: {Have the man at the desk open it for you!}
 		)
 		(aKid1
@@ -89,7 +91,7 @@
 			init:
 			setScript: sidewalkSouthScript
 		)
-		(= currentStatus 8)
+		(= currentStatus egoINTERMINAL)
 		(HandsOff)
 		(ego
 			illegalBits: 0
@@ -101,33 +103,31 @@
 			setCel: 0
 			init:
 		)
-		(self setRegions: 500 setScript: rm57Script)
+		(self setRegions: AIRPORT setScript: rm57Script)
 	)
 	
 	(method (dispose)
-		(DisposeScript 992)
+		(DisposeScript MOTION)
 		(super dispose:)
 	)
 )
 
 (instance rm57Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((& (ego onControl:) $0010) (self changeState: 2))
-			((& (ego onControl:) $0008)
-				(if
-					(and
-						(== currentStatus 0)
-						(== triedToEnterWrongSidewalk 0)
-					)
-					(= triedToEnterWrongSidewalk 1)
+			((& (ego onControl:) cRED)
+				(self changeState: 2)
+			)
+			((& (ego onControl:) cCYAN)
+				(if (and (== currentStatus egoNORMAL) (== wrongWayMsg FALSE))
+					(= wrongWayMsg TRUE)
 					(Print 57 0)
 				)
 			)
-			(else (= triedToEnterWrongSidewalk 0))
+			(else
+				(= wrongWayMsg FALSE)
+			)
 		)
 	)
 	
@@ -137,11 +137,11 @@
 				(ego setCel: 0 setMotion: MoveTo 186 175 self)
 			)
 			(1
-				(NormalEgo 3)
-				(ego observeControl: 4 16384)
+				(NormalEgo loopN)
+				(ego observeControl: cGREEN cYELLOW)
 			)
 			(2
-				(= currentStatus 8)
+				(= currentStatus egoINTERMINAL)
 				(HandsOff)
 				(ego
 					illegalBits: 0
@@ -151,34 +151,37 @@
 					setMotion: MoveTo 129 234 self
 				)
 			)
-			(3 (curRoom newRoom: 55))
+			(3
+				(curRoom newRoom: 55)
+			)
 			(4
 				(HandsOff)
 				(theGame changeScore: 3)
 				(Print 57 20)
 				(Print (Format @str 57 21 tritePhrase))
-				(aDoor locked: 0 force: 1 open:)
-				(SetRegionTimer 0 0 0)
+				(aDoor locked: FALSE force: TRUE open:)
+				(SetRegionTimer NULL 0 0)
 				(ego setMotion: MoveTo 151 145 self)
 			)
 			(5
 				(ego setMotion: MoveTo 151 133 self)
 			)
 			(6
-				(aDoor setCycle: Beg)
+				(aDoor setCycle: BegLoop)
 				(ego
 					illegalBits: 0
 					setPri: 5
 					setMotion: MoveTo 199 133 self
 				)
 			)
-			(7 (curRoom newRoom: 58))
+			(7
+				(curRoom newRoom: 58)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if
@@ -188,12 +191,18 @@
 				(Said 'give,finger,look,apply/ticket')
 			)
 			(cond 
-				((not (ego has: 23)) (DontHave))
-				((!= currentStatus 0) (NotNow))
-				((not (ego inRect: 185 140 244 152)) (NotClose))
+				((not (ego has: iAirlineTicket))
+					(DontHave)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 185 140 244 152))
+					(NotClose)
+				)
 				(else
 					(Print 57 1)
-					(if (== missedFlight 1)
+					(if (== missedFlight TRUE)
 						(Print 57 2)
 						(Print (Format @str 57 3 tritePhrase))
 					else
@@ -208,7 +217,7 @@
 				(Said 'call/man,agent')
 			)
 			(Print (Format @str 57 4 introductoryPhrase))
-			(if (not (ego has: 23))
+			(if (not (ego has: iAirlineTicket))
 				(Print 57 5)
 				(Print 57 6)
 			else
@@ -217,37 +226,56 @@
 		)
 		(if (Said 'get/pamphlet')
 			(cond 
-				((!= currentStatus 0) (NotNow))
-				((not ((inventory at: 26) ownedBy: curRoomNum)) (Print 57 8))
-				((not (ego inRect: 159 140 195 152)) (NotClose))
-				(else (ego get: 26) (theGame changeScore: 11) (Print 57 9))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not ((inventory at: iPamphlet) ownedBy: curRoomNum))
+					(Print 57 8)
+				)
+				((not (ego inRect: 159 140 195 152))
+					(NotClose)
+				)
+				(else
+					(ego get: iPamphlet)
+					(theGame changeScore: 11)
+					(Print 57 9)
+				)
 			)
 		)
 		(if (Said 'look>')
-			(if (Said '/man,agent') (Print 57 10) (Print 57 11))
+			(if (Said '/man,agent')
+				(Print 57 10)
+				(Print 57 11)
+			)
 			(if (Said '/buffet')
-				(if ((inventory at: 26) ownedBy: curRoomNum)
+				(if ((inventory at: iPamphlet) ownedBy: curRoomNum)
 					(Print 57 12)
 				else
 					(Print 57 13)
 				)
 			)
-			(if (Said '/pamphlet') (Print 57 14))
+			(if (Said '/pamphlet')
+				(Print 57 14)
+			)
 			(if (Said '/children,bimbo')
-				(if (> filthLevel 4) (Print 57 15) else (Print 57 16))
+				(if (> filthLevel 4)
+					(Print 57 15)
+				else
+					(Print 57 16)
+				)
 			)
 			(if (Said '/computer')
 				(Print 57 17)
 				(Print 57 18 #at -1 130)
 			)
-			(if (Said '[/airport]') (Print 57 19))
+			(if (Said '[/airport]')
+				(Print 57 19)
+			)
 		)
 	)
 )
 
 (instance sidewalkNorthScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -262,8 +290,6 @@
 )
 
 (instance sidewalkSouthScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -277,7 +303,7 @@
 	)
 )
 
-(instance aMom of PV
+(instance aMom of PicView
 	(properties
 		y 140
 		x 112
@@ -286,7 +312,7 @@
 	)
 )
 
-(instance aSkater of PV
+(instance aSkater of PicView
 	(properties
 		y 160
 		x 234
@@ -296,43 +322,35 @@
 	)
 )
 
-(instance aPerson of PV
+(instance aPerson of PicView
 	(properties
 		y 130
 		x 196
 		view 525
 		cel 3
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aMonitor of PV
+(instance aMonitor of PicView
 	(properties
 		y 111
 		x 197
 		view 525
 		cel 2
 		priority 10
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aPlane of Airplane
-	(properties)
-)
+(instance aPlane of Airplane)
 
 (instance aDoor of Door
 	(properties
 		y 137
 		x 163
 		view 525
-		msgLook 0
-		msgLookLock 18
-		msgLocked 38
-		msgExcept 59
-		msgFunny 82
-		msgCloser 102
 	)
 )
 
@@ -352,22 +370,22 @@
 	)
 )
 
-(instance aSidewalkNorth of Act
+(instance aSidewalkNorth of Actor
 	(properties
 		y 180
 		x 192
 		view 525
 		cel 3
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aSidewalkSouth of Act
+(instance aSidewalkSouth of Actor
 	(properties
 		y 178
 		x 135
 		view 525
 		cel 3
-		signal $4000
+		signal ignrAct
 	)
 )

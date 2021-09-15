@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 52)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Extra)
@@ -17,7 +17,7 @@
 (local
 	local0
 	aGreenAgent
-	local2
+	ticketNum
 	linesCleared
 )
 (instance theSound of Sound
@@ -27,7 +27,7 @@
 	)
 )
 
-(instance rm52 of Rm
+(instance rm52 of Room
 	(properties
 		picture 52
 		horizon 5
@@ -37,8 +37,8 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 508)
-		(Load rsVIEW 509)
+		(Load VIEW 508)
+		(Load VIEW 509)
 		(super init:)
 		(addToPics
 			add:
@@ -62,17 +62,23 @@
 			doit:
 		)
 		(cond 
-			((== prevRoomNum 53) (ego posn: 273 127))
-			((== prevRoomNum 50) (ego posn: 133 184))
-			((== prevRoomNum 0) (ego posn: 133 184))
+			((== prevRoomNum 53)
+				(ego posn: 273 127)
+			)
+			((== prevRoomNum 50)
+				(ego posn: 133 184)
+			)
+			((== prevRoomNum 0)
+				(ego posn: 133 184)
+			)
 		)
-		(self setRegions: 500 setScript: rm52Script)
-		(if ((inventory at: 23) ownedBy: curRoomNum)
-			(= linesCleared 1)
+		(self setRegions: AIRPORT setScript: rm52Script)
+		(if ((inventory at: iAirlineTicket) ownedBy: curRoomNum)
+			(= linesCleared TRUE)
 		)
-		(if (< suitcaseBombState 2)
-			(Load rsVIEW 510)
-			(Load rsVIEW 608)
+		(if (< suitcaseBombState bombEXPLODING)
+			(Load VIEW 510)
+			(Load VIEW 608)
 			(aBlueAgent init:)
 			((= aGreenAgent (Extra new:))
 				view: 509
@@ -80,7 +86,9 @@
 				posn: 167 92
 				init:
 			)
-			(aCyanAgent init:)
+			(aCyanAgent
+				init:
+			)
 			(aBlueLine
 				posn: 109 140
 				cycleSpeed: 1
@@ -102,9 +110,9 @@
 				stopUpd:
 				init:
 			)
-			(if (< suitcaseBombState 1)
+			(if (< suitcaseBombState bombHOLDING)
 				(NormalEgo)
-				(ego observeControl: 16384)
+				(ego observeControl: cYELLOW)
 				(aCustomer
 					posn: 161 227
 					setCycle: Walk
@@ -114,15 +122,15 @@
 					setScript: ticketScript
 				)
 			else
-				(Load rsSOUND 5)
+				(Load SOUND 5)
 				(theSound play:)
-				(= currentStatus 7)
+				(= currentStatus egoSUITCASEBOMB)
 				(HandsOff)
 				(rm52Script changeState: 1)
 			)
 		else
-			(if (== suitcaseBombState 2)
-				(= suitcaseBombState 3)
+			(if (== suitcaseBombState bombEXPLODING)
+				(= suitcaseBombState bombAFTEREXPLOSION)
 				(HandsOff)
 				(ego
 					view: 155
@@ -152,11 +160,11 @@
 )
 
 (instance rm52Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (ego inRect: 279 100 333 137) (curRoom newRoom: 53))
+		(if (ego inRect: 279 100 333 137)
+			(curRoom newRoom: 53)
+		)
 	)
 	
 	(method (changeState newState)
@@ -173,33 +181,36 @@
 				(Print 52 22)
 				(Print 52 23 #at -1 15 #width 280)
 				(Print 52 24 #at -1 15 #width 280)
+				;additional Amiga message
 				(Print 52 25 #at -1 130)
-				(ego ignoreControl: 16384 setMotion: MoveTo 184 178 self)
+				(ego ignoreControl: cYELLOW setMotion: MoveTo 184 178 self)
 			)
 			(4
 				(Print 52 26)
 				(ego setMotion: MoveTo 159 188 self)
 			)
 			(5
-				(ego put: 22 -1)
+				(ego put: iSuitcase -1)
 				(curRoom newRoom: 152)
 			)
-			(6 (= seconds 5))
+			(6
+				(= seconds 5)
+			)
 			(7
 				(theGame changeScore: 15)
 				(Print 52 27)
 				(Print 52 28)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(8
 				(Print 52 29 #draw)
-				(NormalEgo 2)
+				(NormalEgo loopS)
 			)
 			(9
 				(HandsOff)
-				(ego loop: 3)
+				(ego loop: loopN)
 				(Print 52 30 #draw)
-				(aGreenAgent setCycle: Fwd)
+				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
 			)
 			(10
@@ -209,7 +220,7 @@
 			)
 			(11
 				(Print 52 32)
-				(aGreenAgent setCycle: Fwd)
+				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
 			)
 			(12
@@ -224,7 +235,7 @@
 				(= seconds 3)
 			)
 			(14
-				(aGreenAgent setCycle: Fwd)
+				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
 			)
 			(15
@@ -273,12 +284,16 @@
 				(Print 52 70 #at -1 20 #time 4)
 				(Print 52 71 #at -1 20 #time 3)
 				(Print 52 72 #at -1 20 #time 2 #dispose)
-				(if (> filthLevel 4) (Print 52 73) else (Print 52 74))
+				(if (> filthLevel 4)
+					(Print 52 73)
+				else
+					(Print 52 74)
+				)
 				(aGreenAgent setCel: 0)
 				(= seconds 3)
 			)
 			(16
-				(aGreenAgent setCycle: Fwd)
+				(aGreenAgent setCycle: Forward)
 				(= seconds 3)
 			)
 			(17
@@ -286,25 +301,30 @@
 				(Print 52 76 #at -1 20)
 				(Print (Format @str 52 77 tritePhrase) #at -1 20)
 				(aGreenAgent setCel: 0 stopUpd:)
-				(ego get: 23)
+				(ego get: iAirlineTicket)
 				(theGame changeScore: 5)
-				(NormalEgo 3)
-				(SetRegionTimer 4 5 10)
+				(NormalEgo loopN)
+				(SetRegionTimer rgAIRPORT 5 10)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
 			(if (Said '/man,children')
 				(cond 
-					(aBlueLine (Print 52 0))
-					(linesCleared (Print 52 1))
-					(else (Print 52 2))
+					(aBlueLine
+						(Print 52 0)
+					)
+					(linesCleared
+						(Print 52 1)
+					)
+					(else
+						(Print 52 2)
+					)
 				)
 			)
 			(if (and linesCleared (Said '/bimbo,agent'))
@@ -324,48 +344,71 @@
 			)
 			(if (Said '[/airport,buffet]')
 				(cond 
-					(aBlueLine (Print 52 9))
-					(linesCleared (Print 52 10))
-					(else (Print 52 2))
+					(aBlueLine
+						(Print 52 9)
+					)
+					(linesCleared
+						(Print 52 10)
+					)
+					(else
+						(Print 52 2)
+					)
 				)
 			)
 		)
-		(if
-		(or (Said 'call/bimbo,agent') (Said 'get,buy/ticket'))
+		(if (or (Said 'call/bimbo,agent') (Said 'get,buy/ticket'))
 			(cond 
-				((not linesCleared) (Print 52 11))
-				((!= suitcaseBombState 3) (Print 52 12))
-				((not ((inventory at: 23) ownedBy: curRoomNum)) (Print 52 13))
-				((not (ego inRect: 154 118 181 129)) (NotClose))
-				(else (self changeState: 9))
+				((not linesCleared)
+					(Print 52 11)
+				)
+				((!= suitcaseBombState bombAFTEREXPLOSION)
+					(Print 52 12)
+				)
+				((not ((inventory at: iAirlineTicket) ownedBy: curRoomNum))
+					(Print 52 13)
+				)
+				((not (ego inRect: 154 118 181 129))
+					(NotClose)
+				)
+				(else
+					(self changeState: 9)
+				)
 			)
 		)
 		(if (Said 'call/man,children')
 			(cond 
-				((not linesCleared) (Print 52 11))
-				((!= suitcaseBombState 3)
+				((not linesCleared)
+					(Print 52 11)
+				)
+				((!= suitcaseBombState bombAFTEREXPLOSION)
 					(Print (Format @str 52 14 introductoryPhrase))
-					(if (> filthLevel 10) (Print 52 15) else (Print 52 16))
+					(if (> filthLevel 10)
+						(Print 52 15)
+					else
+						(Print 52 16)
+					)
 				)
 				((ego inRect: 154 118 181 129)
 					(Print (Format @str 52 17 introductoryPhrase))
 					(Print 52 18)
 				)
-				(else (NotClose))
+				(else
+					(NotClose)
+				)
 			)
 		)
-		(if (and (!= suitcaseBombState 3) (Said '/line'))
+		(if (and (!= suitcaseBombState bombAFTEREXPLOSION) (Said '/line'))
 			(Print 52 19)
 		)
 	)
 )
 
 (instance ticketScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp cmonIn)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 5)))
+			(0
+				(= seconds (Random 2 5))
+			)
 			(1
 				(aCustomer
 					posn: 161 227
@@ -374,28 +417,30 @@
 				)
 			)
 			(2
-				(= temp0 0)
-				(while (not temp0)
-					(switch (++ local2)
+				(= cmonIn FALSE)
+				(while (not cmonIn)
+					(switch (++ ticketNum)
 						(1
-							(if (not (& (ego onControl:) $0002))
+							(if (not (& (ego onControl:) cBLUE))
 								(self changeState: 9)
-								(= temp0 1)
+								(= cmonIn TRUE)
 							)
 						)
 						(2
-							(if (not (& (ego onControl:) $0004))
+							(if (not (& (ego onControl:) cGREEN))
 								(self changeState: 3)
-								(= temp0 1)
+								(= cmonIn TRUE)
 							)
 						)
 						(3
-							(if (not (& (ego onControl:) $0008))
+							(if (not (& (ego onControl:) cCYAN))
 								(self changeState: 15)
-								(= temp0 1)
+								(= cmonIn TRUE)
 							)
 						)
-						(else  (= local2 0))
+						(else
+							(= ticketNum 0)
+						)
 					)
 				)
 			)
@@ -407,12 +452,12 @@
 				(= seconds 3)
 			)
 			(5
-				(if (& (ego onControl:) $0004)
+				(if (& (ego onControl:) cGREEN)
 					(-- state)
 					(= cycles 10)
 				else
 					(aCustomer posn: 164 124 setMotion: MoveTo 177 124 self)
-					(aGreenLine cel: 0 setCycle: End)
+					(aGreenLine cel: 0 setCycle: EndLoop)
 				)
 			)
 			(6
@@ -434,12 +479,12 @@
 				(= seconds 3)
 			)
 			(11
-				(if (& (ego onControl:) $0002)
+				(if (& (ego onControl:) cBLUE)
 					(-- state)
 					(= cycles 10)
 				else
 					(aCustomer posn: 122 124 setMotion: MoveTo 135 124 self)
-					(aBlueLine cel: 0 setCycle: End)
+					(aBlueLine cel: 0 setCycle: EndLoop)
 				)
 			)
 			(12
@@ -461,12 +506,12 @@
 				(= seconds 3)
 			)
 			(17
-				(if (& (ego onControl:) $0008)
+				(if (& (ego onControl:) cCYAN)
 					(-- state)
 					(= cycles 10)
 				else
 					(aCustomer posn: 210 124 setMotion: MoveTo 223 124 self)
-					(aCyanLine cel: 0 setCycle: End)
+					(aCyanLine cel: 0 setCycle: EndLoop)
 				)
 			)
 			(18
@@ -481,7 +526,7 @@
 	)
 )
 
-(instance aLcomputer of PV
+(instance aLcomputer of PicView
 	(properties
 		y 98
 		x 105
@@ -491,7 +536,7 @@
 	)
 )
 
-(instance aCcomputer of PV
+(instance aCcomputer of PicView
 	(properties
 		y 98
 		x 157
@@ -501,7 +546,7 @@
 	)
 )
 
-(instance aRcomputer of PV
+(instance aRcomputer of PicView
 	(properties
 		y 98
 		x 210
@@ -510,7 +555,7 @@
 	)
 )
 
-(instance aCounter1 of PV
+(instance aCounter1 of PicView
 	(properties
 		y 98
 		x 131
@@ -520,7 +565,7 @@
 	)
 )
 
-(instance aCounter2 of PV
+(instance aCounter2 of PicView
 	(properties
 		y 98
 		x 185
@@ -530,7 +575,7 @@
 	)
 )
 
-(instance aMonitor1 of PV
+(instance aMonitor1 of PicView
 	(properties
 		y 63
 		x 128
@@ -540,7 +585,7 @@
 	)
 )
 
-(instance aMonitor2 of PV
+(instance aMonitor2 of PicView
 	(properties
 		y 63
 		x 149
@@ -550,7 +595,7 @@
 	)
 )
 
-(instance aMonitor3 of PV
+(instance aMonitor3 of PicView
 	(properties
 		y 63
 		x 171
@@ -560,7 +605,7 @@
 	)
 )
 
-(instance aMonitor4 of PV
+(instance aMonitor4 of PicView
 	(properties
 		y 63
 		x 192
@@ -570,7 +615,7 @@
 	)
 )
 
-(instance aCustomsSign of PV
+(instance aCustomsSign of PicView
 	(properties
 		y 61
 		x 249
@@ -581,7 +626,7 @@
 	)
 )
 
-(instance aPlants of PV
+(instance aPlants of PicView
 	(properties
 		y 53
 		x 247
@@ -592,7 +637,7 @@
 	)
 )
 
-(instance aRaisins of PV
+(instance aRaisins of PicView
 	(properties
 		y 147
 		x 295
@@ -603,7 +648,7 @@
 	)
 )
 
-(instance aTicket1 of PV
+(instance aTicket1 of PicView
 	(properties
 		y 102
 		x 92
@@ -613,7 +658,7 @@
 	)
 )
 
-(instance aTicket2 of PV
+(instance aTicket2 of PicView
 	(properties
 		y 102
 		x 125
@@ -623,7 +668,7 @@
 	)
 )
 
-(instance aTicket3 of PV
+(instance aTicket3 of PicView
 	(properties
 		y 102
 		x 157
@@ -633,7 +678,7 @@
 	)
 )
 
-(instance aTicket4 of PV
+(instance aTicket4 of PicView
 	(properties
 		y 102
 		x 189
@@ -643,7 +688,7 @@
 	)
 )
 
-(instance aTicket5 of PV
+(instance aTicket5 of PicView
 	(properties
 		y 102
 		x 221
@@ -692,7 +737,7 @@
 	)
 )
 
-(instance aCustomer of Act
+(instance aCustomer of Actor
 	(properties
 		view 608
 	)

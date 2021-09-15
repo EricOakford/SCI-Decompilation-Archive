@@ -23,11 +23,11 @@
 	aWake
 	aDrain
 	aMan
-	local8
+	henchwomanWaiting
 	oldEgoBase
 	drowningInLeisureSuit
 	aHench
-	canFollowHenchwoman
+	henchwomanBeckons
 )
 (instance rm34 of Room
 	(properties
@@ -236,7 +236,7 @@
 			(self changeState: 1)
 		)
 		(if (== SOUTH (ego edgeHit?))
-			(if (== local8 0)
+			(if (== henchwomanWaiting 0)
 				(curRoom newRoom: 31)
 			else
 				(Print 34 0)
@@ -245,9 +245,9 @@
 				(curRoom newRoom: 95)
 			)
 		)
-		(if (and henchwomanIsHere canFollowHenchwoman (> (ego y?) 181))
-			(= canFollowHenchwoman FALSE)
-			(= local8 1)
+		(if (and henchwomanIsHere henchwomanBeckons (> (ego y?) 181))
+			(= henchwomanBeckons FALSE)
+			(= henchwomanWaiting 1)
 			(curRoom south: 95)
 			(Print 34 2)
 			(HandsOff)
@@ -611,7 +611,7 @@
 				else
 					(aHench setMotion: MoveTo 155 129 self)
 					(= henchwomanIsHere TRUE)
-					(NotifyScript 8 1)
+					(NotifyScript HENCHWOMAN 1)
 				)
 			)
 			(3
@@ -625,7 +625,7 @@
 			(5
 				(Print 34 36)
 				(aHench setMotion: MoveTo 155 129 self)
-				(= canFollowHenchwoman TRUE)
+				(= henchwomanBeckons TRUE)
 			)
 			(6
 				(aHench setMotion: MoveTo 155 234 self)
@@ -637,7 +637,7 @@
 				(aHench dispose:)
 				(= henchView 0)
 				(= henchwomanIsHere FALSE)
-				(= canFollowHenchwoman FALSE)
+				(= henchwomanBeckons FALSE)
 			)
 		)
 	)

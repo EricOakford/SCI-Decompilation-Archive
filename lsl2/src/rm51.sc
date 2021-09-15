@@ -15,7 +15,7 @@
 
 (local
 	local0
-	followingHenchwoman
+	joinedHenchwoman
 	henchwomanBeckons
 	aBarberPole
 	aPlane
@@ -63,7 +63,7 @@
 			setPri: 4
 			setCycle: Forward
 			posn: 236 74
-			isExtra: 1
+			isExtra: TRUE
 			init:
 		)
 		((= aPlane (Airplane new:))
@@ -83,8 +83,7 @@
 			ignoreActors:
 			addToPic:
 		)
-		(if
-		(or (!= 1 (Random 1 3)) (!= currentEgoView 100))
+		(if (or (!= 1 (Random 1 3)) (!= currentEgoView vEgo))
 			((View new:)
 				view: 506
 				cel: 2
@@ -118,18 +117,18 @@
 		)
 		(NormalEgo)
 		(ego init:)
-		(self setRegions: 500 setScript: rm51Script)
+		(self setRegions: AIRPORT setScript: rm51Script)
 	)
 )
 
 (instance rm51Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 151))
-		(if (== 2 (ego edgeHit?))
-			(if (== followingHenchwoman 0)
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 151)
+		)
+		(if (== EAST (ego edgeHit?))
+			(if (== joinedHenchwoman FALSE)
 				(curRoom newRoom: 52)
 			else
 				(Print 51 0 #at 15 -1 #width 280)
@@ -139,7 +138,7 @@
 		)
 		(if (and henchwomanIsHere henchwomanBeckons (> (ego x?) 300))
 			(= henchwomanBeckons FALSE)
-			(= followingHenchwoman TRUE)
+			(= joinedHenchwoman TRUE)
 			(curRoom east: 95)
 			(Print 51 1)
 			(HandsOff)
@@ -148,23 +147,25 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
 			(if (Said '/barstool,bimbo')
-				(if
-				(and henchwomanIsHere (< (henchScript state?) 7))
+				(if (and henchwomanIsHere (< (henchScript state?) 7))
 					(Print 51 2)
 				else
 					(Print 51 3)
 				)
 			)
-			(if (Said '/art') (Print 51 4))
+			(if (Said '/art')
+				(Print 51 4)
+			)
 			(if (Said '[/building,airport]')
 				(Print 51 5)
-				(if henchwomanIsHere (Print 51 6))
+				(if henchwomanIsHere
+					(Print 51 6)
+				)
 			)
 		)
 		(if
@@ -185,16 +186,18 @@
 			(Print 51 8)
 			(henchScript changeState: 7)
 		)
-		(if (Said 'bath[/down,barstool]') (Print 51 9))
+		(if (Said 'bath[/down,barstool]')
+			(Print 51 9)
+		)
 	)
 )
 
 (instance henchScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 5 10)))
+			(0
+				(= seconds (Random 5 10))
+			)
 			(1
 				(aHench
 					cycleSpeed: 1
@@ -217,7 +220,10 @@
 				(aHench setLoop: 2 setCycle: Forward)
 				(= seconds 3)
 			)
-			(5 (Print 51 12) (= seconds 3))
+			(5
+				(Print 51 12)
+				(= seconds 3)
+			)
 			(6
 				(Print 51 13)
 				(aHench setLoop: 0 cel: 0 setCycle: Forward cycleSpeed: 2)
@@ -252,7 +258,9 @@
 				(aHench setMotion: MoveTo 333 118 self)
 				(= henchwomanBeckons TRUE)
 			)
-			(9 (= seconds 10))
+			(9
+				(= seconds 10)
+			)
 			(10
 				(aHench dispose:)
 				(= henchView 0)

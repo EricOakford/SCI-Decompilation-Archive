@@ -26,7 +26,7 @@
 	)
 	
 	(method (init)
-		(Load VIEW 100)
+		(Load VIEW vEgo)
 		(Load VIEW 661)
 		(Load VIEW 603)
 		(super init:)
@@ -259,17 +259,21 @@
 )
 
 (instance rm61Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (== state 17) (ShakeScreen 1 (Random 1 3)))
-		(if (& (ego onControl:) $0004) (curRoom newRoom: 62))
+		(if (== state 17)
+			(ShakeScreen 1 (Random 1 3))
+		)
+		(if (& (ego onControl:) cGREEN)
+			(curRoom newRoom: 62)
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds 2))
+			(1
+				(= seconds 2)
+			)
 			(2
 				(ego setMotion: MoveTo 53 117 self)
 			)
@@ -290,7 +294,7 @@
 			(6
 				(aStewardess setCel: 0)
 				(Print 61 9 #draw)
-				(ego put: 23 -1)
+				(ego put: iAirlineTicket -1)
 				(Print 61 10)
 				(Print 61 11)
 				(= seconds 3)
@@ -310,7 +314,9 @@
 			(9
 				(ego setMotion: MoveTo 103 102 self)
 			)
-			(10 (= seconds 3))
+			(10
+				(= seconds 3)
+			)
 			(11
 				(Print 61 16)
 				(ego setMotion: MoveTo 326 102)
@@ -336,7 +342,9 @@
 				(Print 61 19)
 				(= seconds 3)
 			)
-			(17 (= seconds 3))
+			(17
+				(= seconds 3)
+			)
 			(18
 				(Print 61 20)
 				(= currentStatus egoDYING)
@@ -345,8 +353,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
@@ -357,7 +364,9 @@
 					(NotClose)
 				)
 			)
-			(if (Said '/door') (Print 61 1))
+			(if (Said '/door')
+				(Print 61 1)
+			)
 			(if (Said '[/children,man,bimbo,airline,airport]')
 				(Print 61 2)
 				(Print 61 3)
@@ -372,9 +381,15 @@
 				((!= currentStatus egoNORMAL)
 					(NotNow)
 				)
-				((& (ego onControl:) $0010) (Print 61 6))
-				((not (& (ego onControl:) $0008)) (NotClose))
-				(else (self changeState: 12))
+				((& (ego onControl:) cRED)
+					(Print 61 6)
+				)
+				((not (& (ego onControl:) cCYAN))
+					(NotClose)
+				)
+				(else
+					(self changeState: 12)
+				)
 			)
 		)
 	)

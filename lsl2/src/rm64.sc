@@ -39,8 +39,7 @@
 			init:
 		)
 		(= numClouds (Random 2 6))
-		(= i 0)
-		(while (< i numClouds)
+		(for ((= i 0)) (< i numClouds) ((++ i))
 			((View new:)
 				view: 620
 				cel: (Random 0 10)
@@ -48,7 +47,6 @@
 				posn: (Random -10 330) (Random 5 188)
 				addToPic:
 			)
-			(++ i)
 		)
 		(ego
 			view: 162
@@ -65,8 +63,6 @@
 )
 
 (instance rm64Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -76,7 +72,9 @@
 			(0
 				(ego setMotion: MoveTo 144 208 self)
 			)
-			(1 (curRoom newRoom: 65))
+			(1
+				(curRoom newRoom: 65)
+			)
 			(2
 				(ego
 					loop: 1
@@ -87,13 +85,14 @@
 				(= currentStatus egoLAUNCHPARACHUTE)
 				(Print 64 8 #draw)
 			)
-			(3 (curRoom newRoom: 65))
+			(3
+				(curRoom newRoom: 65)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look')
@@ -115,12 +114,17 @@
 				)
 			)
 		)
-		(if
-		(Said '(conceal<on),wear,afix,buckle,afix/parachute')
+		(if (Said '(conceal<on),wear,afix,buckle,afix/parachute')
 			(cond 
-				((== wearingParachute TRUE) (Print 64 5))
-				((ego has: iParachute) (Print 64 6))
-				(else (Print 64 7))
+				((== wearingParachute TRUE)
+					(Print 64 5)
+				)
+				((ego has: iParachute)
+					(Print 64 6)
+				)
+				(else
+					(Print 64 7)
+				)
 			)
 		)
 	)

@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 64)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -16,16 +16,16 @@
 (local
 	numClouds
 )
-(instance rm64 of Rm
+(instance rm64 of Room
 	(properties
 		picture 64
 		horizon 5
 	)
 	
-	(method (init &tmp temp0 temp1)
-		(Load rsVIEW 162)
-		(Load rsVIEW 511)
-		(Load rsVIEW 620)
+	(method (init &tmp i temp1)
+		(Load VIEW 162)
+		(Load VIEW 511)
+		(Load VIEW 620)
 		(super init:)
 		(aPlane
 			illegalBits: 0
@@ -34,32 +34,28 @@
 			init:
 		)
 		(= numClouds (Random 2 6))
-		(= temp0 0)
-		(while (< temp0 numClouds)
+		(for ((= i 0)) (< i numClouds) ((++ i))
 			(aClouds
 				cel: (Random 0 10)
 				posn: (Random -10 330) (Random 5 188)
 				addToPic:
 			)
-			(++ temp0)
 		)
 		(ego
 			view: 162
 			posn: 160 8
-			setCycle: Fwd
+			setCycle: Forward
 			loop: 0
 			setStep: -1 3
 			init:
 		)
-		(= currentStatus 12)
+		(= currentStatus egoFALLING)
 		(self setScript: rm64Script)
-		(User canInput: 1 canControl: 0)
+		(User canInput: TRUE canControl: FALSE)
 	)
 )
 
 (instance rm64Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -69,7 +65,9 @@
 			(0
 				(ego setMotion: MoveTo 144 208 self)
 			)
-			(1 (curRoom newRoom: 65))
+			(1
+				(curRoom newRoom: 65)
+			)
 			(2
 				(ego
 					loop: 1
@@ -77,49 +75,55 @@
 					cycleSpeed: 4
 					setMotion: MoveTo 144 208 self
 				)
-				(= currentStatus 10)
+				(= currentStatus egoLAUNCHPARACHUTE)
 				(Print 64 8 #draw)
 			)
-			(3 (curRoom newRoom: 65))
+			(3
+				(curRoom newRoom: 65)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look')
-			(if (== currentStatus 12)
+			(if (== currentStatus egoFALLING)
 				(Print 64 0)
 			else
 				(Print 64 1)
 			)
 		)
 		(if (Said 'apply,open,jerk/cord,parachute')
-			(if (!= currentStatus 12)
+			(if (!= currentStatus egoFALLING)
 				(Print 64 2)
 			else
 				(Print 64 3)
-				(if (== wearingParachute 1)
+				(if (== wearingParachute TRUE)
 					(self changeState: 2)
 				else
 					(Print 64 4)
 				)
 			)
 		)
-		(if
-		(Said '(conceal<on),wear,afix,buckle,afix/parachute')
+		(if (Said '(conceal<on),wear,afix,buckle,afix/parachute')
 			(cond 
-				((== wearingParachute 1) (Print 64 5))
-				((ego has: 24) (Print 64 6))
-				(else (Print 64 7))
+				((== wearingParachute TRUE)
+					(Print 64 5)
+				)
+				((ego has: iParachute)
+					(Print 64 6)
+				)
+				(else
+					(Print 64 7)
+				)
 			)
 		)
 	)
 )
 
-(instance aPlane of Act
+(instance aPlane of Actor
 	(properties
 		y 7
 		x 155
@@ -131,6 +135,6 @@
 (instance aClouds of View
 	(properties
 		view 620
-		signal $4000
+		signal ignrAct
 	)
 )

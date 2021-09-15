@@ -14,7 +14,7 @@
 )
 
 (local
-	triedToEnterWater
+	waterMsg
 	aKalalau
 	aCupidWest
 	aCupidEast
@@ -38,9 +38,11 @@
 		(super init:)
 		(NormalEgo)
 		(self setScript: rm75Script)
-		(if global111 (= endGameState 105))
+		(if global111
+			(= endGameState 105)
+		)
 		(cond 
-			((== endGameState NULL)
+			((== endGameState 0)
 				(= endGameState endMEETKALALAU)
 				(= currentStatus egoMEETTRIBE)
 				(rm75Script changeState: 1)
@@ -84,7 +86,7 @@
 			)
 			((== endGameState 103)
 				(= endGameState 104)
-				(= currentStatus 22)
+				(= currentStatus egoWONGAME)
 				(rm75Script changeState: 36)
 				(Load VIEW 704)
 				(Load VIEW 706)
@@ -123,20 +125,23 @@
 )
 
 (instance rm75Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0100)
-			(if (== triedToEnterWater FALSE) (= triedToEnterWater TRUE) (Print 75 0))
+		(if (& (ego onControl:) cLCYAN)
+			(if (== waterMsg FALSE)
+				(= waterMsg TRUE)
+				(Print 75 0)
+			)
 		else
-			(= triedToEnterWater FALSE)
+			(= waterMsg FALSE)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds 3))
+			(1
+				(= seconds 3)
+			)
 			(2
 				(aKalalau cycleSpeed: 1 setCycle: EndLoop self)
 			)
@@ -263,7 +268,13 @@
 				(= cycles 5)
 			)
 			(23
-				(aCupidEast loop: 8 cel: 0 setCycle: Forward posn: 236 51 show:)
+				(aCupidEast
+					loop: 8
+					cel: 0
+					setCycle: Forward
+					posn: 236 51
+					show:
+				)
 				(= cycles 41)
 			)
 			(24
@@ -289,12 +300,16 @@
 					setCycle: EndLoop self
 				)
 			)
-			(28 (= seconds 5))
-			(29 (ego setCycle: BegLoop self))
+			(28
+				(= seconds 5)
+			)
+			(29
+				(ego setCycle: BegLoop self)
+			)
 			(30
 				(Print 75 17 #draw)
 				(Print 75 18 #at -1 152)
-				(aKalalau show: ignoreActors: 0)
+				(aKalalau show: ignoreActors: FALSE)
 				(ego
 					view: currentEgoView
 					setLoop: -1
@@ -314,7 +329,11 @@
 				(Print 75 24 #at 15 -1 #width 280)
 				(Print 75 25)
 				(Print 75 26 #at 15 -1 #width 280)
-				(if (> filthLevel 4) (Print 75 27) else (Print 75 28))
+				(if (> filthLevel 4)
+					(Print 75 27)
+				else
+					(Print 75 28)
+				)
 				(Print 75 29 #at -1 152)
 				(= seconds 3)
 			)
@@ -339,7 +358,9 @@
 			(35
 				(ego setMotion: MoveTo 0 143 self)
 			)
-			(36 (= seconds 3))
+			(36
+				(= seconds 3)
+			)
 			(37
 				(Print 75 34)
 				(Print 75 35)
@@ -361,10 +382,14 @@
 					setCycle: EndLoop self
 				)
 			)
-			(40 (= seconds 5))
-			(41 (ego setCycle: BegLoop self))
+			(40
+				(= seconds 5)
+			)
+			(41
+				(ego setCycle: BegLoop self)
+			)
 			(42
-				(aKalalau show: ignoreActors: 0)
+				(aKalalau show: ignoreActors: FALSE)
 				(ego
 					view: currentEgoView
 					setLoop: -1
@@ -383,32 +408,46 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/fluid,lagoon') (Print 75 1) (Print 75 2))
-			(if (Said '[/airport,/]')
+			(if (Said '/fluid,lagoon')
+				(Print 75 1)
+				(Print 75 2)
+			)
+			(if (Said '[/airport,mountain]')	;EO: fixed said spec
 				(Print 75 3)
 				(Print 75 4)
 				(Print 75 5 #at -1 152)
 			)
 		)
-		(if (and (not (ego has: iSand)) (Said 'look/beach'))
+		(if (and (not (ego has: iSand))
+				(Said 'look/beach')
+			)
 			(Print 75 6)
 		)
-		(if (Said 'play,dig/beach') (Print 75 7))
+		(if (Said 'play,dig/beach')
+			(Print 75 7)
+		)
 		(if (Said 'get/beach')
 			(cond 
-				((!= currentStatus egoNORMAL) (NotNow))
-				((not ((inventory at: iSand) ownedBy: curRoomNum)) (AlreadyTook))
-				((not (& (ego onControl: origin) $4000)) (NotClose))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not ((inventory at: iSand) ownedBy: curRoomNum))
+					(AlreadyTook)
+				)
+				((not (& (ego onControl: origin) cYELLOW))
+					(NotClose)
+				)
 				(else
 					(ego get: iSand)
 					(theGame changeScore: 3)
 					(Print 75 8)
-					(if (> filthLevel 10) (Print 75 9 #at -1 152))
+					(if (> filthLevel 10)
+						(Print 75 9 #at -1 152)
+					)
 				)
 			)
 		)

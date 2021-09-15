@@ -33,7 +33,9 @@
 		(Load VIEW 610)
 		(Load VIEW 604)
 		(Load VIEW 223)
-		(if (ego has: iPamphlet) (Load VIEW 26))
+		(if (ego has: iPamphlet)
+			(Load VIEW 26)
+		)
 		(Load SOUND 105)
 		(theSound init:)
 		(super init:)
@@ -72,7 +74,7 @@
 		else (NormalEgo)
 		)
 		(if goingToSeat
-			(= goingToSeat 0)
+			(= goingToSeat FALSE)
 			(HandsOff)
 			(rm62Script changeState: 1)
 			((= aStewardess (Actor new:))
@@ -93,15 +95,19 @@
 )
 
 (instance rm62Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (== currentStatus egoNORMAL)
-			(if (& (ego onControl:) $0002) (curRoom newRoom: 61))
-			(if (& (ego onControl:) $0004) (curRoom newRoom: 63))
+			(if (& (ego onControl:) cBLUE)
+				(curRoom newRoom: 61)
+			)
+			(if (& (ego onControl:) cGREEN)
+				(curRoom newRoom: 63)
+			)
 		)
-		(if (== state 18) (ShakeScreen 1 (Random 1 3)))
+		(if (== state 18)
+			(ShakeScreen 1 (Random 1 3))
+		)
 		(if
 			(and
 				(== gameState rgAIRPLANE)
@@ -109,20 +115,27 @@
 				(== currentStatus egoSITTING)
 			)
 			(= currentStatus egoSTOPPED)
-			(= gameState NULL)
+			(= gameState 0)
 			(rm62Script changeState: 21)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds 3))
+			(1
+				(= seconds 3)
+			)
 			(2
 				(Print 62 16)
 				(ego setMotion: MoveTo 169 102 self)
 			)
-			(3 (= seconds 3))
-			(4 (Print 62 17) (= seconds 3))
+			(3
+				(= seconds 3)
+			)
+			(4
+				(Print 62 17)
+				(= seconds 3)
+			)
 			(5
 				(Print 62 18)
 				(ego
@@ -203,7 +216,9 @@
 				(Print 62 26)
 				(= seconds 5)
 			)
-			(18 (= seconds 3))
+			(18
+				(= seconds 3)
+			)
 			(19
 				(Print 62 27)
 				(Print 62 28 #at -1 152)
@@ -261,15 +276,22 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look,call,finger,call/bimbo,cart,bimbo')
-			(if (== drinksBeingServed FALSE) (Print 62 0) else (Print 62 1))
+			(if (== drinksBeingServed FALSE)
+				(Print 62 0)
+			else
+				(Print 62 1)
+			)
 		)
 		(if (Said 'jerk,jerk/cart')
-			(if (== drinksBeingServed FALSE) (Print 62 2) else (Print 62 3))
+			(if (== drinksBeingServed FALSE)
+				(Print 62 2)
+			else
+				(Print 62 3)
+			)
 		)
 		(if (Said 'look>')
 			(if (Said '/bra,barstool,barstool')
@@ -280,7 +302,11 @@
 				)
 			)
 			(if (Said '/man')
-				(if (== boreState 255) (Print 62 6) else (Print 62 7))
+				(if (== boreState 255)
+					(Print 62 6)
+				else
+					(Print 62 7)
+				)
 			)
 			(if (Said '[/airline,airport]')
 				(if ((inventory at: iAirsickBag) ownedBy: curRoomNum)
@@ -295,8 +321,12 @@
 				((== currentStatus egoSITTING)
 					(YouAre)
 				)
-				((not (ego inRect: 158 94 194 106)) (NotClose))
-				((!= currentStatus egoNORMAL) (NotNow))
+				((not (ego inRect: 158 94 194 106))
+					(NotClose)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
 				(else
 					(Ok)
 					(ego setScript: sittingScript)
@@ -304,8 +334,7 @@
 				)
 			)
 		)
-		(if
-		(and (== currentStatus egoSITTING) (Said 'free,afix/belt'))
+		(if (and (== currentStatus egoSITTING) (Said 'free,afix/belt'))
 			(Ok)
 		)
 		(if
@@ -314,8 +343,12 @@
 				(Said 'disembark[/barstool]')
 			)
 			(cond 
-				((== currentStatus egoNORMAL) (YouAre))
-				((!= currentStatus egoSITTING) (NotNow))
+				((== currentStatus egoNORMAL)
+					(YouAre)
+				)
+				((!= currentStatus egoSITTING)
+					(NotNow)
+				)
 				(else
 					(Ok)
 					(ego setScript: sittingScript)
@@ -325,16 +358,28 @@
 		)
 		(if (Said 'buy,get,buy/drink')
 			(cond 
-				((not drinksBeingServed) (Print 62 2))
-				((== currentStatus egoSITTING) (NotClose))
-				(else (Print 62 10))
+				((not drinksBeingServed)
+					(Print 62 2)
+				)
+				((== currentStatus egoSITTING)
+					(NotClose)
+				)
+				(else
+					(Print 62 10)
+				)
 			)
 		)
-		(if (Said 'call/man,man') (Print 62 11))
+		(if (Said 'call/man,man')
+			(Print 62 11)
+		)
 		(if (Said 'give,apply/pamphlet')
 			(cond 
-				((not (ego has: iPamphlet)) (DontHave))
-				((!= currentStatus egoSITTING) (NotClose))
+				((not (ego has: iPamphlet))
+					(DontHave)
+				)
+				((!= currentStatus egoSITTING)
+					(NotClose)
+				)
 				(else
 					(ego put: iPamphlet -1)
 					(theGame changeScore: 8)
@@ -346,8 +391,12 @@
 		)
 		(if (Said 'get/bag')
 			(cond 
-				((not ((inventory at: iAirsickBag) ownedBy: curRoomNum)) (AlreadyTook))
-				((!= currentStatus egoSITTING) (NotClose))
+				((not ((inventory at: iAirsickBag) ownedBy: curRoomNum))
+					(AlreadyTook)
+				)
+				((!= currentStatus egoSITTING)
+					(NotClose)
+				)
 				(else
 					(Print 62 14)
 					(Print 62 15 #at -1 152)
@@ -360,8 +409,6 @@
 )
 
 (instance sittingScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -402,7 +449,9 @@
 					cycleSpeed: 4
 					setCycle: EndLoop self
 				)
-				(if (!= boreState 255) (aBore setScript: boreScript))
+				(if (!= boreState 255)
+					(aBore setScript: boreScript)
+				)
 			)
 			(5
 				(= seconds (= cycles 0))
@@ -451,15 +500,13 @@
 			)
 			(9
 				(ego posn: 169 97)
-				(NormalEgo 1)
+				(NormalEgo loopW)
 			)
 		)
 	)
 )
 
 (instance cartLeftScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -489,8 +536,6 @@
 )
 
 (instance cartRightScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -525,8 +570,6 @@
 )
 
 (instance boreScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -552,7 +595,10 @@
 						(Print 62 50)
 						(Print 62 51 #at -1 152)
 					)
-					(3 (Print 62 52) (Print 62 53))
+					(3
+						(Print 62 52)
+						(Print 62 53)
+					)
 					(4
 						(Print 62 54)
 						(Print 62 55)
@@ -607,7 +653,9 @@
 			(6
 				(aBore setLoop: 1 cel: 0 setCycle: EndLoop self)
 			)
-			(7 (= seconds 3))
+			(7
+				(= seconds 3)
+			)
 			(8
 				(Print 62 66 #draw)
 				(= currentStatus egoDYING)

@@ -65,8 +65,6 @@
 )
 
 (instance rm70Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -74,7 +72,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (ego has: iKnife)) (= seconds 10))
+				(if (not (ego has: iKnife))
+					(= seconds 10)
+				)
 			)
 			(1
 				(Print 70 8)
@@ -119,28 +119,30 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/parachute') (Print 70 0))
+			(if (Said '/parachute')
+				(Print 70 0)
+			)
 			(if (Said '[/airport,branch,palm,forest,bush]')
 				(Print 70 1)
 				(Print 70 2)
 			)
 		)
-		(if (Said 'swing') (Print 70 3))
-		(if
-			(Said
-				'drain,(get<off),free,free,open,jerk/cord,parachute,buckle'
-			)
+		(if (Said 'swing')
+			(Print 70 3)
+		)
+		(if (Said 'drain,(get<off),free,free,open,jerk/cord,parachute,buckle')
 			(Print 70 4)
 		)
-		(if (Said 'hop,carry,climb') (Print 70 5))
+		(if (Said 'hop,carry,climb')
+			(Print 70 5)
+		)
 		(if
 			(or
-				(Said 'apply/gun')
+				(Said 'apply/knife')
 				(Said 'cut/parachute,buckle,bathing')
 			)
 			(Print 70 6)

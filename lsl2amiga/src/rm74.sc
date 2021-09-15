@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 74)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -15,11 +15,11 @@
 
 (local
 	vineInRoom
-	triedToGoWest
-	triedToClimbOut
+	westMsg
+	climbMsg
 	swingingOnVine
 )
-(instance rm74 of Rm
+(instance rm74 of Room
 	(properties
 		picture 74
 		horizon 66
@@ -28,89 +28,115 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 178)
-		(Load rsVIEW 729)
+		(Load VIEW 178)
+		(Load VIEW 729)
 		(super init:)
-		(if ((inventory at: 29) ownedBy: curRoomNum)
-			(= vineInRoom 1)
-			(aTHEvine stopUpd: init:)
+		(if ((inventory at: iVine) ownedBy: curRoomNum)
+			(= vineInRoom TRUE)
+			(aTHEvine
+				stopUpd:
+				init:
+			)
 		)
 		(addToPics
 			add: aVineA aVineB aVineC aVineD aVineE aVineF aVineG aVineH
 			doit:
 		)
-		(aRapids setCycle: Fwd init:)
-		(aVine1 setPri: 8 stopUpd: init:)
-		(aVine2 setPri: 8 stopUpd: init:)
-		(aVine3 setPri: 8 stopUpd: init:)
-		(if
-		(and (== passedPiranhaWater 0) (!= prevRoomNum 75))
-			(Load rsVIEW 177)
-			(Load rsVIEW 176)
-			(Load rsVIEW 110)
-			(aBigEgo init:)
-			(aBigEgoFace setPri: 15 cycleSpeed: 1 init:)
+		(aRapids
+			setCycle: Forward
+			init:
+		)
+		(aVine1
+			setPri: 8
+			stopUpd:
+			init:
+		)
+		(aVine2
+			setPri: 8
+			stopUpd:
+			init:
+		)
+		(aVine3
+			setPri: 8
+			stopUpd:
+			init:
+		)
+		(if (and (== passedPiranhaWater FALSE) (!= prevRoomNum 75))
+			(Load VIEW 177)
+			(Load VIEW 176)
+			(Load VIEW 110)
+			(aBigEgo
+				init:
+			)
+			(aBigEgoFace
+				setPri: 15
+				cycleSpeed: 1
+				init:
+			)
 		)
 		(NormalEgo)
 		(if (== prevRoomNum 75)
-			(ego posn: 288 78 observeControl: 2 16)
+			(ego posn: 288 78 observeControl: cBLUE cRED)
 		else
 			(ego posn: 2 76)
 		)
 		(ego init:)
-		(self setRegions: 700 setScript: rm74Script)
+		(self setRegions: ISLAND setScript: rm74Script)
 	)
 )
 
 (instance rm74Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			(
-			(and (ego inRect: 261 72 321 77) (== currentStatus 0)) (curRoom newRoom: 75))
+			((and (ego inRect: 261 72 321 77) (== currentStatus egoNORMAL))
+				(curRoom newRoom: 75)
+			)
 			(
 				(and
-					(== currentStatus 1016)
-					(& (ego onControl:) $0010)
+					(== currentStatus egoEATENBYPIRANHA)
+					(& (ego onControl:) cRED)
 				)
 				(self changeState: 3)
 			)
 			(
 				(and
-					(== currentStatus 1016)
-					(& (ego onControl:) $0400)
+					(== currentStatus egoEATENBYPIRANHA)
+					(& (ego onControl:) cLGREEN)
 				)
-				(if (== triedToClimbOut 0)
-					(= triedToClimbOut 1)
+				(if (== climbMsg FALSE)
+					(= climbMsg TRUE)
 					(Print 74 0)
 				)
 			)
 			(
 				(and
-					(== currentStatus 1016)
-					(& (ego onControl:) $2000)
+					(== currentStatus egoEATENBYPIRANHA)
+					(& (ego onControl:) cLMAGENTA)
 				)
-				(if (== triedToGoWest 0)
-					(= triedToGoWest 1)
+				(if (== westMsg FALSE)
+					(= westMsg TRUE)
 					(Print 74 1)
 				)
 			)
-			(
-			(and (== currentStatus 0) (== (ego onControl:) 2)) (self changeState: 1))
-			(else (= triedToGoWest 0) (= triedToClimbOut 0))
+			((and (== currentStatus egoNORMAL) (== (ego onControl:) cBLUE))
+				(self changeState: 1)
+			)
+			(else
+				(= westMsg FALSE)
+				(= climbMsg FALSE)
+			)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(= currentStatus 1016)
-				(User canControl: 1 canInput: 1)
+				(= currentStatus egoEATENBYPIRANHA)
+				(User canControl: TRUE canInput: TRUE)
 				(ego
 					view: 176
-					observeControl: 1 -32768
+					observeControl: cBLACK cWHITE
 					setLoop: -1
 					setStep: 3 2
 					setCycle: Walk
@@ -118,33 +144,37 @@
 				)
 				(= cycles 8)
 			)
-			(2 (Print 74 17 #draw))
+			(2
+				(Print 74 17 #draw)
+			)
 			(3
 				(Print 74 18)
 				(ego
 					view: 177
 					setPri: -1
-					illegalBits: -32768
-					observeControl: 16 2 16384
+					illegalBits: cWHITE
+					observeControl: cRED cBLUE cYELLOW
 				)
-				(User canInput: 0)
-				(= currentStatus 1000)
+				(User canInput: FALSE)
+				(= currentStatus egoSTOPPED)
 				(curRoom east: 0)
 				(= cycles 0)
 				(= seconds 6)
 			)
 			(4
-				(User canControl: 0)
+				(User canControl: FALSE)
 				(ego setMotion: 0 setLoop: 2)
 				(aBigEgo posn: (ego x?) 87 stopUpd:)
-				(aBigEgoFace posn: (ego x?) 87 cel: 0 setCycle: End self)
+				(aBigEgoFace posn: (ego x?) 87 cel: 0 setCycle: EndLoop self)
 			)
-			(5 (= cycles 7))
+			(5
+				(= cycles 7)
+			)
 			(6
-				(aBigEgoFace setCycle: Beg self)
+				(aBigEgoFace setCycle: BegLoop self)
 			)
 			(7
-				(aBigEgoFace loop: 5 setCycle: End)
+				(aBigEgoFace loop: 5 setCycle: EndLoop)
 				(= seconds 3)
 			)
 			(8
@@ -156,21 +186,21 @@
 			(9
 				(Print 74 20)
 				(Print 74 21)
-				(= currentStatus 1001)
+				(= currentStatus egoDYING)
 			)
 			(10
 				(Ok)
 				(ego hide:)
-				(User canControl: 0)
-				(= currentStatus 1013)
-				(aVine1 cel: 1 setCycle: CT 7 1 self)
+				(User canControl: FALSE)
+				(= currentStatus egoONVINE1)
+				(aVine1 cel: 1 setCycle: CycleTo 7 1 self)
 			)
 			(11
 				(if swingingOnVine
-					(= swingingOnVine 0)
+					(= swingingOnVine FALSE)
 					(self changeState: 14)
 				else
-					(aVine1 cel: 8 setCycle: End)
+					(aVine1 cel: 8 setCycle: EndLoop)
 					(ego
 						view: 178
 						illegalBits: 0
@@ -182,28 +212,28 @@
 						cel: 0
 						posn: 106 85
 						show:
-						setCycle: End
+						setCycle: EndLoop
 						setMotion: MoveTo 106 102 self
 					)
 				)
 			)
 			(12
-				(ego setLoop: 4 posn: 106 103 cel: 0 setCycle: End self)
+				(ego setLoop: 4 posn: 106 103 cel: 0 setCycle: EndLoop self)
 			)
 			(13
 				(Print 74 22 #at -1 20 #draw)
 				(self changeState: 1)
 			)
 			(14
-				(aVine1 setCel: 8 setCycle: End)
-				(aVine2 setCel: 1 setCycle: CT 6 1 self)
+				(aVine1 setCel: 8 setCycle: EndLoop)
+				(aVine2 setCel: 1 setCycle: CycleTo 6 1 self)
 			)
 			(15
 				(if swingingOnVine
-					(= swingingOnVine 0)
+					(= swingingOnVine FALSE)
 					(self changeState: 18)
 				else
-					(aVine2 cel: 7 setCycle: End)
+					(aVine2 cel: 7 setCycle: EndLoop)
 					(ego
 						view: 178
 						illegalBits: 0
@@ -215,13 +245,13 @@
 						cel: 0
 						posn: 131 73
 						show:
-						setCycle: End
+						setCycle: EndLoop
 						setMotion: MoveTo 131 102 self
 					)
 				)
 			)
 			(16
-				(ego setLoop: 4 posn: 131 103 cel: 0 setCycle: End self)
+				(ego setLoop: 4 posn: 131 103 cel: 0 setCycle: EndLoop self)
 			)
 			(17
 				(Print 74 23 #at -1 20 #draw)
@@ -229,17 +259,17 @@
 			)
 			(18
 				(aVine1 stopUpd:)
-				(aVine2 setCel: 7 setCycle: End)
-				(aVine3 cel: 1 setCycle: CT 6 1 self)
+				(aVine2 setCel: 7 setCycle: EndLoop)
+				(aVine3 cel: 1 setCycle: CycleTo 6 1 self)
 			)
 			(19
 				(aVine2 stopUpd:)
 				(if swingingOnVine
-					(= swingingOnVine 0)
+					(= swingingOnVine FALSE)
 					(aVine3 setCel: 6)
 					(self changeState: 23)
 				else
-					(aVine3 setCycle: Beg self)
+					(aVine3 setCycle: BegLoop self)
 				)
 			)
 			(20
@@ -254,19 +284,19 @@
 					cel: 0
 					posn: 131 73
 					show:
-					setCycle: End
+					setCycle: EndLoop
 					setMotion: MoveTo 131 102 self
 				)
 			)
 			(21
-				(ego setLoop: 4 posn: 131 103 cel: 0 setCycle: End self)
+				(ego setLoop: 4 posn: 131 103 cel: 0 setCycle: EndLoop self)
 			)
 			(22
 				(Print 74 24 #at -1 20 #draw)
 				(self changeState: 1)
 			)
 			(23
-				(aVine3 setCel: 7 setCycle: End)
+				(aVine3 setCel: 7 setCycle: EndLoop)
 				(ego
 					illegalBits: 0
 					ignoreActors:
@@ -277,19 +307,19 @@
 					setCel: 0
 					posn: 158 61
 					show:
-					setCycle: CT 5 1
+					setCycle: CycleTo 5 1
 					setStep: 1 10
 					setMotion: MoveTo 167 122 self
 				)
 			)
 			(24
 				(aVine3 stopUpd:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(25
 				(NormalEgo 0)
-				(if (== passedPiranhaWater 0)
-					(= passedPiranhaWater 1)
+				(if (== passedPiranhaWater FALSE)
+					(= passedPiranhaWater TRUE)
 					(theGame changeScore: 6)
 					(Print 74 25 #at -1 130 #draw)
 				)
@@ -298,15 +328,18 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) evSAID) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
-			(if (Said '/lagoon,beach') (Print 74 2))
-			(if (Said '/brook,fluid') (Print 74 3))
+			(if (Said '/lagoon,beach')
+				(Print 74 2)
+			)
+			(if (Said '/brook,fluid')
+				(Print 74 3)
+			)
 			(if (Said '/fish')
-				(if (!= currentStatus 1016)
+				(if (!= currentStatus egoEATENBYPIRANHA)
 					(Print 74 4)
 				else
 					(Print 74 5)
@@ -314,20 +347,34 @@
 			)
 			(if (Said '/palm,landscape,bush')
 				(Print 74 6)
-				(if (== vineInRoom 1) (Print 74 7))
+				(if (== vineInRoom TRUE)
+					(Print 74 7)
+				)
 			)
-			(if (Said '/boulder,cascade') (Print 74 8))
-			(if (Said '[/airport,forest]') (Print 74 9))
+			(if (Said '/boulder,cascade')
+				(Print 74 8)
+			)
+			(if (Said '[/airport,forest]')
+				(Print 74 9)
+			)
 		)
 		(if (Said 'jerk,get/landscape')
 			(cond 
-				((!= currentStatus 0) (NotNow))
-				((not vineInRoom) (Print 74 10))
-				((ego inRect: 59 91 78 98) (Print 74 11))
-				((not (ego inRect: 149 100 195 129)) (NotClose))
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not vineInRoom)
+					(Print 74 10)
+				)
+				((ego inRect: 59 91 78 98)
+					(Print 74 11)
+				)
+				((not (ego inRect: 149 100 195 129))
+					(NotClose)
+				)
 				(else
-					(= vineInRoom 0)
-					(ego get: 29)
+					(= vineInRoom FALSE)
+					(ego get: iVine)
 					(theGame changeScore: 4)
 					(aTHEvine dispose:)
 					(Print 74 12 #draw)
@@ -335,9 +382,11 @@
 				)
 			)
 		)
-		(if (Said 'bathing') (Print 74 14))
+		(if (Said 'bathing')
+			(Print 74 14)
+		)
 		(if (Said '*/boulder')
-			(if (== currentStatus 1016)
+			(if (== currentStatus egoEATENBYPIRANHA)
 				(Print 74 15)
 			else
 				(Print 74 16)
@@ -351,11 +400,18 @@
 				(Said 'swing<on/landscape')
 			)
 			(cond 
-				(
-				(and (>= currentStatus 1013) (<= currentStatus 1015)) (= swingingOnVine 1))
-				((!= currentStatus 0) (NotNow))
-				((not (ego inRect: 59 91 78 98)) (NotClose))
-				(else (self changeState: 10))
+				((and (>= currentStatus egoONVINE1) (<= currentStatus egoONVINE3))
+					(= swingingOnVine TRUE)
+				)
+				((!= currentStatus egoNORMAL)
+					(NotNow)
+				)
+				((not (ego inRect: 59 91 78 98))
+					(NotClose)
+				)
+				(else
+					(self changeState: 10)
+				)
 			)
 		)
 	)
@@ -368,11 +424,11 @@
 		view 178
 		loop 5
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aVineA of PV
+(instance aVineA of PicView
 	(properties
 		y 40
 		x 18
@@ -380,33 +436,33 @@
 		loop 5
 		cel 1
 		priority 12
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aVineB of PV
+(instance aVineB of PicView
 	(properties
 		y 55
 		x 37
 		view 178
 		loop 5
 		priority 12
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aVineC of PV
+(instance aVineC of PicView
 	(properties
 		y 27
 		x 223
 		view 178
 		loop 5
 		priority 12
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aVineD of PV
+(instance aVineD of PicView
 	(properties
 		y 10
 		x 202
@@ -414,11 +470,11 @@
 		loop 5
 		cel 1
 		priority 12
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aVineE of PV
+(instance aVineE of PicView
 	(properties
 		y 40
 		x 44
@@ -426,40 +482,40 @@
 		loop 5
 		cel 1
 		priority 12
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aVineF of PV
+(instance aVineF of PicView
 	(properties
 		y 32
 		x 192
 		view 178
 		loop 5
 		priority 12
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aVineG of PV
+(instance aVineG of PicView
 	(properties
 		y 51
 		x 23
 		view 178
 		loop 5
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
-(instance aVineH of PV
+(instance aVineH of PicView
 	(properties
 		y 42
 		x 11
 		view 178
 		loop 1
 		priority 7
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -469,7 +525,7 @@
 		x 243
 		view 110
 		priority 14
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -486,7 +542,7 @@
 		y 44
 		x 85
 		view 178
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -496,7 +552,7 @@
 		x 111
 		view 178
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -506,7 +562,7 @@
 		x 136
 		view 178
 		loop 1
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -516,6 +572,6 @@
 		x 243
 		view 177
 		loop 4
-		signal $4000
+		signal ignrAct
 	)
 )

@@ -14,7 +14,7 @@
 
 (local
 	local0
-	triedToLeave
+	leaveMsg
 	aPlane
 )
 (instance blockWest of Block
@@ -52,36 +52,32 @@
 		)
 		(self setRegions: AIRPORT setScript: rm58Script)
 		(blockWest init:)
-		(NormalEgo 0)
+		(NormalEgo loopE)
 		(ego posn: 10 132 observeBlocks: blockWest init:)
 	)
 )
 
 (instance rm58Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (& (ego onControl:) cBLUE)
 			(curRoom newRoom: 61)
 		)
 		(if (& (ego onControl:) cGREEN)
-			(if (not triedToLeave)
-				(= triedToLeave TRUE)
+			(if (not leaveMsg)
+				(= leaveMsg TRUE)
 				(Print 58 0)
 			)
 		else
-			(= triedToLeave FALSE)
+			(= leaveMsg FALSE)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
-		(if
-		(and (Said 'look>') (Said '[/airport,airline]'))
+		(if (and (Said 'look>') (Said '[/airport,airline]'))
 			(Print 58 1)
 			(Print 58 2 #at -1 152)
 		)
