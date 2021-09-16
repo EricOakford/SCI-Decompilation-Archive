@@ -24,23 +24,15 @@
 	local0
 	minstrelResponse
 )
-(instance thisSong of Sound
-	(properties)
-)
+(instance thisSong of Sound)
 
 (instance notes of Prop
-	(properties)
-	
 	(method (cue)
 		(notes dispose:)
 	)
 )
 
 (instance regMinstrel of Region
-	(properties
-	;	name "Minstrel's Region"
-	)
-	
 	(method (init)
 		(super init:)
 		(if
@@ -70,7 +62,7 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(super handleEvent: event)
 		(if (event claimed?) (return TRUE))
 		(return
@@ -80,8 +72,12 @@
 					(cast contains: minstrel)
 				)
 				(cond 
-					((Said 'get/man') (Print 516 0))
-					((Said 'kiss') (Print 516 1))
+					((Said 'get/man')
+						(Print 516 0)
+					)
+					((Said 'kiss')
+						(Print 516 1)
+					)
 					((Said 'deliver>')
 						(cond 
 							((Said '/book')
@@ -98,15 +94,19 @@
 							)
 							(
 								(and
-									(= inventorySaidMe (inventory saidMe:))
-									(ego has: (inventory indexOf: inventorySaidMe))
+									(= index (inventory saidMe:))
+									(ego has: (inventory indexOf: index))
 								)
 								(Print 516 3)
 							)
-							(else (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
-					((Said 'rob/lute') (Print 516 4))
+					((Said 'rob/lute')
+						(Print 516 4)
+					)
 					((Said 'look/man')
 						(if ((Inventory at: iShakespeareBook) ownedBy: 203)
 							(if (cast contains: minstrel)
@@ -121,12 +121,12 @@
 					((Said 'converse[/man]')
 						(cond 
 							(((Inventory at: iLute) ownedBy: 203)
-								(++ timesTalkedToMinstrel)
+								(++ minstrelTalkCount)
 								(sounds eachElementDo: #stop 0)
-								(if (> timesTalkedToMinstrel 4)
+								(if (> minstrelTalkCount 4)
 									(= minstrelResponse (Random 2 4))
 								else
-									(= minstrelResponse timesTalkedToMinstrel)
+									(= minstrelResponse minstrelTalkCount)
 								)
 								(switch minstrelResponse
 									(1
@@ -149,8 +149,12 @@
 								)
 								(minstrelActions changeState: 1)
 							)
-							((cast contains: minstrel) (Print 516 13))
-							(else (event claimed: FALSE))
+							((cast contains: minstrel)
+								(Print 516 13)
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((Said 'get/lute')
@@ -160,7 +164,9 @@
 							(Print 516 15)
 						)
 					)
-					((Said 'hum/') (Print 516 16))
+					((Said 'hum/')
+						(Print 516 16)
+					)
 				)
 			else
 				FALSE
@@ -170,8 +176,6 @@
 )
 
 (instance minstrelActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1

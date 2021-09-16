@@ -23,7 +23,7 @@
 	troll
 	local1
 	local2
-	local3
+	trollGotHer
 )
 (instance trollCaveMusic of Sound
 	(properties
@@ -53,12 +53,12 @@
 )
 
 (instance regTroll of Region
-	(properties)
-	
 	(method (init)
 		(if initialized (return))
-		(= keep 1)
-		(if (ego has: iLantern) (Load VIEW 967))
+		(= keep TRUE)
+		(if (ego has: iLantern)
+			(Load VIEW 967)
+		)
 		(Load VIEW 904)
 		(Load VIEW 190)
 		(super init:)
@@ -66,7 +66,7 @@
 		(= local2 0)
 		(= trollAttacks FALSE)
 		(= local1 0)
-		(= local3 0)
+		(= trollGotHer 0)
 		(trollCaveMusic owner: self init:)
 		(trollMusic owner: self init:)
 		(caughtMusic owner: self init:)
@@ -87,8 +87,7 @@
 			(self setScript: gotchaScript)
 			(return)
 		)
-		(if
-		(and (not (cast contains: troll)) (== trollAttacks TRUE))
+		(if (and (not (cast contains: troll)) (== trollAttacks TRUE))
 			(trollScript changeState: 1)
 		)
 		(if (not local1)
@@ -107,49 +106,85 @@
 	)
 	
 	(method (dispose)
-		(if (== keep 0) (= noWearCrown 0) (super dispose:))
+		(if (== keep FALSE)
+			(= noWearCrown FALSE)
+			(super dispose:)
+		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe temp1 lampLit)
+	(method (handleEvent event &tmp i temp1 lampLit)
 		(super handleEvent: event)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
-				(= lampLit (if (LanternIsOn) (ego has: iLantern) else 0))
+				(= lampLit
+					(if (LanternIsOn) (ego has: iLantern)
+					else
+						FALSE
+					)
+				)
 				(cond 
-					(
-					(and (ego has: iLantern) (Said '/chandelier,lantern[<oil]>'))
+					((and (ego has: iLantern) (Said '/chandelier,lantern[<oil]>'))
 						(cond 
-							((Said 'extinguish,(turn<off)') (self notify: FALSE))
-							((Said '>,ignite,(turn<on)') (self notify: TRUE))
+							((Said 'extinguish,(turn<off)')
+								(self notify: FALSE)
+							)
+							((Said 'light,ignite,(turn<on)')	;EO: Fixed said spec
+								(self notify: TRUE)
+							)
 						)
 					)
 					((Said 'look>')
 						(cond 
-							((Said '<out[/cave]') (Print 605 2))
-							((and lampLit (Said '[<in,at]/cave[<troll,dark]')) (Print 605 3))
-							(
-							(and lampLit (or (Said '/dirt') (Said '<down'))) (Print 605 4))
-							((and lampLit (Said '/passageway')) (Print 605 5))
-							((Said '/troll') (Print 605 6))
-							((inventory saidMe:) (event claimed: FALSE))
-							(else (Print 605 7) (event claimed: TRUE))
+							((Said '<out[/cave]')
+								(Print 605 2)
+							)
+							((and lampLit (Said '[<in,at]/cave[<troll,dark]'))
+								(Print 605 3)
+							)
+							((and lampLit (or (Said '/dirt') (Said '<down')))
+								(Print 605 4)
+							)
+							((and lampLit (Said '/passageway'))
+								(Print 605 5)
+							)
+							((Said '/troll')
+								(Print 605 6)
+							)
+							((inventory saidMe:)
+								(event claimed: FALSE)
+							)
+							(else
+								(Print 605 7)
+								(event claimed: TRUE)
+							)
 						)
 					)
-					(
-					(or (Said 'climb/boulder') (Said 'get/boulder')) (Print 605 8))
-					((Said 'find/troll') (Print 605 6))
+					((or (Said 'climb/boulder') (Said 'get/boulder'))
+						(Print 605 8)
+					)
+					((Said 'find/troll')
+						(Print 605 6)
+					)
 					((cast contains: troll)
 						(cond 
-							((Said 'converse/troll') (Print 605 9))
-							((Said 'kill/troll') (Print 605 10))
-							((Said 'get,capture/troll') (Print 605 11))
-							((or (Said 'kiss/troll') (Said 'kiss[/!*]')) (Print 605 12))
+							((Said 'converse/troll')
+								(Print 605 9)
+							)
+							((Said 'kill/troll')
+								(Print 605 10)
+							)
+							((Said 'get,capture/troll')
+								(Print 605 11)
+							)
+							((or (Said 'kiss/troll') (Said 'kiss[/noword]'))
+								(Print 605 12)
+							)
 							(
 								(and
 									(Said 'deliver>')
-									(= inventorySaidMe (inventory saidMe:))
-									(ego has: (inventory indexOf: inventorySaidMe))
+									(= i (inventory saidMe:))
+									(ego has: (inventory indexOf: i))
 								)
 								(Print 605 13)
 							)
@@ -157,24 +192,24 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(= local1 0)
-		(= local3 0)
+		(= trollGotHer 0)
 		(cls)
 		(if
 			(and
-				(!= newRoomNumber 77)
-				(!= newRoomNumber 70)
+				(!= n 77)
+				(!= n 70)
 				(not (cast contains: troll))
 			)
 			(doMusic cue:)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 	
 	(method (notify param1)
@@ -191,14 +226,18 @@
 				(ego view: 967)
 				(theLight setLoop: 4 init:)
 				(RedrawCast)
-				(LanternIsOn 1)
+				(LanternIsOn TRUE)
 			)
 			(0
 				(ego view: 904)
 				(theLight dispose:)
 				(cond 
-					(local3 (ego dispose:) (RedrawCast))
-					((& (ego onControl: 0) cBLUE) (LanternIsOn FALSE))
+					(trollGotHer (ego dispose:)
+						(RedrawCast)
+					)
+					((& (ego onControl: 0) cBLUE)
+						(LanternIsOn FALSE)
+					)
 					(else
 						(ego dispose:)
 						(RedrawCast)
@@ -218,8 +257,6 @@
 )
 
 (instance trollScript of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -236,7 +273,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not local2) (= seconds 2))
+				(if (not local2)
+					(= seconds 2)
+				)
 			)
 			(1
 				(if
@@ -283,34 +322,62 @@
 					(switch curRoomNum
 						(71
 							(switch prevRoomNum
-								(74 (troll posn: 213 210))
-								(72 (troll posn: 250 101))
-								(else  (troll posn: 179 196))
+								(74
+									(troll posn: 213 210)
+								)
+								(72
+									(troll posn: 250 101)
+								)
+								(else
+									(troll posn: 179 196)
+								)
 							)
 						)
 						(72
 							(switch prevRoomNum
-								(71 (troll posn: 20 92))
-								(75 (troll posn: 180 220))
-								(else  (troll posn: 178 154))
+								(71
+									(troll posn: 20 92)
+								)
+								(75
+									(troll posn: 180 220)
+								)
+								(else
+									(troll posn: 178 154)
+								)
 							)
 						)
 						(74
 							(switch prevRoomNum
-								(71 (troll posn: 114 -20))
-								(75 (troll posn: 340 170))
-								(else  (troll posn: 158 132))
+								(71
+									(troll posn: 114 -20)
+								)
+								(75
+									(troll posn: 340 170)
+								)
+								(else
+									(troll posn: 158 132)
+								)
 							)
 						)
 						(75
 							(switch prevRoomNum
-								(74 (troll posn: -20 170))
-								(76 (troll posn: 340 170))
-								(72 (troll posn: 140 -20))
-								(else  (troll posn: 148 118))
+								(74
+									(troll posn: -20 170)
+								)
+								(76
+									(troll posn: 340 170)
+								)
+								(72
+									(troll posn: 140 -20)
+								)
+								(else
+									(troll posn: 148 118)
+								)
 							)
 						)
-						(76 (troll posn: -40 170))
+						(76
+							(troll posn: -40 170)
+						)
 					)
 					(if (== curRoomNum 76)
 						(switch (Random 0 1)
@@ -332,7 +399,10 @@
 					)
 					(RedrawCast)
 				)
-				(if (not local2) (self cue:) (return))
+				(if (not local2)
+					(self cue:)
+					(return)
+				)
 			)
 			(2
 				(if (cast contains: troll)
@@ -365,8 +435,6 @@
 )
 
 (instance gotchaScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -383,12 +451,14 @@
 				(caughtMusic play:)
 				(cls)
 				(Print 605 16 #at -1 10)
-				(= local3 1)
+				(= trollGotHer TRUE)
 				(regTroll notify: 0)
 				(Print 605 17 #at -1 10)
 				(= seconds 4)
 			)
-			(2 (= dead TRUE))
+			(2
+				(= dead TRUE)
+			)
 		)
 	)
 )
@@ -419,11 +489,11 @@
 )
 
 (instance doMusic of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Timer setReal: self 2))
+			(0
+				(Timer setReal: self 2)
+			)
 			(1
 				(trollCaveMusic loop: 1 playMaybe:)
 			)

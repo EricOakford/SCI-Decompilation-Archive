@@ -14,7 +14,7 @@
 
 (instance forestReg of Region
 	(properties
-	;	name "Forest Region"
+		name "Forest Region"
 	)
 	
 	(method (init)
@@ -58,13 +58,26 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '/boulder') (Print 508 0))
-							((or (Said '/dirt') (Said '/down')) (Print 508 1))
-							((Said '/grass') (Print 508 2))
-							((Said '/bush') (Print 508 3))
-							((Said '/flora') (Print 508 4))
-							((Said '/blossom') (Print 508 5))
-							((Said '/forest') (Print 508 6))
+							((Said '/boulder')
+								(Print 508 0)
+							)
+							((or (Said '/dirt') (Said '/down'))
+								(Print 508 1)
+							)
+							((Said '/grass')
+								(Print 508 2)
+							)
+							((Said '/bush')
+								(Print 508 3)
+							)
+							((Said '/flora')
+								(Print 508 4))
+							((Said '/blossom')
+								(Print 508 5)
+							)
+							((Said '/forest')
+								(Print 508 6)
+							)
 							((Said '/crow,bird,crow')
 								(if (cast contains: crow)
 									(Print 508 7)
@@ -74,9 +87,15 @@
 							)
 						)
 					)
-					((Said 'climb/boulder') (Print 508 9))
-					((Said 'get/blossom') (Print 508 10))
-					((Said 'climb/forest') (Print 508 11))
+					((Said 'climb/boulder')
+						(Print 508 9)
+					)
+					((Said 'get/blossom')
+						(Print 508 10)
+					)
+					((Said 'climb/forest')
+						(Print 508 11)
+					)
 					((Said 'converse/crow,bird,crow')
 						(if (cast contains: crow)
 							(Print 508 12)
@@ -107,8 +126,6 @@
 )
 
 (instance ravenActions of Script
-	(properties)
-	
 	(method (cue)
 		(crow dispose:)
 	)

@@ -12,16 +12,12 @@
 )
 
 (local
-	gEgoViewer
+	saveViewer
 	musicNotes
 )
-(instance fluteMusic of Sound
-	(properties)
-)
+(instance fluteMusic of Sound)
 
 (instance playFlute of Script
-	(properties)
-	
 	(method (init)
 		(= isHandsOff TRUE)
 		(Load VIEW 55)
@@ -42,7 +38,7 @@
 					posn: (+ (ego x?) 10) (- (ego y?) 27)
 					init:
 				)
-				(= gEgoViewer (ego viewer?))
+				(= saveViewer (ego viewer?))
 				(ego
 					viewer: 0
 					view: 55
@@ -56,7 +52,7 @@
 			)
 			(1
 				(ego
-					viewer: gEgoViewer
+					viewer: saveViewer
 					view: (if (== (ego loop?) 0) 2 else 4)
 				)
 				(ego

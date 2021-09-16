@@ -176,10 +176,10 @@
 								(event claimed: FALSE)
 							)
 							((>= (ego distanceTo: crib) 17) (NotClose))
-							((!= (inventory indexOf: inventorySaidMe) iSilverBabyRattle) (Print 59 24))
+							((!= (inventory indexOf: inventorySaidMe) iRattle) (Print 59 24))
 							(else
 								(Print 59 25)
-								(ego put: iSilverBabyRattle 59)
+								(ego put: iRattle 59)
 								(theGame changeScore: 2)
 								(NotifyScript HAUNTED_HOUSE 2)
 							)

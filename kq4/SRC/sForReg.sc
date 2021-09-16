@@ -21,40 +21,71 @@
 	treeBlock2
 )
 (instance sForReg of Region
-	(properties
-	;	name "Scary Forest Region"
-	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '/boulder') (Print 509 0))
-							((Said '/dirt') (Print 509 1))
-							((Said '/bush') (Print 509 2))
-							((or (Said '/sky') (Said '<up')) (if (not isNightTime) (Print 509 3) else (Print 509 4)))
-							((Said '/grass') (Print 509 5))
-							((Said '/flora') (Print 509 6))
-							((Said '/blossom') (Print 509 7))
-							((Said '/forest') (Print 509 8))
-							((Said '/eye') (Print 509 9))
-							(else (event claimed: FALSE))
+							((Said '/boulder')
+								(Print 509 0)
+							)
+							((Said '/dirt')
+								(Print 509 1)
+							)
+							((Said '/bush')
+								(Print 509 2)
+							)
+							((or (Said '/sky') (Said '<up'))
+								(if (not isNightTime)
+									(Print 509 3)
+								else
+									(Print 509 4)
+								)
+							)
+							((Said '/grass')
+								(Print 509 5)
+							)
+							((Said '/flora')
+								(Print 509 6)
+							)
+							((Said '/blossom')
+								(Print 509 7)
+							)
+							((Said '/forest')
+								(Print 509 8)
+							)
+							((Said '/eye')
+								(Print 509 9)
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
-					((Said 'get/blossom') (Print 509 10))
-					((Said 'climb/boulder') (Print 509 11))
-					((Said 'climb/forest') (Print 509 12))
-					((Said 'kill/forest') (Print 509 13))
+					((Said 'get/blossom')
+						(Print 509 10)
+					)
+					((Said 'climb/boulder')
+						(Print 509 11)
+					)
+					((Said 'climb/forest')
+						(Print 509 12)
+					)
+					((Said 'kill/forest')
+						(Print 509 13)
+					)
 					(
 						(or
 							(Said 'break,hit,chop/branch,branch,branch,forest')
 							(Said 'swing,use,wave/ax')
 						)
 						(cond 
-							(choppedScaryTree (Print 509 14))
+							(choppedScaryTree
+								(Print 509 14)
+							)
 							(
 								(and
 									(not choppedScaryTree)
@@ -71,13 +102,17 @@
 							)
 						)
 					)
-					((Said 'conceal/forest') (Print 509 16))
-					((Said 'converse') (Print 509 17))
+					((Said 'conceal/forest')
+						(Print 509 16)
+					)
+					((Said 'converse')
+						(Print 509 17)
+					)
 					((Said 'deliver>')
 						(if
 							(and
-								(= inventorySaidMe (inventory saidMe:))
-								(ego has: (inventory indexOf: inventorySaidMe))
+								(= index (inventory saidMe:))
+								(ego has: (inventory indexOf: index))
 							)
 							(Print 509 18)
 						else
@@ -93,8 +128,6 @@
 )
 
 (instance chop of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1

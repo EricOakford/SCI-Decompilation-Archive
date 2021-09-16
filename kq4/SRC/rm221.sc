@@ -24,14 +24,12 @@
 	genesta
 	[local21 4]
 	poof
-	introDialog
+	saveBits
 	[local27 2]
 	sparkle
 	[local30 200]
 )
-(instance openMusic of Sound
-	(properties)
-)
+(instance openMusic of Sound)
 
 (instance Room221 of Room
 	(properties
@@ -56,16 +54,14 @@
 		(curRoom setScript: PartTwo)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(cls)
 		((ScriptID INTRO) keep: 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance PartTwo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(addToPics dispose:)
 		(switch (= state newState)
@@ -111,7 +107,7 @@
 				(= seconds 2)
 			)
 			(1
-				(= introDialog
+				(= saveBits
 					(Print 221 0
 						#title {Rosella}
 						#at 1 140
@@ -124,16 +120,26 @@
 				(= seconds 6)
 			)
 			(2
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(mirror setLoop: 1 setCycle: Forward)
-				(= introDialog (Print 221 1 #at 180 40 #width 110 #dispose))
+				(= saveBits
+					(Print 221 1
+						#at 180 40
+						#width 110
+						#dispose
+					)
+				)
 				(= seconds 6)
 			)
 			(3
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(mirror setLoop: 0 setCycle: 0)
 				(rosella setLoop: 2 cycleSpeed: 20 setCycle: Forward)
-				(= introDialog
+				(= saveBits
 					(Print 221 2
 						#at 1 134
 						#title {Rosella}
@@ -146,11 +152,19 @@
 			(4
 				(if modelessDialog (modelessDialog dispose:))
 				(mirror setLoop: 1 setCycle: Forward)
-				(= introDialog (Print 221 3 #at 180 40 #width 110 #dispose))
+				(= saveBits
+					(Print 221 3
+						#at 180 40
+						#width 110
+						#dispose
+					)
+				)
 				(= seconds 12)
 			)
 			(5
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(cast eachElementDo: #dispose)
 				(curRoom drawPic: 207)
 				((View new:)
@@ -197,7 +211,7 @@
 						yourself:
 					)
 				)
-				(= introDialog
+				(= saveBits
 					(Print 221 4
 						#at 1 151
 						#title {Rosella}
@@ -219,7 +233,9 @@
 				)
 			)
 			(7
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(genesta dispose:)
 				(rosella dispose:)
 				(curRoom drawPic: 205)
@@ -258,7 +274,7 @@
 					)
 				)
 				(sparkle setScript: doSparkle)
-				(= introDialog
+				(= saveBits
 					(Print 221 5
 						#title {Genesta}
 						#at -1 125
@@ -269,8 +285,10 @@
 				(= seconds 10)
 			)
 			(8
-				(if modelessDialog (modelessDialog dispose:))
-				(= introDialog
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
+				(= saveBits
 					(Print 221 6
 						#title {Genesta}
 						#at -1 125
@@ -281,7 +299,9 @@
 				(= seconds 12)
 			)
 			(9
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(genesta dispose:)
 				(sparkle setScript: 0 dispose:)
 				(curRoom drawPic: 207)
@@ -325,7 +345,7 @@
 						yourself:
 					)
 				)
-				(= introDialog
+				(= saveBits
 					(Print 221 7
 						#title {Rosella}
 						#at 1 151
@@ -336,9 +356,11 @@
 				(= seconds 9)
 			)
 			(10
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(rosellaFace view: 766 loop: 3 cel: 0 posn: 230 71 setPri: 2)
-				(= introDialog
+				(= saveBits
 					(Print 221 8
 						#title {Genesta}
 						#at 100 151
@@ -349,7 +371,9 @@
 				(= seconds 12)
 			)
 			(11
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(rosellaFace
 					view: 763
 					setLoop: 1
@@ -358,7 +382,7 @@
 					setCycle: Forward
 					cycleSpeed: 3
 				)
-				(= introDialog
+				(= saveBits
 					(Print 221 9
 						#title {Rosella}
 						#at 1 151
@@ -369,7 +393,9 @@
 				(= seconds 10)
 			)
 			(12
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(curRoom drawPic: 205)
 				((View new:)
 					view: 762
@@ -411,7 +437,7 @@
 					)
 				)
 				(sparkle setScript: doSparkle)
-				(= introDialog
+				(= saveBits
 					(Print 221 10
 						#title {Genesta}
 						#at 1 135
@@ -422,8 +448,10 @@
 				(= seconds 9)
 			)
 			(13
-				(if modelessDialog (modelessDialog dispose:))
-				(= introDialog
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
+				(= saveBits
 					(Print 221 11
 						#title {Genesta}
 						#at 1 135
@@ -434,7 +462,9 @@
 				(= seconds 8)
 			)
 			(14
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(sparkle setScript: 0 dispose:)
 				(curRoom drawPic: 207)
 				((View new:)
@@ -486,7 +516,7 @@
 						yourself:
 					)
 				)
-				(= introDialog
+				(= saveBits
 					(Print
 						221 12
 						#title {Rosella}
@@ -498,9 +528,11 @@
 				(= seconds 10)
 			)
 			(15
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(rosellaFace view: 766 loop: 3 cel: 0 posn: 230 71 setPri: 2)
-				(= introDialog
+				(= saveBits
 					(Print 221 13
 						#title {Genesta}
 						#at 100 151
@@ -511,7 +543,9 @@
 				(= seconds 8)
 			)
 			(16
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(rosellaFace dispose:)
 				(shimmer dispose:)
 				(curRoom drawPic: 201)
@@ -555,7 +589,7 @@
 				(= seconds 3)
 			)
 			(17
-				(= introDialog
+				(= saveBits
 					(Print 221 14
 						#title {Genesta}
 						#at -1 130
@@ -566,15 +600,21 @@
 				(= seconds 9)
 			)
 			(18
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(mirror
 					setLoop: 2
 					setCel: 255
 					cycleSpeed: 2
 					setCycle: EndLoop stopMirror
 				)
-				(= introDialog
-					(Print 221 15 #title {Rosella} #at 215 40 #dispose)
+				(= saveBits
+					(Print 221 15
+						#title {Rosella}
+						#at 215 40
+						#dispose
+					)
 				)
 				(= seconds 3)
 			)
@@ -592,7 +632,9 @@
 				)
 			)
 			(20
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(= poof
 					((Actor new:)
 						view: 770
@@ -637,32 +679,24 @@
 )
 
 (instance stopRosella of Script
-	(properties)
-	
 	(method (cue)
 		(rosella stopUpd:)
 	)
 )
 
 (instance hideRosella of Script
-	(properties)
-	
 	(method (cue)
 		(rosella hide:)
 	)
 )
 
 (instance stopMirror of Script
-	(properties)
-	
 	(method (cue)
 		(mirror stopUpd:)
 	)
 )
 
 (instance doSparkle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -672,7 +706,9 @@
 			(1
 				(sparkle cel: 255 setCycle: EndLoop self show:)
 			)
-			(2 (self changeState: 0))
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )

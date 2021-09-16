@@ -12,11 +12,11 @@
 
 (local
 	waterDepth
-	local1
+	thisControl
 )
 (instance waterReg of Region
 	(properties
-	;	name "Water Region"
+		name "Water Region"
 	)
 	
 	(method (init)
@@ -30,31 +30,29 @@
 )
 
 (instance water of Script
-	(properties)
-	
 	(method (doit)
-		(if (!= (= waterDepth (ego onControl: origin)) local1)
-			(= local1 waterDepth)
+		(if (!= (= waterDepth (ego onControl: origin)) thisControl)
+			(= thisControl waterDepth)
 			(if (!= currentStatus egoRidingDolphin)
 				(ego setCycle: Walk)
 				(switch waterDepth
-					(1
+					(cBLACK
 						(= currentStatus egoNormal)
 						(ego view: 2 setStep: 3 2)
 					)
-					(2048
+					(cLCYAN
 						(= currentStatus egoInShallowWater)
 						(ego view: 5)
 					)
-					(512
+					(cLBLUE
 						(= currentStatus egoInKneeDeepWater)
 						(ego view: 6)
 					)
-					(8
+					(cCYAN
 						(ego view: 7)
 						(= currentStatus egoInWaistDeepWater)
 					)
-					(2
+					(cBLUE
 						(ego view: 8)
 						(= currentStatus egoSwimming)
 						(ego setCycle: Forward)

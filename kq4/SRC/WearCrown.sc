@@ -21,8 +21,6 @@
 )
 
 (instance wearCrown of Script
-	(properties)
-	
 	(method (init)
 		(= isHandsOff TRUE)
 		(Load VIEW 370)
@@ -47,7 +45,7 @@
 				(= preFrogView (ego viewer?))
 				(sounds eachElementDo: #stop 0)
 				(poofSound number: 59 play:)
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(= oldEgoView (ego view?))
 				(= gNewProp (Prop new:))
 				(gNewProp
@@ -86,7 +84,9 @@
 				(ego view: oldEgoView cycleSpeed: 0 setCycle: Walk)
 				(gNewProp setCycle: BegLoop self)
 			)
-			(6 (= cycles 2))
+			(6
+				(= cycles 2)
+			)
 			(7
 				(if (== (poofSound state?) 3)
 					(self changeState: 6)

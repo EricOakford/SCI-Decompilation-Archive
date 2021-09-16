@@ -305,7 +305,7 @@
 							)
 							((Said '/caldron,kettle,coffee') (Print 42 26))
 							((Said '/fish')
-								(if (not (ego has: iDeadFish))
+								(if (not (ego has: iFish))
 									(Print 42 27)
 								else
 									(event claimed: FALSE)

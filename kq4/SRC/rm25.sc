@@ -244,7 +244,7 @@
 			)
 			(1
 				(Timer setReal: self 5)
-				(= timedMessage (Print 25 3 #at -1 10 #dispose))
+				(= underBits (Print 25 3 #at -1 10 #dispose))
 			)
 			(2 (ego setCycle: BegLoop self))
 			(3

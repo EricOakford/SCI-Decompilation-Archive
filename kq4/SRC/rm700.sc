@@ -11,7 +11,6 @@
 )
 
 (instance Room700 of Room
-	
 	(method (init)
 		(curRoom drawPic: 700 IRISIN)
 		(self setScript: wait)
@@ -27,8 +26,6 @@
 )
 
 (instance wait of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

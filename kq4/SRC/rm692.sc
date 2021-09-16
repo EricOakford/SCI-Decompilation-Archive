@@ -28,7 +28,6 @@
 )
 
 (instance escort of Prop
-	
 	(method (cue)
 		(self addToPic:)
 	)
@@ -252,8 +251,6 @@
 )
 
 (instance egoActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -291,7 +288,7 @@
 			)
 			(6
 				(minister stopUpd:)
-				(= timedMessage (Print 692 0 #at -1 10 #dispose))
+				(= underBits (Print 692 0 #at -1 10 #dispose))
 				(= seconds 12)
 			)
 			(7
@@ -316,7 +313,9 @@
 				(heart dispose:)
 				(ego setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
-			(10 (= seconds 3))
+			(10
+				(= seconds 3)
+			)
 			(11
 				(ego setLoop: 5)
 				(edgar
@@ -328,7 +327,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(12 (= seconds 5))
+			(12
+				(= seconds 5)
+			)
 			(13
 				(Print 692 1 #at -1 10 #time 15)
 				(cls)

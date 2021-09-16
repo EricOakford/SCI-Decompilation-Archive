@@ -38,69 +38,54 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	volume =  12
-	version =  {newInvItem}
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	demoScripts
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime
+	ego									;pointer to ego
+	theGame								;ID of the Game instance
+	curRoom								;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	volume		=		12				;sound volume
+	version		=		{x.yyy.zzz}		;pointer to 'incver' version string			
+	locales								;set of current locales
+	[curSaveDir 20]						;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	useSortedFeatures					;enable cast & feature sorting?
+	demoScripts							;add to curRoomNum to find room demo script
+	egoBlindSpot						;used by sortCopy to exclude
+										;actors behind ego within angle 
+										;from straight behind. 
+										;Default zero is no blind spot
+	overlays	=		-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
+	demoDialogTime	=	3				;how long Prints stay up in demo mode
 	currentPalette
-	;62-99 are unused
+	;globals 62-99 are unused
 		global62
 		global63
 		global64
@@ -138,7 +123,8 @@
 		global96
 		global97
 		global98
-	lastSysGlobal
+		lastSysGlobal
+		;globals 100 and above are for game use
 	isNightTime
 	isIndoors
 	dwarfHouseState
@@ -159,7 +145,7 @@
 	global117
 	whereIsMinstrel
 	minstrel
-	timedMessage
+	underBits
 	ogre
 	dwarfBouncesEgo
 	unicornState
@@ -223,7 +209,7 @@
 	oldEgoView
 	gotItem
 	swallowedByWhale
-	timesTalkedToMinstrel
+	minstrelTalkCount
 	oldEgoBaseSetter
 	numZombies
 	global187
@@ -442,7 +428,9 @@
 		global400
 )
 (procedure (IsObjectOnControl obj ctrl)
-	(if (< argc 2) (= ctrl 5))
+	(if (< argc 2)
+		(= ctrl 5)
+	)
 	(switch (obj loop?)
 		(0
 			(OnControl
@@ -488,8 +476,7 @@
 )
 
 (procedure (Face actor1 actor2)
-	(DirLoop
-		actor1
+	(DirLoop actor1
 		(GetAngle
 			(actor1 x?)
 			(actor1 y?)
@@ -498,8 +485,7 @@
 		)
 	)
 	(if (== argc 3)
-		(DirLoop
-			actor2
+		(DirLoop actor2
 			(GetAngle
 				(actor2 x?)
 				(actor2 y?)
@@ -513,7 +499,9 @@
 (procedure (NormalEgo theLoop theView)
 	(if (> argc 0)
 		(ego loop: theLoop)
-		(if (> argc 1) (ego view: theView))
+		(if (> argc 1)
+			(ego view: theView)
+		)
 	)
 	(ego
 		setLoop: -1
@@ -597,7 +585,6 @@
 )
 
 (class newInvItem of InvItem
-	
 	(method (showSelf)
 		(Print 0 0
 			#title name
@@ -607,7 +594,6 @@
 )
 
 (instance statusCode of Code
-
 	(method (doit strg)
 		(Format strg 0 1 score possibleScore
 			{ KQ\n__The Perils of Rosella}
@@ -770,7 +756,7 @@
 			)
 			(if (!= (= thisTime (GetTime TRUE)) oldSysTime)
 				(= oldSysTime thisTime)
-				(if (>= (= gameSeconds (+ gameSeconds 4)) 60)
+				(if (>= (+= gameSeconds 4) 60)
 					(++ gameMinutes)
 					(-= gameSeconds 60)
 					(if (and (== gameHours 31) (== gameMinutes 59))
@@ -799,7 +785,7 @@
 		(super replay:)
 	)
 	
-	(method (newRoom roomNum)
+	(method (newRoom n)
 		(if
 			(or
 				isHandsOff
@@ -808,31 +794,33 @@
 			(return)
 		)
 		;is it time to turn to night?
-		(if (and (== isNightTime FALSE) (== isIndoors 0))
+		(if (and (== isNightTime FALSE) (== isIndoors FALSE))
 			(if
 				(and
-					(not (if (< 30 roomNum) (< roomNum 77)))
-					(< roomNum 300)
+					(not (if (< 30 n) (< n 77)))
+					(< n 300)
 					(or
 						(and (< 20 gameHours) (< gameHours 30))
 						(and
+							;if we've got everything ready for night,
+							; just transition immediately.
 							(>= gamePhase getPandoraBox)
-							(ego has: iObsidianScarab)
+							(ego has: iScarab)
 							(ego has: iMagicFruit)
 							(< gameHours 30)
 						)
 					)
 				)
 				(= isNightTime TRUE)
-				(= nightRoom roomNum)
+				(= nightRoom n)
 				(if (< gameHours 21)
 					(= gameHours 21)
 					(= gameMinutes 0)
 				)
-				(= roomNum 697)
+				(= n 697)
 			)
 		)
-		(super newRoom: roomNum)
+		(super newRoom: n)
 	)
 	
 	(method (startRoom roomNum &tmp region)
@@ -2353,7 +2341,7 @@ code_11e9:
 			jmp      code_1bc6
 code_11f1:
 			pushi    1
-			lofsa    'lay[/!*]'
+			lofsa    'lay[/noword]'
 			push    
 			callk    Said,  2
 			bt       code_1212
@@ -2450,7 +2438,7 @@ code_12ac:
 			callk    Said,  2
 			bnt      code_1347
 			pushi    1
-			lofsa    'ignite,(turn<on)'
+			lofsa    'light,ignite,(turn<on)'	;EO: fixed said spec
 			push    
 			callk    Said,  2
 			bnt      code_130c
@@ -2741,7 +2729,7 @@ code_14e0:
 			send     4
 			sat      temp1
 			pushi    1
-			lofsa    '[/!*]'
+			lofsa    '[/noword]'
 			push    
 			callk    Said,  2
 			bnt      code_150b
@@ -2997,7 +2985,7 @@ code_16ba:
 			lap      event
 			send     6
 			pushi    1
-			lofsa    '/*<gold'
+			lofsa    '/anyword<gold'
 			push    
 			callk    Said,  2
 			bnt      code_1701
@@ -3024,7 +3012,7 @@ code_16f6:
 			jmp      code_1bc6
 code_1701:
 			pushi    1
-			lofsa    '/*<skeleton'
+			lofsa    '/anyword<skeleton'
 			push    
 			callk    Said,  2
 			bnt      code_1735
@@ -3051,7 +3039,7 @@ code_172a:
 			jmp      code_1bc6
 code_1735:
 			pushi    1
-			lofsa    '/*[<!*]'
+			lofsa    '/anyword[<noword]'
 			push    
 			callk    Said,  2
 			bnt      code_1bc6
@@ -3411,7 +3399,7 @@ code_19e7:
 			callk    Said,  2
 			bnt      code_1a66
 			pushi    1
-			lofsa    '/*[/!*]'
+			lofsa    '/anyword[/noword]'
 			push    
 			callk    Said,  2
 			bnt      code_1a08
@@ -3422,7 +3410,7 @@ code_19e7:
 			jmp      code_1bc6
 code_1a08:
 			pushi    1
-			lofsa    '[/!*]'
+			lofsa    '[/noword]'
 			push    
 			callk    Said,  2
 			bnt      code_1a1e
@@ -3488,7 +3476,7 @@ code_1a66:
 			jmp      code_1bc6
 code_1a87:
 			pushi    1
-			lofsa    '[/!*]'
+			lofsa    '[/noword]'
 			push    
 			callk    Said,  2
 			bnt      code_1a9d

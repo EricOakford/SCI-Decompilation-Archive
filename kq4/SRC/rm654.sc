@@ -19,12 +19,12 @@
 
 (local
 	pot
-	[local1 49]
+	[aDwarf 49]
 	egoSoup
 	[dishes 7]
-	local58
+	i
 	diamondPouch
-	roomDialog
+	saveBits
 	[local61 2]
 	local63
 	local64
@@ -98,24 +98,52 @@
 				((event claimed?) (return TRUE))
 				((== (event type?) saidEvent)
 					(cond 
-						((or (Said 'look[<around][/!*]') (Said 'look/room')) (Print 654 1))
+						((or (Said 'look[<around][/noword]') (Said 'look/room'))
+							(Print 654 1)
+						)
 						((Said 'look>')
 							(cond 
-								((Said '/window') (Print 654 2))
-								((Said '/table')
-									(if (not dwarfHouseState) (Print 654 3))
-									(if (and dwarfHouseState ateSoup) (Print 654 4))
+								((Said '/window')
+									(Print 654 2)
 								)
-								((Said '<under/table') (Print 654 5))
-								((Said '/stair') (Print 654 6))
-								((Said '/cabinet') (Print 654 7))
-								((Said '/wall') (Print 654 8))
-								((or (Said '/dirt') (Said '<down')) (Print 654 9))
-								((Said '/caldron') (Print 654 10))
-								((Said '/fire,fireplace') (Print 654 11))
-								((Said '/carpet') (Print 654 12))
-								((Said '/clock') (Print 654 13))
-								((Said '/bowl') (Print 654 14))
+								((Said '/table')
+									(if (not dwarfHouseState)
+										(Print 654 3)
+									)
+									(if (and dwarfHouseState ateSoup)
+										(Print 654 4)
+									)
+								)
+								((Said '<under/table')
+									(Print 654 5)
+								)
+								((Said '/stair')
+									(Print 654 6)
+								)
+								((Said '/cabinet')
+									(Print 654 7)
+								)
+								((Said '/wall')
+									(Print 654 8)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 654 9)
+								)
+								((Said '/caldron')
+									(Print 654 10)
+								)
+								((Said '/fire,fireplace')
+									(Print 654 11)
+								)
+								((Said '/carpet')
+									(Print 654 12)
+								)
+								((Said '/clock')
+									(Print 654 13)
+								)
+								((Said '/bowl')
+									(Print 654 14)
+								)
 							)
 						)
 					)
@@ -126,9 +154,7 @@
 )
 
 (instance dwarfsInToEat of Script
-	(properties)
-	
-	(method (init param1)
+	(method (init who)
 		(Load VIEW 290)
 		(Load VIEW 291)
 		(Load VIEW 292)
@@ -143,42 +169,42 @@
 		(Load VIEW 276)
 		(Load VIEW 277)
 		(Load VIEW 278)
-		(= [local1 1] 296)
-		(= [local1 2] 278)
-		(= [local1 3] 0)
-		(= [local1 4] 218)
-		(= [local1 5] 138)
-		(= [local1 8] 295)
-		(= [local1 9] 277)
-		(= [local1 10] 1)
-		(= [local1 11] 295)
-		(= [local1 12] 160)
-		(= [local1 15] 294)
-		(= [local1 16] 276)
-		(= [local1 17] 1)
-		(= [local1 18] 262)
-		(= [local1 19] 160)
-		(= [local1 22] 293)
-		(= [local1 23] 275)
-		(= [local1 24] 0)
-		(= [local1 25] 194)
-		(= [local1 26] 138)
-		(= [local1 29] 292)
-		(= [local1 30] 299)
-		(= [local1 31] 1)
-		(= [local1 32] 228)
-		(= [local1 33] 160)
-		(= [local1 36] 291)
-		(= [local1 37] 298)
-		(= [local1 38] 1)
-		(= [local1 39] 190)
-		(= [local1 40] 160)
-		(= [local1 43] 290)
-		(= [local1 44] 297)
-		(= [local1 45] 0)
-		(= [local1 46] 240)
-		(= [local1 47] 137)
-		(super init: param1)
+		(= [aDwarf 1] 296)
+		(= [aDwarf 2] 278)
+		(= [aDwarf 3] 0)
+		(= [aDwarf 4] 218)
+		(= [aDwarf 5] 138)
+		(= [aDwarf 8] 295)
+		(= [aDwarf 9] 277)
+		(= [aDwarf 10] 1)
+		(= [aDwarf 11] 295)
+		(= [aDwarf 12] 160)
+		(= [aDwarf 15] 294)
+		(= [aDwarf 16] 276)
+		(= [aDwarf 17] 1)
+		(= [aDwarf 18] 262)
+		(= [aDwarf 19] 160)
+		(= [aDwarf 22] 293)
+		(= [aDwarf 23] 275)
+		(= [aDwarf 24] 0)
+		(= [aDwarf 25] 194)
+		(= [aDwarf 26] 138)
+		(= [aDwarf 29] 292)
+		(= [aDwarf 30] 299)
+		(= [aDwarf 31] 1)
+		(= [aDwarf 32] 228)
+		(= [aDwarf 33] 160)
+		(= [aDwarf 36] 291)
+		(= [aDwarf 37] 298)
+		(= [aDwarf 38] 1)
+		(= [aDwarf 39] 190)
+		(= [aDwarf 40] 160)
+		(= [aDwarf 43] 290)
+		(= [aDwarf 44] 297)
+		(= [aDwarf 45] 0)
+		(= [aDwarf 46] 240)
+		(= [aDwarf 47] 137)
+		(super init: who)
 	)
 	
 	(method (doit)
@@ -189,8 +215,8 @@
 		(switch (= state newState)
 			(0
 				(User canControl: FALSE canInput: FALSE)
-				(= local58 0)
-				(= roomDialog
+				(= i 0)
+				(= saveBits
 					(Print 654 15
 						#font smallFont
 						#at 200 10
@@ -207,9 +233,9 @@
 			)
 			(1
 				(ego loop: 2 cel: 0 stopUpd:)
-				(= [local1 local58]
+				(= [aDwarf i]
 					((Actor new:)
-						view: [local1 (+ local58 1)]
+						view: [aDwarf (+ i 1)]
 						posn: 155 185
 						illegalBits: 0
 						setStep: 4 3
@@ -218,21 +244,21 @@
 						yourself:
 					)
 				)
-				([local1 local58]
+				([aDwarf i]
 					setCycle: Walk
 					setMotion: MoveTo 135 140 self
 				)
 			)
 			(2
-				([local1 local58]
+				([aDwarf i]
 					setCycle: Walk
 					setMotion: MoveTo 83 134 self
 				)
 			)
 			(3
 				([dishes 0] cel: (+ ([dishes 0] cel?) 1) forceUpd:)
-				([local1 local58]
-					view: [local1 (+ local58 2)]
+				([aDwarf i]
+					view: [aDwarf (+ i 2)]
 					loop: 1
 					setCycle: Forward
 				)
@@ -243,16 +269,16 @@
 				(if (== ([dishes 0] cel?) 7)
 					(cls)
 					(= state 2)
-					(= roomDialog
+					(= saveBits
 						(Print 654 16 #font smallFont #at -1 10 #dispose)
 					)
 					(= seconds 1)
 				else
-					([local1 local58] loop: 2 cel: 0 setCycle: EndLoop self)
+					([aDwarf i] loop: 2 cel: 0 setCycle: EndLoop self)
 				)
 			)
 			(5
-				([local1 local58]
+				([aDwarf i]
 					loop: 0
 					cel: 0
 					setCycle: Walk
@@ -260,62 +286,62 @@
 				)
 			)
 			(6
-				(if (== [local1 (+ local58 3)] 1)
-					([local1 local58]
+				(if (== [aDwarf (+ i 3)] 1)
+					([aDwarf i]
 						setLoop: 7
 						setMotion: MoveTo 135 160 self
 					)
 				else
 					(++ state)
-					([local1 local58]
-						setMotion: MoveTo [local1 (+ local58 4)] [local1 (+ local58 5)] self
+					([aDwarf i]
+						setMotion: MoveTo [aDwarf (+ i 4)] [aDwarf (+ i 5)] self
 					)
 				)
 			)
 			(7
-				([local1 local58]
+				([aDwarf i]
 					setLoop: -1
-					setMotion: MoveTo [local1 (+ local58 4)] [local1 (+ local58 5)] self
+					setMotion: MoveTo [aDwarf (+ i 4)] [aDwarf (+ i 5)] self
 				)
 			)
 			(8
-				(= [local1 (+ local58 6)]
+				(= [aDwarf (+ i 6)]
 					((View new:)
-						view: [local1 (+ local58 2)]
+						view: [aDwarf (+ i 2)]
 						loop: 6
-						posn: [local1 (+ local58 4)] (- [local1 (+ local58 5)] 3)
+						posn: [aDwarf (+ i 4)] (- [aDwarf (+ i 5)] 3)
 						init:
 						ignoreActors: 1
 						stopUpd:
 						yourself:
 					)
 				)
-				([local1 local58]
+				([aDwarf i]
 					loop: 3
 					cel: 0
-					setPri: (if (== [local1 (+ local58 3)] 1) 13 else 12)
+					setPri: (if (== [aDwarf (+ i 3)] 1) 13 else 12)
 					posn:
-						[local1 (+ local58 4)]
-						(if (== [local1 (+ local58 3)] 1)
-							(- [local1 (+ local58 5)] 12)
+						[aDwarf (+ i 4)]
+						(if (== [aDwarf (+ i 3)] 1)
+							(- [aDwarf (+ i 5)] 12)
 						else
-							(- [local1 (+ local58 5)] 6)
+							(- [aDwarf (+ i 5)] 6)
 						)
 					setCycle: EndLoop self
 				)
 			)
 			(9
-				([local1 local58] loop: 4 cel: 0 ignoreActors: 1 stopUpd:)
-				(if (< (= local58 (+ local58 7)) 48)
+				([aDwarf i] loop: 4 cel: 0 ignoreActors: 1 stopUpd:)
+				(if (< (+= i 7) 48)
 					(= state 0)
 					(self cue:)
 				else
 					([dishes 0] dispose:)
 				)
 				(ego startUpd:)
-				(if (> local58 48)
+				(if (> i 48)
 					(cls)
-					(= roomDialog
+					(= saveBits
 						(Print 654 17
 							#font smallFont
 							#at 7 5
@@ -337,7 +363,7 @@
 			(11
 				(User canInput: TRUE)
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 654 18 #font smallFont #at -1 10 #dispose)
 				)
 				(ego view: 76 loop: 5)
@@ -346,50 +372,54 @@
 				(ego setScript: eatOut)
 				(= seconds 60)
 			)
-			(12 (= local63 1))
+			(12
+				(= local63 1)
+			)
 			(13
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 654 19 #font smallFont #at -1 10 #dispose)
 				)
 				(= ateSoup 2)
-				(User canInput: 0)
-				(= local58 0)
-				(while (< local58 7)
-					([local1 (* local58 7)] cel: 0)
-					(++ local58)
+				(User canInput: FALSE)
+				(for ((= i 0)) (< i 7) ((++ i))
+					([aDwarf (* i 7)] cel: 0)
 				)
 				(ego cel: 0)
-				(= local58 49)
+				(= i 49)
 				(= seconds 5)
 			)
 			(14
 				(dwarfMusic play:)
 				(cls)
-				(= roomDialog
-					(Print 654 20 #font smallFont #at -1 10 #dispose)
+				(= saveBits
+					(Print 654 20
+						#font smallFont
+						#at -1 10
+						#dispose
+					)
 				)
 				(self cue:)
 			)
 			(15
-				(= local58 (- local58 7))
-				([local1 local58] loop: 5 cel: 0 setCycle: EndLoop self)
+				(-= i 7)
+				([aDwarf i] loop: 5 cel: 0 setCycle: EndLoop self)
 				((= egoSoup (View new:))
 					view: 500
 					loop: 1
 					cel: 2
 					setPri: 12
-					ignoreActors: 1
-					posn: ([local1 local58] x?) (if [local1 (+ local58 3)] 136 else 133)
+					ignoreActors: TRUE
+					posn: ([aDwarf i] x?) (if [aDwarf (+ i 3)] 136 else 133)
 					addToPic:
 				)
-				(if (== local58 28)
+				(if (== i 28)
 					((= diamondPouch (View new:))
 						view: 500
 						loop: 0
 						cel: 0
 						posn: (+ (egoSoup x?) 8) (- (egoSoup y?) 1)
-						ignoreActors: 1
+						ignoreActors: TRUE
 						setPri: 12
 						init:
 						stopUpd:
@@ -398,28 +428,30 @@
 				)
 			)
 			(16
-				([local1 local58]
-					view: [local1 (+ local58 1)]
+				([aDwarf i]
+					view: [aDwarf (+ i 1)]
 					setPri: -1
 					cel: 0
 					loop: 1
-					posn: ([local1 (+ local58 6)] x?) (+ ([local1 (+ local58 6)] y?) 2)
+					posn: ([aDwarf (+ i 6)] x?) (+ ([aDwarf (+ i 6)] y?) 2)
 					cycleSpeed: 0
 					moveSpeed: 0
 					setCycle: Walk
-					setMotion: MoveTo 140 (+ ([local1 (+ local58 6)] y?) 2) self
+					setMotion: MoveTo 140 (+ ([aDwarf (+ i 6)] y?) 2) self
 				)
-				([local1 (+ local58 6)] dispose:)
+				([aDwarf (+ i 6)] dispose:)
 			)
 			(17
-				([local1 local58]
-					setPri: ([local1 local58] priority?)
+				([aDwarf i]
+					setPri: ([aDwarf i] priority?)
 					setMotion: MoveTo 150 207 self
 				)
 			)
 			(18
-				([local1 local58] dispose:)
-				(if local58 (= state 14))
+				([aDwarf i] dispose:)
+				(if i
+					(= state 14)
+				)
 				(self cue:)
 			)
 			(19
@@ -450,39 +482,58 @@
 			)
 			(20
 				(dwarfMusic dispose:)
-				(User canControl: 1 canInput: 1)
+				(User canControl: TRUE canInput: TRUE)
 				(= inCutscene 0)
 				(curRoom newRoom: 54)
 			)
 		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp invIndex)
 		(return
 			(cond 
 				((event claimed?) (return TRUE))
 				((== (event type?) saidEvent)
 					(cond 
-						((Said 'look/dwarf,man') (Print 654 22))
-						((Said 'look/table') (Print 654 23))
-						((Said 'look/soup') (Print 654 24))
-						((Said 'converse[/dwarf,man]') (tacodoco1 cue:))
+						((Said 'look/dwarf,man')
+							(Print 654 22)
+						)
+						((Said 'look/table')
+							(Print 654 23)
+						)
+						((Said 'look/soup')
+							(Print 654 24)
+						)
+						((Said 'converse[/dwarf,man]')
+							(tacodoco1 cue:)
+						)
 						((or (Said 'get/soup') (Said 'get/bowl'))
 							(cond 
-								((== ateSoup 0) (Print 654 25))
-								((== ateSoup 1) (Print 654 26))
-								(else (Print 654 27))
+								((== ateSoup 0)
+									(Print 654 25)
+								)
+								((== ateSoup 1)
+									(Print 654 26)
+								)
+								(else
+									(Print 654 27)
+								)
 							)
 						)
-						((Said 'kill/dwarf,man') (Print 654 28))
-						((Said 'get/dwarf,man') (Print 654 29))
-						(
-						(or (Said 'kiss[/!*]') (Said 'kiss/dwarf,man')) (Print 654 30))
+						((Said 'kill/dwarf,man')
+							(Print 654 28)
+						)
+						((Said 'get/dwarf,man')
+							(Print 654 29)
+						)
+						((or (Said 'kiss[/noword]') (Said 'kiss/dwarf,man'))
+							(Print 654 30)
+						)
 						((Said 'deliver>')
 							(if
 								(and
-									(= inventorySaidMe (inventory saidMe:))
-									(ego has: (inventory indexOf: inventorySaidMe))
+									(= invIndex (inventory saidMe:))
+									(ego has: (inventory indexOf: invIndex))
 								)
 								(Print 654 31)
 							else
@@ -499,7 +550,9 @@
 								(2 (Print 654 27))
 							)
 						)
-						((Said '(stand<up),(get<up),(/table,chair') (Print 654 34))
+						((Said '(stand<up),(get<up),exit,/table,chair')	;EO: fixed said spec
+							(Print 654 34)
+						)
 					)
 				)
 			)
@@ -508,24 +561,27 @@
 )
 
 (instance tacodoco1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Print 654 35))
+			(0
+				(Print 654 35)
+			)
 			(1
 				(Print 654 36)
 				(Print 654 37)
 			)
-			(2 (Print 654 38))
-			(3 (Print 654 39) (= state 2))
+			(2
+				(Print 654 38)
+			)
+			(3
+				(Print 654 39)
+				(= state 2)
+			)
 		)
 	)
 )
 
 (instance eatOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -539,16 +595,16 @@
 			(1
 				(cls)
 				(ego setLoop: 1 stopUpd:)
-				(= local58 (* (Random 0 6) 7))
+				(= i (* (Random 0 6) 7))
 				(if (< (Random 1 10) 3) (ego setCycle: EndLoop))
-				([local1 local58] setCycle: EndLoop self)
+				([aDwarf i] setCycle: EndLoop self)
 			)
 			(2
 				(if (> (ego cel?) 0) (ego setCycle: CycleTo 0 1))
-				([local1 local58] setCycle: CycleTo 0 1 self)
+				([aDwarf i] setCycle: CycleTo 0 1 self)
 			)
 			(3
-				([local1 local58] stopUpd:)
+				([aDwarf i] stopUpd:)
 				(if (not local63)
 					(= state 0)
 					(self cue:)

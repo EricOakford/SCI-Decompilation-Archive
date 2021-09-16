@@ -525,12 +525,10 @@
 			(return)
 		)
 		(= userFont smallFont)
-		(= i 0)
-		(while (< i (StrLen @userInput))
+		(for ((= i 0)) (< i (StrLen @userInput)) ((++ i))
 			(= ch (& (= ch (StrAt @userInput i)) $005f)) ;ch = userInput[i] & 0x5F -- get uppercased ch
 			(StrAt @userInput i ch) ;put that uppercase character back so we can detect BOBALU later on
-			(= inputSum (+ inputSum ch))
-			(++ i)
+			(+= inputSum ch)
 		)
 		;A whole cond block was missing here for some reason. I rewrote it. -- Kawa
 		(cond

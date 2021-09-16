@@ -20,8 +20,6 @@
 )
 
 (instance regDwarfHouse of Region
-	(properties)
-	
 	(method (init)
 		(if initialized (return))
 		(super init:)

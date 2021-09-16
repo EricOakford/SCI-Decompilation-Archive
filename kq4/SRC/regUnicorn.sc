@@ -30,10 +30,6 @@
 )
 
 (instance regUnicorn of Region
-	(properties
-	;	name "Unicorn's Region"
-	)
-	
 	(method (init)
 		(super init:)
 		(if (== 0 unicornRoom)
@@ -45,13 +41,19 @@
 		)
 		(if (== curRoomNum unicornRoom)
 			(Load VIEW 388)
-			(if (ego has: iGoldenBridle) (Load VIEW 389) (Load VIEW 381))
+			(if (ego has: iGoldenBridle)
+				(Load VIEW 389)
+				(Load VIEW 381)
+			)
 			(if (or (== unicornState uniINITIAL) (== unicornState uniFINAL))
 				(Load VIEW 382)
 				(Load VIEW 383)
 				(Load VIEW 380)
 			)
-			(if (ego has: iCupidBow) (Load VIEW 31) (Load VIEW 681))
+			(if (ego has: iCupidBow)
+				(Load VIEW 31)
+				(Load VIEW 681)
+			)
 			(= unicorn (Actor new:))
 			(unicorn
 				view: 388
@@ -63,7 +65,9 @@
 				init:
 			)
 			(switch curRoomNum
-				(20 (unicorn x: 145 y: 110))
+				(20
+					(unicorn x: 145 y: 110)
+				)
 				(26
 					(unicorn loop: 0 posn: 226 97)
 				)
@@ -89,7 +93,7 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if
@@ -100,13 +104,18 @@
 					(!= (unicorn script?) 0)
 				)
 				(cond 
-					((and (== unicornState uniFINAL) (Said '/unicorn')) (Print 518 0))
+					((and (== unicornState uniFINAL) (Said '/unicorn'))
+						(Print 518 0)
+					)
 					((Said 'launch/arrow,unicorn,arrow')
-						(if
-						(and (ego has: iCupidBow) (< ((Inventory at: iCupidBow) loop?) 2))
-							(if (!= unicornState uniINITIAL) (return (Print 518 1)))
+						(if (and (ego has: iCupidBow) (< ((Inventory at: iCupidBow) loop?) 2))
+							(if (!= unicornState uniINITIAL)
+								(return (Print 518 1))
+							)
 							(cond 
-								((!= (ego view?) 2) (Print 518 2))
+								((!= (ego view?) 2)
+									(Print 518 2)
+								)
 								((unicorn inRect: 0 0 319 189)
 									(Face ego unicorn)
 									(uniActions changeState: 10)
@@ -116,19 +125,26 @@
 									)
 									((Inventory at: iCupidBow) loop: (+ ((Inventory at: iCupidBow) loop?) 1))
 								)
-								(else (Print 518 3))
+								(else
+									(Print 518 3)
+								)
 							)
 						else
 							(Print 518 4)
 						)
 					)
-					(
-					(or (Said 'converse[/!*]') (Said 'converse/unicorn'))
+					((or (Said 'converse[/noword]') (Said 'converse/unicorn'))
 						(if (cast contains: unicorn)
 							(switch unicornState
-								(uniINITIAL (Print 518 5))
-								(uniSHOT (Print 518 6))
-								(uniBRIDLED (Print 518 7))
+								(uniINITIAL
+									(Print 518 5)
+								)
+								(uniSHOT
+									(Print 518 6)
+								)
+								(uniBRIDLED
+									(Print 518 7)
+								)
 							)
 						else
 							(Print 518 8)
@@ -143,7 +159,9 @@
 					)
 					((or (Said 'bit/unicorn') (Said 'place/bit'))
 						(switch unicornState
-							(uniINITIAL (Print 518 10))
+							(uniINITIAL
+								(Print 518 10)
+							)
 							(uniSHOT
 								(if (ego has: iGoldenBridle)
 									(if
@@ -177,13 +195,17 @@
 									(Print 518 12)
 								)
 							)
-							(uniBRIDLED (Print 518 13))
+							(uniBRIDLED
+								(Print 518 13)
+							)
 						)
 					)
-					((or (Said 'kiss[/!*]') (Said 'kiss/unicorn'))
+					((or (Said 'kiss[/noword]') (Said 'kiss/unicorn'))
 						(if (cast contains: unicorn)
 							(cond 
-								((== unicornState uniINITIAL) (Print 518 14))
+								((== unicornState uniINITIAL)
+									(Print 518 14)
+								)
 								(
 									(or
 										(and
@@ -206,7 +228,9 @@
 									)
 									(Print 518 15)
 								)
-								(else (Print 800 1))
+								(else
+									(Print 800 1)
+								)
 							)
 						else
 							(event claimed: FALSE)
@@ -217,16 +241,25 @@
 							(cond 
 								((Said 'look')
 									(switch unicornState
-										(uniINITIAL (Print 518 16))
-										(uniSHOT (Print 518 17))
-										(uniBRIDLED (Print 518 18))
+										(uniINITIAL
+											(Print 518 16)
+										)
+										(uniSHOT
+											(Print 518 17)
+										)
+										(uniBRIDLED
+											(Print 518 18)
+										)
 									)
 								)
-								(
-								(or (Said 'mount') (Said 'get<on') (Said 'climb<on'))
+								((or (Said 'mount') (Said 'get<on') (Said 'climb<on'))
 									(switch unicornState
-										(uniINITIAL (Print 518 19))
-										(uniSHOT (Print 518 20))
+										(uniINITIAL
+											(Print 518 19)
+										)
+										(uniSHOT
+											(Print 518 20)
+										)
 										(uniBRIDLED
 											(if (< (ego distanceTo: unicorn) 10)
 												(if (> (ego y?) (unicorn y?))
@@ -257,14 +290,22 @@
 								)
 								((Said 'get,capture')
 									(switch unicornState
-										(uniINITIAL (Print 518 19))
-										(uniSHOT (Print 518 22))
-										(uniBRIDLED (Print 518 23))
+										(uniINITIAL
+											(Print 518 19)
+										)
+										(uniSHOT
+											(Print 518 22)
+										)
+										(uniBRIDLED
+											(Print 518 23)
+										)
 									)
 								)
 								((Said 'pat')
 									(cond 
-										((== unicornState uniINITIAL) (Print 518 19))
+										((== unicornState uniINITIAL)
+											(Print 518 19)
+										)
 										(
 											(or
 												(and
@@ -287,15 +328,25 @@
 											)
 											(Print 518 24)
 										)
-										(else (Print 800 1))
+										(else
+											(Print 800 1)
+										)
 									)
 								)
-								((Said 'feed') (Print 518 25))
+								((Said 'feed')
+									(Print 518 25)
+								)
 								((Said 'guide')
 									(switch unicornState
-										(0 (Print 518 14))
-										(1 (Print 518 26))
-										(2 (Print 518 23))
+										(uniINITIAL
+											(Print 518 14)
+										)
+										(uniSHOT
+											(Print 518 26)
+										)
+										(uniBRIDLED
+											(Print 518 23)
+										)
 									)
 								)
 							)
@@ -304,8 +355,8 @@
 						)
 					)
 					((Said 'deliver>')
-						(if (= inventorySaidMe (inventory saidMe:))
-							(if (ego has: (inventory indexOf: inventorySaidMe))
+						(if (= index (inventory saidMe:))
+							(if (ego has: (inventory indexOf: index))
 								(Print 518 28)
 							else
 								(Print 800 2)
@@ -324,8 +375,6 @@
 )
 
 (instance uniActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -342,11 +391,13 @@
 							setCycle: EndLoop self
 						)
 					)
-					(uniSHOT (self changeState: 13))
+					(uniSHOT
+						(self changeState: 13)
+					)
 					(uniBRIDLED
 						(unicorn view: 381 cycleSpeed: 1 setCycle: Forward)
 					)
-					(999
+					(uniFINAL
 						(unicorn
 							view: 382
 							cel: 0
@@ -384,8 +435,12 @@
 				(uniTheme dispose:)
 				(unicorn dispose:)
 				(switch curRoomNum
-					(20 (= unicornRoom 27))
-					(26 (= unicornRoom 27))
+					(20
+						(= unicornRoom 27)
+					)
+					(26
+						(= unicornRoom 27)
+					)
 					(27
 						(if (< (unicorn x?) 0)
 							(= unicornRoom 26)
@@ -454,7 +509,9 @@
 				)
 			)
 			(14
-				(if (== local1 3) (= local1 0))
+				(if (== local1 3)
+					(= local1 0)
+				)
 				(self changeState: 13)
 			)
 			(20

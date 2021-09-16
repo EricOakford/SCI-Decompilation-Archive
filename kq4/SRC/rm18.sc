@@ -434,7 +434,7 @@
 			)
 			(3
 				(cond 
-					((ego has: iObsidianScarab) (self changeState: 4))
+					((ego has: iScarab) (self changeState: 4))
 					((== currentStatus egoNormal) (self changeState: 10))
 				)
 			)
@@ -479,7 +479,7 @@
 				(ego view: 46 cel: 255 setCycle: EndLoop self)
 			)
 			(12
-				(= timedMessage (Print 18 42 #at -1 0 #dispose))
+				(= underBits (Print 18 42 #at -1 0 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)
@@ -576,7 +576,7 @@
 				(ego view: 46 cel: 255 setCycle: EndLoop self)
 			)
 			(12
-				(= timedMessage (Print 18 42 #at -1 0 #dispose))
+				(= underBits (Print 18 42 #at -1 0 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)
@@ -668,7 +668,7 @@
 				(ego view: 46 cel: 255 setCycle: EndLoop self)
 			)
 			(12
-				(= timedMessage (Print 18 42 #at -1 0 #dispose))
+				(= underBits (Print 18 42 #at -1 0 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)

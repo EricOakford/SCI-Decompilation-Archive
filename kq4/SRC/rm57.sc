@@ -189,7 +189,7 @@
 				setLoop: 0
 				init:
 			)
-			(if (ego has: iWitchGlassEye)
+			(if (ego has: iGlassEye)
 				(= witchesEyeless TRUE)
 				(if (and (not (ego has: 7)) (not witchesTossedScarab))
 					(Load SCRIPT JUMP)
@@ -229,7 +229,7 @@
 			((> gamePhase getTheHen)
 				(cond 
 					(
-					(and (ego has: iWitchGlassEye) (!= (witch2 script?) witchMoan))
+					(and (ego has: iGlassEye) (!= (witch2 script?) witchMoan))
 						(witchChaser setScript: 0 setMotion: 0)
 						(witchEye changeState: 20)
 					)
@@ -245,7 +245,7 @@
 					(
 						(and
 							(ego inRect: 110 123 119 133)
-							(not (ego has: iWitchGlassEye))
+							(not (ego has: iGlassEye))
 							(not local12)
 							(== (witchChaser script?) witchChase)
 						)
@@ -269,7 +269,7 @@
 					(
 						(and
 							(ego inRect: 131 122 138 131)
-							(not (ego has: iWitchGlassEye))
+							(not (ego has: iGlassEye))
 							(not local12)
 							(== (witchChaser script?) witchChase)
 						)
@@ -322,7 +322,7 @@
 				((Said 'look>')
 					(cond 
 						((Said '/eye')
-							(if ((inventory at: iWitchGlassEye) ownedBy: 57)
+							(if ((inventory at: iGlassEye) ownedBy: 57)
 								(Print 57 3)
 							else
 								(event claimed: FALSE)
@@ -330,9 +330,9 @@
 						)
 						((Said '/hag')
 							(cond 
-								((not (ego has: iWitchGlassEye)) (Print 57 4))
+								((not (ego has: iGlassEye)) (Print 57 4))
 								(witchesEyeless (Print 57 5))
-								(((inventory at: iWitchGlassEye) ownedBy: -1) (Print 57 6))
+								(((inventory at: iGlassEye) ownedBy: -1) (Print 57 6))
 								(else (Print 57 5))
 							)
 						)
@@ -341,25 +341,25 @@
 				)
 				((Said 'converse')
 					(cond 
-						(((inventory at: iWitchGlassEye) ownedBy: 57) (answer1 cue:))
-						((ego has: iWitchGlassEye) (answer2 cue:))
+						(((inventory at: iGlassEye) ownedBy: 57) (answer1 cue:))
+						((ego has: iGlassEye) (answer2 cue:))
 						(else (answer3 cue:))
 					)
 				)
 				((Said 'rob,get/charm')
 					(cond 
-						((ego has: iObsidianScarab) (Print 800 0))
+						((ego has: iScarab) (Print 800 0))
 						((not witchesTossedScarab) (Print 57 7))
 						((> (ego distanceTo: scarab) 20) (Print 800 1))
 						(else (ego setScript: pickUp))
 					)
 				)
 				((Said 'get,rob/eye')
-					(if (not (ego has: iWitchGlassEye))
-						(if ((inventory at: iWitchGlassEye) ownedBy: 57)
+					(if (not (ego has: iGlassEye))
+						(if ((inventory at: iGlassEye) ownedBy: 57)
 							(if (ego inRect: 119 122 129 136)
 								(Print 57 8)
-								(ego get: iWitchGlassEye)
+								(ego get: iGlassEye)
 								(theGame changeScore: 3)
 								(= gotItem TRUE)
 							else
@@ -373,13 +373,13 @@
 					)
 				)
 				((Said 'deliver,return,throw/eye')
-					(if (ego has: iWitchGlassEye)
+					(if (ego has: iGlassEye)
 						(if (not witchesEyeless)
 							(Print 57 10)
 							(ego put: 6 -1)
 						else
 							(theGame changeScore: 3)
-							(ego put: iWitchGlassEye -1)
+							(ego put: iGlassEye -1)
 							(Print 57 11)
 						)
 						(witchMoan changeState: 4)
@@ -479,7 +479,7 @@
 				(witchChaser loop: 1 setCycle: EndLoop self)
 			)
 			(3
-				(if (not ((inventory at: iWitchGlassEye) ownedBy: -1))
+				(if (not ((inventory at: iGlassEye) ownedBy: -1))
 					(witchChaser setScript: witchChase)
 				)
 				(witch1 loop: 0 setCycle: CycleTo 4 1 self)
@@ -670,7 +670,7 @@
 				(witchChaser ignoreActors: 0 setMotion: MoveTo 125 133 self)
 			)
 			(3
-				(if (not ((inventory at: iWitchGlassEye) ownedBy: -1))
+				(if (not ((inventory at: iGlassEye) ownedBy: -1))
 					(Print 57 33)
 				)
 				(witchChaser view: 183 setLoop: 0 cel: 255 setCycle: EndLoop)
@@ -718,12 +718,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not ((inventory at: iWitchGlassEye) ownedBy: -1))
+				(if (not ((inventory at: iGlassEye) ownedBy: -1))
 					(Print 57 37)
 				)
 			)
 			(1
-				(if (not ((inventory at: iWitchGlassEye) ownedBy: -1))
+				(if (not ((inventory at: iGlassEye) ownedBy: -1))
 					(switch (Random 1 4)
 						(1 (Print 57 38))
 						(2 (Print 57 39))
@@ -833,7 +833,7 @@
 			(2
 				(scarab dispose:)
 				(= witchesTossedScarab FALSE)
-				(ego get: iObsidianScarab)
+				(ego get: iScarab)
 				(= gotItem TRUE)
 				(theGame changeScore: 2)
 				(= seconds 2)
@@ -861,7 +861,7 @@
 			)
 			(3 (= seconds 3))
 			(4
-				(if (not ((inventory at: iWitchGlassEye) ownedBy: -1))
+				(if (not ((inventory at: iGlassEye) ownedBy: -1))
 					(Print 57 45)
 				)
 			)

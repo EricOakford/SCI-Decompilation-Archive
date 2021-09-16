@@ -60,7 +60,7 @@
 		(Load VIEW 21)
 		(Load VIEW 73)
 		(Load SOUND 51)
-		(if (ego has: iPeacockFeather) (Load SOUND 60) (Load VIEW 51))
+		(if (ego has: iFeather) (Load SOUND 60) (Load VIEW 51))
 		(= noWearCrown 1)
 		(ego view: 8 posn: 39 160 viewer: inWhale init:)
 		((= egoTickling (Prop new:))
@@ -69,7 +69,7 @@
 			init:
 			hide:
 		)
-		(if ((Inventory at: iGlassBottle) ownedBy: 44)
+		(if ((Inventory at: iBottle) ownedBy: 44)
 			(= bottle (Actor new:))
 			(bottle
 				view: 531
@@ -130,7 +130,7 @@
 					((Said 'get/boat') (Print 44 5))
 					((Said 'get/bottle')
 						(cond 
-							(((Inventory at: iGlassBottle) ownedBy: 44)
+							(((Inventory at: iBottle) ownedBy: 44)
 								(if (< (ego distanceTo: bottle) 15)
 									(Print 44 6)
 									(bottle dispose:)
@@ -140,7 +140,7 @@
 									(Print 800 1)
 								)
 							)
-							((ego has: iGlassBottle) (Print 44 7))
+							((ego has: iBottle) (Print 44 7))
 							(else (Print 44 8))
 						)
 					)
@@ -160,7 +160,7 @@
 							((Said '/uvula') (Print 44 16))
 							((Said '/skeleton,james,man,person') (Print 44 17))
 							((Said '/water')
-								(if ((Inventory at: iGlassBottle) ownedBy: 44)
+								(if ((Inventory at: iBottle) ownedBy: 44)
 									(Print 44 18)
 								else
 									(Print 44 19)
@@ -192,7 +192,7 @@
 					; decompile properly.
 					;((Said '>/fire') (Print 44 9))
 					((Said 'tickle')
-						(if (ego has: iPeacockFeather)
+						(if (ego has: iFeather)
 							(if (ego inRect: 140 71 178 86)
 								(ego setScript: tickle)
 								(tickle changeState: 1)
@@ -351,7 +351,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (ego has: iPeacockFeather)
+				(if (ego has: iFeather)
 					((ScriptID 0 5) setReal: self 1 4)
 				else
 					((ScriptID 0 5) setReal: self 2 1)

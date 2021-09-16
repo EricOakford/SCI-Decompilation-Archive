@@ -58,14 +58,15 @@
 					)
 					(theGame restart:)
 				)
-				(else (curRoom newRoom: 120))
+				(else
+					(curRoom newRoom: 120)
+				)
 			)
 		)
 	)
 )
 
 (instance creditActions of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

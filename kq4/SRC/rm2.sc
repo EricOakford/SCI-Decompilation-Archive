@@ -38,7 +38,7 @@
 						(or
 							(Said '/room')
 							(Said '/around')
-							(Said '[<around][/!*]')
+							(Said '[<around][/noword]')
 						)
 						(Print 2 0)
 					)

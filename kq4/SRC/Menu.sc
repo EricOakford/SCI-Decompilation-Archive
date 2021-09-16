@@ -10,7 +10,6 @@
 
 
 (class TheMenuBar of MenuBar
-	
 	(method (init)
 		(AddMenu { \01_}
 			{About KQ4`^a:Help`#1}

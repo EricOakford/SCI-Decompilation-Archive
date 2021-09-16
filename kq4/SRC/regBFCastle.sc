@@ -34,16 +34,18 @@
 )
 
 (instance regBFCastle of Region
-	(properties)
-	
 	(method (init)
 		(= keep TRUE)
 		(Load VIEW 355)
 		(Load VIEW 356)
 		(Load VIEW 358)
 		(= noWearCrown TRUE)
-		(if (< gamePhase killedLolotte) (= ravenRoom 92))
-		(if (not howFast) (= ravenRoom 0))
+		(if (< gamePhase killedLolotte)
+			(= ravenRoom 92)
+		)
+		(if (not howFast)
+			(= ravenRoom 0)
+		)
 		(super init:)
 	)
 	
@@ -74,7 +76,10 @@
 		(if (cast contains: henchman)
 			(henchman setMotion: 0 setCycle: 0)
 		)
-		(if (== keep FALSE) (= noWearCrown FALSE) (super dispose:))
+		(if (== keep FALSE)
+			(= noWearCrown FALSE)
+			(super dispose:)
+		)
 	)
 	
 	(method (handleEvent event &tmp temp0)
@@ -85,9 +90,11 @@
 				((== (event type?) saidEvent)
 					(cond 
 						((Said 'blow/whistle')
-							(if (ego has: iSilverWhistle)
+							(if (ego has: iWhistle)
 								(Print 604 0)
-							else (DontHave))
+							else
+								(DontHave)
+							)
 						)
 						((Said 'look/wall')
 							(Print 604 1)
@@ -109,7 +116,10 @@
 						)
 						((Said '/goon,man>')
 							(cond 
-								((not (cast contains: henchman)) (Print 604 4) (event claimed: TRUE))
+								((not (cast contains: henchman))
+									(Print 604 4)
+									(event claimed: TRUE)
+								)
 								((Said 'look')
 									(if (and lolotteAlive (not henchChasingEgo))
 										(Print 604 5)
@@ -128,19 +138,40 @@
 										(Print 604 7)
 									)
 								)
-								((Said 'get,capture') (Print 604 8))
-								((Said 'kiss') (Print 604 9))
-								((Said 'deliver') (Print 604 10) (event claimed: TRUE))
+								((Said 'get,capture')
+									(Print 604 8)
+								)
+								((Said 'kiss')
+									(Print 604 9)
+								)
+								((Said 'deliver')
+									(Print 604 10)
+									(event claimed: TRUE)
+								)
 							)
 						)
 						((Said '/raven,crow>')
 							(cond 
-								((not (cast contains: raven)) (Print 604 11) (event claimed: TRUE))
-								((Said 'look') (Print 604 12))
-								((Said 'converse') (Print 604 13))
-								((Said 'get,capture') (Print 604 14))
-								((Said 'kiss') (Print 604 15))
-								((Said 'deliver') (Print 604 16) (event claimed: TRUE))
+								((not (cast contains: raven))
+									(Print 604 11)
+									(event claimed: TRUE)
+								)
+								((Said 'look')
+									(Print 604 12)
+								)
+								((Said 'converse')
+									(Print 604 13)
+								)
+								((Said 'get,capture')
+									(Print 604 14)
+								)
+								((Said 'kiss')
+									(Print 604 15)
+								)
+								((Said 'deliver')
+									(Print 604 16)
+									(event claimed: TRUE)
+								)
 							)
 						)
 					)
@@ -149,9 +180,9 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(henchChaseReg seconds: 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 	
 	(method (notify param1)
@@ -160,8 +191,6 @@
 )
 
 (instance initializeRoom of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -228,8 +257,6 @@
 )
 
 (instance ravenStuff of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -336,10 +363,8 @@
 )
 
 (instance preenShit of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -352,21 +377,24 @@
 					(2
 						(raven loop: 1 setCycle: EndLoop self)
 					)
-					(else  (self cue:))
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(1
 				(raven loop: 3)
 				(= seconds 4)
 			)
-			(2 (= state -1) (self cue:))
+			(2
+				(= state -1)
+				(self cue:)
+			)
 		)
 	)
 )
 
 (instance henchChaseReg of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -391,7 +419,7 @@
 				)
 				(henchman
 					view: 141
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setStep: 6 3
 					setCycle: Walk
 					setMotion: Chase ego 15 self

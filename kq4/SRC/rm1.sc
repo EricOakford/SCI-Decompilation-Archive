@@ -40,7 +40,9 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 101))
+		(if isNightTime
+			(curRoom overlay: 101)
+		)
 		(self setRegions: BEACH WATER GULL MEADOW)
 		(= saveViewer (ego viewer?))
 		(if (== prevRoomNum 2)

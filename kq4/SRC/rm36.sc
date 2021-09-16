@@ -220,7 +220,7 @@
 				(ego setMotion: 0 view: 21 cel: 255 setCycle: EndLoop self)
 			)
 			(2
-				(= timedMessage (Print 36 30 #at -1 10 #dispose))
+				(= underBits (Print 36 30 #at -1 10 #dispose))
 				(Timer setReal: self 5)
 			)
 			(3 (ego setCycle: BegLoop self))

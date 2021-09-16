@@ -16,16 +16,14 @@
 	local0
 )
 (instance openPbox of Script
-	(properties)
-	
-	(method (init param1)
+	(method (init who)
 		(Load VIEW 40)
 		(Load VIEW 21)
 		(Load VIEW 519)
 		(Load VIEW 43)
 		(Load VIEW 685)
 		(Load VIEW 684)
-		(super init: param1)
+		(super init: who)
 		(HandsOff)
 	)
 	
@@ -34,7 +32,11 @@
 			(0
 				(Print 307 0 #at -1 10 #time 6)
 				(ego viewer: 0)
-				(if isIndoors (ego view: 40) else (ego view: 21))
+				(if isIndoors
+					(ego view: 40)
+				else
+					(ego view: 21)
+				)
 				(ego cel: 0 loop: 0 setCycle: EndLoop self)
 			)
 			(1
@@ -186,7 +188,9 @@
 				(cls)
 				((ScriptID 0 6) setReal: self 10)
 			)
-			(6 (= dead TRUE))
+			(6
+				(= dead TRUE)
+			)
 		)
 	)
 )
@@ -203,8 +207,8 @@
 		illegalBits $0000
 	)
 	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 		(self
 			ignoreHorizon: TRUE
 			ignoreActors: TRUE
@@ -220,8 +224,8 @@
 		illegalBits $0000
 	)
 	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 		(self
 			ignoreHorizon: TRUE
 			ignoreActors: TRUE

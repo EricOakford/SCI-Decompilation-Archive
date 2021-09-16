@@ -15,25 +15,34 @@
 
 (instance regOgre of Region
 	(properties
-	;	name "Ogre's Region"
+		name "Ogre's Region"
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (cast contains: ogre))
+			(if (and (== (event type?) saidEvent) (cast contains: ogre))
 				(cond 
-					((Said 'look/giant') (Print 517 0))
-					((Said 'converse') (Print 517 1))
-					((Said 'kill/giant') (Print 517 2))
-					((Said 'get,capture/giant') (Print 517 3))
-					((Said 'kiss') (Print 517 4))
+					((Said 'look/giant')
+						(Print 517 0)
+					)
+					((Said 'converse')
+						(Print 517 1)
+					)
+					((Said 'kill/giant')
+						(Print 517 2)
+					)
+					((Said 'get,capture/giant')
+						(Print 517 3)
+					)
+					((Said 'kiss')
+						(Print 517 4)
+					)
 					((Said 'deliver>')
 						(if
 							(and
-								(= inventorySaidMe (inventory saidMe:))
-								(ego has: (inventory indexOf: inventorySaidMe))
+								(= index (inventory saidMe:))
+								(ego has: (inventory indexOf: index))
 							)
 							(Print 517 5)
 						else

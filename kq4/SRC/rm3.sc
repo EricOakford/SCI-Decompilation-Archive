@@ -135,11 +135,15 @@
 					(ego posn: 318 (ego y?))
 				)
 			)
-			(9 (ego y: 187))
+			(9
+				(ego y: 187)
+			)
 			(27
 				(ego posn: (ego x?) (+ horizon 2))
 			)
-			(0 (ego x: 98 y: 176))
+			(0
+				(ego x: 98 y: 176)
+			)
 		)
 	)
 	
@@ -162,7 +166,7 @@
 						(or
 							(Said 'look/room')
 							(Said 'look/around')
-							(Said 'look[<around][/!*]')
+							(Said 'look[<around][/noword]')
 						)
 						(if (== (ego view?) 2)
 							(Print 3 3)
@@ -203,8 +207,12 @@
 						(if (!= (ego view?) 2)
 							(Print 3 10)
 						else
-							(Print 3 11)))
-					((Said 'hop,dive/pool,water') (Print 3 12))
+							(Print 3 11)
+						)
+					)
+					((Said 'hop,dive/pool,water')
+						(Print 3 12)
+					)
 					((or (Said 'drink') (Said 'get/drink'))
 						(cond 
 							((!= (ego view?) 2)
@@ -444,7 +452,7 @@
 				(aCupid
 					view: 167
 					setLoop: -1
-					observeControl: TRUE
+					observeControl: cBLACK
 					xStep: 1
 					yStep: 1
 					loop: 1
@@ -469,7 +477,9 @@
 			(11
 				(aCupid setMotion: MoveTo 4 72 self)
 			)
-			(12 (aCupid dispose:))
+			(12
+				(aCupid dispose:)
+			)
 			(20
 				(Print 3 35)
 				(if (timers contains: cupidTimer)
@@ -508,7 +518,9 @@
 			(24
 				(aCupid setMotion: MoveTo 41 70 self)
 			)
-			(25 (aCupid dispose:))
+			(25
+				(aCupid dispose:)
+			)
 			(30
 				(Print 3 35)
 				(if (timers contains: cupidTimer)
@@ -516,7 +528,7 @@
 				)
 				(aCupid
 					ignoreBlocks: cupidCage
-					ignoreControl: 1
+					ignoreControl: cBLACK
 					xStep: 6
 					yStep: 2
 					setLoop: 1
@@ -551,7 +563,7 @@
 			(40
 				(aCupid ignoreBlocks: cupidCage)
 				(aCupid
-					ignoreControl: TRUE
+					ignoreControl: cBLACK
 					setLoop: 0
 					xStep: 3
 					yStep: 2
@@ -581,35 +593,59 @@
 				(aCupid view: 160 setLoop: 1 setCel: 0 setCycle: Forward)
 				(aCupid setPri: 7 setMotion: MoveTo 171 80 self)
 			)
-			(45 (self changeState: 10))
+			(45
+				(self changeState: 10)
+			)
 		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp i)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'look/cupid')
 						(cond 
-							((== cupidState cupidFlyingWithBow) (Print 3 22))
-							((== cupidState cupidSwimming) (Print 3 23))
-							((== cupidState cupidFlyingNoBow) (Print 3 24))
-							((== cupidState cupidScared) (Print 3 25))
-							((== cupidState cupidDivingIn) (Print 3 26))
-							((== cupidState cupidFinishedSwim) (Print 3 27))
+							((== cupidState cupidFlyingWithBow)
+								(Print 3 22)
+							)
+							((== cupidState cupidSwimming)
+								(Print 3 23)
+							)
+							((== cupidState cupidFlyingNoBow)
+								(Print 3 24)
+							)
+							((== cupidState cupidScared)
+								(Print 3 25)
+							)
+							((== cupidState cupidDivingIn)
+								(Print 3 26)
+							)
+							((== cupidState cupidFinishedSwim)
+								(Print 3 27)
+							)
 						)
 					)
-					((Said 'play/cupid') (Print 3 28))
-					((Said 'get/cupid') (Print 3 29))
-					((Said 'kiss') (Print 3 30))
+					((Said 'play/cupid')
+						(Print 3 28)
+					)
+					((Said 'get/cupid')
+						(Print 3 29)
+					)
+					((Said 'kiss')
+						(Print 3 30)
+					)
 					((Said 'converse')
 						(cond 
 							((not (cast contains: aCupid))
 								(event claimed: FALSE)
 							)
-							((== cupidState cupidFlyingWithBow) (Print 3 31))
-							((== cupidState cupidScared) (Print 3 32))
+							((== cupidState cupidFlyingWithBow)
+								(Print 3 31)
+							)
+							((== cupidState cupidScared)
+								(Print 3 32)
+							)
 							((== cupidState cupidSwimming)
 								(if (< (ego distanceTo: aCupid) 40)
 									(Print 3 33)
@@ -622,15 +658,17 @@
 									(Print 3 31)
 								)
 							)
-							(else (Print 3 31))
+							(else
+								(Print 3 31)
+							)
 						)
 					)
 					(
 						(and
 							(Said 'deliver>')
-							(= inventorySaidMe (inventory saidMe:))
+							(= i (inventory saidMe:))
 						)
-						(if (ego has: (inventory indexOf: inventorySaidMe))
+						(if (ego has: (inventory indexOf: i))
 							(Print 3 34)
 						else
 							(DontHave)
@@ -638,15 +676,13 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance egoActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -669,9 +705,11 @@
 			)
 			(11
 				(= seconds 5)
-				(= timedMessage (Print 3 36 #at -1 10 #dispose))
+				(= underBits (Print 3 36 #at -1 10 #dispose))
 			)
-			(12 (ego setCycle: BegLoop self))
+			(12
+				(ego setCycle: BegLoop self)
+			)
 			(13
 				(cls)
 				(HandsOn)

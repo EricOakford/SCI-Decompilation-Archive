@@ -41,9 +41,14 @@
 		)
 		(if (< doneTime (GetTime))
 			(cond 
-				((<= machineSpeed 30) (= howFast 0))
-				((<= machineSpeed 60) (= howFast 1))
-				(else (= howFast 2))
+				((<= machineSpeed 30)
+					(= howFast slow))
+				((<= machineSpeed 60)
+					(= howFast medium)
+				)
+				(else
+					(= howFast fast)
+				)
 			)
 			(theGame setSpeed: 6)
 			(TheMenuBar draw:)

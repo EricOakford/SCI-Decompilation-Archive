@@ -57,7 +57,7 @@
 		(= isIndoors FALSE)
 		(= oldHorizon horizon)
 		(super init:)
-		(if (ego has: iDeadFish)
+		(if (ego has: iFish)
 			(Load VIEW 312)
 			(Load VIEW 311)
 			(Load VIEW 310)
@@ -131,7 +131,7 @@
 			init:
 			setScript: waveScript
 		)
-		(if (or (ego has: iSilverWhistle) (ego has: iDeadFish)) (= local11 1))
+		(if (or (ego has: iWhistle) (ego has: iFish)) (= local11 1))
 		(cond 
 			((and (== global136 101) (== global137 100)) (ego posn: 13 91))
 			((and (== global136 99) (== global137 100)) (ego posn: 294 84))
@@ -142,7 +142,7 @@
 		(sandCastle setScript: deathTimer init: hide:)
 		;the sand castle is in view 524, loop 2. It seems to have been used for debugging the death timer.
 		((= newProp_3 (Prop new:)) init: hide:)
-		(if ((Inventory at: iSilverWhistle) ownedBy: 207)
+		(if ((Inventory at: iWhistle) ownedBy: 207)
 			(= pelican (Actor new:))
 			(pelican
 				ignoreHorizon:
@@ -160,7 +160,7 @@
 			)
 			(pelican setScript: pelActions)
 		)
-		(if ((Inventory at: iSilverWhistle) ownedBy: 43)
+		(if ((Inventory at: iWhistle) ownedBy: 43)
 			((= whistle (Actor new:))
 				posn: 137 106
 				ignoreActors:
@@ -227,8 +227,8 @@
 					((Said 'look>')
 						(cond 
 							((Said '/fish')
-								(if (ego has: iDeadFish)
-									((Inventory at: iDeadFish) showSelf:)
+								(if (ego has: iFish)
+									((Inventory at: iFish) showSelf:)
 								else
 									(Print 43 6)
 								)
@@ -296,7 +296,7 @@
 					)
 					((Said 'climb/forest,palm') (Print 43 24))
 					((Said 'deliver,throw,feed/fish')
-						(if (ego has: iDeadFish)
+						(if (ego has: iFish)
 							(if (== (ego view?) 2)
 								(switch pelicanState
 									(1
@@ -324,16 +324,16 @@
 					)
 					((Said 'get,whistle/whistle')
 						(cond 
-							(((Inventory at: iSilverWhistle) ownedBy: 43)
+							(((Inventory at: iWhistle) ownedBy: 43)
 								(if (< (ego distanceTo: whistle) 15)
 									(bridleActions changeState: 10)
 									(theGame changeScore: 2)
-									(ego get: iSilverWhistle)
+									(ego get: iWhistle)
 								else
 									(Print 800 1)
 								)
 							)
-							((ego has: iSilverWhistle) (Print 43 30))
+							((ego has: iWhistle) (Print 43 30))
 							(else (Print 43 10))
 						)
 					)
@@ -352,7 +352,7 @@
 						)
 					)
 					((Said 'play,whistle,blow[/whistle]')
-						(if (ego has: iSilverWhistle)
+						(if (ego has: iWhistle)
 							(sounds eachElementDo: #stop 0)
 							(whistleSound number: 76 play:)
 							(if (not dolphin)
@@ -649,11 +649,11 @@
 				)
 				(pelican setLoop: 2 cel: 255 setCycle: EndLoop self)
 				(newAct_4 dispose:)
-				((Inventory at: iSilverWhistle) moveTo: 43)
+				((Inventory at: iWhistle) moveTo: 43)
 			)
 			(23
 				(Print 43 50)
-				((Inventory at: iDeadFish) moveTo: 207)
+				((Inventory at: iFish) moveTo: 207)
 				(= local2 99)
 				(HandsOn)
 				(self changeState: 10)
@@ -798,7 +798,7 @@
 				(ego viewer: 0 view: 21 cel: 255 setCycle: EndLoop self)
 			)
 			(2
-				(= timedMessage (Print 43 5 #at -1 10 #dispose))
+				(= underBits (Print 43 5 #at -1 10 #dispose))
 				(= seconds 5)
 			)
 			(3 (ego setCycle: BegLoop self))

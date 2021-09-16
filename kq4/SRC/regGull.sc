@@ -12,17 +12,15 @@
 )
 
 (local
-	local0
-	[local1 4]
 	numGulls
+	[aGull 4]
+	i
 )
-(instance gullBlock1 of Cage
-	(properties)
-)
+(instance gullBlock1 of Cage)
 
 (instance regGull of Region
 	(properties
-	;	name "Gull Region"
+		name "Gull Region"
 	)
 	
 	(method (init)
@@ -34,12 +32,10 @@
 				right: 349
 				init:
 			)
-			(= local0 2)
-			(if
-			(and (!= curRoomNum 7) (!= curRoomNum 40) howFast)
-				(= numGulls 1)
-				(while (<= numGulls local0)
-					(= [local1 numGulls]
+			(= numGulls 2)
+			(if (and (!= curRoomNum 7) (!= curRoomNum 40) howFast)
+				(for ((= i 1)) (<= i numGulls) ((++ i))
+					(= [aGull i]
 						((Actor new:)
 							x: (Random 1 280)
 							y: (Random 1 30)
@@ -51,20 +47,19 @@
 							setCycle: Forward
 							setMotion: Wander 15
 							view: (if (== curRoomNum 32) 325 else (Random 325 326))
-							ignoreHorizon: 1
-							illegalBits: 16384
+							ignoreHorizon: TRUE
+							illegalBits: cYELLOW
 							init:
 							yourself:
 						)
 					)
-					(++ numGulls)
 				)
 			)
 		)
 		(super init:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp invIndex)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
@@ -72,25 +67,47 @@
 					(cond 
 						((Said '/gull,gull,bird>')
 							(cond 
-								((Said 'look') (Print 504 0))
-								((Said 'converse') (Print 504 1))
-								((Said 'get,capture') (Print 504 2))
-								((Said 'kiss') (Print 504 3))
-								((Said 'feed') (Print 504 4))
+								((Said 'look')
+									(Print 504 0)
+								)
+								((Said 'converse')
+									(Print 504 1)
+								)
+								((Said 'get,capture')
+									(Print 504 2)
+								)
+								((Said 'kiss')
+									(Print 504 3)
+								)
+								((Said 'feed')
+									(Print 504 4)
+								)
 							)
 						)
-						((Said 'deliver/*/gull,gull,bird')
+						((Said 'deliver/anyword/gull,gull,bird')
 							(cond 
-								((not (= inventorySaidMe (inventory saidMe:))) (Print 504 5))
-								((ego has: (inventory indexOf: inventorySaidMe)) (Print 504 6))
-								(else (DontHave))
+								((not (= invIndex (inventory saidMe:)))
+									(Print 504 5)
+								)
+								((ego has: (inventory indexOf: invIndex))
+									(Print 504 6)
+								)
+								(else
+									(DontHave)
+								)
 							)
 						)
 						((Said 'throw')
 							(cond 
-								((not (= inventorySaidMe (inventory saidMe:))) (Print 504 7))
-								((ego has: (inventory indexOf: inventorySaidMe)) (Print 504 8))
-								(else (DontHave))
+								((not (= invIndex (inventory saidMe:)))
+									(Print 504 7)
+								)
+								((ego has: (inventory indexOf: invIndex))
+									(Print 504 8)
+								)
+								(else
+									(DontHave)
+								)
 							)
 						)
 					)

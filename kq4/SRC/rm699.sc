@@ -137,7 +137,6 @@
 )
 
 (instance spark1 of Script
-	
 	(method (init who)
 		(super init: who)
 		(client init:)
@@ -178,7 +177,6 @@
 )
 
 (instance spark2 of Script
-
 	(method (init who)
 		(super init: who)
 		(client init:)
@@ -217,7 +215,6 @@
 )
 
 (instance spark3 of Script
-	
 	(method (init who)
 		(super init: who)
 		(client init:)
@@ -256,7 +253,6 @@
 )
 
 (instance spark4 of Script
-
 	(method (init who)
 		(super init: who)
 		(client init:)
@@ -301,11 +297,14 @@
 )
 
 (instance playMusic of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (bannerSound play: self))
-			(1 (curRoom newRoom: 98))
+			(0
+				(bannerSound play: self)
+			)
+			(1
+				(curRoom newRoom: 98)
+			)
 		)
 	)
 )

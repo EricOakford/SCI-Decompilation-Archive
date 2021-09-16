@@ -104,7 +104,7 @@
 								((Said '/ladder') (Print 65 12))
 								((Said '/crumbs') (Print 65 13))
 								((Said '/bottle')
-									(if (ego has: iGlassBottle)
+									(if (ego has: iBottle)
 										(event claimed: FALSE)
 									else
 										(Print 800 2)

@@ -32,18 +32,28 @@ $600 debugM
 )
 
 (instance DebugMenu of Script
-	
 	(method (init)
-		(AddMenu
-			{ Debug_}
-			{Ego info...`@e:Show Room`@R:Free Mem`@F:Show ATPs`@P:-! :Set Debug`^D:Clicks:Set Inv`@S:Set Var`@V:Get All`@G:Log`@L:-! :Visual`#0:Priority`#6:Control`#4}
+		(AddMenu { Debug_}
+			{Ego info...`@e:
+			Show Room`@R:
+			Free Mem`@F:
+			Show ATPs`@P:-! :
+			Set Debug`^D:
+			Clicks:
+			Set Inv`@S:
+			Set Var`@V:
+			Get All`@G:
+			Log`@L:-! :
+			Visual`#0:
+			Priority`#6:
+			Control`#4}
 		)
 		(if (not (StatusLine state?))
 			(TheMenuBar draw:)
 		)
 	)
 	
-	(method (doit event &tmp oldPause [temp1 6] [buf 33])
+	(method (doit event &tmp evt [temp1 6] [buf 33])
 		(switch event
 			(egoI
 				(Print
@@ -119,10 +129,10 @@ $600 debugM
 			(controlI
 				(Show CMAP)
 				(Animate (cast elements?))
-				(while (== 0 ((= oldPause (Event new: allEvents)) type?))
-					(oldPause dispose:)
+				(while (== nullEvt ((= evt (Event new: allEvents)) type?))
+					(evt dispose:)
 				)
-				(oldPause dispose:)
+				(evt dispose:)
 				(Show VMAP)
 			)
 		)

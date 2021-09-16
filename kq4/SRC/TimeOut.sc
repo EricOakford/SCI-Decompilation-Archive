@@ -11,8 +11,6 @@
 )
 
 (instance timeOut of Script	;time's up, game over!
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -24,7 +22,7 @@
 				(Timer setReal: self 5)
 			)
 			(1
-				(= timedMessage (Print 302 0 #dispose))
+				(= underBits (Print 302 0 #dispose))
 				(Timer setReal: self 15)
 			)
 			(2

@@ -355,7 +355,7 @@
 							)
 						)
 						((Said 'blow/whistle')
-							(if (and (ego has: iSilverWhistle) (cast contains: aOgre))
+							(if (and (ego has: iWhistle) (cast contains: aOgre))
 								(if (== ogreState 3) (Print 49 15) else (Print 49 16))
 							else
 								(event claimed: FALSE)

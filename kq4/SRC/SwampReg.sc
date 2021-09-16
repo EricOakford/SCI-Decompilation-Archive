@@ -21,8 +21,8 @@
 	swampDepth
 	poof
 	swampThing
-	local4
-	oldEgoViewer
+	thisControl
+	saveViewer
 )
 (instance poofSound of Sound
 	(properties
@@ -31,10 +31,6 @@
 )
 
 (instance swampReg of Region
-	(properties
-	;	name "Swamp Region"
-	)
-	
 	(method (init)
 		(Load VIEW 5)
 		(Load VIEW 6)
@@ -55,7 +51,9 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'bathe,dive,wade[<enter][/ocean]') (Print 513 0))
+					((Said 'bathe,dive,wade[<enter][/ocean]')
+						(Print 513 0)
+					)
 					(
 						(or
 							(Said 'enter/fish')
@@ -65,15 +63,17 @@
 						)
 						(Print 513 1)
 					)
-					((Said 'get/water') (Print 513 2))
+					((Said 'get/water')
+						(Print 513 2)
+					)
 					((or (Said 'drink') (Said 'get/drink'))
 						(if (== (ego view?) 2)
 							(if
 								(or
-									(& (= local4 (IsObjectOnControl ego 12)) $0008)
-									(& local4 $0800)
-									(& local4 $0002)
-									(& local4 $0200)
+									(& (= thisControl (IsObjectOnControl ego 12)) cCYAN)
+									(& thisControl cLCYAN)
+									(& thisControl cBLUE)
+									(& thisControl cLBLUE)
 								)
 								(= oldEgoScript (ego script?))
 								(ego setScript: drinking)
@@ -84,35 +84,67 @@
 							(Print 513 3)
 						)
 					)
-					((Said 'look<in/water') (Print 513 4))
-					((Said 'look,climb/boulder<[gray]') (Print 513 5))
+					((Said 'look<in/water')
+						(Print 513 4)
+					)
+					((Said 'look,climb/boulder<[gray]')
+						(Print 513 5)
+					)
 					((Said 'look>')
 						(cond 
-							((Said '/water') (Print 513 6))
-							((Said '/cliff') (Print 513 7))
-							((Said '/dirt') (Print 513 8))
-							((Said '/tuft') (Print 513 9))
-							((Said '/grass') (Print 513 10))
-							((Said '/bush') (Print 513 11))
-							((Said '/flora') (Print 513 12))
-							((Said '/blossom') (Print 513 13))
-							((Said '/forest') (Print 513 14))
+							((Said '/water')
+								(Print 513 6)
+							)
+							((Said '/cliff')
+								(Print 513 7)
+							)
+							((Said '/dirt')
+								(Print 513 8)
+							)
+							((Said '/tuft')
+								(Print 513 9)
+							)
+							((Said '/grass')
+								(Print 513 10)
+							)
+							((Said '/bush')
+								(Print 513 11)
+							)
+							((Said '/flora')
+								(Print 513 12)
+							)
+							((Said '/blossom')
+								(Print 513 13)
+							)
+							((Said '/forest')
+								(Print 513 14)
+							)
 						)
 					)
-					((Said 'climb,cross/cliff') (Print 513 15))
-					((Said 'get/blossom') (Print 513 13))
+					((Said 'climb,cross/cliff')
+						(Print 513 15)
+					)
+					((Said 'get/blossom')
+						(Print 513 13)
+					)
 					(
 					(or (Said 'dennis/crown') (Said 'place/crown'))
 						(cond 
-							(
-							(and (ego inRect: 115 149 274 181) (== curRoomNum 78)) (Print 513 16))
-							((!= (ego view?) 2) (Print 513 17))
-							((ego has: iSmallCrown) (swamp changeState: 20))
-							(else (Print 800 2))
+							((and (ego inRect: 115 149 274 181) (== curRoomNum 78))
+								(Print 513 16)
+							)
+							((!= (ego view?) 2)
+								(Print 513 17)
+							)
+							((ego has: iCrown)
+								(swamp changeState: 20)
+							)
+							(else
+								(Print 800 2)
+							)
 						)
 					)
-					(
-					(or (Said 'detach/crown') (Said 'get<off/crown'))
+					((or (Said 'detach/crown') (Said 'get<off/crown'))
 						(if (== currentStatus egoIsFrog)
 							(swamp changeState: 30)
 						else
@@ -128,45 +160,47 @@
 )
 
 (instance swamp of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(= local0 (= swampDepth (ego onControl: origin)))
 		(cond 
 			((and (== currentStatus egoOnSwampGrass) (== laidDownBoard FALSE))
 				(switch swampDepth
-					(1
+					(cBLACK
 						(ego illegalBits: cWHITE view: 2)
 					)
-					(2048
+					(cLCYAN
 						(ego illegalBits: -31744 view: 5)
 					)
-					(512
+					(cLBLUE
 						(ego illegalBits: -31744 view: 6)
 					)
-					(8
+					(cCYAN
 						(ego illegalBits: -31744 view: 7)
 					)
-					(2 (self changeState: 1))
+					(cBLUE
+						(self changeState: 1)
+					)
 				)
 			)
 			((== currentStatus egoIsFrog)
 				(if (== (ego mover?) 0) (ego cel: 0))
 				(switch swampDepth
-					(1
-						(ego illegalBits: -16384 view: 372)
+					(cBLACK
+						(ego illegalBits: (| cWHITE cYELLOW) view: 372)
 					)
-					(2048
+					(cLCYAN
 						(ego illegalBits: cWHITE view: 377)
 					)
-					(512
+					(cLBLUE
 						(ego illegalBits: cWHITE view: 377)
 					)
-					(8
+					(cCYAN
 						(ego view: 377 illegalBits: cWHITE)
 					)
-					(2 (self changeState: 10))
+					(cBLUE
+						(self changeState: 10)
+					)
 					(1024
 						(ego illegalBits: cWHITE view: 372)
 					)
@@ -187,7 +221,7 @@
 					illegalBits: 1
 					view: 73
 					cel: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cycleSpeed: 2
 					setCycle: EndLoop self
 				)
@@ -198,7 +232,9 @@
 				(Print 513 20)
 				(Timer setReal: self 5)
 			)
-			(3 (= dead TRUE))
+			(3
+				(= dead TRUE)
+			)
 			(10
 				(HandsOff)
 				(= currentStatus egoNormal)
@@ -231,7 +267,9 @@
 				(swampThing dispose:)
 				(Timer setReal: self 5)
 			)
-			(15 (= dead TRUE))
+			(15
+				(= dead TRUE)
+			)
 			(20
 				(HandsOff)
 				(sounds eachElementDo: #stop 0)
@@ -284,29 +322,32 @@
 				(ego view: 2 ignoreControl: 16384 setCycle: Walk)
 				(HandsOn)
 			)
-			(32 (poof dispose:))
+			(32
+				(poof dispose:)
+			)
 		)
 	)
 )
 
 (instance drinking of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= oldEgoViewer (ego viewer?))
+				(= saveViewer (ego viewer?))
 				(ego viewer: 0 view: 21 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(= timedMessage (Print 513 22 #at -1 10 #dispose))
+				(= underBits (Print 513 22 #at -1 10 #dispose))
 				(Timer setReal: self 4)
 			)
-			(2 (ego setCycle: BegLoop self))
+			(2
+				(ego setCycle: BegLoop self)
+			)
 			(3
 				(cls)
 				(ego view: 2 setCycle: Walk)
-				(ego viewer: oldEgoViewer script: oldEgoScript)
+				(ego viewer: saveViewer script: oldEgoScript)
 				(HandsOn)
 			)
 		)

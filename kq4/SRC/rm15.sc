@@ -147,7 +147,7 @@
 			init:
 			addToPic:
 		)
-		(if ((Inventory at: iSmallCrown) ownedBy: 200)
+		(if ((Inventory at: iCrown) ownedBy: 200)
 			(= aFrog (Actor new:))
 			(frogTheme play:)
 			(= frogPrinceState 0)
@@ -290,7 +290,7 @@
 							((Said '/crown')
 								(cond 
 									((== frogPrinceState frogHeldByEgo) (Print 15 17))
-									((ego has: iSmallCrown) ((Inventory at: iSmallCrown) showSelf:))
+									((ego has: iCrown) ((Inventory at: iCrown) showSelf:))
 									(else (Print 800 1))
 								)
 							)
@@ -361,7 +361,7 @@
 						(if (ego has: 5)
 							(cond 
 								((== frogPrinceState frogInit)
-									(if ((Inventory at: iSmallCrown) ownedBy: 200)
+									(if ((Inventory at: iCrown) ownedBy: 200)
 										(if
 											(and
 												(& (= local2 (IsObjectOnControl ego 15)) $0200)
@@ -430,10 +430,10 @@
 					)
 					((Said 'get,rob/crown')
 						(cond 
-							((ego has: iSmallCrown) (Print 800 0))
+							((ego has: iCrown) (Print 800 0))
 							((== frogPrinceState frogHeldByEgo)
 								(Print 15 46)
-								((Inventory at: iSmallCrown) moveTo: ego)
+								((Inventory at: iCrown) moveTo: ego)
 								(= gotItem TRUE)
 								(ego
 									view: 2
@@ -634,7 +634,7 @@
 				(Print 15 50 #at -1 10)
 				(aFrog cycleSpeed: 1 setAvoider: (Avoider new:))
 				(Print 15 51)
-				((Inventory at: iSmallCrown) moveTo: ego)
+				((Inventory at: iCrown) moveTo: ego)
 				(= gotItem TRUE)
 				(theGame changeScore: 2)
 				(if (< (aFrog x?) (ego x?))
@@ -786,7 +786,7 @@
 			)
 			(1
 				(= seconds 5)
-				(= timedMessage (Print 15 52 #at -1 10 #dispose))
+				(= underBits (Print 15 52 #at -1 10 #dispose))
 			)
 			(2 (ego setCycle: BegLoop self))
 			(3

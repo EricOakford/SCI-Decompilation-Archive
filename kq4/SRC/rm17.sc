@@ -59,7 +59,7 @@
 		(self setRegions: FOREST)
 		(super init:)
 		(if isNightTime (curRoom overlay: 117))
-		(if (and isNightTime (not (ego has: iObsidianScarab)))
+		(if (and isNightTime (not (ego has: iScarab)))
 			(Load VIEW 270)
 			(Load VIEW 36)
 			(Load VIEW 35)
@@ -226,7 +226,7 @@
 			)
 			(5
 				(aZombie hide:)
-				(= timedMessage (Print 17 16 #at -1 20 #dispose))
+				(= underBits (Print 17 16 #at -1 20 #dispose))
 				(ego
 					view: 45
 					x: 160

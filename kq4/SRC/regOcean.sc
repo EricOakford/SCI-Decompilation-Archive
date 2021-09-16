@@ -16,7 +16,7 @@
 
 (instance regOcean of Region
 	(properties
-	;	name "Ocean Region"
+		name "Ocean Region"
 	)
 	
 	(method (handleEvent event)
@@ -35,27 +35,58 @@
 					)
 					((Said 'look/fish')
 						(cond 
-							((ego has: iDeadFish) ((Inventory at: iDeadFish) showSelf:))
-							((not isNightTime) (Print 519 1))
-							(else (Print 519 2))
+							((ego has: iFish)
+								((Inventory at: iFish) showSelf:)
+							)
+							((not isNightTime)
+								(Print 519 1)
+							)
+							(else
+								(Print 519 2)
+							)
 						)
 					)
-					((Said 'converse/fish') (if (not isNightTime) (Print 519 3) else (Print 519 4)))
-					((Said 'eat,kill,kiss/fish') (if (not isNightTime) (Print 519 5) else (Print 519 4)))
-					(
-					(or (Said 'get,capture/fish') (Said 'fish[/!*]')) (Print 519 6))
-					((Said 'look/ocean,water') (Print 519 7))
-					((Said 'look/sky') (if (not isNightTime) (Print 519 8) else (Print 519 9)))
-					((Said 'bathe[/!*]') (Print 519 10))
+					((Said 'converse/fish')
+						(if (not isNightTime)
+							(Print 519 3)
+						else
+							(Print 519 4)
+						)
+					)
+					((Said 'eat,kill,kiss/fish')
+						(if (not isNightTime)
+							(Print 519 5)
+						else
+							(Print 519 4)
+						)
+					)
+					((or (Said 'get,capture/fish') (Said 'fish[/noword]'))
+						(Print 519 6)
+					)
+					((Said 'look/ocean,water')
+						(Print 519 7)
+					)
+					((Said 'look/sky')
+						(if (not isNightTime)
+							(Print 519 8)
+						else
+							(Print 519 9)
+						)
+					)
+					((Said 'bathe[/noword]')
+						(Print 519 10)
+					)
 					(
 						(or
 							(Said 'dive/ocean,water')
-							(Said 'dive[/!*]')
+							(Said 'dive[/noword]')
 							(Said 'bathe<under/ocean,water')
 						)
 						(Print 519 11)
 					)
-					((or (Said 'get/drink') (Said 'drink')) (Print 519 12))
+					((or (Said 'get/drink') (Said 'drink'))
+						(Print 519 12)
+					)
 				)
 			else
 				FALSE

@@ -22,18 +22,14 @@
 (local
 	panView
 	local1
-	local2
+	panAttention
 	playLuteNotes
 	musicNotes
-	local5
+	meetTime
 )
-(instance panCage of Cage
-	(properties)
-)
+(instance panCage of Cage)
 
-(instance panTheme of Sound
-	(properties)
-)
+(instance panTheme of Sound)
 
 (instance luteMusic of Sound
 	(properties
@@ -42,21 +38,17 @@
 )
 
 (instance regPan of Region
-	(properties
-	;	name "Pan's Region"
-	)
-	
 	(method (init)
 		(super init:)
-		(if ((Inventory at: iSilverFlute) ownedBy: 201)
+		(if ((Inventory at: iFlute) ownedBy: 201)
 			(= panView 157)
-			(= local5
+			(= meetTime
 				(+
 					(* (- gameHours hourLastMetPan) 60)
 					(- gameMinutes minutesLastMetPan)
 				)
 			)
-			(if (and (<= (Random 1 100) 40) (>= local5 2))
+			(if (and (<= (Random 1 100) 40) (>= meetTime 2))
 				(panCage
 					left: 0
 					right: 319
@@ -102,8 +94,7 @@
 	(method (doit)
 		(super doit:)
 		(if (cast contains: pan)
-			(if
-			(or (== (pan view?) 158) (== (pan view?) 157))
+			(if (or (== (pan view?) 158) (== (pan view?) 157))
 				(musicNotes
 					setPri: (pan priority?)
 					x: (+ (pan x?) 8)
@@ -112,7 +103,9 @@
 			)
 			(if (not (pan inRect: 0 0 319 219))
 				(pan dispose:)
-				(if (IsObject musicNotes) (musicNotes dispose:))
+				(if (IsObject musicNotes)
+					(musicNotes dispose:)
+				)
 				(panTheme loop: 1 changeState:)
 			)
 		)
@@ -123,11 +116,10 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (cast contains: pan))
+			(if (and (== (event type?) saidEvent) (cast contains: pan))
 				(cond 
 					((Said 'play/lute')
 						(if (ego has: iLute)
@@ -142,7 +134,7 @@
 						)
 					)
 					((Said 'play/flute')
-						(if (ego has: iSilverFlute)
+						(if (ego has: iFlute)
 							(if (== (panTheme state?) 3)
 								(Print 514 1)
 							else
@@ -152,19 +144,31 @@
 							(Print 800 2)
 						)
 					)
-					((Said 'hum') (Print 514 2))
-					((Said 'kill/pan') (Print 514 3))
-					((Said 'play<with/pan') (Print 514 4))
-					((Said 'dance') (Print 514 5))
-					((Said 'get/pan') (Print 514 6))
-					((Said 'capture/pan') (Print 514 7))
+					((Said 'hum')
+						(Print 514 2)
+					)
+					((Said 'kill/pan')
+						(Print 514 3)
+					)
+					((Said 'play<with/pan')
+						(Print 514 4)
+					)
+					((Said 'dance')
+						(Print 514 5)
+					)
+					((Said 'get/pan')
+						(Print 514 6)
+					)
+					((Said 'capture/pan')
+						(Print 514 7)
+					)
 					((Said 'deliver/lute')
 						(if (ego has: iLute)
-							(if local2
+							(if panAttention
 								(if (< (ego distanceTo: pan) 22)
 									((Inventory at: iLute) moveTo: 201)
 									(Print 514 8)
-									((Inventory at: iSilverFlute) moveTo: ego)
+									((Inventory at: iFlute) moveTo: ego)
 									(theGame changeScore: 3)
 									(ego setMotion: 0)
 									(pan view: 158 setMotion: Wander 3000)
@@ -182,8 +186,8 @@
 						)
 					)
 					((Said 'deliver>')
-						(if (= inventorySaidMe (inventory saidMe:))
-							(if (ego has: (inventory indexOf: inventorySaidMe))
+						(if (= index (inventory saidMe:))
+							(if (ego has: (inventory indexOf: index))
 								(Print 514 10)
 							else
 								(DontHave)
@@ -193,27 +197,49 @@
 							(event claimed: TRUE)
 						)
 					)
-					((Said 'kiss') (Print 514 12))
+					((Said 'kiss')
+						(Print 514 12)
+					)
 					((== (pan view?) 157)
 						(cond 
-							((Said 'look/pan') (Print 514 13))
-							((Said 'converse[/pan]') (Print 514 14))
-							((Said 'get/flute') (Print 514 15))
-							((Said 'rob/flute') (Print 514 16))
+							((Said 'look/pan')
+								(Print 514 13)
+							)
+							((Said 'converse[/pan]')
+								(Print 514 14)
+							)
+							((Said 'get/flute')
+								(Print 514 15)
+							)
+							((Said 'rob/flute')
+								(Print 514 16)
+							)
 						)
 					)
 					((== (pan view?) 158)
 						(cond 
-							((Said 'get,rob/lute') (Print 514 17))
-							((Said 'look/pan') (Print 514 18))
-							((Said 'converse[/pan]') (Print 514 19))
+							((Said 'get,rob/lute')
+								(Print 514 17)
+							)
+							((Said 'look/pan')
+								(Print 514 18)
+							)
+							((Said 'converse[/pan]')
+								(Print 514 19)
+							)
 						)
 					)
 					((== (pan view?) 150)
 						(cond 
-							((Said 'converse[/pan]') (Print 514 20))
-							((Said 'look/pan') (Print 514 21))
-							((Said 'get/flute') (Print 514 15))
+							((Said 'converse[/pan]')
+								(Print 514 20)
+							)
+							((Said 'look/pan')
+								(Print 514 21)
+							)
+							((Said 'get/flute')
+								(Print 514 15)
+							)
 						)
 					)
 				)
@@ -225,8 +251,6 @@
 )
 
 (instance playLute of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -254,9 +278,11 @@
 			(2
 				(Print 514 21 #at -1 10 #draw)
 				(ego view: 2 setLoop: -1 setCycle: Walk)
-				(if (IsObject playLuteNotes) (playLuteNotes dispose:))
+				(if (IsObject playLuteNotes)
+					(playLuteNotes dispose:)
+				)
 				(Face ego pan)
-				(= local2 1)
+				(= panAttention TRUE)
 				(HandsOn)
 			)
 		)
@@ -264,12 +290,14 @@
 )
 
 (instance panActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 25))
-			(1 (pan ignoreBlocks: panCage))
+			(0
+				(= seconds 25)
+			)
+			(1
+				(pan ignoreBlocks: panCage)
+			)
 		)
 	)
 )

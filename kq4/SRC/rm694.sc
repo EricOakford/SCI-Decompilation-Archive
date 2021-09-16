@@ -37,7 +37,6 @@
 )
 
 (instance actions of Script
-
 	(method (changeState newState &tmp [buf 12])
 		(switch (= state newState)
 			(0
@@ -85,7 +84,7 @@
 					init:
 					addToPic:
 				)
-				(= timedMessage (Print 694 0 #at -1 117 #dispose))
+				(= underBits (Print 694 0 #at -1 117 #dispose))
 				(= grahamFace (Prop new:))
 				(grahamFace
 					view: 752
@@ -141,7 +140,7 @@
 				(= seconds 3)
 			)
 			(7
-				(= timedMessage
+				(= underBits
 					(Print 694 1 #at -1 25 #width 240 #dispose)
 				)
 				(= seconds 2)
@@ -168,7 +167,10 @@
 					(self changeState: 10)
 				)
 			)
-			(10 (= dead TRUE) (cls))
+			(10
+				(= dead TRUE)
+				(cls)
+			)
 			(100
 				(= rosellaBody (Actor new:))
 				(= rosella (Actor new:))
@@ -195,7 +197,7 @@
 			(101
 				(rosella cel: 4)
 				(ego put: 25 999)
-				(= timedMessage
+				(= underBits
 					(Print 694 2 #at -1 35 #width 240 #dispose)
 				)
 				(= seconds 8)
@@ -357,7 +359,7 @@
 				(= seconds 4)
 			)
 			(105
-				(= timedMessage
+				(= underBits
 					(Print 694 3
 						#at -1 20
 						#width 240
@@ -369,7 +371,7 @@
 			)
 			(106
 				(cls)
-				(= timedMessage
+				(= underBits
 					(Print 694 4
 						#at -1 20
 						#width 240
@@ -381,7 +383,7 @@
 			)
 			(107
 				(cls)
-				(= timedMessage
+				(= underBits
 					(Print 694 5
 						#at -1 20
 						#width 240
@@ -404,7 +406,7 @@
 					setPri: 14
 					init:
 				)
-				(= timedMessage
+				(= underBits
 					(Print 694 6
 						#at -1 138
 						#width 240
@@ -566,7 +568,9 @@
 				(= gameHours 0)
 				(= seconds 10)
 			)
-			(112 (cls))
+			(112
+				(cls)
+			)
 			(500
 				((View new:)
 					view: 786
@@ -672,10 +676,8 @@
 			;since the promotion it was for had since ended. However, it's still present here.
 			(600
 				(StrAt @buf 10)
-				(= i 0)
-				(while (<= i 9)
+				(for ((= i 0)) (<= i 9) ((++ i))
 					(StrAt @buf i (+ (Random 0 25) 65))
-					(++ i)
 				)
 				(StrAt @buf 10 0)
 				(if (== score 230)

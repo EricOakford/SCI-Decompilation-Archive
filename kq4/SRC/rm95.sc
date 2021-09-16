@@ -234,8 +234,8 @@
 					((Said 'look>')
 						(cond 
 							((Said '/fish')
-								(if (ego has: iDeadFish)
-									((Inventory at: iDeadFish) showSelf:)
+								(if (ego has: iFish)
+									((Inventory at: iFish) showSelf:)
 								else
 									(Print 95 4)
 								)
@@ -603,7 +603,7 @@
 				)
 				(= currentStatus egoNormal)
 				(HandsOn)
-				((Inventory at: iDeadFish) moveTo: ego)
+				((Inventory at: iFish) moveTo: ego)
 				(theGame changeScore: 3)
 				((Inventory at: iWorm) moveTo: 777)
 				(curRoom setScript: 0)

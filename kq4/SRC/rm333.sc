@@ -33,15 +33,15 @@
 )
 
 (instance Room333 of Room
-	(properties)
-	
 	(method (init)
-		(User canControl: 0 canInput: 0)
+		(User canControl: FALSE canInput: FALSE)
 		(= picture prevRoomNum)
 		(ego edgeHit: 0)
 		(ego xStep: 4 init:)
 		(super init:)
-		(if isNightTime (curRoom overlay: (+ picture 100)))
+		(if isNightTime
+			(curRoom overlay: (+ picture 100))
+		)
 		(Load PICTURE 30)
 		(Load PICTURE 29)
 		(Load PICTURE 28)
@@ -64,8 +64,6 @@
 )
 
 (instance from20 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -115,8 +113,6 @@
 )
 
 (instance from26 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -165,8 +161,6 @@
 )
 
 (instance from27 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -205,8 +199,6 @@
 )
 
 (instance from28 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -248,14 +240,12 @@
 )
 
 (instance in79 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(= h1 (Actor new:))
 				(h1Actions changeState: 1)
-				(= timedMessage (Print 333 0 #at -1 10 #dispose))
+				(= underBits (Print 333 0 #at -1 10 #dispose))
 			)
 			(2
 				(= unicorn (Actor new:))
@@ -314,8 +304,6 @@
 )
 
 (instance h1Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -364,8 +352,6 @@
 )
 
 (instance h2Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -418,8 +404,6 @@
 )
 
 (instance h3Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -464,8 +448,6 @@
 )
 
 (instance turnUnicorn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

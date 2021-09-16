@@ -8,19 +8,19 @@
 
 ;Inventory items
 (enum
-	iSilverFlute		;0
+	iFlute				;0
 	iDiamondPouch		;1
 	iTalisman			;2
 	iLantern			;3
 	iPandorasBox		;4
 	iGoldBall			;5
-	iWitchGlassEye		;6
-	iObsidianScarab		;7
-	iPeacockFeather		;8
+	iGlassEye			;6
+	iScarab				;7
+	iFeather			;8
 	iLute				;9
-	iSmallCrown			;10
+	iCrown				;10
 	iFrog				;11
-	iSilverBabyRattle	;12
+	iRattle				;12
 	iGoldCoins			;13
 	iCupidBow			;14
 	iShovel				;15
@@ -32,20 +32,27 @@
 	iGoldenBridle		;21
 	iBoard				;22
 	iBone				;23
-	iDeadFish			;24
+	iFish				;24
 	iMagicFruit			;25
 	iSheetMusic			;26
-	iSilverWhistle		;27
+	iWhistle			;27
 	iLocket				;28
 	iMedal				;29
 	iToyHorse			;30
-	iGlassBottle		;31
+	iBottle				;31
 	iGoldKey			;32
 	iMagicHen			;33
 	iRose				;34
 	iNote				;35
 )
 
+; howFast values
+(enum
+	slow
+	medium
+	fast
+	fastest
+)
 
 ;ego states
 (enum

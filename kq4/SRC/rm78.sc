@@ -59,7 +59,7 @@
 		(Load VIEW 330)
 		(Load VIEW 69)
 		(Load VIEW 59)
-		(if (ego has: iSilverFlute)
+		(if (ego has: iFlute)
 			(Load VIEW 888)
 			(Load VIEW 55)
 			(Load SOUND 55)

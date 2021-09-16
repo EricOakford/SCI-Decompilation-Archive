@@ -16,7 +16,7 @@
 
 (local
 	soundIsOn
-	openMusicSignal
+	saveSignal
 	[local2 3]
 	tear
 	theTalker
@@ -30,28 +30,20 @@
 	genesta
 	[local20 4]
 	poof
-	roomDialog
+	saveBits
 	[local26 2]
 	ripple1
 	ripple2
-	wave
+	waveIndex
 	[local31 50]
 )
-(instance openMusic of Sound
-	(properties)
-)
+(instance openMusic of Sound)
 
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
 (instance Room222 of Room
 	(properties
@@ -93,18 +85,18 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(TheMenuBar draw:)
 		(cls)
-		(if (IsObject waves) (waves dispose:))
+		(if (IsObject waves)
+			(waves dispose:)
+		)
 		(= userFont bigFont)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance RoomActions of Script
-	(properties)
-	
 	(method (doit &tmp [openMusicStr 40])
 		(super doit:)
 		(if debugging
@@ -112,7 +104,7 @@
 				(Format @openMusicStr 222 0
 					state
 					(openMusic prevSignal?)
-					openMusicSignal
+					saveSignal
 				)
 				p_at 0 0
 				p_back vWHITE
@@ -200,7 +192,9 @@
 			)
 			(3
 				(fairy1 observeBlocks: fairyBlock)
-				(if howFast (fairy2 observeBlocks: fairyBlock))
+				(if howFast
+					(fairy2 observeBlocks: fairyBlock)
+				)
 				(rosella dispose:)
 				(= rosella
 					((Prop new:)
@@ -214,8 +208,10 @@
 				)
 				(genesta setLoop: 3 cel: 0 stopUpd:)
 				(fairy1 setMotion: Wander)
-				(if howFast (fairy2 setMotion: Wander))
-				(= roomDialog
+				(if howFast
+					(fairy2 setMotion: Wander)
+				)
+				(= saveBits
 					(Print 222 1
 						#title {Genesta}
 						#at 100 151
@@ -235,7 +231,9 @@
 					(waveActions changeState: 10)
 				)
 				(fairy1 dispose:)
-				(if howFast (fairy2 dispose:))
+				(if howFast
+					(fairy2 dispose:)
+				)
 				(setupRoom209 doit:)
 				(= rosella
 					((Actor new:)
@@ -264,7 +262,7 @@
 			)
 			(5
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 2 #at 50 151 #width 200 #draw #dispose)
 				)
 				(Timer setReal: self 9)
@@ -272,7 +270,7 @@
 			(6
 				(cls)
 				(rosella cycleSpeed: 2 setCycle: Forward show:)
-				(= roomDialog
+				(= saveBits
 					(Print 222 3
 						#title {Rosella}
 						#at 1 151
@@ -310,7 +308,7 @@
 					)
 				)
 				(blinkEyes changeState: 0)
-				(= roomDialog
+				(= saveBits
 					(Print 222 4
 						#title {Genesta}
 						#at 60 130
@@ -322,7 +320,7 @@
 			)
 			(8
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 5
 						#title {Genesta}
 						#at 70 130
@@ -370,7 +368,7 @@
 			)
 			(11
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 6
 						#title {Genesta}
 						#at 100 130
@@ -382,7 +380,7 @@
 			)
 			(12
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 7
 						#title {Genesta}
 						#at 100 130
@@ -396,7 +394,7 @@
 				(cls)
 				(genesta setCel: 0 stopUpd:)
 				(rosella setCycle: Forward)
-				(= roomDialog
+				(= saveBits
 					(Print 222 8
 						#title {Rosella}
 						#at 1 130
@@ -410,7 +408,7 @@
 				(cls)
 				(rosella setCel: 0 stopUpd:)
 				(genesta setCycle: Forward)
-				(= roomDialog
+				(= saveBits
 					(Print 222 9
 						#title {Genesta}
 						#at 100 130
@@ -449,7 +447,7 @@
 				)
 				(rosellaBlinks changeState: 0)
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 10
 						#title {Rosella}
 						#at 1 130
@@ -462,7 +460,7 @@
 			(16
 				(cls)
 				(theTalker hide:)
-				(= roomDialog
+				(= saveBits
 					(Print 222 11
 						#title {Genesta}
 						#at 100 130
@@ -475,7 +473,7 @@
 			(17
 				(cls)
 				(theTalker show:)
-				(= roomDialog
+				(= saveBits
 					(Print 222 12
 						#title {Rosella}
 						#at 1 130
@@ -553,7 +551,7 @@
 			)
 			(19
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 13
 						#title {Genesta}
 						#at 100 151
@@ -569,7 +567,7 @@
 			)
 			(21
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 14
 						#title {Genesta}
 						#at 80 151
@@ -582,7 +580,7 @@
 			)
 			(22
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 15
 						#title {Genesta}
 						#at 80 151
@@ -619,7 +617,7 @@
 			(26
 				(poof dispose:)
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 16
 						#title {Rosella}
 						#at 1 151
@@ -633,7 +631,7 @@
 			)
 			(27
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 17
 						#title {Genesta}
 						#at 80 151
@@ -657,7 +655,7 @@
 				)
 				(fairy1 setMotion: MoveTo -30 (+ (curRoom horizon?) 1))
 				(cls)
-				(= roomDialog
+				(= saveBits
 					(Print 222 18 #title {Genesta} #at 200 151 #dispose)
 				)
 				(Timer setReal: self 7)
@@ -668,14 +666,14 @@
 			)
 			(30
 				(cls)
-				(= roomDialog (Print 222 19 #at -1 151 #dispose))
+				(= saveBits (Print 222 19 #at -1 151 #dispose))
 				(Timer setReal: self 4)
 			)
 			(31
 				(if
 					(or
 						(and
-							(== openMusicSignal 127)
+							(== saveSignal 127)
 							(== (openMusic prevSignal?) 93)
 						)
 						(== (openMusic signal?) -1)
@@ -700,32 +698,24 @@
 )
 
 (instance stopRosella of Code
-	(properties)
-	
 	(method (doit)
 		(rosella stopUpd:)
 	)
 )
 
 (instance hideRosella of Code
-	(properties)
-	
 	(method (doit)
 		(rosella hide:)
 	)
 )
 
 (instance gotHere of Code
-	(properties)
-	
 	(method (doit)
 		(Print 222 20)
 	)
 )
 
 (instance blinkEyes of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -752,7 +742,9 @@
 			(2
 				(talkerEyes show: setCycle: EndLoop self)
 			)
-			(3 (self changeState: 1))
+			(3
+				(self changeState: 1)
+			)
 			(4
 				(if timer (timer dispose:))
 				(talkerEyes show:)
@@ -777,14 +769,14 @@
 				(tear dispose:)
 				(self changeState: 1)
 			)
-			(7 (talkerEyes dispose:))
+			(7
+				(talkerEyes dispose:)
+			)
 		)
 	)
 )
 
 (instance rosellaBlinks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -810,15 +802,19 @@
 			(2
 				(talkerEyes show: setCycle: EndLoop self)
 			)
-			(3 (self changeState: 1))
-			(4 (if timer (timer dispose:)))
+			(3
+				(self changeState: 1)
+			)
+			(4
+				(if timer
+					(timer dispose:)
+				)
+			)
 		)
 	)
 )
 
 (instance setupRoom209 of Code
-	(properties)
-	
 	(method (doit)
 		(curRoom drawPic: 209)
 		((View new:)
@@ -847,8 +843,6 @@
 )
 
 (instance setupRoom25 of Code
-	(properties)
-	
 	(method (doit)
 		(curRoom drawPic: 25)
 		(if howFast
@@ -913,39 +907,35 @@
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= wave 0)
-				(while (< wave (waves size?))
+				(for ((= waveIndex 0)) (< waveIndex (waves size?)) ((++ waveIndex))
 					((View new:)
-						view: ((waves at: wave) view?)
-						loop: ((waves at: wave) loop?)
+						view: ((waves at: waveIndex) view?)
+						loop: ((waves at: waveIndex) loop?)
 						cel: 0
 						setPri: 0
 						ignoreActors:
-						x: ((waves at: wave) x?)
-						y: ((waves at: wave) y?)
+						x: ((waves at: waveIndex) x?)
+						y: ((waves at: waveIndex) y?)
 						init:
 						addToPic:
 						yourself:
 					)
-					(++ wave)
 				)
-				(= wave 0)
+				(= waveIndex 0)
 				(self changeState: 1)
 			)
 			(1
-				((waves at: wave) cel: 0 show: setCycle: EndLoop self)
+				((waves at: waveIndex) cel: 0 show: setCycle: EndLoop self)
 			)
 			(2
-				((waves at: wave) hide:)
-				(if (< wave (- (waves size?) 1))
-					(++ wave)
+				((waves at: waveIndex) hide:)
+				(if (< waveIndex (- (waves size?) 1))
+					(++ waveIndex)
 				else
-					(= wave 0)
+					(= waveIndex 0)
 				)
 				(waveActions changeState: 1)
 			)
@@ -958,11 +948,9 @@
 )
 
 (instance highState of Script
-	(properties)
-	
 	(method (cue)
-		(if (> (openMusic signal?) openMusicSignal)
-			(= openMusicSignal (openMusic signal?))
+		(if (> (openMusic signal?) saveSignal)
+			(= saveSignal (openMusic signal?))
 		)
 	)
 )

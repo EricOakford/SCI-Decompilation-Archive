@@ -372,7 +372,7 @@
 			)
 			(3
 				(coffinLid ignoreActors: 0 stopUpd:)
-				(if (ego has: iObsidianScarab)
+				(if (ego has: iScarab)
 					(Print 69 33 #at -1 10 #time 4)
 					(self changeState: 5)
 				else

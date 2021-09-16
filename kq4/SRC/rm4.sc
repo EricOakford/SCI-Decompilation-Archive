@@ -24,30 +24,22 @@
 )
 
 (local
-	local0
+	ogreTimer
 	aOgress
-	local2
+	ogreIsHere
 	ogressState
-	local4
+	angOgressToEgo
 	newActHeading
 	aDeer
 	local7
 )
-(instance doorSound of Sound
-	(properties)
-)
+(instance doorSound of Sound)
 
-(instance ogressTheme of Sound
-	(properties)
-)
+(instance ogressTheme of Sound)
 
-(instance ogreTheme of Sound
-	(properties)
-)
+(instance ogreTheme of Sound)
 
 (instance door of Prop
-	(properties)
-	
 	(method (cue)
 		(if (!= (door cel?) (door lastCel:))
 			(self setCycle: EndLoop self)
@@ -69,11 +61,13 @@
 		(= east 5)
 		(= west 3)
 		(= horizon 75)
-		(= noWearCrown 1)
+		(= noWearCrown TRUE)
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 104))
+		(if isNightTime
+			(curRoom overlay: 104)
+		)
 		(self setRegions: FOREST OGRE)
 		(if (and (== gamePhase getTheHen) (== ogressIsHome FALSE))
 			(Load VIEW 245)
@@ -106,19 +100,28 @@
 			(ego y: (+ horizon (ego yStep?)))
 		)
 		(switch prevRoomNum
-			(0 (ego posn: 128 166))
+			(0
+				(ego posn: 128 166)
+			)
 			(28
 				(ego posn: 48 (+ horizon (ego yStep?) 1))
 			)
-			(3 (ego posn: 2 (ego y?)))
-			(5 (ego posn: 317 (ego y?)))
-			(10 (ego posn: (ego x?) 187))
-			(49 (ego loop: 2 posn: 173 152))
+			(3
+				(ego posn: 2 (ego y?))
+			)
+			(5
+				(ego posn: 317 (ego y?))
+			)
+			(10
+				(ego posn: (ego x?) 187)
+			)
+			(49
+				(ego loop: 2 posn: 173 152)
+			)
 		)
 		(ego view: 2 init:)
 		(ego setStep: 3 2)
-		(if
-		(and (== prevRoomNum 10) ogre (!= global179 TRUE))
+		(if (and (== prevRoomNum 10) ogre (!= global179 TRUE))
 			(= ogre (Actor new:))
 			(ogre
 				posn: 110 (+ 189 (- ogreY 75) 80)
@@ -168,7 +171,9 @@
 				ignoreActors:
 				init:
 			)
-			(if (< (Random 1 100) 50) (ogre posn: 110 239))
+			(if (< (Random 1 100) 50)
+				(ogre posn: 110 239)
+			)
 			(ogreTheme number: 5 loop: -1 play:)
 			(curRoom setScript: ogreActions)
 		)
@@ -176,13 +181,14 @@
 			(curRoom setScript: ogreActions)
 			(ogreActions changeState: 200)
 		)
-		(if (== (door cel?) 0) (ego observeControl: 16384))
+		(if (== (door cel?) 0)
+			(ego observeControl: cYELLOW)
+		)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (& (ego onControl: 0) $4000) (!= (door cel?) 0))
+		(if (and (& (ego onControl: 0) cYELLOW) (!= (door cel?) 0))
 			(curRoom newRoom: 49)
 		)
 		(if (cast contains: ego)
@@ -201,8 +207,12 @@
 		)
 		(if (cast contains: aOgress)
 			(cond 
-				((aOgress inRect: 143 0 369 136) (aOgress setPri: 1))
-				((< (ogressActions state?) 200) (aOgress setPri: -1))
+				((aOgress inRect: 143 0 369 136)
+					(aOgress setPri: 1)
+				)
+				((< (ogressActions state?) 200)
+					(aOgress setPri: -1)
+				)
 			)
 		)
 		(if (== ogressState ogressAppears)
@@ -226,17 +236,17 @@
 				(not (ego inRect: 134 0 369 137))
 				(not (aOgress inRect: 104 149 369 185))
 			)
-			(= local4
+			(= angOgressToEgo
 				(GetAngle (aOgress x?) (aOgress y?) (ego x?) (ego y?))
 			)
 			(if
 				(and
 					(< (= newActHeading (aOgress heading?)) 15)
-					(> local4 345)
+					(> angOgressToEgo 345)
 				)
-				(= newActHeading (+ newActHeading 360))
+				(+= newActHeading 360)
 			)
-			(if (< (Abs (- local4 newActHeading)) 15)
+			(if (< (Abs (- angOgressToEgo newActHeading)) 15)
 				(= ogressState ogressChases)
 				(Print 4 0)
 				(ogressActions changeState: 10)
@@ -245,7 +255,7 @@
 	)
 	
 	(method (dispose)
-		(= noWearCrown 0)
+		(= noWearCrown FALSE)
 		(ego setPri: -1)
 		(super dispose:)
 	)
@@ -257,10 +267,20 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '/cottage') (Print 4 1))
-							((Said '/door') (Print 4 2))
-							((Said '/bucket') (Print 4 3))
-							((Said '/buck') (if (cast contains: aOgress) (Print 4 4)))
+							((Said '/cottage')
+								(Print 4 1)
+							)
+							((Said '/door')
+								(Print 4 2)
+							)
+							((Said '/bucket')
+								(Print 4 3)
+							)
+							((Said '/buck')
+								(if (cast contains: aOgress)
+									(Print 4 4)
+								)
+							)
 							((Said '/window')
 								(if (ego inRect: 266 140 304 155)
 									(Print 4 5)
@@ -278,11 +298,12 @@
 									(Print 4 8)
 								)
 							)
-							((Said '[<around][/room]') (Print 4 9))
+							((Said '[<around][/room]')
+								(Print 4 9)
+							)
 						)
 					)
-					(
-					(and (cast contains: aOgress) (Said 'converse'))
+					((and (cast contains: aOgress) (Said 'converse'))
 						(if (and (== (aOgress view?) 246) (!= ogressState 3))
 							(if (not (ego inRect: 143 0 319 136))
 								(Print 4 10)
@@ -297,18 +318,29 @@
 					)
 					((Said 'get,capture/buck')
 						(cond 
-							((cast contains: aOgress) (Print 4 13))
-							((cast contains: aDeer) (Print 4 14))
-							(else (Print 4 15))
+							((cast contains: aOgress)
+								(Print 4 13)
+							)
+							((cast contains: aDeer)
+								(Print 4 14)
+							)
+							(else
+								(Print 4 15)
+							)
 						)
 					)
-					((Said 'get,capture/giantess') (Print 4 16))
+					((Said 'get,capture/giantess')
+						(Print 4 16)
+					)
 					((Said 'open/door')
 						(if (ego inRect: 163 144 199 155)
 							(cond 
-								(
-								(or (cast contains: aOgress) (cast contains: ogre)) (Print 4 17))
-								((!= gamePhase 2) (Print 4 18))
+								((or (cast contains: aOgress) (cast contains: ogre))
+									(Print 4 17)
+								)
+								((!= gamePhase 2)
+									(Print 4 18)
+								)
 								(else
 									(ego loop: 3)
 									(HandsOff)
@@ -324,48 +356,70 @@
 					((Said 'bang')
 						(if (< (ego distanceTo: door) 10)
 							(cond 
-								((cast contains: ogre) (Print 4 19))
-								((!= gamePhase getTheHen) (Print 4 20))
+								((cast contains: ogre)
+									(Print 4 19)
+								)
+								((!= gamePhase getTheHen)
+									(Print 4 20)
+								)
 								((not (cast contains: aOgress))
 									(Print 4 21)
 									(curRoom setScript: ogressActions)
 									(ogressActions changeState: 200)
 								)
-								(else (Print 4 22))
+								(else
+									(Print 4 22)
+								)
 							)
 						else
 							(Print 800 1)
 						)
 					)
-					((Said 'unlatch') (if (!= gamePhase getTheHen) (Print 4 18) else (Print 4 23)))
-					((Said 'break/window') (Print 4 24))
-					((Said 'break/door') (Print 4 25))
-					((Said 'open/window') (Print 4 26))
+					((Said 'unlatch')
+						(if (!= gamePhase getTheHen)
+							(Print 4 18)
+						else
+							(Print 4 23)
+						)
+					)
+					((Said 'break/window')
+						(Print 4 24)
+					)
+					((Said 'break/door')
+						(Print 4 25)
+					)
+					((Said 'open/window')
+						(Print 4 26)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(HandsOn)
 		(if (cast contains: ego)
 			(ego illegalBits: cWHITE)
 			(ego setPri: -1)
 		)
-		(if (!= newRoomNumber 49) (= ogreState 0))
+		(if (!= n 49)
+			(= ogreState 0)
+		)
 		(= noWearCrown 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance ogressActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (if aOgress (= seconds 3)))
+			(0
+				(if aOgress
+					(= seconds 3)
+				)
+			)
 			(1
 				(= ogressState ogressAppears)
 				(aOgress setLoop: 0)
@@ -373,7 +427,9 @@
 			(2
 				(aOgress setMotion: MoveTo 183 155 ogressActions)
 			)
-			(3 (door setCycle: EndLoop self))
+			(3
+				(door setCycle: EndLoop self)
+			)
 			(4
 				(= ogressState 3)
 				(aOgress
@@ -382,7 +438,9 @@
 					setMotion: MoveTo 187 144 self
 				)
 			)
-			(5 (door setCycle: BegLoop self))
+			(5
+				(door setCycle: BegLoop self)
+			)
 			(6
 				(= ogressState 0)
 				(ogressTheme client: 0 stop:)
@@ -424,8 +482,12 @@
 				(aOgress view: 57 setCycle: Forward)
 				(Print 4 27 #at -1 10 #draw)
 			)
-			(13 (= seconds 2))
-			(14 (= dead TRUE))
+			(13
+				(= seconds 2)
+			)
+			(14
+				(= dead TRUE)
+			)
 			(200
 				(door setCycle: EndLoop self)
 				(= aOgress (Actor new:))
@@ -440,22 +502,26 @@
 				)
 				(HandsOff)
 			)
-			(201 (= seconds 1))
-			(202 (self changeState: 11))
+			(201
+				(= seconds 1)
+			)
+			(202
+				(self changeState: 11)
+			)
 		)
 	)
 )
 
 (instance ogreActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (cast contains: ogre) (ogreActions changeState: 1))
+				(if (cast contains: ogre)
+					(ogreActions changeState: 1)
+				)
 			)
 			(1
-				(= local2 1)
+				(= ogreIsHere TRUE)
 				(if (ego inRect: 223 74 319 136)
 					(ogre setMotion: MoveTo 97 123 self)
 				else
@@ -482,18 +548,20 @@
 				(ogre setAvoider: 0 view: 79 setCycle: Walk self)
 				(Print 4 28 #at -1 10 #draw)
 				(cond 
-					((ogre inRect: -50 70 350 93) (ogre setMotion: MoveTo 37 87 self))
+					((ogre inRect: -50 70 350 93)
+						(ogre setMotion: MoveTo 37 87 self)
+					)
 					(
 						(or
 							(ogre inRect: -50 93 350 136)
 							(ogre inRect: 92 135 141 148)
 						)
 						(self changeState: 5)
-						(= local0 (Timer setReal: killOgre 15))
+						(= ogreTimer (Timer setReal: killOgre 15))
 					)
 					(else
 						(self changeState: 7)
-						(= local0 (Timer setReal: killOgre 15))
+						(= ogreTimer (Timer setReal: killOgre 15))
 					)
 				)
 			)
@@ -507,7 +575,9 @@
 				(ogre setMotion: MoveTo 182 164 self)
 			)
 			(8
-				(if (timers contains: local0) (local0 dispose: delete:))
+				(if (timers contains: ogreTimer)
+					(ogreTimer dispose: delete:)
+				)
 				(if (== (door cel?) 0)
 					(door setCycle: EndLoop self)
 				else
@@ -518,13 +588,19 @@
 				(door ignoreActors:)
 				(ogre setMotion: MoveTo 182 154 self)
 			)
-			(10 (= seconds 3))
+			(10
+				(= seconds 3)
+			)
 			(11
 				(sounds eachElementDo: #stop 0)
 				(= seconds 2)
 			)
-			(12 (= dead TRUE))
-			(200 (= seconds 5))
+			(12
+				(= dead TRUE)
+			)
+			(200
+				(= seconds 5)
+			)
 			(201
 				(= ogre (Actor new:))
 				(ogre
@@ -544,7 +620,7 @@
 				)
 			)
 			(202
-				(ogre observeControl: 16384)
+				(ogre observeControl: cYELLOW)
 				(self changeState: 1)
 			)
 		)
@@ -552,8 +628,6 @@
 )
 
 (instance killOgre of Script
-	(properties)
-	
 	(method (cue)
 		(= dead TRUE)
 	)

@@ -280,7 +280,7 @@
 			)
 			(3
 				(cond 
-					((ego has: iObsidianScarab) (self changeState: 4))
+					((ego has: iScarab) (self changeState: 4))
 					((== currentStatus egoNormal) (self changeState: 10))
 				)
 			)
@@ -320,7 +320,7 @@
 				(ego view: 46 cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(= timedMessage (Print 16 21 #at -1 20 #dispose))
+				(= underBits (Print 16 21 #at -1 20 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)
@@ -373,7 +373,7 @@
 			)
 			(3
 				(cond 
-					((ego has: iObsidianScarab) (self changeState: 4))
+					((ego has: iScarab) (self changeState: 4))
 					((== currentStatus egoNormal) (self changeState: 10))
 				)
 			)
@@ -418,7 +418,7 @@
 				(ego view: 46 cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(= timedMessage (Print 16 21 #at -1 20 #dispose))
+				(= underBits (Print 16 21 #at -1 20 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)
@@ -470,7 +470,7 @@
 			)
 			(3
 				(cond 
-					((ego has: iObsidianScarab) (self changeState: 4))
+					((ego has: iScarab) (self changeState: 4))
 					((== currentStatus egoNormal) (self changeState: 10))
 				)
 			)
@@ -515,7 +515,7 @@
 				(ego view: 46 cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(= timedMessage (Print 16 21 #at -1 20 #dispose))
+				(= underBits (Print 16 21 #at -1 20 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)
@@ -619,7 +619,7 @@
 						(and
 							(& (ego onControl: 0) cGREY)
 							(== mansionPhase mansionBABY)
-							((Inventory at: iSilverBabyRattle) ownedBy: 88)
+							((Inventory at: iRattle) ownedBy: 88)
 						)
 						(aHole setLoop: 1 cel: 1)
 						(Print 16 24 #at -1 20 #draw)

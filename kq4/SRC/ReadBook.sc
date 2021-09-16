@@ -7,7 +7,7 @@
 
 (public
 	readBook 0
-	;readBook 1	;decompiler goof?
+	;readBook 1	;decompiler goof
 	readNote 1	;was 2
 )
 
@@ -15,34 +15,84 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(Print 306 0 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 0
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(2
-				(Print 306 1 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 1
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(3
-				(Print 306 2 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 2
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(4
-				(Print 306 3 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 3
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(5
-				(Print 306 4 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 4
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(6
-				(Print 306 5 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 5
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(7
-				(Print 306 6 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 6
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(8
-				(Print 306 7 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 7
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(9
-				(Print 306 8 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 8
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(10
-				(Print 306 9 #font smallFont #mode teJustCenter #at -1 15 #width 290)
+				(Print 306 9
+					#font smallFont
+					#mode teJustCenter
+					#at -1 15
+					#width 290
+				)
 			)
 			(11
 				(Print 306 10

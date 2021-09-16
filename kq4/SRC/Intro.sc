@@ -24,13 +24,11 @@
 	son
 	hat
 	[local23 7]
-	introDialog
+	saveBits
 	kingCloseup
 	[local32 202]
 )
-(instance openMusic of Sound
-	(properties)
-)
+(instance openMusic of Sound)
 
 (instance intro of Room
 	(properties
@@ -83,15 +81,15 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (IsObject introDialog) (introDialog dispose:))
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(if (IsObject saveBits)
+			(saveBits dispose:)
+		)
+		(super newRoom: n)
 	)
 )
 
 (instance introSc of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(addToPics dispose:)
 		(switch (= state newState)
@@ -172,7 +170,13 @@
 				(Timer setReal: self 2)
 			)
 			(1
-				(= introDialog (Print 120 0 #at -1 10 #width 300 #dispose))
+				(= saveBits
+					(Print 120 0
+						#at -1 10
+						#width 300
+						#dispose
+					)
+				)
 				(Timer setReal: self 10)
 			)
 			(2
@@ -186,12 +190,20 @@
 				(king setMotion: MoveTo 130 140 self)
 			)
 			(5
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(king setMotion: MoveTo 134 131 self)
 			)
 			(6
 				(king setLoop: 0)
-				(= introDialog (Print 120 1 #width 300 #at -1 12 #dispose))
+				(= saveBits
+					(Print 120 1
+						#width 300
+						#at -1 12
+						#dispose
+					)
+				)
 				(= seconds 11)
 			)
 			(7
@@ -229,7 +241,9 @@
 				(= seconds 1)
 			)
 			(11
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(cast eachElementDo: #hide)
 				(curRoom drawPic: 202)
 				(hat
@@ -244,16 +258,31 @@
 					setCycle: Reverse
 					setMotion: MoveTo 275 120
 				)
-				(= introDialog (Print 120 2 #mode 1 #at -1 150 #dispose))
+				(= saveBits
+					(Print 120 2
+						#mode teJustCenter
+						#at -1 150
+						#dispose
+					)
+				)
 				(Timer setReal: self 3)
 			)
 			(12
-				(if modelessDialog (modelessDialog dispose:))
-				(= introDialog (Print 120 3 #at -1 150 #dispose))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
+				(= saveBits
+					(Print 120 3
+						#at -1 150
+						#dispose
+					)
+				)
 				(Timer setReal: self 3)
 			)
 			(13
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(hat hide:)
 				(= kingCloseup
 					((Actor new:)
@@ -267,11 +296,18 @@
 						yourself:
 					)
 				)
-				(= introDialog (Print 120 4 #at -1 140 #dispose))
+				(= saveBits
+					(Print 120 4
+						#at -1 140
+						#dispose
+					)
+				)
 				(Timer setReal: self 7)
 			)
 			(14
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(kingCloseup dispose:)
 				(curRoom drawPic: 201)
 				(king
@@ -328,23 +364,36 @@
 					posn: 300 144
 					stopUpd:
 				)
-				(= introDialog
-					(Print 120 5 #title {King Graham} #at 53 155 #dispose)
+				(= saveBits
+					(Print 120 5
+						#title {King Graham}
+						#at 53 155
+						#dispose
+					)
 				)
 			)
 			(15
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(Timer setReal: self 3)
 			)
 			(16
 				(cast eachElementDo: #hide)
 				(curRoom drawPic: 203)
 				(hat show: setCel: 0 setLoop: 2 posn: 180 99 stopUpd:)
-				(= introDialog (Print 120 6 #at -1 152 #dispose))
+				(= saveBits
+					(Print 120 6
+						#at -1 152
+						#dispose
+					)
+				)
 				(Timer setReal: self 5)
 			)
 			(17
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(hat dispose:)
 				(curRoom drawPic: 204)
 				((View new:)
@@ -428,7 +477,9 @@
 					posn: 251 177
 					stopUpd:
 				)
-				(= introTimer (Timer setReal: checkHang 15))
+				(= introTimer
+					(Timer setReal: checkHang 15)
+				)
 				(self cue:)
 			)
 			(18
@@ -437,7 +488,9 @@
 					(Timer setReal: self 2)
 				else
 					(Timer setReal: self 5)
-					(if (IsObject introTimer) (introTimer dispose:))
+					(if (IsObject introTimer)
+						(introTimer dispose:)
+					)
 				)
 			)
 			(19
@@ -453,7 +506,12 @@
 					posn: 162 119
 					setPri: 8
 				)
-				(= introDialog (Print 120 7 #at -1 134 #dispose))
+				(= saveBits
+					(Print 120 7
+						#at -1 134
+						#dispose
+					)
+				)
 				(Timer setReal: self 7)
 			)
 			(20
@@ -500,12 +558,20 @@
 					setCycle: EndLoop
 					setMotion: MoveTo 340 176
 				)
-				(= introDialog (Print 120 8 #at -1 10 #width 300 #dispose))
+				(= saveBits
+					(Print 120 8
+						#at -1 10
+						#width 300
+						#dispose
+					)
+				)
 				(Timer setReal: self 4)
 			)
 			(21
 				(= inCutscene TRUE)
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(curRoom newRoom: 221)
 			)
 		)
@@ -513,40 +579,30 @@
 )
 
 (instance stopKing of Script
-	(properties)
-	
 	(method (cue)
 		(king stopUpd:)
 	)
 )
 
 (instance stopQueen of Script
-	(properties)
-	
 	(method (cue)
 		(queen stopUpd:)
 	)
 )
 
 (instance stopSon of Script
-	(properties)
-	
 	(method (cue)
 		(son stopUpd:)
 	)
 )
 
 (instance stopRosella of Script
-	(properties)
-	
 	(method (cue)
 		(rosella stopUpd:)
 	)
 )
 
 (instance checkHang of Script
-	(properties)
-	
 	(method (cue)
 		(timers eachElementDo: #dispose 84)
 		(introSc changeState: 19)

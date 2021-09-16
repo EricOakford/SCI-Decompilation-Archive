@@ -9,15 +9,9 @@
 	ENDMUSIC 1
 )
 
-(instance ENDMUSIC of Sound
-	(properties)
-)
+(instance ENDMUSIC of Sound)
 
 (instance RgEnd of Region
-	(properties
-	;	name "Ending Region"
-	)
-	
 	(method (init)
 		(if initialized (return))
 		(= keep TRUE)

@@ -54,7 +54,6 @@
 )
 
 (instance egoActions of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -85,7 +84,9 @@
 				)
 				(poof setCycle: EndLoop self)
 			)
-			(3 (= seconds 2))
+			(3
+				(= seconds 2)
+			)
 			(4
 				(if (ego has: iMagicFruit)
 					(self changeState: 10)
@@ -96,7 +97,9 @@
 			(5
 				(ego setMotion: MoveTo 245 220 self)
 			)
-			(6 (curRoom newRoom: 694))
+			(6
+				(curRoom newRoom: 694)
+			)
 			(10
 				(ego setCycle: Walk setMotion: MoveTo 253 135 self)
 			)
@@ -115,7 +118,9 @@
 					setMotion: MoveTo 245 220 self
 				)
 			)
-			(14 (curRoom newRoom: 694))
+			(14
+				(curRoom newRoom: 694)
+			)
 		)
 	)
 )

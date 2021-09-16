@@ -16,10 +16,6 @@
 )
 
 (instance kq4Intro of Region
-	(properties
-	;	name "intro Region"
-	)
-	
 	(method (init)
 		(if initialized (return))
 		(= keep TRUE)
