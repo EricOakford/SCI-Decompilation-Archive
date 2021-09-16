@@ -467,6 +467,7 @@
 				(lolotte stopUpd:)
 				(= lolotteAlive FALSE) ;ding-dong, the witch is dead!
 				(if (< gameHours 30)
+					;it's now 6 a.m., only two hours left!
 					(= gameHours 30)
 					(= gameMinutes 0)
 				)

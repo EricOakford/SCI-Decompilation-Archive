@@ -23,7 +23,9 @@
 		(= isIndoors FALSE)
 		(super init:)
 		(ego view: 2 xStep: 3 yStep: 2 init:)
-		(if isNightTime (curRoom overlay: 127))
+		(if isNightTime
+			(curRoom overlay: 127)
+		)
 		(self setRegions: WOODS UNICORN)
 	)
 	
@@ -36,7 +38,7 @@
 					(or
 						(Said 'look/around')
 						(Said 'look/room')
-						(Said 'look[<around][/!*]')
+						(Said 'look[<around][/noword]')
 					)
 				)
 				(Print
@@ -54,7 +56,7 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(super newRoom: n)
 	)
 )

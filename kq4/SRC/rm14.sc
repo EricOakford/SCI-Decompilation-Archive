@@ -12,7 +12,7 @@
 )
 
 (local
-	local0
+	meetTime
 )
 (instance Room14 of Room
 	(properties
@@ -33,20 +33,21 @@
 			(ego x: 209)
 		)
 		(super init:)
-		(if isNightTime (curRoom overlay: 114))
-		(= local0
+		(if isNightTime
+			(curRoom overlay: 114)
+		)
+		(= meetTime
 			(+
 				(* (- gameHours hourLastMetMinstrel) 60)
 				(- gameMinutes minutesLastMetMinstrel)
 			)
 		)
-		(if
-		(and ((Inventory at: iLute) ownedBy: 203) (>= local0 3))
+		(if (and ((Inventory at: iLute) ownedBy: 203) (>= meetTime 3))
 			(= whereIsMinstrel
 				(/ (= whereIsMinstrel (Random 1 300)) 100)
 			)
 		)
-		(if (== whereIsMinstrel 2)
+		(if (== whereIsMinstrel minstrel14)
 			((= minstrel (Actor new:))
 				view: 174
 				loop: 2
@@ -56,9 +57,11 @@
 				init:
 			)
 		)
-		(self setRegions: 506 516)
+		(self setRegions: MEADOW MINSTREL)
 		(ego view: 2 init:)
-		(if (== prevRoomNum 0) (ego posn: 149 188))
+		(if (== prevRoomNum 0)
+			(ego posn: 149 188)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -70,12 +73,14 @@
 						(or
 							(Said 'look/around')
 							(Said 'look/room')
-							(Said 'look[<around][/!*]')
+							(Said 'look[<around][/noword]')
 							(Said 'smell/blossom')
 						)
 						(Print 14 0)
 					)
-					((Said 'look/stump') (Print 14 1))
+					((Said 'look/stump')
+						(Print 14 1)
+					)
 				)
 			else
 				FALSE
@@ -83,11 +88,11 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (cast contains: minstrel)
 			(= hourLastMetMinstrel gameHours)
 			(= minutesLastMetMinstrel gameMinutes)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )

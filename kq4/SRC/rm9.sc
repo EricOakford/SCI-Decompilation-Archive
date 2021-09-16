@@ -37,7 +37,9 @@
 		(if (< (ego x?) 93) (ego x: 93))
 		(super init:)
 		(ego view: 2 init:)
-		(if isNightTime (curRoom overlay: 109))
+		(if isNightTime
+			(curRoom overlay: 109)
+		)
 		(self setRegions: WOODS PAN)
 		(if (not isNightTime)
 			(if (< (Random 1 100) 50)
@@ -72,34 +74,42 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'climb/boulder') (Print 9 0))
+					((Said 'climb/boulder')
+						(Print 9 0)
+					)
 					((Said 'look>')
 						(cond 
-							((Said '/pool') (Print 9 1))
-							((Said '/boulder') (Print 9 2))
-							((Said '/blossom') (Print 9 3))
-							((Said '[<around][/room]') (Print 9 4))
+							((Said '/pool')
+								(Print 9 1)
+							)
+							((Said '/boulder')
+								(Print 9 2)
+							)
+							((Said '/blossom')
+								(Print 9 3)
+							)
+							((Said '[<around][/room]')
+								(Print 9 4)
+							)
 						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (cast contains: pan)
 			(= hourLastMetPan gameHours)
 			(= minutesLastMetPan gameMinutes)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance bird1Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -110,14 +120,14 @@
 				(aBird1 setCycle: 0 cel: 0)
 				(= seconds (Random 1 8))
 			)
-			(2 (self changeState: 0))
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance bird2Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -128,7 +138,9 @@
 				(aBird2 setCycle: 0 cel: 0)
 				(= seconds (Random 1 8))
 			)
-			(2 (self changeState: 0))
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )

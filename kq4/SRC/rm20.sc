@@ -23,7 +23,9 @@
 		(= isIndoors FALSE)
 		(super init:)
 		(ego view: 2 init:)
-		(if isNightTime (curRoom overlay: 120))
+		(if isNightTime
+			(curRoom overlay: 120)
+		)
 		(self setRegions: MEADOW UNICORN)
 	)
 	
@@ -33,7 +35,7 @@
 			(if
 				(and
 					(== (event type?) saidEvent)
-					(or (Said 'look/room') (Said 'look[<around][/!*]'))
+					(or (Said 'look/room') (Said 'look[<around][/noword]'))
 				)
 				(Print 20 0)
 			else

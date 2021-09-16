@@ -22,7 +22,9 @@
 		(= horizon 68)
 		(= isIndoors FALSE)
 		(super init:)
-		(if isNightTime (curRoom overlay: 108))
+		(if isNightTime
+			(curRoom overlay: 108)
+		)
 		(ego view: 2 init:)
 		(self setRegions: MEADOW PAN)
 	)
@@ -32,11 +34,17 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said '/door') (Print 8 0))
+					((Said '/door')
+						(Print 8 0)
+					)
 					((Said '/window>')
 						(cond 
-							((Said 'open') (Print 8 1))
-							((Said 'break') (Print 8 2))
+							((Said 'open')
+								(Print 8 1)
+							)
+							((Said 'break')
+								(Print 8 2)
+							)
 							((Said 'look')
 								(if (ego inRect: 10 134 57 140)
 									(Print 8 3)
@@ -49,8 +57,12 @@
 				)
 				(if (Said 'look>')
 					(cond 
-						((Said '/cottage') (Print 8 4))
-						((Said '[<around][/room]') (Print 8 5))
+						((Said '/cottage')
+							(Print 8 4)
+						)
+						((Said '[<around][/room]')
+							(Print 8 5
+							))
 					)
 				)
 			else
@@ -59,11 +71,11 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (cast contains: pan)
 			(= hourLastMetPan gameHours)
 			(= minutesLastMetPan gameMinutes)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )

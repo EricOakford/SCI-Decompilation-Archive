@@ -40,20 +40,34 @@
 		(switch prevRoomNum
 			(2
 				(cond 
-					((> (ego x?) 251) (ego posn: 251 188))
-					((< (ego x?) 80) (ego posn: 82 188))
-					(else (ego posn: (ego x?) 188))
+					((> (ego x?) 251)
+						(ego posn: 251 188)
+					)
+					((< (ego x?) 80)
+						(ego posn: 82 188)
+					)
+					(else
+						(ego posn: (ego x?) 188)
+					)
 				)
 			)
 			(21
 				(cond 
-					((!= (ego view?) 2) (ego posn: 215 (+ horizon 2)))
-					((< (ego y?) 155) (ego posn: 155 (+ horizon 2)))
-					(else (ego posn: 255 76))
+					((!= (ego view?) 2)
+						(ego posn: 215 (+ horizon 2))
+					)
+					((< (ego y?) 155)
+						(ego posn: 155 (+ horizon 2))
+					)
+					(else
+						(ego posn: 255 76)
+					)
 				)
 				(Animate (cast elements?) FALSE)
 			)
-			(25 (ego posn: 1 (ego y?)))
+			(25
+				(ego posn: 1 (ego y?))
+			)
 			(20
 				(if (> (ego x?) 185)
 					(ego posn: 185 (+ horizon (ego yStep?)))
@@ -61,10 +75,14 @@
 					(ego posn: (ego x?) (+ horizon (ego yStep?)))
 				)
 			)
-			(27 (ego posn: 318 (ego y?)))
+			(27
+				(ego posn: 318 (ego y?))
+			)
 		)
 		(ego init:)
-		(if (== prevRoomNum 0) (ego posn: 150 149))
+		(if (== prevRoomNum 0)
+			(ego posn: 150 149)
+		)
 		(= aRipple1 (Prop new:))
 		(aRipple1
 			isExtra: TRUE
@@ -154,7 +172,7 @@
 					(or
 						(Said 'look/around')
 						(Said 'look/room')
-						(Said 'look[<around][/!*]')
+						(Said 'look[<around][/noword]')
 					)
 				)
 				(Print 26 0)
@@ -164,11 +182,11 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (and (== (ego edgeHit?) NORTH) (> (ego x?) 202))
 			(super newRoom: 21)
 		else
-			(super newRoom: newRoomNumber)
+			(super newRoom: n)
 		)
 	)
 )

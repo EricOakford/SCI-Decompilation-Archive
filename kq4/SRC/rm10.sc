@@ -16,7 +16,7 @@
 
 (local
 	[local0 2]
-	local2
+	ogreIsHere
 	local3
 	aSmoke
 	aBird1
@@ -43,7 +43,9 @@
 		(= isIndoors FALSE)
 		(= noWearCrown TRUE)
 		(super init:)
-		(if isNightTime (curRoom overlay: 110))
+		(if isNightTime
+			(curRoom overlay: 110)
+		)
 		(self setRegions: FOREST OGRE)
 		(switch prevRoomNum
 			(16
@@ -74,8 +76,7 @@
 			init:
 		)
 		(cond 
-			(
-			(and (== prevRoomNum 4) ogre (not (ego has: iMagicHen)))
+			((and (== prevRoomNum 4) ogre (not (ego has: iMagicHen)))
 				(= ogre (Actor new:))
 				(Load VIEW 78)
 				(Load VIEW 79)
@@ -88,7 +89,7 @@
 					ignoreActors:
 					init:
 				)
-				(= local2 0)
+				(= ogreIsHere 0)
 				(self setScript: ogreActions)
 				(ogreActions changeState: 1)
 			)
@@ -112,9 +113,13 @@
 				)
 				(self setScript: ogreActions)
 			)
-			(else (= ogre 0))
+			(else
+				(= ogre 0)
+			)
 		)
-		(if (== ogreState 4) (= ogreState 5))
+		(if (== ogreState 4)
+			(= ogreState 5)
+		)
 		(ego view: 2 init:)
 		(if (not isNightTime)
 			(if (< (Random 1 100) 50)
@@ -147,35 +152,40 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (Said 'look>'))
+			(if (and (== (event type?) saidEvent) (Said 'look>'))
 				(cond 
-					((Said '/cottage') (Print 10 0))
-					((Said '[<around][/room]') (Print 10 1))
+					((Said '/cottage')
+						(Print 10 0)
+					)
+					((Said '[<around][/room]')
+						(Print 10 1)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(= noWearCrown 0)
+	(method (newRoom n)
+		(= noWearCrown FALSE)
 		(timers eachElementDo: #dispose 84)
-		(if (cast contains: ogre) (= ogreY (ogre y?)))
-		(super newRoom: newRoomNumber)
+		(if (cast contains: ogre)
+			(= ogreY (ogre y?))
+		)
+		(super newRoom: n)
 	)
 )
 
 (instance ogreActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 1 6)))
+			(0
+				(= seconds (Random 1 6))
+			)
 			(1
-				(if (== local2 0)
-					(= local2 1)
+				(if (== ogreIsHere FALSE)
+					(= ogreIsHere TRUE)
 					(ogreTheme play:)
 					(ogre
 						setAvoider: (Avoider new:)
@@ -196,14 +206,14 @@
 				(Print 10 2)
 				(ogre view: 79 setCycle: Walk setMotion: MoveTo 200 80)
 			)
-			(4 (= dead TRUE))
+			(4
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance bird1Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -214,14 +224,14 @@
 				(aBird1 setCycle: 0 cel: 0)
 				(= seconds (Random 1 8))
 			)
-			(2 (self changeState: 0))
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance bird2Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -232,7 +242,9 @@
 				(aBird2 cel: 0 setCycle: 0)
 				(= seconds (Random 1 8))
 			)
-			(2 (self changeState: 0))
+			(2
+				(self changeState: 0)
+			)
 		)
 	)
 )

@@ -161,9 +161,9 @@
 	ghostRoomNum
 	mansionPhase
 	ghostWandering
-	global136
-	global137
-	gNewPropX
+	oceanRoomX
+	oceanRoomY
+	aDugHole
 	global139
 	global140
 	global141
@@ -212,7 +212,7 @@
 	minstrelTalkCount
 	oldEgoBaseSetter
 	numZombies
-	global187
+	unlockedCryptDoor
 	nightRoom
 	noWearCrown
 	global190
@@ -686,7 +686,7 @@
 		(= fishermanState fisherGoneFishing)
 		(= oldSysTime 0)
 		(= currentStatus egoNormal)
-		(= gameHours 8)
+		(= gameHours 8)	;start at 8 a.m.
 		(ego view: 2 x: 100 y: 120)
 		(if (GameIsRestarting)
 			(TheMenuBar draw:)
@@ -760,9 +760,11 @@
 					(++ gameMinutes)
 					(-= gameSeconds 60)
 					(if (and (== gameHours 31) (== gameMinutes 59))
-						(curRoom setScript: (ScriptID 302 0))	;Time Over
+						;time's up at 8 a.m. of the second day
+						(curRoom setScript: (ScriptID 302 0))
 					)
 					(if (and (== gameHours 20) (== (mod gameMinutes 15) 0))
+						;night falls at 8 p.m.
 						(Print 0 4)
 					)
 					(if (== gameMinutes 60)

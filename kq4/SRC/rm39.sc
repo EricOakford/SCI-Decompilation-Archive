@@ -15,21 +15,13 @@
 (local
 	i
 )
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance wave3 of Prop
-	(properties)
-)
+(instance wave3 of Prop)
 
 (instance Room39 of Room
 	(properties
@@ -56,7 +48,7 @@
 			init:
 		)
 		(wave2
-			isExtra: 1
+			isExtra: TRUE
 			view: 663
 			loop: 4
 			cel: 3
@@ -67,7 +59,7 @@
 			init:
 		)
 		(wave3
-			isExtra: 1
+			isExtra: TRUE
 			view: 663
 			loop: 5
 			cel: 1
@@ -80,31 +72,59 @@
 		(waves add: wave1 wave2 wave3)
 		(wave1 setScript: waveActions)
 		(switch prevRoomNum
-			(37 (ego x: 307 y: 100))
-			(36 (ego x: 302 y: 100))
-			(32 (ego x: 160 y: 188))
-			(31 (ego posn: 40 119))
+			(37
+				(ego x: 307 y: 100)
+			)
+			(36
+				(ego x: 302 y: 100)
+			)
+			(32
+				(ego x: 160 y: 188)
+			)
+			(31
+				(ego posn: 40 119)
+			)
 			(33
 				(cond 
-					((== (ego view?) 2) (ego posn: 188 (+ horizon 2)))
-					((== (ego view?) 8) (ego posn: 95 (+ horizon 2)))
-					((== (ego view?) 6) (ego posn: 165 (+ horizon 2)))
-					((== (ego view?) 5) (ego posn: 175 (+ horizon 2)))
-					((== (ego view?) 7) (ego posn: 135 (+ horizon 2)))
-					(else (ego posn: 161 (+ horizon 2)))
+					((== (ego view?) 2)
+						(ego posn: 188 (+ horizon 2))
+					)
+					((== (ego view?) 8)
+						(ego posn: 95 (+ horizon 2))
+					)
+					((== (ego view?) 6)
+						(ego posn: 165 (+ horizon 2))
+					)
+					((== (ego view?) 5)
+						(ego posn: 175 (+ horizon 2))
+					)
+					((== (ego view?) 7)
+						(ego posn: 135 (+ horizon 2))
+					)
+					(else
+						(ego posn: 161 (+ horizon 2))
+					)
 				)
 			)
-			(40 (ego posn: 318 (ego y?)))
+			(40
+				(ego posn: 318 (ego y?))
+			)
 		)
 		(ego xStep: 3 yStep: 2 init:)
-		(self setRegions: 505 501 503 504)
+		(self setRegions: GENESTA WATER BEACH GULL)
 	)
 	
 	(method (doit)
 		(cond 
-			((>= (ego y?) 189) (= newRoomNum 32))
-			((>= (ego x?) 319) (= newRoomNum 40))
-			((<= (ego x?) 0) (= newRoomNum 31))
+			((>= (ego y?) 189)
+				(= newRoomNum 32)
+			)
+			((>= (ego x?) 319)
+				(= newRoomNum 40)
+			)
+			((<= (ego x?) 0)
+				(= newRoomNum 31)
+			)
 			((<= (ego y?) horizon)
 				(if (> (ego x?) 292)
 					(= newRoomNum 36)
@@ -132,13 +152,10 @@
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -151,7 +168,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(self changeState: 1)

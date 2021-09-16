@@ -87,9 +87,15 @@
 			cycleSpeed: 3
 			init:
 		)
-		(if isNightTime (= picture 132))
-		(if (>= (ego x?) 319) (ego x: 1))
-		(if (<= (ego x?) 0) (ego x: 318))
+		(if isNightTime
+			(= picture 132)
+		)
+		(if (>= (ego x?) 319)
+			(ego x: 1)
+		)
+		(if (<= (ego x?) 0)
+			(ego x: 318)
+		)
 		(switch prevRoomNum
 			(41
 				(ego posn: 226 (+ horizon 1))
@@ -110,14 +116,23 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (Said 'look>'))
+			(if (and (== (event type?) saidEvent) (Said 'look>'))
 				(cond 
-					((Said '/tamir') (Print 32 0))
-					((Said '/island') (Print 32 1))
-					((Said '/castle') (Print 32 2))
-					((Said '/fish') (Print 32 3))
-					((Said '[<around][/room]') (Print 32 4))
+					((Said '/tamir')
+						(Print 32 0)
+					)
+					((Said '/island')
+						(Print 32 1)
+					)
+					((Said '/castle')
+						(Print 32 2)
+					)
+					((Said '/fish')
+						(Print 32 3)
+					)
+					((Said '[<around][/room]')
+						(Print 32 4)
+					)
 				)
 			else
 				FALSE
@@ -125,15 +140,21 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (== (ego edgeHit?) NORTH)
 			(cond 
-				((< (ego x?) 115) (super newRoom: 39))
-				((> (ego x?) 198) (super newRoom: 41))
-				(else (super newRoom: 40))
+				((< (ego x?) 115)
+					(super newRoom: 39)
+				)
+				((> (ego x?) 198)
+					(super newRoom: 41)
+				)
+				(else
+					(super newRoom: 40)
+				)
 			)
 		else
-			(super newRoom: newRoomNumber)
+			(super newRoom: n)
 		)
 	)
 )

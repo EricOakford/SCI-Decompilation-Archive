@@ -17,23 +17,17 @@
 
 (local
 	local0
-	local1
-	gEgoViewer
-	local3
+	waterControl
+	saveViewer
+	i
 	aRipple1
 	aRipple2
 )
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
 (instance Room25 of Room
 	(properties
@@ -50,7 +44,9 @@
 		(= inCinematic FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 125))
+		(if isNightTime
+			(curRoom overlay: 125)
+		)
 		(self setRegions: GULL WATER BEACH MEADOW)
 		(Load VIEW 2)
 		(Load VIEW 5)
@@ -135,7 +131,9 @@
 							(ego posn: 318 (ego y?))
 						)
 					)
-					(31 (ego posn: 1 (ego y?)))
+					(31
+						(ego posn: 1 (ego y?))
+					)
 					(else 
 						(ego posn: 229 125 setMotion: 0 loop: 1)
 					)
@@ -143,34 +141,48 @@
 			)
 			(egoInShallowWater
 				(switch prevRoomNum
-					(1 (ego x: 126 y: 188))
+					(1
+						(ego x: 126 y: 188)
+					)
 					(19
 						(ego x: 166 y: (+ horizon (ego yStep?) 1))
 					)
-					(26 (ego posn: 318 (ego y?)))
+					(26
+						(ego posn: 318 (ego y?))
+					)
 				)
 			)
 			(egoInKneeDeepWater
 				(switch prevRoomNum
-					(1 (ego x: 126 y: 188))
+					(1
+						(ego x: 126 y: 188)
+					)
 					(19
 						(ego x: 157 y: (+ horizon (ego yStep?) 1))
 					)
-					(26 (ego posn: 318 (ego y?)))
+					(26
+						(ego posn: 318 (ego y?))
+					)
 				)
 			)
 			(egoInWaistDeepWater
 				(switch prevRoomNum
-					(1 (ego x: 126 y: 188))
+					(1
+						(ego x: 126 y: 188)
+					)
 					(19
 						(ego x: 146 y: (+ horizon (ego yStep?) 1))
 					)
-					(26 (ego posn: 318 (ego y?)))
+					(26
+						(ego posn: 318 (ego y?))
+					)
 				)
 			)
 			(egoSwimming
 				(switch prevRoomNum
-					(1 (ego x: 48 y: 188))
+					(1
+						(ego x: 48 y: 188)
+					)
 					(19
 						(ego posn: 88 (+ horizon (ego yStep?) 1))
 					)
@@ -184,7 +196,7 @@
 		)
 		(ego xStep: 3 yStep: 2 init:)
 		(HandsOn)
-		(= gEgoViewer (ego viewer?))
+		(= saveViewer (ego viewer?))
 	)
 	
 	(method (dispose)
@@ -199,26 +211,36 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '/brook') (Print 25 0))
-							((Said '/grass') (Print 25 1))
-							((Said '[<around][/around,room,beach]') (Print 25 2))
+							((Said '/brook')
+								(Print 25 0)
+							)
+							((Said '/grass')
+								(Print 25 1)
+							)
+							((Said '[<around][/around,room,beach]')
+								(Print 25 2)
+							)
 						)
 					)
 					((or (Said 'drink[/water]') (Said 'get/drink'))
 						(if (ego inRect: 185 150 319 180)
 							(cond 
-								((!= currentStatus egoNormal) (Print 25 3))
+								((!= currentStatus egoNormal)
+									(Print 25 3)
+								)
 								(
 									(or
-										(& (= local1 (IsObjectOnControl ego 12)) $0008)
-										(& local1 $0800)
-										(& local1 $0002)
-										(& local1 $0200)
+										(& (= waterControl (IsObjectOnControl ego 12)) cGREEN)
+										(& waterControl cLCYAN)
+										(& waterControl cBLUE)
+										(& waterControl cLBLUE)
 									)
 									(= oldEgoScript (ego script?))
 									(ego setScript: riverActions)
 								)
-								(else (Print 25 4))
+								(else
+									(Print 25 4)
+								)
 							)
 						else
 							(event claimed: FALSE)
@@ -233,64 +255,60 @@
 )
 
 (instance riverActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gEgoViewer (ego viewer?))
+				(= saveViewer (ego viewer?))
 				(ego viewer: 0 view: 21 cel: 255 setCycle: EndLoop self)
 			)
 			(1
 				(Timer setReal: self 5)
 				(= underBits (Print 25 3 #at -1 10 #dispose))
 			)
-			(2 (ego setCycle: BegLoop self))
+			(2
+				(ego setCycle: BegLoop self)
+			)
 			(3
 				(cls)
 				(HandsOn)
 				(ego view: 2 setCycle: Walk)
-				(ego script: oldEgoScript viewer: gEgoViewer)
+				(ego script: oldEgoScript viewer: saveViewer)
 			)
 		)
 	)
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local3 0)
-				(while (< local3 (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
-						view: ((waves at: local3) view?)
-						loop: ((waves at: local3) loop?)
+						view: ((waves at: i) view?)
+						loop: ((waves at: i) loop?)
 						cel: 0
 						setPri: 0
 						ignoreActors:
-						x: ((waves at: local3) x?)
-						y: ((waves at: local3) y?)
+						x: ((waves at: i) x?)
+						y: ((waves at: i) y?)
 						init:
 						addToPic:
 						yourself:
 					)
-					(++ local3)
 				)
-				(= local3 0)
+				(= i 0)
 				(self changeState: 1)
 			)
 			(1
-				((waves at: local3) cel: 0 show: setCycle: EndLoop self)
+				((waves at: i) cel: 0 show: setCycle: EndLoop self)
 			)
 			(2
-				((waves at: local3) hide:)
-				(if (< local3 (- (waves size?) 1))
-					(++ local3)
+				((waves at: i) hide:)
+				(if (< i (- (waves size?) 1))
+					(++ i)
 				else
-					(= local3 0)
+					(= i 0)
 				)
 				(waveActions changeState: 1)
 			)

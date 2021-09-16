@@ -14,12 +14,12 @@
 )
 
 (local
-	gEgoOnControl
-	theGEgoOnControl
+	thisControl
+	fallControl
 	aHench1
 	aHench2
 	local4
-	local5
+	fallToY
 )
 (instance hTheme of Sound
 	(properties
@@ -52,7 +52,9 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 130))
+		(if isNightTime
+			(curRoom overlay: 130)
+		)
 		(self setRegions: FOREST MOUNTAIN)
 		(Load VIEW 17)
 		(Load VIEW 18)
@@ -60,11 +62,15 @@
 		(Load VIEW 33)
 		(Load SOUND 80)
 		(switch prevRoomNum
-			(west (ego x: 2))
+			(west
+				(ego x: 2)
+			)
 			(24
 				(ego posn: 112 (+ horizon 2))
 			)
-			(0 (ego x: 183 y: 123))
+			(0
+				(ego x: 183 y: 123)
+			)
 			(92
 				(ego view: 80 setCycle: Forward setScript: henchFlyIn)
 				(= horizon -1000)
@@ -79,7 +85,9 @@
 					(ego x: 318 y: 100)
 				)
 			)
-			(else  (ego x: 183 y: 123))
+			(else
+				(ego x: 183 y: 123)
+			)
 		)
 		(if (== (ego script?) 0)
 			(ego view: 2 xStep: 3 yStep: 2 init:)
@@ -90,14 +98,20 @@
 		(super doit:)
 		(if
 			(and
-				(!= (= gEgoOnControl (ego onControl:)) theGEgoOnControl)
+				(!= (= thisControl (ego onControl:)) fallControl)
 				(== (curRoom script?) 0)
 			)
-			(= theGEgoOnControl gEgoOnControl)
+			(= fallControl thisControl)
 			(cond 
-				((& gEgoOnControl $0010) (self setScript: shortFall))
-				((& gEgoOnControl $0004) (self setScript: deadFall))
-				((& gEgoOnControl cMAGENTA) (self setScript: deadMagenta))
+				((& thisControl cRED)
+					(self setScript: shortFall)
+				)
+				((& thisControl cGREEN)
+					(self setScript: deadFall)
+				)
+				((& thisControl cMAGENTA)
+					(self setScript: deadMagenta)
+				)
 			)
 		)
 	)
@@ -107,11 +121,17 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'climb/boulder') (Print 30 0))
+					((Said 'climb/boulder')
+						(Print 30 0)
+					)
 					((Said 'look>')
 						(cond 
-							((Said '/path') (Print 30 1))
-							((Said '/boulder') (Print 30 2))
+							((Said '/path')
+								(Print 30 1)
+							)
+							((Said '/boulder')
+								(Print 30 2)
+							)
 							((Said '/goon,man,person')
 								(if (cast contains: aHench1)
 									(Print 30 3)
@@ -119,7 +139,9 @@
 									(Print 30 4)
 								)
 							)
-							((Said '[<around][/room]') (Print 30 5))
+							((Said '[<around][/room]')
+								(Print 30 5)
+							)
 						)
 					)
 				)
@@ -129,33 +151,39 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (!= (ego view?) 80) (super newRoom: newRoomNumber))
+	(method (newRoom n)
+		(if (!= (ego view?) 80)
+			(super newRoom: n)
+		)
 	)
 )
 
 (instance shortFall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(fallSound play:)
 				(HandsOff)
 				(cond 
-					((< (ego x?) 183) (= local5 146))
-					((> (ego x?) 195) (= local5 165))
-					(else (= local5 154))
+					((< (ego x?) 183)
+						(= fallToY 146)
+					)
+					((> (ego x?) 195)
+						(= fallToY 165)
+					)
+					(else
+						(= fallToY 154)
+					)
 				)
 				(ego
 					yStep: 6
 					yStep: 6
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					setCel: 0
 					view: 17
 					setCycle: Forward
-					setMotion: MoveTo (ego x?) local5 self
+					setMotion: MoveTo (ego x?) fallToY self
 				)
 			)
 			(1
@@ -176,8 +204,6 @@
 )
 
 (instance deadFall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -186,7 +212,7 @@
 				(ego
 					yStep: 10
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					setCel: 0
 					view: 17
 					setCycle: Forward
@@ -195,7 +221,7 @@
 			)
 			(1
 				(ego view: 33 loop: 0)
-				(Animate (cast elements?) 0)
+				(Animate (cast elements?) FALSE)
 				(ShakeScreen 10 shakeSDown)
 				(Timer setReal: self 3)
 			)
@@ -212,8 +238,6 @@
 )
 
 (instance deadMagenta of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -222,7 +246,7 @@
 				(ego
 					yStep: 10
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					setCel: 0
 					view: 17
 					setCycle: Forward
@@ -248,8 +272,6 @@
 )
 
 (instance henchFlyIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -319,8 +341,6 @@
 )
 
 (instance h1Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -346,8 +366,6 @@
 )
 
 (instance h2Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -363,7 +381,9 @@
 			(1
 				(aHench2 view: 143 setMotion: MoveTo 175 -30 self)
 			)
-			(2 (aHench2 dispose:))
+			(2
+				(aHench2 dispose:)
+			)
 		)
 	)
 )

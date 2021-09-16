@@ -19,7 +19,7 @@
 	ripple1
 	ripple2
 	ripple3
-	gEgoViewer
+	saveViewer
 )
 (instance Room21 of Room
 	(properties
@@ -35,7 +35,9 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 121))
+		(if isNightTime
+			(curRoom overlay: 121)
+		)
 		(self setRegions: WOODS WATER RIVER)
 		(Load VIEW 518)
 		(Load VIEW 21)
@@ -79,7 +81,9 @@
 			ignoreActors:
 			init:
 		)
-		(if (< (ego y?) horizon) (ego y: (+ horizon 2)))
+		(if (< (ego y?) horizon)
+			(ego y: (+ horizon 2))
+		)
 		(if ((Inventory at: iGoldBall) ownedBy: 21)
 			((= aBall (View new:))
 				view: 518
@@ -92,18 +96,28 @@
 			)
 		)
 		(switch prevRoomNum
-			(0 (ego posn: 160 185))
+			(0
+				(ego posn: 160 185)
+			)
 			(26
 				(cond 
-					((!= (ego view?) 2) (ego posn: 1 174))
-					((< (ego x?) 191) (ego posn: 1 136))
-					(else (ego posn: 7 186))
+					((!= (ego view?) 2)
+						(ego posn: 1 174)
+					)
+					((< (ego x?) 191)
+						(ego posn: 1 136)
+					)
+					(else
+						(ego posn: 7 186)
+					)
 				)
 				(RedrawCast)
 			)
 			(22
 				(cond 
-					((!= (ego view?) 2) (ego posn: 318 116))
+					((!= (ego view?) 2)
+						(ego posn: 318 116)
+					)
 					(
 						(and
 							(>= (ego y?) 105)
@@ -112,7 +126,9 @@
 						)
 						(ego posn: 318 102)
 					)
-					(else (ego posn: 318 (ego y?)))
+					(else
+						(ego posn: 318 (ego y?))
+					)
 				)
 			)
 			(20
@@ -131,18 +147,21 @@
 		)
 		((ego viewer?) doit:)
 		(ego init:)
-		(if (== prevRoomNum 0) (ego x: 180 y: 188))
+		(if (== prevRoomNum 0)
+			(ego x: 180 y: 188)
+		)
 	)
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (Said 'look>'))
+			(if (and (== (event type?) saidEvent) (Said 'look>'))
 				(cond 
 					((Said '<under/bridge')
 						(cond 
-							((ego inRect: 120 130 195 139) (ego setScript: egoActions))
+							((ego inRect: 120 130 195 139)
+								(ego setScript: egoActions)
+							)
 							(
 								(or
 									(ego inRect: 70 115 254 169)
@@ -150,30 +169,34 @@
 								)
 								(Print 21 0)
 							)
-							(else (Print 800 1))
+							(else
+								(Print 800 1)
+							)
 						)
 					)
-					((Said '/bridge') (Print 21 1))
-					((Said '[<around][/room]') (Print 21 2))
+					((Said '/bridge')
+						(Print 21 1)
+					)
+					((Said '[<around][/room]')
+						(Print 21 2)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (ego inRect: -6 166 20 192)
 			(super newRoom: 26)
 		else
-			(super newRoom: newRoomNumber)
+			(super newRoom: n)
 		)
 	)
 )
 
 (instance egoActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -181,7 +204,7 @@
 				(ego setAvoider: Avoider setMotion: MoveTo 141 133 self)
 			)
 			(1
-				(= gEgoViewer (ego viewer?))
+				(= saveViewer (ego viewer?))
 				(ego setAvoider: 0 viewer: 0)
 				(ego loop: 0 view: 21 cel: 255 setCycle: EndLoop self)
 			)
@@ -205,7 +228,7 @@
 			)
 			(5
 				(ego view: 2 setCycle: Walk)
-				(ego viewer: gEgoViewer)
+				(ego viewer: saveViewer)
 				(HandsOn)
 			)
 		)

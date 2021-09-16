@@ -16,9 +16,9 @@
 
 (local
 	ripple1
-	local1
-	local2
-	local3
+	roomX
+	roomY
+	roomChanges
 	islet
 	fish3
 	fish
@@ -27,8 +27,8 @@
 	shark
 	fishX
 	local11
-	local12
-	local13
+	drownTime
+	genestaIsleY	;distance from Genesta's island
 )
 (instance whaleMusic of Sound
 	(properties
@@ -51,7 +51,7 @@
 	(method (init)
 		(= horizon 75)
 		(= isIndoors FALSE)
-		(= local12 4)
+		(= drownTime 4)
 		(if howFast
 			(= ripple1 (Prop new:))
 			(ripple1
@@ -85,19 +85,19 @@
 					else
 						(curRoom drawPic: 31)
 					)
-					(= local2 4)
-					(= local1 2)
+					(= roomY 4)
+					(= roomX 2)
 					(User canControl: FALSE)
 					(= inCutscene TRUE)
 					(ego posn: 5 100 setMotion: MoveTo 400 113)
 				else
-					(= local2 100)
-					(= local1 100)
+					(= roomY 100)
+					(= roomX 100)
 				)
 			)
 			(44
-				(= local2 99)
-				(= local1 100)
+				(= roomY 99)
+				(= roomX 100)
 				((= islet (View new:))
 					view: 526
 					loop: 0
@@ -105,7 +105,9 @@
 					posn: 134 54
 					init:
 				)
-				(if (IsObject ripple1) (ripple1 hide:))
+				(if (IsObject ripple1)
+					(ripple1 hide:)
+				)
 				(if isNightTime
 					(curRoom drawPic: 131)
 				else
@@ -114,28 +116,76 @@
 				(ego setScript: whaleActions)
 				(whaleActions changeState: 10)
 			)
-			(1 (= local2 4) (= local1 0))
-			(95 (= local2 3) (= local1 1))
-			(13 (= local2 2) (= local1 0))
-			(19 (= local2 1) (= local1 0))
-			(25 (= local2 0) (= local1 0))
+			(1
+				(= roomY 4)
+				(= roomX 0)
+			)
+			(95
+				(= roomY 3)
+				(= roomX 1)
+			)
+			(13
+				(= roomY 2)
+				(= roomX 0)
+			)
+			(19
+				(= roomY 1)
+				(= roomX 0)
+			)
+			(25
+				(= roomY 0)
+				(= roomX 0)
+			)
 			(32
 				(cond 
-					((<= (ego x?) 0) (= local2 1) (= local1 5))
-					((>= (ego y?) 189) (= local2 1) (= local1 3))
-					((>= (ego x?) 319) (= local2 1) (= local1 3))
-					(else (= local2 1) (= local1 3))
+					((<= (ego x?) 0)
+						(= roomY 1)
+						(= roomX 5)
+					)
+					((>= (ego y?) 189)
+						(= roomY 1)
+						(= roomX 3)
+					)
+					((>= (ego x?) 319)
+						(= roomY 1)
+						(= roomX 3)
+					)
+					(else
+						(= roomY 1)
+						(= roomX 3)
+					)
 				)
 			)
-			(39 (= local2 2) (= local1 5))
-			(41 (= local1 3) (= local2 2))
-			(36 (= local2 3) (= local1 5))
-			(38 (= local2 3) (= local1 3))
-			(33 (= local2 4) (= local1 5))
-			(34 (= local2 4) (= local1 4))
-			(35 (= local2 4) (= local1 3))
+			(39
+				(= roomY 2)
+				(= roomX 5)
+			)
+			(41
+				(= roomX 3)
+				(= roomY 2)
+			)
+			(36
+				(= roomY 3)
+				(= roomX 5)
+			)
+			(38
+				(= roomY 3)
+				(= roomX 3)
+			)
+			(33
+				(= roomY 4)
+				(= roomX 5)
+			)
+			(34
+				(= roomY 4)
+				(= roomX 4)
+			)
+			(35
+				(= roomY 4)
+				(= roomX 3)
+			)
 		)
-		(= local3 0)
+		(= roomChanges 0)
 		(= local11 0)
 		(if (!= (ego view?) 312)
 			(if (!= (ego view?) 84)
@@ -152,7 +202,7 @@
 				(< (Random 1 100) 40)
 				(!= currentStatus egoRidingDolphin)
 				(== swallowedByWhale FALSE)
-				(< local1 30)
+				(< roomX 30)
 				(!= (ego script?) sharkActions)
 			)
 			(ego setScript: whaleActions)
@@ -160,7 +210,7 @@
 		(ego edgeHit: 0)
 		(super init:)
 		(self doit:)
-		(= local13 local2)
+		(= genestaIsleY roomY)
 	)
 	
 	(method (doit)
@@ -182,18 +232,20 @@
 			(curRoom setScript: fishActions)
 		)
 		(if (ego edgeHit?)
-			(++ local3)
-			(= global136 local1)
-			(= global137 local2)
+			(++ roomChanges)
+			(= oceanRoomX roomX)
+			(= oceanRoomY roomY)
 			(if (!= (ego view?) 312)
-				(if (and (== local3 1) isNightTime)
-					(= local1 1000)
-					(= local2 1000)
+				(if (and (== roomChanges 1) isNightTime)
+					(= roomX 1000)
+					(= roomY 1000)
 				)
-				(if (== local3 4) (Print 31 17))
+				(if (== roomChanges 4)
+					(Print 31 17)
+				)
 				(if
 					(and
-						(== local3 local12)
+						(== roomChanges drownTime)
 						(!= (ego script?) sharkActions)
 					)
 					(ego setScript: drown)
@@ -202,24 +254,36 @@
 				)
 			)
 			(cond 
-				((== (ego edgeHit?) 1)
-					(if (and (< (++ local2) 10) (> local2 4))
-						(= local2 0)
+				((== (ego edgeHit?) NORTH)
+					(if (and (< (++ roomY) 10) (> roomY 4))
+						(= roomY 0)
 					)
 					(ego posn: (ego x?) 188)
 				)
-				((== (ego edgeHit?) 3)
-					(if (< (-- local2) 0) (= local2 4))
+				((== (ego edgeHit?) SOUTH)
+					(if (< (-- roomY) 0)
+						(= roomY 4)
+					)
 					(ego posn: (ego x?) (+ horizon (ego yStep?) 2))
 				)
-				((== (ego edgeHit?) 2) (-- local1) (ego posn: 1 (ego y?)))
-				((== (ego edgeHit?) 4) (++ local1) (ego posn: 318 (ego y?)))
+				((== (ego edgeHit?) EAST)
+					(-- roomX)
+					(ego posn: 1 (ego y?))
+				)
+				((== (ego edgeHit?) WEST)
+					(++ roomX)
+					(ego posn: 318 (ego y?))
+				)
 			)
 			(cond 
-				((and (== local1 100) (== local2 100)) (curRoom newRoom: 43))
-				((and (== local1 1) (== local2 3)) (curRoom newRoom: 95))
-				((== local1 0)
-					(switch local2
+				((and (== roomX 100) (== roomY 100))
+					(curRoom newRoom: 43)
+				)
+				((and (== roomX 1) (== roomY 3))
+					(curRoom newRoom: 95)
+				)
+				((== roomX 0)
+					(switch roomY
 						(4 (curRoom newRoom: 1))
 						(2 (curRoom newRoom: 13))
 						(1 (curRoom newRoom: 19))
@@ -228,15 +292,19 @@
 				)
 				(
 					(and
-						(== local2 1)
-						(or (== local1 3) (== local1 4) (== local1 5))
+						(== roomY 1)
+						(or (== roomX 3) (== roomX 4) (== roomX 5))
 					)
 					(curRoom newRoom: 32)
 				)
-				((and (== local2 2) (== local1 3)) (curRoom newRoom: 41))
-				((and (== local2 2) (== local1 5)) (curRoom newRoom: 39))
-				((and (== local2 3) (== local1 3))
-					(if (== local13 4)
+				((and (== roomY 2) (== roomX 3))
+					(curRoom newRoom: 41)
+				)
+				((and (== roomY 2) (== roomX 5))
+					(curRoom newRoom: 39)
+				)
+				((and (== roomY 3) (== roomX 3))
+					(if (== genestaIsleY 4)
 						(ego y: 100)
 						(curRoom newRoom: 41)
 					else
@@ -244,40 +312,57 @@
 						(curRoom newRoom: 35)
 					)
 				)
-				((and (== local2 3) (== local1 5))
+				((and (== roomY 3) (== roomX 5))
 					(if (<= (ego y?) 120)
 						(curRoom newRoom: 33)
 					else
 						(curRoom newRoom: 39)
 					)
 				)
-				((and (== local2 4) (== local1 3)) (if (!= (ego view?) 312) (curRoom newRoom: 35)))
-				((and (== local2 4) (== local1 4)) (if (!= (ego view?) 312) (curRoom newRoom: 34)))
-				(
-				(and (== local2 4) (== local1 5) (!= (ego view?) 312)) (curRoom newRoom: 33))
+				((and (== roomY 4) (== roomX 3))
+					(if (!= (ego view?) 312)
+						(curRoom newRoom: 35))
+					)
+				((and (== roomY 4) (== roomX 4))
+					(if (!= (ego view?) 312)
+						(curRoom newRoom: 34))
+					)
+				((and (== roomY 4) (== roomX 5) (!= (ego view?) 312))
+					(curRoom newRoom: 33)
+				)
 			)
 			(cond 
 				((== (ego script?) sharkActions)
 					(if (cast contains: shark)
 						(cond 
-							((< (ego x?) 10) (shark posn: (- (ego x?) 30) (ego y?)))
-							((> (ego x?) 300) (shark posn: (+ (ego x?) 30) (ego y?)))
-							((< (ego y?) (+ horizon 10)) (shark posn: (+ (ego x?) 20) (ego y?)))
-							((> (ego y?) 174) (shark posn: (ego x?) (+ (ego y?) 30)))
-							(else (shark posn: (- (ego x?) 20) (- (ego y?) 20)))
+							((< (ego x?) 10)
+								(shark posn: (- (ego x?) 30) (ego y?))
+							)
+							((> (ego x?) 300)
+								(shark posn: (+ (ego x?) 30) (ego y?))
+							)
+							((< (ego y?) (+ horizon 10))
+								(shark posn: (+ (ego x?) 20) (ego y?))
+							)
+							((> (ego y?) 174)
+								(shark posn: (ego x?) (+ (ego y?) 30))
+							)
+							(else
+								(shark posn: (- (ego x?) 20) (- (ego y?) 20))
+							)
 						)
 					)
 				)
 				(
 					(and
 						(or
-							(and (== local2 0) (> local1 2) (<= local1 5))
+							(and (== roomY 0) (> roomX 2) (<= roomX 5))
 							(and
-								(== local2 0)
-								(<= local1 2)
+								(== roomY 0)
+								(<= roomX 2)
 								(> (Random 1 100) 50)
 							)
-							(and (!= isNightTime 0) (<= (Random 100) 40))
+							(and (!= isNightTime FALSE) (<= (Random 100) 40))
 							(<= (Random 1 100) 20)
 						)
 						(!= (ego view?) 312)
@@ -298,15 +383,17 @@
 				)
 				(if
 					(and
-						(not (if (== local2 99) (== local1 100)))
+						(not (if (== roomY 99) (== roomX 100)))
 						(cast contains: islet)
 					)
 					(islet dispose:)
-					(if (IsObject ripple1) (ripple1 show:))
+					(if (IsObject ripple1)
+						(ripple1 show:)
+					)
 				)
 				(if isNightTime
 					(addToPics dispose:)
-					(curRoom drawPic: 131 9)
+					(curRoom drawPic: 131 BLACKOUT)
 					(if (cast contains: whale)
 						(ego setScript: 0)
 						(whale dispose:)
@@ -314,7 +401,7 @@
 					)
 				else
 					(addToPics dispose:)
-					(curRoom drawPic: 31 9)
+					(curRoom drawPic: 31 BLACKOUT)
 					(if (cast contains: whale)
 						(ego setScript: 0)
 						(whale dispose:)
@@ -322,7 +409,7 @@
 					)
 				)
 				(cond 
-					((and (== local1 100) (== local2 99))
+					((and (== roomX 100) (== roomY 99))
 						(if (not (cast contains: islet))
 							((= islet (View new:))
 								view: 526
@@ -331,10 +418,14 @@
 								posn: 134 54
 								init:
 							)
-							(if (IsObject ripple1) (ripple1 hide:))
+							(if (IsObject ripple1)
+								(ripple1 hide:)
+							)
 						)
 					)
-					((IsObject ripple1) (ripple1 show:))
+					((IsObject ripple1)
+						(ripple1 show:)
+					)
 				)
 				(if (not isNightTime)
 					((View new:)
@@ -368,7 +459,9 @@
 						addToPic:
 					)
 				)
-				(if (!= (ego view?) 312) (ego setMotion: 0 show:))
+				(if (!= (ego view?) 312)
+					(ego setMotion: 0 show:)
+				)
 			)
 		)
 	)
@@ -378,19 +471,29 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'look[<around][/room,ocean,ocean,water]')
 						(cond 
-							((and (== local2 99) (== local1 100)) (Print 31 0))
-							(isNightTime (Print 31 1))
-							((== currentStatus 14) (Print 31 2))
-							(else (Print 31 3))
+							((and (== roomY 99) (== roomX 100))
+								(Print 31 0)
+							)
+							(isNightTime
+								(Print 31 1)
+							)
+							((== currentStatus egoRidingDolphin)
+								(Print 31 2)
+							)
+							(else
+								(Print 31 3)
+							)
 						)
-						(if (cast contains: shark) (Print 31 4))
+						(if (cast contains: shark)
+							(Print 31 4)
+						)
 					)
 					((Said 'mount/dolphin')
 						(if (== (ego view?) 312)
@@ -407,7 +510,7 @@
 						)
 					)
 					((Said 'look/island')
-						(if (and (== local2 99) (== local1 100))
+						(if (and (== roomY 99) (== roomX 100))
 							(Print 31 8)
 						else
 							(Print 31 9)
@@ -415,18 +518,26 @@
 					)
 					((== (ego view?) 312)
 						(cond 
-							((Said 'look/dolphin') (Print 31 10))
-							((Said 'kiss/dolphin') (Print 31 11))
+							((Said 'look/dolphin')
+								(Print 31 10)
+							)
+							((Said 'kiss/dolphin')
+								(Print 31 11)
+							)
 							((Said 'deliver>')
 								(cond 
-									((Said '/*/fish') (Print 31 12))
-									((Said '/*/bird,gull') (Print 31 13))
+									((Said '/anyword/fish')
+										(Print 31 12)
+									)
+									((Said '/anyword/bird,gull')
+										(Print 31 13)
+									)
 									(
 										(and
-											(Said '/*/dolphin>')
-											(= inventorySaidMe (inventory saidMe:))
+											(Said '/anyword/dolphin>')
+											(= index (inventory saidMe:))
 										)
-										(if (ego has: (inventory indexOf: inventorySaidMe))
+										(if (ego has: (inventory indexOf: index))
 											(Print 31 14)
 										else
 											(DontHave)
@@ -434,22 +545,26 @@
 									)
 								)
 							)
-							((Said 'converse[/dolphin]') (Print 31 15))
-							((Said 'pat/dolphin') (Print 31 16))
-							(else (event claimed: FALSE))
+							((Said 'converse[/dolphin]')
+								(Print 31 15)
+							)
+							((Said 'pat/dolphin')
+								(Print 31 16)
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 )
 
 (instance fish3Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -470,17 +585,19 @@
 				)
 			)
 			(1
-				(if (cast contains: fish3) (fish3 dispose:))
+				(if (cast contains: fish3)
+					(fish3 dispose:)
+				)
 				(= seconds 3)
 			)
-			(2 (curRoom setScript: 0))
+			(2
+				(curRoom setScript: 0)
+			)
 		)
 	)
 )
 
 (instance fishActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -501,20 +618,24 @@
 				)
 			)
 			(1
-				(if (cast contains: fish) (fish dispose:))
+				(if (cast contains: fish)
+					(fish dispose:)
+				)
 				(= seconds 3)
 			)
-			(2 (curRoom setScript: 0))
+			(2
+				(curRoom setScript: 0)
+			)
 		)
 	)
 )
 
 (instance drown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (= seconds 10))
+			(1
+				(= seconds 10)	;get to shore quickly!
+			)
 			(2
 				(HandsOff)
 				(ego
@@ -545,11 +666,11 @@
 )
 
 (instance whaleActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 8)))
+			(0
+				(= seconds (Random 2 8))
+			)
 			(1
 				(= whale (Prop new:))
 				(whaleMusic play:)
@@ -618,11 +739,11 @@
 )
 
 (instance sharkActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 1 5)))
+			(0
+				(= seconds (Random 1 5))
+			)
 			(1
 				(sharkMusic play:)
 				((= shark (Actor new:))

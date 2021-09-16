@@ -20,8 +20,8 @@
 )
 
 (local
-	local0
-	local1
+	waterControl
+	thisControl
 	local2
 	aFrog
 	aPoof
@@ -59,9 +59,13 @@
 		(if (<= (ego y?) horizon)
 			(ego posn: (ego x?) (- horizon 2))
 		)
-		(if (< (ego x?) 29) (ego x: 29))
+		(if (< (ego x?) 29)
+			(ego x: 29)
+		)
 		(super init:)
-		(if isNightTime (curRoom overlay: 115))
+		(if isNightTime
+			(curRoom overlay: 115)
+		)
 		(self setRegions: WOODS)
 		(ego view: 2 setStep: 3 2 init:)
 		(if (== frogPrinceState 0)
@@ -137,7 +141,9 @@
 			setCycle: Forward
 			init:
 		)
-		(if (== prevRoomNum 0) (ego x: 1 y: 150))
+		(if (== prevRoomNum 0)
+			(ego x: 1 y: 150)
+		)
 		((View new:)
 			view: 518
 			loop: 0
@@ -179,21 +185,21 @@
 		(super doit:)
 		(if
 			(and
-				(== (= local0 (ego onControl: origin)) cLBLUE)
+				(== (= waterControl (ego onControl: origin)) cLBLUE)
 				(== frogPrinceState 0)
 			)
 			(frogActions changeState: 1)
 		)
-		(if (!= local1 local0)
-			(= local1 local0)
-			(switch local0
-				(1
+		(if (!= thisControl waterControl)
+			(= thisControl waterControl)
+			(switch waterControl
+				(cBLACK
 					(if (not (ego has: iFrog))
 						(= currentStatus egoNormal)
 						(ego view: 2)
 					)
 				)
-				(512
+				(cLBLUE
 					(if (not (ego has: iFrog))
 						(ego view: 6)
 						(= currentStatus egoInKneeDeepWater)
@@ -203,7 +209,7 @@
 		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if
 			(and
 				(== frogPrinceState 4)
@@ -225,10 +231,18 @@
 					((Said '/prince>')
 						(if (and (== frogPrinceState 5) (cast contains: aFrog))
 							(cond 
-								((Said 'look') (Print 15 0))
-								((Said 'converse') (Print 15 1))
-								((Said 'get') (Print 15 2))
-								((Said 'kiss') (Print 15 3))
+								((Said 'look')
+									(Print 15 0)
+								)
+								((Said 'converse')
+									(Print 15 1)
+								)
+								((Said 'get')
+									(Print 15 2)
+								)
+								((Said 'kiss')
+									(Print 15 3)
+								)
 							)
 						else
 							(Print 15 4)
@@ -245,17 +259,31 @@
 					)
 					((Said 'look,find,look/frog')
 						(cond 
-							((ego has: iFrog) ((Inventory at: iFrog) showSelf:))
-							((or (== frogPrinceState frogInit) (== frogPrinceState frogHasBall)) (Print 15 6))
-							((== frogPrinceState frogUnderwater) (Print 15 7))
-							((== frogPrinceState frogGettingBall) (Print 15 8))
-							((== frogPrinceState frogHeldByEgo) (Print 15 9))
-							(else (Print 15 10))
+							((ego has: iFrog)
+								((Inventory at: iFrog) showSelf:)
+							)
+							((or (== frogPrinceState frogInit) (== frogPrinceState frogHasBall))
+								(Print 15 6)
+							)
+							((== frogPrinceState frogUnderwater)
+								(Print 15 7)
+							)
+							((== frogPrinceState frogGettingBall)
+								(Print 15 8)
+							)
+							((== frogPrinceState frogHeldByEgo)
+								(Print 15 9)
+							)
+							(else
+								(Print 15 10)
+							)
 						)
 					)
 					((Said 'look>')
 						(cond 
-							((Said '<under,in/water') (Print 15 7))
+							((Said '<under,in/water')
+								(Print 15 7)
+							)
 							((Said '/lake,water')
 								(Print
 									(Format @str 15 11
@@ -269,11 +297,18 @@
 							)
 							((or (Said '<down[/dirt]') (Said '/dirt'))
 								(cond 
-									(
-									(and ((Inventory at: iGoldBall) ownedBy: 15) (== frogPrinceState frogHasBall)) (Print 15 12))
-									(((Inventory at: iGoldBall) ownedBy: 15) (Print 15 13))
-									((== frogPrinceState frogHasBall) (Print 15 14))
-									(else (Print 15 15))
+									((and ((Inventory at: iGoldBall) ownedBy: 15) (== frogPrinceState frogHasBall))
+										(Print 15 12)
+									)
+									(((Inventory at: iGoldBall) ownedBy: 15)
+										(Print 15 13)
+									)
+									((== frogPrinceState frogHasBall)
+										(Print 15 14)
+									)
+									(else
+										(Print 15 15)
+									)
 								)
 							)
 							((Said '/lilies,pad')
@@ -289,12 +324,20 @@
 							)
 							((Said '/crown')
 								(cond 
-									((== frogPrinceState frogHeldByEgo) (Print 15 17))
-									((ego has: iCrown) ((Inventory at: iCrown) showSelf:))
-									(else (Print 800 1))
+									((== frogPrinceState frogHeldByEgo)
+										(Print 15 17)
+									)
+									((ego has: iCrown)
+										((Inventory at: iCrown) showSelf:)
+									)
+									(else
+										(Print 800 1)
+									)
 								)
 							)
-							((Said '/blossom') (Print 15 18))
+							((Said '/blossom')
+								(Print 15 18)
+							)
 							((Said '[<around][/room]')
 								(Print
 									(Format @str 15 19
@@ -308,34 +351,60 @@
 							)
 						)
 					)
-					((Said 'get/blossom') (Print 15 20))
-					((Said 'bathe,dive') (Print 15 21))
-					((Said 'wade') (Print 15 22))
+					((Said 'get/blossom')
+						(Print 15 20)
+					)
+					((Said 'bathe,dive')
+						(Print 15 21)
+					)
+					((Said 'wade')
+						(Print 15 22)
+					)
 					((or (Said 'get/drink') (Said 'drink[/water]'))
 						(= local2 (IsObjectOnControl ego 12))
 						(cond 
 							((== (ego view?) 2)
-								(if (& local2 $0200)
+								(if (& local2 cLBLUE)
 									(= oldEgoScript (ego script?))
 									(ego setScript: drinking)
 								else
 									(Print 800 1)
 								)
 							)
-							((== (ego view?) 6) (Print 15 23))
-							(else (Print 15 24))
+							((== (ego view?) 6)
+								(Print 15 23)
+							)
+							(else
+								(Print 15 24)
+							)
 						)
 					)
 					((Said 'get,get,capture/frog')
 						(cond 
-							((== frogPrinceState frogHeldByEgo) (Print 800 0))
-							((== frogPrinceState frogUnderwater) (Print 15 25))
-							((== frogPrinceState frogPrinceLeft) (Print 15 26))
-							((!= frogPrinceState frogHasBall) (Print 15 27))
-							((== (ego view?) 6) (Print 15 28))
-							((ego has: iGoldBall) (CantDo))
-							((ego inRect: 249 133 266 139) (Print 15 29))
-							((== frogPrinceState 7) (CantDo))
+							((== frogPrinceState frogHeldByEgo)
+								(Print 800 0)
+							)
+							((== frogPrinceState frogUnderwater)
+								(Print 15 25)
+							)
+							((== frogPrinceState frogPrinceLeft)
+								(Print 15 26)
+							)
+							((!= frogPrinceState frogHasBall)
+								(Print 15 27)
+							)
+							((== (ego view?) 6)
+								(Print 15 28)
+							)
+							((ego has: iGoldBall)
+								(CantDo)
+							)
+							((ego inRect: 249 133 266 139)
+								(Print 15 29)
+							)
+							((== frogPrinceState 7)
+								(CantDo)
+							)
 							((== frogPrinceState frogHasBall)
 								(if (< (ego distanceTo: aFrog) 13)
 									(HandsOff)
@@ -347,10 +416,11 @@
 							)
 						)
 					)
-					((Said 'get/lilies,pad') (Print 15 31))
+					((Said 'get/lilies,pad')
+						(Print 15 31)
+					)
 					((Said 'converse[/frog]')
-						(if
-						(or (== frogPrinceState 0) (== frogPrinceState 3) (== frogPrinceState 4))
+						(if (or (== frogPrinceState 0) (== frogPrinceState 3) (== frogPrinceState 4))
 							(Print 15 32)
 							(Print 15 33)
 						else
@@ -358,13 +428,13 @@
 						)
 					)
 					((Said 'throw,drop,place,deliver/ball')
-						(if (ego has: 5)
+						(if (ego has: iGoldBall)
 							(cond 
 								((== frogPrinceState frogInit)
 									(if ((Inventory at: iCrown) ownedBy: 200)
 										(if
 											(and
-												(& (= local2 (IsObjectOnControl ego 15)) $0200)
+												(& (= local2 (IsObjectOnControl ego 15)) cLRED)
 												(== (ego view?) 2)
 											)
 											(HandsOff)
@@ -379,14 +449,18 @@
 										(Print 15 37)
 									)
 								)
-								((!= (ego view?) 2) (Print 15 38))
-								(else (Print 15 39))
+								((!= (ego view?) 2)
+									(Print 15 38)
+								)
+								(else
+									(Print 15 39)
+								)
 							)
 						else
 							(Print 15 40)
 						)
 					)
-					((or (Said 'kiss/frog') (Said 'kiss[/!*]'))
+					((or (Said 'kiss/frog') (Said 'kiss[/noword]'))
 						(if (== frogPrinceState frogHeldByEgo)
 							(Print 15 41)
 							(frogActions changeState: 50)
@@ -398,7 +472,9 @@
 					((Said 'get/ball')
 						(if (== (ego view?) 2)
 							(cond 
-								((== frogPrinceState 7) (CantDo))
+								((== frogPrinceState 7)
+									(CantDo)
+								)
 								(((Inventory at: iGoldBall) ownedBy: 15)
 									(if (< (ego distanceTo: aBall) 10)
 										(HandsOff)
@@ -408,16 +484,20 @@
 										(Print 800 1)
 									)
 								)
-								((ego has: iGoldBall) (Print 800 0))
-								(else (Print 15 43))
+								((ego has: iGoldBall)
+									(Print 800 0)
+								)
+								(else
+									(Print 15 43)
+								)
 							)
 						else
 							(CantDo)
 						)
 					)
 					((Said 'deliver>')
-						(if (= inventorySaidMe (inventory saidMe:))
-							(if (ego has: (inventory indexOf: inventorySaidMe))
+						(if (= index (inventory saidMe:))
+							(if (ego has: (inventory indexOf: index))
 								(if (cast contains: aFrog)
 									(Print 15 44)
 								else
@@ -430,7 +510,9 @@
 					)
 					((Said 'get,rob/crown')
 						(cond 
-							((ego has: iCrown) (Print 800 0))
+							((ego has: iCrown)
+								(Print 800 0)
+							)
 							((== frogPrinceState frogHeldByEgo)
 								(Print 15 46)
 								((Inventory at: iCrown) moveTo: ego)
@@ -446,18 +528,20 @@
 								(= frogPrinceState frogPrinceLeft)
 								(frogActions changeState: 70)
 							)
-							(else (Print 15 42))
+							(else
+								(Print 15 42)
+							)
 						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(super newRoom: n)
 	)
 )
 
@@ -696,8 +780,12 @@
 					init:
 				)
 			)
-			(71 (aFrog dispose:))
-			(100 (= seconds (Random 3 8)))
+			(71
+				(aFrog dispose:)
+			)
+			(100
+				(= seconds (Random 3 8))
+			)
 			(101
 				(if (== (ego onControl: origin) cLBLUE)
 					(self changeState: 100)
@@ -729,8 +817,6 @@
 )
 
 (instance ballActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -770,7 +856,9 @@
 					setMotion: MoveTo (+ (ego x?) 10) (- (ego y?) 10) self
 				)
 			)
-			(11 (ego loop: 1))
+			(11
+				(ego loop: 1)
+			)
 		)
 	)
 )
@@ -788,7 +876,9 @@
 				(= seconds 5)
 				(= underBits (Print 15 52 #at -1 10 #dispose))
 			)
-			(2 (ego setCycle: BegLoop self))
+			(2
+				(ego setCycle: BegLoop self)
+			)
 			(3
 				(HandsOn)
 				(cls)

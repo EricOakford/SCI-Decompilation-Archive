@@ -13,24 +13,18 @@
 )
 
 (local
-	gEgoOnControl
+	thisControl
 	i
 )
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
 (instance wave1 of Prop
 	(properties)
 )
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance wave3 of Prop
-	(properties)
-)
+(instance wave3 of Prop)
 
 (instance Room41 of Room
 	(properties
@@ -46,9 +40,9 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(self setRegions: 505 501 503 504)
+		(self setRegions: GENESTA WATER BEACH GULL)
 		(wave1
-			isExtra: 1
+			isExtra: TRUE
 			view: 664
 			loop: 0
 			cel: 3
@@ -60,7 +54,7 @@
 			init:
 		)
 		(wave2
-			isExtra: 1
+			isExtra: TRUE
 			view: 664
 			loop: 1
 			cel: 2
@@ -72,7 +66,7 @@
 			init:
 		)
 		(wave3
-			isExtra: 1
+			isExtra: TRUE
 			view: 664
 			loop: 2
 			cel: 3
@@ -86,20 +80,40 @@
 		(waves add: wave1 wave2 wave3)
 		(wave1 setScript: waveActions_a)
 		(switch prevRoomNum
-			(38 (ego x: 19 y: 99))
+			(38
+				(ego x: 19 y: 99)
+			)
 			(35
 				(cond 
-					((== (ego view?) 2) (ego posn: 117 106))
-					((== (ego view?) 5) (ego posn: 186 112))
-					((== (ego view?) 6) (ego posn: 186 112))
-					((== (ego view?) 7) (ego posn: 201 112))
-					((== (ego view?) 8) (ego posn: 237 112))
-					(else (ego posn: 182 112))
+					((== (ego view?) 2)
+						(ego posn: 117 106)
+					)
+					((== (ego view?) 5)
+						(ego posn: 186 112)
+					)
+					((== (ego view?) 6)
+						(ego posn: 186 112)
+					)
+					((== (ego view?) 7)
+						(ego posn: 201 112)
+					)
+					((== (ego view?) 8)
+						(ego posn: 237 112)
+					)
+					(else
+						(ego posn: 182 112)
+					)
 				)
 			)
-			(31 (ego posn: 318 110))
-			(32 (ego x: 138 y: 188))
-			(40 (ego posn: 1 (ego y?)))
+			(31
+				(ego posn: 318 110)
+			)
+			(32
+				(ego x: 138 y: 188)
+			)
+			(40
+				(ego posn: 1 (ego y?))
+			)
 		)
 		(ego xStep: 3 yStep: 2 init:)
 		((ego viewer?) doit:)
@@ -109,12 +123,14 @@
 		(super doit:)
 		(if
 			(and
-				(& (= gEgoOnControl (ego onControl:)) cBROWN)
+				(& (= thisControl (ego onControl:)) cBROWN)
 				(or (<= (ego heading?) 90) (>= (ego heading?) 270))
 			)
 			(curRoom newRoom: 35)
 		)
-		(if (& gEgoOnControl cRED) (curRoom newRoom: 38))
+		(if (& thisControl cRED)
+			(curRoom newRoom: 38)
+		)
 	)
 	
 	(method (dispose)
@@ -130,7 +146,7 @@
 					(Said 'look/island')
 					(Said 'look/around')
 					(Said 'look/room')
-					(Said 'look[<around][/!*]')
+					(Said 'look[<around][/noword]')
 				)
 			)
 			(Print 41 0)
@@ -139,13 +155,10 @@
 )
 
 (instance waveActions_a of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -158,7 +171,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(self changeState: 1)
@@ -180,13 +192,10 @@
 )
 
 (instance waveActions_b of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -199,7 +208,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(if howFast

@@ -17,9 +17,9 @@
 )
 
 (local
-	local0
-	local1
-	gEgoOnControl
+	thisControl
+	waterControl
+	prevControl
 	local3
 	aFisher
 	aSmoke
@@ -216,9 +216,15 @@
 				)
 				((= aFisher (Actor new:)) view: 230)
 				(cond 
-					((<= fishermanTimer 12) (= fishermanX 40))
-					((< fishermanTimer 20) (= fishermanX 120))
-					(else (= fishermanX 166))
+					((<= fishermanTimer 12)
+						(= fishermanX 40)
+					)
+					((< fishermanTimer 20)
+						(= fishermanX 120)
+					)
+					(else
+						(= fishermanX 166)
+					)
 				)
 				(aFisher
 					posn: fishermanX 144
@@ -236,7 +242,9 @@
 			)
 		)
 		(ego observeControl: cWHITE cYELLOW cLGREEN)
-		(if (<= (ego y?) (+ horizon 1))
+		(if (<= (ego y?)
+				(+ horizon 1)
+			)
 			(ego y: (+ horizon 2))
 		)
 		(if
@@ -280,17 +288,27 @@
 						)
 					)
 					(8
-						(if (< (ego y?) 125) (ego x: 280) else (ego x: 317))
-						(if (<= (ego y?) (+ horizon 1))
+						(if (< (ego y?) 125)
+							(ego x: 280)
+						else
+							(ego x: 317)
+						)
+						(if (<= (ego y?)
+								(+ horizon 1)
+							)
 							(ego y: (+ horizon 2))
 						)
-						(if (ego inRect: 193 129 319 157) (ego setPri: 12))
+						(if (ego inRect: 193 129 319 157)
+							(ego setPri: 12)
+						)
 					)
 				)
 			)
 			(egoInShallowWater
 				(switch prevRoomNum
-					(13 (ego posn: 189 185))
+					(13
+						(ego posn: 189 185)
+					)
 					(1
 						(ego posn: 93 (+ horizon 2))
 					)
@@ -298,7 +316,9 @@
 			)
 			(egoInKneeDeepWater
 				(switch prevRoomNum
-					(13 (ego posn: 137 185))
+					(13
+						(ego posn: 137 185)
+					)
 					(1
 						(ego posn: 88 (+ horizon 2))
 					)
@@ -306,7 +326,9 @@
 			)
 			(egoInWaistDeepWater
 				(switch prevRoomNum
-					(13 (ego posn: 105 184))
+					(13
+						(ego posn: 105 184)
+					)
 					(1
 						(ego posn: 73 (+ horizon 2))
 					)
@@ -314,8 +336,12 @@
 			)
 			(egoSwimming
 				(switch prevRoomNum
-					(95 (ego x: 2))
-					(13 (ego posn: 42 184))
+					(95
+						(ego x: 2)
+					)
+					(13
+						(ego posn: 42 184)
+					)
 					(1
 						(ego posn: 20 (+ horizon 2))
 					)
@@ -329,40 +355,47 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (not (ego inRect: -5 135 174 153)) (= global107 0))
-		(= gEgoOnControl (ego onControl:))
-		(if
-		(and (ego inRect: -3 0 27 189) (!= global107 9))
+		(if (not (ego inRect: -5 135 174 153))
+			(= global107 0)
+		)
+		(= prevControl (ego onControl:))
+		(if (and (ego inRect: -3 0 27 189) (!= global107 9))
 			(ego view: 8)
 		)
-		(if
-		(and (& (ego onControl: 1) $0040) (== global107 9))
-			(ego observeControl: 16384)
-			(ego ignoreControl: 128)
+		(if (and (& (ego onControl: origin) cBROWN) (== global107 9))
+			(ego observeControl: cYELLOW)
+			(ego ignoreControl: cLRED)
 			(ego setPri: -1)
 			(= global107 0)
 		)
-		(if
-		(and (& (ego onControl: 1) $0020) (!= global107 9))
+		(if (and (& (ego onControl: origin) cMAGENTA) (!= global107 9))
 			(ego setPri: 13)
 			(ego illegalBits: cWHITE observeControl: cLGREEN)
-			(ego observeControl: 128)
+			(ego observeControl: cLGREY)
 			(= global107 9)
 		)
 		(if (== (curRoom script?) 0)
 			(if (!= global107 9)
 				(cond 
-					((ego inRect: 103 157 219 189) (ego setPri: 15))
-					((ego inRect: 193 129 319 157) (ego setPri: 12))
-					((ego inRect: 80 125 157 158) (ego setPri: 8))
-					(else (ego setPri: -1))
+					((ego inRect: 103 157 219 189)
+						(ego setPri: 15)
+					)
+					((ego inRect: 193 129 319 157)
+						(ego setPri: 12)
+					)
+					((ego inRect: 80 125 157 158)
+						(ego setPri: 8)
+					)
+					(else
+						(ego setPri: -1)
+					)
 				)
 			)
 			(cond 
 				(
 					(and
 						(== currentStatus egoNormal)
-						(& gEgoOnControl $1000)
+						(& prevControl cLRED)
 						(> (ego heading?) 135)
 					)
 					(self setScript: fallRocks)
@@ -370,12 +403,12 @@
 				(
 					(and
 						(== currentStatus egoNormal)
-						(& gEgoOnControl $1000)
+						(& prevControl cLRED)
 						(<= (ego heading?) 135)
 					)
 					(ego setPri: -1)
 				)
-				((& gEgoOnControl $2000)
+				((& prevControl cLMAGENTA)
 					(if
 						(and
 							(!= global107 9)
@@ -387,10 +420,9 @@
 						(ego setPri: 12)
 					)
 				)
-				((& gEgoOnControl $0100)
+				((& prevControl cGREY)
 					(if (!= global107 9)
-						(if
-						(and (> (ego heading?) 90) (< (ego heading?) 270))
+						(if (and (> (ego heading?) 90) (< (ego heading?) 270))
 							(ego setPri: 12)
 						else
 							(ego setPri: -1)
@@ -399,8 +431,12 @@
 				)
 				((== global107 9)
 					(cond 
-						((& gEgoOnControl $0010) (self setScript: fallNorth))
-						((& gEgoOnControl $0004) (self setScript: fallSouth))
+						((& prevControl cRED)
+							(self setScript: fallNorth)
+						)
+						((& prevControl cGREEN)
+							(self setScript: fallSouth)
+						)
 					)
 				)
 			)
@@ -413,12 +449,18 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'get/fisherman') (if (== fishermanState fisherComingHome) (Print 7 0) else (Print 7 1)))
+					((Said 'get/fisherman')
+						(if (== fishermanState fisherComingHome)
+							(Print 7 0)
+						else
+							(Print 7 1)
+						)
+					)
 					((Said 'get/pole')
 						(if (cast contains: aFisher)
 							(Print 7 2)
@@ -433,31 +475,51 @@
 							(Print 7 3)
 						)
 					)
-					((Said 'kiss') (if (== fishermanState fisherComingHome) (Print 7 5) else (Print 7 6)))
+					((Said 'kiss')
+						(if (== fishermanState fisherComingHome)
+							(Print 7 5)
+						else
+							(Print 7 6)
+						)
+					)
 					((Said 'deliver>')
-						(if (= inventorySaidMe (inventory saidMe:))
-							(if (ego has: (inventory indexOf: inventorySaidMe))
-								(if (== fishermanState fisherComingHome) (Print 7 7) else (Print 7 8))
+						(if (= index (inventory saidMe:))
+							(if (ego has: (inventory indexOf: index))
+								(if (== fishermanState fisherComingHome)
+									(Print 7 7)
+								else
+									(Print 7 8)
+								)
 							else
 								(DontHave)
 							)
 						)
 					)
-					((Said 'help/fisherman') (Print 7 9))
+					((Said 'help/fisherman')
+						(Print 7 9)
+					)
 					(
 						(or
 							(Said 'look/around')
 							(Said 'look/room')
-							(Said 'look[<around][/!*]')
+							(Said 'look[<around][/noword]')
 						)
 						(Print 7 10)
 					)
 					((Said 'look>')
 						(cond 
-							((Said '/anchor') (Print 7 11))
-							((Said '/cottage') (Print 7 12))
-							((Said '<under/dock') (Print 7 13))
-							((Said '/door') (Print 7 14))
+							((Said '/anchor')
+								(Print 7 11)
+							)
+							((Said '/cottage')
+								(Print 7 12)
+							)
+							((Said '<under/dock')
+								(Print 7 13)
+							)
+							((Said '/door')
+								(Print 7 14)
+							)
 							((Said '/window')
 								(if
 									(or
@@ -471,7 +533,9 @@
 									(Print 800 1)
 								)
 							)
-							((Said '/dock') (Print 7 16))
+							((Said '/dock')
+								(Print 7 16)
+							)
 							((Said '/fisherman')
 								(if (== fishermanState fisherComingHome)
 									(Print 7 17)
@@ -479,35 +543,56 @@
 									(Print 7 3)
 								)
 							)
-							((Said '/grass') (Print 7 18))
+							((Said '/grass')
+								(Print 7 18)
+							)
 						)
 					)
-					((Said 'get/anchor') (Print 7 19))
-					((Said 'break/window') (Print 7 20))
-					((Said 'break/door') (Print 7 21))
-					((Said 'open/window') (Print 7 22))
-					((Said 'close/door') (Print 7 23))
-					(
-						(Said
-							'converse[/fisherman,fisherman,fisherman,fisherman,fisherman]'
-						)
+					((Said 'get/anchor')
+						(Print 7 19)
+					)
+					((Said 'break/window')
+						(Print 7 20)
+					)
+					((Said 'break/door')
+						(Print 7 21)
+					)
+					((Said 'open/window')
+						(Print 7 22)
+					)
+					((Said 'close/door')
+						(Print 7 23)
+					)
+					((Said 'converse[/fisherman,fisherman,fisherman,fisherman,fisherman]')
 						(if (== fishermanState fisherComingHome)
 							(Print 7 24)
 						else
 							(event claimed: FALSE)
 						)
 					)
-					((Said 'unlatch/door') (if (not isNightTime) (Print 7 25) else (Print 7 26)))
+					((Said 'unlatch/door')
+						(if (not isNightTime)
+							(Print 7 25)
+						else
+							(Print 7 26)
+						)
+					)
 					((Said 'bang/door')
 						(if (ego inRect: 204 129 233 148)
-							(if (not isNightTime) (Print 7 27) else (Print 7 28))
+							(if (not isNightTime)
+								(Print 7 27)
+							else
+								(Print 7 28)
+							)
 						else
 							(Print 800 1)
 						)
 					)
 					((Said 'open/door')
 						(cond 
-							((!= (door cel?) 0) (Print 7 29))
+							((!= (door cel?) 0)
+								(Print 7 29)
+							)
 							((ego inRect: 204 129 233 148)
 								(if (not isNightTime)
 									(HandsOff)
@@ -518,7 +603,9 @@
 									(Print 7 26)
 								)
 							)
-							(else (Print 800 1))
+							(else
+								(Print 800 1)
+							)
 						)
 					)
 				)
@@ -528,44 +615,44 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(HandsOn)
 		(ego setPri: -1 illegalBits: cWHITE)
-		(if (== fishermanState fisherComingHome) (= fishermanState fisherAtHome))
-		(super newRoom: newRoomNumber)
+		(if (== fishermanState fisherComingHome)
+			(= fishermanState fisherAtHome)
+		)
+		(super newRoom: n)
 	)
 )
 
 (instance water of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
-				(!= local0 (= local1 (ego onControl: TRUE)))
+				(!= thisControl (= waterControl (ego onControl: origin)))
 				(!= global107 9)
 			)
-			(= local0 local1)
+			(= thisControl waterControl)
 			(ego setCycle: Walk)
-			(switch local1
-				(1
+			(switch waterControl
+				(cBLACK
 					(= currentStatus egoNormal)
 					(ego view: 2)
 				)
-				(2048
-					(ego observeControl: 16384)
+				(cLCYAN
+					(ego observeControl: cYELLOW)
 					(= currentStatus egoInShallowWater)
 					(ego view: 5)
 				)
-				(512
+				(cLBLUE
 					(= currentStatus egoInKneeDeepWater)
 					(ego view: 6)
 				)
-				(8
+				(cCYAN
 					(ego view: 7)
 					(= currentStatus egoInWaistDeepWater)
 				)
-				(2
+				(cBLUE
 					(ego view: 8)
 					(= currentStatus egoSwimming)
 					(ego setCycle: Forward)
@@ -576,8 +663,6 @@
 )
 
 (instance fallSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -598,7 +683,7 @@
 				(ego yStep: 2 setPri: -1)
 				(ego
 					view: 19
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 255
 					setCycle: EndLoop self
 				)
@@ -608,7 +693,7 @@
 				(ego
 					viewer: water
 					illegalBits: cWHITE
-					observeControl: 1024
+					observeControl: cLGREEN
 				)
 				(curRoom setScript: 0)
 			)
@@ -617,8 +702,6 @@
 )
 
 (instance fallNorth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -643,7 +726,7 @@
 					loop: 3
 					view: 7
 					illegalBits: cWHITE
-					observeControl: 1024
+					observeControl: cLGREEN
 					viewer: water
 				)
 				(= global107 0)
@@ -655,8 +738,6 @@
 )
 
 (instance fallRocks of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -682,7 +763,7 @@
 			(2
 				(ego
 					illegalBits: cWHITE
-					observeControl: 1024
+					observeControl: cLGREEN
 					setCycle: Walk
 					loop: 1
 					view: 2
@@ -727,13 +808,10 @@
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -746,7 +824,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(self changeState: 1)

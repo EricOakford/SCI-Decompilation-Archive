@@ -27,8 +27,8 @@
 	local4
 	local5
 	local6
-	local7
-	local8
+	lookHoleIndex
+	holeEmpty
 )
 
 (enum ;crypt door states
@@ -53,8 +53,6 @@
 )
 
 (instance door of Prop
-	(properties)
-	
 	(method (cue)
 		(self ignoreActors:)
 		(curRoom newRoom: 69)
@@ -73,10 +71,12 @@
 	(method (init)
 		(= isIndoors FALSE)
 		(Load VIEW 47)
-		(ego edgeHit: 0 observeControl: 16384)
+		(ego edgeHit: 0 observeControl: cYELLOW)
 		(= numZombies 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 118))
+		(if isNightTime
+			(curRoom overlay: 118)
+		)
 		(self setRegions: CEMETERY MOUNTAIN)
 		(if isNightTime
 			(Load VIEW 261)
@@ -124,7 +124,7 @@
 			)
 		)
 		(if (== cryptDoorState doorOpen)
-			(ego ignoreControl: 16384)
+			(ego ignoreControl: cYELLOW)
 			(door
 				posn: 273 148
 				view: 611
@@ -147,13 +147,17 @@
 			)
 		)
 		(switch prevRoomNum
-			(west (ego posn: 2 (ego y?)))
+			(west
+				(ego posn: 2 (ego y?))
+			)
 			(north
 				(ego x: 45 y: (+ horizon (ego yStep?) 1))
 			)
-			(south (ego posn: 172 188))
+			(south
+				(ego posn: 172 188)
+			)
 			(69
-				(ego x: 266 y: 153 xStep: 3 yStep: 2 ignoreControl: 16384)
+				(ego x: 266 y: 153 xStep: 3 yStep: 2 ignoreControl: cYELLOW)
 				(door
 					posn: 273 148
 					view: 611
@@ -165,35 +169,37 @@
 					stopUpd:
 				)
 			)
-			(0 (ego x: 180 y: 188))
+			(0
+				(ego x: 180 y: 188)
+			)
 		)
 		(= currentStatus egoNormal)
 		(ego view: 2 init:)
-		(= local6 1)
-		(while (<= local6 timesUsedShovel)
+		(for ((= local6 1)) (<= local6 timesUsedShovel) ((++ local6))
 			(if
 				(==
-					[gNewPropX (= local5 (* (- local6 1) 3))]
+					[aDugHole (= local5 (* (- local6 1) 3))]
 					curRoomNum
 				)
 				((View new:)
 					view: 528
 					loop: 0
 					cel: 6
-					posn: [gNewPropX (+ local5 1)] [gNewPropX (+ local5 2)]
+					posn: [aDugHole (+ local5 1)] [aDugHole (+ local5 2)]
 					ignoreActors:
 					setPri: 0
 					addToPic:
 					ignoreActors:
 				)
 			)
-			(++ local6)
 		)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) cYELLOW) (curRoom newRoom: 69))
+		(if (& (ego onControl: 0) cYELLOW)
+			(curRoom newRoom: 69)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -201,16 +207,36 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'climb/boulder') (Print 18 0))
-					((Said 'open,enter/crypt') (if (== cryptDoorState doorOpen) (Print 18 1) else (Print 18 2)))
+					((Said 'climb/boulder')
+						(Print 18 0)
+					)
+					((Said 'open,enter/crypt')
+						(if (== cryptDoorState doorOpen)
+							(Print 18 1)
+						else
+							(Print 18 2)
+						)
+					)
 					((Said 'look>')
 						(cond 
-							((Said '/boulder') (Print 18 3))
-							((Said '/grass') (Print 18 4))
-							((Said '/crypt') (Print 18 5))
-							((Said '/cliff') (Print 18 6))
-							((Said '/gravestone') (Print 18 7))
-							((Said '/monument,lion') (Print 18 8))
+							((Said '/boulder')
+								(Print 18 3)
+							)
+							((Said '/grass')
+								(Print 18 4)
+							)
+							((Said '/crypt')
+								(Print 18 5)
+							)
+							((Said '/cliff')
+								(Print 18 6)
+							)
+							((Said '/gravestone')
+								(Print 18 7)
+							)
+							((Said '/monument,lion')
+								(Print 18 8)
+							)
 							((Said '/door')
 								(if (== (door cel?) 0)
 									(Print 18 9)
@@ -219,37 +245,44 @@
 								)
 							)
 							((Said '/hole')
-								(= local7 1)
-								(while (<= local7 timesUsedShovel)
+								(for ((= lookHoleIndex 1)) (<= lookHoleIndex timesUsedShovel) ((++ lookHoleIndex))
 									(if
 										(and
-											(== [gNewPropX (= local5 (* (- local7 1) 3))] 18)
+											(== [aDugHole (= local5 (* (- lookHoleIndex 1) 3))] 18)
 											(<
 												(egoDist
-													doit: [gNewPropX (+ local5 1)] [gNewPropX (+ local5 2)]
+													doit: [aDugHole (+ local5 1)] [aDugHole (+ local5 2)]
 												)
 												20
 											)
 										)
-										(= local8 1)
+										(= holeEmpty TRUE)
 									)
-									(++ local7)
 								)
 								(if (>= timesUsedShovel 0)
-									(if local8 (Print 18 11) else (Print 800 1))
+									(if holeEmpty
+										(Print 18 11)
+									else
+										(Print 800 1)
+									)
 								else
 									(Print 18 12)
 								)
-								(= local8 0)
+								(= holeEmpty FALSE)
 							)
-							((Said '[<around][/room]') (Print 18 13) (Print 18 14))
+							((Said '[<around][/room]')
+								(Print 18 13)
+								(Print 18 14)
+							)
 						)
 					)
 				)
 				(cond 
 					((Said '/door>')
 						(cond 
-							((Said 'break') (Print 18 15))
+							((Said 'break')
+								(Print 18 15)
+							)
 							((Said 'bang')
 								(if (ego inRect: 262 149 292 157)
 									(Print 18 16)
@@ -262,14 +295,18 @@
 									(cond 
 										((== cryptDoorState doorClosed)
 											(doorSound play: door)
-											(ego setMotion: 0 ignoreControl: 16384)
+											(ego setMotion: 0 ignoreControl: cYELLOW)
 											(HandsOff)
 											(= cryptDoorState doorOpen)
 											(= inCutscene TRUE)
 											(door setCycle: EndLoop door)
 										)
-										((== cryptDoorState doorLocked) (Print 18 17))
-										(else (Print 18 18))
+										((== cryptDoorState doorLocked)
+											(Print 18 17)
+										)
+										(else
+											(Print 18 18)
+										)
 									)
 								else
 									(Print 800 1)
@@ -281,7 +318,7 @@
 								else
 									(Print 18 20)
 									(door setCycle: BegLoop)
-									(ego observeControl: 16384)
+									(ego observeControl: cYELLOW)
 									(= cryptDoorState doorClosed)
 									(doorSound play:)
 								)
@@ -291,20 +328,23 @@
 									(if (ego inRect: 262 149 292 157)
 										(cond 
 											((== cryptDoorState doorClosed)
-												(if
-												(and ((Inventory at: iPandorasBox) ownedBy: 69) (== gamePhase endGame))
+												(if (and ((Inventory at: iPandorasBox) ownedBy: 69) (== gamePhase endGame))
 													(Print 18 21 #draw)
 													(theGame changeScore: 2)
 													(ego put: iSkeletonKey 18)
 													(= cryptDoorState doorLocked)
-													(ego observeControl: 16384)
+													(ego observeControl: cYELLOW)
 												else
 													(Print 18 22)
 													(= cryptDoorState doorLocked)
 												)
 											)
-											((== cryptDoorState doorOpen) (Print 18 23))
-											((== cryptDoorState doorLocked) (Print 18 24))
+											((== cryptDoorState doorOpen)
+												(Print 18 23)
+											)
+											((== cryptDoorState doorLocked)
+												(Print 18 24)
+											)
 										)
 									else
 										(Print 800 1)
@@ -319,17 +359,21 @@
 										((== cryptDoorState doorLocked)
 											(if ((Inventory at: iSkeletonKey) ownedBy: ego)
 												(Print 18 26)
-												(if (not global187)
+												(if (not unlockedCryptDoor)
 													(theGame changeScore: 3)
-													(++ global187)
+													(++ unlockedCryptDoor)
 												)
 												(= cryptDoorState doorClosed)
 											else
 												(Print 18 27)
 											)
 										)
-										((== cryptDoorState doorOpen) (Print 18 28))
-										((== cryptDoorState doorClosed) (Print 18 29))
+										((== cryptDoorState doorOpen)
+											(Print 18 28)
+										)
+										((== cryptDoorState doorClosed)
+											(Print 18 29)
+										)
 									)
 								else
 									(Print 800 1)
@@ -340,37 +384,70 @@
 					((Said 'read,look/epitaph,gravestone,boulder')
 						(cond 
 							((& (ego onControl: 0) cGREEN)
-								(Print 18 30 #mode teJustCenter #at -1 15 #width 290)
+								(Print 18 30
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cLGREY)
-								(Print 18 31 #mode teJustCenter #at -1 15 #width 290)
+								(Print 18 31
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cCYAN)
-								(Print 18 32 #mode teJustCenter #at -1 15 #width 290)
+								(Print 18 32
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cMAGENTA)
-								(Print 18 33 #mode teJustCenter #at -1 15 #width 290)
+								(Print 18 33
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cLRED)
-								(Print 18 34 #mode teJustCenter #at -1 15 #width 290)
+								(Print 18 34
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cBLUE)
-								(Print 18 35 #mode teJustCenter #at -1 15 #width 290)
+								(Print 18 35
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cRED)
-								(Print 18 36 #mode teJustCenter #at -1 15 #width 290)
+								(Print 18 36
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cGREY)
-								(Print 18 37 #mode teJustCenter #at -1 15 #width 290)
+								(Print 18 37
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
-							(else (Print 800 1))
+							(else
+								(Print 800 1)
+							)
 						)
 					)
 					((Said 'dig[/hole,grave]')
-						(if
-						(and (ego has: iShovel) (== 0 ((Inventory at: iShovel) loop?)))
+						(if (and (ego has: iShovel) (== 0 ((Inventory at: iShovel) loop?)))
 							(if (> mansionPhase 0)
-								(if (& (ego onControl: 0) $7fff)
+								(if (& (ego onControl: 0) (- cWHITE cBLACK))
 									(ego setScript: digging)
 									(digging changeState: 1)
 								else
@@ -385,26 +462,28 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(HandsOn)
-		(= noWearCrown 0)
-		(if (== (ego view?) 2) (super newRoom: newRoomNumber))
+		(= noWearCrown FALSE)
+		(if (== (ego view?) 2)
+			(super newRoom: n)
+		)
 	)
 )
 
 (instance z4Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 4))
+			(0
+				(= seconds 4)
+			)
 			(1
-				(= noWearCrown 1)
+				(= noWearCrown TRUE)
 				(zTheme loop: -1 play:)
 				(++ numZombies)
 				(aZombie1 show: setCycle: EndLoop self)
@@ -434,8 +513,12 @@
 			)
 			(3
 				(cond 
-					((ego has: iScarab) (self changeState: 4))
-					((== currentStatus egoNormal) (self changeState: 10))
+					((ego has: iScarab)
+						(self changeState: 4)
+					)
+					((== currentStatus egoNormal)
+						(self changeState: 10)
+					)
 				)
 			)
 			(4
@@ -472,7 +555,9 @@
 					)
 					(aZombie2 setMotion: Wander)
 				)
-				(if (cast contains: aZombie3) (aZombie3 setMotion: Wander))
+				(if (cast contains: aZombie3)
+					(aZombie3 setMotion: Wander)
+				)
 				(aZombie1 setMotion: Wander)
 			)
 			(11
@@ -493,14 +578,16 @@
 )
 
 (instance z5Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 8))
+			(0
+				(= seconds 8)
+			)
 			(1
 				(++ numZombies)
-				(if (== (zTheme state?) 0) (zTheme loop: -1 play:))
+				(if (== (zTheme state?) 0)
+					(zTheme loop: -1 play:)
+				)
 				(if (== (zTheme loop?) 1)
 					(zTheme loop: -1 changeState:)
 				)
@@ -514,7 +601,7 @@
 				)
 			)
 			(2
-				(if (== currentStatus 0)
+				(if (== currentStatus egoNormal)
 					(aZombie2
 						view: 269
 						setCycle: Walk
@@ -532,8 +619,12 @@
 			)
 			(3
 				(cond 
-					((ego has: 7) (self changeState: 4))
-					((== currentStatus 0) (self changeState: 10))
+					((ego has: iScarab)
+						(self changeState: 4)
+					)
+					((== currentStatus egoNormal)
+						(self changeState: 10)
+					)
 				)
 			)
 			(4
@@ -553,7 +644,7 @@
 			)
 			(10
 				(HandsOff)
-				(= currentStatus 17)
+				(= currentStatus egoZombie)
 				(zTheme dispose: number: 21 play:)
 				(ego view: 36 cel: 255 setMotion: 0 setCycle: EndLoop self)
 				(aZombie2 setMotion: Wander)
@@ -583,25 +674,27 @@
 			(13
 				(cls)
 				(zTheme stop:)
-				(= dead 1)
+				(= dead TRUE)
 			)
 		)
 	)
 )
 
 (instance z1Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 10))
+			(0
+				(= seconds 10)
+			)
 			(1
-				(if (== (zTheme state?) 0) (zTheme loop: -1 play:))
+				(if (== (zTheme state?) 0)
+					(zTheme loop: -1 play:)
+				)
 				(if (== (zTheme loop?) 1)
 					(zTheme loop: -1 changeState:)
 				)
 				(++ numZombies)
-				(= noWearCrown 1)
+				(= noWearCrown TRUE)
 				(aZombie3 show: setCycle: EndLoop self)
 				((View new:)
 					view: 260
@@ -611,7 +704,7 @@
 				)
 			)
 			(2
-				(if (== currentStatus 0)
+				(if (== currentStatus egoNormal)
 					(aZombie3
 						view: 261
 						setCycle: Walk
@@ -629,8 +722,12 @@
 			)
 			(3
 				(cond 
-					((ego has: 7) (self changeState: 4))
-					((== currentStatus 0) (self changeState: 10))
+					((ego has: iScarab)
+						(self changeState: 4)
+					)
+					((== currentStatus egoNormal)
+						(self changeState: 10)
+					)
 				)
 			)
 			(4
@@ -645,7 +742,7 @@
 			)
 			(10
 				(HandsOff)
-				(= currentStatus 17)
+				(= currentStatus egoZombie)
 				(zTheme dispose: number: 21 play:)
 				(ego view: 36 cel: 255 setMotion: 0 setCycle: EndLoop self)
 				(aZombie3 setMotion: Wander)
@@ -675,32 +772,32 @@
 			(13
 				(cls)
 				(zTheme stop:)
-				(= dead 1)
+				(= dead TRUE)
 			)
 		)
 	)
 )
 
 (instance holeActions of Script
-	(properties)
-	
-	(method (cue &tmp temp0)
-		(= temp0 (aHole cel?))
-		(++ temp0)
-		(if (>= state 0) (aHole cel: temp0) else (++ state))
+	(method (cue &tmp theCel)
+		(= theCel (aHole cel?))
+		(++ theCel)
+		(if (>= state 0)
+			(aHole cel: theCel)
+		else
+			(++ state)
+		)
 	)
 )
 
 (instance digging of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(HandsOff)
 				(ego
 					view: 47
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 255
 					setCycle: EndLoop self
 				)
@@ -746,11 +843,11 @@
 				)
 			)
 			(6
-				(= [gNewPropX (= local5 (* (- (++ timesUsedShovel) 1) 3))]
+				(= [aDugHole (= local5 (* (- (++ timesUsedShovel) 1) 3))]
 					curRoomNum
 				)
-				(= [gNewPropX (+ local5 1)] (aHole x?))
-				(= [gNewPropX (+ local5 2)] (aHole y?))
+				(= [aDugHole (+ local5 1)] (aHole x?))
+				(= [aDugHole (+ local5 2)] (aHole y?))
 				(ego view: 2 setCycle: Walk)
 				(HandsOn)
 				(cond 
@@ -780,7 +877,9 @@
 						(ego get: iLocket)
 						(theGame changeScore: 3)
 					)
-					(else (Print 18 46))
+					(else
+						(Print 18 46)
+					)
 				)
 				(HandsOn)
 			)
@@ -789,8 +888,6 @@
 )
 
 (instance getItems of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -799,7 +896,7 @@
 			)
 			(2
 				(aHole setLoop: 0 cel: 6)
-				(= gotItem 1)
+				(= gotItem TRUE)
 				(ego setCycle: BegLoop self)
 			)
 			(3
@@ -812,8 +909,6 @@
 )
 
 (instance egoDist of Code
-	(properties)
-	
 	(method (doit param1 param2 &tmp temp0)
 		(= temp0
 			(Sqrt

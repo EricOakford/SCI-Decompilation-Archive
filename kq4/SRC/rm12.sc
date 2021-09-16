@@ -15,7 +15,7 @@
 
 (local
 	[treeArm 13]
-	grabCycle
+	grabbedLoop
 	i
 	aEye1
 	aEye2
@@ -51,7 +51,9 @@
 		(Load SOUND 65)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 112))
+		(if isNightTime
+			(curRoom overlay: 112)
+		)
 		(= aEye1 (Prop new:))
 		(= aEye2 (Prop new:))
 		(= aEye3 (Prop new:))
@@ -118,10 +120,8 @@
 			init:
 		)
 		(self setRegions: SCARY_FOREST MOUNTAIN)
-		(= i 1)
-		(while (< i 13)
+		(for ((= i 1)) (< i 13) ((++ i))
 			(= [treeArm i] (Prop new:))
-			(++ i)
 		)
 		([treeArm 1]
 			view: 695
@@ -290,30 +290,65 @@
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (not choppedScaryTree) (== (curRoom script?) 0))
+		(if (and (not choppedScaryTree) (== (curRoom script?) 0))
 			(cond 
-				((& (ego onControl: 0) cLGREY) (= grabCycle 1) (= i 2) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) cLMAGENTA) (= grabCycle 1) (= i 3))
-				((& (ego onControl: 0) cBROWN) (= grabCycle 1) (= i 6) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) cMAGENTA) (= grabCycle 1) (= i 5) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) cGREY) (= grabCycle 2) (= i 1) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) cLRED) (= grabCycle 2) (= i 4) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) cRED) (= grabCycle 2) (= i 7) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) cLBLUE) (= grabCycle 2) (= i 8) (curRoom setScript: grabbed))
-				((& (ego onControl: 0) cLCYAN) (= grabCycle 2) (= i 9) (curRoom setScript: grabbed))
+				((& (ego onControl: 0) cLGREY)
+					(= grabbedLoop 1)
+					(= i 2)
+					(curRoom setScript: grabbed)
+				)
+				((& (ego onControl: 0) cLMAGENTA)
+					(= grabbedLoop 1)
+					(= i 3)
+					(curRoom setScript: grabbed)	;EO: this was missing
+				)
+				((& (ego onControl: 0) cBROWN)
+					(= grabbedLoop 1)
+					(= i 6)
+					(curRoom setScript: grabbed)
+				)
+				((& (ego onControl: 0) cMAGENTA)
+					(= grabbedLoop 1)
+					(= i 5)
+					(curRoom setScript: grabbed)
+				)
+				((& (ego onControl: 0) cGREY)
+					(= grabbedLoop 2)
+					(= i 1)
+					(curRoom setScript: grabbed)
+				)
+				((& (ego onControl: 0) cLRED)
+					(= grabbedLoop 2)
+					(= i 4)
+					(curRoom setScript: grabbed)
+				)
+				((& (ego onControl: 0) cRED)
+					(= grabbedLoop 2)
+					(= i 7)
+					(curRoom setScript: grabbed)
+				)
+				((& (ego onControl: 0) cLBLUE)
+					(= grabbedLoop 2)
+					(= i 8)
+					(curRoom setScript: grabbed)
+				)
+				((& (ego onControl: 0) cLCYAN)
+					(= grabbedLoop 2)
+					(= i 9)
+					(curRoom setScript: grabbed)
+				)
 				((& (ego onControl: 0) cGREEN)
-					(= grabCycle 2)
+					(= grabbedLoop 2)
 					(= i 10)
 					(curRoom setScript: grabbed)
 				)
 				((& (ego onControl: 0) cLGREEN)
-					(= grabCycle 2)
+					(= grabbedLoop 2)
 					(= i 11)
 					(curRoom setScript: grabbed)
 				)
 				((& (ego onControl: 0) cCYAN)
-					(= grabCycle 3)
+					(= grabbedLoop 3)
 					(= i 12)
 					(curRoom setScript: grabbed)
 				)
@@ -346,8 +381,6 @@
 )
 
 (instance grabbed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -356,7 +389,7 @@
 				(HandsOff)
 				([treeArm i]
 					startUpd:
-					setCycle: CycleTo grabCycle 1 self
+					setCycle: CycleTo grabbedLoop 1 self
 				)
 			)
 			(1
@@ -374,7 +407,9 @@
 				)
 				(= seconds 5)
 			)
-			(3 (= dead TRUE))
+			(3
+				(= dead TRUE)
+			)
 		)
 	)
 )

@@ -17,17 +17,11 @@
 	ripple
 	door
 )
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
 (instance Room40 of Room
 	(properties
@@ -89,10 +83,18 @@
 			addToPic:
 		)
 		(cond 
-			((== prevRoomNum 32) (ego x: 160 y: 188))
-			((== prevRoomNum 39) (ego x: 1 y: (ego y?)))
-			((== prevRoomNum 41) (ego x: 318 y: (ego y?)))
-			((== prevRoomNum 37) (ego x: 158 y: (+ horizon (ego yStep?) 1)))
+			((== prevRoomNum 32)
+				(ego x: 160 y: 188)
+			)
+			((== prevRoomNum 39)
+				(ego x: 1 y: (ego y?))
+			)
+			((== prevRoomNum 41)
+				(ego x: 318 y: (ego y?))
+			)
+			((== prevRoomNum 37)
+				(ego x: 158 y: (+ horizon (ego yStep?) 1))
+			)
 		)
 		(ego xStep: 3 yStep: 2 init:)
 		((ego viewer?) doit:)
@@ -115,13 +117,10 @@
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -134,7 +133,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(if howFast

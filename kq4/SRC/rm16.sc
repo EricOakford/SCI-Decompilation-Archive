@@ -25,9 +25,9 @@
 	zombie3
 	aHole
 	local4
-	local5
-	local6
-	local7
+	holeXY
+	i
+	lookHoleIndex
 	holeEmpty
 )
 (instance zTheme of Sound
@@ -57,7 +57,9 @@
 		)
 		(if (== prevRoomNum 22) (ego x: 158))
 		(super init:)
-		(if isNightTime (curRoom overlay: 116))
+		(if isNightTime
+			(curRoom overlay: 116)
+		)
 		(self setRegions: CEMETERY)
 		(if isNightTime
 			(Load VIEW 261)
@@ -104,27 +106,25 @@
 				hide:
 			)
 		)
-		(ego view: 2 observeControl: 16384 init:)
+		(ego view: 2 observeControl: cYELLOW init:)
 		(= currentStatus egoNormal)
 		(curRoom setScript: holeActions)
-		(= local6 1)
-		(while (<= local6 timesUsedShovel)
+		(for ((= i 1)) (<= i timesUsedShovel) ((++ i))
 			(if
 				(==
-					[gNewPropX (= local5 (* (- local6 1) 3))]
+					[aDugHole (= holeXY (* (- i 1) 3))]
 					curRoomNum
 				)
 				((View new:)
 					view: 528
 					loop: 0
 					cel: 6
-					posn: [gNewPropX (+ local5 1)] [gNewPropX (+ local5 2)]
+					posn: [aDugHole (+ holeXY 1)] [aDugHole (+ holeXY 2)]
 					setPri: 0
 					addToPic:
 					ignoreActors:
 				)
 			)
-			(++ local6)
 		)
 	)
 	
@@ -133,41 +133,87 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'look/gravestone') (Print 16 0))
+					((Said 'look/gravestone')
+						(Print 16 0)
+					)
 					((Said 'read,look/epitaph,gravestone,boulder')
 						(cond 
 							((& (ego onControl: 0) cCYAN)
-								(Print 16 1 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 1
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cMAGENTA)
-								(Print 16 2 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 2 
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cGREY)
-								(Print 16 3 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 3
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cLBLUE)
-								(Print 16 4 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 4
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cGREEN)
-								(Print 16 5 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 5
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cBLUE)
-								(Print 16 6 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 6
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cLGREY)
-								(Print 16 7 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 7
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cBROWN)
-								(Print 16 8 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 8
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cRED)
-								(Print 16 9 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 9
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cLGREEN)
-								(Print 16 10 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 10
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							((& (ego onControl: 0) cLRED)
-								(Print 16 11 #mode teJustCenter #at -1 15 #width 290)
+								(Print 16 11
+									#mode teJustCenter
+									#at -1 15
+									#width 290
+								)
 							)
 							(else
 								(Print 800 1)
@@ -183,40 +229,49 @@
 									(Print 800 1)
 								)
 							)
-							((Said '/cross') (Print 16 13))
-							((Said '/forest') (Print 16 14))
+							((Said '/cross')
+								(Print 16 13)
+							)
+							((Said '/forest')
+								(Print 16 14)
+							)
 							((Said '/hole')
-								(= local7 1)
-								(while (<= local7 timesUsedShovel)
+								(for ((= lookHoleIndex 1)) (<= lookHoleIndex timesUsedShovel) ((++ lookHoleIndex))
 									(if
 										(and
-											(== [gNewPropX (= local5 (* (- local7 1) 3))] 16)
+											(== [aDugHole (= holeXY (* (- lookHoleIndex 1) 3))] 16)
 											(<
 												(egoDist
-													doit: [gNewPropX (+ local5 1)] [gNewPropX (+ local5 2)]
+													doit: [aDugHole (+ holeXY 1)] [aDugHole (+ holeXY 2)]
 												)
 												20
 											)
 										)
 										(= holeEmpty TRUE)
 									)
-									(++ local7)
 								)
 								(cond 
-									(holeEmpty (Print 16 15))
-									((ego inRect: 103 115 226 177) (Print 16 12))
-									(else (Print 800 1))
+									(holeEmpty
+										(Print 16 15)
+									)
+									((ego inRect: 103 115 226 177)
+										(Print 16 12)
+									)
+									(else
+										(Print 800 1)
+									)
 								)
 								(= holeEmpty FALSE)
 							)
-							((Said '[<around][/room]') (Print 16 16))
+							((Said '[<around][/room]')
+								(Print 16 16)
+							)
 						)
 					)
 					((Said 'dig[/grave,hole]')
-						(if
-						(and (ego has: iShovel) (== 0 ((Inventory at: iShovel) loop?)))
+						(if (and (ego has: iShovel) (== 0 ((Inventory at: iShovel) loop?)))
 							(if (> mansionPhase 0)
-								(if (& (ego onControl: 0) $7fff)
+								(if (& (ego onControl: 0) (- cWHITE cBLACK))
 									(ego setScript: digging)
 									(digging changeState: 1)
 								else
@@ -231,26 +286,28 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(ego illegalBits: cWHITE)
-		(= noWearCrown 0)
-		(if (== (ego view?) 2) (super newRoom: newRoomNumber))
+		(= noWearCrown FALSE)
+		(if (== (ego view?) 2)
+			(super newRoom: n)
+		)
 	)
 )
 
 (instance z1Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 4))
+			(0
+				(= seconds 4)
+			)
 			(1
-				(= noWearCrown 1)
+				(= noWearCrown TRUE)
 				(zTheme play:)
 				(zombie1 show: setCycle: EndLoop self)
 				(++ numZombies)
@@ -280,8 +337,12 @@
 			)
 			(3
 				(cond 
-					((ego has: iScarab) (self changeState: 4))
-					((== currentStatus egoNormal) (self changeState: 10))
+					((ego has: iScarab)
+						(self changeState: 4)
+					)
+					((== currentStatus egoNormal)
+						(self changeState: 10)
+					)
 				)
 			)
 			(4
@@ -334,11 +395,11 @@
 )
 
 (instance z2Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 10))
+			(0
+				(= seconds 10)
+			)
 			(1
 				(if (== (zTheme state?) 0) (zTheme play:))
 				(if (== (zTheme loop?) 1)
@@ -373,8 +434,12 @@
 			)
 			(3
 				(cond 
-					((ego has: iScarab) (self changeState: 4))
-					((== currentStatus egoNormal) (self changeState: 10))
+					((ego has: iScarab)
+						(self changeState: 4)
+					)
+					((== currentStatus egoNormal)
+						(self changeState: 10)
+					)
 				)
 			)
 			(4
@@ -432,11 +497,11 @@
 )
 
 (instance z3Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 15))
+			(0
+				(= seconds 15)
+			)
 			(1
 				(if (== (zTheme state?) 0) (zTheme play:))
 				(if (== (zTheme loop?) 1)
@@ -470,8 +535,12 @@
 			)
 			(3
 				(cond 
-					((ego has: iScarab) (self changeState: 4))
-					((== currentStatus egoNormal) (self changeState: 10))
+					((ego has: iScarab)
+						(self changeState: 4)
+					)
+					((== currentStatus egoNormal)
+						(self changeState: 10)
+					)
 				)
 			)
 			(4
@@ -529,25 +598,25 @@
 )
 
 (instance holeActions of Script
-	(properties)
-	
-	(method (cue &tmp temp0)
-		(= temp0 (aHole cel?))
-		(++ temp0)
-		(if (>= state 0) (aHole cel: temp0) else (++ state))
+	(method (cue &tmp theCel)
+		(= theCel (aHole cel?))
+		(++ theCel)
+		(if (>= state 0)
+			(aHole cel: theCel)
+		else
+			(++ state)
+		)
 	)
 )
 
 (instance digging of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(HandsOff)
 				(ego
 					view: 47
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 0
 					setCycle: EndLoop self
 				)
@@ -593,11 +662,11 @@
 				)
 			)
 			(6
-				(= [gNewPropX (= local5 (* (- (++ timesUsedShovel) 1) 3))]
+				(= [aDugHole (= holeXY (* (- (++ timesUsedShovel) 1) 3))]
 					curRoomNum
 				)
-				(= [gNewPropX (+ local5 1)] (aHole x?))
-				(= [gNewPropX (+ local5 2)] (aHole y?))
+				(= [aDugHole (+ holeXY 1)] (aHole x?))
+				(= [aDugHole (+ holeXY 2)] (aHole y?))
 				(ego view: 2 setCycle: Walk)
 				(HandsOn)
 				(cond 
@@ -650,8 +719,6 @@
 )
 
 (instance getItems of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -664,7 +731,9 @@
 				(= gotItem TRUE)
 				(ego setCycle: BegLoop self)
 			)
-			(3 (= cycles 6))
+			(3
+				(= cycles 6)
+			)
 			(4
 				(Print 16 27)
 				(ego view: 2 setCycle: Walk)
@@ -675,8 +744,6 @@
 )
 
 (instance egoDist of Code
-	(properties)
-	
 	(method (doit param1 param2 &tmp temp0)
 		(= temp0
 			(Sqrt

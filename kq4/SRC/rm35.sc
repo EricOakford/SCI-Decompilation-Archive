@@ -15,21 +15,13 @@
 (local
 	i
 )
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance wave3 of Prop
-	(properties)
-)
+(instance wave3 of Prop)
 
 (instance Room35 of Room
 	(properties
@@ -37,7 +29,9 @@
 	)
 	
 	(method (init)
-		(if isNightTime (= picture 135))
+		(if isNightTime
+			(= picture 135)
+		)
 		(= east (= north 31))
 		(= west 34)
 		(= horizon 80)
@@ -82,14 +76,26 @@
 		(waves add: wave1 wave2 wave3)
 		(wave1 setScript: waveActions)
 		(switch prevRoomNum
-			(38 (ego x: 93 y: 187))
+			(38
+				(ego x: 93 y: 187)
+			)
 			(41
 				(cond 
-					((== (ego view?) 5) (ego x: 236 y: 187))
-					((== (ego view?) 6) (ego x: 266 y: 187))
-					((== (ego view?) 7) (ego x: 289 y: 187))
-					((== (ego view?) 8) (ego x: 310 y: 187))
-					(else (ego x: 212 y: 183))
+					((== (ego view?) 5)
+						(ego x: 236 y: 187)
+					)
+					((== (ego view?) 6)
+						(ego x: 266 y: 187)
+					)
+					((== (ego view?) 7)
+						(ego x: 289 y: 187)
+					)
+					((== (ego view?) 8)
+						(ego x: 310 y: 187)
+					)
+					(else
+						(ego x: 212 y: 183)
+					)
 				)
 				((ego viewer?) doit:)
 			)
@@ -100,7 +106,9 @@
 					(ego posn: 317 (ego y?))
 				)
 			)
-			(34 (ego x: 1))
+			(34
+				(ego x: 1)
+			)
 		)
 		(ego xStep: 3 yStep: 2 init:)
 	)
@@ -114,9 +122,15 @@
 					(= newRoomNum 41)
 				)
 			)
-			((>= (ego x?) 319) (= newRoomNum 31))
-			((<= (ego x?) 0) (= newRoomNum 34))
-			((<= (ego y?) horizon) (= newRoomNum 31))
+			((>= (ego x?) 319)
+				(= newRoomNum 31)
+			)
+			((<= (ego x?) 0)
+				(= newRoomNum 34)
+			)
+			((<= (ego y?) horizon)
+				(= newRoomNum 31)
+			)
 		)
 	)
 	
@@ -137,13 +151,10 @@
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -156,7 +167,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(self changeState: 1)

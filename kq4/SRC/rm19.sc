@@ -15,29 +15,21 @@
 )
 
 (local
-	gEgoViewer
+	saveViewer
 	i
-	local2
+	meetTime
 )
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance wave3 of Prop
-	(properties)
-)
+(instance wave3 of Prop)
 
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
-(instance fallSound of Sound
-	(properties)
-)
+(instance fallSound of Sound)
+
+(define cFALL	$31d4)	;(| cLMAGENTA cLRED clGREY cGREY cRED cBROWN cGREEN)
 
 (instance Room19 of Room
 	(properties
@@ -53,20 +45,21 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 119))
-		(= local2
+		(if isNightTime
+			(curRoom overlay: 119)
+		)
+		(= meetTime
 			(+
 				(* (- gameHours hourLastMetMinstrel) 60)
 				(- gameMinutes minutesLastMetMinstrel)
 			)
 		)
-		(if
-		(and ((Inventory at: iLute) ownedBy: 203) (>= local2 3))
+		(if (and ((Inventory at: iLute) ownedBy: 203) (>= meetTime 3))
 			(= whereIsMinstrel
 				(/ (= whereIsMinstrel (Random 1 30)) 10)
 			)
 		)
-		(if (== whereIsMinstrel 3)
+		(if (== whereIsMinstrel minstrel19)
 			((= minstrel (Actor new:))
 				view: 174
 				loop: 2
@@ -121,7 +114,7 @@
 		else
 			(= global107 0)
 		)
-		(ego illegalBits: -16384)
+		(ego illegalBits: (| cWHITE cYELLOW))
 		(switch currentStatus
 			(egoNormal
 				(switch prevRoomNum
@@ -201,7 +194,9 @@
 			)
 			(egoSwimming
 				(switch prevRoomNum
-					(25 (ego x: 5 y: 188))
+					(25
+						(ego x: 5 y: 188)
+					)
 					(13
 						(ego x: 104 y: (+ horizon (ego yStep?) 1))
 					)
@@ -216,35 +211,38 @@
 			)
 		)
 		(ego init:)
-		(= gEgoViewer (ego viewer?))
+		(= saveViewer (ego viewer?))
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp thisControl)
 		(super doit:)
 		(if (== global107 11)
 			(cond 
-				((ego inRect: 254 104 316 115) (ego setPri: 12))
-				(
-				(and (!= currentStatus egoFalling) (== (ego edgeHit?) 0)) (ego setPri: 14))
+				((ego inRect: 254 104 316 115)
+					(ego setPri: 12)
+				)
+				((and (!= currentStatus egoFalling) (== (ego edgeHit?) 0))
+					(ego setPri: 14)
+				)
 			)
 		)
 		(if
 			(and
 				(== (curRoom script?) 0)
 				(== global107 11)
-				(& (= temp0 (ego onControl: 0)) $31d4)
+				(& (= thisControl (ego onControl: 0)) cFALL)
 			)
 			(doFall doit:)
 			(self
 				setScript:
 					(cond 
-						((& temp0 $2000) fallLmagenta)
-						((& temp0 $1000) fallLred)
-						((& temp0 $0100) fallGrey)
-						((& temp0 $0080) fallLgrey)
-						((& temp0 $0010) fallRed)
-						((& temp0 $0040) fallBrown)
-						((& temp0 $0004) fallGreen)
+						((& thisControl cLMAGENTA) fallLmagenta)
+						((& thisControl cLRED) fallLred)
+						((& thisControl cGREY) fallGrey)
+						((& thisControl cLGREY) fallLgrey)
+						((& thisControl cRED) fallRed)
+						((& thisControl cBROWN) fallBrown)
+						((& thisControl cGREEN) fallGreen)
 					)
 			)
 		)
@@ -259,12 +257,17 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (Said 'look>'))
+			(if (and (== (event type?) saidEvent) (Said 'look>'))
 				(cond 
-					((Said '/grass') (Print 19 0))
-					((Said '/cliff') (Print 19 1))
-					((Said '[<around][/room]') (Print 19 2))
+					((Said '/grass')
+						(Print 19 0)
+					)
+					((Said '/cliff')
+						(Print 19 1)
+					)
+					((Said '[<around][/room]')
+						(Print 19 2)
+					)
 				)
 			else
 				FALSE
@@ -272,21 +275,19 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (cast contains: minstrel)
 			(= hourLastMetMinstrel gameHours)
 			(= minutesLastMetMinstrel gameMinutes)
 		)
 		(if (!= currentStatus egoFalling)
 			(ego setPri: -1 illegalBits: cWHITE)
-			(super newRoom: newRoomNumber)
+			(super newRoom: n)
 		)
 	)
 )
 
 (instance fallLmagenta of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -310,14 +311,15 @@
 				(ShakeScreen 10 shakeSDown)
 				(= seconds 5)
 			)
-			(2 (Print 19 3) (= dead TRUE))
+			(2
+				(Print 19 3)
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance fallLred of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -342,15 +344,18 @@
 				(ShakeScreen 10 shakeSDown)
 				(= seconds 5)
 			)
-			(2 (Print 19 4) (= seconds 5))
-			(3 (= dead TRUE))
+			(2
+				(Print 19 4)
+				(= seconds 5)
+			)
+			(3
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance fallGrey of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -375,15 +380,18 @@
 				(ShakeScreen 10 shakeSDown)
 				(= seconds 5)
 			)
-			(2 (Print 19 5) (= seconds 5))
-			(3 (= dead TRUE))
+			(2
+				(Print 19 5)
+				(= seconds 5)
+			)
+			(3
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance fallLgrey of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -409,15 +417,18 @@
 				(ShakeScreen 10 shakeSDown)
 				(= seconds 5)
 			)
-			(2 (Print 19 4) (= seconds 5))
-			(3 (= dead TRUE))
+			(2
+				(Print 19 4)
+				(= seconds 5)
+			)
+			(3
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance fallRed of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -443,15 +454,18 @@
 				(ShakeScreen 10 shakeSDown)
 				(= seconds 5)
 			)
-			(2 (Print 19 4) (= seconds 5))
-			(3 (= dead TRUE))
+			(2
+				(Print 19 4)
+				(= seconds 5)
+			)
+			(3
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance fallBrown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -476,15 +490,18 @@
 				(ShakeScreen 10 shakeSDown)
 				(= seconds 3)
 			)
-			(2 (Print 19 6) (= seconds 5))
-			(3 (= dead TRUE))
+			(2
+				(Print 19 6)
+				(= seconds 5)
+			)
+			(3
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance fallGreen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -509,20 +526,22 @@
 				(ShakeScreen 10 shakeSDown)
 				(= seconds 5)
 			)
-			(2 (Print 19 7) (= seconds 5))
-			(3 (= dead TRUE))
+			(2
+				(Print 19 7)
+				(= seconds 5)
+			)
+			(3
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -535,7 +554,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(if howFast
@@ -561,11 +579,11 @@
 )
 
 (instance doFall of Code
-	(properties)
-	
 	(method (doit)
 		(sounds eachElementDo: #stop 0)
 		(fallSound number: 51 play:)
-		(if (cast contains: minstrel) (minstrel setCycle: 0))
+		(if (cast contains: minstrel)
+			(minstrel setCycle: 0)
+		)
 	)
 )

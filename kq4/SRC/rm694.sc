@@ -564,7 +564,12 @@
 				)
 			)
 			(111
-				(Print 694 7 #at -1 85 #icon 100 0 0 #dispose)
+				(Print 694 7
+					#at -1 85
+					#icon 100 0 0
+					#dispose
+				)
+				;set hours to 0, since Graham is now cured
 				(= gameHours 0)
 				(= seconds 10)
 			)

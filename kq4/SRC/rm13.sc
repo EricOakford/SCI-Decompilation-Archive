@@ -16,24 +16,16 @@
 (local
 	aSmoke
 	aFisher
-	local2
-	local3
+	i
+	meetTime
 )
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance wave3 of Prop
-	(properties)
-)
+(instance wave3 of Prop)
 
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
 (instance minBlock of Block
 	(properties
@@ -58,7 +50,9 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 113))
+		(if isNightTime
+			(curRoom overlay: 113)
+		)
 		(wave1
 			isExtra: TRUE
 			view: 665
@@ -94,19 +88,18 @@
 		)
 		(waves add: wave1 wave2 wave3)
 		(wave1 setScript: waveActions)
-		(= local3
+		(= meetTime
 			(+
 				(* (- gameHours hourLastMetMinstrel) 60)
 				(- gameMinutes minutesLastMetMinstrel)
 			)
 		)
-		(if
-		(and ((Inventory at: iLute) ownedBy: 203) (>= local3 3))
+		(if (and ((Inventory at: iLute) ownedBy: 203) (>= meetTime 3))
 			(= whereIsMinstrel
 				(/ (= whereIsMinstrel (Random 1 30)) 10)
 			)
 		)
-		(if (== whereIsMinstrel 1)
+		(if (== whereIsMinstrel minstrel13)
 			((= minstrel (Actor new:))
 				view: 174
 				loop: 2
@@ -138,7 +131,9 @@
 			cycleSpeed: 2
 			init:
 		)
-		(if (== prevRoomNum 14) (= currentStatus egoNormal))
+		(if (== prevRoomNum 14)
+			(= currentStatus egoNormal)
+		)
 		(switch currentStatus
 			(egoNormal
 				(switch prevRoomNum
@@ -220,10 +215,11 @@
 	(method (handleEvent event)
 		(if (event claimed?) (return TRUE))
 		(return
-			(if
-			(and (== (event type?) saidEvent) (Said 'look>'))
+			(if (and (== (event type?) saidEvent) (Said 'look>'))
 				(cond 
-					((Said '/grass') (Print 13 0))
+					((Said '/grass')
+						(Print 13 0)
+					)
 					((Said '/dock')
 						(if (== fishermanState fisherGoneFishing)
 							(Print 13 1)
@@ -234,62 +230,66 @@
 					((Said '/cottage') (Print 13 2))
 					((Said '/fisherman,man,woman,person')
 						(cond 
-							((cast contains: minstrel) (event claimed: FALSE))
-							((== fishermanState fisherGoneFishing) (Print 13 3))
-							(else (Print 13 4))
+							((cast contains: minstrel)
+								(event claimed: FALSE)
+							)
+							((== fishermanState fisherGoneFishing)
+								(Print 13 3)
+							)
+							(else
+								(Print 13 4)
+							)
 						)
 					)
-					((Said '[<around][/room]') (Print 13 5))
+					((Said '[<around][/room]')
+						(Print 13 5)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (cast contains: minstrel)
 			(= hourLastMetMinstrel gameHours)
 			(= minutesLastMetMinstrel gameMinutes)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local2 0)
-				(while (< local2 (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
-						view: ((waves at: local2) view?)
-						loop: ((waves at: local2) loop?)
+						view: ((waves at: i) view?)
+						loop: ((waves at: i) loop?)
 						cel: 0
 						setPri: 0
 						ignoreActors:
-						x: ((waves at: local2) x?)
-						y: ((waves at: local2) y?)
+						x: ((waves at: i) x?)
+						y: ((waves at: i) y?)
 						init:
 						addToPic:
 						yourself:
 					)
-					(++ local2)
 				)
-				(= local2 0)
+				(= i 0)
 				(self changeState: 1)
 			)
 			(1
-				((waves at: local2) cel: 255 show: setCycle: EndLoop self)
+				((waves at: i) cel: 255 show: setCycle: EndLoop self)
 			)
 			(2
-				((waves at: local2) hide:)
-				(if (< local2 (- (waves size?) 1))
-					(++ local2)
+				((waves at: i) hide:)
+				(if (< i (- (waves size?) 1))
+					(++ i)
 				else
-					(= local2 0)
+					(= i 0)
 				)
 				(waveActions changeState: 1)
 			)

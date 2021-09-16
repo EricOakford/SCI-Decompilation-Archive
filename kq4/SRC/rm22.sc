@@ -22,13 +22,9 @@
 	ripple5
 	ripple1
 )
-(instance doorSound of Sound
-	(properties)
-)
+(instance doorSound of Sound)
 
 (instance door of Prop
-	(properties)
-	
 	(method (cue)
 		(if (!= (door cel?) (door lastCel:))
 			(self setCycle: EndLoop self)
@@ -53,7 +49,9 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 122))
+		(if isNightTime
+			(curRoom overlay: 122)
+		)
 		(self setRegions: WATER RIVER FOREST)
 		(Load VIEW 612)
 		(= ripple1 (Prop new:))
@@ -74,7 +72,7 @@
 		(= ripple4 (Prop new:))
 		(= ripple5 (Prop new:))
 		(ripple2
-			isExtra: 1
+			isExtra: TRUE
 			view: 656
 			loop: 0
 			cel: 2
@@ -85,7 +83,7 @@
 			init:
 		)
 		(ripple3
-			isExtra: 1
+			isExtra: TRUE
 			view: 656
 			loop: 1
 			cel: 1
@@ -96,7 +94,7 @@
 			init:
 		)
 		(ripple4
-			isExtra: 1
+			isExtra: TRUE
 			view: 656
 			loop: 2
 			cel: 2
@@ -107,7 +105,7 @@
 			init:
 		)
 		(ripple5
-			isExtra: 1
+			isExtra: TRUE
 			view: 656
 			loop: 3
 			cel: 1
@@ -129,7 +127,9 @@
 		(if isNightTime (door loop: 1))
 		(switch prevRoomNum
 			(21
-				(if (<= (ego y?) horizon) (ego posn: 1 (+ horizon 2)))
+				(if (<= (ego y?) horizon)
+					(ego posn: 1 (+ horizon 2))
+				)
 				(if (and (>= (ego y?) 126) (< (ego y?) 130))
 					(ego posn: 1 127)
 				else
@@ -139,17 +139,27 @@
 			(16
 				(ego x: 27 y: (+ horizon (ego yStep?) 1))
 			)
-			(28 (ego x: 171 y: 188))
-			(23 (ego posn: 317 (ego y?)))
+			(28
+				(ego x: 171 y: 188)
+			)
+			(23
+				(ego posn: 317 (ego y?))
+			)
 			(53
 				(ego view: 2 loop: 2 x: 188 y: 114)
-				(if (== dwarfHouseState houseKICKEDOUT) (curRoom setScript: doorActions))
+				(if (== dwarfHouseState houseKICKEDOUT)
+					(curRoom setScript: doorActions)
+				)
 			)
 			(54
-				(if (== dwarfHouseState houseKICKEDOUT) (curRoom setScript: doorActions))
+				(if (== dwarfHouseState houseKICKEDOUT)
+					(curRoom setScript: doorActions)
+				)
 				(ego view: 2 x: 188 y: 114)
 			)
-			(0 (ego x: 318 y: 123))
+			(0
+				(ego x: 318 y: 123)
+			)
 		)
 		(ego xStep: 3 yStep: 2 init:)
 		(HandsOn)
@@ -157,8 +167,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (ego inRect: 167 140 201 149) (!= (ego view?) 2))
+		(if (and (ego inRect: 167 140 201 149) (!= (ego view?) 2))
 			(ego setPri: 11)
 		else
 			(ego setPri: -1)
@@ -170,7 +179,9 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'look/cottage') (Print 22 0))
+					((Said 'look/cottage')
+						(Print 22 0)
+					)
 					((Said 'look/window')
 						(if
 							(or
@@ -182,23 +193,39 @@
 							(Print 800 1)
 						)
 					)
-					((Said 'look/blossom') (Print 22 2))
-					((Said 'get/blossom') (Print 22 3))
-					((Said 'look/door') (Print 22 4))
-					((Said 'break/window') (Print 22 5))
-					((Said 'break/door') (Print 22 6))
-					((Said 'open/window') (Print 22 7))
+					((Said 'look/blossom')
+						(Print 22 2)
+					)
+					((Said 'get/blossom')
+						(Print 22 3)
+					)
+					((Said 'look/door')
+						(Print 22 4)
+					)
+					((Said 'break/window')
+						(Print 22 5)
+					)
+					((Said 'break/door')
+						(Print 22 6)
+					)
+					((Said 'open/window')
+						(Print 22 7)
+					)
 					((Said 'open/door')
 						(if (ego inRect: 170 112 202 120)
 							(cond 
-								((== kickedOut 1) (Print 22 8))
+								((== kickedOut TRUE)
+									(Print 22 8)
+								)
 								((not isNightTime)
 									(HandsOff)
 									(ego loop: 3)
 									(doorSound number: 300 play: door)
 									(door setCycle: EndLoop)
 								)
-								(else (Print 22 9))
+								(else
+									(Print 22 9)
+								)
 							)
 						else
 							(Print 800 1)
@@ -206,7 +233,11 @@
 					)
 					((Said 'unlatch/door')
 						(if (ego inRect: 170 112 202 120)
-							(if (not isNightTime) (Print 22 10) else (Print 22 11))
+							(if (not isNightTime)
+								(Print 22 10)
+							else
+								(Print 22 11)
+							)
 						else
 							(Print 800 1)
 						)
@@ -214,32 +245,40 @@
 					((Said 'bang/door')
 						(if (ego inRect: 170 112 202 120)
 							(cond 
-								((== kickedOut TRUE) (Print 22 12))
-								(isNightTime (Print 22 13))
-								(else (Print 22 14))
+								((== kickedOut TRUE)
+									(Print 22 12)
+								)
+								(isNightTime
+									(Print 22 13)
+								)
+								(else
+									(Print 22 14)
+								)
 							)
 						else
 							(Print 800 1)
 						)
 					)
-					((Said 'look/wheel') (Print 22 15))
-					((Said 'look[<around][/room]') (Print 22 16))
+					((Said 'look/wheel')
+						(Print 22 15)
+					)
+					((Said 'look[<around][/room]')
+						(Print 22 16)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(User canControl: TRUE canInput: TRUE)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance doorActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -247,7 +286,9 @@
 				(= kickedOut TRUE)
 				(door ignoreActors: 0 setCycle: BegLoop self)
 			)
-			(1 (Print 22 17))
+			(1
+				(Print 22 17)
+			)
 		)
 	)
 )

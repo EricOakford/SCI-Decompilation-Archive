@@ -15,21 +15,13 @@
 (local
 	i
 )
-(instance waves of List
-	(properties)
-)
+(instance waves of List)
 
-(instance wave1 of Prop
-	(properties)
-)
+(instance wave1 of Prop)
 
-(instance wave2 of Prop
-	(properties)
-)
+(instance wave2 of Prop)
 
-(instance wave3 of Prop
-	(properties)
-)
+(instance wave3 of Prop)
 
 (instance Room34 of Room
 	(properties
@@ -37,7 +29,9 @@
 	)
 	
 	(method (init)
-		(if isNightTime (= picture 134))
+		(if isNightTime
+			(= picture 134)
+		)
 		(= north 31)
 		(= east 35)
 		(= west 33)
@@ -86,8 +80,12 @@
 			(31
 				(ego posn: (ego x?) (+ horizon 2))
 			)
-			(33 (ego posn: 2 (ego y?)))
-			(35 (ego posn: 317 (ego y?)))
+			(33
+				(ego posn: 2 (ego y?))
+			)
+			(35
+				(ego posn: 317 (ego y?))
+			)
 		)
 		(ego xStep: 3 yStep: 2 init:)
 	)
@@ -105,7 +103,11 @@
 					(== (event type?) saidEvent)
 					(Said 'look[<around][/room,island]')
 				)
-				(if (== (ego view?) 2) (Print 34 0) else (Print 34 1))
+				(if (== (ego view?) 2)
+					(Print 34 0)
+				else
+					(Print 34 1)
+				)
 			else
 				FALSE
 			)
@@ -114,13 +116,10 @@
 )
 
 (instance waveActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= i 0)
-				(while (< i (waves size?))
+				(for ((= i 0)) (< i (waves size?)) ((++ i))
 					((View new:)
 						view: ((waves at: i) view?)
 						loop: ((waves at: i) loop?)
@@ -133,7 +132,6 @@
 						addToPic:
 						yourself:
 					)
-					(++ i)
 				)
 				(= i 0)
 				(self changeState: 1)

@@ -20,7 +20,7 @@
 (local
 	local0
 	aEgoFrog
-	local2
+	sweptTimer
 	local3
 	local4
 	ripple1
@@ -54,7 +54,9 @@
 		(ego edgeHit: 0)
 		(= inCutscene FALSE)
 		(super init:)
-		(if isNightTime (curRoom overlay: 124))
+		(if isNightTime
+			(curRoom overlay: 124)
+		)
 		(self setRegions: WATER RIVER MOUNTAIN FOREST)
 		(Load VIEW 8)
 		(if (ego has: iCrown)
@@ -66,7 +68,7 @@
 		)
 		(= aSplash1 (Prop new:))
 		(= aSplash2 (Prop new:))
-		(if (== howFast 2)
+		(if (== howFast fast)
 			(= ripple1 (Prop new:))
 			(= aWaterfall3 (Prop new:))
 			(ripple1
@@ -203,29 +205,63 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '<in/falls') (Print 24 0))
-							((Said '<under/pool,water,falls') (if (!= (ego view?) 8) (Print 24 1) else (Print 24 2)))
-							((Said '<in,in/water,pool') (Print 24 3))
-							((Said '<behind/falls') (Print 24 4))
-							((Said '/falls') (Print 24 5))
-							((Said '<in/pool') (Print 24 6))
-							((Said '/pool') (Print 24 7))
-							((Said '[<around][/room]') (Print 24 8))
+							((Said '<in/falls')
+								(Print 24 0)
+							)
+							((Said '<under/pool,water,falls')
+								(if (!= (ego view?) 8)
+									(Print 24 1)
+								else
+									(Print 24 2)
+								)
+							)
+							((Said '<in,in/water,pool')
+								(Print 24 3)
+							)
+							((Said '<behind/falls')
+								(Print 24 4)
+							)
+							((Said '/falls')
+								(Print 24 5)
+							)
+							((Said '<in/pool')
+								(Print 24 6)
+							)
+							((Said '/pool')
+								(Print 24 7)
+							)
+							((Said '[<around][/room]')
+								(Print 24 8)
+							)
 						)
 					)
-					((Said 'enter<behind/falls') (Print 24 9))
+					((Said 'enter<behind/falls')
+						(Print 24 9)
+					)
 					((Said 'bathe,dive<under/pool,water,falls')
 						(cond 
-							((== (ego view?) 8) (Print 24 10))
-							((!= (ego view?) 2) (Print 24 11))
-							(else (Print 24 12))
+							((== (ego view?) 8)
+								(Print 24 10)
+							)
+							((!= (ego view?) 2)
+								(Print 24 11)
+							)
+							(else
+								(Print 24 12)
+							)
 						)
 					)
 					((Said 'bathe,dive,wade')
 						(cond 
-							((== (ego view?) 2) (Print 24 13))
-							((== (ego view?) 8) (Print 24 14))
-							(else (Print 24 15))
+							((== (ego view?) 2)
+								(Print 24 13)
+							)
+							((== (ego view?) 8)
+								(Print 24 14)
+							)
+							(else
+								(Print 24 15)
+							)
 						)
 					)
 					((Said 'dennis,place/crown')
@@ -251,15 +287,13 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(ego viewer: 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance egoFrogActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -290,16 +324,25 @@
 				(ego view: 372 setCycle: Walk setAvoider: Avoider)
 				(ego viewer: frogViewer)
 				(cond 
-					(
-					(or (ego inRect: 0 84 54 137) (ego inRect: 0 84 78 96)) (ego setMotion: MoveTo 38 (ego y?) self))
-					((ego inRect: 53 95 155 115) (ego setMotion: MoveTo 64 (ego y?) self))
-					((ego inRect: 0 115 229 148) (ego setMotion: MoveTo 151 (ego y?) self))
+					((or (ego inRect: 0 84 54 137) (ego inRect: 0 84 78 96))
+						(ego setMotion: MoveTo 38 (ego y?) self)
+					)
+					((ego inRect: 53 95 155 115)
+						(ego setMotion: MoveTo 64 (ego y?) self)
+					)
+					((ego inRect: 0 115 229 148)
+						(ego setMotion: MoveTo 151 (ego y?) self)
+					)
 					((ego inRect: 0 137 79 168)
 						(ego setMotion: MoveTo 63 164 self)
 						(self changeState: 10)
 					)
-					((> (ego y?) 171) (self changeState: 10))
-					(else (self changeState: 20))
+					((> (ego y?) 171)
+						(self changeState: 10)
+					)
+					(else
+						(self changeState: 20)
+					)
 				)
 			)
 			(5
@@ -308,11 +351,15 @@
 			(6
 				(ego setMotion: MoveTo 193 166 self)
 			)
-			(7 (self changeState: 20))
+			(7
+				(self changeState: 20)
+			)
 			(10
 				(ego setMotion: MoveTo 217 182 self)
 			)
-			(11 (self changeState: 20))
+			(11
+				(self changeState: 20)
+			)
 			(20
 				(ego setMotion: MoveTo 223 168 self)
 			)
@@ -327,12 +374,10 @@
 )
 
 (instance frogViewer of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(= local4 (= local3 (ego onControl: origin)))
-		(if (& local3 $0001)
+		(if (& local3 cBLACK)
 			(ego view: 371)
 		else
 			(ego view: 377)
@@ -341,8 +386,6 @@
 )
 
 (instance swept of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -362,10 +405,12 @@
 						setMotion: MoveTo (- (ego x?) 5) (+ (ego y?) 7) self
 					)
 				)
-				(= local2 (Timer setReal: self 3))
+				(= sweptTimer (Timer setReal: self 3))
 			)
 			(1
-				(if (IsObject local2) (local2 dispose: delete:))
+				(if (IsObject sweptTimer)
+					(sweptTimer dispose: delete:)
+				)
 				(Print 24 17)
 				(ego
 					xStep: 3

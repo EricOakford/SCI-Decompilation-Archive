@@ -15,14 +15,14 @@
 )
 
 (local
-	local0
+	thisControl
 	local1
-	local2
+	fallToY
 	aBird
 	birdTimer
 	wormTimer
 	aWorm
-	local7
+	fallControl
 )
 (instance fallSound of Sound
 	(properties
@@ -44,7 +44,9 @@
 		(= isIndoors FALSE)
 		(ego edgeHit: 0)
 		(super init:)
-		(if isNightTime (curRoom overlay: 129))
+		(if isNightTime
+			(curRoom overlay: 129)
+		)
 		(self setRegions: FOREST)
 		(if ((Inventory at: iWorm) ownedBy: 206)
 			(Load VIEW 21)
@@ -70,13 +72,17 @@
 			(23
 				(ego x: 264 y: (+ horizon 2))
 			)
-			(5 (ego y: 188))
-			(0 (ego x: 290 y: 160))
+			(5
+				(ego y: 188)
+			)
+			(0
+				(ego x: 290 y: 160)
+			)
 		)
 		(if
 			(and
 				(<= (Random 1 100) 50)
-				((Inventory at: 19) ownedBy: 206)
+				((Inventory at: iWorm) ownedBy: 206)
 			)
 			(= aBird (Actor new:))
 			(aBird
@@ -100,12 +106,12 @@
 		(super doit:)
 		(if
 			(and
-				(!= (= local0 (ego onControl: 0)) local7)
+				(!= (= thisControl (ego onControl: 0)) fallControl)
 				(== (ego script?) 0)
 				(== newRoomNum curRoomNum)
 			)
-			(= local7 local0)
-			(if (& local0 $0004)
+			(= fallControl thisControl)
+			(if (& thisControl cGREEN)
 				(curRoom west: 0)
 				(ego setScript: fallSouth)
 			)
@@ -121,7 +127,7 @@
 						(or
 							(Said 'look/around')
 							(Said 'look/room')
-							(Said 'look[<around][/!*]')
+							(Said 'look[<around][/noword]')
 						)
 						(Print 29 0)
 					)
@@ -137,7 +143,9 @@
 							(Print 29 1)
 						)
 					)
-					((Said 'look/crow,crow') (event claimed: FALSE))
+					((Said 'look/crow,crow')
+						(event claimed: FALSE)
+					)
 					((Said 'look/robin,bird')
 						(cond 
 							((cast contains: aBird)
@@ -147,8 +155,12 @@
 									(Print 29 3)
 								)
 							)
-							((cast contains: crow) (event claimed: 0))
-							(else (Print 29 4))
+							((cast contains: crow)
+								(event claimed: FALSE)
+							)
+							(else
+								(Print 29 4)
+							)
 						)
 					)
 					((Said 'converse/robin,bird')
@@ -158,16 +170,19 @@
 							(Print 29 6)
 						)
 					)
-					((Said 'kill/robin,bird') (Print 29 7))
+					((Said 'kill/robin,bird')
+						(Print 29 7)
+					)
 					((Said 'capture,get,kiss/robin,bird')
-						(if
-						(or (cast contains: aBird) (cast contains: crow))
+						(if (or (cast contains: aBird) (cast contains: crow))
 							(Print 800 1)
 						else
 							(Print 29 4)
 						)
 					)
-					((Said 'help/robin,bird') (Print 29 8))
+					((Said 'help/robin,bird')
+						(Print 29 8)
+					)
 					((Said 'deliver')
 						(if (cast contains: aBird)
 							(Print 29 9)
@@ -185,17 +200,28 @@
 								)
 								(Print 29 2)
 							)
-							(((Inventory at: iWorm) ownedBy: 29) (Print 29 11))
-							((ego has: iWorm) ((Inventory at: iWorm) showSelf:))
-							(else (Print 29 4))
+							(((Inventory at: iWorm) ownedBy: 29)
+								(Print 29 11)
+							)
+							((ego has: iWorm)
+								((Inventory at: iWorm) showSelf:)
+							)
+							(else
+								(Print 29 4)
+							)
 						)
 					)
 					((Said 'look/dirt')
 						(cond 
-							(((Inventory at: iWorm) ownedBy: 29) (Print 29 11))
-							(
-							(and (== (birdActions state?) 0) (!= aBird 0)) (Print 29 2))
-							(else (Print 29 12))
+							(((Inventory at: iWorm) ownedBy: 29)
+								(Print 29 11)
+							)
+							((and (== (birdActions state?) 0) (!= aBird 0))
+								(Print 29 2)
+							)
+							(else
+								(Print 29 12)
+							)
 						)
 					)
 				)
@@ -205,42 +231,44 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(timers eachElementDo: #dispose 84)
 		(if ((Inventory at: iWorm) ownedBy: 29)
 			((Inventory at: iWorm) moveTo: 206)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance fallSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(fallSound play:)
 				(cond 
-					((> (ego x?) 100) (= local1 12))
-					((>= (ego x?) 65) (= local1 20))
+					((> (ego x?) 100)
+						(= local1 12)
+					)
+					((>= (ego x?) 65)
+						(= local1 20)
+					)
 					(else (= local1 30))
 				)
 				(if (> (+ (ego y?) local1) 188)
-					(= local2 188)
+					(= fallToY 188)
 				else
-					(= local2 (+ (ego y?) local1))
+					(= fallToY (+ (ego y?) local1))
 				)
 				(ego
 					yStep: 6
 					yStep: 6
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					setCel: 0
 					view: 17
 					setCycle: EndLoop
-					setMotion: MoveTo (ego x?) local2 self
+					setMotion: MoveTo (ego x?) fallToY self
 				)
 			)
 			(1
@@ -266,8 +294,6 @@
 )
 
 (instance birdActions of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -276,7 +302,9 @@
 				(< (aBird distanceTo: ego) 30)
 				(== (aBird loop?) 2)
 			)
-			(if (timers contains: birdTimer) (birdTimer dispose:))
+			(if (timers contains: birdTimer)
+				(birdTimer dispose:)
+			)
 			(self changeState: 1)
 		)
 	)
@@ -313,15 +341,13 @@
 			)
 			(4
 				(aBird dispose:)
-				(= aBird NULL)
+				(= aBird 0)
 			)
 		)
 	)
 )
 
 (instance wormActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
