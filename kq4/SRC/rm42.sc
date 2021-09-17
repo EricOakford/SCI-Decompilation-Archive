@@ -195,7 +195,7 @@
 		(super doit:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
@@ -209,10 +209,13 @@
 											{You see a tired-looking woman kneading bread at the counter.}
 										)
 										((not (ego has: iFishingPole))
-											{You see the old fisherman at the table, and his wife kneading bread at the counter. The fisherman's fishing pole has been set in the corner.}
+											{You see the old fisherman at the table, and his wife kneading bread at the counter.
+											 The fisherman's fishing pole has been set in the corner.}
 										)
 										((not (ego has: iDiamondPouch))
-											{You see the old fisherman at the table, and his wife kneading bread at the counter. Since your generous gift of the diamonds, however, her grouchy look has been replaced by one of contentment.}
+											{You see the old fisherman at the table, and his wife kneading bread at the counter.
+											 Since your generous gift of the diamonds, however, her grouchy look has been replaced
+											  by one of contentment.}
 										)
 										(else {_})
 									)
@@ -222,12 +225,18 @@
 							(Print
 								(Format @str 42 0
 									(cond 
-										((not (cast contains: fisherman)) {You see a tired-looking woman knitting at the table.})
+										((not (cast contains: fisherman))
+											{You see a tired-looking woman knitting at the table.})
 										((not (ego has: iFishingPole))
-											{The fisherman's worn and tattered wife sits at the table with her husband, talking. The fisherman's pole has been set into the corner.}
+											{The fisherman's worn and tattered wife sits at the table 
+											with her husband, talking. 
+											The fisherman's pole has been set into the corner.}
 										)
 										((not (ego has: iDiamondPouch))
-											{The fisherman's worn and tattered wife sits at the table with her husband, talking. Since your generous gift of the diamonds, however, her grouchy look has been replaced by one of contentment.}
+											{The fisherman's worn and tattered wife sits at the table 
+											with her husband, talking. 
+											Since your generous gift of the diamonds, however, her grouchy
+											 look has been replaced by one of contentment.}
 										)
 										(else {_})
 									)
@@ -235,8 +244,9 @@
 							)
 						)
 					)
-					(
-					(and (cast contains: fisherman) (Said '/person')) (Print 42 1))
+					((and (cast contains: fisherman) (Said '/person'))
+						(Print 42 1)
+					)
 					((Said '/people')
 						(if (cast contains: fisherman)
 							(Print 42 1)
@@ -250,22 +260,46 @@
 								(cond 
 									(wifeAtCounter
 										(cond 
-											((not (ego has: iFishingPole)) (Print 42 3))
-											((not (ego has: iDiamondPouch)) (Print 42 4))
+											((not (ego has: iFishingPole))
+												(Print 42 3)
+											)
+											((not (ego has: iDiamondPouch))
+												(Print 42 4)
+											)
 										)
 									)
-									((!= fishermanState fisherAtHome) (Print 42 5))
-									((== ((inventory at: iDiamondPouch) owner?) 42) (Print 42 6))
-									(else (Print 42 7))
+									((!= fishermanState fisherAtHome)
+										(Print 42 5)
+									)
+									((== ((inventory at: iDiamondPouch) owner?) 42)
+										(Print 42 6)
+									)
+									(else
+										(Print 42 7)
+									)
 								)
 							)
-							((Said '/dough[<bread]') (Print 42 8))
-							((Said '<under/table') (Print 42 9))
-							((Said '/table') (Print 42 10))
-							((Said '/chair') (Print 42 11))
-							((Said '<under/bed') (Print 42 12))
-							((Said '/bed') (Print 42 13))
-							((Said '/stove') (Print 42 14))
+							((Said '/dough[<bread]')
+								(Print 42 8)
+							)
+							((Said '<under/table')
+								(Print 42 9)
+							)
+							((Said '/table')
+								(Print 42 10)
+							)
+							((Said '/chair')
+								(Print 42 11)
+							)
+							((Said '<under/bed')
+								(Print 42 12)
+							)
+							((Said '/bed')
+								(Print 42 13)
+							)
+							((Said '/stove')
+								(Print 42 14)
+							)
 							((Said '/window')
 								(cond 
 									(
@@ -275,13 +309,23 @@
 										)
 										(Print 42 15)
 									)
-									((ego inRect: 236 118 261 139) (Print 42 16))
-									(else (Print 800 1))
+									((ego inRect: 236 118 261 139)
+										(Print 42 16)
+									)
+									(else
+										(Print 800 1)
+									)
 								)
 							)
-							((Said '/door') (Print 42 17))
-							((Said '/wall') (Print 42 18))
-							((or (Said '/dirt') (Said '<down')) (Print 42 19))
+							((Said '/door')
+								(Print 42 17)
+							)
+							((Said '/wall')
+								(Print 42 18)
+							)
+							((or (Said '/dirt') (Said '<down'))
+								(Print 42 19)
+							)
 							((Said '/pole')
 								(cond 
 									(
@@ -291,19 +335,33 @@
 										)
 										(Print 42 20)
 									)
-									((ego has: iFishingPole) (event claimed: FALSE))
-									(else (Print 42 21))
+									((ego has: iFishingPole)
+										(event claimed: FALSE)
+									)
+									(else
+										(Print 42 21)
+									)
 								)
 							)
 							((Said '/fisherman')
 								(cond 
-									((!= fishermanState fisherAtHome) (Print 42 22))
-									((not wifeAtCounter) (Print 42 23))
-									((== ((inventory at: iDiamondPouch) owner?) 42) (Print 42 24))
-									(else (Print 42 25))
+									((!= fishermanState fisherAtHome)
+										(Print 42 22)
+									)
+									((not wifeAtCounter)
+										(Print 42 23)
+									)
+									((== ((inventory at: iDiamondPouch) owner?) 42)
+										(Print 42 24)
+									)
+									(else
+										(Print 42 25)
+									)
 								)
 							)
-							((Said '/caldron,kettle,coffee') (Print 42 26))
+							((Said '/caldron,kettle,coffee')
+								(Print 42 26)
+							)
 							((Said '/fish')
 								(if (not (ego has: iFish))
 									(Print 42 27)
@@ -311,11 +369,14 @@
 									(event claimed: FALSE)
 								)
 							)
-							((Said '/shelf') (Print 42 28))
-							((Said '/can') (Print 42 29))
+							((Said '/shelf')
+								(Print 42 28)
+							)
+							((Said '/can')
+								(Print 42 29)
+							)
 							((Said '/knitting,knitting')
-								(if
-								(and (== (wife view?) 240) (== (wife loop?) 3))
+								(if (and (== (wife view?) 240) (== (wife loop?) 3))
 									(Print 42 30)
 								else
 									(Print 42 31)
@@ -323,7 +384,9 @@
 							)
 						)
 					)
-					((Said 'eat/dough') (Print 42 32))
+					((Said 'eat/dough')
+						(Print 42 32)
+					)
 					((Said 'rob/pole')
 						(cond 
 							(
@@ -333,20 +396,26 @@
 								)
 								(Print 42 33)
 							)
-							(((inventory at: iFishingPole) ownedBy: ego) (Print 800 0))
-							(else (Print 42 21))
+							(((inventory at: iFishingPole) ownedBy: ego)
+								(Print 800 0)
+							)
+							(else
+								(Print 42 21)
+							)
 						)
 					)
 					((Said 'kiss>')
 						(cond 
-							((Said '[/!*]')
+							((Said '[/noword]')
 								(if (== fishermanState fisherAtHome)
 									(Print 42 34)
 								else
 									(Print 42 35)
 								)
 							)
-							((Said '/woman,person') (Print 42 35))
+							((Said '/woman,person')
+								(Print 42 35)
+							)
 							((Said '/fisherman')
 								(if (== fishermanState fisherAtHome)
 									(Print 42 36)
@@ -356,19 +425,27 @@
 							)
 						)
 					)
-					((Said 'help') (Print 42 38))
+					((Said 'help')
+						(Print 42 38)
+					)
 					(
 						(or
 							(Said 'converse/woman,person')
 							(and
 								(< (ego distanceTo: wife) 50)
-								(Said 'converse[/!*]')
+								(Said 'converse[/noword]')
 							)
 						)
 						(cond 
-							((== ((inventory at: iDiamondPouch) owner?) 42) (wifeTacoDoco2 cue:))
-							((cast contains: fisherman) (wifeTacoDoco1 cue:))
-							(else (wifeTacoDoco cue:))
+							((== ((inventory at: iDiamondPouch) owner?) 42)
+								(wifeTacoDoco2 cue:)
+							)
+							((cast contains: fisherman)
+								(wifeTacoDoco1 cue:)
+							)
+							(else
+								(wifeTacoDoco cue:)
+							)
 						)
 					)
 					(
@@ -377,11 +454,11 @@
 							(and
 								(cast contains: fisherman)
 								(< (ego distanceTo: fisherman) 50)
-								(Said 'converse[/!*]')
+								(Said 'converse[/noword]')
 							)
 						)
-						(if (== fishermanState 3)
-							(if (== ((inventory at: 1) owner?) 42)
+						(if (== fishermanState fisherAtHome)
+							(if (== ((inventory at: iDiamondPouch) owner?) 42)
 								(fishermanTacoDoco1 cue:)
 							else
 								(fishermanTacoDoco2 cue:)
@@ -392,14 +469,26 @@
 					)
 					((Said 'converse[/!*]')
 						(cond 
-							((cast contains: fisherman) (Print 42 40))
-							((== ((inventory at: iDiamondPouch) owner?) 42) (wifeTacoDoco2 cue:))
-							((cast contains: fisherman) (wifeTacoDoco1 cue:))
-							(else (wifeTacoDoco cue:))
+							((cast contains: fisherman)
+								(Print 42 40)
+							)
+							((== ((inventory at: iDiamondPouch) owner?) 42)
+								(wifeTacoDoco2 cue:)
+							)
+							((cast contains: fisherman)
+								(wifeTacoDoco1 cue:)
+							)
+							(else
+								(wifeTacoDoco cue:)
+							)
 						)
 					)
-					((Said 'close,open/door') (Print 42 41))
-					((Said 'sit') (Print 42 42))
+					((Said 'close,open/door')
+						(Print 42 41)
+					)
+					((Said 'sit')
+						(Print 42 42)
+					)
 					(
 						(or
 							(Said 'lay,sleep[<down,on,in]')
@@ -407,7 +496,9 @@
 						)
 						(Print 42 13)
 					)
-					((Said 'drink,get/coffee,cup') (Print 42 43))
+					((Said 'drink,get/coffee,cup')
+						(Print 42 43)
+					)
 					((Said 'deliver>')
 						(if
 							(or
@@ -419,13 +510,13 @@
 							)
 							(if
 								(and
-									(= inventorySaidMe (inventory saidMe:))
-									(ego has: (inventory indexOf: inventorySaidMe))
+									(= index (inventory saidMe:))
+									(ego has: (inventory indexOf: index))
 								)
 								(cond 
 									(
 										(and
-											(== (inventory indexOf: inventorySaidMe) 1)
+											(== (inventory indexOf: index) iDiamondPouch)
 											(== fishermanState fisherAtHome)
 										)
 										(if (< (ego distanceTo: wife) 25)
@@ -436,11 +527,19 @@
 										(ego put: iDiamondPouch 42)
 										(wife setScript: givePole)
 									)
-									((== fishermanState fisherAtHome) (Print 42 46))
-									(else (Print 42 47))
+									((== fishermanState fisherAtHome)
+										(Print 42 46)
+									)
+									(else
+										(Print 42 47)
+									)
 								)
 							else
-								(if inventorySaidMe (Print 800 2) else (Print 42 48))
+								(if index
+									(Print 800 2)
+								else
+									(Print 42 48)
+								)
 								(event claimed: TRUE)
 							)
 						else
@@ -450,7 +549,9 @@
 					)
 					((Said 'get,rob>')
 						(cond 
-							((Said '/knitting') (Print 42 49))
+							((Said '/knitting')
+								(Print 42 49)
+							)
 							((Said '/pole')
 								(cond 
 									(
@@ -460,41 +561,61 @@
 										)
 										(Print 42 50)
 									)
-									(((inventory at: iFishingPole) ownedBy: ego) (Print 42 51))
-									(else (Print 42 21))
+									(((inventory at: iFishingPole) ownedBy: ego)
+										(Print 42 51)
+									)
+									(else
+										(Print 42 21)
+									)
 								)
 							)
-							((Said '/dough') (Print 42 52))
-							((Said '/woman,person') (Print 42 53))
-							((Said '/fisherman') (if (== fishermanState fisherAtHome) (Print 42 54)))
-							((Said '/caldron') (Print 42 55))
-							((Said '/can') (Print 42 56))
-							((Said '/fish') (Print 42 57))
+							((Said '/dough')
+								(Print 42 52)
+							)
+							((Said '/woman,person')
+								(Print 42 53)
+							)
+							((Said '/fisherman')
+								(if (== fishermanState fisherAtHome)
+									(Print 42 54)
+								)
+							)
+							((Said '/caldron')
+								(Print 42 55)
+							)
+							((Said '/can')
+								(Print 42 56)
+							)
+							((Said '/fish')
+								(Print 42 57)
+							)
 						)
 					)
-					((Said 'create/bed') (Print 42 58))
+					((Said 'make/bed')
+						(Print 42 58)
+					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(super newRoom: n)
 	)
 )
 
 (instance doBread of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Timer setReal: self 5))
+			(0
+				(Timer setReal: self 5)
+			)
 			(1
 				(wife setLoop: 1)
 				(Timer setReal: self 3)
@@ -509,10 +630,8 @@
 )
 
 (instance givePole of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -543,9 +662,9 @@
 				)
 			)
 			(2
-				(ego get: 17)
+				(ego get: iFishingPole)
 				(theGame changeScore: 3)
-				(= gotItem 1)
+				(= gotItem TRUE)
 				(wife
 					view: 242
 					loop: 0
@@ -568,10 +687,8 @@
 )
 
 (instance wifeTalk of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 		(client cycleSpeed: 1)
 	)
 	
@@ -595,10 +712,8 @@
 )
 
 (instance fishermanSit of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 		(client cycleSpeed: 2)
 	)
 	
@@ -622,47 +737,59 @@
 )
 
 (instance wifeTacoDoco of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if talkedToFishermanWife (self cue:) (return))
+				(if talkedToFishermanWife
+					(self cue:)
+					(return)
+				)
 				(Print 42 59)
 				(= talkedToFishermanWife 1)
 			)
 			(1
-				(if (> talkedToFishermanWife 1) (self cue:) (return))
+				(if (> talkedToFishermanWife 1)
+					(self cue:)
+					(return)
+				)
 				(Print 42 60)
 				(= talkedToFishermanWife 2)
 			)
-			(2 (= state 1) (Print 42 61))
+			(2
+				(= state 1)
+				(Print 42 61)
+			)
 		)
 	)
 )
 
 (instance wifeTacoDoco1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if talkedToFishermanWife (self cue:) (return))
+				(if talkedToFishermanWife
+					(self cue:)
+					(return)
+				)
 				(Print 42 62)
 				(= talkedToFishermanWife 1)
 			)
-			(1 (= state 0) (Print 42 63))
+			(1
+				(= state 0)
+				(Print 42 63)
+			)
 		)
 	)
 )
 
 (instance wifeTacoDoco2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (< talkedToFishermanWife 0) (self cue:) (return))
+				(if (< talkedToFishermanWife 0)
+					(self cue:)
+					(return)
+				)
 				(= talkedToFishermanWife -1)
 				(Print 42 64)
 			)
@@ -683,39 +810,43 @@
 )
 
 (instance fishermanTacoDoco1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Print 42 66))
-			(1 (= state 0) (Print 42 67))
+			(0
+				(Print 42 66)
+			)
+			(1
+				(= state 0)
+				(Print 42 67)
+			)
 		)
 	)
 )
 
 (instance fishermanTacoDoco2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Print 42 68))
-			(1 (Print 42 69))
-			(2 (= state 1) (Print 42 70))
+			(0
+				(Print 42 68)
+			)
+			(1
+				(Print 42 69)
+			)
+			(2
+				(= state 1)
+				(Print 42 70)
+			)
 		)
 	)
 )
 
 (instance chairBase of Code
-	(properties)
-	
-	(method (doit param1)
-		(param1 brTop: (- (param1 y?) 5))
-		(param1 brLeft: (- (param1 x?) 16))
-		(param1 brBottom: (+ (param1 y?) 1))
-		(param1 brRight: (+ (param1 x?) 5))
+	(method (doit theActor)
+		(theActor brTop: (- (theActor y?) 5))
+		(theActor brLeft: (- (theActor x?) 16))
+		(theActor brBottom: (+ (theActor y?) 1))
+		(theActor brRight: (+ (theActor x?) 5))
 	)
 )
 
-(instance chairBlock of Block
-	(properties)
-)
+(instance chairBlock of Block)

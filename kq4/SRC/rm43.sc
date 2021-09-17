@@ -20,7 +20,7 @@
 )
 
 (local
-	gEgoViewer
+	saveViewer
 	pelicanState
 	local2
 	local3
@@ -31,15 +31,13 @@
 	whistle
 	sandCastle
 	newProp_3
-	local11
-	local12
-	local13
+	canEscape
+	dying
+	waterControl
 	[local14 2]
 	cloud
 )
-(instance whistleSound of Sound
-	(properties)
-)
+(instance whistleSound of Sound)
 
 (instance dolphinTheme of Sound
 	(properties
@@ -48,10 +46,12 @@
 )
 
 (instance Room43 of Room
-	(properties)
-	
 	(method (init)
-		(if isNightTime (= picture 143) else (= picture 43))
+		(if isNightTime
+			(= picture 143)
+		else
+			(= picture 43)
+		)
 		(= south (= north (= west (= east 31))))
 		(= horizon 78)
 		(= isIndoors FALSE)
@@ -131,12 +131,22 @@
 			init:
 			setScript: waveScript
 		)
-		(if (or (ego has: iWhistle) (ego has: iFish)) (= local11 1))
+		(if (and (ego has: iWhistle) (ego has: iFish))	;was "or", but both are needed
+			(= canEscape TRUE)
+		)
 		(cond 
-			((and (== oceanRoomX 101) (== oceanRoomY 100)) (ego posn: 13 91))
-			((and (== oceanRoomX 99) (== oceanRoomY 100)) (ego posn: 294 84))
-			((and (== oceanRoomX 100) (== oceanRoomY 99)) (ego posn: 38 171))
-			((and (== oceanRoomX 100) (== oceanRoomY 101)) (ego posn: (ego x?) (+ horizon (ego yStep?) 1)))
+			((and (== oceanRoomX 101) (== oceanRoomY 100))
+				(ego posn: 13 91)
+			)
+			((and (== oceanRoomX 99) (== oceanRoomY 100))
+				(ego posn: 294 84)
+			)
+			((and (== oceanRoomX 100) (== oceanRoomY 99))
+				(ego posn: 38 171)
+			)
+			((and (== oceanRoomX 100) (== oceanRoomY 101))
+				(ego posn: (ego x?) (+ horizon (ego yStep?) 1))
+			)
 		)
 		(= sandCastle (Prop new:))
 		(sandCastle setScript: deathTimer init: hide:)
@@ -183,16 +193,22 @@
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'look[<around][/room]') (Print 43 0))
+					((Said 'look[<around][/room]')
+						(Print 43 0)
+					)
 					((Said 'bathe')
 						(cond 
-							((== (ego view?) 2) (Print 43 1))
-							((== (ego view?) 8) (Print 43 2))
+							((== (ego view?) 2)
+								(Print 43 1)
+							)
+							((== (ego view?) 8)
+								(Print 43 2)
+							)
 							(
 								(or
 									(== (ego view?) 5)
@@ -201,29 +217,41 @@
 								)
 								(Print 43 3)
 							)
-							(else (Print 43 4))
+							(else
+								(Print 43 4)
+							)
 						)
 					)
 					((Said 'get,drink[/drink,water]')
 						(cond 
-							((!= currentStatus egoNormal) (Print 43 5))
+							((!= currentStatus egoNormal)
+								(Print 43 5)
+							)
 							(
 								(or
-									(& (= local13 (IsObjectOnControl ego 12)) $0008)
-									(& local13 $0800)
-									(& local13 $0002)
-									(& local13 $0200)
+									(& (= waterControl (IsObjectOnControl ego 12)) cCYAN)
+									(& waterControl cLCYAN)
+									(& waterControl cBLUE)
+									(& waterControl cLBLUE)
 								)
 								(= oldEgoScript (ego script?))
 								(ego setScript: drinking)
 								(drinking changeState: 1)
 							)
-							(else (Print 800 1))
+							(else
+								(Print 800 1)
+							)
 						)
 					)
-					((Said 'fish') (Print 43 6))
-					((Said 'get,capture/fish') (Print 43 6))
-					((Said 'look,find/tamir') (Print 43 7))
+					((Said 'fish')
+						(Print 43 6)
+					)
+					((Said 'get,capture/fish')
+						(Print 43 6)
+					)
+					((Said 'look,find/tamir')
+						(Print 43 7)
+					)
 					((Said 'look>')
 						(cond 
 							((Said '/fish')
@@ -235,12 +263,20 @@
 							)
 							((Said '/dolphin')
 								(cond 
-									((cast contains: dolphin) (Print 43 8))
-									((== (ego view?) 312) (Print 43 9))
-									(else (Print 43 10))
+									((cast contains: dolphin)
+										(Print 43 8)
+									)
+									((== (ego view?) 312)
+										(Print 43 9)
+									)
+									(else
+										(Print 43 10)
+									)
 								)
 							)
-							((Said '/island') (Print 43 11))
+							((Said '/island')
+								(Print 43 11)
+							)
 							((Said '<under/water,ocean')
 								(if (== (ego view?) 2)
 									(Print 43 12)
@@ -248,8 +284,12 @@
 									(Print 43 13)
 								)
 							)
-							((Said '/ocean,water') (Print 43 14))
-							((Said '/beach') (Print 43 15))
+							((Said '/ocean,water')
+								(Print 43 14)
+							)
+							((Said '/beach')
+								(Print 43 15)
+							)
 							(
 								(or
 									(Said '/dirt')
@@ -274,11 +314,17 @@
 										)
 										(Print 43 17)
 									)
-									(else (Print 43 18))
+									(else
+										(Print 43 18)
+									)
 								)
 							)
-							((Said '/forest,flora,palm') (Print 43 19))
-							((Said '/coconut') (Print 43 20))
+							((Said '/forest,flora,palm')
+								(Print 43 19)
+							)
+							((Said '/coconut')
+								(Print 43 20)
+							)
 							((Said '/boat,shipwreck')
 								(Print
 									(Format @str 43 21
@@ -291,10 +337,18 @@
 									)
 								)
 							)
-							((Said '/pelican,bird') (if (!= pelicanState 4) (Print 43 22) else (Print 43 23)))
+							((Said '/pelican,bird')
+								(if (!= pelicanState 4)
+									(Print 43 22)
+								else
+									(Print 43 23)
+								)
+							)
 						)
 					)
-					((Said 'climb/forest,palm') (Print 43 24))
+					((Said 'climb/forest,palm')
+						(Print 43 24)
+					)
 					((Said 'deliver,throw,feed/fish')
 						(if (ego has: iFish)
 							(if (== (ego view?) 2)
@@ -311,9 +365,15 @@
 											(Print 800 1)
 										)
 									)
-									(2 (Print 43 26))
-									(3 (Print 43 27))
-									(else  (Print 43 28))
+									(2
+										(Print 43 26)
+									)
+									(3
+										(Print 43 27)
+									)
+									(else
+										(Print 43 28)
+									)
 								)
 							else
 								(Print 43 28)
@@ -333,8 +393,12 @@
 									(Print 800 1)
 								)
 							)
-							((ego has: iWhistle) (Print 43 30))
-							(else (Print 43 10))
+							((ego has: iWhistle)
+								(Print 43 30)
+							)
+							(else
+								(Print 43 10)
+							)
 						)
 					)
 					((Said 'mount/dolphin')
@@ -380,10 +444,14 @@
 								(Print 43 34)
 								(event claimed: TRUE)
 							)
-							(
-							(and (cast contains: dolphin) (Said '[/dolphin]')) (Print 43 35) (event claimed: TRUE))
-							((Said '/bird,gull,gull') (event claimed: FALSE))
-							((Said '[/!*]') (Print 43 36))
+							((and (cast contains: dolphin) (Said '[/dolphin]'))
+								(Print 43 35) (event claimed: TRUE))
+							((Said '/bird,gull,gull')
+								(event claimed: FALSE)
+							)
+							((Said '[/noword]')
+								(Print 43 36)
+							)
 						)
 					)
 					((Said 'feed/pelican,bird')
@@ -409,14 +477,20 @@
 					)
 					((Said 'kiss')
 						(cond 
-							((and (cast contains: pelican) (!= pelicanState 4)) (Print 43 39))
-							((cast contains: dolphin) (Print 43 40))
-							(else (event claimed: FALSE))
+							((and (cast contains: pelican) (!= pelicanState 4))
+								(Print 43 39)
+							)
+							((cast contains: dolphin)
+								(Print 43 40)
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((Said 'deliver>')
-						(if (= inventorySaidMe (inventory saidMe:))
-							(if (ego has: (inventory indexOf: inventorySaidMe))
+						(if (= index (inventory saidMe:))
+							(if (ego has: (inventory indexOf: index))
 								(cond 
 									(
 										(or
@@ -425,9 +499,13 @@
 										)
 										(Print 43 41)
 									)
-									(
-									(and (cast contains: dolphin) (Said '/dolphin')) (Print 43 42))
-									(else (Print 43 43) (event claimed: TRUE))
+									((and (cast contains: dolphin) (Said '/dolphin'))
+										(Print 43 42)
+									)
+									(else
+										(Print 43 43)
+										(event claimed: TRUE)
+									)
 								)
 							else
 								(DontHave)
@@ -436,16 +514,22 @@
 					)
 					((Said 'get,capture/dolphin')
 						(cond 
-							((cast contains: dolphin) (Print 43 44))
-							((== (ego view?) 312) (Print 43 45))
-							(else (Print 43 10))
+							((cast contains: dolphin)
+								(Print 43 44)
+							)
+							((== (ego view?) 312)
+								(Print 43 45)
+							)
+							(else
+								(Print 43 10)
+							)
 						)
 					)
 					((Said 'deliver>')
 						(if
 							(and
-								(= inventorySaidMe (inventory saidMe:))
-								(ego has: (inventory indexOf: inventorySaidMe))
+								(= index (inventory saidMe:))
+								(ego has: (inventory indexOf: index))
 							)
 							(Print 43 46)
 						else
@@ -472,14 +556,12 @@
 )
 
 (instance bridleActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(HandsOff)
 				(ego get: iGoldenBridle setMotion: 0)
-				(= gEgoViewer (ego viewer?))
+				(= saveViewer (ego viewer?))
 				(ego
 					viewer: 0
 					view: 21
@@ -494,12 +576,12 @@
 			)
 			(3
 				(Print 43 49 #at -1 10)
-				(ego viewer: gEgoViewer view: 2 setCycle: Walk)
+				(ego viewer: saveViewer view: 2 setCycle: Walk)
 				(HandsOn)
 			)
 			(10
 				(HandsOff)
-				(= gEgoViewer (ego viewer?))
+				(= saveViewer (ego viewer?))
 				(Face ego whistle)
 				(ego
 					viewer: 0
@@ -516,7 +598,7 @@
 				(ego setCycle: BegLoop self)
 			)
 			(12
-				(ego viewer: gEgoViewer view: 2 setCycle: Walk)
+				(ego viewer: saveViewer view: 2 setCycle: Walk)
 				(HandsOn)
 			)
 		)
@@ -524,11 +606,8 @@
 )
 
 (instance pelActions of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (== pelicanState 1) (ego inRect: 95 92 140 110))
+		(if (and (== pelicanState 1) (ego inRect: 95 92 140 110))
 			(pelActions changeState: 10)
 		)
 	)
@@ -542,7 +621,9 @@
 					((ScriptID 0 5) setReal: self 30)
 				)
 			)
-			(1 (self changeState: 10))
+			(1
+				(self changeState: 10)
+			)
 			(10
 				((ScriptID 0 5) dispose: delete:)
 				(++ local2)
@@ -571,8 +652,7 @@
 				((ScriptID 0 5) setReal: self 1 1)
 			)
 			(13
-				(if
-				(and (not (ego inRect: 192 108 237 125)) (< local2 3))
+				(if (and (not (ego inRect: 192 108 237 125)) (< local2 3))
 					(= pelicanState 2)
 					(pelican
 						startUpd:
@@ -601,8 +681,8 @@
 				(newProp_3 setScript: 0)
 				(= pelicanState 3)
 				(Face ego pelican)
-				(= gEgoViewer (ego viewer?))
-				(ego viewer: 0 loop: (& (ego loop?) $0001))
+				(= saveViewer (ego viewer?))
+				(ego viewer: 0 loop: (& (ego loop?) 1))
 				(ego
 					view: 15
 					cel: 255
@@ -629,7 +709,7 @@
 					setCycle: Forward
 					setMotion: MoveTo (+ (pelican x?) 8) (- (pelican y?) 7) self
 				)
-				(ego viewer: gEgoViewer view: 2 setCycle: Walk)
+				(ego viewer: saveViewer view: 2 setCycle: Walk)
 				(pelican setLoop: 1 setCel: -1 cel: 255 setCycle: EndLoop)
 			)
 			(22
@@ -663,8 +743,6 @@
 )
 
 (instance whistleActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -686,17 +764,19 @@
 				(glint hide:)
 				(= seconds (Random 3 10))
 			)
-			(4 (self changeState: 2))
+			(4
+				(self changeState: 2)
+			)
 		)
 	)
 )
 
 (instance dolphActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 4))
+			(0
+				(= seconds 4)
+			)
 			(1
 				(sounds eachElementDo: #stop 0)
 				(dolphinTheme play:)
@@ -729,12 +809,10 @@
 )
 
 (instance deathTimer of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
-				local12
+				dying
 				(<= state 2)
 				(or
 					(ego inRect: 140 98 196 118)
@@ -749,9 +827,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if local11 (= seconds 240) else (= seconds 120))
+				(if canEscape
+					(= seconds 240)
+				else
+					(= seconds 120)
+				)
 			)
-			(1 (= local12 1))
+			(1
+				(= dying TRUE)
+			)
 			(10
 				(HandsOff)
 				(ego
@@ -775,26 +859,35 @@
 				(ego view: 83 loop: 0 cel: 0)
 				(= seconds 4)
 			)
-			(13 (ego cel: 1) (= seconds 5))
-			(14 (ego cel: 2) (= seconds 6))
-			(15 (ego cel: 3) (= seconds 7))
+			(13
+				(ego cel: 1)
+				(= seconds 5)
+			)
+			(14
+				(ego cel: 2)
+				(= seconds 6)
+			)
+			(15
+				(ego cel: 3)
+				(= seconds 7)
+			)
 			(16
 				(Print 43 52 #at -1 10)
 				(= seconds 6)
 			)
-			(17 (= dead TRUE))
+			(17
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance drinking of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(HandsOff)
-				(= gEgoViewer (ego viewer?))
+				(= saveViewer (ego viewer?))
 				(ego viewer: 0 view: 21 cel: 255 setCycle: EndLoop self)
 			)
 			(2
@@ -805,7 +898,7 @@
 			(4
 				(cls)
 				(ego view: 2 setCycle: Walk)
-				(ego script: oldEgoScript viewer: gEgoViewer)
+				(ego script: oldEgoScript viewer: saveViewer)
 				(HandsOn)
 			)
 		)
@@ -813,8 +906,6 @@
 )
 
 (instance pelMovement of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -833,11 +924,11 @@
 )
 
 (instance waveScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (Random 2 6)))
+			(0
+				(= cycles (Random 2 6))
+			)
 			(1
 				(cloud loop: 0 cel: 0 posn: 50 142 setCycle: EndLoop self)
 				(= state 6)

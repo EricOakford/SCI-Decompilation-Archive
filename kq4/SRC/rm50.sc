@@ -21,9 +21,7 @@
 	candle1
 	candle2
 )
-(instance theSelection of Sound
-	(properties)
-)
+(instance theSelection of Sound)
 
 (instance Room50 of Room
 	(properties
@@ -42,7 +40,12 @@
 		(self setRegions: OGRE_HOUSE)
 		(super init:)
 		(if isNightTime
-			((View new:) view: 647 loop: 2 posn: 244 95 addToPic:)
+			((View new:)
+				view: 647
+				loop: 2
+				posn: 244 95
+				addToPic:
+			)
 		)
 		((= smoke (Prop new:))
 			view: 540
@@ -73,30 +76,51 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: FALSE) $0040) (self newRoom: 49))
+		(if (& (ego onControl: 0) cBROWN)
+			(self newRoom: 49)
+		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '<under/table') (Print 50 0))
-							((Said '/table') (Print 50 1))
-							((Said '/stove') (Print 50 2))
-							((Said '/window') (Print 50 3))
-							((Said '/buck') (Print 50 4))
-							((Said '/caldron') (Print 50 5))
-							((Said '/wall') (Print 50 6))
-							((or (Said '/dirt') (Said '<down')) (Print 50 7))
-							((Said '/giantess') (Print 50 8))
-							((Said '[<around,at][/room,cottage,kitchen]') (Print 50 9))
+							((Said '<under/table')
+								(Print 50 0)
+							)
+							((Said '/table')
+								(Print 50 1)
+							)
+							((Said '/stove')
+								(Print 50 2)
+							)
+							((Said '/window')
+								(Print 50 3)
+							)
+							((Said '/buck')
+								(Print 50 4)
+							)
+							((Said '/caldron')
+								(Print 50 5)
+							)
+							((Said '/wall')
+								(Print 50 6)
+							)
+							((or (Said '/dirt') (Said '<down'))
+								(Print 50 7)
+							)
+							((Said '/giantess')
+								(Print 50 8)
+							)
+							((Said '[<around,at][/room,cottage,kitchen]')
+								(Print 50 9)
+							)
 						)
 					)
-					(
-					(or (Said 'converse/giantess') (Said 'converse[/!*]'))
+					((or (Said 'converse/giantess') (Said 'converse[/noword]'))
 						(if (== (ogressChase state?) 0)
 							(Print 50 10)
 							(ogressChase seconds: 0 changeState: 2)
@@ -104,16 +128,23 @@
 							(Print 50 11)
 						)
 					)
-					((Said 'get,rob/buck') (Print 50 12))
-					((Said 'kill/giantess') (Print 50 13))
-					((Said 'get,capture/giantess') (Print 50 14))
-					((Said 'help,,/buck') (Print 50 15))
+					((Said 'get,rob/buck')
+						(Print 50 12)
+					)
+					((Said 'kill/giantess')
+						(Print 50 13)
+					)
+					((Said 'get,capture/giantess')
+						(Print 50 14)
+					)
+					((Said 'help,save/buck')	;EO: fixed said spec
+						(Print 50 15))
 					(
 						(and
 							(Said 'deliver>')
-							(= inventorySaidMe (inventory saidMe:))
+							(= index (inventory saidMe:))
 						)
-						(if (inventorySaidMe ownedBy: ego)
+						(if (index ownedBy: ego)
 							(Print 50 16)
 						else
 							(event claimed: TRUE)
@@ -129,12 +160,9 @@
 )
 
 (instance ogressChase of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (< (ego distanceTo: client) 25) (== state 0))
+		(if (and (< (ego distanceTo: client) 25) (== state 0))
 			(= seconds 0)
 			(self cue:)
 		)
@@ -153,7 +181,10 @@
 				)
 				(= seconds 5)
 			)
-			(1 (Print 50 18) (self cue:))
+			(1
+				(Print 50 18)
+				(self cue:)
+			)
 			(2
 				(theSelection number: 10 loop: 1 play:)
 				(= enteredOgreKitchen TRUE)
@@ -179,7 +210,9 @@
 				(Print 50 19 #at -1 10)
 				(= seconds 5)
 			)
-			(5 (= dead TRUE))
+			(5
+				(= dead TRUE)
+			)
 		)
 	)
 )
@@ -197,8 +230,6 @@
 )
 
 (instance playMusic of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

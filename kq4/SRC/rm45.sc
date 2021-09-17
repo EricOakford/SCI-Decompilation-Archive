@@ -23,7 +23,7 @@
 	candleLight1
 	candleLight2
 	cat
-	local5
+	saveBits
 	genesta
 	genestaCloseup
 	genestaFace
@@ -117,7 +117,9 @@
 	(method (doit)
 		(super doit:)
 		(if (cast contains: ego)
-			(if (& (ego onControl: FALSE) $0040) (curRoom newRoom: 46))
+			(if (& (ego onControl: 0) cBROWN)
+				(curRoom newRoom: 46)
+			)
 			(if
 				(and
 					(ego inRect: 93 116 223 151)
@@ -129,7 +131,9 @@
 							(fairy1 setScript: ChaseEgo)
 						)
 					)
-					((!= (fairy2 script?) ChaseEgo) (fairy2 setScript: ChaseEgo))
+					((!= (fairy2 script?) ChaseEgo)
+						(fairy2 setScript: ChaseEgo)
+					)
 				)
 			else
 				(if (!= (fairy1 script?) ChaseEgoWhenTalk)
@@ -155,9 +159,15 @@
 					(cond 
 						((Said 'look>')
 							(cond 
-								((Said '[<on,in,at]/bed') (Print 45 0))
-								((Said '<under/bed') (Print 45 1))
-								((Said '/wand[<magic]') (Print 45 2))
+								((Said '[<on,in,at]/bed')
+									(Print 45 0)
+								)
+								((Said '<under/bed')
+									(Print 45 1)
+								)
+								((Said '/wand[<magic]')
+									(Print 45 2)
+								)
 								((Said '/window')
 									(if (ego inRect: 113 110 208 122)
 										(Print 45 3)
@@ -165,8 +175,12 @@
 										(Print 45 4)
 									)
 								)
-								((Said '/blossom,flora') (Print 45 5))
-								((Said '/stair') (Print 45 6))
+								((Said '/blossom,flora')
+									(Print 45 5)
+								)
+								((Said '/stair')
+									(Print 45 6)
+								)
 								((Said '/chest,dresser,drawer>')
 									(if (Said '<in,in')
 										(Print 45 7)
@@ -175,8 +189,12 @@
 										(event claimed: TRUE)
 									)
 								)
-								((Said '/wall') (Print 45 9))
-								((Said '[<down]/dirt') (Print 45 10))
+								((Said '/wall')
+									(Print 45 9)
+								)
+								((Said '[<down]/dirt')
+									(Print 45 10)
+								)
 								((Said '/genesta')
 									(Print
 										(Format @str 45 11
@@ -188,10 +206,15 @@
 										)
 									)
 								)
-								((Said '/cat[<snow,white]') (Print 45 12))
-								(
-								(Said '[<around][/room,tower,bedroom,chamber[<bed]]') (Print 45 13))
-								(else (event claimed: FALSE))
+								((Said '/cat[<snow,white]')
+									(Print 45 12)
+								)
+								((Said '[<around][/room,tower,bedroom,chamber[<bed]]')
+									(Print 45 13)
+								)
+								(else
+									(event claimed: FALSE)
+								)
 							)
 						)
 						((Said 'deliver,return/amulet[/genesta]')
@@ -212,15 +235,19 @@
 						(
 							(or
 								(Said '(lay<down,on,in),(sleep<in,on),(get<in,on)[/bed]')
-								(Said 'sleep[/!*]')
+								(Said 'sleep[/noword]')
 							)
 							(Print 45 15)
 						)
-						((Said 'get/blossom') (Print 45 16))
-						((Said 'get,get,rob/wand') (Print 45 17))
+						((Said 'get/blossom')
+							(Print 45 16)
+						)
+						((Said 'get,get,rob/wand')
+							(Print 45 17)
+						)
 						((Said 'open/dresser,drawer,chest') (Print 45 7))
 						(
-						(or (Said 'converse/genesta') (Said 'converse[/!*]'))
+						(or (Said 'converse/genesta') (Said 'converse[/noword]'))
 							(Print 45 18)
 							(cond 
 								((< (ego x?) 158)
@@ -228,46 +255,80 @@
 										(fairy1 setScript: ChaseEgoWhenTalk)
 									)
 								)
-								((== (fairy2 script?) Flutter6) (fairy2 setScript: ChaseEgoWhenTalk))
+								((== (fairy2 script?) Flutter6)
+									(fairy2 setScript: ChaseEgoWhenTalk)
+								)
 							)
 						)
-						((Said 'kill/genesta') (Print 45 19))
-						((Said 'get/genesta') (Print 45 20))
-						((or (Said 'kiss/genesta') (Said 'kiss[/!*]')) (Print 45 21))
-						((Said 'help,,/genesta') (Print 45 22))
-						(else (event claimed: FALSE))
+						((Said 'kill/genesta')
+							(Print 45 19)
+						)
+						((Said 'get/genesta')
+							(Print 45 20)
+						)
+						((or (Said 'kiss/genesta') (Said 'kiss[/noword]'))
+							(Print 45 21)
+						)
+						((Said 'help,,/genesta')
+							(Print 45 22)
+						)
+						(else
+							(event claimed: FALSE)
+						)
 					)
 					(if (not (event claimed?))
 						(cond 
-							((Said 'look[/fairies[<little]]') (Print 45 23))
-							((Said 'converse[/fairies]') (Print 45 24))
-							((Said 'kill[/fairies]') (Print 45 25))
-							((Said 'get/fairies') (Print 45 26))
-							((Said 'capture/fairies') (Print 45 26))
-							((Said 'kiss/fairies') (Print 45 27))
-							((Said 'help/fairies') (Print 45 28))
-							((Said 'converse/cat[<snow,white]') (Print 45 29))
-							((Said 'kill/cat[<snow,white]') (Print 45 30))
-							((Said 'get,capture/cat[<snow,white]') (Print 45 31))
-							((Said 'kiss,pat/cat[<snow,white]') (Print 45 32))
+							((Said 'look[/fairies[<little]]')
+								(Print 45 23)
+							)
+							((Said 'converse[/fairies]')
+								(Print 45 24)
+							)
+							((Said 'kill[/fairies]')
+								(Print 45 25)
+							)
+							((Said 'get/fairies')
+								(Print 45 26)
+							)
+							((Said 'capture/fairies')
+								(Print 45 26)
+							)
+							((Said 'kiss/fairies')
+								(Print 45 27)
+							)
+							((Said 'help/fairies')
+								(Print 45 28)
+							)
+							((Said 'converse/cat[<snow,white]')
+								(Print 45 29)
+							)
+							((Said 'kill/cat[<snow,white]')
+								(Print 45 30)
+							)
+							((Said 'get,capture/cat[<snow,white]')
+								(Print 45 31)
+							)
+							((Said 'kiss,pat/cat[<snow,white]')
+								(Print 45 32)
+							)
 							(
 								(or
-									(Said 'deliver/cat/*')
-									(Said 'deliver/*/cat')
+									(Said 'deliver/cat/anyword')
+									(Said 'deliver/anyword/cat')
 								)
 								(Print 45 33)
 							)
 							(
 								(or
-									(Said 'deliver/fairies/*')
-									(Said 'deliver/*/fairies')
+									(Said 'deliver/fairies/anyword')
+									(Said 'deliver/anyword/fairies')
 								)
 								(Print 45 34)
 							)
 							(
 								(or
-									(Said 'deliver/genesta,fairies/*')
-									(Said 'deliver/*[/genesta,fairies]')
+									(Said 'deliver/genesta,fairies/anyword')
+									(Said 'deliver/anyword[/genesta,fairies]')
 								)
 								(Print 45 35)
 							)
@@ -280,8 +341,6 @@
 )
 
 (instance ChaseEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -303,8 +362,6 @@
 )
 
 (instance ChaseEgoWhenTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -315,14 +372,14 @@
 				)
 				(= seconds 4)
 			)
-			(1 (client setScript: 0))
+			(1
+				(client setScript: 0)
+			)
 		)
 	)
 )
 
 (instance Flutter3 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -336,8 +393,6 @@
 )
 
 (instance Flutter6 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -351,11 +406,11 @@
 )
 
 (instance catMove of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(cat setCycle: EndLoop self)
 			)
@@ -385,13 +440,11 @@
 )
 
 (instance closer of Script
-	(properties)
-	
-	(method (init param1)
+	(method (init who)
 		(Load VIEW 101)
 		(Load VIEW 103)
 		(Load VIEW 104)
-		(super init: param1)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -454,7 +507,7 @@
 			)
 			(5
 				(Print 45 39 #at -1 150)
-				(= local5 (Print 45 40 #at -1 10 #dispose))
+				(= saveBits (Print 45 40 #at -1 10 #dispose))
 				(genesta loop: 3 setCycle: Forward)
 				((= poof (Prop new:))
 					view: 686

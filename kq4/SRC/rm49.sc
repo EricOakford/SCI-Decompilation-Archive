@@ -30,13 +30,9 @@
 	local10
 	wokeUpOgre
 )
-(instance theMusic of Sound
-	(properties)
-)
+(instance theMusic of Sound)
 
-(instance throwSound of Sound
-	(properties)
-)
+(instance throwSound of Sound)
 
 (instance Room49 of Room
 	(properties
@@ -55,18 +51,17 @@
 		)
 		(self setRegions: OGRE_HOUSE)
 		(super init:)
-		(if
-		(and (> ogreState 0) (!= ogreState 5) (not enteredOgreKitchen))
+		(if (and (> ogreState 0) (!= ogreState 5) (not enteredOgreKitchen))
 			(= local1 1)
 		)
 		(= isIndoors TRUE)
-		(= noWearCrown 1)
+		(= noWearCrown TRUE)
 		(if isNightTime
 			((View new:)
 				view: 616
 				loop: 1
 				posn: 50 128
-				ignoreActors: 1
+				ignoreActors: TRUE
 				addToPic:
 				stopUpd:
 			)
@@ -90,7 +85,9 @@
 			posn: (if (== ((inventory at: iBone) owner?) 49) 155 else 160) 126
 			init:
 		)
-		(if (== ogreState 5) ((inventory at: iMagicHen) owner: 48))
+		(if (== ogreState 5)
+			((inventory at: iMagicHen) owner: 48)
+		)
 		(if ((inventory at: iMagicHen) ownedBy: 49)
 			((= hen (Actor new:))
 				view: 360
@@ -116,8 +113,8 @@
 			init:
 		)
 		(if (or (== prevRoomNum 4) (== prevRoomNum 0))
-			(frontDoor setPri: 0 ignoreActors: 1)
-			(= ogreFrontDoorOpen 1)
+			(frontDoor setPri: 0 ignoreActors: TRUE)
+			(= ogreFrontDoorOpen TRUE)
 			(ego
 				posn: 53 132
 				view: 2
@@ -248,11 +245,11 @@
 			stopUpd:
 		)
 		(if (not (frontDoor cel?))
-			(ego observeControl: 16384)
+			(ego observeControl: cYELLOW)
 		else
-			(ego ignoreControl: 16384)
+			(ego ignoreControl: cYELLOW)
 		)
-		(if (== ((inventory at: 23) owner?) 49)
+		(if (== ((inventory at: iBone) owner?) 49)
 			(dog setScript: chewBone)
 		else
 			(dog setScript: chaseEgo)
@@ -261,7 +258,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0004)
+		(if (& (ego onControl:) cGREEN)
 			(ego setPri: 4)
 		else
 			(ego setPri: -1)
@@ -284,27 +281,25 @@
 				(self setScript: ogreStuff)
 			)
 		)
-		(if (& (ego onControl: FALSE) $0040)
+		(if (& (ego onControl: 0) cBROWN)
 			(HandsOn)
 			(curRoom newRoom: 4)
 		)
-		(if
-		(and (& (ego onControl: FALSE) $0010) (not local9))
+		(if (and (& (ego onControl: 0) cRED) (not local9))
 			(HandsOn)
 			(curRoom newRoom: 51)
 		)
-		(if (& (ego onControl: FALSE) $0008)
+		(if (& (ego onControl: 0) cCYAN)
 			(HandsOn)
 			(curRoom newRoom: 48)
 		)
-		(if
-		(and (& (ego onControl: FALSE) $0020) (not local9))
+		(if (and (& (ego onControl: 0) cMAGENTA) (not local9))
 			(HandsOn)
 			(curRoom newRoom: 50)
 		)
 		(if
 			(and
-				(& (ego onControl: FALSE) $0400)
+				(& (ego onControl: 0) cLGREEN)
 				(!= currentStatus egoOnStairs)
 				(not local9)
 			)
@@ -316,11 +311,11 @@
 	
 	(method (dispose)
 		(HandsOn)
-		(= noWearCrown 0)
+		(= noWearCrown FALSE)
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(return
 			(cond 
 				((event claimed?) (return TRUE))
@@ -328,20 +323,48 @@
 					(cond 
 						((Said 'look>')
 							(cond 
-								((Said '<under/table') (Print 49 0))
-								((Said '/table') (if aOgre (Print 49 1) else (Print 49 2)))
-								((Said '/chair') (Print 49 3))
-								((Said '/carpet,carpet') (Print 49 4))
-								((Said '/stair') (Print 49 5))
-								((Said '/window') (Print 49 6))
-								((Said '/door') (Print 49 7))
-								((Said '/wall') (Print 49 8))
-								((or (Said '/dirt') (Said '<down')) (Print 49 9))
+								((Said '<under/table')
+									(Print 49 0)
+								)
+								((Said '/table')
+									(if aOgre
+										(Print 49 1)
+									else
+										(Print 49 2)
+									)
+								)
+								((Said '/chair')
+									(Print 49 3)
+								)
+								((Said '/carpet,carpet')
+									(Print 49 4)
+								)
+								((Said '/stair')
+									(Print 49 5)
+								)
+								((Said '/window')
+									(Print 49 6)
+								)
+								((Said '/door')
+									(Print 49 7)
+								)
+								((Said '/wall')
+									(Print 49 8)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 49 9)
+								)
 								((Said '/giant')
 									(cond 
-										((== ogreState 3) (Print 49 1))
-										(ogreState (Print 49 10))
-										(else (Print 49 11))
+										((== ogreState ogreSLEEPING)
+											(Print 49 1)
+										)
+										(ogreState
+											(Print 49 10)
+										)
+										(else
+											(Print 49 11)
+										)
 									)
 								)
 								((Said '/bulldog')
@@ -351,12 +374,18 @@
 										(Print 49 13)
 									)
 								)
-								((Said '[<around][/room,cottage]') (Print 49 14))
+								((Said '[<around][/room,cottage]')
+									(Print 49 14)
+								)
 							)
 						)
 						((Said 'blow/whistle')
 							(if (and (ego has: iWhistle) (cast contains: aOgre))
-								(if (== ogreState 3) (Print 49 15) else (Print 49 16))
+								(if (== ogreState ogreSLEEPING)
+									(Print 49 15)
+								else
+									(Print 49 16)
+								)
 							else
 								(event claimed: FALSE)
 							)
@@ -368,21 +397,33 @@
 								(Print 49 18)
 							)
 						)
-						((Said 'kill/bulldog') (Print 49 19))
-						((Said 'pat/bulldog') (Print 49 20))
-						((Said 'calm/bulldog') (Print 49 21))
-						((Said 'get,capture/bulldog') (Print 49 22))
-						((Said 'sit>') (Print 49 23) (event claimed: TRUE))
-						((Said 'converse/bulldog')
-							(if (== (dog script?) chewBone)
-								(Print 49 17)
-							else
-								(Print 49 18)
-							)
+						((Said 'kill/bulldog')
+							(Print 49 19)
 						)
+						((Said 'pat/bulldog')
+							(Print 49 20)
+						)
+						((Said 'calm/bulldog')
+							(Print 49 21)
+						)
+						((Said 'get,capture/bulldog')
+							(Print 49 22)
+						)
+						((Said 'sit>')
+							(Print 49 23)
+							(event claimed: TRUE)
+						)
+						;NOTE: this case already exists, and will probably never be executed
+;;;						((Said 'converse/bulldog')
+;;;							(if (== (dog script?) chewBone)
+;;;								(Print 49 17)
+;;;							else
+;;;								(Print 49 18)
+;;;							)
+;;;						)
 						((Said 'converse,awaken[/giant]')
 							(if (cast contains: aOgre)
-								(if (== ogreState 3)
+								(if (== ogreState ogreSLEEPING)
 									(if
 										(and
 											(< (ego distanceTo: aOgre) 50)
@@ -401,26 +442,41 @@
 								(Print 49 27)
 							)
 						)
-						(
-						(or (Said 'open/closet') (Said 'open/door<closet'))
+						((or (Said 'open/closet') (Said 'open/door<closet'))
 							(cond 
-								((not (ego inRect: 219 123 245 130)) (NotClose))
-								((closetDoor cel?) (Print 49 28))
-								(
-								(or (cast contains: ogress) (cast contains: aOgre)) (Print 49 29))
-								((ego has: iMagicHen) (Print 49 10))
-								(else (closetDoor setScript: doorOpen))
+								((not (ego inRect: 219 123 245 130))
+									(NotClose)
+								)
+								((closetDoor cel?)
+									(Print 49 28)
+								)
+								((or (cast contains: ogress) (cast contains: aOgre))
+									(Print 49 29)
+								)
+								((ego has: iMagicHen)
+									(Print 49 10)
+								)
+								(else
+									(closetDoor setScript: doorOpen)
+								)
 							)
 						)
 						((Said 'open/door')
 							(cond 
 								((ego inRect: 219 123 245 130)
 									(cond 
-										((closetDoor cel?) (Print 49 28))
-										(
-										(or (cast contains: ogress) (cast contains: aOgre)) (Print 49 29))
-										((ego has: iMagicHen) (Print 49 10))
-										(else (closetDoor setScript: doorOpen))
+										((closetDoor cel?)
+											(Print 49 28)
+										)
+										((or (cast contains: ogress) (cast contains: aOgre))
+											(Print 49 29)
+										)
+										((ego has: iMagicHen)
+											(Print 49 10)
+										)
+										(else
+											(closetDoor setScript: doorOpen)
+										)
 									)
 								)
 								((ego inRect: 38 129 73 141)
@@ -429,28 +485,29 @@
 											((ego has: iMagicHen)
 												(frontDoor ignoreActors: TRUE setCycle: EndLoop setPri: 0)
 												(= ogreFrontDoorOpen TRUE)
-												(ego ignoreControl: 16384)
+												(ego ignoreControl: cYELLOW)
 												(if (and (ego has: iMagicHen) (== (ogreAwake state?) 0))
 													(ogreAwake changeState: 2)
 												)
 											)
 											((cast contains: aOgre)
-												(if
-												(and (== ogreState 3) (not (ogreAwake state?)))
+												(if (and (== ogreState ogreSLEEPING) (not (ogreAwake state?)))
 													(ogreAwake changeState: 2)
 												)
 											)
 											(else
 												(frontDoor ignoreActors: TRUE setCycle: EndLoop setPri: 0)
 												(= ogreFrontDoorOpen TRUE)
-												(ego ignoreControl: 16384)
+												(ego ignoreControl: cYELLOW)
 											)
 										)
 									else
 										(Print 49 30)
 									)
 								)
-								(else (Print 49 31))
+								(else
+									(Print 49 31)
+								)
 							)
 						)
 						((Said 'close/door')
@@ -467,15 +524,17 @@
 										(if (ego has: iMagicHen)
 											(Print 49 33)
 										else
-											(= ogreFrontDoorOpen 0)
-											(ego observeControl: 16384)
+											(= ogreFrontDoorOpen FALSE)
+											(ego observeControl: cYELLOW)
 											(frontDoor setCycle: BegLoop setPri: -1)
 										)
 									else
 										(Print 49 32)
 									)
 								)
-								(else (Print 49 31))
+								(else
+									(Print 49 31)
+								)
 							)
 						)
 						((Said 'get/egg[<gold]')
@@ -492,7 +551,9 @@
 						)
 						((Said 'get,rob/chicken')
 							(cond 
-								((not hen) (Print 49 35))
+								((not hen)
+									(Print 49 35)
+								)
 								((ego has: iMagicHen)
 									(AlreadyTook)
 								)
@@ -507,15 +568,19 @@
 									(theGame changeScore: 4)
 									(hen dispose:)
 								)
-								(else (NotClose))
+								(else
+									(NotClose)
+								)
 							)
 						)
-						((Said 'kill/giant') (Print 49 36))
+						((Said 'kill/giant')
+							(Print 49 36)
+						)
 						(
 							(or
 								(Said 'kiss/giant')
 								(Said 'kiss/bulldog')
-								(Said 'kiss[/!*]')
+								(Said 'kiss[/noword]')
 							)
 							(Print 49 37)
 						)
@@ -541,16 +606,18 @@
 								(Print 49 41)
 							)
 						)
-						((Said 'get,capture/giant') (Print 49 42))
+						((Said 'get,capture/giant')
+							(Print 49 42)
+						)
 						(
 							(and
 								(Said 'deliver>')
-								(= inventorySaidMe (inventory saidMe:))
+								(= index (inventory saidMe:))
 							)
 							(if
 								(and
-									inventorySaidMe
-									(ego has: (inventory indexOf: inventorySaidMe))
+									index
+									(ego has: (inventory indexOf: index))
 								)
 								(if (cast contains: aOgre)
 									(Print 49 43)
@@ -569,18 +636,16 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (== newRoomNumber 4)
-			((ScriptID OGRE_HOUSE) keep: 0)
-			(= noWearCrown 0)
+	(method (newRoom n)
+		(if (== n 4)
+			((ScriptID OGRE_HOUSE) keep: FALSE)
+			(= noWearCrown FALSE)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance ogreStuff of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -604,8 +669,12 @@
 							(self changeState: 10)
 						)
 					)
-					(2 (self changeState: 20))
-					(3 (self changeState: 30))
+					(2
+						(self changeState: 20)
+					)
+					(3
+						(self changeState: 30)
+					)
 				)
 			)
 			(10
@@ -655,7 +724,9 @@
 					setMotion: MoveTo 246 132 self
 				)
 			)
-			(15 (= dead TRUE))
+			(15
+				(= dead TRUE)
+			)
 			(20
 				(Print 49 48 #at -1 10)
 				(ogreAwake state: 0)
@@ -671,15 +742,15 @@
 				)
 			)
 			(30
-				(if (== prevRoomNum 51) (Print 49 49 #at -1 10))
+				(if (== prevRoomNum 51)
+					(Print 49 49 #at -1 10)
+				)
 			)
 		)
 	)
 )
 
 (instance ogreAwake of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -687,7 +758,7 @@
 				(not enteredOgreKitchen)
 				(== (self state?) 1)
 				(> (ego y?) 122)
-				(not (& (ego onControl:) $0004))
+				(not (& (ego onControl:) cGREEN))
 			)
 			(self cue:)
 		)
@@ -696,8 +767,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (!= ogreState 2)
-					(if (== howFast 0)
+				(if (!= ogreState ogreEATING)
+					(if (== howFast slow)
 						(= seconds 75)
 					else
 						(= seconds 60)
@@ -707,19 +778,31 @@
 				)
 			)
 			(1
-				(if (> (ego y?) 122) (return))
+				(if (> (ego y?) 122)
+					(return)
+				)
 			)
 			(2
 				(ego observeControl: cGREEN)
 				(cond 
-					((ego has: iMagicHen) (if (not wokeUpOgre) (Print 49 50 #time 4)))
-					((== ogreState 3) (Print 49 51))
+					((ego has: iMagicHen)
+						(if (not wokeUpOgre)
+							(Print 49 50 #time 4)
+						)
+					)
+					((== ogreState ogreSLEEPING)
+						(Print 49 51)
+					)
 				)
 				(theMusic number: 5 loop: -1 play:)
 				(aOgre cycleSpeed: 0 loop: 1 setCycle: EndLoop self)
 			)
 			(3
-				(if (== howFast 0) (= seconds 3) else (self cue:))
+				(if (== howFast slow)
+					(= seconds 3)
+				else
+					(self cue:)
+				)
 			)
 			(4
 				(= ogreState 4)
@@ -753,14 +836,14 @@
 					setMotion: MoveTo 246 132 self
 				)
 			)
-			(7 (= dead TRUE))
+			(7
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance ogressChase of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -789,16 +872,16 @@
 				(Print 49 53 #at -1 10 #draw)
 				(= seconds 4)
 			)
-			(3 (= dead TRUE))
+			(3
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance henPecked of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -810,7 +893,7 @@
 					loop: 0
 					show:
 					setPri: 12
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCycle: Walk
 					moveSpeed: 2
 					cycleSpeed: 0
@@ -829,8 +912,7 @@
 				(if (cast contains: hen)
 					(hen
 						setCycle: Walk
-						setMotion:
-							MoveTo
+						setMotion: MoveTo
 							(if (> (hen x?) 238)
 								(Random 214 230)
 							else
@@ -841,14 +923,15 @@
 					)
 				)
 			)
-			(3 (= state 0) (self cue:))
+			(3
+				(= state 0)
+				(self cue:)
+			)
 		)
 	)
 )
 
 (instance chaseEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -856,7 +939,7 @@
 				(dog
 					setAvoider: (Avoider new:)
 					setCycle: Forward
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: Chase ego 15 self
 				)
 			)
@@ -898,8 +981,6 @@
 )
 
 (instance chewBone of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -926,13 +1007,9 @@
 	)
 )
 
-(instance dogsPlace of Block
-	(properties)
-)
+(instance dogsPlace of Block)
 
 (instance catchBone of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -978,14 +1055,16 @@
 				(dog
 					view: 350
 					loop: 2
-					ignoreActors: 0
+					ignoreActors: FALSE
 					cycleSpeed: 1
 					setCycle: Forward
 				)
 				(= seconds 8)
 			)
 			(5
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(HandsOn)
 				(dog setScript: chewBone)
 			)
@@ -994,8 +1073,6 @@
 )
 
 (instance doorOpen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1020,8 +1097,6 @@
 )
 
 (instance moveOnTheStairs of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -1036,7 +1111,9 @@
 			(2
 				(HandsOn)
 				(ego illegalBits: cWHITE)
-				(if (== ogreFrontDoorOpen 0) (ego observeControl: 16384))
+				(if (== ogreFrontDoorOpen FALSE)
+					(ego observeControl: cYELLOW)
+				)
 				(ego setStep: 3 2)
 				(= currentStatus egoNormal)
 			)

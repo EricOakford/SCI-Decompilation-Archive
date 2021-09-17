@@ -21,7 +21,7 @@
 	aLegs
 	aHen
 	local6
-	ogreSpeaks
+	saveBits
 )
 (instance keyholeMusic of Sound
 	(properties
@@ -37,7 +37,7 @@
 	
 	(method (init)
 		(= isIndoors TRUE)
-		(= noWearCrown 1)
+		(= noWearCrown TRUE)
 		(Load VIEW 2)
 		(Load VIEW 614)
 		(Load VIEW 647)
@@ -78,7 +78,9 @@
 						(switch ogreState
 							(1 0)
 							(ogreEATING 1)
-							(ogreSLEEPING (if (ego has: iMagicHen) 3 else 2))
+							(ogreSLEEPING
+								(if (ego has: iMagicHen) 3 else 2)
+							)
 							(4 0)
 						)
 					setPri: 2
@@ -90,7 +92,7 @@
 	)
 	
 	(method (dispose)
-		(= noWearCrown 0)
+		(= noWearCrown FALSE)
 		(super dispose:)
 	)
 	
@@ -112,23 +114,34 @@
 													(self setScript: emptyHole)
 												)
 											)
-											((!= script theKeyhole) (self setScript: emptyHole))
-											(else (Print 51 0))
+											((!= script theKeyhole)
+												(self setScript: emptyHole)
+											)
+											(else
+												(Print 51 0)
+											)
 										)
 									else
 										(Print 51 1)
 									)
 								)
-								((Said '/door') (Print 51 2))
-								((Said '/wall') (Print 51 3))
-								((or (Said '/dirt') (Said '<down')) (Print 51 4))
-								((Said '[<around,at][/room,cottage,closet]') (Print 51 5))
+								((Said '/door')
+									(Print 51 2)
+								)
+								((Said '/wall')
+									(Print 51 3)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 51 4)
+								)
+								((Said '[<around,at][/room,cottage,closet]')
+									(Print 51 5)
+								)
 							)
 						)
 						((Said 'open/door,closet')
 							(if (== (aDoor cel?) 0)
-								(if
-								(or ogreCameHome (== ogreState 0) (== ogreState 5))
+								(if (or ogreCameHome (== ogreState 0) (== ogreState 5))
 									(if (ego inRect: 134 131 169 141)
 										(aDoor setScript: doorOpen)
 									else
@@ -143,7 +156,7 @@
 						)
 						((Said 'close/door')
 							(if (aDoor cel?)
-								(aDoor ignoreActors: 0 setCycle: BegLoop)
+								(aDoor ignoreActors: FALSE setCycle: BegLoop)
 								(aOgre hide:)
 							else
 								(Print 51 8)
@@ -157,9 +170,7 @@
 )
 
 (instance theKeyhole of Script
-	(properties)
-	
-	(method (init param1)
+	(method (init who)
 		(Load VIEW 70)
 		(Load VIEW 251)
 		(Load VIEW 252)
@@ -199,7 +210,7 @@
 			init:
 			hide:
 		)
-		(super init: param1)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -215,7 +226,7 @@
 				(ego hide:)
 				(aOgre hide:)
 				(aDoor hide:)
-				(curRoom drawPic: 52 15)
+				(curRoom drawPic: 52 (| BLACKOUT IRISIN))
 				(= ogreCameHome TRUE)
 				(if isNightTime
 					((View new:) view: 647 loop: 3 posn: 184 87 addToPic:)
@@ -229,7 +240,7 @@
 				)
 				(aLegs show: stopUpd:)
 				(keyholeMusic play:)
-				(= ogreSpeaks (Print 51 9 #font smallFont #at -1 5 #time 12))
+				(= saveBits (Print 51 9 #font smallFont #at -1 5 #time 12))
 				(= seconds 2)
 			)
 			(3
@@ -334,8 +345,6 @@
 )
 
 (instance emptyHole of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -371,7 +380,7 @@
 						posn: 162 115
 						addToPic:
 					)
-					(= ogreSpeaks (Print 51 15 #at -1 10 #draw #dispose))
+					(= saveBits (Print 51 15 #at -1 10 #draw #dispose))
 				)
 				(= seconds 5)
 			)
@@ -391,8 +400,6 @@
 )
 
 (instance doorOpen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -412,7 +419,7 @@
 				else
 					(aOgre hide:)
 				)
-				(client ignoreActors: 1 setCycle: EndLoop self)
+				(client ignoreActors: TRUE setCycle: EndLoop self)
 			)
 			(1
 				(RedrawCast)

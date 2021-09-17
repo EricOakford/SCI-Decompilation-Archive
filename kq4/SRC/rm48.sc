@@ -20,7 +20,7 @@
 	axe
 	[local1 3]
 	ogress
-	local5
+	theSelection
 )
 (instance Room48 of Room
 	(properties
@@ -30,7 +30,9 @@
 	
 	(method (init)
 		(super init:)
-		(if ((Inventory at: iAxe) ownedBy: 48) (Load VIEW 501))
+		(if ((Inventory at: iAxe) ownedBy: 48)
+			(Load VIEW 501)
+		)
 		(Load VIEW 2)
 		(Load VIEW 647)
 		(Load VIEW 245)
@@ -39,18 +41,28 @@
 		(ogressCatchMusic init:)
 		(switch prevRoomNum
 			(49
-				(NormalEgo 0)
+				(NormalEgo loopE)
 				(ego posn: 130 123 view: 2 loop: 0 setStep: 3 2 init:)
 			)
 			(else 
-				(NormalEgo 0)
+				(NormalEgo loopE)
 				(ego posn: 135 134 view: 2 loop: 0 setStep: 3 2 init:)
 			)
 		)
 		(self setRegions: OGRE_HOUSE)
 		(if isNightTime
-			((View new:) view: 647 loop: 0 posn: 158 93 addToPic:)
-			((View new:) view: 647 loop: 1 posn: 263 96 addToPic:)
+			((View new:)
+				view: 647
+				loop: 0
+				posn: 158 93
+				addToPic:
+			)
+			((View new:)
+				view: 647
+				loop: 1
+				posn: 263 96
+				addToPic:
+			)
 			((Prop new:)
 				view: 501
 				loop: 1
@@ -111,7 +123,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: FALSE) $0040) (curRoom newRoom: 49))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 49)
+		)
 	)
 	
 	(method (dispose)
@@ -126,11 +140,21 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '<under/bed') (Print 48 0))
-							((Said '/bed') (Print 48 1))
-							((Said '<in/chest,dresser,drawer') (Print 48 2))
-							((Said '/chest,dresser,drawer') (Print 48 3))
-							((Said '/carpet') (Print 48 4))
+							((Said '<under/bed')
+								(Print 48 0)
+							)
+							((Said '/bed')
+								(Print 48 1)
+							)
+							((Said '<in/chest,dresser,drawer')
+								(Print 48 2)
+							)
+							((Said '/chest,dresser,drawer')
+								(Print 48 3)
+							)
+							((Said '/carpet')
+								(Print 48 4)
+							)
 							((Said '/window')
 								(if
 									(or
@@ -142,8 +166,12 @@
 									(Print 800 1)
 								)
 							)
-							((Said '/stair') (Print 48 6))
-							((Said '/barrel') (Print 48 7))
+							((Said '/stair')
+								(Print 48 6)
+							)
+							((Said '/barrel')
+								(Print 48 7)
+							)
 							((Said '/mirror')
 								(if (ego inRect: 201 143 282 170)
 									(Print 48 8)
@@ -158,8 +186,12 @@
 									(Print 48 10)
 								)
 							)
-							((Said '/wall') (Print 48 11))
-							((or (Said '/dirt') (Said '<down')) (Print 48 12))
+							((Said '/wall')
+								(Print 48 11)
+							)
+							((or (Said '/dirt') (Said '<down'))
+								(Print 48 12)
+							)
 							((Said '[<around,at][/room,bedroom,cottage]')
 								(Print
 									(Format @str 48 13
@@ -194,7 +226,9 @@
 						)
 						(Print 48 15)
 					)
-					((Said 'open/chest,dresser,drawer') (Print 48 2))
+					((Said 'open/chest,dresser,drawer')
+						(Print 48 2)
+					)
 					((Said 'open/window')
 						(if
 							(or
@@ -229,7 +263,7 @@
 					)
 					((Said 'bang/door')
 						(if (ego inRect: 25 137 60 154)
-							(if (== ((inventory at: 33) owner?) 48)
+							(if (== ((inventory at: iMagicHen) owner?) 48)
 								(Print 48 20)
 							else
 								(Print 48 21)
@@ -245,11 +279,21 @@
 						(> (ogressChase state?) 0)
 					)
 					(cond 
-						((Said 'look/giantess') (Print 48 22))
-						((Said 'converse[/giantess]') (Print 48 23))
-						((Said 'kill[/giantess]') (Print 48 24))
-						((Said 'get,capture/giantess') (Print 48 25))
-						((Said 'deliver') (Print 48 26))
+						((Said 'look/giantess')
+							(Print 48 22)
+						)
+						((Said 'converse[/giantess]')
+							(Print 48 23)
+						)
+						((Said 'kill[/giantess]')
+							(Print 48 24)
+						)
+						((Said 'get,capture/giantess')
+							(Print 48 25)
+						)
+						((Said 'deliver')
+							(Print 48 26)
+						)
 					)
 				)
 			else
@@ -260,8 +304,6 @@
 )
 
 (instance ogressChase of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -273,18 +315,22 @@
 					view: 245
 					posn: 0 0
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setPri: 8
 					setCycle: Walk
 					init:
 					hide:
 				)
-				(if (!= debugOn FALSE) (= seconds 10) else (= seconds 60))
+				(if (!= debugOn FALSE)
+					(= seconds 10)
+				else
+					(= seconds 60)
+				)
 			)
 			(1
-				(= local5 10)
+				(= theSelection 10)
 				(= isHandsOff TRUE)
-				(User canInput: 0)
+				(User canInput: FALSE)
 				(playMusic cue:)
 				(client
 					posn: 64 138
@@ -311,7 +357,7 @@
 			)
 			(4
 				(HandsOff)
-				(= local5 11)
+				(= theSelection 11)
 				(playMusic cue:)
 				(ego hide:)
 				(ego hide:)
@@ -326,7 +372,9 @@
 				(Print 48 28 #at -1 10)
 				(= seconds 4)
 			)
-			(6 (= dead TRUE))
+			(6
+				(= dead TRUE)
+			)
 		)
 	)
 )
@@ -344,12 +392,10 @@
 )
 
 (instance playMusic of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(switch local5
+				(switch theSelection
 					(10
 						(ogressChaseMusic play: self)
 					)
@@ -359,7 +405,10 @@
 				)
 			)
 			(1
-				(if (!= local5 11) (= state -1) (self cue:))
+				(if (!= theSelection 11)
+					(= state -1)
+					(self cue:)
+				)
 			)
 		)
 	)
