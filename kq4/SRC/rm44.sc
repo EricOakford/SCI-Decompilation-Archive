@@ -60,8 +60,11 @@
 		(Load VIEW 21)
 		(Load VIEW 73)
 		(Load SOUND 51)
-		(if (ego has: iFeather) (Load SOUND 60) (Load VIEW 51))
-		(= noWearCrown 1)
+		(if (ego has: iFeather)
+			(Load SOUND 60)
+			(Load VIEW 51)
+		)
+		(= noWearCrown TRUE)
 		(ego view: 8 posn: 39 160 viewer: inWhale init:)
 		((= egoTickling (Prop new:))
 			view: 0
@@ -124,10 +127,18 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'get,(look<in)/skeleton,man,person,james') (Print 44 2))
-					((or (Said 'get,capture/fish') (Said 'fish')) (Print 44 3))
-					((Said 'get,drink[/drink,water]') (Print 44 4))
-					((Said 'get/boat') (Print 44 5))
+					((Said 'get,(look<in)/skeleton,man,person,james')
+						(Print 44 2)
+					)
+					((or (Said 'get,capture/fish') (Said 'fish'))
+						(Print 44 3)
+					)
+					((Said 'get,drink[/drink,water]')
+						(Print 44 4)
+					)
+					((Said 'get/boat')
+						(Print 44 5)
+					)
 					((Said 'get/bottle')
 						(cond 
 							(((Inventory at: iBottle) ownedBy: 44)
@@ -140,25 +151,43 @@
 									(Print 800 1)
 								)
 							)
-							((ego has: iBottle) (Print 44 7))
-							(else (Print 44 8))
+							((ego has: iBottle)
+								(Print 44 7)
+							)
+							(else
+								(Print 44 8)
+							)
 						)
 					)
-					;this caused said spec errors
-					((Said 'ignite,create,begin/fire')
+					((Said 'light,ignite,create,begin/fire')	;EO: fixed said spec
 						(Print 44 9)
 					)
 					((Said 'look>')
 						(cond 
-							((Said '/fish') (Print 44 10))
-							((Said '/boat') (Print 44 11))
-							((Said '<under/water') (Print 44 12))
-							;said spec did not decompile properly
-							;((Said '/)') (Print 44 13))
-							((Said '/tongue') (Print 44 14))
-							((Said '/esophagus,lips,molar') (Print 44 15))
-							((Said '/uvula') (Print 44 16))
-							((Said '/skeleton,james,man,person') (Print 44 17))
+							((Said '/fish')
+								(Print 44 10)
+							)
+							((Said '/boat')
+								(Print 44 11)
+							)
+							((Said '<under/water')
+								(Print 44 12)
+							)
+							((Said '/belly')	;EO: fixed said spec
+								(Print 44 13)
+							)
+							((Said '/tongue')
+								(Print 44 14)
+							)
+							((Said '/esophagus,lips,molar')
+								(Print 44 15)
+							)
+							((Said '/uvula')
+								(Print 44 16)
+							)
+							((Said '/skeleton,james,man,person')
+								(Print 44 17)
+							)
 							((Said '/water')
 								(if ((Inventory at: iBottle) ownedBy: 44)
 									(Print 44 18)
@@ -166,11 +195,22 @@
 									(Print 44 19)
 								)
 							)
-							((Said '[<up,around,at][/room,whale]') (Print 44 0) (Print 44 1))
+							((Said '[<up,around,at][/room,whale]')
+								(Print 44 0)
+								(Print 44 1)
+							)
 						)
 					)
-					((Said 'hit/molar') (if (< (ego y?) 82) (Print 44 20) else (Print 800 1)))
-					((Said 'hit/tongue') (Print 44 21))
+					((Said 'hit/molar')
+						(if (< (ego y?) 82)
+							(Print 44 20)
+						else
+							(Print 800 1)
+						)
+					)
+					((Said 'hit/tongue')
+						(Print 44 21)
+					)
 					((Said 'hit/uvula,esophagus')
 						(if (ego inRect: 140 71 178 86)
 							(Print 44 22)
@@ -178,19 +218,24 @@
 							(Print 800 1)
 						)
 					)
-					((Said 'climb') (Print 44 23))
-					;((or (Said 'call,help') (Said ',/&'))
-					((Said 'call,help')
+					((Said 'climb')
+						(Print 44 23)
+					)
+					((or (Said 'call,help') (Said 'save/me'))	;EO: fixed said spec
 						(Print 44 24)
 					)
-					;this case already exists, and the said spec did
-					; not deomcpile properly.
-					;((Said 'open') (Print 44 25))
-					((Said 'bathe') (Print 44 26))
-					((Said 'open,force/lips') (Print 44 27))
-					;this case already exists, and the said spec did not
-					; decompile properly.
-					;((Said '>/fire') (Print 44 9))
+					((Said 'escape')	;EO: fixed said spec
+						(Print 44 25)
+					)
+					((Said 'bathe')
+						(Print 44 26)
+					)
+					((Said 'open,force/lips')
+						(Print 44 27)
+					)
+					((Said 'light/fire')	;EO: fixed said spec
+						(Print 44 9)
+					)
 					((Said 'tickle')
 						(if (ego has: iFeather)
 							(if (ego inRect: 140 71 178 86)
@@ -213,16 +258,20 @@
 )
 
 (instance slide of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(HandsOff)
 				(cond 
-					((< (ego x?) 50) (= egoX (+ (ego x?) 20)))
-					((> (ego x?) 270) (= egoX (- (ego x?) 20)))
-					(else (= egoX (ego x?)))
+					((< (ego x?) 50)
+						(= egoX (+ (ego x?) 20))
+					)
+					((> (ego x?) 270)
+						(= egoX (- (ego x?) 20))
+					)
+					(else
+						(= egoX (ego x?))
+					)
 				)
 				(ego
 					view: 52
@@ -251,26 +300,33 @@
 			)
 			(10
 				(HandsOff)
-				(ego view: 17 setLoop: (& (ego loop?) $0001))
+				(ego view: 17 setLoop: (& (ego loop?) 1))
 				(ego illegalBits: 0 cel: 255 setCycle: EndLoop self)
 			)
-			(11 (self changeState: 1))
+			(11
+				(self changeState: 1)
+			)
 		)
 	)
 )
 
 (instance inWhale of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (== (ego script?) 0)
 			(cond 
-				((& (ego onControl: origin) $0200) (ego view: 8 xStep: 2 yStep: 1 setCycle: Forward))
-				((& (ego onControl: TRUE) cCYAN) (ego view: 7 xStep: 2 yStep: 1 setCycle: Walk))
-				((& (ego onControl: TRUE) $0800) (ego view: 6 xStep: 2 yStep: 1 setCycle: Walk))
-				((& (ego onControl: TRUE) $0001)
+				((& (ego onControl: origin) cLBLUE)
+					(ego view: 8 xStep: 2 yStep: 1 setCycle: Forward)
+				)
+				((& (ego onControl: origin) cCYAN)
+					(ego view: 7 xStep: 2 yStep: 1 setCycle: Walk)
+				)
+				((& (ego onControl: origin) cLCYAN)
+					(ego view: 6 xStep: 2 yStep: 1 setCycle: Walk)
+				)
+				((& (ego onControl: origin) cBLACK)
 					(if (== (ego view?) 2)
+						(ego setScript: slide)	;EO: added to fix a very rare bug
 						(slide changeState: 1)
 					else
 						(ego view: 53 setCycle: Walk setStep: 1 1)
@@ -279,7 +335,7 @@
 				(
 					(and
 						(!= (ego view?) 2)
-						(& (ego onControl: TRUE) $0010)
+						(& (ego onControl: origin) cRED)
 						(== (ego script?) 0)
 						(<= state 0)
 						(<= (deadTimer state?) 0)
@@ -320,8 +376,6 @@
 )
 
 (instance tickle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -331,14 +385,14 @@
 				(tickleSound play: self)
 				(ego setMotion: 0 viewer: 0)
 				(Face ego egoTickling)
-				(ego loop: (& (ego loop?) $0001))
-				(ego view: 51 loop: (& (ego loop?) $0001) setCycle: Forward)
+				(ego loop: (& (ego loop?) 1))
+				(ego view: 51 loop: (& (ego loop?) 1) setCycle: Forward)
 			)
 			(2
 				(Print 44 30)
 				(ego setLoop: -1 setCel: -1)
 				(HandsOn)
-				(= noWearCrown 0)
+				(= noWearCrown FALSE)
 				(curRoom newRoom: 31)
 			)
 		)
@@ -346,8 +400,6 @@
 )
 
 (instance deadTimer of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -371,12 +423,20 @@
 				(HandsOff)
 				(sounds eachElementDo: #stop 0)
 				(cond 
-					((< (ego x?) 50) (= egoX (+ (ego x?) 20)))
-					((> (ego x?) 270) (= egoX (- (ego x?) 20)))
-					(else (= egoX (ego x?)))
+					((< (ego x?) 50)
+						(= egoX (+ (ego x?) 20))
+					)
+					((> (ego x?) 270)
+						(= egoX (- (ego x?) 20))
+					)
+					(else
+						(= egoX (ego x?))
+					)
 				)
 				(cond 
-					((== (ego view?) 2) (self changeState: 10))
+					((== (ego view?) 2)
+						(self changeState: 10)
+					)
 					((== (ego view?) 53)
 						(fallSound play:)
 						(ego
@@ -386,17 +446,21 @@
 							setMotion: MoveTo egoX 145 self
 						)
 					)
-					(else (self changeState: 4))
+					(else
+						(self changeState: 4)
+					)
 				)
 			)
 			(3
 				(ego view: 19 setLoop: 0 cel: 2 setCycle: EndLoop self)
 			)
-			(4 (self changeState: 20))
+			(4
+				(self changeState: 20)
+			)
 			(10
 				(fallSound play:)
 				(ego
-					setLoop: (& (ego loop?) $0001)
+					setLoop: (& (ego loop?) 1)
 					view: 17
 					cel: 255
 					setCycle: EndLoop self
@@ -413,7 +477,9 @@
 					setMotion: MoveTo egoX 145 self
 				)
 			)
-			(12 (self changeState: 3))
+			(12
+				(self changeState: 3)
+			)
 			(20
 				(ego view: 73 setLoop: 0 cel: 6 setCycle: EndLoop self)
 			)
@@ -422,7 +488,9 @@
 				(Print 44 31)
 				((ScriptID 0 5) setReal: self 5)
 			)
-			(22 (= dead TRUE))
+			(22
+				(= dead TRUE)
+			)
 		)
 	)
 )

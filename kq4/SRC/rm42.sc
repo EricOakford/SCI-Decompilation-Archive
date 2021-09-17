@@ -32,7 +32,7 @@
 (instance Room42 of Room
 	(properties
 		picture 42
-		style (| BLACKOUT IRISOUT) ;$0010
+		style (| BLACKOUT IRISOUT)
 	)
 	
 	(method (init)
