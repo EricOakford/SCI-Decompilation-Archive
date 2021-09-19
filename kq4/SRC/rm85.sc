@@ -72,20 +72,24 @@
 	(method (doit)
 		(super doit:)
 		(if (!= (self script?) fallStairs)
-			(if (& (ego onControl: 0) $0040)
+			(if (& (ego onControl: 0) cBROWN)
 				(ego baseSetter: 0 looper: 0)
 				(curRoom newRoom: 90)
 			)
-			(if (& (ego onControl: 0) $0020)
+			(if (& (ego onControl: 0) cMAGENTA)
 				(ego baseSetter: 0 looper: 0)
 				(curRoom newRoom: 81)
 			)
-			(if (& (ego onControl:) $0004)
+			(if (& (ego onControl:) cGREEN)
 				(self setScript: fallStairs)
 			)
 			(cond 
-				((& (ego onControl: 0) $0002) (ego looper: myLooper))
-				((> (ego y?) 110) (ego looper: 0))
+				((& (ego onControl: 0) cBLUE)
+					(ego looper: myLooper)
+				)
+				((> (ego y?) 110)
+					(ego looper: 0)
+				)
 			)
 		)
 	)
@@ -98,17 +102,25 @@
 					(cond 
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look/room,tower,castle')
 							)
 							(Print 85 0)
 						)
 						((Said 'look>')
 							(cond 
-								((or (Said '/dirt') (Said '<down')) (Print 85 1))
-								((or (Said '/sky') (Said '<up')) (Print 85 2))
-								((Said '/stair') (Print 85 3))
-								((Said '/stair') (Print 85 4))
+								((or (Said '/dirt') (Said '<down'))
+									(Print 85 1)
+								)
+								((or (Said '/sky') (Said '<up'))
+									(Print 85 2)
+								)
+								((Said '/stair')
+									(Print 85 3)
+								)
+								((Said '/stair')
+									(Print 85 4)
+								)
 							)
 						)
 					)
@@ -119,42 +131,38 @@
 )
 
 (instance myLooper of Code
-	(properties)
-	
-	(method (doit param1)
-		(param1
+	(method (doit obj)
+		(obj
 			loop:
 				(cond 
 					(
 						(or
-							(>= (param1 heading?) 305)
-							(<= (param1 heading?) 45)
+							(>= (obj heading?) 305)
+							(<= (obj heading?) 45)
 						)
-						2
+						loopS
 					)
 					(
 						(and
-							(>= (param1 heading?) 135)
-							(<= (param1 heading?) 225)
+							(>= (obj heading?) 135)
+							(<= (obj heading?) 225)
 						)
-						3
+						loopN
 					)
 					(
 						(and
-							(> (param1 heading?) 45)
-							(< (param1 heading?) 135)
+							(> (obj heading?) 45)
+							(< (obj heading?) 135)
 						)
-						0
+						loopE
 					)
-					(else 1)
+					(else loopW)
 				)
 		)
 	)
 )
 
 (instance fallStairs of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -176,8 +184,7 @@
 					setLoop: (+ 2 (ego loop?))
 					setCycle: Forward
 					setPri: -1
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(if (< (ego y?) 130)
 							(- (ego x?) 20)
 						else

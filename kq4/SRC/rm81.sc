@@ -15,7 +15,7 @@
 )
 
 (local
-	saveBits
+	printObj
 	h1
 	h2
 	door
@@ -25,7 +25,7 @@
 	local7
 	doorLocked
 	stolenInventory
-	gInvFirst
+	node
 )
 (instance theMusic of Sound
 	(properties
@@ -192,13 +192,19 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) $0040) (curRoom newRoom: 85))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 85)
+		)
 		(if
 			(and
 				(ego inRect: 61 144 84 157)
-				((inventory at: 34) ownedBy: 81)
+				((inventory at: iRose) ownedBy: 81)
 			)
-			(Print 81 0 #font smallFont #icon 409 0 0 #at -1 20)
+			(Print 81 0
+				#font smallFont
+				#icon 409 0 0
+				#at -1 20
+			)
 			(= gotItem TRUE)
 			(ego get: iRose)
 		)
@@ -214,15 +220,19 @@
 							(cond 
 								(
 									(or
-										(Said 'look[<around][/!*]')
+										(Said 'look[<around][/noword]')
 										(Said 'look/castle,tower,room,bedroom')
 									)
 									(Print 81 1)
 								)
 								((Said 'look>')
 									(cond 
-										((Said '<under/bed') (Print 81 2))
-										((Said '/bed') (Print 81 3))
+										((Said '<under/bed')
+											(Print 81 2)
+										)
+										((Said '/bed')
+											(Print 81 3)
+										)
 										((Said '/window')
 											(if
 												(or
@@ -241,7 +251,9 @@
 											)
 											(Print 81 5)
 										)
-										((Said '/chest,dresser') (Print 81 6))
+										((Said '/chest,dresser')
+											(Print 81 6)
+										)
 										((or (Said '/dirt') (Said '<down'))
 											(if (== ((inventory at: iRose) owner?) 81)
 												(Print 81 7)
@@ -256,9 +268,15 @@
 												(Print 800 1)
 											)
 										)
-										((Said '/carpet') (Print 81 10))
-										((Said '/stair') (Print 81 11))
-										((Said '/door') (Print 81 12))
+										((Said '/carpet')
+											(Print 81 10)
+										)
+										((Said '/stair')
+											(Print 81 11)
+										)
+										((Said '/door')
+											(Print 81 12)
+										)
 										((Said '/key')
 											(if (and (ego has: iRose) (not (ego has: iGoldKey)))
 												(Print 81 13)
@@ -268,8 +286,9 @@
 										)
 									)
 								)
-								(
-								(and (cast contains: edgar) (Said 'converse')) (Print 81 14))
+								((and (cast contains: edgar) (Said 'converse'))
+									(Print 81 14)
+								)
 								(
 									(and
 										((inventory at: iRose) ownedBy: 81)
@@ -285,39 +304,78 @@
 									)
 									(Print 81 15)
 								)
-								(
-								(or (Said 'open/chest') (Said 'open/drawer[<chest]')) (Print 81 5))
-								((Said 'open/window') (Print 81 16))
-								((Said 'break/window') (Print 81 17))
+								((or (Said 'open/chest') (Said 'open/drawer[<chest]'))
+									(Print 81 5)
+								)
+								((Said 'open/window')
+									(Print 81 16)
+								)
+								((Said 'break/window')
+									(Print 81 17)
+								)
 								((Said '[use]/key<skeleton')
 									(cond 
-										((not (ego has: iSkeletonKey)) (DontHave))
-										((not doorLocked) (Print 81 18))
-										(else (Print 81 19))
+										((not (ego has: iSkeletonKey))
+											(DontHave)
+										)
+										((not doorLocked)
+											(Print 81 18)
+										)
+										(else
+											(Print 81 19)
+										)
 									)
 								)
 								((Said 'unlatch/door')
 									(cond 
-										((== prevRoomNum 85) (Print 81 20))
-										((not doorLocked) (Print 81 21))
-										((not (ego inRect: 70 150 84 157)) (Print 800 1))
-										((ego has: iGoldKey) (= doorLocked FALSE) (Print 81 22) (theGame changeScore: 2))
-										(else (Print 81 23))
+										((== prevRoomNum 85)
+											(Print 81 20)
+										)
+										((not doorLocked)
+											(Print 81 21)
+										)
+										((not (ego inRect: 70 150 84 157))
+											(Print 800 1)
+										)
+										((ego has: iGoldKey)
+											(= doorLocked FALSE)
+											(Print 81 22)
+											(theGame changeScore: 2)
+										)
+										(else
+											(Print 81 23)
+										)
 									)
 								)
 								((or (Said '[use]/key<gold') (Said 'gold'))
 									(cond 
-										((not (ego inRect: 70 150 84 157)) (Print 800 1))
-										((not (ego has: iGoldKey)) (Print 800 2))
-										((not doorLocked) (Print 81 24))
-										((or local7 (not (ego has: iSkeletonKey))) (Print 81 22) (= doorLocked FALSE) (theGame changeScore: 2))
-										(else (Print 81 25))
+										((not (ego inRect: 70 150 84 157))
+											(Print 800 1)
+										)
+										((not (ego has: iGoldKey))
+											(Print 800 2)
+										)
+										((not doorLocked)
+											(Print 81 24)
+										)
+										((or local7 (not (ego has: iSkeletonKey)))
+											(Print 81 22)
+											(= doorLocked FALSE)
+											(theGame changeScore: 2)
+										)
+										(else
+											(Print 81 25)
+										)
 									)
 								)
 								((Said 'open/door')
 									(cond 
-										((not (ego inRect: 70 150 84 157)) (Print 800 1))
-										(doorLocked (Print 81 26))
+										((not (ego inRect: 70 150 84 157))
+											(Print 800 1)
+										)
+										(doorLocked
+											(Print 81 26)
+										)
 										((== (door cel?) 0)
 											(door startUpd: setCycle: EndLoop doDoor)
 											(User canControl: FALSE canInput: FALSE)
@@ -351,25 +409,40 @@
 								)
 							)
 						)
-						(
-						(or (Said 'look[<around][/!*]') (Said 'look/room')) (Print 81 30))
-						((Said 'look/stair') (Print 81 31))
-						((Said 'look/door') (Print 81 12))
-						((Said 'look/wall') (Print 81 32))
-						((Said 'close/door') (Print 81 28))
+						((or (Said 'look[<around][/noword]') (Said 'look/room'))
+							(Print 81 30)
+						)
+						((Said 'look/stair')
+							(Print 81 31)
+						)
+						((Said 'look/door')
+							(Print 81 12)
+						)
+						((Said 'look/wall')
+							(Print 81 32)
+						)
+						((Said 'close/door')
+							(Print 81 28)
+						)
 						((Said 'open/door')
 							(cond 
-								((not (ego inRect: 57 155 84 165)) (Print 800 1))
+								((not (ego inRect: 57 155 84 165))
+									(Print 800 1)
+								)
 								((== (door cel?) 0)
 									(door startUpd: setCycle: EndLoop doDoor)
 									(User canControl: FALSE canInput: FALSE)
 									(ego illegalBits: cWHITE setMotion: 0)
 									(doorOpenMusic play:)
 								)
-								(else (Print 81 33))
+								(else
+									(Print 81 33)
+								)
 							)
 						)
-						((Said 'unlatch/*') (Print 81 34))
+						((Said 'unlatch/anyword')
+							(Print 81 34)
+						)
 					)
 				)
 			)
@@ -378,8 +451,6 @@
 )
 
 (instance doDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -413,7 +484,7 @@
 				(door setCycle: BegLoop)
 			)
 			(3
-				(ego illegalBits: -16384)
+				(ego illegalBits: (| cWHITE cYELLOW))
 				(h2 illegalBits: 0 setMotion: MoveTo 145 235 self)
 				(h1 illegalBits: 0 setMotion: MoveTo 145 239)
 			)
@@ -442,7 +513,7 @@
 				)
 			)
 			(7
-				(= saveBits (Print 81 36 #at -1 25 #dispose))
+				(= printObj (Print 81 36 #at -1 25 #dispose))
 				(edgar
 					cycleSpeed: 7
 					setLoop: 0
@@ -494,22 +565,20 @@
 )
 
 (instance lockUpLast of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= gInvFirst (inventory first:))
-				(while gInvFirst
+				(= node (inventory first:))
+				(while node
 					(if
 						(and
-							(= stolenInventory (NodeValue gInvFirst))
+							(= stolenInventory (NodeValue node))
 							(== (stolenInventory owner?) ego)
 						)
 						(stolenInventory owner: 89)
 					)
-					(= gInvFirst (inventory next: gInvFirst))
+					(= node (inventory next: node))
 				)
 				(ego setMotion: 0 illegalBits: 0)
 				(h1 setMotion: Follow ego 10)
@@ -546,11 +615,14 @@
 				(Print 81 38 #at -1 10 #width 260 #time 10)
 				(ego setMotion: MoveTo 160 149 self)
 			)
-			(8 (ego loop: 2) (= seconds 3))
+			(8
+				(ego loop: 2)
+				(= seconds 3)
+			)
 			(9
 				(= inCutscene TRUE)
 				(= isHandsOff FALSE)
-				((ScriptID LOLOTTE) keep: 0)
+				((ScriptID LOLOTTE) keep: FALSE)
 				(curRoom newRoom: 692)
 				(= noWearCrown FALSE)
 			)

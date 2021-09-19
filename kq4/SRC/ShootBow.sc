@@ -42,7 +42,7 @@
 				(ego view: oldEgoView setCycle: Walk)
 				(= isHandsOff FALSE)
 				((Inventory at: iCupidBow) loop: (+ ((Inventory at: iCupidBow) loop?) 1))
-				(= underBits (Print 305 0 #at -1 10 #dispose))
+				(= globalPrint (Print 305 0 #at -1 10 #dispose))
 				(Timer setReal: self 4)
 			)
 			(2

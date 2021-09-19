@@ -140,7 +140,7 @@
 	global114				;unused
 	roomSeconds				;elapsed seconds in current room (resets to 0 on room change)
 	global116				;unused
-	global117				;used in menu		
+	debugMenu				;used in menu		
 	global118				;unused
 	speedTestQA				;never set, but if TRUE, prints the speed rating at the speed tester
 	machineSpeed			;used by the speed tester to test how fast the system is

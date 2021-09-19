@@ -84,7 +84,7 @@
 					init:
 					addToPic:
 				)
-				(= underBits (Print 694 0 #at -1 117 #dispose))
+				(= globalPrint (Print 694 0 #at -1 117 #dispose))
 				(= grahamFace (Prop new:))
 				(grahamFace
 					view: 752
@@ -140,7 +140,7 @@
 				(= seconds 3)
 			)
 			(7
-				(= underBits
+				(= globalPrint
 					(Print 694 1 #at -1 25 #width 240 #dispose)
 				)
 				(= seconds 2)
@@ -197,7 +197,7 @@
 			(101
 				(rosella cel: 4)
 				(ego put: 25 999)
-				(= underBits
+				(= globalPrint
 					(Print 694 2 #at -1 35 #width 240 #dispose)
 				)
 				(= seconds 8)
@@ -359,7 +359,7 @@
 				(= seconds 4)
 			)
 			(105
-				(= underBits
+				(= globalPrint
 					(Print 694 3
 						#at -1 20
 						#width 240
@@ -371,7 +371,7 @@
 			)
 			(106
 				(cls)
-				(= underBits
+				(= globalPrint
 					(Print 694 4
 						#at -1 20
 						#width 240
@@ -383,7 +383,7 @@
 			)
 			(107
 				(cls)
-				(= underBits
+				(= globalPrint
 					(Print 694 5
 						#at -1 20
 						#width 240
@@ -406,7 +406,7 @@
 					setPri: 14
 					init:
 				)
-				(= underBits
+				(= globalPrint
 					(Print 694 6
 						#at -1 138
 						#width 240

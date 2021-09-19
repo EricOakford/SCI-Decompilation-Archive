@@ -92,7 +92,7 @@
 									(& thisControl cBLUE)
 									(& thisControl cLBLUE)
 								)
-								(= underBits (Print 512 7 #at -1 10 #dispose))
+								(= globalPrint (Print 512 7 #at -1 10 #dispose))
 								(riverActions changeState: 1)
 							)
 							(else (NotClose))

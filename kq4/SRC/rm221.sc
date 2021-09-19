@@ -24,7 +24,7 @@
 	genesta
 	[local21 4]
 	poof
-	saveBits
+	printObj
 	[local27 2]
 	sparkle
 	[local30 200]
@@ -107,7 +107,7 @@
 				(= seconds 2)
 			)
 			(1
-				(= saveBits
+				(= printObj
 					(Print 221 0
 						#title {Rosella}
 						#at 1 140
@@ -124,7 +124,7 @@
 					(modelessDialog dispose:)
 				)
 				(mirror setLoop: 1 setCycle: Forward)
-				(= saveBits
+				(= printObj
 					(Print 221 1
 						#at 180 40
 						#width 110
@@ -139,7 +139,7 @@
 				)
 				(mirror setLoop: 0 setCycle: 0)
 				(rosella setLoop: 2 cycleSpeed: 20 setCycle: Forward)
-				(= saveBits
+				(= printObj
 					(Print 221 2
 						#at 1 134
 						#title {Rosella}
@@ -152,7 +152,7 @@
 			(4
 				(if modelessDialog (modelessDialog dispose:))
 				(mirror setLoop: 1 setCycle: Forward)
-				(= saveBits
+				(= printObj
 					(Print 221 3
 						#at 180 40
 						#width 110
@@ -211,7 +211,7 @@
 						yourself:
 					)
 				)
-				(= saveBits
+				(= printObj
 					(Print 221 4
 						#at 1 151
 						#title {Rosella}
@@ -274,7 +274,7 @@
 					)
 				)
 				(sparkle setScript: doSparkle)
-				(= saveBits
+				(= printObj
 					(Print 221 5
 						#title {Genesta}
 						#at -1 125
@@ -288,7 +288,7 @@
 				(if modelessDialog
 					(modelessDialog dispose:)
 				)
-				(= saveBits
+				(= printObj
 					(Print 221 6
 						#title {Genesta}
 						#at -1 125
@@ -345,7 +345,7 @@
 						yourself:
 					)
 				)
-				(= saveBits
+				(= printObj
 					(Print 221 7
 						#title {Rosella}
 						#at 1 151
@@ -360,7 +360,7 @@
 					(modelessDialog dispose:)
 				)
 				(rosellaFace view: 766 loop: 3 cel: 0 posn: 230 71 setPri: 2)
-				(= saveBits
+				(= printObj
 					(Print 221 8
 						#title {Genesta}
 						#at 100 151
@@ -382,7 +382,7 @@
 					setCycle: Forward
 					cycleSpeed: 3
 				)
-				(= saveBits
+				(= printObj
 					(Print 221 9
 						#title {Rosella}
 						#at 1 151
@@ -437,7 +437,7 @@
 					)
 				)
 				(sparkle setScript: doSparkle)
-				(= saveBits
+				(= printObj
 					(Print 221 10
 						#title {Genesta}
 						#at 1 135
@@ -451,7 +451,7 @@
 				(if modelessDialog
 					(modelessDialog dispose:)
 				)
-				(= saveBits
+				(= printObj
 					(Print 221 11
 						#title {Genesta}
 						#at 1 135
@@ -516,7 +516,7 @@
 						yourself:
 					)
 				)
-				(= saveBits
+				(= printObj
 					(Print
 						221 12
 						#title {Rosella}
@@ -532,7 +532,7 @@
 					(modelessDialog dispose:)
 				)
 				(rosellaFace view: 766 loop: 3 cel: 0 posn: 230 71 setPri: 2)
-				(= saveBits
+				(= printObj
 					(Print 221 13
 						#title {Genesta}
 						#at 100 151
@@ -589,7 +589,7 @@
 				(= seconds 3)
 			)
 			(17
-				(= saveBits
+				(= printObj
 					(Print 221 14
 						#title {Genesta}
 						#at -1 130
@@ -609,7 +609,7 @@
 					cycleSpeed: 2
 					setCycle: EndLoop stopMirror
 				)
-				(= saveBits
+				(= printObj
 					(Print 221 15
 						#title {Rosella}
 						#at 215 40

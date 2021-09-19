@@ -24,8 +24,12 @@
 		(= east 76)
 		(ego view: 904 xStep: 4 yStep: 1)
 		(switch prevRoomNum
-			(72 (ego posn: 132 83 init:))
-			(74 (ego posn: 10 167 init:))
+			(72
+				(ego posn: 132 83 init:)
+			)
+			(74
+				(ego posn: 10 167 init:)
+			)
 			(else 
 				(ego posn: 307 163 init:)
 			)

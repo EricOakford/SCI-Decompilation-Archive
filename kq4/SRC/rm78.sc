@@ -21,17 +21,17 @@
 )
 
 (local
-	local0
-	local1
+	jumpNum
+	jumpIndex
 	[jumpArea 18]
-	gEgoViewer
+	saveViewer
 	snake
 	snakeState
 	fruit
 	board
 	ripple1
 	ripple2
-	newProp_4
+	fluteNotes
 )
 (instance gotFruit of Sound)
 
@@ -53,7 +53,9 @@
 		(= west 77)
 		(= horizon 40)
 		(= isIndoors FALSE)
-		(if isNightTime (= picture 178))
+		(if isNightTime
+			(= picture 178)
+		)
 		(super init:)
 		(self setRegions: SWAMP)
 		(Load VIEW 330)
@@ -64,7 +66,10 @@
 			(Load VIEW 55)
 			(Load SOUND 55)
 		)
-		(if (ego has: iBoard) (Load VIEW 21) (Load VIEW 515))
+		(if (ego has: iBoard)
+			(Load VIEW 21)
+			(Load VIEW 515)
+		)
 		(Load SOUND 50)
 		(Load SOUND 39)
 		(Load SOUND 40)
@@ -82,7 +87,7 @@
 			init:
 		)
 		(ripple2
-			isExtra: 1
+			isExtra: TRUE
 			view: 650
 			loop: 5
 			cel: 0
@@ -212,7 +217,7 @@ code_038e:
 			calle    Print,  4
 			jmp      code_08e2
 code_03c1:
-			lsl      local0
+			lsl      jumpNum
 			ldi      5
 			eq?     
 			bnt      code_0418
@@ -472,7 +477,7 @@ code_05af:
 			ldi      1024
 			ne?     
 			bt       code_05c8
-			lsl      local0
+			lsl      jumpNum
 			ldi      5
 			ne?     
 			bnt      code_05d4
@@ -529,7 +534,7 @@ code_061a:
 			ldi      1024
 			ne?     
 			bt       code_0633
-			lsl      local0
+			lsl      jumpNum
 			ldi      5
 			ne?     
 			bnt      code_063f
@@ -548,7 +553,7 @@ code_063f:
 			jmp      code_08e2
 code_064b:
 			pushi    1
-			lofsa    'deliver/*[/cobra]>'
+			lofsa    'deliver/anyword[/cobra]>'
 			push    
 			callk    Said,  2
 			bnt      code_069e
@@ -591,7 +596,7 @@ code_068a:
 			jmp      code_08e2
 code_069e:
 			pushi    1
-			lofsa    'throw/*[/cobra]>'
+			lofsa    'throw/anyword[/cobra]>'
 			push    
 			callk    Said,  2
 			bnt      code_06e2
@@ -803,7 +808,7 @@ code_0819:
 			lofsa    {A large, glistening fruit hangs from a small branch.}
 			jmp      code_084c
 code_0849:
-			lofsa    {LOOKUP\_ERROR}
+			lofsa    {}
 code_084c:
 			push    
 			callk    Format,  8
@@ -812,7 +817,7 @@ code_084c:
 			jmp      code_08e2
 code_0858:
 			pushi    1
-			lofsa    '*[/cobra]>'
+			lofsa    'anyword[/cobra]>'
 			push    
 			callk    Said,  2
 			bnt      code_08e2
@@ -841,7 +846,7 @@ code_087c:
 			jmp      code_08dd
 code_0895:
 			pushi    1
-			lofsa    'get,capture/*'
+			lofsa    'get,capture/anyword'
 			push    
 			callk    Said,  2
 			bnt      code_08ae
@@ -865,7 +870,7 @@ code_08ae:
 			jmp      code_08dd
 code_08c7:
 			pushi    1
-			lofsa    'hit/*'
+			lofsa    'hit/anyword'
 			push    
 			callk    Said,  2
 			bnt      code_08e2
@@ -884,31 +889,34 @@ code_08e2:
 )
 
 (instance jump of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
 				(if (== (ego loop?) 0)
-					(++ local0)
-					(= local1 (+ local1 2))
+					(++ jumpNum)
+					(+= jumpIndex 2)
 				else
-					(-- local0)
-					(= local1 (- local1 2))
+					(-- jumpNum)
+					(-= jumpIndex 2)
 				)
-				(if (== local0 -1) (curRoom newRoom: 77) (return))
+				(if (== jumpNum -1)
+					(curRoom newRoom: 77)
+					(return)
+				)
 				(HandsOff)
-				(= gEgoViewer (ego viewer?))
+				(= saveViewer (ego viewer?))
 				(ego viewer: 0)
 				(ego view: 69 cel: 255 setCycle: EndLoop self)
 			)
-			(2 (ego setCycle: CycleTo 1 -1 self))
+			(2
+				(ego setCycle: CycleTo 1 -1 self)
+			)
 			(3
 				(ego xStep: 6 yStep: 4)
 				(cond 
 					((== (ego loop?) 0)
 						(ego
-							setMotion: JumpTo [jumpArea local1] [jumpArea (+ local1 1)]
+							setMotion: JumpTo [jumpArea jumpIndex] [jumpArea (+ jumpIndex 1)]
 							setLoop: 2
 							cel: 255
 							setCycle: EndLoop self
@@ -916,24 +924,26 @@ code_08e2:
 					)
 					((== (ego loop?) 1)
 						(ego
-							setMotion: JumpTo [jumpArea local1] [jumpArea (+ local1 1)]
+							setMotion: JumpTo [jumpArea jumpIndex] [jumpArea (+ jumpIndex 1)]
 							setLoop: 3
 							cel: 255
 							setCycle: EndLoop self
 						)
 					)
 					((== (ego loop?) 2)
-						(ego viewer: gEgoViewer)
+						(ego viewer: saveViewer)
 						(ego setMotion: JumpTo (ego x?) (+ (ego y?) 6))
 					)
 					((== (ego loop?) 3)
-						(ego viewer: gEgoViewer)
+						(ego viewer: saveViewer)
 						(ego setMotion: JumpTo (ego x?) (- (ego y?) 6))
 					)
 				)
 			)
 			(4
-				(if (== local0 6) (ego viewer: gEgoViewer))
+				(if (== jumpNum 6)
+					(ego viewer: saveViewer)
+				)
 				(if (== (ego loop?) 2)
 					(ego cel: 255 setLoop: -1 loop: 4 setCycle: EndLoop self)
 				else
@@ -947,24 +957,23 @@ code_08e2:
 					(ego view: 2 loop: 1 cel: 0 xStep: 3 yStep: 2)
 				)
 				(HandsOn)
-				(ego viewer: gEgoViewer)
+				(ego viewer: saveViewer)
 				(ego view: 2 setCycle: Walk)
-				(if (and (== local0 5) (== snakeState 0))
+				(if (and (== jumpNum 5) (== snakeState 0))
 					(snakeActions changeState: 1)
 				)
 			)
-			(10 (Print 78 0))
+			(10
+				(Print 78 0)
+			)
 		)
 	)
 )
 
 (instance snakeActions of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== snakeState 1) (ego inRect: 170 157 217 170))
+		(if (and (== snakeState 1) (ego inRect: 170 157 217 170))
 			(= snakeState 3)
 			(snakeActions changeState: 10)
 		)
@@ -1005,13 +1014,15 @@ code_08e2:
 				(snake setLoop: 1 setCycle: Forward)
 				(= seconds 5)
 			)
-			(13 (= dead TRUE))
+			(13
+				(= dead TRUE)
+			)
 			(20
 				(= seconds 0)
 				(HandsOff)
 				(= currentStatus egoNormal)
 				(ego view: 55 setMotion: 0 loop: 0 setCycle: Forward)
-				((= newProp_4 (Prop new:))
+				((= fluteNotes (Prop new:))
 					view: 888
 					setPri: (+ (ego priority?) 1)
 					cycleSpeed: 1
@@ -1027,19 +1038,19 @@ code_08e2:
 			(21
 				(Print 78 29 #at -1 10)
 				(ego view: 2 setCycle: Walk)
-				(newProp_4 dispose:)
+				(fluteNotes dispose:)
 				(= currentStatus egoOnSwampGrass)
 				(= seconds 15)
 				(HandsOn)
 			)
-			(22 (self changeState: 2))
+			(22
+				(self changeState: 2)
+			)
 		)
 	)
 )
 
 (instance boardActions of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (== state 3)
@@ -1102,11 +1113,11 @@ code_08e2:
 )
 
 (instance fruitActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 10)))
+			(0
+				(= seconds (Random 2 10))
+			)
 			(1
 				(fruit cel: 255 setCycle: EndLoop self)
 			)

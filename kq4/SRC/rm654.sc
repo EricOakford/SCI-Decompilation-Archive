@@ -24,7 +24,7 @@
 	[dishes 7]
 	i
 	diamondPouch
-	saveBits
+	printObj
 	[local61 2]
 	local63
 	local64
@@ -216,7 +216,7 @@
 			(0
 				(User canControl: FALSE canInput: FALSE)
 				(= i 0)
-				(= saveBits
+				(= printObj
 					(Print 654 15
 						#font smallFont
 						#at 200 10
@@ -269,7 +269,7 @@
 				(if (== ([dishes 0] cel?) 7)
 					(cls)
 					(= state 2)
-					(= saveBits
+					(= printObj
 						(Print 654 16 #font smallFont #at -1 10 #dispose)
 					)
 					(= seconds 1)
@@ -341,7 +341,7 @@
 				(ego startUpd:)
 				(if (> i 48)
 					(cls)
-					(= saveBits
+					(= printObj
 						(Print 654 17
 							#font smallFont
 							#at 7 5
@@ -363,7 +363,7 @@
 			(11
 				(User canInput: TRUE)
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 654 18 #font smallFont #at -1 10 #dispose)
 				)
 				(ego view: 76 loop: 5)
@@ -377,7 +377,7 @@
 			)
 			(13
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 654 19 #font smallFont #at -1 10 #dispose)
 				)
 				(= ateSoup 2)
@@ -392,7 +392,7 @@
 			(14
 				(dwarfMusic play:)
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 654 20
 						#font smallFont
 						#at -1 10

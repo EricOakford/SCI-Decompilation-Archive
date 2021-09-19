@@ -23,7 +23,7 @@
 	candleLight1
 	candleLight2
 	cat
-	saveBits
+	printObj
 	genesta
 	genestaCloseup
 	genestaFace
@@ -507,7 +507,7 @@
 			)
 			(5
 				(Print 45 39 #at -1 150)
-				(= saveBits (Print 45 40 #at -1 10 #dispose))
+				(= printObj (Print 45 40 #at -1 10 #dispose))
 				(genesta loop: 3 setCycle: Forward)
 				((= poof (Prop new:))
 					view: 686

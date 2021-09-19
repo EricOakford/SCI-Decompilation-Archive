@@ -51,7 +51,9 @@
 			(NotifyScript TROLL_CAVE 1)
 		else
 			(ego view: 950 posn: 290 163 init:)
-			(if (not (LanternIsOn)) (ShowCaveForeground 1))
+			(if (not (LanternIsOn))
+				(ShowCaveForeground TRUE)
+			)
 			(= trollAttacks FALSE)
 			(ego setScript: crawl)
 		)
@@ -61,15 +63,19 @@
 		(super doit:)
 		(if
 			(and
-				(& (ego onControl:) $0002)
+				(& (ego onControl:) cBLUE)
 				(< (ego heading?) 180)
 				(!= (ego script?) crawl)
 			)
 			(ego setScript: crawl)
 		)
 		(cond 
-			((and caveForeground (LanternIsOn)) (ShowCaveForeground 0))
-			((and (not caveForeground) (not (LanternIsOn))) (ShowCaveForeground 1))
+			((and caveForeground (LanternIsOn))
+				(ShowCaveForeground FALSE)
+			)
+			((and (not caveForeground) (not (LanternIsOn)))
+				(ShowCaveForeground TRUE)
+			)
 		)
 	)
 	
@@ -79,28 +85,40 @@
 				((event claimed?) (return TRUE))
 				((== (event type?) saidEvent)
 					(cond 
-						((or (Said 'crawl,(/cave') (Said 'crawl[/!*]')) (if (not (& (ego onControl:) $0002)) (Print 800 1)))
-						((Said 'look,find/(,(') (Print 73 0))
-						((Said 'look<out') (Print 73 1))
-						((or (Said 'look/sky') (Said 'look<up[/!*]')) (if isNightTime (Print 73 2) else (Print 73 3)))
+						((or (Said 'crawl,exit/cave') (Said 'crawl[/noword]'))	;EO: fixed said spec
+							(if (not (& (ego onControl:) cBLUE))
+								(Print 800 1)
+							)
+						)
+						((Said 'look,find/exit,exit')	;EO: fixed said spec
+							(Print 73 0)
+						)
+						((Said 'look<out')
+							(Print 73 1)
+						)
+						((or (Said 'look/sky') (Said 'look<up[/noword]'))
+							(if isNightTime
+								(Print 73 2)
+							else
+								(Print 73 3)
+							)
+						)
 					)
 				)
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (== newRoomNumber 77)
-			((ScriptID TROLL_CAVE) keep: 0)
+	(method (newRoom n)
+		(if (== n 77)
+			((ScriptID TROLL_CAVE) keep: FALSE)
 			(= noWearCrown FALSE)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance crawl of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -135,10 +153,14 @@
 				)
 				(HandsOn)
 				(client setScript: 0)
-				(if (LanternIsOn) (NotifyScript TROLL_CAVE 3))
+				(if (LanternIsOn)
+					(NotifyScript TROLL_CAVE 3)
+				)
 			)
 			(20
-				(if (LanternIsOn) (NotifyScript TROLL_CAVE 2))
+				(if (LanternIsOn)
+					(NotifyScript TROLL_CAVE 2)
+				)
 				(ego
 					view: 950
 					setLoop: 0

@@ -19,9 +19,7 @@
 	slippedOnStairs
 	henchman
 )
-(instance theMusic of Sound
-	(properties)
-)
+(instance theMusic of Sound)
 
 (instance fallMusic of Sound
 	(properties
@@ -66,7 +64,7 @@
 				posn: 73 137
 				view: 4
 				setStep: 4 2
-				illegalBits: -16384
+				illegalBits: (| cWHITE cYELLOW)
 				baseSetter: 0
 				init:
 				observeBlocks: stair1 stair2
@@ -127,8 +125,7 @@
 				(& (ego onControl: origin) cBLUE)
 				(!= (ego script?) falling)
 			)
-			(if
-			(and (< (ego heading?) 180) (> (ego heading?) 0))
+			(if (and (< (ego heading?) 180) (> (ego heading?) 0))
 				(ego
 					setPri: 12
 					illegalBits: cWHITE
@@ -136,7 +133,11 @@
 				)
 				(= slippedOnStairs TRUE)
 			else
-				(ego setPri: -1 illegalBits: -16384 baseSetter: 0)
+				(ego
+					setPri: -1
+					illegalBits: (| cWHITE cYELLOW)
+					baseSetter: 0
+				)
 				(= slippedOnStairs FALSE)
 			)
 		)
@@ -156,19 +157,31 @@
 					(cond 
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look/room,castle,tower')
 							)
 							(Print 93 1)
 						)
 						((Said 'look>')
 							(cond 
-								((Said '/stair') (Print 93 2))
-								((or (Said '/dirt') (Said '<down')) (Print 93 3))
-								((or (Said '/sky') (Said '<up')) (Print 93 4))
-								((Said '/stair') (Print 93 5))
-								((Said '/door') (Print 93 6))
-								((Said '/door') (Print 93 7))
+								((Said '/stair')
+									(Print 93 2)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 93 3)
+								)
+								((or (Said '/sky') (Said '<up'))
+									(Print 93 4)
+								)
+								((Said '/stair')
+									(Print 93 5)
+								)
+								((Said '/door')
+									(Print 93 6)
+								)
+								((Said '/door')
+									(Print 93 7)
+								)
 							)
 						)
 					)
@@ -179,8 +192,6 @@
 )
 
 (instance falling of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -216,7 +227,7 @@
 					view: 4
 					setStep: 4 2
 					setLoop: -1
-					illegalBits: -16384
+					illegalBits: (| cWHITE cYELLOW)
 					setPri: -1
 					setCycle: Walk
 				)
@@ -259,8 +270,6 @@
 )
 
 (instance henchChase93 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

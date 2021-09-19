@@ -22,7 +22,7 @@
 				(Timer setReal: self 5)
 			)
 			(1
-				(= underBits (Print 302 0 #dispose))
+				(= globalPrint (Print 302 0 #dispose))
 				(Timer setReal: self 15)
 			)
 			(2

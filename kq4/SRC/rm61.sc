@@ -14,7 +14,7 @@
 )
 
 (local
-	saveBits
+	printObj
 )
 (instance fallSound of Sound
 	(properties
@@ -172,7 +172,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= saveBits (Print 61 5 #at -1 10 #dispose))
+				(= printObj (Print 61 5 #at -1 10 #dispose))
 				(User canControl: FALSE)
 				(fallSound play:)
 				(ego illegalBits: 0 ignoreActors: TRUE)

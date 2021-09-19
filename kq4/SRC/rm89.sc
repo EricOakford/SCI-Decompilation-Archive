@@ -13,29 +13,29 @@
 )
 
 (local
-	cupboardDoor1
-	cupboardDoor2
+	rightCabinetDoor
+	leftCabinetDoor
 	egoInventory
 	dishes
-	gInvFirst
+	node
 	stolenInventory
 	local6
 	recoveredItems
 )
-(procedure (RecoverItems &tmp temp0)
-	(= temp0 0)
-	(= gInvFirst (inventory first:))
-	(while gInvFirst
+(procedure (RecoverItems &tmp retVal)
+	(= retVal 0)
+	(= node (inventory first:))
+	(while node
 		(if
 			(and
-				(= stolenInventory (NodeValue gInvFirst))
+				(= stolenInventory (NodeValue node))
 				(== (stolenInventory owner?) 89)
 			)
-			(= temp0 1)
+			(= retVal TRUE)
 		)
-		(= gInvFirst (inventory next: gInvFirst))
+		(= node (inventory next: node))
 	)
-	(return temp0)
+	(return retVal)
 )
 
 (instance Room89 of Room
@@ -79,7 +79,7 @@
 				addToPic:
 			)
 		)
-		((= cupboardDoor1 (Prop new:))
+		((= rightCabinetDoor (Prop new:))
 			view: 606
 			loop: 0
 			posn: 241 108
@@ -87,7 +87,7 @@
 			setPri: 8
 			stopUpd:
 		)
-		((= cupboardDoor2 (Prop new:))
+		((= leftCabinetDoor (Prop new:))
 			view: 606
 			posn: 76 108
 			loop: 1
@@ -118,13 +118,17 @@
 		)
 		(if (or (== prevRoomNum 91) (== prevRoomNum 0))
 			(ego posn: 38 151 view: 4 xStep: 4 yStep: 2 init:)
-			(if henchChasingEgo (= henchChasingEgo FALSE))
+			(if henchChasingEgo
+				(= henchChasingEgo FALSE)
+			)
 		)
 	)
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) cBROWN) (curRoom newRoom: 91))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 91)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -135,7 +139,7 @@
 					(cond 
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look/room,castle,kitchen')
 							)
 							(Print 89 0)
@@ -145,18 +149,22 @@
 								((Said '<in/cabinet')
 									(if
 										(or
-											(< (ego distanceTo: cupboardDoor1) 25)
-											(< (ego distanceTo: cupboardDoor2) 25)
+											(< (ego distanceTo: rightCabinetDoor) 25)
+											(< (ego distanceTo: leftCabinetDoor) 25)
 										)
-										(if (< (ego distanceTo: cupboardDoor1) 25)
-											(if (== (cupboardDoor1 cel?) 0)
-												(cupboardDoor1 setCycle: EndLoop rightCabinet)
+										(if (< (ego distanceTo: rightCabinetDoor) 25)
+											(if (== (rightCabinetDoor cel?) 0)
+												(rightCabinetDoor setCycle: EndLoop rightCabinet)
 											)
-											(if recoveredItems (Print 89 1) else (Print 89 2))
+											(if recoveredItems
+												(Print 89 1)
+											else
+												(Print 89 2)
+											)
 										)
-										(if (< (ego distanceTo: cupboardDoor2) 25)
-											(if (== (cupboardDoor2 cel?) 0)
-												(cupboardDoor2 setCycle: EndLoop leftCabinet)
+										(if (< (ego distanceTo: leftCabinetDoor) 25)
+											(if (== (leftCabinetDoor cel?) 0)
+												(leftCabinetDoor setCycle: EndLoop leftCabinet)
 											)
 											(Print 89 3)
 										)
@@ -164,14 +172,30 @@
 										(Print 800 1)
 									)
 								)
-								((Said '/cabinet') (Print 89 4))
-								((Said '<under/table') (Print 89 5))
-								((Said '/table') (Print 89 6))
-								((Said '/fireplace') (Print 89 7))
-								((Said '/caldron') (Print 89 8))
-								((Said '/barrel') (Print 89 9))
-								((Said '/wall') (Print 89 10))
-								((or (Said '/dirt') (Said '<down')) (Print 89 11))
+								((Said '/cabinet')
+									(Print 89 4)
+								)
+								((Said '<under/table')
+									(Print 89 5)
+								)
+								((Said '/table')
+									(Print 89 6)
+								)
+								((Said '/fireplace')
+									(Print 89 7)
+								)
+								((Said '/caldron')
+									(Print 89 8)
+								)
+								((Said '/barrel')
+									(Print 89 9)
+								)
+								((Said '/wall')
+									(Print 89 10)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 89 11)
+								)
 								((Said '/window')
 									(if (ego inRect: 220 124 282 146)
 										(Print 89 12)
@@ -179,48 +203,60 @@
 										(Print 800 1)
 									)
 								)
-								((Said '/door') (Print 89 13))
+								((Said '/door')
+									(Print 89 13)
+								)
 							)
 						)
 						((Said 'open>')
 							(cond 
-								((Said '/barrel') (Print 89 14))
-								((Said '/window') (Print 89 15))
+								((Said '/barrel')
+									(Print 89 14)
+								)
+								((Said '/window')
+									(Print 89 15)
+								)
 								((Said '/cabinet,door')
 									(cond 
 										((ego inRect: 210 123 249 133)
-											(if (== (cupboardDoor1 cel?) 0)
-												(cupboardDoor1 setCycle: EndLoop rightCabinet)
-												(if recoveredItems (Print 89 16) else (Print 89 2))
+											(if (== (rightCabinetDoor cel?) 0)
+												(rightCabinetDoor setCycle: EndLoop rightCabinet)
+												(if recoveredItems
+													(Print 89 16)
+												else
+													(Print 89 2)
+												)
 											else
 												(Print 89 17)
 											)
 										)
 										((ego inRect: 74 122 100 133)
-											(if (== (cupboardDoor2 cel?) 0)
-												(cupboardDoor2 setCycle: EndLoop leftCabinet)
+											(if (== (leftCabinetDoor cel?) 0)
+												(leftCabinetDoor setCycle: EndLoop leftCabinet)
 												(Print 89 3)
 											else
 												(Print 89 17)
 											)
 										)
-										(else (Print 800 1))
+										(else
+											(Print 800 1)
+										)
 									)
 								)
 							)
 						)
 						((Said 'close/cabinet,door')
 							(cond 
-								((< (ego distanceTo: cupboardDoor1) 25)
-									(if (cupboardDoor1 cel?)
-										(cupboardDoor1 setCycle: BegLoop rightCabinet)
+								((< (ego distanceTo: rightCabinetDoor) 25)
+									(if (rightCabinetDoor cel?)
+										(rightCabinetDoor setCycle: BegLoop rightCabinet)
 									else
 										(Print 89 18)
 									)
 								)
-								((< (ego distanceTo: cupboardDoor2) 25)
-									(if (cupboardDoor2 cel?)
-										(cupboardDoor2 setCycle: BegLoop leftCabinet)
+								((< (ego distanceTo: leftCabinetDoor) 25)
+									(if (leftCabinetDoor cel?)
+										(leftCabinetDoor setCycle: BegLoop leftCabinet)
 									else
 										(Print 89 18)
 									)
@@ -228,12 +264,16 @@
 								(else (Print 800 1))
 							)
 						)
-						((Said 'break/window') (Print 89 19))
+						((Said 'break/window')
+							(Print 89 19)
+						)
 						((Said 'get>')
 							(cond 
-								((Said '/caldron') (Print 89 20))
+								((Said '/caldron')
+									(Print 89 20)
+								)
 								((Said '/dish')
-									(if (not (cupboardDoor2 cel?))
+									(if (not (leftCabinetDoor cel?))
 										(Print 89 21)
 									else
 										(Print 89 22)
@@ -241,22 +281,28 @@
 								)
 								((Said '/all,possessions,inventory')
 									(cond 
-										((not recoveredItems) (Print 89 2))
-										((not (cupboardDoor1 cel?)) (Print 89 21))
-										((> (ego distanceTo: cupboardDoor1) 25) (Print 800 1))
+										((not recoveredItems)
+											(Print 89 2)
+										)
+										((not (rightCabinetDoor cel?))
+											(Print 89 21)
+										)
+										((> (ego distanceTo: rightCabinetDoor) 25)
+											(Print 800 1)
+										)
 										(else
 											(= local6 1)
-											(= gInvFirst (inventory first:))
-											(while gInvFirst
+											(= node (inventory first:))
+											(while node
 												(if
 													(and
-														(= stolenInventory (NodeValue gInvFirst))
+														(= stolenInventory (NodeValue node))
 														(== (stolenInventory owner?) 89)
 													)
 													(stolenInventory owner: ego)
 													(= local6 0)
 												)
-												(= gInvFirst (inventory next: gInvFirst))
+												(= node (inventory next: node))
 											)
 											(if (not local6)
 												(theGame changeScore: 4)
@@ -273,8 +319,8 @@
 								(
 									(and
 										recoveredItems
-										(< (ego distanceTo: cupboardDoor1) 25)
-										(!= (cupboardDoor1 cel?) (- (NumCels cupboardDoor1) 1))
+										(< (ego distanceTo: rightCabinetDoor) 25)
+										(!= (rightCabinetDoor cel?) (- (NumCels rightCabinetDoor) 1))
 									)
 									(Print 89 23)
 									(event claimed: TRUE)
@@ -289,12 +335,10 @@
 )
 
 (instance rightCabinet of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cupboardDoor1 stopUpd:)
+				(rightCabinetDoor stopUpd:)
 				(= state -1)
 			)
 		)
@@ -302,12 +346,10 @@
 )
 
 (instance leftCabinet of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cupboardDoor2 stopUpd:)
+				(leftCabinetDoor stopUpd:)
 				(= state -1)
 			)
 		)

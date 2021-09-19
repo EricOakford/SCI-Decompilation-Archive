@@ -24,7 +24,7 @@
 	son
 	hat
 	[local23 7]
-	saveBits
+	printObj
 	kingCloseup
 	[local32 202]
 )
@@ -82,8 +82,8 @@
 	)
 	
 	(method (newRoom n)
-		(if (IsObject saveBits)
-			(saveBits dispose:)
+		(if (IsObject printObj)
+			(printObj dispose:)
 		)
 		(super newRoom: n)
 	)
@@ -170,7 +170,7 @@
 				(Timer setReal: self 2)
 			)
 			(1
-				(= saveBits
+				(= printObj
 					(Print 120 0
 						#at -1 10
 						#width 300
@@ -197,7 +197,7 @@
 			)
 			(6
 				(king setLoop: 0)
-				(= saveBits
+				(= printObj
 					(Print 120 1
 						#width 300
 						#at -1 12
@@ -258,7 +258,7 @@
 					setCycle: Reverse
 					setMotion: MoveTo 275 120
 				)
-				(= saveBits
+				(= printObj
 					(Print 120 2
 						#mode teJustCenter
 						#at -1 150
@@ -271,7 +271,7 @@
 				(if modelessDialog
 					(modelessDialog dispose:)
 				)
-				(= saveBits
+				(= printObj
 					(Print 120 3
 						#at -1 150
 						#dispose
@@ -296,7 +296,7 @@
 						yourself:
 					)
 				)
-				(= saveBits
+				(= printObj
 					(Print 120 4
 						#at -1 140
 						#dispose
@@ -364,7 +364,7 @@
 					posn: 300 144
 					stopUpd:
 				)
-				(= saveBits
+				(= printObj
 					(Print 120 5
 						#title {King Graham}
 						#at 53 155
@@ -382,7 +382,7 @@
 				(cast eachElementDo: #hide)
 				(curRoom drawPic: 203)
 				(hat show: setCel: 0 setLoop: 2 posn: 180 99 stopUpd:)
-				(= saveBits
+				(= printObj
 					(Print 120 6
 						#at -1 152
 						#dispose
@@ -506,7 +506,7 @@
 					posn: 162 119
 					setPri: 8
 				)
-				(= saveBits
+				(= printObj
 					(Print 120 7
 						#at -1 134
 						#dispose
@@ -558,7 +558,7 @@
 					setCycle: EndLoop
 					setMotion: MoveTo 340 176
 				)
-				(= saveBits
+				(= printObj
 					(Print 120 8
 						#at -1 10
 						#width 300

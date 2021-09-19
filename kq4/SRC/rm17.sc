@@ -253,7 +253,7 @@
 			)
 			(5
 				(aZombie hide:)
-				(= underBits (Print 17 16 #at -1 20 #dispose))
+				(= globalPrint (Print 17 16 #at -1 20 #dispose))
 				(ego
 					view: 45
 					x: 160

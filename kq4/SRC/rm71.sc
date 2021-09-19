@@ -58,7 +58,7 @@
 		(if (== ((inventory at: iBone) owner?) 71)
 			((= bone (Prop new:))
 				view: 511
-				ignoreActors: 1
+				ignoreActors: TRUE
 				loop: 0
 				cel: 1
 				posn: 72 116
@@ -68,27 +68,43 @@
 		)
 		(ego view: 904 xStep: 4 yStep: 1)
 		(switch prevRoomNum
-			(72 (ego posn: 208 104))
-			(74 (ego posn: 170 183))
+			(72
+				(ego posn: 208 104)
+			)
+			(74
+				(ego posn: 170 183)
+			)
 			(else 
 				(ego posn: 78 112)
 				(= trollAttacks FALSE)
-				(if (not (LanternIsOn)) (ShowCaveForeground 1))
+				(if (not (LanternIsOn))
+					(ShowCaveForeground TRUE)
+				)
 			)
 		)
 		(ego priority: (CoordPri (ego y?)) init:)
-		(if (LanternIsOn) (NotifyScript 605 1))
+		(if (LanternIsOn)
+			(NotifyScript TROLL_CAVE 1)
+		)
 	)
 	
 	(method (doit)
 		(super doit:)
 		(cond 
-			((& (ego onControl: 0) $0040) (curRoom newRoom: 70))
-			((& (ego onControl: 0) $0020) (curRoom newRoom: 72))
+			((& (ego onControl: 0) cBROWN)
+				(curRoom newRoom: 70)
+			)
+			((& (ego onControl: 0) cMAGENTA)
+				(curRoom newRoom: 72)
+			)
 		)
 		(cond 
-			((and caveForeground (LanternIsOn)) (ShowCaveForeground 0))
-			((and (not caveForeground) (not (LanternIsOn))) (ShowCaveForeground 1))
+			((and caveForeground (LanternIsOn))
+				(ShowCaveForeground FALSE)
+			)
+			((and (not caveForeground) (not (LanternIsOn)))
+				(ShowCaveForeground TRUE)
+			)
 		)
 	)
 	
@@ -99,12 +115,17 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((or (Said '/falls') (Said '<out')) (Print 71 0))
-							((Said '/<') (Print 71 1))
+							((or (Said '/falls') (Said '<out'))
+								(Print 71 0)
+							)
+							((Said '/heap')	;EO: fixed said spec
+								(Print 71 1)
+							)
 							(
 								(and
 									(not (ego has: iBone))
-									(or (Said '/[') (Said '/dirt') (Said '<down'))
+									;EO: fixed said spec
+									(or (Said '/bone') (Said '/dirt') (Said '<down'))
 								)
 								(Print 71 1)
 							)
@@ -118,13 +139,17 @@
 										)
 									)
 								)
-								(if (not (ego has: iBone)) (Print 71 3))
+								(if (not (ego has: iBone))
+									(Print 71 3)
+								)
 							)
 						)
 					)
-					((Said 'get/[')
+					((Said 'get/bone')	;EO: fixed said spec
 						(cond 
-							((!= ((inventory at: iBone) owner?) 71) (Print 71 4))
+							((!= ((inventory at: iBone) owner?) 71)
+								(Print 71 4)
+							)
 							(
 								(and
 									(< (ego distanceTo: bone) 15)
@@ -136,28 +161,28 @@
 								(= gotItem TRUE)
 								(theGame changeScore: 2)
 							)
-							(else (NotClose))
+							(else
+								(NotClose)
+							)
 						)
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (== newRoomNumber 70)
+	(method (newRoom n)
+		(if (== n 70)
 			((ScriptID TROLL_CAVE) keep: 0)
-			(= noWearCrown 0)
+			(= noWearCrown FALSE)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance getDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -171,7 +196,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(1 (ego setCycle: BegLoop self))
+			(1
+				(ego setCycle: BegLoop self)
+			)
 			(2
 				(ego view: oldEgoView setCycle: Walk)
 				(HandsOn)

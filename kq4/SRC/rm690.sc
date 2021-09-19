@@ -167,7 +167,7 @@
 				)
 			)
 			(2
-				(= underBits (Print 690 0 #at -1 0 #dispose))
+				(= globalPrint (Print 690 0 #at -1 0 #dispose))
 				(= seconds 5)
 			)
 			(3
@@ -186,7 +186,7 @@
 				)
 			)
 			(10
-				(= underBits
+				(= globalPrint
 					(Print 690 1
 						#at -1 10
 						#title {Genesta}
@@ -216,14 +216,14 @@
 			)
 			(13
 				(genesta loop: 2 cycleSpeed: 1 setCycle: Forward)
-				(= underBits (Print 690 2 #at -1 0 #dispose))
+				(= globalPrint (Print 690 2 #at -1 0 #dispose))
 				(= seconds 8)
 			)
 			(14
 				(if modelessDialog
 					(modelessDialog dispose:)
 				)
-				(= underBits
+				(= globalPrint
 					(Print 690 3 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 6)
@@ -256,7 +256,7 @@
 				(self changeState: 4)
 			)
 			(20
-				(= underBits
+				(= globalPrint
 					(Print 690 4 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 15)
@@ -265,12 +265,12 @@
 				(if modelessDialog
 					(modelessDialog dispose:)
 				)
-				(= underBits (Print 690 5 #at -1 0 #dispose))
+				(= globalPrint (Print 690 5 #at -1 0 #dispose))
 				(= seconds 6)
 			)
 			(22
 				(if modelessDialog (modelessDialog dispose:))
-				(= underBits
+				(= globalPrint
 					(Print 690 6 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 10)
@@ -296,7 +296,7 @@
 			)
 			(26
 				(poof hide:)
-				(= underBits
+				(= globalPrint
 					(Print 690 7 #at -1 10 #title {Genesta} #dispose)
 				)
 				(genesta loop: 3 setCycle: Forward)
@@ -322,7 +322,7 @@
 				(edgar loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(30
-				(= underBits
+				(= globalPrint
 					(Print 690 8 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 8)
@@ -394,13 +394,13 @@
 					maxCycles: 4
 					init:
 				)
-				(= underBits (Print 690 9 #at -1 0 #dispose))
+				(= globalPrint (Print 690 9 #at -1 0 #dispose))
 				(= seconds 6)
 			)
 			(36
 				(if modelessDialog (modelessDialog dispose:))
 				(edgarFace cycleSpeed: 5 setCycle: EndLoop self)
-				(= underBits
+				(= globalPrint
 					(Print 690 10 #at -1 10 #title {Edgar} #dispose)
 				)
 				((= edgarHands (View new:))
@@ -414,22 +414,22 @@
 			)
 			(37
 				(if modelessDialog (modelessDialog dispose:))
-				(= underBits (Print 690 11 #at -1 0 #dispose))
+				(= globalPrint (Print 690 11 #at -1 0 #dispose))
 				(= seconds 5)
 			)
 			(38
 				(if modelessDialog (modelessDialog dispose:))
-				(= underBits (Print 690 12 #at -1 0 #dispose))
+				(= globalPrint (Print 690 12 #at -1 0 #dispose))
 				(= seconds 5)
 			)
 			(39
 				(if modelessDialog (modelessDialog dispose:))
-				(= underBits (Print 690 13 #at -1 0 #dispose))
+				(= globalPrint (Print 690 13 #at -1 0 #dispose))
 				(= seconds 3)
 			)
 			(40
 				(if modelessDialog (modelessDialog dispose:))
-				(= underBits
+				(= globalPrint
 					(Print 690 14 #at -1 10 #title {Rosella} #dispose)
 				)
 				(edgarFace
@@ -446,7 +446,7 @@
 				(if modelessDialog (modelessDialog dispose:))
 				(edgarFace dispose:)
 				(rosellaEye dispose:)
-				(= underBits
+				(= globalPrint
 					(Print 690 15 #at -1 10 #title {Rosella} #dispose)
 				)
 				(= seconds 4)
@@ -471,14 +471,14 @@
 				)
 				(ego cel: 1)
 				(edgar setCycle: EndLoop)
-				(= underBits
+				(= globalPrint
 					(Print 690 16 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 6)
 			)
 			(44
 				(if modelessDialog (modelessDialog dispose:))
-				(= underBits
+				(= globalPrint
 					(Print 690 17 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 5)
@@ -508,19 +508,19 @@
 			)
 			(100
 				(genesta view: 755 setLoop: 3 cel: 8)
-				(= underBits
+				(= globalPrint
 					(Print 690 18 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 15)
 			)
 			(101
 				(if modelessDialog (modelessDialog dispose:))
-				(= underBits (Print 690 19 #at -1 0 #dispose))
+				(= globalPrint (Print 690 19 #at -1 0 #dispose))
 				(= seconds 8)
 			)
 			(102
 				(if modelessDialog (modelessDialog dispose:))
-				(= underBits
+				(= globalPrint
 					(Print 690 20 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 10)
@@ -546,7 +546,7 @@
 			)
 			(106
 				(poof hide:)
-				(= underBits
+				(= globalPrint
 					(Print 690 21 #at -1 10 #title {Genesta} #dispose)
 				)
 				(= seconds 10)

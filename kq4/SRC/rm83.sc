@@ -19,7 +19,7 @@
 (local
 	henchman
 	window
-	roomDialog
+	printObj
 )
 (instance Room83 of Room
 	(properties
@@ -99,8 +99,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== gamePhase endGame) (& (ego onControl: 0) $0040))
+		(if (and (== gamePhase endGame) (& (ego onControl: 0) cBROWN))
 			(curRoom newRoom: 86)
 		)
 	)
@@ -113,31 +112,68 @@
 					(cond 
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look/room,castle')
 							)
 							(Print 83 0)
 						)
 						((Said 'look>')
 							(cond 
-								((Said '/skeleton,bone') (Print 83 1))
-								((Said '/machine') (Print 83 2))
-								((Said '/whip') (Print 83 3))
-								((Said '/chain') (Print 83 4))
-								((Said '/window') (Print 83 5))
-								((Said '/wall') (Print 83 6))
-								((or (Said '/dirt') (Said '<down')) (Print 83 7))
+								((Said '/skeleton,bone')
+									(Print 83 1)
+								)
+								((Said '/machine')
+									(Print 83 2)
+								)
+								((Said '/whip')
+									(Print 83 3)
+								)
+								((Said '/chain')
+									(Print 83 4)
+								)
+								((Said '/window')
+									(Print 83 5)
+								)
+								((Said '/wall')
+									(Print 83 6)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 83 7)
+								)
 							)
 						)
-						(
-						(or (Said 'use,(turn<on)/machine') (Said 'turn/wheel')) (Print 83 8))
-						((Said 'get/whip') (Print 83 9))
-						((Said 'get/chain') (Print 83 4))
-						((Said 'open/window') (Print 83 10))
-						((Said 'break/window') (Print 83 11))
-						((Said 'open/door') (if (< gamePhase killedLolotte) (Print 83 12) else (Print 83 13)))
-						((Said 'unlatch/door') (if (< gamePhase killedLolotte) (Print 83 14) else (Print 83 15)))
-						((Said 'call/help') (Print 83 16))
+						((or (Said 'use,(turn<on)/machine') (Said 'turn/wheel'))
+							(Print 83 8)
+						)
+						((Said 'get/whip')
+							(Print 83 9)
+						)
+						((Said 'get/chain')
+							(Print 83 4)
+						)
+						((Said 'open/window')
+							(Print 83 10)
+						)
+						((Said 'break/window')
+							(Print 83 11)
+						)
+						((Said 'open/door')
+							(if (< gamePhase killedLolotte)
+								(Print 83 12)
+							else
+								(Print 83 13)
+							)
+						)
+						((Said 'unlatch/door')
+							(if (< gamePhase killedLolotte)
+								(Print 83 14)
+							else
+								(Print 83 15)
+							)
+						)
+						((Said 'call/help,save')	;EO: fixed said spec
+							(Print 83 16)
+						)
 					)
 				)
 			)
@@ -146,11 +182,11 @@
 )
 
 (instance takeBack of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 30))
+			(0
+				(= seconds 30)
+			)
 			(1
 				(User canControl: FALSE canInput: FALSE)
 				(ego setMotion: 0)
@@ -167,15 +203,19 @@
 					view: 141
 					posn: 150 194
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					init:
 					setCycle: Walk
 					setMotion: MoveTo 150 160 self
 				)
 			)
 			(3
-				(= roomDialog
-					(Print 83 18 #at -1 10 #font smallFont #dispose)
+				(= printObj
+					(Print 83 18
+						#at -1 10
+						#font smallFont
+						#dispose
+					)
 				)
 				(User canControl: FALSE canInput: FALSE)
 				(ego illegalBits: 0 setMotion: MoveTo 160 (ego y?) self)

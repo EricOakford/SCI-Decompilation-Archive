@@ -49,10 +49,12 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) $0040) (= newRoomNum 73))
+		(if (& (ego onControl: 0) cBROWN)
+			(= newRoomNum 73)
+		)
 		(if
 			(and
-				(& (ego onControl: 1) $0004)
+				(& (ego onControl: origin) cGREEN)
 				(not boardOverChasm)
 				(!= (curRoom script?) fallChasm)
 			)
@@ -65,21 +67,31 @@
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
-					((Said 'look[<around][/room]') (Print 76 0) (Print 76 1))
+					((Said 'look[<around][/room]')
+						(Print 76 0)
+						(Print 76 1)
+					)
 					((Said 'find,look/abyss')
-						(if (& (ego onControl: 0) $1000)
+						(if (& (ego onControl: 0) cLRED)
 							(Print 76 2)
 						else
 							(Print 76 3)
 						)
 					)
-					((Said 'look/(,hole') (Print 76 4))
+					((Said 'look/exit,hole')	;EO: fixed said spec
+						(Print 76 4)
+					)
 					((Said '(place,lay)[<down]/board')
 						(cond 
-							((not (ego has: iBoard)) (Print 76 5 #at -1 10 #time 5))
-							(
-							(or boardOverChasm (not (& (ego onControl: 0) $1000))) (NotClose))
-							(else (self setScript: layBoard))
+							((not (ego has: iBoard))
+								(Print 76 5 #at -1 10 #time 5)
+							)
+							((or boardOverChasm (not (& (ego onControl: 0) cLRED)))
+								(NotClose)
+							)
+							(else
+								(self setScript: layBoard)
+							)
 						)
 					)
 				)
@@ -91,13 +103,11 @@
 )
 
 (instance fallChasm of Script
-	(properties)
-	
-	(method (init param1)
+	(method (init who)
 		(HandsOff)
 		(NotifyScript TROLL_CAVE 4)
 		(ego view: 936 setPri: 10 setCycle: Forward)
-		(super init: param1)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -110,7 +120,9 @@
 				)
 				(= cycles 2)
 			)
-			(1 (fallSound play: self))
+			(1
+				(fallSound play: self)
+			)
 			(2
 				((inventory at: 3) loop: 0)
 				(Print 76 6 #draw #mode teJustCenter #dispose)
@@ -125,27 +137,27 @@
 				(ShakeScreen 10)
 				(= seconds 2)
 			)
-			(5 (= dead TRUE))
+			(5
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance layBoard of Script
-	(properties)
-	
-	(method (init param1)
+	(method (init who)
 		(= egoY (ego y?))
 		(if (< (/ global192 10) 2)
 			(theGame changeScore: 2)
-			(= global192 (+ global192 10))
+			(+= global192 10)
 		)
-		(super init: param1)
+		(super init: who)
 	)
 	
 	(method (doit)
 		(if
 			(and
-				(& (ego onControl: 1) $0004)
+				(& (ego onControl: origin) cGREEN)
 				(or
 					(> (ego y?) (+ egoY 3))
 					(< (ego y?) (- egoY 3))
@@ -156,15 +168,15 @@
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $0004)
+				(& (ego onControl: origin) cGREEN)
 				(== boardOverChasm TRUE)
 				(== laidDownBoard FALSE)
 			)
-			(= laidDownBoard 1)
+			(= laidDownBoard TRUE)
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $1000)
+				(& (ego onControl: origin) cLRED)
 				(== laidDownBoard TRUE)
 				(== boardOverChasm TRUE)
 			)

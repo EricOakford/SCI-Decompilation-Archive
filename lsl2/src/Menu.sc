@@ -40,8 +40,8 @@
 		(SetMenu invI p_said 'all')
 	)
 	
-	(method (handleEvent event &tmp temp0 i [str2 100])
-		(switch (= temp0 (super handleEvent: event))
+	(method (handleEvent event &tmp evt i [str2 100])
+		(switch (= evt (super handleEvent: event))
 			(aboutI
 				(Print MENU 0
 					#font smallFont
@@ -225,8 +225,8 @@
 				)
 			)
 			(else 
-				(if global117
-					(global117 doit: temp0)
+				(if debugMenu
+					(debugMenu doit: evt)
 				)
 			)
 		)

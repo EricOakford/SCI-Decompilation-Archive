@@ -193,11 +193,11 @@
 				((event claimed?) (return TRUE))
 				((== (event type?) saidEvent)
 					(cond 
-						((not (& (ego onControl: 0) $0800))
+						((not (& (ego onControl: 0) cLCYAN))
 							(cond 
 								(
 									(or
-										(Said 'look[<around][/!*]')
+										(Said 'look[<around][/noword]')
 										(Said 'look[<around]/room')
 										(Said 'look/castle,tower,bedroom')
 									)
@@ -211,11 +211,21 @@
 										)
 									)
 								)
-								((Said 'bang') (if lolotteAlive (Print 82 2) else (Print 82 3)))
+								((Said 'bang')
+									(if lolotteAlive
+										(Print 82 2)
+									else
+										(Print 82 3)
+									)
+								)
 								((Said 'look>')
 									(cond 
-										((Said '<under/bed') (Print 82 4))
-										((Said '/bed') (Print 82 5))
+										((Said '<under/bed')
+											(Print 82 4)
+										)
+										((Said '/bed')
+											(Print 82 5)
+										)
 										((Said '/window')
 											(if
 												(or
@@ -227,9 +237,15 @@
 												(NotClose)
 											)
 										)
-										((Said '/wall') (Print 82 7))
-										((Said '/dirt') (Print 82 8))
-										((Said '/carpet') (Print 82 9))
+										((Said '/wall')
+											(Print 82 7)
+										)
+										((Said '/dirt')
+											(Print 82 8)
+										)
+										((Said '/carpet')
+											(Print 82 9)
+										)
 										((Said '/mirror')
 											(if (ego inRect: 42 123 108 144)
 												(Print 82 10)
@@ -237,8 +253,12 @@
 												(NotClose)
 											)
 										)
-										((Said '/stair') (Print 82 11))
-										((Said '/door') (Print 82 12))
+										((Said '/stair')
+											(Print 82 11)
+										)
+										((Said '/door')
+											(Print 82 12)
+										)
 										((Said '/lolotte,fairies')
 											(if lolotteAlive
 												(Print 82 13)
@@ -254,20 +274,43 @@
 												)
 											)
 										)
-										(else (event claimed: FALSE))
+										(else
+											(event claimed: FALSE)
+										)
 									)
 								)
-								((Said 'help/lolotte,fairies') (Print 82 15))
-								((Said 'kiss[/lolotte,fairies]') (if lolotteAlive (Print 82 16) else (Print 82 17)))
-								((Said 'deliver>') (Print 82 18) (event claimed: TRUE))
+								((Said 'help,save/lolotte,fairies')	;EO: fixed said spec
+									(Print 82 15)
+								)
+								((Said 'kiss[/lolotte,fairies]')
+									(if lolotteAlive
+										(Print 82 16)
+									else
+										(Print 82 17)
+									)
+								)
+								((Said 'deliver>')
+									(Print 82 18)
+									(event claimed: TRUE)
+								)
 								((Said 'awaken/lolotte,fairies')
 									(if lolotteAlive
 										(curRoom setScript: egoZapped)
 									else
-										(Print 82 19 #font smallFont #at 15 10 #time 4)
+										(Print 82 19
+											#font smallFont
+											#at 15 10
+											#time 4
+										)
 									)
 								)
-								((Said 'get,capture/lolotte,fairies') (if lolotteAlive (Print 82 20) else (Print 82 17)))
+								((Said 'get,capture/lolotte,fairies')
+									(if lolotteAlive
+										(Print 82 20)
+									else
+										(Print 82 17)
+									)
+								)
 								((Said 'converse[<lolotte,fairies]')
 									(if lolotteAlive
 										(curRoom setScript: egoZapped)
@@ -284,10 +327,18 @@
 								)
 								((Said 'get/amulet')
 									(cond 
-										((ego has: iTalisman) (Print 82 22 #time 3))
-										((!= ((inventory at: iTalisman) owner?) 82) (Print 82 23 #time 5))
-										((not (ego inRect: 120 120 215 135)) (Print 82 24 #time 3))
-										(lolotteAlive (curRoom setScript: egoZapped))
+										((ego has: iTalisman)
+											(Print 82 22 #time 3)
+										)
+										((!= ((inventory at: iTalisman) owner?) 82)
+											(Print 82 23 #time 5)
+										)
+										((not (ego inRect: 120 120 215 135))
+											(Print 82 24 #time 3)
+										)
+										(lolotteAlive
+											(curRoom setScript: egoZapped)
+										)
 										(else
 											(Print 82 25 #time 2)
 											(ego get: iTalisman)
@@ -313,19 +364,35 @@
 								)
 								((Said 'kill/lolotte,fairies')
 									(cond 
-										((== lolotteAlive FALSE) (Print 82 29))
-										((ego has: iCupidBow) (Print 82 30))
-										(else (Print 82 31))
+										((== lolotteAlive FALSE)
+											(Print 82 29)
+										)
+										((ego has: iCupidBow)
+											(Print 82 30)
+										)
+										(else
+											(Print 82 31)
+										)
 									)
 								)
-								((Said 'launch[/!*]') (Print 82 32))
+								((Said 'launch[/noword]')
+									(Print 82 32)
+								)
 								((Said 'launch/lolotte,fairies,arrow,arrow')
 									(if (ego has: iCupidBow)
 										(cond 
-											((>= ((inventory at: iCupidBow) loop?) 2) (Print 82 33))
-											((not lolotteAlive) (Print 82 34))
-											((== (curRoom script?) lolotteDead) (Print 82 35))
-											(else (self setScript: shootLolotte))
+											((>= ((inventory at: iCupidBow) loop?) 2)
+												(Print 82 33)
+											)
+											((not lolotteAlive)
+												(Print 82 34)
+											)
+											((== (curRoom script?) lolotteDead)
+												(Print 82 35)
+											)
+											(else
+												(self setScript: shootLolotte)
+											)
 										)
 									else
 										(Print 82 36)
@@ -333,36 +400,74 @@
 								)
 							)
 						)
-						((Said 'look/stair') (Print 82 37))
-						((Said 'look/wall') (Print 82 7))
-						((Said 'look/door') (Print 82 38))
-						((Said 'open/window') (Print 82 39))
-						((Said 'break/window') (Print 82 40))
-						((Said 'look[<around][/room]') (Print 82 41))
+						((Said 'look/stair')
+							(Print 82 37)
+						)
+						((Said 'look/wall')
+							(Print 82 7)
+						)
+						((Said 'look/door')
+							(Print 82 38)
+						)
+						((Said 'open/window')
+							(Print 82 39)
+						)
+						((Said 'break/window')
+							(Print 82 40)
+						)
+						((Said 'look[<around][/room]')
+							(Print 82 41)
+						)
 						((Said 'unlatch/door>')
 							(cond 
-								(unlockedLolotteDoor (event claimed: TRUE) (Print 82 26))
-								((not (ego inRect: 233 155 251 162)) (event claimed: TRUE) (NotClose))
+								(unlockedLolotteDoor
+									(event claimed: TRUE)
+									(Print 82 26)
+								)
+								((not (ego inRect: 233 155 251 162))
+									(event claimed: TRUE)
+									(NotClose)
+								)
 								(
 									(or
 										(and (ego has: iGoldKey) (not (ego has: iSkeletonKey)))
-										(and (Said '*/*/(key<gold)') (ego has: iGoldKey))
+										(and (Said 'anyword/anyword/(key<gold)') (ego has: iGoldKey))
 									)
 									(event claimed: TRUE)
 									(UnlockDoor)
 								)
-								((and (Said '*/*/key<skeleton') (ego has: iSkeletonKey)) (Print 82 42))
-								((and (ego has: 20) (ego has: 32)) (event claimed: 1) (Print 82 43) (= askedWhichKey TRUE))
-								(else (event claimed: 1) (Print 82 44))
+								((and (Said 'anyword/anyword/key<skeleton') (ego has: iSkeletonKey))
+									(Print 82 42)
+								)
+								((and (ego has: iSkeletonKey) (ego has: iGoldKey))
+									(event claimed: TRUE)
+									(Print 82 43)
+									(= askedWhichKey TRUE)
+								)
+								(else
+									(event claimed: TRUE)
+									(Print 82 44)
+								)
 							)
 						)
 						((or (Said '[use]/key<gold') (Said '/gold'))
 							(cond 
-								((not (ego has: iGoldKey)) (Print 82 45))
-								((not (ego inRect: 233 155 251 162)) (event claimed: TRUE) (NotClose))
-								(unlockedLolotteDoor (Print 82 46))
-								((or askedWhichKey (not (ego has: iSkeletonKey))) (UnlockDoor))
-								(else (Print 82 47))
+								((not (ego has: iGoldKey))
+									(Print 82 45)
+								)
+								((not (ego inRect: 233 155 251 162))
+									(event claimed: TRUE)
+									(NotClose)
+								)
+								(unlockedLolotteDoor
+									(Print 82 46)
+								)
+								((or askedWhichKey (not (ego has: iSkeletonKey)))
+									(UnlockDoor)
+								)
+								(else
+									(Print 82 47)
+								)
 							)
 						)
 						(
@@ -378,12 +483,16 @@
 								(cond 
 									((and unlockedLolotteDoor (== (door cel?) 0))
 										(User canControl: FALSE canInput: FALSE)
-										(door startUpd: ignoreActors: 1 setCycle: EndLoop doDoor)
+										(door startUpd: ignoreActors: TRUE setCycle: EndLoop doDoor)
 										(ego stopUpd:)
 										(doorSound play:)
 									)
-									((not unlockedLolotteDoor) (Print 82 49))
-									(else (Print 82 50))
+									((not unlockedLolotteDoor)
+										(Print 82 49)
+									)
+									(else
+										(Print 82 50)
+									)
 								)
 							else
 								(NotClose)
@@ -404,8 +513,6 @@
 )
 
 (instance doDoor of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -419,8 +526,6 @@
 )
 
 (instance lolotteDead of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -488,8 +593,6 @@
 )
 
 (instance shootLolotte of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -511,18 +614,16 @@
 )
 
 (instance stopHeart of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (heart dispose:))
+			(0
+				(heart dispose:)
+			)
 		)
 	)
 )
 
 (instance egoZapped of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -550,32 +651,32 @@
 				(Print 82 58 #at 15 5 #font smallFont)
 				((ScriptID 0 4) setReal: self 3)
 			)
-			(4 (= dead TRUE))
+			(4
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance edsHere of Script
-	(properties)
-	
-	(method (init param1)
+	(method (init who)
 		(Load VIEW 130)
 		(Load VIEW 132)
-		(super init: param1)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(theMusic number: 43 loop: 1 play:)
-				(User canControl: 0 canInput: 0)
+				(User canControl: FALSE canInput: FALSE)
 				(ego setMotion: 0 loop: 0)
 				((= edgar (Actor new:))
 					view: 130
 					illegalBits: 0
 					posn: 185 203
 					init:
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setCycle: Walk
 					setMotion: MoveTo 251 162 self
 				)

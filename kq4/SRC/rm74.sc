@@ -23,8 +23,12 @@
 		(= east 75)
 		(ego view: 904 xStep: 4 yStep: 1)
 		(switch prevRoomNum
-			(75 (ego posn: 295 167 init:))
-			(else  (ego posn: 109 84 init:))
+			(75
+				(ego posn: 295 167 init:)
+			)
+			(else
+				(ego posn: 109 84 init:)
+			)
 		)
 		(ego priority: (CoordPri (ego y?)))
 		(NotifyScript TROLL_CAVE 1)

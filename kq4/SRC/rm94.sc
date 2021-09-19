@@ -90,7 +90,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) cBROWN) (curRoom newRoom: 80))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 80)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -100,10 +102,14 @@
 				((!= (event type?) saidEvent) (return TRUE))
 				((Said 'open/gate')
 					(cond 
-						((!= (openedGate cel?) 0) (Print 94 0))
-						((not (ego inRect: 150 144 163 158)) (Print 800 1))
+						((!= (openedGate cel?) 0)
+							(Print 94 0)
+						)
+						((not (ego inRect: 150 144 163 158))
+							(Print 800 1)
+						)
 						(else
-							(ego ignoreControl: 16)
+							(ego ignoreControl: cRED)
 							(openedGate ignoreActors: TRUE setCycle: EndLoop gateScript)
 							(if (== unicornState uniCAPTURED)
 								(uniStuff changeState: 4)
@@ -115,17 +121,20 @@
 				)
 				((Said 'close/gate')
 					(cond 
-						((== (openedGate cel?) 0) (Print 94 1))
-						((not (ego inRect: 232 149 248 158)) (Print 800 1))
+						((== (openedGate cel?) 0)
+							(Print 94 1)
+						)
+						((not (ego inRect: 232 149 248 158))
+							(Print 800 1)
+						)
 						(else
-							(ego observeControl: 16)
+							(ego observeControl: cRED)
 							(openedGate ignoreActors: 0 setCycle: BegLoop gateScript)
 						)
 					)
 				)
 				((Said 'converse[/unicorn,horse]')
-					(if
-					(or (!= unicornState uniCAPTURED) (not (cast contains: theUnicorn)))
+					(if (or (!= unicornState uniCAPTURED) (not (cast contains: theUnicorn)))
 						(Print 94 2)
 					else
 						(Print 94 3)
@@ -140,8 +149,11 @@
 				)
 				((Said '/unicorn,horse>')
 					(cond 
-						((!= unicornState uniCAPTURED) (Print 94 5) (event claimed: 1))
-						((Said 'look/*')
+						((!= unicornState uniCAPTURED)
+							(Print 94 5)
+							(event claimed: TRUE)
+						)
+						((Said 'look/anyword')
 							(if (== unicornState uniCAPTURED)
 								(Print 94 6)
 								(Print 94 7)
@@ -149,18 +161,38 @@
 								(Print 94 8)
 							)
 						)
-						((Said 'pat') (Print 94 9))
-						((Said 'mount') (Print 94 10))
-						((Said 'get,capture,guide') (Print 94 11))
-						((Said 'free,help') (Print 94 12))
-						(else (Print 94 13) (event claimed: TRUE))
+						((Said 'pat')
+							(Print 94 9)
+						)
+						((Said 'mount')
+							(Print 94 10)
+						)
+						((Said 'get,capture,guide')
+							(Print 94 11)
+						)
+						((Said 'free,help')
+							(Print 94 12)
+						)
+						(else
+							(Print 94 13)
+							(event claimed: TRUE)
+						)
 					)
 				)
 				((Said 'look>')
 					(cond 
-						((Said '/gate') (Print 94 14))
-						((Said '/wall') (Print 94 15))
-						((Said '[<around][/room,barn]') (Print 94 16) (if (== unicornState uniCAPTURED) (Print 94 17)))
+						((Said '/gate')
+							(Print 94 14)
+						)
+						((Said '/wall')
+							(Print 94 15)
+						)
+						((Said '[<around][/room,barn]')
+							(Print 94 16)
+							(if (== unicornState uniCAPTURED)
+								(Print 94 17)
+							)
+						)
 					)
 				)
 			)
@@ -169,8 +201,6 @@
 )
 
 (instance gateScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -182,21 +212,28 @@
 )
 
 (instance uniStuff of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (theUnicorn setCycle: EndLoop self))
-			(1 (theUnicorn setCycle: EndLoop self))
+			(0
+				(theUnicorn setCycle: EndLoop self)
+			)
+			(1
+				(theUnicorn setCycle: EndLoop self)
+			)
 			(2
 				(= state -1)
-				(if (not (openedGate cel?)) (= seconds (Random 2 5)))
+				(if (not (openedGate cel?))
+					(= seconds (Random 2 5))
+				)
 			)
-			(4 (HandsOff) (= seconds 1))
+			(4
+				(HandsOff)
+				(= seconds 1)
+			)
 			(5
 				(User canControl: FALSE)
 				(ego loop: 0)
@@ -208,7 +245,10 @@
 					cycleSpeed: 0
 					setCycle: EndLoop self
 				)
-				(Print 94 18 #at -1 15 #width 290)
+				(Print 94 18
+					#at -1 15
+					#width 290
+				)
 			)
 			(6
 				(theUnicorn

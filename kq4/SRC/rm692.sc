@@ -288,7 +288,7 @@
 			)
 			(6
 				(minister stopUpd:)
-				(= underBits (Print 692 0 #at -1 10 #dispose))
+				(= globalPrint (Print 692 0 #at -1 10 #dispose))
 				(= seconds 12)
 			)
 			(7

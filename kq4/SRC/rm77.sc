@@ -16,10 +16,10 @@
 )
 
 (local
-	local0
-	local1
+	jumpNum
+	jumpIndex
 	[jumpAreas 22]
-	gEgoViewer
+	saveViewer
 	ripple1
 	ripple2
 )
@@ -37,7 +37,9 @@
 		(Load VIEW 69)
 		(Load VIEW 49)
 		(Load SCRIPT JUMP)
-		(if isNightTime (= picture 177))
+		(if isNightTime
+			(= picture 177)
+		)
 		(super init:)
 		(self setRegions: SWAMP)
 		(= ripple1 (Prop new:))
@@ -65,8 +67,8 @@
 		(switch prevRoomNum
 			(east
 				(ego view: 2 posn: 301 161 loop: 1)
-				(= local0 10)
-				(= local1 20)
+				(= jumpNum 10)
+				(= jumpIndex 20)
 				(= currentStatus egoOnSwampGrass)
 				(User canControl: TRUE canInput: TRUE)
 			)
@@ -127,12 +129,12 @@
 				(== (ego view?) 6)
 				(== (ego view?) 7)
 			)
-			(= local0 0)
-			(= local1 0)
+			(= jumpNum 0)
+			(= jumpIndex 0)
 		)
 		(if
 			(and
-				(& (ego onControl: 0) $4000)
+				(& (ego onControl: 0) cYELLOW)
 				(== (ego view?) 2)
 				(== (ego script?) 0)
 				(< (ego heading?) 285)
@@ -157,12 +159,16 @@
 							(Said 'look/room')
 							(Said 'look/around')
 							(Said 'look/marsh')
-							(Said 'look[<around][/!*]')
+							(Said 'look[<around][/noword]')
 						)
 						(Print 77 0)
 					)
-					((Said 'look<in/cave') (Print 77 1))
-					((Said 'look/cave') (Print 77 2))
+					((Said 'look<in/cave')
+						(Print 77 1)
+					)
+					((Said 'look/cave')
+						(Print 77 2)
+					)
 					((Said 'crawl/')
 						(if (ego inRect: 40 154 63 170)
 							(ego setScript: egoCrawlIn)
@@ -170,7 +176,9 @@
 							(Print 77 3)
 						)
 					)
-					((Said 'hop,hop') (jump changeState: 1))
+					((Said 'hop,hop')
+						(jump changeState: 1)
+					)
 				)
 			else
 				FALSE
@@ -180,8 +188,6 @@
 )
 
 (instance egoCrawlOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -206,8 +212,6 @@
 )
 
 (instance egoCrawlIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -248,8 +252,6 @@
 )
 
 (instance jump of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -257,13 +259,13 @@
 					(Print 77 4)
 					(self changeState: 0)
 				else
-					(if (and (== local0 10) (== (ego loop?) 0))
+					(if (and (== jumpNum 10) (== (ego loop?) 0))
 						(HandsOn)
 						(= inCutscene TRUE)
 						(curRoom newRoom: 78)
 						(return)
 					)
-					(if (== local0 0)
+					(if (== jumpNum 0)
 						(if
 							(or
 								(not (ego inRect: 87 161 106 172))
@@ -272,45 +274,47 @@
 							)
 							(jump changeState: 10)
 						else
-							(= gEgoViewer (ego viewer?))
+							(= saveViewer (ego viewer?))
 							(ego viewer: 0)
 							(HandsOff)
 							(ego view: 69 cel: 255 setCycle: EndLoop self)
 						)
 					else
-						(= gEgoViewer (ego viewer?))
+						(= saveViewer (ego viewer?))
 						(ego viewer: 0)
 						(HandsOff)
 						(ego view: 69 cel: 255 setCycle: EndLoop self)
 					)
 				)
 			)
-			(2 (ego setCycle: CycleTo 1 -1 self))
+			(2
+				(ego setCycle: CycleTo 1 -1 self)
+			)
 			(3
 				(ego xStep: 6 yStep: 4)
 				(cond 
 					((== (ego loop?) 0)
 						(ego setLoop: 2 cel: 255 setCycle: EndLoop)
-						(++ local0)
-						(= local1 (+ local1 2))
+						(++ jumpNum)
+						(+= jumpIndex 2)
 						(ego
-							setMotion: JumpTo [jumpAreas local1] [jumpAreas (+ local1 1)] self
+							setMotion: JumpTo [jumpAreas jumpIndex] [jumpAreas (+ jumpIndex 1)] self
 						)
 					)
 					((== (ego loop?) 1)
 						(ego setLoop: 3 cel: 255 setCycle: EndLoop)
-						(-- local0)
-						(= local1 (- local1 2))
+						(-- jumpNum)
+						(-= jumpIndex 2)
 						(ego
-							setMotion: JumpTo [jumpAreas local1] [jumpAreas (+ local1 1)] self
+							setMotion: JumpTo [jumpAreas jumpIndex] [jumpAreas (+ jumpIndex 1)] self
 						)
 					)
 					((== (ego loop?) 2)
-						(ego viewer: gEgoViewer)
+						(ego viewer: saveViewer)
 						(ego setMotion: JumpTo (ego x?) (+ (ego y?) 6) self)
 					)
 					((== (ego loop?) 3)
-						(ego viewer: gEgoViewer)
+						(ego viewer: saveViewer)
 						(ego setMotion: JumpTo (ego x?) (- (ego y?) 6) self)
 					)
 				)
@@ -318,12 +322,12 @@
 			(4
 				(if
 					(and
-						(!= (ego onControl: 1) 1024)
-						(!= (ego onControl: 1) 1)
+						(!= (ego onControl: origin) cLGREEN)
+						(!= (ego onControl: origin) cBLACK)
 					)
 					(ego
 						setLoop: -1
-						viewer: gEgoViewer
+						viewer: saveViewer
 						setCycle: Walk
 						setStep: 3 2
 					)
@@ -343,10 +347,12 @@
 					(ego view: 2 loop: 1 cel: 0 xStep: 3 yStep: 2)
 				)
 				(HandsOn)
-				(ego viewer: gEgoViewer)
+				(ego viewer: saveViewer)
 				(ego view: 2 setCycle: Walk)
 			)
-			(10 (Print 77 5))
+			(10
+				(Print 77 5)
+			)
 		)
 	)
 )

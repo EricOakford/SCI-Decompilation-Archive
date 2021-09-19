@@ -18,9 +18,7 @@
 	henchman
 	local1
 )
-(instance theMusic of Sound
-	(properties)
-)
+(instance theMusic of Sound)
 
 (instance fallSound of Sound
 	(properties
@@ -92,7 +90,7 @@
 				view: 4
 				looper: myLooper
 				setStep: 4 2
-				illegalBits: -16384
+				illegalBits: (| cWHITE cYELLOW)
 				init:
 			)
 		)
@@ -103,7 +101,7 @@
 		(if
 			(and
 				(!= (self script?) fallStairs)
-				(& (ego onControl: 0) $0040)
+				(& (ego onControl: 0) cBROWN)
 			)
 			(ego baseSetter: 0 looper: 0)
 			(curRoom newRoom: 93)
@@ -111,19 +109,19 @@
 		(if
 			(and
 				(!= (self script?) fallStairs)
-				(& (ego onControl: 0) $0020)
+				(& (ego onControl: 0) cMAGENTA)
 			)
 			(ego baseSetter: 0 looper: 0)
 			(curRoom newRoom: 82)
 		)
-		(if (& (ego onControl: 0) $0010)
+		(if (& (ego onControl: 0) cRED)
 			(ego baseSetter: 0 looper: 0)
 			(curRoom newRoom: 87)
 		)
 		(if
 			(and
 				(not local1)
-				(& (ego onControl: 0) $0004)
+				(& (ego onControl: 0) cGREEN)
 				(!= (self script?) fallStairs)
 			)
 			(ego baseSetter: 0 looper: 0)
@@ -132,19 +130,18 @@
 		(if
 			(and
 				local1
-				(& (ego onControl: 0) $1000)
+				(& (ego onControl: 0) cLRED)
 				(!= (self script?) fallStairs)
 			)
 			(ego baseSetter: 0 looper: 0)
 			(self setScript: fallStairs)
 		)
-		(if
-		(and (not local1) (& (ego onControl: 1) $0400))
+		(if (and (not local1) (& (ego onControl: origin) cLGREEN))
 			(ego illegalBits: -16384 looper: myLooper)
 			(= local1 1)
 		)
-		(if (and local1 (& (ego onControl: 1) $0100))
-			(ego illegalBits: -32760 looper: 0)
+		(if (and local1 (& (ego onControl: origin) cGREY))
+			(ego illegalBits: (| cWHITE cCYAN) looper: 0)
 			(= local1 0)
 		)
 	)
@@ -157,19 +154,31 @@
 					(cond 
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look/room,castle,tower')
 							)
 							(Print 88 0)
 						)
 						((Said 'look>')
 							(cond 
-								((or (Said '/dirt') (Said '<down')) (Print 88 1))
-								((Said '/wall') (Print 88 2))
-								((or (Said '/sky') (Said '<up')) (Print 88 3))
-								((Said '/stair') (Print 88 4))
-								((Said '/stair') (Print 88 5))
-								((Said '/door') (Print 88 6))
+								((or (Said '/dirt') (Said '<down'))
+									(Print 88 1)
+								)
+								((Said '/wall')
+									(Print 88 2)
+								)
+								((or (Said '/sky') (Said '<up'))
+									(Print 88 3)
+								)
+								((Said '/stair')
+									(Print 88 4)
+								)
+								((Said '/stair')
+									(Print 88 5)
+								)
+								((Said '/door')
+									(Print 88 6)
+								)
 							)
 						)
 					)
@@ -180,42 +189,38 @@
 )
 
 (instance myLooper of Code
-	(properties)
-	
-	(method (doit param1)
-		(param1
+	(method (doit obj)
+		(obj
 			loop:
 				(cond 
 					(
 						(or
-							(>= (param1 heading?) 305)
-							(<= (param1 heading?) 45)
+							(>= (obj heading?) 305)
+							(<= (obj heading?) 45)
 						)
-						2
+						loopS
 					)
 					(
 						(and
-							(>= (param1 heading?) 135)
-							(<= (param1 heading?) 225)
+							(>= (obj heading?) 135)
+							(<= (obj heading?) 225)
 						)
-						3
+						loopN
 					)
 					(
 						(and
-							(> (param1 heading?) 45)
-							(< (param1 heading?) 135)
+							(> (obj heading?) 45)
+							(< (obj heading?) 135)
 						)
-						0
+						loopE
 					)
-					(else 1)
+					(else loopW)
 				)
 		)
 	)
 )
 
 (instance henchChase88 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -241,10 +246,8 @@
 )
 
 (instance fallStairs of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -280,7 +283,7 @@
 				)
 			)
 			(2
-				(curRoom drawPic: 93 7)
+				(curRoom drawPic: 93 IRISOUT)
 				(cast eachElementDo: #hide)
 				((View new:)
 					view: 634

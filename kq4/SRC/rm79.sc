@@ -17,6 +17,8 @@
 	(goon goon goon man goon goon animal goon)
 )
 
+(define cFALL $0f8e)
+
 (local
 	h1
 	h2
@@ -52,7 +54,9 @@
 		(Load VIEW 142)
 		(Load VIEW 143)
 		(Load VIEW 144)
-		(if isNightTime (= picture 179))
+		(if isNightTime
+			(= picture 179)
+		)
 		(super init:)
 		(switch prevRoomNum
 			(north
@@ -84,34 +88,35 @@
 		(= isHandsOff FALSE)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp thisControl)
 		(super doit:)
-		(if
-		(and (== (curRoom script?) 0) (== currentStatus 0))
+		(if (and (== (curRoom script?) 0) (== currentStatus egoNormal))
 			(cond 
-				((& (= temp0 (ego onControl: 0)) $0040) (curRoom newRoom: 80))
-				((& temp0 $0010)
+				((& (= thisControl (ego onControl: 0)) cBROWN)
+					(curRoom newRoom: 80)
+				)
+				((& thisControl cRED)
 					(if (< (ego heading?) 180)
 						(ego baseSetter: 0)
 					else
 						(ego baseSetter: (ScriptID 0 1))
 					)
 				)
-				((& temp0 $0f8e)
+				((& thisControl cFALL)
 					(sounds eachElementDo: #stop 0)
 					(sFalling play:)
 					(stopHench cue:)
 					(curRoom
 						setScript:
 							(cond 
-								((& temp0 cBLUE) fallBlue)
-								((& temp0 cCYAN) fallCyan)
-								((& temp0 cGREEN) fallGreen)
-								((& temp0 cLGREY) fallLgrey)
-								((& temp0 cGREY) fallGrey)
-								((& temp0 cLBLUE) fallLblue)
-								((& temp0 cLGREEN) fallLgreen)
-								((& temp0 cLCYAN) fallLcyan)
+								((& thisControl cBLUE) fallBlue)
+								((& thisControl cCYAN) fallCyan)
+								((& thisControl cGREEN) fallGreen)
+								((& thisControl cLGREY) fallLgrey)
+								((& thisControl cGREY) fallGrey)
+								((& thisControl cLBLUE) fallLblue)
+								((& thisControl cLGREEN) fallLgreen)
+								((& thisControl cLCYAN) fallLcyan)
 							)
 					)
 				)
@@ -119,15 +124,16 @@
 		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'look>')
 						(cond 
-							(
-							(or (Said '/room,cliff') (Said '[<around][/!*]')) (Print 79 0))
+							((or (Said '/room,cliff') (Said '[<around][/noword]'))
+								(Print 79 0)
+							)
 							((Said '/goon')
 								(if (cast contains: h1)
 									(Print 79 1)
@@ -135,20 +141,33 @@
 									(Print 79 2)
 								)
 							)
-							((Said '/path') (Print 79 3))
-							((Said '/castle') (Print 79 4))
-							((Said '/boulder') (Print 79 5))
-							((Said '/dirt,down') (Print 79 6))
-							((Said '/forest') (Print 79 7))
+							((Said '/path')
+								(Print 79 3)
+							)
+							((Said '/castle')
+								(Print 79 4)
+							)
+							((Said '/boulder')
+								(Print 79 5)
+							)
+							((Said '/dirt,down')
+								(Print 79 6)
+							)
+							((Said '/forest')
+								(Print 79 7)
+							)
 						)
 					)
 					((Said 'climb/cliff') (Print 79 8))
-					(
-					(or (Said 'converse/goon') (Said 'converse[/!*]')) (Print 79 9))
-					((Said 'get,capture/goon') (Print 79 10))
+					((or (Said 'converse/goon') (Said 'converse[/noword]'))
+						(Print 79 9)
+					)
+					((Said 'get,capture/goon')
+						(Print 79 10)
+					)
 					((Said 'deliver>')
-						(if (= inventorySaidMe (inventory saidMe:))
-							(if (ego has: (inventory indexOf: inventorySaidMe))
+						(if (= index (inventory saidMe:))
+							(if (ego has: (inventory indexOf: index))
 								(Print 79 11)
 							else
 								(Print 800 2)
@@ -160,24 +179,22 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(cls)
 		(if (!= currentStatus egoFalling)
 			(= noWearCrown FALSE)
 			(ego illegalBits: cWHITE setPri: -1)
-			(super newRoom: newRoomNumber)
+			(super newRoom: n)
 		)
 	)
 )
 
 (instance fallBlue of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -187,7 +204,7 @@
 					setPri: 8
 					yStep: 10
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 0
 					view: 17
 					setCycle: Forward
@@ -195,14 +212,14 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 150) self
 				)
 			)
-			(1 (curRoom setScript: egoDead))
+			(1
+				(curRoom setScript: egoDead)
+			)
 		)
 	)
 )
 
 (instance fallCyan of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -220,14 +237,14 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 150) self
 				)
 			)
-			(1 (curRoom setScript: egoDead))
+			(1
+				(curRoom setScript: egoDead)
+			)
 		)
 	)
 )
 
 (instance fallGreen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -237,7 +254,7 @@
 					setPri: 4
 					yStep: 10
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 0
 					view: 17
 					setCycle: Forward
@@ -245,14 +262,14 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 150) self
 				)
 			)
-			(1 (curRoom setScript: egoDead))
+			(1
+				(curRoom setScript: egoDead)
+			)
 		)
 	)
 )
 
 (instance fallLgrey of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -262,7 +279,7 @@
 					setPri: 10
 					yStep: 10
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 0
 					view: 17
 					setCycle: Forward
@@ -270,14 +287,14 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 150) self
 				)
 			)
-			(1 (curRoom setScript: egoDead))
+			(1
+				(curRoom setScript: egoDead)
+			)
 		)
 	)
 )
 
 (instance fallGrey of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -295,14 +312,14 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 150) self
 				)
 			)
-			(1 (curRoom setScript: egoDead))
+			(1
+				(curRoom setScript: egoDead)
+			)
 		)
 	)
 )
 
 (instance fallLblue of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -312,7 +329,7 @@
 					setPri: 6
 					yStep: 10
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 0
 					view: 17
 					setCycle: Forward
@@ -320,14 +337,14 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 150) self
 				)
 			)
-			(1 (curRoom setScript: egoDead))
+			(1
+				(curRoom setScript: egoDead)
+			)
 		)
 	)
 )
 
 (instance fallLgreen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -337,7 +354,7 @@
 					setPri: 0
 					yStep: 10
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 0
 					view: 17
 					setCycle: Forward
@@ -345,14 +362,14 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 150) self
 				)
 			)
-			(1 (curRoom setScript: egoDead))
+			(1
+				(curRoom setScript: egoDead)
+			)
 		)
 	)
 )
 
 (instance fallLcyan of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -362,7 +379,7 @@
 					setPri: 0
 					yStep: 10
 					illegalBits: 0
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					cel: 0
 					view: 17
 					setCycle: Forward
@@ -370,14 +387,14 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 150) self
 				)
 			)
-			(1 (curRoom setScript: egoDead))
+			(1
+				(curRoom setScript: egoDead)
+			)
 		)
 	)
 )
 
 (instance h1Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -394,7 +411,11 @@
 					setPri: 13
 					init:
 				)
-				(Print 79 13 #draw #at -1 10 #dispose)
+				(Print 79 13
+					#draw
+					#at -1 10
+					#dispose
+				)
 			)
 			(1
 				(h1 xStep: 4 yStep: 3 setMotion: MoveTo -10 50 self)
@@ -431,8 +452,6 @@
 )
 
 (instance h2Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -476,9 +495,15 @@
 				(h1 hide:)
 				(h2 hide:)
 				(cond 
-					((== gamePhase getTheUnicorn) (self changeState: 20))
-					((and (== gamePhase getTheHen) (not (ego has: iMagicHen))) (self changeState: 20))
-					((and (== gamePhase getPandoraBox) (not (ego has: iPandorasBox))) (self changeState: 20))
+					((== gamePhase getTheUnicorn)
+						(self changeState: 20)
+					)
+					((and (== gamePhase getTheHen) (not (ego has: iMagicHen)))
+						(self changeState: 20)
+					)
+					((and (== gamePhase getPandoraBox) (not (ego has: iPandorasBox)))
+						(self changeState: 20)
+					)
 					(else
 						(ego
 							view: 60
@@ -556,8 +581,6 @@
 )
 
 (instance egoDead of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -577,8 +600,6 @@
 )
 
 (instance stopHench of Script
-	(properties)
-	
 	(method (cue)
 		(if (cast contains: h1)
 			(h1

@@ -61,7 +61,7 @@
 				baseSetter: 0
 				view: 4
 				setStep: 4 2
-				illegalBits: -16384
+				illegalBits: (| cWHITE cYELLOW)
 				init:
 			)
 			(= local0 0)
@@ -100,8 +100,12 @@
 			)
 			(if local0
 				(cond 
-					((& (ego onControl:) cGREEN) (self setScript: fallingToDeath))
-					((& (ego onControl:) cGREY) (self setScript: fallingDown))
+					((& (ego onControl:) cGREEN)
+						(self setScript: fallingToDeath)
+					)
+					((& (ego onControl:) cGREY)
+						(self setScript: fallingDown)
+					)
 				)
 			)
 			(if (& (ego onControl: origin) cBLUE)
@@ -110,7 +114,7 @@
 					(ego
 						baseSetter: (ScriptID 0 1)
 						setPri: -1
-						illegalBits: -16384
+						illegalBits: (| cWHITE cYELLOW)
 					)
 					(= local0 0)
 				else
@@ -131,19 +135,35 @@
 		(return
 			(cond 
 				((event claimed?) (return TRUE))
-				(
-				(and (== (event type?) saidEvent) (Said 'look>'))
+				((and (== (event type?) saidEvent) (Said 'look>'))
 					(cond 
-						((or (Said '/dirt') (Said '<down')) (Print 90 1))
-						((Said '/wall') (Print 90 2))
-						((or (Said '/sky') (Said '<up')) (Print 90 3))
-						((Said '/stair') (Print 90 4))
-						((Said '/stair') (Print 90 5))
-						((Said '/door') (Print 90 6))
-						((Said '/door') (Print 90 7))
-						(
-						(or (Said '[<around][/room]') (Said '/castle,tower')) (Print 90 8))
-						(else (event claimed: FALSE))
+						((or (Said '/dirt') (Said '<down'))
+							(Print 90 1)
+						)
+						((Said '/wall')
+							(Print 90 2)
+						)
+						((or (Said '/sky') (Said '<up'))
+							(Print 90 3)
+						)
+						((Said '/stair')
+							(Print 90 4)
+						)
+						((Said '/stair')
+							(Print 90 5)
+						)
+						((Said '/door')
+							(Print 90 6)
+						)
+						((Said '/door')
+							(Print 90 7)
+						)
+						((or (Said '[<around][/room]') (Said '/castle,tower'))
+							(Print 90 8)
+						)
+						(else
+							(event claimed: FALSE)
+						)
 					)
 				)
 			)
@@ -152,12 +172,10 @@
 )
 
 (instance fallingDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(User canInput: 0 canControl: 0)
+				(User canInput: FALSE canControl: FALSE)
 				(ego
 					view: 44
 					loop: 0
@@ -181,7 +199,7 @@
 				(ego
 					view: 4
 					baseSetter: 0
-					illegalBits: -16384
+					illegalBits: (| cWHITE cYELLOW)
 					setPri: -1
 					setCycle: Walk
 				)
@@ -196,8 +214,6 @@
 )
 
 (instance fallingToDeath of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

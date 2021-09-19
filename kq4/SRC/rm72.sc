@@ -31,7 +31,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) $0040) (= newRoomNum 71))
+		(if (& (ego onControl: 0) cBROWN)
+			(= newRoomNum 71)
+		)
 	)
 	
 	(method (dispose)

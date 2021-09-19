@@ -19,9 +19,9 @@
 	edgar
 	heart
 	henchman
-	roomDialog
+	printObj
 	stolenInventory
-	gInvFirst
+	node
 	candle
 	local8
 	local9
@@ -165,7 +165,7 @@
 				view: 141
 				setStep: 4 2
 				illegalBits: 0
-				ignoreActors: 1
+				ignoreActors: TRUE
 				posn: 350 129
 				setCycle: Walk
 				init:
@@ -175,24 +175,29 @@
 			(= inCutscene TRUE)
 			(curRoom setScript: walkIn)
 		)
-		(if (cast contains: lolotte) (theMusic play:))
+		(if (cast contains: lolotte)
+			(theMusic play:)
+		)
 	)
 	
 	(method (doit)
 		(if (& (ego onControl: 0) cBROWN)
 			(cond 
-				((and (== gamePhase endGame) (== lolotteAlive FALSE)) (curRoom newRoom: 80))
-				((not triedToEscape) (Print 92 0) (= triedToEscape TRUE))
+				((and (== gamePhase endGame) (== lolotteAlive FALSE))
+					(curRoom newRoom: 80)
+				)
+				((not triedToEscape)
+					(Print 92 0)
+					(= triedToEscape TRUE)
+				)
 			)
 		else
 			(= triedToEscape FALSE)
 		)
-		(if
-		(and (& (ego onControl: 0) cMAGENTA) (!= (ego view?) 81))
+		(if (and (& (ego onControl: 0) cMAGENTA) (!= (ego view?) 81))
 			(curRoom newRoom: 91)
 		)
-		(if
-		(and (& (ego onControl: 0) cRED) (!= (ego view?) 81))
+		(if (and (& (ego onControl: 0) cRED) (!= (ego view?) 81))
 			(curRoom newRoom: 93)
 		)
 		(super doit:)
@@ -217,14 +222,30 @@
 					(cond 
 						((Said 'look>')
 							(cond 
-								((Said '/throne') (Print 92 1))
-								((Said '/stair') (Print 92 2))
-								((Said '<behind,under/tapestries,painting') (Print 92 3))
-								((Said '/tapestries,painting') (Print 92 4))
-								((Said '/door') (Print 92 5))
-								((Said '/wall') (Print 92 6))
-								((or (Said '/dirt') (Said '<down')) (Print 92 7))
-								((Said '/carpet') (Print 92 8))
+								((Said '/throne')
+									(Print 92 1)
+								)
+								((Said '/stair')
+									(Print 92 2)
+								)
+								((Said '<behind,under/tapestries,painting')
+									(Print 92 3)
+								)
+								((Said '/tapestries,painting')
+									(Print 92 4)
+								)
+								((Said '/door')
+									(Print 92 5)
+								)
+								((Said '/wall')
+									(Print 92 6)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 92 7)
+								)
+								((Said '/carpet')
+									(Print 92 8)
+								)
 								(
 									(or
 										(Said '<around')
@@ -235,7 +256,9 @@
 								)
 							)
 						)
-						((Said 'sit/throne') (Print 92 10))
+						((Said 'sit/throne')
+							(Print 92 10)
+						)
 						((Said 'open/door')
 							(if (and (== gamePhase endGame) (== lolotteAlive FALSE))
 								(Print 92 11)
@@ -257,19 +280,16 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if
-		(or (== newRoomNumber 80) (== newRoomNumber 30))
+	(method (newRoom n)
+		(if (or (== n 80) (== n 30))
 			((ScriptID LOLOTTE) keep: 0)
 			(= noWearCrown FALSE)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance walkIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -291,7 +311,10 @@
 					(getPandoraBox
 						(curRoom setScript: lotTalk5)
 					)
-					(else  (Print 92 16)) ;fail-safe error.
+					(else
+						;fail-safe error.
+						(Print 92 16)
+					)
 				)
 			)
 		)
@@ -299,13 +322,11 @@
 )
 
 (instance lotTalk1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= local9 3)
-				(= roomDialog
+				(= printObj
 					(Print 92 17
 						#at 5 15
 						#font smallFont
@@ -320,7 +341,7 @@
 			(1
 				(= local9 0)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 18 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -329,7 +350,7 @@
 			(2
 				(= local9 9)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 19 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -337,7 +358,7 @@
 			)
 			(3
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 20 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -345,7 +366,7 @@
 			)
 			(4
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 21 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -354,7 +375,7 @@
 			(5
 				(cls)
 				(= local9 8)
-				(= roomDialog
+				(= printObj
 					(Print 92 22 #font smallFont #at 5 15 #width 125 #dispose)
 				)
 				(= local8 1)
@@ -362,7 +383,7 @@
 			)
 			(6
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 23 #font smallFont #at 5 15 #width 125 #dispose)
 				)
 				(lolotte loop: 1 cel: 255 setCycle: EndLoop)
@@ -389,8 +410,6 @@
 )
 
 (instance lotTalk2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -399,7 +418,7 @@
 			(1
 				(ego view: 82 loop: 0 cel: 1)
 				(= local9 4)
-				(= roomDialog
+				(= printObj
 					(Print 92 24 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -408,7 +427,7 @@
 			(2
 				(= local9 7)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 25 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -416,7 +435,7 @@
 			)
 			(3
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 26 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(edgar view: 132 loop: 2 setCycle: EndLoop)
@@ -427,7 +446,7 @@
 				(= local9 5)
 				(cls)
 				(edgar setCycle: BegLoop)
-				(= roomDialog
+				(= printObj
 					(Print 92 27 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -436,7 +455,7 @@
 			(5
 				(= local9 5)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 28 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -446,7 +465,7 @@
 				(= local9 3)
 				(candle setCycle: Forward)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 29 #font smallFont #at 5 15 #width 125 #dispose)
 				)
 				(lolotte loop: 2 cel: 255 setCycle: EndLoop)
@@ -466,13 +485,11 @@
 )
 
 (instance lotTalk3 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= local9 6)
-				(= roomDialog
+				(= printObj
 					(Print 92 30 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= unicornState 99)
@@ -484,7 +501,7 @@
 			(1
 				(= local9 8)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 31 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -493,7 +510,7 @@
 			(2
 				(cls)
 				(edgar setCycle: BegLoop)
-				(= roomDialog
+				(= printObj
 					(Print 92 32 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -502,7 +519,7 @@
 			(3
 				(= local9 12)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 33 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -511,7 +528,7 @@
 			(4
 				(= local9 6)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 34 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -520,7 +537,7 @@
 			(5
 				(candle setCycle: Forward)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 35 #font smallFont #at 5 15 #width 125 #dispose)
 				)
 				(lolotte loop: 2 cel: 255 setCycle: EndLoop)
@@ -539,13 +556,11 @@
 )
 
 (instance lotTalk4 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= local9 8)
-				(= roomDialog
+				(= printObj
 					(Print 92 36 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(ego put: iMagicHen 84)
@@ -556,7 +571,7 @@
 			)
 			(1
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 37 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -566,7 +581,7 @@
 				(edgar setCycle: BegLoop)
 				(= local9 6)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 38 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -575,7 +590,7 @@
 			(3
 				(= local9 8)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 39 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -583,7 +598,7 @@
 			)
 			(4
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 40 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -592,7 +607,7 @@
 			(5
 				(= local9 6)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 41 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -601,7 +616,7 @@
 			(6
 				(= local9 7)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 42 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -609,7 +624,7 @@
 			)
 			(7
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 43 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -617,7 +632,7 @@
 			)
 			(8
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 44 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -626,7 +641,7 @@
 			(9
 				(= local9 8)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 45 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -634,7 +649,7 @@
 			)
 			(10
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 46 #font smallFont #at 5 15 #width 125 #dispose)
 				)
 				(lolotte loop: 2 cel: 255 setCycle: EndLoop)
@@ -654,17 +669,15 @@
 )
 
 (instance lotTalk5 of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= local9 6)
-				(= roomDialog
+				(= printObj
 					(Print 92 47 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(ego put: iPandorasBox 84)
@@ -675,7 +688,7 @@
 			)
 			(1
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 48 #at 25 35 #font smallFont #width -1 #dispose)
 				)
 				(= local8 1)
@@ -685,7 +698,7 @@
 				(= local9 3)
 				(cls)
 				(edgar setCycle: BegLoop)
-				(= roomDialog
+				(= printObj
 					(Print 92 49 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -694,7 +707,7 @@
 			(3
 				(= local9 4)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 50 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -703,7 +716,7 @@
 			(4
 				(= local9 6)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 51 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(lolotte loop: 2 cel: 255 setCycle: EndLoop)
@@ -712,7 +725,7 @@
 			)
 			(5
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 52 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -743,7 +756,7 @@
 			(10
 				(lolotte loop: 0)
 				(= local9 6)
-				(= roomDialog
+				(= printObj
 					(Print 92 53 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -753,7 +766,7 @@
 				(cls)
 				(lolotte loop: 0)
 				(= local9 6)
-				(= roomDialog
+				(= printObj
 					(Print 92 54 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 1)
@@ -763,7 +776,7 @@
 				(cls)
 				(= local9 5)
 				(getShit changeState: 0)
-				(= roomDialog
+				(= printObj
 					(Print 92 55 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local8 0)
@@ -771,29 +784,31 @@
 			)
 			(13
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 56 #at 5 15 #font smallFont #width 125 #dispose)
 				)
-				(= gInvFirst (inventory first:))
-				(while gInvFirst
+				(= node (inventory first:))
+				(while node
 					(if
 						(and
-							(= stolenInventory (NodeValue gInvFirst))
+							(= stolenInventory (NodeValue node))
 							(== (stolenInventory owner?) ego)
 						)
 						(stolenInventory owner: 89)
 					)
-					(= gInvFirst (inventory next: gInvFirst))
+					(= node (inventory next: node))
 				)
 				(= local8 0)
 				(= seconds 8)
 			)
-			(14 (= seconds 2))
+			(14
+				(= seconds 2)
+			)
 			(15
 				(= local9 6)
 				(candle setCycle: Forward)
 				(cls)
-				(= roomDialog
+				(= printObj
 					(Print 92 57 #at 5 15 #font smallFont #width 125 #dispose)
 				)
 				(= local9 3)
@@ -819,8 +834,6 @@
 )
 
 (instance lipLooper of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -835,8 +848,6 @@
 )
 
 (instance getShit of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -846,7 +857,9 @@
 				(henchman loop: 2)
 				(henchman setMotion: MoveTo 320 130 self)
 			)
-			(2 (henchman dispose:))
+			(2
+				(henchman dispose:)
+			)
 		)
 	)
 )

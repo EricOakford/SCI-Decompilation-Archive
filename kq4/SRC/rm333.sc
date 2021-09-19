@@ -245,7 +245,7 @@
 			(1
 				(= h1 (Actor new:))
 				(h1Actions changeState: 1)
-				(= underBits (Print 333 0 #at -1 10 #dispose))
+				(= globalPrint (Print 333 0 #at -1 10 #dispose))
 			)
 			(2
 				(= unicorn (Actor new:))

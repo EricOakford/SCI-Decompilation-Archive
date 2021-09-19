@@ -80,7 +80,7 @@
 		(Load VIEW 39)
 		(super init:)
 		(= climbedDown FALSE)
-		(= climbingLadder 0)
+		(= climbingLadder FALSE)
 		(= isIndoors TRUE)
 		((View new:)
 			view: 522
@@ -154,14 +154,14 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) $0040)
+		(if (& (ego onControl: 0) cBROWN)
 			(User canControl: TRUE canInput: TRUE)
 			(ego setPri: -1)
 			(curRoom newRoom: 18)
 		)
 		(if
 			(and
-				(& (ego onControl: 1) $0004)
+				(& (ego onControl: origin) cGREEN)
 				(== (ego script?) 0)
 			)
 			(User canControl: FALSE canInput: FALSE)
@@ -177,7 +177,7 @@
 					(cond 
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look/room,crypt')
 							)
 							(Print
@@ -197,7 +197,9 @@
 						)
 						((Said 'look>')
 							(cond 
-								((Said '/epitaph') (Print 69 1))
+								((Said '/epitaph')
+									(Print 69 1)
+								)
 								(
 									(and
 										(Said '<in/casket[<elderly]')
@@ -205,10 +207,26 @@
 									)
 									(Print 69 2)
 								)
-								((Said '/casket') (Print 69 3))
-								((or (Said '/hemp,ladder') (Said '/hemp[<<]')) (if (== ropeLadderLowered FALSE) (Print 69 4) else (Print 69 5)))
-								((Said '/platform') (if (== ropeLadderLowered FALSE) (Print 69 4) else (Print 69 6)))
-								((Said '/wall') (Print 69 7))
+								((Said '/casket')
+									(Print 69 3)
+								)
+								((or (Said '/hemp,ladder') (Said '/hemp[<heap]'))	;EO: fixed said spec
+									(if (== ropeLadderLowered FALSE)
+										(Print 69 4)
+									else
+										(Print 69 5)
+									)
+								)
+								((Said '/platform')
+									(if (== ropeLadderLowered FALSE)
+										(Print 69 4)
+									else
+										(Print 69 6)
+									)
+								)
+								((Said '/wall')
+									(Print 69 7)
+								)
 								((or (Said '/dirt') (Said '<down'))
 									(if (== ((Inventory at: iPandorasBox) owner?) 69)
 										(Print 69 8)
@@ -216,34 +234,53 @@
 										(Print 69 9)
 									)
 								)
-								((Said '/mummy') (if mummyAwake (Print 69 10) else (Print 69 11)))
+								((Said '/mummy')
+									(if mummyAwake
+										(Print 69 10)
+									else
+										(Print 69 11)
+									)
+								)
 								((Said '/box[<pandora]')
 									(cond 
-										((== ((Inventory at: iPandorasBox) owner?) 69) (Print 69 8))
-										((ego has: iPandorasBox) (event claimed: FALSE))
-										(else (Print 69 12))
+										((== ((Inventory at: iPandorasBox) owner?) 69)
+											(Print 69 8)
+										)
+										((ego has: iPandorasBox)
+											(event claimed: FALSE)
+										)
+										(else
+											(Print 69 12)
+										)
 									)
 								)
 								(else (event claimed: FALSE))
 							)
 						)
-						((Said 'get,move,lower/hemp,ladder,<')
+						((Said 'get,move,lower/hemp,ladder,heap')	;EO: fixed said spec
 							(cond 
-								(ropeLadderLowered (Print 69 13))
-								((> (ego distanceTo: ropeLadder) 25) (Print 800 1))
+								(ropeLadderLowered
+									(Print 69 13)
+								)
+								((> (ego distanceTo: ropeLadder) 25)
+									(Print 800 1)
+								)
 								(else
 									(Print 69 14)
 									(theGame changeScore: 2)
 									(User canControl: FALSE canInput: FALSE)
 									(ego setMotion: 0)
-									(= climbingLadder 1)
+									(= climbingLadder TRUE)
 									(ropeLadder setScript: DropRope)
 								)
 							)
 						)
 						((Said 'climb[/(hemp,ladder)>')
 							(cond 
-								((not ropeLadderLowered) (event claimed: TRUE) (Print 800 3))
+								((not ropeLadderLowered)
+									(event claimed: TRUE)
+									(Print 800 3)
+								)
 								((or (Said '<down') (not climbedDown))
 									(event claimed: TRUE)
 									(if (> (ego distanceTo: ropeLadder) 20)
@@ -265,29 +302,55 @@
 						)
 						((Said 'get/box')
 							(cond 
-								((not climbedDown) (Print 69 15))
-								((ego has: iPandorasBox) (Print 69 16))
-								((!= ((Inventory at: iPandorasBox) owner?) 69) (Print 69 17))
-								((> (ego distanceTo: pandoraBox) 20) (Print 800 1))
-								(else (ego setScript: stoop))
+								((not climbedDown)
+									(Print 69 15)
+								)
+								((ego has: iPandorasBox)
+									(Print 69 16)
+								)
+								((!= ((Inventory at: iPandorasBox) owner?) 69)
+									(Print 69 17)
+								)
+								((> (ego distanceTo: pandoraBox) 20)
+									(Print 800 1)
+								)
+								(else
+									(ego setScript: stoop)
+								)
 							)
 						)
 						((Said 'place,drop,return/box')
 							(cond 
-								((not (ego has: iPandorasBox)) (Print 69 18))
-								((not climbedDown) (Print 69 15))
-								(else (ego setScript: putBack))
+								((not (ego has: iPandorasBox))
+									(Print 69 18)
+								)
+								((not climbedDown)
+									(Print 69 15)
+								)
+								(else
+									(ego setScript: putBack)
+								)
 							)
 						)
 						((Said 'open/box')
 							(cond 
-								((not (ego has: iPandorasBox)) (Print 69 18))
-								((not climbedDown) (Print 69 19))
-								(else (event claimed: FALSE))
+								((not (ego has: iPandorasBox))
+									(Print 69 18)
+								)
+								((not climbedDown)
+									(Print 69 19)
+								)
+								(else
+									(event claimed: FALSE)
+								)
 							)
 						)
-						((Said 'read/(epitaph,wall,casket,lid)') (Print 69 1))
-						((Said 'get,rob,get,move/casket') (Print 69 20))
+						((Said 'read/(epitaph,wall,casket,lid)')
+							(Print 69 1)
+						)
+						((Said 'get,rob,get,move/casket')
+							(Print 69 20)
+						)
 						((Said 'bang[<on]/casket')
 							(if (< (ego distanceTo: coffin) 15)
 								(Print 69 21)
@@ -297,38 +360,71 @@
 						)
 						((Said 'open/casket,lid')
 							(cond 
-								((not climbedDown) (NotClose))
-								((coffinLid cel?) (Print 69 23 #at -1 10))
-								(else (Print 69 2))
+								((not climbedDown)
+									(NotClose)
+								)
+								((coffinLid cel?)
+									(Print 69 23 #at -1 10)
+								)
+								(else
+									(Print 69 2)
+								)
 							)
 						)
-						((Said 'get,move/casket') (if climbedDown (Print 69 24) else (NotClose)))
-						((Said 'converse') (if mummyAwake (Print 69 25) else (Print 69 26)))
+						((Said 'get,move/casket')
+							(if climbedDown
+								(Print 69 24)
+							else
+								(NotClose)
+							)
+						)
+						((Said 'converse')
+							(if mummyAwake
+								(Print 69 25)
+							else
+								(Print 69 26)
+							)
+						)
 						((Said '/mummy>')
 							(cond 
-								((not mummyAwake) (event claimed: TRUE) (Print 69 11))
-								((Said 'kill') (Print 69 27))
-								((Said 'get,capture') (Print 69 28))
-								((Said 'kiss') (Print 69 29))
-								((Said 'help,,') (Print 69 30))
+								((not mummyAwake)
+									(event claimed: TRUE)
+									(Print 69 11)
+								)
+								((Said 'kill')
+									(Print 69 27)
+								)
+								((Said 'get,capture')
+									(Print 69 28)
+								)
+								((Said 'kiss')
+									(Print 69 29)
+								)
+								((Said 'help,save')	;EO: fixed said spec
+									(Print 69 30)
+								)
 							)
 						)
-						((Said 'deliver/*/mummy') (if mummyAwake (Print 69 31) else (Print 69 11)))
+						((Said 'deliver/anyword/mummy')
+							(if mummyAwake
+								(Print 69 31)
+							else
+								(Print 69 11)
+							)
+						)
 					)
 				)
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(NormalEgo)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance doMummy of Script
-	(properties)
-	
 	(method (doit)
 		(if
 			(and
@@ -356,7 +452,9 @@
 					(= seconds 5)
 				)
 			)
-			(1 (mummy setCycle: EndLoop self))
+			(1
+				(mummy setCycle: EndLoop self)
+			)
 			(2
 				(mummy
 					view: 196
@@ -386,7 +484,7 @@
 			(5
 				(mummy
 					setPri: 9
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo (coffin x?) (coffin y?) self
 				)
 			)
@@ -408,14 +506,15 @@
 			(20
 				(mummy moveSpeed: 0 setMotion: Chase ego 15 self)
 			)
-			(21 (Print 69 35) (= dead TRUE))
+			(21
+				(Print 69 35)
+				(= dead TRUE)
+			)
 		)
 	)
 )
 
 (instance DownLadder of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -501,7 +600,7 @@
 					cel: 0
 					cycleSpeed: 0
 					moveSpeed: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setCycle: Walk
 					setMotion: MoveTo (+ (ropeLadder x?) 0) (+ (ropeLadder y?) 35) self
 				)
@@ -516,7 +615,9 @@
 					setCycle: BegLoop self
 				)
 			)
-			(17 (self cue:))
+			(17
+				(self cue:)
+			)
 			(18
 				(ego
 					view: 4
@@ -563,13 +664,11 @@
 )
 
 (instance cryptFall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setPri: (if (< (ego y?) 84) -1 else 12)
 				)
@@ -611,10 +710,8 @@
 )
 
 (instance stoop of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -649,8 +746,6 @@
 )
 
 (instance putBack of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -659,7 +754,7 @@
 				(if (> (ego x?) 160) (ego loop: 1) else (ego loop: 0))
 			)
 			(1
-				(ego put: 4 69)
+				(ego put: iPandorasBox 69)
 				(if (== lolotteAlive FALSE)
 					(sounds eachElementDo: #stop 0)
 					((Sound new:) number: 50 play:)

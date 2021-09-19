@@ -17,7 +17,7 @@
 (local
 	storeIsOpen
 	afterOnklunk
-	saveBits
+	printObj
 )
 (instance rm15 of Room
 	(properties
@@ -156,7 +156,7 @@
 				(ego setMotion: MoveTo 262 140 self)
 			)
 			(4
-				(= saveBits
+				(= printObj
 					(Print 15 9
 						#at -1 20
 						#dispose
@@ -201,9 +201,9 @@
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (and saveBits (== state 4))
+		(if (and printObj (== state 4))
 			(event claimed: TRUE)
-			(= saveBits 0)
+			(= printObj 0)
 			(cls)
 			(self cue:)
 		)

@@ -17,9 +17,7 @@
 (local
 	henchman
 )
-(instance theMusic of Sound
-	(properties)
-)
+(instance theMusic of Sound)
 
 (instance Room91 of Room
 	(properties
@@ -78,9 +76,15 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: 0) cBROWN) (curRoom newRoom: 90))
-		(if (& (ego onControl: 0) cMAGENTA) (curRoom newRoom: 92))
-		(if (& (ego onControl: 0) cRED) (curRoom newRoom: 89))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 90)
+		)
+		(if (& (ego onControl: 0) cMAGENTA)
+			(curRoom newRoom: 92)
+		)
+		(if (& (ego onControl: 0) cRED)
+			(curRoom newRoom: 89)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -91,50 +95,68 @@
 					(cond 
 						(
 							(or
-								(Said 'look[/!*]')
+								(Said 'look[/noword]')
 								(Said 'look[<around][/room,castle]')
 							)
 							(Print 91 0)
 						)
 						((Said 'look>')
 							(cond 
-								((Said '<under/table') (Print 91 1))
-								((Said '/table') (Print 91 2))
-								((Said '<behind,under/tapestries') (Print 91 3))
-								((Said '/tapestries,painting') (Print 91 4))
-								((Said '/chandelier,candle,candelabra') (Print 91 5))
-								((Said '/door') (Print 91 6))
-								((Said '/wall') (Print 91 7))
-								((or (Said '/dirt') (Said '<down')) (Print 91 8))
-								(else (event claimed: FALSE))
+								((Said '<under/table')
+									(Print 91 1)
+								)
+								((Said '/table')
+									(Print 91 2)
+								)
+								((Said '<behind,under/tapestries')
+									(Print 91 3)
+								)
+								((Said '/tapestries,painting')
+									(Print 91 4)
+								)
+								((Said '/chandelier,candle,candelabra')
+									(Print 91 5)
+								)
+								((Said '/door')
+									(Print 91 6)
+								)
+								((Said '/wall')
+									(Print 91 7)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 91 8)
+								)
+								(else
+									(event claimed: FALSE)
+								)
 							)
 						)
-						((Said 'sit>') (Print 91 9) (event claimed: TRUE))
+						((Said 'sit>')
+							(Print 91 9)
+							(event claimed: TRUE)
+						)
 					)
 				)
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if
-		(or (>= (henchChase state?) 1) (== newRoomNumber 81))
+	(method (newRoom n)
+		(if (or (>= (henchChase state?) 1) (== n 81))
 			(= henchChasingEgo TRUE)
-			(= newRoomNumber 81)
+			(= n 81)
 		else
 			(= henchChasingEgo FALSE)
 			(User canControl: TRUE canInput: TRUE)
 		)
 		(henchChase seconds: 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance henchChase of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -142,7 +164,7 @@
 			(0
 				(theMusic number: 41 play:)
 				(client setMotion: Chase ego 15 self)
-				(= henchChasingEgo 1)
+				(= henchChasingEgo TRUE)
 			)
 			(1
 				(if (== curRoomNum newRoomNum)

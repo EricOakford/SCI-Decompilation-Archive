@@ -145,7 +145,7 @@
 	global117
 	whereIsMinstrel
 	minstrel
-	underBits
+	globalPrint
 	ogre
 	dwarfBouncesEgo
 	unicornState

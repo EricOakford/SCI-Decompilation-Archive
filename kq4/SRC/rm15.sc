@@ -874,7 +874,7 @@
 			)
 			(1
 				(= seconds 5)
-				(= underBits (Print 15 52 #at -1 10 #dispose))
+				(= globalPrint (Print 15 52 #at -1 10 #dispose))
 			)
 			(2
 				(ego setCycle: BegLoop self)

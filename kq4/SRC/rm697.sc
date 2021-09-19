@@ -30,7 +30,7 @@
 		(switch (= state newState)
 			(0
 				(User canControl: FALSE canInput: FALSE)
-				(= underBits (Print 697 0 #at -1 118 #dispose))
+				(= globalPrint (Print 697 0 #at -1 118 #dispose))
 				((Sound new:) number: 67 play: self)
 			)
 			(1

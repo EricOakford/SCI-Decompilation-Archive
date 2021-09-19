@@ -17,8 +17,8 @@
 
 (local
 	board
-	local1
-	local2
+	drinkControl
+	thisControl
 	poof
 	cascade1
 	cascade2
@@ -29,9 +29,7 @@
 	ripple2
 	local11
 )
-(instance poofSound of Sound
-	(properties)
-)
+(instance poofSound of Sound)
 
 (instance Room70 of Room
 	(properties
@@ -166,7 +164,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(= local2 (ego onControl: 1))
+		(= thisControl (ego onControl: origin))
 		(if (== (ego script?) 0)
 			(cond 
 				(
@@ -176,9 +174,21 @@
 					)
 					(ego setScript: sweptOut)
 				)
-				((& local2 $0001) (= currentStatus egoNormal) (ego setCycle: Walk) (ego view: 2))
-				((& local2 $0800) (ego setCycle: Walk) (ego view: 7) (= currentStatus egoInWaistDeepWater))
-				((& local2 $0002) (ego view: 8) (= currentStatus egoSwimming) (ego setCycle: Forward))
+				((& thisControl cBLACK)
+					(= currentStatus egoNormal)
+					(ego setCycle: Walk)
+					(ego view: 2)
+				)
+				((& thisControl cLCYAN)
+					(ego setCycle: Walk)
+					(ego view: 7)
+					(= currentStatus egoInWaistDeepWater)
+				)
+				((& thisControl cBLUE)
+					(ego view: 8)
+					(= currentStatus egoSwimming)
+					(ego setCycle: Forward)
+				)
 			)
 			(if (ego inRect: 209 112 225 120)
 				(ego baseSetter: (ScriptID 0 1))
@@ -186,7 +196,9 @@
 				(ego baseSetter: 0)
 			)
 		)
-		(if (& (ego onControl:) $0040) (curRoom newRoom: 71))
+		(if (& (ego onControl:) cBROWN)
+			(curRoom newRoom: 71)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -196,11 +208,21 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '/falls') (Print 70 0))
-							((Said '/cliff') (Print 70 1))
-							((Said '/cave') (Print 70 2))
-							((Said '/boulder') (Print 70 3))
-							((Said '/flora') (Print 70 4))
+							((Said '/falls')
+								(Print 70 0)
+							)
+							((Said '/cliff')
+								(Print 70 1)
+							)
+							((Said '/cave')
+								(Print 70 2)
+							)
+							((Said '/boulder')
+								(Print 70 3)
+							)
+							((Said '/flora')
+								(Print 70 4)
+							)
 							((Said '/dirt')
 								(if ((Inventory at: iBoard) ownedBy: 70)
 									(Print 70 5)
@@ -208,11 +230,25 @@
 									(Print 70 6)
 								)
 							)
-							((Said '<under/water,pool') (if (== (ego view?) 2) (Print 70 7) else (Print 70 8)))
-							((Said '<in,in/water,pool') (Print 70 9))
-							((Said '/falls') (Print 70 10))
-							((Said '<in/pool,water') (Print 70 11))
-							((Said '/pool,water') (Print 70 12))
+							((Said '<under/water,pool')
+								(if (== (ego view?) 2)
+									(Print 70 7)
+								else
+									(Print 70 8)
+								)
+							)
+							((Said '<in,in/water,pool')
+								(Print 70 9)
+							)
+							((Said '/falls')
+								(Print 70 10)
+							)
+							((Said '<in/pool,water')
+								(Print 70 11)
+							)
+							((Said '/pool,water')
+								(Print 70 12)
+							)
 							((Said '[<around][/room]')
 								(Print
 									(Format @str 70 13
@@ -226,8 +262,12 @@
 							)
 						)
 					)
-					((Said 'climb/cliff') (Print 70 14))
-					((Said 'climb/boulder') (Print 70 15))
+					((Said 'climb/cliff')
+						(Print 70 14)
+					)
+					((Said 'climb/boulder')
+						(Print 70 15)
+					)
 					((Said 'get/board')
 						(if ((Inventory at: iBoard) ownedBy: 70)
 							(if (< (ego distanceTo: board) 12)
@@ -245,10 +285,10 @@
 						(if (== (ego view?) 2)
 							(if
 								(or
-									(& (= local1 (IsObjectOnControl ego 10)) $0008)
-									(& local1 $0800)
-									(& local1 $0002)
-									(& local1 $0200)
+									(& (= drinkControl (IsObjectOnControl ego 10)) cCYAN)
+									(& drinkControl cLCYAN)
+									(& drinkControl cBLUE)
+									(& drinkControl cLBLUE)
 								)
 								(ego setScript: drinking)
 							else
@@ -258,7 +298,9 @@
 							(Print 70 17)
 						)
 					)
-					((Said 'get/water') (Print 70 18))
+					((Said 'get/water')
+						(Print 70 18)
+					)
 					((Said 'dive,bathe[<enter]')
 						(if (== (ego view?) 2)
 							(Print 70 19)
@@ -273,16 +315,14 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(HandsOn)
 		(ego baseSetter: 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance swimIn of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -337,8 +377,6 @@
 )
 
 (instance boardActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -362,8 +400,6 @@
 )
 
 (instance drinking of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -376,7 +412,9 @@
 			)
 			(2 (ego setCycle: BegLoop self))
 			(3
-				(if modelessDialog (modelessDialog dispose:))
+				(if modelessDialog
+					(modelessDialog dispose:)
+				)
 				(HandsOn)
 				(ego view: 2 setCycle: Walk setScript: 0)
 			)
@@ -385,8 +423,6 @@
 )
 
 (instance sweptOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

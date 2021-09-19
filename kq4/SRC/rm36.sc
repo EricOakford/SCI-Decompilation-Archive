@@ -283,7 +283,7 @@
 				(ego setMotion: 0 view: 21 cel: 255 setCycle: EndLoop self)
 			)
 			(2
-				(= underBits (Print 36 30 #at -1 10 #dispose))
+				(= globalPrint (Print 36 30 #at -1 10 #dispose))
 				(Timer setReal: self 5)
 			)
 			(3

@@ -381,7 +381,7 @@
 				(ego view: 46 cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(= underBits (Print 16 21 #at -1 20 #dispose))
+				(= globalPrint (Print 16 21 #at -1 20 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)
@@ -483,7 +483,7 @@
 				(ego view: 46 cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(= underBits (Print 16 21 #at -1 20 #dispose))
+				(= globalPrint (Print 16 21 #at -1 20 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)
@@ -584,7 +584,7 @@
 				(ego view: 46 cel: 0 setCycle: EndLoop self)
 			)
 			(12
-				(= underBits (Print 16 21 #at -1 20 #dispose))
+				(= globalPrint (Print 16 21 #at -1 20 #dispose))
 				(ego view: 45 setCycle: Walk setMotion: Wander)
 				(= seconds 12)
 			)

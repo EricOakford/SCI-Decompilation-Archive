@@ -21,7 +21,7 @@
 	aLegs
 	aHen
 	local6
-	saveBits
+	printObj
 )
 (instance keyholeMusic of Sound
 	(properties
@@ -240,7 +240,7 @@
 				)
 				(aLegs show: stopUpd:)
 				(keyholeMusic play:)
-				(= saveBits (Print 51 9 #font smallFont #at -1 5 #time 12))
+				(= printObj (Print 51 9 #font smallFont #at -1 5 #time 12))
 				(= seconds 2)
 			)
 			(3
@@ -380,7 +380,7 @@
 						posn: 162 115
 						addToPic:
 					)
-					(= saveBits (Print 51 15 #at -1 10 #draw #dispose))
+					(= printObj (Print 51 15 #at -1 10 #draw #dispose))
 				)
 				(= seconds 5)
 			)

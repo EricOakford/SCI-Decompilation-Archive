@@ -30,7 +30,7 @@
 	genesta
 	[local20 4]
 	poof
-	saveBits
+	printObj
 	[local26 2]
 	ripple1
 	ripple2
@@ -211,7 +211,7 @@
 				(if howFast
 					(fairy2 setMotion: Wander)
 				)
-				(= saveBits
+				(= printObj
 					(Print 222 1
 						#title {Genesta}
 						#at 100 151
@@ -262,7 +262,7 @@
 			)
 			(5
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 2 #at 50 151 #width 200 #draw #dispose)
 				)
 				(Timer setReal: self 9)
@@ -270,7 +270,7 @@
 			(6
 				(cls)
 				(rosella cycleSpeed: 2 setCycle: Forward show:)
-				(= saveBits
+				(= printObj
 					(Print 222 3
 						#title {Rosella}
 						#at 1 151
@@ -308,7 +308,7 @@
 					)
 				)
 				(blinkEyes changeState: 0)
-				(= saveBits
+				(= printObj
 					(Print 222 4
 						#title {Genesta}
 						#at 60 130
@@ -320,7 +320,7 @@
 			)
 			(8
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 5
 						#title {Genesta}
 						#at 70 130
@@ -368,7 +368,7 @@
 			)
 			(11
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 6
 						#title {Genesta}
 						#at 100 130
@@ -380,7 +380,7 @@
 			)
 			(12
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 7
 						#title {Genesta}
 						#at 100 130
@@ -394,7 +394,7 @@
 				(cls)
 				(genesta setCel: 0 stopUpd:)
 				(rosella setCycle: Forward)
-				(= saveBits
+				(= printObj
 					(Print 222 8
 						#title {Rosella}
 						#at 1 130
@@ -408,7 +408,7 @@
 				(cls)
 				(rosella setCel: 0 stopUpd:)
 				(genesta setCycle: Forward)
-				(= saveBits
+				(= printObj
 					(Print 222 9
 						#title {Genesta}
 						#at 100 130
@@ -447,7 +447,7 @@
 				)
 				(rosellaBlinks changeState: 0)
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 10
 						#title {Rosella}
 						#at 1 130
@@ -460,7 +460,7 @@
 			(16
 				(cls)
 				(theTalker hide:)
-				(= saveBits
+				(= printObj
 					(Print 222 11
 						#title {Genesta}
 						#at 100 130
@@ -473,7 +473,7 @@
 			(17
 				(cls)
 				(theTalker show:)
-				(= saveBits
+				(= printObj
 					(Print 222 12
 						#title {Rosella}
 						#at 1 130
@@ -551,7 +551,7 @@
 			)
 			(19
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 13
 						#title {Genesta}
 						#at 100 151
@@ -567,7 +567,7 @@
 			)
 			(21
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 14
 						#title {Genesta}
 						#at 80 151
@@ -580,7 +580,7 @@
 			)
 			(22
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 15
 						#title {Genesta}
 						#at 80 151
@@ -617,7 +617,7 @@
 			(26
 				(poof dispose:)
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 16
 						#title {Rosella}
 						#at 1 151
@@ -631,7 +631,7 @@
 			)
 			(27
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 17
 						#title {Genesta}
 						#at 80 151
@@ -655,7 +655,7 @@
 				)
 				(fairy1 setMotion: MoveTo -30 (+ (curRoom horizon?) 1))
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 222 18 #title {Genesta} #at 200 151 #dispose)
 				)
 				(Timer setReal: self 7)
@@ -666,7 +666,7 @@
 			)
 			(30
 				(cls)
-				(= saveBits (Print 222 19 #at -1 151 #dispose))
+				(= printObj (Print 222 19 #at -1 151 #dispose))
 				(Timer setReal: self 4)
 			)
 			(31
