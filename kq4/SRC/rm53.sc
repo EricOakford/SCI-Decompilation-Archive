@@ -82,7 +82,9 @@
 				init:
 			)
 		)
-		(if cleaningUpHouse (self setScript: cleanBedroom))
+		(if cleaningUpHouse
+			(self setScript: cleanBedroom)
+		)
 		(if (not dwarfHouseState)
 			(Load VIEW 675)
 			(Load VIEW 676)
@@ -328,17 +330,18 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: FALSE) $0040) (curRoom newRoom: 54))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 54)
+		)
 	)
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((or (Said 'clean/room') (Said 'clean[/!*]'))
+			((or (Said 'clean/room') (Said 'clean[/noword]'))
 				(if (!= dwarfHouseState TRUE)
 					(self setScript: cleanBedroom)
 				else
@@ -347,9 +350,15 @@
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/bed') (Print 53 1))
-					((Said '/stair') (Print 53 2))
-					((Said '<under/bed') (Print 53 3))
+					((Said '/bed')
+						(Print 53 1)
+					)
+					((Said '/stair')
+						(Print 53 2)
+					)
+					((Said '<under/bed')
+						(Print 53 3)
+					)
 					((Said '/window')
 						(if (ego inRect: 211 125 271 146)
 							(Print 53 4)
@@ -357,8 +366,12 @@
 							(Print 800 1)
 						)
 					)
-					((Said '<in/chest,dresser,drawer') (Print 53 5))
-					((Said '/chest,dresser') (Print 53 6))
+					((Said '<in/chest,dresser,drawer')
+						(Print 53 5)
+					)
+					((Said '/chest,dresser')
+						(Print 53 6)
+					)
 					((Said '/mirror')
 						(if (ego inRect: 217 142 295 161)
 							(Print 53 7)
@@ -366,10 +379,18 @@
 							(NotClose)
 						)
 					)
-					((Said '/shelf') (Print 53 8))
-					((Said '/wall') (Print 53 9))
-					((or (Said '/dirt') (Said '<down')) (Print 53 10))
-					((Said '/carpet,carpet') (Print 53 11))
+					((Said '/shelf')
+						(Print 53 8)
+					)
+					((Said '/wall')
+						(Print 53 9)
+					)
+					((or (Said '/dirt') (Said '<down'))
+						(Print 53 10)
+					)
+					((Said '/carpet,carpet')
+						(Print 53 11)
+					)
 					((Said 'look[<around][/room]')
 						(Print
 							(Format @str 53 12
@@ -388,10 +409,18 @@
 					(Said 'create/bed')
 					(Said 'dust,sweep[/room,dirt,furniture]')
 				)
-				(if dwarfHouseState (Print 53 0) else (Print 53 13))
+				(if dwarfHouseState
+					(Print 53 0)
+				else
+					(Print 53 13)
+				)
 			)
-			((Said 'close,close/drawer,dresser,chest') (Print 53 14))
-			((Said 'open/chest,dresser,drawer') (Print 53 5))
+			((Said 'close,close/drawer,dresser,chest')
+				(Print 53 14)
+			)
+			((Said 'open/chest,dresser,drawer')
+				(Print 53 5)
+			)
 			(
 				(or
 					(Said 'get<in,on/bed')
@@ -404,10 +433,8 @@
 )
 
 (instance cleanBedroom of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 		(ego
 			illegalBits: 0
 			ignoreActors: TRUE
@@ -451,7 +478,9 @@
 				(aClothes10 dispose:)
 				(ego view: 4 setMotion: MoveTo 231 145 self)
 			)
-			(6 (self cue:))
+			(6
+				(self cue:)
+			)
 			(7
 				(ego view: 4 setMotion: MoveTo 237 157 self)
 			)
@@ -510,20 +539,22 @@
 				(ego view: 4 setLoop: -1 setMotion: MoveTo 91 133 self)
 			)
 			(18
-				(= isHandsOff 0)
+				(= isHandsOff FALSE)
 				(ego setMotion: MoveTo 71 133 self)
 			)
-			(19 (curRoom newRoom: 54))
+			(19
+				(curRoom newRoom: 54)
+			)
 		)
 	)
 )
 
 (instance chaseEgo of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 60))
+			(0
+				(= seconds 60)
+			)
 			(1
 				(if
 					(or
@@ -542,7 +573,7 @@
 						setMotion: MoveTo 78 131 self
 					)
 					(HandsOff)
-					(= isHandsOff 0)
+					(= isHandsOff FALSE)
 					(= inCutscene TRUE)
 					(= dwarfBouncesEgo TRUE)
 				)

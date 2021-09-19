@@ -44,7 +44,11 @@
 		(if ((inventory at: iSkeletonKey) ownedBy: curRoomNum)
 			(= keyInDrawer TRUE)
 		)
-		(if playedOrgan (= drawerOpen TRUE) else (= drawerOpen FALSE))
+		(if playedOrgan
+			(= drawerOpen TRUE)
+		else
+			(= drawerOpen FALSE)
+		)
 		((View new:)
 			view: 521
 			loop: 2
@@ -103,35 +107,35 @@
 	(method (doit)
 		(if
 			(and
-				(& (ego onControl:) $0002)
+				(& (ego onControl:) cBLUE)
 				(== (ego illegalBits?) cWHITE)
 				(not (ego script?))
 			)
 			(ego
 				setPri: 11
-				illegalBits: 16384
+				illegalBits: cYELLOW
 				baseSetter: (ScriptID 0 1)
 			)
 		)
 		(if
 			(and
-				(& (ego onControl:) $0010)
-				(not (& (ego onControl: TRUE) $0002))
+				(& (ego onControl:) cRED)
+				(not (& (ego onControl: origin) cBLUE))
 				(not (ego script?))
 			)
 			(ego setPri: -1 illegalBits: cWHITE baseSetter: 0)
 		)
 		(if
 			(and
-				(& (ego onControl: FALSE) $0040)
+				(& (ego onControl: 0) cBROWN)
 				(!= (ego script?) fallHole)
 			)
 			(curRoom newRoom: 61)
 		)
 		(if
 			(and
-				(& (ego onControl:) $0004)
-				(!= (ego illegalBits?) 16384)
+				(& (ego onControl:) cGREEN)
+				(!= (ego illegalBits?) cYELLOW)
 				(!= (ego script?) fallHole)
 			)
 			(HandsOff)
@@ -148,30 +152,50 @@
 					(cond 
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look/room,tower')
 							)
 							(Print 58 0)
 						)
 						((Said 'look>')
 							(cond 
-								((or (Said '<down') (Said '/stair')) (Print 58 1))
-								((Said '<behind/organ') (Print 58 2))
-								((Said '<in/organ') (Print 58 3))
-								((Said '/organ') (Print 58 4))
-								((Said '/bench') (Print 58 5))
-								((Said '/wall') (Print 58 6))
-								((or (Said '/dirt') (Said '<down')) (Print 58 7))
+								((or (Said '<down') (Said '/stair'))
+									(Print 58 1)
+								)
+								((Said '<behind/organ')
+									(Print 58 2)
+								)
+								((Said '<in/organ')
+									(Print 58 3)
+								)
+								((Said '/organ')
+									(Print 58 4)
+								)
+								((Said '/bench')
+									(Print 58 5)
+								)
+								((Said '/wall')
+									(Print 58 6)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 58 7)
+								)
 								((Said '/drawer')
 									(if drawerOpen
-										(if keyInDrawer (Print 58 8) else (Print 58 9))
+										(if keyInDrawer
+											(Print 58 8)
+										else
+											(Print 58 9)
+										)
 									else
 										(Print 58 10)
 									)
 								)
 							)
 						)
-						((Said 'move/bench') (Print 58 11))
+						((Said 'move/bench')
+							(Print 58 11)
+						)
 						((Said 'play,use/music<sheet')
 							(cond 
 								((== (ego view?) 58)
@@ -182,14 +206,19 @@
 										(Print 58 13)
 									)
 								)
-								((ego has: iSheetMusic) (Print 58 14))
-								(else (Print 58 13))
+								((ego has: iSheetMusic)
+									(Print 58 14)
+								)
+								(else
+									(Print 58 13)
+								)
 							)
 						)
-						(
-						(or (Said 'play,use/organ,music') (Said 'play[/!*]'))
+						((or (Said 'play,use/organ,music') (Said 'play[/noword]'))
 							(if (== (ego view?) 58)
-								(if (ego has: 26) (Print 58 15))
+								(if (ego has: iSheetMusic)
+									(Print 58 15)
+								)
 								(playOrgan changeState: 0)
 							else
 								(Print 58 16)
@@ -197,10 +226,18 @@
 						)
 						((or (Said 'sit') (Said 'sit/organ,bench'))
 							(cond 
-								((== (ego view?) 58) (Print 58 17))
-								((ego inRect: 129 121 195 126) (self setScript: sitOrgan))
-								((ego inRect: 122 126 211 137) (Print 58 18))
-								(else (Print 800 1))
+								((== (ego view?) 58)
+									(Print 58 17)
+								)
+								((ego inRect: 129 121 195 126)
+									(self setScript: sitOrgan)
+								)
+								((ego inRect: 122 126 211 137)
+									(Print 58 18)
+								)
+								(else
+									(Print 800 1)
+								)
 							)
 						)
 						(
@@ -230,10 +267,30 @@
 								(Print 58 21)
 							)
 						)
-						((Said 'close/drawer') (if drawerOpen (Print 58 22) else (Print 58 23)))
-						((Said 'open/drawer') (if drawerOpen (Print 58 24) else (Print 58 23)))
-						((Said 'open/bench') (Print 58 25))
-						((Said 'find/drawer') (if drawerOpen (Print 58 26) else (Print 58 27)))
+						((Said 'close/drawer')
+							(if drawerOpen
+								(Print 58 22)
+							else
+								(Print 58 23)
+							)
+						)
+						((Said 'open/drawer')
+							(if drawerOpen
+								(Print 58 24)
+							else
+								(Print 58 23)
+							)
+						)
+						((Said 'open/bench')
+							(Print 58 25)
+						)
+						((Said 'find/drawer')
+							(if drawerOpen
+								(Print 58 26)
+							else
+								(Print 58 27)
+							)
+						)
 					)
 				)
 			)
@@ -242,8 +299,6 @@
 )
 
 (instance playOrgan of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -289,20 +344,19 @@
 	)
 )
 
-(instance theMusic of Sound
-	(properties)
-)
+(instance theMusic of Sound)
 
-(instance sitOrgan of Script
-	(properties)
-	
+(instance sitOrgan of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(User canControl: FALSE)
 				(ego setMotion: MoveTo 164 125 self)
 			)
-			(1 (ego loop: 2) (self cue:))
+			(1
+				(ego loop: 2)
+				(self cue:)
+			)
 			(2
 				((= sittingEgo (Actor new:))
 					view: 58
@@ -324,8 +378,6 @@
 )
 
 (instance standOrgan of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -344,8 +396,6 @@
 )
 
 (instance fallHole of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -400,7 +450,9 @@
 				(ShakeScreen 10)
 				(= seconds 3)
 			)
-			(5 (= dead TRUE))
+			(5
+				(= dead TRUE)
+			)
 		)
 	)
 )

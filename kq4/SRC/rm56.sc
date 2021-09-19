@@ -261,7 +261,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: FALSE) $0040) (curRoom newRoom: 55))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 55)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -292,7 +294,7 @@
 						)
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look[<around]/room')
 								(Said 'look[<around]/mine[<diamond]')
 							)
@@ -300,8 +302,12 @@
 						)
 						((Said 'look>')
 							(cond 
-								((Said '/dwarf') (Print 56 3))
-								((Said '/bucket') (Print 56 4))
+								((Said '/dwarf')
+									(Print 56 3)
+								)
+								((Said '/bucket')
+									(Print 56 4)
+								)
 							)
 						)
 						(
@@ -318,12 +324,16 @@
 						(
 							(and
 								(< (ego distanceTo: dwarf4) 20)
-								(or (Said 'kiss/dwarf') (Said 'kiss[/!*]'))
+								(or (Said 'kiss/dwarf') (Said 'kiss[/noword]'))
 							)
 							(Print 56 6)
 						)
-						((Said 'get,rob/bucket') (Print 56 7))
-						((Said 'rob/lantern') (Print 56 8))
+						((Said 'get,rob/bucket')
+							(Print 56 7)
+						)
+						((Said 'rob/lantern')
+							(Print 56 8)
+						)
 					)
 				)
 			)
@@ -332,13 +342,13 @@
 )
 
 (instance dwarvesMove of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp randVal)
 		(switch (= state newState)
-			(0 (= cycles 4))
+			(0
+				(= cycles 4)
+			)
 			(1
-				(switch (= temp0 (Random 1 6))
+				(switch (= randVal (Random 1 6))
 					(1
 						(if (cast contains: dwarf2)
 							(dwarf2 setCycle: EndLoop self)
@@ -375,7 +385,9 @@
 						(dwarf5 loop: 1 cycleSpeed: 0 setCycle: EndLoop self)
 						(dwarf4 setLoop: 5)
 					)
-					(else  (self cue:))
+					(else
+						(self cue:)
+					)
 				)
 			)
 			(2
@@ -393,9 +405,7 @@
 )
 
 (instance sparkle of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp randVal)
 		(switch (= state newState)
 			(0
 				(switch (Random 1 4)
@@ -426,27 +436,36 @@
 )
 
 (instance answer1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Print 56 9))
-			(1 (Print 56 10))
-			(2 (Print 56 11) (= state 1))
+			(0
+				(Print 56 9)
+			)
+			(1
+				(Print 56 10)
+			)
+			(2
+				(Print 56 11)
+				(= state 1)
+			)
 		)
 	)
 )
 
 (instance handOff of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(dwarvesMove changeState: 3)
-				(if howFast (sparkle changeState: 2))
-				(if (cast contains: dwarf1) (dwarf1 dispose: delete:))
-				(if (cast contains:) (dwarf2 dispose: delete:))
+				(if howFast
+					(sparkle changeState: 2)
+				)
+				(if (cast contains: dwarf1)
+					(dwarf1 dispose: delete:)
+				)
+				(if (cast contains:)
+					(dwarf2 dispose: delete:)
+				)
 				(if (cast contains: sparkle4)
 					(sparkle4 dispose: delete:)
 				)
@@ -498,7 +517,7 @@
 						posn: 136 48
 						setLoop: 3
 						init:
-						ignoreActors: 1
+						ignoreActors: TRUE
 						stopUpd:
 					)
 					(sparkle changeState: 0)
@@ -511,7 +530,7 @@
 					loop: 5
 					cel: 0
 					stopUpd:
-					ignoreActors: 0
+					ignoreActors: FALSE
 					init:
 				)
 				(= seconds 3)

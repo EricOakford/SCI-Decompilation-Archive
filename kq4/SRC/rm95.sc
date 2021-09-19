@@ -21,8 +21,8 @@
 (local
 	local0
 	local1
-	local2
-	local3
+	thisControl
+	fisherHere
 	fisherman
 	seagull
 	[local6 2]
@@ -113,7 +113,9 @@
 				init:
 			)
 		)
-		(if (== fishermanState fisherInit) (= fishermanState fisherGoneFishing))
+		(if (== fishermanState fisherInit)
+			(= fishermanState fisherGoneFishing)
+		)
 		(switch prevRoomNum
 			(0
 				(ego loop: 1 setPri: 13)
@@ -133,11 +135,19 @@
 			)
 			(31
 				(cond 
-					((<= (ego y?) oldHorizon) (ego posn: (ego x?) (+ horizon (ego yStep?) 1)))
-					((>= (ego y?) 189) (ego y: 188))
-					((>= (ego x?) 319) (ego x: 1))
+					((<= (ego y?) oldHorizon)
+						(ego posn: (ego x?) (+ horizon (ego yStep?) 1))
+					)
+					((>= (ego y?) 189)
+						(ego y: 188)
+					)
+					((>= (ego x?) 319)
+						(ego x: 1)
+					)
 				)
-				(if (<= (ego y?) horizon) (ego y: (+ horizon 2)))
+				(if (<= (ego y?) horizon)
+					(ego y: (+ horizon 2))
+				)
 				(ego view: 8 setCycle: Forward)
 			)
 		)
@@ -173,11 +183,11 @@
 				setScript: manActions
 				init:
 			)
-			(= local3 1)
+			(= fisherHere TRUE)
 		)
 		(ego xStep: 3 yStep: 2 init:)
-		(if (and (== global107 9) (== local3 1))
-			(ego observeControl: 32)
+		(if (and (== global107 9) (== fisherHere TRUE))
+			(ego observeControl: cMAGENTA)
 		)
 	)
 	
@@ -196,30 +206,38 @@
 			)
 			(gullActions changeState: 1)
 		)
-		(= local2 (ego onControl: 0))
+		(= thisControl (ego onControl: 0))
 		(if (and (== global107 9) (!= currentStatus 15))
 			(cond 
-				((& local2 $0010) (ego setScript: fallNorth))
-				((& local2 $0004) (ego setScript: fallSouth))
-				((& local2 $0008) (ego setScript: fallWest))
+				((& thisControl cRED)
+					(ego setScript: fallNorth)
+				)
+				((& thisControl cGREEN)
+					(ego setScript: fallSouth)
+				)
+				((& thisControl cCYAN)
+					(ego setScript: fallWest)
+				)
 			)
 		)
-		(if (or (== local3 0) (!= global107 9))
-			(ego ignoreControl: 32)
+		(if (or (== fisherHere FALSE) (!= global107 9))
+			(ego ignoreControl: cMAGENTA)
 		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(if (event claimed?) (return TRUE))
 		(return
 			(if (== (event type?) saidEvent)
 				(cond 
 					((Said 'deliver>')
 						(cond 
-							((Said '/*/gull') (Print 95 0))
-							((Said '/*[/seagull,man,man,man,man]>')
-								(if (= inventorySaidMe (inventory saidMe:))
-									(if (ego has: (inventory indexOf: inventorySaidMe))
+							((Said '/anyword/gull')
+								(Print 95 0)
+							)
+							((Said '/anyword[/fisherman,man,man,man,man]>')	;EO: fixed said spec
+								(if (= index (inventory saidMe:))
+									(if (ego has: (inventory indexOf: index))
 										(Print 95 1)
 									else
 										(Print 95 2)
@@ -240,11 +258,25 @@
 									(Print 95 4)
 								)
 							)
-							((Said '/dock') (Print 95 5))
-							((Said '<under/dock') (Print 95 6))
-							((Said '<under/water,ocean') (if (== (ego view?) 2) (Print 95 7) else (Print 95 8)))
-							((Said '/barrel') (Print 95 9))
-							((Said '/ocean,water') (Print 95 10))
+							((Said '/dock')
+								(Print 95 5)
+							)
+							((Said '<under/dock')
+								(Print 95 6)
+							)
+							((Said '<under/water,ocean')
+								(if (== (ego view?) 2)
+									(Print 95 7)
+								else
+									(Print 95 8)
+								)
+							)
+							((Said '/barrel')
+								(Print 95 9)
+							)
+							((Said '/ocean,water')
+								(Print 95 10)
+							)
 							((Said '/gull,gull,gull')
 								(if (cast contains: seagull)
 									(Print 95 11)
@@ -252,8 +284,10 @@
 									(event claimed: FALSE)
 								)
 							)
-							((Said '/hemp') (Print 95 12))
-							((Said '/seagull,man,man,man,man')
+							((Said '/hemp')
+								(Print 95 12)
+							)
+							((Said '/fisherman,man,man,man,man')	;EO: fixed said spec
 								(if (== fishermanState fisherGoneFishing)
 									(Print 95 13)
 								else
@@ -271,7 +305,9 @@
 					)
 				)
 				(cond 
-					((Said 'open/barrel') (Print 95 9))
+					((Said 'open/barrel')
+						(Print 95 9)
+					)
 					((or (Said 'drink') (Said 'get/drink'))
 						(if (== (ego view?) 2)
 							(Print 95 17)
@@ -286,7 +322,9 @@
 							(Print 95 20)
 						)
 					)
-					((Said 'dive,(bathe<under)[/ocean,water]') (Print 95 21))
+					((Said 'dive,(bathe<under)[/ocean,water]')
+						(Print 95 21)
+					)
 					((Said 'bathe')
 						(if (== (ego view?) 2)
 							(Print 95 19)
@@ -294,10 +332,12 @@
 							(Print 95 22)
 						)
 					)
-					((Said 'get/hemp') (Print 95 23))
+					((Said 'get/hemp')
+						(Print 95 23)
+					)
 					(
 						(or
-							(Said 'fish[<enter][/!*]')
+							(Said 'fish[<enter][/noword]')
 							(Said 'capture,get/fish')
 							(Said 'cast/pole')
 						)
@@ -312,35 +352,58 @@
 						(cond 
 							((ego has: iFishingPole)
 								(cond 
-									((Said 'bait') (event claimed: FALSE))
-									((Said 'get') (AlreadyTook))
-									((Said 'use') (Print 95 25))
+									((Said 'bait')
+										(event claimed: FALSE)
+									)
+									((Said 'get')
+										(AlreadyTook)
+									)
+									((Said 'use')
+										(Print 95 25)
+									)
 								)
 							)
-							((not (cast contains: fisherman)) (event claimed: TRUE) (Print 95 26))
-							((Said 'get') (Print 95 27))
-							((Said 'rob') (Print 95 28))
+							((not (cast contains: fisherman))
+								(event claimed: TRUE)
+								(Print 95 26)
+							)
+							((Said 'get')
+								(Print 95 27)
+							)
+							((Said 'rob')
+								(Print 95 28)
+							)
 						)
 					)
 					((Said '/gull>')
 						(cond 
 							((not (cast contains: seagull)) 0)
-							((Said 'feed') (Print 95 29))
-							((Said 'kiss') (Print 95 30))
-							((Said 'converse') (Print 95 31))
-							((Said 'capture,get') (Print 95 32))
+							((Said 'feed')
+								(Print 95 29)
+							)
+							((Said 'kiss')
+								(Print 95 30)
+							)
+							((Said 'converse')
+								(Print 95 31)
+							)
+							((Said 'capture,get')
+								(Print 95 32)
+							)
 						)
 					)
-					((Said '[/seagull,man,man,man,man]>')
+					((Said '[/fisherman,man,man,man,man]>')	;EO: fixed said spec
 						(cond 
-							((Said 'get/*')
+							((Said 'get/anyword')
 								(if (== fishermanState fisherGoneFishing)
 									(Print 95 33)
 								else
 									(Print 95 34)
 								)
 							)
-							((Said 'help') (Print 95 35))
+							((Said 'help')
+								(Print 95 35)
+							)
 							((Said 'kiss')
 								(if (== fishermanState fisherGoneFishing)
 									(Print 95 36)
@@ -359,21 +422,19 @@
 					)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(= noWearCrown FALSE)
 		(ego baseSetter: 0)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance fallSouth of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -395,14 +456,19 @@
 				(ego yStep: 2 setPri: -1)
 				(ego
 					view: 19
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					illegalBits: cWHITE
 					cel: 255
 					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego view: 8 setCycle: Forward illegalBits: cWHITE setPri: -1)
+				(ego
+					view: 8
+					setCycle: Forward
+					illegalBits: cWHITE
+					setPri: -1
+				)
 				(HandsOn)
 				(= global107 0)
 				(ego setScript: 0)
@@ -411,9 +477,7 @@
 	)
 )
 
-(instance fallNorth of Script
-	(properties)
-	
+(instance fallNorth of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -447,8 +511,6 @@
 )
 
 (instance fallWest of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -464,7 +526,7 @@
 			(1
 				(ego
 					view: 19
-					loop: (& (ego loop?) $0001)
+					loop: (& (ego loop?) 1)
 					illegalBits: cWHITE
 					cel: 255
 					setPri: -1
@@ -481,8 +543,6 @@
 )
 
 (instance manActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -500,7 +560,7 @@
 					setCycle: Walk
 					setMotion: MoveTo 319 146 self
 				)
-				(= local3 0)
+				(= fisherHere FALSE)
 			)
 			(4
 				(= minuteMetFisherman gameMinutes)
@@ -515,8 +575,6 @@
 )
 
 (instance gullActions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -526,7 +584,9 @@
 				(seagull loop: 1 cel: 0 setCycle: Forward)
 				(seagull setMotion: MoveTo -10 25 self)
 			)
-			(3 (seagull dispose:))
+			(3
+				(seagull dispose:)
+			)
 		)
 	)
 )
@@ -538,11 +598,14 @@
 		(switch (= state newState)
 			(1
 				(ego baseSetter: (ScriptID 0 1))
-				(= currentStatus 15)
+				(= currentStatus egoFishing)
 				(cond 
-					(
-					(and (ego has: iFishingPole) ((Inventory at: iWorm) ownedBy: 666)) (self changeState: 9))
-					((ego has: iFishingPole) (self changeState: 19))
+					((and (ego has: iFishingPole) ((Inventory at: iWorm) ownedBy: 666))
+						(self changeState: 9)
+					)
+					((ego has: iFishingPole)
+						(self changeState: 19)
+					)
 					(else
 						(Print 95 39)
 						(= currentStatus egoNormal)

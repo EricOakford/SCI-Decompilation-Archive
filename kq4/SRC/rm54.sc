@@ -41,7 +41,8 @@
 	busy
 )
 ;EO: Using the Avoider in this room crashes the game with an "Out of Heap Space" error!
-;In fact, this room uses so much heap that saving, restoring, and inventory are disabled.
+; In fact, this room uses so much heap that saving, restoring, and inventory are disabled.
+; For this reason, the Avoider is no longer loaded. It doesn't seem necessary anyway.
 
 (instance Room54 of Room
 	(properties
@@ -57,7 +58,9 @@
 		(Load VIEW 500)
 		(Load VIEW 533)
 		(self setRegions: DWARF_HOUSE)
-		(if (== prevRoomNum 654) (curRoom style: IRISIN))
+		(if (== prevRoomNum 654)
+			(curRoom style: IRISIN)
+		)
 		(super init:)
 		((View new:)
 			view: 533
@@ -79,7 +82,11 @@
 		)
 		(= isIndoors TRUE)
 		(NormalEgo)
-		(ego view: 4 observeControl: cGREEN setStep: 4 2)
+		(ego
+			view: 4
+			observeControl: cGREEN
+			setStep: 4 2
+		)
 		(cond 
 			((== prevRoomNum 53)
 				(if (== dwarfBouncesEgo TRUE)
@@ -96,7 +103,9 @@
 					)
 				)
 			)
-			((== prevRoomNum 654) (ego posn: 270 135 loop: 2 init:))
+			((== prevRoomNum 654)
+				(ego posn: 270 135 loop: 2 init:)
+			)
 			(else
 				(dwarfBouncer posn: 147 1194 show:)
 				(ego posn: 147 157 loop: 3 init:)
@@ -104,8 +113,7 @@
 			)
 		)
 		(if (not dwarfTableClean)
-			(= i 7)
-			(while (>= i 0)
+			(for ((= i 7)) (>= i 0) ((-- i))
 				((= [bowl i] (View new:))
 					view: 500
 					loop: 1
@@ -136,7 +144,6 @@
 					init:
 					stopUpd:
 				)
-				(-- i)
 			)
 		else
 			((= [bowl 0] (View new:))
@@ -250,7 +257,9 @@
 			setCycle: Forward
 			init:
 		)
-		(if (not howFast) (soupPot addToPic:))
+		(if (not howFast)
+			(soupPot addToPic:)
+		)
 		((= closetDoor (Prop new:))
 			view: 677
 			setLoop: 2
@@ -267,11 +276,23 @@
 		(super doit:)
 		(if (and (== busy 0) (== (ego script?) 0))
 			(cond 
-				((& (ego onControl:) $0020) (curRoom newRoom: 53))
-				((& (ego onControl:) $0200) (ego setScript: useSteps) (useSteps changeState: 1))
-				((& (ego onControl:) $1000) (ego setScript: useSteps) (useSteps changeState: 4))
-				((& (ego onControl:) $0040)
-					(ego illegalBits: cWHITE ignoreActors: 0 loop: 2)
+				((& (ego onControl:) cMAGENTA)
+					(curRoom newRoom: 53)
+				)
+				((& (ego onControl:) cLBLUE)
+					(ego setScript: useSteps)
+					(useSteps changeState: 1)
+				)
+				((& (ego onControl:) cLRED)
+					(ego setScript: useSteps)
+					(useSteps changeState: 4)
+				)
+				((& (ego onControl:) cBROWN)
+					(ego
+						illegalBits: cWHITE
+						ignoreActors: FALSE
+						loop: 2
+					)
 					(curRoom newRoom: 22)
 				)
 			)
@@ -280,13 +301,16 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((or (Said 'is<how<time') (Said '[!*]/time')) (Print 54 0))
-			((Said 'open,(look<in)/cabinet') (Print 54 1))
+			((or (Said 'is<how<time') (Said '[noword]/time'))
+				(Print 54 0)
+			)
+			((Said 'open,(look<in)/cabinet')
+				(Print 54 1)
+			)
 			((Said 'close/cabinet')
 				(if (not dwarfHouseState)
 					(Print 54 2)
@@ -296,38 +320,80 @@
 			)
 			((Said 'open/door,closet,pantry')
 				(cond 
-					((== (closetDoor cel?) 0) (Print 54 4))
-					((ego inRect: 40 137 70 150) (closetDoor setScript: doorOpen))
-					(else (Print 800 1))
+					((== (closetDoor cel?) 0)
+						(Print 54 4)
+					)
+					((ego inRect: 40 137 70 150)
+						(closetDoor setScript: doorOpen)
+					)
+					(else
+						(Print 800 1)
+					)
 				)
 			)
 			((Said 'close/door,closet,pantry')
 				(cond 
-					((> (closetDoor cel?) 0) (Print 54 3))
-					((ego inRect: 0 137 70 145) (closetDoor setScript: doorClose))
-					(else (Print 800 1))
+					((> (closetDoor cel?) 0)
+						(Print 54 3)
+					)
+					((ego inRect: 0 137 70 145)
+						(closetDoor setScript: doorClose)
+					)
+					(else
+						(Print 800 1)
+					)
 				)
 			)
-			((Said 'sit') (Print 54 5))
+			((Said 'sit')
+				(Print 54 5)
+			)
 			((Said 'clean[/cottage]')
-				(if (== dwarfBouncesEgo TRUE) (Print 54 5) (return))
+				(if (== dwarfBouncesEgo TRUE)
+					(Print 54 5)
+					(return)
+				)
 				(cond 
-					((& (ego onControl:) $0004) (Print 54 6))
-					((== dwarfHouseState 0) (ego setScript: startClean))
-					((not dwarfTableClean) (ego setScript: cleanTable))
-					(else (Print 54 7))
+					((& (ego onControl:) cGREEN)
+						(Print 54 6)
+					)
+					((== dwarfHouseState 0)
+						(ego setScript: startClean)
+					)
+					((not dwarfTableClean)
+						(ego setScript: cleanTable)
+					)
+					(else
+						(Print 54 7)
+					)
 				)
 			)
 			((Said 'clean,scrub/table,dish')
 				(cond 
-					((and dwarfHouseState (not dwarfTableClean)) (ego setScript: cleanTable))
-					((and dwarfHouseState dwarfTableClean) (Print 54 8))
-					(else (Print 54 2))
+					((and dwarfHouseState (not dwarfTableClean))
+						(ego setScript: cleanTable)
+					)
+					((and dwarfHouseState dwarfTableClean)
+						(Print 54 8)
+					)
+					(else
+						(Print 54 2)
+					)
 				)
 			)
-			(
-			(Said 'clean,do,scrub,sweep,dust[/dish,dirt,furniture]') (if dwarfHouseState (Print 54 9) else (Print 54 2)))
-			((Said 'eat,drink,eat/soup') (if (not ateSoup) (Print 54 5) else (Print 54 10)))
+			((Said 'clean,do,scrub,sweep,dust[/dish,dirt,furniture]')
+				(if dwarfHouseState
+					(Print 54 9)
+				else
+					(Print 54 2)
+				)
+			)
+			((Said 'eat,drink,eat/soup')
+				(if (not ateSoup)
+					(Print 54 5)
+				else
+					(Print 54 10)
+				)
+			)
 			((Said 'get>')
 				(cond 
 					((Said '/dish[<dirty]')
@@ -338,18 +404,30 @@
 						)
 					)
 					((Said '/broom')
-						(if (& (ego onControl: TRUE) $0004)
+						(if (& (ego onControl: origin) cGREEN)
 							(Print 54 13)
 						else
 							(Print 54 14)
 						)
 					)
-					((Said '/caldron') (Print 54 15))
-					((Said '/bowl') (Print 54 16))
-					((Said '/soup') (if ateSoup (Print 54 17) else (Print 54 18)))
+					((Said '/caldron')
+						(Print 54 15)
+					)
+					((Said '/bowl')
+						(Print 54 16)
+					)
+					((Said '/soup')
+						(if ateSoup
+							(Print 54 17)
+						else
+							(Print 54 18)
+						)
+					)
 					((Said '/pouch,diamond')
 						(cond 
-							((ego has: iDiamondPouch) (event claimed: FALSE))
+							((ego has: iDiamondPouch)
+								(event claimed: FALSE)
+							)
 							((== ((inventory at: iDiamondPouch) owner?) curRoomNum)
 								(if (ego inRect: 200 140 276 164)
 									(ego get: iDiamondPouch)
@@ -360,16 +438,21 @@
 									(Print 800 1)
 								)
 							)
-							(else (Print 54 19))
+							(else
+								(Print 54 19)
+							)
 						)
 					)
 				)
 			)
 			((Said 'look>')
 				(cond 
-					((and (== ateSoup TRUE) (Said '/soup')) (Print 54 20))
-					(
-					(and ((Inventory at: iDiamondPouch) ownedBy: 54) (Said '/pouch,diamond')) (Print 54 21))
+					((and (== ateSoup TRUE) (Said '/soup'))
+						(Print 54 20)
+					)
+					((and ((Inventory at: iDiamondPouch) ownedBy: 54) (Said '/pouch,diamond'))
+						(Print 54 21)
+					)
 					((Said '/window')
 						(if (ego inRect: 124 117 197 130)
 							(Print 54 22)
@@ -388,11 +471,15 @@
 							(Print 54 24)
 						)
 					)
-					((Said '<under/table') (Print 54 25))
+					((Said '<under/table')
+						(Print 54 25)
+					)
 					((Said '/table')
 						(if dwarfTableClean
 							(Print 54 26)
-							(if (== ((inventory at: iDiamondPouch) owner?) 54) (Print 54 27))
+							(if (== ((inventory at: iDiamondPouch) owner?) 54)
+								(Print 54 27)
+							)
 						else
 							(Print 54 28)
 							(if (== ((inventory at: iDiamondPouch) owner?) curRoomNum)
@@ -400,16 +487,44 @@
 							)
 						)
 					)
-					((Said '/stair') (Print 54 29))
-					((Said '/cabinet') (Print 54 30))
-					((Said '<in/cabinet') (Print 54 1))
-					((Said '/wall') (Print 54 31))
-					((or (Said '/dirt') (Said '<down')) (Print 54 32))
-					((Said '/bowl') (if dwarfTableClean (Print 54 33) else (Print 54 34)))
-					((Said '/caldron,soup') (Print 54 35))
-					((Said '/fire,fireplace') (Print 54 36))
-					((Said '/carpet') (Print 54 37))
-					((Said '/sink') (if dwarfHouseState (Print 54 38) else (Print 54 39)))
+					((Said '/stair')
+						(Print 54 29)
+					)
+					((Said '/cabinet')
+						(Print 54 30)
+					)
+					((Said '<in/cabinet')
+						(Print 54 1)
+					)
+					((Said '/wall')
+						(Print 54 31)
+					)
+					((or (Said '/dirt') (Said '<down'))
+						(Print 54 32)
+					)
+					((Said '/bowl')
+						(if dwarfTableClean
+							(Print 54 33)
+						else
+							(Print 54 34)
+						)
+					)
+					((Said '/caldron,soup')
+						(Print 54 35)
+					)
+					((Said '/fire,fireplace')
+						(Print 54 36)
+					)
+					((Said '/carpet')
+						(Print 54 37)
+					)
+					((Said '/sink')
+						(if dwarfHouseState
+							(Print 54 38)
+						else
+							(Print 54 39)
+						)
+					)
 					((Said '/dish[<dirty]')
 						(if (or (not dwarfHouseState) (not dwarfTableClean))
 							(Print 54 40)
@@ -417,39 +532,56 @@
 							(Print 54 41)
 						)
 					)
-					((Said '/clock[<cuckoo]') (Print 54 42))
-					((Said '/time') (Print 54 43))
+					((Said '/clock[<cuckoo]')
+						(Print 54 42)
+					)
+					((Said '/time')
+						(Print 54 43)
+					)
 					((Said '<in/closet')
 						(cond 
-							((& (ego onControl: TRUE) $0004) (Print 54 44))
-							((> (closetDoor cel?) 0) (Print 54 45))
-							(else (Print 800 1))
+							((& (ego onControl: origin) cGREEN)
+								(Print 54 44)
+							)
+							((> (closetDoor cel?) 0)
+								(Print 54 45)
+							)
+							(else
+								(Print 800 1)
+							)
 						)
 					)
 					((Said '/closet')
-						(if (& (ego onControl: TRUE) $0004)
+						(if (& (ego onControl: origin) cGREEN)
 							(Print 54 46)
 						else
 							(Print 54 47)
 						)
 					)
 					((Said '/broom')
-						(if (& (ego onControl: TRUE) $0004)
+						(if (& (ego onControl: origin) cGREEN)
 							(Print 54 48)
 						else
 							(Print 54 49)
 						)
 					)
-					((Said '[<around][/cottage,kitchen]') (Print 54 50) (if (== dwarfHouseState 0) (Print 54 51)))
+					((Said '[<around][/cottage,kitchen]')
+						(Print 54 50)
+						(if (== dwarfHouseState houseDIRTY)
+							(Print 54 51)
+						)
+					)
 				)
 			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (== newRoomNumber 22) ((ScriptID 601) keep: 0))
-		(= noWearCrown 0)
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(if (== n 22)
+			((ScriptID 601) keep: FALSE)
+		)
+		(= noWearCrown FALSE)
+		(super newRoom: n)
 	)
 )
 
@@ -458,11 +590,14 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(= busy 1)
+				(= busy TRUE)
 				(= isHandsOff FALSE)
 				(= inCutscene TRUE)
 				(= cleaningUpHouse TRUE)
-				(ego illegalBits: 0 setAvoider: Avoider)
+				(ego
+					illegalBits: 0
+					;setAvoider: Avoider	;not enough heap for avoider
+				)
 				(NotifyScript DWARF_HOUSE 1)
 				(ego setMotion: MoveTo 135 (ego y?) self)
 			)
@@ -478,14 +613,14 @@
 			(4
 				(ego setMotion: MoveTo 243 90 self)
 			)
-			(5 (curRoom newRoom: 53))
+			(5
+				(curRoom newRoom: 53)
+			)
 		)
 	)
 )
 
 (instance cleanKitchen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -493,12 +628,14 @@
 				(= busy TRUE)
 				(ego
 					illegalBits: 0
-					setAvoider: Avoider
+					;setAvoider: Avoider	;not enough heap for avoider
 					loop: 1
 					setMotion: MoveTo 194 123 self
 				)
 			)
-			(1 (cleanTable cue:))
+			(1
+				(cleanTable cue:)
+			)
 			(2
 				(ego setLoop: -1 setMotion: MoveTo 103 120 self)
 			)
@@ -652,11 +789,9 @@
 )
 
 (instance cleanTable of Script
-	(properties)
-	
-	(method (init param1)
+	(method (init who)
 		(Load VIEW 63)
-		(super init: param1)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -668,7 +803,11 @@
 					(= cleaningUpHouse TRUE)
 					(NotifyScript DWARF_HOUSE 1)
 				)
-				(ego illegalBits: 0 setAvoider: Avoider setCycle: Walk)
+				(ego
+					illegalBits: 0
+					;setAvoider: Avoider	;not enough heap for avoider
+					setCycle: Walk
+				)
 				(if (> (ego y?) 145)
 					(ego setMotion: MoveTo 135 159 self)
 				else
@@ -747,8 +886,6 @@
 )
 
 (instance doorOpen of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -768,8 +905,6 @@
 )
 
 (instance doorClose of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -789,8 +924,6 @@
 )
 
 (instance useSteps of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
@@ -803,7 +936,7 @@
 			)
 			(3
 				(HandsOn)
-				(= noWearCrown 1)
+				(= noWearCrown TRUE)
 				(ego observeControl: cWHITE setScript: 0)
 				(curRoom newRoom: 53)
 			)
@@ -845,7 +978,7 @@
 					(dwarfBouncer
 						posn: 140 221
 						setMotion: MoveTo 140 160 self
-						setAvoider: Avoider
+						;setAvoider: Avoider	;not enough heap for avoider
 					)
 				)
 			)

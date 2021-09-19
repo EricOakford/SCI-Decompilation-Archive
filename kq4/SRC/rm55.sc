@@ -17,7 +17,7 @@
 )
 
 (local
-	local0
+	onUpperLevel
 	dwarf1
 	local2
 	dwarf2
@@ -48,7 +48,7 @@
 		(Load VIEW 18)
 		(self setRegions: DWARF_MINE)
 		(super init:)
-		(= local0 0)
+		(= onUpperLevel FALSE)
 		(= isIndoors TRUE)
 		(if (or (== prevRoomNum 28) (== prevRoomNum 0))
 			(ego
@@ -166,7 +166,7 @@
 				setLoop: 0
 				setCycle: Forward
 				cycleSpeed: 1
-				ignoreActors: 1
+				ignoreActors: TRUE
 				init:
 			)
 			((= dwarf5 (Actor new:))
@@ -177,7 +177,7 @@
 				setLoop: 3
 				setCycle: Forward
 				cycleSpeed: 2
-				ignoreActors: 1
+				ignoreActors: TRUE
 				init:
 			)
 			((= dwarf1 (Actor new:))
@@ -186,25 +186,27 @@
 				posn: 60 107
 				setCycle: Walk
 				init:
-				ignoreActors: 1
+				ignoreActors: TRUE
 			)
 			(dwarf1 setScript: SendOut)
 		)
 	)
 	
 	(method (doit)
-		(if (== (ego script?) 0) (ego setPri: -1))
+		(if (== (ego script?) 0)
+			(ego setPri: -1)
+		)
 		(if
 			(and
-				(& (ego onControl: 0) $0040)
+				(& (ego onControl: 0) cBROWN)
 				(!= (ego script?) Tripped)
 			)
 			(curRoom newRoom: 28)
 		)
 		(if
 			(and
-				(& (ego onControl: TRUE) $1000)
-				(== local0 0)
+				(& (ego onControl: origin) cLRED)
+				(== onUpperLevel 0)
 				(== (ego script?) 0)
 			)
 			(ego setScript: WalkPath)
@@ -212,34 +214,34 @@
 		(if
 			(and
 				(or
-					(& (ego onControl:) $0002)
-					(& (ego onControl:) $1000)
+					(& (ego onControl:) cBLUE)
+					(& (ego onControl:) cLRED)
 				)
-				(== local0 0)
+				(== onUpperLevel 0)
 				(== (ego script?) 0)
 			)
 			(ego setScript: WalkPath)
 		)
 		(if
 			(and
-				(& (ego onControl: TRUE) $0004)
+				(& (ego onControl: origin) cGREEN)
 				(== dwarfHouseState houseCLEAN)
 				(!= (ego script?) Tripped)
 			)
 			(ego setScript: Tripped)
 		)
-		(if
-		(and (& (ego onControl:) $0010) (== (ego script?) 0))
+		(if (and (& (ego onControl:) cRED) (== (ego script?) 0))
 			(ego setPri: 12)
-			(if
-			(or (>= (ego heading?) 180) (== (ego heading?) 0))
-				(= local0 0)
+			(if (or (>= (ego heading?) 180) (== (ego heading?) 0))
+				(= onUpperLevel FALSE)
 				(ego illegalBits: cWHITE)
 			else
-				(= local0 1)
+				(= onUpperLevel TRUE)
 				(ego illegalBits: -28672)
 			)
-			(if (> (ego x?) 121) (ego setPri: -1))
+			(if (> (ego x?) 121)
+				(ego setPri: -1)
+			)
 		)
 		(super doit:)
 	)
@@ -253,12 +255,17 @@
 		(return
 			(cond 
 				((event claimed?) (return TRUE))
-				(
-				(and (== (event type?) saidEvent) (Said 'look>'))
+				((and (== (event type?) saidEvent) (Said 'look>'))
 					(cond 
-						((Said '/door') (Print 55 0))
-						((Said '<out[/(mine[<diamond]),(door[<mine])]') (Print 55 1))
-						((Said '[<around][/!*]') (Print 55 2))
+						((Said '/door')
+							(Print 55 0)
+						)
+						((Said '<out[/(mine[<diamond]),(door[<mine])]')
+							(Print 55 1)
+						)
+						((Said '[<around][/noword]')
+							(Print 55 2)
+						)
 						(
 							(or
 								(Said '<around')
@@ -282,18 +289,18 @@
 )
 
 (instance SendOut of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(HandsOff)
 				(Print 55 3)
 				(dwarf1 setPri: -1 setMotion: MoveTo 92 89)
 				(ego
 					illegalBits: 0
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 101 81 self
 				)
 			)
@@ -311,8 +318,6 @@
 )
 
 (instance Tripped of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 40])
 		(switch (= state newState)
 			(0
@@ -320,13 +325,12 @@
 				(ego
 					illegalBits: 0
 					setPri: (if (> (ego y?) 115) 11 else 10)
-					ignoreActors: 1
+					ignoreActors: TRUE
 					view: 44
 					setStep: 10 20
 					setLoop: 2
 					setCycle: Forward
-					setMotion:
-						JumpTo
+					setMotion: JumpTo
 						(if (< (ego x?) 100) 100 else (+ (ego x?) 20))
 						149
 						self
@@ -340,7 +344,7 @@
 				(ego view: 41 setLoop: 0 cel: 255 setCycle: EndLoop self)
 			)
 			(3
-				(= local0 1)
+				(= onUpperLevel TRUE)
 				(ego
 					view: 4
 					setStep: 4 2
@@ -359,38 +363,40 @@
 )
 
 (instance WalkPath of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			(
 				(and
 					(or
-						(& (ego onControl:) $0002)
-						(& (ego onControl:) $1000)
+						(& (ego onControl:) cBLUE)
+						(& (ego onControl:) cLRED)
 					)
-					(== local0 0)
+					(== onUpperLevel 0)
 				)
 				(ego setPri: 13)
-				(if (& (ego onControl: FALSE) $0008)
+				(if (& (ego onControl: 0) cCYAN)
 					(ego setScript: Tripped)
 				)
 			)
-			((not (& (ego onControl: TRUE) $0010))
+			((not (& (ego onControl: origin) cRED))
 				(ego setPri: -1)
-				(if (== (ego script?) WalkPath) (ego setScript: 0))
+				(if (== (ego script?) WalkPath)
+					(ego setScript: 0)
+				)
 			)
 		)
 	)
 )
 
 (instance Watch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (dwarf1 setCycle: EndLoop self))
-			(1 (= seconds 5))
+			(0
+				(dwarf1 setCycle: EndLoop self)
+			)
+			(1
+				(= seconds 5)
+			)
 			(2
 				(dwarf1 setCel: 0)
 				(= seconds 10)
@@ -401,13 +407,13 @@
 )
 
 (instance sparkle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(switch (Random 1 4)
-					(1 (sparkle1 setCycle: EndLoop self))
+					(1
+						(sparkle1 setCycle: EndLoop self)
+					)
 					(2
 						(sparkle2 setCycle: EndLoop self)
 					)

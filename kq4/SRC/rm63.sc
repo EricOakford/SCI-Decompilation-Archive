@@ -79,12 +79,14 @@
 			ignoreActors: 1
 			addToPic:
 		)
-		(if (== mansionPhase mansionBOY) (Load VIEW 209))
+		(if (== mansionPhase mansionBOY)
+			(Load VIEW 209)
+		)
 		(ego setScript: climbIn)
 		(if
 			(and
 				(< 0 mansionPhase)
-				(< mansionPhase 255)
+				(< mansionPhase mansionFINAL)
 				(== ghostRoomNum curRoomNum)
 			)
 			(NotifyScript HAUNTED_HOUSE -1)
@@ -93,8 +95,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (& (ego onControl: TRUE) $0004) (not (ego script?)))
+		(if (and (& (ego onControl: origin) cGREEN) (not (ego script?)))
 			(ego setScript: fallDead)
 		)
 	)
@@ -110,8 +111,12 @@
 				((event claimed?) (return TRUE))
 				((== (event type?) saidEvent)
 					(cond 
-						((Said '/box') (Print 63 0))
-						((Said 'get,open,look/birdcage,birdcage') (Print 63 1))
+						((Said '/box')
+							(Print 63 0)
+						)
+						((Said 'get,open,look/birdcage,birdcage')
+							(Print 63 1)
+						)
 						((Said 'play/boy,ghost')
 							(if (== curRoomNum ghostRoomNum)
 								(Print 63 2)
@@ -125,20 +130,34 @@
 									(if (ego inRect: 141 120 193 129)
 										(ego setMotion: 0)
 										(cond 
-											((not chestOpen) (if (== mansionPhase mansionBOY) (Print 63 4) else (Print 63 5)))
+											((not chestOpen)
+												(if (== mansionPhase mansionBOY)
+													(Print 63 4)
+												else
+													(Print 63 5)
+												)
+											)
 											((== ((inventory at: iSheetMusic) owner?) 63)
 												(Print 63 6)
 												(ego get: iSheetMusic)
 												(= gotItem TRUE)
 												(theGame changeScore: 2)
 											)
-											(else (Print 63 7))
+											(else
+												(Print 63 7)
+											)
 										)
 									else
 										(Print 800 1)
 									)
 								)
-								((Said '/chest') (if (== mansionPhase mansionBOY) (Print 63 4) else (Print 63 8)))
+								((Said '/chest')
+									(if (== mansionPhase mansionBOY)
+										(Print 63 4)
+									else
+										(Print 63 8)
+									)
+								)
 								((Said '<in/trapdoor')
 									(if (ego inRect: 135 138 182 148)
 										(Print 63 9)
@@ -146,12 +165,24 @@
 										(Print 63 10)
 									)
 								)
-								((or (Said '/trapdoor') (Said '<down')) (Print 63 11))
-								((Said '/ladder') (Print 63 12))
-								((Said '/window') (Print 63 13))
-								((Said '/junk') (Print 63 14))
-								((Said '/wall') (Print 63 15))
-								((Said '/dirt') (Print 63 16))
+								((or (Said '/trapdoor') (Said '<down'))
+									(Print 63 11)
+								)
+								((Said '/ladder')
+									(Print 63 12)
+								)
+								((Said '/window')
+									(Print 63 13)
+								)
+								((Said '/junk')
+									(Print 63 14)
+								)
+								((Said '/wall')
+									(Print 63 15)
+								)
+								((Said '/dirt')
+									(Print 63 16)
+								)
 								((Said '/ghost')
 									(if (== ghostRoomNum curRoomNum)
 										(Print 63 17)
@@ -159,7 +190,9 @@
 										(Print 63 18)
 									)
 								)
-								((Said '[<around][/room]') (Print 63 19))
+								((Said '[<around][/room]')
+									(Print 63 19)
+								)
 							)
 						)
 						((Said 'climb[/ladder,down]')
@@ -169,9 +202,15 @@
 								(Print 800 1)
 							)
 						)
-						((Said 'close/trapdoor') (Print 63 20))
-						((Said 'open/trapdoor') (Print 63 21))
-						((Said 'get/chest') (Print 63 22))
+						((Said 'close/trapdoor')
+							(Print 63 20)
+						)
+						((Said 'open/trapdoor')
+							(Print 63 21)
+						)
+						((Said 'get/chest')
+							(Print 63 22)
+						)
 						((Said 'get,move,detach/ghost')
 							(if (== ghostRoomNum curRoomNum)
 								(Print 63 23)
@@ -189,10 +228,20 @@
 						)
 						((Said 'open/chest')
 							(cond 
-								(chestOpen (Print 63 25))
-								((== mansionPhase mansionBOY) (Print 63 26))
-								((ego inRect: 141 120 193 129) (ego setMotion: 0) (chest setCycle: EndLoop) (= chestOpen TRUE))
-								(else (Print 800 1))
+								(chestOpen
+									(Print 63 25)
+								)
+								((== mansionPhase mansionBOY)
+									(Print 63 26)
+								)
+								((ego inRect: 141 120 193 129)
+									(ego setMotion: 0)
+									(chest setCycle: EndLoop)
+									(= chestOpen TRUE)
+								)
+								(else
+									(Print 800 1)
+								)
 							)
 						)
 					)
@@ -203,8 +252,6 @@
 )
 
 (instance climbDown of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -239,10 +286,8 @@
 )
 
 (instance climbIn of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)
@@ -280,13 +325,9 @@
 	)
 )
 
-(instance fallSound of Sound
-	(properties)
-)
+(instance fallSound of Sound)
 
 (instance fallDead of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -364,7 +405,9 @@
 				(ShakeScreen 10)
 				(= seconds 5)
 			)
-			(5 (= dead TRUE))
+			(5
+				(= dead TRUE)
+			)
 		)
 	)
 )

@@ -79,7 +79,7 @@
 		(if
 			(and
 				(< 0 mansionPhase)
-				(< mansionPhase 255)
+				(< mansionPhase mansionFINAL)
 				(== ghostRoomNum curRoomNum)
 			)
 			(NotifyScript HAUNTED_HOUSE -1)
@@ -88,10 +88,12 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl: FALSE) $0040) (curRoom newRoom: 68))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 68)
+		)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(return
 			(cond 
 				((event claimed?) (return TRUE))
@@ -99,16 +101,22 @@
 					(cond 
 						(
 							(or
-								(Said 'look[<around][/!*]')
+								(Said 'look[<around][/noword]')
 								(Said 'look[<around]/room')
 							)
 							(Print 60 0)
-							(if (== mansionPhase mansionLADY) (Print 60 1))
+							(if (== mansionPhase mansionLADY)
+								(Print 60 1)
+							)
 						)
 						((Said 'look>')
 							(cond 
-								((Said '<under/bed') (Print 60 2))
-								((Said '/bed') (Print 60 3))
+								((Said '<under/bed')
+									(Print 60 2)
+								)
+								((Said '/bed')
+									(Print 60 3)
+								)
 								((Said '/window')
 									(if (ego inRect: 137 114 191 124)
 										(Print 60 4)
@@ -116,23 +124,81 @@
 										(Print 800 1)
 									)
 								)
-								((Said '/fireplace') (Print 60 5))
-								((Said '/carpet,carpet') (Print 60 6))
-								((Said '<in/chest,dresser,drawer') (Print 60 7))
-								((Said '/chandelier') (Print 60 8))
-								((Said '/chest,dresser') (Print 60 9))
-								((Said '/wall') (Print 60 10))
-								((or (Said '/dirt') (Said '<down')) (Print 60 11))
-								((Said '/ceiling') (if trapdoorOpen (Print 60 12) else (Print 60 13)))
-								((Said '<in,up/trapdoor') (if trapdoorOpen (Print 60 14) else (Print 60 15)))
-								((Said '<up') (if trapdoorOpen (Print 60 16) else (SeeNothing)))
-								((Said '/ladder') (if trapdoorOpen (Print 60 17) else (Print 60 18)))
-								((Said '/trapdoor') (if trapdoorOpen (Print 60 19) else (Print 60 20)))
+								((Said '/fireplace')
+									(Print 60 5)
+								)
+								((Said '/carpet,carpet')
+									(Print 60 6)
+								)
+								((Said '<in/chest,dresser,drawer')
+									(Print 60 7)
+								)
+								((Said '/chandelier')
+									(Print 60 8)
+								)
+								((Said '/chest,dresser')
+									(Print 60 9)
+								)
+								((Said '/wall')
+									(Print 60 10)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 60 11)
+								)
+								((Said '/ceiling')
+									(if trapdoorOpen
+										(Print 60 12)
+									else
+										(Print 60 13)
+									)
+								)
+								((Said '<in,up/trapdoor')
+									(if trapdoorOpen
+										(Print 60 14)
+									else
+										(Print 60 15)
+									)
+								)
+								((Said '<up')
+									(if trapdoorOpen
+										(Print 60 16)
+									else
+										(SeeNothing)
+									)
+								)
+								((Said '/ladder')
+									(if trapdoorOpen
+										(Print 60 17)
+									else
+										(Print 60 18)
+									)
+								)
+								((Said '/trapdoor')
+									(if trapdoorOpen
+										(Print 60 19)
+									else
+										(Print 60 20)
+									)
+								)
 							)
 						)
-						((Said 'open/trapdoor') (if trapdoorOpen (Print 60 21) else (Print 60 22)))
-						((Said 'close/trapdoor') (if trapdoorOpen (Print 60 23) else (Print 60 24)))
-						((Said 'open/chest,dresser,drawer') (Print 60 7))
+						((Said 'open/trapdoor')
+							(if trapdoorOpen
+								(Print 60 21)
+							else
+								(Print 60 22)
+							)
+						)
+						((Said 'close/trapdoor')
+							(if trapdoorOpen
+								(Print 60 23)
+							else
+								(Print 60 24)
+							)
+						)
+						((Said 'open/chest,dresser,drawer')
+							(Print 60 7)
+						)
 						(
 							(or
 								(Said 'lay,sleep[<in,down,on][/bed]')
@@ -155,8 +221,12 @@
 								(Print 60 27)
 							)
 						)
-						((Said 'climb') (Print 60 28))
-						((Said 'move>') (Print 60 29))
+						((Said 'climb')
+							(Print 60 28)
+						)
+						((Said 'move>')
+							(Print 60 29)
+						)
 					)
 					(if
 						(and
@@ -165,35 +235,47 @@
 							(== (event claimed?) FALSE)
 						)
 						(cond 
-							((Said 'look/ghost,woman,woman,woman') (Print 60 1))
-							((Said 'look/chair') (Print 60 30))
+							((Said 'look/ghost,woman,woman,woman')
+								(Print 60 1)
+							)
+							((Said 'look/chair')
+								(Print 60 30)
+							)
 							(
 								(or
 									(Said 'converse/ghost,woman,woman,woman')
-									(Said 'converse[/!*]')
+									(Said 'converse[/noword]')
 								)
 								(Print 60 31)
 							)
-							((Said 'get/ghost,woman,woman,woman') (Print 60 32))
-							((Said 'get,capture/ghost,woman,woman,woman') (Print 60 33))
-							((Said 'kill/ghost,woman,woman,woman') (Print 60 34))
+							((Said 'get/ghost,woman,woman,woman')
+								(Print 60 32)
+							)
+							((Said 'get,capture/ghost,woman,woman,woman')
+								(Print 60 33)
+							)
+							((Said 'kill/ghost,woman,woman,woman')
+								(Print 60 34)
+							)
 							(
 								(or
 									(Said 'kiss/ghost,woman,woman,woman')
-									(Said 'kiss[/!*]')
+									(Said 'kiss[/noword]')
 								)
 								(Print 60 35)
 							)
-							((Said 'help/ghost,woman,woman,woman') (Print 60 36))
+							((Said 'help/ghost,woman,woman,woman')
+								(Print 60 36)
+							)
 							((Said 'deliver>')
 								(if (ego inRect: 60 118 105 152)
 									(cond 
 										(
 											(and
-												(= inventorySaidMe (inventory saidMe:))
-												(ego has: (inventory indexOf: inventorySaidMe))
+												(= index (inventory saidMe:))
+												(ego has: (inventory indexOf: index))
 											)
-											(if (== (inventory indexOf: inventorySaidMe) iLocket)
+											(if (== (inventory indexOf: index) iLocket)
 												(ego put: iLocket -1)
 												(theGame changeScore: 2)
 												(Print 60 37)
@@ -202,7 +284,9 @@
 												(Print 60 38)
 											)
 										)
-										(inventorySaidMe (event claimed: FALSE))
+										(index
+											(event claimed: FALSE)
+										)
 									)
 								else
 									(Print 800 1)
@@ -218,14 +302,12 @@
 )
 
 (instance climbLadder of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setMotion: MoveTo 161 140 self
 				)
@@ -256,10 +338,8 @@
 )
 
 (instance climbDown of Script
-	(properties)
-	
-	(method (init param1)
-		(super init: param1)
+	(method (init who)
+		(super init: who)
 	)
 	
 	(method (changeState newState)

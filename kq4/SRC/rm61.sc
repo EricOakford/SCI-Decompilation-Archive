@@ -14,7 +14,7 @@
 )
 
 (local
-	local0
+	saveBits
 )
 (instance fallSound of Sound
 	(properties
@@ -67,7 +67,7 @@
 		(super doit:)
 		(if
 			(and
-				(& (ego onControl: FALSE) $0040)
+				(& (ego onControl: 0) cBROWN)
 				(== (ego script?) 0)
 			)
 			(ego looper: 0)
@@ -75,7 +75,7 @@
 		)
 		(if
 			(and
-				(& (ego onControl: FALSE) $0020)
+				(& (ego onControl: 0) cMAGENTA)
 				(== (ego script?) 0)
 			)
 			(ego looper: 0)
@@ -83,15 +83,18 @@
 		)
 		(if
 			(and
-				(& (ego onControl: FALSE) $0004)
+				(& (ego onControl: 0) cGREEN)
 				(== (ego script?) 0)
 			)
 			(ego setScript: fallStairs)
 		)
 		(cond 
-			((& (ego onControl: FALSE) $0200) (ego looper: myLooper))
-			(
-			(and (> (ego y?) 130) (!= (ego script?) fallStairs)) (ego looper: 0))
+			((& (ego onControl: 0) cLBLUE)
+				(ego looper: myLooper)
+			)
+			((and (> (ego y?) 130) (!= (ego script?) fallStairs))
+				(ego looper: 0)
+			)
 		)
 	)
 	
@@ -99,15 +102,26 @@
 		(return
 			(cond 
 				((event claimed?) (return TRUE))
-				(
-				(and (== (event type?) saidEvent) (Said 'look>'))
+				((and (== (event type?) saidEvent) (Said 'look>'))
 					(cond 
-						((Said '/stair') (Print 61 0))
-						((Said '/dirt') (Print 61 1))
-						((Said '/wall') (Print 61 2))
-						((Said '<up[/!*]') (Print 61 3))
-						((Said '<down[/!*]') (Print 61 1))
-						((Said '[<around][/room,tower]') (Print 61 4))
+						((Said '/stair')
+							(Print 61 0)
+						)
+						((Said '/dirt')
+							(Print 61 1)
+						)
+						((Said '/wall')
+							(Print 61 2)
+						)
+						((Said '<up[/noword]')
+							(Print 61 3)
+						)
+						((Said '<down[/noword]')
+							(Print 61 1)
+						)
+						((Said '[<around][/room,tower]')
+							(Print 61 4)
+						)
 					)
 				)
 			)
@@ -116,45 +130,40 @@
 )
 
 (instance myLooper of Code
-	(properties)
-	
-	(method (doit param1)
-		(param1
+	(method (doit obj)
+		(obj
 			loop:
 				(cond 
 					(
 						(or
-							(>= (param1 heading?) 335)
-							(<= (param1 heading?) 25)
+							(>= (obj heading?) 335)
+							(<= (obj heading?) 25)
 						)
-						2
+						loopS
 					)
 					(
 						(and
-							(>= (param1 heading?) 155)
-							(<= (param1 heading?) 205)
+							(>= (obj heading?) 155)
+							(<= (obj heading?) 205)
 						)
-						3
+						loopN
 					)
 					(
 						(and
-							(> (param1 heading?) 25)
-							(< (param1 heading?) 155)
+							(> (obj heading?) 25)
+							(< (obj heading?) 155)
 						)
-						0
+						loopE
 					)
-					(else 1)
+					(else loopW)
 				)
 		)
 	)
 )
 
 (instance fallStairs of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (== (curRoom picture?) 61) (> (ego y?) 100))
+		(if (and (== (curRoom picture?) 61) (> (ego y?) 100))
 			(ego setPri: 14)
 		)
 		(super doit:)
@@ -163,10 +172,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local0 (Print 61 5 #at -1 10 #dispose))
+				(= saveBits (Print 61 5 #at -1 10 #dispose))
 				(User canControl: FALSE)
 				(fallSound play:)
-				(ego illegalBits: 0 ignoreActors: 1)
+				(ego illegalBits: 0 ignoreActors: TRUE)
 				(self cue:)
 			)
 			(1
@@ -211,7 +220,9 @@
 				(Animate (cast elements?) FALSE)
 				(= seconds 4)
 			)
-			(6 (= dead TRUE))
+			(6
+				(= dead TRUE)
+			)
 		)
 	)
 )

@@ -24,18 +24,18 @@
 	cauldron
 	firePit
 	brew
-	witchChaser
 	witch1
-	witch1Body
-	witch2body
 	witch2
+	witch2Body
+	witch3Body
+	witch3
 	local8
-	newProp_4
+	theEye
 	witchesEyeless
 	scarab
-	local12
-	local13
-	newProp
+	witchGrabEgo
+	ouchMsg
+	skullEyes
 )
 (instance Room57 of Room
 	(properties
@@ -59,7 +59,7 @@
 		(Load VIEW 66)
 		(super init:)
 		(= isIndoors TRUE)
-		(= noWearCrown 1)
+		(= noWearCrown TRUE)
 		(self setScript: rm57Script)
 		(ego
 			posn: 160 184
@@ -75,13 +75,13 @@
 				loop: 3
 				cel: 0
 				illegalBits: 0
-				ignoreActors: 1
+				ignoreActors: TRUE
 				posn: scarabX scarabY
 				setScript: scarabToss
 				init:
 			)
 		)
-		((= newProp (Prop new:))
+		((= skullEyes (Prop new:))
 			isExtra: TRUE
 			view: 631
 			loop: 1
@@ -124,7 +124,7 @@
 		)
 		(if (> gamePhase getTheHen)
 			(witchMusic loop: 1 play:)
-			((= newProp_4 (Prop new:))
+			((= theEye (Prop new:))
 				view: 631
 				setLoop: 2
 				cycleSpeed: 2
@@ -134,7 +134,7 @@
 				stopUpd:
 				hide:
 			)
-			((= witch1 (Prop new:))
+			((= witch2 (Prop new:))
 				view: 186
 				loop: 0
 				cel: 5
@@ -143,7 +143,7 @@
 				init:
 				stopUpd:
 			)
-			((= witch1Body (Prop new:))
+			((= witch2Body (Prop new:))
 				view: 186
 				setLoop: 3
 				cel: 0
@@ -151,7 +151,7 @@
 				init:
 				stopUpd:
 			)
-			((= witch2 (Prop new:))
+			((= witch3 (Prop new:))
 				view: 184
 				loop: 0
 				cel: 5
@@ -159,7 +159,7 @@
 				init:
 				stopUpd:
 			)
-			((= witch2body (Prop new:))
+			((= witch3Body (Prop new:))
 				view: 184
 				setLoop: 2
 				cel: 0
@@ -169,20 +169,20 @@
 			)
 			(blockWitch2
 				top: 115
-				bottom: (witch1 brBottom?)
-				left: (- (witch1 brLeft?) 2)
-				right: (+ (witch1 brBottom?) 2)
-				init:
-			)
-			(blockWitch3
-				top: 115
 				bottom: (witch2 brBottom?)
 				left: (- (witch2 brLeft?) 2)
 				right: (+ (witch2 brBottom?) 2)
 				init:
 			)
+			(blockWitch3
+				top: 115
+				bottom: (witch3 brBottom?)
+				left: (- (witch3 brLeft?) 2)
+				right: (+ (witch3 brBottom?) 2)
+				init:
+			)
 			(ego observeBlocks: blockWitch2 blockWitch3)
-			((= witchChaser (Actor new:))
+			((= witch1 (Actor new:))
 				view: 185
 				posn: 83 126
 				illegalBits: cWHITE
@@ -191,7 +191,7 @@
 			)
 			(if (ego has: iGlassEye)
 				(= witchesEyeless TRUE)
-				(if (and (not (ego has: 7)) (not witchesTossedScarab))
+				(if (and (not (ego has: iScarab)) (not witchesTossedScarab))
 					(Load SCRIPT JUMP)
 					((= scarab (Actor new:))
 						view: 631
@@ -199,7 +199,7 @@
 						cel: 0
 						illegalBits: 0
 						ignoreActors: TRUE
-						posn: (witchChaser x?) (- (witchChaser y?) 30)
+						posn: (witch1 x?) (- (witch1 y?) 30)
 						setScript: scarabToss
 						init:
 					)
@@ -207,10 +207,10 @@
 				else
 					(rm57Script changeState: 3)
 				)
-				(witch2 setScript: witchMoan)
+				(witch3 setScript: witchMoan)
 			else
 				(= witchesEyeless FALSE)
-				(witch1 setScript: witchEye)
+				(witch2 setScript: witchEye)
 			)
 		)
 	)
@@ -219,59 +219,58 @@
 		(cond 
 			(
 				(and
-					(& (ego onControl:) $0004)
-					(not local12)
-					(not local13)
+					(& (ego onControl:) cGREEN)
+					(not witchGrabEgo)
+					(not ouchMsg)
 				)
 				(Print 57 0 #time 3)
 				(ouchness cue:)
 			)
 			((> gamePhase getTheHen)
 				(cond 
-					(
-					(and (ego has: iGlassEye) (!= (witch2 script?) witchMoan))
-						(witchChaser setScript: 0 setMotion: 0)
+					((and (ego has: iGlassEye) (!= (witch3 script?) witchMoan))
+						(witch1 setScript: 0 setMotion: 0)
 						(witchEye changeState: 20)
 					)
 					(
 						(and
-							(!= (witchChaser script?) witchChase)
-							(< (ego distanceTo: witchChaser) 30)
+							(!= (witch1 script?) witchChase)
+							(< (ego distanceTo: witch1) 30)
 							(not (ego has: 6))
-							(!= (witch2 script?) witchMoan)
+							(!= (witch3 script?) witchMoan)
 						)
-						(witchChaser setScript: witchChase)
+						(witch1 setScript: witchChase)
 					)
 					(
 						(and
 							(ego inRect: 110 123 119 133)
 							(not (ego has: iGlassEye))
-							(not local12)
-							(== (witchChaser script?) witchChase)
+							(not witchGrabEgo)
+							(== (witch1 script?) witchChase)
 						)
 						(Print 57 1 #time 2)
 						(Print 57 2 #time 2)
-						(witch1 hide:)
-						(witch1Body hide: ignoreActors:)
+						(witch2 hide:)
+						(witch2Body hide: ignoreActors:)
 						(ego
 							setMotion: 0
 							view: 186
 							loop: 2
-							posn: (witch1Body x?) (witch1Body y?)
+							posn: (witch2Body x?) (witch2Body y?)
 							setLoop: 2
 							setCycle: Forward
 						)
-						(= local12 1)
+						(= witchGrabEgo TRUE)
 						(witchMusic number: 13 loop: 1 play:)
-						(User canControl: 0 canInput: 0)
+						(User canControl: FALSE canInput: FALSE)
 						(witchEye changeState: 7)
 					)
 					(
 						(and
 							(ego inRect: 131 122 138 131)
 							(not (ego has: iGlassEye))
-							(not local12)
-							(== (witchChaser script?) witchChase)
+							(not witchGrabEgo)
+							(== (witch1 script?) witchChase)
 						)
 						(Print 57 1 #time 2)
 						(Print 57 2 #time 2)
@@ -280,23 +279,23 @@
 							setMotion: 0
 							view: 184
 							loop: 1
-							posn: (witch2body x?) (witch2body y?)
+							posn: (witch3Body x?) (witch3Body y?)
 							setLoop: 1
 							setCycle: Forward
 						)
-						(witch2 hide:)
-						(witch2body hide: ignoreActors:)
-						(= local12 1)
+						(witch3 hide:)
+						(witch3Body hide: ignoreActors:)
+						(= witchGrabEgo TRUE)
 						(witchMusic number: 13 loop: 1 play:)
 						(witchEye changeState: 4)
 					)
 					(
 						(and
-							(!= (witchChaser script?) witchChase)
-							(!= (witch2 script?) witchMoan)
+							(!= (witch1 script?) witchChase)
+							(!= (witch3 script?) witchMoan)
 							(ego inRect: 110 123 138 133)
 						)
-						(witchChaser setScript: witchChase)
+						(witch1 setScript: witchChase)
 					)
 				)
 			)
@@ -307,14 +306,13 @@
 	(method (dispose)
 		(sounds eachElementDo: #stop 0)
 		(timers eachElementDo: #dispose 84)
-		(= noWearCrown 0)
+		(= noWearCrown FALSE)
 		(DisposeScript JUMP)
 		(super dispose:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+	(method (handleEvent event &tmp index)
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (> gamePhase getTheHen)
@@ -330,28 +328,50 @@
 						)
 						((Said '/hag')
 							(cond 
-								((not (ego has: iGlassEye)) (Print 57 4))
-								(witchesEyeless (Print 57 5))
-								(((inventory at: iGlassEye) ownedBy: -1) (Print 57 6))
+								((not (ego has: iGlassEye))
+									(Print 57 4)
+								)
+								(witchesEyeless
+									(Print 57 5)
+								)
+								(((inventory at: iGlassEye) ownedBy: -1)
+									(Print 57 6)
+								)
 								(else (Print 57 5))
 							)
 						)
-						(else (event claimed: FALSE))
+						(else
+							(event claimed: FALSE)
+						)
 					)
 				)
 				((Said 'converse')
 					(cond 
-						(((inventory at: iGlassEye) ownedBy: 57) (answer1 cue:))
-						((ego has: iGlassEye) (answer2 cue:))
-						(else (answer3 cue:))
+						(((inventory at: iGlassEye) ownedBy: 57)
+							(answer1 cue:)
+						)
+						((ego has: iGlassEye)
+							(answer2 cue:)
+						)
+						(else
+							(answer3 cue:)
+						)
 					)
 				)
 				((Said 'rob,get/charm')
 					(cond 
-						((ego has: iScarab) (Print 800 0))
-						((not witchesTossedScarab) (Print 57 7))
-						((> (ego distanceTo: scarab) 20) (Print 800 1))
-						(else (ego setScript: pickUp))
+						((ego has: iScarab)
+							(Print 800 0)
+						)
+						((not witchesTossedScarab)
+							(Print 57 7)
+						)
+						((> (ego distanceTo: scarab) 20)
+							(Print 800 1)
+						)
+						(else
+							(ego setScript: pickUp)
+						)
 					)
 				)
 				((Said 'get,rob/eye')
@@ -376,7 +396,7 @@
 					(if (ego has: iGlassEye)
 						(if (not witchesEyeless)
 							(Print 57 10)
-							(ego put: 6 -1)
+							(ego put: iGlassEye -1)
 						else
 							(theGame changeScore: 3)
 							(ego put: iGlassEye -1)
@@ -389,15 +409,21 @@
 				)
 				((Said '/hag>')
 					(cond 
-						((Said 'kill') (Print 57 12))
-						((Said 'get') (Print 57 13))
-						((Said 'kiss') (Print 57 14))
+						((Said 'kill')
+							(Print 57 12)
+						)
+						((Said 'get')
+							(Print 57 13)
+						)
+						((Said 'kiss')
+							(Print 57 14)
+						)
 						(
 							(and
 								(Said 'deliver>')
-								(= inventorySaidMe (inventory saidMe:))
+								(= index (inventory saidMe:))
 							)
-							(if (ego has: (inventory indexOf: inventorySaidMe))
+							(if (ego has: (inventory indexOf: index))
 								(Print 57 15)
 							else
 								(DontHave)
@@ -410,12 +436,13 @@
 		(cond 
 			((Said 'look>')
 				(cond 
-					((Said '/bottle') (Print 57 16))
-					(
-					(or (Said '[<around,in][/room,cave]') (Said '[/!*]'))
+					((Said '/bottle')
+						(Print 57 16)
+					)
+					((or (Said '[<around,in][/room,cave]') (Said '[/noword]'))
 						(Print
 							(Format @str 57 17
-								(if (> gamePhase 2)
+								(if (> gamePhase getTheHen)
 									{Within it, reside three one-eyed old witches.}
 								else
 									{_}
@@ -428,127 +455,163 @@
 							)
 						)
 					)
-					((Said '/caldron') (Print 57 18))
-					((Said '/brew') (Print 57 19))
-					((Said '/fire') (Print 57 20))
-					((Said '<out/cave') (Print 57 21))
-					((or (Said '/dirt') (Said '<down')) (if witchesTossedScarab (Print 57 22) else (Print 57 23)))
-					((Said '/wall') (Print 57 24))
-					((Said '/shelf') (Print 57 25))
-					((Said '/skull') (Print 57 26))
+					((Said '/caldron')
+						(Print 57 18)
+					)
+					((Said '/brew')
+						(Print 57 19)
+					)
+					((Said '/fire')
+						(Print 57 20)
+					)
+					((Said '<out/cave')
+						(Print 57 21)
+					)
+					((or (Said '/dirt') (Said '<down'))
+						(if witchesTossedScarab
+							(Print 57 22)
+						else
+							(Print 57 23)
+						)
+					)
+					((Said '/wall')
+						(Print 57 24)
+					)
+					((Said '/shelf')
+						(Print 57 25)
+					)
+					((Said '/skull')
+						(Print 57 26)
+					)
 				)
 			)
 			((Said 'get,rob>')
 				(cond 
-					((Said '/bottle') (Print 57 27))
-					((Said '/skull') (Print 57 28))
-					((Said '/brew') (Print 57 29))
+					((Said '/bottle')
+						(Print 57 27)
+					)
+					((Said '/skull')
+						(Print 57 28)
+					)
+					((Said '/brew')
+						(Print 57 29)
+					)
 				)
 			)
-			((Said 'eat,drink/brew') (Print 57 30))
-			((Said 'get/caldron') (Print 57 31))
+			((Said 'eat,drink/brew')
+				(Print 57 30)
+			)
+			((Said 'get/caldron')
+				(Print 57 31)
+			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(ego loop: 2)
 		(Animate (cast elements?) FALSE)
 		(= noWearCrown FALSE)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
-(instance witchEye of Script
-	(properties)
-	
+(instance witchEye of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(witchChaser view: 185 loop: 0 setCycle: BegLoop self)
+				(witch1 view: 185 loop: 0 setCycle: BegLoop self)
 			)
 			(1
-				(newProp_4
-					x: (+ (witchChaser x?) 1)
-					y: (- (witchChaser y?) 43)
+				(theEye
+					x: (+ (witch1 x?) 1)
+					y: (- (witch1 y?) 43)
 					show:
 				)
 				(= seconds 4)
 			)
 			(2
-				(newProp_4 hide:)
-				(witchChaser loop: 1 setCycle: EndLoop self)
+				(theEye hide:)
+				(witch1 loop: 1 setCycle: EndLoop self)
 			)
 			(3
 				(if (not ((inventory at: iGlassEye) ownedBy: -1))
-					(witchChaser setScript: witchChase)
+					(witch1 setScript: witchChase)
 				)
-				(witch1 loop: 0 setCycle: CycleTo 4 1 self)
+				(witch2 loop: 0 setCycle: CycleTo 4 1 self)
 			)
 			(4
-				(witch2 stopUpd:)
-				(newProp_4
-					x: (- (witch1 x?) 1)
-					y: (- (witch1 y?) 12)
-					show:
-				)
-				(if (not local12) (= seconds 5))
-			)
-			(5
-				(newProp_4 hide:)
-				(witch1 setLoop: 0 setCycle: BegLoop self)
-			)
-			(6
-				(witch1 setCycle: CycleTo 5 -1)
-				(witch2 setCycle: CycleTo 4 1 self)
-			)
-			(7
-				(witch1 stopUpd:)
-				(newProp_4
-					x: (+ (witch2 x?) 0)
+				(witch3 stopUpd:)
+				(theEye
+					x: (- (witch2 x?) 1)
 					y: (- (witch2 y?) 12)
 					show:
 				)
-				(if (not local12) (= seconds 5))
+				(if (not witchGrabEgo)
+					(= seconds 5)
+				)
 			)
-			(8
-				(newProp_4 hide:)
-				(witch2 setCycle: BegLoop self)
+			(5
+				(theEye hide:)
+				(witch2 setLoop: 0 setCycle: BegLoop self)
 			)
-			(9
+			(6
 				(witch2 setCycle: CycleTo 5 -1)
-				(if (== (witchChaser script?) witchChase) (= state 3))
-				(witch1 setCycle: CycleTo 4 1 self)
+				(witch3 setCycle: CycleTo 4 1 self)
 			)
-			(10
+			(7
 				(witch2 stopUpd:)
-				(newProp_4
-					x: (- (witch1 x?) 1)
-					y: (- (witch1 y?) 40)
+				(theEye
+					x: (+ (witch3 x?) 0)
+					y: (- (witch3 y?) 12)
 					show:
 				)
-				(if (not local12) (= seconds 5))
+				(if (not witchGrabEgo)
+					(= seconds 5)
+				)
+			)
+			(8
+				(theEye hide:)
+				(witch3 setCycle: BegLoop self)
+			)
+			(9
+				(witch3 setCycle: CycleTo 5 -1)
+				(if (== (witch1 script?) witchChase)
+					(= state 3)
+				)
+				(witch2 setCycle: CycleTo 4 1 self)
+			)
+			(10
+				(witch3 stopUpd:)
+				(theEye
+					x: (- (witch2 x?) 1)
+					y: (- (witch2 y?) 40)
+					show:
+				)
+				(if (not witchGrabEgo)
+					(= seconds 5)
+				)
 			)
 			(11
-				(newProp_4 hide:)
-				(witch1 loop: 0 cel: 255 setCycle: EndLoop self)
+				(theEye hide:)
+				(witch2 loop: 0 cel: 255 setCycle: EndLoop self)
 			)
-			(12 (self changeState: 0))
+			(12
+				(self changeState: 0)
+			)
 			(20
-				(newProp_4 hide:)
+				(theEye hide:)
 				(client setScript: 0)
-				(witch2 setScript: witchMoan)
+				(witch3 setScript: witchMoan)
 			)
 		)
 	)
 )
 
-(instance witchChase of Script
-	(properties)
-	
+(instance witchChase of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(witchChaser
+				(witch1
 					view: 180
 					moveSpeed: 2
 					setAvoider: Avoider
@@ -560,17 +623,17 @@
 			(1
 				(HandsOff)
 				(ego ignoreActors: hide:)
-				(witch1 show:)
-				(witch1Body show:)
 				(witch2 show:)
-				(witch2body show:)
-				(witchChaser view: 65 moveSpeed: 0)
+				(witch2Body show:)
+				(witch3 show:)
+				(witch3Body show:)
+				(witch1 view: 65 moveSpeed: 0)
 				(self cue:)
 			)
 			(2
 				(witchMusic number: 13 loop: 1 play:)
-				(= local12 1)
-				(witchChaser
+				(= witchGrabEgo TRUE)
+				(witch1
 					view: 66
 					setLoop:
 						(if
@@ -579,8 +642,8 @@
 								(GetAngle
 									(ego x?)
 									(ego y?)
-									(witchChaser x?)
-									(witchChaser y?)
+									(witch1 x?)
+									(witch1 y?)
 								)
 							)
 							1
@@ -588,37 +651,37 @@
 							0
 						)
 					setAvoider: Avoider
-					setMotion: MoveTo 157 (if (< (witchChaser y?) 154) 143 else 164) self
+					setMotion: MoveTo 157 (if (< (witch1 y?) 154) 143 else 164) self
 				)
 			)
 			(3
 				(Print 57 32 #at -1 20)
-				(witchChaser
+				(witch1
 					view: 66
-					setLoop: (+ (witchChaser loop?) 2)
+					setLoop: (+ (witch1 loop?) 2)
 					cel: 255
 					setCycle: EndLoop self
 				)
 			)
 			(4
-				(witchChaser
+				(witch1
 					setLoop: -1
 					illegalBits: cWHITE
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setAvoider: Avoider
 					view: 180
-					setMotion: MoveTo 95 (witchChaser y?)
+					setMotion: MoveTo 95 (witch1 y?)
 				)
-				(witch1 stopUpd:)
 				(witch2 stopUpd:)
+				(witch3 stopUpd:)
 				(witchMusic stop:)
 				(ego
 					view: 64
 					posn: (brew x?) (+ (brew y?) 1)
 					cel: 255
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setPri: 12
-					setLoop: (witchChaser loop?)
+					setLoop: (witch1 loop?)
 					show:
 					setMotion: 0
 					setCycle: EndLoop self
@@ -631,8 +694,12 @@
 			(6
 				(ego cel: 255 setLoop: 3 setCycle: EndLoop self)
 			)
-			(7 (= seconds 6))
-			(8 (= dead TRUE))
+			(7
+				(= seconds 6)
+			)
+			(8
+				(= dead TRUE)
+			)
 		)
 	)
 )
@@ -643,10 +710,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(witchChaser setScript: 0)
-				(newProp_4 hide:)
-				(witch2 hide: ignoreActors:)
-				(witch2body
+				(witch1 setScript: 0)
+				(theEye hide:)
+				(witch3 hide: ignoreActors:)
+				(witch3Body
 					view: 183
 					setLoop: 2
 					cel: 255
@@ -655,9 +722,9 @@
 				)
 			)
 			(1
-				(witch2body stopUpd:)
-				(witch1 hide: ignoreActors:)
-				(witch1Body
+				(witch3Body stopUpd:)
+				(witch2 hide: ignoreActors:)
+				(witch2Body
 					view: 183
 					setLoop: 1
 					cel: 255
@@ -666,55 +733,58 @@
 				)
 			)
 			(2
-				(witch1Body stopUpd:)
-				(witchChaser ignoreActors: 0 setMotion: MoveTo 125 133 self)
+				(witch2Body stopUpd:)
+				(witch1 ignoreActors: 0 setMotion: MoveTo 125 133 self)
 			)
 			(3
 				(if (not ((inventory at: iGlassEye) ownedBy: -1))
 					(Print 57 33)
 				)
-				(witchChaser view: 183 setLoop: 0 cel: 255 setCycle: EndLoop)
+				(witch1 view: 183 setLoop: 0 cel: 255 setCycle: EndLoop)
 			)
 			(4
-				(witch2body setCycle: BegLoop)
-				(witchChaser setCycle: BegLoop)
-				(witch1Body setCycle: BegLoop)
+				(witch3Body setCycle: BegLoop)
+				(witch1 setCycle: BegLoop)
+				(witch2Body setCycle: BegLoop)
 				((ScriptID 0 4) setReal: self 4)
 			)
 			(5
-				(witchChaser
+				(witch1
 					view: 180
 					setLoop: -1
 					setMotion: MoveTo 88 129 self
 				)
 			)
 			(6
-				(witch1Body view: 186 setLoop: 3 cel: 0)
-				(witch2body view: 184 setLoop: 2 cel: 0)
-				(witch1 show:)
+				(witch2Body view: 186 setLoop: 3 cel: 0)
+				(witch3Body view: 184 setLoop: 2 cel: 0)
 				(witch2 show:)
+				(witch3 show:)
 				(client setScript: 0)
-				(witch1 setScript: witchEye)
+				(witch2 setScript: witchEye)
 			)
 		)
 	)
 )
 
 (instance answer1 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Print 57 34))
-			(1 (Print 57 35))
-			(2 (Print 57 36) (= state 1))
+			(0
+				(Print 57 34)
+			)
+			(1
+				(Print 57 35)
+			)
+			(2
+				(Print 57 36)
+				(= state 1)
+			)
 		)
 	)
 )
 
 (instance answer2 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -725,10 +795,18 @@
 			(1
 				(if (not ((inventory at: iGlassEye) ownedBy: -1))
 					(switch (Random 1 4)
-						(1 (Print 57 38))
-						(2 (Print 57 39))
-						(3 (Print 57 40))
-						(4 (Print 57 37))
+						(1
+							(Print 57 38)
+						)
+						(2
+							(Print 57 39)
+						)
+						(3
+							(Print 57 40)
+						)
+						(4
+							(Print 57 37)
+						)
 					)
 					(= state 0)
 				)
@@ -738,16 +816,22 @@
 )
 
 (instance answer3 of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Print 57 41))
+			(0
+				(Print 57 41)
+			)
 			(1
 				(switch (Random 1 3)
-					(1 (Print 57 42))
-					(2 (Print 57 43))
-					(3 (Print 57 41))
+					(1
+						(Print 57 42)
+					)
+					(2
+						(Print 57 43)
+					)
+					(3
+						(Print 57 41)
+					)
 				)
 				(= state 0)
 			)
@@ -756,8 +840,6 @@
 )
 
 (instance scarabToss of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -772,15 +854,19 @@
 			(1
 				(= scarabX (scarab x?))
 				(= scarabY (scarab y?))
-				(= witchesTossedScarab 1)
+				(= witchesTossedScarab TRUE)
 				(scarab setPri: -1)
 				(= seconds 2)
 			)
 			(2
-				(if (cast contains: scarab) (scarab setCycle: EndLoop self))
+				(if (cast contains: scarab)
+					(scarab setCycle: EndLoop self)
+				)
 			)
 			(3
-				(if (cast contains: scarab) (scarab setCycle: BegLoop self))
+				(if (cast contains: scarab)
+					(scarab setCycle: BegLoop self)
+				)
 			)
 			(4
 				(scarab stopUpd:)
@@ -792,15 +878,16 @@
 )
 
 (instance ouchness of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local13 1)
+				(= ouchMsg TRUE)
 				((ScriptID 0 5) setReal: self 3)
 			)
-			(1 (= state -1) (= local13 0))
+			(1
+				(= state -1)
+				(= ouchMsg FALSE)
+			)
 		)
 	)
 )
@@ -811,20 +898,16 @@
 	)
 )
 
-(instance blockWitch2 of Block
-	(properties)
-)
+(instance blockWitch2 of Block)
 
-(instance blockWitch3 of Block
-	(properties)
-)
+(instance blockWitch3 of Block)
 
 (instance pickUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (self cue:))
+			(0
+				(self cue:)
+			)
 			(1
 				(HandsOff)
 				(Face ego scarab)
@@ -838,7 +921,9 @@
 				(theGame changeScore: 2)
 				(= seconds 2)
 			)
-			(3 (ego setCycle: BegLoop self))
+			(3
+				(ego setCycle: BegLoop self)
+			)
 			(4
 				(ego view: 2 setCycle: Walk)
 				(HandsOn)
@@ -848,24 +933,29 @@
 )
 
 (instance rm57Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (HandsOff) (= seconds 3))
+			(1
+				(HandsOff)
+				(= seconds 3)
+			)
 			(2
 				(Print 57 44 #at -1 20)
 				(= state 4)
 				(= seconds 3)
 				(HandsOn)
 			)
-			(3 (= seconds 3))
+			(3
+				(= seconds 3)
+			)
 			(4
 				(if (not ((inventory at: iGlassEye) ownedBy: -1))
 					(Print 57 45)
 				)
 			)
-			(5 (Print 57 46))
+			(5
+				(Print 57 46)
+			)
 		)
 	)
 )

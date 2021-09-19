@@ -19,9 +19,7 @@
 (local
 	crib
 )
-(instance babySound of Sound
-	(properties)
-)
+(instance babySound of Sound)
 
 (instance Room59 of Room
 	(properties
@@ -80,11 +78,13 @@
 	)
 	
 	(method (doit)
-		(if (& (ego onControl: FALSE) $0040) (curRoom newRoom: 62))
+		(if (& (ego onControl: 0) cBROWN)
+			(curRoom newRoom: 62)
+		)
 		(super doit:)
 	)
 	
-	(method (handleEvent event &tmp inventorySaidMe)
+	(method (handleEvent event &tmp index)
 		(return
 			(if (event claimed?)
 				(return TRUE)
@@ -93,10 +93,18 @@
 					(cond 
 						((Said 'look>')
 							(cond 
-								((Said '[<around][/room,bedroom,nursery]') (Print 59 0))
-								((Said '<in/chest,dresser,drawer') (Print 59 1))
-								((Said '/chest,dresser') (Print 59 2))
-								((Said '/chair,rocker') (Print 59 3))
+								((Said '[<around][/room,bedroom,nursery]')
+									(Print 59 0)
+								)
+								((Said '<in/chest,dresser,drawer')
+									(Print 59 1)
+								)
+								((Said '/chest,dresser')
+									(Print 59 2)
+								)
+								((Said '/chair,rocker')
+									(Print 59 3)
+								)
 								((Said '/window')
 									(if (ego inRect: 76 125 109 147)
 										(Print 59 4)
@@ -104,33 +112,65 @@
 										(Print 800 1)
 									)
 								)
-								(
-								(or (Said '<in/cradle') (Said 'ghost[<ghost]'))
+								((or (Said '<in/cradle') (Said 'ghost[<ghost]'))
 									(if (< (ego distanceTo: crib) 15)
-										(if (!= mansionPhase mansionBABY) (Print 59 5) else (Print 59 6))
+										(if (!= mansionPhase mansionBABY)
+											(Print 59 5)
+										else
+											(Print 59 6)
+										)
 									else
 										(Print 800 1)
 									)
 								)
-								((Said '/cradle') (if (!= mansionPhase mansionBABY) (Print 59 7) else (Print 59 8)))
-								((Said '/wall') (Print 59 9))
-								((or (Said '/dirt') (Said '<down')) (Print 59 10))
-								((Said '/horse,toy') (Print 59 11))
-								((Said '/carpet') (Print 59 12))
-								(else (event claimed: FALSE))
+								((Said '/cradle')
+									(if (!= mansionPhase mansionBABY)
+										(Print 59 7)
+									else
+										(Print 59 8)
+									)
+								)
+								((Said '/wall')
+									(Print 59 9)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 59 10)
+								)
+								((Said '/horse,toy')
+									(Print 59 11)
+								)
+								((Said '/carpet')
+									(Print 59 12)
+								)
+								(else
+									(event claimed: FALSE)
+								)
 							)
 						)
-						((Said 'open/chest,dresser,drawer') (Print 59 1))
-						((Said 'sit') (Print 59 13))
-						((Said 'boulder[/cradle]')
+						((Said 'open/chest,dresser,drawer')
+							(Print 59 1)
+						)
+						((Said 'sit')
+							(Print 59 13)
+						)
+						((Said 'rock[/cradle]')
 							(cond 
-								((== mansionPhase mansionBABY) (Print 59 14))
-								((< (ego distanceTo: crib) 10) (rockAgain changeState: 0) (event claimed: TRUE))
+								((== mansionPhase mansionBABY)
+									(Print 59 14)
+								)
+								((< (ego distanceTo: crib) 10)
+									(rockAgain changeState: 0)
+									(event claimed: TRUE)
+								)
 								(else (Print 800 1))
 							)
 						)
-						((Said '(get<on),mount,play/horse,toy') (Print 59 15))
-						((Said 'get/horse,toy') (Print 59 16))
+						((Said '(get<on),mount,play/horse,toy')
+							(Print 59 15)
+						)
+						((Said 'get/horse,toy')
+							(Print 59 16)
+						)
 					)
 				)
 				(if
@@ -145,38 +185,58 @@
 					(
 						(or
 							(Said 'look<in/cradle')
-							(Said
-								'look,(feel[<in,around]),find/cradle,(ghost[<ghost])'
-							)
+							(Said 'look,(feel[<in,around]),find/cradle,(ghost[<ghost])')
 						)
 						(if (< (ego distanceTo: crib) 15)
-							(if (!= mansionPhase mansionBABY) (Print 59 5) else (Print 59 6))
+							(if (!= mansionPhase mansionBABY)
+								(Print 59 5)
+							else
+								(Print 59 6)
+							)
 						else
 							(Print 800 1)
 						)
 					)
-					((Said 'converse,calm,calm') (Print 59 17))
-					((Said 'kiss') (Print 59 18))
+					((Said 'converse,calm,calm')
+						(Print 59 17)
+					)
+					((Said 'kiss')
+						(Print 59 18)
+					)
 					((Said '/ghost[<ghost]>')
 						(cond 
-							((Said 'get,hold,capture,(get<up)') (Print 59 19))
-							((Said 'kill') (Print 59 20))
-							((Said 'help,,') (Print 59 21))
-							((Said 'feed') (Print 59 22))
+							((Said 'get,hold,capture,(get<up)')
+								(Print 59 19)
+							)
+							((Said 'kill')
+								(Print 59 20)
+							)
+							((Said 'help,save')	;EO: fixed said spec
+								(Print 59 21)
+							)
+							((Said 'feed')
+								(Print 59 22)
+							)
 						)
 					)
-					((Said 'hum[/ghost,lullaby]') (Print 59 23))
+					((Said 'hum[/ghost,lullaby]')
+						(Print 59 23)
+					)
 					((Said 'deliver,throw,place,drop>')
 						(cond 
 							(
 								(or
-									(not (= inventorySaidMe (inventory saidMe:)))
-									(not (ego has: (inventory indexOf: inventorySaidMe)))
+									(not (= index (inventory saidMe:)))
+									(not (ego has: (inventory indexOf: index)))
 								)
 								(event claimed: FALSE)
 							)
-							((>= (ego distanceTo: crib) 17) (NotClose))
-							((!= (inventory indexOf: inventorySaidMe) iRattle) (Print 59 24))
+							((>= (ego distanceTo: crib) 17)
+								(NotClose)
+							)
+							((!= (inventory indexOf: index) iRattle)
+								(Print 59 24)
+							)
 							(else
 								(Print 59 25)
 								(ego put: iRattle 59)
@@ -192,8 +252,6 @@
 )
 
 (instance rockMeBaby of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -212,8 +270,6 @@
 )
 
 (instance rockAgain of Script
-	(properties)
-	
 	(method (init param1)
 		(super init: param1)
 	)
@@ -226,19 +282,23 @@
 			)
 			(1
 				(rockMeBaby cue:)
-				(if (== mansionPhase mansionBABY) (self changeState: 0))
+				(if (== mansionPhase mansionBABY)
+					(self changeState: 0)
+				)
 			)
 		)
 	)
 )
 
 (instance rm59Script of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 102])
 		(switch (= state newState)
-			(1 (= seconds 5))
-			(2 (Print 59 26))
+			(1
+				(= seconds 5)
+			)
+			(2
+				(Print 59 26)
+			)
 		)
 	)
 )

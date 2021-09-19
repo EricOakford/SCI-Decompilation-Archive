@@ -69,7 +69,7 @@
 		)
 		(if (or (== prevRoomNum 67) (== prevRoomNum 0))
 			(ego
-				illegalBits: -16384
+				illegalBits: (| cWHITE cYELLOW)
 				posn: 240 127
 				view: 4
 				xStep: 4
@@ -77,7 +77,7 @@
 				init:
 				setPri: -1
 			)
-			(= onStairs 1)
+			(= onStairs TRUE)
 			(ego observeBlocks: stair1)
 		)
 		(if (== prevRoomNum 61)
@@ -99,16 +99,21 @@
 	(method (doit)
 		(super doit:)
 		(if (!= (self script?) stairTrip)
-			(if (& (ego onControl: FALSE) $0040) (curRoom newRoom: 67))
-			(if (& (ego onControl: FALSE) $0020) (curRoom newRoom: 61))
-			(if
-			(and (& (ego onControl: FALSE) $0004) (not onStairs))
+			(if (& (ego onControl: 0) cBROWN)
+				(curRoom newRoom: 67)
+			)
+			(if (& (ego onControl: 0) cMAGENTA)
+				(curRoom newRoom: 61)
+			)
+			(if (and (& (ego onControl: 0) cGREEN) (not onStairs))
 				(self setScript: stairTrip)
 			)
-			(if (& (ego onControl: TRUE) $0800)
+			(if (& (ego onControl: origin) cLCYAN)
 				(if (> (ego heading?) 180)
 					(= onStairs 0)
-					(if (ego blocks?) (ego ignoreBlocks: stair1))
+					(if (ego blocks?)
+						(ego ignoreBlocks: stair1)
+					)
 					(ego
 						illegalBits: cWHITE
 						baseSetter: (ScriptID 0 1)
@@ -129,7 +134,7 @@
 			(
 				(and
 					(ego inRect: 183 150 205 168)
-					(& (ego onControl:) $0800)
+					(& (ego onControl:) cLCYAN)
 					onStairs
 				)
 				(ego setPri: 12)
@@ -153,7 +158,7 @@
 			)
 			(ego setPri: 7)
 		)
-		(if (& (ego onControl: 1) $0400)
+		(if (& (ego onControl: origin) cLGREEN)
 			(if
 			(or (< (ego heading?) 90) (> (ego heading?) 270))
 				(ego setPri: 7)
@@ -184,12 +189,24 @@
 					(cond 
 						((Said 'look>')
 							(cond 
-								((Said '/stair') (Print 66 0))
-								((Said '/door') (Print 66 1))
-								((or (Said '/dirt') (Said '<down')) (Print 66 2))
-								((Said '/wall') (Print 66 3))
-								((Said '/torch') (Print 66 4))
-								((Said '<up') (Print 66 5))
+								((Said '/stair')
+									(Print 66 0)
+								)
+								((Said '/door')
+									(Print 66 1)
+								)
+								((or (Said '/dirt') (Said '<down'))
+									(Print 66 2)
+								)
+								((Said '/wall')
+									(Print 66 3)
+								)
+								((Said '/torch')
+									(Print 66 4)
+								)
+								((Said '<up')
+									(Print 66 5)
+								)
 								((Said '[<around][/room,tower]')
 									(Print
 										(Format @str 66 6
@@ -201,10 +218,14 @@
 										)
 									)
 								)
-								(else (event claimed: FALSE))
+								(else
+									(event claimed: FALSE)
+								)
 							)
 						)
-						((Said '*/stair') (Print 66 7))
+						((Said 'anyword/stair')
+							(Print 66 7)
+						)
 						((Said 'get/shovel')
 							(if
 								(and
@@ -223,9 +244,15 @@
 								(Print 66 8)
 							)
 						)
-						((Said 'get/torch') (Print 66 9))
-						((Said 'close/door') (Print 66 10))
-						((Said 'open/door') (Print 66 11))
+						((Said 'get/torch')
+							(Print 66 9)
+						)
+						((Said 'close/door')
+							(Print 66 10)
+						)
+						((Said 'open/door')
+							(Print 66 11)
+						)
 					)
 				)
 			)
@@ -234,14 +261,14 @@
 )
 
 (instance stairTrip of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(ego illegalBits: 0 ignoreActors: TRUE)
-				(if (< (ego y?) 90) (= fatalFall 1))
+				(if (< (ego y?) 90)
+					(= fatalFall TRUE)
+				)
 				(self cue:)
 			)
 			(1
@@ -292,7 +319,7 @@
 						setCycle: Walk
 						setLoop: -1
 						setPri: -1
-						illegalBits: -16384
+						illegalBits: (| cWHITE cYELLOW)
 						baseSetter: 0
 						ignoreActors: 0
 					)
@@ -301,7 +328,9 @@
 					(client setScript: 0)
 				)
 			)
-			(5 (= dead TRUE))
+			(5
+				(= dead TRUE)
+			)
 		)
 	)
 )

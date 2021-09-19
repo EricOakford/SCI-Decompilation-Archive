@@ -66,6 +66,7 @@
 (define egoOnSwampGrass 12)
 (define egoIsFrog 13)
 (define egoRidingDolphin 14)
+(define egoFishing	15)
 (define egoFallDownStairs 16)
 (define egoZombie 17)
 (define egoOnStairs 18)
