@@ -434,7 +434,7 @@
 									(if ((Inventory at: iCrown) ownedBy: 200)
 										(if
 											(and
-												(& (= local2 (IsObjectOnControl ego 15)) cLRED)
+												(& (= local2 (IsObjectOnControl ego 15)) cLBLUE)
 												(== (ego view?) 2)
 											)
 											(HandsOff)
