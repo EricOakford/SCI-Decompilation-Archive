@@ -2,4 +2,4 @@
   Game version 1.006.004
   Interpreter version 0.000.502
 
-  This game tends to crash with "Out of Heap Space" errors at critical points; thus, it cannot be tested to completion.
+  Currently being tested, but the severe shortage of heap space in certain rooms makes the Avoider quite dangerous to use in them.
