@@ -275,7 +275,7 @@
 								)
 							)
 						)
-						((Said 'climb[/(hemp,ladder)>')
+						((Said 'climb[/(hemp,ladder)]>')
 							(cond 
 								((not ropeLadderLowered)
 									(event claimed: TRUE)

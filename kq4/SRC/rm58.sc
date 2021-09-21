@@ -244,7 +244,7 @@
 							(or
 								(Said 'get<up')
 								(Said 'stand[<up]')
-								(Said '(/organ,bench')
+								(Said 'exit/organ,bench')	;EO: fixed said spec
 							)
 							(if (== (ego view?) 58)
 								(self setScript: standOrgan)

@@ -53,7 +53,9 @@
 		(Load VIEW 512)
 		(self setRegions: LOLOTTE)
 		(super init:)
-		(NotifyScript LOLOTTE 0)
+		;EO: Unfortunately, we have to remove the henchman from this room
+		; so that the game doesn't run out of heap. He'll be back for the upgrade.
+		;(NotifyScript LOLOTTE 0)
 		(= local8 0)
 		((View new:)
 			view: 634

@@ -125,8 +125,8 @@
 		global98
 		lastSysGlobal
 		;globals 100 and above are for game use
-	isNightTime
-	isIndoors
+	isNightTime				;if TRUE, it's night
+	isIndoors				;if TRUE, show larger ego view
 	dwarfHouseState
 	global103
 	global104
@@ -432,7 +432,7 @@
 		(= ctrl 5)
 	)
 	(switch (obj loop?)
-		(0
+		(loopE
 			(OnControl
 				CMAP
 				(obj x?)
@@ -442,7 +442,7 @@
 			)
 			(return)
 		)
-		(1
+		(loopW
 			(OnControl
 				CMAP
 				(- (obj x?) ctrl)
@@ -452,7 +452,7 @@
 			)
 			(return)
 		)
-		(2
+		(loopS
 			(OnControl
 				CMAP
 				(obj x?)
@@ -462,7 +462,7 @@
 			)
 			(return)
 		)
-		(3
+		(loopN
 			(OnControl
 				CMAP
 				(obj x?)
