@@ -550,7 +550,7 @@
 								(2 (Print 654 27))
 							)
 						)
-						((Said '(stand<up),(get<up),exit,/table,chair')	;EO: fixed said spec
+						((Said '(stand<up),(get<up),exit/table,chair')	;EO: fixed said spec
 							(Print 654 34)
 						)
 					)
