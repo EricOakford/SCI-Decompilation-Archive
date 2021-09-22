@@ -83,8 +83,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (< (ego priority?) 5)
@@ -97,7 +95,9 @@
 		else
 			(= hitRearWall FALSE)
 		)
-		(if (& (ego onControl:) cBLUE) (curRoom newRoom: 360))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 360)
+		)
 	)
 	
 	(method (changeState newState)
@@ -110,7 +110,9 @@
 				(= cycles 2)
 				(= seconds 3)
 			)
-			(2 (music stop:))
+			(2
+				(music stop:)
+			)
 			(3
 				(music stop:)
 				(= saveSpeed (theGame setSpeed: 6))
@@ -235,35 +237,51 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'nightstand,get,jump,climb<on/backstage') (Print 390 1))
-			((Said 'get') (Print 390 2))
-			((Said 'drag<on/camera') (Print 390 3))
-			((Said 'make/tape') (Print 390 4))
+			((Said 'stand,get,jump,climb<on/backstage')
+				(Print 390 1)
+			)
+			((Said 'get')
+				(Print 390 2)
+			)
+			((Said 'drag<on/camera')
+				(Print 390 3)
+			)
+			((Said 'make/tape')
+				(Print 390 4)
+			)
 			(
 				(or
 					(Said '/class,(work<out),aerobic')
 					(Said '//class,(work<out),aerobic')
 					(Said 'class,dance,naked,naked,(work<out),class')
 				)
-				(if larryBuffed (Print 390 5) else (Print 390 6))
+				(if larryBuffed
+					(Print 390 5)
+				else
+					(Print 390 6)
+				)
 			)
 			((Said 'look>')
 				(cond 
-					(
-					(Said '/camera,equipment,camera,tape,microphone') (Print 390 7))
-					((Said '/burn') (Print 390 8))
+					((Said '/camera,equipment,camera,tape,microphone')
+						(Print 390 7)
+					)
+					((Said '/burn')
+						(Print 390 8)
+					)
 					((Said '[/area]')
 						(Printf 390 9
 							(cond 
 								((cast contains: aBambi)
 									{A beautiful blond woman stands on the stage with a puzzled expression on her face.}
 								)
-								((Btst fBambiGone) {It looks like someone was recently here making a video.})
+								((Btst fBambiGone)
+									{It looks like someone was recently here making a video.}
+								)
 								(else
 									{The equipment seems to have suffered some sort of meltdown!}
 								)
@@ -296,8 +314,6 @@
 )
 
 (instance BambiScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 2 2)
 		(switch (= state newState)
@@ -322,7 +338,7 @@
 			(3)
 			(4
 				(aBambi setLoop: 1 setCel: 0)
-				(if (Btst 71)
+				(if (Btst fMetBambi)
 					(Print 390 24)
 				else
 					(Printf 390 25 introductoryPhrase)
@@ -350,14 +366,15 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
 			((Said 'look/babe')
 				(cond 
-					((not (& (ego onControl:) cCYAN)) (Print 390 17))
+					((not (& (ego onControl:) cCYAN))
+						(Print 390 17)
+					)
 					((Btst fNotShower)
 						(Print 390 18)
 					)
@@ -367,10 +384,17 @@
 					((Btst fNotUseDeodorant)
 						(Print 390 20)
 					)
-					(else (self changeState: 4))
+					(else
+						(self changeState: 4)
+					)
 				)
 			)
-			((Said '/boob,body') (Print 390 21) (Print 390 22 #at -1 144))
+			((Said '/boob,body')
+				(Print 390 21)
+				(Print 390 22
+					#at -1 144
+				)
+			)
 			((Said '/babe')
 				(if (not (& (ego onControl:) cCYAN))
 					(NotClose)

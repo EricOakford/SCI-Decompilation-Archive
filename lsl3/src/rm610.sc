@@ -83,24 +83,29 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0002) (curRoom newRoom: 620))
+		(if (& (ego onControl:) cBLUE)
+			(curRoom newRoom: 620)
+		)
 	)
 	
 	(method (changeState newState)
 		(ChangeScriptState self newState 5 2)
 		(switch (= state newState)
 			(0
-				(if (< prevRoomNum curRoomNum) (= seconds 3))
+				(if (< prevRoomNum curRoomNum)
+					(= seconds 3)
+				)
 			)
 			(1
 				(Print 610 5 #at 10 40 #width 290)
 				(= seconds 3)
 			)
-			(2 (Print 610 6) (= seconds 2))
+			(2
+				(Print 610 6)
+				(= seconds 2)
+			)
 			(3
 				(Print 610 7)
 				(music number: 610 loop: 1 play: self)
@@ -215,7 +220,9 @@
 				(Print 610 15)
 				(= cycles 11)
 			)
-			(22 (aLarry setCycle: EndLoop self))
+			(22
+				(aLarry setCycle: EndLoop self)
+			)
 			(23
 				(NormalActor aLarry 2 720)
 				(aLarry illegalBits: 0)
@@ -225,7 +232,9 @@
 				(Print 610 16)
 				(= seconds 2)
 			)
-			(25 (ego setCycle: EndLoop self))
+			(25
+				(ego setCycle: EndLoop self)
+			)
 			(26
 				(NormalEgo 3 currentEgoView)
 				(ego illegalBits: 0)
@@ -241,7 +250,9 @@
 			(28
 				(aLarry setMotion: MoveTo 276 185 self)
 			)
-			(29 (ego loop: 1))
+			(29
+				(ego loop: 1)
+			)
 			(30
 				(Bclr fSaveDisabled)
 				(Bclr fCursorHidden)
@@ -266,15 +277,21 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
 			(cond 
-				((Said '/door,wall,awning,exit') (Print 610 1))
-				((Said '/gravestone') (Print 610 2))
-				((Said '[/backdrop,buffet,backstage,area]') (Print 610 3) (Print 610 4 #at -1 144))
+				((Said '/door,wall,awning,exit')
+					(Print 610 1)
+				)
+				((Said '/gravestone')
+					(Print 610 2)
+				)
+				((Said '[/backdrop,buffet,backstage,area]')
+					(Print 610 3)
+					(Print 610 4 #at -1 144)
+				)
 			)
 		)
 	)
@@ -487,8 +504,6 @@
 )
 
 (instance Man2Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
@@ -519,6 +534,4 @@
 	)
 )
 
-(instance aLarry of Actor
-	(properties)
-)
+(instance aLarry of Actor)

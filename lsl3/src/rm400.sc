@@ -25,33 +25,42 @@
 		(self setScript: RoomScript)
 		(NormalEgo)
 		(switch prevRoomNum
-			(460 (ego posn: 318 162))
-			(410
-				(if (< (ego x?) 111) (ego x: 111))
-				(if (> (ego x?) 210) (ego x: 210))
+			(460
+				(ego posn: 318 162)
 			)
-			(else  (ego posn: 159 188))
+			(410
+				(if (< (ego x?) 111)
+					(ego x: 111)
+				)
+				(if (> (ego x?) 210)
+					(ego x: 210)
+				)
+			)
+			(else
+				(ego posn: 159 188)
+			)
 		)
 		(ego init:)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
 			(cond 
-				((Said '/burn') (Printf 400 0 currentEgo))
-				((Said '[/area]') (Print 400 1))
+				((Said '/burn')
+					(Printf 400 0 currentEgo)
+				)
+				((Said '[/area]')
+					(Print 400 1)
+				)
 			)
 		)
 	)

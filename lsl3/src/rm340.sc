@@ -17,7 +17,7 @@
 (local
 	[local0 45]
 	jokeNum
-	theALadyLR_Top
+	theDrinker
 	egoSittingLoop
 	comedianOnStage
 	[wantToSayStr 30]
@@ -74,16 +74,16 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if comedianOnStage (Print 340 0))
+	(method (newRoom n)
+		(if comedianOnStage
+			(Print 340 0)
+		)
 		(= currentStatus egoNORMAL)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0)
@@ -115,11 +115,15 @@
 				(User canInput: TRUE)
 				(= currentStatus egoSITTING)
 			)
-			(4 (ego setCycle: BegLoop self))
+			(4
+				(ego setCycle: BegLoop self)
+			)
 			(5
-				(= currentStatus 16)
-				(NormalEgo 3 (+ 705 larryBuffed))
-				(if comedianOnStage (Print 340 39))
+				(= currentStatus egoINCOMEDYCLUB)
+				(NormalEgo loopN (+ 705 larryBuffed))
+				(if comedianOnStage
+					(Print 340 39)
+				)
 			)
 			(6
 				(HandsOff)
@@ -189,8 +193,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -203,15 +206,28 @@
 					(Print 340 4)
 				)
 			)
-			((Said 'applaud') (if comedianOnStage (Print 340 5) else (Print 340 4)))
+			((Said 'applaud')
+				(if comedianOnStage
+					(Print 340 5)
+				else
+					(Print 340 4)
+				)
+			)
 			((and debugging (Said 'test/joke'))
 				(= jokeNum
 					(GetNumber {First joke (from 1 to LAST JOKE):})
 				)
 				(Printf 340 6 jokeNum)
 			)
-			((Said 'address/comedian') (if comedianOnStage (Print 340 7) else (Print 340 8)))
-			((Said 'address/bob') (Print 340 9))
+			((Said 'address/comedian')
+				(if comedianOnStage
+					(Print 340 7)
+					else (Print 340 8)
+				)
+			)
+			((Said 'address/bob')
+				(Print 340 9)
+			)
 			(
 				(or
 					(Said 'get/microphone')
@@ -236,11 +252,15 @@
 			)
 			((Said 'get/bottle,beer')
 				(cond 
-					(
-					(and (!= currentStatus 16) (!= currentStatus egoSITTING)) (GoodIdea))
-					(
-					(or (not (InRoom iWineBottle)) (not (ego has: iPenthouseKey))) (Print 340 11))
-					((not (& (ego onControl:) cLGREY)) (NotClose))
+					((and (!= currentStatus egoINCOMEDYCLUB) (!= currentStatus egoSITTING))
+						(GoodIdea)
+					)
+					((or (not (InRoom iWineBottle)) (not (ego has: iPenthouseKey)))
+						(Print 340 11)
+					)
+					((not (& (ego onControl:) cLGREY))
+						(NotClose)
+					)
 					(else
 						(Ok)
 						(aBottle dispose:)
@@ -256,27 +276,49 @@
 					(Said 'exit/barstool')
 				)
 				(cond 
-					((== currentStatus egoINCOMEDYCLUB) (YouAre))
-					((!= currentStatus egoSITTING) (GoodIdea))
-					(else (self changeState: 4))
+					((== currentStatus egoINCOMEDYCLUB)
+						(YouAre)
+					)
+					((!= currentStatus egoSITTING)
+						(GoodIdea)
+					)
+					(else
+						(self changeState: 4)
+					)
 				)
 			)
 			((Said 'lie')
 				(cond 
-					((not (& (ego onControl:) cBLUE)) (Print 340 14))
-					((== currentStatus egoSITTING) (YouAre))
+					((not (& (ego onControl:) cBLUE))
+						(Print 340 14)
+					)
+					((== currentStatus egoSITTING)
+						(YouAre)
+					)
 					((!= currentStatus egoINCOMEDYCLUB) (GoodIdea))
 					(else (self changeState: 1))
 				)
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/barstool') (Print 340 15))
-					((Said '/backstage') (Print 340 16))
-					((Said '/mask') (Print 340 17))
-					((Said '/awning') (Print 340 18))
-					((Said '/cigarette,smoke') (Print 340 19))
-					((Said '/burn,burn') (Print 340 20))
+					((Said '/barstool')
+						(Print 340 15)
+					)
+					((Said '/backstage')
+						(Print 340 16)
+					)
+					((Said '/mask')
+						(Print 340 17)
+					)
+					((Said '/awning')
+						(Print 340 18)
+					)
+					((Said '/cigarette,smoke')
+						(Print 340 19)
+					)
+					((Said '/burn,burn')
+						(Print 340 20)
+					)
 					(
 						(or
 							(Said 'buy/beer,drink,beer')
@@ -286,9 +328,19 @@
 						)
 						(Print 340 21)
 					)
-					((Said '/door') (Print 340 22))
-					((Said '/comedian') (if comedianOnStage (Print 340 23) else (Print 340 24)))
-					((Said '/babe') (Print 340 25))
+					((Said '/door')
+						(Print 340 22)
+					)
+					((Said '/comedian')
+						(if comedianOnStage
+							(Print 340 23)
+						else
+							(Print 340 24)
+						)
+					)
+					((Said '/babe')
+						(Print 340 25)
+					)
 					((Said '/man,couple')
 						(if
 							(and
@@ -312,22 +364,35 @@
 					)
 					((Said '/al')
 						(cond 
-							((Btst fAlAndBill) (Print 340 29) (Print 340 30 #at -1 144))
-							((& (ego onControl:) cCYAN) (Print 340 31))
-							(else (Print 340 32))
+							((Btst fAlAndBill)
+								(Print 340 29)
+								(Print 340 30 #at -1 144)
+							)
+							((& (ego onControl:) cCYAN)
+								(Print 340 31)
+							)
+							(else
+								(Print 340 32)
+							)
 						)
 					)
 					((Said '/bill')
 						(cond 
-							((Btst fAlAndBill) (event claimed: FALSE))
-							((& (ego onControl:) cGREEN) (Print 340 33))
-							(else (Print 340 34))
+							((Btst fAlAndBill)
+								(event claimed: FALSE)
+							)
+							((& (ego onControl:) cGREEN)
+								(Print 340 33)
+							)
+							(else
+								(Print 340 34)
+							)
 						)
 					)
 					((Said '/buffet')
 						(if
 							(and
-								(& (ego onControl:) $0080)
+								(& (ego onControl:) cLGREY)
 								(InRoom iWineBottle)
 								(ego has: iPenthouseKey)
 							)
@@ -336,8 +401,16 @@
 							(Print 340 35)
 						)
 					)
-					((Said '/bob') (if comedianOnStage (Print 340 36) else (Print 340 37)))
-					((Said '[/area,couple]') (Print 340 38))
+					((Said '/bob')
+						(if comedianOnStage
+							(Print 340 36)
+						else
+							(Print 340 37)
+						)
+					)
+					((Said '[/area,couple]')
+						(Print 340 38)
+					)
 				)
 			)
 		)
@@ -345,12 +418,9 @@
 )
 
 (instance ComicScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== -1 (music prevSignal?)) (== state 7))
+		(if (and (== -1 (music prevSignal?)) (== state 7))
 			(self cue:)
 		)
 	)
@@ -1212,31 +1282,33 @@ code_1083:
 )
 
 (instance drinkerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 10)))
+			(0
+				(= seconds (Random 2 10))
+			)
 			(1
 				(switch (Random 1 3)
 					(1
-						(= theALadyLR_Top aLadyLR_Top)
+						(= theDrinker aLadyLR_Top)
 					)
 					(2
-						(= theALadyLR_Top aLadyUL_Top)
+						(= theDrinker aLadyUL_Top)
 					)
 					(3
-						(= theALadyLR_Top aManUL_Top)
+						(= theDrinker aManUL_Top)
 					)
 				)
-				(theALadyLR_Top setCycle: EndLoop self)
+				(theDrinker setCycle: EndLoop self)
 			)
 			(2
-				(if (== theALadyLR_Top aLadyUL_Top) (= state -1))
+				(if (== theDrinker aLadyUL_Top)
+					(= state -1)
+				)
 				(= cycles (Random 5 22))
 			)
 			(3
-				(theALadyLR_Top setCycle: BegLoop self)
+				(theDrinker setCycle: BegLoop self)
 				(= state -1)
 			)
 		)
@@ -1426,7 +1498,9 @@ code_1083:
 	(properties)
 	
 	(method (doit)
-		(if (Random 0 3) (aComic cel: (Random 0 2)))
+		(if (Random 0 3)
+			(aComic cel: (Random 0 2))
+		)
 	)
 )
 

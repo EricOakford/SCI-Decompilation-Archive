@@ -16,14 +16,14 @@
 )
 
 (instance CherriScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (and (== state 10) (> (ego x?) 280)) (self cue:))
+		(if (and (== state 10) (> (ego x?) 280))
+			(self cue:)
+		)
 		(if
 			(and
-				(== showroomState 2)
+				(== showroomState SRcherriOnPhone)
 				(== (client loop?) 4)
 				(== (client x?) 82)
 				(== (client y?) 124)
@@ -39,7 +39,9 @@
 		(ChangeScriptState self newState 3 2)
 		(switch (= state newState)
 			(0
-				(if (== showroomState SRknowsAboutDeed) (self changeState: 3))
+				(if (== showroomState SRknowsAboutDeed)
+					(self changeState: 3)
+				)
 				(if (== showroomState SRshowDone)
 					(self changeState: 10)
 					(client posn: -20 143 stopUpd:)
@@ -64,13 +66,19 @@
 				(= saveEgoLoop (ego loop?))
 				(curRoom newRoom: 435)
 			)
-			(3 (HandsOff) (= seconds 3))
-			(4 (Print 422 7) (= seconds 3))
+			(3
+				(HandsOff)
+				(= seconds 3)
+			)
+			(4
+				(Print 422 7)
+				(= seconds 3)
+			)
 			(5
 				(Print 422 8)
 				(client
 					illegalBits: 0
-					ignoreActors: 0
+					ignoreActors: FALSE
 					setLoop: 1
 					setCycle: Walk
 					setMotion: MoveTo 45 140 self
@@ -83,13 +91,17 @@
 					(ego setCycle: Walk setMotion: MoveTo 97 (ego y?))
 				)
 			)
-			(6 (theDoor setCycle: EndLoop self))
+			(6
+				(theDoor setCycle: EndLoop self)
+			)
 			(7
 				(Print 422 9)
 				(theDoor stopUpd:)
 				(client setMotion: MoveTo -20 140 self)
 			)
-			(8 (theDoor setCycle: BegLoop self))
+			(8
+				(theDoor setCycle: BegLoop self)
+			)
 			(9
 				(soundFX number: 11 loop: 1 play:)
 				(= showroomState SRcherriBackstage)
@@ -99,7 +111,9 @@
 				(client dispose:)
 				(self dispose:)
 			)
-			(10 (= seconds 15))
+			(10
+				(= seconds 15)
+			)
 			(11
 				(if (< (ego x?) 160)
 					(-- state)
@@ -120,7 +134,9 @@
 					setMotion: MoveTo 45 140 self
 				)
 			)
-			(13 (theDoor setCycle: BegLoop self))
+			(13
+				(theDoor setCycle: BegLoop self)
+			)
 			(14
 				(soundFX number: 11 loop: 1 play:)
 				(theDoor stopUpd:)
@@ -145,17 +161,31 @@
 			(return)
 		)
 		(cond 
-			((or (Said 'give/babe') (Said 'give/anyword/babe')) (Print 422 0))
+			((or (Said 'give/babe') (Said 'give/anyword/babe'))
+				(Print 422 0)
+			)
 			((Said 'look/babe')
 				(cond 
-					((!= showroomState SRcherriOnPhone) (Print 422 1))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((!= (client xLast?) (client x?)) (Print 422 2))
-					((not (& (ego onControl:) cMAGENTA)) (Print 422 3))
-					(else (self changeState: 1))
+					((!= showroomState SRcherriOnPhone)
+						(Print 422 1)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((!= (client xLast?) (client x?))
+						(Print 422 2)
+					)
+					((not (& (ego onControl:) cMAGENTA))
+						(Print 422 3)
+					)
+					(else
+						(self changeState: 1)
+					)
 				)
 			)
-			((and (== showroomState SRcherriOnPhone) (Said '/babe')) (Print 422 4))
+			((and (== showroomState SRcherriOnPhone) (Said '/babe'))
+				(Print 422 4)
+			)
 		)
 	)
 )

@@ -66,8 +66,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (& (ego onControl:) cBLUE)
@@ -92,7 +90,9 @@
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
 			(0
-				(if (not (Btst fMetSuzi)) (= seconds 3))
+				(if (not (Btst fMetSuzi))
+					(= seconds 3)
+				)
 			)
 			(1
 				(Bset fMetSuzi)
@@ -104,9 +104,15 @@
 				(Ok)
 				(ego illegalBits: 0)
 				(cond 
-					((> (ego x?) 119) (ego setMotion: MoveTo 119 132 self))
-					((< (ego x?) 90) (ego setMotion: MoveTo 90 132 self))
-					(else (ego setMotion: MoveTo (ego x?) 132 self))
+					((> (ego x?) 119)
+						(ego setMotion: MoveTo 119 132 self)
+					)
+					((< (ego x?) 90)
+						(ego setMotion: MoveTo 90 132 self)
+					)
+					(else
+						(ego setMotion: MoveTo (ego x?) 132 self)
+					)
 				)
 			)
 			(3
@@ -120,7 +126,9 @@
 			(5
 				(ego setLoop: (Random 1 4) cel: 0 setCycle: EndLoop self)
 			)
-			(6 (= cycles (Random 11 33)))
+			(6
+				(= cycles (Random 11 33))
+			)
 			(7
 				(ego setCycle: BegLoop self)
 				(= state 3)
@@ -131,24 +139,31 @@
 				(ego setLoop: 0 setCel: 255 setCycle: BegLoop self)
 			)
 			(9
-				(NormalEgo 2)
+				(NormalEgo loopS)
 				(= currentStatus egoNORMAL)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
 			((Said 'lie')
 				(cond 
-					((not (& (ego onControl:) cGREEN)) (Print 323 5))
-					((== currentStatus egoSITTING) (YouAre))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					(else (self changeState: 2))
+					((not (& (ego onControl:) cGREEN))
+						(Print 323 5)
+					)
+					((== currentStatus egoSITTING)
+						(YouAre)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					(else
+						(self changeState: 2)
+					)
 				)
 			)
 			(
@@ -157,15 +172,25 @@
 					(Said 'exit/barstool,barstool')
 				)
 				(cond 
-					((== currentStatus egoNORMAL) (YouAre))
-					((!= currentStatus egoSITTING) (Print 323 6))
-					(else (self changeState: 8))
+					((== currentStatus egoNORMAL)
+						(YouAre)
+					)
+					((!= currentStatus egoSITTING)
+						(Print 323 6)
+					)
+					(else
+						(self changeState: 8)
+					)
 				)
 			)
 			((Said 'address/babe')
 				(cond 
-					((!= currentStatus egoSITTING) (Print 323 7))
-					((!= local301 0) (Print 323 8))
+					((!= currentStatus egoSITTING)
+						(Print 323 7)
+					)
+					((!= local301 0)
+						(Print 323 8)
+					)
 					((== lawyerState LSfree)
 						(Printf 323 9 introductoryPhrase)
 						(Format @str 323 10)
@@ -180,8 +205,12 @@
 			)
 			((or (Said '/deed,land') (Said '//deed,land'))
 				(cond 
-					((!= currentStatus egoSITTING) (Print 323 13))
-					((!= local301 0) (Print 323 14))
+					((!= currentStatus egoSITTING)
+						(Print 323 13)
+					)
+					((!= local301 0)
+						(Print 323 14)
+					)
 					((== lawyerState LSfree)
 						(++ lawyerState)
 						(theGame changeScore: 30)
@@ -190,7 +219,10 @@
 						(Format @str 323 17)
 						(SuziScript changeState: 2)
 					)
-					((== lawyerState LSwaiting4Deed) (Format @str 323 18) (SuziScript changeState: 2))
+					((== lawyerState LSwaiting4Deed)
+						(Format @str 323 18)
+						(SuziScript changeState: 2)
+					)
 					(else
 						(Print 323 11)
 						(Format @str 323 12)
@@ -200,8 +232,12 @@
 			)
 			((or (Said '/decree') (Said '//decree'))
 				(cond 
-					((!= currentStatus egoSITTING) (Print 323 19))
-					((!= local301 0) (Print 323 14))
+					((!= currentStatus egoSITTING)
+						(Print 323 19)
+					)
+					((!= local301 0)
+						(Print 323 14)
+					)
 					((or (== lawyerState LSfree) (== lawyerState LSwaiting4Deed))
 						(Print 323 20)
 						(Format @str 323 21)
@@ -219,18 +255,37 @@
 						(Format @str 323 25)
 						(SuziScript changeState: 2)
 					)
-					(else (Format @str 323 26) (SuziScript changeState: 2))
+					(else
+						(Format @str 323 26)
+						(SuziScript changeState: 2)
+					)
 				)
 			)
-			((Said '/equipment') (Print 323 27) (Print 323 28 #at -1 144))
-			((Said '/call') (Print 323 29))
-			((Said '/buffet,calf') (Print 323 30))
-			((Said '/barstool') (Print 323 31))
-			((Said '/art') (Print 323 32))
-			((Said '/door') (Print 323 33))
-			((Said '/cup') (Print 323 34))
-			(
-			(Said '/bookcase,bookcase,bookcase,cabinet,book') (Print 323 35))
+			((Said '/equipment')
+				(Print 323 27)
+				(Print 323 28 #at -1 144)
+			)
+			((Said '/call')
+				(Print 323 29)
+			)
+			((Said '/buffet,calf')
+				(Print 323 30)
+			)
+			((Said '/barstool')
+				(Print 323 31)
+			)
+			((Said '/art')
+				(Print 323 32)
+			)
+			((Said '/door')
+				(Print 323 33)
+			)
+			((Said '/cup')
+				(Print 323 34)
+			)
+			((Said '/bookcase,bookcase,bookcase,cabinet,book')
+				(Print 323 35)
+			)
 			((Said 'look>')
 				(cond 
 					((Said '/babe,eye')
@@ -244,12 +299,16 @@
 								(= saveEgoX (ego x?))
 								(= saveEgoY (ego y?))
 								(= saveEgoLoop (ego loop?))
-								(if (== currentStatus 1004) (= currentStatus 323))
+								(if (== currentStatus 1004)
+									(= currentStatus 323)
+								)
 								(curRoom newRoom: 325)
 							)
 						)
 					)
-					((Said '[/office,area]') (Print 323 40))
+					((Said '[/office,area]')
+						(Print 323 40)
+					)
 				)
 			)
 		)
@@ -257,8 +316,6 @@
 )
 
 (instance SuziScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 2 1)
 		(switch (= state newState)
@@ -271,11 +328,21 @@
 			)
 			(1
 				(cond 
-					((== (= local301 (Random 0 7)) 1) (self changeState: 4))
-					((== local301 3) (self changeState: 18))
-					((== local301 5) (self changeState: 6))
-					((== local301 7) (self changeState: 16))
-					(else (self changeState: 0))
+					((== (= local301 (Random 0 7)) 1)
+						(self changeState: 4)
+					)
+					((== local301 3)
+						(self changeState: 18)
+					)
+					((== local301 5)
+						(self changeState: 6)
+					)
+					((== local301 7)
+						(self changeState: 16)
+					)
+					(else
+						(self changeState: 0)
+					)
 				)
 			)
 			(2
@@ -342,7 +409,9 @@
 			(10
 				(aSuzi setMotion: MoveTo 204 204 self)
 			)
-			(11 (= cycles 15))
+			(11
+				(= cycles 15)
+			)
 			(12
 				(= local301 6)
 				(aSuzi
@@ -395,12 +464,12 @@
 )
 
 (instance ChairScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 3 4)
 		(switch (= state newState)
-			(0 (= seconds (Random 5 10)))
+			(0
+				(= seconds (Random 5 10))
+			)
 			(1
 				(if (< local301 4)
 					(self cue:)

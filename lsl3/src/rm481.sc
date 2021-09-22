@@ -14,13 +14,13 @@
 )
 
 (local
-	[str 200]
+	[plotString 200]
 )
-(procedure (RoomPrint &tmp seconds)
-	(Print @str
+(procedure (PrintPlot &tmp seconds)
+	(Print @plotString
 		#at 0 70
 		#width 125
-		#time (= seconds (PrintDelay @str))
+		#time (= seconds (PrintDelay @plotString))
 		#dispose
 	)
 	(return (+ 3 seconds))
@@ -51,8 +51,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(theGame setSpeed: 6)
@@ -60,26 +58,28 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 33))
+			(0
+				(= cycles 33)
+			)
 			(1
-				(Format @str 481 1)
-				(= seconds (RoomPrint))
+				(Format @plotString 481 1)
+				(= seconds (PrintPlot))
 			)
 			(2
-				(Format @str 481 2)
-				(= seconds (RoomPrint))
+				(Format @plotString 481 2)
+				(= seconds (PrintPlot))
 			)
 			(3
-				(Format @str 481 3)
-				(= seconds (RoomPrint))
+				(Format @plotString 481 3)
+				(= seconds (PrintPlot))
 			)
 			(4
-				(Format @str 481 4)
-				(= seconds (RoomPrint))
+				(Format @plotString 481 4)
+				(= seconds (PrintPlot))
 			)
 			(5
-				(Format @str 481 5)
-				(= seconds (RoomPrint))
+				(Format @plotString 481 5)
+				(= seconds (PrintPlot))
 			)
 			(6
 				(curRoom drawPic: 99 IRISIN)
@@ -110,8 +110,8 @@
 				(= cycles 33)
 			)
 			(9
-				(Format @str 481 7)
-				(= seconds (RoomPrint))
+				(Format @plotString 481 7)
+				(= seconds (PrintPlot))
 			)
 			(10 (curRoom newRoom: 482))
 		)

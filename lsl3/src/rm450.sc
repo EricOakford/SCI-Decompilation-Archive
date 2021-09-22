@@ -25,7 +25,7 @@
 	local0
 	pattiPlayingPiano
 	pianoMusic
-	local3
+	noEntryMsg
 )
 (instance rm450 of Room
 	(properties
@@ -72,16 +72,20 @@
 				(HandsOff)
 			)
 			((== prevRoomNum 455)
-				(= pattiPlayingPiano 1)
+				(= pattiPlayingPiano TRUE)
 				(HandsOff)
 				(ego ignoreActors: illegalBits: 0 posn: 139 121 view: 451)
 				(RoomScript changeState: 10)
 			)
 			(else
 				(if (and (== showroomState SRdone) (InRoom iPenthouseKey))
-					(= pattiPlayingPiano 1)
-					(if (== (Random 0 3) 3) (aRoger init:))
-					(if (== (Random 0 3) 3) (aElvis init:))
+					(= pattiPlayingPiano TRUE)
+					(if (== (Random 0 3) 3)
+						(aRoger init:)
+					)
+					(if (== (Random 0 3) 3)
+						(aElvis init:)
+					)
 				)
 				(if (> (ego y?) 130)
 					(ego posn: 29 188)
@@ -103,26 +107,31 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) cGREY)
-			(if (not local3)
-				(= local3 1)
+		(if (& (ego onControl:) cLBLUE)
+			(if (not noEntryMsg)
+				(= noEntryMsg TRUE)
 				(ego
 					posn: (ego xLast?) (ego yLast?)
 					setMotion: 0
 					observeControl: cLBLUE
 					forceUpd:
 				)
-				(if playingAsPatti (Print 450 0) else (Print 450 1))
+				(if playingAsPatti
+					(Print 450 0)
+				else
+					(Print 450 1)
+				)
 			)
 		else
-			(= local3 0)
+			(= noEntryMsg FALSE)
 		)
 		(if pattiPlayingPiano
-			(ego observeBlocks: blockPatti observeControl: cYELLOW)
+			(ego
+				observeBlocks: blockPatti
+				observeControl: cYELLOW
+			)
 		)
 	)
 	
@@ -133,11 +142,20 @@
 			(6
 				(HandsOff)
 				(Ok)
-				(ego ignoreActors: illegalBits: 0)
+				(ego
+					ignoreActors:
+					illegalBits: 0
+				)
 				(cond 
-					((& (ego onControl:) cBLUE) (self changeState: 8))
-					((& (ego onControl:) cMAGENTA) (self changeState: 7))
-					(else (ego setMotion: MoveTo 118 (ego y?) self))
+					((& (ego onControl:) cBLUE)
+						(self changeState: 8)
+					)
+					((& (ego onControl:) cMAGENTA)
+						(self changeState: 7)
+					)
+					(else
+						(ego setMotion: MoveTo 118 (ego y?) self)
+					)
 				)
 			)
 			(7
@@ -203,17 +221,24 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
 			((Said 'lie')
 				(cond 
-					((== currentStatus egoSITTING) (YouAre))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					(playingAsPatti (Print 450 2))
-					((& (ego onControl:) cGREEN) (Print 450 3))
+					((== currentStatus egoSITTING)
+						(YouAre)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					(playingAsPatti
+						(Print 450 2)
+					)
+					((& (ego onControl:) cGREEN)
+						(Print 450 3)
+					)
 					(
 						(or
 							(& (ego onControl:) cBLUE)
@@ -222,8 +247,12 @@
 						)
 						(self changeState: 6)
 					)
-					((& (ego onControl:) cBROWN) (Print 450 4))
-					(else (Print 450 5))
+					((& (ego onControl:) cBROWN)
+						(Print 450 4)
+					)
+					(else
+						(Print 450 5)
+					)
 				)
 			)
 			(
@@ -232,17 +261,31 @@
 					(Said 'exit/barstool,barstool')
 				)
 				(cond 
-					((== currentStatus egoNORMAL) (YouAre))
-					((!= currentStatus egoSITTING) (GoodIdea))
-					(else (self changeState: 11))
+					((== currentStatus egoNORMAL)
+						(YouAre)
+					)
+					((!= currentStatus egoSITTING)
+						(GoodIdea)
+					)
+					(else
+						(self changeState: 11)
+					)
 				)
 			)
 			((Said 'get/marker')
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not playingAsPatti) (Print 450 6))
-					((not (InRoom iMarker)) (AlreadyTook))
-					((not (ego inRect: 10 152 55 160)) (NotClose))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not playingAsPatti)
+						(Print 450 6)
+					)
+					((not (InRoom iMarker))
+						(AlreadyTook)
+					)
+					((not (ego inRect: 10 152 55 160))
+						(NotClose)
+					)
 					(else
 						(Ok)
 						(ego get: iMarker)
@@ -254,10 +297,18 @@
 			)
 			((Said 'get/tip')
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not playingAsPatti) (Print 450 8))
-					((not (Btst fGotTipJar)) (AlreadyTook))
-					((not (& (ego onControl:) cBLUE)) (Print 450 9))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not playingAsPatti)
+						(Print 450 8)
+					)
+					((not (Btst fGotTipJar))
+						(AlreadyTook)
+					)
+					((not (& (ego onControl:) cBLUE))
+						(Print 450 9)
+					)
 					(else
 						(Ok)
 						(ego get: iMoney)
@@ -271,22 +322,38 @@
 					)
 				)
 			)
-			((Said 'get,buy,call/attendant,attendant,drink') (Print 450 12))
-			((Said '/attendant,attendant') (Print 450 13))
+			((Said 'get,buy,call/attendant,attendant,drink')
+				(Print 450 12)
+			)
+			((Said '/attendant,attendant')
+				(Print 450 13)
+			)
 			((or (Said 'give,backdrop/tip') (Said 'tip'))
 				(cond 
-					(playingAsPatti (Print 450 14))
-					((not (ego has: iMoney)) (DontHave))
-					((Btst fGotTipJar) (Print 450 15))
-					(else (Print 450 16))
+					(playingAsPatti
+						(Print 450 14)
+					)
+					((not (ego has: iMoney))
+						(DontHave)
+					)
+					((Btst fGotTipJar)
+						(Print 450 15)
+					)
+					(else
+						(Print 450 16)
+					)
 				)
 			)
 			((Said 'gamble/keyboard')
 				(cond 
-					(playingAsPatti (Print 450 17))
+					(playingAsPatti
+						(Print 450 17)
+					)
 					((not (cast contains: aPatti))
 						(Print 450 18)
-						(if (== filthLevel 4) (Print 450 19 #at -1 144))
+						(if (== filthLevel 4)
+							(Print 450 19 #at -1 144)
+						)
 					)
 					(else
 						(Print 450 20)
@@ -295,8 +362,16 @@
 					)
 				)
 			)
-			((Said 'hear') (if pattiPlayingPiano (Print 450 22) else (Print 450 23)))
-			((Said 'look<below') (Print 450 24))
+			((Said 'hear')
+				(if pattiPlayingPiano
+					(Print 450 22)
+				else
+					(Print 450 23)
+				)
+			)
+			((Said 'look<below')
+				(Print 450 24)
+			)
 			((Said 'look>')
 				(cond 
 					(
@@ -305,12 +380,20 @@
 							(and (InRoom iMarker) (Said '/marker'))
 						)
 						(cond 
-							((not playingAsPatti) (Print 450 25))
-							((not (InRoom 18)) (Print 450 26))
-							(else (Print 450 27))
+							((not playingAsPatti)
+								(Print 450 25)
+							)
+							((not (InRoom iMarker))
+								(Print 450 26)
+							)
+							(else
+								(Print 450 27)
+							)
 						)
 					)
-					((Said '/wall,ceiling,burn') (Print 450 28))
+					((Said '/wall,ceiling,burn')
+						(Print 450 28)
+					)
 					((Said '/bar')
 						(if pattiPlayingPiano
 							(Print 450 29)
@@ -319,18 +402,44 @@
 							(Print 450 31 #at -1 144)
 						)
 					)
-					((Said '/buffet') (Print 450 32) (Print 450 33 #at -1 144))
-					((Said '/barstool') (Print 450 34))
-					((Said '/drink') (Print 450 35))
-					((and (Btst fGotTipJar) (Said '/tip')) (Print 450 36))
-					((Said '/door') (Print 450 37))
+					((Said '/buffet')
+						(Print 450 32)
+						(Print 450 33
+							#at -1 144
+						)
+					)
+					((Said '/barstool')
+						(Print 450 34)
+					)
+					((Said '/drink')
+						(Print 450 35)
+					)
+					((and (Btst fGotTipJar) (Said '/tip'))
+						(Print 450 36)
+					)
+					((Said '/door')
+						(Print 450 37)
+					)
 					((Said '/keyboard,entertainer')
 						(cond 
-							((< showroomState SRdone) (Print 450 38))
-							((InRoom iPenthouseKey) (Print 450 39) (Print 450 40 #at -1 144))
-							((not playingAsPatti) (Print 450 41))
-							((Btst fGotTipJar) (Print 450 42))
-							(else (Print 450 43))
+							((< showroomState SRdone)
+								(Print 450 38)
+							)
+							((InRoom iPenthouseKey)
+								(Print 450 39)
+								(Print 450 40
+									#at -1 144
+								)
+							)
+							((not playingAsPatti)
+								(Print 450 41)
+							)
+							((Btst fGotTipJar)
+								(Print 450 42)
+							)
+							(else
+								(Print 450 43)
+							)
 						)
 					)
 					((Said '[/bar,area]')
@@ -338,7 +447,11 @@
 							(Print 450 44)
 						else
 							(Print 450 45)
-							(if pattiPlayingPiano (Print 450 46) else (Print 450 47))
+							(if pattiPlayingPiano
+								(Print 450 46)
+							else
+								(Print 450 47)
+							)
 						)
 					)
 				)
@@ -362,8 +475,6 @@
 )
 
 (instance ElvisScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 3 3)
 		(switch (= state newState)
@@ -392,14 +503,20 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'look/man,elvis') (Print 450 50))
-			((Said 'address/elvis') (Print 450 51))
-			((Said '/elvis') (Print 450 52) (self changeState: 3))
+			((Said 'look/man,elvis')
+				(Print 450 50)
+			)
+			((Said 'address/elvis')
+				(Print 450 51)
+			)
+			((Said '/elvis')
+				(Print 450 52)
+				(self changeState: 3)
+			)
 		)
 	)
 )
@@ -418,8 +535,6 @@
 )
 
 (instance RogerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 4 4)
 		(switch (= state newState)
@@ -443,14 +558,20 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'look/man,hardy') (Print 450 53))
-			((Said 'address/hardy,man') (Print 450 51))
-			((Said '/hardy') (Print 450 54) (Print 450 55))
+			((Said 'look/man,hardy')
+				(Print 450 53)
+			)
+			((Said 'address/hardy,man')
+				(Print 450 51)
+			)
+			((Said '/hardy')
+				(Print 450 54)
+				(Print 450 55)
+			)
 		)
 	)
 )
@@ -583,9 +704,7 @@
 )
 
 (instance PattiScript of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp pianoLoop)
 		(ChangeScriptState self newState 2 2)
 		(switch (= state newState)
 			(0)
@@ -593,12 +712,12 @@
 				(= seconds 0)
 				(aPatti view: 452 viewer: pianoCycler)
 				(if pianoMusic
-					(= temp0 1)
+					(= pianoLoop 1)
 				else
 					(= pianoMusic (Random 451 454))
-					(= temp0 (Random 1 3))
+					(= pianoLoop (Random 1 3))
 				)
-				(music stop: number: pianoMusic loop: temp0 play: self)
+				(music stop: number: pianoMusic loop: pianoLoop play: self)
 			)
 			(2
 				(music number: pianoMusic loop: 1 play:)
@@ -644,8 +763,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -694,7 +812,13 @@
 				)
 				(self changeState: 1)
 			)
-			((Said 'address[/entertainer]') (if playingAsPatti (Print 450 57) else (Print 450 58)))
+			((Said 'address[/entertainer]')
+				(if playingAsPatti
+					(Print 450 57)
+				else
+					(Print 450 58)
+				)
+			)
 			((Said 'look/entertainer')
 				(if (!= currentStatus egoSITTING)
 					(Print 450 59)
@@ -702,19 +826,21 @@
 					(RoomScript changeState: 13)
 				)
 			)
-			((Said '/entertainer') (Print 450 60))
+			((Said '/entertainer')
+				(Print 450 60)
+			)
 		)
 	)
 )
 
 (instance pianoCycler of Code
-	(properties)
-	
 	(method (doit)
 		(if (not (Random 0 9))
 			(aPatti cycleSpeed: (Random 0 1))
 		)
-		(if (not (Random 0 5)) (aPatti loop: (Random 0 3)))
+		(if (not (Random 0 5))
+			(aPatti loop: (Random 0 3))
+		)
 	)
 )
 

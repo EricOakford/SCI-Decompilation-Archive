@@ -40,11 +40,22 @@
 	(= oldEgoY (ego y?))
 	(= oldEgoPriority (ego priority?))
 	(switch (++ exerciseTimes)
-		(1 (Print 380 30))
-		(2 (Print 380 31))
-		(3 (Print 380 32))
-		(4 (Print 380 33))
-		(5 (Print 380 34) (= exerciseTimes 0))
+		(1
+			(Print 380 30)
+		)
+		(2
+			(Print 380 31)
+		)
+		(3
+			(Print 380 32)
+		)
+		(4
+			(Print 380 33)
+		)
+		(5
+			(Print 380 34)
+			(= exerciseTimes 0)
+		)
 	)
 	(User mapKeyToDir: FALSE canInput: TRUE)
 	(ego viewer: 0 illegalBits: 0 ignoreActors:)
@@ -56,7 +67,7 @@
 	(Bset fNotShower)
 	(Bset fNotUseSoap)
 	(Bset fNotUseDeodorant)
-	(NormalEgo 2 (+ 704 larryBuffed))
+	(NormalEgo loopS (+ 704 larryBuffed))
 	(ego
 		posn: oldEgoX oldEgoY
 		setPri: oldEgoPriority
@@ -131,17 +142,17 @@
 		(= pullUps requiredNum)
 		(= poundsPumped requiredNum)
 		(= legCurls requiredNum)
-		(NormalEgo 1 (+ 704 larryBuffed))
+		(NormalEgo loopW (+ 704 larryBuffed))
 		(ego posn: 270 175 setPri: 9 viewer: egoViewer init:)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0040) (curRoom newRoom: 370))
+		(if (& (ego onControl:) cBROWN)
+			(curRoom newRoom: 370)
+		)
 	)
 	
 	(method (changeState newState)
@@ -174,7 +185,10 @@
 				(aLegCurlBar hide:)
 				(self cue:)
 			)
-			(2 (= local2 1) (= local12 3))
+			(2
+				(= local2 1)
+				(= local12 3)
+			)
 			(3
 				(= local12 1)
 				(ego cel: 0 setCycle: EndLoop)
@@ -199,7 +213,11 @@
 			)
 			(6)
 			(7
-				(User mapKeyToDir: 1 canInput: 0 canControl: 0)
+				(User
+					mapKeyToDir: TRUE
+					canInput: FALSE
+					canControl: FALSE
+				)
 				(aCenterWeight setMotion: MoveTo 153 166 self)
 				(aActor1 setMotion: MoveTo 155 50 self)
 			)
@@ -234,7 +252,10 @@
 				(ego setPri: 13 setLoop: 2 posn: 219 159)
 				(self cue:)
 			)
-			(12 (= local2 1) (= local12 3))
+			(12
+				(= local2 1)
+				(= local12 3)
+			)
 			(13
 				(= local12 1)
 				(ego cel: 0 setCycle: EndLoop self)
@@ -259,7 +280,11 @@
 			)
 			(16)
 			(17
-				(User mapKeyToDir: TRUE canInput: FALSE canControl: FALSE)
+				(User
+					mapKeyToDir: TRUE
+					canInput: FALSE
+					canControl: FALSE
+				)
 				(aBigEgo posn: 1234 1234 setMotion: 0)
 				(aActor1 posn: 155 34 setMotion: 0 stopUpd:)
 				(aRoundBar show:)
@@ -271,7 +296,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(18 (StopExercising))
+			(18
+				(StopExercising)
+			)
 			(19
 				(ego
 					illegalBits: 0
@@ -301,7 +328,10 @@
 				(aBigEgo view: 384 setLoop: 0 posn: 302 1)
 				(self cue:)
 			)
-			(22 (= local2 1) (= local12 3))
+			(22
+				(= local2 1)
+				(= local12 3)
+			)
 			(23
 				(= local12 1)
 				(ego setCycle: EndLoop)
@@ -361,7 +391,10 @@
 				(aBarPullBarView hide:)
 				(self cue:)
 			)
-			(30 (= local2 1) (= local12 4))
+			(30
+				(= local2 1)
+				(= local12 4)
+			)
 			(31
 				(= local12 2)
 				(ego setCycle: EndLoop)
@@ -388,7 +421,11 @@
 			)
 			(34)
 			(35
-				(User mapKeyToDir: 1 canInput: 0 canControl: 0)
+				(User
+					mapKeyToDir: TRUE
+					canInput: FALSE
+					canControl: FALSE
+				)
 				(aCenterWeight setMotion: MoveTo 153 166 self)
 				(aActor1 setMotion: MoveTo 155 50 self)
 				(aBarPullBarView show: stopUpd:)
@@ -406,7 +443,7 @@
 				(= larryBuffed 20)
 				(= local3 1)
 				(= currentEgoView 720)
-				(NormalEgo 2 724)
+				(NormalEgo loopS 724)
 				(HandsOff)
 				(= seconds 3)
 			)
@@ -414,14 +451,14 @@
 				(Print 380 21)
 				(music number: 380 loop: musicLoop play:)
 				(= local1 0)
-				(NormalEgo 2 704)
+				(NormalEgo loopS 704)
 				(HandsOff)
 				(= saveSpeed (theGame setSpeed: 6))
 				(= seconds 3)
 			)
 			(41
 				(ego
-					illegalBits: 64
+					illegalBits: cBROWN
 					ignoreActors:
 					view: 385
 					setLoop: local1
@@ -431,10 +468,16 @@
 			)
 			(42
 				(cond 
-					((== 0 local1) (Print 380 22))
-					((== 3 local1) (Print 380 23))
+					((== 0 local1)
+						(Print 380 22)
+					)
+					((== 3 local1)
+						(Print 380 23)
+					)
 				)
-				(if (>= 4 (++ local1)) (= state (- state 2)))
+				(if (>= 4 (++ local1))
+					(-= state 2)
+				)
 				(= cycles 11)
 			)
 			(43
@@ -504,7 +547,7 @@
 				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(59
-				(NormalEgo 0 724)
+				(NormalEgo loopE 724)
 				(ego viewer: egoViewer)
 				(theGame changeScore: 100)
 				(Print 380 29)
@@ -526,8 +569,13 @@
 						(== (event message?) PAGEUP)
 					)
 					(cond 
-						((== local12 3) (self cue:))
-						((== local12 2) (++ state) (self cue:))
+						((== local12 3)
+							(self cue:)
+						)
+						((== local12 2)
+							(++ state)
+							(self cue:)
+						)
 					)
 				)
 				(
@@ -537,8 +585,13 @@
 						(== (event message?) PAGEDOWN)
 					)
 					(cond 
-						((== local12 4) (self cue:))
-						((== local12 1) (++ state) (self cue:))
+						((== local12 4)
+							(self cue:)
+						)
+						((== local12 1)
+							(++ state)
+							(self cue:)
+						)
 					)
 				)
 			)
@@ -561,7 +614,9 @@
 			)
 			((Said 'lie,(work<out),use')
 				(cond 
-					(currentActivity (Print 380 0))
+					(currentActivity
+						(Print 380 0)
+					)
 					((& (ego onControl:) cCYAN)
 						(if (>= requiredLegCurls legCurls)
 							(Print 380 1)
@@ -590,7 +645,10 @@
 							(self changeState: 28)
 						)
 					)
-					(else (Print 380 5) (Print 380 6))
+					(else
+						(Print 380 5)
+						(Print 380 6)
+					)
 				)
 			)
 			(
@@ -601,10 +659,18 @@
 					(Said 'drag/bar')
 				)
 				(cond 
-					(currentActivity (Print 380 0))
-					((>= requiredBarPulls barPulls) (Print 380 7))
-					((& (ego onControl:) $0020) (self changeState: 28))
-					(else (Print 380 8))
+					(currentActivity
+						(Print 380 0)
+					)
+					((>= requiredBarPulls barPulls)
+						(Print 380 7)
+					)
+					((& (ego onControl:) cMAGENTA)
+						(self changeState: 28)
+					)
+					(else
+						(Print 380 8)
+					)
 				)
 			)
 			(
@@ -614,10 +680,18 @@
 					(Said 'use/curl')
 				)
 				(cond 
-					(currentActivity (Print 380 0))
-					((>= requiredLegCurls legCurls) (Print 380 9))
-					((& (ego onControl:) cCYAN) (self changeState: 1))
-					(else (Print 380 10))
+					(currentActivity
+						(Print 380 0)
+					)
+					((>= requiredLegCurls legCurls)
+						(Print 380 9)
+					)
+					((& (ego onControl:) cCYAN)
+						(self changeState: 1)
+					)
+					(else
+						(Print 380 10)
+					)
 				)
 			)
 			(
@@ -629,10 +703,18 @@
 					(Said 'increase,use/drag,bell,bell')
 				)
 				(cond 
-					(currentActivity (Print 380 0))
-					((>= requiredPoundsPumped poundsPumped) (Print 380 11))
-					((& (ego onControl:) cGREEN) (self changeState: 10))
-					(else (Print 380 12))
+					(currentActivity
+						(Print 380 0)
+					)
+					((>= requiredPoundsPumped poundsPumped)
+						(Print 380 11)
+					)
+					((& (ego onControl:) cGREEN)
+						(self changeState: 10)
+					)
+					(else
+						(Print 380 12)
+					)
 				)
 			)
 			(
@@ -644,15 +726,28 @@
 					(Said 'use/pullup')
 				)
 				(cond 
-					(currentActivity (Print 380 0))
-					((>= requiredPullUps pullUps) (Print 380 13))
-					((& (ego onControl:) $0010) (self changeState: 19))
+					(currentActivity
+						(Print 380 0)
+					)
+					((>= requiredPullUps pullUps)
+						(Print 380 13)
+					)
+					((& (ego onControl:) cRED)
+						(self changeState: 19)
+					)
 					(else (Print 380 14))
 				)
 			)
-			((Said 'perspiration') (if currentActivity (YouAre) else (Print 380 15)))
-			(
-			(and (Said 'look>') (Said '[/equipment,pos,area]')) (Print 380 16))
+			((Said 'perspiration')
+				(if currentActivity
+					(YouAre)
+				else
+					(Print 380 15)
+				)
+			)
+			((and (Said 'look>') (Said '[/equipment,pos,area]'))
+				(Print 380 16)
+			)
 		)
 	)
 )
@@ -787,13 +882,17 @@
 )
 
 (instance egoViewer of Code
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((< (ego y?) 172) (ego setPri: 4))
-			((& (ego onControl:) $0002) (ego setPri: 9))
-			(else (ego setPri: -1))
+			((< (ego y?) 172)
+				(ego setPri: 4)
+			)
+			((& (ego onControl:) cBLUE)
+				(ego setPri: 9)
+			)
+			(else
+				(ego setPri: -1)
+			)
 		)
 	)
 )

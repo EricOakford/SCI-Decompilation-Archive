@@ -15,7 +15,7 @@
 
 (local
 	local0
-	local1
+	congratsMsg
 	[plotString 222]
 )
 (procedure (PrintPlot theWidth &tmp t)
@@ -69,11 +69,11 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(Format @plotString 650 0)
 				(= seconds (PrintPlot))
@@ -108,13 +108,19 @@
 			(8
 				(ego setMotion: MoveTo 64 100 self)
 			)
-			(9 (aDoor setCycle: EndLoop self))
+			(9
+				(aDoor setCycle: EndLoop self)
+			)
 			(10
 				(ego posn: 999 999)
 				(= seconds 3)
 			)
-			(11 (aDoor setCycle: BegLoop self))
-			(12 (= seconds 6))
+			(11
+				(aDoor setCycle: BegLoop self)
+			)
+			(12
+				(= seconds 6)
+			)
 			(13
 				(aMonitor hide:)
 				(aDoor posn: 234 345)
@@ -126,7 +132,7 @@
 				(= seconds 3)
 			)
 			(15
-				(if local1
+				(if congratsMsg
 					(= seconds 7)
 					(= state 6)
 				else
@@ -138,7 +144,7 @@
 				(= seconds 3)
 			)
 			(17
-				(= local1 1)
+				(= congratsMsg TRUE)
 				(Format @plotString 650 6)
 				(= seconds (PrintPlot))
 			)
@@ -219,7 +225,9 @@
 					(= seconds (PrintPlot))
 				)
 			)
-			(27 (= state 6))
+			(27
+				(= state 6)
+			)
 		)
 	)
 	
@@ -289,12 +297,24 @@
 	(method (doit &tmp temp0)
 		(super doit:)
 		(cond 
-			((== (= temp0 (Random 0 33)) 1) (self posn: 100 178))
-			((== temp0 2) (self posn: 101 184))
-			((== temp0 3) (self posn: 34 180))
-			((== temp0 4) (self posn: 36 184))
-			((< temp0 17) (self cel: 0))
-			(else (self cel: 1))
+			((== (= temp0 (Random 0 33)) 1)
+				(self posn: 100 178)
+			)
+			((== temp0 2)
+				(self posn: 101 184)
+			)
+			((== temp0 3)
+				(self posn: 34 180)
+			)
+			((== temp0 4)
+				(self posn: 36 184)
+			)
+			((< temp0 17)
+				(self cel: 0)
+			)
+			(else
+				(self cel: 1)
+			)
 		)
 	)
 )
@@ -316,11 +336,21 @@
 	(method (doit &tmp temp0)
 		(super doit:)
 		(cond 
-			((== (= temp0 (Random 0 33)) 1) (self posn: 11 173))
-			((== temp0 2) (self posn: 18 180))
-			((== temp0 3) (self posn: 8 185))
-			((< temp0 17) (self cel: 0))
-			(else (self cel: 1))
+			((== (= temp0 (Random 0 33)) 1)
+				(self posn: 11 173)
+			)
+			((== temp0 2)
+				(self posn: 18 180)
+			)
+			((== temp0 3)
+				(self posn: 8 185)
+			)
+			((< temp0 17)
+				(self cel: 0)
+			)
+			(else
+				(self cel: 1)
+			)
 		)
 	)
 )
@@ -342,8 +372,12 @@
 		(super doit:)
 		(if (== loop 3)
 			(switch (Random 0 7)
-				(1 (self setCycle: Forward))
-				(2 (self setCycle: Reverse))
+				(1
+					(self setCycle: Forward)
+				)
+				(2
+					(self setCycle: Reverse)
+				)
 				(3
 					(self cycleSpeed: (Random 0 1))
 				)

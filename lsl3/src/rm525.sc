@@ -52,8 +52,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -74,7 +72,9 @@
 				(music stop: number: 3 loop: 1 play:)
 				(ego setCycle: EndLoop self)
 			)
-			(3 (ego setCycle: BegLoop self))
+			(3
+				(ego setCycle: BegLoop self)
+			)
 			(4
 				(music stop: number: 526 loop: 1 play:)
 				(ego setCycle: EndLoop self)
@@ -82,7 +82,9 @@
 			(5
 				(ego setLoop: 1 setCel: 0 setCycle: EndLoop self)
 			)
-			(6 (ego setCycle: BegLoop self))
+			(6
+				(ego setCycle: BegLoop self)
+			)
 			(7
 				(ego setLoop: 0 setCel: 255 setCycle: BegLoop self)
 			)
@@ -96,7 +98,9 @@
 			(10
 				(ego setLoop: 2 setCel: 0 setCycle: EndLoop self)
 			)
-			(11 (ego setCycle: BegLoop self))
+			(11
+				(ego setCycle: BegLoop self)
+			)
 			(12
 				(ego setLoop: 1 setCel: 255 setCycle: BegLoop self)
 			)
@@ -150,8 +154,6 @@
 )
 
 (instance theJump of Jump
-	(properties)
-	
 	(method (init)
 		(super init: ego RoomScript)
 		(self yStep: 1 y: 183)

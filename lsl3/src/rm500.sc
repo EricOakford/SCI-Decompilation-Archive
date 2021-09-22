@@ -17,32 +17,31 @@
 (local
 	[msgBuf 66]
 	[titleBuf 22]
-	[local88 20] = [-16564 5177 19666 27846 18175 19476 14668 -11668 -14778 -2049 -12039 -6221 -28275 -28200 -29441 -24077 -12441 8987 9137 6655]
-	local108 =  500
-	local109
+	local88 = [-16564 5177 19666 27846 18175 19476 14668 -11668 -14778 -2049 -12039 -6221 -28275 -28200 -29441 -24077 -12441 8987 9137 6655]
+	thePic =  500
+	bambooRoom
 	thirstTimer
-	gEgoEdgeHit
+	theEdge
 )
 (procedure (proc500_1 &tmp temp0)
-	(curRoom drawPic: local108)
-	(if (proc500_2 (+ 0 local109))
-		(curRoom overlay: (+ local108 4))
+	(curRoom drawPic: thePic)
+	(if (proc500_2 (+ 0 bambooRoom))
+		(curRoom overlay: (+ thePic 4))
 	)
-	(if (proc500_2 (+ 80 local109))
-		(curRoom overlay: (+ local108 2))
+	(if (proc500_2 (+ 80 bambooRoom))
+		(curRoom overlay: (+ thePic 2))
 	)
-	(if (proc500_2 (+ 240 local109))
-		(curRoom overlay: (+ local108 3))
+	(if (proc500_2 (+ 240 bambooRoom))
+		(curRoom overlay: (+ thePic 3))
 	)
-	(if (proc500_2 (+ 160 local109))
-		(curRoom overlay: (+ local108 1))
+	(if (proc500_2 (+ 160 bambooRoom))
+		(curRoom overlay: (+ thePic 1))
 	)
 )
 
 (procedure (proc500_2 param1)
 	(return
-		(if
-		(& [local88 (/ param1 16)] (>> $8000 (mod param1 16)))
+		(if (& [local88 (/ param1 16)] (>> $8000 (mod param1 16)))
 			1
 		else
 			0
@@ -56,17 +55,17 @@
 		horizon 22
 	)
 	
-	(method (init &tmp temp0)
-		(= temp0 500)
-		(while (< temp0 510)
-			(Load PICTURE temp0)
-			(++ temp0)
+	(method (init &tmp i)
+		(for ((= i 500)) (< i 510) ((++ i))
+			(Load PICTURE i)
 		)
 		(Load VIEW 800)
 		(Load VIEW 501)
 		(Load VIEW 502)
 		(Load VIEW 503)
-		(if (ego has: iWineBottle) (Load VIEW ((Inventory at: iWineBottle) view?)))
+		(if (ego has: iWineBottle)
+			(Load VIEW ((Inventory at: iWineBottle) view?))
+		)
 		(Load SOUND 501)
 		(Load SOUND 502)
 		(Load SOUND 503)
@@ -79,10 +78,10 @@
 		(self setScript: RoomScript)
 		(if (== prevRoomNum 510)
 			(ego posn: 177 26)
-			(= local109 1)
+			(= bambooRoom 1)
 		else
 			(ego posn: (Random 130 234) 188)
-			(= local109 68)
+			(= bambooRoom 68)
 		)
 		(proc500_1)
 		(NormalEgo)
@@ -91,36 +90,45 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (ego edgeHit?)
-			(= gEgoEdgeHit (ego edgeHit?))
+			(= theEdge (ego edgeHit?))
 			(ego edgeHit: 0 illegalBits: 0)
 			(theGame setCursor: waitCursor TRUE)
 			(HandsOff)
 			(++ thirstTimer)
 			(self changeState: 0)
 			(cond 
-				((< thirstTimer 8) (ego view: 800 moveSpeed: 0))
+				((< thirstTimer 8)
+					(ego view: 800 moveSpeed: 0)
+				)
 				((< thirstTimer 14)
 					(ego view: 501 moveSpeed: 0)
-					(if (!= 501 (music number?)) (music fade:))
+					(if (!= 501 (music number?))
+						(music fade:)
+					)
 				)
 				((< thirstTimer 17)
 					(ego view: 502 moveSpeed: 1)
-					(if (!= 502 (music number?)) (music fade:))
+					(if (!= 502 (music number?))
+						(music fade:)
+					)
 				)
 				((< thirstTimer 18)
 					(ego view: 503 moveSpeed: 2)
-					(if (!= 503 (music number?)) (music fade:))
+					(if (!= 503 (music number?))
+						(music fade:)
+					)
 				)
-				(else (ego view: 503 moveSpeed: 3) (self changeState: 2))
+				(else
+					(ego view: 503 moveSpeed: 3)
+					(self changeState: 2)
+				)
 			)
-			(switch gEgoEdgeHit
-				(1
-					(if (== local109 1)
+			(switch theEdge
+				(NORTH
+					(if (== bambooRoom 1)
 						(music fade:)
 						(if (not (Btst fPassedMaze))
 							(theGame changeScore: 100)
@@ -130,39 +138,55 @@
 						(curRoom newRoom: 510)
 						(return)
 					else
-						(= local109 (- local109 8))
+						(-= bambooRoom 8)
 					)
 				)
-				(3
-					(if (== local109 68)
+				(SOUTH
+					(if (== bambooRoom 68)
 						(curRoom newRoom: 245)
 						(return)
 					else
-						(= local109 (+ local109 8))
+						(+= bambooRoom 8)
 					)
 				)
-				(2 (++ local109))
-				(4 (-- local109))
+				(EAST
+					(++ bambooRoom)
+				)
+				(WEST
+					(-- bambooRoom)
+				)
 			)
-			(if (== local108 505)
-				(= local108 500)
-				(switch gEgoEdgeHit
-					(1
+			(if (== thePic 505)
+				(= thePic 500)
+				(switch theEdge
+					(NORTH
 						(ego posn: (Random 130 234) 187)
 					)
-					(3 (ego posn: 177 26))
-					(2 (ego posn: 1 74))
-					(else  (ego posn: 317 74))
+					(SOUTH
+						(ego posn: 177 26)
+					)
+					(EAST
+						(ego posn: 1 74)
+					)
+					(else
+						(ego posn: 317 74)
+					)
 				)
 			else
-				(= local108 505)
-				(switch gEgoEdgeHit
-					(1
+				(= thePic 505)
+				(switch theEdge
+					(NORTH
 						(ego posn: (Random 80 163) 187)
 					)
-					(3 (ego posn: 188 26))
-					(2 (ego posn: 1 83))
-					(else  (ego posn: 314 128))
+					(SOUTH
+						(ego posn: 188 26)
+					)
+					(EAST
+						(ego posn: 1 83)
+					)
+					(else
+						(ego posn: 314 128)
+					)
 				)
 			)
 			(proc500_1)
@@ -180,7 +204,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 4))
+			(0
+				(= seconds 4)
+			)
 			(1
 				(cond 
 					(
@@ -209,9 +235,15 @@
 					)
 				)
 				(cond 
-					((== thirstTimer 4) (Print 500 13))
-					((== thirstTimer 8) (Print 500 14))
-					((== thirstTimer 12) (Print 500 15))
+					((== thirstTimer 4)
+						(Print 500 13)
+					)
+					((== thirstTimer 8)
+						(Print 500 14)
+					)
+					((== thirstTimer 12)
+						(Print 500 15)
+					)
 					((== thirstTimer 16)
 						(Print 500 16)
 						(Print 500 17)
@@ -220,7 +252,9 @@
 					)
 				)
 			)
-			(2 (= seconds 3))
+			(2
+				(= seconds 3)
+			)
 			(3
 				(Print 500 20)
 				(= seconds 3)
@@ -253,16 +287,23 @@
 	)
 	
 	(method (handleEvent event &tmp temp0)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return (event claimed?))
 		)
 		(return
 			(cond 
-				((Said 'get/bamboo') (Print 500 2))
-				((Said 'climb/bamboo') (Print 500 3))
-				((Said 'attack/bamboo') (Print 500 4))
-				((Said 'nightstand,(get,nightstand<up)') (Print 500 5))
+				((Said 'get/bamboo')
+					(Print 500 2)
+				)
+				((Said 'climb/bamboo')
+					(Print 500 3)
+				)
+				((Said 'attack/bamboo')
+					(Print 500 4)
+				)
+				((Said 'nightstand,(get,nightstand<up)')
+					(Print 500 5)
+				)
 				(
 					(or
 						(Said 'sip/water')
@@ -270,9 +311,15 @@
 						(Said 'use,drink,drain/water,beer,bottle')
 					)
 					(cond 
-						((!= currentStatus 0) (GoodIdea))
-						((not (ego has: iWineBottle)) (DontHave))
-						((== ((Inventory at: iWineBottle) view?) 28) (Print 500 6 #icon 28 0 0))
+						((!= currentStatus egoNORMAL)
+							(GoodIdea)
+						)
+						((not (ego has: iWineBottle))
+							(DontHave)
+						)
+						((== ((Inventory at: iWineBottle) view?) 28)
+							(Print 500 6 #icon 28 0 0)
+						)
 						(else
 							(Ok)
 							(theGame changeScore: 20)
@@ -289,7 +336,10 @@
 				)
 				((Said 'look>')
 					(cond 
-						((Said '[/area]') (Print 500 9) (Print 500 10 #at -1 144))
+						((Said '[/area]')
+							(Print 500 9)
+							(Print 500 10 #at -1 144)
+						)
 						((Said '/bamboo')
 							(Print 500 11)
 							(Print (Format @msgBuf 500 12 bambooStalksSeen) #at -1 144)
@@ -303,8 +353,6 @@
 )
 
 (instance SteadyBase of Code
-	(properties)
-	
 	(method (doit)
 		(ego brBottom: (+ (ego y?) 1))
 		(ego brTop: (- (ego brBottom?) 2))
@@ -313,11 +361,8 @@
 	)
 )
 
-(class SlowWalk of Forward
+(instance SlowWalk of Forward	;was a class, but not in the table
 	(properties
-		client 0
-		caller 0
-		cycleDir 1
 		cycleCnt 0
 		completed 0
 	)

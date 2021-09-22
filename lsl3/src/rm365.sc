@@ -65,13 +65,15 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
-			(0 (= seconds 3))
-			(1 (aDoor setCycle: EndLoop self))
+			(0
+				(= seconds 3)
+			)
+			(1
+				(aDoor setCycle: EndLoop self)
+			)
 			(2
 				(music stop:)
 				(soundFX number: 11 loop: 1 play:)
@@ -269,30 +271,32 @@
 )
 
 (instance humpCycler of Code	;EO: This seesm to be an unused duplicate of egoHumpCycler
-	(properties)
-	
-	(method (doit &tmp temp0)
+	(method (doit &tmp randVal)
 		(cond 
-			((<= filthLevel 2) (ego stopUpd:) (aBambi stopUpd:))
+			((<= filthLevel 2)
+				(ego stopUpd:)
+				(aBambi stopUpd:)
+			)
 			((not (Random 0 9))
-				(= temp0 (Random 0 5))
-				(ego cycleSpeed: temp0)
-				(aBambi cycleSpeed: temp0)
+				(= randVal (Random 0 5))
+				(ego cycleSpeed: randVal)
+				(aBambi cycleSpeed: randVal)
 			)
 		)
 	)
 )
 
 (instance egoHumpCycler of Code
-	(properties)
-	
-	(method (doit &tmp temp0)
+	(method (doit &tmp randVal)
 		(cond 
-			((<= filthLevel 2) (ego stopUpd:) (aBambi stopUpd:))
+			((<= filthLevel 2)
+				(ego stopUpd:)
+				(aBambi stopUpd:)
+			)
 			((not (Random 0 9))
-				(= temp0 (Random 0 5))
-				(ego cycleSpeed: temp0)
-				(aBambi cycleSpeed: temp0)
+				(= randVal (Random 0 5))
+				(ego cycleSpeed: randVal)
+				(aBambi cycleSpeed: randVal)
 			)
 		)
 	)

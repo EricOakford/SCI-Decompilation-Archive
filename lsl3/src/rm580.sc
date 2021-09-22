@@ -42,8 +42,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [str 100])
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
@@ -99,7 +97,10 @@
 				(ego setCycle: EndLoop setMotion: MoveTo -47 164 show:)
 				(= cycles 11)
 			)
-			(9 (Print 580 2) (= cycles 22))
+			(9
+				(Print 580 2)
+				(= cycles 22)
+			)
 			(10
 				(Woman2Script cue:)
 				(aWoman1 setLoop: 3 cel: 0 setCycle: EndLoop self)
@@ -131,7 +132,9 @@
 				)
 				(= cycles 11)
 			)
-			(14 (Print 580 4 #at -1 144))
+			(14
+				(Print 580 4 #at -1 144)
+			)
 		)
 	)
 )
@@ -195,15 +198,17 @@
 			(5
 				(aWoman2 setLoop: 5 setMotion: MoveTo -20 60 self)
 			)
-			(6 (curRoom newRoom: 585))
+			(6
+				(curRoom newRoom: 585)
+			)
 		)
 	)
 )
 
 (instance HeadTurner of Code
-	(properties)
-	
 	(method (doit)
-		(if (not (Random 0 3)) (ego setCel: (Random 0 4)))
+		(if (not (Random 0 3))
+			(ego setCel: (Random 0 4))
+		)
 	)
 )

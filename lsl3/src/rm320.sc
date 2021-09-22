@@ -30,7 +30,9 @@
 	)
 	
 	(method (init)
-		(if (= dollars 500) (Load VIEW 24))
+		(if (= dollars 500)
+			(Load VIEW 24)
+		)
 		(Load SOUND 323)
 		(super init:)
 		(addToPics
@@ -41,11 +43,18 @@
 			add: atpFax
 			doit:
 		)
-		(aDoor init: locked: 1)
-		(if playingAsPatti (= lawyerState 8))
+		(aDoor
+			init:
+			locked: TRUE
+		)
+		(if playingAsPatti
+			(= lawyerState LSdone)
+		)
 		(if (< lawyerState LSdone)
 			(aRoger init:)
-			(if (> machineSpeed 16) (aFax init:))
+			(if (> machineSpeed 16)
+				(aFax init:)
+			)
 		)
 		(self setScript: RoomScript)
 		(if (or (== prevRoomNum 323) (== prevRoomNum 324))
@@ -60,20 +69,20 @@
 		(ego init:)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(cond 
-			(
-			(and (== lawyerState 2) (== (ego edgeHit?) 3)) (= lawyerState 3))
-			(
-			(and (== lawyerState 6) (== (ego edgeHit?) 3)) (= lawyerState 7))
+			((and (== lawyerState LSwaiting4Deed) (== (ego edgeHit?) SOUTH))
+				(= lawyerState LSdeedReady)
+			)
+			((and (== lawyerState LSWaiting4Divorce) (== (ego edgeHit?) SOUTH))
+				(= lawyerState LSdivorceReady)
+			)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 4)
 		(switch (= state newState)
@@ -85,7 +94,7 @@
 			)
 			(3
 				(HandsOff)
-				(aDoor locked: 0)
+				(aDoor locked: FALSE)
 				(ego illegalBits: 0 setMotion: MoveTo 233 (ego y?) self)
 			)
 			(4
@@ -112,32 +121,58 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'get/palm') (Print 320 0))
-			((Said '/equipment') (Print 320 1) (Print 320 2 #at -1 144))
-			((Said '/computer') (Print 320 3))
-			((Said '/call') (Print 320 4))
+			((Said 'get/palm')
+				(Print 320 0)
+			)
+			((Said '/equipment')
+				(Print 320 1)
+				(Print 320 2 #at -1 144)
+			)
+			((Said '/computer')
+				(Print 320 3)
+			)
+			((Said '/call')
+				(Print 320 4)
+			)
 			((Said 'look>')
 				(cond 
-					((Said '/palm') (Print 320 5))
-					((Said '/awning,wall') (Print 320 6))
-					((Said '/burn,ceiling') (Print 320 7))
-					((Said '/buffet,buffet,buffet') (Print 320 8))
+					((Said '/palm')
+						(Print 320 5)
+					)
+					((Said '/awning,wall')
+						(Print 320 6)
+					)
+					((Said '/burn,ceiling')
+						(Print 320 7)
+					)
+					((Said '/buffet,buffet,buffet')
+						(Print 320 8)
+					)
 					((Said '/door')
 						(cond 
-							((& (ego onControl:) $0008) (Print 320 9))
-							((& (ego onControl:) $0002) (Print 320 10))
-							((& (ego onControl:) $0010) (Print 320 11))
-							(else (Print 320 12))
+							((& (ego onControl:) cCYAN)
+								(Print 320 9)
+							)
+							((& (ego onControl:) cBLUE)
+								(Print 320 10)
+							)
+							((& (ego onControl:) cRED)
+								(Print 320 11)
+							)
+							(else
+								(Print 320 12)
+							)
 						)
 					)
 					((Said '[/area]')
 						(Print 320 13)
-						(if (cast contains: aRoger) (Print 320 14))
+						(if (cast contains: aRoger)
+							(Print 320 14)
+						)
 					)
 				)
 			)
@@ -146,8 +181,6 @@
 )
 
 (instance SecretaryScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 2 2)
 		(switch (= state newState)
@@ -158,13 +191,25 @@
 				(= seconds (Random 3 6))
 			)
 			(1
-				(if (== local301 0) (= local301 (Random 320 327)))
+				(if (== local301 0)
+					(= local301 (Random 320 327))
+				)
 				(cond 
-					((!= str 0) (self changeState: 2))
-					((== local301 320) (self changeState: 4))
-					((== local301 323) (self changeState: 6))
-					((== local301 321) (self changeState: 9))
-					(else (self changeState: 0))
+					((!= str 0)
+						(self changeState: 2)
+					)
+					((== local301 320)
+						(self changeState: 4)
+					)
+					((== local301 323)
+						(self changeState: 6)
+					)
+					((== local301 321)
+						(self changeState: 9)
+					)
+					(else
+						(self changeState: 0)
+					)
 				)
 			)
 			(2
@@ -188,8 +233,10 @@
 					#mode teJustCenter
 					#icon 321 5 0
 				)
-				(User canInput: 1)
-				(if (== (RoomScript state?) 2) (RoomScript cue:))
+				(User canInput: TRUE)
+				(if (== (RoomScript state?) 2)
+					(RoomScript cue:)
+				)
 				(= str 0)
 				(= cycles 22)
 				(= state -1)
@@ -201,12 +248,18 @@
 			(5
 				(aRoger setCel: 0)
 				(= cycles (Random 9 19))
-				(if (Random 0 2) (= state 3) else (= state -1))
+				(if (Random 0 2)
+					(= state 3)
+				else
+					(= state -1)
+				)
 			)
 			(6
 				(aRoger cycleSpeed: 2 loop: 4 cel: 0 setCycle: EndLoop self)
 			)
-			(7 (= cycles (Random 9 19)))
+			(7
+				(= cycles (Random 9 19))
+			)
 			(8
 				(aRoger setCycle: BegLoop self)
 				(= state -1)
@@ -221,7 +274,9 @@
 			(11
 				(aRoger setCel: 0)
 				(= cycles (Random 9 19))
-				(if (Random 0 3) (= state 9))
+				(if (Random 0 3)
+					(= state 9)
+				)
 			)
 			(12
 				(aRoger loop: 0 setCel: 255 setCycle: BegLoop self)
@@ -231,8 +286,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -244,10 +298,15 @@
 					(Said 'address')
 				)
 				(cond 
-					((not (& (ego onControl:) $0020)) (NotClose))
-					(
-					(and (!= currentStatus egoNORMAL) (!= currentStatus egoSHOWGIRL)) (GoodIdea))
-					((!= local301 0) (Print 320 17))
+					((not (& (ego onControl:) cMAGENTA))
+						(NotClose)
+					)
+					((and (!= currentStatus egoNORMAL) (!= currentStatus egoSHOWGIRL))
+						(GoodIdea)
+					)
+					((!= local301 0)
+						(Print 320 17)
+					)
 					(else
 						(User canInput: FALSE)
 						(switch lawyerState
@@ -329,11 +388,18 @@
 					(Said 'give,buy,use//buck,man,charge,500,bill,500')
 				)
 				(cond 
-					((not (ego has: iMoney)) (Print 320 36))
-					((not (& (ego onControl:) $0020)) (NotClose))
-					(
-					(and (!= currentStatus egoNORMAL) (!= currentStatus egoSHOWGIRL)) (GoodIdea))
-					((!= local301 0) (Print 320 17))
+					((not (ego has: iMoney))
+						(Print 320 36)
+					)
+					((not (& (ego onControl:) cMAGENTA))
+						(NotClose)
+					)
+					((and (!= currentStatus egoNORMAL) (!= currentStatus egoSHOWGIRL))
+						(GoodIdea)
+					)
+					((!= local301 0)
+						(Print 320 17)
+					)
 					((== lawyerState LSbusy)
 						(User canInput: FALSE)
 						(Format @str 320 37)
@@ -349,7 +415,10 @@
 						(Format @str 320 39)
 						(self changeState: 2)
 					)
-					((!= dollars 500) (Print 320 40) (Print 320 41 #at -1 144))
+					((!= dollars 500)
+						(Print 320 40)
+						(Print 320 41 #at -1 144)
+					)
 					(else
 						(Ok)
 						(= lawyerState LSdivorce)
@@ -378,10 +447,15 @@
 					(Said '//decree,document,(document<decree)')
 				)
 				(cond 
-					((not (& (ego onControl:) $0020)) (NotClose))
-					(
-					(and (!= currentStatus egoNORMAL) (!= currentStatus egoSHOWGIRL)) (GoodIdea))
-					((!= local301 0) (Print 320 17))
+					((not (& (ego onControl:) cMAGENTA))
+						(NotClose)
+					)
+					((and (!= currentStatus egoNORMAL) (!= currentStatus egoSHOWGIRL))
+						(GoodIdea)
+					)
+					((!= local301 0)
+						(Print 320 17)
+					)
 					((== lawyerState LSbusy)
 						(User canInput: FALSE)
 						(Printf 320 44 introductoryPhrase)
@@ -438,22 +512,30 @@
 					)
 				)
 			)
-			((and (ego has: iLandDeed) (Said 'look/deed,land')) (event claimed: FALSE) (return))
+			((and (ego has: iLandDeed) (Said 'look/deed,land'))
+				(event claimed: FALSE)
+				(return)
+			)
 			((or (Said '//deed,land') (Said '/deed,land'))
 				(cond 
-					((not (& (ego onControl:) cMAGENTA)) (NotClose))
-					(
-					(and (!= currentStatus egoNORMAL) (!= currentStatus egoSHOWGIRL)) (GoodIdea))
-					((!= local301 0) (Print 320 17))
+					((not (& (ego onControl:) cMAGENTA))
+						(NotClose)
+					)
+					((and (!= currentStatus egoNORMAL) (!= currentStatus egoSHOWGIRL))
+						(GoodIdea)
+					)
+					((!= local301 0)
+						(Print 320 17)
+					)
 					((== lawyerState LSbusy)
-						(User canInput: 0)
+						(User canInput: FALSE)
 						(Printf 320 44 introductoryPhrase)
 						(Print 320 59)
 						(Format @str 320 60)
 						(self changeState: 2)
 					)
 					((== lawyerState LSfree)
-						(User canInput: 0)
+						(User canInput: FALSE)
 						(Printf 320 44 introductoryPhrase)
 						(Print 320 61)
 						(Format @str 320 62)
@@ -494,7 +576,7 @@
 		view 320
 		loop 1
 		priority 9
-		signal $4000
+		signal ignrAct
 	)
 )
 
@@ -551,12 +633,12 @@
 	(method (init)
 		(super init:)
 		(self
-			cycleType: 1
+			cycleType: ExtraEndLoop
 			pauseCel: -2
 			minPause: 99
 			maxPause: 999
 			setPri: 12
-			isExtra: 1
+			isExtra: TRUE
 			ignoreActors:
 			startExtra:
 		)

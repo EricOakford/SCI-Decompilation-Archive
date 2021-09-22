@@ -161,27 +161,31 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(theGame setSpeed: 6)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp len)
 		(ChangeScriptState self newState 1 4)
 		(switch (= state newState)
-			(0 (= cycles 33))
+			(0
+				(= cycles 33)
+			)
 			(1
 				(Format @str 482 1)
 				(PrintLarry cue:)
 			)
-			(2 (= cycles 22))
+			(2
+				(= cycles 22)
+			)
 			(3
 				(Format @str 482 2)
 				(PrintPatti cue:)
 			)
-			(4 (= cycles 22))
+			(4
+				(= cycles 22)
+			)
 			(5
 				(Format @str 482 3)
 				(PrintLarry cue:)
@@ -195,33 +199,43 @@
 				(Format @str 482 4)
 				(PrintLarry cue:)
 			)
-			(8 (= cycles 22))
+			(8
+				(= cycles 22)
+			)
 			(9
 				(Format @str 482 5)
 				(PrintPatti cue:)
 			)
-			(10 (= cycles 33))
+			(10
+				(= cycles 33)
+			)
 			(11
 				(Format @str 482 6)
 				(= seconds
-					(= temp0 (+ 3 (/ (StrLen @str) printTime)))
+					(= len (+ 3 (/ (StrLen @str) printTime)))
 				)
-				(Print @str #time temp0 #dispose)
+				(Print @str #time len #dispose)
 			)
-			(12 (= cycles 33))
+			(12
+				(= cycles 33)
+			)
 			(13
 				(Format @str 482 7)
 				(PrintPatti cue:)
 			)
-			(14 (= cycles 33))
+			(14
+				(= cycles 33)
+			)
 			(15
 				(Format @str 482 8)
 				(= seconds
-					(= temp0 (+ 3 (/ (StrLen @str) printTime)))
+					(= len (+ 3 (/ (StrLen @str) printTime)))
 				)
-				(Print @str #time temp0 #dispose)
+				(Print @str #time len #dispose)
 			)
-			(16 (= cycles 3))
+			(16
+				(= cycles 3)
+			)
 			(17
 				(music number: 487 loop: 2 play:)
 				(aBubbleLarry cycleSpeed: 0)
@@ -229,18 +243,24 @@
 				(PrintLarry cue:)
 				(ego loop: 2 cel: 0 setCycle: CycleTo 3 1)
 			)
-			(18 (= cycles 5))
+			(18
+				(= cycles 5)
+			)
 			(19
 				(Format @str 482 10)
 				(PrintLarry cue:)
 			)
-			(20 (= cycles 5))
+			(20
+				(= cycles 5)
+			)
 			(21
 				(Format @str 482 11)
 				(PrintLarry cue:)
 				(ego setCycle: EndLoop)
 			)
-			(22 (= cycles 22))
+			(22
+				(= cycles 22)
+			)
 			(23
 				(ego loop: 3 setCycle: EndLoop)
 				(= cycles 44)
@@ -249,7 +269,9 @@
 				(Format @str 482 12)
 				(PrintLarry cue:)
 			)
-			(25 (= cycles 22))
+			(25
+				(= cycles 22)
+			)
 			(26
 				(ego
 					posn: 188 95
@@ -271,10 +293,14 @@
 				)
 				(= cycles 6)
 			)
-			(28 (ego setCycle: BegLoop self))
-			(29 (= cycles 11))
+			(28
+				(ego setCycle: BegLoop self)
+			)
+			(29
+				(= cycles 11)
+			)
 			(30
-				(NormalEgo 0 720)
+				(NormalEgo loopE 720)
 				(HandsOff)
 				(ego setMotion: MoveTo 231 (ego y?) self)
 			)
@@ -302,11 +328,15 @@
 			(37
 				(aPatti setCycle: CycleTo 7 -1 self)
 			)
-			(38 (aPatti setCycle: EndLoop self))
+			(38
+				(aPatti setCycle: EndLoop self)
+			)
 			(39
 				(aPatti cycleSpeed: 0 setCycle: CycleTo 7 -1 self)
 			)
-			(40 (aPatti setCycle: EndLoop self))
+			(40
+				(aPatti setCycle: EndLoop self)
+			)
 			(41
 				(music number: 488 loop: 2 play:)
 				(aPatti posn: 155 98 setLoop: 3 cel: 0 setCycle: EndLoop)
@@ -317,17 +347,23 @@
 				(Format @str 482 13)
 				(PrintPatti cue:)
 			)
-			(43 (= cycles 11))
+			(43
+				(= cycles 11)
+			)
 			(44
 				(Format @str 482 14)
 				(PrintPatti cue:)
 			)
-			(45 (= cycles 33))
+			(45
+				(= cycles 33)
+			)
 			(46
 				(Format @str 482 15)
 				(PrintPatti cue:)
 			)
-			(47 (= cycles 33))
+			(47
+				(= cycles 33)
+			)
 			(48
 				(Format @str 482 16)
 				(PrintPatti cue:)
@@ -362,12 +398,16 @@
 					setMotion: MoveTo 159 65 self
 				)
 			)
-			(53 (aDoor setCycle: EndLoop self))
+			(53
+				(aDoor setCycle: EndLoop self)
+			)
 			(54
 				(aDoor stopUpd:)
 				(aPatti setMotion: MoveTo 159 55 self)
 			)
-			(55 (curRoom newRoom: 483))
+			(55
+				(curRoom newRoom: 483)
+			)
 		)
 	)
 	
@@ -386,8 +426,6 @@
 )
 
 (instance PrintLarry of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 2 4)
 		(switch (= state newState)
@@ -414,8 +452,6 @@
 )
 
 (instance PrintPatti of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 3 4)
 		(switch (= state newState)
@@ -469,6 +505,11 @@
 	
 	(method (init)
 		(super init:)
-		(self ignoreActors: posn: 155 98 setPri: 8 setCycle: Forward)
+		(self
+			ignoreActors:
+			posn: 155 98
+			setPri: 8
+			setCycle: Forward
+		)
 	)
 )

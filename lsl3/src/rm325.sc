@@ -18,7 +18,11 @@
 	
 	(method (init)
 		(super init:)
-		(self setRegions: 71 setLocales: 70 setScript: RoomScript)
+		(self
+			setRegions: FACE
+			setLocales: GIRL
+			setScript: RoomScript
+		)
 		(NotifyScript 71 1 103 63)
 		(NotifyScript 71 2 184 60)
 		(NotifyScript 71 3 106 65)
@@ -30,17 +34,22 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 11))
+			(0
+				(= cycles 11)
+			)
 			(1
 				(AnimateFace 2 20)
 				(= cycles 33)
 			)
-			(2 (Print 325 0) (= cycles 11))
-			(3 (curRoom newRoom: 323))
+			(2
+				(Print 325 0)
+				(= cycles 11)
+			)
+			(3
+				(curRoom newRoom: 323)
+			)
 		)
 	)
 )

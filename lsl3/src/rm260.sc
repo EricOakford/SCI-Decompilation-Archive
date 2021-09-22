@@ -19,9 +19,9 @@
 )
 
 (local
-	local0
-	local1
-	local2
+	puttingDownTowel
+	noSwimMsg
+	vendorHere
 	[local3 2]
 	[msgBuf 40]
 	[titleBuf 22]
@@ -66,7 +66,9 @@
 				(Load VIEW 712)
 				(aLizard init:)
 			)
-			(1 (ego observeControl: cYELLOW))
+			(1
+				(ego observeControl: cYELLOW)
+			)
 			(2
 				(aTawni setLoop: 2 setCel: 255)
 				(TawniScript changeState: 8)
@@ -126,11 +128,15 @@
 			(Load VIEW 709)
 			(aLizard init:)
 		)
-		(if (!= tawniState 5) (ego init:))
+		(if (!= tawniState 5)
+			(ego init:)
+		)
 		(if (and tawniState (< tawniState 6))
 			(aTowel init:)
 			(aTawni init:)
-			(if (== tawniState 3) (TawniScript changeState: 11))
+			(if (== tawniState 3)
+				(TawniScript changeState: 11)
+			)
 		)
 		(if
 			(and
@@ -156,20 +162,17 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if (& (ego onControl:) $0100)
-			(if (not local1)
-				(= local1 1)
+		(if (& (ego onControl:) cGREY)
+			(if (not noSwimMsg)
+				(= noSwimMsg TRUE)
 				(Printf 260 0 currentEgo)
 			)
 		else
-			(= local1 0)
+			(= noSwimMsg FALSE)
 		)
-		(if
-		(and (!= currentStatus egoNORMAL) (!= currentStatus 1003))
+		(if (and (!= currentStatus egoNORMAL) (!= currentStatus egoDROWNING))
 			(ego observeControl: cLBLUE)
 		)
 		(if
@@ -182,9 +185,11 @@
 		(switch (= state newState)
 			(0)
 			(5
-				(= cycles (= seconds 0))
+				(= cycles
+					(= seconds 0)
+				)
 				(HandsOff)
-				(= currentStatus 1003)
+				(= currentStatus egoDROWNING)
 				(ego
 					view: (if playingAsPatti 812 else 712)
 					illegalBits: -513
@@ -198,7 +203,10 @@
 			(6
 				(ego setMotion: 0 setCycle: EndLoop self)
 			)
-			(7 (ego hide:) (= seconds 2))
+			(7
+				(ego hide:)
+				(= seconds 2)
+			)
 			(8
 				(theGame setScript: (ScriptID DYING))
 				((ScriptID DYING)
@@ -216,12 +224,17 @@
 			)
 			(11
 				(aTowel hide:)
-				(ego get: 8 setCycle: BegLoop self)
+				(ego get: iTowel setCycle: BegLoop self)
 				(= tawniState 7)
 				(theGame changeScore: 2)
 			)
 			(12
-				(if local0 (= local0 0) (self cue:) else (NormalEgo))
+				(if puttingDownTowel
+					(= puttingDownTowel 0)
+					(self cue:)
+				else
+					(NormalEgo)
+				)
 			)
 			(13
 				(HandsOff)
@@ -330,11 +343,11 @@
 			)
 			(28
 				(NormalEgo)
-				(= currentStatus 0)
+				(= currentStatus egoNORMAL)
 			)
 			(29
 				(HandsOff)
-				(Bset 5)
+				(Bset fCursorHidden)
 				(= seconds 0)
 				(aTawni setScript: 0 setCycle: EndLoop self)
 				(music number: 8 loop: -1 play:)
@@ -406,7 +419,9 @@
 				(VendorScript changeState: 10)
 				(= seconds 3)
 			)
-			(40 (ego setCycle: BegLoop self))
+			(40
+				(ego setCycle: BegLoop self)
+			)
 			(41
 				(Print 260 50)
 				(= seconds 3)
@@ -470,8 +485,8 @@
 			(51
 				(music number: 9 loop: 1 play: self)
 				(Print 260 59)
-				(NormalEgo 2)
-				(Bclr 5)
+				(NormalEgo loopS)
+				(Bclr fCursorHidden)
 				(ego observeControl: cYELLOW)
 				(= tawniState 4)
 				(= currentStatus egoNORMAL)
@@ -495,13 +510,16 @@
 			(cls)
 			(self cue:)
 		)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'carve,carve') (Print 260 1))
-			((Said 'get/crab') (Print 260 2))
+			((Said 'carve,carve')
+				(Print 260 1)
+			)
+			((Said 'get/crab')
+				(Print 260 2)
+			)
 			(
 				(or
 					(Said '(get<on),throw,use,lie,bang/towel')
@@ -512,14 +530,34 @@
 					(Said 'lie,bang/down[<on]/towel')
 				)
 				(cond 
-					((== currentStatus egoSUNBATHING) (YouAre))
-					((== currentStatus egoNATIVE) (Print 260 3))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((== tawniState 1) (Print 260 4))
-					((== tawniState 4) (Print 260 5) (Print 260 6))
-					((== tawniState 6) (Ok) (= local0 1) (self changeState: 9))
-					((not (ego has: iTowel)) (DontHave))
-					(else (Ok) (self changeState: 13))
+					((== currentStatus egoSUNBATHING)
+						(YouAre)
+					)
+					((== currentStatus egoNATIVE)
+						(Print 260 3)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((== tawniState 1)
+						(Print 260 4)
+					)
+					((== tawniState 4)
+						(Print 260 5)
+						(Print 260 6)
+					)
+					((== tawniState 6)
+						(Ok)
+						(= puttingDownTowel TRUE)
+						(self changeState: 9)
+					)
+					((not (ego has: iTowel))
+						(DontHave)
+					)
+					(else
+						(Ok)
+						(self changeState: 13)
+					)
 				)
 			)
 			(
@@ -536,45 +574,81 @@
 			)
 			((Said '/towel>')
 				(cond 
-					((ego has: iTowel) (event claimed: FALSE))
+					((ego has: iTowel)
+						(event claimed: FALSE)
+					)
 					(
 						(or
-							(& (aTowel signal?) $0080)
+							(& (aTowel signal?) actorHidden)
 							(not (cast contains: aTowel))
 						)
 						(Print 260 8)
 						(Print 260 9)
-						(event claimed: 1)
+						(event claimed: TRUE)
 					)
 					((Said 'get,grab,rob,(pick<up)')
 						(cond 
-							((== currentStatus egoNATIVE) (Print 260 3))
-							((!= currentStatus egoNORMAL) (GoodIdea))
-							((== tawniState 1) (Print 260 10))
-							((== tawniState 4) (Print 260 11) (Print 260 6))
-							((!= tawniState 6) (Print 260 7))
-							(else (Ok) (self changeState: 9))
+							((== currentStatus egoNATIVE)
+								(Print 260 3)
+							)
+							((!= currentStatus egoNORMAL)
+								(GoodIdea)
+							)
+							((== tawniState 1)
+								(Print 260 10)
+							)
+							((== tawniState 4)
+								(Print 260 11)
+								(Print 260 6)
+							)
+							((!= tawniState 6)
+								(Print 260 7)
+							)
+							(else
+								(Ok)
+								(self changeState: 9)
+							)
 						)
 					)
 					((Said 'look')
 						(cond 
-							((and (>= tawniState 1) (<= tawniState 5)) (Print 260 12))
-							((< tawniState 6) (Print 260 13))
-							((== tawniState 6) (Print 260 14))
-							((== currentStatus egoSUNBATHING) (Print 260 15))
-							(else (event claimed: 0))
+							((and (>= tawniState 1) (<= tawniState 5))
+								(Print 260 12)
+							)
+							((< tawniState 6)
+								(Print 260 13)
+							)
+							((== tawniState 6)
+								(Print 260 14)
+							)
+							((== currentStatus egoSUNBATHING)
+								(Print 260 15)
+							)
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
-					(else (event claimed: FALSE))
+					(else
+						(event claimed: FALSE)
+					)
 				)
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/boulder,boulder') (Print 260 16))
-					((Said '/bay,water,bay') (Print 260 17) (Print 260 18))
-					(
-					(or (Said 'down<look') (Said '/beach,down,beach')) (Print 260 19))
-					((Said '/crab') (Print 260 20))
+					((Said '/boulder,boulder')
+						(Print 260 16)
+					)
+					((Said '/bay,water,bay')
+						(Print 260 17)
+						(Print 260 18)
+					)
+					((or (Said 'down<look') (Said '/beach,down,beach'))
+						(Print 260 19)
+					)
+					((Said '/crab')
+						(Print 260 20)
+					)
 					((Said '[/area]')
 						(if (and tawniState (< tawniState 5))
 							(Print 260 21)
@@ -602,54 +676,104 @@
 		(self setScript: TawniScript ignoreActors:)
 	)
 	
-	(method (handleEvent event &tmp item)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+	(method (handleEvent event &tmp i)
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
 			((Said 'give,sell,show>')
 				(cond 
-					((not (& (ego onControl:) $1000)) (NotClose))
+					((not (& (ego onControl:) cLRED))
+						(NotClose)
+					)
 					((== 707 (ego view?))
-						(= item (inventory saidMe:))
-						(event claimed: 0)
+						(= i (inventory saidMe:))
+						(event claimed: FALSE)
 						(cond 
-							((Said '[/!*]') (Print 260 60))
-							((not item) (Print 260 61))
-							((not (item ownedBy: ego)) (DontHave))
-							((== item (inventory at: iWood)) (Print 260 62) (Print 260 63))
-							((== item (inventory at: iSoap)) (Print 260 64) (Print 260 64) (Print 260 65))
-							((== item (inventory at: iOrchids)) (Print 260 66))
-							(else (Print 260 67))
+							((Said '[/noword]')
+								(Print 260 60)
+							)
+							((not i)
+								(Print 260 61)
+							)
+							((not (i ownedBy: ego))
+								(DontHave)
+							)
+							((== i (inventory at: iWood))
+								(Print 260 62)
+								(Print 260 63)
+							)
+							((== i (inventory at: iSoap))
+								(Print 260 64)
+								(Print 260 64)
+								(Print 260 65)
+							)
+							((== i (inventory at: iOrchids))
+								(Print 260 66)
+							)
+							(else
+								(Print 260 67)
+							)
 						)
 						(Print 260 68)
 					)
-					((== tawniState 4) (Print 260 69) (Print 260 70) (Print 260 71 #at -1 144))
-					(else (Print 260 72))
+					((== tawniState 4)
+						(Print 260 69)
+						(Print 260 70)
+						(Print 260 71 #at -1 144)
+					)
+					(else
+						(Print 260 72)
+					)
 				)
 				(event claimed: TRUE)
 			)
 			((or (Said '//maller>') (Said '/maller>'))
 				(cond 
-					((> tawniState 4) (event claimed: TRUE) (Print 260 73))
-					((Said 'bang') (Print 260 74))
+					((> tawniState 4)
+						(event claimed: TRUE)
+						(Print 260 73)
+					)
+					((Said 'bang')
+						(Print 260 74)
+					)
 					((Said 'address')
 						(cond 
-							((not (& (ego onControl:) $1000)) (NotClose))
-							((== 707 (ego view?)) (Print 260 69) (Print 260 75))
-							((== tawniState 4) (Print 260 69) (Print 260 70) (Print 260 71 #at -1 144))
-							(else (Print 260 76))
+							((not (& (ego onControl:) cLRED))
+								(NotClose)
+							)
+							((== 707 (ego view?))
+								(Print 260 69)
+								(Print 260 75)
+							)
+							((== tawniState 4)
+								(Print 260 69)
+								(Print 260 70)
+								(Print 260 71 #at -1 144)
+							)
+							(else
+								(Print 260 76)
+							)
 						)
 					)
 					((Said 'look')
 						(cond 
-							((== 707 (ego view?)) (Print 260 77))
-							((== tawniState 4) (Print 260 78))
-							((== local2 1) (Print 260 79))
-							((not (& (ego onControl:) $1000)) (NotClose))
+							((== 707 (ego view?))
+								(Print 260 77)
+							)
+							((== tawniState 4)
+								(Print 260 78)
+							)
+							((== vendorHere TRUE)
+								(Print 260 79)
+							)
+							((not (& (ego onControl:) cLRED))
+								(NotClose)
+							)
 							(else
-								(if (not (Btst fMetTawni)) (Printf 260 80 introductoryPhrase))
+								(if (not (Btst fMetTawni))
+									(Printf 260 80 introductoryPhrase)
+								)
 								(HandsOff)
 								(Bset fCursorHidden)
 								(= tawniState 2)
@@ -664,11 +788,11 @@
 )
 
 (instance TawniScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 3 7)))
+			(0
+				(= seconds (Random 3 7))
+			)
 			(1
 				(aTawni cycleSpeed: 1 setLoop: 1 setCycle: EndLoop)
 				(= seconds (Random 1 3))
@@ -718,7 +842,7 @@
 			)
 			(9
 				(aTawni setLoop: 2 setCel: 255 setCycle: BegLoop self)
-				(= local2 0)
+				(= vendorHere 0)
 				(= state 0)
 			)
 			(11 (= seconds 0))
@@ -727,8 +851,6 @@
 )
 
 (instance aVendor of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -740,14 +862,14 @@
 )
 
 (instance VendorScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(aVendor posn: -15 123)
 				(switch vendorView
-					(707 (self cue:))
+					(707
+						(self cue:)
+					)
 					(264
 						(if (<= filthLevel 1)
 							(= cycles 99)
@@ -761,7 +883,7 @@
 				)
 			)
 			(1
-				(= local2 1)
+				(= vendorHere TRUE)
 				(aVendor
 					setLoop: 0
 					view: vendorView
@@ -777,10 +899,11 @@
 				(Print 260 85)
 				(= cycles 11)
 			)
-			(4 (Print 260 86))
+			(4
+				(Print 260 86)
+			)
 			(5
-				(if
-				(and (!= tawniState 3) (>= (TawniScript state?) 5))
+				(if (and (!= tawniState 3) (>= (TawniScript state?) 5))
 					(return)
 				)
 				(Print 260 87)
@@ -803,12 +926,16 @@
 			)
 			(6
 				(switch vendorView
-					(267 (Print 260 93))
+					(267
+						(Print 260 93)
+					)
 					(268
 						(Print 260 94)
 						(Print 260 95)
 					)
-					(269 (Print 260 96))
+					(269
+						(Print 260 96)
+					)
 					(707
 						(Print 260 97)
 						(Print 260 98 #at -1 144)
@@ -818,9 +945,15 @@
 			)
 			(7
 				(switch vendorView
-					(267 (Print 260 99))
-					(268 (Print 260 100))
-					(269 (Print 260 101))
+					(267
+						(Print 260 99)
+					)
+					(268
+						(Print 260 100)
+					)
+					(269
+						(Print 260 101)
+					)
 					(707
 						(if (== ((Inventory at: iWood) view?) 22)
 							(Print 260 102 #icon 22 0 0)
@@ -833,13 +966,19 @@
 			)
 			(8
 				(switch vendorView
-					(267 (Print 260 104))
-					(268 (Print 260 105))
+					(267
+						(Print 260 104)
+					)
+					(268
+						(Print 260 105)
+					)
 					(269
 						(Print 260 106)
 						(Print 260 107 #at -1 144)
 					)
-					(707 (Printf 260 108 expletive))
+					(707
+						(Printf 260 108 expletive)
+					)
 				)
 				(= cycles 30)
 			)
@@ -851,7 +990,9 @@
 						(Print 260 110)
 						(Print 260 111)
 					)
-					(268 (Print 260 112))
+					(268
+						(Print 260 112)
+					)
 					(269
 						(Print 260 113)
 						(Print 260 114)
@@ -877,17 +1018,24 @@
 			)
 			(11
 				(cond 
-					((== vendorView 707) (= vendorView -1) (= tawniState 6) (curRoom newRoom: 250))
-					((or (== vendorView 269) (== vendorView 264)) (= vendorView -1))
-					(else (++ vendorView) (self changeState: 0))
+					((== vendorView 707) (= vendorView -1)
+						(= tawniState 6)
+						(curRoom newRoom: 250)
+					)
+					((or (== vendorView 269) (== vendorView 264))
+						(= vendorView -1)
+					)
+					(else
+						(++ vendorView)
+						(self changeState: 0)
+					)
 				)
 			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -942,8 +1090,6 @@
 )
 
 (instance LizardScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -971,7 +1117,9 @@
 					setMotion: MoveTo (Random 126 192) (Random 172 188) self
 				)
 			)
-			(2 (= seconds (Random 2 5)))
+			(2
+				(= seconds (Random 2 5))
+			)
 			(3
 				(aLizard
 					cycleSpeed: 1
@@ -980,7 +1128,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(4 (= cycles (Random 3 7)))
+			(4
+				(= cycles (Random 3 7))
+			)
 			(5
 				(aLizard
 					setLoop: (+ 2 (aLizard loop?))
@@ -1051,40 +1201,50 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (and state (Said '/lizard>'))
 			(cond 
-				((Said 'get,grab/') (Print 260 117))
+				((Said 'get,grab/')
+					(Print 260 117)
+				)
 				((Said 'look/')
 					(cond 
-						((== state 0) (Print 260 73))
-						((and (== state 5) (== currentStatus egoSUNBATHING)) (Print 260 118))
-						(else (Print 260 119))
+						((== state 0)
+							(Print 260 73)
+						)
+						((and (== state 5) (== currentStatus egoSUNBATHING))
+							(Print 260 118)
+						)
+						(else
+							(Print 260 119)
+						)
 					)
 				)
-				(else (Print 260 120) (event claimed: TRUE))
+				(else
+					(Print 260 120)
+					(event claimed: TRUE)
+				)
 			)
 		)
 	)
 )
 
 (instance humpCycler of Code
-	(properties)
-	
 	(method (doit)
 		(cond 
-			((<= filthLevel 1) (ego setCycle: 0))
-			((not (Random 0 9)) (ego cycleSpeed: (Random 0 5)))
+			((<= filthLevel 1)
+				(ego setCycle: 0)
+			)
+			((not (Random 0 9))
+				(ego cycleSpeed: (Random 0 5))
+			)
 		)
 	)
 )
 
 (instance salesViewer of Code
-	(properties)
-	
 	(method (doit)
 		(if (not (Random 0 3))
 			(aVendor setCel: (Random 0 (- (NumCels aVendor) 1)))

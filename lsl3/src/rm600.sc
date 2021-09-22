@@ -30,19 +30,27 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ego
 			posn: (Random 10 310) -40
 			setMotion: MoveTo (Random 10 310) 224 RoomScript
 		)
 		(switch (= state newState)
-			(2 (Printf 600 0 expletive))
-			(4 (Print 600 1))
-			(5 (ego setLoop: 0))
-			(8 (Print 600 2))
-			(9 (Print 600 3))
+			(2
+				(Printf 600 0 expletive)
+			)
+			(4
+				(Print 600 1)
+			)
+			(5
+				(ego setLoop: 0)
+			)
+			(8
+				(Print 600 2)
+			)
+			(9
+				(Print 600 3)
+			)
 			(10
 				(theGame setSpeed: saveSpeed)
 				(music fade:)

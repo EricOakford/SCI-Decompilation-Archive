@@ -11,8 +11,6 @@
 )
 
 (instance rm299 of Locale
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(if
@@ -27,16 +25,26 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'address/man,couple,babe') (Print 299 0))
-			((Said 'carve,get/blade') (Print 299 1))
-			((Said '/cab') (Print 299 2))
-			((Said '/auto,auto') (Print 299 3) (Print 299 4 #at -1 144))
-			((Said 'climb/palm') (Print 299 5))
+			((Said 'address/man,couple,babe')
+				(Print 299 0)
+			)
+			((Said 'carve,get/blade')
+				(Print 299 1)
+			)
+			((Said '/cab')
+				(Print 299 2)
+			)
+			((Said '/auto,auto')
+				(Print 299 3)
+				(Print 299 4 #at -1 144)
+			)
+			((Said 'climb/palm')
+				(Print 299 5)
+			)
 			((Said 'drain,(get<off)/sandal')
 				(Printf 299 6
 					(if playingAsPatti
@@ -48,10 +56,18 @@
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/up,air') (Print 299 7))
-					((Said '/auto,camp') (Print 299 8))
-					((Said '/carpet') (Print 299 9))
-					((Said '/palm,bush') (Print 299 10))
+					((Said '/up,air')
+						(Print 299 7)
+					)
+					((Said '/auto,camp')
+						(Print 299 8)
+					)
+					((Said '/carpet')
+						(Print 299 9)
+					)
+					((Said '/palm,bush')
+						(Print 299 10)
+					)
 				)
 			)
 		)

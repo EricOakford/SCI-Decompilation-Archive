@@ -21,8 +21,7 @@
 		#at 10 5
 		#width 290
 		#mode teJustCenter
-		#time
-		(= seconds (PrintDelay @str))
+		#time (= seconds (PrintDelay @str))
 		#dispose
 	)
 	(return (+ 3 seconds))
@@ -61,8 +60,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(theGame setSpeed: 6)
@@ -70,8 +67,12 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (aPatti setCycle: EndLoop self))
-			(1 (= seconds 3))
+			(0
+				(aPatti setCycle: EndLoop self)
+			)
+			(1
+				(= seconds 3)
+			)
 			(2
 				(Format @str 483 1)
 				(= seconds (PattiSays))
@@ -124,7 +125,9 @@
 				(= seconds (PattiSays))
 				(ego setMotion: MoveTo 192 110)
 			)
-			(14 (= cycles 11))
+			(14
+				(= cycles 11)
+			)
 			(15
 				(Format @str 483 7)
 				(= seconds (PattiSays))
@@ -136,13 +139,17 @@
 				(aHole2 dispose:)
 				(aPatti cycleSpeed: 2 setCycle: BegLoop self)
 			)
-			(17 (= seconds 3))
+			(17
+				(= seconds 3)
+			)
 			(18
 				(music number: 491 loop: 2 play:)
 				(Format @str 483 8)
 				(= seconds (PattiSays))
 			)
-			(19 (= seconds 5))
+			(19
+				(= seconds 5)
+			)
 			(20
 				(music fade:)
 				(systemWindow color: myTextColor back: myBackColor)

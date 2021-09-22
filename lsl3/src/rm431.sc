@@ -19,7 +19,7 @@
 (local
 	[actors 6]
 	[veggies 6]
-	local12 = [999 113 127 141 155 169 183 197 999]
+	toX = [999 113 127 141 155 169 183 197 999]
 	[msgBuf 40]
 	[titleBuf 22]
 )
@@ -29,7 +29,7 @@
 		horizon 1
 	)
 	
-	(method (init &tmp temp0)
+	(method (init &tmp i)
 		(Load SOUND 10)
 		(Load SOUND 433)
 		(Load SOUND 432)
@@ -73,9 +73,7 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
-	(method (doit &tmp temp0)
+	(method (doit &tmp i)
 		(super doit:)
 		(if
 			(and
@@ -86,20 +84,20 @@
 		)
 		(if (== currentStatus 431)
 			(cond 
-				((& (ego onControl: 1) cBLUE) (= temp0 1))
-				((& (ego onControl: 1) cGREEN) (= temp0 2))
-				((& (ego onControl: 1) cCYAN) (= temp0 3))
-				((& (ego onControl: 1) cRED) (= temp0 4))
-				((& (ego onControl: 1) cMAGENTA) (= temp0 5))
-				((& (ego onControl: 1) cBROWN) (= temp0 6))
-				(else (= temp0 0))
+				((& (ego onControl: 1) cBLUE) (= i 1))
+				((& (ego onControl: 1) cGREEN) (= i 2))
+				((& (ego onControl: 1) cCYAN) (= i 3))
+				((& (ego onControl: 1) cRED) (= i 4))
+				((& (ego onControl: 1) cMAGENTA) (= i 5))
+				((& (ego onControl: 1) cBROWN) (= i 6))
+				(else (= i 0))
 			)
-			(ego setLoop: temp0)
+			(ego setLoop: i)
 			(aFloor
-				posn: [local12 temp0] 97
+				posn: [toX i] 97
 				setCel:
 					(aSpotlight
-						posn: [local12 temp0] 52
+						posn: [toX i] 52
 						setCel: (if (< machineSpeed 39) (return))
 					)
 			)
@@ -168,15 +166,13 @@
 			)
 			(12
 				(HandsOff)
-				(= i 1)
-				(while (<= i 5)
+				(for ((= i 1)) (<= i 5) ((++ i))
 					([veggies i]
 						view: 430
 						setCycle: Forward
 						setStep: 6 6
 						setScript: (VeggieScript new:)
 					)
-					(++ i)
 				)
 				(= seconds 8)
 			)
@@ -186,10 +182,8 @@
 			)
 			(14
 				(cls)
-				(= i 1)
-				(while (<= i 5)
+				(for ((= i 1)) (<= i 5) ((++ i))
 					(([veggies i] script?) changeState: 2)
-					(++ i)
 				)
 				(theGame setScript: (ScriptID DYING))
 				((ScriptID DYING)
@@ -206,24 +200,24 @@
 				(Print 431 24 #at 10 5 #width 290)
 				(aSpotlight setLoop: 5 setPri: 14 ignoreActors: init:)
 				(aFloor setLoop: 6 setPri: 7 ignoreActors: init:)
-				(ego setMotion: MoveTo [local12 6] 95 self)
+				(ego setMotion: MoveTo [toX 6] 95 self)
 				(= cycles 4)
 			)
 			(16
 				(music number: 432 loop: 1 play: self)
 			)
 			(17
-				(ego setMotion: MoveTo [local12 1] 95 self)
+				(ego setMotion: MoveTo [toX 1] 95 self)
 			)
 			(18
 				(Print 431 25 #at 10 5 #width 290 #dispose)
 				([actors 1] setScript: (MoneyScript new:))
-				(ego setMotion: MoveTo [local12 3] 95 self)
+				(ego setMotion: MoveTo [toX 3] 95 self)
 			)
 			(19
 				([actors 2] setScript: (MoneyScript new:))
 				([actors 3] setScript: (MoneyScript new:))
-				(ego setStep: 1 1 setMotion: MoveTo [local12 6] 95 self)
+				(ego setStep: 1 1 setMotion: MoveTo [toX 6] 95 self)
 			)
 			(20
 				(cls)
@@ -235,21 +229,21 @@
 			)
 			(21
 				(ego
-					setMotion: MoveTo (Random [local12 1] [local12 6]) 95 self
+					setMotion: MoveTo (Random [toX 1] [toX 6]) 95 self
 				)
 				;EO: Tweaked code based on decompiled NRS script
 				(/ machineSpeed 10)
-				(if (>= 2 (++ register)) (-- state))
+				(if (>= 2 (++ register))
+					(-- state)
+				)
 				;(if (>= (/ machineSpeed 10) (++ register)) (-- state))
 			)
 			(22
 				(music loop: 1 play:)
-				(curRoom drawPic: 99 6)
+				(curRoom drawPic: 99 IRISIN)
 				(cast eachElementDo: #hide)
-				(= i 1)
-				(while (<= i 5)
+				(for ((= i 1)) (<= i 5) ((++ i))
 					(([actors i] script?) changeState: 2)
-					(++ i)
 				)
 				(= cycles 20)
 			)
@@ -258,7 +252,10 @@
 				(Print 431 27)
 				(Print 431 28)
 				(Print 431 29)
-				(Print 431 30 #at 10 144 #width 290)
+				(Print 431 30
+					#at 10 144
+					#width 290
+				)
 				(Load VIEW 708)
 				(= currentEgoView 708)
 				(= currentStatus egoSHOWGIRL)
@@ -338,10 +335,11 @@
 )
 
 (instance VeggieScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles (Random 1 9)))
+			(0
+				(= cycles (Random 1 9))
+			)
 			(1
 				(client
 					setLoop: (Random 8 9)
@@ -359,11 +357,15 @@
 )
 
 (instance MoneyScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client view: 430 setLoop: 7 setCycle: Forward setStep: 7 7)
+				(client
+					view: 430
+					setLoop: 7
+					setCycle: Forward
+					setStep: 7 7
+				)
 				(= cycles (Random 1 9))
 			)
 			(1

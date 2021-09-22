@@ -62,12 +62,9 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== state 2) (< (aObstacle distanceTo: ego) 9))
+		(if (and (== state 2) (< (aObstacle distanceTo: ego) 9))
 			(self changeState: 6)
 		)
 	)
@@ -99,8 +96,12 @@
 					(= oldEgoX (ego x?))
 				)
 				(cond 
-					((< oldEgoX (- obstacleX 5)) (- oldEgoX 5))
-					((> oldEgoX (+ obstacleX 5)) (+ oldEgoX 5))
+					((< oldEgoX (- obstacleX 5))
+						(- oldEgoX 5)
+					)
+					((> oldEgoX (+ obstacleX 5))
+						(+ oldEgoX 5)
+					)
 				)
 				(aObstacle
 					posn: obstacleX 89
@@ -116,7 +117,9 @@
 				)
 			)
 			(3
-				(if (== (aObstacle loop?) 3) (Print 560 2 #at -1 10))
+				(if (== (aObstacle loop?) 3)
+					(Print 560 2 #at -1 10)
+				)
 				(theGame changeScore: obstacleLoop)
 				(self changeState: 0)
 			)
@@ -128,7 +131,7 @@
 			)
 			(5
 				(Print 560 4 #at -1 10)
-				(DisposeScript 964)
+				(DisposeScript DPATH)
 				(music priority: 0)
 				(curRoom newRoom: 580)
 			)
@@ -188,12 +191,12 @@
 )
 
 (instance DotScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 2 2)
 		(switch (= state newState)
-			(0 (= seconds 1))
+			(0
+				(= seconds 1)
+			)
 			(1
 				(= obstacleLoop 0)
 				(aObstacle setStep: 2 2 cycleSpeed: 1)

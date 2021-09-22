@@ -28,7 +28,9 @@
 		(Load SOUND 536)
 		(music number: 535 loop: -1 play:)
 		(HandsOff)
-		(if (Btst fFlag15) (= currentEgoView 803))
+		(if (Btst fFlag15)
+			(= currentEgoView 803)
+		)
 		(super init:)
 		(aBird1 init:)
 		(aBird2 init:)
@@ -49,11 +51,11 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(if (== currentEgoView 803)
 					(Print 535 0 #at 10 -1 #width 290)
@@ -65,7 +67,9 @@
 				(= cycles (Random 55 111))
 			)
 			(2
-				(if (!= currentEgoView 803) (Print 535 3))
+				(if (!= currentEgoView 803)
+					(Print 535 3)
+				)
 				(= cycles (Random 55 111))
 			)
 			(3
@@ -139,12 +143,12 @@
 )
 
 (instance Bird1Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Random 0 2)) (= seconds (Random 3 7)))
+				(if (not (Random 0 2))
+					(= seconds (Random 3 7))
+				)
 			)
 			(1
 				(aBird1 setMotion: MoveTo 333 19 self)
@@ -167,13 +171,13 @@
 	)
 )
 
-(instance Bird2Script of Script
-	(properties)
-	
+(instance Bird2Script of Script	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (not (Random 0 3)) (= seconds (Random 1 3)))
+				(if (not (Random 0 3))
+					(= seconds (Random 1 3))
+				)
 			)
 			(1
 				(aBird2 setMotion: MoveTo -14 138 self)
@@ -199,12 +203,9 @@
 )
 
 (instance Bird3Script of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== state 0) (> 11 (client distanceTo: ego)))
+		(if (and (== state 0) (> 11 (client distanceTo: ego)))
 			(self cue:)
 		)
 	)
@@ -219,8 +220,6 @@
 )
 
 (instance theJump of Jump
-	(properties)
-	
 	(method (init)
 		(super init: ego RoomScript)
 		(self yStep: 5 y: 300)

@@ -14,14 +14,14 @@
 )
 
 (instance rm20 of Locale
-	(method (handleEvent event &tmp n i saveBits evt [str1 30] [str2 30] [str3 30])
+	(method (handleEvent event &tmp n i obj evt [str1 30] [str2 30] [str3 30])
 		(if (or (not debugging) (event claimed?)) (return))
 		(switch (event type?)
 			(mouseDown
 				(cond 
 					((& (event modifiers?) shiftDown)
 						(event claimed: TRUE)
-						(= saveBits
+						(= obj
 							(Print
 								(Format @str1 20 0 (event x?) (event y?))
 								#at 150 100
@@ -32,7 +32,7 @@
 						(while (!= mouseUp ((= evt (Event new:)) type?))
 							(evt dispose:)
 						)
-						(saveBits dispose:)
+						(obj dispose:)
 						(evt dispose:)
 					)
 					((& (event modifiers?) ctrlDown)

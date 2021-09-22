@@ -15,7 +15,7 @@
 )
 
 (local
-	[local0 307]
+	[plotString 307]
 )
 (instance rm305 of Room
 	(properties
@@ -56,8 +56,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
@@ -70,24 +68,33 @@
 				)
 			)
 			(1)
-			(2 (Print 305 5))
+			(2
+				(Print 305 5)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'look<in/cup') (Print 305 0))
+			((Said 'look<in/cup')
+				(Print 305 0)
+			)
 			((Said 'look>')
 				(cond 
-					((Said '/awning') (Print 305 1))
-					((Said '/palm,palm') (Print 305 2))
+					((Said '/awning')
+						(Print 305 1)
+					)
+					((Said '/palm,palm')
+						(Print 305 2)
+					)
 					((Said '[/building,area]')
 						(Print 305 3)
-						(if (not playingAsPatti) (Print 305 4 #at -1 144))
+						(if (not playingAsPatti)
+							(Print 305 4 #at -1 144)
+						)
 					)
 				)
 			)

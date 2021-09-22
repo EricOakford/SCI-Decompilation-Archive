@@ -39,7 +39,7 @@
 		(self setScript: RoomScript style: 7)
 		((Inventory at: iDress) view: 33)
 		(= currentEgoView 801)
-		(NormalEgo 0 592)
+		(NormalEgo loopE 592)
 		(ego
 			ignoreActors:
 			illegalBits: 0
@@ -54,8 +54,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -64,16 +62,30 @@
 				(= seconds 2)
 			)
 			(1
-				(Print 590 19 #at 10 10 #width 140 #dispose)
-				(Print 590 20 #at 170 10 #width 140)
+				(Print 590 19
+					#at 10 10
+					#width 140
+					#dispose
+				)
+				(Print 590 20
+					#at 170 10
+					#width 140
+				)
 				(cls)
 				(ego setLoop: 1 setCycle: Forward)
 				(aLarry setLoop: 1 setCycle: Forward)
 				(= seconds 3)
 			)
 			(2
-				(Print 590 21 #at 10 10 #width 140 #dispose)
-				(Print 590 22 #at 170 10 #width 140)
+				(Print 590 21
+					#at 10 10
+					#width 140
+					#dispose
+				)
+				(Print 590 22
+					#at 170 10
+					#width 140
+				)
 				(cls)
 				(ego setLoop: 2 cel: 0 setCycle: EndLoop self)
 				(aLarry setLoop: 2 cel: 0 setCycle: EndLoop self)
@@ -84,7 +96,9 @@
 				(aLarry hide:)
 				(= seconds 4)
 			)
-			(5 (ego setCycle: BegLoop self))
+			(5
+				(ego setCycle: BegLoop self)
+			)
 			(6
 				(ego view: 592 setLoop: 2 setCel: 255 setCycle: BegLoop self)
 				(aLarry
@@ -314,44 +328,81 @@
 				(cast eachElementDo: #hide)
 				(= seconds 3)
 			)
-			(40 (curRoom newRoom: 600))
+			(40
+				(curRoom newRoom: 600)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			(
-			(or (Said 'draw,make/door') (Said 'draw,use/marker'))
+			((or (Said 'draw,make/door') (Said 'draw,use/marker'))
 				(if (not (ego has: iMarker))
 					(Print 590 0)
 				else
 					(self changeState: 23)
 				)
 			)
-			((Said 'throw,make,use/magic,spell') (if (ego has: iMarker) (Print 590 1) else (Print 590 2)))
-			((Said 'unfasten,grab,carve/hemp,bamboo') (Print 590 3))
-			((Said 'throw') (Print 590 4))
-			((Said 'use') (Print 590 5))
-			((Said 'get') (Print 590 6))
-			((or (Said 'enjoy') (Said '/enjoy')) (Print 590 7))
-			((Said 'bend/bar') (Print 590 8))
-			((Said 'attack') (Print 590 9))
-			((Said 'throw,drag/cage') (Print 590 10))
+			((Said 'throw,make,use/magic,spell')
+				(if (ego has: iMarker)
+					(Print 590 1)
+				else
+					(Print 590 2)
+				)
+			)
+			((Said 'unfasten,grab,carve/hemp,bamboo')
+				(Print 590 3)
+			)
+			((Said 'throw')
+				(Print 590 4)
+			)
+			((Said 'use')
+				(Print 590 5)
+			)
+			((Said 'get')
+				(Print 590 6)
+			)
+			((or (Said 'enjoy') (Said '/enjoy'))
+				(Print 590 7)
+			)
+			((Said 'bend/bar')
+				(Print 590 8)
+			)
+			((Said 'attack')
+				(Print 590 9)
+			)
+			((Said 'throw,drag/cage')
+				(Print 590 10)
+			)
 			((Said 'look>')
 				(cond 
-					((Said '/hemp') (Print 590 11))
-					((Said '/man,larry') (Print 590 12))
-					(
-					(and (cast contains: aDoctor) (Said '/cannibal')) (Print 590 13))
-					((Said '/camp') (Print 590 14))
-					((Said '/cage,bar') (Print 590 15))
-					((Said '/dope') (Print 590 16))
-					((Said '/bamboo,cage') (Print 590 17))
-					((Said '[/area]') (Print 590 18))
+					((Said '/hemp')
+						(Print 590 11)
+					)
+					((Said '/man,larry')
+						(Print 590 12)
+					)
+					((and (cast contains: aDoctor) (Said '/cannibal'))
+						(Print 590 13)
+					)
+					((Said '/camp')
+						(Print 590 14)
+					)
+					((Said '/cage,bar')
+						(Print 590 15)
+					)
+					((Said '/dope')
+						(Print 590 16)
+					)
+					((Said '/bamboo,cage')
+						(Print 590 17)
+					)
+					((Said '[/area]')
+						(Print 590 18)
+					)
 				)
 			)
 		)

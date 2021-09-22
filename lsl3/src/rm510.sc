@@ -13,7 +13,7 @@
 )
 
 (local
-	local0
+	drownCycles
 )
 (instance rm510 of Room
 	(properties
@@ -46,15 +46,14 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
-			(
-			(and (& (ego onControl: origin) cLBLUE) (== currentStatus egoNORMAL)) (self changeState: 2))
-			((and (== currentStatus egoSWIMMING) (< 8 (++ local0)))
-				(= local0 0)
+			((and (& (ego onControl: origin) cLBLUE) (== currentStatus egoNORMAL))
+				(self changeState: 2)
+			)
+			((and (== currentStatus egoSWIMMING) (< 8 (++ drownCycles)))
+				(= drownCycles 0)
 				(ego setLoop: (+ (Random 0 1) (* 2 (< (ego y?) 87))))
 			)
 		)
@@ -84,7 +83,9 @@
 			(4
 				(ego setMotion: MoveTo 200 54 self)
 			)
-			(5 (curRoom newRoom: 520))
+			(5
+				(curRoom newRoom: 520)
+			)
 			(6
 				(HandsOff)
 				(= currentStatus egoDRINKWATER)
@@ -105,11 +106,13 @@
 			(8
 				(ego setLoop: 0 setCel: 255 setCycle: BegLoop self)
 			)
-			(9 (= seconds 2))
+			(9
+				(= seconds 2)
+			)
 			(10
 				(theGame changeScore: 42)
 				(Bset fDrankRiverWater)
-				(NormalEgo 1)
+				(NormalEgo loopW)
 				(= currentStatus egoNORMAL)
 				(Print 510 10)
 			)
@@ -117,8 +120,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -129,23 +131,47 @@
 					(Said 'drink/water')
 				)
 				(cond 
-					((Btst fDrankRiverWater) (Print 510 0))
-					((not (& (ego onControl:) cLBLUE)) (NotClose))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					(else (self changeState: 6))
+					((Btst fDrankRiverWater)
+						(Print 510 0)
+					)
+					((not (& (ego onControl:) cLBLUE))
+						(NotClose)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					(else
+						(self changeState: 6)
+					)
 				)
 			)
-			((Said 'make/hemp') (Print 510 1))
-			(
-			(or (Said 'make/boat') (Said 'climb,get,use/bamboo')) (Print 510 2))
-			((or (Said 'go<swim') (Said 'swim')) (Print 510 3))
+			((Said 'make/hemp')
+				(Print 510 1)
+			)
+			((or (Said 'make/boat') (Said 'climb,get,use/bamboo'))
+				(Print 510 2)
+			)
+			((or (Said 'go<swim') (Said 'swim'))
+				(Print 510 3)
+			)
 			((Said 'look>')
 				(cond 
-					((Said '/palm') (Print 510 4))
-					((Said '/boulder,boob') (Print 510 5))
-					((Said '/bamboo') (Print 510 6))
-					((Said '/cascade,creek') (Print 510 7) (Print 510 8 #at -1 144))
-					((Said '[/area]') (Print 510 9))
+					((Said '/palm')
+						(Print 510 4)
+					)
+					((Said '/boulder,boob')
+						(Print 510 5)
+					)
+					((Said '/bamboo')
+						(Print 510 6)
+					)
+					((Said '/cascade,creek')
+						(Print 510 7)
+						(Print 510 8 #at -1 144)
+					)
+					((Said '[/area]')
+						(Print 510 9)
+					)
 				)
 			)
 		)

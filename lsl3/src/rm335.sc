@@ -16,9 +16,9 @@
 )
 
 (local
-	haveNoWine
-	haveNoBra
-	haveNoPantyhose
+	noWaterMsg
+	noBraMsg
+	noHoseMsg
 )
 (instance rm335 of Room
 	(properties
@@ -27,7 +27,7 @@
 	
 	(method (init)
 		(super init:)
-		(self setRegions: 71 setScript: RoomScript)
+		(self setRegions: FACE setScript: RoomScript)
 		(NotifyScript 71 1 154 78)
 		(NotifyScript 71 2 188 81)
 		(NotifyScript 71 3 152 78)
@@ -38,8 +38,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -58,8 +56,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -82,9 +79,14 @@
 				(PersonSays 335 0)
 				(AnimateFace 4 4)
 			)
-			((Said '/bill,health') (Print 335 1))
-			(
-			(or (Said 'show/ball/entertainer') (Said 'show/ball')) (EgoSays 335 2) (EgoSays 335 3) (AnimateFace 2 20))
+			((Said '/bill,health')
+				(Print 335 1)
+			)
+			((or (Said 'show/ball/entertainer') (Said 'show/ball'))
+				(EgoSays 335 2)
+				(EgoSays 335 3)
+				(AnimateFace 2 20)
+			)
 			(
 				(or
 					(Said 'aid')
@@ -102,7 +104,9 @@
 				)
 				(PersonSays 335 6)
 			)
-			((Said '/bar,blackboard,drink,club,dance') (PersonSays 335 7))
+			((Said '/bar,blackboard,drink,club,dance')
+				(PersonSays 335 7)
+			)
 			((Said 'give')
 				(if (InRoom iPanties 330)
 					(PersonSays 335 8)
@@ -112,16 +116,16 @@
 			)
 			((Said 'address')
 				(cond 
-					((and (not haveNoPantyhose) (not (ego has: iPantyhose)))
-							(= haveNoPantyhose TRUE)
+					((and (not noHoseMsg) (not (ego has: iPantyhose)))
+							(= noHoseMsg TRUE)
 							(PersonSays 335 10)
 						)
-					((and (not haveNoBra) (not (ego has: iBra)))
-						(= haveNoBra TRUE)
+					((and (not noBraMsg) (not (ego has: iBra)))
+						(= noBraMsg TRUE)
 						(PersonSays 335 11)
 					)
-					((and (not haveNoWine) (or (not (ego has: iWineBottle)) (!= ((Inventory at: iWineBottle) view?) 29)))
-						(= haveNoWine TRUE)
+					((and (not noWaterMsg) (or (not (ego has: iWineBottle)) (!= ((Inventory at: iWineBottle) view?) 29)))
+						(= noWaterMsg TRUE)
 						(PersonSays 335 12)
 					)
 					(else
@@ -136,7 +140,11 @@
 				(PersonSays 335 17)
 				(AnimateFace 7 22)
 			)
-			((Said 'enjoy/ya') (EgoSays 335 18) (PersonSays 335 19) (AnimateFace 5 44))
+			((Said 'enjoy/ya')
+				(EgoSays 335 18)
+				(PersonSays 335 19)
+				(AnimateFace 5 44)
+			)
 			(
 				(or
 					(Said 'cease/look')
@@ -146,18 +154,45 @@
 				)
 				(self changeState: 1)
 			)
-			((Said 'embrace') (Print 335 20))
-			((Said '/beard') (Print 335 21) (Print 335 22 #at -1 144))
-			((Said '/ass') (Print 335 23))
-			((Said '/bracelet') (Print 335 24))
-			((Said '/cloth') (Print 335 25))
-			((Said '/body') (Print 335 26))
-			((Said '/ankle') (Print 335 27))
-			((Said '/hair') (Print 335 28))
-			((Said '/ear') (Print 335 29))
-			((Said '/nose') (Print 335 30))
-			((Said '/lip,lip') (Print 335 31))
-			((Said '/eye') (Print 335 32))
+			((Said 'embrace')
+				(Print 335 20)
+			)
+			((Said '/beard')
+				(Print 335 21)
+				(Print 335 22
+					#at -1 144
+				)
+			)
+			((Said '/ass')
+				(Print 335 23)
+			)
+			((Said '/bracelet')
+				(Print 335 24)
+			)
+			((Said '/cloth')
+				(Print 335 25)
+			)
+			((Said '/body')
+				(Print 335 26)
+			)
+			((Said '/ankle')
+				(Print 335 27)
+			)
+			((Said '/hair')
+				(Print 335 28)
+			)
+			((Said '/ear')
+				(Print 335 29)
+			)
+			((Said '/nose')
+				(Print 335 30)
+			)
+			((Said '/lip,lip')
+				(Print 335 31)
+			)
+			((Said '/eye')
+				(Print 335 32)
+			)
 			(
 				(or
 					(Said 'caress,grab,caress')
@@ -167,14 +202,31 @@
 				(PersonSays 335 34)
 				(AnimateFace 5 44)
 			)
-			((Said '/dicklicker') (Print 335 35))
+			((Said '/dicklicker')
+				(Print 335 35)
+			)
 			((Said 'look>')
 				(cond 
-					((Said '/calf') (PersonSays 335 36) (AnimateFace 3 22))
-					((Said '/bracelet') (Print 335 37))
-					((Said '/ear') (Print 335 38))
-					((Said '/boob') (Print 335 39) (PersonSays 335 40) (AnimateFace 6 12))
-					((Said '[/area,man,man]') (Print 335 41) (PersonSays 335 42) (AnimateFace 2 33))
+					((Said '/calf')
+						(PersonSays 335 36)
+						(AnimateFace 3 22)
+					)
+					((Said '/bracelet')
+						(Print 335 37)
+					)
+					((Said '/ear')
+						(Print 335 38)
+					)
+					((Said '/boob')
+						(Print 335 39)
+						(PersonSays 335 40)
+						(AnimateFace 6 12)
+					)
+					((Said '[/area,man,man]')
+						(Print 335 41)
+						(PersonSays 335 42)
+						(AnimateFace 2 33)
+					)
 				)
 			)
 			(
@@ -182,9 +234,7 @@
 					(Said '(out<go),dance,show,date/')
 					(Said 'get/man/building')
 					(Said 'ask/man/date')
-					(Said
-						'go/area,backdrop,comedian,club,date,exit,bar,show,dance'
-					)
+					(Said 'go/area,backdrop,comedian,club,date,exit,bar,show,dance')
 				)
 				(EgoSays 335 43)
 				(PersonSays 335 44)

@@ -19,16 +19,16 @@
 		style IRISIN
 	)
 	
-	(method (init &tmp temp0 [fileBuf 9])
+	(method (init &tmp speedFile [fileBuf 9])
 		(HandsOff)
 		(= programControl FALSE)
 		(StatusLine disable:)
 		(TheMenuBar hide:)
 		(super init:)
-		(if (!= (= temp0 (FOpen {RESOURCE.LL3} 1)) -1)
-			(= filthLevel (ReadNumber (FGets @fileBuf 8 temp0)))
+		(if (!= (= speedFile (FOpen {RESOURCE.LL3} 1)) -1)
+			(= filthLevel (ReadNumber (FGets @fileBuf 8 speedFile)))
 		)
-		(FClose temp0)
+		(FClose speedFile)
 		(ego
 			view: 290
 			posn: 20 100
@@ -76,9 +76,9 @@
 				)
 			)
 			(if (> (DoSound NumVoices) 3)
-				(= musicLoop SND_DONE)
+				(= musicLoop -1)
 			else
-				(= musicLoop SND_READY)
+				(= musicLoop 1)
 			)
 			(= global112 0)
 			(= minutesBetweenReminders 5)

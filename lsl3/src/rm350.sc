@@ -16,7 +16,7 @@
 )
 
 (local
-	timesTalkedToDave
+	talkCount
 )
 (instance rm350 of Room
 	(properties
@@ -42,7 +42,11 @@
 		(aDoor init:)
 		(aPins init:)
 		(if (> machineSpeed 16)
-			(aWaterfall setCycle: Forward isExtra: 1 init:)
+			(aWaterfall
+				setCycle: Forward
+				isExtra: TRUE
+				init:
+			)
 		)
 		(cond 
 			((== prevRoomNum 355)
@@ -86,8 +90,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
@@ -178,19 +180,36 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'lie') (Print 350 0) (Print 350 1))
-			((Said 'open/door') (Print 350 2) (Print 350 3 #at -1 144))
-			((Said 'drink,get/water') (Print 350 4) (Print 350 5))
-			((Said 'get') (Print 350 6))
-			((Said 'give') (Print 350 7))
+			((Said 'lie')
+				(Print 350 0)
+				(Print 350 1)
+			)
+			((Said 'open/door')
+				(Print 350 2)
+				(Print 350 3
+					#at -1 144
+				)
+			)
+			((Said 'drink,get/water')
+				(Print 350 4)
+				(Print 350 5)
+			)
+			((Said 'get')
+				(Print 350 6)
+			)
+			((Said 'give')
+				(Print 350 7)
+			)
 			((Said 'address/man,guard')
-				(switch (++ timesTalkedToDave)
-					(1 (Print 350 8) (Print 350 9))
+				(switch (++ talkCount)
+					(1
+						(Print 350 8)
+						(Print 350 9)
+					)
 					(2
 						(Print 350 10)
 						(Print 350 11)
@@ -201,19 +220,47 @@
 					)
 				)
 			)
-			((or (Said '//job') (Said '/job')) (Print 350 14))
-			((or (Said '/chairman') (Said '//chairman')) (Print 350 15) (Print 350 16 #at -1 144))
+			((or (Said '//job') (Said '/job'))
+				(Print 350 14)
+			)
+			((or (Said '/chairman') (Said '//chairman'))
+				(Print 350 15)
+				(Print 350 16
+					#at -1 144
+				)
+			)
 			((Said 'look>')
 				(cond 
-					((Said '/clit,skin,carpet,(head<skin),skin') (Print 350 17) (Print 350 18 #at -1 144))
-					((Said '/barstool,book') (Printf 350 19 currentEgo))
-					((Said '/cup') (Print 350 20))
-					((Said '/flower') (Print 350 21))
-					((Said '/water,fountain,cascade') (Print 350 22))
-					((Said '/buffet') (Print 350 23))
-					((Said '/guard,man') (Print 350 24))
-					((Said '/door') (Print 350 25))
-					((Said '[/area]') (Print 350 26))
+					((Said '/clit,skin,carpet,(head<skin),skin')
+						(Print 350 17)
+						(Print 350 18
+							#at -1 144
+						)
+					)
+					((Said '/barstool,book')
+						(Printf 350 19 currentEgo)
+					)
+					((Said '/cup')
+						(Print 350 20)
+					)
+					((Said '/flower')
+						(Print 350 21)
+					)
+					((Said '/water,fountain,cascade')
+						(Print 350 22)
+					)
+					((Said '/buffet')
+						(Print 350 23)
+					)
+					((Said '/guard,man')
+						(Print 350 24)
+					)
+					((Said '/door')
+						(Print 350 25)
+					)
+					((Said '[/area]')
+						(Print 350 26)
+					)
 				)
 			)
 		)
@@ -317,8 +364,6 @@
 )
 
 (instance DaveScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (== 0 (aDave loop?))
@@ -335,12 +380,14 @@
 		)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp randVal)
 		(switch (= state newState)
-			(0 (= cycles (Random 11 22)))
+			(0
+				(= cycles (Random 11 22))
+			)
 			(1
 				(= seconds (Random 3 9))
-				(switch (= temp0 (Random 0 5))
+				(switch (= randVal (Random 0 5))
 					(0
 						(aDave loop: 1 setCycle: EndLoop self)
 						(= seconds 0)

@@ -17,8 +17,6 @@
 	[titleBuf 22]
 )
 (instance ManagerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 4 2)
 		(switch (= state newState)
@@ -60,7 +58,9 @@
 					cel: 0
 					setCycle: EndLoop self
 				)
-				(if (>= 10 (++ local0)) (-- state))
+				(if (>= 10 (++ local0))
+					(-- state)
+				)
 			)
 			(7
 				(client loop: 4 cel: 0 setCycle: EndLoop self)

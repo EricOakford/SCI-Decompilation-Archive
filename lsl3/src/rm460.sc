@@ -57,8 +57,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
@@ -85,11 +83,13 @@
 				(ego setCycle: BegLoop self)
 			)
 			(4
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(HandsOff)
 				((aLightLeft script?) changeState: 3)
 			)
-			(5 (= seconds 0))
+			(5
+				(= seconds 0)
+			)
 			(6
 				(aLightLeft setScript: 0)
 				(soundFX number: 460 loop: 1 play:)
@@ -134,8 +134,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -146,15 +145,25 @@
 					(Said 'board,open/elevator,door')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cBLUE)) (Print 460 0))
-					(else (RoomScript changeState: 1))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cBLUE))
+						(Print 460 0)
+					)
+					(else
+						(RoomScript changeState: 1)
+					)
 				)
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/palm') (Print 460 1))
-					((Said '/carpet,carpet') (Print 460 2))
+					((Said '/palm')
+						(Print 460 1)
+					)
+					((Said '/carpet,carpet')
+						(Print 460 2)
+					)
 					((Said '/elevator,door,burn')
 						(Printf 460 3
 							(+ 1 (aLightLeft cel?)) (+ 1 (aLightRight cel?))
@@ -183,11 +192,11 @@
 )
 
 (instance ManScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 4 8)))
+			(0
+				(= seconds (Random 4 8))
+			)
 			(1
 				(aMan
 					illegalBits: 0
@@ -197,11 +206,15 @@
 					setMotion: MoveTo 257 162 self
 				)
 			)
-			(2 (= seconds (Random 4 8)))
+			(2
+				(= seconds (Random 4 8))
+			)
 			(3
 				(aMan setMotion: MoveTo 233 140 self)
 			)
-			(4 (self changeState: 0))
+			(4
+				(self changeState: 0)
+			)
 			(5
 				(aMan setMotion: MoveTo 249 155 self)
 			)
@@ -228,7 +241,9 @@
 							(2 (Print 460 16))
 							(3 (Print 460 17))
 						)
-						(if (> (++ manResponse) 3) (= manResponse 0))
+						(if (> (++ manResponse) 3)
+							(= manResponse 0)
+						)
 					)
 					(else
 						(switch manResponse
@@ -237,7 +252,9 @@
 							(2 (Print 460 20))
 							(3 (Print 460 21))
 						)
-						(if (> (++ manResponse) 3) (= manResponse 0))
+						(if (> (++ manResponse) 3)
+							(= manResponse 0)
+						)
 					)
 				)
 				(self changeState: 0)
@@ -246,8 +263,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -346,9 +362,7 @@
 
 (instance LightScript of Script
 	;EO: Code tweaked to fix original speed bug, using decompiled NRS script
-	(properties)
-	
-	(method (changeState newState &tmp clientCel)
+	(method (changeState newState &tmp theCel)
 		(switch (= state newState)
 			(0
 				(client
@@ -366,12 +380,12 @@
 				(= seconds (Random 4 10))
 			)
 			(2
-				(= clientCel (client cel?))
-				(while (== (client cel?) clientCel)
-					(= clientCel (Random 1 8))
+				(= theCel (client cel?))
+				(while (== (client cel?) theCel)
+					(= theCel (Random 1 8))
 				)
 				(client
-					setCycle: CycleTo clientCel (if (> clientCel (client cel?)) 1 else -1) self
+					setCycle: CycleTo theCel (if (> theCel (client cel?)) 1 else -1) self
 				)
 				(= state 0)
 			)

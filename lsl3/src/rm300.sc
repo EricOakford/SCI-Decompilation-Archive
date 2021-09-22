@@ -14,8 +14,8 @@
 )
 
 (local
-	noEntry
-	[local1 301]
+	noEntryMsg
+	[plotString 301]
 )
 (instance rm300 of Room
 	(properties
@@ -43,8 +43,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (& (ego onControl:) cYELLOW)
@@ -54,8 +52,8 @@
 					(self changeState: 4)
 				)
 				((== currentStatus 301))
-				((not noEntry)
-					(= noEntry TRUE)
+				((not noEntryMsg)
+					(= noEntryMsg TRUE)
 					(Print 300 0)
 				)
 			)
@@ -95,20 +93,35 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if (Said 'look>')
 			(cond 
-				((Said '/fish') (Print 300 1))
-				((Said '/awning') (Print 300 2))
-				((Said '/panties') (Print 300 3))
-				((Said '/eye') (Print 300 4))
-				((Said '/lip') (Print 300 5))
-				((Said '/dicklicker') (Print 300 6))
-				((Said '/spout') (Print 300 7))
-				((Said '[/area]') (Print 300 8))
+				((Said '/fish')
+					(Print 300 1)
+				)
+				((Said '/awning')
+					(Print 300 2)
+				)
+				((Said '/panties')
+					(Print 300 3)
+				)
+				((Said '/eye')
+					(Print 300 4)
+				)
+				((Said '/lip')
+					(Print 300 5)
+				)
+				((Said '/dicklicker')
+					(Print 300 6)
+				)
+				((Said '/spout')
+					(Print 300 7)
+				)
+				((Said '[/area]')
+					(Print 300 8)
+				)
 			)
 		)
 	)

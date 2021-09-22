@@ -49,13 +49,16 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
-			(0 (= seconds 3))
-			(1 (Print 640 0) (= seconds 2))
+			(0
+				(= seconds 3)
+			)
+			(1
+				(Print 640 0)
+				(= seconds 2)
+			)
 			(2
 				(aCamera setStep: 1 1 setMotion: MoveTo 96 189 self)
 			)
@@ -104,8 +107,12 @@
 				(aRosella setLoop: 0)
 				(music fade:)
 				(switch (++ sceneTakes)
-					(1 (Print 640 5))
-					(2 (Print 640 6))
+					(1
+						(Print 640 5)
+					)
+					(2
+						(Print 640 6)
+					)
 					(3
 						(aRosella stopUpd:)
 						(Print 640 7)
@@ -122,7 +129,9 @@
 					cycleSpeed: 1
 					setMotion: MoveTo 224 115 self
 				)
-				(if (< sceneTakes 3) (= state 5))
+				(if (< sceneTakes 3)
+					(= state 5)
+				)
 			)
 			(12
 				(aRosella cycleSpeed: 1 setLoop: 2 setCycle: Forward)
@@ -234,9 +243,7 @@
 	)
 )
 
-(instance aLarry of Actor
-	(properties)
-)
+(instance aLarry of Actor)
 
 (instance atpChest of PicView
 	(properties

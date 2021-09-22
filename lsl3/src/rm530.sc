@@ -50,7 +50,7 @@
 				(= onOtherSide TRUE)
 				(= ropeState 531)
 				(= currentEgoView 802)
-				(NormalEgo 2)
+				(NormalEgo loopS)
 				(ego setStep: 2 1 posn: 215 75 init:)
 				(aRope posn: 227 72 setCycle: EndLoop RopeScript)
 			)
@@ -59,7 +59,7 @@
 				(= onOtherSide TRUE)
 				(= ropeState 531)
 				(= currentEgoView 802)
-				(NormalEgo 2)
+				(NormalEgo loopS)
 				(ego setStep: 2 1 posn: 31 78 init:)
 				(aRope posn: 227 72 setCel: 255 stopUpd:)
 			)
@@ -98,8 +98,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(cond 
 			(
@@ -128,7 +126,9 @@
 				(ego posn: (ego x?) (+ (ego y?) 5))
 				(self changeState: 65)
 			)
-			((& (ego onControl:) cLGREEN) (curRoom newRoom: 540))
+			((& (ego onControl:) cLGREEN)
+				(curRoom newRoom: 540)
+			)
 			(
 				(and
 					(== ropeState 3)
@@ -137,12 +137,19 @@
 				(= ropeState 531)
 				(self changeState: 58)
 			)
-			(
-			(and (== currentStatus egoNORMAL) (not (Btst fDrankRiverWater)) (not onOtherSide))
+			((and (== currentStatus egoNORMAL) (not (Btst fDrankRiverWater)) (not onOtherSide))
 				(cond 
-					((== roomSeconds 30) (++ roomSeconds) (Print 530 0))
-					((== roomSeconds 60) (++ roomSeconds) (Print 530 1))
-					((or (> roomSeconds 90) (== ropeState 4)) (self changeState: 12))
+					((== roomSeconds 30)
+						(++ roomSeconds)
+						(Print 530 0)
+					)
+					((== roomSeconds 60)
+						(++ roomSeconds)
+						(Print 530 1)
+					)
+					((or (> roomSeconds 90) (== ropeState 4))
+						(self changeState: 12)
+					)
 				)
 			)
 		)
@@ -212,7 +219,9 @@
 			)
 			(9
 				(= cycles 11)
-				(if (> 4 (++ local2)) (= state 7))
+				(if (> 4 (++ local2))
+					(= state 7)
+				)
 			)
 			(10
 				(ego
@@ -352,9 +361,7 @@
 				(Print
 					(Format @msgBuf 530 81 expletive)
 					#dispose
-					#at
-					-1
-					10
+					#at -1 10
 				)
 				(music number: 4 loop: 1 play:)
 				(ego setLoop: 2 cel: 0 cycleSpeed: 0 setCycle: EndLoop self)
@@ -364,7 +371,9 @@
 				(Ok)
 				(HandsOff)
 				(Print 530 82)
-				(if (>= filthLevel 3) (Print 530 83 #at -1 144))
+				(if (>= filthLevel 3)
+					(Print 530 83 #at -1 144)
+				)
 				(= currentStatus 533)
 				(ego
 					view: 532
@@ -398,7 +407,9 @@
 			(41
 				(theGame changeScore: 25)
 				(Print 530 84)
-				(if (>= filthLevel 3) (Print 530 85 #at -1 144))
+				(if (>= filthLevel 3)
+					(Print 530 85 #at -1 144)
+				)
 				(User canInput: TRUE)
 			)
 			(42
@@ -413,7 +424,7 @@
 			)
 			(43
 				(ego posn: 128 132)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(= currentStatus 0)
 			)
 			(44
@@ -455,7 +466,9 @@
 				(ego setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(49
-				(if (> 2 (++ local0)) (= state 46))
+				(if (> 2 (++ local0))
+					(= state 46)
+				)
 				(= seconds 3)
 			)
 			(50
@@ -468,7 +481,10 @@
 			)
 			(52
 				(theGame changeScore: 20)
-				(Print 530 90 #at 10 5 #width 290)
+				(Print 530 90
+					#at 10 5
+					#width 290
+				)
 				(= ropeState 3)
 				(soundFX stop:)
 				(music play:)
@@ -577,14 +593,14 @@
 				(music fade:)
 				(= seconds 3)
 			)
-			(64 (curRoom newRoom: 535))
+			(64
+				(curRoom newRoom: 535)
+			)
 			(65
 				(HandsOff)
 				(Print
 					(Format @msgBuf 530 81 expletive)
-					#at
-					-1
-					10
+					#at -1 10
 					#dispose
 				)
 				(music number: 4 loop: 1 play:)
@@ -606,8 +622,7 @@
 			)
 			(67
 				(cls)
-				(if
-				(or (== currentStatus 534) (== currentStatus 535))
+				(if (or (== currentStatus 534) (== currentStatus 535))
 					(Print 530 97)
 				else
 					(Print 530 98)
@@ -632,15 +647,18 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
 			((Said 'make,weave/blade,hemp')
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					(onOtherSide (Print 530 2))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					(onOtherSide
+						(Print 530 2)
+					)
 					(else
 						(switch ropeState
 							(0 (Print 530 3))
@@ -650,14 +668,17 @@
 					)
 				)
 			)
-			((and (>= ropeState 4) (Said 'unfasten')) (Print 530 5))
-			(
-			(or (Said 'hemp/boulder') (Said 'throw/blade,hemp'))
+			((and (>= ropeState 4) (Said 'unfasten'))
+				(Print 530 5)
+			)
+			((or (Said 'hemp/boulder') (Said 'throw/blade,hemp'))
 				(if (!= currentStatus egoNORMAL)
 					(GoodIdea)
 				else
 					(switch ropeState
-						(0 (Print 530 6))
+						(0
+							(Print 530 6)
+						)
 						(1
 							(Print 530 7)
 							(ego put: iMarijuana curRoomNum)
@@ -670,24 +691,47 @@
 								(self changeState: 46)
 							)
 						)
-						(3 (ItIs))
-						(4 (ItIs))
-						(531 (Print 530 9))
+						(3
+							(ItIs)
+						)
+						(4
+							(ItIs)
+						)
+						(531
+							(Print 530 9)
+						)
 					)
 				)
 			)
 			((Said 'attach/hemp>')
 				(cond 
-					((Said '//coconut') (Print 530 10))
-					((!= currentStatus 531) (event claimed: TRUE) (Print 530 11))
-					((Said '/[/!*]') (Print 530 12))
+					((Said '//coconut')
+						(Print 530 10)
+					)
+					((!= currentStatus 531)
+						(event claimed: TRUE)
+						(Print 530 11)
+					)
+					((Said '/[/noword]')
+						(Print 530 12)
+					)
 					((Said '//palm')
 						(switch ropeState
-							(2 (Print 530 11))
-							(3 (self changeState: 53))
-							(4 (ItIs))
-							(531 (Print 530 13))
-							(else  (Print 530 14))
+							(2
+								(Print 530 11)
+							)
+							(3
+								(self changeState: 53)
+							)
+							(4
+								(ItIs)
+							)
+							(531
+								(Print 530 13)
+							)
+							(else
+								(Print 530 14)
+							)
 						)
 					)
 				)
@@ -700,12 +744,24 @@
 					(Said 'break/skirt,cloth,dress')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((== currentEgoView 803) (Print 530 15))
-					((< ropeState 3) (Print 530 16))
-					((< ropeState 4) (Print 530 17))
-					((> ropeState 4) (Print 530 18))
-					(else (self changeState: 56))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((== currentEgoView 803)
+						(Print 530 15)
+					)
+					((< ropeState 3)
+						(Print 530 16)
+					)
+					((< ropeState 4)
+						(Print 530 17)
+					)
+					((> ropeState 4)
+						(Print 530 18)
+					)
+					(else
+						(self changeState: 56)
+					)
 				)
 			)
 			(
@@ -716,40 +772,80 @@
 					(Said 'bang,go,grab,exit,use,climb//hemp,belt')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (Print 530 19))
-					(onOtherSide (Print 530 20))
-					((< ropeState 4) (Print 530 21))
-					((> 129 (ego y?)) (NotClose))
-					(else (self changeState: 60))
+					((!= currentStatus egoNORMAL)
+						(Print 530 19)
+					)
+					(onOtherSide
+						(Print 530 20)
+					)
+					((< ropeState 4)
+						(Print 530 21)
+					)
+					((> 129 (ego y?))
+						(NotClose)
+					)
+					(else
+						(self changeState: 60)
+					)
 				)
 			)
-			((and onOtherSide (Said '/hemp')) (Print 530 22))
-			((and ropeState (Said 'test,look/hemp,knot')) (Print 530 23))
-			(
-			(and (== ropeState 3) (Said 'use,climb,throw/hemp')) (Print 530 24))
+			((and onOtherSide (Said '/hemp'))
+				(Print 530 22)
+			)
+			((and ropeState (Said 'test,look/hemp,knot'))
+				(Print 530 23)
+			)
+			((and (== ropeState 3) (Said 'use,climb,throw/hemp'))
+				(Print 530 24)
+			)
 			((Said 'climb/palm')
 				(cond 
-					((== currentStatus 536) (self changeState: 42))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					(onOtherSide (Print 530 25))
-					((& (ego onControl:) cMAGENTA) (Print 530 26))
-					((not (& (ego onControl:) cRED)) (Print 530 27))
-					(else (self changeState: 35))
+					((== currentStatus 536)
+						(self changeState: 42)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					(onOtherSide
+						(Print 530 25)
+					)
+					((& (ego onControl:) cMAGENTA)
+						(Print 530 26)
+					)
+					((not (& (ego onControl:) cRED))
+						(Print 530 27)
+					)
+					(else
+						(self changeState: 35)
+					)
 				)
 			)
-			(
-			(and (== currentStatus 536) (Said 'go,climb<down')) (self changeState: 42))
+			((and (== currentStatus 536) (Said 'go,climb<down'))
+				(self changeState: 42)
+			)
 			((Said 'pick,get/coconut')
 				(cond 
-					((ego has: iCoconuts) (Print 530 28))
-					((!= currentStatus 536) (Print 530 29))
-					(else (self changeState: 37))
+					((ego has: iCoconuts)
+						(Print 530 28)
+					)
+					((!= currentStatus 536)
+						(Print 530 29)
+					)
+					(else
+						(self changeState: 37)
+					)
 				)
 			)
-			((Said 'climb[<down]/boulder,canyon,ledge') (Print 530 30) (Print 530 31 #at -1 144))
-			((Said 'climb<up[/boulder,canyon,ledge]') (Print 530 32))
-			(
-			(or (Said 'look<down') (Said 'look/cliff,edge,canyon')) (Print 530 33))
+			((Said 'climb[<down]/boulder,canyon,ledge')
+				(Print 530 30)
+				(Print 530 31 #at -1 144)
+			)
+			((Said 'climb<up[/boulder,canyon,ledge]')
+				(Print 530 32)
+			)
+			((or (Said 'look<down') (Said 'look/cliff,edge,canyon'))
+				(Print 530 33)
+			)
 			(
 				(and
 					(not onOtherSide)
@@ -768,15 +864,21 @@
 				else
 					(switch ropeState
 						(0
-							(if (not (& (ego onControl:) $0008))
+							(if (not (& (ego onControl:) cCYAN))
 								(NotClose)
 							else
 								(self changeState: 7)
 							)
 						)
-						(1 (Print 530 36))
-						(2 (Print 530 37))
-						(else  (Print 530 38))
+						(1
+							(Print 530 36)
+						)
+						(2
+							(Print 530 37)
+						)
+						(else
+							(Print 530 38)
+						)
 					)
 				)
 			)
@@ -786,10 +888,19 @@
 					(Said 'burn,smoke/bush,bush,blade')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (ego has: iMarijuana)) (Print 530 39))
-					((> ropeState 1) (Print 530 40))
-					(else (= currentStatus 534) (self changeState: 15))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (ego has: iMarijuana))
+						(Print 530 39)
+					)
+					((> ropeState 1)
+						(Print 530 40)
+					)
+					(else
+						(= currentStatus 534)
+						(self changeState: 15)
+					)
 				)
 			)
 			(
@@ -798,14 +909,27 @@
 					(Said 'eat,eat/bush,bush,blade')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (ego has: iMarijuana)) (Print 530 41))
-					((> ropeState 1) (Print 530 42))
-					(else (= currentStatus 535) (self changeState: 15))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (ego has: iMarijuana))
+						(Print 530 41)
+					)
+					((> ropeState 1)
+						(Print 530 42)
+					)
+					(else
+						(= currentStatus 535)
+						(self changeState: 15)
+					)
 				)
 			)
-			((Said 'unfasten') (Print 530 43))
-			((Said 'drag,drag,drag/palm') (Print 530 44))
+			((Said 'unfasten')
+				(Print 530 43)
+			)
+			((Said 'drag,drag,drag/palm')
+				(Print 530 44)
+			)
 			(
 				(and
 					(ego has: iCoconuts)
@@ -820,25 +944,47 @@
 				(cond 
 					((Said '/boulder')
 						(cond 
-							((== ropeState 531) (Print 530 22))
-							((== ropeState 4) (Print 530 46) (Print 530 47 #at -1 144))
-							(else (Print 530 48))
+							((== ropeState 531)
+								(Print 530 22)
+							)
+							((== ropeState 4)
+								(Print 530 46)
+								(Print 530 47 #at -1 144)
+							)
+							(else
+								(Print 530 48)
+							)
 						)
 					)
 					((Said '/carpet') (Print 530 49))
 					((Said '/palm')
 						(cond 
-							(onOtherSide (Print 530 50))
-							((== currentStatus 536) (Print 530 51))
-							(else (Print 530 52))
+							(onOtherSide
+								(Print 530 50)
+							)
+							((== currentStatus 536)
+								(Print 530 51)
+							)
+							(else
+								(Print 530 52)
+							)
 						)
 					)
 					((Said '/coconut')
-						(if (>= filthLevel 2) (Print 530 53 #at -1 144))
+						(if (>= filthLevel 2)
+							(Print 530 53 #at -1 144)
+						)
 						(cond 
-							((ego has: iCoconuts) (event claimed: FALSE))
-							(onOtherSide (Print 530 54))
-							(else (Print 530 55) (Print 530 56))
+							((ego has: iCoconuts)
+								(event claimed: FALSE)
+							)
+							(onOtherSide
+								(Print 530 54)
+							)
+							(else
+								(Print 530 55)
+								(Print 530 56)
+							)
 						)
 					)
 					(
@@ -854,16 +1000,28 @@
 					)
 					((Said '/bush,exit')
 						(cond 
-							((== currentStatus 536) (Print 530 57))
-							(onOtherSide (Print 530 59))
-							(else (Print 530 60))
+							((== currentStatus 536)
+								(Print 530 57)
+							)
+							(onOtherSide
+								(Print 530 59)
+							)
+							(else
+								(Print 530 60)
+							)
 						)
 					)
 					((Said '[/ledge,area]')
 						(cond 
-							((== currentStatus 536) (Print 530 61))
-							(onOtherSide (Print 530 62))
-							(else (Print 530 63))
+							((== currentStatus 536)
+								(Print 530 61)
+							)
+							(onOtherSide
+								(Print 530 62)
+							)
+							(else
+								(Print 530 63)
+							)
 						)
 					)
 				)
@@ -887,8 +1045,6 @@
 )
 
 (instance RopeScript of Script
-	(properties)
-	
 	(method (cue)
 		(aRope stopUpd:)
 		(Print 530 100 #at 10 5 #width 290)
@@ -907,8 +1063,6 @@
 )
 
 (instance theJump of Jump
-	(properties)
-	
 	(method (init)
 		(super init: ego RoomScript)
 		(self yStep: 2)

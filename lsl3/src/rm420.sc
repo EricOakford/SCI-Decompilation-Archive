@@ -25,7 +25,7 @@
 	[titleBuf 22]
 	passPage
 	inputPassNum
-	[correctPassNum 27] = [0 0 0 741 0 -9725 30004 0 0 18608 25695 -32695 993 0 0 9170 0 0 -16422 -31742 0 0 -11054 -3033]
+	correctPassNum = [0 0 0 741 0 -9725 30004 0 0 18608 25695 -32695 993 0 0 9170 0 0 -16422 -31742 0 0 -11054 -3033]
 )
 (procedure (MaitreDSays theView theLoop theCel)
 	(Print @msgBuf
@@ -45,7 +45,9 @@
 	
 	(method (init)
 		(Load SOUND 11)
-		(if (ego has: iLandDeed) (Load VIEW 7))
+		(if (ego has: iLandDeed)
+			(Load VIEW 7)
+		)
 		(super init:)
 		(addToPics
 			add: atpPoster1
@@ -82,7 +84,9 @@
 		)
 		(cond 
 			((== prevRoomNum 440)
-				(if (== currentStatus 18) (= currentStatus egoNORMAL))
+				(if (== currentStatus 18)
+					(= currentStatus egoNORMAL)
+				)
 				(TheMenuBar draw:)
 				(StatusLine enable:)
 				(ego loop: 0 posn: 44 142)
@@ -95,26 +99,33 @@
 				)
 				(aCherri init:)
 			)
-			((== prevRoomNum 430) (RoomScript changeState: 1))
-			((== prevRoomNum 431) (self style: IRISOUT) (RoomScript changeState: 1))
-			((> (ego y?) 130) (ego posn: 317 188 loop: 1))
-			(else (ego loop: 1 posn: 309 163))
+			((== prevRoomNum 430)
+				(RoomScript changeState: 1)
+			)
+			((== prevRoomNum 431)
+				(self style: IRISOUT)
+				(RoomScript changeState: 1)
+			)
+			((> (ego y?) 130)
+				(ego posn: 317 188 loop: 1)
+			)
+			(else
+				(ego loop: 1 posn: 309 163)
+			)
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (== theDoor aDoor)
 			(= theDoor 0)
 			(DisposeScript 421)
 			(DisposeScript 422)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
@@ -178,12 +189,16 @@
 			(8
 				(ego setMotion: MoveTo -3 140 self)
 			)
-			(9 (aDoor setCycle: BegLoop self))
+			(9
+				(aDoor setCycle: BegLoop self)
+			)
 			(10
 				(soundFX number: 11 loop: 1 play:)
 				(= cycles 12)
 			)
-			(11 (curRoom newRoom: 440))
+			(11
+				(curRoom newRoom: 440)
+			)
 			(12
 				(HandsOff)
 				(aCherri setScript: 0)
@@ -220,7 +235,9 @@
 			)
 			(17
 				(Print 420 30)
-				(if (ego has: iLandDeed) (= state 19))
+				(if (ego has: iLandDeed)
+					(= state 19)
+				)
 				(= seconds 3)
 			)
 			(18
@@ -243,12 +260,16 @@
 				(Print 420 35 #at 10 5 #width 290)
 				(= seconds 3)
 			)
-			(22 (aDoor setCycle: EndLoop self))
+			(22
+				(aDoor setCycle: EndLoop self)
+			)
 			(23
 				(aDoor stopUpd:)
 				(ego setMotion: MoveTo -20 (ego y?) self)
 			)
-			(24 (aDoor setCycle: BegLoop self))
+			(24
+				(aDoor setCycle: BegLoop self)
+			)
 			(25
 				(soundFX number: 11 loop: 1 play:)
 				(cls)
@@ -259,40 +280,59 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'look/art,art') (Print 420 0))
-			(
-			(or (Said 'make/call') (Said 'call') (Said 'use/call'))
+			((Said 'look/art,art')
+				(Print 420 0)
+			)
+			((or (Said 'make/call') (Said 'call') (Said 'use/call'))
 				(if (== showroomState SRcherriOnPhone)
 					(Print 420 1)
 				else
 					(Print 420 2)
 				)
 			)
-			((Said '/alter') (Print 420 3))
-			((Said 'unbolt/door') (Print 420 4))
+			((Said '/change')
+				(Print 420 3)
+			)
+			((Said 'unbolt/door')
+				(Print 420 4)
+			)
 			((Said 'open/door')
 				(cond 
-					((not (& (ego onControl:) cCYAN)) (NotClose))
-					((== currentStatus egoSHOWGIRL) (self changeState: 6))
-					(else (Print 420 5))
-				)
-			)
-			(
-			(and (== currentStatus egoSHOWGIRL) (Said '/cloth,cloth')) (Print 420 6))
-			((Said 'knock')
-				(cond 
-					((== currentStatus egoSHOWGIRL) (Print 420 7))
-					((or (Btst fScrewedCherri) (>= showroomState SRdone)) (Print 420 8))
 					((not (& (ego onControl:) cCYAN))
 						(NotClose)
 					)
-					((== showroomState SRshowDone) (Print 420 9))
-					(else (self changeState: 12))
+					((== currentStatus egoSHOWGIRL)
+						(self changeState: 6)
+					)
+					(else
+						(Print 420 5)
+					)
+				)
+			)
+			((and (== currentStatus egoSHOWGIRL) (Said '/cloth,cloth'))
+				(Print 420 6)
+			)
+			((Said 'knock')
+				(cond 
+					((== currentStatus egoSHOWGIRL)
+						(Print 420 7)
+					)
+					((or (Btst fScrewedCherri) (>= showroomState SRdone))
+						(Print 420 8)
+					)
+					((not (& (ego onControl:) cCYAN))
+						(NotClose)
+					)
+					((== showroomState SRshowDone)
+						(Print 420 9)
+					)
+					(else
+						(self changeState: 12)
+					)
 				)
 			)
 			((Said 'look<in/bolt,(hole<key),door')
@@ -309,8 +349,12 @@
 					(Print 420 11)
 				)
 			)
-			((Said 'board/backstage') (Print 420 12))
-			((Said '/hemp') (Print 420 13))
+			((Said 'board/backstage')
+				(Print 420 12)
+			)
+			((Said '/hemp')
+				(Print 420 13)
+			)
 			((Said 'look>')
 				(cond 
 					((Said '/lectern')
@@ -320,8 +364,13 @@
 							(Print 420 15)
 						)
 					)
-					((Said '/backstage') (Print 420 16))
-					((Said '/wall') (Print 420 0) (Print 420 17))
+					((Said '/backstage')
+						(Print 420 16)
+					)
+					((Said '/wall')
+						(Print 420 0)
+						(Print 420 17)
+					)
 					((Said '/call')
 						(if (== showroomState SRcherriOnPhone)
 							(Print 420 18)
@@ -333,9 +382,15 @@
 						(Print
 							(Format @msgBuf 420 19
 								(cond 
-									((== showroomState SRcherriOnPhone) {a gorgeous woman in a dressing gown})
-									((cast contains: aMaitreD) {a man standing behind a podium})
-									(else {you})
+									((== showroomState SRcherriOnPhone)
+										{a gorgeous woman in a dressing gown}
+									)
+									((cast contains: aMaitreD)
+										{a man standing behind a podium}
+									)
+									(else
+										{you}
+									)
 								)
 							)
 						)
@@ -357,13 +412,15 @@
 	
 	(method (init)
 		(super init:)
-		(self setScript: MaitreDScript ignoreActors: stopUpd:)
+		(self
+			setScript: MaitreDScript
+			ignoreActors:
+			stopUpd:
+		)
 	)
 )
 
 (instance MaitreDScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [numBuf 5])
 		(ChangeScriptState self newState 2 2)
 		(switch (= state newState)
@@ -424,7 +481,9 @@
 			)
 			(5
 				(aMaitreD setCel: 0 stopUpd:)
-				(if (not msgBuf) (Format @msgBuf 420 70))
+				(if (not msgBuf)
+					(Format @msgBuf 420 70)
+				)
 				(MaitreDSays 422 3 0)
 				(HandsOn)
 			)
@@ -437,7 +496,10 @@
 			(7
 				(aMaitreD setCel: 0 stopUpd:)
 				(cond 
-					((== ((Inventory at: iMoney) view?) 24) (Print 420 71) (MaitreDSays 422 3 0))
+					((== ((Inventory at: iMoney) view?) 24)
+						(Print 420 71)
+						(MaitreDSays 422 3 0)
+					)
 					((not (Btst fGaveTicketToMaitreD))
 						(Format @msgBuf 420 72)
 						(MaitreDSays 422 3 0)
@@ -482,7 +544,9 @@
 			(11
 				(ego setMotion: MoveTo 149 94 self)
 			)
-			(12 (curRoom newRoom: 430))
+			(12
+				(curRoom newRoom: 430)
+			)
 			(13
 				(aMaitreD setCel: 0 stopUpd:)
 				(Format @msgBuf 420 74)
@@ -502,16 +566,19 @@
 		)
 	)
 	
-	(method (handleEvent event &tmp item)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+	(method (handleEvent event &tmp index)
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
 			((or (Said 'ask/pass') (Said 'ask/about/pass'))
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cRED)) (Print 420 37))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cRED))
+						(Print 420 37)
+					)
 					(else
 						(Print 420 38)
 						(Format @msgBuf 420 39)
@@ -522,8 +589,12 @@
 			(
 			(and (not playingAsPatti) (Said '/entertainer'))
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cRED)) (Print 420 37))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cRED))
+						(Print 420 37)
+					)
 					(else
 						(Print 420 40)
 						(Format @msgBuf 420 41)
@@ -538,8 +609,12 @@
 					(Said '//casino,gambling')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cRED)) (Print 420 37))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cRED))
+						(Print 420 37)
+					)
 					(else
 						(Print 420 42)
 						(Format @msgBuf 420 43)
@@ -555,20 +630,41 @@
 					(Said 'look/show')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cRED)) (Print 420 37))
-					((>= showroomState SRstageDoorUnlocked) (Print 420 44))
-					((>= showroomState SRshowDone) (Print 420 45))
-					(else (Format @msgBuf 420 46) (self changeState: 4))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cRED))
+						(Print 420 37)
+					)
+					((>= showroomState SRstageDoorUnlocked)
+						(Print 420 44)
+					)
+					((>= showroomState SRshowDone)
+						(Print 420 45)
+					)
+					(else
+						(Format @msgBuf 420 46)
+						(self changeState: 4)
+					)
 				)
 			)
 			((Said 'bracelet,use,give,show/pass,book')
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cRED)) (Print 420 47))
-					((>= showroomState SRstageDoorUnlocked) (Print 420 44))
-					((>= showroomState SRshowDone) (Print 420 45))
-					(else (self changeState: 1))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cRED))
+						(Print 420 47)
+					)
+					((>= showroomState SRstageDoorUnlocked)
+						(Print 420 44)
+					)
+					((>= showroomState SRshowDone)
+						(Print 420 45)
+					)
+					(else
+						(self changeState: 1)
+					)
 				)
 			)
 			(
@@ -578,19 +674,37 @@
 					(Said 'bracelet,give,show/man/buck,500,bill')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (ego has: iMoney)) (Print 420 48))
-					((not (& (ego onControl:) cRED)) (Print 420 47))
-					((>= showroomState SRstageDoorUnlocked) (Print 420 49))
-					(else (self changeState: 6))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (ego has: iMoney))
+						(Print 420 48)
+					)
+					((not (& (ego onControl:) cRED))
+						(Print 420 47)
+					)
+					((>= showroomState SRstageDoorUnlocked)
+						(Print 420 49)
+					)
+					(else
+						(self changeState: 6)
+					)
 				)
 			)
 			((Said 'address/man')
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (& (ego onControl:) cRED)) (Print 420 50))
-					((>= showroomState SRstageDoorUnlocked) (Print 420 44))
-					((>= showroomState SRshowDone) (Print 420 45))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (& (ego onControl:) cRED))
+						(Print 420 50)
+					)
+					((>= showroomState SRstageDoorUnlocked)
+						(Print 420 44)
+					)
+					((>= showroomState SRshowDone)
+						(Print 420 45)
+					)
 					(else
 						(Printf 420 51 introductoryPhrase)
 						(Print 420 52)
@@ -599,21 +713,46 @@
 					)
 				)
 			)
-			((Said 'look/man') (Print 420 53) (Print 420 54 #at -1 144))
+			((Said 'look/man')
+				(Print 420 53)
+				(Print 420 54
+					#at -1 144
+				)
+			)
 			((Said 'give>')
-				(= item (inventory saidMe:))
+				(= index (inventory saidMe:))
 				(event claimed: FALSE)
 				(cond 
-					((not (& (ego onControl:) cRED)) (Print 420 55))
-					((Said '[/noword]') (Print 420 56))
-					((not item) (Print 420 57))
-					((not (item ownedBy: ego)) (DontHave))
-					((== item (inventory at: iKnife)) (Print 420 58))
-					((== item (inventory at: iGrass)) (Print 420 59))
-					((== item (inventory at: iWood)) (Print 420 60))
-					((== item (inventory at: iOrchids)) (Print 420 61))
-					((== item (inventory at: iCreditCard)) (Print 420 62))
-					(else (Print 420 63))
+					((not (& (ego onControl:) cRED))
+						(Print 420 55)
+					)
+					((Said '[/noword]')
+						(Print 420 56)
+					)
+					((not index)
+						(Print 420 57)
+					)
+					((not (index ownedBy: ego))
+						(DontHave)
+					)
+					((== index (inventory at: iKnife))
+						(Print 420 58)
+					)
+					((== index (inventory at: iGrass))
+						(Print 420 59)
+					)
+					((== index (inventory at: iWood))
+						(Print 420 60)
+					)
+					((== index (inventory at: iOrchids))
+						(Print 420 61)
+					)
+					((== index (inventory at: iCreditCard))
+						(Print 420 62)
+					)
+					(else
+						(Print 420 63)
+					)
 				)
 				(event claimed: TRUE)
 			)
@@ -722,6 +861,4 @@
 	)
 )
 
-(instance handIcon of DCIcon
-	(properties)
-)
+(instance handIcon of DCIcon)

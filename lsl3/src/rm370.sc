@@ -16,7 +16,7 @@
 	inputNum1
 	inputNum2
 	inputNum3
-	triedToLeave
+	leaveMsg
 	local4
 	[str 200]
 )
@@ -45,9 +45,16 @@
 		(self setScript: RoomScript)
 		(NormalEgo)
 		(cond 
-			((== prevRoomNum 375) (ego loop: 2 posn: 221 58))
-			((== prevRoomNum 380) (ego loop: 2 posn: 313 62))
-			(else (= currentStatus egoLEISURESUIT) (ego posn: 307 179))
+			((== prevRoomNum 375)
+				(ego loop: 2 posn: 221 58)
+			)
+			((== prevRoomNum 380)
+				(ego loop: 2 posn: 313 62)
+			)
+			(else
+				(= currentStatus egoLEISURESUIT)
+				(ego posn: 307 179)
+			)
 		)
 		(ego
 			view:
@@ -62,84 +69,133 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (< (aLocker y?) 999) (Bset 51))
+	(method (newRoom n)
+		(if (< (aLocker y?) 999)
+			(Bset fLockerRobbed)
+		)
 		(if
 			(and
-				(== newRoomNumber 375)
+				(== n 375)
 				(== currentStatus egoTOWEL)
 				(ego has: iTowel)
 			)
-			(Print 370 0 #at 10 -1 #width 290)
+			(Print 370 0
+				#at 10 -1
+				#width 290
+			)
 			(PutInRoom iTowel 375)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(switch currentStatus
-			(5
-				(ego observeControl: 4096 8192 ignoreControl: cYELLOW)
+			(egoNAKED
+				(ego
+					observeControl: cLRED cLMAGENTA
+					ignoreControl: cYELLOW
+				)
 			)
-			(6
-				(ego observeControl: 4096 8192 ignoreControl: cYELLOW)
+			(egoNAKED_CENSORED
+				(ego
+					observeControl: cLRED cLMAGENTA
+					ignoreControl: cYELLOW
+				)
 			)
-			(9
-				(ego observeControl: 16384 4096 ignoreControl: cLMAGENTA)
+			(egoSWEATSUIT
+				(ego
+					observeControl: cYELLOW cLRED
+					ignoreControl: cLMAGENTA
+				)
 			)
-			(8
-				(ego observeControl: 8192 4096 ignoreControl: cYELLOW)
+			(egoTOWEL
+				(ego
+					observeControl: cLMAGENTA cLRED
+					ignoreControl: cYELLOW
+				)
 			)
 			(else 
-				(ego observeControl: 8192 16384 ignoreControl: cLRED)
+				(ego
+					observeControl: cLMAGENTA cYELLOW
+					ignoreControl: cLRED
+				)
 			)
 		)
-		(if (& (ego onControl:) $0800) (ego setPri: 3))
-		(if (& (ego onControl:) $0400) (ego setPri: -1))
+		(if (& (ego onControl:) cLCYAN)
+			(ego setPri: 3)
+		)
+		(if (& (ego onControl:) cLGREEN)
+			(ego setPri: -1)
+		)
 		(cond 
-			((& (ego onControl:) cGREEN) (curRoom newRoom: 375))
+			((& (ego onControl:) cGREEN)
+				(curRoom newRoom: 375)
+			)
 			((& (ego onControl:) cBLUE)
-				(if (not triedToLeave)
+				(if (not leaveMsg)
 					(cond 
-						((== currentStatus egoLEISURESUIT) (= triedToLeave TRUE) (Print 370 1))
-						((== currentStatus egoSWEATSUIT) (= triedToLeave TRUE) (Print 370 2))
-					)
-				)
-			)
-			((& (ego onControl:) $0010) (curRoom newRoom: 380))
-			((& (ego onControl:) $0008)
-				(if (not triedToLeave)
-					(cond 
-						((or (== currentStatus egoNAKED) (== currentStatus egoNAKED_CENSORED)) (= triedToLeave TRUE) (Print 370 3))
 						((== currentStatus egoLEISURESUIT)
-							(= triedToLeave TRUE)
-							(Print 370 4)
-							(if (not larryBuffed) (Print 370 5 #at -1 144))
+							(= leaveMsg TRUE)
+							(Print 370 1)
 						)
-						((== currentStatus egoTOWEL) (= triedToLeave TRUE) (Print 370 6))
+						((== currentStatus egoSWEATSUIT)
+							(= leaveMsg TRUE)
+							(Print 370 2)
+						)
 					)
 				)
 			)
-			((== 2 (ego edgeHit?))
+			((& (ego onControl:) cRED)
+				(curRoom newRoom: 380)
+			)
+			((& (ego onControl:) cCYAN)
+				(if (not leaveMsg)
+					(cond 
+						((or (== currentStatus egoNAKED) (== currentStatus egoNAKED_CENSORED))
+							(= leaveMsg TRUE)
+							(Print 370 3)
+						)
+						((== currentStatus egoLEISURESUIT)
+							(= leaveMsg TRUE)
+							(Print 370 4)
+							(if (not larryBuffed)
+								(Print 370 5 #at -1 144)
+							)
+						)
+						((== currentStatus egoTOWEL)
+							(= leaveMsg TRUE)
+							(Print 370 6)
+						)
+					)
+				)
+			)
+			((== EAST (ego edgeHit?))
 				(= currentStatus 0)
 				(= currentEgoView (+ 700 larryBuffed))
 				(curRoom newRoom: 360)
 			)
-			((& (ego onControl:) $0020)
-				(if (not triedToLeave)
+			((& (ego onControl:) cMAGENTA)
+				(if (not leaveMsg)
 					(cond 
-						((or (== currentStatus egoNAKED) (== currentStatus egoNAKED_CENSORED)) (= triedToLeave TRUE) (Print 370 7))
-						((== currentStatus egoSWEATSUIT) (= triedToLeave TRUE) (Print 370 8))
-						((== currentStatus egoTOWEL) (= triedToLeave TRUE) (Print 370 9))
+						((or (== currentStatus egoNAKED) (== currentStatus egoNAKED_CENSORED))
+							(= leaveMsg TRUE)
+							(Print 370 7)
+						)
+						((== currentStatus egoSWEATSUIT)
+							(= leaveMsg TRUE)
+							(Print 370 8)
+						)
+						((== currentStatus egoTOWEL)
+							(= leaveMsg TRUE)
+							(Print 370 9)
+						)
 					)
 				)
 			)
-			(else (= triedToLeave FALSE))
+			(else (= leaveMsg FALSE))
 		)
 	)
 	
@@ -155,7 +211,9 @@
 					setMotion: MoveTo (ego x?) (+ (ego y?) 20) self
 				)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(ego
 					setMotion: MoveTo (ego x?) (- (ego y?) 20)
@@ -172,7 +230,7 @@
 			)
 			(4
 				(Print @str)
-				(NormalEgo 0 (ego view?))
+				(NormalEgo loopE (ego view?))
 			)
 		)
 	)
@@ -1494,15 +1552,17 @@ code_0e7c:
 )
 
 (instance Man1Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 3 6)))
+			(0
+				(= seconds (Random 3 6))
+			)
 			(1
 				(aMan1 setMotion: MoveTo (Random 81 200) 14 self)
 			)
-			(2 (= seconds (Random 6 12)))
+			(2
+				(= seconds (Random 6 12))
+			)
 			(3
 				(aMan1 setMotion: MoveTo (Random 80 100) 14 self)
 				(= state -1)
@@ -1531,15 +1591,17 @@ code_0e7c:
 )
 
 (instance Man2Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 3 6)))
+			(0
+				(= seconds (Random 3 6))
+			)
 			(1
 				(aMan2 setMotion: MoveTo (Random 2 40) 8 self)
 			)
-			(2 (= seconds (Random 6 12)))
+			(2
+				(= seconds (Random 6 12))
+			)
 			(3
 				(aMan2 setMotion: MoveTo (Random -60 1) 8 self)
 				(= state -1)
@@ -1568,15 +1630,17 @@ code_0e7c:
 )
 
 (instance Man3Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 3 6)))
+			(0
+				(= seconds (Random 3 6))
+			)
 			(1
 				(aMan3 setMotion: MoveTo (Random 2 22) 20 self)
 			)
-			(2 (= seconds (Random 6 12)))
+			(2
+				(= seconds (Random 6 12))
+			)
 			(3
 				(aMan3 setMotion: MoveTo (Random -60 1) 20 self)
 				(= state -1)

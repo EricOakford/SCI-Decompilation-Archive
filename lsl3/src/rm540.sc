@@ -37,7 +37,7 @@
 		else
 			(ego posn: 233 188)
 		)
-		(if (not (Btst 68))
+		(if (not (Btst fBeatFeralPig))
 			(Load VIEW 541)
 			(Load VIEW 542)
 			(Load VIEW 543)
@@ -54,19 +54,17 @@
 		(= currentEgoView 803)
 		((Inventory at: iDress) view: 31)
 		(= currentStatus egoNORMAL)
-		(NormalEgo 3)
+		(NormalEgo loopN)
 		(ego init:)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(super newRoom: n)
 		(LoadMany FALSE WANDER)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if
@@ -102,7 +100,7 @@
 			)
 			(2
 				(Print 540 25 #at -1 10)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 			)
 			(3
 				(HandsOff)
@@ -120,7 +118,7 @@
 			)
 			(4
 				(Print 540 26)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 			)
 			(5
 				(HandsOff)
@@ -141,7 +139,7 @@
 			)
 			(6
 				(Print 540 27)
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(Print 540 28 #at -1 144)
 			)
 			(7
@@ -161,7 +159,7 @@
 				(= cycles (* 5 (- (NumCels ego) 1)))
 			)
 			(8
-				(NormalEgo 3)
+				(NormalEgo loopN)
 				(HandsOff)
 				(aBra
 					ignoreHorizon:
@@ -177,7 +175,10 @@
 				(PigScript cue:)
 				(aBra dispose:)
 				(if (Btst fCoconutsInBra)
-					(ego put: 16 -1 put: 19 -1)
+					(ego
+						put: iBra -1
+						put: iCoconuts -1
+					)
 					(self changeState: 11)
 				else
 					(= seconds 3)
@@ -192,7 +193,10 @@
 					next: (Format @titleBuf 540 31)
 				)
 			)
-			(11 (= cycles 0) (= seconds 3))
+			(11
+				(= cycles 0)
+				(= seconds 3)
+			)
 			(12
 				(Print 540 32 #at -1 10)
 				(NormalEgo 3)
@@ -207,32 +211,61 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'use/bra,coconut') (Print 540 0))
-			((Said 'use/marker') (Print 540 1))
-			((and (ego has: iPenthouseKey) (Said '/key')) (Print 540 2))
-			((Said 'climb/palm') (Print 540 3))
+			((Said 'use/bra,coconut')
+				(Print 540 0)
+			)
+			((Said 'use/marker')
+				(Print 540 1)
+			)
+			((and (ego has: iPenthouseKey) (Said '/key'))
+				(Print 540 2)
+			)
+			((Said 'climb/palm')
+				(Print 540 3)
+			)
 			((Said '(backdrop<on),wear/bra')
 				(cond 
-					((InRoom iBra 484) (Print 540 4))
-					((InRoom iBra -1) (DontHave))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (Btst fRemovedBra)) (Print 540 5))
-					((Btst fCoconutsInBra) (Print 540 6))
-					(else (self changeState: 3))
+					((InRoom iBra 484)
+						(Print 540 4)
+					)
+					((InRoom iBra -1)
+						(DontHave)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (Btst fRemovedBra))
+						(Print 540 5)
+					)
+					((Btst fCoconutsInBra)
+						(Print 540 6)
+					)
+					(else
+						(self changeState: 3)
+					)
 				)
 			)
 			((Said 'drain,(off<get),(get<off)/bra')
 				(cond 
-					((InRoom iBra 484) (Print 540 4))
-					((InRoom iBra -1) (DontHave))
-					((Btst fRemovedBra) (Print 540 7))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					(else (self changeState: 1))
+					((InRoom iBra 484)
+						(Print 540 4)
+					)
+					((InRoom iBra -1)
+						(DontHave)
+					)
+					((Btst fRemovedBra)
+						(Print 540 7)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					(else
+						(self changeState: 1)
+					)
 				)
 			)
 			(
@@ -240,20 +273,37 @@
 					(Btst fCoconutsInBra)
 					(Said 'drain,(out<get),(get<out)/coconut')
 				)
-				(Bclr 74)
+				(Bclr fCoconutsInBra)
 				(Print 540 8)
 			)
 			((Said 'backdrop/coconut/bra')
 				(cond 
-					((not (ego has: iBra)) (Print 540 9))
+					((not (ego has: iBra))
+						(Print 540 9)
+					)
 					((not (ego has: iCoconuts))
 						(Print 540 10)
-						(if (>= filthLevel 3) (Print 540 11 #at -1 144))
+						(if (>= filthLevel 3)
+							(Print 540 11
+								#at -1 144
+							)
+						)
 					)
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (Btst fRemovedBra)) (Print 540 12) (Print 540 13 #at -1 144))
-					((Btst fCoconutsInBra) (Print 540 14))
-					(else (self changeState: 5))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (Btst fRemovedBra))
+						(Print 540 12)
+						(Print 540 13
+							#at -1 144
+						)
+					)
+					((Btst fCoconutsInBra)
+						(Print 540 14)
+					)
+					(else
+						(self changeState: 5)
+					)
 				)
 			)
 			(
@@ -263,12 +313,24 @@
 					(Said 'throw/bra')
 				)
 				(cond 
-					((InRoom iBra 484) (Print 540 4))
-					((not (ego has: iBra)) (DontHave))
-					((not (Btst fRemovedBra)) (Print 540 15))
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((!= (PigScript state?) 2) (Print 540 16))
-					(else (self changeState: 7))
+					((InRoom iBra 484)
+						(Print 540 4)
+					)
+					((not (ego has: iBra))
+						(DontHave)
+					)
+					((not (Btst fRemovedBra))
+						(Print 540 15)
+					)
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((!= (PigScript state?) 2)
+						(Print 540 16)
+					)
+					(else
+						(self changeState: 7)
+					)
 				)
 			)
 			((Said 'throw/coconut')
@@ -276,20 +338,35 @@
 					(Print 540 17)
 				else
 					(Print 540 10)
-					(if (> filthLevel 1) (Print 540 18 #at -1 144))
+					(if (> filthLevel 1)
+						(Print 540 18 #at -1 144)
+					)
 				)
 			)
 			((Said 'throw>')
 				(cond 
-					((Said '[/noword]') (Print 540 19))
-					((Said '/anyword[/noword]') (Print 540 20))
+					((Said '[/noword]')
+						(Print 540 19)
+					)
+					((Said '/anyword[/noword]')
+						(Print 540 20)
+					)
 				)
 			)
-			((Said 'climb,crawl') (Print 540 21))
+			((Said 'climb,crawl')
+				(Print 540 21)
+			)
 			((Said 'look>')
 				(cond 
-					((Said '/creek') (Print 540 22))
-					((Said '[/area]') (Print 540 23) (Print 540 24 #at -1 144))
+					((Said '/creek')
+						(Print 540 22)
+					)
+					((Said '[/area]')
+						(Print 540 23)
+						(Print 540 24
+							#at -1 144
+						)
+					)
 				)
 			)
 		)
@@ -327,13 +404,13 @@
 )
 
 (instance PigScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(cond 
 			((== currentStatus 540))
-			((and (< state 4) (& (ego onControl:) cBLUE)) (self changeState: 4))
+			((and (< state 4) (& (ego onControl:) cBLUE))
+				(self changeState: 4)
+			)
 			(
 				(and
 					(& (ego onControl: origin) cRED)
@@ -393,8 +470,7 @@
 					setCel: 0
 					setCycle: EndLoop
 					setStep: 4 10
-					setMotion:
-						MoveTo
+					setMotion: MoveTo
 						(- (aPig x?) (/ (- (aPig x?) (ego x?)) 2))
 						-10
 						self
@@ -468,7 +544,10 @@
 		(cond 
 			((Said '//animal>')
 				(cond 
-					((> (aPig x?) 275) (Print 540 42) (event claimed: TRUE))
+					((> (aPig x?) 275)
+						(Print 540 42)
+						(event claimed: TRUE)
+					)
 					((Said 'throw/anyword>')
 						(if (Said '/bra')
 							(event claimed: FALSE)
@@ -477,17 +556,34 @@
 							(event claimed: TRUE)
 						)
 					)
-					(else (Print 540 44) (event claimed: TRUE))
+					(else
+						(Print 540 44)
+						(event claimed: TRUE)
+					)
 				)
 			)
 			((Said '/animal>')
 				(cond 
-					((> (aPig x?) 280) (Print 540 42) (event claimed: TRUE))
-					((Said 'feed/') (Print 540 45))
-					((Said 'attack,carve/') (Print 540 46))
-					((Said 'address') (Print 540 47))
-					((Said 'look/') (Print 540 48))
-					(else (Print 540 49) (event claimed: TRUE))
+					((> (aPig x?) 280)
+						(Print 540 42)
+						(event claimed: TRUE)
+					)
+					((Said 'feed/')
+						(Print 540 45)
+					)
+					((Said 'attack,carve/')
+						(Print 540 46)
+					)
+					((Said 'address')
+						(Print 540 47)
+					)
+					((Said 'look/')
+						(Print 540 48)
+					)
+					(else
+						(Print 540 49)
+						(event claimed: TRUE)
+					)
 				)
 			)
 		)

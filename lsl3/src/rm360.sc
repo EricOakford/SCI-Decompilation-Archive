@@ -18,7 +18,7 @@
 )
 
 (local
-	local0
+	talkCount
 )
 (instance rm360 of Room
 	(properties
@@ -50,13 +50,18 @@
 		(aTanBoothDoor init:)
 		(aStudioDoor init:)
 		(aLockerDoor init:)
-		(if (not playingAsPatti) (aRobin init:))
+		(if (not playingAsPatti)
+			(aRobin init:)
+		)
 		(self setLocales: ROBIN_LARRY setScript: RoomScript)
 		(NormalEgo)
 		(cond 
 			((== prevRoomNum 390)
 				(ego posn: 198 122 loop: 2)
-				(aStudioDoor close: locked: TRUE)
+				(aStudioDoor
+					close:
+					locked: TRUE
+				)
 				(if (== currentStatus egoAUTO)
 					(HandsOff)
 					(aBambi init:)
@@ -65,21 +70,27 @@
 					(RoomScript changeState: 11)
 				)
 			)
-			((== prevRoomNum 370) (ego posn: 27 173) (aLockerDoor close: locked: 1))
+			((== prevRoomNum 370)
+				(ego posn: 27 173)
+				(aLockerDoor
+					close:
+					locked: TRUE
+				)
+			)
 			((== prevRoomNum 365)
 				(TheMenuBar draw: state: TRUE)
 				(StatusLine enable:)
 				(ego loop: 1 posn: 294 177)
 			)
-			(else (ego posn: 159 186 loop: 3))
+			(else
+				(ego posn: 159 186 loop: 3)
+			)
 		)
 		(ego init:)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (!= currentStatus egoAUTO)
@@ -92,7 +103,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 0))
+			(0
+				(= seconds 0)
+			)
 			(1
 				(HandsOff)
 				(ego
@@ -102,7 +115,12 @@
 				)
 			)
 			(2
-				(ego view: 715 setLoop: 1 setCel: 0 setCycle: EndLoop self)
+				(ego
+					view: 715
+					setLoop: 1
+					setCel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(3
 				(NormalEgo)
@@ -117,7 +135,11 @@
 					ignoreActors:
 					setMotion: MoveTo 12 171 self
 				)
-				(aLockerDoor locked: 0 force: 1 open:)
+				(aLockerDoor
+					locked: FALSE
+					force: TRUE
+					open:
+				)
 			)
 			(4
 				(ego setMotion: MoveTo 0 171 self)
@@ -127,7 +149,9 @@
 				(soundFX number: 11 loop: 1 play:)
 				(ego setMotion: MoveTo -20 171 self)
 			)
-			(6 (curRoom newRoom: 370))
+			(6
+				(curRoom newRoom: 370)
+			)
 			(7
 				(HandsOff)
 				(Ok)
@@ -138,7 +162,12 @@
 				)
 			)
 			(8
-				(ego view: 715 setCel: 0 setLoop: 2 setCycle: EndLoop self)
+				(ego
+					view: 715
+					setCel: 0
+					setLoop: 2
+					setCycle: EndLoop self
+				)
 			)
 			(9
 				(if (not (Btst fBeenInTanningRoom))
@@ -158,7 +187,9 @@
 			(10
 				(ego setMotion: MoveTo 197 0)
 			)
-			(11 (= cycles 10))
+			(11
+				(= cycles 10)
+			)
 			(12
 				(aBambi setMotion: MoveTo 225 165 self)
 				(= cycles 5)
@@ -213,8 +244,7 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
@@ -226,37 +256,68 @@
 					(Said 'unbolt,open/door')
 				)
 				(cond 
-					((!= currentStatus egoNORMAL) (GoodIdea))
-					((not (ego has: iSpaKeycard)) (Print 360 0))
+					((!= currentStatus egoNORMAL)
+						(GoodIdea)
+					)
+					((not (ego has: iSpaKeycard))
+						(Print 360 0)
+					)
 					(
 						(and
 							(not (& (ego onControl:) (aLockerDoor doorCtrl?)))
 							(not (& (ego onControl:) (aStudioDoor doorCtrl?)))
-							(not (& (ego onControl:) $0020))
+							(not (& (ego onControl:) cMAGENTA))
 						)
 						(NotClose)
 					)
-					((& (ego onControl:) cMAGENTA) (Print 360 1) (Print 360 2))
-					((& (ego onControl:) (aLockerDoor doorCtrl?)) (RoomScript changeState: 1))
-					((& (ego onControl:) (aStudioDoor doorCtrl?)) (RoomScript changeState: 7))
+					((& (ego onControl:) cMAGENTA)
+						(Print 360 1)
+						(Print 360 2)
+					)
+					((& (ego onControl:) (aLockerDoor doorCtrl?))
+						(RoomScript changeState: 1)
+					)
+					((& (ego onControl:) (aStudioDoor doorCtrl?))
+						(RoomScript changeState: 7)
+					)
 				)
 			)
-			((Said '/club,class,bell,booth,aerobic') (Print 360 3))
-			((Said '/bookcase,buffet') (Print 360 4))
-			((Said '/blender') (Print 360 5))
-			((Said '/blouse') (Print 360 6))
-			((Said 'get/soap') (Print 360 7))
+			((Said '/club,class,bell,booth,aerobic')
+				(Print 360 3)
+			)
+			((Said '/bookcase,buffet')
+				(Print 360 4)
+			)
+			((Said '/blender')
+				(Print 360 5)
+			)
+			((Said '/blouse')
+				(Print 360 6)
+			)
+			((Said 'get/soap')
+				(Print 360 7)
+			)
 			((Said 'look>')
 				(cond 
 					((Said '/door')
 						(cond 
-							((& (ego onControl:) (aLockerDoor doorCtrl?)) (Print 360 8))
-							((& (ego onControl:) (aStudioDoor doorCtrl?)) (Print 360 9))
-							((& (ego onControl:) $0020) (Print 360 10))
-							(else (Print 360 11))
+							((& (ego onControl:) (aLockerDoor doorCtrl?))
+								(Print 360 8)
+							)
+							((& (ego onControl:) (aStudioDoor doorCtrl?))
+								(Print 360 9)
+							)
+							((& (ego onControl:) cMAGENTA)
+								(Print 360 10)
+							)
+							(else
+								(Print 360 11)
+							)
 						)
 					)
-					((Said '/awning,board,note,art') (Print 360 12))
+					((Said '/awning,board,note,art')
+						(Print 360 12)
+					)
 					((Said '/man')
 						(if (cast contains: aRobin)
 							(Print 360 13)
@@ -272,11 +333,25 @@
 							(Print 360 17)
 						)
 					)
-					((Said '/buffet,buffet') (if playingAsPatti (Print 360 18) else (Print 360 19)))
-					((Said '/burn') (Print 360 20))
-					((Said '/board,bulletin,note,awning') (Print 360 21))
-					((Said '/announcement') (Print 360 22))
-					((Said '[/club,club,area]') (Print 360 23))
+					((Said '/buffet,buffet')
+						(if playingAsPatti
+							(Print 360 18)
+						else
+							(Print 360 19)
+						)
+					)
+					((Said '/burn')
+						(Print 360 20)
+					)
+					((Said '/board,bulletin,note,awning')
+						(Print 360 21)
+					)
+					((Said '/announcement')
+						(Print 360 22)
+					)
+					((Said '[/club,club,area]')
+						(Print 360 23)
+					)
 				)
 			)
 		)
@@ -304,11 +379,11 @@
 )
 
 (instance ManScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 4 8)))
+			(0
+				(= seconds (Random 4 8))
+			)
 			(1
 				(aRobin
 					illegalBits: 0
@@ -318,7 +393,9 @@
 					setMotion: MoveTo (Random 101 155) 105 self
 				)
 			)
-			(2 (= seconds (Random 1 3)))
+			(2
+				(= seconds (Random 1 3))
+			)
 			(4
 				(aRobin setLoop: 3)
 				(= seconds (Random 4 8))
@@ -333,30 +410,56 @@
 			(7
 				(aRobin setCel: 0)
 				(switch register
-					(1 (Print 360 36))
-					(2 (Print 360 37))
-					(3 (Print 360 38))
+					(1
+						(Print 360 36)
+					)
+					(2
+						(Print 360 37)
+					)
+					(3
+						(Print 360 38)
+					)
 					(4
 						(cond 
-							((< newspaperState NSpHere) (Print 360 39))
-							((== newspaperState NSpHere) (Print 360 40))
-							(else (Print 360 41))
+							((< newspaperState NSpHere)
+								(Print 360 39)
+							)
+							((== newspaperState NSpHere)
+								(Print 360 40)
+							)
+							(else
+								(Print 360 41)
+							)
 						)
 					)
-					(101 (Print 360 42))
-					(102 (Print 360 43))
+					(101
+						(Print 360 42)
+					)
+					(102
+						(Print 360 43)
+					)
 					(103
 						(Print 360 44)
 						(Print 360 45)
 					)
-					(104 (Print 360 46))
-					(105 (Print 360 47))
-					(106 (Print 360 48))
-					(107 (Print 360 49))
-					(108 (Print 360 50))
+					(104
+						(Print 360 46)
+					)
+					(105
+						(Print 360 47)
+					)
+					(106
+						(Print 360 48)
+					)
+					(107
+						(Print 360 49)
+					)
+					(108
+						(Print 360 50)
+					)
 					(else 
 						(Print 360 51)
-						(= local0 4)
+						(= talkCount 4)
 					)
 				)
 				(= register 0)
@@ -367,23 +470,35 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
 			((Said 'address/man')
 				(cond 
-					(playingAsPatti (Print 360 28))
-					((not (& (ego onControl:) $0080)) (NotClose))
-					(else (ManScript changeState: 6 register: (++ local0)))
+					(playingAsPatti
+						(Print 360 28)
+					)
+					((not (& (ego onControl:) cLGREY))
+						(NotClose)
+					)
+					(else
+						(ManScript changeState: 6 register: (++ talkCount))
+					)
 				)
 			)
 			((Said 'ask>')
 				(cond 
-					(playingAsPatti (Print 360 28))
-					((not (& (ego onControl:) $0080)) (NotClose))
-					((or (Said '/door') (Said '//door')) (Print 360 29) (ManScript changeState: 6 register: 102))
+					(playingAsPatti
+						(Print 360 28)
+					)
+					((not (& (ego onControl:) cLGREY))
+						(NotClose)
+					)
+					((or (Said '/door') (Said '//door'))
+						(Print 360 29)
+						(ManScript changeState: 6 register: 102)
+					)
 					(
 						(or
 							(Said '/keycard,camp,key,membership,card')
@@ -393,12 +508,21 @@
 						(Print 360 30)
 						(ManScript changeState: 6 register: 104)
 					)
-					(
-					(or (Said '/bambi,tape') (Said '//tape,bambi')) (Print 360 31) (ManScript changeState: 6 register: 106))
-					((or (Said '/locker') (Said '//locker')) (Print 360 32) (ManScript changeState: 6 register: 108))
-					(
-					(or (Said '/combination') (Said '//combination')) (Print 360 33) (ManScript changeState: 6 register: 107))
-					(else (ManScript changeState: 6 register: 103))
+					((or (Said '/bambi,tape') (Said '//tape,bambi'))
+						(Print 360 31)
+						(ManScript changeState: 6 register: 106)
+					)
+					((or (Said '/locker') (Said '//locker'))
+						(Print 360 32)
+						(ManScript changeState: 6 register: 108)
+					)
+					((or (Said '/combination') (Said '//combination'))
+						(Print 360 33)
+						(ManScript changeState: 6 register: 107)
+					)
+					(else
+						(ManScript changeState: 6 register: 103)
+					)
 				)
 				(event claimed: TRUE)
 			)
@@ -408,7 +532,9 @@
 						(DontHave)
 						(event claimed: TRUE)
 					)
-					((not (& (ego onControl:) $0080)) (NotClose))
+					((not (& (ego onControl:) cLGREY))
+						(NotClose)
+					)
 					(else
 						(Print 360 34 #icon 9 0 0)
 						(ManScript changeState: 6 register: 101)
@@ -416,13 +542,15 @@
 				)
 			)
 			((Said 'give')
-				(if (& (ego onControl:) $0080)
+				(if (& (ego onControl:) cLGREY)
 					(ManScript changeState: 6 register: 105)
 				else
 					(NotClose)
 				)
 			)
-			((Said '/man') (Print 360 35))
+			((Said '/man')
+				(Print 360 35)
+			)
 		)
 	)
 )
@@ -463,10 +591,10 @@
 		view 360
 		loop 2
 		entranceTo 390
-		locked 1
-		doorCtrl 8
-		roomCtrl 16
-		doorBlock 8192
+		locked TRUE
+		doorCtrl cCYAN
+		roomCtrl cRED
+		doorBlock cLMAGENTA
 	)
 )
 
@@ -476,7 +604,7 @@
 		x 11
 		view 360
 		entranceTo 370
-		locked 1
+		locked TRUE
 		roomCtrl 0
 	)
 )

@@ -20,7 +20,7 @@
 	actor5
 	[money 6]
 	[actors 6]
-	[local15 14] = [0 0 54 74 41 78 26 83 11 88 -4 93]
+	actorXY = [0 0 54 74 41 78 26 83 11 88 -4 93]
 )
 (instance rm430 of Room
 	(properties
@@ -28,7 +28,7 @@
 		horizon 1
 	)
 	
-	(method (init &tmp temp0)
+	(method (init &tmp i)
 		(= showroomState SRshowDone)
 		(= oldStatus currentStatus)
 		(= currentStatus curRoomNum)
@@ -67,28 +67,24 @@
 		(= actor4 aActor4)
 		(= actor5 aActor5)
 		(ego posn: 999 999 init: hide:)
-		(= temp0 1)
-		(while (<= temp0 5)
-			([actors temp0]
+		(for ((= i 1)) (<= i 5) ((++ i))
+			([actors i]
 				view: 433
-				posn: [local15 (* temp0 2)] [local15 (+ 1 (* temp0 2))]
+				posn: [actorXY (* i 2)] [actorXY (+ 1 (* i 2))]
 				setPri: 3
 				setStep: 1 1
 			)
-			(++ temp0)
 		)
 		(self setScript: RoomScript)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp i)
 		(ChangeScriptState self newState 1 12)
 		(switch (= state newState)
 			(0
@@ -183,10 +179,8 @@
 				(= cycles 55)
 			)
 			(24
-				(= temp0 1)
-				(while (<= temp0 5)
-					([actors temp0] setMotion: MoveTo 119 52)
-					(++ temp0)
+				(for ((= i 1)) (<= i 5) ((++ i))
+					([actors i] setMotion: MoveTo 119 52)
 				)
 				(= cycles 66)
 			)
@@ -271,10 +265,8 @@
 			(33
 				(actor5 setLoop: 1 setCycle: Forward)
 				(Print 430 2 #at 10 144 #width 290 #dispose)
-				(= temp0 1)
-				(while (<= temp0 5)
-					([money temp0] setScript: (MoneyScript new:))
-					(++ temp0)
+				(for ((= i 1)) (<= i 5) ((++ i))
+					([money i] setScript: (MoneyScript new:))
 				)
 				(self cue:)
 			)
@@ -327,10 +319,8 @@
 				(music number: 13 loop: -1 play:)
 				(actor4 setMotion: MoveTo 148 163)
 				(actor5 setMotion: MoveTo 149 140 self)
-				(= temp0 1)
-				(while (<= temp0 5)
-					(([money temp0] script?) changeState: 2)
-					(++ temp0)
+				(for ((= i 1)) (<= i 5) ((++ i))
+					(([money i] script?) changeState: 2)
 				)
 			)
 			(42
@@ -361,25 +351,15 @@
 	)
 )
 
-(instance aActor1 of Actor
-	(properties)
-)
+(instance aActor1 of Actor)
 
-(instance aActor2 of Actor
-	(properties)
-)
+(instance aActor2 of Actor)
 
-(instance aActor3 of Actor
-	(properties)
-)
+(instance aActor3 of Actor)
 
-(instance aActor4 of Actor
-	(properties)
-)
+(instance aActor4 of Actor)
 
-(instance aActor5 of Actor
-	(properties)
-)
+(instance aActor5 of Actor)
 
 (instance aSpotlight of Prop
 	(properties
@@ -411,40 +391,32 @@
 	)
 )
 
-(instance aMoney1 of Actor
-	(properties)
-)
+(instance aMoney1 of Actor)
 
-(instance aMoney2 of Actor
-	(properties)
-)
+(instance aMoney2 of Actor)
 
-(instance aMoney3 of Actor
-	(properties)
-)
+(instance aMoney3 of Actor)
 
-(instance aMoney4 of Actor
-	(properties)
-)
+(instance aMoney4 of Actor)
 
-(instance aMoney5 of Actor
-	(properties)
-)
+(instance aMoney5 of Actor)
 
 (instance MoneyScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client view: 430 setLoop: 7 setCycle: Forward setStep: 7 7)
+				(client
+					view: 430
+					setLoop: 7
+					setCycle: Forward
+					setStep: 7 7
+				)
 				(= cycles (Random 1 9))
 			)
 			(1
 				(client
 					posn: (Random 8 290) (Random 144 157)
-					setMotion:
-						JumpTo
+					setMotion: JumpTo
 						(actor5 x?)
 						(- (actor5 y?) (Random 0 33))
 						self

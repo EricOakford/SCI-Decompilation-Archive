@@ -43,26 +43,32 @@
 		(self setScript: RoomScript)
 		(= currentStatus egoSHOWGIRL)
 		(= currentEgoView 708)
-		(NormalEgo 0)
+		(NormalEgo loopE)
 		(ego posn: 41 156 illegalBits: 0 init:)
 		(HandsOff)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
-			(0 (= cycles 22))
-			(1 (Print 324 0) (= seconds 3))
+			(0
+				(= cycles 22)
+			)
+			(1
+				(Print 324 0)
+				(= seconds 3)
+			)
 			(2
 				(Print 324 1)
 				(Print 324 2 #at -1 144)
 				(= seconds 3)
 			)
-			(3 (Print 324 3) (= seconds 3))
+			(3
+				(Print 324 3)
+				(= seconds 3)
+			)
 			(4
 				(Print 324 4)
 				(ego
@@ -99,7 +105,9 @@
 				(aSuzi setMotion: MoveTo 47 156 self)
 				(= cycles 27)
 			)
-			(10 (Print 324 7))
+			(10
+				(Print 324 7)
+			)
 			(11
 				(aDoorNorth setCycle: BegLoop)
 				(aDoorSouth setCycle: BegLoop self)
@@ -142,7 +150,9 @@
 				)
 				(music number: 8 loop: -1 play:)
 			)
-			(17 (= seconds 3))
+			(17
+				(= seconds 3)
+			)
 			(18
 				(Print 324 12)
 				(= seconds 3)
@@ -153,7 +163,7 @@
 			)
 			(20
 				(Print 324 14)
-				(Bset 45)
+				(Bset fScrewedSuzi)
 				(theGame changeScore: 100)
 				(aSuzi hide:)
 				(ego
@@ -166,9 +176,15 @@
 				(addToPics add: atpSuziClothes doit:)
 				(= cycles 22)
 			)
-			(21 (ego setCycle: EndLoop self))
-			(22 (= seconds 3))
-			(23 (ego setCycle: BegLoop self))
+			(21
+				(ego setCycle: EndLoop self)
+			)
+			(22
+				(= seconds 3)
+			)
+			(23
+				(ego setCycle: BegLoop self)
+			)
 			(24
 				(ego
 					viewer: humpCycler
@@ -200,17 +216,23 @@
 			)
 			(27
 				(ego viewer: 0 setCel: 0)
-				(if (== interruptions 1) (Print 324 15))
+				(if (== interruptions 1)
+					(Print 324 15)
+				)
 				(= seconds 3)
 			)
 			(28
 				(switch interruptions
-					(1 (Print 324 16))
+					(1
+						(Print 324 16)
+					)
 					(2
 						(Print 324 17)
 						(Print 324 18 #at -1 144)
 					)
-					(3 (Print 324 19))
+					(3
+						(Print 324 19)
+					)
 					(4
 						(Printf 324 20 expletive)
 						(Print 324 21 #at -1 144)
@@ -246,7 +268,9 @@
 			(32
 				(aSuzi setCel: 1)
 				(= cycles (Random 5 11))
-				(if (> 3 (++ local0)) (= state 30))
+				(if (> 3 (++ local0))
+					(= state 30)
+				)
 			)
 			(33
 				(aSuzi setLoop: 5 setCel: 255 setCycle: BegLoop self)
@@ -275,7 +299,9 @@
 						(Print 324 24)
 						(Print 324 25 #at -1 144)
 					)
-					(3 (Print 324 26))
+					(3
+						(Print 324 26)
+					)
 				)
 				(= seconds 2)
 			)
@@ -342,7 +368,9 @@
 			(48
 				(aSuzi setMotion: MoveTo 177 233 self)
 			)
-			(49 (= seconds 2))
+			(49
+				(= seconds 2)
+			)
 			(50
 				(aSuzi
 					view: 328
@@ -363,7 +391,7 @@
 				(= cycles 22)
 			)
 			(52
-				(curRoom drawPic: 99 6)
+				(curRoom drawPic: 99 IRISIN)
 				(cast eachElementDo: #hide)
 				(= cycles 22)
 			)
@@ -513,9 +541,9 @@
 )
 
 (instance humpCycler of Code
-	(properties)
-	
 	(method (doit)
-		(if (not (Random 0 9)) (ego cycleSpeed: (Random 0 5)))
+		(if (not (Random 0 9))
+			(ego cycleSpeed: (Random 0 5))
+		)
 	)
 )

@@ -57,15 +57,13 @@
 		(music number: 630 loop: musicLoop play:)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(DisposeScript WANDER)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (== currentStatus 630)
@@ -212,31 +210,36 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			(
-			(Said 'cable,attach,(on<drag)/cable,equipment,handle')
+			((Said 'cable,attach,(on<drag)/cable,equipment,handle')
 				(if (== currentStatus egoNORMAL)
 					(ItIs)
 				else
 					(Print 630 0)
 				)
 			)
-			(
-				(Said
-					'disconnect,drain,(off<drag),cease,drag/cable,equipment,handle'
-				)
+			((Said 'disconnect,drain,(off<drag),cease,drag/cable,equipment,handle')
 				(cond 
-					((!= currentStatus 630) (GoodIdea))
-					((not (ego inRect: 190 126 261 154)) (NotClose))
-					((or (< (ego cel?) 6) (> (ego cel?) 9)) (Print 630 1))
-					(else (RoomScript changeState: 6))
+					((!= currentStatus 630)
+						(GoodIdea)
+					)
+					((not (ego inRect: 190 126 261 154))
+						(NotClose)
+					)
+					((or (< (ego cel?) 6) (> (ego cel?) 9))
+						(Print 630 1)
+					)
+					(else
+						(RoomScript changeState: 6)
+					)
 				)
 			)
-			((Said 'get/cable,cable') (Print 630 2))
+			((Said 'get/cable,cable')
+				(Print 630 2)
+			)
 			((Said 'look>')
 				(cond 
 					((Said '/cable,cable,cable')
@@ -246,7 +249,9 @@
 							(Print 630 4)
 						)
 					)
-					((Said '/larry') (Print 630 5))
+					((Said '/larry')
+						(Print 630 5)
+					)
 					((Said '/equipment,equipment')
 						(if (== currentStatus 630)
 							(Print 630 6)
@@ -254,7 +259,12 @@
 							(Print 630 7)
 						)
 					)
-					((Said '[/area]') (Print 630 8) (if (== currentStatus 630) (Print 630 9)))
+					((Said '[/area]')
+						(Print 630 8)
+						(if (== currentStatus 630)
+							(Print 630 9)
+						)
+					)
 				)
 			)
 		)
@@ -317,8 +327,6 @@
 )
 
 (instance SQ3Base of Code
-	(properties)
-	
 	(method (doit &tmp temp0)
 		(ego brBottom: (+ (ego y?) 1))
 		(ego brTop: (- (ego brBottom?) (ego yStep?)))

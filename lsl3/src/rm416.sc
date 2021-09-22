@@ -29,10 +29,15 @@
 		(super init:)
 		(self setRegions: CASINO_MIRROR)
 		(cond 
-			((== prevRoomNum 410) (ego posn: 1 143))
-			(
-			(or (== currentStatus 11) (> (ego yLast?) 180)) (ego posn: 315 136))
-			(else (ego posn: 290 122))
+			((== prevRoomNum 410)
+				(ego posn: 1 143)
+			)
+			((or (== currentStatus egoSHOWGIRL) (> (ego yLast?) 180))
+				(ego posn: 315 136)
+			)
+			(else
+				(ego posn: 290 122)
+			)
 		)
 		(NormalEgo)
 		(ego init:)
@@ -75,9 +80,11 @@
 			view: (ego view?)
 			loop:
 			(switch (ego loop?)
-				(3 2)
-				(2 3)
-				(else  (ego loop?))
+				(loopN loopS)
+				(loopS loopN)
+				(else
+					(ego loop?)
+				)
 			)
 			cel: (ego cel?)
 			x: (ego x?)
@@ -95,7 +102,7 @@
 		loop 3
 		cel 11
 		cycleSpeed 0
-		cycleType 1
+		cycleType ExtraEndLoop
 		hesitation 11
 		pauseCel 11
 		minPause 22
@@ -136,12 +143,12 @@
 )
 
 (instance WalkerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 6)))
+			(0
+				(= seconds (Random 2 6))
+			)
 			(1
 				(switch (Random 0 6)
 					(0
@@ -176,7 +183,9 @@
 							setMotion: MoveTo 132 32 self
 						)
 					)
-					(else  (= seconds 2))
+					(else
+						(= seconds 2)
+					)
 				)
 				(= state -1)
 			)

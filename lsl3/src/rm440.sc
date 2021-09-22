@@ -42,7 +42,7 @@
 		(Load VIEW 444)
 		(super init:)
 		(self setScript: RoomScript)
-		(NormalEgo 1)
+		(NormalEgo loopW)
 		(ego
 			viewer: shadowViewer
 			posn: 315 151
@@ -59,7 +59,11 @@
 				(Load SOUND 10)
 				(Load PICTURE 99)
 				(HandsOff)
-				(aCherri init: setCycle: Walk ignoreActors:)
+				(aCherri
+					init:
+					setCycle: Walk
+					ignoreActors:
+				)
 				(RoomScript changeState: 1)
 			)
 			((== currentStatus egoSHOWGIRL)
@@ -72,8 +76,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 7)
 		(switch (= state newState)
@@ -90,7 +92,9 @@
 					setMotion: MoveTo 94 151 self
 				)
 			)
-			(3 (YouSay 440 13))
+			(3
+				(YouSay 440 13)
+			)
 			(4
 				(aCherri setLoop: 1 cel: 0)
 				(= seconds 3)
@@ -108,7 +112,9 @@
 				(aHat ignoreActors: init: stopUpd:)
 				(= seconds 3)
 			)
-			(8 (aCherri setCycle: EndLoop self))
+			(8
+				(aCherri setCycle: EndLoop self)
+			)
 			(9
 				(aCherri setLoop: 3 cel: 0)
 				(aTail ignoreActors: init: stopUpd:)
@@ -164,7 +170,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(18 (= seconds 3))
+			(18
+				(= seconds 3)
+			)
 			(19
 				(CherriSays 440 18)
 				(= seconds 3)
@@ -269,52 +277,61 @@
 				(ego loop: 3 cel: 0 setCycle: EndLoop self)
 				(= cycles 9)
 			)
-			(38 (aLclothes dispose:))
+			(38
+				(aLclothes dispose:)
+			)
 			(39
 				(= showroomState SRdone)
 				(= newspaperState NSpHere)
 				(= currentStatus 18)
 				(= currentEgoView 700)
-				(NormalEgo 1 444)
+				(NormalEgo loopW 444)
 				(ego viewer: shadowViewer)
 				(theGame changeScore: 25)
 				(= cycles 22)
 			)
-			(40 (Print 440 28))
+			(40
+				(Print 440 28)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
-			((Said 'smell') (Print 440 0))
+			((Said 'smell')
+				(Print 440 0)
+			)
 			(
 				(or
 					(Said 'naked')
-					(Said
-						'(alter<(out<of),from),(off<get),(get<off),drain/cloth,dress,cloth'
-					)
+					(Said '(alter<(out<of),from),(off<get),(get<off),drain/cloth,dress,cloth')
 					(Said 'dress<get')
 					(Said 'get/dress')
-					(Said
-						'wear,get,(alter<in,to),(backdrop<on)//cloth,cloth[<leisure]'
-					)
-					(Said
-						'wear,get,(alter<in,to),(backdrop<on)/cloth,cloth[<leisure]'
-					)
+					(Said 'wear,get,(alter<in,to),(backdrop<on)//cloth,cloth[<leisure]')
+					(Said 'wear,get,(alter<in,to),(backdrop<on)/cloth,cloth[<leisure]')
 				)
 				(cond 
-					((not (ego inRect: 121 127 199 159)) (NotClose))
-					((!= currentStatus egoSHOWGIRL) (Print 440 1) (Print 440 2) (Print 440 3))
-					(else (self changeState: 33))
+					((not (ego inRect: 121 127 199 159))
+						(NotClose)
+					)
+					((!= currentStatus egoSHOWGIRL)
+						(Print 440 1)
+						(Print 440 2)
+						(Print 440 3)
+					)
+					(else
+						(self changeState: 33)
+					)
 				)
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/burn,ceiling') (Print 440 4))
+					((Said '/burn,ceiling')
+						(Print 440 4)
+					)
 					(
 						(and
 							(== currentStatus egoSHOWGIRL)
@@ -330,9 +347,18 @@
 							(Print 440 7 #at -1 144)
 						)
 					)
-					((Said '/prop,backdrop') (Print 440 8))
-					((Said '/bottle') (Print 440 9))
-					((Said '[/area,backstage]') (Print 440 10) (Print 440 11 #at -1 144))
+					((Said '/prop,backdrop')
+						(Print 440 8)
+					)
+					((Said '/bottle')
+						(Print 440 9)
+					)
+					((Said '[/area,backstage]')
+						(Print 440 10)
+						(Print 440 11
+							#at -1 144
+						)
+					)
 				)
 			)
 		)
@@ -393,25 +419,31 @@
 )
 
 (instance shadowViewer of Code
-	(properties)
-	
 	(method (doit)
 		(ego
 			view:
 				(cond 
-					((not (& (ego onControl: origin) $0200)) currentEgoView)
-					((== currentStatus egoSHOWGIRL) 441)
-					((!= currentStatus egoAUTO) 444)
-					(else (Print 440 29))
+					((not (& (ego onControl: origin) cLBLUE))
+						currentEgoView
+					)
+					((== currentStatus egoSHOWGIRL)
+						441
+					)
+					((!= currentStatus egoAUTO)
+						444
+					)
+					(else
+						(Print 440 29)
+					)
 				)
 		)
 	)
 )
 
 (instance humpCycler of Code
-	(properties)
-	
 	(method (doit)
-		(if (not (Random 0 9)) (ego cycleSpeed: (Random 0 5)))
+		(if (not (Random 0 9))
+			(ego cycleSpeed: (Random 0 5))
+		)
 	)
 )

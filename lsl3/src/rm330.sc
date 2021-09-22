@@ -22,7 +22,7 @@
 	local0
 	local1
 	local2
-	theADrinker1
+	theDrinker
 	local4
 	local5
 )
@@ -33,7 +33,7 @@
 	)
 	
 	(method (init)
-		(Bset 36)
+		(Bset fBeenInChipAndDales)
 		(= currentStatus 17)
 		(Load VIEW 330)
 		(Load VIEW 333)
@@ -91,8 +91,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0)
@@ -133,7 +131,9 @@
 			(6
 				(ego setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
-			(7 (= cycles (Random 33 66)))
+			(7
+				(= cycles (Random 33 66))
+			)
 			(8
 				(ego setCycle: BegLoop self)
 				(= state 3)
@@ -152,7 +152,7 @@
 			)
 			(11
 				(= currentStatus egoSITTING)
-				(NormalEgo 1 332)
+				(NormalEgo loopW 332)
 				(ego baseSetter: squareBase)
 			)
 			(12
@@ -176,7 +176,9 @@
 				(ego cycleSpeed: 0)
 				(= cycles 15)
 			)
-			(15 (= cycles 10))
+			(15
+				(= cycles 10)
+			)
 			(16
 				(Print 330 39 #icon 14 0 0 #at -1 10)
 				(ego cycleSpeed: 1 setLoop: 2 cel: 0 setCycle: EndLoop)
@@ -223,49 +225,92 @@
 	)
 	
 	(method (handleEvent event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(if local2
 			(cond 
-				((Said 'caress,get,grab,caress/man') (Print 330 0))
+				((Said 'caress,get,grab,caress/man')
+					(Print 330 0)
+				)
 				((Said 'applaud')
 					(Print 330 1)
-					(if (== currentStatus 1004) (self changeState: 4))
+					(if (== currentStatus egoSITTING)
+						(self changeState: 4)
+					)
 				)
-				((Said '(get<off),drain/panties') (Print 330 2))
+				((Said '(get<off),drain/panties')
+					(Print 330 2)
+				)
 				((Said 'give,throw/panties>')
 					(cond 
-						((not (ego has: 14)) (DontHave))
-						((Said '/[/noword]') (Print 330 3))
-						((not (Said '//backstage,man')) (Print 330 4))
-						((!= local2 2) (Print 330 5))
-						(else (self changeState: 12))
+						((not (ego has: iPanties))
+							(DontHave)
+						)
+						((Said '/[/noword]')
+							(Print 330 3)
+						)
+						((not (Said '//backstage,man'))
+							(Print 330 4)
+						)
+						((!= local2 2)
+							(Print 330 5)
+						)
+						(else
+							(self changeState: 12)
+						)
 					)
 					(event claimed: TRUE)
 				)
 				((Said 'look/man,eye')
 					(cond 
-						((== local2 0) (Print 330 6))
-						((< local2 6) (Print 330 7) (Print 330 8 #at -1 144))
-						((> local2 6) (Print 330 9))
-						((!= currentStatus egoSITTING) (Print 330 10))
-						(else (self changeState: 18))
+						((== local2 0)
+							(Print 330 6)
+						)
+						((< local2 6)
+							(Print 330 7)
+							(Print 330 8 #at -1 144)
+						)
+						((> local2 6)
+							(Print 330 9)
+						)
+						((!= currentStatus egoSITTING)
+							(Print 330 10)
+						)
+						(else
+							(self changeState: 18)
+						)
 					)
 				)
 				((Said 'address/man')
 					(switch local2
-						(2 (Print 330 11))
-						(3 (Print 330 12))
-						(4 (Print 330 13))
-						(5 (Print 330 14) (= local5 1))
-						(1 (Print 330 12))
-						(6 (Print 330 15))
-						(else  (Print 330 16))
+						(2
+							(Print 330 11)
+						)
+						(3
+							(Print 330 12)
+						)
+						(4
+							(Print 330 13)
+						)
+						(5
+							(Print 330 14)
+							(= local5 1)
+						)
+						(1
+							(Print 330 12)
+						)
+						(6
+							(Print 330 15)
+						)
+						(else
+							(Print 330 16)
+						)
 					)
 				)
-				((Said 'address') (Print 330 17))
+				((Said 'address')
+					(Print 330 17)
+				)
 				(
 					(and
 						(== local2 6)
@@ -279,8 +324,12 @@
 			)
 		)
 		(cond 
-			((and local0 (Said 'get,(up<pick)/cloth')) (Print 330 19))
-			((Said 'get,buy/drink,cup') (Print 330 20))
+			((and local0 (Said 'get,(up<pick)/cloth'))
+				(Print 330 19)
+			)
+			((Said 'get,buy/drink,cup')
+				(Print 330 20)
+			)
 			(
 				(or
 					(Said 'go,climb,(get<on)/backstage,buffet,barstool')
@@ -290,11 +339,22 @@
 			)
 			((Said 'lie')
 				(cond 
-					((& (ego onControl:) cGREEN) (Print 330 22))
-					((not (& (ego onControl:) cBLUE)) (NotClose))
-					((== currentStatus egoSITTING) (YouAre))
-					((!= currentStatus 17) (GoodIdea))
-					(else (Ok) (self changeState: 1))
+					((& (ego onControl:) cGREEN)
+						(Print 330 22)
+					)
+					((not (& (ego onControl:) cBLUE))
+						(NotClose)
+					)
+					((== currentStatus egoSITTING)
+						(YouAre)
+					)
+					((!= currentStatus 17)
+						(GoodIdea)
+					)
+					(else
+						(Ok)
+						(self changeState: 1)
+					)
 				)
 			)
 			(
@@ -303,30 +363,63 @@
 					(Said 'exit/barstool')
 				)
 				(cond 
-					((== currentStatus 17) (YouAre))
-					((!= currentStatus egoSITTING) (GoodIdea))
-					((== local2 6) (Print 330 23))
-					(else (self changeState: 9))
+					((== currentStatus 17)
+						(YouAre)
+					)
+					((!= currentStatus egoSITTING)
+						(GoodIdea)
+					)
+					((== local2 6)
+						(Print 330 23)
+					)
+					(else
+						(self changeState: 9)
+					)
 				)
 			)
-			((Said 'throw/buck,tip,buck') (Print 330 24))
-			((Said 'look,caress<below/buffet,barstool') (Print 330 25))
+			((Said 'throw/buck,tip,buck')
+				(Print 330 24)
+			)
+			((Said 'look,caress<below/buffet,barstool')
+				(Print 330 25)
+			)
 			((Said 'look>')
 				(cond 
-					((and local0 (Said '/cloth,buffet')) (Print 330 26))
-					((Said '/backstage') (Print 330 27))
+					((and local0 (Said '/cloth,buffet'))
+						(Print 330 26)
+					)
+					((Said '/backstage')
+						(Print 330 27)
+					)
 					((Said '/barstool')
 						(Print 330 28)
-						(if (== currentStatus egoSITTING) (Print 330 29))
+						(if (== currentStatus egoSITTING)
+							(Print 330 29)
+						)
 						(if (== local2 6)
 							(Print 330 30)
 							(Print 330 31 #at -1 144)
 						)
 					)
-					((Said '/burn') (Print 330 32))
-					((Said '/curtain') (if (aCurtain cel?) (Print 330 33) else (Print 330 34)))
-					((Said '/buffet,babe,man,cup,drink,couple') (Print 330 35))
-					((Said '[/area]') (Print 330 36) (Print 330 37 #at -1 144))
+					((Said '/burn')
+						(Print 330 32)
+					)
+					((Said '/curtain')
+						(if (aCurtain cel?)
+							(Print 330 33)
+						else
+							(Print 330 34)
+						)
+					)
+					((Said '/buffet,babe,man,cup,drink,couple')
+						(Print 330 35)
+					)
+					((Said '[/area]')
+						(Print 330 36)
+						(Print 330 37
+							#at -1 144
+						)
+					)
 				)
 			)
 		)
@@ -348,12 +441,12 @@
 )
 
 (instance DaleScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0)
-			(1 (= seconds (Random 2 5)))
+			(1
+				(= seconds (Random 2 5))
+			)
 			(2
 				(music number: 10 loop: -1 play:)
 				(Print 330 43)
@@ -402,7 +495,9 @@
 				(= cycles 22)
 			)
 			(11
-				(if (> 3 (++ local4)) (= state 9))
+				(if (> 3 (++ local4))
+					(= state 9)
+				)
 				(aDale
 					setLoop: 5
 					setMotion: MoveTo (Random 63 68) (Random 110 110)
@@ -472,7 +567,9 @@
 				)
 				(= cycles 20)
 			)
-			(21 (Print 330 47))
+			(21
+				(Print 330 47)
+			)
 			(22
 				(if (or local5 (InRoom 14 335))
 					(= local2 6)
@@ -481,7 +578,7 @@
 						illegalBits: 0
 						setMotion: MoveTo 283 121 self
 					)
-					(if (InRoom 14 335)
+					(if (InRoom iPanties 335)
 						(Print 330 48)
 					else
 						(Print 330 49)
@@ -499,9 +596,11 @@
 					setCycle: EndLoop self
 				)
 			)
-			(24 (= seconds 11))
+			(24
+				(= seconds 11)
+			)
 			(25
-				(if (!= currentStatus 1004)
+				(if (!= currentStatus egoSITTING)
 					(= seconds 5)
 					(-- state)
 				else
@@ -587,25 +686,29 @@
 )
 
 (instance drinkerScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds (Random 2 5)))
+			(0
+				(= seconds (Random 2 5))
+			)
 			(1
 				(switch (Random 1 4)
-					(1 (= theADrinker1 aDrinker1))
-					(2 (= theADrinker1 aDrinker2))
-					(3 (= theADrinker1 aDrinker3))
-					(4 (= theADrinker1 aDrinker4))
+					(1 (= theDrinker aDrinker1))
+					(2 (= theDrinker aDrinker2))
+					(3 (= theDrinker aDrinker3))
+					(4 (= theDrinker aDrinker4))
 				)
-				(theADrinker1 setCycle: EndLoop self)
+				(theDrinker setCycle: EndLoop self)
 			)
-			(2 (= cycles (Random 15 29)))
+			(2
+				(= cycles (Random 15 29))
+			)
 			(3
-				(theADrinker1 setCycle: BegLoop self)
+				(theDrinker setCycle: BegLoop self)
 			)
-			(4 (self changeState: 0))
+			(4
+				(self changeState: 0)
+			)
 		)
 	)
 )
@@ -687,12 +790,10 @@
 )
 
 (instance squareBase of Code
-	(properties)
-	
-	(method (doit param1)
-		(param1 brBottom: (+ (param1 y?) 5))
-		(param1 brTop: (- (param1 brBottom?) 9))
-		(param1 brLeft: (- (param1 x?) 8))
-		(param1 brRight: (+ (param1 x?) 8))
+	(method (doit theActor)
+		(theActor brBottom: (+ (theActor y?) 5))
+		(theActor brTop: (- (theActor brBottom?) 9))
+		(theActor brLeft: (- (theActor x?) 8))
+		(theActor brRight: (+ (theActor x?) 8))
 	)
 )

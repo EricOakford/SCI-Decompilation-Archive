@@ -38,22 +38,24 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(ego setMotion: MoveTo 214 146 self)
 				(= cycles 22)
 			)
-			(1 (aKen setCycle: Forward))
+			(1
+				(aKen setCycle: Forward)
+			)
 			(2
 				(Print 355 0)
 				(aKen setCel: 0)
 				(ego setMotion: MoveTo 269 165 self)
 				(= cycles 22)
 			)
-			(3 (aKen setCycle: Forward))
+			(3
+				(aKen setCycle: Forward)
+			)
 			(4
 				(Print 355 1)
 				(aKen setCel: 0)
@@ -175,8 +177,6 @@
 )
 
 (instance tiradeCycler of Code
-	(properties)
-	
 	(method (doit)
 		(if (not (Random 0 4))
 			(aKen cycleSpeed: (Random 0 2))

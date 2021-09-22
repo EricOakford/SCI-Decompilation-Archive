@@ -48,8 +48,6 @@
 )
 
 (instance RoomScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (> machineSpeed 16)
@@ -86,7 +84,10 @@
 				(cast eachElementDo: #hide)
 				(= seconds 3)
 			)
-			(3 (Print 585 1) (= seconds 3))
+			(3
+				(Print 585 1)
+				(= seconds 3)
+			)
 			(4
 				(Print 585 2 #at -1 144)
 				(= seconds 3)
@@ -100,7 +101,10 @@
 				(Print 585 5 #at -1 144)
 				(= seconds 3)
 			)
-			(7 (Print 585 6) (= seconds 3))
+			(7
+				(Print 585 6)
+				(= seconds 3)
+			)
 			(8
 				(music number: 485 loop: -1 play:)
 				(DisposeScript DPATH)
@@ -214,8 +218,6 @@
 )
 
 (instance ManScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(ChangeScriptState self newState 1 2)
 		(switch (= state newState)
@@ -243,7 +245,9 @@
 				(RoomScript changeState: 1)
 				(aCornMan setPri: 3 setMotion: MoveTo 84 91 self)
 			)
-			(6 (aCornMan hide:))
+			(6
+				(aCornMan hide:)
+			)
 		)
 	)
 )
