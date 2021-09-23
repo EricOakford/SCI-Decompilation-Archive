@@ -23,7 +23,7 @@
 	sweptTimer
 	local3
 	local4
-	ripple1
+	cascade
 	aWaterfall1
 	aWaterfall2
 	aWaterfall3
@@ -69,9 +69,9 @@
 		(= aSplash1 (Prop new:))
 		(= aSplash2 (Prop new:))
 		(if (== howFast fast)
-			(= ripple1 (Prop new:))
+			(= cascade (Prop new:))
 			(= aWaterfall3 (Prop new:))
-			(ripple1
+			(cascade
 				isExtra: TRUE
 				view: 651
 				loop: 0

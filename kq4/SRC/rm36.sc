@@ -18,12 +18,12 @@
 (local
 	swan
 	thisControl
-	ripple4
-	ripple5
 	ripple1
 	ripple2
-	ripple3
-	ripple6
+	wave1
+	wave2
+	wave3
+	cockatoo
 )
 (instance Room_36 of Room
 	(properties
@@ -42,10 +42,10 @@
 		(Load VIEW 345)
 		(Load VIEW 21)
 		(Load VIEW 2)
-		(= ripple1 (Prop new:))
-		(= ripple2 (Prop new:))
-		(= ripple3 (Prop new:))
-		(ripple1
+		(= wave1 (Prop new:))
+		(= wave2 (Prop new:))
+		(= wave3 (Prop new:))
+		(wave1
 			isExtra: TRUE
 			view: 663
 			loop: 0
@@ -58,7 +58,7 @@
 			cycleSpeed: 2
 			init:
 		)
-		(ripple2
+		(wave2
 			isExtra: TRUE
 			view: 663
 			loop: 1
@@ -71,7 +71,7 @@
 			cycleSpeed: 2
 			init:
 		)
-		(ripple3
+		(wave3
 			isExtra: TRUE
 			view: 663
 			loop: 2
@@ -84,9 +84,9 @@
 			cycleSpeed: 2
 			init:
 		)
-		(= ripple4 (Prop new:))
-		(= ripple5 (Prop new:))
-		(ripple4
+		(= ripple1 (Prop new:))
+		(= ripple2 (Prop new:))
+		(ripple1
 			isExtra: TRUE
 			view: 650
 			loop: 5
@@ -97,7 +97,7 @@
 			ignoreActors:
 			init:
 		)
-		(ripple5
+		(ripple2
 			isExtra: TRUE
 			view: 650
 			loop: 6
@@ -108,8 +108,8 @@
 			ignoreActors:
 			init:
 		)
-		(= ripple6 (Prop new:))
-		(ripple6
+		(= cockatoo (Prop new:))
+		(cockatoo
 			isExtra: TRUE
 			view: 341
 			loop: 4

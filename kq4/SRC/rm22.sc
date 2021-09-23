@@ -16,11 +16,11 @@
 
 (local
 	kickedOut
+	ripple1
 	ripple2
 	ripple3
 	ripple4
-	ripple5
-	ripple1
+	aSmoke
 )
 (instance doorSound of Sound)
 
@@ -54,8 +54,8 @@
 		)
 		(self setRegions: WATER RIVER FOREST)
 		(Load VIEW 612)
-		(= ripple1 (Prop new:))
-		(ripple1
+		(= aSmoke (Prop new:))
+		(aSmoke
 			isExtra: TRUE
 			view: 627
 			loop: 0
@@ -67,11 +67,11 @@
 			ignoreActors:
 			init:
 		)
+		(= ripple1 (Prop new:))
 		(= ripple2 (Prop new:))
 		(= ripple3 (Prop new:))
 		(= ripple4 (Prop new:))
-		(= ripple5 (Prop new:))
-		(ripple2
+		(ripple1
 			isExtra: TRUE
 			view: 656
 			loop: 0
@@ -82,7 +82,7 @@
 			ignoreActors:
 			init:
 		)
-		(ripple3
+		(ripple2
 			isExtra: TRUE
 			view: 656
 			loop: 1
@@ -93,7 +93,7 @@
 			ignoreActors:
 			init:
 		)
-		(ripple4
+		(ripple3
 			isExtra: TRUE
 			view: 656
 			loop: 2
@@ -104,7 +104,7 @@
 			ignoreActors:
 			init:
 		)
-		(ripple5
+		(ripple4
 			isExtra: TRUE
 			view: 656
 			loop: 3
