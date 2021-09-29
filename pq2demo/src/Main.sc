@@ -30,64 +30,48 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	volume =  12
-	version =  {diverClock}
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	sortedCast
-	deleteCastMember
+	ego									;pointer to ego
+	theGame								;ID of the Game instance
+	curRoom								;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	volume		=		12				;sound volume
+	version		=		{x.yyy.zzz}		;pointer to 'incver' version string			
+	locales								;set of current locales
+	[curSaveDir 20]						;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	sortedCast							;cast sorted by "visibility" to ego
+	deleteCastMember					;a member of the cast needs deleting
 	skipFactor
 	overlays =  -1
+	;globals 58 to 99 are unused
 		global58
 		global59
 		global60
@@ -129,7 +113,8 @@
 		global96
 		global97
 		global98
-		lastSysGlobal
+	lastSysGlobal
+	;globals 100 and above are for game use
 	gamePhase
 	debugging
 	global102
@@ -305,14 +290,17 @@
 		global269
 )
 (procedure (HaveMem howMuch)
+	;check how much heap is available
 	(return (> (MemoryInfo FreeHeap) howMuch))
 )
 
 (procedure (RedrawCast)
+	;re-animate the cast without cycling
 	(Animate (cast elements?) FALSE)
 )
 
 (procedure (cls)
+	;clear modeless dialog from the screen
 	(if modelessDialog
 		(modelessDialog dispose:)
 	)
@@ -335,6 +323,7 @@
 )
 
 (procedure (HandsOff)
+	;disable ego control
 	(cond 
 		((== argc 1)
 			(= global243 1)
@@ -349,6 +338,7 @@
 )
 
 (procedure (HandsOn)
+	;enable ego control
 	(if (not global244)
 		(= isHandsOff FALSE)
 		(User canControl: TRUE canInput: TRUE)
@@ -364,6 +354,8 @@
 )
 
 (procedure (InRoom what where)
+	;check whether an inventory object is in a room.
+	; If no room is specified, it assumes the current room.
 	(return
 		(==
 			((inventory at: what) owner?)
@@ -373,39 +365,38 @@
 )
 
 (procedure (PutInRoom what where)
+	;put an inventory object in a room.
+	; If no room is specified, it assumes the current room.
 	((inventory at: what)
 		owner: (if (== argc 1) curRoomNum else where)
 	)
 )
 
 (procedure (Bset flagEnum)
-	(= [gameFlags (/ flagEnum 16)]
-		(|
-			[gameFlags (/ flagEnum 16)]
-			(>> $8000 (mod flagEnum 16))
-		)
+	;Set a boolean game flag
+	(|= [gameFlags (/ flagEnum 16)]
+		(>> $8000 (mod flagEnum 16))
 	)
 )
 
 (procedure (Bclr flagEnum)
-	(= [gameFlags (/ flagEnum 16)]
-		(&
-			[gameFlags (/ flagEnum 16)]
-			(~ (>> $8000 (mod flagEnum 16)))
-		)
+	;Clear a boolean game flag
+	(&= [gameFlags (/ flagEnum 16)]
+		(~ (>> $8000 (mod flagEnum 16)))
 	)
 )
 
 (procedure (Btst flagEnum)
+	;Test a boolean game flag
 	(return
-		(&
-			[gameFlags (/ flagEnum 16)]
+		(& [gameFlags (/ flagEnum 16)]
 			(>> $8000 (mod flagEnum 16))
 		)
 	)
 )
 
 (procedure (NormalEgo)
+	;normalizes ego's animation
 	(ego
 		setLoop: -1
 		setPri: -1
@@ -430,14 +421,12 @@
 )
 
 (instance statusCode of Code
-	
 	(method (doit strg)
 		(Format strg 0 0 score possibleScore)
 	)
 )
 
 (instance PQ of Game
-
 	(method (init &tmp [temp0 21])
 		(super init:)
 		(TheMenuBar init:)

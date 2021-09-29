@@ -269,7 +269,7 @@
 						((or (Said 'kiss/genesta') (Said 'kiss[/noword]'))
 							(Print 45 21)
 						)
-						((Said 'help,,/genesta')
+						((Said 'help,save/genesta')	;EO: fixed said spec
 							(Print 45 22)
 						)
 						(else

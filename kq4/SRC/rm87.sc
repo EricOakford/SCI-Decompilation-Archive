@@ -19,10 +19,10 @@
 	h1
 	h2
 	h3
-	door2
-	door3
-	door4
-	door1
+	aFlame1
+	aFlame2
+	aFlame3
+	aDoor
 	local7
 )
 (instance theMusic of Sound)
@@ -49,28 +49,28 @@
 		(super init:)
 		(NotifyScript LOLOTTE 0)
 		(theMusic number: 41 loop: 0 init:)
-		((= door1 (Prop new:))
+		((= aDoor (Prop new:))
 			view: 608
 			posn: 140 117
 			cel: 0
 			init:
 			stopUpd:
 		)
-		((= door2 (Prop new:))
+		((= aFlame1 (Prop new:))
 			posn: 24 64
 			view: 633
 			cel: 2
 			init:
 			setCycle: Forward
 		)
-		((= door3 (Prop new:))
+		((= aFlame2 (Prop new:))
 			posn: 32 74
 			view: 633
 			cel: 0
 			init:
 			setCycle: Forward
 		)
-		((= door4 (Prop new:))
+		((= aFlame3 (Prop new:))
 			posn: 42 64
 			view: 633
 			cel: 1
@@ -196,14 +196,14 @@
 						)
 						((Said 'open/door')
 							(cond 
-								((!= (door1 cel?) 0)
+								((!= (aDoor cel?) 0)
 									(Print 87 11 #at -1 10)
 								)
 								((not (ego inRect: 111 118 140 123))
 									(Print 800 1)
 								)
 								(else
-									(door1 setCycle: EndLoop doDoor)
+									(aDoor setCycle: EndLoop doDoor)
 									(doorSound play:)
 								)
 							)
@@ -247,7 +247,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(door1 stopUpd:)
+				(aDoor stopUpd:)
 				(curRoom newRoom: 84)
 			)
 		)

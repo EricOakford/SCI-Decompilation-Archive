@@ -169,7 +169,7 @@
 			(curRoom newRoom: 86)
 			(event claimed: TRUE)
 		)
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(switch (event message?)
 				(`#2
 					(if (GetMenu soundI p_value)

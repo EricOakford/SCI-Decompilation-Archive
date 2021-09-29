@@ -146,7 +146,7 @@
 	(method (handleEvent event)
 		(cond 
 			((event claimed?) (return))
-			((or (Said 'look,check/smoke') (MousedOn self event emRIGHT_BUTTON))
+			((or (Said 'look,check/smoke') (MousedOn self event shiftDown))
 				(Print 45 12)
 				(event claimed: TRUE)
 			)

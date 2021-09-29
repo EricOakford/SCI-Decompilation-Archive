@@ -229,7 +229,7 @@
 				(Print 32 0)
 			)
 		)
-		(if (Said 'look<on,over,above/cabinet[<(]')
+		(if (Said 'look<on,over,above/cabinet[<lid]')	;EO: fixed said spec
 			(Print 32 1)
 			(Print 32 2 #at -1 130)
 		)

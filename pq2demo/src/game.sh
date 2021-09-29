@@ -8,15 +8,15 @@
 (include colors.sh)
 
 ;Locales
-(define GUN			150)
-(define FIELDKIT	153)
-(define JET			154)
-(define COVE		155)
-(define OFFICE		156)
+(define rgGun		150)
+(define rgFieldKit	153)
+(define rgJet		154)
+(define rgCove		155)
+(define rgOffice	156)
 (define DEBUG		801)
 
 ;Regions
-(define SEWER 205)
+(define rgSewer 205)
 
 ;Inventory items
 (enum
@@ -65,8 +65,8 @@
 (define phaseCOVE 5)
 
 ;Cars
-(define carWORK 13)
-(define carPERSONAL 33)
+(define carWork 13)
+(define carPersonal 33)
 
 ;Gunfire states
 (enum 1

@@ -690,7 +690,7 @@
 )
 
 (procedure (PebbleCount)
-	(switch (= numPebbles (- numPebbles 1))
+	(switch (-= numPebbles 1)
 		(0
 			((inventory at: iPebbles) owner: 4)
 		)
@@ -721,8 +721,6 @@
 )
 
 (instance kq1 of Game
-	(properties)
-	
 	(method (init &tmp [temp0 11])
 		(= version {0.000.001})
 		(if (!= (versionFile open: 1) 0)

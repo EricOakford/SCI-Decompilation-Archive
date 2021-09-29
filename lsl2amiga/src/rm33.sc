@@ -135,13 +135,13 @@
 		(aCloset
 			doorCtrl: cRED
 			doorBlock: FALSE
-			roomCtrl: cBLACK
+			roomCtrl: 0
 			init:
 		)
 		(aDrawer
 			doorCtrl: cMAGENTA
 			doorBlock: FALSE
-			roomCtrl: cBLACK
+			roomCtrl: 0
 			init:
 		)
 		(if debugging

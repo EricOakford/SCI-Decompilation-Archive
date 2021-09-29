@@ -26,7 +26,7 @@
 	wifeSitting
 	fisherman
 	fishermanSitting
-	newProp
+	aSmoke
 	wifeAtCounter
 )
 (instance Room42 of Room
@@ -45,7 +45,9 @@
 		)
 		(super init:)
 		(= isIndoors TRUE)
-		(if (ego has: iDiamondPouch) (= wifeAtCounter TRUE))
+		(if (ego has: iDiamondPouch)
+			(= wifeAtCounter TRUE)
+		)
 		(ego
 			view: 4
 			loop: 0
@@ -55,7 +57,7 @@
 			posn: 63 125
 			init:
 		)
-		((= newProp (Prop new:))
+		((= aSmoke (Prop new:))
 			view: 513
 			posn: 133 84
 			setLoop: 2

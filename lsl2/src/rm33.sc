@@ -143,7 +143,7 @@
 			posn: 137 96
 			doorCtrl: cRED
 			doorBlock: FALSE
-			roomCtrl: cBLACK
+			roomCtrl: 0
 			init:
 		)
 		((= aDrawer (Door new:))
@@ -153,7 +153,7 @@
 			posn: 161 88
 			doorCtrl: cMAGENTA
 			doorBlock: FALSE
-			roomCtrl: cBLACK
+			roomCtrl: 0
 			init:
 		)
 		(if debugging
