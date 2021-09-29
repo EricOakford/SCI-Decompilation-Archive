@@ -165,7 +165,7 @@
 		(if (Said 'bathing,dive,(climb<off)')
 			(Print 134 7)
 		)
-		(if (Said 'get/(top,bikini,job,<bikini)')	;EO: fixed spec error
+		(if (Said 'get/top,bikini,job,(top<bikini)')	;EO: fixed spec error
 			(cond 
 				((not ((inventory at: iBikiniTop) ownedBy: curRoomNum))
 					(Print 134 8)
