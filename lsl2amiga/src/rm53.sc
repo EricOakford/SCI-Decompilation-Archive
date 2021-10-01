@@ -130,7 +130,7 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript MOTION)	;to prevent fragmentation
+;;;		(DisposeScript MOTION)	;commented out to prevent fragmentation
 		(super dispose:)
 	)
 )

@@ -107,7 +107,7 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript MOTION)
+;;;		(DisposeScript MOTION)
 		(super dispose:)
 	)
 )

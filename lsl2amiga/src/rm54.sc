@@ -113,8 +113,8 @@
 	)
 	
 	(method (dispose)
-		(DisposeScript MOTION)
-		(DisposeScript travelerScript)
+;;;		(DisposeScript MOTION)
+;;;		(DisposeScript travelerScript)
 		(super dispose:)
 	)
 )
