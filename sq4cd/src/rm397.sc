@@ -22,6 +22,7 @@
 	paidForHintbook
 	[local5 2]
 	oldSortedFeatures
+	smelledWall
 	[str 300]
 )
 (instance rm397 of SQRoom
@@ -50,14 +51,16 @@
 		(globalSound vol: 127 changeState:)
 		(HandsOn)
 		(clerkHead posn: 161 70 setPri: 8 init:)
-		(clerk posn: 160 85 init:)
+		(clerk posn: 160 85 init:) 
 		(super init:)
 		(self setRegions: MALL)
+		(birdyFeature init:) ;easter egg restore
 		(displayCase init:)
 		(shelf1 init:)
 		(shelf2 init:)
 		(bin1 init:)
 		(bin2 init:)
+		(box init:) ;easter egg restore
 		(ego x: 160 y: 180 init:)
 		(if (== prevRoomNum 398) (ego posn: 127 163))
 		(if (== prevRoomNum 395)
@@ -113,8 +116,8 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(V_LOOK (narrator say: 1))
-			(V_SMELL (VerbFail))
-			(V_TASTE (VerbFail))
+			;(V_SMELL (VerbFail)) ;don't block the easter eggs
+			;(V_TASTE (VerbFail))
 			(else  (super doVerb: theVerb))
 		)
 	)
@@ -282,6 +285,39 @@
 	)
 )
 
+(instance birdy of Script
+	(properties)
+	
+	(method (doit)
+		(super doit:)
+		(if (!= (ego loop?) 2)
+			(clerk loop: 0 cel: 0)
+			(clerkHead loop: 2 setCycle: RandCycle cycleSpeed: 20)
+			(self dispose:)
+		)
+	)
+	
+	(method (changeState newState)
+		(switch (= state newState)
+			(0
+				(clerkHead setCycle: 0 loop: 3 cel: 1)
+				(clerk setCycle: 0 loop: 3 cel: 0)
+				(= seconds 3)
+			)
+			(1
+				(clerkHead loop: 4 cycleSpeed: 0 setCycle: Forward)
+				(clerk loop: 0 cel: 0)
+				(= cycles (Random 20 40))
+			)
+			(2
+				(clerkHead loop: 2 setCycle: RandCycle cycleSpeed: 20)
+				(= seconds 10)
+			)
+			(3 (self dispose:))
+		)
+	)
+)
+
 (instance sayThankYou of Script
 	(properties)
 	
@@ -301,6 +337,22 @@
 		view 397
 	)
 	
+	(method (doit)
+		(super doit:)
+		(if
+			(and
+				(not (self script?))
+				(== (clerkHead loop?) 2)
+				(== (ego loop?) 2)
+				(== (Random 0 100) 1)
+				smelledWall
+			)
+			(if (not (curRoom script?)) 
+				(curRoom setScript: birdy)
+			)
+		)
+	)
+		
 	(method (doVerb theVerb theItem)
 		(switch theVerb
 			(V_TALK
@@ -461,6 +513,29 @@
 	)
 )
 
+(instance birdyFeature of Sq4Feature 
+	(properties
+		x 9
+		y 33
+		nsTop 28
+		nsBottom 38
+		nsRight 19
+		noun NARRATOR
+	)
+	
+	(method (doVerb theVerb)
+		(switch theVerb
+			(V_SMELL
+				(if (not (curRoom script?))
+					(narrator say: 8)
+					(++ smelledWall)
+					(self dispose:)
+				)
+			)
+		)
+	)
+)
+
 (instance tROG of Sq4Talker
 	(properties
 		z 400
@@ -484,5 +559,27 @@
 		mouthOffsetY 36
 		eyeOffsetX 25
 		eyeOffsetY 18
+	)
+)
+
+(instance box of Sq4Feature
+	(properties
+		x 307
+		y 35
+		nsTop 30
+		nsLeft 296
+		nsBottom 40
+		nsRight 319
+		noun NARRATOR
+	)
+	
+	(method (doVerb theVerb)
+		(switch theVerb
+			(V_TASTE
+				(if (not (ego script?)) ;set script on ego, not room to avoid lockup- DL
+					(ego setScript: talk2)
+				)
+			)
+		)
 	)
 )
