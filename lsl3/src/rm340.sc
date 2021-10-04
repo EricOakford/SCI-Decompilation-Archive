@@ -425,858 +425,214 @@
 		)
 	)
 	
-	(method (changeState newState &tmp [temp0 200] [temp200 4] temp204 temp205 temp206 temp207 temp208)
-		(asm
-			lap      newState
-			aTop     state
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_0a5f
-			jmp      code_1083
-code_0a5f:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0aa0
-			lsg      machineSpeed
-			ldi      39
-			gt?     
-			bnt      code_0a79
-			pushi    #setCycle
-			pushi    1
-			class    Forward
-			push    
-			lofsa    aSign
-			send     6
-code_0a79:
-			pushi    #number
-			pushi    1
-			pushi    10
-			pushi    6
-			pushi    1
-			pushi    65535
-			pushi    42
-			pushi    0
-			lag      music
-			send     16
-			pushi    #loop
-			pushi    1
-			pushi    2
-			pushi    126
-			pushi    1
-			class    Forward
-			push    
-			lofsa    aDrummer
-			send     12
-			ldi      4
-			aTop     seconds
-			jmp      code_1083
-code_0aa0:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0aee
-			pushi    2
-			pushi    340
-			pushi    43
-			calle    Print,  4
-			lsg      currentStatus
-			ldi      1004
-			ne?     
-			bnt      code_0ac4
-			pushi    2
-			pushi    340
-			pushi    44
-			calle    Print,  4
-code_0ac4:
-			pushi    #stop
-			pushi    0
-			pushi    43
-			pushi    1
-			pushi    340
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    42
-			pushi    0
-			lag      music
-			send     20
-			pushi    #cycleSpeed
-			pushi    1
-			pushi    1
-			pushi    6
-			pushi    1
-			pushi    1
-			lofsa    aDrummer
-			send     12
-			ldi      3
-			aTop     seconds
-			jmp      code_1083
-code_0aee:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0b0b
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    160
-			pushi    58
-			pushSelf
-			lofsa    aComic
-			send     12
-			jmp      code_1083
-code_0b0b:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_0b2d
-			pushi    #setPri
-			pushi    1
-			pushi    65535
-			pushi    210
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    160
-			pushi    78
-			pushSelf
-			lofsa    aComic
-			send     18
-			jmp      code_1083
-code_0b2d:
-			dup     
-			ldi      5
-			eq?     
-			bnt      code_0b55
-			lsg      machineSpeed
-			ldi      39
-			gt?     
-			bnt      code_0b4a
-			pushi    #setCel
-			pushi    1
-			pushi    1
-			pushi    197
-			pushi    0
-			lofsa    aSign
-			send     10
-code_0b4a:
-			ldi      1
-			sal      comedianOnStage
-			ldi      3
-			aTop     seconds
-			jmp      code_1083
-code_0b55:
-			dup     
-			ldi      6
-			eq?     
-			bnt      code_0b75
-			pushi    #loop
-			pushi    1
-			pushi    4
-			pushi    208
-			pushi    1
-			lofsa    talkCycler
-			push    
-			lofsa    aComic
-			send     12
-			ldi      3
-			aTop     seconds
-			jmp      code_1083
-code_0b75:
-			dup     
-			ldi      7
-			eq?     
-			bnt      code_0b7f
-			jmp      code_1083
-code_0b7f:
-			dup     
-			ldi      8
-			eq?     
-			bnt      code_0baa
-			pushi    #cycleSpeed
-			pushi    1
-			pushi    0
-			pushi    6
-			pushi    1
-			pushi    0
-			pushi    201
-			pushi    1
-			pushi    0
-			lofsa    aDrummer
-			send     18
-			pushi    2
-			pushi    340
-			pushi    45
-			calle    Print,  4
-			ldi      3
-			aTop     seconds
-			jmp      code_1083
-code_0baa:
-			dup     
-			ldi      9
-			eq?     
-			bnt      code_0c60
-			pushi    #number
-			pushi    1
-			pushi    341
-			pushi    6
-			pushi    1
-			pushi    65535
-			pushi    42
-			pushi    0
-			lag      music
-			send     16
-			lsg      currentStatus
-			ldi      1004
-			ne?     
-			bnt      code_0bd6
-			pushi    2
-			pushi    340
-			pushi    46
-			calle    Print,  4
-code_0bd6:
-			pushi    2
-			pushi    340
-			pushi    47
-			calle    Print,  4
-			ldi      0
-			sal      ethnic1Str
-			ldi      0
-			sal      ethnic2Str
-			ldi      0
-			sal      ethnic3Str
-code_0bec:
-			pushi    3
-			pushi    1
-			lea      @ethnic1Str
-			push    
-			callk    StrLen,  2
-			ugt?    
-			bnt      code_0c0d
-			pushi    3
-			lea      @ethnic1Str
-			push    
-			pushi    15
-			lofsa    {Ethnic group #1:}
-			push    
-			calle    GetInput,  6
-			jmp      code_0bec
-code_0c0d:
-			pushi    3
-			pushi    1
-			lea      @ethnic2Str
-			push    
-			callk    StrLen,  2
-			ugt?    
-			bnt      code_0c2e
-			pushi    3
-			lea      @ethnic2Str
-			push    
-			pushi    15
-			lofsa    {Ethnic group #2:}
-			push    
-			calle    GetInput,  6
-			jmp      code_0c0d
-code_0c2e:
-			pushi    3
-			pushi    1
-			lea      @ethnic3Str
-			push    
-			callk    StrLen,  2
-			ugt?    
-			bnt      code_0c4f
-			pushi    3
-			lea      @ethnic3Str
-			push    
-			pushi    15
-			lofsa    {Ethnic group #3:}
-			push    
-			calle    GetInput,  6
-			jmp      code_0c2e
-code_0c4f:
-			pushi    2
-			pushi    340
-			pushi    48
-			calle    Print,  4
-			ldi      3
-			aTop     seconds
-			jmp      code_1083
-code_0c60:
-			dup     
-			ldi      10
-			eq?     
-			bnt      code_0c80
-			pushi    #loop
-			pushi    1
-			pushi    4
-			pushi    208
-			pushi    1
-			lofsa    talkCycler
-			push    
-			lofsa    aComic
-			send     12
-			ldi      3
-			aTop     seconds
-			jmp      code_1083
-code_0c80:
-			dup     
-			ldi      11
-			eq?     
-			bnt      code_0e5c
-			pushi    #setCycle
-			pushi    1
-			class    Walk
-			push    
-			pushi    208
-			pushi    1
-			pushi    0
-			lofsa    aComic
-			send     12
-			ldi      0
-			sat      temp204
-code_0c9b:
-			+at      temp204
-			pushi    2
-			pushi    0
-			pushi    42
-			callk    Random,  4
-			sat      temp206
-			lal      jokeNum
-			bnt      code_0cb2
-			+al      jokeNum
-			sat      temp206
-			pushi    0
-			sali     local0
-code_0cb2:
-			lat      temp206
-			lsli     local0
-			ldi      0
-			eq?     
-			bnt      code_0e42
-			pushi    1
-			lat      temp206
-			sali     local0
-			pushi    2
-			pushi    49
-			pushi    51
-			callk    Random,  4
-			sal      local109
-			sal      local110
-			lal      local109
-			sal      local111
-code_0cd1:
-			lsl      local109
-			lal      local110
-			eq?     
-			bnt      code_0ce6
-			pushi    2
-			pushi    49
-			pushi    51
-			callk    Random,  4
-			sal      local110
-			jmp      code_0cd1
-code_0ce6:
-			lsl      local111
-			lal      local109
-			eq?     
-			bt       code_0cf6
-			lsl      local111
-			lal      local110
-			eq?     
-			bnt      code_0d03
-code_0cf6:
-			pushi    2
-			pushi    49
-			pushi    51
-			callk    Random,  4
-			sal      local111
-			jmp      code_0ce6
-code_0d03:
-			ldi      0
-			sat      temp207
-code_0d07:
-			lst      temp207
-			ldi      5
-			lt?     
-			bnt      code_0de8
-			ldi      0
-			sat      temp208
-			pushi    5
-			lea      @temp0
-			push    
-			pushi    340
-			pushi    49
-			pushi    341
-			lst      temp207
-			lst      temp206
-			ldi      5
-			mul     
-			add     
-			push    
-			callk    Format,  10
-			pushi    32
-			pushi    2
-			lea      @temp0
-			push    
-			pushi    1
-			callk    StrAt,  4
-			ne?     
-			bnt      code_0de3
-			ldi      0
-			sat      temp205
-code_0d40:
-			lst      temp205
-			pushi    1
-			lea      @temp0
-			push    
-			callk    StrLen,  2
-			lt?     
-			bnt      code_0dc5
-			pushi    47
-			pushi    2
-			lea      @temp0
-			push    
-			lst      temp205
-			callk    StrAt,  4
-			eq?     
-			bnt      code_0dc0
-			pushi    3
-			lea      @temp0
-			push    
-			lst      temp205
-			pushi    37
-			callk    StrAt,  6
-			pushi    2
-			lea      @temp0
-			push    
-			+at      temp205
-			push    
-			callk    StrAt,  4
-			push    
-			dup     
-			lal      local109
-			eq?     
-			bnt      code_0d8b
-			lea      @ethnic1Str
-			push    
-			lat      temp208
-			sati     temp200
-			+at      temp208
-			jmp      code_0db0
-code_0d8b:
-			dup     
-			lal      local110
-			eq?     
-			bnt      code_0d9f
-			lea      @ethnic2Str
-			push    
-			lat      temp208
-			sati     temp200
-			+at      temp208
-			jmp      code_0db0
-code_0d9f:
-			dup     
-			lal      local111
-			eq?     
-			bnt      code_0db0
-			lea      @ethnic3Str
-			push    
-			lat      temp208
-			sati     temp200
-			+at      temp208
-code_0db0:
-			toss    
-			pushi    3
-			lea      @temp0
-			push    
-			lst      temp205
-			pushi    115
-			callk    StrAt,  6
-			+at      temp205
-code_0dc0:
-			+at      temp205
-			jmp      code_0d40
-code_0dc5:
-			pushi    6
-			lea      @temp0
-			push    
-			ldi      0
-			lsti     temp200
-			ldi      1
-			lsti     temp200
-			ldi      2
-			lsti     temp200
-			ldi      3
-			lsti     temp200
-			ldi      4
-			lsti     temp200
-			calle    Printf,  12
-code_0de3:
-			+at      temp207
-			jmp      code_0d07
-code_0de8:
-			lsl      jokeNum
-			ldi      42
-			gt?     
-			bnt      code_0e10
-			lal      jokeNum
-			bnt      code_0e06
-			pushi    2
-			pushi    340
-			pushi    50
-			calle    Print,  4
-			ldi      0
-			sal      jokeNum
-			jmp      code_0e10
-code_0e06:
-			pushi    2
-			pushi    340
-			pushi    51
-			calle    Print,  4
-code_0e10:
-			pushi    #setCycle
-			pushi    1
-			class    EndLoop
-			push    
-			lofsa    aDrummer
-			send     6
-			pushi    1
-			pushi    11
-			callk    DoSound,  2
-			push    
-			ldi      5
-			gt?     
-			bnt      code_0e55
-			pushi    #number
-			pushi    1
-			pushi    2
-			pushi    21
-			pushi    27
-			callk    Random,  4
-			push    
-			pushi    6
-			pushi    1
-			pushi    1
-			pushi    42
-			pushi    0
-			lag      soundFX
-			send     16
-			jmp      code_0e55
-code_0e42:
-			lst      temp204
-			ldi      1000
-			ge?     
-			bnt      code_0c9b
-			ldi      12
-			aTop     state
-			jmp      code_0e55
-			jmp      code_0c9b
-code_0e55:
-			ldi      2
-			aTop     seconds
-			jmp      code_1083
-code_0e5c:
-			dup     
-			ldi      12
-			eq?     
-			bnt      code_0e8b
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    2
-			pushi    125
-			pushi    195
-			callk    Random,  4
-			push    
-			pushi    2
-			pushi    66
-			pushi    80
-			callk    Random,  4
-			push    
-			pushSelf
-			lofsa    aComic
-			send     12
-			ldi      9
-			aTop     state
-			jmp      code_1083
-code_0e8b:
-			dup     
-			ldi      13
-			eq?     
-			bnt      code_0eba
-			pushi    #fade
-			pushi    0
-			lag      music
-			send     4
-			pushi    2
-			pushi    340
-			pushi    52
-			calle    Print,  4
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    158
-			pushi    75
-			pushSelf
-			lofsa    aComic
-			send     12
-			jmp      code_1083
-code_0eba:
-			dup     
-			ldi      14
-			eq?     
-			bnt      code_0eec
-			pushi    2
-			pushi    340
-			pushi    53
-			calle    Print,  4
-			pushi    1
-			pushi    43
-			callb    Btst,  2
-			not     
-			bnt      code_0ee5
-			pushi    1
-			pushi    43
-			callb    Bset,  2
-			pushi    #changeScore
-			pushi    1
-			pushi    100
-			lag      theGame
-			send     6
-code_0ee5:
-			ldi      2
-			aTop     seconds
-			jmp      code_1083
-code_0eec:
-			dup     
-			ldi      15
-			eq?     
-			bnt      code_0f15
-			pushi    #view
-			pushi    1
-			pushi    344
-			pushi    6
-			pushi    1
-			pushi    2
-			pushi    7
-			pushi    1
-			pushi    0
-			pushi    126
-			pushi    2
-			class    EndLoop
-			push    
-			pushSelf
-			pushi    210
-			pushi    1
-			pushi    0
-			lofsa    aComic
-			send     32
-			jmp      code_1083
-code_0f15:
-			dup     
-			ldi      16
-			eq?     
-			bnt      code_0f37
-			pushi    #setCycle
-			pushi    1
-			class    Walk
-			push    
-			pushi    210
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    125
-			pushi    75
-			pushSelf
-			lofsa    aComic
-			send     18
-			jmp      code_1083
-code_0f37:
-			dup     
-			ldi      17
-			eq?     
-			bnt      code_0f54
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    194
-			pushi    75
-			pushSelf
-			lofsa    aComic
-			send     12
-			jmp      code_1083
-code_0f54:
-			dup     
-			ldi      18
-			eq?     
-			bnt      code_0f71
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    161
-			pushi    75
-			pushSelf
-			lofsa    aComic
-			send     12
-			jmp      code_1083
-code_0f71:
-			dup     
-			ldi      19
-			eq?     
-			bnt      code_0f92
-			pushi    #loop
-			pushi    1
-			pushi    2
-			pushi    201
-			pushi    1
-			pushi    255
-			pushi    126
-			pushi    2
-			class    BegLoop
-			push    
-			pushSelf
-			lofsa    aComic
-			send     20
-			jmp      code_1083
-code_0f92:
-			dup     
-			ldi      20
-			eq?     
-			bnt      code_0fb5
-			pushi    #view
-			pushi    1
-			pushi    343
-			pushi    6
-			pushi    1
-			pushi    2
-			pushi    126
-			pushi    1
-			class    Walk
-			push    
-			lofsa    aComic
-			send     18
-			ldi      2
-			aTop     seconds
-			jmp      code_1083
-code_0fb5:
-			dup     
-			ldi      21
-			eq?     
-			bnt      code_0ff2
-			pushi    2
-			pushi    340
-			pushi    54
-			calle    Print,  4
-			pushi    #number
-			pushi    1
-			pushi    340
-			pushi    6
-			pushi    1
-			pushi    65535
-			pushi    42
-			pushi    0
-			lag      music
-			send     16
-			lsg      machineSpeed
-			ldi      39
-			gt?     
-			bnt      code_0feb
-			pushi    #setCycle
-			pushi    1
-			class    Forward
-			push    
-			lofsa    aSign
-			send     6
-code_0feb:
-			ldi      2
-			aTop     seconds
-			jmp      code_1083
-code_0ff2:
-			dup     
-			ldi      22
-			eq?     
-			bnt      code_100f
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    160
-			pushi    57
-			pushSelf
-			lofsa    aComic
-			send     12
-			jmp      code_1083
-code_100f:
-			dup     
-			ldi      23
-			eq?     
-			bnt      code_1042
-			pushi    2
-			pushi    340
-			pushi    55
-			calle    Print,  4
-			pushi    #setMotion
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    241
-			pushi    58
-			pushSelf
-			lofsa    aComic
-			send     12
-			pushi    #fade
-			pushi    0
-			lag      music
-			send     4
-			ldi      0
-			sal      comedianOnStage
-			jmp      code_1083
-code_1042:
-			dup     
-			ldi      24
-			eq?     
-			bnt      code_1083
-			pushi    #hide
-			pushi    0
-			lofsa    aComic
-			send     4
-			lsg      machineSpeed
-			ldi      39
-			gt?     
-			bnt      code_1068
-			pushi    #setCel
-			pushi    1
-			pushi    0
-			pushi    197
-			pushi    0
-			lofsa    aSign
-			send     10
-code_1068:
-			pushi    #stopUpd
-			pushi    0
-			lofsa    aDrummer
-			send     4
-			pushi    #number
-			pushi    1
-			pushi    341
-			pushi    6
-			pushi    1
-			lsg      musicLoop
-			pushi    42
-			pushi    0
-			lag      music
-			send     16
-code_1083:
-			toss    
-			ret     
+	(method (changeState newState &tmp [str 200] [len 4] temp204 temp205 temp206 temp207 i)
+		;EO: this method has been successfully decompiled!
+		; It should be tested to make sure it works properly.
+		(switch (= state newState)
+			(0)
+			(1
+				(if (> machineSpeed 39)
+					(aSign setCycle: Forward)
+				)
+				(music number: 10 loop: -1 play:)
+				(aDrummer loop: 2 setCycle: Forward)
+				(= seconds 4)
+			)
+			(2
+				(Print 340 43)
+				(if (!= currentStatus 1004) (Print 340 44))
+				(music stop: number: 340 loop: 1 play:)
+				(aDrummer cycleSpeed: 1 loop: 1)
+				(= seconds 3)
+			)
+			(3
+				(aComic setMotion: MoveTo 160 58 self)
+			)
+			(4
+				(aComic setPri: -1 setMotion: MoveTo 160 78 self)
+			)
+			(5
+				(if (> machineSpeed 39) (aSign setCel: 1 stopUpd:))
+				(= comedianOnStage TRUE)
+				(= seconds 3)
+			)
+			(6
+				(aComic loop: 4 viewer: talkCycler)
+				(= seconds 3)
+			)
+			(7)
+			(8
+				(aDrummer cycleSpeed: 0 loop: 0 setCel: 0)
+				(Print 340 45)
+				(= seconds 3)
+			)
+			(9
+				(music number: 341 loop: -1 play:)
+				(if (!= currentStatus egoSITTING)
+					(Print 340 46)
+				)
+				(Print 340 47)
+				(= ethnic1Str 0)
+				(= ethnic2Str 0)
+				(= ethnic3Str 0)
+				(if (u> 3 (StrLen @ethnic1Str))
+					(GetInput @ethnic1Str 15 {Ethnic group #1:})
+				)
+				(if (u> 3 (StrLen @ethnic2Str))
+					(GetInput @ethnic2Str 15 {Ethnic group #2:})
+				)
+				(if (u> 3 (StrLen @ethnic3Str))
+					(GetInput @ethnic3Str 15 {Ethnic group #3:})
+				)
+				(Print 340 48)
+				(= seconds 3)
+			)
+			(10
+				(aComic loop: 4 viewer: talkCycler)
+				(= seconds 3)
+			)
+			(11
+				(aComic setCycle: Walk viewer: 0)
+				(= temp204 0)
+				(++ temp204)
+				(= temp206 (Random 0 42))
+				(if jokeNum (= [local0 (= temp206 (++ jokeNum))] 0))
+				(if (== [local0 temp206] 0)
+					(= [local0 temp206] 1)
+					(= local110 (= local109 (Random 49 51)))
+					(= local111 local109)
+					(if (== local109 local110)
+						(= local110 (Random 49 51))
+					)
+					(while (or (== local111 local109) (== local111 local110))
+						(= local111 (Random 49 51))
+					)
+					(= temp207 0)
+					(while (< temp207 5)
+						(= i 0)
+						(Format @str 340 49 341 (+ temp207 (* temp206 5)))
+						(if (!= 32 (StrAt @str 1))
+							(= temp205 0)
+							(if (< temp205 (StrLen @str))
+								(if (== 47 (StrAt @str temp205))
+									(StrAt @str temp205 37)
+									(switch (StrAt @str (++ temp205))
+										(local109
+											(= [len i] @ethnic1Str)
+											(++ i)
+										)
+										(local110
+											(= [len i] @ethnic2Str)
+											(++ i)
+										)
+										(local111
+											(= [len i] @ethnic3Str)
+											(++ i)
+										)
+									)
+									(StrAt @str temp205 115)
+									(++ temp205)
+								)
+								(++ temp205)
+							)
+							(Printf
+								@str
+								[len 0]
+								[len 1]
+								[len 2]
+								[len 3]
+								[len 4]
+							)
+						)
+						(++ temp207)
+					)
+					(if (> jokeNum 42)
+						(if jokeNum
+							(Print 340 50)
+							(= jokeNum 0)
+						else
+							(Print 340 51)
+						)
+					)
+					(aDrummer setCycle: EndLoop)
+					(if (> (DoSound NumVoices) 5)
+						(soundFX number: (Random 21 27) loop: 1 play:)
+					)
+				else
+					(>= temp204 1000)
+					(= state 12)
+				)
+				(= seconds 2)
+			)
+			(12
+				(aComic
+					setMotion: MoveTo (Random 125 195) (Random 66 80) self
+				)
+				(= state 9)
+			)
+			(13
+				(music fade:)
+				(Print 340 52)
+				(aComic setMotion: MoveTo 158 75 self)
+			)
+			(14
+				(Print 340 53)
+				(if (not (Btst fListenedToComedian))
+					(Bset fListenedToComedian)
+					(theGame changeScore: 100)
+				)
+				(= seconds 2)
+			)
+			(15
+				(aComic
+					view: 344
+					loop: 2
+					cel: 0
+					setCycle: EndLoop self
+					setMotion: 0
+				)
+			)
+			(16
+				(aComic setCycle: Walk setMotion: MoveTo 125 75 self)
+			)
+			(17
+				(aComic setMotion: MoveTo 194 75 self)
+			)
+			(18
+				(aComic setMotion: MoveTo 161 75 self)
+			)
+			(19
+				(aComic loop: 2 setCel: 255 setCycle: BegLoop self)
+			)
+			(20
+				(aComic view: 343 loop: 2 setCycle: Walk)
+				(= seconds 2)
+			)
+			(21
+				(Print 340 54)
+				(music number: 340 loop: -1 play:)
+				(if (> machineSpeed 39)
+					(aSign setCycle: Forward)
+				)
+				(= seconds 2)
+			)
+			(22
+				(aComic setMotion: MoveTo 160 57 self)
+			)
+			(23
+				(Print 340 55)
+				(aComic setMotion: MoveTo 241 58 self)
+				(music fade:)
+				(= comedianOnStage FALSE)
+			)
+			(24
+				(aComic hide:)
+				(if (> machineSpeed 39)
+					(aSign setCel: 0 stopUpd:)
+				)
+				(aDrummer stopUpd:)
+				(music number: 341 loop: musicLoop play:)
+			)
 		)
 	)
 )
