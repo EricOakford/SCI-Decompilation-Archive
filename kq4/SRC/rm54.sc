@@ -40,9 +40,9 @@
 	diamondPouch
 	busy
 )
-;EO: Using the Avoider in this room crashes the game with an "Out of Heap Space" error!
-; In fact, this room uses so much heap that saving, restoring, and inventory are disabled.
-; For this reason, the Avoider is no longer loaded. It doesn't seem necessary anyway.
+
+;EO: The Avoider is used once again.
+; Although it uses a lot of heap, it no longer runs out.
 
 (instance Room54 of Room
 	(properties
@@ -596,7 +596,7 @@
 				(= cleaningUpHouse TRUE)
 				(ego
 					illegalBits: 0
-					;setAvoider: Avoider	;not enough heap for avoider
+					setAvoider: Avoider	;not enough heap for avoider
 				)
 				(NotifyScript DWARF_HOUSE 1)
 				(ego setMotion: MoveTo 135 (ego y?) self)
@@ -628,7 +628,7 @@
 				(= busy TRUE)
 				(ego
 					illegalBits: 0
-					;setAvoider: Avoider	;not enough heap for avoider
+					setAvoider: Avoider	;not enough heap for avoider
 					loop: 1
 					setMotion: MoveTo 194 123 self
 				)
@@ -805,7 +805,7 @@
 				)
 				(ego
 					illegalBits: 0
-					;setAvoider: Avoider	;not enough heap for avoider
+					setAvoider: Avoider	;not enough heap for avoider
 					setCycle: Walk
 				)
 				(if (> (ego y?) 145)
@@ -978,7 +978,7 @@
 					(dwarfBouncer
 						posn: 140 221
 						setMotion: MoveTo 140 160 self
-						;setAvoider: Avoider	;not enough heap for avoider
+						setAvoider: Avoider	;not enough heap for avoider
 					)
 				)
 			)

@@ -34,8 +34,7 @@
 
 (instance throwSound of Sound)
 
-;EO: This room uses Avoider, but there is not enough heap space to use it.
-; Hopefully, it's not needed.
+;EO: This room uses Avoider once again!
 
 (instance Room49 of Room
 	(properties
@@ -705,7 +704,7 @@
 			(12
 				(= local9 1)
 				(aOgre
-					;setAvoider: (Avoider new:)
+					setAvoider: (Avoider new:)
 					setCycle: Walk
 					setMotion: Chase ego 15 self
 				)
@@ -723,7 +722,7 @@
 					view: 79
 					setPri: 9
 					setCycle: Walk
-					;setAvoider: Avoider
+					setAvoider: Avoider
 					setMotion: MoveTo 246 132 self
 				)
 			)
@@ -813,7 +812,7 @@
 				(aOgre
 					view: 250
 					posn: (aOgre x?) (- (aOgre y?) 3)
-					;setAvoider: Avoider
+					setAvoider: Avoider
 					setCycle: Walk
 					setMotion: Chase ego 15 self
 				)
@@ -835,7 +834,7 @@
 					setCycle: Walk
 					illegalBits: cWHITE
 					setPri: -1
-					;setAvoider: Avoider
+					setAvoider: Avoider
 					setMotion: MoveTo 246 132 self
 				)
 			)
@@ -854,7 +853,7 @@
 				(theMusic number: 10 loop: -1 play:)
 				(ogress
 					illegalBits: cWHITE
-					;setAvoider: Avoider
+					setAvoider: Avoider
 					ignoreActors: 1
 					setCycle: Walk
 					setMotion: Chase ego 15 self
@@ -940,7 +939,7 @@
 			(0
 				(Print 49 54 #at -1 10 #draw)
 				(dog
-					;setAvoider: (Avoider new:)
+					setAvoider: (Avoider new:)
 					setCycle: Forward
 					ignoreActors: TRUE
 					setMotion: Chase ego 15 self
