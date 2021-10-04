@@ -179,713 +179,917 @@
 		(DisposeScript JUMP)
 		(super dispose:)
 	)
-	
-	(method (handleEvent event &tmp temp0)
-		(asm
-			pushi    #claimed
-			pushi    0
-			lap      event
-			send     4
-			bnt      code_038e
-			ldi      1
-			ret     
-code_038e:
-			pushi    #type
-			pushi    0
-			lap      event
-			send     4
-			push    
-			ldi      128
-			eq?     
-			bnt      code_08e2
-			pushi    1
-			lofsa    'hop,hop'
-			push    
-			callk    Said,  2
-			bnt      code_0437
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      109
-			gt?     
-			bnt      code_03c1
-			pushi    2
-			pushi    78
-			pushi    0
-			calle    Print,  4
-			jmp      code_08e2
-code_03c1:
-			lsl      jumpNum
-			ldi      5
-			eq?     
-			bnt      code_0418
-			pushi    #ownedBy
-			pushi    1
-			pushi    78
-			pushi    #at
-			pushi    1
-			pushi    22
-			class    Inventory
-			send     6
-			send     6
-			bnt      code_0418
-			pushi    #inRect
-			pushi    4
-			pushi    92
-			pushi    164
-			pushi    109
-			pushi    172
-			lag      ego
-			send     12
-			bnt      code_040c
-			pushi    #loop
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      1
-			ne?     
-			bnt      code_040c
-			pushi    2
-			pushi    78
-			pushi    1
-			calle    Print,  4
-			jmp      code_08e2
-code_040c:
-			pushi    #changeState
-			pushi    1
-			pushi    1
-			lofsa    jump
-			send     6
-			jmp      code_08e2
-code_0418:
-			lsg      currentStatus
-			ldi      13
-			eq?     
-			bnt      code_042b
-			pushi    2
-			pushi    78
-			pushi    2
-			calle    Print,  4
-			jmp      code_08e2
-code_042b:
-			pushi    #changeState
-			pushi    1
-			pushi    1
-			lofsa    jump
-			send     6
-			jmp      code_08e2
-code_0437:
-			pushi    1
-			lofsa    'play/flute'
-			push    
-			callk    Said,  2
-			bnt      code_04c4
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      2
-			eq?     
-			bnt      code_04b7
-			pushi    #has
-			pushi    1
-			pushi    0
-			lag      ego
-			send     6
-			bnt      code_04ab
-			pushi    #state
-			pushi    0
-			lofsa    snakeActions
-			send     4
-			push    
-			ldi      21
-			eq?     
-			bnt      code_048a
-			pushi    #seconds
-			pushi    1
-			pushi    0
-			lofsa    snakeActions
-			send     6
-			pushi    2
-			pushi    78
-			pushi    3
-			calle    Print,  4
-			pushi    #seconds
-			pushi    1
-			pushi    15
-			lofsa    snakeActions
-			send     6
-			jmp      code_0494
-code_048a:
-			pushi    #changeState
-			pushi    1
-			pushi    20
-			lofsa    snakeActions
-			send     6
-code_0494:
-			lag      global155
-			not     
-			bnt      code_08e2
-			pushi    #changeScore
-			pushi    1
-			pushi    4
-			lag      theGame
-			send     6
-			ldi      1
-			sag      global155
-			jmp      code_08e2
-code_04ab:
-			pushi    2
-			pushi    800
-			pushi    2
-			calle    Print,  4
-			jmp      code_08e2
-code_04b7:
-			pushi    2
-			pushi    800
-			pushi    3
-			calle    Print,  4
-			jmp      code_08e2
-code_04c4:
-			pushi    1
-			lofsa    'get/fruit'
-			push    
-			callk    Said,  2
-			bnt      code_056a
-			pushi    #has
-			pushi    1
-			pushi    25
-			lag      ego
-			send     6
-			bnt      code_04e8
-			pushi    2
-			pushi    78
-			pushi    4
-			calle    Print,  4
-			jmp      code_08e2
-code_04e8:
-			lsl      snakeState
-			ldi      2
-			eq?     
-			bnt      code_0563
-			pushi    #inRect
-			pushi    4
-			pushi    171
-			pushi    157
-			pushi    195
-			pushi    167
-			lag      ego
-			send     12
-			bnt      code_0563
-			pushi    #ownedBy
-			pushi    1
-			pushi    78
-			pushi    #at
-			pushi    1
-			pushi    25
-			class    Inventory
-			send     6
-			send     6
-			bnt      code_0557
-			pushi    2
-			pushi    78
-			pushi    5
-			calle    Print,  4
-			pushi    #number
-			pushi    1
-			pushi    50
-			pushi    42
-			pushi    0
-			lofsa    gotFruit
-			send     10
-			pushi    #dispose
-			pushi    0
-			lal      fruit
-			send     4
-			pushi    #moveTo
-			pushi    1
-			lsg      ego
-			pushi    #at
-			pushi    1
-			pushi    25
-			class    Inventory
-			send     6
-			send     6
-			pushi    #changeScore
-			pushi    1
-			pushi    10
-			lag      theGame
-			send     6
-			jmp      code_08e2
-code_0557:
-			pushi    2
-			pushi    78
-			pushi    6
-			calle    Print,  4
-			jmp      code_08e2
-code_0563:
-			pushi    0
-			callb    NotClose,  0
-			jmp      code_08e2
-code_056a:
-			pushi    1
-			lofsa    'get/board'
-			push    
-			callk    Said,  2
-			bnt      code_05e1
-			pushi    #ownedBy
-			pushi    1
-			pushi    78
-			pushi    #at
-			pushi    1
-			pushi    22
-			class    Inventory
-			send     6
-			send     6
-			not     
-			bnt      code_0596
-			pushi    2
-			pushi    78
-			pushi    7
-			calle    Print,  4
-			jmp      code_08e2
-code_0596:
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      109
-			gt?     
-			bnt      code_05af
-			pushi    2
-			pushi    78
-			pushi    0
-			calle    Print,  4
-			jmp      code_08e2
-code_05af:
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      1024
-			ne?     
-			bt       code_05c8
-			lsl      jumpNum
-			ldi      5
-			ne?     
-			bnt      code_05d4
-code_05c8:
-			pushi    2
-			pushi    78
-			pushi    8
-			calle    Print,  4
-			jmp      code_08e2
-code_05d4:
-			pushi    #changeState
-			pushi    1
-			pushi    10
-			lofsa    boardActions
-			send     6
-			jmp      code_08e2
-code_05e1:
-			pushi    1
-			lofsa    'lay,place/board'
-			push    
-			callk    Said,  2
-			bnt      code_064b
-			pushi    #has
-			pushi    1
-			pushi    22
-			lag      ego
-			send     6
-			not     
-			bnt      code_0601
-			pushi    0
-			callb    DontHave,  0
-			jmp      code_08e2
-code_0601:
-			pushi    #x
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      109
-			gt?     
-			bnt      code_061a
-			pushi    2
-			pushi    78
-			pushi    0
-			calle    Print,  4
-			jmp      code_08e2
-code_061a:
-			pushi    #onControl
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			push    
-			ldi      1024
-			ne?     
-			bt       code_0633
-			lsl      jumpNum
-			ldi      5
-			ne?     
-			bnt      code_063f
-code_0633:
-			pushi    2
-			pushi    78
-			pushi    8
-			calle    Print,  4
-			jmp      code_08e2
-code_063f:
-			pushi    #changeState
-			pushi    1
-			pushi    1
-			lofsa    boardActions
-			send     6
-			jmp      code_08e2
-code_064b:
-			pushi    1
-			lofsa    'deliver/anyword[/cobra]>'
-			push    
-			callk    Said,  2
-			bnt      code_069e
-			pushi    #saidMe
-			pushi    0
-			lag      inventory
-			send     4
-			sat      temp0
-			bnt      code_068a
-			pushi    #has
-			pushi    1
-			pushi    #indexOf
-			pushi    1
-			push    
-			lag      inventory
-			send     6
-			push    
-			lag      ego
-			send     6
-			bnt      code_0683
-			pushi    2
-			pushi    78
-			pushi    9
-			calle    Print,  4
-			jmp      code_08e2
-code_0683:
-			pushi    0
-			callb    DontHave,  0
-			jmp      code_08e2
-code_068a:
-			pushi    2
-			pushi    78
-			pushi    10
-			calle    Print,  4
-			pushi    #claimed
-			pushi    1
-			pushi    1
-			lap      event
-			send     6
-			jmp      code_08e2
-code_069e:
-			pushi    1
-			lofsa    'throw/anyword[/cobra]>'
-			push    
-			callk    Said,  2
-			bnt      code_06e2
-			pushi    #saidMe
-			pushi    0
-			lag      inventory
-			send     4
-			sat      temp0
-			bnt      code_06e2
-			pushi    #has
-			pushi    1
-			pushi    #indexOf
-			pushi    1
-			lst      temp0
-			lag      inventory
-			send     6
-			push    
-			lag      ego
-			send     6
-			bnt      code_06d7
-			pushi    2
-			pushi    78
-			pushi    11
-			calle    Print,  4
-			jmp      code_08e2
-code_06d7:
-			pushi    #claimed
-			pushi    1
-			pushi    0
-			lap      event
-			send     6
-			jmp      code_08e2
-code_06e2:
-			pushi    1
-			lofsa    'look>'
-			push    
-			callk    Said,  2
-			bnt      code_0858
-			pushi    1
-			lofsa    '/cobra'
-			push    
-			callk    Said,  2
-			bnt      code_073f
-			pushi    #state
-			pushi    0
-			lofsa    snakeActions
-			send     4
-			push    
-			ldi      21
-			eq?     
-			bnt      code_0713
-			pushi    2
-			pushi    78
-			pushi    12
-			calle    Print,  4
-			jmp      code_08e2
-code_0713:
-			pushi    #ownedBy
-			pushi    1
-			pushi    78
-			pushi    #at
-			pushi    1
-			pushi    25
-			class    Inventory
-			send     6
-			send     6
-			bnt      code_0733
-			pushi    2
-			pushi    78
-			pushi    13
-			calle    Print,  4
-			jmp      code_08e2
-code_0733:
-			pushi    2
-			pushi    78
-			pushi    14
-			calle    Print,  4
-			jmp      code_08e2
-code_073f:
-			pushi    1
-			lofsa    '/forest'
-			push    
-			callk    Said,  2
-			bnt      code_0776
-			pushi    #ownedBy
-			pushi    1
-			pushi    78
-			pushi    #at
-			pushi    1
-			pushi    25
-			class    Inventory
-			send     6
-			send     6
-			bnt      code_076a
-			pushi    2
-			pushi    78
-			pushi    15
-			calle    Print,  4
-			jmp      code_08e2
-code_076a:
-			pushi    2
-			pushi    78
-			pushi    16
-			calle    Print,  4
-			jmp      code_08e2
-code_0776:
-			pushi    1
-			lofsa    '/fruit'
-			push    
-			callk    Said,  2
-			bnt      code_07cb
-			pushi    #ownedBy
-			pushi    1
-			pushi    78
-			pushi    #at
-			pushi    1
-			pushi    25
-			class    Inventory
-			send     6
-			send     6
-			bnt      code_07a1
-			pushi    2
-			pushi    78
-			pushi    17
-			calle    Print,  4
-			jmp      code_08e2
-code_07a1:
-			pushi    #has
-			pushi    1
-			pushi    25
-			lag      ego
-			send     6
-			bnt      code_07bf
-			pushi    #showSelf
-			pushi    0
-			pushi    #at
-			pushi    1
-			pushi    25
-			class    Inventory
-			send     6
-			send     4
-			jmp      code_08e2
-code_07bf:
-			pushi    2
-			pushi    78
-			pushi    18
-			calle    Print,  4
-			jmp      code_08e2
-code_07cb:
-			pushi    1
-			lofsa    '/island'
-			push    
-			callk    Said,  2
-			bnt      code_0802
-			pushi    #ownedBy
-			pushi    1
-			pushi    78
-			pushi    #at
-			pushi    1
-			pushi    25
-			class    Inventory
-			send     6
-			send     6
-			bnt      code_07f6
-			pushi    2
-			pushi    78
-			pushi    19
-			calle    Print,  4
-			jmp      code_08e2
-code_07f6:
-			pushi    2
-			pushi    78
-			pushi    20
-			calle    Print,  4
-			jmp      code_08e2
-code_0802:
-			pushi    1
-			lofsa    '/grass,tuft'
-			push    
-			callk    Said,  2
-			bnt      code_0819
-			pushi    2
-			pushi    78
-			pushi    21
-			calle    Print,  4
-			jmp      code_08e2
-code_0819:
-			pushi    1
-			lofsa    '[<around][/marsh,room]'
-			push    
-			callk    Said,  2
-			bnt      code_08e2
-			pushi    1
-			pushi    4
-			lea      @str
-			push    
-			pushi    78
-			pushi    22
-			pushi    #ownedBy
-			pushi    1
-			pushi    78
-			pushi    #at
-			pushi    1
-			pushi    25
-			class    Inventory
-			send     6
-			send     6
-			bnt      code_0849
-			lofsa    {A large, glistening fruit hangs from a small branch.}
-			jmp      code_084c
-code_0849:
-			lofsa    {}
-code_084c:
-			push    
-			callk    Format,  8
-			push    
-			calle    Print,  2
-			jmp      code_08e2
-code_0858:
-			pushi    1
-			lofsa    'anyword[/cobra]>'
-			push    
-			callk    Said,  2
-			bnt      code_08e2
-			pushi    1
-			lofsa    'converse'
-			push    
-			callk    Said,  2
-			bnt      code_087c
-			pushi    2
-			pushi    78
-			pushi    23
-			calle    Print,  4
-			ldi      1
-			jmp      code_08dd
-code_087c:
-			pushi    1
-			lofsa    'kill'
-			push    
-			callk    Said,  2
-			bnt      code_0895
-			pushi    2
-			pushi    78
-			pushi    24
-			calle    Print,  4
-			ldi      1
-			jmp      code_08dd
-code_0895:
-			pushi    1
-			lofsa    'get,capture/anyword'
-			push    
-			callk    Said,  2
-			bnt      code_08ae
-			pushi    2
-			pushi    78
-			pushi    25
-			calle    Print,  4
-			ldi      1
-			jmp      code_08dd
-code_08ae:
-			pushi    1
-			lofsa    'kiss'
-			push    
-			callk    Said,  2
-			bnt      code_08c7
-			pushi    2
-			pushi    78
-			pushi    26
-			calle    Print,  4
-			ldi      1
-			jmp      code_08dd
-code_08c7:
-			pushi    1
-			lofsa    'hit/anyword'
-			push    
-			callk    Said,  2
-			bnt      code_08e2
-			pushi    2
-			pushi    78
-			pushi    27
-			calle    Print,  4
-			ldi      1
-code_08dd:
-			bnt      code_08e2
-			ldi      1
-code_08e2:
-			ret     
+
+	(method (handleEvent event &tmp index)
+		;EO: this method has been successfully decompiled!
+		(if (event claimed?) (return TRUE))
+		(return
+			(if (== (event type?) saidEvent)
+				(cond 
+					((Said 'hop,hop')
+						(cond 
+							((> (ego x?) 109)
+								(Print 78 0)
+							)
+							((and (== jumpNum 5) ((Inventory at: iBoard) ownedBy: 78))
+								(if (and (ego inRect: 92 164 109 172) (!= (ego loop?) 1))
+									(Print 78 1)
+								else
+									(jump changeState: 1)
+								)
+							)
+							((== currentStatus egoIsFrog)
+								(Print 78 2)
+							)
+							(else
+								(jump changeState: 1)
+							)
+						)
+					)
+					((Said 'play/flute')
+						(if (== (ego view?) 2)
+							(if (ego has: 0)
+								(if (== (snakeActions state?) 21)
+									(snakeActions seconds: 0)
+									(Print 78 3)
+									(snakeActions seconds: 15)
+								else
+									(snakeActions changeState: 20)
+								)
+								(if (not charmedSnake)
+									(theGame changeScore: 4)
+									(= charmedSnake TRUE)
+								)
+							else
+								(Print 800 2)
+							)
+						else
+							(Print 800 3)
+						)
+					)
+					((Said 'get/fruit')
+						(cond 
+							((ego has: iMagicFruit)
+								(Print 78 4)
+							)
+							((and (== snakeState 2) (ego inRect: 171 157 195 167))
+								(if ((Inventory at: iMagicFruit) ownedBy: 78)
+									(Print 78 5)
+									(gotFruit number: 50 play:)
+									(fruit dispose:)
+									((Inventory at: iMagicFruit) moveTo: ego)
+									(theGame changeScore: 10)
+								else
+									(Print 78 6)
+								)
+							)
+							(else
+								(NotClose)
+							)
+						)
+					)
+					((Said 'get/board')
+						(cond 
+							((not ((Inventory at: iBoard) ownedBy: 78))
+								(Print 78 7)
+							)
+							((> (ego x?) 109)
+								(Print 78 0)
+							)
+							((or (!= (ego onControl: origin) cLGREEN) (!= jumpNum 5))
+								(Print 78 8)
+							)
+							(else
+								(boardActions changeState: 10)
+							)
+						)
+					)
+					((Said 'lay,place/board')
+						(cond 
+							((not (ego has: iBoard))
+								(DontHave)
+							)
+							((> (ego x?) 109)
+								(Print 78 0)
+							)
+							((or (!= (ego onControl: origin) cLGREEN) (!= jumpNum 5))
+								(Print 78 8)
+							)
+							(else
+								(boardActions changeState: 1)
+							)
+						)
+					)
+					((Said 'deliver/anyword[/cobra]>')
+						(if (= index (inventory saidMe:))
+							(if (ego has: (inventory indexOf: index))
+								(Print 78 9)
+							else
+								(DontHave)
+							)
+						else
+							(Print 78 10)
+							(event claimed: TRUE)
+						)
+					)
+					(
+						(and
+							(Said 'throw/*[/cobra]>')
+							(= index (inventory saidMe:))
+						)
+						(if (ego has: (inventory indexOf: index))
+							(Print 78 11)
+						else
+							(event claimed: FALSE)
+						)
+					)
+					((Said 'look>')
+						(cond 
+							((Said '/cobra')
+								(cond 
+									((== (snakeActions state?) 21)
+										(Print 78 12)
+									)
+									(((Inventory at: iMagicFruit) ownedBy: 78)
+										(Print 78 13)
+									)
+									(else
+										(Print 78 14)
+									)
+								)
+							)
+							((Said '/forest')
+								(if ((Inventory at: iMagicFruit) ownedBy: 78)
+									(Print 78 15)
+								else
+									(Print 78 16)
+								)
+							)
+							((Said '/fruit')
+								(cond 
+									(((Inventory at: iMagicFruit) ownedBy: 78)
+										(Print 78 17)
+									)
+									((ego has: iMagicFruit)
+										((Inventory at: iMagicFruit) showSelf:)
+									)
+									(else
+										(Print 78 18)
+									)
+								)
+							)
+							((Said '/island')
+								(if ((Inventory at: iMagicFruit) ownedBy: 78)
+									(Print 78 19)
+								else
+									(Print 78 20)
+								)
+							)
+							((Said '/grass,tuft') (Print 78 21))
+							((Said '[<around][/marsh,room]')
+								(Print
+									(Format @str 78 22
+										(if ((Inventory at: iMagicFruit) ownedBy: 78)
+											{A large, glistening fruit hangs from a small branch.}
+										else
+											{}
+										)
+									)
+								)
+							)
+						)
+					)
+					((Said 'anyword[/cobra]>')
+						(if (Said 'converse')
+							(Print 78 23)
+						)
+						(if (Said 'kill')
+							(Print 78 24)
+						)
+						(if (Said 'get,capture/anyword')
+							(Print 78 25)
+						)
+						(if (Said 'kiss')
+							(Print 78 26)
+						)
+						(if (Said 'hit/anyword')
+							(Print 78 27)
+						)
+					)
+				)
+			else
+				FALSE
+			)
 		)
 	)
+	
+;;;	(method (handleEvent event &tmp temp0)
+;;;		(asm
+;;;			pushi    #claimed
+;;;			pushi    0
+;;;			lap      event
+;;;			send     4
+;;;			bnt      code_038e
+;;;			ldi      1
+;;;			ret     
+;;;code_038e:
+;;;			pushi    #type
+;;;			pushi    0
+;;;			lap      event
+;;;			send     4
+;;;			push    
+;;;			ldi      128
+;;;			eq?     
+;;;			bnt      code_08e2
+;;;			pushi    1
+;;;			lofsa    'hop,hop'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_0437
+;;;			pushi    #x
+;;;			pushi    0
+;;;			lag      ego
+;;;			send     4
+;;;			push    
+;;;			ldi      109
+;;;			gt?     
+;;;			bnt      code_03c1
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    0
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_03c1:
+;;;			lsl      jumpNum
+;;;			ldi      5
+;;;			eq?     
+;;;			bnt      code_0418
+;;;			pushi    #ownedBy
+;;;			pushi    1
+;;;			pushi    78
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    22
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			bnt      code_0418
+;;;			pushi    #inRect
+;;;			pushi    4
+;;;			pushi    92
+;;;			pushi    164
+;;;			pushi    109
+;;;			pushi    172
+;;;			lag      ego
+;;;			send     12
+;;;			bnt      code_040c
+;;;			pushi    #loop
+;;;			pushi    0
+;;;			lag      ego
+;;;			send     4
+;;;			push    
+;;;			ldi      1
+;;;			ne?     
+;;;			bnt      code_040c
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    1
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_040c:
+;;;			pushi    #changeState
+;;;			pushi    1
+;;;			pushi    1
+;;;			lofsa    jump
+;;;			send     6
+;;;			jmp      code_08e2
+;;;code_0418:
+;;;			lsg      currentStatus
+;;;			ldi      13
+;;;			eq?     
+;;;			bnt      code_042b
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    2
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_042b:
+;;;			pushi    #changeState
+;;;			pushi    1
+;;;			pushi    1
+;;;			lofsa    jump
+;;;			send     6
+;;;			jmp      code_08e2
+;;;code_0437:
+;;;			pushi    1
+;;;			lofsa    'play/flute'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_04c4
+;;;			pushi    #view
+;;;			pushi    0
+;;;			lag      ego
+;;;			send     4
+;;;			push    
+;;;			ldi      2
+;;;			eq?     
+;;;			bnt      code_04b7
+;;;			pushi    #has
+;;;			pushi    1
+;;;			pushi    0
+;;;			lag      ego
+;;;			send     6
+;;;			bnt      code_04ab
+;;;			pushi    #state
+;;;			pushi    0
+;;;			lofsa    snakeActions
+;;;			send     4
+;;;			push    
+;;;			ldi      21
+;;;			eq?     
+;;;			bnt      code_048a
+;;;			pushi    #seconds
+;;;			pushi    1
+;;;			pushi    0
+;;;			lofsa    snakeActions
+;;;			send     6
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    3
+;;;			calle    Print,  4
+;;;			pushi    #seconds
+;;;			pushi    1
+;;;			pushi    15
+;;;			lofsa    snakeActions
+;;;			send     6
+;;;			jmp      code_0494
+;;;code_048a:
+;;;			pushi    #changeState
+;;;			pushi    1
+;;;			pushi    20
+;;;			lofsa    snakeActions
+;;;			send     6
+;;;code_0494:
+;;;			lag      charmedSnake
+;;;			not     
+;;;			bnt      code_08e2
+;;;			pushi    #changeScore
+;;;			pushi    1
+;;;			pushi    4
+;;;			lag      theGame
+;;;			send     6
+;;;			ldi      1
+;;;			sag      charmedSnake
+;;;			jmp      code_08e2
+;;;code_04ab:
+;;;			pushi    2
+;;;			pushi    800
+;;;			pushi    2
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_04b7:
+;;;			pushi    2
+;;;			pushi    800
+;;;			pushi    3
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_04c4:
+;;;			pushi    1
+;;;			lofsa    'get/fruit'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_056a
+;;;			pushi    #has
+;;;			pushi    1
+;;;			pushi    25
+;;;			lag      ego
+;;;			send     6
+;;;			bnt      code_04e8
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    4
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_04e8:
+;;;			lsl      snakeState
+;;;			ldi      2
+;;;			eq?     
+;;;			bnt      code_0563
+;;;			pushi    #inRect
+;;;			pushi    4
+;;;			pushi    171
+;;;			pushi    157
+;;;			pushi    195
+;;;			pushi    167
+;;;			lag      ego
+;;;			send     12
+;;;			bnt      code_0563
+;;;			pushi    #ownedBy
+;;;			pushi    1
+;;;			pushi    78
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    25
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			bnt      code_0557
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    5
+;;;			calle    Print,  4
+;;;			pushi    #number
+;;;			pushi    1
+;;;			pushi    50
+;;;			pushi    42
+;;;			pushi    0
+;;;			lofsa    gotFruit
+;;;			send     10
+;;;			pushi    #dispose
+;;;			pushi    0
+;;;			lal      fruit
+;;;			send     4
+;;;			pushi    #moveTo
+;;;			pushi    1
+;;;			lsg      ego
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    25
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			pushi    #changeScore
+;;;			pushi    1
+;;;			pushi    10
+;;;			lag      theGame
+;;;			send     6
+;;;			jmp      code_08e2
+;;;code_0557:
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    6
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_0563:
+;;;			pushi    0
+;;;			callb    NotClose,  0
+;;;			jmp      code_08e2
+;;;code_056a:
+;;;			pushi    1
+;;;			lofsa    'get/board'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_05e1
+;;;			pushi    #ownedBy
+;;;			pushi    1
+;;;			pushi    78
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    22
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			not     
+;;;			bnt      code_0596
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    7
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_0596:
+;;;			pushi    #x
+;;;			pushi    0
+;;;			lag      ego
+;;;			send     4
+;;;			push    
+;;;			ldi      109
+;;;			gt?     
+;;;			bnt      code_05af
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    0
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_05af:
+;;;			pushi    #onControl
+;;;			pushi    1
+;;;			pushi    1
+;;;			lag      ego
+;;;			send     6
+;;;			push    
+;;;			ldi      1024
+;;;			ne?     
+;;;			bt       code_05c8
+;;;			lsl      jumpNum
+;;;			ldi      5
+;;;			ne?     
+;;;			bnt      code_05d4
+;;;code_05c8:
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    8
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_05d4:
+;;;			pushi    #changeState
+;;;			pushi    1
+;;;			pushi    10
+;;;			lofsa    boardActions
+;;;			send     6
+;;;			jmp      code_08e2
+;;;code_05e1:
+;;;			pushi    1
+;;;			lofsa    'lay,place/board'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_064b
+;;;			pushi    #has
+;;;			pushi    1
+;;;			pushi    22
+;;;			lag      ego
+;;;			send     6
+;;;			not     
+;;;			bnt      code_0601
+;;;			pushi    0
+;;;			callb    DontHave,  0
+;;;			jmp      code_08e2
+;;;code_0601:
+;;;			pushi    #x
+;;;			pushi    0
+;;;			lag      ego
+;;;			send     4
+;;;			push    
+;;;			ldi      109
+;;;			gt?     
+;;;			bnt      code_061a
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    0
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_061a:
+;;;			pushi    #onControl
+;;;			pushi    1
+;;;			pushi    1
+;;;			lag      ego
+;;;			send     6
+;;;			push    
+;;;			ldi      1024
+;;;			ne?     
+;;;			bt       code_0633
+;;;			lsl      jumpNum
+;;;			ldi      5
+;;;			ne?     
+;;;			bnt      code_063f
+;;;code_0633:
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    8
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_063f:
+;;;			pushi    #changeState
+;;;			pushi    1
+;;;			pushi    1
+;;;			lofsa    boardActions
+;;;			send     6
+;;;			jmp      code_08e2
+;;;code_064b:
+;;;			pushi    1
+;;;			lofsa    'deliver/anyword[/cobra]>'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_069e
+;;;			pushi    #saidMe
+;;;			pushi    0
+;;;			lag      inventory
+;;;			send     4
+;;;			sat      temp0
+;;;			bnt      code_068a
+;;;			pushi    #has
+;;;			pushi    1
+;;;			pushi    #indexOf
+;;;			pushi    1
+;;;			push    
+;;;			lag      inventory
+;;;			send     6
+;;;			push    
+;;;			lag      ego
+;;;			send     6
+;;;			bnt      code_0683
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    9
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_0683:
+;;;			pushi    0
+;;;			callb    DontHave,  0
+;;;			jmp      code_08e2
+;;;code_068a:
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    10
+;;;			calle    Print,  4
+;;;			pushi    #claimed
+;;;			pushi    1
+;;;			pushi    1
+;;;			lap      event
+;;;			send     6
+;;;			jmp      code_08e2
+;;;code_069e:
+;;;			pushi    1
+;;;			lofsa    'throw/anyword[/cobra]>'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_06e2
+;;;			pushi    #saidMe
+;;;			pushi    0
+;;;			lag      inventory
+;;;			send     4
+;;;			sat      temp0
+;;;			bnt      code_06e2
+;;;			pushi    #has
+;;;			pushi    1
+;;;			pushi    #indexOf
+;;;			pushi    1
+;;;			lst      temp0
+;;;			lag      inventory
+;;;			send     6
+;;;			push    
+;;;			lag      ego
+;;;			send     6
+;;;			bnt      code_06d7
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    11
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_06d7:
+;;;			pushi    #claimed
+;;;			pushi    1
+;;;			pushi    0
+;;;			lap      event
+;;;			send     6
+;;;			jmp      code_08e2
+;;;code_06e2:
+;;;			pushi    1
+;;;			lofsa    'look>'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_0858
+;;;			pushi    1
+;;;			lofsa    '/cobra'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_073f
+;;;			pushi    #state
+;;;			pushi    0
+;;;			lofsa    snakeActions
+;;;			send     4
+;;;			push    
+;;;			ldi      21
+;;;			eq?     
+;;;			bnt      code_0713
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    12
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_0713:
+;;;			pushi    #ownedBy
+;;;			pushi    1
+;;;			pushi    78
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    25
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			bnt      code_0733
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    13
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_0733:
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    14
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_073f:
+;;;			pushi    1
+;;;			lofsa    '/forest'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_0776
+;;;			pushi    #ownedBy
+;;;			pushi    1
+;;;			pushi    78
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    25
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			bnt      code_076a
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    15
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_076a:
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    16
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_0776:
+;;;			pushi    1
+;;;			lofsa    '/fruit'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_07cb
+;;;			pushi    #ownedBy
+;;;			pushi    1
+;;;			pushi    78
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    25
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			bnt      code_07a1
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    17
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_07a1:
+;;;			pushi    #has
+;;;			pushi    1
+;;;			pushi    25
+;;;			lag      ego
+;;;			send     6
+;;;			bnt      code_07bf
+;;;			pushi    #showSelf
+;;;			pushi    0
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    25
+;;;			class    Inventory
+;;;			send     6
+;;;			send     4
+;;;			jmp      code_08e2
+;;;code_07bf:
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    18
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_07cb:
+;;;			pushi    1
+;;;			lofsa    '/island'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_0802
+;;;			pushi    #ownedBy
+;;;			pushi    1
+;;;			pushi    78
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    25
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			bnt      code_07f6
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    19
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_07f6:
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    20
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_0802:
+;;;			pushi    1
+;;;			lofsa    '/grass,tuft'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_0819
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    21
+;;;			calle    Print,  4
+;;;			jmp      code_08e2
+;;;code_0819:
+;;;			pushi    1
+;;;			lofsa    '[<around][/marsh,room]'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_08e2
+;;;			pushi    1
+;;;			pushi    4
+;;;			lea      @str
+;;;			push    
+;;;			pushi    78
+;;;			pushi    22
+;;;			pushi    #ownedBy
+;;;			pushi    1
+;;;			pushi    78
+;;;			pushi    #at
+;;;			pushi    1
+;;;			pushi    25
+;;;			class    Inventory
+;;;			send     6
+;;;			send     6
+;;;			bnt      code_0849
+;;;			lofsa    {A large, glistening fruit hangs from a small branch.}
+;;;			jmp      code_084c
+;;;code_0849:
+;;;			lofsa    {}
+;;;code_084c:
+;;;			push    
+;;;			callk    Format,  8
+;;;			push    
+;;;			calle    Print,  2
+;;;			jmp      code_08e2
+;;;code_0858:
+;;;			pushi    1
+;;;			lofsa    'anyword[/cobra]>'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_08e2
+;;;			pushi    1
+;;;			lofsa    'converse'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_087c
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    23
+;;;			calle    Print,  4
+;;;			ldi      1
+;;;			jmp      code_08dd
+;;;code_087c:
+;;;			pushi    1
+;;;			lofsa    'kill'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_0895
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    24
+;;;			calle    Print,  4
+;;;			ldi      1
+;;;			jmp      code_08dd
+;;;code_0895:
+;;;			pushi    1
+;;;			lofsa    'get,capture/anyword'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_08ae
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    25
+;;;			calle    Print,  4
+;;;			ldi      1
+;;;			jmp      code_08dd
+;;;code_08ae:
+;;;			pushi    1
+;;;			lofsa    'kiss'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_08c7
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    26
+;;;			calle    Print,  4
+;;;			ldi      1
+;;;			jmp      code_08dd
+;;;code_08c7:
+;;;			pushi    1
+;;;			lofsa    'hit/anyword'
+;;;			push    
+;;;			callk    Said,  2
+;;;			bnt      code_08e2
+;;;			pushi    2
+;;;			pushi    78
+;;;			pushi    27
+;;;			calle    Print,  4
+;;;			ldi      1
+;;;;EO: code_08dd prevented decompilation
+;;;code_08dd:
+;;;			bnt      code_08e2
+;;;			ldi      1
+;;;code_08e2:
+;;;			ret     
+;;;		)
+;;;	)
 )
 
 (instance jump of Script

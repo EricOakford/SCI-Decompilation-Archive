@@ -602,7 +602,7 @@
 								(Print 49 39)
 							)
 						)
-						((Said 'get,rob/[')
+						((Said 'get,rob/bone')	;EO: fixed said spec
 							(if (== ((inventory at: iBone) owner?) 49)
 								(Print 49 40)
 							else
