@@ -7,7 +7,7 @@
 
 
 (local
-	[theCel 8] = [0 4 6 2 7 5 1 3]
+	theCel = [0 4 6 2 7 5 1 3]
 )
 
 ;NOTE: These classes have been commented out.
