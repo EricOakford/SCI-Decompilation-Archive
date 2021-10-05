@@ -201,7 +201,7 @@
 	global183
 	removedBodyFromRiver
 	global185
-	docCoveTimer
+	bainsInCoveTimer
 	global187
 	bainsInCove
 	diverState
@@ -475,8 +475,8 @@
 		(if (> global171 1)
 			(-- global171)
 		)
-		(if (> docCoveTimer 0)
-			(-- docCoveTimer)
+		(if (> bainsInCoveTimer 0)
+			(-- bainsInCoveTimer)
 		)
 		(if (== diverState 1)
 			(diverClock set: 600)
@@ -529,7 +529,7 @@
 		else
 			(SetMenu carI p_value TRUE)
 		)
-		(if (and (< docCoveTimer 250) bainsInCove)
+		(if (and (< bainsInCoveTimer 250) bainsInCove)
 			(= bainsInCove 2)
 		)
 		(super startRoom: roomNum)

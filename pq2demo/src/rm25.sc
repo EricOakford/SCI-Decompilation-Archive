@@ -14,15 +14,15 @@
 (local
 	egoCarDoor
 	hood
-	lightPosn
+	pCar
 	[local3 3]
 	motelDoor1
 	local7
 	motelDoor2
-	local9
-	local10
-	local11
-	local12
+	smoke
+	swatGuy1
+	swatGuy2
+	pCarDoor
 	[hoodPosn 10]
 )
 (instance keithAct of Actor)
@@ -141,460 +141,157 @@
 )
 
 (instance pLight of Prop
-
 	(method (doit)
-		(self posn: (+ (lightPosn x?) 4) (- (lightPosn y?) 29))
+		(self posn: (+ (pCar x?) 4) (- (pCar y?) 29))
 		(super doit:)
 	)
 )
 
+
 (instance swatArrives of Script
-	
+	;EO: Decompilation complete!
 	(method (changeState newState)
-		(asm
-			lap      newState
-			aTop     state
-			push    
-			dup     
-			ldi      0
-			eq?     
-			bnt      code_04ed
-			pushi    #view
-			pushi    1
-			pushi    54
-			pushi    196
-			pushi    1
-			pushi    1
-			pushi    157
-			pushi    1
-			pushi    3
-			pushi    193
-			pushi    2
-			pushi    64
-			pushi    156
-			pushi    66
-			pushi    1
-			pushi    11
-			pushi    212
-			pushi    1
-			pushi    65535
-			pushi    85
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    Actor
-			send     4
-			sal      lightPosn
-			send     42
-			pushi    #view
-			pushi    1
-			pushi    54
-			pushi    196
-			pushi    1
-			pushi    3
-			pushi    157
-			pushi    1
-			pushi    0
-			pushi    66
-			pushi    1
-			pushi    11
-			pushi    121
-			pushi    1
-			class    Forward
-			push    
-			pushi    197
-			pushi    0
-			pushi    60
-			pushi    0
-			pushi    85
-			pushi    0
-			lofsa    pLight
-			send     42
-			pushi    #view
-			pushi    1
-			pushi    268
-			pushi    6
-			pushi    1
-			pushi    0
-			pushi    7
-			pushi    1
-			pushi    2
-			pushi    193
-			pushi    2
-			pushi    48
-			pushi    144
-			pushi    66
-			pushi    1
-			pushi    10
-			pushi    197
-			pushi    1
-			pushi    0
-			pushi    85
-			pushi    0
-			pushi    132
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    Prop
-			send     4
-			sal      local10
-			send     46
-			pushi    #view
-			pushi    1
-			pushi    30
-			pushi    193
-			pushi    2
-			pushi    73
-			pushi    164
-			pushi    66
-			pushi    1
-			pushi    12
-			pushi    121
-			pushi    1
-			class    Walk
-			push    
-			pushi    85
-			pushi    0
-			pushi    132
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    Actor
-			send     4
-			sal      local11
-			send     34
-			pushi    #view
-			pushi    1
-			pushi    51
-			pushi    196
-			pushi    1
-			pushi    8
-			pushi    157
-			pushi    1
-			pushi    255
-			pushi    193
-			pushi    2
-			pushi    82
-			pushi    151
-			pushi    66
-			pushi    1
-			pushi    12
-			pushi    197
-			pushi    1
-			pushi    0
-			pushi    85
-			pushi    0
-			pushi    132
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    Prop
-			send     4
-			sal      local12
-			send     46
-			pushi    1
-			pushi    14
-			callb    Btst,  2
-			bnt      code_04d8
-			pushi    #stopUpd
-			pushi    0
-			lal      lightPosn
-			send     4
-			pushi    #stopUpd
-			pushi    0
-			pushi    198
-			pushi    0
-			lal      local12
-			send     8
-			pushi    #stopUpd
-			pushi    0
-			pushi    198
-			pushi    0
-			lal      local10
-			send     8
-			pushi    #stopUpd
-			pushi    0
-			pushi    198
-			pushi    0
-			lal      local11
-			send     8
-			pushi    #setScript
-			pushi    1
-			pushi    0
-			pToa     client
-			send     6
-			ret     
-code_04d8:
-			pushi    #posn
-			pushi    2
-			pushi    65476
-			pushi    157
-			lal      lightPosn
-			send     8
-			pushi    #cue
-			pushi    0
-			self     4
-			jmp      code_06c3
-code_04ed:
-			dup     
-			ldi      1
-			eq?     
-			bnt      code_0512
-			pushi    #posn
-			pushi    2
-			pushi    65476
-			pushi    157
-			pushi    208
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    64
-			pushi    157
-			pushSelf
-			lal      lightPosn
-			send     20
-			jmp      code_06c3
-code_0512:
-			dup     
-			ldi      2
-			eq?     
-			bnt      code_0530
-			pushi    #show
-			pushi    0
-			pushi    157
-			pushi    1
-			pushi    0
-			pushi    121
-			pushi    2
-			class    EndLoop
-			push    
-			pushSelf
-			lal      local12
-			send     18
-			jmp      code_06c3
-code_0530:
-			dup     
-			ldi      3
-			eq?     
-			bnt      code_0556
-			pushi    #stopUpd
-			pushi    0
-			lal      local12
-			send     4
-			pushi    #show
-			pushi    0
-			lal      local11
-			send     4
-			pushi    #show
-			pushi    0
-			lal      local10
-			send     4
-			ldi      1
-			aTop     cycles
-			jmp      code_06c3
-code_0556:
-			dup     
-			ldi      4
-			eq?     
-			bnt      code_0574
-			pushi    #stopUpd
-			pushi    0
-			lal      local10
-			send     4
-			pushi    #stopUpd
-			pushi    0
-			lal      lightPosn
-			send     4
-			ldi      3
-			aTop     seconds
-			jmp      code_06c3
-code_0574:
-			dup     
-			ldi      5
-			eq?     
-			bnt      code_05a7
-			pushi    #view
-			pushi    1
-			pushi    268
-			pushi    196
-			pushi    1
-			pushi    2
-			pushi    193
-			pushi    2
-			pushi    73
-			pushi    164
-			pushi    159
-			pushi    1
-			pushi    1
-			pushi    157
-			pushi    1
-			pushi    0
-			pushi    121
-			pushi    2
-			class    EndLoop
-			push    
-			pushSelf
-			lal      local11
-			send     40
-			jmp      code_06c3
-code_05a7:
-			dup     
-			ldi      6
-			eq?     
-			bnt      code_0618
-			pushi    #view
-			pushi    1
-			pushi    268
-			pushi    196
-			pushi    1
-			pushi    3
-			pushi    159
-			pushi    1
-			pushi    1
-			pushi    157
-			pushi    1
-			pushi    0
-			pushi    121
-			pushi    1
-			class    EndLoop
-			push    
-			lal      local11
-			send     30
-			pushi    #view
-			pushi    1
-			pushi    268
-			pushi    196
-			pushi    1
-			pushi    4
-			pushi    66
-			pushi    1
-			pushi    14
-			pushi    217
-			pushi    2
-			pushi    10
-			dup     
-			pushi    121
-			pushi    1
-			class    Forward
-			push    
-			pushi    197
-			pushi    0
-			pushi    212
-			pushi    1
-			pushi    65535
-			pushi    193
-			pushi    2
-			pushi    75
-			pushi    140
-			pushi    208
-			pushi    4
-			class    MoveTo
-			push    
-			pushi    225
-			pushi    111
-			pushSelf
-			pushi    85
-			pushi    0
-			lofsa    gasBomb
-			send     66
-			jmp      code_06c3
-code_0618:
-			dup     
-			ldi      7
-			eq?     
-			bnt      code_06b4
-			pushi    #dispose
-			pushi    0
-			lofsa    gasBomb
-			send     4
-			pushi    #view
-			pushi    1
-			pushi    30
-			pushi    193
-			pushi    2
-			pushi    73
-			pushi    164
-			pushi    196
-			pushi    1
-			pushi    0
-			pushi    157
-			pushi    1
-			pushi    0
-			pushi    159
-			pushi    1
-			pushi    0
-			lal      local11
-			send     32
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    196
-			pushi    1
-			pushi    0
-			pushi    157
-			pushi    1
-			pushi    1
-			pushi    66
-			pushi    1
-			pushi    9
-			pushi    193
-			pushi    2
-			pushi    229
-			pushi    121
-			pushi    85
-			pushi    0
-			pushi    194
-			pushi    0
-			pushi    199
-			pushi    0
-			pushi    #new
-			pushi    0
-			class    View
-			send     4
-			send     44
-			pushi    #view
-			pushi    1
-			pushi    251
-			pushi    196
-			pushi    1
-			pushi    8
-			pushi    157
-			pushi    1
-			pushi    0
-			pushi    193
-			pushi    2
-			pushi    229
-			pushi    115
-			pushi    66
-			pushi    1
-			pushi    10
-			pushi    85
-			pushi    0
-			pushi    121
-			pushi    1
-			class    Forward
-			push    
-			pushi    #new
-			pushi    0
-			class    Prop
-			send     4
-			sal      local9
-			send     42
-			ldi      3
-			aTop     seconds
-			jmp      code_06c3
-code_06b4:
-			dup     
-			pushi    #newRoom
-			pushi    1
-			pushi    22
-			lag      curRoom
-			send     6
-			eq?     
-			bnt      code_06c3
-code_06c3:
-			toss    
-			ret     
+		(switch (= state newState)
+			(0
+				((= pCar (Actor new:))
+					view: 54
+					setLoop: 1
+					setCel: 3
+					posn: 64 156
+					setPri: 11
+					ignoreControl: -1
+					init:
+				)
+				(pLight
+					view: 54
+					setLoop: 3
+					setCel: 0
+					setPri: 11
+					setCycle: Forward
+					ignoreActors:
+					doit:
+					init:
+				)
+				((= swatGuy1 (Prop new:))
+					view: 268
+					loop: 0
+					cel: 2
+					posn: 48 144
+					setPri: 10
+					ignoreActors: 0
+					init:
+					hide:
+				)
+				((= swatGuy2 (Actor new:))
+					view: 30
+					posn: 73 164
+					setPri: 12
+					setCycle: Walk
+					init:
+					hide:
+				)
+				((= pCarDoor (Prop new:))
+					view: 51
+					setLoop: 8
+					setCel: 255
+					posn: 82 151
+					setPri: 12
+					ignoreActors: 0
+					init:
+					hide:
+				)
+				(if (Btst 14)
+					(pCar stopUpd:)
+					(pCarDoor stopUpd: show:)
+					(swatGuy1 stopUpd: show:)
+					(swatGuy2 stopUpd: show:)
+					(client setScript: 0)
+					(return)
+				)
+				(pCar posn: -60 157)
+				(self cue:)
+			)
+			(1
+				(pCar posn: -60 157 setMotion: MoveTo 64 157 self)
+			)
+			(2
+				(pCarDoor show: setCel: 0 setCycle: EndLoop self)
+			)
+			(3
+				(pCarDoor stopUpd:)
+				(swatGuy2 show:)
+				(swatGuy1 show:)
+				(= cycles 1)
+			)
+			(4
+				(swatGuy1 stopUpd:)
+				(pCar stopUpd:)
+				(= seconds 3)
+			)
+			(5
+				(swatGuy2
+					view: 268
+					setLoop: 2
+					posn: 73 164
+					cycleSpeed: 1
+					setCel: 0
+					setCycle: EndLoop self
+				)
+			)
+			(6
+				(swatGuy2
+					view: 268
+					setLoop: 3
+					cycleSpeed: 1
+					setCel: 0
+					setCycle: EndLoop
+				)
+				(gasBomb
+					view: 268
+					setLoop: 4
+					setPri: 14
+					setStep: 10 10
+					setCycle: Forward
+					ignoreActors:
+					ignoreControl: -1
+					posn: 75 140
+					setMotion: MoveTo 225 111 self
+					init:
+				)
+			)
+			(7
+				(gasBomb dispose:)
+				(swatGuy2
+					view: 30
+					posn: 73 164
+					setLoop: 0
+					setCel: 0
+					cycleSpeed: 0
+				)
+				((View new:)
+					view: 251
+					setLoop: 0
+					setCel: 1
+					setPri: 9
+					posn: 229 121
+					init:
+					stopUpd:
+					addToPic:
+				)
+				((= smoke (Prop new:))
+					view: 251
+					setLoop: 8
+					setCel: 0
+					posn: 229 115
+					setPri: 10
+					init:
+					setCycle: Forward
+				)
+				(= seconds 3)
+			)
+			(8
+				(curRoom newRoom: 22)
+			)
 		)
 	)
 )
