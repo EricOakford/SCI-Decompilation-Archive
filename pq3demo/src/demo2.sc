@@ -23,7 +23,7 @@
 		(HandsOff)
 		(LoadMany PICTURE 100 98 3 2 82)
 		(LoadMany VIEW 850 851 105)
-		(music number: 50 setLoop: -1 play:)
+		(theMusic number: 50 setLoop: -1 play:)
 		(super init:)
 		(switch prevRoomNum
 			(120
@@ -47,8 +47,6 @@
 )
 
 (instance cycleScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -68,8 +66,6 @@
 )
 
 (instance rmScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -78,7 +74,7 @@
 				(= cycles 1)
 			)
 			(1
-				(if (< (music prevSignal?) 10) (-- state))
+				(if (< (theMusic prevSignal?) 10) (-- state))
 				(= cycles 1)
 			)
 			(2
@@ -86,7 +82,7 @@
 				(= cycles 1)
 			)
 			(3
-				(if (< (music prevSignal?) 20) (-- state))
+				(if (< (theMusic prevSignal?) 20) (-- state))
 				(= cycles 1)
 			)
 			(4 (III show:) (= seconds 7))
@@ -131,15 +127,13 @@
 			)
 			(15 (head1 setCycle: EndLoop self))
 			(16 (= seconds 6))
-			(17 (music fade: self))
+			(17 (theMusic fade: self))
 			(18 (curRoom newRoom: 122))
 		)
 	)
 )
 
 (instance demoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -152,7 +146,7 @@
 				(curRoom style: WIPERIGHT drawPic: 1 overlay: 82)
 				(= seconds 10)
 			)
-			(2 (music fade: self))
+			(2 (theMusic fade: self))
 			(3 (curRoom newRoom: 120))
 		)
 	)
@@ -169,9 +163,7 @@
 	)
 )
 
-(instance sfx1 of Sound
-	(properties)
-)
+(instance sfx1 of Sound)
 
 (instance head1 of Prop
 	(properties

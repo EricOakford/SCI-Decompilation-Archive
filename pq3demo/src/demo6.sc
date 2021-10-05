@@ -14,17 +14,17 @@
 )
 
 (local
-	mD1
-	mD2
+	saveBits
+	saveBits2
 )
 (procedure (JimSays theString &tmp [temp0 3])
-	(if mD1
-		(Display 125 0 p_restore mD1)
-		(Display 125 0 p_restore mD2)
-		(= mD1 0)
+	(if saveBits
+		(Display 125 0 p_restore saveBits)
+		(Display 125 0 p_restore saveBits2)
+		(= saveBits 0)
 	)
 	(if theString
-		(= mD2
+		(= saveBits2
 			(Display theString
 				p_width 300
 				p_at 10 5
@@ -34,7 +34,7 @@
 				p_save
 			)
 		)
-		(= mD1
+		(= saveBits
 			(Display theString
 				p_width 300
 				p_at 10 5
@@ -47,9 +47,7 @@
 	)
 )
 
-(instance fakeEgo of Actor
-	(properties)
-)
+(instance fakeEgo of Actor)
 
 (instance demo6 of Room
 	(properties
@@ -70,11 +68,11 @@
 		(super init:)
 		(LoadMany FONT 9 11)
 		(HandsOff)
-		(Load rsSOUND 558)
+		(Load SOUND 558)
 		(addToPics add: pCar_a pCar2 doit:)
 		(frontDoor init:)
 		(halfTrack init:)
-		(music number: 551 vol: 127 loop: -1 playBed:)
+		(theMusic number: 551 vol: 127 loop: -1 playBed:)
 		(topLights setCycle: Forward init:)
 		(rearLights setCycle: Forward init:)
 		(dog setCycle: Forward init:)
@@ -82,21 +80,23 @@
 	)
 	
 	(method (doit &tmp temp0)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((event claimed?) (return))
 			(script (return))
-			(else (event claimed: TRUE))
+			(else
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
 
 (instance demoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 3))
@@ -149,14 +149,14 @@
 				(JimSays 0)
 				(sfx2 fade: self)
 			)
-			(9 (curRoom newRoom: 126))
+			(9
+				(curRoom newRoom: 126)
+			)
 		)
 	)
 )
 
 (instance jiggle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

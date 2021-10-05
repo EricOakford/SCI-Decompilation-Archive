@@ -12,13 +12,16 @@
 )
 
 (local
-	mD
+	saveBits
 	local1
 )
 (procedure (JimSays theString &tmp [temp0 3])
-	(if mD (Display 123 0 p_restore mD) (= mD 0))
+	(if saveBits
+		(Display 123 0 p_restore saveBits)
+		(= saveBits 0)
+	)
 	(if theString
-		(= mD
+		(= saveBits
 			(Display theString
 				p_width 130
 				p_at 10 5
@@ -43,26 +46,28 @@
 		(redLine init:)
 		(wheel setCycle: Forward init:)
 		(indicator setCycle: Forward init:)
-		(music number: 252 loop: 1 play:)
+		(theMusic number: 252 loop: 1 play:)
 		(self setScript: demoScript)
 	)
 	
 	(method (doit &tmp temp0)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((event claimed?) (return))
 			(script (return))
-			(else (event claimed: TRUE))
+			(else
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
 
 (instance demoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -84,9 +89,11 @@
 			)
 			(2
 				(JimSays 0)
-				(music client: self fade: self)
+				(theMusic client: self fade: self)
 			)
-			(3 (curRoom newRoom: 124))
+			(3
+				(curRoom newRoom: 124)
+			)
 		)
 	)
 )

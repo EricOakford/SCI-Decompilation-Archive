@@ -13,12 +13,15 @@
 )
 
 (local
-	mD
+	saveBits
 )
 (procedure (JimSays theString &tmp [temp0 3])
-	(if mD (Display 122 0 p_restore mD) (= mD 0))
+	(if saveBits
+		(Display 122 0 p_restore saveBits)
+		(= saveBits 0)
+	)
 	(if theString
-		(= mD
+		(= saveBits
 			(Display theString
 				p_width 130
 				p_at 10 5
@@ -45,7 +48,9 @@
 		(JRHand setScript: (armScript new:) init:)
 		(JEye setScript: (eyeScript new:) init:)
 		(switch prevRoomNum
-			(121 (self setScript: jimTalk))
+			(121
+				(self setScript: jimTalk)
+			)
 			(else 
 				(self setScript: demoScript)
 			)
@@ -53,7 +58,9 @@
 	)
 	
 	(method (doit &tmp temp0)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (dispose)
@@ -65,18 +72,18 @@
 		(cond 
 			((event claimed?) (return))
 			(script (return))
-			(else (event claimed: TRUE))
+			(else
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
 
 (instance jimTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(music number: 51 loop: 1 play:)
+				(theMusic number: 51 loop: 1 play:)
 				(= cycles 2)
 			)
 			(1
@@ -118,31 +125,29 @@
 				(JRHand setScript: 0)
 				(JLHand dispose:)
 				(JEye dispose:)
-				(music fade: self)
+				(theMusic fade: self)
 			)
 			(7
 				(curRoom drawPic: 98)
 				(cast eachElementDo: #dispose)
 				(= cycles 5)
 			)
-			(8 (curRoom newRoom: 123))
+			(8
+				(curRoom newRoom: 123)
+			)
 		)
 	)
 )
 
 (instance demoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(music number: 51 loop: 1 play:)
+				(theMusic number: 51 loop: 1 play:)
 				(= cycles 2)
 			)
 			(1
-				(JimSays
-					{Is the difference between living and dying.}
-				)
+				(JimSays {Is the difference between living and dying.})
 				(JHead setCycle: RandCycle)
 				(= seconds 5)
 			)
@@ -179,17 +184,19 @@
 				(cast eachElementDo: #dispose)
 				(= cycles 5)
 			)
-			(7 (curRoom newRoom: 121))
+			(7
+				(curRoom newRoom: 121)
+			)
 		)
 	)
 )
 
 (instance eyeScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: BegLoop self))
+			(0
+				(client setCycle: BegLoop self)
+			)
 			(1
 				(= seconds (Random 3 10))
 				(= state -1)
@@ -199,8 +206,6 @@
 )
 
 (instance armScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

@@ -15,17 +15,17 @@
 )
 
 (local
-	mD1
-	mD2
+	saveBits
+	saveBits2
 )
 (procedure (PersonSays theString &tmp [temp0 3])
-	(if mD1
-		(Display 124 0 p_restore mD1)
-		(Display 124 0 p_restore mD2)
-		(= mD1 0)
+	(if saveBits
+		(Display 124 0 p_restore saveBits)
+		(Display 124 0 p_restore saveBits2)
+		(= saveBits 0)
 	)
 	(if theString
-		(= mD2
+		(= saveBits2
 			(Display theString
 				p_width 130
 				p_at 10 5
@@ -35,7 +35,7 @@
 				p_save
 			)
 		)
-		(= mD1
+		(= saveBits
 			(Display theString
 				p_width 130
 				p_at 10 5
@@ -67,7 +67,9 @@
 	)
 	
 	(method (doit &tmp temp0)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (dispose)
@@ -79,17 +81,19 @@
 		(cond 
 			((event claimed?) (return))
 			(script (return))
-			(else (event claimed: TRUE))
+			(else
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
 
 (instance demoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 3))
+			(0
+				(= cycles 3)
+			)
 			(1
 				(sfx2 number: 298 loop: 1 play:)
 				(pCar setMotion: MoveTo 96 207 self)
@@ -122,7 +126,7 @@
 				)
 			)
 			(5
-				(music
+				(theMusic
 					number: 291
 					vol: 40
 					loop: -1
@@ -154,7 +158,7 @@
 			(9
 				(suspectMouth setCycle: 0 cel: 0)
 				(PersonSays 0)
-				(music fade: self)
+				(theMusic fade: self)
 				(sfx1 fade: self)
 			)
 			(10 (curRoom newRoom: 125))
@@ -163,8 +167,6 @@
 )
 
 (instance grooveScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -293,7 +295,9 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (< (Random 0 100) 3) (self setCycle: BegLoop))
+		(if (< (Random 0 100) 3)
+			(self setCycle: BegLoop)
+		)
 	)
 )
 

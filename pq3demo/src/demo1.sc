@@ -27,7 +27,7 @@
 		(HandsOff)
 		(theIconBar disable:)
 		(storeWindow init: stopUpd:)
-		(music number: 300 loop: -1 play:)
+		(theMusic number: 300 loop: -1 play:)
 		(self setScript: demoScript)
 	)
 	
@@ -50,8 +50,6 @@
 )
 
 (instance demoScript of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (or (== state 6) (== state 9))
@@ -82,7 +80,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 50))
+			(0
+				(= cycles 50)
+			)
 			(1
 				(sfx1 number: 303 loop: 1 play:)
 				(storeWindow
@@ -111,7 +111,9 @@
 				(marie loop: 6 cel: 0 setCycle: CycleTo 9 1)
 				(= seconds 3)
 			)
-			(5 (marie setCycle: EndLoop self))
+			(5
+				(marie setCycle: EndLoop self)
+			)
 			(6
 				(storeWindow dispose:)
 				(marie
@@ -146,7 +148,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(11 (= seconds 2))
+			(11
+				(= seconds 2)
+			)
 			(12
 				(curRoom drawPic: 66)
 				(marieHead view: 368 loop: 0 cel: 0 posn: 174 82 init:)
@@ -179,7 +183,9 @@
 					init:
 				)
 			)
-			(16 (= seconds 2))
+			(16
+				(= seconds 2)
+			)
 			(17
 				(cigarette setMotion: MoveTo 33 96 self)
 			)
@@ -231,7 +237,7 @@
 			(26
 				(bandit1 cycleSpeed: 8 setCycle: EndLoop self)
 				(sfx3 number: 301 vol: 127 loop: 1 play:)
-				(music stop:)
+				(theMusic stop:)
 			)
 			(27
 				(bandit2
@@ -330,7 +336,7 @@
 		view 370
 		loop 1
 		priority 3
-		signal $0810
+		signal (| fixedLoop fixPriOn)
 	)
 )
 

@@ -142,8 +142,8 @@
 		global97
 		global98
 	lastSysGlobal
-	music
-	dongle
+	theMusic
+	gameCode
 	numColors
 	numVoices
 	startingRoom
@@ -157,8 +157,8 @@
 	global112
 	global113
 	global114
-	pMouseX =  -1
-	pMouseY =  -1
+	saveCursorX =  -1
+	saveCursorY =  -1
 	oldSysTime
 	mapTextColor
 	myTextColor
@@ -249,8 +249,8 @@
 	)
 	(theIconBar curIcon: oldCurIcon)
 	(if (not (HaveMouse))
-		(= pMouseX ((User curEvent?) x?))
-		(= pMouseY ((User curEvent?) y?))
+		(= saveCursorX ((User curEvent?) x?))
+		(= saveCursorY ((User curEvent?) y?))
 		(theGame setCursor: waitCursor TRUE 304 172)
 	else
 		(theGame setCursor: waitCursor TRUE)
@@ -269,14 +269,14 @@
 		ICON_INVENTORY
 		ICON_NOTEBOOK
 	)
-	(if (and (not (HaveMouse)) (!= pMouseX -1))
+	(if (and (not (HaveMouse)) (!= saveCursorX -1))
 		(theGame
-			setCursor: ((theIconBar curIcon?) cursor?) TRUE pMouseX pMouseY
+			setCursor: ((theIconBar curIcon?) cursor?) TRUE saveCursorX saveCursorY
 		)
 	else
 		(theGame setCursor: ((theIconBar curIcon?) cursor?))
 	)
-	(= pMouseX (= pMouseY -1))
+	(= saveCursorX (= saveCursorY -1))
 )
 
 (procedure (HaveMem howMuch)
@@ -337,31 +337,37 @@
 (procedure (proc0_13)
 )
 
-(procedure (Face actor1 actor2 both whoToCue &tmp ang1To2 theX theY temp3 temp4)
-	(= temp3 0)
+(procedure (Face actor1 actor2 both whoToCue &tmp ang1To2 theX theY obj temp4)
+	(= obj 0)
 	(= temp4 0)
 	(if (IsObject actor2)
 		(= theX (actor2 x?))
 		(= theY (actor2 y?))
 		(if (> argc 2)
 			(if (IsObject both)
-				(= temp3 both)
+				(= obj both)
 			else
 				(= temp4 both)
 			)
-			(if (== argc 4) (= temp3 whoToCue))
+			(if (== argc 4)
+				(= obj whoToCue)
+			)
 		)
 	else
 		(= theX actor2)
 		(= theY both)
-		(if (== argc 4) (= temp3 whoToCue))
+		(if (== argc 4)
+			(= obj whoToCue)
+		)
 	)
-	(if temp4 (Face actor2 actor1))
+	(if temp4
+		(Face actor2 actor1)
+	)
 	(= ang1To2
 		(GetAngle (actor1 x?) (actor1 y?) theX theY)
 	)
 	(actor1
-		setHeading: ang1To2 (if (IsObject temp3) temp3 else 0)
+		setHeading: ang1To2 (if (IsObject obj) obj else 0)
 	)
 )
 
@@ -379,7 +385,7 @@
 	(return (if (Btst fIsVGA) vga else ega))
 )
 
-(procedure (manageFlags flagEnum param2 &tmp temp0 temp1 temp2 temp3)
+(procedure (manageFlags what flagEnum &tmp temp0 temp1 temp2 temp3)
 	(asm
 		ldi      0
 		sat      temp0
@@ -391,7 +397,7 @@ code_0a76:
 		lt?     
 		bnt      code_0aeb
 		lat      temp0
-		lapi     param2
+		lapi     flagEnum
 		sat      temp1
 		push    
 		ldi      16
@@ -403,7 +409,7 @@ code_0a76:
 		mod     
 		shl     
 		sat      temp3
-		lsp      flagEnum
+		lsp      what
 		dup     
 		ldi      1
 		eq?     
@@ -493,8 +499,6 @@ code_0aeb:
 )
 
 (instance stopGroop of GradualLooper
-	(properties)
-	
 	(method (doit)
 		(if (== (ego loop?) (- (NumLoops ego) 1))
 			(ego loop: (ego cel?))
@@ -503,9 +507,7 @@ code_0aeb:
 	)
 )
 
-(instance longSong of Sound
-	(properties)
-)
+(instance longSong of Sound)
 
 (instance redX of View
 	(properties
@@ -604,7 +606,7 @@ code_0aeb:
 			botBordHgt: 25
 		)
 		(= numVoices (DoSound NumVoices))
-		((= music longSong) owner: self priority: 15 init:)
+		((= theMusic longSong) owner: self priority: 15 init:)
 		((= theIconBar IconBar)
 			add: icon0 icon1 icon2 icon3 icon4 icon5 icon8 icon7 icon9 icon6
 			eachElementDo: #init
@@ -614,20 +616,48 @@ code_0aeb:
 			useIconItem: icon4
 			helpIconItem: icon9
 		)
-		(icon5 message: (if (HaveMouse) 3840 else 9))
+		(icon5 message: (if (HaveMouse) SHIFTTAB else TAB))
 		(theIconBar disable: ICON_HELP)
 		(GameControls
 			window: gcWin
 			add:
 				iconOk
-				(detailSlider theObj: self selector: #detailLevel yourself:)
-				(volumeSlider theObj: self selector: #masterVolume yourself:)
+				(detailSlider
+					theObj: self
+					selector: #detailLevel
+					yourself:
+				)
+				(volumeSlider
+					theObj: self
+					selector: #masterVolume
+					yourself:
+				)
 				speedSlider
-				(iconSave theObj: self selector: #save yourself:)
-				(iconRestore theObj: self selector: #restore yourself:)
-				(iconRestart theObj: self selector: #restart yourself:)
-				(iconQuit theObj: self selector: #quitGame yourself:)
-				(iconAbout theObj: self selector: #doit yourself:)
+				(iconSave
+					theObj: self
+					selector: #save
+					yourself:
+				)
+				(iconRestore
+					theObj: self
+					selector: #restore
+					yourself:
+				)
+				(iconRestart
+					theObj: self
+					selector: #restart
+					yourself:
+				)
+				(iconQuit
+					theObj: self
+					selector: #quitGame
+					yourself:
+				)
+				(iconAbout
+					theObj: self
+					selector: #doit
+					yourself:
+				)
 				iconHelp
 			helpIconItem: iconHelp
 			curIcon: iconRestore
@@ -646,7 +676,9 @@ code_0aeb:
 				(= currentSeconds 0)
 				(if (> (++ currentMinutes) 59)
 					(= currentMinutes 0)
-					(if (> (++ currentHour) 12) (= currentHour 1))
+					(if (> (++ currentHour) 12)
+						(= currentHour 1)
+					)
 				)
 			)
 		)
@@ -683,13 +715,6 @@ code_0aeb:
 			(switch (event type?)
 				(keyDown
 					(switch (event message?)
-						;EO: Added these here to test the save/restore interface
-;;;						(`#5
-;;;							(theGame save:)
-;;;						)
-;;;						(`#7
-;;;							(theGame restore:)
-;;;						)
 						(`^q
 							(theGame quitGame:)
 							(event claimed: TRUE)
@@ -707,7 +732,9 @@ code_0aeb:
 	)
 	
 	(method (pragmaFail)
-		(if (User canInput:) (VerbFail))
+		(if (User canInput:)
+			(VerbFail)
+		)
 	)
 )
 
@@ -894,7 +921,9 @@ code_0aeb:
 	)
 	
 	(method (select)
-		(if (super select: &rest) (Inventory showSelf: ego))
+		(if (super select: &rest)
+			(Inventory showSelf: ego)
+		)
 	)
 )
 
@@ -963,8 +992,6 @@ code_0aeb:
 )
 
 (instance DoVerbCode of Code
-	(properties)
-	
 	(method (doit theVerb theObj &tmp objDesc)
 		(= objDesc (theObj description?))
 		(switch theVerb
@@ -977,14 +1004,14 @@ code_0aeb:
 					)
 				)
 			)
-			(else  (VerbFail))
+			(else
+				(VerbFail)
+			)
 		)
 	)
 )
 
 (instance FtrInit of Code
-	(properties)
-	
 	(method (doit theObj)
 		(if (== (theObj sightAngle?) ftrDefault)
 			(theObj sightAngle: 90)
@@ -1002,8 +1029,6 @@ code_0aeb:
 )
 
 (instance gcWin of BorderWindow
-	(properties)
-	
 	(method (open &tmp
 			theBevelWid t l r b theColor theMaps bottomColor topColor leftColor rightColor
 			thePri i [scoreBuf 15] [scoreRect 4])

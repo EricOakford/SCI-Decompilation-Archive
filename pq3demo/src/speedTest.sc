@@ -17,9 +17,7 @@
 	versionFile
 	fastSpeed
 )
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance speedTest of Room
 	(properties
@@ -52,9 +50,10 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== (++ machineSpeed) 1) (= doneTime (+ 60 (GetTime))))
-		(if
-		(and (u< doneTime (GetTime)) (not (self script?)))
+		(if (== (++ machineSpeed) 1)
+			(= doneTime (+ 60 (GetTime)))
+		)
+		(if (and (u< doneTime (GetTime)) (not (self script?)))
 			(if (< machineSpeed fastSpeed)
 				(= howFast slow)
 				(theGame detailLevel: 1)
@@ -71,8 +70,6 @@
 )
 
 (instance speedScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
 			(0
@@ -80,8 +77,13 @@
 				(fred setMotion: 0)
 				(= cycles 1)
 			)
-			(1 (= speed 2) (= cycles 1))
-			(2 (curRoom newRoom: 120))
+			(1
+				(= speed 2)
+				(= cycles 1)
+			)
+			(2
+				(curRoom newRoom: 120)
+			)
 		)
 	)
 )

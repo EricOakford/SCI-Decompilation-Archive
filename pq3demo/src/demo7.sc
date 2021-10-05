@@ -14,17 +14,17 @@
 )
 
 (local
-	mD1
-	mD2
+	saveBits
+	saveBits2
 )
 (procedure (JimSays theString &tmp [temp0 3])
-	(if mD1
-		(Display 126 0 p_restore mD1)
-		(Display 126 0 p_restore mD2)
-		(= mD1 0)
+	(if saveBits
+		(Display 126 0 p_restore saveBits)
+		(Display 126 0 p_restore saveBits2)
+		(= saveBits 0)
 	)
 	(if theString
-		(= mD2
+		(= saveBits2
 			(Display theString
 				p_width 300
 				p_at 10 5
@@ -34,7 +34,7 @@
 				p_save
 			)
 		)
-		(= mD1
+		(= saveBits
 			(Display theString
 				p_width 300
 				p_at 10 5
@@ -47,9 +47,7 @@
 	)
 )
 
-(instance fakeEgo of Actor
-	(properties)
-)
+(instance fakeEgo of Actor)
 
 (instance demo7 of Room
 	(properties
@@ -67,32 +65,40 @@
 			loop: 0
 			setStep: 3 2
 			posn: 88 83
-			illegalBits: -32768
+			illegalBits: cWHITE
 		)
 		(addToPics add: fireplace doit:)
 		(dust init:)
 		(tv setCycle: Forward init:)
 		(self setScript: demoScript)
 		(LoadMany SOUND 937 940 566)
-		(sfx3 number: 565 loop: -1 vol: 20 play: fade: 127 5 10 0)
+		(sfx3
+			number: 565
+			loop: -1
+			vol: 20
+			play:
+			fade: 127 5 10 0
+		)
 	)
 	
 	(method (doit &tmp temp0)
-		(if script (script doit:))
+		(if script
+			(script doit:)
+		)
 	)
 	
 	(method (handleEvent event)
 		(cond 
 			((event claimed?) (return))
 			(script (return))
-			(else (event claimed: TRUE))
+			(else
+				(event claimed: TRUE)
+			)
 		)
 	)
 )
 
 (instance demoScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -103,7 +109,7 @@
 			)
 			(1
 				(fakeEgo setCycle: CycleTo 3 1 self init:)
-				(music fade: 0 5 10 1)
+				(theMusic fade: 0 5 10 1)
 				(dust dispose:)
 			)
 			(2
@@ -134,7 +140,7 @@
 					setCycle: Walk
 					setMotion: MoveTo 95 96 self
 				)
-				(music fade:)
+				(theMusic fade:)
 			)
 			(7
 				(LoadMany SOUND 566 940)
