@@ -16,8 +16,8 @@
 (local
 	i
 	[ripple 2]
-	[rippleX 2] = [29 40]
-	[rippleY 2] = [40 84]
+	rippleX = [29 40]
+	rippleY = [40 84]
 )
 (instance rm7 of Room
 	(properties
@@ -238,7 +238,7 @@ code_0181:
 			ldi      1
 code_0183:
 			lt?     
-			bnt      code_01e4
+			;bnt      code_01e4
 			pushi    5
 			pushi    #superClass
 			pushi    207

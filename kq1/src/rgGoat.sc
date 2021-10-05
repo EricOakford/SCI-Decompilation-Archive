@@ -175,7 +175,7 @@
 		)
 		(cond 
 			((Said 'attack,kick/goat')
-				(if roomWithDeadGoat
+				(if deadGoatRoom
 					(Print 600 4)
 				else
 					(Print 600 5)
@@ -213,7 +213,7 @@
 			)
 			((Said 'stab,kill/goat')
 				(cond 
-					(roomWithDeadGoat
+					(deadGoatRoom
 						(Print 600 12)
 					)
 					((curRoom script?)
@@ -330,7 +330,7 @@
 			)
 			(1
 				(goatKill stop:)
-				(= roomWithDeadGoat curRoomNum)
+				(= deadGoatRoom curRoomNum)
 				(= deadGoatX (theGoat x?))
 				(= deadGoatY (theGoat y?))
 				(= deadGoatLoop (theGoat loop?))

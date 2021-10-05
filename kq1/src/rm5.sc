@@ -26,7 +26,9 @@
 	)
 	
 	(method (init)
-		(if (>= howFast 1) (LoadMany VIEW 302 700))
+		(if (>= howFast 1)
+			(LoadMany VIEW 302 700)
+		)
 		(self style:
 			(switch prevRoomNum
 				(north WIPEDOWN)
@@ -190,8 +192,6 @@
 )
 
 (instance fishJump of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -269,8 +269,6 @@
 )
 
 (instance climbHill of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -293,12 +291,9 @@
 )
 
 (instance slipIntoWater of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
-		(if
-		(and (== state 0) (& (ego onControl: origin) cBLUE))
+		(if (and (== state 0) (& (ego onControl: origin) cBLUE))
 			(self changeState: 1)
 		)
 	)

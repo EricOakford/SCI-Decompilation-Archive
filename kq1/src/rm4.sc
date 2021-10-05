@@ -104,7 +104,9 @@
 			)
 		)
 		(cond 
-			((and script (not egoInWater)) (script doit:))
+			((and script (not egoInWater))
+				(script doit:)
+			)
 			((and (not (ego script?)) (& (ego onControl: origin) cBROWN))
 				(ego setScript: climbBackHill)
 			)
@@ -254,8 +256,6 @@
 )
 
 (instance getPebbles of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -291,13 +291,11 @@
 )
 
 (instance climbHill of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(if (not (Btst 44))
+				(if (not (Btst fClimbingHill))
 					(ego
 						illegalBits: 0
 						setLoop: 3
@@ -331,8 +329,6 @@
 )
 
 (instance climbBackHill of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -355,8 +351,6 @@
 )
 
 (instance slipIntoWater of Script
-	(properties)
-	
 	(method (doit)
 		(super doit: &rest)
 		(if (== state 0)
@@ -402,8 +396,6 @@
 )
 
 (instance fishJump of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

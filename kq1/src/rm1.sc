@@ -21,8 +21,8 @@
 (local
 	i
 	[ripple 3]
-	[rippleX 3] = [51 170 288]
-	[rippleY 3] = [155 156 158]
+	rippleX = [51 170 288]
+	rippleY = [155 156 158]
 )
 (instance rm1 of Room
 	(properties
@@ -36,7 +36,7 @@
 	(method (init)
 		(LoadMany VIEW 201 202 267 186 0)
 		(LoadMany SOUND 78 79 80 11)
-		(self keep: 0)
+		(self keep: FALSE)
 		(self style:
 				(switch prevRoomNum
 					(north WIPEDOWN)
@@ -51,8 +51,7 @@
 		)
 		(gate illegalBits: 0 ignoreHorizon: setPri: 3 stopUpd:)
 		(self setRegions: MOAT)
-		(= i 0)
-		(while (< i 3)
+		(for ((= i 0)) (< i 3) ((++ i))
 			((= [ripple i] (Clone Ripple))
 				view: 202
 				cycleSpeed: 1
@@ -71,7 +70,6 @@
 			(if (>= howFast 1)
 				([ripple i] setCycle: Forward)
 			)
-			(++ i)
 		)
 		(super init:)
 		(if
@@ -128,296 +126,85 @@
 	)
 	
 	(method (handleEvent event)
-		(asm
-			pushi    #claimed
-			pushi    0
-			lap      event
-			send     4
-			bnt      code_02bb
-			ret     
-			jmp      code_04c6
-code_02bb:
-			pushi    #handleEvent
-			pushi    1
-			lsp      event
-			super    Room,  6
-			bnt      code_02ca
-			ret     
-			jmp      code_04c6
-code_02ca:
-			pushi    1
-			lofsa    'open,open/door,gate'
-			push    
-			callk    Said,  2
-			bnt      code_035b
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      86
-			gt?     
-			bnt      code_02ed
-			pushi    2
-			pushi    1
-			pushi    0
-			calle    Print,  4
-			jmp      code_04c6
-code_02ed:
-			pushi    1
-			pushi    2
-			callb    Btst,  2
-			bnt      code_02ff
-			pushi    2
-			pushi    1
-			pushi    1
-			calle    Print,  4
-			jmp      code_04c6
-code_02ff:
-			pushi    #has
-			pushi    1
-			pushi    14
-			lag      ego
-			send     6
-			bnt      code_0350
-			pushi    #has
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			bnt      code_0350
-			pushi    #has
-			pushi    1
-			pushi    16
-			lag      ego
-			send     6
-			bnt      code_0350
-			pushi    2
-			pushi    1
-			pushi    2
-			calle    Print,  4
-			pushi    #fade
-			pushi    0
-			pushi    2
-			pushi    0
-			pushi    23
-			callk    ScriptID,  4
-			send     4
-			pushi    2
-			pushi    111
-			pushi    3
-			callb    SolvePuzzle,  4
-			pushi    #setScript
-			pushi    1
-			lofsa    enterCastle
-			push    
-			lofsa    gate
-			send     6
-			jmp      code_04c6
-code_0350:
-			pushi    2
-			pushi    1
-			pushi    3
-			calle    Print,  4
-			jmp      code_04c6
-code_035b:
-			pushi    1
-			lofsa    'close,shut/gate,door'
-			push    
-			callk    Said,  2
-			bnt      code_0371
-			pushi    2
-			pushi    1
-			pushi    4
-			calle    Print,  4
-			jmp      code_04c6
-code_0371:
-			pushi    1
-			lofsa    'knock/door,gate'
-			push    
-			callk    Said,  2
-			bnt      code_039f
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      86
-			lt?     
-			bnt      code_0395
-			pushi    2
-			pushi    1
-			pushi    5
-			calle    Print,  4
-			jmp      code_04c6
-code_0395:
-			pushi    2
-			pushi    1
-			pushi    0
-			calle    Print,  4
-			jmp      code_04c6
-code_039f:
-			pushi    1
-			lofsa    'get,take,use/planter,caldron,planter'
-			push    
-			callk    Said,  2
-			bnt      code_03b5
-			pushi    2
-			pushi    1
-			pushi    6
-			calle    Print,  4
-			jmp      code_04c6
-code_03b5:
-			pushi    1
-			lofsa    'get,take<in/planter,planter,caldron'
-			push    
-			callk    Said,  2
-			bt       code_03cb
-			pushi    1
-			lofsa    'hide<in/planter,planter,caldron'
-			push    
-			callk    Said,  2
-			bnt      code_03d6
-code_03cb:
-			pushi    2
-			pushi    1
-			pushi    7
-			calle    Print,  4
-			jmp      code_04c6
-code_03d6:
-			pushi    1
-			lofsa    'look,check,talk,speak,kick,kill,kiss,attack/guard'
-			push    
-			callk    Said,  2
-			bnt      code_03ec
-			pushi    2
-			pushi    1
-			pushi    8
-			calle    Print,  4
-			jmp      code_04c6
-code_03ec:
-			pushi    6
-			lsp      event
-			pushi    101
-			pushi    30
-			pushi    120
-			pushi    48
-			pushi    3
-			callb    MouseClaimed,  12
-			bnt      code_040b
-			pushi    2
-			pushi    1
-			pushi    9
-			calle    Print,  4
-			jmp      code_04c6
-code_040b:
-			pushi    1
-			lofsa    'look,check/planter,caldron'
-			push    
-			callk    Said,  2
-			bnt      code_0421
-			pushi    2
-			pushi    1
-			pushi    10
-			calle    Print,  4
-			jmp      code_04c6
-code_0421:
-			pushi    1
-			lofsa    'look,check/ceder,vine,bury'
-			push    
-			callk    Said,  2
-			bnt      code_0437
-			pushi    2
-			pushi    1
-			pushi    11
-			calle    Print,  4
-			jmp      code_04c6
-code_0437:
-			pushi    1
-			lofsa    'look,check/blossom'
-			push    
-			callk    Said,  2
-			bnt      code_0466
-			pushi    #y
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      112
-			lt?     
-			bnt      code_045b
-			pushi    2
-			pushi    1
-			pushi    12
-			calle    Print,  4
-			jmp      code_04c6
-code_045b:
-			pushi    2
-			pushi    1
-			pushi    13
-			calle    Print,  4
-			jmp      code_04c6
-code_0466:
-			pushi    1
-			lofsa    'remove/ring'
-			push    
-			callk    Said,  2
-			bnt      code_04be
-			pushi    1
-			pushi    1
-			callb    Btst,  2
-			bnt      code_04b3
-			pushi    #has
-			pushi    1
-			pushi    16
-			lag      ego
-			send     6
-			bnt      code_049c
-			pushi    #has
-			pushi    1
-			pushi    14
-			lag      ego
-			send     6
-			bnt      code_049c
-			pushi    #has
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-code_049c:
-			not     
-			bnt      code_04b3
-			pushi    2
-			pushi    1
-			pushi    14
-			calle    Print,  4
-			pushi    #claimed
-			pushi    1
-			pushi    0
-			lap      event
-			send     6
-			jmp      code_04c6
-code_04b3:
-			pushi    #claimed
-			pushi    1
-			pushi    0
-			lap      event
-			send     6
-			jmp      code_04c6
-code_04be:
-			pushi    #handleEvent
-			pushi    1
-			lsp      event
-			super    Room,  6
-code_04c6:
-			ret     
+		;this has been successfully decompiled
+		(cond 
+			((event claimed?) (return))
+			((super handleEvent: event) (return))
+			((Said 'open,open/door,gate')
+				(cond 
+					((> (ego y?) 86)
+						(Print 1 0)
+					)
+					((Btst 2)
+						(Print 1 1)
+					)
+					((and (ego has: iMagicMirror) (ego has: iChest) (ego has: iMagicShield))
+						(Print 1 2)
+						((ScriptID 0 23) fade:)
+						(SolvePuzzle fEndGame 3)
+						(gate setScript: enterCastle)
+					)
+					(else
+						(Print 1 3)
+					)
+				)
+			)
+			((Said 'close,shut/gate,door')
+				(Print 1 4)
+			)
+			((Said 'knock/door,gate')
+				(if (< (ego y?) 86)
+					(Print 1 5)
+				else
+					(Print 1 0)
+				)
+			)
+			((Said 'get,take,use/planter,caldron,planter') (Print 1 6))
+			(
+				(or
+					(Said 'get,take<in/planter,planter,caldron')
+					(Said 'hide<in/planter,planter,caldron')
+				)
+				(Print 1 7)
+			)
+			((Said 'look,check,talk,speak,kick,kill,kiss,attack/guard')
+				(Print 1 8)
+			)
+			((MouseClaimed event 101 30 120 48 3)
+				(Print 1 9)
+			)
+			((Said 'look,check/planter,caldron')
+				(Print 1 10)
+			)
+			((Said 'look,check/ceder,vine,bury')
+				(Print 1 11)
+			)
+			((Said 'look,check/blossom')
+				(if (< (ego y?) 112)
+					(Print 1 12)
+				else
+					(Print 1 13)
+				)
+			)
+			((Said 'remove/ring')
+				(if (Btst fInvisible)
+					(if
+						(not
+							(and (ego has: iMagicShield) (ego has: iMagicMirror) (ego has: iChest))
+						)
+						(Print 1 14)
+						(event claimed: FALSE)
+					)
+				)
+				(event claimed: FALSE)
+			)
+			(else
+				(super handleEvent: event)
+			)
 		)
-	)
-)
+	))
 
 (instance enterCastle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -464,8 +251,6 @@ code_04c6:
 )
 
 (instance exitCastle of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -527,7 +312,7 @@ code_04c6:
 			((Said 'talk,speak,ask/guard,man')
 				(Print 1 16)
 			)
-			((Said 'give[/*]/guard')
+			((Said 'give[/anyword]/guard')
 				(Print 1 17)
 			)
 			((Said 'attack,kick,kill/guard')

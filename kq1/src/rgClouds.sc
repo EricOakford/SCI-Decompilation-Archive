@@ -122,7 +122,7 @@
 					(& (ego onControl:) cMAGENTA)
 					(and
 						(& (ego onControl:) cBLUE)
-						(not roomWithBeanstalk)
+						(not stalkRoom)
 					)
 				)
 				(== newRoomNum curRoomNum)

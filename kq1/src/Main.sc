@@ -28,7 +28,7 @@
 	CantReach 4
 	DontHave 6
 	RedrawCast 7
-	SetItemOwner 8
+	PutInRoom 8
 	LogIt 9
 	Bset 10
 	Bclr 11
@@ -170,7 +170,7 @@
 	global116
 	global117
 	debugging
-	roomWithDeadGoat
+	deadGoatRoom
 	deadGoatX
 	deadGoatY
 	deadGoatLoop
@@ -182,7 +182,7 @@
 	theGoat
 	roomWithLiveGoat =  11
 	egoInWater
-	roomWithBeanstalk
+	stalkRoom
 	deadGiantX =  -1
 	deadGiantY =  -1
 	invisibleRingTimer =  2400
@@ -311,7 +311,7 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (SetItemOwner item owner)
+(procedure (PutInRoom item owner)
 	((inventory at: item)
 		owner: (if (== argc 1) curRoomNum else owner)
 	)
@@ -327,20 +327,14 @@
 )
 
 (procedure (Bset flagEnum)
-	(= [gameFlags (/ flagEnum 16)]
-		(|
-			[gameFlags (/ flagEnum 16)]
-			(>> $8000 (mod flagEnum 16))
-		)
+	(|= [gameFlags (/ flagEnum 16)]
+		(>> $8000 (mod flagEnum 16))
 	)
 )
 
 (procedure (Bclr flagEnum)
-	(= [gameFlags (/ flagEnum 16)]
-		(&
-			[gameFlags (/ flagEnum 16)]
-			(~ (>> $8000 (mod flagEnum 16)))
-		)
+	(&= [gameFlags (/ flagEnum 16)]
+		(~ (>> $8000 (mod flagEnum 16)))
 	)
 )
 
@@ -355,7 +349,7 @@
 
 (procedure (ShowDeadGoat)
 	(cond 
-		((== roomWithDeadGoat curRoomNum)
+		((== deadGoatRoom curRoomNum)
 			(theGoat
 				view: 166
 				setLoop: deadGoatLoop
@@ -367,9 +361,9 @@
 		)
 		(
 			(and
-				(== roomWithDeadGoat (curRoom west?))
+				(== deadGoatRoom (curRoom west?))
 				(> deadGoatX 315)
-				(OneOf roomWithDeadGoat 1 2 83 10 11 15 16)
+				(OneOf deadGoatRoom 1 2 83 10 11 15 16)
 				(OneOf curRoomNum 1 2 83 10 11 15 16)
 			)
 			(theGoat
@@ -383,9 +377,9 @@
 		)
 		(
 			(and
-				(== roomWithDeadGoat (curRoom east?))
+				(== deadGoatRoom (curRoom east?))
 				(< deadGoatX 5)
-				(OneOf roomWithDeadGoat 1 2 83 10 11 15 16)
+				(OneOf deadGoatRoom 1 2 83 10 11 15 16)
 				(OneOf curRoomNum 1 2 83 10 11 15 16)
 			)
 			(theGoat
@@ -412,13 +406,13 @@
 			)
 			(< (event y?) bottom)
 		else
-			0
+			FALSE
 		)
 	)
 )
 
-(procedure (Face actor1 actor2 both &tmp temp0 ang1to2)
-	(= temp0 (actor1 loop?))
+(procedure (Face actor1 actor2 both &tmp theLoop ang1to2)
+	(= theLoop (actor1 loop?))
 	(if (== argc 2)
 		(DirLoop
 			actor1
@@ -446,7 +440,7 @@
 			(GetAngle (actor1 x?) (actor1 y?) actor2 both)
 		)
 	)
-	(if (!= temp0 (actor1 loop?))
+	(if (!= theLoop (actor1 loop?))
 		(actor1 setHeading: ang1to2)
 		(actor1 forceUpd:)
 		(RedrawCast)
@@ -454,129 +448,8 @@
 	(actor1 setMotion: 0)
 )
 
-;;;(procedure (EgoDead message)			
-;;;	(asm
-;;;		pushi    0
-;;;		call     HandsOff,  0
-;;;		pushi    #fade
-;;;		pushi    0
-;;;		lofsa    backSound
-;;;		send     4
-;;;		pushi    #fade
-;;;		pushi    0
-;;;		lofsa    gameSound
-;;;		send     4
-;;;		pushi    1
-;;;		pushi    100
-;;;		callk    Wait,  2
-;;;		pushi    #eachElementDo
-;;;		pushi    1
-;;;		pushi    #stop
-;;;		lag      sounds
-;;;		send     6
-;;;		pushi    #number
-;;;		pushi    1
-;;;		pushi    2
-;;;		pushi    0
-;;;		pushi    2
-;;;		callk    Random,  4
-;;;		push    
-;;;		dup     
-;;;		ldi      0
-;;;		eq?     
-;;;		bnt      code_2773
-;;;		ldi      49
-;;;		jmp      code_2788
-;;;code_2773:
-;;;		dup     
-;;;		ldi      1
-;;;		eq?     
-;;;		bnt      code_277f
-;;;		ldi      28
-;;;		jmp      code_2788
-;;;code_277f:
-;;;		dup     
-;;;		ldi      2
-;;;		eq?     
-;;;		bnt      code_2788
-;;;		ldi      3
-;;;code_2788:
-;;;		toss    
-;;;		push    
-;;;		pushi    #loop
-;;;		pushi    1
-;;;		pushi    1
-;;;		pushi    #priority
-;;;		pushi    1
-;;;		pushi    15
-;;;		pushi    9
-;;;		pushi    0
-;;;		pushi    #play
-;;;		pushi    0
-;;;		lofsa    backSound
-;;;		send     26
-;;;		pushi    #setCursor
-;;;		pushi    2
-;;;		lsg      normalCursor
-;;;		pushi    1
-;;;		lag      theGame
-;;;		send     8
-;;;code_27a9:
-;;;		pushi    11
-;;;		&rest    message
-;;;		pushi    #width
-;;;		pushi    250
-;;;		pushi    #button
-;;;		lofsa    {Restore}
-;;;		push    
-;;;		pushi    1
-;;;		pushi    #button
-;;;		lofsa    { Restart_}
-;;;		push    
-;;;		pushi    2
-;;;		pushi    #button
-;;;		lofsa    { Quit_}
-;;;		push    
-;;;		pushi    3
-;;;		calle    Print,  22
-;;;		push    
-;;;		dup     
-;;;		ldi      1
-;;;		eq?     
-;;;		bnt      code_27de
-;;;		pushi    #restore
-;;;		pushi    0
-;;;		lag      theGame
-;;;		send     4
-;;;		jmp      code_27fe
-;;;code_27de:
-;;;		dup     
-;;;		ldi      2
-;;;		eq?     
-;;;		bnt      code_27f0
-;;;		pushi    #restart
-;;;		pushi    0
-;;;		lag      theGame
-;;;		send     4
-;;;		jmp      code_27fe
-;;;code_27f0:
-;;;		dup     
-;;;		ldi      3
-;;;		eq?     
-;;;		bnt      code_27fe
-;;;		ldi      1
-;;;		sag      quit
-;;;		jmp      code_2802
-;;;code_27fe:
-;;;		toss    
-;;;		jmp      code_27a9
-;;;code_2802:
-;;;		ret     
-;;;	)
-;;;)
-
 (procedure (EgoDead)
-	;EO: this is a recreation, based on the above commented-out assembly code
+	;EO: this has been properly decompiled
 	(HandsOff)
 	(backSound fade:)
 	(gameSound fade:)
@@ -615,12 +488,12 @@
 	)
 )
 
-(procedure (proc0_17 param1 param2 param3)
+(procedure (proc0_17 angle y hrz)
 	(return
 		(cond 
-			((<= param2 param3) param3)
-			((>= param2 param1) param1)
-			(else param2)
+			((<= y hrz) hrz)
+			((>= y angle) angle)
+			(else y)
 		)
 	)
 )
@@ -662,12 +535,19 @@
 			description: {You are holding an empty wooden bucket.}
 		)
 		(Bclr fWaterInBucket)
-		(if (not (Btst fDragonDoused)) (Bclr fFilledBucket) (kq1 changeScore: -2))
+		(if (not (Btst fDragonDoused))
+			(Bclr fFilledBucket)
+			(kq1 changeScore: -2)
+		)
 	)
 )
 
 (procedure (CantDo)
-	(if (Random 0 1) (Print 0 133) else (Print 0 134))
+	(if (Random 0 1)
+		(Print 0 133)
+	else
+		(Print 0 134)
+	)
 )
 
 (procedure (CheckHowFast level)
@@ -686,7 +566,9 @@
 )
 
 (procedure (FadeBackgroundMusic)
-	(if (!= 98 (backSound number?)) (backSound fade:))
+	(if (!= 98 (backSound number?))
+		(backSound fade:)
+	)
 )
 
 (procedure (PebbleCount)
@@ -694,7 +576,9 @@
 		(0
 			((inventory at: iPebbles) owner: 4)
 		)
-		(1 (_Pebbles_ name: { Pebble_}))
+		(1
+			(_Pebbles_ name: { Pebble_})
+		)
 		(else 
 			(_Pebbles_ name: { Pebbles_})
 		)
@@ -781,148 +665,66 @@
 			(theGame newRoom: 777)
 		)
 	)
-	
-	(method (doit &tmp temp0)
-		(asm
-			pushi    0
-			callk    HaveMouse,  0
-			sat      temp0
-			pushi    #number
-			pushi    0
-			lofsa    backSound
-			send     4
-			push    
-			ldi      98
-			eq?     
-			bnt      code_0289
-			pushi    #signal
-			pushi    0
-			lofsa    backSound
-			send     4
-			push    
-			ldi      65535
-			eq?     
-			bnt      code_0289
-			pushi    1
-			pushi    51
-			call     Btst,  2
-			not     
-			bnt      code_0289
-			pushi    1
-			pushi    51
-			call     Bset,  2
-code_0289:
-			lag      haloTimer
-			bnt      code_029b
-			-ag      haloTimer
-			not     
-			bnt      code_029b
-			pushi    2
-			pushi    0
-			pushi    0
-			calle    Print,  4
-code_029b:
-			pushi    1
-			pushi    1
-			call     Btst,  2
-			bnt      code_0304
-			lag      invisibleRingTimer
-			bnt      code_0304
-			-ag      invisibleRingTimer
-			not     
-			bnt      code_0304
-			pushi    1
-			pushi    1
-			call     Bclr,  2
-			lsg      curRoomNum
-			ldi      1
-			eq?     
-			bnt      code_02ee
-			pushi    #has
-			pushi    1
-			pushi    16
-			lag      ego
-			send     6
-			bnt      code_02e0
-			pushi    #has
-			pushi    1
-			pushi    14
-			lag      ego
-			send     6
-			bnt      code_02e0
-			pushi    #has
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-code_02e0:
-			not     
-			bnt      code_02ee
-			pushi    2
-			pushi    0
-			pushi    1
-			calle    Print,  4
-			jmp      code_02f5
-code_02ee:
-			pushi    2
-			pushi    0
-			pushi    2
-			calle    Print,  4
-code_02f5:
-			pushi    #put
-			pushi    1
-			pushi    5
-			lag      ego
-			send     6
-			pushi    0
-			call     NormalEgo,  0
-code_0304:
-			lag      global108
-			not     
-			bnt      code_034c
-			lag      global107
-			bnt      code_0316
-			ldi      0
-			sat      temp0
-			jmp      code_033a
-code_0316:
-			pushi    #controls
-			pushi    0
-			class    User
-			send     4
-			push    
-			ldi      0
-			eq?     
-			bnt      code_0330
-			ldi      1
-			sat      temp0
-			lag      waitCursor
-			sag      oldCursor
-			jmp      code_033a
-code_0330:
-			pushi    0
-			callk    HaveMouse,  0
-			sat      temp0
-			lag      normalCursor
-			sag      oldCursor
-code_033a:
-			lsg      theCursor
-			lag      oldCursor
-			ne?     
-			bnt      code_034c
-			pushi    #setCursor
-			pushi    2
-			lsg      oldCursor
-			lst      temp0
-			self     8
-code_034c:
-			pushi    #doit
-			pushi    0
-			super    Game,  4
-			ret     
+
+	(method (doit &tmp haveMouse)
+		(= haveMouse (HaveMouse))
+		(if
+			(and
+				(== (backSound number?) 98)
+				(== (backSound signal?) -1)
+				(not (Btst fReplayEndMusic))
+			)
+			(Bset fReplayEndMusic)
 		)
+		(if (and haloTimer (not (-- haloTimer)))
+			(Print 0 0)
+		)
+		(if
+			(and
+				(Btst fInvisible)
+				invisibleRingTimer
+				(not (-- invisibleRingTimer))
+			)
+			(Bclr fInvisible)
+			;this was the undecompilable part. It should work properly now.
+			(if (and
+					(== curRoomNum 1)
+					;castle guards are at the gate
+					(not (and
+							(ego has: iMagicShield)
+							(ego has: iMagicMirror)
+							(ego has: iChest)
+						 )
+					)
+				)
+				(Print 0 1)
+			else
+				(Print 0 2)
+			)
+			(ego put: iMagicRing)
+			(NormalEgo)
+		)
+		(if (not global108)
+			(cond 
+				(global107
+					(= haveMouse 0)
+				)
+				((== (User controls?) FALSE)
+					(= haveMouse TRUE)
+					(= oldCursor waitCursor)
+				)
+				(else
+					(= haveMouse (HaveMouse))
+					(= oldCursor normalCursor)
+				)
+			)
+			(if (!= theCursor oldCursor)
+				(self setCursor: oldCursor haveMouse)
+			)
+		)
+		(super doit:)
 	)
-	
+		
 	(method (replay)
 		(TheMenuBar draw:)
 		(StatusLine enable:)
@@ -931,410 +733,115 @@ code_034c:
 		)
 		(super replay:)
 	)
-	
+
 	(method (startRoom roomNum)
-		(asm
-			pushi    37
-			pushi    0
-			pushi    985
-			pushi    982
-			pushi    972
-			pushi    988
-			pushi    980
-			pushi    978
-			pushi    977
-			pushi    975
-			pushi    974
-			pushi    971
-			pushi    970
-			pushi    969
-			pushi    973
-			pushi    966
-			pushi    965
-			pushi    964
-			pushi    962
-			pushi    956
-			pushi    976
-			pushi    959
-			pushi    955
-			pushi    949
-			pushi    991
-			pushi    986
-			pushi    983
-			pushi    611
-			pushi    600
-			pushi    608
-			pushi    779
-			pushi    784
-			pushi    782
-			pushi    781
-			pushi    780
-			pushi    615
-			pushi    898
-			pushi    899
-			calle    LoadMany,  74
-			lag      debugOn
-			bnt      code_03d5
-			ldi      0
-			sag      debugOn
-			pushi    0
-			callk    SetDebug,  0
-code_03d5:
-			pushi    1
-			pushi    1
-			callk    MemoryInfo,  2
-			push    
-			pushi    20
-			pushi    1
-			pushi    0
-			callk    MemoryInfo,  2
-			add     
-			ugt?    
-			bnt      code_0403
-			lag      debugging
-			bnt      code_0403
-			pushi    5
-			pushi    0
-			pushi    3
-			pushi    #button
-			lofsa    {Debug}
-			push    
-			pushi    1
-			calle    Print,  10
-			bnt      code_0403
-			pushi    0
-			callk    SetDebug,  0
-code_0403:
-			pushi    #startRoom
-			pushi    1
-			lsp      roomNum
-			super    Game,  6
-			lsg      prevRoomNum
-			ldi      0
-			eq?     
-			bnt      code_042e
-			pushi    1
-			pushi    40
-			call     Btst,  2
-			not     
-			bnt      code_042e
-			pushi    #draw
-			pushi    0
-			class    MenuBar
-			send     4
-			pushi    #enable
-			pushi    0
-			class    StatusLine
-			send     4
-code_042e:
-			pushi    #picAngle
-			pushi    1
-			pushi    50
-			lag      curRoom
-			send     6
-			pushi    1
-			pushi    2
-			call     Btst,  2
-			bnt      code_045f
-			pushi    79
-			lag      curRoomNum
-			ge?     
-			bnt      code_044d
-			pprev   
-			ldi      49
-			ge?     
-code_044d:
-			not     
-			bnt      code_045f
-			pushi    #setRegions
-			pushi    1
-			pushi    600
-			lag      curRoom
-			send     6
-			jmp      code_04d7
-code_045f:
-			lag      roomWithDeadGoat
-			bnt      code_0469
-			pushi    0
-			call     ShowDeadGoat,  0
-code_0469:
-			pushi    40
-			lsg      curRoomNum
-			pushi    3
-			pushi    4
-			pushi    5
-			pushi    6
-			pushi    7
-			pushi    8
-			pushi    9
-			pushi    12
-			pushi    14
-			pushi    15
-			pushi    16
-			pushi    17
-			pushi    18
-			pushi    19
-			pushi    20
-			pushi    23
-			pushi    24
-			pushi    26
-			pushi    30
-			pushi    31
-			pushi    32
-			pushi    33
-			pushi    34
-			pushi    36
-			pushi    37
-			pushi    38
-			pushi    42
-			pushi    45
-			pushi    47
-			pushi    56
-			pushi    57
-			pushi    59
-			pushi    60
-			pushi    61
-			pushi    62
-			pushi    70
-			pushi    71
-			pushi    72
-			pushi    82
-			calle    OneOf,  80
-			bnt      code_04d7
-			lsg      howFast
-			ldi      1
-			ge?     
-			bnt      code_04d7
-			pushi    #setLocales
-			pushi    1
-			pushi    611
-			lag      curRoom
-			send     6
-code_04d7:
-			pushi    4
-			lsg      curRoomNum
-			pushi    24
-			pushi    31
-			pushi    38
-			calle    OneOf,  8
-			bnt      code_0518
-			pushi    #has
-			pushi    1
-			pushi    20
-			lag      ego
-			send     6
-			bnt      code_0505
-			pushi    #setRegions
-			pushi    1
-			pushi    606
-			lag      curRoom
-			send     6
-			jmp      code_0518
-code_0505:
-			lsg      roomWithBeanstalk
-			lag      curRoomNum
-			eq?     
-			bnt      code_0518
-			pushi    #setRegions
-			pushi    1
-			pushi    607
-			lag      curRoom
-			send     6
-code_0518:
-			pushi    10
-			lsg      curRoomNum
-			pushi    56
-			pushi    57
-			pushi    58
-			pushi    59
-			pushi    60
-			pushi    61
-			pushi    62
-			pushi    72
-			pushi    82
-			calle    OneOf,  20
-			bnt      code_0542
-			pushi    #setRegions
-			pushi    1
-			pushi    610
-			lag      curRoom
-			send     6
-code_0542:
-			lag      haloTimer
-			bnt      code_0552
-			pushi    #setRegions
-			pushi    1
-			pushi    616
-			lag      curRoom
-			send     6
-code_0552:
-			pushi    #loop
-			pushi    1
-			pushi    0
-			lofsa    gameSound
-			send     6
-			pushi    #has
-			pushi    1
-			pushi    14
-			lag      ego
-			send     6
-			bnt      code_05ae
-			pushi    #has
-			pushi    1
-			pushi    1
-			lag      ego
-			send     6
-			bnt      code_05ae
-			pushi    #has
-			pushi    1
-			pushi    16
-			lag      ego
-			send     6
-			bnt      code_05ae
-			pushi    1
-			pushi    51
-			call     Btst,  2
-			not     
-			bnt      code_05ae
-			lsg      curRoomNum
-			ldi      70
-			lt?     
-			bt       code_059c
-			lsg      curRoomNum
-			ldi      83
-			eq?     
-			bnt      code_05ae
-code_059c:
-			lsg      curRoomNum
-			ldi      53
-			ne?     
-			bnt      code_05ae
-			pushi    1
-			pushi    98
-			call     PlayBackgroundMusic,  2
-			jmp      code_06ab
-code_05ae:
-			pushi    12
-			lsg      curRoomNum
-			pushi    50
-			pushi    66
-			pushi    67
-			pushi    68
-			pushi    69
-			pushi    73
-			pushi    74
-			pushi    75
-			pushi    76
-			pushi    77
-			pushi    78
-			calle    OneOf,  24
-			bnt      code_05db
-			pushi    1
-			pushi    31
-			call     PlayBackgroundMusic,  2
-			jmp      code_06ab
-code_05db:
-			pushi    2
-			lsg      curRoomNum
-			pushi    63
-			calle    OneOf,  4
-			bnt      code_05f3
-			pushi    1
-			pushi    73
-			call     PlayBackgroundMusic,  2
-			jmp      code_06ab
-code_05f3:
-			pushi    27
-			lsg      curRoomNum
-			pushi    3
-			pushi    9
-			pushi    10
-			pushi    11
-			pushi    12
-			pushi    13
-			pushi    15
-			pushi    16
-			pushi    19
-			pushi    21
-			pushi    22
-			pushi    24
-			pushi    27
-			pushi    28
-			pushi    29
-			pushi    30
-			pushi    31
-			pushi    35
-			pushi    36
-			pushi    38
-			pushi    40
-			pushi    44
-			pushi    45
-			pushi    46
-			pushi    48
-			pushi    95
-			calle    OneOf,  54
-			bnt      code_063d
-			pushi    1
-			pushi    2
-			call     PlayBackgroundMusic,  2
-			jmp      code_06ab
-code_063d:
-			pushi    9
-			lsg      curRoomNum
-			pushi    1
-			pushi    2
-			pushi    25
-			pushi    26
-			pushi    39
-			pushi    41
-			pushi    42
-			pushi    83
-			calle    OneOf,  18
-			bnt      code_0662
-			pushi    1
-			pushi    52
-			call     PlayBackgroundMusic,  2
-			jmp      code_06ab
-code_0662:
-			pushi    6
-			lsg      curRoomNum
-			pushi    7
-			pushi    32
-			pushi    33
-			pushi    34
-			pushi    47
-			calle    OneOf,  12
-			bnt      code_0683
-			pushi    1
-			pushi    12
-			call     PlayBackgroundMusic,  2
-			jmp      code_06ab
-code_0683:
-			pushi    11
-			lsg      curRoomNum
-			pushi    4
-			pushi    5
-			pushi    6
-			pushi    8
-			pushi    17
-			pushi    18
-			pushi    20
-			pushi    23
-			pushi    37
-			pushi    43
-			calle    OneOf,  22
-			bnt      code_06ab
-			pushi    1
-			pushi    68
-			call     PlayBackgroundMusic,  2
-code_06ab:
-			pushi    #dispose
-			pushi    0
-			self     4
-			ret     
+		(LoadMany FALSE
+			AVOIDER SIGHT CHASE EXTRA TEXTRA RFEATURE GROOPER
+			DEMO NAMEFIND FOLLOW WANDER REVERSE TIMER SORT
+			COUNT DPATH QSCRIPT FORCOUNT CAT QSOUND TRACK
+			BLOCK JUMP ORBIT PATH BIRD GOAT RIVER
+			779 784 782 781 780 615 898 899
 		)
+		(if debugOn
+			(= debugOn FALSE)
+			(SetDebug)
+		)
+		(if
+			(and
+				(u> (MemoryInfo FreeHeap) (+ 20 (MemoryInfo LargestPtr)))
+				debugging
+				(Print 0 3
+					#button {Debug} 1
+				)
+			)
+			(SetDebug)
+		)
+		(super startRoom: roomNum)
+		(if (and (== prevRoomNum 0) (not (Btst fInCartoon)))
+			(MenuBar draw:)
+			(StatusLine enable:)
+		)
+		(curRoom picAngle: 50)
+		;this was the undecompilable part. It's been fixed.
+		(if (and (Btst fGoatFollows) (not (if (>= 79 curRoomNum) (>= curRoomNum 49))))
+			(curRoom setRegions: GOAT)
+		else
+			(if deadGoatRoom
+				(ShowDeadGoat)
+			)
+			(if
+				(and
+					(OneOf curRoomNum
+						3 4 5 6 7 8 9 12
+						14 15 16 17 18 19
+						20 23 24 26 30 31
+						32 33 34 36 37 38
+						42 45 47 56 57 59
+						60 61 62 70 71 72
+						82
+					)
+					(>= howFast 1)
+				)
+				(curRoom setLocales: BIRD)
+			)
+		)
+		(if (OneOf curRoomNum 24 31 38)
+			(cond 
+				((ego has: iBeans)
+					(curRoom setRegions: BEANS)
+				)
+				((== stalkRoom curRoomNum)
+					(curRoom setRegions: STALK)
+				)
+			)
+		)
+		(if (OneOf curRoomNum 56 57 58 59 60 61 62 72 82)
+			(curRoom setRegions: CLOUDS)
+		)
+		(if haloTimer
+			(curRoom setRegions: HALO)
+		)
+		(gameSound loop: 0)
+		(cond 
+			(
+				(and
+					(ego has: iMagicMirror)
+					(ego has: iChest)
+					(ego has: iMagicShield)
+					(not (Btst fReplayEndMusic))
+					(or (< curRoomNum 70) (== curRoomNum 83))
+					(!= curRoomNum 53)
+				)
+				(PlayBackgroundMusic 98)
+			)
+			((OneOf curRoomNum 50 66 67 68 69 73 74 75 76 77 78)
+				(PlayBackgroundMusic 31)
+			)
+			((OneOf curRoomNum 63)
+				(PlayBackgroundMusic 73)
+			)
+			(
+				(OneOf curRoomNum
+					3 9 10 11 12 13 15 16
+					19 21 22 24 27 28 29 30
+					31 35 36 38 40 44 45 46
+					48 95
+				)
+				(PlayBackgroundMusic 2)
+			)
+			((OneOf curRoomNum 1 2 25 26 39 41 42 83)
+				(PlayBackgroundMusic 52)
+			)
+			((OneOf curRoomNum 7 32 33 34 47)
+				(PlayBackgroundMusic 12)
+			)
+			((OneOf curRoomNum 4 5 6 8 17 18 20 23 37 43)
+				(PlayBackgroundMusic 68)
+			)
+		)
+		(self dispose:)
 	)
-	
+		
 	(method (handleEvent event &tmp i [temp1 3] evtX evtY evtMod [str 50])
 		(if
 			(and
@@ -1374,7 +881,9 @@ code_06ab:
 				(cond 
 					((Said 'look,check[<up][/sky]')
 						(cond 
-							((OneOf curRoomNum 70 71 roomWithBeanstalk) (Print 0 4))
+							((OneOf curRoomNum 70 71 stalkRoom)
+								(Print 0 4)
+							)
 							(
 								(OneOf curRoomNum
 									49 50 51 52 53 54 55 65 66 67 68 69
@@ -1406,7 +915,7 @@ code_06ab:
 							((Said 'talk,speak')
 								(if
 									(or
-										(== roomWithDeadGoat curRoomNum)
+										(== deadGoatRoom curRoomNum)
 										(cast contains: theGoat)
 									)
 									(Print 0 11)
@@ -1417,7 +926,7 @@ code_06ab:
 							((Said 'get,take')
 								(if
 									(or
-										(== roomWithDeadGoat curRoomNum)
+										(== deadGoatRoom curRoomNum)
 										(cast contains: theGoat)
 									)
 									(Print 0 12)
@@ -1444,8 +953,12 @@ code_06ab:
 					((Said '/fish>')
 						(if (OneOf curRoomNum 4 5 6 8 17 18 20 23 37 43)
 							(cond 
-								((Said 'eat,consume') (Print 0 15))
-								((Said 'kill') (Print 0 16))
+								((Said 'eat,consume')
+									(Print 0 15)
+								)
+								((Said 'kill')
+									(Print 0 16)
+								)
 							)
 						else
 							(Print 0 17)
@@ -1456,7 +969,8 @@ code_06ab:
 						(cond 
 							((Said 'get,take')
 								(if (ego has: iWalnut)
-									(Print 0 18) else
+									(Print 0 18)
+								else
 									(event claimed: FALSE)
 								)
 							)
@@ -1563,7 +1077,7 @@ code_06ab:
 							)
 							((or (Said 'remove') (Said 'take<off'))
 								(cond 
-									((== (ego view?)(if (Btst fLittleEgo) 23 else 16))
+									((== (ego view?) (if (Btst fLittleEgo) 23 else 16))
 										(CantDo)
 									)
 									((not (Btst fWearingRing))
@@ -1710,7 +1224,7 @@ code_06ab:
 										(Bset fAteCarrot)
 										(curRoom setScript: (ScriptID 781 0))
 										(Bclr fPickedCarrot)
-										(SetItemOwner iCarrot 15)
+										(PutInRoom iCarrot 15)
 										(if (not (Btst fTrollDead))
 											(theGame changeScore: -2)
 										)
@@ -1728,7 +1242,7 @@ code_06ab:
 									(Print 0 53)
 									(Bset fAteBeans)
 									(curRoom setScript: (ScriptID 781 0))
-									(SetItemOwner iBeans 0)
+									(PutInRoom iBeans 0)
 									(theGame changeScore: -4)
 								)
 							)
@@ -1742,7 +1256,7 @@ code_06ab:
 									(DontHave)
 								)
 							)
-							((Said '/*')
+							((Said '/anyword')
 								(Print 0 55)
 								(event claimed: TRUE)
 							)
@@ -2006,7 +1520,7 @@ code_06ab:
 							)
 						)
 					)
-					((and (== roomWithDeadGoat curRoomNum) (Said 'get,take/dagger'))
+					((and (== deadGoatRoom curRoomNum) (Said 'get,take/dagger'))
 						(Print 0 95)
 					)
 					((Said 'get,take>')
@@ -2014,7 +1528,7 @@ code_06ab:
 							((and (= i (inventory firstTrue: #saidMe)) (i ownedBy: ego))
 								(Print 0 18)
 							)
-							((Said '/*')
+							((Said '/anyword')
 								(Print 0 96)
 							)
 							(else
@@ -2146,8 +1660,7 @@ code_06ab:
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if
-		(and (not (event claimed?)) (== (event type?) saidEvent))
+		(if (and (not (event claimed?)) (== (event type?) saidEvent))
 			(if (Said 'look,check/goat')
 				(self doVerb: verbLook)
 			)
@@ -2161,7 +1674,7 @@ code_06ab:
 		(switch theVerb
 			(verbLook
 				(cond 
-					(roomWithDeadGoat
+					(deadGoatRoom
 						(Print 0 121)
 					)
 					((== view 166)
@@ -2187,8 +1700,6 @@ code_06ab:
 )
 
 (instance menace of Actor
-	(properties)
-	
 	(method (handleEvent event)
 		(cond 
 			((event claimed?)
@@ -2338,7 +1849,9 @@ code_06ab:
 	
 	(method (showSelf &tmp [str 80])
 		(if (== numPebbles 1)
-			(Print (Format @str 0 128 numPebbles) #icon 510 0 0)
+			(Print (Format @str 0 128 numPebbles)
+				#icon 510 0 0
+			)
 		else
 			(Print
 				(Format @str 0 129 numPebbles)
@@ -2450,9 +1963,7 @@ code_06ab:
 	)
 )
 
-(instance logFile of File
-	(properties)
-)
+(instance logFile of File)
 
 (instance kqWindow of SysWindow
 	(properties

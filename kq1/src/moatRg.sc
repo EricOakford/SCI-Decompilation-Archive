@@ -650,7 +650,7 @@ code_0ee6:
 			callb    Btst,  2
 			bnt      code_0ef4
 			ldi      23
-			jmp      code_0ef6
+			;jmp      code_0ef6
 code_0ef4:
 			ldi      16
 code_0ef6:

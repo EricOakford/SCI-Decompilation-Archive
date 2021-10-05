@@ -45,7 +45,7 @@
 					setCycle: EndLoop self
 					setMotion: 0
 				)
-				(SetItemOwner iMushroom 0)
+				(PutInRoom iMushroom 0)
 			)
 			(2
 				((ScriptID 0 21) number: 20 init: play:)

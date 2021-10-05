@@ -98,7 +98,7 @@
 		(rock14 init:)
 		(if
 			(and
-				(!= roomWithBeanstalk 22)
+				(!= stalkRoom 22)
 				(not (Btst fGotRideFromBird))
 				(= birdChance (Random 0 4))
 				(ego has: iMagicMirror)
@@ -388,7 +388,7 @@ code_0390:
 			(and
 				(ego inRect: 88 108 187 144)
 				(not script)
-				(!= roomWithBeanstalk 22)
+				(!= stalkRoom 22)
 				(< local1 birdChance)
 			)
 			(if (== local1 0)

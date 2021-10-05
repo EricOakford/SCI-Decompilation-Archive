@@ -328,7 +328,7 @@
 					)
 					(Bclr fInvisible)
 					(Bclr fWearingRing)
-					(SetItemOwner iMagicRing)
+					(PutInRoom iMagicRing)
 				)
 				(ego
 					view: (if (Btst fLittleEgo) 17 else 15)

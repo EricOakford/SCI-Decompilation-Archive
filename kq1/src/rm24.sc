@@ -88,7 +88,7 @@
 		(bush init:)
 		(tree5 init:)
 		(if
-		(and (Btst fPlantedBeanstalk) (== roomWithBeanstalk curRoomNum))
+		(and (Btst fPlantedBeanstalk) (== stalkRoom curRoomNum))
 			(stalkIn24 init:)
 			(stalk2In24 init:)
 			(features delete: tree3)
@@ -134,7 +134,7 @@
 			((Said 'look,check>')
 				(cond 
 					((Said '[<at,around][/room,clearing]')
-						(if (== roomWithBeanstalk curRoomNum)
+						(if (== stalkRoom curRoomNum)
 							(Print 24 0)
 						else
 							(Print 24 1)
@@ -144,17 +144,17 @@
 						(cond 
 							((and (< (ego distanceTo: clover) 30) (not (ego has: iFourLeafClover)))
 								(Print 24 2)
-								(if (== roomWithBeanstalk curRoomNum)
+								(if (== stalkRoom curRoomNum)
 									(Print 24 0)
 								)
 							)
 							((< (ego distanceTo: cloverPatch) 20)
 								(Print 24 3)
-								(if (== roomWithBeanstalk curRoomNum)
+								(if (== stalkRoom curRoomNum)
 									(Print 24 0)
 								)
 							)
-							((== roomWithBeanstalk curRoomNum)
+							((== stalkRoom curRoomNum)
 								(Print 24 0)
 							)
 							(else

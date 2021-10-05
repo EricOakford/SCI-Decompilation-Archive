@@ -190,7 +190,7 @@
 					(Print 48 9)
 					(Bclr fInvisible)
 					(Bclr fWearingRing)
-					(SetItemOwner iMagicRing)
+					(PutInRoom iMagicRing)
 					(theGame changeScore: -3)
 				)
 				(ego setCycle: EndLoop self)

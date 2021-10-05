@@ -98,7 +98,7 @@
 	
 	(method (doit &tmp temp0)
 		(if (!= local0 (ego onControl: origin))
-			(if (== (= local0 (ego onControl: origin)) 512)
+			(if (== (= local0 (ego onControl: origin)) cLBLUE)
 				(ego z: -8 setPri: 7)
 			else
 				(ego z: 0 setPri: -1)
@@ -225,7 +225,7 @@
 			)
 			((Said 'get,take,pick/dagger')
 				(cond 
-					((== roomWithDeadGoat curRoomNum)
+					((== deadGoatRoom curRoomNum)
 						(event claimed: FALSE)
 					)
 					((and (Btst fTookDagger) (not (ego has: iDagger)))
@@ -273,13 +273,13 @@
 			((event claimed?)
 				(return)
 			)
-			((Said 'kick/boulder[<!*]')
+			((Said 'kick/boulder[<noword]')
 				(Print 3 24)
 			)
-			((Said 'look,check/(boulder,pebble)[<!*]')
+			((Said 'look,check/(boulder,pebble)[<noword]')
 				(event claimed: FALSE)
 			)
-			((or (Said 'look,check/(boulder,pebble)[<!*]') (MousedOn self event shiftDown))
+			((or (Said 'look,check/(boulder,pebble)[<noword]') (MousedOn self event shiftDown))
 				(if (Btst fMovedRock)
 					(Print 3 25)
 					(event claimed: TRUE)
@@ -288,25 +288,25 @@
 					(Print 3 26)
 				)
 			)
-			((Said 'get,take/(boulder,pebble)[<!*]')
+			((Said 'get,take/(boulder,pebble)[<noword]')
 				(Print 3 27)
 			)
 			;EO: this case already exists, and will probably never be executed
-			((Said 'get,take/(boulder,pebble)[<!*]')
+			((Said 'get,take/(boulder,pebble)[<noword]')
 				(if (< (ego distanceTo: rock) 30)
 					(Print 3 28)
 				else
 					(Print 3 29)
 				)
 			)
-			((Said 'lift/boulder[<!*]')
+			((Said 'lift/boulder[<noword]')
 				(if (ego inRect: 129 105 192 116)
 					(Print 3 30)
 				else
 					(Print 3 31)
 				)
 			)
-			((Said 'move,pull,pull/(boulder,pebble)[<!*]')
+			((Said 'move,pull,pull/(boulder,pebble)[<noword]')
 				(cond 
 					((Btst fMovedRock)
 						(Print 3 32)
@@ -336,8 +336,6 @@
 )
 
 (instance moveRock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -386,8 +384,6 @@
 )
 
 (instance crushedByRock of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -425,8 +421,6 @@
 )
 
 (instance getDagger of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

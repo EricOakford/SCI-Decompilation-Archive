@@ -33,7 +33,7 @@
 	(method (init)
 		(LoadMany VIEW 271 8)
 		(Load SOUND 6)
-		(self south: roomWithBeanstalk)
+		(self south: stalkRoom)
 		(self style:
 		(switch prevRoomNum
 			(north SCROLLUP)

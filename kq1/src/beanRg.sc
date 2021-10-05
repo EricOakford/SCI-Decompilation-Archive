@@ -41,7 +41,7 @@
 			((super handleEvent: event))
 			((Said 'bury/bean')
 				(cond 
-					(roomWithBeanstalk
+					(stalkRoom
 						(Print 606 0)
 					)
 					((not (ego has: iBeans))
@@ -132,7 +132,7 @@
 					(= deadGoatY (+ (theGoat y?) (* local2 3)))
 					(theGoat setMotion: MoveTo deadGoatX deadGoatY)
 				)
-				(= roomWithBeanstalk curRoomNum)
+				(= stalkRoom curRoomNum)
 			)
 			(7
 				(ShakeScreen 8 shakeSDiagonal)
@@ -170,7 +170,7 @@
 				(Face ego stalk)
 				(stalk dispose:)
 				(if
-				(and (!= roomWithDeadGoat curRoomNum) (Btst fGoatFollows))
+				(and (!= deadGoatRoom curRoomNum) (Btst fGoatFollows))
 					(= deadGoatX 0)
 					(= deadGoatY 0)
 					(theGoat setMotion: Follow ego 60)

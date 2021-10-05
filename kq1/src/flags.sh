@@ -53,7 +53,7 @@
 	fClimbing					;48
 	fLookedAtGarden				;49
 	fLookedAtGardenBorder		;50
-	fHaloExpired				;51
+	fReplayEndMusic				;51
 	fUnused52					;52
 	fUnused53					;53
 	fUnused54					;54

@@ -764,7 +764,7 @@
 				(ego setMotion: MoveTo 105 (rat y?) self)
 			)
 			(2
-				(SetItemOwner ratOffering)
+				(PutInRoom ratOffering)
 				(theGame changeScore: (- 0 pointsLost))
 				(ego loop: 1 ignoreBlocks: ratBlock stopUpd:)
 				(rat setScript: 0)

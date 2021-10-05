@@ -611,7 +611,7 @@
 					(Print 52 39)
 					(Bclr fInvisible)
 					(Bclr fWearingRing)
-					(SetItemOwner iMagicRing)
+					(PutInRoom iMagicRing)
 					(theGame changeScore: -3)
 					(self cue:)
 				else

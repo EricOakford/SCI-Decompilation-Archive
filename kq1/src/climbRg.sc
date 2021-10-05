@@ -121,7 +121,7 @@
 				)
 			)
 			(4
-				(curRoom drawPic: roomWithBeanstalk overlay: 270 PLAIN)
+				(curRoom drawPic: stalkRoom overlay: 270 PLAIN)
 				(ego
 					view: 34
 					setCycle: 0
@@ -201,7 +201,7 @@
 				)
 			)
 			(4
-				(curRoom drawPic: roomWithBeanstalk overlay: 270 PLAIN)
+				(curRoom drawPic: stalkRoom overlay: 270 PLAIN)
 				(ego
 					setCycle: 0
 					setLoop: 4

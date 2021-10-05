@@ -17,9 +17,9 @@
 (local
 	i
 	[ripple 6]
-	[rippleX 6] = [137 203 296 258 96 56]
-	[rippleY 6] = [178 178 159 168 171 167]
-	[rippleLoop 6] = [1 2 3 3 3 3]
+	rippleX = [137 203 296 258 96 56]
+	rippleY = [178 178 159 168 171 167]
+	rippleLoop = [1 2 3 3 3 3]
 )
 (instance rm2 of Room
 	(properties
@@ -65,8 +65,7 @@
 		(tree init:)
 		(tree1 init:)
 		(self setRegions: MOAT)
-		(= i 0)
-		(while (< i 6)
+		(for ((= i 0)) (< i 6) ((++ i))
 			((= [ripple i] (Clone Ripple))
 				view: 202
 				cycleSpeed: 1
@@ -86,7 +85,6 @@
 			(if (>= howFast 1)
 				([ripple i] setCycle: Forward)
 			)
-			(++ i)
 		)
 		(addToPics add: urn eachElementDo: #init doit:)
 		(vine1 init:)
@@ -158,8 +156,6 @@
 )
 
 (instance Ripple of Prop
-	(properties)
-	
 	(method (handleEvent event)
 		(cond 
 			((event claimed?)

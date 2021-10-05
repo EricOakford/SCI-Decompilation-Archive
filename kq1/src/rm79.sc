@@ -488,7 +488,7 @@
 										#width 280
 										#mode teJustCenter
 									)
-									(SetItemOwner itemOffered)
+									(PutInRoom itemOffered)
 								)
 							)
 							(iBeans
@@ -875,7 +875,7 @@
 					cycleSpeed: 2
 					setCycle: EndLoop self
 				)
-				(SetItemOwner iCeramicBowl)
+				(PutInRoom iCeramicBowl)
 			)
 			(2
 				(NormalEgo)
@@ -979,7 +979,7 @@
 					)
 				)
 				(head loop: 2 cel: 0 setCycle: EndLoop self)
-				(SetItemOwner itemOffered)
+				(PutInRoom itemOffered)
 			)
 			(2
 				(ego stopUpd:)

@@ -259,7 +259,7 @@
 				(if
 					(and
 						(or (cast contains: theGoat) (Btst fGoatFollows))
-						(!= roomWithDeadGoat curRoomNum)
+						(!= deadGoatRoom curRoomNum)
 					)
 					(curRoom setScript: GoatButt)
 				else

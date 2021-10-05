@@ -137,7 +137,7 @@
 			((super handleEvent: event) (return))
 			((or (Said 'look,check<down') (Said 'look,check/grass'))
 				(Print 38 0)
-				(if (== roomWithBeanstalk curRoomNum)
+				(if (== stalkRoom curRoomNum)
 					(Print 38 1)
 				)
 			)
@@ -154,7 +154,7 @@
 			((Said 'look,check>')
 				(cond 
 					((Said '[<at,around][/room,clearing]')
-						(if (!= curRoomNum roomWithBeanstalk)
+						(if (!= curRoomNum stalkRoom)
 							(Print 38 5)
 						else
 							(Print 38 6)

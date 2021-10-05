@@ -75,7 +75,7 @@
 		(bush init:)
 		(cond 
 			((not (Btst fGoatFollows))
-				(if (and (not roomWithDeadGoat) (not (Btst fOfferedGoatCarrot)))
+				(if (and (not deadGoatRoom) (not (Btst fOfferedGoatCarrot)))
 					(LoadMany VIEW 21 167)
 					(goatLpr viewChange: 167)
 					(if (and (== roomWithLiveGoat 11) (not (Btst fGoatFriend)))
@@ -177,7 +177,7 @@
 			)
 			((cast contains: theGoat)
 				(cond 
-					(roomWithDeadGoat (event claimed: FALSE))
+					(deadGoatRoom (event claimed: FALSE))
 					((or (Said 'talk,speak,say,call') (Said '/hello'))
 						(Print 10 8)
 					)
@@ -216,7 +216,7 @@
 								else
 									(Print 10 19)
 								)
-								(SetItemOwner iCarrot 15)
+								(PutInRoom iCarrot 15)
 								(Bclr fGoatFollows)
 								(if
 								(and (not (Btst fGoatPenOpen)) (& (theGoat onControl: origin) (| cLRED cLMAGENTA)))
@@ -269,7 +269,7 @@
 					(
 					(or (Said 'shoot/goat') (Said 'kill/goat/shot'))
 						(cond 
-							(roomWithDeadGoat
+							(deadGoatRoom
 								(Print 10 25)
 							)
 							((curRoom script?)
@@ -292,7 +292,7 @@
 					(
 					(or (Said 'stab,kill/goat') (Said 'use,throw/dagger'))
 						(cond 
-							(roomWithDeadGoat
+							(deadGoatRoom
 								(Print 10 25)
 							)
 							((curRoom script?)
@@ -376,7 +376,7 @@
 				(Print 10 41)
 			)
 			((Said 'attack,kick/goat')
-				(if roomWithDeadGoat
+				(if deadGoatRoom
 					(Print 10 42)
 				else
 					(Print 10 43)
@@ -407,7 +407,7 @@
 		(cond 
 			(
 				(and
-					(not roomWithDeadGoat)
+					(not deadGoatRoom)
 					(< (ego distanceTo: theGoat) 30)
 				)
 				(= cycles 0)

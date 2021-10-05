@@ -155,7 +155,7 @@
 				else
 					(Print 31 5)
 				)
-				(if (== roomWithBeanstalk curRoomNum)
+				(if (== stalkRoom curRoomNum)
 					(Print 31 6)
 				)
 			)
@@ -163,7 +163,7 @@
 				(cond 
 					((Said '[<at,around][/grass,room,ceder,clearing]')
 						(cond 
-							((== roomWithBeanstalk curRoomNum)
+							((== stalkRoom curRoomNum)
 								(Print 31 7)
 							)
 							((not (ego has: iCeramicBowl))
