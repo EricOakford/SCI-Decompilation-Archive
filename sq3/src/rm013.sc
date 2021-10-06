@@ -20,7 +20,7 @@
 	local1
 	local2
 	local3
-	saveBits
+	printObj
 	local5
 )
 (instance rm013 of Room
@@ -552,7 +552,7 @@
 				(theMusic number: 45 loop: 1 play:)
 			)
 			(3
-				(= saveBits (Print 13 33 #dispose))
+				(= printObj (Print 13 33 #dispose))
 				(= seconds 5)
 			)
 			(4 (cls) (EgoDead 901 0 0 1))

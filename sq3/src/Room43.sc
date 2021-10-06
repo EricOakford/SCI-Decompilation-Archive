@@ -26,41 +26,13 @@
 	newSound
 )
 (class BView of View
-	(properties
-		y 0
-		x 0
-		z 0
-		heading 0
-		yStep 2
-		view 0
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $0101
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-	)
-	
 	(method (delete)
-		(= signal (& signal $ffdf))
+		(&= signal $ffdf)
 		(super delete:)
 	)
 )
 
-(instance footPrint of BView
-	(properties)
-)
+(instance footPrint of BView)
 
 (instance rm43 of Room
 	(properties
@@ -74,7 +46,10 @@
 	(method (init)
 		(User canInput: TRUE canControl: FALSE)
 		(NormalEgo)
-		(if (not visitedPhleebhutStore) (Load VIEW 66) (Load VIEW 67))
+		(if (not visitedPhleebhutStore)
+			(Load VIEW 66)
+			(Load VIEW 67)
+		)
 		(Load VIEW 70)
 		(Load VIEW 121)
 		(Load SOUND 13)
@@ -84,7 +59,7 @@
 		(o init: addToPic:)
 		(wonder init: addToPic:)
 		(if (or (== terminatorState terminatorMEET) (== terminatorState terminatorSEARCHING))
-			(ego observeControl: 16384)
+			(ego observeControl: cYELLOW)
 			(door
 				view: 121
 				loop: 0
@@ -181,7 +156,7 @@
 		(if (!= curRoomNum newRoomNum) (return))
 		(if
 			(or
-				(== (ego onControl: 0) 4)
+				(== (ego onControl: 0) cGREEN)
 				(== (ego onControl: 0) 5)
 			)
 			(self newRoom: 470)
@@ -298,12 +273,16 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(if (or (not script) (== script tActions))
 			(ego illegalBits: cWHITE)
 			(cond 
-				((!= newRoomNumber 470) (theMusic owner: -1 number: 22 priority: 0 loop: -1 play:))
-				((== (theMusic number?) 22) (theMusic fade:))
+				((!= n 470)
+					(theMusic owner: -1 number: 22 priority: 0 loop: -1 play:)
+				)
+				((== (theMusic number?) 22)
+					(theMusic fade:)
+				)
 			)
 			(if
 				(and
@@ -313,14 +292,14 @@
 				(= terminatorState terminatorSEARCHING)
 			)
 			(DisposeScript EXTRA)
-			(if (not isHandsOff) (super newRoom: newRoomNumber))
+			(if (not isHandsOff)
+				(super newRoom: n)
+			)
 		)
 	)
 )
 
 (instance kid1Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -331,14 +310,14 @@
 				(car setScript: kid2Script)
 				(kid1 setMotion: MoveTo 246 160 self)
 			)
-			(2 (kid1 dispose:))
+			(2
+				(kid1 dispose:)
+			)
 		)
 	)
 )
 
 (instance kid2Script of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -348,14 +327,14 @@
 				(curRoom setScript: momScript)
 				(kid2 setMotion: MoveTo 246 160 self)
 			)
-			(2 (kid2 dispose:))
+			(2
+				(kid2 dispose:)
+			)
 		)
 	)
 )
 
 (instance momScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -368,14 +347,14 @@
 				(car setScript: popScript)
 				(mom setMotion: MoveTo 284 160 self)
 			)
-			(3 (mom dispose:))
+			(3
+				(mom dispose:)
+			)
 		)
 	)
 )
 
 (instance popScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -402,7 +381,9 @@
 				)
 				(curRoom setScript: festerScript)
 			)
-			(5 (pop dispose:))
+			(5
+				(pop dispose:)
+			)
 		)
 	)
 )
@@ -1041,102 +1022,25 @@
 )
 
 (instance tActions of Script
-	(properties)
-	
 	(method (doit)
-		(asm
-			lsg      curRoomNum
-			lag      newRoomNum
-			ne?     
-			bnt      code_1e9f
-			ret     
-code_1e9f:
-			lsl      local4
-			ldi      1
-			eq?     
-			bt       code_1eaf
-			lsl      local4
-			ldi      7
-			eq?     
-			bnt      code_1f24
-code_1eaf:
-			pushi    #cel
-			pushi    0
-			lag      terminator
-			send     4
-			push    
-			ldi      0
-			eq?     
-			bt       code_1ee7
-			pushi    #loop
-			pushi    0
-			lag      terminator
-			send     4
-			push    
-			ldi      2
-			lt?     
-			bnt      code_1ed9
-			pushi    #cel
-			pushi    0
-			lag      terminator
-			send     4
-			push    
-			ldi      4
-			eq?     
-			jmp      code_1ee4
-code_1ed9:
-			pushi    #cel
-			pushi    0
-			lag      terminator
-			send     4
-			push    
-			ldi      3
-			eq?     
-code_1ee4:
-			bnt      code_1f24
-code_1ee7:
-			pushi    #view
-			pushi    1
-			pushi    106
-			pushi    6
-			pushi    1
-			pushi    #loop
-			pushi    0
-			lag      terminator
-			send     4
-			push    
-			pushi    7
-			pushi    1
-			pushi    #cel
-			pushi    0
-			lag      terminator
-			send     4
-			push    
-			pushi    199
-			pushi    2
-			pushi    #x
-			pushi    0
-			lag      terminator
-			send     4
-			push    
-			pushi    #y
-			pushi    0
-			lag      terminator
-			send     4
-			push    
-			pushi    205
-			pushi    1
-			pushi    1
-			pushi    207
-			pushi    0
-			lofsa    footPrint
-			send     36
-code_1f24:
-			pushi    #doit
-			pushi    0
-			super    Script,  4
-			ret     
+		;this has been newly decompiled
+		(if (!= curRoomNum newRoomNum) (return))
+		(if (or (== local4 1) (== local4 7))
+			(if (== (terminator cel?) 0)
+			else
+				(if (< (terminator loop?) 2) (== (terminator cel?) 4))
+				(== (terminator cel?) 3)
+			)
+			(footPrint
+				view: 106
+				loop: (terminator loop?)
+				cel: (terminator cel?)
+				posn: (terminator x?) (terminator y?)
+				ignoreActors: 1
+				addToPic:
+			)
 		)
+		(super doit:)
 	)
 	
 	(method (changeState newState)

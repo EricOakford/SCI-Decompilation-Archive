@@ -38,11 +38,8 @@
 )
 
 (instance startShip of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (== (self state?) 3) (== (theMusic prevSignal?) 10))
+		(if (and (== (self state?) 3) (== (theMusic prevSignal?) 10))
 			(self cue:)
 		)
 		(super doit:)
@@ -53,7 +50,9 @@
 			(0
 				(= saveBits
 					(Display
-						{You enter a blackness like no other you\nhave ever experienced. All sense of time\nand speed are lost.}
+						{You enter a blackness like no other you\n
+						have ever experienced. All sense of time\n
+						and speed are lost.}
 						p_width 250
 						p_at 35 80
 						p_mode teJustCenter
@@ -80,10 +79,13 @@
 				(Timer setReal: self 3)
 			)
 			(2
-				(Display 98 0 108 saveBits)
+				(Display 98 0 p_restore saveBits)
 				(= saveBits
 					(Display
-						{A bright light becomes visible in the\ndistance. It grows larger as your ship\nraces toward it. Finally you are hurled\nout of the blackness into a parallel universe.}
+						{A bright light becomes visible in the\n
+						distance. It grows larger as your ship\n
+						races toward it. Finally you are hurled\n
+						out of the blackness into a parallel universe.}
 						p_width 250
 						p_at 35 70
 						p_mode teJustCenter
@@ -98,31 +100,31 @@
 			(4
 				(Display 98 0 p_restore saveBits)
 				(spaceShip show:)
-				(curRoom overlay: 201 5)
+				(curRoom overlay: 201 WIPEDOWN)
 				(Timer setCycle: self 1)
 			)
 			(5
-				(curRoom overlay: 202 5)
+				(curRoom overlay: 202 WIPEDOWN)
 				(Timer setCycle: self 1)
 			)
 			(6
-				(curRoom overlay: 203 5)
+				(curRoom overlay: 203 WIPEDOWN)
 				(Timer setCycle: self 1)
 			)
 			(7
-				(curRoom overlay: 204 5)
+				(curRoom overlay: 204 WIPEDOWN)
 				(Timer setCycle: self 1)
 			)
 			(8
-				(curRoom overlay: 205 5)
+				(curRoom overlay: 205 WIPEDOWN)
 				(Timer setCycle: self 1)
 			)
 			(9
-				(curRoom overlay: 206 5)
+				(curRoom overlay: 206 WIPEDOWN)
 				(Timer setCycle: self 1)
 			)
 			(10
-				(curRoom overlay: 207 5)
+				(curRoom overlay: 207 WIPEDOWN)
 				(Timer setCycle: self 1)
 			)
 			(11
@@ -141,7 +143,9 @@
 				(spaceShip hide:)
 				(Timer setReal: self 2)
 			)
-			(13 (curRoom newRoom: 115))
+			(13
+				(curRoom newRoom: 115)
+			)
 		)
 	)
 )

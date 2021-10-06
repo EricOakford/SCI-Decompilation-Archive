@@ -15,10 +15,10 @@
 (local
 	[local0 2]
 	saveBits
-	creditDialog
+	saveBits2
 )
 (procedure (DoDisplay message)
-	(= creditDialog
+	(= saveBits2
 		(Display message
 			p_width 250
 			p_at 35 120
@@ -32,7 +32,7 @@
 )
 
 (procedure (RestoreDisplay)
-	(Display 117 1 p_restore creditDialog)
+	(Display 117 1 p_restore saveBits2)
 	(RedrawCast)
 )
 
@@ -57,8 +57,6 @@
 )
 
 (instance shipScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -84,7 +82,9 @@
 			(3
 				(ship cel: 0 setLoop: 1 setCycle: EndLoop self)
 			)
-			(4 (= seconds 2))
+			(4
+				(= seconds 2)
+			)
 			(5
 				(Display 117 1 p_restore saveBits)
 				(curRoom setScript: endScript)
@@ -94,14 +94,14 @@
 )
 
 (instance endScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(end init: setCycle: EndLoop self)
 			)
-			(1 (= seconds 5))
+			(1
+				(= seconds 5)
+			)
 			(2
 				(end setCel: 255 setMotion: MoveTo 154 45 self)
 			)
@@ -112,7 +112,8 @@
 			(4
 				(= saveBits
 					(Display
-						{Thanks To The Following For Their\nCooperation In The Making Of This Game:}
+						{Thanks To The Following For Their\n
+						Cooperation In The Making Of This Game:}
 						p_width 250
 						p_at 35 85
 						p_mode teJustCenter
@@ -183,7 +184,7 @@
 			)
 			(16
 				(Display 117 1 p_restore saveBits)
-				(Display 117 1 p_restore creditDialog)
+				(Display 117 1 p_restore saveBits2)
 				(RedrawCast)
 				(= saveBits
 					(Display
@@ -196,9 +197,10 @@
 						p_save
 					)
 				)
-				(= creditDialog
+				(= saveBits2
 					(Display
-						{Robert E. "Bobbit" Heitman\nFor His Generous, Yet Verbose, Contribution of Advice, Help & Emergency Code Service}
+						{Robert E. "Bobbit" Heitman\n
+						For His Generous, Yet Verbose, Contribution of Advice, Help & Emergency Code Service}
 						p_width 250
 						p_at 35 120
 						p_mode teJustCenter
@@ -212,7 +214,7 @@
 			(17
 				(Display 117 1 p_restore saveBits)
 				(RedrawCast)
-				(Display 117 1 p_restore creditDialog)
+				(Display 117 1 p_restore saveBits2)
 				(RedrawCast)
 				(= saveBits
 					(Display
@@ -226,9 +228,11 @@
 					)
 				)
 				(RedrawCast)
-				(= creditDialog
+				(= saveBits2
 					(Display
-						{The Two Babes From Andromeda\n(Our Wives)\nFor Putting Up With Us These Last 12 Months}
+						{The Two Babes From Andromeda\n
+						(Our Wives)\n
+						For Putting Up With Us These Last 12 Months}
 						p_width 250
 						p_at 35 120
 						p_mode teJustCenter
@@ -240,9 +244,9 @@
 				(= seconds 8)
 			)
 			(18
-				(Display 117 1 p_restore creditDialog)
+				(Display 117 1 p_restore saveBits2)
 				(RedrawCast)
-				(= creditDialog
+				(= saveBits2
 					(Display
 						{You!\n(For Shelling Out Your Hard Earned Bucks To Buy This Game)}
 						p_width 250
@@ -257,7 +261,7 @@
 			)
 			(19
 				(Display 117 1 p_restore saveBits)
-				(Display 117 1 p_restore creditDialog)
+				(Display 117 1 p_restore saveBits2)
 				(RedrawCast)
 				(self changeState: 4)
 			)
@@ -266,8 +270,6 @@
 )
 
 (instance ship of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

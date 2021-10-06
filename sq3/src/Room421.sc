@@ -27,41 +27,23 @@
 	local8
 	local9
 )
-(instance deathSound of Sound
-	(properties)
-)
+(instance deathSound of Sound)
 
-(instance elevator of Actor
-	(properties)
-)
+(instance elevator of Actor)
 
-(instance elevTop of Prop
-	(properties)
-)
+(instance elevTop of Prop)
 
-(instance elevBottom of Prop
-	(properties)
-)
+(instance elevBottom of Prop)
 
-(instance cable1 of Prop
-	(properties)
-)
+(instance cable1 of Prop)
 
-(instance cable2 of View
-	(properties)
-)
+(instance cable2 of View)
 
-(instance gear of Prop
-	(properties)
-)
+(instance gear of Prop)
 
-(instance pulley1 of Actor
-	(properties)
-)
+(instance pulley1 of Actor)
 
-(instance pulley2 of Actor
-	(properties)
-)
+(instance pulley2 of Actor)
 
 (instance Room421 of Room
 	(properties
@@ -94,7 +76,7 @@
 				stopUpd:
 			)
 		)
-		(if (InRoom 16 421)
+		(if (InRoom iInvisibilityBelt 421)
 			((= theBelt (View new:))
 				view: 120
 				loop: 5
@@ -178,8 +160,7 @@
 	(method (doit)
 		(super doit:)
 		(if (!= curRoomNum newRoomNum) (return))
-		(if
-		(and (& (ego onControl: 0) $0004) (not isHandsOff))
+		(if (and (& (ego onControl: 0) cGREEN) (not isHandsOff))
 			(= global104 7)
 			(if (and (cast contains: terminator) (< local0 5))
 				(terminator setMotion: 0)
@@ -188,7 +169,7 @@
 		)
 		(if
 			(and
-				(& (ego onControl: 0) $1000)
+				(& (ego onControl: 0) cLRED)
 				(== global104 2)
 				(== festerState 0)
 				(<= (bringOnFester state?) 0)
@@ -196,9 +177,12 @@
 			(pulley1 setScript: fall)
 		)
 		(cond 
-			((== global104 1) (ego setPri: 8))
-			(
-			(and (== global104 2) (ego inRect: 0 135 91 163)) (ego setPri: 14))
+			((== global104 1)
+				(ego setPri: 8)
+			)
+			((and (== global104 2) (ego inRect: 0 135 91 163))
+				(ego setPri: 14)
+			)
 			(
 				(and
 					(== global104 2)
@@ -206,7 +190,11 @@
 					(not isHandsOff)
 				)
 				(= global104 3)
-				(ego setPri: 10 ignoreControl: 16384 observeControl: 8192)
+				(ego
+					setPri: 10
+					ignoreControl: cYELLOW
+					observeControl: cLMAGENTA
+				)
 			)
 			(
 				(and
@@ -215,7 +203,11 @@
 					(not isHandsOff)
 				)
 				(= global104 2)
-				(ego setPri: -1 observeControl: 16384 ignoreControl: 8192)
+				(ego
+					setPri: -1
+					observeControl: cYELLOW
+					ignoreControl: cLMAGENTA
+				)
 			)
 			(
 				(and
@@ -224,7 +216,11 @@
 					(ego inRect: 239 52 270 57)
 				)
 				(= global104 4)
-				(ego setPri: -1 observeControl: 16384 ignoreControl: 8192)
+				(ego
+					setPri: -1
+					observeControl: cYELLOW
+					ignoreControl: cLMAGENTA
+				)
 				(if
 					(and
 						(or (== terminatorState 1) (== terminatorState 2))
@@ -240,9 +236,15 @@
 					(not isHandsOff)
 				)
 				(= global104 3)
-				(ego setPri: 10 ignoreControl: 16384 observeControl: 8192)
+				(ego
+					setPri: 10
+					ignoreControl: cYELLOW
+					observeControl: cLMAGENTA
+				)
 			)
-			((== global104 3) (ego setPri: 10))
+			((== global104 3)
+				(ego setPri: 10)
+			)
 			(
 				(and
 					(== global104 4)
@@ -254,18 +256,22 @@
 			(
 				(and
 					(== global104 4)
-					(& (ego onControl: 0) $0200)
+					(& (ego onControl: 0) cLBLUE)
 					(not isHandsOff)
 				)
 				(ego setPri: 9)
 			)
-			((not isHandsOff) (ego setPri: -1))
+			((not isHandsOff)
+				(ego setPri: -1)
+			)
 		)
 		(cond 
-			(
-			(and (== local0 4) (terminator inRect: 0 62 237 76)) (terminator setPri: 14))
-			(
-			(and (== local0 2) (terminator inRect: 0 136 91 163)) (terminator setPri: 14))
+			((and (== local0 4) (terminator inRect: 0 62 237 76))
+				(terminator setPri: 14)
+			)
+			((and (== local0 2) (terminator inRect: 0 136 91 163))
+				(terminator setPri: 14)
+			)
 			(
 				(and
 					(!= terminatorState terminatorDEAD)
@@ -273,10 +279,15 @@
 					(terminator setPri: -1)
 				)
 			)
-			((== local0 3) (terminator setPri: 10))
-			(
-			(and (== local0 4) (& (terminator onControl: 0) $0200)) (terminator setPri: 9))
-			((== local0 4) (terminator setPri: -1))
+			((== local0 3)
+				(terminator setPri: 10)
+			)
+			((and (== local0 4) (& (terminator onControl: 0) cLBLUE))
+				(terminator setPri: 9)
+			)
+			((== local0 4)
+				(terminator setPri: -1)
+			)
 		)
 	)
 	
@@ -287,9 +298,15 @@
 				((Said 'look,converse/blatz')
 					(if (== (curRoom script?) bringOnFester)
 						(cond 
-							((== festerState 1) (Print 421 0))
-							((== festerState 2) (Print 421 1))
-							(else (Print 421 2))
+							((== festerState 1)
+								(Print 421 0)
+							)
+							((== festerState 2)
+								(Print 421 1)
+							)
+							(else
+								(Print 421 2)
+							)
 						)
 					else
 						(Print 421 2)
@@ -301,20 +318,33 @@
 							(or
 								(Said '/area')
 								(Said '/around')
-								(Said '[<around][/!*]')
+								(Said '[<around][/noword]')
 							)
 							(Print 421 3)
 						)
-						((Said '/stair') (Print 421 4))
-						((Said '/pedestal') (Print 421 5))
-						((Said '<down') (Print 421 6))
-						((or (Said '<up') (Said '/ceiling')) (Print 421 7))
+						((Said '/stair')
+							(Print 421 4)
+						)
+						((Said '/pedestal')
+							(Print 421 5)
+						)
+						((Said '<down')
+							(Print 421 6)
+						)
+						((or (Said '<up') (Said '/ceiling'))
+							(Print 421 7)
+						)
 						((Said '/android')
 							(cond 
-								((== local0 0) (Print 421 8))
-								((== local0 1) (Print 421 9))
-								(
-								(and (>= local0 2) (!= local0 5) (!= local0 6)) (Print 421 10))
+								((== local0 0)
+									(Print 421 8)
+								)
+								((== local0 1)
+									(Print 421 9)
+								)
+								((and (>= local0 2) (!= local0 5) (!= local0 6))
+									(Print 421 10)
+								)
 								((== local0 5)
 									(if
 										(and
@@ -324,7 +354,8 @@
 										(Print
 											(Format @invStr 421 11
 												(if (InRoom iInvisibilityBelt 421)
-													{Looking closely, you notice that the terminator's invisibility belt has survived relatively intact.}
+													{Looking closely, you notice that the terminator's invisibility
+													 belt has survived relatively intact.}
 												else
 													{}
 												)
@@ -345,7 +376,8 @@
 								(Print
 									(Format @invStr 421 11
 										(if (InRoom iInvisibilityBelt 421)
-											{Looking closely, you notice that the terminator's invisibility belt has survived relatively intact.}
+											{Looking closely, you notice that the terminator's
+											invisibility belt has survived relatively intact.}
 										else
 											{}
 										)
@@ -355,13 +387,27 @@
 								(Print 421 12)
 							)
 						)
-						((Said '/engine,device,equipment') (Print 421 13))
-						((Said '/cog') (Print 421 14))
-						((Said '/rope,scout,pulley,jar') (Print 421 15))
-						((Said '/banister') (Print 421 16))
-						((Said '/overhang') (Print 421 17))
-						((Said '/pit') (Print 421 18))
-						((Said '/bolt') (Print 421 19))
+						((Said '/engine,device,equipment')
+							(Print 421 13)
+						)
+						((Said '/cog')
+							(Print 421 14)
+						)
+						((Said '/rope,scout,pulley,jar')
+							(Print 421 15)
+						)
+						((Said '/banister')
+							(Print 421 16)
+						)
+						((Said '/overhang')
+							(Print 421 17)
+						)
+						((Said '/pit')
+							(Print 421 18)
+						)
+						((Said '/bolt')
+							(Print 421 19)
+						)
 						((Said '/elevator')
 							(if (or (== festerState 2) (== festerState 1))
 								(Print 421 20)
@@ -370,8 +416,7 @@
 							)
 						)
 						((Said '/button,control')
-							(if
-							(and (ego inRect: 0 37 73 133) (== global104 2))
+							(if (and (ego inRect: 0 37 73 133) (== global104 2))
 								(Print 421 22)
 							else
 								(Print 421 23)
@@ -379,8 +424,7 @@
 						)
 					)
 				)
-				(
-				(and (Said 'explore/android,debris,body') (== local0 5))
+				((and (Said 'explore/android,debris,body') (== local0 5))
 					(if
 						(and
 							(== global104 2)
@@ -389,7 +433,8 @@
 						(Print
 							(Format @invStr 421 11
 								(if (InRoom iInvisibilityBelt 421)
-									{Looking closely, you notice that the terminator's invisibility belt has survived relatively intact.}
+									{Looking closely, you notice that the terminator's
+									invisibility belt has survived relatively intact.}
 								else
 									{}
 								)
@@ -399,8 +444,7 @@
 						(Print 421 12)
 					)
 				)
-				(
-				(or (Said 'press<up') (Said 'press/button<up'))
+				((or (Said 'press<up') (Said 'press/button<up'))
 					(if (ego inRect: 39 123 62 133)
 						(Print 421 24)
 					else
@@ -413,8 +457,7 @@
 						(Said 'press<down')
 						(Said 'use/elevator')
 					)
-					(if
-					(and (ego inRect: 39 123 63 133) (== festerState 2))
+					(if (and (ego inRect: 39 123 63 133) (== festerState 2))
 						(Print 421 25)
 						(curRoom setScript: lowerEgoElevator)
 					else
@@ -428,21 +471,36 @@
 						(Print 421 27)
 					)
 				)
-				((Said 'board,drag,hold/scout,rope,jar') (Print 421 28))
-				(
-				(Said 'swing,get,press,use/scout,pulley,rope,jar')
+				((Said 'board,drag,hold/scout,rope,jar')
+					(Print 421 28)
+				)
+				((Said 'swing,get,press,use/scout,pulley,rope,jar')
 					(switch local3
-						(0 (ego setScript: doPulley))
-						(2 (Print 421 29))
-						(else  (Print 421 30))
+						(0
+							(ego setScript: doPulley)
+						)
+						(2
+							(Print 421 29)
+						)
+						(else
+							(Print 421 30)
+						)
 					)
 				)
-				((Said 'get/scout,banister,rope') (Print 421 31))
+				((Said 'get/scout,banister,rope')
+					(Print 421 31)
+				)
 				((Said 'get/belt')
 					(cond 
-						((ego has: 16) (Print 421 32))
-						((not (InRoom 16 421)) (Print 421 33))
-						((> (ego distanceTo: theBelt) 12) (NotClose))
+						((ego has: iInvisibilityBelt)
+							(Print 421 32)
+						)
+						((not (InRoom iInvisibilityBelt 421))
+							(Print 421 33)
+						)
+						((> (ego distanceTo: theBelt) 12)
+							(NotClose)
+						)
 						(else
 							(Print 421 34)
 							(theBelt dispose:)
@@ -450,18 +508,38 @@
 							(if (> (bringOnFester seconds?) 5)
 								(bringOnFester seconds: 5)
 							)
-							(ego get: 16)
+							(ego get: iInvisibilityBelt)
 						)
 					)
 				)
-				((Said 'get/android') (if (== local0 5) (Print 421 35) else (Print 421 36)))
-				((Said 'get<in/elevator') (Print 421 37))
-				((Said 'attack/android') (Print 421 38))
-				((Said 'use/orat,stick') (Print 421 39))
-				((Said 'jump') (Print 421 40))
-				((Said 'turn<off/engine') (Print 421 41))
-				((Said 'climb') (Print 421 42))
-				((Said '/scout,jar,rope,cog,device,engine') (Print 421 43))
+				((Said 'get/android')
+					(if (== local0 5)
+						(Print 421 35)
+					else
+						(Print 421 36)
+					)
+				)
+				((Said 'get<in/elevator')
+					(Print 421 37)
+				)
+				((Said 'attack/android')
+					(Print 421 38)
+				)
+				((Said 'use/orat,stick')
+					(Print 421 39)
+				)
+				((Said 'jump')
+					(Print 421 40)
+				)
+				((Said 'turn<off/engine')
+					(Print 421 41)
+				)
+				((Said 'climb')
+					(Print 421 42)
+				)
+				((Said '/scout,jar,rope,cog,device,engine')
+					(Print 421 43)
+				)
 			)
 		)
 		(return
@@ -482,15 +560,13 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(sounds eachElementDo: #fade)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance raise of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -525,8 +601,8 @@
 					view: 0
 					setLoop: -1
 					setCycle: Walk
-					illegalBits: -32768
-					observeControl: 16384
+					illegalBits: cWHITE
+					observeControl: cYELLOW
 					posn: 56 129
 					setPri: -1
 				)
@@ -538,14 +614,12 @@
 )
 
 (instance termComesUp of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(= local0 1)
 				(= festerState 1)
-				(ego observeControl: 4096)
+				(ego observeControl: cLRED)
 				(elevator
 					view: 83
 					setLoop: 2
@@ -608,7 +682,7 @@
 					(talkBubble dispose:)
 					(terminator setScript: termChase)
 					(= festerState 1)
-					(ego observeControl: 4096)
+					(ego observeControl: cLRED)
 					(elevator
 						view: 83
 						setLoop: 2
@@ -636,16 +710,14 @@
 			(5
 				(= festerState 0)
 				(cable1 stopUpd:)
-				(ego ignoreControl: 4096)
-				(terminator observeControl: 4096)
+				(ego ignoreControl: cLRED)
+				(terminator observeControl: cLRED)
 			)
 		)
 	)
 )
 
 (instance termChase of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (!= curRoomNum newRoomNum) (return))
@@ -659,27 +731,35 @@
 						)
 						(self changeState: 1)
 					)
-					(
-					(and (== global104 2) (!= state 7) (< state 8)) (self changeState: 7))
+					((and (== global104 2) (!= state 7) (< state 8))
+						(self changeState: 7)
+					)
 				)
 			)
 			((== local0 3)
 				(cond 
-					(
-					(and (== global104 4) (!= state 2) (< state 8)) (self changeState: 2))
-					(
-					(and (== global104 3) (< state 8) (!= state 7)) (self changeState: 7))
-					(
-					(and (== global104 2) (< state 8) (!= state 5)) (self changeState: 5))
+					((and (== global104 4) (!= state 2) (< state 8))
+						(self changeState: 2)
+					)
+					((and (== global104 3) (< state 8) (!= state 7))
+						(self changeState: 7)
+					)
+					((and (== global104 2) (< state 8) (!= state 5))
+						(self changeState: 5)
+					)
 				)
 			)
 			((== local0 4)
 				(cond 
-					(
-					(and (== global104 4) (< state 8) (!= state 7)) (self changeState: 7))
-					(
-					(and (== global104 3) (< state 8) (!= state 4)) (self changeState: 4))
-					((and (== global104 2) (!= state 4)) (self changeState: 4))
+					((and (== global104 4) (< state 8) (!= state 7))
+						(self changeState: 7)
+					)
+					((and (== global104 3) (< state 8) (!= state 4))
+						(self changeState: 4)
+					)
+					((and (== global104 2) (!= state 4))
+						(self changeState: 4)
+					)
 				)
 			)
 		)
@@ -689,7 +769,7 @@
 		(switch (= state newState)
 			(0
 				(= local0 2)
-				(terminator observeControl: 4096)
+				(terminator observeControl: cLRED)
 			)
 			(1
 				(terminator setMotion: MoveTo 286 156 self)
@@ -698,8 +778,8 @@
 				(terminator
 					setMotion: MoveTo 248 47 self
 					setPri: 10
-					ignoreControl: 16384 2048
-					observeControl: 8192
+					ignoreControl: cYELLOW cLCYAN
+					observeControl: cLMAGENTA
 				)
 				(= local0 3)
 			)
@@ -707,8 +787,8 @@
 				(= local0 4)
 				(terminator
 					setMotion: Chase ego 10 self
-					observeControl: 4 16384
-					ignoreControl: 8192
+					observeControl: cGREEN cYELLOW
+					ignoreControl: cLMAGENTA
 					setPri: -1
 				)
 				(= state 7)
@@ -722,20 +802,20 @@
 			(5
 				(= local0 3)
 				(terminator
-					observeControl: 2048
+					observeControl: cLCYAN
 					setMotion: MoveTo 290 156 self
-					ignoreControl: 16384
+					ignoreControl: cYELLOW
 					setPri: 10
-					observeControl: 8192
+					observeControl: cLMAGENTA
 				)
 			)
 			(6
 				(= local0 2)
 				(terminator
 					setMotion: Chase ego 10 self
-					observeControl: 16384
+					observeControl: cYELLOW
 					setPri: -1
-					ignoreControl: 8192
+					ignoreControl: cLMAGENTA
 				)
 				(= state 7)
 			)
@@ -799,8 +879,6 @@
 )
 
 (instance doPulley of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (!= curRoomNum newRoomNum) (return))
@@ -828,8 +906,7 @@
 							)
 						)
 					)
-					(if
-					(or (< (terminator x?) 113) (> (terminator x?) 192))
+					(if (or (< (terminator x?) 113) (> (terminator x?) 192))
 						(= local3 3)
 						(Print 421 44)
 					else
@@ -853,8 +930,7 @@
 							)
 						)
 					)
-					(if
-					(or (< (terminator x?) 113) (> (terminator x?) 192))
+					(if (or (< (terminator x?) 113) (> (terminator x?) 192))
 						(Print 421 44)
 						(= local3 3)
 					else
@@ -915,7 +991,10 @@
 						(= thePulley pulley2)
 						(self changeState: 1)
 					)
-					(else (NotClose) (ego setScript: 0))
+					(else
+						(NotClose)
+						(ego setScript: 0)
+					)
 				)
 			)
 			(1
@@ -1031,7 +1110,9 @@
 				)
 				(= seconds 2)
 			)
-			(6 (bonk dispose:))
+			(6
+				(bonk dispose:)
+			)
 			(7
 				(deathSound number: 91 priority: 20 play:)
 				(terminator
@@ -1065,8 +1146,6 @@
 )
 
 (instance smash of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1093,28 +1172,29 @@
 					(terminator setMotion: 0)
 				)
 			)
-			(1 (EgoDead 901 0 3 99))
+			(1
+				(EgoDead 901 0 3 99)
+			)
 		)
 	)
 )
 
 (instance bringOnFester of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (!= curRoomNum newRoomNum) (return))
-		(if
-		(and (== festerState 2) (& (ego onControl: 0) $1000))
+		(if (and (== festerState 2) (& (ego onControl: 0) cLRED))
 			(self changeState: 10)
 		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 60))
+			(0
+				(= seconds 60)
+			)
 			(1
-				(ego observeControl: 4096)
+				(ego observeControl: cLRED)
 				(= festerState 1)
 				(elevator
 					setCel: 5
@@ -1146,14 +1226,14 @@
 			(5
 				(cls)
 				(Print 421 50 #at 66 65 #dispose #title {Fester})
-				(ego ignoreControl: 4096)
+				(ego ignoreControl: cLRED)
 				(= festerState 2)
 				(= seconds 4)
 			)
 			(6
 				(cls)
 				(HandsOn)
-				(ego ignoreControl: 4096)
+				(ego ignoreControl: cLRED)
 				(= seconds 15)
 			)
 			(7
@@ -1177,14 +1257,14 @@
 				)
 				(cable1 setCycle: EndLoop)
 			)
-			(11 (curRoom newRoom: 42))
+			(11
+				(curRoom newRoom: 42)
+			)
 		)
 	)
 )
 
 (instance fall of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1222,14 +1302,14 @@
 				(elevator hide:)
 				(= seconds 6)
 			)
-			(2 (EgoDead 901 0 0 1))
+			(2
+				(EgoDead 901 0 0 1)
+			)
 		)
 	)
 )
 
 (instance lowerEgoElevator of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1254,14 +1334,14 @@
 				)
 				(cable1 setCycle: EndLoop)
 			)
-			(2 (curRoom newRoom: 420))
+			(2
+				(curRoom newRoom: 420)
+			)
 		)
 	)
 )
 
 (instance gearActions of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (!= curRoomNum newRoomNum)

@@ -73,7 +73,7 @@
 		else
 			(= elmoAtDesk TRUE)
 			(elmo init:)
-			(trash1 setCel: (= [global567 0] 0))
+			(trash1 setCel: (= [trashVaporized 0] 0))
 			(trash1 vaporized: 0)
 		)
 		(self setScript: rmScript)
@@ -84,7 +84,13 @@
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					((Said 'look[/area]') (if elmoAtDesk (Print 93 0) else (Print 93 1)))
+					((Said 'look[/area]')
+						(if elmoAtDesk
+							(Print 93 0)
+						else
+							(Print 93 1)
+						)
+					)
 					((Said 'look/man,boss')
 						(if (and elmoAtDesk (ego inRect: 225 86 320 149))
 							(Print 93 2)
@@ -92,7 +98,9 @@
 							(Print 93 3)
 						)
 					)
-					((Said '*/complex') (Print 93 4))
+					((Said '*/complex')
+						(Print 93 4)
+					)
 					((Said 'converse/man,boy,elmo,boss,bystander')
 						(if (and elmoAtDesk (ego inRect: 225 86 320 149))
 							(Print 93 5)
@@ -103,9 +111,15 @@
 					((Said 'look,open,explore,unlock/desk,drawer')
 						(if (ego inRect: 225 86 320 149)
 							(cond 
-								(elmoAtDesk (Print 93 7))
-								(((inventory at: 11) ownedBy: curRoomNum) (Print 93 8))
-								(else (Print 93 9))
+								(elmoAtDesk
+									(Print 93 7)
+								)
+								(((inventory at: iKeycard) ownedBy: curRoomNum)
+									(Print 93 8)
+								)
+								(else
+									(Print 93 9)
+								)
 							)
 						else
 							(Print 93 10)
@@ -113,7 +127,9 @@
 					)
 					((Said 'get/key,card')
 						(cond 
-							(elmoAtDesk (Print 93 11))
+							(elmoAtDesk
+								(Print 93 11)
+							)
 							(((inventory at: iKeycard) ownedBy: curRoomNum)
 								(if (ego inRect: 275 89 300 104)
 									(ego get: iKeycard)
@@ -124,8 +140,12 @@
 									(Print 93 13)
 								)
 							)
-							((ego has: iKeycard) (Print 93 14))
-							(else (Print 93 15))
+							((ego has: iKeycard)
+								(Print 93 14)
+							)
+							(else
+								(Print 93 15)
+							)
 						)
 					)
 				)
@@ -133,19 +153,21 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (== newRoomNumber 94) (theMusic stop:))
+	(method (newRoom n)
+		(if (== n 94)
+			(theMusic stop:)
+		)
 		(timers eachElementDo: #dispose 84)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance rmScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
-		(if (== prevRoomNum 94) (ego posn: 318 65 view: 113))
+		(if (== prevRoomNum 94)
+			(ego posn: 318 65 view: 113)
+		)
 		(ego init:)
 		(if (== prevRoomNum 94)
 			(ego setMotion: MoveTo 288 65 self)
@@ -200,8 +222,6 @@
 )
 
 (instance elmo of Nerd
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -217,8 +237,6 @@
 )
 
 (instance keycard of View
-	(properties)
-	
 	(method (init)
 		(self
 			view: 115
@@ -493,18 +511,16 @@
 )
 
 (instance rick of Actor
-	(properties)
-	
 	(method (init)
 		(self
-			ignoreHorizon: 1
+			ignoreHorizon: TRUE
 			view: 131
 			x: 116
 			y: -5
 			setPri: 14
 			setCycle: Forward
 			setStep: 1 1
-			ignoreActors: 1
+			ignoreActors: TRUE
 			ignoreControl: -1
 			setScript: rickScript
 		)
@@ -513,8 +529,6 @@
 )
 
 (instance rickScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -523,24 +537,24 @@
 			(1
 				(rick setLoop: 1 setMotion: MoveTo 116 -5 self)
 			)
-			(2 (self init:))
+			(2
+				(self init:)
+			)
 		)
 	)
 )
 
 (instance ken of Actor
-	(properties)
-	
 	(method (init)
 		(self
-			ignoreHorizon: 1
+			ignoreHorizon: TRUE
 			view: 132
 			x: -11
 			y: 136
 			setPri: 14
 			setCycle: Forward
 			setStep: 1 1
-			ignoreActors: 1
+			ignoreActors: TRUE
 			ignoreControl: -1
 			setScript: kenScript
 		)
@@ -549,8 +563,6 @@
 )
 
 (instance kenScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -568,8 +580,6 @@
 )
 
 (instance rickWhip of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -595,8 +605,6 @@
 )
 
 (instance kenWhip of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -611,7 +619,9 @@
 					(ken setCycle: Forward setLoop: 0 setScript: kenScript)
 				)
 			)
-			(else  (self init:))
+			(else
+				(self init:)
+			)
 		)
 	)
 )

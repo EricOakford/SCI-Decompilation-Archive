@@ -13,7 +13,7 @@
 )
 
 (local
-	saveBits
+	printObj
 )
 (instance door of Actor
 	(properties)
@@ -171,7 +171,7 @@
 					)
 					((Said 'disembark,disembark/')
 						(switch
-							(= saveBits
+							(= printObj
 								(Print 81 14 #button {Ship} 1 #button {ScumSoft} 2)
 							)
 							(1 (curRoom newRoom: 80))
@@ -265,7 +265,7 @@
 			)
 			(8
 				(switch
-					(= saveBits
+					(= printObj
 						(Print 81 17
 							#button {Stay Here} 1
 							#button {Return to Ship} 2

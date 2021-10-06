@@ -18,7 +18,7 @@
 (local
 	notAPrettySight
 	local1
-	saveBits
+	printObj
 	local3
 )
 (instance grind of Sound
@@ -321,7 +321,7 @@
 				(= cycles 5)
 			)
 			(4
-				(= saveBits (Print 10 18 #dispose))
+				(= printObj (Print 10 18 #dispose))
 				(= seconds 6)
 			)
 			(5 (cls) (EgoDead 901 0 3 4))
@@ -448,7 +448,7 @@
 			)
 			(2
 				(ego hide:)
-				(= saveBits
+				(= printObj
 					(if (== global132 2)
 						(Print 10 19 #dispose)
 					else

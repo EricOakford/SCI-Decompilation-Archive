@@ -12,7 +12,7 @@
 )
 
 (local
-	saveBits
+	printObj
 	markSpeaking
 	scottSpeaking
 )
@@ -22,7 +22,7 @@
 
 (procedure (localproc_0837 param1 param2)
 	(cls)
-	(= saveBits 0)
+	(= printObj 0)
 	(param1 setCel: 0 setLoop: param2)
 )
 
@@ -63,7 +63,7 @@
 				(= saveDisabled 1)
 				(localproc_082c MarkHead 1)
 				(= markSpeaking 1)
-				(= saveBits
+				(= printObj
 					(Print 24 0 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 10)
@@ -77,7 +77,7 @@
 			(3
 				(localproc_082c MarkHead 1)
 				(= markSpeaking 1)
-				(= saveBits
+				(= printObj
 					(Print 24 2 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 8)
@@ -90,28 +90,28 @@
 			(5
 				(Scott setCel: 3)
 				(ScottHead dispose:)
-				(= saveBits
+				(= printObj
 					(Print 24 3 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 4)
 			)
 			(6
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 24 4 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 8)
 			)
 			(7
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 24 5 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 8)
 			)
 			(8
 				(cls)
-				(= saveBits
+				(= printObj
 					(Print 24 6 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 6)
@@ -131,7 +131,7 @@
 			(10
 				(localproc_082c MarkHead 1)
 				(= markSpeaking 1)
-				(= saveBits
+				(= printObj
 					(Print 24 8 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 2)
@@ -144,7 +144,7 @@
 			(12
 				(localproc_082c ScottHead 3)
 				(= scottSpeaking 1)
-				(= saveBits
+				(= printObj
 					(Print 24 9 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 2)
@@ -157,7 +157,7 @@
 			(14
 				(localproc_082c MarkHead 1)
 				(= markSpeaking 1)
-				(= saveBits
+				(= printObj
 					(Print 24 10 #at 10 25 #width 100 #font 600 #dispose)
 				)
 				(= seconds 2)

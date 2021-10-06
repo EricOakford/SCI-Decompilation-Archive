@@ -61,16 +61,12 @@
 )
 
 (instance openingScript of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (== (theMusic prevSignal?) -1) (== local2 1))
+		(if (and (== (theMusic prevSignal?) -1) (== local2 1))
 			(= local2 0)
 			(openingScript cue:)
 		)
-		(if
-		(and (== local2 2) (== (beamSound prevSignal?) -1))
+		(if (and (== local2 2) (== (beamSound prevSignal?) -1))
 			(= local2 0)
 			(curRoom newRoom: 155)
 		)
@@ -79,7 +75,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
+			(0
+				(= seconds 5)
+			)
 			(1
 				(curRoom overlay: 926 WIPERIGHT)
 				(= cycles 2)
@@ -110,7 +108,7 @@
 				(drip3 dispose:)
 				(drip4 dispose:)
 				(Display 1 0 p_restore saveBits1)
-				(curRoom drawPic: 150 5)
+				(curRoom drawPic: 150 WIPEDOWN)
 				(= cycles 2)
 			)
 			(5
@@ -120,7 +118,9 @@
 				(Mark stopUpd:)
 				(Scott init: setCycle: EndLoop setMotion: MoveTo 268 37 self)
 			)
-			(7 (= cycles 2))
+			(7
+				(= cycles 2)
+			)
 			(8
 				(Scott stopUpd:)
 				(= saveBits1
@@ -155,7 +155,11 @@
 				(RedrawCast)
 				(= saveBits2
 					(Display
-						{Programmed by\n\n\nGraphics by\n\nGame Development System by\n\n\nMusic by\n\nSound Effects & Music Editing by}
+						{Programmed by\n\n\n
+						Graphics by\n\n
+						Game Development System by\n\n\n
+						Music by\n\n
+						Sound Effects & Music Editing by}
 						p_width 250
 						p_at 30 25
 						p_mode teJustLeft
@@ -167,7 +171,13 @@
 				(RedrawCast)
 				(= saveBits1
 					(Display
-						{\nScott Murphy, Doug Oldfield,\nKen Koch, Chris Smith\n\nMark Crowe\n\nJeff Stephenson, Bob Heitman,\nPablo Ghenis, Stuart Goldstein\n\nBob Siebenberg\n\nMark Seibert}
+						{\nScott Murphy, Doug Oldfield,\n
+						Ken Koch, Chris Smith\n\n
+						Mark Crowe\n\n
+						Jeff Stephenson, Bob Heitman,\n
+						Pablo Ghenis, Stuart Goldstein\n\n
+						Bob Siebenberg\n\n
+						Mark Seibert}
 						p_width 250
 						p_at 80 25
 						p_mode teJustLeft
@@ -184,7 +194,11 @@
 				(RedrawCast)
 				(= saveBits1
 					(Display
-						{It has been an indeterminate amount\nof time since Roger Wilco rocketed\naway from Vohaul's burning space\nfortress. Time stands still for our\nhero in suspended animation.}
+						{It has been an indeterminate amount\n
+						of time since Roger Wilco rocketed\n
+						away from Vohaul's burning space\n
+						fortress. Time stands still for our\n
+						hero in suspended animation.}
 						p_width 250
 						p_at 35 65
 						p_mode teJustCenter
@@ -202,7 +216,13 @@
 			(12
 				(= saveBits1
 					(Display
-						{Its engines long spent, the small\nescape pod drifts aimlessly through\nunfamiliar star fields, its course\naltered many times by small asteroids\nand space debris. Inside, Roger lies\nundisturbed in his sleep chamber....\n...but not for long.}
+						{Its engines long spent, the small\n
+						escape pod drifts aimlessly through\n
+						unfamiliar star fields, its course\n
+						altered many times by small asteroids\n
+						and space debris. Inside, Roger lies\n
+						undisturbed in his sleep chamber....\n
+						...but not for long.}
 						p_width 250
 						p_at 35 65
 						p_mode teJustCenter
@@ -213,7 +233,9 @@
 				)
 				(= seconds 13)
 			)
-			(13 (= local2 1))
+			(13
+				(= local2 1)
+			)
 			(14
 				(Display 1 0 p_restore saveBits1)
 				(RedrawCast)
@@ -222,7 +244,7 @@
 			)
 			(15
 				(theMusic number: 73 loop: -1 play:)
-				(curRoom overlay: 151 6)
+				(curRoom overlay: 151 IRISIN)
 				(podOutline init: setCycle: Forward)
 				(pod setMotion: MoveTo -54 97 self)
 			)
@@ -240,7 +262,9 @@
 			(18
 				(podImage init: setCycle: EndLoop self)
 			)
-			(19 (= cycles 2))
+			(19
+				(= cycles 2)
+			)
 			(20
 				(podImage stopUpd:)
 				(scanner init: setCycle: Forward)
@@ -265,7 +289,7 @@
 			)
 			(25
 				(cast eachElementDo: #dispose)
-				(= showStyle 0)
+				(= showStyle HSHUTTER)
 				(curRoom drawPic: 153)
 				(pod3 init: setMotion: MoveTo 87 156 self)
 				(light init:)
@@ -273,7 +297,7 @@
 			)
 			(26
 				(cast eachElementDo: #dispose)
-				(curRoom drawPic: 154 3)
+				(curRoom drawPic: 154 WIPERIGHT)
 				(pod2 init: setMotion: MoveTo 184 169 self)
 				(hatch init:)
 			)
@@ -286,11 +310,15 @@
 				(beam init: stopUpd:)
 				(theMusic stop:)
 			)
-			(29 (= cycles 20))
+			(29
+				(= cycles 20)
+			)
 			(30
 				(pod2 setMotion: MoveTo 137 80 self)
 			)
-			(31 (= cycles 2))
+			(31
+				(= cycles 2)
+			)
 			(32
 				(beam dispose:)
 				(self setScript: closeHatchScript self)
@@ -309,30 +337,34 @@
 				)
 				(= seconds 12)
 			)
-			(35 (= local2 2))
+			(35
+				(= local2 2)
+			)
 		)
 	)
 )
 
 (instance openHatchScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(hatch stopUpd:)
 				(= seconds 5)
 			)
-			(1 (hatch setCycle: EndLoop self))
-			(2 (hatch stopUpd:))
-			(3 (self dispose:))
+			(1
+				(hatch setCycle: EndLoop self)
+			)
+			(2
+				(hatch stopUpd:)
+			)
+			(3
+				(self dispose:)
+			)
 		)
 	)
 )
 
 (instance closeHatchScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -347,11 +379,11 @@
 )
 
 (instance handScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= cycles 2))
+			(0
+				(= cycles 2)
+			)
 			(1
 				(hand
 					setLoop: 1
@@ -360,7 +392,9 @@
 					setMotion: MoveTo 121 191 self
 				)
 			)
-			(2 (hand setCycle: EndLoop self))
+			(2
+				(hand setCycle: EndLoop self)
+			)
 			(3
 				(light setCycle: Forward)
 				(= seconds 2)
@@ -368,8 +402,12 @@
 			(4
 				(hand setCel: 0 setMotion: MoveTo 169 191 self)
 			)
-			(5 (= cycles 15))
-			(6 (hand setCycle: EndLoop self))
+			(5
+				(= cycles 15)
+			)
+			(6
+				(hand setCycle: EndLoop self)
+			)
 			(7
 				(hand setCel: 0 setMotion: MoveTo 121 223)
 			)

@@ -20,7 +20,7 @@
 	oldEgoX
 	local2
 	local3
-	saveBits
+	printObj
 )
 (instance rm012 of Room
 	(properties
@@ -178,7 +178,7 @@
 			)
 			(3
 				(ego hide:)
-				(= saveBits (Print 12 3 #dispose))
+				(= printObj (Print 12 3 #dispose))
 				(= seconds 5)
 			)
 			(4 (cls) (EgoDead 901 0 0 1))

@@ -22,7 +22,9 @@
 		(AddMenu { Speed_}
 			{Change...`^s :--! :Faster`+ :Normal`= :Slower`-_}
 		)
-		(AddMenu { Sound_} {Volume...`^v :Sound Off`#2=1_})
+		(AddMenu { Sound_}
+			{Volume...`^v :Sound Off`#2=1_}
+		)
 		(SetMenu saveI p_said 'save')
 		(SetMenu restoreI p_said 'restore')
 		(SetMenu restartI p_said 'restart')
@@ -114,7 +116,9 @@
 				(Print MENU 6)
 				(Print
 					(Format @str
-						{In fact, you don't want your boss to know that you've been playing Space Quest ]I[ for %d hours, %d minutes and %d seconds.}
+						{In fact, you don't want your boss to know that
+						you've been playing Space Quest ]I[ for %d hours,
+						%d minutes and %d seconds.}
 						gameHours gameMinutes gameSeconds
 					)
 				)

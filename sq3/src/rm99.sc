@@ -39,10 +39,8 @@
 		(Load SOUND 93)
 		(super init:)
 		(RedrawCast)
-		(= i 0)
-		(while (< i 4)
+		(for ((= i 0)) (< i 4) ((++ i))
 			((= [spiralStar i] (SpiralStar new:)) init:)
-			(++ i)
 		)
 		(theMusic number: 94 loop: -1 play:)
 		(curRoom setScript: startShip)
@@ -50,18 +48,22 @@
 )
 
 (instance startShip of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (Timer setReal: self 10))
+			(0
+				(Timer setReal: self 10)
+			)
 			(1
 				(= local7 1)
 				(theMusic number: 93 loop: -1 play:)
 				(Timer setReal: self 2)
 			)
-			(2 (= local6 1))
-			(3 (Timer setReal: self 1))
+			(2
+				(= local6 1)
+			)
+			(3
+				(Timer setReal: self 1)
+			)
 			(4
 				(= local8 4)
 				(Timer setReal: self 1)
@@ -77,7 +79,10 @@
 			(6
 				(= saveBits
 					(Display
-						{The overwhelming force of the black hole\ndraws your ship in. Helpless to do any-\nthing, you and your passengers strap in\nand hope for the best.}
+						{The overwhelming force of the black hole\n
+						draws your ship in. Helpless to do any-\n
+						thing, you and your passengers strap in\n
+						and hope for the best.}
 						p_width 250
 						p_at 35 65
 						p_mode teJustCenter
@@ -101,14 +106,14 @@
 				)
 			)
 			(9
-				(Display 99 0 108 saveBits)
+				(Display 99 0 p_restore saveBits)
 				(curRoom newRoom: 98)
 			)
 		)
 	)
 )
 
-(class SpiralStar of Prop	;EO: was a class, but not in the class table
+(class SpiralStar of Prop	;EO: not in the class table
 	(properties
 		view 101
 		loop 0
@@ -128,9 +133,9 @@
 			(self sel_344:)
 		else
 			(if (and local8 (> radius 187))
-				(= radius (+ radius sel_341))
+				(+= radius sel_341)
 			)
-			(= radius (- radius sel_341))
+			(-= radius sel_341)
 			(= sel_342 (mod (+ sel_342 sel_343 360) 360))
 			(self
 				posn: (+ 160 (CosMult sel_342 radius)) (+ 95 (SinMult sel_342 radius))
@@ -180,8 +185,7 @@
 				sel_343: -5
 			)
 		else
-			(if
-			(and (not local5) (not local7) (== 1 (Random 1 2)))
+			(if (and (not local5) (not local7) (== 1 (Random 1 2)))
 				(= local5 1)
 				(self
 					type: 1
@@ -207,7 +211,9 @@
 					sel_343: (* (Random 1 2) 5)
 				)
 			)
-			(if local8 (-- local8))
+			(if local8
+				(-- local8)
+			)
 		)
 		(self doit:)
 	)

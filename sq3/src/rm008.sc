@@ -24,7 +24,7 @@
 	oldLoop
 	clawX
 	clawY
-	saveBits
+	printObj
 	local7
 	local8
 )
@@ -655,7 +655,7 @@
 					cycleSpeed: 2
 					setCycle: EndLoop self
 				)
-				(= saveBits (Print 8 60 #dispose))
+				(= printObj (Print 8 60 #dispose))
 			)
 			(1
 				(ego setLoop: 1 cel: 0 cycleSpeed: 1 setCycle: Forward)

@@ -21,7 +21,10 @@
 	(method (init &tmp [temp0 50])
 		(User canInput: TRUE canControl: FALSE)
 		(super init:)
-		(if (not forceBeamDestroyed) (Load VIEW 91) (ray init:))
+		(if (not forceBeamDestroyed)
+			(Load VIEW 91)
+			(ray init:)
+		)
 		(self setScript: RayScript)
 	)
 	
@@ -31,48 +34,76 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 		(cond 
 			((Said 'look>')
 				(cond 
-					((Said '[/around,scope]') (Print 690 0))
-					((Said '/moon') (Print 690 1))
+					((Said '[/around,scope]')
+						(Print 690 0)
+					)
+					((Said '/moon')
+						(Print 690 1)
+					)
 					((Said '/beam')
 						(cond 
-							(forceBeamDestroyed (Print 690 2))
-							(decodedMessage (Print 690 3))
-							(else (Print 690 4))
+							(forceBeamDestroyed
+								(Print 690 2)
+							)
+							(decodedMessage
+								(Print 690 3)
+							)
+							(else
+								(Print 690 4)
+							)
 						)
 					)
 				)
 			)
-			((Said 'get>') (event claimed: TRUE) (Print 690 5))
+			((Said 'get>')
+				(event claimed: TRUE)
+				(Print 690 5)
+			)
 		)
 	)
 )
 
 (instance RayScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
+			(0
+				(= seconds 5)
+			)
 			(1
 				(cond 
 					((not lookedAtForceBeam)
 						(cond 
-							(decodedMessage (Print 690 6))
-							(forceBeamDestroyed (Print 690 7))
-							(else (Print 690 8))
+							(decodedMessage
+								(Print 690 6)
+							)
+							(forceBeamDestroyed
+								(Print 690 7)
+							)
+							(else
+								(Print 690 8)
+							)
 						)
 						(theGame changeScore: 10)
 					)
-					(forceBeamDestroyed (if decodedMessage (Print 690 9) else (Print 690 10)))
-					(decodedMessage (Print 690 11))
-					(else (Print 690 12))
+					(forceBeamDestroyed
+						(if decodedMessage
+							(Print 690 9)
+						else
+							(Print 690 10)
+						)
+					)
+					(decodedMessage
+						(Print 690 11)
+					)
+					(else
+						(Print 690 12)
+					)
 				)
 				(= lookedAtForceBeam TRUE)
 				(= seconds 5)
@@ -86,8 +117,6 @@
 )
 
 (instance ray of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

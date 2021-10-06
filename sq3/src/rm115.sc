@@ -34,11 +34,8 @@
 )
 
 (instance startShip of Script
-	(properties)
-	
 	(method (doit)
-		(if
-		(and (== (self state?) 1) (== (theMusic prevSignal?) 20))
+		(if (and (== (self state?) 1) (== (theMusic prevSignal?) 20))
 			(self cue:)
 		)
 		(super doit:)
@@ -49,7 +46,8 @@
 			(0
 				(= saveBits
 					(Display
-						{You cut the engines to sub-lightspeed as\nyou near a seemingly habitable planet.}
+						{You cut the engines to sub-lightspeed as\n
+						you near a seemingly habitable planet.}
 						p_width 250
 						p_at 35 140
 						p_mode teJustCenter
@@ -62,12 +60,18 @@
 			)
 			(1)
 			(2
-				(Display 115 0 108 saveBits)
+				(Display 115 0 p_restore saveBits)
 				(Timer setReal: self 2)
 			)
-			(3 (spaceShip init:))
-			(4 (Timer setReal: self 2))
-			(5 (curRoom newRoom: 116))
+			(3
+				(spaceShip init:)
+			)
+			(4
+				(Timer setReal: self 2)
+			)
+			(5
+				(curRoom newRoom: 116)
+			)
 		)
 	)
 )
@@ -92,7 +96,7 @@
 			(self dispose:)
 			(startShip cue:)
 		else
-			(= local1 (- local1 local2))
+			(-= local1 local2)
 			(= local3 (mod (+ local3 local4 360) 360))
 			(self
 				posn: (+ 190 (CosMult local3 local1)) (+ 50 (SinMult local3 local1))

@@ -13,9 +13,7 @@
 (local
 	doneTime
 )
-(instance fred of Actor
-	(properties)
-)
+(instance fred of Actor)
 
 (instance rm777 of Room
 	(properties
@@ -45,12 +43,20 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (== (++ machineSpeed) 1) (= doneTime (+ 60 (GetTime))))
+		(if (== (++ machineSpeed) 1)
+			(= doneTime (+ 60 (GetTime)))
+		)
 		(if (u< doneTime (GetTime))
 			(cond 
-				((<= machineSpeed 30) (= howFast 0))
-				((<= machineSpeed 60) (= howFast 1))
-				(else (= howFast 2))
+				((<= machineSpeed 30)
+					(= howFast slow)
+				)
+				((<= machineSpeed 60)
+					(= howFast medium)
+				)
+				(else
+					(= howFast fast)
+				)
 			)
 			(theGame setSpeed: 5)
 			(RedrawCast)

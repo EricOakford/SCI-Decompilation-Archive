@@ -56,8 +56,6 @@
 )
 
 (instance rmScript of Script
-	(properties)
-	
 	(method (doit)
 		(if (== (theMusic prevSignal?) -1)
 			(if
@@ -68,8 +66,7 @@
 				)
 				(self cue:)
 			)
-			(if
-			(and (== (theMusic number?) 66) (!= (theMusic state?) 3))
+			(if (and (== (theMusic number?) 66) (!= (theMusic state?) 3))
 				(if (< (self state?) 19) (theMusic play:))
 				(if (== (self state?) 19) (self cue:))
 			)
@@ -108,14 +105,25 @@
 				(theMusic number: 66 loop: 1 play:)
 				(eyes setCycle: CycleTo 3 1 self)
 			)
-			(4 (= seconds 3))
+			(4
+				(= seconds 3)
+			)
 			(5
 				(eyes cel: 0 setCycle: CycleTo 3 1 self)
 			)
-			(6 (= cycles 15))
-			(7 (eyes cel: 0) (= cycles 2))
-			(8 (eyes setCycle: EndLoop self))
-			(9 (bub0 init:))
+			(6
+				(= cycles 15)
+			)
+			(7
+				(eyes cel: 0)
+				(= cycles 2)
+			)
+			(8
+				(eyes setCycle: EndLoop self)
+			)
+			(9
+				(bub0 init:)
+			)
 			(10
 				(eyes
 					setLoop: 1
@@ -124,8 +132,12 @@
 					setCycle: EndLoop self
 				)
 			)
-			(11 (eyes setCycle: BegLoop self))
-			(12 (eyes setCycle: EndLoop self))
+			(11
+				(eyes setCycle: BegLoop self)
+			)
+			(12
+				(eyes setCycle: EndLoop self)
+			)
 			(13
 				(eyes setCycle: CycleTo 2 -1 self)
 			)
@@ -141,13 +153,19 @@
 					setCycle: EndLoop self
 				)
 			)
-			(16 (eyes setCycle: BegLoop self))
-			(17 (eyes setCycle: EndLoop self))
+			(16
+				(eyes setCycle: BegLoop self)
+			)
+			(17
+				(eyes setCycle: EndLoop self)
+			)
 			(18
 				(eyes stopUpd:)
 				(= cycles 2)
 			)
-			(19 (eyes stopUpd:))
+			(19
+				(eyes stopUpd:)
+			)
 			(20
 				(= oldCursor normalCursor)
 				(theGame setCursor: normalCursor (HaveMouse))
@@ -162,8 +180,6 @@
 )
 
 (instance bubScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -191,8 +207,6 @@
 )
 
 (instance bub0 of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -207,8 +221,6 @@
 )
 
 (instance bub1 of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -222,8 +234,6 @@
 )
 
 (instance bub2 of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -237,8 +247,6 @@
 )
 
 (instance bub3 of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

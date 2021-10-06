@@ -11,8 +11,6 @@
 )
 
 (instance postCard of Code
-	(properties)
-	
 	(method (init)
 		(Load VIEW 73)
 		(super init:)
@@ -74,8 +72,6 @@
 )
 
 (instance card of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

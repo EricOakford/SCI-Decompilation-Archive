@@ -592,7 +592,7 @@
 	global564
 	global565
 	global566
-	global567
+	trashVaporized
 	global568
 	global569
 	global570
@@ -1030,7 +1030,7 @@
 		(super startRoom: roomNum)
 	)
 	
-	(method (handleEvent event &tmp item saveBits evt temp3 nextRoom evtX evtY evtMod temp8 [str 50])
+	(method (handleEvent event &tmp item obj evt temp3 nextRoom evtX evtY evtMod temp8 [str 50])
 		(if (event claimed?) (return))
 		(super handleEvent: event)
 		(if (== calcOn TRUE)
@@ -1230,7 +1230,7 @@
 						)
 						((& evtMod shiftDown)
 							(event claimed: TRUE)
-							(= saveBits
+							(= obj
 								(Print
 									(Format @str 0 29 evtX evtY)
 									#at
@@ -1255,7 +1255,7 @@
 							(while (!= mouseUp ((= evt (Event new:)) type?))
 								(evt dispose:)
 							)
-							(saveBits dispose:)
+							(obj dispose:)
 							(evt dispose:)
 						)
 						((& evtMod ctrlDown)

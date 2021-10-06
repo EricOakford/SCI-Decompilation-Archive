@@ -12,29 +12,17 @@
 	Room420 0
 )
 
-(instance elevTop of View
-	(properties)
-)
+(instance elevTop of View)
 
-(instance elevBottom of View
-	(properties)
-)
+(instance elevBottom of View)
 
-(instance cable1 of View
-	(properties)
-)
+(instance cable1 of View)
 
-(instance cable2 of View
-	(properties)
-)
+(instance cable2 of View)
 
-(instance cable3 of View
-	(properties)
-)
+(instance cable3 of View)
 
-(instance cable4 of View
-	(properties)
-)
+(instance cable4 of View)
 
 (instance Room420 of Room
 	(properties
@@ -161,7 +149,9 @@
 	(method (doit)
 		(super doit:)
 		(if (!= curRoomNum newRoomNum) (return))
-		(if (& (ego onControl: 1) $0040) (curRoom newRoom: 42))
+		(if (& (ego onControl: origin) cBROWN)
+			(curRoom newRoom: 42)
+		)
 	)
 	
 	(method (handleEvent event)
@@ -175,15 +165,26 @@
 								(or
 									(Said '/area')
 									(Said '/around')
-									(Said '[<around][/!*]')
+									(Said '[<around][/noword]')
 								)
 								(Print 420 0)
 							)
-							((Said '/elevator') (Print 420 1))
-							((Said '/button,console,control') (Print 420 2))
-							((Said '<up') (Print 420 3))
-							((Said '/pit') (Print 420 4))
-							(else (Print 420 5) (event claimed: TRUE))
+							((Said '/elevator')
+								(Print 420 1)
+							)
+							((Said '/button,console,control')
+								(Print 420 2)
+							)
+							((Said '<up')
+								(Print 420 3)
+							)
+							((Said '/pit')
+								(Print 420 4)
+							)
+							(else
+								(Print 420 5)
+								(event claimed: TRUE)
+							)
 						)
 					)
 					(
@@ -198,8 +199,12 @@
 							(NotClose)
 						)
 					)
-					((Said 'press<down') (Print 420 6))
-					((Said 'climb') (Print 420 7))
+					((Said 'press<down')
+						(Print 420 6)
+					)
+					((Said 'climb')
+						(Print 420 7)
+					)
 				)
 			else
 				FALSE
@@ -207,25 +212,37 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(if (!= newRoomNumber 421)
-			(theMusic owner: -1 number: 22 priority: 1 loop: -1 play:)
+	(method (newRoom n)
+		(if (!= n 421)
+			(theMusic
+				owner: -1
+				number: 22
+				priority: 1
+				loop: -1
+				play:
+			)
 		)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance raise of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (!= curRoomNum newRoomNum) (return))
 		(cond 
-			((< (Abs (- (ego y?) (cable1 y?))) 2) (cable1 dispose:))
-			((< (Abs (- (ego y?) (cable2 y?))) 2) (cable2 dispose:))
-			((< (Abs (- (ego y?) (cable3 y?))) 2) (cable3 dispose:))
-			((< (Abs (- (ego y?) (cable4 y?))) 2) (cable4 dispose:))
+			((< (Abs (- (ego y?) (cable1 y?))) 2)
+				(cable1 dispose:)
+			)
+			((< (Abs (- (ego y?) (cable2 y?))) 2)
+				(cable2 dispose:)
+			)
+			((< (Abs (- (ego y?) (cable3 y?))) 2)
+				(cable3 dispose:)
+			)
+			((< (Abs (- (ego y?) (cable4 y?))) 2)
+				(cable4 dispose:)
+			)
 		)
 	)
 	
@@ -257,16 +274,46 @@
 )
 
 (instance lowerElevator of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
 		(if (!= curRoomNum newRoomNum) (return))
 		(cond 
-			((< (Abs (- (ego y?) (cable1 y?))) 2) (cable1 view: 83 loop: 1 cel: 3 forceUpd: stopUpd:))
-			((< (Abs (- (ego y?) (cable2 y?))) 2) (cable2 view: 83 loop: 1 cel: 3 forceUpd: stopUpd:))
-			((< (Abs (- (ego y?) (cable3 y?))) 2) (cable3 view: 83 loop: 1 cel: 3 forceUpd: stopUpd:))
-			((< (Abs (- (ego y?) (cable4 y?))) 2) (cable4 view: 83 loop: 1 cel: 3 forceUpd: stopUpd:))
+			((< (Abs (- (ego y?) (cable1 y?))) 2)
+				(cable1
+					view: 83
+					loop: 1
+					cel: 3
+					forceUpd:
+					stopUpd:
+				)
+			)
+			((< (Abs (- (ego y?) (cable2 y?))) 2)
+				(cable2
+					view: 83
+					loop: 1
+					cel: 3
+					forceUpd:
+					stopUpd:
+				)
+			)
+			((< (Abs (- (ego y?) (cable3 y?))) 2)
+				(cable3
+					view: 83
+					loop: 1
+					cel: 3
+					forceUpd:
+					stopUpd:
+				)
+			)
+			((< (Abs (- (ego y?) (cable4 y?))) 2)
+				(cable4
+					view: 83
+					loop: 1
+					cel: 3
+					forceUpd:
+					stopUpd:
+				)
+			)
 		)
 	)
 	

@@ -15,59 +15,33 @@
 
 (local
 	[local0 2]
-	musicChannels
+	numVoices
 )
-(instance ship of Actor
-	(properties)
-)
+(instance ship of Actor)
 
-(instance shadow of Actor
-	(properties)
-)
+(instance shadow of Actor)
 
-(instance cockPit of Prop
-	(properties)
-)
+(instance cockPit of Prop)
 
-(instance Roger of Actor
-	(properties)
-)
+(instance Roger of Actor)
 
-(instance Mark of Actor
-	(properties)
-)
+(instance Mark of Actor)
 
-(instance Scott of Actor
-	(properties)
-)
+(instance Scott of Actor)
 
-(instance ramp of Prop
-	(properties)
-)
+(instance ramp of Prop)
 
-(instance Ken of Actor
-	(properties)
-)
+(instance Ken of Actor)
 
-(instance bigRoger of Actor
-	(properties)
-)
+(instance bigRoger of Actor)
 
-(instance sMouth of Prop
-	(properties)
-)
+(instance sMouth of Prop)
 
-(instance mMouth of Prop
-	(properties)
-)
+(instance mMouth of Prop)
 
-(instance kMouth of Prop
-	(properties)
-)
+(instance kMouth of Prop)
 
-(instance rMouth of Prop
-	(properties)
-)
+(instance rMouth of Prop)
 
 (instance Room116 of Room
 	(properties
@@ -75,12 +49,14 @@
 	)
 	
 	(method (init)
-		(= musicChannels (DoSound NumVoices))
+		(= numVoices (DoSound NumVoices))
 		(Load SOUND 99)
 		(Load SOUND 83)
 		(Load SOUND 38)
 		(Load SOUND 40)
-		(if (== musicChannels 1) (Load SOUND 16))
+		(if (== numVoices 1)
+			(Load SOUND 16)
+		)
 		(= horizon -4000)
 		(theGame setSpeed: 5)
 		(HandsOff)
@@ -89,14 +65,12 @@
 		(self setScript: Actions)
 	)
 	
-	(method (newRoom newRoomNumber)
-		(super newRoom: newRoomNumber)
+	(method (newRoom n)
+		(super newRoom: n)
 	)
 )
 
 (instance Actions of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -200,7 +174,9 @@
 					init:
 				)
 			)
-			(9 (= seconds 2))
+			(9
+				(= seconds 2)
+			)
 			(10
 				(curRoom drawPic: 117 DISSOLVE)
 				(cast eachElementDo: #hide)
@@ -220,7 +196,7 @@
 				(= seconds 3)
 			)
 			(11
-				(if (== musicChannels 1)
+				(if (== numVoices 1)
 					(theMusic stop:)
 					(theMusic number: 16 loop: -1 play:)
 				)
@@ -382,7 +358,9 @@
 			(26
 				(ego setMotion: MoveTo 54 157 self)
 			)
-			(27 (= seconds 7))
+			(27
+				(= seconds 7)
+			)
 			(28
 				(cockPit setCycle: BegLoop self)
 			)
@@ -427,15 +405,17 @@
 			(36
 				(ship setMotion: MoveTo 215 -5 self)
 			)
-			(37 (= seconds 2))
-			(38 (curRoom newRoom: 117))
+			(37
+				(= seconds 2)
+			)
+			(38
+				(curRoom newRoom: 117)
+			)
 		)
 	)
 )
 
 (instance KenMoveIntoBuilding of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -449,8 +429,6 @@
 )
 
 (instance MarkMoveIntoBuilding of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -464,8 +442,6 @@
 )
 
 (instance ScottMoveIntoBuilding of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

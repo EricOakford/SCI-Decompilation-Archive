@@ -45,16 +45,13 @@
 	
 	(method (handleEvent event)
 		(super handleEvent: event)
-		(if
-		(or (!= (event type?) saidEvent) (event claimed?))
+		(if (or (!= (event type?) saidEvent) (event claimed?))
 			(return)
 		)
 	)
 )
 
 (instance OpenDoor of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
@@ -66,7 +63,9 @@
 				(guard1 init: setMotion: MoveTo 149 116)
 				(guard2 init: setMotion: MoveTo 155 116)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(door setCycle: BegLoop self)
 				(ego hide:)
@@ -87,7 +86,9 @@
 				(= seconds 1)
 				(door dispose:)
 			)
-			(6 (= cycles 2))
+			(6
+				(= cycles 2)
+			)
 			(7
 				(ego setMotion: MoveTo 145 116 self)
 			)
@@ -103,7 +104,7 @@
 					view: 0
 					setStep: 3 2
 					posn: 277 171
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setPri: -1
 					setMotion: MoveTo 145 171 self
 				)
@@ -175,8 +176,6 @@
 )
 
 (instance door of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -191,8 +190,6 @@
 )
 
 (instance guard1 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -208,8 +205,6 @@
 )
 
 (instance guard2 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -225,8 +220,6 @@
 )
 
 (instance elevator of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

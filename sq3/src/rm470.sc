@@ -14,7 +14,7 @@
 )
 
 (local
-	saveBits
+	printObj
 	lookedAtCounter
 	local2
 	eyesCel
@@ -47,7 +47,11 @@
 )
 
 (procedure (localproc_1788)
-	(if saveBits (balloon setCel: 3) (cls) (= saveBits 0))
+	(if printObj
+		(balloon setCel: 3)
+		(cls)
+		(= printObj 0)
+	)
 	(head cel: 0)
 	(eyes posn: 140 55 setLoop: 1 setCel: 0)
 	(lHand view: 80 setLoop: 6 setCel: 0 posn: 166 80 hide:)
@@ -97,24 +101,22 @@
 		(lHand init: stopUpd: hide: setScript: EarWax)
 		(mouth init:)
 		(balloon init: setCel: 3)
-		(if
-		(or (== (theMusic state?) 0) (== (theMusic number?) 22))
+		(if (or (== (theMusic state?) 0) (== (theMusic number?) 22))
 			(theMusic number: 13 priority: 3 loop: -1 play:)
 		)
-		(= saveBits 0)
+		(= printObj 0)
 		(self setScript: Howdy)
 	)
 	
 	(method (doit &tmp [temp0 30])
 		(super doit:)
-		(if
-		(and (== (balloon cel?) 1) (not modelessDialog))
+		(if (and (== (balloon cel?) 1) (not modelessDialog))
 			(localproc_1788)
 		)
 	)
 	
 	(method (dispose)
-		(if saveBits (cls))
+		(if printObj (cls))
 		(super dispose:)
 	)
 	
@@ -122,31 +124,63 @@
 		(if (event claimed?) (return))
 		(switch (event type?)
 			(keyDown
-				(if (and (== (event message?) ENTER) saveBits)
+				(if (and (== (event message?) ENTER) printObj)
 					(localproc_1788)
 					(script cue:)
 				)
 			)
 			(saidEvent
 				(cond 
-					((Said 'look[/area,store]') (Print 470 0))
-					((Said 'look/counter,box,display,cabinet') (Print 470 1) (= lookedAtCounter TRUE))
-					(
-					(Said 'look/head,face,man,blatz,alien,animal,owner') (Print 470 2))
-					((Said 'look/mouth') (Print 470 3))
-					((Said 'look/eye') (Print 470 4))
-					((Said 'look/finger') (Print 470 5))
-					((Said 'look/mog,head') (Print 470 6))
-					((Said 'look/rock,crystal') (if (ego has: iGlowingGem) (Print 470 7) else (Print 470 8)))
-					(
-					(or (Said 'look/deck,ceiling') (Said 'look<up,down')) (Print 470 9))
-					((Said 'look/pane') (Print 470 10))
-					((Said 'look/partition') (Print 470 11))
-					((Said 'look/glass') (Print 470 12))
-					((Said 'look/rack') (Print 470 13))
-					((Said 'look/shirt') (Print 470 14))
-					(
-					(Said 'look/shelf,skull,bone,pilot,android,debris,domino') (Print 470 15))
+					((Said 'look[/area,store]')
+						(Print 470 0)
+					)
+					((Said 'look/counter,box,display,cabinet')
+						(Print 470 1)
+						(= lookedAtCounter TRUE)
+					)
+					((Said 'look/head,face,man,blatz,alien,animal,owner')
+						(Print 470 2)
+					)
+					((Said 'look/mouth')
+						(Print 470 3)
+					)
+					((Said 'look/eye')
+						(Print 470 4)
+					)
+					((Said 'look/finger')
+						(Print 470 5)
+					)
+					((Said 'look/mog,head')
+						(Print 470 6)
+					)
+					((Said 'look/rock,crystal')
+						(if (ego has: iGlowingGem)
+							(Print 470 7)
+						else
+							(Print 470 8)
+						)
+					)
+					((or (Said 'look/deck,ceiling') (Said 'look<up,down'))
+						(Print 470 9)
+					)
+					((Said 'look/pane')
+						(Print 470 10)
+					)
+					((Said 'look/partition')
+						(Print 470 11)
+					)
+					((Said 'look/glass')
+						(Print 470 12)
+					)
+					((Said 'look/rack')
+						(Print 470 13)
+					)
+					((Said 'look/shirt')
+						(Print 470 14)
+					)
+					((Said 'look/shelf,skull,bone,pilot,android,debris,domino')
+						(Print 470 15)
+					)
 					((Said 'look,read/postcard,card')
 						(if (== thePostcard 6)
 							(= thePostcard 1)
@@ -172,14 +206,24 @@
 								)
 								(curRoom setScript: ScumScript)
 							)
-							(
-							(or (Said '/pestulon') (Said '/blatz/pestulon')) (curRoom setScript: PestScript))
-							(else (event claimed: TRUE) (Print 470 16))
+							((or (Said '/pestulon') (Said '/blatz/pestulon'))
+								(curRoom setScript: PestScript)
+							)
+							(else
+								(event claimed: TRUE)
+								(Print 470 16)
+							)
 						)
 					)
-					((Said 'break,beat') (Print 470 17))
-					((Said 'rob,attack') (Print 470 18))
-					((Said 'kiss') (Print 470 19))
+					((Said 'break,beat')
+						(Print 470 17)
+					)
+					((Said 'rob,attack')
+						(Print 470 18)
+					)
+					((Said 'kiss')
+						(Print 470 19)
+					)
 					((Said 'wear,(drop<on)/cap')
 						(if (ego has: iChickenHat)
 							(= wearingChickenHat TRUE)
@@ -190,26 +234,49 @@
 					)
 					((Said 'remove,(get<off)/cap')
 						(cond 
-							((not (ego has: iChickenHat)) (DontHave))
-							(wearingChickenHat (= wearingChickenHat FALSE) (Print 470 21))
-							(else (Print 470 22))
-						)
-					)
-					(
-					(Said 'get/skull,bone,android,pilot,mog,debris,head') (Print 470 23))
-					((Said 'get>')
-						(if (= item (inventory firstTrue: #saidMe))
-							(cond 
-								((item ownedBy: 470) (Print 470 23))
-								((item ownedBy: ego) (Print 470 24))
-								(else (Print 470 25))
+							((not (ego has: iChickenHat))
+								(DontHave)
+							)
+							(wearingChickenHat
+								(= wearingChickenHat FALSE)
+								(Print 470 21)
+							)
+							(else
+								(Print 470 22)
 							)
 						)
 					)
-					(
-					(Said 'buy/skull,bone,android,pilot,mog,debris,head') (Print 470 26))
-					((Said 'buy/crystal,rock') (if (ego has: iGlowingGem) (Print 470 27) else (Print 470 28)))
-					((Said 'buy/postcard') (Print 470 29))
+					((Said 'get/skull,bone,android,pilot,mog,debris,head')
+						(Print 470 23)
+					)
+					((Said 'get>')
+						(if (= item (inventory firstTrue: #saidMe))
+							(cond 
+								((item ownedBy: 470)
+									(Print 470 23)
+								)
+								((item ownedBy: ego)
+									(Print 470 24)
+								)
+								(else
+									(Print 470 25)
+								)
+							)
+						)
+					)
+					((Said 'buy/skull,bone,android,pilot,mog,debris,head')
+						(Print 470 26)
+					)
+					((Said 'buy/crystal,rock')
+						(if (ego has: iGlowingGem)
+							(Print 470 27)
+						else
+							(Print 470 28)
+						)
+					)
+					((Said 'buy/postcard')
+						(Print 470 29)
+					)
 					((Said 'buy>')
 						(if (= item (inventory firstTrue: #saidMe))
 							(cond 
@@ -223,16 +290,17 @@
 										(Print 470 31)
 									)
 								)
-								((item ownedBy: ego) (Print 470 24))
-								(else (Print 470 25))
+								((item ownedBy: ego)
+									(Print 470 24)
+								)
+								(else
+									(Print 470 25)
+								)
 							)
 						)
 					)
-					(
-						(Said
-							'give,drop,sell,display,trade/crystal,crystal[<glowing]'
-						)
-						(if (ego has: 0)
+					((Said 'give,drop,sell,display,trade/crystal,crystal[<glowing]')
+						(if (ego has: iGlowingGem)
 							(if (not haggledWithFester)
 								(curRoom setScript: Orium)
 							else
@@ -247,22 +315,27 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(= saveDisabled FALSE)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
-(instance Howdy of Script
-	(properties)
-	
+(instance Howdy of Script	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 2))
+			(0
+				(= seconds 2)
+			)
 			(1
 				(FesterTalks)
-				(= saveBits
-					(Print 470 33 #at -1 1 #width 280 #font 600 #dispose)
+				(= printObj
+					(Print 470 33
+						#at -1 1
+						#width 280
+						#font 600
+						#dispose
+					)
 				)
 				(= seconds 15)
 			)
@@ -278,16 +351,19 @@
 )
 
 (instance PestScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(localproc_1788)
 				(RedrawCast)
 				(FesterTalks)
-				(= saveBits
-					(Print 470 34 #at -1 1 #width 280 #font 600 #dispose)
+				(= printObj
+					(Print 470 34
+						#at -1 1
+						#width 280
+						#font 600
+						#dispose
+					)
 				)
 				(= local2 0)
 				(EarWax changeState: 2)
@@ -302,16 +378,19 @@
 )
 
 (instance ScumScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(localproc_1788)
 				(RedrawCast)
 				(FesterTalks)
-				(= saveBits
-					(Print 470 35 #at -1 1 #width 280 #font 600 #dispose)
+				(= printObj
+					(Print 470 35
+						#at -1 1
+						#width 280
+						#font 600
+						#dispose
+					)
 				)
 				(= local2 0)
 				(EarWax changeState: 2)
@@ -326,16 +405,19 @@
 )
 
 (instance ByeScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(localproc_1788)
 				(RedrawCast)
 				(FesterTalks)
-				(= saveBits
-					(Print 470 36 #at -1 1 #width 280 #font 600 #dispose)
+				(= printObj
+					(Print 470 36
+						#at -1 1
+						#width 280
+						#font 600
+						#dispose
+					)
 				)
 				(= seconds 10)
 			)
@@ -350,8 +432,6 @@
 )
 
 (instance SalesPitch of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= seconds 2))
@@ -359,7 +439,7 @@
 				(if ((inventory at: iOratOnAStick) ownedBy: 470)
 					(FesterTalks)
 					(localproc_1714 1 0 210 93 Forward)
-					(= saveBits
+					(= printObj
 						(Print 470 37 #at -1 1 #width 280 #font 600 #dispose)
 					)
 					(= seconds 15)
@@ -368,7 +448,7 @@
 				)
 			)
 			(2
-				(if saveBits
+				(if printObj
 					(localproc_1788)
 					(= seconds 7)
 				else
@@ -379,8 +459,13 @@
 				(if ((inventory at: iChickenHat) ownedBy: 470)
 					(FesterTalks)
 					(localproc_1714 2 1 217 95 0)
-					(= saveBits
-						(Print 470 38 #at -1 1 #width 280 #font 600 #dispose)
+					(= printObj
+						(Print 470 38
+							#at -1 1
+							#width 280
+							#font 600
+							#dispose
+						)
 					)
 					(= seconds 15)
 				else
@@ -388,7 +473,7 @@
 				)
 			)
 			(4
-				(if saveBits
+				(if printObj
 					(localproc_1788)
 					(= seconds 7)
 				else
@@ -399,8 +484,13 @@
 				(if ((inventory at: iThermoUnderwear) ownedBy: 470)
 					(FesterTalks)
 					(localproc_1714 2 0 215 94 0)
-					(= saveBits
-						(Print 470 39 #at -1 1 #width 280 #font 600 #dispose)
+					(= printObj
+						(Print 470 39
+							#at -1 1
+							#width 280
+							#font 600
+							#dispose
+						)
 					)
 					(= seconds 15)
 				else
@@ -408,7 +498,7 @@
 				)
 			)
 			(6
-				(if saveBits
+				(if printObj
 					(localproc_1788)
 					(= seconds 7)
 				else
@@ -417,8 +507,13 @@
 			)
 			(7
 				(FesterTalks)
-				(= saveBits
-					(Print 470 40 #at -1 1 #width 280 #font 600 #dispose)
+				(= printObj
+					(Print 470 40
+						#at -1 1
+						#width 280
+						#font 600
+						#dispose
+					)
 				)
 				(= seconds 10)
 			)
@@ -429,8 +524,13 @@
 			(9
 				(if (== lookedAtCounter TRUE)
 					(FesterTalks)
-					(= saveBits
-						(Print 470 41 #at -1 1 #width 280 #font 600 #dispose)
+					(= printObj
+						(Print 470 41
+							#at -1 1
+							#width 280
+							#font 600
+							#dispose
+						)
 					)
 					(= seconds 15)
 				else
@@ -451,8 +551,6 @@
 )
 
 (instance Orium of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
@@ -475,19 +573,19 @@
 				(rArm setCel: 0)
 				(localproc_1788)
 				(FesterTalks)
-				(= saveBits
+				(= printObj
 					(Print 470 42 #at -1 1 #width 280 #font 600 #dispose)
 				)
 				(= seconds 8)
 			)
 			(3
-				(= haggledWithFester 1)
+				(= haggledWithFester TRUE)
 				(localproc_1788)
 				(switch (HaggleGem 350)
 					(0 (= cycles 2))
 					(1
 						(ego get: iBuckazoids put: iGlowingGem)
-						(= buckazoids (+ buckazoids 350))
+						(+= buckazoids 350)
 						(rock dispose:)
 						(theGame changeScore: 2)
 						(HandsOn)
@@ -500,7 +598,7 @@
 					(0 (= cycles 2))
 					(1
 						(ego get: iBuckazoids put: iGlowingGem)
-						(= buckazoids (+ buckazoids 400))
+						(+= buckazoids 400)
 						(rock dispose:)
 						(theGame changeScore: 4)
 						(HandsOn)
@@ -513,7 +611,7 @@
 					(0 (= cycles 2))
 					(1
 						(ego get: iBuckazoids put: iGlowingGem)
-						(= buckazoids (+ buckazoids 425))
+						(+= buckazoids 425)
 						(rock dispose:)
 						(theGame changeScore: 8)
 						(HandsOn)
@@ -523,7 +621,7 @@
 			)
 			(6
 				(FesterTalks)
-				(= saveBits
+				(= printObj
 					(Print 470 43 #at -1 1 #width 280 #font 600 #dispose)
 				)
 				(= seconds 8)
@@ -540,8 +638,6 @@
 )
 
 (instance Orium2 of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
@@ -555,7 +651,7 @@
 				(head setCel: 0)
 				(eyes setCel: 0 posn: 140 55)
 				(FesterTalks)
-				(= saveBits
+				(= printObj
 					(Print 470 44 #at -1 1 #width 280 #font 600 #dispose)
 				)
 				(= seconds 8)
@@ -576,7 +672,7 @@
 			)
 			(3
 				(FesterTalks)
-				(= saveBits
+				(= printObj
 					(Print 470 45 #at -1 1 #width 280 #font 600 #dispose)
 				)
 				(= seconds 8)
@@ -593,8 +689,6 @@
 )
 
 (instance EyeBlink of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0 (= seconds (Random 4 7)))
@@ -614,14 +708,12 @@
 )
 
 (instance MoveEye of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0 (= seconds (Random 3 5)))
 			(1
 				(cond 
-					((or saveBits (== (eyes cel?) 3)) (self init:))
+					((or printObj (== (eyes cel?) 3)) (self init:))
 					((== (eyes cel?) 0) (eyes cel: 1))
 					(else (eyes cel: 0))
 				)
@@ -632,8 +724,6 @@
 )
 
 (instance EarWax of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0 (= seconds (Random 10 25)))
@@ -656,15 +746,13 @@
 )
 
 (instance ArmUp of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
-				(if saveBits (= seconds (Random 4 12)))
+				(if printObj (= seconds (Random 4 12)))
 			)
 			(1
-				(if saveBits
+				(if printObj
 					(rHand hide:)
 					(rArm setCel: 1)
 					(= seconds 2)
@@ -680,8 +768,6 @@
 )
 
 (instance head of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -695,8 +781,6 @@
 )
 
 (instance eyes of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -710,8 +794,6 @@
 )
 
 (instance mouth of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -726,8 +808,6 @@
 )
 
 (instance rArm of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -741,8 +821,6 @@
 )
 
 (instance rHand of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -756,8 +834,6 @@
 )
 
 (instance lArm of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -771,8 +847,6 @@
 )
 
 (instance lHand of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -786,8 +860,6 @@
 )
 
 (instance balloon of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -801,8 +873,6 @@
 )
 
 (instance rock of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

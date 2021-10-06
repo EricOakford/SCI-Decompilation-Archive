@@ -22,21 +22,13 @@
 	guardX
 	guardY
 )
-(instance guard of Actor
-	(properties)
-)
+(instance guard of Actor)
 
-(instance beam of View
-	(properties)
-)
+(instance beam of View)
 
-(instance blast of Actor
-	(properties)
-)
+(instance blast of Actor)
 
 (instance PestRegion of Region
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(Load VIEW 92)
@@ -62,16 +54,19 @@
 							(or
 								(Said '/area')
 								(Said '/around')
-								(Said '[<around][/!*]')
+								(Said '[<around][/noword]')
 							)
 							(Print 503 0)
 						)
 					)
-					(
-					(or (Said 'turn<on/belt') (Said 'activate/belt'))
+					((or (Said 'turn<on/belt') (Said 'activate/belt'))
 						(cond 
-							((== beltState beltDEPLETED) (Print 503 1))
-							((== beltState beltTURNEDON) (Print 503 2))
+							((== beltState beltDEPLETED)
+								(Print 503 1)
+							)
+							((== beltState beltTURNEDON)
+								(Print 503 2)
+							)
 							(else
 								(Print 503 3)
 								(= beltState beltTURNEDON)
@@ -80,11 +75,14 @@
 							)
 						)
 					)
-					(
-					(or (Said 'turn<off/belt') (Said 'deactivate/belt'))
+					((or (Said 'turn<off/belt') (Said 'deactivate/belt'))
 						(cond 
-							((== beltState beltDEPLETED) (Print 503 4))
-							((== beltState beltTURNEDOFF) (Print 503 5))
+							((== beltState beltDEPLETED)
+								(Print 503 4)
+							)
+							((== beltState beltTURNEDOFF)
+								(Print 503 5)
+							)
 							(else
 								(Print 503 3)
 								(= egoInvisible FALSE)
@@ -93,7 +91,10 @@
 							)
 						)
 					)
-					((Said 'converse/guard') (= notifyCountdown 3) (self notify:))
+					((Said 'converse/guard')
+						(= notifyCountdown 3)
+						(self notify:)
+					)
 				)
 			else
 				FALSE
@@ -107,12 +108,9 @@
 )
 
 (instance guardActions of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== pestulonGuardState guardCHASES) (== egoInvisible TRUE) (>= state 2))
+		(if (and (== pestulonGuardState guardCHASES) (== egoInvisible TRUE) (>= state 2))
 			(Print 503 6)
 			(= pestulonGuardState guardSTOPPED)
 			(guard setMotion: 0)
@@ -153,7 +151,11 @@
 			)
 			(2
 				(cond 
-					((or (< (guard x?) 3) (> (guard x?) 316)) (-- state) (guard setMotion: Follow ego 5) (= seconds 1))
+					((or (< (guard x?) 3) (> (guard x?) 316))
+						(-- state)
+						(guard setMotion: Follow ego 5)
+						(= seconds 1)
+					)
 					((and (!= pestulonGuardState guardSTOPPED) (== egoInvisible FALSE))
 						(Print 503 8)
 						(guard
@@ -200,7 +202,9 @@
 				(ego view: 92 setLoop: 2 cel: 0 setCycle: Forward)
 				(= seconds 7)
 			)
-			(6 (EgoDead 901 0 7 999))
+			(6
+				(EgoDead 901 0 7 999)
+			)
 		)
 	)
 )

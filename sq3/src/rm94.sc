@@ -89,7 +89,9 @@
 	)
 	
 	(method (doit)
-		(if (== (ego onControl:) 3) (curRoom newRoom: 93))
+		(if (== (ego onControl:) (| cBLACK cBLUE))
+			(curRoom newRoom: 93)
+		)
 		(super doit:)
 	)
 	
@@ -100,13 +102,23 @@
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '[/area]') (Print 94 0))
-							((Said '/craft,aluminum') (Print 94 1))
-							((Said '/bow') (Print 94 2))
-							((Said '/air') (Print 94 3))
+							((Said '[/area]')
+								(Print 94 0)
+							)
+							((Said '/craft,aluminum')
+								(Print 94 1)
+							)
+							((Said '/bow')
+								(Print 94 2)
+							)
+							((Said '/air')
+								(Print 94 3)
+							)
 						)
 					)
-					((Said 'climb[/down,up]') (Print 94 4))
+					((Said 'climb[/down,up]')
+						(Print 94 4)
+					)
 				)
 			)
 		)
@@ -115,17 +127,13 @@
 )
 
 (instance RunAway of Script
-	(properties)
-	
 	(method (doit)
 		(super doit:)
-		(if
-		(and (== local0 1) (== (liftOff prevSignal?) -1))
+		(if (and (== local0 1) (== (liftOff prevSignal?) -1))
 			(= local0 0)
 			(self changeState: 9)
 		)
-		(if
-		(and (== local0 2) (== (warpOut prevSignal?) -1))
+		(if (and (== local0 2) (== (warpOut prevSignal?) -1))
 			(curRoom newRoom: 14)
 		)
 	)
@@ -142,7 +150,9 @@
 			(2
 				(ego setMotion: MoveTo 269 174 self)
 			)
-			(3 (ego dispose:))
+			(3
+				(ego dispose:)
+			)
 			(4
 				(liftOff play:)
 				(ramp dispose:)
@@ -186,25 +196,25 @@
 )
 
 (instance ScottScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
-			(0 (= cycles 10))
+			(0
+				(= cycles 10)
+			)
 			(1
 				(Scott setMotion: MoveTo 261 150 self)
 			)
 			(2
 				(Scott setMotion: MoveTo 269 142 self)
 			)
-			(3 (RunAway changeState: 4))
+			(3
+				(RunAway changeState: 4)
+			)
 		)
 	)
 )
 
 (instance Scott of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -215,14 +225,12 @@
 			setStep: 6 3
 			setPri: 14
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 		)
 	)
 )
 
 (instance Mark of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -233,14 +241,12 @@
 			setStep: 6 3
 			setPri: 14
 			illegalBits: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 		)
 	)
 )
 
 (instance ship of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -251,15 +257,13 @@
 			setStep: 6 6
 			setPri: 15
 			illegalBits: 0
-			ignoreHorizon: 1
-			ignoreActors: 1
+			ignoreHorizon: TRUE
+			ignoreActors: TRUE
 		)
 	)
 )
 
 (instance ramp of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -269,14 +273,12 @@
 			posn: 266 182
 			setPri: 13
 			setCycle: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 		)
 	)
 )
 
 (instance balloon of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -286,7 +288,7 @@
 			posn: 79 162
 			setPri: 15
 			setCycle: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 		)
 	)
 )

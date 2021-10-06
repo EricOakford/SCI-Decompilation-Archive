@@ -24,8 +24,6 @@
 	bugBlockBottom
 )
 (instance bug of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self setScript: scorp)
@@ -37,17 +35,13 @@
 	)
 )
 
-(instance zap of Sound
-	(properties)
-)
+(instance zap of Sound)
 
 (instance bugBlock of Block
 	(properties)
 )
 
 (instance scorp of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(Load SOUND 90)
@@ -90,7 +84,12 @@
 			)
 			(if (or (< state 2) (== state 6))
 				(cond 
-					((!= global104 0) (if (== local0 1) (= local0 0) (self changeState: 6)))
+					((!= global104 0)
+						(if (== local0 1)
+							(= local0 0)
+							(self changeState: 6)
+						)
+					)
 					((!= local0 1)
 						(= state 1)
 						(bug
@@ -122,31 +121,37 @@
 				(switch curRoomNum
 					(42
 						(= bugBlockBottom 0)
-						(bug ignoreControl: 8192 4096)
+						(bug ignoreControl: cLMAGENTA cLRED)
 					)
 					(44
 						(= bugBlockBottom 0)
-						(bug ignoreControl: 8192)
+						(bug ignoreControl: cLMAGENTA)
 					)
-					(45 (= bugBlockBottom 82))
+					(45
+						(= bugBlockBottom 82)
+					)
 					(46
 						(= bugBlockBottom 80)
-						(bug ignoreControl: 2048)
+						(bug ignoreControl: cLCYAN)
 					)
 					(47
 						(= bugBlockBottom 105)
-						(bug ignoreControl: 16)
+						(bug ignoreControl: cRED)
 					)
-					(48 (= bugBlockBottom 86))
+					(48
+						(= bugBlockBottom 86)
+					)
 					(50
 						(= bugBlockBottom 55)
-						(bug ignoreControl: 8)
+						(bug ignoreControl: cCYAN)
 					)
 					(51
 						(= bugBlockBottom 87)
-						(bug ignoreControl: 8)
+						(bug ignoreControl: cCYAN)
 					)
-					(52 (= bugBlockBottom 97))
+					(52
+						(= bugBlockBottom 97)
+					)
 				)
 				(bugBlock top: 0 bottom: bugBlockBottom right: 319 left: 0)
 				(bug observeBlocks: bugBlock)
@@ -214,7 +219,9 @@
 				(Print 511 1)
 				(= seconds 5)
 			)
-			(5 (EgoDead 901 0 12 17))
+			(5
+				(EgoDead 901 0 12 17)
+			)
 			(6
 				(bug
 					setLoop: -1

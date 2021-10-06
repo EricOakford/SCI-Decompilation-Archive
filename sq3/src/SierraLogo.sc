@@ -17,15 +17,15 @@
 		picture 900
 	)
 	
-	(method (init &tmp newEvent [temp1 50])
+	(method (init &tmp event [str 50])
 		(= showStyle (| BLACKOUT IRISOUT))
 		(User canInput: TRUE canControl: TRUE)
 		(Load VIEW 900)
 		(super init:)
-		(while ((= newEvent (Event new:)) type?)
-			(newEvent dispose:)
+		(while ((= event (Event new:)) type?)
+			(event dispose:)
 		)
-		(newEvent dispose:)
+		(event dispose:)
 		(self setScript: rmScript)
 	)
 	
@@ -41,8 +41,6 @@
 )
 
 (instance rmScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -68,7 +66,7 @@
 			(3
 				(logo0 stopUpd:)
 				(shadow0 stopUpd:)
-				(if (>= howFast 1)
+				(if (>= howFast medium)
 					(logo1 init: setMotion: MoveTo 158 23 self)
 					(shadow1 init: setMotion: MoveTo 167 26)
 				else
@@ -290,14 +288,14 @@
 				(presents init:)
 				(= seconds 2)
 			)
-			(27 (curRoom newRoom: 1))
+			(27
+				(curRoom newRoom: 1)
+			)
 		)
 	)
 )
 
 (instance logo0 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -315,8 +313,6 @@
 )
 
 (instance logo1 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -334,8 +330,6 @@
 )
 
 (instance logo2 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -353,8 +347,6 @@
 )
 
 (instance logo3 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -372,8 +364,6 @@
 )
 
 (instance logo4 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -391,8 +381,6 @@
 )
 
 (instance logo5 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -410,8 +398,6 @@
 )
 
 (instance logo6 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -429,8 +415,6 @@
 )
 
 (instance logo7 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -448,8 +432,6 @@
 )
 
 (instance logo8 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -467,8 +449,6 @@
 )
 
 (instance logo9 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -486,8 +466,6 @@
 )
 
 (instance logo10 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -505,8 +483,6 @@
 )
 
 (instance logo11 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -524,8 +500,6 @@
 )
 
 (instance logo12 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -543,8 +517,6 @@
 )
 
 (instance logo13 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -562,8 +534,6 @@
 )
 
 (instance logo14 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -581,8 +551,6 @@
 )
 
 (instance logo15 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -600,8 +568,6 @@
 )
 
 (instance logo16 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -619,8 +585,6 @@
 )
 
 (instance shadow0 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -637,8 +601,6 @@
 )
 
 (instance shadow1 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -655,8 +617,6 @@
 )
 
 (instance shadow2 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -673,8 +633,6 @@
 )
 
 (instance shadow3 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -691,8 +649,6 @@
 )
 
 (instance shadow4 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -709,8 +665,6 @@
 )
 
 (instance shadow5 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -727,8 +681,6 @@
 )
 
 (instance shadow6 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -745,8 +697,6 @@
 )
 
 (instance shadow7 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -763,8 +713,6 @@
 )
 
 (instance shadow8 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -781,8 +729,6 @@
 )
 
 (instance shadow9 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -799,8 +745,6 @@
 )
 
 (instance shadow10 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -817,8 +761,6 @@
 )
 
 (instance shadow11 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -835,8 +777,6 @@
 )
 
 (instance shadow12 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -853,8 +793,6 @@
 )
 
 (instance shadow13 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -871,8 +809,6 @@
 )
 
 (instance shadow14 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -889,8 +825,6 @@
 )
 
 (instance shadow15 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -907,8 +841,6 @@
 )
 
 (instance shadow16 of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -925,14 +857,12 @@
 )
 
 (instance theS of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
 			view: 900
 			setLoop: 4
-			cel: (if (>= howFast 1) 0 else 4)
+			cel: (if (>= howFast medium) 0 else 4)
 			posn: 77 132
 			ignoreActors: TRUE
 		)
@@ -940,14 +870,12 @@
 )
 
 (instance theI of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
 			view: 900
 			setLoop: 5
-			cel: (if (>= howFast 1) 0 else 4)
+			cel: (if (>= howFast medium) 0 else 4)
 			posn: 102 132
 			ignoreActors: TRUE
 		)
@@ -955,14 +883,12 @@
 )
 
 (instance theE of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
 			view: 900
 			setLoop: 6
-			cel: (if (>= howFast 1) 0 else 4)
+			cel: (if (>= howFast medium) 0 else 4)
 			posn: 127 133
 			ignoreActors: TRUE
 		)
@@ -970,14 +896,12 @@
 )
 
 (instance theR1 of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
 			view: 900
 			setLoop: 7
-			cel: (if (>= howFast 1) 0 else 4)
+			cel: (if (>= howFast medium) 0 else 4)
 			posn: 163 133
 			ignoreActors: TRUE
 		)
@@ -985,14 +909,12 @@
 )
 
 (instance theR2 of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
 			view: 900
 			setLoop: 7
-			cel: (if (>= howFast 1) 0 else 4)
+			cel: (if (>= howFast medium) 0 else 4)
 			posn: 201 133
 			ignoreActors: TRUE
 		)
@@ -1000,14 +922,12 @@
 )
 
 (instance theA of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
 			view: 900
 			setLoop: 8
-			cel: (if (>= howFast 1) 0 else 4)
+			cel: (if (>= howFast medium) 0 else 4)
 			posn: 237 133
 			ignoreActors: TRUE
 		)
@@ -1015,8 +935,6 @@
 )
 
 (instance presents of View
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

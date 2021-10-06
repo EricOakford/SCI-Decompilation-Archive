@@ -16,10 +16,10 @@
 	orderedTang
 	orderedFood
 	menuOption
-	local4
-	local5 =  30
-	[local6 12] = [27 35 43 51 59 67 91 99 123 131 139 147]
-	[local18 12] = [32 40 48 56 64 72 96 104 128 136 144 152]
+	leftX
+	rightX =  30
+	upY = [27 35 43 51 59 67 91 99 123 131 139 147]
+	downY = [32 40 48 56 64 72 96 104 128 136 144 152]
 )
 
 (enum 1 ;menu choices
@@ -113,120 +113,120 @@
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 0] (event y?))
-									(<= (event y?) [local18 0])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 0] (event y?))
+									(<= (event y?) [downY 0])
 								)
 								(= menuOption foodMINIMONOLITH)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 1] (event y?))
-									(<= (event y?) [local18 1])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 1] (event y?))
+									(<= (event y?) [downY 1])
 								)
 								(= menuOption foodMONOLITH)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 2] (event y?))
-									(<= (event y?) [local18 2])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 2] (event y?))
+									(<= (event y?) [downY 2])
 								)
 								(= menuOption foodWITHPOLYCHEEZE)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 3] (event species?))
-									(<= (event species?) [local18 3])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 3] (event species?))
+									(<= (event species?) [downY 3])
 								)
 								(= menuOption foodFILET)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 4] (event y?))
-									(<= (event y?) [local18 4])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 4] (event y?))
+									(<= (event y?) [downY 4])
 								)
 								(= menuOption foodJUMBO)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 5] (event y?))
-									(<= (event y?) [local18 5])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 5] (event y?))
+									(<= (event y?) [downY 5])
 								)
 								(= menuOption foodBIGBELCHER)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 6] (event y?))
-									(<= (event y?) [local18 6])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 6] (event y?))
+									(<= (event y?) [downY 6])
 								)
 								(= menuOption foodFUNMEAL)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 7] (event y?))
-									(<= (event y?) [local18 7])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 7] (event y?))
+									(<= (event y?) [downY 7])
 								)
 								(= menuOption foodSPACESPUDS)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 8] (event y?))
-									(<= (event y?) [local18 8])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 8] (event y?))
+									(<= (event y?) [downY 8])
 								)
 								(= menuOption tangSMALL)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 9] (event y?))
-									(<= (event y?) [local18 9])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 9] (event y?))
+									(<= (event y?) [downY 9])
 								)
 								(= menuOption tangMEDIUM)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 10] (event y?))
-									(<= (event y?) [local18 10])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 10] (event y?))
+									(<= (event y?) [downY 10])
 								)
 								(= menuOption tangLARGE)
 								(curRoom setScript: ChooseFood)
 							)
 							(
 								(and
-									(<= local4 (event x?))
-									(<= (event x?) local5)
-									(<= [local6 11] (event y?))
-									(<= (event y?) [local18 11])
+									(<= leftX (event x?))
+									(<= (event x?) rightX)
+									(<= [upY 11] (event y?))
+									(<= (event y?) [downY 11])
 								)
 								(= menuOption tangSLOPPYSLURPER)
 								(curRoom setScript: ChooseFood)
@@ -296,60 +296,61 @@
 )
 
 (instance ChooseFood of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(switch menuOption
 					(0)
 					(foodMINIMONOLITH
-						(= monolithBurgerBill (+ monolithBurgerBill 1))
+						(+= monolithBurgerBill 1)
 						(= orderedFood TRUE)
 					)
 					(foodMONOLITH
-						(= monolithBurgerBill (+ monolithBurgerBill 2))
+						(+= monolithBurgerBill 2)
 						(= orderedFood TRUE)
 					)
 					(foodWITHPOLYCHEEZE
-						(= monolithBurgerBill (+ monolithBurgerBill 3))
+						(+= monolithBurgerBill 3)
 						(= orderedFood TRUE)
 					)
 					(foodFILET
-						(= monolithBurgerBill (+ monolithBurgerBill 2))
+						(+= monolithBurgerBill 2)
 						(= orderedFood TRUE)
 					)
 					(foodJUMBO
-						(= monolithBurgerBill (+ monolithBurgerBill 5))
+						(+= monolithBurgerBill 5)
 						(= orderedFood TRUE)
 					)
 					(foodBIGBELCHER
-						(= monolithBurgerBill (+ monolithBurgerBill 9))
+						(+= monolithBurgerBill 9)
 						(= orderedFood TRUE)
 						(= orderedBigBelcherCombo TRUE)
 					)
 					(foodFUNMEAL
-						(= monolithBurgerBill (+ monolithBurgerBill 7))
-						(if (not (ego has: iDecoderRing)) (= mealHasDecoderRing TRUE))
+						(+= monolithBurgerBill 7)
+						(if (not (ego has: iDecoderRing))
+							(= mealHasDecoderRing TRUE)
+						)
 						(= orderedFood TRUE)
 					)
 					(foodSPACESPUDS
-						(= monolithBurgerBill (+ monolithBurgerBill 1))
+						(+= monolithBurgerBill 1)
 						(= orderedFood TRUE)
 					)
 					(tangSMALL
-						(= monolithBurgerBill (+ monolithBurgerBill 1))
+						(+= monolithBurgerBill 1)
 						(= orderedTang TRUE)
 					)
 					(tangMEDIUM
-						(= monolithBurgerBill (+ monolithBurgerBill 2))
+						(+= monolithBurgerBill 2)
 						(= orderedTang TRUE)
 					)
 					(tangLARGE
-						(= monolithBurgerBill (+ monolithBurgerBill 3))
+						(+= monolithBurgerBill 3)
 						(= orderedTang TRUE)
 					)
 					(tangSLOPPYSLURPER
-						(= monolithBurgerBill (+ monolithBurgerBill 4))
+						(+= monolithBurgerBill 4)
 						(= orderedTang TRUE)
 					)
 				)
@@ -365,7 +366,6 @@
 )
 
 (instance Quitting of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -411,7 +411,9 @@
 					)
 					(= global592 0)
 					(= saveDisabled FALSE)
-					(if (> monolithBurgerBill 9999) (= monolithBurgerBill 9999))
+					(if (> monolithBurgerBill 9999)
+						(= monolithBurgerBill 9999)
+					)
 					(User mapKeyToDir: TRUE)
 					(cls)
 					(curRoom newRoom: 25)

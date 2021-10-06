@@ -13,7 +13,7 @@
 )
 
 (local
-	saveBits
+	printObj
 )
 (procedure (ElmoSpeaks &tmp temp0)
 	(= temp0 (Random 1 2))
@@ -23,11 +23,11 @@
 )
 
 (procedure (ClearText)
-	(if saveBits
+	(if printObj
 		(tail dispose:)
 		(RedrawCast)
 		(cls)
-		(= saveBits 0)
+		(= printObj 0)
 	)
 	(elmo setCel: 0)
 	(mouth setCel: 0 setLoop: 3 stopUpd:)
@@ -93,23 +93,30 @@
 		(super handleEvent: event)
 		(if (event claimed?) (return))
 		(if (event type?)
-			(if saveBits (tail dispose:) (RedrawCast) (cls))
-			(= saveDisabled 0)
+			(if printObj
+				(tail dispose:)
+				(RedrawCast)
+				(cls)
+			)
+			(= saveDisabled FALSE)
 			(curRoom newRoom: 120)
 		)
 	)
 )
 
 (instance ElmoTalk of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
 				(ElmoSpeaks)
-				(= saveBits
-					(Print 96 6 #at -1 45 #width 200 #font 600 #dispose)
+				(= printObj
+					(Print 96 6
+						#at -1 45
+						#width 200
+						#font 600
+						#dispose
+					)
 				)
 				(= seconds 10)
 			)
@@ -119,8 +126,13 @@
 			)
 			(3
 				(ElmoSpeaks)
-				(= saveBits
-					(Print 96 7 #at -1 45 #width 200 #font 600 #dispose)
+				(= printObj
+					(Print 96 7
+						#at -1 45
+						#width 200
+						#font 600
+						#dispose
+					)
 				)
 				(= seconds 15)
 			)
@@ -130,8 +142,13 @@
 			)
 			(5
 				(ElmoSpeaks)
-				(= saveBits
-					(Print 96 8 #at -1 45 #width 200 #font 600 #dispose)
+				(= printObj
+					(Print 96 8
+						#at -1 45
+						#width 200
+						#font 600
+						#dispose
+					)
 				)
 				(= seconds 10)
 			)
@@ -141,8 +158,13 @@
 			)
 			(7
 				(ElmoSpeaks)
-				(= saveBits
-					(Print 96 9 #at -1 45 #width 200 #font 600 #dispose)
+				(= printObj
+					(Print 96 9
+						#at -1 45
+						#width 200
+						#font 600
+						#dispose
+					)
 				)
 				(= seconds 10)
 			)
@@ -152,20 +174,27 @@
 			)
 			(9
 				(ElmoSpeaks)
-				(= saveBits
-					(Print 96 10 #at -1 45 #width 200 #font 600 #dispose)
+				(= printObj
+					(Print 96 10
+						#at -1 45
+						#width 200
+						#font 600
+						#dispose
+					)
 				)
 				(= seconds 10)
 			)
-			(10 (ClearText))
-			(11 (curRoom setScript: 0))
+			(10
+				(ClearText)
+			)
+			(11
+				(curRoom setScript: 0)
+			)
 		)
 	)
 )
 
 (instance elmo of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -180,8 +209,6 @@
 )
 
 (instance mouth of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -196,8 +223,6 @@
 )
 
 (instance tail of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

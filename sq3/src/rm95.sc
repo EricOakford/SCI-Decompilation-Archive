@@ -48,14 +48,14 @@
 		(self setScript: rmScript)
 	)
 	
-	(method (doit &tmp temp0)
+	(method (doit &tmp thisControl)
 		(super doit:)
 		(if (User canControl:)
 			(if (>= (ego y?) 190)
 				(curRoom setScript: exitHallScript)
 			)
 			(cond 
-				((& (= temp0 (ego onControl: -1)) $0010)
+				((& (= thisControl (ego onControl: -1)) cRED)
 					(ego setPri: 5)
 					(if
 						(and
@@ -68,9 +68,13 @@
 						)
 					)
 				)
-				((& temp0 $0004) (ego setPri: 4))
-				((& temp0 $0080) (ego setPri: 5))
-				((& temp0 $0008)
+				((& thisControl cGREEN)
+					(ego setPri: 4)
+				)
+				((& thisControl cLGREY)
+					(ego setPri: 5)
+				)
+				((& thisControl cCYAN)
 					(if (!= (bridgeFront cel?) (bridgeFront lastCel:))
 						(ego setPri: 5)
 					else
@@ -88,17 +92,31 @@
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					(
-					(or (Said 'look<down') (Said 'look/pit,deck,dirt')) (Print 95 0))
-					((Said 'look/pedestal,aisle,aisle,ramp') (Print 95 1))
-					((Said 'look/door,entrance') (Print 95 2))
-					((Said 'look/crack,crack') (Print 95 3))
-					((Said 'look/partition') (Print 95 4))
-					((or (Said 'look<up') (Said 'look/pane')) (Print 95 5))
-					((Said 'look/control,console,button') (Print 95 6))
-					((Said 'jump[/*]') (Print 95 7))
-					(
-					(Said 'press,press,beat,feel,use/control,console,button')
+					((or (Said 'look<down') (Said 'look/pit,deck,dirt'))
+						(Print 95 0)
+					)
+					((Said 'look/pedestal,aisle,aisle,ramp')
+						(Print 95 1)
+					)
+					((Said 'look/door,entrance')
+						(Print 95 2)
+					)
+					((Said 'look/crack,crack')
+						(Print 95 3)
+					)
+					((Said 'look/partition')
+						(Print 95 4)
+					)
+					((or (Said 'look<up') (Said 'look/pane'))
+						(Print 95 5)
+					)
+					((Said 'look/control,console,button')
+						(Print 95 6)
+					)
+					((Said 'jump[/anyword]')
+						(Print 95 7)
+					)
+					((Said 'press,press,beat,feel,use/control,console,button')
 						(if (ego inRect: 0 180 320 190)
 							(ego setScript: buttonScript)
 						else
@@ -107,27 +125,40 @@
 					)
 					((<= (captureScript state?) 3)
 						(cond 
-							((Said 'look[/area,left,right]') (Print 95 9))
-							((Said 'look,converse/man,folk') (Print 95 10))
-							((Said 'free,release/man[<2]') (Print 95 11))
-							((Said 'look/gel') (Print 95 12))
-							((Said 'melt/gel') (Print 95 13))
-							((Said 'eat/gel') (Print 95 14))
+							((Said 'look[/area,left,right]')
+								(Print 95 9)
+							)
+							((Said 'look,converse/man,folk')
+								(Print 95 10)
+							)
+							((Said 'free,release/man[<2]')
+								(Print 95 11)
+							)
+							((Said 'look/gel')
+								(Print 95 12)
+							)
+							((Said 'melt/gel')
+								(Print 95 13)
+							)
+							((Said 'eat/gel')
+								(Print 95 14)
+							)
 							(
 								(or
 									(Said 'blast[/gel]')
 									(Said 'use/mrgarbage')
 									(Said 'use/garbage<mr')
 								)
-								(if
-								(and (ego inRect: 140 102 176 110) (>= (ego loop?) 2))
+								(if (and (ego inRect: 140 102 176 110) (>= (ego loop?) 2))
 									(ego setScript: captureScript)
 								else
 									(Print 95 15)
 								)
 							)
-							((Said 'blast/*') (Print 95 16))
-							((Said '*/gel')
+							((Said 'blast/anyword')
+								(Print 95 16)
+							)
+							((Said 'anyword/gel')
 								(if (ego inRect: 140 102 176 110)
 									(Print 95 17)
 								else
@@ -136,20 +167,42 @@
 							)
 						)
 					)
-					((Said 'look/gel') (Print 95 18))
-					((Said 'blast/gel') (Print 95 19))
-					((Said '*/gel') (Print 95 20))
-					((Said 'blast[/*]') (Print 95 21))
-					((Said 'attack,combat,escape') (Print 95 22))
-					((Said 'look[/area,left,right]') (Print 95 23) (Print 95 24))
-					((Said '*/man<2') (Print 95 25))
-					((Said 'look/guard') (Print 95 26))
+					((Said 'look/gel')
+						(Print 95 18)
+					)
+					((Said 'blast/gel')
+						(Print 95 19)
+					)
+					((Said 'anyword/gel')
+						(Print 95 20)
+					)
+					((Said 'blast[/anyword]')
+						(Print 95 21)
+					)
+					((Said 'attack,combat,escape')
+						(Print 95 22)
+					)
+					((Said 'look[/area,left,right]')
+						(Print 95 23)
+						(Print 95 24)
+					)
+					((Said '*/man<2')
+						(Print 95 25)
+					)
+					((Said 'look/guard')
+						(Print 95 26)
+					)
 					((>= (captureScript state?) 16)
 						(cond 
-							(
-							(Said 'look/pane,man,guard,folk,accountant,eightprong') (Print 95 27))
-							((Said 'look/elmo,elmo,boy,(man<little)') (Print 95 28))
-							((Said 'converse/*') (Print 95 29))
+							((Said 'look/pane,man,guard,folk,accountant,eightprong')
+								(Print 95 27)
+							)
+							((Said 'look/elmo,elmo,boy,(man<little)')
+								(Print 95 28)
+							)
+							((Said 'converse/anyword')
+								(Print 95 29)
+							)
 						)
 					)
 				)
@@ -157,15 +210,13 @@
 		)
 	)
 	
-	(method (newRoom newRoomNumber)
+	(method (newRoom n)
 		(timers eachElementDo: #dispose 84)
-		(super newRoom: newRoomNumber)
+		(super newRoom: n)
 	)
 )
 
 (instance rmScript of Script
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(mrMark init:)
@@ -206,14 +257,15 @@
 					setMotion: MoveTo 158 188 self
 				)
 			)
-			(1 (rm95 south: 90) (HandsOn))
+			(1
+				(rm95 south: 90)
+				(HandsOn)
+			)
 		)
 	)
 )
 
 (instance buttonScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -244,15 +296,18 @@
 			(5
 				(ego setMotion: MoveTo 158 188 self)
 			)
-			(6 (rm95 south: 90) (HandsOn))
-			(else  (self changeState: 0))
+			(6
+				(rm95 south: 90)
+				(HandsOn)
+			)
+			(else
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance gonner of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -260,7 +315,7 @@
 				(captureScript changeState: 99)
 				(ego
 					view: 88
-					ignoreActors: 1
+					ignoreActors: TRUE
 					illegalBits: 0
 					setStep: 3 12
 					setLoop: (ego loop?)
@@ -281,14 +336,14 @@
 					(self cue:)
 				)
 			)
-			(3 (EgoDead 901 0 0 10))
+			(3
+				(EgoDead 901 0 0 10)
+			)
 		)
 	)
 )
 
 (instance exitHallScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -304,8 +359,6 @@
 )
 
 (instance captureScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -331,7 +384,7 @@
 					setLoop: -1
 					setCel: -1
 					setCycle: Walk
-					observeControl: 28
+					observeControl: (| cGREEN cCYAN cRED)
 					setMotion: Wander
 				)
 				(Timer setCycle: self 2)
@@ -343,7 +396,7 @@
 					setLoop: -1
 					setCel: -1
 					setCycle: Walk
-					observeControl: 28
+					observeControl: (| cGREEN cCYAN cRED)
 					setMotion: Wander
 				)
 				(= theScore score)
@@ -369,7 +422,9 @@
 					(self cue:)
 				)
 			)
-			(6 (Timer setReal: self 10))
+			(6
+				(Timer setReal: self 10)
+			)
 			(7
 				(Print 95 34 #at -1 20 #width 280)
 				(doorSound play:)
@@ -481,7 +536,7 @@
 				(mrScott
 					setLoop: -1
 					setCel: -1
-					ignoreActors: 1
+					ignoreActors: TRUE
 					ignoreControl: -1
 					setMotion: Follow mrMark 2
 				)
@@ -501,7 +556,7 @@
 			(24
 				(ego
 					setPri: 6
-					ignoreActors: 1
+					ignoreActors: TRUE
 					setMotion: MoveTo 205 110 self
 				)
 				(mrMark setPri: 6)
@@ -558,8 +613,6 @@
 )
 
 (instance bridgeLeft of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -568,15 +621,13 @@
 			loop: 1
 			cel: 0
 			posn: 84 121
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 		)
 	)
 )
 
 (instance bridgeFront of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -586,15 +637,13 @@
 			loop: 0
 			cel: (if bridgeExtended 6 else 0)
 			posn: 160 180
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 		)
 	)
 )
 
 (instance bridgeRight of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -603,15 +652,13 @@
 			loop: 2
 			cel: 0
 			posn: 233 121
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 		)
 	)
 )
 
 (instance doorLeft of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -621,15 +668,13 @@
 			loop: 4
 			cel: 0
 			posn: 54 125
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 		)
 	)
 )
 
 (instance doorRear of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -639,15 +684,13 @@
 			loop: 3
 			cel: 0
 			posn: 159 84
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 		)
 	)
 )
 
 (instance doorRight of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -657,15 +700,13 @@
 			loop: 5
 			cel: 0
 			posn: 266 124
-			ignoreActors: 1
+			ignoreActors: TRUE
 			stopUpd:
 		)
 	)
 )
 
 (instance windowLeft of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -680,8 +721,6 @@
 )
 
 (instance windowCenter of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -696,8 +735,6 @@
 )
 
 (instance windowRight of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -741,13 +778,11 @@
 )
 
 (instance guardLeft of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
-			ignoreActors: 1
-			ignoreControl: 1
+			ignoreActors: TRUE
+			ignoreControl: cBLACK
 			setPri: 6
 			view: 210
 			setLoop: 1
@@ -759,8 +794,6 @@
 )
 
 (instance elmoPug of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -775,13 +808,11 @@
 )
 
 (instance guardRight of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
-			ignoreActors: 1
-			ignoreControl: 1
+			ignoreActors: TRUE
+			ignoreControl: cBLACK
 			setPri: 6
 			view: 210
 			setLoop: 0
@@ -793,8 +824,6 @@
 )
 
 (instance mrMark of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -809,8 +838,6 @@
 )
 
 (instance mrScott of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self

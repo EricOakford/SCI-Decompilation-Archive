@@ -20,7 +20,7 @@
 (local
 	local0
 	grabber
-	saveBits
+	printObj
 )
 (instance rm003 of Room
 	(properties
@@ -335,7 +335,7 @@
 					cycleSpeed: 2
 					setCycle: EndLoop self
 				)
-				(= saveBits (Print 3 35 #dispose))
+				(= printObj (Print 3 35 #dispose))
 			)
 			(1
 				(ego setLoop: 1 cel: 0 cycleSpeed: 1 setCycle: Forward)

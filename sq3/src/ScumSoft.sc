@@ -20,12 +20,43 @@
 	scriptClient
 	local1
 	local2
-	local3
-	[droidPath 63] = [0 10 161 0 41 160 0 74 154 1 101 149 1 123 145 1 145 136 2 166 128 2 182 110 2 194 98 3 203 75 3 208 55 3 203 34 3 191 17 4 174 8 4 159 11 4 146 16 4 136 27 5 136 40 5 140 51 5 148 54 5 161 57]
+	pathIndex
+	droidPath = [
+		0 10
+		161 0
+		41 160
+		0 74
+		154 1
+		101 149
+		1 123
+		145 1
+		145 136
+		2 166
+		128 2
+		182 110
+		2 194
+		98 3
+		203 75
+		3 208
+		55 3
+		203 34
+		3 191
+		17 4
+		174 8
+		4 159
+		11 4
+		146 16
+		4 136
+		27 5
+		136 40
+		5 140
+		51 5
+		148 54
+		5 161
+		57 0
+		]
 )
 (instance scumSoft of Region
-	(properties)
-	
 	(method (init)
 		(StatusLine enable:)
 		(super init: &rest)
@@ -54,7 +85,7 @@
 		(announce state: scumSoftAnnouncement)
 		(if scumSoftAlerted
 			(if (== prevRoomNum 90)
-				(= scumSoftAlerted 0)
+				(= scumSoftAlerted FALSE)
 				(= shadowDroidX 0)
 				(= shadowDroidY 0)
 			else
@@ -73,8 +104,7 @@
 	)
 	
 	(method (doit)
-		(if
-		(and (not scumSoftAlerted) (== 700 (Random 1 1400)))
+		(if (and (not scumSoftAlerted) (== 700 (Random 1 1400)))
 			(announce cue:)
 		)
 	)
@@ -84,31 +114,25 @@
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					(
-						(Said
-							'look[/area,department,deck,dirt,ceiling,left,right,up,down]'
-						)
+					((Said 'look[/area,department,deck,dirt,ceiling,left,right,up,down]')
 						(Print 702 0)
 					)
-					((Said 'look/partition,partition') (Print 702 1))
-					((Said '*/cabinet,cabinet') (Print 702 2))
-					(
-						(Said
-							'converse,look/man,folk,bystander,eightprong,accountant'
-						)
+					((Said 'look/partition,partition')
+						(Print 702 1)
+					)
+					((Said 'anyword/cabinet,cabinet')
+						(Print 702 2)
+					)
+					((Said 'converse,look/man,folk,bystander,eightprong,accountant')
 						(Print 702 3)
 					)
-					((Said 'look/garbage,can,basket') (Print 702 4))
-					(
-						(Said
-							'look/chart,paper,passenger,calendar,board,desk,chair'
-						)
+					((Said 'look/garbage,can,basket')
+						(Print 702 4)
+					)
+					((Said 'look/chart,paper,passenger,calendar,board,desk,chair')
 						(Print 702 5)
 					)
-					(
-						(Said
-							'sit,explore,get,beat,beat,get,feel/chart,passenger,calendar,board,chair,man,desk,paper,partition'
-						)
+					((Said 'sit,explore,get,beat,beat,get,feel/chart,passenger,calendar,board,chair,man,desk,paper,partition')
 						(Print 702 6)
 					)
 				)
@@ -118,13 +142,15 @@
 )
 
 (instance announce of Script
-	(properties)
-	
 	(method (changeState newState)
 		(++ scumSoftAnnouncement)
 		(switch (= state newState)
-			(1 (Print 702 7))
-			(2 (Print 702 8))
+			(1
+				(Print 702 7)
+			)
+			(2
+				(Print 702 8)
+			)
 		)
 	)
 )
@@ -145,19 +171,22 @@
 	
 	(method (init)
 		(self
-			vaporized: [global567 myID]
+			vaporized: [trashVaporized myID]
 			view: 115
 			ignoreActors: 0
 			setLoop: 4
-			setCel: [global567 (super init:)]
+			setCel: [trashVaporized (super init:)]
 			stopUpd:
 		)
-		(if (and vaporized myID) (self addToPic:))
+		(if (and vaporized myID)
+			(self addToPic:))
 	)
 	
 	(method (doit)
 		(cond 
-			(scumSoftAlerted (self egoNear: FALSE))
+			(scumSoftAlerted
+				(self egoNear: FALSE)
+			)
 			(
 				(and
 					(<= nearWest (ego x?))
@@ -175,7 +204,10 @@
 					(self egoNear: TRUE)
 				)
 			)
-			((and egoNear (not vaporized) myNerd) (self egoNear: FALSE) (alertScript init: (self myNerd?)))
+			((and egoNear (not vaporized) myNerd)
+				(self egoNear: FALSE)
+				(alertScript init: (self myNerd?))
+				)
 			(
 				(and
 					(not (ego mover?))
@@ -185,8 +217,7 @@
 					(== 50 (Random 1 100))
 				)
 				(myNerd setCel: (if (myNerd cel?) 0 else 3))
-				(if
-				(and (not (== curRoomNum 93)) (== 1 (Random 1 2)))
+				(if (and (not (== curRoomNum 93)) (== 1 (Random 1 2)))
 					(theMusic
 						number: (if (== 1 (Random 1 2)) 103 else 102)
 						play:
@@ -200,19 +231,25 @@
 		(if (event claimed?) (return))
 		(switch (event type?)
 			(saidEvent
-				(if (ego has: 13)
+				(if (ego has: iVaporizer)
 					(cond 
-						((Said 'look/garbage<mr') ((inventory at: iVaporizer) showSelf:))
+						((Said 'look/garbage<mr')
+							((inventory at: iVaporizer) showSelf:)
+						)
 						(
 							(or
 								(Said 'blast[/garbage]')
 								(Said 'use/mrgarbage')
 								(Said 'use/garbage<mr')
 							)
-							(if (self perform: egoIsHere species) (self egoHere: TRUE))
+							(if (self perform: egoIsHere species)
+								(self egoHere: TRUE)
+							)
 							(self vaporize:)
 						)
-						((Said 'blast/*') (Print 702 9))
+						((Said 'blast/anyword')
+							(Print 702 9)
+						)
 					)
 				)
 			)
@@ -227,12 +264,16 @@
 				else
 					(self
 						vaporized: TRUE
-						setCel: (= [global567 myID] 1)
+						setCel: (= [trashVaporized myID] 1)
 						misses: 0
 					)
 					(cond 
-						((not (== curRoomNum 93)) (self addToPic:))
-						((not myNerd) (Print 702 11))
+						((not (== curRoomNum 93))
+							(self addToPic:)
+						)
+						((not myNerd)
+							(Print 702 11)
+						)
 					)
 				)
 				(self egoHere: 0)
@@ -254,7 +295,9 @@
 					)
 				)
 			)
-			(else (Print 702 17))
+			(else
+				(Print 702 17)
+			)
 		)
 		(ego view: 113 cycleSpeed: 0 setCycle: Walk)
 		(HandsOn)
@@ -268,51 +311,49 @@
 )
 
 (instance egoIsHere of Code
-	(properties)
-	
-	(method (doit param1)
+	(method (doit theActor)
 		(if scumSoftAlerted (return FALSE))
 		(switch (ego loop?)
-			(0
+			(loopE
 				(if
 					(or
-						(> (ego brTop?) (param1 brBottom?))
-						(< (ego brBottom?) (param1 brTop?))
-						(> (ego brRight?) (param1 brLeft?))
-						(< (+ (ego brRight?) (ego xStep?)) (param1 brLeft?))
+						(> (ego brTop?) (theActor brBottom?))
+						(< (ego brBottom?) (theActor brTop?))
+						(> (ego brRight?) (theActor brLeft?))
+						(< (+ (ego brRight?) (ego xStep?)) (theActor brLeft?))
 					)
 					(return FALSE)
 				)
 			)
-			(1
+			(loopW
 				(if
 					(or
-						(> (ego brTop?) (param1 brBottom?))
-						(< (ego brBottom?) (param1 brTop?))
-						(< (ego brLeft?) (param1 brRight?))
-						(> (- (ego brLeft?) (ego xStep?)) (param1 brRight?))
+						(> (ego brTop?) (theActor brBottom?))
+						(< (ego brBottom?) (theActor brTop?))
+						(< (ego brLeft?) (theActor brRight?))
+						(> (- (ego brLeft?) (ego xStep?)) (theActor brRight?))
 					)
 					(return FALSE)
 				)
 			)
-			(2
+			(loopS
 				(if
 					(or
-						(< (ego brRight?) (param1 brLeft?))
-						(> (ego brLeft?) (param1 brRight?))
-						(> (ego brBottom?) (param1 nsTop?))
-						(< (+ (ego brBottom?) (ego yStep?)) (param1 nsTop?))
+						(< (ego brRight?) (theActor brLeft?))
+						(> (ego brLeft?) (theActor brRight?))
+						(> (ego brBottom?) (theActor nsTop?))
+						(< (+ (ego brBottom?) (ego yStep?)) (theActor nsTop?))
 					)
 					(return FALSE)
 				)
 			)
-			(3
+			(loopN
 				(if
 					(or
-						(< (ego brRight?) (param1 brLeft?))
-						(> (ego brLeft?) (param1 brRight?))
-						(< (ego brTop?) (param1 nsBottom?))
-						(> (- (ego brTop?) (ego yStep?)) (param1 nsBottom?))
+						(< (ego brRight?) (theActor brLeft?))
+						(> (ego brLeft?) (theActor brRight?))
+						(< (ego brTop?) (theActor nsBottom?))
+						(> (- (ego brTop?) (ego yStep?)) (theActor nsBottom?))
 					)
 					(return FALSE)
 				)
@@ -362,8 +403,6 @@
 )
 
 (instance alertScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -406,8 +445,6 @@
 )
 
 (instance alertBalloon of View
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -422,8 +459,6 @@
 )
 
 (instance shadowDroid of Actor
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -433,7 +468,7 @@
 			setCel: 1
 			setCycle: Forward
 			xStep: (if (ego has: iCoveralls) 3 else 8)
-			yStep: (if (ego has: 12) 2 else 5)
+			yStep: (if (ego has: iCoveralls) 2 else 5)
 			ignoreHorizon: 1
 			ignoreActors: 1
 			ignoreControl: -1
@@ -449,10 +484,12 @@
 				)
 				(swoopDroid dispose:)
 			)
-			((or (== prevRoomNum 90) (== prevRoomNum 94)) (self posn: shadowDroidX shadowDroidY))
+			((or (== prevRoomNum 90) (== prevRoomNum 94))
+				(self posn: shadowDroidX shadowDroidY)
+			)
 			(else
 				(switch (ego loop?)
-					(0
+					(loopE
 						(self
 							posn:
 								(if (>= shadowDroidX 0)
@@ -463,7 +500,7 @@
 								shadowDroidY
 						)
 					)
-					(1
+					(loopW
 						(self
 							posn:
 								(if (<= shadowDroidX 320)
@@ -474,7 +511,7 @@
 								shadowDroidY
 						)
 					)
-					(2
+					(loopS
 						(self
 							ignoreHorizon: TRUE
 							posn:
@@ -486,7 +523,7 @@
 								)
 						)
 					)
-					(3
+					(loopN
 						(self
 							posn:
 								shadowDroidX
@@ -504,14 +541,11 @@
 )
 
 (instance securityDroid of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
 			setPri:
-				(if
-				(and (not (== curRoomNum 93)) (< (ego y?) 116))
+				(if (and (not (== curRoomNum 93)) (< (ego y?) 116))
 					14
 				else
 					15
@@ -533,30 +567,33 @@
 )
 
 (instance swoopDroid of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
-		(self setPri: 15 view: 256 setLoop: 0 ignoreActors: TRUE)
+		(self
+			setPri: 15
+			view: 256
+			setLoop: 0
+			ignoreActors: TRUE
+		)
 	)
 	
 	(method (doit)
 		(if (not local2) (return))
-		(if (and (<= 0 local3) (<= local3 62))
+		(if (and (<= 0 pathIndex) (<= pathIndex 62))
 			(if (> local2 0)
 				(self
-					setCel: [droidPath local3]
-					x: [droidPath (++ local3)]
-					y: [droidPath (++ local3)]
+					setCel: [droidPath pathIndex]
+					x: [droidPath (++ pathIndex)]
+					y: [droidPath (++ pathIndex)]
 				)
-				(++ local3)
+				(++ pathIndex)
 			else
 				(self
-					y: [droidPath local3]
-					x: (- 320 [droidPath (-- local3)])
-					setCel: [droidPath (-- local3)]
+					y: [droidPath pathIndex]
+					x: (- 320 [droidPath (-- pathIndex)])
+					setCel: [droidPath (-- pathIndex)]
 				)
-				(-- local3)
+				(-- pathIndex)
 			)
 		else
 			(= local2 0)
@@ -566,8 +603,6 @@
 )
 
 (instance zapper of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(shadowDroid posn: (ego x?) (ego y?))
@@ -583,7 +618,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (ego has: 12)
+		(if (ego has: iCoveralls)
 			(ego
 				view: (if cel 113 else 92)
 				setLoop: (if cel 2 else 5)
@@ -596,14 +631,12 @@
 )
 
 (instance droidScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOff)
 				(= local2 1)
-				(= local3 0)
+				(= pathIndex 0)
 				(theMusic number: 46 loop: 1 play:)
 				(swoopDroid init:)
 			)
@@ -634,11 +667,11 @@
 			(4
 				(if
 					(or
-						(& (ego onControl: -1) $0002)
+						(& (ego onControl: -1) cBLUE)
 						(>= (ego y?) 191)
 						(>= (ego x?) 320)
 					)
-					(= state (- state 2))
+					(-= state 2)
 				else
 					(HandsOff)
 				)
@@ -680,7 +713,7 @@
 				(shadowDroid dispose:)
 				(theMusic number: 46 loop: 1 play:)
 				(= local2 -1)
-				(= local3 62)
+				(= pathIndex 62)
 				(swoopDroid init:)
 			)
 			(10

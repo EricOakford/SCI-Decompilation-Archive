@@ -23,26 +23,25 @@
 	local3
 	local4
 	local5
-	local6
-	local7
+	toX
+	toY
 	userPrevDir
 	local9
-	[local10 4] = [1 0 3 2]
-	bgHealth
-	egoHealth
+	local10 = [1 0 3 2]
+	bgHits
+	egoHits
 	local16
 	local17
 	local18 =  3
 	local19
 )
-(procedure (FaceObject who whom)
-	(DirLoop
-		who
+(procedure (Face actor1 actor2)
+	(DirLoop actor1
 		(GetAngle
-			(who x?)
-			(who y?)
-			(whom x?)
-			(whom y?)
+			(actor1 x?)
+			(actor1 y?)
+			(actor2 x?)
+			(actor2 y?)
 		)
 	)
 )
@@ -83,15 +82,12 @@
 	)
 )
 
-(procedure (localproc_2066 param1 &tmp temp0 temp1)
-	(= temp0 1000)
-	(= temp1 0)
-	(= temp0 1000)
-	(while (< temp1 argc)
-		(if (< [param1 temp1] temp0) (= temp0 [param1 temp1]))
-		(++ temp1)
+(procedure (localproc_2066 param1 &tmp retVal i)
+	(= retVal 1000)
+	(for ((= i 0) (= retVal 1000)) (< i argc) ((++ i))
+		(if (< [param1 i] retVal) (= retVal [param1 i]))
 	)
-	(return temp0)
+	(return retVal)
 )
 
 (procedure (NoAttack)
@@ -165,23 +161,24 @@
 	
 	(method (doit &tmp [temp0 50])
 		(super doit:)
-		(if (and (badGuy isBlocked:) (not egoHealth))
+		(if (and (badGuy isBlocked:) (not egoHits))
 			(BadGuy changeState: 15)
 		)
-		(if (and (ego inRect: 0 0 152 86) (not egoHealth))
+		(if (and (ego inRect: 0 0 152 86) (not egoHits))
 			(ScottScript changeState: 10)
 		)
-		(if (and (ego inRect: 0 87 152 189) (not egoHealth))
+		(if (and (ego inRect: 0 87 152 189) (not egoHits))
 			(ScottScript changeState: 7)
 		)
-		(if (and (ego inRect: 153 0 319 86) (not egoHealth))
+		(if (and (ego inRect: 153 0 319 86) (not egoHits))
 			(ScottScript changeState: 4)
 		)
-		(if
-		(and (ego inRect: 153 87 319 189) (not egoHealth))
+		(if (and (ego inRect: 153 87 319 189) (not egoHits))
 			(ScottScript changeState: 1)
 		)
-		(if global219 (-- local18))
+		(if global219
+			(-- local18)
+		)
 		(if (not local18)
 			(= local18 3)
 			(= local16 1)
@@ -232,19 +229,17 @@
 )
 
 (instance StartScript of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
 				(NoAttack)
-				(= egoHealth 1)
+				(= egoHits 1)
 				(balloon init:)
 				(= seconds 3)
 			)
 			(1
 				(balloon dispose:)
-				(= egoHealth 0)
+				(= egoHits 0)
 				(CanAttack)
 				(client setScript: 0)
 			)
@@ -253,19 +248,17 @@
 )
 
 (instance Punch of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
 				(= userPrevDir (User prevDir?))
 				(NoAttack)
 				(if (ego mover?)
-					(= local6 ((ego mover?) x?))
-					(= local7 ((ego mover?) y?))
+					(= toX ((ego mover?) x?))
+					(= toY ((ego mover?) y?))
 				else
-					(= local6 0)
-					(= local7 0)
+					(= toX 0)
+					(= toY 0)
 				)
 				(ego view: 202 setCel: 0 setMotion: 0)
 				(if (and (not local5) (not local4))
@@ -296,8 +289,8 @@
 			)
 			(2
 				(localproc_20b2)
-				(if (or local6 local7)
-					(ego setMotion: MoveTo local6 local7)
+				(if (or toX toY)
+					(ego setMotion: MoveTo toX toY)
 				)
 				(= local1 0)
 				(CanAttack)
@@ -309,10 +302,8 @@
 )
 
 (instance EgoBump of Script
-	(properties)
-	
 	(method (doit)
-		(if (and (ego isBlocked:) local1 (not bgHealth))
+		(if (and (ego isBlocked:) local1 (not bgHits))
 			(self cue:)
 		)
 		(if (== (legs view?) 208)
@@ -369,8 +360,6 @@
 )
 
 (instance EgoBlock of Script
-	(properties)
-	
 	(method (changeState newState &tmp [temp0 50])
 		(switch (= state newState)
 			(0
@@ -378,11 +367,11 @@
 				(NoAttack)
 				(= local0 1)
 				(if (ego mover?)
-					(= local6 ((ego mover?) x?))
-					(= local7 ((ego mover?) y?))
+					(= toX ((ego mover?) x?))
+					(= toY ((ego mover?) y?))
 				else
-					(= local6 0)
-					(= local7 0)
+					(= toX 0)
+					(= toY 0)
 				)
 				(ego view: 209 setCel: 0 setMotion: 0)
 				(RedrawCast)
@@ -392,8 +381,8 @@
 			(2 (ego setCycle: BegLoop self))
 			(3
 				(localproc_20b2)
-				(if (or local6 local7)
-					(ego setMotion: MoveTo local6 local7)
+				(if (or toX toY)
+					(ego setMotion: MoveTo toX toY)
 				)
 				(= local0 0)
 				(= local16 2)
@@ -406,8 +395,6 @@
 )
 
 (instance BadGuy of Script
-	(properties)
-	
 	(method (doit)
 		(if (== (bgLegs view?) 206)
 			(bgLegs
@@ -436,7 +423,9 @@
 				)
 				(badGuy setMotion: Chase ego 45 self)
 			)
-			(1 (= cycles 1))
+			(1
+				(= cycles 1)
+			)
 			(2
 				(switch (Random 1 2)
 					(1 (self changeState: 3))
@@ -444,7 +433,7 @@
 				)
 			)
 			(3
-				(FaceObject badGuy ego)
+				(Face badGuy ego)
 				(= local5 1)
 				(badGuy
 					view: 205
@@ -454,7 +443,9 @@
 				)
 				(= cycles 2)
 			)
-			(4 (badGuy setCycle: EndLoop self))
+			(4
+				(badGuy setCycle: EndLoop self)
+			)
 			(5
 				(= local17 4)
 				(if (and (localproc_1f80 badGuy ego) (not local1))
@@ -498,7 +489,7 @@
 			)
 			(8
 				(= local3 1)
-				(FaceObject badGuy ego)
+				(Face badGuy ego)
 				(badGuy view: 207 setCel: 0 setMotion: 0)
 				(RedrawCast)
 				(badGuy setCycle: EndLoop self)
@@ -573,7 +564,7 @@
 					(Scott setMotion: MoveTo 82 72 self)
 				)
 			)
-			(3 (FaceObject Scott ego))
+			(3 (Face Scott ego))
 			(4
 				(if (Scott inRect: 153 0 319 86)
 					(Scott setMotion: MoveTo 230 105 self)
@@ -586,7 +577,7 @@
 					(Scott setMotion: MoveTo 83 103 self)
 				)
 			)
-			(6 (FaceObject Scott ego))
+			(6 (Face Scott ego))
 			(7
 				(if (Scott inRect: 0 87 152 189)
 					(Scott setMotion: MoveTo 82 72 self)
@@ -599,7 +590,7 @@
 					(Scott setMotion: MoveTo 228 70 self)
 				)
 			)
-			(9 (FaceObject Scott ego))
+			(9 (Face Scott ego))
 			(10
 				(if (Scott inRect: 0 0 152 86)
 					(Scott setMotion: MoveTo 228 70 self)
@@ -613,11 +604,11 @@
 					(Scott setMotion: MoveTo 230 105 self)
 				)
 			)
-			(12 (FaceObject Scott ego))
+			(12 (Face Scott ego))
 			(13
 				(Scott setMotion: MoveTo 153 105 self)
 			)
-			(14 (FaceObject Scott ego))
+			(14 (Face Scott ego))
 		)
 	)
 )
@@ -992,8 +983,8 @@
 			)
 			(= local16 0)
 		)
-		(if (and (<= (self x?) 11) (not egoHealth))
-			(= bgHealth 1)
+		(if (and (<= (self x?) 11) (not egoHits))
+			(= bgHits 1)
 			(NoAttack)
 			(curRoom setScript: EgoDies)
 			(self dispose:)
@@ -1003,8 +994,6 @@
 )
 
 (instance bgPower of Prop
-	(properties)
-	
 	(method (init)
 		(super init:)
 		(self
@@ -1014,7 +1003,7 @@
 			posn: 230 12
 			setPri: 14
 			setCycle: 0
-			ignoreActors: 1
+			ignoreActors: TRUE
 		)
 	)
 	
@@ -1032,8 +1021,8 @@
 			)
 			(= local17 0)
 		)
-		(if (and (>= (self x?) 296) (not bgHealth))
-			(= egoHealth 1)
+		(if (and (>= (self x?) 296) (not bgHits))
+			(= egoHits 1)
 			(NoAttack)
 			(BadGuy changeState: 16)
 			(ScottScript changeState: 13)
