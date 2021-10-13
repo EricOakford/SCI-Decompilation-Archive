@@ -464,6 +464,9 @@
 		;; for this is done in class Save, the actual save in the (SaveGame)
 		;; kernel function.
 
+		(= oldLang parseLang)
+		(= parseLang ENGLISH)
+		
 		(Load FONT smallFont)
 		(Load CURSOR waitCursor)
 

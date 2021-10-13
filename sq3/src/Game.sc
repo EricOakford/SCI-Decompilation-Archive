@@ -118,9 +118,9 @@
 	(properties
 		script 0			;a current script for the game as a whole
 		;EO: Language properties added from Iceman demo
-		parseLang 1
-		printLang 1
-		subtitleLang 0
+		parseLang ENGLISH
+		printLang ENGLISH
+		subtitleLang NULL
 
 	)
 
@@ -464,6 +464,9 @@
 		;; for this is done in class Save, the actual save in the (SaveGame)
 		;; kernel function.
 
+		(= oldLang parseLang)
+		(= parseLang ENGLISH)
+		
 		(Load FONT smallFont)
 		(Load CURSOR waitCursor)
 
@@ -475,11 +478,10 @@
 			)
 			(= num (Save doit: @comment))
 			(if (!= num -1)
-				(= parseLang oldLang)	;EO: Added from Iceman demo
+				(= parseLang oldLang)
 				(= oldCur (self setCursor:waitCursor TRUE))
 				(if (not (SaveGame name num @comment version))
-					(Print
-						GAME 0
+					(Print GAME 0
 						#font: SYSFONT
 						#button: {OK} 1
 					)
@@ -489,7 +491,7 @@
 			(PromptForDiskChange FALSE)
 		)
 		(Sound pause:oldPause)
-		(= parseLang oldLang)	;EO: Added from Iceman demo
+		(= parseLang oldLang)
 	)
 
 
@@ -498,10 +500,8 @@
 		;; for this is done in class Restore, the actual save in the
 		;; (RestoreGame) kernel function.
 		
-		;;;EO: added from Iceman demo
 		(= oldLang parseLang)
-		(= parseLang 1)
-		;;;
+		(= parseLang ENGLISH)
 		(Load FONT smallFont)
 		(Load CURSOR waitCursor)
 

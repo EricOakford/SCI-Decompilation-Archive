@@ -500,7 +500,10 @@
 		;; Save the game at its current state.  The user interface work
 		;; for this is done in class Save, the actual save in the (SaveGame)
 		;; kernel function.
-
+		
+		(= oldLang parseLang)
+		(= parseLang ENGLISH)
+		
 		(Load FONT smallFont)
 		(Load CURSOR waitCursor)
 
@@ -512,7 +515,7 @@
 			)
 			(= num (Save doit: @comment))
 			(if (!= num -1)
-				(= parseLang oldLang)	;EO: Added from Iceman demo
+				(= parseLang oldLang)
 				(= oldCur (self setCursor:waitCursor TRUE))
 				(if (not (SaveGame name num @comment version))
 					(Print GAME 0
@@ -525,7 +528,7 @@
 			(PromptForDiskChange FALSE)
 		)
 		(Sound pause:oldPause)
-		(= parseLang oldLang)	;EO: Added from Iceman demo
+		(= parseLang oldLang)
 	)
 
 
@@ -534,9 +537,8 @@
 		;; for this is done in class Restore, the actual save in the
 		;; (RestoreGame) kernel function.
 		
-		;;;EO: added from Iceman demo
 		(= oldLang parseLang)
-		(= parseLang 1)
+		(= parseLang ENGLISH)
 		;;;
 		(Load FONT smallFont)
 		(Load CURSOR waitCursor)
