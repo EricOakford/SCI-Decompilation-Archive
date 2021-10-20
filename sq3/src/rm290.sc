@@ -37,7 +37,7 @@
 	soundIsOn
 	wonMsg
 )
-(procedure (localproc_0f30)
+(procedure (StartNewChicken)
 	(= oldChickenX (Random 70 248))
 )
 
@@ -68,7 +68,7 @@
 			p_color vBLACK
 		)
 		(guysLeft init:)
-		(localproc_0f30)
+		(StartNewChicken)
 		(= oldChickenY 22)
 		(= chickenX oldChickenX)
 		(= chickenY oldChickenY)
@@ -110,6 +110,8 @@
 		(Load SOUND 26)
 		(Load SOUND 33)
 		(super init:)
+;;;		(TheMenuBar draw:)
+;;;		(StatusLine enable:)
 		(= saveDisabled TRUE)
 		(self setScript: intro)
 	)
@@ -234,7 +236,7 @@
 					(`#2
 						(if soundIsOn
 							(= soundIsOn FALSE)
-							(DoSound  SoundOn FALSE)
+							(DoSound SoundOn FALSE)
 							(SetMenu soundI p_value FALSE p_text {Turn on})
 						else
 							(= soundIsOn TRUE)
@@ -245,7 +247,7 @@
 					(`#6
 						(event claimed: TRUE)
 						(= saveDisabled FALSE)
-						(= inCartoon 0)
+						(= inCartoon FALSE)
 						(curRoom newRoom: 29)
 					)
 				)
@@ -268,6 +270,7 @@
 						(= saveDisabled FALSE)
 						(= inCartoon FALSE)
 						(curRoom newRoom: 29)
+;;;						(= quit TRUE)
 					)
 					((Said 'beat,tilt/game,device')
 						(Print 290 4)
@@ -306,8 +309,8 @@
 								)
 							)
 							(= wonMsg 0)
-							(= saveDisabled 0)
-							(= inCartoon 0)
+							(= saveDisabled FALSE)
+							(= inCartoon FALSE)
 							(self newRoom: 29)
 						else
 							(Print 290 11)
@@ -542,7 +545,12 @@
 					(theGame changeScore: 5)
 					(+= astroChickenScore 5)
 				)
-				(if (or (== currentLevel 3) (== currentLevel 6) (== currentLevel 9))
+				(if
+					(or
+						(== currentLevel 3)
+						(== currentLevel 6)
+						(== currentLevel 9)
+					)
 					(++ currentLives)
 				)
 				(if (== currentLevel 10)
@@ -553,7 +561,7 @@
 				)
 			)
 			(4
-				(localproc_0f30)
+				(StartNewChicken)
 				(= chickenX oldChickenX)
 				(= chickenY oldChickenY)
 				(= addY 1)
@@ -595,6 +603,7 @@
 				(= wonMsg TRUE)
 				(= inCartoon TRUE)
 				(TheMenuBar draw: state: TRUE)
+;;;				(StatusLine enable: state: TRUE)
 				(User canInput: TRUE)
 				(= printObj
 					(Display 290 16
@@ -605,6 +614,7 @@
 						p_font 603
 					)
 				)
+;;;				(theGame restart:)
 			)
 		)
 	)
@@ -665,7 +675,7 @@
 				)
 			)
 			(1
-				(localproc_0f30)
+				(StartNewChicken)
 				(Chicken x: oldChickenX y: oldChickenY show:)
 				(= chickenX oldChickenX)
 				(= chickenY oldChickenY)

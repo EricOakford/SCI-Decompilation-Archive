@@ -24,7 +24,7 @@
 	CantDo 8
 	DontHave 9
 	RedrawCast 10
-	proc0_11 11
+	ChangeSoundState 11
 	cls 12
 	InRoom 13
 	PutInRoom 14
@@ -688,9 +688,9 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_11 theObj	theLoop)
-	;not sure, never used, but it seems to change an object's loop and state
-	(theObj loop: theLoop changeState:)
+(procedure (ChangeSoundState soundObj theLoop)
+	;seems to change a sound object's loop and state
+	(soundObj loop: theLoop changeState:)
 )
 
 (procedure (cls)
@@ -764,7 +764,6 @@
 (instance logFile of File)
 
 (instance SQ3 of Game
-	
 	(method (init)
 		(super init:)
 		;set up the game's objects and globals
@@ -1040,8 +1039,7 @@
 	)
 )
 
-(instance calc of Prop
-	
+(instance calc of Prop	
 	(method (init)
 		(super init:)
 		(self

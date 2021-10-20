@@ -27,7 +27,7 @@
 	CantDo 8
 	DontHave 9
 	RedrawCast 10
-	proc0_11 11
+	ChangeSoundState 11
 	cls 12
 	InRoom 13
 	PutInRoom 14
@@ -694,9 +694,9 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_11 theObj theLoop)
-	;not sure, never used, but it seems to change an object's loop and state
-	(theObj loop: theLoop changeState:)
+(procedure (ChangeSoundState soundObj theLoop)
+	;seems to change a sound object's loop and state
+	(soundObj loop: theLoop changeState:)
 )
 
 (procedure (cls)
@@ -706,18 +706,18 @@
 	)
 )
 
-(procedure (InRoom item owner)
+(procedure (InRoom what where)
 	(return
 		(==
-			((inventory at: item) owner?)
-			(if (== argc 1) curRoomNum else owner)
+			((inventory at: what) owner?)
+			(if (== argc 1) curRoomNum else where)
 		)
 	)
 )
 
-(procedure (PutInRoom item owner)
-	((inventory at: item)
-		owner: (if (== argc 1) curRoomNum else owner)
+(procedure (PutInRoom what where)
+	((inventory at: what)
+		owner: (if (== argc 1) curRoomNum else where)
 	)
 )
 

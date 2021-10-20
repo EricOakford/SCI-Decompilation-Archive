@@ -20,65 +20,73 @@
 	chickenY
 	oldChickenX
 	oldChickenY
-	local4
+	addY
 	local5
 	currentFeed
-	local7
+	addX
 	local8
 	chickenLoop
-	local10
+	chickenDir
 	currentLives
 	currentLevel
 	local13
-	saveBits
+	printObj
 	local15
-	local16
+	gameStarted
 	soundIsOn
-	local18
+	wonMsg
 )
-(procedure (localproc_0e48)
+(procedure (StartNewChicken)
 	(= oldChickenX (Random 70 248))
 )
 
-(procedure (DoDisplay)
-	(curRoom drawPic: 292)
-	(Display 290 11
-		p_at 52 180
-		p_width 91
-		p_color vBLACK
-		p_back vBLACK
-		p_font 600
-	)
-	(Display 290 15
-		p_at 50 180
-		p_width 55
-		p_color vWHITE
-		p_back vBLACK
-		p_font 600
-	)
-	(guysLeft init:)
-	(localproc_0e48)
-	(= oldChickenY 22)
-	(= chickenX oldChickenX)
-	(= chickenY oldChickenY)
-	(= local4 1)
-	(= local5 0)
-	(= local7 0)
-	(= local8 0)
-	(= currentFeed 100)
-	(= local10 2)
-	(= currentLives 3)
-	(= currentLevel 0)
-	(= local13 0)
-	(++ astroChickenPlays)
-	(= local16 1)
-	(= local15 0)
-	(Chicken init:)
-	(Csong play: loop: -1)
-	(HandsOff)
-	(= soundIsOn (GetMenu soundI p_value))
-	(StatusLine enable: state: TRUE)
-	(curRoom setScript: 0)
+(procedure (InsertCoin)
+;;;	(if (ego has: iBuckazoids)
+;;;		(if (not (-- buckazoids))
+;;;			(ego put: iBuckazoids -1)
+;;;		)
+		(curRoom drawPic: 292)
+		(Display 290 11
+			p_at 52 180
+			p_width 91
+			p_color vBLACK
+			p_back vBLACK
+			p_font 600
+		)
+		(Display 290 15
+			p_at 50 180
+			p_width 55
+			p_color vWHITE
+			p_back vBLACK
+			p_font 600
+		)
+		(guysLeft init:)
+		(StartNewChicken)
+		(= oldChickenY 22)
+		(= chickenX oldChickenX)
+		(= chickenY oldChickenY)
+		(= addY 1)
+		(= local5 0)
+		(= addX 0)
+		(= local8 0)
+		(= currentFeed 100)
+		(= chickenDir 2)
+		(= currentLives 3)
+		(= currentLevel 0)
+		(= local13 0)
+		(++ astroChickenPlays)
+		(= gameStarted 1)
+		(= local15 0)
+		(Chicken init:)
+		(Csong play: loop: -1)
+		(HandsOff)
+		(= soundIsOn (GetMenu soundI p_value))
+;;;		(TheMenuBar hide: state: FALSE)
+		(StatusLine enable: state: TRUE)
+		(curRoom setScript: 0)
+;;;	else
+;;;		(Print "You don't even have a buck.")
+;;;	)
 )
 
 (instance rm290 of Room
@@ -116,7 +124,7 @@
 				(HandsOff)
 				(= local15 1)
 				(= local5 0)
-				(switch local10
+				(switch chickenDir
 					(2 (Chicken loop: 3))
 					(0 (Chicken loop: 4))
 					(1 (Chicken loop: 5))
@@ -129,32 +137,37 @@
 			(if (== (Chicken onControl: origin) 2048)
 				(self setScript: tooHigh)
 			)
-			(if
-			(and (== (Chicken onControl: origin) 4096) (== local13 0))
-				(if (< (Abs local4) 6)
+			(if (and (== (Chicken onControl: origin) 4096) (== local13 0))
+				(if (< (Abs addY) 6)
 					(self setScript: landedOK)
 				else
 					(Chicken loop: 8 cel: 0)
 					(= local5 0)
 					(= local13 1)
-					(= local4 (- local4 (* local4 2)))
+					(= addY (- addY (* addY 2)))
 					(if (== chickenLoop 0)
 						(= chickenLoop 4)
-						(= local10 0)
-						(= local7 4)
+						(= chickenDir 0)
+						(= addX 4)
 						(Chicken setCycle: Forward)
 					else
 						(= chickenLoop 5)
-						(= local10 1)
-						(= local7 -4)
+						(= chickenDir 1)
+						(= addX -4)
 						(Chicken setCycle: Reverse)
 					)
 					(= local8 -10)
 				)
 			)
 			(cond 
-				((== local5 1) (if (< (-- local4) -10) (= local4 -10)) (-- currentFeed))
-				((> (++ local4) 10) (= local4 10))
+				((== local5 1)
+					(if (< (-- addY) -10)
+						(= addY -10))
+						(-- currentFeed)
+					)
+				((> (++ addY) 10)
+					(= addY 10)
+				)
 			)
 			(if (and (!= (Chicken loop?) 2) (== local5 1))
 				(= local8 1)
@@ -169,15 +182,28 @@
 					(++ local8)
 				)
 				(cond 
-					((== local8 12) (= local8 0) (= local7 0))
-					((!= (Abs local7) 4) (if (== chickenLoop 1) (= local7 -2) else (= local7 2)))
+					((== local8 12)
+						(= local8 0)
+						(= addX 0)
+					)
+					((!= (Abs addX) 4)
+						(if (== chickenLoop 1)
+							(= addX -2)
+						else
+							(= addX 2)
+						)
+					)
 				)
 			)
-			(if (< chickenX 52) (= chickenX 265))
-			(if (> chickenX 265) (= chickenX 52))
+			(if (< chickenX 52)
+				(= chickenX 265)
+			)
+			(if (> chickenX 265)
+				(= chickenX 52)
+			)
 			(Chicken
-				x: (= chickenX (+ chickenX local7))
-				y: (= chickenY (+ chickenY local4))
+				x: (+= chickenX addX)
+				y: (+= chickenY addY)
 			)
 		)
 	)
@@ -188,12 +214,18 @@
 			(keyDown
 				(switch (event message?)
 					(`+
-						(if (> speed 1) (theGame setSpeed: (-- speed)))
+						(if (> speed 1)
+							(theGame setSpeed: (-- speed))
+						)
 					)
 					(`-
-						(if (< speed 16) (theGame setSpeed: (++ speed)))
+						(if (< speed 16)
+							(theGame setSpeed: (++ speed))
+						)
 					)
-					(`= (theGame setSpeed: 5))
+					(`=
+						(theGame setSpeed: 5)
+					)
 					(`#2
 						(if soundIsOn
 							(= soundIsOn FALSE)
@@ -205,23 +237,42 @@
 							(SetMenu soundI p_value TRUE p_text {Turn off})
 						)
 					)
+;;;					(`#6
+;;;						(event claimed: TRUE)
+;;;						(= saveDisabled FALSE)
+;;;						(= inCartoon 0)
+;;;						(curRoom newRoom: 29)
+;;;					)
 				)
 			)
 			(saidEvent
 				(cond 
-					((Said 'aid[<get]') (Print 290 1))
-					((Said 'read,look,use/instruction') (Print 290 2))
-					((Said 'insert,use,drop[<in]/bill') (DoDisplay))
-					((Said 'play[/game,astro,astro]') (DoDisplay))
+					((Said 'aid[<get]')
+						(Print 290 1)
+					)
+					((Said 'read,look,use/instruction')
+						(Print 290 2)
+					)
+					((Said 'insert,use,drop[<in]/bill')
+						(InsertCoin)
+					)
+					((Said 'play[/game,astro,astro]')
+						(InsertCoin)
+					)
 					((or (Said 'disembark,quit[/game,device]') (Said '/bye'))
 						(= saveDisabled FALSE)
-						(= inCartoon 0)
+						(= inCartoon FALSE)
+;;;						(curRoom newRoom: 29)
 						(= quit TRUE)
 					)
-					((Said 'beat,tilt/game,device') (Print 290 3))
-					((Said 'look[/area,around,game,device]') (Print 290 4))
+					((Said 'beat,tilt/game,device')
+						(Print 290 3)
+					)
+					((Said 'look[/area,around,game,device]')
+						(Print 290 4)
+					)
 					((Said 'look/letter')
-						(if local18
+						(if wonMsg
 							(Print 290 5)
 							(if (ego has: iDecoderRing)
 								(Print 290 6)
@@ -233,17 +284,16 @@
 							(Print 290 8)
 						)
 					)
-					(
-					(or (Said 'use/decoder,prize') (Said 'decode/letter'))
-						(= inCartoon 1)
+					((or (Said 'use/decoder,prize') (Said 'decode/letter'))
+						(= inCartoon TRUE)
 						(RedrawCast)
 						(if (ego has: iDecoderRing)
-							(if (and (< astroChickenScore 120) (not decodedMessage) local18)
+							(if (and (< astroChickenScore 120) (not decodedMessage) wonMsg)
 								(theGame changeScore: 20)
 								(+= astroChickenScore 20)
 								(= decodedMessage TRUE)
 							)
-							(= saveBits
+							(= printObj
 								(Print 290 9
 									#font 603
 									#icon 242 0 5
@@ -251,9 +301,9 @@
 									#at -1 143
 								)
 							)
-							(= local18 0)
+							(= wonMsg 0)
 							(= saveDisabled FALSE)
-							(= inCartoon 0)
+							(= inCartoon FALSE)
 							(self newRoom: 290)
 						else
 							(Print 290 10)
@@ -268,17 +318,17 @@
 					(dirN
 						(if (== local15 0)
 							(Chicken setCycle: Forward)
-							(= local7 0)
+							(= addX 0)
 							(if (== local5 1)
 								(= local5 0)
-								(switch local10
+								(switch chickenDir
 									(2 (Chicken loop: 3))
 									(0 (Chicken loop: 4))
 									(1 (Chicken loop: 5))
 								)
 							else
 								(= local5 1)
-								(switch local10
+								(switch chickenDir
 									(2 (Chicken loop: 2))
 									(0 (Chicken loop: 0))
 									(1 (Chicken loop: 1))
@@ -288,19 +338,19 @@
 					)
 					(dirS
 						(if (== local15 0)
-							(= local10 2)
+							(= chickenDir 2)
 							(Chicken loop: (if (== local5 1) 2 else 3) cel: 0)
 						)
 					)
 					(dirE
 						(if (== local15 0)
-							(= local10 0)
+							(= chickenDir 0)
 							(Chicken loop: (if (== local5 1) 0 else 4) cel: 0)
 						)
 					)
 					(dirW
 						(if (== local15 0)
-							(= local10 1)
+							(= chickenDir 1)
 							(Chicken loop: (if (== local5 1) 1 else 5) cel: 0)
 						)
 					)
@@ -322,7 +372,7 @@
 					)
 					(dirStop
 						(if (== local15 0)
-							(= local10 2)
+							(= chickenDir 2)
 							(Chicken loop: (if (== local5 1) 2 else 3) cel: 0)
 						)
 					)
@@ -331,9 +381,9 @@
 			(joyDown
 				(if (== local15 0)
 					(Chicken setCycle: Forward)
-					(= local7 0)
+					(= addX 0)
 					(= local5 1)
-					(switch local10
+					(switch chickenDir
 						(2 (Chicken loop: 2))
 						(0 (Chicken loop: 0))
 						(1 (Chicken loop: 1))
@@ -343,9 +393,9 @@
 			(joyUp
 				(if (== local15 0)
 					(Chicken setCycle: Forward)
-					(= local7 0)
+					(= addX 0)
 					(= local5 0)
-					(switch local10
+					(switch chickenDir
 						(2 (Chicken loop: 3))
 						(0 (Chicken loop: 4))
 						(1 (Chicken loop: 5))
@@ -353,16 +403,28 @@
 				)
 			)
 			(mouseDown
+;;;				(if
+;;;					(and
+;;;						(<= 146 (event x?))
+;;;						(<= (event x?) 228)
+;;;						(<= 178 (event y?))
+;;;						(<= (event y?) 187)
+;;;					)
+;;;					(event claimed: TRUE)
+;;;					(= saveDisabled FALSE)
+;;;					(= inCartoon FALSE)
+;;;					(curRoom newRoom: 29)
+;;;				)
 				(if
 					(and
 						(<= 39 (event x?))
 						(<= (event x?) 142)
 						(<= 175 (event y?))
 						(<= (event y?) 189)
-						(not local16)
+						(not gameStarted)
 					)
 					(event claimed: TRUE)
-					(DoDisplay)
+					(InsertCoin)
 				)
 			)
 		)
@@ -370,12 +432,11 @@
 )
 
 (instance intro of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
 				(HandsOn)
-				(= inCartoon 0)
+				(= inCartoon FALSE)
 				(guysLeft dispose:)
 				(client drawPic: 291)
 				(Display 290 11
@@ -386,7 +447,7 @@
 					p_font 600
 				)
 				(RedrawCast)
-				(= local16 0)
+				(= gameStarted FALSE)
 				(= seconds 5)
 			)
 			(1
@@ -431,13 +492,14 @@
 				)
 				(= seconds 15)
 			)
-			(3 (self changeState: 0))
+			(3
+				(self changeState: 0)
+			)
 		)
 	)
 )
 
 (instance landedOK of Script
-
 	(method (changeState newState &tmp [temp0 5])
 		(switch (= state newState)
 			(0
@@ -447,7 +509,9 @@
 			(1
 				(Bacock init: setCycle: EndLoop self)
 			)
-			(2 (= seconds 2))
+			(2
+				(= seconds 2)
+			)
 			(3
 				(Bacock dispose:)
 				(RedrawCast)
@@ -472,14 +536,14 @@
 				)
 			)
 			(4
-				(localproc_0e48)
+				(StartNewChicken)
 				(= chickenX oldChickenX)
 				(= chickenY oldChickenY)
-				(= local4 1)
+				(= addY 1)
 				(= local5 0)
-				(= local7 0)
+				(= addX 0)
 				(= local8 0)
-				(= local10 2)
+				(= chickenDir 2)
 				(= currentFeed 100)
 				(Chicken
 					x: oldChickenX
@@ -495,7 +559,6 @@
 )
 
 (instance youWon of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -506,12 +569,12 @@
 					(+= astroChickenScore 50)
 				)
 				(client drawPic: 290)
-				(= local18 1)
-				(= inCartoon 1)
+				(= wonMsg TRUE)
+				(= inCartoon TRUE)
 				(TheMenuBar draw: state: TRUE)
 				(StatusLine enable: state: TRUE)
 				(User canInput: TRUE)
-				(= saveBits
+				(= printObj
 					(Display 290 14
 						p_at 60 30
 						p_width 200
@@ -527,7 +590,6 @@
 )
 
 (instance blowUp of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -554,15 +616,14 @@
 )
 
 (instance tooHigh of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= local4 1)
+				(= addY 1)
 				(= local5 0)
-				(= local7 0)
+				(= addX 0)
 				(= local8 0)
-				(= local10 2)
+				(= chickenDir 2)
 				(= local15 0)
 				(= local13 0)
 				(Chicken loop: 3)
@@ -573,7 +634,6 @@
 )
 
 (instance death of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -584,15 +644,15 @@
 				)
 			)
 			(1
-				(localproc_0e48)
+				(StartNewChicken)
 				(Chicken x: oldChickenX y: oldChickenY show:)
 				(= chickenX oldChickenX)
 				(= chickenY oldChickenY)
-				(= local4 1)
+				(= addY 1)
 				(= local5 0)
-				(= local7 0)
+				(= addX 0)
 				(= local8 0)
-				(= local10 2)
+				(= chickenDir 2)
 				(= currentFeed 100)
 				(= local15 0)
 				(= local13 0)
@@ -604,7 +664,6 @@
 )
 
 (instance byeBye of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -628,7 +687,6 @@
 )
 
 (instance Chicken of Actor
-
 	(method (init)
 		(super init:)
 		(self
@@ -645,7 +703,6 @@
 )
 
 (instance guysLeft of Prop
-	
 	(method (init)
 		(super init:)
 		(self
@@ -666,7 +723,6 @@
 )
 
 (instance Bacock of Prop
-
 	(method (init)
 		(super init:)
 		(self
@@ -679,7 +735,6 @@
 )
 
 (instance gameOver of Prop
-	
 	(method (init)
 		(super init:)
 		(self view: 291 setLoop: 3 setPri: 14 posn: 155 91)
@@ -687,7 +742,6 @@
 )
 
 (instance explosion of Prop
-	
 	(method (init)
 		(super init:)
 		(self view: 291 setPri: 14 setLoop: 0 setCel: 0)

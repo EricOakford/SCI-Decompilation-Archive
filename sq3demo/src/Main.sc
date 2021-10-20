@@ -15,7 +15,7 @@
 	HandsOn 3
 	HaveMem 4
 	RedrawCast 10
-	proc0_11 11
+	ChangeSoundState 11
 	cls 12
 )
 
@@ -781,9 +781,9 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_11 theObj theLoop)
+(procedure (ChangeSoundState soundObj theLoop)
 	;not sure, never used, but it seems to change an object's loop and state
-	(theObj loop: theLoop changeState:)
+	(soundObj loop: theLoop changeState:)
 )
 
 (procedure (cls)
