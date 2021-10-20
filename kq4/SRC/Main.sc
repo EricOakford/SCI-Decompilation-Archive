@@ -32,7 +32,7 @@
 	CantDo 16
 	DontHave 17
 	RedrawCast 18
-	proc0_19 19
+	ChangeSoundState 19
 	LanternIsOn 20
 	cls 21
 )
@@ -568,8 +568,8 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_19 param1 param2)
-	(param1 loop: param2 changeState:)
+(procedure (ChangeSoundState soundObj theLoop)
+	(soundObj loop: theLoop changeState:)
 )
 
 (procedure (LanternIsOn newState &tmp oldState)

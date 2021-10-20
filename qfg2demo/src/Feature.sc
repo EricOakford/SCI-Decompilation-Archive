@@ -105,9 +105,15 @@
 			(saidEvent
 				(cond 
 					((not (Said noun)))
-					((not (= theVerb (event message?))) (event claimed: FALSE))
-					((self passedChecks: theVerb) (self doVerb: theVerb))
-					((IsObject actions) (actions handleEvent: event self))
+					((not (= theVerb (event message?)))
+						(event claimed: FALSE)
+					)
+					((self passedChecks: theVerb)
+						(self doVerb: theVerb)
+					)
+					((IsObject actions)
+						(actions handleEvent: event self)
+					)
 				)
 			)
 			(mouseDown
@@ -125,8 +131,7 @@
 						(event claimed: TRUE)
 					)
 					((& theMods ctrlDown)
-						(if
-						(or (& contClick NOCHECKMOUSE) (self passedChecks: contClick))
+						(if (or (& contClick NOCHECKMOUSE) (self passedChecks: contClick))
 							(self doVerb: (& (~ NOCHECKMOUSE) contClick))
 						)
 						(event claimed: TRUE)
@@ -138,21 +143,19 @@
 	)
 	
 	(method (setChecks theVerb theChecks &tmp theVal theShift)
-		(= theVal
-			(<< theChecks (= theShift (* 4 (mod (- theVerb 1) 4))))
-		)
-		(cond 
+		(= theVal (<< theChecks	(= theShift (* 4 (mod (- theVerb 1) 4)))))
+		(cond
 			((<= theVerb 4)
-				(= verbChecks1 (& verbChecks1 (~ (<< $F theShift))))
-				(= verbChecks1 (| verbChecks1 theVal))
+				(&= verbChecks1 (~ (<< $F theShift)))
+				(|= verbChecks1 theVal)
 			)
 			((<= theVerb 8)
-				(= verbChecks2 (& verbChecks2 (~ (<< $F theShift))))
-				(= verbChecks2 (| verbChecks2 theVal))
+				(&= verbChecks2 (~ (<< $F theShift)))
+				(|= verbChecks2 theVal)
 			)
 			(else
-				(= verbChecks3 (& verbChecks3 (~ (<< $F theShift))))
-				(= verbChecks3 (| verbChecks3 theVal))
+				(&= verbChecks3 (~ (<< $F theShift)))
+				(|= verbChecks3 theVal)
 			)
 		)
 	)
@@ -267,36 +270,32 @@
 	)
 	
 	(method (passedChecks theVerb &tmp theChecks)
-		(if
-			(and
-				(or
-					(not
-						(&
-							(= theChecks
-								(&
-									(>>
-										(if (<= theVerb 4) verbChecks1 else verbChecks2)
-										(* 4 (mod (- theVerb 1) 4))
-									)
-									$F
-								)
-							)
-							ISNOTHIDDEN
-						)
+		;EO: this method did not decompile properly
+		(= theChecks 
+			(&
+				(>>
+					(if (<= theVerb 4)
+						verbChecks1	
+					else
+						verbChecks2
 					)
-					(self isNotHidden:)
-				)
-				(or (not (& theChecks FARCHECK)) (self farCheck:))
-				(or (not (& theChecks NEARCHECK)) (self nearCheck:))
+					(* 4 (mod (- theVerb 1) 4))
+				)	
+				$F
 			)
-			(if (not (& theChecks FACINGME)) else (self facingMe:))
 		)
-	)
+		(return 
+			(and
+				(or (not (& theChecks ISNOTHIDDEN))	(self isNotHidden:))
+				(or (not (& theChecks FARCHECK))   	(self farCheck:))
+				(or (not (& theChecks NEARCHECK))   (self nearCheck:))
+				(or (not (& theChecks FACINGME)) 	(self facingMe:))
+			)
+		)
+	)	
 )
 
 (instance dftFtrInit of Code
-	(properties)
-	
 	(method (doit theObj)
 		(if (== (theObj sightAngle?) ftrDefault)
 			(theObj sightAngle: 90)

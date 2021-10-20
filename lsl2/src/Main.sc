@@ -23,7 +23,7 @@
 	NotifyScript 7
 	HaveMem 8
 	RedrawCast 9
-	proc0_10 10
+	ChangeSoundState 10
 	cls 11
 	Ok 12
 	ItIs 13
@@ -640,9 +640,9 @@
 	(Animate (cast elements?) FALSE)
 )
 
-(procedure (proc0_10 theObj theLoop)
-	;not sure, never used, but it seems to change an object's loop and state
-	(theObj loop: theLoop changeState:)
+(procedure (ChangeSoundState soundObj theLoop)
+	;seems to change a sound object's loop and state
+	(soundObj loop: theLoop changeState:)
 )
 
 (procedure (cls)

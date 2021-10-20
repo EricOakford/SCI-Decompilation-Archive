@@ -564,7 +564,7 @@
 				)
 			)
 			(21
-				(proc0_19 henchTheme 1)
+				(ChangeSoundState henchTheme 1)
 				(ego
 					view: 80
 					setCycle: Forward
