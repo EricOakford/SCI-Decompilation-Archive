@@ -1,0 +1,48 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# FATCITY)
+(include game.sh)
+(use Main)
+(use Intrface)
+(use Game)
+(use System)
+
+(public
+	rm399 0
+)
+
+(instance rm399 of Locale
+	(method (init)
+		(super init:)
+		(if (not (OneOf prevRoomNum 360 370 375 380 390))
+			(music number: 399 loop: musicLoop play:)
+		)
+	)
+	
+	(method (handleEvent event)
+		(if (or (!= (event type?) saidEvent) (event claimed?))
+			(return)
+		)
+		(cond 
+			;Amiga changes
+			((or (Said 'look<down') (Said '/carpet'))
+				(Print 399 0)
+			)
+			((Said 'look/card,membership,keycard[<membership]')
+				(if (ego has: iSpaKeycard)
+					(event claimed: FALSE)
+				else
+					(DontHave)
+				)
+			)
+			((or (Said 'look/ceiling') (Said 'look[<up]'))
+				(Print 399 1)
+			)
+			((Said '/wall')
+				(Print 399 2)
+			)
+			((Said '/door')
+				(Printf 399 3 currentEgo)
+			)
+		)
+	)
+)

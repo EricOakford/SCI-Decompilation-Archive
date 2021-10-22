@@ -184,7 +184,7 @@
 				(music number: 6 loop: -1 play:)
 				(cls)
 				(Print 610 13
-					#at 148 22
+					#at 100 22 ;148 22
 					#dispose
 				)
 				(aLarry setMotion: MoveTo 169 109 self)
