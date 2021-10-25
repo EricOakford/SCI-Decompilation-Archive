@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 0)
-(include game.sh)
+(include game.sh) (include menu.sh)
 (use Intrface)
 (use Avoider)
 (use Sound)
@@ -295,88 +295,38 @@
 		global269
 		global270
 )
-(procedure (EgoDead param1)
-	(asm
-		pushi    0
-		call     HandsOff,  0
-		pushi    1
-		pushi    0
-		callk    Wait,  2
-		pushi    1
-		pushi    150
-		callk    Wait,  2
-		pushi    #eachElementDo
-		pushi    1
-		pushi    88
-		lag      sounds
-		send     6
-		pushi    #number
-		pushi    1
-		pushi    2
-		pushi    42
-		pushi    0
-		lofsa    music
-		send     10
-code_0d7e:
-		pushi    17
-		&rest    param1
-		pushi    80
-		lofsa    {Jim shakes his head and says...}
-		push    
-		pushi    70
-		pushi    184
-		pushi    82
-		pushi    555
-		pushi    0
-		pushi    0
-		pushi    81
-		lofsa    {Restore}
-		push    
-		pushi    1
-		pushi    81
-		lofsa    { Restart_}
-		push    
-		pushi    2
-		pushi    81
-		lofsa    { Quit_}
-		push    
-		pushi    3
-		calle    Print,  34
-		push    
-		dup     
-		ldi      1
-		eq?     
-		bnt      code_0dc0
-		pushi    #restore
-		pushi    0
-		lag      theGame
-		send     4
-		jmp      code_0de0
-code_0dc0:
-		dup     
-		ldi      2
-		eq?     
-		bnt      code_0dd2
-		pushi    #restart
-		pushi    0
-		lag      theGame
-		send     4
-		jmp      code_0de0
-code_0dd2:
-		dup     
-		ldi      3
-		eq?     
-		bnt      code_0de0
-		ldi      1
-		sag      quit
-		jmp      code_0de4
-code_0de0:
-		toss    
-		jmp      code_0d7e
-code_0de4:
-		ret     
+(procedure (EgoDead)
+	;disposes all sounds, plays the death music, and gives the player a choice:
+	;	Restore, Restart, Quit
+	(HandsOff)
+	(Wait 0)
+	(Wait 150)
+	(sounds eachElementDo: #dispose)
+	(music number: 2 play:)
+	(repeat
+		(switch
+			(Print &rest
+				#title {Jim shakes his head and says...}
+				#width 184
+				#icon 555 0 0
+				#button {Restore} 1
+				#button { Restart_} 2
+				#button { Quit_} 3
+			)
+			(1
+				(theGame restore:)
+			)
+			(2
+				(theGame restart:)
+			)
+			(3
+				(= quit TRUE)
+				(break)
+			)
+		)
 	)
 )
+
 
 (procedure (NotifyScript script &tmp i)
 	(= i (ScriptID script))
@@ -384,16 +334,18 @@ code_0de4:
 	;((ScriptID script) notify: &rest)
 )
 
-(procedure (HaveMem param1)
-	(return (> (MemoryInfo 0) param1))
+(procedure (HaveMem howMuch)
+	(return (> (MemoryInfo LargestPtr) howMuch))
 )
 
 (procedure (RedrawCast)
-	(Animate (cast elements?) 0)
+	(Animate (cast elements?) FALSE)
 )
 
 (procedure (cls)
-	(if modelessDialog (modelessDialog dispose:))
+	(if modelessDialog
+		(modelessDialog dispose:)
+	)
 )
 
 (procedure (NotClose)
@@ -414,81 +366,80 @@ code_0de4:
 
 (procedure (HandsOff)
 	(cond 
-		((== argc 1) (= global243 1))
-		(global243 (= global244 1))
+		((== argc 1)
+			(= global243 1)
+		)
+		(global243
+			(= global244 1)
+		)
 	)
-	(= isHandsOff 1)
-	(User canControl: 0 canInput: 0)
+	(= isHandsOff TRUE)
+	(User canControl: FALSE canInput: FALSE)
 	(ego setMotion: 0)
 )
 
 (procedure (HandsOn)
 	(if (not global244)
-		(= isHandsOff 0)
-		(User canControl: 1 canInput: 1)
+		(= isHandsOff FALSE)
+		(User canControl: TRUE canInput: TRUE)
 	)
-	(if (== argc 1) (= global243 0) (= global244 0))
+	(if (== argc 1)
+		(= global243 0)
+		(= global244 0)
+	)
 )
 
 (procedure (DontHaveGun)
 	(Print 0 36)
 )
 
-(procedure (InRoom param1 param2)
+(procedure (InRoom what where)
 	(return
 		(==
-			((inventory at: param1) owner?)
-			(if (== argc 1) curRoomNum else param2)
+			((inventory at: what) owner?)
+			(if (== argc 1) curRoomNum else where)
 		)
 	)
 )
 
-(procedure (PutInRoom param1 param2)
-	((inventory at: param1)
-		owner: (if (== argc 1) curRoomNum else param2)
+(procedure (PutInRoom what where)
+	((inventory at: what)
+		owner: (if (== argc 1) curRoomNum else where)
 	)
 )
 
-(procedure (Bset param1)
-	(= [gameFlags (/ param1 16)]
-		(|
-			[gameFlags (/ param1 16)]
-			(>> $8000 (mod param1 16))
-		)
-	)
+(procedure (Bset flagEnum)
+	(|= [gameFlags (/ flagEnum 16)] (>> $8000 (mod flagEnum 16)))
 )
 
-(procedure (Bclr param1)
-	(= [gameFlags (/ param1 16)]
-		(&
-			[gameFlags (/ param1 16)]
-			(~ (>> $8000 (mod param1 16)))
-		)
-	)
+(procedure (Bclr flagEnum)
+	(&= [gameFlags (/ flagEnum 16)] (~ (>> $8000 (mod flagEnum 16))))
 )
 
-(procedure (Btst param1)
+(procedure (Btst flagEnum)
 	(return
 		(&
-			[gameFlags (/ param1 16)]
-			(>> $8000 (mod param1 16))
+			[gameFlags (/ flagEnum 16)]
+			(>> $8000 (mod flagEnum 16))
 		)
 	)
 )
 
-(procedure (AssignObjectToScript param1 param2 param3)
+(procedure (AssignObjectToScript obj theScript theState)
 	(switch argc
-		(2 (param1 setScript: param2))
+		(2
+			(obj setScript: theScript)
+		)
 		(3
-			(param1 script: param2)
-			(param2 client: param1)
-			(param2 changeState: param3)
+			(obj script: theScript)
+			(theScript client: obj)
+			(theScript changeState: theState)
 		)
 	)
-	(while (param1 script?)
-		(Animate (cast elements?) 1)
+	(while (obj script?)
+		(Animate (cast elements?) TRUE)
 		(if doMotionCue
-			(= doMotionCue 0)
+			(= doMotionCue FALSE)
 			(cast eachElementDo: #motionCue)
 		)
 		(Wait 5)
@@ -501,7 +452,7 @@ code_0de4:
 		setPri: -1
 		setMotion: 0
 		setCycle: Walk
-		illegalBits: -32768
+		illegalBits: cWHITE
 		cycleSpeed: 0
 		moveSpeed: 0
 		setStep: 3 2
@@ -509,18 +460,22 @@ code_0de4:
 	)
 )
 
-(procedure (SolvePuzzle param1 param2)
-	(if (and (== argc 2) (Btst param2)) (return))
-	(theGame changeScore: param1)
-	(if (Btst 125) (Bclr 125) else (music number: 6 play:))
-	(if (== argc 2) (Bset param2))
+(procedure (SolvePuzzle pValue pFlag)
+	(if (and (== argc 2) (Btst pFlag)) (return))
+	(theGame changeScore: pValue)
+	(if (Btst fGotPoints)
+		(Bclr fGotPoints)
+	else
+		(music number: 6 play:)
+	)
+	(if (== argc 2)
+		(Bset pFlag)
+	)
 )
 
 (instance diverClock of TimeOut)
 
-(instance continuousMusic of Sound
-	(properties)
-)
+(instance continuousMusic of Sound)
 
 (instance music of Sound
 	(properties
@@ -529,10 +484,8 @@ code_0de4:
 )
 
 (instance statusCode of Code
-	(properties)
-	
-	(method (doit param1)
-		(Format param1 0 0 score possibleScore)
+	(method (doit strg)
+		(Format strg 0 0 score possibleScore)
 	)
 )
 
@@ -543,8 +496,6 @@ code_0de4:
 )
 
 (instance PQ of Game
-	(properties)
-	
 	(method (init &tmp [temp0 21])
 		(= systemWindow (SysWindow new:))
 		(super init:)
@@ -577,7 +528,7 @@ code_0de4:
 		(= currentCar 33)
 		(= methaneGasTimer -1)
 		(= correctScubaTank (Random 1 3))
-		(Bset 12)
+		(Bset fEgoDeskUnlocked)
 		(= version {1.002.011})
 		(Inventory
 			add:
@@ -620,9 +571,9 @@ code_0de4:
 				note_from_Marie_s_door
 				your_LPD_business_card
 		)
-		(ego get: 4)
+		(ego get: iMoneyClip)
 		(HandsOn)
-		(= showStyle 0)
+		(= showStyle HSHUTTER)
 		(DoSound ChangeVolume 15)
 		((= cSound continuousMusic)
 			owner: self
@@ -631,7 +582,7 @@ code_0de4:
 		)
 		(music owner: self number: 6 init:)
 		(if (GameIsRestarting)
-			(Bset 167)
+			(Bset fGameIsRestarting)
 			(self newRoom: 99)
 		else
 			(self newRoom: 99)
@@ -674,7 +625,7 @@ code_0de4:
 			(= diverState 11)
 		)
 		(if (and (== diverState 11) (< (diverClock timeLeft?) 1))
-			(= removedBodyFromRiver 1)
+			(= removedBodyFromRiver TRUE)
 			(= diverState 12)
 		)
 	)
@@ -683,35 +634,35 @@ code_0de4:
 		(TheMenuBar draw:)
 		(StatusLine enable:)
 		(if (DoSound SoundOn)
-			(SetMenu 1282 113 0 110 {Turn Off})
+			(SetMenu soundI p_value FALSE p_text {Turn Off})
 		else
-			(SetMenu 113 1 110 {Turn On})
+			(SetMenu p_value TRUE p_text {Turn On})
 		)
 		(super replay:)
 	)
 	
-	(method (startRoom roomNum &tmp temp0 theAvoid newEvent [temp3 50])
-		(while ((= newEvent (Event new:)) type?)
-			(newEvent dispose:)
+	(method (startRoom roomNum &tmp temp0 avd evt [temp3 50])
+		(while ((= evt (Event new:)) type?)
+			(evt dispose:)
 		)
-		(newEvent dispose:)
+		(evt dispose:)
 		(DisposeScript 301)
 		(DisposeScript 976)
-		(if (and (!= roomNum 13) (!= roomNum 33))
-			(= theAvoid Avoider)
+		(if (and (!= roomNum carWork) (!= roomNum carPersonal))
+			(= avd Avoider)
 		else
-			(DisposeScript 985)
+			(DisposeScript AVOIDER)
 		)
 		(if
 			(and
 				debugging
-				(u> (MemoryInfo 1) (+ 20 (MemoryInfo 0)))
+				(u> (MemoryInfo FreeHeap) (+ 20 (MemoryInfo LargestPtr)))
 				(Print 0 4 #button {Debug} 1)
 			)
 			(SetDebug)
 		)
-		(= gunNotNeeded 1)
-		(= gunFireState 2)
+		(= gunNotNeeded TRUE)
+		(= gunFireState gunUSELESS)
 		(if
 			(and
 				(!= roomNum 1)
@@ -727,9 +678,9 @@ code_0de4:
 				(!= roomNum 61)
 				(!= roomNum 67)
 			)
-			(SetMenu 777 112 0)
+			(SetMenu carI p_state FALSE)
 		else
-			(SetMenu 777 112 1)
+			(SetMenu carI p_state TRUE)
 		)
 		(= global132 0)
 		(if (and (< bainsInCoveTimer 250) bainsInCoveState)
@@ -743,7 +694,7 @@ code_0de4:
 				(!= (ego view?) 306)
 				(!= (ego view?) 6)
 			)
-			(= gunDrawn 0)
+			(= gunDrawn FALSE)
 		)
 		(if global214
 			(= global214 0)
@@ -753,16 +704,16 @@ code_0de4:
 				(5 (ego view: 1))
 			)
 		)
-		(if (and (!= roomNum 13) (!= roomNum 33))
-			(curRoom setLocales: 150)
+		(if (and (!= roomNum carWork) (!= roomNum carPersonal))
+			(curRoom setLocales: regGun)
 		)
 		(if debugging
-			(curRoom setLocales: 801)
+			(curRoom setLocales: DEBUG)
 		)
 		(Load SOUND 6)
 	)
 	
-	(method (handleEvent event &tmp temp0 [temp1 53])
+	(method (handleEvent event &tmp index [temp1 53])
 		(super handleEvent: event)
 		(if (event claimed?) (return))
 		(switch (event type?)
@@ -775,17 +726,17 @@ code_0de4:
 						)
 					)
 					((Said 'frisk,(look<in,through)/billfold')
-						(if (not (ego has: 7))
+						(if (not (ego has: iWallet))
 							(DontHave)
 						else
 							(Print 800 50)
-							(SolvePuzzle 2 58)
-							(Bset 33)
+							(SolvePuzzle 2 fFirstFindDivingCard)
+							(Bset fFoundDiverCard)
 						)
 					)
 					((Said 'open/billfold')
-						(if (ego has: 7)
-							((inventory at: 7) showSelf:)
+						(if (ego has: iWallet)
+							((inventory at: iWallet) showSelf:)
 						else
 							(DontHave)
 						)
@@ -799,29 +750,33 @@ code_0de4:
 						(Print 800 (Random 0 7))
 					)
 					((Said 'read/instruction,newspaper')
-						(if (ego has: 33)
-							(Print 800 53 33 smallFont)
+						(if (ego has: iBombInstructions)
+							(Print 800 53 #font smallFont)
 						else
 							(DontHave)
 						)
 					)
-					(
-						(Said
-							'look,compare,check/handwriting,note,handwriting[<hand]'
-						)
-						(if (ego has: 36)
-							(SolvePuzzle 3 90)
-							(Print 0 5 #at -1 15 #icon 136 0 0)
+					((Said 'look,compare,check/handwriting,note,handwriting[<hand]')
+						(if (ego has: iMarieDoorNote)
+							(SolvePuzzle 3 fCheckMarieHandwriting)
+							(Print 0 5
+								#at -1 15
+								#icon 136 0 0
+							)
 						else
 							(DontHave)
 						)
 					)
-					((Said 'holler') (Print 0 6))
+					((Said 'holler')
+						(Print 0 6)
+					)
 					((Said 'chat>')
 						(cond 
 							((Said '/friend')
 								(cond 
-									((== curRoomNum 13) (Print 800 (Random 10 15)))
+									((== curRoomNum carWork)
+										(Print 800 (Random 10 15))
+									)
 									(
 										(or
 											(not (cast contains: keith))
@@ -829,93 +784,149 @@ code_0de4:
 										)
 										(Print 0 7)
 									)
-									((> (ego distanceTo: keith) 30) (Print 0 8))
-									(else (Print 800 (Random 10 15)))
+									((> (ego distanceTo: keith) 30)
+										(Print 0 8)
+									)
+									(else
+										(Print 800 (Random 10 15))
+									)
 								)
 							)
-							((Said '/!*') (Print 0 9))
-							(else (event claimed: 1) (Print 0 10))
+							((Said '/noword')
+								(Print 0 9)
+							)
+							(else
+								(event claimed: TRUE)
+								(Print 0 10)
+							)
 						)
 					)
-					((or (Said '[say]/hello') (Said 'smile,wave')) (Print 0 11))
-					((Said '[say]/bye') (Print 0 12))
-					((Said 'open/door') (CantDo))
+					((or (Said '[say]/hello') (Said 'smile,wave'))
+						(Print 0 11)
+					)
+					((Said '[say]/bye')
+						(Print 0 12)
+					)
+					((Said 'open/door')
+						(CantDo)
+					)
 					(
 						(or
 							(Said 'use,remove/powder,brush')
 							(Said 'deposit,apply,use/powder,dust')
-							(Said 'dust,powder[/*]')
+							(Said 'dust,powder[/anyword]')
 							(Said 'get,remove,hoist/fingerprint,print[<finger]')
 							(Said 'open,use,look/briefcase')
 						)
-						(if (== gamePhase 14) (Print 0 13) else (Print 0 14))
+						(if (== gamePhase 14)
+							(Print 0 13)
+						else
+							(Print 0 14)
+						)
 					)
-					((Said 'get/*')
-						(event claimed: 0)
+					((Said 'get/anyword')
+						(event claimed: FALSE)
 						(if
 							(and
-								(= temp0 (inventory saidMe: event))
-								(== (temp0 owner?) ego)
+								(= index (inventory saidMe: event))
+								(== (index owner?) ego)
 							)
 							(AlreadyTook)
 						else
-							(event claimed: 1)
+							(event claimed: TRUE)
 							(Print 0 15)
 						)
 					)
-					((Said 'use/*') (Print 0 16))
-					((Said 'deposit,deposit/*') (Print 0 14))
+					((Said 'use/anyword')
+						(Print 0 16)
+					)
+					((Said 'deposit,deposit/anyword')
+						(Print 0 14)
+					)
 					((Said 'ask>')
 						(cond 
-							((Said '/!*') (Print 0 17))
-							((Said '//!*') (Print 0 18))
+							((Said '/noword')
+								(Print 0 17)
+							)
+							((Said '//noword')
+								(Print 0 18)
+							)
 						)
 					)
-					((Said 'eat/9mm') (Print 0 19))
-					((Said 'eat') (Print 0 20))
+					((Said 'eat/9mm')
+						(Print 0 19)
+					)
+					((Said 'eat')
+						(Print 0 20)
+					)
 					((Said 'turn/card')
 						(cond 
-							((not (ego has: 37)) (DontHave))
-							((your_LPD_business_card cel?) (your_LPD_business_card cel: 0 showSelf:))
-							(else (your_LPD_business_card cel: 1 showSelf:))
+							((not (ego has: iLPDBusinessCard))
+								(DontHave)
+							)
+							((your_LPD_business_card cel?)
+								(your_LPD_business_card cel: 0 showSelf:)
+							)
+							(else
+								(your_LPD_business_card cel: 1 showSelf:)
+							)
 						)
 					)
-					((or (Said 'thank') (Said '/thanks')) (Print 0 21))
-					((Said '/oop,oop') (Print 0 22))
-					((Said 'affirmative,n') (Print 0 23))
-					((Said 'sat') (Print 0 10))
-					((Said 'beat,kill,fire,beat') (Print 0 24))
-					((Said 'cigarette') (Print 800 51))
-					((Said 'gave[/*]') (Print 0 14))
+					((or (Said 'thank') (Said '/thanks'))
+						(Print 0 21)
+					)
+					((Said '/oop,oop')
+						(Print 0 22)
+					)
+					((Said 'affirmative,n')
+						(Print 0 23)
+					)
+					((Said 'sat')
+						(Print 0 10)
+					)
+					((Said 'beat,kill,fire,beat')
+						(Print 0 24)
+					)
+					((Said 'cigarette')
+						(Print 800 51)
+					)
+					((Said 'gave[/anyword]')
+						(Print 0 14)
+					)
 					((Said 'frisk>')
-						(if (Said '/!*')
+						(if (Said '/noword')
 							(Print 0 25)
 						else
-							(event claimed: 1)
+							(event claimed: TRUE)
 							(Print 0 26)
 						)
 					)
 					((Said 'look,read>')
 						(cond 
-							(
-							(or (Said '/pocket<coat') (Said '/coat<pocket')) (event claimed: 0))
-							((Said '/pocket') (Print 0 27))
+							((or (Said '/pocket<coat') (Said '/coat<pocket'))
+								(event claimed: FALSE)
+							)
+							((Said '/pocket')
+								(Print 0 27)
+							)
 							((Said '/certificate')
-								(if (Btst 33)
-									(Print 800 49 82 164 0 0)
+								(if (Btst fFoundDiverCard)
+									(Print 800 49
+										#icon 164 0 0
+									)
 								else
 									(Print 800 52)
 								)
 							)
 							((or (Said '<back/card') (Said '/back/card'))
-								(if (ego has: 37)
+								(if (ego has: iLPDBusinessCard)
 									(your_LPD_business_card cel: 1 showSelf:)
 								else
 									(DontHave)
 								)
 							)
 							((or (Said '<front/card') (Said '/front/card'))
-								(if (ego has: 37)
+								(if (ego has: iLPDBusinessCard)
 									(your_LPD_business_card cel: 0 showSelf:)
 								else
 									(DontHave)
@@ -937,19 +948,15 @@ code_0de4:
 							)
 							(
 								(or
-									(Said
-										'/bains,john,dooley,lloyd,gelepsi,captain,hall,james,pierson'
-									)
-									(Said
-										'/simpson,bob,adams,cole,jerome,ken,ken,saxton,luis'
-									)
-									(Said
-										'/roberts,calvin,calvin,willis,jerk,diver,chuck,colby,miller'
-									)
+									(Said '/bains,john,dooley,lloyd,gelepsi,captain,hall,james,pierson')
+									(Said '/simpson,bob,adams,cole,jerome,ken,ken,saxton,luis')
+									(Said '/roberts,calvin,calvin,willis,jerk,diver,chuck,colby,miller')
 								)
 								(Print 0 28)
 							)
-							((Said '/kim,holt,gomez,cheeks,cheeks,holt') (Print 0 29))
+							((Said '/kim,holt,gomez,cheeks,cheeks,holt')
+								(Print 0 29)
+							)
 							((Said '/boob')
 								(if
 									(or
@@ -964,15 +971,20 @@ code_0de4:
 									(Print 0 31)
 								)
 							)
-							((Said '/clock,wrist,time') (Print 800 9))
-							((= temp0 (inventory saidMe: event))
-								(if (ego has: (inventory indexOf: temp0))
-									(temp0 showSelf:)
+							((Said '/clock,wrist,time')
+								(Print 800 9)
+							)
+							((= index (inventory saidMe: event))
+								(if (ego has: (inventory indexOf: index))
+									(index showSelf:)
 								else
 									(DontHave)
 								)
 							)
-							(else (event claimed: 1) (Print 800 (Random 30 32)))
+							(else
+								(event claimed: TRUE)
+								(Print 800 (Random 30 32))
+							)
 						)
 					)
 				)
@@ -980,31 +992,26 @@ code_0de4:
 		)
 	)
 	
-	(method (wordFail param1 &tmp [temp0 40])
-		(Printf 0 1 param1)
+	(method (wordFail word &tmp [str 40])
+		(Printf 0 1 word)
 	)
 	
 	(method (syntaxFail)
-		(Print 0 2 #icon 555 1 0)
+		(Print 0 2
+			#icon 555 1 0
+		)
 	)
 	
-	(method (pragmaFail &tmp [temp0 100])
+	(method (pragmaFail &tmp [str 100])
 		(Print 0 3)
 	)
 )
 
 (class Iitem of InvItem
-	(properties
-		said 0
-		description 0
-		owner 0
-		view 0
-		loop 0
-		cel 0
-	)
-	
 	(method (showSelf)
-		(Print 899 (- view 100) 80 name 82 view 0 cel)
+		(Print 899 (- view 100)
+			#title name
+			#icon view 0 cel)
 	)
 )
 
@@ -1050,11 +1057,11 @@ code_0de4:
 		name "key ring"
 	)
 	
-	(method (saidMe param1)
+	(method (saidMe event)
 		(return
-			(if (and (ego has: 3) (Said '/key'))
-				(param1 claimed: 0)
-				(return 0)
+			(if (and (ego has: iUnmarkedCarKeys) (Said '/key'))
+				(event claimed: FALSE)
+				(return FALSE)
 			else
 				(return (if (Said '/key') else (Said said)))
 			)
@@ -1078,15 +1085,11 @@ code_0de4:
 		name "money clip"
 	)
 	
-	(method (showSelf &tmp [temp0 40])
+	(method (showSelf &tmp [str 40])
 		(Print
-			(Format @temp0 0 37 dollars)
-			#title
-			name
-			#icon
-			view
-			0
-			(if (== dollars 0) 1 else 0)
+			(Format @str 0 37 dollars)
+			#title name
+			#icon view 0 (if (== dollars 0) 1 else 0)
 		)
 	)
 )
@@ -1116,11 +1119,11 @@ code_0de4:
 		view 107
 	)
 	
-	(method (saidMe param1)
+	(method (saidMe event)
 		(return
-			(if (and (ego has: 18) (Said '/badge'))
-				(param1 claimed: 0)
-				(return 0)
+			(if (and (ego has: iLostBadge) (Said '/badge'))
+				(event claimed: FALSE)
+				(return FALSE)
 			else
 				(return (Said said))
 			)
@@ -1161,34 +1164,27 @@ code_0de4:
 		name "potted plant"
 	)
 	
-	(method (showSelf &tmp [temp0 40])
+	(method (showSelf &tmp [str 40])
 		(Print
-			(Format
-				@temp0
-				0
-				38
+			(Format @str 0 38
 				(switch cel
 					(0 {potted plant})
 					(1 {single long-stemmed rose})
 					(2 {bouquet})
 				)
 			)
-			#title
-			name
-			#icon
-			view
-			loop
-			cel
+			#title name
+			#icon view loop cel
 		)
 	)
 	
-	(method (ownedBy param1)
+	(method (ownedBy whom)
 		(switch cel
 			(0 (= name {potted plant}))
 			(1 (= name {rose}))
 			(2 (= name {bouquet}))
 		)
-		(super ownedBy: param1)
+		(super ownedBy: whom)
 	)
 )
 
@@ -1200,13 +1196,19 @@ code_0de4:
 		name "new mug shot"
 	)
 	
-	(method (saidMe param1)
+	(method (saidMe event)
 		(return
 			(cond 
-				((!= owner ego) (return 0))
-				(
-				(or (Said '/mugshot<old') (Said '/shot<mug<old')) (param1 claimed: 0) (return 0))
-				(else (return (Said said)))
+				((!= owner ego)
+					(return FALSE)
+				)
+				((or (Said '/mugshot<old') (Said '/shot<mug<old'))
+					(event claimed: FALSE)
+					(return FALSE)
+				)
+				(else
+					(return (Said said))
+				)
 			)
 		)
 	)
@@ -1246,20 +1248,13 @@ code_0de4:
 		name "plane ticket"
 	)
 	
-	(method (showSelf &tmp [temp0 40])
+	(method (showSelf &tmp [str 40])
 		(Print
-			(Format
-				@temp0
-				0
-				39
-				(if (== airplaneToSteelton 1) {Steelton} else {Houston})
+			(Format @str 0 39
+				(if (== airplaneToSteelton TRUE) {Steelton} else {Houston})
 			)
-			#title
-			name
-			#icon
-			view
-			0
-			0
+			#title name
+			#icon view 0 0
 		)
 	)
 )
@@ -1424,13 +1419,13 @@ code_0de4:
 		name "Colby's business card"
 	)
 	
-	(method (saidMe param1)
+	(method (saidMe event)
 		(return
-			(if (and (ego has: 37) (Said '/card[<!*]'))
-				(param1 claimed: 0)
-				(return 0)
+			(if (and (ego has: iLPDBusinessCard) (Said '/card[<noword]'))
+				(event claimed: FALSE)
+				(return FALSE)
 			else
-				(return (if (Said '/card[<!*]') else (Said said)))
+				(return (if (Said '/card[<noword]') else (Said said)))
 			)
 		)
 	)
