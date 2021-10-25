@@ -12,7 +12,7 @@
 (local
 	oldCur
 )
-(class Ware
+(class Ware ;of RootObj
 	(properties
 		price 0
 	)
@@ -23,44 +23,40 @@
 )
 
 (instance buy of Dialog
-	(method (init &tmp temp0 temp1 temp2 temp3 newDText gNewListFirst temp6)
+	(method (init &tmp h v temp2 val wareText node obj)
 		(= oldCur theCursor)
 		(theGame setCursor: ARROW_CURSOR)
-		(= temp0 (= temp1 4))
-		(= temp3 0)
+		(= h (= v MARGIN))
+		(= val 0)
 		(if (!= curRoomNum 65)
 			((= theBuyDialog (DText new:))
 				text: {You may buy:}
 				setSize:
-				moveTo: 4 temp1
+				moveTo: 4 v
 			)
 		else
 			((= theBuyDialog (DText new:))
 				text: {You may give:}
 				setSize:
-				moveTo: 4 temp1
+				moveTo: 4 v
 			)
 		)
 		(self add: theBuyDialog setSize:)
-		(= temp1
-			(+
-				temp1
-				(- (theBuyDialog nsBottom?) (theBuyDialog nsTop?))
-				1
-			)
+		(= v
+			(+ v (- (theBuyDialog nsBottom?) (theBuyDialog nsTop?)) 1)
 		)
-		(= gNewListFirst (wareList first:))
-		(while gNewListFirst
-			(= temp6 (NodeValue gNewListFirst))
-			(++ temp3)
+		(= node (wareList first:))
+		(while node
+			(= obj (NodeValue node))
+			(++ val)
 			(self
 				add:
-					((= newDText (DText new:))
-						value: temp3
-						text: (temp6 name?)
-						nsLeft: temp0
-						nsTop: temp1
-						state: 3
+					((= wareText (DText new:))
+						value: val
+						text: (obj name?)
+						nsLeft: h
+						nsTop: v
+						state: (| dActive dExit)
 						setSize:
 						yourself:
 					)
@@ -69,9 +65,9 @@
 				(self
 					add:
 						((DText new:)
-							text: (temp6 price?)
-							nsLeft: (+ temp0 120)
-							nsTop: temp1
+							text: (obj price?)
+							nsLeft: (+ h 120)
+							nsTop: v
 							setSize:
 							yourself:
 						)
@@ -79,18 +75,18 @@
 				(self
 					add:
 						((DText new:)
-							text: (if (StrCmp (temp6 price?) {1}) {Silvers} else {Silver})
-							nsLeft: (+ temp0 140)
-							nsTop: temp1
+							text: (if (StrCmp (obj price?) {1}) {Silvers} else {Silver})
+							nsLeft: (+ h 140)
+							nsTop: v
 							setSize:
 							yourself:
 						)
 				)
 			)
-			(= temp1
-				(+ temp1 (- (newDText nsBottom?) (newDText nsTop?)) 1)
+			(= v
+				(+ v (- (wareText nsBottom?) (wareText nsTop?)) 1)
 			)
-			(= gNewListFirst (wareList next: gNewListFirst))
+			(= node (wareList next: node))
 		)
 		(= window systemWindow)
 		(self setSize:)
@@ -112,30 +108,30 @@
 			move: (- (theBuyDialog nsLeft?) (theBuyDialog nsRight?)) 0
 		)
 		(self add: theBuyDialog setSize: center:)
-		(return temp3)
+		(return val)
 	)
 	
-	(method (doit &tmp theGNewDText temp1 temp2 temp3 temp4 temp5)
+	(method (doit &tmp obj haveG haveS costS temp4 temp5)
 		(self init:)
-		(self open: 4 15)
-		(= temp2 ((inventory at: iSilver) amount?))
+		(self open: wTitled 15)
+		(= haveS ((inventory at: iSilver) amount?))
 		(= temp4 (/ ((inventory at: iSilver) amount?) 10))
-		(= temp1 (* ((inventory at: iGold) amount?) 10))
-		(= theGNewDText theBuyDialog)
-		(= theGNewDText (super doit: theGNewDText))
+		(= haveG (* ((inventory at: iGold) amount?) 10))
+		(= obj theBuyDialog)
+		(= obj (super doit: obj))
 		(if
 			(or
-				(not (IsObject theGNewDText))
-				(== theGNewDText theBuyDialog)
+				(not (IsObject obj))
+				(== obj theBuyDialog)
 			)
 			(self dispose: 0)
 		else
 			(= temp5
 				(not
 					(mod
-						(= temp3
+						(= costS
 							(ReadNumber
-								((wareList at: (- (theGNewDText value?) 1)) price?)
+								((wareList at: (- (obj value?) 1)) price?)
 							)
 						)
 						10
@@ -143,34 +139,38 @@
 				)
 			)
 			(cond 
-				((< (+ temp1 temp2) temp3) (self dispose: -1))
-				((== (+ temp1 temp2) temp3)
+				((< (+ haveG haveS) costS)
+					;not enough money
+					(self dispose: -1)
+				)
+				((== (+ haveG haveS) costS)
+					;has exactly enough
 					((inventory at: iSilver) amount: 0)
 					((inventory at: iGold) amount: 0)
-					(ego use: 0 0)
-					(self dispose: (theGNewDText value?))
+					(ego use: iSilver 0)
+					(self dispose: (obj value?))
 				)
-				((> temp2 temp3)
+				((> haveS costS)
 					((inventory at: iSilver)
-						amount: (- ((inventory at: iSilver) amount?) temp3)
+						amount: (- ((inventory at: iSilver) amount?) costS)
 					)
-					(self dispose: (theGNewDText value?))
+					(self dispose: (obj value?))
 				)
 				(temp4
 					((inventory at: iSilver)
 						amount: (- ((inventory at: iSilver) amount?) (* temp4 10))
 					)
-					(= temp3 (- temp3 (* temp4 10)))
+					(-= costS (* temp4 10))
 					((inventory at: iGold)
 						amount:
 							(-
 								((inventory at: iGold) amount?)
-								(+ (/ temp3 10) (if temp5 0 else 1))
+								(+ (/ costS 10) (if temp5 0 else 1))
 							)
 					)
 					(if (not temp5)
 						((inventory at: iSilver)
-							amount: (+ ((inventory at: iSilver) amount?) (- 10 (mod temp3 10)))
+							amount: (+ ((inventory at: iSilver) amount?) (- 10 (mod costS 10)))
 						)
 					)
 					(cond 
@@ -179,7 +179,7 @@
 								(== ((inventory at: iSilver) amount?) 0)
 								(== ((inventory at: iGold) amount?) 0)
 							)
-							(ego use: 0 0)
+							(ego use: iSilver 0)
 						)
 						(
 							(and
@@ -192,19 +192,19 @@
 							)
 						)
 					)
-					(self dispose: (theGNewDText value?))
+					(self dispose: (obj value?))
 				)
 				(else
 					((inventory at: iGold)
 						amount:
 							(-
 								((inventory at: iGold) amount?)
-								(+ (/ temp3 10) (if temp5 0 else 1))
+								(+ (/ costS 10) (if temp5 0 else 1))
 							)
 					)
 					(if (not temp5)
 						((inventory at: iSilver)
-							amount: (+ ((inventory at: iSilver) amount?) (- 10 (mod temp3 10)))
+							amount: (+ ((inventory at: iSilver) amount?) (- 10 (mod costS 10)))
 						)
 					)
 					(cond 
@@ -213,7 +213,7 @@
 								(== ((inventory at: iSilver) amount?) 0)
 								(== ((inventory at: iGold) amount?) 0)
 							)
-							(ego use: 0 0)
+							(ego use: iSilver 0)
 						)
 						(
 							(and
@@ -226,18 +226,18 @@
 							)
 						)
 					)
-					(self dispose: (theGNewDText value?))
+					(self dispose: (obj value?))
 				)
 			)
 		)
 	)
 	
-	(method (dispose param1)
+	(method (dispose ret)
 		(self eachElementDo: #dispose 1)
 		(super dispose:)
 		(wareList dispose:)
 		(theGame setCursor: oldCur)
-		(return param1)
+		(return ret)
 	)
 	
 	(method (handleEvent event &tmp eMsg eType)
