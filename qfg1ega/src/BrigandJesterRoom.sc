@@ -221,7 +221,7 @@
 			)
 		)
 		(cond 
-			((and (Btst fBefriendedYorick) (not local7) (not local8))
+			((and (Btst fYorickLikesYou) (not local7) (not local8))
 				(SolvePuzzle f96AskAboutElsa 8)
 				(= local7 1)
 				(head dispose:)
@@ -274,9 +274,9 @@
 				(cond 
 					((Btst fNoMoreTalking) (NoTalking) (event claimed: TRUE))
 					((Said '/yorick')
-						(if (not (Btst fBefriendedYorick))
+						(if (not (Btst fYorickLikesYou))
 							(SolvePuzzle f96TalkToJester 2)
-							(Bset fBefriendedYorick)
+							(Bset fYorickLikesYou)
 							(HighPrint 96 7)
 							;"You know me?  Then perhaps you have come to help.  Perhaps you are able to take the child from the band."
 						else
@@ -298,8 +298,8 @@
 					(= talkRet TRUE)
 					(cond 
 						((Said '//elsa')
-							(if (not (Btst fBefriendedYorick))
-								(Bset fBefriendedYorick)
+							(if (not (Btst fYorickLikesYou))
+								(Bset fYorickLikesYou)
 								(HighPrint 96 10)
 								;"You know Elsa?  Then perhaps you have come to help.  Perhaps you are able to take the child from the band."
 								(HighPrint 96 11)
@@ -314,8 +314,8 @@
 							;If that happens, I know she will never be disenchanted."
 						)
 						((Said '//enchantment,disenchantment,spell,curse')
-							(if (not (Btst fBefriendedYorick))
-								(Bset fBefriendedYorick)
+							(if (not (Btst fYorickLikesYou))
+								(Bset fYorickLikesYou)
 								(HighPrint 96 15)
 								;"You know about the enchantment?  Then perhaps you have come to help. 
 								; Perhaps you are able to take the child from the band."
@@ -330,7 +330,8 @@
 							;"If you're going to be the big Hero, I hope you brought a Dispel Potion or something."
 						)
 						((Said '//yorick')
-							(if (not (Btst fBefriendedYorick)) (Bset fBefriendedYorick)
+							(if (not (Btst fYorickLikesYou))
+								(Bset fYorickLikesYou)
 								(HighPrint 96 7)
 								;"You know me?  Then perhaps you have come to help. 
 								; Perhaps you are able to take the child from the band."
@@ -371,8 +372,8 @@
 							;"I'll protect the Brigand Leader with everything I've got.  That's no laughing matter as I get madder."
 						)
 						((Said '//potion<disenchant')
-							(if (not (Btst fBefriendedYorick))
-								(Bset fBefriendedYorick)
+							(if (not (Btst fYorickLikesYou))
+								(Bset fYorickLikesYou)
 								(HighPrint 96 15)
 								;"You know about the enchantment?  Then perhaps you have come to help. 
 								; Perhaps you are able to take the child from the band."
@@ -436,7 +437,7 @@
 						)
 						((Said '//*')
 							(= talkRet FALSE)
-							(if (Btst fBefriendedYorick)
+							(if (Btst fYorickLikesYou)
 								(HighPrint 96 46)
 								;"If you have business to do, then get busy doing your business."
 							else

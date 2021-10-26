@@ -1035,7 +1035,7 @@
 				(V_TALK
 					(if (not askedForDust)
 						(= askedForDust TRUE)
-						(if (Btst fDancedForFairies)
+						(if (Btst fMetFairies)
 							(= local94 16)
 						else
 							(= local94 1)
@@ -1077,7 +1077,7 @@
 				else
 					(switch local94
 						(1
-							(Bset fDancedForFairies)
+							(Bset fMetFairies)
 							(switch
 								(Print
 									addText: N_ROOM NULL C_ASKDANCE 1 0 0
@@ -1520,8 +1520,7 @@
 	)
 )
 
-(instance setUpFaerys of FaeryScript
-	
+(instance setUpFaerys of FaeryScript	
 	(method (doit)
 		(super doit:)
 		(if
@@ -1576,7 +1575,7 @@
 			(5
 				(if (not askedForDust)
 					(= askedForDust TRUE)
-					(if (Btst fDancedForFairies)
+					(if (Btst fMetFairies)
 						(= local94 16)
 					else
 						(= local94 1)
@@ -1588,10 +1587,10 @@
 				)
 			)
 			(6
-				(if (Btst fDancedForFairies)
+				(if (Btst fMetFairies)
 					(messager say: N_FAIRIES NULL C_HELLOAGAIN 0 self)
 				else
-					(Bset fDancedForFairies)
+					(Bset fMetFairies)
 					(messager say: N_FAIRIES NULL C_FIRSTMEET 0 self)
 				)
 			)

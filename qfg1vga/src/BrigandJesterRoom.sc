@@ -774,7 +774,7 @@
 			)
 		)
 		(cond 
-			((and (Btst fBefriendedYorick) (not yorickLeaveCued) (not yorickGone))
+			((and (Btst fYorickLikesYou) (not yorickLeaveCued) (not yorickGone))
 				(= yorickLeaveCued TRUE)
 				((ScriptID 98 32) dispose:)
 				(self view: 298 setLoop: 0 setCel: 0)
@@ -795,7 +795,7 @@
 		(if (== (= superShowDialog (super showDialog:)) -23)
 			(SolvePuzzle f96AskAboutElsa 8)
 			;UPGRADE: Flag now set to allow Yorick to leave
-			(Bset fBefriendedYorick)
+			(Bset fYorickLikesYou)
 		)
 		(return superShowDialog)
 	)
@@ -1656,7 +1656,7 @@
 				)
 			)
 			(2
-				(if (Btst fBefriendedYorick)
+				(if (Btst fYorickLikesYou)
 					(messager say: N_ROOM NULL C_YORICKFRIEND)
 				)
 				(yorick setLoop: 1 setCel: 0 setCycle: MoveCycle @yorickLeavePath self)

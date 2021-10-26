@@ -42,7 +42,7 @@
 	local70 = [35 250 265 140 225]
 	local75 = [30 35 125 50 45]
 	local80
-	local81
+	whichTalk
 	local82
 	local83
 	local84
@@ -74,6 +74,28 @@
 	mushroomPalette
 	ateShrooms
 )
+
+;whichTalk states
+(enum 1
+	FirstTalk		;1	;; used when fairies first notice ego -- 13 items...whichTalk = FirstTalk
+	AskToDance		;2	;; used when ego agrees to dance -- 9 items...whichTalk = AskToDance
+	MakeHimDance	;3	;; used when fairies force ego to dance if he refuses to -- 10 items...whichTalk = MakeHimDance 
+	Klutz			;4	;; used for klutzy ego dance -- 6 items...whichTalk = Klutz
+	Graceful		;5	;; used when fairies are impressed by ego's dance -- 9 items...whichTalk = Graceful
+	WhaddayaWant	;6	;; used when fairies open discussion with ego -- 12 items...whichTalk = WhaddayaWant
+	EnterRing		;7	;; used when ego busts into fairies' ring or threatens them -- 10 items...whichTalk = EnterRing 
+	UseMagic		;8	;; used when ego tries to use magic -- 9 items...whichTalk = UseMagic
+	GetDust			;9	;; follow-up to 'get/dust' -- 4 items...whichTalk = GetDust
+	Dust			;10	;; answers to 'ask about fairy dust' -- 22 items...whichTalk = Dust 
+	Mushrooms		;11	;; answers to 'ask about mushrooms' -- 9 items...whichTalk = Mushrooms 
+	Faeries			;12	;; answers to 'ask about fairies' -- 8 items...whichTalk = Faeries
+	Woods			;13	;; answers to 'ask about forest' -- 7 items...whichTalk = Woods
+	Dryad			;14 ;; answers to 'ask about Dryad' -- 7 items...whichTalk = Dryad
+	Boring			;15 ;; answers to 'ask about [*]' -- 6 items...whichTalk = Boring
+	Killer			;16 ;; used when ego tries to fight with or kill fairies -- 10 items...whichTalk = Killer
+	BackAgain		;17 ;; used when ego returns to the room -- 10 items...whichTalk = BackAgain
+)
+
 (procedure (AddFaeryWindow &tmp i)
 	(for ((= i 0)) (< i 5) ((++ i))
 		(= [faeryWindow i] (aFaeryWindow new:))
@@ -278,7 +300,7 @@
 				(-- faeryTimer)
 				(= local107 1)
 				(= local82 (+ (= local80 local97) 8))
-				(= local81 8)
+				(= whichTalk 8)
 				(rm70 setScript: faeryTalk)
 			)
 			((> faeryTimer 1)
@@ -296,7 +318,7 @@
 				(= local4 0)
 				(= local107 1)
 				(= local82 (+ (= local80 local91) 8))
-				(= local81 2)
+				(= whichTalk 2)
 				(self setScript: faeryTalk)
 			)
 		)
@@ -312,15 +334,15 @@
 			(= local4 0)
 			(= local107 1)
 			(= local82 (+ (= local80 local96) 9))
-			(= local81 7)
+			(= whichTalk 7)
 			(self setScript: faeryTalk)
 		)
 		(cond 
 			((and (> local80 local89) (not local3)) (= local3 1))
-			((and (== local81 8) (== (rm70 script?) 0))
+			((and (== whichTalk 8) (== (rm70 script?) 0))
 				(= local107 1)
 				(= local82 (+ (= local80 local92) 9))
-				(= local81 3)
+				(= whichTalk MakeHimDance)
 				(self setScript: faeryTalk)
 			)
 		)
@@ -345,12 +367,12 @@
 		(and (== (event type?) direction) (not local3))
 			(event claimed: TRUE)
 			(= local3 1)
-			(if (Btst fDancedForFairies)
+			(if (Btst fMetFairies)
 				(= local82 (+ (= local80 local106) 9))
-				(= local81 17)
+				(= whichTalk 17)
 			else
 				(= local82 (+ (= local80 local90) 12))
-				(= local81 1)
+				(= whichTalk 1)
 			)
 			(AddChaseScript)
 			(self setScript: faeryTalk)
@@ -358,12 +380,12 @@
 		(if (and (== (event type?) mouseDown) (not local3))
 			(event claimed: TRUE)
 			(= local3 1)
-			(if (Btst fDancedForFairies)
+			(if (Btst fMetFairies)
 				(= local82 (+ (= local80 local106) 9))
-				(= local81 17)
+				(= whichTalk 17)
 			else
 				(= local82 (+ (= local80 local90) 12))
-				(= local81 1)
+				(= whichTalk 1)
 			)
 			(AddChaseScript)
 			(self setScript: faeryTalk)
@@ -384,14 +406,14 @@
 						(= local4 0)
 						(= local107 1)
 						(= local82 (+ (= local80 local91) 8))
-						(= local81 2)
+						(= whichTalk AskToDance)
 						(self setScript: faeryTalk)
 					)
 					((Said 'n')
 						(= local4 0)
 						(= local107 1)
 						(= local82 (+ (= local80 local92) 9))
-						(= local81 3)
+						(= whichTalk MakeHimDance)
 						(self setScript: faeryTalk)
 					)
 					(else
@@ -403,12 +425,12 @@
 				(if (not local3)
 					(event claimed: TRUE)
 					(= local3 1)
-					(if (Btst fDancedForFairies)
+					(if (Btst fMetFairies)
 						(= local82 (+ (= local80 local106) 9))
-						(= local81 17)
+						(= whichTalk 17)
 					else
 						(= local82 (+ (= local80 local90) 12))
-						(= local81 1)
+						(= whichTalk 1)
 					)
 					(AddChaseScript)
 					(self setScript: faeryTalk)
@@ -430,7 +452,7 @@
 							(AddChaseScript)
 							(= local107 1)
 							(= local82 (+ (= local80 local105) 9))
-							(= local81 16)
+							(= whichTalk Killer)
 							(self setScript: faeryTalk)
 						else
 							(HighPrint 70 3)
@@ -442,7 +464,7 @@
 							(if (Btst fFaeryAttention)
 								(= local107 1)
 								(= local82 (+ (= local80 local104) 5))
-								(= local81 15)
+								(= whichTalk Boring)
 								(self setScript: faeryTalk)
 							else
 								(HighPrint 70 4)
@@ -461,7 +483,7 @@
 									(AddChaseScript)
 									(= local107 1)
 									(= local82 (+ (= local80 local100) 8))
-									(= local81 11)
+									(= whichTalk Mushrooms)
 									(self setScript: faeryTalk)
 								)
 								((Said '//dust[<faerie,about]')
@@ -472,7 +494,7 @@
 										(AddChaseScript)
 										(= local107 1)
 										(= local82 (+ (= local80 local98) 22))
-										(= local81 9)
+										(= whichTalk GetDust)
 										(self setScript: faeryTalk)
 									)
 								)
@@ -480,21 +502,21 @@
 									(AddChaseScript)
 									(= local107 1)
 									(= local82 (+ (= local80 local101) 7))
-									(= local81 12)
+									(= whichTalk Faeries)
 									(self setScript: faeryTalk)
 								)
 								((Said '//forest')
 									(AddChaseScript)
 									(= local107 1)
 									(= local82 (+ (= local80 local102) 6))
-									(= local81 13)
+									(= whichTalk Woods)
 									(self setScript: faeryTalk)
 								)
 								((Said '//dryad')
 									(AddChaseScript)
 									(= local107 1)
 									(= local82 (+ (= local80 local103) 6))
-									(= local81 14)
+									(= whichTalk Dryad)
 									(self setScript: faeryTalk)
 								)
 								(else
@@ -503,7 +525,7 @@
 									(if (Btst fFaeryAttention)
 										(= local107 1)
 										(= local82 (+ (= local80 local104) 5))
-										(= local81 15)
+										(= whichTalk Boring)
 										(self setScript: faeryTalk)
 									else
 										(HighPrint 70 4)
@@ -532,10 +554,15 @@
 								)
 							)
 							(DAZZLE
-								(if (CastSpell spell) (CastDazz) (FaeriesHostile))
+								(if (CastSpell spell)
+									(CastDazz)
+									(FaeriesHostile)
+								)
 							)
 							(CALM
-								(if (CastSpell spell) (CastCalm))
+								(if (CastSpell spell)
+									(CastCalm)
+								)
 							)
 							(FLAMEDART
 								(if (CastSpell spell)
@@ -543,7 +570,9 @@
 									(FaeriesHostile)
 								)
 							)
-							(else  (event claimed: FALSE))
+							(else
+								(event claimed: FALSE)
+							)
 						)
 					)
 					((Said 'throw/dagger,dagger')
@@ -566,8 +595,13 @@
 					)
 					((Said 'eat/mushroom')
 						(cond 
-							((Btst fAteFaeryShrooms) (event claimed: FALSE))
-							((and (== local4 0) (== (ego script?) 0)) (Bset fAteFaeryShrooms) (ego setScript: eatShroom))
+							((Btst fAteFaeryShrooms)
+								(event claimed: FALSE)
+							)
+							((and (== local4 0) (== (ego script?) 0))
+								(Bset fAteFaeryShrooms)
+								(ego setScript: eatShroom)
+							)
 							(else
 								(HighPrint 70 1)
 								;Don't you want to dance?
@@ -607,7 +641,7 @@
 										(else
 											(= local107 1)
 											(= local82 (+ (= local80 local98) 22))
-											(= local81 9)
+											(= whichTalk GetDust)
 											(self setScript: faeryTalk)
 										)
 									)
@@ -749,8 +783,6 @@
 )
 
 (instance faeryTalk of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -766,33 +798,53 @@
 					(
 						(or
 							(and local87 (== local80 (+ local96 7)))
-							(and (== local81 3) (== local80 (+ local92 7)))
-							(and (== local81 16) (== local80 (+ local105 7)))
+							(and (== whichTalk MakeHimDance) (== local80 (+ local92 7)))
+							(and (== whichTalk Killer) (== local80 (+ local105 7)))
 						)
 						(ego setScript: deathDance)
 						(self changeState: 0)
 					)
-					((< local80 local82) (self changeState: 0))
+					((< local80 local82)
+						(self changeState: 0)
+					)
 					(else
-						(switch local81
+						(switch whichTalk
 							(1
-								(Bset fDancedForFairies)
+								(Bset fMetFairies)
 								(= local4 100)
 								(HandsOn)
 							)
-							(17 (= local4 100) (HandsOn))
-							(2 (ego setScript: cuteDance))
-							(5 (= local84 1))
-							(4 (= local84 1))
+							(17
+								(= local4 100)
+								(HandsOn)
+							)
+							(2
+								(ego setScript: cuteDance)
+							)
+							(5
+								(= local84 1)
+							)
+							(4
+								(= local84 1)
+							)
 							(8
 								(= faeryTimer 0)
 								(AddChaseScript)
 							)
-							(9 (ego setScript: getDust))
-							(10 (getDust cue:))
-							(15 (AddFaeryDanceScript))
+							(GetDust
+								(ego setScript: getDust)
+							)
+							(10
+								(getDust cue:)
+							)
+							(Boring
+								(AddFaeryDanceScript)
+							)
 						)
-						(if (== (ego script?) 0) (cls) (HandsOn))
+						(if (== (ego script?) 0)
+							(cls)
+							(HandsOn)
+						)
 						(self dispose:)
 					)
 				)
@@ -852,7 +904,7 @@
 					((== local83 3)
 						(= local107 1)
 						(= local82 (+ (= local80 local94) 9))
-						(= local81 5)
+						(= whichTalk 5)
 						(rm70 setScript: faeryTalk)
 						(self changeState: 3)
 					)
@@ -893,7 +945,7 @@
 				(AddChaseScript)
 				(= local107 1)
 				(= local82 (+ (= local80 local95) 11))
-				(= local81 6)
+				(= whichTalk 6)
 				(rm70 setScript: faeryTalk)
 				(HandsOn)
 				(self dispose:)
@@ -931,7 +983,7 @@
 					((== local83 5)
 						(= local107 1)
 						(= local82 (+ (= local80 local93) 5))
-						(= local81 4)
+						(= whichTalk Klutz)
 						(rm70 setScript: faeryTalk)
 						(self changeState: 0)
 					)
@@ -950,7 +1002,7 @@
 				(AddChaseScript)
 				(= local107 1)
 				(= local82 (+ (= local80 local95) 11))
-				(= local81 6)
+				(= whichTalk 6)
 				(rm70 setScript: faeryTalk)
 				(self dispose:)
 			)
@@ -1082,7 +1134,7 @@
 				(= seconds 6)
 			)
 			(2
-				(= local81 10)
+				(= whichTalk Dust)
 				(= local107 1)
 				(= local82 (+ (= local80 local99) 3))
 				(rm70 setScript: faeryTalk)

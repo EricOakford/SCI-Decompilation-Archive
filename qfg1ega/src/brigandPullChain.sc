@@ -77,7 +77,7 @@
 				(if (not (Btst fPulledChain))
 					((ScriptID 96 6) dispose:)
 				)
-				(if (Btst fBefriendedYorick)
+				(if (Btst fYorickLikesYou)
 					(HighPrint 231 0)
 					;"Elsa is right next door.  I'll go set up the secret exit for your escape."
 				)

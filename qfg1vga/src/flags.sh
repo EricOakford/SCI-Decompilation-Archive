@@ -185,7 +185,7 @@
 	fUncoveredSafe 		;183
 	fCrackedSafe 		;184
 	fUnused185		;----------- event 185 is unused
-	fDancedForFairies 			;186
+	fMetFairies 			;186
 	fDancing 		;187
 	fFaeryAttention		 		;188
 	fKarlAttention 			;189
@@ -270,7 +270,7 @@
 	fYorickThrewSomething					;265 (used in Yorrick's room) 
 	fErasmusAskedMaze 	;266
 	fNoMoreTalking 		;267
-	fBefriendedYorick 			;268
+	fYorickLikesYou 			;268	;original Sierra name
 	fBallConks					;269 ; set in brigandHappyFace
 	fFallTrap4					;270 ; set in brigandFallSideways
 	fYorickThrows					;271 (tested in Yorrick's room)
