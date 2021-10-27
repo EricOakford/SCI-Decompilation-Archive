@@ -20,11 +20,11 @@
 	local3
 	local4
 )
-(instance keithAct of Act
+(instance keithAct of Actor
 	(properties)
 )
 
-(instance rm26 of Rm
+(instance rm26 of Room
 	(properties
 		picture 26
 		style $0004

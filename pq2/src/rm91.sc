@@ -50,7 +50,7 @@
 	)
 )
 
-(instance rm91 of Rm
+(instance rm91 of Room
 	(properties
 		picture 94
 		style $0007
@@ -122,7 +122,7 @@
 					setLoop: 1
 					setCel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -132,7 +132,7 @@
 					setCel: 0
 					show:
 					cycleSpeed: 1
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(= seconds (Random 4 8))
 			)
@@ -224,7 +224,7 @@
 			setPri: 12
 			init:
 			cycleSpeed: 1
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		((= drummer (Prop new:))
 			view: 207
@@ -233,7 +233,7 @@
 			setPri: 12
 			init:
 			cycleSpeed: 1
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		((= saxophonist (Prop new:))
 			view: 207
@@ -242,7 +242,7 @@
 			setPri: 12
 			init:
 			cycleSpeed: 2
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		(RedrawCast)
 		(band play:)
@@ -299,7 +299,7 @@
 	(properties)
 	
 	(method (init)
-		((= airplaneFlyingIntoSunset (Act new:))
+		((= airplaneFlyingIntoSunset (Actor new:))
 			view: 280
 			loop: 0
 			cel: 0
@@ -458,7 +458,7 @@
 	(properties)
 	
 	(method (init)
-		((= airplaneFinale (Act new:))
+		((= airplaneFinale (Actor new:))
 			view: 259
 			setLoop: 7
 			setCel: 0
@@ -576,15 +576,15 @@
 			(6
 				(cls)
 				(= printObj (Print 91 27 #at 100 40 #dispose))
-				(sonnyAndMarie setCycle: End)
+				(sonnyAndMarie setCycle: EndLoop)
 				(= seconds 2)
 			)
 			(7
 				(cls)
-				(sonnyAndMarie setCycle: Beg self)
+				(sonnyAndMarie setCycle: BegLoop self)
 			)
 			(8
-				((= heart1 (Act new:))
+				((= heart1 (Actor new:))
 					view: 285
 					setLoop: 0
 					setCel: 0
@@ -593,10 +593,10 @@
 					init:
 					setStep: 1 1
 					moveSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo -60 100
 				)
-				((= heart2 (Act new:))
+				((= heart2 (Actor new:))
 					view: 285
 					setLoop: 1
 					setCel: 1
@@ -605,10 +605,10 @@
 					init:
 					setStep: 1 1
 					moveSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo -50 93
 				)
-				((= heart3 (Act new:))
+				((= heart3 (Actor new:))
 					view: 285
 					setLoop: 2
 					setCel: 2
@@ -617,7 +617,7 @@
 					init:
 					setStep: 1 1
 					moveSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo -40 100 self
 				)
 			)
@@ -627,7 +627,7 @@
 					setCel: 0
 					posn: 234 60
 					setPri: 12
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10

@@ -80,7 +80,7 @@
 	(properties)
 )
 
-(instance quincyCarBlock of Blk
+(instance quincyCarBlock of Block
 	(properties
 		top 154
 		left 172
@@ -89,7 +89,7 @@
 	)
 )
 
-(instance ourCarBlock of Blk
+(instance ourCarBlock of Block
 	(properties
 		top 158
 		left 233
@@ -98,7 +98,7 @@
 	)
 )
 
-(instance bwCarBlock of Blk
+(instance bwCarBlock of Block
 	(properties
 		top 137
 		left 36
@@ -107,7 +107,7 @@
 	)
 )
 
-(instance rm27 of Rm
+(instance rm27 of Room
 	(properties
 		picture 27
 		style $0008
@@ -290,7 +290,7 @@
 				init:
 				addToPic:
 			)
-			((= mrG (Act new:))
+			((= mrG (Actor new:))
 				view: 48
 				posn: 178 136
 				setStep: 3 4
@@ -300,7 +300,7 @@
 				setScript: mrGScript
 			)
 		)
-		((= newAct_2 (Act new:))
+		((= newAct_2 (Actor new:))
 			view: 10
 			posn: (if (and (> 3 global182) (> global182 1))
 				223
@@ -313,7 +313,7 @@
 			illegalBits: 0
 			stopUpd:
 		)
-		((= newAct_3 (Act new:))
+		((= newAct_3 (Actor new:))
 			view: 162
 			posn: 188
 			(switch global182
@@ -328,7 +328,7 @@
 			(if (== roomCarParked curRoomNum) (not local8) else 0)
 		)
 		(if (not local8) (= local6 1) else (= local6 0))
-		((= newAct_4 (Act new:))
+		((= newAct_4 (Actor new:))
 			view: 54
 			setStep: 1
 			setLoop: 1
@@ -739,13 +739,13 @@
 					setMotion: 0
 				)
 				(if (== currentCar 13)
-					((= keith (Act new:))
+					((= keith (Actor new:))
 						view: 20
 						posn: -100 0
 						setCycle: Walk
 						setMotion: 0
 						illegalBits: 0
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						init:
 					)
 				)
@@ -809,7 +809,7 @@
 						posn: 306 163
 						setPri: 13
 						init:
-						setCycle: End
+						setCycle: EndLoop
 					)
 				)
 			)
@@ -908,7 +908,7 @@
 					posn: 306 163
 					setPri: 13
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(13
@@ -936,7 +936,7 @@
 					setPri: 13
 					init:
 					ignoreActors:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(16 (unTrunk stopUpd:))
@@ -949,7 +949,7 @@
 					posn: 250 172
 					setPri: 13
 					startUpd:
-					setCycle: CT 0 -1 self
+					setCycle: CycleTo 0 -1 self
 				)
 			)
 			(18 (unTrunk dispose:))
@@ -1079,7 +1079,7 @@
 					loop: 2
 					cel: 0
 					setPri: 14
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 			)
@@ -1094,7 +1094,7 @@
 				(= seconds 1)
 			)
 			(4
-				(qDoor setCycle: Beg)
+				(qDoor setCycle: BegLoop)
 				(newAct_2
 					setLoop: -1
 					setCycle: Walk
@@ -1140,7 +1140,7 @@
 					cel: 0
 					posn: 190 136
 					setPri: 15
-					setCycle: End
+					setCycle: EndLoop
 					init:
 					ignoreActors:
 				)
@@ -1174,12 +1174,12 @@
 					loop: 2
 					cel: 0
 					setPri: 14
-					setCycle: End self
+					setCycle: EndLoop self
 					init:
 				)
 			)
 			(15
-				(qDoor setCycle: Beg)
+				(qDoor setCycle: BegLoop)
 				(newAct_2 hide:)
 				(if (ego inRect: 162 187 212 240)
 					(Print 27 102)

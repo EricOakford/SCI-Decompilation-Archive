@@ -31,11 +31,11 @@
 	(Print &rest #at -1 40)
 )
 
-(instance bubble of Act
+(instance bubble of Actor
 	(properties)
 )
 
-(instance carp of Act
+(instance carp of Actor
 	(properties)
 )
 
@@ -71,7 +71,7 @@
 	(properties)
 )
 
-(instance rm64 of Rm
+(instance rm64 of Room
 	(properties
 		picture 64
 		style $0008
@@ -89,7 +89,7 @@
 			cel: 0
 			posn: 58 17
 			setPri: 15
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 1
 			init:
 		)
@@ -100,7 +100,7 @@
 			posn: 27 23
 			setPri: 15
 			init:
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		(bubbles
 			view: 91
@@ -109,7 +109,7 @@
 			posn: 5 35
 			setPri: 15
 			init:
-			setCycle: Fwd
+			setCycle: Forward
 		)
 		(if (< howFast 30)
 			(theWaves stopUpd:)
@@ -618,7 +618,7 @@
 					cycleSpeed: 2
 					illegalBits: 0
 					ignoreActors:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -628,7 +628,7 @@
 					setStep: 5 3
 					setPri: 15
 					cycleSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (+ (ego x?) 90) 55 self
 				)
 			)

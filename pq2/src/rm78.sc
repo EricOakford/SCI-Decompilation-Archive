@@ -19,7 +19,7 @@
 	(Print &rest #at -1 15)
 )
 
-(instance rm78 of Rm
+(instance rm78 of Room
 	(properties
 		picture 78
 		style $0008
@@ -43,7 +43,7 @@
 			view: 190
 			posn: 151 115
 			loop: 0
-			setCycle: Fwd
+			setCycle: Forward
 			init:
 			startUpd:
 		)
@@ -68,14 +68,14 @@
 			)
 			(12 (ego init:))
 			(else 
-				((= pitman (Act new:))
+				((= pitman (Actor new:))
 					view: 50
 					loop: 1
 					posn: 164 200
 					init:
 					stopUpd:
 				)
-				((= keith (Act new:))
+				((= keith (Actor new:))
 					view: 20
 					loop: 0
 					posn: 110 200
@@ -239,7 +239,7 @@
 				(self cue:)
 			)
 			(6
-				(keith setCycle: Fwd setMotion: MoveTo 0 240 startUpd:)
+				(keith setCycle: Forward setMotion: MoveTo 0 240 startUpd:)
 				(= gunNotNeeded 0)
 				(= gunFireState 1)
 				(ego startUpd:)

@@ -47,15 +47,15 @@
 	)
 )
 
-(instance vanDoor of Act
+(instance vanDoor of Actor
 	(properties)
 )
 
-(instance bains of Act
+(instance bains of Actor
 	(properties)
 )
 
-(instance vanBlock of Blk
+(instance vanBlock of Block
 	(properties
 		top 163
 		left 234
@@ -85,7 +85,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((= van (Act new:))
+				((= van (Actor new:))
 					view: 154
 					setLoop: 0
 					setCel: 0
@@ -218,7 +218,7 @@
 					setStep: 3 2
 					ignoreActors: 0
 					observeBlocks: vanBlock
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 230 184 self
 				)
 			)
@@ -286,7 +286,7 @@
 					view: 98
 					cel: 0
 					setLoop: 7
-					setCycle: End
+					setCycle: EndLoop
 					posn: 178 63
 					setMotion: MoveTo 180 54 self
 				)
@@ -351,7 +351,7 @@
 					view: 98
 					cel: 0
 					setLoop: 7
-					setCycle: End
+					setCycle: EndLoop
 					posn: 178 63
 					setMotion: MoveTo 180 54
 				)
@@ -363,40 +363,40 @@
 					setStep: 1 1
 					cycleSpeed: 2
 					setMotion: MoveTo 210 66
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(33
 				(moore stopUpd:)
-				(ego setLoop: 1 setCycle: Fwd)
+				(ego setLoop: 1 setCycle: Forward)
 				(= seconds 2)
 			)
 			(34
-				(ego setLoop: 2 setCycle: End self)
+				(ego setLoop: 2 setCycle: EndLoop self)
 			)
 			(35
-				(ego setLoop: 3 setCycle: End self)
+				(ego setLoop: 3 setCycle: EndLoop self)
 			)
 			(36
 				(if
 				(and (== scubaTankOxygen 2200) (Btst 7) (Btst 6))
 					(SolvePuzzle 6)
 				)
-				(ego setLoop: 4 setCycle: Fwd)
+				(ego setLoop: 4 setCycle: Forward)
 				(= seconds 2)
 			)
 			(37
 				(ego
 					setLoop: 6
 					setMotion: MoveTo 210 63
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(38
 				(ego
 					setLoop: 7
 					setMotion: MoveTo 210 50
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(39
@@ -496,7 +496,7 @@
 	)
 )
 
-(instance rm60 of Rm
+(instance rm60 of Room
 	(properties
 		picture 60
 		style $0007
@@ -526,7 +526,7 @@
 		(Load rsVIEW 98)
 		(Load rsVIEW 17)
 		(Load rsVIEW 21)
-		((= moore (Act new:))
+		((= moore (Actor new:))
 			view: 21
 			posn: -100 0
 			init:
@@ -541,7 +541,7 @@
 		(if (< global111 3) (= diverState 0))
 		(NormalEgo)
 		(ego illegalBits: -16384 init:)
-		((= keith (Act new:))
+		((= keith (Actor new:))
 			view: 20
 			posn: 1000 1000
 			init:
@@ -587,7 +587,7 @@
 					(keith
 						view: 20
 						posn: (+ (ego x?) 90) (ego y?)
-						setAvoider: Avoid
+						setAvoider: Avoider
 						setMotion: Follow ego 87
 						setCycle: Walk
 					)
@@ -611,7 +611,7 @@
 				(if (== currentCar 13)
 					(cond 
 						(global187
-							(if (not docCoveTimer) (Bset 55))
+							(if (not doCoveTimer) (Bset 55))
 							(if (not (Btst 55))
 								(Bset 55)
 								(= diverState 1)
@@ -629,7 +629,7 @@
 								view: (if bainsInCove 53 else 20)
 								posn: 181 115
 								setCycle: Walk
-								setAvoider: Avoid
+								setAvoider: Avoider
 								setMotion: Follow ego 60
 							)
 						)
@@ -979,7 +979,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(if (== (++ local7) 3)
 					(HandsOff)
@@ -996,7 +996,7 @@
 			)
 			(4
 				(= local6 1)
-				(= docCoveTimer 1200)
+				(= doCoveTimer 1200)
 				(= bainsInCove 1)
 				(bains
 					view: 14
@@ -1010,13 +1010,13 @@
 				else
 					(switch global208
 						(1
-							(newProp setCycle: End self startUpd:)
+							(newProp setCycle: EndLoop self startUpd:)
 						)
 						(2
-							(newProp_2 setCycle: End self startUpd:)
+							(newProp_2 setCycle: EndLoop self startUpd:)
 						)
 						(3
-							(newProp_3 setCycle: End self startUpd:)
+							(newProp_3 setCycle: EndLoop self startUpd:)
 						)
 					)
 				)
@@ -1047,7 +1047,7 @@
 					cel: 0
 					cycleSpeed: 1
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: 0
 				)
 			)
@@ -1091,7 +1091,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((= car (Act new:))
+				((= car (Actor new:))
 					view: 94
 					setStep: 18 10
 					setLoop: 1
@@ -1124,7 +1124,7 @@
 						self
 					startUpd:
 				)
-				(newProp_4 setCycle: Fwd startUpd:)
+				(newProp_4 setCycle: Forward startUpd:)
 			)
 			(2
 				(car
@@ -1155,7 +1155,7 @@
 						startUpd:
 					)
 				)
-				((= collision (Act new:))
+				((= collision (Actor new:))
 					view: 76
 					posn: (ego x?) (ego y?)
 					loop: 5
@@ -1163,7 +1163,7 @@
 					setMotion: 0
 					cycleSpeed: 2
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego dispose:)
 				(= local18 1)
@@ -1174,7 +1174,7 @@
 					setLoop: 6
 					cel: 0
 					setMotion: MoveTo (+ (collision x?) 20) (collision y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7

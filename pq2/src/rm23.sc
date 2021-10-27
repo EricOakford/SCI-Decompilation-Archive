@@ -101,11 +101,11 @@
 	(properties)
 )
 
-(instance jailer of Act
+(instance jailer of Actor
 	(properties)
 )
 
-(instance witness of Act
+(instance witness of Actor
 	(properties)
 )
 
@@ -115,7 +115,7 @@
 	)
 )
 
-(instance rm23 of Rm
+(instance rm23 of Room
 	(properties
 		picture 23
 		style $0000

@@ -32,11 +32,11 @@
 	(Print &rest #at -1 40)
 )
 
-(instance bubble of Act
+(instance bubble of Actor
 	(properties)
 )
 
-(instance mooreBubble of Act
+(instance mooreBubble of Actor
 	(properties)
 )
 
@@ -44,7 +44,7 @@
 	(properties)
 )
 
-(instance carp of Act
+(instance carp of Actor
 	(properties)
 )
 
@@ -76,7 +76,7 @@
 	(properties)
 )
 
-(instance rm63 of Rm
+(instance rm63 of Room
 	(properties
 		picture 63
 		style $0008
@@ -263,7 +263,7 @@
 			view: 12
 			loop: 6
 			posn: (moore x?) (moore y?)
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			init:
 		)
@@ -283,7 +283,7 @@
 			view: 12
 			setLoop: 4
 			xStep: 4
-			setCycle: Fwd
+			setCycle: Forward
 			setPri: 12
 			ignoreActors:
 			illegalBits: 0
@@ -434,7 +434,7 @@
 					setPri: 15
 					setMotion: MoveTo 400 134
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -478,7 +478,7 @@
 					cycleSpeed: 2
 					illegalBits: 0
 					ignoreActors:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -487,7 +487,7 @@
 					setStep: 5 3
 					setPri: 15
 					cycleSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (- (ego x?) 90) 55 self
 				)
 			)

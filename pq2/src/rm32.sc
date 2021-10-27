@@ -43,7 +43,7 @@
 	)
 )
 
-(instance rm32 of Rm
+(instance rm32 of Room
 	(properties
 		picture 32
 		style $0008
@@ -221,7 +221,7 @@
 			(0
 				(cond 
 					((and (>= gamePhase 8) (== currentCar 13))
-						((= keith (Act new:))
+						((= keith (Actor new:))
 							view: 20
 							posn: 255 145
 							observeBlocks: lampBlock
@@ -972,7 +972,7 @@
 	)
 )
 
-(instance lampBlock of Blk
+(instance lampBlock of Block
 	(properties)
 )
 
@@ -988,7 +988,7 @@
 			(0
 				(HandsOff)
 				(ego setMotion: 0 stopUpd: setPri: 8)
-				(newProp setCycle: End)
+				(newProp setCycle: EndLoop)
 				(= local1 1)
 				(= seconds 2)
 			)
@@ -1000,7 +1000,7 @@
 				)
 				(= seconds 2)
 			)
-			(2 (newProp setCycle: Beg self))
+			(2 (newProp setCycle: BegLoop self))
 			(3
 				(newProp stopUpd:)
 				(ego setPri: -1)

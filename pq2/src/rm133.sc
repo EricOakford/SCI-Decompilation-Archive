@@ -50,7 +50,7 @@
 	)
 )
 
-(instance rm133 of Rm
+(instance rm133 of Room
 	(properties
 		picture 77
 		style $0006
@@ -75,7 +75,7 @@
 		(= marieTiedUp 1)
 		(= gunNotNeeded 0)
 		(= gunFireState 0)
-		((= bains (Act new:))
+		((= bains (Actor new:))
 			view: 13
 			loop: 2
 			cel: 0
@@ -85,17 +85,17 @@
 			init:
 			hide:
 		)
-		((= marie (Act new:))
+		((= marie (Actor new:))
 			view: 38
 			loop: 2
 			cel: 0
 			posn: 210 115
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			setPri: 8
 			init:
 		)
-		((= chair (Act new:))
+		((= chair (Actor new:))
 			view: 38
 			loop: 3
 			cel: 0
@@ -111,7 +111,7 @@
 			cel: 0
 			posn: 155 64
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
 			ignoreActors: 1
 			init:
@@ -122,7 +122,7 @@
 			cel: 0
 			posn: 184 75
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors: 1
 			init:
@@ -293,18 +293,18 @@
 			)
 			(2
 				(ego ignoreActors: 0 loop: 0 cel: 0 posn: 190 115)
-				(marie ignoreActors: 0 setCycle: End self)
+				(marie ignoreActors: 0 setCycle: EndLoop self)
 			)
 			(3
 				(localproc_0060 133 32)
 				(localproc_0060 133 33)
-				(marie setLoop: 0 cel: 0 posn: 197 115 setCycle: End self)
+				(marie setLoop: 0 cel: 0 posn: 197 115 setCycle: EndLoop self)
 				(ego hide:)
 			)
 			(4
 				(= marieTiedUp 0)
 				(= untiedMarie 1)
-				(marie setCel: 4 setCycle: Beg)
+				(marie setCel: 4 setCycle: BegLoop)
 				(RedrawCast)
 				(if (not marieIsCalm)
 					(User canInput: 0)
@@ -330,12 +330,12 @@
 					setLoop: 0
 					cel: 0
 					setMotion: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(bainsGunShot play:)
 			)
 			(6
-				(bains cel: 0 setCycle: End)
+				(bains cel: 0 setCycle: EndLoop)
 				(bainsGunShot play:)
 				(HandsOff)
 				(ego
@@ -343,7 +343,7 @@
 					setMotion: 0
 					loop: (if (> (bains x?) (ego x?)) 2 else 3)
 					setPri: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7 (EgoDead 133 41))
@@ -361,7 +361,7 @@
 					loop: 1
 					setCel: 255
 					posn: 215 115
-					setCycle: CT 1 -1
+					setCycle: CycleTo 1 -1
 				)
 				(HandsOn)
 				(= cycles 100)
@@ -411,9 +411,9 @@
 			(18
 				(bains setMotion: 0)
 				(cond 
-					((<= (+ (bains x?) 20) (ego x?)) (bains view: 15 setLoop: 0 cel: 0 setCycle: End self))
-					((>= (- (bains x?) 20) (ego x?)) (bains view: 15 setLoop: 1 cel: 0 setCycle: End self))
-					(else (bains view: 15 setLoop: 3 cel: 0 setCycle: End self))
+					((<= (+ (bains x?) 20) (ego x?)) (bains view: 15 setLoop: 0 cel: 0 setCycle: EndLoop self))
+					((>= (- (bains x?) 20) (ego x?)) (bains view: 15 setLoop: 1 cel: 0 setCycle: EndLoop self))
+					(else (bains view: 15 setLoop: 3 cel: 0 setCycle: EndLoop self))
 				)
 			)
 			(19
@@ -424,13 +424,13 @@
 						view: 297
 						loop: (if (> (bains x?) (ego x?)) 2 else 3)
 						posn: 82 138
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(ego
 						view: 297
 						loop: (if (> (bains x?) (ego x?)) 2 else 3)
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 				(ego setMotion: 0)
@@ -451,14 +451,14 @@
 					setMotion: 0
 					setLoop: 1
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(= cycles 6)
 				(bainsGunShot play:)
 			)
 			(22
 				(if (<= local107 1)
-					(bains view: 15 setLoop: 1 cel: 0 setCycle: End)
+					(bains view: 15 setLoop: 1 cel: 0 setCycle: EndLoop)
 					(bainsGunShot play:)
 					(= cycles 6)
 				else
@@ -467,7 +467,7 @@
 			)
 			(23
 				(if (<= local107 1)
-					(bains view: 15 setLoop: 1 cel: 0 setCycle: End)
+					(bains view: 15 setLoop: 1 cel: 0 setCycle: EndLoop)
 					(bainsGunShot play:)
 					(= cycles 6)
 				else
@@ -481,7 +481,7 @@
 				(bainsGunShot dispose:)
 				(ego setMotion: 0)
 				(SolvePuzzle 15)
-				(bains view: 274 setLoop: 0 cel: 0 setCycle: End)
+				(bains view: 274 setLoop: 0 cel: 0 setCycle: EndLoop)
 				(= local115 1)
 				(= cycles 10)
 			)
@@ -528,7 +528,7 @@
 					loop: 1
 					setCel: 0
 					posn: 215 115
-					setCycle: End
+					setCycle: EndLoop
 					ignoreActors: 1
 				)
 				(ego setMotion: MoveTo 190 115 self)
@@ -539,7 +539,7 @@
 					loop: 0
 					cel: 0
 					posn: 197 115
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego hide:)
 			)
@@ -576,7 +576,7 @@
 					)
 					loop: (mod (ego loop?) 4)
 					setCel: 255
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(1

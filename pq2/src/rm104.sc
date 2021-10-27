@@ -25,7 +25,7 @@
 	(Print &rest #at -1 15)
 )
 
-(instance plane of Act
+(instance plane of Actor
 	(properties)
 )
 
@@ -37,7 +37,7 @@
 	(properties)
 )
 
-(instance rm104 of Rm
+(instance rm104 of Room
 	(properties
 		picture 50
 		style $0003
@@ -93,7 +93,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(SL enable:)
+				(StatusLine enable:)
 				(= local4 (Random 100 450))
 			)
 			(1 (planeScript changeState: 0))

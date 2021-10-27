@@ -64,7 +64,7 @@
 	(properties)
 )
 
-(instance rm22 of Rm
+(instance rm22 of Room
 	(properties
 		picture 22
 		style $0008
@@ -174,7 +174,7 @@
 		else
 			(= local6 0)
 		)
-		((= newAct (Act new:))
+		((= newAct (Actor new:))
 			view: 54
 			setStep: 1
 			setLoop: 1
@@ -250,7 +250,7 @@
 					setMotion: 0
 				)
 				(if (== currentCar 13)
-					((= keith (Act new:))
+					((= keith (Actor new:))
 						view: 20
 						illegalBits: -16384
 						posn:
@@ -734,11 +734,11 @@
 			(0 (= local16 1) (self cue:))
 			(1
 				(= local17 1)
-				(camera setCycle: End self)
+				(camera setCycle: EndLoop self)
 			)
 			(2
 				(= local17 0)
-				(camera setCycle: Beg self)
+				(camera setCycle: BegLoop self)
 			)
 			(3 (self changeState: 1))
 			(4
@@ -746,7 +746,7 @@
 				(camera setCycle: 0)
 				(self cue:)
 			)
-			(5 (camera setCycle: CT 0 -1))
+			(5 (camera setCycle: CycleTo 0 -1))
 		)
 	)
 )
@@ -763,7 +763,7 @@
 			)
 			(1
 				(ego setLoop: 3)
-				(newProp setCycle: End self)
+				(newProp setCycle: EndLoop self)
 			)
 			(2
 				(ego setLoop: -1)
@@ -799,7 +799,7 @@
 						posn: [local4 0] [local4 1]
 						setPri: 9
 						init:
-						setCycle: End
+						setCycle: EndLoop
 					)
 				)
 			)
@@ -875,7 +875,7 @@
 					posn: [local4 0] [local4 1]
 					setPri: 9
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(12
@@ -901,7 +901,7 @@
 					posn: 209 138
 					setPri: 9
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(15 (unTrunk stopUpd:))
@@ -914,7 +914,7 @@
 					posn: 209 138
 					setPri: 9
 					startUpd:
-					setCycle: CT 0 -1 self
+					setCycle: CycleTo 0 -1 self
 				)
 			)
 			(17 (unTrunk dispose:))

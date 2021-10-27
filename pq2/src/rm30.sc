@@ -96,7 +96,7 @@
 	)
 )
 
-(instance rm30 of Rm
+(instance rm30 of Room
 	(properties
 		picture 30
 		style $0000
@@ -127,7 +127,7 @@
 			setMotion: MoveTo 107 143
 			setScript: day2Script
 		)
-		((= waiter (Act new:))
+		((= waiter (Actor new:))
 			view: 28
 			posn: 137 104
 			init:
@@ -381,7 +381,7 @@
 					(== (newProp_7 cel?) 5)
 				)
 				(localproc_001b)
-				(newProp_7 setCycle: End startUpd:)
+				(newProp_7 setCycle: EndLoop startUpd:)
 				(if (not local32)
 					(newView posn: 157 164)
 					(= local32 1)
@@ -1013,14 +1013,14 @@
 				(newProp_6
 					loop: 8
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 3
 					startUpd:
 				)
 				(newProp
 					loop: 9
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 0
 					startUpd:
 				)
@@ -1040,8 +1040,8 @@
 			)
 			(4
 				(HandsOff)
-				(newProp_6 loop: 5 cel: 0 setCycle: End cycleSpeed: 0)
-				(newProp posn: 209 111 loop: 6 cel: 0 setCycle: End)
+				(newProp_6 loop: 5 cel: 0 setCycle: EndLoop cycleSpeed: 0)
+				(newProp posn: 209 111 loop: 6 cel: 0 setCycle: EndLoop)
 				(= local45 (+ local45 1))
 				(newProp_3
 					view: 285
@@ -1050,7 +1050,7 @@
 					posn: 196 78
 					setPri: 7
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					startUpd:
 				)
 				(newProp_4
@@ -1060,7 +1060,7 @@
 					posn: 218 70
 					setPri: 7
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					startUpd:
 				)
 				(newProp_5
@@ -1070,14 +1070,14 @@
 					posn: 175 62
 					setPri: 7
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					startUpd:
 				)
 				(= seconds 4)
 			)
 			(5
-				(newProp_6 setCycle: Beg)
-				(newProp setCycle: Beg)
+				(newProp_6 setCycle: BegLoop)
+				(newProp setCycle: BegLoop)
 				(newProp_3 posn: 0 0 stopUpd:)
 				(newProp_4 posn: 0 0 stopUpd:)
 				(newProp_5 posn: 0 0 stopUpd:)

@@ -320,7 +320,7 @@
 	)
 )
 
-(instance rm3 of Rm
+(instance rm3 of Room
 	(properties
 		picture 3
 		style $0000
@@ -385,7 +385,7 @@
 					loop: 1
 					cycleSpeed: 4
 					setPri: 11
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				((View new:)
@@ -492,7 +492,7 @@
 					stopUpd:
 					init:
 				)
-				((= colbyFile (Act new:))
+				((= colbyFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 160 99
@@ -502,7 +502,7 @@
 					stopUpd:
 					init:
 				)
-				((= dickeyFile (Act new:))
+				((= dickeyFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 160 93
@@ -512,7 +512,7 @@
 					stopUpd:
 					init:
 				)
-				((= jonesFile (Act new:))
+				((= jonesFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 161 87
@@ -522,7 +522,7 @@
 					stopUpd:
 					init:
 				)
-				((= simmsFile (Act new:))
+				((= simmsFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 160 78
@@ -532,7 +532,7 @@
 					stopUpd:
 					init:
 				)
-				((= sniderFile (Act new:))
+				((= sniderFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 160 74
@@ -542,7 +542,7 @@
 					stopUpd:
 					init:
 				)
-				((= snowFile (Act new:))
+				((= snowFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 161 67
@@ -552,7 +552,7 @@
 					stopUpd:
 					init:
 				)
-				((= valanciaFile (Act new:))
+				((= valanciaFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 161 61

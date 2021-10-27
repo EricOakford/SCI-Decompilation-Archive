@@ -25,7 +25,7 @@
 	(Print &rest #at -1 15)
 )
 
-(instance rm18 of Rm
+(instance rm18 of Room
 	(properties
 		picture 18
 		style $0001
@@ -156,7 +156,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(SL enable:)
+				(StatusLine enable:)
 				(ego
 					view: (if gunDrawn 7 else 1)
 					xStep: 3
@@ -166,13 +166,13 @@
 					init:
 				)
 				(if (Btst 40)
-					((= keith (Act new:))
+					((= keith (Actor new:))
 						view: 20
 						xStep: 3
 						yStep: 2
 						posn: (- (ego x?) 26) (ego y?)
 						setCycle: Walk
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: Follow ego 24
 						init:
 					)

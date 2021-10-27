@@ -32,7 +32,7 @@
 	(Print &rest #at -1 15)
 )
 
-(instance rm17 of Rm
+(instance rm17 of Room
 	(properties
 		picture 17
 		style $0000
@@ -48,7 +48,7 @@
 		(Load rsVIEW 20)
 		(Load rsVIEW 78)
 		(Load rsVIEW 77)
-		((= scruffy (Act new:))
+		((= scruffy (Actor new:))
 			view: 78
 			setLoop: 1
 			init:
@@ -78,7 +78,7 @@
 			loop: 3
 			posn: 80 125
 			setPri: 5
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 1
 			ignoreActors:
 			init:
@@ -88,7 +88,7 @@
 			loop: 4
 			posn: 54 139
 			setPri: 9
-			setCycle: Rev
+			setCycle: Reverse
 			cycleSpeed: 1
 			init:
 			ignoreActors:
@@ -194,7 +194,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(SL enable:)
+				(StatusLine enable:)
 				(if (== prevRoomNum 16)
 					(User prevDir: 7)
 					(ego
@@ -205,12 +205,12 @@
 					)
 					(= local11 1)
 					(if (Btst 40)
-						((= keith (Act new:))
+						((= keith (Actor new:))
 							view: 20
 							loop: 0
 							cel: 7
 							posn: (+ (ego x?) 42) (ego y?)
-							setAvoider: (Avoid new:)
+							setAvoider: (Avoider new:)
 							setCycle: Walk
 							illegalBits: -28672
 							init:
@@ -252,7 +252,7 @@
 				(HandsOn)
 				(User prevDir: 3)
 				(if (Btst 40)
-					((= keith (Act new:))
+					((= keith (Actor new:))
 						view: 20
 						setLoop: 0
 						cel: 7
@@ -483,14 +483,14 @@
 						cel: 3
 						setCycle: 0
 						setMotion: MoveTo 50 134 self
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						ignoreActors: 1
 					)
 				else
 					(scruffy
 						posn: -15 168
 						setCycle: Walk
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 					)
 					(self changeState: 3)
 				)

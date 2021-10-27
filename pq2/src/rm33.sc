@@ -66,15 +66,15 @@
 	(properties)
 )
 
-(instance lines of Act
+(instance lines of Actor
 	(properties)
 )
 
-(instance rightScene of Act
+(instance rightScene of Actor
 	(properties)
 )
 
-(instance leftScene of Act
+(instance leftScene of Actor
 	(properties)
 )
 
@@ -110,15 +110,15 @@
 	(properties)
 )
 
-(instance leftFwd of Fwd
+(instance leftFwd of Forward
 	(properties)
 )
 
-(instance rightFwd of Fwd
+(instance rightFwd of Forward
 	(properties)
 )
 
-(instance lineFwd of Fwd
+(instance lineFwd of Forward
 	(properties)
 )
 
@@ -126,7 +126,7 @@
 	(properties)
 )
 
-(instance rm33 of Rm
+(instance rm33 of Room
 	(properties
 		picture 33
 		style $0000
@@ -311,7 +311,7 @@
 					posn: 149 114
 					setPri: 2
 					setLoop: 4
-					setCycle: Fwd
+					setCycle: Forward
 					illegalBits: 0
 					init:
 					stopUpd:
@@ -322,7 +322,7 @@
 					setPri: 0
 					setLoop: 0
 					cel: 1
-					setCycle: Fwd
+					setCycle: Forward
 					illegalBits: 0
 					init:
 					stopUpd:
@@ -333,7 +333,7 @@
 					posn: 218 103
 					setPri: 0
 					setLoop: 1
-					setCycle: Fwd
+					setCycle: Forward
 					illegalBits: 0
 					init:
 					stopUpd:
@@ -377,7 +377,7 @@
 					posn: 148 69
 					setPri: 13
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 3)
 			)

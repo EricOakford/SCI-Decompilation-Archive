@@ -37,7 +37,7 @@
 	(Print &rest #at -1 15)
 )
 
-(instance rm19 of Rm
+(instance rm19 of Room
 	(properties
 		picture 19
 		style $0000
@@ -104,12 +104,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(SL enable:)
+				(StatusLine enable:)
 				(HandsOn)
 				(User prevDir: 7)
 				(if
 				(and (== gamePhase 13) (not local10) (not (Btst 150)))
-					((= marshall (Act new:))
+					((= marshall (Actor new:))
 						view: 21
 						posn: (if (Btst 151) 192 else 138) (if (Btst 151) 119 else 120)
 						init:
@@ -179,7 +179,7 @@
 			)
 			(1
 				(HandsOff)
-				(newProp_2 startUpd: setCycle: End self)
+				(newProp_2 startUpd: setCycle: EndLoop self)
 				(= local11 1)
 			)
 			(2
@@ -194,7 +194,7 @@
 			)
 			(3
 				(ego ignoreActors: 0 illegalBits: -24576)
-				(newProp_2 ignoreActors: setCycle: Beg self)
+				(newProp_2 ignoreActors: setCycle: BegLoop self)
 			)
 			(4
 				(HandsOn)
@@ -202,7 +202,7 @@
 			)
 			(5
 				(HandsOff)
-				(newProp_3 startUpd: setCycle: End self)
+				(newProp_3 startUpd: setCycle: EndLoop self)
 				(= local11 2)
 			)
 			(6
@@ -217,14 +217,14 @@
 			)
 			(7
 				(ego ignoreActors: 0 illegalBits: -24576)
-				(newProp_3 ignoreActors: setCycle: Beg self)
+				(newProp_3 ignoreActors: setCycle: BegLoop self)
 			)
 			(8
 				(HandsOn)
 				(newProp_3 stopUpd:)
 			)
 			(9
-				(newProp_4 startUpd: setCycle: End self)
+				(newProp_4 startUpd: setCycle: EndLoop self)
 				(HandsOff)
 				(= local11 3)
 			)
@@ -240,7 +240,7 @@
 			)
 			(11
 				(ego ignoreActors: 0 illegalBits: -24576)
-				(newProp_4 ignoreActors: setCycle: Beg self)
+				(newProp_4 ignoreActors: setCycle: BegLoop self)
 			)
 			(12
 				(HandsOn)
@@ -722,7 +722,7 @@
 						(>= gamePhase 6)
 						(< gamePhase 8)
 					)
-					((= revolver (Act new:))
+					((= revolver (Actor new:))
 						view: 256
 						setLoop: 2
 						setCel: 0
@@ -975,9 +975,9 @@
 			(0
 				(if global128 (self changeState: 2))
 			)
-			(1 (flood setCycle: End self))
+			(1 (flood setCycle: EndLoop self))
 			(2
-				(flood loop: 4 setCycle: Fwd)
+				(flood loop: 4 setCycle: Forward)
 			)
 		)
 	)

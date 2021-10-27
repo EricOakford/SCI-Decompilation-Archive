@@ -788,7 +788,7 @@ code_0710:
 	)
 )
 
-(instance rm6 of Rm
+(instance rm6 of Room
 	(properties
 		picture 6
 		style $0005

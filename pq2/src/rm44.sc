@@ -28,7 +28,7 @@
 	)
 )
 
-(instance rm44 of Rm
+(instance rm44 of Room
 	(properties
 		picture 88
 		style $0000
@@ -120,7 +120,7 @@
 			setPri: 14
 			addToPic:
 		)
-		((= airplane (Act new:))
+		((= airplane (Actor new:))
 			view: 259
 			posn: -15 82
 			setStep: 2 1
@@ -180,9 +180,9 @@
 					loop: 0
 					setCel: -1
 					posn: planeX 110
-					setCycle: End
+					setCycle: EndLoop
 				)
-				((= fire1 (Act new:))
+				((= fire1 (Actor new:))
 					view: 259
 					setLoop: 2
 					cel: 0
@@ -192,10 +192,10 @@
 					ignoreActors:
 					illegalBits: 0
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (+ planeX 20) 220 self
 				)
-				((= fire2 (Act new:))
+				((= fire2 (Actor new:))
 					view: 259
 					setLoop: 3
 					cel: 0
@@ -205,10 +205,10 @@
 					init:
 					ignoreActors:
 					illegalBits: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (+ planeX 34) 220
 				)
-				((= fire3 (Act new:))
+				((= fire3 (Actor new:))
 					view: 259
 					setLoop: 3
 					cel: 0
@@ -218,7 +218,7 @@
 					init:
 					ignoreActors:
 					illegalBits: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (+ planeX 39) 220
 				)
 			)

@@ -72,7 +72,7 @@
 	(properties)
 )
 
-(instance rm8 of Rm
+(instance rm8 of Room
 	(properties
 		picture 8
 		style $0007
@@ -163,7 +163,7 @@
 					view: 9
 					posn: 123 22
 					cycleSpeed: 3
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(= local151 5)

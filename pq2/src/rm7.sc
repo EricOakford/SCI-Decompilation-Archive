@@ -127,7 +127,7 @@
 	)
 )
 
-(instance rm7 of Rm
+(instance rm7 of Room
 	(properties)
 	
 	(method (init)
@@ -186,7 +186,7 @@
 					stopUpd:
 					init:
 				)
-				((= bainsFile (Act new:))
+				((= bainsFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 160 99
@@ -196,7 +196,7 @@
 					init:
 					stopUpd:
 				)
-				((= bottsFile (Act new:))
+				((= bottsFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 160 93
@@ -206,7 +206,7 @@
 					init:
 					stopUpd:
 				)
-				((= loofinFile (Act new:))
+				((= loofinFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 161 87
@@ -216,7 +216,7 @@
 					init:
 					stopUpd:
 				)
-				((= martinezFile (Act new:))
+				((= martinezFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 160 78
@@ -226,7 +226,7 @@
 					init:
 					stopUpd:
 				)
-				((= southFile (Act new:))
+				((= southFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 160 74
@@ -236,7 +236,7 @@
 					init:
 					stopUpd:
 				)
-				((= taselliFile (Act new:))
+				((= taselliFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 161 67
@@ -246,7 +246,7 @@
 					init:
 					stopUpd:
 				)
-				((= westFile (Act new:))
+				((= westFile (Actor new:))
 					view: 60
 					ignoreActors:
 					posn: 161 61

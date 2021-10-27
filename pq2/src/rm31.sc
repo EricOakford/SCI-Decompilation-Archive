@@ -78,7 +78,7 @@
 	(properties)
 )
 
-(instance rm31 of Rm
+(instance rm31 of Room
 	(properties
 		picture 31
 		style $0000
@@ -145,7 +145,7 @@
 			(= local6 0)
 			(HandsOn)
 		)
-		((= car (Act new:))
+		((= car (Actor new:))
 			view: 54
 			setStep: 3 3
 			setLoop: 0
@@ -255,7 +255,7 @@
 					(if (== prevRoomNum local19)
 						(if (< gamePhase 8)
 							(= local25 1)
-							((= keith (Act new:))
+							((= keith (Actor new:))
 								view: 20
 								posn: 340 340
 								init:
@@ -263,21 +263,21 @@
 							)
 							(localproc_000c 31 1)
 						else
-							((= keith (Act new:))
+							((= keith (Actor new:))
 								view: 20
 								posn: 148 112
 								setCycle: Walk
-								setAvoider: (Avoid new:)
+								setAvoider: (Avoider new:)
 								init:
 								setMotion: 0
 							)
 						)
 					else
-						((= keith (Act new:))
+						((= keith (Actor new:))
 							view: 20
 							posn: (ego x?) (- (ego y?) 25)
 							setCycle: Walk
-							setAvoider: (Avoid new:)
+							setAvoider: (Avoider new:)
 							init:
 							setMotion: 0
 						)
@@ -715,7 +715,7 @@
 					posn: [local2 0] [local2 1]
 					setPri: 12
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (== currentCar 13)
 					(= local25 1)
@@ -817,7 +817,7 @@
 					posn: [local2 0] [local2 1]
 					setPri: 11
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (== currentCar 13)
 					(keith
@@ -842,7 +842,7 @@
 					posn: [local4 0] [local4 1]
 					setPri: 11
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11 (unTrunk stopUpd:))
@@ -855,7 +855,7 @@
 					posn: [local4 0] [local4 1]
 					setPri: 11
 					startUpd:
-					setCycle: CT 0 -1 self
+					setCycle: CycleTo 0 -1 self
 				)
 			)
 			(13 (unTrunk dispose:))

@@ -77,15 +77,15 @@
 	(properties)
 )
 
-(instance gelepsi of Act
+(instance gelepsi of Actor
 	(properties)
 )
 
-(instance barbie of Act
+(instance barbie of Actor
 	(properties)
 )
 
-(instance ourCar of Act
+(instance ourCar of Actor
 	(properties)
 )
 
@@ -105,7 +105,7 @@
 	(properties)
 )
 
-(instance ourCarBlock of Blk
+(instance ourCarBlock of Block
 	(properties
 		top 194
 		left 107
@@ -114,7 +114,7 @@
 	)
 )
 
-(instance bwCarBlock of Blk
+(instance bwCarBlock of Block
 	(properties
 		top 164
 		left 105
@@ -123,7 +123,7 @@
 	)
 )
 
-(instance vanBlock of Blk
+(instance vanBlock of Block
 	(properties
 		top 164
 		bottom 178
@@ -131,7 +131,7 @@
 	)
 )
 
-(instance rm61 of Rm
+(instance rm61 of Room
 	(properties
 		picture 61
 		style $0006
@@ -171,7 +171,7 @@
 					else
 						(= local4 global111)
 					)
-					(= docCoveTimer 0)
+					(= doCoveTimer 0)
 				)
 				((< gamePhase 5) (= local4 0))
 				((== gamePhase 5)
@@ -184,7 +184,7 @@
 							(= local4 2)
 							(= captainWarningTimer 0)
 						)
-						((Btst 20) (= local4 4) (Bclr 20) (= docCoveTimer 0))
+						((Btst 20) (= local4 4) (Bclr 20) (= doCoveTimer 0))
 						(else (= local4 3) (= captainWarningTimer 0))
 					)
 				)
@@ -257,7 +257,7 @@
 					posn: 219 136
 					init:
 					setCycle: Walk
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: Follow ego 500
 					illegalBits: 0
 					setScript: barbieScript
@@ -362,7 +362,7 @@
 			(Print 61 7)
 			(= diverState 5)
 			(ego observeBlocks: vanBlock)
-			((Act new:)
+			((Actor new:)
 				view: 154
 				loop: 0
 				cel: 0
@@ -393,11 +393,11 @@
 					(ego posn: 200 240)
 				)
 				(if (== currentCar 13)
-					((= keith (Act new:))
+					((= keith (Actor new:))
 						view: 20
 						cel: 0
 						posn: -100 400
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setScript: keithScript
 						init:
 					)
@@ -876,7 +876,7 @@
 						posn: 182 197
 						setPri: 15
 						init:
-						setCycle: End
+						setCycle: EndLoop
 					)
 				)
 			)
@@ -930,7 +930,7 @@
 				(HandsOff)
 				(ego stopUpd: ignoreBlocks: ourCarBlock)
 				(if (== currentCar 13)
-					(if docCoveTimer (Print 61 84) else (Print 61 85))
+					(if doCoveTimer (Print 61 84) else (Print 61 85))
 					(keith ignoreActors: illegalBits: 0)
 					(cond 
 						((< (keith y?) 168) (keith setMotion: MoveTo 90 150 self))
@@ -952,7 +952,7 @@
 			(9
 				(if (cast contains: gelepsi)
 					(cond 
-						(docCoveTimer (Print 61 86))
+						(doCoveTimer (Print 61 86))
 						(removedBodyFromRiver (Print 61 87))
 						(else (Print 61 87))
 					)
@@ -967,7 +967,7 @@
 					posn: 182 197
 					setPri: 15
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -993,7 +993,7 @@
 					posn: 126 209
 					setPri: 15
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(14 (unTrunk stopUpd:))
@@ -1005,7 +1005,7 @@
 					posn: 126 209
 					setPri: 1
 					startUpd:
-					setCycle: CT 0 -1 self
+					setCycle: CycleTo 0 -1 self
 				)
 			)
 			(16 (unTrunk dispose:))
@@ -1082,7 +1082,7 @@
 							(= seconds 2)
 						)
 					)
-					((and (== local4 4) (not local1)) (= docCoveTimer 0) (localproc_000c 61 94))
+					((and (== local4 4) (not local1)) (= doCoveTimer 0) (localproc_000c 61 94))
 					((== local4 4) (localproc_000c 61 95))
 				)
 			)

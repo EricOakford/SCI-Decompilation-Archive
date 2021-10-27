@@ -27,7 +27,7 @@
 	dustedGloveBox
 	gloveBoxIsOpen
 )
-(instance rm68 of Rm
+(instance rm68 of Room
 	(properties
 		picture 93
 		style $0003
@@ -71,7 +71,7 @@
 					cel: 0
 					posn: 148 38
 					setPri: 0
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 			)
@@ -133,11 +133,11 @@
 				(self cue:)
 			)
 			(2
-				(gloveBoxDoor startUpd: setCycle: End)
+				(gloveBoxDoor startUpd: setCycle: EndLoop)
 				(= gloveBoxIsOpen 1)
 			)
 			(3
-				(gloveBoxDoor setCycle: Beg self)
+				(gloveBoxDoor setCycle: BegLoop self)
 				(= gloveBoxIsOpen 0)
 			)
 			(4

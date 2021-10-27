@@ -160,7 +160,7 @@
 	(properties)
 )
 
-(instance sonny of PV
+(instance sonny of PicView
 	(properties
 		y 105
 		x 63
@@ -169,7 +169,7 @@
 	)
 )
 
-(instance keithBud of PV
+(instance keithBud of PicView
 	(properties
 		y 107
 		x 247
@@ -179,7 +179,7 @@
 	)
 )
 
-(instance sShoulder of PV
+(instance sShoulder of PicView
 	(properties
 		y 141
 		x 99
@@ -189,7 +189,7 @@
 	)
 )
 
-(instance kShoulder of PV
+(instance kShoulder of PicView
 	(properties
 		y 137
 		x 208
@@ -199,7 +199,7 @@
 	)
 )
 
-(instance wheel of PV
+(instance wheel of PicView
 	(properties
 		y 130
 		x 113
@@ -209,7 +209,7 @@
 	)
 )
 
-(instance street of PV
+(instance street of PicView
 	(properties
 		y 101
 		x 154
@@ -219,7 +219,7 @@
 	)
 )
 
-(instance rm13 of Rm
+(instance rm13 of Room
 	(properties
 		picture 13
 		style $0000
@@ -305,7 +305,7 @@
 			posn: 149 101
 			setPri: 2
 			setLoop: 4
-			setCycle: Fwd
+			setCycle: Forward
 			init:
 			stopUpd:
 		)
@@ -315,7 +315,7 @@
 			setPri: 0
 			setLoop: 0
 			cel: 1
-			setCycle: Fwd
+			setCycle: Forward
 			init:
 			stopUpd:
 		)
@@ -324,7 +324,7 @@
 			posn: 201 93
 			setPri: 0
 			setLoop: 1
-			setCycle: Fwd
+			setCycle: Forward
 			init:
 			stopUpd:
 		)
@@ -338,7 +338,7 @@
 			init:
 			stopUpd:
 		)
-		(SL enable:)
+		(StatusLine enable:)
 		(super init:)
 		(self setScript: rm13Script)
 	)
@@ -512,7 +512,7 @@
 					view: 71
 					posn: 159 141
 					cycleSpeed: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 6
 					setPri: 13
 					init:
@@ -524,7 +524,7 @@
 					posn: 215 81
 					setLoop: 2
 					cycleSpeed: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 12
 					init:
 				)
@@ -532,7 +532,7 @@
 					view: 71
 					posn: 205 97
 					cycleSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 3
 					setPri: 13
 					init:
@@ -547,7 +547,7 @@
 				(if (< howFast 30)
 					(self cue:)
 				else
-					(puff setCycle: End self)
+					(puff setCycle: EndLoop self)
 				)
 			)
 			(2 (= local121 (Random 20 70)))
@@ -676,7 +676,7 @@
 						)
 						(cond 
 							((and (not (Btst 27)) global127) (sequencer changeState: 63))
-							(docCoveTimer (= docCoveTimer 0) (sequencer changeState: 12))
+							(doCoveTimer (= doCoveTimer 0) (sequencer changeState: 12))
 							(
 								(and
 									removedBodyFromRiver
@@ -925,7 +925,7 @@
 						)
 					)
 					((Said 'chase[/bains]')
-						(if docCoveTimer
+						(if doCoveTimer
 							(= outsideRoom 14)
 							(sequencer changeState: 11)
 							(= local107 0)

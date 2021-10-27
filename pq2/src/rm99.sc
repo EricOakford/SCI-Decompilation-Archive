@@ -5,6 +5,7 @@
 (use Motion)
 (use Game)
 (use Menu)
+(use Intrface)
 
 (public
 	rm99 0
@@ -13,7 +14,7 @@
 (local
 	doneTIme
 )
-(instance rm99 of Rm
+(instance rm99 of Room
 	(properties
 		picture 450
 		style $0006
@@ -28,7 +29,7 @@
 			posn: 20 100
 			setStep: 1 1
 			setMotion: MoveTo 300 100
-			setCycle: Fwd
+			setCycle: Forward
 			init:
 		)
 		(= howFast 0)
@@ -44,7 +45,7 @@
 			(if (Btst 167)
 				(theGame setSpeed: 6)
 				(MenuBar draw:)
-				(SL enable:)
+				(StatusLine enable:)
 				(NormalEgo)
 				(curRoom newRoom: 1)
 			else

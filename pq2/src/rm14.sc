@@ -82,7 +82,7 @@
 	)
 )
 
-(instance ourCarBlock of Blk
+(instance ourCarBlock of Block
 	(properties
 		top 133
 		left 162
@@ -91,15 +91,15 @@
 	)
 )
 
-(instance nose of Act
+(instance nose of Actor
 	(properties)
 )
 
-(instance tail of Act
+(instance tail of Actor
 	(properties)
 )
 
-(instance plane of Act
+(instance plane of Actor
 	(properties)
 )
 
@@ -135,19 +135,19 @@
 	(properties)
 )
 
-(instance smallGuy1 of Act
+(instance smallGuy1 of Actor
 	(properties)
 )
 
-(instance smallGuy2 of Act
+(instance smallGuy2 of Actor
 	(properties)
 )
 
-(instance smallGuy3 of Act
+(instance smallGuy3 of Actor
 	(properties)
 )
 
-(instance ourCar of Act
+(instance ourCar of Actor
 	(properties)
 )
 
@@ -159,7 +159,7 @@
 	(properties)
 )
 
-(instance rm14 of Rm
+(instance rm14 of Room
 	(properties
 		picture 14
 		style $0001
@@ -169,7 +169,7 @@
 		(asm
 			pushi    #init
 			pushi    0
-			super    Rm,  4
+			super    Room,  4
 			ldi      70
 			sag      perspective
 			pushi    2
@@ -346,7 +346,7 @@ code_071e:
 			pushi    3
 			pushi    126
 			pushi    1
-			class    Fwd
+			class    Forward
 			push    
 			pushi    66
 			pushi    1
@@ -757,7 +757,7 @@ code_096b:
 					(33 (ego posn: local8 239))
 				)
 				(if (== currentCar 13)
-					((= keith (Act new:))
+					((= keith (Actor new:))
 						view: 20
 						posn: (- 38 (ego x?)) (ego y?)
 						setCycle: Walk
@@ -769,7 +769,7 @@ code_096b:
 							(keith
 								posn: 224 190
 								setMotion: Follow ego 34
-								setAvoider: (Avoid new:)
+								setAvoider: (Avoider new:)
 							)
 						)
 						(nextRoom
@@ -779,7 +779,7 @@ code_096b:
 										posn: (- (ego x?) 32) (- (ego y?) 8)
 										loop: 2
 										setMotion: Follow ego 500
-										setAvoider: (Avoid new:)
+										setAvoider: (Avoider new:)
 									)
 								)
 								((and (not (Btst 118)) (== global169 1)) (keith posn: -14 128))
@@ -923,7 +923,7 @@ code_096b:
 												(keith
 													posn: 5 164
 													setMotion: Follow ego 36
-													setAvoider: (Avoid new:)
+													setAvoider: (Avoider new:)
 												)
 												(localproc_000c 14 40 83)
 											)
@@ -1111,7 +1111,7 @@ code_096b:
 						posn: 230 135
 						setPri: 10
 						init:
-						setCycle: End
+						setCycle: EndLoop
 					)
 				)
 			)
@@ -1188,7 +1188,7 @@ code_096b:
 					posn: 230 135
 					setPri: 10
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8
@@ -1216,7 +1216,7 @@ code_096b:
 					posn: 178 144
 					setPri: 10
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11 (unTrunk stopUpd:))
@@ -1228,7 +1228,7 @@ code_096b:
 					cel: 2
 					posn: 178 144
 					startUpd:
-					setCycle: CT 0 -1 self
+					setCycle: CycleTo 0 -1 self
 				)
 			)
 			(13 (unTrunk dispose:))

@@ -93,15 +93,15 @@
 	)
 )
 
-(instance kAct of Act
+(instance kAct of Actor
 	(properties)
 )
 
-(instance gasBomb of Act
+(instance gasBomb of Actor
 	(properties)
 )
 
-(instance rm25 of Rm
+(instance rm25 of Room
 	(properties
 		picture 25
 		style $0000
@@ -195,7 +195,7 @@
 			(HandsOn)
 		)
 		(if (or global170 (Btst 13)) (= global178 1))
-		((= newAct (Act new:))
+		((= newAct (Actor new:))
 			view: 54
 			setStep: 3 3
 			setLoop: 1
@@ -298,7 +298,7 @@
 				view: 20
 				illegalBits: -32768
 				setCycle: Walk
-				setAvoider: (Avoid new:)
+				setAvoider: (Avoider new:)
 				setMotion: Follow ego 500
 			)
 			(if (== prevRoomNum 26)
@@ -307,7 +307,7 @@
 					loop: 1
 					posn: 270 150
 					init:
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setMotion: MoveTo 227 160 keithScript
 				)
 			else
@@ -647,7 +647,7 @@
 								(= local41 1)
 								(Print 25 54)
 								(ego setMotion: 0)
-								(newAct_3 view: 268 setLoop: 1 setCel: 0 setCycle: End)
+								(newAct_3 view: 268 setLoop: 1 setCel: 0 setCycle: EndLoop)
 								(Print 25 55)
 								(Print 25 56)
 								(Print 25 57)
@@ -744,7 +744,7 @@
 						ignoreActors:
 						posn: [local24 0] [local24 1]
 						setPri: 14
-						setCycle: End self
+						setCycle: EndLoop self
 						init:
 					)
 				else
@@ -758,7 +758,7 @@
 						setCycle: Walk
 						setStep: 3 2
 						setPri: 15
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 					)
 				)
 				(ego
@@ -859,7 +859,7 @@
 						posn: [local24 0] [local24 1]
 						setPri: 15
 						init:
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 					(keith
 						ignoreActors: 1
@@ -882,12 +882,12 @@
 					posn: [local26 0] [local26 1]
 					setPri: 14
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10 (newProp stopUpd:))
 			(11
-				(newProp startUpd: setCycle: Beg self)
+				(newProp startUpd: setCycle: BegLoop self)
 			)
 			(12 (newProp dispose:))
 		)
@@ -910,7 +910,7 @@
 		(switch (= state newState)
 			(0
 				(= gunNotNeeded 0)
-				((= newAct_2 (Act new:))
+				((= newAct_2 (Actor new:))
 					view: 54
 					setLoop: 1
 					setCel: 3
@@ -924,7 +924,7 @@
 					setLoop: 3
 					setCel: 0
 					setPri: 11
-					setCycle: Fwd
+					setCycle: Forward
 					ignoreActors:
 					doit:
 					init:
@@ -939,7 +939,7 @@
 					init:
 					hide:
 				)
-				((= newAct_3 (Act new:))
+				((= newAct_3 (Actor new:))
 					view: 30
 					posn: 73 164
 					setPri: 12
@@ -988,7 +988,7 @@
 			(2
 				(HandsOn)
 				(ego setMotion: 0 startUpd:)
-				(newProp_5 show: setCel: 0 setCycle: End self)
+				(newProp_5 show: setCel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(newProp_5 stopUpd:)
@@ -1013,8 +1013,8 @@
 			(0
 				(HandsOff)
 				(ego setMotion: 0 stopUpd:)
-				((= newAct_4 (Act new:))
-					setAvoider: Avoid
+				((= newAct_4 (Actor new:))
+					setAvoider: Avoider
 					view: 50
 					setCycle: Walk
 					posn: 85 180
@@ -1060,7 +1060,7 @@
 				(Bset 13)
 				(Bclr 29)
 				(newAct_4
-					setAvoider: Avoid
+					setAvoider: Avoider
 					setMotion: MoveTo -10 (newAct_4 y?) self
 				)
 			)
@@ -1088,7 +1088,7 @@
 						posn: [local24 0] [local24 1]
 						setPri: 14
 						init:
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(self cue:)
@@ -1114,7 +1114,7 @@
 						setCycle: Walk
 						setStep: 3 2
 						setPri: 15
-						setAvoider: Avoid
+						setAvoider: Avoider
 						setMotion: MoveTo 190 200 self
 					)
 				else
@@ -1288,7 +1288,7 @@
 					setCel: 0
 					posn: 251 155
 					setPri: 11
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -1296,7 +1296,7 @@
 					setLoop: 7
 					posn: 252 158
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -1313,7 +1313,7 @@
 					setLoop: 2
 					setCel: 0
 					posn: 234 159
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -1344,7 +1344,7 @@
 					(= cycles 4)
 				else
 					(= gunDrawn 1)
-					(ego view: 4 setLoop: 0 setCel: 0 setCycle: End self)
+					(ego view: 4 setLoop: 0 setCel: 0 setCycle: EndLoop self)
 				)
 			)
 			(1
@@ -1354,18 +1354,18 @@
 					setLoop: 7
 					setCel: 0
 					posn: 252 156
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(if (ego inRect: 220 151 280 156)
 					(= local38 1)
-					(ego view: 97 setLoop: 2 setCel: 0 setCycle: End self)
+					(ego view: 97 setLoop: 2 setCel: 0 setCycle: EndLoop self)
 				else
 					(ego
 						view: 557
 						posn: 262 161
 						setLoop: (if gunDrawn 0 else 1)
 						setCel: 0
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				)
 			)
@@ -1413,7 +1413,7 @@
 					posn: 73 164
 					cycleSpeed: 1
 					setCel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -1423,14 +1423,14 @@
 					setLoop: 3
 					cycleSpeed: 1
 					setCel: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(gasBomb
 					view: 268
 					setLoop: 4
 					setPri: 14
 					setStep: 10 10
-					setCycle: Fwd
+					setCycle: Forward
 					ignoreActors:
 					ignoreControl: -1
 					posn: 75 140
@@ -1468,7 +1468,7 @@
 					posn: 229 115
 					setPri: 10
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 3)
 				(if (< howFast 30) (= local2 100) else (= local2 200))

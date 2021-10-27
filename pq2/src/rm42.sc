@@ -232,7 +232,7 @@
 	)
 )
 
-(instance rm42 of Rm
+(instance rm42 of Room
 	(properties
 		picture 40
 		style $0000
@@ -524,7 +524,7 @@
 					view: 84
 					setCel: 0
 					cycleSpeed: 4
-					setCycle: CT 7 1 self
+					setCycle: CycleTo 7 1 self
 					setLoop:
 						(cond 
 							((== local104 2) 6)
@@ -535,9 +535,9 @@
 				)
 			)
 			(2
-				(ego setCel: 4 setCycle: CT 7 1 self)
+				(ego setCel: 4 setCycle: CycleTo 7 1 self)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(HandsOn)
 				(ego
@@ -561,7 +561,7 @@
 			(1
 				(HandsOff)
 				(ego setMotion: 0)
-				(newProp_3 setCycle: End self)
+				(newProp_3 setCycle: EndLoop self)
 			)
 			(2
 				(ego setPri: -1 setMotion: MoveTo 69 155 self)
@@ -591,7 +591,7 @@
 				)
 			)
 			(11
-				(newProp_3 setCycle: Beg self)
+				(newProp_3 setCycle: BegLoop self)
 			)
 			(12
 				(HandsOn)

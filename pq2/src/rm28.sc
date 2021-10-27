@@ -35,11 +35,11 @@
 	(properties)
 )
 
-(instance Wnote of Act
+(instance Wnote of Actor
 	(properties)
 )
 
-(instance rm28 of Rm
+(instance rm28 of Room
 	(properties
 		picture 28
 		style $0000

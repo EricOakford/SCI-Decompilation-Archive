@@ -47,7 +47,7 @@
 	)
 )
 
-(instance rm40 of Rm
+(instance rm40 of Room
 	(properties
 		picture 40
 		style $0000
@@ -71,7 +71,7 @@
 			illegalBits: 0
 			init:
 		)
-		((= keith (Act new:))
+		((= keith (Actor new:))
 			view: 20
 			ignoreActors:
 			illegalBits: 0
@@ -79,7 +79,7 @@
 			setCycle: Walk
 			init:
 		)
-		((= stewardess (Act new:))
+		((= stewardess (Actor new:))
 			view: 26
 			posn: 255 73
 			loop: 1
@@ -88,7 +88,7 @@
 			illegalBits: 0
 			init:
 		)
-		((= guard (Act new:))
+		((= guard (Actor new:))
 			view: 31
 			posn: 300 1063
 			loop: 1
@@ -178,7 +178,7 @@
 					setPri: 0
 					posn: 200 68
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
@@ -357,14 +357,14 @@
 				(stewardess setMotion: MoveTo 268 60 self)
 			)
 			(2
-				(cockpitDoor startUpd: setCycle: End self)
+				(cockpitDoor startUpd: setCycle: EndLoop self)
 			)
 			(3
 				(cockpitDoor stopUpd:)
 				(stewardess setPri: 0 setMotion: MoveTo 280 50 self)
 			)
 			(4
-				(cockpitDoor startUpd: setCycle: Beg self)
+				(cockpitDoor startUpd: setCycle: BegLoop self)
 				(stewardess hide:)
 			)
 			(5
@@ -372,7 +372,7 @@
 				(client setScript: 0)
 			)
 			(6
-				(cockpitDoor setCycle: End self)
+				(cockpitDoor setCycle: EndLoop self)
 			)
 			(7
 				(cockpitDoor stopUpd:)
@@ -385,7 +385,7 @@
 			)
 			(8
 				(stewardess setPri: -1)
-				(cockpitDoor setCycle: Beg self)
+				(cockpitDoor setCycle: BegLoop self)
 			)
 			(9
 				(cockpitDoor stopUpd:)
@@ -413,7 +413,7 @@
 					cycleSpeed: 1
 					setMotion: 0
 					setPri: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -453,7 +453,7 @@
 				(Print 40 21)
 				(ego illegalBits: 0 ignoreActors: 1)
 				(cond 
-					(sittingInPlane (ego setCycle: Beg self))
+					(sittingInPlane (ego setCycle: BegLoop self))
 					((& (ego onControl:) $1800) (self changeState: 6))
 					(else (self cue:))
 				)
@@ -544,8 +544,8 @@
 				(HandsOff)
 				(AirplanePrint 40 28)
 				(stewardess setLoop: 3)
-				(ego setCycle: Beg self)
-				(keith setCycle: Beg)
+				(ego setCycle: BegLoop self)
+				(keith setCycle: BegLoop)
 			)
 			(21
 				(ego

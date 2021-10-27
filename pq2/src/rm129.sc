@@ -16,7 +16,7 @@
 	drain
 	[sewage 2]
 )
-(instance rm129 of Rm
+(instance rm129 of Room
 	(properties
 		picture 203
 		style $0000
@@ -43,7 +43,7 @@
 		)
 		(HandsOn)
 		(if (== prevRoomNum 132) (= methaneGasTimer 66))
-		((= drain (Act new:))
+		((= drain (Actor new:))
 			view: 92
 			loop: 5
 			cel: 0
@@ -59,7 +59,7 @@
 			cel: 2
 			posn: 96 113
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -70,7 +70,7 @@
 			cel: 1
 			posn: 175 177
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -124,7 +124,7 @@
 	)
 )
 
-(instance cockroach of Act
+(instance cockroach of Actor
 	(properties
 		y 90
 		x 135

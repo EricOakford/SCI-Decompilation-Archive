@@ -35,7 +35,7 @@
 	(Print &rest #at -1 24)
 )
 
-(instance rm101 of Rm
+(instance rm101 of Room
 	(properties
 		picture 101
 		style $0000
@@ -257,7 +257,7 @@
 			ignoreActors:
 			init:
 		)
-		((= keith (Act new:))
+		((= keith (Actor new:))
 			view: 20
 			posn: 10 135
 			loop: 0
@@ -267,7 +267,7 @@
 			init:
 			illegalBits: -16384
 		)
-		((= willy (Act new:))
+		((= willy (Actor new:))
 			view: 45
 			posn: 245 141
 			setCycle: Walk
@@ -527,7 +527,7 @@
 			)
 			(1
 				(localproc_000c 101 43 83)
-				(officeDoor setCycle: End self)
+				(officeDoor setCycle: EndLoop self)
 			)
 			(2
 				(ego setMotion: MoveTo 180 139 self)

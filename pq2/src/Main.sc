@@ -108,9 +108,9 @@
 		global83
 		global84
 		global85
-		global86
+		doCoveTimer ;global86
 		global87
-		global88
+		bainsInCove ;global88
 		global89
 		global90
 		global91

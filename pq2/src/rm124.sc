@@ -35,7 +35,7 @@
 	)
 )
 
-(instance rm124 of Rm
+(instance rm124 of Room
 	(properties
 		picture 203
 		style $0000
@@ -84,7 +84,7 @@
 			cel: 0
 			posn: 205 189
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
 			ignoreActors: 1
 			init:
@@ -95,7 +95,7 @@
 			cel: 2
 			posn: 96 113
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
 			ignoreActors: 1
 			init:
@@ -106,7 +106,7 @@
 			cel: 1
 			posn: 175 177
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 3
 			ignoreActors: 1
 			init:
@@ -211,7 +211,7 @@
 					ignoreActors: 1
 					illegalBits: 0
 					posn: 176 104
-					setCycle: CT 11 1 self
+					setCycle: CycleTo 11 1 self
 					setMotion: 0
 				)
 			)
@@ -220,7 +220,7 @@
 				(User canInput: 1)
 			)
 			(3
-				(ego loop: 3 setCycle: CT 7 1 self)
+				(ego loop: 3 setCycle: CycleTo 7 1 self)
 				(User canInput: 0)
 			)
 			(4
@@ -240,7 +240,7 @@
 					(= triedToOpenManhole 0)
 					(= bainsIsHere 1)
 					(bainsMusic play:)
-					((= bains (Act new:))
+					((= bains (Actor new:))
 						view: 14
 						setLoop: 1
 						cel: 0
@@ -276,7 +276,7 @@
 				)
 			)
 			(2
-				(bains view: 15 cel: 0 setCycle: End self)
+				(bains view: 15 cel: 0 setCycle: EndLoop self)
 				(bainsGunFire play:)
 			)
 			(3

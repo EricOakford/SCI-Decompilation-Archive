@@ -40,11 +40,11 @@
 	(Print &rest #at -1 15)
 )
 
-(instance agent of Act
+(instance agent of Actor
 	(properties)
 )
 
-(instance rm16 of Rm
+(instance rm16 of Room
 	(properties
 		picture 16
 		style $0001
@@ -73,7 +73,7 @@
 			init:
 			ignoreActors:
 			illegalBits: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed:
 			stopUpd:
 		)
@@ -111,11 +111,11 @@
 			)
 		)
 		(if (Btst 40)
-			((= keith (Act new:))
+			((= keith (Actor new:))
 				view: 20
 				init:
 				setMotion: Follow ego 25
-				setAvoider: (Avoid new:)
+				setAvoider: (Avoider new:)
 				setCycle: Walk
 			)
 			(switch prevRoomNum
@@ -161,10 +161,10 @@
 		(if (and (>= gamePhase 6) (< gamePhase 8) local8)
 			(= local8 0)
 			(Bset 40)
-			((= keith (Act new:))
+			((= keith (Actor new:))
 				view: 20
 				setCycle: Walk
-				setAvoider: (Avoid new:)
+				setAvoider: (Avoider new:)
 				init:
 				setScript: keithJoinsEgoScript
 			)
@@ -2663,7 +2663,7 @@ code_17b9:
 					posn: 253 138
 					init:
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -2671,7 +2671,7 @@ code_17b9:
 				(self cue:)
 			)
 			(7
-				(keithCallingCaptain setCycle: Beg self)
+				(keithCallingCaptain setCycle: BegLoop self)
 			)
 			(8
 				(keithCallingCaptain dispose:)
@@ -2757,14 +2757,14 @@ code_17b9:
 					posn: 253 139
 					init:
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
 				(= perspective 0)
 				(curRoom newRoom: 12)
 			)
-			(6 (ego setCycle: Beg self))
+			(6 (ego setCycle: BegLoop self))
 			(7
 				(HandsOn)
 				(NormalEgo)
@@ -2775,7 +2775,7 @@ code_17b9:
 	)
 )
 
-(instance pictureOnWall of PV
+(instance pictureOnWall of PicView
 	(properties
 		y 88
 		x 44
@@ -2787,7 +2787,7 @@ code_17b9:
 	)
 )
 
-(instance sittingPerson of PV
+(instance sittingPerson of PicView
 	(properties
 		y 125
 		x 55
@@ -2798,7 +2798,7 @@ code_17b9:
 	)
 )
 
-(instance counterPerson of PV
+(instance counterPerson of PicView
 	(properties
 		y 124
 		x 179
@@ -2809,7 +2809,7 @@ code_17b9:
 	)
 )
 
-(instance talking1 of PV
+(instance talking1 of PicView
 	(properties
 		y 150
 		x 78
@@ -2820,7 +2820,7 @@ code_17b9:
 	)
 )
 
-(instance talking2 of PV
+(instance talking2 of PicView
 	(properties
 		y 151
 		x 101
@@ -2831,7 +2831,7 @@ code_17b9:
 	)
 )
 
-(instance talking3 of PV
+(instance talking3 of PicView
 	(properties
 		y 153
 		x 91
@@ -2842,7 +2842,7 @@ code_17b9:
 	)
 )
 
-(instance standing1 of PV
+(instance standing1 of PicView
 	(properties
 		y 98
 		x 145
@@ -2853,7 +2853,7 @@ code_17b9:
 	)
 )
 
-(instance standing2 of PV
+(instance standing2 of PicView
 	(properties
 		y 103
 		x 240
@@ -2865,7 +2865,7 @@ code_17b9:
 	)
 )
 
-(instance standing3 of PV
+(instance standing3 of PicView
 	(properties
 		y 104
 		x 171
@@ -2876,7 +2876,7 @@ code_17b9:
 	)
 )
 
-(instance standing4 of PV
+(instance standing4 of PicView
 	(properties
 		y 106
 		x 164
@@ -2886,7 +2886,7 @@ code_17b9:
 	)
 )
 
-(instance standing5 of PV
+(instance standing5 of PicView
 	(properties
 		y 100
 		x 154
@@ -2897,7 +2897,7 @@ code_17b9:
 	)
 )
 
-(instance case of PV
+(instance case of PicView
 	(properties
 		y 129
 		x 61
@@ -2908,7 +2908,7 @@ code_17b9:
 	)
 )
 
-(instance SIGN of PV
+(instance SIGN of PicView
 	(properties
 		y 70
 		x 29
@@ -2918,7 +2918,7 @@ code_17b9:
 	)
 )
 
-(instance poster1 of PV
+(instance poster1 of PicView
 	(properties
 		y 117
 		x 190
@@ -2930,7 +2930,7 @@ code_17b9:
 	)
 )
 
-(instance poster2 of PV
+(instance poster2 of PicView
 	(properties
 		y 126
 		x 212
@@ -2942,7 +2942,7 @@ code_17b9:
 	)
 )
 
-(instance agent2 of PV
+(instance agent2 of PicView
 	(properties
 		y 103
 		x 211

@@ -67,7 +67,7 @@
 	)
 )
 
-(instance rm4 of Rm
+(instance rm4 of Room
 	(properties
 		picture 4
 		style $0006
@@ -144,10 +144,10 @@
 					cel: 255
 					posn: 182 130
 					init:
-					setCycle: Beg
+					setCycle: BegLoop
 				)
 				(User canInput: 1)
-				(phone cel: 255 loop: 1 posn: 172 116 setCycle: Beg init:)
+				(phone cel: 255 loop: 1 posn: 172 116 setCycle: BegLoop init:)
 				(= egoSitting 1)
 				(if
 				(and (!= isOnDuty 1) (== gamePhase 7) (not (Btst 45)))
@@ -270,12 +270,12 @@
 						loop: 1
 						posn: 48 112
 						setPri: 12
-						setCycle: Fwd
+						setCycle: Forward
 						cycleSpeed: 2
 						init:
 					)
 				else
-					(captain loop: 4 setCycle: Fwd cycleSpeed: 7)
+					(captain loop: 4 setCycle: Forward cycleSpeed: 7)
 				)
 				((= keith (View new:)) view: 65 init:)
 				(switch whereIsKeith
@@ -312,7 +312,7 @@
 							(- (keith y?) 31)
 						setPri: 9
 						cycleSpeed: 3
-						setCycle: Fwd
+						setCycle: Forward
 						init:
 					)
 				)
@@ -359,7 +359,7 @@
 				)
 			)
 			(1
-				(ego loop: 2 cel: 0 setCycle: End self)
+				(ego loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(rm4 setScript: drawerScript)
@@ -371,7 +371,7 @@
 					view: 3
 					loop: 2
 					cel: 3
-					setCycle: Beg self
+					setCycle: BegLoop self
 					setMotion: 0
 				)
 				(curRoom drawPic: 4)
@@ -381,13 +381,13 @@
 				(User canInput: 1)
 			)
 			(5
-				(ego loop: 3 cel: 0 setCycle: End self)
-				(phone setCel: -1 setCycle: End startUpd:)
+				(ego loop: 3 cel: 0 setCycle: EndLoop self)
+				(phone setCel: -1 setCycle: EndLoop startUpd:)
 			)
 			(6 (curRoom newRoom: 12))
 			(7
-				(ego setCycle: Beg self)
-				(phone setCycle: Beg)
+				(ego setCycle: BegLoop self)
+				(phone setCycle: BegLoop)
 			)
 			(8 (ego loop: 0 cel: 0))
 		)
@@ -912,7 +912,7 @@
 				(User canInput: 0)
 				(ego stopUpd:)
 				(= talkedToCaptain 1)
-				(captain setCycle: End)
+				(captain setCycle: EndLoop)
 				(aTimer setCycle: self 18)
 			)
 			(1
@@ -931,7 +931,7 @@
 				(localproc_000c 4 104)
 				(if egoSitting (User canInput: 1) else (HandsOn))
 				(ego startUpd:)
-				(captain setCycle: Beg)
+				(captain setCycle: BegLoop)
 			)
 			(5 (aTimer setReal: self 3))
 			(6
@@ -942,7 +942,7 @@
 				(= captainWarningTimer 300)
 				(= isOnDuty 2)
 				(= talkedToCaptain 1)
-				(captain setCycle: End)
+				(captain setCycle: EndLoop)
 				(aTimer setCycle: self 18)
 			)
 			(7
@@ -966,14 +966,14 @@
 				(localproc_000c 4 109)
 				(if egoSitting (User canInput: 1) else (HandsOn))
 				(= isOnDuty 2)
-				(captain setCycle: Beg)
+				(captain setCycle: BegLoop)
 			)
 			(12
 				(HandsOff)
 				(User canInput: 0)
 				(if (not egoSitting) (ego loop: 1))
 				(= talkedToCaptain 1)
-				(captain setCycle: End)
+				(captain setCycle: EndLoop)
 				(aTimer setCycle: self 18)
 			)
 			(13
@@ -984,7 +984,7 @@
 				)
 				(if egoSitting (User canInput: 1) else (HandsOn))
 				(ego startUpd:)
-				(captain setCycle: Beg)
+				(captain setCycle: BegLoop)
 			)
 			(14
 				(HandsOff)
@@ -992,7 +992,7 @@
 				(if (not egoSitting) (ego loop: 1))
 				(= talkedToCaptain 1)
 				(= isOnDuty 1)
-				(captain setCycle: End)
+				(captain setCycle: EndLoop)
 				(aTimer setCycle: self 18)
 			)
 			(15
@@ -1001,7 +1001,7 @@
 					(1 (localproc_000c 4 114))
 				)
 				(if egoSitting (User canInput: 1) else (HandsOn))
-				(captain setCycle: Beg)
+				(captain setCycle: BegLoop)
 			)
 			(16
 				(HandsOff)
@@ -1011,7 +1011,7 @@
 				(= isOnDuty 2)
 				(= gamePhase 10)
 				(= captainWarningTimer 600)
-				(captain setCycle: End)
+				(captain setCycle: EndLoop)
 				(aTimer setCycle: self 18)
 			)
 			(17
@@ -1023,20 +1023,20 @@
 			)
 			(18
 				(localproc_000c 4 117)
-				(captain setCycle: Beg)
+				(captain setCycle: BegLoop)
 				(if egoSitting (User canInput: 1) else (HandsOn))
 				(ego setMotion: 0)
 			)
 			(19
 				(HandsOff)
 				(= talkedToCaptain 1)
-				(captain setCycle: Beg)
+				(captain setCycle: BegLoop)
 				(blab
 					view: 65
 					loop: 1
 					posn: 48 112
 					setPri: 12
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 2
 					init:
 				)
@@ -1064,7 +1064,7 @@
 			(24
 				(localproc_000c 4 124)
 				(blab dispose:)
-				(captain setCycle: Fwd)
+				(captain setCycle: Forward)
 				(HandsOn)
 			)
 			(25
@@ -1073,7 +1073,7 @@
 				(HandsOff)
 				(ego loop: 1)
 				(if (not (Btst 27)) (Print 4 125 #at -1 130 #draw))
-				(captain setCycle: End)
+				(captain setCycle: EndLoop)
 				(aTimer setCycle: self 18)
 			)
 			(26
@@ -1088,7 +1088,7 @@
 				(= captainCanTalk 1)
 			)
 			(28
-				(blab show: setCycle: Fwd)
+				(blab show: setCycle: Forward)
 				(aTimer setCycle: self 9)
 			)
 			(29
@@ -1128,7 +1128,7 @@
 					(if (ego has: 13) (PutInRoom 13 2))
 					(localproc_000c 4 138)
 				)
-				(captain setCycle: Beg)
+				(captain setCycle: BegLoop)
 			)
 		)
 	)
