@@ -1,6 +1,8 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 8)
-(include sci.sh)
+(include system.sh) ;for p_at, etc.
+(include keys.sh)
+;(include sci.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -14,31 +16,31 @@
 )
 
 (local
-	[local0 100]
-	[str 41]
+	;[local0 100]
+	[str 41] ;pCommandString
 	eventMessage
-	local142
+	;local142 unused?
 	local143
-	local144
+	local144 ;currentFolder (personnel:2, homicide:4, vice:7, burglary:5, firearms:6)
 	local145
-	local146
-	local147
-	local148
-	local149
-	local150
-	local151
-	local152
-	local153
-	local154
+	local146 ;Change Director
+	local147 ;inPersonnelDIR
+	local148 ;inCriminalDIR
+	local149 ;inSierraDIR
+	local150 ;ready for input?
+	local151 ;cue computerScript
+	local152 ;selectedRecordNum
+	;local153 unused?
+	local154 ;inputCursorX
 )
-(procedure (localproc_000c &tmp newEvent)
+(procedure (localproc_000c &tmp newEvent) ;clean up DIR CD listing?
 	(while ((= newEvent (Event new:)) type?)
 		(newEvent dispose:)
 	)
 	(newEvent dispose:)
 )
 
-(procedure (localproc_0031 param1)
+(procedure (localproc_0031 param1) ;letter to uppercase
 	(return
 		(if (and (<= 97 param1) (<= param1 122))
 			(return (- param1 32))
@@ -48,7 +50,7 @@
 	)
 )
 
-(procedure (localproc_01c0)
+(procedure (localproc_01c0) ;display record
 	(Print &rest #font 7 #width 168 #at 70 10)
 )
 
@@ -82,7 +84,7 @@
 		(super init:)
 		(HandsOff)
 		(User canInput: 1)
-		(Load rsVIEW 9)
+		(Load VIEW 9)
 		(lite1
 			view: 9
 			loop: 2
@@ -99,7 +101,14 @@
 			init:
 			stopUpd:
 		)
-		(shaw view: 9 loop: 3 cel: 0 posn: 83 150 init: addToPic:)
+		(shaw
+			view: 9
+			loop: 3
+			cel: 0
+			posn: 83 150
+			init:
+			addToPic:
+		)
 		(Format @str 8 0)
 		(self setScript: rm8Script)
 	)
@@ -110,9 +119,10 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(p_said
 				(cond 
-					((Said '/book,instruction,cocksucker') (Print 8 1))
+					;((Said '/book,instruction,cocksucker') (Print 8 1)) 
+					((Said '/book,instruction,dos') (Print 8 1)) 
 					((Said 'look/switch,button,power') (Print 8 2))
 					((Said 'look/computer') (Print 8 3))
 					((Said 'exit,walk,go,quit') (curRoom newRoom: prevRoomNum))
@@ -121,13 +131,14 @@
 						(or
 							(Said 'turn,log<on[/computer,power,button]')
 							(Said 'activate,use,logon[/computer]')
-							(Said 'flip,press,activate,press[/button,power,switch]')
+							;(Said 'flip,press,activate,press[/button,power,switch]')
+							(Said 'flip,press,activate,push[/button,power,switch]')
 						)
 						(lite1 hide:)
 						(lite2 hide:)
 						(rm8 setScript: computerScript)
 					)
-					((Said '[<around,at][/(!*)]') (Print 8 5))
+					((Said '[<around,at][/(anyword)]') (Print 8 5))
 				)
 			)
 		)
@@ -150,8 +161,12 @@
 			(self changeState: 1)
 		)
 		(cond 
-			((<= (compCursor x?) 123) (compCursor x: 123))
-			((>= (compCursor x?) 236) (compCursor x: 236))
+			((<= (compCursor x?) 123)
+				(compCursor x: 123)
+			)
+			((>= (compCursor x?) 236)
+				(compCursor x: 236)
+			)
 		)
 		(super doit:)
 	)
@@ -171,80 +186,53 @@
 			(1
 				(= local143 24)
 				(while (<= local143 114)
-					(Display
-						8
-						6
-						dsCOORD
-						73
-						local143
-						dsFONT
-						7
-						dsCOLOR
-						0
-						dsBACKGROUND
-						0
+					(Display 8 6
+						p_at 73 local143
+						p_font 7
+						p_color 0
+						p_back 0
 					)
 					(= local143 (+ local143 10))
 				)
-				(if (cast contains: fileCursor) (fileCursor dispose:))
-				(if (not local146) (self cue:))
+				(if (cast contains: fileCursor)
+					(fileCursor dispose:)
+				)
+				(if (not local146)
+					(self cue:)
+				)
 			)
 			(2
 				(= local150 1)
-				(Display 8 7 dsCOORD 73 14 dsFONT 7 dsCOLOR 0)
-				(Display
-					8
-					8
-					dsCOORD
-					73
-					14
-					dsFONT
-					7
-					dsCOLOR
-					9
-					dsBACKGROUND
-					0
+				(Display 8 7 
+					p_at 73 14 
+					p_font 7 
+					p_color 0
+				)
+				(Display 8 8
+					p_at 73 14
+					p_font 7
+					p_color 9
+					p_back 0
 				)
 			)
 			(3
-				(Display
-					8
-					9
-					dsCOORD
-					73
-					14
-					dsFONT
-					7
-					dsCOLOR
-					0
-					dsBACKGROUND
-					0
+				(Display 8 9
+					p_at 73 14
+					p_font 7
+					p_color 0
+					p_back 0
 				)
-				(Display
-					8
-					9
-					dsCOORD
-					73
-					15
-					dsFONT
-					7
-					dsCOLOR
-					0
-					dsBACKGROUND
-					0
+				(Display 8 9
+					p_at 73 15
+					p_font 7
+					p_color 0
+					p_back 0
 				)
-				(Display
-					8
-					10
-					dsCOORD
-					73
-					14
-					dsFONT
-					7
-					dsCOLOR
-					14
-					dsBACKGROUND
-					0
+				(Display 8 10 ;session complete
+					p_at 73 14
+					p_font 7
+					p_color 14
+					p_back 0
 				)
 				(= newRoomNum prevRoomNum)
 			)
@@ -253,7 +241,7 @@
 	
 	(method (handleEvent event &tmp [temp0 4])
 		(switch (event type?)
-			(evJOYSTICK
+			(direction ;evJOYSTICK
 				(if (or local147 local149)
 					(event claimed: 1)
 					(switch (event message?)
@@ -265,8 +253,13 @@
 									)
 									(-- local152)
 								)
-								((== (fileCursor x?) 71) (= local152 11) (fileCursor posn: 162 33))
-								(else (= local152 1) (fileCursor posn: 71 33))
+								((== (fileCursor x?) 71)
+									(= local152 11)
+									(fileCursor posn: 162 33)
+								)
+								(else (= local152 1)
+									(fileCursor posn: 71 33)
+								)
 							)
 						)
 						(JOY_DOWN
@@ -277,8 +270,13 @@
 										posn: (fileCursor x?) (+ (fileCursor y?) 10)
 									)
 								)
-								((== (fileCursor x?) 71) (= local152 20) (fileCursor posn: 162 123))
-								(else (= local152 10) (fileCursor posn: 71 123))
+								((== (fileCursor x?) 71)
+									(= local152 20)
+									(fileCursor posn: 162 123)
+								)
+								(else (= local152 10)
+									(fileCursor posn: 71 123)
+								)
 							)
 						)
 						(else 
@@ -293,14 +291,14 @@
 					)
 				)
 			)
-			(evKEYBOARD
+			(keyDown ;evKEYBOARD
 				(if
 					(or
-						(== (= eventMessage (event message?)) 16384)
+						(== eventMessage KEY_F6)
 						(== eventMessage KEY_F8)
 						(== eventMessage KEY_F10)
 					)
-					(Print 8 11)
+					(Print 8 11) ;disable gun
 					(event claimed: 1)
 				)
 				(if local150
@@ -316,17 +314,11 @@
 							(StrAt @str local154 (localproc_0031 eventMessage))
 							(++ local154)
 							(StrAt @str local154 0)
-							(Display
-								(Format @temp0 {%c} eventMessage)
-								dsCOORD
-								(compCursor x?)
-								(- (compCursor y?) 8)
-								dsFONT
-								7
-								dsCOLOR
-								9
-								dsBACKGROUND
-								0
+							(Display (Format @temp0 {%c} eventMessage)
+								p_at (compCursor x?) (- (compCursor y?) 8)
+								p_font 7
+								p_color 9
+								p_back 0
 							)
 							(compCursor x: (+ (compCursor x?) 6))
 						)
@@ -334,116 +326,87 @@
 							(-- local154)
 							(StrAt @str local154 0)
 							(compCursor x: (- (compCursor x?) 6))
-							(Display
-								8
-								12
-								dsCOORD
-								(compCursor x?)
-								(- (compCursor y?) 8)
-								dsFONT
-								7
-								dsCOLOR
-								0
-								dsBACKGROUND
-								0
+							(Display 8 12
+								p_at (compCursor x?) (- (compCursor y?) 8)
+								p_font 7
+								p_color 0
+								p_back 0
 							)
 						)
 						((== eventMessage KEY_RETURN)
-							(Display
-								8
-								13
-								dsCOORD
-								123
-								14
-								dsCOLOR
-								0
-								dsFONT
-								7
-								dsBACKGROUND
-								0
+							(Display 8 13
+								p_at 123 14
+								p_color 0
+								p_font 7
+								p_back 0
 							)
-							(Display
-								8
-								13
-								dsCOORD
-								123
-								15
-								dsCOLOR
-								0
-								dsFONT
-								7
-								dsBACKGROUND
-								0
+							(Display 8 13
+								p_at 123 15
+								p_color 0
+								p_font 7
+								p_back 0
 							)
 							(= local154 0)
 							(compCursor x: 123)
 							(cond 
 								(local146
 									(cond 
-										((not (StrCmp @str {CRIMINAL})) (= local145 3) (= local146 0) (self changeState: 1))
-										((not (StrCmp @str {SIERRA})) (= local145 1) (= local146 0) (self changeState: 1))
+										((not (StrCmp @str {CRIMINAL}))
+											(= local145 3)
+											(= local146 0)
+											(self changeState: 1)
+										)
+										((not (StrCmp @str {SIERRA}))
+											(= local145 1)
+											(= local146 0)
+											(self changeState: 1))
 										((not (StrCmp @str {PERSONNEL}))
 											(= local144 2)
 											(= local146 0)
 											(= local148 1)
 											(self changeState: 1)
 										)
-										(
-										(and (not (StrCmp @str {HOMICIDE})) (== local145 3))
+										((and (not (StrCmp @str {HOMICIDE})) (== local145 3))
 											(= local144 4)
 											(= local146 0)
 											(= local148 1)
 											(self changeState: 1)
 										)
-										(
-										(and (not (StrCmp @str {VICE})) (== local145 3))
+										((and (not (StrCmp @str {VICE})) (== local145 3))
 											(= local144 7)
 											(= local146 0)
 											(= local148 1)
 											(self changeState: 1)
 										)
-										(
-										(and (not (StrCmp @str {BURGLARY})) (== local145 3))
+										((and (not (StrCmp @str {BURGLARY})) (== local145 3))
 											(= local144 5)
 											(= local146 0)
 											(= local148 1)
 											(self changeState: 1)
 										)
-										(
-										(and (not (StrCmp @str {FIREARMS})) (== local145 3))
+										((and (not (StrCmp @str {FIREARMS})) (== local145 3))
 											(= local144 6)
 											(= local146 0)
 											(= local148 1)
 											(self changeState: 1)
 										)
-										(else (= local145 0) (= local146 0) (self changeState: 1))
+										(else (= local145 0)
+											(= local146 0)
+											(self changeState: 1)
+										)
 									)
 									(if local148
-										(Display
-											8
-											14
-											dsCOORD
-											73
-											14
-											dsCOLOR
-											0
-											dsFONT
-											7
-											dsBACKGROUND
-											0
+										(Display 8 14
+											p_at 73 14
+											p_color 0
+											p_font 7
+											p_back 0
 										)
-										(Display
-											8
-											15
-											dsCOORD
-											73
-											14
-											dsCOLOR
-											9
-											dsFONT
-											7
-											dsBACKGROUND
-											0
+										(Display 8 15
+											p_at 73 14
+											p_color 9
+											p_font 7
+											p_back 0
 										)
 									)
 								)
@@ -451,12 +414,20 @@
 									(= local148 0)
 									(cond 
 										(
-										(and (not (StrCmp @str {ICECREAM})) (== local144 4)) (= local145 local144))
+										(and (not (StrCmp @str {ICECREAM})) (== local144 4))
+											(= local145 local144))
 										(
-										(and (not (StrCmp @str {PISTACHIO})) (== local144 2)) (= local145 local144) (SolvePuzzle 2 120))
-										(
-										(and (not (StrCmp @str {MIAMI})) (== local144 7)) (= local145 local144) (SolvePuzzle 2 121))
-										(else (Print 8 16 #time 3))
+										(and (not (StrCmp @str {PISTACHIO})) (== local144 2))
+											(= local145 local144)
+											(SolvePuzzle 2 120)
+										)
+										((and (not (StrCmp @str {MIAMI})) (== local144 7))
+											(= local145 local144)
+											(SolvePuzzle 2 121)
+										)
+										(else
+											(Print 8 16 #time 3)
+										)
 									)
 									(self changeState: 1)
 								)
@@ -565,7 +536,7 @@
 													(localproc_01c0 8 74)
 													(localproc_01c0 8 75)
 													(localproc_01c0 8 76)
-													(Bset 56)
+													(Bset 56) ;read Pratt record
 												)
 												(11
 													(localproc_01c0 8 77)
@@ -675,768 +646,436 @@
 								(not local148)
 							)
 							(Format @str 8 0)
-							(Display
-								8
-								13
-								dsCOORD
-								123
-								14
-								dsCOLOR
-								0
-								dsFONT
-								7
-								dsBACKGROUND
-								0
+							(Display 8 13
+								p_at 123 14
+								p_color 0
+								p_font 7
+								p_back 0
 							)
-							(Display
-								8
-								13
-								dsCOORD
-								123
-								15
-								dsCOLOR
-								0
-								dsFONT
-								7
-								dsBACKGROUND
-								0
+							(Display 8 13
+								p_at 123 15
+								p_color 0
+								p_font 7
+								p_back 0
 							)
 							(compCursor x: 123)
 							(switch local145
 								(0
-									(Display
-										8
-										123
-										dsCOORD
-										73
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 123
+										p_at 73 24
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										124
-										dsCOORD
-										73
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 124
+										p_at 73 34
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										125
-										dsCOORD
-										73
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 125
+										p_at 73 44
+										p_color 9
+										p_font 7
+										p_back 0
 									)
 								)
 								(1
-									(Display
-										8
-										126
-										dsCOORD
-										73
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 126
+										p_at 73 24
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										127
-										dsCOORD
-										73
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 127
+										p_at 73 34
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										128
-										dsCOORD
-										73
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 128
+										p_at 73 44
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										129
-										dsCOORD
-										73
-										54
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 129
+										p_at 73 54
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										130
-										dsCOORD
-										73
-										64
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 130
+										p_at 73 64
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										131
-										dsCOORD
-										73
-										74
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 131
+										p_at 73 74
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										132
-										dsCOORD
-										73
-										84
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 132
+										p_at 73 84
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										133
-										dsCOORD
-										73
-										94
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 133
+										p_at 73 94
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										134
-										dsCOORD
-										73
-										104
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 134
+										p_at 73 104
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										(Format @local0 8 135)
-										dsCOORD
-										73
-										114
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									;(Display (Format @local0 8 135)
+									(Display 8 135
+										p_at 73 114
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										(Format @local0 8 136)
-										dsCOORD
-										160
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									;(Display (Format @local0 8 136)
+									(Display 8 136
+										p_at 160 24
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										(Format @local0 8 137)
-										dsCOORD
-										160
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									;(Display (Format @local0 8 137)
+									(Display 8 137
+										p_at 160 34
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										(Format @local0 8 138)
-										dsCOORD
-										160
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									;(Display (Format @local0 8 138)
+									(Display 8 138
+										p_at 160 44
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										(Format @local0 8 139)
-										dsCOORD
-										160
-										54
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									;(Display (Format @local0 8 139)
+									(Display 8 139
+										p_at 160 54
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										(Format @local0 8 140)
-										dsCOORD
-										160
-										64
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									;(Display (Format @local0 8 140)
+									(Display 8 140
+										p_at 160 64
+										p_color 9
+										p_font 7
+										p_back 0
 									)
 									(= local149 1)
 									(= local152 1)
 									(fileCursor view: 9 loop: 1 posn: 71 32 init:)
 								)
 								(2
-									(Display
-										(Format @local0 8 141)
-										dsCOORD
-										73
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
+									;(Display (Format @local0 8 141)
+									(Display 8 141
+										p_at 73 24
+										p_color 9
+										p_font 7
 									)
-									(Display
-										(Format @local0 8 142)
-										dsCOORD
-										73
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
+									;(Display (Format @local0 8 142)
+									(Display 8 142
+										p_at 73 34
+										p_color 9
+										p_font 7
 									)
-									(Display
-										(Format @local0 8 143)
-										dsCOORD
-										73
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
+									;(Display (Format @local0 8 143)
+									(Display 8 143
+										p_at 73 44
+										p_color 9
+										p_font 7
 									)
-									(Display
-										(Format @local0 8 144)
-										dsCOORD
-										73
-										54
-										dsCOLOR
-										9
-										dsFONT
-										7
+									;(Display (Format @local0 8 144)
+									(Display 8 144
+										p_at 73 54
+										p_color 9
+										p_font 7
 									)
-									(Display
-										(Format @local0 8 145)
-										dsCOORD
-										73
-										64
-										dsCOLOR
-										9
-										dsFONT
-										7
+									;(Display (Format @local0 8 145)
+									(Display 8 145
+										p_at 73 64
+										p_color 9
+										p_font 7
 									)
-									(Display
-										(Format @local0 8 146)
-										dsCOORD
-										73
-										74
-										dsCOLOR
-										9
-										dsFONT
-										7
+									;(Display (Format @local0 8 146)
+									(Display 8 146
+										p_at 73 74
+										p_color 9
+										p_font 7
 									)
-									(Display 8 147 dsCOORD 73 84 dsCOLOR 9 dsFONT 7)
-									(Display 8 148 dsCOORD 73 94 dsCOLOR 9 dsFONT 7)
-									(Display 8 149 dsCOORD 73 104 dsCOLOR 9 dsFONT 7)
-									(Display 8 150 dsCOORD 73 114 dsCOLOR 9 dsFONT 7)
-									(Display 8 151 dsCOORD 155 24 dsCOLOR 9 dsFONT 7)
-									(Display 8 152 dsCOORD 155 34 dsCOLOR 9 dsFONT 7)
-									(Display 8 153 dsCOORD 155 44 dsCOLOR 9 dsFONT 7)
-									(Display 8 154 dsCOORD 155 54 dsCOLOR 9 dsFONT 7)
-									(Display 8 155 dsCOORD 155 64 dsCOLOR 9 dsFONT 7)
-									(Display 8 156 dsCOORD 155 74 dsCOLOR 9 dsFONT 7)
-									(Display 8 157 dsCOORD 155 84 dsCOLOR 9 dsFONT 7)
+									(Display 8 147
+										p_at 73 84
+										p_color 9
+										p_font 7
+									)
+									(Display 8 148
+										p_at 73 94
+										p_color 9
+										p_font 7
+									)
+									(Display 8 149
+										p_at 73 104
+										p_color 9
+										p_font 7
+									)
+									(Display 8 150
+										p_at 73 114
+										p_color 9
+										p_font 7
+									)
+									(Display 8 151
+										p_at 155 24
+										p_color 9
+										p_font 7
+									)
+									(Display 8 152
+										p_at 155 34
+										p_color 9
+										p_font 7
+									)
+									(Display 8 153
+										p_at 155 44
+										p_color 9
+										p_font 7
+									)
+									(Display 8 154
+										p_at 155 54
+										p_color 9
+										p_font 7
+									)
+									(Display 8 155
+										p_at 155 64
+										p_color 9
+										p_font 7
+									)
+									(Display 8 156
+										p_at 155 74
+										p_color 9
+										p_font 7
+									)
+									(Display 8 157
+										p_at 155 84
+										p_color 9
+										p_font 7
+									)
 									(= local147 1)
 									(= local152 1)
 									(fileCursor view: 9 loop: 1 posn: 71 32 init:)
 								)
 								(3
-									(Display
-										8
-										158
-										dsCOORD
-										73
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 158
+										p_at 73 24
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										159
-										dsCOORD
-										73
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 159
+										p_at 73 34
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										160
-										dsCOORD
-										73
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 160
+										p_at 73 44
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										161
-										dsCOORD
-										73
-										54
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 161
+										p_at 73 54
+										p_color 9
+										p_font 7
+										p_back 0
 									)
 								)
 								(4
-									(Display
-										8
-										162
-										dsCOORD
-										73
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 162
+										p_at 73 24
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										163
-										dsCOORD
-										73
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 163
+										p_at 73 34
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										164
-										dsCOORD
-										73
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 164
+										p_at 73 44
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										165
-										dsCOORD
-										73
-										54
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 165
+										p_at 73 54
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										166
-										dsCOORD
-										73
-										64
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 166
+										p_at 73 64
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										167
-										dsCOORD
-										73
-										74
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 167
+										p_at 73 74
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										168
-										dsCOORD
-										73
-										84
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 168
+										p_at 73 84
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										169
-										dsCOORD
-										158
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 169
+										p_at 158 24
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										170
-										dsCOORD
-										158
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 170
+										p_at 158 34
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										171
-										dsCOORD
-										158
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 171
+										p_at 158 44
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										172
-										dsCOORD
-										158
-										54
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 172
+										p_at 158 54
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										173
-										dsCOORD
-										158
-										64
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 173
+										p_at 158 64
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										174
-										dsCOORD
-										158
-										74
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 174
+										p_at 158 74
+										p_color 9
+										p_font 7
+										p_back 0
 									)
 									(= local147 1)
 									(= local152 1)
 									(fileCursor view: 9 loop: 1 posn: 71 32 init:)
 								)
 								(7
-									(Display
-										8
-										175
-										dsCOORD
-										73
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 175
+										p_at 73 24
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										176
-										dsCOORD
-										73
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 176
+										p_at 73 34
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										177
-										dsCOORD
-										73
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 177
+										p_at 73 44
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										178
-										dsCOORD
-										73
-										54
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 178
+										p_at 73 54
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										179
-										dsCOORD
-										73
-										64
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 179
+										p_at 73 64
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										180
-										dsCOORD
-										73
-										74
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 180
+										p_at 73 74
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										181
-										dsCOORD
-										73
-										84
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 181
+										p_at 73 84
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										182
-										dsCOORD
-										73
-										94
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 182
+										p_at 73 94
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										183
-										dsCOORD
-										73
-										104
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 183
+										p_at 73 104
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										184
-										dsCOORD
-										154
-										24
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 184
+										p_at 154 24
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										185
-										dsCOORD
-										154
-										34
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 185
+										p_at 154 34
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										186
-										dsCOORD
-										154
-										44
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 186
+										p_at 154 44
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										187
-										dsCOORD
-										154
-										54
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 187
+										p_at 154 54
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										188
-										dsCOORD
-										154
-										64
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 188
+										p_at 154 64
+										p_color 9
+										p_font 7
+										p_back 0
 									)
-									(Display
-										8
-										189
-										dsCOORD
-										154
-										74
-										dsCOLOR
-										9
-										dsFONT
-										7
-										dsBACKGROUND
-										0
+									(Display 8 189
+										p_at 154 74
+										p_color 9
+										p_font 7
+										p_back 0
 									)
 									(= local147 1)
 									(= local152 1)
@@ -1456,31 +1095,17 @@
 						)
 						((not (StrCmp @str {CD}))
 							(Format @str 8 0)
-							(Display
-								8
-								14
-								dsCOORD
-								73
-								14
-								dsCOLOR
-								0
-								dsFONT
-								7
-								dsBACKGROUND
-								0
+							(Display 8 14
+								p_at 73 14
+								p_color 0
+								p_font 7
+								p_back 0
 							)
-							(Display
-								8
-								190
-								dsCOORD
-								73
-								14
-								dsCOLOR
-								9
-								dsFONT
-								7
-								dsBACKGROUND
-								0
+							(Display 8 190
+								p_at 73 14
+								p_color 9
+								p_font 7
+								p_back 0
 							)
 							(= local149 0)
 							(= local147 0)
