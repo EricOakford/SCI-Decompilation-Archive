@@ -459,7 +459,7 @@
 	saveCursorX
 	saveCursorY
 	oldIcon
-	global423
+	totalInvItems
 	oldScore
 	disabledActions					;which action icons are disabled
 	projObj						;object ID for projectile
