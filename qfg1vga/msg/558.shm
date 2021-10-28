@@ -2,27 +2,27 @@
 ;;; 558.shm -- Produced by SCI Companion
 ;;; This file should only be edited with the SCI Companion message editor
 
-;;; NOUNS
-
-(define N_OPENSPELL 12)
-(define N_DETECTMAGICSPELL 6)
-(define N_TRIGGERSPELL 17)
-(define N_DAZZLESPELL 5)
-(define N_ZAPSPELL 18)
-(define N_CALMSPELL 2)
-(define N_FLAMEDARTSPELL 4)
-(define N_FETCHSPELL 7)
-(define N_INVLOOK 9)
-(define N_INVSELECT 14)
-(define N_INVHELP 8)
-(define N_OK 10)
-(define N_NOTUSEFULHERE 15)
-(define N_SPELLDESCRIPTION 16)
-(define N_THROWROCK 13)
-(define N_THROWDAGGER 3)
-(define N_CASTCALM 1)
-(define N_NOEFFECT 11)
-
 ;;; CASES
 
+
+;;; NOUNS
+
+(define N_OPEN 12)
+(define N_DETECT 6)
+(define N_TRIGGER 17)
+(define N_DAZZLE 5)
+(define N_ZAP 18)
+(define N_CALM 2)
+(define N_FLAMEDART 4)
+(define N_FETCH 7)
+(define N_LOOK 9)
+(define N_SELECT 14)
+(define N_HELP 8)
+(define N_OK 10)
+(define N_NOTUSEFULHERE 15)
+(define N_SPELL 16)
+(define N_ROCK 13)
+(define N_DAGGER 3)
+(define N_CAST_CALM 1)
+(define N_NO_EFFECT 11)
 

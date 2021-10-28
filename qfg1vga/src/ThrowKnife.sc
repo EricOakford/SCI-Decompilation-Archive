@@ -40,7 +40,7 @@
 	)
 	(return
 		(if (not (ego has: iDagger))
-			(messager say: N_THROWDAGGER NULL NULL 1 0 SPELLS)
+			(messager say: N_DAGGER NULL NULL 1 0 SPELLS)
 			(DisposeScript THROWKNIFE)
 			(return FALSE)
 		else
@@ -216,7 +216,7 @@
 					(if (not (TakeDamage 50))
 						(EgoDead C_DIE_HURT_SELF)
 					else
-						(messager say: N_THROWDAGGER NULL NULL 2 0 SPELLS)
+						(messager say: N_DAGGER NULL NULL 2 0 SPELLS)
 					)
 				)
 				(client dispose:)
