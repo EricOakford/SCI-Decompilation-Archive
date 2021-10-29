@@ -294,7 +294,7 @@
 			(keyDown ;evKEYBOARD
 				(if
 					(or
-						(== eventMessage KEY_F6)
+						(== (= eventMessage (event message?)) KEY_F6)
 						(== eventMessage KEY_F8)
 						(== eventMessage KEY_F10)
 					)
