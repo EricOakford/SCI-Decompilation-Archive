@@ -611,7 +611,7 @@
 				(if (== currentCar 13)
 					(cond 
 						(global187
-							(if (not doCoveTimer) (Bset 55))
+							(if (not bainsInCoveTimer) (Bset 55))
 							(if (not (Btst 55))
 								(Bset 55)
 								(= diverState 1)
@@ -626,7 +626,7 @@
 						)
 						((== diverState 0)
 							(keith
-								view: (if bainsInCove 53 else 20)
+								view: (if bainsInCoveState 53 else 20)
 								posn: 181 115
 								setCycle: Walk
 								setAvoider: Avoider
@@ -717,7 +717,9 @@
 				(= diverState 4)
 				(moore setScript: diverScript)
 			)
-			(bainsInCove (keith view: 53))
+			(bainsInCoveState
+				(keith view: 53)
+			)
 		)
 	)
 	
@@ -747,7 +749,11 @@
 				(if
 					(and
 						(== (ego view?) 17)
-						(or (== temp0 16384) (== temp0 16896) (== temp0 17408))
+						(or
+							(== temp0 KEY_F6)
+							(== temp0 KEY_F8)
+							(== temp0 KEY_F10)
+						)
 					)
 					(Print 60 23)
 					(event claimed: 1)
@@ -792,14 +798,14 @@
 						)
 					)
 					((Said 'apprehend,chase/bains')
-						(if (and (== global111 3) global183 bainsInCove)
+						(if (and (== global111 3) global183 bainsInCoveState)
 							(Print 60 32)
 						else
 							(Print 60 33)
 						)
 					)
 					((or (Said '/police,freeze') (Said 'freeze'))
-						(if (and (== global111 3) global183 bainsInCove)
+						(if (and (== global111 3) global183 bainsInCoveState)
 							(Print 60 34)
 						else
 							(Print 60 35)
@@ -808,7 +814,7 @@
 					((Said 'look,beat,get,chat/bains,suspect')
 						(cond 
 							(local1 (Print 60 36))
-							((and (== global111 3) global183 bainsInCove) (Print 60 37))
+							((and (== global111 3) global183 bainsInCoveState) (Print 60 37))
 							(else (Print 60 33))
 						)
 					)
@@ -996,8 +1002,8 @@
 			)
 			(4
 				(= local6 1)
-				(= doCoveTimer 1200)
-				(= bainsInCove 1)
+				(= bainsInCoveTimer 1200)
+				(= bainsInCoveState 1)
 				(bains
 					view: 14
 					loop: 1
@@ -1071,8 +1077,8 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (and bainsInCove global183) (++ local9))
-		(if (and bainsInCove (> local9 120))
+		(if (and bainsInCoveState global183) (++ local9))
+		(if (and bainsInCoveState (> local9 120))
 			(carScript changeState: 1)
 		)
 		(if
@@ -1115,7 +1121,7 @@
 				(carSound number: 39 loop: 1 priority: 12 play:)
 				(= local1 1)
 				(keith setMotion: Follow car 500)
-				(= bainsInCove 0)
+				(= bainsInCoveState 0)
 				(car
 					setMotion:
 						MoveTo

@@ -838,7 +838,7 @@
 				(= temp0 (event message?))
 				(event claimed: 1)
 				(cond 
-					((== temp0 17408)
+					((== temp0 KEY_F10)
 						(cond 
 							(isHandsOff 1)
 							((not (ego has: 0)) (DontHaveGun))

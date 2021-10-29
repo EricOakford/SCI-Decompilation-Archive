@@ -116,7 +116,7 @@
 (define	mouseDown	$0001)
 (define	mouseUp		$0002)
 (define	keyDown		$0004)
-(define	keyUp			$0008)
+(define	keyUp		$0008)
 (define	menuStart	$0010)
 (define	menuHit		$0020)
 (define	direction	$0040)

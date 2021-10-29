@@ -1,6 +1,9 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 13)
-(include sci.sh)
+;(include sci.sh)
+(include system.sh)
+(include keys.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -30,7 +33,7 @@
 	local108
 	windshieldOverlay
 	local110
-	local111
+	textColor
 	local112
 	local113
 	local114
@@ -50,7 +53,7 @@
 		)
 		(NormalEgo)
 		(Print 13 0)
-		(if (and (== outsideRoom 25) (Btst 165))
+		(if (and (== outsideRoom 25) (Btst fDroveToMotel)) ;165
 			(= outsideRoom 225)
 		)
 		(NormalEgo)
@@ -67,7 +70,7 @@
 	(leftScene startUpd:)
 	(= onTheRoad 1)
 	(= roomCarParked 13)
-	(Bset 40)
+	(Bset fKeithFollows) ;40
 	(= local116 300)
 	(= local117 20)
 )
@@ -76,20 +79,12 @@
 	(= local118 0)
 	(= local112 0)
 	(DrawCel 180 4 0 4 145 15)
-	(Display
-		13
-		2
-		dsWIDTH
-		316
-		dsCOORD
-		0
-		158
-		dsCOLOR
-		0
-		dsBACKGROUND
-		0
-		dsFONT
-		0
+	(Display 13 2 ;"---------"
+		p_width 316
+		p_at 0 158
+		p_color 0
+		p_back 0
+		p_font 0
 	)
 )
 
@@ -98,32 +93,20 @@
 	(= local118 80)
 	(= local112 1)
 	(DrawCel 180 param1 0 4 145 15)
-	(= local111 15)
+	(= textColor 15)
 	(if (== argc 2)
-		(Display
-			(Format @str param2)
-			dsWIDTH
-			316
-			dsCOORD
-			0
-			158
-			dsCOLOR
-			local111
-			dsFONT
-			0
+		(Display (Format @str param2)
+			p_width 316
+			p_at 0 158
+			p_color textColor
+			p_font 0
 		)
 	else
-		(Display
-			(Format @str param2 param3)
-			dsWIDTH
-			316
-			dsCOORD
-			0
-			158
-			dsCOLOR
-			local111
-			dsFONT
-			0
+		(Display (Format @str param2 param3)
+			p_width 316
+			p_at 0 158
+			p_color textColor
+			p_font 0
 		)
 	)
 )
@@ -228,11 +211,11 @@
 	(method (init)
 		(HandsOff)
 		(User canInput: 1)
-		(Load rsVIEW 71)
-		(Load rsVIEW 200)
-		(Load rsVIEW 180)
-		(Load rsSOUND 5)
-		(= currentCar 13)
+		(Load VIEW 71)
+		(Load VIEW 200)
+		(Load VIEW 180)
+		(Load SOUND 5)
+		(= currentCar carWork)
 		(= onTheRoad 0)
 		(= gunDrawn 0)
 		(= outsideRoom prevRoomNum)
@@ -279,7 +262,7 @@
 				(110 327)
 			)
 		)
-		(Load rsVIEW extraView)
+		(Load VIEW extraView)
 		(= local116 300)
 		(ego
 			setPri: 0
@@ -349,11 +332,13 @@
 			(return)
 		else
 			(switch (event type?)
-				(evMOUSEBUTTON
+				(mouseDown ;evMOUSEBUTTON
 					(if local112
 						(event claimed: 1)
 						(localproc_0097)
-						(if (not local113) (sequencer cue:))
+						(if (not local113)
+							(sequencer cue:)
+						)
 					else
 						(event claimed: 0)
 					)
@@ -368,8 +353,15 @@
 	
 	(method (doit)
 		(cond 
-			((and local112 (== local118 1)) (localproc_0097) (if (not local113) (sequencer cue:)))
-			((and local112 (> local118 0)) (-- local118))
+			((and local112 (== local118 1))
+				(localproc_0097)
+				(if (not local113)
+					(sequencer cue:)
+				)
+			)
+			((and local112 (> local118 0))
+				(-- local118)
+			)
 		)
 		(if
 			(and
@@ -379,7 +371,9 @@
 			(= local115 1)
 			(sequencer changeState: 105)
 		)
-		(if (> local121 1) (-- local121))
+		(if (> local121 1)
+			(-- local121)
+		)
 		(if (== local121 1)
 			(= local121 0)
 			(self changeState: 1)
@@ -387,17 +381,31 @@
 		(if onTheRoad
 			(if (> howFast 20)
 				(cond 
-					((<= (hand y?) 148) (hand posn: 129 (+ (hand y?) 1)))
-					((>= (hand y?) 154) (hand posn: 129 (- (hand y?) 1)))
-					(else (hand posn: 129 (+ (hand y?) (Random -2 2))))
+					((<= (hand y?) 148)
+						(hand posn: 129 (+ (hand y?) 1))
+					)
+					((>= (hand y?) 154)
+						(hand posn: 129 (- (hand y?) 1))
+					)
+					(else
+						(hand posn: 129 (+ (hand y?) (Random -2 2)))
+					)
 				)
 			)
 			(if (not local112)
-				(if (> local117 1) (-- local117))
+				(if (> local117 1)
+					(-- local117)
+				)
 				(cond 
-					((> windshieldOverlay local107) (-- windshieldOverlay))
-					((< windshieldOverlay local107) (++ windshieldOverlay))
-					((> local110 local108) (-- local110))
+					((> windshieldOverlay local107)
+						(-- windshieldOverlay)
+					)
+					((< windshieldOverlay local107)
+						(++ windshieldOverlay)
+					)
+					((> local110 local108)
+						(-- local110)
+					)
 					(else
 						(if local101
 							(EgoDead
@@ -439,13 +447,21 @@
 			(lines stopUpd:)
 			(rightScene stopUpd:)
 			(leftScene stopUpd:)
-			(if (> local116 0) (-- local116))
+			(if (> local116 0)
+				(-- local116)
+			)
 			(if (and (== local116 1) (not local112))
 				(= local116 200)
 				(cond 
-					((Btst 1) (localproc_00cd 1 13 3))
-					((Random 0 1) (localproc_00cd 1 13 4))
-					(else (localproc_00cd 1 13 5))
+					((Btst fCanGetWarrant)
+						(localproc_00cd 1 13 3)
+					)
+					((Random 0 1)
+						(localproc_00cd 1 13 4)
+					)
+					(else
+						(localproc_00cd 1 13 5)
+					)
 				)
 			)
 		)
@@ -459,10 +475,20 @@
 						(= local117 15)
 					)
 				)
-				((and (not (Btst 16)) (== gamePhase 2)) (sequencer changeState: 74) (= local117 20))
-				((and (Btst 16) (not (Btst 17))) (sequencer changeState: 5))
-				((and (not local100) (== gamePhase 4)) (sequencer changeState: 79) (= local117 25))
-				((and (not (Btst 21)) (== gamePhase 6)) (sequencer changeState: 36))
+				((and (not (Btst 16)) (== gamePhase 2))
+					(sequencer changeState: 74)
+					(= local117 20)
+				)
+				((and (Btst 16) (not (Btst 17)))
+					(sequencer changeState: 5)
+				)
+				((and (not local100) (== gamePhase 4))
+					(sequencer changeState: 79)
+					(= local117 25)
+				)
+				((and (not (Btst 21)) (== gamePhase 6))
+					(sequencer changeState: 36)
+				)
 				(
 					(and
 						(not (Btst 22))
@@ -473,8 +499,11 @@
 					(= local117 25)
 				)
 				(
-				(and (Btst 22) (ego has: 11) (not (Btst 23))) (sequencer changeState: 54))
-				((and (not (Btst 24)) (== gamePhase 10)) (sequencer changeState: 57))
+				(and (Btst 22) (ego has: 11) (not (Btst 23)))
+					(sequencer changeState: 54)
+				)
+				((and (not (Btst 24))
+						(== gamePhase 10)) (sequencer changeState: 57))
 				(
 				(and (not (Btst 27)) global127 (== prevRoomNum 31)) (sequencer changeState: 63))
 				((and (not (Btst 28)) (Btst 52)) (sequencer changeState: 68))
@@ -518,7 +547,9 @@
 					init:
 					setScript: sequencer
 				)
-				(if (< howFast 30) (scanner stopUpd: setScript: 0))
+				(if (< howFast 30)
+					(scanner stopUpd: setScript: 0)
+				)
 				(cig
 					view: 71
 					posn: 215 81
@@ -550,19 +581,21 @@
 					(puff setCycle: EndLoop self)
 				)
 			)
-			(2 (= local121 (Random 20 70)))
+			(2 
+				(= local121 (Random 20 70))
+			)
 		)
 	)
 	
 	(method (handleEvent event &tmp temp0)
 		(if (event claimed?) (return))
 		(switch (event type?)
-			(evKEYBOARD
+			(keyDown ;evKEYBOARD
 				(if
 					(or
-						(== (= temp0 (event message?)) 16384)
-						(== temp0 16896)
-						(== temp0 17408)
+						(== (= temp0 (event message?)) KEY_F6)
+						(== temp0 KEY_F8)
+						(== temp0 KEY_F10)
 					)
 					(Print 13 6)
 					(event claimed: 1)
@@ -580,7 +613,7 @@
 				)
 				(event claimed: (not local113))
 			)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said '/too<i') (Print 13 7))
 					(
@@ -676,7 +709,7 @@
 						)
 						(cond 
 							((and (not (Btst 27)) global127) (sequencer changeState: 63))
-							(doCoveTimer (= doCoveTimer 0) (sequencer changeState: 12))
+							(bainsInCoveTimer (= bainsInCoveTimer 0) (sequencer changeState: 12))
 							(
 								(and
 									removedBodyFromRiver
@@ -925,7 +958,7 @@
 						)
 					)
 					((Said 'chase[/bains]')
-						(if doCoveTimer
+						(if bainsInCoveTimer
 							(= outsideRoom 14)
 							(sequencer changeState: 11)
 							(= local107 0)

@@ -179,7 +179,7 @@
 							(else (event claimed: 0))
 						)
 					)
-					((== temp0 17408)
+					((== temp0 KEY_F10)
 						(event claimed: 1)
 						(cond 
 							((not (ego has: 0)) (DontHaveGun))

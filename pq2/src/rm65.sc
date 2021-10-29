@@ -301,9 +301,9 @@
 				(if (> local103 0) (= local103 3))
 				(if
 					(or
-						(== (= temp0 (event message?)) 16384)
-						(== temp0 16896)
-						(== temp0 17408)
+						(== (= temp0 (event message?)) KEY_F6)
+						(== temp0 KEY_F8)
+						(== temp0 KEY_F10)
 					)
 					(event claimed: 1)
 				else

@@ -14,11 +14,11 @@
 )
 
 (local
-	newProp
+	door
 	camera
-	newAct
-	newProp_3
-	[local4 2]
+	car
+	carDoor
+	[carDoorPos 2]
 	local6
 	local7
 	local8
@@ -93,8 +93,8 @@
 		(Load rsVIEW 20)
 		(Load rsVIEW 54)
 		(Load rsVIEW 51)
-		(= [local4 0] 265)
-		(= [local4 1] 129)
+		(= [carDoorPos 0] 265)
+		(= [carDoorPos 1] 129)
 		(= local10 240)
 		(= local8 238)
 		(= local9 247)
@@ -137,7 +137,7 @@
 			stopUpd:
 			addToPic:
 		)
-		((View new:)
+		((View new:) ;fence
 			view: 211
 			loop: 1
 			cel: 0
@@ -146,7 +146,7 @@
 			stopUpd:
 			addToPic:
 		)
-		((= newProp (Prop new:))
+		((= door (Prop new:))
 			view: 211
 			posn: 178 99
 			init:
@@ -174,7 +174,7 @@
 		else
 			(= local6 0)
 		)
-		((= newAct (Actor new:))
+		((= car (Actor new:))
 			view: 54
 			setStep: 1
 			setLoop: 1
@@ -211,7 +211,7 @@
 				(and
 					(== global132 local6)
 					(== local6 1)
-					(not (cast contains: newAct))
+					(not (cast contains: car))
 				)
 				(= global132 0)
 				(carScript changeState: 0)
@@ -263,7 +263,7 @@
 				(if (!= prevRoomNum local11)
 					(= workCarTrunkOpened 0)
 					(stopScript init:)
-					(newAct setMotion: MoveTo local9 134 stopScript)
+					(car setMotion: MoveTo local9 134 stopScript)
 				else
 					(if (and workCarTrunkOpened (== currentCar 13))
 						(unTrunk
@@ -275,7 +275,7 @@
 							init:
 						)
 					)
-					(newAct addToPic:)
+					(car addToPic:)
 				)
 				(cond 
 					((!= roomCarParked curRoomNum) (Bclr 142) (= roomCarParked curRoomNum))
@@ -763,7 +763,7 @@
 			)
 			(1
 				(ego setLoop: 3)
-				(newProp setCycle: EndLoop self)
+				(door setCycle: EndLoop self)
 			)
 			(2
 				(ego setLoop: -1)
@@ -792,11 +792,11 @@
 				)
 				(if (and (== currentCar 13) (not local7))
 					(keith posn: 250 136 loop: 0 cel: 1 startUpd:)
-					((= newProp_3 (Prop new:))
+					((= carDoor (Prop new:))
 						view: 51
 						loop: 3
 						cel: 0
-						posn: [local4 0] [local4 1]
+						posn: [carDoorPos 0] [carDoorPos 1]
 						setPri: 9
 						init:
 						setCycle: EndLoop
@@ -828,7 +828,7 @@
 						(localproc_000c 22 99)
 						(Bset 142)
 					else
-						(newProp_3 dispose:)
+						(carDoor dispose:)
 						(keith illegalBits: 0 setMotion: MoveTo 250 140 self)
 					)
 				)
@@ -868,11 +868,11 @@
 				(self cue:)
 			)
 			(11
-				((= newProp_3 (Prop new:))
+				((= carDoor (Prop new:))
 					view: 51
 					loop: 3
 					cel: 0
-					posn: [local4 0] [local4 1]
+					posn: [carDoorPos 0] [carDoorPos 1]
 					setPri: 9
 					init:
 					setCycle: EndLoop self
@@ -933,7 +933,7 @@
 			)
 			(1
 				(= global132 1)
-				(newAct stopUpd: addToPic:)
+				(car stopUpd: addToPic:)
 			)
 		)
 	)

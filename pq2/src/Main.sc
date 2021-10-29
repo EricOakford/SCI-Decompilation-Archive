@@ -108,9 +108,9 @@
 		global83
 		global84
 		global85
-		doCoveTimer ;global86
+		global86
 		global87
-		bainsInCove ;global88
+		global88
 		global89
 		global90
 		global91
@@ -235,7 +235,7 @@
 	unprotectedShots
 	global210
 	gunNotNeeded
-	gunFireState
+	gunFireState ;1-gunPERMITTED, 2-gunUSELESS, 3-gunPROHIBITED (gameOver)
 	global213
 	global214
 	numAmmoClips
@@ -525,7 +525,7 @@
 		(= workCarLocked 1)
 		(= global134 1)
 		(= personalCarLocked 1)
-		(= currentCar 33)
+		(= currentCar carPersonal)
 		(= methaneGasTimer -1)
 		(= correctScubaTank (Random 1 3))
 		(Bset fEgoDeskUnlocked)
@@ -585,9 +585,9 @@
 			(Bset fGameIsRestarting)
 			(TheMenuBar draw:)
 			(StatusLine enable:)
-			(self newRoom: 99)
+			(self newRoom: 99) ;99
 		else
-			(self newRoom: 99)
+			(self newRoom: 99) ;99
 		)
 	)
 	

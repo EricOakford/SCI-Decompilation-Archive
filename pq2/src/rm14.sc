@@ -1,6 +1,8 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 14)
-(include sci.sh)
+(include system.sh)
+(include keys.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -62,7 +64,7 @@
 						(workCarLocked (localproc_000c 14 75))
 						(workCarTrunkOpened (localproc_000c 14 76))
 						((ego has: 10) (localproc_000c 14 77))
-						(else (= currentCar 13) (carScript changeState: 4))
+						(else (= currentCar carWork) (carScript changeState: 4))
 					)
 				)
 				(33
@@ -688,7 +690,7 @@ code_096b:
 	(method (doit)
 		(cond 
 			((<= (ego y?) 116)
-				(if (and (== currentCar 13) (> (keith x?) 8))
+				(if (and (== currentCar carWork) (> (keith x?) 8))
 					(switch global169
 						(1 (localproc_000c 14 0))
 						(2
@@ -756,7 +758,7 @@ code_096b:
 					(13 (ego posn: local8 239))
 					(33 (ego posn: local8 239))
 				)
-				(if (== currentCar 13)
+				(if (== currentCar carWork)
 					((= keith (Actor new:))
 						view: 20
 						posn: (- 38 (ego x?)) (ego y?)
@@ -803,7 +805,7 @@ code_096b:
 				(= cycles 1)
 			)
 			(2
-				(if (== currentCar 13)
+				(if (== currentCar carWork)
 					(switch prevRoomNum
 						(104 (localproc_000c 14 8 83))
 						(nextRoom
@@ -848,7 +850,7 @@ code_096b:
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'close/door') (localproc_000c 14 18))
 					(
@@ -916,7 +918,7 @@ code_096b:
 											(SolvePuzzle 1 77)
 											(if
 												(and
-													(== currentCar 13)
+													(== currentCar carWork)
 													(cast contains: keith)
 													(< (keith x?) 50)
 												)
@@ -982,7 +984,7 @@ code_096b:
 						(if
 						(ego inRect: [local4 0] [local4 1] [local4 2] [local4 3])
 							(cond 
-								((and (== currentCar 13) (ego has: 3))
+								((and (== currentCar carWork) (ego has: 3))
 									(if workCarLocked
 										(= workCarLocked 0)
 										(localproc_000c 14 51)
@@ -990,10 +992,10 @@ code_096b:
 										(localproc_000c 14 52)
 									)
 								)
-								((== currentCar 13) (localproc_000c 14 53))
+								((== currentCar carWork) (localproc_000c 14 53))
 							)
 							(cond 
-								((and (== currentCar 33) (ego has: 2))
+								((and (== currentCar carPersonal) (ego has: 2))
 									(if personalCarLocked
 										(= personalCarLocked 0)
 										(localproc_000c 14 51)
@@ -1001,7 +1003,7 @@ code_096b:
 										(localproc_000c 14 52)
 									)
 								)
-								((== currentCar 33) (localproc_000c 14 53))
+								((== currentCar carPersonal) (localproc_000c 14 53))
 							)
 						else
 							(localproc_000c 14 54)
@@ -1011,7 +1013,7 @@ code_096b:
 					(or (Said 'lock/door,auto') (Said 'lock/door<auto'))
 						(if
 						(ego inRect: [local4 0] [local4 1] [local4 2] [local4 3])
-							(if (== currentCar 13)
+							(if (== currentCar carWork)
 								(cond 
 									((not workCarLocked) (= workCarLocked 1) (localproc_000c 14 55))
 									((ego inRect: 223 156 291 190) (localproc_000c 14 56))

@@ -171,7 +171,7 @@
 					else
 						(= local4 global111)
 					)
-					(= doCoveTimer 0)
+					(= bainsInCoveTimer 0)
 				)
 				((< gamePhase 5) (= local4 0))
 				((== gamePhase 5)
@@ -184,7 +184,7 @@
 							(= local4 2)
 							(= captainWarningTimer 0)
 						)
-						((Btst 20) (= local4 4) (Bclr 20) (= doCoveTimer 0))
+						((Btst 20) (= local4 4) (Bclr 20) (= bainsInCoveTimer 0))
 						(else (= local4 3) (= captainWarningTimer 0))
 					)
 				)
@@ -192,7 +192,7 @@
 			)
 			(= global111 local4)
 		)
-		(if global183 (= bainsInCove 0))
+		(if global183 (= bainsInCoveState 0))
 		(self setLocales: 155)
 		(grass1
 			view: 253
@@ -930,7 +930,7 @@
 				(HandsOff)
 				(ego stopUpd: ignoreBlocks: ourCarBlock)
 				(if (== currentCar 13)
-					(if doCoveTimer (Print 61 84) else (Print 61 85))
+					(if bainsInCoveTimer (Print 61 84) else (Print 61 85))
 					(keith ignoreActors: illegalBits: 0)
 					(cond 
 						((< (keith y?) 168) (keith setMotion: MoveTo 90 150 self))
@@ -952,7 +952,7 @@
 			(9
 				(if (cast contains: gelepsi)
 					(cond 
-						(doCoveTimer (Print 61 86))
+						(bainsInCoveTimer (Print 61 86))
 						(removedBodyFromRiver (Print 61 87))
 						(else (Print 61 87))
 					)
@@ -1082,7 +1082,7 @@
 							(= seconds 2)
 						)
 					)
-					((and (== local4 4) (not local1)) (= doCoveTimer 0) (localproc_000c 61 94))
+					((and (== local4 4) (not local1)) (= bainsInCoveTimer 0) (localproc_000c 61 94))
 					((== local4 4) (localproc_000c 61 95))
 				)
 			)

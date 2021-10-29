@@ -31,7 +31,7 @@
 	)
 )
 
-(instance event of Event)
+;;;(instance event of Event)
 
 (instance rm701 of Room
 	(properties

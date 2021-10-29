@@ -1,6 +1,8 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 33)
-(include sci.sh)
+(include game.sh)
+(include system.sh)
+(include keys.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -110,17 +112,17 @@
 	(properties)
 )
 
-(instance leftFwd of Forward
-	(properties)
-)
-
-(instance rightFwd of Forward
-	(properties)
-)
-
-(instance lineFwd of Forward
-	(properties)
-)
+;;;(instance leftFwd of Forward
+;;;	(properties)
+;;;)
+;;;
+;;;(instance rightFwd of Forward
+;;;	(properties)
+;;;)
+;;;
+;;;(instance lineFwd of Forward
+;;;	(properties)
+;;;)
 
 (instance aTimer of Timer
 	(properties)
@@ -137,9 +139,9 @@
 		(HandsOff)
 		(User canInput: 1)
 		(curRoom setLocales: 153)
-		(Load rsVIEW 71)
-		(Load rsVIEW 200)
-		(Load rsVIEW 269)
+		(Load VIEW 71)
+		(Load VIEW 200)
+		(Load VIEW 269)
 		(ego
 			setPri: -1
 			setLoop: -1
@@ -181,15 +183,15 @@
 			)
 		)
 		(switch local6
-			(0 (Load rsVIEW 329))
-			(60 (Load rsVIEW 332))
-			(120 (Load rsVIEW 331))
-			(180 (Load rsVIEW 328))
-			(220 (Load rsVIEW 326))
-			(140 (Load rsVIEW 334))
-			(40 (Load rsVIEW 333))
-			(62 (Load rsVIEW 330))
-			(122 (Load rsVIEW 327))
+			(0 (Load VIEW 329))
+			(60 (Load VIEW 332))
+			(120 (Load VIEW 331))
+			(180 (Load VIEW 328))
+			(220 (Load VIEW 326))
+			(140 (Load VIEW 334))
+			(40 (Load VIEW 333))
+			(62 (Load VIEW 330))
+			(122 (Load VIEW 327))
 		)
 		(= local5 local7)
 		(= local4 local6)
@@ -418,12 +420,12 @@
 	(method (handleEvent event &tmp temp0)
 		(if (event claimed?) (return))
 		(switch (event type?)
-			(evKEYBOARD
+			(keyDown
 				(if
 					(or
-						(== (= temp0 (event message?)) 16384)
-						(== temp0 16896)
-						(== temp0 17408)
+						(== (= temp0 (event message?)) KEY_F6)
+						(== temp0 KEY_F8)
+						(== temp0 KEY_F10)
 					)
 					(Print 33 7)
 					(event claimed: 1)
@@ -431,7 +433,7 @@
 					(event claimed: 0)
 				)
 			)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'extender/dispatch') (Print 33 8))
 					((Said 'look/ignition') (if (InRoom 2 0) (Print 33 9) else (Print 33 10)))
@@ -582,15 +584,17 @@
 					((Said 'beep,press/horn') (Print 33 53))
 					((Said 'drive/auto') (Print 33 54))
 					((Said 'drive,go>')
-						(if (and (== gamePhase 3) (Btst 152)) (= gamePhase 4))
-						(if (and (== gamePhase 12) (not (Btst 165)))
+						(if (and (== gamePhase phaseMALL) (Btst fBeenAtMallCrimeScene))
+							(= gamePhase 4)
+						)
+						(if (and (== gamePhase 12) (not (Btst fDroveToMotel)))
 							(if (Said '/inn[<snuggler,to]')
 								(event claimed: 0)
 							else
-								(Bset 165)
+								(Bset fDroveToMotel) ;165
 							)
 						)
-						(PutInRoom 2 0)
+						(PutInRoom iKeyRing 0) 
 						(cond 
 							(
 								(or
@@ -605,8 +609,12 @@
 										(= local5 60)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0 
+										(Print 33 55)
+									)
+									(else 
+										(Print 33 56)
+									)
 								)
 							)
 							((Said '/jail[<lytton,to]')
@@ -617,8 +625,12 @@
 										(= local5 20)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0
+										(Print 33 55)
+									)
+									(else
+										(Print 33 56)
+									)
 								)
 							)
 							((Said '/cove[<cotton,to]')
@@ -629,8 +641,12 @@
 										(= local5 0)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0
+										(Print 33 55)
+									)
+									(else
+										(Print 33 56)
+									)
 								)
 							)
 							((Said '/airport[<lytton,to]')
@@ -641,8 +657,12 @@
 										(= local5 100)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0
+										(Print 33 55)
+									)
+									(else
+										(Print 33 56)
+									)
 								)
 							)
 							((Said '/inn[<snuggler,to]')
@@ -653,8 +673,12 @@
 										(= local5 120)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0
+										(Print 33 55)
+									)
+									(else
+										(Print 33 56)
+									)
 								)
 							)
 							(
@@ -671,8 +695,12 @@
 										(= local5 80)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0
+										(Print 33 55)
+									)
+									(else
+										(Print 33 56)
+									)
 								)
 							)
 							(
@@ -684,8 +712,12 @@
 										(= local5 120)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0
+										(Print 33 55)
+									)
+									(else
+										(Print 33 56)
+									)
 								)
 							)
 							(
@@ -711,8 +743,12 @@
 										(= local5 60)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0
+										(Print 33 55)
+									)
+									(else
+										(Print 33 56)
+									)
 								)
 							)
 							(
@@ -728,11 +764,17 @@
 										(= local5 120)
 										(localproc_000e)
 									)
-									(local0 (Print 33 55))
-									(else (Print 33 56))
+									(local0
+										(Print 33 55)
+									)
+									(else
+										(Print 33 56)
+									)
 								)
 							)
-							((Said '/ave<fig<5556') (Print 33 58) (User canInput: 1))
+							((Said '/ave<fig<5556')
+								(Print 33 58) (User canInput: 1)
+							)
 							(
 								(or
 									(Said '/castle<caffeine[<carol,to]')
@@ -742,9 +784,17 @@
 								)
 								(Print 33 59)
 							)
-							((Said '/steelton,houston,coarsegold') (User canInput: 1) (Print 33 60))
-							((Said '/[*]') (User canInput: 1) (Print 33 61))
-							(else (event claimed: 1) (Print 33 62))
+							((Said '/steelton,houston,coarsegold')
+								(User canInput: 1) (Print 33 60)
+							)
+							((Said '/[*]')
+								(User canInput: 1)
+								(Print 33 61)
+							)
+							(else
+								(event claimed: 1)
+								(Print 33 62)
+							)
 						)
 					)
 					(

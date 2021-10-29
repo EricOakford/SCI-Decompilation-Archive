@@ -1430,18 +1430,18 @@ code_08ad:
 	)
 )
 
-(instance stopScript of Script
-	(method (changeState newState)
-		(switch (= state newState)
-			(0
-				(ego stopUpd:)
-				(if (== currentCar carWork)
-					(keith stopUpd:)
-				)
-			)
-			(1
-				(local0 ignoreActors: FALSE stopUpd: addToPic:)
-			)
-		)
-	)
-)
+;;;(instance stopScript of Script
+;;;	(method (changeState newState)
+;;;		(switch (= state newState)
+;;;			(0
+;;;				(ego stopUpd:)
+;;;				(if (== currentCar carWork)
+;;;					(keith stopUpd:)
+;;;				)
+;;;			)
+;;;			(1
+;;;				(local0 ignoreActors: FALSE stopUpd: addToPic:)
+;;;			)
+;;;		)
+;;;	)
+;;;)
