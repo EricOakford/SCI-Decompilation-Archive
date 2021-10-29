@@ -33,7 +33,7 @@
 	askedWhichTank
 	local113
 )
-(instance rm66 of Rm
+(instance rm66 of Room
 	(properties
 		picture 666
 		style $0002

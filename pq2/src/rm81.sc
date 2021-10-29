@@ -35,7 +35,7 @@
 	(Print &rest #at -1 15)
 )
 
-(instance rm81 of Rm
+(instance rm81 of Room
 	(properties
 		picture 81
 		style $0000
@@ -72,14 +72,14 @@
 			ignoreActors:
 			stopUpd:
 		)
-		((= duck (Act new:))
+		((= duck (Actor new:))
 			view: 264
 			posn: -15 124
 			init:
 			illegalBits: 0
 			setStep: 2 1
 			moveSpeed: 1
-			setCycle: Fwd
+			setCycle: Forward
 			setScript: duckScript
 		)
 		(if (== prevRoomNum 120)
@@ -375,7 +375,7 @@
 					loop: 3
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -413,7 +413,7 @@
 				(self cue:)
 			)
 			(1
-				(ego cycleSpeed: 1 setCycle: Beg self)
+				(ego cycleSpeed: 1 setCycle: BegLoop self)
 			)
 			(2
 				(NormalEgo)
@@ -489,11 +489,11 @@
 				(duck setLoop: 0 setMotion: MoveTo 34 145 self)
 			)
 			(1
-				(duck setLoop: 4 setCycle: End self)
+				(duck setLoop: 4 setCycle: EndLoop self)
 			)
-			(2 (duck setCycle: Beg self))
+			(2 (duck setCycle: BegLoop self))
 			(3
-				(duck setLoop: 1 setCycle: Fwd setMotion: MoveTo -15 124)
+				(duck setLoop: 1 setCycle: Forward setMotion: MoveTo -15 124)
 			)
 		)
 	)
@@ -506,13 +506,13 @@
 		(switch (= state newState)
 			(0
 				(= dogIsHere 1)
-				((= dog (Act new:))
+				((= dog (Actor new:))
 					view: 191
 					loop: 0
 					setStep: 6 4
 					init:
-					setCycle: Fwd
-					setAvoider: (Avoid new:)
+					setCycle: Forward
+					setAvoider: (Avoider new:)
 				)
 				(dog posn: 0 185 setMotion: MoveTo 150 170 self)
 			)

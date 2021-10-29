@@ -77,7 +77,7 @@
 	)
 )
 
-(instance rm2 of Rm
+(instance rm2 of Room
 	(properties
 		picture 2
 		style $0008
@@ -145,7 +145,7 @@
 			init:
 			stopUpd:
 		)
-		((= bigJon (Act new:))
+		((= bigJon (Actor new:))
 			view: 57
 			illegalBits: 0
 			posn: 212 93
@@ -164,7 +164,7 @@
 				)
 			)
 			(Bset 10)
-			((= mrG (Act new:))
+			((= mrG (Actor new:))
 				view: 48
 				posn: 191 109
 				loop: 3

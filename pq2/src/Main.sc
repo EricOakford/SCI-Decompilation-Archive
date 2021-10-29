@@ -108,9 +108,9 @@
 		global83
 		global84
 		global85
-		global86
+		doCoveTimer ;global86
 		global87
-		global88
+		bainsInCove ;global88
 		global89
 		global90
 		global91
@@ -583,6 +583,8 @@
 		(music owner: self number: 6 init:)
 		(if (GameIsRestarting)
 			(Bset fGameIsRestarting)
+			(TheMenuBar draw:)
+			(StatusLine enable:)
 			(self newRoom: 99)
 		else
 			(self newRoom: 99)

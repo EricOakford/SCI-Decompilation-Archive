@@ -53,7 +53,7 @@
 	(properties)
 )
 
-(instance diver of Act
+(instance diver of Actor
 	(properties)
 )
 
@@ -65,11 +65,11 @@
 	(properties)
 )
 
-(instance bains of Act
+(instance bains of Actor
 	(properties)
 )
 
-(instance car of Act
+(instance car of Actor
 	(properties)
 )
 
@@ -77,7 +77,7 @@
 	(properties)
 )
 
-(instance bloodBlock of Blk
+(instance bloodBlock of Block
 	(properties
 		top 72
 		left 70
@@ -150,7 +150,7 @@
 	)
 )
 
-(instance rm62 of Rm
+(instance rm62 of Room
 	(properties
 		picture 62
 		style $0000
@@ -239,11 +239,11 @@
 				)
 			)
 			(if (== currentCar 13)
-				((= keith (Act new:))
+				((= keith (Actor new:))
 					view: 20
 					setStep: 3 2
 					posn: 330 79
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setCycle: Walk
 					setMotion: 0
 					init:
@@ -725,7 +725,7 @@
 						(if (> (ego y?) 132) (+ (ego y?) 10) else 141)
 						self
 				)
-				(smoke setCycle: Fwd)
+				(smoke setCycle: Forward)
 			)
 			(3
 				(car setMotion: MoveTo 430 (car y?) self)
@@ -740,7 +740,7 @@
 				(if (== currentCar 13)
 					(keith setMotion: Follow ego 50 startUpd:)
 				)
-				((= collision (Act new:))
+				((= collision (Actor new:))
 					view: 76
 					posn: (ego x?) (ego y?)
 					loop: 5
@@ -748,7 +748,7 @@
 					setMotion: 0
 					cycleSpeed: 2
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego dispose:)
 				(= local106 1)
@@ -758,7 +758,7 @@
 					setLoop: 6
 					cel: 0
 					setMotion: MoveTo (+ (collision x?) 20) (collision y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(7

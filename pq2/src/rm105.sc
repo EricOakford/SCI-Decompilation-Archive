@@ -24,7 +24,7 @@
 	(temp0 dispose:)
 )
 
-(instance rm105 of Rm
+(instance rm105 of Room
 	(properties
 		picture 104
 		style $0007
@@ -93,7 +93,7 @@
 					posn: 255 175
 					setPri: -1
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					startUpd:
 				)
 				(localproc_000c)

@@ -32,7 +32,7 @@
 	(Print &rest #at -1 15)
 )
 
-(instance rm79 of Rm
+(instance rm79 of Room
 	(properties
 		picture 79
 		style $0000
@@ -79,7 +79,7 @@
 				(ego posn: 90 108 setMotion: MoveTo 93 189)
 			)
 		)
-		((= duck1 (Act new:))
+		((= duck1 (Actor new:))
 			view: 264
 			posn: 192 119
 			init:
@@ -88,7 +88,7 @@
 			moveSpeed: 2
 			setMotion: Wander
 		)
-		((= duck2 (Act new:))
+		((= duck2 (Actor new:))
 			view: 264
 			posn: 279 114
 			init:
@@ -236,13 +236,13 @@
 		(switch (= state newState)
 			(0
 				(= dogIsHere 1)
-				((= dog (Act new:))
+				((= dog (Actor new:))
 					view: 191
 					loop: 0
 					setStep: 6 4
 					init:
-					setCycle: Fwd
-					setAvoider: (Avoid new:)
+					setCycle: Forward
+					setAvoider: (Avoider new:)
 				)
 				(dog posn: 0 200 setMotion: MoveTo 120 161 self)
 			)

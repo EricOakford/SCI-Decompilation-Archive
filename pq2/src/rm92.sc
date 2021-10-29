@@ -11,7 +11,7 @@
 	rm92 0
 )
 
-(instance rm92 of Rm
+(instance rm92 of Room
 	(properties
 		picture 92
 		style $0006
@@ -167,7 +167,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(SL enable:)
+				(StatusLine enable:)
 				(Timer setReal: self 5)
 			)
 			(1

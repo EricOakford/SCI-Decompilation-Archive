@@ -63,7 +63,7 @@
 	(properties)
 )
 
-(instance flowerGirl of Act
+(instance flowerGirl of Actor
 	(properties)
 )
 
@@ -71,7 +71,7 @@
 	(properties)
 )
 
-(instance rm15 of Rm
+(instance rm15 of Room
 	(properties
 		picture 15
 		style $0000
@@ -305,7 +305,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(SL enable:)
+				(StatusLine enable:)
 				(if (== prevRoomNum 14)
 					(cond 
 						((< gGEgoX 58)
@@ -347,11 +347,11 @@
 					)
 				)
 				(if (Btst 40)
-					((= keith (Act new:))
+					((= keith (Actor new:))
 						view: 20
 						init:
 						setCycle: Walk
-						setAvoider: (Avoid new:)
+						setAvoider: (Avoider new:)
 						setMotion: Follow ego 25
 					)
 					(if (== prevRoomNum 16)
@@ -371,7 +371,7 @@
 			)
 			(1
 				(HandsOff)
-				((= newAct (Act new:))
+				((= newAct (Actor new:))
 					view: 76
 					posn: (if (> (ego x?) 325) 322 else (ego x?)) (ego y?)
 					loop: 5
@@ -379,7 +379,7 @@
 					setMotion: 0
 					cycleSpeed: 2
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego dispose:)
 				(= local15 0)
@@ -390,7 +390,7 @@
 					setLoop: 6
 					cel: 0
 					setMotion: MoveTo (- (newAct x?) 20) (newAct y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -837,7 +837,7 @@
 					posn: -15 120
 					init:
 					setCycle: Walk
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: Chase ego 25
 					illegalBits: -31744
 					startUpd:

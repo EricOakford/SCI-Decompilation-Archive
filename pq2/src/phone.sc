@@ -174,7 +174,7 @@ code_1ba3:
 	)
 )
 
-(instance phone of Rm
+(instance phone of Room
 	(properties
 		picture 444
 		style $0006
@@ -187,7 +187,7 @@ code_1ba3:
 		(Load rsSOUND 45)
 		(super init:)
 		(= local171 0)
-		((= sonny (Act new:))
+		((= sonny (Actor new:))
 			view: 444
 			setLoop: 0
 			cel: 0
@@ -196,7 +196,7 @@ code_1ba3:
 			ignoreActors:
 			init:
 		)
-		((= sonnyMouth (Act new:))
+		((= sonnyMouth (Actor new:))
 			view: 445
 			setLoop: 0
 			cel: 0
@@ -204,7 +204,7 @@ code_1ba3:
 			posn: 240 151
 			init:
 		)
-		((= person (Act new:))
+		((= person (Actor new:))
 			view: 444
 			loop: 1
 			cel: 0
@@ -213,7 +213,7 @@ code_1ba3:
 			posn: 60 1000
 			init:
 		)
-		((= personMouth (Act new:))
+		((= personMouth (Actor new:))
 			view: 445
 			loop: 1
 			cel: 0
@@ -531,7 +531,7 @@ code_03f6:
 	(method (init param1)
 		(super init: param1)
 		(person loop: 6 cel: 0 posn: 63 80 stopUpd:)
-		(personMouth loop: 6 cel: 0 posn: 74 65 setCycle: End)
+		(personMouth loop: 6 cel: 0 posn: 74 65 setCycle: EndLoop)
 		(RedrawCast)
 		(self changeState: 1)
 	)
@@ -637,7 +637,7 @@ code_03f6:
 	(method (init param1)
 		(super init: param1)
 		(person setLoop: 2 cel: 0 posn: 63 80 stopUpd:)
-		(personMouth setLoop: 2 cel: 0 posn: 69 63 setCycle: End)
+		(personMouth setLoop: 2 cel: 0 posn: 69 63 setCycle: EndLoop)
 		(RedrawCast)
 		(= local6 0)
 		(self changeState: 1)
@@ -729,7 +729,7 @@ code_03f6:
 	(method (init param1)
 		(super init: param1)
 		(person loop: 1 cel: 0 posn: 63 80 stopUpd:)
-		(personMouth loop: 1 cel: 0 posn: 71 63 setCycle: End)
+		(personMouth loop: 1 cel: 0 posn: 71 63 setCycle: EndLoop)
 		(RedrawCast)
 		(self changeState: 1)
 	)
@@ -794,7 +794,7 @@ code_03f6:
 	(method (init param1)
 		(super init: param1)
 		(person loop: 4 cel: 0 posn: 63 80 stopUpd:)
-		(personMouth loop: 4 cel: 0 posn: 65 64 setCycle: End)
+		(personMouth loop: 4 cel: 0 posn: 65 64 setCycle: EndLoop)
 		(= local7 0)
 		(= local5 0)
 		(RedrawCast)
@@ -899,7 +899,7 @@ code_03f6:
 	(method (init param1)
 		(super init: param1)
 		(person loop: 5 cel: 0 posn: 63 80 stopUpd:)
-		(personMouth loop: 5 cel: 0 posn: 77 67 setCycle: End)
+		(personMouth loop: 5 cel: 0 posn: 77 67 setCycle: EndLoop)
 		(RedrawCast)
 		(self changeState: 1)
 	)
@@ -980,7 +980,7 @@ code_03f6:
 	(method (init param1)
 		(super init: param1)
 		(person loop: 8 cel: 0 posn: 63 80 stopUpd:)
-		(personMouth loop: 8 cel: 0 posn: 73 60 setCycle: End)
+		(personMouth loop: 8 cel: 0 posn: 73 60 setCycle: EndLoop)
 		(RedrawCast)
 		(self changeState: 1)
 	)
@@ -1025,7 +1025,7 @@ code_03f6:
 	(method (init param1)
 		(super init: param1)
 		(person loop: 7 cel: 0 posn: 63 80 stopUpd:)
-		(personMouth loop: 7 cel: 0 posn: 74 69 setCycle: End)
+		(personMouth loop: 7 cel: 0 posn: 74 69 setCycle: EndLoop)
 		(RedrawCast)
 		(self changeState: 1)
 	)
@@ -1081,7 +1081,7 @@ code_03f6:
 	(method (init param1)
 		(super init: param1)
 		(person loop: 9 cel: 0 posn: 63 80 stopUpd:)
-		(personMouth loop: 9 cel: 0 posn: 71 58 setCycle: End)
+		(personMouth loop: 9 cel: 0 posn: 71 58 setCycle: EndLoop)
 		(= local8 (Random 0 2))
 		(RedrawCast)
 		(self changeState: 1)
@@ -1141,7 +1141,7 @@ code_03f6:
 		(switch (= state newState)
 			(0
 				(if (personMouth inRect: 0 0 320 200)
-					(personMouth setCycle: End self)
+					(personMouth setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -1152,7 +1152,7 @@ code_03f6:
 						(> (StrLen @str) 15)
 						(personMouth inRect: 0 0 320 200)
 					)
-					(personMouth setCycle: End self)
+					(personMouth setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)
@@ -1187,11 +1187,11 @@ code_03f6:
 	(method (changeState newState &tmp [temp0 4] temp4 temp5 temp6)
 		(switch (= state newState)
 			(0
-				(sonnyMouth setCycle: End self)
+				(sonnyMouth setCycle: EndLoop self)
 			)
 			(1
 				(if (> (StrLen @str) 15)
-					(sonnyMouth setCycle: End self)
+					(sonnyMouth setCycle: EndLoop self)
 				else
 					(= cycles 1)
 				)

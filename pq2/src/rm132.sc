@@ -15,7 +15,7 @@
 	[waste 3]
 	local3
 )
-(instance rm132 of Rm
+(instance rm132 of Room
 	(properties
 		picture 200
 		style $0000
@@ -60,7 +60,7 @@
 			cel: 2
 			posn: 210 189
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -71,7 +71,7 @@
 			cel: 2
 			posn: 65 124
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -82,7 +82,7 @@
 			cel: 0
 			posn: 163 153
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:

@@ -26,7 +26,7 @@
 	)
 )
 
-(instance rm131 of Rm
+(instance rm131 of Room
 	(properties
 		picture 76
 		style $0000
@@ -69,7 +69,7 @@
 			cel: 1
 			posn: 319 131
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -80,7 +80,7 @@
 			cel: 2
 			posn: 237 130
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -91,7 +91,7 @@
 			cel: 1
 			posn: 120 131
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -102,7 +102,7 @@
 			cel: 2
 			posn: 133 173
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -113,7 +113,7 @@
 			cel: 0
 			posn: 192 125
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -131,7 +131,7 @@
 		(if untiedMarie
 			(Load rsVIEW 13)
 			(Load rsVIEW 15)
-			((= bains (Act new:))
+			((= bains (Actor new:))
 				view: 13
 				posn: 110 100
 				loop: 0
@@ -185,7 +185,7 @@
 				(HandsOff)
 			)
 			(1
-				(bains view: 15 loop: 0 cel: 0 setCycle: End self)
+				(bains view: 15 loop: 0 cel: 0 setCycle: EndLoop self)
 				(bainsShot play:)
 			)
 			(2
@@ -194,7 +194,7 @@
 					illegalBits: 0
 					x: 184
 					loop: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3 (EgoDead 131 5))

@@ -79,7 +79,7 @@
 	)
 	
 	(method (dispose)
-		(sounds eachElementDo: #dispose)
+		;(sounds eachElementDo: #dispose) causes 'Memory fragmented' crash
 		(super dispose:)
 	)
 	

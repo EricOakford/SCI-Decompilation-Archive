@@ -31,7 +31,7 @@
 	(Print &rest #at -1 130)
 )
 
-(instance rm5 of Rm
+(instance rm5 of Room
 	(properties
 		picture 5
 		style $0007
@@ -163,7 +163,7 @@
 					startUpd:
 					cycleSpeed: 2
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -184,14 +184,14 @@
 					startUpd:
 					cycleSpeed: 2
 					cel: 4
-					setCycle: Beg
+					setCycle: BegLoop
 					init:
 				)
 				(curRoom drawPic: 5)
 			)
 			(4
 				(HandsOff)
-				(stallDoor setCycle: End self)
+				(stallDoor setCycle: EndLoop self)
 			)
 			(5
 				(stallDoor stopUpd:)
@@ -206,7 +206,7 @@
 			)
 			(7
 				(User canInput: 1)
-				(stallDoor setCycle: Beg)
+				(stallDoor setCycle: BegLoop)
 			)
 			(8
 				(switch (Random 0 2)
@@ -218,7 +218,7 @@
 			(9
 				(HandsOff)
 				(= egoSitting 0)
-				(stallDoor setCycle: End self)
+				(stallDoor setCycle: EndLoop self)
 			)
 			(10
 				(ego setMotion: MoveTo 210 120 self)
@@ -229,7 +229,7 @@
 			(12
 				(HandsOn)
 				(ego illegalBits: -32768)
-				(stallDoor setCycle: Beg self)
+				(stallDoor setCycle: BegLoop self)
 			)
 			(13 (stallDoor stopUpd:))
 		)
@@ -541,7 +541,7 @@
 				(User canInput: 1)
 				(curRoom drawPic: 9)
 				(cast eachElementDo: #dispose)
-				((= gun (Act new:))
+				((= gun (Actor new:))
 					view: 69
 					posn: 146 189
 					setPri: 13
@@ -551,7 +551,7 @@
 					stopUpd:
 				)
 				(if (not (InRoom 0)) (gun posn: 146 1189))
-				((= ammoClips (Act new:))
+				((= ammoClips (Actor new:))
 					view: 69
 					posn: 227 41
 					setPri: 12
@@ -568,7 +568,7 @@
 					stopUpd:
 				)
 				(if (not (InRoom 1)) (ammoClips posn: 227 1041))
-				((= handcuffs (Act new:))
+				((= handcuffs (Actor new:))
 					view: 69
 					posn: 216 136
 					setPri: 13

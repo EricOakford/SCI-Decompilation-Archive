@@ -17,7 +17,7 @@
 	[pipeSewage 4]
 	local5
 )
-(instance rm121 of Rm
+(instance rm121 of Room
 	(properties
 		picture 70
 		style $0000
@@ -51,7 +51,7 @@
 			cel: 3
 			posn: 114 116
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			ignoreActors: 1
 			init:
 		)
@@ -61,7 +61,7 @@
 			cel: 1
 			posn: 319 126
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors:
 			init:
@@ -72,7 +72,7 @@
 			cel: 2
 			posn: 237 130
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors:
 			init:
@@ -83,7 +83,7 @@
 			cel: 1
 			posn: 120 126
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors:
 			init:
@@ -94,7 +94,7 @@
 			cel: 0
 			posn: 207 132
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors:
 			init:
@@ -159,18 +159,18 @@
 					yStep: 1
 					illegalBits: 0
 					setMotion: MoveTo 304 110
-					setCycle: CT 2 1
+					setCycle: CycleTo 2 1
 				)
-				(pipe setCycle: CT 3 1 self)
+				(pipe setCycle: CycleTo 3 1 self)
 				(cSound stop: number: 24 loop: 1 priority: 12 play:)
 			)
 			(1
-				(ego yStep: 3 setMotion: MoveTo 304 115 setCycle: CT 4 1)
-				(pipe setCycle: CT 6 1 self)
+				(ego yStep: 3 setMotion: MoveTo 304 115 setCycle: CycleTo 4 1)
+				(pipe setCycle: CycleTo 6 1 self)
 			)
 			(2
-				(ego setMotion: MoveTo 304 125 setCycle: CT 7 1)
-				(pipe setCycle: CT 10 1)
+				(ego setMotion: MoveTo 304 125 setCycle: CycleTo 7 1)
+				(pipe setCycle: CycleTo 10 1)
 				(= cycles 10)
 			)
 			(3

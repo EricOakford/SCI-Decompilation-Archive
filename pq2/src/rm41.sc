@@ -50,7 +50,7 @@
 	(properties)
 )
 
-(instance rm41 of Rm
+(instance rm41 of Room
 	(properties
 		picture 40
 		style $0000
@@ -82,7 +82,7 @@
 			setPri: 3
 			init:
 		)
-		((= keith (Act new:))
+		((= keith (Actor new:))
 			view: 82
 			illegalBits: 0
 			ignoreActors:
@@ -92,7 +92,7 @@
 			posn: 200 68
 			init:
 		)
-		((= stewardess (Act new:))
+		((= stewardess (Actor new:))
 			view: 26
 			posn: 255 77
 			loop: 2
@@ -119,7 +119,7 @@
 			setPri: 15
 			addToPic:
 		)
-		((= hijacker1 (Act new:))
+		((= hijacker1 (Actor new:))
 			view: 24
 			posn: 60 1060
 			loop: 1
@@ -129,7 +129,7 @@
 			setCycle: Walk
 			init:
 		)
-		((= hijacker2 (Act new:))
+		((= hijacker2 (Actor new:))
 			view: 23
 			posn: 70 1060
 			loop: 1
@@ -261,14 +261,14 @@
 				(hijacker2 setMotion: MoveTo 268 60 self)
 			)
 			(3
-				(newProp startUpd: setCycle: End self)
+				(newProp startUpd: setCycle: EndLoop self)
 			)
 			(4
 				(newProp stopUpd:)
 				(hijacker2 setPri: 0 setMotion: MoveTo 280 50 self)
 			)
 			(5
-				(newProp startUpd: setCycle: Beg self)
+				(newProp startUpd: setCycle: BegLoop self)
 				(hijacker2 posn: 280 1050)
 				(hijacker2 setScript: 0)
 			)
@@ -379,7 +379,7 @@
 					cycleSpeed: 1
 					setMotion: 0
 					setPri: 3
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
@@ -423,7 +423,7 @@
 					cycleSpeed: 1
 					setMotion: 0
 					setPri: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -453,7 +453,7 @@
 							loop: 4
 							cel: 0
 							posn: 251 76
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 					((!= local0 0)
@@ -461,7 +461,7 @@
 							view: 83
 							loop: 4
 							posn: 251 76
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 					)
 					(else (Print 41 27) (self cue:))
@@ -490,11 +490,11 @@
 					ignoreActors:
 					posn: (- (ego x?) 15) (+ (ego y?) 2)
 					setPri: 3
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(1
-				(ego setPri: 0 setCycle: CT 4 1 self)
+				(ego setPri: 0 setCycle: CycleTo 4 1 self)
 			)
 			(2 (Timer setReal: self 2))
 			(3 (EgoDead @str))
@@ -518,7 +518,7 @@
 					loop: 5
 					cel: 0
 					posn: (- (hijacker1 x?) 14) (hijacker1 y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -552,7 +552,7 @@
 					cel: 0
 					posn: 256 76
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -561,7 +561,7 @@
 					loop: 7
 					cel: 0
 					posn: 273 75
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 2
 				)
 				(stewardess
@@ -571,7 +571,7 @@
 					posn: 253 76
 					show:
 					cycleSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= cycles 10)
 			)
@@ -594,7 +594,7 @@
 					cel: 0
 					posn: 251 76
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= local0 1)
 			)
@@ -614,7 +614,7 @@
 							cel: 0
 							posn: 256 76
 							cycleSpeed: 0
-							setCycle: End self
+							setCycle: EndLoop self
 						)
 						(hijacker1
 							view: 84
@@ -622,7 +622,7 @@
 							cel: 0
 							posn: 256 76
 							cycleSpeed: 0
-							setCycle: End
+							setCycle: EndLoop
 						)
 						(= local101 3)
 					)
@@ -636,7 +636,7 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(hijacker1
 					view: 83
@@ -644,7 +644,7 @@
 					loop: 7
 					cel: 0
 					cycleSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(hijacker1Timer setCycle: self 80)
 			)
@@ -668,7 +668,7 @@
 					loop: 0
 					cel: 0
 					posn: 263 75
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -690,10 +690,10 @@
 			(0
 				(hijacker2Timer setReal: self 1)
 			)
-			(1 (newProp setCycle: End self))
+			(1 (newProp setCycle: EndLoop self))
 			(2
 				(= local101 5)
-				(newProp setCycle: Beg)
+				(newProp setCycle: BegLoop)
 				(hijacker2
 					view: 27
 					loop: 2
@@ -715,11 +715,11 @@
 			(5
 				(HandsOff)
 				(= local101 0)
-				(hijacker2 setCycle: End self)
+				(hijacker2 setCycle: EndLoop self)
 			)
 			(6
 				(hijackGunFire play:)
-				(hijacker2 setCycle: Beg)
+				(hijacker2 setCycle: BegLoop)
 				(Format @str 41 39)
 				(if sittingInPlane
 					(ego
@@ -746,7 +746,7 @@
 					loop: 1
 					cel: 0
 					setPri: (+ (hijacker2 priority?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -780,7 +780,7 @@
 						view: 4
 						loop: (mod (ego loop?) 4)
 						setCel: 255
-						setCycle: Beg self
+						setCycle: BegLoop self
 					)
 				else
 					(self cue:)
@@ -798,7 +798,7 @@
 					loop: 4
 					cel: 0
 					posn: 251 76
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -821,7 +821,7 @@
 				(stewardess setMotion: MoveTo 268 55 self)
 			)
 			(7
-				(newProp setPri: 0 setCycle: End self)
+				(newProp setPri: 0 setCycle: EndLoop self)
 			)
 			(8
 				(newProp stopUpd:)
@@ -829,8 +829,8 @@
 			)
 			(9
 				(stewardess hide:)
-				(newProp setCycle: Beg)
-				(keith setCycle: Beg self)
+				(newProp setCycle: BegLoop)
+				(keith setCycle: BegLoop self)
 			)
 			(10
 				(keith
@@ -852,7 +852,7 @@
 				(keith setMotion: MoveTo 265 58 self)
 			)
 			(12
-				(newProp setCycle: End self)
+				(newProp setCycle: EndLoop self)
 			)
 			(13
 				(newProp stopUpd:)
@@ -860,7 +860,7 @@
 			)
 			(14
 				(keith hide:)
-				(newProp setCycle: Beg self)
+				(newProp setCycle: BegLoop self)
 			)
 			(15
 				(HandsOn)

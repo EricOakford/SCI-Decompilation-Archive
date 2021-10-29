@@ -125,7 +125,7 @@
 	)
 )
 
-(instance rm10 of Rm
+(instance rm10 of Room
 	(properties
 		picture 10
 		style $0001
@@ -246,7 +246,7 @@
 				(= [local47 19] -1)
 				(= [local47 20] 2)
 				(= [local47 21] -2)
-				((= theDoor (Act new:))
+				((= theDoor (Actor new:))
 					view: 58
 					setCycle: 0
 					setCel: 0
@@ -518,7 +518,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				([shooter local4] setCycle: Beg self)
+				([shooter local4] setCycle: BegLoop self)
 			)
 			(1 ([shooter local4] stopUpd:))
 		)
@@ -689,7 +689,7 @@
 			(1
 				(HandsOff)
 				(if (not wearingEarProtectors) (shot number: 41 play:))
-				(ego setCel: 255 setCycle: End self)
+				(ego setCel: 255 setCycle: EndLoop self)
 				([bulletHole1 targetShots]
 					posn:
 						(+
@@ -767,7 +767,7 @@
 				(= inBooth 0)
 			)
 			(7
-				(target startUpd: setCycle: Beg self)
+				(target startUpd: setCycle: BegLoop self)
 			)
 			(8
 				(target cel: 0 stopUpd:)
@@ -816,7 +816,7 @@
 				(= targetShots 0)
 				(= local69 (Random 1 21))
 				(= inBooth 0)
-				(target setCycle: End self)
+				(target setCycle: EndLoop self)
 			)
 			(11
 				(target stopUpd:)

@@ -97,7 +97,7 @@
 				(if (!= (cSound state?) 3)
 					(cSound number: 40 loop: 1 play:)
 				)
-				((= mugger (Act new:))
+				((= mugger (Actor new:))
 					view: 52
 					posn:
 						(switch curRoomNum
@@ -115,7 +115,7 @@
 					init:
 					setCycle: Walk
 					setMotion: Chase ego 18 self
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setStep: 6 4
 				)
 				(if global236
@@ -188,11 +188,11 @@
 					loop: (if (< (ego x?) (mugger x?)) 0 else 1)
 					init:
 					posn: (ego x?) (ego y?)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(5
-				(newProp loop: 2 setCycle: Fwd)
+				(newProp loop: 2 setCycle: Forward)
 				(mugMusic play: self)
 			)
 			(6
@@ -334,7 +334,7 @@
 				(= cycles 10)
 			)
 			(15
-				((= keith (Act new:))
+				((= keith (Actor new:))
 					view: 20
 					illegalBits: 0
 					posn:
@@ -356,7 +356,7 @@
 						)
 					init:
 					setCycle: Walk
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion:
 						MoveTo
 						(switch curRoomNum

@@ -28,7 +28,7 @@
 	(Print &rest #at -1 15)
 )
 
-(instance rm80 of Rm
+(instance rm80 of Room
 	(properties
 		picture 80
 		style $0000
@@ -184,13 +184,13 @@
 		(switch (= state newState)
 			(0
 				(= dogIsHere 1)
-				((= dog (Act new:))
+				((= dog (Actor new:))
 					view: 191
 					loop: 0
 					setStep: 6 4
 					init:
-					setCycle: Fwd
-					setAvoider: (Avoid new:)
+					setCycle: Forward
+					setAvoider: (Avoider new:)
 				)
 				(dog posn: 100 188 setMotion: MoveTo 320 179 self)
 			)

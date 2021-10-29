@@ -18,7 +18,7 @@
 	cockpitDoor
 	bathroom
 )
-(instance rm43 of Rm
+(instance rm43 of Room
 	(properties
 		picture 40
 		style $0000
@@ -42,7 +42,7 @@
 			illegalBits: 0
 			init:
 		)
-		((= keith (Act new:))
+		((= keith (Actor new:))
 			view: 20
 			loop: 1
 			posn: 272 1060
@@ -71,7 +71,7 @@
 			setPri: 15
 			addToPic:
 		)
-		((= marshall (Act new:))
+		((= marshall (Actor new:))
 			view: 25
 			posn: 317 1085
 			ignoreActors:
@@ -115,13 +115,13 @@
 				(ego setMotion: MoveTo 245 73 self)
 			)
 			(2
-				(cockpitDoor setCycle: End self)
+				(cockpitDoor setCycle: EndLoop self)
 			)
 			(3
 				(keith posn: 270 55 setMotion: MoveTo 257 67 self)
 			)
 			(4
-				(cockpitDoor setCycle: Beg)
+				(cockpitDoor setCycle: BegLoop)
 				(AirplanePrint 43 2)
 				(= seconds 2)
 			)
@@ -145,7 +145,7 @@
 					cycleSpeed: 1
 					setMotion: 0
 					setPri: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9 (= seconds 6))
@@ -156,7 +156,7 @@
 			(11
 				(AirplanePrint 43 5)
 				(keith cue:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(12
 				(ego
@@ -231,11 +231,11 @@
 					setLoop: 4
 					setCel: 0
 					cycleSpeed: 1
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(3 (= seconds 1))
-			(4 (keith setCycle: Beg self))
+			(4 (keith setCycle: BegLoop self))
 			(5
 				(keith
 					view: 20

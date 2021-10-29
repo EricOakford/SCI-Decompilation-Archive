@@ -23,7 +23,7 @@
 	(properties)
 )
 
-(instance rm120 of Rm
+(instance rm120 of Room
 	(properties
 		picture 201
 		style $0008
@@ -89,7 +89,7 @@
 			cel: 0
 			posn: 260 128
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors: 1
 			init:
@@ -100,7 +100,7 @@
 			cel: 0
 			posn: 176 141
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors: 1
 			init:
@@ -111,7 +111,7 @@
 			cel: 1
 			posn: 133 173
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors: 1
 			init:
@@ -238,7 +238,7 @@
 					view: 295
 					loop: 0
 					posn: 130 113
-					setCycle: CT 11 1 self
+					setCycle: CycleTo 11 1 self
 				)
 			)
 			(4
@@ -246,7 +246,7 @@
 				(curRoom newRoom: 81)
 			)
 			(5
-				(ego loop: 2 setCycle: CT 7 1 self)
+				(ego loop: 2 setCycle: CycleTo 7 1 self)
 			)
 			(6
 				(ego

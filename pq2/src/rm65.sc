@@ -36,7 +36,7 @@
 	(Print &rest #at -1 40)
 )
 
-(instance carp of Act
+(instance carp of Actor
 	(properties)
 )
 
@@ -110,7 +110,7 @@
 	)
 )
 
-(instance rm65 of Rm
+(instance rm65 of Room
 	(properties
 		picture 65
 		style $0008
@@ -618,7 +618,7 @@
 					illegalBits: -32768
 					init:
 				)
-				((= bubbles (Act new:))
+				((= bubbles (Actor new:))
 					view: 12
 					setLoop: 4
 					xStep: 4
@@ -654,7 +654,7 @@
 					cycleSpeed: 2
 					illegalBits: 0
 					ignoreActors:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
@@ -664,7 +664,7 @@
 					setStep: 5 3
 					setPri: 15
 					cycleSpeed: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (- (ego x?) 80) 55 self
 				)
 			)

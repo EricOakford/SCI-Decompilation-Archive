@@ -18,7 +18,7 @@
 	atDeadEnd
 	nearDrainPipe
 )
-(instance rm130 of Rm
+(instance rm130 of Room
 	(properties
 		picture 201
 		style $0000
@@ -64,7 +64,7 @@
 			cel: 2
 			posn: 317 130
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -75,7 +75,7 @@
 			cel: 0
 			posn: 176 141
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -86,7 +86,7 @@
 			cel: 1
 			posn: 133 173
 			setPri: 1
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -150,18 +150,18 @@
 					yStep: 1
 					illegalBits: 0
 					setMotion: MoveTo 304 110
-					setCycle: CT 2 1
+					setCycle: CycleTo 2 1
 				)
-				(pipe setCycle: CT 3 1 self)
+				(pipe setCycle: CycleTo 3 1 self)
 				(cSound stop: number: 24 loop: 1 priority: 12 play:)
 			)
 			(1
-				(ego yStep: 3 setMotion: MoveTo 304 115 setCycle: CT 4 1)
-				(pipe setCycle: CT 6 1 self)
+				(ego yStep: 3 setMotion: MoveTo 304 115 setCycle: CycleTo 4 1)
+				(pipe setCycle: CycleTo 6 1 self)
 			)
 			(2
-				(ego setMotion: MoveTo 304 125 setCycle: CT 7 1)
-				(pipe setCycle: CT 10 1)
+				(ego setMotion: MoveTo 304 125 setCycle: CycleTo 7 1)
+				(pipe setCycle: CycleTo 10 1)
 				(Timer setCycle: self 10)
 			)
 			(3

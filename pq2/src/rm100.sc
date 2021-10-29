@@ -24,7 +24,7 @@
 	)
 )
 
-(instance rm100 of Rm
+(instance rm100 of Room
 	(properties
 		picture 100
 		style $0008
@@ -133,13 +133,13 @@
 				(= seconds 1)
 			)
 			(1
-				((= chopper (Act new:))
+				((= chopper (Actor new:))
 					view: 275
 					setLoop: 9
 					cel: 7
 					posn: 210 77
 					cycleSpeed: 2
-					setCycle: Beg self
+					setCycle: BegLoop self
 					setMotion: MoveTo 216 74
 					init:
 					ignoreActors:
@@ -149,7 +149,7 @@
 			(2
 				(chopper
 					setLoop: 7
-					setCycle: Beg
+					setCycle: BegLoop
 					setMotion: MoveTo 218 74 self
 				)
 			)
@@ -157,7 +157,7 @@
 				(chopper
 					setLoop: 5
 					setStep: 8 4
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 330 100 self
 				)
 			)
@@ -187,7 +187,7 @@
 			(7
 				(chopper
 					setLoop: 3
-					setCycle: Fwd
+					setCycle: Forward
 					ignoreHorizon: 1
 					setMotion: MoveTo 255 -11 self
 				)
@@ -197,7 +197,7 @@
 					posn: 131 -11
 					setLoop: 8
 					setStep: 1 1
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 131 28 self
 				)
 			)

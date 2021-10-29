@@ -35,7 +35,7 @@
 	)
 )
 
-(instance rm128 of Rm
+(instance rm128 of Room
 	(properties
 		picture 204
 		style $0000
@@ -74,7 +74,7 @@
 			cel: 2
 			posn: 121 188
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -85,7 +85,7 @@
 			cel: 0
 			posn: 185 144
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -96,7 +96,7 @@
 			cel: 0
 			posn: 225 113
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 2
 			ignoreActors: 1
 			init:
@@ -201,7 +201,7 @@
 					illegalBits: 0
 					ignoreActors: 1
 					posn: 143 105
-					setCycle: CT 11 1 self
+					setCycle: CycleTo 11 1 self
 					setMotion: 0
 				)
 			)
@@ -210,7 +210,7 @@
 				(User canInput: 1)
 			)
 			(3
-				(ego loop: 2 cel: 0 setCycle: CT 7 1 self)
+				(ego loop: 2 cel: 0 setCycle: CycleTo 7 1 self)
 				(User canInput: 0)
 			)
 			(4
@@ -231,7 +231,7 @@
 					(= bainsAmbush 1)
 					(Load rsSOUND 41)
 					(bainsMusic play:)
-					((= bains (Act new:))
+					((= bains (Actor new:))
 						view: 14
 						setLoop: 0
 						cel: 0
@@ -267,7 +267,7 @@
 				)
 			)
 			(2
-				(bains view: 15 cel: 0 setCycle: End self)
+				(bains view: 15 cel: 0 setCycle: EndLoop self)
 				(bainsGunFire play:)
 			)
 			(3

@@ -51,7 +51,7 @@
 	)
 )
 
-(instance larry of Act
+(instance larry of Actor
 	(properties
 		view 81
 		loop 3
@@ -136,23 +136,23 @@
 			(1
 				(switch (Random 0 1)
 					(0
-						(larry setLoop: 4 setCycle: End)
+						(larry setLoop: 4 setCycle: EndLoop)
 					)
 					(1
-						(larry setLoop: 3 setCycle: End)
+						(larry setLoop: 3 setCycle: EndLoop)
 					)
 				)
 				(= cycles (Random 40 60))
 			)
 			(2
-				(larry setCycle: Beg)
+				(larry setCycle: BegLoop)
 				(self changeState: 0)
 			)
 		)
 	)
 )
 
-(instance guard of Act
+(instance guard of Actor
 	(properties)
 )
 
@@ -160,7 +160,7 @@
 	(properties)
 )
 
-(instance rm20 of Rm
+(instance rm20 of Room
 	(properties
 		picture 20
 		style $0008
@@ -367,7 +367,7 @@
 					)
 				else
 					(ego view: 1 posn: 15 124 init: setMotion: MoveTo 153 124)
-					((= keith (Act new:))
+					((= keith (Actor new:))
 						view: 20
 						setCycle: Walk
 						posn: 24 124
@@ -644,9 +644,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((= keith (Act new:))
+				((= keith (Actor new:))
 					view: 20
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 2
 					setCel: 1
 					xStep: 3
@@ -784,7 +784,7 @@
 			)
 			(12
 				(ego illegalBits: -32768 loop: 1 cel: 7)
-				(guard loop: 6 cel: 0 setCycle: End self)
+				(guard loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(13
 				(localproc_0060 20 76 25 4 83)
@@ -810,7 +810,7 @@
 					init:
 					startUpd:
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(User canInput: 1)
 			)
@@ -851,10 +851,10 @@
 				(guard setCycle: Walk setMotion: MoveTo 151 133 self)
 			)
 			(22
-				(guard setLoop: 4 setCycle: End self)
+				(guard setLoop: 4 setCycle: EndLoop self)
 			)
 			(23
-				(guard setLoop: 5 setCycle: End self)
+				(guard setLoop: 5 setCycle: EndLoop self)
 			)
 			(24
 				(ego hide:)

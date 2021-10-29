@@ -14,7 +14,7 @@
 (local
 	[sewage 3]
 )
-(instance rm123 of Rm
+(instance rm123 of Room
 	(properties
 		picture 204
 		style $0000
@@ -41,7 +41,7 @@
 			cel: 2
 			posn: 121 188
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors: 1
 			init:
@@ -52,7 +52,7 @@
 			cel: 0
 			posn: 185 144
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors: 1
 			init:
@@ -63,7 +63,7 @@
 			cel: 0
 			posn: 225 113
 			setPri: 0
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 4
 			ignoreActors: 1
 			init:
@@ -108,7 +108,7 @@
 	)
 )
 
-(instance cockroach of Act
+(instance cockroach of Actor
 	(properties
 		y 120
 		x 133

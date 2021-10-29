@@ -62,11 +62,11 @@
 	)
 )
 
-(instance carBlock of Blk
+(instance carBlock of Block
 	(properties)
 )
 
-(instance jBlock of Blk
+(instance jBlock of Block
 	(properties)
 )
 
@@ -90,19 +90,19 @@
 	(properties)
 )
 
-(instance haines of Act
+(instance haines of Actor
 	(properties)
 )
 
-(instance shopwoman of Act
+(instance shopwoman of Actor
 	(properties)
 )
 
-(instance ourCar of Act
+(instance ourCar of Actor
 	(properties)
 )
 
-(instance rm67 of Rm
+(instance rm67 of Room
 	(properties
 		picture 67
 		style $0001
@@ -235,9 +235,9 @@
 			init:
 		)
 		(if (== currentCar 13)
-			((= keith (Act new:))
+			((= keith (Actor new:))
 				view: 20
-				setAvoider: Avoid
+				setAvoider: Avoider
 				observeBlocks: carBlock
 				observeBlocks: jBlock
 				posn: 400 400
@@ -265,7 +265,7 @@
 				posn: 231 140
 				setPri: 13
 				init:
-				setCycle: Fwd
+				setCycle: Forward
 			)
 			((View new:)
 				view: 75
@@ -294,7 +294,7 @@
 				setCycle: Walk
 				setPri: -1
 				posn: 210 178
-				setAvoider: (Avoid new:)
+				setAvoider: (Avoider new:)
 				init:
 			)
 			(shopwoman
@@ -483,7 +483,7 @@
 						(Print 67 18)
 					)
 					(workCarTrunkOpened (Print 67 19))
-					(else (= workCarTrunkOpened 1) (unTrunk setCycle: End unTrunk))
+					(else (= workCarTrunkOpened 1) (unTrunk setCycle: EndLoop unTrunk))
 				)
 			)
 			((Said 'close/trunk')
@@ -497,7 +497,7 @@
 						)
 						(NotClose)
 					)
-					(else (= workCarTrunkOpened 0) (unTrunk setCycle: Beg unTrunk))
+					(else (= workCarTrunkOpened 0) (unTrunk setCycle: BegLoop unTrunk))
 				)
 			)
 			((Said 'deposit,place/briefcase[/trunk]')
@@ -789,7 +789,7 @@
 					posn: [carDoorPosn 0] [carDoorPosn 1]
 					setPri: 11
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -872,7 +872,7 @@
 					posn: [carDoorPosn 0] [carDoorPosn 1]
 					setPri: 11
 					init:
-					setCycle: End
+					setCycle: EndLoop
 				)
 				(self cue:)
 			)
@@ -898,10 +898,10 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(unTrunk cel: 0 setCycle: End self)
+				(unTrunk cel: 0 setCycle: EndLoop self)
 			)
 			(1 (= seconds 2))
-			(2 (unTrunk setCycle: Beg self))
+			(2 (unTrunk setCycle: BegLoop self))
 			(3
 				(unTrunk stopUpd:)
 				(client setScript: 0)
@@ -975,7 +975,7 @@
 				(HandsOff)
 				(if keith
 					(keith
-						setAvoider: Avoid
+						setAvoider: Avoider
 						setMotion: MoveTo 110 (keith y?)
 					)
 					(Print 67 71)
@@ -987,7 +987,7 @@
 			)
 			(1
 				(if keith
-					(keith setAvoider: Avoid setMotion: MoveTo 110 158)
+					(keith setAvoider: Avoider setMotion: MoveTo 110 158)
 				)
 				(haines setMotion: MoveTo 134 164 self)
 			)
@@ -1007,7 +1007,7 @@
 				(cSound number: 27 loop: -1 play:)
 				(if keith (keith setMotion: MoveTo 400 100))
 				(Print 67 76 #at -1 40)
-				(haines setAvoider: Avoid setMotion: MoveTo -20 100 self)
+				(haines setAvoider: Avoider setMotion: MoveTo -20 100 self)
 			)
 			(4
 				(haines posn: -20 1000 stopUpd:)

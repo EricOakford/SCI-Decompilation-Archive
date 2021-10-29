@@ -75,7 +75,7 @@
 	(properties)
 )
 
-(instance rm29 of Rm
+(instance rm29 of Room
 	(properties
 		picture 29
 		style $0001
@@ -186,7 +186,7 @@
 			loop: 3
 			posn: 28 103
 			init:
-			setCycle: Fwd
+			setCycle: Forward
 			cycleSpeed: 1
 			startUpd:
 		)
@@ -207,7 +207,7 @@
 			(= local6 0)
 			(HandsOn)
 		)
-		((= newAct (Act new:))
+		((= newAct (Actor new:))
 			view: 54
 			setStep: 3 3
 			setLoop: 0
@@ -280,7 +280,7 @@
 			(0
 				(ego view: 0 posn: 0 0 init: setMotion: 0)
 				(if (== currentCar 13)
-					((= keith (Act new:)) view: 20 init:)
+					((= keith (Actor new:)) view: 20 init:)
 				)
 				(= [local4 0] 82)
 				(= [local4 1] 190)
@@ -536,7 +536,7 @@
 					posn: [local2 0] [local2 1]
 					setPri: 14
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (== currentCar 13)
 					(keith
@@ -588,7 +588,7 @@
 					posn: [local2 0] [local2 1]
 					setPri: 14
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -603,7 +603,7 @@
 					posn: [local4 0] [local4 1]
 					setPri: 14
 					init:
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(8 (unTrunk stopUpd:))
@@ -616,7 +616,7 @@
 					posn: [local4 0] [local4 1]
 					setPri: 14
 					startUpd:
-					setCycle: CT 0 -1 self
+					setCycle: CycleTo 0 -1 self
 				)
 			)
 			(10 (unTrunk dispose:))
