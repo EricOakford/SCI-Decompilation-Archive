@@ -583,6 +583,8 @@
 		(music owner: self number: 6 init:)
 		(if (GameIsRestarting)
 			(Bset fGameIsRestarting)
+			(TheMenuBar draw:)
+			(StatusLine enable:)
 			(self newRoom: 99)
 		else
 			(self newRoom: 99)
