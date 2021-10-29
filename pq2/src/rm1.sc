@@ -19,8 +19,8 @@
 	walkingOffGrounds
 	officeDoor
 	nearUnmarkedCar
-	local3
-	local4
+	randCarExists
+	;local4 unused
 	carPullingIn
 	local6
 	local7
@@ -198,10 +198,10 @@
 				0
 			)
 		)
-		(= local7 (if (== currentCar 13) 118 else 247))
-		(= carX (if (== currentCar 13) 110 else 257))
-		(= carY (if (== currentCar 13) 144 else 141))
-		(if (or (== prevRoomNum 2) (== currentCar 33))
+		(= local7 (if (== currentCar carWork) 118 else 247))
+		(= carX (if (== currentCar carWork) 110 else 257))
+		(= carY (if (== currentCar carWork) 144 else 141))
+		(if (or (== prevRoomNum 2) (== currentCar carPersonal))
 			(unmarked
 				view: 54
 				loop: 0
@@ -225,7 +225,7 @@
 				ignoreActors:
 				addToPic:
 			)
-			(= local3 1)
+			(= randCarExists 1)
 			(ego observeBlocks: car2Block)
 		)
 		(if (Btst fDocBookingEvidence)
@@ -241,7 +241,7 @@
 			)
 			(ego observeBlocks: car3Block)
 		)
-		(if (or (== prevRoomNum 2) (== currentCar 13))
+		(if (or (== prevRoomNum 2) (== currentCar carWork))
 			(egosCar
 				view: 54
 				loop: 0
@@ -273,7 +273,7 @@
 				view: 54
 				setStep: 2
 				setLoop: 0
-				setCel: (if (== currentCar 13) 1 else 0)
+				setCel: (if (== currentCar carWork) 1 else 0)
 				ignoreActors:
 				illegalBits: 0
 				setCycle: 0
@@ -285,7 +285,10 @@
 			(= carPullingIn 0)
 		)
 		(if (== prevRoomNum 2)
-			(ego posn: 131 110 setMotion: MoveTo 131 400)
+			(ego 
+				posn: 131 110
+				setMotion: MoveTo 131 400
+			)
 		else
 			(self setScript: driveUpScript)
 		)
@@ -310,10 +313,10 @@
 				(and
 					(== captainWarningTimer 450)
 					(== gamePhase 0)
-					(not (ego has: 2))
+					(not (ego has: iKeyRing))
 				)
-				(Print 1 1)
-				(= captainWarningTimer 700)
+					(Print 1 1)
+					(= captainWarningTimer 700)
 			)
 		)
 		(cond 
@@ -323,8 +326,8 @@
 					(!= walkingOffGrounds 1)
 					(!= walkingOffGrounds 2)
 				)
-				(= walkingOffGrounds 1)
-				(Print 1 2)
+					(= walkingOffGrounds 1)
+					(Print 1 2)
 			)
 			((and (>= 210 (ego y?)) (== walkingOffGrounds 1)) (= walkingOffGrounds 0)
 				(Print 1 3)
@@ -351,8 +354,8 @@
 					(== global132 (not carPullingIn))
 					(== (not carPullingIn) 1)
 				)
-				(= global132 0)
-				(EnterCar)
+					(= global132 0)
+					(EnterCar)
 			)
 		)
 		(super doit:)
@@ -366,16 +369,15 @@
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					(
-						(or
+					((or
 							(Said 'remove/cloth')
 							(Said 'get<[off]/cloth<[off]')
 							(Said 'undress')
 							(Said 'get/naked')
-							(Said 'leak')
-							(Said 'get/leak')
+							(Said 'piss')
+							(Said 'take/piss')
 						)
-						(Print 1 8)
+							(Print 1 8)
 					)
 					((Said 'drive')
 						(if carPullingIn
@@ -515,7 +517,7 @@
 								(or
 									(and
 										(ego inRect: 73 149 128 188)
-										(or (Btst 10) local3)
+										(or (Btst fDocBookingEvidence) randCarExists)
 									)
 									(and (ego inRect: 205 154 313 185) nearUnmarkedCar)
 								)
@@ -802,7 +804,7 @@
 				(ego setPri: -1)
 				(carDoor
 					view: 51
-					loop: (if (== currentCar 13) 2 else 0)
+					loop: (if (== currentCar carWork) 2 else 0)
 					cel: 0
 					ignoreActors:
 					init:
@@ -842,7 +844,7 @@
 					)
 				)
 				(carDoor dispose:)
-				(if (== currentCar 33)
+				(if (== currentCar carPersonal)
 					(HandsOn)
 				else
 					(rm1 setScript: awayScript)

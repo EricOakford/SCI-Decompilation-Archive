@@ -163,7 +163,7 @@
 		(HandsOn)
 		(Load rsVIEW 0)
 		(Load rsVIEW 20)
-		(if bainsInCove
+		(if bainsInCoveState
 			(Load rsVIEW 14)
 			(Load rsVIEW 76)
 			(Load rsVIEW 94)
@@ -171,13 +171,13 @@
 		(= gunNotNeeded 0)
 		(= gunFireState
 			(cond 
-				(bainsInCove 0)
+				(bainsInCoveState 0)
 				((cast contains: keith) 2)
 				((cast contains: diver) 3)
 				(else 1)
 			)
 		)
-		(if (and (== gamePhase 5) (not bainsInCove))
+		(if (and (== gamePhase 5) (not bainsInCoveState))
 			(if (== (ego view?) 17)
 				(cSound number: 12 loop: 1 play:)
 			else
@@ -227,7 +227,7 @@
 				(ego setMotion: MoveTo -10 (ego y?))
 				(User prevDir: 7)
 			)
-			(if bainsInCove
+			(if bainsInCoveState
 				(bains
 					view: 14
 					setStep: 12 5
@@ -330,7 +330,10 @@
 				(if
 					(and
 						(== (ego view?) 17)
-						(or (== temp0 16384) (== temp0 16896) (== temp0 17408))
+						(or
+							(== temp0 KEY_F6)
+							(== temp0 KEY_F8)
+							(== temp0 KEY_F10))
 					)
 					(localproc_027b 62 11)
 					(event claimed: 1)
@@ -667,7 +670,7 @@
 	
 	(method (init)
 		(super init:)
-		(if bainsInCove
+		(if bainsInCoveState
 			(car
 				view: 94
 				setStep: 16 4
@@ -717,7 +720,7 @@
 			)
 			(2
 				(tmpSound number: 39 loop: 1 play:)
-				(= bainsInCove 0)
+				(= bainsInCoveState 0)
 				(car
 					setMotion:
 						MoveTo

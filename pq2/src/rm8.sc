@@ -119,7 +119,7 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(p_said
+			(saidEvent
 				(cond 
 					;((Said '/book,instruction,cocksucker') (Print 8 1)) 
 					((Said '/book,instruction,dos') (Print 8 1)) 
@@ -308,10 +308,10 @@
 						(
 							(and
 								(< KEY_SPACE (event message?))
-								(< (event message?) 127)
+								(< (event message?) KEY_DELETE) ;127
 								(< local154 13)
 							)
-							(StrAt @str local154 (localproc_0031 eventMessage))
+							(StrAt @str local154 (localproc_0031 (event message?)))
 							(++ local154)
 							(StrAt @str local154 0)
 							(Display (Format @temp0 {%c} eventMessage)

@@ -42,14 +42,14 @@
 			(= doneTIme (+ 60 (GetTime)))
 		)
 		(if (< doneTIme (GetTime))
-			(if (Btst 167)
+			(if (Btst 167) ;fGameIsRestarting
 				(theGame setSpeed: 6)
 				(MenuBar draw:)
 				(StatusLine enable:)
 				(NormalEgo)
-				(curRoom newRoom: 1)
+				(curRoom newRoom: 1);1
 			else
-				(curRoom newRoom: 200)
+				(curRoom newRoom: 200);200
 			)
 		)
 	)

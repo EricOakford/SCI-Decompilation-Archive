@@ -8,6 +8,7 @@
 (use Actor)
 (use System)
 
+
 (public
 	Introduction 0
 )
@@ -79,7 +80,7 @@
 	)
 	
 	(method (dispose)
-		;(sounds eachElementDo: #dispose) causes 'Memory fragmented' crash
+		;(sounds eachElementDo: #dispose) causes 'Memory Fragmented.'
 		(super dispose:)
 	)
 	
@@ -451,9 +452,9 @@
 
 (instance redLight2 of Prop)
 
-(instance blueLight1 of Prop)
+;(instance blueLight1 of Prop)
 
-(instance blueLight2 of Prop)
+;(instance blueLight2 of Prop)
 
 (instance building of Actor)
 
