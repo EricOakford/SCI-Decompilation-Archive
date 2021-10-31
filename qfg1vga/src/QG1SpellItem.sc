@@ -20,13 +20,8 @@
 (class QG1SpellItem of InvItem
 	(properties
 		view 992
-		state 0
-		message 0
 		signal (| HIDEBAR RELVERIFY IMMEDIATE)
 		modNum SPELLS
-		owner 0
-		script 0
-		value 0
 		amount 0
 		cost 0
 	)
@@ -42,15 +37,15 @@
 		)
 	)
 	
-	(method (doVerb theVerb &tmp [temp0 10] [descBuf 60] [temp70 60])
+	(method (doVerb theVerb &tmp [spellBuf 10] [descBuf 60] [str 60])
 		(if (== theVerb V_LOOK)
-			(Message MsgGet SPELLS noun NULL NULL 1 @temp0)
-			(Message MsgGet SPELLS N_SPELLDESCRIPTION NULL NULL 1 @descBuf)
+			(Message MsgGet SPELLS noun NULL NULL 1 @spellBuf)
+			(Message MsgGet SPELLS N_SPELL NULL NULL 1 @descBuf)
 			(Print
 				font: userFont
 				mode: teJustCenter
-				width: (if (== noun V_DO) 200 else 180)
-				addTextF: @temp70 @descBuf @temp0 amount cost
+				width: (if (== noun N_FLAMEDART) 200 else 180)
+				addTextF: @str @descBuf @spellBuf amount cost
 				init:
 			)
 		)
@@ -168,7 +163,7 @@
 
 (instance openSpell of QG1SpellItem
 	(properties
-		noun N_OPENSPELL
+		noun N_OPEN
 	)
 	
 	(method (doVerb theVerb &tmp evt)
@@ -176,7 +171,7 @@
 			(if (== theVerb V_DO)
 				(glorySpells hide:)
 				(cond 
-					((& spellMask $0100)
+					((& spellMask DISABLED_OPEN)
 						(NotUsefulHere)
 					)
 					((not (CastSpell OPEN)))
@@ -208,7 +203,7 @@
 (instance detectMagicSpell of QG1SpellItem
 	(properties
 		loop 1
-		noun N_DETECTMAGICSPELL
+		noun N_DETECT
 	)
 	
 	(method (doVerb theVerb &tmp evt)
@@ -216,7 +211,7 @@
 			(if (== theVerb V_DO)
 				(glorySpells hide:)
 				(cond 
-					((& spellMask $0200)
+					((& spellMask DISABLED_DETECT)
 						(NotUsefulHere)
 					)
 					((not
@@ -250,7 +245,7 @@
 (instance triggerSpell of QG1SpellItem
 	(properties
 		loop 2
-		noun N_TRIGGERSPELL
+		noun N_TRIGGER
 	)
 	
 	(method (doVerb theVerb &tmp evt)
@@ -258,7 +253,7 @@
 			(if (== theVerb V_DO)
 				(glorySpells hide:)
 				(cond 
-					((& spellMask $0400)
+					((& spellMask DISABLED_TRIGGER)
 						(NotUsefulHere)
 					)
 					((not
@@ -292,7 +287,7 @@
 (instance dazzleSpell of QG1SpellItem
 	(properties
 		loop 4
-		noun N_DAZZLESPELL
+		noun N_DAZZLE
 	)
 	
 	(method (doVerb theVerb &tmp evt)
@@ -300,7 +295,7 @@
 			(if (== theVerb V_DO)
 				(glorySpells hide:)
 				(cond 
-					((& spellMask $0800)
+					((& spellMask DISABLED_DAZZLE)
 						(NotUsefulHere)
 					)
 					((not
@@ -338,7 +333,7 @@
 (instance zapSpell of QG1SpellItem
 	(properties
 		loop 3
-		noun N_ZAPSPELL
+		noun N_ZAP
 	)
 	
 	(method (doVerb theVerb &tmp evt)
@@ -346,7 +341,7 @@
 			(if (== theVerb V_DO)
 				(glorySpells hide:)
 				(cond 
-					((& spellMask $1000)
+					((& spellMask DISABLED_ZAP)
 						(NotUsefulHere)
 					)
 					((not (CastSpell ZAP)))
@@ -376,7 +371,7 @@
 (instance calmSpell of QG1SpellItem
 	(properties
 		loop 5
-		noun N_CALMSPELL
+		noun N_CALM
 	)
 	
 	(method (doVerb theVerb &tmp evt)
@@ -384,7 +379,7 @@
 			(if (== theVerb V_DO)
 				(glorySpells hide:)
 				(cond 
-					((& spellMask $2000)
+					((& spellMask DISABLED_CALM)
 						(NotUsefulHere)
 					)
 					((not (CastSpell CALM)))
@@ -419,14 +414,14 @@
 	(properties
 		loop 6
 		cursor 948
-		noun N_FLAMEDARTSPELL
+		noun N_FLAMEDART
 	)
 	
 	(method (doVerb theVerb &tmp evt)
 		(if (== theVerb V_DO)
 			(glorySpells hide:)
 			(cond 
-				((& spellMask $4000)
+				((& spellMask DISABLED_FLAMEDART)
 					(NotUsefulHere)
 				)
 				((not (CastSpell FLAMEDART)))
@@ -444,7 +439,7 @@
 (instance fetchSpell of QG1SpellItem
 	(properties
 		loop 7
-		noun N_FETCHSPELL
+		noun N_FETCH
 	)
 	
 	(method (doVerb theVerb &tmp evt)
@@ -452,7 +447,7 @@
 			(if (== theVerb V_DO)
 				(glorySpells hide:)
 				(cond 
-					((& spellMask $8000)
+					((& spellMask DISABLED_FETCH)
 						(NotUsefulHere)
 					)
 					((not (CastSpell FETCH)))
@@ -488,7 +483,7 @@
 		cursor 941
 		message V_LOOK
 		signal (| FIXED_POSN RELVERIFY)
-		noun N_INVLOOK
+		noun N_LOOK
 		modNum SPELLS
 		helpVerb V_HELP
 	)
@@ -500,7 +495,7 @@
 		loop 0
 		cel 0
 		cursor 942
-		noun N_INVSELECT
+		noun N_SELECT
 		modNum SPELLS
 		helpVerb V_HELP
 	)
@@ -513,7 +508,7 @@
 		cel 0
 		cursor 949
 		message V_HELP
-		noun N_INVHELP
+		noun N_HELP
 		modNum SPELLS
 		helpVerb V_HELP
 	)

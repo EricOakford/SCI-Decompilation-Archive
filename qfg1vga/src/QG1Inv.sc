@@ -22,8 +22,6 @@
 (class QG1InvItem of InvItem
 	(properties
 		view 950
-		loop 0
-		cel 0
 		weight 0	;measured in quarks
 		amount 0
 		amtDropped 0
@@ -47,10 +45,16 @@
 					(if pickUpMode
 						(if (== amtDropped 1)
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 22 @str)
-							(Print addTextF: @buffer @str @itemBuf init:)
+							(Print
+								addTextF: @buffer @str @itemBuf
+								init:
+							)
 						else
 							(Message MsgGet GLORYINV N_ITEM NULL NULL 23 @str)
-							(Print addTextF: @buffer @str amtDropped @itemBuf init:)
+							(Print
+								addTextF: @buffer @str amtDropped @itemBuf
+								init:
+							)
 						)
 					else
 						(= pounds (= decimal 0))
@@ -76,7 +80,10 @@
 				(V_DROP
 					(cond 
 						((and (== self dagger) (== (self amount?) 1) (not (ego has: iSword)))
-							(Print addText: N_ITEM NULL NULL 4 0 0 GLORYINV init:)
+							(Print
+								addText: N_ITEM NULL NULL 4 0 0 GLORYINV
+								init:
+							)
 						)
 						(
 							(OneOf
@@ -140,7 +147,7 @@
 						(self pickItUp: 1)
 					)
 				)
-				(9 0)
+				(V_HELP 0)	;do nothing
 				(else 
 					(Message MsgGet GLORYINV N_ITEM NULL NULL 3 @str)
 					(Message MsgGet GLORYINV N_ITEM theVerb NULL 1 @dropBuf)
@@ -172,7 +179,7 @@
 		(if (not amtDropped)
 			(dropInv hide: delete: self)
 			(if (> (dropInv size?) MARGIN)
-				(= pickUpMode 1)
+				(= pickUpMode TRUE)
 				((= inventory dropInv) showSelf:)
 			else
 				((= inventory gloryInv) showSelf:)
@@ -286,7 +293,7 @@
 			eachElementDo: #highlightColor -1
 			eachElementDo: #lowlightColor -1
 			eachElementDo: #init
-			state: 2048
+			state: NOCLICKHELP
 		)
 	)
 	
@@ -303,8 +310,10 @@
 	)
 	
 	(method (hide &tmp i)
-		(if (== inventory self) (= inventory gloryInv))
-		(= pickUpMode 0)
+		(if (== inventory self)
+			(= inventory gloryInv)
+		)
+		(= pickUpMode FALSE)
 		(for ((= i 0)) (< i (- size MARGIN)) ((++ i))
 			(if ((self at: i) amount?)
 				((self at: i) owner: ego)
@@ -328,7 +337,6 @@
 )
 
 (instance pageCode of Code
-	
 	(method (init &tmp i temp1)
 		(if (Btst fPickItUp)
 			(Bclr fPickItUp)
@@ -337,6 +345,7 @@
 			)
 			((= inventory dropInv) okButton: ok showSelf:)
 		else
+			;can't bring up the inventory in battle or the Mage's Maze
 			(if
 				(or
 					(OneOf curRoomNum
@@ -348,7 +357,7 @@
 				(return)
 			)
 			(invSelect message: -1)
-			(= global423 0)
+			(= totalInvItems 0)
 			(invPageUp owner: 0)
 			(invPageDown owner: 0)
 			(for ((= i 0)) (< i NUM_INVITEMS) ((++ i))
@@ -360,12 +369,12 @@
 							(> ((inventory at: i) amount?) 0)
 							(== i 0)
 						)
-						(< (++ global423) 24)
+						(< (++ totalInvItems) 24)
 					)
 					((inventory at: i) owner: ego)
 				)
 			)
-			(if (> global423 23)
+			(if (> totalInvItems 23)
 				(invPageDown highlightColor: -1 owner: ego)
 			)
 			(inventory showSelf:)
@@ -377,7 +386,7 @@
 	(properties
 		view 991
 		loop 5
-		message 75
+		message V_PAGETURNER
 		signal (| RELVERIFY IMMEDIATE)
 		noun N_PAGETURNER
 		modNum GLORYINV
@@ -417,7 +426,7 @@
 				(inventory hide: showSelf:)
 				(return 0)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -521,7 +530,7 @@
 		(return
 			(if (super select: &rest)
 				(= droppedSomething FALSE)
-				(for ((= i 0)) (< i 40) ((++ i))
+				(for ((= i 0)) (< i iLastInvItem) ((++ i))
 					(if ((gloryInv at: i) amtDropped?)
 						(= droppedSomething TRUE)
 					)
@@ -537,7 +546,7 @@
 					(return FALSE)
 				)
 			else
-				0
+				FALSE
 			)
 		)
 	)
@@ -1087,7 +1096,7 @@
 (instance youOnlyLoveMeForMyCueMethod of Script
 	(method (cue &tmp maxWt [str 60] [buffer 60])
 		(= maxWt (MaxLoad))
-		(Message MsgGet GLORYINV 9 0 0 2 @str)
+		(Message MsgGet GLORYINV N_STATUS NULL NULL 2 @str)
 		(Print
 			font: userFont
 			mode: teJustCenter

@@ -86,7 +86,7 @@
 				(soundObj play:)
 			)
 			(3
-				(messager say: N_CASTCALM NULL NULL 0 0 SPELLS)
+				(messager say: N_CALM NULL NULL 0 0 SPELLS)
 				(= ticks 12)
 			)
 			(4
