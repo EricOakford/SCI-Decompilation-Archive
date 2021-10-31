@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 12)
-(include sci.sh)
+(include system.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -33,11 +33,11 @@
 	[local171 10]
 	infoLocation
 )
-(procedure (localproc_0084 param1)
+(procedure (RingPhone param1)
 	(Ring loop: param1 play:)
 )
 
-(procedure (localproc_0092)
+(procedure (BusySignal)
 	(Busy loop: 6 play:)
 )
 
@@ -48,30 +48,40 @@
 		(= temp0 (Random 0 100))
 	)
 	(cond 
-		((<= temp0 40) (localproc_0092) (Print 12 104) (Busy stop:))
-		((<= temp0 95) (localproc_0084 5) (Print 12 105) (Ring stop:))
-		(else (Print 12 106))
+		((<= temp0 40)
+			(BusySignal)
+			(Print 12 104) ;the phone is busy
+			(Busy stop:)
+		)
+		((<= temp0 95)
+			(RingPhone 5)
+			(Print 12 105) ;no one is there to answer.
+			(Ring stop:)
+		)
+		(else
+			(Print 12 106) ;call cannot be completed as dialed
+		) 
 	)
 	(curRoom setScript: phoneNumber)
 )
 
-(procedure (localproc_1a9d)
+(procedure (PersonHangUp)
 	(person posn: 30 1000)
 	(personMouth posn: 60 1000)
 	(RedrawCast)
 	(cls)
 	(= local9 4)
-	(Format @str 12 107)
+	(Format @str 12 107) ;click
 	(AssignObjectToScript person doTalk 2)
 )
 
-(procedure (localproc_1add)
+(procedure (BondsSpeak)
 	(cls)
 	(Format @str &rest)
 	(AssignObjectToScript sonnyMouth doEgoTalk)
 )
 
-(procedure (localproc_1af6)
+(procedure (PersonSpeak) ;(localproc_1af6)
 	(cls)
 	(= local9 0)
 	(Format @str &rest)
@@ -142,7 +152,7 @@ code_1b85:
 		pushi    2
 		pushi    12
 		pushi    107
-		call     localproc_1add,  4
+		call     BondsSpeak,  4
 		pushi    #changeState
 		pushi    1
 		pushi    999
@@ -177,14 +187,14 @@ code_1ba3:
 (instance phone of Room
 	(properties
 		picture 444
-		style $0006
+		style IRISIN
 	)
 	
 	(method (init)
-		(Load rsVIEW 444)
-		(Load rsVIEW 445)
-		(Load rsSOUND 44)
-		(Load rsSOUND 45)
+		(Load VIEW 444)
+		(Load VIEW 445)
+		(Load SOUND 44)
+		(Load SOUND 45)
 		(super init:)
 		(= local171 0)
 		((= sonny (Actor new:))
@@ -228,16 +238,16 @@ code_1ba3:
 	(method (handleEvent event)
 		(if (event claimed?) (return))
 		(switch (event type?)
-			(evKEYBOARD
+			(keyDown
 				(super handleEvent: event)
 			)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said '/bye')
 						(switch (Random 0 2)
-							(0 (localproc_1add 12 0))
-							(1 (localproc_1add 12 1))
-							(else  (localproc_1add 12 2))
+							(0 (BondsSpeak 12 0))
+							(1 (BondsSpeak 12 1))
+							(else  (BondsSpeak 12 2))
 						)
 						((curRoom script?) changeState: 999)
 					)
@@ -436,15 +446,15 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if
-		(or (event claimed?) (!= (event type?) evSAID))
+		(or (event claimed?) (!= (event type?) saidEvent))
 			(return)
 		)
 		(cond 
 			((Said '/411,0') (curRoom setScript: Information))
 			((Said '/5558723')
-				(localproc_1af6 12 6)
-				(localproc_1af6 12 7)
-				(localproc_1a9d)
+				(PersonSpeak 12 6)
+				(PersonSpeak 12 7)
+				(PersonHangUp)
 				(curRoom setScript: phoneNumber)
 			)
 			((Said '/5552222') (localproc_1a28))
@@ -452,8 +462,8 @@ code_03f6:
 			((Said '/5551699') (localproc_1a28))
 			((Said '/5552052') (localproc_1a28))
 			((Said '/5554495')
-				(localproc_1af6 12 8)
-				(localproc_1a9d)
+				(PersonSpeak 12 8)
+				(PersonHangUp)
 				(curRoom setScript: phoneNumber)
 			)
 			((Said '/5554169')
@@ -494,15 +504,15 @@ code_03f6:
 			((Said '/5550001') (localproc_1a28 40))
 			((Said '/2096834463')
 				(if (== (Random 1 2) 1)
-					(localproc_1af6 12 9)
-					(localproc_1af6 12 10)
-					(localproc_1a9d)
+					(PersonSpeak 12 9)
+					(PersonSpeak 12 10)
+					(PersonHangUp)
 					(curRoom setScript: phoneNumber)
 				else
-					(localproc_1af6 12 11)
-					(localproc_1af6 12 12)
-					(localproc_1af6 12 13)
-					(localproc_1a9d)
+					(PersonSpeak 12 11)
+					(PersonSpeak 12 12)
+					(PersonSpeak 12 13)
+					(PersonHangUp)
 					(curRoom setScript: phoneNumber)
 				)
 			)
@@ -541,24 +551,24 @@ code_03f6:
 			(1
 				(= str 0)
 				(= infoLocation 0)
-				(localproc_1af6 12 15)
+				(PersonSpeak 12 15)
 			)
 			(2
 				(= str 0)
-				(localproc_1af6 12 16)
+				(PersonSpeak 12 16)
 			)
 			(3
-				(localproc_1af6 12 17)
+				(PersonSpeak 12 17)
 				(= state 1)
 				(= cycles 2)
 			)
 			(4
-				(localproc_1af6 12 18)
+				(PersonSpeak 12 18)
 				(= state 0)
 				(= cycles 2)
 			)
 			(999
-				(localproc_1a9d)
+				(PersonHangUp)
 				(client setScript: phoneNumber)
 			)
 		)
@@ -566,11 +576,11 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(localproc_1b13 event)
 			(return)
 		)
-		(if (!= (event type?) evSAID) (return))
+		(if (!= (event type?) saidEvent) (return))
 		(switch state
 			(1
 				(cond 
@@ -580,8 +590,8 @@ code_03f6:
 					((Said '/houston') (= infoLocation 4) (self changeState: 2))
 					(else
 						(event claimed: 1)
-						(localproc_1af6 12 19)
-						(localproc_1af6 12 20)
+						(PersonSpeak 12 19)
+						(PersonSpeak 12 20)
 						(self changeState: 999)
 					)
 				)
@@ -590,22 +600,22 @@ code_03f6:
 				(switch infoLocation
 					(2
 						(cond 
-							((Said '/police') (localproc_1af6 12 21))
-							((Said '/cheeks<cheeks') (localproc_1af6 12 22))
+							((Said '/police') (PersonSpeak 12 21))
+							((Said '/cheeks<cheeks') (PersonSpeak 12 22))
 							((Said '/cheeks,(cheeks<!*)') (self changeState: 3) (return))
-							((Said '/cove<cotton') (localproc_1af6 12 23))
-							((Said '/arnie,cafe') (localproc_1af6 12 24))
-							((Said '/jail') (localproc_1af6 12 25))
-							((Said '/airport') (localproc_1af6 12 26))
-							((Said '/inn') (localproc_1af6 12 27))
+							((Said '/cove<cotton') (PersonSpeak 12 23))
+							((Said '/arnie,cafe') (PersonSpeak 12 24))
+							((Said '/jail') (PersonSpeak 12 25))
+							((Said '/airport') (PersonSpeak 12 26))
+							((Said '/inn') (PersonSpeak 12 27))
 							(else (event claimed: 1) (self changeState: 4) (return))
 						)
 						(if (== state 2) (self changeState: 999))
 					)
 					(1
 						(cond 
-							((Said '/police,lpd,(department<police)') (localproc_1af6 12 28))
-							((Said '/park<burt') (localproc_1af6 12 29))
+							((Said '/police,lpd,(department<police)') (PersonSpeak 12 28))
+							((Said '/park<burt') (PersonSpeak 12 29))
 							(else (event claimed: 1) (self changeState: 4) (return))
 						)
 						(if (== state 2) (self changeState: 999))
@@ -613,8 +623,8 @@ code_03f6:
 					(3
 						(if
 						(Said '/sierra,(online<sierra),(line<on<sierra)')
-							(localproc_1af6 12 30)
-							(localproc_1af6 12 31)
+							(PersonSpeak 12 30)
+							(PersonSpeak 12 31)
 							(self changeState: 999)
 						else
 							(event claimed: 1)
@@ -645,10 +655,10 @@ code_03f6:
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (localproc_1af6 12 32))
-			(2 (localproc_1af6 12 33))
+			(1 (PersonSpeak 12 32))
+			(2 (PersonSpeak 12 33))
 			(999
-				(localproc_1a9d)
+				(PersonHangUp)
 				(client setScript: phoneNumber)
 			)
 		)
@@ -656,11 +666,11 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(localproc_1b13 event)
 			(return)
 		)
-		(if (!= (event type?) evSAID) (return))
+		(if (!= (event type?) saidEvent) (return))
 		(cond 
 			(
 				(or
@@ -669,10 +679,10 @@ code_03f6:
 				)
 				(switch state
 					(1
-						(localproc_1add 12 34)
+						(BondsSpeak 12 34)
 						(self changeState: 2)
 					)
-					(else  (localproc_1add 12 32))
+					(else  (BondsSpeak 12 32))
 				)
 			)
 			(
@@ -682,11 +692,11 @@ code_03f6:
 					(Said 'warn/bains,colby')
 				)
 				(switch state
-					(1 (localproc_1af6 12 35))
+					(1 (PersonSpeak 12 35))
 					(else 
-						(localproc_1add 12 36)
-						(localproc_1af6 12 37)
-						(localproc_1af6 12 38)
+						(BondsSpeak 12 36)
+						(PersonSpeak 12 37)
+						(PersonSpeak 12 38)
 						(SolvePuzzle 4 95)
 						(self changeState: 999)
 					)
@@ -695,25 +705,25 @@ code_03f6:
 			(else
 				(if (Said 'chat')
 					(switch (Random 0 1)
-						(0 (localproc_1add 12 39))
-						(1 (localproc_1add 12 40))
+						(0 (BondsSpeak 12 39))
+						(1 (BondsSpeak 12 40))
 					)
 				else
 					(event claimed: 1)
 				)
 				(switch state
 					(1
-						(localproc_1af6 12 41)
+						(PersonSpeak 12 41)
 						(++ local6)
 					)
 					(2
 						(switch (Random 0 4)
-							(0 (localproc_1af6 12 42))
-							(1 (localproc_1af6 12 43))
-							(else  (localproc_1af6 12 44))
+							(0 (PersonSpeak 12 42))
+							(1 (PersonSpeak 12 43))
+							(else  (PersonSpeak 12 44))
 						)
 						(if (> (++ local6) 2)
-							(localproc_1af6 12 45)
+							(PersonSpeak 12 45)
 							(self changeState: 999)
 						)
 					)
@@ -736,14 +746,14 @@ code_03f6:
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (localproc_1af6 12 32))
+			(1 (PersonSpeak 12 32))
 			(2
-				(localproc_1af6 12 46)
-				(localproc_1af6 12 47)
+				(PersonSpeak 12 46)
+				(PersonSpeak 12 47)
 			)
 			(999
-				(localproc_1af6 12 48)
-				(localproc_1a9d)
+				(PersonSpeak 12 48)
+				(PersonHangUp)
 				(= gamePhase 7)
 				(SolvePuzzle 3)
 				(client setScript: phoneNumber)
@@ -753,36 +763,36 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(localproc_1b13 event)
 			(return)
 		)
-		(if (!= (event type?) evSAID) (return))
+		(if (!= (event type?) saidEvent) (return))
 		(cond 
 			(
-			(or (Said '/hello,bonds,cheeks') (Said '//bonds')) (localproc_1add 12 49) (self changeState: 2))
+			(or (Said '/hello,bonds,cheeks') (Said '//bonds')) (BondsSpeak 12 49) (self changeState: 2))
 			((or (Said 'chat') (Said 'affirmative'))
 				(if (== state 2)
 					(self changeState: 999)
 				else
-					(localproc_1add 12 49)
+					(BondsSpeak 12 49)
 					(self changeState: 2)
 				)
 			)
 			((Said 'n')
 				(if (== state 2)
-					(localproc_1af6 12 50)
-					(localproc_1a9d)
+					(PersonSpeak 12 50)
+					(PersonHangUp)
 					(client setScript: phoneNumber)
 				else
-					(localproc_1af6 12 51)
+					(PersonSpeak 12 51)
 				)
 			)
 			((== state 1) (event claimed: 1) (self changeState: 1))
 			(else
 				(event claimed: 1)
-				(localproc_1af6 12 52)
-				(localproc_1af6 12 53)
+				(PersonSpeak 12 52)
+				(PersonSpeak 12 53)
 			)
 		)
 	)
@@ -803,9 +813,9 @@ code_03f6:
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (localproc_1af6 12 54))
+			(1 (PersonSpeak 12 54))
 			(999
-				(localproc_1a9d)
+				(PersonHangUp)
 				(client setScript: phoneNumber)
 			)
 		)
@@ -813,11 +823,11 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(localproc_1b13 event)
 			(return)
 		)
-		(if (!= (event type?) evSAID) (return))
+		(if (!= (event type?) saidEvent) (return))
 		(cond 
 			(
 				(or
@@ -825,12 +835,12 @@ code_03f6:
 					(and (== state 1) (or (Said 'chat') (Said '//bonds')))
 				)
 				(if (== state 1)
-					(localproc_1add 12 55)
-					(localproc_1af6 12 56)
+					(BondsSpeak 12 55)
+					(PersonSpeak 12 56)
 					(= local5 1)
 					(= state 2)
 				else
-					(localproc_1af6 12 57)
+					(PersonSpeak 12 57)
 				)
 			)
 			(
@@ -840,16 +850,16 @@ code_03f6:
 				)
 				(= local5 0)
 				(switch state
-					(1 (localproc_1af6 12 58))
+					(1 (PersonSpeak 12 58))
 					(2
 						(if (Btst 94)
-							(localproc_1af6 12 59)
-							(localproc_1af6 12 60)
+							(PersonSpeak 12 59)
+							(PersonSpeak 12 60)
 							(self changeState: 999)
 						else
-							(localproc_1add 12 61)
-							(localproc_1add 12 62)
-							(localproc_1af6 12 63)
+							(BondsSpeak 12 61)
+							(BondsSpeak 12 62)
+							(PersonSpeak 12 63)
 							(SolvePuzzle 4 94)
 							(self changeState: 999)
 						)
@@ -858,32 +868,32 @@ code_03f6:
 			)
 			((Said 'affirmative')
 				(if (and (== state 2) local5)
-					(localproc_1af6 12 64)
+					(PersonSpeak 12 64)
 				else
-					(localproc_1af6 12 51)
+					(PersonSpeak 12 51)
 				)
 			)
 			((Said 'n')
 				(if (and (== state 2) local5)
-					(localproc_1af6 12 65)
+					(PersonSpeak 12 65)
 				else
-					(localproc_1af6 12 51)
+					(PersonSpeak 12 51)
 				)
 			)
 			(else
 				(event claimed: 1)
 				(= local5 0)
 				(switch state
-					(1 (localproc_1af6 12 41))
+					(1 (PersonSpeak 12 41))
 					(2
 						(if local7
-							(localproc_1add 12 66)
-							(localproc_1af6 12 67)
-							(localproc_1a9d)
+							(BondsSpeak 12 66)
+							(PersonSpeak 12 67)
+							(PersonHangUp)
 							(client setScript: phoneNumber)
 						else
-							(localproc_1add 12 68)
-							(localproc_1af6 12 69)
+							(BondsSpeak 12 68)
+							(PersonSpeak 12 69)
 							(++ local7)
 						)
 					)
@@ -906,9 +916,9 @@ code_03f6:
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (localproc_1af6 12 70))
+			(1 (PersonSpeak 12 70))
 			(3
-				(localproc_1af6 12 71)
+				(PersonSpeak 12 71)
 				(person posn: 30 1000)
 				(personMouth posn: 60 1000)
 				(RedrawCast)
@@ -920,7 +930,7 @@ code_03f6:
 				(= seconds 15)
 			)
 			(999
-				(localproc_1a9d)
+				(PersonHangUp)
 				(= seconds 0)
 				(client setScript: phoneNumber)
 			)
@@ -929,23 +939,23 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(localproc_1b13 event)
 			(return)
 		)
-		(if (!= (event type?) evSAID) (return))
+		(if (!= (event type?) saidEvent) (return))
 		(cond 
 			((or (== state 3) (== state 4)) (event claimed: 1) (Print 12 73))
 			((Said '/burglary,narcotics,homicide')
 				(if (== state 1)
 					(switch (Random 0 1)
-						(0 (localproc_1af6 12 74))
-						(else  (localproc_1af6 12 75))
+						(0 (PersonSpeak 12 74))
+						(else  (PersonSpeak 12 75))
 					)
-					(localproc_1af6 12 76)
+					(PersonSpeak 12 76)
 					(= local5 1)
 				else
-					(localproc_1af6 12 57)
+					(PersonSpeak 12 57)
 				)
 			)
 			((Said 'affirmative,affirmative')
@@ -953,21 +963,21 @@ code_03f6:
 					(= local5 0)
 					(self changeState: 3)
 				else
-					(localproc_1af6 12 51)
+					(PersonSpeak 12 51)
 				)
 			)
 			((Said 'n')
 				(if (== local5 1)
 					(= local5 0)
-					(localproc_1af6 12 77)
+					(PersonSpeak 12 77)
 					(self changeState: 999)
 				else
-					(localproc_1af6 12 51)
+					(PersonSpeak 12 51)
 				)
 			)
 			((== state 1)
 				(event claimed: 1)
-				(localproc_1af6 12 78)
+				(PersonSpeak 12 78)
 				(self changeState: 1)
 			)
 		)
@@ -988,16 +998,16 @@ code_03f6:
 	(method (changeState newState)
 		(switch (= state newState)
 			(1
-				(localproc_1af6 12 79)
-				(localproc_1af6 12 80)
+				(PersonSpeak 12 79)
+				(PersonSpeak 12 80)
 			)
 			(2
-				(localproc_1af6 12 81)
-				(localproc_1af6 12 82)
+				(PersonSpeak 12 81)
+				(PersonSpeak 12 82)
 				(self changeState: 999)
 			)
 			(999
-				(localproc_1a9d)
+				(PersonHangUp)
 				(client setScript: phoneNumber)
 			)
 		)
@@ -1005,11 +1015,11 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(localproc_1b13 event)
 			(return)
 		)
-		(if (!= (event type?) evSAID) (return))
+		(if (!= (event type?) saidEvent) (return))
 		(if (and (== state 1) (Said '/hello'))
 			(self changeState: 1)
 		else
@@ -1032,24 +1042,24 @@ code_03f6:
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(1 (localproc_1af6 12 83))
+			(1 (PersonSpeak 12 83))
 			(2
-				(localproc_1af6 12 84)
-				(localproc_1af6 12 85)
-				(localproc_1af6 12 86)
-				(localproc_1af6 12 87)
-				(localproc_1af6 12 88)
+				(PersonSpeak 12 84)
+				(PersonSpeak 12 85)
+				(PersonSpeak 12 86)
+				(PersonSpeak 12 87)
+				(PersonSpeak 12 88)
 			)
 			(3
-				(localproc_1af6 12 89)
-				(localproc_1af6 12 90)
-				(localproc_1af6 12 91)
-				(localproc_1af6 12 92)
-				(localproc_1af6 12 93)
+				(PersonSpeak 12 89)
+				(PersonSpeak 12 90)
+				(PersonSpeak 12 91)
+				(PersonSpeak 12 92)
+				(PersonSpeak 12 93)
 				(self changeState: 999)
 			)
 			(999
-				(localproc_1a9d)
+				(PersonHangUp)
 				(client setScript: phoneNumber)
 			)
 		)
@@ -1057,16 +1067,16 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(localproc_1b13 event)
 			(return)
 		)
-		(if (!= (event type?) evSAID) (return))
+		(if (!= (event type?) saidEvent) (return))
 		(if (Said '/dumb,dumb')
-			(localproc_1af6 12 94)
-			(localproc_1af6 12 95)
-			(localproc_1af6 12 96)
-			(localproc_1a9d)
+			(PersonSpeak 12 94)
+			(PersonSpeak 12 95)
+			(PersonSpeak 12 96)
+			(PersonHangUp)
 			(client setScript: phoneNumber)
 		else
 			(event claimed: 1)
@@ -1092,28 +1102,28 @@ code_03f6:
 			(1
 				(switch local8
 					(0
-						(localproc_1af6 12 97)
-						(localproc_1af6 12 97)
+						(PersonSpeak 12 97)
+						(PersonSpeak 12 97)
 					)
-					(1 (localproc_1af6 12 98))
-					(2 (localproc_1af6 12 99))
+					(1 (PersonSpeak 12 98))
+					(2 (PersonSpeak 12 99))
 				)
 			)
 			(2
 				(switch local8
 					(0 (= cycles 1) (= state 0))
 					(1
-						(localproc_1af6 12 100)
+						(PersonSpeak 12 100)
 						(self changeState: 999)
 					)
 					(2
-						(localproc_1af6 12 101)
+						(PersonSpeak 12 101)
 						(self changeState: 999)
 					)
 				)
 			)
 			(999
-				(localproc_1a9d)
+				(PersonHangUp)
 				(client setScript: phoneNumber)
 			)
 		)
@@ -1121,14 +1131,14 @@ code_03f6:
 	
 	(method (handleEvent event)
 		(if (event claimed?) (return))
-		(if (== (event type?) evKEYBOARD)
+		(if (== (event type?) keyDown)
 			(localproc_1b13 event)
 			(return)
 		)
-		(if (!= (event type?) evSAID) (return))
+		(if (!= (event type?) saidEvent) (return))
 		(cond 
-			((Said 'is<who') (localproc_1af6 12 102))
-			((Said 'fuck') (localproc_1af6 12 103))
+			((Said 'is<who') (PersonSpeak 12 102))
+			((Said 'fuck') (PersonSpeak 12 103))
 			(else (event claimed: 1) (self changeState: (++ state)))
 		)
 	)
