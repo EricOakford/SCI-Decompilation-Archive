@@ -123,7 +123,7 @@
 							82 83 84 91 93 94 96 97 141
 						)
 					)
-					(messager say: N_NOEFFECT NULL NULL 1 self SPELLS)
+					(messager say: N_NO_EFFECT NULL NULL 1 self SPELLS)
 				else
 					(soundObj number: 35 play:)
 					(= ticks 30)

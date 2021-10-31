@@ -194,7 +194,7 @@
 					(if (not (TakeDamage 100))
 						(EgoDead C_DIE_FLAME_SELF)
 					else
-						(messager say: N_THROWROCK NULL NULL 2 0 SPELLS)
+						(messager say: N_ROCK NULL NULL 2 0 SPELLS)
 					)
 				)
 				(cond 

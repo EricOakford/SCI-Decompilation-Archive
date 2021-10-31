@@ -35,7 +35,7 @@
 	)
 	(return
 		(if (not (ego has: iRock))
-			(messager say: N_THROWROCK NULL NULL 1 0 SPELLS)
+			(messager say: N_ROCK NULL NULL 1 0 SPELLS)
 			(DisposeScript THROWROCK)
 			(return FALSE)
 		else
@@ -207,7 +207,7 @@
 					(if (not (TakeDamage 1))
 						(EgoDead C_DIE_HURT_SELF)
 					else
-						(messager say: N_THROWROCK NULL NULL 2 0 SPELLS)
+						(messager say: N_ROCK NULL NULL 2 0 SPELLS)
 					)
 				)
 				(client dispose:)
