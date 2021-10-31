@@ -1,6 +1,9 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 7)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
+(include keys.sh)
+(include menu.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -23,106 +26,215 @@
 	southFile
 	taselliFile
 	westFile
-	newView_3
-	newView
+	drawerPlaque
+	bainsOldMugShot
 	bainsMugShot
 	local12
 	local13
 	local14
 )
-(procedure (localproc_0114)
+(procedure (PrevioustPage)
 	(= local12 1)
-	(curRoom drawPic: 90 3)
+	(curRoom drawPic: 90 WIPERIGHT)
 	(switch theFile
 		(bainsFile
-			(mugShot loop: 2 cel: 0 y: 60 init:)
+			(mugShot
+				loop: 2
+				cel: 0
+				y: 60
+				init:
+			)
 			(bainsMugShot posn: 31 28)
-			(if (InRoom 23) (newView posn: 57 66))
+			(if (InRoom iOldMugShot)
+				(bainsOldMugShot posn: 57 66)
+			)
 			(RedrawCast)
-			(Display 7 0 dsCOORD 120 15 dsWIDTH 200 dsFONT 0)
-			(Display 7 1 dsCOORD 20 75 dsWIDTH 300)
+			(Display 7 0
+				p_at 120 15
+				p_width 200
+				p_font 0
+			)
+			(Display 7 1 
+				p_at 20 75 
+				p_width 300
+			)
 		)
 		(bottsFile
-			(mugShot loop: 1 cel: 0 y: 60 init:)
+			(mugShot
+				loop: 1
+				cel: 0
+				y: 60
+				init:
+			)
 			(RedrawCast)
-			(Display 7 2 dsCOORD 120 10 dsWIDTH 200 dsFONT 0)
-			(Display 7 3 dsCOORD 20 65 dsWIDTH 300)
+			(Display 7 2
+				p_at 120 10
+				p_width 200
+				p_font 0
+			)
+			(Display 7 3
+				p_at 20 65
+				p_width 300
+			)
 		)
 		(loofinFile
-			(mugShot loop: 1 cel: 1 y: 160 init:)
+			(mugShot
+				loop: 1
+				cel: 1
+				y: 160
+				init:
+			)
 			(RedrawCast)
-			(Display 7 4 dsCOORD 20 10 dsWIDTH 300 dsFONT 0)
-			(Display 7 5 dsCOORD 120 90 dsWIDTH 180)
+			(Display 7 4
+				p_at 20 10
+				p_width 300
+				p_font 0
+			)
+			(Display 7 5
+				p_at 120 90
+				p_width 180
+			)
 		)
 		(martinezFile
-			(mugShot loop: 0 cel: 0 y: 160 init:)
+			(mugShot
+				loop: 0
+				cel: 0
+				y: 160
+				init:
+			)
 			(RedrawCast)
-			(Display 7 6 dsCOORD 20 10 dsWIDTH 300 dsFONT 0)
-			(Display 7 7 dsCOORD 120 100 dsWIDTH 180)
+			(Display 7 6
+				p_at 20 10
+				p_width 300
+				p_font 0
+			)
+			(Display 7 7
+				p_at 120 100
+				p_width 180
+			)
 		)
 		(southFile
-			(mugShot loop: 0 cel: 1 y: 160 init:)
+			(mugShot
+				loop: 0
+				cel: 1
+				y: 160
+				init:
+			)
 			(RedrawCast)
-			(Display 7 8 dsCOORD 20 10 dsWIDTH 300 dsFONT 0)
-			(Display 7 9 dsCOORD 120 100 dsWIDTH 180)
+			(Display 7 8
+				p_at 20 10
+				p_width 300
+				p_font 0
+			)
+			(Display 7 9
+				p_at 120 100
+				p_width 180
+			)
 		)
 		(taselliFile
-			(mugShot loop: 2 cel: 0 y: 170 init:)
+			(mugShot
+				loop: 2
+				cel: 0
+				y: 170
+				init:
+			)
 			(RedrawCast)
-			(Display 7 10 dsCOORD 20 10 dsWIDTH 280 dsFONT 0)
-			(Display 7 11 dsCOORD 120 110 dsWIDTH 180)
+			(Display 7 10
+				p_at 20 10
+				p_width 280
+				p_font 0
+			)
+			(Display 7 11
+				p_at 120 110
+				p_width 180
+			)
 		)
 		(westFile
-			(mugShot loop: 0 cel: 2 y: 160 init:)
+			(mugShot
+				loop: 0
+				cel: 2
+				y: 160
+				init:
+			)
 			(RedrawCast)
-			(Display 7 12 dsCOORD 20 10 dsWIDTH 280 dsFONT 0)
-			(Display 7 13 dsCOORD 120 100 dsWIDTH 180)
+			(Display 7 12
+				p_at 20 10
+				p_width 280
+				p_font 0
+			)
+			(Display 7 13
+				p_at 120 100
+				p_width 180
+			)
 		)
 	)
 	(= local13 0)
 )
 
-(procedure (localproc_0366)
+(procedure (NextPage)
 	(= local12 0)
 	(= local13 1)
-	(curRoom drawPic: 90 2)
+	(curRoom drawPic: 90 WIPELEFT)
 	(switch theFile
 		(bainsFile
 			(mugShot posn: 60 -30)
 			(bainsMugShot posn: 0 0)
-			(if (InRoom 23) (newView posn: 0 0))
+			(if (InRoom iOldMugShot)
+				(bainsOldMugShot posn: 0 0)
+			)
 			(Animate (cast elements?) 0)
-			(Display 7 14 dsCOORD 20 7 dsWIDTH 300)
+			(Display 7 14
+				p_at 20 7
+				p_width 300
+			)
 		)
 		(bottsFile
 			(mugShot posn: 60 -30)
 			(Animate (cast elements?) 0)
-			(Display 7 15 dsCOORD 20 10 dsWIDTH 300)
+			(Display 7 15
+				p_at 20 10
+				p_width 300
+			)
 		)
 		(loofinFile
 			(mugShot posn: 60 -30)
 			(Animate (cast elements?) 0)
-			(Display 7 16 dsCOORD 20 10 dsWIDTH 300)
+			(Display 7 16
+				p_at 20 10
+				p_width 300
+			)
 		)
 		(martinezFile
 			(mugShot posn: 60 -30)
 			(Animate (cast elements?) 0)
-			(Display 7 17 dsCOORD 20 10 dsWIDTH 300)
+			(Display 7 17
+				p_at 20 10
+				p_width 300
+			)
 		)
 		(southFile
 			(mugShot posn: 60 -30)
 			(Animate (cast elements?) 0)
-			(Display 7 18 dsCOORD 20 10 dsWIDTH 300)
+			(Display 7 18
+				p_at 20 10
+				p_width 300
+			)
 		)
 		(taselliFile
 			(mugShot posn: 60 -30)
 			(Animate (cast elements?) 0)
-			(Display 7 19 dsCOORD 20 10 dsWIDTH 300)
+			(Display 7 19
+				p_at 20 10
+				p_width 300
+			)
 		)
 		(westFile
 			(mugShot posn: 60 -30)
 			(Animate (cast elements?) 0)
-			(Display 7 20 dsCOORD 20 10 dsWIDTH 300)
+			(Display 7 20
+				p_at 20 10
+				p_width 300
+			)
 		)
 	)
 )
@@ -134,7 +246,7 @@
 		(super init:)
 		(HandsOff)
 		(User canInput: 1)
-		((= newView (View new:))
+		((= bainsOldMugShot (View new:))
 			view: 204
 			loop: 2
 			cel: 0
@@ -176,8 +288,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(curRoom drawPic: 7 6)
-				((= newView_3 (View new:))
+				(curRoom drawPic: 7 IRISIN)
+				((= drawerPlaque (View new:))
 					view: 60
 					posn: 156 110
 					loop: 2
@@ -275,8 +387,8 @@
 				(southFile hide:)
 				(taselliFile hide:)
 				(westFile hide:)
-				(newView_3 hide:)
-				(SetMenu 513 112 0)
+				(drawerPlaque hide:)
+				(SetMenu saveI 112 0) ;112=smMENU_ENABLE // aBool, no SYSTEM.SH equivalent?
 				(User canInput: 1)
 				(HandsOn)
 				(self cue:)
@@ -285,20 +397,22 @@
 				(= local12 1)
 				(= local13 0)
 				(= local14 1)
-				(localproc_0114)
+				(PrevioustPage)
 			)
 			(5
 				(User canInput: 0)
 				(mugShot dispose:)
 				(if (== theFile bainsFile)
 					(bainsMugShot posn: 0 0)
-					(if (not (ego has: 23)) (newView posn: 0 0))
+					(if (not (ego has: iOldMugShot))
+						(bainsOldMugShot posn: 0 0)
+					)
 				)
 				(= local14 0)
 				(self cue:)
 			)
 			(6
-				(curRoom drawPic: 7 6)
+				(curRoom drawPic: 7 IRISIN)
 				(bainsFile show:)
 				(bottsFile show:)
 				(loofinFile show:)
@@ -306,8 +420,8 @@
 				(southFile show:)
 				(taselliFile show:)
 				(westFile show:)
-				(newView_3 show:)
-				(SetMenu 513 112 1)
+				(drawerPlaque show:)
+				(SetMenu saveI 112 1)
 				(if (< howFast 30)
 					(self cue:)
 				else
@@ -316,13 +430,15 @@
 					)
 				)
 			)
-			(7 (User canInput: 1))
+			(7
+				(User canInput: 1)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evKEYBOARD
+			(keyDown
 				(if
 					(or
 						(== (event message?) KEY_F6)
@@ -333,14 +449,14 @@
 					(CantDo)
 				)
 			)
-			(evSAID
+			(saidEvent
 				(cond 
 					(local14
 						(cond 
 							((Said 'get/mugshot,painting,shot[<mug]')
 								(if (== theFile bainsFile)
-									(if (InRoom 23)
-										(newView dispose:)
+									(if (InRoom iOldMugShot)
+										(bainsOldMugShot dispose:)
 										(ego get: 23)
 										(SolvePuzzle 1)
 									else
@@ -350,7 +466,13 @@
 									(Print 7 22)
 								)
 							)
-							((Said 'look/painting,mugshot,shot[<mug]') (if local12 (Print 7 23) else (Print 7 24)))
+							((Said 'look/painting,mugshot,shot[<mug]')
+								(if local12
+									(Print 7 23)
+								else
+									(Print 7 24)
+								)
+							)
 							(
 								(or
 									(Said '[turn,go,look]/2[<page]')
@@ -358,7 +480,7 @@
 									(Said 'read,look,see,turn/page[<next,second]')
 								)
 								(if local12
-									(localproc_0366)
+									(NextPage)
 								else
 									(Print 7 25 #at -1 140)
 								)
@@ -372,7 +494,7 @@
 									(Said '/back')
 								)
 								(if local13
-									(localproc_0114)
+									(PrevioustPage)
 								else
 									(Print 7 26 #at -1 140)
 								)
@@ -384,14 +506,12 @@
 								)
 								(Print 7 27 #at -1 140)
 							)
-							(
-								(Said
-									'[read,see,look,get,open,pull]/file,bains,loofin,botts,martinez,julia,jason,lonny'
-								)
+							((Said '[read,see,look,get,open,pull]/file,bains,loofin,botts,martinez,julia,jason,lonny')
 								(Print 7 28 #at -1 140)
 							)
-							(
-							(Said 'exit,close,exit,close/(drawer,cabinet)[<file]') (Print 7 29 #at -1 140))
+							((Said 'exit,close,exit,close/(drawer,cabinet)[<file]')
+								(Print 7 29 #at -1 140)
+							)
 							(
 								(or
 									(Said 'close,replace[/file]')
@@ -469,9 +589,16 @@
 						(= theFile westFile)
 						(fileScript changeState: 1)
 					)
-					((Said 'look/painting,mugshot,shot[<mug]') (Print 7 32))
-					((Said 'read,see,look,get,open,pull/file') (Print 7 33))
-					((Said 'exit,close[/drawer,cabinet,file]') (cast eachElementDo: #dispose) (curRoom newRoom: 4))
+					((Said 'look/painting,mugshot,shot[<mug]')
+						(Print 7 32)
+					)
+					((Said 'read,see,look,get,open,pull/file')
+						(Print 7 33)
+					)
+					((Said 'exit,close[/drawer,cabinet,file]')
+						(cast eachElementDo: #dispose)
+						(curRoom newRoom: 4)
+					)
 				)
 			)
 		)

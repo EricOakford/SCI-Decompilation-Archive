@@ -18,7 +18,7 @@ $100 sierraM
 $200 fileM
 	saveI
 	restoreI
-		divider201I
+	divider201I
 	restartI
 	quitI
 )
@@ -28,11 +28,11 @@ $300 actionM
 	pauseI
 	invI
 	repeatI
-		divider301I
+	divider301I
 	loadGunI
 	drawGunI
 	fireGunI
-		divider302I
+	divider302I
 	carI
 )
 

@@ -505,7 +505,7 @@
 				((and (not (Btst 24))
 						(== gamePhase 10)) (sequencer changeState: 57))
 				(
-				(and (not (Btst 27)) global127 (== prevRoomNum 31)) (sequencer changeState: 63))
+				(and (not (Btst fKidnappingReported)) global127 (== prevRoomNum 31)) (sequencer changeState: 63))
 				((and (not (Btst 28)) (Btst 52)) (sequencer changeState: 68))
 			)
 			(if (not local117)
@@ -1220,7 +1220,7 @@
 			(63
 				(User canInput: 0)
 				(= local113 0)
-				(Bset 27)
+				(Bset fKidnappingReported)
 				(localproc_00cd 1 13 121)
 			)
 			(64

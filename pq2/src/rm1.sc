@@ -369,7 +369,8 @@
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					((or
+					(
+						(or
 							(Said 'remove/cloth')
 							(Said 'get<[off]/cloth<[off]')
 							(Said 'undress')
@@ -377,7 +378,7 @@
 							(Said 'piss')
 							(Said 'take/piss')
 						)
-							(Print 1 8)
+						(Print 1 8)
 					)
 					((Said 'drive')
 						(if carPullingIn
@@ -517,9 +518,15 @@
 								(or
 									(and
 										(ego inRect: 73 149 128 188)
-										(or (Btst fDocBookingEvidence) randCarExists)
+										(or
+											(Btst fDocBookingEvidence)
+											randCarExists
+										)
 									)
-									(and (ego inRect: 205 154 313 185) nearUnmarkedCar)
+									(and
+										(ego inRect: 205 154 313 185)
+										nearUnmarkedCar
+									)
 								)
 								(Print 1 28)
 							)

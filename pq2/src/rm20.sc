@@ -238,7 +238,7 @@
 		(manScript dispose:)
 		(keithScript dispose:)
 		(guardScript dispose:)
-		(features eachElementDo: #dispose 84)
+		(features eachElementDo: #dispose #delete)
 		(super dispose:)
 	)
 )

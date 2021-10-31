@@ -1,6 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 6)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -18,7 +19,7 @@
 
 (local
 	local0
-	local1
+	numPeopleInRoom
 )
 (instance James of Feature
 	(properties)
@@ -335,7 +336,7 @@ code_026a:
 			ret     
 			jmp      code_03aa
 code_027e:
-			lsl      local1
+			lsl      numPeopleInRoom
 			ldi      0
 			eq?     
 			bnt      code_0292
@@ -365,7 +366,7 @@ code_02b0:
 			push    
 			callk    Said,  2
 			bnt      code_02db
-			lsl      local1
+			lsl      numPeopleInRoom
 			ldi      0
 			eq?     
 			bnt      code_02cf
@@ -392,7 +393,7 @@ code_02db:
 			callk    Said,  2
 			bnt      code_03aa
 code_02f1:
-			lsl      local1
+			lsl      numPeopleInRoom
 			ldi      0
 			eq?     
 			bnt      code_030d
@@ -503,35 +504,73 @@ code_03aa:
 	(method (handleEvent event)
 		(cond 
 			(
-			(or (event claimed?) (!= (event type?) evSAID)) (return))
+				(or
+					(event claimed?)
+					(!= (event type?) saidEvent)
+				)
+				(return)
+			)
 			((not (ego inRect: 56 120 120 146))
 				(cond 
-					((not (Said '/lieutenant,bob,adams')) (return))
-					((<= local1 1) (Print 6 22))
-					(else (NotClose))
+					((not (Said '/lieutenant,bob,adams'))
+						(return)
+					)
+					((<= numPeopleInRoom 1)
+						(Print 6 22)
+					)
+					(else
+						(NotClose)
+					)
 				)
 			)
-			((Said 'look/desk') (Print 6 23))
-			((Said 'ask') (if (<= local1 1) (Print 6 22) else (Print 6 24)))
+			((Said 'look/desk')
+				(Print 6 23)
+			)
+			((Said 'ask')
+				(if (<= numPeopleInRoom 1)
+					(Print 6 22)
+				else
+					(Print 6 24)
+				)
+			)
 			(
 				(or
 					(Said '/lieutenant,bob,adams,dude,cop>')
 					(Said 'hello>')
 				)
 				(cond 
-					((<= local1 1) (event claimed: 1) (Print 6 22))
-					((Said 'look') (Print 6 25))
-					((or (Said 'chat') (Said 'hello'))
+					((<= numPeopleInRoom 1)
+						(event claimed: 1)
+						(Print 6 22)
+					)
+					((Said 'look')
+						(Print 6 25)
+					)
+					(
+						(or
+							(Said 'chat')
+							(Said 'hello')
+						)
 						(switch (Random 0 2)
-							(0 (Print 6 26))
-							(1 (Print 6 27))
-							(2 (Print 6 28))
+							(0
+								(Print 6 26)
+							)
+							(1
+								(Print 6 27)
+							)
+							(2
+								(Print 6 28)
+							)
 						)
 					)
-					(else (event claimed: 0))
+					(else
+						(event claimed: 0)
+					)
 				)
 			)
-			((Said '/affirmative') (Print 6 29))
+			((Said '/affirmative')
+				(Print 6 29)
+			)
 		)
 	)
 )
@@ -595,7 +634,7 @@ code_05b2:
 			ret     
 			jmp      code_0710
 code_05c6:
-			lsl      local1
+			lsl      numPeopleInRoom
 			ldi      2
 			gt?     
 			bnt      code_05da
@@ -636,7 +675,7 @@ code_060f:
 			push    
 			callk    Said,  2
 			bnt      code_063a
-			lsl      local1
+			lsl      numPeopleInRoom
 			ldi      2
 			gt?     
 			bnt      code_062e
@@ -663,7 +702,7 @@ code_063a:
 			callk    Said,  2
 			bnt      code_0710
 code_0650:
-			lsl      local1
+			lsl      numPeopleInRoom
 			ldi      2
 			gt?     
 			bnt      code_066c
@@ -779,11 +818,28 @@ code_0710:
 	(method (handleEvent event)
 		(cond 
 			(
-			(or (event claimed?) (!= (event type?) evSAID)) (return))
-			((not (ego inRect: 193 145 240 154)) (if (Said '/computer') (NotClose) else (return)))
-			((Said 'look/desk') (Print 6 40))
-			((Said 'turn<on/computer') (Print 6 41))
-			((Said 'look,use/computer') (curRoom newRoom: 8))
+				(or
+					(event claimed?)
+					(!= (event type?) saidEvent)
+				)
+				(return)
+			)
+			((not (ego inRect: 193 145 240 154))
+				(if (Said '/computer')
+					(NotClose)
+				else
+					(return)
+				)
+			)
+			((Said 'look/desk')
+				(Print 6 40)
+			)
+			((Said 'turn<on/computer')
+				(Print 6 41)
+			)
+			((Said 'look,use/computer')
+				(curRoom newRoom: 8)
+			)
 		)
 	)
 )
@@ -791,26 +847,34 @@ code_0710:
 (instance rm6 of Room
 	(properties
 		picture 6
-		style $0005
+		style WIPEDOWN
 	)
 	
 	(method (init)
-		(Load rsVIEW 1)
-		(Load rsVIEW 68)
+		(Load VIEW 1)
+		(Load VIEW 68)
 		(super init:)
 		(self setFeatures: Laura James William Robert Computer)
-		(self setLocales: 153 156)
+		(self setLocales: regFieldKit regOffice)
 		(HandsOn)
 		(= local0 0)
-		(= local1 (Random 0 4))
-		(= gunFireState 3)
+		(= numPeopleInRoom (Random 0 4))
+		(= gunFireState gunPROHIBITED)
 		(if (!= prevRoomNum 8)
 			(User prevDir: 1)
-			(ego posn: 87 158 setMotion: MoveTo 87 10)
+			(ego
+				posn: 87 158
+				setMotion: MoveTo 87 10
+			)
 		)
-		(ego view: 1 setCycle: Walk illegalBits: -32768 init:)
-		(if (<= local1 2)
-			((View new:)
+		(ego
+			view: 1
+			setCycle: Walk
+			illegalBits: cWHITE ;-32768
+			init:
+		)
+		(if (<= numPeopleInRoom 2)
+			((View new:) ;laura
 				view: 68
 				posn: 185 125
 				loop: 0
@@ -819,8 +883,8 @@ code_0710:
 				addToPic:
 			)
 		)
-		(if (!= local1 0)
-			((View new:)
+		(if (!= numPeopleInRoom 0)
+			((View new:) ;William 
 				view: 68
 				posn: 206 142
 				loop: 0
@@ -829,7 +893,7 @@ code_0710:
 				addToPic:
 			)
 		)
-		((View new:)
+		((View new:) ;James
 			view: 68
 			posn: 182 148
 			loop: 0
@@ -837,8 +901,8 @@ code_0710:
 			init:
 			addToPic:
 		)
-		(if (> local1 1)
-			((View new:)
+		(if (> numPeopleInRoom 1)
+			((View new:) ;Adams
 				view: 68
 				posn: 92 112
 				loop: 0
@@ -851,7 +915,7 @@ code_0710:
 	)
 	
 	(method (dispose)
-		(features eachElementDo: #dispose 84)
+		(features eachElementDo: #dispose #delete)
 		(super dispose:)
 	)
 )
@@ -860,22 +924,32 @@ code_0710:
 	(properties)
 	
 	(method (doit)
-		(if (> (ego y?) 160) (curRoom newRoom: 2))
+		(if (> (ego y?) 160)
+			(curRoom newRoom: 2)
+		)
 		(super doit:)
 	)
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '/flyer,painting') (Print 6 42))
-							((Said '/wastebasket,garbage') (Print 6 43))
-							((Said '[<at,around][/(!*,chamber,office)]') (Print 6 44))
+							((Said '/flyer,painting')
+								(Print 6 42)
+							)
+							((Said '/wastebasket,garbage')
+								(Print 6 43)
+							)
+							((Said '[<at,around][/(!*,chamber,office)]')
+								(Print 6 44)
+							)
 						)
 					)
-					((Said 'empty,clean[/newspaper,garbage,basket]') (Print 6 45))
+					((Said 'empty,clean[/newspaper,garbage,basket]')
+						(Print 6 45)
+					)
 				)
 			)
 		)
