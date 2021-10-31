@@ -461,7 +461,13 @@
 )
 
 (procedure (SolvePuzzle pValue pFlag)
-	(if (and (== argc 2) (Btst pFlag)) (return))
+	(if
+		(and
+			(== argc 2)
+			(Btst pFlag)
+		)
+		(return)
+	)
 	(theGame changeScore: pValue)
 	(if (Btst fGotPoints)
 		(Bclr fGotPoints)
@@ -528,7 +534,7 @@
 		(= currentCar carPersonal)
 		(= methaneGasTimer -1)
 		(= correctScubaTank (Random 1 3))
-		(Bset fEgoDeskUnlocked)
+		(Bset fEgoDeskLocked) ;flag was fEgoDeskUnlocked. Renamed for clarity - DL
 		(= version {1.002.011})
 		(Inventory
 			add:

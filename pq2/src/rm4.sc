@@ -1,6 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 4)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -24,12 +25,12 @@
 	wallet
 	whereIsKeith
 	egoSitting
-	local4
+	local4 ;which captain/keith comment to print based on gamePhaze?
 	onPhone
-	local6
+	closedDrawer
 	captainCanTalk
 )
-(procedure (localproc_000c)
+(procedure (LocPrint)
 	(Print &rest #at -1 124)
 )
 
@@ -70,18 +71,18 @@
 (instance rm4 of Room
 	(properties
 		picture 4
-		style $0006
+		style IRISIN
 	)
 	
 	(method (init)
 		(super init:)
 		(HandsOn)
-		(Load rsVIEW 1)
-		(Load rsVIEW 0)
-		(Load rsVIEW 65)
-		(Load rsVIEW 62)
-		(Load rsVIEW 3)
-		(= gunFireState 3)
+		(Load VIEW 1)
+		(Load VIEW 0)
+		(Load VIEW 65)
+		(Load VIEW 62)
+		(Load VIEW 3)
+		(= gunFireState gunPROHIBITED)
 		(NormalEgo)
 		(if
 			(and
@@ -105,18 +106,47 @@
 		)
 		(= local4
 			(cond 
-				((Btst 32) (Bclr 32) 2)
-				((and global127 (not (Btst 31))) 8)
-				((== gamePhase 8) 4)
-				(global162 9)
-				((== gamePhase 0) 1)
-				((== prevRoomNum 7) 9)
-				((== prevRoomNum 12) 9)
-				((== isOnDuty 1) 2)
-				((== isOnDuty 2) 2)
-				((== gamePhase 12) 6)
-				(marieWantsCall 3)
-				(else 0)
+				((Btst fVisitedHomicideOffice)
+					(Bclr fVisitedHomicideOffice)
+					2
+				)
+				(
+					(and
+						global127
+						(not (Btst 31)) ;fFlag31
+					)
+					8
+				)
+				((== gamePhase 8)
+					4
+				)
+				(global162
+					9
+				)
+				((== gamePhase 0)
+					1
+				)
+				((== prevRoomNum 7)
+					9
+				)
+				((== prevRoomNum 12)
+					9
+				)
+				((== isOnDuty 1)
+					2
+				)
+				((== isOnDuty 2)
+					2
+				)
+				((== gamePhase 12)
+					6
+				)
+				(marieWantsCall
+					3
+				)
+				(else
+					0
+				)
 			)
 		)
 		(= gunFireState 3)
@@ -147,16 +177,30 @@
 					setCycle: BegLoop
 				)
 				(User canInput: 1)
-				(phone cel: 255 loop: 1 posn: 172 116 setCycle: BegLoop init:)
+				(phone
+					cel: 255
+					loop: 1
+					posn: 172 116
+					setCycle: BegLoop
+					init:
+				)
 				(= egoSitting 1)
 				(if
-				(and (!= isOnDuty 1) (== gamePhase 7) (not (Btst 45)))
+					(and
+						(!= isOnDuty 1)
+						(== gamePhase 7)
+						(not (Btst 45)) ;fFlag45
+					)
 					(Bset 45)
 					(captainScript changeState: 14)
 				)
 			)
 			(else 
-				(ego posn: 198 146 init: setMotion: MoveTo 198 946)
+				(ego
+					posn: 198 146
+					init:
+					setMotion: MoveTo 198 946
+				)
 			)
 		)
 	)
@@ -181,21 +225,31 @@
 					(ego view: (- (ego view?) 1))
 				)
 			)
-			((!= (mod (ego view?) 2) 1) (ego view: (+ (ego view?) 1)))
+			((!= (mod (ego view?) 2) 1)
+				(ego view: (+ (ego view?) 1))
+			)
 		)
 		(cond 
 			((>= (ego y?) 165)
 				(if
-				(and (ego has: 3) (< 5 gamePhase) (< gamePhase 8))
-					(localproc_000c 4 0)
-					(localproc_000c 4 1)
-					(PutInRoom 3)
+					(and
+						(ego has: 3)
+						(< 5 gamePhase)
+						(< gamePhase 8)
+					)
+					(LocPrint 4 0)
+					(LocPrint 4 1)
+					(PutInRoom iUnmarkedCarKeys)
 					(= workCarLocked 1)
 				)
-				(= global162
-					(if (and talkedToCaptain (== isOnDuty 0))
+				(= global162 ;player waiting for reply maybe?
+					(if
+						(and
+							talkedToCaptain
+							(== isOnDuty 0)
+						)
 						(cond 
-							((== local4 2))
+							((== local4 2)) ;returns 2?
 							((== local4 1))
 							((== local4 6))
 							((== local4 8))
@@ -207,7 +261,7 @@
 				)
 				(if (!= isOnDuty 1)
 					(if (== gamePhase 6)
-						(localproc_000c 4 2)
+						(LocPrint 4 2)
 						(= isOnDuty 1)
 					)
 				)
@@ -230,7 +284,13 @@
 				)
 				(captainScript changeState: 0)
 			)
-			((and (== local4 8) (not (Btst 31))) (captainScript changeState: 25))
+			(
+				(and
+					(== local4 8)
+					(not (Btst fReportedMarieMissingToCaptain))
+				)
+					(captainScript changeState: 25)
+				)
 		)
 		(super doit:)
 	)
@@ -238,17 +298,33 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (and local6 (> local4 3))
-					(= local4 9)
-					(= local6 0)
+				(if
+					(and
+						closedDrawer
+						(> local4 3)
+					)
+						(= local4 9)
+						(= closedDrawer 0)
 				)
 				(switch local4
-					(1 (= whereIsKeith 2))
-					(2 (= whereIsKeith 3))
-					(4 (= whereIsKeith 2))
-					(6 (= whereIsKeith 5))
-					(7 (= whereIsKeith 3))
-					(8 (= whereIsKeith 1))
+					(1
+						(= whereIsKeith 2)
+					)
+					(2
+						(= whereIsKeith 3)
+					)
+					(4
+						(= whereIsKeith 2)
+					)
+					(6
+						(= whereIsKeith 5)
+					)
+					(7
+						(= whereIsKeith 3)
+					)
+					(8
+						(= whereIsKeith 1)
+					)
 					(else 
 						(= whereIsKeith (Random 1 6))
 					)
@@ -262,9 +338,18 @@
 					init:
 					stopUpd:
 				)
-				(captain view: 65 posn: 53 134 cel: 0 setPri: 9 init:)
+				(captain
+					view: 65
+					posn: 53 134
+					cel: 0
+					setPri: 9
+					init:
+				)
 				(if (<= whereIsKeith 3)
-					(captain loop: 3 stopUpd:)
+					(captain
+						loop: 3
+						stopUpd:
+					)
 					(blab
 						view: 65
 						loop: 1
@@ -275,27 +360,59 @@
 						init:
 					)
 				else
-					(captain loop: 4 setCycle: Forward cycleSpeed: 7)
+					(captain
+						loop: 4
+						setCycle: Forward
+						cycleSpeed: 7
+					)
 				)
-				((= keith (View new:)) view: 65 init:)
+				((= keith (View new:))
+					view: 65
+					init:
+				)
 				(switch whereIsKeith
 					(1
-						(keith view: 62 posn: 213 134 loop: 0 cel: 0)
+						(keith
+							view: 62
+							posn: 213 134
+							loop: 0
+							cel: 0
+						)
 					)
 					(2
-						(keith posn: 210 136 loop: 6 cel: 0)
+						(keith
+							posn: 210 136
+							loop: 6
+							cel: 0
+						)
 					)
 					(3
-						(keith posn: 133 130 loop: 6 cel: 0)
+						(keith
+							posn: 133 130
+							loop: 6
+							cel: 0
+						)
 					)
 					(4
-						(keith posn: 163 148 loop: 6 cel: 0)
+						(keith
+							posn: 163 148
+							loop: 6
+							cel: 0
+						)
 					)
 					(5
-						(keith posn: 120 140 loop: 7 cel: 0)
+						(keith
+							posn: 120 140
+							loop: 7
+							cel: 0
+						)
 					)
 					(6
-						(keith posn: 214 148 loop: 7 cel: 0)
+						(keith
+							posn: 214 148
+							loop: 7
+							cel: 0
+						)
 					)
 				)
 				(keith stopUpd:)
@@ -345,9 +462,15 @@
 				(switch local4
 					(2
 						(cond 
-							((== isOnDuty 1) (captainScript changeState: 14))
-							((== isOnDuty 2) (captainScript changeState: 12))
-							(else (captainScript changeState: 5))
+							((== isOnDuty 1)
+								(captainScript changeState: 14)
+							)
+							((== isOnDuty 2)
+								(captainScript changeState: 12)
+							)
+							(else
+								(captainScript changeState: 5)
+							)
 						)
 					)
 					(4
@@ -359,7 +482,11 @@
 				)
 			)
 			(1
-				(ego loop: 2 cel: 0 setCycle: EndLoop self)
+				(ego
+					loop: 2
+					cel: 0
+					setCycle: EndLoop self
+				)
 			)
 			(2
 				(rm4 setScript: drawerScript)
@@ -381,21 +508,35 @@
 				(User canInput: 1)
 			)
 			(5
-				(ego loop: 3 cel: 0 setCycle: EndLoop self)
-				(phone setCel: -1 setCycle: EndLoop startUpd:)
+				(ego
+					loop: 3
+					cel: 0
+					setCycle: EndLoop self
+				)
+				(phone
+					setCel: -1
+					setCycle: EndLoop
+					startUpd:
+				)
 			)
-			(6 (curRoom newRoom: 12))
+			(6
+				(curRoom newRoom: 12)
+			)
 			(7
 				(ego setCycle: BegLoop self)
 				(phone setCycle: BegLoop)
 			)
-			(8 (ego loop: 0 cel: 0))
+			(8 (ego
+					loop: 0
+					cel: 0
+				)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					(
 						(or
@@ -405,10 +546,23 @@
 							)
 						)
 						(cond 
-							((not (ego inRect: 70 131 122 156)) (NotClose))
-							((not captainCanTalk) (Print 4 3))
-							((or (ego has: 13) (ego has: 35) (Btst 136)) (captainScript changeState: 28))
-							(else (Print 4 4))
+							((not (ego inRect: 70 131 122 156))
+								(NotClose)
+							)
+							((not captainCanTalk)
+								(Print 4 3)
+							)
+							(
+								(or
+									(ego has: iHitList)
+									(ego has: iColbyCard)
+									(Btst fBookedColbyCard)
+								)
+									(captainScript changeState: 28)
+							)
+							(else
+								(Print 4 4)
+							)
 						)
 					)
 					((Said 'look,read/file')
@@ -420,11 +574,26 @@
 					)
 					((Said 'look,read/newspaper,flyer')
 						(cond 
-							((ego inRect: 122 117 168 124) (Print 4 7) (Print 4 8) (SolvePuzzle 1 123))
+							((ego inRect: 122 117 168 124)
+								(Print 4 7)
+								(Print 4 8)
+								(SolvePuzzle 1 123)
+							)
 							(
-							(and (ego inRect: 70 128 99 140) (== (ego loop?) 1)) (Print 4 9))
-							((ego inRect: 71 130 124 157) (Print 4 10) (Print 4 11) (SolvePuzzle 1 124))
-							(else (event claimed: 0))
+								(and
+									(ego inRect: 70 128 99 140)
+									(== (ego loop?) 1)
+								)
+									(Print 4 9)
+							)
+							((ego inRect: 71 130 124 157)
+								(Print 4 10)
+								(Print 4 11)
+								(SolvePuzzle 1 124)
+							)
+							(else
+								(event claimed: 0)
+							)
 						)
 					)
 					(
@@ -432,22 +601,39 @@
 							(Said 'look,read/*<ya<thank')
 							(Said 'look,read/letter')
 						)
-						(if (and (ego has: 5) (!= local4 3))
-							((inventory at: 5) showSelf:)
+						(if
+							(and
+								(ego has: 5)
+								(!= local4 3)
+							)
+								((inventory at: 5) showSelf:)
 						else
 							(event claimed: 0)
 						)
 					)
 					((Said 'chat[/dude,cop,person]')
 						(cond 
-							((ego inRect: 70 131 122 156) (Print 4 12))
-							((ego inRect: 90 117 137 132) (Print 4 13))
-							((< (ego distanceTo: keith) 46) (Print 4 14))
-							(else (Print 4 15))
+							((ego inRect: 70 131 122 156)
+								(Print 4 12)
+							)
+							((ego inRect: 90 117 137 132)
+								(Print 4 13)
+							)
+							((< (ego distanceTo: keith) 46)
+								(Print 4 14)
+							)
+							(else
+								(Print 4 15)
+							)
 						)
 					)
 					(
-					(or (Said 'ask,get//order') (Said 'ask,get/order')) (Print 4 16))
+						(or
+							(Said 'ask,get//order')
+							(Said 'ask,get/order')
+						)
+							(Print 4 16)
+					)
 					((Said 'chat,ask/hall')
 						(if (!= isOnDuty 1)
 							(if (== (captain loop?) 3)
@@ -467,18 +653,29 @@
 						)
 					)
 					(
-					(or (Said 'chat,get,ask/friend,friend') (Said 'let/go'))
+						(or
+							(Said 'chat,get,ask/friend,friend')
+							(Said 'let/go')
+						)
 						(if (< (ego distanceTo: keith) 40)
 							(switch isOnDuty
-								(2 (Print 4 20))
-								(1 (Print 4 21))
-								(else  (Print 4 22))
+								(2
+									(Print 4 20)
+								)
+								(1
+									(Print 4 21)
+								)
+								(else
+									(Print 4 22)
+								)
 							)
 						else
 							(Print 4 23)
 						)
 					)
-					((Said 'press,move/friend') (Print 4 24))
+					((Said 'press,move/friend')
+						(Print 4 24)
+					)
 					((Said 'get,remove,pick/')
 						(if (ego inRect: 70 131 122 153)
 							(Print 4 25)
@@ -486,25 +683,40 @@
 							(event claimed: 0)
 						)
 					)
-					((Said '/briefcase') (Print 4 26))
-					((or (Said '/shot<mug') (Said '/mugshot')) (Print 4 27))
-					((Said 'turn<on/computer') (Print 4 28))
+					((Said '/briefcase')
+						(Print 4 26)
+					)
+					(
+						(or
+							(Said '/shot<mug')
+							(Said '/mugshot')
+						)
+							(Print 4 27))
+					((Said 'turn<on/computer')
+						(Print 4 28)
+					)
 					((Said 'look,use/computer')
 						(if
 							(or
-								(== (ego onControl:) 16384)
-								(== (ego onControl:) -16384)
+								(== (ego onControl:) cYELLOW) ;16384
+								(== (ego onControl:) -16384) ;not needed?
 							)
-							(curRoom newRoom: 8)
+								(curRoom newRoom: 8)
 						else
 							(NotClose)
 						)
 					)
 					((Said 'look,read,frisk>')
 						(cond 
-							((Said '/light,lamp') (Print 4 29))
-							((Said '<in/drawer') (Print 4 30))
-							((Said '/drawer') (Print 4 31))
+							((Said '/light,lamp')
+								(Print 4 29)
+							)
+							((Said '<in/drawer')
+								(Print 4 30)
+							)
+							((Said '/drawer')
+								(Print 4 31)
+							)
 							((Said '/cone')
 								(if (== (captain loop?) 3)
 									(Print 4 32)
@@ -512,42 +724,67 @@
 									(Print 4 33)
 								)
 							)
-							((Said '/locker') (Print 4 34))
-							((Said '/key,coatrack') (Print 4 35))
-							((Said '/wall') (Print 4 36))
-							((Said '/file,cabinet<in,in') (Print 4 37))
+							((Said '/locker')
+								(Print 4 34)
+							)
+							((Said '/key,coatrack')
+								(Print 4 35)
+							)
+							((Said '/wall')
+								(Print 4 36)
+							)
+							((Said '/file,cabinet<in,in')
+								(Print 4 37)
+							)
 							((Said '/board[<bulletin]')
 								(cond 
-									((ego inRect: 122 117 168 124) (Print 4 7) (Print 4 8) (SolvePuzzle 1 123))
+									((ego inRect: 122 117 168 124)
+										(Print 4 7)
+										(Print 4 8)
+										(SolvePuzzle 1 123)
+									)
 									(
-									(and (ego inRect: 70 128 99 140) (== (ego loop?) 1)) (Print 4 38))
-									(else (Print 4 39))
+										(and
+											(ego inRect: 70 128 99 140)
+											(== (ego loop?) 1)
+										)
+											(Print 4 38)
+									)
+									(else
+										(Print 4 39)
+									)
 								)
 							)
-							((Said '/score,schedule') (SolvePuzzle 1 123) (Print 4 8))
-							(
-							(Said '[<at,around][/(!*,chamber,office,homicide)]') (Print 4 40) (Print 4 41))
+							((Said '/score,schedule')
+								(SolvePuzzle 1 123)
+								(Print 4 8)
+							)
+							((Said '[<at,around][/(!*,chamber,office,homicide)]')
+								(Print 4 40)
+								(Print 4 41)
+							)
 						)
 					)
 				)
 				(cond 
-					(
-						(Said
-							'look,get,read,check/basket,subpoena,note,envelope,finding,newspaper'
-						)
+					((Said 'look,get,read,check/basket,subpoena,note,envelope,finding,newspaper')
 						(event claimed: 0)
-						(if (or (ego inRect: 130 123 188 144) egoSitting)
+						(if
+							(or
+								(ego inRect: 130 123 188 144)
+								egoSitting
+							)
 							(cond 
 								(
 									(and
 										(< gamePhase 6)
 										(Said '/basket,subpoena,envelope,newspaper')
 									)
-									(SolvePuzzle 1 64)
-									(localproc_000c 4 42)
-									(localproc_000c 4 43)
-									(localproc_000c 4 44 70 240)
-									(Print 4 45 #at -1 120)
+										(SolvePuzzle 1 64)
+										(LocPrint 4 42)
+										(LocPrint 4 43)
+										(LocPrint 4 44 70 240)
+										(Print 4 45 #at -1 120)
 								)
 								(
 									(and
@@ -556,30 +793,46 @@
 									)
 									(if
 										(or
-											(Btst 128)
-											(Btst 131)
-											(Btst 132)
-											(Btst 130)
-											(Btst 134)
-											(Btst 127)
-											(Btst 133)
-											(Btst 129)
+											(Btst fBookedFingerprint) ;128
+											(Btst fBookedCoveBlood) ;was 131, which never gets set. Confirm 146 is correct here.
+											(Btst fBookedPlasterCast) ;132
+											(Btst fBookedKnife) ;130
+											(Btst fBookedJailClothes) ;134
+											(Btst fBookedRevolver) ;127
+											(Btst fBookedBullets) ;133
+											(Btst fBppkedThumbprint) ;129
 										)
-										(SolvePuzzle 3 65)
-										(localproc_000c 4 46)
-										(localproc_000c 4 47)
-										(Print 4 48 #at -1 40)
-										(if (Btst 128) (Print 4 49))
-										(if (Btst 129) (Print 4 50))
-										(cond 
-											((Btst 131) (Print 4 51))
-											((Btst 132) (Print 4 52))
-											((Btst 130) (Print 4 53))
-											((Btst 134) (Print 4 54))
-											((Btst 127) (Print 4 55))
-											((Btst 133) (Print 4 56))
-										)
-										(Print 4 57)
+											(SolvePuzzle 3 65)
+											(LocPrint 4 46)
+											(LocPrint 4 47)
+											(Print 4 48 #at -1 40)
+											(if (Btst fBookedFingerprint)
+												(Print 4 49)
+											)
+											(if (Btst fBppkedThumbprint)
+												(Print 4 50)
+											)
+											(cond 
+												((Btst fBookedCoveBlood) ;was 131. See above comment
+													(Print 4 51)
+												)
+												((Btst fBookedPlasterCast)
+													(Print 4 52)
+												)
+												((Btst fBookedKnife)
+													(Print 4 53)
+												)
+												((Btst fBookedJailClothes)
+													(Print 4 54)
+												)
+												((Btst fBookedRevolver)
+													(Print 4 55)
+												)
+												((Btst fBookedBullets)
+													(Print 4 56)
+												)
+											)
+											(Print 4 57)
 									else
 										(Print 4 58)
 									)
@@ -589,11 +842,14 @@
 										marieWantsCall
 										(Said '/basket,note,letter,newspaper')
 									)
-									(localproc_000c 4 59)
-									(localproc_000c 4 60)
-									(localproc_000c 4 61)
+									(LocPrint 4 59)
+									(LocPrint 4 60)
+									(LocPrint 4 61)
 								)
-								(else (Print 4 62) (event claimed: 1))
+								(else
+									(Print 4 62)
+									(event claimed: 1)
+								)
 							)
 						else
 							(Print 4 63)
@@ -602,27 +858,71 @@
 					)
 					((Said 'look/dude,person,cop')
 						(cond 
-							((ego inRect: 75 131 122 153) (Print 4 64))
-							((ego inRect: 90 117 142 132) (Print 4 65))
-							((< (ego distanceTo: keith) 30) (Print 4 66))
-							(else (Print 4 67))
+							((ego inRect: 75 131 122 153)
+								(Print 4 64)
+							)
+							((ego inRect: 90 117 142 132)
+								(Print 4 65)
+							)
+							((< (ego distanceTo: keith) 30)
+								(Print 4 66)
+							)
+							(else
+								(Print 4 67)
+							)
 						)
 					)
-					((Said 'look/hall') (Print 4 64))
-					((Said 'look/james') (if (ego inRect: 90 117 142 132) (Print 4 65)))
-					((Said 'look/friend') (Print 4 66))
+					((Said 'look/hall')
+						(Print 4 64)
+					)
+					((Said 'look/james')
+						(if (ego inRect: 90 117 142 132)
+							(Print 4 65)
+						)
+					)
+					((Said 'look/friend')
+						(Print 4 66)
+					)
 					((Said 'look/desk')
 						(cond 
-							((ego inRect: 71 131 122 156) (Print 4 68))
-							((ego inRect: 90 117 140 132) (Print 4 69))
-							((ego inRect: 189 117 244 139) (Print 4 70))
-							((ego inRect: 154 140 235 200) (Print 4 71))
-							(else (Print 4 72))
+							((ego inRect: 71 131 122 156)
+								(Print 4 68)
+							)
+							((ego inRect: 90 117 140 132)
+								(Print 4 69)
+							)
+							((ego inRect: 189 117 244 139)
+								(Print 4 70)
+							)
+							((ego inRect: 154 140 235 200)
+								(Print 4 71)
+							)
+							(else
+								(Print 4 72)
+							)
 						)
 					)
-					((Said 'get,remove/subpoena') (if (< gamePhase 6) (Print 4 73) else (Print 4 74)))
-					((Said 'get,remove/note') (if (== gamePhase 6) (Print 4 75) else (Print 4 76)))
-					((Said 'get,remove/clue,finding,envelope') (if (>= gamePhase 8) (Print 4 73) else (Print 4 77)))
+					((Said 'get,remove/subpoena')
+						(if (< gamePhase 6)
+							(Print 4 73)
+						else
+							(Print 4 74)
+						)
+					)
+					((Said 'get,remove/note')
+						(if (== gamePhase 6)
+							(Print 4 75)
+						else
+							(Print 4 76)
+						)
+					)
+					((Said 'get,remove/clue,finding,envelope')
+						(if (>= gamePhase 8)
+							(Print 4 73)
+						else
+							(Print 4 77)
+						)
+					)
 					((Said 'read,look/schedule[<fire]')
 						(if (ego inRect: 122 117 168 124)
 							(Print 4 8)
@@ -630,7 +930,9 @@
 							(NotClose)
 						)
 					)
-					((Said 'open,close/locker') (Print 4 78))
+					((Said 'open,close/locker')
+						(Print 4 78)
+					)
 					(
 						(or
 							(Said 'open/cabinet[<file]')
@@ -639,20 +941,26 @@
 								(Said 'open/drawer<file')
 							)
 						)
-						(if (ego inRect: 232 138 260 152)
-							(cast eachElementDo: #startUpd)
-							(curRoom newRoom: 7)
+							(if (ego inRect: 232 138 260 152)
+								(cast eachElementDo: #startUpd) ;why??
+								(curRoom newRoom: 7)
+							else
+								(NotClose)
+							)
+					)
+					((Said 'close/(cabinet[<file]),file')
+						(if (== prevRoomNum 7)
+							(Print 4 79)
 						else
-							(NotClose)
+							(Print 4 80)
 						)
 					)
-					((Said 'close/(cabinet[<file]),file') (if (== prevRoomNum 7) (Print 4 79) else (Print 4 80)))
 					((Said 'get,remove/key')
 						(if (ego inRect: 122 117 168 124)
-							(if (ego has: 3)
+							(if (ego has: iUnmarkedCarKeys)
 								(Print 4 81)
 							else
-								(ego get: 3)
+								(ego get: iUnmarkedCarKeys)
 								(carKey posn: 0 0)
 								(Print 4 82)
 								(SolvePuzzle 1 104)
@@ -662,9 +970,9 @@
 						)
 					)
 					((Said 'deposit,replace/key')
-						(if (ego has: 3)
+						(if (ego has: iUnmarkedCarKeys)
 							(if (ego inRect: 122 117 168 124)
-								(PutInRoom 3)
+								(PutInRoom iUnmarkedCarKeys)
 								(carKey posn: 141 110)
 								(Print 4 83)
 							else
@@ -676,7 +984,9 @@
 					)
 					((Said 'sat')
 						(cond 
-							(egoSitting (Print 4 84))
+							(egoSitting
+								(Print 4 84)
+							)
 							((ego inRect: 170 122 196 141)
 								(HandsOff)
 								(User canInput: 1)
@@ -693,22 +1003,33 @@
 									posn: 182 130
 								)
 							)
-							(else (NotClose))
+							(else
+								(NotClose)
+							)
 						)
 					)
-					((or (Said 'stand[<up]') (Said 'get<up'))
-						(if egoSitting
-							(HandsOn)
-							(NormalEgo)
-							(ego view: 1 loop: 1 cel: 9 posn: 192 136)
-							(= egoSitting 0)
-						else
-							(Print 4 85)
+					(
+						(or
+							(Said 'stand[<up]')
+							(Said 'get<up')
 						)
+							(if egoSitting
+								(HandsOn)
+								(NormalEgo)
+								(ego
+									view: 1
+									loop: 1
+									cel: 9
+									posn: 192 136
+								)
+								(= egoSitting 0)
+							else
+								(Print 4 85)
+							)
 					)
 					((Said 'open/drawer,desk')
 						(if egoSitting
-							(if (not (Btst 12))
+							(if (not (Btst fEgoDeskLocked)) ;renamed from fEgoDeskUnlocked
 								(self changeState: 1)
 							else
 								(Print 4 86)
@@ -720,9 +1041,16 @@
 					((Said 'unlock/drawer,desk')
 						(if egoSitting
 							(cond 
-								((not (Btst 12)) (Print 4 88))
-								((ego has: 2) (Print 4 89) (Bclr 12) (self changeState: 1))
-								(else (Print 4 90))
+								((not (Btst fEgoDeskLocked))
+									(Print 4 88)
+								)
+								((ego has: iKeyRing)
+									(Print 4 89)
+									(Bclr fEgoDeskLocked)
+									(self changeState: 1))
+								(else
+									(Print 4 90)
+								)
 							)
 						else
 							(Print 4 91)
@@ -731,15 +1059,26 @@
 					((Said 'lock/drawer,desk')
 						(if egoSitting
 							(cond 
-								((Btst 12) (Print 4 92))
-								((ego has: 2) (Print 4 83) (Bset 12))
-								(else (Print 4 90))
+								((Btst fEgoDeskLocked)
+									(Print 4 92)
+								)
+								((ego has: iKeyRing)
+									(Print 4 83)
+									(Bset fEgoDeskLocked)
+								)
+								(else
+									(Print 4 90)
+								)
 							)
 						else
 							(Print 4 91)
 						)
 					)
-					((or (Said 'lock,close/drawer') (Said 'stand'))
+					(
+						(or
+							(Said 'lock,close/drawer')
+							(Said 'stand')
+						)
 						(if egoSitting
 							(if (== (rm4 script?) drawerScript)
 								(self changeState: 3)
@@ -771,7 +1110,13 @@
 							(Print 4 95)
 						)
 					)
-					((and (Said 'call,phone/') (not onPhone)) (Print 4 96))
+					(
+						(and
+							(Said 'call,phone/')
+							(not onPhone)
+						)
+							(Print 4 96)
+					)
 				)
 			)
 		)
@@ -786,7 +1131,7 @@
 			(0
 				(cast eachElementDo: #hide)
 				(curRoom drawPic: 12)
-				(if (InRoom 5 12)
+				(if (InRoom iThankYouLetter 12)
 					((= marieLetter (View new:))
 						view: 59
 						loop: 0
@@ -797,7 +1142,7 @@
 						stopUpd:
 					)
 				)
-				(if (InRoom 7 12)
+				(if (InRoom iWallet 12)
 					((= wallet (View new:))
 						view: 59
 						loop: 0
@@ -814,31 +1159,37 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'get,remove/letter,card')
-						(if (InRoom 5 12)
+						(if (InRoom iThankYouLetter 12)
 							(marieLetter dispose:)
 							(Print 4 83 #draw)
-							(ego get: 5)
+							(ego get: iThankYouLetter)
 							(SolvePuzzle 1 106)
 						else
 							(Print 4 97)
 						)
 					)
-					((Said 'get,remove/note') (if (InRoom 5 12) (Print 4 98) else (Print 4 97)))
+					((Said 'get,remove/note')
+						(if (InRoom iThankYouLetter 12)
+							(Print 4 98)
+						else
+							(Print 4 97)
+						)
+					)
 					((Said 'get/billfold')
-						(if (InRoom 7 12)
+						(if (InRoom iWallet 12)
 							(wallet dispose:)
 							(Print 4 83 #draw)
-							(ego get: 7)
+							(ego get: iWallet)
 							(SolvePuzzle 1 105)
 						else
 							(Print 4 97)
 						)
 					)
 					((Said 'deposit,replace/letter,card')
-						(if (ego has: 5)
+						(if (ego has: iThankYouLetter)
 							((= marieLetter (View new:))
 								view: 59
 								posn: 146 115
@@ -848,13 +1199,13 @@
 								ignoreActors:
 								stopUpd:
 							)
-							(ego put: 5 12)
+							(ego put: iThankYouLetter 12)
 						else
 							(Print 4 99)
 						)
 					)
 					((Said 'deposit,replace/billfold')
-						(if (ego has: 7)
+						(if (ego has: iWallet)
 							((= wallet (View new:))
 								view: 59
 								posn: 190 105
@@ -880,19 +1231,25 @@
 							(Said 'look,read/*<ya<thank')
 							(Said 'look,read/letter')
 						)
-						(if (InRoom 5 12)
+						(if (InRoom iThankYouLetter 12)
 							(Print 4 100)
 						else
 							(event claimed: 0)
 						)
 					)
-					((or (Said '/shot<mug') (Said '/mugshot')) (Print 4 27))
+					(
+						(or
+							(Said '/shot<mug')
+							(Said '/mugshot')
+						)
+							(Print 4 27)
+						)
 					((Said 'close[/drawer]')
 						(curRoom drawPic: (curRoom picture?))
 						(cast eachElementDo: #dispose)
 						(cast eachElementDo: #delete)
 						(ego init:)
-						(= local6 1)
+						(= closedDrawer 1)
 						(rm4 setScript: rm4Script)
 						(rm4Script changeState: 3)
 					)
@@ -916,26 +1273,28 @@
 				(aTimer setCycle: self 18)
 			)
 			(1
-				(localproc_000c 4 101)
+				(LocPrint 4 101)
 				(aTimer setCycle: self 18)
 			)
 			(2
-				(localproc_000c 4 102)
+				(LocPrint 4 102)
 				(aTimer setCycle: self 18)
 			)
 			(3
-				(localproc_000c 4 103)
+				(LocPrint 4 103)
 				(aTimer setCycle: self 10)
 			)
 			(4
-				(localproc_000c 4 104)
+				(LocPrint 4 104)
 				(if egoSitting (User canInput: 1) else (HandsOn))
 				(ego startUpd:)
 				(captain setCycle: BegLoop)
 			)
 			(5 (aTimer setReal: self 3))
 			(6
-				(if (not egoSitting) (ego loop: 1))
+				(if (not egoSitting)
+					(ego loop: 1)
+				)
 				(HandsOff)
 				(User canInput: 0)
 				(= gamePhase 1)
@@ -951,45 +1310,63 @@
 				(bainsTheme play:)
 			)
 			(8
-				(localproc_000c 4 106)
+				(LocPrint 4 106)
 				(aTimer setCycle: self 18)
 			)
 			(9
-				(localproc_000c 4 107)
+				(LocPrint 4 107)
 				(aTimer setCycle: self 18)
 			)
 			(10
-				(localproc_000c 4 108)
+				(LocPrint 4 108)
 				(aTimer setCycle: self 18)
 			)
 			(11
-				(localproc_000c 4 109)
-				(if egoSitting (User canInput: 1) else (HandsOn))
+				(LocPrint 4 109)
+				(if egoSitting
+					(User canInput: 1)
+				else
+					(HandsOn)
+				)
 				(= isOnDuty 2)
 				(captain setCycle: BegLoop)
 			)
 			(12
 				(HandsOff)
 				(User canInput: 0)
-				(if (not egoSitting) (ego loop: 1))
+				(if (not egoSitting)
+					(ego loop: 1)
+				)
 				(= talkedToCaptain 1)
 				(captain setCycle: EndLoop)
 				(aTimer setCycle: self 18)
 			)
 			(13
 				(switch (Random 0 2)
-					(0 (localproc_000c 4 110))
-					(1 (localproc_000c 4 111))
-					(2 (localproc_000c 4 112))
+					(0
+						(LocPrint 4 110)
+					)
+					(1
+						(LocPrint 4 111)
+					)
+					(2
+						(LocPrint 4 112)
+					)
 				)
-				(if egoSitting (User canInput: 1) else (HandsOn))
+				(if egoSitting
+					(User canInput: 1)
+				else
+					(HandsOn)
+				)
 				(ego startUpd:)
 				(captain setCycle: BegLoop)
 			)
 			(14
 				(HandsOff)
 				(User canInput: 0)
-				(if (not egoSitting) (ego loop: 1))
+				(if (not egoSitting)
+					(ego loop: 1)
+				)
 				(= talkedToCaptain 1)
 				(= isOnDuty 1)
 				(captain setCycle: EndLoop)
@@ -997,10 +1374,18 @@
 			)
 			(15
 				(switch (Random 0 1)
-					(0 (localproc_000c 4 113))
-					(1 (localproc_000c 4 114))
+					(0
+						(LocPrint 4 113)
+					)
+					(1
+						(LocPrint 4 114)
+					)
 				)
-				(if egoSitting (User canInput: 1) else (HandsOn))
+				(if egoSitting
+					(User canInput: 1)
+				else
+					(HandsOn)
+				)
 				(captain setCycle: BegLoop)
 			)
 			(16
@@ -1017,14 +1402,18 @@
 			(17
 				(ego loop: 1)
 				(Print 4 115 #at -1 130 #draw)
-				(localproc_000c 4 116)
+				(LocPrint 4 116)
 				(ego startUpd:)
 				(aTimer setCycle: self 18)
 			)
 			(18
-				(localproc_000c 4 117)
+				(LocPrint 4 117)
 				(captain setCycle: BegLoop)
-				(if egoSitting (User canInput: 1) else (HandsOn))
+				(if egoSitting
+					(User canInput: 1)
+				else
+					(HandsOn)
+				)
 				(ego setMotion: 0)
 			)
 			(19
@@ -1045,34 +1434,36 @@
 			(20
 				(ego loop: 1)
 				(Print 4 118 #at -1 130 #draw)
-				(localproc_000c 4 119)
+				(LocPrint 4 119)
 				(aTimer setCycle: self 18)
 			)
 			(21
-				(localproc_000c 4 120)
-				(localproc_000c 4 121)
+				(LocPrint 4 120)
+				(LocPrint 4 121)
 				(aTimer setCycle: self 18)
 			)
 			(22
-				(localproc_000c 4 122)
+				(LocPrint 4 122)
 				(aTimer setCycle: self 18)
 			)
 			(23
-				(localproc_000c 4 123)
+				(LocPrint 4 123)
 				(aTimer setCycle: self 18)
 			)
 			(24
-				(localproc_000c 4 124)
+				(LocPrint 4 124)
 				(blab dispose:)
 				(captain setCycle: Forward)
 				(HandsOn)
 			)
 			(25
-				(Bset 31)
+				(Bset fReportedMarieMissingToCaptain)
 				(bainsTheme play:)
 				(HandsOff)
 				(ego loop: 1)
-				(if (not (Btst 27)) (Print 4 125 #at -1 130 #draw))
+				(if (not (Btst fKidnappingReported))
+					(Print 4 125 #at -1 130 #draw)
+				)
 				(captain setCycle: EndLoop)
 				(aTimer setCycle: self 18)
 			)
@@ -1082,7 +1473,7 @@
 				(aTimer setCycle: self 8)
 			)
 			(27
-				(localproc_000c 4 127)
+				(LocPrint 4 127)
 				(blab hide:)
 				(HandsOn)
 				(= captainCanTalk 1)
@@ -1092,41 +1483,47 @@
 				(aTimer setCycle: self 9)
 			)
 			(29
-				(if (ego has: 13)
-					(localproc_000c 4 128)
+				(if (ego has: iHitList)
+					(LocPrint 4 128)
 				else
-					(localproc_000c 4 129)
-					(localproc_000c 4 130)
+					(LocPrint 4 129)
+					(LocPrint 4 130)
 				)
 				(aTimer setCycle: self 12)
 			)
 			(30
 				(Print 4 131 #at -1 120)
-				(localproc_000c 4 132)
+				(LocPrint 4 132)
 				(aTimer setCycle: self 18)
 			)
 			(31
 				(cond 
-					((ego has: 35)
-						(localproc_000c 4 133)
-						(localproc_000c 4 134)
-						(localproc_000c 4 135)
+					((ego has: iColbyCard)
+						(LocPrint 4 133)
+						(LocPrint 4 134)
+						(LocPrint 4 135)
 					)
-					((Btst 136)
-						(localproc_000c 4 136)
-						(localproc_000c 4 134)
-						(localproc_000c 4 135)
+					((Btst fBookedColbyCard)
+						(LocPrint 4 136)
+						(LocPrint 4 134)
+						(LocPrint 4 135)
 					)
-					(else (localproc_000c 4 137))
+					(else (LocPrint 4 137))
 				)
 				(aTimer setCycle: self 18)
 			)
 			(32
-				(if (or (ego has: 35) (Btst 136)) (= gamePhase 13))
-				(if (or (ego has: 35) (ego has: 13))
-					(if (ego has: 35) (PutInRoom 35 2))
-					(if (ego has: 13) (PutInRoom 13 2))
-					(localproc_000c 4 138)
+				(if (or (ego has: iColbyCard) (Btst fBookedColbyCard))
+					(= gamePhase 13)
+				)
+				(if (or (ego has: iColbyCard) (ego has: iHitList))
+					(if (ego has: iColbyCard)
+						(PutInRoom iColbyCard 2)
+					)
+					(if (ego has: iHitList)
+						(PutInRoom iHitList 2)
+					)
+					(LocPrint 4 138)
 				)
 				(captain setCycle: BegLoop)
 			)

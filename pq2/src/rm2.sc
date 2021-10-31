@@ -29,28 +29,30 @@
 	bookedEvidence
 	local8
 )
-(procedure (localproc_0a9e)
+(procedure (LocPrint)
 	(Print &rest #at -1 30)
 )
 
-(procedure (localproc_154a)
-	(if (ego has: 28)
-		(if (Btst 144)
-			(Bclr 144)
-			(ProcessEvidence 28 146 2 87)
-			(ego get: 28)
+(procedure (GiveBlood)
+	(if (ego has: iVialOfBlood)
+		(if (Btst fHaveCoveBlood) ;144
+			(Bclr fHaveCoveBlood)
+			(ProcessEvidence iVialOfBlood 146 2 87)
+			(ego get: iVialOfBlood)
 		)
-		(if (Btst 143)
-			(Bclr 143)
-			(ProcessEvidence 28 147 2 88)
-			(ego get: 28)
+		(if (Btst fHaveTrunkBlood) ;143
+			(Bclr fHaveTrunkBlood)
+			(ProcessEvidence iVialOfBlood 147 2 88)
+			(ego get: iVialOfBlood)
 		)
-		(if (Btst 113)
-			(Bclr 113)
-			(ProcessEvidence 28 148 2 89)
-			(ego get: 28)
+		(if (Btst fHaveMotelBlood) ;113
+			(Bclr fHaveMotelBlood)
+			(ProcessEvidence iVialOfBlood 148 2 89)
+			(ego get: iVialOfBlood)
 		)
-		(if (ego has: 28) (PutInRoom 28))
+		(if (ego has: iVialOfBlood)
+			(PutInRoom iVialOfBlood)
+		)
 	)
 )
 
@@ -76,7 +78,7 @@
 			(SolvePuzzle 1)
 			(Bset flag)
 			(ego put: invItem 2)
-			(localproc_0a9e &rest)
+			(LocPrint &rest)
 			(return 1)
 		else
 			(return 0)
@@ -87,7 +89,7 @@
 (instance rm2 of Room
 	(properties
 		picture 2
-		style $0008
+		style DISSOLVE
 	)
 	
 	(method (init)
@@ -98,7 +100,7 @@
 		(Load VIEW 57)
 		(self setLocales: 153)
 		(HandsOn)
-		(= gunFireState 3)
+		(= gunFireState gunPROHIBITED)
 		((View new:)
 			view: 56
 			loop: 3
@@ -343,21 +345,21 @@
 											(and (ego inRect: 42 117 200 130) (== (ego loop?) 1))
 											(and (ego inRect: 30 0 65 200) (== (ego loop?) 3))
 										)
-											(Print 2 4)
+										(Print 2 4)
 									)
 									(
 										(or
 											(and (ego inRect: 70 108 200 118) (== (ego loop?) 1))
 											(and (ego inRect: 64 0 90 200) (== (ego loop?) 3))
 										)
-											(Print 2 5)
+										(Print 2 5)
 									)
 									(
 										(and
 											(ego inRect: 223 105 280 130)
 											(== (ego loop?) 3)
 										)
-											(Print 2 6)
+										(Print 2 6)
 									)
 									(else
 										(Print 2 7)
@@ -554,21 +556,21 @@
 				(RedrawCast)
 				(cond 
 					((cast contains: mrG)
-						(localproc_0a9e 2 31)
+						(LocPrint 2 31)
 					)
 					((or (<= gamePhase 1) local8)
 						(switch (Random 0 3)
 							(0
-								(localproc_0a9e 2 32 25 10)
+								(LocPrint 2 32 25 10)
 							)
 							(1
-								(localproc_0a9e 2 33 25 10)
+								(LocPrint 2 33 25 10)
 							)
 							(2
-								(localproc_0a9e 2 34 25 10)
+								(LocPrint 2 34 25 10)
 							)
 							(3
-								(localproc_0a9e 2 35 25 10)
+								(LocPrint 2 35 25 10)
 							)
 						)
 						(= local6 1)
@@ -577,15 +579,15 @@
 						(= local8 1)
 						(switch (Random 0 3)
 							(0
-								(localproc_0a9e 2 36)
+								(LocPrint 2 36)
 								(= local6 0)
 							)
 							(1
-								(localproc_0a9e 2 37)
+								(LocPrint 2 37)
 								(= local6 5)
 							)
 							(2
-								(localproc_0a9e 2 38)
+								(LocPrint 2 38)
 								(= local6 6)
 							)
 						)
@@ -593,20 +595,20 @@
 				)
 			)
 			(5
-				(localproc_0a9e 2 39 25 10)
+				(LocPrint 2 39 25 10)
 				(= local6 2)
 			)
 			(6
-				(localproc_0a9e 2 40 25 10)
+				(LocPrint 2 40 25 10)
 				(= local6 3)
 			)
 			(7
-				(localproc_0a9e 2 41 25 10)
+				(LocPrint 2 41 25 10)
 				(= local6 3)
 			)
 			(8
-				(localproc_0a9e 2 42 25 10)
-				(localproc_0a9e 2 43 25 10)
+				(LocPrint 2 42 25 10)
+				(LocPrint 2 43 25 10)
 				(= local6 0)
 				(= seconds 2)
 			)
@@ -625,21 +627,21 @@
 				(ProcessEvidence 35 136 2 54)
 				(ProcessEvidence 25 137 2 55)
 				(ProcessEvidence 24 138 2 56)
-				(localproc_154a)
+				(GiveBlood)
 				(if bookedEvidence
 					(switch (Random 0 2)
 						(0
-							(localproc_0a9e 2 57)
+							(LocPrint 2 57)
 						)
 						(1
-							(localproc_0a9e 2 58)
+							(LocPrint 2 58)
 						)
 						(2
-							(localproc_0a9e 2 59)
+							(LocPrint 2 59)
 						)
 					)
 				else
-					(localproc_0a9e 2 60)
+					(LocPrint 2 60)
 				)
 			)
 		)
@@ -659,7 +661,7 @@
 				(cond 
 					((cast contains: mrG)
 						(event claimed: 1)
-						(localproc_0a9e 2 31)
+						(LocPrint 2 31)
 					)
 					((< state 4)
 						(event claimed: 1)
@@ -669,7 +671,7 @@
 						(Print 2 62)
 					)
 					((Said '/clue')
-						(localproc_0a9e 2 63)
+						(LocPrint 2 63)
 						(self changeState: 9)
 					)
 					(
@@ -708,7 +710,7 @@
 								(ProcessEvidence 14 130 2 47)
 							)
 							(28
-								(localproc_154a)
+								(GiveBlood)
 							)
 							(17
 								(ProcessEvidence 17 132 2 48)
@@ -749,25 +751,25 @@
 					(Said '/hello')
 					(Said 'chat/john,dude,dude')
 				)
-					(cond 
-						((cast contains: mrG)
-							(localproc_0a9e 2 31)
-						)
-						((not (ego inRect: 165 105 200 112))
-							(Print 2 65))
-						((<= (bigJonScript state?) 1)
-							(Print 2 12)
-						)
-						((<= (bigJonScript state?) 3)
-							(Print 2 66)
-						)
-						((< (bigJonScript state?) 8)
-							(self cue:)
-						)
-						(else
-							(self changeState: 5)
-						)
+				(cond 
+					((cast contains: mrG)
+						(LocPrint 2 31)
 					)
+					((not (ego inRect: 165 105 200 112))
+						(Print 2 65))
+					((<= (bigJonScript state?) 1)
+						(Print 2 12)
+					)
+					((<= (bigJonScript state?) 3)
+						(Print 2 66)
+					)
+					((< (bigJonScript state?) 8)
+						(self cue:)
+					)
+					(else
+						(self changeState: 5)
+					)
+				)
 			)
 			(
 				(or
@@ -785,7 +787,7 @@
 						(Print 2 66)
 					)
 					(else
-						(localproc_0a9e 2 67)
+						(LocPrint 2 67)
 					)
 				)
 			)
@@ -797,7 +799,7 @@
 				)
 				(cond 
 					((cast contains: mrG)
-						(localproc_0a9e 2 31)
+						(LocPrint 2 31)
 					)
 					((not (ego inRect: 165 105 200 112))
 						(Print 2 65)
@@ -809,27 +811,27 @@
 						(Print 2 66)
 					)
 					(else
-						(localproc_0a9e 2 68)
+						(LocPrint 2 68)
 					)
 				)
 			)
 			((Said 'affirmative')
 				(switch local6
 					(1
-						(localproc_0a9e 2 69)
+						(LocPrint 2 69)
 						(= local6 2)
 					)
 					(2
-						(localproc_0a9e 2 70)
+						(LocPrint 2 70)
 					)
 					(3
-						(localproc_0a9e 2 70)
+						(LocPrint 2 70)
 					)
 					(5
-						(localproc_0a9e 2 71)
+						(LocPrint 2 71)
 					)
 					(6
-						(localproc_0a9e 2 72)
+						(LocPrint 2 72)
 					)
 					(else
 						(Print 2 73)
@@ -837,22 +839,22 @@
 				)
 				(= local6 0)
 			)
-			((Said 'n')
+			((Said 'no')
 				(switch local6
 					(1
-						(localproc_0a9e 2 74)
+						(LocPrint 2 74)
 					)
 					(2
-						(localproc_0a9e 2 75)
+						(LocPrint 2 75)
 					)
 					(3
-						(localproc_0a9e 2 74)
+						(LocPrint 2 74)
 					)
 					(5
-						(localproc_0a9e 2 76)
+						(LocPrint 2 76)
 					)
 					(6
-						(localproc_0a9e 2 77)
+						(LocPrint 2 77)
 					)
 					(else
 						(Print 2 73)
@@ -863,7 +865,7 @@
 			((Said '/none')
 				(switch local6
 					(2
-						(localproc_0a9e 2 78)
+						(LocPrint 2 78)
 					)
 					(else
 						(Print 2 73)

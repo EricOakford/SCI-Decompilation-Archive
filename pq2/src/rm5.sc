@@ -1,6 +1,8 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 5)
-(include sci.sh)
+(include system.sh)
+(include keys.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -27,23 +29,23 @@
 	egoSitting
 	[lockerCombination 3]
 )
-(procedure (localproc_000c)
+(procedure (LocPrint)
 	(Print &rest #at -1 130)
 )
 
 (instance rm5 of Room
 	(properties
 		picture 5
-		style $0007
+		style IRISOUT
 	)
 	
 	(method (init)
 		(super init:)
-		(Load rsVIEW 1)
-		(Load rsVIEW 0)
-		(Load rsVIEW 67)
-		(self setLocales: 153)
-		(= gunFireState 3)
+		(Load VIEW 1)
+		(Load VIEW 0)
+		(Load VIEW 67)
+		(self setLocales: regFieldKit)
+		(= gunFireState gunPROHIBITED)
 		(HandsOn)
 		(= faucetOn 0)
 		(= inStall 0)
@@ -54,12 +56,18 @@
 		(super handleEvent: event)
 		(if (event claimed?) (return))
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(if (Said 'look>')
 					(cond 
-						((Said '[<at,around][/(!*,chamber,bathroom)]') (localproc_000c 5 0 70 220))
-						((Said '[<at,up][/ceiling]') (localproc_000c 5 1))
-						((Said '[<at,down][/floor]') (localproc_000c 5 2))
+						((Said '[<at,around][/(!*,chamber,bathroom)]')
+							(LocPrint 5 0 70 220)
+						)
+						((Said '[<at,up][/ceiling]')
+							(LocPrint 5 1)
+						)
+						((Said '[<at,down][/floor]')
+							(LocPrint 5 2)
+						)
 					)
 				)
 			)
@@ -86,7 +94,9 @@
 					(ego view: (- (ego view?) 1))
 				)
 			)
-			((!= (mod (ego view?) 2) 1) (ego view: (+ (ego view?) 1)))
+			((!= (mod (ego view?) 2) 1)
+				(ego view: (+ (ego view?) 1))
+			)
 		)
 		(super doit:)
 	)
@@ -102,7 +112,7 @@
 					init:
 					setMotion: MoveTo 141 140
 					setCycle: Walk
-					illegalBits: -32768
+					illegalBits: cWHITE ;-32768
 				)
 				((= lockerDoor (Prop new:))
 					view: 67
@@ -210,9 +220,15 @@
 			)
 			(8
 				(switch (Random 0 2)
-					(0 (localproc_000c 5 3))
-					(1 (localproc_000c 5 4))
-					(2 (localproc_000c 5 5))
+					(0
+						(LocPrint 5 3)
+					)
+					(1
+						(LocPrint 5 4)
+					)
+					(2
+						(LocPrint 5 5)
+					)
 				)
 			)
 			(9
@@ -228,10 +244,12 @@
 			)
 			(12
 				(HandsOn)
-				(ego illegalBits: -32768)
+				(ego illegalBits: cWHITE) ;-32768
 				(stallDoor setCycle: BegLoop self)
 			)
-			(13 (stallDoor stopUpd:))
+			(13
+				(stallDoor stopUpd:)
+			)
 		)
 	)
 	
@@ -239,122 +257,173 @@
 		(super handleEvent: event)
 		(if
 			(and
-				(== (event type?) evKEYBOARD)
+				(== (event type?) keyDown)
 				inStall
 				(or
 					(== (event message?) KEY_F6)
 					(== (event message?) KEY_F8)
-					(== (event message?) 14848)
+					(== (event message?) KEY_F10) ;14848
 				)
 			)
 			(event claimed: 1)
-			(localproc_000c 5 6)
+			(LocPrint 5 6)
 		)
 		(if
-		(or (event claimed?) (!= (event type?) evSAID))
+		(or (event claimed?) (!= (event type?) saidEvent))
 			(return)
 		)
 		(cond 
-			((Said 'pick/lock') (localproc_000c 5 7))
+			((Said 'pick/lock')
+				(LocPrint 5 7)
+			)
 			((Said 'stand')
 				(if (not egoSitting)
-					(localproc_000c 5 8)
+					(LocPrint 5 8)
 				else
-					(localproc_000c 5 9)
+					(LocPrint 5 9)
 					(= egoSitting 0)
 				)
 			)
 			((Said 'sat')
 				(cond 
-					(inStall (ego loop: 1) (localproc_000c 5 9 83) (= egoSitting 1))
-					((ego inRect: 77 100 195 135) (localproc_000c 5 10))
-					(else (localproc_000c 5 11))
+					(inStall
+						(ego loop: 1)
+						(LocPrint 5 9 83)
+						(= egoSitting 1)
+					)
+					((ego inRect: 77 100 195 135)
+						(LocPrint 5 10)
+					)
+					(else
+						(LocPrint 5 11)
+					)
 				)
 			)
 			((Said 'get/crud')
 				(if (ego inRect: 77 100 195 135)
-					(localproc_000c 5 12)
+					(LocPrint 5 12)
 				else
-					(localproc_000c 5 11)
+					(LocPrint 5 11)
 				)
 			)
 			((Said 'move/bench')
 				(if (ego inRect: 77 100 195 135)
-					(localproc_000c 5 13)
+					(LocPrint 5 13)
 				else
-					(localproc_000c 5 11)
+					(LocPrint 5 11)
 				)
 			)
 			((Said 'climb/bench')
 				(if (ego inRect: 77 100 195 135)
-					(localproc_000c 5 14)
+					(LocPrint 5 14)
 				else
 					(NotClose)
 				)
 			)
 			(
 				(and
-					(not (& (ego onControl: 1) $00e0))
+					(not (& (ego onControl: 1) $00e0)) ;??
 					(Said 'look,read/locker,door,label,name')
 				)
 				(switch (ego onControl: 1)
-					(4 (localproc_000c 5 15))
-					(8192 (localproc_000c 5 16))
-					(4096 (localproc_000c 5 17))
-					(2048 (localproc_000c 5 18))
-					(1024 (localproc_000c 5 19))
-					(512 (localproc_000c 5 20))
-					(256 (localproc_000c 5 21))
-					(8 (localproc_000c 5 22))
-					(16 (localproc_000c 5 23))
-					(else  (localproc_000c 5 24))
+					(cGREEN
+						(LocPrint 5 15)
+					)
+					(cLMAGENTA
+						(LocPrint 5 16)
+					)
+					(cLRED
+						(LocPrint 5 17)
+					)
+					(cLCYAN
+						(LocPrint 5 18)
+					)
+					(cLGREEN
+						(LocPrint 5 19)
+					)
+					(cLBLUE
+						(LocPrint 5 20)
+					)
+					(cGREY
+						(LocPrint 5 21)
+					)
+					(cCYAN
+						(LocPrint 5 22)
+					)
+					(cRED
+						(LocPrint 5 23)
+					)
+					(else
+						(LocPrint 5 24)
+					)
 				)
 			)
 			((Said 'look>')
 				(cond 
-					((Said '/crud') (localproc_000c 5 25))
-					((Said '/pane') (localproc_000c 5 26))
-					((Said '<below/bench') (localproc_000c 5 27))
-					((Said '/bench') (localproc_000c 5 28))
+					((Said '/crud')
+						(LocPrint 5 25)
+					)
+					((Said '/pane')
+						(LocPrint 5 26)
+					)
+					((Said '<below/bench')
+						(LocPrint 5 27)
+					)
+					((Said '/bench')
+						(LocPrint 5 28)
+					)
 					((Said '<below/door,stall')
 						(cond 
-							((& (ego onControl: 1) $0020)
+							((& (ego onControl: 1) cMAGENTA) ;$0020
 								(switch (Random 0 2)
-									(0 (localproc_000c 5 29))
-									(1 (localproc_000c 5 30))
-									(2 (localproc_000c 5 31))
+									(0
+										(LocPrint 5 29)
+									)
+									(1
+										(LocPrint 5 30)
+									)
+									(2
+										(LocPrint 5 31)
+									)
 								)
 							)
-							((& (ego onControl: 1) $00c0) (localproc_000c 5 32))
-							(else (localproc_000c 5 33))
+							((& (ego onControl: 1) cLGREY) ;$00c0
+								(LocPrint 5 32)
+							)
+							(else (LocPrint 5 33))
 						)
 					)
 					((Said '/crapper,stall')
 						(if inStall
-							(localproc_000c 5 34)
+							(LocPrint 5 34)
 						else
-							(localproc_000c 5 35)
+							(LocPrint 5 35)
 						)
 					)
 					(
-					(and (& (ego onControl: 1) $00e0) (Said '/door')) (localproc_000c 5 36))
+						(and 
+							(& (ego onControl: 1) cLGREY) ;$00e0
+							(Said '/door')
+						)
+						(LocPrint 5 36)
+					)
 					((Said '/lock,combination')
-						(if (& (ego onControl: 1) $0004)
-							(localproc_000c 5 37)
+						(if (& (ego onControl: 1) cGREEN)
+							(LocPrint 5 37)
 						else
-							(localproc_000c 5 38)
+							(LocPrint 5 38)
 						)
 					)
 					((Said '/mirror')
-						(if (== (ego onControl: 1) 16384)
-							(localproc_000c 5 39)
+						(if (== (ego onControl: 1) cYELLOW)
+							(LocPrint 5 39)
 						else
 							(NotClose)
 						)
 					)
 					((Said '/basin[<bath]')
-						(if (== (ego onControl: 1) 16384)
-							(localproc_000c 5 40)
+						(if (== (ego onControl: 1) cYELLOW)
+							(LocPrint 5 40)
 						else
 							(NotClose)
 						)
@@ -362,19 +431,31 @@
 				)
 			)
 			((Said 'crawl<below/door,stall')
-				(if (& (ego onControl: 1) $00e0)
-					(localproc_000c 5 41)
+				(if (& (ego onControl: 1) cLGREY)
+					(LocPrint 5 41)
 				else
 					(NotClose)
 				)
 			)
 			((Said 'chat/dude,cop')
-				(if (or inStall (& (ego onControl: 1) $0120))
+				(if
+					(or
+						inStall
+						(& (ego onControl: 1) cMAGENTA) ;was $0120
+					)
 					(switch (Random 0 3)
-						(0 (localproc_000c 5 42))
-						(1 (localproc_000c 5 43))
-						(2 (localproc_000c 5 44))
-						(3 (localproc_000c 5 45))
+						(0
+							(LocPrint 5 42)
+						)
+						(1
+							(LocPrint 5 43)
+						)
+						(2
+							(LocPrint 5 44)
+						)
+						(3
+							(LocPrint 5 45)
+						)
 					)
 				else
 					(NotClose)
@@ -382,26 +463,40 @@
 			)
 			((Said 'knock')
 				(cond 
-					((== (ego onControl: 1) 32)
+					((== (ego onControl: 1) cMAGENTA)
 						(switch (Random 0 4)
-							(0 (localproc_000c 5 46))
-							(1 (localproc_000c 5 47))
-							(2 (localproc_000c 5 48))
-							(3 (localproc_000c 5 49))
-							(4 (localproc_000c 5 50))
+							(0
+								(LocPrint 5 46)
+							)
+							(1
+								(LocPrint 5 47)
+							)
+							(2
+								(LocPrint 5 48)
+							)
+							(3
+								(LocPrint 5 49)
+							)
+							(4
+								(LocPrint 5 50)
+							)
 						)
 					)
-					((& (ego onControl: 1) $00e0) (localproc_000c 5 51))
-					(else (localproc_000c 5 52))
+					((& (ego onControl: 1) cLGREY) ;was $00e0
+						(LocPrint 5 51)
+					)
+					(else
+						(LocPrint 5 52)
+					)
 				)
 			)
 			(
 				(and
-					(not (& (ego onControl: 1) $00e0))
+					(not (& (ego onControl: 1) cLGREY)) ;$00e0
 					(Said 'unlock,open/lock,locker,door')
 				)
-				(if (!= (ego onControl: 1) 4)
-					(localproc_000c 5 53)
+				(if (!= (ego onControl: 1) cGREEN) ;4
+					(LocPrint 5 53)
 				else
 					(= [lockerCombination 0]
 						(GetNumber {First # of your combination?})
@@ -419,12 +514,18 @@
 							(== [lockerCombination 2] 12)
 						)
 						(self changeState: 1)
-						(SolvePuzzle 5 59)
+						(SolvePuzzle 5 fOpenLocker)
 					else
 						(switch (Random 0 2)
-							(0 (localproc_000c 5 54))
-							(1 (localproc_000c 5 55))
-							(2 (localproc_000c 5 56))
+							(0
+								(LocPrint 5 54)
+							)
+							(1
+								(LocPrint 5 55)
+							)
+							(2
+								(LocPrint 5 56)
+							)
 						)
 					)
 				)
@@ -438,11 +539,23 @@
 					)
 				)
 				(cond 
-					((& (ego onControl: 1) $0040) (localproc_000c 5 57))
-					((& (ego onControl: 1) $0020) (localproc_000c 5 58))
-					((not (& (ego onControl: 1) $00e0)) (localproc_000c 5 52))
-					(inStall (= inStall 0) (rm5Script changeState: 9))
-					(else (= inStall 1) (rm5Script changeState: 4))
+					((& (ego onControl: 1) cBROWN) ;$0040
+						(LocPrint 5 57)
+					)
+					((& (ego onControl: 1) cMAGENTA) ;$0020
+						(LocPrint 5 58)
+					)
+					((not (& (ego onControl: 1) cLGREY)) ;$00e0
+						(LocPrint 5 52)
+					)
+					(inStall
+						(= inStall 0)
+						(rm5Script changeState: 9)
+					)
+					(else
+						(= inStall 1)
+						(rm5Script changeState: 4)
+					)
 				)
 			)
 			((Said 'exit,(get<out)[/stall,crapper]')
@@ -453,7 +566,9 @@
 					(event claimed: 0)
 				)
 			)
-			((Said 'open/pane') (localproc_000c 5 59))
+			((Said 'open/pane')
+				(LocPrint 5 59)
+			)
 			(
 				(or
 					(Said 'use,go/crapper,bathroom')
@@ -463,7 +578,7 @@
 				(if inStall
 					(rm5Script changeState: 8)
 				else
-					(localproc_000c 5 60)
+					(LocPrint 5 60)
 				)
 			)
 			(
@@ -473,57 +588,66 @@
 					(Said 'flush/crapper')
 				)
 				(if inStall
-					(localproc_000c 5 61)
+					(LocPrint 5 61)
 				else
-					(localproc_000c 5 60)
+					(LocPrint 5 60)
 				)
 			)
 			(
-			(or (Said 'use/basin') (Said 'bath/hand,face'))
-				(if (& (ego onControl: 1) $4000)
-					(localproc_000c 5 62)
+				(or
+					(Said 'use/basin')
+					(Said 'bath/hand,face')
+				)
+				(if (& (ego onControl: 1) cYELLOW) ;$4000
+					(LocPrint 5 62)
 				else
-					(localproc_000c 5 63)
+					(LocPrint 5 63)
 				)
 			)
-			((Said 'dry/hand') (localproc_000c 5 59))
+			((Said 'dry/hand')
+				(LocPrint 5 59)
+			)
 			((Said 'turn<on/water,faucet')
-				(if (== (ego onControl: 1) 16384)
+				(if (== (ego onControl: 1) cYELLOW) ;16384
 					(if (not faucetOn)
 						(= faucetOn 1)
-						(localproc_000c 5 64)
+						(LocPrint 5 64)
 					else
-						(localproc_000c 5 65)
+						(LocPrint 5 65)
 					)
 				else
-					(localproc_000c 5 66)
+					(LocPrint 5 66)
 				)
 			)
 			((Said 'turn<off/water,faucet')
-				(if (== (ego onControl: 1) 16384)
+				(if (== (ego onControl: 1) cYELLOW) ;16384
 					(if faucetOn
 						(= faucetOn 0)
-						(localproc_000c 5 67)
+						(LocPrint 5 67)
 					else
 						(NotClose)
 					)
 				else
-					(localproc_000c 5 66)
+					(LocPrint 5 66)
 				)
 			)
-			((Said 'drink/water') (localproc_000c 5 68))
+			((Said 'drink/water')
+				(LocPrint 5 68)
+			)
 			(
 				(or
 					(Said 'close[/locker,door]')
 					(Said 'lock[/locker,door]')
 				)
-				(if (== (ego onControl: 1) 4)
-					(localproc_000c 5 69)
+				(if (== (ego onControl: 1) cGREEN) ;4
+					(LocPrint 5 69)
 				else
-					(localproc_000c 5 70)
+					(LocPrint 5 70)
 				)
 			)
-			((Said 'find/locker') (localproc_000c 5 71))
+			((Said 'find/locker')
+				(LocPrint 5 71)
+			)
 		)
 	)
 )
@@ -535,9 +659,9 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(Load rsVIEW 69)
-				(Load rsVIEW 64)
-				(Load rsPIC 9)
+				(Load VIEW 69)
+				(Load VIEW 64)
+				(Load PICTURE 9)
 				(User canInput: 1)
 				(curRoom drawPic: 9)
 				(cast eachElementDo: #dispose)
@@ -550,7 +674,9 @@
 					init:
 					stopUpd:
 				)
-				(if (not (InRoom 0)) (gun posn: 146 1189))
+				(if (not (InRoom iHandGun))
+					(gun posn: 146 1189)
+				)
 				((= ammoClips (Actor new:))
 					view: 69
 					posn: 227 41
@@ -559,15 +685,25 @@
 					cel:
 						(switch bulletsInGun
 							(0
-								(+ 2 (> [numAmmoClips 1] 0) (> [numAmmoClips 2] 0))
+								(+
+									2
+									(> [numAmmoClips 1] 0)
+									(> [numAmmoClips 2] 0)
+								)
 							)
-							(1 (> [numAmmoClips 2] 0))
-							(else  (> [numAmmoClips 1] 0))
+							(1
+								(> [numAmmoClips 2] 0)
+							)
+							(else 
+								(> [numAmmoClips 1] 0)
+							)
 						)
 					init:
 					stopUpd:
 				)
-				(if (not (InRoom 1)) (ammoClips posn: 227 1041))
+				(if (not (InRoom iAmmoClips))
+					(ammoClips posn: 227 1041)
+				)
 				((= handcuffs (Actor new:))
 					view: 69
 					posn: 216 136
@@ -577,7 +713,9 @@
 					init:
 					stopUpd:
 				)
-				(if (not (InRoom 8)) (handcuffs posn: 216 1136))
+				(if (not (InRoom iHandcuffs))
+					(handcuffs posn: 216 1136)
+				)
 				((View new:)
 					view: 69
 					posn: 219 102
@@ -622,58 +760,69 @@
 		(super handleEvent: event)
 		(if
 			(and
-				(== (event type?) evKEYBOARD)
+				(== (event type?) keyDown)
 				(or
 					(== (event message?) KEY_F6)
 					(== (event message?) KEY_F8)
-					(== (event message?) 14848)
+					(== (event message?) KEY_F10) ;was 14848??
 				)
 			)
 			(event claimed: 1)
-			(localproc_000c 5 6)
+			(LocPrint 5 6)
 		)
 		(if
-		(or (event claimed?) (!= (event type?) evSAID))
+			(or
+				(event claimed?)
+				(!= (event type?) saidEvent)
+			)
 			(return)
 		)
 		(cond 
 			((Said '(replace,remove,deposit)>')
 				(cond 
 					((Said '/gunbelt,9mm')
-						(if (not (ego has: 0))
-							(localproc_000c 5 72)
+						(if (not (ego has: iHandGun))
+							(LocPrint 5 72)
 						else
-							(localproc_000c 5 73)
+							(LocPrint 5 73)
 							(gun posn: 146 189)
-							(PutInRoom 0)
+							(PutInRoom iHandGun)
 						)
 					)
 					((Said '/arrest')
-						(if (not (ego has: 8))
-							(localproc_000c 5 72)
+						(if (not (ego has: iHandcuffs))
+							(LocPrint 5 72)
 						else
-							(localproc_000c 5 74)
+							(LocPrint 5 74)
 							(handcuffs posn: 216 136)
-							(PutInRoom 8)
+							(PutInRoom iHandcuffs)
 						)
 					)
 					((Said '/bullet,ammo,(clip[<ammo])')
-						(if (not (ego has: 1))
-							(localproc_000c 5 72)
+						(if (not (ego has: iAmmoClips))
+							(LocPrint 5 72)
 						else
-							(localproc_000c 5 75)
+							(LocPrint 5 75)
 							(ammoClips
 								cel:
 									(switch bulletsInGun
 										(0
-											(+ 2 (> [numAmmoClips 1] 0) (> [numAmmoClips 2] 0))
+											(+
+												2
+												(> [numAmmoClips 1] 0)
+												(> [numAmmoClips 2] 0)
+											)
 										)
-										(1 (> [numAmmoClips 2] 0))
-										(else  (> [numAmmoClips 1] 0))
+										(1
+											(> [numAmmoClips 2] 0)
+										)
+										(else
+											(> [numAmmoClips 1] 0)
+										)
 									)
 								posn: 227 41
 							)
-							(PutInRoom 1)
+							(PutInRoom iAmmoClips)
 						)
 					)
 					((= temp0 (inventory saidMe: event))
@@ -683,42 +832,47 @@
 							(DontHave)
 						)
 					)
-					(else (event claimed: 1) (CantDo))
+					(else
+						(event claimed: 1)
+						(CantDo)
+					)
 				)
 			)
 			((Said 'get,remove>')
 				(cond 
 					((Said '/gunbelt,9mm')
-						(if (InRoom 0)
-							(localproc_000c 5 77)
+						(if (InRoom iHandGun)
+							(LocPrint 5 77)
 							(gun posn: 100 1000)
-							(ego get: 0)
-							(SolvePuzzle 1 60)
+							(ego get: iHandGun)
+							(SolvePuzzle 1 fGetGun)
 						else
-							(localproc_000c 5 78)
+							(LocPrint 5 78)
 						)
 					)
 					((Said '/bullet,ammo,(clip[<ammo])')
-						(if (InRoom 1)
-							(localproc_000c 5 79)
-							(ego get: 1)
-							(SolvePuzzle 1 62)
+						(if (InRoom iAmmoClips)
+							(LocPrint 5 79)
+							(ego get: iAmmoClips)
+							(SolvePuzzle 1 fGetAmmoClips)
 							(ammoClips posn: 100 1000)
 						else
-							(localproc_000c 5 80)
+							(LocPrint 5 80)
 						)
 					)
 					((Said '/arrest')
-						(if (InRoom 8)
-							(localproc_000c 5 81)
-							(ego get: 8)
-							(SolvePuzzle 1 61)
+						(if (InRoom iHandcuffs)
+							(LocPrint 5 81)
+							(ego get: iHandcuffs)
+							(SolvePuzzle 1 fGetHandcuffs)
 							(handcuffs posn: 100 1000)
 						else
-							(localproc_000c 5 82)
+							(LocPrint 5 82)
 						)
 					)
-					((Said '/flyer') (localproc_000c 5 83))
+					((Said '/flyer')
+						(LocPrint 5 83)
+					)
 				)
 			)
 			((Said 'look>')
@@ -731,40 +885,50 @@
 						)
 					)
 					((Said '/bookcase')
-						(if (InRoom 1)
-							(localproc_000c 5 84)
+						(if (InRoom iAmmoClips)
+							(LocPrint 5 84)
 						else
-							(localproc_000c 5 85)
+							(LocPrint 5 85)
 						)
 					)
-					((Said '/flyer') (localproc_000c 5 86))
+					((Said '/flyer')
+						(LocPrint 5 86)
+					)
 					((Said '/bullet,ammo,(clip[<ammo])')
-						(if (InRoom 1)
-							(localproc_000c 5 87)
+						(if (InRoom iAmmoClips)
+							(LocPrint 5 87)
 						else
 							(event claimed: 0)
 						)
 					)
 					((Said '/9mm,gunbelt')
-						(if (InRoom 0)
-							(localproc_000c 5 88)
+						(if (InRoom iHandGun)
+							(LocPrint 5 88)
 						else
 							(event claimed: 0)
 						)
 					)
 					((Said '/arrest')
-						(if (InRoom 8)
-							(localproc_000c 5 89)
+						(if (InRoom iHandcuffs)
+							(LocPrint 5 89)
 						else
 							(event claimed: 0)
 						)
 					)
-					(else (event claimed: 0))
+					(else
+						(event claimed: 0)
+					)
 				)
 			)
-			((Said 'kiss/flyer,flyer,button') (localproc_000c 5 90) (localproc_000c 5 91))
+			((Said 'kiss/flyer,flyer,button')
+				(LocPrint 5 90)
+				(LocPrint 5 91)
+			)
 			(
-			(or (Said 'lock,close[/locker,door]') (Said 'exit'))
+				(or
+					(Said 'lock,close[/locker,door]')
+					(Said 'exit')
+				)
 				(curRoom drawPic: (curRoom picture?))
 				(cast eachElementDo: #dispose)
 				(HandsOn)

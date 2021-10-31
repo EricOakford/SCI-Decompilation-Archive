@@ -109,14 +109,14 @@
 	fCoronerHasWoody			;9
 	fDocBookingEvidence			;10
 	fKitBinOpen					;11
-	fEgoDeskUnlocked			;12
+	fEgoDeskLocked				;12 ;was fEgoDeskUnlocked
 	fGotMotelWarrant			;13
 	fSWATAtHotel				;14
 	fFlag15						;15
 	fFlag16						;16
 )
 (define fKidnappingReported 27)
-(define fFlag31 31)
+(define fReportedMarieMissingToCaptain 31) ;was fFlag31
 (define fVisitedHomicideOffice 32)
 (define fFoundDiverCard 33)
 (define fTriedToGetTicketToHouston 34)
@@ -185,7 +185,7 @@
 	fBookedFingerprint					;128
 	fBppkedThumbprint					;129
 	fBookedKnife						;130
-	fFlag131							;131
+	fFlag131							;131 ;btst in room 4 says this is river blood. duplicate of 144?
 	fBookedPlasterCast					;132
 	fBookedBullets						;133
 	fBookedJailClothes					;134
