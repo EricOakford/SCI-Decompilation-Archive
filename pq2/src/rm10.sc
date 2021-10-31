@@ -1,6 +1,8 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 10)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
+(include keys.sh)
 (use Main)
 (use Intrface)
 (use Sound)
@@ -47,9 +49,9 @@
 	local77
 	inBooth
 )
-(procedure (localproc_0112 param1)
+(procedure (CreateShooter param1)
 	(= shooterX (- 207 (* local4 28)))
-	((= [shooter param1] (Prop new:))
+	((= [shooter param1] (Prop new:)) ;body
 		posn: shooterX 127
 		setPri: 9
 		loop: (Random 1 2)
@@ -58,7 +60,7 @@
 		init:
 		stopUpd:
 	)
-	((View new:)
+	((View new:) ;random head
 		posn: shooterX 98
 		setPri: 9
 		loop: 0
@@ -69,7 +71,7 @@
 	)
 )
 
-(procedure (localproc_1c34 param1 param2 &tmp temp0)
+(procedure (FaceObject param1 param2 &tmp temp0)
 	(= temp0 (param1 loop?))
 	(DirLoop
 		param1
@@ -103,7 +105,7 @@
 		view 70
 		loop 1
 		priority 12
-		signal $6810
+		signal $6810 ;???
 	)
 	
 	(method (doit)
@@ -128,7 +130,7 @@
 (instance rm10 of Room
 	(properties
 		picture 10
-		style $0001
+		style VSHUTTER
 	)
 	
 	(method (init)
@@ -136,12 +138,12 @@
 		(= local77 1)
 		(NormalEgo)
 		(HandsOn)
-		(Load rsVIEW 1)
-		(Load rsVIEW 72)
-		(Load rsVIEW 0)
-		(Load rsVIEW 58)
-		(Load rsVIEW 73)
-		(Load rsSOUND 41)
+		(Load VIEW 1)
+		(Load VIEW 72)
+		(Load VIEW 0)
+		(Load VIEW 58)
+		(Load VIEW 73)
+		(Load SOUND 41)
 		(= talkedToKen 0)
 		(= wearingEarProtectors 0)
 		(= gunFireState 3)
@@ -157,9 +159,21 @@
 		(super doit:)
 		(cond 
 			(
-			(and (== (ego onControl: 1) 4096) (< state 3)) (= state 3) (theDoor setMotion: MoveTo 270 137 self))
+				(and
+					(== (ego onControl: 1) cLRED)
+					(< state 3)
+				)
+				(= state 3)
+				(theDoor setMotion: MoveTo 270 137 self)
+			)
 			(
-			(and (!= (ego onControl: 1) 4096) (== state 4)) (= state 1) (theDoor setMotion: MoveTo 242 137 self))
+				(and
+					(!= (ego onControl: 1) cLRED)
+					(== state 4)
+				)
+				(= state 1)
+				(theDoor setMotion: MoveTo 242 137 self)
+			)
 		)
 	)
 	
@@ -182,10 +196,19 @@
 			((!= (mod (ego view?) 2) 1) (ego view: (+ (ego view?) 1)))
 		)
 		(cond 
-			((& $0040 (ego onControl:)) (curRoom newRoom: 2))
+			((& cBROWN (ego onControl:))
+				(curRoom newRoom: 2)
+			)
 			(
-			(and (== (ego onControl: 1) 16384) (== (ego loop?) 3)) (self changeState: 3))
-			((!= (self state?) 3) (self changeState: 1))
+				(and
+					(== (ego onControl: 1) cYELLOW)
+					(== (ego loop?) 3)
+				)
+				(self changeState: 3)
+			)
+			((!= (self state?) 3)
+				(self changeState: 1)
+			)
 		)
 		(if (not (< howFast 30))
 			(if (== local13 30)
@@ -276,8 +299,15 @@
 				(= local4 0)
 				(while (<= local4 3)
 					(cond 
-						((not local77) (if [local9 local4] (localproc_0112 local4)))
-						((== (Random 1 2) 1) (localproc_0112 local4) (= [local9 local4] 1))
+						((not local77)
+							(if [local9 local4]
+								(CreateShooter local4)
+							)
+						)
+						((== (Random 1 2) 1)
+							(CreateShooter local4)
+							(= [local9 local4] 1)
+						)
 					)
 					(= local4 (+ local4 1))
 				)
@@ -285,7 +315,9 @@
 			)
 			(1 (= local1 0))
 			(2
-				(if (== local1 0) (Print 10 0))
+				(if (== local1 0)
+					(Print 10 0)
+				)
 				(= local1 1)
 			)
 			(3
@@ -311,7 +343,13 @@
 					(Print 10 1)
 					(Print 10 2)
 					(ego
-						setMotion: MoveTo (if (== (Random 1 2) 1) 320 else 0) (ego y?)
+						setMotion: MoveTo
+							(if (== (Random 1 2) 1)
+								320
+							else
+								0
+							)
+							(ego y?)
 					)
 				else
 					(= oldEgoX (ego x?))
@@ -329,7 +367,7 @@
 					setStep: 3 2
 					setMotion: 0
 					setLoop: -1
-					illegalBits: -32768
+					illegalBits: cWHITE
 					ignoreActors: 0
 					setPri: -1
 					posn: oldEgoX 130
@@ -346,12 +384,17 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '[<at,around][/!*,chamber,range]') (Print 10 4) (Print 10 5))
-							((Said '/counter,bookcase,coatrack') (Print 10 6))
+							((Said '[<at,around][/!*,chamber,range]')
+								(Print 10 4)
+								(Print 10 5)
+							)
+							((Said '/counter,bookcase,coatrack')
+								(Print 10 6)
+							)
 							((Said '/glass')
 								(cond 
 									(
@@ -362,13 +405,23 @@
 										)
 										(Print 10 7)
 									)
-									((<= (ego y?) 135) (Print 10 8))
-									(else (event claimed: 0))
+									((<= (ego y?) 135)
+										(Print 10 8)
+									)
+									(else
+										(event claimed: 0)
+									)
 								)
 							)
 							(
-							(or (Said '/cop[<weapons]') (Said '/dude,ken,ken')) (Print 10 9))
-							((Said '/bullseye') (Print 10 10))
+								(or (Said '/cop[<weapons]')
+									(Said '/dude,ken,ken')
+								)
+								(Print 10 9)
+							)
+							((Said '/bullseye')
+								(Print 10 10)
+							)
 							((Said '/*')
 								(if (ego inRect: 152 153 210 158)
 									(Print 10 11)
@@ -380,14 +433,26 @@
 					)
 					((Said 'chat/dude,cop,ken')
 						(cond 
-							((< (ego y?) 139) (Print 10 12))
-							((ego inRect: 152 153 210 158) (Print 10 13))
-							(talkedToKen (Print 10 14))
+							((< (ego y?) 139)
+								(Print 10 12)
+							)
+							((ego inRect: 152 153 210 158)
+								(Print 10 13)
+							)
+							(talkedToKen
+								(Print 10 14)
+							)
 							(else
 								(switch (Random 0 2)
-									(0 (Print 10 15))
-									(1 (Print 10 16))
-									(2 (Print 10 17))
+									(0
+										(Print 10 15)
+									)
+									(1
+										(Print 10 16)
+									)
+									(2
+										(Print 10 17)
+									)
 								)
 								(= talkedToKen 1)
 							)
@@ -400,15 +465,19 @@
 							(Said 'fire/range,bullseye')
 							(Said 'bullseye/fire')
 						)
-						(if (== (ego onControl: 1) 8192)
+						(if (== (ego onControl: 1) cLMAGENTA)
 							(Print 10 18)
 						else
 							(NotClose)
 						)
 					)
-					((or (Said 'gave/9mm') (Said 'display/9mm'))
-						(if (== (ego onControl: 1) 8192)
-							(if (ego has: 0)
+					(
+						(or
+							(Said 'gave/9mm')
+							(Said 'display/9mm')
+						)
+						(if (== (ego onControl: 1) cLMAGENTA)
+							(if (ego has: iHandGun)
 								(Print 10 19)
 								(Print 10 20)
 								(Print 10 21)
@@ -421,17 +490,24 @@
 					)
 					((Said '(hand<in),exit,replace,gave/ep[<ear]')
 						(cond 
-							((not (ego has: 15)) (DontHave))
-							((!= (ego onControl: 1) 8192) (NotClose))
-							(else (Print 10 22) (PutInRoom 15))
+							((not (ego has: iEarProtectors))
+								(DontHave)
+							)
+							((!= (ego onControl: 1) cLMAGENTA)
+								(NotClose)
+							)
+							(else
+								(Print 10 22)
+								(PutInRoom iEarProtectors)
+							)
 						)
 					)
 					(
 					(or (Said 'get/ep[<ear]') (Said 'ask/ep[<ear]'))
-						(if (== (ego onControl: 1) 8192)
-							(if (== (ego has: 15) 0)
+						(if (== (ego onControl: 1) cLMAGENTA)
+							(if (== (ego has: iEarProtectors) 0)
 								(Print 10 23)
-								(ego get: 15)
+								(ego get: iEarProtectors)
 								(SolvePuzzle 2 66)
 							else
 								(Print 10 24)
@@ -446,9 +522,21 @@
 							(Said 'ask//ammo,clip')
 						)
 						(cond 
-							((!= (ego onControl: 1) 8192) (Print 10 25))
-							((and (not (ego has: 1)) (not bulletsInGun)) (Print 10 26))
-							((and (not (ego has: 1)) bulletsInGun)
+							((!= (ego onControl: 1) cLMAGENTA)
+								(Print 10 25)
+							)
+							(
+								(and
+									(not (ego has: 1))
+									(not bulletsInGun)
+								)
+								(Print 10 26)
+							)
+							(
+								(and
+									(not (ego has: iAmmoClips))
+									bulletsInGun
+								)
 								(if [numAmmoClips bulletsInGun]
 									(Print 10 27)
 								else
@@ -469,7 +557,10 @@
 								(= bulletsInGun 0)
 							)
 							(
-							(or (not [numAmmoClips 1]) (not [numAmmoClips 2]))
+								(or
+									(not [numAmmoClips 1])
+									(not [numAmmoClips 2])
+								)
 								(Print 10 28)
 								(SolvePuzzle 2 68)
 								(if (not [numAmmoClips bulletsInGun])
@@ -491,10 +582,17 @@
 							(Said 'use/ep[<ear]')
 							(Said 'deposit[<in]/ep')
 						)
-						(if (ego has: 15) (Print 10 30) else (Print 10 31))
+						(if (ego has: iEarProtectors)
+							(Print 10 30)
+						else
+							(Print 10 31)
+						)
 					)
 					(
-					(or (Said 'get<off/ep[<ear]') (Said 'remove/ep[<ear]'))
+						(or
+							(Said 'get<off/ep[<ear]')
+							(Said 'remove/ep[<ear]')
+						)
 						(if (== wearingEarProtectors 0)
 							(Print 10 32)
 						else
@@ -520,7 +618,9 @@
 			(0
 				([shooter local4] setCycle: BegLoop self)
 			)
-			(1 ([shooter local4] stopUpd:))
+			(1
+				([shooter local4] stopUpd:)
+			)
 		)
 	)
 )
@@ -535,7 +635,13 @@
 					((ego mover?) init: ego ((ego mover?) x?) 130)
 				)
 			)
-			((and (>= (ego y?) 250) (ego mover?)) ((ego mover?) init: ego ((ego mover?) x?) 250))
+			(
+				(and
+					(>= (ego y?) 250)
+					(ego mover?)
+				)
+				((ego mover?) init: ego ((ego mover?) x?) 250)
+			)
 		)
 		(cond 
 			((<= (ego x?) 94)
@@ -543,9 +649,19 @@
 					((ego mover?) init: ego 94 ((ego mover?) y?))
 				)
 			)
-			((and (>= (ego x?) 222) (ego mover?)) ((ego mover?) init: ego 222 ((ego mover?) y?)))
+			(
+				(and
+					(>= (ego x?) 222)
+					(ego mover?)
+				)
+				((ego mover?) init: ego 222 ((ego mover?) y?))
+			)
 		)
-		(if (and (not (ego has: 0)) (<= (ego y?) 245))
+		(if
+			(and
+				(not (ego has: 0))
+				(<= (ego y?) 245)
+			)
 			(ego setMotion: MoveTo (ego x?) 245)
 		)
 		(super doit:)
@@ -557,8 +673,8 @@
 			(0
 				(= gunDrawn 0)
 				(if (not local73)
-					(Load rsVIEW 70)
-					(Load rsPIC 11)
+					(Load VIEW 70)
+					(Load PICTURE 11)
 					(curRoom drawPic: 11)
 					(cast eachElementDo: #dispose)
 					(cast eachElementDo: #delete)
@@ -577,7 +693,7 @@
 						setCel: 0
 						setLoop: 0
 					)
-					(rightArm init: signal: 26640 doit:)
+					(rightArm init: signal: 26640 doit:) ;26640 doesnt match signal defines
 					(leftArm init: signal: 26640 doit:)
 					((= target (Prop new:))
 						view: 70
@@ -688,7 +804,9 @@
 			)
 			(1
 				(HandsOff)
-				(if (not wearingEarProtectors) (shot number: 41 play:))
+				(if (not wearingEarProtectors)
+					(shot number: 41 play:)
+				)
 				(ego setCel: 255 setCycle: EndLoop self)
 				([bulletHole1 targetShots]
 					posn:
@@ -834,58 +952,109 @@
 			(= gunDrawn 1)
 		)
 		(switch (event type?)
-			(evKEYBOARD
+			(keyDown
 				(= temp0 (event message?))
 				(event claimed: 1)
 				(cond 
 					((== temp0 KEY_F10)
 						(cond 
-							(isHandsOff 1)
-							((not (ego has: 0)) (DontHaveGun))
-							((!= (ego yStep?) 1) (Print 10 40))
-							((not [numAmmoClips bulletsInGun]) (Print 10 41 #time 2))
-							((> targetShots 6) (Print 10 42))
-							((and (!= (target cel?) 4) (<= (ego y?) 208)) (Print 10 43))
-							((not inBooth) (boothScript changeState: 1))
+							(isHandsOff 1) ;??
+							((not (ego has: 0))
+								(DontHaveGun)
+							)
+							((!= (ego yStep?) 1)
+								(Print 10 40)
+							)
+							((not [numAmmoClips bulletsInGun])
+								(Print 10 41 #time 2)
+							)
+							((> targetShots 6)
+								(Print 10 42)
+							)
+							(
+								(and
+									(!= (target cel?) 4)
+									(<= (ego y?) 208)
+								)
+								(Print 10 43)
+							)
+							((not inBooth)
+								(boothScript changeState: 1)
+							)
 						)
 					)
-					((== temp0 16896)
+					((== temp0 KEY_F8)
 						(cond 
-							((not (ego has: 0)) (DontHaveGun))
-							(inBooth (return))
-							(gunDrawn (self changeState: 5))
-							(else (self changeState: 3))
+							((not (ego has: iHandGun))
+								(DontHaveGun)
+							)
+							(inBooth
+								(return)
+							)
+							(gunDrawn
+								(self changeState: 5)
+							)
+							(else
+								(self changeState: 3)
+							)
 						)
 					)
-					(else (event claimed: 0))
+					(else
+						(event claimed: 0)
+					)
 				)
 			)
-			(evSAID
+			(saidEvent
 				(cond 
-					((Said 'look[<at,around][/!*,booth,chamber]') (Print 10 44))
+					((Said 'look[<at,around][/noword,booth,chamber]')
+						(Print 10 44)
+					)
 					((Said 'look/bookcase') (Print 10 45))
 					((Said 'hoist/9mm')
 						(cond 
-							((not (ego has: 0)) (DontHaveGun))
-							(gunDrawn (Print 10 46))
-							(inBooth (Print 10 47))
-							(else (= gunDrawn 1) (self changeState: 3))
+							((not (ego has: iHandGun))
+								(DontHaveGun)
+							)
+							(gunDrawn
+								(Print 10 46)
+							)
+							(inBooth
+								(Print 10 47)
+							)
+							(else (= gunDrawn 1)
+								(self changeState: 3)
+							)
 						)
 					)
 					((Said 'lower/9mm')
 						(cond 
-							((not (ego has: 0)) (DontHaveGun))
+							((not (ego has: iHandGun))
+								(DontHaveGun)
+							)
 							(inBooth (Print 10 47))
-							(gunDrawn (= gunDrawn 0) (self changeState: 5))
-							(else (Print 10 48))
+							(gunDrawn
+								(= gunDrawn 0)
+								(self changeState: 5)
+							)
+							(else
+								(Print 10 48)
+							)
 						)
 					)
 					((Said 'look/bullseye,hole')
 						(cond 
-							((== (target cel?) 4) (Print 10 49))
-							((not targetShots) (Print 10 50))
-							(viewingTarget (Print 10 51))
-							((not local15) (Print 10 52))
+							((== (target cel?) 4)
+								(Print 10 49)
+							)
+							((not targetShots)
+								(Print 10 50)
+							)
+							(viewingTarget
+								(Print 10 51)
+							)
+							((not local15)
+								(Print 10 52)
+							)
 							(
 								(and
 									(<= -6 gunWindageScrew)
@@ -898,9 +1067,7 @@
 							((< gunElevationScrew -4)
 								(Print
 									(Format
-										@temp1
-										10
-										54
+										@temp1 10 54
 										(cond 
 											((> gunWindageScrew 6) { and to the right})
 											((< gunWindageScrew -6) { and to the left})
@@ -912,9 +1079,7 @@
 							((> gunElevationScrew 4)
 								(Print
 									(Format
-										@temp1
-										10
-										55
+										@temp1 10 55
 										(cond 
 											((> gunWindageScrew 6) { and to the right})
 											((< gunWindageScrew -6) { and to the left})
@@ -926,9 +1091,7 @@
 							(else
 								(Print
 									(Format
-										@temp1
-										10
-										56
+										@temp1 10 56
 										(cond 
 											((> gunWindageScrew 6) {right})
 											((< gunWindageScrew 6) {left})
@@ -938,14 +1101,27 @@
 							)
 						)
 					)
-					((Said 'look/button,wall') (Print 10 57))
+					((Said 'look/button,wall')
+						(Print 10 57)
+					)
 					(
-					(or (Said 'press/view,(button<view)') (Said 'view'))
+						(or
+							(Said 'press/view,(button<view)')
+							(Said 'view')
+						)
 						(cond 
-							(gunDrawn (Print 10 58))
-							(inBooth (Print 10 47))
-							((== (target cel?) 4) (self changeState: 7))
-							(else (Print 10 59))
+							(gunDrawn
+								(Print 10 58)
+							)
+							(inBooth
+								(Print 10 47)
+							)
+							((== (target cel?) 4)
+								(self changeState: 7)
+							)
+							(else
+								(Print 10 59)
+							)
 						)
 					)
 					(
@@ -955,30 +1131,56 @@
 							(Said '/back')
 						)
 						(cond 
-							((== (target cel?) 4) (Print 10 60))
-							(gunDrawn (Print 10 61))
-							((and (> targetShots 0) local15) (Print 10 62))
-							(inBooth (Print 10 47))
-							(else (self changeState: 10))
+							((== (target cel?) 4)
+								(Print 10 60)
+							)
+							(gunDrawn
+								(Print 10 61)
+							)
+							(
+								(and
+									(> targetShots 0)
+									local15
+								)
+								(Print 10 62)
+							)
+							(inBooth
+								(Print 10 47)
+							)
+							(else
+								(self changeState: 10)
+							)
 						)
 					)
-					((Said 'press/button') (Print 10 63))
+					((Said 'press/button')
+						(Print 10 63)
+					)
 					(
 						(or
 							(Said 'get,change,replace/bullseye')
 							(Said '/bullseye<new')
 						)
 						(cond 
-							((== (target cel?) 4) (Print 10 64))
-							(gunDrawn (Print 10 61))
-							(inBooth (Print 10 47))
-							(else (self changeState: 9))
+							((== (target cel?) 4)
+								(Print 10 64)
+							)
+							(gunDrawn
+								(Print 10 61)
+							)
+							(inBooth
+								(Print 10 47)
+							)
+							(else
+								(self changeState: 9)
+							)
 						)
 					)
-					((Said 'adjust/bullseye') (Print 10 65))
+					((Said 'adjust/bullseye')
+						(Print 10 65)
+					)
 					((Said 'adjust/sight,9mm,windage,elevation')
 						(if (not gunDrawn)
-							(if (ego has: 0)
+							(if (ego has: iHandGun)
 								(User canControl: 0)
 								(= viewingTarget 1)
 								(rm10 setScript: sightScript)
@@ -1006,17 +1208,34 @@
 							(Said 'deposit[<in]/ep')
 						)
 						(cond 
-							((not (ego has: 15)) (DontHave))
-							(wearingEarProtectors (Print 10 67))
-							(gunDrawn (Print 10 61))
-							(else (= global210 0) (Print 10 33) (= wearingEarProtectors 1))
+							((not (ego has: iEarProtectors))
+								(DontHave)
+							)
+							(wearingEarProtectors
+								(Print 10 67)
+							)
+							(gunDrawn
+								(Print 10 61)
+							)
+							(else
+								(= global210 0)
+								(Print 10 33)
+								(= wearingEarProtectors 1)
+							)
 						)
 					)
 					((Said '(get<off),remove/ep[<ear]')
 						(cond 
-							((not wearingEarProtectors) (Print 10 68))
-							((<= (ego y?) 236) (Print 10 61))
-							(else (Print 10 33) (= wearingEarProtectors 0))
+							((not wearingEarProtectors)
+								(Print 10 68)
+							)
+							((<= (ego y?) 236)
+								(Print 10 61)
+							)
+							(else
+								(Print 10 33)
+								(= wearingEarProtectors 0)
+							)
 						)
 					)
 				)
@@ -1061,7 +1280,7 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evJOYSTICK
+			(direction
 				(event claimed: 1)
 				(switch (= eventMessage_2 (event message?))
 					(1
@@ -1126,7 +1345,7 @@
 					)
 				)
 			)
-			(evKEYBOARD
+			(keyDown
 				(= local73 1)
 				(sightAdjuster dispose:)
 				(windageScrewdriver dispose:)
@@ -1145,7 +1364,7 @@
 	(method (doit)
 		(if (< howFast 30) (return))
 		(if (ego inRect: 100 139 220 160)
-			(localproc_1c34 self ego)
+			(FaceObject self ego)
 		)
 	)
 )

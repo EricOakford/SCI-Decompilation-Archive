@@ -140,7 +140,7 @@
 	fGetGun							;60
 	fGetHandcuffs					;61
 	fGetAmmoClips					;62
-	fFlag63							;63
+	fGetFieldKit					;63
 	fReadSubpoena					;64
 	fReadEvidenceReport			 	;65
 	fGetEarProtectors				;66

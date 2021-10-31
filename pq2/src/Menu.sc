@@ -69,7 +69,7 @@
 			(saveI
 				(if (HaveMem SaveSize)
 					(Load SCRIPT SAVE)
-					(Load SCRIPT 975)
+					(Load SCRIPT DSELECTOR)
 					(theGame save:)
 				else
 					(Print 997 3)
@@ -77,8 +77,8 @@
 			)
 			(restoreI
 				(if (HaveMem SaveSize)
-					(Load SCRIPT 990)
-					(Load SCRIPT 975)
+					(Load SCRIPT SAVE) ;990
+					(Load SCRIPT DSELECTOR)
 					(theGame restore:)
 				else
 					(Print 997 3)

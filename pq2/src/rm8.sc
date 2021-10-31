@@ -25,7 +25,7 @@
 	local145
 	local146 ;Change Director
 	local147 ;inPersonnelDIR
-	local148 ;inCriminalDIR
+	local148 ;passordRequired
 	local149 ;inSierraDIR
 	local150 ;ready for input?
 	local151 ;cue computerScript

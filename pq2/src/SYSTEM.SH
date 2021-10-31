@@ -243,7 +243,7 @@
 
 ;Picture change style constants
 (define	HWIPE		0)
-(define	HSHUTTER	0) ;technically 9?
+(define	HSHUTTER	0) ;should be 9?
 (define	VSHUTTER	1)
 (define	WIPELEFT	2)
 (define	WIPERIGHT	3)
