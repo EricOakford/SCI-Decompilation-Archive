@@ -65,93 +65,36 @@
 		)
 		(self highlight: theIcon 1)
 	)
-	
+
 	(method (retreat amount &tmp theIcon toMove highlightedNo nextIcon)
-		(asm
-			lap      argc
-			bnt      code_00f4
-			lap      amount
-			jmp      code_00f6
-code_00f4:
-			ldi      1
-code_00f6:
-			sat      toMove
-			pushi    #indexOf
-			pushi    1
-			pTos     highlightedIcon
-			self     6
-			sat      highlightedNo
-			push    
-			lat      toMove
-			sub     
-			sat      nextIcon
-			push    
-			ldi      0
-			lt?     
-			bnt      code_0115
-			pTos     size
-			ldi      1
-			sub     
-			sat      nextIcon
-code_0115:
-			pushi    #at
-			pushi    1
-			lst      nextIcon
-			self     6
-			sat      theIcon
-			pushi    1
-			push    
-			callk    IsObject,  2
-			bnt      code_0151
-			pushi    #signal
-			pushi    0
-			lat      theIcon
-			send     4
-			push    
-			ldi      4
-			and     
-			not     
-			bnt      code_0151
-			pushi    #nsLeft
-			pushi    0
-			lat      theIcon
-			send     4
-			push    
-			ldi      65535
-			gt?     
-			bt       code_014d
-			pushi    #isKindOf
-			pushi    1
-			class    InvItem
-			push    
-			lat      theIcon
-			send     6
-			not     
-			bnt      code_0151
-code_014d:
-			jmp      code_0162
-			jmp      code_0115
-code_0151:
-			-at      nextIcon
-			push    
-			ldi      0
-			lt?     
-			bnt      code_0115
-			pTos     size
-			ldi      1
-			sub     
-			sat      nextIcon
-			jmp      code_0115
-code_0162:
-			pushi    #highlight
-			pushi    2
-			lst      theIcon
-			pushi    1
-			self     8
-			ret     
+		;EO: this has been freshly decompiled. It should be tested.
+		(= toMove (if argc amount else 1))
+		(if
+			(<
+				(= nextIcon
+					(- (= highlightedNo (self indexOf: highlightedIcon)) toMove)
+				)
+				0
+			)
+			(= nextIcon (- size 1))
 		)
+		(repeat
+			(= theIcon (self at: nextIcon))
+			(if
+				(and
+					(IsObject theIcon)
+					(not (& (theIcon signal?) DISABLED))
+					(or
+						(> (theIcon nsLeft?) -1)
+						(not (theIcon isKindOf: InvItem))
+					)
+				)
+			)
+			(break)
+		)
+		(self highlight: theIcon 1)
 	)
-	
+		
 	(method (drawInvWindow whom selection
 						&tmp numOwned tallestInv widestInv numIcons tallestIcon iconBarWidth
 						cWide cHigh node obj invW invH iTop iLeft iBottom iRight numRows atX atY i
