@@ -28,7 +28,7 @@
 	
 	(method (init)
 		(super init:)
-		(= signal (| signal (| skipCheck ignrHrz)))
+		(|= signal (| skipCheck ignrHrz))
 		(if (not cycler)
 			(self setCycle: Walk)
 		)
@@ -44,8 +44,7 @@
 			((= obj (inventory at: what))
 				moveTo: (if (== argc 1) -1 else recipient)
 			)
-			(if
-			(and theIconBar (== (theIconBar curInvIcon?) obj))
+			(if (and theIconBar (== (theIconBar curInvIcon?) obj))
 				(= i 0)
 				(while (<= i NUM_INVITEMS)
 					(if
@@ -470,7 +469,6 @@
 )
 
 (instance Roger of EgoSmallTalker
-	
 	(method (init)
 		(if (and (cast contains: ego) (self canTalk:))
 			(self setViews:)

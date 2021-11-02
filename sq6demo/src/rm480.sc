@@ -34,7 +34,7 @@
 		)
 		(shuttleBay init:)
 		(super init:)
-		(sound1 number: 240 loop: -1 play:)
+		(theMusic number: 240 loop: -1 play:)
 		(ego
 			normalize:
 			setHeading: 90
@@ -83,7 +83,7 @@
 	)
 	
 	(method (dispose)
-		(sound1 fade:)
+		(theMusic fade:)
 		(super dispose:)
 	)
 )

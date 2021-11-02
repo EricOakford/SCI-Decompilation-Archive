@@ -34,7 +34,7 @@
 	(method (init)
 		(if (Btst fInIntro)
 			(sfxAmbiance play:)
-			(sound1 number: 121 flags: 1 loop: 1 play:)
+			(theMusic number: 121 flags: 1 loop: 1 play:)
 			(theIconBar disable:)
 			(keyDownHandler addToFront: self)
 			(mouseDownHandler addToFront: self)
@@ -92,7 +92,7 @@
 		)
 		(super init:)
 		(if (and (!= prevRoomNum 460) (not (Btst fInIntro)))
-			(sound1 number: 212 loop: -1 play:)
+			(theMusic number: 212 loop: -1 play:)
 		)
 		(theGame handsOff:)
 		(if (Btst fInIntro)
@@ -186,7 +186,7 @@
 	
 	(method (newRoom newRoomNumber)
 		(if (and (!= newRoomNumber 460) (not (Btst fInIntro)))
-			(sound1 fade:)
+			(theMusic fade:)
 		)
 		(super newRoom: newRoomNumber)
 	)
@@ -212,7 +212,7 @@
 			(2
 				(theGame setCursor: waitCursor TRUE)
 				(messager say: N_THE_END 0 0 1 self)
-				(sound1 number: 105 flags: 1 loop: -1 setVol: 127 play:)
+				(theMusic number: 105 flags: 1 loop: -1 setVol: 127 play:)
 			)
 			(3 (ego setCycle: EndLoop self))
 			(4
@@ -249,7 +249,9 @@
 			(8
 				(messager say: N_THE_END 0 0 3 self)
 			)
-			(9 (proc0_7 1 2 self))
+			(9
+				(proc0_7 1 2 self)
+			)
 			(10
 				(cast eachElementDo: #dispose)
 				(curRoom drawPic: -1)
@@ -304,7 +306,7 @@
 				(= cycles 1)
 			)
 			(14
-				(sound1 fade: 0 25 10 1 self)
+				(theMusic fade: 0 25 10 1 self)
 			)
 			(15
 				(Bclr fBjornEatChow)
@@ -352,7 +354,7 @@
 		(switch (= state newState)
 			(0 (= cycles 1))
 			(1
-				(sound2 fade:)
+				(theMusic2 fade:)
 				(proc0_7 1 4 self)
 			)
 			(2
@@ -370,7 +372,7 @@
 		(switch (= state newState)
 			(0 (= cycles 1))
 			(1
-				(sound2 number: 941 loop: 1 play:)
+				(theMusic2 number: 941 loop: 1 play:)
 				(ego
 					view: 364
 					loop: 0
@@ -406,7 +408,7 @@
 				(= ticks 90)
 			)
 			(2
-				(sound2 number: 926 loop: 1 play:)
+				(theMusic2 number: 926 loop: 1 play:)
 				(ego
 					view: 3630
 					loop: 0
@@ -514,7 +516,7 @@
 			(5
 				(ego normalize:)
 				(Load RES_WAVE 321)
-				(sound2 number: 321 loop: -1 play:)
+				(theMusic2 number: 321 loop: -1 play:)
 				(bjornLeader
 					loop: 1
 					cel: 0
@@ -599,7 +601,7 @@
 			)
 			(6
 				(Load RES_WAVE 937)
-				(sound2 stop:)
+				(theMusic2 stop:)
 				(ego
 					view: 23
 					loop: 1
@@ -729,7 +731,7 @@
 				(ego loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(sound1 fade:)
+				(theMusic fade:)
 				(Load RES_VIEW 11)
 				(sFX play:)
 				(ego loop: 2 cel: 0 setCycle: EndLoop self)
@@ -803,8 +805,8 @@
 			)
 			(3 (= ticks 90))
 			(4
-				(sound1 fade:)
-				(sound2 number: 125 flags: 1 loop: 1 play:)
+				(theMusic fade:)
+				(theMusic2 number: 125 flags: 1 loop: 1 play:)
 				(bjornShip loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(5 (= ticks 90))
@@ -840,7 +842,7 @@
 		(switch (= state newState)
 			(0
 				(sDoSqueegee dispose:)
-				(sound2 number: 126 flags: 1 loop: 1 play:)
+				(theMusic2 number: 126 flags: 1 loop: 1 play:)
 				(sFX number: 923 loop: 1 play:)
 				(bjornLeader
 					init:
@@ -879,7 +881,7 @@
 				(= cycles 1)
 			)
 			(7
-				(sound2 number: 127 flags: 1 loop: 1 play:)
+				(theMusic2 number: 127 flags: 1 loop: 1 play:)
 				(sfxAmbiance stop:)
 				(bjornLeader
 					view: 17

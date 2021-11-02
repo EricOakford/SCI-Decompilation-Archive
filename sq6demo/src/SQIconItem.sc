@@ -8,87 +8,13 @@
 (use Actor)
 (use System)
 
-;Intentionally not commented out so that the script won't compile
-EO:
-;This script has an issue where bringing up the control panel then exiting it
-;causes the icon bar to stop working. We'd better find a way to fix this...
-
 (public
 	SQIconbar 0
 	SQIconItem 1
 )
 
 (class SQIconItem of IconItem
-	(properties
-		scratch 0
-		heading 0
-		noun 0
-		case 0
-		modNum -1
-		nsLeft 0
-		nsTop 0
-		nsRight 0
-		nsBottom 0
-		sightAngle ftrDefault
-		actions 0
-		onMeCheck $0000
-		state $0000
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		plane 0
-		x 0
-		y 0
-		z 0
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		scaleType 0
-		priority 0
-		fixPriority 0
-		inLeft 0
-		inTop 0
-		inRight 0
-		inBottom 0
-		useInsetRect 0
-		view -1
-		loop 0
-		cel 0
-		bitmap 0
-		yStep 2
-		signal RELVERIFY
-		lsLeft 0
-		lsTop 0
-		lsRight 0
-		lsBottom 0
-		brLeft 0
-		brTop 0
-		brRight 0
-		brBottom 0
-		scaleSignal $0000
-		magnifier 0
-		oldScaleX 128
-		type userEvent
-		message -1
-		modifiers $0000
-		mainView 0
-		mainLoop 0
-		mainCel 0
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		cursorView -1
-		cursorLoop -1
-		cursorCel -1
-		highlightColor 0
-		lowlightColor 0
-		helpVerb 0
-		object 0
-		selector 0
-	)
-	
-	(method (select param1 &tmp newEvent temp1 theGameScript)
+	(method (select param1 &tmp newEvent temp1 tut)
 		(return
 			(cond 
 				((& signal DISABLED) 0)
@@ -118,22 +44,22 @@ EO:
 					(newEvent dispose:)
 					(if
 						(and
-							(= theGameScript (theGame script?))
-							(theGameScript isKindOf: Tutorial)
+							(= tut (theGame script?))
+							(tut isKindOf: Tutorial)
 						)
 						(cond 
 							(
 								(and
-									(== (theGameScript nextItem?) self)
+									(== (tut nextItem?) self)
 									(!=
-										(theGameScript nextAction?)
+										(tut nextAction?)
 										((theIconBar helpIconItem?) message?)
 									)
 								)
-								(theGameScript cue:)
+								(tut cue:)
 							)
 							((not temp1) (return 0))
-							(else (theGameScript report:) (return 0))
+							(else (tut report:) (return 0))
 						)
 					)
 					temp1
@@ -141,20 +67,20 @@ EO:
 				(else
 					(if
 						(and
-							(= theGameScript (theGame script?))
-							(theGameScript isKindOf: Tutorial)
+							(= tut (theGame script?))
+							(tut isKindOf: Tutorial)
 						)
 						(if
 							(and
-								(== (theGameScript nextItem?) self)
+								(== (tut nextItem?) self)
 								(!=
-									(theGameScript nextAction?)
+									(tut nextAction?)
 									((theIconBar helpIconItem?) message?)
 								)
 							)
-							(theGameScript cue:)
+							(tut cue:)
 						else
-							(theGameScript report:)
+							(tut report:)
 							(return 0)
 						)
 					)
@@ -173,23 +99,6 @@ EO:
 
 (class SQIconbar of IconBar
 	(properties
-		scratch 0
-		elements 0
-		size 0
-		nextNode 0
-		underBits 0
-		oldMouseX 0
-		oldMouseY 0
-		curIcon 0
-		highlightedIcon 0
-		prevIcon 0
-		curInvIcon 0
-		useIconItem 0
-		helpIconItem 0
-		walkIconItem 0
-		plane 0
-		state OPENIFONME
-		y 0
 		iconCast 0
 		iconSettings 0
 	)
@@ -228,265 +137,79 @@ EO:
 			)
 		)
 	)
-	;EO: Can somebody translate this to SCI? I think it's causing the icon bar to stop working
-	;after bringing up the control panel.
-	(method (doit &tmp temp0 temp1 temp2 temp3 temp4 temp5)
-		(asm
-code_0a39:
-			pTos     state
-			ldi      32
-			and     
-			bnt      code_0c1f
-			pushi    #new
-			pushi    0
-			pushi    #curEvent
-			pushi    0
-			lag      user
-			send     4
-			send     4
-			sat      temp0
-			bnt      code_0c1f
-			pushi    #type
-			pushi    0
-			lat      temp0
-			send     4
-			sat      temp1
-			pushi    #message
-			pushi    0
-			lat      temp0
-			send     4
-			sat      temp2
-			pushi    #modifiers
-			pushi    0
-			lat      temp0
-			send     4
-			sat      temp3
-			lsg      tickOffset
-			pushi    0
-			callk    GetTime,  0
-			add     
-			sag      gameTime
-			pushi    0
-			callk    FrameOut,  0
-			lag      cuees
-			bnt      code_0a90
-			pushi    #eachElementDo
-			pushi    1
-			pushi    69
-			send     6
-code_0a90:
-			pushi    #script
-			pushi    0
-			lag      theGame
-			send     4
-			sat      temp4
-			bnt      code_0ab3
-			pushi    #isKindOf
-			pushi    1
-			class    Tutorial
-			push    
-			lat      temp4
-			send     6
-			bnt      code_0ab3
-			pushi    #doit
-			pushi    0
-			lat      temp4
-			send     4
-code_0ab3:
-			lst      temp1
-			ldi      32
-			eq?     
-			bnt      code_0ae4
-			ldi      4
-			sat      temp1
-			lst      temp3
-			ldi      3
-			and     
-			bnt      code_0ac9
-			ldi      27
-			jmp      code_0acb
-code_0ac9:
-			ldi      13
-code_0acb:
-			sat      temp2
-			ldi      0
-			sat      temp3
-			pushi    #type
-			pushi    1
-			lst      temp1
-			pushi    49
-			pushi    1
-			lst      temp2
-			pushi    72
-			pushi    1
-			push    
-			lat      temp0
-			send     18
-code_0ae4:
-			pushi    #localize
-			pushi    1
-			pTos     plane
-			lat      temp0
-			send     6
-			lst      temp1
-			ldi      1
-			eq?     
-			bt       code_0b05
-			lst      temp1
-			ldi      4
-			eq?     
-			bnt      code_0b2c
-			lst      temp2
-			ldi      13
-			eq?     
-			bnt      code_0b2c
-code_0b05:
-			pToa     helpIconItem
-			bnt      code_0b2c
-			pushi    #signal
-			pushi    0
-			send     4
-			push    
-			ldi      16
-			and     
-			bnt      code_0b2c
-			pushi    #type
-			pushi    1
-			pushi    24576
-			pushi    49
-			pushi    1
-			pushi    #message
-			pushi    0
-			pToa     helpIconItem
-			send     4
-			push    
-			lat      temp0
-			send     12
-code_0b2c:
-			pushi    1
-			lst      temp0
-			callk    MapKeyToDir,  2
-			pushi    #canInput
-			pushi    0
-			lag      user
-			send     4
-			push    
-			ldi      1
-			eq?     
-			bnt      code_0b9a
-			pushi    #y
-			pushi    0
-			lat      temp0
-			send     4
-			push    
-			ldi      17
-			ge?     
-			bnt      code_0b7d
-			pushi    #x
-			pushi    0
-			lat      temp0
-			send     4
-			push    
-			ldi      267
-			lt?     
-			bnt      code_0b7d
-			lsg      theCursor
-			lag      normalCursor
-			ne?     
-			bnt      code_0b9a
-			pushi    #highlight
-			pushi    1
-			pTos     curIcon
-			self     6
-			pushi    #setCursor
-			pushi    1
-			lsg      normalCursor
-			lag      theGame
-			send     6
-			jmp      code_0b9a
-code_0b7d:
-			lsg      theCursor
-			pushi    #getCursor
-			pushi    0
-			self     4
-			ne?     
-			bnt      code_0b9a
-			pushi    #setCursor
-			pushi    1
-			pushi    #getCursor
-			pushi    0
-			self     4
-			push    
-			lag      theGame
-			send     6
-code_0b9a:
-			pushi    #dispatchEvent
-			pushi    1
-			lst      temp0
-			self     6
-			bnt      code_0ba6
-code_0ba6:
-			pushi    #handleEvent
-			pushi    1
-			lst      temp0
-			lag      showTitle
-			send     6
-			lag      autoRobot
-			bnt      code_0bbb
-			pushi    #doit
-			pushi    0
-			send     4
-code_0bbb:
-			pushi    #doit
-			pushi    0
-			lag      cast
-			send     4
-			pushi    0
-			callk    FrameOut,  0
-			lag      doMotionCue
-			bnt      code_0bdc
-			ldi      0
-			sag      doMotionCue
-			pushi    #eachElementDo
-			pushi    1
-			pushi    255
-			lag      cast
-			send     6
-code_0bdc:
-			pushi    #script
-			pushi    0
-			lag      theGame
-			send     4
-			bnt      code_0bf6
-			pushi    #doit
-			pushi    0
-			pushi    #script
-			pushi    0
-			lag      theGame
-			send     4
-			send     4
-code_0bf6:
-			pushi    #eachElementDo
-			pushi    1
-			pushi    69
-			lag      regions
-			send     6
-			pushi    #doit
-			pushi    0
-			lag      theDoits
-			send     4
-			lsg      newRoomNum
-			lag      curRoomNum
-			ne?     
-			bnt      code_0a39
-			pushi    #newRoom
-			pushi    1
-			lsg      newRoomNum
-			lag      theGame
-			send     6
-			jmp      code_0a39
-code_0c1f:
-			ret     
+	(method (doit &tmp event eType eMsg eMod tut temp5)
+		;EO: Tnis has been newly decompiled! It seems to work properly now.
+		(while
+			(and
+				(& state IB_ACTIVE)
+				(= event ((user curEvent?) new:))
+			)
+			(= eType (event type?))
+			(= eMsg (event message?))
+			(= eMod (event modifiers?))
+			(= gameTime (+ tickOffset (GetTime)))
+			(FrameOut)
+			(if cuees
+				(cuees eachElementDo: #doit)
+			)
+			(if
+				(and
+					(= tut (theGame script?))
+					(tut isKindOf: Tutorial)
+				)
+				(tut doit:)
+			)
+			(if (== eType joyDown)
+				(= eType keyDown)
+				(= eMsg (if (& eMod shiftDown) ESC else ENTER))
+				(= eMod 0)
+				(event type: eType message: eMsg modifiers: eMod)
+			)
+			(event localize: plane)
+			(if
+				(and
+					(or (== eType mouseDown) (and (== eType keyDown) (== eMsg ENTER)))
+					helpIconItem
+					(& (helpIconItem signal?) TRANSLATOR)
+				)
+				(event
+					type: (| userEvent helpEvent)
+					message: (helpIconItem message?)
+				)
+			)
+			(MapKeyToDir event)
+			(if (== (user canInput:) TRUE)
+				(cond 
+					((and (>= (event y?) 17) (< (event x?) 267))
+						(if (!= theCursor normalCursor)
+							(self highlight: curIcon)
+							(theGame setCursor: normalCursor)
+						)
+					)
+					((!= theCursor (self getCursor:))
+						(theGame setCursor: (self getCursor:))
+					)
+				)
+			)
+			(self dispatchEvent: event)
+			(showTitle handleEvent: event)
+			(if autoRobot
+				(autoRobot doit:)
+			)
+			(cast doit:)
+			(FrameOut)
+			(if doMotionCue
+				(= doMotionCue FALSE)
+				(cast eachElementDo: #motionCue)
+			)
+			(if (theGame script?)
+				((theGame script?) doit:)
+			)
+			(regions eachElementDo: #doit)
+			(theDoits doit:)
+			(if (!= newRoomNum curRoomNum)
+				(theGame newRoom: newRoomNum)
+			)
 		)
 	)
 	
@@ -496,7 +219,7 @@ code_0c1f:
 	)
 	
 	(method (show &tmp temp0 theY node temp3)
-		(= state (| state IB_ACTIVE))
+		(|= state IB_ACTIVE)
 		(plane priority: 10)
 		(UpdatePlane plane)
 		(= temp0 0)
@@ -504,8 +227,7 @@ code_0c1f:
 		(= node (KList LFirstNode elements))
 		(while node
 			(= nextNode (KList LNextNode node))
-			(if
-			(<= ((= temp3 (KList LNodeValue node)) nsRight?) 0)
+			(if (<= ((= temp3 (KList LNodeValue node)) nsRight?) 0)
 				(temp3 show: temp0 theY)
 				(= temp0 (temp3 nsRight?))
 			else
@@ -544,8 +266,7 @@ code_0c1f:
 						)
 					)
 				)
-				(if
-				(and (< (event y?) 17) (>= (event x?) 267))
+				(if (and (< (event y?) 17) (>= (event x?) 267))
 					(theGame setCursor: temp3 1)
 				)
 				(self hide:)

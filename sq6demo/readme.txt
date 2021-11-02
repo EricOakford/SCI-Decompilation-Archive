@@ -3,7 +3,7 @@
   
   Interpreter version 2.001.002
 
-The game has been tested to completion.
+The game has been tested to completion. Since SQIconBar's doit: has been successfully decompiled, there shouldn't be any problems now.
 
 All system scripts are based on the newest SCI32 source from 10-12-1995, with the exceptions of:
 	ACTOR.SC (06-28-1995)
@@ -14,6 +14,3 @@ All system scripts are based on the newest SCI32 source from 10-12-1995, with th
 	STYLER.SC (06-28-1995)
 	FILE.SC (06-28-1995)
 	INSET.SC (06-28-1995)
-
-Known issues
-	The SQIconItem script has intentionally been made uncompilable, because of a decompiler error that causes the icon bar to stop working after exiting the game's control panel. The specific problem area is the icon bar's doit, which was undecompilable and therefore is represented in assembly.
