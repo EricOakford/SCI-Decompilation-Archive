@@ -42,7 +42,7 @@
 	sightAdjuster
 	windageScrewdriver
 	elevationScrewdriver
-	local73
+	local73 ;isAdjustingSights?
 	talkedToKen
 	wearingEarProtectors
 	viewingTarget
@@ -807,7 +807,10 @@
 				(if (not wearingEarProtectors)
 					(shot number: 41 play:)
 				)
-				(ego setCel: 255 setCycle: EndLoop self)
+				(ego
+					setCel: 255
+					setCycle: EndLoop self
+				)
 				([bulletHole1 targetShots]
 					posn:
 						(+
@@ -956,10 +959,12 @@
 				(= temp0 (event message?))
 				(event claimed: 1)
 				(cond 
-					((== temp0 KEY_F10)
+					((== temp0 `#a) ;17408 or KEY_F10 doesn't match here. Use the statusMenu designation I guess? F8 below matches fine.
 						(cond 
-							(isHandsOff 1) ;??
-							((not (ego has: 0))
+							(isHandsOff
+								1
+							)
+							((not (ego has: iHandGun))
 								(DontHaveGun)
 							)
 							((!= (ego yStep?) 1)
@@ -976,7 +981,7 @@
 									(!= (target cel?) 4)
 									(<= (ego y?) 208)
 								)
-								(Print 10 43)
+								(Print 10 43) ;target too close
 							)
 							((not inBooth)
 								(boothScript changeState: 1)

@@ -940,6 +940,16 @@
 									(DontHave)
 								)
 							)
+							;adding the /card check below allows the turn/card state to work properly.
+							;issue: 'look/back/card' incorrectly shows the front of the card, while 'look/card/back' shows the locker combination. 
+							;In retail, 'look/back/card' is also not quite working. It incorrectly gives the 'spinning your wheels.' look responses.
+							((Said '/card') 
+								(if (ego has: iLPDBusinessCard)
+									(your_LPD_business_card showSelf:)
+								else
+									(DontHave)
+								)
+							)
 							((Said '/friend')
 								(if
 									(or

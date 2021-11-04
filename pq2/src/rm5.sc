@@ -441,7 +441,8 @@
 				(if
 					(or
 						inStall
-						(& (ego onControl: 1) cMAGENTA) ;was $0120
+						;(& (ego onControl: 1) $0120)
+						(== (ego onControl: 1) cMAGENTA)
 					)
 					(switch (Random 0 3)
 						(0

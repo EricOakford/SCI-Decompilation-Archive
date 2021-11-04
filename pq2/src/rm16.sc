@@ -1,6 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 16)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -36,7 +37,7 @@
 	(if (not local16) (= local16 1) (cSound fade:))
 )
 
-(procedure (localproc_001f)
+(procedure (LocPrint)
 	(Print &rest #at -1 15)
 )
 
@@ -52,19 +53,30 @@
 	)
 	
 	(method (init)
-		(Load rsVIEW 0)
-		(Load rsVIEW 1)
-		(Load rsVIEW 20)
-		(Load rsVIEW 77)
-		(if (>= gamePhase 6) (Load rsVIEW 667))
+		(Load VIEW 0)
+		(Load VIEW 1)
+		(Load VIEW 20)
+		(Load VIEW 77)
+		(if (>= gamePhase 6)
+			(Load VIEW 667)
+		)
 		(super init:)
 		(HandsOn)
 		(= perspective 70)
-		(if (and (>= gamePhase 6) (< gamePhase 8)) (Bset 118))
-		(= gunFireState 3)
+		(if
+			(and
+				(>= gamePhase 6)
+				(< gamePhase 8)
+			)
+			(Bset fStolenCarTowed)
+		)
+		(= gunFireState gunPROHIBITED)
 		(= gunNotNeeded 1)
-		(self setLocales: 153)
-		(ego view: (if gunDrawn 7 else 1) init:)
+		(self setLocales: regFieldKit)
+		(ego
+			view: (if gunDrawn 7 else 1)
+			init:
+		)
 		(agent
 			view: 77
 			loop: 2
@@ -80,7 +92,11 @@
 		(switch prevRoomNum
 			(12
 				(= local4 0)
-				(agent setLoop: 3 setCel: 0 posn: 244 1119)
+				(agent
+					setLoop: 3
+					setCel: 0
+					posn: 244 1119
+				)
 				(ego
 					view: 667
 					loop: 1
@@ -100,17 +116,32 @@
 				)
 			)
 			(18
-				(ego posn: 285 (ego y?) setMotion: MoveTo 10 (ego y?))
+				(ego
+					posn: 285 (ego y?)
+					setMotion: MoveTo 10 (ego y?)
+				)
 			)
 			(19
-				(ego posn: 20 132 setMotion: MoveTo 100 132)
+				(ego
+					posn: 20 132
+					setMotion: MoveTo 100 132
+				)
 			)
 			(else 
-				(ego posn: 151 188 setMotion: MoveTo 151 114)
-				(if (>= gamePhase 6) (cSound number: 16 loop: -1 play:))
+				(ego
+					posn: 151 188
+					setMotion: MoveTo 151 114
+				)
+				(if (>= gamePhase 6)
+					(cSound
+						number: 16
+						loop: -1
+						play:
+					)
+				)
 			)
 		)
-		(if (Btst 40)
+		(if (Btst fKeithFollows)
 			((= keith (Actor new:))
 				view: 20
 				init:
@@ -122,15 +153,25 @@
 				(18
 					(keith posn: (+ (ego x?) 20) (ego y?))
 				)
-				(19 (keith posn: 91 146))
-				(17 (keith posn: 50 112))
+				(19
+					(keith posn: 91 146)
+				)
+				(17
+					(keith posn: 50 112)
+				)
 				(else 
 					(keith posn: (+ (ego x?) 10) (+ (ego y?) 20))
 				)
 			)
 		)
 		(addToPics
-			add: pictureOnWall sittingPerson counterPerson talking1 talking2 talking3
+			add:
+				pictureOnWall
+				sittingPerson
+				counterPerson
+				talking1
+				talking2
+				talking3
 		)
 		(addToPics
 			add:
@@ -151,16 +192,43 @@
 	
 	(method (doit)
 		(cond 
-			((ego inRect: 175 112 225 130) (if (!= local4 1) (= local4 1)))
-			((ego inRect: 195 130 225 139) (if (!= local4 2) (= local4 2)))
-			((ego inRect: 225 139 265 145) (if (!= local4 3) (= local4 3)))
-			((ego inRect: 30 114 83 143) (if (!= local4 4) (= local4 4)))
-			((ego inRect: 63 130 116 184) (if (!= local4 5) (= local4 5)))
-			(else (= local4 0))
+			((ego inRect: 175 112 225 130)
+				(if (!= local4 1)
+					(= local4 1)
+				)
+			)
+			((ego inRect: 195 130 225 139)
+				(if (!= local4 2)
+					(= local4 2)
+				)
+			)
+			((ego inRect: 225 139 265 145)
+				(if (!= local4 3)
+					(= local4 3)
+				)
+			)
+			((ego inRect: 30 114 83 143)
+				(if (!= local4 4)
+					(= local4 4)
+				)
+			)
+			((ego inRect: 63 130 116 184)
+				(if (!= local4 5)
+					(= local4 5)
+				)
+			)
+			(else
+				(= local4 0)
+			)
 		)
-		(if (and (>= gamePhase 6) (< gamePhase 8) local8)
+		(if
+			(and
+				(>= gamePhase 6)
+				(< gamePhase 8)
+				local8
+			)
 			(= local8 0)
-			(Bset 40)
+			(Bset fKeithFollows)
 			((= keith (Actor new:))
 				view: 20
 				setCycle: Walk
@@ -171,30 +239,48 @@
 		)
 		(if
 			(and
-				(Btst 40)
+				(Btst fKeithFollows)
 				(<= (keith distanceTo: ego) 25)
-				(not (Btst 126))
-				(ego has: 31)
+				(not (Btst fToldKeithAboutRevolver))
+				(ego has: iJailerRevolver)
 				(== prevRoomNum 19)
 			)
-			(Bset 126)
-			(localproc_001f 16 0)
-			(localproc_001f 16 1)
+			(Bset fToldKeithAboutRevolver)
+			(LocPrint 16 0)
+			(LocPrint 16 1)
 		)
-		(if (and local1 (ego inRect: 225 139 265 145))
+		(if
+			(and
+				local1
+				(ego inRect: 225 139 265 145)
+			)
 			(egoOnThePhoneScript changeState: 0)
 		)
 		(if
-		(and (>= gamePhase 6) (!= gamePhase 13) (Btst 34))
+			(and
+				(>= gamePhase 6)
+				(!= gamePhase 13)
+				(Btst fTriedToGetTicketToHouston)
+			)
 			(= local13 1)
 		)
-		(if (== gamePhase 13) (= local14 1))
-		(if (> local2 1) (-- local2))
-		(if (and (== local2 1) (not local15))
+		(if (== gamePhase 13)
+			(= local14 1)
+		)
+		(if (> local2 1)
+			(-- local2)
+		)
+		(if
+			(and
+				(== local2 1)
+				(not local15)
+			)
 			(= local2 0)
 			(moveScript cue:)
 		)
-		(if (> local3 0) (-- local3))
+		(if (> local3 0)
+			(-- local3)
+		)
 		(cond 
 			(
 				(and
@@ -206,13 +292,21 @@
 				(= perspective 0)
 				(curRoom newRoom: 15)
 			)
-			((and (< (ego y?) 115) (< (ego x?) 65))
-				(if (== (cSound number?) 16) (cSound fade:))
+			(
+				(and
+					(< (ego y?) 115)
+					(< (ego x?) 65)
+				)
+				(if (== (cSound number?) 16)
+					(cSound fade:)
+				)
 				(= perspective 0)
 				(curRoom newRoom: 17)
 			)
 			((> (ego x?) 305)
-				(if (== (cSound number?) 16) (cSound fade:))
+				(if (== (cSound number?) 16)
+					(cSound fade:)
+				)
 				(= perspective 0)
 				(curRoom newRoom: 18)
 			)
@@ -222,21 +316,37 @@
 					(< 128 (ego y?))
 					(< (ego y?) 145)
 				)
-				(if (Btst 40) (localproc_001f 16 2))
-				(if (== (cSound number?) 16) (cSound fade:))
+				(if (Btst fKeithFollows)
+					(LocPrint 16 2)
+				)
+				(if (== (cSound number?) 16)
+					(cSound fade:)
+				)
 				(= perspective 0)
 				(curRoom newRoom: 19)
 			)
 		)
-		(if (and (== local4 2) (not local5))
+		(if
+			(and
+				(== local4 2)
+				(not local5)
+			)
 			(= local5 1)
 			(moveScript changeState: 5)
 		)
-		(if (and (== local4 3) (not local5))
+		(if
+			(and (== local4 3)
+				(not local5)
+			)
 			(= local5 1)
 			(moveScript changeState: 7)
 		)
-		(if (and (!= local4 2) (!= local4 3) local5)
+		(if
+			(and
+				(!= local4 2)
+				(!= local4 3)
+				local5
+			)
 			(if (not local7)
 				(moveScript changeState: 0)
 				(= local5 0)
@@ -251,7 +361,9 @@
 					(ego view: (- (ego view?) 1))
 				)
 			)
-			((!= (mod (ego view?) 2) 1) (ego view: (+ (ego view?) 1)))
+			((!= (mod (ego view?) 2) 1)
+				(ego view: (+ (ego view?) 1))
+			)
 		)
 		(super doit:)
 	)
@@ -300,7 +412,7 @@
 			pushi    2
 			pushi    16
 			pushi    3
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_07a2:
 			lsl      local4
@@ -356,7 +468,7 @@ code_07de:
 			pushi    4
 			pushi    82
 			pushi    112
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			jmp      code_0850
 code_080b:
 			dup     
@@ -368,7 +480,7 @@ code_080b:
 			pushi    5
 			pushi    82
 			pushi    112
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			jmp      code_0850
 code_0823:
 			dup     
@@ -380,7 +492,7 @@ code_0823:
 			pushi    6
 			pushi    82
 			pushi    112
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			jmp      code_0850
 code_083b:
 			dup     
@@ -392,7 +504,7 @@ code_083b:
 			pushi    7
 			pushi    82
 			pushi    112
-			call     localproc_001f,  8
+			call     LocPrint,  8
 code_0850:
 			toss    
 			jmp      code_17b9
@@ -411,7 +523,7 @@ code_0854:
 			pushi    4
 			pushi    82
 			pushi    123
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			jmp      code_08b9
 code_0874:
 			dup     
@@ -423,7 +535,7 @@ code_0874:
 			pushi    5
 			pushi    82
 			pushi    123
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			jmp      code_08b9
 code_088c:
 			dup     
@@ -435,7 +547,7 @@ code_088c:
 			pushi    6
 			pushi    82
 			pushi    123
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			jmp      code_08b9
 code_08a4:
 			dup     
@@ -447,7 +559,7 @@ code_08a4:
 			pushi    7
 			pushi    82
 			pushi    123
-			call     localproc_001f,  8
+			call     LocPrint,  8
 code_08b9:
 			toss    
 			jmp      code_17b9
@@ -475,7 +587,7 @@ code_08bd:
 			pushi    8
 			pushi    82
 			pushi    112
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			pushi    2
 			pushi    1
 			pushi    81
@@ -515,7 +627,7 @@ code_0925:
 			pushi    9
 			pushi    82
 			pushi    112
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			jmp      code_17b9
 code_0943:
 			pushi    4
@@ -523,13 +635,13 @@ code_0943:
 			pushi    9
 			pushi    82
 			pushi    123
-			call     localproc_001f,  8
+			call     LocPrint,  8
 			jmp      code_17b9
 code_0954:
 			pushi    2
 			pushi    16
 			pushi    10
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0960:
 			pushi    1
@@ -574,7 +686,7 @@ code_09a5:
 			pushi    2
 			pushi    16
 			pushi    11
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_09b1:
 			pushi    #loop
@@ -589,7 +701,7 @@ code_09b1:
 			pushi    2
 			pushi    16
 			pushi    12
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_09cc:
 			pushi    2
@@ -604,7 +716,7 @@ code_09cc:
 			pushi    2
 			pushi    16
 			pushi    13
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_0a1c
 code_09e7:
 			dup     
@@ -614,7 +726,7 @@ code_09e7:
 			pushi    2
 			pushi    16
 			pushi    14
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_0a1c
 code_09fa:
 			dup     
@@ -624,7 +736,7 @@ code_09fa:
 			pushi    2
 			pushi    16
 			pushi    15
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_0a1c
 code_0a0d:
 			dup     
@@ -634,7 +746,7 @@ code_0a0d:
 			pushi    2
 			pushi    16
 			dup     
-			call     localproc_001f,  4
+			call     LocPrint,  4
 code_0a1c:
 			toss    
 			jmp      code_17b9
@@ -652,7 +764,7 @@ code_0a20:
 			pushi    2
 			pushi    16
 			pushi    17
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0a42:
 			pushi    1
@@ -663,7 +775,7 @@ code_0a42:
 			pushi    2
 			pushi    16
 			pushi    18
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0a59:
 			pushi    1
@@ -674,7 +786,7 @@ code_0a59:
 			pushi    2
 			pushi    16
 			pushi    19
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0a70:
 			pushi    1
@@ -685,7 +797,7 @@ code_0a70:
 			pushi    2
 			pushi    16
 			pushi    20
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0a87:
 			pushi    1
@@ -704,7 +816,7 @@ code_0a87:
 			pushi    2
 			pushi    16
 			pushi    21
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0aac:
 			pushi    #loop
@@ -718,13 +830,13 @@ code_0aac:
 			pushi    2
 			pushi    16
 			pushi    22
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0ac6:
 			pushi    2
 			pushi    16
 			pushi    23
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0ad2:
 			pushi    1
@@ -778,7 +890,7 @@ code_0b25:
 			pushi    2
 			pushi    16
 			pushi    24
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0b31:
 			pushi    #loop
@@ -793,13 +905,13 @@ code_0b31:
 			pushi    2
 			pushi    16
 			pushi    25
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0b4c:
 			pushi    2
 			pushi    16
 			pushi    26
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0b58:
 			pushi    1
@@ -814,13 +926,13 @@ code_0b58:
 			pushi    2
 			pushi    16
 			pushi    27
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0b77:
 			pushi    2
 			pushi    16
 			pushi    28
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0b83:
 			pushi    1
@@ -831,7 +943,7 @@ code_0b83:
 			pushi    2
 			pushi    16
 			pushi    29
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0b9a:
 			pushi    1
@@ -847,7 +959,7 @@ code_0b9a:
 			pushi    2
 			pushi    16
 			pushi    30
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_0bfc
 code_0bba:
 			dup     
@@ -857,7 +969,7 @@ code_0bba:
 			pushi    2
 			pushi    16
 			pushi    31
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_0bfc
 code_0bcd:
 			dup     
@@ -867,7 +979,7 @@ code_0bcd:
 			pushi    2
 			pushi    16
 			pushi    31
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_0bfc
 code_0be0:
 			dup     
@@ -877,13 +989,13 @@ code_0be0:
 			pushi    2
 			pushi    16
 			pushi    32
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_0bfc
 code_0bf3:
 			pushi    2
 			pushi    16
 			pushi    33
-			call     localproc_001f,  4
+			call     LocPrint,  4
 code_0bfc:
 			toss    
 			jmp      code_17b9
@@ -909,13 +1021,13 @@ code_0c23:
 			pushi    2
 			pushi    16
 			pushi    31
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0c2f:
 			pushi    2
 			pushi    16
 			pushi    28
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0c3b:
 			pushi    1
@@ -930,13 +1042,13 @@ code_0c3b:
 			pushi    2
 			pushi    16
 			pushi    34
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0c5a:
 			pushi    2
 			pushi    16
 			pushi    28
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0c66:
 			pushi    1
@@ -951,13 +1063,13 @@ code_0c66:
 			pushi    2
 			pushi    16
 			pushi    35
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0c85:
 			pushi    2
 			pushi    16
 			pushi    28
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0c91:
 			pushi    1
@@ -968,7 +1080,7 @@ code_0c91:
 			pushi    2
 			pushi    16
 			pushi    36
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0ca8:
 			pushi    1
@@ -979,7 +1091,7 @@ code_0ca8:
 			pushi    2
 			pushi    16
 			pushi    37
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0cbf:
 			pushi    1
@@ -990,7 +1102,7 @@ code_0cbf:
 			pushi    2
 			pushi    16
 			pushi    38
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0cd6:
 			pushi    1
@@ -1005,13 +1117,13 @@ code_0cd6:
 			pushi    2
 			pushi    16
 			pushi    39
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0cf5:
 			pushi    2
 			pushi    16
 			pushi    28
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0d01:
 			pushi    1
@@ -1022,7 +1134,7 @@ code_0d01:
 			pushi    2
 			pushi    16
 			pushi    40
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0d18:
 			pushi    1
@@ -1037,13 +1149,13 @@ code_0d18:
 			pushi    2
 			pushi    16
 			pushi    41
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0d37:
 			pushi    2
 			pushi    16
 			pushi    28
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0d43:
 			pushi    1
@@ -1067,7 +1179,7 @@ code_0d66:
 			pushi    2
 			pushi    16
 			pushi    42
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0d72:
 			lsl      local4
@@ -1103,7 +1215,7 @@ code_0da8:
 			pushi    2
 			pushi    16
 			pushi    43
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0db4:
 			pushi    1
@@ -1114,7 +1226,7 @@ code_0db4:
 			pushi    2
 			pushi    16
 			pushi    44
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0dcb:
 			pushi    1
@@ -1125,7 +1237,7 @@ code_0dcb:
 			pushi    2
 			pushi    16
 			pushi    45
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0de2:
 			pushi    1
@@ -1136,7 +1248,7 @@ code_0de2:
 			pushi    2
 			pushi    16
 			pushi    46
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0df9:
 			pushi    1
@@ -1147,7 +1259,7 @@ code_0df9:
 			pushi    2
 			pushi    16
 			pushi    47
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0e10:
 			pushi    1
@@ -1158,7 +1270,7 @@ code_0e10:
 			pushi    2
 			pushi    16
 			pushi    48
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0e27:
 			pushi    1
@@ -1169,7 +1281,7 @@ code_0e27:
 			pushi    2
 			pushi    16
 			pushi    49
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0e3e:
 			pushi    1
@@ -1180,7 +1292,7 @@ code_0e3e:
 			pushi    2
 			pushi    16
 			pushi    50
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0e55:
 			pushi    1
@@ -1203,7 +1315,7 @@ code_0e55:
 			pushi    2
 			pushi    16
 			pushi    51
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0e82:
 			pushi    #has
@@ -1215,13 +1327,13 @@ code_0e82:
 			pushi    2
 			pushi    16
 			pushi    52
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0e9b:
 			pushi    2
 			pushi    16
 			pushi    53
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0ea7:
 			pushi    1
@@ -1241,13 +1353,13 @@ code_0ea7:
 			pushi    2
 			pushi    16
 			pushi    54
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0ed3:
 			pushi    2
 			pushi    16
 			pushi    55
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0edf:
 			pushi    1
@@ -1258,7 +1370,7 @@ code_0edf:
 			pushi    2
 			pushi    16
 			pushi    56
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0ef6:
 			pushi    1
@@ -1273,13 +1385,13 @@ code_0ef6:
 			pushi    2
 			pushi    16
 			pushi    34
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0f15:
 			pushi    2
 			pushi    16
 			pushi    57
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0f21:
 			pushi    1
@@ -1294,13 +1406,13 @@ code_0f21:
 			pushi    2
 			pushi    16
 			pushi    34
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0f40:
 			pushi    2
 			pushi    16
 			pushi    57
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0f4c:
 			pushi    1
@@ -1311,7 +1423,7 @@ code_0f4c:
 			pushi    2
 			pushi    16
 			pushi    58
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0f63:
 			pushi    1
@@ -1326,13 +1438,13 @@ code_0f63:
 			pushi    2
 			pushi    16
 			pushi    59
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0f82:
 			pushi    2
 			pushi    16
 			pushi    60
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_0f8e:
 			pushi    1
@@ -1355,7 +1467,7 @@ code_0f8e:
 			pushi    2
 			pushi    16
 			pushi    61
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1040
 code_0fbe:
 			dup     
@@ -1367,7 +1479,7 @@ code_0fbe:
 			pushi    2
 			pushi    16
 			pushi    62
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1040
 code_0fd6:
 			dup     
@@ -1379,7 +1491,7 @@ code_0fd6:
 			pushi    2
 			pushi    16
 			pushi    62
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1040
 code_0fee:
 			dup     
@@ -1389,7 +1501,7 @@ code_0fee:
 			pushi    2
 			pushi    16
 			pushi    63
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1040
 code_1001:
 			pushi    2
@@ -1404,7 +1516,7 @@ code_1001:
 			pushi    2
 			pushi    16
 			pushi    64
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_103f
 code_101c:
 			dup     
@@ -1414,7 +1526,7 @@ code_101c:
 			pushi    2
 			pushi    16
 			pushi    65
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_103f
 code_102f:
 			dup     
@@ -1424,7 +1536,7 @@ code_102f:
 			pushi    2
 			pushi    16
 			pushi    66
-			call     localproc_001f,  4
+			call     LocPrint,  4
 code_103f:
 			toss    
 code_1040:
@@ -1443,13 +1555,13 @@ code_1044:
 			pushi    2
 			pushi    16
 			pushi    67
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1063:
 			pushi    2
 			pushi    16
 			pushi    68
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_106f:
 			pushi    1
@@ -1469,13 +1581,13 @@ code_106f:
 			pushi    2
 			pushi    16
 			pushi    69
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_109c:
 			pushi    2
 			pushi    16
 			pushi    70
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_10a8:
 			pushi    1
@@ -1516,7 +1628,7 @@ code_10e7:
 			pushi    2
 			pushi    16
 			pushi    63
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_10f3:
 			pushi    2
@@ -1531,7 +1643,7 @@ code_10f3:
 			pushi    2
 			pushi    16
 			pushi    64
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1131
 code_110e:
 			dup     
@@ -1541,7 +1653,7 @@ code_110e:
 			pushi    2
 			pushi    16
 			pushi    65
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1131
 code_1121:
 			dup     
@@ -1551,7 +1663,7 @@ code_1121:
 			pushi    2
 			pushi    16
 			pushi    66
-			call     localproc_001f,  4
+			call     LocPrint,  4
 code_1131:
 			toss    
 			jmp      code_17b9
@@ -1566,7 +1678,7 @@ code_1135:
 			pushi    2
 			pushi    16
 			pushi    71
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1150:
 			lsl      local4
@@ -1578,7 +1690,7 @@ code_1150:
 			pushi    2
 			pushi    16
 			pushi    72
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1169:
 			pushi    0
@@ -1586,7 +1698,7 @@ code_1169:
 			pushi    2
 			pushi    16
 			pushi    73
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_117a:
 			pushi    1
@@ -1606,7 +1718,7 @@ code_117a:
 			pushi    2
 			pushi    16
 			pushi    72
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_121a
 code_11a3:
 			pushi    0
@@ -1614,7 +1726,7 @@ code_11a3:
 			pushi    2
 			pushi    16
 			pushi    74
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_121a
 code_11b4:
 			dup     
@@ -1626,7 +1738,7 @@ code_11b4:
 			pushi    2
 			pushi    16
 			pushi    62
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_121a
 code_11cc:
 			dup     
@@ -1638,7 +1750,7 @@ code_11cc:
 			pushi    2
 			pushi    16
 			pushi    62
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_121a
 code_11e4:
 			dup     
@@ -1648,7 +1760,7 @@ code_11e4:
 			pushi    2
 			pushi    16
 			pushi    75
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_121a
 code_11f7:
 			dup     
@@ -1658,7 +1770,7 @@ code_11f7:
 			pushi    2
 			pushi    16
 			pushi    75
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_121a
 code_120a:
 			dup     
@@ -1668,7 +1780,7 @@ code_120a:
 			pushi    2
 			pushi    16
 			pushi    75
-			call     localproc_001f,  4
+			call     LocPrint,  4
 code_121a:
 			toss    
 			jmp      code_17b9
@@ -1688,7 +1800,7 @@ code_121e:
 			pushi    2
 			pushi    16
 			pushi    76
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1243:
 			lsl      local4
@@ -1703,7 +1815,7 @@ code_1253:
 			pushi    2
 			pushi    16
 			pushi    77
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_125f:
 			lsl      local4
@@ -1746,7 +1858,7 @@ code_12a5:
 			pushi    2
 			pushi    16
 			pushi    78
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_12b1:
 			pushi    1
@@ -1757,7 +1869,7 @@ code_12b1:
 			pushi    2
 			pushi    16
 			pushi    79
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_12c8:
 			pushi    1
@@ -1817,7 +1929,7 @@ code_1322:
 			pushi    2
 			pushi    16
 			pushi    13
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1372
 code_133d:
 			dup     
@@ -1827,7 +1939,7 @@ code_133d:
 			pushi    2
 			pushi    16
 			pushi    14
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1372
 code_1350:
 			dup     
@@ -1837,7 +1949,7 @@ code_1350:
 			pushi    2
 			pushi    16
 			pushi    15
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1372
 code_1363:
 			dup     
@@ -1847,7 +1959,7 @@ code_1363:
 			pushi    2
 			pushi    16
 			dup     
-			call     localproc_001f,  4
+			call     LocPrint,  4
 code_1372:
 			toss    
 			jmp      code_17b9
@@ -1900,7 +2012,7 @@ code_13b0:
 			pushi    2
 			pushi    16
 			pushi    13
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1408
 code_13d3:
 			dup     
@@ -1910,7 +2022,7 @@ code_13d3:
 			pushi    2
 			pushi    16
 			pushi    14
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1408
 code_13e6:
 			dup     
@@ -1920,7 +2032,7 @@ code_13e6:
 			pushi    2
 			pushi    16
 			pushi    15
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_1408
 code_13f9:
 			dup     
@@ -1930,7 +2042,7 @@ code_13f9:
 			pushi    2
 			pushi    16
 			dup     
-			call     localproc_001f,  4
+			call     LocPrint,  4
 code_1408:
 			toss    
 			jmp      code_17b9
@@ -1954,7 +2066,7 @@ code_140c:
 			pushi    2
 			pushi    16
 			pushi    74
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1437:
 			pushi    #inRect
@@ -1976,7 +2088,7 @@ code_1437:
 			pushi    2
 			pushi    16
 			pushi    80
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1468:
 			pushi    1
@@ -2017,7 +2129,7 @@ code_14a0:
 			pushi    2
 			pushi    16
 			pushi    81
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_14bb:
 			pushi    1
@@ -2030,7 +2142,7 @@ code_14bb:
 			pushi    2
 			pushi    16
 			pushi    82
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			pushi    #changeState
 			pushi    1
 			pushi    7
@@ -2046,7 +2158,7 @@ code_14e0:
 			pushi    2
 			pushi    16
 			pushi    83
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_14f7:
 			pushi    #claimed
@@ -2057,7 +2169,7 @@ code_14f7:
 			pushi    2
 			pushi    16
 			pushi    84
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_150b:
 			lsl      local3
@@ -2130,7 +2242,7 @@ code_1592:
 			pushi    2
 			pushi    16
 			pushi    81
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_15e6
 code_15ad:
 			pushi    1
@@ -2143,7 +2255,7 @@ code_15ad:
 			pushi    2
 			pushi    16
 			pushi    82
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			pushi    #changeState
 			pushi    1
 			pushi    7
@@ -2159,7 +2271,7 @@ code_15d2:
 			pushi    2
 			pushi    16
 			pushi    83
-			call     localproc_001f,  4
+			call     LocPrint,  4
 code_15e6:
 			bnt      code_15ec
 			jmp      code_17b9
@@ -2180,7 +2292,7 @@ code_1602:
 			pushi    2
 			pushi    16
 			pushi    84
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1613:
 			pushi    1
@@ -2191,7 +2303,7 @@ code_1613:
 			pushi    2
 			pushi    16
 			pushi    85
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_162a:
 			pushi    1
@@ -2223,13 +2335,13 @@ code_1640:
 			pushi    2
 			pushi    16
 			pushi    86
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1671:
 			pushi    2
 			pushi    16
 			pushi    87
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_167d:
 			pushi    #inRect
@@ -2252,13 +2364,13 @@ code_167d:
 			pushi    2
 			pushi    16
 			pushi    88
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_16b3:
 			pushi    2
 			pushi    16
 			pushi    87
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_16bf:
 			pushi    #inRect
@@ -2279,7 +2391,7 @@ code_16bf:
 			pushi    2
 			pushi    16
 			pushi    89
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			pushi    #changeState
 			pushi    1
 			pushi    0
@@ -2290,13 +2402,13 @@ code_16fa:
 			pushi    2
 			pushi    16
 			pushi    87
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1706:
 			pushi    2
 			pushi    16
 			pushi    90
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_1712:
 			pushi    1
@@ -2342,7 +2454,7 @@ code_1756:
 			pushi    2
 			pushi    16
 			pushi    42
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			jmp      code_17b9
 code_176a:
 			lsl      local4
@@ -2383,7 +2495,7 @@ code_17a8:
 			pushi    2
 			pushi    16
 			pushi    43
-			call     localproc_001f,  4
+			call     LocPrint,  4
 			pushi    #claimed
 			pushi    1
 			pushi    1
@@ -2425,7 +2537,9 @@ code_17b9:
 				(agent stopUpd:)
 				(= local2 (Random 80 150))
 			)
-			(4 (self changeState: 0))
+			(4
+				(self changeState: 0)
+			)
 			(5
 				(agent
 					startUpd:
@@ -2433,7 +2547,9 @@ code_17b9:
 					setMotion: MoveTo 230 110 self
 				)
 			)
-			(6 (moveScript changeState: 9))
+			(6
+				(moveScript changeState: 9)
+			)
 			(7
 				(agent
 					startUpd:
@@ -2449,8 +2565,14 @@ code_17b9:
 			(9
 				(agent stopUpd:)
 				(cond 
-					((== prevRoomNum 12) (= local6 1))
-					((not local6) (localproc_001f 16 73 83) (localproc_000c) (= local6 1))
+					((== prevRoomNum 12)
+						(= local6 1)
+					)
+					((not local6)
+						(LocPrint 16 73 83)
+						(localproc_000c)
+						(= local6 1)
+					)
 				)
 			)
 		)
@@ -2462,21 +2584,31 @@ code_17b9:
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (localproc_001f 16 72))
+			(0
+				(LocPrint 16 72)
+			)
 			(1
-				(localproc_001f 16 91)
+				(LocPrint 16 91)
 				(switch local4
-					(2 (localproc_001f 16 92))
-					(3 (localproc_001f 16 92))
+					(2
+						(LocPrint 16 92)
+					)
+					(3
+						(LocPrint 16 92)
+					)
 					(1
 						(if
-						(or (< gamePhase 6) (== gamePhase 13) (Btst 34))
-							(localproc_001f 16 92)
+							(or
+								(< gamePhase 6)
+								(== gamePhase 13)
+								(Btst fTriedToGetTicketToHouston)
+							)
+							(LocPrint 16 92)
 						else
-							(SolvePuzzle 3 82)
-							(localproc_001f 16 93)
-							(localproc_001f 16 94)
-							(localproc_001f 16 95)
+							(SolvePuzzle 3 fLookedAtPassengerList)
+							(LocPrint 16 93)
+							(LocPrint 16 94)
+							(LocPrint 16 95)
 							(self cue:)
 						)
 					)
@@ -2486,40 +2618,54 @@ code_17b9:
 				(if (!= (cSound state?) 3)
 					(cSound number: 29 loop: -1 play:)
 				)
-				(localproc_001f 16 96 83)
-				(Bset 34)
+				(LocPrint 16 96 83)
+				(Bset fTriedToGetTicketToHouston)
 				(self cue:)
 			)
 			(3
-				(if (== currentCar 13) (= local8 1))
+				(if (== currentCar 13)
+					(= local8 1)
+				)
 			)
 			(4
-				(localproc_001f 16 97 25 4)
-				(localproc_001f 16 98)
+				(LocPrint 16 97 25 4)
+				(LocPrint 16 98)
 			)
 			(5
 				(cond 
-					((and (ego has: 16) (== airplaneToSteelton 0)) (localproc_001f 16 99))
-					((Btst 166) (localproc_001f 16 100))
-					((Btst 36)
-						(if (not (ego has: 16))
-							(localproc_001f 16 101)
-							(localproc_001f 16 102)
+					(
+						(and
+							(ego has: iPlaneTicket)
+							(== airplaneToSteelton 0)
+						)
+						(LocPrint 16 99)
+					)
+					((Btst fTriedToGoToHouston)
+						(LocPrint 16 100)
+					)
+					((Btst fHoustonAuthorized)
+						(if (not (ego has: iPlaneTicket))
+							(LocPrint 16 101)
+							(LocPrint 16 102)
 						else
-							(localproc_001f 16 103)
+							(LocPrint 16 103)
 						)
 						(= goingToHouston 0)
-						(ego get: 16)
+						(ego get: iPlaneTicket)
 						(= airplaneToSteelton 0)
-						(Bclr 36)
+						(Bclr fHoustonAuthorized)
 						(HandsOn)
 					)
 					(else
-						(localproc_001f 16 104)
-						(localproc_001f 16 105)
+						(LocPrint 16 104)
+						(LocPrint 16 105)
 						(HandsOn)
 						(if
-						(and (cast contains: keith) (not (Btst 36)) local13)
+							(and
+								(cast contains: keith)
+								(not (Btst fHoustonAuthorized))
+								local13
+							)
 							(keith setScript: getTheTicketScript)
 						)
 					)
@@ -2527,38 +2673,48 @@ code_17b9:
 			)
 			(6
 				(cond 
-					((== airplaneToSteelton 1) (localproc_001f 16 106))
-					((Btst 37)
-						(if (not (ego has: 16))
-							(localproc_001f 16 107)
-							(localproc_001f 16 102)
-							(if (ego has: 10) (localproc_001f 16 108))
+					((== airplaneToSteelton 1)
+						(LocPrint 16 106)
+					)
+					((Btst fSteeltonAuthorized)
+						(if (not (ego has: iPlaneTicket))
+							(LocPrint 16 107)
+							(LocPrint 16 102)
+							(if (ego has: iFieldKit)
+								(LocPrint 16 108)
+							)
 						else
-							(localproc_001f 16 109)
+							(LocPrint 16 109)
 						)
 						(= goingToSteelton 0)
-						(SolvePuzzle 3 155)
-						(ego get: 16)
+						(SolvePuzzle 3 fGotTicketToSteelton)
+						(ego get: iPlaneTicket)
 						(= airplaneToSteelton 1)
 						(if (IsObject theFieldKit)
 							(theFieldKit dispose:)
 							(= fieldKitOpen 0)
 						)
-						(ego put: 10 16)
+						(ego put: iFieldKit 16)
 						(HandsOn)
 					)
 					(else
-						(localproc_001f 16 110)
-						(localproc_001f 16 111)
+						(LocPrint 16 110)
+						(LocPrint 16 111)
 						(HandsOn)
 						(if
-						(and (cast contains: keith) (not (Btst 37)) local14)
+							(and
+								(cast contains: keith)
+								(not (Btst fSteeltonAuthorized))
+								local14
+							)
 							(keith setScript: getTheTicketScript)
 						)
 					)
 				)
 			)
-			(7 (localproc_001f 16 112))
+			(7
+				(LocPrint 16 112)
+			)
 		)
 	)
 )
@@ -2570,14 +2726,20 @@ code_17b9:
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(keith posn: 165 209 setMotion: MoveTo 168 180 self)
+				(keith
+					posn: 165 209
+					setMotion: MoveTo 168 180 self
+				)
 			)
 			(1
-				(localproc_001f 16 113 83 25 3)
+				(LocPrint 16 113 83 25 3)
 				(keith setMotion: MoveTo 168 151 self)
 			)
 			(2
-				(keith loop: 0 cel: 2)
+				(keith
+					loop: 0
+					cel: 2
+				)
 				(if (< (ego y?) 115)
 					(ego setMotion: MoveTo 155 114 self)
 				else
@@ -2585,31 +2747,29 @@ code_17b9:
 				)
 			)
 			(3
-				(ego
-					setMotion: MoveTo (+ (keith x?) 20) (keith y?) self
-				)
+				(ego setMotion: MoveTo (+ (keith x?) 20) (keith y?) self)
 			)
 			(4
 				(ego loop: 1)
 				(switch global169
 					(1
 						(= global169 3)
-						(localproc_001f 16 114 83)
-						(localproc_001f 16 115)
-						(localproc_001f 16 116)
+						(LocPrint 16 114 83)
+						(LocPrint 16 115)
+						(LocPrint 16 116)
 					)
 					(2
-						(localproc_001f 16 117 83)
-						(localproc_001f 16 116)
+						(LocPrint 16 117 83)
+						(LocPrint 16 116)
 					)
-					(3 (localproc_001f 16 118 83))
+					(3 (LocPrint 16 118 83))
 				)
 				(= global169 0)
 				(self cue:)
 			)
 			(5
-				(localproc_001f 16 119 83)
-				(localproc_001f 16 120)
+				(LocPrint 16 119 83)
+				(LocPrint 16 120)
 				(keith setMotion: Follow ego 25)
 				(HandsOn)
 			)
@@ -2624,16 +2784,14 @@ code_17b9:
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(localproc_001f 16 121)
+				(LocPrint 16 121)
 				(= local15 1)
 				(keith setMotion: 0)
 				(self cue:)
 			)
 			(1
 				(if (< (keith y?) (+ (ego y?) 5))
-					(keith
-						setMotion: MoveTo (- (ego x?) 20) (+ (ego y?) 5) self
-					)
+					(keith setMotion: MoveTo (- (ego x?) 20) (+ (ego y?) 5) self)
 				else
 					(self cue:)
 				)
@@ -2651,7 +2809,7 @@ code_17b9:
 				)
 			)
 			(4
-				(localproc_001f 16 122 25 7 83)
+				(LocPrint 16 122 25 7 83)
 				(self cue:)
 			)
 			(5
@@ -2667,7 +2825,7 @@ code_17b9:
 				)
 			)
 			(6
-				(localproc_001f 16 123 25 10 83)
+				(LocPrint 16 123 25 10 83)
 				(self cue:)
 			)
 			(7
@@ -2683,18 +2841,24 @@ code_17b9:
 				(agent setMotion: MoveTo 244 110)
 				(keith setMotion: Follow ego 25)
 				(if (or local14 local13)
-					(localproc_001f 16 124 83)
+					(LocPrint 16 124 83)
 					(cond 
-						(goingToHouston (Bset 36) (= goingToHouston 0))
+						(goingToHouston
+							(Bset fHoustonAuthorized)
+							(= goingToHouston 0)
+						)
 						(goingToSteelton
-							(Bset 37)
+							(Bset fSteeltonAuthorized)
 							(= goingToSteelton 0)
-							(if (not (Btst 94)) (localproc_001f 16 125))
+							(if
+								(not (Btst fColbyPhoneTap))
+								(LocPrint 16 125)
+							)
 						)
 					)
 				else
-					(localproc_001f 16 126)
-					(localproc_001f 16 127)
+					(LocPrint 16 126)
+					(LocPrint 16 127)
 				)
 				(HandsOn)
 				(self cue:)
@@ -2713,15 +2877,17 @@ code_17b9:
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (Btst 40)
+				(if (Btst fKeithFollows)
 					(if (keith inRect: 225 139 280 145)
 						(HandsOff)
 						(keith
-							setMotion:
-								MoveTo
-								(if (> (ego x?) (keith x?)) 210 else 290)
-								(keith y?)
-								self
+							setMotion: MoveTo
+								(if (> (ego x?) (keith x?))
+									210
+								else
+									290
+								) 
+								(keith y?) self
 						)
 					else
 						(self cue:)
@@ -2745,7 +2911,7 @@ code_17b9:
 				)
 			)
 			(3
-				(localproc_001f 16 128 25 3 83)
+				(LocPrint 16 128 25 3 83)
 				(self cue:)
 			)
 			(4
@@ -2764,7 +2930,9 @@ code_17b9:
 				(= perspective 0)
 				(curRoom newRoom: 12)
 			)
-			(6 (ego setCycle: BegLoop self))
+			(6
+				(ego setCycle: BegLoop self)
+			)
 			(7
 				(HandsOn)
 				(NormalEgo)
