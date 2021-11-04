@@ -1,6 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 15)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use AutoDoor)
@@ -21,9 +22,9 @@
 	local0
 	newAutoDoor
 	newAct
-	local3
-	local4
-	local5
+	rosePrice
+	bouquetPrice
+	plantPrice
 	local6
 	local7
 	local8
@@ -39,7 +40,7 @@
 	local18
 	local19
 )
-(procedure (localproc_0158)
+(procedure (LocPrint)
 	(if (> (ego y?) 150)
 		(Print &rest #at -1 15)
 	else
@@ -74,14 +75,18 @@
 (instance rm15 of Room
 	(properties
 		picture 15
-		style $0000
+		style HWIPE
 	)
 	
 	(method (init)
-		(Load rsVIEW 1)
-		(Load rsVIEW 76)
-		(if (or (ego has: 11) (< gamePhase 8))
-			(Load rsVIEW 43)
+		(Load VIEW 1)
+		(Load VIEW 76)
+		(if
+			(or
+				(ego has: iFlower)
+				(< gamePhase 8)
+			)
+			(Load VIEW 43)
 		)
 		(super init:)
 		(= perspective 70)
@@ -163,9 +168,9 @@
 			init:
 			stopUpd:
 		)
-		(= local3 2)
-		(= local4 15)
-		(= local5 7)
+		(= rosePrice 2)
+		(= bouquetPrice 15)  bouquetPrice
+		(= plantPrice 7)
 		(self setLocales: 153)
 		(self setScript: rm15Script)
 	)
@@ -178,11 +183,11 @@
 		(cond 
 			(local19 0)
 			((> (ego x?) 325)
-				(localproc_0158 15 0)
+				(LocPrint 15 0)
 				(ego setMotion: MoveTo 300 (ego y?))
 			)
 			((< (ego x?) -5)
-				(localproc_0158 15 0)
+				(LocPrint 15 0)
 				(ego setMotion: MoveTo 20 (ego y?))
 			)
 		)
@@ -192,17 +197,22 @@
 					(ego view: (- (ego view?) 1))
 				)
 			)
-			((!= (mod (ego view?) 2) 1) (ego view: (+ (ego view?) 1)))
+			((!= (mod (ego view?) 2) 1)
+				(ego view: (+ (ego view?) 1))
+			)
 		)
 		(if
 			(and
 				(not local8)
 				(not local12)
-				(not (ego has: 11))
+				(not (ego has: iFlower))
 				(< gamePhase 8)
 				(or
 					(== prevRoomNum 16)
-					(and (== prevRoomNum 14) (< (ego y?) 140))
+					(and
+						(== prevRoomNum 14)
+						(< (ego y?) 140)
+					)
 				)
 			)
 			(flowerScript changeState: 0)
@@ -216,8 +226,13 @@
 				)
 			)
 			(cond 
-				((> (ego x?) 245) (= local18 1) (flowerGirl setMotion: 0))
-				(local18 (= local18 0) (flowerGirl setMotion: Follow ego 25))
+				((> (ego x?) 245)
+					(= local18 1)
+					(flowerGirl setMotion: 0)
+				)
+				(local18 (= local18 0)
+					(flowerGirl setMotion: Follow ego 25)
+				)
 			)
 		)
 		(if
@@ -231,7 +246,11 @@
 			(= local9 0)
 			(flowerScript changeState: 1)
 		)
-		(if (and local8 (> (ego y?) 145))
+		(if
+			(and
+				local8
+				(> (ego y?) 145)
+			)
 			(flowerGirl stopUpd:)
 		else
 			(flowerGirl startUpd:)
@@ -239,7 +258,11 @@
 		(cond 
 			((not local16)
 				(if
-				(and (not local6) (> 176 (ego y?)) (> (ego y?) 142))
+					(and
+						(not local6)
+						(> 176 (ego y?)
+					)
+					(> (ego y?) 142))
 					(= local16 1)
 					(if (<= (ego y?) 150)
 						(= local17 2)
@@ -250,24 +273,38 @@
 					(taxi posn: 450 (+ (ego y?) 2))
 				)
 			)
-			((< (taxi x?) -35) (if (< (rm15Script state?) 1) (= local16 0)))
+			((< (taxi x?) -35)
+				(if (< (rm15Script state?) 1)
+					(= local16 0)
+				)
+			)
 			(else
 				(taxi
 					posn:
 						(- (taxi x?) 50)
-						(if (and (> 173 (ego y?)) (> (ego y?) 142))
+						(if 
+							(and
+								(> 173 (ego y?))
+								(> (ego y?) 142)
+							)
 							(+ (ego y?) 2)
 						else
 							(taxi y?)
 						)
 					setPri: (+ (ego priority?) local17)
 				)
-				(if (> (taxi priority?) 14) (taxi priority: 15))
-				(if (< (taxi priority?) 10) (taxi priority: 10))
+				(if (> (taxi priority?) 14)
+					(taxi priority: 15)
+				)
+				(if (< (taxi priority?) 10)
+					(taxi priority: 10)
+				)
 			)
 		)
 		(cond 
-			((< (ego x?) -20) (ego x: -20))
+			((< (ego x?) -20)
+				(ego x: -20)
+			)
 			(
 				(and
 					(< -25 (- (taxi x?) (ego x?)))
@@ -281,7 +318,10 @@
 				)
 				(rm15Script changeState: 1)
 			)
-			((== (newAutoDoor doorState?) 2) (= perspective 0) (curRoom newRoom: 16))
+			((== (newAutoDoor doorState?) 2)
+				(= perspective 0)
+				(curRoom newRoom: 16)
+			)
 			((> (ego y?) 210)
 				(= gGEgoX (ego x?))
 				(= gunFireState 2)
@@ -346,7 +386,7 @@
 						setMotion: MoveTo 115 122
 					)
 				)
-				(if (Btst 40)
+				(if (Btst fKeithFollows)
 					((= keith (Actor new:))
 						view: 20
 						init:
@@ -394,12 +434,20 @@
 				)
 			)
 			(3
-				(newAct setLoop: 7 setCel: 0 stopUpd: addToPic:)
+				(newAct
+					setLoop: 7
+					setCel: 0
+					stopUpd:
+					addToPic:
+				)
 				(= cycles 12)
 				(User canInput: 0)
 			)
 			(4
-				(if (Btst 40) (keith loop: 1) (localproc_0158 15 1 83))
+				(if (Btst fKeithFollows)
+					(keith loop: 1)
+					(LocPrint 15 1 83)
+				)
 				(= cycles 12)
 			)
 			(5
@@ -420,117 +468,202 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					(
-					(or (Said 'gave/newspaper') (Said 'ask,get/newspaper'))
+						(or
+							(Said 'gave/newspaper')
+							(Said 'ask,get/newspaper')
+						)
 						(if (ego inRect: 206 110 305 145)
-							(localproc_0158 15 4)
+							(LocPrint 15 4)
 						else
-							(localproc_0158 15 5)
+							(LocPrint 15 5)
 						)
 					)
 					((Said 'look>')
 						(cond 
-							((Said '/ave,sidewalk,bridge,(walk<side)') (localproc_0158 15 6))
-							((Said '/box') (localproc_0158 15 7))
-							((Said '/pane') (localproc_0158 15 8))
-							((Said '/men,dude,person,crowd') (Print 15 9 #at -1 15))
-							((Said '/bench') (localproc_0158 15 10))
-							((Said '/advertise,ad') (localproc_0158 15 11))
-							((Said '/way<both') (localproc_0158 15 12))
-							((Said '/awning') (localproc_0158 15 13))
-							((Said '<below/auto') (localproc_0158 15 14))
+							((Said '/ave,sidewalk,bridge,(walk<side)')
+								(LocPrint 15 6)
+							)
+							((Said '/box')
+								(LocPrint 15 7)
+							)
+							((Said '/pane')
+								(LocPrint 15 8)
+							)
+							((Said '/men,dude,person,crowd')
+								(Print 15 9 #at -1 15)
+							)
+							((Said '/bench')
+								(LocPrint 15 10)
+							)
+							((Said '/advertise,ad')
+								(LocPrint 15 11)
+							)
+							((Said '/way<both')
+								(LocPrint 15 12)
+							)
+							((Said '/awning')
+								(LocPrint 15 13)
+							)
+							((Said '<below/auto')
+								(LocPrint 15 14)
+							)
 							((Said '/auto')
 								(if (ego inRect: 80 108 120 150)
-									(localproc_0158 15 15)
+									(LocPrint 15 15)
 								else
-									(localproc_0158 15 16)
+									(LocPrint 15 16)
 								)
 							)
-							((Said '/door') (localproc_0158 15 17))
-							((Said '/sign') (localproc_0158 15 18 25 4) (localproc_0158 15 19))
-							((or (Said '/air') (Said '<up')) (localproc_0158 15 20))
-							((or (Said '/dirt') (Said '<down')) (localproc_0158 15 21))
+							((Said '/door')
+								(LocPrint 15 17)
+							)
+							((Said '/sign')
+								(LocPrint 15 18 25 4)
+								(LocPrint 15 19)
+							)
 							(
-							(Said '[<at,around][/building,airport,terminal]') (Print 15 22 #at -1 15))
+								(or
+									(Said '/air')
+									(Said '<up')
+								)
+								(LocPrint 15 20)
+							)
+							(
+								(or
+									(Said '/dirt')
+									(Said '<down')
+								)
+								(LocPrint 15 21)
+							)
+							((Said '[<at,around][/building,airport,terminal]')
+								(Print 15 22 #at -1 15)
+							)
 							((Said '/pole,light[<traffic]')
 								(if (> (ego y?) 150)
-									(localproc_0158 15 23)
+									(LocPrint 15 23)
 								else
-									(localproc_0158 15 24)
+									(LocPrint 15 24)
 								)
 							)
 							((Said '/button')
-								(if (== (ego onControl: 1) 2048)
-									(localproc_0158 15 25)
+								(if (== (ego onControl: 1) cLCYAN)
+									(LocPrint 15 25)
 								else
-									(localproc_0158 15 26)
+									(LocPrint 15 26)
 								)
 							)
 							((Said '/flower,basket')
 								(cond 
-									(local10 (Print 15 27 #at -1 15))
-									(local9 (localproc_0158 15 28))
-									(local11 (localproc_0158 15 29))
-									(else (event claimed: 0))
+									(local10
+										(Print 15 27 #at -1 15)
+									)
+									(local9
+										(LocPrint 15 28)
+									)
+									(local11
+										(LocPrint 15 29)
+									)
+									(else
+										(event claimed: 0)
+									)
 								)
 							)
 							((Said '/broad,wanda')
 								(cond 
-									((or local10 local9) (localproc_0158 15 30))
-									(local11 (localproc_0158 15 29))
-									(else (localproc_0158 15 31))
+									(
+										(or
+											local10
+											local9
+										)
+										(LocPrint 15 30)
+									)
+									(local11
+										(LocPrint 15 29)
+									)
+									(else
+										(LocPrint 15 31)
+									)
 								)
 							)
 						)
 					)
 					((Said 'display/shot,mugshot,painting')
-						(if (or (ego has: 12) (ego has: 23))
-							(if (or (ego inRect: 206 110 305 145) local10)
-								(localproc_0158 15 32)
+						(if
+							(or
+								(ego has: iNewMugShot)
+								(ego has: iOldMugShot)
+							)
+							(if
+								(or
+									(ego inRect: 206 110 305 145)
+									local10
+								)
+								(LocPrint 15 32)
 							else
-								(localproc_0158 15 33)
+								(LocPrint 15 33)
 							)
 						)
 					)
 					(
 						(or
 							(Said 'display,see,ask,chat/flower,rose,bouquet,plant')
-							(Said
-								'display,ask,chat[/broad,i]/flower,rose,bouquet,plant'
-							)
+							(Said 'display,ask,chat[/broad,i]/flower,rose,bouquet,plant')
 							(Said '(have<do)<what')
 						)
 						(cond 
-							((not local8) (localproc_0158 15 34))
-							(local9 (localproc_0158 15 28))
-							(local11 (localproc_0158 15 29))
-							(else (Print 15 27 #at -1 15))
+							((not local8)
+								(LocPrint 15 34)
+							)
+							(local9
+								(LocPrint 15 28)
+							)
+							(local11
+								(LocPrint 15 29)
+							)
+							(else
+								(Print 15 27 #at -1 15)
+							)
 						)
 					)
 					(
 					(Said 'gave/flower,rose,bouquet,carnation,plant')
 						(cond 
-							(local8 (localproc_0158 15 35))
-							(local11 (localproc_0158 15 29))
-							(else (localproc_0158 15 36))
+							(local8
+								(LocPrint 15 35)
+							)
+							(local11
+								(LocPrint 15 29)
+							)
+							(else
+								(LocPrint 15 36)
+							)
 						)
 					)
 					(
-					(Said 'smell/flower,rose,carnation,bouquet,plant')
-						(if (ego has: 11)
-							(localproc_0158 15 37)
+						(Said 'smell/flower,rose,carnation,bouquet,plant')
+						(if (ego has: iFlower)
+							(LocPrint 15 37)
 						else
-							(localproc_0158 15 38)
+							(LocPrint 15 38)
 						)
 					)
-					((Said 'polish') (localproc_0158 15 39))
+					((Said 'polish')
+						(LocPrint 15 39)
+					)
 					((Said 'display/badge')
 						(cond 
-							((ego inRect: 206 110 305 145) (localproc_0158 15 40))
-							(local10 (localproc_0158 15 41))
-							(else (localproc_0158 15 42))
+							((ego inRect: 206 110 305 145)
+								(LocPrint 15 40)
+							)
+							(local10
+								(LocPrint 15 41)
+							)
+							(else
+								(LocPrint 15 42)
+							)
 						)
 					)
 					(
@@ -541,157 +674,198 @@
 							(Said 'cease')
 						)
 						(cond 
-							(local13 (localproc_0158 15 43))
-							(local11 (localproc_0158 15 29))
-							(else (localproc_0158 15 44))
+							(local13
+								(LocPrint 15 43)
+							)
+							(local11
+								(LocPrint 15 29)
+							)
+							(else
+								(LocPrint 15 44)
+							)
 						)
 					)
-					((Said 'gave,write/ticket') (localproc_0158 15 45))
-					((Said 'cross/ave') (localproc_0158 15 46) (ego setMotion: MoveTo 165 150))
-					((Said 'get,call,hail/cab') (localproc_0158 15 47))
-					((Said '/bus') (localproc_0158 15 48))
-					((Said 'sat[<down]') (localproc_0158 15 49))
-					((Said 'get,drive/auto') (localproc_0158 15 50))
-					((Said 'frisk/auto') (localproc_0158 15 51))
+					((Said 'gave,write/ticket')
+						(LocPrint 15 45)
+					)
+					((Said 'cross/ave')
+						(LocPrint 15 46)
+						(ego setMotion: MoveTo 165 150)
+					)
+					((Said 'get,call,hail/cab')
+						(LocPrint 15 47)
+					)
+					((Said '/bus')
+						(LocPrint 15 48)
+					)
+					((Said 'sat[<down]')
+						(LocPrint 15 49)
+					)
+					((Said 'get,drive/auto')
+						(LocPrint 15 50)
+					)
+					((Said 'frisk/auto')
+						(LocPrint 15 51)
+					)
 					((Said 'open/door[<auto]')
 						(if (< (ego x?) 100)
-							(localproc_0158 15 50)
+							(LocPrint 15 50)
 						else
-							(localproc_0158 15 52)
+							(LocPrint 15 52)
 						)
 					)
 					((Said 'open/trunk')
 						(if (< (ego x?) 100)
-							(localproc_0158 15 50)
+							(LocPrint 15 50)
 						else
-							(localproc_0158 15 44)
+							(LocPrint 15 44)
 						)
 					)
-					((Said 'break/pane') (localproc_0158 15 53))
+					((Said 'break/pane')
+						(LocPrint 15 53)
+					)
 					((Said 'get,buy/flower')
 						(if local10
-							(localproc_0158 15 54)
+							(LocPrint 15 54)
 						else
-							(localproc_0158 15 55)
+							(LocPrint 15 55)
 						)
 					)
 					(
-					(or (Said '[buy,get]/yellow') (Said '/1,flower<yellow'))
+						(or
+							(Said '[buy,get]/yellow')
+							(Said '/1,flower<yellow')
+						)
 						(if local10
-							(localproc_0158 15 56)
+							(LocPrint 15 56)
 						else
-							(localproc_0158 15 44)
+							(LocPrint 15 44)
 						)
 					)
 					(
-					(or (Said '[buy,get]/red') (Said '/1,flower<red'))
+						(or
+							(Said '[buy,get]/red')
+							(Said '/1,flower<red')
+						)
 						(if local10
-							(localproc_0158 15 57)
+							(LocPrint 15 57)
 						else
-							(localproc_0158 15 44)
+							(LocPrint 15 44)
 						)
 					)
 					((Said '[buy,get]/rose')
 						(cond 
-							((not (ego has: 11))
+							((not (ego has: iFlower))
 								(if local10
-									(if (ego has: 4)
-										(if (> dollars local3)
-											(= dollars (- dollars local3))
-											(localproc_0158 15 58)
-											(localproc_0158 15 59)
-											(SolvePuzzle 2 80)
-											(ego get: 11)
-											((inventory at: 11) cel: 1)
+									(if (ego has: iMoneyClip)
+										(if (> dollars rosePrice)
+											(= dollars (- dollars rosePrice))
+											(LocPrint 15 58)
+											(LocPrint 15 59)
+											(SolvePuzzle 2 fBoughtFlower)
+											(ego get: iFlower)
+											((inventory at: iFlower) cel: 1)
 											(flowerScript changeState: 2)
 										else
-											(localproc_0158 15 60)
+											(LocPrint 15 60)
 										)
 									else
-										(localproc_0158 15 61)
+										(LocPrint 15 61)
 									)
 								else
-									(localproc_0158 15 55)
+									(LocPrint 15 55)
 								)
 							)
-							(local10 (localproc_0158 15 62))
-							(else (localproc_0158 15 63))
+							(local10
+								(LocPrint 15 62)
+							)
+							(else
+								(LocPrint 15 63)
+							)
 						)
 					)
 					((Said '[buy,get]/bouquet,carnation')
 						(cond 
-							((not (ego has: 11))
+							((not (ego has: iFlower))
 								(if local10
-									(if (> dollars local4)
-										(= dollars (- dollars local4))
-										(localproc_0158 15 64)
-										(localproc_0158 15 59)
-										(SolvePuzzle 2 80)
-										(ego get: 11)
-										((inventory at: 11) cel: 2)
+									(if (> dollars bouquetPrice)
+										(= dollars (- dollars bouquetPrice))
+										(LocPrint 15 64)
+										(LocPrint 15 59)
+										(SolvePuzzle 2 fBoughtFlower)
+										(ego get: iFlower)
+										((inventory at: iFlower) cel: 2)
 										(flowerScript changeState: 2)
 									else
-										(localproc_0158 15 60)
+										(LocPrint 15 60)
 									)
 								else
-									(localproc_0158 15 55)
+									(LocPrint 15 55)
 								)
 							)
-							(local10 (localproc_0158 15 62))
-							(else (localproc_0158 15 63))
+							(local10 (LocPrint 15 62))
+							(else (LocPrint 15 63))
 						)
 					)
 					((Said '[buy,get]/plant')
 						(cond 
-							((not (ego has: 11))
+							((not (ego has: iFlower))
 								(if local10
-									(if (> dollars local5)
-										(= dollars (- dollars local5))
-										(localproc_0158 15 65)
-										(localproc_0158 15 59)
-										(SolvePuzzle 2 80)
-										(ego get: 11)
-										((inventory at: 11) cel: 0)
+									(if (> dollars plantPrice)
+										(= dollars (- dollars plantPrice))
+										(LocPrint 15 65)
+										(LocPrint 15 59)
+										(SolvePuzzle 2 fBoughtFlower)
+										(ego get: iFlower)
+										((inventory at: iFlower) cel: 0)
 										(flowerScript changeState: 2)
 									else
-										(localproc_0158 15 60)
+										(LocPrint 15 60)
 									)
 								else
-									(localproc_0158 15 55)
+									(LocPrint 15 55)
 								)
 							)
-							(local10 (localproc_0158 15 62))
-							(else (localproc_0158 15 63))
+							(local10 (LocPrint 15 62))
+							(else (LocPrint 15 63))
 						)
 					)
 					((Said 'use,press/button')
-						(if (== (ego onControl: 1) 2048)
-							(localproc_0158 15 66)
+						(if (== (ego onControl: 1) cLCYAN)
+							(LocPrint 15 66)
 							(= local6 1)
 							(lightScript changeState: 1)
 							(if (> (ego y?) 170)
-								(SolvePuzzle 1 78)
+								(SolvePuzzle 1 fWaitedToCrossNorth) 
 							else
-								(SolvePuzzle 1 79)
+								(SolvePuzzle 1 fWaitedToCrossSouth)
 							)
 						else
-							(localproc_0158 15 67)
+							(LocPrint 15 67)
 						)
 					)
 					((Said 'chat/dude,men,person,crowd')
 						(if (ego inRect: 206 110 305 145)
-							(localproc_0158 15 68)
-							(localproc_0158 15 69)
+							(LocPrint 15 68)
+							(LocPrint 15 69)
 						else
-							(localproc_0158 15 70)
+							(LocPrint 15 70)
 						)
 					)
 					((Said 'chat/broad,broad,wanda[<flower]')
 						(cond 
-							((not local8) (localproc_0158 15 71))
-							(local9 (localproc_0158 15 70))
-							(local11 (localproc_0158 15 29))
-							(else (Print 15 27 #at -1 15))
+							((not local8)
+								(LocPrint 15 71)
+							)
+							(local9
+								(LocPrint 15 70)
+							)
+							(local11
+								(LocPrint 15 29)
+							)
+							(else
+								(Print 15 27 #at -1 15)
+							)
 						)
 					)
 					(
@@ -702,52 +876,68 @@
 							(Said 'gave,tell,ask/cost')
 						)
 						(if local10
-							(localproc_0158 15 72)
+							(LocPrint 15 72)
 						else
-							(localproc_0158 15 73)
+							(LocPrint 15 73)
 						)
 					)
 					((Said 'pay')
 						(if local10
-							(if (ego has: 11)
-								(localproc_0158 15 74)
+							(if (ego has: iFlower)
+								(LocPrint 15 74)
 							else
-								(localproc_0158 15 75)
+								(LocPrint 15 75)
 							)
 						else
-							(localproc_0158 15 76)
+							(LocPrint 15 76)
 						)
 					)
 					((Said 'affirmative')
 						(if local10
-							(localproc_0158 15 54)
+							(LocPrint 15 54)
 						else
-							(localproc_0158 15 77)
+							(LocPrint 15 77)
 						)
 					)
-					((Said 'n')
+					((Said 'no')
 						(if local10
-							(localproc_0158 15 78 25 4)
-							(localproc_0158 15 79)
+							(LocPrint 15 78 25 4)
+							(LocPrint 15 79)
 							(flowerScript changeState: 2)
 						else
-							(localproc_0158 15 80)
+							(LocPrint 15 80)
 						)
 					)
 					((Said 'ask/name[<broad]')
 						(cond 
-							(local10 (localproc_0158 15 81))
-							(local11 (localproc_0158 15 29))
-							(local9 (localproc_0158 15 82))
-							(else (localproc_0158 15 31))
+							(local10
+								(LocPrint 15 81)
+							)
+							(local11
+								(LocPrint 15 29)
+							)
+							(local9
+								(LocPrint 15 82)
+							)
+							(else
+								(LocPrint 15 31)
+							)
 						)
 					)
 					((Said 'kiss/broad,wanda')
 						(cond 
-							(local10 (localproc_0158 15 83))
-							(local9 (localproc_0158 15 84))
-							(local11 (localproc_0158 15 85))
-							(else (localproc_0158 15 86))
+							(local10
+								(LocPrint 15 83)
+							)
+							(local9
+								(LocPrint 15 84)
+							)
+							(local11
+								(LocPrint 15 85)
+							)
+							(else
+								(LocPrint 15 86)
+							)
 						)
 					)
 					(
@@ -757,29 +947,51 @@
 						)
 						(cond 
 							(local10
-								(localproc_0158 15 87)
+								(LocPrint 15 87)
 								(= local13 1)
 								(flowerScript changeState: 2)
 							)
-							(local9 (localproc_0158 15 84))
-							(local11 (localproc_0158 15 85))
-							(else (localproc_0158 15 86))
+							(local9
+								(LocPrint 15 84)
+							)
+							(local11
+								(LocPrint 15 85)
+							)
+							(else
+								(LocPrint 15 86)
+							)
 						)
 					)
 					((Said 'frisk/broad,wanda')
 						(cond 
-							(local10 (localproc_0158 15 88))
-							(local9 (localproc_0158 15 84))
-							(local11 (localproc_0158 15 85))
-							(else (localproc_0158 15 86))
+							(local10
+								(LocPrint 15 88)
+							)
+							(local9
+								(LocPrint 15 84)
+							)
+							(local11
+								(LocPrint 15 85)
+							)
+							(else
+								(LocPrint 15 86)
+							)
 						)
 					)
 					((Said 'arrest/broad,wanda')
 						(cond 
-							(local10 (localproc_0158 15 89))
-							(local9 (localproc_0158 15 84))
-							(local11 (localproc_0158 15 85))
-							(else (localproc_0158 15 86))
+							(local10
+								(LocPrint 15 89)
+							)
+							(local9
+								(LocPrint 15 84)
+							)
+							(local11
+								(LocPrint 15 85)
+							)
+							(else
+								(LocPrint 15 86)
+							)
 						)
 					)
 				)
@@ -793,11 +1005,12 @@
 	
 	(method (doit)
 		(cond 
-			((> local0 1) (-- local0))
+			((> local0 1)
+				(-- local0)
+			)
 			((== local0 1)
 				(if (cast contains: keith)
-					(if
-					(not (if (> 176 (keith y?)) (> (keith y?) 133)))
+					(if (not (if (> 176 (keith y?)) (> (keith y?) 133)))
 						(self changeState: 2)
 					)
 				else
@@ -817,7 +1030,11 @@
 				(= local6 0)
 				(= local0 0)
 				(lightPole setCel: 6)
-				(if (and (> 176 (ego y?)) (> (ego y?) 142))
+				(if
+					(and
+						(> 176 (ego y?))
+						(> (ego y?) 142)
+					)
 					(Print 15 90 #time 2)
 					(= local7 1)
 				)
@@ -846,7 +1063,9 @@
 				(= local8 1)
 				(= local9 1)
 			)
-			(1 (localproc_0158 15 91))
+			(1
+				(LocPrint 15 91)
+			)
 			(2
 				(= local11 1)
 				(= local10 0)

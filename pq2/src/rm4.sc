@@ -113,7 +113,7 @@
 				(
 					(and
 						global127
-						(not (Btst 31)) ;fFlag31
+						(not (Btst fReportedMarieMissingToCaptain)) ;fFlag31
 					)
 					8
 				)
@@ -123,7 +123,7 @@
 				(global162
 					9
 				)
-				((== gamePhase 0)
+				((== gamePhase 0) ;keith and captain mention bains exscape
 					1
 				)
 				((== prevRoomNum 7)
@@ -598,15 +598,15 @@
 					)
 					(
 						(or
-							(Said 'look,read/*<ya<thank')
+							(Said 'look,read/anyword<ya<thank')
 							(Said 'look,read/letter')
 						)
 						(if
 							(and
-								(ego has: 5)
+								(ego has: iThankYouLetter)
 								(!= local4 3)
 							)
-								((inventory at: 5) showSelf:)
+								((inventory at: iThankYouLetter) showSelf:)
 						else
 							(event claimed: 0)
 						)

@@ -126,7 +126,8 @@
 (define fKeithFollows 40)
 (define fSmudgedPrints 41)
 (define fFlag45 45)
-(enum 50
+(enum 49
+	fGotToiletGun					;49
 	fGotEmptyHolster				;50
 	fAskedWomanAboutCar				;51
 	fFlag52							;52
@@ -155,8 +156,12 @@
 	fFlag75							;75
 	fFlag76							;76
 	fReadJailerVIN					;77
+	fWaitedToCrossNorth				;78
+	fWaitedToCrossSouth				;79
+	fBoughtFlower					;80
 )
 (define fLookedAtPassengerList 82)
+(define fAgentRecognizedBains 83)
 (define fReadCarRentals 84)
 (define fLloydInRehab 85)
 (define fLeanredBainsWasAtMotel 88)
@@ -212,8 +217,8 @@
 	fGotTicketToSteelton 				;155
 	fToldKeithAboutMallScene			;156
 	fFlag157							;157
-	fFlag158							;158
-	fFlag159							;159
+	fRadioedInRentalCar					;158
+	fRadioedInStolenCarPlate			;159
 	fSaveMarie							;160
 	fCalmMarie							;161
 	fFlag162							;162

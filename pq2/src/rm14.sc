@@ -20,33 +20,36 @@
 	local1
 	local2
 	local3
-	[local4 4]
+	[local4 4] ;sonny's car rect
 	local8
 	nextRoom
 	local10
 	[local11 2]
 	local13
 )
-(procedure (localproc_000c)
+(procedure (LocPrint)
 	(Print &rest #at -1 15)
 )
 
 (procedure (localproc_19fc)
 	(cond 
 		(
-		(and (!= global169 0) (ego inRect: 240 180 287 192))
-			(if (>= global169 2)
-				(localproc_000c 14 63)
-				(= perspective 0)
-				(curRoom newRoom: 104)
-			else
-				(Print 14 73)
+			(and (!= global169 0) (ego inRect: 240 180 287 192))
+				(if (>= global169 2)
+					(LocPrint 14 63)
+					(= perspective 0)
+					(curRoom newRoom: 104)
+				else
+					(Print 14 73)
+				)
 			)
-		)
 		(
-		(and (!= global169 0) (ego inRect: 223 156 291 190))
+		(and
+			(!= global169 0)
+			(ego inRect: 223 156 291 190)
+		)
 			(if (>= global169 2)
-				(localproc_000c 14 64)
+				(LocPrint 14 64)
 			else
 				(Print 14 73)
 			)
@@ -59,12 +62,21 @@
 							(not
 								(ego inRect: [local4 0] [local4 1] [local4 2] [local4 3])
 							)
-							(localproc_000c 14 74)
+							(LocPrint 14 74)
 						)
-						(workCarLocked (localproc_000c 14 75))
-						(workCarTrunkOpened (localproc_000c 14 76))
-						((ego has: 10) (localproc_000c 14 77))
-						(else (= currentCar carWork) (carScript changeState: 4))
+						(workCarLocked
+							(LocPrint 14 75)
+						)
+						(workCarTrunkOpened
+							(LocPrint 14 76)
+						)
+						((ego has: 10)
+							(LocPrint 14 77)
+						)
+						(else
+							(= currentCar carWork)
+							(carScript changeState: 4)
+						)
 					)
 				)
 				(33
@@ -73,10 +85,14 @@
 							(not
 								(ego inRect: [local4 0] [local4 1] [local4 2] [local4 3])
 							)
-							(localproc_000c 14 74)
+							(LocPrint 14 74)
 						)
-						((== personalCarLocked 1) (localproc_000c 14 75))
-						(else (carScript changeState: 4))
+						((== personalCarLocked 1)
+							(LocPrint 14 75)
+						)
+						(else
+							(carScript changeState: 4)
+						)
 					)
 				)
 			)
@@ -164,8 +180,43 @@
 (instance rm14 of Room
 	(properties
 		picture 14
-		style $0001
+		style VSHUTTER
 	)
+	
+;;;	(method (init)
+;;;		(Load VIEW 0) ;needed? 
+;;;		(Load VIEW 20)
+;;;		(Load VIEW 74)
+;;;		(Load VIEW 75)
+;;;		(Load VIEW 54)
+;;;		(Load VIEW 51)	
+;;;		(= gunNotNeeded 1)
+;;;		(= gunFireState 3)
+;;;		(self setLocales: 153)
+;;;		(cond
+;;;			(and (== prevRoomNum 33) (== prevRoomNum 13))
+;;;				(self 6) 
+;;;			)
+;;;			((== prevRoomNum 13)
+;;;				(++ local0) ;maybe?	
+;;;			)
+;;;				(and
+;;;					(> global169 0)
+;;;					(!= prevRoomNum 13)				
+;;;				)
+;;;				(Bclr fKeithFollows)
+;;;			)
+;;;			...
+;;;			(if (!= global69 0)
+;;;				((View new:)
+;;;					view: 94
+;;;							
+;;;				)
+;;;
+;;;			
+;;;		)
+;;;	)
+	
 	
 	(method (init)
 		(asm
@@ -690,18 +741,33 @@ code_096b:
 	(method (doit)
 		(cond 
 			((<= (ego y?) 116)
-				(if (and (== currentCar carWork) (> (keith x?) 8))
+				(if
+					(and
+						(== currentCar carWork)
+						(> (keith x?) 8)
+					)
 					(switch global169
-						(1 (localproc_000c 14 0))
+						(1
+							(LocPrint 14 0)
+						)
 						(2
-							(if (not (Btst 119)) (localproc_000c 14 1) (Bset 119))
+							(if (not (Btst fFoundWomanStolenCar))
+								(LocPrint 14 1)
+								(Bset fFoundWomanStolenCar)
+							)
 						)
 					)
 				)
 				(cond 
-					((< (ego x?) 58) (= gGEgoX -10))
-					((> (ego x?) 161) (= gGEgoX 327))
-					(else (= gGEgoX (ego x?)))
+					((< (ego x?) 58)
+						(= gGEgoX -10)
+					)
+					((> (ego x?) 161)
+						(= gGEgoX 327)
+					)
+					(else
+						(= gGEgoX (ego x?))
+					)
 				)
 				(= perspective 0)
 				(curRoom newRoom: nextRoom)
@@ -716,26 +782,47 @@ code_096b:
 				(carScript changeState: 0)
 			)
 			(
-			(and (== global132 (not local0)) (== (not local0) 1)) (= global132 0) (localproc_19fc))
+				(and
+					(== global132 (not local0))
+					(== (not local0) 1)
+				)
+				(= global132 0)
+				(localproc_19fc)
+			)
 			(
 				(and
 					(or (< (ego x?) -12) (> (ego x?) 332))
 					(not local0)
 				)
 				(if
-				(and (cast contains: keith) (< (keith x?) 10))
-					(localproc_000c 14 2)
+				(and
+					(cast contains: keith)
+					(< (keith x?) 10)
+				)
+					(LocPrint 14 2)
 				else
-					(localproc_000c 14 3)
+					(LocPrint 14 3)
 				)
 				(ego setMotion: MoveTo 125 (ego y?))
 			)
-			((and (> (ego y?) 240) (not local0))
+			(
+				(and
+					(> (ego y?) 240)
+					(not local0)
+				)
 				(switch (Random 0 3)
-					(0 (localproc_000c 14 4))
-					(1 (localproc_000c 14 5))
-					(2 (localproc_000c 14 6))
-					(3 (localproc_000c 14 7))
+					(0
+						(LocPrint 14 4)
+					)
+					(1
+						(LocPrint 14 5)
+					)
+					(2
+						(LocPrint 14 6)
+					)
+					(3
+						(LocPrint 14 7)
+					)
 				)
 				(ego setMotion: MoveTo (ego x?) 150)
 			)
@@ -755,8 +842,12 @@ code_096b:
 					(15
 						(ego posn: (+ (/ gGEgoX 3) 57) 124)
 					)
-					(13 (ego posn: local8 239))
-					(33 (ego posn: local8 239))
+					(13
+						(ego posn: local8 239)
+					)
+					(33
+						(ego posn: local8 239)
+					)
 				)
 				(if (== currentCar carWork)
 					((= keith (Actor new:))
@@ -776,7 +867,7 @@ code_096b:
 						)
 						(nextRoom
 							(cond 
-								((Btst 40)
+								((Btst fKeithFollows)
 									(keith
 										posn: (- (ego x?) 32) (- (ego y?) 8)
 										loop: 2
@@ -784,7 +875,13 @@ code_096b:
 										setAvoider: (Avoider new:)
 									)
 								)
-								((and (not (Btst 118)) (== global169 1)) (keith posn: -14 128))
+								(
+									(and
+										(not (Btst fStolenCarTowed))
+										(== global169 1)
+									)
+									(keith posn: -14 128)
+								)
 								(else
 									(keith
 										posn: 153 142
@@ -807,37 +904,41 @@ code_096b:
 			(2
 				(if (== currentCar carWork)
 					(switch prevRoomNum
-						(104 (localproc_000c 14 8 83))
+						(104
+							(LocPrint 14 8 83)
+						)
 						(nextRoom
-							(if (Btst 40)
-								(localproc_000c 14 9 83)
+							(if (Btst fKeithFollows)
+								(LocPrint 14 9 83)
 							else
 								(switch local13
-									(0 (localproc_000c 14 10 83))
+									(0
+										(LocPrint 14 10 83)
+									)
 									(1
 										(if local10
-											(localproc_000c 14 11 83)
-											(localproc_000c 14 12)
+											(LocPrint 14 11 83)
+											(LocPrint 14 12)
 										else
-											(localproc_000c 14 13)
+											(LocPrint 14 13)
 										)
 									)
 									(2
-										(if (not (Btst 118))
-											(localproc_000c 14 14)
+										(if (not (Btst fStolenCarTowed))
+											(LocPrint 14 14)
 										else
-											(localproc_000c 14 15)
+											(LocPrint 14 15)
 										)
 									)
 									(3
-										(if (Btst 118)
-											(localproc_000c 14 16 83)
+										(if (Btst fStolenCarTowed)
+											(LocPrint 14 16 83)
 										else
-											(localproc_000c 14 14)
+											(LocPrint 14 14)
 										)
 									)
 									(else 
-										(localproc_000c 14 17 83)
+										(LocPrint 14 17 83)
 									)
 								)
 							)
@@ -852,7 +953,9 @@ code_096b:
 		(switch (event type?)
 			(saidEvent
 				(cond 
-					((Said 'close/door') (localproc_000c 14 18))
+					((Said 'close/door')
+						(LocPrint 14 18)
+					)
 					(
 						(or
 							(Said 'enter/auto')
@@ -861,7 +964,11 @@ code_096b:
 						)
 						(localproc_19fc)
 					)
-					((or (Said 'look>') (Said 'check[<out]>'))
+					(
+						(or
+							(Said 'look>')
+							(Said 'check[<out]>')
+						)
 						(cond 
 							((Said '/trunk')
 								(if
@@ -875,47 +982,94 @@ code_096b:
 										showSelf: 13
 									)
 								else
-									(localproc_000c 14 19)
+									(LocPrint 14 19)
 								)
 							)
-							((Said '/building,airport,terminal') (localproc_000c 14 20))
-							((Said '/entrance') (localproc_000c 14 21))
-							((Said '/lot') (localproc_000c 14 22))
-							((Said '[<at,around][/!*,chamber]') (localproc_000c 14 23))
-							((Said '/tower') (localproc_000c 14 24))
-							((Said '/sock,wind') (localproc_000c 14 25))
-							((Said '/airplane[<air]') (localproc_000c 14 26))
-							((or (Said '/air') (Said '<up')) (localproc_000c 14 27))
-							((Said '/cloud') (localproc_000c 14 28))
-							((Said '/dude,broad,men,women,crowd') (localproc_000c 14 29))
-							((Said '/vin,badge') (localproc_000c 14 30))
-							((Said '<below/auto') (localproc_000c 14 31))
-							((or (Said '/dirt') (Said '<down,ave,bridge')) (localproc_000c 14 32))
+							((Said '/building,airport,terminal')
+								(LocPrint 14 20)
+							)
+							((Said '/entrance')
+								(LocPrint 14 21)
+							)
+							((Said '/lot')
+								(LocPrint 14 22)
+							)
+							((Said '[<at,around][/!*,chamber]')
+								(LocPrint 14 23)
+							)
+							((Said '/tower')
+								(LocPrint 14 24)
+							)
+							((Said '/sock,wind')
+								(LocPrint 14 25)
+							)
+							((Said '/airplane[<air]')
+								(LocPrint 14 26)
+							)
+							(
+								(or
+									(Said '/air')
+									(Said '<up')
+								)
+								(LocPrint 14 27)
+							)
+							((Said '/cloud')
+								(LocPrint 14 28)
+							)
+							((Said '/dude,broad,men,women,crowd')
+								(LocPrint 14 29)
+							)
+							((Said '/vin,badge')
+								(LocPrint 14 30)
+							)
+							((Said '<below/auto')
+								(LocPrint 14 31)
+							)
+							(
+								(or
+									(Said '/dirt')
+									(Said '<down,ave,bridge')
+								)
+								(LocPrint 14 32)
+							)
 							((Said '/auto')
 								(if (!= global169 0)
 									(cond 
-										((not (Btst 77))
+										((not (Btst fReadJailerVIN))
 											(cond 
-												((ego inRect: 130 163 315 200) (localproc_000c 14 33) (= global169 2))
-												((== global169 2) (localproc_000c 14 34))
-												(else (localproc_000c 14 35))
+												((ego inRect: 130 163 315 200)
+													(LocPrint 14 33)
+													(= global169 2)
+												)
+												((== global169 2)
+													(LocPrint 14 34)
+												)
+												(else
+													(LocPrint 14 35)
+												)
 											)
 										)
-										((ego inRect: 130 163 315 200) (localproc_000c 14 36))
-										(else (localproc_000c 14 34))
+										((ego inRect: 130 163 315 200)
+											(LocPrint 14 36)
+										)
+										(else
+											(LocPrint 14 34)
+										)
 									)
 								else
-									(localproc_000c 14 37)
+									(LocPrint 14 37)
 								)
 							)
 							((Said '/license')
 								(if (!= global169 0)
 									(cond 
-										((ego inRect: 162 163 208 189) (localproc_000c 14 38))
+										((ego inRect: 162 163 208 189)
+											(LocPrint 14 38)
+										)
 										((ego inRect: 295 159 322 190)
-											(localproc_000c 14 39)
+											(LocPrint 14 39)
 											(= global169 2)
-											(SolvePuzzle 1 77)
+											(SolvePuzzle 1 fReadJailerVIN)
 											(if
 												(and
 													(== currentCar carWork)
@@ -927,86 +1081,85 @@ code_096b:
 													setMotion: Follow ego 36
 													setAvoider: (Avoider new:)
 												)
-												(localproc_000c 14 40 83)
+												(LocPrint 14 40 83)
 											)
 										)
-										(else (localproc_000c 14 41))
+										(else (LocPrint 14 41))
 									)
 								else
-									(localproc_000c 14 42)
+									(LocPrint 14 42)
 								)
 							)
 						)
 					)
 					((Said 'drive')
 						(if local0
-							(localproc_000c 14 43)
+							(LocPrint 14 43)
 						else
-							(localproc_000c 14 44)
+							(LocPrint 14 44)
 						)
 					)
 					((Said 'deposit,place/briefcase')
 						(if (ego inRect: 146 132 172 142)
 							(if workCarTrunkOpened
-								(if (ego has: 10)
-									(localproc_000c 14 45)
-									(PutInRoom 10 13)
+								(if (ego has: iFieldKit)
+									(LocPrint 14 45)
+									(PutInRoom iFieldKit 13)
 									(if (IsObject theFieldKit) (theFieldKit dispose:))
 									(= fieldKitOpen 0)
 								else
-									(localproc_000c 14 46)
+									(LocPrint 14 46)
 								)
 							else
-								(localproc_000c 14 47)
+								(LocPrint 14 47)
 							)
 						else
-							(localproc_000c 14 48)
+							(LocPrint 14 48)
 						)
 					)
 					((Said 'remove,get/briefcase')
 						(if (ego inRect: 146 132 172 142)
 							(if workCarTrunkOpened
-								(if (== ((inventory at: 10) owner?) 13)
-									(localproc_000c 14 49)
-									(ego get: 10)
+								(if (== ((inventory at: iFieldKit) owner?) 13)
+									(LocPrint 14 49)
+									(ego get: iFieldKit)
 								else
-									(localproc_000c 14 50)
+									(LocPrint 14 50)
 								)
 							else
-								(localproc_000c 14 47)
+								(LocPrint 14 47)
 							)
 						else
-							(localproc_000c 14 48)
+							(LocPrint 14 48)
 						)
 					)
 					(
 					(or (Said 'unlock/door,auto') (Said 'unlock/door<auto'))
-						(if
-						(ego inRect: [local4 0] [local4 1] [local4 2] [local4 3])
+						(if (ego inRect: [local4 0] [local4 1] [local4 2] [local4 3])
 							(cond 
 								((and (== currentCar carWork) (ego has: 3))
 									(if workCarLocked
 										(= workCarLocked 0)
-										(localproc_000c 14 51)
+										(LocPrint 14 51)
 									else
-										(localproc_000c 14 52)
+										(LocPrint 14 52)
 									)
 								)
-								((== currentCar carWork) (localproc_000c 14 53))
+								((== currentCar carWork) (LocPrint 14 53))
 							)
 							(cond 
 								((and (== currentCar carPersonal) (ego has: 2))
 									(if personalCarLocked
 										(= personalCarLocked 0)
-										(localproc_000c 14 51)
+										(LocPrint 14 51)
 									else
-										(localproc_000c 14 52)
+										(LocPrint 14 52)
 									)
 								)
-								((== currentCar carPersonal) (localproc_000c 14 53))
+								((== currentCar carPersonal) (LocPrint 14 53))
 							)
 						else
-							(localproc_000c 14 54)
+							(LocPrint 14 54)
 						)
 					)
 					(
@@ -1015,40 +1168,47 @@ code_096b:
 						(ego inRect: [local4 0] [local4 1] [local4 2] [local4 3])
 							(if (== currentCar carWork)
 								(cond 
-									((not workCarLocked) (= workCarLocked 1) (localproc_000c 14 55))
-									((ego inRect: 223 156 291 190) (localproc_000c 14 56))
-									(else (localproc_000c 14 57))
+									((not workCarLocked)
+										(= workCarLocked 1)
+										(LocPrint 14 55)
+									)
+									((ego inRect: 223 156 291 190)
+										(LocPrint 14 56)
+									)
+									(else
+										(LocPrint 14 57)
+									)
 								)
 							)
 							(if (== currentCar 33)
 								(if (not personalCarLocked)
 									(= personalCarLocked 1)
-									(localproc_000c 14 55)
+									(LocPrint 14 55)
 								else
-									(localproc_000c 14 57)
+									(LocPrint 14 57)
 								)
 							)
 						else
-							(localproc_000c 14 54)
+							(LocPrint 14 54)
 						)
 					)
 					((Said 'open,unlock/trunk')
 						(if (== currentCar 13)
 							(if (ego inRect: 146 132 172 142)
-								(if (ego has: 3)
+								(if (ego has: iUnmarkedCarKeys)
 									(if workCarTrunkOpened
 										(Print 14 58)
 									else
 										(carScript changeState: 10)
 									)
 								else
-									(localproc_000c 14 59)
+									(LocPrint 14 59)
 								)
 							else
-								(localproc_000c 14 60)
+								(LocPrint 14 60)
 							)
 						else
-							(localproc_000c 14 61)
+							(LocPrint 14 61)
 						)
 					)
 					((Said 'close,lock/trunk')
@@ -1063,23 +1223,33 @@ code_096b:
 								(NotClose)
 							)
 						else
-							(localproc_000c 14 61)
+							(LocPrint 14 61)
 						)
 					)
 					(
 					(or (Said 'frisk/auto') (Said 'check[<out]/auto'))
 						(cond 
 							(
-							(and (!= global169 0) (ego inRect: 240 180 287 192))
-								(localproc_000c 14 63 25 4)
+								(and
+									(!= global169 0)
+									(ego inRect: 240 180 287 192)
+								)
+								(LocPrint 14 63 25 4)
 								(= perspective 0)
 								(curRoom newRoom: 104)
 							)
 							(
-							(and (!= global169 0) (ego inRect: 223 156 291 190)) (localproc_000c 14 64))
-							(
-							(ego inRect: [local4 0] [local4 1] [local4 2] [local4 3]) (localproc_000c 14 65))
-							(else (localproc_000c 14 66))
+							(and
+								(!= global169 0)
+								(ego inRect: 223 156 291 190))
+								(LocPrint 14 64)
+							)
+							((ego inRect: [local4 0] [local4 1] [local4 2] [local4 3])
+								(LocPrint 14 65)
+							)
+							(else
+								(LocPrint 14 66)
+							)
 						)
 					)
 				)
@@ -1141,8 +1311,8 @@ code_096b:
 					(carDoor dispose:)
 					(if (== global169 1)
 						(keith setMotion: MoveTo -14 149)
-						(localproc_000c 14 67 25 7)
-						(localproc_000c 14 68 83 25 5)
+						(LocPrint 14 67 25 7)
+						(LocPrint 14 68 83 25 5)
 					else
 						(keith setMotion: MoveTo 160 146 self)
 					)
@@ -1151,15 +1321,15 @@ code_096b:
 			(3
 				(keith cel: 0)
 				(cond 
-					((and local1 (== global169 3)) (localproc_000c 14 69))
-					((== gamePhase 13) (localproc_000c 14 70))
-					((not local1) (localproc_000c 14 71))
+					((and local1 (== global169 3)) (LocPrint 14 69))
+					((== gamePhase 13) (LocPrint 14 70))
+					((not local1) (LocPrint 14 71))
 				)
 			)
 			(4
 				(HandsOff)
 				(if (== currentCar 13)
-					(localproc_000c 14 72)
+					(LocPrint 14 72)
 					(if (< (keith y?) 134)
 						(keith
 							setAvoider: 0
@@ -1221,7 +1391,9 @@ code_096b:
 					setCycle: EndLoop self
 				)
 			)
-			(11 (unTrunk stopUpd:))
+			(11
+				(unTrunk stopUpd:)
+			)
 			(12
 				(= workCarTrunkOpened 0)
 				(unTrunk
@@ -1253,7 +1425,13 @@ code_096b:
 					init:
 					addToPic:
 				)
-				(door view: 75 loop: 3 posn: 99 96 init: addToPic:)
+				(door
+					view: 75
+					loop: 3
+					posn: 99 96
+					init:
+					addToPic:
+				)
 				(SIGN
 					view: 74
 					loop: 0
@@ -1347,7 +1525,10 @@ code_096b:
 			)
 			(1
 				(plane stopUpd:)
-				(smallGuy1 setLoop: 2 setMotion: MoveTo 180 99)
+				(smallGuy1
+					setLoop: 2
+					setMotion: MoveTo 180 99
+				)
 				(smallGuy2
 					view: 74
 					posn: 324 99
@@ -1405,14 +1586,22 @@ code_096b:
 			(5
 				(tail addToPic:)
 				(nose addToPic:)
-				(smallGuy3 startUpd: setMotion: MoveTo 168 96 init:)
+				(smallGuy3
+					startUpd:
+					setMotion: MoveTo 168 96
+					init:
+				)
 				(smallGuy1
 					startUpd:
 					setLoop: 2
 					setMotion: MoveTo 175 99
 					init:
 				)
-				(smallGuy2 startUpd: setLoop: 4 setMotion: MoveTo 182 98)
+				(smallGuy2
+					startUpd:
+					setLoop: 4
+					setMotion: MoveTo 182 98
+				)
 			)
 		)
 	)
