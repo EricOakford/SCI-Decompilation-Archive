@@ -1,6 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 18)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -15,31 +16,31 @@
 )
 
 (local
-	newProp
-	newView
-	local2
-	local3
-	local4
+	propAgent
+	blondeAgent
+	badgeShown
+	mugshotShown
+	checkedList
 )
-(procedure (localproc_000c)
+(procedure (LocPrint)
 	(Print &rest #at -1 15)
 )
 
 (instance rm18 of Room
 	(properties
 		picture 18
-		style $0001
+		style VSHUTTER
 	)
 	
 	(method (init)
 		(super init:)
 		(= perspective 70)
-		(= gunFireState 3)
+		(= gunFireState gunPROHIBITED)
 		(= gunNotNeeded 1)
 		(User canInput: 1)
-		(Load rsVIEW 1)
-		(Load rsVIEW 79)
-		((= newProp (Prop new:))
+		(Load VIEW 1)
+		(Load VIEW 79)
+		((= propAgent (Prop new:))
 			view: 79
 			posn: 126 98
 			setLoop: 1
@@ -48,7 +49,7 @@
 			init:
 			stopUpd:
 		)
-		((= newView (View new:))
+		((= blondeAgent (View new:))
 			view: 79
 			posn: 101 103
 			loop: 3
@@ -120,7 +121,7 @@
 			stopUpd:
 			addToPic:
 		)
-		(self setLocales: 153)
+		(self setLocales: regFieldKit)
 		(self setScript: rm18Script)
 	)
 	
@@ -148,7 +149,9 @@
 					(ego view: (- (ego view?) 1))
 				)
 			)
-			((!= (mod (ego view?) 2) 1) (ego view: (+ (ego view?) 1)))
+			((!= (mod (ego view?) 2) 1)
+				(ego view: (+ (ego view?) 1))
+			)
 		)
 		(super doit:)
 	)
@@ -165,7 +168,7 @@
 					setMotion: MoveTo 350 (ego y?)
 					init:
 				)
-				(if (Btst 40)
+				(if (Btst fKeithFollows)
 					((= keith (Actor new:))
 						view: 20
 						xStep: 3
@@ -183,55 +186,91 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'display/mugshot,painting,(shot<mug)')
 						(if (ego inRect: 76 113 173 141)
 							(agentScript changeState: 3)
 						else
-							(localproc_000c 18 0)
+							(LocPrint 18 0)
 						)
 					)
 					((Said 'look>')
 						(cond 
-							((Said '[<at,around][/!*,chamber,building]') (localproc_000c 18 1))
+							((Said '[<at,around][/!*,chamber,building]')
+								(LocPrint 18 1)
+							)
 							((Said '/sign,flyer,ad')
 								(if (> (ego x?) 95)
 									(switch (Random 1 3)
-										(1 (localproc_000c 18 2))
-										(2 (localproc_000c 18 3))
-										(3 (localproc_000c 18 4))
+										(1
+											(LocPrint 18 2)
+										)
+										(2
+											(LocPrint 18 3)
+										)
+										(3
+											(LocPrint 18 4)
+										)
 									)
 								else
-									(localproc_000c 18 2)
+									(LocPrint 18 2)
 								)
 							)
-							((or (Said '<up') (Said '/ceiling')) (localproc_000c 18 5))
-							((or (Said '<down') (Said '/floor')) (localproc_000c 18 6))
-							((Said '/counter,agency') (localproc_000c 18 7))
-							((Said '/hat') (localproc_000c 18 8))
-							((Said '/turtle') (localproc_000c 18 9))
+							(
+								(or
+									(Said '<up')
+									(Said '/ceiling')
+								)
+								(LocPrint 18 5)
+							)
+							(
+								(or
+									(Said '<down')
+									(Said '/floor')
+								)
+								(LocPrint 18 6)
+							)
+							((Said '/counter,agency')
+								(LocPrint 18 7)
+							)
+							((Said '/hat')
+								(LocPrint 18 8)
+							)
+							((Said '/turtle')
+								(LocPrint 18 9)
+							)
 							((Said '/pane')
 								(if (== (ego loop?) 2)
-									(localproc_000c 18 10)
+									(LocPrint 18 10)
 								else
-									(localproc_000c 18 11)
+									(LocPrint 18 11)
 								)
 							)
-							((Said '/bench') (localproc_000c 18 12))
-							((Said '/rope') (localproc_000c 18 13))
-							((Said '/painting') (localproc_000c 18 14))
-							((Said '/agent,dude,broad') (localproc_000c 18 15))
+							((Said '/bench')
+								(LocPrint 18 12)
+							)
+							((Said '/rope')
+								(LocPrint 18 13)
+							)
+							((Said '/painting')
+								(LocPrint 18 14)
+							)
+							((Said '/agent,dude,broad')
+								(LocPrint 18 15)
+							)
 							((Said '/list,rental[<customer]')
 								(if (ego inRect: 76 113 173 141)
 									(agentScript changeState: 1)
 								else
-									(localproc_000c 18 16)
+									(LocPrint 18 16)
 								)
 							)
 						)
 					)
-					((Said 'ask/auto') (localproc_000c 18 17))
+					((Said 'ask/auto')
+						(LocPrint 18 17)
+					)
 					(
 						(or
 							(Said 'display,get,see,ask/list[<customer,rental,auto]')
@@ -242,41 +281,59 @@
 						(if (ego inRect: 76 113 173 141)
 							(agentScript changeState: 1)
 						else
-							(localproc_000c 18 16)
+							(LocPrint 18 16)
 						)
 					)
 					((Said 'chat/agent,dude,broad')
 						(if (ego inRect: 76 113 173 141)
 							(agentScript changeState: 0)
 						else
-							(localproc_000c 18 16)
+							(LocPrint 18 16)
 						)
 					)
 					((Said 'read/sign,flyer,ad')
 						(switch (Random 1 3)
-							(1 (localproc_000c 18 2))
-							(2 (localproc_000c 18 3))
-							(3 (localproc_000c 18 4))
+							(1
+								(LocPrint 18 2)
+							)
+							(2
+								(LocPrint 18 3)
+							)
+							(3
+								(LocPrint 18 4)
+							)
 						)
 					)
 					((Said 'display/badge')
 						(if (ego inRect: 76 113 173 141)
 							(agentScript changeState: 2)
 						else
-							(localproc_000c 18 18)
+							(LocPrint 18 18)
 						)
 					)
-					((Said 'get/list[<rental,customer]') (localproc_000c 18 19))
-					((Said 'arrest/agent,dude,broad,broad') (localproc_000c 18 20))
-					((Said 'arrest/agent,dude,broad,broad') (localproc_000c 18 21))
-					((Said 'fire,kill,beat/agent,dude,broad,broad') (localproc_000c 18 22))
-					((Said 'rent[/auto]') (localproc_000c 18 23))
-					((Said 'get/hat') (localproc_000c 18 24))
+					((Said 'get/list[<rental,customer]')
+						(LocPrint 18 19)
+					)
+					((Said 'arrest/agent,dude,broad,broad')
+						(LocPrint 18 20)
+					)
+					((Said 'arrest/agent,dude,broad,broad')
+						(LocPrint 18 21)
+					)
+					((Said 'fire,kill,beat/agent,dude,broad,broad')
+						(LocPrint 18 22)
+					)
+					((Said 'rent[/auto]')
+						(LocPrint 18 23)
+					)
+					((Said 'get/hat')
+						(LocPrint 18 24)
+					)
 					((Said 'thank[/ya,dude,broad,broad,agent]')
 						(if (ego inRect: 76 113 173 141)
 							(agentScript changeState: 4)
 						else
-							(localproc_000c 18 16)
+							(LocPrint 18 16)
 						)
 					)
 				)
@@ -292,81 +349,100 @@
 		(switch (= state newState)
 			(0
 				(switch (Random 0 3)
-					(0 (localproc_000c 18 25))
-					(1 (localproc_000c 18 26))
-					(2 (localproc_000c 18 27))
-					(3 (localproc_000c 18 28))
+					(0
+						(LocPrint 18 25)
+					)
+					(1
+						(LocPrint 18 26)
+					)
+					(2
+						(LocPrint 18 27)
+					)
+					(3
+						(LocPrint 18 28)
+					)
 				)
 			)
 			(1
-				(= local4 1)
-				(if local2
-					(localproc_000c 18 29)
-					(localproc_000c 18 30)
-					(localproc_000c 18 31)
+				(= checkedList 1)
+				(if badgeShown
+					(LocPrint 18 29)
+					(LocPrint 18 30)
+					(LocPrint 18 31)
 				else
-					(localproc_000c 18 32)
+					(LocPrint 18 32)
 				)
 			)
 			(2
-				(= local2 1)
+				(= badgeShown 1)
 				(switch (Random 0 1)
-					(0 (localproc_000c 18 33))
+					(0 (LocPrint 18 33))
 					(1
-						(localproc_000c 18 34)
-						(localproc_000c 18 35)
+						(LocPrint 18 34)
+						(LocPrint 18 35)
 					)
 				)
-				(if local4
-					(localproc_000c 18 30)
-					(localproc_000c 18 31)
+				(if checkedList
+					(LocPrint 18 30)
+					(LocPrint 18 31)
 				)
 			)
 			(3
-				(= local3 1)
+				(= mugshotShown 1)
 				(cond 
-					(local2
+					(badgeShown
 						(cond 
-							((ego has: 12)
+							((ego has: iNewMugShot)
 								(switch (Random 0 1)
 									(0
-										(localproc_000c 18 36 82 112)
+										(LocPrint 18 36 82 112)
 									)
 									(1
-										(localproc_000c 18 37 82 112)
+										(LocPrint 18 37 82 112)
 									)
 								)
 							)
-							((ego has: 23)
+							((ego has: iOldMugShot)
 								(switch (Random 0 1)
 									(0
-										(localproc_000c 18 36 82 123)
+										(LocPrint 18 36 82 123)
 									)
 									(1
-										(localproc_000c 18 37 82 123)
+										(LocPrint 18 37 82 123)
 									)
 								)
 							)
-							(else (localproc_000c 18 38))
+							(else
+								(LocPrint 18 38)
+							)
 						)
 					)
-					((or (ego has: 12) (ego has: 23))
-						(localproc_000c
-							18
-							39
-							82
-							(if (ego has: 12) 112 else 123)
+					(
+						(or
+							(ego has: iNewMugShot)
+							(ego has: iOldMugShot)
+						)
+						(LocPrint 18 39 82
+							(if (ego has: 12)
+								112
+							else
+								123
+							)
 						)
 					)
-					(else (localproc_000c 18 38))
+					(else
+						(LocPrint 18 38)
+					)
 				)
 			)
 			(4
-				(if local2
-					(localproc_000c 18 40)
-					(if local3 (localproc_000c 18 41))
+				(if badgeShown
+					(LocPrint 18 40)
+					(if mugshotShown
+						(LocPrint 18 41)
+					)
 				else
-					(localproc_000c 18 42)
+					(LocPrint 18 42)
 				)
 			)
 		)

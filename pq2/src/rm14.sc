@@ -1069,7 +1069,7 @@ code_096b:
 										((ego inRect: 295 159 322 190)
 											(LocPrint 14 39)
 											(= global169 2)
-											(SolvePuzzle 1 77)
+											(SolvePuzzle 1 fReadJailerVIN)
 											(if
 												(and
 													(== currentCar carWork)
