@@ -113,3 +113,5 @@
 (define vQFG2 920)
 (define vTrialByFire 925)
 (define vEndCreditsCarpet 925)
+
+(define vControlIcons	995)

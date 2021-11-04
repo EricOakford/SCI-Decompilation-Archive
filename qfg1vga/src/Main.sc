@@ -1438,36 +1438,42 @@
 	(method (open &tmp t l b r theColor theMaps thePri [str 15] [scoreBuf 15])
 		(= thePri -1)
 		(self
-			top: (/ (- 200 (+ (CelHigh 995 1 1) 6)) 2)
-			left: (/ (- 320 (+ 149 (CelWide 995 0 1))) 2)
+			top: (/ (- SCRNHIGH (+ (CelHigh vControlIcons 1 1) 6)) 2)
+			left: (/ (- SCRNWIDE (+ CONTROL_WIDTH (CelWide vControlIcons 0 1))) 2)
 			bottom:
 				(+
-					(CelHigh 995 1 1)
-					6
-					(/ (- 200 (+ (CelHigh 995 1 1) 6)) 2)
+					(CelHigh vControlIcons 1 1) 6
+					(/ (- SCRNHIGH (+ (CelHigh vControlIcons 1 1) 6)) 2)
 				)
 			right:
 				(+
-					149
-					(CelWide 995 0 1)
-					(/ (- 320 (+ 149 (CelWide 995 0 1))) 2)
+					CONTROL_WIDTH
+					(CelWide vControlIcons 0 1)
+					(/ (- SCRNWIDE (+ CONTROL_WIDTH (CelWide vControlIcons 0 1))) 2)
 				)
 			priority: thePri
 		)
 		(super open:)
-		(DrawCel 995 1 0 95 28 thePri)
-		(DrawCel 995 1 0 131 28 thePri)
-		(DrawCel 995 1 0 167 28 thePri)
-		(DrawCel 995 0 4 64 (- 24 (+ (CelHigh 995 0 4) 3)) thePri)
-		(DrawCel 995 0 3 100 (- 24 (+ (CelHigh 995 0 4) 3)) thePri)
-		(DrawCel 995 0 2 136 (- 24 (+ (CelHigh 995 0 4) 3)) thePri)
-		(= r (+ (= t (+ 34 (CelHigh 995 0 1))) 10))
+		
+		(DrawCel vControlIcons 1 0 INDICATOR_X INDICATOR_Y thePri)
+		(DrawCel vControlIcons 1 0 (+ INDICATOR_X 36) 28 thePri)
+		(DrawCel vControlIcons 1 0 (+ INDICATOR_X 72) 28 thePri)
+		
+		;detail header
+		(DrawCel vControlIcons 0 4 HEADER_X (- 24 (+ (CelHigh vControlIcons 0 4) 3)) thePri)
+		
+		;volume header
+		(DrawCel vControlIcons 0 3 (+ HEADER_X 36) (- 24 (+ (CelHigh vControlIcons 0 4) 3)) thePri)
+		
+		;speed header
+		(DrawCel vControlIcons 0 2 (+ HEADER_X 72) (- 24 (+ (CelHigh vControlIcons 0 4) 3)) thePri)
+		(= r (+ (= t (+ 34 (CelHigh vControlIcons 0 1))) 10))
 		(= b
 			(+
-				(= l (+ 4 (CelWide 995 1 1)))
+				(= l (+ 4 (CelWide vControlIcons 1 1)))
 				(-
-					(+ 149 (CelWide 995 0 1))
-					(+ 4 (CelWide 995 1 1) 10)
+					(+ CONTROL_WIDTH (CelWide vControlIcons 0 1))
+					(+ 4 (CelWide vControlIcons 1 1) 10)
 				)
 			)
 		)
@@ -1477,27 +1483,27 @@
 		(Graph GShowBits t l (+ r 1) (+ b 1) 1)
 		(Message MsgGet SYSTEM N_SCORE NULL NULL 1 @str)
 		(Format @scoreBuf @str score possibleScore)
-		(DrawCel 995 0 5 (+ 4 (CelWide 995 1 1) 8) (+ 34 (CelHigh 995 0 1) 2) thePri)
+		(DrawCel vControlIcons 0 5 (+ 4 (CelWide vControlIcons 1 1) 8) (+ 34 (CelHigh vControlIcons 0 1) 2) thePri)
 		(Display @scoreBuf
 			p_font 999
 			p_color 52
-			p_at (+ (CelWide 995 0 5) 4 (CelWide 995 1 1) 13) (+ 34 (CelHigh 995 0 1) 2 1)
+			p_at (+ (CelWide vControlIcons 0 5) 4 (CelWide vControlIcons 1 1) 13) (+ 34 (CelHigh vControlIcons 0 1) 2 1)
 		)
 	)
 )
 
 (instance detailSlider of Slider
 	(properties
-		view 995
+		view vControlIcons
 		loop 0
 		cel 1
-		nsLeft 67
-		nsTop 24
+		nsLeft SLIDER_X
+		nsTop SLIDER_Y
 		signal FIXED_POSN
 		noun N_DETAIL
 		modNum SYSTEM
 		helpVerb V_HELP
-		sliderView 995
+		sliderView vControlIcons
 		bottomValue 1
 		topValue 5
 	)
@@ -1512,32 +1518,32 @@
 
 (instance volumeSlider of Slider
 	(properties
-		view 995
+		view vControlIcons
 		loop 0
 		cel 1
-		nsLeft 103
-		nsTop 24
+		nsLeft (+ SLIDER_X 36)
+		nsTop SLIDER_Y
 		signal FIXED_POSN
 		noun N_VOLUME
 		modNum SYSTEM
 		helpVerb V_HELP
-		sliderView 995
+		sliderView vControlIcons
 		topValue 15
 	)
 )
 
 (instance speedSlider of Slider
 	(properties
-		view 995
+		view vControlIcons
 		loop 0
 		cel 1
-		nsLeft 139
-		nsTop 24
+		nsLeft (+ SLIDER_X 72)
+		nsTop SLIDER_Y
 		signal FIXED_POSN
 		noun N_SPEED
 		modNum SYSTEM
 		helpVerb V_HELP
-		sliderView 995
+		sliderView vControlIcons
 		bottomValue 15
 		topValue 1
 	)
@@ -1565,11 +1571,11 @@
 
 (instance iconSave of ControlIcon
 	(properties
-		view 995
+		view vControlIcons
 		loop 2
 		cel 0
-		nsLeft 8
-		nsTop 6
+		nsLeft CONTROL_BUTTON_X
+		nsTop CONTROL_BUTTON_Y
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_SAVE
@@ -1580,11 +1586,11 @@
 
 (instance iconRestore of ControlIcon
 	(properties
-		view 995
+		view vControlIcons
 		loop 3
 		cel 0
-		nsLeft 8
-		nsTop 23
+		nsLeft CONTROL_BUTTON_X
+		nsTop (+ CONTROL_BUTTON_Y 17)
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_RESTORE
@@ -1595,11 +1601,11 @@
 
 (instance iconRestart of ControlIcon
 	(properties
-		view 995
+		view vControlIcons
 		loop 4
 		cel 0
-		nsLeft 8
-		nsTop 40
+		nsLeft CONTROL_BUTTON_X
+		nsTop (+ CONTROL_BUTTON_Y 34)
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_RESTART
@@ -1610,11 +1616,11 @@
 
 (instance iconQuit of ControlIcon
 	(properties
-		view 995
+		view vControlIcons
 		loop 5
 		cel 0
-		nsLeft 8
-		nsTop 57
+		nsLeft CONTROL_BUTTON_X
+		nsTop (+ CONTROL_BUTTON_Y 51)
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_QUIT
@@ -1625,11 +1631,11 @@
 
 (instance iconAbout of ControlIcon
 	(properties
-		view 995
+		view vControlIcons
 		loop 6
 		cel 0
-		nsLeft 8
-		nsTop 74
+		nsLeft CONTROL_BUTTON_X
+		nsTop (+ CONTROL_BUTTON_Y 68)
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
 		noun N_ABOUT
@@ -1640,11 +1646,11 @@
 
 (instance iconGCHelp of IconItem
 	(properties
-		view 995
+		view vControlIcons
 		loop 7
 		cel 0
-		nsLeft 8
-		nsTop 91
+		nsLeft CONTROL_BUTTON_X
+		nsTop (+ CONTROL_BUTTON_Y 85)
 		cursor 949
 		message V_HELP
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE)
@@ -1656,11 +1662,11 @@
 
 (instance iconOk of IconItem
 	(properties
-		view 995
+		view vControlIcons
 		loop 8
 		cel 0
-		nsLeft 8
-		nsTop 108
+		nsLeft CONTROL_BUTTON_X
+		nsTop (+ CONTROL_BUTTON_Y 102)
 		cursor 949
 		message 10
 		signal (| VICON FIXED_POSN RELVERIFY IMMEDIATE HIDEBAR)
@@ -1669,6 +1675,7 @@
 		helpVerb V_HELP
 	)
 )
+
 
 (instance hq1DoVerbCode of Code
 	(method (doit theVerb theObj &tmp oldCurIcon index [str 50] evt)
