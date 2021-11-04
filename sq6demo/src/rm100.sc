@@ -77,7 +77,7 @@
 			)
 			(1
 				(Palette PalIntensity 0 256 100)
-				(sound1 number: 104 flags: 1 loop: -1 setVol: 127 play:)
+				(theMusic number: 104 flags: 1 loop: -1 setVol: 127 play:)
 				(= ticks 120)
 			)
 			(2
@@ -184,7 +184,7 @@
 				(newDText_3 dispose:)
 				(newDText_5 dispose:)
 				(newDText_6 dispose:)
-				(sound1 fade: 0 20 8 1)
+				(theMusic fade: 0 20 8 1)
 				(= ticks 240)
 			)
 			(7

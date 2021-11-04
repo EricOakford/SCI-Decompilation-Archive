@@ -7,7 +7,6 @@
 
 
 (class SQRoom of Room
-	
 	(method (newRoom n)
 		(regions
 			delete: self

@@ -140,8 +140,8 @@
 	gameCode =  1234
 	global102
 	numVoices
-	sound1
-	sound2
+	theMusic
+	theMusic2
 	isWindows
 	theWalkCursor
 	theLookCursor
@@ -339,21 +339,11 @@
 	startingRoom
 )
 (procedure (Bset flagEnum)
-	(= [gameFlags (/ flagEnum 16)]
-		(|
-			[gameFlags (/ flagEnum 16)]
-			(>> $8000 (mod flagEnum 16))
-		)
-	)
+	(|= [gameFlags (/ flagEnum 16)] (>> $8000 (mod flagEnum 16)))
 )
 
 (procedure (Bclr flagEnum)
-	(= [gameFlags (/ flagEnum 16)]
-		(&
-			[gameFlags (/ flagEnum 16)]
-			(~ (>> $8000 (mod flagEnum 16)))
-		)
-	)
+	(&= [gameFlags (/ flagEnum 16)] (~ (>> $8000 (mod flagEnum 16))))
 )
 
 (procedure (Btst flagEnum)
@@ -401,32 +391,32 @@
 	)
 )
 
-(procedure (proc0_7 param1 param2 param3 &tmp temp0 temp1)
-	(if (or (< argc 2) (== param2 0)) (= param2 1))
+(procedure (proc0_7 param1 param2 param3 &tmp i temp1)
+	(if (or (< argc 2) (== param2 0))
+		(= param2 1)
+	)
 	(if (or (== argc 0) (== param1 1))
-		(= temp0 100)
-		(while (> temp0 0)
-			(Palette PalIntensity 0 79 temp0)
-			(Palette PalIntensity 87 256 temp0)
+		(for ((= i 100)) (> i 0) ((-= i param2))
+			(Palette PalIntensity 0 79 i)
+			(Palette PalIntensity 87 256 i)
 			(cast doit:)
 			(FrameOut)
-			(= temp0 (- temp0 param2))
 		)
 	else
-		(= temp0 0)
-		(while (< temp0 100)
-			(Palette PalIntensity 0 79 temp0)
-			(Palette PalIntensity 87 256 temp0)
+		(for ((= i 0)) (< i 100) ((+= i param2))
+			(Palette PalIntensity 0 79 i)
+			(Palette PalIntensity 87 256 i)
 			(cast doit:)
 			(FrameOut)
-			(= temp0 (+ temp0 param2))
 		)
 	)
 	(if (== param1 1)
 		(Palette PalIntensity 0 79 0)
 		(Palette PalIntensity 87 256 0)
 	)
-	(if (and (== argc 3) param3) (param3 cue:))
+	(if (and (== argc 3) param3)
+		(param3 cue:)
+	)
 )
 
 (procedure (RandTime param1 param2)
@@ -442,7 +432,6 @@
 )
 
 (class SQSound of Sound
-	
 	(method (play callerOrVolume)
 		(if argc
 			(= client callerOrVolume)
@@ -472,13 +461,12 @@
 )
 
 (class SQ6 of Game
-	
 	(method (init &tmp versionFile quitStr quitSeq)
 		(while (Message MsgSize 0 N_QUITSTR NULL NULL quitSeq)
 			(++ quitSeq)
 		)
 		(= quitStr (String new:))
-		(Message MsgGet 0 18 0 0
+		(Message MsgGet 0 N_QUITSTR NULL NULL
 			(RandTime 1 (- quitSeq 1))
 			(quitStr data?)
 		)
@@ -503,7 +491,7 @@
 			alterEgo: ego
 			canControl: TRUE
 			canInput: FALSE
-			mapKeyToDir: 0
+			mapKeyToDir: FALSE
 		)
 		(= systemPlane Plane)
 		(= eatMice 6)
@@ -537,8 +525,8 @@
 		(self setCursor: waitCursor TRUE 160 120)
 		(= mouseX 160)
 		(= mouseY 80)
-		((= sound1 gSound1) owner: self init:)
-		((= sound2 gSound2) owner: self init:)
+		((= theMusic gSound1) owner: self init:)
+		((= theMusic2 gSound2) owner: self init:)
 		(if (FileIO FileExists {classes})
 			(= debugging TRUE)
 		else
@@ -664,9 +652,7 @@
 	(method (pragmaFail &tmp oldCur theTime)
 		(if (not (if (user controls?) (user input?)))
 			(= oldCur (self setCursor: theFailCursor))
-			(= theTime 0)
-			(while (< theTime 15000)
-				(++ theTime)
+			(for ((= theTime 0)) (< theTime 15000) ((++ theTime))
 			)
 			(self setCursor: oldCur)
 		)
@@ -678,7 +664,8 @@
 	
 	(method (showAbout)
 		(Prints
-			{If you want to know MORE about SQ6,\nBUY THE GAME!}
+			{If you want to know MORE about SQ6,\n
+			BUY THE GAME!}
 		)
 	)
 	
@@ -708,7 +695,6 @@
 )
 
 (instance pApproachCode of Code
-	
 	(method (doit theVerb)
 		(switch theVerb
 			(V_LOOK $0001)
@@ -726,7 +712,6 @@
 )
 
 (instance sq6DVC of Code
-	
 	(method (doit theVerb)
 		(cond 
 			((== theVerb V_LOOK)
@@ -749,7 +734,6 @@
 )
 
 (instance sq6HandsOffCode of Code
-	
 	(method (doit curX curY)
 		(if (not oldCurIcon)
 			(= oldCurIcon (theIconBar curIcon?))
@@ -786,7 +770,6 @@
 )
 
 (instance sq6HandsOnCode of Code
-	
 	(method (doit curX curY &tmp temp0)
 		(User canControl: TRUE canInput: TRUE)
 		(theIconBar enable:
@@ -931,7 +914,6 @@
 )
 
 (instance sq6Messager of Messager
-	
 	(method (dispose)
 		(theGame setCursor: scratch)
 		(= scratch 0)

@@ -27,7 +27,7 @@
 	
 	(method (init)
 		(if (!= prevRoomNum 460)
-			(sound1 number: 331 flags: 1 loop: -1 play: setVol: 127)
+			(theMusic number: 331 flags: 1 loop: -1 play: setVol: 127)
 		)
 		(curRoom
 			addObstacle:
@@ -123,7 +123,7 @@
 	)
 	
 	(method (dispose)
-		(if (!= newRoomNum 460) (sound1 fade:))
+		(if (!= newRoomNum 460) (theMusic fade:))
 		(super dispose:)
 	)
 )
@@ -138,7 +138,7 @@
 				(= cycles 3)
 			)
 			(1
-				(sound2 number: 941 loop: 1 play:)
+				(theMusic2 number: 941 loop: 1 play:)
 				(ego
 					view: 364
 					setCel: 0
@@ -182,7 +182,7 @@
 				)
 			)
 			(2
-				(sound2 number: 926 loop: 1 play:)
+				(theMusic2 number: 926 loop: 1 play:)
 				(ego
 					view: 3630
 					setCel: 0
@@ -311,7 +311,7 @@
 		(switch (= state newState)
 			(0
 				(= scratch 10)
-				(sound2 number: 922 loop: 1 flags: 1 play:)
+				(theMusic2 number: 922 loop: 1 flags: 1 play:)
 				(ego view: 32 setCel: 0 setLoop: 1 setCycle: Forward)
 				(= cycles 1)
 			)
@@ -323,7 +323,7 @@
 				(= cycles 1)
 			)
 			(2
-				(sound2 stop:)
+				(theMusic2 stop:)
 				(Palette PalIntensity 70 255 100)
 				(ego setCel: 0 setLoop: 2 setCycle: EndLoop self)
 			)

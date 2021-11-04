@@ -21,7 +21,7 @@
 	)
 	
 	(method (init)
-		(sound1 number: 102 flags: 1 loop: -1 play:)
+		(theMusic number: 102 flags: 1 loop: -1 play:)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -105,7 +105,7 @@
 	
 	(method (dispose)
 		(if (!= newRoomNum 460)
-			(sound1 fade:)
+			(theMusic fade:)
 		)
 		(super dispose:)
 	)
@@ -123,7 +123,7 @@
 		(switch (= state newState)
 			(0 (= seconds 2))
 			(1
-				(sound2 number: 941 loop: 1 play:)
+				(theMusic2 number: 941 loop: 1 play:)
 				(ego
 					view: 364
 					setCel: 0
@@ -171,7 +171,7 @@
 				)
 			)
 			(2
-				(sound2 number: 926 loop: 1 play:)
+				(theMusic2 number: 926 loop: 1 play:)
 				(ego
 					view: 3630
 					setCel: 0

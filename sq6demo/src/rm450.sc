@@ -63,7 +63,7 @@
 		)
 		(super init:)
 		(if (!= prevRoomNum 460)
-			(sound1 number: 123 flags: 1 loop: -1 play:)
+			(theMusic number: 123 flags: 1 loop: -1 play:)
 		)
 		(theGame handsOff:)
 		(comPost init: approachVerbs: V_DO)
@@ -116,7 +116,7 @@
 	
 	(method (dispose)
 		(ego setScale: 0 normalize:)
-		(if (!= newRoomNum 460) (sound1 fade:))
+		(if (!= newRoomNum 460) (theMusic fade:))
 		(super dispose:)
 	)
 )
@@ -175,7 +175,7 @@
 		(switch (= state newState)
 			(0 (= cycles 1))
 			(1
-				(sound2 number: 941 loop: 1 play:)
+				(theMusic2 number: 941 loop: 1 play:)
 				(ego
 					view: 364
 					loop: 0
@@ -218,7 +218,7 @@
 				(= ticks 90)
 			)
 			(2
-				(sound2 number: 926 loop: 1 play:)
+				(theMusic2 number: 926 loop: 1 play:)
 				(ego
 					view: 3630
 					loop: 0

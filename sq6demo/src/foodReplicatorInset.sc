@@ -194,9 +194,9 @@
 		(pipeR init:)
 		(theIconBar setupExit: TRUE disable: V_DO 6)
 		(if (and (not (Btst fVisitedReplicator)) (== curRoomNum 430))
-			(sound1 number: 435 setLoop: 0 play:)
+			(theMusic number: 435 setLoop: 0 play:)
 		else
-			(sound1 setVol: 90 setLoop: -1)
+			(theMusic setVol: 90 setLoop: -1)
 		)
 	)
 	
@@ -287,10 +287,10 @@
 			)
 		)
 		(if (and (not (Btst fVisitedReplicator)) (== curRoomNum 430))
-			(sound1 number: 102 flags: 1 loop: -1 play:)
+			(theMusic number: 102 flags: 1 loop: -1 play:)
 			(Bset fVisitedReplicator)
 		else
-			(sound1 setVol: 127)
+			(theMusic setVol: 127)
 		)
 		(super dispose:)
 	)
@@ -324,11 +324,11 @@
 				(theIconBar enable: V_DO 6)
 				(theGame handsOff:)
 				(bg init:)
-				(sound2 number: 117 loop: 1 play:)
+				(theMusic2 number: 117 loop: 1 play:)
 				(door setCycle: EndLoop self)
 			)
 			(1
-				(sound2 number: 118 loop: 1 play:)
+				(theMusic2 number: 118 loop: 1 play:)
 				(sparkle
 					view: 804
 					loop: 0
@@ -346,9 +346,9 @@
 				(sparkle view: 8040 setCel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(sound2 stop:)
+				(theMusic2 stop:)
 				(sparkle dispose:)
-				(sound2 number: 117 loop: 1 play:)
+				(theMusic2 number: 117 loop: 1 play:)
 				(door setCycle: BegLoop self)
 			)
 			(5
