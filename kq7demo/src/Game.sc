@@ -269,7 +269,7 @@
 		(= theGame self)
 		(= curSaveDir (String new:))
 		(= sysLogPath (String new:))
-		(curSaveDir data: (SaveGame SGGetSaveDir))
+		(curSaveDir data: (GetSaveDir))
 
 		; Setup the cursors
 		(= normalCursor theNormalCursor)
