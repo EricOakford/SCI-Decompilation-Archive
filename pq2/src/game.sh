@@ -147,8 +147,8 @@
 	fGetEarProtectors				;66
 	fAlignGunSights					;67
 	fGetMoreAmmo					;68
-	fFlag69							;69
-	fFlag70							;70
+	fAskedToSeeWitness				;69
+	fInterrogatedWitness			;70
 	fSearchedCoveGround				;71
 	fTookPictureCove				;72
 	fReadJailClothesTag				;73
@@ -168,6 +168,7 @@
 (define fCheckMarieHandwriting 90)
 (define fColbyPhoneTap 94)
 (define fWarnedColby 95)
+(define fGateGuardShownBadge 98)
 (define fFindManhole 100)
 (define fOpenManhole 101)
 (define fGetUnmarkedCarKey 104)
@@ -175,9 +176,11 @@
 (define fGetThankYouLetter 106)
 (define fFoundJailerHand 108)
 (define fFoundJailerBody 109)
+(define fGetJailerCarDescription 110)
 (define fRadioInCoveShooting 111)
 (define fBeenAtMall 112)
 (define fHaveMotelBlood 113)
+(define fLockedUpGunAtJail 115)
 (define fStolenCarTowed 118)
 (define fFoundWomanStolenCar 119)
 (enum 122

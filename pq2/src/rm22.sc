@@ -1,6 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 22)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Motion)
@@ -19,41 +20,61 @@
 	car
 	carDoor
 	[carDoorPos 2]
-	local6
+	local6 ;which car?
 	local7
-	local8
+	local8 
 	local9
 	local10
-	local11
-	local12
-	local13
-	local14
-	local15
-	local16
-	local17
-	local18
+	room23
+	pressedBuzzer
+	dustyCornerMessageToggle
+	gunStolenFromLocker
+	;local15 unused
+	cameraIsOscillating
+	;local17 set in cameraScript, but never used
+	lockerUnlocked
 )
-(procedure (localproc_000c)
+(procedure (LocPrint)
 	(Print &rest #at -1 130)
 )
 
-(procedure (localproc_192c)
+(procedure (EnterCar)
 	(return
 		(switch currentCar
-			(13
+			(carWork
 				(cond 
-					((not (ego inRect: 230 118 250 127)) (localproc_000c 22 103))
-					((== workCarLocked 1) (localproc_000c 22 104) (return 0))
-					(workCarTrunkOpened (localproc_000c 22 105) (return 0))
-					((ego has: 10) (localproc_000c 22 106) (return 0))
-					(else (carScript changeState: 8) (return 1))
+					((not (ego inRect: 230 118 250 127))
+						(LocPrint 22 103)
+					)
+					((== workCarLocked 1)
+						(LocPrint 22 104)
+						(return 0)
+					)
+					(workCarTrunkOpened
+						(LocPrint 22 105)
+						(return 0)
+					)
+					((ego has: iFieldKit)
+						(LocPrint 22 106)
+						(return 0)
+					)
+					(else
+						(carScript changeState: 8)
+						(return 1)
+					)
 				)
 			)
-			(33
+			(carPersonal
 				(cond 
-					((not (ego inRect: 230 118 250 127)) (localproc_000c 22 107))
-					(personalCarLocked (localproc_000c 22 104))
-					(else (carScript changeState: 8))
+					((not (ego inRect: 230 118 250 127))
+						(LocPrint 22 107)
+					)
+					(personalCarLocked
+						(LocPrint 22 104)
+					)
+					(else
+						(carScript changeState: 8)
+					)
 				)
 			)
 		)
@@ -67,7 +88,7 @@
 (instance rm22 of Room
 	(properties
 		picture 22
-		style $0008
+		style DISSOLVE
 	)
 	
 	(method (init)
@@ -81,24 +102,29 @@
 		else
 			(HandsOn)
 		)
-		(if (== currentCar 13) (= gunFireState 3))
-		(if global165 (= local18 1))
-		(if
-		(and global165 (== ((inventory at: 0) owner?) 22))
-			(= local18 1)
-			((inventory at: 0) moveTo: 0)
-			(= local14 1)
+		(if (== currentCar carWork) (= gunFireState 3))
+		(if jailLockerOpen
+			(= lockerUnlocked 1)
 		)
-		(Load rsVIEW 0)
-		(Load rsVIEW 20)
-		(Load rsVIEW 54)
-		(Load rsVIEW 51)
+		(if
+			(and
+				jailLockerOpen
+				(== ((inventory at: iHandGun) owner?) 22)
+			)
+			(= lockerUnlocked 1)
+			((inventory at: 0) moveTo: 0)
+			(= gunStolenFromLocker 1)
+		)
+		(Load VIEW 0)
+		(Load VIEW 20)
+		(Load VIEW 54)
+		(Load VIEW 51)
 		(= [carDoorPos 0] 265)
 		(= [carDoorPos 1] 129)
 		(= local10 240)
 		(= local8 238)
 		(= local9 247)
-		(= local11 23)
+		(= room23 23)
 		((View new:)
 			view: 54
 			loop: 0
@@ -117,7 +143,7 @@
 			stopUpd:
 			addToPic:
 		)
-		(if (== currentCar 33)
+		(if (== currentCar carPersonal)
 			((View new:)
 				view: 54
 				loop: 1
@@ -161,14 +187,14 @@
 			init:
 			startUpd:
 		)
-		(= local7
+		(= local7 
 			(if (== roomCarParked curRoomNum)
-				(!= prevRoomNum local11)
+				(!= prevRoomNum room23)
 			else
 				0
 			)
 		)
-		(if (!= prevRoomNum local11)
+		(if (!= prevRoomNum room23)
 			(= local6 1)
 			(User canControl: 0)
 		else
@@ -178,12 +204,16 @@
 			view: 54
 			setStep: 1
 			setLoop: 1
-			setCel: (if (== currentCar 13) 1 else 5)
+			setCel: (if (== currentCar carWork) 1 else 5)
 			setCycle: 0
 			setMotion: 0
 			illegalBits: 0
 			posn:
-				(if (and (!= prevRoomNum local11) (not local7))
+				(if
+					(and
+						(!= prevRoomNum room23)
+						(not local7)
+					)
 					local8
 				else
 					local9
@@ -191,7 +221,7 @@
 				134
 			init:
 		)
-		(self setLocales: 153)
+		(self setLocales: regFieldKit)
 		(self setScript: rm22Script)
 	)
 )
@@ -202,9 +232,18 @@
 	(method (doit)
 		(cond 
 			(
-			(and (!= (mod (ego view?) 2) 0) (<= (ego y?) 122)) (ego view: (- (ego view?) 1)))
+				(and
+					(!= (mod (ego view?) 2) 0)
+					(<= (ego y?) 122)
+				)
+				(ego view: (- (ego view?) 1)))
 			(
-			(and (!= (mod (ego view?) 2) 1) (> (ego y?) 122)) (ego view: (+ (ego view?) 1)))
+				(and
+					(!= (mod (ego view?) 2) 1)
+					(> (ego y?) 122)
+				)
+				(ego view: (+ (ego view?) 1))
+			)
 		)
 		(cond 
 			(
@@ -217,23 +256,47 @@
 				(carScript changeState: 0)
 			)
 			(
-			(and (== global132 (not local6)) (== (not local6) 1)) (= global132 0) (localproc_192c))
+				(and
+					(== global132 (not local6))
+					(== (not local6) 1)
+				)
+				(= global132 0)
+				(EnterCar)
+			)
 		)
 		(cond 
 			(
 				(and
-					(or (< (ego x?) 15) (> (ego x?) 296))
+					(or
+						(< (ego x?) 15)
+						(> (ego x?) 296)
+					)
 					(> (ego y?) 155)
-					(not local13)
+					(not dustyCornerMessageToggle)
 				)
-				(localproc_000c 22 0)
-				(= local13 1)
+				(LocPrint 22 0)
+				(= dustyCornerMessageToggle 1)
 			)
 			(
-			(and local13 (< (ego x?) 295) (> (ego x?) 16)) (= local13 0))
-			((and (ego inRect: 145 99 210 108) local16) (cameraScript changeState: 4))
+				(and
+					dustyCornerMessageToggle
+					(< (ego x?) 295)
+					(> (ego x?) 16)
+				)
+				(= dustyCornerMessageToggle 0)
+			)
 			(
-			(and (not (ego inRect: 145 99 210 108)) (not local16)) (cameraScript changeState: 0))
+				(and
+					(ego inRect: 145 99 210 108)
+					cameraIsOscillating
+				)
+				(cameraScript changeState: 4))
+			(
+			(and
+				(not (ego inRect: 145 99 210 108))
+				(not cameraIsOscillating)
+			)
+			(cameraScript changeState: 0))
 		)
 		(super doit:)
 	)
@@ -244,23 +307,31 @@
 				(ego
 					view: 0
 					posn:
-						(if (== prevRoomNum local11) 179 else 0)
-						(if (== prevRoomNum local11) 106 else 0)
+						(if (== prevRoomNum room23)
+							179
+						else
+							0
+						)
+						(if (== prevRoomNum room23)
+							106
+						else
+							0
+						)
 					init:
 					setMotion: 0
 				)
 				(if (== currentCar 13)
 					((= keith (Actor new:))
 						view: 20
-						illegalBits: -16384
+						illegalBits: cWHITE ;-16384
 						posn:
-							(if (!= prevRoomNum local11) (- (ego x?) 4) else 300)
-							(if (!= prevRoomNum local11) (- (ego y?) 20) else 157)
+							(if (!= prevRoomNum room23) (- (ego x?) 4) else 300)
+							(if (!= prevRoomNum room23) (- (ego y?) 20) else 157)
 						setCycle: Walk
 						init:
 					)
 				)
-				(if (!= prevRoomNum local11)
+				(if (!= prevRoomNum room23)
 					(= workCarTrunkOpened 0)
 					(stopScript init:)
 					(car setMotion: MoveTo local9 134 stopScript)
@@ -278,8 +349,13 @@
 					(car addToPic:)
 				)
 				(cond 
-					((!= roomCarParked curRoomNum) (Bclr 142) (= roomCarParked curRoomNum))
-					(local6 (= global132 1))
+					((!= roomCarParked curRoomNum)
+						(Bclr fKeithWaitsAtJail)
+						(= roomCarParked curRoomNum)
+					)
+					(local6
+						(= global132 1)
+					)
 				)
 			)
 		)
@@ -287,17 +363,23 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'look>')
 						(cond 
-							((Said '/jailer') (localproc_000c 22 1))
+							((Said '/jailer')
+								(LocPrint 22 1)
+							)
 							((Said '/friend')
-								(if (and (== currentCar 13) (< (keith y?) 10))
+								(if
+									(and
+										(== currentCar 13)
+										(< (keith y?) 10)
+									)
 									(if (ego inRect: 235 102 300 158)
-										(localproc_000c 22 2)
+										(LocPrint 22 2)
 									else
-										(localproc_000c 22 3)
+										(LocPrint 22 3)
 									)
 								else
 									(event claimed: 0)
@@ -305,37 +387,47 @@
 							)
 							((Said '[<at,around][/building,garage,chamber]')
 								(Print 22 4 #width 260 #at -1 120)
-								(if (>= gamePhase 1) (Print 22 5 #width 280 #at -1 120))
+								(if (>= gamePhase 1)
+									(Print 22 5 #width 280 #at -1 120)
+								)
 							)
-							((Said '[<at,up][/ceiling,roof]') (localproc_000c 22 6))
-							((Said '[<at,down][/floor,dirt]') (localproc_000c 22 7))
+							((Said '[<at,up][/ceiling,roof]')
+								(LocPrint 22 6)
+							)
+							((Said '[<at,down][/floor,dirt]')
+								(LocPrint 22 7)
+							)
 							((Said '/auto<blue')
 								(if (== currentCar 33)
-									(localproc_000c 22 8)
+									(LocPrint 22 8)
 								else
-									(localproc_000c 22 9)
+									(LocPrint 22 9)
 								)
 							)
 							((Said '/key[<locker]')
-								(if local18
-									(localproc_000c 22 10)
+								(if lockerUnlocked
+									(LocPrint 22 10)
 								else
-									(localproc_000c 22 11)
+									(LocPrint 22 11)
 								)
 							)
-							((Said '<below/auto') (localproc_000c 22 12))
+							((Said '<below/auto')
+								(LocPrint 22 12)
+							)
 							((Said '/auto')
 								(if (ego inRect: 150 0 250 146)
 									(if (== currentCar 13)
-										(localproc_000c 22 13)
+										(LocPrint 22 13)
 									else
-										(localproc_000c 22 14)
+										(LocPrint 22 14)
 									)
 								else
-									(localproc_000c 22 15)
+									(LocPrint 22 15)
 								)
 							)
-							((Said '/cruiser') (localproc_000c 22 16))
+							((Said '/cruiser')
+								(LocPrint 22 16)
+							)
 							((Said '/trunk')
 								(if
 									(and
@@ -348,204 +440,281 @@
 										showSelf: 13
 									)
 								else
-									(localproc_000c 22 17)
+									(LocPrint 22 17)
 								)
 							)
 							((Said '/sign,gate,fence')
 								(if (> (ego x?) 235)
-									(localproc_000c 22 18)
+									(LocPrint 22 18)
 								else
-									(localproc_000c 22 19)
+									(LocPrint 22 19)
 								)
 							)
-							((Said '/wall') (localproc_000c 22 20) (localproc_000c 22 21 70 260))
+							((Said '/wall')
+								(LocPrint 22 20)
+								(LocPrint 22 21 70 260)
+							)
 							((Said '<in/locker')
-								(if global165
+								(if jailLockerOpen
 									(if (ego inRect: 135 99 163 108)
 										(if (!= ((inventory at: 0) owner?) 22)
-											(localproc_000c 22 22)
+											(LocPrint 22 22)
 										else
-											(localproc_000c 22 23)
+											(LocPrint 22 23)
 										)
 									else
-										(localproc_000c 22 24)
+										(LocPrint 22 24)
 									)
 								else
-									(localproc_000c 22 25)
+									(LocPrint 22 25)
 								)
 							)
-							((Said '/locker') (localproc_000c 22 26))
-							((Said '/button,button') (localproc_000c 22 27))
-							((Said '/camera') (localproc_000c 22 28))
-							((Said '/pa,pa') (localproc_000c 22 29))
-							((Said '/door') (localproc_000c 22 30))
-							(else (event claimed: 0))
+							((Said '/locker')
+								(LocPrint 22 26)
+							)
+							((Said '/button,button')
+								(LocPrint 22 27)
+							)
+							((Said '/camera')
+								(LocPrint 22 28)
+							)
+							((Said '/pa,pa')
+								(LocPrint 22 29)
+							)
+							((Said '/door')
+								(LocPrint 22 30)
+							)
+							(else
+								(event claimed: 0)
+							)
 						)
 					)
 					((Said 'chat/friend')
-						(if (and (== currentCar 13) (< (keith y?) 10))
+						(if
+							(and
+								(== currentCar 13)
+								(< (keith y?) 10)
+							)
 							(if (ego inRect: 235 102 300 158)
-								(localproc_000c 22 31)
+								(LocPrint 22 31)
 							else
-								(localproc_000c 22 32)
+								(LocPrint 22 32)
 							)
 						else
 							(event claimed: 0)
 						)
 					)
-					((or (Said 'use/extender') (Said 'extender'))
+					(
+						(or
+							(Said 'use/extender')
+							(Said 'extender')
+						)
 						(if (== currentCar 13)
-							(localproc_000c 22 33)
+							(LocPrint 22 33)
 						else
-							(localproc_000c 22 34)
+							(LocPrint 22 34)
 						)
 					)
 					((Said 'drive')
 						(if local6
-							(localproc_000c 22 35)
+							(LocPrint 22 35)
 						else
-							(localproc_000c 22 36)
+							(LocPrint 22 36)
 						)
 					)
 					((Said 'enter/auto')
 						(cond 
-							((ego inRect: 230 118 250 127) (localproc_192c))
-							((ego inRect: 230 129 260 138) (localproc_000c 22 37))
-							(else (localproc_000c 22 38))
+							((ego inRect: 230 118 250 127)
+								(EnterCar)
+							)
+							((ego inRect: 230 129 260 138)
+								(LocPrint 22 37)
+							)
+							(else
+								(LocPrint 22 38)
+							)
 						)
 					)
 					((Said 'knock')
 						(if (ego inRect: 145 99 205 108)
-							(localproc_000c 22 39)
+							(LocPrint 22 39)
 						else
-							(localproc_000c 22 40)
+							(LocPrint 22 40)
 						)
 					)
-					((Said 'open/auto') (localproc_192c))
-					((Said 'unlock/gate') (localproc_000c 22 41))
+					((Said 'open/auto')
+						(EnterCar)
+					)
+					((Said 'unlock/gate')
+						(LocPrint 22 41)
+					)
 					(
 						(or
 							(Said 'unlock,open/locker')
 							(Said 'unlock,open/(door<locker)')
 						)
 						(cond 
-							(global165 (localproc_000c 22 42))
+							(jailLockerOpen (LocPrint 22 42))
 							((ego inRect: 135 99 163 108)
-								(if (== ((inventory at: 0) owner?) 22)
-									(localproc_000c 22 43)
+								(if (== ((inventory at: iHandGun) owner?) 22)
+									(LocPrint 22 43)
 								else
-									(localproc_000c 22 44)
+									(LocPrint 22 44)
 								)
-								(= global165 1)
-								(= local18 1)
+								(= jailLockerOpen 1)
+								(= lockerUnlocked 1)
 							)
-							(else (localproc_000c 22 45))
+							(else
+								(LocPrint 22 45)
+							)
 						)
 					)
 					((Said 'enter,go[<in]/jail')
 						(if (ego inRect: 145 99 205 108)
-							(if (not local12)
-								(localproc_000c 22 46)
+							(if (not pressedBuzzer)
+								(LocPrint 22 46)
 							else
-								(localproc_000c 22 47)
+								(LocPrint 22 47)
 							)
 						else
-							(localproc_000c 22 48)
+							(LocPrint 22 48)
 						)
 					)
-					((Said 'exit,(get<out)[/auto]') (= global132 1))
+					((Said 'exit,(get<out)[/auto]')
+						(= global132 1)
+					)
 					(
 						(or
 							(Said 'press,use,ring/button,button,bell')
 							(Said 'chat,signal,buzz,call/jailer')
 						)
 						(if (ego inRect: 185 99 210 108)
-							(localproc_000c 22 49)
-							(if local12
-								(localproc_000c 22 50)
+							(LocPrint 22 49)
+							(if pressedBuzzer
+								(LocPrint 22 50)
 							else
-								(= local12 1)
-								(localproc_000c 22 51)
+								(= pressedBuzzer 1)
+								(LocPrint 22 51)
 							)
 						else
-							(localproc_000c 22 52)
+							(LocPrint 22 52)
 						)
 					)
 					((Said 'affirmative')
-						(if (and local12 (ego inRect: 145 99 210 108))
-							(localproc_000c 22 53)
+						(if
+							(and
+								pressedBuzzer
+								(ego inRect: 145 99 210 108)
+							)
+							(LocPrint 22 53)
 						else
-							(localproc_000c 22 54)
+							(LocPrint 22 54)
 						)
 					)
-					((Said 'n')
-						(if (and local12 (ego inRect: 145 99 210 108))
-							(localproc_000c 22 55)
+					((Said 'no')
+						(if
+							(and
+								pressedBuzzer
+								(ego inRect: 145 99 210 108)
+							)
+							(LocPrint 22 55)
 						else
-							(localproc_000c 22 56)
+							(LocPrint 22 56)
 						)
 					)
-					(
-					(Said 'display/badge,card,badge,billfold,painting')
-						(if local12
+					((Said 'display/badge,card,badge,billfold,painting')
+						(if pressedBuzzer
 							(if (ego inRect: 145 99 205 108)
-								(if (ego has: 7)
+								(if (ego has: iWallet)
 									(doorScript changeState: 0)
 								else
-									(localproc_000c 22 57)
+									(LocPrint 22 57)
 								)
 							else
-								(localproc_000c 22 58)
+								(LocPrint 22 58)
 							)
 						else
-							(localproc_000c 22 59)
+							(LocPrint 22 59)
 						)
 					)
 					((Said 'call,holler/friend')
 						(if (keith inRect: 280 150 320 170)
-							(localproc_000c 22 60)
+							(LocPrint 22 60)
 						else
-							(localproc_000c 22 61)
+							(LocPrint 22 61)
 						)
 					)
 					((Said 'get,remove/9mm')
 						(cond 
-							((ego has: 0) (AlreadyTook))
-							((not (ego inRect: 135 99 163 108)) (localproc_000c 22 62))
-							((not global165) (localproc_000c 22 63))
-							(local14
-								(localproc_000c 22 64)
+							((ego has: iHandGun)
+								(AlreadyTook)
+							)
+							((not (ego inRect: 135 99 163 108))
+								(LocPrint 22 62)
+							)
+							((not jailLockerOpen)
+								(LocPrint 22 63)
+							)
+							(gunStolenFromLocker
+								(LocPrint 22 64)
 								(EgoDead
 									{Yes, even in peaceful Lytton, crimes of opportunity still occur. Next time, keep track of your piece.}
 								)
 							)
-							((== ((inventory at: 0) owner?) 22) (localproc_000c 22 65) (ego get: 0) (= global165 0))
-							(else (localproc_000c 22 66))
+							((== ((inventory at: iHandGun) owner?) 22)
+								(LocPrint 22 65)
+								(ego get: iHandGun)
+								(= jailLockerOpen 0)
+							)
+							(else
+								(LocPrint 22 66)
+							)
 						)
 					)
 					((Said 'deposit,place,replace,throw,exit/9mm')
 						(cond 
-							((not (ego inRect: 135 99 163 108)) (localproc_000c 22 62))
-							((not global165) (localproc_000c 22 63))
-							((not (ego has: 0)) (localproc_000c 22 67))
-							(gunDrawn (localproc_000c 22 68))
-							(else (localproc_000c 22 69) (ego put: 0 22))
+							((not (ego inRect: 135 99 163 108))
+								(LocPrint 22 62)
+							)
+							((not jailLockerOpen)
+								(LocPrint 22 63)
+							)
+							((not (ego has: iHandGun))
+								(LocPrint 22 67)
+							)
+							(gunDrawn
+								(LocPrint 22 68)
+							)
+							(else
+								(LocPrint 22 69)
+								(ego put: iHandGun 22)
+							)
 						)
 					)
 					(
 					(Said 'deposit,place,replace,throw/key[<locker]')
-						(if local18
-							(localproc_000c 22 70)
+						(if lockerUnlocked
+							(LocPrint 22 70)
 						else
-							(localproc_000c 22 34)
+							(LocPrint 22 34)
 						)
 					)
-					((Said 'get/key<locker') (if local18 (AlreadyTook) else (localproc_000c 22 71)))
-					((Said 'get/key')
-						(if (and (ego inRect: 135 99 163 108) local18)
-							(localproc_000c 22 72)
+					((Said 'get/key<locker')
+						(if lockerUnlocked
+							(AlreadyTook)
 						else
-							(localproc_000c 22 73)
+							(LocPrint 22 71)
+						)
+					)
+					((Said 'get/key')
+						(if
+							(and
+								(ego inRect: 135 99 163 108)
+								lockerUnlocked
+							)
+							(LocPrint 22 72)
+						else
+							(LocPrint 22 73)
 						)
 					)
 					(
@@ -554,60 +723,68 @@
 							(Said 'close,lock/(door<locker)')
 						)
 						(if (ego inRect: 135 99 163 108)
-							(if global165
-								(= global165 0)
-								(localproc_000c 22 74)
-								(if (== ((inventory at: 0) owner?) 22)
-									(SolvePuzzle 3 115)
+							(if jailLockerOpen
+								(= jailLockerOpen 0)
+								(LocPrint 22 74)
+								(if (== ((inventory at: iHandGun) owner?) 22)
+									(SolvePuzzle 3 fLockedUpGunAtJail)
 								)
 							else
-								(localproc_000c 22 75)
+								(LocPrint 22 75)
 							)
 						else
-							(localproc_000c 22 62)
+							(LocPrint 22 62)
 						)
 					)
-					((Said 'open,move/gate,fence') (localproc_000c 22 76))
-					((Said 'climb/gate,fence') (localproc_000c 22 77))
+					((Said 'open,move/gate,fence')
+						(LocPrint 22 76)
+					)
+					((Said 'climb/gate,fence')
+						(LocPrint 22 77)
+					)
 					((Said 'unlock/door')
 						(cond 
 							((ego inRect: 230 118 250 127)
 								(cond 
-									((== currentCar 13)
-										(if (ego has: 3)
+									((== currentCar carWork)
+										(if (ego has: iUnmarkedCarKeys)
 											(if workCarLocked
 												(= workCarLocked 0)
-												(localproc_000c 22 78)
+												(LocPrint 22 78)
 											else
-												(localproc_000c 22 79)
+												(LocPrint 22 79)
 											)
 										else
-											(localproc_000c 22 80)
+											(LocPrint 22 80)
 										)
 									)
-									((== currentCar 33)
-										(if (ego has: 2)
+									((== currentCar carPersonal)
+										(if (ego has: iKeyRing)
 											(if personalCarLocked
 												(= personalCarLocked 0)
-												(localproc_000c 22 78)
+												(LocPrint 22 78)
 											else
-												(localproc_000c 22 79)
+												(LocPrint 22 79)
 											)
 										else
-											(localproc_000c 22 80)
+											(LocPrint 22 80)
 										)
 									)
 								)
 							)
 							((ego inRect: 145 99 205 108)
-								(if (not local12)
-									(localproc_000c 22 46)
+								(if (not pressedBuzzer)
+									(LocPrint 22 46)
 								else
-									(localproc_000c 22 47)
+									(LocPrint 22 47)
 								)
 							)
-							((ego inRect: 230 129 260 138) (localproc_000c 22 81))
-							(else (localproc_000c 22 45))
+							((ego inRect: 230 129 260 138)
+								(LocPrint 22 81)
+							)
+							(else
+								(LocPrint 22 45)
+							)
 						)
 					)
 					((Said 'lock/door')
@@ -616,43 +793,57 @@
 								(if (== currentCar 13)
 									(if (not workCarLocked)
 										(= workCarLocked 1)
-										(localproc_000c 22 82)
+										(LocPrint 22 82)
 									else
-										(localproc_000c 22 83)
+										(LocPrint 22 83)
 									)
 								)
 								(if (== currentCar 33)
 									(if (not personalCarLocked)
 										(= personalCarLocked 1)
-										(localproc_000c 22 82)
+										(LocPrint 22 82)
 									else
-										(localproc_000c 22 83)
+										(LocPrint 22 83)
 									)
 								)
 							)
-							((ego inRect: 230 129 260 138) (localproc_000c 22 84))
-							(else (localproc_000c 22 45))
+							((ego inRect: 230 129 260 138)
+								(LocPrint 22 84)
+							)
+							(else
+								(LocPrint 22 45)
+							)
 						)
 					)
 					((Said 'open,unlock/trunk')
 						(cond 
-							((== currentCar 13)
+							((== currentCar carWork)
 								(if (ego inRect: 176 123 206 135)
 									(cond 
-										(workCarTrunkOpened (Print 22 85))
-										((ego has: 3) (carScript changeState: 14))
-										(else (localproc_000c 22 86))
+										(workCarTrunkOpened
+											(Print 22 85)
+										)
+										((ego has: iUnmarkedCarKeys)
+											(carScript changeState: 14)
+										)
+										(else
+											(LocPrint 22 86)
+										)
 									)
 								else
-									(localproc_000c 22 87)
+									(LocPrint 22 87)
 								)
 							)
-							((ego inRect: 176 123 206 135) (localproc_000c 22 88))
-							(else (localproc_000c 22 87))
+							((ego inRect: 176 123 206 135)
+								(LocPrint 22 88)
+							)
+							(else
+								(LocPrint 22 87)
+							)
 						)
 					)
 					((Said 'close,lock/trunk')
-						(if (== currentCar 13)
+						(if (== currentCar carWork)
 							(if (ego inRect: 176 123 206 135)
 								(if workCarTrunkOpened
 									(carScript changeState: 16)
@@ -663,7 +854,7 @@
 								(NotClose)
 							)
 						else
-							(localproc_000c 22 88)
+							(LocPrint 22 88)
 						)
 					)
 					(
@@ -674,50 +865,60 @@
 						)
 						(cond 
 							((ego inRect: 145 99 205 108)
-								(if (not local12)
-									(localproc_000c 22 46)
+								(if (not pressedBuzzer)
+									(LocPrint 22 46)
 								else
-									(localproc_000c 22 47)
+									(LocPrint 22 47)
 								)
 							)
-							(local6 (= global132 1))
-							((ego inRect: 230 129 260 138) (localproc_000c 22 84))
-							(else (localproc_192c))
+							(local6
+								(= global132 1)
+							)
+							((ego inRect: 230 129 260 138)
+								(LocPrint 22 84)
+							)
+							(else
+								(EnterCar)
+							)
 						)
 					)
-					((Said 'close/door') (localproc_000c 22 90))
+					((Said 'close/door')
+						(LocPrint 22 90)
+					)
 					((Said 'deposit,place/briefcase')
 						(if (ego inRect: 176 123 206 135)
 							(if workCarTrunkOpened
-								(if (ego has: 10)
-									(localproc_000c 22 91)
-									(PutInRoom 10 13)
-									(if (IsObject theFieldKit) (theFieldKit dispose:))
+								(if (ego has: iFieldKit)
+									(LocPrint 22 91)
+									(PutInRoom iFieldKit 13)
+									(if (IsObject theFieldKit)
+										(theFieldKit dispose:)
+									)
 									(= fieldKitOpen 0)
 								else
-									(localproc_000c 22 92)
+									(LocPrint 22 92)
 								)
 							else
-								(localproc_000c 22 93)
+								(LocPrint 22 93)
 							)
 						else
-							(localproc_000c 22 94)
+							(LocPrint 22 94)
 						)
 					)
 					((Said 'remove,get/briefcase')
 						(if (ego inRect: 176 123 206 135)
 							(if workCarTrunkOpened
-								(if (== ((inventory at: 10) owner?) 13)
-									(localproc_000c 22 95)
-									(ego get: 10)
+								(if (== ((inventory at: iFieldKit) owner?) 13)
+									(LocPrint 22 95)
+									(ego get: iFieldKit)
 								else
-									(localproc_000c 22 96)
+									(LocPrint 22 96)
 								)
 							else
-								(localproc_000c 22 93)
+								(LocPrint 22 93)
 							)
 						else
-							(localproc_000c 22 94)
+							(LocPrint 22 94)
 						)
 					)
 				)
@@ -731,18 +932,23 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= local16 1) (self cue:))
+			(0
+				(= cameraIsOscillating 1)
+				(self cue:)
+			)
 			(1
-				(= local17 1)
+				;(= local17 1)
 				(camera setCycle: EndLoop self)
 			)
 			(2
-				(= local17 0)
+				;(= local17 0)
 				(camera setCycle: BegLoop self)
 			)
-			(3 (self changeState: 1))
+			(3
+				(self changeState: 1)
+			)
 			(4
-				(= local16 0)
+				(= cameraIsOscillating 0)
 				(camera setCycle: 0)
 				(self cue:)
 			)
@@ -758,7 +964,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(localproc_000c 22 97)
+				(LocPrint 22 97)
 				(ego setMotion: MoveTo 180 101 self)
 			)
 			(1
@@ -790,8 +996,17 @@
 					illegalBits: 0
 					setMotion: MoveTo 238 124 self
 				)
-				(if (and (== currentCar 13) (not local7))
-					(keith posn: 250 136 loop: 0 cel: 1 startUpd:)
+				(if
+					(and
+						(== currentCar carWork)
+						(not local7)
+					)
+					(keith
+						posn: 250 136
+						loop: 0
+						cel: 1
+						startUpd:
+					)
 					((= carDoor (Prop new:))
 						view: 51
 						loop: 3
@@ -816,40 +1031,50 @@
 					setLoop: -1
 					setPri: -1
 					ignoreActors: 0
-					illegalBits: -32768
+					illegalBits: cWHITE ;-32768
 				)
 				(HandsOn)
-				(if (== currentCar 13) (self cue:))
+				(if (== currentCar carWork)
+					(self cue:)
+				)
 			)
 			(2
-				(if (== currentCar 13)
+				(if (== currentCar carWork)
 					(if local7
-						(localproc_000c 22 98)
-						(localproc_000c 22 99)
-						(Bset 142)
+						(LocPrint 22 98)
+						(LocPrint 22 99)
+						(Bset fKeithWaitsAtJail)
 					else
 						(carDoor dispose:)
-						(keith illegalBits: 0 setMotion: MoveTo 250 140 self)
+						(keith
+							illegalBits: 0
+							setMotion: MoveTo 250 140 self
+						)
 					)
 				)
 			)
 			(3
-				(keith illegalBits: -16384 setMotion: MoveTo 260 145 self)
-				(localproc_000c 22 100)
+				(keith
+					illegalBits: cWHITE ;-16384
+					setMotion: MoveTo 260 145 self
+				)
+				(LocPrint 22 100)
 			)
 			(4
 				(keith setMotion: MoveTo 300 157 self)
 			)
-			(5 (keith stopUpd:))
+			(5
+				(keith stopUpd:)
+			)
 			(8
 				(HandsOff)
 				(ego stopUpd:)
 				(if (== currentCar 13)
-					(if (Btst 142)
-						(localproc_000c 22 101)
+					(if (Btst fKeithWaitsAtJail)
+						(LocPrint 22 101)
 						(self changeState: 12)
 					else
-						(localproc_000c 22 102)
+						(LocPrint 22 102)
 						(self cue:)
 					)
 				else
@@ -904,7 +1129,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(15 (unTrunk stopUpd:))
+			(15
+				(unTrunk stopUpd:)
+			)
 			(16
 				(= workCarTrunkOpened 0)
 				(unTrunk
@@ -929,11 +1156,16 @@
 		(switch (= state newState)
 			(0
 				(ego stopUpd:)
-				(if (== currentCar 13) (keith stopUpd:))
+				(if (== currentCar carWork)
+					(keith stopUpd:)
+				)
 			)
 			(1
 				(= global132 1)
-				(car stopUpd: addToPic:)
+				(car
+					stopUpd:
+					addToPic:
+				)
 			)
 		)
 	)
