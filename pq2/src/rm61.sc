@@ -1,9 +1,10 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 61)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
-(use Avoider)
+;(use Avoider)
 (use Motion)
 (use Game)
 (use User)
@@ -31,29 +32,29 @@
 	local10
 	local11
 )
-(procedure (localproc_000c)
+(procedure (LocPrint)
 	(Print &rest #at -1 18)
 )
 
-(procedure (localproc_001b)
+(procedure (LocPrintBottom)
 	(Print &rest #at -1 156)
 )
 
-(procedure (localproc_2226)
+(procedure (EnterCar)
 	(return
 		(switch currentCar
 			(13
 				(if (not (ego inRect: 144 188 166 197))
 					(Print 61 115)
 				else
-					(if (and (== gamePhase 5) (not global183))
+					(if (and (== gamePhase 5) (not shotAtBainsInCove))
 						(ego setMotion: MoveTo 125 188)
 						(return (Print 61 116))
 					)
 					(cond 
 						(workCarLocked (Print 61 117) (return 0))
 						(workCarTrunkOpened (Print 61 118) (return 0))
-						((ego has: 10) (Print 61 119) (return 0))
+						((ego has: iFieldKit) (Print 61 119) (return 0))
 						(else (carScript changeState: 7) (return 1))
 					)
 				)
@@ -134,28 +135,39 @@
 (instance rm61 of Room
 	(properties
 		picture 61
-		style $0006
+		style IRISIN
 	)
 	
 	(method (init)
-		(Load rsVIEW 0)
-		(Load rsVIEW 20)
-		(Load rsVIEW 253)
-		(Load rsVIEW 54)
-		(Load rsVIEW 51)
+		(Load VIEW 20)
+		(Load VIEW 253)
+		(Load VIEW 54)
+		(Load VIEW 51)
 		(super init:)
-		(= gunNotNeeded (!= gamePhase 5))
-		(if (== gamePhase 5) (= gunFireState 3))
+		(= gunNotNeeded (!= gamePhase phaseCOVE))
+		(if (== gamePhase phaseCOVE)
+			(= gunFireState gunPROHIBITED)
+		)
 		(= local0 (not (= local3 (== prevRoomNum 60))))
 		(= local1
-			(if (== roomCarParked curRoomNum) local0 else 0)
+			(if (== roomCarParked curRoomNum)
+				local0
+			else
+				0
+			)
 		)
-		(if (and (>= 6 gamePhase) (>= gamePhase 5))
+		(if
+			(and
+				(>= 6 gamePhase)
+				(>= gamePhase phaseCOVE)
+			)
 			(= isOnDuty 0)
 			(= captainWarningTimer 0)
 			(= global159 0)
 		)
-		(if (== diverState 3) (= diverState 1))
+		(if (== diverState 3)
+			(= diverState 1)
+		)
 		(= local11 20)
 		(if local3
 			(HandsOn)
@@ -164,7 +176,11 @@
 			(HandsOff)
 			(cond 
 				(local1
-					(if (and (== global111 3) (Btst 20))
+					(if
+						(and
+							(== global111 3)
+							(Btst 20)
+						)
 						(= local4 4)
 						(= gunNotNeeded 1)
 						(Bclr 20)
@@ -173,8 +189,10 @@
 					)
 					(= bainsInCoveTimer 0)
 				)
-				((< gamePhase 5) (= local4 0))
-				((== gamePhase 5)
+				((< gamePhase phaseCOVE)
+					(= local4 0)
+				)
+				((== gamePhase phaseCOVE)
 					(cond 
 						(
 							(and
@@ -184,16 +202,27 @@
 							(= local4 2)
 							(= captainWarningTimer 0)
 						)
-						((Btst 20) (= local4 4) (Bclr 20) (= bainsInCoveTimer 0))
-						(else (= local4 3) (= captainWarningTimer 0))
+						((Btst 20)
+							(= local4 4)
+							(Bclr 20)
+							(= bainsInCoveTimer 0)
+						)
+						(else
+							(= local4 3)
+							(= captainWarningTimer 0)
+						)
 					)
 				)
-				((>= gamePhase 6) (= local4 1))
+				((>= gamePhase 6)
+					(= local4 1)
+				)
 			)
 			(= global111 local4)
 		)
-		(if global183 (= bainsInCoveState 0))
-		(self setLocales: 155)
+		(if shotAtBainsInCove
+			(= bainsInCoveState 0)
+		)
+		(self setLocales: regCove)
 		(grass1
 			view: 253
 			loop: 0
@@ -249,20 +278,31 @@
 				illegalBits: 0
 				setScript: gelepsiScript
 			)
-			(if (!= diverState 0) (= global185 1))
-			(if (and (not global185) (not global187))
+			(if (!= diverState 0)
+				(= global185 1)
+			)
+			(if
+				(and
+					(not global185)
+					(not global187)
+				)
 				(barbie
 					view: 11
 					loop: 2
 					posn: 219 136
 					init:
 					setCycle: Walk
-					setAvoider: (Avoider new:)
+					;setAvoider: (Avoider new:)
 					setMotion: Follow ego 500
 					illegalBits: 0
 					setScript: barbieScript
 				)
-				(if (< howFast 30) (barbie setMotion: 0 stopUpd:))
+				(if (< howFast 30)
+					(barbie
+						setMotion: 0
+						stopUpd:
+					)
+				)
 			)
 		)
 		(ourCar
@@ -278,10 +318,18 @@
 			ignoreActors:
 		)
 		(= local2
-			(if (cast contains: gelepsi) (== prevRoomNum 13) else 0)
+			(if (cast contains: gelepsi)
+				(== prevRoomNum 13)
+			else
+				0
+			)
 		)
-		(if (and (>= local4 3) (>= diverState 5))
-			((View new:)
+		(if
+			(and
+				(>= local4 3)
+				(>= diverState 5)
+			)
+			((View new:) ;coroner's van
 				view: 154
 				loop: 0
 				cel: 0
@@ -315,7 +363,9 @@
 				(gelepsi setLoop: -1)
 			)
 		)
-		(if (> local11 1) (-- local11))
+		(if (> local11 1)
+			(-- local11)
+		)
 		(cond 
 			(
 				(and
@@ -326,34 +376,64 @@
 				(= global132 0)
 				(carScript changeState: 0)
 			)
-			((== (ego edgeHit?) 4) (= global205 0) (curRoom newRoom: 60))
+			((== (ego edgeHit?) 4)
+				(= global205 0)
+				(curRoom newRoom: 60)
+			)
 			(
-			(and (== global132 (not local0)) (== (not local0) 1)) (= global132 0) (localproc_2226))
+				(and
+					(== global132 (not local0))
+					(== (not local0) 1))
+					(= global132 0)
+					(EnterCar)
+				)
 		)
 		(cond 
-			((and (> (ego y?) 205) (not local0))
+			(
+				(and
+					(> (ego y?) 205)
+					(not local0)
+				)
 				(switch (Random 0 2)
-					(0 (Print 61 0))
-					(1 (Print 61 1))
-					(2 (Print 61 2))
+					(0
+						(Print 61 0)
+					)
+					(1
+						(Print 61 1)
+					)
+					(2
+						(Print 61 2)
+					)
 				)
 				(ego setMotion: MoveTo (ego x?) 176)
 			)
-			((and (== (ego edgeHit?) 2) (== local11 1))
+			(
+				(and
+					(== (ego edgeHit?) 2)
+					(== local11 1)
+				)
 				(ego x: 340)
 				(if local6
 					(Print 61 3)
 				else
 					(switch (Random 0 2)
-						(0 (Print 61 4))
-						(1 (Print 61 5))
-						(2 (Print 61 6))
+						(0
+							(Print 61 4)
+						)
+						(1
+							(Print 61 5)
+						)
+						(2
+							(Print 61 6)
+						)
 					)
 				)
 				(= local11 50)
 			)
 		)
-		(if (< (ego y?) 72) (ego y: 72))
+		(if (< (ego y?) 72)
+			(ego y: 72)
+		)
 		(if
 			(and
 				(== diverState 3)
@@ -380,7 +460,7 @@
 				(ego
 					view: 0
 					posn: 28 (ego y?)
-					illegalBits: -32768
+					illegalBits: cWHITE;-32768
 					ignoreActors: 0
 					setPri: -1
 					setLoop: -1
@@ -392,17 +472,21 @@
 				else
 					(ego posn: 200 240)
 				)
-				(if (== currentCar 13)
+				(if (== currentCar carWork)
 					((= keith (Actor new:))
 						view: 20
 						cel: 0
 						posn: -100 400
-						setAvoider: (Avoider new:)
+						;setAvoider: (Avoider new:)
 						setScript: keithScript
 						init:
 					)
 				)
-				(if (and (== currentCar 13) local3)
+				(if
+					(and
+						(== currentCar carWork)
+						local3
+					)
 					(keith
 						cel: 0
 						posn: 6 (+ (ego y?) 5)
@@ -423,10 +507,23 @@
 					(and
 						(>= local4 3)
 						(not local0)
-						(or global187 (!= diverState 0))
+						(or
+							global187
+							(!= diverState 0)
+						)
 					)
-					(keith posn: 157 158 loop: 1 cel: 0 stopUpd:)
-					(gelepsi posn: 133 162 loop: 0 cel: 4 stopUpd:)
+					(keith
+						posn: 157 158
+						loop: 1
+						cel: 0
+						stopUpd:
+					)
+					(gelepsi
+						posn: 133 162
+						loop: 0
+						cel: 4
+						stopUpd:
+					)
 				)
 				(if (not local3)
 					(stopScript init:)
@@ -435,8 +532,12 @@
 					(ourCar addToPic:)
 				)
 				(cond 
-					((!= roomCarParked curRoomNum) (= roomCarParked curRoomNum))
-					((== local0 1) (= global132 1))
+					((!= roomCarParked curRoomNum)
+						(= roomCarParked curRoomNum)
+					)
+					((== local0 1)
+						(= global132 1)
+					)
 				)
 			)
 		)
@@ -444,9 +545,11 @@
 	
 	(method (handleEvent event)
 		(switch (event type?)
-			(evSAID
+			(saidEvent
 				(cond 
-					((Said 'display/badge') (Print 61 8))
+					((Said 'display/badge')
+						(Print 61 8)
+					)
 					((Said 'look<through/fence,hole')
 						(if (ego inRect: 169 125 320 200)
 							(Print 61 9)
@@ -461,31 +564,47 @@
 							(Print 61 10)
 						)
 					)
-					((Said 'read,look/fence,initials') (Print 61 12))
+					((Said 'read,look/fence,initials')
+						(Print 61 12)
+					)
 					((Said 'look>')
 						(cond 
-							((Said '/briefcase') (Print 61 13))
+							((Said '/briefcase')
+								(Print 61 13)
+							)
 							((Said '/auto')
 								(if (ego inRect: 72 142 360 240)
 									(switch (Random 0 2)
-										(0 (Print 61 14))
-										(1 (Print 61 15))
-										(2 (Print 61 16))
+										(0
+											(Print 61 14)
+										)
+										(1
+											(Print 61 15)
+										)
+										(2
+											(Print 61 16)
+										)
 									)
 								else
 									(Print 61 10)
 								)
 							)
 							((Said '/van,bus')
-								(if (and (> diverState 2) (>= global111 3))
+								(if
+									(and
+										(> diverState 2)
+										(>= global111 3)
+									)
 									(Print 61 17)
 								else
 									(Print 61 18)
 								)
 							)
-							((Said '/trunk<tree') (Print 61 19))
+							((Said '/trunk<tree')
+								(Print 61 19)
+							)
 							((Said '/trunk')
-								(if (== currentCar 13)
+								(if (== currentCar carWork)
 									(if
 										(and
 											(ego inRect: 93 193 129 208)
@@ -517,7 +636,9 @@
 									(Print 61 23)
 								)
 							)
-							((Said '<below/bush') (Print 61 24))
+							((Said '<below/bush')
+								(Print 61 24)
+							)
 							((Said '/rock')
 								(if (ego inRect: 12 88 132 120)
 									(Print 61 25)
@@ -532,7 +653,11 @@
 									(Print 61 10)
 								)
 							)
-							((or (Said '/phone') (Said '/booth[<phone]'))
+							(
+								(or
+									(Said '/phone')
+									(Said '/booth[<phone]')
+								)
 								(if (ego inRect: 208 102 273 138)
 									(Print 61 27)
 								else
@@ -560,18 +685,25 @@
 									(Print 61 33)
 								)
 							)
-							((Said '[<at,around][/(!*,cove,area)]') (Print 61 34) (event claimed: 1))
+							((Said '[<at,around][/(noword,cove,area)]')
+								(Print 61 34)
+								(event claimed: 1)
+							)
 						)
 					)
-					((Said 'smell/garbage,crap,waste') (Print 61 35))
+					((Said 'smell/garbage,crap,waste')
+						(Print 61 35)
+					)
 					((Said 'deposit,place,replace/briefcase')
 						(if (ego inRect: 93 193 129 208)
 							(if workCarTrunkOpened
-								(if (ego has: 10)
+								(if (ego has: iFieldKit)
 									(Print 61 36)
-									(PutInRoom 10 13)
+									(PutInRoom iFieldKit 13)
 									(= fieldKitOpen 0)
-									(if (IsObject theFieldKit) (theFieldKit dispose:))
+									(if (IsObject theFieldKit)
+										(theFieldKit dispose:)
+									)
 								else
 									(Print 61 37)
 								)
@@ -585,9 +717,9 @@
 					((Said 'remove,get/briefcase')
 						(if (ego inRect: 93 193 129 208)
 							(if workCarTrunkOpened
-								(if (== ((inventory at: 10) owner?) 13)
+								(if (== ((inventory at: iFieldKit) owner?) 13)
 									(Print 61 40)
-									(ego get: 10)
+									(ego get: iFieldKit)
 								else
 									(Print 61 41)
 								)
@@ -598,8 +730,12 @@
 							(Print 61 39)
 						)
 					)
-					((Said 'affirmative') (Print 61 42))
-					((Said 'n') (Print 61 43))
+					((Said 'affirmative')
+						(Print 61 42)
+					)
+					((Said 'no')
+						(Print 61 43)
+					)
 					(
 						(or
 							(Said 'use,dial/phone')
@@ -634,13 +770,19 @@
 							(Said 'open/door')
 							(Said 'get<in')
 						)
-						(localproc_2226)
+						(EnterCar)
 					)
-					((Said 'exit/auto') (= global132 1))
+					((Said 'exit/auto')
+						(= global132 1)
+					)
 					((Said 'unlock/door')
 						(if (ego inRect: 144 188 166 197)
 							(cond 
-								((and (== currentCar 13) (ego has: 3))
+								(
+									(and
+										(== currentCar 13)
+										(ego has: iUnmarkedCarKeys)
+									)
 									(if (== workCarLocked 1)
 										(= workCarLocked 0)
 										(Print 61 49)
@@ -648,10 +790,16 @@
 										(Print 61 50)
 									)
 								)
-								((== currentCar 13) (Print 61 51))
+								((== currentCar carWork)
+									(Print 61 51)
+								)
 							)
 							(cond 
-								((and (== currentCar 33) (ego has: 2))
+								(
+									(and
+										(== currentCar carPersonal)
+										(ego has: iKeyRing)
+									)
 									(if (== personalCarLocked 1)
 										(= personalCarLocked 0)
 										(Print 61 49)
@@ -659,7 +807,9 @@
 										(Print 61 50)
 									)
 								)
-								((== currentCar 33) (Print 61 51))
+								((== currentCar carPersonal)
+									(Print 61 51)
+								)
 							)
 						else
 							(NotClose)
@@ -667,7 +817,7 @@
 					)
 					((Said 'lock/door')
 						(if (ego inRect: 144 188 166 197)
-							(if (== currentCar 13)
+							(if (== currentCar carWork)
 								(if (== workCarLocked 0)
 									(= workCarLocked 1)
 									(Print 61 52)
@@ -675,7 +825,7 @@
 									(Print 61 53)
 								)
 							)
-							(if (== currentCar 33)
+							(if (== currentCar carPersonal)
 								(if (== personalCarLocked 0)
 									(= personalCarLocked 1)
 									(Print 61 52)
@@ -688,12 +838,18 @@
 						)
 					)
 					((Said 'open,unlock/trunk')
-						(if (== currentCar 13)
+						(if (== currentCar carWork)
 							(if (ego inRect: 93 193 129 208)
 								(cond 
-									(workCarTrunkOpened (Print 61 54))
-									((ego has: 3) (carScript changeState: 13))
-									(else (Print 61 55))
+									(workCarTrunkOpened
+										(Print 61 54)
+									)
+									((ego has: iUnmarkedCarKeys)
+										(carScript changeState: 13)
+									)
+									(else
+										(Print 61 55)
+									)
 								)
 							else
 								(NotClose)
@@ -703,7 +859,7 @@
 						)
 					)
 					((Said 'close,lock/trunk')
-						(if (== currentCar 13)
+						(if (== currentCar carWork)
 							(if (ego inRect: 93 193 129 208)
 								(if workCarTrunkOpened
 									(carScript changeState: 15)
@@ -727,10 +883,23 @@
 					)
 					((Said 'call/coroner')
 						(cond 
-							((not (cast contains: gelepsi)) (Print 61 59))
-							((and removedBodyFromRiver (not (Btst 54))) (Print 61 60) (SolvePuzzle 3 54))
-							((< (ego distanceTo: gelepsi) 35) (Print 61 61))
-							(else (Print 61 62))
+							((not (cast contains: gelepsi))
+								(Print 61 59)
+							)
+							(
+								(and
+									removedBodyFromRiver
+									(not (Btst fCalledCoroner))
+								)
+								(Print 61 60)
+								(SolvePuzzle 3 fCalledCoroner)
+							)
+							((< (ego distanceTo: gelepsi) 35)
+								(Print 61 61)
+							)
+							(else
+								(Print 61 62)
+							)
 						)
 					)
 					((Said 'chat>')
@@ -738,11 +907,25 @@
 							((Said '/cop,gelepsi,cop')
 								(if (cast contains: gelepsi)
 									(if (< (ego distanceTo: gelepsi) 25)
-										(if (== currentCar 13)
+										(if (== currentCar carWork)
 											(cond 
-												((< (keith distanceTo: gelepsi) 30) (if global183 (Print 61 63) else (Print 61 64)))
-												((and removedBodyFromRiver (not (Btst 54))) (Print 61 60) (SolvePuzzle 3 54))
-												(else (Print 61 61))
+												((< (keith distanceTo: gelepsi) 30)
+													(if shotAtBainsInCove
+														(Print 61 63)
+													else
+														(Print 61 64))
+												)
+												(
+													(and
+														removedBodyFromRiver
+														(not (Btst fCalledCoroner))
+													)
+													(Print 61 60)
+													(SolvePuzzle 3 fCalledCoroner)
+												)
+												(else
+													(Print 61 61)
+												)
 											)
 										else
 											(Print 61 65)
@@ -772,7 +955,7 @@
 										(< (ego distanceTo: barbie) 38)
 									)
 									(if local5
-										(localproc_001b 61 69)
+										(LocPrintBottom 61 69)
 									else
 										(= local5 1)
 										(Print 61 70)
@@ -781,11 +964,18 @@
 									(Print 61 71)
 								)
 							)
-							(else (Print 61 72) (event claimed: 1))
+							(else
+								(Print 61 72)
+								(event claimed: 1)
+							)
 						)
 					)
-					((Said 'close/door[<booth]') (Print 61 73))
-					((Said '/briefcase') (Print 61 13))
+					((Said 'close/door[<booth]')
+						(Print 61 73)
+					)
+					((Said '/briefcase')
+						(Print 61 13)
+					)
 					((cast contains: barbie)
 						(cond 
 							((Said '[say]/hello')
@@ -804,8 +994,13 @@
 							)
 							((Said 'interrogate,ask>')
 								(cond 
-									((> (ego distanceTo: barbie) 38) (event claimed: 1) (Print 61 75))
-									((Said '/badge,license[<broad]') (barbieScript changeState: 3))
+									((> (ego distanceTo: barbie) 38)
+										(event claimed: 1)
+										(Print 61 75)
+									)
+									((Said '/badge,license[<broad]')
+										(barbieScript changeState: 3)
+									)
 									(
 										(or
 											(Said '/number[<phone]')
@@ -814,8 +1009,12 @@
 										)
 										(Print 61 76)
 									)
-									((Said '/name[<broad]') (barbieScript changeState: 2))
-									((Said '/address[<broad]') (barbieScript changeState: 3))
+									((Said '/name[<broad]')
+										(barbieScript changeState: 2)
+									)
+									((Said '/address[<broad]')
+										(barbieScript changeState: 3)
+									)
 									(
 										(or
 											(Said '/blood,mark,clue,location')
@@ -828,10 +1027,13 @@
 											(= local6 1)
 											(SolvePuzzle 2)
 											(barbieScript changeState: 5)
-											(localproc_000c 61 78)
+											(LocPrint 61 78)
 										)
 									)
-									(else (Print 61 79) (event claimed: 1))
+									(else
+										(Print 61 79)
+										(event claimed: 1)
+									)
 								)
 							)
 							((Said 'display[/clue,(print<feet),blood,i]')
@@ -843,7 +1045,9 @@
 							)
 						)
 					)
-					((Said 'ask/') (Print 61 80))
+					((Said 'ask/')
+						(Print 61 80)
+					)
 				)
 			)
 		)
@@ -900,7 +1104,11 @@
 				else
 					(ego observeBlocks: ourCarBlock)
 				)
-				(if (== currentCar 13) (self cue:) else (HandsOn))
+				(if (== currentCar carWork)
+					(self cue:)
+				else
+					(HandsOn)
+				)
 			)
 			(2
 				(carDoor dispose:)
@@ -911,9 +1119,15 @@
 				(HandsOn)
 			)
 			(4
-				(keith loop: 2 cel: 0 setMotion: MoveTo 88 154 self)
+				(keith
+					loop: 2
+					cel: 0
+					setMotion: MoveTo 88 154 self
+				)
 				(switch local4
-					(1 (Print 61 81 #draw))
+					(1
+						(Print 61 81 #draw)
+					)
 					(2
 						(Print 61 82 #at -1 60 #draw)
 					)
@@ -925,17 +1139,32 @@
 			(5
 				(keith setMotion: MoveTo 124 148 self)
 			)
-			(6 (keith stopUpd:))
+			(6
+				(keith stopUpd:)
+			)
 			(7
 				(HandsOff)
 				(ego stopUpd: ignoreBlocks: ourCarBlock)
-				(if (== currentCar 13)
-					(if bainsInCoveTimer (Print 61 84) else (Print 61 85))
-					(keith ignoreActors: illegalBits: 0)
+				(if (== currentCar carWork)
+					(if bainsInCoveTimer
+						(Print 61 84)
+					else
+						(Print 61 85)
+					)
+					(keith
+						ignoreActors:
+						illegalBits: 0
+					)
 					(cond 
-						((< (keith y?) 168) (keith setMotion: MoveTo 90 150 self))
-						((< (keith y?) 196) (keith setMotion: MoveTo 82 196 self))
-						(else (self cue:))
+						((< (keith y?) 168)
+							(keith setMotion: MoveTo 90 150 self)
+						)
+						((< (keith y?) 196)
+							(keith setMotion: MoveTo 82 196 self)
+						)
+						(else
+							(self cue:)
+						)
 					)
 				else
 					(self changeState: 11)
@@ -952,9 +1181,15 @@
 			(9
 				(if (cast contains: gelepsi)
 					(cond 
-						(bainsInCoveTimer (Print 61 86))
-						(removedBodyFromRiver (Print 61 87))
-						(else (Print 61 87))
+						(bainsInCoveTimer
+							(Print 61 86)
+						)
+						(removedBodyFromRiver
+							(Print 61 87)
+						)
+						(else
+							(Print 61 87)
+						)
 					)
 				)
 				(keith setMotion: MoveTo 170 207 self)
@@ -996,7 +1231,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(14 (unTrunk stopUpd:))
+			(14
+				(unTrunk stopUpd:)
+			)
 			(15
 				(unTrunk
 					view: 51
@@ -1008,7 +1245,9 @@
 					setCycle: CycleTo 0 -1 self
 				)
 			)
-			(16 (unTrunk dispose:))
+			(16
+				(unTrunk dispose:)
+			)
 		)
 	)
 )
@@ -1020,7 +1259,9 @@
 		(switch (= state newState)
 			(0
 				(ego stopUpd:)
-				(if (== currentCar 13) (keith stopUpd:))
+				(if (== currentCar carWork)
+					(keith stopUpd:)
+				)
 			)
 			(1
 				(= global132 1)
@@ -1049,7 +1290,7 @@
 			(2
 				(if (< howFast 30) (gelepsi setMotion: 0 stopUpd:))
 				(if local3
-					(if (and global183 (not (Btst 30)))
+					(if (and shotAtBainsInCove (not (Btst 30)))
 						(Bset 30)
 						(if (cast contains: barbie)
 							(barbieScript changeState: 7)
@@ -1073,20 +1314,20 @@
 						else
 							(if (Btst 114)
 								(++ dollars)
-								(localproc_000c 61 91)
+								(LocPrint 61 91)
 							else
-								(localproc_000c 61 92)
+								(LocPrint 61 92)
 							)
 							(Print 61 93 #at -1 24 #draw)
 							(Bset 53)
 							(= seconds 2)
 						)
 					)
-					((and (== local4 4) (not local1)) (= bainsInCoveTimer 0) (localproc_000c 61 94))
-					((== local4 4) (localproc_000c 61 95))
+					((and (== local4 4) (not local1)) (= bainsInCoveTimer 0) (LocPrint 61 94))
+					((== local4 4) (LocPrint 61 95))
 				)
 			)
-			(4 (localproc_000c 61 96))
+			(4 (LocPrint 61 96))
 			(5
 				(gelepsi setMotion: MoveTo 192 149)
 			)
@@ -1102,19 +1343,19 @@
 			(0 0)
 			(1
 				(if local7
-					(localproc_000c 61 97)
+					(LocPrint 61 97)
 				else
-					(localproc_000c 61 98)
+					(LocPrint 61 98)
 					(= local7 1)
 				)
 			)
 			(2
-				(if local8 (localproc_000c 61 99) else (= local8 1))
-				(localproc_000c 61 100)
+				(if local8 (LocPrint 61 99) else (= local8 1))
+				(LocPrint 61 100)
 			)
 			(3
-				(if local9 (localproc_000c 61 99) else (= local9 1))
-				(localproc_000c 61 101)
+				(if local9 (LocPrint 61 99) else (= local9 1))
+				(LocPrint 61 101)
 			)
 			(4
 				(if local10
@@ -1131,14 +1372,14 @@
 				)
 			)
 			(5
-				(localproc_000c 61 107)
-				(localproc_000c 61 108)
-				(localproc_000c 61 109)
-				(localproc_000c 61 110)
+				(LocPrint 61 107)
+				(LocPrint 61 108)
+				(LocPrint 61 109)
+				(LocPrint 61 110)
 			)
 			(6
-				(localproc_000c 61 111)
-				(localproc_000c 61 78)
+				(LocPrint 61 111)
+				(LocPrint 61 78)
 				(= local6 1)
 			)
 			(7
@@ -1147,6 +1388,7 @@
 				(barbie
 					view: 16
 					setStep: 7 3
+					ignoreActors: ;added to prevent lockup
 					setMotion: MoveTo 105 130 self
 				)
 			)
@@ -1154,7 +1396,7 @@
 				(barbie setMotion: MoveTo 73 172 self)
 			)
 			(9
-				(if global183 (localproc_000c 61 112))
+				(if shotAtBainsInCove (LocPrint 61 112))
 				(User canControl: 1)
 				(barbie setPri: 15 setMotion: MoveTo 86 198 self)
 			)

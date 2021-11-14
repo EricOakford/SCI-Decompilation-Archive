@@ -100,7 +100,7 @@
 								else
 									(Print 155 22)
 								)
-								(if (and (== gamePhase 5) (not global183))
+								(if (and (== gamePhase 5) (not shotAtBainsInCove))
 									(Print 155 23)
 								)
 							)

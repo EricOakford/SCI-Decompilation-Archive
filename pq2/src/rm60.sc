@@ -1,9 +1,11 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 60)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
+(include keys.sh)
 (use Main)
 (use Intrface)
-(use Avoider)
+;(use Avoider) frequent game freezes
 (use Sound)
 (use Motion)
 (use Game)
@@ -158,7 +160,7 @@
 					((>= diverState 11) (moore posn: -40 77))
 					((== diverState 8) (Print 60 0))
 					(else
-						(= gunFireState 3)
+						(= gunFireState gunPROHIBITED)
 						(HandsOff)
 						(moore
 							loop: 0
@@ -216,9 +218,10 @@
 				(HandsOff)
 				(moore
 					setStep: 3 2
-					ignoreActors: 0
+					ignoreActors: ;was 0, avoider workaround
 					observeBlocks: vanBlock
-					setAvoider: (Avoider new:)
+					;setAvoider: (Avoider new:)
+					;fix Avoider freeze and enable
 					setMotion: MoveTo 230 184 self
 				)
 			)
@@ -263,7 +266,13 @@
 			(17
 				(Print 60 10 #time 4)
 				(vanDoor setMotion: MoveTo 290 175)
-				(moore setLoop: -1 setMotion: MoveTo 220 139 self)
+				(moore
+					 setLoop: -1
+					 ;setMotion: MoveTo 220 139 self
+					 setMotion: MoveTo 220 195 self
+					 ignoreActors: ;remove with avoider fix
+					;fix avoider and revert
+				)
 			)
 			(18
 				(vanDoor stopUpd:)
@@ -504,46 +513,54 @@
 	
 	(method (init)
 		(super init:)
-		(self setLocales: 153 155)
-		(Load rsVIEW 0)
-		(Load rsVIEW 4)
-		(Load rsVIEW 6)
-		(Load rsVIEW 20)
-		(Load rsVIEW 90)
-		(if (and (not global183) (== global111 3))
-			(Load rsVIEW 53)
-			(Load rsVIEW 97)
-			(Load rsVIEW 14)
-			(Load rsVIEW 15)
-			(Load rsVIEW 76)
-			(Load rsSOUND 33)
-			(Load rsSOUND 41)
-			(Load rsSOUND 41)
-			(Load rsSOUND 39)
+		(self setLocales: regFieldKit regCove)
+		(Load VIEW 0)
+		(Load VIEW 4)
+		(Load VIEW 6)
+		(Load VIEW 20)
+		(Load VIEW 90)
+		(if
+			(and
+				(not shotAtBainsInCove)
+				(== global111 3)
+			)
+			(Load VIEW 53)
+			(Load VIEW 97)
+			(Load VIEW 14)
+			(Load VIEW 15)
+			(Load VIEW 76)
+			(Load SOUND 33)
+			(Load SOUND 41)
+			(Load SOUND 41)
+			(Load SOUND 39)
 		)
-		(Load rsVIEW 154)
-		(Load rsVIEW 22)
-		(Load rsVIEW 98)
-		(Load rsVIEW 17)
-		(Load rsVIEW 21)
+		(Load VIEW 154)
+		(Load VIEW 22)
+		(Load VIEW 98)
+		(Load VIEW 17)
+		(Load VIEW 21)
 		((= moore (Actor new:))
 			view: 21
 			posn: -100 0
 			init:
 			stopUpd:
 		)
-		(= gunNotNeeded (!= gamePhase 5))
-		(if (and (not global183) (== global111 3))
+		(= gunNotNeeded (!= gamePhase phaseCOVE))
+		(if (and (not shotAtBainsInCove) (== global111 3))
 			(= gunFireState 0)
 		else
 			(= gunFireState 2)
 		)
 		(if (< global111 3) (= diverState 0))
 		(NormalEgo)
-		(ego illegalBits: -16384 init:)
+		(ego
+			illegalBits: cWHITE;-16384
+			init:
+		)
 		((= keith (Actor new:))
 			view: 20
 			posn: 1000 1000
+			illegalBits: cWHITE
 			init:
 			stopUpd:
 		)
@@ -578,7 +595,7 @@
 		(switch prevRoomNum
 			(66 (ego hide:))
 			(61
-				(if (not global183)
+				(if (not shotAtBainsInCove)
 					(bainsMusic number: 38 loop: -1 play:)
 				)
 				(ego posn: 300 (ego y?) setMotion: MoveTo -10 (ego y?))
@@ -587,12 +604,13 @@
 					(keith
 						view: 20
 						posn: (+ (ego x?) 90) (ego y?)
-						setAvoider: Avoider
+						;setAvoider: Avoider
+						;fix avoider freeze and enable above
 						setMotion: Follow ego 87
 						setCycle: Walk
 					)
 				)
-				(if (and (not global183) (== global111 3))
+				(if (and (not shotAtBainsInCove) (== global111 3))
 					(bains
 						view: 15
 						loop: 0
@@ -629,7 +647,7 @@
 								view: (if bainsInCoveState 53 else 20)
 								posn: 181 115
 								setCycle: Walk
-								setAvoider: Avoider
+								;setAvoider: Avoider
 								setMotion: Follow ego 60
 							)
 						)
@@ -696,12 +714,12 @@
 			)
 			(
 				(and
-					(not global183)
+					(not shotAtBainsInCove)
 					(== global111 3)
 					(not local6)
 					(< (ego x?) 240)
 				)
-				(= global183 1)
+				(= shotAtBainsInCove 1)
 				(if (== currentCar 13)
 					(keith view: 53 setMotion: MoveTo 181 112)
 				)
@@ -744,7 +762,7 @@
 	(method (handleEvent event &tmp temp0)
 		(if (event claimed?) (return))
 		(switch (event type?)
-			(evKEYBOARD
+			(keyDown
 				(= temp0 (event message?))
 				(if
 					(and
@@ -761,7 +779,7 @@
 					(event claimed: 0)
 				)
 			)
-			(evSAID
+			(saidEvent
 				(cond 
 					((Said 'check,look/air,gauge,equipment')
 						(if (!= (ego view?) 17)
@@ -798,14 +816,14 @@
 						)
 					)
 					((Said 'apprehend,chase/bains')
-						(if (and (== global111 3) global183 bainsInCoveState)
+						(if (and (== global111 3) shotAtBainsInCove bainsInCoveState)
 							(Print 60 32)
 						else
 							(Print 60 33)
 						)
 					)
 					((or (Said '/police,freeze') (Said 'freeze'))
-						(if (and (== global111 3) global183 bainsInCoveState)
+						(if (and (== global111 3) shotAtBainsInCove bainsInCoveState)
 							(Print 60 34)
 						else
 							(Print 60 35)
@@ -814,7 +832,7 @@
 					((Said 'look,beat,get,chat/bains,suspect')
 						(cond 
 							(local1 (Print 60 36))
-							((and (== global111 3) global183 bainsInCoveState) (Print 60 37))
+							((and (== global111 3) shotAtBainsInCove bainsInCoveState) (Print 60 37))
 							(else (Print 60 33))
 						)
 					)
@@ -927,7 +945,7 @@
 				(if local7 (Print 60 63 #at -1 24))
 				(if
 					(and
-						global183
+						shotAtBainsInCove
 						(or (not gunSightsAligned) (!= global205 4))
 					)
 					(Print 60 64 #at -1 20)
@@ -1031,10 +1049,10 @@
 				(newProp addToPic:)
 				(newProp_2 addToPic:)
 				(newProp_3 addToPic:)
-				(Bset 125)
+				(Bset fGotPoints)
 				(cond 
 					(local7 (Print 60 65 #at -1 20))
-					(global183 (Print 60 66))
+					(shotAtBainsInCove (Print 60 66))
 					(else (EgoDead 60 67))
 				)
 				(SolvePuzzle 4)
@@ -1077,7 +1095,7 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (and bainsInCoveState global183) (++ local9))
+		(if (and bainsInCoveState shotAtBainsInCove) (++ local9))
 		(if (and bainsInCoveState (> local9 120))
 			(carScript changeState: 1)
 		)

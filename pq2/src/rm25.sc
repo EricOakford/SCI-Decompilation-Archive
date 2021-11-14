@@ -1,6 +1,7 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 25)
-(include sci.sh)
+(include system.sh)
+(include game.sh)
 (use Main)
 (use Intrface)
 (use Avoider)
@@ -50,37 +51,43 @@
 	local40
 	local41
 )
-(procedure (localproc_1826)
+(procedure (EnterCar)
 	(return
 		(switch currentCar
-			(13
+			(carWork
 				(cond 
-					(
-						(not
-							(ego
-								inRect: [local28 0] [local28 1] [local28 2] [local28 3]
-							)
-						)
+					((not (ego inRect: [local28 0] [local28 1] [local28 2] [local28 3]))
 						(Print 25 72)
 					)
-					((== workCarLocked 1) (Print 25 73) (return 0))
-					(workCarTrunkOpened (Print 25 74) (return 0))
-					((ego has: 10) (Print 25 75) (return 0))
-					(else (carScript changeState: 4) (return 1))
+					((== workCarLocked 1)
+						(Print 25 73)
+						(return 0)
+					)
+					(workCarTrunkOpened
+						(Print 25 74)
+						(return 0)
+					)
+					((ego has: iFieldKit)
+						(Print 25 75)
+						(return 0)
+					)
+					(else
+						(carScript changeState: 4)
+						(return 1)
+					)
 				)
 			)
-			(33
+			(carPersonal
 				(cond 
-					(
-						(not
-							(ego
-								inRect: [local28 0] [local28 1] [local28 2] [local28 3]
-							)
-						)
+					((not (ego inRect: [local28 0] [local28 1] [local28 2] [local28 3]))
 						(Print 25 72)
 					)
-					((== personalCarLocked 1) (Print 25 73))
-					(else (carScript changeState: 4))
+					((== personalCarLocked 1)
+						(Print 25 73)
+					)
+					(else
+						(carScript changeState: 4)
+					)
 				)
 			)
 		)
@@ -104,7 +111,7 @@
 (instance rm25 of Room
 	(properties
 		picture 25
-		style $0000
+		style HWIPE
 	)
 	
 	(method (init)
@@ -114,16 +121,13 @@
 		)
 		(super init:)
 		(= keith 0)
-		(= gunNotNeeded 1)
+		(= gunNotNeeded gunPERMITTED)
 		(= gunFireState 3)
 		(= local1 (< gamePhase 11))
 		(= [local26 0] 142)
 		(= [local26 1] 193)
 		(cond 
-			(
-				(= local9
-					(if (== prevRoomNum 33) else (== prevRoomNum 13))
-				)
+			((= local9 (if (== prevRoomNum 33) else (== prevRoomNum 13)))
 				(= workCarTrunkOpened 0)
 			)
 			(workCarTrunkOpened
@@ -137,21 +141,21 @@
 				)
 			)
 		)
-		(Load rsVIEW 54)
-		(Load rsVIEW 51)
-		(Load rsVIEW 251)
-		(Load rsVIEW 30)
-		(Load rsVIEW 999)
-		(Load rsVIEW 123)
-		(Load rsVIEW 112)
-		(Load rsVIEW 268)
-		(Load rsVIEW 97)
-		(Load rsVIEW 286)
-		(Load rsVIEW 50)
-		(Load rsVIEW 53)
-		(Load rsSOUND 41)
+		(Load VIEW 54)
+		(Load VIEW 51)
+		(Load VIEW 251)
+		(Load VIEW 30)
+		(Load VIEW 999)
+		(Load VIEW 123)
+		(Load VIEW 112)
+		(Load VIEW 268)
+		(Load VIEW 97)
+		(Load VIEW 286)
+		(Load VIEW 50)
+		(Load VIEW 53)
+		(Load SOUND 41)
 		(swatSound init:)
-		(if (== currentCar 13)
+		(if (== currentCar carWork)
 			(= local7 180)
 			(= local8 189)
 			(= [local24 0] 197)
@@ -368,7 +372,7 @@
 					)
 				)
 				(
-				(and (== global132 (not local9)) (== (not local9) 1)) (= global132 0) (localproc_1826))
+				(and (== global132 (not local9)) (== (not local9) 1)) (= global132 0) (EnterCar))
 				((== global171 1) (= global171 0) (self setScript: swatArrives))
 				((== global170 1) (= global170 0) (self setScript: warrantArrives))
 			)
@@ -410,7 +414,7 @@
 	(method (handleEvent event)
 		(super handleEvent: event)
 		(if
-		(or (event claimed?) (!= (event type?) evSAID))
+		(or (event claimed?) (!= (event type?) saidEvent))
 			(return)
 		)
 		(cond 
@@ -504,7 +508,7 @@
 						(ego
 							inRect: [local28 0] [local28 1] [local28 2] [local28 3]
 						)
-						(localproc_1826)
+						(EnterCar)
 					)
 					((not local37) (NotClose))
 					((!= (ego onControl:) 256) (Print 25 27))
@@ -550,7 +554,7 @@
 					(else (Print 25 37))
 				)
 			)
-			((Said 'enter/auto') (localproc_1826))
+			((Said 'enter/auto') (EnterCar))
 			((Said 'exit/auto') (= global132 1))
 			((Said 'lock/door')
 				(if
@@ -1162,7 +1166,7 @@
 	
 	(method (handleEvent event)
 		(if
-		(or (event claimed?) (!= (event type?) evSAID))
+		(or (event claimed?) (!= (event type?) saidEvent))
 			(return)
 		)
 		(cond 

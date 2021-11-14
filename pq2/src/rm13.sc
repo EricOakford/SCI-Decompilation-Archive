@@ -721,7 +721,7 @@
 							)
 							(
 								(and
-									global183
+									shotAtBainsInCove
 									(not (Btst fRadioInCoveShooting))
 								)
 								(Bset fRadioInCoveShooting)

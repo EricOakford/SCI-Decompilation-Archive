@@ -188,7 +188,7 @@
 	global162
 	talkedToKeith
 	talkedToCaptain
-	global165
+	jailLockerOpen
 	gunSightsAligned
 	lloydInRehab
 	global168
@@ -206,7 +206,7 @@
 	global180
 	global181
 	global182
-	global183
+	shotAtBainsInCove ; was global183
 	removedBodyFromRiver
 	global185
 	bainsInCoveTimer
@@ -231,7 +231,7 @@
 	global205
 	cSound
 	bulletsInGun
-	global208
+	global208 ;cove shootout happened?
 	unprotectedShots
 	global210
 	gunNotNeeded
