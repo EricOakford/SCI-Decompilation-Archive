@@ -48,10 +48,11 @@
 )
 
 (instance rm4Script of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 10))
+			(0
+				(= seconds 10)
+			)
 			(1
 				(aDeer
 					setLoop: 0
@@ -93,7 +94,9 @@
 				)
 				(= seconds 10)
 			)
-			(5 (aDeer setCycle: BegLoop self))
+			(5
+				(aDeer setCycle: BegLoop self)
+			)
 			(6
 				(aDeer
 					setPri: 14
@@ -153,13 +156,14 @@
 					setCycle: EndLoop self
 				)
 			)
-			(16 (aDeer stopUpd:))
+			(16
+				(aDeer stopUpd:)
+			)
 		)
 	)
 )
 
 (instance MusicScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

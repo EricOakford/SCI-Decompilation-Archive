@@ -68,7 +68,6 @@
 )
 
 (instance backgroundTree1 of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -80,7 +79,7 @@
 				)
 			)
 			(1
-				(= backTreeCel (+ backTreeCel 1))
+				(+= backTreeCel 1)
 				(client hide:)
 				(= state -1)
 				(self cue:)
@@ -90,7 +89,6 @@
 )
 
 (instance foregroundTree1 of Script
-
 	(method (changeState newState &tmp theCel)
 		(switch (= state newState)
 			(0
@@ -122,7 +120,6 @@
 )
 
 (instance MusicScript of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

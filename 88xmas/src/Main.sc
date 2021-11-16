@@ -312,7 +312,7 @@
 	global297
 	global298
 	global299
-	global300
+	strIndex
 	global301
 	global302
 	christmasCursor
@@ -995,7 +995,6 @@
 		global980
 )
 (instance statusCode of Code
-	
 	(method (doit strg)
 		(Format strg 0 0
 			{________Merry Christmas from Sierra On-Line!}
@@ -1004,9 +1003,7 @@
 )
 
 (instance DEMO of Game
-	
 	(method (init)
-		(Print "Hello")
 		(super init:)
 		(TheMenuBar init:)
 		(User canInput: FALSE)

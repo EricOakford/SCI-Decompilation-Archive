@@ -74,11 +74,9 @@
 	)
 	
 	(method (doit)
-		(= global300 0)
-		(while (< global300 25)
-			(= global301 (StrAt @theLen global300))
-			(StrAt @str global300 global301)
-			(++ global300)
+		(for ((= strIndex 0)) (< strIndex 25) ((++ strIndex))
+			(= global301 (StrAt @theLen strIndex))
+			(StrAt @str strIndex global301)
 		)
 		(Display @str
 			p_at 10 48
@@ -86,28 +84,25 @@
 			p_back 4
 			p_font 369
 		)
-		(= global300 1)
+		(= strIndex 1)
 		(StrCpy @global420 @theLen)
-		(while (!= global300 len)
-			(= global301 (StrAt @global420 global300))
-			(= local7 global300)
+		(while (!= strIndex len)
+			(= global301 (StrAt @global420 strIndex))
+			(= local7 strIndex)
 			(-- local7)
 			(StrAt @theLen local7 global301)
-			(++ global300)
+			(++ strIndex)
 		)
-		(= global300 0)
-		(= global301 (StrAt @global420 global300))
+		(= strIndex 0)
+		(= global301 (StrAt @global420 strIndex))
 		(++ local7)
 		(StrAt @theLen local7 global301)
-		(= i 0)
-		(while (< i 1220)
-			(++ i)
+		(for ((= i 0)) (< i 1220) ((++ i))
 		)
 	)
 )
 
 (instance sparkleScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -127,30 +122,48 @@
 	)
 )
 
-(instance creditScript of Script
-	
+(instance creditScript of Script	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 6))
-			(1 (credits setCycle: EndLoop self))
+			(0
+				(= seconds 6)
+			)
+			(1
+				(credits setCycle: EndLoop self)
+			)
 			(2
 				(credits setLoop: 1)
 				(cond 
-					(local4 (credits setCel: 0))
-					(local5 (credits setCel: 1))
-					(else (credits setCel: 2))
+					(local4
+						(credits setCel: 0)
+					)
+					(local5
+						(credits setCel: 1)
+					)
+					(else
+						(credits setCel: 2)
+					)
 				)
 				(self cue:)
 			)
-			(3 (= seconds 8))
+			(3
+				(= seconds 8)
+			)
 			(4
 				(credits setLoop: 0 setCel: 2 setCycle: BegLoop self)
 			)
 			(5
 				(= state 0)
 				(cond 
-					(local4 (= local4 0) (= local5 1) (= seconds 2))
-					(local5 (= local5 0) (= seconds 2))
+					(local4
+						(= local4 0)
+						(= local5 1)
+						(= seconds 2)
+					)
+					(local5
+						(= local5 0)
+						(= seconds 2)
+					)
 				)
 			)
 		)
@@ -158,7 +171,6 @@
 )
 
 (instance MusicScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

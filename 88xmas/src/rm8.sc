@@ -47,181 +47,238 @@
 )
 
 (instance rm8Script of Script
-	
-	(method (doit &tmp [temp0 30] temp30 temp31 temp32 temp33 temp34 temp35 temp36)
-		;EO: Maybe someone can figure this one out.
-		(asm
-			pushi    #canInput
-			pushi    TRUE
-			pushi    1
-			class    User
-			send     6
-			pushi    11
-			pushi    8
-			pushi    0
-			pushi    #title
-			lofsa    {Enter your own message}
-			push    
-			pushi    #edit
-			lea      @customBuf
-			push    
-			pushi    #time
-			pushi    #font
-			pushi    999
-			pushi    #width
-			pushi    250
-			calle    Print,  22
-			pushi    #canInput
-			pushi    1
-			pushi    0
-			class    User
-			send     6
-			ldi      0
-			sat      temp34
-			ldi      0
-			sat      temp30
-			pushi    1
-			lea      @customBuf
-			push    
-			callk    StrLen,  2
-			sat      temp36
-code_0125:
-			lst      temp30
-			lat      temp36
-			le?     
-			bnt      code_0223
-			pushi    2
-			lea      @customBuf
-			push    
-			lst      temp30
-			callk    StrAt,  4
-			sat      temp31
-			push    
-			ldi      37
-			ne?     
-			bnt      code_0158
-			pushi    3
-			lea      @theLen
-			push    
-			lst      temp34
-			lst      temp31
-			callk    StrAt,  6
-			+at      temp34
-			+at      temp30
-			jmp      code_0125
-code_0158:
-			ldi      0
-			sat      temp35
-			lat      temp30
-			sat      temp33
-			+at      temp33
-			lst      temp30
-			ldi      2
-			add     
-			sat      temp30
-			pushi    2
-			lea      @customBuf
-			push    
-			lst      temp33
-			callk    StrAt,  4
-			sat      temp32
-			push    
-			ldi      109
-			eq?     
-			bnt      code_0196
-			pushi    2
-			lea      @theLen
-			push    
-			lsg      christmasBuf
-			callk    StrCat,  4
-			lst      temp34
-			ldi      15
-			add     
-			sat      temp34
-			ldi      1
-			sat      temp35
-code_0196:
-			lst      temp32
-			ldi      #yStep
-			eq?     
-			bnt      code_01b6
-			pushi    2
-			lea      @theLen
-			push    
-			lsg      newYearBuf
-			callk    StrCat,  4
-			lst      temp34
-			ldi      #cel
-			add     
-			sat      temp34
-			ldi      1
-			sat      temp35
-code_01b6:
-			lst      temp32
-			ldi      115
-			eq?     
-			bnt      code_01d6
-			pushi    2
-			lea      @theLen
-			push    
-			lsg      seasonsBuf
-			callk    StrCat,  4
-			lst      temp34
-			ldi      #nsTop
-			add     
-			sat      temp34
-			ldi      1
-			sat      temp35
-code_01d6:
-			lst      temp32
-			ldi      #b-xAxis
-			eq?     
-			bnt      code_01f6
-			pushi    2
-			lea      @theLen
-			push    
-			lsg      holidayBuf
-			callk    StrCat,  4
-			lst      temp34
-			ldi      13
-			add     
-			sat      temp34
-			ldi      1
-			sat      temp35
-code_01f6:
-			lst      temp35
-			ldi      0
-			eq?     
-			bnt      code_0125
-			pushi    3
-			lea      @theLen
-			push    
-			lst      temp34
-			lst      temp31
-			callk    StrAt,  6
-			+at      temp34
-			pushi    3
-			lea      @theLen
-			push    
-			lst      temp34
-			lst      temp32
-			callk    StrAt,  6
-			+at      temp34
-			jmp      code_0125
-code_0223:
-			lofsa    {_____}
-			sag      global310
-			pushi    2
-			lea      @theLen
-			push    
-			lsg      global310
-			callk    StrCat,  4
-			pushi    #newRoom
-			pushi    1
-			pushi    1
-			lag      curRoom
-			send     6
-			ret     
+	;EO: This has been successfully decompiled!
+	; The selectors were wrong, but I manually corrected them.
+	(method (doit &tmp [temp0 30] i temp31 theMacro temp33 numLetters temp35 customLen)
+		(User canInput: TRUE)
+		(Print 8 0
+			#title {Enter your own message}
+			#edit @customBuf 50
+			#font 999
+			#width 250
 		)
+		(User canInput: FALSE)
+		(= numLetters 0)
+		(= i 0)
+		(= customLen (StrLen @customBuf))
+		(if (<= i customLen)
+			(if (!= (= temp31 (StrAt @customBuf i)) 37)
+				(StrAt @theLen numLetters temp31)
+				(++ numLetters)
+				(++ i)
+			)
+			(= temp35 0)
+			(= temp33 i)
+			(++ temp33)
+			(+= i 2)
+			(cond
+				((== (= theMacro (StrAt @customBuf temp33)) 109)
+					(StrCat @theLen christmasBuf)
+					(+= numLetters 15)
+					(= temp35 1)
+				)
+				((== theMacro 110)
+					(StrCat @theLen newYearBuf)
+					(+= numLetters 14)
+					(= temp35 1)
+				)
+				((== theMacro 115)
+					(StrCat @theLen seasonsBuf)
+					(+= numLetters 18)
+					(= temp35 1)
+				)
+				((== theMacro 104)
+					(StrCat @theLen holidayBuf)
+					(+= numLetters 13)
+					(= temp35 1)
+				)
+			)
+			(== temp35 0)
+			(StrAt @theLen numLetters temp31)
+			(++ numLetters)
+			(StrAt @theLen numLetters theMacro)
+			(++ numLetters)
+		)
+		(= global310 {_____})
+		(StrCat @theLen global310)
+		(curRoom newRoom: 1)
 	)
+	
+;;;	(method (doit &tmp [temp0 30] i temp31 theMacro temp33 numLetters temp35 customLen)
+;;;		;EO: Maybe someone can figure this one out.
+;;;		(asm
+;;;			pushi    #canInput
+;;;			pushi    TRUE
+;;;			pushi    1
+;;;			class    User
+;;;			send     6
+;;;			pushi    11
+;;;			pushi    8
+;;;			pushi    0
+;;;			pushi    #title
+;;;			lofsa    {Enter your own message}
+;;;			push    
+;;;			pushi    #edit
+;;;			lea      @customBuf
+;;;			push    
+;;;			pushi    50
+;;;			pushi    #font
+;;;			pushi    999
+;;;			pushi    #width
+;;;			pushi    250
+;;;			calle    Print,  22
+;;;			pushi    #canInput
+;;;			pushi    TRUE
+;;;			pushi    0
+;;;			class    User
+;;;			send     6
+;;;			ldi      0
+;;;			sat      numLetters
+;;;			ldi      0
+;;;			sat      i
+;;;			pushi    1
+;;;			lea      @customBuf
+;;;			push    
+;;;			callk    StrLen,  2
+;;;			sat      customLen
+;;;	;EO: Calls to code_0125 prevented decompilation.
+;;;code_0125:
+;;;			lst      i
+;;;			lat      customLen
+;;;			le?     
+;;;			bnt      code_0223
+;;;			pushi    2
+;;;			lea      @customBuf
+;;;			push    
+;;;			lst      i
+;;;			callk    StrAt,  4
+;;;			sat      temp31
+;;;			push    
+;;;			ldi      37
+;;;			ne?     
+;;;			bnt      code_0158
+;;;			pushi    3
+;;;			lea      @theLen
+;;;			push    
+;;;			lst      numLetters
+;;;			lst      temp31
+;;;			callk    StrAt,  6
+;;;			+at      numLetters
+;;;			+at      i
+;;;			;jmp      code_0125
+;;;code_0158:
+;;;			ldi      0
+;;;			sat      temp35
+;;;			lat      i
+;;;			sat      temp33
+;;;			+at      temp33
+;;;			lst      i
+;;;			ldi      2
+;;;			add     
+;;;			sat      i
+;;;			pushi    2
+;;;			lea      @customBuf
+;;;			push    
+;;;			lst      temp33
+;;;			callk    StrAt,  4
+;;;			sat      theMacro
+;;;			push    
+;;;			ldi      109
+;;;			eq?     
+;;;			bnt      code_0196
+;;;			pushi    2
+;;;			lea      @theLen
+;;;			push    
+;;;			lsg      christmasBuf
+;;;			callk    StrCat,  4
+;;;			lst      numLetters
+;;;			ldi      15
+;;;			add     
+;;;			sat      numLetters
+;;;			ldi      1
+;;;			sat      temp35
+;;;code_0196:
+;;;			lst      theMacro
+;;;			ldi      #yStep
+;;;			eq?     
+;;;			bnt      code_01b6
+;;;			pushi    2
+;;;			lea      @theLen
+;;;			push    
+;;;			lsg      newYearBuf
+;;;			callk    StrCat,  4
+;;;			lst      numLetters
+;;;			ldi      #cel
+;;;			add     
+;;;			sat      numLetters
+;;;			ldi      1
+;;;			sat      temp35
+;;;code_01b6:
+;;;			lst      theMacro
+;;;			ldi      115
+;;;			eq?     
+;;;			bnt      code_01d6
+;;;			pushi    2
+;;;			lea      @theLen
+;;;			push    
+;;;			lsg      seasonsBuf
+;;;			callk    StrCat,  4
+;;;			lst      numLetters
+;;;			ldi      #nsTop
+;;;			add     
+;;;			sat      numLetters
+;;;			ldi      1
+;;;			sat      temp35
+;;;code_01d6:
+;;;			lst      theMacro
+;;;			ldi      #b-xAxis
+;;;			eq?     
+;;;			bnt      code_01f6
+;;;			pushi    2
+;;;			lea      @theLen
+;;;			push    
+;;;			lsg      holidayBuf
+;;;			callk    StrCat,  4
+;;;			lst      numLetters
+;;;			ldi      13
+;;;			add     
+;;;			sat      numLetters
+;;;			ldi      1
+;;;			sat      temp35
+;;;code_01f6:
+;;;			lst      temp35
+;;;			ldi      0
+;;;			eq?     
+;;;			;bnt      code_0125
+;;;			pushi    3
+;;;			lea      @theLen
+;;;			push    
+;;;			lst      numLetters
+;;;			lst      temp31
+;;;			callk    StrAt,  6
+;;;			+at      numLetters
+;;;			pushi    3
+;;;			lea      @theLen
+;;;			push    
+;;;			lst      numLetters
+;;;			lst      theMacro
+;;;			callk    StrAt,  6
+;;;			+at      numLetters
+;;;			;jmp      code_0125
+;;;code_0223:
+;;;			lofsa    {_____}
+;;;			sag      global310
+;;;			pushi    2
+;;;			lea      @theLen
+;;;			push    
+;;;			lsg      global310
+;;;			callk    StrCat,  4
+;;;			pushi    #newRoom
+;;;			pushi    1
+;;;			pushi    1
+;;;			lag      curRoom
+;;;			send     6
+;;;			ret     
+;;;		)
+;;;	)
 )

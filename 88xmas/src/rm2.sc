@@ -143,7 +143,6 @@
 )
 
 (instance RandomFlicker of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -157,7 +156,6 @@
 )
 
 (instance glint1 of Script
-	
 	(method (init c)
 		(super init: c)
 		(client init:)
@@ -194,7 +192,6 @@
 )
 
 (instance glint2 of Script
-
 	(method (init c)
 		(super init: c)
 		(client init:)
@@ -231,7 +228,6 @@
 )
 
 (instance glint3 of Script
-
 	(method (init c)
 		(super init: c)
 		(client init:)

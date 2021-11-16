@@ -55,7 +55,6 @@
 )
 
 (instance angels of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -67,7 +66,9 @@
 			(2
 				(aAngel setLoop: 1 setMotion: MoveTo 163 55 self)
 			)
-			(3 (aAngel setLoop: 0))
+			(3
+				(aAngel setLoop: 0)
+			)
 			(10
 				(aExtraAngels
 					ignoreActors:
@@ -358,7 +359,6 @@
 )
 
 (instance MusicScript of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

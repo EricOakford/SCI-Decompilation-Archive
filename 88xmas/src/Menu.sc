@@ -7,7 +7,6 @@
 
 
 (class TheMenuBar of MenuBar
-	
 	(method (init)
 		(AddMenu { \01_}
 			{About CARD`^a}

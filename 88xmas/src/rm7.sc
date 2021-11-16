@@ -94,19 +94,18 @@
 )
 
 (instance glint1 of Script
-	
 	(method (init c)
 		(super init: c)
 		(client init:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp randVal)
 		(switch (= state newState)
 			(0
-				(= temp0 (/ (Random 10 79) 10))
+				(= randVal (/ (Random 10 79) 10))
 				(client
 					posn:
-						(switch temp0
+						(switch randVal
 							(1 191)
 							(2 117)
 							(3 44)
@@ -115,7 +114,7 @@
 							(6 142)
 							(7 172)
 						)
-						(switch temp0
+						(switch randVal
 							(1 31)
 							(2 64)
 							(3 9)
@@ -139,19 +138,18 @@
 )
 
 (instance glint2 of Script
-
 	(method (init c)
 		(super init: c)
 		(client init:)
 	)
 	
-	(method (changeState newState &tmp temp0)
+	(method (changeState newState &tmp randVal)
 		(switch (= state newState)
 			(0
-				(= temp0 (/ (Random 10 119) 10))
+				(= randVal (/ (Random 10 119) 10))
 				(client
 					posn:
-						(switch temp0
+						(switch randVal
 							(1 191)
 							(2 117)
 							(3 44)
@@ -160,7 +158,7 @@
 							(6 142)
 							(7 172)
 						)
-						(switch temp0
+						(switch randVal
 							(1 31)
 							(2 64)
 							(3 9)
@@ -184,7 +182,6 @@
 )
 
 (instance walkDonkey of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -205,7 +202,6 @@
 )
 
 (instance MusicScript of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0

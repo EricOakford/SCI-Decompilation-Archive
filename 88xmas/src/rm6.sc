@@ -80,7 +80,6 @@
 )
 
 (instance MusicScript of Script
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -94,7 +93,6 @@
 )
 
 (instance rm6Script of Script
-
 	(method (doit)
 		(if frostyDances
 			(cond 
