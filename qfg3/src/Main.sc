@@ -2585,163 +2585,47 @@
 		helpVerb V_HELP
 	)
 	
-	(method (select param1 &tmp temp0 temp1)
-		(asm
-			pushi    #select
-			pushi    0
-			&rest    param1
-			super    IconItem,  4
-			bnt      code_2953
-			pushi    #cursor
-			pushi    0
-			pushi    #curIcon
-			pushi    0
-			lag      theIconBar
-			send     4
-			send     4
-			push    
-			ldi      948
-			ne?     
-			bnt      code_2847
-			pushi    0
-			call     SaveTheCursor,  0
-code_2847:
-			pushi    #hide
-			pushi    0
-			lag      theIconBar
-			send     4
-			ldi      12
-			lagi     egoStats
-			not     
-			bnt      code_286b
-			pushi    #say
-			pushi    6
-			pushi    26
-			pushi    6
-			pushi    27
-			pushi    0
-			pushi    0
-			pushi    0
-			lag      messager
-			send     16
-			jmp      code_294d
-code_286b:
-			pushi    12
-			lsg      curRoomNum
-			pushi    210
-			pushi    240
-			pushi    250
-			pushi    260
-			pushi    270
-			pushi    290
-			pushi    300
-			pushi    320
-			pushi    330
-			pushi    340
-			pushi    360
-			calle    OneOf,  24
-			bnt      code_28ae
-			pushi    #say
-			pushi    6
-			pushi    26
-			pushi    6
-			pushi    24
-			pushi    0
-			pushi    0
-			pushi    0
-			lag      messager
-			send     16
-			jmp      code_294d
-code_28ae:
-			pushi    11
-			lsg      curRoomNum
-			pushi    410
-			pushi    420
-			pushi    440
-			pushi    450
-			pushi    460
-			pushi    470
-			pushi    475
-			pushi    480
-			pushi    485
-			pushi    490
-			calle    OneOf,  22
-			bnt      code_28fc
-			lsg      curRoomNum
-			ldi      450
-			eq?     
-			bnt      code_28e3
-			lag      Night
-code_28e3:
-			not     
-			bnt      code_28fc
-			pushi    #say
-			pushi    6
-			pushi    26
-			pushi    6
-			pushi    25
-			pushi    0
-			pushi    0
-			pushi    0
-			lag      messager
-			send     16
-			jmp      code_294d
-code_28fc:
-			ldi      0
-			sat      temp1
-code_2900:
-			lst      temp1
-			ldi      15
-			lt?     
-			bnt      code_291b
-			pushi    19
-			lat      temp1
-			add     
-			lagi     egoStats
-			sat      temp0
-			bnt      code_2917
-			jmp      code_291b
-code_2917:
-			+at      temp1
-			jmp      code_2900
-code_291b:
-			lat      temp0
-			not     
-			bnt      code_2936
-			pushi    #say
-			pushi    6
-			pushi    26
-			pushi    6
-			pushi    26
-			pushi    0
-			pushi    0
-			pushi    0
-			lag      messager
-			send     16
-			jmp      code_294d
-code_2936:
-			pushi    #init
-			pushi    0
-			pushi    113
-			pushi    0
-			pushi    111
-			pushi    0
-			pushi    1
-			pushi    21
-			callk    ScriptID,  2
-			send     12
-			pushi    1
-			pushi    21
-			callk    DisposeScript,  2
-code_294d:
-			ldi      1
-			ret     
-			jmp      code_2956
-code_2953:
-			ldi      0
-			ret     
-code_2956:
-			ret     
+	(method (select &tmp whichSkill spellNum)
+		(return
+			(if (super select: &rest)
+				(if (!= ((theIconBar curIcon?) cursor?) 948)
+					(SaveTheCursor)
+				)
+				(theIconBar hide:)
+				(cond 
+					((not [egoStats MAGIC])
+						(messager say: N_CUE V_DOIT C_NO_MAGIC_ABILITY 0 0 0))
+					(
+						(OneOf curRoomNum
+							210 240 250 260 270 290 300
+							320 330 340 360
+						)
+						(messager say: N_CUE V_DOIT C_NO_CAST_TARNA 0 0 0)
+					)
+					(
+						;this was the undecompilable code
+						(or
+							(OneOf curRoomNum 410 420 440 450 460 470 475 480 485 490)
+							(and (== curRoomNum 450) (not Night))
+						)
+						(messager say: N_CUE V_DOIT C_NO_CAST_SIMBANI 0 0 0)
+					)
+					(else
+						(for ((= spellNum 0)) (< spellNum NUM_SPELLS) ((++ spellNum))
+							(if (= whichSkill [egoStats (+ OPEN spellNum)]) (break))
+						)
+						(if (not whichSkill)
+							(messager say: N_CUE V_DOIT C_KNOW_NO_SPELLS 0 0 0)
+						else
+							((ScriptID GLORY_MAGIC) init: showSelf: dispose:)
+							(DisposeScript GLORY_MAGIC)
+						)
+					)
+				)
+				(return TRUE)
+			else
+				(return FALSE)
+			)
 		)
 	)
 )
