@@ -500,146 +500,40 @@
 	)
 	
 	(method (useSkill skillNum learnValue &tmp learnSign)
-		(asm
-			lap      skillNum
-			lagi     egoStats
-			not     
-			bnt      code_0c76
-			ldi      0
-			ret     
-code_0c76:
-			lsp      skillNum
-			ldi      3
-			eq?     
-			bnt      code_0c88
-			pushi    1
-			pushi    115
-			callb    Btst,  2
-			bnt      code_0c88
-			ldi      0
-			ret     
-code_0c88:
-			lsp      skillNum
-			ldi      10
-			eq?     
-			bnt      code_0c96
-			pushi    #useStamina
-			pushi    1
-			pushi    1
-			self     6
-code_0c96:
-			lsp      learnValue
-			ldi      0
-			ge?     
-			bnt      code_0ca1
-			ldi      1
-			jmp      code_0ca3
-code_0ca1:
-			ldi      65535
-code_0ca3:
-			sat      learnSign
-			pushi    1
-			lsp      learnValue
-			callk    Abs,  2
-			push    
-			lap      skillNum
-			lagi     egoStats
-			gt?     
-			bnt      code_0cbc
-			lap      skillNum
-			lsgi     egoStats
-			lat      learnSign
-			mul     
-			sap      learnValue
-code_0cbc:
-			ldi      15
-			lsgi     egoStats
-			pushi    1
-			lsp      learnValue
-			callk    Abs,  2
-			push    
-			ldi      19
-			add     
-			push    
-			ldi      20
-			div     
-			add     
-			push    
-			ldi      15
-			sagi     egoStats
-			lap      skillNum
-			lsgi     skillTicks
-			lap      learnValue
-			add     
-			push    
-			lap      skillNum
-			sagi     skillTicks
-			lap      skillNum
-			lsgi     skillTicks
-			lagi     egoStats
-			ge?     
-			bnt      code_0d1e
-			lap      skillNum
-			lsgi     skillTicks
-			lagi     egoStats
-			sub     
-			push    
-			lap      skillNum
-			sagi     skillTicks
-			lap      skillNum
-			lsgi     egoStats
-			pushi    2
-			pushi    2
-			pushi    4
-			callk    Random,  4
-			add     
-			push    
-			lap      skillNum
-			sagi     egoStats
-			push    
-			ldi      300
-			gt?     
-			bnt      code_0d59
-			pushi    300
-			lap      skillNum
-			sagi     egoStats
-			jmp      code_0d59
-code_0d1e:
-			lap      skillNum
-			lsgi     skillTicks
-			ldi      0
-			lt?     
-			bnt      code_0d56
-			lap      skillNum
-			lsgi     skillTicks
-			lagi     egoStats
-			add     
-			push    
-			lap      skillNum
-			sagi     skillTicks
-			lap      skillNum
-			lsgi     egoStats
-			pushi    2
-			pushi    2
-			pushi    4
-			callk    Random,  4
-			sub     
-			push    
-			lap      skillNum
-			sagi     egoStats
-			push    
-			ldi      5
-			lt?     
-			bnt      code_0d59
-			pushi    5
-			lap      skillNum
-			sagi     egoStats
-			jmp      code_0d59
-code_0d56:
-			ldi      0
-			ret     
-code_0d59:
-			ret     
+		;EO: this has been newly decompiled, but not properly.
+		; I have attempted to fix this.
+		(if (not [egoStats skillNum])
+			(return FALSE)
+		)
+		(if (and (== skillNum VIT) (Btst fPoisoned))
+			(return FALSE)
+		)
+		(if (== skillNum THROW)
+			(self useStamina: 1)
+		)
+		(= learnSign (if (>= learnValue 0) 1 else -1))
+		(if (> (Abs learnValue) [egoStats skillNum])
+			(= learnValue (* [egoStats skillNum] learnSign))
+		)
+		(+= [egoStats EXPER] (/ (+ (Abs learnValue) 19) 20))
+		(+= [skillTicks skillNum] learnValue)
+		(cond
+			;these did not decompile properly; I have attempted to fix this code
+			((>= [skillTicks skillNum] [egoStats skillNum])	;
+				(-= [skillTicks skillNum] [egoStats skillNum])
+				(if (> (+= [egoStats skillNum] (Random 2 4)) 300)
+					(= [egoStats skillNum] 300)	;stats max out at 300
+				)
+			)
+			((< [skillTicks skillNum] 0)	;losing the skill
+				(+= [skillTicks skillNum] [egoStats skillNum])
+				(if (< (-= [egoStats skillNum] (Random 2 4)) 5)
+					(= [egoStats skillNum] 5)	;can't go lower than 5
+				)
+			)
+			(else	;no change yet
+				(return FALSE)
+			)
 		)
 	)
 	
