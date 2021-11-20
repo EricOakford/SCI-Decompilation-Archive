@@ -1,0 +1,55 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# 4)
+(include game.sh)
+(use Main)
+(use GloryRm)
+(use Intrface)
+
+(public
+	rm4 0
+)
+
+(procedure (WhereTo &tmp temp0 roomNum statLevel whichSkill whichSpell)
+	((ScriptID TIME 4) init: 8)
+	(if (FileIO FileExists {18.scr})
+		(= roomNum (GetNumber {Which room? (0 = continue):}))
+	else
+		(= roomNum 0)
+	)
+	(if roomNum
+		(if (!= roomNum 140)
+			(= statLevel 200)
+			(for ((= whichSkill 0)) (< whichSkill OPEN) ((++ whichSkill))
+				(= [egoStats whichSkill] statLevel)
+			)
+			(= [egoStats EXPER] 1900)
+			(= [egoStats HEALTH] (ego maxHealth:))
+			(= [egoStats STAMINA] (ego maxStamina:))
+			(= [egoStats MANA] (ego maxMana:))
+			(for ((= whichSpell 0)) (< whichSpell 22) ((++ whichSpell))
+				(= [egoStats (+ OPEN whichSpell)] statLevel)
+			)
+			(= paladinStat TRUE)
+			(Bset fSenseDanger)
+			((inventory at: iShield) state: 1)
+			((inventory at: iSword) state: 1)
+			(MaxStat HEALTH)
+			(MaxStat STAMINA)
+			(MaxStat MANA)
+		)
+		(Bclr 51)
+		(curRoom newRoom: roomNum)
+	else
+		(ego setSpeed: defaultCycles)
+		(curRoom newRoom: 100)
+	)
+)
+
+(instance rm4 of GloryRm
+
+	(method (init)
+		(Bset fInMainGame)
+		(super init:)
+		(WhereTo)
+	)
+)
