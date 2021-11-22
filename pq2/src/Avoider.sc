@@ -57,7 +57,7 @@
 		
 		(client
 			x: (+ (client x?) (* (sign (TimesSin heading 100)) (client xStep?))),
-			y: (- (client y?) (* (sign (TimesCot heading 100)) (client yStep?))),
+			y: (- (client y?) (* (sign (TimesCos heading 100)) (client yStep?))),
 			heading: heading
 		)
 		;(return (self canBeHere:))
