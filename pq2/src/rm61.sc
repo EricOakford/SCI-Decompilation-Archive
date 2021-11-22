@@ -4,7 +4,7 @@
 (include game.sh)
 (use Main)
 (use Intrface)
-;(use Avoider)
+(use Avoider)
 (use Motion)
 (use Game)
 (use User)
@@ -292,7 +292,7 @@
 					posn: 219 136
 					init:
 					setCycle: Walk
-					;setAvoider: (Avoider new:)
+					setAvoider: (Avoider new:)
 					setMotion: Follow ego 500
 					illegalBits: 0
 					setScript: barbieScript
@@ -477,7 +477,7 @@
 						view: 20
 						cel: 0
 						posn: -100 400
-						;setAvoider: (Avoider new:)
+						setAvoider: (Avoider new:)
 						setScript: keithScript
 						init:
 					)

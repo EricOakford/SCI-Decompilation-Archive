@@ -5,7 +5,7 @@
 (include keys.sh)
 (use Main)
 (use Intrface)
-;(use Avoider) frequent game freezes
+(use Avoider)
 (use Sound)
 (use Motion)
 (use Game)
@@ -218,10 +218,9 @@
 				(HandsOff)
 				(moore
 					setStep: 3 2
-					ignoreActors: ;was 0, avoider workaround
+					ignoreActors: 0
 					observeBlocks: vanBlock
-					;setAvoider: (Avoider new:)
-					;fix Avoider freeze and enable
+					setAvoider: (Avoider new:)
 					setMotion: MoveTo 230 184 self
 				)
 			)
@@ -268,10 +267,7 @@
 				(vanDoor setMotion: MoveTo 290 175)
 				(moore
 					 setLoop: -1
-					 ;setMotion: MoveTo 220 139 self
-					 setMotion: MoveTo 220 195 self
-					 ignoreActors: ;remove with avoider fix
-					;fix avoider and revert
+					 setMotion: MoveTo 220 139 self
 				)
 			)
 			(18
@@ -604,8 +600,7 @@
 					(keith
 						view: 20
 						posn: (+ (ego x?) 90) (ego y?)
-						;setAvoider: Avoider
-						;fix avoider freeze and enable above
+						setAvoider: Avoider
 						setMotion: Follow ego 87
 						setCycle: Walk
 					)
@@ -647,7 +642,7 @@
 								view: (if bainsInCoveState 53 else 20)
 								posn: 181 115
 								setCycle: Walk
-								;setAvoider: Avoider
+								setAvoider: Avoider
 								setMotion: Follow ego 60
 							)
 						)

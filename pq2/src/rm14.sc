@@ -5,7 +5,7 @@
 (include game.sh)
 (use Main)
 (use Intrface)
-(use Avoider) ;Keith's avoider freezes the game
+(use Avoider)
 (use Motion)
 (use Game)
 (use Actor)
@@ -862,7 +862,7 @@ code_096b:
 							(keith
 								posn: 224 190
 								setMotion: Follow ego 34
-								;setAvoider: (Avoider new:)
+								setAvoider: (Avoider new:)
 							)
 						)
 						(nextRoom
@@ -872,7 +872,7 @@ code_096b:
 										posn: (- (ego x?) 32) (- (ego y?) 8)
 										loop: 2
 										setMotion: Follow ego 500
-										;setAvoider: (Avoider new:)
+										setAvoider: (Avoider new:)
 									)
 								)
 								(
@@ -1079,7 +1079,7 @@ code_096b:
 												(keith
 													posn: 5 164
 													setMotion: Follow ego 36
-													;setAvoider: (Avoider new:)
+													setAvoider: (Avoider new:)
 												)
 												(LocPrint 14 40 83)
 											)
