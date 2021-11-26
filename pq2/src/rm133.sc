@@ -554,7 +554,7 @@
 					(= cycles 2)
 				else
 					(cls)
-					(cSound stop: dispose:)
+					;(cSound stop: dispose:) ;causes memory fragment 
 					(curRoom newRoom: 91)
 				)
 			)
