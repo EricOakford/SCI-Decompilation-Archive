@@ -432,7 +432,7 @@
 				(self changeGait: -1 FALSE)
 			)
 		)
-		(if (< (= num (+ num oldNum)) 0)
+		(if (< (+= num oldNum) 0)
 			(= num 0)
 		)
 		(if (and (!= what 0) (== num 0))
@@ -539,7 +539,7 @@
 	
 	(method (useMana pointsUsed)
 		(if [egoStats MAGIC]
-			(if (< (= [egoStats MANA] (- [egoStats MANA] pointsUsed)) 0)
+			(if (< (-= [egoStats MANA] pointsUsed) 0)
 				(= [egoStats MANA] 0)
 			)
 			(if (> [egoStats MANA] (self maxMana:))
@@ -559,18 +559,14 @@
 			(self useSkill: VIT (>> (+ pointsUsed 4) $0002))
 		)
 		(cond 
-			(
-				(>
-					(= foo (= [egoStats STAMINA] (- [egoStats STAMINA] pointsUsed)))
-					4
-				)
+			((> (= foo (-= [egoStats STAMINA] pointsUsed)) 4)
 				(Bclr fWornOut)
 				(if (> foo (ego maxStamina:))
 					(= [egoStats STAMINA] (ego maxStamina:))
 				)
 			)
 			((>= foo 0))
-			((self takeDamage: (>> (- 2 [egoStats STAMINA]) $0002))
+			((self takeDamage: (>> (- 2 [egoStats STAMINA]) 2))
 				(= [egoStats STAMINA] 0)
 				(if (not (Btst fWornOut))
 					(Bset fWornOut)
@@ -587,13 +583,13 @@
 		(return [egoStats HEALTH])
 	)
 	
-	(method (addHonor howMuch &tmp num gainedASkill [temp2 20])
+	(method (addHonor howMuch &tmp num i [temp2 20])
 		(= num
 			(cond 
 				(
 					(<
 						(if paladinStat
-							(- [egoStats 14] paladinStat)
+							(- [egoStats HONOR] paladinStat)
 						)
 						0
 					)
@@ -604,8 +600,8 @@
 		)
 		(self useSkill: HONOR (* howMuch 3))
 		(cond 
-			((= gainedASkill (PaladinCheck num 10))
-				(if (== gainedASkill 1)
+			((= i (PaladinCheck num 10))
+				(if (== i 1)
 					((inventory at: iSword) state: 1)
 					(ego solvePuzzle: fLearnFlamingSword 2)
 					(messager say: N_EGO_CUE V_DOIT C_GAIN_FLAME_SWORD 0 0 GLORY_EGO)
@@ -614,8 +610,8 @@
 					(messager say: N_EGO_CUE V_DOIT C_LOSE_FLAME_SWORD 0 0 GLORY_EGO)
 				)
 			)
-			((= gainedASkill (PaladinCheck num 25))
-				(if (== gainedASkill 1)
+			((= i (PaladinCheck num 25))
+				(if (== i 1)
 					;paladin automatically gains magic if he doesn't have it
 					(if (not [egoStats MAGIC])
 						(= [egoStats MAGIC] 5)
@@ -628,8 +624,8 @@
 					(messager say: N_EGO_CUE V_HEAL C_LOSE_HEAL 0 0 GLORY_EGO)
 				)
 			)
-			((= gainedASkill (PaladinCheck num 50))
-				(if (== gainedASkill 1)
+			((= i (PaladinCheck num 50))
+				(if (== i 1)
 					(Bset fSenseDanger)
 					(ego solvePuzzle: fLearnSenseDanger 2)
 					(messager say: N_EGO_CUE V_DOIT C_GAIN_SENSE 0 0 GLORY_EGO)
@@ -638,8 +634,8 @@
 					(messager say: N_EGO_CUE V_DOIT C_LOSE_SENSE 0 0 GLORY_EGO)
 				)
 			)
-			((= gainedASkill (PaladinCheck num 80))
-				(if (== gainedASkill 1)
+			((= i (PaladinCheck num 80))
+				(if (== i 1)
 					(Bset fHonorShield)
 					(ego solvePuzzle: fLearnHonorShield 2)
 					(messager say: N_EGO_CUE V_DOIT 18 0 0 GLORY_EGO)

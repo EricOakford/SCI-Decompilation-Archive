@@ -534,7 +534,7 @@
 				)
 				(V_OPEN
 					(if (ego castSpell: OPEN)
-						(AutoTarget
+						(FindTarget
 							((User curEvent?) x?)
 							((User curEvent?) y?)
 						)

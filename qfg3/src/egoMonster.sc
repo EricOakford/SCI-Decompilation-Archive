@@ -14,7 +14,7 @@
 (procedure (DamageCue)
 	(cond 
 		((>= [egoStats HEALTH] 55)
-			(gWarriorObj getHurt: 30)
+			(theWarrior getHurt: 30)
 		)
 		((not (cast contains: haramiMan))
 			(haramiMan init:)
@@ -37,7 +37,7 @@
 	(method (init)
 		(curRoom picture: 0)
 		(self
-			primDamage: (* (gWarriorObj weapValue?) 2)
+			primDamage: (* (theWarrior weapValue?) 2)
 			monHP: [egoStats HEALTH]
 			view: (if (ego has: iSword) 844 else 843)
 		)
@@ -76,7 +76,7 @@
 				(if (== gCalledBy 1)
 					(client setScript: sCast)
 				else
-					(gMonster
+					(theMonster
 						setLoop: (if (ego has: 1) (Random 0 2) else 0)
 						setCycle: EndLoop self
 					)
@@ -87,21 +87,21 @@
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(DamageCue (gMonster primDamage?))
+					(DamageCue (theMonster primDamage?))
 				else
 					(globalSound number: 940 play:)
 				)
 				(= cycles (+ (/ 3 arcadeDifficulty) 1))
 			)
 			(3
-				(gMonster setLoop: 0 setCel: 0 stopUpd:)
+				(theMonster setLoop: 0 setCel: 0 stopUpd:)
 				(= ticks (/ (Random 45 180) arcadeDifficulty))
 			)
 			(4 (self init:))
@@ -114,7 +114,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setLoop: 1 setCel: 0 setCycle: EndLoop self)
+				(theMonster setLoop: 1 setCel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(monSpell
@@ -127,7 +127,7 @@
 					init:
 					x: 180
 					y: 100
-					setMotion: MoveTo (gWarriorObj x?) (- (gWarriorObj y?) 45) monSpell
+					setMotion: MoveTo (theWarrior x?) (- (theWarrior y?) 45) monSpell
 				)
 				(globalSound
 					number:
@@ -157,18 +157,18 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setLoop: 0 setCel: 2)
+				(theMonster setLoop: 0 setCel: 2)
 				(= ticks 60)
 			)
 			(1
-				(gMonster whimper:)
+				(theMonster whimper:)
 				(= ticks (- (/ (Random 45 180) arcadeDifficulty) 14))
 			)
 			(2
 				(if (== gCalledBy 1)
-					(gMonster setScript: sCast)
+					(theMonster setScript: sCast)
 				else
-					(gMonster setScript: sFight)
+					(theMonster setScript: sFight)
 				)
 			)
 		)
@@ -194,11 +194,11 @@
 				(not
 					(if
 						(or
-							(== (gWarriorObj view?) 26)
-							(== (gWarriorObj view?) 27)
+							(== (theWarrior view?) 26)
+							(== (theWarrior view?) 27)
 						)
 					else
-						(== (gWarriorObj view?) 555)
+						(== (theWarrior view?) 555)
 					)
 				)
 				(= temp0 0)
@@ -263,9 +263,9 @@
 				)
 			)
 		else
-			(gMonster setCycle: 0 setScript: 0)
+			(theMonster setCycle: 0 setScript: 0)
 			(HandsOff)
-			(gWarriorObj setCycle: 0 setScript: sMonsterDie)
+			(theWarrior setCycle: 0 setScript: sMonsterDie)
 		)
 	)
 )

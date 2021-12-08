@@ -1095,7 +1095,7 @@
 						((ScriptID 852 2) setScript: (ScriptID 852 3) 0 theVerb)
 					)
 					((not (ego script?))
-						(AutoTarget
+						(FindTarget
 							((User curEvent?) x?)
 							((User curEvent?) y?)
 						)
@@ -1106,7 +1106,7 @@
 							(== (ego script?) egoHit)
 							(== (ego script?) walkOnGarg)
 						)
-						(AutoTarget
+						(FindTarget
 							((User curEvent?) x?)
 							((User curEvent?) y?)
 						)

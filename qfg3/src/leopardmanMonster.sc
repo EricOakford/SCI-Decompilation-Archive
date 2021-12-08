@@ -65,20 +65,20 @@
 	
 	(method (cue)
 		(if (and (> x -20) (< loop 3))
-			(gWarriorObj autoDodge:)
+			(theWarrior autoDodge:)
 			(if
 				(not
 					(if
 						(or
-							(== (gWarriorObj view?) 26)
-							(== (gWarriorObj view?) 27)
+							(== (theWarrior view?) 26)
+							(== (theWarrior view?) 27)
 						)
 					else
-						(== (gWarriorObj view?) 555)
+						(== (theWarrior view?) 555)
 					)
 				)
 				(if (not (> reversalTimer 0))
-					(gWarriorObj getHurt: (gMonster primDamage?))
+					(theWarrior getHurt: (theMonster primDamage?))
 				)
 				(self
 					setCel: 0
@@ -104,37 +104,37 @@
 				(= ticks (/ (Random 60 150) arcadeDifficulty))
 			)
 			(1
-				(gMonster
+				(theMonster
 					setLoop: (Random 0 2)
 					setCel: 0
 					setCycle: EndLoop self
 				)
 			)
 			(2
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(cond 
 					(
 						(not
 							(if
 								(or
-									(== (gWarriorObj view?) 26)
-									(== (gWarriorObj view?) 27)
+									(== (theWarrior view?) 26)
+									(== (theWarrior view?) 27)
 								)
 							else
-								(== (gWarriorObj view?) 555)
+								(== (theWarrior view?) 555)
 							)
 						)
-						(gWarriorObj getHurt: (gMonster secDamage?))
+						(theWarrior getHurt: (theMonster secDamage?))
 					)
-					((< (gMonster loop?) 2) (globalSound number: 940 play:))
+					((< (theMonster loop?) 2) (globalSound number: 940 play:))
 				)
-				(gMonster setCel: 0)
+				(theMonster setCel: 0)
 				(= ticks (/ (Random 60 150) arcadeDifficulty))
 			)
 			(3
 				(= start 0)
 				(if (> (= global432 (- global432 5)) 4)
-					(gMonster setLoop: 3 setCycle: EndLoop self)
+					(theMonster setLoop: 3 setCycle: EndLoop self)
 				else
 					(self start: 0 init:)
 				)
@@ -161,7 +161,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster
+				(theMonster
 					x: 165
 					y: 145
 					setCel: 0
@@ -171,12 +171,12 @@
 				(= ticks 60)
 			)
 			(1
-				(gMonster whimper:)
+				(theMonster whimper:)
 				(= ticks (- (/ (Random 90 120) arcadeDifficulty) 29))
 			)
 			(2
 				(if (Random 0 1) (sFight start: 3))
-				(gMonster setScript: sFight)
+				(theMonster setScript: sFight)
 			)
 		)
 	)

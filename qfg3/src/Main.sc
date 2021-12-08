@@ -36,7 +36,7 @@
 	NextDay 11
 	Face 12
 	DontMove 13
-	AutoTarget 14
+	FindTarget 14
 	CyclePalette 15
 	DisableIcons 16
 	textIcon 17
@@ -448,16 +448,16 @@
 	innDay
 	commons
 	global411 =  1
-	gMonster
-	gWarriorObj
+	theMonster
+	theWarrior
 	savannaPanoNum
 	gGOwnerX_3
 	gGOwnerY_3
 	global417
 	global418
 	gCalledBy
-	global420
-	global421
+	combatView
+	defendView
 	honeyTreeX
 	honeyTreeY
 	numDinars
@@ -499,7 +499,7 @@
 	controlRet
 	global461
 	global462
-	global463
+	hungerTimer
 	simbaniFoodDay
 	totalEncumbrance
 	survivorTalkCount
@@ -893,7 +893,7 @@
 	)
 )
 
-(procedure (AutoTarget theX theY)
+(procedure (FindTarget theX theY)
 	(= projX 0)
 	(= projY 0)
 	(if argc
@@ -1106,13 +1106,13 @@
 						(= timeToEat FALSE)
 					)
 				)
-				(if (<= (= global463 (- global463 global411)) 0)
-					(= global463 100)
+				(if (<= (-= hungerTimer global411) 0)
+					(= hungerTimer 100)
 					(if (Btst fStarving)
 						(ego eatMeal:)
 					)
 				)
-				(if (<= (= stamCounter (- stamCounter global411)) 0)
+				(if (<= (-= stamCounter global411) 0)
 					(= stamCounter 20)
 					(cond 
 						((or (> lostSleep 1) (Btst fOverloaded))
@@ -1168,7 +1168,7 @@
 					)
 				)
 			)
-		)
+		)	;end of timekeeping code
 	)
 	
 	(method (newRoom &tmp [temp0 3] evt)

@@ -208,7 +208,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(AutoTarget 125 101)
+				(FindTarget 125 101)
 				(self setScript: (ScriptID CASTOPEN 0) self)
 			)
 			(1
@@ -692,7 +692,7 @@
 					(if (== climbedUp TRUE)
 						(messager say: N_CUE V_DOIT C_DONT_NEED_FETCH)
 					else
-						(AutoTarget 186 53)
+						(FindTarget 186 53)
 						(curRoom setScript: (ScriptID CASTFETCH 0) 0 anubisStatue)
 					)
 				)

@@ -34,19 +34,19 @@
 	)
 	
 	(method (cue)
-		(gWarriorObj autoDodge:)
+		(theWarrior autoDodge:)
 		(if
 			(not
 				(if
 					(or
-						(== (gWarriorObj view?) 26)
-						(== (gWarriorObj view?) 27)
+						(== (theWarrior view?) 26)
+						(== (theWarrior view?) 27)
 					)
 				else
-					(== (gWarriorObj view?) 555)
+					(== (theWarrior view?) 555)
 				)
 			)
-			(gWarriorObj getHurt: (gMonster secDamage?))
+			(theWarrior getHurt: (theMonster secDamage?))
 			(spit setCycle: EndLoop spit)
 			(Bset 115)
 		else
@@ -92,21 +92,21 @@
 				(= ticks (/ (Random 90 360) arcadeDifficulty))
 			)
 			(1
-				(gMonster
+				(theMonster
 					setCel: 0
 					setLoop: (if (Random 0 1) 1 else 2)
 					setCycle: EndLoop self
 				)
 			)
 			(2
-				(if (== (gMonster loop?) 1)
-					(gMonster setCycle: BegLoop self)
+				(if (== (theMonster loop?) 1)
+					(theMonster setCycle: BegLoop self)
 				else
 					(= ticks (/ 180 arcadeDifficulty))
 				)
 			)
 			(3
-				(gMonster setLoop: 3 setCel: 0 setCycle: CycleTo 1 1 self)
+				(theMonster setLoop: 3 setCel: 0 setCycle: CycleTo 1 1 self)
 			)
 			(4
 				(if (Random 0 1)
@@ -115,29 +115,29 @@
 						x: 162
 						y: 119
 						setCel: 0
-						setMotion: MoveTo 102 119 gMonster
+						setMotion: MoveTo 102 119 theMonster
 					)
 				else
-					(gMonster x: 150)
-					(gWarriorObj autoDodge:)
+					(theMonster x: 150)
+					(theWarrior autoDodge:)
 					(if
 						(not
 							(if
 								(or
-									(== (gWarriorObj view?) 26)
-									(== (gWarriorObj view?) 27)
+									(== (theWarrior view?) 26)
+									(== (theWarrior view?) 27)
 								)
 							else
-								(== (gWarriorObj view?) 555)
+								(== (theWarrior view?) 555)
 							)
 						)
-						(gWarriorObj getHurt: (gMonster primDamage?))
+						(theWarrior getHurt: (theMonster primDamage?))
 					)
 				)
-				(gMonster setCycle: EndLoop self)
+				(theMonster setCycle: EndLoop self)
 			)
 			(5
-				(gMonster x: 185 y: 125)
+				(theMonster x: 185 y: 125)
 				(self init:)
 			)
 		)
@@ -150,14 +150,14 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setLoop: 0 setCel: 0 setCycle: EndLoop self)
+				(theMonster setLoop: 0 setCel: 0 setCycle: EndLoop self)
 				(= ticks 60)
 			)
 			(1
-				(gMonster whimper:)
+				(theMonster whimper:)
 				(= ticks (- (/ (Random 45 180) arcadeDifficulty) 14))
 			)
-			(2 (gMonster setScript: sFight))
+			(2 (theMonster setScript: sFight))
 		)
 	)
 )

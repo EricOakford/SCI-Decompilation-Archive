@@ -332,7 +332,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(AutoTarget 235 20)
+				(FindTarget 235 20)
 				(self setScript: (ScriptID CASTOPEN 0) self)
 			)
 			(1

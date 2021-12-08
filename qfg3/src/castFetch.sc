@@ -22,9 +22,8 @@
 	local27 = [2 3 6 7]
 )
 (instance castFetchScript of Script
-	
 	(method (init what &tmp i)
-		(AutoTarget
+		(FindTarget
 			((User curEvent?) x?)
 			((User curEvent?) y?)
 		)

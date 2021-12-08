@@ -55,49 +55,49 @@
 				(= ticks (/ 180 arcadeDifficulty))
 			)
 			(1
-				(gMonster
-					setLoop: (if (== (gMonster loop?) 1) 2 else 1)
+				(theMonster
+					setLoop: (if (== (theMonster loop?) 1) 2 else 1)
 					setCycle: EndLoop self
 				)
 			)
 			(2
-				(if (== (gMonster loop?) 1)
+				(if (== (theMonster loop?) 1)
 					(= ticks 60)
 				else
 					(= ticks 12)
 				)
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(cond 
 					(
 						(not
 							(if
 								(or
-									(== (gWarriorObj view?) 26)
-									(== (gWarriorObj view?) 27)
+									(== (theWarrior view?) 26)
+									(== (theWarrior view?) 27)
 								)
 							else
-								(== (gWarriorObj view?) 555)
+								(== (theWarrior view?) 555)
 							)
 						)
-						(gWarriorObj getHurt: (gMonster primDamage?))
+						(theWarrior getHurt: (theMonster primDamage?))
 					)
 					(
 						(and
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 555)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 555)
 							)
-							(== (gWarriorObj loop?) 0)
+							(== (theWarrior loop?) 0)
 						)
-						(gWarriorObj getHurt: (gMonster primDamage?) 2)
-						(gMonster getHurt: (gWarriorObj weapValue?) 2)
+						(theWarrior getHurt: (theMonster primDamage?) 2)
+						(theMonster getHurt: (theWarrior weapValue?) 2)
 					)
 					(else (globalSound number: 940 play:))
 				)
-				(if (== (gMonster loop?) 1) (gMonster whimper:))
+				(if (== (theMonster loop?) 1) (theMonster whimper:))
 			)
 			(3
-				(gMonster setCycle: BegLoop self)
+				(theMonster setCycle: BegLoop self)
 			)
 			(4 (self init:))
 		)
@@ -109,15 +109,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setCel: 0 setLoop: 1 setCycle: CycleTo 2 1)
+				(theMonster setCel: 0 setLoop: 1 setCycle: CycleTo 2 1)
 				(= ticks 60)
 			)
 			(1
-				(gMonster setCycle: BegLoop self)
+				(theMonster setCycle: BegLoop self)
 			)
 			(2
-				(gMonster loop: 2)
-				(gMonster setScript: sFight)
+				(theMonster loop: 2)
+				(theMonster setScript: sFight)
 			)
 		)
 	)

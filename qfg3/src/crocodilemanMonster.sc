@@ -53,19 +53,19 @@
 	)
 	
 	(method (cue)
-		(gWarriorObj autoDodge:)
+		(theWarrior autoDodge:)
 		(if
 			(not
 				(if
 					(or
-						(== (gWarriorObj view?) 26)
-						(== (gWarriorObj view?) 27)
+						(== (theWarrior view?) 26)
+						(== (theWarrior view?) 27)
 					)
 				else
-					(== (gWarriorObj view?) 555)
+					(== (theWarrior view?) 555)
 				)
 			)
-			(gWarriorObj getHurt: (gMonster primDamage?))
+			(theWarrior getHurt: (theMonster primDamage?))
 		else
 			(globalSound number: 940 play:)
 		)
@@ -88,22 +88,22 @@
 				(torso setLoop: (Random 2 3) setCycle: EndLoop self)
 			)
 			(2
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
 					(if (== (torso loop?) 2)
-						(gWarriorObj getHurt: (gMonster secDamage?))
+						(theWarrior getHurt: (theMonster secDamage?))
 					else
-						(gWarriorObj getHurt: (gMonster tertDamage?))
+						(theWarrior getHurt: (theMonster tertDamage?))
 					)
 				else
 					(globalSound number: 940 play:)
@@ -126,10 +126,10 @@
 				(= ticks 60)
 			)
 			(1
-				(gMonster whimper:)
+				(theMonster whimper:)
 				(= ticks (- (/ (Random 45 180) arcadeDifficulty) 14))
 			)
-			(2 (gMonster setScript: sFight))
+			(2 (theMonster setScript: sFight))
 		)
 	)
 )

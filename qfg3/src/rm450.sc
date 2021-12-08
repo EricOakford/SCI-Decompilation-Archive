@@ -312,7 +312,7 @@
 		(switch theVerb
 			(75
 				(if (ego castSpell: 19)
-					(AutoTarget
+					(FindTarget
 						((User curEvent?) x?)
 						((User curEvent?) y?)
 					)
@@ -778,7 +778,7 @@
 		(switch (= state newState)
 			(0
 				(HandsOff)
-				(AutoTarget 220 78)
+				(FindTarget 220 78)
 				(cond 
 					((== (= temp0 (ego castSpell: 19)) 1)
 						(messager say: 9 6 35)

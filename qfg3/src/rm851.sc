@@ -228,7 +228,7 @@
 					((ScriptID 850 2) setScript: 0)
 				)
 				((ScriptID 32 0) start: 1)
-				(AutoTarget
+				(FindTarget
 					((User curEvent?) x?)
 					((User curEvent?) y?)
 				)

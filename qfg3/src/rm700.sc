@@ -991,7 +991,7 @@
 				)
 				(75
 					(if (ego castSpell: 19)
-						(AutoTarget
+						(FindTarget
 							((User curEvent?) x?)
 							((User curEvent?) y?)
 						)

@@ -940,7 +940,7 @@
 				)
 				(V_FETCH	;was 26, which is V_DISPEL
 					(if (not (curRoom script?))
-						(AutoTarget 95 180)
+						(FindTarget 95 180)
 						(curRoom setScript: (ScriptID CASTFETCH 0) 0 mainVine)
 					)
 				)
@@ -1269,7 +1269,7 @@
 						(messager say: N_VINE V_DOIT C_DONT_NEED)
 					)
 					((not (curRoom script?))
-						(AutoTarget 165 138)
+						(FindTarget 165 138)
 						(curRoom setScript: (ScriptID CASTFETCH 0) 0 mainVine)
 					)
 				)

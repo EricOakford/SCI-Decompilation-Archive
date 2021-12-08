@@ -20,25 +20,25 @@
 
 (local
 	local0
-	restControls
-	restRet
+	sleepControls
+	restChoice
 	local3
 )
-(procedure (SleepChoice &tmp evt temp1 temp2 temp3 temp4 oldCur)
+(procedure (SleepChoice &tmp evt temp1 ret temp3 temp4 oldCur)
 	;(= temp4 (sleepIcon cel: 0))
 	(temp4 nsLeft: 40 nsTop: (if Night 96 else 79) cursor: 5)
-	(restControls add: temp4)
-	(restControls init: show: dispose:)
-	(= restControls 0)
-	(switch restRet
+	(sleepControls add: temp4)
+	(sleepControls init: show: dispose:)
+	(= sleepControls 0)
+	(switch restChoice
 		(1
-			(RestCheck 10)
+			(EgoRests 10)
 		)
 		(2
-			(RestCheck 30)
+			(EgoRests 30)
 		)
 		(3
-			(RestCheck 60)
+			(EgoRests 60)
 		)
 		(4
 			(if
@@ -52,20 +52,22 @@
 					(regions handleEvent: evt)
 				)
 				(evt dispose:)
-				(= temp2 1)
+				(= ret TRUE)
 			else
 				(egoSleeps init: 5 0)
 			)
 		)
-		(5 (= temp2 1))
+		(5
+			(= ret TRUE)
+		)
 	)
 	(if temp3
 		(theGame setCursor: oldCur)
 	)
-	(return temp2)
+	(return ret)
 )
 
-(procedure (RestCheck theMin &tmp temp0 evt)
+(procedure (EgoRests theMin &tmp temp0 evt)
 	(if
 		(OneOf curRoomNum
 			230 400 460 510 520 530 700
@@ -83,14 +85,13 @@
 )
 
 (instance doSleep of Code
-	
-	(method (init &tmp evt oldCur temp2 temp3 temp4 [str 60])
+	(method (init &tmp evt oldCur ret temp3 temp4 [str 60])
 		(= temp3 1)
-		(= temp2 0)
+		(= ret 0)
 		(= oldCur (theGame setCursor: ARROW_CURSOR))
 		(if (OneOf curRoomNum 150 160 170 180)
 			(= local3 40)
-			((= restControls (GameControls new:))
+			((= sleepControls (GameControls new:))
 				window:
 					((GloryWindow new:)
 						top: 40
@@ -109,22 +110,22 @@
 				nsLeft: 2
 				modifiers: 1
 			)
-			(restControls add: temp4)
+			(sleepControls add: temp4)
 			((= temp4 (sleepIcon new: 1 0 0 1))
 				nsTop: 25
 				nsLeft: 25
 				cursor: 1
 			)
-			(restControls add: temp4)
+			(sleepControls add: temp4)
 			((= temp4 (sleepIcon new: 1 0 0 2))
 				nsTop: 25
 				nsLeft: 105
 				cursor: 2
 			)
-			(restControls add: temp4)
-			(restControls init: show: dispose:)
-			(= restControls 0)
-			(switch restRet
+			(sleepControls add: temp4)
+			(sleepControls init: show: dispose:)
+			(= sleepControls 0)
+			(switch restChoice
 				(1
 					((= evt (Event new:)) type: mouseDown message: V_SLEEP)
 					(= temp3 0)
@@ -132,13 +133,13 @@
 						(regions handleEvent: evt)
 					)
 					(evt dispose:)
-					(= temp2 1)
+					(= ret 1)
 				)
-				(2 (= temp2 0))
+				(2 (= ret 0))
 			)
 		else
 			(= local3 120)
-			((= restControls (GameControls new:))
+			((= sleepControls (GameControls new:))
 				window:
 					((GloryWindow new:)
 						top: 40
@@ -157,49 +158,49 @@
 				nsLeft: 2
 				modifiers: 1
 			)
-			(restControls add: temp4)
+			(sleepControls add: temp4)
 			((= temp4 (sleepIcon new: 2 0 0 1))
 				nsLeft: 40
 				nsTop: 28
 				cursor: 1
 			)
-			(restControls add: temp4)
+			(sleepControls add: temp4)
 			((= temp4 (sleepIcon new: 2 0 0 2))
 				nsLeft: 40
 				nsTop: 45
 				cursor: 2
 			)
-			(restControls add: temp4)
+			(sleepControls add: temp4)
 			((= temp4 (sleepIcon new: 2 0 0 3))
 				nsLeft: 40
 				nsTop: 62
 				cursor: 3
 			)
-			(restControls add: temp4)
+			(sleepControls add: temp4)
 			(if Night
 				((= temp4 (sleepIcon new: 2 0 0 4))
 					nsLeft: 40
 					nsTop: 79
 					cursor: 4
 				)
-				(restControls add: temp4)
+				(sleepControls add: temp4)
 			else
-				((restControls window?) bottom: 138)
+				((sleepControls window?) bottom: 138)
 			)
 			(= temp4 (sleepIcon new: 2 0 0 5))
 			(temp4 nsLeft: 40 nsTop: (if Night 96 else 79) cursor: 5)
-			(restControls add: temp4)
-			(restControls init: show: dispose:)
-			(= restControls 0)
-			(switch restRet
+			(sleepControls add: temp4)
+			(sleepControls init: show: dispose:)
+			(= sleepControls 0)
+			(switch restChoice
 				(1
-					(RestCheck 10)
+					(EgoRests 10)
 				)
 				(2
-					(RestCheck 30)
+					(EgoRests 30)
 				)
 				(3
-					(RestCheck 60)
+					(EgoRests 60)
 				)
 				(4
 					(if
@@ -213,21 +214,20 @@
 							(regions handleEvent: evt)
 						)
 						(evt dispose:)
-						(= temp2 1)
+						(= ret 1)
 					else
 						(egoSleeps init: 5 0)
 					)
 				)
-				(5 (= temp2 1))
+				(5 (= ret 1))
 			)
 		)
 		(if temp3 (theGame setCursor: oldCur))
-		(return temp2)
+		(return ret)
 	)
 )
 
 (instance egoSleeps of Code
-
 	(method (init theHour theMin &tmp sleptHours oldTime [str 60])
 		(if
 			(OneOf curRoomNum
@@ -279,7 +279,6 @@
 )
 
 (instance showTime of Code
-	
 	(method (init &tmp whatDay evt oldTime temp3 temp4 [str 30] [str2 7])
 		(= whatDay Day)
 		(Message MsgGet TIME NULL NULL C_SHOW_TIME 1 @str)
@@ -431,7 +430,6 @@
 )
 
 (instance advanceTime of Code
-	
 	(method (init addHours addMinutes &tmp newTIme)
 		(switch argc
 			(1
@@ -455,7 +453,7 @@
 			(ego eatMeal:)
 		)
 		(while (>= newTIme GAMEDAY)
-			(= newTIme (- newTIme GAMEDAY))
+			(-= newTIme GAMEDAY)
 			(++ Day)
 		)
 		(fixTime
@@ -504,8 +502,8 @@
 	(method (select)
 		(return
 			(if (!= loop 1)
-				(= restRet cursor)
-				(restControls state: (& (restControls state?) $ffdf))
+				(= restChoice cursor)
+				(sleepControls state: (& (sleepControls state?) $ffdf))
 			else
 				(return 0)
 			)

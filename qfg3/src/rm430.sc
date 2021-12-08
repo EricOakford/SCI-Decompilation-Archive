@@ -230,7 +230,7 @@
 					(if (NobodyHere)
 						(ego addHonor: -5)
 						(if (ego castSpell: OPEN)
-							(AutoTarget
+							(FindTarget
 								((User curEvent?) x?)
 								((User curEvent?) y?)
 							)

@@ -98,7 +98,7 @@
 			init: (ScriptID RAKEESH_TALKER 1) @local83 @local90 @local95
 		)
 		(super init:)
-		(AutoTarget -10 -10)
+		(FindTarget -10 -10)
 		(urn init:)
 		(chest init:)
 		(pillar init:)

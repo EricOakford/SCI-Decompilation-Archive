@@ -71,7 +71,7 @@
 (define NUM_STATS 5)
 (define NUM_SKILLS 10)
 (define NUM_DERIVS 5)
-(define NUM_SPELLS 14)
+(define NUM_SPELLS 15)
 (define NUM_ATTRIBS 34) ;(+ NUM_STATS NUM_SKILLS NUM_DERIVS NUM_SPELLS)
 (define NUM_INVITEMS 46) ;(- iLastInvItem 1)
 
@@ -499,6 +499,7 @@
 )
 
 ;Monster arenas
+(define vStatusBar 553)
 (define vDinosaur 560)
 (define vAnt 565)
 (define vGoblin 570)	;unused

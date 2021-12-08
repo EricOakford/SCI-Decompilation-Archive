@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 550)
-(include game.sh)
+(include game.sh) (include "550.shm") (include combat.sh)
 (use Main)
 (use GloryControls)
 (use Print)
@@ -23,110 +23,97 @@
 )
 
 (local
-	local0
+	wasInMainGame
 	theGameTime
 )
-(procedure (localproc_0344 &tmp temp0 temp1 temp2)
-	(= temp0 (FirstNode (cast elements?)))
-	(while temp0
-		(= temp1 (NextNode temp0))
-		(if (not (IsObject (= temp2 (NodeValue temp0))))
+(procedure (StopCast &tmp node nextNode obj)
+	(= node (FirstNode (cast elements?)))
+	(while node
+		(= nextNode (NextNode node))
+		(if (not (IsObject (= obj (NodeValue node))))
 			(return)
 		)
-		(if (temp2 respondsTo: #setCycle)
-			(temp2 setCycle: 0)
-			(if (temp2 respondsTo: #setMotion) (temp2 setMotion: 0))
+		(if (obj respondsTo: #setCycle)
+			(obj setCycle: 0)
+			(if (obj respondsTo: #setMotion) (obj setMotion: 0))
 		)
-		(= temp0 temp1)
+		(= node nextNode)
 	)
 )
 
-(procedure (localproc_03a1)
+(procedure (EndBattle)
 	(HandsOff)
-	(if (<= [egoStats 16] 0) (= battleResult 0))
-	(localproc_0344)
-	(if (spellTimer seconds?) (spellTimer dispose:))
-	(if (stamTimer seconds?) (stamTimer dispose:))
-	(if (duckTimer seconds?) (duckTimer dispose:))
+	(if (<= [egoStats HEALTH] 0)
+		(= battleResult battleEGOLOST)
+	)
+	(StopCast)
+	(if (spellTimer seconds?)
+		(spellTimer dispose:)
+	)
+	(if (stamTimer seconds?)
+		(stamTimer dispose:)
+	)
+	(if (duckTimer seconds?)
+		(duckTimer dispose:)
+	)
 	(SetCursor -2)
 	(combatControls
-		state: (& (combatControls state?) $ffdf)
+		state: (& (combatControls state?) (~ IB_ACTIVE))
 	)
 	(theIconBar enable:)
 	(if (== prevRoomNum 549)
 		(curRoom newRoom: 840)
 	else
-		(if local0 (Bset 6))
+		(if wasInMainGame
+			(Bset fInMainGame)
+		)
 		(curRoom newRoom: prevRoomNum)
 	)
 )
 
 (class CombatIcon of IconItem
 	(properties
-		view -1
-		loop -1
-		cel -1
-		nsLeft 0
-		nsTop -1
-		nsRight 0
-		nsBottom 0
-		state $0000
-		cursor -1
-		type $4000
-		message -1
-		modifiers $0000
-		signal $0001
-		maskView 0
-		maskLoop 0
-		maskCel 0
-		highlightColor 0
-		lowlightColor 0
-		noun 0
-		modNum 0
-		helpVerb 0
 		ducking 0
 		calledBy 0
 		autoDodging 0
 	)
 	
-	(method (highlight param1)
-		(if (or (not (& signal $0020)) (& signal $0004))
+	(method (highlight tOrF)
+		(if (or (not (& signal IB_ACTIVE)) (& signal DISABLED))
 			(return)
 		)
-		(if param1
+		(if tOrF
 			(DrawCel view loop 2 nsLeft nsTop)
 		else
 			(DrawCel view loop 0 nsLeft nsTop)
 		)
 	)
 	
-	(method (onMe theObjOrX)
+	(method (onMe obj)
 		(return
-			(if (not (& signal $0004))
+			(if (not (& signal DISABLED))
 				(if
 					(and
-						(>= (theObjOrX x?) nsLeft)
-						(>= (theObjOrX y?) nsTop)
-						(<= (theObjOrX x?) nsRight)
-						(<= (theObjOrX y?) nsBottom)
-						(not
-							(IsItSkip
-								view
-								loop
-								cel
-								(- (theObjOrX y?) nsTop)
-								(- (theObjOrX x?) nsLeft)
-							)
-						)
+						(>= (obj x?) nsLeft)
+						(>= (obj y?) nsTop)
+						(<= (obj x?) nsRight)
+						(<= (obj y?) nsBottom)
+						(not (IsItSkip view loop cel (- (obj y?) nsTop) (- (obj x?) nsLeft)))
 					)
-					(if (not cursor) (= cursor 1) (self highlight: 1))
-					(return 1)
+					(if (not cursor)
+						(= cursor 1)
+						(self highlight: 1)
+					)
+					(return TRUE)
 				else
-					(if cursor (= cursor 0) (self highlight: 0))
-					(return 0)
+					(if cursor
+						(= cursor 0)
+						(self highlight: 0)
+					)
+					(return FALSE)
 				)
 			else
-				(return 0)
+				(return FALSE)
 			)
 		)
 	)
@@ -135,97 +122,101 @@
 		(if
 			(and
 				(or
-					(== (gWarriorObj view?) 26)
-					(== (gWarriorObj view?) 27)
-					(== (gWarriorObj view?) 555)
+					(== (theWarrior view?) 26)
+					(== (theWarrior view?) 27)
+					(== (theWarrior view?) 555)
 				)
 				(not ducking)
 			)
-			(= ducking 1)
+			(= ducking TRUE)
 			(duckTimer setTicks: 60 self)
 		else
 			(if
 				(and
-					(gWarriorObj cel?)
-					(== (gWarriorObj cel?) (gWarriorObj lastCel:))
+					(theWarrior cel?)
+					(== (theWarrior cel?) (theWarrior lastCel:))
 					(not ducking)
 				)
 				(egoNoise number: 938 play:)
-				(gMonster getHurt:)
+				(theMonster getHurt:)
 				(splotch show: setCycle: EndLoop self)
 			)
 			(= ducking 0)
-			(gWarriorObj normalize:)
+			(theWarrior normalize:)
 		)
 	)
 	
-	(method (warriorCast param1 param2 &tmp temp0)
+	(method (warriorCast spellNum whoCares &tmp toCall)
 		(cond 
-			((< [egoStats 18] [spellCost (- param1 19)]) (return))
-			((ego castSpell: param1)
-				(= temp0 param2)
+			((< [egoStats MANA] [spellCost (- spellNum OPEN)]) (return))
+			((ego castSpell: spellNum)
+				(= toCall whoCares)
 				(egoMPStat update:)
-				(gWarriorObj cel: 0 setCycle: EndLoop temp0)
+				(theWarrior cel: 0 setCycle: EndLoop toCall)
 			)
 		)
 	)
 	
-	(method (tryAttack theTheCombatIcon param2 &tmp theCombatIcon temp1 temp2 temp3)
-		(ego trySkill: 5 200)
+	(method (tryAttack whoCares bonus &tmp toCall toHit theLevel theLoop)
+		(ego trySkill: WEAPON 200)
 		(egoSPStat update:)
 		(egoHPStat update:)
-		(= theCombatIcon 0)
-		(if argc (= theCombatIcon theTheCombatIcon))
+		(= toCall 0)
+		(if argc
+			(= toCall whoCares)
+		)
 		(cond 
 			(
 				(>
-					(= temp1
+					(= toHit
 						(+
 							(-
-								(self attackLevel: param2)
-								(gMonster defenseLevel: 0)
+								(self attackLevel: bonus)
+								(theMonster defenseLevel: 0)
 							)
 							50
 						)
 					)
 					80
 				)
-				(= temp1 80)
+				(= toHit 80)
 			)
-			((< temp1 20) (= temp1 20))
+			((< toHit 20)
+				(= toHit 20)
+			)
 		)
-		(= temp2 (- temp1 (Random 1 100)))
-		(gWarriorObj cel: 0)
+		(= theLevel (- toHit (Random 1 100)))
+		(theWarrior cel: 0)
 		(if (or (== calledBy 2) (== calledBy 0))
-			(= theCombatIcon CombatIcon)
+			(= toCall CombatIcon)
 		)
-		(if (> temp2 (= calledBy 0))
-			(gWarriorObj setCycle: EndLoop theCombatIcon)
+		(if (> theLevel (= calledBy 0))
+			(theWarrior setCycle: EndLoop toCall)
 		else
-			(if (< (= temp3 (- (gWarriorObj lastCel:) 1)) 1)
-				(= temp3 1)
+			(if (< (= theLoop (- (theWarrior lastCel:) 1)) 1)
+				(= theLoop 1)
 			)
-			(gWarriorObj setCycle: CycleTo temp3 1 theCombatIcon)
+			(theWarrior setCycle: CycleTo theLoop 1 toCall)
 		)
 	)
 	
-	(method (attackLevel &tmp temp0)
-		(= temp0
+	(method (attackLevel &tmp theLevel)
+		(= theLevel
 			(/
 				(+
-					(* [egoStats 5] 8)
-					(* [egoStats 2] 4)
-					(* [egoStats 0] 2)
-					[egoStats 1]
-					[egoStats 4]
+					(* [egoStats WEAPON] 8)
+					(* [egoStats AGIL] 4)
+					(* [egoStats STR] 2)
+					[egoStats INT]
+					[egoStats LUCK]
 				)
 				16
 			)
 		)
-		(if (< [egoStats 17] 100)
-			(= temp0 (- temp0 (/ (- 100 [egoStats 17]) 5)))
+		(if (< [egoStats STAMINA] 100)
+			(-= theLevel (/ (- 100 [egoStats STAMINA]) 5))
 		)
-		(return temp0)
+		(return theLevel)
 	)
 	
 	(method (defend theTheCombatIcon &tmp theCombatIcon)
@@ -234,22 +225,21 @@
 			(if
 				(or
 					(== (= theCombatIcon theTheCombatIcon) iconC)
-					(== global420 24)
+					(== combatView 24)
 				)
-				(ego trySkill: 7 200)
+				(ego trySkill: DODGE 200)
 			else
-				(ego trySkill: 6 200)
+				(ego trySkill: PARRY 200)
 			)
 		)
 		(egoSPStat update:)
 		(egoHPStat update:)
-		(if
-		(or (== calledBy 2) (== calledBy 0) autoDodging)
+		(if (or (== calledBy 2) (== calledBy 0) autoDodging)
 			(= autoDodging 0)
 			(= theCombatIcon CombatIcon)
 		)
 		(= calledBy 0)
-		(gWarriorObj cel: 0 setCycle: CycleTo 3 1 theCombatIcon)
+		(theWarrior cel: 0 setCycle: CycleTo 3 1 theCombatIcon)
 	)
 )
 
@@ -258,46 +248,9 @@
 		x 100
 		y 149
 		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
 		priority 12
-		underBits 0
-		signal $4010
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
+		signal (| ignrAct fixPriOn)
 		cycleSpeed 0
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		scaler 0
 		status 0
 		weapValue 0
 	)
@@ -305,10 +258,12 @@
 	(method (cue)
 		(switch status
 			(0
-				(if (cast contains: flames) (flames hide:))
+				(if (cast contains: flames)
+					(flames hide:)
+				)
 				(= status 1)
 				(self
-					view: global421
+					view: defendView
 					loop: 1
 					cel: 0
 					setCycle: CycleTo 1 1 self
@@ -322,42 +277,44 @@
 		)
 	)
 	
-	(method (getHurt param1 &tmp temp0)
-		(gWarriorObj status: 0 cue:)
-		(= temp0 (/ (+ [egoStats 6] [egoStats 7]) 6))
-		(= temp0 (- param1 (/ (* param1 temp0) 100)))
-		(if (ego has: 5)
-			(= temp0 (- temp0 (- 6 arcadeDifficulty)))
+	(method (getHurt damage &tmp totDamage)
+		(theWarrior status: 0 cue:)
+		(= totDamage (/ (+ [egoStats PARRY] [egoStats DODGE]) 6))
+		(= totDamage (- damage (/ (* damage totDamage) 100)))
+		(if (ego has: iShield)
+			(-= totDamage (- 6 arcadeDifficulty))
 		)
-		(if (> (= temp0 (+ temp0 (Random 0 10))) 0)
-			(= [egoStats 16] (- [egoStats 16] temp0))
-			(if (< [egoStats 16] 1) (= [egoStats 16] 0))
+		(if (> (+= totDamage (Random 0 10)) 0)
+			(-= [egoStats HEALTH] totDamage)
+			(if (< [egoStats HEALTH] 1)
+				(= [egoStats HEALTH] 0)
+			)
 			(egoHPStat update:)
 		)
 	)
 	
 	(method (normalize)
-		(gWarriorObj view: global420 loop: 0 cel: 0 stopUpd:)
+		(theWarrior view: combatView loop: 0 cel: 0 stopUpd:)
 		(if (cast contains: flames)
 			(flames show: setCycle: Forward)
 		)
 	)
 	
-	(method (autoDodge &tmp temp0)
-		(if (== arcadeDifficulty 3) (return))
+	(method (autoDodge &tmp theCycles)
+		(if (== arcadeDifficulty 3) (return))	;don't autododge in highest difficulty
 		(if (== arcadeDifficulty 1)
-			(= temp0 5)
+			(= theCycles 5)
 		else
-			(= temp0 10)
+			(= theCycles 10)
 		)
-		(if (< (Random 0 100) (/ [egoStats 7] temp0))
+		(if (< (Random 0 100) (/ [egoStats DODGE] theCycles))
 			(iconC
 				autoDodging: (if (== gCalledBy 0) 0 else 2)
 				select:
 			)
 			(return)
 		)
-		(if (< (Random 0 100) (/ [egoStats 6] temp0))
+		(if (< (Random 0 100) (/ [egoStats PARRY] theCycles))
 			(iconD
 				autoDodging: (if (== gCalledBy 0) 0 else 2)
 				select:
@@ -368,49 +325,7 @@
 
 (class MonsterProp of Prop
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $4010
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		cycleSpeed 6
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		scaler 0
+		signal (| ignrAct fixPriOn)
 	)
 	
 	(method (init)
@@ -425,49 +340,6 @@
 
 (class Monster of MonsterProp
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view -1
-		loop 0
-		cel 0
-		priority 0
-		underBits 0
-		signal $4010
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		cycleSpeed 6
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		scaler 0
 		roar 0
 		primDamage 0
 		secDamage 0
@@ -482,76 +354,77 @@
 	)
 	
 	(method (init)
-		(= gMonster self)
+		(= theMonster self)
 		(super init: &rest)
 	)
 	
-	(method (getHurt param1 param2 param3 &tmp temp0)
+	(method (getHurt damage param2 param3 &tmp totDamage)
 		(if (< argc 3)
 			(if
 				(<
-					(= temp0
+					(= totDamage
 						(-
-							(+ (gWarriorObj weapValue?) (/ [egoStats 0] 10))
-							(gMonster armorValue?)
+							(+ (theWarrior weapValue?) (/ [egoStats STR] 10))
+							(theMonster armorValue?)
 						)
 					)
 					0
 				)
-				(= temp0 (/ (gWarriorObj weapValue?) 5))
+				(= totDamage (/ (theWarrior weapValue?) 5))
 			)
-			(= temp0 (+ temp0 (Random 1 10)))
+			(+= totDamage (Random 1 10))
 			(if (> argc 1)
 				(if (and (< 0 param2) (< param2 4))
-					(= temp0 (/ temp0 param2))
+					(/= totDamage param2)
 				else
-					(= temp0 (+ temp0 param2))
+					(+= totDamage param2)
 				)
 			)
-			(= temp0 (+ temp0 zapPower))
+			(+= totDamage zapPower)
 			(= zapPower 0)
 		else
-			(= temp0 param3)
+			(= totDamage param3)
 		)
 		(if (spellTimer seconds?)
 			(spellTimer seconds: 0 client: 0)
-			(gMonster restart:)
+			(theMonster restart:)
 		)
-		(if
-		(< (= monsterHealth (- monsterHealth temp0)) 0)
+		(if (< (-= monsterHealth totDamage) 0)
 			(= monsterHealth 0)
 		)
 		(monsterHPStat update:)
 	)
 	
 	(method (whimper)
-		(if roar (globalSound number: roar play:))
+		(if roar
+			(globalSound number: roar play:)
+		)
 	)
 	
 	(method (defenseLevel)
 		(return 280)
 	)
 	
-	(method (spellHurt param1 &tmp temp0)
-		(= temp0 0)
-		(switch param1
-			(25
-				(= temp0 (+ 10 (/ [egoStats 25] 30)))
-				(gMonster getHurt: 0 0 temp0)
+	(method (spellHurt spellNum &tmp damage)
+		(= damage 0)
+		(switch spellNum
+			(FLAMEDART
+				(= damage (+ 10 (/ [egoStats FLAMEDART] 30)))
+				(theMonster getHurt: 0 0 damage)
 			)
-			(27
-				(= temp0 (+ 8 (/ [egoStats 27] 30)))
-				(gMonster getHurt: 0 0 temp0)
+			(FORCEBOLT
+				(= damage (+ 8 (/ [egoStats FORCEBOLT] 30)))
+				(theMonster getHurt: 0 0 damage)
 			)
-			(32
-				(= temp0 (+ 12 (/ [egoStats 32] 30)))
-				(gMonster getHurt: 0 0 temp0)
+			(LIGHTNING
+				(= damage (+ 12 (/ [egoStats LIGHTNING] 30)))
+				(theMonster getHurt: 0 0 damage)
 			)
-			(22
+			(DAZZLE
 				(Palette PALIntensity 0 255 500)
 				(Palette PALIntensity 0 255 100)
 				(self setCycle: 0 setScript: 0)
-				(spellTimer setReal: combatRm (/ [egoStats 22] 10))
+				(spellTimer setReal: combatRm (/ [egoStats DAZZLE] 10))
 			)
 		)
 	)
@@ -562,62 +435,12 @@
 
 (class StatusBar of Actor
 	(properties
-		x 0
-		y 0
-		z 0
-		heading 0
-		noun 0
-		modNum -1
-		nsTop 0
-		nsLeft 0
-		nsBottom 0
-		nsRight 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $6789
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		yStep 2
-		view 553
+		view vStatusBar
 		loop 1
 		cel 0
 		priority 1
-		underBits 0
-		signal $4810
-		lsTop 0
-		lsLeft 0
-		lsBottom 0
-		lsRight 0
-		brTop 0
-		brLeft 0
-		brBottom 0
-		brRight 0
-		palette 0
-		scaleSignal $0000
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		cycleSpeed 6
-		script 0
-		cycler 0
-		timer 0
-		detailLevel 0
-		scaler 0
-		illegalBits $8000
-		xLast 0
-		yLast 0
+		signal (| ignrAct fixedLoop fixPriOn)
 		xStep 1
-		origStep 770
-		moveSpeed 6
-		blocks 0
-		baseSetter 0
-		mover 0
-		looper 0
-		viewer 0
-		avoider 0
-		code 0
 		statMax 0
 		xMax 0
 	)
@@ -628,59 +451,51 @@
 		(super init: &rest)
 	)
 	
-	(method (calcVal param1 &tmp temp0)
-		(= temp0 (/ (* param1 100) statMax))
-		(= temp0 (- 47 (/ (* temp0 47) 100)))
-		(if (and (> param1 1) (>= temp0 47)) (= temp0 46))
-		(return (- xMax temp0))
+	(method (calcVal scaledValue &tmp xVal)
+		(= xVal (/ (* scaledValue 100) statMax))
+		(= xVal (- 47 (/ (* xVal 47) 100)))
+		(if (and (> scaledValue 1) (>= xVal 47))
+			(= xVal 46)
+		)
+		(return (- xMax xVal))
 	)
 	
-	(method (update param1 &tmp temp0)
-		(self
-			setMotion: MoveTo (self calcVal: param1) (self y?) self
-		)
+	(method (update statNum &tmp temp0)
+		(self setMotion: MoveTo (self calcVal: statNum) (self y?) self)
 	)
 )
 
 (instance combatRm of Room
 	(method (init)
 		(if (== prevRoomNum 100) (= prevRoomNum 400))
-		(= local0 (Btst 6))
-		(Bclr 6)
+		(= wasInMainGame (Btst fInMainGame))
+		(Bclr fInMainGame)
 		(globalSound setLoop: 1)
 		(soundFx setLoop: 1)
 		(= battleResult 2)
-		((= gWarriorObj WarriorObj) view: 999 init:)
+		((= theWarrior WarriorObj) view: 999 init:)
 		(if
 			(not
-				(OneOf
-					prevRoomNum
-					400
-					650
-					700
-					800
-					810
-					820
-					830
-					549
-					851
-					852
+				(OneOf prevRoomNum
+					400 650 700 800 810
+					820 830 549 851 852
 					853
 				)
 			)
 			((ScriptID
 				(Print
-					addText: 4 0 1 1 0 12
-					addButton: 560 4 0 0 2 0 26
-					addButton: 565 4 0 0 3 140 26
-					addButton: 575 4 0 0 5 0 40
-					addButton: 580 4 0 0 6 140 40
-					addButton: 585 4 0 0 7 0 54
-					addButton: 590 4 0 0 8 140 54
-					addButton: 595 4 0 0 9 0 68
-					addButton: 845 4 0 0 10 140 68
-					addButton: 855 4 0 0 11 0 82
-					addButton: 860 4 0 0 12 140 82
+					addText: N_MONSTER NULL C_TITLE 1 0 12
+					addButton: 560 N_MONSTER NULL NULL 2 0 26
+					addButton: 565 N_MONSTER NULL NULL 3 140 26
+					;addButton: 570 N_MONSTER NULL NULL 4
+					addButton: 575 N_MONSTER NULL NULL 5 0 40
+					addButton: 580 N_MONSTER NULL NULL 6 140 40
+					addButton: 585 N_MONSTER NULL NULL 7 0 54
+					addButton: 590 N_MONSTER NULL NULL 8 140 54
+					addButton: 595 N_MONSTER NULL NULL 9 0 68
+					addButton: 845 N_MONSTER NULL NULL 10 140 68
+					addButton: 855 N_MONSTER NULL NULL 11 0 82
+					addButton: 860 N_MONSTER NULL NULL 12 140 82
 					init:
 				)
 			)
@@ -691,38 +506,38 @@
 		)
 		(Load RES_VIEW 553)
 		(cond 
-			((and (ego has: 1) ((inventory at: 1) state?))
-				(gWarriorObj weapValue: 35)
+			((and (ego has: iSword) ((inventory at: iSword) state?))
+				(theWarrior weapValue: FLAMING_SWORD_VALUE)
 				(= gCalledBy 0)
-				(= global420 25)
-				(= global421 555)
-				(LoadMany 128 25 554 555)
+				(= combatView 25)
+				(= defendView 555)
+				(LoadMany RES_VIEW 25 554 555)
 				(flames init: setCycle: Forward)
 			)
-			((ego has: 1)
-				(gWarriorObj weapValue: 20)
+			((ego has: iSword)
+				(theWarrior weapValue: FINE_SWORD_VALUE)
 				(= gCalledBy 0)
-				(= global420 23)
-				(= global421 26)
-				(LoadMany 128 23 26)
+				(= combatView 23)
+				(= defendView 26)
+				(LoadMany RES_VIEW 23 26)
 			)
 			(else
-				(gWarriorObj weapValue: 10)
+				(theWarrior weapValue: DAGGER_VALUE)
 				(= gCalledBy 2)
-				(= global420 24)
-				(= global421 27)
-				(LoadMany 128 24 27 28 22 552)
-				(LoadMany 130 21)
+				(= combatView 24)
+				(= defendView 27)
+				(LoadMany RES_VIEW 24 27 28 22 552)
+				(LoadMany RES_SCRIPT 21)
 				(combatSpell init: hide:)
 			)
 		)
-		(gWarriorObj view: global420)
+		(theWarrior view: combatView)
 		(theIconBar disable:)
 		(splotch init: hide:)
 		(HandsOn)
 		(super init: &rest)
 		(if (not monsterHealth)
-			(= monsterHealth (gMonster monHP?))
+			(= monsterHealth (theMonster monHP?))
 		)
 		(egoStatus init:)
 		(monStatus init:)
@@ -738,35 +553,33 @@
 			statMax: (if (ego maxMana:) (ego maxMana:) else 100)
 			init:
 		)
-		(monsterHPStat statMax: (gMonster monHP?) init:)
+		(monsterHPStat statMax: (theMonster monHP?) init:)
 		(stamTimer setReal: stamTimer 5)
 		(combatControls init: show: dispose:)
 	)
 	
 	(method (dispose)
-		(LoadMany 0 565 575 580 585 845 590 560 595 855 860)
-		(UnLoad 128 24)
-		(UnLoad 128 27)
-		(UnLoad 128 28)
-		(UnLoad 128 22)
-		(UnLoad 128 552)
-		(UnLoad 128 23)
-		(UnLoad 128 26)
-		(UnLoad 128 25)
-		(UnLoad 128 554)
-		(UnLoad 128 555)
-		(UnLoad 128 553)
+		(LoadMany FALSE 565 575 580 585 845 590 560 595 855 860)
+		(UnLoad RES_VIEW 24)
+		(UnLoad RES_VIEW 27)
+		(UnLoad RES_VIEW 28)
+		(UnLoad RES_VIEW 22)
+		(UnLoad RES_VIEW 552)
+		(UnLoad RES_VIEW 23)
+		(UnLoad RES_VIEW 26)
+		(UnLoad RES_VIEW 25)
+		(UnLoad RES_VIEW 554)
+		(UnLoad RES_VIEW 555)
+		(UnLoad RES_VIEW 553)
 		(super dispose: &rest)
 	)
 	
 	(method (cue)
-		(gMonster restart:)
+		(theMonster restart:)
 	)
 )
 
 (instance combatControls of GloryControls
-	(properties)
-	
 	(method (init)
 		(super init: &rest)
 		(= icon1 iconA)
@@ -784,38 +597,52 @@
 		)
 		(cond 
 			((== gCalledBy 2)
-				(if (== heroType 1)
+				(if (== heroType MAGIC_USER)
 					(= gCalledBy 1)
-					(if (gMonster mustFight?)
+					(if (theMonster mustFight?)
 						(combatControls disable: iconF)
 					)
-					(if (not [egoStats 23]) (combatControls disable: iconE))
-					(if (not [egoStats 32]) (combatControls disable: iconA))
-					(if (not [egoStats 24]) (combatControls disable: iconB))
-					(if (not [egoStats 25]) (combatControls disable: iconC))
-					(if (not [egoStats 27]) (combatControls disable: iconD))
+					(if (not [egoStats ZAP])
+						(combatControls disable: iconE)
+					)
+					(if (not [egoStats LIGHTNING])
+						(combatControls disable: iconA)
+					)
+					(if (not [egoStats DAZZLE])	;NOTE: This was originally CALM, but that's incorrect
+						(combatControls disable: iconB)
+					)
+					(if (not [egoStats FLAMEDART])
+						(combatControls disable: iconC)
+					)
+					(if (not [egoStats FORCEBOLT])
+						(combatControls disable: iconD)
+					)
 					(combatControls
 						eachElementDo: #view 552
 						eachElementDo: #cel 0
 					)
 				else
 					(self eachElementDo: #view 551)
-					(if (not [egoStats 12])
+					(if (not [egoStats MAGIC])
 						(iconMiddle view: 550)
-						(if (gMonster mustFight?) (self disable: iconMiddle))
+						(if (theMonster mustFight?)
+							(self disable: iconMiddle)
+						)
 					)
 				)
 			)
-			((gMonster mustFight?) (self disable: iconMiddle))
+			((theMonster mustFight?)
+				(self disable: iconMiddle)
+			)
 		)
 		(SetCursor 137 242 196 318)
-		(theGame setCursor: theCursor 1 290 170)
+		(theGame setCursor: theCursor TRUE 290 170)
 	)
 	
 	(method (show)
 		(= window combatWin)
-		(User input: 1)
-		(theGame setCursor: 999)
+		(User input: TRUE)
+		(theGame setCursor: ARROW_CURSOR)
 		(super show: &rest)
 	)
 	
@@ -831,9 +658,9 @@
 		(super dispatchEvent: event &rest)
 		(sounds eachElementDo: #check)
 		(timers eachElementDo: #doit)
-		(Animate (cast elements?) 1)
+		(Animate (cast elements?) TRUE)
 		(if doMotionCue
-			(= doMotionCue 0)
+			(= doMotionCue FALSE)
 			(cast eachElementDo: #motionCue)
 		)
 	)
@@ -845,7 +672,7 @@
 		left 239
 		bottom 189
 		right 320
-		type $0083
+		type (| wCustom wNoSave wNoBorder)
 	)
 	
 	(method (open)
@@ -867,23 +694,25 @@
 	
 	(method (select)
 		(= calledBy gCalledBy)
-		(if (cast contains: flames) (flames hide:))
-		(gWarriorObj view: global420)
+		(if (cast contains: flames)
+			(flames hide:)
+		)
+		(theWarrior view: combatView)
 		(switch calledBy
 			(0
-				(gWarriorObj loop: 1)
+				(theWarrior loop: 1)
 				(self tryAttack: self)
 			)
 			(2
-				(gWarriorObj loop: 1)
+				(theWarrior loop: 1)
 				(self tryAttack: self)
 			)
 			(1
-				(gWarriorObj view: 28 loop: 0)
+				(theWarrior view: 28 loop: 0)
 				(self warriorCast: 32 self)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 	
 	(method (cue)
@@ -900,14 +729,14 @@
 					setStep: 6 6
 					setMotion:
 						MoveTo
-						(gMonster spellHitX?)
-						(gMonster spellHitY?)
+						(theMonster spellHitX?)
+						(theMonster spellHitY?)
 						combatSpell
 				)
 			)
 			(else  (super cue:))
 		)
-		(gWarriorObj normalize:)
+		(theWarrior normalize:)
 	)
 )
 
@@ -917,7 +746,7 @@
 		loop 2
 		nsLeft 50
 		nsTop 2
-		signal $4000
+		signal ignrAct
 		maskView 552
 		maskLoop 8
 		maskCel 4
@@ -925,26 +754,26 @@
 	
 	(method (select)
 		(= calledBy gCalledBy)
-		(gWarriorObj view: global420)
+		(theWarrior view: combatView)
 		(if (cast contains: flames)
 			(flames hide:)
-			(gWarriorObj view: 554)
+			(theWarrior view: 554)
 		)
 		(switch calledBy
 			(0
-				(gWarriorObj loop: 2)
+				(theWarrior loop: 2)
 				(self tryAttack: self)
 			)
 			(2
-				(gWarriorObj loop: 2)
+				(theWarrior loop: 2)
 				(self tryAttack: self)
 			)
 			(1
-				(gWarriorObj view: 28 loop: 0)
+				(theWarrior view: 28 loop: 0)
 				(self warriorCast: 22 self)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 	
 	(method (cue)
@@ -963,7 +792,7 @@
 			)
 			(else  (super cue:))
 		)
-		(gWarriorObj normalize:)
+		(theWarrior normalize:)
 	)
 )
 
@@ -986,22 +815,22 @@
 			(= theAutoDodging calledBy)
 		)
 		(if (cast contains: flames) (flames hide:))
-		(gWarriorObj view: global421)
+		(theWarrior view: defendView)
 		(switch theAutoDodging
 			(0
-				(gWarriorObj loop: 1)
+				(theWarrior loop: 1)
 				(self defend: self)
 			)
 			(2
-				(gWarriorObj loop: 0)
+				(theWarrior loop: 0)
 				(self defend: self)
 			)
 			(1
-				(gWarriorObj view: 28 loop: 0)
+				(theWarrior view: 28 loop: 0)
 				(self warriorCast: 25 self)
 			)
 		)
-		(return 1)
+		(return TRUE)
 	)
 	
 	(method (cue)
@@ -1017,11 +846,11 @@
 				setStep: 6 6
 				setMotion:
 					MoveTo
-					(gMonster spellHitX?)
-					(gMonster spellHitY?)
+					(theMonster spellHitX?)
+					(theMonster spellHitY?)
 					combatSpell
 			)
-			(gWarriorObj normalize:)
+			(theWarrior normalize:)
 		else
 			(super cue:)
 		)
@@ -1047,19 +876,19 @@
 			(= theAutoDodging calledBy)
 		)
 		(if (cast contains: flames) (flames hide:))
-		(gWarriorObj view: global421)
+		(theWarrior view: defendView)
 		(switch theAutoDodging
 			(0
-				(gWarriorObj loop: 0)
+				(theWarrior loop: 0)
 				(self defend: self)
 			)
 			(2
-				(gWarriorObj loop: 1)
+				(theWarrior loop: 1)
 				(self defend: self)
 			)
 			(1
-				(gWarriorObj view: 28 loop: 0)
-				(self warriorCast: 27 self)
+				(theWarrior view: 28 loop: 0)
+				(self warriorCast: FORCEBOLT self)
 			)
 		)
 		(return 1)
@@ -1078,11 +907,11 @@
 				setStep: 6 6
 				setMotion:
 					MoveTo
-					(gMonster spellHitX?)
-					(gMonster spellHitY?)
+					(theMonster spellHitX?)
+					(theMonster spellHitY?)
 					combatSpell
 			)
-			(gWarriorObj normalize:)
+			(theWarrior normalize:)
 		else
 			(super cue:)
 		)
@@ -1102,14 +931,14 @@
 	
 	(method (select)
 		(= calledBy gCalledBy)
-		(gWarriorObj view: global421)
+		(theWarrior view: defendView)
 		(switch calledBy
 			(0 0)
 			(2 0)
 			(1
 				(if (cast contains: flames) (flames hide:))
-				(gWarriorObj view: 28 loop: 0)
-				(self warriorCast: 23 self)
+				(theWarrior view: 28 loop: 0)
+				(self warriorCast: ZAP self)
 			)
 		)
 		(return 1)
@@ -1123,7 +952,7 @@
 			)
 			(else  (super cue:))
 		)
-		(gWarriorObj normalize:)
+		(theWarrior normalize:)
 	)
 )
 
@@ -1139,15 +968,15 @@
 	)
 	
 	(method (select)
-		(if (& signal $0004) (return 0))
+		(if (& signal DISABLED) (return 0))
 		(= calledBy gCalledBy)
-		(gWarriorObj view: global421)
+		(theWarrior view: defendView)
 		(switch calledBy
 			(0 0)
 			(2 0)
-			(1 (localproc_03a1))
+			(1 (EndBattle))
 		)
-		(return 1)
+		(return TRUE)
 	)
 )
 
@@ -1162,23 +991,33 @@
 	)
 	
 	(method (select)
-		(if (& signal $0004) (return 0))
+		(if (& signal DISABLED) (return FALSE))
 		(= calledBy gCalledBy)
 		(switch calledBy
-			(0 (localproc_03a1))
+			(0 (EndBattle))
 			(2
-				(if (not [egoStats 12])
-					(localproc_03a1)
+				(if (not [egoStats MAGIC])
+					(EndBattle)
 				else
 					(= gCalledBy 1)
-					(if (gMonster mustFight?)
+					(if (theMonster mustFight?)
 						(combatControls disable: iconF)
 					)
-					(if (not [egoStats 23]) (combatControls disable: iconE))
-					(if (not [egoStats 32]) (combatControls disable: iconA))
-					(if (not [egoStats 24]) (combatControls disable: iconB))
-					(if (not [egoStats 25]) (combatControls disable: iconC))
-					(if (not [egoStats 27]) (combatControls disable: iconD))
+					(if (not [egoStats ZAP])
+						(combatControls disable: iconE)
+					)
+					(if (not [egoStats LIGHTNING])
+						(combatControls disable: iconA)
+					)
+					(if (not [egoStats DAZZLE])
+						(combatControls disable: iconB)
+					)
+					(if (not [egoStats FLAMEDART])
+						(combatControls disable: iconC)
+					)
+					(if (not [egoStats FORCEBOLT])
+						(combatControls disable: iconD)
+					)
 					(combatControls
 						eachElementDo: #view 552
 						eachElementDo: #cel 0
@@ -1196,8 +1035,8 @@
 				)
 			)
 		)
-		(Animate (cast elements?) 1)
-		(return 1)
+		(Animate (cast elements?) TRUE)
+		(return TRUE)
 	)
 )
 
@@ -1207,7 +1046,7 @@
 		y 87
 		view 22
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 		moveSpeed 0
 	)
 	
@@ -1215,10 +1054,10 @@
 		(if (< loop 3)
 			(self loop: (+ loop 3) setCel: 0 setCycle: EndLoop self)
 			(egoNoise number: 930 play:)
-			(gMonster spellHurt: approachDist)
+			(theMonster spellHurt: approachDist)
 		else
 			(if (== approachDist 22)
-				(gMonster spellHurt: approachDist)
+				(theMonster spellHurt: approachDist)
 			)
 			(self hide: setCycle: 0)
 		)
@@ -1231,7 +1070,7 @@
 		y 149
 		view 554
 		priority 14
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1242,7 +1081,7 @@
 		view 553
 		cel 1
 		priority 3
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1252,7 +1091,7 @@
 		y 15
 		view 553
 		priority 3
-		signal $4010
+		signal (| ignrAct fixPriOn)
 	)
 )
 
@@ -1263,18 +1102,18 @@
 	)
 	
 	(method (cue)
-		(if (< [egoStats 16] 1)
-			(= battleResult 0)
-			(localproc_03a1)
+		(if (< [egoStats HEALTH] 1)
+			(= battleResult battleEGOLOST)
+			(EndBattle)
 		)
 	)
 	
 	(method (calcVal)
-		(super calcVal: [egoStats 16])
+		(super calcVal: [egoStats HEALTH])
 	)
 	
 	(method (update)
-		(super update: [egoStats 16])
+		(super update: [egoStats HEALTH])
 	)
 )
 
@@ -1285,11 +1124,11 @@
 	)
 	
 	(method (calcVal)
-		(super calcVal: [egoStats 17])
+		(super calcVal: [egoStats STAMINA])
 	)
 	
 	(method (update)
-		(super update: [egoStats 17])
+		(super update: [egoStats STAMINA])
 	)
 )
 
@@ -1300,11 +1139,11 @@
 	)
 	
 	(method (calcVal)
-		(super calcVal: [egoStats 18])
+		(super calcVal: [egoStats MANA])
 	)
 	
 	(method (update)
-		(super update: [egoStats 18])
+		(super update: [egoStats MANA])
 	)
 )
 
@@ -1316,8 +1155,13 @@
 	
 	(method (cue)
 		(cond 
-			((== battleResult -1) (gWarriorObj setScript: sDemonEgoDies))
-			((< monsterHealth 1) (= battleResult 1) (localproc_03a1))
+			((== battleResult -1)
+				(theWarrior setScript: sDemonEgoDies)
+			)
+			((< monsterHealth 1)
+				(= battleResult battleEGOWON)
+				(EndBattle)
+			)
 		)
 	)
 	
@@ -1331,8 +1175,6 @@
 )
 
 (instance sDemonEgoDies of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -1350,9 +1192,9 @@
 				(= cycles 3)
 			)
 			(2
-				(= battleResult 1)
+				(= battleResult battleEGOWON)
 				(DisposeScript 40)
-				(localproc_03a1)
+				(EndBattle)
 			)
 		)
 	)
@@ -1362,19 +1204,19 @@
 	(properties
 		view 553
 		loop 2
-		signal $4000
+		signal ignrAct
 	)
 	
 	(method (show)
 		(self
-			setPri: (+ (gWarriorObj priority?) 1)
+			setPri: (+ (theWarrior priority?) 1)
 			x: (+
-				(gWarriorObj x?)
-				(if (== (gWarriorObj loop?) 1) 48 else 67)
+				(theWarrior x?)
+				(if (== (theWarrior loop?) 1) 48 else 67)
 			)
 			y: (-
-				(gWarriorObj y?)
-				(if (== (gWarriorObj loop?) 1) 66 else 46)
+				(theWarrior y?)
+				(if (== (theWarrior loop?) 1) 66 else 46)
 			)
 		)
 		(super show: &rest)
@@ -1385,17 +1227,11 @@
 	)
 )
 
-(instance duckTimer of Timer
-	(properties)
-)
+(instance duckTimer of Timer)
 
-(instance spellTimer of Timer
-	(properties)
-)
+(instance spellTimer of Timer)
 
 (instance stamTimer of Timer
-	(properties)
-	
 	(method (cue)
 		(ego useStamina: -5)
 		(egoSPStat update:)
@@ -1403,6 +1239,4 @@
 	)
 )
 
-(instance egoNoise of Sound
-	(properties)
-)
+(instance egoNoise of Sound)

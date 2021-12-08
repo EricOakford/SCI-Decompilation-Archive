@@ -53,19 +53,19 @@
 	)
 	
 	(method (cue)
-		(gWarriorObj autoDodge:)
+		(theWarrior autoDodge:)
 		(if
 			(not
 				(if
 					(or
-						(== (gWarriorObj view?) 26)
-						(== (gWarriorObj view?) 27)
+						(== (theWarrior view?) 26)
+						(== (theWarrior view?) 27)
 					)
 				else
-					(== (gWarriorObj view?) 555)
+					(== (theWarrior view?) 555)
 				)
 			)
-			(gWarriorObj getHurt: (gMonster secDamage?))
+			(theWarrior getHurt: (theMonster secDamage?))
 		else
 			(globalSound number: 940 play:)
 		)
@@ -83,19 +83,19 @@
 	
 	(method (cue)
 		(if (> cel 2)
-			(gWarriorObj autoDodge:)
+			(theWarrior autoDodge:)
 			(if
 				(not
 					(if
 						(or
-							(== (gWarriorObj view?) 26)
-							(== (gWarriorObj view?) 27)
+							(== (theWarrior view?) 26)
+							(== (theWarrior view?) 27)
 						)
 					else
-						(== (gWarriorObj view?) 555)
+						(== (theWarrior view?) 555)
 					)
 				)
-				(gWarriorObj getHurt: (gMonster secDamage?))
+				(theWarrior getHurt: (theMonster secDamage?))
 			else
 				(globalSound number: 940 play:)
 			)
@@ -115,22 +115,22 @@
 				(= ticks (/ (Random 45 180) arcadeDifficulty))
 			)
 			(1
-				(gMonster setCel: 0 x: 166 y: 128 setCycle: EndLoop self)
+				(theMonster setCel: 0 x: 166 y: 128 setCycle: EndLoop self)
 			)
 			(2
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(gWarriorObj getHurt: (gMonster primDamage?))
+					(theWarrior getHurt: (theMonster primDamage?))
 				)
 				(dewormMonster setCycle: CycleTo (Random 0 3) -1 self)
 			)
@@ -156,14 +156,14 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setCel: 0 setCycle: CycleTo 2 1)
+				(theMonster setCel: 0 setCycle: CycleTo 2 1)
 				(= ticks 60)
 			)
 			(1
-				(gMonster whimper:)
+				(theMonster whimper:)
 				(= ticks (- (/ (Random 180 360) arcadeDifficulty) 59))
 			)
-			(2 (gMonster setScript: sFight))
+			(2 (theMonster setScript: sFight))
 		)
 	)
 )

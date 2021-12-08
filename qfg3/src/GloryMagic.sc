@@ -22,56 +22,17 @@
 	)
 	
 	(method (select)
-		(asm
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      17
-			gt?     
-			bnt      code_0112
-			pushi    #view
-			pushi    0
-			lag      ego
-			send     4
-			push    
-			ldi      21
-			lt?     
-			bnt      code_0112
-			jmp      code_0110
-code_0110:
-			bt       code_011b
-code_0112:
-			pTos     value
-			ldi      18
-			lagi     egoStats
-			lt?     
-			bnt      code_0125
-code_011b:
-			pushi    #doVerb
-			pushi    1
-			pushi    4
-			self     6
-			jmp      code_0139
-code_0125:
-			pushi    #addText
-			pushi    7
-			pushi    0
-			pushi    0
-			pushi    2
-			pushi    1
-			pushi    0
-			pushi    0
-			pushi    21
-			pushi    110
-			pushi    0
-			class    Print
-			send     22
-code_0139:
-			ldi      0
-			ret     
+		(if 
+			(or
+				;this was the undecompilable part
+				(and (> (ego view?) 17) (< (ego view?) 21))
+				(< value [egoStats MAGIC])
+			)
+			(self doVerb: V_DO)
+		else
+			(Print addText: 0 0 2 1 0 0 21 init:)
 		)
+		(return FALSE)
 	)
 	
 	(method (doVerb theVerb &tmp [nameBuf 20] [descBuf 80])
@@ -184,7 +145,7 @@ code_0139:
 			state: NOCLICKHELP
 		)
 		(= i 0)
-		(while (< i NUM_SPELLS)
+		(while (< i (- NUM_SPELLS 1))	;don't count healing
 			(if [egoStats (+ OPEN i)]
 				((self at: i) owner: ego)
 			)

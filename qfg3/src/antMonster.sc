@@ -97,19 +97,19 @@
 	
 	(method (cue)
 		(if (< cel 2)
-			(gWarriorObj autoDodge:)
+			(theWarrior autoDodge:)
 			(if
 				(not
 					(if
 						(or
-							(== (gWarriorObj view?) 26)
-							(== (gWarriorObj view?) 27)
+							(== (theWarrior view?) 26)
+							(== (theWarrior view?) 27)
 						)
 					else
-						(== (gWarriorObj view?) 555)
+						(== (theWarrior view?) 555)
 					)
 				)
-				(gWarriorObj getHurt: (gMonster secDamage?))
+				(theWarrior getHurt: (theMonster secDamage?))
 				(self setCycle: EndLoop self)
 			else
 				(self setMotion: MoveTo (- x 160) y)
@@ -132,19 +132,19 @@
 				(theHead x: 152 y: 126 setCycle: CycleTo 2 1 self)
 			)
 			(2
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(gWarriorObj getHurt: (gMonster primDamage?))
+					(theWarrior getHurt: (theMonster primDamage?))
 				else
 					(globalSound number: 940 play:)
 				)
@@ -155,19 +155,19 @@
 				(theHead y: 120 setCycle: CycleTo 2 1 self)
 			)
 			(4
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(gWarriorObj getHurt: (gMonster primDamage?))
+					(theWarrior getHurt: (theMonster primDamage?))
 				else
 					(globalSound number: 940 play:)
 				)
@@ -178,19 +178,19 @@
 				(theHead y: 126 setCycle: CycleTo 2 1 self)
 			)
 			(6
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(gWarriorObj getHurt: (gMonster primDamage?))
+					(theWarrior getHurt: (theMonster primDamage?))
 				else
 					(globalSound number: 940 play:)
 				)
@@ -216,10 +216,10 @@
 				(= ticks 60)
 			)
 			(1
-				(gMonster whimper:)
+				(theMonster whimper:)
 				(= ticks (- (/ 180 arcadeDifficulty) 59))
 			)
-			(2 (gMonster setScript: sFight))
+			(2 (theMonster setScript: sFight))
 		)
 	)
 )

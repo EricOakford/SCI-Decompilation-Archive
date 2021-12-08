@@ -88,19 +88,19 @@
 	
 	(method (cue)
 		(if cel
-			(gWarriorObj autoDodge:)
+			(theWarrior autoDodge:)
 			(if
 				(not
 					(if
 						(or
-							(== (gWarriorObj view?) 26)
-							(== (gWarriorObj view?) 27)
+							(== (theWarrior view?) 26)
+							(== (theWarrior view?) 27)
 						)
 					else
-						(== (gWarriorObj view?) 555)
+						(== (theWarrior view?) 555)
 					)
 				)
-				(gWarriorObj getHurt: (gMonster tertDamage?))
+				(theWarrior getHurt: (theMonster tertDamage?))
 			else
 				(globalSound number: 940 play:)
 			)
@@ -118,26 +118,26 @@
 		(switch (= state newState)
 			(0
 				(= ticks (/ 180 arcadeDifficulty))
-				(gMonster x: 152 y: 44)
+				(theMonster x: 152 y: 44)
 			)
 			(1
-				(gMonster setCel: 0 setCycle: CycleTo 2 1 self)
+				(theMonster setCel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(2
-				(gMonster setCycle: EndLoop gMonster)
-				(gWarriorObj autoDodge:)
+				(theMonster setCycle: EndLoop theMonster)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(gWarriorObj getHurt: (gMonster primDamage?))
+					(theWarrior getHurt: (theMonster primDamage?))
 				)
 				(= ticks (/ (Random 180 270) arcadeDifficulty))
 			)
@@ -148,19 +148,19 @@
 			(4
 				(armLeft setCycle: EndLoop armLeft)
 				(armRight setCycle: EndLoop armRight)
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(gWarriorObj getHurt: (gMonster secDamage?))
+					(theWarrior getHurt: (theMonster secDamage?))
 				else
 					(globalSound number: 940 play:)
 				)
@@ -168,10 +168,10 @@
 			)
 			(5
 				(theTail setPri: 6 setCycle: EndLoop theTail)
-				(gMonster setCycle: EndLoop self)
+				(theMonster setCycle: EndLoop self)
 			)
 			(6
-				(gMonster cue:)
+				(theMonster cue:)
 				(= ticks (/ (Random 180 270) arcadeDifficulty))
 			)
 			(7
@@ -181,19 +181,19 @@
 			(8
 				(armLeft setCycle: EndLoop self)
 				(armRight setCycle: EndLoop self)
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(gWarriorObj getHurt: (gMonster secDamage?))
+					(theWarrior getHurt: (theMonster secDamage?))
 				else
 					(globalSound number: 940 play:)
 				)
@@ -213,7 +213,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster whimper: setCel: 1 x: 172 y: 39)
+				(theMonster whimper: setCel: 1 x: 172 y: 39)
 				(armLeft setCel: 4)
 				(armRight setCel: 4)
 				(= ticks 30)
@@ -224,7 +224,7 @@
 				(= ticks 30)
 			)
 			(2
-				(gMonster whimper:)
+				(theMonster whimper:)
 				(armLeft setCel: 5)
 				(armRight setCel: 5)
 				(= ticks (/ 30 arcadeDifficulty))
@@ -232,7 +232,7 @@
 			(3
 				(armLeft setCel: 0)
 				(armRight setCel: 0)
-				(gMonster x: 152 y: 44 setCel: 0 setScript: sFight)
+				(theMonster x: 152 y: 44 setCel: 0 setScript: sFight)
 			)
 		)
 	)

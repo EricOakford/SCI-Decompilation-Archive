@@ -64,24 +64,24 @@
 				)
 			)
 			(2
-				(gWarriorObj autoDodge:)
+				(theWarrior autoDodge:)
 				(if
 					(not
 						(if
 							(or
-								(== (gWarriorObj view?) 26)
-								(== (gWarriorObj view?) 27)
+								(== (theWarrior view?) 26)
+								(== (theWarrior view?) 27)
 							)
 						else
-							(== (gWarriorObj view?) 555)
+							(== (theWarrior view?) 555)
 						)
 					)
-					(gWarriorObj
+					(theWarrior
 						getHurt:
-							(if (gWarriorObj loop?)
-								(gMonster secDamage?)
+							(if (theWarrior loop?)
+								(theMonster secDamage?)
 							else
-								(gMonster primDamage?)
+								(theMonster primDamage?)
 							)
 					)
 				else
@@ -99,14 +99,14 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(gMonster setCel: 0 setLoop: 2 setCycle: EndLoop self)
+				(theMonster setCel: 0 setLoop: 2 setCycle: EndLoop self)
 				(= ticks 60)
 			)
 			(1
-				(gMonster whimper:)
+				(theMonster whimper:)
 				(= ticks (- (/ 120 arcadeDifficulty) 39))
 			)
-			(2 (gMonster setScript: sFight))
+			(2 (theMonster setScript: sFight))
 		)
 	)
 )
