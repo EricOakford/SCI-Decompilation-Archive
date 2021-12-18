@@ -1,7 +1,9 @@
 ### Space Quest 6 Demo (SQ6DEMO)
-  Game version 1.0
+	Game version 1.0
   
-  Interpreter version 2.001.002
+	Interpreter version 2.001.002
+	Apr 19 1995 17:35:07
+	Stamp 1352
 
 The game has been tested to completion. Since SQIconBar's doit: has been successfully decompiled, there shouldn't be any problems now.
 
