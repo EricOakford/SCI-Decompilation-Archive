@@ -349,7 +349,7 @@
 		(= temp2 (- bottom top))
 		(= oMessageListFirst (oMessageList first:))
 		(while oMessageListFirst
-			(= temp1 (List 8 oMessageListFirst))
+			(= temp1 (KList 8 oMessageListFirst))
 			(if
 				(or
 					(< (+ param1 (temp1 nHeight?)) 0)

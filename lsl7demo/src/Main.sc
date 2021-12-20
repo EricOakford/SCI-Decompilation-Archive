@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 0)
-(include sci.sh)
+(include game.sh)
 (use oMenuPopupPlane)
 (use TPSound)
 (use oMessager)
@@ -22,113 +22,101 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	thePlane
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	planes
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	textCode
-	cuees
-	theCursor
-	normalCursor
-	waitCursor
-	userFont =  1
-	smallFont =  4
-	lastEvent
-	eventMask =  32767
-	bigFont =  1
-	version
+	ego								;pointer to ego
+	theGame							;ID of the Game instance
+	curRoom							;ID of current room
+	thePlane						;default plane
+	quit							;when TRUE, quit game
+	cast							;collection of actors
+	regions							;set of current regions
+	timers							;list of timers in the game
+	sounds							;set of sounds being played
+	inventory						;set of inventory items in game
+	planes							;list of all active planes in the game
+	curRoomNum						;current room number
+	prevRoomNum						;previous room number
+	newRoomNum						;number of room to change to
+	debugOn							;generic debug flag -- set from debug menu
+	score							;the player's current score
+	possibleScore					;highest possible score
+	textCode						;code that handles interactive text
+	cuees							;list of who-to-cues for next cycle
+	theCursor						;the number of the current cursor
+	normalCursor					;number of normal cursor form
+	waitCursor						;cursor number of "wait" cursor
+	userFont	=	USERFONT		;font to use for Print
+	smallFont	=	4 				;small font for save/restore, etc.
+	lastEvent					  	;the last event (used by save/restore game)
+	eventMask	=	allEvents	  	;event mask passed to GetEvent in (uEvt new:)
+	bigFont	=		USERFONT	  	;large font
+	version	=		0			  	;pointer to 'incver' version string
+									;	WARNING!  Must be set in room 0
+									;	(usually to {x.yyy    } or {x.yyy.zzz})
 	autoRobot
-	curSaveDir
-	numCD
-	perspective
-	features
-	panels
-	useSortedFeatures
+	curSaveDir						;address of current save drive/directory string
+	numCD	=	0					;number of current CD, 0 for file based
+	perspective						;player's viewing angle: degrees away
+									;	from vertical along y axis
+	features						;locations that may respond to events
+	panels	=	NULL				;list of game panels
+	useSortedFeatures	=	FALSE	;enable cast & feature sorting?
 	unused_6
-	overlays =  -1
-	doMotionCue
-	systemPlane
-	saveFileSelText
+	overlays	= -1
+	doMotionCue						;a motion cue has occurred - process it
+	systemPlane						;ID of standard system plane
+	saveFileSelText					;text of fileSelector item that's selected.
 	unused_8
 	unused_2
-	sysLogPath
-	global43
-	global44
-	global45
-	global46
-	global47
-	global48
-	global49
-	global50
-	global51
-	global52
-	global53
-	global54
-	global55
-	global56
-	global57
-	global58
-	global59
-	global60
-	global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  1
+	[sysLogPath 20]					;-used for system standard logfile path	
+	endSysLogPath					;/		(uses 20 globals)
+	gameControls					;pointer to instance of game controls
+	ftrInitializer					;pointer to code that gets called from
+													;	a feature's init
+	doVerbCode						;pointer to code that gets invoked if
+									;	no feature claims a user event
+	approachCode					;pointer to code that translates verbs
+									;	into bits
+	useObstacles	=	TRUE		;will Ego use PolyPath or not?
 	unused_9
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
+	theIconBar						;points to TheIconBar or Null	
+	mouseX							;-last known mouse position
+	mouseY							;/
+	keyDownHandler					;-our EventHandlers, get called by game
+	mouseDownHandler				;/
+	directionHandler				;/
+	speechHandler					;a special handler for speech events
 	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
-	extMouseHandler
-	talkers
-	inputFont
-	tickOffset
-	howFast
-	gameTime
-	narrator
-	msgType =  1
-	messager
-	prints
-	walkHandler
-	textSpeed =  2
-	altPolyList
-	screenWidth =  320
-	screenHeight =  200
-	lastScreenX =  319
-	lastScreenY =  199
+	pMouse	=	NULL				;pointer to a Pseudo-Mouse, or NULL
+	theDoits	=	NULL			;list of objects to get doits each cycle
+	eatMice	=	60					;how many ticks before we can mouse
+	user	=	NULL				;pointer to specific applications User
+	syncBias						;-globals used by sync.sc
+	theSync							;/		(will be removed shortly)
+	extMouseHandler					;extended mouse handler
+	talkers							;list of talkers on screen
+	inputFont	=	SYSFONT			;font used for user type-in
+	tickOffset						;used to adjust gameTime after restore
+	howFast							;measurment of how fast a machine is
+	gameTime						;ticks since game start
+	narrator						;pointer to narrator (normally Narrator)
+	msgType	=	TEXT_MSG			;type of messages used
+	messager						;pointer to messager (normally Messager)
+	prints							;list of Print's on screen
+	walkHandler						;list of objects to get walkEvents
+	textSpeed	=	2				;time text remains on screen
+	altPolyList						;list of alternate obstacles
+	screenWidth	=  320				; Coordinate System Parameters
+	screenHeight =  200				;
+	lastScreenX	=  319				;
+	lastScreenY	=  199				;
+	;globals > 99 are for game use
 	global100
 	gVerb
 	gInventItem
 	global103
 	global104
 	gOEventHandler
-	global106
+	debugging
 	gOScrollPlane
 	gOFileReadWord_7 =  1
 	global109 =  25
@@ -137,7 +125,7 @@
 	global112 =  40
 	global113 =  -1
 	gNewStr
-	gNewStr_2
+	gameDir
 	gDisabledPlanes
 	gOPlaneStack
 	global118
@@ -374,10 +362,10 @@
 	global349
 	global350
 )
-(procedure (localproc_05ff &tmp temp0)
+(procedure (localproc_05ff &tmp str)
 	(if (not gOFileReadWord_6)
-		(switch (Platform 0)
-			(2
+		(switch (Platform GetPlatType)
+			(PlatWin
 				(= gOFileReadWord_6
 					(GetSierraProfileInt
 						{Config}
@@ -386,54 +374,44 @@
 					)
 				)
 			)
-			(1
-				(= temp0 (Str new: 100))
-				(GetConfig {VideoSpeed} temp0)
-				(= gOFileReadWord_6 (/ (temp0 asInteger:) 5))
-				(temp0 dispose:)
+			(PlatDos
+				(= str (String new: 100))
+				(GetConfig {VideoSpeed} str)
+				(= gOFileReadWord_6 (/ (str asInteger:) 5))
+				(str dispose:)
 			)
-			(0
-				(= temp0 (Str new: 100))
-				(GetConfig {VideoSpeed} temp0)
-				(= gOFileReadWord_6 (temp0 asInteger:))
-				(temp0 dispose:)
+			(PlatMac
+				(= str (String new: 100))
+				(GetConfig {VideoSpeed} str)
+				(= gOFileReadWord_6 (str asInteger:))
+				(str dispose:)
 			)
-			(else  (= gOFileReadWord_6 0))
+			(else
+				(= gOFileReadWord_6 0)
+			)
 		)
 		(WritePrefs)
 	)
 )
 
-(instance oUser of NewUser
-	(properties)
-)
+(instance oUser of NewUser)
 
-(instance oEventHandler of NewEventHandler
-	(properties)
-)
+(instance oEventHandler of NewEventHandler)
 
-(instance oBackgroundPlane of Plane
-	(properties)
-)
+(instance oBackgroundPlane of Plane)
 
-(instance oTestFile of File
-	(properties)
-)
+(instance oTestFile of File)
 
 (instance oMusic1 of TPSound
 	(properties
-		type $0001
+		type mNOPAUSE
 	)
 )
 
-(instance oSound1 of TPSound
-	(properties)
-)
+(instance oSound1 of TPSound)
 
 (instance L7 of NewGame
-	(properties)
-	
-	(method (init &tmp temp0 temp1 temp2)
+	(method (init &tmp str temp1 temp2)
 		(= gGPEventX 0)
 		(= gGPEventY 0)
 		(theGame handsOff:)
@@ -446,7 +424,7 @@
 		(= smallFont 999)
 		(= bigFont 2510)
 		(= inputFont 999)
-		(DoAudio 12 0)
+		(DoAudio AudMixCheck 0)
 		(= systemPlane (Plane new:))
 		((= user oUser) alterEgo: (= ego (ScriptID 64007 0)))
 		(super init:)
@@ -467,18 +445,23 @@
 			((thePlane oMyFeatures?) dispose:)
 			(thePlane oMyFeatures: features)
 		)
-		((= gOMusic1 oMusic1) owner: self flags: 1)
-		((= gOSound1 oSound1) owner: self flags: 5)
-		(= gNewStr (Str new:))
-		((= gNewStr_2 (Str new:)) copy: curSaveDir)
-		(if
-		(not (= global288 (MakeMessageText 0 0 3 1 14)))
-			(= global288 (Str with: {Continue}))
+		((= gOMusic1 oMusic1)
+			owner: self
+			flags: mNOPAUSE
+		)
+		((= gOSound1 oSound1)
+			owner: self
+			flags: (| mNOPAUSE mLOAD_AUDIO)
+		)
+		(= gNewStr (String new:))
+		((= gameDir (String new:)) copy: curSaveDir)
+		(if (not (= global288 (MakeMessageText 0 0 3 1 14)))
+			(= global288 (String with: {Continue}))
 		)
 		(ReadPrefs)
 		(localproc_05ff)
 		(= approachCode oApproachCode)
-		(= gVerb 2)
+		(= gVerb V_DO)
 		((ScriptID 64017 0) init:)
 		((= gOEventHandler oEventHandler)
 			init:
@@ -488,7 +471,7 @@
 		(proc64040_0)
 		(proc64032_2)
 		((= messager (ScriptID 64032 1)) init:)
-		(= msgType 2)
+		(= msgType CD_MSG)
 		(proc64036_0)
 		(self
 			handsOnCode: oHandsOnCode
@@ -499,26 +482,32 @@
 		(proc64037_1)
 		((ScriptID 64038 0) init:)
 		((ScriptID 64000 0) init:)
-		(if (FileIO 10 {classes})
-			(= global106 1)
+		(if (FileIO FileExists {classes})
+			(= debugging TRUE)
 		else
-			(= temp0 (Str newWith: 100 {_}))
-			(GetConfig {TorinDebug} temp0)
-			(temp0 lower:)
-			(if (== (= temp1 (temp0 at: 0)) 116) (= global106 1))
-			(temp0 dispose:)
+			(= str (String newWith: 100 {_}))
+			(GetConfig {TorinDebug} str)
+			(str lower:)
+			(if (== (= temp1 (str at: 0)) 116)
+				(= debugging TRUE)
+			)
+			(str dispose:)
 		)
-		(if (FileIO 10 {autotp}) (= global243 1))
-		(if global106 ((ScriptID 64014 0) init:))
-		(= temp0 (Str newWith: 100 {_}))
-		(GetConfig {LeakDump} temp0)
-		(temp0 lower:)
-		(if (== (= temp1 (temp0 at: 0)) 116) (= global202 1))
-		(temp0 dispose:)
-		(= temp0 (Str newWith: 100 {_}))
-		(GetConfig {StartRoom} temp0)
-		(= newRoomNum (temp0 asInteger:))
-		(temp0 dispose:)
+		(if (FileIO FileExists {autotp})
+			(= global243 1)
+		)
+		(if debugging
+			((ScriptID 64014 0) init:)
+		)
+		(= str (String newWith: 100 {_}))
+		(GetConfig {LeakDump} str)
+		(str lower:)
+		(if (== (= temp1 (str at: 0)) 116) (= global202 1))
+		(str dispose:)
+		(= str (String newWith: 100 {_}))
+		(GetConfig {StartRoom} str)
+		(= newRoomNum (str asInteger:))
+		(str dispose:)
 		(if (!= newRoomNum 0) (return))
 		(= newRoomNum 50)
 	)
@@ -529,11 +518,9 @@
 )
 
 (instance oHandsOffCode of Code
-	(properties)
-	
-	(method (doit param1 &tmp userCanControl temp1)
+	(method (doit allHands &tmp userCanControl temp1)
 		(= userCanControl (user canControl:))
-		(= temp1 (if argc param1 else 0))
+		(= temp1 (if argc allHands else 0))
 		(user canControl: 0 canInput: 0)
 		(if (!= theCursor waitCursor)
 			(theGame setCursor: waitCursor)
@@ -552,8 +539,6 @@
 )
 
 (instance oHandsOnCode of Code
-	(properties)
-	
 	(method (doit)
 		(user canControl: 1 canInput: 1)
 		(if (ScriptID 64000 0) ((ScriptID 64000 0) enable:))
@@ -570,13 +555,15 @@
 )
 
 (instance oApproachCode of Code
-	(properties)
-	
-	(method (doit param1)
+	(method (doit theVerb)
 		(return
-			(switch param1
-				(2 (return 1))
-				(else  (return -32768))
+			(switch theVerb
+				(V_DO
+					(return $0001)
+				)
+				(else
+					(return $8000)
+				)
 			)
 		)
 	)

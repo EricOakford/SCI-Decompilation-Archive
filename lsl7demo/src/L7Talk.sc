@@ -9,7 +9,7 @@
 (use GenDialog)
 (use Plane)
 (use String)
-(use CueObj)
+(use Feature)
 (use System)
 
 (public
@@ -257,7 +257,7 @@ code_0235:
 		(if (and theL7TalkWindow (theL7TalkWindow oPlane?))
 			(theL7TalkWindow dispose:)
 		else
-			(PrintDebug
+			(MonoOut
 				{oTalkClose selected with no current talk window}
 			)
 		)
@@ -283,7 +283,7 @@ code_0235:
 				(not theOTopics)
 				(not (theOTopics size:))
 			)
-			(PrintDebug {Illegal call of L7TalkWindow init})
+			(MonoOut {Illegal call of L7TalkWindow init})
 			(return)
 		)
 		(super init: &rest)
@@ -301,7 +301,7 @@ code_0235:
 	
 	(method (addTopic param1 &tmp temp0 temp1)
 		(if (not oTopics)
-			(PrintDebug {Illegal addTopic call in L7TalkWindow})
+			(MonoOut {Illegal addTopic call in L7TalkWindow})
 			(return)
 		)
 		(= temp1 0)
@@ -496,7 +496,7 @@ code_0235:
 					(= temp4 (Str with: temp3))
 				)
 				(if (== (temp7 weigh: temp4) 0)
-					(PrintDebug {Hit on '%s'} temp7)
+					(MonoOut {Hit on '%s'} temp7)
 					(proc64896_7 temp4)
 					(proc64896_7 temp7)
 					(= param1 (local2 at: temp6))

@@ -407,7 +407,7 @@
 	
 	(method (physToUser param1 &tmp temp0)
 		(if (not nPhysRange)
-			(PrintDebug {physical range not inited. DJM. scrllbar.sc})
+			(MonoOut {physical range not inited. DJM. scrllbar.sc})
 			(return 0)
 		)
 		(= param1 (Max 0 (Min nPhysRange param1)))

@@ -17,7 +17,7 @@
 	(= soundsFirst (sounds first:))
 	(while soundsFirst
 		(if
-		((= temp0 (List 8 soundsFirst)) respondsTo: #reSyncVol)
+		((= temp0 (KList 8 soundsFirst)) respondsTo: #reSyncVol)
 			(temp0 reSyncVol:)
 		)
 		(= soundsFirst (sounds next: soundsFirst))
@@ -29,7 +29,7 @@
 	(= soundsFirst (sounds first:))
 	(while soundsFirst
 		(if
-		((= temp0 (List 8 soundsFirst)) respondsTo: #reSyncVol)
+		((= temp0 (KList 8 soundsFirst)) respondsTo: #reSyncVol)
 			(temp0 reSyncVol:)
 		)
 		(= soundsFirst (sounds next: soundsFirst))
@@ -41,7 +41,7 @@
 	(= soundsFirst (sounds first:))
 	(while soundsFirst
 		(if
-		((= temp0 (List 8 soundsFirst)) respondsTo: #reSyncVol)
+		((= temp0 (KList 8 soundsFirst)) respondsTo: #reSyncVol)
 			(temp0 reSyncVol:)
 		)
 		(= soundsFirst (sounds next: soundsFirst))
@@ -165,12 +165,7 @@
 			(cond 
 				((ResCheck 141 [param1 temp0]) (Load 141 [param1 temp0]))
 				((ResCheck 140 [param1 temp0]) (Load 140 [param1 temp0]))
-				(else
-					(PrintDebug
-						{Preloaded sound not found: %d}
-						[param1 temp0]
-					)
-				)
+				(else (MonoOut {Preloaded sound not found: %d} [param1 temp0]))
 			)
 			(++ temp0)
 		)
@@ -214,7 +209,7 @@
 			)
 		)
 		(if (<= audTicks 0)
-			(PrintDebug
+			(MonoOut
 				{No audio found m:%hu n:%d v:%d c:%d s:%d}
 				audModNum
 				audNoun
@@ -226,7 +221,7 @@
 		)
 		(if (and (& msgType $0001) theTheAudNoun)
 			(= oSubtitle
-				(proc64928_1
+				(MakeMessageSubtitle
 					audModNum
 					audNoun
 					audVerb
@@ -262,7 +257,7 @@
 		)
 		(if (& msgType $0001)
 			(= oSubtitle
-				(proc64928_1
+				(MakeMessageSubtitle
 					audModNum
 					audNoun
 					audVerb

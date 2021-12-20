@@ -6,7 +6,7 @@
 (use PArray)
 (use Array)
 (use Print)
-(use CueObj)
+(use Feature)
 (use Actor)
 (use System)
 

@@ -15,8 +15,7 @@
 (class ExitFeature of Feature
 	(method (doVerb &tmp [temp0 2])
 		(ego
-			setMotion:
-				PolyPath
+			setMotion: PolyPath
 				(- mouseX (plane left:))
 				(- mouseY (plane top?))
 				self

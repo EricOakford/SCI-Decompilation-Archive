@@ -230,7 +230,7 @@
 	(method (autosave param1 param2 &tmp temp0 [temp1 2] temp3 temp4 newStr)
 		(if (> argc 1) (= temp0 param2) else (= temp0 0))
 		((= newStr (Str new:)) copy: curSaveDir)
-		(curSaveDir copy: gNewStr_2)
+		(curSaveDir copy: gameDir)
 		(if (FileIO 19 (KArray 9 curSaveDir))
 			(= temp3 (self setCursor: waitCursor 1))
 			(if argc
@@ -269,7 +269,7 @@
 	(method (autorestore param1 &tmp temp0 newStr_4 newStr_2 newStr_3 planesNextNode temp5 temp6 temp7 temp8 temp9 temp10 temp11 newStr)
 		(if argc (= temp0 param1) else (= temp0 0))
 		((= newStr (Str new:)) copy: curSaveDir)
-		(curSaveDir copy: gNewStr_2)
+		(curSaveDir copy: gameDir)
 		(if
 		(not (SaveGame 3 {Autosv} temp0 (KArray 9 version)))
 			(if temp0

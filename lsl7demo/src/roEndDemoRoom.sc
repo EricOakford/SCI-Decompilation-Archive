@@ -26,7 +26,7 @@
 	(if (ResCheck 139 param1)
 		(Palette 1 param1)
 	else
-		(PrintDebug {Palette %d is inaccessible.} param1)
+		(MonoOut {Palette %d is inaccessible.} param1)
 	)
 	(return 1)
 )

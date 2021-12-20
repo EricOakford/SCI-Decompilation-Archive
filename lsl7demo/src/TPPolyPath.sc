@@ -69,7 +69,7 @@
 				name: {tpppath.init}
 				copy: temp3
 			)
-			(Array 4 temp3)
+			(KArray 4 temp3)
 			(self setTarget:)
 		)
 		(super init:)
@@ -149,10 +149,10 @@
 	)
 	
 	(method (newTarget)
-		(PrintDebug {TPPolyPath newTarget method not overridden!})
+		(MonoOut {TPPolyPath newTarget method not overridden!})
 	)
 	
 	(method (setArgs)
-		(PrintDebug {TPPolyPath setArgs method not overridden!})
+		(MonoOut {TPPolyPath setArgs method not overridden!})
 	)
 )

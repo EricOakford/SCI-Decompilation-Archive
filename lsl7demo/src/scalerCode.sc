@@ -48,7 +48,7 @@
 		)
 		(= temp6 (Str format: {%s scale= %d} param2 temp0))
 		((= newDText (DText new:))
-			text: (Array 8 (temp6 data?))
+			text: (KArray 8 (temp6 data?))
 			fore: 87
 			back: 0
 			skip: 255
@@ -76,7 +76,7 @@
 		(newEvent y: (Max param1 (newEvent y?)))
 		(= temp3 (Str format: {%s y= %d} param2 (newEvent y?)))
 		((= newDText (DText new:))
-			text: (Array 8 (temp3 data?))
+			text: (KArray 8 (temp3 data?))
 			fore: 87
 			back: 0
 			skip: 255

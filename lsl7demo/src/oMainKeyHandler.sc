@@ -22,7 +22,7 @@
 	
 	(method (handleEvent event &tmp theGameNGameSpeed)
 		(if (not (& (event type?) $000c))
-			(PrintDebug
+			(MonoOut
 				{Attempt to execute key handler with non-key event. DJM keys.sc}
 			)
 			(return)

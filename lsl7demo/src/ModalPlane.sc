@@ -5,7 +5,7 @@
 (use TimePauser)
 (use NewGame)
 (use Plane)
-(use CueObj)
+(use Feature)
 (use System)
 
 

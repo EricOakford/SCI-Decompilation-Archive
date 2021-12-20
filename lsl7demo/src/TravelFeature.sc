@@ -7,7 +7,7 @@
 (use PushButton)
 (use GenDialog)
 (use Polygon)
-(use CueObj)
+(use Feature)
 
 (public
 	oTravelScreen 0

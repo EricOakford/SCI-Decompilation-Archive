@@ -29,7 +29,7 @@
 	(if (or (< argc 2) (not param1) (not param2))
 		(if param1 (proc64896_7 param1))
 		(if param2 (proc64896_7 param2))
-		(PrintDebug {illegal call of TextDialog. gendialg.sc DJM})
+		(MonoOut {illegal call of TextDialog. gendialg.sc DJM})
 		(return)
 	)
 	(if (< argc 3) (= temp0 0) else (= temp0 param3))
@@ -45,7 +45,7 @@
 		fore: global274
 		back: 255
 		skip: 255
-		text: (Array 8 (Array 9 param1))
+		text: (KArray 8 (KArray 9 param1))
 		border: 0
 		mode: 0
 		bTileBorder: 0
@@ -59,7 +59,7 @@
 		nLeading: global271
 		fore: gFore
 		back: gBack
-		text: (Array 8 (Array 9 param2))
+		text: (KArray 8 (KArray 9 param2))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -95,7 +95,7 @@
 			fore: global274
 			back: 255
 			skip: 255
-			text: (Array 8 (Array 9 temp0))
+			text: (KArray 8 (KArray 9 temp0))
 			border: 5
 			bTileBorder: 1
 			vTile: -5516
@@ -167,7 +167,7 @@
 
 (procedure (proc64033_1 param1 param2)
 	(if (< argc 2)
-		(PrintDebug {illegal set of dialog font. gendialg.sc DJM})
+		(MonoOut {illegal set of dialog font. gendialg.sc DJM})
 		(return)
 	)
 	(= global268 param1)
@@ -176,7 +176,7 @@
 
 (procedure (proc64033_2 param1 param2)
 	(if (< argc 2)
-		(PrintDebug {illegal set of button font. gendialg.sc DJM})
+		(MonoOut {illegal set of button font. gendialg.sc DJM})
 		(return)
 	)
 	(= global270 param1)
@@ -185,9 +185,7 @@
 
 (procedure (proc64033_3 param1 theGFore theGBack)
 	(if (< argc 3)
-		(PrintDebug
-			{illegal set of dialog colors. gendialg.sc DJM}
-		)
+		(MonoOut {illegal set of dialog colors. gendialg.sc DJM})
 		(return)
 	)
 	(= global274 param1)
@@ -197,9 +195,7 @@
 
 (procedure (proc64033_4 param1 param2 param3)
 	(if (< argc 3)
-		(PrintDebug
-			{illegal set of dialog colors. gendialg.sc DJM}
-		)
+		(MonoOut {illegal set of dialog colors. gendialg.sc DJM})
 		(return)
 	)
 	(= global275 param1)
@@ -213,9 +209,7 @@
 		(if param1 (proc64896_7 param1))
 		(if param3 (proc64896_7 param2))
 		(if param2 (proc64896_7 param3))
-		(PrintDebug
-			{illegal call of YesNoDialog. gendialg.sc DJM}
-		)
+		(MonoOut {illegal call of YesNoDialog. gendialg.sc DJM})
 		(return 0)
 	)
 	(if (< argc 4) (= temp0 0) else (= temp0 param4))
@@ -231,7 +225,7 @@
 		fore: global274
 		back: 255
 		skip: 255
-		text: (Array 8 (Array 9 param1))
+		text: (KArray 8 (KArray 9 param1))
 		mode: 0
 		border: 0
 		bTileBorder: 0
@@ -256,7 +250,7 @@
 		nLeading: global271
 		fore: gFore
 		back: gBack
-		text: (Array 8 (Array 9 param2))
+		text: (KArray 8 (KArray 9 param2))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -271,7 +265,7 @@
 		nLeading: global271
 		fore: gFore
 		back: gBack
-		text: (Array 8 (Array 9 param3))
+		text: (KArray 8 (KArray 9 param3))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -318,7 +312,7 @@
 			fore: global274
 			back: 255
 			skip: 255
-			text: (Array 8 (Array 9 temp0))
+			text: (KArray 8 (KArray 9 temp0))
 			border: 5
 			bTileBorder: 1
 			vTile: -5516
@@ -414,9 +408,7 @@
 		(if param1 (proc64896_7 param1))
 		(if param3 (proc64896_7 param2))
 		(if param2 (proc64896_7 param3))
-		(PrintDebug
-			{illegal call of YesNoDialog. gendialg.sc DJM}
-		)
+		(MonoOut {illegal call of YesNoDialog. gendialg.sc DJM})
 		(return 0)
 	)
 	(if (< argc 5) (= temp0 0) else (= temp0 param5))
@@ -433,7 +425,7 @@
 		fore: global274
 		back: 255
 		skip: 255
-		text: (Array 8 (Array 9 param1))
+		text: (KArray 8 (KArray 9 param1))
 		mode: 0
 		border: 0
 		bTileBorder: 0
@@ -457,7 +449,7 @@
 		nLeading: global271
 		fore: gFore
 		back: gBack
-		text: (Array 8 (Array 9 param2))
+		text: (KArray 8 (KArray 9 param2))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -472,7 +464,7 @@
 		nLeading: global271
 		fore: gFore
 		back: gBack
-		text: (Array 8 (Array 9 param3))
+		text: (KArray 8 (KArray 9 param3))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -544,7 +536,7 @@
 			fore: global274
 			back: 255
 			skip: 255
-			text: (Array 8 (Array 9 temp0))
+			text: (KArray 8 (KArray 9 temp0))
 			border: 5
 			bTileBorder: 1
 			vTile: -5516
@@ -646,7 +638,7 @@
 
 (procedure (proc64033_7 param1 param2 param3 param4 &tmp temp0 temp1 newTiledViewNWidth newTiledViewNHeight newDialogPlane newTiledView newDismissTextButton [theNewDismissTextButton 10] newDismissTextButtonNWidth newDismissTextButtonNHeight temp19 temp20 temp21 temp22 temp23)
 	(if (or (< argc 4) (not [param4 0]))
-		(PrintDebug
+		(MonoOut
 			{Illegal call of StackedButtonDialog. slidesho.sc MFM}
 		)
 		(return 0)
@@ -657,7 +649,7 @@
 	(while (< temp23 param1)
 		(= newDismissTextButton (DismissTextButton new:))
 		(newDismissTextButton
-			text: (Array 8 (Array 9 [param4 temp23]))
+			text: (KArray 8 (KArray 9 [param4 temp23]))
 			fore: gFore
 			back: gBack
 			font: global270

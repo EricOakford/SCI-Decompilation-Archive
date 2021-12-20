@@ -5,7 +5,7 @@
 (use PopMenu)
 (use GenDialog)
 (use PolyPath)
-(use CueObj)
+(use Feature)
 (use StopWalk)
 (use Grooper)
 (use Ego)
@@ -33,7 +33,7 @@
 			(not param1)
 			(not (param1 isKindOf: Actor))
 		)
-		(PrintDebug {Bad call of GetActorLoop. L7Ego.sc. djm})
+		(MonoOut {Bad call of GetActorLoop. L7Ego.sc. djm})
 		(return 0)
 	)
 	(return
@@ -276,7 +276,7 @@
 			(while oMyVerbHandlersFirst
 				(if
 					(and
-						(= temp1 (List 8 oMyVerbHandlersFirst))
+						(= temp1 (KList 8 oMyVerbHandlersFirst))
 						(temp1 doVerb: &rest)
 					)
 					(return 1)

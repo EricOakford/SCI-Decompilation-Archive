@@ -227,7 +227,7 @@
 	(while temp4
 		(if
 			(and
-				((= temp0 (List 8 temp4)) isKindOf: param2)
+				((= temp0 (KList 8 temp4)) isKindOf: param2)
 				(<
 					(= temp3
 						(GetDistance param3 param4 (temp0 x?) (temp0 y?))
@@ -271,7 +271,7 @@
 	(= temp0 (planes next: (planes first:)))
 	(while temp0
 		(if
-		((= theTheThePlane (List 8 temp0)) onMe: param1)
+		((= theTheThePlane (KList 8 temp0)) onMe: param1)
 			(= theThePlane theTheThePlane)
 			(break)
 		)
@@ -370,7 +370,7 @@
 							)
 							(return)
 						)
-						(if (not (String 7 (printInit name?) {temp}))
+						(if (not (KString 7 (printInit name?) {temp}))
 							(printInit dispose:)
 							(= theNewActor 0)
 						)
@@ -432,7 +432,7 @@
 						else
 							(printInit cel: 0)
 						)
-						(PrintDebug {Cur Cel: %d} (printInit cel?))
+						(MonoOut {Cur Cel: %d} (printInit cel?))
 						(UpdateScreenItem printInit)
 					)
 					(KEY_4
@@ -456,7 +456,7 @@
 						else
 							(printInit cel: (printInit lastCel:))
 						)
-						(PrintDebug {Cur Cel: %d} (printInit cel?))
+						(MonoOut {Cur Cel: %d} (printInit cel?))
 						(UpdateScreenItem printInit)
 					)
 					(KEY_3
@@ -480,7 +480,7 @@
 						else
 							(printInit loop: 0)
 						)
-						(PrintDebug {Cur Loop: %d} (printInit loop?))
+						(MonoOut {Cur Loop: %d} (printInit loop?))
 						(UpdateScreenItem printInit)
 					)
 					(KEY_1
@@ -504,7 +504,7 @@
 						else
 							(printInit loop: (printInit lastLoop:))
 						)
-						(PrintDebug {Cur Loop: %d} (printInit loop?))
+						(MonoOut {Cur Loop: %d} (printInit loop?))
 						(UpdateScreenItem printInit)
 					)
 					(KEY_NUMPAD4
@@ -524,11 +524,7 @@
 							(return)
 						)
 						(printInit posn: (- (printInit x?) 1) (printInit y?))
-						(PrintDebug
-							{CurPos: %d, %d}
-							(printInit x?)
-							(printInit y?)
-						)
+						(MonoOut {CurPos: %d, %d} (printInit x?) (printInit y?))
 						(UpdateScreenItem printInit)
 					)
 					(KEY_RIGHT
@@ -548,11 +544,7 @@
 							(return)
 						)
 						(printInit posn: (+ (printInit x?) 1) (printInit y?))
-						(PrintDebug
-							{CurPos: %d, %d}
-							(printInit x?)
-							(printInit y?)
-						)
+						(MonoOut {CurPos: %d, %d} (printInit x?) (printInit y?))
 						(UpdateScreenItem printInit)
 					)
 					(KEY_UP
@@ -572,11 +564,7 @@
 							(return)
 						)
 						(printInit posn: (printInit x?) (- (printInit y?) 1))
-						(PrintDebug
-							{CurPos: %d, %d}
-							(printInit x?)
-							(printInit y?)
-						)
+						(MonoOut {CurPos: %d, %d} (printInit x?) (printInit y?))
 						(UpdateScreenItem printInit)
 					)
 					(KEY_NUMPAD2
@@ -596,11 +584,7 @@
 							(return)
 						)
 						(printInit posn: (printInit x?) (+ (printInit y?) 1))
-						(PrintDebug
-							{CurPos: %d, %d}
-							(printInit x?)
-							(printInit y?)
-						)
+						(MonoOut {CurPos: %d, %d} (printInit x?) (printInit y?))
 						(UpdateScreenItem printInit)
 					)
 					(KEY_ALT_a
@@ -646,7 +630,7 @@
 							(++ local0)
 						)
 						(if (< local0 999)
-							(Dummy (temp5 data?))
+							(SaveScreen (temp5 data?))
 							(Printf {Screen saved as\n___%s} (temp5 data?))
 						else
 							(Prints
@@ -659,7 +643,7 @@
 						(if ((temp23 getMainCast:) size:)
 							(= temp4 ((temp23 getMainCast:) first:))
 							(while temp4
-								(= temp3 (List 8 temp4))
+								(= temp3 (KList 8 temp4))
 								(if (not (localproc_00b2 temp3)) (break))
 								(= temp4 ((temp23 getMainCast:) next: temp4))
 							)
@@ -740,10 +724,10 @@
 						(= temp6 0)
 						(if (PEditor size:)
 							(= temp6 (Str newWith: 5 {}))
-							(= temp8 (List 3 (PEditor elements?)))
+							(= temp8 (KList 3 (PEditor elements?)))
 							(while temp8
-								(= temp9 (List 6 temp8))
-								(= temp11 (List 8 temp8))
+								(= temp9 (KList 6 temp8))
+								(= temp11 (KList 8 temp8))
 								(poly_pol writeString: {\0D\n})
 								(poly_pol writeString: {(instance_})
 								(poly_pol writeString: (temp11 name?))
@@ -976,10 +960,10 @@
 								((curRoom obstacles?) dispose:)
 								(curRoom obstacles: 0)
 							)
-							(= temp8 (List 3 (PEditor elements?)))
+							(= temp8 (KList 3 (PEditor elements?)))
 							(while temp8
-								(= temp9 (List 6 temp8))
-								(= temp11 (List 8 temp8))
+								(= temp9 (KList 6 temp8))
+								(= temp11 (KList 8 temp8))
 								(curRoom
 									addObstacle:
 										((Polygon new:)
@@ -1066,13 +1050,13 @@
 					(JOY_DOWNRIGHT
 						(= temp23 (localproc_0978 event))
 						(= temp3 (proc64014_1 {Which sound number?}))
-						(= temp4 (proc64255_1 {Loop?}))
+						(= temp4 (GetNumber {Loop?}))
 						(if (> temp3 0)
 							(debugSound stop: setLoop: temp4 number: temp3 play:)
 						)
 					)
 					(KEY_ALT_t
-						(if (> (= local5 (proc64255_1 {Teleport to})) 0)
+						(if (> (= local5 (GetNumber {Teleport to})) 0)
 							(curRoom newRoom: local5)
 						)
 					)
@@ -1102,9 +1086,9 @@
 				(switch (event modifiers?)
 					(emCTRL
 						(= temp23 (localproc_0978 event))
-						(PrintDebug { local: %d/%d} (event x?) (event y?))
+						(MonoOut { local: %d/%d} (event x?) (event y?))
 						(event globalize:)
-						(PrintDebug {global: %d/%d} (event x?) (event y?))
+						(MonoOut {global: %d/%d} (event x?) (event y?))
 					)
 					(emALT
 						(= temp23 (localproc_0978 event))
@@ -1135,7 +1119,7 @@
 							(FrameOut)
 							(newEvent dispose:)
 						)
-						(PrintDebug
+						(MonoOut
 							{; %s (#%d)\nposn: %d %d}
 							(printInit name?)
 							printInit

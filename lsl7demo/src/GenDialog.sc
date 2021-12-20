@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 64896)
-(include sci.sh)
+(include game.sh)
 (use Main)
 (use String)
 (use Array)
@@ -136,7 +136,7 @@
 		)
 		(return 0)
 	)
-	(= temp6 (Str newWith: 4000 {}))
+	(= temp6 (String newWith: 4000 {}))
 	(Message
 		0
 		theCurRoomNum

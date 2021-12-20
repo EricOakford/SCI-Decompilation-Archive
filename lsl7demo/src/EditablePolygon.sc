@@ -577,7 +577,7 @@ code_080c:
 			(= local1 (Str format: {Edit Mode}))
 		)
 		((= newDText (DText new:))
-			text: (Array 8 (local1 data?))
+			text: (KArray 8 (local1 data?))
 			fore: 87
 			back: 0
 			skip: 255
@@ -661,11 +661,11 @@ code_080c:
 		(= currentPolygon (= currentIndex 0))
 		(if (not (self size:)) (return))
 		(= theTheCurrentPolygonShortestDistance 32767)
-		(= theNextNode (List 3 elements))
+		(= theNextNode (KList 3 elements))
 		(while theNextNode
-			(= nextNode (List 6 theNextNode))
+			(= nextNode (KList 6 theNextNode))
 			(= theCurrentIndex
-				((= theCurrentPolygon (List 8 theNextNode))
+				((= theCurrentPolygon (KList 8 theNextNode))
 					findClosestPoint: param1 param2
 				)
 			)
@@ -775,7 +775,7 @@ code_1349:
 			lal      local1
 			send     4
 			push    
-			callk    Array,  4
+			callk    KArray,  4
 			push    
 			_line_   617
 			pushi    37
@@ -1412,14 +1412,14 @@ code_1111:
 			pushi    65535
 			pushi    1
 			pTos     currentPolygon
-			callk    Dummy,  2
+			callk    TestPoly,  2
 			ne?     
 			bnt      code_1227
 			_line_   569
 			pushi    1
 			lofsa    {Container polygon must be CCW}
 			push    
-			callk    PrintDebug,  2
+			callk    MonoOut,  2
 			jmp      code_1227
 code_120a:
 			_line_   572
@@ -1427,14 +1427,14 @@ code_120a:
 			pushi    1
 			pushi    1
 			pTos     currentPolygon
-			callk    Dummy,  2
+			callk    TestPoly,  2
 			ne?     
 			bnt      code_1227
 			_line_   574
 			pushi    1
 			lofsa    {Non container polygon must be CW}
 			push    
-			callk    PrintDebug,  2
+			callk    MonoOut,  2
 code_1227:
 			toss    
 			jmp      code_1240

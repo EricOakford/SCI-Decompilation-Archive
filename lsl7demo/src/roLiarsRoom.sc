@@ -13,7 +13,7 @@
 (use Print)
 (use Talker)
 (use Polygon)
-(use CueObj)
+(use Feature)
 (use Timer)
 (use Motion)
 (use Actor)
@@ -68,7 +68,7 @@
 		(if param1 (proc64896_7 param1))
 		(if param2 (proc64896_7 param2))
 		(if param3 (proc64896_7 param3))
-		(PrintDebug
+		(MonoOut
 			{Illegal call of MakeChoice procedure. liars.sc SRC}
 		)
 		(return 0)
@@ -95,7 +95,7 @@
 		nLeading: global271
 		fore: gFore
 		back: gBack
-		text: (Array 8 (Array 9 param2))
+		text: (KArray 8 (KArray 9 param2))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -110,7 +110,7 @@
 		nLeading: global271
 		fore: gFore
 		back: gBack
-		text: (Array 8 (Array 9 param3))
+		text: (KArray 8 (KArray 9 param3))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -135,7 +135,7 @@
 			fore: global274
 			back: 255
 			skip: 255
-			text: (Array 8 (Array 9 param1))
+			text: (KArray 8 (KArray 9 param1))
 			border: 5
 			bTileBorder: 0
 			vTile: -5516
@@ -520,7 +520,7 @@
 				(and (not temp1) (< temp2 (oLarryDiceOShowing size:)))
 					(= temp3 0)
 					(= temp5
-						(List
+						(KList
 							8
 							(= oLarryDiceOShowingFirst (oLarryDiceOShowing first:))
 						)
@@ -538,7 +538,7 @@
 						(if
 						(!= oLarryDiceOShowingFirst (oLarryDiceOShowing last:))
 							(= temp5
-								(List
+								(KList
 									8
 									(= oLarryDiceOShowingFirst
 										(oLarryDiceOShowing next: oLarryDiceOShowingFirst)
@@ -669,13 +669,13 @@
 	)
 	
 	(method (firstDie)
-		(List 8 (= curNode (self first:)))
+		(KList 8 (= curNode (self first:)))
 	)
 	
 	(method (nextDie)
 		(return
 			(if (!= curNode (self last:))
-				(return (List 8 (= curNode (self next: curNode))))
+				(return (KList 8 (= curNode (self next: curNode))))
 			else
 				(return 0)
 			)
@@ -683,7 +683,7 @@
 	)
 	
 	(method (lastDie)
-		(List 8 (self last:))
+		(KList 8 (self last:))
 	)
 	
 	(method (stillRolling &tmp diceFirstDie temp1 temp2)

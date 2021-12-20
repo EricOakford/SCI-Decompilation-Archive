@@ -18,7 +18,7 @@
 
 (public
 	proc64928_0 0
-	proc64928_1 1
+	MakeMessageSubtitle 1
 	proc64928_2 2
 )
 
@@ -54,7 +54,7 @@
 	(newPrint dialog?)
 )
 
-(procedure (proc64928_1 param1 param2 param3 param4 param5 &tmp temp0 temp1)
+(procedure (MakeMessageSubtitle param1 param2 param3 param4 param5 &tmp temp0 temp1)
 	(if (< argc 5)
 		(MonoOut
 			{Passed less than the minimum no. of args to MakeMessageSubTitle}

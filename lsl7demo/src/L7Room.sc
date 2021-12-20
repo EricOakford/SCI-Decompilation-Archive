@@ -133,7 +133,7 @@
 		(oExtraPlanes delete: param1)
 		(if (== param1 plane)
 			(if (oExtraPlanes size:)
-				(= plane (List 8 (oExtraPlanes last:)))
+				(= plane (KList 8 (oExtraPlanes last:)))
 			else
 				(= plane oMainPlane)
 				(= oMainPlane 0)
@@ -145,7 +145,7 @@
 	
 	(method (exitRoom param1 param2 param3 param4)
 		(if (< argc 3)
-			(PrintDebug
+			(MonoOut
 				{You have to pass all three arguments.\ntheRoom, theX, and theY. SRC l7room.sc.}
 			)
 			(return)

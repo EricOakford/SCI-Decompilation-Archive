@@ -27,7 +27,7 @@
 )
 (procedure (proc64038_1 param1)
 	(if (not param1)
-		(PrintDebug
+		(MonoOut
 			{Adding default verbs to NULL object. DJM popmenu.sc}
 		)
 		(return)
@@ -258,7 +258,7 @@ code_049b:
 			pushi    1
 			lofsa    {Attempt to handle NULL feature. DJM POPMENU.SC}
 			push    
-			callk    PrintDebug,  2
+			callk    MonoOut,  2
 			_line_   228
 			ldi      65535
 			ret     
@@ -380,7 +380,7 @@ code_05b6:
 			lofsa    {No verb list for feature %d}
 			push    
 			lsp      param1
-			callk    PrintDebug,  4
+			callk    MonoOut,  4
 			_line_   266
 			ldi      65535
 			ret     
@@ -443,7 +443,7 @@ code_06fc:
 			pushi    2
 			pushi    8
 			push    
-			callk    List,  4
+			callk    KList,  4
 			sat      temp9
 			_line_   289
 			pushi    5
@@ -935,7 +935,7 @@ code_0acb:
 			lofsa    {Hit on '%s'}
 			push    
 			lst      temp8
-			callk    PrintDebug,  4
+			callk    MonoOut,  4
 			_line_   429
 			pushi    1
 			lst      temp18

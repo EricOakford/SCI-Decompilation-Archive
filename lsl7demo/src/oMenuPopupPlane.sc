@@ -9,7 +9,7 @@
 (use GenDialog)
 (use Plane)
 (use String)
-(use CueObj)
+(use Feature)
 (use File)
 
 (public
@@ -25,14 +25,14 @@
 	local0
 )
 (procedure (WritePrefs &tmp temp0)
-	(= temp0 (Str with: gNewStr_2))
+	(= temp0 (Str with: gameDir))
 	(temp0 cat: {larry7.prf})
 	(if (!= (temp0 weigh: (oFile name?)) 0)
-		(oFile name: (Array 8 (temp0 data?)))
+		(oFile name: (KArray 8 (temp0 data?)))
 	)
 	(temp0 dispose:)
 	(if (not (oFile open: 2))
-		(PrintDebug {Unable to create prefs file.})
+		(MonoOut {Unable to create prefs file.})
 		(return)
 	)
 	(oFile writeWord: 18247)
@@ -52,10 +52,10 @@
 )
 
 (procedure (ReadPrefs &tmp temp0 temp1 oFileReadWord_3 oFileReadWord oFileReadWord_2)
-	(= temp0 (Str with: gNewStr_2))
+	(= temp0 (Str with: gameDir))
 	(temp0 cat: {larry7.prf})
 	(if (!= (temp0 weigh: (oFile name?)) 0)
-		(oFile name: (Array 8 (temp0 data?)))
+		(oFile name: (KArray 8 (temp0 data?)))
 	)
 	(temp0 dispose:)
 	(if

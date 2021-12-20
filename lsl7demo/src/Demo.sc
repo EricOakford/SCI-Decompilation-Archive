@@ -32,7 +32,7 @@
 		(if param1 (proc64896_7 param1))
 		(if param2 (proc64896_7 param2))
 		(if param3 (proc64896_7 param3))
-		(PrintDebug
+		(MonoOut
 			{Illegal call of MakeChoice procedure. demo.sc SRC}
 		)
 		(return 0)
@@ -59,7 +59,7 @@
 		nLeading: global271
 		fore: 0
 		back: gBack
-		text: (Array 8 (Array 9 param2))
+		text: (KArray 8 (KArray 9 param2))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -74,7 +74,7 @@
 		nLeading: global271
 		fore: 0
 		back: gBack
-		text: (Array 8 (Array 9 param3))
+		text: (KArray 8 (KArray 9 param3))
 		bTileBorder: 1
 		vTileOff: global276
 		vTileOn: global277
@@ -99,7 +99,7 @@
 			fore: 0
 			back: 255
 			skip: 255
-			text: (Array 8 (Array 9 param1))
+			text: (KArray 8 (KArray 9 param1))
 			border: 5
 			bTileBorder: 0
 			vTile: -5516
@@ -194,7 +194,7 @@
 	(if (ResCheck 139 param1)
 		(Palette 1 param1)
 	else
-		(PrintDebug {Palette %d is inaccessible.} param1)
+		(MonoOut {Palette %d is inaccessible.} param1)
 	)
 	(return 1)
 )
