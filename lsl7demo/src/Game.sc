@@ -449,7 +449,7 @@
 		)
 		(cast plane: thePlane)
 
-;;;		(Styler init:)	; creates array
+		(Styler init:)	; creates array
 		(self setCursor: normalCursor TRUE)
 	)
 
