@@ -34,7 +34,7 @@
 	
 	(method (doVerb theVerb)
 		(if
-		(and noun msgType (Message msgGET 0 noun theVerb 0 1))
+		(and noun msgType (Message 0 0 noun theVerb 0 1))
 			(messager say: noun theVerb 0 0 0 0)
 		)
 	)
@@ -329,9 +329,7 @@
 				(++ temp0)
 			)
 		)
-		(Prints
-			{error -- can't find open inventory slot. djm, dminv.sc}
-		)
+		(Prints LOOKUP_ERROR)
 		(return -1)
 	)
 	
@@ -436,9 +434,7 @@
 			(if temp4
 				(return (nUnhilitedBack at: temp3))
 			else
-				(Prints
-					{error -- find nearest open can't find open inventory slot. djm, dminv.sc}
-				)
+				(Prints LOOKUP_ERROR)
 				(return 0)
 			)
 		)
@@ -519,10 +515,7 @@
 	)
 	
 	(method (doVerb theVerb &tmp temp0)
-		(if (not nLevel)
-			(Prints {no handler for InventWellFeature. djm, inv.sc})
-			(return)
-		)
+		(if (not nLevel) (Prints LOOKUP_ERROR) (return))
 		(if
 			(not
 				(= temp0

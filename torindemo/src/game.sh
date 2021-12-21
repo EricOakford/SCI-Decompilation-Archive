@@ -5,6 +5,7 @@
 ; * Put all the defines specific to your game in here
 
 (include system.sh) (include sci2.sh)
+(include verbs.sh)
 
 (define BLACK_COLOR 234)
 (define WHITE_COLOR 235)

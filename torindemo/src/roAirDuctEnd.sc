@@ -30,7 +30,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setCycle: oTorinCycle)
+		(self setCycle: LOOKUP_ERROR)
 	)
 	
 	(method (cantBeHere)
@@ -53,7 +53,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(aoTorinCrawls
+				(LOOKUP_ERROR
 					loop: 0
 					cel: 4
 					posn: 660 80
@@ -62,22 +62,22 @@
 				)
 			)
 			(1
-				(aoTorinCrawls dispose:)
-				(poTorinFalls loop: 0 cel: 0 posn: 390 80 init:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR loop: 0 cel: 0 posn: 390 80 init:)
 				(messager say: 0 0 1 1 self)
 			)
 			(2
-				(poTorinFalls setCycle: CT 15 1 self)
+				(LOOKUP_ERROR setCycle: CT 15 1 self)
 			)
 			(3
-				(sound1 lThumbLoop: -15235)
-				(poTorinFalls setCycle: End self)
+				(theSound lThumbLoop: -15235)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(4
-				(poTorinFalls dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom picture: -15235)
 				(curRoom drawPic: -15235)
-				(poTorinFalls
+				(LOOKUP_ERROR
 					loop: 1
 					cel: 0
 					posn: 316 120
@@ -98,8 +98,8 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -15236)
-		(curRoom setScript: soTorinFallsThroughSpace)
+		(theMusic pageSize: -15236)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

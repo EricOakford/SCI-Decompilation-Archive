@@ -37,7 +37,7 @@
 				(messager say: noun theVerb 0 0)
 			)
 			(74
-				(messager say: noun theVerb 0 0 coLeaveCU)
+				(messager say: noun theVerb 0 0 LOOKUP_ERROR)
 			)
 		)
 	)
@@ -59,9 +59,9 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -25236)
-		(foControls init:)
-		(foCannonExit init:)
+		(theMusic pageSize: -25236)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(theGame handsOn:)
 	)
 	

@@ -1,15 +1,18 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 64869)
-(include game.sh)
+(include sci.sh)
 (use Plane)
 (use Actor)
 (use System)
 
 
-(instance voTemp of View)
+(instance voTemp of View
+	(properties)
+)
 
-(class TiledBitmap of Object
+(class TiledBitmap of Obj
 	(properties
+		scratch 0
 		oMyScrollViews 1
 		oMyNotifyObjs 0
 		oMyNotifySelectors 0
@@ -34,55 +37,45 @@
 	
 	(method (init theVInventory param2 param3 theOMyNotifyObjs theOMyScrollViews)
 		(super init: &rest)
-		(if (< argc 3)
-			(MonoOut {invalid init of TiledBitmap})
-			(return)
-		)
+		(if (< argc 3) (MonoOut LOOKUP_ERROR) (return))
 		(= vInventory theVInventory)
-		(if (> argc 3)
-			(= oMyNotifyObjs theOMyNotifyObjs)
-		)
-		(if (> argc 4)
-			(= oMyScrollViews theOMyScrollViews)
-		)
+		(if (> argc 3) (= oMyNotifyObjs theOMyNotifyObjs))
+		(if (> argc 4) (= oMyScrollViews theOMyScrollViews))
 		(self lInventory: param2 param3)
 	)
 	
 	(method (dispose)
-		(if bitmap
-			(Bitmap MapDispose bitmap)
-			(= bitmap 0)
-		)
+		(if bitmap (Bitmap 1 bitmap) (= bitmap 0))
 		(super dispose: &rest)
 	)
 	
 	(method (lInventory theOMyNotifySelectors theAddScrollView &tmp theOMyScrollViews temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8 theIsObjVisible theAddPics temp11)
-		(if (< argc 2)
-			(MonoOut {Invalid resize of TiledBitmap})
-			(return)
-		)
+		(if (< argc 2) (MonoOut LOOKUP_ERROR) (return))
 		(if (not (ResCheck 128 vInventory))
-			(MonoOut {no view %hd for TiledBitmap} vInventory)
+			(MonoOut LOOKUP_ERROR vInventory)
 			(return)
 		)
-		(voTemp view: vInventory loop: 0 cel: 0)
-		(if (or (< (= temp5 (NumLoops voTemp)) 1) (> temp5 2))
-			(MonoOut {wrong number of loops view %hd} vInventory)
+		(LOOKUP_ERROR view: vInventory loop: 0 cel: 0)
+		(if
+			(or
+				(< (= temp5 (NumLoops 'LOOKUP_ERROR')) 1)
+				(> temp5 2)
+			)
+			(MonoOut LOOKUP_ERROR vInventory)
 			(return)
 		)
 		(if (== temp5 1)
 			(= theOMyScrollViews 0)
-			(= temp6 (NumCels voTemp))
+			(= temp6 (NumCels LOOKUP_ERROR))
 		else
 			(= theOMyScrollViews oMyScrollViews)
-			(= temp6 (NumCels voTemp))
-			(voTemp loop: 1)
-			(= temp7 (NumCels voTemp))
+			(= temp6 (NumCels LOOKUP_ERROR))
+			(LOOKUP_ERROR loop: 1)
+			(= temp7 (NumCels {view %hd TL corner wrong size}))
 		)
-		(if (or (!= temp6 1) (and theOMyScrollViews (!= temp7 8)))
-			(MonoOut
-				{Error: tiles view %hd should have 1 cel in loop 0, 8 cels in loop 1}
-			)
+		(if
+		(or (!= temp6 1) (and theOMyScrollViews (!= temp7 8)))
+			(MonoOut LOOKUP_ERROR)
 			(return)
 		)
 		(= canScrollLeft (CelWide vInventory 0 0))
@@ -105,11 +98,11 @@
 			)
 			(= temp8 0)
 			(if (!= getLocalX (CelHigh vInventory 1 1))
-				(MonoOut {view %hd left/right borders don't match})
+				(MonoOut LOOKUP_ERROR)
 				(= temp8 1)
 			)
 			(if (!= getLocalY (CelWide vInventory 1 3))
-				(MonoOut {view %hd top/bottom borders don't match})
+				(MonoOut LOOKUP_ERROR)
 				(= temp8 1)
 			)
 			(if
@@ -117,7 +110,7 @@
 					(!= isObjVisible (CelWide vInventory 1 4))
 					(!= addPics (CelHigh vInventory 1 4))
 				)
-				(MonoOut {view %hd TL corner wrong size})
+				(MonoOut LOOKUP_ERROR)
 				(= temp8 1)
 			)
 			(if
@@ -125,7 +118,7 @@
 					(!= isLocVisible (CelWide vInventory 1 5))
 					(!= addPics (CelHigh vInventory 1 5))
 				)
-				(MonoOut {view %hd TR corner wrong size})
+				(MonoOut LOOKUP_ERROR)
 				(= temp8 1)
 			)
 			(if
@@ -133,7 +126,7 @@
 					(!= isObjVisible (CelWide vInventory 1 6))
 					(!= addViews (CelHigh vInventory 1 6))
 				)
-				(MonoOut {view %hd BL corner wrong size})
+				(MonoOut LOOKUP_ERROR)
 				(= temp8 1)
 			)
 			(if
@@ -141,7 +134,7 @@
 					(!= isLocVisible (CelWide vInventory 1 7))
 					(!= addViews (CelHigh vInventory 1 7))
 				)
-				(MonoOut {view %hd BR corner wrong size})
+				(MonoOut LOOKUP_ERROR)
 				(= temp8 1)
 			)
 			(if temp8 (return))
@@ -171,7 +164,7 @@
 				(= temp2 (- theAddScrollView (+ addPics addViews)))
 				(if
 				(or (< temp1 canScrollLeft) (< temp2 canScrollRight))
-					(MonoOut {requested max size too small for tiles})
+					(MonoOut LOOKUP_ERROR)
 				)
 				(= scroll (/ temp1 canScrollLeft))
 				(= scrollToObj (/ temp2 canScrollRight))
@@ -207,9 +200,9 @@
 		(= addToNotifyList
 			(/ (- addScrollView theAddScrollView) 2)
 		)
-		(if bitmap (Bitmap MapDispose bitmap) (= bitmap 0))
+		(if bitmap (Bitmap 1 bitmap) (= bitmap 0))
 		(= bitmap
-			(Bitmap MapCreate oMyNotifySelectors addScrollView 255 255)
+			(Bitmap 0 oMyNotifySelectors addScrollView 255 255)
 		)
 		(= theIsObjVisible isObjVisible)
 		(= theAddPics addPics)
@@ -217,7 +210,8 @@
 		(while (< temp3 panTo)
 			(= temp4 0)
 			(while (< temp4 scrollToLoc)
-				(Bitmap MapAddCel
+				(Bitmap
+					3
 					bitmap
 					vInventory
 					0
@@ -235,7 +229,8 @@
 		(if theOMyScrollViews
 			(= theIsObjVisible 0)
 			(= theAddPics 0)
-			(Bitmap MapAddCel
+			(Bitmap
+				3
 				bitmap
 				vInventory
 				1
@@ -246,7 +241,8 @@
 			(= theIsObjVisible (+ theIsObjVisible isObjVisible))
 			(= temp3 0)
 			(while (< temp3 scroll)
-				(Bitmap MapAddCel
+				(Bitmap
+					3
 					bitmap
 					vInventory
 					1
@@ -257,7 +253,8 @@
 				(= theIsObjVisible (+ theIsObjVisible getLocalY))
 				(++ temp3)
 			)
-			(Bitmap MapAddCel
+			(Bitmap
+				3
 				bitmap
 				vInventory
 				1
@@ -269,7 +266,8 @@
 			(= theAddPics addPics)
 			(= temp3 0)
 			(while (< temp3 scrollToObj)
-				(Bitmap MapAddCel
+				(Bitmap
+					3
 					bitmap
 					vInventory
 					1
@@ -284,7 +282,8 @@
 				(+ isObjVisible (* scroll getLocalY))
 			)
 			(= theAddPics addPics)
-			(Bitmap MapAddRect
+			(Bitmap
+				5
 				bitmap
 				theIsObjVisible
 				theAddPics
@@ -294,7 +293,8 @@
 			)
 			(= temp3 0)
 			(while (< temp3 scrollToObj)
-				(Bitmap MapAddCel
+				(Bitmap
+					3
 					bitmap
 					vInventory
 					1
@@ -307,7 +307,8 @@
 			)
 			(= theIsObjVisible 0)
 			(= theAddPics (+ addPics (* getLocalX scrollToObj)))
-			(Bitmap MapAddRect
+			(Bitmap
+				5
 				bitmap
 				theIsObjVisible
 				theAddPics
@@ -315,7 +316,8 @@
 				(- (+ theAddPics addViews) 1)
 				255
 			)
-			(Bitmap MapAddCel
+			(Bitmap
+				3
 				bitmap
 				vInventory
 				1
@@ -326,7 +328,8 @@
 			(= theIsObjVisible (+ theIsObjVisible isObjVisible))
 			(= temp3 0)
 			(while (< temp3 scroll)
-				(Bitmap MapAddCel
+				(Bitmap
+					3
 					bitmap
 					vInventory
 					1
@@ -337,7 +340,8 @@
 				(= theIsObjVisible (+ theIsObjVisible getLocalY))
 				(++ temp3)
 			)
-			(Bitmap MapAddCel
+			(Bitmap
+				3
 				bitmap
 				vInventory
 				1
@@ -350,15 +354,62 @@
 	
 	(method (cInventory param1 &tmp theBitmap)
 		(= theBitmap bitmap)
-		(if (and argc param1)
-			(= bitmap 0)
-		)
+		(if (and argc param1) (= bitmap 0))
 		(return theBitmap)
 	)
 )
 
 (class TiledView of View
 	(properties
+		scratch 0
+		heading 0
+		noun 0
+		case 0
+		modNum -1
+		nsLeft 0
+		nsTop 0
+		nsRight 0
+		nsBottom 0
+		sightAngle 26505
+		actions 0
+		onMeCheck $0000
+		state $0000
+		approachX 0
+		approachY 0
+		approachDist 0
+		_approachVerbs 0
+		plane 0
+		x 0
+		y 0
+		z 0
+		scaleX 128
+		scaleY 128
+		maxScale 128
+		scaleType 0
+		priority 0
+		fixPriority 0
+		inLeft 0
+		inTop 0
+		inRight 0
+		inBottom 0
+		useInsetRect 0
+		view -1
+		loop 0
+		cel 0
+		bitmap 0
+		yStep 2
+		signal $4021
+		lsLeft 0
+		lsTop 0
+		lsRight 0
+		lsBottom 0
+		brLeft 0
+		brTop 0
+		brRight 0
+		brBottom 0
+		scaleSignal $0000
+		magnifier 0
+		oldScaleX 128
 		oMyNotifySelectors 0
 		addScrollView 0
 		killPan 0
@@ -367,18 +418,10 @@
 	
 	(method (init param1 param2 param3 param4)
 		(cond 
-			((< argc 2)
-				(MonoOut {Invalid init of TiledView -- not enough params})
-			)
-			((== argc 2)
-				(TiledBitmap init: view param1 param2)
-			)
-			((== argc 3)
-				(TiledBitmap init: view param1 param2 param3)
-			)
-			((> argc 3)
-				(TiledBitmap init: view param1 param2 param3 param4)
-			)
+			((< argc 2) (MonoOut LOOKUP_ERROR))
+			((== argc 2) (TiledBitmap init: view param1 param2))
+			((== argc 3) (TiledBitmap init: view param1 param2 param3))
+			((> argc 3) (TiledBitmap init: view param1 param2 param3 param4))
 		)
 		(= bitmap (TiledBitmap cInventory: 1))
 		(= oMyNotifySelectors (TiledBitmap oMyNotifySelectors?))
@@ -391,6 +434,28 @@
 
 (class TiledPlane of Plane
 	(properties
+		scratch 0
+		resX -1
+		resY -1
+		left 0
+		top 0
+		right 0
+		bottom 0
+		inLeft 0
+		inTop 0
+		inRight 0
+		inBottom 0
+		vanishingX 0
+		vanishingY 0
+		coordType 0
+		picture -1
+		style $0000
+		priority -1
+		back 0
+		bitmap 0
+		casts 0
+		mirrored 0
+		nScreenSizeX 0
 		killPan 0
 		addToNotifyList 0
 		vCloseup 0
@@ -400,26 +465,16 @@
 	)
 	
 	(method (init param1 param2 param3 param4 theVInventory theOMyNotifyObjs theOMyScrollViews &tmp [temp0 2])
-		(if (< argc 5)
-			(MonoOut {Not enough params to init of TiledPlane})
-			(return)
-		)
+		(if (< argc 5) (MonoOut LOOKUP_ERROR) (return))
 		(super init: param1 param2 param3 param4 &rest)
 		(= vInventory theVInventory)
-		(if (> argc 5)
-			(= oMyNotifyObjs theOMyNotifyObjs)
-		)
-		(if (> argc 6)
-			(= oMyScrollViews theOMyScrollViews)
-		)
+		(if (> argc 5) (= oMyNotifyObjs theOMyNotifyObjs))
+		(if (> argc 6) (= oMyScrollViews theOMyScrollViews))
 		(self setRect: param1 param2 param3 param4)
 	)
 	
 	(method (dispose)
-		(if vCloseup
-			(vCloseup dispose:)
-			(= vCloseup 0)
-		)
+		(if vCloseup (vCloseup dispose:) (= vCloseup 0))
 		(super dispose: &rest)
 	)
 	
@@ -434,7 +489,7 @@
 			)
 			(if vCloseup (vCloseup dispose:))
 			(= vCloseup (TiledView new:))
-			(vCloseup name: {voBG} setPri: 0 view: vInventory)
+			(vCloseup name: LOOKUP_ERROR setPri: 0 view: vInventory)
 			(vCloseup
 				init:
 					vCloseupOMyNotifySelectors

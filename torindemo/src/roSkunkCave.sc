@@ -37,17 +37,15 @@
 	(method (doVerb)
 		(switch local1
 			(0
-				(ego setScript: soCrawlBackOut)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(2
-				(ego setScript: soClothespinOffAndOut)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(3
-				(ego setScript: soWalkOutFrontDoor)
+				(ego setScript: LOOKUP_ERROR)
 			)
-			(else 
-				(MonoOut {illegal postion for walkout})
-			)
+			(else  (MonoOut LOOKUP_ERROR))
 		)
 	)
 	
@@ -62,8 +60,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poTorin view: 20500 loop: 0 posn: 110 212)
-				(poTorin cel: (poTorin lastCel:) setCycle: Beg self)
+				(LOOKUP_ERROR view: 20500 loop: 0 posn: 110 212)
+				(LOOKUP_ERROR
+					cel: (LOOKUP_ERROR lastCel:)
+					setCycle: Beg self
+				)
 			)
 			(1
 				((ScriptID 64017 0) clear: 84)
@@ -80,7 +81,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20500
 					loop: 2
 					posn: 110 212
@@ -111,7 +112,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20503
 					loop: 4
 					cel: 0
@@ -146,8 +147,8 @@
 	
 	(method (doVerb)
 		(cond 
-			(((ScriptID 64017 0) test: 83) (ego setScript: soLeaveBackDoor))
-			((== local1 2) (ego setScript: soSneakPastSkunks))
+			(((ScriptID 64017 0) test: 83) (ego setScript: LOOKUP_ERROR))
+			((== local1 2) (ego setScript: LOOKUP_ERROR))
 			(else (messager say: 0 0 7 0))
 		)
 	)
@@ -160,7 +161,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20500
 					loop: 0
 					cel: 0
@@ -178,8 +179,8 @@
 			(1)
 			(2
 				(if (not ((ScriptID 64017 0) test: 83))
-					(poTorin setVisibleRange: 33)
-					(self setScript: soSkunksEnter self)
+					(LOOKUP_ERROR setVisibleRange: 33)
+					(self setScript: LOOKUP_ERROR self)
 				else
 					(self cue:)
 				)
@@ -187,7 +188,7 @@
 			(3
 				(theGame handsOn:)
 				(= local1 0)
-				(foFloor init:)
+				(LOOKUP_ERROR init:)
 				(self dispose:)
 			)
 		)
@@ -200,7 +201,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poSkunks
+				(LOOKUP_ERROR
 					view: 20501
 					loop: 0
 					cel: 0
@@ -210,11 +211,11 @@
 				)
 			)
 			(1
-				(poSkunks loop: 2)
-				(voSamNormalMouth init:)
-				(voMaxNormalMouth init:)
-				(= gToSam toSam)
-				(= gToMax toMax)
+				(LOOKUP_ERROR loop: 2)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(= gToSam LOOKUP_ERROR)
+				(= gToMax LOOKUP_ERROR)
 				(self dispose:)
 			)
 		)
@@ -228,12 +229,12 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(poTorin loop: 4 cel: 0 setCycle: CT 19 1 self)
+				(LOOKUP_ERROR loop: 4 cel: 0 setCycle: CT 19 1 self)
 			)
 			(1
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 360 264 oPanner: 1 -5436 6 show:)
-				(foFloor dispose:)
+				(LOOKUP_ERROR dispose:)
 				(= local1 3)
 				(theGame handsOn:)
 				(self dispose:)
@@ -249,7 +250,7 @@
 		(switch (= state newState)
 			(0
 				(if (== local1 0)
-					(self setScript: soClimbOutOfTunnel self)
+					(self setScript: LOOKUP_ERROR self)
 				else
 					(self cue:)
 				)
@@ -272,7 +273,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soClothespinSelf)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -291,28 +292,28 @@
 				)
 			)
 			(1
-				(poTorin loop: 1 cel: 0 setCycle: CT 15 1 self)
+				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: CT 15 1 self)
 			)
 			(2
-				(poTorin setCycle: End self)
-				(voSamNormalMouth hide:)
-				(voMaxNormalMouth hide:)
-				(poSkunks loop: 1 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: End self)
 			)
 			(3)
 			(4
-				(poSkunks loop: 5)
-				(voSamNormalMouth loop: 6 show:)
-				(voMaxNormalMouth loop: 7 show:)
-				(toSam loop: 6)
-				(toMax loop: 7)
-				(poSamTail init:)
-				(poMaxTail init:)
+				(LOOKUP_ERROR loop: 5)
+				(LOOKUP_ERROR loop: 6 show:)
+				(LOOKUP_ERROR loop: 7 show:)
+				(LOOKUP_ERROR loop: 6)
+				(LOOKUP_ERROR loop: 7)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
 				(theGame handsOn:)
-				(poTorin setTotalWidth: 33)
-				(foFloor dispose:)
+				(LOOKUP_ERROR setTotalWidth: 33)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64017 0) set: 85)
-				(poSkunks setTotalWidth: 40)
+				(LOOKUP_ERROR setTotalWidth: 40)
 				(= local1 2)
 			)
 		)
@@ -357,7 +358,7 @@
 	
 	(method (doVerb)
 		(if ((ScriptID 64017 0) test: 83)
-			(curRoom setScript: soClimbOutOfTunnel)
+			(curRoom setScript: LOOKUP_ERROR)
 		else
 			(messager say: 0 0 7 0)
 		)
@@ -375,11 +376,11 @@
 	)
 	
 	(method (doVerb)
-		(poSkunks doVerb: &rest)
+		(LOOKUP_ERROR doVerb: &rest)
 	)
 	
 	(method (setSpeedDirect)
-		(poSkunks setSpeedDirect: &rest)
+		(LOOKUP_ERROR setSpeedDirect: &rest)
 	)
 )
 
@@ -393,12 +394,12 @@
 	)
 	
 	(method (init)
-		(voSamNormalMouth hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(voSamNormalMouth show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -415,11 +416,11 @@
 	)
 	
 	(method (doVerb)
-		(poSkunks doVerb: &rest)
+		(LOOKUP_ERROR doVerb: &rest)
 	)
 	
 	(method (setSpeedDirect)
-		(poSkunks setSpeedDirect: &rest)
+		(LOOKUP_ERROR setSpeedDirect: &rest)
 	)
 )
 
@@ -434,12 +435,12 @@
 	)
 	
 	(method (init)
-		(voMaxNormalMouth hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(voMaxNormalMouth show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -456,15 +457,15 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setScript: (soTailFlick new:))
+		(self setScript: (LOOKUP_ERROR new:))
 	)
 	
 	(method (doVerb)
-		(poSkunks doVerb: &rest)
+		(LOOKUP_ERROR doVerb: &rest)
 	)
 	
 	(method (setSpeedDirect)
-		(poSkunks setSpeedDirect: &rest)
+		(LOOKUP_ERROR setSpeedDirect: &rest)
 	)
 )
 
@@ -480,15 +481,15 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setScript: (soTailFlick new:))
+		(self setScript: (LOOKUP_ERROR new:))
 	)
 	
 	(method (doVerb)
-		(poSkunks doVerb: &rest)
+		(LOOKUP_ERROR doVerb: &rest)
 	)
 	
 	(method (setSpeedDirect)
-		(poSkunks setSpeedDirect: &rest)
+		(LOOKUP_ERROR setSpeedDirect: &rest)
 	)
 )
 
@@ -538,13 +539,13 @@
 			)
 			(38
 				(if ((ScriptID 64017 0) test: 85)
-					(ego setScript: soCarpetSkunks)
+					(ego setScript: LOOKUP_ERROR)
 				else
 					(messager say: 2 47 2 0)
 				)
 			)
 			(40
-				(ego setScript: soFanSkunks)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(37
 				(if ((ScriptID 64017 0) test: 85)
@@ -567,12 +568,12 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(poSkunks hide:)
-				(voSamNormalMouth hide:)
-				(voMaxNormalMouth hide:)
-				(poSamTail hide:)
-				(poMaxTail hide:)
-				(poTorin
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR
 					view: 20502
 					posn: 356 267
 					loop: 0
@@ -581,9 +582,9 @@
 				)
 			)
 			(1
-				(poTorin view: 20500 loop: 1 posn: 110 212)
-				(poTorin cel: (poTorin lastCel:))
-				(poSkunks
+				(LOOKUP_ERROR view: 20500 loop: 1 posn: 110 212)
+				(LOOKUP_ERROR cel: (LOOKUP_ERROR lastCel:))
+				(LOOKUP_ERROR
 					view: 20502
 					loop: 1
 					cel: 0
@@ -593,11 +594,11 @@
 				)
 			)
 			(2
-				(poSkunks view: 20501 loop: 5 cel: 0 posn: 587 278)
-				(voSamNormalMouth show:)
-				(voMaxNormalMouth show:)
-				(poSamTail show:)
-				(poMaxTail show:)
+				(LOOKUP_ERROR view: 20501 loop: 5 cel: 0 posn: 587 278)
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR show:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -611,18 +612,21 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (!= local1 0)
-					(MonoOut {illegal call of soFanSkunks})
-				)
+				(if (!= local1 0) (MonoOut LOOKUP_ERROR))
 				(theGame handsOff:)
 				(messager say: 2 40 2 1 self)
 			)
 			(1
-				(poTorin view: 20500 loop: 3 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR
+					view: 20500
+					loop: 3
+					cel: 0
+					setCycle: End self
+				)
 			)
 			(2
-				(poTorin loop: 0)
-				(poTorin cel: (poTorin lastCel:))
+				(LOOKUP_ERROR loop: 0)
+				(LOOKUP_ERROR cel: (LOOKUP_ERROR lastCel:))
 				(messager sayRange: 2 40 2 2 3 self)
 			)
 			(3
@@ -643,7 +647,7 @@
 				(messager say: 2 38 1 1 self)
 			)
 			(1
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20503
 					loop: 0
 					cel: 0
@@ -652,19 +656,19 @@
 				)
 			)
 			(2
-				(voSamNormalMouth dispose:)
-				(voMaxNormalMouth dispose:)
-				(poSamTail dispose:)
-				(poMaxTail dispose:)
-				(poSkunks view: 20502 loop: 1)
-				(poSkunks
-					cel: (poSkunks lastCel:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR view: 20502 loop: 1)
+				(LOOKUP_ERROR
+					cel: (LOOKUP_ERROR lastCel:)
 					posn: 371 254
 					setCycle: Beg self
 				)
 			)
 			(3
-				(poSkunks
+				(LOOKUP_ERROR
 					view: 20503
 					loop: 2
 					cel: 0
@@ -673,16 +677,21 @@
 				)
 			)
 			(4
-				(poTorin view: 20503 loop: 1 cel: 0 setCycle: End self)
-				(poSkunks setCycle: End self)
+				(LOOKUP_ERROR
+					view: 20503
+					loop: 1
+					cel: 0
+					setCycle: End self
+				)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(5)
 			(6
-				(poSkunks dispose:)
-				(poTorin loop: 3 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR loop: 3 cel: 0 setCycle: End self)
 			)
 			(7
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 367 272 oPanner: 1 -5436 6 show:)
 				(= local1 3)
 				((ScriptID 64017 0) clear: 85)
@@ -704,7 +713,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 20500)
+		(theMusic pageSize: 20500)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -733,8 +742,8 @@
 					yourself:
 				)
 		)
-		(foToCliffExit init:)
-		(foToGuruExit init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(ego
 			init:
 			oPanner:
@@ -750,7 +759,7 @@
 		else
 			(= local1 0)
 			(ego posn: 356 267)
-			(curRoom setScript: soCrawlIn)
+			(curRoom setScript: LOOKUP_ERROR)
 		)
 	)
 	
@@ -763,9 +772,9 @@
 	(method (setWander param1)
 		(return
 			(if (== param1 20900)
-				(return foToGuruExit)
+				(return LOOKUP_ERROR)
 			else
-				(return foToCliffExit)
+				(return LOOKUP_ERROR)
 			)
 		)
 	)

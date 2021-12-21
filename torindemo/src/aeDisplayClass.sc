@@ -87,7 +87,7 @@
 			(registerHandsOffActive at: temp0 param1)
 			(self draw:)
 		else
-			(MonoOut {No more room to display objects})
+			(MonoOut LOOKUP_ERROR)
 		)
 	)
 	
@@ -100,7 +100,7 @@
 			(registerHandsOffActive at: temp0 0)
 			(self draw:)
 		else
-			(MonoOut {Object %s is not displayed} (param1 name?))
+			(MonoOut LOOKUP_ERROR (param1 name?))
 		)
 	)
 	
@@ -140,14 +140,14 @@
 			nMaxChars
 		)
 		(UpdateScreenItem view)
-		(self oMyGroup: 0 0 back {Tick:%d} normalize)
+		(self oMyGroup: 0 0 back LOOKUP_ERROR normalize)
 	)
 	
 	(method (oDataArray &tmp theNOffY theCreateBitmap theModule theRePosn)
 		(= theRePosn rePosn)
 		(= theNOffY nOffY)
 		(while (< theNOffY (+ nOffY nOffX))
-			(self oMyGroup: theNOffY 0 back {%d} theRePosn)
+			(self oMyGroup: theNOffY 0 back LOOKUP_ERROR theRePosn)
 			(= theRePosn (+ theRePosn nItems))
 			(++ theNOffY)
 		)

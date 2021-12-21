@@ -23,7 +23,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soGoToCannonBall)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -37,7 +37,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soGoToCaretakers)
+		(ego setScript: {foCatapult})
 	)
 )
 
@@ -51,7 +51,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soGoToCatapult)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -113,7 +113,7 @@
 					nCurPosY: 10
 					xStep: 2
 					yStep: 1
-					setScript: soBoogleWalkIn self
+					setScript: LOOKUP_ERROR self
 				)
 				(ego posn: 283 169 setMotion: MoveTo 297 174 self)
 			)
@@ -152,7 +152,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -25336)
+		(theMusic pageSize: -25336)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -187,13 +187,13 @@
 					yourself:
 				)
 		)
-		(foCannonBall init:)
-		(foCaretakers init:)
-		(foCatapult init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(ego init: oPanner: nCurPosY: 10 xStep: 2 yStep: 1)
 		(switch prevRoomNum
 			(-25436
-				(ego setScript: soWalkInFromEntrance)
+				(ego setScript: LOOKUP_ERROR)
 				(return)
 			)
 			(-23536

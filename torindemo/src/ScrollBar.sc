@@ -2,7 +2,7 @@
 (script# 64005)
 (include sci.sh)
 (use Main)
-(use PushButton)
+(use Button)
 (use Actor)
 (use System)
 
@@ -123,7 +123,7 @@
 				init: temp2
 			)
 		)
-		((= nMouseStartY (DragButton new:))
+		((= nMouseStartY (LOOKUP_ERROR new:))
 			view: oEScrollExit
 			loop: oWScrollExit
 			cel: oHorizHandle
@@ -425,10 +425,7 @@
 	)
 	
 	(method (oHandsOffList param1)
-		(if (not oFlagArray)
-			(MonoOut {physical range not inited. DJM. scrllbar.sc})
-			(return 0)
-		)
+		(if (not oFlagArray) (MonoOut LOOKUP_ERROR) (return 0))
 		(return (+ (MulDiv param1 oMsgArray oFlagArray) nBorderDist))
 	)
 	

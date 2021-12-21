@@ -60,42 +60,44 @@
 		(switch (= state newState)
 			(0)
 			(1
-				(oGasp lThumbLoop: 30205)
+				(LOOKUP_ERROR lThumbLoop: 30205)
 				(messager say: 1 1 1 1 self)
 			)
 			(2
 				(messager say: 1 1 1 2 self)
-				(sound1 lThumbLoop: 30201)
-				(poTorinBreaksFree setCycle: End self)
-				(poPergolansRun setCycle: End)
+				(theSound lThumbLoop: 30201)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR setCycle: End)
 			)
-			(3 (oScream lThumbLoop: 30202))
+			(3
+				(LOOKUP_ERROR lThumbLoop: 30202)
+			)
 			(4 (messager say: 1 1 1 3 self))
 			(5
 				(messager say: 1 1 1 4 self)
-				(poTorinBreaksFree
+				(LOOKUP_ERROR
 					posn: 192 227
 					setLoop: 2
 					setCel: 0
 					setCycle: End self
 				)
 			)
-			(6 (sound1 lThumbLoop: 30204))
+			(6 (theSound lThumbLoop: 30204))
 			(7
-				(oGasp lThumbLoop: 30203)
-				(poTorinBreaksFree dispose:)
+				(LOOKUP_ERROR lThumbLoop: 30203)
+				(LOOKUP_ERROR dispose:)
 				(ego init: setLoop: 2 posn: 181 219 oPanner: scrollTo:)
-				(poSmetana init:)
+				(LOOKUP_ERROR init:)
 				(messager say: 1 1 1 5 self)
 			)
 			(8
-				(poSmetana setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 				(messager say: 1 1 1 6 self)
 			)
 			(9)
 			(10
 				(ego hide:)
-				(poTorinBreaksFree
+				(LOOKUP_ERROR
 					posn: 181 219
 					setLoop: 5
 					setCel: 0
@@ -104,20 +106,20 @@
 				)
 			)
 			(11
-				(poTorinBreaksFree dispose:)
-				(poPergolansRun dispose:)
-				(poSmetana dispose:)
-				(curRoom initThumb: oSmetanaCU)
-				(voSmetanaBody init:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR init:)
 				(messager sayRange: 1 1 1 7 17 self)
 			)
 			(12
-				(voSmetanaBody dispose:)
-				(poTorinPicksUpSmetana init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(13
-				(curRoom arrowDown: oSmetanaCU)
-				(poTorinPicksUpSmetana
+				(curRoom arrowDown: LOOKUP_ERROR)
+				(LOOKUP_ERROR
 					init:
 					posn: 142 221
 					setLoop: 3
@@ -126,13 +128,13 @@
 				)
 			)
 			(14
-				(poTorinPicksUpSmetana dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(theGame handsOn:)
-				(poLeenahInBondage init: setCycle: Fwd)
-				(poPergolansHide init:)
-				(oPergolaScrollPlane sitNSpin: 632 0 0 2)
-				(music1 pageSize: 30399)
+				(LOOKUP_ERROR init: setCycle: Fwd)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR sitNSpin: 632 0 0 2)
+				(theMusic pageSize: 30399)
 				(self dispose:)
 			)
 		)
@@ -164,12 +166,12 @@
 	)
 	
 	(method (init)
-		(voSmetanaBody hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(voSmetanaBody show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -180,7 +182,7 @@
 	)
 	
 	(method (init)
-		(= gToSmetana toSmetana)
+		(= gToSmetana LOOKUP_ERROR)
 		(super
 			init:
 				(thePlane left:)
@@ -217,7 +219,7 @@
 		(switch theVerb
 			(1
 				(if (== case 3)
-					(ego setScript: soTorinMeetsLeenah)
+					(ego setScript: LOOKUP_ERROR)
 				else
 					(messager say: noun theVerb case 0)
 				)
@@ -230,10 +232,10 @@
 				)
 			)
 			(41
-				(ego setScript: soTorinShowsClosedLocket)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(73
-				(ego setScript: soTorinShowsOpenLocket)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -245,11 +247,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poLeenahInBondage hide:)
+				(LOOKUP_ERROR hide:)
 				(ego hide:)
-				(poTorinKneels setCel: 0 init: setCycle: End self)
-				(poLeenahScreams setCel: 0 init: setCycle: Fwd)
-				(poPergolansHide setCycle: End)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: Fwd)
+				(LOOKUP_ERROR setCycle: End)
 				(messager say: 0 0 3 1 self)
 			)
 			(1)
@@ -257,15 +259,15 @@
 				(messager sayRange: 0 0 3 2 3 self)
 			)
 			(3
-				(poTorinKneels setCycle: Beg self)
-				(poLeenahScreams setCycle: End self)
+				(LOOKUP_ERROR setCycle: Beg self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(4)
 			(5
-				(poTorinKneels dispose:)
-				(poLeenahScreams dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
-				(poLeenahInBondage show:)
+				(LOOKUP_ERROR show:)
 				(self dispose:)
 			)
 		)
@@ -325,12 +327,12 @@
 	)
 	
 	(method (init)
-		(poLeenahInBondage hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poLeenahInBondage show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -344,12 +346,12 @@
 	)
 	
 	(method (init)
-		(poTorinShowsLocket hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poTorinShowsLocket show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -365,21 +367,21 @@
 			)
 			(1
 				(ego hide:)
-				(poTorinShowsLocket setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(2
-				(= gToTorinPullsOutMeat toTorinShowingLocket)
-				(= gToLeenahReactsToLocket toLeenahReactsToLocket)
+				(= gToTorinPullsOutMeat LOOKUP_ERROR)
+				(= gToLeenahReactsToLocket LOOKUP_ERROR)
 				(messager sayRange: 3 41 0 6 8 self)
 			)
 			(3
-				(poTorinShowsLocket dispose:)
-				(poTorinPutsAwayLocket setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(4
 				(= gToTorinPullsOutMeat 0)
 				(= gToLeenahReactsToLocket 0)
-				(poTorinPutsAwayLocket dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -396,29 +398,29 @@
 			(0
 				(theGame handsOff:)
 				(ego hide:)
-				(poTorinShowsLocket setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(1
-				(= gToTorinPullsOutMeat toTorinShowingLocket)
-				(= gToLeenahReactsToLocket toLeenahReactsToLocket)
+				(= gToTorinPullsOutMeat LOOKUP_ERROR)
+				(= gToLeenahReactsToLocket LOOKUP_ERROR)
 				(messager sayRange: 3 73 0 1 2 self)
 			)
 			(2
 				(messager say: 3 73 0 3 self)
-				(poTorinShowsLocket dispose:)
-				(poTorinPutsAwayLocket setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(3)
 			(4
-				(poTorinPutsAwayLocket dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(= gToTorinPullsOutMeat 0)
 				(messager sayRange: 3 73 0 4 11 self)
 			)
 			(5
 				(= gToLeenahReactsToLocket 0)
-				(foKnife init:)
-				(poLeenahInBondage setTotalWidth: 1 41)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR setTotalWidth: 1 41)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -433,19 +435,19 @@
 		(super init: &rest)
 		(self setVisibleRange: 1)
 		(self approachVerbs: 1)
-		(self nScrollMaxX: (+ 1 (poLeenahInBondage priority?)))
+		(self nScrollMaxX: (+ 1 ({poTorinAndLeenah} priority?)))
 		(= nsTop 240)
 		(= nsBottom 265)
 		(= nsLeft 1073)
 		(= nsRight 1112)
-		(= approachX (poLeenahInBondage approachX?))
-		(= approachY (poLeenahInBondage approachY?))
+		(= approachX (LOOKUP_ERROR approachX?))
+		(= approachY (LOOKUP_ERROR approachY?))
 		(= x (+ approachX 10))
 		(= y (- approachY 10))
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soTorinKnifesLeenah)
+		(curRoom setScript: LOOKUP_ERROR)
 		(self dispose:)
 	)
 )
@@ -478,58 +480,54 @@
 			)
 			(1
 				(ego hide:)
-				(poTorinCuts setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 				(ego get: ((ScriptID 64001 0) get: 34))
 			)
 			(2
-				(sound1 lThumbLoop: 30301)
-				(poLeenahInBondage dispose:)
-				(poLeenahSitsUp setCel: 0 init: setCycle: End self)
+				(theSound lThumbLoop: 30301)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(3
-				(poTorinCuts dispose:)
-				(poLeenahSitsUp dispose:)
-				(curRoom initThumb: oBLT)
-				(poTorinOffers init:)
-				(poLeenahSmiles setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(4 (messager say: 4 1 0 2 self))
 			(5
 				(messager say: 4 1 0 3 self)
-				(poTorinOffers setCycle: End self)
-				(poLeenahSmiles setLoop: 2 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR setLoop: 2 setCel: 0 setCycle: End self)
 			)
 			(6)
 			(7)
 			(8
-				(poTorinOffers dispose:)
-				(poLeenahSmiles dispose:)
-				(poPlacingOfLocket setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 				(ego put: ((ScriptID 64001 0) get: 31))
 				(ego put: ((ScriptID 64001 0) get: 32))
 			)
 			(9
-				(poPlacingOfLocket
-					setLoop: 5
-					setCel: 0
-					setCycle: End self
-				)
-				(poBoogleInterrupts setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setLoop: 5 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 				(messager say: 4 1 0 4 self)
 			)
 			(10)
 			(11)
 			(12
-				(poPlacingOfLocket dispose:)
-				(poBoogleInterrupts setLoop: 6 setCel: 0 setCycle: Fwd)
-				(poTorinOffers
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setLoop: 6 setCel: 0 setCycle: Fwd)
+				(LOOKUP_ERROR
 					view: 30206
 					setLoop: 0
 					setCel: 0
 					init:
 					setCycle: End self
 				)
-				(poLeenahSmiles
+				(LOOKUP_ERROR
 					view: 30206
 					setLoop: 1
 					setCel: 0
@@ -540,7 +538,7 @@
 			(13)
 			(14
 				(messager say: 4 1 0 5 self)
-				(poBoogleInterrupts
+				(LOOKUP_ERROR
 					view: 30206
 					setLoop: 2
 					setCel: 0
@@ -549,20 +547,20 @@
 			)
 			(15)
 			(16
-				(poBoogleInterrupts dispose:)
-				(poTorinOffers setLoop: 3 setCel: 0 setCycle: End self)
-				(poLeenahSmiles setLoop: 4 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setLoop: 3 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setLoop: 4 setCel: 0 setCycle: End self)
 			)
 			(17)
 			(18
 				(messager sayRange: 4 1 0 6 7 self)
 			)
 			(19
-				(curRoom arrowDown: oBLT)
-				(poTorinAndLeenah setCel: 0 init: setCycle: End self)
+				(curRoom arrowDown: LOOKUP_ERROR)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(20
-				(poTorinAndLeenah setLoop: 6 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setLoop: 6 setCel: 0 setCycle: End self)
 				(messager say: 4 1 0 8 self)
 			)
 			(21)
@@ -653,13 +651,10 @@
 	(method (init)
 		(super init: &rest)
 		(= plane
-			(oPergolaScrollPlane
-				init: 1264 (thePlane doDouble:)
-				yourself:
-			)
+			(LOOKUP_ERROR init: 1264 (thePlane doDouble:) yourself:)
 		)
-		(music1 pageSize: 30100)
-		(oJungleAmbience vThumbView: 30299)
+		(theMusic pageSize: 30100)
+		(LOOKUP_ERROR vThumbView: 30299)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -669,10 +664,10 @@
 				)
 		)
 		(theGame handsOff:)
-		(poTorinBreaksFree init:)
-		(poPergolansRun init:)
-		(curRoom setScript: soTorinBreaksFree)
-		(proc64896_1 0 10 soTorinBreaksFree)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(curRoom setScript: LOOKUP_ERROR)
+		(proc64896_1 0 10 LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

@@ -6,7 +6,7 @@
 (use TPScript)
 (use TiledBitmap)
 (use CueMe)
-(use PushButton)
+(use Button)
 (use ExitFeature)
 (use Print)
 (use Scaler)
@@ -60,7 +60,7 @@
 				(== theFrontSize theBackSize)
 			)
 			(Printf
-				{SlopedScaler, bad args %d %d %d___%d %d %d}
+				LOOKUP_ERROR
 				theFrontSize
 				theId
 				theFrontY
@@ -202,12 +202,14 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (ego setScript: soTreeTalk))
+			(1
+				(ego setScript: LOOKUP_ERROR)
+			)
 			(52
 				(if (>= global232 4)
-					(ego setScript: soGetSappyDawburr)
+					(ego setScript: LOOKUP_ERROR)
 				else
-					(Prints {Need message for tree not sappy enough. DJM})
+					(Prints LOOKUP_ERROR)
 				)
 			)
 			(else 
@@ -348,7 +350,9 @@
 			)
 			(= local0 1)
 			(= temp0 (Random 1 9))
-			(sound1 lDownArrowLoop: 0 0 2 temp0 oStopTalking -14936 1)
+			(theSound
+				lDownArrowLoop: 0 0 2 temp0 LOOKUP_ERROR -14936 1
+			)
 		)
 		(super handleEvent: event &rest)
 	)
@@ -380,7 +384,9 @@
 			)
 			(= local0 1)
 			(= temp0 (Random 1 17))
-			(sound1 lDownArrowLoop: 0 0 3 temp0 oStopTalking -14936 1)
+			(theSound
+				lDownArrowLoop: 0 0 3 temp0 LOOKUP_ERROR -14936 1
+			)
 		)
 		(super handleEvent: event &rest)
 	)
@@ -389,9 +395,9 @@
 		(switch theVerb
 			(1
 				(if local1
-					(curRoom setScript: soSlipAndFall)
+					(curRoom setScript: LOOKUP_ERROR)
 				else
-					(curRoom setScript: soGetOnSlopeAndSlip)
+					(curRoom setScript: LOOKUP_ERROR)
 				)
 			)
 			(else 
@@ -405,7 +411,7 @@
 	(properties)
 	
 	(method (cue)
-		(theGame setScript: soPauseABit)
+		(theGame setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -432,7 +438,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soGetOnSlopeAndStay)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -445,7 +451,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soScuttleToPos2)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -458,7 +464,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soScuttleToPos3)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -476,7 +482,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					loop: 0
 					cel: 0
 					posn: 190 229
@@ -496,15 +502,15 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(poTorin
-					posn: (aoTorin x?) (aoTorin y?)
+				(LOOKUP_ERROR
+					posn: (LOOKUP_ERROR x?) (LOOKUP_ERROR y?)
 					loop: 2
 					cel: 0
 					init:
 					setScaler: SlopedScaler 100 190 229 55 530 172
 					setCycle: End self
 				)
-				(aoTorin hide:)
+				(LOOKUP_ERROR hide:)
 			)
 			(1
 				(if (not ((ScriptID 64017 0) test: 109))
@@ -514,25 +520,25 @@
 				)
 			)
 			(2
-				(poTorin loop: 3 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 3 cel: 0 setCycle: End self)
 			)
 			(3
-				(poTorin loop: 4 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 4 cel: 0 setCycle: End self)
 			)
 			(4
-				(poTorin loop: 5 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 5 cel: 0 setCycle: End self)
 				(messager say: 0 0 4 2 self)
 			)
 			(5)
 			(6
 				(if ((ScriptID 64019 0) show:)
-					(poTorin dispose:)
+					(LOOKUP_ERROR dispose:)
 					(ego posn: 190 229 setLoop: 6 show:)
 					(= local1 0)
-					(foPath2 dispose:)
-					(foPath3 dispose:)
-					(foPath1 init:)
-					(foTree init:)
+					(LOOKUP_ERROR dispose:)
+					(LOOKUP_ERROR dispose:)
+					(LOOKUP_ERROR init:)
+					(LOOKUP_ERROR init:)
 				)
 				(theGame handsOn:)
 				(self dispose:)
@@ -547,11 +553,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(self setScript: soGetOnSlope self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(1
-				(aoTorin posn: 342 218 init: hide:)
-				(self setScript: soSlipAndFall self)
+				(LOOKUP_ERROR posn: 342 218 init: hide:)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(2 (self dispose:))
 		)
@@ -564,21 +570,21 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(self setScript: soGetOnSlope self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(1
 				(theGame handsOff:)
-				(poTorin dispose:)
-				(aoTorin
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR
 					posn: 342 218
 					init:
 					setMotion: MoveTo 370 200 self
 				)
 			)
 			(2
-				(foTree dispose:)
-				(foPath1 dispose:)
-				(foPath2 init:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
 				(= local1 1)
 				(theGame handsOn:)
 				(self dispose:)
@@ -594,11 +600,11 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(aoTorin setMotion: MoveTo 455 155 self)
+				(LOOKUP_ERROR setMotion: MoveTo 455 155 self)
 			)
 			(1
-				(foPath2 dispose:)
-				(foPath3 init:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -613,11 +619,11 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(aoTorin setMotion: MoveTo 530 172 self)
+				(LOOKUP_ERROR setMotion: MoveTo 530 172 self)
 			)
 			(1
-				(aoTorin dispose:)
-				(poTorin
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR
 					loop: 6
 					cel: 0
 					posn: 530 172
@@ -674,10 +680,10 @@
 					yourself:
 				)
 		)
-		(foPlanterExit init:)
-		(foSlope init:)
-		(foTree init:)
-		(foPath1 init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(ego init: oPanner:)
 		(theGame handsOn:)
 		(switch prevRoomNum

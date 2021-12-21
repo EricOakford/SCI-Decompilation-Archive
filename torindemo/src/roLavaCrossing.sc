@@ -33,10 +33,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soTorinInspectsCannon)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(74
-				(ego setScript: soTorinShootsCannon)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -48,7 +48,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego nSaveTime: voWaterCannon self)
+				(ego nSaveTime: LOOKUP_ERROR self)
 			)
 			(1 (curRoom newRoom: -24936))
 		)
@@ -62,39 +62,39 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(ego nSaveTime: voWaterCannon self)
+				(ego nSaveTime: LOOKUP_ERROR self)
 			)
 			(1
-				(voWaterCannon dispose:)
-				(poBoogleJumps init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(2
-				(poBoogleJumps dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego hide:)
-				(poTorinKneels init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(3
-				(poTorinKneels dispose:)
-				(poTorinOperatesCannon init: setCycle: End self)
-				(oWaterGun lThumbLoop: -25035)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
+				(LOOKUP_ERROR lThumbLoop: -25035)
 			)
 			(4
-				(oHiss lThumbLoop: -25034)
-				(poPathForms init: setCycle: End self)
+				(LOOKUP_ERROR lThumbLoop: -25034)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(5
-				(poTorinOperatesCannon dispose:)
-				(poTorinRuns init: setCycle: End self)
-				(poBoogleRuns init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(6)
 			(7
-				(poBoogleRuns dispose:)
-				(poPathForms dispose:)
-				(poPathMelts init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(8
-				(poPathMelts dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom newRoom: -24836)
 			)
 		)
@@ -183,7 +183,7 @@
 	(properties)
 	
 	(method (cue)
-		(music1 pageSize: -25036)
+		(theMusic pageSize: -25036)
 	)
 )
 
@@ -195,8 +195,8 @@
 	
 	(method (init)
 		(super init: &rest)
-		(oMoodMusic lThumbLoop: -24937 oPlayMusic)
-		(music1 pageSize: 0)
+		(LOOKUP_ERROR lThumbLoop: -24937 LOOKUP_ERROR)
+		(theMusic pageSize: 0)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -233,15 +233,15 @@
 		)
 		((ScriptID 64899 3) init:)
 		(ego init: oPanner: setScaler: Scaler 55 40 306 142)
-		(voWaterCannon init:)
+		(LOOKUP_ERROR init:)
 		(switch prevRoomNum
 			(-24936
 				(ego
-					posn: (voWaterCannon approachX?) (voWaterCannon approachY?)
+					posn: (LOOKUP_ERROR approachX?) (LOOKUP_ERROR approachY?)
 					setLoop: 7
 				)
 				(if ((ScriptID 64017 0) test: 107)
-					(ego setScript: soTorinShootsCannon)
+					(ego setScript: LOOKUP_ERROR)
 				)
 			)
 			(else 

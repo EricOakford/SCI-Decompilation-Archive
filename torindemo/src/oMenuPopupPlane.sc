@@ -2,9 +2,9 @@
 (script# 64000)
 (include sci.sh)
 (use Main)
-(use GenDialg)
-(use NewUser)
-(use MenuItem)
+(use GenDialog)
+(use Events)
+(use Menus)
 (use Plane)
 (use String)
 (use Print)
@@ -49,11 +49,11 @@
 		(if (not (ScriptID 64000 0)) (return 0))
 		(= temp1 0)
 		(= temp0 (Clone event))
-		(temp0 localize: (oMenuPopupFeat plane?))
+		(temp0 localize: (LOOKUP_ERROR plane?))
 		(if
 			(and
 				(user canControl:)
-				(not (oMenuPopupFeat onMe: temp0))
+				(not (LOOKUP_ERROR onMe: temp0))
 				((ScriptID 64000 0) nExitDist:)
 				(not ((ScriptID 64000 0) nScrollDir:))
 			)
@@ -73,19 +73,21 @@
 	
 	(method (init)
 		(super init: &rest)
-		(gOEventHandler scriptId: oKillMenuCheck)
-		(oMenuPopupPlane
+		(gOEventHandler scriptId: LOOKUP_ERROR)
+		(LOOKUP_ERROR
 			init:
 				4
 				4
 				(+ ((ScriptID 64000 0) findData:) 4)
 				(+ ((ScriptID 64000 0) doDouble:) 4)
 		)
-		(oMenuPopupFeat init: oMenuPopupPlane)
+		(LOOKUP_ERROR init: LOOKUP_ERROR)
 	)
 	
 	(method (oDragNotify)
-		(scrollThumb addToEnd: moFile moGame moHelp)
+		(scrollThumb
+			addToEnd: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
+		)
 	)
 	
 	(method (hide &tmp temp0)
@@ -108,7 +110,9 @@
 	)
 	
 	(method (oDragNotify)
-		(scrollThumb addToEnd: moNew moOpen moSave moExit)
+		(scrollThumb
+			addToEnd: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
+		)
 	)
 )
 
@@ -120,7 +124,7 @@
 	
 	(method (oDragNotify)
 		(scrollThumb
-			addToEnd: moSpeed moScrolling moText moVolume
+			addToEnd: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
 		)
 	)
 )
@@ -132,7 +136,9 @@
 	)
 	
 	(method (oDragNotify)
-		(scrollThumb addToEnd: moGetHelp moSupport moAbout)
+		(scrollThumb
+			addToEnd: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
+		)
 	)
 )
 
@@ -144,7 +150,7 @@
 	
 	(method (oVerbs)
 		(if (= local0 (MakeMessageText 1 0 0 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
@@ -159,7 +165,7 @@
 	
 	(method (oVerbs)
 		(if (= local0 (MakeMessageText 3 0 0 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
@@ -187,8 +193,8 @@
 				)
 				(= newStr (Str new:))
 				(= newStr_2 (Str new:))
-				(Message msgGET -542 10 0 0 1 (newStr data?))
-				(Message msgGET -542 2 0 0 1 (newStr_2 data?))
+				(Message 0 -542 10 0 0 1 (newStr data?))
+				(Message 0 -542 2 0 0 1 (newStr_2 data?))
 				(Print
 					font: 999
 					fore: 235
@@ -200,7 +206,7 @@
 				(newStr dispose:)
 				(newStr_2 dispose:)
 			)
-			(else (Printf {Saved Game: %s} gNewStr))
+			(else (Printf LOOKUP_ERROR gNewStr))
 		)
 		(theGame addVerbHandler: gNewStr)
 	)
@@ -214,12 +220,12 @@
 	
 	(method (oVerbs)
 		(if (= local0 (MakeMessageText 2 0 0 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
 		(if (= local0 (MakeMessageText 2 0 0 2 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
@@ -248,7 +254,7 @@
 		)
 		(if (not temp0) (return))
 		(if (= local0 (MakeMessageText 4 0 4 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
@@ -290,7 +296,7 @@
 			)
 			(self oStopNotify:)
 			(if (= local0 (MakeMessageText 0 0 3 1 0))
-				(TextDialog local0 global288)
+				(TextDialog local0 continueText)
 				(local0 dispose:)
 				(= local0 0)
 			)
@@ -300,7 +306,7 @@
 			(= global206 60)
 			(self check:)
 			(if (= local0 (MakeMessageText 0 0 4 1 0))
-				(TextDialog local0 global288)
+				(TextDialog local0 continueText)
 				(local0 dispose:)
 				(= local0 0)
 			)
@@ -316,7 +322,7 @@
 	
 	(method (oVerbs)
 		(if (= local0 (MakeMessageText 7 0 0 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
@@ -339,7 +345,7 @@
 			(= msgType 3)
 			(self check:)
 			(if (= local0 (MakeMessageText 0 0 6 1 0))
-				(TextDialog local0 global288)
+				(TextDialog local0 continueText)
 				(local0 dispose:)
 				(= local0 0)
 			)
@@ -347,7 +353,7 @@
 			(= msgType 2)
 			(self oStopNotify:)
 			(if (= local0 (MakeMessageText 0 0 5 1 0))
-				(TextDialog local0 global288)
+				(TextDialog local0 continueText)
 				(local0 dispose:)
 				(= local0 0)
 			)
@@ -362,7 +368,7 @@
 	)
 	
 	(method (oVerbs)
-		(Prints {Title Bar selected})
+		(Prints LOOKUP_ERROR)
 	)
 )
 
@@ -374,7 +380,7 @@
 	
 	(method (oVerbs)
 		(if (= local0 (MakeMessageText 5 0 0 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
@@ -389,7 +395,7 @@
 	
 	(method (oVerbs)
 		(if (= local0 (MakeMessageText 6 0 0 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
@@ -404,7 +410,7 @@
 	
 	(method (oVerbs)
 		(if (= local0 (MakeMessageText 9 0 0 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)
@@ -419,7 +425,7 @@
 	
 	(method (oVerbs)
 		(if (= local0 (MakeMessageText 18 0 0 1 300))
-			(TextDialog local0 global288)
+			(TextDialog local0 continueText)
 			(local0 dispose:)
 			(= local0 0)
 		)

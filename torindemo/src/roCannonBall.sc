@@ -28,7 +28,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soExit)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -70,7 +70,7 @@
 		(if (>= (proc64001_4) 5)
 			(messager say: 1 1 2 0 0 -25336)
 		else
-			(curRoom setScript: soSendCannonballDown)
+			(curRoom setScript: LOOKUP_ERROR)
 		)
 	)
 )
@@ -103,9 +103,9 @@
 				(ego setHeading: 315 self)
 			)
 			(2
-				(foCoinBox setTotalWidth: 1)
+				(LOOKUP_ERROR setTotalWidth: 1)
 				(theGame handsOn:)
-				(poCannonball
+				(LOOKUP_ERROR
 					loop: 0
 					cel: 0
 					posn: 376 90
@@ -115,7 +115,7 @@
 			)
 			(3 (= ticks 30))
 			(4
-				(poCannonball
+				(LOOKUP_ERROR
 					loop: 1
 					cel: 0
 					posn: 381 166
@@ -124,7 +124,7 @@
 			)
 			(5 (= ticks 60))
 			(6
-				(poCannonball
+				(LOOKUP_ERROR
 					loop: 2
 					cel: 0
 					posn: 166 216
@@ -133,7 +133,7 @@
 			)
 			(7 (= ticks 60))
 			(8
-				(poCannonball
+				(LOOKUP_ERROR
 					loop: 3
 					cel: 0
 					posn: 87 183
@@ -142,7 +142,7 @@
 			)
 			(9 (= ticks 60))
 			(10
-				(poCannonball
+				(LOOKUP_ERROR
 					loop: 4
 					cel: 0
 					posn: 186 92
@@ -151,7 +151,7 @@
 			)
 			(11 (= ticks 60))
 			(12
-				(poCannonball
+				(LOOKUP_ERROR
 					loop: 5
 					cel: 0
 					posn: 412 92
@@ -160,14 +160,14 @@
 			)
 			(13
 				(if (> (ego x?) 460)
-					(curRoom setScript: soNabBall)
+					(curRoom setScript: LOOKUP_ERROR)
 				else
 					(self cue:)
 				)
 			)
 			(14 (= ticks 60))
 			(15
-				(poCannonball
+				(LOOKUP_ERROR
 					loop: 6
 					cel: 0
 					posn: 449 233
@@ -175,8 +175,8 @@
 				)
 			)
 			(16
-				(poCannonball dispose:)
-				(foCoinBox setVisibleRange: 1)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setVisibleRange: 1)
 				(self dispose:)
 			)
 		)
@@ -191,13 +191,13 @@
 			(0
 				(theGame handsOff:)
 				(= local0 0)
-				(ego setScript: soGetInPlace)
+				(ego setScript: LOOKUP_ERROR)
 				(= ticks 60)
 			)
 			(1 (= ticks 10))
 			(2
 				(if (not local0) (self changeState: (- state 1)))
-				(poCannonball
+				(LOOKUP_ERROR
 					loop: 6
 					cel: 0
 					posn: 449 233
@@ -205,19 +205,19 @@
 				)
 			)
 			(3
-				(poCannonball dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego hide:)
-				(poTorin cel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR cel: 0 init: setCycle: End self)
 			)
 			(4
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(if (not (proc64001_2))
-					(MonoOut {no cannonballs left})
+					(MonoOut LOOKUP_ERROR)
 				else
 					(ego get: (proc64001_2))
 				)
 				(ego posn: 556 310 oPanner: 1 -5436 4 show:)
-				(foCoinBox setVisibleRange: 1)
+				(LOOKUP_ERROR setVisibleRange: 1)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -250,7 +250,7 @@
 			(0
 				(theGame handsOff:)
 				(ego posn: 662 300 setMotion: MoveTo 600 300 self)
-				((ScriptID 64018 0) setScript: soBoogleWalkIn)
+				((ScriptID 64018 0) setScript: LOOKUP_ERROR)
 			)
 			(1
 				(theGame handsOn:)
@@ -287,7 +287,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -23336)
+		(theMusic pageSize: -23336)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -296,8 +296,8 @@
 					yourself:
 				)
 		)
-		(foCoinBox init:)
-		(foExitToIsland init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(ego init: oPanner: nCurPosY: 75)
 		((ScriptID 64018 0)
 			posn: 610 300
@@ -306,7 +306,7 @@
 			nCurPosY: 75
 		)
 		(theGame handsOn:)
-		(ego setScript: soWalkIn)
+		(ego setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

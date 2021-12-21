@@ -91,7 +91,7 @@
 		)
 		(setSel_141
 			addToEnd:
-				((Ostiary new:)
+				((LOOKUP_ERROR new:)
 					audHolder: temp1
 					view: (+ 30410 temp0)
 					heading: temp3
@@ -118,18 +118,12 @@
 )
 
 (procedure (localproc_042f param1)
-	(if (not local1)
-		(MonoOut {error in GetLocX -- 30400.sc DJM})
-		(return 0)
-	)
+	(if (not local1) (MonoOut {LOOKUP\_ERROR}) (return 0))
 	(return (local1 at: (* param1 2)))
 )
 
 (procedure (localproc_046c param1)
-	(if (not local1)
-		(MonoOut {error in GetLocY -- 30400.sc DJM})
-		(return 0)
-	)
+	(if (not local1) (MonoOut {LOOKUP\_ERROR}) (return 0))
 	(return (local1 at: (+ (* param1 2) 1)))
 )
 
@@ -192,8 +186,8 @@
 			(local3 at: 3)
 			(local3 at: 4)
 		)
-		(MonoOut {Winning position!})
-		(curRoom setScript: soPuzzleSolved)
+		(MonoOut LOOKUP_ERROR)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -336,7 +330,7 @@
 		(super doit: &rest)
 		(if
 		(and (not addBrokenShard) (> (- gameTime fadeIn) 120))
-			(MonoOut {FailSafe Off -- Ostiary %d} audHolder)
+			(MonoOut LOOKUP_ERROR audHolder)
 			(= addBrokenShard 1)
 			(= fadeIn gameTime)
 		)
@@ -357,8 +351,8 @@
 							(= temp3 (* (- (theDeleteShard y?) y) 3))
 							(if (< (= temp6 (GetDistance 0 0 temp2 temp3)) 28)
 								(if (not local8)
-									(sound1
-										lDownArrowLoop: (- (+ 1 audHolder) 1) 0 18 1 oDoneTalking 30600 1
+									(theSound
+										lDownArrowLoop: (- (+ 1 audHolder) 1) 0 18 1 {oSmallOst6} 30600 1
 									)
 									(= local8 1)
 								)
@@ -373,7 +367,7 @@
 					)
 				)
 				((> (- gameTime fadeIn) 20)
-					(MonoOut {FailSafe On -- Ostiary %d} audHolder)
+					(MonoOut LOOKUP_ERROR audHolder)
 					(= fadeIn gameTime)
 					(= addBrokenShard 0)
 					(self setLoop: -1)
@@ -407,9 +401,9 @@
 			(= local8 1)
 			(++ local9)
 			(if (== theSel_1279 0)
-				(messager say: 0 0 1 1 oDoneTalking 30600)
+				(messager say: 0 0 1 1 LOOKUP_ERROR 30600)
 			else
-				(messager say: 0 0 1 2 oDoneTalking 30600)
+				(messager say: 0 0 1 2 LOOKUP_ERROR 30600)
 			)
 		)
 		(if (!= startCorder -1)
@@ -449,11 +443,7 @@
 			(return)
 		)
 		(if (!= startCorder -1)
-			(MonoOut
-				{integrity failure -- invalid cue, point: %d, guy: %d}
-				setWinner
-				audHolder
-			)
+			(MonoOut LOOKUP_ERROR setWinner audHolder)
 			(return)
 		)
 		(= startCorder setWinner)
@@ -636,12 +626,12 @@
 				(messager say: 0 0 2 0 self 30600)
 			)
 			(1
-				(curRoom initThumb: oTreeScrollPlane)
-				(oTreeScrollPlane fadeRel: 0 632)
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR fadeRel: 0 632)
 				(= ticks 120)
 			)
 			(2
-				(oTreeScrollPlane sitNSpin: 0 0 self 4 6 6)
+				(LOOKUP_ERROR sitNSpin: 0 0 self 4 6 6)
 			)
 			(3 (= ticks 120))
 			(4 (curRoom newRoom: 30500))
@@ -686,7 +676,7 @@
 			(0
 				(curRoom picture: 30400)
 				(curRoom drawPic: 30400)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 30400
 					loop: 0
 					cel: 0
@@ -694,37 +684,49 @@
 					init:
 					setCycle: End self
 				)
-				(poLeenah view: 30400 loop: 1 cel: 0 posn: 324 259 init:)
-				(poBoogle view: 30400 loop: 2 cel: 0 posn: 324 259 init:)
+				(LOOKUP_ERROR
+					view: 30400
+					loop: 1
+					cel: 0
+					posn: 324 259
+					init:
+				)
+				(LOOKUP_ERROR
+					view: 30400
+					loop: 2
+					cel: 0
+					posn: 324 259
+					init:
+				)
 			)
 			(1
-				(poTorin hide:)
-				(poLeenah loop: 1 cel: 1 setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR loop: 1 cel: 1 setCycle: End self)
 			)
 			(2
-				(poTorin show: loop: 3 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR show: loop: 3 cel: 0 setCycle: End self)
 			)
 			(3
-				(poBoogle setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(4
-				(poTorin dispose:)
-				(poBoogle dispose:)
-				(poLeenah dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom picture: 30403)
 				(curRoom drawPic: 30403)
-				(oSmallOst0 init:)
-				(oSmallOst1 init:)
-				(oSmallOst2 init:)
-				(oSmallOst3 init:)
-				(oSmallOst4 init:)
-				(oSmallOst5 init:)
-				(oSmallOst6 init:)
-				(oSmallOst7 init:)
-				(oSmallOst8 init:)
-				(oSmallOst9 init:)
-				(foExit init:)
-				(poTorin
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR
 					view: 30403
 					loop: 0
 					cel: 0
@@ -732,7 +734,7 @@
 					init:
 					setCycle: End self
 				)
-				(poBoogle
+				(LOOKUP_ERROR
 					view: 30403
 					loop: 2
 					cel: 0
@@ -740,7 +742,7 @@
 					init:
 					setCycle: End self
 				)
-				(poLeenah
+				(LOOKUP_ERROR
 					view: 30403
 					loop: 1
 					cel: 0
@@ -753,19 +755,19 @@
 			(6)
 			(7 (= ticks 120))
 			(8
-				(oSmallOst0 dispose:)
-				(oSmallOst1 dispose:)
-				(oSmallOst2 dispose:)
-				(oSmallOst3 dispose:)
-				(oSmallOst4 dispose:)
-				(oSmallOst5 dispose:)
-				(oSmallOst6 dispose:)
-				(oSmallOst7 dispose:)
-				(oSmallOst8 dispose:)
-				(oSmallOst9 dispose:)
-				(poTorin dispose:)
-				(poBoogle dispose:)
-				(poLeenah dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom picture: 30404)
 				(curRoom drawPic: 30404)
 				(localproc_01b2)
@@ -799,9 +801,9 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 30400)
+		(theMusic pageSize: 30400)
 		(= local10 0)
-		(curRoom setScript: soPlayRoomIntro)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (doit)
@@ -809,7 +811,7 @@
 		(if
 		(and local10 (> (- gameTime theGSel_57) local7))
 			(if (not local12)
-				(self setScript: soFirstScrewup)
+				(self setScript: {LOOKUP\_ERROR})
 				(return)
 			)
 			(localproc_074c)
@@ -828,7 +830,7 @@
 			(setSel_141 dispose:)
 			(= setSel_141 0)
 		)
-		(sound1 stop:)
+		(theSound stop:)
 		(super dispose: &rest)
 	)
 	
@@ -836,7 +838,7 @@
 	)
 	
 	(method (zipTo)
-		(curRoom setScript: soPuzzleSolved)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (intoPouch)

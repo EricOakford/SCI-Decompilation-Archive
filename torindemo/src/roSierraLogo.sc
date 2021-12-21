@@ -28,6 +28,6 @@
 	(method (init)
 		(super init: &rest)
 		(= plane (ScriptID 0 2))
-		(curRoom setScript: soSierraLogo)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )

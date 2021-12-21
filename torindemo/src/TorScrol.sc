@@ -46,7 +46,7 @@
 				(ego has: ((ScriptID 64001 0) get: 46))
 				local4
 			)
-			(theDoits add: oCarpenterHammerCuer)
+			(theDoits add: LOOKUP_ERROR)
 			(= local6 1)
 			(return 1)
 		else
@@ -62,7 +62,7 @@
 				(ego has: ((ScriptID 64001 0) get: 56))
 				(ego has: ((ScriptID 64001 0) get: 51))
 			)
-			(theDoits add: oAcrobatsVanishCuer)
+			(theDoits add: LOOKUP_ERROR)
 			(= local7 1)
 			(return 1)
 		else
@@ -233,7 +233,7 @@
 	)
 	
 	(method (init)
-		(= frame voCentipedeBody)
+		(= frame LOOKUP_ERROR)
 		(super init: &rest)
 	)
 )
@@ -245,19 +245,19 @@
 		(switch (= state newState)
 			(0
 				(ego bMouseDown: 0)
-				(oBackstageScrollPlane fadeRel: 1756 0)
-				(poEgoEntrance init:)
+				(LOOKUP_ERROR fadeRel: 1756 0)
+				(LOOKUP_ERROR init:)
 				(= global237 1)
 				(messager sayRange: 0 0 0 1 2 self)
 			)
 			(1
-				(poEgoEntrance setCycle: End)
-				(poDancingCentipede init: setCycle: End self)
+				(LOOKUP_ERROR setCycle: End)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(2
-				(voHat init:)
-				(voCane init:)
-				(poDancingCentipede
+				({voTorinWithArchivistBody} init:)
+				(LOOKUP_ERROR init:)
+				(soTalkToCarpenter
 					setLoop: 3
 					setCel: 0
 					posn: 2102 208
@@ -265,12 +265,12 @@
 				)
 			)
 			(3
-				(poDancingCentipede dispose:)
+				(LOOKUP_ERROR dispose:)
 				(= global237 0)
 				(messager say: 0 0 0 3 self)
 			)
 			(4
-				(poEgoEntrance
+				(LOOKUP_ERROR
 					setLoop: 4
 					setCel: 0
 					posn: 2000 206
@@ -285,15 +285,15 @@
 					init:
 					oPanner: 1
 					ignoreActors: 0
-					code: oEgoCode
-					lCheck: oScrollerWalkHandler
+					code: LOOKUP_ERROR
+					lCheck: LOOKUP_ERROR
 				)
-				(theDoits add: oRabbitCuer)
-				(theDoits add: oCarpenterCuer)
-				(theDoits add: oAcrobatCuer)
-				(poEgoDouble init:)
+				(theDoits add: LOOKUP_ERROR)
+				(theDoits add: LOOKUP_ERROR)
+				(theDoits add: LOOKUP_ERROR)
+				(LOOKUP_ERROR init:)
 				(theGame handsOn:)
-				(poEgoEntrance dispose:)
+				(LOOKUP_ERROR dispose:)
 				(self dispose:)
 			)
 		)
@@ -307,7 +307,7 @@
 		(if (and (< 1786 (ego x?)) (< (ego x?) 1960))
 			(ego setMotion: 0)
 			(theGame handsOff:)
-			(curRoom setScript: soArchery)
+			(curRoom setScript: LOOKUP_ERROR)
 			(theDoits delete: self)
 			(self dispose:)
 		)
@@ -320,10 +320,10 @@
 	(method (doit)
 		(if
 			(and
-				(< 849 (oBackstageScrollPlane setMusic?))
-				(< (oBackstageScrollPlane setMusic?) 1226)
+				(< 849 (LOOKUP_ERROR setMusic?))
+				(< (LOOKUP_ERROR setMusic?) 1226)
 			)
-			(poCarpenter setScript: soCarpenterSaws)
+			(LOOKUP_ERROR setScript: LOOKUP_ERROR)
 			(theDoits delete: self)
 			(self dispose:)
 		)
@@ -336,17 +336,17 @@
 	(method (doit)
 		(if
 			(or
-				(< (oBackstageScrollPlane setMusic?) 577)
-				(> (oBackstageScrollPlane setMusic?) 1687)
+				(< (LOOKUP_ERROR setMusic?) 577)
+				(> (LOOKUP_ERROR setMusic?) 1687)
 			)
-			(poCarpenter
+			(LOOKUP_ERROR
 				posn: 1544 240
 				setLoop: 2
 				setCel: 0
 				setCycle: Fwd
 				setTotalWidth: 1
 			)
-			(voSaw init:)
+			(LOOKUP_ERROR init:)
 			(theDoits delete: self)
 			(self dispose:)
 		)
@@ -360,14 +360,14 @@
 		(if
 			(and
 				(or
-					(< (oBackstageScrollPlane setMusic?) 1157)
-					(> (oBackstageScrollPlane setMusic?) 2593)
+					(< (LOOKUP_ERROR setMusic?) 1157)
+					(> (LOOKUP_ERROR setMusic?) 2593)
 				)
 				(or (< (ego x?) 1787) (> (ego x?) 2593))
 			)
-			(poManAcrobat init:)
-			(poGirlAcrobat init:)
-			(poAcrobats init: setScript: soTumbleAct)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR init: setScript: LOOKUP_ERROR)
 			(theDoits delete: self)
 			(self dispose:)
 		)
@@ -381,15 +381,15 @@
 		(if
 			(and
 				(or
-					(< (oBackstageScrollPlane setMusic?) 1157)
-					(> (oBackstageScrollPlane setMusic?) 2593)
+					(< (LOOKUP_ERROR setMusic?) 1157)
+					(> (LOOKUP_ERROR setMusic?) 2593)
 				)
 				(or (< (ego x?) 1787) (> (ego x?) 2593))
 			)
-			(poAcrobats dispose:)
-			(poManAcrobat dispose:)
-			(poGirlAcrobat dispose:)
-			(voRosin init:)
+			(LOOKUP_ERROR dispose:)
+			(LOOKUP_ERROR dispose:)
+			(LOOKUP_ERROR dispose:)
+			(LOOKUP_ERROR init:)
 			(theDoits delete: self)
 			(self dispose:)
 		)
@@ -406,7 +406,7 @@
 				local6
 				(ego has: ((ScriptID 64001 0) get: 60))
 			)
-			(aoStageManager setScript: soStageManagerReady)
+			(LOOKUP_ERROR setScript: LOOKUP_ERROR)
 			(theDoits delete: self)
 			(self dispose:)
 		)
@@ -460,10 +460,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(curRoom setScript: soTalkToRabbit)
+				(curRoom setScript: LOOKUP_ERROR)
 			)
 			(57
-				(curRoom setScript: soRabbitClimbsInHat)
+				(curRoom setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -499,12 +499,12 @@
 	)
 	
 	(method (init)
-		(poRabbitQuits hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poRabbitQuits show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -516,29 +516,29 @@
 		(switch (= state newState)
 			(0
 				(ego bMouseDown: 0)
-				(oBackstageScrollPlane sitNSpin: 1553 0 self)
+				(LOOKUP_ERROR sitNSpin: 1553 0 self)
 			)
 			(1
-				(poArcher setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(2
 				(messager sayRange: 0 0 17 1 2 self)
 			)
 			(3
-				(poArcher setLoop: 3 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setLoop: 3 setCel: 0 setCycle: End self)
 			)
 			(4
-				(poRabbit dispose:)
-				(poArcher dispose:)
-				(curRoom initThumb: oArcheryCU)
-				(poArrowFlight init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR init: setCycle: End self)
 				(messager say: 0 0 17 3 self)
 			)
 			(5)
 			(6
-				(curRoom arrowDown: oArcheryCU)
-				(poRabbitQuits init: setCycle: End self)
-				(poArcherLeaves init:)
+				(curRoom arrowDown: LOOKUP_ERROR)
+				(LOOKUP_ERROR init: setCycle: End self)
+				(LOOKUP_ERROR init:)
 			)
 			(7
 				(= global233 2)
@@ -546,14 +546,14 @@
 			)
 			(8
 				(= global233 0)
-				(poArcherLeaves setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(9
 				(messager say: 0 0 17 7 self)
 			)
 			(10
-				(voBow init:)
-				(poArcherLeaves
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR
 					posn: 1697 289
 					setLoop: 3
 					setCel: 0
@@ -564,7 +564,7 @@
 				(messager say: 0 0 17 8 self)
 			)
 			(12
-				(poArcherLeaves dispose:)
+				(LOOKUP_ERROR dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -580,26 +580,26 @@
 			(0
 				(theGame handsOff:)
 				(localproc_040a
-					(poRabbitQuits approachX?)
-					(poRabbitQuits approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 315 self))
 			(2
-				(curRoom initThumb: oRabbitCU)
-				(if (and (== (poRabbitQuits case?) 2) local3)
-					(poRabbitQuits case: 4)
+				(curRoom initThumb: LOOKUP_ERROR)
+				(if (and (== (LOOKUP_ERROR case?) 2) local3)
+					(LOOKUP_ERROR case: 4)
 				)
-				(messager say: 0 1 (poRabbitQuits case?) 0 self -12436)
-				(switch (poRabbitQuits case?)
-					(1 (poRabbitQuits case: 3))
-					(3 (poRabbitQuits case: 5))
-					(5 (poRabbitQuits case: 2))
+				(messager say: 0 1 (LOOKUP_ERROR case?) 0 self -12436)
+				(switch (LOOKUP_ERROR case?)
+					(1 (LOOKUP_ERROR case: 3))
+					(3 (LOOKUP_ERROR case: 5))
+					(5 (LOOKUP_ERROR case: 2))
 				)
 			)
 			(3
-				(curRoom arrowDown: oRabbitCU)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -634,12 +634,12 @@
 	)
 	
 	(method (init)
-		(voRabbitMouth hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(voRabbitMouth show:)
+		(soMagicianGivesBook show:)
 		(super dispose: &rest)
 	)
 )
@@ -670,40 +670,40 @@
 			(0
 				(theGame handsOff:)
 				(localproc_040a
-					(poRabbitQuits approachX?)
-					(poRabbitQuits approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 315 self))
 			(2
-				(curRoom initThumb: oRabbitCU)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(messager sayRange: 0 57 0 1 7 self -12436)
 			)
 			(3
-				(curRoom arrowDown: oRabbitCU)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(if
 					(not
-						(if (< 1483 (oBackstageScrollPlane setMusic?))
-							(< (oBackstageScrollPlane setMusic?) 1755)
+						(if (< 1483 (LOOKUP_ERROR setMusic?))
+							(< (LOOKUP_ERROR setMusic?) 1755)
 						)
 					)
-					(oBackstageScrollPlane sitNSpin: 1640 0 self)
+					(LOOKUP_ERROR sitNSpin: 1640 0 self)
 				else
 					(self cue:)
 				)
 			)
 			(4
 				(ego hide:)
-				(poTorinWithHat init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(5
-				(poRabbitQuits dispose:)
-				(poRabbitClimbsInHat init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(6
-				(poRabbitClimbsInHat dispose:)
-				(poTorinWithHat
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR
 					posn: 2037 265
 					setLoop: 4
 					setCel: 0
@@ -711,7 +711,7 @@
 				)
 			)
 			(7
-				(poTorinWithHat dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego put: ((ScriptID 64001 0) get: 47))
 				(ego get: ((ScriptID 64001 0) get: 48))
 				(ego posn: 2037 265 setLoop: 7 scrollTo: show:)
@@ -749,7 +749,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (ego setScript: soTakeSaw))
+			(1
+				(ego setScript: LOOKUP_ERROR)
+			)
 		)
 	)
 )
@@ -761,16 +763,16 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(voSaw approachX?)
-					(voSaw approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(voSaw dispose:)
-				(Prints {Anim of Torin taking saw})
+				(LOOKUP_ERROR dispose:)
+				(Prints LOOKUP_ERROR)
 				(self cue:)
 			)
 			(3
@@ -807,7 +809,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTalkToCarpenter)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -818,19 +820,19 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(poCarpenter approachX?)
-					(poCarpenter approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 90 self))
 			(2
 				(theGame handsOff:)
-				(messager say: 1 1 (poCarpenter case?) 0 self)
+				(messager say: 1 1 (LOOKUP_ERROR case?) 0 self)
 			)
 			(3
-				(if (< (poCarpenter case?) 21)
-					(poCarpenter case: (+ 1 (poCarpenter case?)))
+				(if (< (LOOKUP_ERROR case?) 21)
+					(LOOKUP_ERROR case: (+ 1 (LOOKUP_ERROR case?)))
 				else
 					(= local4 1)
 					(localproc_02da)
@@ -848,12 +850,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poCarpenter setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(1
-				(voSaw dispose:)
-				(voBoard dispose:)
-				(poCarpenter
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR
 					posn: 1282 247
 					setLoop: 1
 					setCel: 0
@@ -881,7 +883,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTalkToAcrobat 0 self)
+		(ego setScript: LOOKUP_ERROR 0 self)
 	)
 )
 
@@ -902,7 +904,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTalkToAcrobat 0 self)
+		(ego setScript: LOOKUP_ERROR 0 self)
 	)
 )
 
@@ -923,7 +925,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTalkToAcrobat 0 self)
+		(ego setScript: LOOKUP_ERROR 0 self)
 	)
 )
 
@@ -954,9 +956,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poAcrobats hide:)
-				(poManAcrobat setCel: 0 show: setCycle: End self)
-				(poGirlAcrobat
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR setCel: 0 show: setCycle: End self)
+				(LOOKUP_ERROR
 					posn: 2187 298
 					setLoop: 0
 					setCel: 0
@@ -966,7 +968,7 @@
 			)
 			(1)
 			(2
-				(poGirlAcrobat
+				(LOOKUP_ERROR
 					posn: 1965 309
 					setLoop: 2
 					setCel: 0
@@ -974,9 +976,9 @@
 				)
 			)
 			(3
-				(poManAcrobat hide:)
-				(poGirlAcrobat hide:)
-				(poAcrobats
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR
 					posn: 2293 294
 					setLoop: 3
 					setCel: 0
@@ -985,7 +987,12 @@
 				)
 			)
 			(4
-				(poAcrobats setLoop: 4 setCel: 0 show: setCycle: End self)
+				({poTorinTakesCorder}
+					setLoop: 4
+					setCel: 0
+					show:
+					setCycle: End self
+				)
 				(= state -1)
 			)
 		)
@@ -1008,7 +1015,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTalkToArchivist 0 0)
+		(ego setScript: LOOKUP_ERROR 0 0)
 	)
 )
 
@@ -1026,7 +1033,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTalkToArchivist 0 1)
+		(ego setScript: LOOKUP_ERROR 0 1)
 	)
 )
 
@@ -1040,12 +1047,12 @@
 	)
 	
 	(method (init)
-		(voArchivistCU hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(voArchivistCU show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -1078,12 +1085,12 @@
 	)
 	
 	(method (init)
-		(voTorinWithArchivistMouth hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(voTorinWithArchivistMouth show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -1099,52 +1106,52 @@
 			)
 			(1
 				(localproc_040a
-					(poArchivist approachX?)
-					(poArchivist approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(2 (ego setHeading: 90 self))
 			(3
 				(theGame handsOff:)
-				(if (== (poArchivist case?) 1)
+				(if (== (LOOKUP_ERROR case?) 1)
 					(messager sayRange: 0 1 1 1 4 self -12336)
 				else
 					(self cue:)
 				)
 			)
 			(4
-				(curRoom initThumb: oArchivistCU)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(self cue:)
 			)
 			(5
 				(theGame handsOff:)
-				(switch (poArchivist case?)
+				(switch (LOOKUP_ERROR case?)
 					(1
 						(messager say: 0 1 1 5 self -12336)
 					)
 					(5
-						(self setScript: soRecordingSession self)
+						(self setScript: LOOKUP_ERROR self)
 					)
 					(else 
-						(messager say: 0 1 (poArchivist case?) 0 self -12336)
+						(messager say: 0 1 (LOOKUP_ERROR case?) 0 self -12336)
 					)
 				)
 			)
 			(6
-				(switch (poArchivist case?)
-					(1 (poArchivist case: 6))
-					(6 (poArchivist case: 2))
-					(2 (poArchivist case: 3))
-					(3 (poArchivist case: 4))
-					(4 (poArchivist case: 5))
-					(5 (poArchivist case: 7))
+				(switch (LOOKUP_ERROR case?)
+					(1 (LOOKUP_ERROR case: 6))
+					(6 (LOOKUP_ERROR case: 2))
+					(2 (LOOKUP_ERROR case: 3))
+					(3 (LOOKUP_ERROR case: 4))
+					(4 (LOOKUP_ERROR case: 5))
+					(5 (LOOKUP_ERROR case: 7))
 					(7
-						(poArchivist case: 8)
-						(curRoom arrowDown: oArchivistCU)
+						(LOOKUP_ERROR case: 8)
+						(curRoom arrowDown: LOOKUP_ERROR)
 					)
 					(else 
-						(curRoom arrowDown: oArchivistCU)
+						(curRoom arrowDown: LOOKUP_ERROR)
 					)
 				)
 				(theGame handsOn:)
@@ -1163,24 +1170,24 @@
 				(messager sayRange: 0 1 5 1 10 self -12336)
 			)
 			(1
-				(curRoom arrowDown: oArchivistCU)
-				(poArchivist hide:)
-				(poEjectCrystal init: setCycle: End self)
+				(curRoom arrowDown: LOOKUP_ERROR)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(2
 				(messager say: 0 1 5 11 self -12336)
 			)
 			(3
-				(poEjectCrystal dispose:)
-				(poTorinRecords init:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
 				(ego hide:)
-				(poArchivist show:)
+				(LOOKUP_ERROR show:)
 				(messager say: 0 1 5 12 self -12336)
 			)
 			(4
-				(poTorinRecords dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
-				(curRoom initThumb: oArchivistCU)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(messager say: 0 1 5 13 self -12336)
 			)
 			(5
@@ -1188,20 +1195,20 @@
 				(messager say: 0 1 5 14 self -12336)
 			)
 			(6
-				(curRoom arrowDown: oArchivistCU)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(ego get: ((ScriptID 64001 0) get: 52))
 				(localproc_02da)
-				(poArchivist hide:)
-				(poArchivistGivesCorder init: setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(7
-				(poArchivist show:)
+				(LOOKUP_ERROR show:)
 				(ego hide:)
-				(poArchivistGivesCorder dispose:)
-				(poTorinTakesCorder init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(8
-				(poTorinTakesCorder dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(self dispose:)
 			)
@@ -1272,12 +1279,12 @@
 	)
 	
 	(method (init)
-		(voMagicianMouth hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(voMagicianMouth show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -1302,9 +1309,9 @@
 			(1
 				(if local3
 					(= case 7)
-					(ego setScript: soTalkToZippy 0 theVerb)
+					(ego setScript: LOOKUP_ERROR 0 theVerb)
 				else
-					(ego setScript: soMagicTrick)
+					(ego setScript: LOOKUP_ERROR)
 					(= local3 1)
 				)
 			)
@@ -1314,21 +1321,21 @@
 				else
 					(= case 2)
 				)
-				(ego setScript: soGiveKerchiefToZippy)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(58
-				(ego setScript: soGiveRabbitToZippy)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(57
 				(= case 0)
-				(ego setScript: soTalkToZippy 0 theVerb)
+				(ego setScript: LOOKUP_ERROR 0 theVerb)
 			)
 			(60
 				(if ((ScriptID 64017 0) test: 134)
-					(ego setScript: soGiveWandToZippy)
+					(ego setScript: LOOKUP_ERROR)
 				else
 					(= case 2)
-					(ego setScript: soTalkToZippy 0 theVerb)
+					(ego setScript: LOOKUP_ERROR 0 theVerb)
 				)
 			)
 		)
@@ -1342,21 +1349,21 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(poMagician approachX?)
-					(poMagician approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(curRoom initThumb: oMagicianCU)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(messager
-					say: 0 register (poMagician case?) 0 self -12536
+					say: 0 register (LOOKUP_ERROR case?) 0 self -12536
 				)
 			)
 			(3
-				(curRoom arrowDown: oMagicianCU)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1371,111 +1378,111 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(poMagician approachX?)
-					(poMagician approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(curRoom initThumb: oMagicianCU)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(messager sayRange: 0 1 1 1 4 self -12536)
 			)
 			(3
-				(voMagicianBody hide:)
-				(voMagicianMouth hide:)
-				(poShufflesCards init: setCycle: Fwd)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR init: setCycle: Fwd)
 				(messager say: 0 1 1 5 self -12536)
 			)
 			(4
-				(poShufflesCards setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(5
-				(poShufflesCards dispose:)
-				(poHandsCardsToTorin init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(6
-				(poHandsCardsToTorin dispose:)
-				(voMagicianBody show:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR show:)
 				(messager say: 0 1 1 6 self -12536)
 			)
 			(7
-				(poTorinTakesCards init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(8
 				(messager sayRange: 0 1 1 9 10 self -12536)
 			)
 			(9
-				(voMagicianBody hide:)
-				(voMagicianMouth hide:)
-				(poSleeveFidget setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(10
-				(poSleeveFidget dispose:)
-				(poPullsOutBouquet init: setCycle: CT 2 1 self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: CT 2 1 self)
 			)
 			(11
 				(messager say: 0 1 1 11 self -12536)
 			)
 			(12
-				(poPullsOutBouquet setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(13
-				(poPullsOutBouquet dispose:)
-				(voMagicianBody show:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR show:)
 				(messager sayRange: 0 1 1 12 16 self -12536)
 			)
 			(14
-				(voMagicianBody hide:)
-				(voMagicianMouth hide:)
-				(poSleeveFidget setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(15
-				(poSleeveFidget dispose:)
-				(poPullsOutDove init: setCycle: CT 2 1 self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: CT 2 1 self)
 			)
 			(16
 				(messager say: 0 1 1 17 self -12536)
 			)
 			(17
-				(poPullsOutDove setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(18
-				(poPullsOutDove dispose:)
-				(voMagicianBody show:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR show:)
 				(messager sayRange: 0 1 1 18 19 self -12536)
 			)
 			(19
 				(messager say: 0 1 1 21 self -12536)
 			)
 			(20
-				(voMagicianBody hide:)
-				(voMagicianMouth hide:)
-				(poSleeveFidget setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(21
-				(poSleeveFidget dispose:)
-				(poPullsOutBook init: setCycle: CT 2 1 self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: CT 2 1 self)
 			)
 			(22
 				(messager say: 0 1 1 22 self -12536)
 			)
 			(23
-				(poPullsOutBook setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(24
-				(poPullsOutBook dispose:)
-				(voMagicianBody show:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR show:)
 				(messager sayRange: 0 1 1 23 27 self -12536)
 			)
 			(25
-				(poTorinTakesCards dispose:)
-				(poTorinReturnsCards init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(26
-				(curRoom arrowDown: oMagicianCU)
-				(poMagician setVisibleRange: 56 58 57 60)
+				(curRoom arrowDown: LOOKUP_ERROR)
+				(LOOKUP_ERROR setVisibleRange: 56 58 57 60)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1561,28 +1568,28 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(poMagician approachX?)
-					(poMagician approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(curRoom initThumb: oMagicianCU)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(messager sayRange: 0 72 0 1 3 self -12536)
 			)
 			(3
-				(poTorinGivesRabbit init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(4
-				(poTorinGivesRabbit dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego put: ((ScriptID 64001 0) get: 48))
 				(messager sayRange: 0 72 0 4 14 self -12536)
 			)
 			(5
 				((ScriptID 64017 0) set: 134)
-				(curRoom arrowDown: oMagicianCU)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1597,35 +1604,35 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(poMagician approachX?)
-					(poMagician approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(curRoom initThumb: oMagicianCU)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(messager say: 0 60 0 1 self -12536)
 			)
 			(3
-				(poTorinGivesWand init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(4
-				(poTorinGivesWand dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego put: ((ScriptID 64001 0) get: 50))
 				(messager sayRange: 0 60 0 2 7 self -12536)
 			)
 			(5
 				((ScriptID 64017 0) set: 135)
 				(if ((ScriptID 64017 0) test: 136)
-					(ego setScript: soMagicianGivesBook)
+					(ego setScript: LOOKUP_ERROR)
 				else
 					(messager say: 0 60 3 0 self -12536)
 				)
 			)
 			(6
-				(curRoom arrowDown: oMagicianCU)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1640,25 +1647,25 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(poMagician approachX?)
-					(poMagician approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(curRoom initThumb: oMagicianCU)
-				(messager say: 0 56 (poMagician case?) 1 self -12536)
+				(curRoom initThumb: LOOKUP_ERROR)
+				(messager say: 0 56 (LOOKUP_ERROR case?) 1 self -12536)
 			)
 			(3
-				(poTorinGivesKerchief init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(4
 				(ego put: ((ScriptID 64001 0) get: 58))
-				(poTorinGivesKerchief dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64017 0) set: 136)
-				(if (== (poMagician case?) 5)
+				(if (== (LOOKUP_ERROR case?) 5)
 					(messager sayRange: 0 56 5 2 3 self -12536)
 				else
 					(messager sayRange: 0 56 2 2 6 self -12536)
@@ -1667,7 +1674,7 @@
 			(5
 				(if
 					(and
-						(== (poMagician case?) 5)
+						(== (LOOKUP_ERROR case?) 5)
 						((ScriptID 64017 0) test: 135)
 					)
 					(messager sayRange: 0 56 5 4 6 self -12536)
@@ -1678,12 +1685,12 @@
 			(6
 				(if
 					(and
-						(== (poMagician case?) 5)
+						(== (LOOKUP_ERROR case?) 5)
 						((ScriptID 64017 0) test: 135)
 					)
-					(ego setScript: soMagicianGivesBook)
+					(ego setScript: LOOKUP_ERROR)
 				else
-					(curRoom arrowDown: oMagicianCU)
+					(curRoom arrowDown: LOOKUP_ERROR)
 					(theGame handsOn:)
 					(self dispose:)
 				)
@@ -1725,21 +1732,21 @@
 				(messager say: 0 0 6 1 self -12536)
 			)
 			(1
-				(voMagicianBody hide:)
-				(voMagicianMouth hide:)
-				(poMagicianGivesBook init: setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(2
-				(poMagicianGivesBook dispose:)
-				(voMagicianBody show:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR show:)
 				(ego get: ((ScriptID 64001 0) get: 51))
 				(localproc_0386)
 				(messager sayRange: 0 0 6 2 3 self -12536)
 			)
 			(3
-				(curRoom arrowDown: oMagicianCU)
-				(poMagician dispose:)
-				(poHappyMagician init: setCycle: Fwd)
+				(curRoom arrowDown: LOOKUP_ERROR)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: Fwd)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1780,13 +1787,13 @@
 			setStep: 5 -1
 			ignoreActors: 0
 			setVisibleRange: 1
-			setScript: soStageManagerPaces
+			setScript: LOOKUP_ERROR
 		)
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTalkToStageManager)
-		(self setScript: soStageManagerStopsToTalk)
+		(ego setScript: LOOKUP_ERROR)
+		(self setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1796,16 +1803,16 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(aoStageManager setLoop: local5 1 setCycle: Walk)
+				(LOOKUP_ERROR setLoop: local5 1 setCycle: Walk)
 				(if local5
-					(aoStageManager setMotion: PolyPath 1151 257 self)
+					(LOOKUP_ERROR setMotion: PolyPath 1151 257 self)
 				else
-					(aoStageManager setMotion: PolyPath 765 268 self)
+					(LOOKUP_ERROR setMotion: PolyPath 765 268 self)
 				)
 			)
 			(1
 				(= local5 (- 1 local5))
-				(aoStageManager setScript: self)
+				(LOOKUP_ERROR setScript: self)
 			)
 		)
 	)
@@ -1817,13 +1824,13 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(aoStageManager setTotalWidth: 1)
+				(LOOKUP_ERROR setTotalWidth: 1)
 				(= seconds 5)
 			)
 			(1
-				(foLeftCurtain init:)
-				(foRightCurtain init:)
-				(aoStageManager
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR
 					setMotion: 0
 					setLoop: (+ 2 local5) 1
 					setCycle: End self
@@ -1845,12 +1852,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(if (<= (- (ego x?) (aoStageManager x?)) 1580)
+				(if (<= (- (ego x?) (LOOKUP_ERROR x?)) 1580)
 					(= local5 1)
 				else
 					(= local5 0)
 				)
-				(aoStageManager
+				(LOOKUP_ERROR
 					setMotion: 0
 					setLoop: (+ 2 local5) 1
 					setCycle: End self
@@ -1864,7 +1871,7 @@
 	(properties)
 	
 	(method (dispose)
-		(aoStageManager setScript: soStageManagerPaces)
+		(LOOKUP_ERROR setScript: LOOKUP_ERROR)
 		(super dispose: &rest)
 	)
 	
@@ -1872,8 +1879,8 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(+ (aoStageManager x?) 100)
-					(aoStageManager y?)
+					(+ (LOOKUP_ERROR x?) 100)
+					(LOOKUP_ERROR y?)
 					self
 				)
 			)
@@ -1886,17 +1893,17 @@
 			)
 			(2
 				(theGame handsOff:)
-				(messager say: 3 1 (aoStageManager case?) 0 self)
+				(messager say: 3 1 (LOOKUP_ERROR case?) 0 self)
 			)
 			(3
-				(switch (aoStageManager case?)
-					(9 (aoStageManager case: 10))
-					(10 (aoStageManager case: 11))
-					(11 (aoStageManager case: 12))
-					(12 (aoStageManager case: 13))
+				(switch (LOOKUP_ERROR case?)
+					(9 (LOOKUP_ERROR case: 10))
+					(10 (LOOKUP_ERROR case: 11))
+					(11 (LOOKUP_ERROR case: 12))
+					(12 (LOOKUP_ERROR case: 13))
 					(13
-						(aoStageManager case: 22)
-						(theDoits add: oStageManagerReadyCuer)
+						(LOOKUP_ERROR case: 22)
+						(theDoits add: LOOKUP_ERROR)
 					)
 				)
 				(theGame handsOn:)
@@ -1923,7 +1930,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soTakePoster)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -1936,20 +1943,20 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(voPoster approachX?)
-					(voPoster approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(voPoster dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego hide:)
-				(poTakePoster init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(3
-				(poTakePoster dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(ego get: ((ScriptID 64001 0) get: 45))
 				(theGame handsOn:)
@@ -1984,7 +1991,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soTakeBagpipes)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -1997,15 +2004,15 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(voBagpipes approachX?)
-					(voBagpipes approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(voBagpipes dispose:)
+				(LOOKUP_ERROR dispose:)
 				(self cue:)
 			)
 			(3
@@ -2034,7 +2041,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (ego setScript: soTakeHat))
+			(1
+				(ego setScript: LOOKUP_ERROR)
+			)
 		)
 	)
 )
@@ -2046,16 +2055,16 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(voHat approachX?)
-					(voHat approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(voHat dispose:)
-				(Prints {Anim of Torin taking hat})
+				(LOOKUP_ERROR dispose:)
+				(Prints LOOKUP_ERROR)
 				(self cue:)
 			)
 			(3
@@ -2083,7 +2092,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (ego setScript: soTakeCane))
+			(1
+				(ego setScript: LOOKUP_ERROR)
+			)
 		)
 	)
 )
@@ -2095,16 +2106,16 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(voCane approachX?)
-					(voCane approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(voCane dispose:)
-				(Prints {Anim of Torin taking cane})
+				(LOOKUP_ERROR dispose:)
+				(Prints LOOKUP_ERROR)
 				(self cue:)
 			)
 			(3
@@ -2132,7 +2143,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (ego setScript: soTakeBow))
+			(1
+				(ego setScript: LOOKUP_ERROR)
+			)
 		)
 	)
 )
@@ -2144,16 +2157,16 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(voBow approachX?)
-					(voBow approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(voBow dispose:)
-				(Prints {Anim of Torin taking bow})
+				(LOOKUP_ERROR dispose:)
+				(Prints LOOKUP_ERROR)
 				(self cue:)
 			)
 			(3
@@ -2182,7 +2195,9 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (ego setScript: soTakeRosin))
+			(1
+				(ego setScript: LOOKUP_ERROR)
+			)
 		)
 	)
 )
@@ -2194,16 +2209,16 @@
 		(switch (= state newState)
 			(0
 				(localproc_040a
-					(voRosin approachX?)
-					(voRosin approachY?)
+					(LOOKUP_ERROR approachX?)
+					(LOOKUP_ERROR approachY?)
 					self
 				)
 			)
 			(1 (ego setHeading: 0 self))
 			(2
 				(theGame handsOff:)
-				(voRosin dispose:)
-				(Prints {Anim of Torin taking rosin})
+				(LOOKUP_ERROR dispose:)
+				(Prints LOOKUP_ERROR)
 				(self cue:)
 			)
 			(3
@@ -2222,12 +2237,9 @@
 		(super init: &rest)
 		(theGame handsOff:)
 		(= plane
-			(oBackstageScrollPlane
-				init: 3792 (thePlane doDouble:)
-				yourself:
-			)
+			(LOOKUP_ERROR init: 3792 (thePlane doDouble:) yourself:)
 		)
-		(music1 pageSize: -14636)
+		(theMusic pageSize: -14636)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -2316,18 +2328,18 @@
 					yourself:
 				)
 		)
-		(voSaw init:)
-		(voBoard init:)
-		(voPoster init:)
-		(voBagpipes init:)
-		(poRabbit init: setCycle: Fwd)
-		(poArcher init: setCycle: Fwd)
-		(poCarpenter init: setCycle: Osc)
-		(poArchivist init: setCycle: Fwd)
-		(poMagician init:)
-		(aoStageManager init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init: setCycle: Fwd)
+		(LOOKUP_ERROR init: setCycle: Fwd)
+		(LOOKUP_ERROR init: setCycle: Osc)
+		(LOOKUP_ERROR init: setCycle: Fwd)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(ego posn: 2069 207)
-		(curRoom setScript: soEgoEntrance)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)
@@ -2367,8 +2379,8 @@
 				(thePlane right:)
 				(thePlane bottom?)
 		)
-		(voMagicianBody init: self)
-		(voMagicianMouth init: self)
+		(LOOKUP_ERROR init: self)
+		(LOOKUP_ERROR init: self)
 	)
 )
 
@@ -2376,7 +2388,7 @@
 	(properties)
 	
 	(method (doVerb)
-		(curRoom arrowDown: oArchivistCU)
+		(curRoom arrowDown: LOOKUP_ERROR)
 	)
 )
 
@@ -2393,10 +2405,10 @@
 				(thePlane right:)
 				(thePlane bottom?)
 		)
-		(foArchivistCUExit init:)
-		(= gToArchivistCU toArchivistCU)
-		(voArchivistCU init:)
-		(voTorinWithArchivistBody init:)
+		(LOOKUP_ERROR init:)
+		(= gToArchivistCU LOOKUP_ERROR)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 	)
 	
 	(method (dispose)
@@ -2419,8 +2431,8 @@
 				(thePlane right:)
 				(thePlane bottom?)
 		)
-		(voRabbitBody init: self)
-		(voRabbitMouth init: self)
+		(LOOKUP_ERROR init: self)
+		(LOOKUP_ERROR init: self)
 		(= global233 1)
 	)
 	
@@ -2447,13 +2459,7 @@
 	)
 	
 	(method (handleEvent event &tmp theCurrentY gimmeRelVolPercent temp2 temp3)
-		(if (not gimme)
-			(return
-				(MonoOut
-					{Attempt to handleEvent scroll handle with no scroll plane. MLE 50900.sc}
-				)
-			)
-		)
+		(if (not gimme) (return (MonoOut 'LOOKUP_ERROR')))
 		(if
 			(and
 				(self onMe: event)
@@ -2515,12 +2521,7 @@
 	)
 	
 	(method (indexToCoor &tmp temp0 gimmeRelVolPercent temp2)
-		(if (not gimme)
-			(MonoOut
-				{Attempt to resynch scroll handle with no scroll plane. DJM torscrol.sc}
-			)
-			(return)
-		)
+		(if (not gimme) (MonoOut LOOKUP_ERROR) (return))
 		(= temp2 (- currentY currentX))
 		(if shortestDistance
 			(= temp0
@@ -2548,11 +2549,11 @@
 	)
 	
 	(method (init)
-		(= delBoogleFeature oBackstageHandle)
-		(= oMainPlane foEBackstageScroll)
-		(= addBoogleFeature foWBackstageScroll)
+		(= delBoogleFeature LOOKUP_ERROR)
+		(= oMainPlane LOOKUP_ERROR)
+		(= addBoogleFeature LOOKUP_ERROR)
 		(super init: &rest)
-		(oBackstageHandle gimme: self init: yourself:)
+		(LOOKUP_ERROR gimme: self init: yourself:)
 		(oMainPlane init: (ScriptID 0 1))
 		(addBoogleFeature init: (ScriptID 0 1))
 	)
@@ -2727,7 +2728,7 @@
 				(= x (+ egoX 3160))
 			)
 			(= theGSel_1206Sel_1 egoX)
-			(oBackstageHandle indexToCoor:)
+			(LOOKUP_ERROR indexToCoor:)
 		)
 		(super doit: &rest)
 	)

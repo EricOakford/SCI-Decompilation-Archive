@@ -1,10 +1,10 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 0)
-(include sci.sh)
+(include game.sh) (include "0.shm")
 (use TPSound)
-(use GenDialg)
+(use GenDialog)
 (use NewGame)
-(use NewUser)
+(use Events)
 (use PArray)
 (use Plane)
 (use String)
@@ -17,106 +17,94 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	thePlane
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	planes
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	textCode
-	cuees
-	theCursor
-	normalCursor
-	waitCursor
-	userFont =  1
-	smallFont =  4
-	lastEvent
-	eventMask =  32767
-	bigFont =  1
-	version
+	ego								;pointer to ego
+	theGame							;ID of the Game instance
+	curRoom							;ID of current room
+	thePlane						;default plane
+	quit							;when TRUE, quit game
+	cast							;collection of actors
+	regions							;set of current regions
+	timers							;list of timers in the game
+	sounds							;set of sounds being played
+	inventory						;set of inventory items in game
+	planes							;list of all active planes in the game
+	curRoomNum						;current room number
+	prevRoomNum						;previous room number
+	newRoomNum						;number of room to change to
+	debugOn							;generic debug flag -- set from debug menu
+	score							;the player's current score
+	possibleScore					;highest possible score
+	textCode						;code that handles interactive text
+	cuees							;list of who-to-cues for next cycle
+	theCursor						;the number of the current cursor
+	normalCursor					;number of normal cursor form
+	waitCursor						;cursor number of "wait" cursor
+	userFont	=	USERFONT		;font to use for Print
+	smallFont	=	4 				;small font for save/restore, etc.
+	lastEvent					  	;the last event (used by save/restore game)
+	eventMask	=	allEvents	  	;event mask passed to GetEvent in (uEvt new:)
+	bigFont	=		USERFONT	  	;large font
+	version	=		0			  	;pointer to 'incver' version string
+									;	WARNING!  Must be set in room 0
+									;	(usually to {x.yyy    } or {x.yyy.zzz})
 	autoRobot
-	curSaveDir
-	numCD
-	perspective
-	features
-	panels
-	useSortedFeatures
+	curSaveDir						;address of current save drive/directory string
+	numCD	=	0					;number of current CD, 0 for file based
+	perspective						;player's viewing angle: degrees away
+									;	from vertical along y axis
+	features						;locations that may respond to events
+	panels	=	NULL				;list of game panels
+	useSortedFeatures	=	FALSE	;enable cast & feature sorting?
 	unused_6
-	overlays =  -1
-	doMotionCue
-	systemPlane
-	saveFileSelText
+	overlays	= -1
+	doMotionCue						;a motion cue has occurred - process it
+	systemPlane						;ID of standard system plane
+	saveFileSelText					;text of fileSelector item that's selected.
 	unused_8
 	unused_2
-	sysLogPath
-	global43
-	global44
-	global45
-	global46
-	global47
-	global48
-	global49
-	global50
-	global51
-	global52
-	global53
-	global54
-	global55
-	global56
-	global57
-	global58
-	global59
-	global60
-	global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  1
+	[sysLogPath 20]					;-used for system standard logfile path	
+	endSysLogPath					;/		(uses 20 globals)
+	gameControls					;pointer to instance of game controls
+	ftrInitializer					;pointer to code that gets called from
+													;	a feature's init
+	doVerbCode						;pointer to code that gets invoked if
+									;	no feature claims a user event
+	approachCode					;pointer to code that translates verbs
+									;	into bits
+	useObstacles	=	TRUE		;will Ego use PolyPath or not?
 	unused_9
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
+	theIconBar						;points to TheIconBar or Null	
+	mouseX							;-last known mouse position
+	mouseY							;/
+	keyDownHandler					;-our EventHandlers, get called by game
+	mouseDownHandler				;/
+	directionHandler				;/
+	speechHandler					;a special handler for speech events
 	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
-	extMouseHandler
-	talkers
-	inputFont
-	tickOffset
-	howFast
-	gameTime
-	narrator
-	msgType =  1
-	messager
-	prints
-	walkHandler
-	textSpeed =  2
-	altPolyList
-	screenWidth =  320
-	screenHeight =  200
-	lastScreenX =  319
-	lastScreenY =  199
+	pMouse	=	NULL				;pointer to a Pseudo-Mouse, or NULL
+	theDoits	=	NULL			;list of objects to get doits each cycle
+	eatMice	=	60					;how many ticks before we can mouse
+	user	=	NULL				;pointer to specific applications User
+	syncBias						;-globals used by sync.sc
+	theSync							;/		(will be removed shortly)
+	extMouseHandler					;extended mouse handler
+	talkers							;list of talkers on screen
+	inputFont	=	SYSFONT			;font used for user type-in
+	tickOffset						;used to adjust gameTime after restore
+	howFast							;measurment of how fast a machine is
+	gameTime						;ticks since game start
+	narrator						;pointer to narrator (normally Narrator)
+	msgType	=	TEXT_MSG			;type of messages used
+	messager						;pointer to messager (normally Messager)
+	prints							;list of Print's on screen
+	walkHandler						;list of objects to get walkEvents
+	textSpeed	=	2				;time text remains on screen
+	altPolyList						;list of alternate obstacles
+	screenWidth	=  320				; Coordinate System Parameters
+	screenHeight =  200				;
+	lastScreenX	=  319				;
+	lastScreenY	=  199				;
+	;globals > 99 are for game use
 	global100
 	gVerb
 	gInventItem
@@ -132,7 +120,7 @@
 	global112 =  40
 	global113 =  -1
 	gNewStr
-	gNewStr_2
+	gameDir
 	gDisabledPlanes
 	gOPlaneStack
 	global118
@@ -220,8 +208,8 @@
 	global200
 	global201
 	global202 =  2
-	music1
-	sound1
+	theMusic
+	theSound
 	global205 =  240
 	global206 =  60
 	gLoop
@@ -305,43 +293,31 @@
 	global285
 	global286
 	global287
-	global288
+	continueText
 	global289
 	gToSam
 	gToMax
 	gToVederPillow
 	global293
 )
-(instance oUser of NewUser
-	(properties)
-)
+(instance oUser of NewUser)
 
-(instance oEventHandler of NewEventHandler
-	(properties)
-)
+(instance oEventHandler of NewEventHandler)
 
-(instance oBackgroundPlane of Plane
-	(properties)
-)
+(instance oBackgroundPlane of Plane)
 
-(instance oLogoPlane of Plane
-	(properties)
-)
+(instance oLogoPlane of Plane)
 
 (instance oMusic1 of TPSound
 	(properties
-		type $0001
+		type mNOPAUSE
 	)
 )
 
-(instance oSound1 of TPSound
-	(properties)
-)
+(instance oSound1 of TPSound)
 
 (instance Torin of NewGame
-	(properties)
-	
-	(method (init &tmp [temp0 6] temp6 [temp7 2])
+	(method (init &tmp [temp0 6] i [temp7 2])
 		(= saveCurX 0)
 		(= saveCurY 0)
 		(theGame handsOff:)
@@ -349,32 +325,37 @@
 		(= screenWidth 640)
 		(= lastScreenX 639)
 		(= lastScreenY 479)
-		(if
-		(not (= global288 (MakeMessageText 0 0 1 1 0)))
-			(= global288 (Str with: {Continue}))
+		(if (not (= continueText (MakeMessageText NULL NULL C_CONTINUE 1 0)))
+			(= continueText (String with: {Continue}))
 		)
 		(= userFont 999)
 		(= smallFont 999)
 		(= bigFont 2510)
 		(= inputFont 999)
-		(DoAudio 12 0)
+		(DoAudio AudMixCheck 0)
 		(= systemPlane (Plane new:))
 		((= user oUser) alterEgo: (= ego (ScriptID 64007 0)))
 		(super init:)
 		(oLogoPlane
-			picture: -4536
+			picture: 61000
 			priority: 800
 			init: 0 0 639 479
 		)
 		(FrameOut)
 		(thePlane setRect: 4 4 635 319)
-		((= music1 oMusic1) owner: self flags: 1)
-		((= sound1 oSound1) owner: self flags: 5)
-		(= gNewStr (Str new:))
-		((= gNewStr_2 (Str new:)) copy: curSaveDir)
+		((= theMusic oMusic1)
+			owner: self
+			flags: mNOPAUSE
+		)
+		((= theSound oSound1)
+			owner: self
+			flags: (| mNOPAUSE mLOAD_AUDIO)
+		)
+		(= gNewStr (String new:))
+		((= gameDir (String new:)) copy: curSaveDir)
 		(= global108 1)
 		(= approachCode oApproachCode)
-		(= gVerb 1)
+		(= gVerb V_DO)
 		((ScriptID 64017 0) init:)
 		((= gOEventHandler oEventHandler)
 			init:
@@ -409,11 +390,9 @@
 			init:
 		)
 		((ScriptID 64002 0) init:)
-		(= temp6 0)
-		(while (< temp6 9)
-			(= [gHoldTime temp6] -1)
-			(= [gLoop temp6] (& temp6 $0003))
-			(++ temp6)
+		(for ((= i 0)) (< i 9) ((++ i))
+			(= [gHoldTime i] -1)
+			(= [gLoop i] (& i $0003))
 		)
 		(= newRoomNum -4536)
 	)
@@ -424,11 +403,9 @@
 )
 
 (instance oHandsOffCode of Code
-	(properties)
-	
-	(method (doit param1 &tmp userCanControl temp1)
+	(method (doit allHands &tmp userCanControl temp1)
 		(= userCanControl (user canControl:))
-		(= temp1 (if (not argc) else (== param1 1)))
+		(= temp1 (if (not argc) else (== allHands 1)))
 		(user canControl: 0 canInput: 0)
 		(if (!= theCursor waitCursor)
 			(theGame setCursor: waitCursor)
@@ -437,16 +414,14 @@
 			(= saveCurX mouseX)
 			(= saveCurY mouseY)
 			(SetCursor 415 363)
-			(= isHandsOff 1)
+			(= isHandsOff TRUE)
 		)
 	)
 )
 
 (instance oHandsOnCode of Code
-	(properties)
-	
 	(method (doit)
-		(user canControl: 1 canInput: 1)
+		(user canControl: TRUE canInput: TRUE)
 		(if
 			(and
 				isHandsOff
@@ -455,18 +430,20 @@
 			)
 			(SetCursor saveCurX saveCurY)
 		)
-		(= isHandsOff 0)
+		(= isHandsOff FALSE)
 	)
 )
 
 (instance oApproachCode of Code
-	(properties)
-	
-	(method (doit param1)
+	(method (doit theVerb)
 		(return
-			(switch param1
-				(1 (return 1))
-				(else  (return -32768))
+			(switch theVerb
+				(V_DO
+					(return $0001)
+				)
+				(else
+					(return $8000)
+				)
 			)
 		)
 	)

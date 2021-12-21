@@ -25,7 +25,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poHorror init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(1 (curRoom newRoom: -14136))
 		)
@@ -39,9 +39,9 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -14236)
+		(theMusic pageSize: -14236)
 		(theGame handsOff:)
-		(self setScript: soHorror)
+		(self setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

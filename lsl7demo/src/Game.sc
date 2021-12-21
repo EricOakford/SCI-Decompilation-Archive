@@ -477,7 +477,7 @@
 		)
 
 		; Give any control panels their chance
-;;;		(if panels (panels eachElementDo: #doit) )
+		(if panels (panels eachElementDo: #doit) )
 
 		; Give each character in the cast the chance to do its thing.  Show the
 		;	changes on the screen, then delete any cast members who are scheduled

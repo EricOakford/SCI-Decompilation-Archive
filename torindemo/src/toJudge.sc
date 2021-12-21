@@ -60,13 +60,13 @@
 	)
 	
 	(method (init)
-		(= loop (voJudgeFace loop?))
-		(voJudgeFace hide:)
+		(= loop (LOOKUP_ERROR loop?))
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(voJudgeFace show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -77,15 +77,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(voJudgeFace hide: setLoop: 5)
-				(poJudge loop: 3 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR hide: setLoop: 5)
+				(LOOKUP_ERROR loop: 3 cel: 0 setCycle: End self)
 			)
 			(1
-				(= ticks (poJudge cycleSpeed?))
+				(= ticks (LOOKUP_ERROR cycleSpeed?))
 			)
 			(2
-				(poJudge loop: 4 cel: 0)
-				(voJudgeFace show:)
+				(LOOKUP_ERROR loop: 4 cel: 0)
+				(LOOKUP_ERROR show:)
 				(self dispose:)
 			)
 		)
@@ -98,15 +98,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(voJudgeFace hide: setLoop: 2)
-				(poJudge loop: 6 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR hide: setLoop: 2)
+				(LOOKUP_ERROR loop: 6 cel: 0 setCycle: End self)
 			)
 			(1
-				(= ticks (poJudge cycleSpeed?))
+				(= ticks (LOOKUP_ERROR cycleSpeed?))
 			)
 			(2
-				(poJudge loop: 1 cel: 0)
-				(voJudgeFace show:)
+				(LOOKUP_ERROR loop: 1 cel: 0)
+				(LOOKUP_ERROR show:)
 				(self dispose:)
 			)
 		)
@@ -119,7 +119,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poTorin loop: 8 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 8 cel: 0 setCycle: End self)
 			)
 			(1 (self dispose:))
 		)
@@ -132,7 +132,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poTorin loop: 9 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 9 cel: 0 setCycle: End self)
 			)
 			(1 (self dispose:))
 		)
@@ -151,7 +151,7 @@
 				(theGame handsOff:)
 				(curRoom picture: -15036)
 				(curRoom drawPic: -15036)
-				(poTorin
+				(LOOKUP_ERROR
 					view: -15035
 					loop: 0
 					cel: 0
@@ -161,11 +161,11 @@
 				)
 			)
 			(1
-				(Prints {loop 1 not available})
+				(Prints LOOKUP_ERROR)
 				(self cue:)
 			)
 			(2
-				(poDreep
+				(LOOKUP_ERROR
 					view: -15035
 					loop: 2
 					cel: 0
@@ -175,12 +175,17 @@
 				)
 			)
 			(3
-				(poDreep dispose:)
-				(poTorin loop: 3 cel: 0 posn: 149 196 setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR
+					loop: 3
+					cel: 0
+					posn: 149 196
+					setCycle: End self
+				)
 			)
 			(4 (messager say: 0 0 2 0 self))
 			(5
-				(poBoogle
+				(LOOKUP_ERROR
 					view: -15035
 					loop: 4
 					cel: 0
@@ -190,17 +195,22 @@
 				)
 			)
 			(6
-				(poTorin loop: 5 cel: 0 posn: 149 200 setCycle: End self)
+				(LOOKUP_ERROR
+					loop: 5
+					cel: 0
+					posn: 149 200
+					setCycle: End self
+				)
 				(messager say: 0 0 1 0 self)
 			)
 			(7)
 			(8
-				(poBoogle dispose:)
-				(poDreep dispose:)
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom picture: -15035)
 				(curRoom drawPic: -15035)
-				(poBoogle
+				(LOOKUP_ERROR
 					view: -15034
 					loop: 0
 					cel: 0
@@ -210,15 +220,20 @@
 				)
 			)
 			(9
-				(poBoogle loop: 1 cel: 0 posn: 361 308 setCycle: End self)
+				(LOOKUP_ERROR
+					loop: 1
+					cel: 0
+					posn: 361 308
+					setCycle: End self
+				)
 				(messager say: 0 0 3 0 self)
 			)
 			(10)
 			(11
-				(poBoogle dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom picture: -15036)
 				(curRoom drawPic: -15036)
-				(poTorin
+				(LOOKUP_ERROR
 					view: -15034
 					loop: 2
 					cel: 0
@@ -232,9 +247,15 @@
 			(13
 				(curRoom picture: -15034)
 				(curRoom drawPic: -15034)
-				(poTorin view: -15033 loop: 0 cel: 0 posn: 305 296)
-				(poJudge view: -15033 loop: 1 cel: 0 posn: 318 104 init:)
-				(voJudgeFace
+				(LOOKUP_ERROR view: -15033 loop: 0 cel: 0 posn: 305 296)
+				(LOOKUP_ERROR
+					view: -15033
+					loop: 1
+					cel: 0
+					posn: 318 104
+					init:
+				)
+				(LOOKUP_ERROR
 					view: -15033
 					loop: 2
 					cel: 0
@@ -245,26 +266,26 @@
 			)
 			(14
 				(messager say: 0 0 5 2 self)
-				(self setScript: soCycleTorinUp self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(15)
 			(16
-				(self setScript: soCycleJudgeDown self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(17
 				(messager sayRange: 0 0 5 3 4 self)
-				(self setScript: soCycleTorinDown self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(18)
 			(19
-				(self setScript: soCycleJudgeUp self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(20
 				(messager say: 0 0 5 5 self)
 			)
 			(21
 				(messager say: 0 0 5 6 self)
-				(self setScript: soCycleTorinUp self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(22)
 			(23
@@ -272,38 +293,38 @@
 			)
 			(24
 				(messager sayRange: 0 0 5 8 10 self)
-				(self setScript: soCycleTorinDown self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(25)
 			(26
-				(self setScript: soCycleJudgeDown self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(27
 				(messager say: 0 0 5 11 self)
 			)
 			(28
-				(self setScript: soCycleJudgeUp self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(29
 				(messager say: 0 0 5 12 self)
 			)
 			(30
-				(voJudgeFace hide:)
-				(poJudge loop: 7 cel: 0 setCycle: CT 2 1 self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR loop: 7 cel: 0 setCycle: CT 2 1 self)
 			)
 			(31
-				(sound1 lThumbLoop: -15035)
-				(poJudge setCycle: End self)
+				(theSound lThumbLoop: -15035)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(32
-				(poJudge loop: 7 cel: 0 setCycle: CT 2 1 self)
+				(LOOKUP_ERROR loop: 7 cel: 0 setCycle: CT 2 1 self)
 			)
 			(33
-				(sound1 lThumbLoop: -15035)
-				(poJudge setCycle: CT 5 1 self)
+				(theSound lThumbLoop: -15035)
+				(LOOKUP_ERROR setCycle: CT 5 1 self)
 			)
 			(34
-				(poTorin loop: 10 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 10 cel: 0 setCycle: End self)
 			)
 			(35 (curRoom newRoom: -15136))
 		)
@@ -314,11 +335,11 @@
 	)
 	
 	(method (sayMessage)
-		(poBoogle dispose:)
-		(poTorin dispose:)
-		(poDreep dispose:)
-		(poJudge dispose:)
-		(voJudgeFace dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		(curRoom setScript: self)
 	)
 )
@@ -332,10 +353,22 @@
 				(theGame handsOff:)
 				(curRoom picture: -15034)
 				(curRoom drawPic: -15034)
-				(music1 pageSize: -10536)
-				(poTorin view: -15033 loop: 0 cel: 0 posn: 305 296 init:)
-				(poJudge view: -15033 loop: 1 cel: 0 posn: 318 104 init:)
-				(voJudgeFace
+				(theMusic pageSize: -10536)
+				(LOOKUP_ERROR
+					view: -15033
+					loop: 0
+					cel: 0
+					posn: 305 296
+					init:
+				)
+				(LOOKUP_ERROR
+					view: -15033
+					loop: 1
+					cel: 0
+					posn: 318 104
+					init:
+				)
+				(LOOKUP_ERROR
 					view: -15033
 					loop: 2
 					cel: 0
@@ -345,29 +378,29 @@
 				(messager say: 0 0 0 1 self -10536)
 			)
 			(1
-				(voJudgeFace hide:)
-				(poJudge loop: 7 cel: 0 setCycle: CT 2 1 self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR loop: 7 cel: 0 setCycle: CT 2 1 self)
 			)
 			(2
-				(sound1 lThumbLoop: -15035)
-				(poJudge setCycle: End self)
+				(theSound lThumbLoop: -15035)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(3
-				(poJudge loop: 7 cel: 0 setCycle: CT 2 1 self)
+				(LOOKUP_ERROR loop: 7 cel: 0 setCycle: CT 2 1 self)
 			)
 			(4
-				(sound1 lThumbLoop: -15035)
-				(poJudge setCycle: CT 5 1 self)
+				(theSound lThumbLoop: -15035)
+				(LOOKUP_ERROR setCycle: CT 5 1 self)
 			)
 			(5
-				(poTorin dispose:)
-				(poJudge dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom picture: -10534)
 				(curRoom drawPic: -10534)
 				(messager say: 0 0 0 2 self -10536)
 			)
 			(6
-				(poTorin
+				(LOOKUP_ERROR
 					view: -10536
 					posn: 171 275
 					loop: 0
@@ -378,10 +411,10 @@
 				(messager say: 0 0 0 3 0 -10536)
 			)
 			(7
-				(sound1 lThumbLoop: -10534 self)
+				(theSound lThumbLoop: -10534 self)
 			)
 			(8
-				(sound1 lThumbLoop: -10533 self)
+				(theSound lThumbLoop: -10533 self)
 				((ScriptID 64017 0) set: 143)
 				(if (not ((ScriptID 64017 0) test: 137))
 					(((ScriptID 64001 0) get: 53) moveTo: -1)
@@ -389,17 +422,17 @@
 				)
 			)
 			(9
-				(poTorin loop: 1 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: End self)
 			)
 			(10
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom picture: -1)
 				((curRoom plane?) back: 234)
 				(curRoom drawPic: -1)
 				(messager say: 0 0 0 4 self -10536)
 			)
 			(11
-				(poTorin
+				(LOOKUP_ERROR
 					view: -14434
 					loop: 0
 					cel: 0
@@ -419,12 +452,12 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -15036)
+		(theMusic pageSize: -15036)
 		(if ((ScriptID 64017 0) test: 142)
 			(proc64896_1 0)
-			(curRoom setScript: soPlayMovie2)
+			(curRoom setScript: LOOKUP_ERROR)
 		else
-			(curRoom setScript: soPlayMovie)
+			(curRoom setScript: LOOKUP_ERROR)
 		)
 	)
 	

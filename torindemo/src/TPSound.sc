@@ -101,7 +101,7 @@
 			(self stop:)
 			(if client (client cue: self) (= client 0))
 		)
-		(if handle (DoSound sndUPDATE_CUES self))
+		(if handle (DoSound 17 self))
 		(if signal
 			(= prevSignal signal)
 			(= signal 0)
@@ -158,9 +158,9 @@
 		(= temp0 0)
 		(while (< temp0 argc)
 			(cond 
-				((ResCheck 141 [param1 temp0]) (Load rsAUDIO [param1 temp0]))
-				((ResCheck 140 [param1 temp0]) (Load rsCDAUDIO [param1 temp0]))
-				(else (MonoOut {Preloaded sound not found: %d} [param1 temp0]))
+				((ResCheck 141 [param1 temp0]) (Load 141 [param1 temp0]))
+				((ResCheck 140 [param1 temp0]) (Load 140 [param1 temp0]))
+				(else (MonoOut LOOKUP_ERROR [param1 temp0]))
 			)
 			(++ temp0)
 		)
@@ -205,7 +205,7 @@
 		)
 		(if (<= maxPosn 0)
 			(MonoOut
-				{No audio found m:%hu n:%d v:%d c:%d s:%d}
+				LOOKUP_ERROR
 				audModNum
 				audNoun
 				audVerb

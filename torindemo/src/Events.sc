@@ -771,7 +771,7 @@ code_0d01:
 				(if (!= theCursor temp0) (theGame setCursor: temp0))
 			else
 				(if (>= gVerb (global100 size:))
-					(Prints {ERROR: no cursor for verb %d} gVerb)
+					(Prints LOOKUP_ERROR gVerb)
 					(= temp1 (global100 at: 0))
 				else
 					(= temp1 (global100 at: gVerb))
@@ -789,7 +789,7 @@ code_0d01:
 			)
 		else
 			(if (>= gVerb (global100 size:))
-				(Prints {ERROR: no cursor for verb %d} gVerb)
+				(Prints LOOKUP_ERROR gVerb)
 				(= temp1 (global100 at: 0))
 			else
 				(= temp1 (global100 at: gVerb))
@@ -850,7 +850,7 @@ code_0d01:
 			(and
 				(not readPolygonsFromList)
 				theReadPolygonsFromListNoun
-				(Message msgGET 5 theReadPolygonsFromListNoun 6 0 1)
+				(Message 0 5 theReadPolygonsFromListNoun 6 0 1)
 			)
 			(if
 				(or
@@ -866,7 +866,7 @@ code_0d01:
 			(if (>= gameTime finished)
 				(= savePolygons 0)
 				(= addPolygon
-					((ToolHelpPlane new:)
+					((LOOKUP_ERROR new:)
 						init: theReadPolygonsFromListNoun (temp3 x?) (temp3 y?)
 						yourself:
 					)
@@ -1000,8 +1000,8 @@ code_0d01:
 		(super init: &rest)
 		(= newCast (Cast new:))
 		(self addCast: newCast)
-		(= temp1 (Str newWith: 400 {}))
-		(Message msgGET 5 param1 6 0 1 (temp1 data?))
+		(= temp1 (Str newWith: 400 LOOKUP_ERROR))
+		(Message 0 5 param1 6 0 1 (temp1 data?))
 		(= oMyVerbHandlers
 			((ToolHelpView new:)
 				text: (KString 8 (temp1 data?))

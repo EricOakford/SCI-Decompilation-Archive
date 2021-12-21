@@ -4,7 +4,7 @@
 (use Main)
 (use TorinEgo)
 (use TPRoom)
-(use GenDialg)
+(use GenDialog)
 (use Script)
 (use Polygon)
 (use Feature)
@@ -21,7 +21,7 @@
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb 13)
-				(ego setScript: soGetOuttaDodge)
+				(ego setScript: 'LOOKUP_ERROR')
 				(return 1)
 			else
 				(return 0)
@@ -79,10 +79,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soGetOuttaDodge)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(13
-				(ego setScript: soGetOuttaDodge)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -114,7 +114,7 @@
 			)
 			(3
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20800
 					loop: 0
 					cel: 0
@@ -124,21 +124,21 @@
 				)
 			)
 			(4
-				(poTorin setCycle: End self)
-				(sound1 lThumbLoop: 20801 self)
+				(LOOKUP_ERROR setCycle: End self)
+				(theSound lThumbLoop: 20801 self)
 			)
 			(5)
 			(6
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64017 0) set: 95)
 				(theGame handsOn:)
 				(if (= temp0 (MakeMessageText 15 13 0 1 300))
-					(TextDialog temp0 global288)
+					(TextDialog temp0 continueText)
 					(temp0 dispose:)
 					(= temp0 0)
 				)
 				(if (= temp0 (MakeMessageText 15 13 0 2 300))
-					(TextDialog temp0 global288)
+					(TextDialog temp0 continueText)
 					(temp0 dispose:)
 					(= temp0 0)
 				)
@@ -156,7 +156,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 20800)
+		(theMusic pageSize: 20800)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -165,9 +165,9 @@
 					yourself:
 				)
 		)
-		(foCryst init:)
+		(LOOKUP_ERROR init:)
 		(ego init: oPanner:)
-		(ego oFlagValues: oRSDHandler)
+		(ego oFlagValues: LOOKUP_ERROR)
 		(theGame handsOff:)
 		(ego posn: 650 300)
 		(ego setMotion: MoveTo 600 300 (ScriptID 64020 0))

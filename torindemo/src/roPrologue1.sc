@@ -15,7 +15,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(PlayVMD 0 {10000.vmd})
+				(PlayVMD 0 LOOKUP_ERROR)
 				(PlayVMD 1 4 4 5)
 				(PlayVMD 14 7)
 				(PlayVMD 6)
@@ -31,9 +31,9 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 0)
+		(theMusic pageSize: 0)
 		(= global202 0)
-		(curRoom setScript: soPlayPrologue)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

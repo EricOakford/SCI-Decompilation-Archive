@@ -1,10 +1,16 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
 (script# 64898)
-(include game.sh)
+(include sci.sh)
 (use Array)
 
 
 (class PArray of IDArray
+	(properties
+		scratch 0
+		data 0
+		type $0001
+	)
+	
 	(method (add param1 &tmp temp0)
 		(= temp0 0)
 		(while (< temp0 argc)

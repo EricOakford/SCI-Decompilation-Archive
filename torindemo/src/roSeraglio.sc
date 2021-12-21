@@ -25,20 +25,20 @@
 	theSel_15 =  2
 )
 (procedure (localproc_2946)
-	(oHaremTalk stop:)
+	(LOOKUP_ERROR stop:)
 	(= local1 0)
-	(soHaremGirlsChatter changeState: 1)
+	(LOOKUP_ERROR changeState: 1)
 )
 
 (procedure (localproc_2979)
-	(oHaremTalk stop:)
-	(oChatter stop:)
-	(soHaremGirlsChatter dispose:)
+	(LOOKUP_ERROR stop:)
+	(LOOKUP_ERROR stop:)
+	(LOOKUP_ERROR dispose:)
 	(= local1 0)
 )
 
 (procedure (localproc_29b8)
-	(poNull setScript: soHaremGirlsChatter)
+	(LOOKUP_ERROR setScript: LOOKUP_ERROR)
 )
 
 (instance foToCliffExit of ExitFeature
@@ -55,9 +55,9 @@
 	
 	(method (doVerb)
 		(if local0
-			(curRoom setScript: soBoogleBackUpAndExit)
+			(curRoom setScript: LOOKUP_ERROR)
 		else
-			(ego setScript: soClimbOut)
+			(ego setScript: LOOKUP_ERROR)
 		)
 	)
 )
@@ -66,7 +66,7 @@
 	(properties)
 	
 	(method (doVerb)
-		(curRoom arrowDown: oSignCUPlane)
+		(curRoom arrowDown: LOOKUP_ERROR)
 	)
 )
 
@@ -77,7 +77,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20600
 					loop: 0
 					cel: 0
@@ -87,7 +87,7 @@
 				)
 			)
 			(1
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 102 280 oPanner: 1 -5436 4 show:)
 				(theGame handsOn:)
 			)
@@ -109,7 +109,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20600
 					loop: 1
 					cel: 0
@@ -153,7 +153,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTakeTableTop)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -175,7 +175,7 @@
 			(3
 				(ego get: ((ScriptID 64001 0) get: 18))
 				((ScriptID 64017 0) set: 46)
-				(voTableTop dispose:)
+				(LOOKUP_ERROR dispose:)
 			)
 			(4
 				(theGame handsOn:)
@@ -199,7 +199,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTakePillow)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -217,8 +217,8 @@
 			)
 			(2
 				(ego hide:)
-				(voPillow dispose:)
-				(poTorin
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR
 					view: 20601
 					loop: 2
 					cel: 0
@@ -228,7 +228,7 @@
 				)
 			)
 			(3
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(ego get: ((ScriptID 64001 0) get: 27))
 				((ScriptID 64017 0) set: 55)
@@ -253,7 +253,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTakeFan)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -271,7 +271,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20601
 					loop: 0
 					cel: 0
@@ -281,11 +281,11 @@
 				)
 			)
 			(3
-				(voFan dispose:)
-				(poTorin setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(4
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 630 296 oPanner: 1 -5436 2 show:)
 				(ego get: ((ScriptID 64001 0) get: 30))
 				((ScriptID 64017 0) set: 58)
@@ -312,13 +312,13 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(39
-				(ego setScript: soDropStinkyCarpet)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(40
 				(if ((ScriptID 64017 0) test: 90)
-					(ego setScript: soFanStink)
+					(ego setScript: LOOKUP_ERROR)
 				else
-					(MonoOut {Forgot to remove hotspot for fan on ledge.})
+					(MonoOut LOOKUP_ERROR)
 				)
 			)
 			(else 
@@ -344,7 +344,7 @@
 			(2)
 			(3
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20600
 					loop: 2
 					cel: 0
@@ -357,19 +357,19 @@
 			(4
 				((ScriptID 64017 0) set: 90)
 				(ego put: ((ScriptID 64001 0) get: 29) 20600)
-				(voStinkyCarpetOnLedge init:)
+				(LOOKUP_ERROR init:)
 				((curRoom plane?) sitNSpin: -32000 264 self 1)
 			)
 			(5
 				(= ticks 60)
 				(ego posn: 120 270 oPanner: 1 -5436 2 show:)
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 			)
 			(6
 				((curRoom plane?) sitNSpin: 0 0 self 1)
 			)
 			(7
-				(foLedge setVisibleRange: 40)
+				(LOOKUP_ERROR setVisibleRange: 40)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -389,7 +389,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(poCarpetStench init:)
+		(LOOKUP_ERROR init:)
 	)
 )
 
@@ -435,7 +435,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20600
 					loop: 3
 					cel: 0
@@ -452,10 +452,10 @@
 			)
 			(4
 				(= local1 0)
-				(poTorin setCycle: CT 33 1 self)
+				(LOOKUP_ERROR setCycle: CT 33 1 self)
 			)
 			(5
-				(poTorin setScript: soKeepTorinFanning)
+				(LOOKUP_ERROR setScript: LOOKUP_ERROR)
 				(= theSel_15 3)
 				((curRoom plane?) sitNSpin: -32000 288 self 2 6 7)
 			)
@@ -464,12 +464,12 @@
 				((curRoom plane?) sitNSpin: 264 -32000 self 2 6 7)
 			)
 			(8
-				(poGirl1 setScript: soGirl1Runs self)
-				(poGirl2 setScript: soGirl2Runs self)
-				(poGirl3 setScript: soGirl3Runs self)
-				(poGirl4 setScript: soGirl4Runs self)
+				(LOOKUP_ERROR setScript: 'LOOKUP_ERROR' self)
+				(LOOKUP_ERROR setScript: LOOKUP_ERROR self)
+				(LOOKUP_ERROR setScript: LOOKUP_ERROR self)
+				(LOOKUP_ERROR setScript: LOOKUP_ERROR self)
 				(= theSel_15 2)
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego put: ((ScriptID 64001 0) get: 30))
 				(ego show:)
 			)
@@ -492,21 +492,21 @@
 	
 	(method (rememberMessage)
 		(localproc_2979)
-		(poGirl1 dispose:)
-		(poGirl2 dispose:)
-		(poGirl3 dispose:)
-		(poGirl4 dispose:)
-		(poTorin dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		(ego posn: 122 268 show:)
 		((curRoom plane?) fadeRel: 0 0)
-		(sound1 stop:)
+		(theSound stop:)
 		((ScriptID 64017 0) set: 91)
 		(ego put: ((ScriptID 64001 0) get: 30))
 		(self dispose:)
 	)
 	
 	(method (sayMessage)
-		(poGirl1
+		(LOOKUP_ERROR
 			view: 20608
 			loop: 0
 			cel: 0
@@ -514,7 +514,7 @@
 			init:
 			setScript: 0
 		)
-		(poGirl2
+		(LOOKUP_ERROR
 			view: 20608
 			loop: 2
 			cel: 0
@@ -523,7 +523,7 @@
 			setPri: 100
 			setScript: 0
 		)
-		(poGirl3
+		(LOOKUP_ERROR
 			view: 20608
 			loop: 4
 			cel: 0
@@ -531,7 +531,7 @@
 			init:
 			setScript: 0
 		)
-		(poGirl4
+		(LOOKUP_ERROR
 			view: 20608
 			loop: 6
 			cel: 0
@@ -539,12 +539,12 @@
 			init:
 			setScript: 0
 		)
-		(sound1 stop:)
+		(theSound stop:)
 		(localproc_29b8)
-		(poTorin dispose:)
+		(LOOKUP_ERROR dispose:)
 		(ego posn: 122 268 show:)
 		((curRoom plane?) fadeRel: 0 0)
-		(ego setScript: soFanStink)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -554,7 +554,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poGirl1
+				(LOOKUP_ERROR
 					view: 20608
 					loop: 0
 					cel: 0
@@ -564,13 +564,18 @@
 			)
 			(1
 				(localproc_2979)
-				(sound1 lThumbLoop: 20606)
-				(poGirl1 setCycle: End self)
+				(theSound lThumbLoop: 20606)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(2
-				(poGirl1 loop: 1 cel: 0 posn: 675 485 setCycle: End self)
+				(LOOKUP_ERROR
+					loop: 1
+					cel: 0
+					posn: 675 485
+					setCycle: End self
+				)
 			)
-			(3 (poGirl1 dispose:))
+			(3 (LOOKUP_ERROR dispose:))
 		)
 	)
 )
@@ -581,7 +586,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poGirl2
+				(LOOKUP_ERROR
 					view: 20608
 					loop: 2
 					cel: 0
@@ -590,10 +595,10 @@
 				)
 			)
 			(1
-				(poGirl2 setPri: 500 setCycle: End self)
+				(LOOKUP_ERROR setPri: 500 setCycle: End self)
 			)
 			(2
-				(poGirl2
+				(LOOKUP_ERROR
 					loop: 3
 					cel: 0
 					posn: 407 519
@@ -601,9 +606,9 @@
 				)
 			)
 			(3
-				(poGirl2 setPri: 5 setCycle: End self)
+				(LOOKUP_ERROR setPri: 5 setCycle: End self)
 			)
-			(4 (poGirl2 dispose:))
+			(4 (LOOKUP_ERROR dispose:))
 		)
 	)
 )
@@ -614,7 +619,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poGirl3
+				(LOOKUP_ERROR
 					view: 20608
 					loop: 4
 					cel: 0
@@ -623,9 +628,14 @@
 				)
 			)
 			(1
-				(poGirl3 loop: 5 cel: 0 posn: 627 519 setCycle: End self)
+				(LOOKUP_ERROR
+					loop: 5
+					cel: 0
+					posn: 627 519
+					setCycle: End self
+				)
 			)
-			(2 (poGirl3 dispose:))
+			(2 (LOOKUP_ERROR dispose:))
 		)
 	)
 )
@@ -636,7 +646,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poGirl4
+				(LOOKUP_ERROR
 					view: 20608
 					loop: 6
 					cel: 0
@@ -645,9 +655,14 @@
 				)
 			)
 			(1
-				(poGirl4 loop: 7 cel: 0 posn: 570 452 setCycle: End self)
+				(LOOKUP_ERROR
+					loop: 7
+					cel: 0
+					posn: 570 452
+					setCycle: End self
+				)
 			)
-			(2 (poGirl4 dispose:))
+			(2 (LOOKUP_ERROR dispose:))
 		)
 	)
 )
@@ -658,7 +673,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poTorin cel: 34 setCycle: CT 39 1 self)
+				(LOOKUP_ERROR cel: 34 setCycle: CT 39 1 self)
 			)
 			(1 (self changeState: 0))
 		)
@@ -681,7 +696,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTakeCarpet)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -699,7 +714,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20601
 					loop: 1
 					cel: 0
@@ -709,12 +724,12 @@
 				)
 			)
 			(3
-				(voCarpet dispose:)
-				(poTorin setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(4
 				(ego show:)
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego get: ((ScriptID 64001 0) get: 28))
 				((ScriptID 64017 0) set: 56)
 				(theGame handsOn:)
@@ -738,11 +753,11 @@
 	)
 	
 	(method (doVerb)
-		(foLadderHole doVerb: &rest)
+		(LOOKUP_ERROR doVerb: &rest)
 	)
 	
 	(method (setSpeedDirect)
-		(foLadderHole setSpeedDirect: &rest)
+		(LOOKUP_ERROR setSpeedDirect: &rest)
 	)
 )
 
@@ -764,10 +779,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soLadderDeath)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(46
-				(ego setScript: soYoYoBoogle)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -796,8 +811,8 @@
 			(3
 				(= local1 0)
 				(ego hide:)
-				(voLadder hide:)
-				(poTorin
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR
 					view: 20603
 					loop: 0
 					cel: 0
@@ -808,21 +823,21 @@
 			)
 			(4
 				((curRoom plane?) sitNSpin: -32000 177 0 1)
-				(poTorin setPri: 10 setCycle: End self)
-				(sound1 lThumbLoop: 20601 self)
+				(LOOKUP_ERROR setPri: 10 setCycle: End self)
+				(theSound lThumbLoop: 20601 self)
 				(if (not ((ScriptID 64017 0) test: 91))
 					(localproc_2946)
 				)
 			)
 			(5)
 			(6
-				(sound1 lThumbLoop: 20602 self)
+				(theSound lThumbLoop: 20602 self)
 			)
 			(7
 				(theGame handsOn:)
 				(if ((ScriptID 64019 0) show: 0 42 13)
-					(poTorin dispose:)
-					(voLadder show:)
+					(LOOKUP_ERROR dispose:)
+					(LOOKUP_ERROR show:)
 					(if (not ((ScriptID 64017 0) test: 91))
 						(localproc_29b8)
 					)
@@ -856,7 +871,7 @@
 			(3
 				(= local1 0)
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20603
 					loop: 1
 					cel: 0
@@ -866,13 +881,13 @@
 				)
 			)
 			(4
-				(poTorin setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 				((curRoom plane?) sitNSpin: -32000 316 0 1 5 5)
 			)
 			(5
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
-				(poBoogle
+				(LOOKUP_ERROR
 					view: 20603
 					loop: 2
 					cel: 0
@@ -882,7 +897,7 @@
 				)
 			)
 			(6
-				(poBoogle dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0)
 					bSwing: 0
 					posn: 670 497
@@ -890,11 +905,11 @@
 					show:
 				)
 				(if (not ((ScriptID 64017 0) test: 91))
-					(self setScript: soGirlsPlayBall self)
+					(self setScript: LOOKUP_ERROR self)
 				else
 					((ScriptID 64017 0) set: 92)
 					(= local0 1)
-					(foBackToTop init:)
+					(LOOKUP_ERROR init:)
 					(self cue:)
 				)
 			)
@@ -913,69 +928,69 @@
 		(switch (= state newState)
 			(0
 				(localproc_2979)
-				(poGirl1 setScript: 0 view: 20604 loop: 3 cel: 0)
-				(poGirl2 setScript: 0 view: 20604 loop: 0 cel: 0)
-				(poGirl3 setScript: 0 view: 20604 loop: 1 cel: 0)
-				(poGirl4 setScript: 0 view: 20604 loop: 2 cel: 0)
+				(LOOKUP_ERROR setScript: 0 view: 20604 loop: 3 cel: 0)
+				(LOOKUP_ERROR setScript: 0 view: 20604 loop: 0 cel: 0)
+				(LOOKUP_ERROR setScript: 0 view: 20604 loop: 1 cel: 0)
+				(LOOKUP_ERROR setScript: 0 view: 20604 loop: 2 cel: 0)
 				((ScriptID 64018 0) setMotion: MoveTo 645 524)
-				(poGirl3 loop: 4 cel: 0 setCycle: CT 13 1 self)
+				(LOOKUP_ERROR loop: 4 cel: 0 setCycle: CT 13 1 self)
 			)
 			(1
 				((ScriptID 64018 0) hide:)
-				(poGirl3 cel: 14)
-				(poGirl3 setCycle: End self)
+				(LOOKUP_ERROR cel: 14)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(2
-				(poGirl1 loop: 6 cel: 0 setCycle: CT 6 1 self)
+				(LOOKUP_ERROR loop: 6 cel: 0 setCycle: CT 6 1 self)
 			)
 			(3
-				(poGirl1 setCycle: End self)
-				(poGirl3 loop: 5 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR loop: 5 cel: 0 setCycle: End self)
 			)
 			(4)
 			(5
-				(poGirl2 loop: 7 cel: 0 setCycle: CT 6 1 self)
+				(LOOKUP_ERROR loop: 7 cel: 0 setCycle: CT 6 1 self)
 			)
 			(6
-				(voGongBonger hide:)
-				(poGirl2 setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(7
-				(poGirl1 loop: 8 cel: 0 setCycle: CT 6 1 self)
+				(LOOKUP_ERROR loop: 8 cel: 0 setCycle: CT 6 1 self)
 			)
 			(8
-				(poGirl1 setCycle: End self)
-				(poGirl2 loop: 9 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR loop: 9 cel: 0 setCycle: End self)
 			)
 			(9)
 			(10
 				(if ((ScriptID 64019 0) show: 0 42 1)
 					((curRoom plane?) fadeRel: 400 0)
 					((ScriptID 64018 0) hide:)
-					(voGongBonger show:)
-					(poGirl1
+					(LOOKUP_ERROR show:)
+					(LOOKUP_ERROR
 						view: 20606
 						loop: 7
 						cel: 0
-						setScript: (soWaitRandomForFidget new:)
+						setScript: (LOOKUP_ERROR new:)
 					)
-					(poGirl2
+					(LOOKUP_ERROR
 						view: 20606
 						loop: 4
 						cel: 0
-						setScript: (soWaitRandomForFidget new:)
+						setScript: (LOOKUP_ERROR new:)
 					)
-					(poGirl3
+					(LOOKUP_ERROR
 						view: 20606
 						loop: 5
 						cel: 0
-						setScript: (soWaitRandomForFidget new:)
+						setScript: (LOOKUP_ERROR new:)
 					)
-					(poGirl4
+					(LOOKUP_ERROR
 						view: 20606
 						loop: 6
 						cel: 0
-						setScript: (soWaitRandomForFidget new:)
+						setScript: (LOOKUP_ERROR new:)
 					)
 					(localproc_29b8)
 				)
@@ -1003,7 +1018,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soBoogleBackUp)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1014,7 +1029,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				((curRoom plane?) nInitCursorY: foBackToTop)
+				((curRoom plane?) nInitCursorY: LOOKUP_ERROR)
 				(messager say: 10 1 10 0 self)
 			)
 			(1
@@ -1028,7 +1043,7 @@
 				((ScriptID 64018 0) setMotion: MoveTo 780 451 self)
 			)
 			(3
-				(sound1 lThumbLoop: 20607 self)
+				(theSound lThumbLoop: 20607 self)
 				(ego setMotion: MoveTo 608 277 self)
 				((curRoom plane?) sitNSpin: 216 0 self 2)
 				((ScriptID 64018 0) hide: setPri: -1)
@@ -1037,7 +1052,7 @@
 			(5)
 			(6
 				(ego setHeading: 270 self)
-				(poBoogle
+				(LOOKUP_ERROR
 					view: 20603
 					loop: 4
 					cel: 0
@@ -1048,13 +1063,13 @@
 			)
 			(7)
 			(8
-				(poBoogle dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) posn: 532 277 bSwing: 0 show:)
 				(= local0 0)
 				(self setScript: (ScriptID 64018 1) self)
 			)
 			(9
-				(foBackToTop dispose:)
+				(LOOKUP_ERROR dispose:)
 				(if ((ScriptID 64017 0) test: 89)
 					(ego get: ((ScriptID 64001 0) get: 20))
 					((ScriptID 64017 0) set: 48)
@@ -1074,9 +1089,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego setScript: soBoogleBackUp self)
+				(ego setScript: LOOKUP_ERROR self)
 			)
-			(1 (foToCliffExit doVerb: 1))
+			(1 (LOOKUP_ERROR doVerb: 1))
 		)
 	)
 )
@@ -1088,7 +1103,7 @@
 		(switch (= state newState)
 			(0 (= ticks (Random 200 400)))
 			(1
-				(client setScript: (soFidgetGirls new:))
+				(client setScript: (LOOKUP_ERROR new:))
 			)
 		)
 	)
@@ -1107,7 +1122,7 @@
 			(0 (client setCycle: End self))
 			(1
 				(client cel: 0)
-				(client setScript: (soWaitRandomForFidget new:))
+				(client setScript: (LOOKUP_ERROR new:))
 			)
 		)
 	)
@@ -1123,7 +1138,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setScript: (soWaitRandomForFidget new:))
+		(self setScript: (LOOKUP_ERROR new:))
 		(self setPri: 4)
 	)
 )
@@ -1138,7 +1153,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setScript: (soWaitRandomForFidget new:))
+		(self setScript: (LOOKUP_ERROR new:))
 		(self setPri: 100)
 	)
 )
@@ -1153,7 +1168,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setScript: (soWaitRandomForFidget new:))
+		(self setScript: (LOOKUP_ERROR new:))
 		(self setPri: 5)
 	)
 )
@@ -1168,7 +1183,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setScript: (soWaitRandomForFidget new:))
+		(self setScript: (LOOKUP_ERROR new:))
 		(self setPri: 3)
 	)
 )
@@ -1187,7 +1202,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soShowSign)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1201,7 +1216,7 @@
 			)
 			(1 (= cycles 1))
 			(2
-				(curRoom initThumb: oSignCUPlane)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(self dispose:)
 			)
 		)
@@ -1236,7 +1251,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTakeGong)
+		(ego setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setSpeedDirect)
@@ -1267,16 +1282,22 @@
 			)
 			(3
 				((ScriptID 64018 0) hide:)
-				(poBoogle view: 20603 loop: 3 cel: 0 posn: 568 514 init:)
-				(poBoogle setCycle: CT 25 1 self)
+				(LOOKUP_ERROR
+					view: 20603
+					loop: 3
+					cel: 0
+					posn: 568 514
+					init:
+				)
+				(LOOKUP_ERROR setCycle: CT 25 1 self)
 			)
 			(4
-				(voGongTile dispose:)
+				(LOOKUP_ERROR dispose:)
 				(messager say: 4 1 12 2)
-				(poBoogle setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(5
-				(poBoogle dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) posn: 666 513 setLoop: 4 show:)
 				((ScriptID 64017 0) set: 89)
 				(theGame handsOn:)
@@ -1304,15 +1325,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(oChatter vThumbView: 20605 cThumbCel: 50)
-				(oHaremTalk cThumbCel: 50)
+				(LOOKUP_ERROR vThumbView: 20605 cThumbCel: 50)
+				(LOOKUP_ERROR cThumbCel: 50)
 				(self cue:)
 			)
 			(1 (= ticks (Random 200 300)))
 			(2
 				(if local1 (self changeState: 1))
 				(= local1 1)
-				(oHaremTalk
+				(LOOKUP_ERROR
 					lDownArrowLoop: 0 0 1 (Random 1 26) self 20600 1
 				)
 			)
@@ -1348,7 +1369,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(curRoom setScript: soTakeSign)
+				(curRoom setScript: LOOKUP_ERROR)
 			)
 			(else  (super doVerb: theVerb))
 		)
@@ -1364,8 +1385,8 @@
 			(1
 				(ego get: ((ScriptID 64001 0) get: 19))
 				((ScriptID 64017 0) set: 47)
-				(voWarningSign dispose:)
-				(curRoom arrowDown: oSignCUPlane)
+				(LOOKUP_ERROR dispose:)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(self dispose:)
 			)
 		)
@@ -1385,9 +1406,9 @@
 				(thePlane right:)
 				(thePlane bottom?)
 		)
-		(voSignBG init:)
-		(foSignCU init:)
-		(foExitCU init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 	)
 )
 
@@ -1412,8 +1433,8 @@
 	
 	(method (init)
 		(super init: &rest)
-		(= plane (oSeraglioScrollPlane init: 948 632 yourself:))
-		(music1 pageSize: 20600)
+		(= plane (LOOKUP_ERROR init: 948 632 yourself:))
+		(theMusic pageSize: 20600)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -1450,36 +1471,36 @@
 				)
 		)
 		(if (not ((ScriptID 64017 0) test: 46))
-			(voTableTop init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if (not ((ScriptID 64017 0) test: 55))
-			(voPillow init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if (not ((ScriptID 64017 0) test: 47))
-			(voWarningSign init:)
+			(LOOKUP_ERROR init:)
 		)
-		(if (not ((ScriptID 64017 0) test: 58)) (voFan init:))
+		(if (not ((ScriptID 64017 0) test: 58))
+			(LOOKUP_ERROR init:)
+		)
 		(if (not ((ScriptID 64017 0) test: 56))
-			(voCarpet init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if (not ((ScriptID 64017 0) test: 89))
-			(voGongTile init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if (not ((ScriptID 64017 0) test: 91))
-			(poGirl1 init:)
-			(poGirl2 init:)
-			(poGirl3 init:)
-			(poGirl4 init:)
-			(poNull setScript: soHaremGirlsChatter)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR setScript: LOOKUP_ERROR)
 		)
-		(if ((ScriptID 64017 0) test: 90)
-			(voStinkyCarpetOnLedge init:)
-		)
-		(foLadderHole init:)
-		(voLadder init:)
-		(foLedge init:)
-		(voGongBonger init:)
-		(foToCliffExit init:)
+		(if ((ScriptID 64017 0) test: 90) (LOOKUP_ERROR init:))
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(ego init: oPanner:)
 		((ScriptID 64018 0)
 			posn: 146 276
@@ -1490,18 +1511,20 @@
 		)
 		(theGame handsOn:)
 		(ego posn: 102 280 hide:)
-		(ego setScript: soClimbIn)
+		(ego setScript: LOOKUP_ERROR)
 	)
 	
 	(method (doit)
 		(super doit: &rest)
-		(if (poNull script?) ((poNull script?) doit:))
+		(if (LOOKUP_ERROR script?)
+			((LOOKUP_ERROR script?) doit:)
+		)
 	)
 	
 	(method (setArgs param1)
 		(return
-			(if (not (KString 7 param1 {foSignCU}))
-				(return foSignCU)
+			(if (not (KString 7 param1 LOOKUP_ERROR))
+				(return LOOKUP_ERROR)
 			else
 				(super setArgs: param1 &rest)
 			)
@@ -1511,10 +1534,10 @@
 	(method (highlight param1)
 		(if
 			(and
-				(== param1 foSignCU)
-				(!= (curRoom plane?) oSignCUPlane)
+				(== param1 LOOKUP_ERROR)
+				(!= (curRoom plane?) LOOKUP_ERROR)
 			)
-			(super highlight: voWarningSign)
+			(super highlight: LOOKUP_ERROR)
 		else
 			(super highlight: param1 &rest)
 		)
@@ -1522,10 +1545,10 @@
 	
 	(method (setWander)
 		(return
-			(if (== (curRoom plane?) oSignCUPlane)
-				(return foExitCU)
+			(if (== (curRoom plane?) LOOKUP_ERROR)
+				(return LOOKUP_ERROR)
 			else
-				(return foToCliffExit)
+				(return LOOKUP_ERROR)
 			)
 		)
 	)

@@ -45,9 +45,9 @@
 	(method (doit)
 		(if (!= local0 local3)
 			(= local0 (+ local0 (* local1 local2)))
-			(voBackground scaleX: local0 scaleY: local0)
+			(LOOKUP_ERROR scaleX: local0 scaleY: local0)
 		else
-			(soEntrance cue:)
+			(LOOKUP_ERROR cue:)
 		)
 	)
 )
@@ -75,7 +75,7 @@
 	)
 	
 	(method (cue)
-		(curRoom setScript: soTorinFallsThrough)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -130,33 +130,28 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(oAmbient vThumbView: 30199)
+				(LOOKUP_ERROR vThumbView: 30199)
 				(= seconds 3)
 			)
-			(1 (theDoits add: oZoomer))
+			(1 (theDoits add: LOOKUP_ERROR))
 			(2
-				(theDoits delete: oZoomer)
-				(oZoomer dispose:)
-				(poTorinEntrance init: setCycle: End self)
-				(sound1 lThumbLoop: 30101)
+				(theDoits delete: LOOKUP_ERROR)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
+				(theSound lThumbLoop: 30101)
 			)
 			(3
-				(= gToTorinPullsOutMeat oTorinFaceDown)
+				(= gToTorinPullsOutMeat LOOKUP_ERROR)
 				(messager say: 0 0 0 1 self)
 			)
 			(4
 				(= gToTorinPullsOutMeat 0)
-				(poTorinEntrance dispose:)
-				(poTorinLooksAround init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(5
-				(poTorinLooksAround dispose:)
-				(ego
-					posn: 148 252
-					init:
-					oPanner:
-					lCheck: oTreeWalkHandler
-				)
+				(LOOKUP_ERROR dispose:)
+				(ego posn: 148 252 init: oPanner: lCheck: LOOKUP_ERROR)
 				(messager sayRange: 0 0 0 2 3 self)
 			)
 			(6
@@ -235,17 +230,17 @@
 				(thePlane right:)
 				(thePlane bottom?)
 		)
-		(voTorinUnconscious init: self setScale:)
-		(poPergolians
+		(LOOKUP_ERROR init: self setScale:)
+		(LOOKUP_ERROR
 			setCel: 0
 			init: self
-			setCycle: End coTestForClick
+			setCycle: End LOOKUP_ERROR
 			setScale:
 		)
-		(poPergoliansKillTorin setScale:)
+		(LOOKUP_ERROR setScale:)
 		(= local0 128)
 		(= local3 (MulDiv 128 133 100))
-		(theDoits add: oBaseZoomer)
+		(theDoits add: LOOKUP_ERROR)
 	)
 )
 
@@ -304,9 +299,9 @@
 	
 	(method (cue)
 		(if local4
-			(proc64896_1 1 10 coNextRoom)
+			(proc64896_1 1 10 LOOKUP_ERROR)
 		else
-			(curRoom setScript: soSkeleton)
+			(curRoom setScript: LOOKUP_ERROR)
 		)
 	)
 )
@@ -325,20 +320,16 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poPergolians dispose:)
-				(poPergoliansKillTorin
-					setCel: 0
-					init:
-					setCycle: CT 12 1 self
-				)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: CT 12 1 self)
 			)
 			(1
-				(voSkeleton init:)
-				(poPergoliansKillTorin setCycle: End self)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(2
 				((ScriptID 64019 0) show: 0 42 1 30200)
-				(oTreebasePlane dispose: init:)
+				(LOOKUP_ERROR dispose: init:)
 				(self dispose:)
 			)
 		)
@@ -351,9 +342,9 @@
 	(method (doit)
 		(if (!= local0 local3)
 			(= local0 (+ local0 (* local1 local2)))
-			(voTorinUnconscious scaleX: local0 scaleY: local0)
-			(poPergolians scaleX: local0 scaleY: local0)
-			(poPergoliansKillTorin scaleX: local0 scaleY: local0)
+			(LOOKUP_ERROR scaleX: local0 scaleY: local0)
+			(LOOKUP_ERROR scaleX: local0 scaleY: local0)
+			(LOOKUP_ERROR scaleX: local0 scaleY: local0)
 		else
 			(theDoits delete: self)
 			(self dispose:)
@@ -366,14 +357,14 @@
 	
 	(method (init)
 		(super init: &rest)
-		(= plane (oTreetopPlane init: yourself:))
-		(voBackground init:)
-		(voBackground setScale: scaleX: 64 scaleY: 64)
-		(curRoom setScript: soEntrance)
-		(music1 pageSize: 30100)
-		(foUpperShard init:)
-		(foLowerShard init:)
-		(foThunderstorm init:)
+		(= plane (LOOKUP_ERROR init: yourself:))
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR setScale: scaleX: 64 scaleY: 64)
+		(curRoom setScript: LOOKUP_ERROR)
+		(theMusic pageSize: 30100)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 	)
 	
 	(method (setWander)
@@ -401,7 +392,7 @@
 	(properties)
 	
 	(method (doit)
-		(curRoom setScript: soTorinFallsThrough)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -417,32 +408,32 @@
 			(0
 				(theGame handsOff:)
 				(ego hide:)
-				(poTorinFallsThrough init: setCycle: End self)
-				(music1 pageSize: 0)
-				(oFallingMusic lThumbLoop: 30198)
-				(sound1 lThumbLoop: 30102 coMoreFallingSFX)
+				(LOOKUP_ERROR init: setCycle: End self)
+				(theMusic pageSize: 0)
+				(LOOKUP_ERROR lThumbLoop: 30198)
+				(theSound lThumbLoop: 30102 LOOKUP_ERROR)
 				(messager say: 0 0 0 4)
 			)
 			(1
-				(poTorinFallsThrough dispose:)
-				(poLeavesFlyUp init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(2
-				(oTreetopPlane dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom
 					plane:
-						(oTreeScrollPlane
+						(LOOKUP_ERROR
 							oBoogleFeatures: 0
 							oExtraPlanes: 0
 							init: (thePlane findData:) 1580
 							yourself:
 						)
 				)
-				(oTreeScrollPlane sitNSpin: 0 1264 self 3)
+				(LOOKUP_ERROR sitNSpin: 0 1264 self 3)
 			)
 			(3
-				(oTreeScrollPlane dispose:)
-				(curRoom plane: (oTreebasePlane init: yourself:))
+				(LOOKUP_ERROR dispose:)
+				(curRoom plane: (LOOKUP_ERROR init: yourself:))
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -454,7 +445,7 @@
 	(properties)
 	
 	(method (cue)
-		(sound1 lThumbLoop: 30103 coUgh)
+		(theSound lThumbLoop: 30103 LOOKUP_ERROR)
 	)
 )
 
@@ -462,7 +453,7 @@
 	(properties)
 	
 	(method (cue)
-		(messager say: 0 0 0 5 coCaptured)
+		(messager say: 0 0 0 5 LOOKUP_ERROR)
 	)
 )
 

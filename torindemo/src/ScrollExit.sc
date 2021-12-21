@@ -215,33 +215,33 @@
 		(if relVolPercent
 			(if (== -1 oMainPlane)
 				(= oMainPlane
-					(foEScroll init: (ScriptID 0 1) yourself:)
+					(LOOKUP_ERROR init: (ScriptID 0 1) yourself:)
 				)
 			)
 			(if (== -1 addBoogleFeature)
 				(= addBoogleFeature
-					(foWScroll init: (ScriptID 0 1) yourself:)
+					(LOOKUP_ERROR init: (ScriptID 0 1) yourself:)
 				)
 			)
 			(if (== -1 delBoogleFeature)
 				(= delBoogleFeature
-					(oHHandle gimme: self init: yourself:)
+					(LOOKUP_ERROR gimme: self init: yourself:)
 				)
 			)
 		)
 		(if audTicks
 			(if (== -1 oBoogleFeatures)
 				(= oBoogleFeatures
-					(foNScroll init: (ScriptID 0 1) yourself:)
+					(LOOKUP_ERROR init: (ScriptID 0 1) yourself:)
 				)
 			)
 			(if (== -1 oExtraPlanes)
 				(= oExtraPlanes
-					(foSScroll init: (ScriptID 0 1) yourself:)
+					(LOOKUP_ERROR init: (ScriptID 0 1) yourself:)
 				)
 			)
 			(if (== -1 showHelp)
-				(= showHelp (oVHandle gimme: self init: yourself:))
+				(= showHelp (LOOKUP_ERROR gimme: self init: yourself:))
 			)
 		)
 	)
@@ -407,13 +407,7 @@
 	)
 	
 	(method (handleEvent event &tmp theCurrentX gimmeRelVolPercent temp2 temp3)
-		(if (not gimme)
-			(return
-				(Prints
-					{Attempt to handleEvent scroll handle with no scroll plane. DJM torscrol.sc}
-				)
-			)
-		)
+		(if (not gimme) (return (Prints LOOKUP_ERROR)))
 		(if
 			(and
 				(self onMe: event)
@@ -481,12 +475,7 @@
 	)
 	
 	(method (indexToCoor &tmp gimmeSetMusic gimmeRelVolPercent temp2)
-		(if (not gimme)
-			(Prints
-				{Attempt to resynch scroll handle with no scroll plane. DJM torscrol.sc}
-			)
-			(return)
-		)
+		(if (not gimme) (Prints LOOKUP_ERROR) (return))
 		(= temp2 (- currentY currentX))
 		(if shortestDistance
 			(= gimmeSetMusic (gimme setMusic?))

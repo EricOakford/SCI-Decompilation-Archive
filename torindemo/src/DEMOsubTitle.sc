@@ -6,11 +6,11 @@
 (use TPRoom)
 (use TPScript)
 (use TPSound)
-(use GenDialg)
+(use GenDialog)
 (use Script)
 (use CueMe)
 (use ScrollView)
-(use NewUser)
+(use Events)
 (use ExitFeature)
 (use Print)
 (use Talker)
@@ -44,9 +44,9 @@
 	(= local1 1)
 	(ego setScaler: Scaler 60 60 1 0)
 	(ego setPri: 45)
-	(foStartingLedgeToTopLedge init:)
-	(foStartingLedgeToBitternut init:)
-	(foStartingLedgeToClotheslineLedge init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
 	(= local0
 		((Polygon new:)
 			type: 3
@@ -59,9 +59,9 @@
 
 (procedure (localproc_0b60)
 	(if (== local1 1)
-		(foStartingLedgeToTopLedge dispose:)
-		(foStartingLedgeToBitternut dispose:)
-		(foStartingLedgeToClotheslineLedge dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		((curRoom obstacles?) delete: local0)
 		(local0 dispose:)
 	)
@@ -70,9 +70,9 @@
 
 (procedure (localproc_0f8d)
 	(= local1 2)
-	(foTopLedgeToStartingLedge init:)
+	(LOOKUP_ERROR init:)
 	(if (not ((ScriptID 64017 0) test: 43))
-		(foStepTile init:)
+		(LOOKUP_ERROR init:)
 	)
 	(ego setPri: 25)
 	(= local0
@@ -87,8 +87,8 @@
 
 (procedure (localproc_1031)
 	(if (== local1 2)
-		(foTopLedgeToStartingLedge dispose:)
-		(foStepTile dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		((curRoom obstacles?) delete: local0)
 		(local0 dispose:)
 	)
@@ -97,16 +97,16 @@
 
 (procedure (localproc_2002)
 	(= local1 3)
-	(foBridgeDoor init:)
-	(foClotheslineLedgeToStartingLedge init:)
-	(foClotheslineLedgeToDragon init:)
-	(foVeder init:)
-	(voSplash init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
 	(if (not ((ScriptID 64017 0) test: 74))
-		(foBasket init:)
+		(LOOKUP_ERROR init:)
 	)
 	(if (not ((ScriptID 64017 0) test: 51))
-		(foClothesline init:)
+		(LOOKUP_ERROR init:)
 	)
 	(ego setScaler: Scaler 70 50 921 720)
 	(ego setPri: 65)
@@ -215,39 +215,39 @@
 			yourself:
 		)
 	)
-	(theDoits add: oSplashTest)
+	(theDoits add: LOOKUP_ERROR)
 	(curRoom addObstacle: local0 local5)
 	(if (not ((ScriptID 64017 0) test: 76))
-		(ego setScript: soBoogleGetsWashed)
-		(oCliffScrollPlane sitNSpin: 0 587 soBoogleGetsWashed 1)
+		(ego setScript: LOOKUP_ERROR)
+		(LOOKUP_ERROR sitNSpin: 0 587 LOOKUP_ERROR 1)
 	else
-		(oCliffScrollPlane sitNSpin: 0 587 0 1)
+		(LOOKUP_ERROR sitNSpin: 0 587 0 1)
 	)
 )
 
 (procedure (localproc_22c6)
 	(if (== local1 3)
-		(foBasket dispose:)
-		(foVeder dispose:)
-		(foClothesline dispose:)
-		(foBridgeDoor dispose:)
-		(voSplash dispose:)
-		(foClotheslineLedgeToStartingLedge dispose:)
-		(foClotheslineLedgeToDragon dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		({oTorinLeapsRight} dispose:)
 		((curRoom obstacles?) delete: local0)
 		((curRoom obstacles?) delete: local5)
 		(local0 dispose:)
 		(local5 dispose:)
 		(local6 dispose:)
-		(theDoits delete: oSplashTest)
+		(theDoits delete: LOOKUP_ERROR)
 	)
 	(= local1 0)
 )
 
 (procedure (localproc_2608)
 	(= local1 4)
-	(foPalaceDoor init:)
-	(foBridgeToClotheslineLedge init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
 	(ego setScaler: Scaler 33 33 1 0)
 	(ego setPri: 35)
 	(= local0
@@ -262,8 +262,8 @@
 
 (procedure (localproc_26ae)
 	(if (== local1 4)
-		(foPalaceDoor dispose:)
-		(foBridgeToClotheslineLedge dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		((curRoom obstacles?) delete: local0)
 		(local0 dispose:)
 	)
@@ -274,10 +274,10 @@
 	(= local1 5)
 	(ego setScaler: Scaler 60 60 1 0)
 	(ego setPri: 85)
-	(foDragonToClotheslineLedge init:)
-	(foDragonCave init:)
-	(foDragonToVultures init:)
-	(foRockOverVultures init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
 	(= local0
 		((Polygon new:)
 			type: 3
@@ -290,10 +290,10 @@
 
 (procedure (localproc_36a3)
 	(if (== local1 5)
-		(foDragonToClotheslineLedge dispose:)
-		(foDragonCave dispose:)
-		(foDragonToVultures dispose:)
-		(foRockOverVultures dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		((curRoom obstacles?) delete: local0)
 		(local0 dispose:)
 	)
@@ -304,14 +304,14 @@
 	(= local1 6)
 	(ego setScaler: Scaler 60 60 1 0)
 	(ego setPri: 95)
-	(foVulturesToDragon init:)
-	(if (voTree loop?)
-		(voTree setSpeedFraction: (ScriptID 64006 8))
+	(LOOKUP_ERROR init:)
+	(if (LOOKUP_ERROR loop?)
+		(LOOKUP_ERROR setSpeedFraction: (ScriptID 64006 8))
 	else
-		(voTree setVisibleRange: 36)
+		(LOOKUP_ERROR setVisibleRange: 36)
 	)
 	(if ((ScriptID 64017 0) test: 73)
-		(foVulturesToLeap init:)
+		(LOOKUP_ERROR init:)
 		(= local0
 			((Polygon new:)
 				type: 3
@@ -338,8 +338,8 @@
 			)
 		)
 	else
-		(foVultures init:)
-		(foWalkByVultures init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(= local0
 			((Polygon new:)
 				type: 3
@@ -353,14 +353,14 @@
 
 (procedure (localproc_4f68)
 	(if (== local1 6)
-		(music1 fade: 0 10 9 1)
-		(foVulturesToDragon dispose:)
-		(voTree setSpeedFraction: 0)
-		(voTree setTotalWidth: 36)
-		(foVulturesToLeap dispose:)
-		(foWalkByVultures dispose:)
-		(foVultures dispose:)
-		(foVulturesForward dispose:)
+		(theMusic fade: 0 10 9 1)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR setSpeedFraction: 0)
+		(LOOKUP_ERROR setTotalWidth: 36)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		((curRoom obstacles?) delete: local0)
 		(local0 dispose:)
 	)
@@ -369,8 +369,8 @@
 
 (procedure (localproc_54d6)
 	(= local1 7)
-	(foLeapLedgeToVultures init:)
-	(foLeapAcrossRight init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
 	(= local0
 		((Polygon new:)
 			type: 3
@@ -383,8 +383,8 @@
 
 (procedure (localproc_5559)
 	(if (== local1 7)
-		(foLeapLedgeToVultures dispose:)
-		(foLeapAcrossRight dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		((curRoom obstacles?) delete: local0)
 		(local0 dispose:)
 	)
@@ -395,9 +395,9 @@
 	(= local1 8)
 	(ego setScaler: Scaler 46 46 1 0)
 	(ego setPri: 85)
-	(foClimbToSeraglio init:)
-	(foLeapAcrossLeft init:)
-	(foSkunkCave init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
+	(LOOKUP_ERROR init:)
 	(= local0
 		((Polygon new:)
 			type: 3
@@ -410,9 +410,9 @@
 
 (procedure (localproc_5bce)
 	(if (== local1 8)
-		(foClimbToSeraglio dispose:)
-		(foSkunkCave dispose:)
-		(foLeapAcrossLeft dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		((curRoom obstacles?) delete: local0)
 		(local0 dispose:)
 	)
@@ -432,7 +432,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soStartingLedgeToBitternut)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -489,7 +489,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soStartingLedgeToClotheslineLedge)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -564,7 +564,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soStartingLedgeToTopLedge)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -642,7 +642,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTopLedgeToStartingLedge)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -667,7 +667,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soTorinGrabsTile)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -696,10 +696,10 @@
 			)
 			(1
 				(ego hide:)
-				(poTorinGrabsTile setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(2
-				(poTileFalls
+				(LOOKUP_ERROR
 					posn: 98 321
 					setCel: 0
 					init:
@@ -784,7 +784,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soBridgeDoor)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -859,7 +859,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soClotheslineLedgeToStartingLedge)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -943,7 +943,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soClotheslineLedgeToDragon)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -1037,7 +1037,7 @@
 			(1
 				(ego get: ((ScriptID 64001 0) get: 23))
 				((ScriptID 64017 0) set: 51)
-				(voClothespin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(self setTotalWidth: 1)
 				(messager say: 6 1 0 0)
 			)
@@ -1069,7 +1069,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1 (messager say: 9 1 12 0))
-			(29 (ego setScript: soWashTile))
+			(29
+				(ego setScript: LOOKUP_ERROR)
+			)
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -1094,7 +1096,7 @@
 			(0
 				(theGame handsOff:)
 				(ego hide:)
-				(poTorinAndTile
+				(LOOKUP_ERROR
 					setLoop: 3
 					setCel: 0
 					init:
@@ -1107,19 +1109,19 @@
 				(= ticks
 					(*
 						2
-						(+ 1 (poWasherLady lastCel:))
-						(poWasherLady cycleSpeed?)
+						(+ 1 (LOOKUP_ERROR lastCel:))
+						(LOOKUP_ERROR cycleSpeed?)
 					)
 				)
 			)
 			(2
-				(poTorinAndTile setLoop: 4 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setLoop: 4 setCel: 0 setCycle: End self)
 			)
 			(3
 				(ego get: ((ScriptID 64001 0) get: 33))
 				((ScriptID 64017 0) set: 60)
-				(poTorinAndTile dispose:)
-				(foBasket dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -1174,30 +1176,26 @@
 			)
 			(4
 				((ScriptID 64018 0) hide:)
-				(poBoogleGetsWashed
+				(LOOKUP_ERROR
 					setLoop: 1
 					setCel: 0
-					setPri: (- (poWasherLady priority?) 1)
+					setPri: (- (LOOKUP_ERROR priority?) 1)
 					posn: 192 773
 					init:
 					setCycle: End self
 				)
 			)
 			(5
-				(poWasherLady setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(6
-				(poBoogleGetsWashed
-					setLoop: 2
-					setCel: 0
-					setCycle: End self
-				)
-				(poWasherLady setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setLoop: 2 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 setCycle: End self)
 			)
 			(7)
 			(8
-				(poWasherLady setCycle: Fwd)
-				(poBoogleGetsWashed
+				(LOOKUP_ERROR setCycle: Fwd)
+				(LOOKUP_ERROR
 					setLoop: 5
 					setCel: 0
 					posn: 233 770
@@ -1205,7 +1203,7 @@
 				)
 			)
 			(9
-				(poBoogleGetsWashed dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0)
 					posn: 224 770
 					show:
@@ -1234,7 +1232,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soYellAtVeder)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1265,17 +1263,17 @@
 			)
 			(2
 				(ego hide:)
-				(poTorinYells setCel: 0 init: setCycle: CT 20 1 self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: CT 20 1 self)
 			)
 			(3
 				(messager say: 3 1 13 0 self)
 			)
 			(4
-				(poTorinYells setCycle: End self)
-				(poVeder setCycle: End)
+				({soTorinTalksToVultures} setCycle: End self)
+				(LOOKUP_ERROR setCycle: End)
 			)
 			(5
-				(poTorinYells dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -1290,7 +1288,7 @@
 	(method (doit)
 		(if
 		(and (ego mover?) (local6 onMe: (ego x?) (ego y?)))
-			(voSplash
+			(LOOKUP_ERROR
 				posn: (ego x?) (ego y?)
 				loop: (ego loop?)
 				cel: (ego cel:)
@@ -1298,7 +1296,7 @@
 				show:
 			)
 		else
-			(voSplash hide:)
+			(LOOKUP_ERROR hide:)
 		)
 	)
 )
@@ -1355,7 +1353,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soBridgeToClotheslineLedge)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -1422,7 +1420,7 @@
 	
 	(method (doVerb)
 		(if (= local8 (MakeMessageText 14 0 0 1 300))
-			(TextDialog local8 global288)
+			(TextDialog local8 continueText)
 			(local8 dispose:)
 			(= local8 0)
 		)
@@ -1499,7 +1497,7 @@
 	
 	(method (cue)
 		(if (= local8 (MakeMessageText 10 0 0 1 300))
-			(TextDialog local8 global288)
+			(TextDialog local8 continueText)
 			(local8 dispose:)
 			(= local8 0)
 		)
@@ -1519,7 +1517,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soDragonToVultures)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -1605,7 +1603,7 @@
 		(switch theVerb
 			(35
 				(if (not ((ScriptID 64017 0) test: 73))
-					(ego setScript: soTorinDropsMeat)
+					(ego setScript: LOOKUP_ERROR)
 				)
 			)
 			(else 
@@ -1666,8 +1664,8 @@
 	)
 	
 	(method (init)
-		(= x (poVulturesFlyAway x?))
-		(= y (poVulturesFlyAway y?))
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
 		(super init: &rest)
 	)
 )
@@ -1679,8 +1677,8 @@
 	)
 	
 	(method (init)
-		(= x (poVulturesFlyAway x?))
-		(= y (poVulturesFlyAway y?))
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
 		(super init: &rest)
 		(= cycleSpeed 30)
 		(self setCycle: RandCycle)
@@ -1694,8 +1692,8 @@
 	)
 	
 	(method (init)
-		(= x (poVulturesFlyAway x?))
-		(= y (poVulturesFlyAway y?))
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
 		(super init: &rest)
 		(= cycleSpeed 30)
 		(self setCycle: RandCycle)
@@ -1710,18 +1708,18 @@
 	)
 	
 	(method (init)
-		(= x (poVulturesFlyAway x?))
-		(= y (poVulturesFlyAway y?))
-		(poVulturesFlyAway hide:)
-		(voVultureBodyMeat init:)
-		(poVisceraIdleMeat init:)
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
+		(LOOKUP_ERROR hide:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poVulturesFlyAway show:)
-		(voVultureBodyMeat dispose:)
-		(poVisceraIdleMeat dispose:)
+		(LOOKUP_ERROR show:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		(super dispose: &rest)
 	)
 )
@@ -1734,18 +1732,18 @@
 	)
 	
 	(method (init)
-		(= x (poVulturesFlyAway x?))
-		(= y (poVulturesFlyAway y?))
-		(poVulturesFlyAway hide:)
-		(voVultureBodyMeat init:)
-		(poTripeIdleMeat init:)
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
+		(LOOKUP_ERROR hide:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poVulturesFlyAway show:)
-		(voVultureBodyMeat dispose:)
-		(poTripeIdleMeat dispose:)
+		(LOOKUP_ERROR show:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		(super dispose: &rest)
 	)
 )
@@ -1771,7 +1769,7 @@
 			(0
 				(theGame handsOff:)
 				(ego setMotion: PolyPath 122 1275 self)
-				(oCliffScrollPlane sitNSpin: 0 1072 self 1)
+				(LOOKUP_ERROR sitNSpin: 0 1072 self 1)
 			)
 			(1)
 			(2 (ego setHeading: 135 self))
@@ -1780,63 +1778,59 @@
 				(= cycles 2)
 			)
 			(4
-				(sound1 nHeight: 20108 20198 20121 20110)
+				(theSound nHeight: 20108 20198 20121 20110)
 				(ego hide:)
-				(poTorinPullsOutMeat init: setCycle: End self)
+				(LOOKUP_ERROR init: setCycle: End self)
 			)
 			(5
-				(= gToTorinPullsOutMeat toTorinPullsOutMeat)
+				(= gToTorinPullsOutMeat LOOKUP_ERROR)
 				(messager say: 2 35 0 1 self)
 			)
 			(6
 				(= gToTorinPullsOutMeat 0)
-				(poTorinPullsOutMeat
-					setLoop: 2
-					setCel: 0
-					setCycle: CT 13 1 self
-				)
+				(LOOKUP_ERROR setLoop: 2 setCel: 0 setCycle: CT 13 1 self)
 			)
 			(7
-				(= ticks (poTorinPullsOutMeat cycleSpeed?))
-				(sound1 lThumbLoop: 20108)
+				(= ticks (LOOKUP_ERROR cycleSpeed?))
+				(theSound lThumbLoop: 20108)
 			)
 			(8
-				(poTorinPullsOutMeat setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(9
-				(poTorinPullsOutMeat dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(ego put: ((ScriptID 64001 0) get: 25))
 				((ScriptID 64017 0) set: 73)
-				(aoFlyingMeat
+				(LOOKUP_ERROR
 					setLoop: 3 1
 					setCel: 0
 					posn: 381 1241
 					init:
 					setCycle: Fwd
 				)
-				(poVultures dispose:)
-				(poVulturesFlyAway init:)
-				(oCliffScrollPlane sitNSpin: 0 1262 self 1)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR sitNSpin: 0 1262 self 1)
 			)
 			(10
-				(music1 pageSize: 20198)
-				(poVulturesFlyAway setCycle: CT 30 1 self)
+				(theMusic pageSize: 20198)
+				(LOOKUP_ERROR setCycle: CT 30 1 self)
 			)
 			(11
-				(= ticks (poVulturesFlyAway cycleSpeed?))
+				(= ticks (LOOKUP_ERROR cycleSpeed?))
 			)
 			(12
-				(sound1 lThumbLoop: 20121)
-				(poVulturesFlyAway setCycle: End self)
+				(theSound lThumbLoop: 20121)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(13
-				(= gToVisceraMeat toVisceraMeat)
-				(= gToTripeMeat toTripeMeat)
+				(= gToVisceraMeat LOOKUP_ERROR)
+				(= gToTripeMeat LOOKUP_ERROR)
 				(messager sayRange: 2 35 0 2 3 self)
 			)
 			(14
-				(poVulturesFlyAway
+				(LOOKUP_ERROR
 					setLoop: 6
 					setCel: 0
 					posn: 266 1570
@@ -1844,7 +1838,7 @@
 				)
 			)
 			(15
-				(poVulturesFlyAway
+				(LOOKUP_ERROR
 					setLoop: 7
 					setCel: 0
 					posn: 287 1563
@@ -1852,23 +1846,23 @@
 				)
 			)
 			(16
-				(= ticks (poVulturesFlyAway cycleSpeed?))
-				(sound1 lThumbLoop: 20110)
+				(= ticks (LOOKUP_ERROR cycleSpeed?))
+				(theSound lThumbLoop: 20110)
 			)
 			(17
-				(poVulturesFlyAway setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(18
-				(poVulturesFlyAway dispose:)
+				(LOOKUP_ERROR dispose:)
 				(= gToVisceraMeat 0)
 				(= gToTripeMeat 0)
-				(oCliffScrollPlane sitNSpin: 0 1580 self 2)
+				(LOOKUP_ERROR sitNSpin: 0 1580 self 2)
 				(messager sayRange: 2 35 0 4 5 self)
 			)
 			(19)
 			(20
-				(oCliffScrollPlane sitNSpin: 0 1072 self 1)
-				(music1 fade: 0 10 9 1)
+				(LOOKUP_ERROR sitNSpin: 0 1072 self 1)
+				(theMusic fade: 0 10 9 1)
 			)
 			(21
 				(theGame handsOn:)
@@ -1887,15 +1881,15 @@
 			put: ((ScriptID 64001 0) get: 25)
 		)
 		((ScriptID 64017 0) set: 73)
-		(oCliffScrollPlane bSpinning: fadeRel: 0 1072)
-		(poTorinPullsOutMeat dispose:)
-		(aoFlyingMeat dispose:)
-		(poVultures dispose:)
-		(poVulturesFlyAway dispose:)
+		(LOOKUP_ERROR bSpinning: fadeRel: 0 1072)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		(= gToVisceraMeat 0)
 		(= gToTripeMeat 0)
-		(music1 pageSize: 0)
-		(sound1 stop:)
+		(theMusic pageSize: 0)
+		(theSound stop:)
 		(theGame handsOn:)
 		(self dispose:)
 	)
@@ -1910,21 +1904,21 @@
 			get: ((ScriptID 64001 0) get: 25)
 		)
 		((ScriptID 64017 0) unlockAudio: 73)
-		(oCliffScrollPlane bSpinning: fadeRel: 0 1072)
-		(poTorinPullsOutMeat setLoop: 0 setCel: 0 dispose:)
-		(aoFlyingMeat dispose:)
-		(poVultures init:)
-		(poVulturesFlyAway
+		(LOOKUP_ERROR bSpinning: fadeRel: 0 1072)
+		(LOOKUP_ERROR setLoop: 0 setCel: 0 dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR
 			view: 20104
 			setLoop: 5
 			setCel: 0
 			posn: 289 1587
 			dispose:
 		)
-		(= gToVisceraMeat toViscera)
-		(= gToTripeMeat toTripe)
-		(music1 pageSize: 0)
-		(sound1 stop:)
+		(= gToVisceraMeat LOOKUP_ERROR)
+		(= gToTripeMeat LOOKUP_ERROR)
+		(theMusic pageSize: 0)
+		(theSound stop:)
 		(ego setScript: self)
 	)
 )
@@ -1942,7 +1936,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soVulturesToDragon)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -1958,9 +1952,9 @@
 		(switch (= state newState)
 			(0
 				(if (not ((ScriptID 64017 0) test: 73))
-					(poVultures setCycle: Beg)
-					(foVulturesForward dispose:)
-					(foVultures init:)
+					(LOOKUP_ERROR setCycle: Beg)
+					(LOOKUP_ERROR dispose:)
+					(LOOKUP_ERROR init:)
 				)
 				(ego setMotion: PolyPath 38 1543 self)
 			)
@@ -2003,7 +1997,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soVulturesToLeap)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -2012,15 +2006,15 @@
 	
 	(method (init)
 		(super init: &rest)
-		(= nsTop (foVulturesToLeap nsTop?))
-		(= nsBottom (foVulturesToLeap nsBottom?))
-		(= nsLeft (foVulturesToLeap nsLeft?))
-		(= nsRight (foVulturesToLeap nsRight?))
+		(= nsTop (LOOKUP_ERROR nsTop?))
+		(= nsBottom (LOOKUP_ERROR nsBottom?))
+		(= nsLeft (LOOKUP_ERROR nsLeft?))
+		(= nsRight (LOOKUP_ERROR nsRight?))
 		(self setSpeedFraction: (ScriptID 64006 6))
 	)
 	
 	(method (doVerb)
-		(foVultures doVerb: &rest)
+		(LOOKUP_ERROR doVerb: &rest)
 	)
 )
 
@@ -2103,13 +2097,13 @@
 	)
 	
 	(method (doVerb theVerb)
-		(music1 pageSize: 20199)
+		(theMusic pageSize: 20199)
 		(switch theVerb
 			(1
-				(ego setScript: soTorinTalksToVultures)
+				(ego setScript: 'LOOKUP_ERROR')
 			)
 			(35
-				(ego setScript: soTorinGivesMeat)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -2132,7 +2126,7 @@
 	)
 	
 	(method (doVerb)
-		(foVultures doVerb: &rest)
+		(LOOKUP_ERROR doVerb: &rest)
 	)
 )
 
@@ -2143,8 +2137,8 @@
 	)
 	
 	(method (init)
-		(= x (poVultures x?))
-		(= y (poVultures y?))
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
 		(super init: &rest)
 	)
 )
@@ -2156,8 +2150,8 @@
 	)
 	
 	(method (init)
-		(= x (poVultures x?))
-		(= y (poVultures y?))
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
 		(super init: &rest)
 		(= cycleSpeed 30)
 		(self setCycle: RandCycle)
@@ -2171,8 +2165,8 @@
 	)
 	
 	(method (init)
-		(= x (poVultures x?))
-		(= y (poVultures y?))
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
 		(super init: &rest)
 		(= cycleSpeed 30)
 		(self setCycle: RandCycle)
@@ -2187,18 +2181,18 @@
 	)
 	
 	(method (init)
-		(= x (poVultures x?))
-		(= y (poVultures y?))
-		(poVultures hide:)
-		(voVultureBody init:)
-		(poVisceraIdle init:)
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
+		(LOOKUP_ERROR hide:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poVultures show:)
-		(voVultureBody dispose:)
-		(poVisceraIdle dispose:)
+		(LOOKUP_ERROR show:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		(super dispose: &rest)
 	)
 )
@@ -2210,19 +2204,19 @@
 	)
 	
 	(method (init)
-		(= priority (- (poVultures y?) 5))
-		(= x (poVultures x?))
-		(= y (poVultures y?))
-		(poVultures hide:)
-		(voVultureBody init:)
-		(poTripeIdle init:)
+		(= priority (- (LOOKUP_ERROR y?) 5))
+		(= x (LOOKUP_ERROR x?))
+		(= y (LOOKUP_ERROR y?))
+		(LOOKUP_ERROR hide:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poVultures show:)
-		(voVultureBody dispose:)
-		(poTripeIdle dispose:)
+		(LOOKUP_ERROR show:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		(super dispose: &rest)
 	)
 )
@@ -2243,7 +2237,7 @@
 						((ScriptID 64017 0) set: 75)
 					)
 				)
-				(ego oCuee: poVultures self)
+				(ego oCuee: LOOKUP_ERROR self)
 			)
 			(1
 				(if (> (ego x?) 118)
@@ -2256,9 +2250,9 @@
 			(2
 				(ego setLoop: -1)
 				(messager say: 4 1 global262 1 self)
-				(poVultures setCycle: End self)
-				(foVultures dispose:)
-				(foVulturesForward init:)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
 			)
 			(3)
 			(4
@@ -2298,9 +2292,9 @@
 			(0
 				(theGame handsOff:)
 				(ego setMotion: PolyPath 119 1550 self)
-				(poVultures setCycle: End self)
-				(foVultures dispose:)
-				(foVulturesForward init:)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
 			)
 			(1)
 			(2 (ego setHeading: 135 self))
@@ -2309,12 +2303,12 @@
 				(= cycles 2)
 			)
 			(4
-				(sound1 nHeight: 20120 20115)
+				(theSound nHeight: 20120 20115)
 				(messager say: 4 35 0 1 self)
 			)
 			(5
 				(ego hide:)
-				(poTorinOffersMeat
+				(LOOKUP_ERROR
 					setLoop: 3
 					setCel: 0
 					init:
@@ -2322,28 +2316,24 @@
 				)
 			)
 			(6
-				(poVultures hide:)
-				(poVulturesEatMeat setCel: 0 init: setCycle: CT 18 1 self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: CT 18 1 self)
 			)
 			(7
-				(oChomp lThumbLoop: 20120)
+				(LOOKUP_ERROR lThumbLoop: 20120)
 				(ego put: ((ScriptID 64001 0) get: 25))
-				(= ticks (poVulturesEatMeat cycleSpeed?))
+				(= ticks (LOOKUP_ERROR cycleSpeed?))
 			)
 			(8
-				(sound1 lThumbLoop: 20115)
-				(poTorinOffersMeat
-					setLoop: 5
-					setCel: 0
-					setCycle: End self
-				)
-				(poVulturesEatMeat setCycle: End self)
+				(theSound lThumbLoop: 20115)
+				(LOOKUP_ERROR setLoop: 5 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(9)
 			(10
-				(poTorinOffersMeat dispose:)
-				(poVulturesEatMeat dispose:)
-				(poVultures show:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR show:)
 				(ego posn: 44 1549 show:)
 				(messager sayRange: 4 35 0 2 8 self)
 			)
@@ -2351,14 +2341,14 @@
 				(theGame handsOn:)
 				(if (== local9 1)
 					(if (= local8 (MakeMessageText 17 0 0 local9 300))
-						(TextDialog local8 global288)
+						(TextDialog local8 continueText)
 						(local8 dispose:)
 						(= local8 0)
 					)
 					(= local9 (Min 4 (+ local9 1)))
 				)
 				(if (= local8 (MakeMessageText 17 0 0 local9 300))
-					(TextDialog local8 global288)
+					(TextDialog local8 continueText)
 					(local8 dispose:)
 					(= local8 0)
 				)
@@ -2413,7 +2403,7 @@
 		(switch (= state newState)
 			(0
 				(if (= local8 (MakeMessageText 20 0 11 1 300))
-					(TextDialog local8 global288)
+					(TextDialog local8 continueText)
 					(local8 dispose:)
 				)
 				(if ((ScriptID 64002 10) slotIncX?)
@@ -2461,9 +2451,9 @@
 	(method (doVerb theVerb)
 		(if loop
 			(if ((ScriptID 64017 0) test: 73)
-				(ego setScript: soBigTree)
+				(ego setScript: LOOKUP_ERROR)
 			else
-				(ego setScript: soTorinTalksToVultures)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		else
 			(switch theVerb
@@ -2471,7 +2461,7 @@
 					(ego setScript: DEMOsubTitle)
 				)
 				(36
-					(ego setScript: soTorinFertilizesTree)
+					(ego setScript: LOOKUP_ERROR)
 				)
 				(else  (super doVerb: &rest))
 			)
@@ -2505,9 +2495,9 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(sound1 nHeight: 20119 20112)
+				(theSound nHeight: 20119 20112)
 				(ego setMotion: PolyPath 89 1571 self)
-				(oCliffScrollPlane sitNSpin: 0 1424 self 1)
+				(LOOKUP_ERROR sitNSpin: 0 1424 self 1)
 			)
 			(1)
 			(2 (ego setHeading: 135 self))
@@ -2517,42 +2507,34 @@
 			)
 			(4
 				(ego hide:)
-				(poTorinFertilizesTree
-					setCel: 0
-					init:
-					setCycle: CT 20 1 self
-				)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: CT 20 1 self)
 			)
 			(5
-				(sound1 lThumbLoop: 20119)
-				(poTorinFertilizesTree setCycle: End self)
+				(theSound lThumbLoop: 20119)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(6
 				(ego put: ((ScriptID 64001 0) get: 26))
 				((ScriptID 64017 0) set: 72)
-				(oCliffScrollPlane sitNSpin: 0 1580 self 1)
+				(LOOKUP_ERROR sitNSpin: 0 1580 self 1)
 			)
 			(7
-				(voTree dispose:)
-				(sound1 lThumbLoop: 20112)
-				(poTreeGrows setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(theSound lThumbLoop: 20112)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(8
-				(poTreeGrows dispose:)
-				(voTree setLoop: 1 init:)
-				(voTree setSpeedFraction: (ScriptID 64006 8))
-				(voTree setTotalWidth: 1 36)
-				(oCliffScrollPlane sitNSpin: 0 1424 self 1)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setLoop: 1 init:)
+				(LOOKUP_ERROR setSpeedFraction: (ScriptID 64006 8))
+				(LOOKUP_ERROR setTotalWidth: 1 36)
+				(LOOKUP_ERROR sitNSpin: 0 1424 self 1)
 			)
 			(9
-				(poTorinFertilizesTree
-					setLoop: 3
-					setCel: 0
-					setCycle: End self
-				)
+				(LOOKUP_ERROR setLoop: 3 setCel: 0 setCycle: End self)
 			)
 			(10
-				(poTorinFertilizesTree dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -2570,14 +2552,14 @@
 			put: ((ScriptID 64001 0) get: 26)
 		)
 		((ScriptID 64017 0) set: 72)
-		(poTorinFertilizesTree dispose:)
-		(poTreeGrows dispose:)
-		(sound1 stop:)
-		(oCliffScrollPlane bSpinning:)
-		(oCliffScrollPlane fadeRel: 0 1424)
-		(voTree setLoop: 1 init:)
-		(voTree setSpeedFraction: (ScriptID 64006 8))
-		(voTree setTotalWidth: 1 36)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(theSound stop:)
+		(LOOKUP_ERROR bSpinning:)
+		(LOOKUP_ERROR fadeRel: 0 1424)
+		(LOOKUP_ERROR setLoop: 1 init:)
+		(LOOKUP_ERROR setSpeedFraction: (ScriptID 64006 8))
+		(LOOKUP_ERROR setTotalWidth: 1 36)
 		(theGame handsOn:)
 		(self dispose:)
 	)
@@ -2591,20 +2573,20 @@
 			show:
 			get: ((ScriptID 64001 0) get: 26)
 		)
-		(poTorinFertilizesTree
+		(LOOKUP_ERROR
 			view: 20106
 			setLoop: 0
 			setCel: 0
 			posn: 89 1571
 			dispose:
 		)
-		(poTreeGrows dispose:)
-		(voTree setLoop: 0 init:)
-		(voTree setSpeedFraction: 0)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR setLoop: 0 init:)
+		(LOOKUP_ERROR setSpeedFraction: 0)
 		((ScriptID 64017 0) unlockAudio: 72)
-		(sound1 stop:)
-		(oCliffScrollPlane bSpinning:)
-		(oCliffScrollPlane fadeRel: 0 1424)
+		(theSound stop:)
+		(LOOKUP_ERROR bSpinning:)
+		(LOOKUP_ERROR fadeRel: 0 1424)
 		(ego setScript: self)
 	)
 )
@@ -2638,7 +2620,7 @@
 				(ego setMotion: MoveTo 310 1560 self)
 			)
 			(2
-				(oCliffScrollPlane sitNSpin: 0 1440 self 1)
+				(LOOKUP_ERROR sitNSpin: 0 1440 self 1)
 				(ego setHeading: 135 self)
 			)
 			(3)
@@ -2647,9 +2629,9 @@
 				(= cycles 2)
 			)
 			(5
-				(sound1 nHeight: 20116)
+				(theSound nHeight: 20116)
 				(ego hide:)
-				(poTorinClimbsDownTree
+				(LOOKUP_ERROR
 					setCel: 0
 					init:
 					setPri: 2000
@@ -2657,9 +2639,9 @@
 				)
 			)
 			(6
-				(sound1 lThumbLoop: 20116)
-				(oCliffScrollPlane sitNSpin: 0 1580 self 1)
-				(poTorinClimbsDownTree setCycle: End self)
+				(theSound lThumbLoop: 20116)
+				(LOOKUP_ERROR sitNSpin: 0 1580 self 1)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(7)
 			(8 (curRoom newRoom: 20700))
@@ -2667,8 +2649,8 @@
 	)
 	
 	(method (rememberMessage)
-		(sound1 stop:)
-		(oCliffScrollPlane bSpinning:)
+		(theSound stop:)
+		(LOOKUP_ERROR bSpinning:)
 		(curRoom newRoom: 20700)
 	)
 )
@@ -2687,7 +2669,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soLeapLedgeToVultures)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -2759,7 +2741,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soLeapAcrossRight)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -2783,7 +2765,7 @@
 		(switch (= state newState)
 			(0
 				(ego setMotion: PolyPath 293 1339 self)
-				(oCliffScrollPlane sitNSpin: 0 1183)
+				(LOOKUP_ERROR sitNSpin: 0 1183)
 			)
 			(1 (ego setHeading: 90 self))
 			(2
@@ -2795,16 +2777,16 @@
 			(3
 				(= oMessageList 1)
 				(self posnList:)
-				(sound1 nHeight: 20113)
+				(theSound nHeight: 20113)
 				(messager say: 7 1 2 1 self)
 			)
 			(4
 				(ego hide:)
-				(sound1 lThumbLoop: 20113)
-				(poTorinLeapsRight setCel: 0 init: setCycle: End self)
+				(theSound lThumbLoop: 20113)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(5
-				(poTorinLeapsRight dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 478 1294 show: setMotion: MoveTo 489 1297 self)
 			)
 			(6
@@ -2816,8 +2798,8 @@
 	)
 	
 	(method (rememberMessage)
-		(sound1 stop:)
-		(poTorinLeapsRight dispose:)
+		(theSound stop:)
+		(LOOKUP_ERROR dispose:)
 		(ego oPanner: 1 -5436 0 posn: 489 1297 show: setMotion: 0)
 		(theGame handsOn:)
 		(localproc_5b1b)
@@ -2839,7 +2821,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soLeapAcrossLeft)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -2875,10 +2857,10 @@
 			(3
 				(= oMessageList 1)
 				(self posnList:)
-				(sound1 nHeight: 20114)
+				(theSound nHeight: 20114)
 				(ego hide:)
-				(sound1 lThumbLoop: 20114)
-				(poTorinLeapsLeft
+				(theSound lThumbLoop: 20114)
+				(LOOKUP_ERROR
 					setCel: 0
 					init:
 					setPri: 89
@@ -2886,7 +2868,7 @@
 				)
 			)
 			(4
-				(poTorinLeapsLeft dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 310 1342 setLoop: 1 scrollTo: show:)
 				(theGame handsOn:)
 				(localproc_54d6)
@@ -2896,8 +2878,8 @@
 	)
 	
 	(method (rememberMessage)
-		(sound1 stop:)
-		(poTorinLeapsLeft dispose:)
+		(theSound stop:)
+		(LOOKUP_ERROR dispose:)
 		(ego oPanner: 1 -5436 0 posn: 310 1342 show: setMotion: 0)
 		(theGame handsOn:)
 		(localproc_54d6)
@@ -2920,7 +2902,7 @@
 	
 	(method (doVerb)
 		(if (= local8 (MakeMessageText 11 0 0 1 300))
-			(TextDialog local8 global288)
+			(TextDialog local8 continueText)
 			(local8 dispose:)
 			(= local8 0)
 		)
@@ -2960,7 +2942,7 @@
 	
 	(method (doVerb)
 		(if (= local8 (MakeMessageText 12 0 0 1 300))
-			(TextDialog local8 global288)
+			(TextDialog local8 continueText)
 			(local8 dispose:)
 			(= local8 0)
 		)
@@ -3003,11 +2985,7 @@
 				(ego hide:)
 				(= oMessageList 1)
 				(self posnList:)
-				(poTorinClimbsToSeraglio
-					setCel: 0
-					init:
-					setCycle: End self
-				)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(4 (curRoom newRoom: 20600))
 		)
@@ -3045,26 +3023,26 @@
 			(0
 				(theGame handsOff:)
 				(ego dispose:)
-				(oCliffScrollPlane fadeRel: 0 0)
-				(sound1 nHeight: 20102 20105 20106)
-				(sound1 lThumbLoop: 20101 self)
+				(LOOKUP_ERROR fadeRel: 0 0)
+				(theSound nHeight: 20102 20105 20106)
+				(theSound lThumbLoop: 20101 self)
 			)
 			(1
-				(poTorinFallsIn setCel: 0 init: setCycle: CT 13 1 self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: CT 13 1 self)
 			)
 			(2
-				(sound1 lThumbLoop: 20102 self)
+				(theSound lThumbLoop: 20102 self)
 			)
 			(3
-				(oCliffScrollPlane sitNSpin: 0 156 self 1)
-				(sound1 lThumbLoop: 20105 self)
-				(oThud lThumbLoop: 20106)
-				(poTorinFallsIn setCycle: End self)
+				(LOOKUP_ERROR sitNSpin: 0 156 self 1)
+				(theSound lThumbLoop: 20105 self)
+				(LOOKUP_ERROR lThumbLoop: 20106)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(4)
 			(5)
 			(6
-				(poTileFalls
+				(LOOKUP_ERROR
 					setCel: 0
 					posn: 82 321
 					init:
@@ -3127,14 +3105,14 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(sound1 nHeight: 20117)
+				(theSound nHeight: 20117)
 				(ego
 					setScaler: Scaler 60 60 1 0
 					posn: 198 1845
 					setLoop: 7
 					hide:
 				)
-				(poTorinClimbsUpTree
+				(LOOKUP_ERROR
 					setCel: 0
 					init:
 					setPri: 2500
@@ -3144,14 +3122,14 @@
 				(self posnList:)
 			)
 			(1
-				(sound1 lThumbLoop: 20117)
-				(= ticks (poTorinClimbsUpTree cycleSpeed?))
+				(theSound lThumbLoop: 20117)
+				(= ticks (LOOKUP_ERROR cycleSpeed?))
 			)
 			(2
-				(poTorinClimbsUpTree setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(3
-				(poTorinClimbsUpTree dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 276 1583 show: setMotion: MoveTo 233 1570 self)
 			)
 			(4
@@ -3163,8 +3141,8 @@
 	)
 	
 	(method (rememberMessage)
-		(sound1 stop:)
-		(poTorinClimbsUpTree dispose:)
+		(theSound stop:)
+		(LOOKUP_ERROR dispose:)
 		(ego posn: 233 1570 show: setMotion: 0)
 		(localproc_4de1)
 		(theGame handsOn:)
@@ -3191,16 +3169,12 @@
 					oPanner: 1 -5436 4
 					scrollTo:
 				)
-				(poTorinClimbsToSeraglio
-					setCel: 24
-					init:
-					setCycle: Beg self
-				)
+				(LOOKUP_ERROR setCel: 24 init: setCycle: Beg self)
 				(= oMessageList 1)
 				(self posnList:)
 			)
 			(1
-				(poTorinClimbsToSeraglio dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(localproc_5b1b)
 				(theGame handsOn:)
@@ -3210,7 +3184,7 @@
 	)
 	
 	(method (rememberMessage)
-		(poTorinClimbsToSeraglio dispose:)
+		(LOOKUP_ERROR dispose:)
 		(ego show:)
 		(localproc_5b1b)
 		(theGame handsOn:)
@@ -3285,7 +3259,7 @@
 				(= cycles 2)
 			)
 			(1
-				(oCliffScrollPlane sitNSpin: 0 810 self 1)
+				(LOOKUP_ERROR sitNSpin: 0 810 self 1)
 			)
 			(2
 				(ego setMotion: DPath 455 1013 444 1002 self)
@@ -3320,7 +3294,7 @@
 	)
 	
 	(method (rememberMessage)
-		(oCliffScrollPlane bSpinning:)
+		(LOOKUP_ERROR bSpinning:)
 		(curRoom newRoom: 20900)
 	)
 )
@@ -3352,14 +3326,14 @@
 				(ego setMotion: DPath 455 1013 530 1044 self)
 			)
 			(4
-				(oCliffScrollPlane sitNSpin: 0 982 self 1)
+				(LOOKUP_ERROR sitNSpin: 0 982 self 1)
 			)
 			(5 (curRoom newRoom: 20500))
 		)
 	)
 	
 	(method (rememberMessage)
-		(oCliffScrollPlane bSpinning:)
+		(LOOKUP_ERROR bSpinning:)
 		(curRoom newRoom: 20500)
 	)
 )
@@ -3432,10 +3406,10 @@
 	)
 	
 	(method (oText)
-		(self nInitPlaneY: oBackView1)
-		(self nInitPlaneY: oBackView2)
-		(oBackView1 kill: 1 632)
-		(oBackView2 kill: 1 632)
+		(self nInitPlaneY: LOOKUP_ERROR)
+		(self nInitPlaneY: LOOKUP_ERROR)
+		(LOOKUP_ERROR kill: 1 632)
+		(LOOKUP_ERROR kill: 1 632)
 	)
 )
 
@@ -3447,7 +3421,7 @@
 	(properties)
 	
 	(method (cue)
-		(music1 pageSize: 0)
+		(theMusic pageSize: 0)
 	)
 )
 
@@ -3459,7 +3433,7 @@
 	(method (init)
 		(super init: &rest)
 		(= plane
-			(oCliffScrollPlane
+			(LOOKUP_ERROR
 				oBoogleFeatures: 0
 				oExtraPlanes: 0
 				init: (thePlane findData:) 1896
@@ -3467,87 +3441,69 @@
 			)
 		)
 		(= global202 2)
-		(= gToTripeMeat toTripe)
-		(= gToVisceraMeat toViscera)
+		(= gToTripeMeat LOOKUP_ERROR)
+		(= gToVisceraMeat LOOKUP_ERROR)
 		(if (not ((ScriptID 64017 0) test: 73))
-			(poVultures init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if ((ScriptID 64017 0) test: 72)
-			(voTree setLoop: 1 init:)
+			(LOOKUP_ERROR setLoop: 1 init:)
 		else
-			(voTree setLoop: 0 init:)
+			(LOOKUP_ERROR setLoop: 0 init:)
 		)
-		(poRiver init:)
-		(music1 pageSize: 0)
-		(oMyAmbience vThumbView: 20100)
+		(LOOKUP_ERROR init:)
+		(theMusic pageSize: 0)
+		(LOOKUP_ERROR vThumbView: 20100)
 		(ego init: oPanner:)
 		(ego setScaler: Scaler 60 60 1 0)
 		(theGame handsOn:)
 		(switch prevRoomNum
 			(20200
-				(oCliffScrollPlane fadeRel: 0 276)
-				(ego setScript: soBitternutToStartingLedge)
+				(LOOKUP_ERROR fadeRel: 0 276)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(20300
-				(oCliffScrollPlane fadeRel: 0 360)
+				(LOOKUP_ERROR fadeRel: 0 360)
 				(ego posn: 576 516)
 				(ego setLoop: 1)
 				(ego setScaler: Scaler 33 33 1 0)
 				(localproc_2608)
 			)
 			(20400
-				(oCliffScrollPlane fadeRel: 0 1104)
+				(LOOKUP_ERROR fadeRel: 0 1104)
 				(ego posn: 46 1262)
 				(ego setLoop: 4)
 				(ego setScaler: Scaler 60 60 1 0)
-				(ego setScript: soEnterFromDragonCave)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(20500
 				(if ((ScriptID 64017 0) test: 84)
-					(oCliffScrollPlane fadeRel: 0 982)
-					(ego setScript: soSkunkCaveBack)
+					(LOOKUP_ERROR fadeRel: 0 982)
+					(ego setScript: LOOKUP_ERROR)
 				else
-					(oCliffScrollPlane fadeRel: 0 1104)
-					(ego setScript: soSkunkCaveFront)
+					(LOOKUP_ERROR fadeRel: 0 1104)
+					(ego setScript: LOOKUP_ERROR)
 				)
 			)
 			(20900
-				(oCliffScrollPlane fadeRel: 0 696)
-				(ego setScript: soLeaveManLedge)
+				(LOOKUP_ERROR fadeRel: 0 696)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(20600
-				(oCliffScrollPlane fadeRel: 0 1104)
-				(curRoom setScript: soClimbFromSeraglio)
+				(LOOKUP_ERROR fadeRel: 0 1104)
+				(curRoom setScript: LOOKUP_ERROR)
 			)
 			(20700
-				(oCliffScrollPlane fadeRel: 0 1579)
-				(ego setScript: soClimbUpBigTree)
+				(LOOKUP_ERROR fadeRel: 0 1579)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(21000
 				(localproc_0aa3)
-				(oCliffScrollPlane fadeRel: 0 276)
+				(LOOKUP_ERROR fadeRel: 0 276)
 				(cond 
-					(((ScriptID 64017 0) test: 81)
-						(ego
-							posn: 140 463
-							setLoop: 6
-							setScript: soStartingLedgeToTopLedge
-						)
-					)
-					(((ScriptID 64017 0) test: 82)
-						(ego
-							posn: 88 463
-							setLoop: 7
-							setScript: soStartingLedgeToBitternut
-						)
-					)
-					(else
-						(ego
-							posn: 200 468
-							setLoop: 3
-							setScript: soStartingLedgeToClotheslineLedge
-						)
-					)
+					(((ScriptID 64017 0) test: 81) (ego posn: 140 463 setLoop: 6 setScript: LOOKUP_ERROR))
+					(((ScriptID 64017 0) test: 82) (ego posn: 88 463 setLoop: 7 setScript: LOOKUP_ERROR))
+					(else (ego posn: 200 468 setLoop: 3 setScript: LOOKUP_ERROR))
 				)
 			)
 			(20000
@@ -3560,10 +3516,10 @@
 						((ScriptID 64001 1) get: 0)
 						((ScriptID 64001 1) get: 5)
 				)
-				(curRoom setScript: soEgoFallsIn)
+				(curRoom setScript: LOOKUP_ERROR)
 			)
 			(else 
-				(oCliffScrollPlane fadeRel: 0 1287)
+				(LOOKUP_ERROR fadeRel: 0 1287)
 				(ego posn: 38 1543 setLoop: 4 scrollTo:)
 				(ego
 					get:
@@ -3583,9 +3539,9 @@
 						((ScriptID 64001 0) get: 22)
 				)
 				(localproc_4de1)
-				(Palette palSET_FROM_RESOURCE 20000)
+				(Palette 1 20000)
 				(if (= local8 (MakeMessageText 0 0 6 1 300))
-					(TextDialog local8 global288)
+					(TextDialog local8 continueText)
 					(local8 dispose:)
 					(= local8 0)
 				)
@@ -3610,9 +3566,7 @@
 	
 	(method (handleEvent event &tmp temp0)
 		(if (not (& (event type?) $000c))
-			(Prints
-				{Attempt to execute key handler with non-key event. DJM keys.sc}
-			)
+			(Prints LOOKUP_ERROR)
 			(return 0)
 		)
 		(if (not (& (event type?) evKEYBOARD)) (return 0))

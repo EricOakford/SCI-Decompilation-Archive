@@ -58,18 +58,18 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poGrab dispose:)
-				(poStomp cel: 0 init: setCycle: CT 17 1 self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR cel: 0 init: setCycle: CT 17 1 self)
 			)
 			(1
-				(poStomp cel: 18)
-				(UpdateScreenItem poStomp)
-				(poPeel cel: 0 init:)
+				(LOOKUP_ERROR cel: 18)
+				(UpdateScreenItem LOOKUP_ERROR)
+				(LOOKUP_ERROR cel: 0 init:)
 				(= ticks 1)
 			)
 			(2
 				(messager say: 3 1 2 4 self)
-				(poPeel cel: 1 setCycle: End self)
+				(LOOKUP_ERROR cel: 1 setCycle: End self)
 			)
 			(3)
 			(4
@@ -80,8 +80,8 @@
 			(5
 				(ego get: ((ScriptID 64001 1) get: 2))
 				((ScriptID 64017 0) set: 11)
-				(poPeel dispose:)
-				(poStomp dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
 				(self dispose:)
 			)
 		)
@@ -98,7 +98,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(oWindBlow nHeight: 12001)
+				({foBigLeaf2} nHeight: 12001)
 				(theGame handsOff:)
 				(if (== local0 3)
 					(messager say: 3 18 2 0 self)
@@ -107,29 +107,39 @@
 				)
 			)
 			(1
-				(oWindBlow lThumbLoop: 12001)
-				(poWind
+				(LOOKUP_ERROR lThumbLoop: 12001)
+				(LOOKUP_ERROR
 					cel: 0
 					loop: (+ 4 local0)
 					init:
 					setCycle: End self
 				)
-				(poGrab cel: 0 loop: local0 init: setCycle: End self)
-				(if (== local0 3) (poGrab posn: 173 (poGrab y?)))
+				(LOOKUP_ERROR
+					cel: 0
+					loop: local0
+					init:
+					setCycle: End self
+				)
+				(if (== local0 3)
+					(LOOKUP_ERROR posn: 173 (LOOKUP_ERROR y?))
+				)
 			)
 			(2)
 			(3
-				(poWind dispose:)
+				(LOOKUP_ERROR dispose:)
 				(cond 
 					((== 1 local0)
-						(foBigLeaf setPolygon: (foBigLeaf2 init: yourself:))
+						(LOOKUP_ERROR setPolygon: (LOOKUP_ERROR init: yourself:))
 						(self cue:)
 					)
 					((== 2 local0)
-						(foBigLeaf setPolygon: (foBigLeaf3 init: yourself:))
+						(LOOKUP_ERROR setPolygon: (LOOKUP_ERROR init: yourself:))
 						(self cue:)
 					)
-					((== 3 local0) (foBigLeaf dispose:) (self setScript: soPeelInchie self))
+					((== 3 local0)
+						(LOOKUP_ERROR dispose:)
+						(self setScript: LOOKUP_ERROR self)
+					)
 				)
 			)
 			(4
@@ -141,7 +151,7 @@
 			)
 			(5
 				(theGame handsOn:)
-				(poGrab dispose:)
+				(LOOKUP_ERROR dispose:)
 				(self dispose:)
 			)
 		)
@@ -200,7 +210,7 @@
 	(properties)
 	
 	(method (init &tmp temp0)
-		(self setPolygon: (foBigLeaf1 init: yourself:))
+		(self setPolygon: (LOOKUP_ERROR init: yourself:))
 		(= local1 0)
 		(= nsBottom (= nsTop (= nsRight (= nsLeft 0))))
 		(super init: &rest)
@@ -212,7 +222,7 @@
 				((== theVerb 18)
 					(= local1 1)
 					(++ local0)
-					(curRoom setScript: soWind)
+					(curRoom setScript: LOOKUP_ERROR)
 					(return 1)
 				)
 				((== theVerb 1)
@@ -286,16 +296,16 @@
 	(method (init)
 		(super init: &rest)
 		((ScriptID 64017 0) set: 12)
-		(foExit init:)
-		(music1 pageSize: 12000)
-		(foAllOthers
+		(LOOKUP_ERROR init:)
+		(theMusic pageSize: 12000)
+		(LOOKUP_ERROR
 			init: plane
 			nScrollMaxX: 1
 			setVisibleRange: 1 18
 		)
 		(= local0 0)
 		(if (not ((ScriptID 64017 0) test: 11))
-			(foBigLeaf
+			(LOOKUP_ERROR
 				init: plane
 				nScrollMaxX: 100
 				setVisibleRange: 1 18
@@ -310,12 +320,12 @@
 				(ego has: ((ScriptID 64001 0) get: 3))
 				(not ((ScriptID 64017 0) test: 24))
 			)
-			(MonoOut {setting met snails flag})
+			(MonoOut LOOKUP_ERROR)
 			((ScriptID 64017 0) set: 24)
 		else
 			(ego get: ((ScriptID 64001 0) get: 3))
 			(if (not ((ScriptID 64017 0) test: 24))
-				(MonoOut {gimme again to set met snails flag})
+				(MonoOut LOOKUP_ERROR)
 			)
 		)
 	)

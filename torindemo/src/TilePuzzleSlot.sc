@@ -27,10 +27,7 @@
 	local2
 )
 (procedure (localproc_0118 param1 &tmp temp0 temp1)
-	(if (not local2)
-		(Prints {TileVerbs not inited. 20700.sc djm})
-		(return -1)
-	)
+	(if (not local2) (Prints LOOKUP_ERROR) (return -1))
 	(= temp0 (local2 size:))
 	(= temp1 0)
 	(while (< temp1 temp0)
@@ -58,7 +55,7 @@
 	(= temp2 0)
 	(if (not temp1) (return 0))
 	((ScriptID 64017 0) set: 94)
-	(return (curRoom setScript: soSolved))
+	(return (curRoom setScript: LOOKUP_ERROR))
 )
 
 (instance soSolved of Script
@@ -68,7 +65,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(sound1 lThumbLoop: 20702 self)
+				(theSound lThumbLoop: 20702 self)
 			)
 			(1 (messager say: 0 0 1 0 self))
 			(2 (curRoom newRoom: 20800))
@@ -144,7 +141,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soClimbUpTree)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -197,7 +194,7 @@
 		(if ((ScriptID 64017 0) test: 94)
 			(curRoom newRoom: 20800)
 		else
-			(ego setScript: soClimbUpStairs)
+			(ego setScript: LOOKUP_ERROR)
 		)
 	)
 )
@@ -206,7 +203,7 @@
 	(properties)
 	
 	(method (doVerb)
-		(curRoom setScript: soClimbDownStairs)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -335,7 +332,7 @@
 	(method (doVerb theVerb)
 		(cond 
 			((OneOf theVerb 27 32 24 30 31 48 25 28 26)
-				(sound1 lThumbLoop: 20701)
+				(theSound lThumbLoop: 20701)
 				(gInventItem moveTo: 20700)
 				(if (!= holdTime -1)
 					((local1 at: holdTime) moveTo: -2)
@@ -344,19 +341,10 @@
 				(self audPlay: (localproc_0118 theVerb))
 				(localproc_0185)
 			)
-			((== theVerb 29)
-				(Prints
-					{There is a funny noise and the tile will not go in}
-				)
-			)
+			((== theVerb 29) (Prints LOOKUP_ERROR))
 			((== theVerb 1)
-				(if (== holdTime -1)
-					(MonoOut
-						{attempt to pickup nonexistent tile. 20700.sc djm}
-					)
-					(SetDebug)
-				)
-				(sound1 lThumbLoop: 20701)
+				(if (== holdTime -1) (MonoOut LOOKUP_ERROR) (SetDebug))
+				(theSound lThumbLoop: 20701)
 				((local1 at: holdTime) moveTo: -2)
 				(self empty:)
 			)
@@ -385,15 +373,12 @@
 	)
 	
 	(method (sfx param1)
-		(if (== holdTime -1)
-			(Prints {Attempt to rotate empty slot. 20700.sc djm})
-			(return)
-		)
-		(sound1 lThumbLoop: 20703)
+		(if (== holdTime -1) (Prints LOOKUP_ERROR) (return))
+		(theSound lThumbLoop: 20703)
 		(if (== param1 1)
-			(self setScript: (soRotLeft new:) self)
+			(self setScript: (LOOKUP_ERROR new:) self)
 		else
-			(self setScript: (soRotRight new:) self)
+			(self setScript: (LOOKUP_ERROR new:) self)
 		)
 	)
 )
@@ -461,9 +446,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(sound1 nHeight: 20118)
+				(theSound nHeight: 20118)
 				(theGame handsOff:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20700
 					loop: 0
 					cel: 0
@@ -473,11 +458,11 @@
 				)
 			)
 			(1
-				(sound1 lThumbLoop: 20118)
-				(poTorin setCycle: End self)
+				(theSound lThumbLoop: 20118)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(2
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 434 307 oPanner: 1 -5436 5 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -500,7 +485,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20700
 					loop: 1
 					cel: 0
@@ -531,7 +516,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20700
 					loop: 2
 					cel: 0
@@ -541,8 +526,8 @@
 				)
 			)
 			(3
-				(poTorin dispose:)
-				(curRoom initThumb: oPhaceCUPlane)
+				(LOOKUP_ERROR dispose:)
+				(curRoom initThumb: LOOKUP_ERROR)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -557,8 +542,8 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(curRoom arrowDown: oPhaceCUPlane)
-				(poTorin
+				(curRoom arrowDown: LOOKUP_ERROR)
+				(LOOKUP_ERROR
 					view: 20700
 					loop: 3
 					cel: 0
@@ -568,7 +553,7 @@
 				)
 			)
 			(1
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 234 297 oPanner: 1 -5436 4 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -611,7 +596,7 @@
 			(= temp2 (+ temp2 54))
 			(++ temp3)
 		)
-		(foExitCU init:)
+		(LOOKUP_ERROR init:)
 		((ScriptID 64017 0) set: 93)
 	)
 )
@@ -644,7 +629,7 @@
 			)
 		)
 		(= local2 (PArray newWith: 9 27 32 24 30 31 48 25 28 26))
-		(music1 pageSize: 20700)
+		(theMusic pageSize: 20700)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -653,11 +638,11 @@
 					yourself:
 				)
 		)
-		(foPhaceMS init:)
-		(foToCliffExit init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(ego init: oPanner: hide:)
 		(theGame handsOn:)
-		(ego setScript: soClimbDownTree)
+		(ego setScript: LOOKUP_ERROR)
 	)
 	
 	(method (dispose)
@@ -668,8 +653,8 @@
 	)
 	
 	(method (highlight)
-		(if (== (curRoom plane?) oPhaceCUPlane)
-			(super highlight: foExitCU)
+		(if (== (curRoom plane?) LOOKUP_ERROR)
+			(super highlight: LOOKUP_ERROR)
 		else
 			(super highlight: &rest)
 		)
@@ -677,17 +662,17 @@
 	
 	(method (setWander)
 		(return
-			(if (== (curRoom plane?) oPhaceCUPlane)
-				(return foExitCU)
+			(if (== (curRoom plane?) LOOKUP_ERROR)
+				(return LOOKUP_ERROR)
 			else
-				(return foToCliffExit)
+				(return LOOKUP_ERROR)
 			)
 		)
 	)
 	
 	(method (zipTo)
 		(cond 
-			((!= (curRoom plane?) oPhaceCUPlane) (super zipTo: &rest))
+			((!= (curRoom plane?) LOOKUP_ERROR) (super zipTo: &rest))
 			(
 				(and
 					(or
@@ -744,40 +729,33 @@
 							(Print
 								font: 999
 								fore: 0
-								back: (Palette palUNSET_FLAG 127 127 127)
-								addText: {Would you like to skip this puzzle?}
-								addButton: 1 {Yes} 20 24
-								addButton: 0 {No} 160 24
+								back: (Palette 3 127 127 127)
+								addText: LOOKUP_ERROR
+								addButton: 1 LOOKUP_ERROR 20 24
+								addButton: 0 LOOKUP_ERROR 160 24
 								init:
 							)
 							((ScriptID 64017 0) set: 94)
-							(curRoom setScript: soGoToChamber)
+							(curRoom setScript: LOOKUP_ERROR)
 						else
-							(Prints
-								{Sorry there's no other way I can help you on this puzzle.}
-							)
+							(Prints LOOKUP_ERROR)
 						)
 					else
-						(Prints {You need to arrange these tiles to form a face})
+						(Prints LOOKUP_ERROR)
 						((ScriptID 64017 0) set: 96)
 					)
 				else
-					(Prints {You need to put all nine tiles on this panel})
+					(Prints LOOKUP_ERROR)
 				)
 			)
-			(else
-				(Prints
-					{You need to find all nine tiles that belong here}
-				)
-				(super highlight: foExitCU)
-			)
+			(else (Prints LOOKUP_ERROR) (super highlight: LOOKUP_ERROR))
 		)
 	)
 	
 	(method (intoPouch)
 		(if (!= -1 [gHoldTime 0])
 			(Printf
-				{Pos: %d %d %d %d %d %d %d %d %d Dir: %d %d %d %d %d %d %d %d %d}
+				LOOKUP_ERROR
 				[gHoldTime 0]
 				[gHoldTime 1]
 				[gHoldTime 2]

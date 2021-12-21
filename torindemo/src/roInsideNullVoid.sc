@@ -69,7 +69,7 @@
 	)
 	
 	(method (init)
-		(MonoOut {using fake buzzard art})
+		(MonoOut LOOKUP_ERROR)
 		(super setPri: 40 nCurPosX: 56 init: &rest)
 	)
 )
@@ -82,7 +82,7 @@
 	)
 	
 	(method (init)
-		(MonoOut {using fake meat art})
+		(MonoOut LOOKUP_ERROR)
 		(super setPri: 40 nCurPosX: 56 init: &rest)
 	)
 )
@@ -99,7 +99,7 @@
 	)
 	
 	(method (init)
-		(MonoOut {using fake cryst corder art})
+		(MonoOut LOOKUP_ERROR)
 		(if (not ((ScriptID 64017 0) test: 138))
 			(= gGLastVerbX (ego x?))
 			(= gGLastVerbY (ego y?))
@@ -158,7 +158,7 @@
 	(method (doVerb theVerb &tmp temp0 temp1 temp2)
 		(switch theVerb
 			(63
-				(oBagpipe play:)
+				(LOOKUP_ERROR play:)
 				(= temp0 (- (ego x?) ((user curEvent?) x?)))
 				(= temp1 (- (ego y?) ((user curEvent?) y?)))
 				(= temp2
@@ -176,7 +176,7 @@
 				)
 			)
 			(64
-				(voCrystcorder init:)
+				(LOOKUP_ERROR init:)
 				(ego put: ((ScriptID 64001 0) get: 52))
 			)
 		)
@@ -206,8 +206,8 @@
 			(0
 				(theGame handsOff:)
 				(ego hide:)
-				(oNullVoidPlane makeTopBorder: 0 0)
-				(poIntoVoid cel: 0 init: setCycle: End self setPri: 10)
+				(LOOKUP_ERROR makeTopBorder: 0 0)
+				(LOOKUP_ERROR cel: 0 init: setCycle: End self setPri: 10)
 			)
 			(1 (self rememberMessage:))
 		)
@@ -215,7 +215,7 @@
 	
 	(method (rememberMessage)
 		(ego posn: 244 195 show:)
-		(poIntoVoid dispose:)
+		(LOOKUP_ERROR dispose:)
 		(theGame handsOn:)
 		(self dispose:)
 	)
@@ -251,13 +251,13 @@
 	
 	(method (init)
 		(super init: &rest)
-		(= plane (oNullVoidPlane init: 948 948 yourself:))
-		(music1 pageSize: -14436)
-		(foVoid init:)
-		(foAll init:)
-		(foLycentiaExit init:)
-		(poVultures init:)
-		(poLegOMeat init:)
+		(= plane (LOOKUP_ERROR init: 948 948 yourself:))
+		(theMusic pageSize: -14436)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(theGame handsOn:)
 		(ego
 			init:
@@ -270,7 +270,7 @@
 		(switch prevRoomNum
 			(-14336
 				(ego
-					posn: (foLycentiaExit x?) (foLycentiaExit y?)
+					posn: (LOOKUP_ERROR x?) (LOOKUP_ERROR y?)
 					setPri: 10
 					show:
 				)
@@ -280,7 +280,7 @@
 				(= local0 2)
 			)
 			(else 
-				(self setScript: soIntoVoid)
+				(self setScript: LOOKUP_ERROR)
 				(= local0 (= local1 (= local2 (= local3 0))))
 			)
 		)
@@ -312,7 +312,7 @@
 				(UpdateScreenItem ego)
 			)
 		)
-		(if (foLycentiaExit onMe:) (curRoom newRoom: -14336))
+		(if (LOOKUP_ERROR onMe:) (curRoom newRoom: -14336))
 		(if (<= local0 0)
 			(if (and (<= -1 local1) (<= local1 1))
 				(= local1 0)
@@ -337,7 +337,7 @@
 	)
 	
 	(method (setWander param1)
-		(return (if (== param1 -14336) (return foLycentiaExit) else 0))
+		(return (if (== param1 -14336) (return LOOKUP_ERROR) else 0))
 	)
 	
 	(method (intoPouch)

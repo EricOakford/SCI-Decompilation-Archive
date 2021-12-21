@@ -165,12 +165,7 @@
 	)
 	
 	(method (nUserRange theNsBottom)
-		(if (not plane)
-			(MonoOut
-				{attempt to call makeTopBorder on MoveFeature with uninited plane. DJM, modalpl.sc}
-			)
-			(return)
-		)
+		(if (not plane) (MonoOut LOOKUP_ERROR) (return))
 		(= nsTop (= nsLeft 0))
 		(= nsRight (- (plane right:) (plane left:)))
 		(= nsBottom theNsBottom)

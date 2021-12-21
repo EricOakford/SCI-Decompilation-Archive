@@ -9,7 +9,7 @@
 (use TPSound)
 (use CueMe)
 (use ScrollView)
-(use NewUser)
+(use Events)
 (use ExitFeature)
 (use Print)
 (use Scaler)
@@ -45,16 +45,16 @@
 	)
 	(switch temp0
 		(0
-			(poNull
+			(LOOKUP_ERROR
 				setScript:
-					(soCrossTreeL setNoScore: param1 unSet: param2 yourself:)
+					(LOOKUP_ERROR setNoScore: param1 unSet: param2 yourself:)
 					temp1
 			)
 		)
 		(2
-			(poNull
+			(LOOKUP_ERROR
 				setScript:
-					(soCrossTreeR setNoScore: param1 unSet: param2 yourself:)
+					(LOOKUP_ERROR setNoScore: param1 unSet: param2 yourself:)
 					temp1
 			)
 		)
@@ -92,9 +92,9 @@
 		(switch (= state newState)
 			(0
 				(if (== local0 1)
-					(self setScript: soJumpToLeftBank self)
+					(self setScript: LOOKUP_ERROR self)
 				else
-					(self setScript: soGoThroughTreeL self)
+					(self setScript: LOOKUP_ERROR self)
 				)
 			)
 			(1
@@ -133,9 +133,9 @@
 		(switch (= state newState)
 			(0
 				(if (== local0 1)
-					(self setScript: soJumpToRightBank self)
+					(self setScript: LOOKUP_ERROR self)
 				else
-					(self setScript: soGoThroughTreeR self)
+					(self setScript: LOOKUP_ERROR self)
 				)
 			)
 			(1
@@ -177,7 +177,7 @@
 			(3)
 			(4
 				(ego hide:)
-				(poTorinSwings
+				(LOOKUP_ERROR
 					loop: 0
 					cel: 0
 					posn: 1630 322
@@ -186,14 +186,14 @@
 				)
 			)
 			(5
-				(poTorinSwings setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 				((ScriptID 64018 0) hide:)
-				(poBoogleCrosses
+				(LOOKUP_ERROR
 					loop: 0
 					cel: 0
 					posn: 1429 304
 					init:
-					setCycle: End oBoogleEndRight
+					setCycle: End LOOKUP_ERROR
 				)
 			)
 			(6
@@ -206,7 +206,7 @@
 				(ego setLoop: 4)
 				(ego show:)
 				(ego setAvoider: 0)
-				(poTorinSwings dispose:)
+				(LOOKUP_ERROR dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -232,7 +232,7 @@
 			(2)
 			(3
 				(ego hide:)
-				(poTorinSwings
+				(LOOKUP_ERROR
 					loop: 2
 					cel: 0
 					posn: 1404 303
@@ -241,14 +241,14 @@
 				)
 			)
 			(4
-				(poTorinSwings setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 				((ScriptID 64018 0) hide:)
-				(poBoogleCrosses
+				(LOOKUP_ERROR
 					loop: 1
 					cel: 0
 					posn: 1822 280
 					init:
-					setCycle: End oBoogleEndLeft
+					setCycle: End LOOKUP_ERROR
 				)
 			)
 			(5
@@ -261,7 +261,7 @@
 				(ego setLoop: 5)
 				(ego show:)
 				(ego setAvoider: 0)
-				(poTorinSwings dispose:)
+				(LOOKUP_ERROR dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -273,7 +273,7 @@
 	(properties)
 	
 	(method (cue)
-		(poBoogleCrosses dispose:)
+		(LOOKUP_ERROR dispose:)
 		((ScriptID 64018 0) posn: 1855 281)
 		((ScriptID 64018 0) setLoop: 6)
 		((ScriptID 64018 0) show:)
@@ -285,7 +285,7 @@
 	(properties)
 	
 	(method (cue)
-		(poBoogleCrosses dispose:)
+		(LOOKUP_ERROR dispose:)
 		((ScriptID 64018 0) posn: 1432 306)
 		((ScriptID 64018 0) setLoop: 7)
 		((ScriptID 64018 0) show:)
@@ -316,7 +316,7 @@
 			(2)
 			(3
 				(ego hide:)
-				(poTorinSwings
+				(LOOKUP_ERROR
 					loop: 3
 					cel: 0
 					posn: 1404 303
@@ -326,7 +326,7 @@
 			)
 			(4
 				(= local0 1)
-				(ego setAvoider: oStayInTree)
+				(ego setAvoider: LOOKUP_ERROR)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -354,7 +354,7 @@
 			(3)
 			(4
 				(ego hide:)
-				(poTorinSwings
+				(LOOKUP_ERROR
 					loop: 1
 					cel: 0
 					posn: 1630 322
@@ -364,7 +364,7 @@
 			)
 			(5
 				(= local0 1)
-				(ego setAvoider: oStayInTree)
+				(ego setAvoider: LOOKUP_ERROR)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -383,7 +383,7 @@
 				(ego bMouseDown: 0)
 			)
 			(1
-				(poTorinSwings
+				(LOOKUP_ERROR
 					loop: 2
 					cel: 13
 					posn: 1404 303
@@ -391,12 +391,12 @@
 				)
 				(if (> ((ScriptID 64018 0) x?) 1614)
 					((ScriptID 64018 0) hide:)
-					(poBoogleCrosses
+					(LOOKUP_ERROR
 						loop: 1
 						cel: 0
 						posn: 1822 280
 						init:
-						setCycle: End oBoogleEndLeft
+						setCycle: End LOOKUP_ERROR
 					)
 				)
 			)
@@ -410,7 +410,7 @@
 				(ego setLoop: 5)
 				(ego show:)
 				(ego setAvoider: 0)
-				(poTorinSwings dispose:)
+				(LOOKUP_ERROR dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -429,7 +429,7 @@
 				(ego bMouseDown: 0)
 			)
 			(1
-				(poTorinSwings
+				(LOOKUP_ERROR
 					loop: 0
 					cel: 21
 					posn: 1630 322
@@ -437,12 +437,12 @@
 				)
 				(if (< ((ScriptID 64018 0) x?) 1614)
 					((ScriptID 64018 0) hide:)
-					(poBoogleCrosses
+					(LOOKUP_ERROR
 						loop: 0
 						cel: 0
 						posn: 1429 304
 						init:
-						setCycle: End oBoogleEndRight
+						setCycle: End LOOKUP_ERROR
 					)
 				)
 			)
@@ -456,7 +456,7 @@
 				(ego setLoop: 4)
 				(ego show:)
 				(ego setAvoider: 0)
-				(poTorinSwings dispose:)
+				(LOOKUP_ERROR dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -582,7 +582,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soExitToGuardHouse)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -691,7 +691,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soExitToFahrman)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -767,7 +767,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soExitToCity)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -805,7 +805,7 @@
 	
 	(method (doVerb theVerb)
 		(curRoom
-			setScript: (soHandleRoot verb: theVerb nBendLight: self yourself:)
+			setScript: (LOOKUP_ERROR verb: theVerb nBendLight: self yourself:)
 		)
 	)
 )
@@ -819,7 +819,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1 (messager say: 7 1 0 0))
-			(2 (ego setScript: soChopRoot))
+			(2
+				(ego setScript: LOOKUP_ERROR)
+			)
 		)
 	)
 )
@@ -839,22 +841,22 @@
 			(1 (ego setHeading: 135 self))
 			(2
 				(ego hide:)
-				(poTorinChops cel: 0 loop: 0 init: setCycle: CT 18 1 self)
+				(LOOKUP_ERROR cel: 0 loop: 0 init: setCycle: CT 18 1 self)
 			)
 			(3
-				(voSquareRoot dispose:)
-				(poTorinChops setCycle: CT 24 1 self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCycle: CT 24 1 self)
 			)
 			(4
-				(voCutRoot init:)
-				(poTorinChops setCycle: End self)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(5
 				(ego posn: 2181 273)
 				(ego setLoop: 6)
 				(((ScriptID 64001 0) get: 0) moveTo: -3)
 				(ego show:)
-				(poTorinChops dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64017 0) set: 18)
 				(theGame handsOn:)
 				(self dispose:)
@@ -868,9 +870,9 @@
 		(ego setLoop: 6)
 		(((ScriptID 64001 0) get: 0) moveTo: -3)
 		(ego show:)
-		(voSquareRoot dispose:)
-		(voCutRoot init:)
-		(poTorinChops dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR dispose:)
 		((ScriptID 64017 0) set: 18)
 		(theGame handsOn:)
 		(self dispose:)
@@ -880,9 +882,9 @@
 		(= local0 2)
 		(ego posn: 2203 274)
 		(ego show:)
-		(voCutRoot dispose:)
-		(voSquareRoot init:)
-		(poTorinChops dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR dispose:)
 		((ScriptID 64017 0) unlockAudio: 18)
 		(ego setScript: self)
 	)
@@ -904,7 +906,7 @@
 			(0
 				(ego get: ((ScriptID 64001 0) get: 5))
 				((ScriptID 64017 0) set: 5)
-				(voCutRoot dispose:)
+				(LOOKUP_ERROR dispose:)
 				(self dispose:)
 			)
 		)
@@ -925,7 +927,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soPickUpRoot)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -949,7 +951,7 @@
 			(messager say: 8 1 6)
 		else
 			(curRoom
-				setScript: (soPickUpBerries nBendLight: self yourself:)
+				setScript: (LOOKUP_ERROR nBendLight: self yourself:)
 			)
 		)
 	)
@@ -987,7 +989,7 @@
 		(= local6 942)
 		(= local7 263)
 		(= local8 110)
-		(curRoom setScript: soTouchRazorVines)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1046,7 +1048,7 @@
 		(= local6 1048)
 		(= local7 262)
 		(= local8 110)
-		(curRoom setScript: soTouchRazorVines)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1101,7 +1103,7 @@
 		(= local6 1999)
 		(= local7 236)
 		(= local8 100)
-		(curRoom setScript: soTouchRazorVines)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1154,7 +1156,7 @@
 		(= local6 2180)
 		(= local7 239)
 		(= local8 100)
-		(curRoom setScript: soTouchRazorVines)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1180,7 +1182,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTouchRazorVines
+				(LOOKUP_ERROR
 					nCurPosY: local8
 					posn: local6 local7
 					cel: 0
@@ -1189,7 +1191,7 @@
 				)
 			)
 			(3
-				(poTouchRazorVines dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(messager say: 1 1 0 0 self)
 			)
@@ -1212,7 +1214,7 @@
 	(method (init)
 		(super init: &rest)
 		(self setPri: 248)
-		(self setCycle: oSlugCycler)
+		(self setCycle: LOOKUP_ERROR)
 	)
 	
 	(method (doit)
@@ -1220,8 +1222,8 @@
 		(if
 		(and (== cel 0) ((ScriptID 64017 0) test: 14))
 			(if ((ScriptID 64017 0) test: 16)
-				(if (not (poBoogleBoxOverScum script?))
-					(poBoogleBoxOverScum setScript: soCatchSlugs)
+				(if (not (LOOKUP_ERROR script?))
+					(LOOKUP_ERROR setScript: 'LOOKUP_ERROR')
 				)
 			else
 				((ScriptID 64017 0) set: 15)
@@ -1238,7 +1240,7 @@
 			(0
 				(theGame handsOff:)
 				(ego setMotion: 0)
-				(poBoogleBoxOverScum loop: 1 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: End self)
 			)
 			(1 (ego setHeading: 90 self))
 			(2
@@ -1246,10 +1248,10 @@
 			)
 			(3
 				((ScriptID 64017 0) set: 17)
-				(voMoatScumOnGround dispose:)
-				(foSlugTree dispose:)
-				(poSlugs dispose:)
-				(ego setScript: soPickUpBoogle)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
+				(ego setScript: LOOKUP_ERROR)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1289,11 +1291,13 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soTryToGetSlugs)
+				(ego setScript: 'LOOKUP_ERROR')
 			)
-			(11 (ego setScript: soPutScum))
+			(11
+				(ego setScript: LOOKUP_ERROR)
+			)
 			(15
-				(ego setScript: soPutBoogleBox)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -1322,10 +1326,10 @@
 			(2
 				(theGame handsOff:)
 				(ego hide:)
-				(poTorinJumps cel: 0 loop: 0 init: setCycle: End self)
+				(LOOKUP_ERROR cel: 0 loop: 0 init: setCycle: End self)
 			)
 			(3
-				(poTorinJumps dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 1013 261 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -1348,9 +1352,11 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(15
-				(ego setScript: soPutBoogleBox)
+				(ego setScript: LOOKUP_ERROR)
 			)
-			(11 (ego setScript: soPutScum))
+			(11
+				(ego setScript: LOOKUP_ERROR)
+			)
 		)
 	)
 )
@@ -1403,36 +1409,36 @@
 				(ego setHeading: 215 self)
 				((curRoom plane?) sitNSpin: 687 0 self 1 10 10)
 				(ego bMouseDown: 0)
-				((ScriptID 64018 0) setScript: soBoogleWaitForScum)
+				((ScriptID 64018 0) setScript: LOOKUP_ERROR)
 			)
 			(2)
 			(3
 				(ego hide:)
-				(poPutsScum loop: 0 cel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR loop: 0 cel: 0 init: setCycle: End self)
 			)
 			(4
 				(ego put: ((ScriptID 64001 0) get: 7) 10100)
-				(voMoatScumOnGround init:)
+				(LOOKUP_ERROR init:)
 				((ScriptID 64017 0) set: 14)
-				(poPutsScum loop: 1 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: End self)
 			)
 			(5
-				(poSlugs cycleSpeed: 7 setCycle: Beg self)
+				(LOOKUP_ERROR cycleSpeed: 7 setCycle: Beg self)
 			)
 			(6
-				(poPutsScum loop: 2 cel: 0 setCycle: CT 8 1 self)
+				(LOOKUP_ERROR loop: 2 cel: 0 setCycle: CT 8 1 self)
 			)
 			(7
-				(poPutsScum setCycle: End self)
-				(poSlugs cycleSpeed: 3 setCycle: End)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR cycleSpeed: 3 setCycle: End)
 			)
 			(8
-				(poPutsScum dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 1189 265 setLoop: 5 show:)
-				(poSlugs setCycle: oSlugCycler)
-				(foSlugTrapLoc setVisibleRange: 15)
-				(foSlugTree setVisibleRange: 15)
-				(soBoogleWaitForScum cue:)
+				(LOOKUP_ERROR setCycle: LOOKUP_ERROR)
+				(LOOKUP_ERROR setVisibleRange: 15)
+				(LOOKUP_ERROR setVisibleRange: 15)
+				(LOOKUP_ERROR cue:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1441,15 +1447,15 @@
 	
 	(method (rememberMessage)
 		(= local0 0)
-		(voMoatScumOnGround init:)
+		(LOOKUP_ERROR init:)
 		(ego put: ((ScriptID 64001 0) get: 7) 10100)
 		((ScriptID 64017 0) set: 14)
-		(poPutsScum dispose:)
+		(LOOKUP_ERROR dispose:)
 		(ego posn: 1189 265 setLoop: 5 show:)
-		(poSlugs setCycle: oSlugCycler)
-		(foSlugTrapLoc setVisibleRange: 15)
-		(foSlugTree setVisibleRange: 15)
-		(soBoogleWaitForScum changeState: 2)
+		(LOOKUP_ERROR setCycle: LOOKUP_ERROR)
+		(LOOKUP_ERROR setVisibleRange: 15)
+		(LOOKUP_ERROR setVisibleRange: 15)
+		(LOOKUP_ERROR changeState: 2)
 		(theGame handsOn:)
 		(self dispose:)
 	)
@@ -1457,10 +1463,10 @@
 	(method (sayMessage)
 		(= local0 0)
 		(ego posn: 1003 249 setLoop: 5 show:)
-		(poPutsScum dispose:)
-		(poSlugs setCycle: oSlugCycler)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR setCycle: LOOKUP_ERROR)
 		(ego get: ((ScriptID 64001 0) get: 7))
-		(voMoatScumOnGround dispose:)
+		(LOOKUP_ERROR dispose:)
 		((ScriptID 64017 0) unlockAudio: 14)
 		(ego setScript: self)
 	)
@@ -1476,7 +1482,9 @@
 				((curRoom plane?) sitNSpin: 600 0 self 1 10 10)
 			)
 			(1)
-			(2 (ego oCuee: foSlugTree self))
+			(2
+				(ego oCuee: 'LOOKUP_ERROR' self)
+			)
 			(3
 				(theGame handsOff:)
 				(((ScriptID 64001 1) get: 1) moveTo: -3)
@@ -1487,7 +1495,7 @@
 			)
 			(5
 				((ScriptID 64018 0) bSwing: 0 setLoop: 4 hide:)
-				(poBoogleBoxOverScum init:)
+				(LOOKUP_ERROR init:)
 				((ScriptID 64017 0) set: 16)
 				(theGame handsOn:)
 				(self dispose:)
@@ -1515,7 +1523,7 @@
 		(switch theVerb
 			(1 (messager say: 10 1 0 0))
 			(15
-				(ego setScript: soPutBoogleBox)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else  (super doVerb: theVerb))
 		)
@@ -1540,7 +1548,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soPickUpBoogle)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else  (super doVerb: theVerb))
 		)
@@ -1554,10 +1562,10 @@
 		(switch (= state newState)
 			(0
 				((ScriptID 64017 0) clear: 16)
-				(poBoogleBoxOverScum cel: 0 loop: 2 setCycle: End self)
+				(LOOKUP_ERROR cel: 0 loop: 2 setCycle: End self)
 			)
 			(1
-				(poBoogleBoxOverScum dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) show:)
 				(self dispose:)
 			)
@@ -1574,18 +1582,18 @@
 				(localproc_02be 920 242 self)
 			)
 			(1
-				(ego oCuee: poBoogleBoxOverScum self)
+				(ego oCuee: LOOKUP_ERROR self)
 			)
 			(2
-				(poBoogleBoxOverScum cel: 0 loop: 2 setCycle: End self)
+				(LOOKUP_ERROR cel: 0 loop: 2 setCycle: End self)
 			)
 			(3
 				(if ((ScriptID 64017 0) test: 17)
 					(messager say: 11 1 9 0)
 					(ego get: ((ScriptID 64001 0) get: 10))
 					((ScriptID 64017 0) set: 13)
-					(foSlugTree dispose:)
-					(foSlugTrapLoc dispose:)
+					(LOOKUP_ERROR dispose:)
+					(LOOKUP_ERROR dispose:)
 				)
 				((ScriptID 64017 0) clear: 16)
 				((ScriptID 64018 0)
@@ -1595,7 +1603,7 @@
 					show:
 					bSwing: 1
 				)
-				(poBoogleBoxOverScum dispose:)
+				(LOOKUP_ERROR dispose:)
 				(self dispose:)
 			)
 		)
@@ -1627,7 +1635,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soGoToSnails)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -1639,13 +1647,13 @@
 			(0
 				(if (== local0 1) (self cue:))
 				(if (== local0 2)
-					(self setScript: soJumpLeftToTree self)
+					(self setScript: LOOKUP_ERROR self)
 				else
-					(self setScript: soJumpRightToTree self)
+					(self setScript: LOOKUP_ERROR self)
 				)
 			)
 			(1
-				(poTorinSwings
+				(LOOKUP_ERROR
 					posn: 1404 303
 					loop: 4
 					cel: 0
@@ -1691,16 +1699,12 @@
 	(method (doVerb)
 		(switch local0
 			(1
-				(ego setScript: soJumpToRightBank)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(2
-				(ego setScript: soJumpLeftToTree)
+				(ego setScript: LOOKUP_ERROR)
 			)
-			(0
-				(Prints
-					{Error -- activation of left tree climb. DJM 10100.sc}
-				)
-			)
+			(0 (Prints LOOKUP_ERROR))
 		)
 	)
 )
@@ -1735,16 +1739,12 @@
 	(method (doVerb)
 		(switch local0
 			(1
-				(ego setScript: soJumpToLeftBank)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(0
-				(ego setScript: soJumpRightToTree)
+				(ego setScript: LOOKUP_ERROR)
 			)
-			(2
-				(Prints
-					{Error -- activation of right tree climb. DJM 10100.sc}
-				)
-			)
+			(2 (Prints LOOKUP_ERROR))
 		)
 	)
 )
@@ -1778,16 +1778,12 @@
 	
 	(method (doVerb)
 		(switch local0
-			(1
-				(Prints
-					{Error -- activation of cross tree climb. DJM 10100.sc}
-				)
-			)
+			(1 (Prints LOOKUP_ERROR))
 			(0
-				(ego setScript: soGoThroughTreeR)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(2
-				(ego setScript: soGoThroughTreeL)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -1819,12 +1815,12 @@
 	)
 	
 	(method (oText)
-		(self nInitPlaneY: oMoonView)
-		(self nInitPlaneY: oBackView1)
-		(self nInitPlaneY: oBackView2)
-		(oMoonView talkerList: 0 0)
-		(oBackView1 kill: 0 1264)
-		(oBackView2 kill: 0 1264)
+		(self nInitPlaneY: LOOKUP_ERROR)
+		(self nInitPlaneY: LOOKUP_ERROR)
+		(self nInitPlaneY: LOOKUP_ERROR)
+		(LOOKUP_ERROR talkerList: 0 0)
+		(LOOKUP_ERROR kill: 0 1264)
+		(LOOKUP_ERROR kill: 0 1264)
 	)
 )
 
@@ -1834,58 +1830,55 @@
 	(method (init &tmp temp0)
 		(super init: &rest)
 		(= plane
-			(oWoodsScrollPlane
-				init: 3160 (thePlane doDouble:)
-				yourself:
-			)
+			(LOOKUP_ERROR init: 3160 (thePlane doDouble:) yourself:)
 		)
-		(gOEventHandler scrolled: oTempKeyHandler)
-		(ego init: oPanner: lCheck: oScrollerWalkHandler)
-		(foLeafExit init:)
-		(foBogExit init:)
-		(foGuardHouseExit init:)
-		(foFahrmanExit init:)
-		(foCityExit init:)
-		(foLRazorVines1 init:)
-		(foLRazorVines2 init:)
-		(foLRazorVines3 init:)
-		(foLRazorVines4 init:)
-		(foLeftTreeClimb init:)
-		(foRightTreeClimb init:)
-		(foCrossTree init:)
+		(gOEventHandler scrolled: LOOKUP_ERROR)
+		(ego init: oPanner: lCheck: LOOKUP_ERROR)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(if (not ((ScriptID 64017 0) test: 13))
-			(foSlugTree init:)
-			(poSlugs init:)
-			(foSlugTrapLoc init:)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if
 			(and
 				((ScriptID 64017 0) test: 18)
 				(not ((ScriptID 64017 0) test: 5))
 			)
-			(voCutRoot init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if
 			(and
 				((ScriptID 64017 0) test: 14)
 				(not ((ScriptID 64017 0) test: 17))
 			)
-			(voMoatScumOnGround init:)
-			(foSlugTrapLoc setVisibleRange: 15)
-			(foSlugTree setVisibleRange: 15)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR setVisibleRange: 15)
+			(LOOKUP_ERROR setVisibleRange: 15)
 		)
 		(if (not ((ScriptID 64017 0) test: 18))
-			(voSquareRoot init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if (not ((ScriptID 64017 0) test: 4))
-			(foBerryBushes init:)
+			(LOOKUP_ERROR init:)
 		)
 		(if (not ((ScriptID 64017 0) test: 6))
-			(foSnailLedge init:)
-			(poSnails init:)
+			(LOOKUP_ERROR init:)
+			(LOOKUP_ERROR init:)
 		)
-		(music1 pageSize: 10100)
-		(oBrook minPosn: 0 init: vThumbView: 10106)
+		(theMusic pageSize: 10100)
+		(LOOKUP_ERROR minPosn: 0 init: vThumbView: 10106)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -1985,7 +1978,7 @@
 		(switch prevRoomNum
 			(11000
 				((ScriptID 64018 0) posn: 460 285)
-				(ego setScript: soWalkInFromFahrman)
+				(ego setScript: LOOKUP_ERROR)
 				(= local0 0)
 			)
 			(16000
@@ -2010,7 +2003,7 @@
 				(= local0 2)
 			)
 			(15800
-				(ego setScript: soWalkInFromGuardHouse)
+				(ego setScript: LOOKUP_ERROR)
 				((ScriptID 64018 0) posn: 2680 250)
 				(= local0 2)
 			)
@@ -2018,10 +2011,10 @@
 				(ego posn: 1614 216)
 				((ScriptID 64018 0) posn: 1858 245)
 				(ego hide:)
-				(poTorinSwings
+				(LOOKUP_ERROR
 					posn: 1630 322
 					loop: 1
-					cel: (poTorinSwings lastCel:)
+					cel: (LOOKUP_ERROR lastCel:)
 					init:
 				)
 				(plane fadeRel: 1298 0)
@@ -2044,21 +2037,21 @@
 	(method (doit &tmp temp0 temp1)
 		(super doit: &rest)
 		(= temp1 (Abs (- 1600 (ego x?))))
-		(oBrook cThumbCel: (- 100 (/ temp1 16)))
+		(LOOKUP_ERROR cThumbCel: (- 100 (/ temp1 16)))
 		(if
 			(and
 				((ScriptID 64017 0) test: 16)
 				(>
 					(GetDistance
-						(foSlugTrapLoc x?)
-						(foSlugTrapLoc y?)
+						(LOOKUP_ERROR x?)
+						(LOOKUP_ERROR y?)
 						(ego x?)
 						(ego y?)
 					)
 					200
 				)
 			)
-			(ego setScript: soBoogleGetsUp)
+			(ego setScript: LOOKUP_ERROR)
 		)
 		(if local4
 			(plane nInitCursorX: local2 0)
@@ -2066,7 +2059,7 @@
 			(if (== (plane setMusic?) (plane relVolPercent?))
 				(= temp0 (- gameTime theGSel_57))
 				(Printf
-					{Ticks: %d, Frames: %d, Rate: %d/sec}
+					LOOKUP_ERROR
 					temp0
 					local5
 					(/ (* local5 60) temp0)
@@ -2078,7 +2071,7 @@
 	)
 	
 	(method (dispose)
-		(gOEventHandler pageUp: oTempKeyHandler)
+		(gOEventHandler pageUp: LOOKUP_ERROR)
 		(super dispose: &rest)
 	)
 	
@@ -2103,9 +2096,7 @@
 	
 	(method (handleEvent event &tmp eventMessage)
 		(if (not (& (event type?) $000c))
-			(Prints
-				{Attempt to execute key handler with non-key event. DJM keys.sc}
-			)
+			(Prints LOOKUP_ERROR)
 			(return 0)
 		)
 		(if (not (& (event type?) evKEYBOARD)) (return 0))

@@ -5,7 +5,7 @@
 (use List)
 (use Set)
 (use Event)
-(use NewUser)
+(use Events)
 (use String)
 (use Print)
 (use Sound)
@@ -70,26 +70,24 @@
 )
 
 (procedure (proc64888_7 &tmp temp0)
-	(oPlaneStack addToFront: 0)
+	(LOOKUP_ERROR addToFront: 0)
 	(= temp0 0)
 	(while (< temp0 (planes size:))
-		(oPlaneStack addToFront: (planes at: temp0))
+		(LOOKUP_ERROR addToFront: (planes at: temp0))
 		(++ temp0)
 	)
 )
 
 (procedure (RestorePlane &tmp temp0)
-	(if (oPlaneStack isEmpty:)
-		(MonoOut
-			{Tried to restore plane when none saved on stack.}
-		)
+	(if (LOOKUP_ERROR isEmpty:)
+		(MonoOut LOOKUP_ERROR)
 		(return)
 	)
-	(while (= temp0 (oPlaneStack at: 0))
+	(while (= temp0 (LOOKUP_ERROR at: 0))
 		(temp0 enable:)
-		(oPlaneStack delete: temp0)
+		(LOOKUP_ERROR delete: temp0)
 	)
-	(oPlaneStack delete: 0)
+	(LOOKUP_ERROR delete: 0)
 )
 
 (instance DisabledPlanes of Set
@@ -130,30 +128,20 @@
 	)
 	
 	(method (init)
-		((= gDisabledPlanes DisabledPlanes) add:)
-		((= gOPlaneStack oPlaneStack) add:)
+		((= gDisabledPlanes LOOKUP_ERROR) add:)
+		((= gOPlaneStack LOOKUP_ERROR) add:)
 		(super init: &rest)
 	)
 	
 	(method (replay &tmp temp0 temp1 temp2 temp3 planesNextNode temp5 temp6)
 		(= global113 -1)
-		(Palette palSET_FROM_RESOURCE 999)
+		(Palette 1 999)
 		(switch global202
-			(1
-				(Palette palSET_FROM_RESOURCE 10000)
-			)
-			(2
-				(Palette palSET_FROM_RESOURCE 20000)
-			)
-			(3
-				(Palette palSET_FROM_RESOURCE 30000)
-			)
-			(4
-				(Palette palSET_FROM_RESOURCE -25536)
-			)
-			(5
-				(Palette palSET_FROM_RESOURCE -15536)
-			)
+			(1 (Palette 1 10000))
+			(2 (Palette 1 20000))
+			(3 (Palette 1 30000))
+			(4 (Palette 1 -25536))
+			(5 (Palette 1 -15536))
 		)
 		(= planesNextNode (KList 3 (planes elements?)))
 		(while planesNextNode
@@ -215,7 +203,7 @@
 			(else (theGame setCursor: normalCursor))
 		)
 		(if (IsHiRes) (Font 1 640 480))
-		(DoSound sndRESTORE)
+		(DoSound sndNOP)
 		(Sound pause: 0)
 		(= tickOffset (- gameTime (GetTime)))
 		(while (not quit)
@@ -232,16 +220,16 @@
 		(= newStr (Str new:))
 		(= newStr_2 (Str new:))
 		(= newStr_3 (Str new:))
-		(Palette palSET_FROM_RESOURCE 999)
+		(Palette 1 999)
 		(if (not (FileIO 19 (KString 9 curSaveDir)))
-			(Message msgGET -542 9 0 0 1 (newStr data?))
+			(Message 0 -542 9 0 0 1 (newStr data?))
 			(newStr_3 format: newStr curSaveDir)
 			(Print
 				font: 999
 				fore: 0
-				back: (Palette palUNSET_FLAG 127 127 127)
+				back: (Palette 3 127 127 127)
 				addText: newStr_3
-				addButtonBM: -1 0 0 1 {OK} 0 30
+				addButtonBM: -1 0 0 1 LOOKUP_ERROR 0 30
 				init:
 			)
 			(GetDirectory curSaveDir)
@@ -349,12 +337,12 @@
 					)
 					(= planesNextNode (gDisabledPlanes nextNode?))
 				)
-				(Message msgGET -542 3 0 0 1 (newStr data?))
-				(Message msgGET -542 2 0 0 1 (newStr_2 data?))
+				(Message 0 -542 3 0 0 1 (newStr data?))
+				(Message 0 -542 2 0 0 1 (newStr_2 data?))
 				(Print
 					font: 999
 					fore: 0
-					back: (Palette palUNSET_FLAG 127 127 127)
+					back: (Palette 3 127 127 127)
 					addText: (newStr data?)
 					addButtonBM: -1 0 0 1 (newStr_2 data?) 0 40
 					init:
@@ -373,14 +361,14 @@
 		(if (not (FileIO 19 (KString 9 curSaveDir)))
 			(= newStr_2 (Str new:))
 			(= newStr_3 (Str new:))
-			(Message msgGET -542 9 0 0 1 (newStr_3 data?))
+			(Message 0 -542 9 0 0 1 (newStr_3 data?))
 			(newStr_2 format: newStr_3 curSaveDir)
 			(Print
 				font: 999
 				fore: 0
-				back: (Palette palUNSET_FLAG 127 127 127)
+				back: (Palette 3 127 127 127)
 				addText: newStr_2
-				addButtonBM: -1 0 0 1 {OK} 0 30
+				addButtonBM: -1 0 0 1 LOOKUP_ERROR 0 30
 				init:
 			)
 			(GetDirectory curSaveDir)
@@ -395,16 +383,16 @@
 			(-2
 				(= newStr_3 (Str new:))
 				(= newStr_4 (Str new:))
-				(Message msgGET -542 11 0 0 1 (newStr_3 data?))
-				(Message msgGET -542 2 0 0 1 (newStr_4 data?))
+				(Message 0 -542 11 0 0 1 (newStr_3 data?))
+				(Message 0 -542 2 0 0 1 (newStr_4 data?))
 				(if
 					(Print
 						font: 999
 						fore: 0
-						back: (Palette palUNSET_FLAG 127 127 127)
+						back: (Palette 3 127 127 127)
 						addText: newStr_3
 						addButtonBM: -546 0 0 0 newStr_4 0 40
-						addButtonBM: -546 2 0 1 {Change Dir} 55 40
+						addButtonBM: -546 2 0 1 LOOKUP_ERROR 55 40
 						init:
 					)
 					(GetDirectory curSaveDir)
@@ -427,12 +415,12 @@
 					)
 					(= newStr_3 (Str new:))
 					(= newStr_4 (Str new:))
-					(Message msgGET -542 10 0 0 1 (newStr_3 data?))
-					(Message msgGET -542 2 0 0 1 (newStr_4 data?))
+					(Message 0 -542 10 0 0 1 (newStr_3 data?))
+					(Message 0 -542 2 0 0 1 (newStr_4 data?))
 					(Print
 						font: 999
 						fore: 0
-						back: (Palette palUNSET_FLAG 127 127 127)
+						back: (Palette 3 127 127 127)
 						addText: newStr_3
 						addButtonBM: -1 0 0 1 newStr_4 0 40
 						init:
@@ -452,23 +440,23 @@
 	
 	(method (masterVolume param1)
 		(if argc
-			(DoSound sndMASTER_VOLUME param1)
+			(DoSound sndINIT param1)
 		else
-			(DoSound sndMASTER_VOLUME)
+			(DoSound sndINIT)
 		)
 	)
 	
 	(method (addVerbHandler param1 param2 &tmp temp0 [temp1 2] temp3 temp4 newStr)
 		(if (> argc 1) (= temp0 param2) else (= temp0 0))
 		((= newStr (Str new:)) copy: curSaveDir)
-		(curSaveDir copy: gNewStr_2)
+		(curSaveDir copy: gameDir)
 		(if (FileIO 19 (KString 9 curSaveDir))
 			(= temp3 (self setCursor: waitCursor 1))
 			(if argc
 				(if param1
 					(SaveGame
 						0
-						{Autosave}
+						LOOKUP_ERROR
 						temp0
 						(param1 data?)
 						(KString 9 version)
@@ -476,18 +464,18 @@
 				else
 					(SaveGame
 						0
-						{Autosave}
+						LOOKUP_ERROR
 						temp0
-						{A Fresh Game}
+						LOOKUP_ERROR
 						(KString 9 version)
 					)
 				)
 			else
 				(SaveGame
 					0
-					{Autosave}
+					LOOKUP_ERROR
 					temp0
-					{Where I last left off...}
+					LOOKUP_ERROR
 					(KString 9 version)
 				)
 			)
@@ -504,14 +492,12 @@
 	(method (deleteVerbHandler param1 &tmp temp0 newStr_4 newStr_2 newStr_3 planesNextNode temp5 temp6 temp7 temp8 temp9 temp10 temp11 newStr)
 		(if argc (= temp0 param1) else (= temp0 0))
 		((= newStr (Str new:)) copy: curSaveDir)
-		(curSaveDir copy: gNewStr_2)
+		(curSaveDir copy: gameDir)
 		(if
-		(not (SaveGame 3 {Autosave} temp0 (KString 9 version)))
-			(if temp0
-				(Prints
-					{Unable to reset game. Please exit and restart application.}
-				)
+			(not
+				(SaveGame 3 LOOKUP_ERROR temp0 (KString 9 version))
 			)
+			(if temp0 (Prints LOOKUP_ERROR))
 			(curSaveDir copy: newStr)
 			(newStr dispose:)
 			(return)
@@ -572,13 +558,13 @@
 		)
 		(self setCursor: waitCursor 1)
 		(self getDisc: (CD 1))
-		(SaveGame 1 {Autosave} temp0 version)
-		(Message msgGET -542 3 0 0 1 (newStr_2 data?))
-		(Message msgGET -542 2 0 0 1 (newStr_3 data?))
+		(SaveGame 1 LOOKUP_ERROR temp0 version)
+		(Message 0 -542 3 0 0 1 (newStr_2 data?))
+		(Message 0 -542 2 0 0 1 (newStr_3 data?))
 		(Print
 			font: 999
 			fore: 0
-			back: (Palette palUNSET_FLAG 127 127 127)
+			back: (Palette 3 127 127 127)
 			addText: (newStr_2 data?)
 			addButtonBM: -1 0 0 1 (newStr_3 data?) 0 40
 			init:

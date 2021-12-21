@@ -54,21 +54,13 @@
 	
 	(method (init)
 		(super init: &rest)
-		(Palette palSET_FROM_RESOURCE 999)
+		(Palette 1 999)
 		(switch global202
-			(1
-				(Palette palSET_FROM_RESOURCE 10000)
-			)
+			(1 (Palette 1 10000))
 			(2)
-			(3
-				(Palette palSET_FROM_RESOURCE 30000)
-			)
-			(4
-				(Palette palSET_FROM_RESOURCE -25536)
-			)
-			(5
-				(Palette palSET_FROM_RESOURCE -15536)
-			)
+			(3 (Palette 1 30000))
+			(4 (Palette 1 -25536))
+			(5 (Palette 1 -15536))
 		)
 		(RemapColors 2 238 25)
 		(RemapColors 2 237 45)
@@ -113,7 +105,7 @@
 	
 	(method (initThumb param1 &tmp thePlane_2 planePriority)
 		(if (or (not argc) (not param1))
-			(Prints {improper call of addRoomPlane. tproom.sc djm})
+			(Prints LOOKUP_ERROR)
 			(return)
 		)
 		(= thePlane_2 plane)
@@ -134,7 +126,7 @@
 				(not poMyEgo)
 				(not poMyEgoView)
 			)
-			(Prints {improper call of deleteRoomPlane. tproom.sc djm})
+			(Prints LOOKUP_ERROR)
 			(return)
 		)
 		(poMyEgo delete: param1)
@@ -182,7 +174,7 @@
 			)
 			(= planesNextNode (planes nextNode?))
 		)
-		(MonoOut {No object with name %s} param1)
+		(MonoOut LOOKUP_ERROR param1)
 		(return 0)
 	)
 	
@@ -232,7 +224,7 @@
 	)
 	
 	(method (setWander param1)
-		(MonoOut {You need to go to Room# %d} param1)
+		(MonoOut LOOKUP_ERROR param1)
 		(return 0)
 	)
 	

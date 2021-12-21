@@ -76,7 +76,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -14836)
+		(theMusic pageSize: -14836)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -107,9 +107,9 @@
 					yourself:
 				)
 		)
-		(foBackStageExit init:)
+		(LOOKUP_ERROR init:)
 		(ego init: oPanner:)
-		(curRoom setScript: soPlayMovie)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

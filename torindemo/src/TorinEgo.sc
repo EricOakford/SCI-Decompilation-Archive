@@ -203,23 +203,19 @@
 	
 	(method (init)
 		(super init: &rest)
-		(oWalkFeature init: (ScriptID 0 1))
+		(LOOKUP_ERROR init: (ScriptID 0 1))
 		(if (== curRoomNum 20800) (self setVisibleRange: 13))
 	)
 	
 	(method (dispose)
-		(if (oWalkFeature plane?) (oWalkFeature dispose:))
+		(if (LOOKUP_ERROR plane?) (LOOKUP_ERROR dispose:))
 		(super dispose: &rest)
 	)
 	
 	(method (doVerb theVerb)
 		(if (self oScoreFlags: theVerb) (return))
 		(switch theVerb
-			(13
-				(Prints
-					{Torin: I'm not near a phenocryst -- why waste the powder?}
-				)
-			)
+			(13 (Prints LOOKUP_ERROR))
 			(else 
 				(super doVerb: theVerb &rest)
 			)

@@ -61,12 +61,12 @@
 	(method (init)
 		(= signal (| signal $1000))
 		(super init: &rest)
-		(oNotInchie init:)
+		(LOOKUP_ERROR init:)
 	)
 	
 	(method (dispose)
 		(super dispose:)
-		(oNotInchie dispose:)
+		(LOOKUP_ERROR dispose:)
 	)
 	
 	(method (handleEvent event &tmp temp0 temp1 temp2)
@@ -91,7 +91,7 @@
 				((<= temp1 270) (= temp2 3))
 				(else (= temp2 2))
 			)
-			(self loop: temp2 setCycle: End coWormPoppedUp)
+			(self loop: temp2 setCycle: End LOOKUP_ERROR)
 		else
 			(super handleEvent: event)
 		)
@@ -113,7 +113,9 @@
 	
 	(method (onMe theObjOrX)
 		(if
-		(not (oNotInchie onMe: (theObjOrX x?) (theObjOrX y?)))
+			(not
+				(LOOKUP_ERROR onMe: (theObjOrX x?) (theObjOrX y?))
+			)
 			(super onMe: theObjOrX)
 		)
 	)
@@ -124,7 +126,7 @@
 	
 	(method (cue)
 		(theGame handsOn:)
-		(poInchworm cel: 0 loop: 1 cycleSpeed: 9 setCycle: Fwd)
+		(LOOKUP_ERROR cel: 0 loop: 1 cycleSpeed: 9 setCycle: Fwd)
 		(= local0 0)
 	)
 )
@@ -142,16 +144,16 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 11200)
+		(theMusic pageSize: 11200)
 		(= local1 70)
-		(foExit init:)
+		(LOOKUP_ERROR init:)
 		(theGame handsOff:)
-		(poInchworm
+		(LOOKUP_ERROR
 			loop: 0
 			cel: 0
 			init:
 			setVisibleRange: 1
-			setCycle: End coWormPoppedUp
+			setCycle: End LOOKUP_ERROR
 		)
 		(= local2 0)
 	)

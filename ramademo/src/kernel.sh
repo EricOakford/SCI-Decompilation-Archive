@@ -689,4 +689,13 @@
 			FreeDLL
 			CallDLL
 		)
+;EO: Additional SCI3 kernel functions from LSL7
+;;;	(none)						kernel	154
+;;;	Miniminze					kernel	155
+;;;	DeletePic					kernel	156
+;;;	(none)						kernel	157
+;;;	WebConnect					kernel	158
+;;;	(none)						kernel	159
+;;;	PlayDuck					kernel	160
+;;;	WinExec						kernel	161
 ;;;)

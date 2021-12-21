@@ -29,8 +29,8 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(sound1 lThumbLoop: -14935)
-				(poTorin
+				(theSound lThumbLoop: -14935)
+				(LOOKUP_ERROR
 					loop: 0
 					cel: 0
 					posn: 184 263
@@ -39,20 +39,25 @@
 				)
 			)
 			(1
-				(oCrunch init: lThumbLoop: -14933 self)
+				(LOOKUP_ERROR init: lThumbLoop: -14933 self)
 			)
 			(2
-				(sound1 lThumbLoop: -14934)
-				(poTorin loop: 1 cel: 0 setCycle: End self)
+				(theSound lThumbLoop: -14934)
+				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: End self)
 			)
 			(3
-				(poTorin loop: 2 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 2 cel: 0 setCycle: End self)
 			)
 			(4
-				(poTorin loop: 3 cel: 0 posn: 174 257 setCycle: End self)
+				(LOOKUP_ERROR
+					loop: 3
+					cel: 0
+					posn: 174 257
+					setCycle: End self
+				)
 			)
 			(5
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego
 					posn: 174 257
 					init:
@@ -76,8 +81,8 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -14836)
-		(curRoom setScript: soPlayMovie)
+		(theMusic pageSize: -14836)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

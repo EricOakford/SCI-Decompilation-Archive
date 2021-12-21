@@ -67,7 +67,7 @@
 			)
 		else
 			(if (not getHotspotVerbList)
-				(Prints {Game has no messager. Consider yourself warned})
+				(Prints LOOKUP_ERROR)
 				(= getHotspotVerbList 1)
 			)
 			(DoAudio
@@ -174,22 +174,17 @@
 			else
 				(= normalizeRect (Str with: temp1))
 			)
-			(= initItems (FileIO fiSEEK (newFile handle?) 0 2))
-			(FileIO fiSEEK (newFile handle?) 0 0)
+			(= initItems (FileIO 7 (newFile handle?) 0 2))
+			(FileIO 7 (newFile handle?) 0 0)
 			(= findCastMember (KString 0 initItems 3))
 			(= temp2
-				(FileIO
-					fiREAD
-					(newFile handle?)
-					findCastMember
-					initItems
-				)
+				(FileIO 2 (newFile handle?) findCastMember initItems)
 			)
 			(= getWidth (self nOffsetY: 2))
 			(self nBaseTilesY:)
 			(self nHeight:)
 		else
-			(MonoOut {Could not open '%s'} (newFile name?))
+			(MonoOut LOOKUP_ERROR (newFile name?))
 		)
 		(newFile dispose:)
 		(return temp2)
@@ -245,7 +240,7 @@
 				((temp1 isKindOf: setScalePercent) (if (!= -1 (temp1 just?)) (Load rsPIC (temp1 just?))))
 				((temp1 isKindOf: getMainCast)
 					(if (ResCheck 141 (temp1 number?))
-						(Load rsAUDIO (temp1 number?))
+						(Load 141 (temp1 number?))
 					else
 						(Load rsSOUND (temp1 number?))
 					)
@@ -433,7 +428,7 @@
 					)
 				)
 				(else 
-					(MonoOut {illegal cmd %d} temp0)
+					(MonoOut LOOKUP_ERROR temp0)
 				)
 			)
 			(= face (+ face 4 temp1))
@@ -454,17 +449,17 @@
 		(= newStr (Str new:))
 		(if (== (= temp0 (param1 indexOf: 58)) -1)
 			(if (not nSizeMode)
-				(= nSizeMode (Str newWith: 100 {}))
-				(GetConfig {animDir} nSizeMode)
+				(= nSizeMode (Str newWith: 100 LOOKUP_ERROR))
+				(GetConfig LOOKUP_ERROR nSizeMode)
 			)
-			(newStr format: {%s\\%s} nSizeMode param1)
+			(newStr format: LOOKUP_ERROR nSizeMode param1)
 		else
 			(newStr copy: param1)
 		)
 		(if (!= (= temp0 (newStr indexOf: 46)) -1)
 			(newStr at: temp0 0)
 		)
-		(newStr cat: {.anm})
+		(newStr cat: LOOKUP_ERROR)
 		(param1 copy: newStr)
 		(newStr dispose:)
 	)

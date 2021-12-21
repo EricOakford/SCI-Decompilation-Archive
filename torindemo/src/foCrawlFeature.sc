@@ -25,13 +25,13 @@
 )
 (procedure (localproc_00e0 param1 param2 &tmp temp0)
 	(if (> argc 1) (= temp0 param2) else (= temp0 0))
-	(if (== param1 (aoTorinCrawls x?)) (return))
-	(if (> param1 (aoTorinCrawls x?))
-		(oTorinCycle cycleDir: -1)
+	(if (== param1 (LOOKUP_ERROR x?)) (return))
+	(if (> param1 (LOOKUP_ERROR x?))
+		(LOOKUP_ERROR cycleDir: -1)
 	else
-		(oTorinCycle cycleDir: 1)
+		(LOOKUP_ERROR cycleDir: 1)
 	)
-	(aoTorinCrawls setMotion: MoveTo param1 local0 temp0)
+	(LOOKUP_ERROR setMotion: MoveTo param1 local0 temp0)
 	((ScriptID 64018 0)
 		setMotion: MoveTo (+ param1 local4) local0
 	)
@@ -47,7 +47,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soCrawlOutL1)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -61,7 +61,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soCrawlOutL2)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -75,7 +75,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soCrawlOutR2)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -89,7 +89,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soCrawlOutL3)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -103,7 +103,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soCrawlOutR3)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -176,10 +176,10 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self setCycle: oTorinCycle)
+		(self setCycle: LOOKUP_ERROR)
 		(self setPri: 20)
 		((ScriptID 64018 0)
-			posn: (+ (aoTorinCrawls x?) local4) local0
+			posn: (+ (LOOKUP_ERROR x?) local4) local0
 			init:
 			oPanner:
 			setPri: 20
@@ -197,14 +197,14 @@
 		((ScriptID 64018 0) xStep: xStep)
 		(if
 			(and
-				(== (curRoom plane?) oDuctPlane3)
+				(== (curRoom plane?) LOOKUP_ERROR)
 				(<= (- x local3) local2)
 				(not local1)
 			)
 			(= local1 1)
 			(self setMotion: 0)
 			(self setCel: 2)
-			(self setScript: soMenuBonk)
+			(self setScript: LOOKUP_ERROR)
 		)
 		(if
 			(and
@@ -220,7 +220,7 @@
 		(if
 			(and
 				(<= x 127)
-				(== (curRoom plane?) oDuctPlane2)
+				(== (curRoom plane?) LOOKUP_ERROR)
 				(not local6)
 			)
 			(= local6 1)
@@ -248,14 +248,14 @@
 				(theGame handsOff:)
 				((ScriptID 64018 0) setMotion: 0)
 				((ScriptID 64000 0) show:)
-				(sound1 lThumbLoop: -15335 self)
+				(theSound lThumbLoop: -15335 self)
 			)
 			(1
 				((ScriptID 64000 2) hilite:)
-				(sound1 lThumbLoop: -15334 self)
+				(theSound lThumbLoop: -15334 self)
 			)
 			(2
-				(sound1 lThumbLoop: -15333)
+				(theSound lThumbLoop: -15333)
 				((ScriptID 64000 0) hide:)
 				(theGame handsOn:)
 			)
@@ -270,7 +270,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(aoTorinCrawls posn: 650 local0 init:)
+				(LOOKUP_ERROR posn: 650 local0 init:)
 				(localproc_00e0 540 self)
 			)
 			(1
@@ -291,13 +291,13 @@
 				(localproc_00e0 -40 self)
 			)
 			(1
-				(aoTorinCrawls dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) dispose:)
-				(curRoom initThumb: oDuctPlane2)
-				(aoTorinCrawls
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR
 					posn: 660 local0
 					init:
-					setCycle: oTorinCycle
+					setCycle: LOOKUP_ERROR
 				)
 				(localproc_00e0 600 self)
 			)
@@ -319,13 +319,13 @@
 				(localproc_00e0 -40 self)
 			)
 			(1
-				(aoTorinCrawls dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) dispose:)
-				(curRoom initThumb: oDuctPlane3)
-				(aoTorinCrawls
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR
 					posn: 660 local0
 					init:
-					setCycle: oTorinCycle
+					setCycle: LOOKUP_ERROR
 				)
 				(localproc_00e0 600 self)
 			)
@@ -347,14 +347,14 @@
 				(localproc_00e0 660 self)
 			)
 			(1
-				(aoTorinCrawls dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) dispose:)
-				(curRoom arrowDown: oDuctPlane2)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(= local0 292)
-				(aoTorinCrawls
+				(LOOKUP_ERROR
 					posn: -40 local0
 					init:
-					setCycle: oTorinCycle
+					setCycle: LOOKUP_ERROR
 				)
 				(localproc_00e0 20 self)
 			)
@@ -376,7 +376,7 @@
 				(localproc_00e0 -40 self)
 			)
 			(1
-				(aoTorinCrawls dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) dispose:)
 				(curRoom newRoom: -15236)
 			)
@@ -394,13 +394,13 @@
 				(localproc_00e0 660 self)
 			)
 			(1
-				(aoTorinCrawls dispose:)
-				(curRoom arrowDown: oDuctPlane3)
+				(LOOKUP_ERROR dispose:)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(= local0 166)
-				(aoTorinCrawls
+				(LOOKUP_ERROR
 					posn: -40 local0
 					init:
-					setCycle: oTorinCycle
+					setCycle: LOOKUP_ERROR
 				)
 				(localproc_00e0 20 self)
 			)
@@ -427,9 +427,9 @@
 				(thePlane bottom?)
 		)
 		(= local0 166)
-		(foCrawlFeature2 init:)
-		(foExit2L init:)
-		(foExit2R init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 	)
 )
 
@@ -448,9 +448,9 @@
 				(thePlane bottom?)
 		)
 		(= local0 70)
-		(foCrawlFeature3 init:)
-		(foExit3L init:)
-		(foExit3R init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 	)
 )
 
@@ -462,18 +462,16 @@
 	(method (init)
 		(super init: &rest)
 		(= local2 ((ScriptID 64000 0) findData:))
-		(aoTorinCrawls posn: 300 200 cel: 2 init:)
-		(SetNowSeen aoTorinCrawls)
-		(= local3
-			(- (aoTorinCrawls x?) (aoTorinCrawls nsLeft?))
-		)
-		(aoTorinCrawls cel: 0 dispose:)
-		(music1 pageSize: -15436)
-		(foExit1L init:)
-		(foCrawlFeature1 init:)
+		(LOOKUP_ERROR posn: 300 200 cel: 2 init:)
+		(SetNowSeen LOOKUP_ERROR)
+		(= local3 (- (LOOKUP_ERROR x?) (LOOKUP_ERROR nsLeft?)))
+		(LOOKUP_ERROR cel: 0 dispose:)
+		(theMusic pageSize: -15436)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(theGame handsOn:)
 		(= local0 292)
-		(curRoom setScript: soCrawlInR1)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

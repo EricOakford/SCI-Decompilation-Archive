@@ -19,7 +19,7 @@
 			(= oThumb 1)
 			(= oDownArrow gameTime)
 			(= oldTimers timers)
-			((= timers (Set new:)) name: {pausedTimers} add:)
+			((= timers (Set new:)) name: LOOKUP_ERROR add:)
 		)
 	)
 	

@@ -68,9 +68,9 @@
 		(switch theVerb
 			(1
 				(cond 
-					(((ScriptID 64017 0) test: 28) (ego setScript: soSecondEntrance))
-					(((ScriptID 64017 0) test: 8) (ego setScript: soFirstEntrance))
-					(else (ego setScript: soEgoTriesDoor))
+					(((ScriptID 64017 0) test: 28) (ego setScript: LOOKUP_ERROR))
+					(((ScriptID 64017 0) test: 8) (ego setScript: LOOKUP_ERROR))
+					(else (ego setScript: LOOKUP_ERROR))
 				)
 			)
 			(else 
@@ -94,19 +94,21 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego nSaveTime: foDoor self))
+			(0
+				(ego nSaveTime: LOOKUP_ERROR self)
+			)
 			(1
 				(theGame handsOff:)
 				(ego hide:)
-				(poEgoTriesDoor setCel: 0 init: setCycle: CT 3 1 self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: CT 3 1 self)
 			)
 			(2 (= cycles 5))
 			(3
-				(sound1 lThumbLoop: 15005)
-				(poEgoTriesDoor setCycle: End self)
+				(theSound lThumbLoop: 15005)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(4
-				(poEgoTriesDoor dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 266 241 setLoop: 6 scrollTo: show:)
 				(messager say: 1 1 5 0 self)
 			)
@@ -157,12 +159,12 @@
 			(2
 				(theGame handsOff:)
 				(ego hide:)
-				(sound1 lThumbLoop: 15001)
-				(poEgoKnocks setCel: 0 init: setCycle: End self)
+				(theSound lThumbLoop: 15001)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(3
 				(ego show:)
-				(poEgoKnocks dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego setLoop: 6 1)
 				(ego setMotion: MoveTo 286 249 self)
 			)
@@ -170,18 +172,18 @@
 				(messager sayRange: 1 1 2 2 3 self)
 			)
 			(5
-				(voDoor dispose:)
-				(sound1 lThumbLoop: 15002)
-				(music1 pageSize: 15099)
-				(poGuardOpensDoor1 setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(theSound lThumbLoop: 15002)
+				(theMusic pageSize: 15099)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(6
 				(= global226 1)
 				(messager sayRange: 1 1 2 4 6 self)
 			)
 			(7
-				(poGuardOpensDoor1 dispose:)
-				(poGuardOpensDoor2 setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(8
 				(= global226 2)
@@ -190,11 +192,11 @@
 			(9
 				(= global226 0)
 				(messager say: 1 1 2 9 self)
-				(poGuardOpensDoor2
+				(LOOKUP_ERROR
 					setLoop: 9
 					setCel: 0
 					setPri: 100
-					setScript: soGuardWalksIn
+					setScript: LOOKUP_ERROR
 				)
 			)
 			(10 (curRoom newRoom: 15100))
@@ -208,11 +210,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poGuardOpensDoor2 setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(1
-				(poGuardOpensDoor2 dispose:)
-				(voOpenDoor init:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
 				(ego setMotion: MoveTo 365 213 self)
 			)
 			(2 (self dispose:))
@@ -289,13 +291,13 @@
 	)
 	
 	(method (init)
-		(poGuardOpensDoor1 hide:)
-		(= frame voGuard1)
+		(LOOKUP_ERROR hide:)
+		(= frame {roGuardHouseExt})
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poGuardOpensDoor1 show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -328,13 +330,13 @@
 	)
 	
 	(method (init)
-		(poGuardOpensDoor2 hide:)
-		(= frame voGuard2)
+		(LOOKUP_ERROR hide:)
+		(= frame LOOKUP_ERROR)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poGuardOpensDoor2 show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -361,13 +363,13 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soDoOnCrystal)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(14
-				(ego setScript: soBoogleAxOnCrystal)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(2
-				(ego setScript: soAxOnCrystal)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -382,7 +384,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego nSaveTime: foCrystal self)
+				(ego nSaveTime: LOOKUP_ERROR self)
 			)
 			(1
 				(theGame handsOff:)
@@ -390,7 +392,7 @@
 					(self cue:)
 				else
 					(ego hide:)
-					(poDoOnCrystal
+					(LOOKUP_ERROR
 						setCel: 0
 						init:
 						setPri: 292
@@ -402,7 +404,7 @@
 				(if ((ScriptID 64017 0) test: 8)
 					(messager say: 2 1 2 0 self)
 				else
-					(poDoOnCrystal dispose:)
+					(LOOKUP_ERROR dispose:)
 					(ego posn: 318 290 setLoop: 5 scrollTo: show:)
 					(messager say: 2 1 5 0 self)
 				)
@@ -429,7 +431,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego nSaveTime: foCrystal self)
+				(ego nSaveTime: LOOKUP_ERROR self)
 			)
 			(1
 				(theGame handsOff:)
@@ -464,28 +466,24 @@
 				((ScriptID 64018 0) setHeading: 270)
 				(theGame handsOff:)
 				(ego hide:)
-				(poAxOnCrystal setCel: 0 init: setCycle: CT 15 1 self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: CT 15 1 self)
 			)
 			(4
 				((ScriptID 64018 0) hide:)
-				(poBoogleRinging
-					setCel: 0
-					init:
-					setCycle: End coDisposeBoogleRinging
-				)
-				(poAxOnCrystal setCycle: CT 20 1 self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End LOOKUP_ERROR)
+				(LOOKUP_ERROR setCycle: CT 20 1 self)
 			)
 			(5
-				(sound1 lThumbLoop: 15006)
-				(poAxOnCrystal setCycle: CT 45 1 self)
+				(theSound lThumbLoop: 15006)
+				(LOOKUP_ERROR setCycle: CT 45 1 self)
 			)
 			(6
-				(sound1 lThumbLoop: 15007)
-				(voCrystal dispose:)
-				(poAxOnCrystal setCycle: End self)
+				(theSound lThumbLoop: 15007)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(7
-				(poAxOnCrystal dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 293 289 setLoop: 4 scrollTo: show:)
 				(messager say: 2 2 5 1 self)
 			)
@@ -493,12 +491,12 @@
 				(ego get: ((ScriptID 64001 0) get: 8))
 				(ego get: ((ScriptID 64001 0) get: 0))
 				((ScriptID 64017 0) set: 8)
-				(foCrystal setTotalWidth: 2 14)
-				(voDoor dispose:)
-				(poGuardOpensDoor1 setCel: 0 init: setCycle: End self)
-				(ego oCuee: poGuardOpensDoor1 self)
-				(music1 pageSize: 15099)
-				(sound1 lThumbLoop: 15002)
+				(LOOKUP_ERROR setTotalWidth: 2 14)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
+				(ego oCuee: LOOKUP_ERROR self)
+				(theMusic pageSize: 15099)
+				(theSound lThumbLoop: 15002)
 			)
 			(9)
 			(10
@@ -507,13 +505,13 @@
 			)
 			(11
 				(= global226 0)
-				(poGuardOpensDoor1 setCycle: Beg self)
-				(sound1 lThumbLoop: 15003)
+				(LOOKUP_ERROR setCycle: Beg self)
+				(theSound lThumbLoop: 15003)
 			)
 			(12
-				(music1 pageSize: 15800)
-				(voDoor init:)
-				(poGuardOpensDoor1 dispose:)
+				(theMusic pageSize: 15800)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) ID:)
 				((ScriptID 64018 0) bSwing: 1)
 				(theGame handsOn:)
@@ -528,7 +526,7 @@
 	
 	(method (cue)
 		((ScriptID 64018 0) show:)
-		(poBoogleRinging dispose:)
+		(LOOKUP_ERROR dispose:)
 	)
 )
 
@@ -616,12 +614,12 @@
 					posn: 374 299
 					oPanner:
 					setScaler: Scaler 100 64 290 228
-					setScript: soSBoogleEntrance
+					setScript: LOOKUP_ERROR
 				)
 			)
 			(15100
 				(ego
-					posn: (foDoor approachX?) (foDoor approachY?)
+					posn: (LOOKUP_ERROR approachX?) (LOOKUP_ERROR approachY?)
 					setLoop: 2
 				)
 				((ScriptID 64018 0)
@@ -645,20 +643,20 @@
 				)
 			)
 		)
-		(foMainExit init:)
-		(foDoor init:)
-		(foSign init:)
-		(foCrystal init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(if (not ((ScriptID 64017 0) test: 8))
-			(voCrystal init: setPri: 291)
+			(LOOKUP_ERROR init: setPri: 291)
 		)
 		(if ((ScriptID 64017 0) test: 28)
-			(voOpenDoor init:)
+			(LOOKUP_ERROR init:)
 		else
-			(voDoor init:)
+			(LOOKUP_ERROR init:)
 		)
-		(music1 pageSize: 15800)
-		(Load rsAUDIO 15006 15001 15002 15007 15003 15005)
+		(theMusic pageSize: 15800)
+		(Load 141 15006 15001 15002 15007 15003 15005)
 		(Load rsVIEW 15002 15001)
 		(curRoom
 			addObstacle:

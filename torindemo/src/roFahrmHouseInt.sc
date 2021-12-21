@@ -110,7 +110,7 @@
 				(theGame handsOff:)
 				(messager say: 2 1 3 1 (ScriptID 64020 0))
 			else
-				(ego setScript: soLookAtAshtray)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		else
 			(super doVerb: theVerb)
@@ -124,7 +124,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego nSaveTime: foAshtray self)
+				(ego nSaveTime: LOOKUP_ERROR self)
 			)
 			(1 (= ticks 2) (ego scrollTo:))
 			(2 (curRoom newRoom: 11300))
@@ -161,7 +161,7 @@
 				(theGame handsOff:)
 				(messager say: 1 1 2 1 (ScriptID 64020 0))
 			else
-				(ego setScript: soLookInsideBasket)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		else
 			(super doVerb: theVerb)
@@ -175,7 +175,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego nSaveTime: foSewingBasket self)
+				(ego nSaveTime: LOOKUP_ERROR self)
 			)
 			(1 (= ticks 2) (ego scrollTo:))
 			(2 (curRoom newRoom: 11200))
@@ -205,7 +205,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soHot)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -220,13 +220,15 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego oPlane: foStove self))
+			(0
+				(ego oPlane: LOOKUP_ERROR self)
+			)
 			(1
 				(theGame handsOff:)
 				(ego setHeading: 135 self)
 			)
 			(2
-				(poHot
+				(LOOKUP_ERROR
 					loop: 4
 					cel: 0
 					posn: (ego x?) (ego y?)
@@ -236,9 +238,12 @@
 				)
 				(ego hide:)
 			)
-			(3 (poHot cel: 7) (= ticks 1))
+			(3
+				(LOOKUP_ERROR cel: 7)
+				(= ticks 1)
+			)
 			(4
-				(poHot dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(messager say: 3 1 0 0 self)
 			)
@@ -272,10 +277,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(curRoom newTarget: foBox)
+				(curRoom newTarget: LOOKUP_ERROR)
 				(ego get: ((ScriptID 64001 1) get: 1))
 				((ScriptID 64018 0) hide:)
-				(poBoogleToBox
+				(LOOKUP_ERROR
 					cel: 0
 					posn: ((ScriptID 64018 0) x?) ((ScriptID 64018 0) y?)
 					init:
@@ -283,7 +288,7 @@
 				)
 			)
 			(1
-				(poBoogleToBox dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) loop: 6 show:)
 				(self dispose:)
 			)
@@ -305,7 +310,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego nSaveTime: foDoor self))
+			(0
+				(ego nSaveTime: LOOKUP_ERROR self)
+			)
 			(1 (curRoom newRoom: 11000))
 		)
 	)
@@ -333,7 +340,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soDoorScript)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -350,7 +357,7 @@
 	(properties)
 	
 	(method (cue)
-		(curRoom setScript: (ScriptID 64018 2) coBoogleOutOfBag)
+		(curRoom setScript: (ScriptID 64018 2) LOOKUP_ERROR)
 	)
 )
 
@@ -364,7 +371,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 11100)
+		(theMusic pageSize: 11100)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -412,16 +419,16 @@
 				)
 		)
 		(if (not (ego has: ((ScriptID 64001 1) get: 1)))
-			(foBox init: soBoogleLearnBox)
-			(self setDefault: foBox)
+			(LOOKUP_ERROR init: LOOKUP_ERROR)
+			(self setDefault: LOOKUP_ERROR)
 		)
-		(poFire init: setCycle: Fwd)
-		(foDoor init:)
-		(foSewingBasket init:)
-		(foAshtray init:)
-		(foStove init:)
-		(foMomChair init:)
-		(foDadChair init:)
+		(LOOKUP_ERROR init: setCycle: Fwd)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(theGame handsOn:)
 		(switch prevRoomNum
 			(11200
@@ -461,11 +468,11 @@
 					init:
 					oPanner:
 					setScaler: Scaler 125 72 300 180
-					posn: (foDoor approachX?) (foDoor approachY?)
+					posn: (LOOKUP_ERROR approachX?) (LOOKUP_ERROR approachY?)
 					loop: 2
 				)
 				(if ((ScriptID 64017 0) test: 144)
-					(ego setMotion: MoveTo 339 207 coBoogleJumpOutOfBag)
+					(ego setMotion: MoveTo 339 207 LOOKUP_ERROR)
 				else
 					(ego setMotion: MoveTo 339 207 (ScriptID 64020 0))
 					((ScriptID 64018 0)

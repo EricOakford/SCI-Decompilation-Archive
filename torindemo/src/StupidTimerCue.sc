@@ -39,7 +39,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: soExit)
+		(curRoom setScript: {uick, hide!})
 	)
 )
 
@@ -63,7 +63,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 1) (curRoom setScript: soGoInside))
+		(if (== theVerb 1) (curRoom setScript: LOOKUP_ERROR))
 	)
 )
 
@@ -87,7 +87,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 1) (curRoom setScript: soRingDoorbell))
+		(if (== theVerb 1) (curRoom setScript: LOOKUP_ERROR))
 	)
 )
 
@@ -113,7 +113,7 @@
 	
 	(method (doVerb theVerb)
 		(if (and (== theVerb 1) (not local0))
-			(curRoom setScript: soOnPorch)
+			(curRoom setScript: LOOKUP_ERROR)
 		)
 	)
 )
@@ -140,7 +140,7 @@
 	
 	(method (doVerb theVerb)
 		(if (and (== theVerb 1) local0)
-			(curRoom setScript: soUnderPorch)
+			(curRoom setScript: LOOKUP_ERROR)
 		)
 	)
 )
@@ -186,14 +186,14 @@
 			(0
 				(theGame handsOff:)
 				(if (not local0)
-					(self setScript: soOnPorch self)
+					(self setScript: {LOOKUP\_ERROR} self)
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(poTorinStop hide:)
-				(poTorin
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR
 					posn: 465 108
 					loop: 9
 					cel: 0
@@ -214,9 +214,9 @@
 	(properties)
 	
 	(method (dispose)
-		(poTorinStop loop: 11 show:)
+		(LOOKUP_ERROR loop: 11 show:)
 		(theGame handsOn:)
-		(poTorin dispose:)
+		(LOOKUP_ERROR dispose:)
 		(super dispose:)
 	)
 	
@@ -225,8 +225,8 @@
 			(0
 				(theGame handsOff:)
 				(= local0 1)
-				(poTorinStop hide:)
-				(poTorin
+				({poDreep} hide:)
+				(LOOKUP_ERROR
 					posn: 465 108
 					loop: 11
 					cel: 0
@@ -243,9 +243,9 @@
 	(properties)
 	
 	(method (dispose)
-		(poTorinStop loop: 12 show:)
+		(LOOKUP_ERROR loop: 12 show:)
 		(theGame handsOn:)
-		(poTorin dispose:)
+		(LOOKUP_ERROR dispose:)
 		(super dispose:)
 	)
 	
@@ -254,8 +254,8 @@
 			(0
 				(theGame handsOff:)
 				(= local0 0)
-				(poTorinStop hide:)
-				(poTorin
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR
 					posn: 465 108
 					loop: 2
 					cel: 0
@@ -274,7 +274,7 @@
 	)
 	
 	(method (cue)
-		(oStupidProp setScript: soTimesUp)
+		(LOOKUP_ERROR setScript: LOOKUP_ERROR)
 	)
 	
 	(method (timer)
@@ -297,15 +297,15 @@
 			(0
 				(theGame handsOff:)
 				(if (not local0)
-					(self setScript: soOnPorch self)
+					(self setScript: {LOOKUP\_ERROR} self)
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(oDoorBell lThumbLoop: -14335)
-				(poTorinStop hide:)
-				(poTorin
+				(LOOKUP_ERROR lThumbLoop: -14335)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR
 					posn: 465 108
 					loop: 1
 					cel: 0
@@ -315,13 +315,13 @@
 			)
 			(2
 				(theGame handsOn:)
-				(MonoOut {Quick, hide!})
+				(MonoOut LOOKUP_ERROR)
 				(if (not local1)
 					(= local1 1)
-					(oStupidTimer setReal: StupidTimerCue 5)
+					(LOOKUP_ERROR setReal: StupidTimerCue 5)
 				)
-				(poTorinStop show:)
-				(poTorin dispose:)
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR dispose:)
 				(self dispose:)
 			)
 		)
@@ -335,15 +335,15 @@
 		(switch (= state newState)
 			(0
 				(= local1 0)
-				(MonoOut {Times up})
+				(MonoOut LOOKUP_ERROR)
 				(theGame handsOff:)
-				(poDoor cel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR cel: 0 init: setCycle: End self)
 			)
 			(1
 				(cond 
-					(local0 (self setScript: soDreepEatTorin self))
-					((ego has: ((ScriptID 64001 0) get: 52)) (self setScript: soDreepLook self))
-					(else (self setScript: soDreepLeave self))
+					(local0 (self setScript: LOOKUP_ERROR self))
+					((ego has: ((ScriptID 64001 0) get: 52)) (self setScript: LOOKUP_ERROR self))
+					(else (self setScript: LOOKUP_ERROR self))
 				)
 			)
 			(2
@@ -361,7 +361,7 @@
 		(switch (= state newState)
 			(0
 				(messager say: 0 0 2 0 self)
-				(poDreep
+				(LOOKUP_ERROR
 					posn: 361 113
 					loop: 5
 					cel: 0
@@ -370,9 +370,11 @@
 				)
 			)
 			(1)
-			(2 (poDoor setCycle: Beg self))
+			(2
+				(LOOKUP_ERROR setCycle: Beg self)
+			)
 			(3
-				(poDreep dispose:)
+				(LOOKUP_ERROR dispose:)
 				(self dispose:)
 			)
 		)
@@ -386,7 +388,7 @@
 		(switch (= state newState)
 			(0
 				(messager say: 0 0 3 0 self)
-				(poDreep
+				(LOOKUP_ERROR
 					posn: 361 113
 					loop: 6
 					cel: 0
@@ -397,8 +399,8 @@
 			(1)
 			(2
 				((ScriptID 64017 0) set: 141)
-				(foInside init:)
-				(poDreep dispose:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR dispose:)
 				(self dispose:)
 			)
 		)
@@ -411,7 +413,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poDreep
+				(LOOKUP_ERROR
 					posn: 361 113
 					loop: 4
 					cel: 0
@@ -421,19 +423,19 @@
 			)
 			(1
 				(messager say: 0 0 1 0 self)
-				(poTorinStop hide:)
-				(poDreep setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(2)
 			(3
 				(theGame handsOn:)
 				(if ((ScriptID 64019 0) show:)
-					(poDoor setCycle: Beg self)
+					(LOOKUP_ERROR setCycle: Beg self)
 				)
 			)
 			(4
-				(poDreep dispose:)
-				(poTorinStop show:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR show:)
 				(self dispose:)
 			)
 		)
@@ -447,8 +449,8 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(poTorinStop dispose:)
-				(poTorin
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR
 					posn: 465 108
 					loop: 8
 					cel: 0
@@ -457,7 +459,7 @@
 				)
 			)
 			(1
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom newRoom: -14436)
 				(self dispose:)
 			)
@@ -471,7 +473,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poTorin
+				(LOOKUP_ERROR
 					posn: 465 108
 					loop: 0
 					cel: 0
@@ -480,8 +482,8 @@
 				)
 			)
 			(1
-				(poTorinStop show:)
-				(poTorin dispose:)
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -496,34 +498,34 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -14436)
-		(foNullVoidExit init:)
-		(foDoorstep init:)
-		(foDoorbottom init:)
-		(foDoorbell init:)
-		(poDoor init:)
+		(theMusic pageSize: -14436)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(= local0 1)
 		(= local1 0)
-		(poTorinStop
+		(LOOKUP_ERROR
 			view: -14335
 			loop: 11
 			posn: 465 108
 			init:
 			hide:
 		)
-		(curRoom setScript: soEnter)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (dispose)
-		(oStupidTimer delete:)
+		(LOOKUP_ERROR delete:)
 		(super dispose:)
 	)
 	
 	(method (setWander param1)
 		(return
 			(cond 
-				((== param1 -14236) (return foInside))
-				((== param1 -14436) (return foNullVoidExit))
+				((== param1 -14236) (return LOOKUP_ERROR))
+				((== param1 -14436) (return LOOKUP_ERROR))
 			)
 		)
 	)

@@ -13,24 +13,14 @@
 )
 
 (procedure (proc64001_2)
-	(if (not (ego has: ioCannonball1))
-		(return ioCannonball1)
+	(if (not (ego has: 'LOOKUP_ERROR'))
+		(return LOOKUP_ERROR)
 	)
-	(if (not (ego has: ioCannonball2))
-		(return ioCannonball2)
-	)
-	(if (not (ego has: ioCannonball3))
-		(return ioCannonball3)
-	)
-	(if (not (ego has: ioCannonball4))
-		(return ioCannonball4)
-	)
-	(if (not (ego has: ioCannonball5))
-		(return ioCannonball5)
-	)
-	(if (not (ego has: ioCannonball6))
-		(return ioCannonball6)
-	)
+	(if (not (ego has: LOOKUP_ERROR)) (return LOOKUP_ERROR))
+	(if (not (ego has: LOOKUP_ERROR)) (return LOOKUP_ERROR))
+	(if (not (ego has: LOOKUP_ERROR)) (return ioWand))
+	(if (not (ego has: LOOKUP_ERROR)) (return LOOKUP_ERROR))
+	(if (not (ego has: LOOKUP_ERROR)) (return LOOKUP_ERROR))
 	(return 0)
 )
 
@@ -38,12 +28,12 @@
 	(return
 		(if
 			(or
-				(== param1 ioCannonball1)
-				(== param1 ioCannonball2)
-				(== param1 ioCannonball3)
-				(== param1 ioCannonball4)
-				(== param1 ioCannonball5)
-				(== param1 ioCannonball6)
+				(== param1 LOOKUP_ERROR)
+				(== param1 LOOKUP_ERROR)
+				(== param1 LOOKUP_ERROR)
+				(== param1 LOOKUP_ERROR)
+				(== param1 LOOKUP_ERROR)
+				(== param1 LOOKUP_ERROR)
 			)
 			(return 1)
 		else
@@ -54,12 +44,12 @@
 
 (procedure (proc64001_4 &tmp temp0)
 	(= temp0 0)
-	(if (ego has: ioCannonball1) (++ temp0))
-	(if (ego has: ioCannonball2) (++ temp0))
-	(if (ego has: ioCannonball3) (++ temp0))
-	(if (ego has: ioCannonball4) (++ temp0))
-	(if (ego has: ioCannonball5) (++ temp0))
-	(if (ego has: ioCannonball6) (++ temp0))
+	(if (ego has: LOOKUP_ERROR) (++ temp0))
+	(if (ego has: LOOKUP_ERROR) (++ temp0))
+	(if (ego has: LOOKUP_ERROR) (++ temp0))
+	(if (ego has: LOOKUP_ERROR) (++ temp0))
+	(if (ego has: LOOKUP_ERROR) (++ temp0))
+	(if (ego has: LOOKUP_ERROR) (++ temp0))
 	(return temp0)
 )
 
@@ -70,133 +60,133 @@
 		(self
 			add:
 				1
-				ioRope
+				LOOKUP_ERROR
 				0
-				ioAx
+				LOOKUP_ERROR
 				1
-				ioRope
+				LOOKUP_ERROR
 				2
-				ioPouch
+				LOOKUP_ERROR
 				3
-				ioInchworm
+				LOOKUP_ERROR
 				4
-				ioChuckBerries
+				LOOKUP_ERROR
 				5
-				ioSquareRoot
+				LOOKUP_ERROR
 				6
-				ioSnails
+				LOOKUP_ERROR
 				7
-				ioMoatScum
+				LOOKUP_ERROR
 				8
-				ioShard
+				LOOKUP_ERROR
 				9
-				ioEressdy
+				LOOKUP_ERROR
 				10
-				ioSlugs
+				LOOKUP_ERROR
 				11
-				ioPeat
+				LOOKUP_ERROR
 				12
-				ioConsoleShard
+				LOOKUP_ERROR
 				13
-				ioLeaf
+				LOOKUP_ERROR
 				14
-				ioGuillotineTile
+				LOOKUP_ERROR
 				15
-				ioStepTile
+				LOOKUP_ERROR
 				16
-				ioTrivetTile
+				LOOKUP_ERROR
 				17
-				ioSmallDoorTile
+				LOOKUP_ERROR
 				18
-				ioTableTopTile
+				LOOKUP_ERROR
 				19
-				ioWarningTile
+				LOOKUP_ERROR
 				20
-				ioTubTile
+				LOOKUP_ERROR
 				21
-				ioSeatTile
+				LOOKUP_ERROR
 				22
-				ioFloorTile
+				LOOKUP_ERROR
 				23
-				ioClothespin
+				LOOKUP_ERROR
 				24
-				ioBallInvite
+				LOOKUP_ERROR
 				25
-				ioBeestLeg
+				LOOKUP_ERROR
 				26
-				ioDragonPoo
+				LOOKUP_ERROR
 				27
-				ioHaremPillow
+				LOOKUP_ERROR
 				28
-				ioRedCarpet
+				LOOKUP_ERROR
 				29
-				ioStinkyCarpet
+				LOOKUP_ERROR
 				30
-				ioFan
-				31
-				ioLocket
-				32
-				ioOpenLocket
-				33
-				ioCleanTile
-				34
-				ioKnife
-				35
-				ioAmmonia
-				36
-				ioOpenAmmonia
-				37
-				ioWrench
-				38
-				ioCannonball1
-				39
-				ioCannonball2
-				40
-				ioCannonball3
-				41
-				ioCannonball4
-				42
-				ioCannonball5
-				43
-				ioCannonball6
-				44
-				ioSilkWorms
-				45
-				ioPlaybill
-				46
-				ioBagpipes
-				47
-				ioTopHat
-				48
-				ioRabbit
-				49
-				ioCane
-				50
-				ioWand
-				51
-				ioMagicBook
-				52
-				ioCrystcorder
-				53
-				ioAudcryst
-				54
-				ioShatteredShard
-				55
-				ioSaw
-				56
-				ioBow
-				57
 				ioRosin
+				31
+				LOOKUP_ERROR
+				32
+				LOOKUP_ERROR
+				33
+				LOOKUP_ERROR
+				34
+				LOOKUP_ERROR
+				35
+				LOOKUP_ERROR
+				36
+				LOOKUP_ERROR
+				37
+				LOOKUP_ERROR
+				38
+				LOOKUP_ERROR
+				39
+				LOOKUP_ERROR
+				40
+				LOOKUP_ERROR
+				41
+				LOOKUP_ERROR
+				42
+				LOOKUP_ERROR
+				43
+				LOOKUP_ERROR
+				44
+				LOOKUP_ERROR
+				45
+				{ioPeat}
+				46
+				{oStepTile}
+				47
+				LOOKUP_ERROR
+				48
+				LOOKUP_ERROR
+				49
+				LOOKUP_ERROR
+				50
+				{ioStinkyCarpet}
+				51
+				LOOKUP_ERROR
+				52
+				LOOKUP_ERROR
+				53
+				{oCannonball5}
+				54
+				LOOKUP_ERROR
+				55
+				{oMagicBook}
+				56
+				LOOKUP_ERROR
+				57
+				LOOKUP_ERROR
 				58
-				ioSilkHanky
+				LOOKUP_ERROR
 				59
-				ioMagicTrick
+				{oBoogleLantern}
 				60
-				ioRosinedBow
+				LOOKUP_ERROR
 				61
-				ioDawburr
+				LOOKUP_ERROR
 				62
-				ioSappyDawburr
+				LOOKUP_ERROR
 		)
 		(= nHBorderSize (nHBorder size:))
 		(= temp0 0)
@@ -619,9 +609,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(55
-				(ego get: ioSilkHanky)
-				(ioSilkWorms setTotalWidth: 55)
-				(ioPlaybill setTotalWidth: 54)
+				(ego get: LOOKUP_ERROR)
+				({ioKnife} setTotalWidth: 55)
+				(LOOKUP_ERROR setTotalWidth: 54)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -646,9 +636,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(54
-				(ego get: ioSilkHanky)
-				(ioSilkWorms setTotalWidth: 55)
-				(ioPlaybill setTotalWidth: 54)
+				(ego get: LOOKUP_ERROR)
+				(LOOKUP_ERROR setTotalWidth: 55)
+				(LOOKUP_ERROR setTotalWidth: 54)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -700,8 +690,8 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(67
-				(ego put: ioCane)
-				(ego get: ioWand)
+				(ego put: LOOKUP_ERROR)
+				(ego get: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -786,8 +776,8 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(59
-				(ego put: ioCane)
-				(ego get: ioWand)
+				(ego put: 'LOOKUP_ERROR')
+				(ego get: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -809,9 +799,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(70
-				(ego put: ioBow)
-				(ego put: ioRosin)
-				(ego get: ioRosinedBow)
+				(ego put: LOOKUP_ERROR)
+				(ego put: LOOKUP_ERROR)
+				(ego get: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -833,9 +823,9 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(68
-				(ego put: ioBow)
-				(ego put: ioRosin)
-				(ego get: ioRosinedBow)
+				(ego put: LOOKUP_ERROR)
+				(ego put: LOOKUP_ERROR)
+				(ego get: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -956,19 +946,19 @@
 		(self
 			add:
 				0
-				ioBoogleAx
+				LOOKUP_ERROR
 				1
-				ioBoogleBox
+				LOOKUP_ERROR
 				3
-				ioBoogleYoYo
+				LOOKUP_ERROR
 				4
-				ioBoogleShovel
+				LOOKUP_ERROR
 				5
-				ioBoogleLantern
+				LOOKUP_ERROR
 				2
-				ioBoogleWorm
+				LOOKUP_ERROR
 				6
-				ioBoogleRedCross
+				LOOKUP_ERROR
 		)
 		(= nHBorderSize (nHBorder size:))
 		(= temp0 0)

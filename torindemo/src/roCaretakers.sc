@@ -37,25 +37,25 @@
 	(if (!= temp2 local3)
 		(switch temp2
 			(0
-				(curRoom setScript: soSeeSawLeftDown)
+				(curRoom setScript: LOOKUP_ERROR)
 			)
 			(2
-				(curRoom setScript: soSeeSawRightDown)
+				(curRoom setScript: LOOKUP_ERROR)
 			)
 			(1
 				(switch local3
 					(2
-						(curRoom setScript: soSeeSawCenterFromRight)
+						(curRoom setScript: 'LOOKUP_ERROR')
 					)
 					(0
-						(curRoom setScript: soSeeSawCenterFromLeft)
+						(curRoom setScript: LOOKUP_ERROR)
 					)
 				)
 			)
 		)
 		(= local3 temp2)
-		(foSeeSawLeft setRect:)
-		(foSeeSawRight setRect:)
+		(LOOKUP_ERROR setRect:)
+		(LOOKUP_ERROR setRect:)
 	)
 )
 
@@ -74,7 +74,7 @@
 
 (procedure (localproc_0263 param1 param2)
 	(if (or (< argc 2) (not param1))
-		(MonoOut {error in GetLocX -- 30400.sc DJM})
+		(MonoOut LOOKUP_ERROR)
 		(return 0)
 	)
 	(return (param1 at: (* param2 2)))
@@ -82,7 +82,7 @@
 
 (procedure (localproc_02a7 param1 param2)
 	(if (or (< argc 2) (not param1))
-		(MonoOut {error in GetLocY -- 30400.sc DJM})
+		(MonoOut LOOKUP_ERROR)
 		(return 0)
 	)
 	(return (param1 at: (+ (* param2 2) 1)))
@@ -98,7 +98,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soExit)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -135,21 +135,21 @@
 		(= temp1 (localproc_02a7 local0 cel))
 		(if
 			(or
-				(!= temp0 (voBallsInBasket x?))
-				(!= temp1 (voBallsInBasket y?))
+				(!= temp0 (LOOKUP_ERROR x?))
+				(!= temp1 (LOOKUP_ERROR y?))
 			)
-			(voBallsInBasket posn: temp0 temp1)
-			(if (voBallsInBasket scratch?) (voBallsInBasket doit:))
+			(LOOKUP_ERROR posn: temp0 temp1)
+			(if ({oPutBallInBasket} scratch?) (LOOKUP_ERROR doit:))
 		)
 		(= temp0 (localproc_0263 local1 cel))
 		(= temp1 (localproc_02a7 local1 cel))
 		(if
 			(or
-				(!= temp0 (voTorinInBasket x?))
-				(!= temp1 (voTorinInBasket y?))
+				(!= temp0 (LOOKUP_ERROR x?))
+				(!= temp1 (LOOKUP_ERROR y?))
 			)
-			(voTorinInBasket posn: temp0 temp1)
-			(if (voTorinInBasket scratch?) (voTorinInBasket doit:))
+			(LOOKUP_ERROR posn: temp0 temp1)
+			(if ({soPutBallInBasket} scratch?) (LOOKUP_ERROR doit:))
 		)
 	)
 )
@@ -185,18 +185,15 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(50
-				(ego setScript: soPutBallInBasket)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(1
 				(if (>= (proc64001_4) 5)
 					(messager say: 1 1 2 0 0 -25336)
 					(return)
 				)
-				(if (== global250 0)
-					(MonoOut {tried to take ball from empty basket})
-					(return)
-				)
-				(ego setScript: soTakeBallFromBasket)
+				(if (== global250 0) (MonoOut LOOKUP_ERROR) (return))
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -212,9 +209,7 @@
 			(2
 				(super setRect: 143 144 198 172)
 			)
-			(else 
-				(MonoOut {prob in foSeeSawLeft setRect})
-			)
+			(else  (MonoOut LOOKUP_ERROR))
 		)
 	)
 )
@@ -232,9 +227,9 @@
 		(switch theVerb
 			(1
 				(if local2
-					(ego setScript: soJumpOutOfBasket)
+					(ego setScript: LOOKUP_ERROR)
 				else
-					(ego setScript: soJumpIntoBasket)
+					(ego setScript: LOOKUP_ERROR)
 				)
 			)
 		)
@@ -251,9 +246,7 @@
 			(2
 				(super setRect: 427 205 482 234)
 			)
-			(else 
-				(MonoOut {prob in foSeeSawRight setRect})
-			)
+			(else  (MonoOut LOOKUP_ERROR))
 		)
 	)
 )
@@ -272,7 +265,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: -23535
 					loop: 0
 					cel: 0
@@ -283,10 +276,10 @@
 			)
 			(3
 				(= local2 1)
-				(poTorin dispose:)
-				(voTorinInBasket init:)
-				(foSeeSawLeft dispose:)
-				(foExitToIsland dispose:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR dispose:)
 				(localproc_0090)
 				(theGame handsOn:)
 				(self dispose:)
@@ -303,15 +296,15 @@
 			(0
 				(theGame handsOff:)
 				(= local2 0)
-				(voTorinInBasket dispose:)
-				(foSeeSawLeft init:)
-				(foExitToIsland init:)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR init:)
 				(switch local3
 					(2 (= temp0 3))
 					(1 (= temp0 2))
 					(0 (= temp0 1))
 				)
-				(poTorin
+				(LOOKUP_ERROR
 					view: -23535
 					loop: temp0
 					cel: 0
@@ -322,7 +315,7 @@
 				(localproc_0090)
 			)
 			(1
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego oPanner: 1 -5436 0 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -345,7 +338,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: -23536
 					loop: 0
 					cel: 0
@@ -356,20 +349,20 @@
 			)
 			(3
 				(if (== local3 1) (= temp0 1) else (= temp0 2))
-				(poTorin loop: temp0 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: temp0 cel: 0 setCycle: End self)
 			)
 			(4
-				(if (== global250 0) (voBallsInBasket init:))
+				(if (== global250 0) (LOOKUP_ERROR init:))
 				(++ global250)
-				(voBallsInBasket cel: (- global250 1))
-				(if (== global250 6) (foSeeSawLeft setTotalWidth: 50))
-				(foSeeSawLeft setVisibleRange: 1)
+				(LOOKUP_ERROR cel: (- global250 1))
+				(if (== global250 6) (LOOKUP_ERROR setTotalWidth: 50))
+				(LOOKUP_ERROR setVisibleRange: 1)
 				(ego put: gInventItem)
 				(localproc_0090)
-				(poTorin loop: 4 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 4 cel: 0 setCycle: End self)
 			)
 			(5
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego oPanner: 1 -5436 0 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -392,10 +385,10 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: -23536
 					loop: 2
-					cel: (poTorin lastCel:)
+					cel: (LOOKUP_ERROR lastCel:)
 					posn: 171 250
 					init:
 					setCycle: Beg self
@@ -403,22 +396,22 @@
 			)
 			(3
 				(if (== (-- global250) 0)
-					(voBallsInBasket dispose:)
-					(foSeeSawLeft setTotalWidth: 1)
+					(LOOKUP_ERROR dispose:)
+					(LOOKUP_ERROR setTotalWidth: 1)
 				else
-					(voBallsInBasket cel: (- global250 1))
+					(LOOKUP_ERROR cel: (- global250 1))
 				)
-				(foSeeSawLeft setVisibleRange: 50)
+				(LOOKUP_ERROR setVisibleRange: 50)
 				(ego get: (proc64001_2))
 				(localproc_0090)
-				(poTorin
+				(LOOKUP_ERROR
 					loop: 0
-					cel: (poTorin lastCel:)
+					cel: (LOOKUP_ERROR lastCel:)
 					setCycle: Beg self
 				)
 			)
 			(4
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego oPanner: 1 -5436 3 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -435,7 +428,7 @@
 			(0
 				(theGame handsOff:)
 				(ego posn: -30 290 setMotion: MoveTo 30 290 self)
-				((ScriptID 64018 0) setScript: soBoogleWalkIn)
+				((ScriptID 64018 0) setScript: LOOKUP_ERROR)
 			)
 			(1
 				(theGame handsOn:)
@@ -471,7 +464,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poSeeSaw setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(1 (self dispose:))
 		)
@@ -484,7 +477,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poSeeSaw setCycle: Beg self)
+				(LOOKUP_ERROR setCycle: Beg self)
 			)
 			(1 (self dispose:))
 		)
@@ -497,7 +490,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poSeeSaw setCycle: CT 3 1 self)
+				(LOOKUP_ERROR setCycle: CT 3 1 self)
 			)
 			(1 (self dispose:))
 		)
@@ -510,7 +503,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poSeeSaw setCycle: CT 3 -1 self)
+				(LOOKUP_ERROR setCycle: CT 3 -1 self)
 			)
 			(1 (self dispose:))
 		)
@@ -524,7 +517,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -25336)
+		(theMusic pageSize: -25336)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -595,17 +588,17 @@
 				)
 		)
 		(localproc_01aa)
-		(poSeeSaw init:)
-		(foSeeSawLeft init:)
-		(foSeeSawRight init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(if global250
 			(= local3 0)
-			(poSeeSaw cel: 6)
+			(LOOKUP_ERROR cel: 6)
 		else
 			(= local3 1)
-			(poSeeSaw cel: 3)
+			(LOOKUP_ERROR cel: 3)
 		)
-		(foExitToIsland init:)
+		(LOOKUP_ERROR init:)
 		(ego init: oPanner: setScaler: Scaler 73 35 255 205)
 		((ScriptID 64018 0)
 			posn: 30 300
@@ -614,7 +607,7 @@
 			setScaler: Scaler 73 35 255 205
 		)
 		(theGame handsOn:)
-		(ego setScript: soWalkIn)
+		(ego setScript: LOOKUP_ERROR)
 	)
 	
 	(method (dispose)

@@ -60,7 +60,7 @@
 			(2 (= ticks 1))
 			(3
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20303
 					loop: 0
 					cel: 0
@@ -80,10 +80,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poTorin loop: 1 cel: 0 setCycle: End self)
+				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: End self)
 			)
 			(1
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(self dispose:)
 			)
@@ -97,12 +97,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(self setScript: soKneelAtTile self)
+				(self setScript: LOOKUP_ERROR self)
 				(messager sayRange: 0 0 1 1 2 self)
 			)
 			(1)
 			(2
-				(self setScript: soUnKneelAtTile self)
+				(self setScript: LOOKUP_ERROR self)
 				(messager say: 0 0 1 3 self)
 			)
 			(3)
@@ -134,7 +134,7 @@
 			)
 			(3
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					view: 20300
 					cel: 0
 					loop: 0
@@ -146,21 +146,21 @@
 			)
 			(4)
 			(5
-				(poTorin cel: 0 loop: 1 setCycle: CT 8 1 self)
+				(LOOKUP_ERROR cel: 0 loop: 1 setCycle: CT 8 1 self)
 				(ego put: ((ScriptID 64001 0) get: 8))
-				(Prints {missing anim of shard in roof})
-				(Prints {missing anim of rainbow on the wall})
+				(Prints LOOKUP_ERROR)
+				(Prints LOOKUP_ERROR)
 			)
 			(6
-				(poTorin setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 				(messager say: 1 12 0 7 self)
 			)
 			(7)
 			(8
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 276 290 show:)
 				(messager sayRange: 1 12 0 8 20 self)
-				(Prints {missing anim giving/getting invite})
+				(Prints LOOKUP_ERROR)
 				(ego get: ((ScriptID 64001 0) get: 24))
 				((ScriptID 64017 0) set: 52)
 			)
@@ -206,7 +206,7 @@
 						(++ global293)
 					)
 					(3
-						(curRoom initThumb: oThroneCUPlane)
+						(curRoom initThumb: 'LOOKUP_ERROR')
 						(++ global293)
 					)
 					(4
@@ -222,7 +222,7 @@
 				)
 			)
 			(12
-				(ego setScript: soGiveShardToKing)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -243,7 +243,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(poKing doVerb: theVerb)
+		(LOOKUP_ERROR doVerb: theVerb)
 	)
 )
 
@@ -299,7 +299,7 @@
 			)
 			(2
 				(ego hide:)
-				(poTorin
+				(LOOKUP_ERROR
 					cel: 0
 					loop: 0
 					view: 20301
@@ -309,9 +309,9 @@
 				)
 			)
 			(3
-				(voBeestLeg dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64017 0) set: 67)
-				(poTorin setCycle: CT 12 1 self)
+				(LOOKUP_ERROR setCycle: CT 12 1 self)
 			)
 			(4
 				(if ((ScriptID 64017 0) test: 67)
@@ -319,13 +319,13 @@
 				else
 					(messager say: 6 1 11 0 self)
 				)
-				(poTorin setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(5)
 			(6
 				(ego get: ((ScriptID 64001 0) get: 25))
 				((ScriptID 64017 0) set: 53)
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 110 266 loop: 8 cel: 4 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -353,7 +353,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soPickUpBeestLeg)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -366,8 +366,8 @@
 	
 	(method (doVerb)
 		(theGame handsOff:)
-		(curRoom arrowDown: oFloorTile)
-		(curRoom setScript: soUnKneelAtTile (ScriptID 64020 0))
+		(curRoom arrowDown: LOOKUP_ERROR)
+		(curRoom setScript: LOOKUP_ERROR (ScriptID 64020 0))
 	)
 )
 
@@ -385,7 +385,7 @@
 				(thePlane right:)
 				(thePlane bottom?)
 		)
-		(foFloorTileExit init:)
+		(LOOKUP_ERROR init:)
 	)
 )
 
@@ -396,11 +396,11 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(self setScript: soKneelAtTile self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(1
-				(curRoom initThumb: oFloorTile)
-				(poTorinCUView
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR
 					view: 20309
 					loop: 0
 					posn: 348 205
@@ -415,13 +415,13 @@
 				(messager say: 5 1 10 2 self)
 			)
 			(4
-				(poTorinCUView setCycle: CT 30 1 self)
+				(LOOKUP_ERROR setCycle: CT 30 1 self)
 			)
 			(5
 				(messager sayRange: 5 1 10 3 4 self)
 			)
 			(6
-				(poTorinCUView setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 				(messager sayRange: 5 1 10 5 6 self)
 			)
 			(7)
@@ -440,11 +440,11 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(self setScript: soKneelAtTile self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(1
-				(curRoom initThumb: oFloorTile)
-				(poTorinCUView
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR
 					cel: 0
 					loop: 0
 					view: 20306
@@ -454,12 +454,12 @@
 				(messager say: 5 1 9 0 self)
 			)
 			(2
-				(poTorinCUView setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(3
 				(ego get: ((ScriptID 64001 0) get: 22))
 				((ScriptID 64017 0) set: 50)
-				(foFloorTile dispose:)
+				(LOOKUP_ERROR dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -488,9 +488,9 @@
 	
 	(method (doVerb)
 		(if ((ScriptID 64017 0) test: 93)
-			(ego setScript: soPickUpFloorTile)
+			(ego setScript: LOOKUP_ERROR)
 		else
-			(ego setScript: soAttemptPickUpFloorTile)
+			(ego setScript: LOOKUP_ERROR)
 		)
 	)
 )
@@ -559,11 +559,11 @@
 			)
 			(1
 				(messager say: 1 1 7 11 self)
-				(poQueenCUView setCycle: CT 58 1 self)
+				(LOOKUP_ERROR setCycle: CT 58 1 self)
 			)
 			(2
-				(poTorinCUView setCycle: End self)
-				(poQueenCUView setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(3)
 			(4
@@ -628,7 +628,7 @@
 	(properties)
 	
 	(method (doVerb)
-		(curRoom arrowDown: oThroneCUPlane)
+		(curRoom arrowDown: LOOKUP_ERROR)
 	)
 )
 
@@ -646,16 +646,16 @@
 				(thePlane right:)
 				(thePlane bottom?)
 		)
-		(poKingCUView init: self)
-		(poQueenCUView init: self)
-		(poTorinCUView
+		(LOOKUP_ERROR init: self)
+		(LOOKUP_ERROR init: self)
+		(LOOKUP_ERROR
 			init: self
-			setPri: (- (poQueenCUView priority?) 1)
+			setPri: (- (LOOKUP_ERROR priority?) 1)
 		)
-		(poGirl1CUView init: self setCycle: Fwd)
-		(poGirl2CUView init: self setCycle: Fwd)
-		(foThroneCUExit init:)
-		(poKingCUView setScript: soThroneCUQueenSpeech)
+		(LOOKUP_ERROR init: self setCycle: Fwd)
+		(LOOKUP_ERROR init: self setCycle: Fwd)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -666,7 +666,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 20300)
+		(theMusic pageSize: 20300)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -675,17 +675,17 @@
 					yourself:
 				)
 		)
-		(poKing init:)
-		(poQueen init:)
-		(poGirl1Fanning init:)
-		(poGirl2Fanning init:)
-		(foCeilingTile init:)
-		(voBeestLeg init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
 		(if (not ((ScriptID 64017 0) test: 50))
-			(foFloorTile init:)
+			(LOOKUP_ERROR init:)
 		)
 		(= local0 0)
-		(foToCliffExit init:)
+		(LOOKUP_ERROR init:)
 		(theGame handsOff:)
 		(ego
 			oPanner:
@@ -694,7 +694,7 @@
 			init:
 		)
 		(if (not ((ScriptID 64017 0) test: 64))
-			(ego setScript: soHumbleBoy)
+			(ego setScript: LOOKUP_ERROR)
 		else
 			(ego setMotion: MoveTo 278 311 (ScriptID 64020 0))
 		)

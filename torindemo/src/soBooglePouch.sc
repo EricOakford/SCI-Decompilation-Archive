@@ -340,31 +340,31 @@ code_04b2:
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(self setScript: soMoveTorin self)
-				(oHereBoy
+				(self setScript: LOOKUP_ERROR self)
+				(LOOKUP_ERROR
 					approachX: local2
 					approachY: local3
 					toggle: self
 					init:
 				)
 				(if (not ((curRoom checkVerbHandlers?) size:))
-					(oBoogle oFace: 0)
+					(LOOKUP_ERROR oFace: 0)
 				)
-				(oBoogle bSwing: 1)
+				(LOOKUP_ERROR bSwing: 1)
 			)
 			(1)
 			(2
 				(if sb
 					((ScriptID 64018 0) setHeading: 270 self)
-					(poBooglePouch loop: 3)
+					(LOOKUP_ERROR loop: 3)
 				else
 					((ScriptID 64018 0) setHeading: 90 self)
-					(poBooglePouch loop: 2)
+					(LOOKUP_ERROR loop: 2)
 				)
 			)
 			(3
 				((ScriptID 64018 0) hide:)
-				(poBooglePouch
+				(LOOKUP_ERROR
 					setCel: 0
 					posn: (ego x?) (ego y?)
 					init:
@@ -372,7 +372,7 @@ code_04b2:
 				)
 			)
 			(4
-				(poBooglePouch dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego setMotion: PolyPath setNoScore unSet self)
 			)
 			(5 (ego setHeading: flag self))
@@ -396,10 +396,10 @@ code_04b2:
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(self setScript: soMoveTorin self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(1
-				(poBooglePouch
+				(LOOKUP_ERROR
 					loop: (if sb 0 else 1)
 					setCel: 0
 					posn: (ego x?) (ego y?)
@@ -408,7 +408,7 @@ code_04b2:
 				)
 			)
 			(2
-				(poBooglePouch dispose:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64017 0) clear: 144)
 				((ScriptID 64018 0)
 					oPanner:
@@ -468,11 +468,11 @@ code_04b2:
 	)
 	
 	(method (tile)
-		(oBoogle nSaveTime: self self)
+		(LOOKUP_ERROR nSaveTime: self self)
 	)
 	
 	(method (cue)
-		(oBoogle setScript: toggle oBoogleStartWandering)
+		(LOOKUP_ERROR setScript: toggle LOOKUP_ERROR)
 	)
 )
 
@@ -651,8 +651,8 @@ code_04b2:
 	
 	(method (rotate &tmp temp0 temp1 curRoomCheckVerbHandlers temp3 temp4 temp5 [temp6 3])
 		(self setMotion: 0)
-		(if (!= -1 (poBoogleTailFidget loop?))
-			(poBoogleTailFidget dispose:)
+		(if (!= -1 (LOOKUP_ERROR loop?))
+			(LOOKUP_ERROR dispose:)
 		)
 		(= oFace (Random 50 250))
 		(= temp1 (Random 1 100))
@@ -678,25 +678,25 @@ code_04b2:
 			)
 			(
 				(and
-					(!= mover oBoogleChase)
+					(!= mover LOOKUP_ERROR)
 					(> (= temp4 (self distanceTo: ego)) 200)
 				)
 				(self
-					setMotion: oBoogleChase ego 40 oBoogleStartWandering
+					setMotion: LOOKUP_ERROR ego 40 oBoogleStartWandering
 				)
 			)
-			((and (< temp1 10) (!= oBoogleWander mover)) (self setMotion: oBoogleWander 80))
-			((and (< temp1 15) (!= oBoogleOrbit mover))
+			((and (< temp1 10) (!= LOOKUP_ERROR mover)) (self setMotion: LOOKUP_ERROR 80))
+			((and (< temp1 15) (!= LOOKUP_ERROR mover))
 				(self
 					setMotion:
-						oBoogleOrbit
+						LOOKUP_ERROR
 						ego
 						40
 						(GetAngle (ego x?) (ego y?) x y)
 						(if (& $0001 temp1) -15 else 15)
 				)
 			)
-			((< temp1 0) (poBoogleTailFidget init:))
+			((< temp1 0) (LOOKUP_ERROR init:))
 		)
 	)
 	
@@ -721,14 +721,14 @@ code_04b2:
 	
 	(method (init)
 		(if ((ScriptID 64017 0) test: 144)
-			(Prints {ERROR: Boogle init'ed while inside the pouch})
+			(Prints LOOKUP_ERROR)
 		)
 		(super init: &rest)
 	)
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (Prints {Wow}))
+			(1 (Prints LOOKUP_ERROR))
 			(else 
 				(super doVerb: theVerb &rest)
 			)
@@ -765,6 +765,6 @@ code_04b2:
 	
 	(method (tile)
 		(curRoom newTarget: self)
-		(oBoogle nSaveTime: self toggle)
+		(LOOKUP_ERROR nSaveTime: self toggle)
 	)
 )

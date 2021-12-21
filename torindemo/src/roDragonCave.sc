@@ -25,9 +25,9 @@
 				(theGame handsOff:)
 				(if ((ScriptID 64017 0) test: 68)
 					(if ((ScriptID 64017 0) test: 69)
-						(self setScript: soBoogleWormOut self)
+						(self setScript: LOOKUP_ERROR self)
 					else
-						(self setScript: soBoogleWormOutNoPoo self)
+						(self setScript: LOOKUP_ERROR self)
 					)
 				else
 					(self cue:)
@@ -54,7 +54,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTorinLeaveRoom)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -101,7 +101,7 @@
 		(switch theVerb
 			(1
 				(if (not ((ScriptID 64017 0) test: 68))
-					(ego setScript: soOpenPooDoor)
+					(ego setScript: LOOKUP_ERROR)
 				)
 			)
 			(43
@@ -109,17 +109,17 @@
 					(if ((ScriptID 64017 0) test: 69)
 						(messager say: 1 43 2 0)
 					else
-						(ego setScript: soBoogleWormIn)
+						(ego setScript: LOOKUP_ERROR)
 					)
 				)
 			)
 			(45
 				(if ((ScriptID 64017 0) test: 68)
 					(if ((ScriptID 64017 0) test: 69)
-						(voDarkness hide:)
-						(poBoogle show:)
+						(LOOKUP_ERROR hide:)
+						(LOOKUP_ERROR show:)
 					else
-						(ego setScript: soBoogleLamp)
+						(ego setScript: {soBoogleWormIn})
 					)
 				)
 			)
@@ -136,7 +136,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(foDarkness init: oDragonScrollPlane)
+		(LOOKUP_ERROR init: LOOKUP_ERROR)
 		(self show:)
 	)
 	
@@ -144,26 +144,26 @@
 		(super show:)
 		(if (ego has: ((ScriptID 64001 0) get: 17))
 			(if ((ScriptID 64017 0) test: 68)
-				(foDarkness setVisibleRange: 45)
-				(foDarkness setTotalWidth: 43)
-				(foLight setVisibleRange: 43)
-				(foLight setTotalWidth: 45 44)
+				(LOOKUP_ERROR setVisibleRange: 45)
+				(LOOKUP_ERROR setTotalWidth: 43)
+				(LOOKUP_ERROR setVisibleRange: 43)
+				(LOOKUP_ERROR setTotalWidth: 45 44)
 			else
-				(foDarkness setTotalWidth: 45)
-				(foDarkness setVisibleRange: 43)
-				(foLight setTotalWidth: 43)
-				(foLight setVisibleRange: 45 44)
+				(LOOKUP_ERROR setTotalWidth: 45)
+				(LOOKUP_ERROR setVisibleRange: 43)
+				(LOOKUP_ERROR setTotalWidth: 43)
+				(LOOKUP_ERROR setVisibleRange: 45 44)
 			)
 		else
-			(foDarkness setTotalWidth: 43 45)
+			(LOOKUP_ERROR setTotalWidth: 43 45)
 		)
-		(foPoo dispose:)
+		(LOOKUP_ERROR dispose:)
 	)
 	
 	(method (hide)
 		(super hide:)
-		(foDarkness setTotalWidth: 45)
-		(foPoo init: oDragonScrollPlane)
+		(LOOKUP_ERROR setTotalWidth: 45)
+		(LOOKUP_ERROR init: LOOKUP_ERROR)
 	)
 )
 
@@ -176,9 +176,9 @@
 				(messager say: 1 43 5 1 self)
 			)
 			(1
-				(voDarkness show:)
-				(oDragonScrollPlane sitNSpin: 316 0 self)
-				(poBoogle
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR sitNSpin: 316 0 self)
+				(LOOKUP_ERROR
 					setCel: 0
 					setLoop: 3
 					posn: 373 169
@@ -192,8 +192,8 @@
 			)
 			(4
 				((ScriptID 64017 0) clear: 68)
-				(voDarkness show:)
-				(poBoogle dispose:)
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR dispose:)
 				((ScriptID 64018 0) posn: 882 214 show:)
 				(self dispose:)
 			)
@@ -208,7 +208,7 @@
 		(switch (= state newState)
 			(0
 				(messager say: 3 43 6 1 self)
-				(oDragonScrollPlane sitNSpin: 316 0 self)
+				(LOOKUP_ERROR sitNSpin: 316 0 self)
 			)
 			(1)
 			(2
@@ -216,8 +216,8 @@
 			)
 			(3 (ego setHeading: 270 self))
 			(4
-				(voDarkness show:)
-				(poBoogle
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR
 					setCel: 0
 					setLoop: 3
 					posn: 373 169
@@ -227,7 +227,7 @@
 			)
 			(5
 				(ego hide:)
-				(poBoogle
+				(LOOKUP_ERROR
 					setCel: 0
 					setLoop: 4
 					posn: 900 205
@@ -237,7 +237,7 @@
 			)
 			(6)
 			(7
-				(poBoogle dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				((ScriptID 64017 0) set: 144)
 				((ScriptID 64018 0) dispose:)
@@ -245,7 +245,7 @@
 				(ego get: ((ScriptID 64001 0) get: 26))
 				((ScriptID 64017 0) set: 54)
 				((ScriptID 64017 0) clear: 68)
-				(voDarkness show:)
+				(LOOKUP_ERROR show:)
 				(self dispose:)
 			)
 		)
@@ -270,14 +270,14 @@
 				(messager say: 3 45 5 1 self)
 			)
 			(1
-				(poBoogle
+				(LOOKUP_ERROR
 					setLoop: 1
 					setCel: 0
 					posn: 256 180
 					setCycle: End
 				)
-				(sound1 lThumbLoop: 20403)
-				(voDarkness hide:)
+				(theSound lThumbLoop: 20403)
+				(LOOKUP_ERROR hide:)
 				((ScriptID 64017 0) set: 71)
 				(messager say: 3 45 5 2 self)
 			)
@@ -300,7 +300,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(oDragonScrollPlane sitNSpin: 316 0 self)
+				(LOOKUP_ERROR sitNSpin: 316 0 self)
 				(messager say: 1 43 7 1 self)
 			)
 			(1)
@@ -326,7 +326,7 @@
 			)
 			(5
 				((ScriptID 64018 0) hide:)
-				(poBoogle
+				(LOOKUP_ERROR
 					loop: 0
 					cel: 0
 					posn: 650 204
@@ -335,16 +335,16 @@
 				)
 			)
 			(6
-				(sound1 lThumbLoop: 20404)
-				(poBoogle setCycle: CT 24 1 self)
+				(theSound lThumbLoop: 20404)
+				(LOOKUP_ERROR setCycle: CT 24 1 self)
 			)
 			(7
-				(sound1 stop:)
-				(poBoogle setCycle: End self)
+				(theSound stop:)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(8
 				(messager say: 1 43 7 3 self)
-				(oDragonScrollPlane sitNSpin: 0 0 self)
+				(LOOKUP_ERROR sitNSpin: 0 0 self)
 			)
 			(9)
 			(10
@@ -353,7 +353,7 @@
 			(11
 				((ScriptID 64017 0) set: 70)
 				((ScriptID 64017 0) set: 68)
-				(voDarkness show:)
+				(LOOKUP_ERROR show:)
 				(ego get: ((ScriptID 64001 1) get: 2))
 				(theGame handsOn:)
 				(self dispose:)
@@ -369,29 +369,29 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(oDragonScrollPlane sitNSpin: 0 0 self)
+				(LOOKUP_ERROR sitNSpin: 0 0 self)
 				(messager say: 3 44 4 1 self)
 			)
 			(1)
 			(2
-				(poBoogle setLoop: 2 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setLoop: 2 setCel: 0 setCycle: End self)
 			)
 			(3
 				(messager say: 3 44 4 2 self)
 			)
 			(4
-				(voDarkness show:)
-				(poBoogle setLoop: 1 setCel: 1 hide:)
-				(sound1 lThumbLoop: 20403)
+				(LOOKUP_ERROR show:)
+				(LOOKUP_ERROR setLoop: 1 setCel: 1 hide:)
+				(theSound lThumbLoop: 20403)
 				(messager say: 3 44 4 3 self)
 			)
 			(5
-				(sound1 lThumbLoop: 20402 self)
+				(theSound lThumbLoop: 20402 self)
 			)
 			(6
 				(ego get: ((ScriptID 64001 1) get: 4))
 				((ScriptID 64017 0) set: 69)
-				(voDarkness show:)
+				(LOOKUP_ERROR show:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -465,7 +465,7 @@
 			(if ((ScriptID 64017 0) test: 69)
 				(messager say: 3 44 2 0)
 			else
-				(ego setScript: soBoogleTakePoo)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
 	)
@@ -486,43 +486,43 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(oDragonScrollPlane sitNSpin: 316 0 self)
+				(LOOKUP_ERROR sitNSpin: 316 0 self)
 			)
 			(1
 				(ego hide:)
-				(poTorin init: setCycle: CT 30 1 self)
+				(LOOKUP_ERROR init: setCycle: CT 30 1 self)
 			)
 			(2
 				(messager say: 1 1 1 1 self)
-				(poTorin setCycle: CT 48 1 self)
+				(LOOKUP_ERROR setCycle: CT 48 1 self)
 			)
 			(3)
 			(4
-				(voPooDoor dispose:)
+				(LOOKUP_ERROR dispose:)
 				(messager say: 1 1 1 2 self)
 			)
 			(5
-				(poTorin setCycle: CT 56 1 self)
-				(sound1 lThumbLoop: 20401)
+				(LOOKUP_ERROR setCycle: CT 56 1 self)
+				(theSound lThumbLoop: 20401)
 			)
 			(6
 				(ego get: ((ScriptID 64001 0) get: 17))
-				(poTorin setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 				(messager say: 1 1 1 3 self)
 			)
 			(7)
 			(8
-				(poTorin setCel: 0 setLoop: 1 setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 setLoop: 1 setCycle: End self)
 				(messager say: 1 1 1 4 self)
 			)
 			(9)
 			(10
-				(poTorin setLoop: 0 setCel: 46 setCycle: Beg self)
+				(LOOKUP_ERROR setLoop: 0 setCel: 46 setCycle: Beg self)
 			)
 			(11
-				(voDarkness show:)
+				(LOOKUP_ERROR show:)
 				(ego show:)
-				(poTorin dispose:)
+				(LOOKUP_ERROR dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -545,7 +545,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: soOpenPooDoor)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(43 (messager say: 1 43 1 0))
 		)
@@ -601,10 +601,10 @@
 			(43
 				(if ((ScriptID 64017 0) test: 69)
 					(theGame handsOff:)
-					(ego setScript: soBoogleWormOut (ScriptID 64020 0))
+					(ego setScript: LOOKUP_ERROR (ScriptID 64020 0))
 				else
 					(theGame handsOff:)
-					(ego setScript: soBoogleWormOutNoPoo (ScriptID 64020 0))
+					(ego setScript: LOOKUP_ERROR (ScriptID 64020 0))
 				)
 			)
 			(45 (messager say: 1 45 0 0))
@@ -637,12 +637,9 @@
 	(method (init)
 		(super init: &rest)
 		(= plane
-			(oDragonScrollPlane
-				init: 948 (thePlane doDouble:)
-				yourself:
-			)
+			(LOOKUP_ERROR init: 948 (thePlane doDouble:) yourself:)
 		)
-		(music1 pageSize: 20400)
+		(theMusic pageSize: 20400)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -652,12 +649,12 @@
 				)
 		)
 		((ScriptID 64017 0) clear: 68)
-		(foLight init: oDragonScrollPlane)
-		(voDarkness init: oDragonScrollPlane)
+		(LOOKUP_ERROR init: LOOKUP_ERROR)
+		(LOOKUP_ERROR init: LOOKUP_ERROR)
 		(if (not (ego has: ((ScriptID 64001 0) get: 17)))
-			(voPooDoor init: oDragonScrollPlane)
+			(LOOKUP_ERROR init: LOOKUP_ERROR)
 		)
-		(foToCliffExit init:)
+		(LOOKUP_ERROR init:)
 		(ego oPanner: setHeading: 225 posn: 915 216 init:)
 		(if (!= prevRoomNum 20100)
 			((ScriptID 64017 0) set: 144)

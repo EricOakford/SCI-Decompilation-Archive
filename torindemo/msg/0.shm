@@ -1,0 +1,19 @@
+;;; Sierra Script
+;;; 0.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; NOUNS
+
+
+;;; CASES
+
+(define C_CONTINUE 1)
+(define C_PAUSED 2)
+(define C_SCROLL_OFF 3)
+(define C_SCROLL_ON 4)
+(define C_CAPTIONS_OFF 5)
+(define C_CAPTIONS_ON 6)
+(define C_OOPS 7)
+(define C_QUIT 8)
+(define C_PROMPT_QUIT 9)
+

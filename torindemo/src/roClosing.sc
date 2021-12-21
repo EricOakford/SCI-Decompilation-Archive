@@ -16,7 +16,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Prints {The End})
+				(Prints LOOKUP_ERROR)
 				(= cycles 1)
 			)
 			(1 (curRoom newRoom: -4436))
@@ -29,8 +29,8 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 0)
-		(curRoom setScript: soPlayMovie)
+		(theMusic pageSize: 0)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

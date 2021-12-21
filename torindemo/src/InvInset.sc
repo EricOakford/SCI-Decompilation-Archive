@@ -5,7 +5,7 @@
 (use Script)
 (use TranslucentPlane)
 (use ModalPlane)
-(use PushButton)
+(use Button)
 (use Plane)
 (use Print)
 (use Polygon)
@@ -31,16 +31,11 @@
 )
 (procedure (proc64897_2 param1)
 	(if (and theGInventItem (== param1 theView))
-		(if (not theView)
-			(MonoOut
-				{Big error -- inconsistent vars in invinset. djm}
-			)
-			(return)
-		)
+		(if (not theView) (MonoOut {LOOKUP\_ERROR}) (return))
 		(theGInventItem moveTo: -3)
 		(= theGInventItem 0)
 		(theView view: -5531 loop: 0 cel: 0)
-		(oRotInv dispose:)
+		(LOOKUP_ERROR dispose:)
 	)
 )
 
@@ -61,9 +56,9 @@
 				((ScriptID 64001 0) get: 35)
 				((ScriptID 64001 0) get: 36)
 			)
-			(poRotView
+			(LOOKUP_ERROR
 				setVisibleRange: 1
-				signal: (& (poRotView signal?) $efff)
+				signal: (& (LOOKUP_ERROR signal?) $efff)
 			)
 		)
 	)
@@ -88,7 +83,7 @@
 				)
 				(= view (theGInventItem oParent?))
 				(theGInventItem moveTo: -4)
-				(voEye
+				(LOOKUP_ERROR
 					view: (theGInventItem bHilited?)
 					loop: (theGInventItem bChecked?)
 					cel: (theGInventItem oChildren?)
@@ -146,7 +141,7 @@
 			(== theGInventItem ((ScriptID 64001 0) get: 52))
 				(curRoom arrowDown: (ScriptID 56000 1))
 			else
-				(oRotInv dispose:)
+				(LOOKUP_ERROR dispose:)
 			)
 			(theGInventItem moveTo: -2)
 			(= theGInventItem 0)
@@ -166,7 +161,7 @@
 			(== theGInventItem ((ScriptID 64001 0) get: 52))
 				(curRoom initThumb: (ScriptID 56000 1))
 			else
-				(oRotInv init:)
+				(LOOKUP_ERROR init:)
 			)
 		)
 	)
@@ -212,9 +207,9 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(poDarkerPlane init:)
-				(poRotView init: (oRotInv nSpeed:))
-				(oRotateForward slotIncY: 1 oVerbs:)
+				(LOOKUP_ERROR init:)
+				({oButtonGroup} init: (LOOKUP_ERROR nSpeed:))
+				(LOOKUP_ERROR slotIncY: 1 oVerbs:)
 				(theGame handsOn:)
 			)
 		)
@@ -238,7 +233,7 @@
 				(thePlane right:)
 				(thePlane bottom?)
 		)
-		(foOpaque init: self)
+		(LOOKUP_ERROR init: self)
 	)
 )
 
@@ -250,42 +245,37 @@
 	
 	(method (init &tmp temp0 [temp1 3])
 		(super init: 16 8 616 408 &rest)
-		(if (not theGInventItem)
-			(Prints
-				{attempt to bring up rotating view with non-item. invinset.sc djm}
-			)
-			(return)
-		)
-		(oRotateReverse init: (ScriptID 64002 1))
-		(oStepReverse init: (ScriptID 64002 1))
-		(oStop init: (ScriptID 64002 1))
-		(oStepForward init: (ScriptID 64002 1))
-		(oRotateForward init: (ScriptID 64002 1))
-		(oButtonGroup init:)
+		(if (not theGInventItem) (Prints LOOKUP_ERROR) (return))
+		(LOOKUP_ERROR init: (ScriptID 64002 1))
+		(LOOKUP_ERROR init: (ScriptID 64002 1))
+		(LOOKUP_ERROR init: (ScriptID 64002 1))
+		(LOOKUP_ERROR init: (ScriptID 64002 1))
+		(LOOKUP_ERROR init: (ScriptID 64002 1))
+		(LOOKUP_ERROR init:)
 		((ScriptID 64002 5) hide:)
 		((ScriptID 64002 4) hide:)
 		((ScriptID 64002 6) hide:)
 		(= temp0 (theGInventItem oParent?))
-		(poRotView
+		(LOOKUP_ERROR
 			view: temp0
 			setPri: 100
-			setScript: soScanObject
+			setScript: LOOKUP_ERROR
 		)
 		(UpdatePlane self)
 	)
 	
 	(method (dispose)
-		(oRotateReverse dispose:)
-		(oStepReverse dispose:)
-		(oStop dispose:)
-		(oStepForward dispose:)
-		(oRotateForward dispose:)
-		(oButtonGroup dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
+		(LOOKUP_ERROR dispose:)
 		((ScriptID 64002 5) show:)
 		((ScriptID 64002 4) show:)
 		((ScriptID 64002 6) show:)
-		(if (poDarkerPlane nScreenSizeX?)
-			(poDarkerPlane dispose:)
+		(if (LOOKUP_ERROR nScreenSizeX?)
+			(LOOKUP_ERROR dispose:)
 		)
 		(super dispose: &rest)
 	)
@@ -297,7 +287,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0 (= cycles 2))
-			(1 (oRotInv dispose:))
+			(1 (LOOKUP_ERROR dispose:))
 		)
 	)
 )
@@ -312,7 +302,7 @@
 	)
 	
 	(method (oVerbs)
-		(poRotView setCycle: Fwd)
+		(LOOKUP_ERROR setCycle: Fwd)
 	)
 )
 
@@ -326,35 +316,35 @@
 	)
 	
 	(method (oVerbs)
-		(poRotView setCycle: 0)
-		(oRotateReverse slotIncY: 0)
-		(oRotateForward slotIncY: 0)
+		(LOOKUP_ERROR setCycle: 0)
+		(LOOKUP_ERROR slotIncY: 0)
+		(LOOKUP_ERROR slotIncY: 0)
 	)
 	
 	(method (oMyHandler)
-		(poRotView setCycle: 0)
+		(LOOKUP_ERROR setCycle: 0)
 		(if
 			(>
-				(= poRotViewSel_256 (+ (poRotView cel:) 1))
-				(poRotView lastCel:)
+				(= poRotViewSel_256 (+ (LOOKUP_ERROR cel:) 1))
+				(LOOKUP_ERROR lastCel:)
 			)
 			(= poRotViewSel_256 0)
 		)
-		(poRotView cel: poRotViewSel_256)
+		(LOOKUP_ERROR cel: poRotViewSel_256)
 		(= local2 (+ gameTime 20))
 	)
 	
 	(method (addSelfToCursorList)
 		(if (> gameTime local2)
-			(poRotView setCycle: 0)
+			(LOOKUP_ERROR setCycle: 0)
 			(if
 				(>
-					(= poRotViewSel_256 (+ (poRotView cel:) 1))
-					(poRotView lastCel:)
+					(= poRotViewSel_256 (+ (LOOKUP_ERROR cel:) 1))
+					(LOOKUP_ERROR lastCel:)
 				)
 				(= poRotViewSel_256 0)
 			)
-			(poRotView cel: poRotViewSel_256)
+			(LOOKUP_ERROR cel: poRotViewSel_256)
 			(= local2 (+ gameTime 5))
 		)
 	)
@@ -370,9 +360,9 @@
 	)
 	
 	(method (oVerbs)
-		(poRotView setCycle: 0)
-		(oRotateReverse slotIncY: 0)
-		(oRotateForward slotIncY: 0)
+		(LOOKUP_ERROR setCycle: 0)
+		(LOOKUP_ERROR slotIncY: 0)
+		(LOOKUP_ERROR slotIncY: 0)
 	)
 )
 
@@ -386,28 +376,28 @@
 	)
 	
 	(method (oVerbs)
-		(poRotView setCycle: 0)
-		(oRotateReverse slotIncY: 0)
-		(oRotateForward slotIncY: 0)
+		(LOOKUP_ERROR setCycle: 0)
+		(LOOKUP_ERROR slotIncY: 0)
+		(LOOKUP_ERROR slotIncY: 0)
 	)
 	
 	(method (oMyHandler)
-		(poRotView setCycle: 0)
+		(LOOKUP_ERROR setCycle: 0)
 		(if
-		(< (= poRotViewSel_256 (- (poRotView cel:) 1)) 0)
-			(= poRotViewSel_256 (poRotView lastCel:))
+		(< (= poRotViewSel_256 (- (LOOKUP_ERROR cel:) 1)) 0)
+			(= poRotViewSel_256 (LOOKUP_ERROR lastCel:))
 		)
-		(poRotView cel: poRotViewSel_256)
+		(LOOKUP_ERROR cel: poRotViewSel_256)
 		(= local2 (+ gameTime 20))
 	)
 	
 	(method (addSelfToCursorList)
 		(if (> gameTime local2)
 			(if
-			(< (= poRotViewSel_256 (- (poRotView cel:) 1)) 0)
-				(= poRotViewSel_256 (poRotView lastCel:))
+			(< (= poRotViewSel_256 (- (LOOKUP_ERROR cel:) 1)) 0)
+				(= poRotViewSel_256 (LOOKUP_ERROR lastCel:))
 			)
-			(poRotView cel: poRotViewSel_256)
+			(LOOKUP_ERROR cel: poRotViewSel_256)
 			(= local2 (+ gameTime 5))
 		)
 	)
@@ -423,7 +413,7 @@
 	)
 	
 	(method (oVerbs)
-		(poRotView setCycle: Rev)
+		(LOOKUP_ERROR setCycle: Rev)
 	)
 )
 
@@ -432,6 +422,6 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self add: oRotateReverse oRotateForward)
+		(self add: LOOKUP_ERROR LOOKUP_ERROR)
 	)
 )

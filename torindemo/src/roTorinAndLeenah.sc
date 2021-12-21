@@ -23,7 +23,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Prints {Mushy love scene})
+				(Prints LOOKUP_ERROR)
 				(ego get: ((ScriptID 64001 1) get: 6))
 				(self dispose:)
 				(curRoom newRoom: 30400)
@@ -42,19 +42,19 @@
 					(self cue:)
 					(return)
 				)
-				(= temp0 (+ (voWaterfall x?) local3))
-				(MonoOut {newx %d} temp0)
+				(= temp0 (+ (LOOKUP_ERROR x?) local3))
+				(MonoOut LOOKUP_ERROR temp0)
 				(if (> temp0 0) (= temp0 0))
-				(MonoOut {newx %d} temp0)
-				(voWaterfall x: temp0 scaleX: local0 scaleY: local0)
+				(MonoOut LOOKUP_ERROR temp0)
+				(LOOKUP_ERROR x: temp0 scaleX: local0 scaleY: local0)
 				(if (== temp0 -45) (-- local3))
 				(= ticks 8)
 				(= state -1)
 			)
 			(1
-				(voWaterfall dispose:)
+				(LOOKUP_ERROR dispose:)
 				(curRoom picture: 30305 drawPic: 30305)
-				(self setScript: soRunAnim self)
+				(self setScript: LOOKUP_ERROR self)
 			)
 			(2 (self dispose:))
 		)
@@ -76,7 +76,7 @@
 		(= local2 64)
 		(= local1 1)
 		(= local3 10)
-		(voWaterfall
+		(LOOKUP_ERROR
 			x: -315
 			setScale:
 			maxScale: 128
@@ -84,8 +84,8 @@
 			scaleY: local0
 			init:
 		)
-		(music1 pageSize: 30300)
-		(curRoom setScript: soZoomAndPan)
+		(theMusic pageSize: 30300)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (setWander)

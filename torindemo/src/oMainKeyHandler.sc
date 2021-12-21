@@ -3,7 +3,7 @@
 (include sci.sh)
 (use Main)
 (use soBooglePouch)
-(use NewUser)
+(use Events)
 (use Print)
 (use System)
 
@@ -21,9 +21,7 @@
 	
 	(method (handleEvent event &tmp theGameOCantBeHereHandler)
 		(if (not (& (event type?) $000c))
-			(Prints
-				{Attempt to execute key handler with non-key event. DJM keys.sc}
-			)
+			(Prints {oMainKeyHandler})
 			(return)
 		)
 		(if (not (& (event type?) evKEYBOARD)) (return))

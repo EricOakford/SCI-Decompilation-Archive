@@ -45,7 +45,7 @@
 	)
 	
 	(method (doVerb)
-		(ego nSaveTime: self oToConsole)
+		(ego nSaveTime: self LOOKUP_ERROR)
 	)
 )
 
@@ -56,13 +56,13 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(Prints {Animation of portal opening})
+				(Prints LOOKUP_ERROR)
 				(self cue:)
 			)
 			(1
 				(theGame handsOn:)
-				(foPhenocryst init:)
-				(ego oFlagValues: oRSDHandler)
+				({oTransport} init:)
+				(ego oFlagValues: LOOKUP_ERROR)
 				(self dispose:)
 			)
 		)
@@ -85,7 +85,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(13
-				(curRoom setScript: soTransport)
+				(curRoom setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -100,7 +100,7 @@
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb 13)
-				(curRoom setScript: soTransport)
+				(curRoom setScript: 'LOOKUP_ERROR')
 				(return 1)
 			else
 				(return 0)
@@ -116,9 +116,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(Prints
-					{Animation of Torin transporting (no placeholder anim)}
-				)
+				(Prints LOOKUP_ERROR)
 				(self cue:)
 			)
 			(1 (curRoom newRoom: -15536))
@@ -133,7 +131,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: -24636)
+		(theMusic pageSize: -24636)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -184,7 +182,7 @@
 		(switch prevRoomNum
 			(-22536
 				(ego
-					posn: (foConsole approachX?) (foConsole approachY?)
+					posn: (LOOKUP_ERROR approachX?) (LOOKUP_ERROR approachY?)
 					scrollTo:
 					init:
 					oPanner:
@@ -192,14 +190,14 @@
 				)
 				((ScriptID 64018 0) posn: 147 317 init: oPanner:)
 				(if ((ScriptID 64017 0) test: 108)
-					(ego setScript: soPortalOpens)
+					(ego setScript: LOOKUP_ERROR)
 				else
-					(foConsole init:)
+					(LOOKUP_ERROR init:)
 				)
 			)
 			(else 
 				(theGame handsOff:)
-				(foConsole init:)
+				(LOOKUP_ERROR init:)
 				(ego
 					posn: 313 456
 					init:

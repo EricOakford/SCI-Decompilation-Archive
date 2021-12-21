@@ -58,18 +58,18 @@
 			(10100
 				(ego posn: 310 340 loop: 3)
 				((ScriptID 64018 0) posn: 360 340 loop: 3)
-				(ego setScript: soForestToExt)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(15000
 				(ego posn: 300 235 loop: 2)
 				((ScriptID 64018 0) posn: 360 235 loop: 2)
-				(ego setScript: soExtToForest)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(ego posn: 310 340 loop: 3)
-				(ego setScript: soForestToExt)
+				(ego setScript: LOOKUP_ERROR)
 			)
 		)
-		(music1 pageSize: 15800)
+		(theMusic pageSize: 15800)
 	)
 )

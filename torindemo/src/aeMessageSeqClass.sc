@@ -50,7 +50,7 @@
 				(whoToCue case?)
 				seq
 			)
-			(MonoOut {seq %d = %d} seq temp0)
+			(MonoOut LOOKUP_ERROR seq temp0)
 		)
 		(param1 isButtonDown: param2 vTiles (+ vTiles bmpOff))
 	)
@@ -89,7 +89,7 @@
 		(= newStr_6 (Str new:))
 		(= newStr_7 (Str new:))
 		(newStr
-			format: {%d} ((whoToCue bTileBorder?) normalize?)
+			format: LOOKUP_ERROR ((whoToCue bTileBorder?) normalize?)
 		)
 		(Print
 			x: 20
@@ -99,23 +99,27 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: {Message Edit}
-			addText: {Tick} temp7 temp9
+			addTitle: LOOKUP_ERROR
+			addText: LOOKUP_ERROR temp7 temp9
 			addEdit: newStr 5 temp8 temp9
 			first: 3
-			addText: {Noun} temp7 (= temp9 (+ temp9 temp10))
-			addEdit: newStr_2 5 temp8 (newStr_7 format: {%hu} (curRoom number?))
-			addText: {Verb} temp7 (= temp9 (+ temp9 temp10))
-			addEdit: newStr_3 5 temp8 (newStr_6 format: {%d} 1)
-			addText: {Case} temp7 (= temp9 (+ temp9 temp10))
-			addEdit: newStr_4 5 temp8 (newStr_5 format: {%d} 1)
-			addText: {Start Seq} temp7 (= temp9 (+ temp9 temp10))
-			addEdit: newStr_5 5 temp8 (newStr_4 format: {%d} 0)
-			addText: {Stop Seq} temp7 (= temp9 (+ temp9 temp10))
-			addEdit: newStr_6 5 temp8 (newStr_3 format: {%d} 1)
-			addText: {Module} temp7 (= temp9 (+ temp9 temp10))
-			addEdit: newStr_7 5 temp8 (newStr_2 format: {%d} 1)
-			addButton: -1 {CANCEL} temp7 (= temp9 (+ temp9 temp10))
+			addText: LOOKUP_ERROR temp7 (= temp9 (+ temp9 temp10))
+			addEdit:
+				newStr_2
+				5
+				temp8
+				(newStr_7 format: LOOKUP_ERROR (curRoom number?))
+			addText: LOOKUP_ERROR temp7 (= temp9 (+ temp9 temp10))
+			addEdit: newStr_3 5 temp8 (newStr_6 format: LOOKUP_ERROR 1)
+			addText: LOOKUP_ERROR temp7 (= temp9 (+ temp9 temp10))
+			addEdit: newStr_4 5 temp8 (newStr_5 format: LOOKUP_ERROR 1)
+			addText: LOOKUP_ERROR temp7 (= temp9 (+ temp9 temp10))
+			addEdit: newStr_5 5 temp8 (newStr_4 format: LOOKUP_ERROR 0)
+			addText: LOOKUP_ERROR temp7 (= temp9 (+ temp9 temp10))
+			addEdit: newStr_6 5 temp8 (newStr_3 format: LOOKUP_ERROR 1)
+			addText: LOOKUP_ERROR temp7 (= temp9 (+ temp9 temp10))
+			addEdit: newStr_7 5 temp8 (newStr_2 format: LOOKUP_ERROR 1)
+			addButton: -1 LOOKUP_ERROR temp7 (= temp9 (+ temp9 temp10))
 		)
 		(if (> (= printInit (Print init:)) 0)
 			(if (>= (= newStrAsInteger (newStr asInteger:)) 0)
@@ -126,17 +130,10 @@
 				(= deleteHotspotVerb (newStr_6 asInteger:))
 				(= testHotspotVerb (newStr_7 asInteger:))
 				(if
-					(Message
-						msgGET
-						testHotspotVerb
-						noun
-						verb
-						case
-						addHotspotVerb
-					)
+				(Message 0 testHotspotVerb noun verb case addHotspotVerb)
 					(nCutoff
 						format:
-							{%d/%s = %s: %hu/%d/%d/%d from %d to %d}
+							LOOKUP_ERROR
 							getBitmap
 							name
 							nSpecialSelector
@@ -172,13 +169,13 @@
 							doHeld: aeMessageSeqClass newStrAsInteger theAddHotspotVerb temp14
 						)
 						(= newStrAsInteger (+ newStrAsInteger temp14 21))
-						(newStr format: {, %d} newStrAsInteger)
+						(newStr format: LOOKUP_ERROR newStrAsInteger)
 						(nCutoff cat: newStr)
 						(++ theAddHotspotVerb)
 					)
 				else
 					(MonoOut
-						{Message %d %d %d %d %d not found}
+						LOOKUP_ERROR
 						testHotspotVerb
 						noun
 						verb
@@ -187,7 +184,7 @@
 					)
 				)
 			else
-				(MonoOut {Ticks must >= 0})
+				(MonoOut LOOKUP_ERROR)
 			)
 		)
 		(newStr dispose:)
@@ -212,22 +209,13 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: {Message Help}
-			addText:
-				{A message is spoken dialogue, often between 2 actors.}
-				temp0
-				temp2
-			addText: {} temp0 (= temp2 (+ temp2 temp3))
-			addText: {It supports these commands:} temp0 (= temp2 (+ temp2 temp3))
-			addText:
-				{ALT-E____seq___change the sequence number}
-				temp0
-				(= temp2 (+ temp2 temp3))
-			addText:
-				{_______________or the sequence's start tick}
-				temp0
-				(= temp2 (+ temp2 temp3))
-			addButton: -1 {OK} temp0 (= temp2 (+ temp2 temp3))
+			addTitle: LOOKUP_ERROR
+			addText: LOOKUP_ERROR temp0 temp2
+			addText: LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addButton: -1 LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
 			init:
 		)
 	)

@@ -31,7 +31,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soBitternutExit)
+		(ego setScript: LOOKUP_ERROR)
 	)
 )
 
@@ -94,7 +94,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: soTopExit)
+		(ego setScript: 'LOOKUP_ERROR')
 	)
 )
 
@@ -174,22 +174,22 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(curRoom initThumb: oTileCU)
-				(voBody init:)
-				(poTorinLooksUp
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR
 					setCel: 0
 					init:
 					setPri: 400
 					setCycle: End self
 				)
-				(poTile setCel: 0 init: setCycle: End self)
-				(sound1 lThumbLoop: 20107)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
+				(theSound lThumbLoop: 20107)
 			)
 			(1)
 			(2 (= ticks 20))
 			(3
-				(curRoom arrowDown: oTileCU)
-				(poTorinPicksUpTile setCel: 0 init: setCycle: End self)
+				(curRoom arrowDown: LOOKUP_ERROR)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(4
 				(if ((ScriptID 64017 0) test: 42)
@@ -209,7 +209,7 @@
 				(= cycles 2)
 			)
 			(5
-				(poTorinPicksUpTile dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -225,8 +225,8 @@
 	
 	(method (init)
 		(super init: &rest)
-		(music1 pageSize: 20100)
-		(Load rsAUDIO 20107)
+		(theMusic pageSize: 20100)
+		(Load 141 20107)
 		(curRoom
 			addObstacle:
 				((Polygon new:)
@@ -235,10 +235,10 @@
 					yourself:
 				)
 		)
-		(foBitternutExit init:)
-		(foTopExit init:)
-		(foClotheslineExit init:)
-		(curRoom setScript: soTileFalling)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(LOOKUP_ERROR init:)
+		(curRoom setScript: LOOKUP_ERROR)
 	)
 	
 	(method (intoPouch)

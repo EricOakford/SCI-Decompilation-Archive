@@ -31,12 +31,12 @@
 	)
 	
 	(method (nextMsg theArrowDir theNComingFrom theExitPriority theEnterPriority param5 &tmp temp0 temp1 temp2 temp3)
-		(= temp1 (Str newWith: 1000 {}))
+		(= temp1 (Str newWith: 1000 LOOKUP_ERROR))
 		(= temp2 0)
 		(if argc
 			(= temp0
 				(Message
-					msgGET
+					0
 					theArrowDir
 					theNComingFrom
 					theExitPriority
@@ -50,7 +50,7 @@
 			(= enterPriority theEnterPriority)
 			(= arrowDir theArrowDir)
 		else
-			(= temp0 (Message msgNEXT (temp1 data?)))
+			(= temp0 (Message 1 (temp1 data?)))
 		)
 		(if
 			(and
@@ -61,7 +61,7 @@
 				)
 			)
 			(= temp2
-				(Str format: {%s: %s} (proc64032_0 temp0) temp1)
+				(Str format: LOOKUP_ERROR (proc64032_0 temp0) temp1)
 			)
 			(if (!= (= temp0 (self findTalker: temp0)) -1)
 				(if (& msgType $0002)

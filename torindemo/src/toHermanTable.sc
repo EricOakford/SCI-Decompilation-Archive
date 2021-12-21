@@ -88,16 +88,16 @@
 				(ego setMotion: PolyPath 282 191 self)
 				((ScriptID 64018 0)
 					bSwing: 0
-					setMotion: PolyPath 235 210 coFaceBoogleNE
+					setMotion: PolyPath 235 210 LOOKUP_ERROR
 				)
 			)
 			(2
 				(ego hide:)
-				(poTorinJuicesBerries setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(3
-				(poTorinJuicesBerries dispose:)
-				(sound1 lThumbLoop: 15103)
+				(LOOKUP_ERROR dispose:)
+				(theSound lThumbLoop: 15103)
 				(ego posn: 284 192 setLoop: 5 scrollTo: show:)
 				(messager say: 1 8 4 5 self)
 			)
@@ -110,22 +110,22 @@
 			(6
 				(ego hide:)
 				((ScriptID 64018 0) hide:)
-				(poTorinDuckwalks
+				(LOOKUP_ERROR
 					setCel: 0
 					init:
 					setPri: 240
 					setCycle: End self
 				)
-				(sound1 lThumbLoop: 15199)
+				(theSound lThumbLoop: 15199)
 			)
 			(7
-				(poTorinDuckwalks dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego
 					posn: 419 239
 					setLoop: 4
 					scrollTo:
 					show:
-					nSaveTime: poGuard self
+					nSaveTime: LOOKUP_ERROR self
 				)
 				((ScriptID 64018 0)
 					posn: 469 240
@@ -139,25 +139,25 @@
 				(messager sayRange: 1 8 4 6 7 self)
 			)
 			(9
-				(curRoom initThumb: oTalkInset)
-				(poGuardDrinks init:)
-				(poTorinServesBerries setCel: 0 init: setCycle: End self)
-				(poGuardDrinks setCycle: CT 44 1 self)
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR init:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCycle: CT 44 1 self)
 			)
 			(10)
 			(11
-				(sound1 lThumbLoop: 15104)
-				(poGuardDrinks setCycle: End self)
+				(theSound lThumbLoop: 15104)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(12
-				(poTorinServesBerries dispose:)
+				(LOOKUP_ERROR dispose:)
 				(= global226 4)
 				(messager sayRange: 1 8 4 8 17 self)
 			)
 			(13
 				(= global226 3)
 				(theGame handsOn:)
-				(curRoom arrowDown: oTalkInset)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(self dispose:)
 			)
 		)
@@ -223,10 +223,10 @@
 			(3
 				(ego
 					hide:
-					posn: (poGuard approachX?) (poGuard approachY?)
+					posn: (LOOKUP_ERROR approachX?) (LOOKUP_ERROR approachY?)
 					setLoop: 6
 				)
-				(poTorinCooksSlugs
+				(LOOKUP_ERROR
 					setCel: 0
 					setScaler: Scaler 110 110 1 0
 					init:
@@ -235,13 +235,13 @@
 			)
 			(4 (= seconds 2))
 			(5
-				(poTorinCooksSlugs dispose:)
-				(curRoom initThumb: oTalkInset)
-				(poGuardEats setCel: 0 init:)
+				(LOOKUP_ERROR dispose:)
+				(curRoom initThumb: LOOKUP_ERROR)
+				(LOOKUP_ERROR setCel: 0 init:)
 				(messager say: 1 20 6 6 self)
 			)
 			(6
-				(poTorinServesSlugetti
+				(LOOKUP_ERROR
 					setCel: 0
 					init:
 					setPri: 255
@@ -249,15 +249,15 @@
 				)
 			)
 			(7
-				(poTorinServesSlugetti setCycle: End)
-				(poGuardEats setCycle: CT 34 1 self)
+				(LOOKUP_ERROR setCycle: End)
+				(LOOKUP_ERROR setCycle: CT 34 1 self)
 			)
 			(8
-				(poGuardEats setCycle: End self)
-				(sound1 lThumbLoop: 15105)
+				(LOOKUP_ERROR setCycle: End self)
+				(theSound lThumbLoop: 15105)
 			)
 			(9
-				(curRoom arrowDown: oTalkInset)
+				(curRoom arrowDown: LOOKUP_ERROR)
 				(ego show:)
 				(messager sayRange: 1 20 6 8 17 self)
 			)
@@ -318,26 +318,26 @@
 			(2 (ego setHeading: 315 self))
 			(3
 				(ego hide:)
-				(poPrepareSquareRoot setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(4
-				(poPrepareSquareRoot dispose:)
-				(poBakeSquareRoot setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
 			)
 			(5
-				(poBakeSquareRoot dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego posn: 288 186 setLoop: 6 scrollTo: show:)
 				(ego setMotion: PolyPath 231 234 self)
 			)
 			(6 (ego setHeading: 45 self))
 			(7 (messager say: 1 9 8 8 self))
 			(8
-				(sound1 lThumbLoop: 15101)
+				(theSound lThumbLoop: 15101)
 				(messager sayRange: 1 9 8 9 10 self)
 			)
 			(9
-				(poGuard dispose:)
-				(poGuardLeavesRoom
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR
 					setCel: 0
 					init:
 					setPri: 200
@@ -399,18 +399,23 @@
 		(switch (= state newState)
 			(0
 				(ego hide:)
-				(poGuard setLoop: 0 setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR
+					setLoop: 0
+					setCel: 0
+					init:
+					setCycle: End self
+				)
 			)
 			(1
 				(ego show:)
-				(ego setMotion: MoveTo 455 235 coFaceEgo)
+				(ego setMotion: MoveTo 455 235 LOOKUP_ERROR)
 				(= cycles 6)
 			)
 			(2
-				(poGuard setLoop: 1 setCel: 0 setCycle: End self)
+				(LOOKUP_ERROR setLoop: 1 setCel: 0 setCycle: End self)
 			)
 			(3
-				(poBoogleSniffing
+				(LOOKUP_ERROR
 					setCel: 0
 					init:
 					setScaler: Scaler 90 90 0 1
@@ -418,17 +423,17 @@
 				)
 			)
 			(4
-				(poGuard hide:)
-				(poGuardReact setCel: 0 init: setCycle: End self)
-				(poBoogleSniffing setCycle: End self)
+				(LOOKUP_ERROR hide:)
+				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
+				(LOOKUP_ERROR setCycle: End self)
 			)
 			(5)
 			(6
-				(poBoogleSniffing dispose:)
+				(LOOKUP_ERROR dispose:)
 				(ego get: ((ScriptID 64001 1) get: 5))
-				((ScriptID 64018 0) init: setScript: soBoogleEntrance)
-				(poGuardReact dispose:)
-				(poGuard show:)
+				((ScriptID 64018 0) init: setScript: LOOKUP_ERROR)
+				(LOOKUP_ERROR dispose:)
+				(LOOKUP_ERROR show:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -476,7 +481,7 @@
 					((not ((ScriptID 64017 0) test: 30)) (messager say: noun theVerb 4 0))
 					((not ((ScriptID 64017 0) test: 29)) (messager say: noun theVerb 6 0))
 					((not ((ScriptID 64017 0) test: 31)) (messager say: noun theVerb 8 0))
-					(else (MonoOut {Error: Guard shouldn't be here.}))
+					(else (MonoOut LOOKUP_ERROR))
 				)
 			)
 			(20
@@ -488,7 +493,7 @@
 					((ScriptID 64017 0) set: 29)
 					(ego put: ((ScriptID 64001 0) get: 10))
 					(ego put: ((ScriptID 64001 0) get: 11))
-					(ego setScript: soTorinServesSlugetti)
+					(ego setScript: LOOKUP_ERROR)
 				else
 					(messager say: noun theVerb 10 0)
 				)
@@ -502,7 +507,7 @@
 					((ScriptID 64017 0) set: 29)
 					(ego put: ((ScriptID 64001 0) get: 10))
 					(ego put: ((ScriptID 64001 0) get: 11))
-					(ego setScript: soTorinServesSlugetti)
+					(ego setScript: LOOKUP_ERROR)
 				else
 					(messager say: noun theVerb 11 0)
 				)
@@ -510,7 +515,7 @@
 			(8
 				((ScriptID 64017 0) set: 30 27)
 				(ego put: ((ScriptID 64001 0) get: 4))
-				(ego setScript: soTorinServesBerries)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(9
 				(if (not ((ScriptID 64017 0) test: 30))
@@ -523,7 +528,7 @@
 				)
 				((ScriptID 64017 0) set: 31)
 				(ego put: ((ScriptID 64001 0) get: 5))
-				(ego setScript: soGuardLeavesRoom)
+				(ego setScript: LOOKUP_ERROR)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -541,12 +546,12 @@
 	)
 	
 	(method (init)
-		(poGuard hide:)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poGuard show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -555,14 +560,14 @@
 	(properties)
 	
 	(method (init)
-		(= frame voHermanDrinkingBody)
-		(= mouth poHermanDrinkingMouth)
-		(poGuardDrinks hide:)
+		(= frame LOOKUP_ERROR)
+		(= mouth LOOKUP_ERROR)
+		(LOOKUP_ERROR hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(poGuardDrinks show:)
+		(LOOKUP_ERROR show:)
 		(super dispose: &rest)
 	)
 )
@@ -651,9 +656,9 @@
 				(ego posn: 635 262 loop: 3)
 				(if ((ScriptID 64017 0) test: 28)
 					(ego setMotion: MoveTo 455 235 (ScriptID 64020 0))
-					((ScriptID 64018 0) init: setScript: soBoogleEntrance)
+					((ScriptID 64018 0) init: setScript: LOOKUP_ERROR)
 				else
-					(ego setScript: soFirstEntrance)
+					(ego setScript: LOOKUP_ERROR)
 				)
 			)
 			(15200
@@ -669,10 +674,16 @@
 				(ego posn: 282 292 loop: 3)
 			)
 		)
-		(foMainExit init:)
+		(LOOKUP_ERROR init:)
 		(cond 
-			(((ScriptID 64017 0) test: 31) (foDoorExit init:))
-			(((ScriptID 64017 0) test: 28) (poGuard setLoop: 1 setCel: (poGuard lastCel:) init:))
+			(((ScriptID 64017 0) test: 31) (LOOKUP_ERROR init:))
+			(((ScriptID 64017 0) test: 28)
+				(LOOKUP_ERROR
+					setLoop: 1
+					setCel: (LOOKUP_ERROR lastCel:)
+					init:
+				)
+			)
 		)
 		(curRoom
 			addObstacle:
@@ -704,7 +715,7 @@
 					yourself:
 				)
 		)
-		(music1 pageSize: 15100)
+		(theMusic pageSize: 15100)
 		(if (not ((ScriptID 64017 0) test: 28))
 			(Load rsVIEW 15100 15103)
 		)
@@ -717,7 +728,7 @@
 		(if (not ((ScriptID 64017 0) test: 31))
 			(Load rsVIEW 15104)
 		)
-		(Load rsAUDIO 15103 15199 15104 15105)
+		(Load 141 15103 15199 15104 15105)
 		((ScriptID 64017 0) set: 28)
 	)
 	

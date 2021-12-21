@@ -47,8 +47,8 @@
 	
 	(method (edit &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 printInit)
 		(= temp6 0)
-		(= temp0 (Str with: {0}))
-		(= temp1 (Str with: {1}))
+		(= temp0 (Str with: {eSoundInterceptClass}))
+		(= temp1 (Str with: LOOKUP_ERROR))
 		(= temp3 (+ (= temp2 5) 100))
 		(= temp4 5)
 		(= temp5 (+ 7 (Font 0 inputFont)))
@@ -60,15 +60,15 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: {Sound Edit}
-			addText: {Name} temp2 temp4
+			addTitle: LOOKUP_ERROR
+			addText: LOOKUP_ERROR temp2 temp4
 			addEdit: nSpecialSelector 32 temp3 temp4
 			first: 3
-			addText: {Number} temp2 (= temp4 (+ temp4 temp5))
+			addText: LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
 			addEdit: temp0 5 temp3 temp5
-			addText: {Loop} temp2 (= temp4 (+ temp4 temp5))
+			addText: LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
 			addEdit: temp1 5 temp3 temp5
-			addButton: -1 {CANCEL} temp2 (= temp4 (+ temp4 temp5))
+			addButton: -1 LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
 		)
 		(if (> (= printInit (Print init:)) 0)
 			(= number (temp0 asInteger:))
@@ -76,19 +76,13 @@
 			(or (ResCheck 141 number) (ResCheck 140 number))
 				(= loop (temp1 asInteger:))
 				(nCutoff
-					format:
-						{%d/%s = %s: %hu, loop %d times}
-						getBitmap
-						name
-						nSpecialSelector
-						number
-						loop
+					format: LOOKUP_ERROR getBitmap name nSpecialSelector number loop
 				)
 				(= temp6 1)
 				(= bmpOn (DoAudio 1 number 1 0))
 				(self doSelect:)
 			else
-				(MonoOut {sound %s not found} temp0)
+				(MonoOut LOOKUP_ERROR temp0)
 			)
 		)
 		(temp0 dispose:)
@@ -110,9 +104,9 @@
 			(= temp10 ((whoToCue bTileBorder?) normalize?))
 		)
 		(if (= temp5 (self nSelectValue: aeSoundStopClass))
-			(newStr_4 format: {%d} (temp5 vTiles?))
+			(newStr_4 format: 'LOOKUP_ERROR' (temp5 vTiles?))
 		)
-		(newStr_3 format: {%d} temp10)
+		(newStr_3 format: LOOKUP_ERROR temp10)
 		(Print
 			x: 20
 			y: 20
@@ -123,15 +117,11 @@
 			font: inputFont
 			addTitle: newStr
 			addText: newStr_2 temp1 temp3
-			addText: {Start} temp1 (= temp3 (+ temp3 temp4))
-			addEdit: newStr_3 5 temp2 (newStr_2 format: {len = %d} bmpOn)
-			addText: {Stop} temp1 (= temp3 (+ temp3 temp4))
-			addEdit:
-				newStr_4
-				5
-				temp2
-				(newStr format: {Sound %s Edit} nSpecialSelector)
-			addButton: -1 {CANCEL} temp1 (= temp3 (+ temp3 temp4))
+			addText: LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addEdit: newStr_3 5 temp2 (newStr_2 format: LOOKUP_ERROR bmpOn)
+			addText: LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addEdit: newStr_4 5 temp2 (newStr format: LOOKUP_ERROR nSpecialSelector)
+			addButton: -1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
 		)
 		(if (> (= printInit (Print init:)) 0)
 			(if (>= (= theVoBG (newStr_3 asInteger:)) 0)
@@ -139,7 +129,7 @@
 				(self oSelectNotify: aeSoundPlayClass)
 				(self doHeld: aeSoundPlayClass theVoBG)
 			else
-				(MonoOut {Ticks must >= 0})
+				(MonoOut LOOKUP_ERROR)
 			)
 			(if (== loop 0)
 				(= oSpecialSync 32767)
@@ -155,13 +145,13 @@
 							(= oSpecialSync theOSpecialSync)
 							(self doHeld: aeSoundStopClass theOSpecialSync)
 						else
-							(MonoOut {Stop must be > start})
+							(MonoOut LOOKUP_ERROR)
 						)
 					else
-						(MonoOut {Sound naturally ends at %d} (+ theVoBG bmpOn))
+						(MonoOut LOOKUP_ERROR (+ theVoBG bmpOn))
 					)
 				else
-					(MonoOut {Ticks must >= 0})
+					(MonoOut LOOKUP_ERROR)
 				)
 			)
 		)
@@ -182,19 +172,13 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: {Sound Help}
-			addText: {A sound makes a noise} temp0 temp2
-			addText: {} temp0 (= temp2 (+ temp2 temp3))
-			addText: {It supports these commands:} temp0 (= temp2 (+ temp2 temp3))
-			addText:
-				{ALT-E____start_______Start playing the sound}
-				temp0
-				(= temp2 (+ temp2 temp3))
-			addText:
-				{ALT-E____stop________Stop playing the sound}
-				temp0
-				(= temp2 (+ temp2 temp3))
-			addButton: -1 {OK} temp0 (= temp2 (+ temp2 temp3))
+			addTitle: LOOKUP_ERROR
+			addText: LOOKUP_ERROR temp0 temp2
+			addText: LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addButton: -1 LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
 			init:
 		)
 	)

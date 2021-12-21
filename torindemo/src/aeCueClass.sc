@@ -57,13 +57,13 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: {External Edit}
-			addText: {Ext object's name} temp0 temp2
+			addTitle: LOOKUP_ERROR
+			addText: LOOKUP_ERROR temp0 temp2
 			addEdit: nSpecialSelector 32 temp0 (= temp2 (+ temp2 temp3))
 		)
 		(if (> (= printInit (Print init:)) 0)
 			(nCutoff
-				format: {%d/%s = %s} getBitmap getBitmap name nSpecialSelector
+				format: LOOKUP_ERROR getBitmap getBitmap name nSpecialSelector
 			)
 			(= temp4 1)
 			(self doSelect:)
@@ -77,8 +77,8 @@
 		(= temp4 (+ 7 (Font 0 inputFont)))
 		(= newStr (Str new:))
 		(= newStr_2 (Str new:))
-		(= temp9 (Str with: {0}))
-		(newStr format: {Cue '%s'} nSpecialSelector)
+		(= temp9 (Str with: LOOKUP_ERROR))
+		(newStr format: LOOKUP_ERROR nSpecialSelector)
 		(Print
 			x: 20
 			y: 20
@@ -88,17 +88,17 @@
 			skip: 0
 			font: inputFont
 			addTitle: newStr
-			addText: {Tick} temp1 temp3
+			addText: LOOKUP_ERROR temp1 temp3
 			addEdit: newStr_2 5 temp2 temp3
-			addText: {value} temp1 (= temp3 (+ temp3 temp4))
+			addText: LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
 			addEdit:
 				temp9
 				5
 				temp2
 				(newStr_2
-					format: {%d} ((whoToCue bTileBorder?) normalize?)
+					format: LOOKUP_ERROR ((whoToCue bTileBorder?) normalize?)
 				)
-			addButton: -1 {CANCEL} temp1 (= temp3 (+ temp3 temp4))
+			addButton: -1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
 		)
 		(if (> (= printInit (Print init:)) 0)
 			(if
@@ -107,7 +107,7 @@
 				(self doHeld: aeCueClass theOSpecialSync temp10)
 				(= voBG (= oSpecialSync theOSpecialSync))
 			else
-				(MonoOut {Ticks must >= 0})
+				(MonoOut LOOKUP_ERROR)
 			)
 		)
 		(newStr_2 dispose:)
@@ -126,27 +126,15 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: {External Help}
-			addText: {An external allows the animation editor to connect} temp0 temp2
-			addText:
-				{objects ouside of the animation player. It's current}
-				temp0
-				(= temp2 (+ temp2 temp3))
-			addText:
-				{most useful feature is to allow the animation player to}
-				temp0
-				(= temp2 (+ temp2 temp3))
-			addText:
-				{cue an object outside of the animation.}
-				temp0
-				(= temp2 (+ temp2 temp3))
-			addText: {} temp0 (= temp2 (+ temp2 temp3))
-			addText: {It supports these commands:} temp0 (= temp2 (+ temp2 temp3))
-			addText:
-				{ALT-E_____cue____cue the external object}
-				temp0
-				(= temp2 (+ temp2 temp3))
-			addButton: -1 {OK} temp0 (= temp2 (+ temp2 temp3))
+			addTitle: LOOKUP_ERROR
+			addText: LOOKUP_ERROR temp0 temp2
+			addText: LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
+			addButton: -1 LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
 			init:
 		)
 	)
