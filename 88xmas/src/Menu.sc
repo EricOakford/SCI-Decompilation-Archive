@@ -26,7 +26,7 @@
 				(= oldPause (DoSound PauseSound TRUE))
 				(Print MENU 0
 					#mode teJustCenter
-					#icon 6 2 0
+					#icon rFrosty 2 0
 					#font 3
 				)
 				(DoSound PauseSound oldPause)
@@ -38,7 +38,7 @@
 						#button {__Quit__} 1
 						#button {Continue} 2
 						#mode teJustCenter
-						#icon 6 2 0
+						#icon rFrosty 2 0
 					)
 					(1
 						(= quit TRUE)

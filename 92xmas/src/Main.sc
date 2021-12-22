@@ -17,114 +17,103 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	unused_1
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	textCode
-	cuees
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	version
+	ego								  	;pointer to ego
+	theGame							  	;ID of the Game instance
+	curRoom							  	;ID of current room
+	unused_1		
+	quit							  	;when TRUE, quit game
+	cast							  	;collection of actors
+	regions							  	;set of current regions
+	timers							  	;list of timers in the game
+	sounds							  	;set of sounds being played
+	inventory						  	;set of inventory items in game
+	addToPics						  	;list of views added to the picture
+	curRoomNum						  	;current room number
+	prevRoomNum						  	;previous room number
+	newRoomNum						  	;number of room to change to
+	debugOn							  	;generic debug flag -- set from debug menu
+	score							  	;the player's current score
+	possibleScore					  	;highest possible score
+	textCode							;code that handles interactive text
+	cuees							  	;list of who-to-cues for next cycle
+	theCursor						  	;the number of the current cursor
+	normalCursor	=	ARROW_CURSOR	;number of normal cursor form
+	waitCursor		=	HAND_CURSOR 	;cursor number of "wait" cursor
+	userFont		=	USERFONT	  	;font to use for Print
+	smallFont		=	4 			  	;small font for save/restore, etc.
+	lastEvent						  	;the last event (used by save/restore game)
+	modelessDialog					  	;the modeless Dialog known to User and Intrface
+	bigFont			=	USERFONT	  	;large font
+	version			=	0			  	;pointer to 'incver' version string
+										;	WARNING!  Must be set in room 0
+										;	(usually to {x.yyy    } or {x.yyy.zzz})
 	unused_3
-	curSaveDir
+	curSaveDir							;address of current save drive/directory string
 	unused_4
-	perspective
-	features
+	perspective							;player's viewing angle: degrees away
+										;	from vertical along y axis
+	features							;locations that may respond to events
 	unused_5
-	useSortedFeatures
+	useSortedFeatures	=	FALSE		;enable cast & feature sorting?
 	unused_6
-	overlays =  -1
-	doMotionCue
-	systemWindow
+	overlays			=	-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
 	unused_7
 	unused_8
 	modelessPort
-	sysLogPath
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-		global50
-		global51
-		global52
-		global53
-		global54
-		global55
-		global56
-		global57
-		global58
-		global59
-		global60
-		global61
-	endSysLogPath
-	gameControls
-	ftrInitializer
-	doVerbCode
-	approachCode
-	useObstacles =  TRUE
+	[sysLogPath	20]						;-used for system standard logfile path	
+	endSysLogPath						;/		(uses 20 globals)
+	gameControls						;pointer to instance of game controls
+	ftrInitializer						;pointer to code that gets called from
+										;	a feature's init
+	doVerbCode							;pointer to code that gets invoked if
+										;	no feature claims a user event
+	approachCode						;pointer to code that translates verbs
+										;	into bits
+	useObstacles	=	TRUE			;will Ego use PolyPath or not?
 	unused_9
-	theIconBar
-	mouseX
-	mouseY
-	keyDownHandler
-	mouseDownHandler
-	directionHandler
-	speechHandler
+	theIconBar							;points to TheIconBar or Null	
+	mouseX								;-last known mouse position
+	mouseY								;/
+	keyDownHandler						;-our EventHandlers, get called by game
+	mouseDownHandler					;/
+	directionHandler					;/
+	speechHandler						;a special handler for speech events
 	lastVolume
-	pMouse
-	theDoits
-	eatMice =  60
-	user
-	syncBias
-	theSync
+	pMouse			=	NULL			;pointer to a Pseudo-Mouse, or NULL
+	theDoits		=	NULL			;list of objects to get doits each cycle
+	eatMice			=	60				;how many ticks before we can mouse
+	user			=	NULL			;pointer to specific applications User
+	syncBias							;-globals used by sync.sc
+	theSync								;/		(will be removed shortly)
 	unused_10
-	fastCast
-	inputFont
-	tickOffset
-	howFast
-	gameTime
-	narrator
-	msgType =  TEXT_MSG
-	messager
-	prints
-	walkHandler
-	textSpeed =  2
-	altPolyList
+	fastCast							;list of talkers on screen
+	inputFont		=	SYSFONT			;font used for user type-in
+	tickOffset							;used to adjust gameTime after restore
+	howFast								;measurment of how fast a machine is
+	gameTime							;ticks since game start
+	narrator							;pointer to narrator (normally Narrator)
+	msgType			=	TEXT_MSG		;type of messages used
+	messager							;pointer to messager (normally Messager)
+	prints								;list of Print's on screen
+	walkHandler							;list of objects to get walkEvents
+	textSpeed		=	2				;time text remains on screen
+	altPolyList							;list of alternate obstacles
+	;globals 96-99 are unused
 	global96
 	global97
 	global98
 	lastSysGlobal
-	global100
+	;globals 100 and above are for game use
+	global100	;unused
 	gameCode =  1234
-	global102
-	theMusic1
-	theMusic2
-	debugging
-	global106
-	global107
+	global102	;unused
+	theMusic1	;pointer for music
+	theMusic2	;pointer for sound effects
+	debugging	;debug mode enabled
+	global106	;unused
+	global107	;unused
 	snowflakeSpeed
 	;This array is used to draw the text at the end
 	lettersView =  [
@@ -155,7 +144,8 @@
 	lettersX =  5
 	lettersY =  -14
 	;end of letters globals
-	global200
+	cardDone	;once we're at the end, set up everything again
+	;201-250 are unused
 	global201
 	global202
 	global203
@@ -208,25 +198,21 @@
 	global250
 )
 (procedure (SetUpPic thePic &tmp i)
-	(if (not global200)
-		(= i 99)
-		(while (>= i 0)
+	(if (not cardDone)
+		(for ((= i 99)) (>= i 0) ((-= i 2))
 			(Palette PALIntensity 0 255 i)
 			(Game doit:)
-			(= i (- i 2))
 		)
 	)
-	(= global200 0)
+	(= cardDone FALSE)
 	(DrawPic thePic PLAIN TRUE)
 	(Animate)
 )
 
 (procedure (SetUpPalette &tmp i)
-	(= i 0)
-	(while (<= i 100)
+	(for ((= i 0)) (<= i 100) ((+= i 2))
 		(Palette PALIntensity 0 255 i)
 		(Game doit:)
-		(= i (+ i 2))
 	)
 )
 
@@ -234,7 +220,7 @@
 	(properties
 		cycleCnt 0
 		completed 0
-		;EO: These were incorrect due to lack of selector table.
+		;EO: These were incorrect due to lack of a selector table.
 		setOnMeCheck 10
 		scaleDir 20
 	)
@@ -271,7 +257,6 @@
 (instance cardDirHandler of EventHandler)
 
 (instance Card of Game
-
 	(method (init &tmp [temp0 4])
 		(super init:)
 		((= theMusic1 longSong)
@@ -328,7 +313,8 @@
 		(super startRoom: roomNum)
 	)
 	
-	(method (handleEvent event &tmp savePort node underbits i t l r b temp8 temp9 evt obj [str 75])
+	(method (handleEvent event
+				&tmp savePort node underbits i t l r b numCols numRows evt obj [str 75])
 		(if (event claimed?) (return TRUE))
 		(return
 			(switch (event type?)
@@ -367,25 +353,23 @@
 									(`@y
 										(= savePort (GetPort))
 										(SetPort 0)
-										(= temp8 5)
-										(= temp9 16)
+										(= numCols 5)
+										(= numRows 16)
 										(= t 15)
 										(= l 80)
-										(= b (+ t (* 34 temp8)))
-										(= r (+ l (* 10 temp9)))
+										(= b (+ t (* 34 numCols)))
+										(= r (+ l (* 10 numRows)))
 										(= underbits (Graph GSaveBits t l b r 1))
 										(Graph GFillRect t l b r 1 255)
-										(= i 0)
-										(while (< i 256)
+										(for ((= i 0)) (< i 256) ((++ i))
 											(Graph GFillRect
-												(+ t temp8 (* temp8 (/ i 8)))
-												(+ l temp9 (* 16 (mod i 8)))
-												(+ t temp8 temp8 (* temp8 (/ i 8)))
-												(+ l temp9 temp9 (* temp9 (mod i 8)))
-												1
+												(+ t numCols (* numCols (/ i 8)))
+												(+ l numRows (* 16 (mod i 8)))
+												(+ t numCols numCols (* numCols (/ i 8)))
+												(+ l numRows numRows (* numRows (mod i 8)))
+												VMAP
 												i
 											)
-											(++ i)
 										)
 										(Graph GShowBits t l b r VMAP)
 										(repeat
@@ -468,7 +452,6 @@
 (instance longSong2 of Sound)
 
 (instance cardScript of Script
-	
 	(method (doit)
 		(if (< state 4)
 			(Palette PALCycle 96 223 1)
@@ -481,7 +464,11 @@
 			(0
 				(SetUpPic pHalfDome)
 				(Load RES_VIEW pHalfDome)
-				(theMusic1 number: pHalfDome setLoop: 1 play: self)
+				(theMusic1
+					number: pHalfDome
+					setLoop: 1
+					play: self
+				)
 				(SetUpPalette)
 			)
 			(1 0)
@@ -669,7 +656,11 @@
 				(Load RES_VIEW vLogos)
 				(Load RES_VIEW vLetters1)
 				(Load RES_VIEW vLetters2)
-				(theMusic2 number: sFireCrackling setLoop: -1 play:)
+				(theMusic2
+					number: sFireCrackling
+					setLoop: -1
+					play:
+				)
 				(prop1
 					view: pCabinInside
 					setLoop: 0
@@ -744,7 +735,9 @@
 				(SetUpPalette)
 				(= ticks 240)
 			)
-			(17 (prop6 setCycle: EndLoop self))
+			(17
+				(prop6 setCycle: EndLoop self)
+			)
 			(18
 				(prop6 setLoop: 1 setCel: 0 setCycle: EndLoop self)
 			)
@@ -753,19 +746,17 @@
 				(= ticks 120)
 			)
 			(20
-				(= i 99)
-				(while (> i 64)
+				(for ((= i 99)) (> i 64) ((-= i 2))
 					(Palette PALIntensity 16 71 i)
 					(Palette PALIntensity 80 255 i)
 					(Card doit:)
-					(= i (- i 2))
 				)
 				(= lettersIndex -4)
 				(= ticks 60)
 			)
 			(21
 				(= lastTicks 0)
-				(= lettersIndex (+ lettersIndex 4))
+				(+= lettersIndex 4)
 				(letters
 					view: [lettersView lettersIndex]
 					loop: [lettersView (+ lettersIndex 1)]
@@ -850,15 +841,15 @@
 				)
 				(= ticks 180)
 			)
-			(30 (prop8 setCycle: BegLoop))
+			(30
+				(prop8 setCycle: BegLoop)
+			)
 			(31
-				(= i 50)
-				(while (>= i 0)
+				(for ((= i 50)) (>= i 0) ((-= i 2))
 					(Palette PALIntensity 0 255 i)
 					(Game doit:)
-					(= i (- i 2))
 				)
-				(= global200 1)
+				(= cardDone TRUE)
 				(prop1 setCycle: 0 hide:)
 				(prop2 setCycle: 0 hide:)
 				(prop3 setCycle: 0 hide:)

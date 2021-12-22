@@ -20,11 +20,11 @@
 (local
 	cupidPathValue
 	cupidTargets
-	picDrawn
+	i
 	local3
 	local4
 	playingBagPipes
-	local6 = [
+	starXY = [
 		0 0
 		122 57
 		245 61
@@ -49,7 +49,7 @@
 		265 71
 		PATHEND
 		]
-	turkeyPoly = [
+	turkeyPts = [
 		0 0
 		0 0
 		237 80
@@ -73,13 +73,12 @@
 (procedure (NextTake nextPic &tmp thePic)
 	((ScriptID MAIN 5) fade:)
 	(= thePic (if argc nextPic else pStage))
-	(curRoom
-		drawPic: thePic
-			(if (and (<= 0 numColors) (<= numColors 16))
-				BLACKOUT
-			else
-				FADEOUT
-			)
+	(curRoom drawPic: thePic
+		(if (and (<= 0 numColors) (<= numColors 16))
+			BLACKOUT
+		else
+			FADEOUT
+		)
 	)
 	(cast eachElementDo: #hide)
 )
@@ -103,7 +102,6 @@
 )
 
 (instance bagPipeScript of Script
-	
 	(method (init)
 		(super init: &rest)
 		((ScriptID MAIN 5) number: sBagPipes loop: -1 playBed:)
@@ -138,10 +136,16 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (wannaBe posn: 265 132))
+			(0
+				(wannaBe posn: 265 132)
+			)
 			(1 0)
 			(2
-				((ScriptID MAIN 4) number: 10 loop: 0 play:)
+				((ScriptID MAIN 4)
+					number: 10
+					loop: 0
+					play:
+				)
 				(stageProp
 					show:
 					view: vBagPipe
@@ -162,10 +166,20 @@
 			)
 			(4
 				(clover dispose:)
-				(director show: cel: 0 loop: 2 setCycle: EndLoop self)
+				(director
+					show:
+					cel: 0
+					loop: 2
+					setCycle: EndLoop self
+				)
 			)
 			(5
-				((ScriptID 0 6) number: 101 loop: 0 init: play: self)
+				((ScriptID 0 6)
+					number: sNo
+					loop: 0
+					init:
+					play: self
+				)
 			)
 			(6
 				(Wait 40)
@@ -183,7 +197,6 @@
 )
 
 (instance cloverFall of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -222,7 +235,6 @@
 )
 
 (instance scottishDance of Script
-
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -251,15 +263,20 @@
 )
 
 (instance turkeyEnter of Script
-
 	(method (init)
 		(super init: &rest)
-		((ScriptID 0 5) number: sChicken loop: -1 playBed:)
+		((ScriptID 0 5)
+			number: sChicken
+			loop: -1
+			playBed:
+		)
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 3))
+			(0
+				(= seconds 3)
+			)
 			(1
 				(stageProp
 					view: vTurkey
@@ -284,27 +301,35 @@
 				(= cycles 1)
 			)
 			(2
-				((ScriptID 0 4) number: 12 loop: 0 play:)
+				((ScriptID 0 4)
+					number: 12
+					loop: 0
+					play:
+				)
 			)
-			(3 (= cycles 10))
+			(3
+				(= cycles 10)
+			)
 			(4
 				(stageProp cycleSpeed: 0 setCycle: BegLoop self)
 				(wannaBe cycleSpeed: 0 setCycle: EndLoop self)
 			)
-			(5 (wannaBe hide:))
+			(5
+				(wannaBe hide:)
+			)
 			(6
 				(stageProp hide:)
-				(= picDrawn 0)
+				(= i 0)
 				(= cycles 10)
 			)
 			(7
-				(if (!= [turkeyPoly (= picDrawn (+ picDrawn 3))] -1)
+				(if (!= [turkeyPts (+= i 3)] -1)
 					((ScriptID 0 4) number: 13 loop: 0 play:)
 					(wannaBe
 						show:
 						loop: 2
-						cel: [turkeyPoly picDrawn]
-						posn: [turkeyPoly (+ (-- state) 1)] [turkeyPoly (+ picDrawn 2)]
+						cel: [turkeyPts i]
+						posn: [turkeyPts (+ (-- state) 1)] [turkeyPts (+ i 2)]
 					)
 				)
 				(= cycles 1)
@@ -346,7 +371,6 @@
 )
 
 (instance cupidWannaBe of Script
-	
 	(method (init)
 		(super init: &rest)
 		((ScriptID 0 5) number: sCupid loop: -1 playBed:)
@@ -682,7 +706,7 @@
 				(director loop: 3 cel: 0 show: setCycle: EndLoop self)
 			)
 			(16
-				((ScriptID 0 6) number: 105 loop: 0 play: self)
+				((ScriptID 0 6) number: sYesThatsIt loop: 0 play: self)
 			)
 			(17 (Wait 40) (= cycles 1))
 			(18
@@ -699,7 +723,7 @@
 				)
 			)
 			(19
-				((ScriptID 0 6) number: 106 loop: 0 play: self)
+				((ScriptID 0 6) number: sAction loop: 0 play: self)
 			)
 			(20
 				(Wait 60)
@@ -785,7 +809,6 @@
 )
 
 (instance CreditsRoll of Script
-		
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
@@ -807,29 +830,29 @@
 			)
 			(1
 				((ScriptID 0 5) number: sSugarPlumFairy loop: 1 playBed: self)
-				(= picDrawn 6)
+				(= i 6)
 				(= playingBagPipes 0)
 				(= seconds 2)
 			)
 			(2
-				(if (!= (++ picDrawn) 15)
+				(if (!= (++ i) 15)
 					(-- state)
-					(curRoom drawPic: picDrawn 8)
+					(curRoom drawPic: i 8)
 				)
 				(= seconds 2)
 			)
 			(3
 				(curRoom drawPic: pCredits1 FADEOUT)
-				(= picDrawn 0)
+				(= i 0)
 				(= cycles 1)
 			)
 			(4
-				(if (!= [local6 (= picDrawn (+ picDrawn 2))] -1)
+				(if (!= [starXY (+= i 2)] -1)
 					(stageProp
 						show:
 						view: vCreditStars
 						setPri: 15
-						posn: [local6 picDrawn] [local6 (+ (-- state) 1)]
+						posn: [starXY i] [starXY (+ (-- state) 1)]
 						setCycle: Oscillate 1 self
 					)
 				else
@@ -1070,7 +1093,6 @@
 )
 
 (instance cupidPath of Path
-	
 	(method (motionCue)
 		(++ cupidTargets)
 		(super motionCue: &rest)
@@ -1109,7 +1131,6 @@
 )
 
 (instance cpdPath2 of Path
-
 	(method (motionCue)
 		(++ cupidTargets)
 		(super motionCue: &rest)

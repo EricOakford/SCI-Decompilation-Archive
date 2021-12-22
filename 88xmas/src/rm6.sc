@@ -83,7 +83,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((Sound new:) number: sFrosty loop: 1 play: self)
+				((Sound new:)
+					number: sFrosty
+					loop: 1
+					play: self
+				)
 			)
 			(1
 				(curRoom newRoom: rManger)

@@ -20,83 +20,62 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed =  6
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle =  IRISOUT
-	aniInterval
-	theCursor
-	normalCursor =  ARROW_CURSOR
-	waitCursor =  HAND_CURSOR
-	userFont =  USERFONT
-	smallFont =  4
-	lastEvent
-	modelessDialog
-	bigFont =  USERFONT
-	volume =  12
-	version
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
-	aniThreshold =  10
-	perspective
-	features
-	sortedFeatures
-	useSortedFeatures
-	demoScripts
-	egoBlindSpot
-	overlays =  -1
-	doMotionCue
-	systemWindow
-	demoDialogTime =  3
+	ego									;pointer to ego
+	theGame								;ID of the Game instance
+	curRoom								;ID of current room
+	speed =  6							;number of ticks between animations
+	quit								;when TRUE, quit game
+	cast								;collection of actors
+	regions								;set of current regions
+	timers								;list of timers in the game
+	sounds								;set of sounds being played
+	inventory							;set of inventory items in game
+	addToPics							;list of views added to the picture
+	curRoomNum							;current room number
+	prevRoomNum							;previous room number
+	newRoomNum							;number of room to change to
+	debugOn								;generic debug flag -- set from debug menu
+	score								;the player's current score
+	possibleScore						;highest possible score
+	showStyle	=		IRISOUT			;style of picture showing
+	aniInterval							;# of ticks it took to do the last animation cycle
+	theCursor							;the number of the current cursor
+	normalCursor =		ARROW_CURSOR	;number of normal cursor form
+	waitCursor	 =		HAND_CURSOR		;cursor number of "wait" cursor
+	userFont	 =		USERFONT		;font to use for Print
+	smallFont	 =		4				;small font for save/restore, etc.
+	lastEvent							;the last event (used by save/restore game)
+	modelessDialog						;the modeless Dialog known to User and Intrface
+	bigFont		=		USERFONT		;large font
+	volume		=		12				;sound volume
+	version		=		{x.yyy.zzz}		;pointer to 'incver' version string			
+	locales								;set of current locales
+	[curSaveDir 20]						;address of current save drive/directory string
+	aniThreshold	=	10
+	perspective							;player's viewing angle:
+										;	 degrees away from vertical along y axis
+	features							;locations that may respond to events
+	sortedFeatures          			;above+cast sorted by "visibility" to ego
+	useSortedFeatures					;enable cast & feature sorting?
+	demoScripts							;add to curRoomNum to find room demo script
+	egoBlindSpot						;used by sortCopy to exclude
+										;actors behind ego within angle 
+										;from straight behind. 
+										;Default zero is no blind spot
+	overlays	=		-1
+	doMotionCue							;a motion cue has occurred - process it
+	systemWindow						;ID of standard system window
+	demoDialogTime	=	3				;how long Prints stay up in demo mode
 	currentPalette
 	modelessPort
-	sysLogPath
-		global64
-		global65
-		global66
-		global67
-		global68
-		global69
-		global70
-		global71
-	endSysLogPath
-	ftrInitializer
-	doVerbCode
-	firstSaidHandler
-	useObstacles =  TRUE
+	[sysLogPath 10]						;used for system standard logfile path (uses 10 globals)
+	ftrInitializer						;pointer to code that gets called from
+										;a feature's init
+	doVerbCode							;pointer to code that gets invoked if
+										;no feature claims a user event
+	firstSaidHandler		
+	useObstacles =  TRUE				;will Ego use PolyPath or not?
+	;globals 77-99 are unused
 		global77
 		global78
 		global79
@@ -120,15 +99,16 @@
 		global97
 		global98
 	lastSysGlobal
-	isHandsOff
-	debugging
-	global102
-	global103
-	numVoices
-	global105
-	global106
-	global107
-	numColors
+	;globals 100 and above are for game use
+	isHandsOff				;ego can't be controlled
+	debugging				;debug mode enabled
+	global102				;unused
+	global103				;unused
+	numVoices				;Number of voices supported by sound driver
+	global105				;unused
+	global106				;unused
+	global107				;unused
+	numColors				;Number of colors supported by graphics driver
 )
 (procedure (HandsOff)
 	(= isHandsOff TRUE)
@@ -149,21 +129,25 @@
 )
 
 (instance gameSound of Sound
+	;for sound effects
 	(properties
 		priority 5
 	)
 )
 
-(instance backSound of Sound)
+;
+(instance backSound of Sound
+	;for music
+)
 
 (instance saidSound of Sound
+	;for director's voice
 	(properties
 		priority 6
 	)
 )
 
-(instance Card of Game
-	
+(instance Card of Game	
 	(method (init &tmp [temp0 11])
 		(= systemWindow SysWindow)
 		(super init:)
@@ -172,7 +156,11 @@
 		(= numColors (Graph GDetect))
 		(User alterEgo: ego)
 		(= showStyle IRISIN)
-		(TheMenuBar init: draw: hide:)
+		(TheMenuBar
+			init:
+			draw:
+			hide:
+		)
 		(User
 			alterEgo: ego
 			prompt: {What is your wish?}

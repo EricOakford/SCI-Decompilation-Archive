@@ -1,5 +1,5 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 4)
+(script# rDeerRiver)
 (include game.sh)
 (use Main)
 (use Sound)
@@ -20,28 +20,32 @@
 )
 (instance rm4 of Room
 	(properties
-		picture 4
+		picture rDeerRiver
 		style IRISOUT
 	)
 	
 	(method (init)
-		(Load VIEW 4)
+		(Load VIEW rDeerRiver)
 		((= aDeer (Actor new:))
-			view: 4
+			view: rDeerRiver
 			loop: 0
 			posn: 232 158
 			xStep: 2
 			init:
 		)
 		((= aMoon (Actor new:))
-			view: 4
+			view: rDeerRiver
 			loop: 4
 			posn: 37 64
 			xStep: 1
 			init:
 			setScript: rm4Script
 		)
-		((= aRipple (Prop new:)) view: 4 loop: 3 posn: 126 178)
+		((= aRipple (Prop new:))
+			view: rDeerRiver
+			loop: 3
+			posn: 126 178
+		)
 		(super init:)
 		(self setScript: MusicScript)
 	)
@@ -167,7 +171,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((Sound new:) number: 3 loop: 1 play: self)
+				((Sound new:)
+					number: 3
+					loop: 1
+					play: self
+				)
 			)
 			(1
 				(curRoom newRoom: 6)

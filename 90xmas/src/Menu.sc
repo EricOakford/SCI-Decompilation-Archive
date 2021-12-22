@@ -19,16 +19,24 @@
 	)
 	
 	(method (init)
-		(AddMenu { \01_} {About Card`^a})
-		(AddMenu { Action_} {Restart Card`#9:Quit`^q})
-		(AddMenu { Sound_} {Volume`^v:Turn Off`#2=1})
+		(AddMenu { \01_}
+			{About Card`^a}
+		)
+		(AddMenu { Action_}
+			{Restart Card`#9:Quit`^q}
+		)
+		(AddMenu { Sound_}
+			{Volume`^v:Turn Off`#2=1}
+		)
 	)
 	
 	(method (handleEvent event &tmp i [str 250] oldPause temp252)
 		(switch (super handleEvent: event)
 			(aboutI
 				(= oldPause (Sound pause: TRUE))
-				(if (< numColors 8) (aWin color: vBLACK back: vWHITE))
+				(if (< numColors 8)
+					(aWin color: vBLACK back: vWHITE)
+				)
 				(Print (Format @str MENU 0)
 					#title { About Christmas Card:_}
 					#mode teJustCenter

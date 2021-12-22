@@ -25,8 +25,7 @@
 	)
 )
 
-(instance displayTitle of Script
-	
+(instance displayTitle of Script	
 	(method (doit)
 		(super doit:)
 		(if (< state 2)

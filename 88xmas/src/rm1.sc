@@ -150,7 +150,11 @@
 				(= seconds 8)
 			)
 			(4
-				(credits setLoop: 0 setCel: 2 setCycle: BegLoop self)
+				(credits
+					setLoop: 0
+					setCel: 2
+					setCycle: BegLoop self
+				)
 			)
 			(5
 				(= state 0)
@@ -174,7 +178,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((Sound new:) number: sMerryXmas loop: 1 play: self)
+				((Sound new:)
+					number: sMerryXmas
+					loop: 1
+					play: self
+				)
 			)
 			(1
 				(curRoom newRoom: 2)

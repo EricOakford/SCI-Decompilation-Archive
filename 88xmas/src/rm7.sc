@@ -205,7 +205,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((Sound new:) number: 7 loop: 1 play: self)
+				((Sound new:)
+					number: 7
+					loop: 1
+					play: self
+				)
 			)
 			(1
 				(aStar init: cycleSpeed: 3 setCycle: EndLoop self)

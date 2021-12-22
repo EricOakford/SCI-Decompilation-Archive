@@ -123,7 +123,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((Sound new:) number: sJingleBells loop: 1 play: self)
+				((Sound new:)
+					number: sJingleBells
+					loop: 1
+					play: self
+				)
 			)
 			(1
 				(aHorse cycleSpeed: 0)

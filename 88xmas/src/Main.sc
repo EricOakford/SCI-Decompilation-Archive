@@ -12,63 +12,46 @@
 )
 
 (local
-	ego
-	theGame
-	curRoom
-	speed
-	quit
-	cast
-	regions
-	timers
-	sounds
-	inventory
-	addToPics
-	curRoomNum
-	prevRoomNum
-	newRoomNum
-	debugOn
-	score
-	possibleScore
-	showStyle
-	aniInterval
-	theCursor
-	normalCursor
-	waitCursor
-	userFont
-	smallFont
-	lastEvent
-	modelessDialog
-	bigFont
-	volume
-	version
-	locales
-	curSaveDir
-		global31
-		global32
-		global33
-		global34
-		global35
-		global36
-		global37
-		global38
-		global39
-		global40
-		global41
-		global42
-		global43
-		global44
-		global45
-		global46
-		global47
-		global48
-		global49
+	ego					;pointer to ego
+	theGame				;ID of the Game instance
+	curRoom				;ID of current room
+	speed				;game speed (number of ticks between animations)
+	quit				;when TRUE, quit game
+	cast				;collection of actors
+	regions				;set of current regions
+	timers				;list of timers in the game
+	sounds				;set of sounds being played
+	inventory			;set of inventory items in game
+	addToPics			;list of views added to the picture
+	curRoomNum			;current room number
+	prevRoomNum			;previous room number
+	newRoomNum			;number of room to change to
+	debugOn				;generic debug flag -- set from debug menu
+	score				;the player's current score
+	possibleScore		;highest possible score
+	showStyle			;style of picture showing
+	aniInterval			;the # of ticks it took to do the last animation cycle
+	theCursor			;the number of the current cursor
+	normalCursor		;number of normal cursor form
+	waitCursor			;cursor number of "wait" cursor
+	userFont			;font to use for Print
+	smallFont			;small font for save/restore, etc.
+	lastEvent			;the last event (used by save/restore game)
+	modelessDialog		;the modeless Dialog known to User and Intrface
+	bigFont				;large font
+	volume				;sound volume for machines with control over it
+	version				;pointer to "x.yyy.zzz"
+	locales				;set of current locales
+	[curSaveDir 20]		;address of current save drive/directory string
 	aniThreshold
-	perspective
-	features
-	sortedFeatures
-	sortedCast
-	deleteCastMember
-	skipFactor
+	perspective			;player's viewing angle:
+						;	 degrees away from vertical along y axis								
+	features			;locations that may respond to events
+	sortedFeatures		;above sorted by "visibility" to ego
+	sortedCast			;cast sorted by "visibility" to ego
+	deleteCastMember	;a member of the cast needs deleting
+	skipFactor			;default=1, set to 2 or 3 if we're really crawling
+	;globals 57-99 are unused
 		global57
 		global58
 		global59

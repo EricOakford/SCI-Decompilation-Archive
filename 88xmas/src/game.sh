@@ -21,6 +21,7 @@
 (define rOpening		1)
 (define rFireplace		2)
 (define rJingleBells	3)
+(define rDeerRiver		4)
 (define rWiseMen		5)
 (define rFrosty			6)
 (define rManger			7)

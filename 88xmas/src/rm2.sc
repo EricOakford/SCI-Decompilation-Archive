@@ -146,7 +146,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				((Sound new:) number: sChestnuts loop: 1 play: self)
+				((Sound new:)
+					number: sChestnuts
+					loop: 1
+					play: self
+				)
 			)
 			(1
 				(curRoom newRoom: 5)

@@ -71,23 +71,25 @@
 			(= temp33 i)
 			(++ temp33)
 			(+= i 2)
+			;this was the undecompilable result.
+			; It may need corrections.
 			(cond
-				((== (= theMacro (StrAt @customBuf temp33)) 109)
+				((== (= theMacro (StrAt @customBuf temp33)) `m)
 					(StrCat @theLen christmasBuf)
 					(+= numLetters 15)
 					(= temp35 1)
 				)
-				((== theMacro 110)
+				((== theMacro `n)
 					(StrCat @theLen newYearBuf)
 					(+= numLetters 14)
 					(= temp35 1)
 				)
-				((== theMacro 115)
+				((== theMacro `s)
 					(StrCat @theLen seasonsBuf)
 					(+= numLetters 18)
 					(= temp35 1)
 				)
-				((== theMacro 104)
+				((== theMacro `h)
 					(StrCat @theLen holidayBuf)
 					(+= numLetters 13)
 					(= temp35 1)
@@ -105,7 +107,7 @@
 	)
 	
 ;;;	(method (doit &tmp [temp0 30] i temp31 theMacro temp33 numLetters temp35 customLen)
-;;;		;EO: Maybe someone can figure this one out.
+;;;		;EO: Keeping this here to allow for corrections to the above code.
 ;;;		(asm
 ;;;			pushi    #canInput
 ;;;			pushi    TRUE
