@@ -1,0 +1,330 @@
+;;; Sierra Script 1.0 - (do not remove this comment)
+(script# 1824)
+(include sci.sh)
+(use Main)
+(use LarryTalker)
+
+(public
+	proc1824_0 0
+	proc1824_1 1
+	proc1824_2 2
+	proc1824_3 3
+	proc1824_4 4
+	proc1824_5 5
+	proc1824_6 6
+	proc1824_7 7
+	proc1824_8 8
+	proc1824_9 9
+	proc1824_10 10
+	proc1824_11 11
+	proc1824_12 12
+	proc1824_13 13
+	proc1824_14 14
+	proc1824_15 15
+	proc1824_16 16
+	proc1824_17 17
+	proc1824_18 18
+	proc1824_19 19
+	proc1824_20 20
+	proc1824_21 21
+	proc1824_22 22
+	proc1824_23 23
+	proc1824_24 24
+	proc1824_25 25
+	proc1824_26 26
+	proc1824_27 27
+	proc1824_28 28
+	proc1824_29 29
+	proc1824_30 30
+	proc1824_31 31
+	proc1824_32 32
+	proc1824_33 33
+	You 34
+)
+
+(procedure (proc1824_0)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_2)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_3)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_4)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_5)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_6)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_7)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_8)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_9)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_10)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_11)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_12)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_13)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_14)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_15)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_16)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_17)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_18)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_19)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_20)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_21)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_22)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_23)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_24)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_25)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_26)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_27)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_28)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_29)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_30)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_31)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_32)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(procedure (proc1824_33)
+	(= PROPERTY-ACCESS-IN-NON-METHOD userFont)
+	(= PROPERTY-ACCESS-IN-NON-METHOD -1)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 140)
+	(= PROPERTY-ACCESS-IN-NON-METHOD 1)
+	(super init: &rest)
+)
+
+(instance You of LarryTalker
+	(properties
+		showTitle 1
+		back 74
+	)
+	
+	(method (init)
+		(= font userFont)
+		(= x -1)
+		(= y 140)
+		(= modeless 1)
+		(super init: &rest)
+	)
+)

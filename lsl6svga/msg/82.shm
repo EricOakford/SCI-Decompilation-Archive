@@ -1,0 +1,32 @@
+;;; Sierra Script
+;;; 82.shm -- Produced by SCI Companion
+;;; This file should only be edited with the SCI Companion message editor
+
+;;; CASES
+
+(define C_SAW_TITS 1)
+(define C_TRY_AGAIN 2)
+(define C_RESTORE 3)
+(define C_WEIGHTS 4)
+(define C_DROWN_POOL 5)
+(define C_ELECTROCUTED 6)
+(define C_GUARD 7)
+(define C_SAUNA 8)
+(define C_UNLUBRICATED_PISTON 9)
+(define C_DROWN_CELLULITE 10)
+(define C_MUD_BATH 11)
+(define C_DROWN_BEACH 12)
+(define C_DROWN_BAR 13)
+(define C_TRUCK_TIRE 14)
+(define C_FENCE 15)
+(define C_GARY 16)
+(define C_DUMMY17 17)
+(define C_MASTURBATE 18)
+(define C_MISSILE 20)
+(define C_ELECTRIC_FENCE 19)
+
+;;; NOUNS
+
+(define N_ROOM 1)
+(define N_DEATH 2)
+
