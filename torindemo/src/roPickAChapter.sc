@@ -184,7 +184,7 @@
 		(= fore gFore)
 		(super init: &rest)
 		(AddLine
-			LOOKUP_ERROR
+			oPickAChapter
 			434
 			(+ y 14)
 			x
@@ -217,7 +217,7 @@
 		(= fore gFore)
 		(super init: &rest)
 		(AddLine
-			LOOKUP_ERROR
+			oPickAChapter
 			413
 			(+ y 14)
 			x
@@ -250,7 +250,7 @@
 		(= fore gFore)
 		(super init: &rest)
 		(AddLine
-			LOOKUP_ERROR
+			oPickAChapter
 			389
 			(+ y 14)
 			x
@@ -283,7 +283,7 @@
 		(= fore gFore)
 		(super init: &rest)
 		(AddLine
-			LOOKUP_ERROR
+			oPickAChapter
 			346
 			(+ y 14)
 			x
@@ -316,7 +316,7 @@
 		(= fore gFore)
 		(super init: &rest)
 		(AddLine
-			LOOKUP_ERROR
+			oPickAChapter
 			275
 			(+ y 14)
 			x
@@ -393,10 +393,10 @@
 					(temp1 dispose:)
 					(= temp6 (/ (- screenWidth temp4) 2))
 					(= temp7 350)
-					(LOOKUP_ERROR
+					(oTransPlane
 						init: temp6 temp7 (- (+ temp6 temp4) 1) (- (+ temp7 temp5) 1)
 					)
-					(UpdatePlane LOOKUP_ERROR)
+					(UpdatePlane oTransPlane)
 					(= temp8 (Bitmap 0 temp4 temp5 255 255 640 480))
 					(Bitmap 5 temp8 0 0 (- temp4 1) (- temp5 1) 255)
 					(Bitmap
@@ -415,8 +415,8 @@
 						255
 						0
 					)
-					(LOOKUP_ERROR bitmap: temp8 init: LOOKUP_ERROR posn: 8 8)
-					(UpdateScreenItem LOOKUP_ERROR)
+					(voText bitmap: temp8 init: oTransPlane posn: 8 8)
+					(UpdateScreenItem voText)
 					(temp0 dispose:)
 				)
 				(FrameOut)
@@ -521,64 +521,80 @@
 	
 	(method (init &tmp temp0)
 		(Palette 1 999)
-		(LOOKUP_ERROR
+		(oPickAChapter
 			priority: (GetHighPlanePri)
 			init: 0 0 639 479
 		)
-		(= plane LOOKUP_ERROR)
+		(= plane oPickAChapter)
 		(super init: &rest)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
+		(voLogo init: oPickAChapter)
 		(Palette 1 -5521)
-		(if (not global242) (curRoom setScript: 'LOOKUP_ERROR'))
+		(if (not global242) (curRoom setScript: soDemoIntro))
 		(= global202 0)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
+		(oIntroButton removeItem: oRoomChosen init: oPickAChapter)
+		(oRestoreButton
+			removeItem: oRoomChosen
+			init: oPickAChapter
+		)
+		(oChapter1Button
+			removeItem: oRoomChosen
+			init: oPickAChapter
+		)
+		(oChapter2Button
+			removeItem: oRoomChosen
+			init: oPickAChapter
+		)
+		(oChapter3Button
+			removeItem: oRoomChosen
+			init: oPickAChapter
+		)
+		(oChapter4Button
+			removeItem: oRoomChosen
+			init: oPickAChapter
+		)
+		(oChapter5Button
+			removeItem: oRoomChosen
+			init: oPickAChapter
+		)
+		(oEpilogueButton
+			removeItem: oRoomChosen
+			init: oPickAChapter
+		)
+		(oExitButton removeItem: oRoomChosen init: oPickAChapter)
 		(if
 			(or
-				(!= (= temp0 (FileIO 0 LOOKUP_ERROR)) -1)
-				(SaveGame 3 LOOKUP_ERROR 0 (KString 9 version))
+				(!= (= temp0 (FileIO 0 {torinsg.cat})) -1)
+				(SaveGame 3 {Autosave} 0 (KString 9 version))
 			)
 			(FileIO 1 temp0)
-			(LOOKUP_ERROR removeItem: LOOKUP_ERROR init: LOOKUP_ERROR)
+			(oResumeButton
+				removeItem: oRoomChosen
+				init: oPickAChapter
+			)
 		)
-		(LOOKUP_ERROR
-			init:
-			cycleSpeed: (Random 7 17)
-			setCycle: Fwd
-		)
-		(LOOKUP_ERROR
-			init:
-			cycleSpeed: (Random 7 17)
-			setCycle: RandCycle
-		)
-		(LOOKUP_ERROR
+		(oTwinkle1 init: cycleSpeed: (Random 7 17) setCycle: Fwd)
+		(oTwinkle2
 			init:
 			cycleSpeed: (Random 7 17)
 			setCycle: RandCycle
 		)
-		(LOOKUP_ERROR
+		(oTwinkle3
 			init:
 			cycleSpeed: (Random 7 17)
 			setCycle: RandCycle
 		)
-		(LOOKUP_ERROR
-			init:
-			cycleSpeed: (Random 7 17)
-			setCycle: Fwd
-		)
-		(LOOKUP_ERROR
+		(oTwinkle4
 			init:
 			cycleSpeed: (Random 7 17)
 			setCycle: RandCycle
 		)
-		(LOOKUP_ERROR
+		(oTwinkle5 init: cycleSpeed: (Random 7 17) setCycle: Fwd)
+		(oTwinkle6
+			init:
+			cycleSpeed: (Random 7 17)
+			setCycle: RandCycle
+		)
+		(oTwinkle7
 			init:
 			cycleSpeed: (Random 7 17)
 			setCycle: RandCycle
@@ -587,9 +603,7 @@
 	)
 	
 	(method (dispose)
-		(if (LOOKUP_ERROR nScreenSizeX?)
-			(LOOKUP_ERROR dispose:)
-		)
+		(if (oTransPlane nScreenSizeX?) (oTransPlane dispose:))
 		(super dispose:)
 	)
 )

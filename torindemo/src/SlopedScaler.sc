@@ -42,7 +42,7 @@
 				(== theFrontSize theBackSize)
 			)
 			(Printf
-				LOOKUP_ERROR
+				{SlopedScaler, bad args %d %d %d___%d %d %d}
 				theFrontSize
 				theId
 				theFrontY
@@ -93,7 +93,12 @@
 		(= temp4 (GetDistance id frontY temp5 temp6))
 		(= temp4 (GetDistance location backY temp5 temp6))
 		(= temp0 (+ backSize (MulDiv temp4 slopeNum slopeDen)))
-		(MonoOut LOOKUP_ERROR (ego x?) (ego y?) temp0)
+		(MonoOut
+			{Ego @ %d %d, scale = %d}
+			(ego x?)
+			(ego y?)
+			temp0
+		)
 		(if
 		(or (!= clientScaleX temp0) (!= clientScaleY temp0))
 			(client scaleX: temp0 scaleY: temp0)

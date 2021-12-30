@@ -40,12 +40,12 @@
 	
 	(method (init)
 		(super init: &rest)
-		(LOOKUP_ERROR init:)
+		(foWrench init:)
 		(self setCycle: Fwd)
 	)
 	
 	(method (dispose)
-		(LOOKUP_ERROR dispose:)
+		(foWrench dispose:)
 		(super dispose: &rest)
 	)
 )
@@ -64,7 +64,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soTakeWrench)
 	)
 )
 
@@ -82,7 +82,7 @@
 			)
 			(2
 				(ego get: ((ScriptID 64001 0) get: 37))
-				(LOOKUP_ERROR dispose:)
+				(voWrench dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -100,7 +100,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(theDoits add: LOOKUP_ERROR)
+		(theDoits add: oTestNearCannon)
 	)
 )
 
@@ -108,7 +108,7 @@
 	(properties)
 	
 	(method (doit)
-		(if (LOOKUP_ERROR onMe: ego) (curRoom newRoom: -25036))
+		(if (foWaterCannon onMe: ego) (curRoom newRoom: -25036))
 	)
 )
 
@@ -133,7 +133,7 @@
 		(super init: &rest)
 		(gOEventHandler bHasFF: (ScriptID 64010 1))
 		(= plane
-			(LOOKUP_ERROR
+			(oSpitsScrollPlane
 				oMainPlane: 0
 				addBoogleFeature: 0
 				init: 1896 (thePlane doDouble:)
@@ -141,12 +141,12 @@
 			)
 		)
 		(theMusic pageSize: -25236)
-		(LOOKUP_ERROR init:)
+		(voWrench init:)
 		(ego
 			init:
 			oPanner:
 			setScaler: Scaler 35 20 297 45
-			sayNoSave: LOOKUP_ERROR
+			sayNoSave: oLavaDetector
 		)
 		(theGame handsOn:)
 		(switch prevRoomNum
@@ -159,7 +159,7 @@
 				(plane fadeRel: 632 0)
 			)
 		)
-		(LOOKUP_ERROR init:)
+		(foWaterCannon init:)
 		(= local0 (Bitmap 9 -25236 1 0 0 0))
 	)
 	

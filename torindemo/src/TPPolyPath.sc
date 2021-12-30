@@ -66,7 +66,7 @@
 			(= value 2)
 			(if points (points dispose:))
 			((= points (IntArray new:))
-				name: LOOKUP_ERROR
+				name: {tpppath.init}
 				copy: temp3
 			)
 			(KArray 4 temp3)
@@ -116,7 +116,7 @@
 					(+ (- (clientPlane bottom?) (clientPlane top?)) 1)
 				)
 				(= newIntArray (IntArray new:))
-				(newIntArray name: LOOKUP_ERROR)
+				(newIntArray name: {tpppath.setTarget})
 				(newIntArray
 					copy: (AvoidPath
 						(client x?)
@@ -149,10 +149,10 @@
 	)
 	
 	(method (mn)
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut {TPPolyPath newTarget method not overridden!})
 	)
 	
 	(method (md)
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut {TPPolyPath setArgs method not overridden!})
 	)
 )

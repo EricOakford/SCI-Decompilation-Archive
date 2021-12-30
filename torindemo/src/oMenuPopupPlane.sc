@@ -49,11 +49,11 @@
 		(if (not (ScriptID 64000 0)) (return 0))
 		(= temp1 0)
 		(= temp0 (Clone event))
-		(temp0 localize: (LOOKUP_ERROR plane?))
+		(temp0 localize: (oMenuPopupFeat plane?))
 		(if
 			(and
 				(user canControl:)
-				(not (LOOKUP_ERROR onMe: temp0))
+				(not (oMenuPopupFeat onMe: temp0))
 				((ScriptID 64000 0) nExitDist:)
 				(not ((ScriptID 64000 0) nScrollDir:))
 			)
@@ -73,21 +73,19 @@
 	
 	(method (init)
 		(super init: &rest)
-		(gOEventHandler scriptId: LOOKUP_ERROR)
-		(LOOKUP_ERROR
+		(gOEventHandler scriptId: oKillMenuCheck)
+		(oMenuPopupPlane
 			init:
 				4
 				4
 				(+ ((ScriptID 64000 0) findData:) 4)
 				(+ ((ScriptID 64000 0) doDouble:) 4)
 		)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
+		(oMenuPopupFeat init: oMenuPopupPlane)
 	)
 	
 	(method (oDragNotify)
-		(scrollThumb
-			addToEnd: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-		)
+		(scrollThumb addToEnd: moFile moGame moHelp)
 	)
 	
 	(method (hide &tmp temp0)
@@ -110,9 +108,7 @@
 	)
 	
 	(method (oDragNotify)
-		(scrollThumb
-			addToEnd: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-		)
+		(scrollThumb addToEnd: moNew moOpen moSave moExit)
 	)
 )
 
@@ -124,7 +120,7 @@
 	
 	(method (oDragNotify)
 		(scrollThumb
-			addToEnd: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
+			addToEnd: moSpeed moScrolling moText moVolume
 		)
 	)
 )
@@ -136,9 +132,7 @@
 	)
 	
 	(method (oDragNotify)
-		(scrollThumb
-			addToEnd: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-		)
+		(scrollThumb addToEnd: moGetHelp moSupport moAbout)
 	)
 )
 
@@ -206,7 +200,7 @@
 				(newStr dispose:)
 				(newStr_2 dispose:)
 			)
-			(else (Printf LOOKUP_ERROR gNewStr))
+			(else (Printf {Saved Game: %s} gNewStr))
 		)
 		(theGame addVerbHandler: gNewStr)
 	)
@@ -368,7 +362,7 @@
 	)
 	
 	(method (oVerbs)
-		(Prints LOOKUP_ERROR)
+		(Prints {Title Bar selected})
 	)
 )
 

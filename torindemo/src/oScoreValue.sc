@@ -71,7 +71,9 @@
 	)
 	
 	(method (getMyYOffset param1)
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut
+			{SetNoScore should be replaced by normal set. djm. tpflags.sc}
+		)
 		(super set: param1 &rest)
 	)
 	
@@ -80,10 +82,10 @@
 		(= temp0 0)
 		(while (< temp0 argc)
 			(= temp1 (oScoreValue lineColor: [param1 temp0]))
-			(= temp2 (LOOKUP_ERROR test: [param1 temp0]))
+			(= temp2 (oScoreFlags test: [param1 temp0]))
 			(if (and temp1 temp2)
 				(theGame changeScore: (- 0 temp1))
-				(LOOKUP_ERROR clear: [param1 temp0])
+				(oScoreFlags clear: [param1 temp0])
 			)
 			(= temp0 (+ temp0 1))
 		)
@@ -103,7 +105,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(LOOKUP_ERROR init:)
+		(oScoreFlags init:)
 		(oScoreValue
 			init:
 			add:
@@ -255,10 +257,10 @@
 		(= temp0 0)
 		(while (< temp0 argc)
 			(= temp2 (oScoreValue lineColor: [param1 temp0]))
-			(= temp3 (LOOKUP_ERROR test: [param1 temp0]))
+			(= temp3 (oScoreFlags test: [param1 temp0]))
 			(if (and temp2 (not temp3))
 				(theGame changeScore: temp2)
-				(LOOKUP_ERROR set: [param1 temp0])
+				(oScoreFlags set: [param1 temp0])
 			)
 			(= temp0 (+ temp0 1))
 		)

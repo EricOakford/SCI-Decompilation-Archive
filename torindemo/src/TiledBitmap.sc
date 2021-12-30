@@ -37,7 +37,10 @@
 	
 	(method (init theVInventory param2 param3 theOMyNotifyObjs theOMyScrollViews)
 		(super init: &rest)
-		(if (< argc 3) (MonoOut LOOKUP_ERROR) (return))
+		(if (< argc 3)
+			(MonoOut {invalid init of TiledBitmap})
+			(return)
+		)
 		(= vInventory theVInventory)
 		(if (> argc 3) (= oMyNotifyObjs theOMyNotifyObjs))
 		(if (> argc 4) (= oMyScrollViews theOMyScrollViews))
@@ -50,32 +53,34 @@
 	)
 	
 	(method (lInventory theOMyNotifySelectors theAddScrollView &tmp theOMyScrollViews temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8 theIsObjVisible theAddPics temp11)
-		(if (< argc 2) (MonoOut LOOKUP_ERROR) (return))
-		(if (not (ResCheck 128 vInventory))
-			(MonoOut LOOKUP_ERROR vInventory)
+		(if (< argc 2)
+			(MonoOut {Invalid resize of TiledBitmap})
 			(return)
 		)
-		(LOOKUP_ERROR view: vInventory loop: 0 cel: 0)
+		(if (not (ResCheck 128 vInventory))
+			(MonoOut {no view %hd for TiledBitmap} vInventory)
+			(return)
+		)
+		(voTemp view: vInventory loop: 0 cel: 0)
 		(if
-			(or
-				(< (= temp5 (NumLoops 'LOOKUP_ERROR')) 1)
-				(> temp5 2)
-			)
-			(MonoOut LOOKUP_ERROR vInventory)
+		(or (< (= temp5 (NumLoops voTemp)) 1) (> temp5 2))
+			(MonoOut {wrong number of loops view %hd} vInventory)
 			(return)
 		)
 		(if (== temp5 1)
 			(= theOMyScrollViews 0)
-			(= temp6 (NumCels LOOKUP_ERROR))
+			(= temp6 (NumCels voTemp))
 		else
 			(= theOMyScrollViews oMyScrollViews)
-			(= temp6 (NumCels LOOKUP_ERROR))
-			(LOOKUP_ERROR loop: 1)
-			(= temp7 (NumCels {view %hd TL corner wrong size}))
+			(= temp6 (NumCels voTemp))
+			(voTemp loop: 1)
+			(= temp7 (NumCels voTemp))
 		)
 		(if
 		(or (!= temp6 1) (and theOMyScrollViews (!= temp7 8)))
-			(MonoOut LOOKUP_ERROR)
+			(MonoOut
+				{Error: tiles view %hd should have 1 cel in loop 0, 8 cels in loop 1}
+			)
 			(return)
 		)
 		(= canScrollLeft (CelWide vInventory 0 0))
@@ -98,11 +103,11 @@
 			)
 			(= temp8 0)
 			(if (!= getLocalX (CelHigh vInventory 1 1))
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {view %hd left/right borders don't match})
 				(= temp8 1)
 			)
 			(if (!= getLocalY (CelWide vInventory 1 3))
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {view %hd top/bottom borders don't match})
 				(= temp8 1)
 			)
 			(if
@@ -110,7 +115,7 @@
 					(!= isObjVisible (CelWide vInventory 1 4))
 					(!= addPics (CelHigh vInventory 1 4))
 				)
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {view %hd TL corner wrong size})
 				(= temp8 1)
 			)
 			(if
@@ -118,7 +123,7 @@
 					(!= isLocVisible (CelWide vInventory 1 5))
 					(!= addPics (CelHigh vInventory 1 5))
 				)
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {view %hd TR corner wrong size})
 				(= temp8 1)
 			)
 			(if
@@ -126,7 +131,7 @@
 					(!= isObjVisible (CelWide vInventory 1 6))
 					(!= addViews (CelHigh vInventory 1 6))
 				)
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {view %hd BL corner wrong size})
 				(= temp8 1)
 			)
 			(if
@@ -134,7 +139,7 @@
 					(!= isLocVisible (CelWide vInventory 1 7))
 					(!= addViews (CelHigh vInventory 1 7))
 				)
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {view %hd BR corner wrong size})
 				(= temp8 1)
 			)
 			(if temp8 (return))
@@ -164,7 +169,7 @@
 				(= temp2 (- theAddScrollView (+ addPics addViews)))
 				(if
 				(or (< temp1 canScrollLeft) (< temp2 canScrollRight))
-					(MonoOut LOOKUP_ERROR)
+					(MonoOut {requested max size too small for tiles})
 				)
 				(= scroll (/ temp1 canScrollLeft))
 				(= scrollToObj (/ temp2 canScrollRight))
@@ -418,7 +423,7 @@
 	
 	(method (init param1 param2 param3 param4)
 		(cond 
-			((< argc 2) (MonoOut LOOKUP_ERROR))
+			((< argc 2) (MonoOut {Invalid init of TiledView -- not enough params}))
 			((== argc 2) (TiledBitmap init: view param1 param2))
 			((== argc 3) (TiledBitmap init: view param1 param2 param3))
 			((> argc 3) (TiledBitmap init: view param1 param2 param3 param4))
@@ -465,7 +470,10 @@
 	)
 	
 	(method (init param1 param2 param3 param4 theVInventory theOMyNotifyObjs theOMyScrollViews &tmp [temp0 2])
-		(if (< argc 5) (MonoOut LOOKUP_ERROR) (return))
+		(if (< argc 5)
+			(MonoOut {Not enough params to init of TiledPlane})
+			(return)
+		)
 		(super init: param1 param2 param3 param4 &rest)
 		(= vInventory theVInventory)
 		(if (> argc 5) (= oMyNotifyObjs theOMyNotifyObjs))
@@ -489,7 +497,7 @@
 			)
 			(if vCloseup (vCloseup dispose:))
 			(= vCloseup (TiledView new:))
-			(vCloseup name: LOOKUP_ERROR setPri: 0 view: vInventory)
+			(vCloseup name: {voBG} setPri: 0 view: vInventory)
 			(vCloseup
 				init:
 					vCloseupOMyNotifySelectors

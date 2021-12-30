@@ -28,7 +28,7 @@
 	else
 		(curRoom obstacles: (List new:))
 	)
-	(curRoom addObstacle: LOOKUP_ERROR)
+	(curRoom addObstacle: oRoomPolygon)
 	(features dispose: init:)
 	(= temp0 0)
 	(while (< temp0 argc)
@@ -36,12 +36,12 @@
 		(++ temp0)
 	)
 	(if (proc64018_4 ego (ego x?) (ego y?))
-		(MonoOut LOOKUP_ERROR (ego x?) (ego y?))
+		(MonoOut {Dest %d %d is outside} (ego x?) (ego y?))
 	)
 )
 
 (procedure (localproc_0458)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init:
 			1892
@@ -159,17 +159,11 @@
 			1893
 			283
 	)
-	(localproc_0202
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-	)
+	(localproc_0202 foA1 foA2 foA3 foA4 foA5)
 )
 
 (procedure (localproc_0893)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init:
 			1456
@@ -203,11 +197,11 @@
 			1461
 			36
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foB1 foB2)
 )
 
 (procedure (localproc_0a3f)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init:
 			1207
@@ -259,11 +253,11 @@
 			1213
 			128
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foC1 foC2)
 )
 
 (procedure (localproc_0c21)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init:
 			1375
@@ -411,37 +405,37 @@
 			1408
 			287
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foD1 foD2)
 )
 
 (procedure (localproc_0f39)
-	(LOOKUP_ERROR type: 3 init: 1083 22 930 24 930 27 1085 25)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(oRoomPolygon type: 3 init: 1083 22 930 24 930 27 1085 25)
+	(localproc_0202 foE1 foE2)
 )
 
 (procedure (localproc_10aa)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init: 701 45 681 43 661 21 625 0 634 0 666 20 684 40 704 41
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foF1 foF2)
 )
 
 (procedure (localproc_1226)
-	(LOOKUP_ERROR type: 3 init: 120 33 94 35 84 49 115 48)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(oRoomPolygon type: 3 init: 120 33 94 35 84 49 115 48)
+	(localproc_0202 foG1 foG2)
 )
 
 (procedure (localproc_1390)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init: 223 119 172 119 172 121 223 121
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foH1 foH2)
 )
 
 (procedure (localproc_1503)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init:
 			153
@@ -583,16 +577,11 @@
 			171
 			231
 	)
-	(localproc_0202
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-	)
+	(localproc_0202 foI1 foI2 foI3 foI4)
 )
 
 (procedure (localproc_1961)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init:
 			1033
@@ -730,31 +719,27 @@
 			1034
 			160
 	)
-	(localproc_0202
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-	)
+	(localproc_0202 foJ1 foJ2 foJ3)
 )
 
 (procedure (localproc_1cfa)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init: 741 100 675 105 675 108 743 102
 	)
-	(localproc_0202 'LOOKUP_ERROR')
+	(localproc_0202 foK1)
 )
 
 (procedure (localproc_1dd6)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init: 741 100 675 105 675 108 743 102
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foL1 foL2)
 )
 
 (procedure (localproc_1f4a)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init:
 			233
@@ -832,11 +817,11 @@
 			199
 			225
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foM1 foM2)
 )
 
 (procedure (localproc_2184)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init:
 			814
@@ -870,32 +855,28 @@
 			753
 			1
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foN1 foN2)
 )
 
 (procedure (localproc_2328)
-	(LOOKUP_ERROR type: 3 init: 393 54 261 57 261 59 394 56)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(oRoomPolygon type: 3 init: 393 54 261 57 261 59 394 56)
+	(localproc_0202 foO1 foO2)
 )
 
 (procedure (localproc_249a)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init: 313 86 278 84 257 82 235 83 199 86 199 83 257 79 315 84
 	)
-	(localproc_0202 'LOOKUP_ERROR' 'LOOKUP_ERROR')
+	(localproc_0202 foP1 foP2)
 )
 
 (procedure (localproc_261f)
-	(LOOKUP_ERROR
+	(oRoomPolygon
 		type: 3
 		init: 313 86 278 84 257 82 235 83 199 86 199 83 257 79 315 84
 	)
-	(localproc_0202
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-		'LOOKUP_ERROR'
-	)
+	(localproc_0202 foQ1 foQ2 foWinner)
 )
 
 (class MountainPath of ExitFeature
@@ -956,12 +937,12 @@
 	)
 	
 	(method (doVerb)
-		(MonoOut LOOKUP_ERROR name)
+		(MonoOut {%s exit} name)
 		(ego setMotion: PolyPath x y self 2)
 	)
 	
 	(method (cue)
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut {MountainPath super cued})
 	)
 )
 
@@ -1002,11 +983,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foA3 x?) (foA3 y?) (ScriptID 64020 0)
 		)
 	)
 )
@@ -1026,11 +1003,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foA2 x?) (foA2 y?) (ScriptID 64020 0)
 		)
 	)
 )
@@ -1050,11 +1023,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foC1 x?) (foC1 y?) (ScriptID 64020 0)
 		)
 		(localproc_0a3f)
 	)
@@ -1075,11 +1044,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foD1 x?) (foD1 y?) (ScriptID 64020 0)
 		)
 		(localproc_0c21)
 	)
@@ -1100,7 +1065,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion: MoveTo (LOOKUP_ERROR x?) ({oJ1} y?) (ScriptID 64020 0)
+			setMotion: MoveTo (foC2 x?) (foC2 y?) (ScriptID 64020 0)
 		)
 		(localproc_0a3f)
 	)
@@ -1121,11 +1086,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foD1 x?) (foD1 y?) (ScriptID 64020 0)
 		)
 		(localproc_0c21)
 	)
@@ -1146,11 +1107,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foA4 x?) (foA4 y?) (ScriptID 64020 0)
 		)
 		(localproc_0458)
 	)
@@ -1171,11 +1128,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foB1 x?) (foB1 y?) (ScriptID 64020 0)
 		)
 		(localproc_0893)
 	)
@@ -1196,11 +1149,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foB2 x?) (foB2 y?) (ScriptID 64020 0)
 		)
 		(localproc_0893)
 	)
@@ -1221,11 +1170,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foE1 x?) (foE1 y?) (ScriptID 64020 0)
 		)
 		(localproc_0f39)
 	)
@@ -1246,11 +1191,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foD2 x?) (foD2 y?) (ScriptID 64020 0)
 		)
 		(localproc_0c21)
 	)
@@ -1271,11 +1212,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foF1 x?) (foF1 y?) (ScriptID 64020 0)
 		)
 		(localproc_10aa)
 	)
@@ -1296,11 +1233,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foE2 x?) (foE2 y?) (ScriptID 64020 0)
 		)
 		(localproc_0f39)
 	)
@@ -1321,11 +1254,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foG1 x?) (foG1 y?) (ScriptID 64020 0)
 		)
 		(localproc_1226)
 	)
@@ -1346,11 +1275,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foF2 x?) (foF2 y?) (ScriptID 64020 0)
 		)
 		(localproc_10aa)
 	)
@@ -1371,11 +1296,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foH1 x?) (foH1 y?) (ScriptID 64020 0)
 		)
 		(localproc_1390)
 	)
@@ -1396,11 +1317,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foG2 x?) (foG2 y?) (ScriptID 64020 0)
 		)
 		(localproc_1226)
 	)
@@ -1421,11 +1338,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foI1 x?) (foI1 y?) (ScriptID 64020 0)
 		)
 		(localproc_1503)
 	)
@@ -1446,11 +1359,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foH2 x?) (foH2 y?) (ScriptID 64020 0)
 		)
 		(localproc_1390)
 	)
@@ -1470,13 +1379,9 @@
 	
 	(method (cue)
 		(theGame handsOff:)
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut {Whoo-o-oaah})
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foK1 x?) (foK1 y?) (ScriptID 64020 0)
 		)
 		(localproc_1cfa)
 	)
@@ -1497,11 +1402,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foM1 x?) (foM1 y?) (ScriptID 64020 0)
 		)
 		(localproc_1f4a)
 	)
@@ -1524,11 +1425,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foJ1 x?) (foJ1 y?) (ScriptID 64020 0)
 		)
 		(localproc_1961)
 	)
@@ -1549,11 +1446,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foI4 x?) (foI4 y?) (ScriptID 64020 0)
 		)
 		(localproc_1503)
 	)
@@ -1574,11 +1467,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foL2 x?) (foL2 y?) (ScriptID 64020 0)
 		)
 		(localproc_1dd6)
 	)
@@ -1599,11 +1488,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foP1 x?) (foP1 y?) (ScriptID 64020 0)
 		)
 		(localproc_249a)
 	)
@@ -1624,11 +1509,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foL1 x?) (foL1 y?) (ScriptID 64020 0)
 		)
 		(localproc_1dd6)
 	)
@@ -1649,11 +1530,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foJ2 x?) (foJ2 y?) (ScriptID 64020 0)
 		)
 		(localproc_1961)
 	)
@@ -1674,11 +1551,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foK1 x?) (foK1 y?) (ScriptID 64020 0)
 		)
 		(localproc_1cfa)
 	)
@@ -1699,11 +1572,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foI3 x?) (foI3 y?) (ScriptID 64020 0)
 		)
 		(localproc_1503)
 	)
@@ -1724,11 +1593,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foN2 x?) (foN2 y?) (ScriptID 64020 0)
 		)
 		(localproc_2184)
 	)
@@ -1749,11 +1614,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foP1 x?) (foP1 y?) (ScriptID 64020 0)
 		)
 		(localproc_249a)
 	)
@@ -1773,11 +1634,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foO1 x?) (foO1 y?) (ScriptID 64020 0)
 		)
 		(localproc_2328)
 	)
@@ -1798,11 +1655,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foN2 x?) (foN2 y?) (ScriptID 64020 0)
 		)
 		(localproc_2184)
 	)
@@ -1823,11 +1676,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foQ2 x?) (foQ2 y?) (ScriptID 64020 0)
 		)
 		(localproc_261f)
 	)
@@ -1848,11 +1697,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foJ3 x?) (foJ3 y?) (ScriptID 64020 0)
 		)
 		(localproc_1961)
 	)
@@ -1873,11 +1718,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foQ1 x?) (foQ1 y?) (ScriptID 64020 0)
 		)
 		(localproc_261f)
 	)
@@ -1898,11 +1739,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foP2 x?) (foP2 y?) (ScriptID 64020 0)
 		)
 		(localproc_249a)
 	)
@@ -1923,11 +1760,7 @@
 	(method (cue)
 		(theGame handsOff:)
 		(ego
-			setMotion:
-				MoveTo
-				(LOOKUP_ERROR x?)
-				(LOOKUP_ERROR y?)
-				(ScriptID 64020 0)
+			setMotion: MoveTo (foO2 x?) (foO2 y?) (ScriptID 64020 0)
 		)
 		(localproc_2328)
 	)
@@ -1976,10 +1809,13 @@
 	(method (init)
 		(super init: &rest)
 		(= plane
-			(LOOKUP_ERROR init: 1896 (thePlane doDouble:) yourself:)
+			(oLavaScrollPlane
+				init: 1896 (thePlane doDouble:)
+				yourself:
+			)
 		)
 		(theMusic pageSize: -25236)
-		(LOOKUP_ERROR init:)
+		(foWinner init:)
 		(ego oPanner: init: setScaler: Scaler 82 25 297 120)
 		(theGame handsOn:)
 		(= local0 0)
@@ -2002,16 +1838,16 @@
 			(cond 
 				((== 4 (ego cel:))
 					(if local2
-						(LOOKUP_ERROR lThumbLoop: -24831)
+						(foots lThumbLoop: -24831)
 					else
-						(LOOKUP_ERROR lThumbLoop: -24833)
+						(foots lThumbLoop: -24833)
 					)
 				)
 				((== 10 (ego cel:))
 					(if local2
-						(LOOKUP_ERROR lThumbLoop: -24830)
+						(foots lThumbLoop: -24830)
 					else
-						(LOOKUP_ERROR lThumbLoop: -24832)
+						(foots lThumbLoop: -24832)
 					)
 				)
 			)

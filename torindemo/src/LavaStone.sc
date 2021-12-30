@@ -27,16 +27,16 @@
 	[lavaStoneSel_141 37]
 )
 (procedure (localproc_0316)
-	((curRoom obstacles?) delete: LOOKUP_ERROR)
-	((curRoom obstacles?) delete: 'LOOKUP_ERROR')
+	((curRoom obstacles?) delete: oFarShoreWinnerPoly)
+	((curRoom obstacles?) delete: oFarShorePoly)
 	(if (>= local1 34)
-		(LOOKUP_ERROR init:)
-		((curRoom obstacles?) add: LOOKUP_ERROR)
-		(LOOKUP_ERROR init:)
+		(oFarShoreWinnerPoly init:)
+		((curRoom obstacles?) add: oFarShoreWinnerPoly)
+		(foExit init:)
 	else
-		(LOOKUP_ERROR init:)
-		((curRoom obstacles?) add: LOOKUP_ERROR)
-		(LOOKUP_ERROR dispose:)
+		(oFarShorePoly init:)
+		((curRoom obstacles?) add: oFarShorePoly)
+		(foExit dispose:)
 	)
 )
 
@@ -53,13 +53,13 @@
 (procedure (localproc_0432 &tmp temp0)
 	(= temp0 0)
 	(while (< temp0 33)
-		((= [lavaStoneSel_141 temp0] (LOOKUP_ERROR new:))
+		((= [lavaStoneSel_141 temp0] (LavaStone new:))
 			getBitmap: temp0
 		)
 		(++ temp0)
 	)
 	(= local1 34)
-	(LOOKUP_ERROR cel: local1)
+	(poBridge cel: local1)
 	([lavaStoneSel_141 0] BAD_SELECTOR: 2 6 init: add: 1 4)
 	([lavaStoneSel_141 1]
 		BAD_SELECTOR: 2 10
@@ -209,25 +209,25 @@
 		init:
 		add: 28 29
 	)
-	((= [lavaStoneSel_141 33] (LOOKUP_ERROR new:))
+	((= [lavaStoneSel_141 33] (AlmostFarLavaStone new:))
 		BAD_SELECTOR: 16 12
 		getBitmap: 33
 		init:
 		add: 31 34
 	)
-	((= [lavaStoneSel_141 34] (LOOKUP_ERROR new:))
+	((= [lavaStoneSel_141 34] (FarLavaStone new:))
 		BAD_SELECTOR: 18 12
 		getBitmap: 34
 		init:
 		add: 33
 	)
-	((= [lavaStoneSel_141 35] (LOOKUP_ERROR new:))
+	((= [lavaStoneSel_141 35] (NearLavaStone new:))
 		BAD_SELECTOR: 0 10
 		getBitmap: 35
 		init:
 		add: 1 36
 	)
-	((= [lavaStoneSel_141 36] (LOOKUP_ERROR new:))
+	((= [lavaStoneSel_141 36] (NearLavaStone new:))
 		BAD_SELECTOR: 0 14
 		getBitmap: 36
 		init:
@@ -235,34 +235,34 @@
 	)
 )
 
-(procedure (localproc_0af9 param1 &tmp temp0 lavaStoneSel_141Cel lOOKUP_ERRORCel theLOOKUP_ERROR)
+(procedure (localproc_0af9 param1 &tmp temp0 lavaStoneSel_141Cel poBridgeCel thePoBridge)
 	(= local1 0)
 	(localproc_0316)
-	(= lOOKUP_ERRORCel (LOOKUP_ERROR cel:))
-	(= theLOOKUP_ERROR LOOKUP_ERROR)
-	(LOOKUP_ERROR setCycle: Beg)
+	(= poBridgeCel (poBridge cel:))
+	(= thePoBridge poBridge)
+	(poBridge setCycle: Beg)
 	(= temp0 0)
 	(while (< temp0 37)
 		(if
 			(>
 				(= lavaStoneSel_141Cel ([lavaStoneSel_141 temp0] cel:))
-				lOOKUP_ERRORCel
+				poBridgeCel
 			)
-			(= theLOOKUP_ERROR [lavaStoneSel_141 temp0])
-			(= lOOKUP_ERRORCel lavaStoneSel_141Cel)
+			(= thePoBridge [lavaStoneSel_141 temp0])
+			(= poBridgeCel lavaStoneSel_141Cel)
 		)
 		(if (> lavaStoneSel_141Cel 0)
 			([lavaStoneSel_141 temp0]
 				setVisibleRange: 1
 				setScript: 0
-				cycleSpeed: (LOOKUP_ERROR cycleSpeed?)
+				cycleSpeed: (poBridge cycleSpeed?)
 				setCycle: Beg
 			)
 		)
 		(++ temp0)
 	)
 	(theGame handsOff:)
-	(theLOOKUP_ERROR setCycle: Beg param1)
+	(thePoBridge setCycle: Beg param1)
 )
 
 (class LavaStone of Prop
@@ -365,12 +365,12 @@
 			(else (return))
 		)
 		(= theLavaStone self)
-		(LOOKUP_ERROR setLoop: temp2 cel: 0 setCycle: End self)
+		(poTorinJumper setLoop: temp2 cel: 0 setCycle: End self)
 	)
 	
 	(method (onMe theObjOrX)
 		(cond 
-			((self isKindOf: LOOKUP_ERROR)
+			((self isKindOf: NearLavaStone)
 				(if
 					(or
 						(not theLavaStone)
@@ -380,19 +380,19 @@
 				)
 				(return)
 			)
-			((self isKindOf: LOOKUP_ERROR)
+			((self isKindOf: FarLavaStone)
 				(if (== theLavaStone [lavaStoneSel_141 33])
 					(super onMe: theObjOrX)
 				)
 				(return)
 			)
-			((self isKindOf: LOOKUP_ERROR)
+			((self isKindOf: AlmostFarLavaStone)
 				(if
 					(or
 						(== theLavaStone [lavaStoneSel_141 34])
 						(and
 							theLavaStone
-							(== (LOOKUP_ERROR cel:) 0)
+							(== (poTorinJumper cel:) 0)
 							(BAD_SELECTOR contains: (theLavaStone getBitmap?))
 						)
 					)
@@ -404,7 +404,7 @@
 				(if
 					(and
 						theLavaStone
-						(== (LOOKUP_ERROR cel:) 0)
+						(== (poTorinJumper cel:) 0)
 						(super onMe: theObjOrX)
 					)
 					(BAD_SELECTOR contains: (theLavaStone getBitmap?))
@@ -416,15 +416,15 @@
 	
 	(method (cue)
 		(theGame handsOn:)
-		(LOOKUP_ERROR
+		(poTorinJumper
 			nCurPosY: [local2 BAD_SELECTOR]
 			loop: 0
 			cel: 0
 			posn: x y
 		)
-		(UpdateScreenItem LOOKUP_ERROR)
+		(UpdateScreenItem poTorinJumper)
 		(= theLavaStone self)
-		(self setScript: (LOOKUP_ERROR new:))
+		(self setScript: (SoStoneSink new:))
 	)
 	
 	(method (BAD SELECTOR theBAD SELECTOR param2)
@@ -509,19 +509,19 @@
 			(super doVerb: &rest)
 		else
 			(= theLavaStone self)
-			(self setScript: LOOKUP_ERROR self)
+			(self setScript: soEgoToJumper self)
 		)
 	)
 	
 	(method (cue)
 		(theGame handsOn:)
-		(LOOKUP_ERROR
+		(poTorinJumper
 			nCurPosY: [local2 BAD_SELECTOR]
 			loop: 0
 			cel: 0
 			posn: x y
 		)
-		(UpdateScreenItem LOOKUP_ERROR)
+		(UpdateScreenItem poTorinJumper)
 		(= theLavaStone self)
 	)
 )
@@ -534,7 +534,7 @@
 			(0
 				(if (not theLavaStone) (self dispose:) (return))
 				(theGame handsOff:)
-				(Prints LOOKUP_ERROR)
+				(Prints {Anim: jumper to stopwalk})
 				(self cue:)
 			)
 			(1 (= ticks 2))
@@ -543,10 +543,10 @@
 				(ego
 					oPanner:
 					init:
-					posn: (LOOKUP_ERROR x?) (LOOKUP_ERROR y?)
+					posn: (poTorinJumper x?) (poTorinJumper y?)
 					setPri: 650
 				)
-				(LOOKUP_ERROR dispose:)
+				(poTorinJumper dispose:)
 				(self dispose:)
 			)
 		)
@@ -567,11 +567,11 @@
 			(1 (= ticks 2))
 			(2 (ego setHeading: 0 self))
 			(3
-				(Prints LOOKUP_ERROR)
+				(Prints {Anim of torin to jumping position})
 				(self cue:)
 			)
 			(4
-				(LOOKUP_ERROR
+				(poTorinJumper
 					init:
 					posn: (theLavaStone x?) (theLavaStone y?)
 					nCurPosY: [local2 (theLavaStone BAD SELECTOR?)]
@@ -590,10 +590,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(self setScript: LOOKUP_ERROR self)
+				(self setScript: soEgoToJumper self)
 			)
 			(1
-				(LOOKUP_ERROR
+				(poTorinJumper
 					posn: (theLavaStone x?) (theLavaStone y?)
 					nCurPosY: [local2 (theLavaStone BAD SELECTOR?)]
 					setLoop: 2
@@ -670,7 +670,7 @@
 	
 	(method (doVerb)
 		(if (== theLavaStone [lavaStoneSel_141 34])
-			(self setScript: LOOKUP_ERROR self)
+			(self setScript: soEgoToJumpBackward self)
 		else
 			(super doVerb: &rest)
 		)
@@ -750,7 +750,7 @@
 			nCurPosY: [local2 BAD_SELECTOR]
 			setPri: 650
 		)
-		(LOOKUP_ERROR dispose:)
+		(poTorinJumper dispose:)
 	)
 )
 
@@ -781,28 +781,28 @@
 					setCycle: End self
 				)
 				(++ local1)
-				(LOOKUP_ERROR lThumbLoop: -24735)
+				(oStoneSound lThumbLoop: -24735)
 			)
 			(1
-				(LOOKUP_ERROR cel: local1)
+				(poBridge cel: local1)
 				(if (== theLavaStone client)
-					(LOOKUP_ERROR lThumbLoop: -24733)
+					(oStoneSound lThumbLoop: -24733)
 					(theGame handsOff:)
-					(LOOKUP_ERROR
+					(poTorinSinker
 						init:
 						posn: (client x?) (client y?)
-						setScale: LOOKUP_ERROR
+						setScale: poTorinJumper
 						cel: 0
 						setCycle: End self
 					)
-					(LOOKUP_ERROR dispose:)
+					(poTorinJumper dispose:)
 				)
 			)
 			(2
-				(LOOKUP_ERROR dispose:)
+				(poTorinSinker dispose:)
 				(if ((ScriptID 64019 0) show: 0 42 3)
 					(theGame handsOff:)
-					(curRoom setScript: LOOKUP_ERROR)
+					(curRoom setScript: soTorinEnter)
 				)
 				(self dispose:)
 			)
@@ -896,7 +896,7 @@
 					setPri: 650
 					setMotion: MoveTo 280 617 self
 				)
-				(LOOKUP_ERROR cel: local1)
+				(poBridge cel: local1)
 			)
 			(1
 				(theGame handsOn:)
@@ -922,11 +922,11 @@
 		(switch (= state newState)
 			(0
 				(if (<= local1 0) (self dispose:))
-				(self setScript: LOOKUP_ERROR self)
+				(self setScript: soJumperToEgo self)
 			)
 			(1
 				(ego
-					setMotion: PolyPath (LOOKUP_ERROR x?) (LOOKUP_ERROR y?) self
+					setMotion: PolyPath (poNearPusher x?) (poNearPusher y?) self
 				)
 			)
 			(2 (= ticks 2))
@@ -942,13 +942,13 @@
 					(self cue:)
 				)
 				(ego hide:)
-				(LOOKUP_ERROR init: setCycle: End self)
+				(poNearPusher init: setCycle: End self)
 			)
 			(5)
 			(6 (localproc_0af9 self))
 			(7
 				(ego show:)
-				(LOOKUP_ERROR dispose:)
+				(poNearPusher dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1028,7 +1028,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soResetNear)
 	)
 	
 	(method (onMe theObjOrX)
@@ -1161,7 +1161,7 @@
 	
 	(method (init &tmp temp0)
 		(super init: &rest)
-		(= plane (LOOKUP_ERROR init: 632 632 yourself:))
+		(= plane (oNullVoidPlane init: 632 632 yourself:))
 		(= [local2 0] 100)
 		(= [local2 1] 93)
 		(= [local2 2] 86)
@@ -1193,15 +1193,15 @@
 			)
 			(++ temp0)
 		)
-		(LOOKUP_ERROR init:)
-		(curRoom addObstacle: LOOKUP_ERROR)
+		(oNearShorePoly init:)
+		(curRoom addObstacle: oNearShorePoly)
 		(localproc_0432)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(curRoom setScript: LOOKUP_ERROR)
+		(foFarReset init:)
+		(voFarResetHandle init:)
+		(foNearReset init:)
+		(voNearResetHandle init:)
+		(poBridge init:)
+		(curRoom setScript: soTorinEnter)
 	)
 	
 	(method (dispose &tmp temp0)

@@ -51,19 +51,19 @@
 		(super init: &rest)
 		(self moveTo: left top)
 		(= modalPlaneNSpeed (self nSpeed:))
-		(LOOKUP_ERROR y: 0 init: modalPlaneNSpeed)
+		(voInsetFrame y: 0 init: modalPlaneNSpeed)
 		(self setSize:)
-		(= temp1 (Str newWith: 400 LOOKUP_ERROR))
+		(= temp1 (Str newWith: 400 {Set Speed}))
 		(self setTitle: (KString 8 (temp1 data?)))
 		(temp1 dispose:)
-		(LOOKUP_ERROR init: modalPlaneNSpeed setPri: 100)
-		(LOOKUP_ERROR init: (self nSpeed:))
-		(LOOKUP_ERROR init: (self nSpeed:))
-		(LOOKUP_ERROR init: (self nSpeed:))
-		(LOOKUP_ERROR init: (self nSpeed:))
-		(LOOKUP_ERROR init: (self nSpeed:))
-		(LOOKUP_ERROR init: self)
-		(LOOKUP_ERROR nUserRange: 28)
+		(poWalker init: modalPlaneNSpeed setPri: 100)
+		(voClose init: (self nSpeed:))
+		(voFastLeft init: (self nSpeed:))
+		(voStepLeft init: (self nSpeed:))
+		(voFastRight init: (self nSpeed:))
+		(voStepRight init: (self nSpeed:))
+		(foMove init: self)
+		(foMove nUserRange: 28)
 	)
 )
 
@@ -75,11 +75,11 @@
 		loop 4
 	)
 	
-	(method (oVerbs &tmp lOOKUP_ERRORCycleSpeed)
-		(= lOOKUP_ERRORCycleSpeed (LOOKUP_ERROR cycleSpeed?))
-		(theGame oCantBeHereHandler: lOOKUP_ERRORCycleSpeed)
-		(ego setSpeed: lOOKUP_ERRORCycleSpeed)
-		(LOOKUP_ERROR dispose:)
+	(method (oVerbs &tmp poWalkerCycleSpeed)
+		(= poWalkerCycleSpeed (poWalker cycleSpeed?))
+		(theGame oCantBeHereHandler: poWalkerCycleSpeed)
+		(ego setSpeed: poWalkerCycleSpeed)
+		(oInset dispose:)
 		(DisposeScript -1521)
 	)
 )
@@ -93,7 +93,7 @@
 	)
 	
 	(method (oVerbs)
-		(LOOKUP_ERROR cycleSpeed: 10)
+		(poWalker cycleSpeed: 10)
 	)
 )
 
@@ -106,16 +106,16 @@
 	)
 	
 	(method (oMyHandler)
-		(LOOKUP_ERROR
-			cycleSpeed: (Min 40 (+ 1 (LOOKUP_ERROR cycleSpeed?)))
+		(poWalker
+			cycleSpeed: (Min 40 (+ 1 (poWalker cycleSpeed?)))
 		)
 		(= local0 (+ gameTime 20))
 	)
 	
 	(method (addSelfToCursorList)
 		(if (> gameTime local0)
-			(LOOKUP_ERROR
-				cycleSpeed: (Min 40 (+ 1 (LOOKUP_ERROR cycleSpeed?)))
+			(poWalker
+				cycleSpeed: (Min 40 (+ 1 (poWalker cycleSpeed?)))
 			)
 			(= local0 (+ gameTime 5))
 		)
@@ -131,16 +131,16 @@
 	)
 	
 	(method (oMyHandler)
-		(LOOKUP_ERROR
-			cycleSpeed: (Max (- (LOOKUP_ERROR cycleSpeed?) 1) 0)
+		(poWalker
+			cycleSpeed: (Max (- (poWalker cycleSpeed?) 1) 0)
 		)
 		(= local0 (+ gameTime 20))
 	)
 	
 	(method (addSelfToCursorList)
 		(if (> gameTime local0)
-			(LOOKUP_ERROR
-				cycleSpeed: (Max (- (LOOKUP_ERROR cycleSpeed?) 1) 0)
+			(poWalker
+				cycleSpeed: (Max (- (poWalker cycleSpeed?) 1) 0)
 			)
 			(= local0 (+ gameTime 5))
 		)
@@ -156,6 +156,6 @@
 	)
 	
 	(method (oVerbs)
-		(LOOKUP_ERROR cycleSpeed: 0)
+		(poWalker cycleSpeed: 0)
 	)
 )

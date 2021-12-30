@@ -43,7 +43,7 @@
 	)
 	
 	(method (doVerb)
-		(LOOKUP_ERROR dispose:)
+		(animPlayer dispose:)
 		(curRoom newRoom: 16000)
 	)
 )
@@ -85,24 +85,20 @@
 (instance toZax of Talker
 	(properties)
 	
-	(method (init &tmp lOOKUP_ERRORX lOOKUP_ERRORY lOOKUP_ERRORPriority)
-		(LOOKUP_ERROR hide:)
-		(= lOOKUP_ERRORX (LOOKUP_ERROR x?))
-		(= lOOKUP_ERRORY (LOOKUP_ERROR y?))
-		(= priority
-			(= lOOKUP_ERRORPriority (LOOKUP_ERROR priority?))
-		)
-		(= bust (LOOKUP_ERROR x: lOOKUP_ERRORX y: lOOKUP_ERRORY))
-		(= mouth
-			(LOOKUP_ERROR x: lOOKUP_ERRORX y: lOOKUP_ERRORY)
-		)
+	(method (init &tmp poGuardCuX poGuardCuY poGuardCuPriority)
+		(poGuardCu hide:)
+		(= poGuardCuX (poGuardCu x?))
+		(= poGuardCuY (poGuardCu y?))
+		(= priority (= poGuardCuPriority (poGuardCu priority?)))
+		(= bust (voZaxBust x: poGuardCuX y: poGuardCuY))
+		(= mouth (poZaxMouth x: poGuardCuX y: poGuardCuY))
 		(super init:)
-		(mouth setPri: (+ 1 lOOKUP_ERRORPriority))
+		(mouth setPri: (+ 1 poGuardCuPriority))
 	)
 	
 	(method (dispose)
-		(if (not (LOOKUP_ERROR plane?)) (LOOKUP_ERROR init:))
-		(LOOKUP_ERROR show:)
+		(if (not (poGuardCu plane?)) (poGuardCu init:))
+		(poGuardCu show:)
 		(super dispose: &rest)
 	)
 )
@@ -125,7 +121,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR cel: 0 init: setCycle: End self)
+				(poGuardCu cel: 0 init: setCycle: End self)
 			)
 			(1
 				(switch global230
@@ -141,10 +137,10 @@
 				(if (< global230 6) (++ global230))
 			)
 			(2
-				(LOOKUP_ERROR setCycle: Beg self)
+				(poGuardCu setCycle: Beg self)
 			)
 			(3
-				(LOOKUP_ERROR dispose:)
+				(poGuardCu dispose:)
 				(self dispose:)
 			)
 		)
@@ -175,7 +171,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soGuardCuTalk)
 			)
 		)
 	)
@@ -186,15 +182,13 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0
-				(ego nSaveTime: LOOKUP_ERROR self)
-			)
+			(0 (ego nSaveTime: foMoat self))
 			(1
 				(ego hide:)
-				(LOOKUP_ERROR init: load: LOOKUP_ERROR cuee: self play:)
+				(animPlayer init: load: {fallin} cuee: self play:)
 			)
 			(2
-				(LOOKUP_ERROR hide:)
+				(animPlayer hide:)
 				(if ((ScriptID 64019 0) show: 0 42 9) (ego show:))
 				(self dispose:)
 			)
@@ -209,7 +203,7 @@
 	)
 	
 	(method (init)
-		(LOOKUP_ERROR init: load: LOOKUP_ERROR cuee: self)
+		(animPlayer init: load: {snail} cuee: self)
 		(super init: &rest)
 	)
 	
@@ -217,12 +211,12 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(ego nSaveTime: LOOKUP_ERROR self)
+				(ego nSaveTime: foMoat self)
 			)
 			(1
 				(ego hide:)
 				(((ScriptID 64001 0) get: 6) dispose:)
-				(LOOKUP_ERROR play:)
+				(animPlayer play:)
 			)
 			(2 (self rememberMessage:))
 		)
@@ -230,7 +224,7 @@
 	
 	(method (rememberMessage)
 		(((ScriptID 64001 0) get: 6) dispose:)
-		(LOOKUP_ERROR stop: hide:)
+		(animPlayer stop: hide:)
 		(ego posn: 154 293 loop: 4 show:)
 		(ego get: ((ScriptID 64001 0) get: 7))
 		((ScriptID 64017 0) set: 7)
@@ -241,7 +235,7 @@
 	(method (sayMessage)
 		(ego show:)
 		((ScriptID 64017 0) unlockAudio: 7)
-		(LOOKUP_ERROR stop: hide:)
+		(animPlayer stop: hide:)
 		(ego setScript: self)
 	)
 )
@@ -272,10 +266,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soTorinJumpInMoat)
 			)
 			(10
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soDropSnails)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -323,10 +317,10 @@
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(foMoat init:)
+		(foDrawbridge init:)
+		(foGuard init:)
+		(foExit init:)
 		((ScriptID 64018 0)
 			init:
 			posn: 100 350

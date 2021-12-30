@@ -207,7 +207,7 @@
 	(method (init &tmp temp0)
 		(super init: left top right bottom)
 		(self setPri: -1)
-		(LOOKUP_ERROR
+		(textScrollBar
 			object: self
 			selector: 1074
 			nBorderDist: 0
@@ -215,9 +215,9 @@
 			init: self
 		)
 		(= bSinging
-			(- (+ 1 (- right left)) (LOOKUP_ERROR width:))
+			(- (+ 1 (- right left)) (textScrollBar width:))
 		)
-		(LOOKUP_ERROR posn: bSinging 0)
+		(textScrollBar posn: bSinging 0)
 		(= oRightHand (List new:))
 	)
 	
@@ -235,7 +235,7 @@
 	)
 	
 	(method (setPenalty)
-		(self getTwoHigher: (- 0 (LOOKUP_ERROR getPenalty:)))
+		(self getTwoHigher: (- 0 (textScrollBar getPenalty:)))
 	)
 	
 	(method (oSingCuee param1 &tmp newTextDisplayClass)
@@ -260,7 +260,7 @@
 		(param1 bRightHandOut: newTextDisplayClass)
 	)
 	
-	(method (unselect param1 param2 param3 param4 param5 &tmp newTextSaverClass lOOKUP_ERROROScrollPlane)
+	(method (unselect param1 param2 param3 param4 param5 &tmp newTextSaverClass textScrollBarOScrollPlane)
 		(if (>= (oRightHand size:) oLeftHand)
 			(= newTextSaverClass (oRightHand at: 0))
 			(oRightHand delete: newTextSaverClass)
@@ -277,12 +277,14 @@
 		(oRightHand addToEnd: newTextSaverClass)
 		(self oSingCuee: newTextSaverClass)
 		(self switchWith:)
-		(= lOOKUP_ERROROScrollPlane (LOOKUP_ERROR oScrollPlane?))
-		(LOOKUP_ERROR solvedThrough: lOOKUP_ERROROScrollPlane)
-		(= lOOKUP_ERROROScrollPlane
-			(- 0 lOOKUP_ERROROScrollPlane)
+		(= textScrollBarOScrollPlane
+			(textScrollBar oScrollPlane?)
 		)
-		(self getTwoHigher: lOOKUP_ERROROScrollPlane)
+		(textScrollBar solvedThrough: textScrollBarOScrollPlane)
+		(= textScrollBarOScrollPlane
+			(- 0 textScrollBarOScrollPlane)
+		)
+		(self getTwoHigher: textScrollBarOScrollPlane)
 	)
 	
 	(method (curPrayer param1 param2 &tmp temp0)
@@ -300,7 +302,7 @@
 			)
 		else
 			(= temp0 -1)
-			(param2 with: LOOKUP_ERROR)
+			(param2 with: {The unknown message})
 		)
 		(return temp0)
 	)
@@ -357,7 +359,7 @@
 		(= temp1 (- temp1 (- bottom top)))
 		(= temp1 (Max 1 temp1))
 		(= temp3 (* 3 (= temp2 (Max 1 (/ temp1 20)))))
-		(LOOKUP_ERROR
+		(textScrollBar
 			setAllFlagsUpTo: 0 temp1
 			getScore: temp2 temp3
 		)

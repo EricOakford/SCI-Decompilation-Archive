@@ -39,15 +39,15 @@
 	local1
 )
 (procedure (proc64002_2 &tmp [temp0 3] temp3)
-	(LOOKUP_ERROR init: 0 320 lastScreenX lastScreenY)
-	((OpaqueFeature new:) init: LOOKUP_ERROR)
-	({soTeleprompterDown} init: 0 0 lastScreenX 3)
-	({oBoogleInventory} init: 0 4 3 320)
-	(LOOKUP_ERROR init: (- screenWidth 4) 4 screenWidth 320)
-	(LOOKUP_ERROR init: 78 352 558 479)
-	(LOOKUP_ERROR init: 78 352 558 479)
-	((ScriptID 64002 3) init: LOOKUP_ERROR)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
+	(oInterfacePlane init: 0 320 lastScreenX lastScreenY)
+	((OpaqueFeature new:) init: oInterfacePlane)
+	(topBorder init: 0 0 lastScreenX 3)
+	(leftBorder init: 0 4 3 320)
+	(rightBorder init: (- screenWidth 4) 4 screenWidth 320)
+	(oInvPlane init: 78 352 558 479)
+	(oBooglePlane init: 78 352 558 479)
+	((ScriptID 64002 3) init: oInterfacePlane)
+	(foScore init: oInterfacePlane)
 	(= eatMice 2)
 	(= temp3
 		(IntArray
@@ -89,22 +89,22 @@
 	)
 	((ScriptID 64001 0)
 		checkStatus: -5531
-		init: (LOOKUP_ERROR nSpeed:) temp3
+		init: (oInvPlane nSpeed:) temp3
 	)
 	(= local1
-		(((ScriptID 64897 1) new:) init: LOOKUP_ERROR yourself:)
+		(((ScriptID 64897 1) new:) init: oInvPlane yourself:)
 	)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	((LOOKUP_ERROR new:) init: LOOKUP_ERROR)
+	(oTorinWellBG init: oInvPlane)
+	((voEyePedestal new:) init: oInvPlane)
 	((ScriptID 64001 1)
 		checkStatus: -5531
-		init: (LOOKUP_ERROR nSpeed:) temp3
+		init: (oBooglePlane nSpeed:) temp3
 	)
 	(= local0
-		(((ScriptID 64897 1) new:) init: LOOKUP_ERROR yourself:)
+		(((ScriptID 64897 1) new:) init: oBooglePlane yourself:)
 	)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	((LOOKUP_ERROR new:) init: LOOKUP_ERROR)
+	(oBoogleWellBG init: oBooglePlane)
+	((voEyePedestal new:) init: oBooglePlane)
 	(temp3 dispose:)
 	(= temp3 0)
 	((ScriptID 64004 0)
@@ -116,7 +116,7 @@
 		bottom: 327
 		init:
 	)
-	(LOOKUP_ERROR
+	(voTeleprompterBg
 		priority: 0
 		fixPriority: 1
 		y: (-
@@ -125,39 +125,39 @@
 		)
 		init: (ScriptID 64004 0)
 	)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	(LOOKUP_ERROR init: LOOKUP_ERROR)
-	(gOEventHandler setIncrement: LOOKUP_ERROR)
-	(gOEventHandler setIncrement: LOOKUP_ERROR)
-	(gOEventHandler setIncrement: LOOKUP_ERROR)
-	(super init: LOOKUP_ERROR)
+	(oTorinInventory init: oInterfacePlane)
+	(oBoogleInventory init: oInterfacePlane)
+	(oInventoryGroup init: oInterfacePlane)
+	(oTeleprompter init: oInterfacePlane)
+	(oHelp init: oInterfacePlane)
+	(oRewind init: oInterfacePlane)
+	(oPause init: oInterfacePlane)
+	(oFastForward init: oInterfacePlane)
+	(gOEventHandler setIncrement: oRewind)
+	(gOEventHandler setIncrement: oFastForward)
+	(gOEventHandler setIncrement: oPause)
+	(super init: oInterfacePlane)
 	((ScriptID 64000 0) init:)
 	(UpdatePlane (ScriptID 64002 1))
-	(UpdatePlane LOOKUP_ERROR)
+	(UpdatePlane oInvPlane)
 )
 
 (procedure (proc64002_7)
 	(if (== global265 0) (return))
 	(proc64897_2 local0)
 	(= global265 0)
-	(LOOKUP_ERROR setPri: -1)
-	(LOOKUP_ERROR setPri: 450)
-	(LOOKUP_ERROR slotIncY: 1)
+	(oBooglePlane setPri: -1)
+	(oInvPlane setPri: 450)
+	(oTorinInventory slotIncY: 1)
 )
 
 (procedure (proc64002_8)
 	(if (== global265 1) (return))
 	(proc64897_2 local1)
 	(= global265 1)
-	(LOOKUP_ERROR setPri: 450)
-	(LOOKUP_ERROR setPri: -1)
-	(LOOKUP_ERROR slotIncY: 1)
+	(oBooglePlane setPri: 450)
+	(oInvPlane setPri: -1)
+	(oBoogleInventory slotIncY: 1)
 )
 
 (instance oInterfacePlane of Plane
@@ -186,15 +186,15 @@
 	)
 	
 	(method (init &tmp [temp0 3] temp3)
-		(LOOKUP_ERROR init: 0 320 lastScreenX lastScreenY)
-		((OpaqueFeature new:) init: LOOKUP_ERROR)
-		({soTeleprompterDown} init: 0 0 lastScreenX 3)
-		({oBoogleInventory} init: 0 4 3 320)
-		(LOOKUP_ERROR init: (- screenWidth 4) 4 screenWidth 320)
-		(LOOKUP_ERROR init: 78 352 558 479)
-		(LOOKUP_ERROR init: 78 352 558 479)
-		((ScriptID 64002 3) init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
+		(oInterfacePlane init: 0 320 lastScreenX lastScreenY)
+		((OpaqueFeature new:) init: oInterfacePlane)
+		(topBorder init: 0 0 lastScreenX 3)
+		(leftBorder init: 0 4 3 320)
+		(rightBorder init: (- screenWidth 4) 4 screenWidth 320)
+		(oInvPlane init: 78 352 558 479)
+		(oBooglePlane init: 78 352 558 479)
+		((ScriptID 64002 3) init: oInterfacePlane)
+		(foScore init: oInterfacePlane)
 		(= eatMice 2)
 		(= temp3
 			(IntArray
@@ -236,22 +236,22 @@
 		)
 		((ScriptID 64001 0)
 			checkStatus: -5531
-			init: (LOOKUP_ERROR nSpeed:) temp3
+			init: (oInvPlane nSpeed:) temp3
 		)
 		(= local1
-			(((ScriptID 64897 1) new:) init: LOOKUP_ERROR yourself:)
+			(((ScriptID 64897 1) new:) init: oInvPlane yourself:)
 		)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		((LOOKUP_ERROR new:) init: LOOKUP_ERROR)
+		(oTorinWellBG init: oInvPlane)
+		((voEyePedestal new:) init: oInvPlane)
 		((ScriptID 64001 1)
 			checkStatus: -5531
-			init: (LOOKUP_ERROR nSpeed:) temp3
+			init: (oBooglePlane nSpeed:) temp3
 		)
 		(= local0
-			(((ScriptID 64897 1) new:) init: LOOKUP_ERROR yourself:)
+			(((ScriptID 64897 1) new:) init: oBooglePlane yourself:)
 		)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		((LOOKUP_ERROR new:) init: LOOKUP_ERROR)
+		(oBoogleWellBG init: oBooglePlane)
+		((voEyePedestal new:) init: oBooglePlane)
 		(temp3 dispose:)
 		(= temp3 0)
 		((ScriptID 64004 0)
@@ -263,7 +263,7 @@
 			bottom: 327
 			init:
 		)
-		(LOOKUP_ERROR
+		(voTeleprompterBg
 			priority: 0
 			fixPriority: 1
 			y: (-
@@ -272,21 +272,21 @@
 			)
 			init: (ScriptID 64004 0)
 		)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(gOEventHandler setIncrement: LOOKUP_ERROR)
-		(gOEventHandler setIncrement: LOOKUP_ERROR)
-		(gOEventHandler setIncrement: LOOKUP_ERROR)
-		(super init: LOOKUP_ERROR)
+		(oTorinInventory init: oInterfacePlane)
+		(oBoogleInventory init: oInterfacePlane)
+		(oInventoryGroup init: oInterfacePlane)
+		(oTeleprompter init: oInterfacePlane)
+		(oHelp init: oInterfacePlane)
+		(oRewind init: oInterfacePlane)
+		(oPause init: oInterfacePlane)
+		(oFastForward init: oInterfacePlane)
+		(gOEventHandler setIncrement: oRewind)
+		(gOEventHandler setIncrement: oFastForward)
+		(gOEventHandler setIncrement: oPause)
+		(super init: oInterfacePlane)
 		((ScriptID 64000 0) init:)
 		(UpdatePlane (ScriptID 64002 1))
-		(UpdatePlane LOOKUP_ERROR)
+		(UpdatePlane oInvPlane)
 	)
 )
 
@@ -411,7 +411,7 @@
 				else
 					(Load 140 -5527)
 				)
-				(LOOKUP_ERROR
+				(oTeleprompterTempPlane
 					priority: 1000
 					init:
 						((ScriptID 64004 0) left:)
@@ -419,18 +419,21 @@
 						((ScriptID 64004 0) right:)
 						((ScriptID 64004 0) bottom?)
 				)
-				(UpdatePlane LOOKUP_ERROR)
-				(LOOKUP_ERROR
-					y: (- (LOOKUP_ERROR bottom?) (LOOKUP_ERROR top?))
+				(UpdatePlane oTeleprompterTempPlane)
+				(poTeleprompter
+					y: (-
+						(oTeleprompterTempPlane bottom?)
+						(oTeleprompterTempPlane top?)
+					)
 					cel: 0
-					init: LOOKUP_ERROR
+					init: oTeleprompterTempPlane
 					setCycle: End self
 				)
-				(LOOKUP_ERROR vThumbView: -5528)
+				(teleMove vThumbView: -5528)
 			)
 			(1
-				(LOOKUP_ERROR stop:)
-				(LOOKUP_ERROR dispose:)
+				(teleMove stop:)
+				(oTeleprompterTempPlane dispose:)
 				((ScriptID 64004 0) show:)
 				(self dispose:)
 			)
@@ -455,7 +458,7 @@
 					(Load 140 -5527)
 				)
 				((ScriptID 64004 0) hide:)
-				(LOOKUP_ERROR
+				(oTeleprompterTempPlane
 					priority: 1000
 					init:
 						((ScriptID 64004 0) left:)
@@ -463,19 +466,22 @@
 						((ScriptID 64004 0) right:)
 						((ScriptID 64004 0) bottom?)
 				)
-				(UpdatePlane LOOKUP_ERROR)
-				(LOOKUP_ERROR
-					y: (- (LOOKUP_ERROR bottom?) (LOOKUP_ERROR top?))
+				(UpdatePlane oTeleprompterTempPlane)
+				(poTeleprompter
+					y: (-
+						(oTeleprompterTempPlane bottom?)
+						(oTeleprompterTempPlane top?)
+					)
 					cel: 9
-					init: LOOKUP_ERROR
+					init: oTeleprompterTempPlane
 					setCycle: Beg self
 				)
-				(LOOKUP_ERROR vThumbView: -5528)
+				(teleMove vThumbView: -5528)
 			)
 			(1
-				(LOOKUP_ERROR stop:)
-				(LOOKUP_ERROR lThumbLoop:)
-				(LOOKUP_ERROR dispose:)
+				(teleMove stop:)
+				(teleDone lThumbLoop:)
+				(oTeleprompterTempPlane dispose:)
 				(self dispose:)
 			)
 		)
@@ -505,9 +511,9 @@
 	
 	(method (oVerbs)
 		(if slotIncX
-			(LOOKUP_ERROR init: LOOKUP_ERROR)
+			(soTeleprompterUp init: soTeleprompter2)
 		else
-			(LOOKUP_ERROR init: LOOKUP_ERROR)
+			(soTeleprompterDown init: soTeleprompter2)
 		)
 	)
 )
@@ -544,9 +550,9 @@
 	
 	(method (oVerbs &tmp temp0)
 		(if (== loop 17)
-			(theGame setScript: LOOKUP_ERROR)
+			(theGame setScript: soRaiseHourglass)
 		else
-			(theGame setScript: LOOKUP_ERROR)
+			(theGame setScript: soLowerHourglass)
 		)
 	)
 )
@@ -572,20 +578,20 @@
 					(temp0 dispose:)
 					(= temp0 0)
 				)
-				(LOOKUP_ERROR hide:)
-				(LOOKUP_ERROR
-					cel: (LOOKUP_ERROR lastCel:)
-					init: (LOOKUP_ERROR plane?)
+				(oHelp hide:)
+				(poHourglass
+					cel: (poHourglass lastCel:)
+					init: (oHelp plane?)
 					setCycle: Beg self
 				)
-				(LOOKUP_ERROR vThumbView: -5528)
+				(teleMove vThumbView: -5528)
 			)
 			(1
-				(LOOKUP_ERROR stop:)
-				(LOOKUP_ERROR lThumbLoop:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR loop: 25 show:)
-				(LOOKUP_ERROR
+				(teleMove stop:)
+				(teleDone lThumbLoop:)
+				(poHourglass dispose:)
+				(oHelp loop: 25 show:)
+				(oHelp
 					setPolygon:
 						((Polygon new:)
 							type: 0
@@ -620,20 +626,20 @@
 					(temp0 dispose:)
 					(= temp0 0)
 				)
-				(LOOKUP_ERROR hide:)
-				(LOOKUP_ERROR
+				(oHelp hide:)
+				(poHourglass
 					cel: 0
-					init: (LOOKUP_ERROR plane?)
+					init: (oHelp plane?)
 					setCycle: End self
 				)
-				(LOOKUP_ERROR vThumbView: -5528)
+				(teleMove vThumbView: -5528)
 			)
 			(1
-				(LOOKUP_ERROR stop:)
-				(LOOKUP_ERROR lThumbLoop:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR loop: 17 show:)
-				(LOOKUP_ERROR
+				(teleMove stop:)
+				(teleDone lThumbLoop:)
+				(poHourglass dispose:)
+				(oHelp loop: 17 show:)
+				(oHelp
 					setPolygon:
 						((Polygon new:)
 							type: 0
@@ -671,7 +677,7 @@
 	
 	(method (init)
 		(super init: &rest)
-		(self add: LOOKUP_ERROR LOOKUP_ERROR)
+		(self add: oBoogleInventory oTorinInventory)
 	)
 )
 
@@ -764,8 +770,8 @@
 			(messager isVisible:)
 			(nPointOn sayMessage:)
 			(if (nPointOn oMessageList?)
-				(LOOKUP_ERROR enable:)
-				(LOOKUP_ERROR setScript: nPointOn)
+				(oFastForward enable:)
+				(oFastForward setScript: nPointOn)
 			)
 		)
 	)
@@ -805,17 +811,17 @@
 	(method (oVerbs &tmp temp0)
 		(if slotIncX
 			(Sound pause: 1)
-			(LOOKUP_ERROR init:)
+			(oPausePlane init:)
 			(if (= temp0 (MakeMessageText 0 0 2 1 0 300))
 				(TextDialog temp0 continueText)
 				(temp0 dispose:)
 				(= temp0 0)
 				(self slotIncY: 0)
-				(LOOKUP_ERROR dispose:)
+				(oPausePlane dispose:)
 				(Sound pause: 0)
 			)
 		else
-			(LOOKUP_ERROR dispose:)
+			(oPausePlane dispose:)
 			(Sound pause: 0)
 		)
 	)
@@ -824,22 +830,22 @@
 (instance oPausePlane of ModalPlane
 	(properties)
 	
-	(method (init &tmp lOOKUP_ERRORPlane)
+	(method (init &tmp oPausePlane)
 		(= picture -2)
-		(= lOOKUP_ERRORPlane (LOOKUP_ERROR plane?))
+		(= oPausePlane (oPause plane?))
 		(super
 			init:
-				(lOOKUP_ERRORPlane left:)
-				(lOOKUP_ERRORPlane top?)
-				(lOOKUP_ERRORPlane right:)
-				(lOOKUP_ERRORPlane bottom?)
+				(oPausePlane left:)
+				(oPausePlane top?)
+				(oPausePlane right:)
+				(oPausePlane bottom?)
 		)
-		(LOOKUP_ERROR dispose: init: LOOKUP_ERROR slotIncY: 1)
+		(oPause dispose: init: oPausePlane slotIncY: 1)
 	)
 	
 	(method (dispose)
 		(super dispose: &rest)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
+		(oPause init: oInterfacePlane)
 	)
 )
 

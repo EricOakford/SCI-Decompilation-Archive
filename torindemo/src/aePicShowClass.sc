@@ -47,21 +47,21 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp1 temp3
+			addTitle: {Picture Edit}
+			addText: {Number} temp1 temp3
 			addEdit: newStr 5 temp2 temp3
-			addButton: -1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addButton: -1 {CANCEL} temp1 (= temp3 (+ temp3 temp4))
 		)
 		(if (> (= printInit (Print init:)) 0)
 			(= picture (newStr asInteger:))
 			(if (ResCheck 129 picture)
 				(nCutoff
-					format: LOOKUP_ERROR getBitmap name nSpecialSelector picture
+					format: {%d/%s = %s: %hu} getBitmap name nSpecialSelector picture
 				)
 				(= temp5 1)
 				(self doSelect:)
 			else
-				(MonoOut LOOKUP_ERROR newStr)
+				(MonoOut {Pic %s not found} newStr)
 			)
 		)
 		(newStr dispose:)
@@ -74,10 +74,10 @@
 		(= temp4 (+ 7 (Font 0 inputFont)))
 		(= newStr (Str new:))
 		(if (= temp5 (self nSelectValue: aePicShowClass))
-			(newStr format: 'LOOKUP_ERROR' (temp5 vTiles?))
+			(newStr format: {%d} (temp5 vTiles?))
 		else
 			(newStr
-				format: LOOKUP_ERROR ((whoToCue bTileBorder?) normalize?)
+				format: {%d} ((whoToCue bTileBorder?) normalize?)
 			)
 		)
 		(Print
@@ -88,16 +88,16 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp1 temp3
+			addTitle: {Pic Edit}
+			addText: {Tick} temp1 temp3
 			addEdit: newStr 5 temp2 temp3
-			addButton: -1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addButton: -1 {CANCEL} temp1 (= temp3 (+ temp3 temp4))
 		)
 		(if (> (= printInit (Print init:)) 0)
 			(if (>= (= newStrAsInteger (newStr asInteger:)) 0)
 				(self doHeld: aePicShowClass newStrAsInteger)
 			else
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {Ticks must >= 0})
 			)
 		)
 		(newStr dispose:)
@@ -115,12 +115,15 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp0 temp2
-			addText: LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addButton: -1 LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
+			addTitle: {Picture Help}
+			addText: {A picture covers the background of the screen} temp0 temp2
+			addText: {} temp0 (= temp2 (+ temp2 temp3))
+			addText: {It supports these commands:} temp0 (= temp2 (+ temp2 temp3))
+			addText:
+				{ALT-E_____show____draw the picture}
+				temp0
+				(= temp2 (+ temp2 temp3))
+			addButton: -1 {OK} temp0 (= temp2 (+ temp2 temp3))
 			init:
 		)
 	)

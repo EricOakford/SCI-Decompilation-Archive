@@ -23,7 +23,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soGoToCannonBall)
 	)
 )
 
@@ -37,7 +37,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: {foCatapult})
+		(ego setScript: soGoToCaretakers)
 	)
 )
 
@@ -51,7 +51,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soGoToCatapult)
 	)
 )
 
@@ -113,7 +113,7 @@
 					nCurPosY: 10
 					xStep: 2
 					yStep: 1
-					setScript: LOOKUP_ERROR self
+					setScript: soBoogleWalkIn self
 				)
 				(ego posn: 283 169 setMotion: MoveTo 297 174 self)
 			)
@@ -187,13 +187,13 @@
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(foCannonBall init:)
+		(foCaretakers init:)
+		(foCatapult init:)
 		(ego init: oPanner: nCurPosY: 10 xStep: 2 yStep: 1)
 		(switch prevRoomNum
 			(-25436
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soWalkInFromEntrance)
 				(return)
 			)
 			(-23536

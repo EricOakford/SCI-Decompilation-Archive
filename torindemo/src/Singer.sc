@@ -96,7 +96,7 @@
 	(while (< temp0 10)
 		(setSel_141
 			addToEnd:
-				((LOOKUP_ERROR new:)
+				((Singer new:)
 					audHolder: temp0
 					tray: (temp2 at: temp0)
 					case: (temp3 at: temp0)
@@ -126,22 +126,34 @@
 )
 
 (procedure (localproc_0487 param1)
-	(if (not local2) (MonoOut {LOOKUP\_ERROR}) (return 0))
+	(if (not local2)
+		(MonoOut {error in GetLocX -- 30400.sc DJM})
+		(return 0)
+	)
 	(return (local2 at: (* param1 2)))
 )
 
 (procedure (localproc_04c4 param1)
-	(if (not local2) (MonoOut {LOOKUP\_ERROR}) (return 0))
+	(if (not local2)
+		(MonoOut {error in GetLocY -- 30400.sc DJM})
+		(return 0)
+	)
 	(return (local2 at: (+ (* param1 2) 1)))
 )
 
 (procedure (localproc_0505 param1)
-	(if (not local3) (MonoOut {LOOKUP\_ERROR}) (return 0))
+	(if (not local3)
+		(MonoOut {error in GetLocX -- 30400.sc DJM})
+		(return 0)
+	)
 	(return (local3 at: (* param1 2)))
 )
 
 (procedure (localproc_0542 param1)
-	(if (not local3) (MonoOut {LOOKUP\_ERROR}) (return 0))
+	(if (not local3)
+		(MonoOut {error in GetLocY -- 30400.sc DJM})
+		(return 0)
+	)
 	(return (local3 at: (+ (* param1 2) 1)))
 )
 
@@ -214,7 +226,7 @@
 			)
 			(++ temp0)
 		)
-		(if temp1 (curRoom setScript: LOOKUP_ERROR))
+		(if temp1 (curRoom setScript: soWinStage1))
 	else
 		(= local6 1)
 		(= local7 1)
@@ -237,7 +249,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soLeftSings)
 	)
 )
 
@@ -251,7 +263,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soRightSings)
 	)
 )
 
@@ -269,7 +281,7 @@
 	)
 	
 	(method (doVerb)
-		(LOOKUP_ERROR init:)
+		(voBaton init:)
 		(= gVerb 1)
 	)
 )
@@ -420,8 +432,10 @@
 		else
 			(= local10 0)
 			(theGame handsOff:)
-			(self BAD_SELECTOR: LOOKUP_ERROR)
-			((self eat:) BAD_SELECTOR: (self stick:) LOOKUP_ERROR)
+			(self BAD_SELECTOR: coHandsOnWhenCuedThrice)
+			((self eat:)
+				BAD_SELECTOR: (self stick:) coHandsOnWhenCuedThrice
+			)
 		)
 	)
 	
@@ -433,13 +447,13 @@
 		(if theSinger (theSinger nMyFlag:))
 		(self BAD_SELECTOR:)
 		(= theSinger self)
-		(self setScript: (LOOKUP_ERROR new:))
+		(self setScript: (soSelect new:))
 	)
 	
 	(method (nMyFlag)
 		(if (!= self theSinger) (return))
 		(= theSinger 0)
-		(self setScript: (LOOKUP_ERROR new:))
+		(self setScript: (soUnselect new:))
 	)
 	
 	(method (eat)
@@ -476,15 +490,15 @@
 	
 	(method (BAD SELECTOR param1 param2 &tmp temp0)
 		(if (or (not argc) (not param1))
-			(MonoOut LOOKUP_ERROR)
+			(MonoOut {illegal switchWith. 30500.sc djm})
 			(return)
 		)
 		(if (> argc 1) (= temp0 param2) else (= temp0 0))
 		(self
-			setScript: (LOOKUP_ERROR new:) temp0 (param1 startCorder?)
+			setScript: (soStrollTo new:) temp0 (param1 startCorder?)
 		)
 		(param1
-			setScript: (LOOKUP_ERROR new:) temp0 (self startCorder?)
+			setScript: (soStrollTo new:) temp0 (self startCorder?)
 		)
 	)
 	
@@ -496,7 +510,7 @@
 			(= nStuckLoop 0)
 		)
 		(theSound cDownArrowCel: tray 0 0 case 1 self 30600)
-		(MonoOut LOOKUP_ERROR audHolder)
+		(MonoOut {ID: %d} audHolder)
 		(= nReturnLoop 1)
 		(self BAD_SELECTOR:)
 	)
@@ -512,14 +526,20 @@
 	)
 	
 	(method (invObject param1)
-		(if (not argc) (MonoOut LOOKUP_ERROR) (return))
+		(if (not argc)
+			(MonoOut {invalid call of raiseHands. 30500.sc})
+			(return)
+		)
 		(if (& param1 $0001) (= bSapped 1))
 		(if (& param1 $0002) (= nMode 1))
 		(self BAD_SELECTOR:)
 	)
 	
 	(method (sappify param1)
-		(if (not argc) (MonoOut LOOKUP_ERROR) (return))
+		(if (not argc)
+			(MonoOut {invalid call of lowerHands. 30500.sc})
+			(return)
+		)
 		(if (& param1 $0001) (= bSapped 0))
 		(if (& param1 $0002) (= nMode 0))
 		(self BAD_SELECTOR:)
@@ -637,7 +657,7 @@
 			)
 			(5
 				(if local6
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soOpenLeftDoor self)
 				else
 					(self cue:)
 				)
@@ -673,7 +693,7 @@
 			)
 			(5
 				(if local7
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soOpenRightDoor self)
 				else
 					(self cue:)
 				)
@@ -704,14 +724,14 @@
 					)
 					(++ temp0)
 				)
-				(LOOKUP_ERROR dispose:)
+				(foLeftSide dispose:)
 				(self cue:)
 			)
 			(1
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {The left door opens!})
 				(= local8 1)
 				(if local9
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soWin self)
 				else
 					(messager say: 0 0 15 0 self 30600)
 				)
@@ -739,14 +759,14 @@
 					)
 					(++ temp0)
 				)
-				(LOOKUP_ERROR dispose:)
+				(foRightSide dispose:)
 				(self cue:)
 			)
 			(1
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {The right door opens!})
 				(= local9 1)
 				(if local8
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soWin self)
 				else
 					(messager say: 0 0 15 0 self 30600)
 				)
@@ -792,13 +812,13 @@
 			(0
 				(theGame handsOff:)
 				(= gVerb 1)
-				(LOOKUP_ERROR setCycle: Beg self)
+				(poPodium setCycle: Beg self)
 				(messager sayRange: 0 0 4 1 3 self 30600)
 			)
 			(1)
 			(2
-				(LOOKUP_ERROR dispose:)
-				(MonoOut LOOKUP_ERROR)
+				(poPodium dispose:)
+				(MonoOut {Win!})
 				(= temp0 0)
 				(while (< temp0 10)
 					((setSel_141 at: temp0)
@@ -809,7 +829,7 @@
 				)
 				(curRoom picture: 30501)
 				(curRoom drawPic: 30501)
-				(LOOKUP_ERROR
+				(poTorin
 					view: 30503
 					posn: 299 263
 					loop: 1
@@ -817,7 +837,7 @@
 					init:
 					setCycle: End self
 				)
-				(LOOKUP_ERROR
+				(poLeenah
 					view: 30503
 					posn: 299 263
 					loop: 0
@@ -829,47 +849,31 @@
 			)
 			(3)
 			(4
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR loop: 2 cel: 0 setCycle: End self)
+				(poLeenah dispose:)
+				(poTorin loop: 2 cel: 0 setCycle: End self)
 			)
 			(5
-				(LOOKUP_ERROR loop: 3 cel: 0)
-				(= gToTorinPullsOutMeat LOOKUP_ERROR)
-				(= gToLeenahReactsToLocket LOOKUP_ERROR)
+				(poTorin loop: 3 cel: 0)
+				(= gToTorinPullsOutMeat toTorinEndCh3)
+				(= gToLeenahReactsToLocket toLeenahEndCh3)
 				(messager sayRange: 0 0 4 6 10 self 30600)
 			)
 			(6
-				(LOOKUP_ERROR loop: 7 cel: 0 setCycle: End self)
+				(poTorin loop: 7 cel: 0 setCycle: End self)
 			)
 			(7
 				(messager sayRange: 0 0 4 11 13 self 30600)
 			)
 			(8
-				(LOOKUP_ERROR
-					view: 30504
-					loop: 0
-					cel: 0
-					init:
-					setCycle: Fwd
-				)
-				(LOOKUP_ERROR
-					view: 30504
-					loop: 1
-					cel: 0
-					setCycle: End self
-				)
+				(poLeenah view: 30504 loop: 0 cel: 0 init: setCycle: Fwd)
+				(poTorin view: 30504 loop: 1 cel: 0 setCycle: End self)
 			)
 			(9
-				(LOOKUP_ERROR
-					view: 30504
-					loop: 2
-					cel: 0
-					setCycle: End self
-				)
+				(poTorin view: 30504 loop: 2 cel: 0 setCycle: End self)
 			)
 			(10
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR loop: 3 cel: 0 setCycle: End self)
+				(poLeenah dispose:)
+				(poTorin loop: 3 cel: 0 setCycle: End self)
 				(messager say: 0 0 4 14 0 30600)
 			)
 			(11
@@ -891,19 +895,19 @@
 				(= cycles 2)
 			)
 			(1
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {Won stage 1. Moving to stage 2.})
 				(= local4 1)
 				(= temp0 0)
 				(while (< temp0 5)
 					((setSel_141 at: temp0)
-						setScript: (LOOKUP_ERROR new:) self
+						setScript: (soMenStage2 new:) self
 					)
 					((setSel_141 at: (+ temp0 5))
-						setScript: (LOOKUP_ERROR new:) self
+						setScript: (soWomenStage2 new:) self
 					)
 					(++ temp0)
 				)
-				(LOOKUP_ERROR cel: 0 init: setCycle: End self)
+				(poPodium cel: 0 init: setCycle: End self)
 			)
 			(2)
 			(3)
@@ -916,9 +920,9 @@
 			(10)
 			(11)
 			(12
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
+				(voBaton init:)
+				(foLeftSide init:)
+				(foRightSide init:)
 				(theGame handsOn:)
 				(theMusic pageSize: 0)
 				(self dispose:)
@@ -1160,7 +1164,7 @@
 		(super init: &rest)
 		(theMusic pageSize: 30500)
 		(localproc_01c2)
-		(curRoom setScript: 'LOOKUP_ERROR')
+		(curRoom setScript: soStartMeUp)
 	)
 	
 	(method (dispose)

@@ -107,9 +107,9 @@
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
+		(foBackStageExit init:)
 		(ego init: oPanner:)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soPlayMovie)
 	)
 	
 	(method (setWander)

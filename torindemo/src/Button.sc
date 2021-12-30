@@ -540,7 +540,11 @@
 				(= theFore_2 254)
 				(= theFore_3 254)
 			)
-			(if (== updateItemSlot -1) (MonoOut LOOKUP_ERROR))
+			(if (== updateItemSlot -1)
+				(MonoOut
+					{both vTile properties must be filled. button.sc djm}
+				)
+			)
 			(TiledBitmap
 				init: findNearestOpen oMyNotifySelectors addScrollView 0 minCycle
 			)
@@ -564,7 +568,9 @@
 					(!= oMyNotifySelectors tiledBitmapOMyNotifySelectors)
 					(!= addScrollView tiledBitmapAddScrollView)
 				)
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut
+					{the on and off tiles of TextButton are not the same size}
+				)
 			)
 		else
 			(= maxDelay
@@ -651,7 +657,7 @@
 		(if (and argc param1)
 			(= minDelay (Str with: (KString 9 param1)))
 		else
-			(= minDelay (Str with: LOOKUP_ERROR))
+			(= minDelay (Str with: {}))
 		)
 		(self maxX:)
 	)
@@ -747,7 +753,7 @@
 			(= testHotspotVerb curRoomNum)
 		)
 		(if text (text dispose:))
-		(= text (Str newWith: 100 LOOKUP_ERROR))
+		(= text (Str newWith: 100 {}))
 		(if
 			(not
 				(Message
@@ -760,9 +766,16 @@
 					(text data?)
 				)
 			)
-			(MonoOut LOOKUP_ERROR testHotspotVerb noun verb case seq)
+			(MonoOut
+				{cannot find message: %d %d %d %d %d}
+				testHotspotVerb
+				noun
+				verb
+				case
+				seq
+			)
 			(text
-				format: LOOKUP_ERROR testHotspotVerb noun verb case seq
+				format: {msg: %d %d %d %d %d} testHotspotVerb noun verb case seq
 			)
 		)
 		(super init: &rest)

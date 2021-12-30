@@ -42,28 +42,28 @@ code_0695:
 		pushi    #addToEnd
 		pushi    8
 		_line_   262
-		lofsa    LOOKUP_ERROR
+		lofsa    voShard0
 		push    
 		_line_   263
-		lofsa    LOOKUP_ERROR
+		lofsa    voShard1
 		push    
 		_line_   264
-		lofsa    LOOKUP_ERROR
+		lofsa    voShard2
 		push    
 		_line_   265
-		lofsa    LOOKUP_ERROR
+		lofsa    voShard3
 		push    
 		_line_   266
-		lofsa    LOOKUP_ERROR
+		lofsa    voShard4
 		push    
 		_line_   267
-		lofsa    LOOKUP_ERROR
+		lofsa    voShard5
 		push    
 		_line_   268
-		lofsa    LOOKUP_ERROR
+		lofsa    voShard6
 		push    
 		_line_   269
-		lofsa    LOOKUP_ERROR
+		lofsa    voShard7
 		push    
 		lat      temp0
 		send     20
@@ -77,13 +77,13 @@ code_0695:
 	)
 )
 
-(procedure (proc56000_2 &tmp lOOKUP_ERRORBAD SELECTOR temp1 temp2 temp3 temp4)
-	(= lOOKUP_ERRORBAD_SELECTOR (LOOKUP_ERROR BAD SELECTOR?))
-	(if (== 4 (lOOKUP_ERRORBAD_SELECTOR size:))
-		(= temp1 (lOOKUP_ERRORBAD_SELECTOR at: 0))
-		(= temp2 (lOOKUP_ERRORBAD_SELECTOR at: 1))
-		(= temp3 (lOOKUP_ERRORBAD_SELECTOR at: 2))
-		(= temp4 (lOOKUP_ERRORBAD_SELECTOR at: 3))
+(procedure (proc56000_2 &tmp oCrystCorderBAD SELECTOR temp1 temp2 temp3 temp4)
+	(= oCrystCorderBAD_SELECTOR (oCrystCorder BAD SELECTOR?))
+	(if (== 4 (oCrystCorderBAD_SELECTOR size:))
+		(= temp1 (oCrystCorderBAD_SELECTOR at: 0))
+		(= temp2 (oCrystCorderBAD_SELECTOR at: 1))
+		(= temp3 (oCrystCorderBAD_SELECTOR at: 2))
+		(= temp4 (oCrystCorderBAD_SELECTOR at: 3))
 		(cond 
 			(
 				(and
@@ -163,10 +163,10 @@ code_0276:
 			(thePlane bottom?)
 	)
 	(= local1 1)
-	(LOOKUP_ERROR init:)
-	(LOOKUP_ERROR init:)
-	(LOOKUP_ERROR init:)
-	(LOOKUP_ERROR init:)
+	(oCrystCorder init:)
+	(foFullPlay init:)
+	(foFullHolder init:)
+	(oPlayButton init:)
 	(= theShard 0)
 )
 
@@ -205,7 +205,7 @@ code_0276:
 		BAD_SELECTOR 0
 	)
 	
-	(method (init &tmp bAD SELECTORFirst temp1 lOOKUP_ERRORBAD SELECTOR)
+	(method (init &tmp bAD SELECTORFirst temp1 voUnbrokenShardBAD SELECTOR)
 		(if (not BAD_SELECTOR)
 			(super init: &rest)
 			(= BAD_SELECTOR -1)
@@ -222,8 +222,8 @@ code_0276:
 				(if ((ScriptID 64017 0) test: 143)
 					(self BAD_SELECTOR: 0)
 				else
-					(LOOKUP_ERROR init:)
-					(self BAD_SELECTOR: 0 LOOKUP_ERROR 126 210)
+					(voUnbrokenShard init:)
+					(self BAD_SELECTOR: 0 voUnbrokenShard 126 210)
 				)
 			else
 				(= bAD_SELECTORFirst (BAD_SELECTOR first:))
@@ -248,12 +248,14 @@ code_0276:
 						((ScriptID 64017 0) test: 143)
 						(== bAD_SELECTORFirst 1)
 					)
-					(= lOOKUP_ERRORBAD_SELECTOR (LOOKUP_ERROR BAD SELECTOR?))
-					(LOOKUP_ERROR
-						BAD_SELECTOR: lOOKUP_ERRORBAD_SELECTOR LOOKUP_ERROR
+					(= voUnbrokenShardBAD_SELECTOR
+						(voUnbrokenShard BAD SELECTOR?)
 					)
-					(self BAD_SELECTOR: lOOKUP_ERRORBAD_SELECTOR)
-					(LOOKUP_ERROR dispose:)
+					(oCrystCorder
+						BAD_SELECTOR: voUnbrokenShardBAD_SELECTOR voUnbrokenShard
+					)
+					(self BAD_SELECTOR: voUnbrokenShardBAD_SELECTOR)
+					(voUnbrokenShard dispose:)
 				)
 			)
 		)
@@ -272,7 +274,7 @@ code_0276:
 	(method (BAD SELECTOR)
 		(= BAD_SELECTOR -1)
 		((ScriptID 64017 0) clear: 139)
-		(LOOKUP_ERROR slotIncY: 0)
+		(oPlayButton slotIncY: 0)
 	)
 	
 	(method (BAD SELECTOR)
@@ -309,14 +311,14 @@ code_0276:
 	)
 	
 	(method (BAD SELECTOR param1 &tmp theBAD SELECTOR)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(voShard0 init:)
+		(voShard1 init:)
+		(voShard2 init:)
+		(voShard3 init:)
+		(voShard4 init:)
+		(voShard5 init:)
+		(voShard6 init:)
+		(voShard7 init:)
 		(if (== param1 1)
 			(= theBAD_SELECTOR BAD_SELECTOR)
 		else
@@ -324,14 +326,14 @@ code_0276:
 		)
 		(theBAD_SELECTOR
 			addToEnd:
-				LOOKUP_ERROR
-				LOOKUP_ERROR
-				LOOKUP_ERROR
-				LOOKUP_ERROR
-				LOOKUP_ERROR
-				LOOKUP_ERROR
-				LOOKUP_ERROR
-				LOOKUP_ERROR
+				voShard0
+				voShard1
+				voShard2
+				voShard3
+				voShard4
+				voShard5
+				voShard6
+				voShard7
 		)
 		(self BAD_SELECTOR: param1)
 	)
@@ -559,21 +561,21 @@ code_05fd:
 		(if (== theVerb 65)
 			((ScriptID 64017 0) set: 137)
 			(((ScriptID 64001 0) get: 53) moveTo: -1)
-			(LOOKUP_ERROR BAD_SELECTOR: 1 LOOKUP_ERROR 148 127)
-			(LOOKUP_ERROR init:)
-			(if (LOOKUP_ERROR slotIncX?)
-				(LOOKUP_ERROR BAD_SELECTOR:)
+			(oCrystCorder BAD_SELECTOR: 1 voUnbrokenShard 148 127)
+			(voUnbrokenShard init:)
+			(if (oPlayButton slotIncX?)
+				(oCrystCorder BAD_SELECTOR:)
 			)
 			(return)
 		)
 		(if (== theVerb 66)
 			(if (not ((ScriptID 64017 0) test: 137))
-				(LOOKUP_ERROR BAD_SELECTOR: 1)
+				(oCrystCorder BAD_SELECTOR: 1)
 				((ScriptID 64017 0) set: 143)
 				((ScriptID 64017 0) set: 137)
 				(((ScriptID 64001 0) get: 54) moveTo: -1)
 			else
-				(LOOKUP_ERROR
+				(oCrystCorder
 					BAD_SELECTOR: 1 theShard theObjOrXX theObjOrXY
 				)
 				(((ScriptID 64001 0) get: 54) moveTo: -1)
@@ -613,17 +615,17 @@ code_05fd:
 		(if (== theVerb 65)
 			((ScriptID 64017 0) set: 137)
 			(((ScriptID 64001 0) get: 53) moveTo: -1)
-			(LOOKUP_ERROR BAD_SELECTOR: 0 LOOKUP_ERROR 126 210)
-			(LOOKUP_ERROR init:)
+			(oCrystCorder BAD_SELECTOR: 0 voUnbrokenShard 126 210)
+			(voUnbrokenShard init:)
 		)
 		(if (== theVerb 66)
 			(if (not ((ScriptID 64017 0) test: 137))
-				(LOOKUP_ERROR BAD_SELECTOR: 0)
+				(oCrystCorder BAD_SELECTOR: 0)
 				((ScriptID 64017 0) set: 143)
 				((ScriptID 64017 0) set: 137)
 				(((ScriptID 64001 0) get: 54) moveTo: -1)
 			else
-				(LOOKUP_ERROR
+				(oCrystCorder
 					BAD_SELECTOR: 0 theShard theObjOrXX theObjOrXY
 				)
 				(((ScriptID 64001 0) get: 54) moveTo: -1)
@@ -700,7 +702,7 @@ code_05fd:
 	(method (init)
 		(if
 		(or (< BAD_SELECTOR -9535) (> BAD_SELECTOR -9527))
-			(MonoOut LOOKUP_ERROR)
+			(MonoOut {Illegal init of shard})
 			(SetDebug)
 		)
 		(if (== BAD_SELECTOR 2)
@@ -723,7 +725,7 @@ code_05fd:
 			(((ScriptID 64001 0) get: 53) moveTo: -2)
 			((ScriptID 64017 0) clear: 137)
 		)
-		(LOOKUP_ERROR BAD_SELECTOR: BAD_SELECTOR self)
+		(oCrystCorder BAD_SELECTOR: BAD_SELECTOR self)
 		(self dispose:)
 	)
 )
@@ -737,9 +739,9 @@ code_05fd:
 	
 	(method (oVerbs)
 		(if slotIncX
-			(LOOKUP_ERROR BAD_SELECTOR:)
+			(oCrystCorder BAD_SELECTOR:)
 		else
-			(LOOKUP_ERROR BAD_SELECTOR:)
+			(oCrystCorder BAD_SELECTOR:)
 		)
 	)
 )
@@ -761,10 +763,10 @@ code_05fd:
 				(thePlane bottom?)
 		)
 		(= local1 1)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(oCrystCorder init:)
+		(foFullPlay init:)
+		(foFullHolder init:)
+		(oPlayButton init:)
 		(= theShard 0)
 	)
 )
@@ -833,10 +835,10 @@ code_05fd:
 				(thePlane bottom?)
 		)
 		(= local1 1)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(oCrystCorder init:)
+		(foFullPlay init:)
+		(foFullHolder init:)
+		(oPlayButton init:)
 		(= theShard 0)
 	)
 	

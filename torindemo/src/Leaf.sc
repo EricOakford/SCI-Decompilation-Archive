@@ -48,7 +48,7 @@
 		class    End
 		push    
 		pushSelf
-		lofsa    LOOKUP_ERROR
+		lofsa    poTorin
 		send     38
 		jmp      code_0533
 		dup     
@@ -59,7 +59,7 @@
 		_line_   123
 		pushi    #initThumb
 		pushi    1
-		lofsa    LOOKUP_ERROR
+		lofsa    oWormCUPlane
 		push    
 		lag      curRoom
 		send     6
@@ -108,7 +108,7 @@ code_0533:
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soGoToPlantCU)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -130,7 +130,7 @@ code_0533:
 				(ego setHeading: 315 self)
 			)
 			(2
-				(curRoom initThumb: LOOKUP_ERROR)
+				(curRoom initThumb: oPlantCUPlane)
 			)
 		)
 	)
@@ -148,7 +148,7 @@ code_0533:
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soGoToWormCU)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -171,7 +171,7 @@ code_0533:
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -15133
 					loop: 6
 					cel: 0
@@ -181,7 +181,7 @@ code_0533:
 				)
 			)
 			(3
-				(curRoom initThumb: LOOKUP_ERROR)
+				(curRoom initThumb: oWormCUPlane)
 				(self dispose:)
 			)
 		)
@@ -194,8 +194,8 @@ code_0533:
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(curRoom arrowDown: LOOKUP_ERROR)
-				(LOOKUP_ERROR
+				(curRoom arrowDown: oWormCUPlane)
+				(poTorin
 					view: -15133
 					loop: 6
 					cel: 11
@@ -204,7 +204,7 @@ code_0533:
 				)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego show:)
 				(self dispose:)
 			)
@@ -224,7 +224,7 @@ code_0533:
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soTakeDawburr)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -252,7 +252,7 @@ code_0533:
 			(3
 				(ego get: ((ScriptID 64001 0) get: 61))
 				((ScriptID 64017 0) set: 126)
-				(LOOKUP_ERROR dispose:)
+				(foDawburrs dispose:)
 				(theGame handsOn:)
 			)
 		)
@@ -278,7 +278,7 @@ code_0533:
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -15135
 					loop: 0
 					cel: 0
@@ -289,26 +289,21 @@ code_0533:
 			)
 			(1
 				(theSound lThumbLoop: -15135)
-				(LOOKUP_ERROR
-					loop: 1
-					cel: 0
-					posn: 239 208
-					setCycle: End self
-				)
+				(poTorin loop: 1 cel: 0 posn: 239 208 setCycle: End self)
 			)
 			(2
-				(LOOKUP_ERROR loop: 2 cel: 0 setCycle: End self)
+				(poTorin loop: 2 cel: 0 setCycle: End self)
 			)
 			(3
 				(theSound lThumbLoop: -15134 self)
 			)
 			(4
 				(theSound lThumbLoop: -15133)
-				(LOOKUP_ERROR loop: 3 cel: 0 setCycle: End self)
+				(poTorin loop: 3 cel: 0 setCycle: End self)
 			)
 			(5 (messager say: 0 0 9 1 self))
 			(6
-				(LOOKUP_ERROR
+				(poTorin
 					view: -15134
 					loop: 0
 					cel: 0
@@ -317,7 +312,7 @@ code_0533:
 				)
 			)
 			(7
-				(LOOKUP_ERROR
+				(poBoogle
 					view: -15134
 					loop: 2
 					cel: 0
@@ -325,15 +320,10 @@ code_0533:
 					init:
 					setCycle: End
 				)
-				(LOOKUP_ERROR
-					loop: 1
-					cel: 0
-					posn: 276 241
-					setCycle: End self
-				)
+				(poTorin loop: 1 cel: 0 posn: 276 241 setCycle: End self)
 			)
 			(8
-				(LOOKUP_ERROR
+				(poCop
 					view: -15134
 					loop: 3
 					cel: 0
@@ -343,19 +333,19 @@ code_0533:
 				)
 			)
 			(9
-				(LOOKUP_ERROR loop: 4 cel: 0 setCycle: End self)
-				(LOOKUP_ERROR loop: 5 cel: 0 setCycle: End self)
+				(poTorin loop: 4 cel: 0 setCycle: End self)
+				(poCop loop: 5 cel: 0 setCycle: End self)
 			)
 			(10)
 			(11
 				(messager sayRange: 0 0 9 2 8 self)
 			)
 			(12
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR loop: 6 cel: 0 setCycle: End self)
+				(poTorin dispose:)
+				(poCop loop: 6 cel: 0 setCycle: End self)
 			)
 			(13
-				(LOOKUP_ERROR dispose:)
+				(poCop dispose:)
 				(curRoom newRoom: -15036)
 			)
 		)
@@ -369,7 +359,7 @@ code_0533:
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -15133
 					loop: 1
 					cel: 0
@@ -379,10 +369,10 @@ code_0533:
 				)
 			)
 			(1
-				(LOOKUP_ERROR loop: 2 cel: 0 setCycle: End self)
+				(poTorin loop: 2 cel: 0 setCycle: End self)
 			)
 			(2
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego
 					posn: 301 241
 					init:
@@ -464,7 +454,7 @@ code_0533:
 	)
 	
 	(method (doVerb)
-		(LOOKUP_ERROR doVerb: &rest)
+		(poPlantCU doVerb: &rest)
 	)
 )
 
@@ -478,12 +468,12 @@ code_0533:
 	)
 	
 	(method (init)
-		(LOOKUP_ERROR hide:)
+		(voMrsPlantFace hide:)
 		(super init: &rest)
 	)
 	
 	(method (dispose)
-		(LOOKUP_ERROR show:)
+		(voMrsPlantFace show:)
 		(super dispose: &rest)
 	)
 )
@@ -492,7 +482,7 @@ code_0533:
 	(properties)
 	
 	(method (doVerb)
-		(curRoom arrowDown: LOOKUP_ERROR)
+		(curRoom arrowDown: oPlantCUPlane)
 	)
 )
 
@@ -510,11 +500,11 @@ code_0533:
 				(thePlane bottom?)
 		)
 		(theGame handsOff:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(poPlantCU init:)
+		(voMrsPlantFace init:)
+		(foPlantCUExit init:)
 		(theGame handsOn:)
-		(LOOKUP_ERROR doVerb: 1)
+		(poPlantCU doVerb: 1)
 	)
 )
 
@@ -522,7 +512,7 @@ code_0533:
 	(properties)
 	
 	(method (doVerb)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soExitWormCU)
 	)
 )
 
@@ -604,9 +594,9 @@ code_0533:
 	(method (doVerb theVerb)
 		(switch theVerb
 			(53
-				(LOOKUP_ERROR init:)
+				(voSap1 init:)
 				((ScriptID 64017 0) set: 130)
-				(LOOKUP_ERROR BAD_SELECTOR:)
+				(poWorm1 BAD_SELECTOR:)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -633,9 +623,9 @@ code_0533:
 	(method (doVerb theVerb)
 		(switch theVerb
 			(53
-				(LOOKUP_ERROR init:)
+				(voSap2 init:)
 				((ScriptID 64017 0) set: 131)
-				(LOOKUP_ERROR BAD_SELECTOR:)
+				(poWorm2 BAD_SELECTOR:)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -662,9 +652,9 @@ code_0533:
 	(method (doVerb theVerb)
 		(switch theVerb
 			(53
-				(LOOKUP_ERROR init:)
+				(voSap3 init:)
 				((ScriptID 64017 0) set: 132)
-				(LOOKUP_ERROR BAD_SELECTOR:)
+				(poWorm3 BAD_SELECTOR:)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -713,9 +703,9 @@ code_0533:
 	(method (doVerb theVerb)
 		(switch theVerb
 			(53
-				(LOOKUP_ERROR init:)
+				(voSap4 init:)
 				((ScriptID 64017 0) set: 133)
-				(LOOKUP_ERROR BAD_SELECTOR:)
+				(poWorm4 BAD_SELECTOR:)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -918,8 +908,8 @@ code_0533:
 					(ego get: ((ScriptID 64001 0) get: 44))
 					((ScriptID 64017 0) set: 109)
 					(messager say: 6 1 2 0)
-					(ego setScript: LOOKUP_ERROR)
-					(LOOKUP_ERROR dispose:)
+					(ego setScript: soExitWormCU)
+					(foWormPlants dispose:)
 				else
 					(messager say: 6 1 0 0)
 				)
@@ -943,7 +933,7 @@ code_0533:
 		(self setVisibleRange: 1)
 		(if (== loop BAD_SELECTOR)
 			(= loop BAD_SELECTOR)
-			(LOOKUP_ERROR init: vThumbView: -15130)
+			(oWormSquelch init: vThumbView: -15130)
 		)
 	)
 )
@@ -974,7 +964,7 @@ code_0533:
 			_line_   771
 			pushi    #init
 			pushi    0
-			lofsa    LOOKUP_ERROR
+			lofsa    voSap1
 			send     4
 code_1549:
 			_line_   773
@@ -1016,7 +1006,7 @@ code_1549:
 			_line_   785
 			pushi    #init
 			pushi    0
-			lofsa    LOOKUP_ERROR
+			lofsa    voSap2
 			send     4
 code_1593:
 			_line_   787
@@ -1061,7 +1051,7 @@ code_1593:
 			_line_   803
 			pushi    #init
 			pushi    0
-			lofsa    LOOKUP_ERROR
+			lofsa    voSap3
 			send     4
 code_15dd:
 			_line_   805
@@ -1097,16 +1087,16 @@ code_15dd:
 				(thePlane bottom?)
 		)
 		(theGame handsOff:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init: vThumbView: -15131)
+		(foWormCUExit init:)
+		(foLeaf1 init:)
+		(poWorm1 init:)
+		(foLeaf2 init:)
+		(poWorm2 init:)
+		(foLeaf3 init:)
+		(poWorm3 init:)
+		(foLeaf4 init:)
+		(poWorm4 init:)
+		(oWormMunch init: vThumbView: -15131)
 		(FrameOut)
 		(theGame handsOn:)
 	)
@@ -1137,16 +1127,16 @@ code_15dd:
 				(thePlane bottom?)
 		)
 		(theGame handsOff:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init: vThumbView: -15131)
+		(foWormCUExit init:)
+		(foLeaf1 init:)
+		(poWorm1 init:)
+		(foLeaf2 init:)
+		(poWorm2 init:)
+		(foLeaf3 init:)
+		(poWorm3 init:)
+		(foLeaf4 init:)
+		(poWorm4 init:)
+		(oWormMunch init: vThumbView: -15131)
 		(FrameOut)
 		(theGame handsOn:)
 	)
@@ -1155,8 +1145,8 @@ code_15dd:
 		48
 		12336
 		(~ $baad)
-		(LOOKUP_ERROR vThumbView: 0)
-		(LOOKUP_ERROR vThumbView: 0)
+		(oWormMunch vThumbView: 0)
+		(oWormSquelch vThumbView: 0)
 		(super dispose: &rest)
 	)
 )
@@ -1193,22 +1183,22 @@ code_15dd:
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
+		(poMrsPlant init:)
 		(if (not ((ScriptID 64017 0) test: 126))
-			(LOOKUP_ERROR init:)
+			(foDawburrs init:)
 		)
 		(if (not ((ScriptID 64017 0) test: 109))
-			(LOOKUP_ERROR init:)
+			(foWormPlants init:)
 		)
-		(LOOKUP_ERROR init:)
+		(foSlopeExit init:)
 		(if (not ((ScriptID 64017 0) test: 128))
 			((ScriptID 64017 0) set: 128)
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soEnterFirstTime)
 			(return)
 		)
 		(if (not ((ScriptID 64017 0) test: 129))
 			((ScriptID 64017 0) set: 129)
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soEnterSecondTime)
 			(return)
 		)
 		(ego init: oPanner: setScaler: Scaler 100 78 312 231)

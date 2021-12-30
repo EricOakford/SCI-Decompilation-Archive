@@ -61,9 +61,9 @@
 				yourself:
 			)
 		)
-		(= changeRemap LOOKUP_ERROR)
-		(= nTopBorderHeight LOOKUP_ERROR)
-		(= bTileBorder LOOKUP_ERROR)
+		(= changeRemap aeStatusBar)
+		(= nTopBorderHeight aeDisplay)
+		(= bTileBorder aePlayer)
 		(actor back: 223)
 		(pic back: 219)
 		(sfx back: 216)
@@ -105,11 +105,11 @@
 					(Print
 						x: 20
 						y: 20
-						addTitle: LOOKUP_ERROR
-						addText: LOOKUP_ERROR temp1 temp2
-						addButton: 1 LOOKUP_ERROR temp1 (= temp2 (+ temp2 25))
-						addButton: 0 LOOKUP_ERROR (= temp1 (+ temp1 100)) temp2
-						addButton: -1 LOOKUP_ERROR (= temp1 (+ temp1 100)) temp2
+						addTitle: {Save}
+						addText: {File needs saving} temp1 temp2
+						addButton: 1 {Save} temp1 (= temp2 (+ temp2 25))
+						addButton: 0 {Quit} (= temp1 (+ temp1 100)) temp2
+						addButton: -1 {Cancel} (= temp1 (+ temp1 100)) temp2
 						init:
 					)
 				)
@@ -117,7 +117,7 @@
 				(-1 (return))
 			)
 		)
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut {Goodbye!})
 		(= canScrollDown 0)
 		(remapColor dispose:)
 		(theDoits delete: self)
@@ -150,7 +150,7 @@
 			(remapPercent dispose:)
 			(= nScrollSpeedY (= remapPercent 0))
 		else
-			(MonoOut LOOKUP_ERROR)
+			(MonoOut {file open failed})
 			(SetDebug)
 		)
 	)
@@ -168,25 +168,25 @@
 			back: 234
 			skip: 0
 			font: userFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp0 (= temp1 5)
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' (= temp0 (+ temp0 temp2)) (= temp1 5)
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' (= temp0 (+ temp0 temp2)) (= temp1 5)
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp1 (+ temp1 temp3))
+			addTitle: {AnimationEditor Help}
+			addText: {Commands:} temp0 (= temp1 5)
+			addText: {ALT keys} temp0 (= temp1 (+ temp1 temp3))
+			addText: {ALT-E__edit current object} temp0 (= temp1 (+ temp1 temp3))
+			addText: {ALT-L__load} temp0 (= temp1 (+ temp1 temp3))
+			addText: {ALT-S__load} temp0 (= temp1 (+ temp1 temp3))
+			addText: {ALT-V__look at views} temp0 (= temp1 (+ temp1 temp3))
+			addText: {ALT-X__quit} temp0 (= temp1 (+ temp1 temp3))
+			addText: {_} (= temp0 (+ temp0 temp2)) (= temp1 5)
+			addText: {Function keys} temp0 (= temp1 (+ temp1 temp3))
+			addText: {F1___this help} temp0 (= temp1 (+ temp1 temp3))
+			addText: {_} (= temp0 (+ temp0 temp2)) (= temp1 5)
+			addText: {Normal keys} temp0 (= temp1 (+ temp1 temp3))
+			addText: {h___item help} temp0 (= temp1 (+ temp1 temp3))
+			addText: {p___play} temp0 (= temp1 (+ temp1 temp3))
+			addText: {r___resume} temp0 (= temp1 (+ temp1 temp3))
+			addText: {z___Zoom in (more detail)} temp0 (= temp1 (+ temp1 temp3))
+			addText: {Z___Zoom out (less detail)} temp0 (= temp1 (+ temp1 temp3))
+			addText: {mouse/key pause animation} temp0 (= temp1 (+ temp1 temp3))
 			init:
 		)
 	)
@@ -227,7 +227,7 @@
 			)
 			(nTopBorderHeight normalize: 0)
 		else
-			(MonoOut LOOKUP_ERROR)
+			(MonoOut {file open failed})
 		)
 	)
 	
@@ -259,13 +259,13 @@
 					(Print
 						x: 20
 						y: 20
-						addTitle: LOOKUP_ERROR
-						addButton: 1 LOOKUP_ERROR temp2 temp3
-						addButton: 2 LOOKUP_ERROR temp2 (= temp3 (+ temp3 temp4))
-						addButton: 3 LOOKUP_ERROR temp2 (= temp3 (+ temp3 temp4))
-						addButton: 4 LOOKUP_ERROR temp2 (= temp3 (+ temp3 temp4))
-						addButton: 5 LOOKUP_ERROR temp2 (= temp3 (+ temp3 temp4))
-						addButton: -1 LOOKUP_ERROR temp2 (= temp3 (+ temp3 temp4))
+						addTitle: {Select Type}
+						addButton: 1 {Actor} temp2 temp3
+						addButton: 2 {Pic} temp2 (= temp3 (+ temp3 temp4))
+						addButton: 3 {Sound} temp2 (= temp3 (+ temp3 temp4))
+						addButton: 4 {Message} temp2 (= temp3 (+ temp3 temp4))
+						addButton: 5 {External} temp2 (= temp3 (+ temp3 temp4))
+						addButton: -1 {Cancel} temp2 (= temp3 (+ temp3 temp4))
 						init:
 					)
 				)
@@ -309,7 +309,7 @@
 		(if canScrollDown
 			(= newStr (Str new:))
 			(newStr
-				format: LOOKUP_ERROR (canScrollDown nSpecialSelector?)
+				format: {Delete '%s'?} (canScrollDown nSpecialSelector?)
 			)
 			(if
 				(==
@@ -322,11 +322,11 @@
 						back: 234
 						skip: 0
 						font: inputFont
-						addTitle: LOOKUP_ERROR
+						addTitle: {Delete}
 						addText: newStr 5 5
-						addButton: 1 LOOKUP_ERROR 5 30
-						addButton: 0 LOOKUP_ERROR 55 30
-						addButton: 0 LOOKUP_ERROR 105 30
+						addButton: 1 {Yes} 5 30
+						addButton: 0 {No} 55 30
+						addButton: 0 {CANCEL} 105 30
 						init:
 					)
 				)
@@ -337,8 +337,8 @@
 	
 	(method (nScrollDenomY &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8)
 		(= temp6 0)
-		(= temp0 (Str with: LOOKUP_ERROR))
-		(= temp1 (Str with: LOOKUP_ERROR))
+		(= temp0 (Str with: {0}))
+		(= temp1 (Str with: {0}))
 		(= temp3 (+ (= temp2 5) 100))
 		(= temp5 (+ 7 (Font 0 inputFont)))
 		(repeat
@@ -351,30 +351,30 @@
 				back: 234
 				skip: 0
 				font: inputFont
-				addTitle: LOOKUP_ERROR
-				addText: LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
+				addTitle: {View Displayer}
+				addText: {View} temp2 (= temp4 (+ temp4 temp5))
 				addEdit: temp0 5 temp3 temp4
-				addText: LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
+				addText: {Loop} temp2 (= temp4 (+ temp4 temp5))
 				addEdit: temp1 5 temp3 temp4
-				addButton: 1 LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
-				addButton: -1 LOOKUP_ERROR temp3 temp4
+				addButton: 1 {Preview} temp2 (= temp4 (+ temp4 temp5))
+				addButton: -1 {Quit} temp3 temp4
 			)
 			(if (< (Print init:) 0) (break))
-			(LOOKUP_ERROR view: (temp0 asInteger:))
-			(if (ResCheck 128 (LOOKUP_ERROR view?))
-				(LOOKUP_ERROR loop: (temp1 asInteger:))
-				(if (>= (LOOKUP_ERROR loop?) 0)
+			(aeNumNuts view: (temp0 asInteger:))
+			(if (ResCheck 128 (aeNumNuts view?))
+				(aeNumNuts loop: (temp1 asInteger:))
+				(if (>= (aeNumNuts loop?) 0)
 					(if
 						(and
-							(>= (LOOKUP_ERROR loop?) 0)
-							(< (LOOKUP_ERROR loop?) (NumLoops 'LOOKUP_ERROR'))
+							(>= (aeNumNuts loop?) 0)
+							(< (aeNumNuts loop?) (NumLoops aeNumNuts))
 						)
-						(if (> (NumCels 'LOOKUP_ERROR') 0)
-							(LOOKUP_ERROR posn: 300 250 init:)
+						(if (> (NumCels aeNumNuts) 0)
+							(aeNumNuts posn: 300 250 init:)
 							(= temp7 0)
-							(while (< temp7 (NumCels LOOKUP_ERROR))
-								(LOOKUP_ERROR cel: temp7)
-								(UpdateScreenItem LOOKUP_ERROR)
+							(while (< temp7 (NumCels aeNumNuts))
+								(aeNumNuts cel: temp7)
+								(UpdateScreenItem aeNumNuts)
 								(= temp8 150)
 								(while temp8
 									(FrameOut)
@@ -382,19 +382,19 @@
 								)
 								(++ temp7)
 							)
-							(LOOKUP_ERROR dispose:)
+							(aeNumNuts dispose:)
 						else
-							(MonoOut LOOKUP_ERROR temp0 temp1)
+							(MonoOut {View %s, loop %s has no cels} temp0 temp1)
 						)
 					else
-						(MonoOut LOOKUP_ERROR temp0 temp1)
-						(MonoOut LOOKUP_ERROR (- (NumLoops LOOKUP_ERROR) 1))
+						(MonoOut {View %s, loop #%s too large} temp0 temp1)
+						(MonoOut {Maximum of %d} (- (NumLoops aeNumNuts) 1))
 					)
 				else
-					(MonoOut LOOKUP_ERROR temp1)
+					(MonoOut {Loop %s must be >= 0} temp1)
 				)
 			else
-				(MonoOut LOOKUP_ERROR temp0)
+				(MonoOut {View %s not found} temp0)
 			)
 		)
 		(temp0 dispose:)
@@ -499,13 +499,16 @@
 	)
 	
 	(method (nOriginY param1 param2 &tmp temp0)
-		(if (not argc) (MonoOut LOOKUP_ERROR) (SetDebug))
+		(if (not argc)
+			(MonoOut {AnimEditor openFile: no mode specified})
+			(SetDebug)
+		)
 		(if (not normalizeRect)
-			(= normalizeRect (Str with: 'LOOKUP_ERROR'))
+			(= normalizeRect (Str with: {file.anm}))
 		)
 		(if (== argc 1)
 			(if
-			(not (= temp0 (GetInput normalizeRect 50 LOOKUP_ERROR)))
+			(not (= temp0 (GetInput normalizeRect 50 {Filename:})))
 				(return)
 			)
 		else
@@ -517,8 +520,8 @@
 	)
 	
 	(method (oMyPlane)
-		(self save: LOOKUP_ERROR)
-		(bTileBorder load: LOOKUP_ERROR nTilesX: 0)
+		(self save: {animedit.anm})
+		(bTileBorder load: {animedit.anm} nTilesX: 0)
 		(= unregisterEventHog 0)
 		(= nScrollSpeedY 1)
 	)

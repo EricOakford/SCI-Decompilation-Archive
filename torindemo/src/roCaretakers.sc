@@ -37,25 +37,25 @@
 	(if (!= temp2 local3)
 		(switch temp2
 			(0
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soSeeSawLeftDown)
 			)
 			(2
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soSeeSawRightDown)
 			)
 			(1
 				(switch local3
 					(2
-						(curRoom setScript: 'LOOKUP_ERROR')
+						(curRoom setScript: soSeeSawCenterFromRight)
 					)
 					(0
-						(curRoom setScript: LOOKUP_ERROR)
+						(curRoom setScript: soSeeSawCenterFromLeft)
 					)
 				)
 			)
 		)
 		(= local3 temp2)
-		(LOOKUP_ERROR setRect:)
-		(LOOKUP_ERROR setRect:)
+		(foSeeSawLeft setRect:)
+		(foSeeSawRight setRect:)
 	)
 )
 
@@ -74,7 +74,7 @@
 
 (procedure (localproc_0263 param1 param2)
 	(if (or (< argc 2) (not param1))
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut {error in GetLocX -- 30400.sc DJM})
 		(return 0)
 	)
 	(return (param1 at: (* param2 2)))
@@ -82,7 +82,7 @@
 
 (procedure (localproc_02a7 param1 param2)
 	(if (or (< argc 2) (not param1))
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut {error in GetLocY -- 30400.sc DJM})
 		(return 0)
 	)
 	(return (param1 at: (+ (* param2 2) 1)))
@@ -98,7 +98,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soExit)
 	)
 )
 
@@ -135,21 +135,21 @@
 		(= temp1 (localproc_02a7 local0 cel))
 		(if
 			(or
-				(!= temp0 (LOOKUP_ERROR x?))
-				(!= temp1 (LOOKUP_ERROR y?))
+				(!= temp0 (voBallsInBasket x?))
+				(!= temp1 (voBallsInBasket y?))
 			)
-			(LOOKUP_ERROR posn: temp0 temp1)
-			(if ({oPutBallInBasket} scratch?) (LOOKUP_ERROR doit:))
+			(voBallsInBasket posn: temp0 temp1)
+			(if (voBallsInBasket scratch?) (voBallsInBasket doit:))
 		)
 		(= temp0 (localproc_0263 local1 cel))
 		(= temp1 (localproc_02a7 local1 cel))
 		(if
 			(or
-				(!= temp0 (LOOKUP_ERROR x?))
-				(!= temp1 (LOOKUP_ERROR y?))
+				(!= temp0 (voTorinInBasket x?))
+				(!= temp1 (voTorinInBasket y?))
 			)
-			(LOOKUP_ERROR posn: temp0 temp1)
-			(if ({soPutBallInBasket} scratch?) (LOOKUP_ERROR doit:))
+			(voTorinInBasket posn: temp0 temp1)
+			(if (voTorinInBasket scratch?) (voTorinInBasket doit:))
 		)
 	)
 )
@@ -185,15 +185,18 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(50
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soPutBallInBasket)
 			)
 			(1
 				(if (>= (proc64001_4) 5)
 					(messager say: 1 1 2 0 0 -25336)
 					(return)
 				)
-				(if (== global250 0) (MonoOut LOOKUP_ERROR) (return))
-				(ego setScript: LOOKUP_ERROR)
+				(if (== global250 0)
+					(MonoOut {tried to take ball from empty basket})
+					(return)
+				)
+				(ego setScript: soTakeBallFromBasket)
 			)
 		)
 	)
@@ -209,7 +212,9 @@
 			(2
 				(super setRect: 143 144 198 172)
 			)
-			(else  (MonoOut LOOKUP_ERROR))
+			(else 
+				(MonoOut {prob in foSeeSawLeft setRect})
+			)
 		)
 	)
 )
@@ -227,9 +232,9 @@
 		(switch theVerb
 			(1
 				(if local2
-					(ego setScript: LOOKUP_ERROR)
+					(ego setScript: soJumpOutOfBasket)
 				else
-					(ego setScript: LOOKUP_ERROR)
+					(ego setScript: soJumpIntoBasket)
 				)
 			)
 		)
@@ -246,7 +251,9 @@
 			(2
 				(super setRect: 427 205 482 234)
 			)
-			(else  (MonoOut LOOKUP_ERROR))
+			(else 
+				(MonoOut {prob in foSeeSawRight setRect})
+			)
 		)
 	)
 )
@@ -265,7 +272,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23535
 					loop: 0
 					cel: 0
@@ -276,10 +283,10 @@
 			)
 			(3
 				(= local2 1)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
+				(voTorinInBasket init:)
+				(foSeeSawLeft dispose:)
+				(foExitToIsland dispose:)
 				(localproc_0090)
 				(theGame handsOn:)
 				(self dispose:)
@@ -296,15 +303,15 @@
 			(0
 				(theGame handsOff:)
 				(= local2 0)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
+				(voTorinInBasket dispose:)
+				(foSeeSawLeft init:)
+				(foExitToIsland init:)
 				(switch local3
 					(2 (= temp0 3))
 					(1 (= temp0 2))
 					(0 (= temp0 1))
 				)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23535
 					loop: temp0
 					cel: 0
@@ -315,7 +322,7 @@
 				(localproc_0090)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego oPanner: 1 -5436 0 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -338,7 +345,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23536
 					loop: 0
 					cel: 0
@@ -349,20 +356,20 @@
 			)
 			(3
 				(if (== local3 1) (= temp0 1) else (= temp0 2))
-				(LOOKUP_ERROR loop: temp0 cel: 0 setCycle: End self)
+				(poTorin loop: temp0 cel: 0 setCycle: End self)
 			)
 			(4
-				(if (== global250 0) (LOOKUP_ERROR init:))
+				(if (== global250 0) (voBallsInBasket init:))
 				(++ global250)
-				(LOOKUP_ERROR cel: (- global250 1))
-				(if (== global250 6) (LOOKUP_ERROR setTotalWidth: 50))
-				(LOOKUP_ERROR setVisibleRange: 1)
+				(voBallsInBasket cel: (- global250 1))
+				(if (== global250 6) (foSeeSawLeft setTotalWidth: 50))
+				(foSeeSawLeft setVisibleRange: 1)
 				(ego put: gInventItem)
 				(localproc_0090)
-				(LOOKUP_ERROR loop: 4 cel: 0 setCycle: End self)
+				(poTorin loop: 4 cel: 0 setCycle: End self)
 			)
 			(5
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego oPanner: 1 -5436 0 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -385,10 +392,10 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23536
 					loop: 2
-					cel: (LOOKUP_ERROR lastCel:)
+					cel: (poTorin lastCel:)
 					posn: 171 250
 					init:
 					setCycle: Beg self
@@ -396,22 +403,22 @@
 			)
 			(3
 				(if (== (-- global250) 0)
-					(LOOKUP_ERROR dispose:)
-					(LOOKUP_ERROR setTotalWidth: 1)
+					(voBallsInBasket dispose:)
+					(foSeeSawLeft setTotalWidth: 1)
 				else
-					(LOOKUP_ERROR cel: (- global250 1))
+					(voBallsInBasket cel: (- global250 1))
 				)
-				(LOOKUP_ERROR setVisibleRange: 50)
+				(foSeeSawLeft setVisibleRange: 50)
 				(ego get: (proc64001_2))
 				(localproc_0090)
-				(LOOKUP_ERROR
+				(poTorin
 					loop: 0
-					cel: (LOOKUP_ERROR lastCel:)
+					cel: (poTorin lastCel:)
 					setCycle: Beg self
 				)
 			)
 			(4
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego oPanner: 1 -5436 3 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -428,7 +435,7 @@
 			(0
 				(theGame handsOff:)
 				(ego posn: -30 290 setMotion: MoveTo 30 290 self)
-				((ScriptID 64018 0) setScript: LOOKUP_ERROR)
+				((ScriptID 64018 0) setScript: soBoogleWalkIn)
 			)
 			(1
 				(theGame handsOn:)
@@ -464,7 +471,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR setCycle: End self)
+				(poSeeSaw setCycle: End self)
 			)
 			(1 (self dispose:))
 		)
@@ -477,7 +484,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR setCycle: Beg self)
+				(poSeeSaw setCycle: Beg self)
 			)
 			(1 (self dispose:))
 		)
@@ -490,7 +497,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR setCycle: CT 3 1 self)
+				(poSeeSaw setCycle: CT 3 1 self)
 			)
 			(1 (self dispose:))
 		)
@@ -503,7 +510,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR setCycle: CT 3 -1 self)
+				(poSeeSaw setCycle: CT 3 -1 self)
 			)
 			(1 (self dispose:))
 		)
@@ -588,17 +595,17 @@
 				)
 		)
 		(localproc_01aa)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(poSeeSaw init:)
+		(foSeeSawLeft init:)
+		(foSeeSawRight init:)
 		(if global250
 			(= local3 0)
-			(LOOKUP_ERROR cel: 6)
+			(poSeeSaw cel: 6)
 		else
 			(= local3 1)
-			(LOOKUP_ERROR cel: 3)
+			(poSeeSaw cel: 3)
 		)
-		(LOOKUP_ERROR init:)
+		(foExitToIsland init:)
 		(ego init: oPanner: setScaler: Scaler 73 35 255 205)
 		((ScriptID 64018 0)
 			posn: 30 300
@@ -607,7 +614,7 @@
 			setScaler: Scaler 73 35 255 205
 		)
 		(theGame handsOn:)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soWalkIn)
 	)
 	
 	(method (dispose)

@@ -105,7 +105,7 @@
 	
 	(method (initThumb param1 &tmp thePlane_2 planePriority)
 		(if (or (not argc) (not param1))
-			(Prints LOOKUP_ERROR)
+			(Prints {improper call of addRoomPlane. tproom.sc djm})
 			(return)
 		)
 		(= thePlane_2 plane)
@@ -126,7 +126,7 @@
 				(not poMyEgo)
 				(not poMyEgoView)
 			)
-			(Prints LOOKUP_ERROR)
+			(Prints {improper call of deleteRoomPlane. tproom.sc djm})
 			(return)
 		)
 		(poMyEgo delete: param1)
@@ -174,7 +174,7 @@
 			)
 			(= planesNextNode (planes nextNode?))
 		)
-		(MonoOut LOOKUP_ERROR param1)
+		(MonoOut {No object with name %s} param1)
 		(return 0)
 	)
 	
@@ -224,7 +224,7 @@
 	)
 	
 	(method (setWander param1)
-		(MonoOut LOOKUP_ERROR param1)
+		(MonoOut {You need to go to Room# %d} param1)
 		(return 0)
 	)
 	

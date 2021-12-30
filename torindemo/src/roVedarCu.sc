@@ -56,11 +56,11 @@
 		(if ((ScriptID 64017 0) test: 49)
 			(= loop 4)
 			(= cel (self lastCel:))
-			(= gToVederPillow LOOKUP_ERROR)
+			(= gToVederPillow toVederPillow)
 		else
 			(= loop 1)
 			(= cel 0)
-			(= gToVederPillow LOOKUP_ERROR)
+			(= gToVederPillow toVeder)
 		)
 		(super init: &rest)
 		(if ((ScriptID 64017 0) test: 49)
@@ -68,7 +68,7 @@
 				setVisibleRange: 33 1 36 40 37 34 39 27 32 24 30 31 29 25 48 28 26
 			)
 		else
-			(self setCycle: End LOOKUP_ERROR)
+			(self setCycle: End coAddHotspots)
 		)
 	)
 	
@@ -88,10 +88,10 @@
 		)
 		(switch theVerb
 			(1
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soTalkToVeder)
 			)
 			(37
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soTorinGivesPillow)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -104,7 +104,7 @@
 	(properties)
 	
 	(method (cue)
-		(LOOKUP_ERROR
+		(poMan
 			setVisibleRange: 33 1 36 40 37 34 39 27 32 24 30 31 29 25 48 28 26
 		)
 	)
@@ -115,9 +115,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0
-				(ego oCuee: LOOKUP_ERROR self)
-			)
+			(0 (ego oCuee: poMan self))
 			(1
 				((ScriptID 64017 0) set: 80)
 				(switch global263
@@ -165,9 +163,9 @@
 			(2
 				(theGame handsOff:)
 				(ego hide:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
-				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
+				(poMan dispose:)
+				(poTorinGivesPillow setCel: 0 init: setCycle: End self)
+				(poManTakesPillow setCel: 0 init: setCycle: End self)
 			)
 			(3)
 			(4
@@ -175,9 +173,9 @@
 				(ego get: ((ScriptID 64001 0) get: 21))
 				((ScriptID 64017 0) set: 49)
 				(= global263 7)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
+				(poTorinGivesPillow dispose:)
+				(poManTakesPillow dispose:)
+				(poMan init:)
 				(ego posn: 461 215 setLoop: 5 scrollTo: show:)
 				(theGame handsOn:)
 			)
@@ -192,13 +190,13 @@
 	)
 	
 	(method (init)
-		(self posn: (LOOKUP_ERROR x?) (LOOKUP_ERROR y?))
+		(self posn: (poMan x?) (poMan y?))
 		(super init: &rest)
-		(LOOKUP_ERROR hide:)
+		(poMan hide:)
 	)
 	
 	(method (dispose)
-		(LOOKUP_ERROR show:)
+		(poMan show:)
 		(super dispose: &rest)
 	)
 )
@@ -210,10 +208,10 @@
 	)
 	
 	(method (init)
-		(= x (LOOKUP_ERROR x?))
-		(= y (LOOKUP_ERROR y?))
-		(= priority (LOOKUP_ERROR priority?))
-		(= frame LOOKUP_ERROR)
+		(= x (poMan x?))
+		(= y (poMan y?))
+		(= priority (poMan priority?))
+		(= frame voVederBody)
 		(super init: &rest)
 	)
 )
@@ -225,13 +223,13 @@
 	)
 	
 	(method (init)
-		(self posn: (LOOKUP_ERROR x?) (LOOKUP_ERROR y?))
+		(self posn: (poMan x?) (poMan y?))
 		(super init: &rest)
-		(LOOKUP_ERROR hide:)
+		(poMan hide:)
 	)
 	
 	(method (dispose)
-		(LOOKUP_ERROR show:)
+		(poMan show:)
 		(super dispose: &rest)
 	)
 )
@@ -243,10 +241,10 @@
 	)
 	
 	(method (init)
-		(= x (LOOKUP_ERROR x?))
-		(= y (LOOKUP_ERROR y?))
-		(= priority (LOOKUP_ERROR priority?))
-		(= frame LOOKUP_ERROR)
+		(= x (poMan x?))
+		(= y (poMan y?))
+		(= priority (poMan priority?))
+		(= frame voVederPillowBody)
 		(super init: &rest)
 	)
 )
@@ -291,8 +289,8 @@
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(foExit init:)
+		(poMan init:)
 		(ego
 			posn: 626 280
 			init:
@@ -303,7 +301,7 @@
 	)
 	
 	(method (setWander)
-		(return LOOKUP_ERROR)
+		(return foExit)
 	)
 	
 	(method (intoPouch)

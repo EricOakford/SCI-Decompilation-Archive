@@ -120,8 +120,8 @@
 	
 	(method (edit &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 printInit)
 		(= temp6 0)
-		(= temp0 (Str with: 'LOOKUP_ERROR'))
-		(= temp1 (Str with: LOOKUP_ERROR))
+		(= temp0 (Str with: {0}))
+		(= temp1 (Str with: {0}))
 		(= temp3 (+ (= temp2 5) 100))
 		(= temp4 5)
 		(= temp5 (+ 7 (Font 0 inputFont)))
@@ -133,43 +133,42 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp2 temp4
+			addTitle: {Actor Edit}
+			addText: {Name} temp2 temp4
 			addEdit: nSpecialSelector 32 temp3 temp4
 			first: 3
-			addText: LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
+			addText: {View} temp2 (= temp4 (+ temp4 temp5))
 			addEdit: temp0 5 temp3 temp5
-			addText: LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
+			addText: {Loop} temp2 (= temp4 (+ temp4 temp5))
 			addEdit: temp1 5 temp3 temp5
-			addButton: -1 LOOKUP_ERROR temp2 (= temp4 (+ temp4 temp5))
+			addButton: -1 {CANCEL} temp2 (= temp4 (+ temp4 temp5))
 		)
 		(if (> (= printInit (Print init:)) 0)
 			(= view (temp0 asInteger:))
 			(if (ResCheck 128 view)
 				(= loop (temp1 asInteger:))
-				(LOOKUP_ERROR view: view loop: loop)
+				(numNuts view: view loop: loop)
 				(if (>= loop 0)
-					(if
-					(and (>= loop 0) (< loop (NumLoops LOOKUP_ERROR)))
-						(if (> (NumCels 'LOOKUP_ERROR') 0)
+					(if (and (>= loop 0) (< loop (NumLoops numNuts)))
+						(if (> (NumCels numNuts) 0)
 							(nCutoff
-								format: LOOKUP_ERROR getBitmap name nSpecialSelector view loop
+								format: {%d/%s = %s: %hu/%d} getBitmap name nSpecialSelector view loop
 							)
 							(self doHeld: aeActorXYClass 0 200 200)
 							(self doHeld: aeActorVisClass 0 1)
 							(= temp6 1)
 						else
-							(MonoOut LOOKUP_ERROR temp0 temp1)
+							(MonoOut {View %s, loop %s has no cels} temp0 temp1)
 						)
 					else
-						(MonoOut LOOKUP_ERROR temp0 temp1)
-						(MonoOut LOOKUP_ERROR (- (NumLoops LOOKUP_ERROR) 1))
+						(MonoOut {View %s, loop #%s too large} temp0 temp1)
+						(MonoOut {Maximum of %d} (- (NumLoops numNuts) 1))
 					)
 				else
-					(MonoOut LOOKUP_ERROR temp1)
+					(MonoOut {Loop %s must be >= 0} temp1)
 				)
 			else
-				(MonoOut LOOKUP_ERROR temp0)
+				(MonoOut {View %s not found} temp0)
 			)
 		)
 		(temp0 dispose:)
@@ -189,18 +188,33 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp0 temp2
-			addText: LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addText: 'LOOKUP_ERROR' temp0 (= temp2 (+ temp2 temp3))
-			addButton: -1 LOOKUP_ERROR temp0 (= temp2 (+ temp2 temp3))
+			addTitle: {Actor Help}
+			addText: {An actor has a visible representation on the screen} temp0 temp2
+			addText:
+				{An actor's view and loop number cannot be}
+				temp0
+				(= temp2 (+ temp2 temp3))
+			addText: {changed during an animation.} temp0 (= temp2 (+ temp2 temp3))
+			addText: {} temp0 (= temp2 (+ temp2 temp3))
+			addText: {It supports these commands:} temp0 (= temp2 (+ temp2 temp3))
+			addText:
+				{ALT-c____cel_______change the actor's cel number}
+				temp0
+				(= temp2 (+ temp2 temp3))
+			addText: {ALT-p____priority__priority} temp0 (= temp2 (+ temp2 temp3))
+			addText:
+				{ALT-v____visible___make the actor in/visible}
+				temp0
+				(= temp2 (+ temp2 temp3))
+			addText:
+				{ALT-x____xy________change actor's location}
+				temp0
+				(= temp2 (+ temp2 temp3))
+			addText:
+				{ALT-y____xy________change actor's location}
+				temp0
+				(= temp2 (+ temp2 temp3))
+			addButton: -1 {OK} temp0 (= temp2 (+ temp2 temp3))
 			init:
 		)
 	)
@@ -286,7 +300,7 @@
 		(= temp4 (+ 7 (Font 0 inputFont)))
 		(= newStr (Str new:))
 		(newStr
-			format: LOOKUP_ERROR ((whoToCue bTileBorder?) normalize?)
+			format: {%d} ((whoToCue bTileBorder?) normalize?)
 		)
 		(Print
 			x: 20
@@ -296,12 +310,12 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp1 temp3
+			addTitle: {Actor Edit}
+			addText: {Tick} temp1 temp3
 			addEdit: newStr 5 temp2 temp3
-			addButton: 1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
-			addButton: 0 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
-			addButton: -1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addButton: 1 {SHOW} temp1 (= temp3 (+ temp3 temp4))
+			addButton: 0 {HIDE} temp1 (= temp3 (+ temp3 temp4))
+			addButton: -1 {CANCEL} temp1 (= temp3 (+ temp3 temp4))
 		)
 		(if
 			(and
@@ -323,7 +337,7 @@
 		(= temp4 (+ 7 (Font 0 inputFont)))
 		(= newStr (Str new:))
 		(newStr
-			format: LOOKUP_ERROR ((whoToCue bTileBorder?) normalize?)
+			format: {%d} ((whoToCue bTileBorder?) normalize?)
 		)
 		(= newStr_2 (Str new:))
 		(Print
@@ -334,22 +348,20 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp1 temp3
+			addTitle: {Actor Edit}
+			addText: {Tick} temp1 temp3
 			addEdit: newStr 5 temp2 temp3
-			addText: LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addText: {Priority} temp1 (= temp3 (+ temp3 temp4))
 			addEdit:
 				newStr_2
 				5
 				temp2
 				(if (= actorNMinWidth (self nMinWidth:))
-					(newStr_2
-						format: 'LOOKUP_ERROR' (actorNMinWidth priority?)
-					)
+					(newStr_2 format: {%d} (actorNMinWidth priority?))
 				else
-					(newStr_2 with: LOOKUP_ERROR)
+					(newStr_2 with: {200})
 				)
-			addButton: -1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addButton: -1 {CANCEL} temp1 (= temp3 (+ temp3 temp4))
 		)
 		(if
 			(and
@@ -375,7 +387,7 @@
 		(= temp4 (+ 7 (Font 0 inputFont)))
 		(= newStr (Str new:))
 		(newStr
-			format: LOOKUP_ERROR ((whoToCue bTileBorder?) normalize?)
+			format: {%d} ((whoToCue bTileBorder?) normalize?)
 		)
 		(= newStr_2 (Str new:))
 		(= newStr_3 (Str new:))
@@ -387,24 +399,24 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp1 temp3
+			addTitle: {Actor Edit}
+			addText: {Tick} temp1 temp3
 			addEdit: newStr 5 temp2 temp3
-			addText: LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addText: {X} temp1 (= temp3 (+ temp3 temp4))
 			addEdit:
 				newStr_2
 				5
 				temp2
 				(if (= actorNMinWidth (self nMinWidth:))
-					(newStr_2 format: 'LOOKUP_ERROR' (actorNMinWidth x?))
-					(newStr_3 format: LOOKUP_ERROR (actorNMinWidth y?))
+					(newStr_2 format: {%d} (actorNMinWidth x?))
+					(newStr_3 format: {%d} (actorNMinWidth y?))
 				else
-					(newStr_2 with: LOOKUP_ERROR)
-					(newStr_3 with: LOOKUP_ERROR)
+					(newStr_2 with: {200})
+					(newStr_3 with: {200})
 				)
-			addText: LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addText: {Y} temp1 (= temp3 (+ temp3 temp4))
 			addEdit: newStr_3 5 temp2 newStr_3
-			addButton: -1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addButton: -1 {CANCEL} temp1 (= temp3 (+ temp3 temp4))
 		)
 		(if
 			(and
@@ -428,9 +440,9 @@
 		(= temp4 (+ 7 (Font 0 inputFont)))
 		(= newStr (Str new:))
 		(newStr
-			format: LOOKUP_ERROR ((whoToCue bTileBorder?) normalize?)
+			format: {%d} ((whoToCue bTileBorder?) normalize?)
 		)
-		(= temp11 (Str newWith: 'LOOKUP_ERROR'))
+		(= temp11 (Str newWith: {6}))
 		(Print
 			x: 20
 			y: 20
@@ -439,13 +451,13 @@
 			back: 234
 			skip: 0
 			font: inputFont
-			addTitle: LOOKUP_ERROR
-			addText: LOOKUP_ERROR temp1 temp3
+			addTitle: {Actor Edit}
+			addText: {Tick} temp1 temp3
 			addEdit: newStr 5 temp2 temp3
 			first: 3
-			addText: LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addText: {Cycle Speed} temp1 (= temp3 (+ temp3 temp4))
 			addEdit: temp11 5 temp2 temp11
-			addButton: -1 LOOKUP_ERROR temp1 (= temp3 (+ temp3 temp4))
+			addButton: -1 {CANCEL} temp1 (= temp3 (+ temp3 temp4))
 		)
 		(if
 			(and
@@ -454,8 +466,8 @@
 			)
 			(if (> (= temp12 (temp11 asInteger:)) 0)
 				(self internalDoSelect: aeActorCelClass)
-				(LOOKUP_ERROR view: view loop: loop)
-				(= temp8 (NumCels LOOKUP_ERROR))
+				(numNuts view: view loop: loop)
+				(= temp8 (NumCels numNuts))
 				(= temp7 0)
 				(while (< temp7 temp8)
 					(self
@@ -464,7 +476,7 @@
 					(++ temp7)
 				)
 			else
-				(MonoOut LOOKUP_ERROR)
+				(MonoOut {cycle speed must be > 0})
 			)
 		)
 		(newStr dispose:)

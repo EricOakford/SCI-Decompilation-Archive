@@ -329,7 +329,9 @@
 				(++ temp0)
 			)
 		)
-		(Prints LOOKUP_ERROR)
+		(Prints
+			{error -- can't find open inventory slot. djm, dminv.sc}
+		)
 		(return -1)
 	)
 	
@@ -434,7 +436,9 @@
 			(if temp4
 				(return (nUnhilitedBack at: temp3))
 			else
-				(Prints LOOKUP_ERROR)
+				(Prints
+					{error -- find nearest open can't find open inventory slot. djm, dminv.sc}
+				)
 				(return 0)
 			)
 		)
@@ -515,7 +519,10 @@
 	)
 	
 	(method (doVerb theVerb &tmp temp0)
-		(if (not nLevel) (Prints LOOKUP_ERROR) (return))
+		(if (not nLevel)
+			(Prints {no handler for InventWellFeature. djm, inv.sc})
+			(return)
+		)
 		(if
 			(not
 				(= temp0

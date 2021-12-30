@@ -288,9 +288,9 @@
 			(or
 				(< argc 2)
 				(not playSubtitledSound)
-				(not (playSubtitledSound isKindOf: LOOKUP_ERROR))
+				(not (playSubtitledSound isKindOf: ScrollPlane))
 			)
-			(Prints LOOKUP_ERROR)
+			(Prints {Improper init of Panner. Scrlplan.sc djm})
 		)
 		(= preload thePreload)
 		(= playMessage thePlayMessage)
@@ -527,7 +527,11 @@
 	)
 	
 	(method (nInitCursorY param1 param2 &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6)
-		(if (!= (param1 plane?) self) (Prints LOOKUP_ERROR))
+		(if (!= (param1 plane?) self)
+			(Prints
+				{Attempt to scroll to object not on our plane. DJM scrlplan.sc}
+			)
+		)
 		(if (< argc 2) (= temp0 0) else (= temp0 param2))
 		(if (and (self nVerb: param1) (not temp0)) (return))
 		(= temp1 (/ saveTime 2))
@@ -583,7 +587,9 @@
 			(= egoYStep theEgoYStep)
 		)
 		(if (< argc 3) (= temp3 0) else (= temp3 param3))
-		(if (< argc 2) (Prints LOOKUP_ERROR))
+		(if (< argc 2)
+			(Prints {Improper call to panTo. Scrlplan.sc djm})
+		)
 		(self bSpinning:)
 		(= nInitPlaneX
 			((Panner new:)

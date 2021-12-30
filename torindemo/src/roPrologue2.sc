@@ -16,7 +16,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Prints LOOKUP_ERROR)
+				(Prints {Prologue part II})
 				(= cycles 1)
 			)
 			(1 (curRoom newRoom: 10000))
@@ -31,7 +31,7 @@
 		(super init: &rest)
 		(theMusic pageSize: 0)
 		(= global202 0)
-		(curRoom setScript: {roPrologue2})
+		(curRoom setScript: soPlayPrologue)
 	)
 	
 	(method (setWander)

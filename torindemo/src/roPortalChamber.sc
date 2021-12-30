@@ -40,7 +40,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(13
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soTransport)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -61,7 +61,7 @@
 	)
 	
 	(method (doVerb)
-		(LOOKUP_ERROR doVerb: &rest)
+		(foPlatform doVerb: &rest)
 	)
 )
 
@@ -71,7 +71,7 @@
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb 13)
-				(curRoom setScript: 'LOOKUP_ERROR')
+				(curRoom setScript: soTransport)
 				(return 1)
 			else
 				(return 0)
@@ -139,24 +139,24 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(ego nSaveTime: LOOKUP_ERROR self)
+				(ego nSaveTime: foPlatform self)
 			)
 			(1
 				(self setScript: (ScriptID 64018 1) self)
 			)
 			(2
 				(ego
-					setMotion: MoveTo (LOOKUP_ERROR x?) (LOOKUP_ERROR y?) self
+					setMotion: MoveTo (foPlatform x?) (foPlatform y?) self
 				)
 			)
 			(3 (ego setHeading: 135 self))
 			(4
-				(curRoom initThumb: LOOKUP_ERROR)
-				(LOOKUP_ERROR setCel: 0 init:)
+				(curRoom initThumb: oCrystalCU)
+				(poTransport setCel: 0 init:)
 				(= seconds 2)
 			)
 			(5
-				(LOOKUP_ERROR setCycle: End self)
+				(poTransport setCycle: End self)
 			)
 			(6 (= seconds 2))
 			(7 (curRoom newRoom: 20000))
@@ -200,7 +200,7 @@
 		(super init: &rest)
 		(theGame handsOn:)
 		(ego init: oPanner: setScaler: Scaler 115 50 281 103)
-		(ego oFlagValues: LOOKUP_ERROR)
+		(ego oFlagValues: oRSDHandler)
 		((ScriptID 64018 0)
 			init:
 			oPanner:
@@ -209,13 +209,13 @@
 		(switch prevRoomNum
 			(15700
 				(ego
-					posn: (LOOKUP_ERROR approachX?) (LOOKUP_ERROR approachY?)
+					posn: (foFont approachX?) (foFont approachY?)
 					loop: 2
 				)
 			)
 			(15600
 				(ego
-					posn: (LOOKUP_ERROR approachX?) (LOOKUP_ERROR approachY?)
+					posn: (foConsole approachX?) (foConsole approachY?)
 					loop: 2
 				)
 			)
@@ -269,7 +269,7 @@
 				(not (ego has: ((ScriptID 64001 0) get: 9)))
 				((ScriptID 64017 0) test: 40)
 			)
-			(LOOKUP_ERROR init:)
+			(foFont init:)
 		)
 		(if ((ScriptID 64017 0) test: 40)
 			(curRoom
@@ -311,10 +311,10 @@
 			)
 		)
 		(if (not ((ScriptID 64017 0) test: 40))
-			(LOOKUP_ERROR init:)
+			(foConsole init:)
 		)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(foPlatform init:)
+		(foPortal init:)
 		((ScriptID 64899 3) init:)
 		(theMusic pageSize: 15200)
 	)

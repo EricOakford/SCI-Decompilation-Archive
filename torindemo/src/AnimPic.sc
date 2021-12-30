@@ -67,7 +67,7 @@
 			)
 		else
 			(if (not getHotspotVerbList)
-				(Prints LOOKUP_ERROR)
+				(Prints {Game has no messager. Consider yourself warned})
 				(= getHotspotVerbList 1)
 			)
 			(DoAudio
@@ -184,7 +184,7 @@
 			(self nBaseTilesY:)
 			(self nHeight:)
 		else
-			(MonoOut LOOKUP_ERROR (newFile name?))
+			(MonoOut {Could not open '%s'} (newFile name?))
 		)
 		(newFile dispose:)
 		(return temp2)
@@ -428,7 +428,7 @@
 					)
 				)
 				(else 
-					(MonoOut LOOKUP_ERROR temp0)
+					(MonoOut {illegal cmd %d} temp0)
 				)
 			)
 			(= face (+ face 4 temp1))
@@ -449,17 +449,17 @@
 		(= newStr (Str new:))
 		(if (== (= temp0 (param1 indexOf: 58)) -1)
 			(if (not nSizeMode)
-				(= nSizeMode (Str newWith: 100 LOOKUP_ERROR))
-				(GetConfig LOOKUP_ERROR nSizeMode)
+				(= nSizeMode (Str newWith: 100 {}))
+				(GetConfig {animDir} nSizeMode)
 			)
-			(newStr format: LOOKUP_ERROR nSizeMode param1)
+			(newStr format: {%s\\%s} nSizeMode param1)
 		else
 			(newStr copy: param1)
 		)
 		(if (!= (= temp0 (newStr indexOf: 46)) -1)
 			(newStr at: temp0 0)
 		)
-		(newStr cat: LOOKUP_ERROR)
+		(newStr cat: {.anm})
 		(param1 copy: newStr)
 		(newStr dispose:)
 	)

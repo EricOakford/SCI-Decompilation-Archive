@@ -13,15 +13,15 @@
 	oClickThrough2 4
 )
 
-(procedure (Help &tmp theLOOKUP_ERROR theLOOKUP_ERRORAddLine theLOOKUP_ERRORAddPoint temp3 temp4 theLOOKUP_ERRORFindPoint temp6 temp7 temp8 temp9)
+(procedure (Help &tmp theOClickThroughSlugs theOClickThroughSlugsAddLine theOClickThroughSlugsAddPoint temp3 temp4 theOClickThroughSlugsFindPoint temp6 temp7 temp8 temp9)
 	(cond 
 		(
 			(and
 				(== global202 1)
 				(not ((ScriptID 64017 0) test: 13))
-				(LOOKUP_ERROR dragPoint: 7)
+				(oClickThrough1 dragPoint: 7)
 			)
-			(= theLOOKUP_ERROR LOOKUP_ERROR)
+			(= theOClickThroughSlugs oClickThroughSlugs)
 		)
 		(
 			(and
@@ -31,18 +31,18 @@
 					(and
 						(not ((ScriptID 64017 0) test: 22))
 						(== curRoomNum 13000)
-						(LOOKUP_ERROR dragPoint: 1)
+						(oClickThrough1 dragPoint: 1)
 					)
 				)
 			)
-			(= theLOOKUP_ERROR LOOKUP_ERROR)
+			(= theOClickThroughSlugs oClickThroughBog)
 		)
 		(else
-			(= theLOOKUP_ERROR
+			(= theOClickThroughSlugs
 				(switch global202
 					(0 0)
-					(1 'LOOKUP_ERROR')
-					(2 'LOOKUP_ERROR')
+					(1 oClickThrough1)
+					(2 oClickThrough2)
 					(3 0)
 					(4 0)
 					(5 0)
@@ -51,32 +51,40 @@
 			)
 		)
 	)
-	(if theLOOKUP_ERROR
-		(if (not (theLOOKUP_ERROR oCast?))
-			(theLOOKUP_ERROR init:)
+	(if theOClickThroughSlugs
+		(if (not (theOClickThroughSlugs oCast?))
+			(theOClickThroughSlugs init:)
 		)
-		(= theLOOKUP_ERRORAddLine (theLOOKUP_ERROR addLine?))
-		(= theLOOKUP_ERRORAddPoint (theLOOKUP_ERROR addPoint?))
-		(= theLOOKUP_ERRORFindPoint (theLOOKUP_ERROR findPoint?))
+		(= theOClickThroughSlugsAddLine
+			(theOClickThroughSlugs addLine?)
+		)
+		(= theOClickThroughSlugsAddPoint
+			(theOClickThroughSlugs addPoint?)
+		)
+		(= theOClickThroughSlugsFindPoint
+			(theOClickThroughSlugs findPoint?)
+		)
 	else
-		(MonoOut LOOKUP_ERROR)
+		(MonoOut {Help called for nonexistent level})
 		(return)
 	)
 	(= temp3 0)
 	(while
 		(and
-			(< temp3 (theLOOKUP_ERRORAddLine size:))
+			(< temp3 (theOClickThroughSlugsAddLine size:))
 			((ScriptID 64017 0)
-				test: (theLOOKUP_ERRORAddLine at: temp3)
+				test: (theOClickThroughSlugsAddLine at: temp3)
 			)
 		)
 		(++ temp3)
 	)
-	(if (>= temp3 (theLOOKUP_ERRORAddLine size:))
-		(MonoOut LOOKUP_ERROR)
+	(if (>= temp3 (theOClickThroughSlugsAddLine size:))
+		(MonoOut
+			{Help called for level after all flags have been set.}
+		)
 		(return)
 	)
-	(= temp4 (theLOOKUP_ERRORAddPoint at: temp3))
+	(= temp4 (theOClickThroughSlugsAddPoint at: temp3))
 	(if
 	(and (== global202 global259) (== temp4 global260))
 		(++ global261)
@@ -86,17 +94,24 @@
 	(= global259 global202)
 	(= global260 temp4)
 	(if
-	(Message 0 theLOOKUP_ERRORFindPoint 0 0 temp4 global261)
-		(messager
-			say: 0 0 temp4 global261 0 theLOOKUP_ERRORFindPoint
+		(Message
+			0
+			theOClickThroughSlugsFindPoint
+			0
+			0
+			temp4
+			global261
 		)
-		(= temp8 (theLOOKUP_ERRORAddLine at: temp3))
+		(messager
+			say: 0 0 temp4 global261 0 theOClickThroughSlugsFindPoint
+		)
+		(= temp8 (theOClickThroughSlugsAddLine at: temp3))
 		(= temp6 ((ScriptID 64017 0) writeToFile: temp8))
 		(= temp9 ((ScriptID 64017 0) lineColor: temp8))
 		(if
 			(Message
 				0
-				theLOOKUP_ERRORFindPoint
+				theOClickThroughSlugsFindPoint
 				0
 				0
 				temp4
@@ -110,14 +125,18 @@
 		((ScriptID 64017 0) polygons: temp8 temp7)
 	else
 		(if (== (-- global261) 0)
-			(MonoOut LOOKUP_ERROR temp4 theLOOKUP_ERRORFindPoint)
+			(MonoOut
+				{No help message for case %d in module %d}
+				temp4
+				theOClickThroughSlugsFindPoint
+			)
 			(return)
 		)
 		(messager
-			say: 0 0 temp4 global261 0 theLOOKUP_ERRORFindPoint
+			say: 0 0 temp4 global261 0 theOClickThroughSlugsFindPoint
 		)
 	)
-	(theLOOKUP_ERROR dispose:)
+	(theOClickThroughSlugs dispose:)
 )
 
 (class ClickThrough of Obj
@@ -155,7 +174,9 @@
 	(method (dragPoint param1 &tmp temp0 temp1 temp2)
 		(if oCast (= temp1 1) else (= temp1 0) (self init:))
 		(if (== (= temp2 (addLine indexOf: param1)) -1)
-			(MonoOut LOOKUP_ERROR)
+			(MonoOut
+				{Called solvedThrough on a flag not in this instance of clickThrough}
+			)
 			(return 1)
 		)
 		(= temp0 0)
@@ -174,7 +195,9 @@
 	(method (setPoint param1 &tmp temp0 temp1 temp2)
 		(if oCast (= temp2 1) else (= temp2 0) (self init:))
 		(if (== (= temp1 (addLine indexOf: param1)) -1)
-			(MonoOut LOOKUP_ERROR)
+			(MonoOut
+				{Called setAllFlagsUpTo on a flag not in this instance of clickThrough}
+			)
 			(return)
 		)
 		(= temp0 0)
@@ -283,177 +306,177 @@
 				43
 				20100
 				1
-				LOOKUP_ERROR
+				{voStepTile}
 				30
 				62
 				20200
 				1
-				LOOKUP_ERROR
+				{aoBitterMom}
 				31
 				51
 				20100
 				1
-				LOOKUP_ERROR
+				{foClothesline}
 				32
 				65
 				20300
 				1
-				LOOKUP_ERROR
+				{poKing}
 				33
 				52
 				20300
 				12
-				LOOKUP_ERROR
+				{poKing}
 				34
 				53
 				20300
 				1
-				LOOKUP_ERROR
+				{voBeestLeg}
 				35
 				63
 				20200
 				34
-				LOOKUP_ERROR
+				{aoBitterMom}
 				36
 				44
 				20200
 				1
-				LOOKUP_ERROR
+				{voTrivetTile}
 				37
 				45
 				20400
 				1
-				LOOKUP_ERROR
+				{voPooDoor}
 				38
 				70
 				20400
 				43
-				LOOKUP_ERROR
+				{foDarkness}
 				39
 				71
 				20400
 				45
-				LOOKUP_ERROR
+				{foDarkness}
 				40
 				69
 				20400
 				44
-				LOOKUP_ERROR
+				{foPoo}
 				41
 				54
 				20400
 				43
-				LOOKUP_ERROR
+				{foLight}
 				42
 				75
 				20100
 				1
-				LOOKUP_ERROR
+				{foVultures}
 				43
 				73
 				20100
 				35
-				LOOKUP_ERROR
+				{foRockOverVultures}
 				44
 				46
 				20600
 				1
-				LOOKUP_ERROR
+				{foTableTop}
 				45
 				56
 				20600
 				1
-				LOOKUP_ERROR
+				{foCarpet}
 				46
 				58
 				20600
 				1
-				LOOKUP_ERROR
+				{foFan}
 				47
 				55
 				20600
 				1
-				LOOKUP_ERROR
+				{foPillows}
 				48
 				47
 				20600
 				1
-				LOOKUP_ERROR
+				{foSignCU}
 				49
 				86
 				20500
 				33
-				LOOKUP_ERROR
+				{oTPEgo}
 				50
 				83
 				20500
 				38
-				LOOKUP_ERROR
+				{poSkunks}
 				51
 				80
 				20900
 				1
-				LOOKUP_ERROR
+				{foMan}
 				52
 				49
 				20900
 				37
-				LOOKUP_ERROR
+				{foMan}
 				53
 				90
 				20600
 				39
-				LOOKUP_ERROR
+				{foLedge}
 				54
 				91
 				20600
 				40
-				LOOKUP_ERROR
+				{foLedge}
 				55
 				92
 				20600
 				46
-				LOOKUP_ERROR
+				{foLadder}
 				56
 				89
 				20600
 				1
-				LOOKUP_ERROR
+				{foGongTile}
 				57
 				72
 				20100
 				36
-				LOOKUP_ERROR
+				{foTree}
 				59
 				93
 				20700
 				1
-				LOOKUP_ERROR
+				{foPhaceMS}
 				60
 				50
 				20300
 				1
-				LOOKUP_ERROR
+				{foFloorTile}
 				61
 				74
 				20100
 				29
-				LOOKUP_ERROR
+				{foBasket}
 				62
 				60
 				20100
 				1
-				LOOKUP_ERROR
+				{voCleanTile}
 				63
 				94
 				20700
 				1
-				LOOKUP_ERROR
+				{foPhaceMS}
 				64
 				95
 				20800
 				13
-				LOOKUP_ERROR
+				{oTPEgo}
 				25
 		)
 	)

@@ -16,7 +16,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Prints LOOKUP_ERROR)
+				(Prints {Chapter 5})
 				(= cycles 1)
 			)
 			(1 (curRoom newRoom: -15436))
@@ -32,7 +32,7 @@
 		(theMusic pageSize: 0)
 		(= global202 5)
 		(Palette 1 -15536)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soPlayChapter)
 	)
 	
 	(method (setWander)

@@ -47,7 +47,7 @@
 				scaleY: (Max (/ (* temp0 128) 100) 1)
 			)
 		)
-		(= temp6 (Str format: LOOKUP_ERROR param2 temp0))
+		(= temp6 (Str format: {%s scale= %d} param2 temp0))
 		((= newDText (DText new:))
 			text: (KString 8 (temp6 data?))
 			fore: 235
@@ -75,9 +75,7 @@
 	(while (!= ((= newEvent (Event new:)) type?) 1)
 		(newEvent localize: local0)
 		(newEvent y: (Max param1 (newEvent y?)))
-		(= temp3
-			(Str format: 'LOOKUP_ERROR' param2 (newEvent y?))
-		)
+		(= temp3 (Str format: {%s y= %d} param2 (newEvent y?)))
 		((= newDText (DText new:))
 			text: (KString 8 (temp3 data?))
 			fore: 235
@@ -117,7 +115,10 @@
 	
 	(method (init param1 param2 &tmp newEvent)
 		(if (not (RespondsTo param1 340))
-			(Printf LOOKUP_ERROR (param1 name?))
+			(Printf
+				{scalerCode: object %s does not scale}
+				(param1 name?)
+			)
 			(return)
 		)
 		(= local1 param1)
@@ -131,7 +132,10 @@
 	)
 	
 	(method (doit &tmp temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7)
-		(if (not local1) (Prints LOOKUP_ERROR) (return))
+		(if (not local1)
+			(Prints {scalerCode: please init with an object first})
+			(return)
+		)
 		(local1 setScale: 0)
 		(= temp0 (local1 x?))
 		(= temp1 (local1 y?))
@@ -151,10 +155,17 @@
 			)
 		)
 		(= temp2
-			(localproc_0443 0 (Str with: LOOKUP_ERROR) temp6)
+			(localproc_0443
+				0
+				(Str with: {back Y, click when done.___})
+				temp6
+			)
 		)
 		(= temp4
-			(localproc_0262 temp2 (Str with: LOOKUP_ERROR))
+			(localproc_0262
+				temp2
+				(Str with: {Size object, click when done.___})
+			)
 		)
 		(= temp7
 			(AddLine
@@ -171,13 +182,20 @@
 			)
 		)
 		(= temp3
-			(localproc_0443 temp2 (Str with: LOOKUP_ERROR) temp7)
+			(localproc_0443
+				temp2
+				(Str with: {front Y, click when done.___})
+				temp7
+			)
 		)
 		(= temp5
-			(localproc_0262 temp3 (Str with: LOOKUP_ERROR))
+			(localproc_0262
+				temp3
+				(Str with: {Size object, click when done.___})
+			)
 		)
 		(local1 posn: temp0 temp1)
-		(Printf LOOKUP_ERROR temp5 temp4 temp3 temp2)
+		(Printf {Scaler %d %d %d %d} temp5 temp4 temp3 temp2)
 		(local1 setScaler: Scaler temp5 temp4 temp3 temp2)
 		(DeleteLine temp6 local0)
 		(DeleteLine temp7 local0)

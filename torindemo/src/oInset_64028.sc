@@ -35,32 +35,34 @@
 		(super init: &rest)
 		(self moveTo: left top)
 		(= modalPlaneNSpeed (self nSpeed:))
-		(LOOKUP_ERROR y: 0 init: modalPlaneNSpeed)
+		(voInsetFrame y: 0 init: modalPlaneNSpeed)
 		(self setSize:)
-		(LOOKUP_ERROR
+		(oScrollBar1
 			oScrollPlane: 100
-			init: (LOOKUP_ERROR nSpeed:)
+			init: (oInset nSpeed:)
 			posn: 20 40
 			solvedThrough: (- 100 gCurVolume)
 		)
-		(LOOKUP_ERROR
+		(oScrollBar2
 			oScrollPlane: 100
-			init: (LOOKUP_ERROR nSpeed:)
+			init: (oInset nSpeed:)
 			posn: 80 40
 			solvedThrough: (- 100 gSaveThis)
 		)
-		(LOOKUP_ERROR
+		(oScrollBar3
 			oScrollPlane: 100
-			init: (LOOKUP_ERROR nSpeed:)
+			init: (oInset nSpeed:)
 			posn: 140 40
 			solvedThrough: (- 100 global229)
 		)
-		(= temp1 (Str newWith: 400 LOOKUP_ERROR))
+		(= temp1
+			(Str newWith: 400 {Music, Sound FX, Dialog Volume})
+		)
 		(self setTitle: (KString 8 (temp1 data?)))
 		(temp1 dispose:)
-		(LOOKUP_ERROR init: (self nSpeed:))
-		(LOOKUP_ERROR init: self)
-		(LOOKUP_ERROR nUserRange: 28)
+		(voClose init: (self nSpeed:))
+		(foMove init: self)
+		(foMove nUserRange: 28)
 	)
 )
 
@@ -73,10 +75,10 @@
 	)
 	
 	(method (oVerbs &tmp temp0)
-		(LOOKUP_ERROR dispose:)
-		(LOOKUP_ERROR dispose:)
-		(LOOKUP_ERROR dispose:)
-		(LOOKUP_ERROR dispose:)
+		(oScrollBar1 dispose:)
+		(oScrollBar2 dispose:)
+		(oScrollBar3 dispose:)
+		(oInset dispose:)
 		(DisposeScript -1508)
 	)
 )

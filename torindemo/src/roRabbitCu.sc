@@ -23,7 +23,7 @@
 	(method (init)
 		(super init: &rest)
 		(theMusic pageSize: -12436)
-		(LOOKUP_ERROR init:)
+		(foExit init:)
 		(theGame handsOn:)
 	)
 	

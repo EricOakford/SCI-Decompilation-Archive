@@ -38,7 +38,7 @@
 				(ego setMotion: MoveTo 174 312 self)
 			)
 			(1
-				(LOOKUP_ERROR posn: (ego x?) (ego y?) init:)
+				(fakeEgo posn: (ego x?) (ego y?) init:)
 				(ego dispose:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -54,51 +54,51 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR cel: 0 setCycle: End self)
+				(fakeEgo cel: 0 setCycle: End self)
 			)
 			(1
 				(messager say: 0 0 0 1 self)
 				(gInventItem moveTo: -3)
 			)
 			(2
-				(LOOKUP_ERROR hide:)
-				(LOOKUP_ERROR vThumbView: -14535)
-				(LOOKUP_ERROR
-					posn: (LOOKUP_ERROR x?) (LOOKUP_ERROR y?)
+				(fakeEgo hide:)
+				(sawSound vThumbView: -14535)
+				(poBendSaw
+					posn: (fakeEgo x?) (fakeEgo y?)
 					init:
 					cycleSpeed: 7
 					setCycle: Fwd
 				)
-				(LOOKUP_ERROR
-					posn: (LOOKUP_ERROR x?) (LOOKUP_ERROR y?)
+				(poBowSaw
+					posn: (fakeEgo x?) (fakeEgo y?)
 					init:
 					cycleSpeed: 5
 					setCycle: Fwd
 				)
-				(LOOKUP_ERROR init:)
+				(poDirector init:)
 				(= ticks 180)
 			)
 			(3
-				(LOOKUP_ERROR stop:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR show:)
-				(LOOKUP_ERROR cel: 0 setCycle: End self)
+				(sawSound stop:)
+				(poBowSaw dispose:)
+				(poBendSaw dispose:)
+				(fakeEgo show:)
+				(poDirector cel: 0 setCycle: End self)
 			)
 			(4
-				(LOOKUP_ERROR init: cel: 0 setCycle: End self)
+				(poCop init: cel: 0 setCycle: End self)
 			)
 			(5
 				(messager sayRange: 0 0 0 2 6 self)
 			)
 			(6
-				(LOOKUP_ERROR loop: 1 cel: 0 init: setCycle: End self)
+				(poCop loop: 1 cel: 0 init: setCycle: End self)
 			)
 			(7
-				(LOOKUP_ERROR loop: 2 cel: 0 init: setCycle: End self)
+				(poCop loop: 2 cel: 0 init: setCycle: End self)
 			)
 			(8
-				(proc64896_1 1 10 LOOKUP_ERROR)
+				(proc64896_1 1 10 coNextRoom)
 				(self dispose:)
 			)
 		)
@@ -147,9 +147,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 67)
-			(LOOKUP_ERROR setScript: LOOKUP_ERROR)
-		)
+		(if (== theVerb 67) (fakeEgo setScript: soPlaySaw))
 	)
 )
 
@@ -163,7 +161,7 @@
 		(theMusic pageSize: -14536)
 		(theGame handsOff:)
 		(ego oPanner: posn: -20 440 init:)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soEnterRoom)
 	)
 	
 	(method (setWander)

@@ -30,7 +30,7 @@
 			(0
 				(theGame handsOff:)
 				(theSound lThumbLoop: -14935)
-				(LOOKUP_ERROR
+				(poTorin
 					loop: 0
 					cel: 0
 					posn: 184 263
@@ -39,25 +39,20 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR init: lThumbLoop: -14933 self)
+				(oCrunch init: lThumbLoop: -14933 self)
 			)
 			(2
 				(theSound lThumbLoop: -14934)
-				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: End self)
+				(poTorin loop: 1 cel: 0 setCycle: End self)
 			)
 			(3
-				(LOOKUP_ERROR loop: 2 cel: 0 setCycle: End self)
+				(poTorin loop: 2 cel: 0 setCycle: End self)
 			)
 			(4
-				(LOOKUP_ERROR
-					loop: 3
-					cel: 0
-					posn: 174 257
-					setCycle: End self
-				)
+				(poTorin loop: 3 cel: 0 posn: 174 257 setCycle: End self)
 			)
 			(5
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego
 					posn: 174 257
 					init:
@@ -82,7 +77,7 @@
 	(method (init)
 		(super init: &rest)
 		(theMusic pageSize: -14836)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soPlayMovie)
 	)
 	
 	(method (setWander)

@@ -23,13 +23,15 @@
 	proc64033_8 8
 )
 
-(procedure (TextDialog param1 param2 param3 param4 param5 &tmp temp0 temp1 temp2 newTextButtonOMyNotifySelectors newTextButtonAddScrollView newLOOKUP_ERROR_2OMyNotifySelectors newLOOKUP_ERROR_2AddScrollView temp7 temp8 newLOOKUP_ERROR newTiledView newLOOKUP_ERROR_2 newTiledViewOMyNotifySelectors newTiledViewAddScrollView newTiledViewKillPan newTiledViewAddToNotifyList temp16 temp17 newTextButton)
-	(if (< argc 2) (return (MonoOut LOOKUP_ERROR)))
+(procedure (TextDialog param1 param2 param3 param4 param5 &tmp temp0 temp1 temp2 newTextButtonOMyNotifySelectors newTextButtonAddScrollView newDismissButtonOMyNotifySelectors newDismissButtonAddScrollView temp7 temp8 newDialogPlane newTiledView newDismissButton newTiledViewOMyNotifySelectors newTiledViewAddScrollView newTiledViewKillPan newTiledViewAddToNotifyList temp16 temp17 newTextButton)
+	(if (< argc 2)
+		(return (MonoOut {illegal call of TextDialog. gendialg.sc DJM}))
+	)
 	(if (< argc 3) (= temp1 -2) else (= temp1 param3))
 	(if (< argc 4) (= temp2 -2) else (= temp2 param4))
 	(if (< argc 5) (= temp0 300) else (= temp0 param5))
 	(if (or (not param1) (not param2)) (return 0))
-	((= newLOOKUP_ERROR (LOOKUP_ERROR new:)) init: 0 0 1 1)
+	((= newDialogPlane (DialogPlane new:)) init: 0 0 1 1)
 	(= newTextButton (TextButton new:))
 	(newTextButton
 		font: global268
@@ -41,7 +43,7 @@
 		text: (KString 8 (KString 9 param1))
 		curULY: 0
 		minCycle: 0
-		init: newLOOKUP_ERROR
+		init: newDialogPlane
 		disable:
 	)
 	(= newTextButtonOMyNotifySelectors
@@ -50,8 +52,8 @@
 	(= newTextButtonAddScrollView
 		(newTextButton addScrollView?)
 	)
-	(= newLOOKUP_ERROR_2 (LOOKUP_ERROR new:))
-	(newLOOKUP_ERROR_2
+	(= newDismissButton (DismissButton new:))
+	(newDismissButton
 		font: global270
 		maxCycle: global271
 		fore: gFore
@@ -61,19 +63,19 @@
 		findNearestOpen: global276
 		updateItemSlot: global277
 		setPos: 1
-		init: newLOOKUP_ERROR
+		init: newDialogPlane
 	)
-	(= newLOOKUP_ERROR_2OMyNotifySelectors
-		(newLOOKUP_ERROR_2 oMyNotifySelectors?)
+	(= newDismissButtonOMyNotifySelectors
+		(newDismissButton oMyNotifySelectors?)
 	)
-	(= newLOOKUP_ERROR_2AddScrollView
-		(newLOOKUP_ERROR_2 addScrollView?)
+	(= newDismissButtonAddScrollView
+		(newDismissButton addScrollView?)
 	)
 	(= temp7
 		(+
 			(Max
 				newTextButtonOMyNotifySelectors
-				newLOOKUP_ERROR_2OMyNotifySelectors
+				newDismissButtonOMyNotifySelectors
 			)
 			10
 		)
@@ -81,13 +83,13 @@
 	(= temp8
 		(+
 			newTextButtonAddScrollView
-			newLOOKUP_ERROR_2AddScrollView
+			newDismissButtonAddScrollView
 			15
 		)
 	)
 	((= newTiledView (TiledView new:))
 		view: global275
-		init: temp7 temp8 0 1 newLOOKUP_ERROR
+		init: temp7 temp8 0 1 newDialogPlane
 	)
 	(= newTiledViewOMyNotifySelectors
 		(newTiledView oMyNotifySelectors?)
@@ -128,14 +130,14 @@
 			)
 		)
 	)
-	(newLOOKUP_ERROR
+	(newDialogPlane
 		setRect:
 			temp1
 			temp2
 			(- (+ temp1 newTiledViewOMyNotifySelectors) 1)
 			(- (+ temp2 newTiledViewAddScrollView) 1)
 	)
-	(UpdatePlane newLOOKUP_ERROR)
+	(UpdatePlane newDialogPlane)
 	(= newTiledViewKillPan (newTiledView killPan?))
 	(= newTiledViewAddToNotifyList
 		(newTiledView addToNotifyList?)
@@ -147,7 +149,7 @@
 		(/
 			(-
 				newTiledViewOMyNotifySelectors
-				newLOOKUP_ERROR_2OMyNotifySelectors
+				newDismissButtonOMyNotifySelectors
 			)
 			2
 		)
@@ -159,8 +161,8 @@
 			newTextButtonAddScrollView
 		)
 	)
-	(newLOOKUP_ERROR_2 posn: temp16 temp17)
-	(return (newLOOKUP_ERROR setMinMax:))
+	(newDismissButton posn: temp16 temp17)
+	(return (newDialogPlane setMinMax:))
 )
 
 (procedure (MakeMessageText param1 param2 param3 param4 theTheCurRoomNum &tmp temp0 temp1 temp2 temp3 theCurRoomNum temp5)
@@ -173,11 +175,11 @@
 	else
 		(= theCurRoomNum theTheCurRoomNum)
 	)
-	(= temp5 (Str newWith: 4000 LOOKUP_ERROR))
+	(= temp5 (Str newWith: 4000 {}))
 	(if
 	(not (Message 0 theCurRoomNum temp0 temp1 temp2 temp3))
 		(MonoOut
-			LOOKUP_ERROR
+			{MakeMessageText: No message found m:%hu n:%d v:%d c:%d s:%d}
 			theCurRoomNum
 			temp0
 			temp1
@@ -199,40 +201,54 @@
 )
 
 (procedure (SetDialogFont param1 param2)
-	(if (< argc 2) (MonoOut LOOKUP_ERROR) (return))
+	(if (< argc 2)
+		(MonoOut {illegal set of dialog font. gendialg.sc DJM})
+		(return)
+	)
 	(= global268 param1)
 	(= global269 param2)
 )
 
 (procedure (SetButtonFont param1 param2)
-	(if (< argc 2) (MonoOut LOOKUP_ERROR) (return))
+	(if (< argc 2)
+		(MonoOut {illegal set of button font. gendialg.sc DJM})
+		(return)
+	)
 	(= global270 param1)
 	(= global271 param2)
 )
 
 (procedure (SetDialogColors param1 theGFore theGBack)
-	(if (< argc 3) (MonoOut LOOKUP_ERROR) (return))
+	(if (< argc 3)
+		(MonoOut {illegal set of dialog colors. gendialg.sc DJM})
+		(return)
+	)
 	(= global274 param1)
 	(= gFore theGFore)
 	(= gBack theGBack)
 )
 
 (procedure (proc64033_5 param1 param2 param3)
-	(if (< argc 3) (MonoOut LOOKUP_ERROR) (return))
+	(if (< argc 3)
+		(MonoOut {illegal set of dialog colors. gendialg.sc DJM})
+		(return)
+	)
 	(= global275 param1)
 	(= global276 param2)
 	(= global277 param3)
 )
 
-(procedure (proc64033_6 param1 param2 param3 param4 param5 param6 &tmp temp0 temp1 temp2 newTextButtonOMyNotifySelectors newTextButtonAddScrollView newLOOKUP_ERROR_3OMyNotifySelectors newLOOKUP_ERROR_3AddScrollView temp7 temp8 newLOOKUP_ERROR newTiledView newLOOKUP_ERROR_2 newLOOKUP_ERROR_3 newTiledViewOMyNotifySelectors newTiledViewAddScrollView newTiledViewKillPan newTiledViewAddToNotifyList temp17 temp18 newTextButton temp20)
-	(if (< argc 3) (return (MonoOut LOOKUP_ERROR)))
+(procedure (proc64033_6 param1 param2 param3 param4 param5 param6 &tmp temp0 temp1 temp2 newTextButtonOMyNotifySelectors newTextButtonAddScrollView newDismissButton_2OMyNotifySelectors newDismissButton_2AddScrollView temp7 temp8 newDialogPlane newTiledView newDismissButton newDismissButton_2 newTiledViewOMyNotifySelectors newTiledViewAddScrollView newTiledViewKillPan newTiledViewAddToNotifyList temp17 temp18 newTextButton temp20)
+	(if (< argc 3)
+		(return (MonoOut {illegal call of TextDialog. gendialg.sc DJM}))
+	)
 	(if (< argc 4) (= temp1 -2) else (= temp1 param4))
 	(if (< argc 5) (= temp2 -2) else (= temp2 param5))
 	(if (< argc 6) (= temp0 300) else (= temp0 param6))
 	(if (or (not param1) (not param2) (not param3))
 		(return 0)
 	)
-	((= newLOOKUP_ERROR (LOOKUP_ERROR new:)) init: 0 0 1 1)
+	((= newDialogPlane (DialogPlane new:)) init: 0 0 1 1)
 	(= newTextButton (TextButton new:))
 	(newTextButton
 		font: global268
@@ -244,7 +260,7 @@
 		text: (KString 8 (KString 9 param1))
 		curULY: 0
 		minCycle: 0
-		init: newLOOKUP_ERROR
+		init: newDialogPlane
 		disable:
 	)
 	(= newTextButtonOMyNotifySelectors
@@ -264,8 +280,8 @@
 			10
 		)
 	)
-	(= newLOOKUP_ERROR_2 (LOOKUP_ERROR new:))
-	(newLOOKUP_ERROR_2
+	(= newDismissButton (DismissButton new:))
+	(newDismissButton
 		font: global270
 		maxCycle: global271
 		fore: gFore
@@ -277,10 +293,10 @@
 		compress: temp20
 		value: 1
 		setPos: 1
-		init: newLOOKUP_ERROR
+		init: newDialogPlane
 	)
-	(= newLOOKUP_ERROR_3 (LOOKUP_ERROR new:))
-	(newLOOKUP_ERROR_3
+	(= newDismissButton_2 (DismissButton new:))
+	(newDismissButton_2
 		font: global270
 		maxCycle: global271
 		fore: gFore
@@ -291,22 +307,22 @@
 		updateItemSlot: global277
 		compress: temp20
 		value: 0
-		init: newLOOKUP_ERROR
+		init: newDialogPlane
 	)
-	(= newLOOKUP_ERROR_3OMyNotifySelectors
-		(newLOOKUP_ERROR_3 oMyNotifySelectors?)
+	(= newDismissButton_2OMyNotifySelectors
+		(newDismissButton_2 oMyNotifySelectors?)
 	)
-	(= newLOOKUP_ERROR_3AddScrollView
-		(newLOOKUP_ERROR_3 addScrollView?)
+	(= newDismissButton_2AddScrollView
+		(newDismissButton_2 addScrollView?)
 	)
 	(= temp7
 		(+
 			(Max
 				newTextButtonOMyNotifySelectors
 				(+
-					newLOOKUP_ERROR_3OMyNotifySelectors
+					newDismissButton_2OMyNotifySelectors
 					5
-					newLOOKUP_ERROR_3OMyNotifySelectors
+					newDismissButton_2OMyNotifySelectors
 				)
 			)
 			10
@@ -315,13 +331,13 @@
 	(= temp8
 		(+
 			newTextButtonAddScrollView
-			newLOOKUP_ERROR_3AddScrollView
+			newDismissButton_2AddScrollView
 			15
 		)
 	)
 	((= newTiledView (TiledView new:))
 		view: global275
-		init: temp7 temp8 0 1 newLOOKUP_ERROR
+		init: temp7 temp8 0 1 newDialogPlane
 	)
 	(= newTiledViewOMyNotifySelectors
 		(newTiledView oMyNotifySelectors?)
@@ -362,14 +378,14 @@
 			)
 		)
 	)
-	(newLOOKUP_ERROR
+	(newDialogPlane
 		setRect:
 			temp1
 			temp2
 			(- (+ temp1 newTiledViewOMyNotifySelectors) 1)
 			(- (+ temp2 newTiledViewAddScrollView) 1)
 	)
-	(UpdatePlane newLOOKUP_ERROR)
+	(UpdatePlane newDialogPlane)
 	(= newTiledViewKillPan (newTiledView killPan?))
 	(= newTiledViewAddToNotifyList
 		(newTiledView addToNotifyList?)
@@ -382,8 +398,8 @@
 			(-
 				newTiledViewOMyNotifySelectors
 				(+
-					newLOOKUP_ERROR_3OMyNotifySelectors
-					newLOOKUP_ERROR_3OMyNotifySelectors
+					newDismissButton_2OMyNotifySelectors
+					newDismissButton_2OMyNotifySelectors
 					5
 				)
 			)
@@ -397,15 +413,18 @@
 			newTextButtonAddScrollView
 		)
 	)
-	(newLOOKUP_ERROR_2 posn: temp17 temp18)
-	(newLOOKUP_ERROR_3
-		posn: (+ temp17 newLOOKUP_ERROR_3OMyNotifySelectors 5) temp18
+	(newDismissButton posn: temp17 temp18)
+	(newDismissButton_2
+		posn: (+ temp17 newDismissButton_2OMyNotifySelectors 5) temp18
 	)
-	(return (newLOOKUP_ERROR setMinMax:))
+	(return (newDialogPlane setMinMax:))
 )
 
 (procedure (GetTextWidth param1 param2 param3 &tmp temp0 temp1)
-	(if (< argc 3) (MonoOut LOOKUP_ERROR) (return 0))
+	(if (< argc 3)
+		(MonoOut {illegal call of GetTextWidth. djm gendialg.sc})
+		(return 0)
+	)
 	(= temp0 (IntArray new: 4))
 	(KText
 		0
@@ -421,7 +440,10 @@
 )
 
 (procedure (proc64033_8 param1 param2 param3 &tmp temp0 temp1)
-	(if (< argc 3) (MonoOut LOOKUP_ERROR) (return 0))
+	(if (< argc 3)
+		(MonoOut {illegal call of GetTextWidth. djm gendialg.sc})
+		(return 0)
+	)
 	(= temp0 (IntArray new: 4))
 	(KText
 		0
@@ -563,7 +585,7 @@
 	
 	(method (oVerbs)
 		(plane value: value)
-		(LOOKUP_ERROR setScript: (LOOKUP_ERROR new:) 0 plane)
+		(poNull setScript: (soDelayDispose new:) 0 plane)
 	)
 )
 
@@ -622,9 +644,7 @@
 			(gOEventHandler handleEvent: temp0)
 			(temp0 dispose:)
 			((self nSpeed:) doit:)
-			(if (LOOKUP_ERROR script?)
-				((LOOKUP_ERROR script?) doit:)
-			)
+			(if (poNull script?) ((poNull script?) doit:))
 			(FrameOut)
 		)
 		(= theValue value)

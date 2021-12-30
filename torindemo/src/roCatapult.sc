@@ -28,7 +28,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soExitEast)
 	)
 )
 
@@ -42,7 +42,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soExitNorth)
 	)
 )
 
@@ -56,7 +56,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soExitWest)
 	)
 )
 
@@ -140,11 +140,11 @@
 	)
 	
 	(method (doVerb)
-		(if local0 (ego setScript: LOOKUP_ERROR) (return))
+		(if local0 (ego setScript: soTryForLever) (return))
 		(if ((ScriptID 64017 0) test: 102)
-			(ego setScript: LOOKUP_ERROR)
+			(ego setScript: soTriggerCatapult)
 		else
-			(ego setScript: LOOKUP_ERROR)
+			(ego setScript: soCockCatapult)
 		)
 	)
 )
@@ -202,7 +202,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soThrowBall)
 	)
 )
 
@@ -223,7 +223,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soCutRope)
 	)
 )
 
@@ -247,13 +247,13 @@
 		(switch theVerb
 			(1
 				(if local0
-					(ego setScript: LOOKUP_ERROR)
+					(ego setScript: soGetOutOfBowl)
 				else
-					(ego setScript: LOOKUP_ERROR)
+					(ego setScript: soJumpInBowl)
 				)
 			)
 			(50
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soPutBallInBowl)
 			)
 		)
 	)
@@ -266,18 +266,13 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
-					view: -23432
-					loop: 0
-					cel: 0
-					setCycle: End self
-				)
+				(poTorin view: -23432 loop: 0 cel: 0 setCycle: End self)
 				(messager say: 2 1 3 0 self -25336)
 			)
 			(1)
 			(2
-				(LOOKUP_ERROR view: -23433)
-				(LOOKUP_ERROR loop: 0 cel: (LOOKUP_ERROR lastCel:))
+				(poTorin view: -23433)
+				(poTorin loop: 0 cel: (poTorin lastCel:))
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -303,7 +298,7 @@
 			(3 (ego setHeading: 315 self))
 			(4
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23433
 					loop: 0
 					cel: 0
@@ -313,12 +308,12 @@
 			)
 			(5
 				(= local0 1)
-				(LOOKUP_ERROR setTotalWidth: 50)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				({oBoogleWalkInWest} dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
+				(foCatapultBowl setTotalWidth: 50)
+				(foExitToIslandNorth dispose:)
+				(foExitToIslandWest dispose:)
+				(foExitToIslandEast dispose:)
+				(foLava dispose:)
+				(foRope init:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -334,32 +329,27 @@
 			(0
 				(theGame handsOff:)
 				(((ScriptID 64001 0) get: 1) moveTo: -3)
-				(LOOKUP_ERROR hide:)
-				(LOOKUP_ERROR
-					view: -23432
-					loop: 1
-					cel: 0
-					setCycle: End self
-				)
+				(poCatapult hide:)
+				(poTorin view: -23432 loop: 1 cel: 0 setCycle: End self)
 			)
 			(1
 				(cond 
-					((> (= temp0 (+ 4 (proc64001_4) global249)) 5) (LOOKUP_ERROR loop: 2 posn: 255 177))
-					((== temp0 5) (LOOKUP_ERROR loop: 3 posn: 166 147))
-					(else (LOOKUP_ERROR loop: 4 posn: 86 96))
+					((> (= temp0 (+ 4 (proc64001_4) global249)) 5) (poTorinLands loop: 2 posn: 255 177))
+					((== temp0 5) (poTorinLands loop: 3 posn: 166 147))
+					(else (poTorinLands loop: 4 posn: 86 96))
 				)
-				(LOOKUP_ERROR cel: 0 init: setCycle: End self)
+				(poTorinLands cel: 0 init: setCycle: End self)
 			)
 			(2
-				(LOOKUP_ERROR dispose:)
+				(poTorinLands dispose:)
 				(cond 
 					((> (= temp0 (+ 4 (proc64001_4) global249)) 5) ((ScriptID 64019 0) show: 0 42 5 -25336))
 					((== temp0 5) (curRoom newRoom: -25136) (return))
 					(else ((ScriptID 64019 0) show: 0 42 4 -25336))
 				)
-				(LOOKUP_ERROR show:)
-				(LOOKUP_ERROR view: -23433)
-				(LOOKUP_ERROR loop: 0 cel: (LOOKUP_ERROR lastCel:))
+				(poCatapult show:)
+				(poTorin view: -23433)
+				(poTorin loop: 0 cel: (poTorin lastCel:))
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -374,15 +364,10 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
-					view: -23433
-					loop: 1
-					cel: 0
-					setCycle: End self
-				)
+				(poTorin view: -23433 loop: 1 cel: 0 setCycle: End self)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego posn: 489 313 oPanner: 1 -5436 7 show:)
 				(ego setMotion: PolyPath 316 280 self)
 			)
@@ -391,12 +376,12 @@
 			)
 			(3
 				(= local0 0)
-				(LOOKUP_ERROR setVisibleRange: 50)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR dispose:)
+				(foCatapultBowl setVisibleRange: 50)
+				(foExitToIslandNorth init:)
+				(foExitToIslandWest init:)
+				(foExitToIslandEast init:)
+				(foLava init:)
+				(foRope dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -418,7 +403,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23433
 					loop: 2
 					cel: 0
@@ -427,7 +412,7 @@
 				)
 			)
 			(3
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego show:)
 				(ego put: gInventItem)
 				(theGame handsOn:)
@@ -451,7 +436,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23435
 					loop: 0
 					cel: 0
@@ -460,11 +445,11 @@
 				)
 			)
 			(3
-				(LOOKUP_ERROR view: -23435 loop: 2 cel: 0)
+				(poCatapult view: -23435 loop: 2 cel: 0)
 				((ScriptID 64017 0) set: 102)
 				(ego show:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR dispose:)
+				(foCatapultBowl init:)
+				(poTorin dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -486,7 +471,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23434
 					loop: 0
 					cel: 0
@@ -495,7 +480,7 @@
 				)
 			)
 			(3
-				(LOOKUP_ERROR
+				(poCatapult
 					view: -23434
 					loop: 1
 					cel: 0
@@ -503,15 +488,15 @@
 				)
 			)
 			(4
-				(self setScript: LOOKUP_ERROR self)
+				(self setScript: soBallsLand self)
 			)
 			(5
-				(LOOKUP_ERROR view: -23435 loop: 1 cel: 0)
+				(poCatapult view: -23435 loop: 1 cel: 0)
 				((ScriptID 64017 0) clear: 102)
 				(ego show:)
-				(LOOKUP_ERROR dispose:)
+				(foCatapultBowl dispose:)
 				(= global249 0)
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -527,14 +512,14 @@
 			(0
 				(cond 
 					((not global249) (self dispose:) (return))
-					((> global249 5) (LOOKUP_ERROR loop: 2 posn: 254 174))
-					((== global249 5) (LOOKUP_ERROR loop: 3 posn: 154 135))
-					(else (LOOKUP_ERROR loop: 4 posn: 82 97))
+					((> global249 5) (poBallsLand loop: 2 posn: 254 174))
+					((== global249 5) (poBallsLand loop: 3 posn: 154 135))
+					(else (poBallsLand loop: 4 posn: 82 97))
 				)
-				(LOOKUP_ERROR cel: 0 init: setCycle: End self)
+				(poBallsLand cel: 0 init: setCycle: End self)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
+				(poBallsLand dispose:)
 				(self dispose:)
 			)
 		)
@@ -555,7 +540,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -23436
 					loop: 0
 					cel: 0
@@ -566,7 +551,7 @@
 			(3
 				(ego put: gInventItem)
 				(++ global249)
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego oPanner: 1 -5436 6 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -583,7 +568,7 @@
 			(0
 				(theGame handsOff:)
 				(ego posn: -30 290 setMotion: MoveTo 30 290 self)
-				((ScriptID 64018 0) setScript: LOOKUP_ERROR)
+				((ScriptID 64018 0) setScript: soBoogleWalkInEast)
 			)
 			(1
 				(theGame handsOn:)
@@ -621,7 +606,7 @@
 			(0
 				(theGame handsOff:)
 				(ego posn: 662 290 setMotion: MoveTo 600 290 self)
-				((ScriptID 64018 0) setScript: LOOKUP_ERROR)
+				((ScriptID 64018 0) setScript: soBoogleWalkInWest)
 			)
 			(1
 				(theGame handsOn:)
@@ -672,26 +657,26 @@
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(foLava init:)
+		(voLever init:)
 		(if ((ScriptID 64017 0) test: 102)
-			(LOOKUP_ERROR init:)
-			(LOOKUP_ERROR view: -23435 loop: 2)
+			(foCatapultBowl init:)
+			(poCatapult view: -23435 loop: 2)
 		else
-			(LOOKUP_ERROR view: -23435 loop: 1)
+			(poCatapult view: -23435 loop: 1)
 		)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(poCatapult init:)
+		(foExitToIslandEast init:)
+		(foExitToIslandWest init:)
+		(foExitToIslandNorth init:)
 		(ego init: oPanner:)
 		((ScriptID 64018 0) posn: 30 300 init: oPanner:)
 		(switch prevRoomNum
 			(-25336
 				(if global248
-					(ego setScript: LOOKUP_ERROR)
+					(ego setScript: soWalkInEast)
 				else
-					(ego setScript: LOOKUP_ERROR)
+					(ego setScript: soWalkInWest)
 				)
 			)
 			(else 

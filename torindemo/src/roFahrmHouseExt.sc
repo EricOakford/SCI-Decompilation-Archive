@@ -66,7 +66,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: 'LOOKUP_ERROR')
+		(curRoom setScript: soDoorExit)
 	)
 )
 
@@ -81,21 +81,21 @@
 		(switch (= state newState)
 			(0
 				(messager say: 3 1 1 0 self)
-				(LOOKUP_ERROR nHeight: 11003)
+				(oDoorSnd nHeight: 11003)
 			)
 			(1
 				(self setScript: (ScriptID 64018 1) self)
 			)
 			(2
-				(ego oPlane: LOOKUP_ERROR self)
+				(ego oPlane: poDoorExit self)
 			)
 			(3
 				(ego hide:)
-				(LOOKUP_ERROR cel: 1 setCycle: CT 6 1 self)
+				(poDoorExit cel: 1 setCycle: CT 6 1 self)
 			)
 			(4
-				(LOOKUP_ERROR lThumbLoop: 11003)
-				(LOOKUP_ERROR setCycle: End self)
+				(oDoorSnd lThumbLoop: 11003)
+				(poDoorExit setCycle: End self)
 			)
 			(5 (curRoom newRoom: 11100))
 		)
@@ -148,18 +148,18 @@
 	(method (init)
 		(= signal (| signal $1000))
 		(super init: &rest)
-		(LOOKUP_ERROR init:)
+		(oAxPolygon init:)
 	)
 	
 	(method (dispose)
-		(LOOKUP_ERROR dispose:)
-		(LOOKUP_ERROR init:)
+		(oAxPolygon dispose:)
+		(oBlockPolygon init:)
 		(super dispose:)
 	)
 	
 	(method (doVerb theVerb)
 		(if (== theVerb 1)
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soPickUpAx)
 		else
 			(super doVerb: theVerb)
 		)
@@ -182,35 +182,33 @@
 			)
 			(1
 				(theGame handsOff:)
-				(ego
-					setMotion: MoveTo (LOOKUP_ERROR x?) (LOOKUP_ERROR y?) self
-				)
+				(ego setMotion: MoveTo (voAx x?) (voAx y?) self)
 			)
 			(2 (ego setHeading: 225 self))
 			(3
 				(ego hide:)
-				(LOOKUP_ERROR
-					posn: (LOOKUP_ERROR x?) (LOOKUP_ERROR y?)
-					setPri: (- (LOOKUP_ERROR priority?) 1)
+				(poPickUpAx
+					posn: (voAx x?) (voAx y?)
+					setPri: (- (voAx priority?) 1)
 					init:
 					setCycle: CT 5 1 self
 				)
 			)
 			(4
-				(= ticks (LOOKUP_ERROR cycleSpeed?))
+				(= ticks (poPickUpAx cycleSpeed?))
 			)
 			(5
-				(LOOKUP_ERROR dispose:)
+				(voAx dispose:)
 				(ego get: ((ScriptID 64001 0) get: 0))
 				((ScriptID 64017 0) set: 0)
-				(LOOKUP_ERROR setCycle: End self)
+				(poPickUpAx setCycle: End self)
 			)
 			(6
 				(ego
-					posn: (+ (LOOKUP_ERROR x?) 28) (LOOKUP_ERROR y?)
+					posn: (+ (poPickUpAx x?) 28) (poPickUpAx y?)
 					show:
 				)
-				(LOOKUP_ERROR dispose:)
+				(poPickUpAx dispose:)
 				(messager say: 1 1 0 0 self)
 			)
 			(7
@@ -234,10 +232,10 @@
 		(switch (= state newState)
 			(0
 				(((ScriptID 64001 1) get: 0) moveTo: -3)
-				(curRoom newTarget: 'LOOKUP_ERROR')
+				(curRoom newTarget: foAx)
 				((ScriptID 64018 0) hide:)
-				(LOOKUP_ERROR
-					posn: (LOOKUP_ERROR approachX?) (LOOKUP_ERROR approachY?)
+				(poBoogleToAx
+					posn: (foAx approachX?) (foAx approachY?)
 					init:
 					cel: 0
 					setCycle: End self
@@ -245,7 +243,7 @@
 			)
 			(1
 				((ScriptID 64018 0) show:)
-				(LOOKUP_ERROR dispose:)
+				(poBoogleToAx dispose:)
 				(if caller (caller cue:))
 				(self dispose:)
 			)
@@ -270,7 +268,7 @@
 	)
 	
 	(method (doVerb theVerb)
-		(if (== theVerb 1) (curRoom setScript: LOOKUP_ERROR))
+		(if (== theVerb 1) (curRoom setScript: soPickUpRope))
 	)
 )
 
@@ -292,7 +290,7 @@
 			(1 (ego setHeading: 45 self))
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poPickUpRope
 					posn: (ego x?) (ego y?)
 					nCurPosY: 105
 					init:
@@ -300,17 +298,17 @@
 				)
 			)
 			(3
-				(= ticks (LOOKUP_ERROR cycleSpeed?))
+				(= ticks (poPickUpRope cycleSpeed?))
 			)
 			(4
 				((ScriptID 64017 0) set: 1)
 				(ego get: ((ScriptID 64001 0) get: 1))
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR setCycle: End self)
+				(voRope dispose:)
+				(poPickUpRope setCycle: End self)
 			)
 			(5
 				(ego posn: (+ (ego x?) 13) (- (ego y?) 3) show:)
-				(LOOKUP_ERROR dispose:)
+				(poPickUpRope dispose:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -383,17 +381,17 @@
 				)
 		)
 		(if (not ((ScriptID 64017 0) test: 0))
-			(LOOKUP_ERROR init: setVisibleRange: 1)
+			(voAx init: setVisibleRange: 1)
 		)
 		(if (not ((ScriptID 64017 0) test: 1))
-			(LOOKUP_ERROR init: setVisibleRange: 1)
+			(voRope init: setVisibleRange: 1)
 		)
 		(if (not (ego has: ((ScriptID 64001 1) get: 0)))
-			(LOOKUP_ERROR init: LOOKUP_ERROR)
-			(self setDefault: LOOKUP_ERROR)
+			(foAx init: soBoogleToAx)
+			(self setDefault: foAx)
 		)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(foSouthExit init:)
+		(poDoorExit init:)
 		((ScriptID 64018 0)
 			init:
 			oPanner:
@@ -408,7 +406,7 @@
 			)
 			(11100
 				(ego
-					posn: (LOOKUP_ERROR approachX?) (+ 12 (LOOKUP_ERROR approachY?))
+					posn: (poDoorExit approachX?) (+ 12 (poDoorExit approachY?))
 					loop: 5
 				)
 				((ScriptID 64018 0) posn: 418 220)

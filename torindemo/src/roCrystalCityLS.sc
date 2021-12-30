@@ -84,7 +84,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: 'LOOKUP_ERROR')
+		(curRoom setScript: soExitToCity)
 	)
 )
 
@@ -95,8 +95,8 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(ego setScript: LOOKUP_ERROR self)
-				((ScriptID 64018 0) setScript: LOOKUP_ERROR self)
+				(ego setScript: soTorinExitToCity self)
+				((ScriptID 64018 0) setScript: soBoogleExitToCity self)
 			)
 			(1)
 			(2
@@ -113,7 +113,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego oPlane: 'LOOKUP_ERROR' self)
+				(ego oPlane: foCliffsExit self)
 			)
 			(1 (ego setHeading: 315 self))
 			(2
@@ -196,8 +196,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego setScript: LOOKUP_ERROR self)
-				((ScriptID 64018 0) setScript: LOOKUP_ERROR self)
+				(ego setScript: soTorinEnterFromCity self)
+				((ScriptID 64018 0)
+					setScript: soBoogleEnterFromCity self
+				)
 			)
 			(1)
 			(2
@@ -300,12 +302,12 @@
 					yourself:
 				)
 		)
-		(theMusic lThumbLoop: 16099 LOOKUP_ERROR)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(theMusic lThumbLoop: 16099 coStartMusic)
+		(foForestExit init:)
+		(foCliffsExit init:)
 		(switch prevRoomNum
 			(16100
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soEnterFromCity)
 			)
 			(10100
 				(ego
@@ -315,7 +317,7 @@
 				)
 				((ScriptID 64018 0) posn: 493 301 loop: 3 init: oPanner:)
 				(if (not ((ScriptID 64017 0) test: 23))
-					(curRoom setScript: LOOKUP_ERROR)
+					(curRoom setScript: soWowCity)
 					((ScriptID 64017 0) set: 23)
 				)
 			)

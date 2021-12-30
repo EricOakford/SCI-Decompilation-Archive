@@ -40,11 +40,13 @@
 	)
 	
 	(method (rememberMessage)
-		(Prints LOOKUP_ERROR)
+		(Prints {FF not initialized for script! djm. tpscript.sc})
 	)
 	
 	(method (sayMessage)
-		(Prints LOOKUP_ERROR)
+		(Prints
+			{Rewind not initialized for script! djm. tpscript.sc}
+		)
 	)
 	
 	(method (posnList)

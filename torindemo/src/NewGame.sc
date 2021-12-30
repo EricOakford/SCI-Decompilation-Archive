@@ -70,24 +70,26 @@
 )
 
 (procedure (proc64888_7 &tmp temp0)
-	(LOOKUP_ERROR addToFront: 0)
+	(oPlaneStack addToFront: 0)
 	(= temp0 0)
 	(while (< temp0 (planes size:))
-		(LOOKUP_ERROR addToFront: (planes at: temp0))
+		(oPlaneStack addToFront: (planes at: temp0))
 		(++ temp0)
 	)
 )
 
 (procedure (RestorePlane &tmp temp0)
-	(if (LOOKUP_ERROR isEmpty:)
-		(MonoOut LOOKUP_ERROR)
+	(if (oPlaneStack isEmpty:)
+		(MonoOut
+			{Tried to restore plane when none saved on stack.}
+		)
 		(return)
 	)
-	(while (= temp0 (LOOKUP_ERROR at: 0))
+	(while (= temp0 (oPlaneStack at: 0))
 		(temp0 enable:)
-		(LOOKUP_ERROR delete: temp0)
+		(oPlaneStack delete: temp0)
 	)
-	(LOOKUP_ERROR delete: 0)
+	(oPlaneStack delete: 0)
 )
 
 (instance DisabledPlanes of Set
@@ -128,8 +130,8 @@
 	)
 	
 	(method (init)
-		((= gDisabledPlanes LOOKUP_ERROR) add:)
-		((= gOPlaneStack LOOKUP_ERROR) add:)
+		((= gDisabledPlanes DisabledPlanes) add:)
+		((= gOPlaneStack oPlaneStack) add:)
 		(super init: &rest)
 	)
 	
@@ -229,7 +231,7 @@
 				fore: 0
 				back: (Palette 3 127 127 127)
 				addText: newStr_3
-				addButtonBM: -1 0 0 1 LOOKUP_ERROR 0 30
+				addButtonBM: -1 0 0 1 {OK} 0 30
 				init:
 			)
 			(GetDirectory curSaveDir)
@@ -368,7 +370,7 @@
 				fore: 0
 				back: (Palette 3 127 127 127)
 				addText: newStr_2
-				addButtonBM: -1 0 0 1 LOOKUP_ERROR 0 30
+				addButtonBM: -1 0 0 1 {OK} 0 30
 				init:
 			)
 			(GetDirectory curSaveDir)
@@ -392,7 +394,7 @@
 						back: (Palette 3 127 127 127)
 						addText: newStr_3
 						addButtonBM: -546 0 0 0 newStr_4 0 40
-						addButtonBM: -546 2 0 1 LOOKUP_ERROR 55 40
+						addButtonBM: -546 2 0 1 {Change Dir} 55 40
 						init:
 					)
 					(GetDirectory curSaveDir)
@@ -456,7 +458,7 @@
 				(if param1
 					(SaveGame
 						0
-						LOOKUP_ERROR
+						{Autosave}
 						temp0
 						(param1 data?)
 						(KString 9 version)
@@ -464,18 +466,18 @@
 				else
 					(SaveGame
 						0
-						LOOKUP_ERROR
+						{Autosave}
 						temp0
-						LOOKUP_ERROR
+						{A Fresh Game}
 						(KString 9 version)
 					)
 				)
 			else
 				(SaveGame
 					0
-					LOOKUP_ERROR
+					{Autosave}
 					temp0
-					LOOKUP_ERROR
+					{Where I last left off...}
 					(KString 9 version)
 				)
 			)
@@ -494,10 +496,12 @@
 		((= newStr (Str new:)) copy: curSaveDir)
 		(curSaveDir copy: gameDir)
 		(if
-			(not
-				(SaveGame 3 LOOKUP_ERROR temp0 (KString 9 version))
+		(not (SaveGame 3 {Autosave} temp0 (KString 9 version)))
+			(if temp0
+				(Prints
+					{Unable to reset game. Please exit and restart application.}
+				)
 			)
-			(if temp0 (Prints LOOKUP_ERROR))
 			(curSaveDir copy: newStr)
 			(newStr dispose:)
 			(return)
@@ -558,7 +562,7 @@
 		)
 		(self setCursor: waitCursor 1)
 		(self getDisc: (CD 1))
-		(SaveGame 1 LOOKUP_ERROR temp0 version)
+		(SaveGame 1 {Autosave} temp0 version)
 		(Message 0 -542 3 0 0 1 (newStr_2 data?))
 		(Message 0 -542 2 0 0 1 (newStr_3 data?))
 		(Print

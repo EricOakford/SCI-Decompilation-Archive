@@ -21,7 +21,9 @@
 	
 	(method (handleEvent event &tmp theGameOCantBeHereHandler)
 		(if (not (& (event type?) $000c))
-			(Prints {oMainKeyHandler})
+			(Prints
+				{Attempt to execute key handler with non-key event. DJM keys.sc}
+			)
 			(return)
 		)
 		(if (not (& (event type?) evKEYBOARD)) (return))

@@ -117,9 +117,9 @@
 	
 	(method (doVerb)
 		(if local1
-			(ego setScript: LOOKUP_ERROR)
+			(ego setScript: soClimbBranchFromRoot)
 		else
-			(ego setScript: LOOKUP_ERROR)
+			(ego setScript: soClimbBranch)
 		)
 	)
 )
@@ -141,7 +141,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soJumpDownFromRoot)
 	)
 )
 
@@ -184,7 +184,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soClimbToRoot)
 	)
 )
 
@@ -202,7 +202,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: 13000
 					loop: 2
 					cel: 0
@@ -213,9 +213,9 @@
 			)
 			(3
 				(= local1 1)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(foGround init:)
+				(foRoot dispose:)
+				(foBog dispose:)
 				((ScriptID 64899 3) dispose:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -230,7 +230,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR
+				(poTorin
 					view: 13000
 					loop: 4
 					cel: 0
@@ -239,13 +239,13 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego posn: 171 271 oPanner: 1 -5436 5 show:)
 				(theGame handsOn:)
-				(LOOKUP_ERROR dispose:)
+				(foGround dispose:)
 				(if (not ((ScriptID 64017 0) test: 10))
-					(poEgoHangs init:)
-					(LOOKUP_ERROR init:)
+					(foRoot init:)
+					(foBog init:)
 				)
 				((ScriptID 64899 3) init:)
 				(= local1 0)
@@ -340,7 +340,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soClimbRope)
 	)
 )
 
@@ -351,7 +351,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: 13000
 					posn: 410 204
 					loop: 3
@@ -362,13 +362,13 @@
 			)
 			(1
 				((ScriptID 64018 0) hide:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
+				(foRoot init:)
+				(foBog init:)
+				(foGround dispose:)
 				((ScriptID 64899 3) init:)
-				(curRoom initThumb: LOOKUP_ERROR)
-				(LOOKUP_ERROR
+				(curRoom initThumb: oBranchPlane)
+				(poEgoOnBranch
 					view: 13001
 					loop: 0
 					cel: 0
@@ -390,12 +390,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(ego nSaveTime: LOOKUP_ERROR self)
+				(ego nSaveTime: foBranch self)
 			)
 			(1
 				(theGame handsOff:)
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poClimbsTree
 					posn: 167 273
 					loop: 0
 					cel: 0
@@ -405,9 +405,9 @@
 			)
 			(2
 				((ScriptID 64018 0) hide:)
-				(LOOKUP_ERROR dispose:)
-				(curRoom initThumb: LOOKUP_ERROR)
-				(LOOKUP_ERROR
+				(poClimbsTree dispose:)
+				(curRoom initThumb: oBranchPlane)
+				(poEgoOnBranch
 					view: 13001
 					loop: 0
 					cel: 0
@@ -450,7 +450,7 @@
 	)
 	
 	(method (doVerb)
-		(LOOKUP_ERROR doVerb: &rest)
+		(foRoot doVerb: &rest)
 	)
 )
 
@@ -459,12 +459,10 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0
-				(ego nSaveTime: LOOKUP_ERROR self)
-			)
+			(0 (ego nSaveTime: foBog self))
 			(1
-				(Prints LOOKUP_ERROR)
-				(Prints LOOKUP_ERROR)
+				(Prints {Anim: Torin tries to reach peat})
+				(Prints {Torin: I can't reach the peat! Gosh darn it!})
 				(self dispose:)
 			)
 		)
@@ -481,7 +479,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: 'LOOKUP_ERROR')
+		(curRoom setScript: soClimbBackDown)
 	)
 )
 
@@ -491,10 +489,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(self setScript: LOOKUP_ERROR self)
+				(self setScript: soUntieSelf self)
 			)
 			(1
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13001
 					loop: 1
 					cel: 0
@@ -503,9 +501,9 @@
 				)
 			)
 			(2
-				(curRoom arrowDown: LOOKUP_ERROR)
+				(curRoom arrowDown: oBranchPlane)
 				((ScriptID 64018 0) show:)
-				(LOOKUP_ERROR
+				(poClimbsTree
 					posn: 167 273
 					loop: 1
 					cel: 0
@@ -514,7 +512,7 @@
 				)
 			)
 			(3
-				(LOOKUP_ERROR dispose:)
+				(poClimbsTree dispose:)
 				(ego posn: 169 272 oPanner: 1 -5436 5 show:)
 				(self dispose:)
 			)
@@ -529,14 +527,14 @@
 		(switch (= state newState)
 			(0
 				(if ((ScriptID 64017 0) test: 20)
-					(MonoOut LOOKUP_ERROR)
+					(MonoOut {Error in call of soTieLeg})
 					(self dispose:)
 					(return)
 				)
 				(if (not ((ScriptID 64017 0) test: 19))
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soTieLegFromZero self)
 				else
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soTieLegFromBranch self)
 				)
 			)
 			(1
@@ -554,7 +552,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13002
 					loop: 0
 					cel: 0
@@ -563,7 +561,7 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR loop: 1 cel: 0 setCycle: End self)
+				(poEgoOnBranch loop: 1 cel: 0 setCycle: End self)
 			)
 			(2
 				(theGame handsOn:)
@@ -581,7 +579,7 @@
 			(0
 				(theGame handsOff:)
 				(if local0
-					(LOOKUP_ERROR
+					(poEgoOnBranch
 						view: 13002
 						loop: 7
 						cel: 0
@@ -594,9 +592,9 @@
 			)
 			(1
 				(if local0
-					(LOOKUP_ERROR loop: 2 cel: 16 setCycle: End self)
+					(poEgoOnBranch loop: 2 cel: 16 setCycle: End self)
 				else
-					(LOOKUP_ERROR loop: 2 cel: 0 setCycle: End self)
+					(poEgoOnBranch loop: 2 cel: 0 setCycle: End self)
 				)
 				(= local0 0)
 			)
@@ -615,14 +613,14 @@
 		(switch (= state newState)
 			(0
 				(if ((ScriptID 64017 0) test: 19)
-					(MonoOut LOOKUP_ERROR)
+					(MonoOut {Error in call of soTieBranch})
 					(self dispose:)
 					(return)
 				)
 				(if (not ((ScriptID 64017 0) test: 20))
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soTieBranchFromZero self)
 				else
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soTieBranchFromLeg self)
 				)
 			)
 			(1
@@ -640,7 +638,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13002
 					loop: 0
 					cel: 0
@@ -649,7 +647,7 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR loop: 3 cel: 0 setCycle: End self)
+				(poEgoOnBranch loop: 3 cel: 0 setCycle: End self)
 				(= local0 1)
 			)
 			(2
@@ -667,7 +665,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13002
 					loop: 4
 					cel: 0
@@ -689,9 +687,9 @@
 		(switch (= state newState)
 			(0
 				(if ((ScriptID 64017 0) test: 19)
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soUntieLegLeaveBranch self)
 				else
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soUntieLegAndPutAway self)
 				)
 			)
 			(1
@@ -709,10 +707,10 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13002
 					loop: 2
-					cel: (LOOKUP_ERROR lastCel:)
+					cel: (poEgoOnBranch lastCel:)
 					setCycle: Beg self
 				)
 			)
@@ -731,7 +729,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13002
 					loop: 6
 					cel: 0
@@ -753,9 +751,9 @@
 		(switch (= state newState)
 			(0
 				(if ((ScriptID 64017 0) test: 20)
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soUntieBranchLeaveLeg self)
 				else
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soUntieBranchAndPutAway self)
 				)
 			)
 			(1
@@ -774,13 +772,13 @@
 			(0
 				(theGame handsOff:)
 				(if local0
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soPullUpRope self)
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13002
 					loop: 5
 					cel: 0
@@ -801,7 +799,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13002
 					loop: 7
 					cel: 0
@@ -809,7 +807,7 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR loop: 2 cel: 16 setCycle: Beg self)
+				(poEgoOnBranch loop: 2 cel: 16 setCycle: Beg self)
 			)
 			(2
 				(= local0 0)
@@ -826,10 +824,10 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13002
 					loop: 4
-					cel: (LOOKUP_ERROR lastCel:)
+					cel: (poEgoOnBranch lastCel:)
 					setCycle: Beg self
 				)
 			)
@@ -848,14 +846,14 @@
 		(switch (= state newState)
 			(0
 				(if ((ScriptID 64017 0) test: 19)
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soUntieBranch self)
 				else
 					(self cue:)
 				)
 			)
 			(1
 				(if ((ScriptID 64017 0) test: 20)
-					(self setScript: LOOKUP_ERROR self)
+					(self setScript: soUntieLeg self)
 				else
 					(self cue:)
 				)
@@ -920,9 +918,9 @@
 	
 	(method (doVerb)
 		(if ((ScriptID 64017 0) test: 19)
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soUntieBranch)
 		else
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soTieBranch)
 		)
 	)
 )
@@ -998,19 +996,19 @@
 		(cond 
 			(((ScriptID 64017 0) test: 20)
 				(if ((ScriptID 64017 0) test: 19)
-					(curRoom setScript: LOOKUP_ERROR)
+					(curRoom setScript: soBungieIntoBog)
 				else
-					(curRoom setScript: LOOKUP_ERROR)
+					(curRoom setScript: soDiveIntoBog)
 				)
 			)
 			(((ScriptID 64017 0) test: 19)
 				(if local0
-					(curRoom setScript: LOOKUP_ERROR)
+					(curRoom setScript: soClimbDownRope)
 				else
-					(curRoom setScript: LOOKUP_ERROR)
+					(curRoom setScript: soDiveIntoBog)
 				)
 			)
-			(else (curRoom setScript: LOOKUP_ERROR))
+			(else (curRoom setScript: soDiveIntoBog))
 		)
 	)
 )
@@ -1022,7 +1020,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13004
 					loop: 0
 					cel: 0
@@ -1031,9 +1029,9 @@
 				)
 			)
 			(1
-				(curRoom arrowDown: LOOKUP_ERROR)
-				(curRoom initThumb: LOOKUP_ERROR)
-				(LOOKUP_ERROR
+				(curRoom arrowDown: oBranchPlane)
+				(curRoom initThumb: oDanglePlane)
+				(poEgoBungies
 					view: 13004
 					loop: 1
 					cel: 0
@@ -1043,24 +1041,24 @@
 				)
 			)
 			(2
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR
+				(poEgoBungies dispose:)
+				(poEgoHangingFromBranch
 					view: 13005
 					loop: 0
 					cel: 8
 					posn: 432 44
 					init:
 				)
-				(LOOKUP_ERROR init:)
+				(voBigBag init:)
 				(ego get: ((ScriptID 64001 0) get: 11))
 				((ScriptID 64017 0) set: 10)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
+				(foRope init:)
+				(foSwingLeft init:)
+				(foSwingRight init:)
+				(foCurlyBranch init:)
+				(foRope init:)
+				(foBranchOverhead init:)
+				(foBogInScreen3 init:)
 				((ScriptID 64017 0) set: 21)
 				(theGame handsOn:)
 				(self dispose:)
@@ -1081,8 +1079,8 @@
 					(((ScriptID 64017 0) test: 19) (= temp0 1))
 					(else (= temp0 2))
 				)
-				(LOOKUP_ERROR hide:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch hide:)
+				(poTorin
 					view: 13006
 					loop: temp0
 					cel: 0
@@ -1092,28 +1090,28 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(curRoom picture: 13000)
 				(curRoom drawPic: 13000)
-				(LOOKUP_ERROR cel: 0 init:)
+				(poBoogleHoldsCard cel: 0 init:)
 				(if ((ScriptID 64017 0) test: 20)
 					(= temp0 3)
 				else
 					(= temp0 4)
 				)
-				(LOOKUP_ERROR loop: temp0 init:)
+				(voTorinInMuck loop: temp0 init:)
 				(= ticks 60)
 			)
 			(2
-				(LOOKUP_ERROR setCycle: End self)
+				(poBoogleHoldsCard setCycle: End self)
 			)
 			(3
 				((ScriptID 64019 0) show: 0 42 8)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(poBoogleHoldsCard dispose:)
+				(voTorinInMuck dispose:)
 				(curRoom picture: 13001)
 				(curRoom drawPic: 13001)
-				(LOOKUP_ERROR show:)
+				(poEgoOnBranch show:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -1128,7 +1126,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poEgoOnBranch
 					view: 13003
 					loop: 0
 					cel: 0
@@ -1136,17 +1134,17 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR hide:)
+				(poEgoOnBranch hide:)
 				(curRoom picture: 13000)
 				(curRoom drawPic: 13000)
-				(LOOKUP_ERROR cel: 0 init:)
-				(LOOKUP_ERROR loop: 1 cel: 0 init: setCycle: End self)
+				(poBoogleHoldsCard cel: 0 init:)
+				(poEgoHangs loop: 1 cel: 0 init: setCycle: End self)
 			)
 			(2
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
+				(foBogBelow dispose:)
+				(foClimbDown dispose:)
+				(foBranchCU dispose:)
+				(foBranchWhileHanging init:)
 				(theGame handsOn:)
 			)
 		)
@@ -1160,18 +1158,18 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR loop: 2 cel: 0 setCycle: End self)
+				(poEgoHangs loop: 2 cel: 0 setCycle: End self)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(poEgoHangs dispose:)
+				(poBoogleHoldsCard dispose:)
+				(foBranchWhileHanging dispose:)
 				(curRoom picture: 13001)
 				(curRoom drawPic: 13001)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR show: loop: 3 cel: 0 setCycle: End self)
+				(foBogBelow init:)
+				(foClimbDown init:)
+				(foBranchCU init:)
+				(poEgoOnBranch show: loop: 3 cel: 0 setCycle: End self)
 			)
 			(2
 				(theGame handsOn:)
@@ -1226,9 +1224,9 @@
 	
 	(method (doVerb)
 		(if ((ScriptID 64017 0) test: 20)
-			(self setScript: LOOKUP_ERROR)
+			(self setScript: soUntieLeg)
 		else
-			(self setScript: LOOKUP_ERROR)
+			(self setScript: soTieLeg)
 		)
 	)
 )
@@ -1248,9 +1246,9 @@
 				(thePlane bottom?)
 		)
 		(theGame handsOff:)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
-		(LOOKUP_ERROR init: LOOKUP_ERROR)
+		(foClimbDown init: oBranchPlane)
+		(foBranchCU init: oBranchPlane)
+		(foBogBelow init: oBranchPlane)
 	)
 )
 
@@ -1380,7 +1378,7 @@
 				(= local3 1)
 				(= theGSel_57 gameTime)
 				(= theTheSel_16 8)
-				(LOOKUP_ERROR dispose:)
+				(foRope dispose:)
 			)
 			(1
 				(if (>= local3 8)
@@ -1394,7 +1392,7 @@
 					(= local3 0)
 					(= local4 0)
 					(= theTheSel_16 8)
-					(LOOKUP_ERROR init: LOOKUP_ERROR)
+					(foRope init: oDanglePlane)
 				else
 					(= local3 (- local3 1))
 				)
@@ -1426,14 +1424,14 @@
 				(= local3 1)
 				(= theGSel_57 gameTime)
 				(= theTheSel_16 8)
-				(LOOKUP_ERROR dispose:)
+				(foRope dispose:)
 			)
 			(1
 				(if (<= local3 1)
 					(= local3 0)
 					(= local4 0)
 					(= theTheSel_16 8)
-					(LOOKUP_ERROR init: LOOKUP_ERROR)
+					(foRope init: oDanglePlane)
 				else
 					(= local3 (- local3 1))
 				)
@@ -1496,9 +1494,9 @@
 	
 	(method (doVerb)
 		(if (== local3 0)
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soUntieWhileStationary)
 		else
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soUntieWhileSwinging)
 		)
 	)
 )
@@ -1555,9 +1553,9 @@
 	
 	(method (doVerb)
 		(if (== local3 0)
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soTryToClimbRope)
 		else
-			(curRoom setScript: LOOKUP_ERROR)
+			(curRoom setScript: soUntieWhileSwinging)
 		)
 	)
 )
@@ -1590,10 +1588,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(4
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soUntieWhileStationary)
 			)
 			(1
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soUntieWhileStationary)
 			)
 		)
 	)
@@ -1646,7 +1644,7 @@
 	)
 	
 	(method (doVerb)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soGrabBranch)
 	)
 	
 	(method (setSpeedDirect param1)
@@ -1668,12 +1666,12 @@
 			(0
 				(theGame handsOff:)
 				(poEgoHangingFromBranch hide:)
-				(LOOKUP_ERROR dispose:)
+				(voBigBag dispose:)
 				(curRoom picture: 13000)
 				(curRoom drawPic: 13000)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR cel: 0 init:)
-				(LOOKUP_ERROR
+				(voLittleBag init:)
+				(poBoogleHoldsCard cel: 0 init:)
+				(poTorin
 					view: 13005
 					loop: 3
 					cel: 0
@@ -1683,16 +1681,16 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR setCycle: End self)
+				(poBoogleHoldsCard setCycle: End self)
 			)
 			(2
 				((ScriptID 64019 0) show: 0 42 7)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(poBoogleHoldsCard dispose:)
+				(poTorin dispose:)
+				(voLittleBag dispose:)
 				(curRoom picture: 13002)
 				(curRoom drawPic: 13002)
-				(LOOKUP_ERROR init:)
+				(voBigBag init:)
 				(poEgoHangingFromBranch show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -1709,12 +1707,12 @@
 			(0
 				(theGame handsOff:)
 				(poEgoHangingFromBranch hide:)
-				(LOOKUP_ERROR dispose:)
+				(voBigBag dispose:)
 				(curRoom picture: 13000)
 				(curRoom drawPic: 13000)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR cel: 0 init:)
-				(LOOKUP_ERROR
+				(voLittleBag init:)
+				(poBoogleHoldsCard cel: 0 init:)
+				(poTorin
 					view: 13004
 					loop: 3
 					cel: 0
@@ -1725,12 +1723,12 @@
 			)
 			(1
 				((ScriptID 64019 0) show: 0 42 10)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(poBoogleHoldsCard dispose:)
+				(poTorin dispose:)
+				(voLittleBag dispose:)
 				(curRoom picture: 13002)
 				(curRoom drawPic: 13002)
-				(LOOKUP_ERROR init:)
+				(voBigBag init:)
 				(poEgoHangingFromBranch show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -1747,12 +1745,12 @@
 			(0
 				(theGame handsOff:)
 				(poEgoHangingFromBranch hide:)
-				(LOOKUP_ERROR dispose:)
+				(voBigBag dispose:)
 				(curRoom picture: 13000)
 				(curRoom drawPic: 13000)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR cel: 0 init:)
-				(LOOKUP_ERROR
+				(voLittleBag init:)
+				(poBoogleHoldsCard cel: 0 init:)
+				(poTorin
 					view: 13004
 					loop: 2
 					cel: 0
@@ -1762,12 +1760,12 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(poBoogleHoldsCard dispose:)
+				(poTorin dispose:)
+				(voLittleBag dispose:)
 				(curRoom picture: 13002)
 				(curRoom drawPic: 13002)
-				(LOOKUP_ERROR init:)
+				(voBigBag init:)
 				(poEgoHangingFromBranch show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -1782,12 +1780,12 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR cel: 0 init: setCycle: End self)
+				(poBoogleHoldsCard dispose:)
+				(voLittleBag dispose:)
+				(poBoogleGetsBag cel: 0 init: setCycle: End self)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
+				(poBoogleGetsBag dispose:)
 				(self dispose:)
 			)
 		)
@@ -1811,10 +1809,10 @@
 			)
 			(2
 				(poEgoHangingFromBranch dispose:)
-				(curRoom arrowDown: 'LOOKUP_ERROR')
-				(LOOKUP_ERROR cel: 0 init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR
+				(curRoom arrowDown: oDanglePlane)
+				(poBoogleHoldsCard cel: 0 init:)
+				(voLittleBag init:)
+				(poTorin
 					view: 13005
 					loop: 2
 					cel: 0
@@ -1824,23 +1822,17 @@
 				)
 			)
 			(3
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego put: ((ScriptID 64001 0) get: 1))
-				(self setScript: LOOKUP_ERROR self)
+				(self setScript: soBoogleGetBag self)
 			)
 			(4
-				(LOOKUP_ERROR
-					view: 13000
-					loop: 4
-					cel: 0
-					posn: 410 204
-					init:
-				)
+				(poTorin view: 13000 loop: 4 cel: 0 posn: 410 204 init:)
 				(= local1 1)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(foGround init:)
+				(foRoot dispose:)
+				(foBog dispose:)
+				(foBranch dispose:)
 				((ScriptID 64899 3) dispose:)
 				((ScriptID 64017 0) set: 22)
 				((ScriptID 64017 0) clear: 21)
@@ -1884,11 +1876,11 @@
 			nCurPosY: 80
 		)
 		(if (not ((ScriptID 64017 0) test: 10))
-			(LOOKUP_ERROR init:)
+			(foBranch init:)
 		)
-		(LOOKUP_ERROR init:)
+		(foBog init:)
 		((ScriptID 64899 3) init:)
-		(LOOKUP_ERROR init:)
+		(foRoot init:)
 		(theMusic pageSize: 13000)
 		(curRoom
 			addObstacle:

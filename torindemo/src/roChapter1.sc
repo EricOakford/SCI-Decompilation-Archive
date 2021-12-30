@@ -16,12 +16,14 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(Prints LOOKUP_ERROR)
-				(Prints LOOKUP_ERROR)
-				(Prints LOOKUP_ERROR)
-				(Prints LOOKUP_ERROR)
-				(Prints LOOKUP_ERROR)
-				(Prints LOOKUP_ERROR)
+				(Prints {Pecand: Hey boy wanna buy some magazines?})
+				(Prints {Pecand: Oh. Sorry, wrong address.})
+				(Prints {Pecand: Hey, did you know that})
+				(Prints
+					{The EVIL Sorceress Lycentia zapped your parents?}
+				)
+				(Prints {I suggest you go find and kill her.})
+				(Prints {Have a nice day.})
 				(= ticks 1)
 			)
 			(1 (curRoom newRoom: 11000))
@@ -37,7 +39,7 @@
 		(theMusic pageSize: 0)
 		(= global202 1)
 		(Palette 1 10000)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soPlayChapter)
 	)
 	
 	(method (setWander)

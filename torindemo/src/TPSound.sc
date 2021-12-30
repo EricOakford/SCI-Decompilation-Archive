@@ -160,7 +160,7 @@
 			(cond 
 				((ResCheck 141 [param1 temp0]) (Load 141 [param1 temp0]))
 				((ResCheck 140 [param1 temp0]) (Load 140 [param1 temp0]))
-				(else (MonoOut LOOKUP_ERROR [param1 temp0]))
+				(else (MonoOut {Preloaded sound not found: %d} [param1 temp0]))
 			)
 			(++ temp0)
 		)
@@ -205,7 +205,7 @@
 		)
 		(if (<= maxPosn 0)
 			(MonoOut
-				LOOKUP_ERROR
+				{No audio found m:%hu n:%d v:%d c:%d s:%d}
 				audModNum
 				audNoun
 				audVerb

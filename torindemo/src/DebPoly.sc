@@ -95,13 +95,20 @@
 					(= theDestY (GetDistance rightSide destX param1 param2))
 					destY
 				)
-				(if 0 (Printf LOOKUP_ERROR param1 param2 theDestY))
+				(if 0
+					(Printf
+						{Finding closest point for %d,%d. New shortest : %d}
+						param1
+						param2
+						theDestY
+					)
+				)
 				(= temp2 temp0)
 				(= destY theDestY)
 			)
 			(++ temp0)
 		)
-		(if 0 (Printf LOOKUP_ERROR temp2))
+		(if 0 (Printf {Returning nearest index : %d} temp2))
 		(return temp2)
 	)
 	
@@ -140,7 +147,12 @@
 		(= rightSide (points at: (= temp0 (* param1 2))))
 		(= destX (points at: (+ temp0 1)))
 		(if 0
-			(Printf {Polygon access type} param1 rightSide destX)
+			(Printf
+				{indexToCoor - index : %d x : %d y: %d}
+				param1
+				rightSide
+				destX
+			)
 		)
 	)
 	
@@ -470,40 +482,44 @@ code_080c:
 	(method (saveMessages param1 param2 &tmp temp0 temp1 temp2)
 		(if (and (> argc 1) param2)
 			(param1
-				writeString: LOOKUP_ERROR
+				writeString: {\0D\n\t\t\t; ***_}
 				writeString: (self name?)
-				writeString: LOOKUP_ERROR
+				writeString: { ***\0D\n}
 			)
 		)
-		(param1 writeString: LOOKUP_ERROR)
+		(param1
+			writeString: {\t\t\t((Polygon new:)\0D\n\t\t\t\ttype:_}
+		)
 		(= temp0
 			(Str
 				with:
 					(switch type
-						(0 'LOOKUP_ERROR')
-						(1 'LOOKUP_ERROR')
-						(3 'LOOKUP_ERROR')
-						(2 'LOOKUP_ERROR')
+						(0 {PTotal})
+						(1 {PNearest})
+						(3 {PContained})
+						(2 {PBarred})
 					)
 			)
 		)
-		(temp0 cat: LOOKUP_ERROR)
+		(temp0 cat: {Access,\0D\n\t\t\t\tinit:_})
 		(param1 writeString: temp0)
-		(temp0 with: LOOKUP_ERROR)
+		(temp0 with: {})
 		(= temp2 0)
 		(= temp1 0)
 		(while (< temp1 size)
 			(self bWander: temp1)
-			(temp0 format: LOOKUP_ERROR rightSide destX)
+			(temp0 format: {%d %d} rightSide destX)
 			(= temp2 (+ temp2 (temp0 size:)))
 			(param1 writeString: temp0)
 			(cond 
-				((> temp2 49) (= temp2 0) (param1 writeString: LOOKUP_ERROR))
-				((< (+ temp1 1) size) (param1 writeString: LOOKUP_ERROR))
+				((> temp2 49) (= temp2 0) (param1 writeString: {\0D\n\t\t\t\t\t\t}))
+				((< (+ temp1 1) size) (param1 writeString: {_}))
 			)
 			(++ temp1)
 		)
-		(param1 writeString: LOOKUP_ERROR)
+		(param1
+			writeString: {,\0D\n\t\t\t\tyourself:\0D\n\t\t\t)\0D\n}
+		)
 		(temp0 dispose:)
 	)
 	
@@ -513,13 +529,13 @@ code_080c:
 		(= temp0 0)
 		(while (< temp0 size)
 			(self bWander: temp0)
-			(newStr_2 format: LOOKUP_ERROR rightSide)
+			(newStr_2 format: {%d_} rightSide)
 			(newStr cat: newStr_2)
-			(newStr_2 format: LOOKUP_ERROR destX)
+			(newStr_2 format: {%d_} destX)
 			(newStr cat: newStr_2)
 			(++ temp0)
 		)
-		(Printf LOOKUP_ERROR (newStr data?))
+		(Printf {%s} (newStr data?))
 		(newStr dispose:)
 		(newStr_2 dispose:)
 	)
@@ -556,10 +572,10 @@ code_080c:
 		(newEvent dispose:)
 		(if (and argc param1)
 			(= mode 0)
-			(= local1 (Str format: LOOKUP_ERROR))
+			(= local1 (Str format: {Create Mode}))
 		else
 			(= mode 1)
-			(= local1 (Str format: LOOKUP_ERROR))
+			(= local1 (Str format: {Edit Mode}))
 		)
 		((= dTextSel_141 (DText new:))
 			text: (KString 8 (local1 data?))
@@ -706,7 +722,7 @@ code_080c:
 			_line_   603
 			pushi    #format
 			pushi    1
-			lofsa    LOOKUP_ERROR
+			lofsa    {Edit Mode}
 			push    
 			class    Str
 			send     6
@@ -720,7 +736,7 @@ code_1332:
 			_line_   606
 			pushi    #format
 			pushi    1
-			lofsa    LOOKUP_ERROR
+			lofsa    {Create Mode}
 			push    
 			class    Str
 			send     6
@@ -1140,7 +1156,7 @@ code_1629:
 			pushi    #newWith
 			pushi    2
 			pushi    13
-			lofsa    LOOKUP_ERROR
+			lofsa    {default}
 			push    
 			class    Str
 			send     8
@@ -1149,7 +1165,7 @@ code_1629:
 			_line_   505
 			pushi    #addTitle
 			pushi    1
-			lofsa    LOOKUP_ERROR
+			lofsa    {Feature Name:}
 			push    
 			_line_   506
 			pushi    416
@@ -1335,13 +1351,13 @@ code_1128:
 			_line_   557
 			pushi    #addTitle
 			pushi    1
-			lofsa    LOOKUP_ERROR
+			lofsa    {Polygon access type}
 			push    
 			_line_   558
 			pushi    425
 			pushi    4
 			pushi    1
-			lofsa    LOOKUP_ERROR
+			lofsa    {Total}
 			push    
 			pushi    0
 			pushi    0
@@ -1349,7 +1365,7 @@ code_1128:
 			pushi    425
 			pushi    4
 			pushi    2
-			lofsa    LOOKUP_ERROR
+			lofsa    { Near_}
 			push    
 			pushi    60
 			pushi    0
@@ -1357,7 +1373,7 @@ code_1128:
 			pushi    425
 			pushi    4
 			pushi    3
-			lofsa    LOOKUP_ERROR
+			lofsa    { Barred_}
 			push    
 			pushi    120
 			pushi    0
@@ -1365,7 +1381,7 @@ code_1128:
 			pushi    425
 			pushi    4
 			dup     
-			lofsa    LOOKUP_ERROR
+			lofsa    { Container_}
 			push    
 			pushi    195
 			pushi    0
@@ -1402,7 +1418,7 @@ code_1128:
 			bnt      code_123e
 			_line_   569
 			pushi    1
-			lofsa    LOOKUP_ERROR
+			lofsa    {Container polygon must be CCW}
 			push    
 			callk    MonoOut,  2
 			jmp      code_123e
@@ -1417,7 +1433,7 @@ code_1221:
 			bnt      code_123e
 			_line_   574
 			pushi    1
-			lofsa    LOOKUP_ERROR
+			lofsa    {Non container polygon must be CW}
 			push    
 			callk    MonoOut,  2
 code_123e:

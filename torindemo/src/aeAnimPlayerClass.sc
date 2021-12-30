@@ -139,7 +139,10 @@
 	)
 	
 	(method (save param1)
-		(if (== -1 type) (MonoOut LOOKUP_ERROR) (SetDebug))
+		(if (== -1 type)
+			(MonoOut {aeCommand: UNSET type})
+			(SetDebug)
+		)
 		(param1 writeWord: type)
 		(param1 writeWord: size)
 		(param1 writeWord: vTiles)
@@ -170,7 +173,7 @@
 		(= bSpecial (List new:))
 		(if (not nSpecialSelector)
 			(= nSpecialSelector (Str new:))
-			(nSpecialSelector format: LOOKUP_ERROR name getBitmap)
+			(nSpecialSelector format: {%s%d} name getBitmap)
 		)
 		((= nCutoff (Str new:)) copy: nSpecialSelector)
 	)
@@ -181,15 +184,15 @@
 	)
 	
 	(method (edit)
-		(MonoOut LOOKUP_ERROR name)
+		(MonoOut {Object %s needs a edit method.} name)
 	)
 	
 	(method (doSelect)
-		(MonoOut LOOKUP_ERROR name)
+		(MonoOut {Object %s needs a editCommands method.} name)
 	)
 	
 	(method (doClick)
-		(MonoOut LOOKUP_ERROR name)
+		(MonoOut {Object %s needs a help method.} name)
 	)
 	
 	(method (doHeld param1 &tmp temp0)
@@ -275,7 +278,7 @@
 	)
 	
 	(method (save)
-		(MonoOut LOOKUP_ERROR name)
+		(MonoOut {Object %s needs a save method.} name)
 	)
 	
 	(method (oHeldNotify param1 param2)
@@ -300,7 +303,7 @@
 	)
 	
 	(method (handleEvent)
-		(MonoOut LOOKUP_ERROR name)
+		(MonoOut {Object %s needs a handleEvent method.} name)
 	)
 	
 	(method (onMe theObjOrX &tmp whoToCueNTopBorderHeight temp1)

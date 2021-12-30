@@ -111,10 +111,10 @@
 			(theSound lThumbLoop: 15201)
 		)
 		(if ((ScriptID 64017 0) test: oSlot)
-			(self setCycle: End LOOKUP_ERROR)
+			(self setCycle: End oTestForWin)
 			((ScriptID 64017 0) clear: oSlot)
 		else
-			(self setCycle: Beg LOOKUP_ERROR)
+			(self setCycle: Beg oTestForWin)
 			((ScriptID 64017 0) set: oSlot)
 		)
 	)
@@ -180,13 +180,13 @@
 	(method (cue)
 		(if
 			(and
-				(== 0 (LOOKUP_ERROR cel:))
-				(== 0 (LOOKUP_ERROR cel:))
-				(== 0 (LOOKUP_ERROR cel:))
-				(== 0 (LOOKUP_ERROR cel:))
+				(== 0 (poStone1 cel:))
+				(== 0 (poStone2 cel:))
+				(== 0 (poStone3 cel:))
+				(== 0 (poStone4 cel:))
 			)
 			((ScriptID 64017 0) set: 40)
-			(curRoom setScript: {StonePillar})
+			(curRoom setScript: soPuzzleSolved)
 		)
 	)
 )
@@ -198,7 +198,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR init: setCycle: End self)
+				(poFont init: setCycle: End self)
 				(theSound lThumbLoop: 15201)
 			)
 			(1 (curRoom newRoom: 15200))
@@ -226,8 +226,8 @@
 		(switch theVerb
 			(22
 				(localproc_028d 1 2)
-				(LOOKUP_ERROR init: x y loop)
-				(LOOKUP_ERROR lThumbLoop: 15204)
+				(voShard init: x y loop)
+				(oClick lThumbLoop: 15204)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -252,8 +252,8 @@
 		(switch theVerb
 			(22
 				(localproc_028d 1 3 4)
-				(LOOKUP_ERROR init: x y loop)
-				(LOOKUP_ERROR lThumbLoop: 15204)
+				(voShard init: x y loop)
+				(oClick lThumbLoop: 15204)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -278,8 +278,8 @@
 		(switch theVerb
 			(22
 				(localproc_028d 2 3)
-				(LOOKUP_ERROR init: x y loop)
-				(LOOKUP_ERROR lThumbLoop: 15204)
+				(voShard init: x y loop)
+				(oClick lThumbLoop: 15204)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -303,9 +303,9 @@
 		(switch theVerb
 			(22
 				(= global201 (mod (+ global201 1) 4))
-				(LOOKUP_ERROR init: x y (LOOKUP_ERROR loop?))
+				(voShard init: x y (voRed loop?))
 				(localproc_00f0)
-				(LOOKUP_ERROR lThumbLoop: 15204)
+				(oClick lThumbLoop: 15204)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -369,74 +369,50 @@
 		((ScriptID 64017 0) set: 35)
 		(theMusic pageSize: 15600)
 		(Load 141 15204 15201)
-		(= temp0
-			(IDArray
-				with: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-			)
-		)
-		(= temp1
-			(IDArray
-				with: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-			)
-		)
-		(= temp2
-			(IDArray
-				with: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-			)
-		)
-		(= temp3
-			(IDArray
-				with: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-			)
-		)
+		(= temp0 (IDArray with: voRed voGreen voBlue voWhite))
+		(= temp1 (IDArray with: voGreen voBlue voWhite voRed))
+		(= temp2 (IDArray with: voBlue voWhite voRed voGreen))
+		(= temp3 (IDArray with: voWhite voRed voGreen voBlue))
 		(= local0 (IDArray with: temp0 temp1 temp2 temp3))
 		(= temp4
-			(IDArray
-				with: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-			)
+			(IDArray with: poStone1 poStone2 poStone3 poStone4)
 		)
 		(= temp5
-			(IDArray
-				with: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-			)
+			(IDArray with: poStone4 poStone1 poStone2 poStone3)
 		)
 		(= temp6
-			(IDArray
-				with: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-			)
+			(IDArray with: poStone3 poStone4 poStone1 poStone2)
 		)
 		(= temp7
-			(IDArray
-				with: LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR LOOKUP_ERROR
-			)
+			(IDArray with: poStone2 poStone3 poStone4 poStone1)
 		)
 		(= local1 (IDArray with: temp4 temp5 temp6 temp7))
 		(super init: &rest)
 		(theGame handsOn:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(poStone1 init:)
+		(poStone2 init:)
+		(poStone3 init:)
+		(poStone4 init:)
+		(voRed init:)
+		(voGreen init:)
+		(voBlue init:)
+		(voWhite init:)
+		(foExit init:)
 		(localproc_00f0)
 		(if (>= (((ScriptID 64001 0) get: 12) owner?) 0)
 			(= temp8 (local0 at: global201))
 			(switch (((ScriptID 64001 0) get: 12) owner?)
 				(0
-					(LOOKUP_ERROR init: 209 265 ((temp8 at: 0) loop?))
+					(voShard init: 209 265 ((temp8 at: 0) loop?))
 				)
 				(1
-					(LOOKUP_ERROR init: 273 247 ((temp8 at: 1) loop?))
+					(voShard init: 273 247 ((temp8 at: 1) loop?))
 				)
 				(2
-					(LOOKUP_ERROR init: 342 267 ((temp8 at: 2) loop?))
+					(voShard init: 342 267 ((temp8 at: 2) loop?))
 				)
 				(3
-					(LOOKUP_ERROR init: 409 249 ((temp8 at: 3) loop?))
+					(voShard init: 409 249 ((temp8 at: 3) loop?))
 				)
 			)
 		)

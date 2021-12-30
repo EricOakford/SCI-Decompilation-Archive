@@ -28,21 +28,21 @@
 			back: 227
 			skip: 0
 			font: userFont
-			addTitle: LOOKUP_ERROR
-			addButton: 10000 LOOKUP_ERROR 0 31
-			addButton: 11100 LOOKUP_ERROR 0 62
-			addButton: 11000 {City} 0 93
-			addButton: 10100 LOOKUP_ERROR 0 124
-			addButton: 16000 LOOKUP_ERROR 0 156
-			addButton: 16100 LOOKUP_ERROR 0 187
-			addButton: 11200 LOOKUP_ERROR 140 31
-			addButton: 11300 {AirDuctEnd} 140 62
-			addButton: 12000 LOOKUP_ERROR 140 93
-			addButton: 14000 {Backstage} 140 124
-			addButton: 13000 LOOKUP_ERROR 200 93
-			addButton: 15000 LOOKUP_ERROR 240 93
-			addButton: 15100 LOOKUP_ERROR 240 62
-			addButton: 15200 LOOKUP_ERROR 240 31
+			addTitle: {The Lands Above}
+			addButton: 10000 {Intro} 0 31
+			addButton: 11100 {Fahrmans House Int} 0 62
+			addButton: 11000 {Fahrmans House Ext} 0 93
+			addButton: 10100 {Forest scroller} 0 124
+			addButton: 16000 {Crystal City, LS} 0 156
+			addButton: 16100 {Crystal City Moat} 0 187
+			addButton: 11200 {Sewing basket} 140 31
+			addButton: 11300 {Dad's Ashtray} 140 62
+			addButton: 12000 {Leaves} 140 93
+			addButton: 14000 {Snails} 140 124
+			addButton: 13000 {Bog} 200 93
+			addButton: 15000 {Guard's House Ext} 240 93
+			addButton: 15100 {Guard's House Int} 240 62
+			addButton: 15200 {Phenocryst Portal} 240 31
 			init:
 		)
 	)
@@ -56,17 +56,17 @@
 			back: 227
 			skip: 0
 			font: userFont
-			addTitle: LOOKUP_ERROR
-			addButton: 20000 LOOKUP_ERROR 0 31
-			addButton: 20100 LOOKUP_ERROR 160 31
-			addButton: 20200 LOOKUP_ERROR 80 31
-			addButton: 20300 LOOKUP_ERROR 240 31
-			addButton: 20400 LOOKUP_ERROR 80 62
-			addButton: 20500 LOOKUP_ERROR 240 62
-			addButton: 20900 LOOKUP_ERROR 240 93
-			addButton: 20600 LOOKUP_ERROR 240 121
-			addButton: 20700 LOOKUP_ERROR 80 93
-			addButton: 20800 LOOKUP_ERROR 0 93
+			addTitle: {Escarpa}
+			addButton: 20000 {Intro} 0 31
+			addButton: 20100 {CliffScroller} 160 31
+			addButton: 20200 {Bitternuts} 80 31
+			addButton: 20300 {Throne Room} 240 31
+			addButton: 20400 {Dragon Cave} 80 62
+			addButton: 20500 {Skunk Cave} 240 62
+			addButton: 20900 {Vedar} 240 93
+			addButton: 20600 {Seraglio} 240 121
+			addButton: 20700 {Phace Puzzle} 80 93
+			addButton: 20800 {Transporter} 0 93
 			init:
 		)
 	)
@@ -80,13 +80,13 @@
 			back: 227
 			skip: 0
 			font: userFont
-			addTitle: LOOKUP_ERROR
-			addButton: 30000 LOOKUP_ERROR 0 31
-			addButton: 30100 LOOKUP_ERROR 80 31
-			addButton: 30200 LOOKUP_ERROR 80 62
-			addButton: 30300 LOOKUP_ERROR 160 62
-			addButton: 30400 LOOKUP_ERROR 240 62
-			addButton: 30500 LOOKUP_ERROR 240 31
+			addTitle: {Pergola}
+			addButton: 30000 {Intro} 0 31
+			addButton: 30100 {OpeningScreen} 80 31
+			addButton: 30200 {City} 80 62
+			addButton: 30300 {Leenah Movie} 160 62
+			addButton: 30400 {Star Puzzle} 240 62
+			addButton: 30500 {Music Puzzle} 240 31
 			init:
 		)
 	)
@@ -100,21 +100,21 @@
 			back: 227
 			skip: 0
 			font: userFont
-			addTitle: LOOKUP_ERROR
-			addButton: -25536 LOOKUP_ERROR 0 31
-			addButton: -24636 LOOKUP_ERROR 80 31
-			addButton: -22536 LOOKUP_ERROR 160 31
-			addButton: -24736 LOOKUP_ERROR 0 62
-			addButton: -24836 LOOKUP_ERROR 80 62
-			addButton: -24936 LOOKUP_ERROR 160 62
-			addButton: -25036 LOOKUP_ERROR 240 62
-			addButton: -25436 LOOKUP_ERROR 0 93
-			addButton: -25136 LOOKUP_ERROR 80 93
-			addButton: -25236 LOOKUP_ERROR 160 93
-			addButton: -25336 LOOKUP_ERROR 0 124
-			addButton: -23336 LOOKUP_ERROR 80 124
-			addButton: -23436 LOOKUP_ERROR 160 124
-			addButton: -23536 LOOKUP_ERROR 240 124
+			addTitle: {Asthenia}
+			addButton: -25536 {Intro} 0 31
+			addButton: -24636 {Exit} 80 31
+			addButton: -22536 {Puzzle} 160 31
+			addButton: -24736 {Stones} 0 62
+			addButton: -24836 {Mountain} 80 62
+			addButton: -24936 {Cannon} 160 62
+			addButton: -25036 {Lava} 240 62
+			addButton: -25436 {Entrance} 0 93
+			addButton: -25136 {SandCU} 80 93
+			addButton: -25236 {Spits} 160 93
+			addButton: -25336 {Island} 0 124
+			addButton: -23336 {Ball Machine} 80 124
+			addButton: -23436 {Catapult} 160 124
+			addButton: -23536 {Caretakers} 240 124
 			init:
 		)
 	)
@@ -128,26 +128,26 @@
 			back: 227
 			skip: 0
 			font: userFont
-			addTitle: LOOKUP_ERROR
-			addButton: -15536 LOOKUP_ERROR 0 31
-			addButton: -15436 LOOKUP_ERROR 240 31
-			addButton: -15336 LOOKUP_ERROR 160 31
-			addButton: -15236 LOOKUP_ERROR 80 31
-			addButton: -15136 LOOKUP_ERROR 80 62
-			addButton: -15036 LOOKUP_ERROR 160 62
-			addButton: -14936 LOOKUP_ERROR 80 93
-			addButton: -14836 LOOKUP_ERROR 80 124
-			addButton: -14736 LOOKUP_ERROR 160 124
-			addButton: -14636 LOOKUP_ERROR 240 124
-			addButton: -12536 LOOKUP_ERROR 80 155
-			addButton: -12436 LOOKUP_ERROR 160 155
-			addButton: -12336 LOOKUP_ERROR 240 155
-			addButton: -14536 LOOKUP_ERROR 240 186
-			addButton: -10536 LOOKUP_ERROR 160 186
-			addButton: -14436 LOOKUP_ERROR 80 186
-			addButton: -14336 LOOKUP_ERROR 80 217
-			addButton: -14236 LOOKUP_ERROR 160 217
-			addButton: -14136 LOOKUP_ERROR 240 217
+			addTitle: {Tenebrous}
+			addButton: -15536 {Intro} 0 31
+			addButton: -15436 {Storeroom} 240 31
+			addButton: -15336 {AirDuct1} 160 31
+			addButton: -15236 {AirDuctEnd} 80 31
+			addButton: -15136 {InPlanter} 80 62
+			addButton: -15036 {JailedMovie} 160 62
+			addButton: -14936 {Slope} 80 93
+			addButton: -14836 {TenebrousLS} 80 124
+			addButton: -14736 {TenebrousMS} 160 124
+			addButton: -14636 {Backstage} 240 124
+			addButton: -12536 {MagicianCU} 80 155
+			addButton: -12436 {RabbitCU} 160 155
+			addButton: -12336 {ArchivistCU} 240 155
+			addButton: -14536 {OnStage} 240 186
+			addButton: -10536 {JudgeMovie} 160 186
+			addButton: -14436 {NullVoid} 80 186
+			addButton: -14336 {Porch} 80 217
+			addButton: -14236 {HorrorHall} 160 217
+			addButton: -14136 {Lair} 240 217
 			init:
 		)
 	)

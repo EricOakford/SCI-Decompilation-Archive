@@ -39,10 +39,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soTryVent)
 			)
 			(51
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soLeaveRoom)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -63,7 +63,7 @@
 			(2
 				(theGame handsOff:)
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorinClimbs
 					view: -15433
 					loop: 8
 					cel: 0
@@ -74,7 +74,7 @@
 			)
 			(3
 				(= local1 1)
-				(LOOKUP_ERROR init:)
+				(foFloor init:)
 				(theGame handsOn:)
 				(self dispose:)
 			)
@@ -89,7 +89,7 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(LOOKUP_ERROR
+				(poTorinClimbs
 					view: -15433
 					loop: 9
 					cel: 0
@@ -100,8 +100,8 @@
 			)
 			(1
 				(= local1 0)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
+				(foFloor dispose:)
+				(poTorinClimbs dispose:)
 				(ego posn: 97 269 setLoop: 2 show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -118,7 +118,7 @@
 			(0
 				(((ScriptID 64001 0) get: 34) moveTo: -3)
 				(if (not local1)
-					(self setScript: {LOOKUP\_ERROR} self)
+					(self setScript: soClimbBoxes self)
 				else
 					(self cue:)
 				)
@@ -126,7 +126,7 @@
 			(1
 				(theGame handsOff:)
 				(theSound lThumbLoop: -15431)
-				(LOOKUP_ERROR
+				(poTorinClimbs
 					view: -15432
 					loop: 2
 					cel: 0
@@ -149,13 +149,13 @@
 		(switch (= state newState)
 			(0
 				(if (not local1)
-					(self setScript: {LOOKUP\_ERROR} self)
+					(self setScript: soClimbBoxes self)
 				else
 					(self cue:)
 				)
 			)
 			(1
-				(LOOKUP_ERROR
+				(poTorinClimbs
 					view: -15432
 					loop: 1
 					cel: 0
@@ -164,7 +164,7 @@
 				)
 			)
 			(2
-				(LOOKUP_ERROR view: -15432 loop: 0 cel: 0 posn: 91 55)
+				(poTorinClimbs view: -15432 loop: 0 cel: 0 posn: 91 55)
 			)
 		)
 	)
@@ -230,9 +230,9 @@
 		(switch theVerb
 			(1
 				(if local1
-					(curRoom setScript: LOOKUP_ERROR)
+					(curRoom setScript: soComeDown)
 				else
-					(curRoom setScript: LOOKUP_ERROR)
+					(curRoom setScript: soClimbBoxes)
 				)
 			)
 			(else 
@@ -285,7 +285,7 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soComeDown)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -336,12 +336,14 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (Prints LOOKUP_ERROR))
+			(1
+				(Prints {something should happen here})
+			)
 			(71
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soReviveTorin)
 			)
 			(49
-				(curRoom setScript: LOOKUP_ERROR)
+				(curRoom setScript: soReviveTorin)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -368,7 +370,7 @@
 				(theGame handsOff:)
 				(((ScriptID 64001 0) get: 35) moveTo: -3)
 				(((ScriptID 64001 1) get: 6) moveTo: -3)
-				(LOOKUP_ERROR
+				(poBoogle
 					view: -15433
 					loop: 0
 					cel: 0
@@ -377,30 +379,15 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR
-					loop: 1
-					cel: 0
-					posn: 374 302
-					setCycle: End self
-				)
+				(poTorinEnters dispose:)
+				(poBoogle loop: 1 cel: 0 posn: 374 302 setCycle: End self)
 				(theSound lThumbLoop: -15433)
 			)
 			(2
-				(LOOKUP_ERROR
-					loop: 2
-					cel: 0
-					posn: 370 303
-					setCycle: End self
-				)
+				(poBoogle loop: 2 cel: 0 posn: 370 303 setCycle: End self)
 			)
 			(3
-				(LOOKUP_ERROR
-					loop: 3
-					cel: 0
-					posn: 368 302
-					setCycle: End self
-				)
+				(poBoogle loop: 3 cel: 0 posn: 368 302 setCycle: End self)
 			)
 			(4
 				((= planeSel_141 (Plane new:))
@@ -408,9 +395,9 @@
 					init: 4 4 640 480
 					setPri: 700
 				)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR
+				(poTorinEnters init:)
+				(poBoogle dispose:)
+				(poBoogle
 					loop: 4
 					cel: 0
 					init: planeSel_141
@@ -422,10 +409,10 @@
 				(proc64002_7)
 				(planeSel_141 setPri: 10)
 				(planeSel_141 setPri: 700)
-				(LOOKUP_ERROR loop: 5 cel: 0 setCycle: End self)
+				(poBoogle loop: 5 cel: 0 setCycle: End self)
 			)
 			(6
-				(LOOKUP_ERROR dispose:)
+				(poBoogle dispose:)
 				(planeSel_141 dispose:)
 				(= planeSel_141 0)
 				(((ScriptID 64001 0) get: 35) moveTo: -1)
@@ -435,7 +422,7 @@
 					show:
 					bSwing: 1
 				)
-				(LOOKUP_ERROR
+				(poTorinEnters
 					view: -15433
 					loop: 0
 					cel: 0
@@ -443,10 +430,10 @@
 				)
 			)
 			(7
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
+				(poTorinEnters dispose:)
+				(foBoxes init:)
+				(foPhenocryst init:)
+				(foDuctExit init:)
 				(ego
 					posn: 425 306
 					setLoop: 4
@@ -465,11 +452,11 @@
 			(= planeSel_141 0)
 		)
 		(((ScriptID 64001 0) get: 35) moveTo: -1)
-		(LOOKUP_ERROR dispose:)
-		(LOOKUP_ERROR dispose:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
+		(poBoogle dispose:)
+		(poTorinEnters dispose:)
+		(foBoxes init:)
+		(foPhenocryst init:)
+		(foDuctExit init:)
 		(ego
 			posn: 425 306
 			setLoop: 4
@@ -505,7 +492,7 @@
 			(0
 				(theGame handsOff:)
 				(theSound lThumbLoop: -15430)
-				(LOOKUP_ERROR
+				(poTorinEnters
 					view: -15435
 					loop: 0
 					cel: 0
@@ -513,7 +500,7 @@
 					posn: 371 309
 					setCycle: End self
 				)
-				(LOOKUP_ERROR
+				(poBoogle
 					view: -15435
 					loop: 1
 					cel: 0
@@ -573,7 +560,7 @@
 		)
 		(ego init: oPanner: hide:)
 		(theGame handsOn:)
-		(curRoom setScript: LOOKUP_ERROR)
+		(curRoom setScript: soEnterRoom)
 		(switch prevRoomNum
 			(else  (ego posn: 600 300))
 		)
@@ -587,7 +574,7 @@
 	)
 	
 	(method (setWander)
-		(return LOOKUP_ERROR)
+		(return foDuctExit)
 	)
 	
 	(method (intoPouch)

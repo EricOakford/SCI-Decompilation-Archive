@@ -27,7 +27,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soExit)
 	)
 )
 
@@ -41,7 +41,7 @@
 			)
 			(1
 				(theGame handsOff:)
-				((ScriptID 64018 0) setScript: LOOKUP_ERROR)
+				((ScriptID 64018 0) setScript: soBoogleExit)
 				(ego setMotion: MoveTo 450 160 self)
 			)
 			(2
@@ -111,9 +111,11 @@
 	
 	(method (doVerb theVerb)
 		(switch theVerb
-			(1 (Prints LOOKUP_ERROR))
+			(1
+				(Prints {Something ought to happen here, dammit!})
+			)
 			(49
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soCleanConsole)
 			)
 		)
 	)
@@ -143,9 +145,9 @@
 	
 	(method (doVerb)
 		(if ((ScriptID 64017 0) test: 99)
-			(ego setScript: LOOKUP_ERROR)
+			(ego setScript: soTakeAmmonia)
 		else
-			(ego setScript: LOOKUP_ERROR)
+			(ego setScript: soOpenConsoleDoor)
 		)
 	)
 )
@@ -160,7 +162,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soHitButton)
 	)
 )
 
@@ -178,7 +180,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -25435
 					loop: 5
 					cel: 0
@@ -189,9 +191,9 @@
 			)
 			(3
 				(ego show:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
+				(poTorin dispose:)
+				(foButton dispose:)
+				(foExit init:)
 				((ScriptID 64017 0) set: 101)
 				(theGame handsOn:)
 			)
@@ -213,7 +215,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -25435
 					loop: 4
 					cel: 0
@@ -224,9 +226,9 @@
 			)
 			(3
 				(ego show:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR init:)
+				(poTorin dispose:)
+				(voDirtyTop dispose:)
+				(foButton init:)
 				((ScriptID 64017 0) set: 100)
 				(messager say: 3 49 2 0 self)
 			)
@@ -252,7 +254,7 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: -25435
 					loop: 3
 					cel: 0
@@ -266,8 +268,8 @@
 				((ScriptID 64017 0) set: 98)
 				((ScriptID 64017 0) clear: 99)
 				(ego show:)
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR setTotalWidth: 1)
+				(poTorin dispose:)
+				(voConsoleDoor setTotalWidth: 1)
 				(messager say: 1 1 0 0 self)
 			)
 			(4
@@ -292,8 +294,8 @@
 			)
 			(2
 				(ego hide:)
-				(LOOKUP_ERROR hide:)
-				(LOOKUP_ERROR
+				(voConsoleDoor hide:)
+				(poTorin
 					view: -25435
 					loop: 2
 					cel: 0
@@ -303,8 +305,8 @@
 				)
 			)
 			(3
-				(LOOKUP_ERROR dispose:)
-				(LOOKUP_ERROR loop: 1 cel: 0 show:)
+				(poTorin dispose:)
+				(voConsoleDoor loop: 1 cel: 0 show:)
 				(ego show:)
 				((ScriptID 64017 0) set: 99)
 				(theGame handsOn:)
@@ -319,7 +321,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(LOOKUP_ERROR
+				(poTorin
 					view: -25436
 					loop: 0
 					cel: 0
@@ -329,7 +331,7 @@
 				)
 			)
 			(1
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				(ego
 					posn: 254 269
 					init:
@@ -344,8 +346,8 @@
 					oPanner:
 					setScaler: Scaler 100 80 270 158
 				)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR init:)
+				(voConsoleDoor init:)
+				(foPhenocryst init:)
 				(messager say: 0 0 1 0 self)
 			)
 			(2
@@ -406,8 +408,8 @@
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
-		(curRoom setScript: LOOKUP_ERROR)
+		(voDirtyTop init:)
+		(curRoom setScript: soEnterRoom)
 	)
 	
 	(method (setWander)

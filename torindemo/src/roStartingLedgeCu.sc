@@ -31,7 +31,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: LOOKUP_ERROR)
+		(ego setScript: soBitternutExit)
 	)
 )
 
@@ -94,7 +94,7 @@
 	)
 	
 	(method (doVerb)
-		(ego setScript: 'LOOKUP_ERROR')
+		(ego setScript: soTopExit)
 	)
 )
 
@@ -174,22 +174,22 @@
 		(switch (= state newState)
 			(0
 				(theGame handsOff:)
-				(curRoom initThumb: LOOKUP_ERROR)
-				(LOOKUP_ERROR init:)
-				(LOOKUP_ERROR
+				(curRoom initThumb: oTileCU)
+				(voBody init:)
+				(poTorinLooksUp
 					setCel: 0
 					init:
 					setPri: 400
 					setCycle: End self
 				)
-				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
+				(poTile setCel: 0 init: setCycle: End self)
 				(theSound lThumbLoop: 20107)
 			)
 			(1)
 			(2 (= ticks 20))
 			(3
-				(curRoom arrowDown: LOOKUP_ERROR)
-				(LOOKUP_ERROR setCel: 0 init: setCycle: End self)
+				(curRoom arrowDown: oTileCU)
+				(poTorinPicksUpTile setCel: 0 init: setCycle: End self)
 			)
 			(4
 				(if ((ScriptID 64017 0) test: 42)
@@ -209,7 +209,7 @@
 				(= cycles 2)
 			)
 			(5
-				(LOOKUP_ERROR dispose:)
+				(poTorinPicksUpTile dispose:)
 				(ego show:)
 				(theGame handsOn:)
 				(self dispose:)
@@ -235,10 +235,10 @@
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(LOOKUP_ERROR init:)
-		(curRoom setScript: LOOKUP_ERROR)
+		(foBitternutExit init:)
+		(foTopExit init:)
+		(foClotheslineExit init:)
+		(curRoom setScript: soTileFalling)
 	)
 	
 	(method (intoPouch)

@@ -36,7 +36,7 @@
 	(method (init)
 		(super init: &rest)
 		(theMusic pageSize: -14136)
-		(LOOKUP_ERROR init:)
+		(foHorrorsExit init:)
 		(ego init: oPanner:)
 		(theGame handsOn:)
 		(switch prevRoomNum

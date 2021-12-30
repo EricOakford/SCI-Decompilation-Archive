@@ -21,7 +21,7 @@
 	(method (doVerb theVerb)
 		(return
 			(if (== theVerb 13)
-				(ego setScript: 'LOOKUP_ERROR')
+				(ego setScript: soGetOuttaDodge)
 				(return 1)
 			else
 				(return 0)
@@ -79,10 +79,10 @@
 	(method (doVerb theVerb)
 		(switch theVerb
 			(1
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soGetOuttaDodge)
 			)
 			(13
-				(ego setScript: LOOKUP_ERROR)
+				(ego setScript: soGetOuttaDodge)
 			)
 			(else 
 				(super doVerb: theVerb &rest)
@@ -114,7 +114,7 @@
 			)
 			(3
 				(ego hide:)
-				(LOOKUP_ERROR
+				(poTorin
 					view: 20800
 					loop: 0
 					cel: 0
@@ -124,12 +124,12 @@
 				)
 			)
 			(4
-				(LOOKUP_ERROR setCycle: End self)
+				(poTorin setCycle: End self)
 				(theSound lThumbLoop: 20801 self)
 			)
 			(5)
 			(6
-				(LOOKUP_ERROR dispose:)
+				(poTorin dispose:)
 				((ScriptID 64017 0) set: 95)
 				(theGame handsOn:)
 				(if (= temp0 (MakeMessageText 15 13 0 1 300))
@@ -165,9 +165,9 @@
 					yourself:
 				)
 		)
-		(LOOKUP_ERROR init:)
+		(foCryst init:)
 		(ego init: oPanner:)
-		(ego oFlagValues: LOOKUP_ERROR)
+		(ego oFlagValues: oRSDHandler)
 		(theGame handsOff:)
 		(ego posn: 650 300)
 		(ego setMotion: MoveTo 600 300 (ScriptID 64020 0))
