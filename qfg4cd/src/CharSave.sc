@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 52)
-(include sci.sh)
+(script# CHARSAVE) ;52
+(include game.sh) (include "52.shm")
 (use Main)
 (use GloryRm)
 (use DButton)
@@ -15,110 +15,144 @@
 	CharSave 0
 )
 
+
+(define QG3_BIRD_BIT $0010)
+(define QG4_BIRD_BIT $0020)
+
+(define	EXTRA_DATA	18)	; Data items other than stats and name
+(define	CHECK_DATA	10)	; Data items that are in check sums
+
 (local
-	statsKey =  83
+	statsKey =  $53
 	svCharType
 	svHighCrown
 	svLowCrown
 	svMiscEquip
-	[codedStats 48]
-	svRations =  25
-	svDaggers =  190
+	[codedStats NUM_ATTRIBS]
+	;the following six locals were mistakenly decompiled
+	; as part of codedStats, likely because they are unused
+	svRations
+	svDaggers
 	svOil
 	svHealingPotion
-	svManaPotion =  55
-	svPoisonCurePotion =  109
-	bogus0 =  196
-	bogus1 =  242
-	checkSum1 =  208
+	svManaPotion
+	svPoisonCurePotion
+
+	bogus0 =  $19
+	bogus1 =  $BE
+	checkSum1
 	checkSum2
-	bogus2
-	bogus3
-	bogus4
-	bogus5
-	checkSumKey
+	bogus2 =  $37
+	bogus3 =  $6D
+	bogus4 =  $C4
+	bogus5 =  $F2
+	checkSumKey =  $D0
 	check1
+	check2
+	heroFileName
+	bigStr
+	bigStr2
+	hasSaved
+	answer
 )
+
+(enum				;states of saveHero Script
+	congrats
+	playItAgain
+	;askSave
+	getInfoFileName
+	checkFile
+	openFile
+	writeHeroInfo
+	writeComplete
+	writeComplete2
+	tryAgain
+	saveDone
+	;checkSong
+	;redrawRoom
+	goToCredits
+)
+
 (instance CharSave of GloryRm
-	(properties)
 	
 	(method (init)
 		(super init: &rest)
-		(= bogus3 (Str new:))
-		(= bogus4 (Str new:))
-		(= bogus5 (Str new:))
-		((ScriptID 15) doit:)
+		(= heroFileName (String new:))
+		(= bigStr (String new:))
+		(= bigStr2 (String new:))
+		((ScriptID CHARSHEET) doit:)
 		(keyDownHandler add: self)
-		(User canControl: 0 canInput: 0)
+		(User canControl: FALSE canInput: FALSE)
 		(self setScript: saveHero)
 	)
 	
 	(method (dispose)
 		(keyDownHandler delete: self)
-		(LoadMany 0 -543 -592)
+		(LoadMany FALSE FILE FILESEL)
 		(super dispose:)
 	)
 )
 
-(instance glory4_sav of File
+(instance heroinfo of File
 	(properties
 		name "glory4.sav"
 	)
 )
 
 (instance saveHero of Script
-	(properties)
-	
-	(method (changeState newState &tmp temp0 temp1 temp2 temp3 temp4)
+
+	(method (changeState newState &tmp whichSkill oldCrown lineEndString oldExper retry)
 		(switch (= state newState)
-			(0
-				(Message msgGET 52 2 0 10 1 (bogus3 data?))
+			(congrats
+				(Message MsgGet CHARSAVE N_CHARSAVE NULL C_FILENAME 1 (heroFileName data?))
 				(if (>= score possibleScore)
-					(messager say: 2 0 8 1 self)
+					(messager say: N_CHARSAVE NULL C_CONGRATS_FULL_SCORE 1 self)
 				else
-					(Message msgGET 52 2 0 4 1 (bogus5 data?))
-					(bogus4 format: (bogus5 data?) score possibleScore)
-					(Print addText: bogus4 init: self)
+					(Message MsgGet CHARSAVE N_CHARSAVE NULL C_CONGRATS 1 (bigStr2 data?))
+					(bigStr format: (bigStr2 data?) score possibleScore)
+					(Print addText: bigStr init: self)
 				)
-				(= register 1)
+				(= register TRUE)
 			)
-			(1
-				(messager say: 2 0 5 0 self)
-				(= register 1)
+			(playItAgain
+				(messager say: N_CHARSAVE NULL C_PLAY_IT_AGAIN 0 self)
+				(= register TRUE)
 			)
-			(2
+			(getInfoFileName
 				(if
 					(Print
-						addText: 2 0 11 1 0 0 52
+						addText: N_CHARSAVE NULL C_DISK_FILE 1 0 0 CHARSAVE
 						font: 999
-						addEdit: bogus3 30 0 30 bogus3
+						addEdit: heroFileName 30 0 30 heroFileName
 						init:
 					)
-					(glory4_sav name: (bogus3 data?))
+					(heroinfo name: (heroFileName data?))
 					(= cycles 2)
 				else
-					(self changeState: 8)
+					(self changeState: tryAgain)
 				)
 			)
-			(3
-				(if (!= (glory4_sav open: 1) 0)
-					(Message msgGET 52 2 0 13 1 (bogus5 data?))
-					(bogus4 format: (bogus5 data?) (glory4_sav name?))
+			(checkFile
+				(if (!= (heroinfo open: fRead) NULL)
+					(Message MsgGet CHARSAVE N_CHARSAVE NULL C_OVERWRITE 1 (bigStr2 data?))
+					(bigStr format: (bigStr2 data?) (heroinfo name?))
 					(theGame setCursor: normalCursor)
 					(switch
-						(= check1
+						(= answer
 							(Print
-								addText: bogus4
+								addText: bigStr
 								classButton: MyButton
 								font: 999
-								addButton: 1 2 0 14 1 25 45
-								addButton: 2 2 0 15 1 105 45
+								addButton: 1 N_CHARSAVE NULL C_NO 1 25 45
+								addButton: 2 N_CHARSAVE NULL C_YES 1 105 45
 								init:
 							)
 						)
-						(1 (self changeState: 2))
+						(1
+							(self changeState: getInfoFileName)
+						)
 						(2
-							(glory4_sav close:)
+							(heroinfo close:)
 							(= cycles 1)
 						)
 					)
@@ -126,205 +160,135 @@
 					(= cycles 1)
 				)
 			)
-			(4
-				(if (glory4_sav open: 2)
-					(glory4_sav close:)
+			(openFile
+				(if (heroinfo open: fTrunc)
+					(heroinfo close:)
 					(= seconds 2)
 				else
-					(Message msgGET 52 2 0 2 1 (bogus5 data?))
-					(bogus4 format: (bogus5 data?) (glory4_sav name?))
-					(Print addText: bogus4 init:)
-					(self changeState: 8)
+					(Message MsgGet CHARSAVE N_CHARSAVE NULL C_WRITE_FAIL 1 (bigStr2 data?))
+					(bigStr format: (bigStr2 data?) (heroinfo name?))
+					(Print addText: bigStr init:)
+					(self changeState: tryAgain)
 				)
 			)
-			(5
-				(if (not (glory4_sav open: 0))
-					(self changeState: 8)
+			(writeHeroInfo
+				(if (not (heroinfo open: fAppend))
+					(self changeState: tryAgain)
 					(return)
 				)
-				(= temp0 0)
-				(while (< temp0 42)
-					(= [codedStats temp0] [egoStats temp0])
-					(++ temp0)
+				(for ((= whichSkill 0)) (< whichSkill NUM_ATTRIBS) ((++ whichSkill))
+					(= [codedStats whichSkill] [egoStats whichSkill])
 				)
-				(= temp1
-					(+ ((inventory at: 0) amount?) (/ global154 100))
+				(= oldCrown
+					(+ ((inventory at: iPurse) amount?) (/ global154 100)) ;? shouldn't this use global 395 (for kopeks)?
 				)
 				(= svCharType heroType)
-				(= svHighCrown (/ temp1 100))
-				(= svLowCrown (mod temp1 100))
+				(= svHighCrown (/ oldCrown 100))
+				(= svLowCrown (mod oldCrown 100))
 				(= svMiscEquip 0)
-				(if (Btst 387) (= svMiscEquip (| svMiscEquip $0010)))
-				(if (ego has: 34)
-					(= svMiscEquip (| svMiscEquip $0020))
+				(if (Btst fBoughtBlackBird)
+					(|= svMiscEquip QG3_BIRD_BIT)
 				)
-				(= checkSum2 checkSum1)
-				(= temp0 0)
-				(while (< temp0 52)
-					(= [statsKey (+ temp0 1)] [statsKey (+ temp0 1)])
-					(= checkSum2 (+ checkSum2 [statsKey (+ temp0 1)]))
-					(= temp0 (+ temp0 2))
+				(if (ego has: iBlackbird)
+					(|= svMiscEquip QG4_BIRD_BIT)
 				)
-				(= bogus2 0)
-				(= temp0 1)
-				(while (< temp0 52)
-					(= [statsKey (+ temp0 1)] [statsKey (+ temp0 1)])
-					(= bogus2 (+ bogus2 [statsKey (+ temp0 1)]))
-					(= temp0 (+ temp0 2))
+				(= check1 checkSumKey)
+				(for ((= whichSkill 0)) (< whichSkill (+ NUM_ATTRIBS CHECK_DATA)) ((+= whichSkill 2))
+					(= [statsKey (+ whichSkill 1)] [statsKey (+ whichSkill 1)])
+					(+= check1 [statsKey (+ whichSkill 1)])
 				)
-				(= svOil checkSum2)
-				(= svHealingPotion bogus2)
-				(= temp0 0)
-				(while (< temp0 60)
-					(= [statsKey (+ temp0 1)] [statsKey (+ temp0 1)])
-					(= [statsKey (+ temp0 1)]
-						(^ [statsKey (+ temp0 1)] [statsKey temp0])
-					)
-					(++ temp0)
+				(= check2 0)
+				(for ((= whichSkill 1)) (< whichSkill (+ NUM_ATTRIBS CHECK_DATA)) ((+= whichSkill 2))
+					(= [statsKey (+ whichSkill 1)] [statsKey (+ whichSkill 1)])
+					(+= check2 [statsKey (+ whichSkill 1)])
 				)
-				((= temp2 (Str newWith: 1 {*})) at: 0 10)
-				(glory4_sav writeString: { glory4.sav_})
-				(glory4_sav writeString: temp2)
-				(glory4_sav writeString: userName)
-				(glory4_sav writeString: temp2)
-				(= temp0 1)
-				(while (< temp0 61)
-					(bogus4 format: {%2x} (/ [statsKey temp0] 100))
-					(glory4_sav writeString: bogus4)
-					(bogus4 format: {%2x} (mod [statsKey temp0] 100))
-					(glory4_sav writeString: bogus4)
-					(++ temp0)
+				(= checkSum1 check1)
+				(= checkSum2 check2)
+				(for ((= whichSkill 0)) (< whichSkill (+ NUM_ATTRIBS EXTRA_DATA)) ((++ whichSkill))
+					(= [statsKey (+ whichSkill 1)] [statsKey (+ whichSkill 1)])
+					(^= [statsKey (+ whichSkill 1)] [statsKey whichSkill])
 				)
-				(glory4_sav writeString: temp2)
-				(glory4_sav close:)
+				((= lineEndString (String newWith: 1 {*})) at: 0 10)
+				(heroinfo writeString: { glory4.sav_})
+				(heroinfo writeString: lineEndString)
+				(heroinfo writeString: userName)
+				(heroinfo writeString: lineEndString)
+				(for ((= whichSkill 1)) (< whichSkill (+ NUM_ATTRIBS EXTRA_DATA 1)) ((++ whichSkill))
+					(bigStr format: {%2x} (/ [statsKey whichSkill] 100))
+					(heroinfo writeString: bigStr)
+					(bigStr format: {%2x} (mod [statsKey whichSkill] 100))
+					(heroinfo writeString: bigStr)
+				)
+				(heroinfo writeString: lineEndString)
+				(heroinfo close:)
 				(= seconds 2)
 			)
-			(6
+			(writeComplete
 				(= register 1)
-				(messager say: 2 0 1 0 self)
+				(messager say: N_CHARSAVE NULL C_WRITE_COMPLETE 0 self)
 			)
-			(7
-				(= checkSumKey 1)
-				(self changeState: 9)
+			(writeComplete2
+				(= hasSaved TRUE)
+				(self changeState: saveDone)
 			)
-			(8
-				(User canInput: 1)
+			(tryAgain
+				(User canInput: TRUE)
 				(if
-					(= temp4
+					(= retry
 						(Print
-							addText: 2 0 16 1
+							addText: N_CHARSAVE NULL C_TRY_AGAIN 1
 							font: 999
-							addButton: 1 2 0 14 1 55 30
-							addButton: 2 2 0 15 1 95 30
+							addButton: 1 N_CHARSAVE NULL C_NO 1 55 30
+							addButton: 2 N_CHARSAVE NULL C_YES 1 95 30
 							init:
 						)
 					)
-					(switch temp4
+					(switch retry
 						(1
-							(User canInput: 0)
-							(= temp4 9)
+							(User canInput: FALSE)
+							(= retry saveDone)
 						)
 						(2
-							(User canInput: 0)
-							(= temp4 2)
-							(= svRations 25)
-							(= svDaggers 190)
-							(= svManaPotion 55)
-							(= svPoisonCurePotion 109)
-							(= bogus0 196)
-							(= bogus1 242)
+							(User canInput: FALSE)
+							(= retry getInfoFileName)
+							(= bogus0 $19)
+							(= bogus1 $BE)
+							(= bogus2 $37)
+							(= bogus3 $6D)
+							(= bogus4 $C4)
+							(= bogus5 $F2)
 						)
 					)
 				)
-				(self changeState: temp4)
+				(self changeState: retry)
 			)
-			(9 (messager say: 2 0 7 0 self))
-			(10 (curRoom newRoom: 160))
+			(saveDone
+				(messager say: N_CHARSAVE NULL C_SAVE_DONE 0 self)
+			)
+			(goToCredits
+				(curRoom newRoom: 160)
+			)
 		)
 	)
 	
 	(method (handleEvent event)
 		(if
 			(and
-				(== (event type?) evKEYBOARD)
-				(== (event message?) KEY_RETURN)
+				(== (event type?) keyDown)
+				(== (event message?) ENTER)
 				register
 			)
-			(= register 0)
+			(= register FALSE)
 			(= cycles 1)
-			(event claimed: 1)
+			(event claimed: TRUE)
 		)
 	)
 )
 
 (class MyButton of DButton
 	(properties
-		scratch 0
-		heading 0
-		noun 0
-		case 0
-		modNum -1
-		nsLeft 0
-		nsTop 0
-		nsRight 0
-		nsBottom 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $0000
-		state $0003
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		plane 0
-		x 0
-		y 0
-		z 0
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		scaleType 0
-		priority 0
-		fixPriority 0
-		inLeft 0
-		inTop 0
-		inRight 0
-		inBottom 0
-		useInsetRect 0
 		view -546
-		loop 0
-		cel 0
-		bitmap 0
-		yStep 2
-		signal $0000
-		lsLeft 0
-		lsTop 0
-		lsRight 0
-		lsBottom 0
-		brLeft 0
-		brTop 0
-		brRight 0
-		brBottom 0
-		scaleSignal $0000
-		magnifier 0
-		oldScaleX 128
-		type $0002
-		key 0
-		value 0
-		object 0
-		selector 0
-		textLeft 0
-		textTop 0
-		textRight 0
-		textBottom 0
-		text 0
-		mode 1
 		fore 0
-		back 0
-		skip 254
 		font 999
-		borderColor 0
-		dimmed 0
-		rects 0
 	)
 )

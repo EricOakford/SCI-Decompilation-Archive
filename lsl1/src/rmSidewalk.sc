@@ -103,7 +103,9 @@
 			(if (Btst fStiffedCabbie) (Load VIEW 171))
 			(curRoom setScript: sDropoff)
 		)
-		(if (> (GameHour) 7) (self setScript: virginScript))
+		(if (> (GameHour) 7)
+			(self setScript: virginScript)
+		)
 		(if (!= curRoomNum 100)
 			(taxiSignProp
 				x:
@@ -182,11 +184,11 @@
 )
 
 (instance virginScript of Script
-	(properties)
-	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (= seconds 5))
+			(0
+				(= seconds 5)
+			)
 			(1
 				(if (curRoom script?)
 					(= cycles 60)
@@ -196,7 +198,9 @@
 					(ego setHeading: 180 self)
 				)
 			)
-			(2 (= cycles 3))
+			(2
+				(= cycles 3)
+			)
 			(3
 				(LoadMany FONT giantFont)
 				(Print rgSidewalk 0 #at 15 -1 #width 280)
@@ -215,7 +219,9 @@
 					setCycle: EndLoop self
 				)
 			)
-			(5 (= seconds 3))
+			(5
+				(= seconds 3)
+			)
 			(6
 				(ShowDeathIcon 807 1)
 				(Format @str1 rgSidewalk 4)

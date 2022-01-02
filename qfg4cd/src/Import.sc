@@ -1,6 +1,6 @@
 ;;; Sierra Script 1.0 - (do not remove this comment)
-(script# 54)
-(include sci.sh)
+(script# IMPORT) ;54
+(include game.sh) (include "54.shm")
 (use Main)
 (use GloryRm)
 (use CharSave)
@@ -16,506 +16,560 @@
 )
 
 (local
-	statsKey =  83
+	;; local data for restoring hero stats from QG2 or QG3
+	statsKey =  $53
 	svCharType
-	[svExperience 3]
+	svExperience
 	svHighDinar
-	[svLowDinar 39]
-	svMiscEquip =  160
-	codedStats =  62
+	svLowDinar
+	svMiscEquip
+	[codedStats QG3_NUM_ATTRIBS]
+	;the following five locals were mistakenly decompiled
+	; as part of codedStats, likely because they are unused
 	svDagger
 	svHealingPill
-	svManaPill =  47
-	svStaminaPill =  144
-	svPoisonCurePill =  25
-	bogus0 =  163
-	bogus1 =  218
+	svManaPill
+	svStaminaPill
+	svPoisonCurePill
+	bogus0 =  $A0
+	bogus1 =  $3E
 	checkSum1
 	checkSum2
-	bogus2
-	bogus3
-	bogus4
-	[bogus5 4]
-	[checkSumKey 34] = [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 41]
-	check1 =  83
+	bogus2 =  $2F
+	bogus3 =  $90
+	bogus4 =  $19
+	bogus5 =  $A3
+	checkSumKey =  $DA
+	check1
 	check2
-	[validFile 3]
+	validFile
 	heroFileName
-	[bigStr 30]
-	str =  121
-	butBuf1 =  134
+	bigStr
+	str
+	butBuf1
 	butBuf2
 	butBuf3
-	butBuf4 =  67
-	statMap =  136
-	statsKeyQg1 =  173
-	svCharTypeQg1 =  240
-	svHighGold =  206
-	[svLowGold 25] = [0 1 2 3 4 5 6 7 8 9 10 11 12 16 17 18 19 20 21 22 23 24 25 26 27]
+	butBuf4
+	statMap = [
+		STR INT AGIL VIT LUCK WEAPON PARRY DODGE STEALTH PICK THROW CLIMB MAGIC COMM HONOR
+		EXPER HEALTH STAMINA MANA OPEN DETMAGIC TRIGGER DAZZLE ZAP CALM FLAMEDART FETCH FORCEBOLT
+		LEVITATE REVERSAL JUGGLE STAFF LIGHTNING HEALING]
+		
+	;; local data for restoring hero stats from QG1
+	statsKeyQg1 =  $53
+	svCharTypeQg1
+	svHighGold
+	svLowGold
 	svScore
 	svMiscEquipQg1
-	codedStatsQg1
+	[codedStatsQg1 QG1_NUM_ATTRIBS]
+	;the following five locals were mistakenly decompiled
+	; as part of codedStats, likely because they are unused
+	svDaggerQg1
+	svHealingPotion
+	svManaPotion
+	svStaminaPotion
+	svGhostOil	
+	bogus6 =  $79
+	bogus7 =  $86
+	check3
+	check4
+	bogus8 =  $43
+	bogus9 =  $88
+	bogus10 =  $AD
+	bogus11 =  $F0
+	checkSumKeyQg1 =  $CE
+	statMapQg1 = [STR INT AGIL VIT LUCK WEAPON PARRY DODGE STEALTH PICK THROW CLIMB MAGIC
+	EXPER HEALTH STAMINA MANA OPEN DETMAGIC TRIGGER DAZZLE ZAP CALM FLAMEDART FETCH]
+	curDir
+	newHeroType
+	newStr
 )
-(procedure (localproc_04bf &tmp temp0)
-	(= temp0 1)
-	(while (< temp0 13)
-		(= [oldStats temp0] 0)
-		(++ temp0)
+
+(enum				;states of importHero Script
+	waitABit
+	askRestore
+	waitABit2
+	getInfoFileName
+	;getInfoFileName2
+	restoreFile
+	readComplete
+	importDone
+	tryAgain
+)
+
+;; Bits in svMiscEquip (QG3)
+(define DISPEL_BIT		$0001)
+(define TINDER_BIT		$0002)
+(define PIN_BIT			$0004)	;from QG2
+(define DAGGER_BIT		$0008)
+(define WATERSKIN_BIT	$0010)
+(define BIRD_BIT		$0020)
+(define BABA_BIT		$0040)	;from QG1
+(define ROPE_BIT		$0080)
+(define TOOL_BIT		$0100)
+(define SWORD_BIT		$0200)
+(define SHIELD_BIT		$0400)
+
+;; Bits in svMiscEquip (QG2)
+(define	QG2_FINESWORD_BIT 	$0001) ; fine sword
+(define	QG2_FLAMESWORD_BIT	$0002) ; flaming sword
+(define	QG2_COMPASS_BIT		$0003) ; compass
+(define	QG2_PIN_BIT			$0004) ; spahire pin
+(define	QG2_LAMP_BIT			$0008) ; brass lamp
+(define	QG2_TOKEN_BIT		$0010) ; EOF token
+(define	QG2_GLASSES_BIT		$0020) ; X-Ray Glasses
+
+; things transferred from "Quest for Glory 1"
+(define	QG2_BABA_BIT			$0030) ; Flag set from QG1
+(define	QG2_SWORD_BIT		$0040) ; Sword
+(define	QG2_CHAIN_BIT		$0080) ;
+(define	QG2_PICK_BIT			$0100) ;
+(define	QG2_TOOL_BIT			$0200) ;
+
+;; Bits in svMiscEquip (QG1)
+(define	QG1_SWORD_BIT		$0001)
+(define	QG1_CHAIN_BIT		$0002)
+(define	QG1_PICK_BIT		$0004)
+(define	QG1_TOOL_BIT		$0008)
+(define	QG1_MIRROR_BIT		$0010)
+(define QG1_BABA_BIT		$0020)		 
+(define	QG1_SCORE_BIT		$0040)
+
+(define	EXTRA_DATA	18)	; Data items other than stats and name
+(define	CHECK_DATA	10)	; Data items that are in check sums
+
+(procedure (MakeZeroQG2 &tmp i)
+	(for ((= i 1)) (< i COMM) ((++ i))
+		(= [oldStats i] 0)
 	)
 	(= heroType 0)
-	(= temp0 0)
-	(while (< temp0 57)
-		((inventory at: temp0) amount: 0 owner: 0)
-		(++ temp0)
+	(for ((= i 0)) (< i iLastInvItem) ((++ i))
+		((inventory at: i) amount: 0 owner: 0)
 	)
 	(= score 0)
 	(userName copy: {xxxxxxxxxxy})
-	(= temp0 0)
-	(while (< temp0 48)
-		(= [statsKey (+ temp0 1)] 0)
-		(++ temp0)
+	(for ((= i 0)) (< i (+ QG2_NUM_ATTRIBS EXTRA_DATA)) ((++ i))
+		(= [statsKey (+ i 1)] 0)
 	)
 )
 
-(procedure (localproc_0528 &tmp temp0)
-	(= temp0 1)
-	(while (< temp0 13)
-		(= [oldStats temp0] 0)
-		(++ temp0)
+(procedure (MakeZeroQG3 &tmp i)
+	(for ((= i 1)) (< i COMM) ((++ i))
+		(= [oldStats i] 0)
 	)
 	(= heroType 0)
-	(= temp0 0)
-	(while (< temp0 57)
-		((inventory at: temp0) amount: 0 owner: 0)
-		(++ temp0)
+	(for ((= i 0)) (< i iLastInvItem) ((++ i))
+		((inventory at: i) amount: 0 owner: 0)
 	)
 	(= score 0)
 	(userName copy: {xxxxxxxxxxy})
-	(= temp0 0)
-	(while (< temp0 52)
-		(= [statsKey (+ temp0 1)] 0)
-		(++ temp0)
+	(for ((= i 0)) (< i (+ QG3_NUM_ATTRIBS EXTRA_DATA)) ((++ i))
+		(= [statsKey (+ i 1)] 0)
 	)
 )
 
-(procedure (localproc_0591 &tmp temp0 temp1 temp2)
-	(localproc_04bf)
-	(if (not (glory2_sav open: 1))
-		(Message msgGET 54 2 6 7 1 (bogus4 data?))
-		(Printf (bogus4 data?) (glory2_sav name?))
-		(return 0)
+(procedure (RestoreHero &tmp temp0 temp1 skillLevel)
+	(MakeZeroQG2)
+	(if (not (heroinfo open: fRead))
+		(Message MsgGet IMPORT N_IMPORT V_DOIT C_CANT_FIND 1 (bigStr data?))
+		(Printf (bigStr data?) (heroinfo name?))
+		(return FALSE)
 	)
-	(= temp0 (Str new: 400))
-	(= temp1 (Str new: 4))
-	(glory2_sav readString: userName 52)
-	(glory2_sav readString: bogus4 300)
-	(if (and (== (bogus4 size:) 86) (localproc_0c3a))
+	(= temp0 (String new: 400))
+	(= temp1 (String new: 4))
+	(heroinfo readString: userName 52)
+	(heroinfo readString: bigStr 300)
+	(if (and (== (bigStr size:) 86) (RestoreFromQG1))
 		(temp0 dispose:)
 		(temp1 dispose:)
-		(return 1)
+		(return TRUE)
 	)
-	(= temp2 0)
-	(while (< temp2 300)
-		(bogus4 at: temp2 0)
-		(++ temp2)
+	(for ((= skillLevel 0)) (< skillLevel 300) ((++ skillLevel))
+		(bigStr at: skillLevel 0)
 	)
-	(glory2_sav seek: 0 0)
-	(glory2_sav readString: userName 52)
-	(glory2_sav readString: bogus4 83)
-	(glory2_sav readString: temp1 3)
-	(bogus4 cat: temp1)
-	(bogus4 cat: temp1)
-	(bogus4 cat: temp1)
-	(bogus4 cat: temp1)
-	(bogus4 cat: temp1)
-	(glory2_sav readString: temp0 100)
-	(bogus4 cat: temp0)
-	(if (localproc_0a84)
+	(heroinfo seek: 0 0)
+	(heroinfo readString: userName 52)
+	(heroinfo readString: bigStr 83)
+	(heroinfo readString: temp1 3)
+	(bigStr cat: temp1)
+	(bigStr cat: temp1)
+	(bigStr cat: temp1)
+	(bigStr cat: temp1)
+	(bigStr cat: temp1)
+	(heroinfo readString: temp0 100)
+	(bigStr cat: temp0)
+	(if (RestoreFromQG2)
 		(temp0 dispose:)
 		(temp1 dispose:)
-		(return 1)
+		(return TRUE)
 	else
-		(localproc_0528)
-		(= bogus1 208)
-		(glory2_sav seek: 0 0)
-		(glory2_sav readString: bogus4 52)
-		(glory2_sav readString: userName 52)
-		(glory2_sav readString: bogus4 300)
-		(if (localproc_0f42)
+		(MakeZeroQG3)
+		(= checkSumKey $D0)
+		(heroinfo seek: 0 0)
+		(heroinfo readString: bigStr 52)
+		(heroinfo readString: userName 52)
+		(heroinfo readString: bigStr 300)
+		(if (RestoreFromQG3)
 			(temp0 dispose:)
 			(temp1 dispose:)
-			(return 1)
+			(return TRUE)
 		)
 	)
-	(Print addText: 2 6 25 1 init:)
-	(codedStatsQg1 dispose:)
-	(= codedStatsQg1 (Str new:))
+	(Print addText: N_IMPORT V_DOIT C_INVALID_FILE_UNKNOWN 1 init:)
+	(newStr dispose:)
+	(= newStr (String new:))
 	(temp0 dispose:)
 	(temp1 dispose:)
-	(return 0)
+	(return FALSE)
 )
 
 (procedure (localproc_079e param1 param2 param3 param4)
 	(return
 		(+
-			(localproc_07e6 param3 param4)
-			(* (localproc_07e6 param1 param2) 100)
+			(ConvWord param3 param4)
+			(* (ConvWord param1 param2) 100)
 		)
 	)
 )
 
-(procedure (localproc_07b7 param1)
+(procedure (ConvByte ascii)
 	(return
 		(cond 
-			((or (== param1 32) (== param1 0)) (return 0))
-			((and (<= 48 param1) (<= param1 57)) (return (- param1 48)))
-			(else (return (- param1 87)))
+			((or (== ascii 32) (== ascii 0))
+				(return 0)
+			)
+			((and (<= 48 ascii) (<= ascii 57))
+				(return (- ascii 48))
+			)
+			(else
+				(return (- ascii 87))
+			)
 		)
 	)
 )
 
-(procedure (localproc_07e6 param1 param2 &tmp [temp0 2])
+(procedure (ConvWord ascii param2 &tmp [temp0 2])
 	(return
 		(|
-			(<< (localproc_07b7 param1) $0004)
-			(localproc_07b7 param2)
+			(<< (ConvByte ascii) 4)
+			(ConvByte param2)
 		)
 	)
 )
 
-(procedure (localproc_07fd param1 param2 param3 &tmp temp0 temp1)
-	(if (= temp1 (param2 size:))
-		(= temp0 (param2 at: (- temp1 1)))
-		(if (OneOf temp0 92 58)
-			(param1 format: {%s%s} param2 param3)
+(procedure (MakeFileName name path root &tmp sep pathLen)
+	(if (= pathLen (path size:))
+		(= sep (path at: (- pathLen 1)))
+		(if (OneOf sep 92 58)
+			(name format: {%s%s} path root)
 		else
-			(param1 format: {%s%c%s} param2 92 param3)
+			(name format: {%s%c%s} path 92 root)
 		)
 	else
-		(param1 copy: param3)
+		(name copy: root)
 	)
-	(param1 data?)
+	(name data?)
 )
 
-(procedure (localproc_0908 param1 &tmp newStr temp1 temp2)
-	(= temp1 0)
-	(= newStr (Str new:))
+(procedure (GetCurSaveDir dir &tmp newDir result temp2)
+	(= result 0)
+	(= newDir (String new:))
 	(theGame handsOn:)
 	(repeat
 		(IconBarCursor view: 942 loop: 0 cel: 14 init:)
 		(if (not (HaveMouse))
-			(theGame setCursor: IconBarCursor 1 oldCurX oldCurY)
+			(theGame setCursor: IconBarCursor TRUE oldCurX oldCurY)
 		else
-			(theGame setCursor: IconBarCursor 1)
+			(theGame setCursor: IconBarCursor TRUE)
 		)
-		(= temp1
+		(= result
 			(Print
 				font: 999
 				largeAlp: 0
-				addText: 1 0 1 1 0 10
-				addEdit: (newStr copy: param1) 30 0 25 param1
-				addButton: 1 1 0 0 1 0 40
-				addButton: 0 1 0 0 2 0 58
+				addText: N_GET_FILE_NAME NULL C_NEW_DIRECTORY 1 0 10
+				addEdit: (newDir copy: dir) 30 0 25 dir
+				addButton: 1 N_GET_FILE_NAME NULL NULL 1 0 40
+				addButton: 0 N_GET_FILE_NAME NULL NULL 2 0 58
 				init:
 			)
 		)
 		(theGame handsOff:)
-		(if (not temp1) (break))
-		(if (not (newStr size:))
-			(GetCWD (newStr data?))
-			(codedStatsQg1 dispose:)
-			(= codedStatsQg1 (Str new:))
-		)
-		(if (ValidPath (newStr data?))
-			(svScore copy: newStr)
-			(codedStatsQg1 dispose:)
-			(= codedStatsQg1 (Str new:))
+		(if (not result)
 			(break)
 		)
-		(Message msgGET 54 2 6 15 1 (bogus4 data?))
-		(Printf (bogus4 data?) (newStr data?))
-		(codedStatsQg1 dispose:)
-		(= codedStatsQg1 (Str new:))
+		(if (not (newDir size:))
+			(GetCWD (newDir data?))
+			(newStr dispose:)
+			(= newStr (String new:))
+		)
+		(if (ValidPath (newDir data?))
+			(curDir copy: newDir)
+			(newStr dispose:)
+			(= newStr (String new:))
+			(break)
+		)
+		(Message MsgGet IMPORT N_IMPORT V_DOIT C_INVALID_DIR 1 (bigStr data?))
+		(Printf (bigStr data?) (newDir data?))
+		(newStr dispose:)
+		(= newStr (String new:))
 	)
-	(newStr dispose:)
-	(return temp1)
+	(newDir dispose:)
+	(return result)
 )
 
-(procedure (localproc_0a84 &tmp temp0 temp1 temp2)
-	(= temp0 0)
-	(= temp2 0)
-	(while (< temp0 52)
-		(= [statsKey (+ temp0 1)]
-			(localproc_07e6
-				(bogus4 at: temp2)
-				(bogus4 at: (+ temp2 1))
+(procedure (RestoreFromQG2 &tmp whichSkill i j)
+	;NOTE: This decompiled the number as 52, which would translate
+	; to (+ QG3_NUM_ATTRIBS EXTRA_DATA), which is for QFG3, not QFG2. This has been fixed.
+	(for ((= whichSkill 0) (= j 0)) (< whichSkill (+ QG2_NUM_ATTRIBS EXTRA_DATA)) ((++ whichSkill) (+= j 2))
+		(= [statsKey (+ whichSkill 1)]
+			(ConvWord
+				(bigStr at: j)
+				(bigStr at: (+ j 1))
 			)
 		)
-		(++ temp0)
-		(= temp2 (+ temp2 2))
 	)
-	(= temp0 52)
-	(while (< 0 temp0)
-		(= [statsKey temp0]
-			(^ [statsKey temp0] (& [statsKey (- temp0 1)] $00ff))
-		)
-		(-- temp0)
+	(for ((= whichSkill (+ QG2_NUM_ATTRIBS EXTRA_DATA))) (< 0 whichSkill) ((-- whichSkill))
+		(^= [statsKey whichSkill] (& [statsKey (- whichSkill 1)] 255))
 	)
-	(= checkSum1 218)
-	(= temp0 0)
-	(while (< temp0 40)
-		(= [statsKey (+ temp0 1)]
-			(& [statsKey (+ temp0 1)] $00ff)
-		)
-		(= checkSum1 (+ checkSum1 [statsKey (+ temp0 1)]))
-		(= temp0 (+ temp0 2))
+	;NOTE: The checksum code uses the correct number, 40
+	; which translates to (+ QG2_NUM_ATTRIBS CHECK_DATA)
+	(= check1 218)
+	(for ((= whichSkill 0)) (< whichSkill (+ QG2_NUM_ATTRIBS CHECK_DATA)) ((+= whichSkill 2))
+		(&= [statsKey (+ whichSkill 1)] 255)
+		(+= check1 [statsKey (+ whichSkill 1)])
 	)
-	(= checkSum2 0)
-	(= temp0 1)
-	(while (< temp0 40)
-		(= [statsKey (+ temp0 1)]
-			(& [statsKey (+ temp0 1)] $00ff)
-		)
-		(= checkSum2 (+ checkSum2 [statsKey (+ temp0 1)]))
-		(= temp0 (+ temp0 2))
+	(= check2 0)
+	(for ((= whichSkill 1)) (< whichSkill (+ QG2_NUM_ATTRIBS CHECK_DATA)) ((+= whichSkill 2))
+		(&= [statsKey (+ whichSkill 1)] 255)
+		(+= check2 [statsKey (+ whichSkill 1)])
 	)
-	(= checkSum1 (& checkSum1 $00ff))
-	(= checkSum2 (& checkSum2 $00ff))
-	(if
-		(or
-			(!= checkSum1 svDagger)
-			(!= checkSum2 svHealingPill)
-		)
-		(return 0)
+	(&= check1 255)
+	(&= check2 255)
+	(if (or (!= check1 checkSum1) (!= check2 checkSum2))
+		(return FALSE)
 	)
-	(= temp0 0)
-	(while (< temp0 34)
-		(= [egoStats [checkSumKey temp0]] [svLowDinar temp0])
+	;this decompiled number of attributes to 34, which would be true for QFG3,
+	; but not QFG2, which was 30. It's been fixed.
+	(for ((= whichSkill 0)) (< whichSkill QG2_NUM_ATTRIBS) ((++ whichSkill))
+		(= [egoStats [statMap whichSkill]] [codedStats whichSkill])
 		(if
 			(not
-				(if (< 13 [checkSumKey temp0])
-					(< [checkSumKey temp0] 20)
-				)
+				(if (< COMM [statMap whichSkill]) (< [statMap whichSkill] OPEN))
 			)
 			(if
 				(not
-					(if (<= 0 [svLowDinar temp0])
-						(<= [svLowDinar temp0] 300)
+					(if (<= 0 [codedStats whichSkill])
+						(<= [codedStats whichSkill] 300)
 					)
 				)
-				(return 0)
+				(return FALSE)
 			)
 		)
-		(++ temp0)
 	)
-	(if (== svCharType 0)
-		(if (and [egoStats 24] [egoStats 30])
-			(= svCharType 1)
+	(if (== svCharType FIGHTER)
+		(if (and [egoStats ZAP] [egoStats REVERSAL])
+			(= svCharType MAGIC_USER)
 		else
-			(= temp1 0)
-			(= temp0 0)
-			(while (< temp0 13)
-				(if [egoStats temp0] (++ temp1))
-				(++ temp0)
+			(= i 0)
+			(for ((= whichSkill 0)) (< whichSkill COMM) ((++ whichSkill))
+				(if [egoStats whichSkill]
+					(++ i)
+				)
 			)
-			(if (or (not [egoStats 6]) (== temp1 13))
-				(= svCharType 2)
+			(if (or (not [egoStats PARRY]) (== i COMM))
+				(= svCharType THIEF)
 			)
 		)
 	)
-	(= heroType (= origHeroType svCharType))
-	(if
-	(and (not (& svHighDinar $0080)) (== heroType 3))
-		(Bset 29)
+	(= heroType
+		(= origHeroType svCharType)
 	)
-	(if (== heroType 3) (= origHeroType 0))
-	(if (== (& svHighDinar $0030) 48) (Bset 22))
-	(return 1)
+	(if (and (not (& svMiscEquip QG2_CHAIN_BIT)) (== heroType PALADIN))
+		(Bset fWasWizard)
+	)
+	(if (== heroType PALADIN)
+		(= origHeroType FIGHTER)
+	)
+	(if (&= svMiscEquip QG2_BABA_BIT)
+		(Bset fBabaFrog)
+	)
+	(return TRUE)
 )
 
-(procedure (localproc_0c3a &tmp temp0 temp1)
-	(= temp0 0)
-	(= temp1 0)
-	(while (< temp0 43)
-		(= [check1 (+ temp0 1)]
-			(localproc_07e6
-				(bogus4 at: temp1)
-				(bogus4 at: (+ temp1 1))
+(procedure (RestoreFromQG1 &tmp whichSkill i)
+	(for ((= whichSkill 0) (= i 0)) (< whichSkill (+ QG1_NUM_ATTRIBS EXTRA_DATA)) ((++ whichSkill) (+= i 2))
+		(= [statsKeyQg1 (+ whichSkill 1)]
+			(ConvWord
+				(bigStr at: i)
+				(bigStr at: (+ i 1))
 			)
 		)
-		(++ temp0)
-		(= temp1 (+ temp1 2))
 	)
-	(= temp0 43)
-	(while (< 0 temp0)
-		(= [check1 temp0]
-			(^ [check1 temp0] (& [check1 (- temp0 1)] $007f))
+	(for ((= whichSkill (+ QG1_NUM_ATTRIBS EXTRA_DATA))) (< 0 whichSkill) ((-- whichSkill))
+		(^= [statsKeyQg1 whichSkill]
+			(& [statsKeyQg1 (- whichSkill 1)] 127)
 		)
-		(-- temp0)
 	)
-	(= checkSum1 svHighGold)
-	(= temp0 0)
-	(while (< temp0 35)
-		(= [check1 (+ temp0 1)] (& [check1 (+ temp0 1)] $007f))
-		(= checkSum1 (+ checkSum1 [check1 (+ temp0 1)]))
-		(= temp0 (+ temp0 2))
+	(= check1 checkSumKeyQg1)
+	(for ((= whichSkill 0)) (< whichSkill (+ QG1_NUM_ATTRIBS CHECK_DATA)) ((+= whichSkill 2))
+		(= [statsKeyQg1 (+ whichSkill 1)]
+			(& [statsKeyQg1 (+ whichSkill 1)] 127)
+		)
+		(+= check1 [statsKeyQg1 (+ whichSkill 1)])
 	)
-	(= checkSum2 0)
-	(= temp0 1)
-	(while (< temp0 35)
-		(= [check1 (+ temp0 1)] (& [check1 (+ temp0 1)] $007f))
-		(= checkSum2 (+ checkSum2 [check1 (+ temp0 1)]))
-		(= temp0 (+ temp0 2))
+	(= check2 0)
+	(for ((= whichSkill 1)) (< whichSkill (+ QG1_NUM_ATTRIBS CHECK_DATA)) ((+= whichSkill 2))
+		(= [statsKeyQg1 (+ whichSkill 1)]
+			(& [statsKeyQg1 (+ whichSkill 1)] 127)
+		)
+		(+= check2 [statsKeyQg1 (+ whichSkill 1)])
 	)
-	(= checkSum1 (& checkSum1 $007f))
-	(= checkSum2 (& checkSum2 $007f))
-	(if
-	(or (!= checkSum1 butBuf2) (!= checkSum2 butBuf3))
-		(return 0)
+	(&= check1 127)
+	(&= check2 127)
+	(if (or (!= check1 check3) (!= check2 check4))
+		(return FALSE)
 	)
-	(= temp0 0)
-	(while (< temp0 25)
-		(= [egoStats [svLowGold temp0]] (* 2 [bigStr temp0]))
+	(for ((= whichSkill 0)) (< whichSkill QG1_NUM_ATTRIBS) ((++ whichSkill))
+		(= [egoStats [statMapQg1 whichSkill]]
+			(* 2 [codedStatsQg1 whichSkill])
+		)
 		(if
 			(not
-				(if (< 12 [svLowGold temp0]) (< [svLowGold temp0] 20))
+				(if (< MAGIC [statMapQg1 whichSkill]) (< [statMapQg1 whichSkill] OPEN))
 			)
 			(if
 				(not
-					(if (<= 0 [bigStr temp0]) (<= [bigStr temp0] 300))
+					(if (<= 0 [codedStatsQg1 whichSkill])
+						(<= [codedStatsQg1 whichSkill] 300)
+					)
 				)
-				(return 0)
+				(return FALSE)
 			)
 		)
-		(++ temp0)
 	)
-	(= heroType (= origHeroType check2))
-	(= [egoStats 13]
-		(/ (+ (* [egoStats 1] 2) [egoStats 4]) 3)
+	(= heroType
+		(= origHeroType svCharTypeQg1)
 	)
-	(= [egoStats 14] 100)
-	(if (& heroFileName $0020) (Bset 22))
-	(return 1)
+	(= [egoStats COMM]
+		(/ (+ (* [egoStats INT] 2) [egoStats LUCK]) 3)
+	)
+	(= [egoStats HONOR] 100)
+	(if (& svMiscEquipQg1 QG1_BABA_BIT)
+		(Bset fBabaFrog)
+	)
+	(return TRUE)
 )
 
-(procedure (localproc_0d9f &tmp newStr newStr_2)
-	(= newStr (Str new:))
-	(Message msgGET 54 2 6 23 1 (newStr data?))
-	(= newStr_2 (Str new:))
+(procedure (ChangeType &tmp curTypeBuf newTypeBuf)
+	(= curTypeBuf (String new:))
+	(Message MsgGet IMPORT N_IMPORT V_DOIT C_CHANGE_TYPE 1 (curTypeBuf data?))
+	(= newTypeBuf (String new:))
 	(switch svCharType
-		(0
-			(Message msgGET 54 2 6 18 1 (newStr_2 data?))
+		(FIGHTER
+			(Message MsgGet IMPORT N_IMPORT V_DOIT C_FIGHTER 1 (newTypeBuf data?))
 		)
-		(1
-			(Message msgGET 54 2 6 21 1 (newStr_2 data?))
+		(MAGIC_USER
+			(Message MsgGet IMPORT N_IMPORT V_DOIT C_WIZARD 1 (newTypeBuf data?))
 		)
-		(2
-			(Message msgGET 54 2 6 19 1 (newStr_2 data?))
+		(THIEF
+			(Message MsgGet IMPORT N_IMPORT V_DOIT C_THIEF 1 (newTypeBuf data?))
 		)
-		(3
-			(Message msgGET 54 2 6 22 1 (newStr_2 data?))
+		(PALADIN
+			(Message MsgGet IMPORT N_IMPORT V_DOIT C_PALADIN 1 (newTypeBuf data?))
 		)
 	)
 	(theGame handsOn:)
 	(IconBarCursor view: 942 loop: 0 cel: 14 init:)
 	(if (not (HaveMouse))
-		(theGame setCursor: IconBarCursor 1 oldCurX oldCurY)
+		(theGame setCursor: IconBarCursor TRUE oldCurX oldCurY)
 	else
-		(theGame setCursor: IconBarCursor 1)
+		(theGame setCursor: IconBarCursor TRUE)
 	)
-	(= svMiscEquipQg1
+	(= newHeroType
 		(Print
-			addTextF: (newStr data?) (newStr_2 data?)
+			addTextF: (curTypeBuf data?) (newTypeBuf data?)
 			font: 999
-			addButton: 4 2 6 26 1 0 65 54
-			addButton: 0 2 6 18 1 70 65 54
-			addButton: 1 2 6 21 1 70 85 54
-			addButton: 2 2 6 19 1 130 65 54
-			addButton: 3 2 6 22 1 130 85 54
+			addButton: 4 N_IMPORT V_DOIT C_CONTINUE 1 0 65 54
+			addButton: 0 N_IMPORT V_DOIT C_FIGHTER 1 70 65 54
+			addButton: 1 N_IMPORT V_DOIT C_WIZARD 1 70 85 54
+			addButton: 2 N_IMPORT V_DOIT C_THIEF 1 130 65 54
+			addButton: 3 N_IMPORT V_DOIT C_PALADIN 1 130 85 54
 			init:
 		)
 	)
 	(theGame handsOff:)
-	(newStr dispose:)
-	(newStr_2 dispose:)
-	(return svMiscEquipQg1)
+	(curTypeBuf dispose:)
+	(newTypeBuf dispose:)
+	(return newHeroType)
 )
 
-(procedure (localproc_0f42 &tmp temp0 temp1)
-	(= temp0 0)
-	(= temp1 0)
-	(while (< temp0 52)
-		(= [statsKey (+ temp0 1)]
+(procedure (RestoreFromQG3 &tmp whichSkill i)
+	(for ((= whichSkill 0) (= i 0)) (< whichSkill (+ QG3_NUM_ATTRIBS EXTRA_DATA)) ((++ whichSkill) (+= i 4))
+		(= [statsKey (+ whichSkill 1)]
 			(localproc_079e
-				(bogus4 at: temp1)
-				(bogus4 at: (+ temp1 1))
-				(bogus4 at: (+ temp1 2))
-				(bogus4 at: (+ temp1 3))
+				(bigStr at: i)
+				(bigStr at: (+ i 1))
+				(bigStr at: (+ i 2))
+				(bigStr at: (+ i 3))
 			)
 		)
-		(++ temp0)
-		(= temp1 (+ temp1 4))
 	)
-	(= temp0 52)
-	(while (< 0 temp0)
-		(= [statsKey temp0]
-			(^ [statsKey temp0] [statsKey (- temp0 1)])
-		)
-		(-- temp0)
+	(for ((= whichSkill (+ QG3_NUM_ATTRIBS EXTRA_DATA))) (< 0 whichSkill) ((-- whichSkill))
+		(^= [statsKey whichSkill] [statsKey (- whichSkill 1)])
 	)
-	(= checkSum1 bogus1)
-	(= temp0 0)
-	(while (< temp0 45)
-		(= [statsKey (+ temp0 1)] [statsKey (+ temp0 1)])
-		(= checkSum1 (+ checkSum1 [statsKey (+ temp0 1)]))
-		(= temp0 (+ temp0 2))
+	(= check1 checkSumKey)
+	(= whichSkill 0)
+	(for ((= whichSkill 0)) (< whichSkill (+ QG3_NUM_ATTRIBS CHECK_DATA 1)) ((+= whichSkill 2))
+		(= [statsKey (+ whichSkill 1)] [statsKey (+ whichSkill 1)])
+		(+= check1 [statsKey (+ whichSkill 1)])
 	)
-	(= checkSum2 0)
-	(= temp0 1)
-	(while (< temp0 45)
-		(= [statsKey (+ temp0 1)] [statsKey (+ temp0 1)])
-		(= checkSum2 (+ checkSum2 [statsKey (+ temp0 1)]))
-		(= temp0 (+ temp0 2))
+	(= check2 0)
+	(for ((= whichSkill 1)) (< whichSkill (+ QG3_NUM_ATTRIBS CHECK_DATA 1)) ((+= whichSkill 2))
+		(= [statsKey (+ whichSkill 1)] [statsKey (+ whichSkill 1)])
+		(+= check2 [statsKey (+ whichSkill 1)])
 	)
-	(= temp0 0)
-	(while (< temp0 34)
-		(= [egoStats [checkSumKey temp0]]
-			[svLowDinar (- temp0 1)]
-		)
+	(for ((= whichSkill 0)) (< whichSkill QG3_NUM_ATTRIBS) ((++ whichSkill))
+		(= [egoStats [statMap whichSkill]] [codedStats (- whichSkill 1)])
 		(if
 			(not
-				(if (< 13 [checkSumKey temp0])
-					(< [checkSumKey temp0] 20)
-				)
+				(if (< COMM [statMap whichSkill]) (< [statMap whichSkill] OPEN))
 			)
 			(if
 				(not
-					(if (<= 0 [svLowDinar temp0])
-						(<= [svLowDinar temp0] 300)
+					(if (<= 0 [codedStats whichSkill])
+						(<= [codedStats whichSkill] 300)
 					)
 				)
 				(cond 
-					((> [svLowDinar temp0] 300) (= [svLowDinar temp0] 300))
-					((< [svLowDinar temp0] 0) (= [svLowDinar temp0] 0))
+					((> [codedStats whichSkill] 300)
+						(= [codedStats whichSkill] 300)
+					)
+					((< [codedStats whichSkill] 0)
+						(= [codedStats whichSkill] 0)
+					)
 				)
 			)
 		)
-		(++ temp0)
 	)
 	(if
 		(and
-			(== svCharType 0)
-			[egoStats [checkSumKey 24]]
-			[egoStats [checkSumKey 30]]
+			(== svCharType FIGHTER)
+			[egoStats [statMap ZAP]]
+			[egoStats [statMap REVERSAL]]
 		)
-		(= svCharType 1)
+		(= svCharType MAGIC_USER)
 	)
-	(if
-	(== (= heroType (= origHeroType svCharType)) 3)
-		(= origHeroType 0)
+	(= heroType
+		(= origHeroType svCharType)
+	)	
+	(if (== heroType PALADIN)
+		(= origHeroType FIGHTER)
 	)
-	(if (& svHighDinar $0020) (Bset 387))
-	(return 1)
+	(if (& svMiscEquip BIRD_BIT)
+		(Bset fBoughtBlackBird)
+	)
+	(return TRUE)
 )
 
 (instance import of GloryRm
@@ -525,145 +579,152 @@
 	
 	(method (init)
 		(theGame handsOff:)
-		(= svScore (Str new:))
-		(GetCWD (svScore data?))
-		(= bogus4 (Str newWith: 301))
-		(= bogus3 (Str new:))
-		(= codedStatsQg1 (Str new:))
+		(= curDir (String new:))
+		(GetCWD (curDir data?))
+		(= bigStr (String newWith: 301))
+		(= heroFileName (String new:))
+		(= newStr (String new:))
 		(super init: &rest)
 		(self setScript: importHero)
 	)
 	
 	(method (dispose)
-		(svScore dispose:)
-		(bogus4 dispose:)
-		(bogus3 dispose:)
+		(curDir dispose:)
+		(bigStr dispose:)
+		(heroFileName dispose:)
 		(super dispose:)
 	)
 )
 
-(instance glory2_sav of File
+(instance heroinfo of File
 	(properties
 		name "glory2.sav"
 	)
 )
 
 (instance importHero of Script
-	(properties)
 	
-	(method (changeState newState &tmp temp0 temp1 newStr svScoreSize temp4)
+	(method (changeState newState &tmp temp0 answer newStr_2 curDirSize temp4)
 		(switch (= state newState)
-			(0 (= cycles 3))
-			(1
-				(Message msgGET 54 2 6 2 1 (bogus3 data?))
-				(messager say: 2 0 0 0 self)
+			(waitABit
+				(= cycles 3)
 			)
-			(2 (= cycles 2))
-			(3
-				(= newStr (Str new:))
+			(askRestore
+				(Message MsgGet IMPORT N_IMPORT V_DOIT C_FILE_NAME 1 (heroFileName data?))
+				(messager say: N_IMPORT NULL NULL 0 self)
+			)
+			(waitABit2
+				(= cycles 2)
+			)
+			(getInfoFileName
+				(= newStr_2 (String new:))
 				(theGame handsOn:)
 				(IconBarCursor view: 942 loop: 0 cel: 14 init:)
 				(if (not (HaveMouse))
-					(theGame setCursor: IconBarCursor 1 oldCurX oldCurY)
+					(theGame setCursor: IconBarCursor TRUE oldCurX oldCurY)
 				else
-					(theGame setCursor: IconBarCursor 1)
+					(theGame setCursor: IconBarCursor TRUE)
 				)
-				(= temp1
+				(= answer
 					(Print
 						font: 999
 						largeAlp: 0
-						addText: 2 6 8 1 5 -5 54
-						addFSelector: 0 15 8 (localproc_07fd newStr svScore {*.sav})
+						addText: N_IMPORT V_DOIT C_IMPORT_TITLE 1 5 -5 54
+						addFSelector: 0 15 8 (MakeFileName newStr_2 curDir {*.sav})
 						classButton: MyButton
-						addButton: 1 2 6 12 1 126 18 54
+						addButton: 1 N_IMPORT V_DOIT C_IMPORT_BUTTON 1 126 18 54
 						classButton: changeButton
-						addButton: 2 2 6 11 1 126 40 54
+						addButton: 2 N_IMPORT V_DOIT C_CHANGE_DIR 1 126 40 54
 						classButton: MyButton
-						addButton: 0 2 6 10 1 126 70 54
+						addButton: 0 N_IMPORT V_DOIT C_CANCEL 1 126 70 54
 						init:
 					)
 				)
 				(theGame handsOff:)
-				(newStr dispose:)
-				(switch temp1
-					(0 (curRoom newRoom: 100))
+				(newStr_2 dispose:)
+				(switch answer
+					(0
+						(curRoom newRoom: 100)
+					)
 					(2
-						(localproc_0908 svScore)
+						(GetCurSaveDir curDir)
 						(self changeState: 2)
 					)
 					(else 
-						(codedStatsQg1 cat: svScore)
-						(= svScoreSize (svScore size:))
-						(= temp4 (svScore at: (- svScoreSize 1)))
-						(if (OneOf temp4 92 58)
-							0
-						else
-							(codedStatsQg1 cat: {\\})
-						)
-						(codedStatsQg1 cat: saveFileSelText)
-						(glory2_sav name: (codedStatsQg1 data?))
+						(newStr cat: curDir)
+						(= curDirSize (curDir size:))
+						(= temp4 (curDir at: (- curDirSize 1)))
+						(if (OneOf temp4 92 58) 0 else (newStr cat: {\\}}))
+						(newStr cat: saveFileSelText)
+						(heroinfo name: (newStr data?))
 					)
 				)
 				(= cycles 2)
 			)
-			(4
-				(if (= bogus2 (localproc_0591))
+			(restoreFile
+				(if (= validFile (RestoreHero))
 					(= cycles 2)
 				else
-					(self changeState: 7)
+					(self changeState: tryAgain)
 				)
 			)
-			(5 (messager say: 2 6 3 0 self))
-			(6
+			(readComplete
+				(messager say: N_IMPORT V_DOIT C_IMPORT_SUCCESS 0 self)
+			)
+			(importDone
 				(if
 					(and
-						bogus2
-						(< -1 (localproc_0d9f))
-						(< (localproc_0d9f) 4)
+						validFile
+						(< -1 (ChangeType))
+						(< (ChangeType) 4)
 					)
-					(= heroType (= origHeroType svMiscEquipQg1))
-					(if (== svMiscEquipQg1 3) (= origHeroType 0))
+					(= heroType
+						(= origHeroType newHeroType)
+					)
+					(if (== newHeroType PALADIN)
+						(= origHeroType FIGHTER)
+					)
 				)
-				(curRoom newRoom: (if bogus2 140 else 100))
+				(curRoom newRoom: (if validFile 140 else 100))
 			)
-			(7
+			(tryAgain
 				(theGame handsOn:)
 				(IconBarCursor view: 942 loop: 0 cel: 14 init:)
 				(if (not (HaveMouse))
-					(theGame setCursor: IconBarCursor 1 oldCurX oldCurY)
+					(theGame setCursor: IconBarCursor TRUE oldCurX oldCurY)
 				else
-					(theGame setCursor: IconBarCursor 1)
+					(theGame setCursor: IconBarCursor TRUE)
 				)
 				(if
 					(Print
-						addText: 2 6 4 1
+						addText: N_IMPORT V_DOIT C_TRY_AGAIN 1
 						font: 999
-						addButton: 1 2 6 5 1 0 50
-						addButton: 0 2 6 6 1 60 50
+						addButton: 1 N_IMPORT V_DOIT C_YES 1 0 50
+						addButton: 0 N_IMPORT V_DOIT C_NO 1 60 50
 						init:
 					)
 					(theGame handsOff:)
-					(codedStatsQg1 dispose:)
-					(= codedStatsQg1 (Str new:))
-					(= str 121)
-					(= butBuf1 134)
-					(= butBuf4 67)
-					(= statMap 136)
-					(= statsKeyQg1 173)
-					(= svCharTypeQg1 240)
-					(= svMiscEquip 160)
-					(= codedStats 62)
-					(= svManaPill 47)
-					(= svStaminaPill 144)
-					(= svPoisonCurePill 25)
-					(= bogus0 163)
-					(self changeState: 2)
+					(newStr dispose:)
+					(= newStr (String new:))
+					(= bogus6 $79)
+					(= bogus7 $86)
+					(= bogus8 $43)
+					(= bogus9 $88)
+					(= bogus10 $AD)
+					(= bogus11 $F0)
+					(= bogus0 $A0)
+					(= bogus1 $3E)
+					(= bogus2 $2F)
+					(= bogus3 $90)
+					(= bogus4 $19)
+					(= bogus5 $A3)
+					(self changeState: waitABit2)
 				else
 					(theGame handsOff:)
-					(codedStatsQg1 dispose:)
-					(= codedStatsQg1 (Str new:))
-					(= bogus2 0)
-					(self changeState: 6)
+					(newStr dispose:)
+					(= newStr (String new:))
+					(= validFile 0)
+					(self changeState: importDone)
 				)
 			)
 		)
@@ -672,73 +733,9 @@
 
 (class MyButton of DButton
 	(properties
-		scratch 0
-		heading 0
-		noun 0
-		case 0
-		modNum -1
-		nsLeft 0
-		nsTop 0
-		nsRight 0
-		nsBottom 0
-		sightAngle 26505
-		actions 0
-		onMeCheck $0000
-		state $0003
-		approachX 0
-		approachY 0
-		approachDist 0
-		_approachVerbs 0
-		plane 0
-		x 0
-		y 0
-		z 0
-		scaleX 128
-		scaleY 128
-		maxScale 128
-		scaleType 0
-		priority 0
-		fixPriority 0
-		inLeft 0
-		inTop 0
-		inRight 0
-		inBottom 0
-		useInsetRect 0
 		view -546
-		loop 0
-		cel 0
-		bitmap 0
-		yStep 2
-		signal $0000
-		lsLeft 0
-		lsTop 0
-		lsRight 0
-		lsBottom 0
-		brLeft 0
-		brTop 0
-		brRight 0
-		brBottom 0
-		scaleSignal $0000
-		magnifier 0
-		oldScaleX 128
-		type $0002
-		key 0
-		value 0
-		object 0
-		selector 0
-		textLeft 0
-		textTop 0
-		textRight 0
-		textBottom 0
-		text 0
-		mode 1
 		fore 0
-		back 0
-		skip 254
 		font 999
-		borderColor 0
-		dimmed 0
-		rects 0
 	)
 )
 
