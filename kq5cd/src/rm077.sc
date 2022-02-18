@@ -72,19 +72,19 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(smallArm cycleSpeed: 3 setCycle: End self init:)
+				(smallArm cycleSpeed: 3 setCycle: EndLoop self init:)
 				(muscha loop: 0 cel: 0)
 			)
 			(1
 				(= local2 1)
-				(smallArm loop: 5 setCycle: Fwd)
+				(smallArm loop: 5 setCycle: Forward)
 				(= cycles 25)
 			)
 			(2
 				(curRoom drawPic: 78)
 				(smallArm dispose:)
 				(ball1 init:)
-				(ball2 cycleSpeed: 3 setCycle: Fwd init:)
+				(ball2 cycleSpeed: 3 setCycle: Forward init:)
 				(muscha
 					view: 778
 					loop: 0
@@ -115,7 +115,7 @@
 					view: 776
 					loop: 7
 					posn: 126 100
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 3
 				)
 				(ball2 dispose:)
@@ -144,7 +144,7 @@
 			(7 (SpeakAudio 975 self))
 			(8
 				(= local2 0)
-				(muscha loop: 2 cel: 0 setCycle: End self)
+				(muscha loop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(= local2 1)
@@ -155,7 +155,7 @@
 				(ego hide:)
 				(curRoom drawPic: 79)
 				(mordac init:)
-				(mHand cycleSpeed: 2 setCycle: Fwd init:)
+				(mHand cycleSpeed: 2 setCycle: Forward init:)
 				(cat cycleSpeed: 1 setScript: catMove init:)
 				(= cycles 1)
 			)
@@ -187,25 +187,25 @@
 				(cat hide:)
 				(wArm hide:)
 				(eArm hide:)
-				(alex init: setCycle: End self cycleSpeed: 3)
+				(alex init: setCycle: EndLoop self cycleSpeed: 3)
 			)
-			(16 (alex setCycle: Beg self))
+			(16 (alex setCycle: BegLoop self))
 			(17
 				(alexFace init: setCycle: MouthSync 931)
 				(SpeakAudio 931 self)
 			)
 			(18
 				(alexFace hide:)
-				(alex setCycle: End self)
+				(alex setCycle: EndLoop self)
 			)
-			(19 (alex setCycle: Beg self))
+			(19 (alex setCycle: BegLoop self))
 			(20
 				(alexFace show: setCycle: MouthSync 932)
 				(SpeakAudio 932 self)
 			)
 			(21
 				(alexFace hide:)
-				(alex setCycle: Beg self)
+				(alex setCycle: BegLoop self)
 			)
 			(22
 				(cls)
@@ -245,7 +245,7 @@
 			)
 			(25
 				(smallMouth hide:)
-				(muscha loop: 8 cel: 0 cycleSpeed: 4 setCycle: End self)
+				(muscha loop: 8 cel: 0 cycleSpeed: 4 setCycle: EndLoop self)
 			)
 			(26
 				(smallMouth
@@ -259,7 +259,7 @@
 				(smallMouth hide:)
 				(ego get: 27)
 				(SolvePuzzle 2)
-				(muscha loop: 9 cel: 0 setCycle: End self)
+				(muscha loop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(28
 				(smallMouth setCycle: 0 dispose:)
@@ -302,7 +302,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setCycle: Beg)
+				(client setCycle: BegLoop)
 				(= state -1)
 				(= seconds (Random 5 8))
 			)
@@ -330,10 +330,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client cycleSpeed: 5 loop: 0 cel: 0 setCycle: End self)
+				(client cycleSpeed: 5 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(1
-				(client loop: 1 cel: 0 setCycle: Fwd)
+				(client loop: 1 cel: 0 setCycle: Forward)
 			)
 		)
 	)
@@ -346,10 +346,10 @@
 		(switch (= state newState)
 			(0
 				(alexFace hide:)
-				(alex setCycle: Beg self)
+				(alex setCycle: BegLoop self)
 			)
 			(1
-				(alexFace show: setCycle: Fwd)
+				(alexFace show: setCycle: Forward)
 				(= seconds (Random 3 5))
 				(= state -1)
 			)

@@ -63,7 +63,7 @@
 				(theMouth setCycle: 0)
 				(eyelid setScript: 0)
 				(if (not (== (eyelid cel?) 0))
-					(eyelid setCycle: Beg self)
+					(eyelid setCycle: BegLoop self)
 				else
 					(= cycles 1)
 				)
@@ -101,11 +101,11 @@
 					(= state 2)
 					(= cycles 1)
 				else
-					(client setCycle: End self)
+					(client setCycle: EndLoop self)
 				)
 			)
 			(1 (= seconds 2))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3 (client setScript: 0))
 		)
 	)

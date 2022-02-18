@@ -56,11 +56,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cassimaEyes setLoop: 1 cycleSpeed: 0 setCycle: End self)
+				(cassimaEyes setLoop: 1 cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(1 (= cycles (Random 1 4)))
 			(2
-				(cassimaEyes setCycle: Beg self)
+				(cassimaEyes setCycle: BegLoop self)
 			)
 			(3 (= seconds (Random 1 3)))
 			(4 (self init:))
@@ -74,10 +74,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(hisEyes setLoop: 5 cycleSpeed: 0 setCycle: End self)
+				(hisEyes setLoop: 5 cycleSpeed: 0 setCycle: EndLoop self)
 			)
 			(1 (= cycles (Random 1 4)))
-			(2 (hisEyes setCycle: Beg self))
+			(2 (hisEyes setCycle: BegLoop self))
 			(3 (= seconds (Random 3 9)))
 			(4 (self init:))
 		)
@@ -91,7 +91,7 @@
 		(switch (= state newState)
 			(0
 				(locket
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: (Random 3 4)
 					cycleSpeed: (Random 1 3)
 				)

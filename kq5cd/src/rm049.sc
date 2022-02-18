@@ -94,9 +94,9 @@
 			)
 		)
 		(if (== (theGame detailLevel:) 3)
-			(wave0 setCycle: Fwd init:)
-			(wave1 setCycle: Fwd init:)
-			(wave2 setCycle: Fwd init:)
+			(wave0 setCycle: Forward init:)
+			(wave1 setCycle: Forward init:)
+			(wave2 setCycle: Forward init:)
 		)
 		(if (== (ego view?) 661)
 			(poly2 points: @local69 size: 16)
@@ -186,7 +186,7 @@
 				(self doit:)
 				(theBoat init: setMotion: MoveTo 143 140 self)
 				(sail init: setCel: 0)
-				(wake init: setCycle: Fwd cycleSpeed: 1 setLoop: 0)
+				(wake init: setCycle: Forward cycleSpeed: 1 setLoop: 0)
 				(if (IsObject (ego head?)) ((ego head?) dispose:))
 				(ego normal: 0 view: 654 setLoop: 1 z: 0 setCel: 0)
 				(if (not (Btst 55))
@@ -209,7 +209,7 @@
 				)
 			)
 			(1
-				(sail setCycle: End)
+				(sail setCycle: EndLoop)
 				(theBoat stopUpd:)
 				(wake dispose:)
 				(if (not (Btst 54))
@@ -260,7 +260,7 @@
 			(0
 				(theMusic number: 815 loop: -1 playBed: 90)
 				(harpy3 init: setScript: harpy3Script)
-				(harpy1 init: setCycle: Fwd setMotion: getEgo1 self)
+				(harpy1 init: setCycle: Forward setMotion: getEgo1 self)
 			)
 			(1
 				(proc762_1 @local136 3074)
@@ -276,7 +276,7 @@
 			)
 			(3
 				(harpy1 setMotion: getEgo4 self)
-				(ego setPri: 11 setCycle: End self)
+				(ego setPri: 11 setCycle: EndLoop self)
 			)
 			(4 0)
 			(5
@@ -294,15 +294,15 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(harpy2 setCycle: Fwd setMotion: getCed self)
+				(harpy2 setCycle: Forward setMotion: getCed self)
 			)
 			(1
 				(SpeakAudio 3075 0 1)
-				(harpy2 setLoop: 4 setCel: 0 setCycle: End self)
+				(harpy2 setLoop: 4 setCel: 0 setCycle: EndLoop self)
 				(cedric dispose:)
 			)
 			(2
-				(harpy2 setLoop: 5 setCycle: Fwd setMotion: takeCed)
+				(harpy2 setLoop: 5 setCycle: Forward setMotion: takeCed)
 			)
 		)
 	)
@@ -353,7 +353,7 @@
 					init:
 					setStep: 5 5
 					setPri: 11
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (ego x?) (- (ego y?) 26) self
 				)
 			)
@@ -454,7 +454,7 @@
 				(sail setPri: 12)
 				(wake
 					init:
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 1
 					setLoop: 1
 					setPri: 11
@@ -553,13 +553,13 @@
 					view: 665
 					setLoop: 1
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(3
 				(shell dispose:)
 				(glint dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(4
 				(if (== (ego view?) 6) ((ego head?) show:))
@@ -590,7 +590,7 @@
 				(glint stopUpd:)
 				(= seconds 5)
 			)
-			(1 (glint setCycle: End self))
+			(1 (glint setCycle: EndLoop self))
 			(2
 				(glint setCycle: 0)
 				(self init:)

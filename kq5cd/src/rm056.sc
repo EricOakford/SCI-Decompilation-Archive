@@ -49,7 +49,7 @@
 		(if (== ((inventory at: 24) owner?) 56)
 			(bag init: stopUpd:)
 		)
-		(fire setCycle: Fwd init:)
+		(fire setCycle: Forward init:)
 		(cupboard init: stopUpd:)
 		(poly1 points: @local11 size: 13)
 		(self addObstacle: poly1)
@@ -182,12 +182,12 @@
 					setLoop: 3
 					cel: 0
 					cycleSpeed: 1
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
-				(ego setCycle: End)
-				(cupboard setCycle: End self)
+				(ego setCycle: EndLoop)
+				(cupboard setCycle: EndLoop self)
 				(theAudio number: 8796 loop: 1 play:)
 			)
 			(3
@@ -231,7 +231,7 @@
 					setLoop: 2
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego get: 24)
 				(SolvePuzzle 2)
@@ -240,7 +240,7 @@
 				(bCel2 dispose:)
 			)
 			(2
-				(cupboard setCycle: Beg self)
+				(cupboard setCycle: BegLoop self)
 				(theAudio number: 8795 loop: 1 play:)
 			)
 			(3

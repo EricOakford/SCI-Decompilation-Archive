@@ -40,8 +40,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 123)
-		(= global321 75)
+		(= cedricX 123)
+		(= cedricY 75)
 		(self
 			setFeatures: hole signPost path8 forest
 			setRegions: 202
@@ -277,7 +277,7 @@
 					illegalBits: 0
 					cel: 7
 					posn: 51 105
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2 (curRoom newRoom: 215))
@@ -293,7 +293,7 @@
 			(0 (HandsOff) (= cycles 3))
 			(1
 				(if (not (Btst 61))
-					(log startUpd: setCycle: End self)
+					(log startUpd: setCycle: EndLoop self)
 					(theAudio number: 8878 loop: 1 play:)
 				else
 					(= cycles 1)
@@ -305,7 +305,7 @@
 					view: 239
 					cel: 0
 					loop: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3

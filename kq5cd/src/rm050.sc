@@ -104,7 +104,7 @@
 					signal: (| (ego signal?) $4000)
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 				)
 			)
@@ -150,7 +150,7 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(cedric dispose:)
 			)

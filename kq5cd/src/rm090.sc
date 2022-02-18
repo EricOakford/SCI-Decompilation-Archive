@@ -153,13 +153,13 @@
 					view: 836
 					setLoop: 0
 					ignoreActors: 1
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo (ego x?) (- (ego y?) 30) self
 				)
 			)
 			(1
 				(if (IsObject (ego head?)) ((ego head?) dispose:))
-				(ego normal: 0 view: 838 setLoop: 0 setCycle: Fwd)
+				(ego normal: 0 view: 838 setLoop: 0 setCycle: Forward)
 				(harpy1 setMotion: MoveTo 350 20 self)
 			)
 			(2
@@ -168,7 +168,7 @@
 			)
 			(3
 				(= deathMessage 744)
-				(EgoDead 247 0 End)
+				(EgoDead 247 0 EndLoop)
 			)
 		)
 	)
@@ -187,7 +187,7 @@
 					setLoop: (if (Btst 74) 5 else 0)
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: 1
 					illegalBits: 0
 				)
@@ -235,12 +235,12 @@
 					view: 838
 					setLoop: 0
 					x: -100
-					setCycle: Fwd
+					setCycle: Forward
 					normal: 0
 					init:
 				)
 				((ego head?) hide:)
-				(harpy4 init: setCycle: Fwd setMotion: swoop1 self)
+				(harpy4 init: setCycle: Forward setMotion: swoop1 self)
 			)
 			(1
 				(harpy4 setMotion: swoop2 self)
@@ -249,7 +249,7 @@
 					setLoop: 1
 					setCel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(ego setMotion: MoveTo (+ (ego x?) 20) (ego y?))
 			)
@@ -288,10 +288,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(harpy1 init: setCycle: Fwd setMotion: MoveTo 66 127 self)
+				(harpy1 init: setCycle: Forward setMotion: MoveTo 66 127 self)
 			)
 			(1
-				(harpy1 setLoop: 3 setCel: 0 setCycle: End self)
+				(harpy1 setLoop: 3 setCel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(harpy1 setMotion: MoveTo 66 136 self)
@@ -435,12 +435,12 @@
 			(1
 				(localproc_000e)
 				(h1Mouth dispose:)
-				(harpy1 view: 842 setLoop: 0 cel: 0 setCycle: End self)
+				(harpy1 view: 842 setLoop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(if (IsObject (ego head?)) ((ego head?) dispose:))
 				(ego dispose:)
-				(harpy1 setLoop: 2 cel: 0 setCycle: End self)
+				(harpy1 setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(harpy1
@@ -455,14 +455,14 @@
 					ignoreActors:
 					setCel: 0
 					posn: (- (harpy2 x?) 25) (- (harpy2 y?) 20)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(harpy3 setScript: harpy3Script)
 				(harpy4 setScript: harpy4Script self)
 				(harpy2
-					setCycle: Fwd
+					setCycle: Forward
 					setLoop: 2
 					setMotion: MoveTo -40 140
 				)
@@ -473,7 +473,7 @@
 			)
 			(6
 				(= deathMessage 744)
-				(EgoDead 247 0 End)
+				(EgoDead 247 0 EndLoop)
 			)
 		)
 	)
@@ -500,7 +500,7 @@
 					ignoreActors:
 					setCel: 0
 					posn: (- (harpy2 x?) 25) (- (harpy2 y?) 20)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 				(ego
@@ -516,20 +516,20 @@
 			(1
 				(harpy2
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: (+ (ego priority?) 1)
 					setMotion: MoveTo (+ (ego x?) 17) (+ (ego y?) 6) self
 				)
 			)
-			(2 (ego setCycle: End self))
+			(2 (ego setCycle: EndLoop self))
 			(3
-				(ego setLoop: 4 setCel: 0 setCycle: Fwd)
+				(ego setLoop: 4 setCel: 0 setCycle: Forward)
 				(harpy2 setLoop: 2 setMotion: MoveTo -40 70 self)
 			)
 			(4
 				(localproc_000e)
 				(h1Mouth dispose:)
-				(harpy1 setLoop: 4 setCycle: End self)
+				(harpy1 setLoop: 4 setCycle: EndLoop self)
 			)
 			(5
 				(harpy3 setScript: harpy3Script)
@@ -539,11 +539,11 @@
 					setLoop: 5
 					setCel: 0
 					posn: (- (harpy1 x?) 25) (- (harpy1 y?) 20)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
-				(harpy1 setLoop: 2 setCycle: Fwd setMotion: MoveTo -40 70)
+				(harpy1 setLoop: 2 setCycle: Forward setMotion: MoveTo -40 70)
 			)
 			(7
 				(= inCartoon 0)
@@ -551,7 +551,7 @@
 			)
 			(8
 				(= deathMessage 744)
-				(EgoDead 247 0 End)
+				(EgoDead 247 0 EndLoop)
 			)
 		)
 	)
@@ -607,20 +607,20 @@
 					setLoop: 5
 					setCel: 0
 					posn: (- (harpy2 x?) 25) (- (harpy2 y?) 20)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
 				(harpy2
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: (+ (ego priority?) 1)
 					setMotion: MoveTo (ego x?) (- (ego y?) 26) self
 				)
 			)
 			(5
 				(note dispose:)
-				(ego setLoop: 2 cycleSpeed: 2 setCycle: End self)
+				(ego setLoop: 2 cycleSpeed: 2 setCycle: EndLoop self)
 				(theMusic stop:)
 			)
 			(6
@@ -649,7 +649,7 @@
 			(8
 				(localproc_000e)
 				(h1Mouth dispose:)
-				(harpy1 setLoop: 4 setCycle: End self)
+				(harpy1 setLoop: 4 setCycle: EndLoop self)
 			)
 			(9
 				(harpy3 setScript: harpy3Script)
@@ -659,11 +659,11 @@
 					setLoop: 5
 					setCel: 0
 					posn: (- (harpy1 x?) 25) (- (harpy1 y?) 20)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10
-				(harpy1 setLoop: 2 setCycle: Fwd setMotion: MoveTo -40 70)
+				(harpy1 setLoop: 2 setCycle: Forward setMotion: MoveTo -40 70)
 			)
 			(11
 				(theMusic number: 814 loop: -1 playBed:)
@@ -707,14 +707,14 @@
 					view: 836
 					setLoop: 6
 					posn: (- (harpy3 x?) 3) (- (harpy3 y?) 20)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(harpy3
 					setLoop: 2
 					posn: (- (harpy3 x?) 35) (- (harpy3 y?) 19)
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo -40 10 self
 				)
 			)
@@ -735,14 +735,14 @@
 					view: 836
 					setLoop: 6
 					posn: (- (harpy4 x?) 3) (- (harpy4 y?) 20)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(harpy4
 					setLoop: 2
 					posn: (- (harpy4 x?) 35) (- (harpy4 y?) 19)
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo -40 10 self
 				)
 			)
@@ -784,7 +784,7 @@
 		(switch (= state newState)
 			(0 (= seconds 5))
 			(1
-				(fishhook setCycle: End self)
+				(fishhook setCycle: EndLoop self)
 			)
 			(2
 				(fishhook setCycle: 0)
@@ -818,13 +818,13 @@
 					view: 665
 					setLoop: (if (Btst 74) 3 else 4)
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 			)
 			(2
 				(SolvePuzzle 2)
 				(fishhook dispose:)
-				(ego setCycle: End self)
+				(ego setCycle: EndLoop self)
 			)
 			(3
 				(ego

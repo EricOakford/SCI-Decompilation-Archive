@@ -38,7 +38,7 @@
 				(= seconds 5)
 			)
 			(3
-				(= global103 0)
+				(= inCartoon 0)
 				(= deathMessage 788)
 				(EgoDead)
 			)
@@ -110,7 +110,7 @@
 				)
 			)
 			(4
-				(= global103 0)
+				(= inCartoon 0)
 				(= deathMessage 788)
 				(EgoDead)
 			)
@@ -147,7 +147,7 @@
 			)
 			(2 (= seconds 2))
 			(3
-				(= global103 0)
+				(= inCartoon 0)
 				(= deathMessage 788)
 				(EgoDead)
 			)
@@ -192,7 +192,7 @@
 			)
 			(4 (= seconds 2))
 			(5
-				(= global103 0)
+				(= inCartoon 0)
 				(= deathMessage 788)
 				(EgoDead)
 			)

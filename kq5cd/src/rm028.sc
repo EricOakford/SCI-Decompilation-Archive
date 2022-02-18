@@ -83,7 +83,7 @@
 				(ego setMotion: PolyPath 227 132 self)
 			)
 			(1
-				(RDoor cycleSpeed: 2 setCycle: End self)
+				(RDoor cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(2
 				(ego setMotion: MoveTo 253 131 self)
@@ -110,7 +110,7 @@
 				(= cycles 1)
 			)
 			(2
-				(LDoor cycleSpeed: 2 setCycle: End self)
+				(LDoor cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(3 (= seconds 3))
 			(4
@@ -153,14 +153,14 @@
 					illegalBits: 0
 					posn: 187 130
 					cycleSpeed: 2
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
 				(theAudio number: 8796 loop: 1 play:)
-				(cupboard setCycle: End self)
+				(cupboard setCycle: EndLoop self)
 			)
-			(3 (ego setCycle: CT 4 1 self))
+			(3 (ego setCycle: CycleTo 4 1 self))
 			(4
 				(User canInput: 1)
 				(lambInset init: stopUpd:)
@@ -203,7 +203,7 @@
 					illegalBits: 0
 					posn: 187 130
 					cycleSpeed: 2
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(2
@@ -211,12 +211,12 @@
 				(lambInset dispose:)
 				(ego get: 19)
 				(SolvePuzzle 2)
-				(ego cel: 0 setCycle: CT 2 1 self)
+				(ego cel: 0 setCycle: CycleTo 2 1 self)
 			)
 			(3
 				(theAudio number: 8795 loop: 1 play:)
-				(cupboard setCycle: Beg self)
-				(ego setCycle: CT 4 1)
+				(cupboard setCycle: BegLoop self)
+				(ego setCycle: CycleTo 4 1)
 			)
 			(4
 				(ego

@@ -65,7 +65,7 @@
 				(= seconds 2)
 			)
 			(3
-				(arms cycleSpeed: 1 setCycle: End)
+				(arms cycleSpeed: 1 setCycle: EndLoop)
 				(= local0 1)
 				(= seconds 2)
 			)
@@ -100,7 +100,7 @@
 		(super doit: &rest)
 		(if
 		(and (== (Random 1 40) 1) (not cycler) (not local0))
-			(self setCycle: End)
+			(self setCycle: EndLoop)
 		)
 	)
 )

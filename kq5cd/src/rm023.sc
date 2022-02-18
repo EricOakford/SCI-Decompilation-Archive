@@ -90,7 +90,7 @@
 						loop: 0
 						cel: 0
 						cycleSpeed: 2
-						setCycle: End self
+						setCycle: EndLoop self
 					)
 				else
 					(self cue:)
@@ -98,8 +98,8 @@
 			)
 			(2
 				(if (not (trunk cel?))
-					(ego loop: 2 cel: 0 setCycle: End self)
-					(trunk cycleSpeed: 2 setCycle: End self)
+					(ego loop: 2 cel: 0 setCycle: EndLoop self)
+					(trunk cycleSpeed: 2 setCycle: EndLoop self)
 					(theAudio number: 8124 loop: 1 play:)
 					(Bset 76)
 				else
@@ -149,18 +149,18 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(SpeakAudio 366)
-				(ego loop: 3 cel: 0 setCycle: End self)
+				(ego loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(wheel dispose:)
 				(ego get: 15)
 				(SolvePuzzle 2)
-				(trunk setCycle: Beg self)
+				(trunk setCycle: BegLoop self)
 				(theAudio number: 8124 loop: 1 play:)
 				(Bclr 76)
 			)
@@ -201,9 +201,9 @@
 						loop: 4
 						cel: 0
 						cycleSpeed: 2
-						setCycle: End self
+						setCycle: EndLoop self
 					)
-					(drawer setCycle: End self)
+					(drawer setCycle: EndLoop self)
 					(theAudio number: 8793 loop: 1 play:)
 					(Bset 75)
 				else
@@ -253,18 +253,18 @@
 					loop: 4
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(SpeakAudio 9052)
-				(ego loop: 5 cel: 0 setCycle: End self)
+				(ego loop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(pouch dispose:)
 				(ego get: 13)
 				(SolvePuzzle 2)
-				(drawer setCycle: Beg self)
+				(drawer setCycle: BegLoop self)
 				(theAudio number: 8793 loop: 1 play:)
 				(Bclr 75)
 			)
@@ -304,14 +304,14 @@
 					loop: 8
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(SpeakAudio 9053)
 				(glint dispose:)
 				(SolvePuzzle 2)
-				(ego get: 1 setCycle: Beg self)
+				(ego get: 1 setCycle: BegLoop self)
 			)
 			(3
 				(ego
@@ -672,7 +672,7 @@
 		(super doit:)
 		(cond 
 			(local6 (-- local6))
-			((not (Random 0 40)) (self setCycle: Beg) (= local6 (Random 50 150)))
+			((not (Random 0 40)) (self setCycle: BegLoop) (= local6 (Random 50 150)))
 		)
 	)
 )

@@ -107,7 +107,7 @@
 				(self setScript: falling)
 			)
 			((& temp1 $0004)
-				(bridge cycleSpeed: 1 setCycle: End)
+				(bridge cycleSpeed: 1 setCycle: EndLoop)
 				(ego
 					priority: (- (ego priority?) 1)
 					signal: (| (ego signal?) $0010)
@@ -232,7 +232,7 @@
 					setLoop: 5
 					setCel: 0
 					posn: 224 157
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(sled init:)
 				(theAudio number: 8790 loop: 1 play: self)
@@ -246,7 +246,7 @@
 					setLoop: 9
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(22
@@ -302,7 +302,7 @@
 					)
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 				)
 				(theAudio number: 7053 play:)

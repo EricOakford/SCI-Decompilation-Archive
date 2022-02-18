@@ -84,7 +84,7 @@
 			)
 		)
 		(dripple setCel: 255 setPri: 5 init: hide:)
-		(splash setCycle: Fwd init: hide:)
+		(splash setCycle: Forward init: hide:)
 		(poly2 points: @local20 size: 8)
 		(poly3 points: @local36 size: 6)
 		(poly4 points: @local48 size: 7)
@@ -181,7 +181,7 @@
 					cel: 0
 					posn: local0 local1
 					cycleSpeed: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 					show:
 				)
 			)
@@ -192,7 +192,7 @@
 					setMotion: MoveTo local0 local2 self
 					show:
 				)
-				(dripple setCycle: End)
+				(dripple setCycle: EndLoop)
 			)
 			(3
 				(drop hide:)
@@ -202,7 +202,7 @@
 					loop: 2
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4 (= state -1) (= cycles 1))
@@ -250,13 +250,13 @@
 				(ego observeControl: 8 setMotion: 0)
 				(theAudio number: 7065 play:)
 				(= local13 ((ego head?) loop?))
-				(stone setPri: 5 cycleSpeed: 6 setCycle: CT 4 1 self)
+				(stone setPri: 5 cycleSpeed: 6 setCycle: CycleTo 4 1 self)
 			)
 			(3
 				(Face ego stone 0)
 				(theMusic number: 97 loop: 1 vol: 127 play:)
 				(theAudio number: 8892 play:)
-				(stone setPri: 13 cycleSpeed: 3 setCycle: End self)
+				(stone setPri: 13 cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(4
 				((ego head?)
@@ -284,28 +284,28 @@
 					view: 882
 					loop: 10
 					posn: 22 136
-					setCycle: Fwd
+					setCycle: Forward
 					setPri: 11
 					init:
 					hide:
 				)
 			)
 			(6
-				(globalCedric setCycle: CT 4 1 self)
+				(globalCedric setCycle: CycleTo 4 1 self)
 			)
 			(7
 				(localproc_000e)
 				(proc762_0 @local62 @local71 @local80 self)
 			)
 			(8
-				(globalCedric setCycle: End self)
+				(globalCedric setCycle: EndLoop self)
 				(= local14 2)
 			)
 			(9
-				(globalCedric setLoop: 9 cel: 0 setCycle: End self)
+				(globalCedric setLoop: 9 cel: 0 setCycle: EndLoop self)
 			)
 			(10
-				(globalCedric setCycle: Beg self)
+				(globalCedric setCycle: BegLoop self)
 			)
 			(11
 				(if (-- local14)
@@ -318,7 +318,7 @@
 			(12
 				(globalCedric
 					cel: (globalCedric lastCel:)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(theMusic fade:)
 			)
@@ -360,7 +360,7 @@
 					loop: 12
 					cel: 0
 					ignoreActors: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 			)
@@ -398,7 +398,7 @@
 					cel: 0
 					posn: (- (ego x?) 10) (+ (ego y?) 1)
 					normal: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 				(reflection hide:)
@@ -414,7 +414,7 @@
 						setStep: 6 4
 						cycleSpeed: 2
 						setMotion: MoveTo 119 126
-						setCycle: CT 4 1 self
+						setCycle: CycleTo 4 1 self
 						init:
 						show:
 					)
@@ -454,7 +454,7 @@
 			)
 			(5
 				(CastleHandsOff)
-				(ego setMotion: 0 loop: 6 cel: 0 setCycle: End self)
+				(ego setMotion: 0 loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(6
 				(if (not local19)
@@ -469,7 +469,7 @@
 					(SolvePuzzle 4)
 					(ego get: 32)
 				)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(7
 				(CastleHandsOff)
@@ -480,7 +480,7 @@
 				(= local18 0)
 				(globalCedric hide:)
 				(prop1 hide:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(9
 				(CastleHandsOn)
@@ -833,7 +833,7 @@
 					normal: 0
 					view: 264
 					setLoop: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= inCartoon 0)
 			)
@@ -883,10 +883,10 @@
 		(switch (= state newState)
 			(0
 				(if (< (DoSound sndDISPOSE) 8)
-					((ScriptID 550 5) setCycle: End self)
+					((ScriptID 550 5) setCycle: EndLoop self)
 				else
 					(theAudio number: 8071 loop: 1 play: self)
-					((ScriptID 550 5) setCycle: End)
+					((ScriptID 550 5) setCycle: EndLoop)
 				)
 			)
 			(1 (= cycles 5))
@@ -912,7 +912,7 @@
 					ignoreActors: 1
 					setLoop: 4
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 			)
@@ -950,7 +950,7 @@
 					cycleSpeed: 3
 					init:
 					setPri: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -979,7 +979,7 @@
 				)
 			)
 			(2
-				((ScriptID 550 3) setCycle: CT 3 1 self)
+				((ScriptID 550 3) setCycle: CycleTo 3 1 self)
 			)
 			(3
 				((ScriptID 550 3) cel: 4)
@@ -987,8 +987,8 @@
 				(= cycles 1)
 			)
 			(4
-				((ScriptID 550 3) setCycle: End)
-				(ego cel: 2 setCycle: End self)
+				((ScriptID 550 3) setCycle: EndLoop)
+				(ego cel: 2 setCycle: EndLoop self)
 			)
 			(5
 				(theAudio number: 8078 play:)
@@ -997,7 +997,7 @@
 					setLoop: 11
 					posn: (- (ego x?) 13) (+ (ego y?) 3)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(6
@@ -1018,7 +1018,7 @@
 					view: 695
 					setCel: 255
 					cycleSpeed: 4
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(7

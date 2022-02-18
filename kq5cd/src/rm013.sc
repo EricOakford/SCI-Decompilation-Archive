@@ -43,8 +43,9 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 69)
-		(= global321 137)
+		(= cedricX 69)
+		(= cedricY 137)
+		
 		(= global325 3053)
 		(= gEgoIllegalBits (ego illegalBits?))
 		(ego illegalBits: -32768 ignoreHorizon: 1)
@@ -62,14 +63,14 @@
 			(theMusic2 number: 803 loop: -1 vol: 127 playBed:)
 			(Load rsVIEW 344)
 			(chair init: stopUpd:)
-			(body setCycle: Fwd cycleSpeed: 3 init:)
+			(body setCycle: Forward cycleSpeed: 3 init:)
 			(oxHead cycleSpeed: 2 init:)
 			(if (== (theGame detailLevel:) 3)
 				(oxTail init: setScript: oxScript)
 			else
 				(oxTail init: stopUpd:)
 			)
-			(coals setCycle: Fwd init:)
+			(coals setCycle: Forward init:)
 			(barrel init:)
 			(shovel init:)
 			(camp init:)
@@ -150,7 +151,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(glint setCycle: End)
+				(glint setCycle: EndLoop)
 				(-- state)
 				(= seconds 10)
 			)
@@ -199,7 +200,7 @@
 		(switch (= state newState)
 			(0
 				(body dispose:)
-				(chair view: 346 loop: 4 cel: 0 setCycle: End self)
+				(chair view: 346 loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(chair view: 346 loop: 0 cel: 1 stopUpd:)
@@ -212,7 +213,7 @@
 				)
 			)
 			(2
-				(gypsy setLoop: 2 cel: 0 setCycle: End self)
+				(gypsy setLoop: 2 cel: 0 setCycle: EndLoop self)
 			)
 			(3
 				(cond 
@@ -255,11 +256,11 @@
 					view: 346
 					loop: 4
 					cel: (- (NumCels chair) -1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(2
-				(body setCycle: Fwd cycleSpeed: 3 init:)
+				(body setCycle: Forward cycleSpeed: 3 init:)
 				(chair
 					loop: 0
 					cel: 0
@@ -279,7 +280,7 @@
 		(switch (= state newState)
 			(0
 				(body dispose:)
-				(chair view: 346 loop: 4 cel: 0 setCycle: End self)
+				(chair view: 346 loop: 4 cel: 0 setCycle: EndLoop self)
 				(ego setMotion: PolyPath 200 132 self)
 			)
 			(1)
@@ -291,7 +292,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -304,11 +305,11 @@
 					setLoop: 3
 					setPri: -1
 					illegalBits: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(4
-				(gypsy setLoop: 4 cel: 0 setCycle: End self)
+				(gypsy setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(if local55
@@ -347,7 +348,7 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -356,11 +357,11 @@
 					setLoop: 3
 					illegalBits: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
-				(gypsy setLoop: 4 cel: 0 setCycle: End self)
+				(gypsy setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(if local55
@@ -397,23 +398,23 @@
 	
 	(method (doit)
 		(super doit:)
-		(if (< (Random 1 100) 10) (oxTail setCycle: Beg))
+		(if (< (Random 1 100) 10) (oxTail setCycle: BegLoop))
 	)
 	
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(oxHead loop: 1 setCycle: End)
+				(oxHead loop: 1 setCycle: EndLoop)
 				(= seconds 5)
 			)
-			(1 (oxHead setCycle: Beg self))
+			(1 (oxHead setCycle: BegLoop self))
 			(2
-				(oxHead loop: 5 cel: 0 setCycle: CT 1 1)
+				(oxHead loop: 5 cel: 0 setCycle: CycleTo 1 1)
 				(theAudio number: 8880 loop: 1 play:)
 				(= cycles 30)
 			)
 			(3
-				(oxHead setCycle: Fwd)
+				(oxHead setCycle: Forward)
 				(= state -1)
 				(= seconds (Random 5 20))
 			)
@@ -448,14 +449,14 @@
 			)
 			(1
 				((ego head?) hide:)
-				(ego normal: 0 view: 56 loop: 3 cel: 0 setCycle: End self)
+				(ego normal: 0 view: 56 loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(tambourine dispose:)
 				((curRoom obstacles?) delete: poly5)
 				(glint setScript: 0 dispose:)
 				(SolvePuzzle 2)
-				(ego get: 34 setCycle: Beg self)
+				(ego get: 34 setCycle: BegLoop self)
 			)
 			(3
 				(SpeakAudio 291)
@@ -611,7 +612,7 @@
 				(not (curRoom script?))
 			)
 			(Bset 51)
-			(curRoom setScript: warnScript)
+			(curRoom setScript: warnScript) 
 		)
 	)
 	

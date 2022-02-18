@@ -30,8 +30,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 119)
-		(= global321 63)
+		(= cedricX 119)
+		(= cedricY 63)
 		(= global325 3057)
 		(self setFeatures: path29 cliffs setRegions: 202)
 		(switch prevRoomNum
@@ -188,7 +188,7 @@
 					setLoop: 0
 					cel: 0
 					cycleSpeed: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setPri: (if (< (ego y?) 100) 1 else (ego priority?))
 					illegalBits: 0
 				)

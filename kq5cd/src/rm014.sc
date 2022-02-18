@@ -55,7 +55,7 @@
 	(switch gEgoEdgeHit
 		(1
 			(ego posn: (ego x?) 186)
-			(-- global315)
+			(-- desertRoomY)
 		)
 		(else 
 			(ego
@@ -65,11 +65,11 @@
 					320
 				) 109
 			)
-			(++ global315)
+			(++ desertRoomY)
 		)
 	)
 	(hills1 view: 352 loop: 2 cel: 0 x: 122 y: 47 signal: 1)
-	(switch global315
+	(switch desertRoomY
 		(1
 			(curRoom west: 212)
 			(curRoom east: 13)
@@ -172,11 +172,11 @@
 				(or
 					(== prevRoomNum 13)
 					(and
-						(== global315 1)
+						(== desertRoomY 1)
 						(or (== prevRoomNum 15) (== prevRoomNum 212))
 					)
 				)
-				(= global315 1)
+				(= desertRoomY 1)
 				(= west 212)
 				(= east 13)
 				(= temp0 100)
@@ -204,9 +204,9 @@
 			(
 				(or
 					(== prevRoomNum 12)
-					(and (== global315 2) (== prevRoomNum 15))
+					(and (== desertRoomY 2) (== prevRoomNum 15))
 				)
-				(= global315 2)
+				(= desertRoomY 2)
 				(= east 12)
 				(= temp0 0)
 				(addToPics add: hills1)
@@ -216,10 +216,10 @@
 			(
 				(or
 					(== prevRoomNum 11)
-					(and (== global315 3) (== prevRoomNum 15))
+					(and (== desertRoomY 3) (== prevRoomNum 15))
 				)
 				(trees x: 294)
-				(= global315 3)
+				(= desertRoomY 3)
 				(= east 11)
 				(= south 211)
 				(= temp0 16)
@@ -328,7 +328,7 @@
 					)
 					(4
 						(theMusic fade:)
-						(= global314 1)
+						(= desertRoomX 1)
 						(curRoom newRoom: west)
 					)
 				)
@@ -375,7 +375,7 @@
 					x: -20
 					y: register
 					setLoop: 10
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 0
 					setMotion: MoveTo 340 register self
 				)

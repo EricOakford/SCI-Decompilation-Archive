@@ -101,11 +101,11 @@
 				(theMusic2 stop:)
 				(theMusic number: 92 loop: -1 play:)
 				(= cycles 30)
-				(wolf1 cycleSpeed: 2 setCycle: End init:)
-				(wolf2 cycleSpeed: 2 setCycle: End init:)
+				(wolf1 cycleSpeed: 2 setCycle: EndLoop init:)
+				(wolf2 cycleSpeed: 2 setCycle: EndLoop init:)
 			)
 			(2
-				(iceQueen cycleSpeed: 3 setCycle: End self)
+				(iceQueen cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(3
 				(= local8 1)
@@ -118,11 +118,11 @@
 				(smallHead hide:)
 				(iceQueen setCycle: 0)
 				(cls)
-				(ego cycleSpeed: 3 setCycle: End self)
+				(ego cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(5
 				(smallHead show:)
-				(iceQueen loop: 6 cel: 0 setCycle: End)
+				(iceQueen loop: 6 cel: 0 setCycle: EndLoop)
 				(ego loop: 12 cel: 2)
 				(smallHead setCycle: MouthSync 936)
 				(SpeakAudio 936 self)
@@ -174,8 +174,8 @@
 				(if (HaveMouse) (= cycles 1) else (= seconds 12))
 			)
 			(9
-				(wolf1 setCycle: Beg self)
-				(wolf2 setCycle: Beg self)
+				(wolf1 setCycle: BegLoop self)
+				(wolf2 setCycle: BegLoop self)
 			)
 			(10)
 			(11
@@ -197,22 +197,22 @@
 				(theIconBar disable:)
 				(HandsOff)
 				(theMusic number: 94 loop: 1 play:)
-				(ego loop: 10 cel: 0 setCycle: End self)
+				(ego loop: 10 cel: 0 setCycle: EndLoop self)
 			)
 			(14
-				(wolf1 view: 917 loop: 1 cel: 0 setCycle: End self)
-				(wolf2 view: 917 loop: 0 cel: 0 setCycle: End)
+				(wolf1 view: 917 loop: 1 cel: 0 setCycle: EndLoop self)
+				(wolf2 view: 917 loop: 0 cel: 0 setCycle: EndLoop)
 			)
 			(15 (= cycles 1))
 			(16
 				(cls)
 				(= deathMessage 757)
-				(EgoDead 543 0 Fwd)
+				(EgoDead 543 0 Forward)
 			)
 			(17
 				(HandsOff)
 				(smallHead loop: 4 x: 138 y: 25 cel: 0 show:)
-				(ego loop: 2 setCycle: Fwd cycleSpeed: 4)
+				(ego loop: 2 setCycle: Forward cycleSpeed: 4)
 				(note init: setScript: noteScript)
 				(theMusic number: 817 loop: 1 play: self)
 				(wolf1 setMotion: 0 setCycle: 0)
@@ -222,13 +222,13 @@
 			(18
 				(smallHead setCycle: MouthSync 938)
 				(SpeakAudio 938 0 1)
-				(wolf1 cycleSpeed: 2 setLoop: 5 setCycle: End)
+				(wolf1 cycleSpeed: 2 setLoop: 5 setCycle: EndLoop)
 				(wolf2
 					cycleSpeed: 2
 					setPri: 1
 					setLoop: 4
 					ignoreActors: 1
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(19
@@ -289,7 +289,7 @@
 			)
 			(26
 				(= local8 1)
-				(ego setCycle: Beg)
+				(ego setCycle: BegLoop)
 				(smallHead setCycle: MouthSync 942)
 				(SpeakAudio 942 self)
 			)
@@ -305,7 +305,7 @@
 				(= local8 0)
 				(smallHead setCycle: 0 dispose:)
 				(iceQueen cel: 0 setCycle: 0)
-				(wolf1 setCycle: Beg self)
+				(wolf1 setCycle: BegLoop self)
 			)
 			(30
 				(cls)
@@ -353,7 +353,7 @@
 					x: [local0 (* temp0 2)]
 					y: [local0 (+ (* temp0 2) 1)]
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -369,9 +369,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= cycles 10))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3
 				(= state -1)
 				(= seconds (Random 3 10))
@@ -403,10 +403,10 @@
 			(1
 				(= local8 0)
 				((ego head?) hide:)
-				(ego normal: 0 cycleSpeed: 3 setCycle: End self)
+				(ego normal: 0 cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(2
-				(iceQueen cycleSpeed: 3 setCycle: End self)
+				(iceQueen cycleSpeed: 3 setCycle: EndLoop self)
 			)
 			(3
 				(= local8 1)
@@ -429,7 +429,7 @@
 			(6
 				(= local8 0)
 				(cls)
-				(ego cycleSpeed: 2 setCycle: Beg self)
+				(ego cycleSpeed: 2 setCycle: BegLoop self)
 			)
 			(7
 				(= local8 1)
@@ -447,16 +447,16 @@
 			(8
 				(= local8 0)
 				(smallHead hide:)
-				(iceQueen cycleSpeed: 5 setCycle: End self)
+				(iceQueen cycleSpeed: 5 setCycle: EndLoop self)
 			)
 			(9 (= cycles 10))
 			(10
-				(iceQueen loop: 8 cel: 0 setCycle: End self)
+				(iceQueen loop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(11 (= cycles 10))
 			(12
 				(cls)
-				(cage loop: 3 cel: 0 cycleSpeed: 8 setCycle: End self)
+				(cage loop: 3 cel: 0 cycleSpeed: 8 setCycle: EndLoop self)
 			)
 			(13 (= cycles 10))
 			(14
@@ -468,7 +468,7 @@
 			)
 			(15
 				(= local8 0)
-				(wolf1 cycleSpeed: 3 setCycle: Beg self)
+				(wolf1 cycleSpeed: 3 setCycle: BegLoop self)
 			)
 			(16
 				(smallHead setCycle: 0 hide:)
@@ -502,10 +502,10 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cedric cycleSpeed: 2 setCycle: CT 4 1 self)
+				(cedric cycleSpeed: 2 setCycle: CycleTo 4 1 self)
 			)
 			(1
-				(cedric setLoop: 6 setCycle: End self)
+				(cedric setLoop: 6 setCycle: EndLoop self)
 			)
 			(2
 				(theMusic fade:)

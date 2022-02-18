@@ -382,7 +382,7 @@
 			(0
 				(= seconds (Random 4 7))
 				(= state -1)
-				(glint cycleSpeed: 2 setCycle: End)
+				(glint cycleSpeed: 2 setCycle: EndLoop)
 			)
 		)
 	)
@@ -420,13 +420,13 @@
 			(3
 				(switch global313
 					(1
-						(door0 cycleSpeed: 2 setCycle: Beg self)
+						(door0 cycleSpeed: 2 setCycle: BegLoop self)
 					)
 					(2
-						(door1 cycleSpeed: 2 setCycle: Beg self)
+						(door1 cycleSpeed: 2 setCycle: BegLoop self)
 					)
 					(else 
-						(door2 cycleSpeed: 2 setCycle: Beg self)
+						(door2 cycleSpeed: 2 setCycle: BegLoop self)
 					)
 				)
 				(theAudio number: 8124 loop: 1 play:)
@@ -445,17 +445,17 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(cart loop: 0 cycleSpeed: 2 setCycle: Fwd)
+				(cart loop: 0 cycleSpeed: 2 setCycle: Forward)
 				(= cycles 8)
 				(= state (- (Random 0 2) 1))
 			)
 			(1
-				(cart loop: 1 setCycle: Fwd)
+				(cart loop: 1 setCycle: Forward)
 				(= cycles 8)
 				(= state (- (Random 0 2) 1))
 			)
 			(2
-				(cart loop: 2 setCycle: End self)
+				(cart loop: 2 setCycle: EndLoop self)
 				(= state (- (Random 0 2) 1))
 			)
 		)
@@ -494,13 +494,13 @@
 				(ego setMotion: 0 illegalBits: 0)
 				(switch global313
 					(1
-						(door0 startUpd: setCycle: End self)
+						(door0 startUpd: setCycle: EndLoop self)
 					)
 					(2
-						(door1 startUpd: setCycle: End self)
+						(door1 startUpd: setCycle: EndLoop self)
 					)
 					(else 
-						(door2 startUpd: setCycle: End self)
+						(door2 startUpd: setCycle: EndLoop self)
 					)
 				)
 				(theAudio number: 8122 loop: 1 play:)
@@ -555,10 +555,10 @@
 					cel: 0
 					cycleSpeed: 2
 					setAvoider: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego get: 5)
 				(SolvePuzzle 2)
@@ -602,12 +602,12 @@
 					cel: 0
 					cycleSpeed: 2
 					setAvoider: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
 				(glint dispose:)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(3
 				(ego get: 4)

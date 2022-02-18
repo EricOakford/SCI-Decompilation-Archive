@@ -127,7 +127,7 @@
 					view: 78
 					setLoop: 0
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					illegalBits: 0
 				)
 			)
@@ -194,7 +194,7 @@
 					cel: 0
 					cycleSpeed: 2
 					setPri: -1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3)
@@ -214,7 +214,7 @@
 				(ego
 					view: 16
 					moveSpeed: theGameEgoMoveSpeed
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 0
 					loop: 3
 					setMotion: MoveTo 147 118 self
@@ -256,13 +256,13 @@
 		(switch (= state newState)
 			(0
 				(eagleHead hide:)
-				(eagle loop: 1 cel: 0 cycleSpeed: 3 setCycle: End)
+				(eagle loop: 1 cel: 0 cycleSpeed: 3 setCycle: EndLoop)
 				(= state (Random -1 0))
 				(= seconds (Random 5 15))
 			)
 			(1
 				(eagle stopUpd:)
-				(eagleHead show: setCycle: End)
+				(eagleHead show: setCycle: EndLoop)
 				(theAudio number: 8864 loop: 1 play:)
 				(eagle loop: 2 cel: 0)
 				(= state (Random -1 0))
@@ -293,7 +293,7 @@
 					loop: (if local36 9 else 8)
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -307,23 +307,23 @@
 				)
 				((ego head?) show:)
 				(eagleHead hide:)
-				(eagle loop: 4 setCycle: End self)
+				(eagle loop: 4 setCycle: EndLoop self)
 				(if local36 (lamb loop: 10))
 				(lamb init:)
 				(theAudio number: 8864 loop: 1 play:)
 			)
 			(4
-				(eagle loop: 5 setCycle: CT 2 1 self)
+				(eagle loop: 5 setCycle: CycleTo 2 1 self)
 			)
 			(5
-				(eagle setCycle: End)
+				(eagle setCycle: EndLoop)
 				(= cycles 25)
 				(++ local1)
 				(lamb cel: local1)
 				(if (< local1 5) (= state (- state 2)))
 			)
 			(6
-				(eagle loop: 7 setCycle: End self)
+				(eagle loop: 7 setCycle: EndLoop self)
 				(lamb dispose:)
 			)
 			(7
@@ -333,7 +333,7 @@
 				(eagleHead dispose:)
 				(eagleWing dispose:)
 				(eagle setScript: 0)
-				(eagle view: 532 loop: 0 cel: 0 setCycle: End self)
+				(eagle view: 532 loop: 0 cel: 0 setCycle: EndLoop self)
 				(theAudio number: 8864 loop: 1 play:)
 			)
 			(9

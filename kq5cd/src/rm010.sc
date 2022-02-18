@@ -41,8 +41,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 195)
-		(= global321 36)
+		(= cedricX 195)
+		(= cedricY 36)
 		(= global325 3044)
 		(self setRegions: 202)
 		(theMusic number: 24 loop: -1 play:)
@@ -128,31 +128,31 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(oldGnome cycleSpeed: 2 cel: 0 loop: 0 setCycle: End)
+				(oldGnome cycleSpeed: 2 cel: 0 loop: 0 setCycle: EndLoop)
 				(= seconds (Random 5 10))
 				(if (< (Random 0 100) 50) (= state 1))
 			)
 			(1
-				(oldGnome loop: 7 cel: 0 setCycle: End)
+				(oldGnome loop: 7 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 5 10))
 				(if (< (Random 0 100) 50) (= state -1))
 			)
 			(2
-				(oldGnome loop: 8 cel: 0 setCycle: End)
+				(oldGnome loop: 8 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 5 10))
 				(if (< (Random 0 100) 50) (= state 0))
 			)
 			(3
-				(oldGnome loop: 10 cel: 0 setCycle: End)
+				(oldGnome loop: 10 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 5 10))
 			)
 			(4
-				(oldGnome loop: 9 cel: 0 setCycle: End)
+				(oldGnome loop: 9 cel: 0 setCycle: EndLoop)
 				(= seconds (Random 5 10))
 				(if (< (Random 0 100) 50) (= state 3))
 			)
 			(5
-				(oldGnome loop: 10 cel: 5 setCycle: Beg self)
+				(oldGnome loop: 10 cel: 5 setCycle: BegLoop self)
 				(= state -1)
 			)
 		)
@@ -174,18 +174,18 @@
 					cycleSpeed: 0
 					loop: 3
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					setScript: 0
 				)
 			)
 			(2
-				(oldGnome loop: 4 cel: 0 setCycle: End self)
+				(oldGnome loop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(3
-				(oldGnome loop: 6 cel: 0 setCycle: End self)
+				(oldGnome loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(oldGnome setCycle: Beg self)
+				(oldGnome setCycle: BegLoop self)
 			)
 			(5
 				(proc762_0 @local134 @local125 @local105 self)
@@ -195,29 +195,29 @@
 					setScript: 0
 					loop: 4
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(= cycles 1)
 			)
 			(7
-				(youngGnome loop: 5 cel: 0 setCycle: End)
+				(youngGnome loop: 5 cel: 0 setCycle: EndLoop)
 				(= cycles 1)
 			)
 			(8
-				(youngGnome loop: 6 cel: 0 setCycle: End self)
+				(youngGnome loop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(ego setMotion: MoveTo 170 100 self)
 			)
 			(10
 				(Face ego youngGnome 5)
-				(youngGnome loop: 7 cel: 0 setCycle: End self)
+				(youngGnome loop: 7 cel: 0 setCycle: EndLoop self)
 				(RPuppet dispose:)
 				(ego get: 12)
 			)
 			(11
 				(cls)
-				(youngGnome loop: 8 cel: 0 setCycle: End self)
+				(youngGnome loop: 8 cel: 0 setCycle: EndLoop self)
 			)
 			(12 (= cycles 1))
 			(13
@@ -266,19 +266,19 @@
 					loop: 0
 					cycleSpeed: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(youngGnome loop: 1 cel: 0 setCycle: End self)
+				(youngGnome loop: 1 cel: 0 setCycle: EndLoop self)
 				(= state (- (Random 0 3) 1))
 			)
 			(2
-				(youngGnome loop: 2 cel: 0 setCycle: End self)
+				(youngGnome loop: 2 cel: 0 setCycle: EndLoop self)
 				(= state (- (Random 0 3) 1))
 			)
 			(3
-				(youngGnome loop: 3 cel: 0 setCycle: End self)
+				(youngGnome loop: 3 cel: 0 setCycle: EndLoop self)
 				(= state (- (Random 0 3) 1))
 			)
 		)

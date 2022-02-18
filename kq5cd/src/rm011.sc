@@ -47,8 +47,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 141)
-		(= global321 66)
+		(= cedricX 141)
+		(= cedricY 66)
 		(= global325 3045)
 		(self setFeatures: tree anthill setRegions: 202)
 		(theAudio number: 7777 loop: -1 doNotStop: 1 play:)
@@ -75,7 +75,7 @@
 		(bees
 			ignoreHorizon: 1
 			ignoreActors: 1
-			setCycle: Fwd
+			setCycle: Forward
 			init:
 		)
 		(theMusic number: 16 loop: -1 vol: 127 play:)
@@ -217,7 +217,7 @@
 					cel: 0
 					setPri: 15
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(3
@@ -231,7 +231,7 @@
 							(+ (ego x?) 39)
 						)
 					y: (+ (ego y?) 22)
-					setCycle: Fwd
+					setCycle: Forward
 					setStep: 3 1
 					illegalBits: -32768
 					setMotion: PolyPath (ego x?) 225 self
@@ -295,7 +295,7 @@
 					view: 320
 					loop: (if (< (ego x?) 181) 0 else 1)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2)
@@ -336,7 +336,7 @@
 					setLoop: 3
 					cel: 0
 					cycleSpeed: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			((and (== local1 2) (< state 7)) (= state 7) (self cue:))
@@ -364,7 +364,7 @@
 					loop: 0
 					cycleSpeed: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -375,7 +375,7 @@
 					cycleSpeed: 2
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(if (== (theGame detailLevel:) 3)
 					(= state (Random 0 2))
@@ -384,11 +384,11 @@
 				)
 			)
 			(2
-				(bear view: 1112 loop: 2 cel: 0 setCycle: End self)
+				(bear view: 1112 loop: 2 cel: 0 setCycle: EndLoop self)
 				(= state (Random 0 2))
 			)
 			(3
-				(bear view: 1113 loop: 3 cel: 0 setCycle: End self)
+				(bear view: 1113 loop: 3 cel: 0 setCycle: EndLoop self)
 				(cond 
 					((== (theAudio number?) 7777)
 						(if (not (Random 0 3))
@@ -407,12 +407,12 @@
 					loop: 0
 					cel: 0
 					cycleSpeed: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theAudio number: 8851 loop: 1 play:)
 			)
 			(5
-				(bear posn: 92 142 loop: 1 cel: 0 setCycle: End self)
+				(bear posn: 92 142 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(6)
 			(7
@@ -434,7 +434,7 @@
 					loop: 4
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(9
@@ -443,12 +443,12 @@
 					loop: 3
 					cel: 0
 					x: (+ (bear x?) 36)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(10
 				(bear
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setAvoider: ((Avoider new:) offScreenOK: 1)
 					setLoop: 1
 					setCycle: Walk
 					cycleSpeed: 0
@@ -530,14 +530,14 @@
 					loop: 4
 					cel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 					get: 17
 				)
 				(SolvePuzzle 2)
 			)
 			(3
 				(SpeakAudio 264)
-				(ego setCycle: Beg self)
+				(ego setCycle: BegLoop self)
 			)
 			(4
 				((ego head?) show:)
@@ -572,29 +572,29 @@
 					setPri: 14
 					posn: (+ ((ego head?) x?) 30) (- ((ego head?) y?) 25)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
 				(bees
 					posn: (ego x?) (- (ego y?) 15)
 					setLoop: 1
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(ego
 					view: 316
 					normal: 0
 					cycleSpeed: 3
 					setLoop: 1
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 			)
 			(2
-				(ego setLoop: 0 setCycle: End self)
+				(ego setLoop: 0 setCycle: EndLoop self)
 			)
 			(3
-				(ego setLoop: 2 cel: 0 setMotion: 0 setCycle: End self)
+				(ego setLoop: 2 cel: 0 setMotion: 0 setCycle: EndLoop self)
 			)
 			(4 (= seconds 3))
 			(5
@@ -617,12 +617,12 @@
 			(1
 				(SpeakAudio 265)
 				((ego head?) hide:)
-				(ego normal: 0 view: 56 loop: 3 cel: 0 setCycle: End self)
+				(ego normal: 0 view: 56 loop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(SolvePuzzle 2)
 				(stick dispose:)
-				(ego get: 16 setCycle: Beg self)
+				(ego get: 16 setCycle: BegLoop self)
 			)
 			(3
 				(ego normal: 1 view: 0 setCycle: Walk loop: 7 cel: 1)
@@ -964,7 +964,7 @@
 	
 	(method (init)
 		(super init:)
-		(self setCycle: Fwd)
+		(self setCycle: Forward)
 	)
 )
 
@@ -982,7 +982,7 @@
 	(method (doit)
 		(super doit:)
 		(switch (Random 1 60)
-			(1 (self setCycle: End))
+			(1 (self setCycle: EndLoop))
 		)
 	)
 )
@@ -1048,9 +1048,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= cycles 10))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3
 				(client setScript: 0 stopUpd:)
 			)

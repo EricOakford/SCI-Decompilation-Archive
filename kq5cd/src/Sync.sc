@@ -7,7 +7,7 @@
 (use System)
 
 
-(class Sync of Obj
+(class Sync of Object
 	(properties
 		syncTime -1
 		syncCue $ffff
@@ -41,7 +41,7 @@
 	)
 )
 
-(class ScriptSync of Obj
+(class ScriptSync of Object
 	(properties
 		prevSignal -1
 		playing 0

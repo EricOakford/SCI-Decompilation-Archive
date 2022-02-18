@@ -18,7 +18,7 @@
 	local0
 	local1
 )
-(instance kq5Title of Rm
+(instance kq5Title of Room
 	(properties
 		picture 55
 	)
@@ -124,11 +124,11 @@
 			)
 			(4)
 			(5
-				(glint setCycle: End self init:)
+				(glint setCycle: EndLoop self init:)
 			)
 			(6)
 			(7
-				(glint posn: 148 143 setCycle: End self)
+				(glint posn: 148 143 setCycle: EndLoop self)
 			)
 			(8
 				(if (!= (DoAudio 6) -1) (-- state))
@@ -153,7 +153,7 @@
 				(= cycles 30)
 			)
 			(10
-				(animation cycleSpeed: 1 setCycle: End self init:)
+				(animation cycleSpeed: 1 setCycle: EndLoop self init:)
 			)
 			(11
 				(if (== (DoSound sndDISPOSE) 32)
@@ -259,7 +259,7 @@
 				(= cycles 1)
 			)
 			(4
-				(glint setCycle: End self init:)
+				(glint setCycle: EndLoop self init:)
 			)
 			(5
 				(if
@@ -272,7 +272,7 @@
 				(= cycles 1)
 			)
 			(6
-				(glint posn: 148 143 setCycle: End self)
+				(glint posn: 148 143 setCycle: EndLoop self)
 			)
 			(7
 				(if (!= (theMusic prevSignal?) -1) (-- state))
@@ -292,7 +292,7 @@
 				(= cycles 30)
 			)
 			(9
-				(animation cycleSpeed: 1 setCycle: End self init:)
+				(animation cycleSpeed: 1 setCycle: EndLoop self init:)
 			)
 			(10
 				(if (== (theMusic prevSignal?) -1)

@@ -39,18 +39,18 @@
 				(= signal (& signal $fffb))
 				(= view
 					(if (self exists:)
-						--UNKNOWN-PROP-NAME--
+					;	--UNKNOWN-PROP-NAME--
 					else
-						--UNKNOWN-PROP-NAME--
+					;	--UNKNOWN-PROP-NAME--
 					)
 				)
 			)
 			((self exists:)
-				(= view --UNKNOWN-PROP-NAME--)
+				;(= view --UNKNOWN-PROP-NAME--)
 				(= signal (& signal $fffb))
 			)
 			(else
-				(= view --UNKNOWN-PROP-NAME--)
+				;(= view --UNKNOWN-PROP-NAME--)
 				(= signal (| signal $0004))
 			)
 		)
@@ -60,7 +60,7 @@
 	(method (select)
 		(if (super select: &rest)
 			(theGame setCursor: cursor)
-			(IconSave number: --UNKNOWN-PROP-NAME--)
+			;(IconSave number: --UNKNOWN-PROP-NAME--)
 		)
 	)
 	
@@ -73,7 +73,7 @@
 				0
 				curSaveDir
 				(theGame name?)
-				--UNKNOWN-PROP-NAME--
+				;--UNKNOWN-PROP-NAME--
 			)
 		)
 	)
@@ -382,7 +382,8 @@
 	
 	(method (select &tmp newClass_993_0 temp1 temp2 temp3 [temp4 20] [temp24 361] [temp385 21] temp406)
 		(if (and (super select: &rest) (IconSave number?))
-			((= newClass_993_0 (Class_993_0 new:))
+			;((= newClass_993_0 (Class_993_0 new:))
+			((= newClass_993_0 (File new:))
 				name: (Format @temp4 764 1 curSaveDir (theGame name?))
 				open: 2
 			)

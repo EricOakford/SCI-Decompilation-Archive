@@ -43,7 +43,7 @@
 				(theMusic number: 90 loop: -1 vol: 127 playBed:)
 			)
 			(workers setLoop: 2 init:)
-			(worker2 setLoop: 3 cycleSpeed: 2 setCycle: Fwd init:)
+			(worker2 setLoop: 3 cycleSpeed: 2 setCycle: Forward init:)
 			(elf setLoop: 1 posn: 48 87 init:)
 		else
 			(theMusic number: 149 loop: -1 vol: 127 play:)
@@ -127,28 +127,28 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(elf cel: 0 cycleSpeed: 2 setCycle: Fwd)
+				(elf cel: 0 cycleSpeed: 2 setCycle: Forward)
 				(= cycles 30)
 			)
 			(1
 				(elf
 					setLoop: 4
 					cel: 0
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 40 93 self
 				)
 			)
 			(2
-				(elf cel: 0 posn: 40 100 setLoop: 5 setCycle: End self)
+				(elf cel: 0 posn: 40 100 setLoop: 5 setCycle: EndLoop self)
 			)
 			(3
-				(elf posn: 49 127 setLoop: 6 cel: 0 setCycle: End self)
+				(elf posn: 49 127 setLoop: 6 cel: 0 setCycle: EndLoop self)
 			)
 			(4 (elf cel: 0 setLoop: 7))
 			(5
 				(ego get: 33)
 				(SolvePuzzle 2)
-				(elf setCycle: End self)
+				(elf setCycle: EndLoop self)
 			)
 			(6 (= cycles 10))
 			(7
@@ -157,7 +157,7 @@
 					normal: 0
 					view: 796
 					setLoop: 0
-					setCycle: End self
+					setCycle: EndLoop self
 					cycleSpeed: 3
 				)
 			)
@@ -177,11 +177,11 @@
 				(ego cel: (- (NumCels ego) 1))
 				(= cycles 15)
 			)
-			(1 (ego setCycle: Beg self))
+			(1 (ego setCycle: BegLoop self))
 			(2
 				(ego view: 2 normal: 1 setLoop: 1)
 				((ego head?) show:)
-				(elf loop: 1 cel: 0 setCycle: CT 6 1 self)
+				(elf loop: 1 cel: 0 setCycle: CycleTo 6 1 self)
 			)
 			(3
 				(elf
@@ -195,7 +195,7 @@
 			)
 			(4
 				(cls)
-				(elf loop: 5 cel: 0 setCycle: Beg)
+				(elf loop: 5 cel: 0 setCycle: BegLoop)
 				(ego
 					normal: 0
 					view: 797
@@ -234,30 +234,30 @@
 					view: 796
 					loop: 11
 					cel: 1
-					setCycle: CT 4 1 self
+					setCycle: CycleTo 4 1 self
 				)
 			)
 			(7
-				(ego loop: 12 cel: 0 setCycle: End self)
+				(ego loop: 12 cel: 0 setCycle: EndLoop self)
 			)
 			(8
-				(ego loop: 13 setCycle: End self)
+				(ego loop: 13 setCycle: EndLoop self)
 			)
 			(9
-				(elf cycleSpeed: 5 setCycle: End self)
-				(ego cycleSpeed: 3 setCycle: Fwd)
+				(elf cycleSpeed: 5 setCycle: EndLoop self)
+				(ego cycleSpeed: 3 setCycle: Forward)
 			)
 			(10
 				(ego
 					loop: 12
 					cel: 2
 					cycleSpeed: (theGame egoMoveSpeed?)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 			)
 			(11
-				(elf setCycle: Beg self)
-				(ego loop: 11 cel: 4 setCycle: CT 1 -1 self)
+				(elf setCycle: BegLoop self)
+				(ego loop: 11 cel: 4 setCycle: CycleTo 1 -1 self)
 			)
 			(12)
 			(13
@@ -276,7 +276,7 @@
 			(0 (= cycles 15))
 			(1
 				(ego
-					setCycle: Rev
+					setCycle: Reverse
 					cycleSpeed: 3
 					setMotion: MoveTo 271 51 self
 				)
@@ -285,7 +285,7 @@
 				(ego cycleSpeed: 3 setMotion: MoveTo 253 107 self)
 			)
 			(3
-				(ego setLoop: 9 posn: 251 124 cel: 0 setCycle: End self)
+				(ego setLoop: 9 posn: 251 124 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(ego
@@ -338,7 +338,7 @@
 					cel: 0
 					setLoop: 0
 					setMotion: 0
-					setCycle: End
+					setCycle: EndLoop
 				)
 				((ego head?) hide:)
 				(theAudio number: 7053 play: self)
@@ -375,7 +375,7 @@
 					view: 796
 					setLoop: 14
 					cel: 0
-					setCycle: CT 3 1 self
+					setCycle: CycleTo 3 1 self
 				)
 				((ego head?) hide:)
 			)
@@ -414,7 +414,7 @@
 					posn: 253 107
 					setLoop: 8
 					cel: 1
-					setCycle: Fwd
+					setCycle: Forward
 					moveSpeed: 2
 					setStep: 1 2
 					setMotion: MoveTo 271 51 self
@@ -452,7 +452,7 @@
 				(ego setCel: 4 x: (- (ego x?) 3))
 				(= cycles 2)
 			)
-			(3 (ego setCycle: Beg self))
+			(3 (ego setCycle: BegLoop self))
 			(4
 				(ego view: 2 x: (- (ego x?) 8))
 				(NormalEgo 1 2)
@@ -480,7 +480,7 @@
 		(super doit:)
 		(if (== (theMusic prevSignal?) 10)
 			(theMusic prevSignal: 0)
-			(self cel: 0 setCycle: End)
+			(self cel: 0 setCycle: EndLoop)
 		)
 	)
 )

@@ -75,7 +75,7 @@
 				(cls)
 				(SpeakAudio 328)
 				((ego head?) hide:)
-				(ego normal: 0 view: 56 loop: 1 cel: 0 setCycle: End self)
+				(ego normal: 0 view: 56 loop: 1 cel: 0 setCycle: EndLoop self)
 			)
 			(2
 				(SolvePuzzle 2)
@@ -110,7 +110,7 @@
 					loop: (Random 1 7)
 					x: [local1 (* temp0 2)]
 					y: [local1 (+ (* temp0 2) 1)]
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -126,7 +126,7 @@
 	
 	(method (changeState newState &tmp temp0)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1
 				(client stopUpd:)
 				(= state -1)
@@ -152,18 +152,18 @@
 					loop: 10
 					cel: 0
 					cycleSpeed: 3
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
-				(ego loop: 11 setCycle: Fwd)
+				(ego loop: 11 setCycle: Forward)
 				(= cycles 50)
 			)
 			(3
 				(if (< (closeDoor state?) 1)
 					(closeDoor changeState: 1)
 				)
-				(ego loop: 12 cel: 0 setCycle: End)
+				(ego loop: 12 cel: 0 setCycle: EndLoop)
 			)
 		)
 	)
@@ -195,7 +195,7 @@
 				(theAudio number: 8018 loop: 1 play:)
 				(client
 					setPri: (- (ego priority?) 1)
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(HandsOff)
 				(if (not (& (ego onControl: 1) $2000))
@@ -234,13 +234,13 @@
 					view: 398
 					loop: 9
 					cel: 0
-					setCycle: CT 2 1 self
+					setCycle: CycleTo 2 1 self
 				)
 			)
 			(2
 				(SolvePuzzle 2)
 				(bottle dispose:)
-				(ego get: 6 setCycle: End self)
+				(ego get: 6 setCycle: EndLoop self)
 			)
 			(3
 				(ego

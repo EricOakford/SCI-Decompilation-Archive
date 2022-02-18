@@ -54,7 +54,7 @@
 		(IKHead setScript: headScript init:)
 		(thug1 setMotion: 0 setScript: (drinkScript new:) init:)
 		(thug2 setScript: (drinkScript new:) init:)
-		(IKArm setCycle: Fwd cycleSpeed: 2 init:)
+		(IKArm setCycle: Forward cycleSpeed: 2 init:)
 		(innKeeper init:)
 		(theMusic number: 119 loop: -1 vol: 127 play:)
 		(poly1 points: @local1 size: 14)
@@ -120,11 +120,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(client setCycle: End)
+				(client setCycle: EndLoop)
 				(= seconds (Random 3 8))
 			)
 			(1
-				(client setCycle: Beg)
+				(client setCycle: BegLoop)
 				(= state -1)
 				(= seconds (Random 3 8))
 			)
@@ -140,7 +140,7 @@
 			(0
 				(IKHead dispose:)
 				(IKArm dispose:)
-				(thug2 setCycle: Beg setScript: 0)
+				(thug2 setCycle: BegLoop setScript: 0)
 				(innKeeper
 					view: 800
 					setScript: 0
@@ -157,7 +157,7 @@
 				(innKeeper setMotion: MoveTo 78 142 self)
 			)
 			(2
-				(dog setCycle: End)
+				(dog setCycle: EndLoop)
 				(thug1
 					view: 806
 					setScript: 0
@@ -170,7 +170,7 @@
 				(innKeeper
 					observeControl: 2048
 					ignoreActors: 1
-					setAvoider: (Avoid new:)
+					setAvoider: (Avoider new:)
 					setMotion: Chase ego 20 self
 				)
 			)
@@ -223,7 +223,7 @@
 				(innHead setCycle: 0 dispose:)
 				(cls)
 				(DoAudio 1 8023)
-				(thug1 view: 810 loop: 0 cel: 0 setCycle: End self)
+				(thug1 view: 810 loop: 0 cel: 0 setCycle: EndLoop self)
 			)
 			(9
 				(theAudio number: 8023 loop: 1 play:)
@@ -237,7 +237,7 @@
 					view: 810
 					loop: 1
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(11
@@ -265,19 +265,19 @@
 		(switch (= state newState)
 			(0 (= seconds (Random 3 8)))
 			(1
-				(client setCycle: CT 3 1)
+				(client setCycle: CycleTo 3 1)
 				(= seconds 3)
 			)
 			(2
-				(client setCycle: End self)
+				(client setCycle: EndLoop self)
 				(if (< (Random 1 100) 25) (= state -1))
 			)
 			(3
-				(client setCycle: CT 1 1)
+				(client setCycle: CycleTo 1 1)
 				(= seconds 1)
 			)
 			(4
-				(client setCycle: CT 0 -1)
+				(client setCycle: CycleTo 0 -1)
 				(= seconds 1)
 				(if (< (Random 1 100) 25)
 					(= state -1)

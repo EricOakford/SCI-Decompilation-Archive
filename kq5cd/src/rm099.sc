@@ -16,7 +16,7 @@
 	local0
 	local1
 )
-(instance rm099 of Rm
+(instance rm099 of Room
 	(properties
 		picture 55
 	)
@@ -58,7 +58,7 @@
 					illegalBits: 0
 					posn: 20 99
 					setStep: 1 1
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 					setMotion: MoveTo 100 100 self
 				)

@@ -32,7 +32,7 @@
 					view: 128
 					posn: 156 157
 					setStep: 1 1
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				((ego head?) hide:)
@@ -45,16 +45,16 @@
 					setLoop: 0
 					setStep: 1 1
 					moveSpeed: 1
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(self setScript: crash)
 			)
 		)
 		(theMusic number: 833 loop: 1 vol: 127 play:)
-		(smoke1 setCycle: Fwd init:)
-		(smoke2 setCycle: Fwd init:)
-		(lava1 setCycle: Fwd init:)
+		(smoke1 setCycle: Forward init:)
+		(smoke2 setCycle: Forward init:)
+		(lava1 setCycle: Forward init:)
 	)
 	
 	(method (doit &tmp temp0)
@@ -106,7 +106,7 @@
 					setLoop: 0
 					setStep: 1 1
 					moveSpeed: 2
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 3
 					setMotion: MoveTo 156 170 self
 					init:
@@ -131,7 +131,7 @@
 					setLoop: 4
 					cel: 0
 					setMotion: MoveTo 156 167
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(theAudio number: 7072 loop: 1 play:)
 			)
@@ -141,7 +141,7 @@
 					setLoop: 5
 					cel: 0
 					cycleSpeed: 3
-					setCycle: Fwd
+					setCycle: Forward
 				)
 				(= seconds 4)
 			)
@@ -163,7 +163,7 @@
 				(ego
 					view: 128
 					setLoop: 4
-					setCycle: Fwd
+					setCycle: Forward
 					cycleSpeed: 1
 					setStep: 1 1
 					moveSpeed: 4
@@ -177,16 +177,16 @@
 					loop: 10
 					cel: 6
 					cycleSpeed: 3
-					setCycle: Beg self
+					setCycle: BegLoop self
 				)
 				(ego dispose:)
 			)
 			(2
-				(killer loop: 6 cel: 0 setCycle: Fwd)
+				(killer loop: 6 cel: 0 setCycle: Forward)
 				(= seconds 2)
 			)
 			(3
-				(killer loop: 10 cel: 0 setCycle: End self)
+				(killer loop: 10 cel: 0 setCycle: EndLoop self)
 			)
 			(4
 				(= deathMessage 9058)

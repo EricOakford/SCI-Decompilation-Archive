@@ -54,7 +54,7 @@
 			(0
 				(eagle
 					setLoop: 2
-					setCycle: Fwd
+					setCycle: Forward
 					setMotion: MoveTo 109 41 self
 				)
 				(roc setScript: rocScript)
@@ -94,11 +94,11 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(roc loop: 0 setCycle: Fwd)
+				(roc loop: 0 setCycle: Forward)
 				(= cycles (Random 15 30))
 			)
 			(1
-				(roc loop: 1 cel: 0 setCycle: Fwd)
+				(roc loop: 1 cel: 0 setCycle: Forward)
 				(= cycles (Random 15 30))
 			)
 			(2 (self init:))
@@ -112,7 +112,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(roc setLoop: 5 cel: 0 setCycle: End self)
+				(roc setLoop: 5 cel: 0 setCycle: EndLoop self)
 			)
 			(1
 				(roc setLoop: 6 setCycle: RandCycle)

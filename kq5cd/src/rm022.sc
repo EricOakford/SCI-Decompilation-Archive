@@ -151,7 +151,7 @@
 					setLoop: 0
 					illegalBits: 0
 					setMotion: MoveTo (ego x?) (- (ego y?) 5)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 			)
@@ -167,7 +167,7 @@
 				((ego head?) show:)
 			)
 			(2
-				(door cycleSpeed: 2 setCycle: End self)
+				(door cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(3
 				(ego
@@ -182,7 +182,7 @@
 			(4
 				(ego setLoop: -1 hide:)
 				((ego head?) hide:)
-				(door setCycle: Beg self)
+				(door setCycle: BegLoop self)
 			)
 			(5
 				(HandsOn)
@@ -202,7 +202,7 @@
 				(door
 					init:
 					setPri: (+ (ego priority?) 1)
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(2
@@ -217,7 +217,7 @@
 				((ego head?) show:)
 			)
 			(3
-				(door setPri: -1 setCycle: Beg self)
+				(door setPri: -1 setCycle: BegLoop self)
 			)
 			(4
 				(client setScript: getBigScript)
@@ -241,7 +241,7 @@
 					normal: 0
 					cel: 0
 					setLoop: 1
-					setCycle: End self
+					setCycle: EndLoop self
 					setMotion: MoveTo 130 140 self
 				)
 			)
@@ -278,7 +278,7 @@
 					setMotion: 0
 					setPri: 8
 					illegalBits: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				((ego head?) hide:)
 				(theAudio number: 7053 loop: 1 play: self)

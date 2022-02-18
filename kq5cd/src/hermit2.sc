@@ -27,8 +27,8 @@
 		(if (== prevRoomNum 112)
 			(hermit view: 626 posn: 136 118 moveSpeed: 1 init:)
 			(ego init: view: 0 normal: 1 posn: 158 121 setLoop: 5)
-			(= global320 201)
-			(= global321 110)
+			(= cedricX 201)
+			(= cedricY 110)
 			(= global325 3070)
 			(curRoom setRegions: 202)
 			(self setScript: cartoon2)
@@ -61,7 +61,7 @@
 				init:
 			)
 		)
-		(chimney setCycle: Fwd init:)
+		(chimney setCycle: Forward init:)
 		(super init:)
 	)
 )
@@ -78,21 +78,21 @@
 			)
 			(2
 				(ego setScript: putDownOwl)
-				(hermit cycleSpeed: 2 setCycle: End self)
+				(hermit cycleSpeed: 2 setCycle: EndLoop self)
 			)
 			(3
-				(hermit setLoop: 1 setCycle: End self)
+				(hermit setLoop: 1 setCycle: EndLoop self)
 			)
 			(4
-				(hermit setLoop: 2 setCycle: Fwd)
+				(hermit setLoop: 2 setCycle: Forward)
 				(= cycles 10)
 			)
-			(5 (hermit setCycle: End self))
+			(5 (hermit setCycle: EndLoop self))
 			(6
-				(hermit setLoop: 1 setCycle: Beg self)
+				(hermit setLoop: 1 setCycle: BegLoop self)
 			)
 			(7
-				(hermit setLoop: 0 setCycle: Beg self)
+				(hermit setLoop: 0 setCycle: BegLoop self)
 			)
 			(8
 				(cls)
@@ -142,16 +142,16 @@
 					view: 1041
 					setLoop: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(15
-				(hermit view: 828 setLoop: 2 setCycle: Fwd)
+				(hermit view: 828 setLoop: 2 setCycle: Forward)
 				(= cycles 20)
 			)
-			(16 (hermit setCycle: End self))
+			(16 (hermit setCycle: EndLoop self))
 			(17
-				(hermit setLoop: 3 setCycle: End self)
+				(hermit setLoop: 3 setCycle: EndLoop self)
 			)
 			(18 (cls) (= seconds 3))
 			(19
@@ -173,7 +173,7 @@
 					loop: 4
 					cycleSpeed: 2
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(hermit_mouth
 					setPri: (+ (hermit priority?) 1)
@@ -225,7 +225,7 @@
 					loop: 4
 					setCel: 0
 					cycleSpeed: 2
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(30
@@ -243,8 +243,8 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(= global320 201)
-				(= global321 110)
+				(= cedricX 201)
+				(= cedricY 110)
 				(curRoom setRegions: 202)
 				(ego
 					view: 0
@@ -276,7 +276,7 @@
 				)
 			)
 			(3
-				(globalCedric view: 138 setLoop: 8 setCycle: End self)
+				(globalCedric view: 138 setLoop: 8 setCycle: EndLoop self)
 			)
 			(4
 				(theMusic fade:)
@@ -303,7 +303,7 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (ego setCycle: End self))
+			(0 (ego setCycle: EndLoop self))
 			(1 (= seconds 2))
 			(2
 				(owl setLoop: 1 posn: 201 115 cycleSpeed: 2 cel: 0 init:)
@@ -340,7 +340,7 @@
 	(method (changeState newState)
 		(switch (= state newState)
 			(0
-				(owl view: 824 cel: 0 setLoop: 0 setCycle: End self)
+				(owl view: 824 cel: 0 setLoop: 0 setCycle: EndLoop self)
 			)
 			(1
 				(owl setLoop: 1 cel: 0)
@@ -349,17 +349,17 @@
 					setLoop: 2
 					cel: 0
 					posn: (- (owl x?) 1) (- (owl y?) 9)
-					setCycle: Fwd
+					setCycle: Forward
 					init:
 				)
 				(= cycles 10)
 			)
-			(2 (owlHead setCycle: End self))
+			(2 (owlHead setCycle: EndLoop self))
 			(3
-				(owl setLoop: 3 cel: 0 setCycle: End self)
+				(owl setLoop: 3 cel: 0 setCycle: EndLoop self)
 			)
 			(4
-				(owl setLoop: 4 cel: 0 setCycle: End self)
+				(owl setLoop: 4 cel: 0 setCycle: EndLoop self)
 			)
 			(5
 				(owlHead setPri: (+ (owl priority?) 1) setLoop: 5)

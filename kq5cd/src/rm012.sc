@@ -50,8 +50,8 @@
 	
 	(method (init)
 		(super init:)
-		(= global320 155)
-		(= global321 51)
+		(= cedricX 155)
+		(= cedricY 51)
 		(= global325 3051)
 		(self setFeatures: anthill setRegions: 202)
 		(switch prevRoomNum
@@ -99,11 +99,11 @@
 		else
 			(theMusic number: 13 loop: -1 vol: 127 playBed:)
 		)
-		(ants1 setCycle: Fwd init:)
-		(ants2 setCycle: Fwd init:)
-		(ants3 setCycle: Fwd init:)
-		(ants4 setCycle: Fwd init:)
-		(ants5 setCycle: Fwd init:)
+		(ants1 setCycle: Forward init:)
+		(ants2 setCycle: Forward init:)
+		(ants3 setCycle: Forward init:)
+		(ants4 setCycle: Forward init:)
+		(ants5 setCycle: Forward init:)
 		(poly1 points: @local3 size: 3)
 		(poly2 points: @local9 size: 6)
 		(poly3 points: @local21 size: 4)
@@ -222,20 +222,20 @@
 					cel: 0
 					setStep: 1 1
 					setMotion: MoveTo 188 145
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
-				(ego cycleSpeed: 5 cel: 0 setLoop: 1 setCycle: End self)
+				(ego cycleSpeed: 5 cel: 0 setLoop: 1 setCycle: EndLoop self)
 			)
 			(2
-				(ego cel: 0 setLoop: 2 setCycle: End self)
+				(ego cel: 0 setLoop: 2 setCycle: EndLoop self)
 			)
 			(3
 				(cls)
-				(ego cel: 0 setLoop: 3 setCycle: End self)
+				(ego cel: 0 setLoop: 3 setCycle: EndLoop self)
 			)
-			(4 (ego setCycle: End self))
+			(4 (ego setCycle: EndLoop self))
 			(5
 				(ego
 					view: 0
@@ -313,7 +313,7 @@
 					view: 296
 					loop: (if (< (ego x?) 151) 0 else 1)
 					cel: 0
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 				(stick
 					setLoop:
@@ -326,7 +326,7 @@
 					x: (ego x?)
 					y: (ego y?)
 					cel: 0
-					setCycle: End
+					setCycle: EndLoop
 					cycleSpeed: (ego cycleSpeed?)
 					init:
 				)
@@ -359,14 +359,14 @@
 					view: 332
 					posn: 129 146
 					setLoop: 0
-					setCycle: CT 5 1 self
+					setCycle: CycleTo 5 1 self
 				)
 				(theAudio number: 8861 loop: 1 play:)
 			)
 			(6
 				(cls)
 				(stick dispose:)
-				(dog setCycle: End self)
+				(dog setCycle: EndLoop self)
 				(theAudio number: 8861 loop: 1 play:)
 			)
 			(7
@@ -376,7 +376,7 @@
 					setLoop: 4
 					illegalBits: -32768
 					setCycle: Walk
-					setAvoider: ((Avoid new:) offScreenOK: 1)
+					setAvoider: ((Avoider new:) offScreenOK: 1)
 					setMotion: MoveTo -45 143 self
 				)
 				(theMusic fade:)
@@ -426,11 +426,11 @@
 		(switch (= state newState)
 			(0
 				(dogHead hide:)
-				(dog loop: 6 setCycle: Fwd)
+				(dog loop: 6 setCycle: Forward)
 				(= seconds (Random 3 8))
 			)
 			(1
-				(dogHead show: loop: 3 cycleSpeed: 4 setCycle: Fwd)
+				(dogHead show: loop: 3 cycleSpeed: 4 setCycle: Forward)
 				(dog loop: 0)
 				(theAudio number: 8861 loop: 1 play: self)
 			)
@@ -456,7 +456,7 @@
 					loop: 1
 					cel: 0
 					cycleSpeed: 4
-					setCycle: End self
+					setCycle: EndLoop self
 				)
 			)
 			(1
@@ -475,7 +475,7 @@
 					cel: 0
 					setMotion: 0
 					cycleSpeed: 3
-					setCycle: End
+					setCycle: EndLoop
 				)
 			)
 			(2
@@ -489,7 +489,7 @@
 				)
 				(= cycles 1)
 				((ego head?) show:)
-				(dogHead setCycle: Beg self)
+				(dogHead setCycle: BegLoop self)
 			)
 			(3 (= seconds 2))
 			(4
@@ -516,9 +516,9 @@
 	
 	(method (changeState newState)
 		(switch (= state newState)
-			(0 (client setCycle: End self))
+			(0 (client setCycle: EndLoop self))
 			(1 (= cycles 10))
-			(2 (client setCycle: Beg self))
+			(2 (client setCycle: BegLoop self))
 			(3
 				(= state -1)
 				(= seconds (Random 3 10))
